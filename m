@@ -2,105 +2,101 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 6036DE994
-	for <lists+linux-wireless@lfdr.de>; Mon, 29 Apr 2019 19:58:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 37B51EA4B
+	for <lists+linux-wireless@lfdr.de>; Mon, 29 Apr 2019 20:41:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728893AbfD2R6r (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 29 Apr 2019 13:58:47 -0400
-Received: from smtp.codeaurora.org ([198.145.29.96]:47154 "EHLO
-        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728844AbfD2R6q (ORCPT
+        id S1729104AbfD2SlT (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 29 Apr 2019 14:41:19 -0400
+Received: from gateway36.websitewelcome.com ([50.116.126.2]:38638 "EHLO
+        gateway36.websitewelcome.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1729073AbfD2SlS (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 29 Apr 2019 13:58:46 -0400
-Received: by smtp.codeaurora.org (Postfix, from userid 1000)
-        id 1806F60850; Mon, 29 Apr 2019 17:58:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1556560726;
-        bh=5TrNGB0Vt1PiDJmJSN6BEJmawdsW3EAaTzNwwM9jFjw=;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=eusJ8tsPjmZceud6ZRCFA4oOx2nDOo4UDaXOa/Ar+wf33hzJIOBB5QfVJiG/BgZAZ
-         gsXEMggHoSXkSi8dHOvpIulXU7+Yn1H3swac6LdzVpQeZYA4lKNnq7/26h2MlmerwO
-         C2lomXBcnrh5VA1YMkFjYeXEHR8abPNzghc0lGXs=
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        pdx-caf-mail.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.7 required=2.0 tests=ALL_TRUSTED,BAYES_00,
-        DKIM_INVALID,DKIM_SIGNED autolearn=no autolearn_force=no version=3.4.0
-Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        (Authenticated sender: kvalo@smtp.codeaurora.org)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 4D27C60240;
-        Mon, 29 Apr 2019 17:58:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1556560724;
-        bh=5TrNGB0Vt1PiDJmJSN6BEJmawdsW3EAaTzNwwM9jFjw=;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=JQwzAg7oAUJimh2bXat/85TTBrtG9kkDmumgpL6ka2y3YwJzjo5Zjz/hBvqKhFkH7
-         TXC5NyOOJ+d6hLFmD0V60vE1/6v6VPc2ySvOMk5o4VW8cZCiYSDRpU1mSLffGiZY46
-         GCVGhxhldc179s94biiyeeQ7PkIINIk+JatR3P/I=
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 4D27C60240
-Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
-From:   Kalle Valo <kvalo@codeaurora.org>
-To:     Luca Coelho <luca@coelho.fi>
-Cc:     linux-wireless@vger.kernel.org, linuxwifi@intel.com,
-        david.e.box@intel.com, joe.konno@intel.com
-Subject: Re: pull-request: iwlwifi-next 2019-04-29
-References: <491e2c7557a981d2e1a721ffe7571ec992dfe62d.camel@coelho.fi>
-Date:   Mon, 29 Apr 2019 20:58:41 +0300
-In-Reply-To: <491e2c7557a981d2e1a721ffe7571ec992dfe62d.camel@coelho.fi> (Luca
-        Coelho's message of "Mon, 29 Apr 2019 19:00:30 +0300")
-Message-ID: <875zqwsnfy.fsf@kamboji.qca.qualcomm.com>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
+        Mon, 29 Apr 2019 14:41:18 -0400
+X-Greylist: delayed 1279 seconds by postgrey-1.27 at vger.kernel.org; Mon, 29 Apr 2019 14:41:17 EDT
+Received: from cm12.websitewelcome.com (cm12.websitewelcome.com [100.42.49.8])
+        by gateway36.websitewelcome.com (Postfix) with ESMTP id CE529400F0E00
+        for <linux-wireless@vger.kernel.org>; Mon, 29 Apr 2019 12:38:38 -0500 (CDT)
+Received: from gator4166.hostgator.com ([108.167.133.22])
+        by cmsmtp with SMTP
+        id LAsfhIBSCiQerLAsghyEux; Mon, 29 Apr 2019 13:19:58 -0500
+X-Authority-Reason: nr=8
+Received: from [189.250.54.97] (port=59422 helo=embeddedor)
+        by gator4166.hostgator.com with esmtpa (Exim 4.91)
+        (envelope-from <gustavo@embeddedor.com>)
+        id 1hLAsa-002u1o-LD; Mon, 29 Apr 2019 13:19:57 -0500
+Date:   Mon, 29 Apr 2019 13:19:50 -0500
+From:   "Gustavo A. R. Silva" <gustavo@embeddedor.com>
+To:     Johannes Berg <johannes@sipsolutions.net>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        "David S. Miller" <davem@davemloft.net>
+Cc:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        "Gustavo A. R. Silva" <gustavo@embeddedor.com>,
+        Kees Cook <keescook@chromium.org>
+Subject: [PATCH][next] mac80211_hwsim: mark expected switch fall-through
+Message-ID: <20190429181950.GA20946@embeddedor>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+User-Agent: Mutt/1.9.4 (2018-02-28)
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - gator4166.hostgator.com
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - embeddedor.com
+X-BWhitelist: no
+X-Source-IP: 189.250.54.97
+X-Source-L: No
+X-Exim-ID: 1hLAsa-002u1o-LD
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
+X-Source-Sender: (embeddedor) [189.250.54.97]:59422
+X-Source-Auth: gustavo@embeddedor.com
+X-Email-Count: 4
+X-Source-Cap: Z3V6aWRpbmU7Z3V6aWRpbmU7Z2F0b3I0MTY2Lmhvc3RnYXRvci5jb20=
+X-Local-Domain: yes
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Luca Coelho <luca@coelho.fi> writes:
+In preparation to enabling -Wimplicit-fallthrough, mark switch
+cases where we are expecting to fall through.
 
-> This is the fourth batch of patches intended for v5.2.  This includes
-> the last patchset I sent.  Usual development work.  More details about
-> the contents in the tag description.
->
-> I have sent this out before and kbuildbot reported success.
->
-> Please let me know if there are any issues.
->
-> Cheers,
-> Luca.
->
->
-> The following changes since commit 9ef77fbedad9ea8895cd5d7fb7aee16071f527dc:
->
->   brcmfmac: send mailbox interrupt twice for specific hardware device (2019-04-26 15:00:53 +0300)
->
-> are available in the Git repository at:
->
->   git://git.kernel.org/pub/scm/linux/kernel/git/iwlwifi/iwlwifi-next.git tags/iwlwifi-next-for-kalle-2019-04-29
->
-> for you to fetch changes up to a0eaead41db98c08614c4b1ef453bdfaacde962d:
->
->   iwlwifi: dbg_ini: check for valid region type during regions parsing (2019-04-29 18:42:48 +0300)
->
-> ----------------------------------------------------------------
-> Fourth batch of patches intended for v5.2
->
-> * Fix a bug we introduced in the RX path in a previous patch;
-> * Add command version parsing from the FW TLVs;
-> * Some fixes and improvements in the new debugging framework;
-> * Bump the FW API supported for 22000 series;
-> * Small improvement in FTM;
-> * Some RF-Kill interrupt handling fixes;
-> * Support for a new WoWLAN patterns FW API;
-> * Other small fixes and improvements;
->
-> ----------------------------------------------------------------
+This patch fixes the following warning:
 
-Pulled, thanks Luca.
+drivers/net/wireless/mac80211_hwsim.c: In function ‘init_mac80211_hwsim’:
+drivers/net/wireless/mac80211_hwsim.c:3853:21: warning: this statement may fall through [-Wimplicit-fallthrough=]
+    param.reg_strict = true;
+    ~~~~~~~~~~~~~~~~~^~~~~~
+drivers/net/wireless/mac80211_hwsim.c:3854:3: note: here
+   case HWSIM_REGTEST_DRIVER_REG_ALL:
+   ^~~~
 
+Warning level 3 was used: -Wimplicit-fallthrough=3
+
+This patch is part of the ongoing efforts to enable
+-Wimplicit-fallthrough.
+
+Signed-off-by: Gustavo A. R. Silva <gustavo@embeddedor.com>
+---
+ drivers/net/wireless/mac80211_hwsim.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/drivers/net/wireless/mac80211_hwsim.c b/drivers/net/wireless/mac80211_hwsim.c
+index 60ca13e0f15b..b5274d1f30fa 100644
+--- a/drivers/net/wireless/mac80211_hwsim.c
++++ b/drivers/net/wireless/mac80211_hwsim.c
+@@ -3851,6 +3851,7 @@ static int __init init_mac80211_hwsim(void)
+ 			break;
+ 		case HWSIM_REGTEST_STRICT_ALL:
+ 			param.reg_strict = true;
++			/* fall through */
+ 		case HWSIM_REGTEST_DRIVER_REG_ALL:
+ 			param.reg_alpha2 = hwsim_alpha2s[0];
+ 			break;
 -- 
-Kalle Valo
+2.21.0
+
