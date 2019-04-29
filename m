@@ -2,109 +2,90 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 8456DE08E
-	for <lists+linux-wireless@lfdr.de>; Mon, 29 Apr 2019 12:30:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8599CE0AD
+	for <lists+linux-wireless@lfdr.de>; Mon, 29 Apr 2019 12:42:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727630AbfD2KaM (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 29 Apr 2019 06:30:12 -0400
-Received: from mail-qk1-f193.google.com ([209.85.222.193]:34674 "EHLO
-        mail-qk1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727560AbfD2KaM (ORCPT
+        id S1727774AbfD2KmF (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 29 Apr 2019 06:42:05 -0400
+Received: from mail-qt1-f194.google.com ([209.85.160.194]:35383 "EHLO
+        mail-qt1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727621AbfD2KmF (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 29 Apr 2019 06:30:12 -0400
-Received: by mail-qk1-f193.google.com with SMTP id n68so5600180qka.1
-        for <linux-wireless@vger.kernel.org>; Mon, 29 Apr 2019 03:30:12 -0700 (PDT)
+        Mon, 29 Apr 2019 06:42:05 -0400
+Received: by mail-qt1-f194.google.com with SMTP id e5so4357428qtq.2
+        for <linux-wireless@vger.kernel.org>; Mon, 29 Apr 2019 03:42:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=chromium.org; s=google;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=LsbJoBOTkJ5iG+ZToRJP54iUPlrflioTmA0QK3mgDEc=;
-        b=O6Jb8N54hpz3uPynvt6Yt5/rHuZZLUeyQ0rO2pFpfNvWnT1xSu7T4eYytHDR01LEQQ
-         ZU1tzv39a8sX4YIaOH4s3mOel/4TQn7rwamS5K9B9YRJzc+N9RK4L4ocfxPOlWxMg4NL
-         P1PX0fdUj7gXI8YJSe5Z1aany9gBNk4KVQbDA=
+        bh=Mti7KwMi+FS7lNJiLBXoxgVN3ENDHL6rbQJBPEZLm8c=;
+        b=e6Z9KN+6jcezK4vxJLAWJ4wS+bpxKehspqny2MSjUgaOejBm5SChPK+bwk3HlBKrwj
+         cxjDmvPu1FDIMhcQNGe0i3iacMH6nOIdGlv9koKvO+L23/izsmwYOK3RSUyqLnk+Z4S/
+         40b9hQCT4A7O4M06WpDPjq4S0Nb9QQNLU2Rio=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=LsbJoBOTkJ5iG+ZToRJP54iUPlrflioTmA0QK3mgDEc=;
-        b=ZM9a1Mlk2XTCZv/Q1zkwZpz3q/sBOBxsIlWnULp0VuHCNGIP53Ogj+gBYiXwo5sPPf
-         lqwBkTudwpWYGZ8e1KokctwU6bI+VldeEvnNIdpo6Qvnb7whVeLPqFY+/HUnO9I1Mx6S
-         VMxI2nFLn3ypkUz7/RB4JOx5ttMXnkb98mUw3/twskyO3e7/t0FNdXFovQCNBYogwzoJ
-         hRe/lfIoMgyc9bFu4oX1SeEkUGpdGjJvJlWkRerxsJ6B6RLzkfBb+cZcHY7Z0vIJ3P44
-         qK6Mwr75qGjToqyMJFaL6+0axo+gdQJZDmB5YC0quFrOHbsnohL1I+SrwnCseQ9fXcrN
-         IxZw==
-X-Gm-Message-State: APjAAAWWUfAtahs8166x680jeAwbCAw6xHWIooVbkWSitNKBgRksyn3P
-        fNe80PwvyeKCdgQ+PEcjICf46nR8zIY+mVfHe5TaoQ==
-X-Google-Smtp-Source: APXvYqxZ73NWcz094Q/7/PmP4XT2MmsPOvqcdxePBjq87Uy02bxkEdIOmOR4YOXaAalFtBGm5if9wOLGQYtec+tcCPM=
-X-Received: by 2002:a37:6897:: with SMTP id d145mr35198030qkc.185.1556533811413;
- Mon, 29 Apr 2019 03:30:11 -0700 (PDT)
+        bh=Mti7KwMi+FS7lNJiLBXoxgVN3ENDHL6rbQJBPEZLm8c=;
+        b=c4M+FbRyS8MPNehAiSjmOw6CznHvXqxhEn61uImuV/L7v4po9ZvE8k3cK977mKi+vN
+         rX8/c8usluzp6Syu68aK3KdL8SGg/Bq3IXalxxFau83sTZv8/cuR3cU2EBECDSn02fzB
+         mK4EMElgxWOmhBIkbsEh2gBzOYC8c7a0j1uZ49dJmjoMvK4LiZDOYINLBK9MDca1pnnb
+         /vzETx+rRxdZwwiXM8j1dDAXrbFfrV2iXya4GIOu+Hm38D8o+Ae5pKXn3RbLeLqQjPt1
+         q46jd9UuafnSkMStWU3iqsqTyP8OQycv30TPh/WuxIO7TTkiaT7+pijobEq4wIDTqn91
+         +XNA==
+X-Gm-Message-State: APjAAAWKvnQch/oX3PzSVstrlUzsmb4JTuicJ7eFO6mV/oq+VVyC04C/
+        fi1S2+RSXU4x39mZYUtgAkjXTWIGTKKd+Q/H
+X-Google-Smtp-Source: APXvYqzk5aYxV58w7N95dNyia/fQ/eV9udrxxcCCgAMyYC9mR+6R1h32BFob+FsBQYmrnc2bEQ3YGA==
+X-Received: by 2002:aed:3e1b:: with SMTP id l27mr38214440qtf.328.1556534523968;
+        Mon, 29 Apr 2019 03:42:03 -0700 (PDT)
+Received: from mail-qk1-f179.google.com (mail-qk1-f179.google.com. [209.85.222.179])
+        by smtp.gmail.com with ESMTPSA id u3sm16405304qkc.21.2019.04.29.03.42.01
+        for <linux-wireless@vger.kernel.org>
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Mon, 29 Apr 2019 03:42:02 -0700 (PDT)
+Received: by mail-qk1-f179.google.com with SMTP id d14so1437890qkl.11
+        for <linux-wireless@vger.kernel.org>; Mon, 29 Apr 2019 03:42:01 -0700 (PDT)
+X-Received: by 2002:a37:4c7:: with SMTP id 190mr37260660qke.128.1556534521618;
+ Mon, 29 Apr 2019 03:42:01 -0700 (PDT)
 MIME-Version: 1.0
-References: <1554260478-4161-1-git-send-email-wgong@codeaurora.org>
-In-Reply-To: <1554260478-4161-1-git-send-email-wgong@codeaurora.org>
-From:   Nicolas Boichat <drinkcat@chromium.org>
-Date:   Mon, 29 Apr 2019 18:30:00 +0800
-Message-ID: <CANMq1KAU1B4Bweq3O6O8HOMwT7fHjj9tDyxqMsn_vn4gwxXL=Q@mail.gmail.com>
-Subject: Re: [PATCH] ath10k: add peer id check in ath10k_peer_find_by_id
-To:     Wen Gong <wgong@codeaurora.org>
-Cc:     ath10k@lists.infradead.org, linux-wireless@vger.kernel.org,
-        Claire Chang <tientzu@chromium.org>
+References: <2884043.Jv1Mn93hE8@aspire.rjw.lan> <20190403195718.GA74723@google.com>
+ <87o94tutdz.fsf@kamboji.qca.qualcomm.com> <CAJZ5v0ifD=DATprUeeO2_LGs04aEEhPB6AcGVPxWUdQaOma+ww@mail.gmail.com>
+In-Reply-To: <CAJZ5v0ifD=DATprUeeO2_LGs04aEEhPB6AcGVPxWUdQaOma+ww@mail.gmail.com>
+From:   Claire Chang <tientzu@chromium.org>
+Date:   Mon, 29 Apr 2019 18:41:50 +0800
+X-Gmail-Original-Message-ID: <CALiNf2_qV+iViHbS0tQquTMZfu6XfFvQCH14mdT5bixn94DZ2Q@mail.gmail.com>
+Message-ID: <CALiNf2_qV+iViHbS0tQquTMZfu6XfFvQCH14mdT5bixn94DZ2Q@mail.gmail.com>
+Subject: Re: [PATCH] ath10k: Drop WARN_ON()s that always trigger during system resume
+To:     "Rafael J. Wysocki" <rafael@kernel.org>
+Cc:     Kalle Valo <kvalo@codeaurora.org>,
+        Brian Norris <briannorris@chromium.org>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Sriram R <srirrama@codeaurora.org>,
+        Linux PM <linux-pm@vger.kernel.org>,
+        Pradeep Kumar Chitrapu <pradeepc@codeaurora.org>,
+        "open list:NETWORKING DRIVERS (WIRELESS)" 
+        <linux-wireless@vger.kernel.org>, ath10k@lists.infradead.org,
+        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+        Todd Brandt <todd.e.brandt@intel.com>
 Content-Type: text/plain; charset="UTF-8"
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Wed, Apr 3, 2019 at 3:01 AM Wen Gong <wgong@codeaurora.org> wrote:
->
-> For some SDIO chip, the peer id is 65535 for MPDU with error status,
-> then test_bit will trigger buffer overflow for peer's memory, if kasan
-> enabled, it will report error.
->
-> Add check for overflow the size of peer's peer_ids will avoid the buffer
-> overflow access.
->
-> Call trace of kasan:
-> dump_backtrace+0x0/0x2ec
-> show_stack+0x20/0x2c
-> __dump_stack+0x20/0x28
-> dump_stack+0xc8/0xec
-> print_address_description+0x74/0x240
-> kasan_report+0x250/0x26c
-> __asan_report_load8_noabort+0x20/0x2c
-> ath10k_peer_find_by_id+0x180/0x1e4 [ath10k_core]
-> ath10k_htt_t2h_msg_handler+0x100c/0x2fd4 [ath10k_core]
-> ath10k_htt_htc_t2h_msg_handler+0x20/0x34 [ath10k_core]
-> ath10k_sdio_irq_handler+0xcc8/0x1678 [ath10k_sdio]
-> process_sdio_pending_irqs+0xec/0x370
-> sdio_run_irqs+0x68/0xe4
-> sdio_irq_work+0x1c/0x28
-> process_one_work+0x3d8/0x8b0
-> worker_thread+0x508/0x7cc
-> kthread+0x24c/0x264
-> ret_from_fork+0x10/0x18
->
-> Tested with QCA6174 SDIO with firmware
-> WLAN.RMH.4.4.1-00007-QCARMSWP-1.
->
-> Signed-off-by: Wen Gong <wgong@codeaurora.org>
-> ---
->  drivers/net/wireless/ath/ath10k/txrx.c | 3 +++
->  1 file changed, 3 insertions(+)
->
-> diff --git a/drivers/net/wireless/ath/ath10k/txrx.c b/drivers/net/wireless/ath/ath10k/txrx.c
-> index 23606b6..33de9e1 100644
-> --- a/drivers/net/wireless/ath/ath10k/txrx.c
-> +++ b/drivers/net/wireless/ath/ath10k/txrx.c
-> @@ -157,6 +157,9 @@ struct ath10k_peer *ath10k_peer_find_by_id(struct ath10k *ar, int peer_id)
->  {
->         struct ath10k_peer *peer;
->
-> +       if (peer_id >= sizeof(peer->peer_ids) * BITS_PER_BYTE)
+Tested-by: Claire Chang <tientzu@chromium.org>
 
-I'd use >= BITS_PER_TYPE(peer->peer_ids).
+> Still, I'm quite sure that the WARN_ON()s trigger during system resume
+> regardless of the hw/fw combination.
 
-> +               return NULL;
-> +
->         lockdep_assert_held(&ar->data_lock);
->
->         list_for_each_entry(peer, &ar->peers, list)
+Also see this on sido:
+
+[    4.925278] ath10k_sdio mmc1:0001:1: qca6174 hw3.2 sdio target
+0x05030000 chip_id 0x00000000 sub 0000:0000
+[    4.935721] ath10k_sdio mmc1:0001:1: kconfig debug 1 debugfs 1
+tracing 1 dfs 0 testmode 1
+[    4.948750] ath10k_sdio mmc1:0001:1: firmware ver
+WLAN.RMH.4.4.1-00007-QCARMSWP-1 api 6 features wowlan,ignore-otp crc32
+b98adaf8
+[    5.132728] ath10k_sdio mmc1:0001:1: board_file api 2 bmi_id 0:4
+crc32 6364cfcc
