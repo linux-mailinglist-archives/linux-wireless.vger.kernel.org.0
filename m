@@ -2,25 +2,25 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D32F8E52A
-	for <lists+linux-wireless@lfdr.de>; Mon, 29 Apr 2019 16:47:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6997AE543
+	for <lists+linux-wireless@lfdr.de>; Mon, 29 Apr 2019 16:49:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728409AbfD2Oqc (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 29 Apr 2019 10:46:32 -0400
-Received: from smtp.codeaurora.org ([198.145.29.96]:36306 "EHLO
+        id S1728393AbfD2Osn (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 29 Apr 2019 10:48:43 -0400
+Received: from smtp.codeaurora.org ([198.145.29.96]:39800 "EHLO
         smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728319AbfD2Oqb (ORCPT
+        with ESMTP id S1728320AbfD2Osn (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 29 Apr 2019 10:46:31 -0400
+        Mon, 29 Apr 2019 10:48:43 -0400
 Received: by smtp.codeaurora.org (Postfix, from userid 1000)
-        id D1D186028C; Mon, 29 Apr 2019 14:46:30 +0000 (UTC)
+        id B70F7608BA; Mon, 29 Apr 2019 14:48:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1556549190;
-        bh=TXlvK+53Z5f7AAMbyCS48iatA/iddrA8c1tdF+6cefU=;
+        s=default; t=1556549322;
+        bh=NcFqWJZM8KHVVeLy31Z4V83m0XnDaKF7vCAx6RUJ4kQ=;
         h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-        b=R0d7TFh+0WYBWSk9avXHa0LzZlLH0FBwZOzrJkUG2vaF1CryoF/PwOLtRLwuELCoH
-         c2zxFEOPUrefK26fpfqQW7JpJGs9pOaiX5MKdy1Zjmh5ZwZBnFQMlOnXqDJs7QtEbG
-         km/5qqvQzhZBE2JxWj40ijgnnQ4QZvAwXnVqg8zc=
+        b=Wh/qgAmhyh7cA6V9hWUzr5W7oCSXScy5XwDthvFwo0xAf6rePnkuUxoaODcND7TXw
+         tLMHQZbSslvkTGFQCZmELkS2os0DDmXXpS0jd8MSklqBxQ/GqLVW9cnLP0TO9S4b6t
+         UNsnlSPkIZXHFOx0V861hIanpHY4dfsjQNyLsk+w=
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         pdx-caf-mail.web.codeaurora.org
 X-Spam-Level: 
@@ -31,33 +31,33 @@ Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
         (Authenticated sender: kvalo@smtp.codeaurora.org)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 8F8AB60134;
-        Mon, 29 Apr 2019 14:46:28 +0000 (UTC)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id AF25760134;
+        Mon, 29 Apr 2019 14:48:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1556549190;
-        bh=TXlvK+53Z5f7AAMbyCS48iatA/iddrA8c1tdF+6cefU=;
+        s=default; t=1556549322;
+        bh=NcFqWJZM8KHVVeLy31Z4V83m0XnDaKF7vCAx6RUJ4kQ=;
         h=Subject:From:In-Reply-To:References:To:Cc:From;
-        b=l6r95cqpXisbYCLJNfZkoe4mDjZdthulp9XKgShVCNuB2t4OQ6+nG8OXRU1YWFXlm
-         yw53+DDxo4ROPWsUADA/ps6jau3v2UowG5n1XyJJAAshLUBOvK/9FEDh8Rl03EybyT
-         xfHC1mBIXuzxbZn4mBYap/ZMs3aiIHvyg7MwhRoM=
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 8F8AB60134
+        b=k5rSRXEu3lTa/+KjDCIwxoOyt7MXBCnBHltcQsIQJHPowy4bg6iHAmqOHnrLmsnWb
+         ehJSTJTtnV99sNUBNQAubQeAHzYENPFIIgDKVNX8Xv8sTdG5PIN1Grw7EcnhAfdU1u
+         IQXFaioSpe6//5LnSBnl/9R+2jnLdDG6NYchdhr4=
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org AF25760134
 Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
 Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH][next] ath6kl: debug: Use struct_size() helper
+Subject: Re: [PATCH][next] ath6kl: wmi: use struct_size() helper
 From:   Kalle Valo <kvalo@codeaurora.org>
-In-Reply-To: <20190403154835.GA20955@embeddedor>
-References: <20190403154835.GA20955@embeddedor>
+In-Reply-To: <20190403184949.GA7597@embeddedor>
+References: <20190403184949.GA7597@embeddedor>
 To:     "Gustavo A. R. Silva" <gustavo@embeddedor.com>
 Cc:     "David S. Miller" <davem@davemloft.net>,
         linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
         linux-kernel@vger.kernel.org,
         "Gustavo A. R. Silva" <gustavo@embeddedor.com>
 User-Agent: pwcli/0.0.0-git (https://github.com/kvalo/pwcli/) Python/2.7.12
-Message-Id: <20190429144630.D1D186028C@smtp.codeaurora.org>
-Date:   Mon, 29 Apr 2019 14:46:30 +0000 (UTC)
+Message-Id: <20190429144842.B70F7608BA@smtp.codeaurora.org>
+Date:   Mon, 29 Apr 2019 14:48:42 +0000 (UTC)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
@@ -69,13 +69,13 @@ X-Mailing-List: linux-wireless@vger.kernel.org
 > in order to avoid any potential type mistakes, in particular in the
 > context in which this code is being used.
 > 
-> So, change the following form:
+> So, replace code of the following form:
 > 
-> sizeof(*tbl) + num_entries * sizeof(struct wmi_bss_roam_info)
+> sizeof(*ev) + ev->num_neighbors * sizeof(struct wmi_neighbor_info)
 > 
->  to :
+> with:
 > 
-> struct_size(tbl, info, num_entries)
+> struct_size(ev, neighbor, ev->num_neighbors)
 > 
 > This code was detected with the help of Coccinelle.
 > 
@@ -84,10 +84,10 @@ X-Mailing-List: linux-wireless@vger.kernel.org
 
 Patch applied to ath-next branch of ath.git, thanks.
 
-df75786b9233 ath6kl: debug: Use struct_size() helper
+83d9562b6478 ath6kl: wmi: use struct_size() helper
 
 -- 
-https://patchwork.kernel.org/patch/10884039/
+https://patchwork.kernel.org/patch/10884343/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
