@@ -2,99 +2,101 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id DAC97BDBC
-	for <lists+linux-wireless@lfdr.de>; Mon, 29 Apr 2019 00:20:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D3802DA5D
+	for <lists+linux-wireless@lfdr.de>; Mon, 29 Apr 2019 03:54:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726478AbfD1WU5 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 28 Apr 2019 18:20:57 -0400
-Received: from 4.mo1.mail-out.ovh.net ([46.105.76.26]:44904 "EHLO
-        4.mo1.mail-out.ovh.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726435AbfD1WU5 (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 28 Apr 2019 18:20:57 -0400
-X-Greylist: delayed 2104 seconds by postgrey-1.27 at vger.kernel.org; Sun, 28 Apr 2019 18:20:56 EDT
-Received: from player799.ha.ovh.net (unknown [10.108.35.215])
-        by mo1.mail-out.ovh.net (Postfix) with ESMTP id DD88E16981D
-        for <linux-wireless@vger.kernel.org>; Sun, 28 Apr 2019 23:35:55 +0200 (CEST)
-Received: from RCM-web2.webmail.mail.ovh.net (ip-194-187-74-233.konfederacka.maverick.com.pl [194.187.74.233])
-        (Authenticated sender: rafal@milecki.pl)
-        by player799.ha.ovh.net (Postfix) with ESMTPSA id 7DBA85314347;
-        Sun, 28 Apr 2019 21:35:50 +0000 (UTC)
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8;
- format=flowed
-Content-Transfer-Encoding: 8bit
-Date:   Sun, 28 Apr 2019 23:35:48 +0200
-From:   =?UTF-8?Q?Rafa=C5=82_Mi=C5=82ecki?= <rafal@milecki.pl>
-To:     Arend Van Spriel <arend.vanspriel@broadcom.com>
-Cc:     =?UTF-8?Q?Rafa=C5=82_Mi=C5=82ecki?= <zajec5@gmail.com>,
+        id S1726786AbfD2ByO (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 28 Apr 2019 21:54:14 -0400
+Received: from bilbo.ozlabs.org ([203.11.71.1]:56107 "EHLO ozlabs.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726681AbfD2ByO (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Sun, 28 Apr 2019 21:54:14 -0400
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+        (No client certificate requested)
+        by mail.ozlabs.org (Postfix) with ESMTPSA id 44snl64JK2z9s55;
+        Mon, 29 Apr 2019 11:54:10 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=canb.auug.org.au;
+        s=201702; t=1556502851;
+        bh=KN9J/W1T49rNawww/E2wIO3cDvFrVEihi+tUSgg7w3E=;
+        h=Date:From:To:Cc:Subject:From;
+        b=p/LRXjusuLEMvXEF+p48ei8s6Guxm10JgujSjp6jaM5wAHFXI73FoEGYfRreUWqzj
+         VA3RMA6vxYUmIl5izcsVesHOiYs0hYYazDTTZRojgHk/6LA+eeFejxcd/zpiP0FU/d
+         3fMFQ1LmfldrH9DKzsLdfnLIrR9oyWdtwzQjZk9LIH2gpT5FOhHlSBA0gRON5vq72a
+         VhYqZmbCvK58KqSvkzZxRNsPyCSQoGyLf8MLv76eC1K+bOA/fgOTL+R+4awBuEVkWX
+         1NcUnhjyWt6TYlEE+AtGGO8kSA9+WXrLgVJn2HiJomxQ7nzXyHgSc3fOu2DNcgjFE+
+         NP4UC9wstr8WA==
+Date:   Mon, 29 Apr 2019 11:54:02 +1000
+From:   Stephen Rothwell <sfr@canb.auug.org.au>
+To:     David Miller <davem@davemloft.net>,
+        Networking <netdev@vger.kernel.org>,
         Kalle Valo <kvalo@codeaurora.org>,
-        linux-wireless@vger.kernel.org,
-        brcm80211-dev-list.pdl@broadcom.com, brcm80211-dev-list@cypress.com
-Subject: Re: [PATCH] brcmfmac: print firmware messages after a firmware crash
-In-Reply-To: <2ccb4482-7561-0812-92dc-5de3d639cc3e@broadcom.com>
-References: <20190427183008.27111-1-zajec5@gmail.com>
- <2ccb4482-7561-0812-92dc-5de3d639cc3e@broadcom.com>
-Message-ID: <904ea13804cc1e1edacbe9485729d1d8@milecki.pl>
-X-Sender: rafal@milecki.pl
-User-Agent: Roundcube Webmail/1.3.9
-X-Originating-IP: 194.187.74.233
-X-Webmail-UserID: rafal@milecki.pl
-X-Ovh-Tracer-Id: 2070248457268727424
-X-VR-SPAMSTATE: OK
-X-VR-SPAMSCORE: -100
-X-VR-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgeduuddriedtgdduieeiucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuqfggjfdpvefjgfevmfevgfenuceurghilhhouhhtmecuhedttdenucesvcftvggtihhpihgvnhhtshculddquddttddm
+        Wireless <linux-wireless@vger.kernel.org>
+Cc:     Linux Next Mailing List <linux-next@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Luca Coelho <luciano.coelho@intel.com>
+Subject: linux-next: manual merge of the net-next tree with the
+ wireless-drivers tree
+Message-ID: <20190429115338.5decb50b@canb.auug.org.au>
+MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ boundary="Sig_/ouD1/C1Rf=a4YufAYVULo5g"; protocol="application/pgp-signature"
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 2019-04-28 23:06, Arend Van Spriel wrote:
-> On 4/27/2019 8:30 PM, Rafał Miłecki wrote:
->> From: Rafał Miłecki <rafal@milecki.pl>
->> 
->> Normally firmware messages are printed with debugging enabled only. 
->> It's
->> a good idea as firmware may print a lot of messages that normal users
->> don't need to care about.
->> 
->> However, on firmware crash, it may be very helpful to log all recent
->> messages. There is almost always a backtrace available as well as 
->> rought
->> info on the latest actions/state.
-> 
-> nice... there is one minor nit below, but other than that...
-> 
-> Reviewed-by: Arend van Spriel <arend.vanspriel@broadcom.com>
->> Signed-off-by: Rafał Miłecki <rafal@milecki.pl>
->> ---
->>   .../broadcom/brcm80211/brcmfmac/pcie.c        | 24 
->> ++++++++++++++-----
->>   1 file changed, 18 insertions(+), 6 deletions(-)
->> 
->> diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/pcie.c 
->> b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/pcie.c
->> index 637973fe8928..f519b050aff3 100644
->> --- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/pcie.c
->> +++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/pcie.c
->> @@ -764,15 +764,22 @@ static void brcmf_pcie_bus_console_init(struct 
->> brcmf_pciedev_info *devinfo)
->>   		  console->base_addr, console->buf_addr, console->bufsize);
->>   }
->>   -
->> -static void brcmf_pcie_bus_console_read(struct brcmf_pciedev_info 
->> *devinfo)
->> +/**
->> + * brcmf_pcie_bus_console_read - reads firmware messages
->> + *
->> + * @error: specifies if error has occurred (prints messages 
->> unconditionally)
->> + */
->> +static void brcmf_pcie_bus_console_read(struct brcmf_pciedev_info 
->> *devinfo,
->> +					int error)
-> 
-> Given how it is called I would say 'bool error' makes a bit more sense.
+--Sig_/ouD1/C1Rf=a4YufAYVULo5g
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: quoted-printable
 
-I even call that function passing "true" or "false" as argument. Nice
-catch!
+Hi all,
+
+Today's linux-next merge of the net-next tree got a conflict in:
+
+  drivers/net/wireless/intel/iwlwifi/mvm/debugfs-vif.c
+
+between commits:
+
+  154d4899e411 ("iwlwifi: mvm: properly check debugfs dentry before using i=
+t")
+  d156e67d3f58 ("iwlwifi: mvm: fix merge damage in iwl_mvm_vif_dbgfs_regist=
+er()")
+
+from the wireless-drivers tree and commit:
+
+  c9af7528c331 ("iwlwifi: mvm: no need to check return value of debugfs_cre=
+ate functions")
+
+from the net-next tree.
+
+I fixed it up (the latter removed the code modified by the former, so I
+just did that) and can carry the fix as necessary. This is now fixed as
+far as linux-next is concerned, but any non trivial conflicts should be
+mentioned to your upstream maintainer when your tree is submitted for
+merging.  You may also want to consider cooperating with the maintainer
+of the conflicting tree to minimise any particularly complex conflicts.
+
+--=20
+Cheers,
+Stephen Rothwell
+
+--Sig_/ouD1/C1Rf=a4YufAYVULo5g
+Content-Type: application/pgp-signature
+Content-Description: OpenPGP digital signature
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCAAdFiEENIC96giZ81tWdLgKAVBC80lX0GwFAlzGWToACgkQAVBC80lX
+0GyjqQf/WmQNjeOP1on2Gd80/wu5PBCMWR0vBySe2WZ8v1efY6dyhDSLHm1bLzu1
+3ZYqkjy9od5BqotAHadOWbwNwv2SsYpYvWKuwYP82Fh509SWEwapxFk/hlv7b6MO
+OXqPJxLVEQ9lBv9ErhkaEV50AkxApAkidiU5vZMbVLcA23dFjMGtpHOUEsEtR9Qc
+xdEK1VHH14ZZAdRt06D3XK0lJwuh/JoMNlZXwmG3syMBwoggULzvqHvdL4KzpOz4
+rDlbyPaOUXipocKkNaShf6EeKVPoOn7w0N8rsj2xGA1chlHQYNh53A1fg7adUIvp
+bWD+K14cDKZGv5rPnaP63DGE8HrNlg==
+=HV9G
+-----END PGP SIGNATURE-----
+
+--Sig_/ouD1/C1Rf=a4YufAYVULo5g--
