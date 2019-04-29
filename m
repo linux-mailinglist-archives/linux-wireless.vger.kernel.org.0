@@ -2,34 +2,34 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 3CE9ADD76
-	for <lists+linux-wireless@lfdr.de>; Mon, 29 Apr 2019 10:13:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 073B7DD78
+	for <lists+linux-wireless@lfdr.de>; Mon, 29 Apr 2019 10:13:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727547AbfD2INV (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 29 Apr 2019 04:13:21 -0400
-Received: from mail.kernel.org ([198.145.29.99]:33596 "EHLO mail.kernel.org"
+        id S1727558AbfD2INX (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 29 Apr 2019 04:13:23 -0400
+Received: from mail.kernel.org ([198.145.29.99]:33610 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727439AbfD2INV (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 29 Apr 2019 04:13:21 -0400
+        id S1727439AbfD2INX (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 29 Apr 2019 04:13:23 -0400
 Received: from localhost.localdomain (unknown [151.66.22.155])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 5CB86206BF;
-        Mon, 29 Apr 2019 08:13:18 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id C5DD52087B;
+        Mon, 29 Apr 2019 08:13:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1556525599;
-        bh=a8fcj5gJRrYH3iVhHICouLUSJqGvWmiMzw+l/t3eZq0=;
+        s=default; t=1556525602;
+        bh=Yh8ku5/7fhG3KiQwKaqBxBc9mgzQ3p3Hml9eMgnFemo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=vku5KiUvI6nV8PEsnvHY9k5OfGP52d6rhc/wfbtpbvUmLToHD2SE4F7ey6ko3/T/s
-         KP5l6Kmi+RKaAu9IHiFsVZbdf0mYz47RH8CC1K+vgGX20C6NEgxYQMOtQVDFDVw9Pc
-         peX4XI/axilnQVdPcaXzz82+A3WdqTkgDsM/6ilE=
+        b=VRBHzPyi/geP/H7X/QrPQdW75u7pdzWrUBP7ROMvFuHif4lFPUPlS7j+p43jaoSdK
+         nBQRbY9I2xIYqXNkSBIVGwciAwjp0qvf0cWP9rSa63Q8MzOiZjxtwSakpcrC3eKCZ/
+         lgwTGLaDlghW9gD2e52HT9hW1htX8C9bZipq16ls=
 From:   Lorenzo Bianconi <lorenzo@kernel.org>
 To:     nbd@nbd.name
 Cc:     lorenzo.bianconi@redhat.com, linux-wireless@vger.kernel.org,
         sgruszka@redhat.com
-Subject: [PATCH v2 3/5] mt76: move beacon_mask in mt76_dev
-Date:   Mon, 29 Apr 2019 10:13:00 +0200
-Message-Id: <611900c45243c8c8cb2a5d59e4008c91c57e1ced.1556525110.git.lorenzo@kernel.org>
+Subject: [PATCH v2 4/5] mt76: move pre_tbtt_tasklet in mt76_dev
+Date:   Mon, 29 Apr 2019 10:13:01 +0200
+Message-Id: <92b351c2c91ab8cc311cf280ca3562dd6f49649b.1556525110.git.lorenzo@kernel.org>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <cover.1556525110.git.lorenzo@kernel.org>
 References: <cover.1556525110.git.lorenzo@kernel.org>
@@ -40,255 +40,234 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Move beacon_mask in mt76_dev data structure since it is used by
-all drivers
+Move pre_tbtt_tasklet tasklet in mt76_dev data structure since
+it is used by all drivers
 
 Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
 ---
- drivers/net/wireless/mediatek/mt76/mt76.h       |  1 +
- .../net/wireless/mediatek/mt76/mt7603/beacon.c  | 17 +++++++++--------
- .../net/wireless/mediatek/mt76/mt7603/mt7603.h  |  2 --
- drivers/net/wireless/mediatek/mt76/mt76x02.h    |  1 -
- .../net/wireless/mediatek/mt76/mt76x02_beacon.c | 16 ++++++++--------
- .../net/wireless/mediatek/mt76/mt76x02_mac.c    |  2 +-
- .../net/wireless/mediatek/mt76/mt76x02_mmio.c   |  6 +++---
- .../wireless/mediatek/mt76/mt76x02_usb_core.c   |  7 ++++---
- 8 files changed, 26 insertions(+), 26 deletions(-)
+ drivers/net/wireless/mediatek/mt76/mt76.h            |  1 +
+ drivers/net/wireless/mediatek/mt76/mt7603/core.c     |  2 +-
+ drivers/net/wireless/mediatek/mt76/mt7603/init.c     |  4 ++--
+ drivers/net/wireless/mediatek/mt76/mt7603/mac.c      |  4 ++--
+ drivers/net/wireless/mediatek/mt76/mt7603/main.c     |  4 ++--
+ drivers/net/wireless/mediatek/mt76/mt7603/mt7603.h   |  2 --
+ drivers/net/wireless/mediatek/mt76/mt76x0/pci.c      |  2 +-
+ drivers/net/wireless/mediatek/mt76/mt76x02.h         |  1 -
+ drivers/net/wireless/mediatek/mt76/mt76x02_mmio.c    | 12 ++++++------
+ drivers/net/wireless/mediatek/mt76/mt76x2/pci_init.c |  2 +-
+ drivers/net/wireless/mediatek/mt76/mt76x2/pci_main.c |  4 ++--
+ 11 files changed, 18 insertions(+), 20 deletions(-)
 
 diff --git a/drivers/net/wireless/mediatek/mt76/mt76.h b/drivers/net/wireless/mediatek/mt76/mt76.h
-index be0ca4af7254..fb0ba1500d89 100644
+index fb0ba1500d89..859c9f019323 100644
 --- a/drivers/net/wireless/mediatek/mt76/mt76.h
 +++ b/drivers/net/wireless/mediatek/mt76/mt76.h
-@@ -470,6 +470,7 @@ struct mt76_dev {
+@@ -469,6 +469,7 @@ struct mt76_dev {
+ 	u8 antenna_mask;
  	u16 chainmask;
  
++	struct tasklet_struct pre_tbtt_tasklet;
  	int beacon_int;
-+	u8 beacon_mask;
+ 	u8 beacon_mask;
  
- 	struct mt76_sband sband_2g;
- 	struct mt76_sband sband_5g;
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7603/beacon.c b/drivers/net/wireless/mediatek/mt76/mt7603/beacon.c
-index 64e15d566283..f3e7406e731f 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7603/beacon.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7603/beacon.c
-@@ -16,7 +16,7 @@ mt7603_update_beacon_iter(void *priv, u8 *mac, struct ieee80211_vif *vif)
- 	struct mt7603_vif *mvif = (struct mt7603_vif *)vif->drv_priv;
- 	struct sk_buff *skb = NULL;
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7603/core.c b/drivers/net/wireless/mediatek/mt76/mt7603/core.c
+index 0d06ff67ce44..37e5644b45ef 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7603/core.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7603/core.c
+@@ -27,7 +27,7 @@ irqreturn_t mt7603_irq_handler(int irq, void *dev_instance)
  
--	if (!(dev->beacon_mask & BIT(mvif->idx)))
-+	if (!(dev->mt76.beacon_mask & BIT(mvif->idx)))
- 		return;
+ 		mt76_wr(dev, MT_HW_INT_STATUS(3), hwintr);
+ 		if (hwintr & MT_HW_INT3_PRE_TBTT0)
+-			tasklet_schedule(&dev->pre_tbtt_tasklet);
++			tasklet_schedule(&dev->mt76.pre_tbtt_tasklet);
  
- 	skb = ieee80211_beacon_get(mt76_hw(dev), vif);
-@@ -48,7 +48,7 @@ mt7603_add_buffered_bc(void *priv, u8 *mac, struct ieee80211_vif *vif)
- 	struct ieee80211_tx_info *info;
- 	struct sk_buff *skb;
+ 		if ((hwintr & MT_HW_INT3_TBTT0) && dev->mt76.csa_complete)
+ 			mt76_csa_finish(&dev->mt76);
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7603/init.c b/drivers/net/wireless/mediatek/mt76/mt7603/init.c
+index d394839f1bd8..c3c295919020 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7603/init.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7603/init.c
+@@ -514,7 +514,7 @@ int mt7603_register_device(struct mt7603_dev *dev)
+ 	spin_lock_init(&dev->ps_lock);
  
--	if (!(dev->beacon_mask & BIT(mvif->idx)))
-+	if (!(dev->mt76.beacon_mask & BIT(mvif->idx)))
- 		return;
+ 	INIT_DELAYED_WORK(&dev->mt76.mac_work, mt7603_mac_work);
+-	tasklet_init(&dev->pre_tbtt_tasklet, mt7603_pre_tbtt_tasklet,
++	tasklet_init(&dev->mt76.pre_tbtt_tasklet, mt7603_pre_tbtt_tasklet,
+ 		     (unsigned long)dev);
  
- 	skb = ieee80211_get_buffered_bc(mt76_hw(dev), vif);
-@@ -134,7 +134,7 @@ void mt7603_pre_tbtt_tasklet(unsigned long arg)
- out:
- 	mt76_queue_tx_cleanup(dev, MT_TXQ_BEACON, false);
- 	if (dev->mt76.q_tx[MT_TXQ_BEACON].q->queued >
--	    hweight8(dev->beacon_mask))
-+	    hweight8(dev->mt76.beacon_mask))
- 		dev->beacon_check++;
- }
+ 	/* Check for 7688, which only has 1SS */
+@@ -573,7 +573,7 @@ int mt7603_register_device(struct mt7603_dev *dev)
  
-@@ -144,12 +144,12 @@ void mt7603_beacon_set_timer(struct mt7603_dev *dev, int idx, int intval)
+ void mt7603_unregister_device(struct mt7603_dev *dev)
+ {
+-	tasklet_disable(&dev->pre_tbtt_tasklet);
++	tasklet_disable(&dev->mt76.pre_tbtt_tasklet);
+ 	mt76_unregister_device(&dev->mt76);
+ 	mt7603_mcu_exit(dev);
+ 	mt7603_dma_cleanup(dev);
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7603/mac.c b/drivers/net/wireless/mediatek/mt76/mt7603/mac.c
+index a5a881738d83..ad517e1af75b 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7603/mac.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7603/mac.c
+@@ -1279,7 +1279,7 @@ static void mt7603_mac_watchdog_reset(struct mt7603_dev *dev)
+ 	mt76_txq_schedule_all(&dev->mt76);
  
- 	if (idx >= 0) {
- 		if (intval)
--			dev->beacon_mask |= BIT(idx);
-+			dev->mt76.beacon_mask |= BIT(idx);
- 		else
--			dev->beacon_mask &= ~BIT(idx);
-+			dev->mt76.beacon_mask &= ~BIT(idx);
+ 	tasklet_disable(&dev->mt76.tx_tasklet);
+-	tasklet_disable(&dev->pre_tbtt_tasklet);
++	tasklet_disable(&dev->mt76.pre_tbtt_tasklet);
+ 	napi_disable(&dev->mt76.napi[0]);
+ 	napi_disable(&dev->mt76.napi[1]);
+ 
+@@ -1328,7 +1328,7 @@ static void mt7603_mac_watchdog_reset(struct mt7603_dev *dev)
+ 	tasklet_enable(&dev->mt76.tx_tasklet);
+ 	tasklet_schedule(&dev->mt76.tx_tasklet);
+ 
+-	tasklet_enable(&dev->pre_tbtt_tasklet);
++	tasklet_enable(&dev->mt76.pre_tbtt_tasklet);
+ 	mt7603_beacon_set_timer(dev, -1, beacon_int);
+ 
+ 	napi_enable(&dev->mt76.napi[0]);
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7603/main.c b/drivers/net/wireless/mediatek/mt76/mt7603/main.c
+index 9be9ae02103e..be5d43050100 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7603/main.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7603/main.c
+@@ -294,9 +294,9 @@ mt7603_bss_info_changed(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
+ 	if (changed & (BSS_CHANGED_BEACON_ENABLED | BSS_CHANGED_BEACON_INT)) {
+ 		int beacon_int = !!info->enable_beacon * info->beacon_int;
+ 
+-		tasklet_disable(&dev->pre_tbtt_tasklet);
++		tasklet_disable(&dev->mt76.pre_tbtt_tasklet);
+ 		mt7603_beacon_set_timer(dev, mvif->idx, beacon_int);
+-		tasklet_enable(&dev->pre_tbtt_tasklet);
++		tasklet_enable(&dev->mt76.pre_tbtt_tasklet);
  	}
  
--	if (!dev->beacon_mask || (!intval && idx < 0)) {
-+	if (!dev->mt76.beacon_mask || (!intval && idx < 0)) {
- 		mt7603_irq_disable(dev, MT_INT_MAC_IRQ3);
- 		mt76_clear(dev, MT_ARB_SCR, MT_ARB_SCR_BCNQ_OPMODE_MASK);
- 		mt76_wr(dev, MT_HW_INT_MASK(3), 0);
-@@ -174,10 +174,11 @@ void mt7603_beacon_set_timer(struct mt7603_dev *dev, int idx, int intval)
- 
- 	mt76_set(dev, MT_WF_ARB_BCN_START,
- 		 MT_WF_ARB_BCN_START_BSSn(0) |
--		 ((dev->beacon_mask >> 1) * MT_WF_ARB_BCN_START_BSS0n(1)));
-+		 ((dev->mt76.beacon_mask >> 1) *
-+		  MT_WF_ARB_BCN_START_BSS0n(1)));
- 	mt7603_irq_enable(dev, MT_INT_MAC_IRQ3);
- 
--	if (dev->beacon_mask & ~BIT(0))
-+	if (dev->mt76.beacon_mask & ~BIT(0))
- 		mt76_set(dev, MT_LPON_SBTOR(0), MT_LPON_SBTOR_SUB_BSS_EN);
- 	else
- 		mt76_clear(dev, MT_LPON_SBTOR(0), MT_LPON_SBTOR_SUB_BSS_EN);
+ 	mutex_unlock(&dev->mt76.mutex);
 diff --git a/drivers/net/wireless/mediatek/mt76/mt7603/mt7603.h b/drivers/net/wireless/mediatek/mt76/mt7603/mt7603.h
-index a2cda08ca70b..8f5ae1644a92 100644
+index 8f5ae1644a92..56ef73e41a5a 100644
 --- a/drivers/net/wireless/mediatek/mt76/mt7603/mt7603.h
 +++ b/drivers/net/wireless/mediatek/mt76/mt7603/mt7603.h
-@@ -125,8 +125,6 @@ struct mt7603_dev {
+@@ -140,8 +140,6 @@ struct mt7603_dev {
+ 	u32 reset_test;
  
- 	s8 sensitivity;
- 
--	u8 beacon_mask;
+ 	unsigned int reset_cause[__RESET_CAUSE_MAX];
 -
- 	u8 beacon_check;
- 	u8 tx_hang_check;
- 	u8 tx_dma_check;
+-	struct tasklet_struct pre_tbtt_tasklet;
+ };
+ 
+ extern const struct mt76_driver_ops mt7603_drv_ops;
+diff --git a/drivers/net/wireless/mediatek/mt76/mt76x0/pci.c b/drivers/net/wireless/mediatek/mt76/mt76x0/pci.c
+index f106dbfa665f..6a8fe82ab9ad 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt76x0/pci.c
++++ b/drivers/net/wireless/mediatek/mt76/mt76x0/pci.c
+@@ -219,7 +219,7 @@ mt76x0e_probe(struct pci_dev *pdev, const struct pci_device_id *id)
+ static void mt76x0e_cleanup(struct mt76x02_dev *dev)
+ {
+ 	clear_bit(MT76_STATE_INITIALIZED, &dev->mt76.state);
+-	tasklet_disable(&dev->pre_tbtt_tasklet);
++	tasklet_disable(&dev->mt76.pre_tbtt_tasklet);
+ 	mt76x0_chip_onoff(dev, false, false);
+ 	mt76x0e_stop_hw(dev);
+ 	mt76x02_dma_cleanup(dev);
 diff --git a/drivers/net/wireless/mediatek/mt76/mt76x02.h b/drivers/net/wireless/mediatek/mt76/mt76x02.h
-index dde1f64390ce..f754790dada4 100644
+index f754790dada4..07579a951dd9 100644
 --- a/drivers/net/wireless/mediatek/mt76/mt76x02.h
 +++ b/drivers/net/wireless/mediatek/mt76/mt76x02.h
-@@ -102,7 +102,6 @@ struct mt76x02_dev {
- 	u32 aggr_stats[32];
+@@ -90,7 +90,6 @@ struct mt76x02_dev {
+ 	struct sk_buff *rx_head;
  
- 	struct sk_buff *beacons[8];
--	u8 beacon_mask;
- 	u8 beacon_data_mask;
+ 	struct tasklet_struct tx_tasklet;
+-	struct tasklet_struct pre_tbtt_tasklet;
+ 	struct delayed_work cal_work;
+ 	struct delayed_work wdt_work;
  
- 	u8 tbtt_count;
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76x02_beacon.c b/drivers/net/wireless/mediatek/mt76/mt76x02_beacon.c
-index 985a9b5d0e45..e196b9c0a686 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76x02_beacon.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt76x02_beacon.c
-@@ -119,23 +119,23 @@ static void
- __mt76x02_mac_set_beacon_enable(struct mt76x02_dev *dev, u8 vif_idx,
- 				bool val, struct sk_buff *skb)
- {
--	u8 old_mask = dev->beacon_mask;
-+	u8 old_mask = dev->mt76.beacon_mask;
- 	bool en;
- 	u32 reg;
- 
- 	if (val) {
--		dev->beacon_mask |= BIT(vif_idx);
-+		dev->mt76.beacon_mask |= BIT(vif_idx);
- 		if (skb)
- 			mt76x02_mac_set_beacon(dev, vif_idx, skb);
- 	} else {
--		dev->beacon_mask &= ~BIT(vif_idx);
-+		dev->mt76.beacon_mask &= ~BIT(vif_idx);
- 		mt76x02_mac_set_beacon(dev, vif_idx, NULL);
- 	}
- 
--	if (!!old_mask == !!dev->beacon_mask)
-+	if (!!old_mask == !!dev->mt76.beacon_mask)
- 		return;
- 
--	en = dev->beacon_mask;
-+	en = dev->mt76.beacon_mask;
- 
- 	reg = MT_BEACON_TIME_CFG_BEACON_TX |
- 	      MT_BEACON_TIME_CFG_TBTT_EN |
-@@ -156,7 +156,7 @@ void mt76x02_mac_set_beacon_enable(struct mt76x02_dev *dev,
- 	if (mt76_is_usb(dev))
- 		skb = ieee80211_beacon_get(mt76_hw(dev), vif);
- 
--	if (!dev->beacon_mask)
-+	if (!dev->mt76.beacon_mask)
- 		dev->tbtt_count = 0;
- 
- 	__mt76x02_mac_set_beacon_enable(dev, vif_idx, val, skb);
-@@ -203,7 +203,7 @@ mt76x02_update_beacon_iter(void *priv, u8 *mac, struct ieee80211_vif *vif)
- 	struct mt76x02_vif *mvif = (struct mt76x02_vif *)vif->drv_priv;
- 	struct sk_buff *skb = NULL;
- 
--	if (!(dev->beacon_mask & BIT(mvif->idx)))
-+	if (!(dev->mt76.beacon_mask & BIT(mvif->idx)))
- 		return;
- 
- 	skb = ieee80211_beacon_get(mt76_hw(dev), vif);
-@@ -223,7 +223,7 @@ mt76x02_add_buffered_bc(void *priv, u8 *mac, struct ieee80211_vif *vif)
- 	struct ieee80211_tx_info *info;
- 	struct sk_buff *skb;
- 
--	if (!(dev->beacon_mask & BIT(mvif->idx)))
-+	if (!(dev->mt76.beacon_mask & BIT(mvif->idx)))
- 		return;
- 
- 	skb = ieee80211_get_buffered_bc(mt76_hw(dev), vif);
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76x02_mac.c b/drivers/net/wireless/mediatek/mt76/mt76x02_mac.c
-index 28851060aa0f..8e0294bfce9c 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76x02_mac.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt76x02_mac.c
-@@ -1044,7 +1044,7 @@ void mt76x02_mac_work(struct work_struct *work)
- 		dev->aggr_stats[idx++] += val >> 16;
- 	}
- 
--	if (!dev->beacon_mask)
-+	if (!dev->mt76.beacon_mask)
- 		mt76x02_check_mac_err(dev);
- 
- 	if (dev->ed_monitor)
 diff --git a/drivers/net/wireless/mediatek/mt76/mt76x02_mmio.c b/drivers/net/wireless/mediatek/mt76/mt76x02_mmio.c
-index 644706ab2893..31e0d4b03f6b 100644
+index 31e0d4b03f6b..c4ead6a76766 100644
 --- a/drivers/net/wireless/mediatek/mt76/mt76x02_mmio.c
 +++ b/drivers/net/wireless/mediatek/mt76/mt76x02_mmio.c
-@@ -415,7 +415,7 @@ static void mt76x02_reset_state(struct mt76x02_dev *dev)
- 	}
- 
- 	dev->vif_mask = 0;
--	dev->beacon_mask = 0;
-+	dev->mt76.beacon_mask = 0;
+@@ -68,9 +68,9 @@ static void mt76x02_pre_tbtt_tasklet(unsigned long arg)
+ static void mt76x02e_pre_tbtt_enable(struct mt76x02_dev *dev, bool en)
+ {
+ 	if (en)
+-		tasklet_enable(&dev->pre_tbtt_tasklet);
++		tasklet_enable(&dev->mt76.pre_tbtt_tasklet);
+ 	else
+-		tasklet_disable(&dev->pre_tbtt_tasklet);
++		tasklet_disable(&dev->mt76.pre_tbtt_tasklet);
  }
  
- static void mt76x02_watchdog_reset(struct mt76x02_dev *dev)
-@@ -438,7 +438,7 @@ static void mt76x02_watchdog_reset(struct mt76x02_dev *dev)
- 	if (restart)
- 		mt76x02_reset_state(dev);
+ static void mt76x02e_beacon_enable(struct mt76x02_dev *dev, bool en)
+@@ -184,7 +184,7 @@ int mt76x02_dma_init(struct mt76x02_dev *dev)
  
--	if (dev->beacon_mask)
-+	if (dev->mt76.beacon_mask)
- 		mt76_clear(dev, MT_BEACON_TIME_CFG,
- 			   MT_BEACON_TIME_CFG_BEACON_TX |
- 			   MT_BEACON_TIME_CFG_TBTT_EN);
-@@ -470,7 +470,7 @@ static void mt76x02_watchdog_reset(struct mt76x02_dev *dev)
- 	if (dev->ed_monitor)
- 		mt76_set(dev, MT_TXOP_CTRL_CFG, MT_TXOP_ED_CCA_EN);
+ 	tasklet_init(&dev->mt76.tx_tasklet, mt76x02_tx_tasklet,
+ 		     (unsigned long) dev);
+-	tasklet_init(&dev->pre_tbtt_tasklet, mt76x02_pre_tbtt_tasklet,
++	tasklet_init(&dev->mt76.pre_tbtt_tasklet, mt76x02_pre_tbtt_tasklet,
+ 		     (unsigned long)dev);
  
--	if (dev->beacon_mask && !restart)
-+	if (dev->mt76.beacon_mask && !restart)
- 		mt76_set(dev, MT_BEACON_TIME_CFG,
- 			 MT_BEACON_TIME_CFG_BEACON_TX |
- 			 MT_BEACON_TIME_CFG_TBTT_EN);
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76x02_usb_core.c b/drivers/net/wireless/mediatek/mt76/mt76x02_usb_core.c
-index 81cebd92a4e8..5b6ac1b364e1 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76x02_usb_core.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt76x02_usb_core.c
-@@ -175,7 +175,7 @@ static void mt76x02u_pre_tbtt_work(struct work_struct *work)
- 	struct sk_buff *skb;
- 	int i, nbeacons;
+ 	kfifo_init(&dev->txstatus_fifo, status_fifo, fifo_size);
+@@ -267,7 +267,7 @@ irqreturn_t mt76x02_irq_handler(int irq, void *dev_instance)
+ 	}
  
--	if (!dev->beacon_mask)
-+	if (!dev->mt76.beacon_mask)
- 		return;
+ 	if (intr & MT_INT_PRE_TBTT)
+-		tasklet_schedule(&dev->pre_tbtt_tasklet);
++		tasklet_schedule(&dev->mt76.pre_tbtt_tasklet);
  
- 	mt76x02_resync_beacon_timer(dev);
-@@ -184,7 +184,7 @@ static void mt76x02u_pre_tbtt_work(struct work_struct *work)
- 		IEEE80211_IFACE_ITER_RESUME_ALL,
- 		mt76x02_update_beacon_iter, dev);
+ 	/* send buffered multicast frames now */
+ 	if (intr & MT_INT_TBTT) {
+@@ -427,7 +427,7 @@ static void mt76x02_watchdog_reset(struct mt76x02_dev *dev)
+ 	ieee80211_stop_queues(dev->mt76.hw);
+ 	set_bit(MT76_RESET, &dev->mt76.state);
  
--	nbeacons = hweight8(dev->beacon_mask);
-+	nbeacons = hweight8(dev->mt76.beacon_mask);
- 	mt76x02_enqueue_buffered_bc(dev, &data, N_BCN_SLOTS - nbeacons);
+-	tasklet_disable(&dev->pre_tbtt_tasklet);
++	tasklet_disable(&dev->mt76.pre_tbtt_tasklet);
+ 	tasklet_disable(&dev->mt76.tx_tasklet);
  
- 	for (i = nbeacons; i < N_BCN_SLOTS; i++) {
-@@ -207,7 +207,8 @@ static enum hrtimer_restart mt76x02u_pre_tbtt_interrupt(struct hrtimer *timer)
+ 	for (i = 0; i < ARRAY_SIZE(dev->mt76.napi); i++)
+@@ -484,7 +484,7 @@ static void mt76x02_watchdog_reset(struct mt76x02_dev *dev)
+ 	tasklet_enable(&dev->mt76.tx_tasklet);
+ 	tasklet_schedule(&dev->mt76.tx_tasklet);
  
- static void mt76x02u_pre_tbtt_enable(struct mt76x02_dev *dev, bool en)
+-	tasklet_enable(&dev->pre_tbtt_tasklet);
++	tasklet_enable(&dev->mt76.pre_tbtt_tasklet);
+ 
+ 	for (i = 0; i < ARRAY_SIZE(dev->mt76.napi); i++) {
+ 		napi_enable(&dev->mt76.napi[i]);
+diff --git a/drivers/net/wireless/mediatek/mt76/mt76x2/pci_init.c b/drivers/net/wireless/mediatek/mt76/mt76x2/pci_init.c
+index 90c1a0489294..71aea2832644 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt76x2/pci_init.c
++++ b/drivers/net/wireless/mediatek/mt76/mt76x2/pci_init.c
+@@ -300,7 +300,7 @@ void mt76x2_stop_hardware(struct mt76x02_dev *dev)
+ void mt76x2_cleanup(struct mt76x02_dev *dev)
  {
--	if (en && dev->beacon_mask && !hrtimer_active(&dev->pre_tbtt_timer))
-+	if (en && dev->mt76.beacon_mask &&
-+	    !hrtimer_active(&dev->pre_tbtt_timer))
- 		mt76x02u_start_pre_tbtt_timer(dev);
- 	if (!en)
- 		mt76x02u_stop_pre_tbtt_timer(dev);
+ 	tasklet_disable(&dev->dfs_pd.dfs_tasklet);
+-	tasklet_disable(&dev->pre_tbtt_tasklet);
++	tasklet_disable(&dev->mt76.pre_tbtt_tasklet);
+ 	mt76x2_stop_hardware(dev);
+ 	mt76x02_dma_cleanup(dev);
+ 	mt76x02_mcu_cleanup(dev);
+diff --git a/drivers/net/wireless/mediatek/mt76/mt76x2/pci_main.c b/drivers/net/wireless/mediatek/mt76/mt76x2/pci_main.c
+index 77f63cb14f35..93ad12391e33 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt76x2/pci_main.c
++++ b/drivers/net/wireless/mediatek/mt76/mt76x2/pci_main.c
+@@ -66,7 +66,7 @@ mt76x2_set_channel(struct mt76x02_dev *dev, struct cfg80211_chan_def *chandef)
+ 
+ 	mt76_set_channel(&dev->mt76);
+ 
+-	tasklet_disable(&dev->pre_tbtt_tasklet);
++	tasklet_disable(&dev->mt76.pre_tbtt_tasklet);
+ 	tasklet_disable(&dev->dfs_pd.dfs_tasklet);
+ 
+ 	mt76x2_mac_stop(dev, true);
+@@ -80,7 +80,7 @@ mt76x2_set_channel(struct mt76x02_dev *dev, struct cfg80211_chan_def *chandef)
+ 
+ 	mt76x2_mac_resume(dev);
+ 	tasklet_enable(&dev->dfs_pd.dfs_tasklet);
+-	tasklet_enable(&dev->pre_tbtt_tasklet);
++	tasklet_enable(&dev->mt76.pre_tbtt_tasklet);
+ 
+ 	clear_bit(MT76_RESET, &dev->mt76.state);
+ 
 -- 
 2.20.1
 
