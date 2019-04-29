@@ -2,25 +2,25 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id ADC3EE4F1
-	for <lists+linux-wireless@lfdr.de>; Mon, 29 Apr 2019 16:43:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D32F8E52A
+	for <lists+linux-wireless@lfdr.de>; Mon, 29 Apr 2019 16:47:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728346AbfD2OnP (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 29 Apr 2019 10:43:15 -0400
-Received: from smtp.codeaurora.org ([198.145.29.96]:60210 "EHLO
+        id S1728409AbfD2Oqc (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 29 Apr 2019 10:46:32 -0400
+Received: from smtp.codeaurora.org ([198.145.29.96]:36306 "EHLO
         smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725838AbfD2OnP (ORCPT
+        with ESMTP id S1728319AbfD2Oqb (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 29 Apr 2019 10:43:15 -0400
+        Mon, 29 Apr 2019 10:46:31 -0400
 Received: by smtp.codeaurora.org (Postfix, from userid 1000)
-        id 4B64E6086B; Mon, 29 Apr 2019 14:43:14 +0000 (UTC)
+        id D1D186028C; Mon, 29 Apr 2019 14:46:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1556548994;
-        bh=F642DkWqeIrIzNHMOaGjMTfPAClqqEoYZGOY6jnPPaI=;
+        s=default; t=1556549190;
+        bh=TXlvK+53Z5f7AAMbyCS48iatA/iddrA8c1tdF+6cefU=;
         h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-        b=o+THj89LJ83zgzFwYbkZtHzSwLcb9HYBiYw26kEx34+FK5UxLnIN7bItU60DsXPpF
-         H5QgKnvUFuNZ8vYGXYXyBZ1g0wfMH3CIvtN+e5xQeN/jfqo5SUzodfbaioHudTMCG+
-         j/Kzy/aBZgYbiHnJV0k4gJlNaSW8K3GqFaKFR77w=
+        b=R0d7TFh+0WYBWSk9avXHa0LzZlLH0FBwZOzrJkUG2vaF1CryoF/PwOLtRLwuELCoH
+         c2zxFEOPUrefK26fpfqQW7JpJGs9pOaiX5MKdy1Zjmh5ZwZBnFQMlOnXqDJs7QtEbG
+         km/5qqvQzhZBE2JxWj40ijgnnQ4QZvAwXnVqg8zc=
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         pdx-caf-mail.web.codeaurora.org
 X-Spam-Level: 
@@ -31,61 +31,63 @@ Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
         (Authenticated sender: kvalo@smtp.codeaurora.org)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 9A1CC6028C;
-        Mon, 29 Apr 2019 14:43:12 +0000 (UTC)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 8F8AB60134;
+        Mon, 29 Apr 2019 14:46:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1556548993;
-        bh=F642DkWqeIrIzNHMOaGjMTfPAClqqEoYZGOY6jnPPaI=;
+        s=default; t=1556549190;
+        bh=TXlvK+53Z5f7AAMbyCS48iatA/iddrA8c1tdF+6cefU=;
         h=Subject:From:In-Reply-To:References:To:Cc:From;
-        b=B2S6041exZrq+2C/ojOhtGHbd/tHHS6Aq0jFP2LUrFul2uwY+40+T9JptgZkOv8z6
-         NhU12JcZ4oadk6ElUELnUoIz/ZuX2iUE7p7CNTvcii1CTsCB5D+m8/c92iFmqLvMsX
-         x4l0+UesHKRbDWVcUf3OrXV45oPEPICn0ktir3+E=
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 9A1CC6028C
+        b=l6r95cqpXisbYCLJNfZkoe4mDjZdthulp9XKgShVCNuB2t4OQ6+nG8OXRU1YWFXlm
+         yw53+DDxo4ROPWsUADA/ps6jau3v2UowG5n1XyJJAAshLUBOvK/9FEDh8Rl03EybyT
+         xfHC1mBIXuzxbZn4mBYap/ZMs3aiIHvyg7MwhRoM=
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 8F8AB60134
 Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
 Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH] ath10k: fix incorrect multicast/broadcast rate setting
+Subject: Re: [PATCH][next] ath6kl: debug: Use struct_size() helper
 From:   Kalle Valo <kvalo@codeaurora.org>
-In-Reply-To: <1544504171-19810-1-git-send-email-pradeepc@codeaurora.org>
-References: <1544504171-19810-1-git-send-email-pradeepc@codeaurora.org>
-To:     Pradeep Kumar Chitrapu <pradeepc@codeaurora.org>
-Cc:     ath10k@lists.infradead.org, linux-wireless@vger.kernel.org,
-        Pradeep kumar Chitrapu <pradeepc@codeaurora.org>,
-        Zhi Chen <zhichen@codeaurora.org>
+In-Reply-To: <20190403154835.GA20955@embeddedor>
+References: <20190403154835.GA20955@embeddedor>
+To:     "Gustavo A. R. Silva" <gustavo@embeddedor.com>
+Cc:     "David S. Miller" <davem@davemloft.net>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        "Gustavo A. R. Silva" <gustavo@embeddedor.com>
 User-Agent: pwcli/0.0.0-git (https://github.com/kvalo/pwcli/) Python/2.7.12
-Message-Id: <20190429144314.4B64E6086B@smtp.codeaurora.org>
-Date:   Mon, 29 Apr 2019 14:43:14 +0000 (UTC)
+Message-Id: <20190429144630.D1D186028C@smtp.codeaurora.org>
+Date:   Mon, 29 Apr 2019 14:46:30 +0000 (UTC)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Pradeep Kumar Chitrapu <pradeepc@codeaurora.org> wrote:
+"Gustavo A. R. Silva" <gustavo@embeddedor.com> wrote:
 
-> Invalid rate code is sent to firmware when multicast rate value of 0 is
-> sent to driver indicating disabled case, causing broken mesh path.
-> so fix that.
+> Make use of the struct_size() helper instead of an open-coded version
+> in order to avoid any potential type mistakes, in particular in the
+> context in which this code is being used.
 > 
-> Tested on QCA9984 with firmware 10.4-3.6.1-00827
+> So, change the following form:
 > 
-> Sven tested on IPQ4019 with 10.4-3.5.3-00057 and QCA9888 with 10.4-3.5.3-00053
-> (ath10k-firmware) and 10.4-3.6-00140 (linux-firmware 2018-12-16-211de167).
+> sizeof(*tbl) + num_entries * sizeof(struct wmi_bss_roam_info)
 > 
-> Fixes: cd93b83ad92 ("ath10k: support for multicast rate control")
-> Co-developed-by: Zhi Chen <zhichen@codeaurora.org>
-> Signed-off-by: Zhi Chen <zhichen@codeaurora.org>
-> Signed-off-by: Pradeep Kumar Chitrapu <pradeepc@codeaurora.org>
-> Tested-by: Sven Eckelmann <sven@narfation.org>
+>  to :
+> 
+> struct_size(tbl, info, num_entries)
+> 
+> This code was detected with the help of Coccinelle.
+> 
+> Signed-off-by: Gustavo A. R. Silva <gustavo@embeddedor.com>
 > Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
 
 Patch applied to ath-next branch of ath.git, thanks.
 
-93ee3d108fc7 ath10k: fix incorrect multicast/broadcast rate setting
+df75786b9233 ath6kl: debug: Use struct_size() helper
 
 -- 
-https://patchwork.kernel.org/patch/10723033/
+https://patchwork.kernel.org/patch/10884039/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
