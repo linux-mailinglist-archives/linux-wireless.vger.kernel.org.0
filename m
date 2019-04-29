@@ -2,101 +2,118 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D3802DA5D
-	for <lists+linux-wireless@lfdr.de>; Mon, 29 Apr 2019 03:54:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 18271DB3E
+	for <lists+linux-wireless@lfdr.de>; Mon, 29 Apr 2019 06:50:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726786AbfD2ByO (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 28 Apr 2019 21:54:14 -0400
-Received: from bilbo.ozlabs.org ([203.11.71.1]:56107 "EHLO ozlabs.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726681AbfD2ByO (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 28 Apr 2019 21:54:14 -0400
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
-        (No client certificate requested)
-        by mail.ozlabs.org (Postfix) with ESMTPSA id 44snl64JK2z9s55;
-        Mon, 29 Apr 2019 11:54:10 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=canb.auug.org.au;
-        s=201702; t=1556502851;
-        bh=KN9J/W1T49rNawww/E2wIO3cDvFrVEihi+tUSgg7w3E=;
-        h=Date:From:To:Cc:Subject:From;
-        b=p/LRXjusuLEMvXEF+p48ei8s6Guxm10JgujSjp6jaM5wAHFXI73FoEGYfRreUWqzj
-         VA3RMA6vxYUmIl5izcsVesHOiYs0hYYazDTTZRojgHk/6LA+eeFejxcd/zpiP0FU/d
-         3fMFQ1LmfldrH9DKzsLdfnLIrR9oyWdtwzQjZk9LIH2gpT5FOhHlSBA0gRON5vq72a
-         VhYqZmbCvK58KqSvkzZxRNsPyCSQoGyLf8MLv76eC1K+bOA/fgOTL+R+4awBuEVkWX
-         1NcUnhjyWt6TYlEE+AtGGO8kSA9+WXrLgVJn2HiJomxQ7nzXyHgSc3fOu2DNcgjFE+
-         NP4UC9wstr8WA==
-Date:   Mon, 29 Apr 2019 11:54:02 +1000
-From:   Stephen Rothwell <sfr@canb.auug.org.au>
-To:     David Miller <davem@davemloft.net>,
-        Networking <netdev@vger.kernel.org>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        Wireless <linux-wireless@vger.kernel.org>
-Cc:     Linux Next Mailing List <linux-next@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Luca Coelho <luciano.coelho@intel.com>
-Subject: linux-next: manual merge of the net-next tree with the
- wireless-drivers tree
-Message-ID: <20190429115338.5decb50b@canb.auug.org.au>
+        id S1726106AbfD2EuW (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 29 Apr 2019 00:50:22 -0400
+Received: from mail-eopbgr720104.outbound.protection.outlook.com ([40.107.72.104]:35648
+        "EHLO NAM05-CO1-obe.outbound.protection.outlook.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1726145AbfD2EuW (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 29 Apr 2019 00:50:22 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cypress.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=ZTFjBMpqxYooIJxThTv9381u22xkhChXO/DmQSmSojM=;
+ b=co8mfNXlRr4ZFaib0Js5FkK28h/i+iwPjvLlW1t7wfwRosMbXI+phV3GtwJo3Tgh2mAcGoXGBhtdaIKdPPl8WtO83W1tge430V8R8GL1u2zKv1K9uI7QzDR+INoklgolBiIpjhr9EZw9Q3c/FhHZnH1Eq+71DO1f6uSK44kK0T8=
+Received: from MN2PR06MB5806.namprd06.prod.outlook.com (20.179.145.207) by
+ MN2PR06MB5487.namprd06.prod.outlook.com (20.178.241.90) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.1835.13; Mon, 29 Apr 2019 04:50:19 +0000
+Received: from MN2PR06MB5806.namprd06.prod.outlook.com
+ ([fe80::1068:df85:f952:bbf3]) by MN2PR06MB5806.namprd06.prod.outlook.com
+ ([fe80::1068:df85:f952:bbf3%2]) with mapi id 15.20.1835.015; Mon, 29 Apr 2019
+ 04:50:19 +0000
+From:   Wright Feng <Wright.Feng@cypress.com>
+To:     Arend Van Spriel <arend.vanspriel@broadcom.com>,
+        "franky.lin@broadcom.com" <franky.lin@broadcom.com>,
+        "hante.meuleman@broadcom.com" <hante.meuleman@broadcom.com>,
+        "kvalo@codeaurora.org" <kvalo@codeaurora.org>,
+        Chi-Hsien Lin <Chi-Hsien.Lin@cypress.com>
+CC:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        "brcm80211-dev-list.pdl@broadcom.com" 
+        <brcm80211-dev-list.pdl@broadcom.com>
+Subject: Re: [PATCH] brcmfmac: allocate msgbuf pktid from 1 to pktids array
+ size
+Thread-Topic: [PATCH] brcmfmac: allocate msgbuf pktid from 1 to pktids array
+ size
+Thread-Index: AQHU+z2RzToH3FeQwUSmmepORWhyJaZMu9WAgAXbtwA=
+Date:   Mon, 29 Apr 2019 04:50:19 +0000
+Message-ID: <0f72eace-be93-a6bd-c752-814efe93727c@cypress.com>
+References: <1556179487-147593-1-git-send-email-wright.feng@cypress.com>
+ <66165629-aa4d-afbe-5b09-3a592ff44a82@broadcom.com>
+In-Reply-To: <66165629-aa4d-afbe-5b09-3a592ff44a82@broadcom.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-clientproxiedby: TYXPR01CA0059.jpnprd01.prod.outlook.com
+ (2603:1096:403:a::29) To MN2PR06MB5806.namprd06.prod.outlook.com
+ (2603:10b6:208:127::15)
+authentication-results: spf=none (sender IP is )
+ smtp.mailfrom=Wright.Feng@cypress.com; 
+x-ms-exchange-messagesentrepresentingtype: 1
+x-originating-ip: [61.222.14.99]
+x-ms-publictraffictype: Email
+x-ms-office365-filtering-correlation-id: bfe42a76-2cd1-4b7a-35f2-08d6cc5e2df5
+x-ms-office365-filtering-ht: Tenant
+x-microsoft-antispam: BCL:0;PCL:0;RULEID:(2390118)(7020095)(4652040)(8989299)(4534185)(4627221)(201703031133081)(201702281549075)(8990200)(5600141)(711020)(4605104)(4618075)(2017052603328)(7193020);SRVR:MN2PR06MB5487;
+x-ms-traffictypediagnostic: MN2PR06MB5487:
+x-microsoft-antispam-prvs: <MN2PR06MB54873C769CEDDABE76CF3709FB390@MN2PR06MB5487.namprd06.prod.outlook.com>
+x-ms-oob-tlc-oobclassifiers: OLM:7219;
+x-forefront-prvs: 0022134A87
+x-forefront-antispam-report: SFV:NSPM;SFS:(10019020)(136003)(39860400002)(346002)(366004)(396003)(376002)(51914003)(189003)(199004)(5660300002)(72206003)(6506007)(6436002)(53936002)(66476007)(73956011)(3846002)(476003)(71200400001)(97736004)(186003)(486006)(66556008)(7736002)(102836004)(53546011)(66066001)(31686004)(66446008)(66946007)(26005)(71190400001)(6486002)(386003)(110136005)(6512007)(76176011)(54906003)(64756008)(6116002)(99286004)(11346002)(6636002)(446003)(6246003)(14454004)(52116002)(2616005)(25786009)(316002)(4326008)(478600001)(31696002)(2501003)(36756003)(256004)(2201001)(8936002)(86362001)(305945005)(81166006)(14444005)(8676002)(81156014)(2906002)(68736007)(229853002);DIR:OUT;SFP:1102;SCL:1;SRVR:MN2PR06MB5487;H:MN2PR06MB5806.namprd06.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;MX:1;A:1;
+received-spf: None (protection.outlook.com: cypress.com does not designate
+ permitted sender hosts)
+x-ms-exchange-senderadcheck: 1
+x-microsoft-antispam-message-info: NlH7T+LYvc2KBSO2zS+SV9FVp7EUVsBN0pYz1RNVwYshoC/6Mt29z68ivLl9osrx4Jy/XfDzKjB3sIpNbMgR+vAVxfwOZrWOZj0oN7/t515fsGXOBd2as/3DPQhFesHyY6E9LQdea1XcTTHrwqzpCEZlXybm/9zVo7BON/DfHfBSI1TakhujKAzVPmY+RIXf/JGseWepysXXnLpKBXdamqoVZY5YibqxA9BMzjJRYSDN1n7YW6Y1hFhqT7bmhBXLZG1zaQWlhtxEtv0TX3Bi0LL750FztJQduQR0COYV1NjEvEWEZMKo+QOr943oCuNimUYJpy8k9zZiNu4OZcKaQ6OYAy/YQqDfqLpKvJ0J5nV2lg2UyO1+R9qTtyE37IHoQx07v2atYgxyXBkcvUDQdGBi44eTW0h2dDg5ncTKFUw=
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <3BE878BEF8041D49991E0D9EC57CAF48@namprd06.prod.outlook.com>
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
- boundary="Sig_/ouD1/C1Rf=a4YufAYVULo5g"; protocol="application/pgp-signature"
+X-OriginatorOrg: cypress.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: bfe42a76-2cd1-4b7a-35f2-08d6cc5e2df5
+X-MS-Exchange-CrossTenant-originalarrivaltime: 29 Apr 2019 04:50:19.3223
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 011addfc-2c09-450d-8938-e0bbc2dd2376
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN2PR06MB5487
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
---Sig_/ouD1/C1Rf=a4YufAYVULo5g
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: quoted-printable
-
-Hi all,
-
-Today's linux-next merge of the net-next tree got a conflict in:
-
-  drivers/net/wireless/intel/iwlwifi/mvm/debugfs-vif.c
-
-between commits:
-
-  154d4899e411 ("iwlwifi: mvm: properly check debugfs dentry before using i=
-t")
-  d156e67d3f58 ("iwlwifi: mvm: fix merge damage in iwl_mvm_vif_dbgfs_regist=
-er()")
-
-from the wireless-drivers tree and commit:
-
-  c9af7528c331 ("iwlwifi: mvm: no need to check return value of debugfs_cre=
-ate functions")
-
-from the net-next tree.
-
-I fixed it up (the latter removed the code modified by the former, so I
-just did that) and can carry the fix as necessary. This is now fixed as
-far as linux-next is concerned, but any non trivial conflicts should be
-mentioned to your upstream maintainer when your tree is submitted for
-merging.  You may also want to consider cooperating with the maintainer
-of the conflicting tree to minimise any particularly complex conflicts.
-
---=20
-Cheers,
-Stephen Rothwell
-
---Sig_/ouD1/C1Rf=a4YufAYVULo5g
-Content-Type: application/pgp-signature
-Content-Description: OpenPGP digital signature
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAEBCAAdFiEENIC96giZ81tWdLgKAVBC80lX0GwFAlzGWToACgkQAVBC80lX
-0GyjqQf/WmQNjeOP1on2Gd80/wu5PBCMWR0vBySe2WZ8v1efY6dyhDSLHm1bLzu1
-3ZYqkjy9od5BqotAHadOWbwNwv2SsYpYvWKuwYP82Fh509SWEwapxFk/hlv7b6MO
-OXqPJxLVEQ9lBv9ErhkaEV50AkxApAkidiU5vZMbVLcA23dFjMGtpHOUEsEtR9Qc
-xdEK1VHH14ZZAdRt06D3XK0lJwuh/JoMNlZXwmG3syMBwoggULzvqHvdL4KzpOz4
-rDlbyPaOUXipocKkNaShf6EeKVPoOn7w0N8rsj2xGA1chlHQYNh53A1fg7adUIvp
-bWD+K14cDKZGv5rPnaP63DGE8HrNlg==
-=HV9G
------END PGP SIGNATURE-----
-
---Sig_/ouD1/C1Rf=a4YufAYVULo5g--
+DQoNCk9uIDIwMTkvNC8yNSDkuIvljYggMDc6MjIsIEFyZW5kIFZhbiBTcHJpZWwgd3JvdGU6DQo+
+IE9uIDQvMjUvMjAxOSAxMDowNCBBTSwgV3JpZ2h0IEZlbmcgd3JvdGU6DQo+PiBTb21lIFBDSUUg
+ZmlybXdhcmVzIGRyb3AgdHhzdGF0dXMgaWYgcGt0aWQgaXMgMCBhbmQgbWFrZSBwYWNrZXQgaGVs
+ZCBpbg0KPj4gaG9zdCBzaWRlIGFuZCBub3QgYmUgcmVsZWFzZWQuIElmIHRoYXQgcGFja2V0IHR5
+cGUgaXMgODAyLjF4LCB0aGUNCj4+IHBlbmRfODAyMXhfY250IHZhbHVlIHdpbGwgYmUgYWx3YXlz
+IGdyZWF0ZXIgdGhhbiAwIGFuZCBzaG93ICJUaW1lZCBvdXQNCj4+IHdhaXRpbmcgZm9yIG5vIHBl
+bmRpbmcgODAyLjF4IHBhY2tldHMiIGVycm9yIG1lc3NhZ2Ugd2hlbiBzZW5kaW5nIGtleSB0bw0K
+Pj4gZG9uZ2xlLg0KPj4NCj4+IFRvIGJlIGNvbXBhdGlibGUgd2l0aCBhbGwgZmlybXdhcmVzLCBo
+b3N0IHNob3VsZCBhbGxvY2F0ZSBtc2didWYgcGt0aWQNCj4+IGZyb20gMSBpbnN0ZWFkIG9mIGZy
+b20gMC4NCj4gDQo+IGxvb2tpbmcgYXQgaXQgd2UgYXJlIHdhc3RpbmcgZW50cnkgMCB3aXRoIHRo
+aXMgcGF0Y2guIENvdWxkIHdlIGF2b2lkIHRoYXQ/DQo+IA0KPiBSZWdhcmRzLA0KPiBBcmVuZA0K
+PiANCkhpIEFyZW5kLA0KDQpUaGFua3MgZm9yIHRoZSBzdWdnZXN0aW9uLg0KVG8gYXZvaWQgd2Fz
+dGluZyBpbmRleCB6ZXJvIGVudHJ5LCBJIGp1c3QgaW5jcmVhc2UgcmVxdWVzdCBJRCBpbiBUWGZs
+b3cNCmFuZCBkZWNyZWFzZSByZXF1ZXN0IElEIHdoZW4gaGFuZGxpbmcgdHhzdGF0dXMuIEkndmUg
+cG9zdGVkIHBhdGNoIHYyLg0KDQpSZWdhcmRzLA0KV3JpZ2h0DQo+PiBTaWduZWQtb2ZmLWJ5OiBX
+cmlnaHQgRmVuZyA8d3JpZ2h0LmZlbmdAY3lwcmVzcy5jb20+DQo+PiAtLS0NCj4+IMKgIGRyaXZl
+cnMvbmV0L3dpcmVsZXNzL2Jyb2FkY29tL2JyY204MDIxMS9icmNtZm1hYy9tc2didWYuYyB8IDIg
+Ky0NCj4+IMKgIDEgZmlsZSBjaGFuZ2VkLCAxIGluc2VydGlvbigrKSwgMSBkZWxldGlvbigtKQ0K
+Pj4NCj4+IGRpZmYgLS1naXQgYS9kcml2ZXJzL25ldC93aXJlbGVzcy9icm9hZGNvbS9icmNtODAy
+MTEvYnJjbWZtYWMvbXNnYnVmLmMgDQo+PiBiL2RyaXZlcnMvbmV0L3dpcmVsZXNzL2Jyb2FkY29t
+L2JyY204MDIxMS9icmNtZm1hYy9tc2didWYuYw0KPj4gaW5kZXggZDM3ODBlYS4uYjJmYWIzYyAx
+MDA2NDQNCj4+IC0tLSBhL2RyaXZlcnMvbmV0L3dpcmVsZXNzL2Jyb2FkY29tL2JyY204MDIxMS9i
+cmNtZm1hYy9tc2didWYuYw0KPj4gKysrIGIvZHJpdmVycy9uZXQvd2lyZWxlc3MvYnJvYWRjb20v
+YnJjbTgwMjExL2JyY21mbWFjL21zZ2J1Zi5jDQo+PiBAQCAtMzQ4LDcgKzM0OCw3IEBAIGJyY21m
+X21zZ2J1Zl9hbGxvY19wa3RpZChzdHJ1Y3QgZGV2aWNlICpkZXYsDQo+PiDCoMKgwqDCoMKgIGRv
+IHsNCj4+IMKgwqDCoMKgwqDCoMKgwqDCoCAoKmlkeCkrKzsNCj4+IMKgwqDCoMKgwqDCoMKgwqDC
+oCBpZiAoKmlkeCA9PSBwa3RpZHMtPmFycmF5X3NpemUpDQo+PiAtwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoCAqaWR4ID0gMDsNCj4+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgICppZHggPSAxOw0KPj4g
+wqDCoMKgwqDCoMKgwqDCoMKgIGlmIChhcnJheVsqaWR4XS5hbGxvY2F0ZWQuY291bnRlciA9PSAw
+KQ0KPj4gwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgaWYgKGF0b21pY19jbXB4Y2hnKCZhcnJh
+eVsqaWR4XS5hbGxvY2F0ZWQsIDAsIDEpID09IDApDQo+PiDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgIGJyZWFrOw0KPj4NCg==
