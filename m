@@ -2,72 +2,118 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id EE05ADCE6
-	for <lists+linux-wireless@lfdr.de>; Mon, 29 Apr 2019 09:32:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E08E1DD39
+	for <lists+linux-wireless@lfdr.de>; Mon, 29 Apr 2019 09:54:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727395AbfD2HcF (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 29 Apr 2019 03:32:05 -0400
-Received: from Galois.linutronix.de ([146.0.238.70]:40722 "EHLO
-        Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726846AbfD2HcE (ORCPT
+        id S1727504AbfD2Hya (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 29 Apr 2019 03:54:30 -0400
+Received: from smtp.codeaurora.org ([198.145.29.96]:39864 "EHLO
+        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727498AbfD2Hya (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 29 Apr 2019 03:32:04 -0400
-Received: from [5.158.153.52] (helo=nanos.tec.linutronix.de)
-        by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
-        (Exim 4.80)
-        (envelope-from <tglx@linutronix.de>)
-        id 1hL0lK-00053O-Qd; Mon, 29 Apr 2019 09:31:43 +0200
-Date:   Mon, 29 Apr 2019 09:31:37 +0200 (CEST)
-From:   Thomas Gleixner <tglx@linutronix.de>
-To:     Xiaoyao Li <xiaoyao.li@linux.intel.com>
-cc:     Fenghua Yu <fenghua.yu@intel.com>, Ingo Molnar <mingo@redhat.com>,
-        Borislav Petkov <bp@alien8.de>, H Peter Anvin <hpa@zytor.com>,
-        Paolo Bonzini <pbonzini@redhat.com>,
-        Dave Hansen <dave.hansen@intel.com>,
-        Ashok Raj <ashok.raj@intel.com>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Ravi V Shankar <ravi.v.shankar@intel.com>,
-        Christopherson Sean J <sean.j.christopherson@intel.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        Michael Chan <michael.chan@broadcom.com>,
-        linux-kernel <linux-kernel@vger.kernel.org>,
-        x86 <x86@kernel.org>, kvm@vger.kernel.org,
-        netdev@vger.kernel.org, linux-wireless@vger.kernel.org
-Subject: Re: [PATCH v8 12/15] kvm/vmx: Emulate MSR TEST_CTL
-In-Reply-To: <87ef9a01-fc99-20be-ec20-2c65e6a012a1@linux.intel.com>
-Message-ID: <alpine.DEB.2.21.1904290929570.1626@nanos.tec.linutronix.de>
-References: <1556134382-58814-1-git-send-email-fenghua.yu@intel.com> <1556134382-58814-13-git-send-email-fenghua.yu@intel.com> <alpine.DEB.2.21.1904250931020.1762@nanos.tec.linutronix.de> <7395908840acfbf806146f5f20d3509342771a19.camel@linux.intel.com>
- <alpine.DEB.2.21.1904280903520.1757@nanos.tec.linutronix.de> <87ef9a01-fc99-20be-ec20-2c65e6a012a1@linux.intel.com>
-User-Agent: Alpine 2.21 (DEB 202 2017-01-01)
-MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+        Mon, 29 Apr 2019 03:54:30 -0400
+Received: by smtp.codeaurora.org (Postfix, from userid 1000)
+        id 0C7DE60E40; Mon, 29 Apr 2019 07:54:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
+        s=default; t=1556524469;
+        bh=XktlkB+zNNoISAn1fR9+feOMjtMSyGbdO2GzL8wkjiw=;
+        h=From:To:Cc:Subject:Date:From;
+        b=PgjLnHTlWlA6wIjzGcI7hGmzinjNHEUJoOEqxa5iDy1tgmPZyRfbBfjYa8GO8ZQiI
+         uLyBKKfrKPjdlmd6qthryRv07DqzMD9bFj7Np0gx/+3MH1Pa9zpPwXi+b6aaSGdePq
+         wAK6Z/y/bvmATwE7vkBtZQa5qqkyvq0PSLNV7x/M=
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        pdx-caf-mail.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.7 required=2.0 tests=ALL_TRUSTED,BAYES_00,
+        DKIM_INVALID,DKIM_SIGNED autolearn=no autolearn_force=no version=3.4.0
+Received: from localhost.localdomain (unknown [180.166.53.21])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-SHA256 (128/128 bits))
+        (No client certificate requested)
+        (Authenticated sender: wgong@smtp.codeaurora.org)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 82B47608FC;
+        Mon, 29 Apr 2019 07:54:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
+        s=default; t=1556524468;
+        bh=XktlkB+zNNoISAn1fR9+feOMjtMSyGbdO2GzL8wkjiw=;
+        h=From:To:Cc:Subject:Date:From;
+        b=Ea60pZ/OgDafDGch9h9ZekSzewTnxjmm4mDp+kpnGkE8ue0dpjDSQou0H8I55Z78j
+         lq51Rs3i77nOan9gUlVroIhtOK5YU1IQGkHWGkLnPwFsV54EXjHdrQISv6OuQMHcvE
+         D8U4GaKYtDKZr1FQ3SOnzZqqSeSA+LGU9tgulnzI=
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 82B47608FC
+Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=wgong@codeaurora.org
+From:   Wen Gong <wgong@codeaurora.org>
+To:     ath10k@lists.infradead.org
+Cc:     linux-wireless@vger.kernel.org
+Subject: [PATCH v2] ath10k: add support for simulate crash on SDIO chip
+Date:   Mon, 29 Apr 2019 15:54:17 +0800
+Message-Id: <1556524457-17469-1-git-send-email-wgong@codeaurora.org>
+X-Mailer: git-send-email 1.9.1
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Sun, 28 Apr 2019, Xiaoyao Li wrote:
-> On 4/28/2019 3:09 PM, Thomas Gleixner wrote:
-> > On Sat, 27 Apr 2019, Xiaoyao Li wrote:
-> > > Indeed, if we use split lock detection for protection purpose, when host
-> > > has it enabled we should directly pass it to guest and forbid guest from
-> > > disabling it.  And only when host disables split lock detection, we can
-> > > expose it and allow the guest to turn it on.
-> > ?
-> > > If it is used for protection purpose, then it should follow what you said
-> > > and
-> > > this feature needs to be disabled by default. Because there are split lock
-> > > issues in old/current kernels and BIOS. That will cause the existing guest
-> > > booting failure and killed due to those split lock.
-> > 
-> > Rightfully so.
-> 
-> So, the patch 13 "Enable split lock detection by default" needs to be removed?
+The command to simulate firmware crash:
+echo soft > /sys/kernel/debug/ieee80211/phy0/ath10k/simulate_fw_crash
 
-Why? No. We enable it by default and everything which violates the rules
-gets what it deserves. If there is an issue, boot with ac_splitlock_off and
-be done with it.
+It will send WMI_FORCE_FW_HANG_ASSERT to firmware, then it will trigger
+CPU interrupt status register for SDIO chip, ath10k driver need to
+configure it while enable SDIO interrupt, otherwise ath10k driver will
+not get the assert error info.
 
-Thanks,
+After this change, it will success for simulate firmware crash.
 
-	tglx
+Tested with QCA6174 SDIO with firmware
+WLAN.RMH.4.4.1-00007-QCARMSWP-1.
+
+Signed-off-by: Wen Gong <wgong@codeaurora.org>
+---
+v2: add MBOX_CPU_STATUS_ENABLE_ASSERT_MASK for fw assert check
+ drivers/net/wireless/ath/ath10k/hw.h   |  1 +
+ drivers/net/wireless/ath/ath10k/sdio.c | 10 ++++++++--
+ 2 files changed, 9 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/net/wireless/ath/ath10k/hw.h b/drivers/net/wireless/ath/ath10k/hw.h
+index 7131499..60521ed 100644
+--- a/drivers/net/wireless/ath/ath10k/hw.h
++++ b/drivers/net/wireless/ath/ath10k/hw.h
+@@ -1095,6 +1095,7 @@ struct ath10k_hw_ops {
+ #define MBOX_CPU_INT_STATUS_ENABLE_ADDRESS	0x00000819
+ #define MBOX_CPU_INT_STATUS_ENABLE_BIT_LSB	0
+ #define MBOX_CPU_INT_STATUS_ENABLE_BIT_MASK	0x000000ff
++#define MBOX_CPU_STATUS_ENABLE_ASSERT_MASK 0x00000001
+ #define MBOX_ERROR_STATUS_ENABLE_ADDRESS	0x0000081a
+ #define MBOX_ERROR_STATUS_ENABLE_RX_UNDERFLOW_LSB  1
+ #define MBOX_ERROR_STATUS_ENABLE_RX_UNDERFLOW_MASK 0x00000002
+diff --git a/drivers/net/wireless/ath/ath10k/sdio.c b/drivers/net/wireless/ath/ath10k/sdio.c
+index fae56c6..1a3a7bf 100644
+--- a/drivers/net/wireless/ath/ath10k/sdio.c
++++ b/drivers/net/wireless/ath/ath10k/sdio.c
+@@ -850,6 +850,10 @@ static int ath10k_sdio_mbox_proc_cpu_intr(struct ath10k *ar)
+ 
+ out:
+ 	mutex_unlock(&irq_data->mtx);
++	if (cpu_int_status & MBOX_CPU_STATUS_ENABLE_ASSERT_MASK) {
++		ath10k_err(ar, "firmware crashed!\n");
++		queue_work(ar->workqueue, &ar->restart_work);
++	}
+ 	return ret;
+ }
+ 
+@@ -1495,8 +1499,10 @@ static int ath10k_sdio_hif_enable_intrs(struct ath10k *ar)
+ 	regs->int_status_en |=
+ 		FIELD_PREP(MBOX_INT_STATUS_ENABLE_MBOX_DATA_MASK, 1);
+ 
+-	/* Set up the CPU Interrupt status Register */
+-	regs->cpu_int_status_en = 0;
++	/* Set up the CPU Interrupt Status Register, enable CPU sourced interrupt #0
++	 * #0 is used for report assertion from target
++	 */
++	regs->cpu_int_status_en = FIELD_PREP(MBOX_CPU_STATUS_ENABLE_ASSERT_MASK, 1);
+ 
+ 	/* Set up the Error Interrupt status Register */
+ 	regs->err_int_status_en =
+-- 
+1.9.1
+
