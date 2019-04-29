@@ -2,39 +2,39 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E433DE98E
-	for <lists+linux-wireless@lfdr.de>; Mon, 29 Apr 2019 19:56:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 66861E444
+	for <lists+linux-wireless@lfdr.de>; Mon, 29 Apr 2019 16:07:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728903AbfD2R4R (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 29 Apr 2019 13:56:17 -0400
-Received: from rnd-relay.smtp.broadcom.com ([192.19.229.170]:60782 "EHLO
+        id S1728196AbfD2OH4 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 29 Apr 2019 10:07:56 -0400
+Received: from rnd-relay.smtp.broadcom.com ([192.19.229.170]:60966 "EHLO
         rnd-relay.smtp.broadcom.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1728844AbfD2R4R (ORCPT
+        by vger.kernel.org with ESMTP id S1728119AbfD2OHz (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 29 Apr 2019 13:56:17 -0400
+        Mon, 29 Apr 2019 10:07:55 -0400
 Received: from mail-irv-17.broadcom.com (mail-irv-17.lvn.broadcom.net [10.75.224.233])
-        by rnd-relay.smtp.broadcom.com (Postfix) with ESMTP id 784D930C571;
-        Mon, 29 Apr 2019 10:56:14 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.10.3 rnd-relay.smtp.broadcom.com 784D930C571
+        by rnd-relay.smtp.broadcom.com (Postfix) with ESMTP id EB85530C055;
+        Mon, 29 Apr 2019 07:07:52 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.10.3 rnd-relay.smtp.broadcom.com EB85530C055
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=broadcom.com;
-        s=dkimrelay; t=1556560574;
+        s=dkimrelay; t=1556546873;
         bh=+njzF/MkWyQUo99XszOttuAyYfxImuTEyzZXCSrj/MA=;
         h=From:Date:Subject:To:From;
-        b=ZPz411Z1ojeG5QMeu2mftSY389L4hJe2pdCK74XxpqX7MkZ2EIj/sYrg+GjA0RufA
-         fTsN4Qhw/Bxt4PmTHMlvbOWLhpKNkzcLbxrMEvZZ7e01lzfOq+umDtTbYsBh2dFgSp
-         EV3q+w9uCpSqfl5KtbjfA1TfSOSBmE74gZtMcD3k=
-Received: from xl-cam-03.broadcom.com (xlinux.cam.broadcom.com [10.177.132.136])
-        by mail-irv-17.broadcom.com (Postfix) with ESMTP id B08BE13EAA5;
-        Mon, 29 Apr 2019 04:44:03 -0700 (PDT)
-Received: by xl-cam-03.broadcom.com (Postfix, from userid 25152)
-        id 235D794070A; Mon, 29 Apr 2019 12:44:03 +0100 (BST)
+        b=QzzNydw0zIPBycE5OmTDzwh2Aonsho60wXrQIq3YaQU0KdspPJZwKrhZ8I+c4rUO0
+         cW6KpONT/oF6T8bqpy9HfjbQGuIb+9Ex7LHI8ojCYi0Iz+6+6yECXQ54AuTqjegCUP
+         EnEtUZO1YMMGEmomqFYVkhKoshk8JjgvlarzB5RE=
+Received: from bld-bun-01.bun.broadcom.com (bld-bun-01.bun.broadcom.com [10.176.128.83])
+        by mail-irv-17.broadcom.com (Postfix) with ESMTP id 72997147535;
+        Mon, 29 Apr 2019 04:59:48 -0700 (PDT)
+Received: by bld-bun-01.bun.broadcom.com (Postfix, from userid 25152)
+        id 3F444B02A68; Mon, 29 Apr 2019 13:59:46 +0200 (CEST)
 From:   Arend van Spriel <arend.vanspriel@broadcom.com>
 Date:   Mon, 29 Apr 2019 11:06:07 +0200
 Subject: [PATCH] brcmfmac: change the order of things in brcmf_detach()
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Message-Id: <20190429114403.235D794070A@xl-cam-03.broadcom.com>
+Message-Id: <20190429115947.3F444B02A68@bld-bun-01.bun.broadcom.com>
 To:     undisclosed-recipients:;
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
