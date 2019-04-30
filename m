@@ -2,107 +2,88 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 36656F99D
-	for <lists+linux-wireless@lfdr.de>; Tue, 30 Apr 2019 15:12:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4A461FA35
+	for <lists+linux-wireless@lfdr.de>; Tue, 30 Apr 2019 15:27:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727617AbfD3NMS (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 30 Apr 2019 09:12:18 -0400
-Received: from mail.kernel.org ([198.145.29.99]:58406 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726264AbfD3NMS (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 30 Apr 2019 09:12:18 -0400
-Received: from localhost.localdomain (unknown [151.66.22.155])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        id S1728214AbfD3N1t (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 30 Apr 2019 09:27:49 -0400
+Received: from smtp.codeaurora.org ([198.145.29.96]:34846 "EHLO
+        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728201AbfD3NZe (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 30 Apr 2019 09:25:34 -0400
+Received: by smtp.codeaurora.org (Postfix, from userid 1000)
+        id 4E61960E7A; Tue, 30 Apr 2019 13:25:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
+        s=default; t=1556630733;
+        bh=M3snicRDGK0OgZ0glnVBGEvcyeWdDYcxTrYt8Ih0giE=;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+        b=CbDqAxYkcXXDndzgQX2f+0/M45q6gzfle9tfE6/JPlzFqw4EAl8iLmpAht5K4qe+p
+         UsesoEIng40GRg5AnenZK8y6C74AI0fUsqMHvhYw7zkuC2b16lDtCPuoYhiZk4apxF
+         NvOp9DMqZMFMnp9fxdRafkHXQ9NxaqjO4hCo+Hnw=
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        pdx-caf-mail.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.7 required=2.0 tests=ALL_TRUSTED,BAYES_00,
+        DKIM_INVALID,DKIM_SIGNED autolearn=no autolearn_force=no version=3.4.0
+Received: from purkki.adurom.net (purkki.adurom.net [80.68.90.206])
+        (using TLSv1.2 with cipher DHE-RSA-AES128-SHA (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 8B04620835;
-        Tue, 30 Apr 2019 13:12:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1556629937;
-        bh=0lM9mG5yupS/9PSblirWI6nSFfMK94txP9FcIgw4P0E=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=C1xZ9DHLz3T8+wNMp4fNhQz8pWg1IjrNjbZYqy4fXDdFK8vgNMqVE25kKq45/p9Py
-         7BbzmmKAsOW8IliHA17CswVc4AOom1ClqzdsYj7v6YA6612IgeSr8SSHo2nJ3JZgi8
-         YUqevpqLdeVtPLihEsecbmJsrjt95SnYprIGhzWc=
-From:   Lorenzo Bianconi <lorenzo@kernel.org>
-To:     nbd@nbd.name
-Cc:     lorenzo.bianconi@redhat.com, linux-wireless@vger.kernel.org,
-        sgruszka@redhat.com
-Subject: [PATCH v3 3/3] mt76: do not enable/disable pre_tbtt_tasklet in scan_start/scan_complete
-Date:   Tue, 30 Apr 2019 15:12:03 +0200
-Message-Id: <b3156cb6a99c6c9df7f2b78be46ac4963afbd8be.1556629547.git.lorenzo@kernel.org>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <cover.1556629547.git.lorenzo@kernel.org>
-References: <cover.1556629547.git.lorenzo@kernel.org>
+        (Authenticated sender: kvalo@smtp.codeaurora.org)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 9BD8B60E7A;
+        Tue, 30 Apr 2019 13:25:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
+        s=default; t=1556630732;
+        bh=M3snicRDGK0OgZ0glnVBGEvcyeWdDYcxTrYt8Ih0giE=;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+        b=NUPMuK42KZvdxWF23xKi96JWXVPM47gk3914upFoA87icTndiACol98DjDITiFyzd
+         RF399SJ81EcX3vE0QW8qe9MOO3i/TMIs3/o6IS8fYAW1qRm8GtlsA5+t3yIxuHu9/8
+         Z35/Ur/1Dgo333UogTAyvM620PFhE80Ne0oZUojY=
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 9BD8B60E7A
+Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
+From:   Kalle Valo <kvalo@codeaurora.org>
+To:     Stanislaw Gruszka <sgruszka@redhat.com>
+Cc:     linux-wireless@vger.kernel.org,
+        Tomislav =?utf-8?Q?Po=C5=BEega?= <pozega.tomislav@gmail.com>,
+        Daniel Golle <daniel@makrotopia.org>,
+        Felix Fietkau <nbd@nbd.name>, Mathias Kresin <dev@kresin.me>
+Subject: Re: [RFC/RFT 7/7] rt2800: do not enable watchdog by default
+References: <1556535270-3551-1-git-send-email-sgruszka@redhat.com>
+        <1556535270-3551-8-git-send-email-sgruszka@redhat.com>
+Date:   Tue, 30 Apr 2019 16:25:29 +0300
+In-Reply-To: <1556535270-3551-8-git-send-email-sgruszka@redhat.com> (Stanislaw
+        Gruszka's message of "Mon, 29 Apr 2019 12:54:30 +0200")
+Message-ID: <87o94nwrp2.fsf@purkki.adurom.net>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/23.4 (gnu/linux)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Do not enable/disable pre_tbtt_tasklet tasklet in
-mt76x02_sw_scan/mt76x02_sw_scan_complete since it is already done
-setting the operating channel. Do run tbtt_tasklet while the device is
-offchannel
+Stanislaw Gruszka <sgruszka@redhat.com> writes:
 
-Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
----
- drivers/net/wireless/mediatek/mt76/mt76x02_mmio.c     | 3 +++
- drivers/net/wireless/mediatek/mt76/mt76x02_usb_core.c | 3 +++
- drivers/net/wireless/mediatek/mt76/mt76x02_util.c     | 5 -----
- 3 files changed, 6 insertions(+), 5 deletions(-)
+> Make watchdog disabled by default and add module parameter to enable it.
+>
+> User will have to create file in /etc/modprobe.d/ with
+>
+> options rt2800lib watchdog=1
+>
+> to enable the watchdog or load "rt2800lib watchdog=1" module manually
+> before loading rt2800{soc,pci,usb} module.
+>
+> Signed-off-by: Stanislaw Gruszka <sgruszka@redhat.com>
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76x02_mmio.c b/drivers/net/wireless/mediatek/mt76/mt76x02_mmio.c
-index 8f899b8aa9fe..7b7163bc3b62 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76x02_mmio.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt76x02_mmio.c
-@@ -30,6 +30,9 @@ static void mt76x02_pre_tbtt_tasklet(unsigned long arg)
- 	struct sk_buff *skb;
- 	int i;
- 
-+	if (mt76_hw(dev)->conf.flags & IEEE80211_CONF_OFFCHANNEL)
-+		return;
-+
- 	mt76x02_resync_beacon_timer(dev);
- 
- 	ieee80211_iterate_active_interfaces_atomic(mt76_hw(dev),
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76x02_usb_core.c b/drivers/net/wireless/mediatek/mt76/mt76x02_usb_core.c
-index 5b6ac1b364e1..6b89f7eab26c 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76x02_usb_core.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt76x02_usb_core.c
-@@ -178,6 +178,9 @@ static void mt76x02u_pre_tbtt_work(struct work_struct *work)
- 	if (!dev->mt76.beacon_mask)
- 		return;
- 
-+	if (mt76_hw(dev)->conf.flags & IEEE80211_CONF_OFFCHANNEL)
-+		return;
-+
- 	mt76x02_resync_beacon_timer(dev);
- 
- 	ieee80211_iterate_active_interfaces(mt76_hw(dev),
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76x02_util.c b/drivers/net/wireless/mediatek/mt76/mt76x02_util.c
-index 12724e96b290..ad5323447ed4 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76x02_util.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt76x02_util.c
-@@ -593,8 +593,6 @@ void mt76x02_sw_scan(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
- {
- 	struct mt76x02_dev *dev = hw->priv;
- 
--	if (mt76_is_mmio(dev))
--		tasklet_disable(&dev->mt76.pre_tbtt_tasklet);
- 	set_bit(MT76_SCANNING, &dev->mt76.state);
- }
- EXPORT_SYMBOL_GPL(mt76x02_sw_scan);
-@@ -605,9 +603,6 @@ void mt76x02_sw_scan_complete(struct ieee80211_hw *hw,
- 	struct mt76x02_dev *dev = hw->priv;
- 
- 	clear_bit(MT76_SCANNING, &dev->mt76.state);
--	if (mt76_is_mmio(dev))
--		tasklet_enable(&dev->mt76.pre_tbtt_tasklet);
--
- 	if (dev->cal.gain_init_done) {
- 		/* Restore AGC gain and resume calibration after scanning. */
- 		dev->cal.low_gain = -1;
+[...]
+
+> +static bool modparam_watchdog;
+> +module_param_named(watchdog, modparam_watchdog, bool, S_IRUGO);
+> +MODULE_PARM_DESC(watchdog, "Enable watchdog.");
+
+You could describe a bit more what this watchdog does and that it's in
+driver (or at least I assume so).
+
 -- 
-2.20.1
-
+Kalle Valo
