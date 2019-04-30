@@ -2,75 +2,103 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 008D3FADB
-	for <lists+linux-wireless@lfdr.de>; Tue, 30 Apr 2019 15:56:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DFB2FFB60
+	for <lists+linux-wireless@lfdr.de>; Tue, 30 Apr 2019 16:25:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726436AbfD3Nz6 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 30 Apr 2019 09:55:58 -0400
-Received: from mailgw01.mediatek.com ([210.61.82.183]:36067 "EHLO
-        mailgw01.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1725938AbfD3Nz5 (ORCPT
+        id S1726511AbfD3OZf (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 30 Apr 2019 10:25:35 -0400
+Received: from smtp.codeaurora.org ([198.145.29.96]:49740 "EHLO
+        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726073AbfD3OZf (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 30 Apr 2019 09:55:57 -0400
-X-UUID: 22f4d06481c74227b1a782e889908a5d-20190430
-X-UUID: 22f4d06481c74227b1a782e889908a5d-20190430
-Received: from mtkmrs01.mediatek.inc [(172.21.131.159)] by mailgw01.mediatek.com
-        (envelope-from <ryder.lee@mediatek.com>)
-        (mhqrelay.mediatek.com ESMTP with TLS)
-        with ESMTP id 705396054; Tue, 30 Apr 2019 21:55:53 +0800
-Received: from mtkcas07.mediatek.inc (172.21.101.84) by
- mtkmbs08n2.mediatek.inc (172.21.101.56) with Microsoft SMTP Server (TLS) id
- 15.0.1395.4; Tue, 30 Apr 2019 21:55:50 +0800
-Received: from mtkslt306.mediatek.inc (10.21.14.136) by mtkcas07.mediatek.inc
- (172.21.101.73) with Microsoft SMTP Server id 15.0.1395.4 via Frontend
- Transport; Tue, 30 Apr 2019 21:55:50 +0800
-From:   Ryder Lee <ryder.lee@mediatek.com>
-To:     Lorenzo Bianconi <lorenzo.bianconi@redhat.com>,
-        Felix Fietkau <nbd@nbd.name>
-CC:     Roy Luo <royluo@google.com>, YF Luo <yf.luo@mediatek.com>,
-        Yiwei Chung <yiwei.chung@mediatek.com>,
-        Sean Wang <sean.wang@mediatek.com>,
-        <linux-wireless@vger.kernel.org>,
-        <linux-mediatek@lists.infradead.org>,
-        <linux-kernel@vger.kernel.org>, Ryder Lee <ryder.lee@mediatek.com>
-Subject: [PATCH v3] mt76: add TX/RX antenna pattern capabilities
-Date:   Tue, 30 Apr 2019 21:55:38 +0800
-Message-ID: <1e054441bab22ee28fdad597ca36d891500b4a66.1556624322.git.ryder.lee@mediatek.com>
-X-Mailer: git-send-email 2.18.0
+        Tue, 30 Apr 2019 10:25:35 -0400
+Received: by smtp.codeaurora.org (Postfix, from userid 1000)
+        id 47F2C608BA; Tue, 30 Apr 2019 14:25:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
+        s=default; t=1556634334;
+        bh=ru4uFJBDXnWgbZnRESyuHYjpWU71nRsW2ZydZO2/mAA=;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+        b=YDhAr6vHVf6QoAZn/LvN4tg/wYbclLl5S/W8f1r6267vp0MumXD4PGO6aPDzq3zT+
+         xzRKIJYSwPmGebXnx5yoQHKV1qOBVcbJExhL8PpM9Bzoch6fmnsi2eMKe1U7hxgupc
+         R8d8cK+HmZ07PvD+35pZo/RrFKT2DMTZZng59kF8=
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        pdx-caf-mail.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.7 required=2.0 tests=ALL_TRUSTED,BAYES_00,
+        DKIM_INVALID,DKIM_SIGNED autolearn=no autolearn_force=no version=3.4.0
+Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo@smtp.codeaurora.org)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 628A1601D4;
+        Tue, 30 Apr 2019 14:25:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
+        s=default; t=1556634333;
+        bh=ru4uFJBDXnWgbZnRESyuHYjpWU71nRsW2ZydZO2/mAA=;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+        b=SKgWvb1L5guw3OnQ9w3LPN0xgaSisWG+/bgnm1Bm2Eb7pkxeHmmxsaHWiLgXLtwfw
+         hHdfXhdb8FaKQ6pOa19R4tMuIZ3j0/Bg/IvHVYYZxzM5xOD+DbdEmD18kgIjpTVbWE
+         XTrKLeYoSwHaw5CxYKSMt6ZYy4NNWZd8uUC1g/jQ=
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 628A1601D4
+Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
+From:   Kalle Valo <kvalo@codeaurora.org>
+To:     Wen Gong <wgong@qti.qualcomm.com>
+Cc:     Nicolas Boichat <drinkcat@chromium.org>,
+        Claire Chang <tientzu@chromium.org>,
+        "linux-wireless\@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        "ath10k\@lists.infradead.org" <ath10k@lists.infradead.org>,
+        Wen Gong <wgong@codeaurora.org>
+Subject: Re: [PATCH] ath10k: add peer id check in ath10k_peer_find_by_id
+References: <1554260478-4161-1-git-send-email-wgong@codeaurora.org>
+        <CANMq1KAU1B4Bweq3O6O8HOMwT7fHjj9tDyxqMsn_vn4gwxXL=Q@mail.gmail.com>
+        <87wojbrg0m.fsf@kamboji.qca.qualcomm.com>
+        <7d528d143ae14de2a489c6986f71ac45@aptaiexm02f.ap.qualcomm.com>
+Date:   Tue, 30 Apr 2019 17:25:30 +0300
+In-Reply-To: <7d528d143ae14de2a489c6986f71ac45@aptaiexm02f.ap.qualcomm.com>
+        (Wen Gong's message of "Tue, 30 Apr 2019 10:12:09 +0000")
+Message-ID: <877ebbpo2t.fsf@kamboji.qca.qualcomm.com>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
 MIME-Version: 1.0
 Content-Type: text/plain
-X-TM-SNTS-SMTP: 773063FDE1F70878361AFD26064A2C2E185522FBBD99B1D7194B6634151CC7CF2000:8
-X-MTK:  N
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Announce antenna pattern cap to adapt PHY and baseband settings.
+Wen Gong <wgong@qti.qualcomm.com> writes:
 
-Signed-off-by: Ryder Lee <ryder.lee@mediatek.com>
----
-Changes since v3:
-- Move these flags to common code.
-Changes since v2:
-- Add a prefix mt76 in the title.
----
- drivers/net/wireless/mediatek/mt76/mac80211.c | 2 ++
- 1 file changed, 2 insertions(+)
+>> -----Original Message-----
+>> From: ath10k <ath10k-bounces@lists.infradead.org> On Behalf Of Kalle Valo
+>> Sent: Tuesday, April 30, 2019 5:37 PM
+>> To: Nicolas Boichat <drinkcat@chromium.org>
+>> Cc: Claire Chang <tientzu@chromium.org>; linux-wireless@vger.kernel.org;
+>> ath10k@lists.infradead.org; Wen Gong <wgong@codeaurora.org>
+>> Subject: [EXT] Re: [PATCH] ath10k: add peer id check in
+>> ath10k_peer_find_by_id
+>> >> --- a/drivers/net/wireless/ath/ath10k/txrx.c
+>> >> +++ b/drivers/net/wireless/ath/ath10k/txrx.c
+>> >> @@ -157,6 +157,9 @@ struct ath10k_peer
+>> *ath10k_peer_find_by_id(struct ath10k *ar, int peer_id)
+>> >>  {
+>> >>         struct ath10k_peer *peer;
+>> >>
+>> >> +       if (peer_id >= sizeof(peer->peer_ids) * BITS_PER_BYTE)
+>> >
+>> > I'd use >= BITS_PER_TYPE(peer->peer_ids).
+>> 
+>> Nice, I didn't know about that. Wen, please submit v2 using this.
+>> 
+>> --
+>> Kalle Valo
+> Yes, 
+> I have send v2 yesterday:
+> [PATCH v2] ath10k: add peer id check in ath10k_peer_find_by_id
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mac80211.c b/drivers/net/wireless/mediatek/mt76/mac80211.c
-index 851caabbecda..26a336ef86c5 100644
---- a/drivers/net/wireless/mediatek/mt76/mac80211.c
-+++ b/drivers/net/wireless/mediatek/mt76/mac80211.c
-@@ -214,6 +214,8 @@ mt76_init_sband(struct mt76_dev *dev, struct mt76_sband *msband,
- 	vht_cap->cap |= IEEE80211_VHT_CAP_RXLDPC |
- 			IEEE80211_VHT_CAP_RXSTBC_1 |
- 			IEEE80211_VHT_CAP_SHORT_GI_80 |
-+			IEEE80211_VHT_CAP_RX_ANTENNA_PATTERN |
-+			IEEE80211_VHT_CAP_TX_ANTENNA_PATTERN |
- 			(3 << IEEE80211_VHT_CAP_MAX_A_MPDU_LENGTH_EXPONENT_SHIFT);
- 
- 	return 0;
+Ok, I didn't notice that yet. But in general it's good practise to reply
+to review comments and let the reviewer (and others) know if you agree
+with the comment or not. For example, in this case you could have said
+to Nicolas: "Ok, I'll send v2".
+
 -- 
-2.18.0
-
+Kalle Valo
