@@ -2,102 +2,64 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 527C3F18E
-	for <lists+linux-wireless@lfdr.de>; Tue, 30 Apr 2019 09:43:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D6518106D6
+	for <lists+linux-wireless@lfdr.de>; Wed,  1 May 2019 12:13:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726145AbfD3HmZ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 30 Apr 2019 03:42:25 -0400
-Received: from mx1.redhat.com ([209.132.183.28]:37246 "EHLO mx1.redhat.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725554AbfD3HmZ (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 30 Apr 2019 03:42:25 -0400
-Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.phx2.redhat.com [10.5.11.14])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mx1.redhat.com (Postfix) with ESMTPS id CAFCB46202;
-        Tue, 30 Apr 2019 07:42:24 +0000 (UTC)
-Received: from localhost (unknown [10.43.2.51])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 389875DD6F;
-        Tue, 30 Apr 2019 07:42:22 +0000 (UTC)
-From:   Stanislaw Gruszka <sgruszka@redhat.com>
-To:     linux-wireless@vger.kernel.org
-Cc:     Felix Fietkau <nbd@nbd.name>,
-        Lorenzo Bianconi <lorenzo.bianconi@redhat.com>
-Subject: [PATCH] mt76: usb: use EP max packet aligned buffer sizes for rx
-Date:   Tue, 30 Apr 2019 09:42:19 +0200
-Message-Id: <20190430074219.8495-1-sgruszka@redhat.com>
+        id S1726333AbfEAKM5 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 1 May 2019 06:12:57 -0400
+Received: from mail-lj1-f194.google.com ([209.85.208.194]:34747 "EHLO
+        mail-lj1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726283AbfEAKMy (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Wed, 1 May 2019 06:12:54 -0400
+Received: by mail-lj1-f194.google.com with SMTP id s7so12421791ljh.1
+        for <linux-wireless@vger.kernel.org>; Wed, 01 May 2019 03:12:53 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:in-reply-to:references:date
+         :message-id:mime-version;
+        bh=ioGPC5F7kySeobmuzWBh6iE9/oKQDUZgPGo93PVH0jQ=;
+        b=BsGtiS2FoYo/0e7ORxkInfsqIs86JM1Gk9mceUNFZr38Ro+KoZwK0lYPmAsDH+xsti
+         emicngNgP/ExxddSBHvah/k0J0izVf/2g39RoXD73PGKqlsqGbe3Fm6EgpEcu/LYvCf6
+         2MNmtnsYrT6BJdPua2CUY63+eJCQeS5XsnNBgcMG7OT2YtQmbTpBs3yUJAPK+/ujjS82
+         uvc1mNRph5kaJZ41S+rfZms2owXLNQoo2jmgB+dBDzGbT8qxpIOqBSn+lQ5p9YAqA0+w
+         23Qfdrz2P/1L8oxKO0UwyB/CebHsdklyGvIIboCwr7DjeygFKU0Y6Qxbiofq02b+il8o
+         yBrA==
+X-Gm-Message-State: APjAAAWlryPxTCSnbkuYYysvPSdbGWunmk7R3Pnpf7acakWJqiMrAxpP
+        ZtO6DqJmvQfS9UtlC9aw3SiHTtZzY1c=
+X-Google-Smtp-Source: APXvYqzB5hQdBlAoZeR0itfmJnETBTWladOgJ+jZTG7V91oV82uNg5XMqc3KmWikaNDo0zoQ5XUosw==
+X-Received: by 2002:a2e:8ec5:: with SMTP id e5mr38849623ljl.7.1556705572672;
+        Wed, 01 May 2019 03:12:52 -0700 (PDT)
+Received: from alrua-x1.borgediget.toke.dk (alrua-x1.vpn.toke.dk. [2a00:7660:6da:10::2])
+        by smtp.gmail.com with ESMTPSA id z17sm7997581lja.26.2019.05.01.03.12.49
+        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
+        Wed, 01 May 2019 03:12:50 -0700 (PDT)
+Received: by alrua-x1.borgediget.toke.dk (Postfix, from userid 1000)
+        id 002071804A3; Tue, 30 Apr 2019 09:49:29 +0200 (CEST)
+From:   Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>
+To:     Erik Stromdahl <erik.stromdahl@gmail.com>,
+        johannes@sipsolutions.net, davem@davemloft.net,
+        linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org
+Cc:     Erik Stromdahl <erik.stromdahl@gmail.com>
+Subject: Re: [PATCH] mac80211: fix possible deadlock in TX path
+In-Reply-To: <20190427204155.14211-1-erik.stromdahl@gmail.com>
+References: <20190427204155.14211-1-erik.stromdahl@gmail.com>
+X-Clacks-Overhead: GNU Terry Pratchett
+Date:   Tue, 30 Apr 2019 09:49:29 +0200
+Message-ID: <87k1fcnd9y.fsf@toke.dk>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.14
-X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16 (mx1.redhat.com [10.5.110.29]); Tue, 30 Apr 2019 07:42:24 +0000 (UTC)
+Content-Type: text/plain
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-If buffer size is not usb_endpoint_maxp (512 or 1024 bytes) multiple,
-usb host driver has to use bounce buffer and copy data. For RX we can
-avoid that since we alreay allocate q->buf_size (2kB) buffers and
-mt76usb hardware will not fill more data as rx packet size is limited
-by network protocol. However add error message if this assumption
-somehow will be not true.
+Erik Stromdahl <erik.stromdahl@gmail.com> writes:
 
-Signed-off-by: Stanislaw Gruszka <sgruszka@redhat.com>
----
- drivers/net/wireless/mediatek/mt76/usb.c | 11 ++++++-----
- 1 file changed, 6 insertions(+), 5 deletions(-)
+> This patch fixes a possible deadlock when updating the TX statistics
+> (when calling into ieee80211_tx_stats()) from ieee80211_tx_dequeue().
 
-diff --git a/drivers/net/wireless/mediatek/mt76/usb.c b/drivers/net/wireless/mediatek/mt76/usb.c
-index c299c6591072..025e072cff28 100644
---- a/drivers/net/wireless/mediatek/mt76/usb.c
-+++ b/drivers/net/wireless/mediatek/mt76/usb.c
-@@ -286,7 +286,6 @@ static int
- mt76u_fill_rx_sg(struct mt76_dev *dev, struct mt76_queue *q, struct urb *urb,
- 		 int nsgs, gfp_t gfp)
- {
--	int sglen = SKB_WITH_OVERHEAD(q->buf_size);
- 	int i;
- 
- 	for (i = 0; i < nsgs; i++) {
-@@ -300,7 +299,7 @@ mt76u_fill_rx_sg(struct mt76_dev *dev, struct mt76_queue *q, struct urb *urb,
- 
- 		page = virt_to_head_page(data);
- 		offset = data - page_address(page);
--		sg_set_page(&urb->sg[i], page, sglen, offset);
-+		sg_set_page(&urb->sg[i], page, q->buf_size, offset);
- 	}
- 
- 	if (i < nsgs) {
-@@ -312,7 +311,7 @@ mt76u_fill_rx_sg(struct mt76_dev *dev, struct mt76_queue *q, struct urb *urb,
- 	}
- 
- 	urb->num_sgs = max_t(int, i, urb->num_sgs);
--	urb->transfer_buffer_length = urb->num_sgs * sglen,
-+	urb->transfer_buffer_length = urb->num_sgs * q->buf_size,
- 	sg_init_marker(urb->sg, urb->num_sgs);
- 
- 	return i ? : -ENOMEM;
-@@ -326,7 +325,7 @@ mt76u_refill_rx(struct mt76_dev *dev, struct urb *urb, int nsgs, gfp_t gfp)
- 	if (dev->usb.sg_en) {
- 		return mt76u_fill_rx_sg(dev, q, urb, nsgs, gfp);
- 	} else {
--		urb->transfer_buffer_length = SKB_WITH_OVERHEAD(q->buf_size);
-+		urb->transfer_buffer_length = q->buf_size;
- 		urb->transfer_buffer = page_frag_alloc(&q->rx_page,
- 						       q->buf_size, gfp);
- 		return urb->transfer_buffer ? 0 : -ENOMEM;
-@@ -447,8 +446,10 @@ mt76u_process_rx_entry(struct mt76_dev *dev, struct urb *urb)
- 		return 0;
- 
- 	data_len = min_t(int, len, data_len - MT_DMA_HDR_LEN);
--	if (MT_DMA_HDR_LEN + data_len > SKB_WITH_OVERHEAD(q->buf_size))
-+	if (MT_DMA_HDR_LEN + data_len > SKB_WITH_OVERHEAD(q->buf_size)) {
-+		dev_err(dev->dev, "rx data too big %d\n", data_len);
- 		return 0;
-+	}
- 
- 	skb = build_skb(data, q->buf_size);
- 	if (!skb)
--- 
-2.20.1
+So is this the fix for the issue with TX scheduling you reported
+earlier? :)
 
+-Toke
