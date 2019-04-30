@@ -2,88 +2,75 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 4A461FA35
-	for <lists+linux-wireless@lfdr.de>; Tue, 30 Apr 2019 15:27:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 008D3FADB
+	for <lists+linux-wireless@lfdr.de>; Tue, 30 Apr 2019 15:56:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728214AbfD3N1t (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 30 Apr 2019 09:27:49 -0400
-Received: from smtp.codeaurora.org ([198.145.29.96]:34846 "EHLO
-        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728201AbfD3NZe (ORCPT
+        id S1726436AbfD3Nz6 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 30 Apr 2019 09:55:58 -0400
+Received: from mailgw01.mediatek.com ([210.61.82.183]:36067 "EHLO
+        mailgw01.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
+        with ESMTP id S1725938AbfD3Nz5 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 30 Apr 2019 09:25:34 -0400
-Received: by smtp.codeaurora.org (Postfix, from userid 1000)
-        id 4E61960E7A; Tue, 30 Apr 2019 13:25:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1556630733;
-        bh=M3snicRDGK0OgZ0glnVBGEvcyeWdDYcxTrYt8Ih0giE=;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=CbDqAxYkcXXDndzgQX2f+0/M45q6gzfle9tfE6/JPlzFqw4EAl8iLmpAht5K4qe+p
-         UsesoEIng40GRg5AnenZK8y6C74AI0fUsqMHvhYw7zkuC2b16lDtCPuoYhiZk4apxF
-         NvOp9DMqZMFMnp9fxdRafkHXQ9NxaqjO4hCo+Hnw=
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        pdx-caf-mail.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.7 required=2.0 tests=ALL_TRUSTED,BAYES_00,
-        DKIM_INVALID,DKIM_SIGNED autolearn=no autolearn_force=no version=3.4.0
-Received: from purkki.adurom.net (purkki.adurom.net [80.68.90.206])
-        (using TLSv1.2 with cipher DHE-RSA-AES128-SHA (128/128 bits))
-        (No client certificate requested)
-        (Authenticated sender: kvalo@smtp.codeaurora.org)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 9BD8B60E7A;
-        Tue, 30 Apr 2019 13:25:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1556630732;
-        bh=M3snicRDGK0OgZ0glnVBGEvcyeWdDYcxTrYt8Ih0giE=;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=NUPMuK42KZvdxWF23xKi96JWXVPM47gk3914upFoA87icTndiACol98DjDITiFyzd
-         RF399SJ81EcX3vE0QW8qe9MOO3i/TMIs3/o6IS8fYAW1qRm8GtlsA5+t3yIxuHu9/8
-         Z35/Ur/1Dgo333UogTAyvM620PFhE80Ne0oZUojY=
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 9BD8B60E7A
-Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
-From:   Kalle Valo <kvalo@codeaurora.org>
-To:     Stanislaw Gruszka <sgruszka@redhat.com>
-Cc:     linux-wireless@vger.kernel.org,
-        Tomislav =?utf-8?Q?Po=C5=BEega?= <pozega.tomislav@gmail.com>,
-        Daniel Golle <daniel@makrotopia.org>,
-        Felix Fietkau <nbd@nbd.name>, Mathias Kresin <dev@kresin.me>
-Subject: Re: [RFC/RFT 7/7] rt2800: do not enable watchdog by default
-References: <1556535270-3551-1-git-send-email-sgruszka@redhat.com>
-        <1556535270-3551-8-git-send-email-sgruszka@redhat.com>
-Date:   Tue, 30 Apr 2019 16:25:29 +0300
-In-Reply-To: <1556535270-3551-8-git-send-email-sgruszka@redhat.com> (Stanislaw
-        Gruszka's message of "Mon, 29 Apr 2019 12:54:30 +0200")
-Message-ID: <87o94nwrp2.fsf@purkki.adurom.net>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/23.4 (gnu/linux)
+        Tue, 30 Apr 2019 09:55:57 -0400
+X-UUID: 22f4d06481c74227b1a782e889908a5d-20190430
+X-UUID: 22f4d06481c74227b1a782e889908a5d-20190430
+Received: from mtkmrs01.mediatek.inc [(172.21.131.159)] by mailgw01.mediatek.com
+        (envelope-from <ryder.lee@mediatek.com>)
+        (mhqrelay.mediatek.com ESMTP with TLS)
+        with ESMTP id 705396054; Tue, 30 Apr 2019 21:55:53 +0800
+Received: from mtkcas07.mediatek.inc (172.21.101.84) by
+ mtkmbs08n2.mediatek.inc (172.21.101.56) with Microsoft SMTP Server (TLS) id
+ 15.0.1395.4; Tue, 30 Apr 2019 21:55:50 +0800
+Received: from mtkslt306.mediatek.inc (10.21.14.136) by mtkcas07.mediatek.inc
+ (172.21.101.73) with Microsoft SMTP Server id 15.0.1395.4 via Frontend
+ Transport; Tue, 30 Apr 2019 21:55:50 +0800
+From:   Ryder Lee <ryder.lee@mediatek.com>
+To:     Lorenzo Bianconi <lorenzo.bianconi@redhat.com>,
+        Felix Fietkau <nbd@nbd.name>
+CC:     Roy Luo <royluo@google.com>, YF Luo <yf.luo@mediatek.com>,
+        Yiwei Chung <yiwei.chung@mediatek.com>,
+        Sean Wang <sean.wang@mediatek.com>,
+        <linux-wireless@vger.kernel.org>,
+        <linux-mediatek@lists.infradead.org>,
+        <linux-kernel@vger.kernel.org>, Ryder Lee <ryder.lee@mediatek.com>
+Subject: [PATCH v3] mt76: add TX/RX antenna pattern capabilities
+Date:   Tue, 30 Apr 2019 21:55:38 +0800
+Message-ID: <1e054441bab22ee28fdad597ca36d891500b4a66.1556624322.git.ryder.lee@mediatek.com>
+X-Mailer: git-send-email 2.18.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain
+X-TM-SNTS-SMTP: 773063FDE1F70878361AFD26064A2C2E185522FBBD99B1D7194B6634151CC7CF2000:8
+X-MTK:  N
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Stanislaw Gruszka <sgruszka@redhat.com> writes:
+Announce antenna pattern cap to adapt PHY and baseband settings.
 
-> Make watchdog disabled by default and add module parameter to enable it.
->
-> User will have to create file in /etc/modprobe.d/ with
->
-> options rt2800lib watchdog=1
->
-> to enable the watchdog or load "rt2800lib watchdog=1" module manually
-> before loading rt2800{soc,pci,usb} module.
->
-> Signed-off-by: Stanislaw Gruszka <sgruszka@redhat.com>
+Signed-off-by: Ryder Lee <ryder.lee@mediatek.com>
+---
+Changes since v3:
+- Move these flags to common code.
+Changes since v2:
+- Add a prefix mt76 in the title.
+---
+ drivers/net/wireless/mediatek/mt76/mac80211.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-[...]
-
-> +static bool modparam_watchdog;
-> +module_param_named(watchdog, modparam_watchdog, bool, S_IRUGO);
-> +MODULE_PARM_DESC(watchdog, "Enable watchdog.");
-
-You could describe a bit more what this watchdog does and that it's in
-driver (or at least I assume so).
-
+diff --git a/drivers/net/wireless/mediatek/mt76/mac80211.c b/drivers/net/wireless/mediatek/mt76/mac80211.c
+index 851caabbecda..26a336ef86c5 100644
+--- a/drivers/net/wireless/mediatek/mt76/mac80211.c
++++ b/drivers/net/wireless/mediatek/mt76/mac80211.c
+@@ -214,6 +214,8 @@ mt76_init_sband(struct mt76_dev *dev, struct mt76_sband *msband,
+ 	vht_cap->cap |= IEEE80211_VHT_CAP_RXLDPC |
+ 			IEEE80211_VHT_CAP_RXSTBC_1 |
+ 			IEEE80211_VHT_CAP_SHORT_GI_80 |
++			IEEE80211_VHT_CAP_RX_ANTENNA_PATTERN |
++			IEEE80211_VHT_CAP_TX_ANTENNA_PATTERN |
+ 			(3 << IEEE80211_VHT_CAP_MAX_A_MPDU_LENGTH_EXPONENT_SHIFT);
+ 
+ 	return 0;
 -- 
-Kalle Valo
+2.18.0
+
