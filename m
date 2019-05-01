@@ -2,117 +2,112 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 32F4A1040A
-	for <lists+linux-wireless@lfdr.de>; Wed,  1 May 2019 04:47:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F2E7A105B5
+	for <lists+linux-wireless@lfdr.de>; Wed,  1 May 2019 09:09:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726220AbfEACrC (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 30 Apr 2019 22:47:02 -0400
-Received: from mail-vs1-f48.google.com ([209.85.217.48]:46334 "EHLO
-        mail-vs1-f48.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726115AbfEACrC (ORCPT
+        id S1726019AbfEAHJl (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 1 May 2019 03:09:41 -0400
+Received: from smtp.codeaurora.org ([198.145.29.96]:33164 "EHLO
+        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726005AbfEAHJl (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 30 Apr 2019 22:47:02 -0400
-Received: by mail-vs1-f48.google.com with SMTP id e2so9205158vsc.13
-        for <linux-wireless@vger.kernel.org>; Tue, 30 Apr 2019 19:47:01 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=pX8e1uaSAA4ErzhFRH7yzsQJlW/zCaTmh6y+0TbR2MY=;
-        b=naLsYv+cPaMlirxwkT6sINHC/HhSJtsclKbMBmfscT9ifjD0d1rXH2blp0520eZ/Nm
-         Cpb1GpoDLH92GqW20NroZKcnYCrQhj4Y6I09q1rS1a7saHFnagR9Oi2w9xOA8vwD92F9
-         eCw73vIb/Q9tKneTJh9A4iz/tzVa/VHP5GN6VW3owTekA0I4gySu6PRzxmCV20GnQKmg
-         K+1zRD7DgIp6KgkNB8V5+aMIM6sHP+PY9vWfibJhnI0xR+yI7kpyeLifvm2DHJ3W//Fc
-         Aj27mj3Q+u6G1fn2J2uIVocoLS5tW3mnWgmov3VD8Phc0Ap26DrZzJ6d1OSO7pEmXf+f
-         ImTQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=pX8e1uaSAA4ErzhFRH7yzsQJlW/zCaTmh6y+0TbR2MY=;
-        b=LVzPsRGA2v+4BKKIHxlOGlHOTY6U673RAzIMA4jwgmBlJ18XOtzhHoWtShjzdsfnci
-         QxLiwRrZ4z0hy8l/3ZemTQuHfuMpxCA8yOVWsMtjInEfilIQ6kCgT5f0vpucg2EdukHK
-         gL6d/i901dogailshh3iGsB17N9np/nlZQcsCI8zifebE///pcnFOXzU7YfFlN2TG5kj
-         1mgrzDFt89Z3bnRr9Huk13Lew6GjPfDSLsYbm1JoFgNE77H+lGiESYXYc+1lKkrhA/Gb
-         Dm6FSxLvUMHUpi748kNrcTyWfiFD0uiQC+62mqoURp+Q3gAMhiaCuI0yOal3U796tEx+
-         iSlg==
-X-Gm-Message-State: APjAAAVd0Lidm0ODDPChP/AXTmtVx4nxyeCVUni8PMrZ0xSdwlpKlZCB
-        eqvwJiaOHHfzRvfhSvntUMAdEPuj63rfOvfx2A==
-X-Google-Smtp-Source: APXvYqwNVV3DZ79paFVFDTCLOUTUUNjsE+4ec9xfVjbNY5wqGroM0muYEr/80uHaUSNWCggppjU7j0xPDBJGW7VgClc=
-X-Received: by 2002:a67:c903:: with SMTP id w3mr548865vsk.62.1556678820854;
- Tue, 30 Apr 2019 19:47:00 -0700 (PDT)
+        Wed, 1 May 2019 03:09:41 -0400
+Received: by smtp.codeaurora.org (Postfix, from userid 1000)
+        id DBE5060A44; Wed,  1 May 2019 07:09:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
+        s=default; t=1556694579;
+        bh=fKxQwV17HEWHZyZ9KayURg2up7pJe+kFtkZokaywfEQ=;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+        b=DDWnhpKp6YyBYPqNMDN4R9hnQNuEcdctKLAUxgiRyd6ApRDBjLezpi1n5A1WR2nnd
+         Yq0ZCqW072SiC2xhvdppMdIEBgS6AH95wlrY0dfeAjY2TelKwNH1xprmQmSxf8vG1r
+         bqPb5k6GE8oXPoSerKGpCeSuySluSv7hr6DI68Ec=
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        pdx-caf-mail.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.7 required=2.0 tests=ALL_TRUSTED,BAYES_00,
+        DKIM_INVALID,DKIM_SIGNED autolearn=no autolearn_force=no version=3.4.0
+Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo@smtp.codeaurora.org)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id B12B9602F3;
+        Wed,  1 May 2019 07:09:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
+        s=default; t=1556694578;
+        bh=fKxQwV17HEWHZyZ9KayURg2up7pJe+kFtkZokaywfEQ=;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+        b=nL1sm5KT1aArpBLWYtFnOd9QPGB6tuJbBiMt7VVacE4fCW3wua6h5vg278hwL0vUb
+         Dy1/KqXi6Le9RLUY/Gl3p9t/wTQOJHO9/9qXHsI8bUASPYWpzUmIUMKzju2n7rvYMl
+         F8bjMGO06zDx4nAUyOYZeIfJ5DvXa6KUY/ZCmpwM=
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org B12B9602F3
+Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
+From:   Kalle Valo <kvalo@codeaurora.org>
+To:     Greg KH <gregkh@linuxfoundation.org>
+Cc:     Stanislaw Gruszka <sgruszka@redhat.com>, yhchuang@realtek.com,
+        linux-wireless@vger.kernel.org, johannes@sipsolutions.net,
+        pkshih@realtek.com, tehuang@realtek.com, Larry.Finger@lwfinger.net,
+        briannorris@chromium.org
+Subject: Re: [PATCH v9 00/14] rtw88: mac80211 driver for Realtek 802.11ac wireless network chips
+References: <1555653004-1795-1-git-send-email-yhchuang@realtek.com>
+        <87sgtzwtst.fsf@purkki.adurom.net> <20190430155808.GA3019@redhat.com>
+        <87v9yvo2y6.fsf@kamboji.qca.qualcomm.com>
+        <20190430174234.GA16336@kroah.com>
+Date:   Wed, 01 May 2019 10:09:34 +0300
+In-Reply-To: <20190430174234.GA16336@kroah.com> (Greg KH's message of "Tue, 30
+        Apr 2019 19:42:34 +0200")
+Message-ID: <87muk6odld.fsf@kamboji.qca.qualcomm.com>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
 MIME-Version: 1.0
-Reply-To: whiteheadm@acm.org
-From:   tedheadster <tedheadster@gmail.com>
-Date:   Tue, 30 Apr 2019 22:46:49 -0400
-Message-ID: <CAP8WD_bTvWWTeh6BP_qgByiuWLbSN==CTBY1KD-v8XpWZkf_Rw@mail.gmail.com>
-Subject: carl9170 crash
-To:     Christian Lamparter <chunkeey@googlemail.com>,
-        linux-wireless@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Christian,
-  I am getting this crash for the carl9170 in recent kernels, though I
-have not yet bisected it. It hangs the networking system completely
-(ifconfig -a never returns) and it prevents a reboot. I have to use
-sysrq-b to 'cleanly' reboot the system.
+Greg KH <gregkh@linuxfoundation.org> writes:
 
-I can apply and test any patches.
+> On Tue, Apr 30, 2019 at 07:47:13PM +0300, Kalle Valo wrote:
+>> Stanislaw Gruszka <sgruszka@redhat.com> writes:
+>> 
+>> > On Tue, Apr 30, 2019 at 03:40:02PM +0300, Kalle Valo wrote:
+>> >> > From: Yan-Hsuan Chuang <yhchuang@realtek.com>
+>> >> >
+>> >> > This is a new mac80211 driver for Realtek 802.11ac wireless network chips.
+>> >> > rtw88 now supports RTL8822BE/RTL8822CE now, with basic station mode
+>> >> > functionalities. The firmware for both can be found at linux-firmware.
+>> >> 
+>> >> This looks very good now. I did a quick review of the driver and had few
+>> >> netpicks but nothing really blocking applying this. So I have now
+>> >> combined these patches into one big patch and pushed it to the pending
+>> >> branch:
+>> >> 
+>> >> https://git.kernel.org/pub/scm/linux/kernel/git/kvalo/wireless-drivers-next.git/commit/?h=pending&id=284d1e4e3311cfe67c1c57ccc275ff0f5666aeea
+>> >> 
+>> >> I appreciate if people could do a quick check and make sure that I
+>> >> didn't do anything stupid when folding the patches.
+>> >
+>> > I've build pending branch and done few quick tests on Realtek
+>> > 8822CE device. Everything works ok.
+>> 
+>> Thanks so much for this, I now feel much more comfortable merging it :)
+>> 
+>> So this is manually applied to wireless-drivers-next:
+>> 
+>> e3037485c68e rtw88: new Realtek 802.11ac driver
+>> 
+>> And it should be in tomorrow's linux-next build, let's see what kind of
+>> reports we get. Greg, feel free to delete the corresponding staging
+>> driver from your tree (I forgot the name of the driver already).
+>
+> I'll be glad to do so if someone also tells me what the driver's name is
+> as well, I don't remember either :)
 
-usbcore: registered new interface driver carl9170
-usb 1-1: driver   API: 1.9.9 2016-02-15 [1-1]
-usb 1-1: firmware API: 1.9.6 2012-07-07
-ath: EEPROM regdomain: 0x3a
-ath: EEPROM indicates we should expect a direct regpair map
-ath: Country alpha2 being used: BM
-ath: Regpair used: 0x3a
-PREEMPT
-CPU: 0 PID: 44 Comm: kworker/0:2 Not tainted 5.1.0-rc7.pentiumii-laptop #1446
-Workqueue: events request_firmware_work_func
-EIP: nl80211_send_wiphy+0x558/0x1a58 [cfg80211]
-Code: 0f 85 73 02 00 00 80 7f 16 00 75 0c 80 7f 2c 00 0f 84 a4 00 00
-00 eb 6a 8d 47 19 ba 03 00 00 00 50 b9 10 00 00 00 8b 75 bc c9 <f0> e8
-2a ae 81 f8 5a cd c0 0f 85 5d 14 00 00 4d b7 4f 14 ba 04 00
-EAX: c891205d EBX: c4a76000 ECX: 00000010 EDX: 00000003
-ESI: c76fa5a0 EDI: c8912044 EBP: c036de14 ESP: c036ddd4
-DS: 007b ES: 007b FS: 0000 GS: 0000 SS: 0068 EFLAGS: 00010202
-CR0: 80050033 CR2: b716c540 CR3: 07618000 CR4: 00000290
-Call Trace:
- ? nl80211_notify_wiphy+0x52/0x84 [cfg80211]
- wiphy_register+0x303/0x624 [cfg80211]
- ? ieee80211_register_hw+0x325/0x94a [mac80211]
- ? __kmalloc+0x8c/0x9c
- ? ieee80211_cs_list_valid+0xb/0x31 [mac80211]
- ieee80211_register_hw+0x68f/0x94a [mac80211]
- ? ath_reg_apply_radar_flags.isra.4+0xb/0x62 [ath]
- ? ath_reg_apply_world_flags+0xa/0xba [ath]
- ? ath_regd_init+0xd8/0xec [ath]
- ? carl9170_op_bss_info_changed+0x16a/0x16a [carl9170]
- carl9170_register+0x1f5/0x36d [carl9170]
- ? carl9170_register+0x1f5/0x36d [carl9170]
- carl9170_usb_firmware_step2+0x226/0x251 [carl9170]
- request_firmware_work_func+0x2a/0x51
- process_one_work+0x134/0x260
- worker_thread+0x18b/0x24a
- kthread+0xcd/0xcf
- ? cancel_delayed_work_sync+0x14/0x14
- ? kthread_create_worker_on_cpu+0x1c/0x1c
- ret_from_fork+0x19/0x24
-Modules linked in: carl9170 mac80211 ath cfg80211 r8169 realtek libphy
-rfkill uhci_hcd ehci_pci ehci_hcd pcmcia usbcore i2c_piix4 i2c_core
-usb_common yenta_socket pcmcia_rsrc pcmcia_core autofs4
----[ end trace dbf0bc816dabbb51 ]---
-EIP: nl80211_send_wiphy+0x558/0x1a58 [cfg80211]
-Code: 0f 85 73 02 00 00 80 7f 16 00 75 0c 80 7f 2c 00 0f 84 a4 00 00
-00 eb 6a 8d 47 19 ba 03 00 00 00 50 b9 10 00 00 00 8b 75 bc c9 <f0> e8
-2a ae 81 f8 5a cd c0 0f 85 5d 14 00 00 4d b7 4f 14 ba 04 00
-EAX: c891205d EBX: c4a76000 ECX: 00000010 EDX: 00000003
-ESI: c76fa5a0 EDI: c8912044 EBP: c036de14 ESP: c15b02b8
-DS: 007b ES: 007b FS: 0000 GS: 0000 SS: 0068 EFLAGS: 00010202
-CR0: 80050033 CR2: b7271500 CR3: 0770f000 CR4: 00000290
-r8169 0000:06:00.0 enp6s0: Link is Up - 1Gbps/Full - flow control rx/tx
+I checked it now, the directory is drivers/staging/rtlwifi. Here's the
+commit adding the upstream driver, in case you need that in the commit
+log:
 
-- Matthew Whitehead
+https://git.kernel.org/pub/scm/linux/kernel/git/kvalo/wireless-drivers-next.git/commit/?id=e3037485c68ec1a299ff41160d8fedbd4abc29b9
+
+-- 
+Kalle Valo
