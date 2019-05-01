@@ -2,74 +2,137 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 582E3108EE
-	for <lists+linux-wireless@lfdr.de>; Wed,  1 May 2019 16:20:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1DA89109DF
+	for <lists+linux-wireless@lfdr.de>; Wed,  1 May 2019 17:16:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726512AbfEAOTw (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 1 May 2019 10:19:52 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:48450 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726165AbfEAOTw (ORCPT
+        id S1726851AbfEAPQf (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 1 May 2019 11:16:35 -0400
+Received: from gateway31.websitewelcome.com ([192.185.143.51]:39071 "EHLO
+        gateway31.websitewelcome.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726488AbfEAPQf (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 1 May 2019 10:19:52 -0400
-Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
-        by youngberry.canonical.com with esmtpsa (TLS1.0:RSA_AES_256_CBC_SHA1:32)
-        (Exim 4.76)
-        (envelope-from <colin.king@canonical.com>)
-        id 1hLq5J-000340-G4; Wed, 01 May 2019 14:19:45 +0000
-From:   Colin King <colin.king@canonical.com>
+        Wed, 1 May 2019 11:16:35 -0400
+Received: from cm10.websitewelcome.com (cm10.websitewelcome.com [100.42.49.4])
+        by gateway31.websitewelcome.com (Postfix) with ESMTP id C930A10FC4
+        for <linux-wireless@vger.kernel.org>; Wed,  1 May 2019 10:16:18 -0500 (CDT)
+Received: from gator4166.hostgator.com ([108.167.133.22])
+        by cmsmtp with SMTP
+        id Lqy2h2ahg2PzOLqy2hWTkz; Wed, 01 May 2019 10:16:18 -0500
+X-Authority-Reason: nr=8
+Received: from [189.250.119.203] (port=59360 helo=embeddedor)
+        by gator4166.hostgator.com with esmtpa (Exim 4.91)
+        (envelope-from <gustavo@embeddedor.com>)
+        id 1hLqy1-001KSh-O8; Wed, 01 May 2019 10:16:17 -0500
+Date:   Wed, 1 May 2019 10:16:15 -0500
+From:   "Gustavo A. R. Silva" <gustavo@embeddedor.com>
 To:     Yan-Hsuan Chuang <yhchuang@realtek.com>,
         Kalle Valo <kvalo@codeaurora.org>,
-        "David S . Miller" <davem@davemloft.net>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH][next] rtw88: fix shift of more than 32 bits of a integer
-Date:   Wed,  1 May 2019 15:19:45 +0100
-Message-Id: <20190501141945.22522-1-colin.king@canonical.com>
-X-Mailer: git-send-email 2.20.1
+        "David S. Miller" <davem@davemloft.net>
+Cc:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        "Gustavo A. R. Silva" <gustavo@embeddedor.com>,
+        Kees Cook <keescook@chromium.org>
+Subject: [PATCH][next] rtw88: phy: mark expected switch fall-throughs
+Message-ID: <20190501151615.GA18557@embeddedor>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+User-Agent: Mutt/1.9.4 (2018-02-28)
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - gator4166.hostgator.com
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - embeddedor.com
+X-BWhitelist: no
+X-Source-IP: 189.250.119.203
+X-Source-L: No
+X-Exim-ID: 1hLqy1-001KSh-O8
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
+X-Source-Sender: (embeddedor) [189.250.119.203]:59360
+X-Source-Auth: gustavo@embeddedor.com
+X-Email-Count: 4
+X-Source-Cap: Z3V6aWRpbmU7Z3V6aWRpbmU7Z2F0b3I0MTY2Lmhvc3RnYXRvci5jb20=
+X-Local-Domain: yes
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Colin Ian King <colin.king@canonical.com>
+In preparation to enabling -Wimplicit-fallthrough, mark switch
+cases where we are expecting to fall through.
 
-Currently the shift of an integer value more than 32 bits can
-occur when nss is more than 32.  Fix this by making the integer
-constants unsigned long longs before shifting and bit-wise or'ing
-with the u64 ra_mask to avoid the undefined shift behaviour.
+This patch fixes the following warnings:
 
-Addresses-Coverity: ("Bad shift operation")
-Fixes: e3037485c68e ("rtw88: new Realtek 802.11ac driver")
-Signed-off-by: Colin Ian King <colin.king@canonical.com>
+drivers/net/wireless/realtek/rtw88/phy.c: In function ‘rtw_get_channel_group’:
+./include/linux/compiler.h:77:22: warning: this statement may fall through [-Wimplicit-fallthrough=]
+ # define unlikely(x) __builtin_expect(!!(x), 0)
+                      ^~~~~~~~~~~~~~~~~~~~~~~~~~
+./include/asm-generic/bug.h:125:2: note: in expansion of macro ‘unlikely’
+  unlikely(__ret_warn_on);     \
+  ^~~~~~~~
+drivers/net/wireless/realtek/rtw88/phy.c:907:3: note: in expansion of macro ‘WARN_ON’
+   WARN_ON(1);
+   ^~~~~~~
+drivers/net/wireless/realtek/rtw88/phy.c:908:2: note: here
+  case 1:
+  ^~~~
+In file included from ./include/linux/bcd.h:5,
+                 from drivers/net/wireless/realtek/rtw88/phy.c:5:
+drivers/net/wireless/realtek/rtw88/phy.c: In function ‘phy_get_2g_tx_power_index’:
+./include/linux/compiler.h:77:22: warning: this statement may fall through [-Wimplicit-fallthrough=]
+ # define unlikely(x) __builtin_expect(!!(x), 0)
+                      ^~~~~~~~~~~~~~~~~~~~~~~~~~
+./include/asm-generic/bug.h:125:2: note: in expansion of macro ‘unlikely’
+  unlikely(__ret_warn_on);     \
+  ^~~~~~~~
+drivers/net/wireless/realtek/rtw88/phy.c:1021:3: note: in expansion of macro ‘WARN_ON’
+   WARN_ON(1);
+   ^~~~~~~
+drivers/net/wireless/realtek/rtw88/phy.c:1022:2: note: here
+  case RTW_CHANNEL_WIDTH_20:
+  ^~~~
+
+Warning level 3 was used: -Wimplicit-fallthrough=3
+
+This patch is part of the ongoing efforts to enable
+-Wimplicit-fallthrough.
+
+Signed-off-by: Gustavo A. R. Silva <gustavo@embeddedor.com>
 ---
- drivers/net/wireless/realtek/rtw88/main.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/net/wireless/realtek/rtw88/phy.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/net/wireless/realtek/rtw88/main.c b/drivers/net/wireless/realtek/rtw88/main.c
-index 9893e5e297e3..6304082361a7 100644
---- a/drivers/net/wireless/realtek/rtw88/main.c
-+++ b/drivers/net/wireless/realtek/rtw88/main.c
-@@ -363,13 +363,13 @@ static u64 get_vht_ra_mask(struct ieee80211_sta *sta)
- 		vht_mcs_cap = mcs_map & 0x3;
- 		switch (vht_mcs_cap) {
- 		case 2: /* MCS9 */
--			ra_mask |= 0x3ff << nss;
-+			ra_mask |= 0x3ffULL << nss;
- 			break;
- 		case 1: /* MCS8 */
--			ra_mask |= 0x1ff << nss;
-+			ra_mask |= 0x1ffULL << nss;
- 			break;
- 		case 0: /* MCS7 */
--			ra_mask |= 0x0ff << nss;
-+			ra_mask |= 0x0ffULL << nss;
- 			break;
- 		default:
- 			break;
+diff --git a/drivers/net/wireless/realtek/rtw88/phy.c b/drivers/net/wireless/realtek/rtw88/phy.c
+index 35a35dbca85f..4381b360b5b5 100644
+--- a/drivers/net/wireless/realtek/rtw88/phy.c
++++ b/drivers/net/wireless/realtek/rtw88/phy.c
+@@ -905,6 +905,7 @@ static u8 rtw_get_channel_group(u8 channel)
+ 	switch (channel) {
+ 	default:
+ 		WARN_ON(1);
++		/* fall through */
+ 	case 1:
+ 	case 2:
+ 	case 36:
+@@ -1019,6 +1020,7 @@ static u8 phy_get_2g_tx_power_index(struct rtw_dev *rtwdev,
+ 	switch (bandwidth) {
+ 	default:
+ 		WARN_ON(1);
++		/* fall through */
+ 	case RTW_CHANNEL_WIDTH_20:
+ 		tx_power += pwr_idx_2g->ht_1s_diff.bw20 * factor;
+ 		if (above_2ss)
+@@ -1062,6 +1064,7 @@ static u8 phy_get_5g_tx_power_index(struct rtw_dev *rtwdev,
+ 	switch (bandwidth) {
+ 	default:
+ 		WARN_ON(1);
++		/* fall through */
+ 	case RTW_CHANNEL_WIDTH_20:
+ 		tx_power += pwr_idx_5g->ht_1s_diff.bw20 * factor;
+ 		if (above_2ss)
 -- 
-2.20.1
+2.21.0
 
