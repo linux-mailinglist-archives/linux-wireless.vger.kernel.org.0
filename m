@@ -2,124 +2,112 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E0F4E10DC4
-	for <lists+linux-wireless@lfdr.de>; Wed,  1 May 2019 22:09:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 242A410DE6
+	for <lists+linux-wireless@lfdr.de>; Wed,  1 May 2019 22:22:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726115AbfEAUJn (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 1 May 2019 16:09:43 -0400
-Received: from mail-ot1-f68.google.com ([209.85.210.68]:42793 "EHLO
-        mail-ot1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726077AbfEAUJn (ORCPT
+        id S1726253AbfEAUWC (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 1 May 2019 16:22:02 -0400
+Received: from mail-ot1-f67.google.com ([209.85.210.67]:39183 "EHLO
+        mail-ot1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726096AbfEAUWC (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 1 May 2019 16:09:43 -0400
-Received: by mail-ot1-f68.google.com with SMTP id f23so66504otl.9
-        for <linux-wireless@vger.kernel.org>; Wed, 01 May 2019 13:09:43 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=sender:subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=yg+6lmU7DoPv4P+NYEkJociN1O4zrJvaxxRKLQK1hP0=;
-        b=ewMw6IXqQxmzJyZkLEFKnPuwFWaLiXt1toNT/dPwFQkgiGhch2HGPn0glgbJl08KK4
-         mee64aEA6FdK/K2tmObq9tz1I1j7DmSpMReqiL3x8Re04jgfeNUtXz1CeREnaJ6vJchg
-         sH3PVk+pRHcyyAFuzA+2QmOk6fzXQemlhR+Vkwi7dFpVip0o+hLAr9KpJNbzqLN8d9c0
-         PiQ3wpwFOrw27ayDdbJvvDpSvUrSZb4KJrAv68PDT3a0rXyV/u1ejNeyDJxmxngehd1v
-         sZ/Uslf7C5H63u8n3EdV8TOtQwgmSZ+bC1jvti96UCY31X0Gfs/4l+KhA8lUVdqUmvQV
-         7QVA==
+        Wed, 1 May 2019 16:22:02 -0400
+Received: by mail-ot1-f67.google.com with SMTP id o39so109498ota.6;
+        Wed, 01 May 2019 13:22:01 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:sender:subject:to:cc:references:from:message-id
-         :date:user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=yg+6lmU7DoPv4P+NYEkJociN1O4zrJvaxxRKLQK1hP0=;
-        b=VEorE7sSVndqt5vZYr4VZjAIRQ1mOjHHTduQyVi4I5UmQdw84fnzY+Zd0kG9pLeUxz
-         gVDHDWdXDITO6J1D7jLWrp9sxEtbGr8RsrM1Gi6xnr/dFpAPhtdMw4uiXJY1/XpCOcqZ
-         gY8y5ELt4CD9L0lFYojRkJjADkmzpiTs/bGmj52aYQ8JcStpGzy41qAT3uZv+KKKmPJV
-         UxusJZGtTOY4b8crdEZK3jra7YdX4ZVa9Gq0JdUqZJpHFmRBe2qC8yg0YgkoTanJAezU
-         5sDT8Qk8Q2sPJilUvl0kleDYKic++oBffL6DHG3rf5DzWeOlfiHmY4UuUcESn68lM0og
-         /IUQ==
-X-Gm-Message-State: APjAAAWPszc2ddc6+3PEOiTstgXeMOKfRhotHScLOQ+0ATAWKEk2vMLU
-        mChsnJSu8rE3fzIqdOM7iEEVvum0
-X-Google-Smtp-Source: APXvYqz6Nc9G6OYDJyh9RAStxWv59Xa5SMaEy089qgxIMF8kDunFAwdrbd8pdn/jjGP6o15IQRQ4mQ==
-X-Received: by 2002:a9d:550e:: with SMTP id l14mr6063693oth.369.1556741382789;
-        Wed, 01 May 2019 13:09:42 -0700 (PDT)
-Received: from [192.168.1.112] (cpe-24-31-245-230.kc.res.rr.com. [24.31.245.230])
-        by smtp.gmail.com with ESMTPSA id e133sm17528009oif.44.2019.05.01.13.09.41
-        (version=TLS1_3 cipher=AEAD-AES128-GCM-SHA256 bits=128/128);
-        Wed, 01 May 2019 13:09:41 -0700 (PDT)
-Subject: Re: [PATCH v9 04/14] rtw88: trx files
-To:     Kalle Valo <kvalo@codeaurora.org>
-Cc:     yhchuang@realtek.com, linux-wireless@vger.kernel.org,
-        johannes@sipsolutions.net, pkshih@realtek.com, tehuang@realtek.com,
-        sgruszka@redhat.com, briannorris@chromium.org,
-        gregkh@linuxfoundation.org
-References: <1555653004-1795-1-git-send-email-yhchuang@realtek.com>
- <1555653004-1795-5-git-send-email-yhchuang@realtek.com>
- <87bm0npsp7.fsf@kamboji.qca.qualcomm.com>
- <04c534eb-af32-adfc-62bb-90d83526af1a@lwfinger.net>
- <87a7g6ni31.fsf@kamboji.qca.qualcomm.com>
-From:   Larry Finger <Larry.Finger@lwfinger.net>
-Message-ID: <7a03880d-0fe9-0fdb-7df9-18560ac000c2@lwfinger.net>
-Date:   Wed, 1 May 2019 15:09:39 -0500
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.6.1
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:content-transfer-encoding
+         :in-reply-to:user-agent;
+        bh=j6+33T0eQYv+IRslxaB17BzPQR0ZaM4rayHxbAHslak=;
+        b=RE6QiWOQgI6pN7NXiR369Zc17nr6DSuJ+8WpLwe9HKX90iyJN3ZF/LZKuGuN5WX+OT
+         mbyQ3IY/oE9sMAKNVibyhoYcDh43raPXJjnio8waBjPMRAFp6mmftR/ELP0LMm8ZE4U2
+         HX3EMy9v/wYPmdA/JDgDBs81N4C0G4bET98BHO0/HrY36iLRDavO80l9UrsPRa4wbYBi
+         974N3+L8n8iuG4KTGffGiRvRQIMkDOWVhZFa1aPJmYzK5+ZXvTuh0JETya+9IR7AMCns
+         i+3etzKo9Cxo3sQYHdeigUcEG7xv05ClqArwQ5eHmSVjlE7t/a4Sp312u3NresQezP8n
+         AksA==
+X-Gm-Message-State: APjAAAU1ajGQxBVV1GNN8Al3jvWv9JDZ1pg/M+xqvlZGRmIO4eIIwgcO
+        OcvIkxxVuHZfCHIjSwj71Q==
+X-Google-Smtp-Source: APXvYqwBsg5utWlEXRbe3QYD7lyCysBSGwYTazCLxVYMMvMP+E5wWbFBBWdUCspop11+hVf0xHJhqQ==
+X-Received: by 2002:a9d:3624:: with SMTP id w33mr19027211otb.284.1556742121379;
+        Wed, 01 May 2019 13:22:01 -0700 (PDT)
+Received: from localhost (24-155-109-49.dyn.grandenetworks.net. [24.155.109.49])
+        by smtp.gmail.com with ESMTPSA id c26sm2891416otl.19.2019.05.01.13.22.00
+        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
+        Wed, 01 May 2019 13:22:00 -0700 (PDT)
+Date:   Wed, 1 May 2019 15:22:00 -0500
+From:   Rob Herring <robh@kernel.org>
+To:     Andrew Lunn <andrew@lunn.ch>
+Cc:     Petr =?utf-8?Q?=C5=A0tetiar?= <ynezz@true.cz>,
+        netdev@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        "David S. Miller" <davem@davemloft.net>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Vivien Didelot <vivien.didelot@gmail.com>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        Yisen Zhuang <yisen.zhuang@huawei.com>,
+        Salil Mehta <salil.mehta@huawei.com>,
+        Woojung Huh <woojung.huh@microchip.com>,
+        Microchip Linux Driver Support <UNGLinuxDriver@microchip.com>,
+        Kunihiko Hayashi <hayashi.kunihiko@socionext.com>,
+        Masahiro Yamada <yamada.masahiro@socionext.com>,
+        Jassi Brar <jaswinder.singh@linaro.org>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        Heiner Kallweit <hkallweit1@gmail.com>,
+        Frank Rowand <frowand.list@gmail.com>,
+        Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
+        Maxime Ripard <maxime.ripard@bootlin.com>,
+        Alban Bedel <albeu@free.fr>,
+        linux-arm-kernel@lists.infradead.org,
+        linux-wireless@vger.kernel.org, linux-mediatek@lists.infradead.org
+Subject: Re: [PATCH v2 2/4] dt-bindings: doc: Reflect new NVMEM
+ of_get_mac_address behaviour
+Message-ID: <20190501202200.GB15495@bogus>
+References: <1556456002-13430-1-git-send-email-ynezz@true.cz>
+ <1556456002-13430-3-git-send-email-ynezz@true.cz>
+ <20190428165326.GI23059@lunn.ch>
 MIME-Version: 1.0
-In-Reply-To: <87a7g6ni31.fsf@kamboji.qca.qualcomm.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20190428165326.GI23059@lunn.ch>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 5/1/19 1:30 PM, Kalle Valo wrote:
-> Larry Finger <Larry.Finger@lwfinger.net> writes:
+On Sun, Apr 28, 2019 at 06:53:26PM +0200, Andrew Lunn wrote:
+> On Sun, Apr 28, 2019 at 02:53:20PM +0200, Petr Štetiar wrote:
+> > As of_get_mac_address now supports NVMEM under the hood, we need to update
+> > the bindings documentation with the new nvmem-cell* properties, which would
+> > mean copy&pasting a lot of redundant information to every binding
+> > documentation currently referencing some of the MAC address properties.
+> > 
+> > So I've just removed all the references to the optional MAC address
+> > properties and replaced them with the reference to the net/ethernet.txt
+> > file.  While at it, I've also removed other optional Ethernet properties.
 > 
->> On 4/30/19 7:45 AM, Kalle Valo wrote:
->>> I'm not really fond of these "byte macros" or whatever they should be
->>> called, you use these a lot in rtw88 but I have seen the same usage also
->>> other drivers. The upstream way of doing this is to create a struct,
->>> which also acts as a documentation, and you can pass it around different
->>> functions. And the GENMASK()s are defined close the struct.
->>>
->>> Also you could change these defines to static inline functions, which
->>> take the struct as a pointer, and that you get type checking from the
->>> compiler. And that way you would get rid of that ugly casting as well.
->>
->> Kalle,
->>
->> I have never been a fan of those complicated macros dating back to the
->> day that I had to make them endian correct. Without Sparse, I never
->> would have made it.
->>
->> I understand your comment about making them be static inline
->> functions, but I am intrigued be the struct method. Is there something
->> other than bit field constructions that could accomplish this?
+> Hi Petr
 > 
-> My comment was about handling firmware commands and events as a byte
-> array, not about bitfields. So that instead of accessing 'index + 1' and
-> 'index + 4' you should create a proper struct for the command and access
-> it using 'cmd->foo' and 'cmd->bar'. Sure, bitfields you still need to
-> access using FIELD_GET() or similar but having a struct for commands is
-> a lot cleaner approach. And most upstream drivers do this: ath10k,
-> ath6kl, iwlwifi, p54 and whatnot.
+> I think each individual binding needs to give a hint if
+> of_get_mac_address() is used, and hence if these optional properties
+> are respected. The same is true for other optional properties. I don't
+> want to have to look at the driver to know which optional properties
+> are implemented, the binding should tell me. What the optional
+> properties mean, and which order they are used in can then be defined
+> in ethernet.txt.
 > 
-> Sorry, no time now to explain further now but, if needed, I can provide
-> a better example tomorrow.
+> So i would suggests something like:
 > 
->> If not, then this method would be very difficult to implement. My
->> basis is an E-mail by Linus that said it was almost impossible to get
->> this type of construct to be endian correct. If he thinks it is
->> difficult, then I know not to tackle it. :)
+> The MAC address will be determined using the optional properties
+> defined in ethernet.txt.
 > 
-> Could you please point Linus' email about this? I would like to
-> understand more, I didn't understand your comment.
-> 
+> And leave all the other optional parameters in the bindings.
 
-Do not worry about giving a further answer. I'll read those other drivers and 
-figure out what they are doing.
+Yes. Generally we need to know which properties from a common pool of 
+properties apply to a specific binding. Also there are typically 
+additional constraints for a specific binding.
 
-The email exchange I saw was at https://yarchive.net/comp/linux/bitfields.html.
-
-Larry
-
+Rob
