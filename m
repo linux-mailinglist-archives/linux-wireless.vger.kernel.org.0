@@ -2,34 +2,34 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 3501A10AAB
-	for <lists+linux-wireless@lfdr.de>; Wed,  1 May 2019 18:08:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7C91B10AAF
+	for <lists+linux-wireless@lfdr.de>; Wed,  1 May 2019 18:08:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726861AbfEAQH6 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 1 May 2019 12:07:58 -0400
-Received: from mail.kernel.org ([198.145.29.99]:36860 "EHLO mail.kernel.org"
+        id S1726881AbfEAQH7 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 1 May 2019 12:07:59 -0400
+Received: from mail.kernel.org ([198.145.29.99]:36896 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726434AbfEAQH5 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 1 May 2019 12:07:57 -0400
+        id S1726434AbfEAQH6 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Wed, 1 May 2019 12:07:58 -0400
 Received: from localhost.localdomain (unknown [151.66.22.155])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 49B692089E;
-        Wed,  1 May 2019 16:07:55 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id CAEC5208C3;
+        Wed,  1 May 2019 16:07:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1556726876;
-        bh=VXGlsnK365Pze5kSDL1F8G/SpDI7dNhXK+MWr0EEydU=;
+        s=default; t=1556726877;
+        bh=y6zwq5TmNpkmP0Fjp1KhxhPVexi9KgxZXbLVfd6RL1A=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=uwocpfm8feFiMXK2NgoEteTp9x8QdCEYI5++JHjgNAnCYYWPxU0bzfcd15eOSngf1
-         qXM8zBP1XTpF41YMBNPYWU1BrIAdgt0GZ4DgB5fgB3GcY+c758YpOuvIhqnBzushAS
-         5ZY8wqYDq+bCpi6+8l6P0I1IWuuRE2w345YTyxr4=
+        b=1vhNRIud6wifd+uGh9Ogyx0EGt7onzkwI4NSXnb0up0T9MD/1yRbe68OppB7G8WW6
+         C/CUjeACE8oltnpXmheOU1uql7eKSfvbbCdxP1sHc+2Kv6PR1THWUtRS5McUKGmo1+
+         n+KIeEPYI8R5bSu1iolgOk28m9oG+LFwSuCAhVhY=
 From:   Lorenzo Bianconi <lorenzo@kernel.org>
 To:     nbd@nbd.name
 Cc:     lorenzo.bianconi@redhat.com, linux-wireless@vger.kernel.org,
         ryder.lee@mediatek.com, royluo@google.com
-Subject: [RFC 03/17] mt7615: mcu: remove bss_info_convert_vif_type routine
-Date:   Wed,  1 May 2019 18:07:25 +0200
-Message-Id: <b68f31656afcf4f87fdb74c9556549890352fd77.1556726268.git.lorenzo@kernel.org>
+Subject: [RFC 04/17] mt7615: mcu: use proper msg size in mt7615_mcu_add_wtbl_bmc
+Date:   Wed,  1 May 2019 18:07:26 +0200
+Message-Id: <a5cc7b351c26d6f4f00fc66b580c188e2f339e65.1556726268.git.lorenzo@kernel.org>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <cover.1556726268.git.lorenzo@kernel.org>
 References: <cover.1556726268.git.lorenzo@kernel.org>
@@ -40,114 +40,82 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Remove bss_info_convert_vif_type routine since it is run just in
-mt7615_mcu_set_bss_info and the switch over vif->type is already there.
-Simplify mt7615_mcu_set_bss_info routine
+Use proper mcu message size in mt7615_mcu_add_wtbl_bmc and do not
+allocate a huge buffer. Moreover use stack memory instead of heap one
 
 Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
 ---
- .../net/wireless/mediatek/mt76/mt7615/mcu.c   | 73 +++++++------------
- 1 file changed, 27 insertions(+), 46 deletions(-)
+ .../net/wireless/mediatek/mt76/mt7615/mcu.c   | 54 +++++++++----------
+ 1 file changed, 24 insertions(+), 30 deletions(-)
 
 diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c
-index d3ec3ea8be43..c79df00a6da6 100644
+index c79df00a6da6..8c76274fd79b 100644
 --- a/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c
 +++ b/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c
-@@ -842,39 +842,28 @@ static int __mt7615_mcu_set_bss_info(struct mt7615_dev *dev,
- 				   MCU_Q_SET, MCU_S2D_H2N, NULL);
+@@ -987,39 +987,33 @@ int mt7615_mcu_set_wtbl_key(struct mt7615_dev *dev, int wcid,
+ 				     &wtbl_sec_key, buf_len);
  }
  
--static void bss_info_convert_vif_type(enum nl80211_iftype type,
--				      u32 *network_type, u32 *conn_type)
--{
--	switch (type) {
--	case NL80211_IFTYPE_AP:
--		if (network_type)
--			*network_type = NETWORK_INFRA;
--		if (conn_type)
--			*conn_type = CONNECTION_INFRA_AP;
--		break;
--	case NL80211_IFTYPE_STATION:
--		if (network_type)
--			*network_type = NETWORK_INFRA;
--		if (conn_type)
--			*conn_type = CONNECTION_INFRA_STA;
--		break;
--	default:
--		WARN_ON(1);
--		break;
--	};
--}
--
--int mt7615_mcu_set_bss_info(struct mt7615_dev *dev, struct ieee80211_vif *vif,
--			    int en)
-+int mt7615_mcu_set_bss_info(struct mt7615_dev *dev,
-+			    struct ieee80211_vif *vif, int en)
+-int mt7615_mcu_add_wtbl_bmc(struct mt7615_dev *dev, struct ieee80211_vif *vif)
++int mt7615_mcu_add_wtbl_bmc(struct mt7615_dev *dev,
++			    struct ieee80211_vif *vif)
  {
  	struct mt7615_vif *mvif = (struct mt7615_vif *)vif->drv_priv;
--	struct bss_info bss_info = {0};
--	u8 bmc_tx_wlan_idx = 0;
--	u32 network_type = 0, conn_type = 0;
-+	struct bss_info bss_info = {
-+		.bss_idx = mvif->idx,
-+		.omac_idx = mvif->omac_idx,
-+		.band_idx = mvif->band_idx,
-+		.bcn_interval = vif->bss_conf.beacon_int,
-+		.dtim_period = vif->bss_conf.dtim_period,
-+		.enable = en,
-+		.feature = BIT(BSS_INFO_BASIC),
-+		.wmm_idx = mvif->wmm_idx,
+-	struct wtbl_generic *wtbl_generic;
+-	struct wtbl_rx *wtbl_rx;
+-	int buf_len, ret;
+-	u8 *buf;
+-
+-	buf = kzalloc(MT7615_WTBL_UPDATE_MAX_SIZE, GFP_KERNEL);
+-	if (!buf)
+-		return -ENOMEM;
+-
+-	wtbl_generic = (struct wtbl_generic *)buf;
+-	buf_len = sizeof(*wtbl_generic);
+-	wtbl_generic->tag = cpu_to_le16(WTBL_GENERIC);
+-	wtbl_generic->len = cpu_to_le16(buf_len);
+-	eth_broadcast_addr(wtbl_generic->peer_addr);
+-	wtbl_generic->muar_idx = 0xe;
+-
+-	wtbl_rx = (struct wtbl_rx *)(buf + buf_len);
+-	buf_len += sizeof(*wtbl_rx);
+-	wtbl_rx->tag = cpu_to_le16(WTBL_RX);
+-	wtbl_rx->len = cpu_to_le16(sizeof(*wtbl_rx));
+-	wtbl_rx->rca1 = 1;
+-	wtbl_rx->rca2 = 1;
+-	wtbl_rx->rv = 1;
+-
+-	ret = __mt7615_mcu_set_wtbl(dev, mvif->sta.wcid.idx,
+-				    WTBL_RESET_AND_SET, 2, buf,
+-				    buf_len);
++	struct {
++		struct wtbl_generic g_wtbl;
++		struct wtbl_rx rx_wtbl;
++	} data = {
++		.g_wtbl = {
++			.tag = cpu_to_le16(WTBL_GENERIC),
++			.len = cpu_to_le16(sizeof(struct wtbl_generic)),
++			.muar_idx = 0xe,
++		},
++		.rx_wtbl = {
++			.tag = cpu_to_le16(WTBL_RX),
++			.len = cpu_to_le16(sizeof(struct wtbl_rx)),
++			.rca1 = 1,
++			.rca2 = 1,
++			.rv = 1,
++		},
 +	};
++	eth_broadcast_addr(data.g_wtbl.peer_addr);
  
--	if (vif->type == NL80211_IFTYPE_AP) {
--		bmc_tx_wlan_idx = mvif->sta.wcid.idx;
--	} else if (vif->type == NL80211_IFTYPE_STATION) {
-+	switch (vif->type) {
-+	case NL80211_IFTYPE_AP:
-+		bss_info.bmc_tx_wlan_idx = mvif->sta.wcid.idx;
-+		bss_info.network_type = NETWORK_INFRA;
-+		bss_info.conn_type = CONNECTION_INFRA_AP;
-+		break;
-+	case NL80211_IFTYPE_STATION: {
- 		/* find the unicast entry for sta mode bmc tx */
- 		struct ieee80211_sta *ap_sta;
- 		struct mt7615_sta *msta;
-@@ -888,27 +877,19 @@ int mt7615_mcu_set_bss_info(struct mt7615_dev *dev, struct ieee80211_vif *vif,
- 		}
+-	kfree(buf);
+-	return ret;
++	return __mt7615_mcu_set_wtbl(dev, mvif->sta.wcid.idx,
++				     WTBL_RESET_AND_SET, 2, &data,
++				     sizeof(struct wtbl_generic) +
++				     sizeof(struct wtbl_rx));
+ }
  
- 		msta = (struct mt7615_sta *)ap_sta->drv_priv;
--		bmc_tx_wlan_idx = msta->wcid.idx;
-+		bss_info.bmc_tx_wlan_idx = msta->wcid.idx;
-+		bss_info.network_type = NETWORK_INFRA;
-+		bss_info.conn_type = CONNECTION_INFRA_STA;
- 
- 		rcu_read_unlock();
--	} else {
-+		break;
-+	}
-+	default:
- 		WARN_ON(1);
-+		break;
- 	}
--
--	bss_info_convert_vif_type(vif->type, &network_type, &conn_type);
--
--	bss_info.bss_idx = mvif->idx;
- 	memcpy(bss_info.bssid, vif->bss_conf.bssid, ETH_ALEN);
--	bss_info.omac_idx = mvif->omac_idx;
--	bss_info.band_idx = mvif->band_idx;
--	bss_info.bmc_tx_wlan_idx = bmc_tx_wlan_idx;
--	bss_info.wmm_idx = mvif->wmm_idx;
--	bss_info.network_type = network_type;
--	bss_info.conn_type = conn_type;
--	bss_info.bcn_interval = vif->bss_conf.beacon_int;
--	bss_info.dtim_period = vif->bss_conf.dtim_period;
--	bss_info.enable = en;
--	bss_info.feature = BIT(BSS_INFO_BASIC);
-+
- 	if (en) {
- 		bss_info.feature |= BIT(BSS_INFO_OMAC);
- 		if (mvif->omac_idx > EXT_BSSID_START)
+ int mt7615_mcu_del_wtbl_bmc(struct mt7615_dev *dev, struct ieee80211_vif *vif)
 -- 
 2.20.1
 
