@@ -2,88 +2,194 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 689FF10759
-	for <lists+linux-wireless@lfdr.de>; Wed,  1 May 2019 13:07:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7174A10810
+	for <lists+linux-wireless@lfdr.de>; Wed,  1 May 2019 14:55:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726133AbfEALGw (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 1 May 2019 07:06:52 -0400
-Received: from mail-lj1-f196.google.com ([209.85.208.196]:44720 "EHLO
-        mail-lj1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726052AbfEALGv (ORCPT
+        id S1726413AbfEAMzp (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 1 May 2019 08:55:45 -0400
+Received: from mail-pf1-f195.google.com ([209.85.210.195]:44098 "EHLO
+        mail-pf1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725971AbfEAMzp (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 1 May 2019 07:06:51 -0400
-Received: by mail-lj1-f196.google.com with SMTP id c6so8714124lji.11;
-        Wed, 01 May 2019 04:06:50 -0700 (PDT)
+        Wed, 1 May 2019 08:55:45 -0400
+Received: by mail-pf1-f195.google.com with SMTP id y13so8560346pfm.11
+        for <linux-wireless@vger.kernel.org>; Wed, 01 May 2019 05:55:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=subject:to:references:from:message-id:date:user-agent:mime-version
-         :in-reply-to:content-language:content-transfer-encoding;
-        bh=eIL682wGpUi32jDyHiv4YP0KGP3S+mHvqENB0UUgtyM=;
-        b=oMhj4EduRZ42J8NPXviNtYfkZPKJ7YbpNc8WdBcU+riYH67W3DL8sqJ49n2S+/EmAQ
-         13xl3uHh+fvqWwa2DdGBgOJkueJbtzz2oP8uHPafT/zQz6OYx2Zue0zIj7kbVJb5cOOU
-         wYFiR566eev3SMFLDVZxA7s+VUZb+K/dTv7DfdN97ZT4IgWxwjgdJW70f+da00Q5uzSH
-         12tBV1OpOiRcgIr5vKBoILgKSJy0Ndf/SisB79kjzGV9Fco+7ehK4StyWr0YpDhrLRWj
-         n6UtVgSExg2R17BXUTrA6NH6TpuiBUUoSVbSy8DMiShHJ+aaOlyEAWn9ta2CVzbn9xx9
-         lNOQ==
+        h=from:to:cc:subject:date:message-id;
+        bh=ztr+lm+w1vKwvmd9OCos0r4TpayaTlwKubRQibiS3/A=;
+        b=uxM6YV0/WtZsXLH9c7mICF+sMe+VfRJljr6bbLibkT0mzaxt1rinJvsUR4FGvfn51s
+         /b4ciq3mTI8YXDaIgNqK4iz5hxPopKQnG/Vv+5PTNUI5Jgf+OBdSJDEmT917ubsMh/qc
+         d7bh0Ule0rwYDoRtoRY1wvhq5C9N8Sm2QPzB+09USmTGBaA3IlFTfrk6PXTm0HRut+q/
+         aEBOGKZq3SghEvdFtBGKXkdb1rbYQ1yLrCw9x9EZ2Pmm4eCqJLdkr0uaux44N2pQfOB0
+         wto3EXILMd5VjZMUdaugF87l+zRpGXi1Izlg9mWgMEWicG22pUKaDINTf2wzpjY/UnZm
+         GssQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=eIL682wGpUi32jDyHiv4YP0KGP3S+mHvqENB0UUgtyM=;
-        b=RhV0Ljylo5B/L/3ULeQMeW1g3xgje7BxcUO5TPMmECSQMYFRy5Z+BAZSEI0GnGdvIi
-         PO0nLTfv/DMw/3sLxfAHKRL8vbzX75FsezBA9nv3KwIgpsnm0ghpgEOOA1ymM8Xarfjh
-         4dxaePPK1hdSO6HW0T9WtGb/XJDz7BjNM9L/cbjXBhlTd6/UYauAl1hlpd+USwvB7A6v
-         xJpzDZQjzYhfq6excQ0qoHuqYuCrQyl66D7IqA8/yroaVEiLheee1xzFYC0mB6r8iESW
-         yuOdKA13mc5brlkes6xrdt4W9YslaMMyxXJAcGnbOTTJVmvBfhXmbNDzqG1OvHYQx+KE
-         hHpQ==
-X-Gm-Message-State: APjAAAUrmIN6dz/M6LymMTu/9fKYPR30m11Qj/+59ez/0RZ8L+gMCX0s
-        hqoTJsT3vmv/cSPR1tO0eXBGrYu2
-X-Google-Smtp-Source: APXvYqzBeP2zYtry4IBI2Iz6vl5syRChsbEVdT3BRJq343Eu3hIZE5Gky/xF+r2LMbI/e3Q+6Kux3w==
-X-Received: by 2002:a2e:2b16:: with SMTP id q22mr39437864lje.20.1556708809355;
-        Wed, 01 May 2019 04:06:49 -0700 (PDT)
-Received: from [192.168.1.244] (81-233-89-221-no75.tbcn.telia.com. [81.233.89.221])
-        by smtp.gmail.com with ESMTPSA id z3sm320851ljg.78.2019.05.01.04.06.48
-        (version=TLS1_3 cipher=AEAD-AES128-GCM-SHA256 bits=128/128);
-        Wed, 01 May 2019 04:06:48 -0700 (PDT)
-Subject: Re: [PATCH] mac80211: fix possible deadlock in TX path
-To:     =?UTF-8?Q?Toke_H=c3=b8iland-J=c3=b8rgensen?= <toke@redhat.com>,
-        johannes@sipsolutions.net, davem@davemloft.net,
-        linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20190427204155.14211-1-erik.stromdahl@gmail.com>
- <87k1fcnd9y.fsf@toke.dk>
-From:   Erik Stromdahl <erik.stromdahl@gmail.com>
-Message-ID: <656f3938-ef82-c1ce-753c-cb6b9d3c424b@gmail.com>
-Date:   Wed, 1 May 2019 13:06:47 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.3.0
-MIME-Version: 1.0
-In-Reply-To: <87k1fcnd9y.fsf@toke.dk>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=ztr+lm+w1vKwvmd9OCos0r4TpayaTlwKubRQibiS3/A=;
+        b=ALUVUiUbtuNEDALSfAm4AyetudPq8fQK2qSMxgB4i2U7+KMvGmgbbXbxF60Ud+Ezec
+         +HBlVwm4pgbpqzyeEqgBLZBjIfiWwOHkuiQ83qN+Ve088k5PfdP6govK2XXlSv35yS2e
+         YUJnIBWCN+b9WDdoQyhickgKqdXHYJJArrhQ+ODEjCkfmRl2bYkCrBvJ7dXgKpwR/kOS
+         ZzZVUIQU2PFXRMM6G7qtfw/MLc14OSyepX47HIT+oVv8tObxlAuXo/N5CZmfcSDTMc7X
+         BTJlvTDdMpOhUSnZnDZqy0KiGIUk8RGbvS1ycd9wEeC5KV93vbIgtywlk6bjl3D7eqae
+         l8wQ==
+X-Gm-Message-State: APjAAAX484FogkigEuoCPv0EQdghdFxQmN5x5sentMc/GtOrsY0hQGpl
+        oktgIGVBKjiwN5DO5bmfR9LYGlUt2GzMJQ==
+X-Google-Smtp-Source: APXvYqzYPbsiDHgZTAUDBARvsCQg8NBI8nxKLbBiyjcI/73GBxRKqkyzcRyitUom+43Z8Dmeih15rQ==
+X-Received: by 2002:aa7:8dc7:: with SMTP id j7mr13343374pfr.82.1556715343318;
+        Wed, 01 May 2019 05:55:43 -0700 (PDT)
+Received: from BWT-FWA-0475.bluwirelesstechnology.com ([183.83.169.104])
+        by smtp.gmail.com with ESMTPSA id s198sm34788404pfs.34.2019.05.01.05.55.41
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Wed, 01 May 2019 05:55:42 -0700 (PDT)
+From:   chaitanya.mgit@gmail.com
+To:     linux-wireless@vger.kernel.org
+Cc:     Chaitanya Tata <chaitanya.tata@bluwireless.co.uk>
+Subject: [PATCH v2] cfg80211: Handle bss expiry during connection
+Date:   Wed,  1 May 2019 18:25:24 +0530
+Message-Id: <20190501125524.19961-1-chaitanya.mgit@gmail.com>
+X-Mailer: git-send-email 2.17.1
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+From: Chaitanya Tata <chaitanya.tata@bluwireless.co.uk>
 
+If the BSS is expired during connection, the connect result will
+trigger a kernel warning. Ideally cfg80211 should hold the BSS
+before the connection is attempted, but as the BSSID is not known
+in case of auth/assoc MLME offload (connect op) it doesn't.
 
-On 4/30/19 9:49 AM, Toke Høiland-Jørgensen wrote:
-> Erik Stromdahl <erik.stromdahl@gmail.com> writes:
-> 
->> This patch fixes a possible deadlock when updating the TX statistics
->> (when calling into ieee80211_tx_stats()) from ieee80211_tx_dequeue().
-> 
-> So is this the fix for the issue with TX scheduling you reported
-> earlier? :)
-> 
+For those drivers without the connect op cfg80211 holds down the
+reference so it wil not be removed from list.
 
-Actually not. I thought so initially, but then, after a few more test runs,
-I was able to run into the issue again.
+Fix this by removing the warning and silently adding the BSS back to
+the bss list which is return by the driver (with proper BSSID set) or
+in case the BSS is already added use that.
 
-But it does seem to fix the other issue with the RCU stall since I haven't
-seen it with this patch applied (could be just a coincidence though).
+The requirements for drivers are documented in the API's.
 
---
-Erik
+Signed-off-by: Chaitanya Tata <chaitanya.tata@bluwireless.co.uk>
+---
+Tested this using the below hack in cfg80211_connect_done():
+        cfg80211_bss_age(rdev, get_seconds() - 30);
+        cfg80211_bss_expire(rdev);
+v2:
+ - Modified to check for BSS to avoid overwriting fresh information with
+ stale. The TS is still updated but IMHO shouldn't matter (avoids having
+a additional flag to avoid that).
+- Fixed BSS ref leak
+
+---
+ include/net/cfg80211.h | 15 +++++++++++----
+ net/wireless/core.h    |  4 ++++
+ net/wireless/scan.c    |  2 +-
+ net/wireless/sme.c     | 29 ++++++++++++++++++++++++++---
+ 4 files changed, 42 insertions(+), 8 deletions(-)
+
+diff --git a/include/net/cfg80211.h b/include/net/cfg80211.h
+index bb307a11ee63..4f6c2c598618 100644
+--- a/include/net/cfg80211.h
++++ b/include/net/cfg80211.h
+@@ -6137,8 +6137,11 @@ struct cfg80211_fils_resp_params {
+  *	case.
+  * @bssid: The BSSID of the AP (may be %NULL)
+  * @bss: Entry of bss to which STA got connected to, can be obtained through
+- *	cfg80211_get_bss() (may be %NULL). Only one parameter among @bssid and
+- *	@bss needs to be specified.
++ *	cfg80211_get_bss() (may be %NULL). But it is recommended to store the
++ *      bss from the connect_request and hold a reference to it and return
++ *      through this param to avoid a warning if the bss is expired during the
++ *      connection, esp. for those drivers implementing connect op.
++ *	Only one parameter among @bssid and @bss needs to be specified.
+  * @req_ie: Association request IEs (may be %NULL)
+  * @req_ie_len: Association request IEs length
+  * @resp_ie: Association response IEs (may be %NULL)
+@@ -6186,8 +6189,12 @@ void cfg80211_connect_done(struct net_device *dev,
+  *
+  * @dev: network device
+  * @bssid: the BSSID of the AP
+- * @bss: entry of bss to which STA got connected to, can be obtained
+- *	through cfg80211_get_bss (may be %NULL)
++ * @bss: Entry of bss to which STA got connected to, can be obtained through
++ *	cfg80211_get_bss() (may be %NULL). But it is recommended to store the
++ *      bss from the connect_request and hold a reference to it and return
++ *      through this param to avoid a warning if the bss is expired during the
++ *      connection, esp. for those drivers implementing connect op.
++ *	Only one parameter among @bssid and @bss needs to be specified.
+  * @req_ie: association request IEs (maybe be %NULL)
+  * @req_ie_len: association request IEs length
+  * @resp_ie: association response IEs (may be %NULL)
+diff --git a/net/wireless/core.h b/net/wireless/core.h
+index 84d36ca7a7ab..238478341100 100644
+--- a/net/wireless/core.h
++++ b/net/wireless/core.h
+@@ -531,6 +531,10 @@ void cfg80211_stop_p2p_device(struct cfg80211_registered_device *rdev,
+ void cfg80211_stop_nan(struct cfg80211_registered_device *rdev,
+ 		       struct wireless_dev *wdev);
+ 
++struct cfg80211_internal_bss *
++cfg80211_bss_update(struct cfg80211_registered_device *rdev,
++		    struct cfg80211_internal_bss *tmp,
++		    bool signal_valid);
+ #ifdef CONFIG_CFG80211_DEVELOPER_WARNINGS
+ #define CFG80211_DEV_WARN_ON(cond)	WARN_ON(cond)
+ #else
+diff --git a/net/wireless/scan.c b/net/wireless/scan.c
+index 287518c6caa4..0f5ae54c7644 100644
+--- a/net/wireless/scan.c
++++ b/net/wireless/scan.c
+@@ -1035,7 +1035,7 @@ struct cfg80211_non_tx_bss {
+ };
+ 
+ /* Returned bss is reference counted and must be cleaned up appropriately. */
+-static struct cfg80211_internal_bss *
++struct cfg80211_internal_bss *
+ cfg80211_bss_update(struct cfg80211_registered_device *rdev,
+ 		    struct cfg80211_internal_bss *tmp,
+ 		    bool signal_valid)
+diff --git a/net/wireless/sme.c b/net/wireless/sme.c
+index 7d34cb884840..35cbfdd56bf0 100644
+--- a/net/wireless/sme.c
++++ b/net/wireless/sme.c
+@@ -799,9 +799,32 @@ void cfg80211_connect_done(struct net_device *dev,
+ 		/* Make sure the bss entry provided by the driver is valid. */
+ 		struct cfg80211_internal_bss *ibss = bss_from_pub(params->bss);
+ 
+-		if (WARN_ON(list_empty(&ibss->list))) {
+-			cfg80211_put_bss(wdev->wiphy, params->bss);
+-			return;
++		if ((list_empty(&ibss->list))) {
++			struct cfg80211_bss *found = NULL, *tmp = params->bss;
++
++			found = cfg80211_get_bss(wdev->wiphy, NULL,
++						 params->bss->bssid,
++						 wdev->ssid, wdev->ssid_len,
++						 wdev->conn_bss_type,
++						 IEEE80211_PRIVACY_ANY);
++			if (found)
++				/* The same BSS is already updated so use it
++				 * instead, as it has latest info.
++				 */
++				params->bss = found;
++			else
++				/* Update with BSS provided by driver, it will
++				 * be freshly added and ref cnted, we can free
++				 * the old one.
++				 *
++				 * signal_valid can be false, as we are not
++				 * expecting the BSS to be found.
++				 */
++				cfg80211_bss_update(rdev, ibss, false);
++			/* Put down the old BSS we don't need it
++			 * anymore.
++			 */
++			cfg80211_put_bss(wdev->wiphy, tmp);
+ 		}
+ 	}
+ 
+-- 
+2.17.1
+
