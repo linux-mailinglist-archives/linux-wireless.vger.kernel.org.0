@@ -2,137 +2,92 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 1DA89109DF
-	for <lists+linux-wireless@lfdr.de>; Wed,  1 May 2019 17:16:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A0B84109F9
+	for <lists+linux-wireless@lfdr.de>; Wed,  1 May 2019 17:23:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726851AbfEAPQf (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 1 May 2019 11:16:35 -0400
-Received: from gateway31.websitewelcome.com ([192.185.143.51]:39071 "EHLO
-        gateway31.websitewelcome.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726488AbfEAPQf (ORCPT
+        id S1726608AbfEAPXq (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 1 May 2019 11:23:46 -0400
+Received: from smtp.codeaurora.org ([198.145.29.96]:47560 "EHLO
+        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726555AbfEAPXq (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 1 May 2019 11:16:35 -0400
-Received: from cm10.websitewelcome.com (cm10.websitewelcome.com [100.42.49.4])
-        by gateway31.websitewelcome.com (Postfix) with ESMTP id C930A10FC4
-        for <linux-wireless@vger.kernel.org>; Wed,  1 May 2019 10:16:18 -0500 (CDT)
-Received: from gator4166.hostgator.com ([108.167.133.22])
-        by cmsmtp with SMTP
-        id Lqy2h2ahg2PzOLqy2hWTkz; Wed, 01 May 2019 10:16:18 -0500
-X-Authority-Reason: nr=8
-Received: from [189.250.119.203] (port=59360 helo=embeddedor)
-        by gator4166.hostgator.com with esmtpa (Exim 4.91)
-        (envelope-from <gustavo@embeddedor.com>)
-        id 1hLqy1-001KSh-O8; Wed, 01 May 2019 10:16:17 -0500
-Date:   Wed, 1 May 2019 10:16:15 -0500
-From:   "Gustavo A. R. Silva" <gustavo@embeddedor.com>
-To:     Yan-Hsuan Chuang <yhchuang@realtek.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        "David S. Miller" <davem@davemloft.net>
-Cc:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        "Gustavo A. R. Silva" <gustavo@embeddedor.com>,
-        Kees Cook <keescook@chromium.org>
-Subject: [PATCH][next] rtw88: phy: mark expected switch fall-throughs
-Message-ID: <20190501151615.GA18557@embeddedor>
+        Wed, 1 May 2019 11:23:46 -0400
+Received: by smtp.codeaurora.org (Postfix, from userid 1000)
+        id 48CF960FEE; Wed,  1 May 2019 15:23:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
+        s=default; t=1556724225;
+        bh=l2WhRhZLGZQr9Ns7eemuc2avdXN2BMxD2MBmuagdNsU=;
+        h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
+        b=fwE9o9feaga+FkHStTK0h1Bf2vqOqoVhFfTnS54r60rYo0FdDBRffdTl8rh1FtaqL
+         D8EVYMka0Lz+YDLV+c4PGN4uzsOPGih182M/ZUQOgdSMfnH9Sbkk8xVAAgLIJNLmSP
+         od0P6+9m4R+dpIGZnq1FOfPwP6wDquK0/2O1JvXA=
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        pdx-caf-mail.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-0.8 required=2.0 tests=ALL_TRUSTED,BAYES_00,
+        DKIM_INVALID,DKIM_SIGNED,MISSING_DATE,MISSING_MID autolearn=no
+        autolearn_force=no version=3.4.0
+Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo@smtp.codeaurora.org)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id A2E6460F37;
+        Wed,  1 May 2019 15:23:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
+        s=default; t=1556724224;
+        bh=l2WhRhZLGZQr9Ns7eemuc2avdXN2BMxD2MBmuagdNsU=;
+        h=Subject:From:In-Reply-To:References:To:Cc:From;
+        b=Yc8AOimvyNaUDbgUtNeGJBH3sOY3tMtcFRApMtdrezyQrwILXBbfOpldMGKj9NT3r
+         k3lFwnO49McALXtMEyJwNzQfZrsZWODnKQX7tBmxtFmbXCUsbzGoKTbxH6NLypYWs1
+         Om2xQYOkGoome5Y338TyF3QB8ZLqUXvH/v9mtaio=
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org A2E6460F37
+Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-User-Agent: Mutt/1.9.4 (2018-02-28)
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - gator4166.hostgator.com
-X-AntiAbuse: Original Domain - vger.kernel.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - embeddedor.com
-X-BWhitelist: no
-X-Source-IP: 189.250.119.203
-X-Source-L: No
-X-Exim-ID: 1hLqy1-001KSh-O8
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
-X-Source-Sender: (embeddedor) [189.250.119.203]:59360
-X-Source-Auth: gustavo@embeddedor.com
-X-Email-Count: 4
-X-Source-Cap: Z3V6aWRpbmU7Z3V6aWRpbmU7Z2F0b3I0MTY2Lmhvc3RnYXRvci5jb20=
-X-Local-Domain: yes
+Subject: Re: [PATCH] brcmfmac: change the order of things in brcmf_detach()
+From:   Kalle Valo <kvalo@codeaurora.org>
+In-Reply-To: <1556532561-24428-1-git-send-email-arend.vanspriel@broadcom.com>
+References: <1556532561-24428-1-git-send-email-arend.vanspriel@broadcom.com>
+To:     Arend van Spriel <arend.vanspriel@broadcom.com>
+Cc:     Piotr Figiel <p.figiel@camlintechnologies.com>,
+        =?utf-8?b?UmFmYcWCIE1pxYJlY2tp?= <rafal@milecki.pl>,
+        linux-wireless@vger.kernel.org,
+        Arend van Spriel <arend.vanspriel@broadcom.com>
+User-Agent: pwcli/0.0.0-git (https://github.com/kvalo/pwcli/) Python/2.7.12
+Message-Id: <20190501152345.48CF960FEE@smtp.codeaurora.org>
+Date:   Wed,  1 May 2019 15:23:45 +0000 (UTC)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-In preparation to enabling -Wimplicit-fallthrough, mark switch
-cases where we are expecting to fall through.
+Arend van Spriel <arend.vanspriel@broadcom.com> wrote:
 
-This patch fixes the following warnings:
+> When brcmf_detach() from the bus layer upon rmmod we can no longer
+> communicate. Hence we will set the bus state to DOWN and cleanup
+> the event and protocol layer. The network interfaces need to be
+> deleted before brcmf_cfg80211_detach() because the latter does the
+> wiphy_unregister() which issues a warning if there are still network
+> devices linked to the wiphy instance.
+> 
+> This change solves a null pointer dereference issue which happened
+> upon issueing rmmod while there are packets queued in bus protocol
+> layer.
+> 
+> Reported-by: Rafał Miłecki <rafal@milecki.pl>
+> Reviewed-by: Hante Meuleman <hante.meuleman@broadcom.com>
+> Reviewed-by: Pieter-Paul Giesberts <pieter-paul.giesberts@broadcom.com>
+> Reviewed-by: Franky Lin <franky.lin@broadcom.com>
+> Signed-off-by: Arend van Spriel <arend.vanspriel@broadcom.com>
 
-drivers/net/wireless/realtek/rtw88/phy.c: In function ‘rtw_get_channel_group’:
-./include/linux/compiler.h:77:22: warning: this statement may fall through [-Wimplicit-fallthrough=]
- # define unlikely(x) __builtin_expect(!!(x), 0)
-                      ^~~~~~~~~~~~~~~~~~~~~~~~~~
-./include/asm-generic/bug.h:125:2: note: in expansion of macro ‘unlikely’
-  unlikely(__ret_warn_on);     \
-  ^~~~~~~~
-drivers/net/wireless/realtek/rtw88/phy.c:907:3: note: in expansion of macro ‘WARN_ON’
-   WARN_ON(1);
-   ^~~~~~~
-drivers/net/wireless/realtek/rtw88/phy.c:908:2: note: here
-  case 1:
-  ^~~~
-In file included from ./include/linux/bcd.h:5,
-                 from drivers/net/wireless/realtek/rtw88/phy.c:5:
-drivers/net/wireless/realtek/rtw88/phy.c: In function ‘phy_get_2g_tx_power_index’:
-./include/linux/compiler.h:77:22: warning: this statement may fall through [-Wimplicit-fallthrough=]
- # define unlikely(x) __builtin_expect(!!(x), 0)
-                      ^~~~~~~~~~~~~~~~~~~~~~~~~~
-./include/asm-generic/bug.h:125:2: note: in expansion of macro ‘unlikely’
-  unlikely(__ret_warn_on);     \
-  ^~~~~~~~
-drivers/net/wireless/realtek/rtw88/phy.c:1021:3: note: in expansion of macro ‘WARN_ON’
-   WARN_ON(1);
-   ^~~~~~~
-drivers/net/wireless/realtek/rtw88/phy.c:1022:2: note: here
-  case RTW_CHANNEL_WIDTH_20:
-  ^~~~
+Marked RFC as requested, please resend once this is ready to be applied.
 
-Warning level 3 was used: -Wimplicit-fallthrough=3
+Patch set to RFC.
 
-This patch is part of the ongoing efforts to enable
--Wimplicit-fallthrough.
-
-Signed-off-by: Gustavo A. R. Silva <gustavo@embeddedor.com>
----
- drivers/net/wireless/realtek/rtw88/phy.c | 3 +++
- 1 file changed, 3 insertions(+)
-
-diff --git a/drivers/net/wireless/realtek/rtw88/phy.c b/drivers/net/wireless/realtek/rtw88/phy.c
-index 35a35dbca85f..4381b360b5b5 100644
---- a/drivers/net/wireless/realtek/rtw88/phy.c
-+++ b/drivers/net/wireless/realtek/rtw88/phy.c
-@@ -905,6 +905,7 @@ static u8 rtw_get_channel_group(u8 channel)
- 	switch (channel) {
- 	default:
- 		WARN_ON(1);
-+		/* fall through */
- 	case 1:
- 	case 2:
- 	case 36:
-@@ -1019,6 +1020,7 @@ static u8 phy_get_2g_tx_power_index(struct rtw_dev *rtwdev,
- 	switch (bandwidth) {
- 	default:
- 		WARN_ON(1);
-+		/* fall through */
- 	case RTW_CHANNEL_WIDTH_20:
- 		tx_power += pwr_idx_2g->ht_1s_diff.bw20 * factor;
- 		if (above_2ss)
-@@ -1062,6 +1064,7 @@ static u8 phy_get_5g_tx_power_index(struct rtw_dev *rtwdev,
- 	switch (bandwidth) {
- 	default:
- 		WARN_ON(1);
-+		/* fall through */
- 	case RTW_CHANNEL_WIDTH_20:
- 		tx_power += pwr_idx_5g->ht_1s_diff.bw20 * factor;
- 		if (above_2ss)
 -- 
-2.21.0
+https://patchwork.kernel.org/patch/10922029/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
