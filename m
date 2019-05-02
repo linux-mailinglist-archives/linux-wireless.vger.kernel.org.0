@@ -2,97 +2,122 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 6117C1201B
-	for <lists+linux-wireless@lfdr.de>; Thu,  2 May 2019 18:27:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7F927121CB
+	for <lists+linux-wireless@lfdr.de>; Thu,  2 May 2019 20:18:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726466AbfEBQ07 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 2 May 2019 12:26:59 -0400
-Received: from smtp.codeaurora.org ([198.145.29.96]:55512 "EHLO
-        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726321AbfEBQ07 (ORCPT
+        id S1726256AbfEBSSO (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 2 May 2019 14:18:14 -0400
+Received: from mail-pg1-f193.google.com ([209.85.215.193]:46461 "EHLO
+        mail-pg1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726175AbfEBSSO (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 2 May 2019 12:26:59 -0400
-Received: by smtp.codeaurora.org (Postfix, from userid 1000)
-        id A3E5B6083E; Thu,  2 May 2019 16:26:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1556814418;
-        bh=4odLYN4jUCJCzuV9WQU82jYINI/bjqsc5/jaSqVbFvI=;
-        h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-        b=hp7vtlBledDfIdDiTCjJxCZ392orplE5rk1jJeghhCUjQTCwRTsKvWLbwAP+YincW
-         sSWPOlK+Z0C51USQGbEJFEeJVosCasEJio5DOjxapbo3W5QOzrY6U63u8Dkx/FWHeB
-         RdmCvY4QMoyoEdCe5lbOJMuk5B1kkOy4TcfVGgMQ=
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        pdx-caf-mail.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-0.8 required=2.0 tests=ALL_TRUSTED,BAYES_00,
-        DKIM_INVALID,DKIM_SIGNED,MISSING_DATE,MISSING_MID autolearn=no
-        autolearn_force=no version=3.4.0
-Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        (Authenticated sender: kvalo@smtp.codeaurora.org)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 69849608D4;
-        Thu,  2 May 2019 16:26:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1556814418;
-        bh=4odLYN4jUCJCzuV9WQU82jYINI/bjqsc5/jaSqVbFvI=;
-        h=Subject:From:In-Reply-To:References:To:Cc:From;
-        b=irXBtchtqKmL5KPkQeC53tejKauDKzMHgOVvG3NgvhRWZyZglakmclIjb4VV/TnBt
-         qRPBhBm+njcO33WM6FaP26iW7ytQvSYsMVFw/C7jjBPcYTgJdwvVNYBG31LkapyCfP
-         eFsrPCoF8RksNOAuNOj2pF0cRor3ws+2W8So1Epg=
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 69849608D4
-Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
-Content-Type: text/plain; charset="utf-8"
+        Thu, 2 May 2019 14:18:14 -0400
+Received: by mail-pg1-f193.google.com with SMTP id n2so1409314pgg.13
+        for <linux-wireless@vger.kernel.org>; Thu, 02 May 2019 11:18:13 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=i5E3RSE8lQiSqCimg0Jp86ttgCCec2oGoZPCpZScr5E=;
+        b=ZrJ2qK2x6e2tQD/KrenlD7nA9vWWuqna7yfhiZinM8ZcBfkNkimmxMOpECoVPitUCd
+         5jN/aErSVoNujlZPhBvusaVinK3xQs5FjR/WOwBKcpOZUuhflXXDO8QPjOb8JomTWyng
+         9VQwAc1oNcwde0b84L/5+7A28zMNGAqaZ02Dgi1qPueMQKA+Qoz9TebxZ3SYwAJRw/ch
+         CUbZ0H1OLS5xWQq+FTfvwOB0/daVUcbj/7BqhJVN5b89udMs6DSKAnPnAUtNipR7mSgl
+         BWf8BAjrpLiUj2GI+8Mj0agUYDoNOJI3m++ArVGXyngbBexIChDs6fTCQ9ZvyQr+QKcB
+         Nnxw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=i5E3RSE8lQiSqCimg0Jp86ttgCCec2oGoZPCpZScr5E=;
+        b=hscYl+AZlMh5P6XJjaGhk7YaxnZj1ZDk0/4oF3aC7OKg9aAI86eQKfZJKgvAhfMEki
+         ZhbGosqUEn7G0oK6shyL75rUhRfT/7FdmKrL7DC87SayzCNqZzQgC6OKZEGakd1CjucI
+         CtVkhu2WlyNEatfpDTByNL7npdWAhfP3iJ6AhO8Id7SW2kLmzl2U48invBXAl6nSg/t0
+         fO9xBeo5QGb3STIll/M+bRI6HtY76fHKFWnTBIY/jQWQymMbxsUJohgmTGTVin7aPakl
+         oF7X05y1KKW2GnOVBQ0084RrEx/BsN/LJ3Xk+/wvDKuO+eZ6zHrXluDNBvl8g8sJaBRd
+         OdLw==
+X-Gm-Message-State: APjAAAVL6aSSvR4E2gPLx7XgMDrSpMttgwHS//ZMyE+eVmxAZY0c24AB
+        DJxww7SJhCnul01eXZl6+ZZR8s9PqRWS2VmGjQpGxw==
+X-Google-Smtp-Source: APXvYqyum+u6TX+AnvXMQhK0hPsMGunXOwrUrgK8auFMJ/68iASPoxxQrweBV/uzyUaDhVMRGKLMVQum8VJ0vnhhgEE=
+X-Received: by 2002:aa7:8096:: with SMTP id v22mr5731088pff.94.1556821092860;
+ Thu, 02 May 2019 11:18:12 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH v2] rtw88: Make RA_MASK macros ULL
-From:   Kalle Valo <kvalo@codeaurora.org>
-In-Reply-To: <20190502150209.4475-1-natechancellor@gmail.com>
-References: <20190502150209.4475-1-natechancellor@gmail.com>
+References: <20190502151548.11143-1-natechancellor@gmail.com>
+In-Reply-To: <20190502151548.11143-1-natechancellor@gmail.com>
+From:   Nick Desaulniers <ndesaulniers@google.com>
+Date:   Thu, 2 May 2019 11:18:01 -0700
+Message-ID: <CAKwvOd=nvKGGW5jvN+WFUXzOm9xeiNNUD0F9--9YcpuRmnWWhA@mail.gmail.com>
+Subject: Re: [PATCH] rsi: Properly initialize data in rsi_sdio_ta_reset
 To:     Nathan Chancellor <natechancellor@gmail.com>
-Cc:     Yan-Hsuan Chuang <yhchuang@realtek.com>,
+Cc:     Amitkumar Karwar <amitkarwar@gmail.com>,
+        Siva Rebbagondla <siva8118@gmail.com>,
+        Kalle Valo <kvalo@codeaurora.org>,
         linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, clang-built-linux@googlegroups.com,
-        Nick Desaulniers <ndesaulniers@google.com>,
-        Nathan Chancellor <natechancellor@gmail.com>
-User-Agent: pwcli/0.0.0-git (https://github.com/kvalo/pwcli/) Python/2.7.12
-Message-Id: <20190502162658.A3E5B6083E@smtp.codeaurora.org>
-Date:   Thu,  2 May 2019 16:26:58 +0000 (UTC)
+        LKML <linux-kernel@vger.kernel.org>,
+        clang-built-linux <clang-built-linux@googlegroups.com>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Nathan Chancellor <natechancellor@gmail.com> wrote:
-
-> Clang warns about the definitions of these macros (full warnings trimmed
-> for brevity):
-> 
-> drivers/net/wireless/realtek/rtw88/main.c:524:15: warning: signed shift
-> result (0x3FF00000000) requires 43 bits to represent, but 'int' only has
-> 32 bits [-Wshift-overflow]
->                         ra_mask &= RA_MASK_VHT_RATES | RA_MASK_OFDM_IN_VHT;
->                                    ^~~~~~~~~~~~~~~~~
-> drivers/net/wireless/realtek/rtw88/main.c:527:15: warning: signed shift
-> result (0xFF0000000) requires 37 bits to represent, but 'int' only has
-> 32 bits [-Wshift-overflow]
->                         ra_mask &= RA_MASK_HT_RATES | RA_MASK_OFDM_IN_HT_5G;
->                                    ^~~~~~~~~~~~~~~~
-> 
-> Given that these are all used with ra_mask, which is of type u64, we can
-> just declare the macros to be ULL as well.
-> 
-> Fixes: e3037485c68e ("rtw88: new Realtek 802.11ac driver")
-> Link: https://github.com/ClangBuiltLinux/linux/issues/467
+On Thu, May 2, 2019 at 8:16 AM Nathan Chancellor
+<natechancellor@gmail.com> wrote:
+>
+> When building with -Wuninitialized, Clang warns:
+>
+> drivers/net/wireless/rsi/rsi_91x_sdio.c:940:43: warning: variable 'data'
+> is uninitialized when used here [-Wuninitialized]
+>         put_unaligned_le32(TA_HOLD_THREAD_VALUE, data);
+>                                                  ^~~~
+> drivers/net/wireless/rsi/rsi_91x_sdio.c:930:10: note: initialize the
+> variable 'data' to silence this warning
+>         u8 *data;
+>                 ^
+>                  = NULL
+> 1 warning generated.
+>
+> Using Clang's suggestion of initializing data to NULL wouldn't work out
+> because data will be dereferenced by put_unaligned_le32. Use kzalloc to
+> properly initialize data, which matches a couple of other places in this
+> driver.
+>
+> Fixes: e5a1ecc97e5f ("rsi: add firmware loading for 9116 device")
+> Link: https://github.com/ClangBuiltLinux/linux/issues/464
 > Signed-off-by: Nathan Chancellor <natechancellor@gmail.com>
+> ---
+>  drivers/net/wireless/rsi/rsi_91x_sdio.c | 21 ++++++++++++++-------
+>  1 file changed, 14 insertions(+), 7 deletions(-)
+>
+> diff --git a/drivers/net/wireless/rsi/rsi_91x_sdio.c b/drivers/net/wireless/rsi/rsi_91x_sdio.c
+> index f9c67ed473d1..b35728564c7b 100644
+> --- a/drivers/net/wireless/rsi/rsi_91x_sdio.c
+> +++ b/drivers/net/wireless/rsi/rsi_91x_sdio.c
+> @@ -929,11 +929,15 @@ static int rsi_sdio_ta_reset(struct rsi_hw *adapter)
+>         u32 addr;
+>         u8 *data;
+>
+> +       data = kzalloc(sizeof(u32), GFP_KERNEL);
 
-Patch applied to wireless-drivers-next.git, thanks.
+Something fishy is going on here.  We allocate 4 B but declare data as
+a u8* (pointer to individual bytes)?  In general, dynamically
+allocating that few bytes is a code smell; either you meant to just
+use the stack, or this memory's lifetime extends past the lifetime of
+this stackframe, at which point you probably just meant to stack
+allocate space in a higher parent frame and pass this preallocated
+memory down to the child frame to get filled in.
 
-237b47efcdbc rtw88: Make RA_MASK macros ULL
+Reading through this code, I don't think that the memory is meant to
+outlive the stack frame.  Is there a reason why we can't just declare
+data as:
 
+u8 data [4];
+
+then use ARRAY_SIZE(data) or RSI_9116_REG_SIZE in rsi_reset_chip(),
+getting rid of the kzalloc/kfree?
+
+(Sorry, I hate when a simple fixup becomes a "hey let's rewrite all
+this code" thus becoming "that guy.")
 -- 
-https://patchwork.kernel.org/patch/10927105/
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
-
+Thanks,
+~Nick Desaulniers
