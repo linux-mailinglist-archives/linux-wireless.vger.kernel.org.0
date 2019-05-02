@@ -2,73 +2,84 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id DD52011ABA
-	for <lists+linux-wireless@lfdr.de>; Thu,  2 May 2019 16:04:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3FD5B11BDE
+	for <lists+linux-wireless@lfdr.de>; Thu,  2 May 2019 16:57:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726447AbfEBOEC (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 2 May 2019 10:04:02 -0400
-Received: from mail-vs1-f66.google.com ([209.85.217.66]:35207 "EHLO
-        mail-vs1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726197AbfEBOEB (ORCPT
+        id S1726268AbfEBO5S (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 2 May 2019 10:57:18 -0400
+Received: from smtp.codeaurora.org ([198.145.29.96]:37788 "EHLO
+        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726203AbfEBO5R (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 2 May 2019 10:04:01 -0400
-Received: by mail-vs1-f66.google.com with SMTP id d8so1437190vsp.2
-        for <linux-wireless@vger.kernel.org>; Thu, 02 May 2019 07:04:01 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:reply-to:from:date:message-id
-         :subject:to:cc;
-        bh=9PosnaKNgclfK+qhKAvGvjnZZQWcdMigJpZ1M7CjYaQ=;
-        b=hEbVkvvvOltVqNlQsAu6OCW/zeiQuRLdq0kVLy5y8SiyajJ4F+EIGkHBZlmRENIK3A
-         V/1opfATmV895te15L1514Ighbi44uPEYhCEi7+aNaS3SvZHYxS5pnUtEV+Kw5Z7hQYD
-         7llc40DYvZGGxUBs0mdVsojfv80c2rsisgz7Y5If4hKYkcPyLpWt2y0Rgzy1D0bfzHmZ
-         2Fg49tw4vyAyfcSlrsoLuoATOL/Pu8pdZTJsFSk2ncphstHjkpY4j6w30JnoIlH7Oysi
-         gbMhxK8j9A3KM9I5plR1oZFAQTPbz9u3r/uLSwgQ9ImE8Osplcn/OLPh2OEG7858pPu2
-         oceQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:reply-to
-         :from:date:message-id:subject:to:cc;
-        bh=9PosnaKNgclfK+qhKAvGvjnZZQWcdMigJpZ1M7CjYaQ=;
-        b=Se901IQVw/aOqPpGRN53WDSBJ1O4AGn+8iYRAf+aMIGqojHCrsQfnbv5IVYJ84DBHO
-         ANwbcylrpREC6IDX6AvO2+EkASJYGSAh5qBHgGGaSGwxalZK42660GyKuCzLMSLpfdBI
-         6dy1CEeug1pLIxtzazFtJZnmFqSCTc8PhD+NxXAMS0cbyUIBGdRWfFBQEwH3wn2FqN1o
-         50dXj/3mOwZ3Po9JTCLGU4RzIIEnM+RdO7i6rb7cj2Il6WiuhA9j+UrB0Ug+6UVanuMv
-         ZMJhXb0Dr/kr2dbi8NsKMKUmRoavkSKw/OKQUn4B5qEhc2YJmdnTT2WS1wOPPI8Lh7aP
-         Y0Cg==
-X-Gm-Message-State: APjAAAUUFVOj2XsYZdytCeMoeLF8dBX5BlXIv7na9ywSyYZ/nAzOszKQ
-        jmtN12I6lSfWTxOmLRgQaTm9kyVswkztJfZiKw==
-X-Google-Smtp-Source: APXvYqw+m7BeCaP46Hr5tCt0+lls1oCZXkYntgBuE+z30mYjElWIGwyD+Bskh8bF5hdinZvA0VkMbV34wjuVE7OE2pc=
-X-Received: by 2002:a67:7f8b:: with SMTP id a133mr2128778vsd.38.1556805840424;
- Thu, 02 May 2019 07:04:00 -0700 (PDT)
+        Thu, 2 May 2019 10:57:17 -0400
+Received: by smtp.codeaurora.org (Postfix, from userid 1000)
+        id 3B2B3607DE; Thu,  2 May 2019 14:57:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
+        s=default; t=1556809037;
+        bh=7E/f1KNqjuAIh+7P2Jn75B7j8N7ezXYcQJb3AHakCt8=;
+        h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
+        b=jSC9ZHuRRb1zB/0i7YC2YQ6SDUn+1H8J/IMznrSuOBqVhyIAFIGLtLS2rvQADb/eL
+         jDYi68kNSOsl7g4qKEwMdGrYROqf4yx4C08ePbVaMhkpGrDrBTgZKBCtzeDH4Hb7CG
+         HednuKonNqvCcj5qFGLWwPeiJhpqtGgWKqv/wKvQ=
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        pdx-caf-mail.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-0.8 required=2.0 tests=ALL_TRUSTED,BAYES_00,
+        DKIM_INVALID,DKIM_SIGNED,MISSING_DATE,MISSING_MID autolearn=no
+        autolearn_force=no version=3.4.0
+Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo@smtp.codeaurora.org)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 60900601D4;
+        Thu,  2 May 2019 14:57:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
+        s=default; t=1556809036;
+        bh=7E/f1KNqjuAIh+7P2Jn75B7j8N7ezXYcQJb3AHakCt8=;
+        h=Subject:From:In-Reply-To:References:To:Cc:From;
+        b=cU8P4yxYCOf5wj3h4yWIsdh8NeF0XqLC+7kk3x7p1KWsVXjaPMd75Xu3jTHIsgt6b
+         /+XwexzrB6TJWeEYobOVEVPSFu7qff0tm9zw/GjWuwFHv99XaqJSGaWm8hnDx8LT/I
+         2tn8Xzuy4kGaJUGU4xkVjDXx6kUj58dOYHSVvCIM=
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 60900601D4
+Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-References: <CAP8WD_bTvWWTeh6BP_qgByiuWLbSN==CTBY1KD-v8XpWZkf_Rw@mail.gmail.com>
- <87k1fawsio.fsf@purkki.adurom.net>
-In-Reply-To: <87k1fawsio.fsf@purkki.adurom.net>
-Reply-To: whiteheadm@acm.org
-From:   tedheadster <tedheadster@gmail.com>
-Date:   Thu, 2 May 2019 10:03:49 -0400
-Message-ID: <CAP8WD_YFzVgvRW_yPVtzvj4KkH+f03jEuVsTRG-QHmZmv+ms9Q@mail.gmail.com>
-Subject: Re: carl9170 crash
-To:     Kalle Valo <kvalo@codeaurora.org>
-Cc:     Matthew Whitehead <whiteheadm@acm.org>,
-        Christian Lamparter <chunkeey@googlemail.com>,
-        linux-wireless@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+Subject: Re: [RFC/RFT 3/7] rt2800: initial watchdog implementation
+From:   Kalle Valo <kvalo@codeaurora.org>
+In-Reply-To: <1556788021-6531-4-git-send-email-sgruszka@redhat.com>
+References: <1556788021-6531-4-git-send-email-sgruszka@redhat.com>
+To:     Stanislaw Gruszka <sgruszka@redhat.com>
+Cc:     linux-wireless@vger.kernel.org,
+        =?utf-8?q?Tomislav_Po=C5=BEega?= <pozega.tomislav@gmail.com>,
+        Daniel Golle <daniel@makrotopia.org>,
+        Felix Fietkau <nbd@nbd.name>, Mathias Kresin <dev@kresin.me>
+User-Agent: pwcli/0.0.0-git (https://github.com/kvalo/pwcli/) Python/2.7.12
+Message-Id: <20190502145717.3B2B3607DE@smtp.codeaurora.org>
+Date:   Thu,  2 May 2019 14:57:17 +0000 (UTC)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Kalle,
-  I just tried to bisect this and got an unexpected result: commit
-4c3f49ae1306c05e91211c06feddfd0a4a57fabd "Merge branch 'for-5.1-fixes'
-of git://git.kernel.org/pub/scm/linux/kernel/git/dennis/percpu".
+Stanislaw Gruszka <sgruszka@redhat.com> wrote:
 
-I wanted to share this in case it is correct. I have a stronger
-suspicion that the problem has a race condition and appears
-intermittently, hence a peculiar bisect outcome.
+> Add watchdog for rt2800 devices. For now it only detect hung
+> and print error.
+> 
+> [Note: I verified that printing messages from process context is
+> fine on MT7620 (WT3020) platform that have problem when printk
+> is called from interrupt context].
+> 
+> Signed-off-by: Stanislaw Gruszka <sgruszka@redhat.com>
 
-I will keep debugging.
+Dropped per request.
 
-- Matthew Whitehead
+Patch set to Rejected.
+
+-- 
+https://patchwork.kernel.org/patch/10926399/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+
