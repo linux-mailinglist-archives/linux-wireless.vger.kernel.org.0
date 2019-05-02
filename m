@@ -2,86 +2,73 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 99E8111A5C
-	for <lists+linux-wireless@lfdr.de>; Thu,  2 May 2019 15:36:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DD52011ABA
+	for <lists+linux-wireless@lfdr.de>; Thu,  2 May 2019 16:04:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726278AbfEBNgn (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 2 May 2019 09:36:43 -0400
-Received: from smtp.codeaurora.org ([198.145.29.96]:55442 "EHLO
-        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726267AbfEBNgm (ORCPT
+        id S1726447AbfEBOEC (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 2 May 2019 10:04:02 -0400
+Received: from mail-vs1-f66.google.com ([209.85.217.66]:35207 "EHLO
+        mail-vs1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726197AbfEBOEB (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 2 May 2019 09:36:42 -0400
-Received: by smtp.codeaurora.org (Postfix, from userid 1000)
-        id 605206083E; Thu,  2 May 2019 13:36:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1556804201;
-        bh=0JFvp52OyBwf49RIzG+yuBXweHAZDmaCdelkT+rDO7w=;
-        h=From:To:Cc:Subject:Date:From;
-        b=mG6jLsRpPE0uTgF+G+M3ZcSQEtx50HLt5+S3yQ4Rp2rsFYBzF5v9p8kgFbNwkxl7O
-         8p6gGOXr4olSPPpLxiRLOqdzCdqjcACV8/ewC5QZ5oJhU7isdnp+Rc+GXno7Oozf46
-         +K4Na8Nft+de+n/lyAW+CDfoKnB6G0zyLqOkCxVM=
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        pdx-caf-mail.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.7 required=2.0 tests=ALL_TRUSTED,BAYES_00,
-        DKIM_INVALID,DKIM_SIGNED autolearn=no autolearn_force=no version=3.4.0
-Received: from yintang-HP-Z230-SFF-Workstation.qca.qualcomm.com (unknown [180.166.53.21])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-SHA256 (128/128 bits))
-        (No client certificate requested)
-        (Authenticated sender: yintang@smtp.codeaurora.org)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id D439E60863;
-        Thu,  2 May 2019 13:36:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1556804200;
-        bh=0JFvp52OyBwf49RIzG+yuBXweHAZDmaCdelkT+rDO7w=;
-        h=From:To:Cc:Subject:Date:From;
-        b=XaFYK4aNxvXw5gEZZbhtK1PYJ1561zL7Vs6SE2Eq65LeYLrGNwCq0300OMH/0vUsB
-         DBRSeTMd+1OkA8OKCD+wTEeMXbFOmt2C/q5K2XG6jOQVuj6iKS6E77c/P6VaoCKUAr
-         ckbOILAfYzEpNPprMsEgdK76Yfcb0vXAk/46u3Ak=
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org D439E60863
-Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=yintang@codeaurora.org
-From:   Yingying Tang <yintang@codeaurora.org>
-To:     ath10k@lists.infradead.org
-Cc:     linux-wireless@vger.kernel.org
-Subject: [PATCH] ath10k: Check tx_stats before use it
-Date:   Thu,  2 May 2019 21:36:50 +0800
-Message-Id: <1556804210-28599-1-git-send-email-yintang@codeaurora.org>
-X-Mailer: git-send-email 1.9.1
+        Thu, 2 May 2019 10:04:01 -0400
+Received: by mail-vs1-f66.google.com with SMTP id d8so1437190vsp.2
+        for <linux-wireless@vger.kernel.org>; Thu, 02 May 2019 07:04:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:reply-to:from:date:message-id
+         :subject:to:cc;
+        bh=9PosnaKNgclfK+qhKAvGvjnZZQWcdMigJpZ1M7CjYaQ=;
+        b=hEbVkvvvOltVqNlQsAu6OCW/zeiQuRLdq0kVLy5y8SiyajJ4F+EIGkHBZlmRENIK3A
+         V/1opfATmV895te15L1514Ighbi44uPEYhCEi7+aNaS3SvZHYxS5pnUtEV+Kw5Z7hQYD
+         7llc40DYvZGGxUBs0mdVsojfv80c2rsisgz7Y5If4hKYkcPyLpWt2y0Rgzy1D0bfzHmZ
+         2Fg49tw4vyAyfcSlrsoLuoATOL/Pu8pdZTJsFSk2ncphstHjkpY4j6w30JnoIlH7Oysi
+         gbMhxK8j9A3KM9I5plR1oZFAQTPbz9u3r/uLSwgQ9ImE8Osplcn/OLPh2OEG7858pPu2
+         oceQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:reply-to
+         :from:date:message-id:subject:to:cc;
+        bh=9PosnaKNgclfK+qhKAvGvjnZZQWcdMigJpZ1M7CjYaQ=;
+        b=Se901IQVw/aOqPpGRN53WDSBJ1O4AGn+8iYRAf+aMIGqojHCrsQfnbv5IVYJ84DBHO
+         ANwbcylrpREC6IDX6AvO2+EkASJYGSAh5qBHgGGaSGwxalZK42660GyKuCzLMSLpfdBI
+         6dy1CEeug1pLIxtzazFtJZnmFqSCTc8PhD+NxXAMS0cbyUIBGdRWfFBQEwH3wn2FqN1o
+         50dXj/3mOwZ3Po9JTCLGU4RzIIEnM+RdO7i6rb7cj2Il6WiuhA9j+UrB0Ug+6UVanuMv
+         ZMJhXb0Dr/kr2dbi8NsKMKUmRoavkSKw/OKQUn4B5qEhc2YJmdnTT2WS1wOPPI8Lh7aP
+         Y0Cg==
+X-Gm-Message-State: APjAAAUUFVOj2XsYZdytCeMoeLF8dBX5BlXIv7na9ywSyYZ/nAzOszKQ
+        jmtN12I6lSfWTxOmLRgQaTm9kyVswkztJfZiKw==
+X-Google-Smtp-Source: APXvYqw+m7BeCaP46Hr5tCt0+lls1oCZXkYntgBuE+z30mYjElWIGwyD+Bskh8bF5hdinZvA0VkMbV34wjuVE7OE2pc=
+X-Received: by 2002:a67:7f8b:: with SMTP id a133mr2128778vsd.38.1556805840424;
+ Thu, 02 May 2019 07:04:00 -0700 (PDT)
+MIME-Version: 1.0
+References: <CAP8WD_bTvWWTeh6BP_qgByiuWLbSN==CTBY1KD-v8XpWZkf_Rw@mail.gmail.com>
+ <87k1fawsio.fsf@purkki.adurom.net>
+In-Reply-To: <87k1fawsio.fsf@purkki.adurom.net>
+Reply-To: whiteheadm@acm.org
+From:   tedheadster <tedheadster@gmail.com>
+Date:   Thu, 2 May 2019 10:03:49 -0400
+Message-ID: <CAP8WD_YFzVgvRW_yPVtzvj4KkH+f03jEuVsTRG-QHmZmv+ms9Q@mail.gmail.com>
+Subject: Re: carl9170 crash
+To:     Kalle Valo <kvalo@codeaurora.org>
+Cc:     Matthew Whitehead <whiteheadm@acm.org>,
+        Christian Lamparter <chunkeey@googlemail.com>,
+        linux-wireless@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-tx_stats will be freed and set to NULL before debugfs_sta node is
-removed in station disconnetion process. So if read the debugfs_sta
-node there may be NULL pointer error. Add check for tx_stats before
-use it to resove this issue.
+Kalle,
+  I just tried to bisect this and got an unexpected result: commit
+4c3f49ae1306c05e91211c06feddfd0a4a57fabd "Merge branch 'for-5.1-fixes'
+of git://git.kernel.org/pub/scm/linux/kernel/git/dennis/percpu".
 
-Signed-off-by: Yingying Tang <yintang@codeaurora.org>
----
- drivers/net/wireless/ath/ath10k/debugfs_sta.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+I wanted to share this in case it is correct. I have a stronger
+suspicion that the problem has a race condition and appears
+intermittently, hence a peculiar bisect outcome.
 
-diff --git a/drivers/net/wireless/ath/ath10k/debugfs_sta.c b/drivers/net/wireless/ath/ath10k/debugfs_sta.c
-index 0f3fd65..4a8d94d 100644
---- a/drivers/net/wireless/ath/ath10k/debugfs_sta.c
-+++ b/drivers/net/wireless/ath/ath10k/debugfs_sta.c
-@@ -674,6 +674,13 @@ static ssize_t ath10k_dbg_sta_dump_tx_stats(struct file *file,
- 
- 	mutex_lock(&ar->conf_mutex);
- 
-+	if (!arsta->tx_stats) {
-+		ath10k_warn(ar, "failed to get tx stats");
-+		mutex_unlock(&ar->conf_mutex);
-+		kfree(buf);
-+		return 0;
-+	}
-+
- 	spin_lock_bh(&ar->data_lock);
- 	for (k = 0; k < ATH10K_STATS_TYPE_MAX; k++) {
- 		for (j = 0; j < ATH10K_COUNTER_TYPE_MAX; j++) {
--- 
-1.9.1
+I will keep debugging.
 
+- Matthew Whitehead
