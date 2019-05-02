@@ -2,190 +2,204 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C811F11613
-	for <lists+linux-wireless@lfdr.de>; Thu,  2 May 2019 11:07:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4B3AE11614
+	for <lists+linux-wireless@lfdr.de>; Thu,  2 May 2019 11:07:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726510AbfEBJHH (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 2 May 2019 05:07:07 -0400
-Received: from mx1.redhat.com ([209.132.183.28]:52476 "EHLO mx1.redhat.com"
+        id S1726289AbfEBJHJ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 2 May 2019 05:07:09 -0400
+Received: from mx1.redhat.com ([209.132.183.28]:47822 "EHLO mx1.redhat.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726191AbfEBJHH (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 2 May 2019 05:07:07 -0400
-Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.phx2.redhat.com [10.5.11.15])
+        id S1726191AbfEBJHI (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 2 May 2019 05:07:08 -0400
+Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.phx2.redhat.com [10.5.11.22])
         (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
         (No client certificate requested)
-        by mx1.redhat.com (Postfix) with ESMTPS id 6C3FB3082B4D;
-        Thu,  2 May 2019 09:07:06 +0000 (UTC)
+        by mx1.redhat.com (Postfix) with ESMTPS id 1541130ADBAD;
+        Thu,  2 May 2019 09:07:08 +0000 (UTC)
 Received: from localhost (ovpn-204-54.brq.redhat.com [10.40.204.54])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 01BE717C5F;
-        Thu,  2 May 2019 09:07:05 +0000 (UTC)
+        by smtp.corp.redhat.com (Postfix) with ESMTP id 9C67D100200A;
+        Thu,  2 May 2019 09:07:07 +0000 (UTC)
 From:   Stanislaw Gruszka <sgruszka@redhat.com>
 To:     linux-wireless@vger.kernel.org
 Cc:     =?UTF-8?q?Tomislav=20Po=C5=BEega?= <pozega.tomislav@gmail.com>,
         Daniel Golle <daniel@makrotopia.org>,
         Felix Fietkau <nbd@nbd.name>, Mathias Kresin <dev@kresin.me>
-Subject: [PATCH 2/7] rt2800: add helpers for reading dma done index
-Date:   Thu,  2 May 2019 11:06:55 +0200
-Message-Id: <1556788021-6531-3-git-send-email-sgruszka@redhat.com>
+Subject: [RFC/RFT 3/7] rt2800: initial watchdog implementation
+Date:   Thu,  2 May 2019 11:06:56 +0200
+Message-Id: <1556788021-6531-4-git-send-email-sgruszka@redhat.com>
 In-Reply-To: <1556788021-6531-1-git-send-email-sgruszka@redhat.com>
 References: <1556788021-6531-1-git-send-email-sgruszka@redhat.com>
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.15
-X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16 (mx1.redhat.com [10.5.110.45]); Thu, 02 May 2019 09:07:06 +0000 (UTC)
+X-Scanned-By: MIMEDefang 2.84 on 10.5.11.22
+X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16 (mx1.redhat.com [10.5.110.47]); Thu, 02 May 2019 09:07:08 +0000 (UTC)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-For mmio we do not properlly trace dma done Q_INDEX_DMA_DONE index
-for TX queues. That would require implementing INT_SOURCE_CSR_*_DMA_DONE
-interrupts, what is rather not worth to do due to adding extra
-CPU load (small but still somewhat not necessary otherwise).
+Add watchdog for rt2800 devices. For now it only detect hung
+and print error.
 
-We can just read TX DMA done indexes from registers directly. What
-will be used by watchdog.
+[Note: I verified that printing messages from process context is
+fine on MT7620 (WT3020) platform that have problem when printk
+is called from interrupt context].
 
 Signed-off-by: Stanislaw Gruszka <sgruszka@redhat.com>
 ---
- drivers/net/wireless/ralink/rt2x00/rt2800lib.h  |  8 +++++++
- drivers/net/wireless/ralink/rt2x00/rt2800mmio.c | 31 +++++++++++++++++++++++++
- drivers/net/wireless/ralink/rt2x00/rt2800mmio.h |  2 ++
- drivers/net/wireless/ralink/rt2x00/rt2800pci.c  |  1 +
- drivers/net/wireless/ralink/rt2x00/rt2800soc.c  |  1 +
- drivers/net/wireless/ralink/rt2x00/rt2800usb.c  |  9 +++++++
- 6 files changed, 52 insertions(+)
+ drivers/net/wireless/ralink/rt2x00/rt2800lib.c   | 56 ++++++++++++++++++++++++
+ drivers/net/wireless/ralink/rt2x00/rt2800lib.h   |  2 +
+ drivers/net/wireless/ralink/rt2x00/rt2800pci.c   |  1 +
+ drivers/net/wireless/ralink/rt2x00/rt2800soc.c   |  1 +
+ drivers/net/wireless/ralink/rt2x00/rt2800usb.c   |  1 +
+ drivers/net/wireless/ralink/rt2x00/rt2x00queue.h |  6 +++
+ 6 files changed, 67 insertions(+)
 
-diff --git a/drivers/net/wireless/ralink/rt2x00/rt2800lib.h b/drivers/net/wireless/ralink/rt2x00/rt2800lib.h
-index 0dff2c7b3010..b3e6e15d34e5 100644
---- a/drivers/net/wireless/ralink/rt2x00/rt2800lib.h
-+++ b/drivers/net/wireless/ralink/rt2x00/rt2800lib.h
-@@ -76,6 +76,7 @@ struct rt2800_ops {
- 				  const u8 *data, const size_t len);
- 	int (*drv_init_registers)(struct rt2x00_dev *rt2x00dev);
- 	__le32 *(*drv_get_txwi)(struct queue_entry *entry);
-+	unsigned int (*drv_get_dma_done)(struct data_queue *queue);
- };
- 
- static inline u32 rt2800_register_read(struct rt2x00_dev *rt2x00dev,
-@@ -177,6 +178,13 @@ static inline __le32 *rt2800_drv_get_txwi(struct queue_entry *entry)
- 	return rt2800ops->drv_get_txwi(entry);
+diff --git a/drivers/net/wireless/ralink/rt2x00/rt2800lib.c b/drivers/net/wireless/ralink/rt2x00/rt2800lib.c
+index 0e8e96075554..7696e3c087ef 100644
+--- a/drivers/net/wireless/ralink/rt2x00/rt2800lib.c
++++ b/drivers/net/wireless/ralink/rt2x00/rt2800lib.c
+@@ -1215,6 +1215,60 @@ void rt2800_txdone_nostatus(struct rt2x00_dev *rt2x00dev)
  }
+ EXPORT_SYMBOL_GPL(rt2800_txdone_nostatus);
  
-+static inline unsigned int rt2800_drv_get_dma_done(struct data_queue *queue)
++static int rt2800_check_hung(struct data_queue *queue)
 +{
-+	const struct rt2800_ops *rt2800ops = queue->rt2x00dev->ops->drv;
++	unsigned int cur_idx = rt2800_drv_get_dma_done(queue);
 +
-+	return rt2800ops->drv_get_dma_done(queue);
++	if (queue->wd_idx != cur_idx)
++		queue->wd_count = 0;
++	else
++		queue->wd_count++;
++
++	return queue->wd_count > 16;
 +}
 +
- void rt2800_mcu_request(struct rt2x00_dev *rt2x00dev,
- 			const u8 command, const u8 token,
- 			const u8 arg0, const u8 arg1);
-diff --git a/drivers/net/wireless/ralink/rt2x00/rt2800mmio.c b/drivers/net/wireless/ralink/rt2x00/rt2800mmio.c
-index ddb88cfeace2..27d2d97c2317 100644
---- a/drivers/net/wireless/ralink/rt2x00/rt2800mmio.c
-+++ b/drivers/net/wireless/ralink/rt2x00/rt2800mmio.c
-@@ -36,6 +36,37 @@
- #include "rt2800lib.h"
- #include "rt2800mmio.h"
- 
-+unsigned int rt2800mmio_get_dma_done(struct data_queue *queue)
++void rt2800_watchdog(struct rt2x00_dev *rt2x00dev)
 +{
-+	struct rt2x00_dev *rt2x00dev = queue->rt2x00dev;
-+	struct queue_entry *entry;
-+	int idx, qid;
++	struct data_queue *queue;
++	bool hung_tx = false;
++	bool hung_rx = false;
 +
-+	switch (queue->qid) {
-+	case QID_AC_VO:
-+	case QID_AC_VI:
-+	case QID_AC_BE:
-+	case QID_AC_BK:
-+		qid = queue->qid;
-+		idx = rt2x00mmio_register_read(rt2x00dev, TX_DTX_IDX(qid));
-+		break;
-+	case QID_MGMT:
-+		idx = rt2x00mmio_register_read(rt2x00dev, TX_DTX_IDX(5));
-+		break;
-+	case QID_RX:
-+		entry = rt2x00queue_get_entry(queue, Q_INDEX_DMA_DONE);
-+		idx = entry->entry_idx;
-+		break;
-+	default:
-+		WARN_ON_ONCE(1);
-+		idx = 0;
-+		break;
++	if (test_bit(DEVICE_STATE_SCANNING, &rt2x00dev->flags))
++		return;
++
++	queue_for_each(rt2x00dev, queue) {
++		switch (queue->qid) {
++		case QID_AC_VO:
++		case QID_AC_VI:
++		case QID_AC_BE:
++		case QID_AC_BK:
++		case QID_MGMT:
++			if (rt2x00queue_empty(queue))
++				continue;
++			hung_tx = rt2800_check_hung(queue);
++			break;
++		case QID_RX:
++			/* For station mode we should reactive at least
++			 * beacons. TODO: need to find good way detect
++			 * RX hung for AP mode.
++			 */
++			if (rt2x00dev->intf_sta_count == 0)
++				continue;
++			hung_rx = rt2800_check_hung(queue);
++			break;
++		default:
++			break;
++		}
 +	}
 +
-+	return idx;
++	if (hung_tx)
++		rt2x00_warn(rt2x00dev, "Watchdog TX hung detected\n");
++
++	if (hung_rx)
++		rt2x00_warn(rt2x00dev, "Watchdog RX hung detected\n");
 +}
-+EXPORT_SYMBOL_GPL(rt2800mmio_get_dma_done);
++EXPORT_SYMBOL_GPL(rt2800_watchdog);
 +
- /*
-  * TX descriptor initialization
-  */
-diff --git a/drivers/net/wireless/ralink/rt2x00/rt2800mmio.h b/drivers/net/wireless/ralink/rt2x00/rt2800mmio.h
-index 3a513273f414..fa90e3c29707 100644
---- a/drivers/net/wireless/ralink/rt2x00/rt2800mmio.h
-+++ b/drivers/net/wireless/ralink/rt2x00/rt2800mmio.h
-@@ -126,6 +126,8 @@
- #define RXD_W3_PLCP_SIGNAL		FIELD32(0x00020000)
- #define RXD_W3_PLCP_RSSI		FIELD32(0x00040000)
+ static unsigned int rt2800_hw_beacon_base(struct rt2x00_dev *rt2x00dev,
+ 					  unsigned int index)
+ {
+@@ -10214,6 +10268,8 @@ int rt2800_probe_hw(struct rt2x00_dev *rt2x00dev)
+ 		__set_bit(REQUIRE_TASKLET_CONTEXT, &rt2x00dev->cap_flags);
+ 	}
  
-+unsigned int rt2800mmio_get_dma_done(struct data_queue *queue);
++	rt2x00dev->link.watchdog_interval = msecs_to_jiffies(100);
 +
- /* TX descriptor initialization */
- __le32 *rt2800mmio_get_txwi(struct queue_entry *entry);
- void rt2800mmio_write_tx_desc(struct queue_entry *entry,
+ 	/*
+ 	 * Set the rssi offset.
+ 	 */
+diff --git a/drivers/net/wireless/ralink/rt2x00/rt2800lib.h b/drivers/net/wireless/ralink/rt2x00/rt2800lib.h
+index b3e6e15d34e5..058cc61884b0 100644
+--- a/drivers/net/wireless/ralink/rt2x00/rt2800lib.h
++++ b/drivers/net/wireless/ralink/rt2x00/rt2800lib.h
+@@ -207,6 +207,8 @@ void rt2800_txdone(struct rt2x00_dev *rt2x00dev);
+ void rt2800_txdone_nostatus(struct rt2x00_dev *rt2x00dev);
+ bool rt2800_txstatus_timeout(struct rt2x00_dev *rt2x00dev);
+ 
++void rt2800_watchdog(struct rt2x00_dev *rt2x00dev);
++
+ void rt2800_write_beacon(struct queue_entry *entry, struct txentry_desc *txdesc);
+ void rt2800_clear_beacon(struct queue_entry *entry);
+ 
 diff --git a/drivers/net/wireless/ralink/rt2x00/rt2800pci.c b/drivers/net/wireless/ralink/rt2x00/rt2800pci.c
-index 0291441ac548..f22260dc2eb4 100644
+index f22260dc2eb4..8ce6c45dbf7d 100644
 --- a/drivers/net/wireless/ralink/rt2x00/rt2800pci.c
 +++ b/drivers/net/wireless/ralink/rt2x00/rt2800pci.c
-@@ -337,6 +337,7 @@ static const struct rt2800_ops rt2800pci_rt2800_ops = {
- 	.drv_write_firmware	= rt2800pci_write_firmware,
- 	.drv_init_registers	= rt2800mmio_init_registers,
- 	.drv_get_txwi		= rt2800mmio_get_txwi,
-+	.drv_get_dma_done	= rt2800mmio_get_dma_done,
- };
- 
- static const struct rt2x00lib_ops rt2800pci_rt2x00_ops = {
+@@ -362,6 +362,7 @@ static const struct rt2x00lib_ops rt2800pci_rt2x00_ops = {
+ 	.link_tuner		= rt2800_link_tuner,
+ 	.gain_calibration	= rt2800_gain_calibration,
+ 	.vco_calibration	= rt2800_vco_calibration,
++	.watchdog		= rt2800_watchdog,
+ 	.start_queue		= rt2800mmio_start_queue,
+ 	.kick_queue		= rt2800mmio_kick_queue,
+ 	.stop_queue		= rt2800mmio_stop_queue,
 diff --git a/drivers/net/wireless/ralink/rt2x00/rt2800soc.c b/drivers/net/wireless/ralink/rt2x00/rt2800soc.c
-index 9c74be82e2be..5c4a745a7489 100644
+index 5c4a745a7489..30e4b578ab67 100644
 --- a/drivers/net/wireless/ralink/rt2x00/rt2800soc.c
 +++ b/drivers/net/wireless/ralink/rt2x00/rt2800soc.c
-@@ -183,6 +183,7 @@ static const struct rt2800_ops rt2800soc_rt2800_ops = {
- 	.drv_write_firmware	= rt2800soc_write_firmware,
- 	.drv_init_registers	= rt2800mmio_init_registers,
- 	.drv_get_txwi		= rt2800mmio_get_txwi,
-+	.drv_get_dma_done	= rt2800mmio_get_dma_done,
- };
- 
- static const struct rt2x00lib_ops rt2800soc_rt2x00_ops = {
+@@ -208,6 +208,7 @@ static const struct rt2x00lib_ops rt2800soc_rt2x00_ops = {
+ 	.link_tuner		= rt2800_link_tuner,
+ 	.gain_calibration	= rt2800_gain_calibration,
+ 	.vco_calibration	= rt2800_vco_calibration,
++	.watchdog		= rt2800_watchdog,
+ 	.start_queue		= rt2800mmio_start_queue,
+ 	.kick_queue		= rt2800mmio_kick_queue,
+ 	.stop_queue		= rt2800mmio_stop_queue,
 diff --git a/drivers/net/wireless/ralink/rt2x00/rt2800usb.c b/drivers/net/wireless/ralink/rt2x00/rt2800usb.c
-index 19eabf16147b..1ec9b1eebedb 100644
+index 1ec9b1eebedb..3966f97c9e47 100644
 --- a/drivers/net/wireless/ralink/rt2x00/rt2800usb.c
 +++ b/drivers/net/wireless/ralink/rt2x00/rt2800usb.c
-@@ -406,6 +406,14 @@ static int rt2800usb_set_device_state(struct rt2x00_dev *rt2x00dev,
- 	return retval;
- }
+@@ -714,6 +714,7 @@ static const struct rt2x00lib_ops rt2800usb_rt2x00_ops = {
+ 	.link_tuner		= rt2800_link_tuner,
+ 	.gain_calibration	= rt2800_gain_calibration,
+ 	.vco_calibration	= rt2800_vco_calibration,
++	.watchdog		= rt2800_watchdog,
+ 	.start_queue		= rt2800usb_start_queue,
+ 	.kick_queue		= rt2x00usb_kick_queue,
+ 	.stop_queue		= rt2800usb_stop_queue,
+diff --git a/drivers/net/wireless/ralink/rt2x00/rt2x00queue.h b/drivers/net/wireless/ralink/rt2x00/rt2x00queue.h
+index a15bae29917b..32ccc819bbf0 100644
+--- a/drivers/net/wireless/ralink/rt2x00/rt2x00queue.h
++++ b/drivers/net/wireless/ralink/rt2x00/rt2x00queue.h
+@@ -449,6 +449,9 @@ enum data_queue_flags {
+  * @length: Number of frames in queue.
+  * @index: Index pointers to entry positions in the queue,
+  *	use &enum queue_index to get a specific index field.
++ * @wd_count: watchdog counter number of times entry does change
++ *      in the queue
++ * @wd_idx: index of queue entry saved by watchdog
+  * @txop: maximum burst time.
+  * @aifs: The aifs value for outgoing frames (field ignored in RX queue).
+  * @cw_min: The cw min value for outgoing frames (field ignored in RX queue).
+@@ -476,6 +479,9 @@ struct data_queue {
+ 	unsigned short length;
+ 	unsigned short index[Q_INDEX_MAX];
  
-+static unsigned int rt2800usb_get_dma_done(struct data_queue *queue)
-+{
-+	struct queue_entry *entry;
++	unsigned short wd_count;
++	unsigned int wd_idx;
 +
-+	entry = rt2x00queue_get_entry(queue, Q_INDEX_DMA_DONE);
-+	return entry->entry_idx;
-+}
-+
- /*
-  * TX descriptor initialization
-  */
-@@ -688,6 +696,7 @@ static const struct rt2800_ops rt2800usb_rt2800_ops = {
- 	.drv_write_firmware	= rt2800usb_write_firmware,
- 	.drv_init_registers	= rt2800usb_init_registers,
- 	.drv_get_txwi		= rt2800usb_get_txwi,
-+	.drv_get_dma_done	= rt2800usb_get_dma_done,
- };
- 
- static const struct rt2x00lib_ops rt2800usb_rt2x00_ops = {
+ 	unsigned short txop;
+ 	unsigned short aifs;
+ 	unsigned short cw_min;
 -- 
 2.7.5
 
