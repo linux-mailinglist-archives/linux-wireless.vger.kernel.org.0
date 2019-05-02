@@ -2,35 +2,35 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 4B3AE11614
-	for <lists+linux-wireless@lfdr.de>; Thu,  2 May 2019 11:07:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id ACECC11616
+	for <lists+linux-wireless@lfdr.de>; Thu,  2 May 2019 11:07:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726289AbfEBJHJ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 2 May 2019 05:07:09 -0400
-Received: from mx1.redhat.com ([209.132.183.28]:47822 "EHLO mx1.redhat.com"
+        id S1726514AbfEBJHL (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 2 May 2019 05:07:11 -0400
+Received: from mx1.redhat.com ([209.132.183.28]:38616 "EHLO mx1.redhat.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726191AbfEBJHI (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 2 May 2019 05:07:08 -0400
-Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.phx2.redhat.com [10.5.11.22])
+        id S1726191AbfEBJHK (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 2 May 2019 05:07:10 -0400
+Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.phx2.redhat.com [10.5.11.15])
         (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
         (No client certificate requested)
-        by mx1.redhat.com (Postfix) with ESMTPS id 1541130ADBAD;
-        Thu,  2 May 2019 09:07:08 +0000 (UTC)
+        by mx1.redhat.com (Postfix) with ESMTPS id AE5AB308FF30;
+        Thu,  2 May 2019 09:07:09 +0000 (UTC)
 Received: from localhost (ovpn-204-54.brq.redhat.com [10.40.204.54])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 9C67D100200A;
-        Thu,  2 May 2019 09:07:07 +0000 (UTC)
+        by smtp.corp.redhat.com (Postfix) with ESMTP id 45264989F;
+        Thu,  2 May 2019 09:07:09 +0000 (UTC)
 From:   Stanislaw Gruszka <sgruszka@redhat.com>
 To:     linux-wireless@vger.kernel.org
 Cc:     =?UTF-8?q?Tomislav=20Po=C5=BEega?= <pozega.tomislav@gmail.com>,
         Daniel Golle <daniel@makrotopia.org>,
         Felix Fietkau <nbd@nbd.name>, Mathias Kresin <dev@kresin.me>
-Subject: [RFC/RFT 3/7] rt2800: initial watchdog implementation
-Date:   Thu,  2 May 2019 11:06:56 +0200
-Message-Id: <1556788021-6531-4-git-send-email-sgruszka@redhat.com>
+Subject: [PATCH 3/7] rt2800: initial watchdog implementation
+Date:   Thu,  2 May 2019 11:06:57 +0200
+Message-Id: <1556788021-6531-5-git-send-email-sgruszka@redhat.com>
 In-Reply-To: <1556788021-6531-1-git-send-email-sgruszka@redhat.com>
 References: <1556788021-6531-1-git-send-email-sgruszka@redhat.com>
-X-Scanned-By: MIMEDefang 2.84 on 10.5.11.22
-X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16 (mx1.redhat.com [10.5.110.47]); Thu, 02 May 2019 09:07:08 +0000 (UTC)
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.15
+X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16 (mx1.redhat.com [10.5.110.49]); Thu, 02 May 2019 09:07:09 +0000 (UTC)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
