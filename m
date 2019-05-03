@@ -2,146 +2,104 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2C0DB12D84
-	for <lists+linux-wireless@lfdr.de>; Fri,  3 May 2019 14:29:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 90A7212E89
+	for <lists+linux-wireless@lfdr.de>; Fri,  3 May 2019 14:55:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727744AbfECM3O (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 3 May 2019 08:29:14 -0400
-Received: from mx1.redhat.com ([209.132.183.28]:35618 "EHLO mx1.redhat.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726047AbfECM3O (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 3 May 2019 08:29:14 -0400
-Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.phx2.redhat.com [10.5.11.16])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mx1.redhat.com (Postfix) with ESMTPS id 0EE9B37E7B;
-        Fri,  3 May 2019 12:29:14 +0000 (UTC)
-Received: from localhost (unknown [10.43.2.51])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id C0D8F5C63A;
-        Fri,  3 May 2019 12:29:11 +0000 (UTC)
-From:   Stanislaw Gruszka <sgruszka@redhat.com>
-To:     linux-wireless@vger.kernel.org
-Cc:     Yan-Hsuan Chuang <yhchuang@realtek.com>,
-        Stanislaw Gruszka <sgruszka@redhat.com>
-Subject: [PATCH] rtw88: avoid circular locking between local->iflist_mtx and rtwdev->mutex
-Date:   Fri,  3 May 2019 14:29:07 +0200
-Message-Id: <1556886547-23632-1-git-send-email-sgruszka@redhat.com>
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.16
-X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16 (mx1.redhat.com [10.5.110.29]); Fri, 03 May 2019 12:29:14 +0000 (UTC)
+        id S1727668AbfECMzS (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 3 May 2019 08:55:18 -0400
+Received: from userp2120.oracle.com ([156.151.31.85]:37760 "EHLO
+        userp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727641AbfECMzS (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 3 May 2019 08:55:18 -0400
+Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
+        by userp2120.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x43Cra0o131650;
+        Fri, 3 May 2019 12:54:57 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
+ : subject : message-id : mime-version : content-type; s=corp-2018-07-02;
+ bh=/EJcOtCKHzyP28w2BqK4Nm8RSbHZ1MiSLldUmj3B1uQ=;
+ b=jFv2J2yl4Awq0vybuY/lRpX7TFepbXcWknMK9WpSaMYRpkkGPjJsho2mRx8cIu0wTWbK
+ urtRsetJ+T56pfSwZU4t8X+z3fPjInw9EA1bmkutdavMHBjFTunW2bE81PiDsXy+Nu4o
+ LoN9KJdPRIKNrvyJNeXI/NWWAe8ET+go86YB1YWmc60/rko4tdzmdn4lhQhCgUQDQ0Xe
+ wTevNiTmJ2iKqSn0zb/WMXdtdi9NN1oBc7+2gO47GuOi/0nSdDXa/nbfYyhF1x+ExKG5
+ YPDbQYVAP0kefCtJ7DGOJthsEBxfTu+Y+a2o9E9l7tGD6J/YuGNCqRNtNyOGl9xzWSAq hw== 
+Received: from userp3030.oracle.com (userp3030.oracle.com [156.151.31.80])
+        by userp2120.oracle.com with ESMTP id 2s6xhyxh0u-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Fri, 03 May 2019 12:54:57 +0000
+Received: from pps.filterd (userp3030.oracle.com [127.0.0.1])
+        by userp3030.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x43CrxGG127592;
+        Fri, 3 May 2019 12:54:57 GMT
+Received: from userv0122.oracle.com (userv0122.oracle.com [156.151.31.75])
+        by userp3030.oracle.com with ESMTP id 2s7p8aak8w-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Fri, 03 May 2019 12:54:57 +0000
+Received: from abhmp0010.oracle.com (abhmp0010.oracle.com [141.146.116.16])
+        by userv0122.oracle.com (8.14.4/8.14.4) with ESMTP id x43CsqSS018138;
+        Fri, 3 May 2019 12:54:52 GMT
+Received: from mwanda (/196.104.111.181)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Fri, 03 May 2019 05:54:52 -0700
+Date:   Fri, 3 May 2019 15:54:36 +0300
+From:   Dan Carpenter <dan.carpenter@oracle.com>
+To:     Felix Fietkau <nbd@nbd.name>, Ryder Lee <ryder.lee@mediatek.com>
+Cc:     Lorenzo Bianconi <lorenzo.bianconi83@gmail.com>,
+        Roy Luo <royluo@google.com>, Kalle Valo <kvalo@codeaurora.org>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        linux-wireless@vger.kernel.org, linux-mediatek@lists.infradead.org,
+        kernel-janitors@vger.kernel.org
+Subject: [PATCH] mt76: Fix a signedness bug in mt7615_add_interface()
+Message-ID: <20190502212341.GA31847@mwanda>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Mailer: git-send-email haha only kidding
+User-Agent: Mutt/1.10.1 (2018-07-13)
+X-Proofpoint-Virus-Version: vendor=nai engine=5900 definitions=9245 signatures=668685
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 malwarescore=0
+ phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=999
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.0.1-1810050000 definitions=main-1905030081
+X-Proofpoint-Virus-Version: vendor=nai engine=5900 definitions=9245 signatures=668685
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
+ suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1011
+ lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=999 adultscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1810050000
+ definitions=main-1905030081
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Remove circular lock dependency by using atomic version of interfaces
-iterate in watch_dog_work(), hence avoid taking local->iflist_mtx
-(rtw_vif_watch_dog_iter() only update some data, it can be called from
-atomic context). Fixes below LOCKDEP warning:
+The problem is that "mvif->omac_idx" is a u8 so it can't be negative
+and the error handling won't work.  The get_omac_idx() function returns
+-1 on error.
 
-[ 1157.219415] ======================================================
-[ 1157.225772] [ INFO: possible circular locking dependency detected ]
-[ 1157.232150] 3.10.0-1043.el7.sgruszka1.x86_64.debug #1 Not tainted
-[ 1157.238346] -------------------------------------------------------
-[ 1157.244635] kworker/u4:2/14490 is trying to acquire lock:
-[ 1157.250194]  (&rtwdev->mutex){+.+.+.}, at: [<ffffffffc098322b>] rtw_ops_config+0x2b/0x90 [rtw88]
-[ 1157.259151]
-but task is already holding lock:
-[ 1157.265085]  (&local->iflist_mtx){+.+...}, at: [<ffffffffc0b8ab7a>] ieee80211_mgd_probe_ap.part.28+0xca/0x160 [mac80211]
-[ 1157.276169]
-which lock already depends on the new lock.
-
-[ 1157.284488]
-the existing dependency chain (in reverse order) is:
-[ 1157.292101]
--> #2 (&local->iflist_mtx){+.+...}:
-[ 1157.296919]        [<ffffffffbc741a29>] lock_acquire+0x99/0x1e0
-[ 1157.302955]        [<ffffffffbce72793>] mutex_lock_nested+0x93/0x410
-[ 1157.309416]        [<ffffffffc0b6038f>] ieee80211_iterate_interfaces+0x2f/0x60 [mac80211]
-[ 1157.317730]        [<ffffffffc09811ab>] rtw_watch_dog_work+0xcb/0x130 [rtw88]
-[ 1157.325003]        [<ffffffffbc6d77bc>] process_one_work+0x22c/0x720
-[ 1157.331481]        [<ffffffffbc6d7dd6>] worker_thread+0x126/0x3b0
-[ 1157.337589]        [<ffffffffbc6e107f>] kthread+0xef/0x100
-[ 1157.343260]        [<ffffffffbce848b7>] ret_from_fork_nospec_end+0x0/0x39
-[ 1157.350091]
--> #1 ((&(&rtwdev->watch_dog_work)->work)){+.+...}:
-[ 1157.356314]        [<ffffffffbc741a29>] lock_acquire+0x99/0x1e0
-[ 1157.362427]        [<ffffffffbc6d570b>] flush_work+0x5b/0x310
-[ 1157.368287]        [<ffffffffbc6d740e>] __cancel_work_timer+0xae/0x170
-[ 1157.374940]        [<ffffffffbc6d7583>] cancel_delayed_work_sync+0x13/0x20
-[ 1157.381930]        [<ffffffffc0982b49>] rtw_core_stop+0x29/0x50 [rtw88]
-[ 1157.388679]        [<ffffffffc098bee6>] rtw_enter_ips+0x16/0x20 [rtw88]
-[ 1157.395428]        [<ffffffffc0983242>] rtw_ops_config+0x42/0x90 [rtw88]
-[ 1157.402173]        [<ffffffffc0b13343>] ieee80211_hw_config+0xc3/0x680 [mac80211]
-[ 1157.409854]        [<ffffffffc0b3925b>] ieee80211_do_open+0x69b/0x9c0 [mac80211]
-[ 1157.417418]        [<ffffffffc0b395e9>] ieee80211_open+0x69/0x70 [mac80211]
-[ 1157.424496]        [<ffffffffbcd03442>] __dev_open+0xe2/0x160
-[ 1157.430356]        [<ffffffffbcd03773>] __dev_change_flags+0xa3/0x180
-[ 1157.436922]        [<ffffffffbcd03879>] dev_change_flags+0x29/0x60
-[ 1157.443224]        [<ffffffffbcda14c4>] devinet_ioctl+0x794/0x890
-[ 1157.449331]        [<ffffffffbcda27b5>] inet_ioctl+0x75/0xa0
-[ 1157.455087]        [<ffffffffbccd54eb>] sock_do_ioctl+0x2b/0x60
-[ 1157.461178]        [<ffffffffbccd5753>] sock_ioctl+0x233/0x310
-[ 1157.467109]        [<ffffffffbc8bd820>] do_vfs_ioctl+0x410/0x6c0
-[ 1157.473233]        [<ffffffffbc8bdb71>] SyS_ioctl+0xa1/0xc0
-[ 1157.478914]        [<ffffffffbce84a5e>] system_call_fastpath+0x25/0x2a
-[ 1157.485569]
--> #0 (&rtwdev->mutex){+.+.+.}:
-[ 1157.490022]        [<ffffffffbc7409d1>] __lock_acquire+0xec1/0x1630
-[ 1157.496305]        [<ffffffffbc741a29>] lock_acquire+0x99/0x1e0
-[ 1157.502413]        [<ffffffffbce72793>] mutex_lock_nested+0x93/0x410
-[ 1157.508890]        [<ffffffffc098322b>] rtw_ops_config+0x2b/0x90 [rtw88]
-[ 1157.515724]        [<ffffffffc0b13343>] ieee80211_hw_config+0xc3/0x680 [mac80211]
-[ 1157.523370]        [<ffffffffc0b8a4ca>] ieee80211_recalc_ps.part.27+0x9a/0x180 [mac80211]
-[ 1157.531685]        [<ffffffffc0b8abc5>] ieee80211_mgd_probe_ap.part.28+0x115/0x160 [mac80211]
-[ 1157.540353]        [<ffffffffc0b8b40d>] ieee80211_beacon_connection_loss_work+0x4d/0x80 [mac80211]
-[ 1157.549513]        [<ffffffffbc6d77bc>] process_one_work+0x22c/0x720
-[ 1157.555886]        [<ffffffffbc6d7dd6>] worker_thread+0x126/0x3b0
-[ 1157.562170]        [<ffffffffbc6e107f>] kthread+0xef/0x100
-[ 1157.567765]        [<ffffffffbce848b7>] ret_from_fork_nospec_end+0x0/0x39
-[ 1157.574579]
-other info that might help us debug this:
-
-[ 1157.582788] Chain exists of:
-  &rtwdev->mutex --> (&(&rtwdev->watch_dog_work)->work) --> &local->iflist_mtx
-
-[ 1157.593024]  Possible unsafe locking scenario:
-
-[ 1157.599046]        CPU0                    CPU1
-[ 1157.603653]        ----                    ----
-[ 1157.608258]   lock(&local->iflist_mtx);
-[ 1157.612180]                                lock((&(&rtwdev->watch_dog_work)->work));
-[ 1157.620074]                                lock(&local->iflist_mtx);
-[ 1157.626555]   lock(&rtwdev->mutex);
-[ 1157.630124]
- *** DEADLOCK ***
-
-[ 1157.636148] 4 locks held by kworker/u4:2/14490:
-[ 1157.640755]  #0:  (%s#6){.+.+.+}, at: [<ffffffffbc6d774a>] process_one_work+0x1ba/0x720
-[ 1157.648965]  #1:  ((&ifmgd->beacon_connection_loss_work)){+.+.+.}, at: [<ffffffffbc6d774a>] process_one_work+0x1ba/0x720
-[ 1157.659950]  #2:  (&wdev->mtx){+.+.+.}, at: [<ffffffffc0b8aad5>] ieee80211_mgd_probe_ap.part.28+0x25/0x160 [mac80211]
-[ 1157.670901]  #3:  (&local->iflist_mtx){+.+...}, at: [<ffffffffc0b8ab7a>] ieee80211_mgd_probe_ap.part.28+0xca/0x160 [mac80211]
-[ 1157.682466]
-
-Fixes: e3037485c68e ("rtw88: new Realtek 802.11ac driver")
-Signed-off-by: Stanislaw Gruszka <sgruszka@redhat.com>
+Fixes: 04b8e65922f6 ("mt76: add mac80211 driver for MT7615 PCIe-based chipsets")
+Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
 ---
- drivers/net/wireless/realtek/rtw88/main.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/net/wireless/mediatek/mt76/mt7615/main.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/wireless/realtek/rtw88/main.c b/drivers/net/wireless/realtek/rtw88/main.c
-index 9893e5e297e3..f63c34a2e356 100644
---- a/drivers/net/wireless/realtek/rtw88/main.c
-+++ b/drivers/net/wireless/realtek/rtw88/main.c
-@@ -162,7 +162,8 @@ static void rtw_watch_dog_work(struct work_struct *work)
- 	rtwdev->stats.tx_cnt = 0;
- 	rtwdev->stats.rx_cnt = 0;
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/main.c b/drivers/net/wireless/mediatek/mt76/mt7615/main.c
+index 80e6b211f60b..8d7a47d1b205 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7615/main.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7615/main.c
+@@ -77,11 +77,12 @@ static int mt7615_add_interface(struct ieee80211_hw *hw,
+ 		goto out;
+ 	}
  
--	rtw_iterate_vifs(rtwdev, rtw_vif_watch_dog_iter, &data);
-+	/* use atomic version to avoid taking local->iflist_mtx mutex */
-+	rtw_iterate_vifs_atomic(rtwdev, rtw_vif_watch_dog_iter, &data);
+-	mvif->omac_idx = get_omac_idx(vif->type, dev->omac_mask);
+-	if (mvif->omac_idx < 0) {
++	idx = get_omac_idx(vif->type, dev->omac_mask);
++	if (idx < 0) {
+ 		ret = -ENOSPC;
+ 		goto out;
+ 	}
++	mvif->omac_idx = idx;
  
- 	/* fw supports only one station associated to enter lps, if there are
- 	 * more than two stations associated to the AP, then we can not enter
+ 	/* TODO: DBDC support. Use band 0 and wmm 0 for now */
+ 	mvif->band_idx = 0;
 -- 
-1.9.3
+2.18.0
 
