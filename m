@@ -2,100 +2,107 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 227BA127D4
-	for <lists+linux-wireless@lfdr.de>; Fri,  3 May 2019 08:39:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5855612835
+	for <lists+linux-wireless@lfdr.de>; Fri,  3 May 2019 08:56:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726259AbfECGjD (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 3 May 2019 02:39:03 -0400
-Received: from mail-qt1-f195.google.com ([209.85.160.195]:41061 "EHLO
-        mail-qt1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725777AbfECGjC (ORCPT
+        id S1726182AbfECG4d (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 3 May 2019 02:56:33 -0400
+Received: from smtp.codeaurora.org ([198.145.29.96]:52572 "EHLO
+        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725793AbfECG4d (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 3 May 2019 02:39:02 -0400
-Received: by mail-qt1-f195.google.com with SMTP id c13so5524915qtn.8
-        for <linux-wireless@vger.kernel.org>; Thu, 02 May 2019 23:39:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=endlessm-com.20150623.gappssmtp.com; s=20150623;
-        h=mime-version:from:date:message-id:subject:to:cc;
-        bh=DZ2IHyxIY3tc20Fav7PGg8oi4DI7SoA47YJWJXbH2tE=;
-        b=IgC/WSM6QdvA97J9Eradk1OkSe2topjqiObiWYIbZdyx/kL61mmr2oXQehbtGj/T+1
-         IZIXz2OMO5RgtUp2K9jrVtD6UPycSwS5ujp38wnBHdq4aoLNN9gqWzPm11o1FMYq28qF
-         r7WOPZ3u6QEA8zGkp9qgzNwDICHurIJ/ik3OnJOFyIB8t2vXHUr9ylAxEEmjxoa1/EYM
-         r6a0I0aeeI36BxPDFIp1RUwLhjzkxaAjeo2n2JY8Tmq1xSKALC3eZIsSnqIp7pJY79Dz
-         keoJra/8M3YhAoPs6SG4NtVkCAtFVj2riHFbKnf3LDSYk5JoZQtcIEgc3dplfqUwsIC1
-         lTRw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:from:date:message-id:subject:to:cc;
-        bh=DZ2IHyxIY3tc20Fav7PGg8oi4DI7SoA47YJWJXbH2tE=;
-        b=tNVxHuVN5NPI1me8R5A2174nrbrPYoU8DOzaOVQuzPLrTWHZMj5gX7VlfZDTC3/tM3
-         0LS8nmKQaMgY45Zy6hGY759XeA8rzM0iIKyV2HMa9wQujlorM/VFn2X6u5NK8tOy7q52
-         eCgOThtQKX7kCeE0Z0LKSrmiFr9PLFXNb3iYytIl8N0DzLattjSlBvK7FKjDSPaDS9yO
-         7nTm0Xxa7fGOfEyQMRkjyaVrBQ8Q1YTRi+YdKcQJucXKoT4uPL5VSBUEpiiyj90DMQhF
-         pWwMPvbMXnzaFuey96HwdPCtRit+5OnyCYqIopmqeISWAdu2/FJ4lEq4GQbeihQaecTC
-         aWBA==
-X-Gm-Message-State: APjAAAU7zn858jpyLzFpMtt/UW5EKwWdwV/volKJk4mqXw5MUzZ9+QRa
-        aqa8n1NhTf/0AaK2wsUkqgv6se3w8QrdmXPNK/NbjQ==
-X-Google-Smtp-Source: APXvYqyZbCWh74vb5VdL2cKae7QJoxTTDldS1TH5WTdKneC0Qmwikj8WKkbQ5N8esX/KXeusHW2I5RkliSFeEJQOg8g=
-X-Received: by 2002:ac8:182e:: with SMTP id q43mr3816249qtj.128.1556865541833;
- Thu, 02 May 2019 23:39:01 -0700 (PDT)
+        Fri, 3 May 2019 02:56:33 -0400
+Received: by smtp.codeaurora.org (Postfix, from userid 1000)
+        id 4651861196; Fri,  3 May 2019 06:56:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
+        s=default; t=1556866592;
+        bh=CKHYLK4DMOav1+dBN3bvyTVHIGXKptSbPxL7DAcePzI=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=Y3x+RF2CrIkrTqH4OK3peMC46gbx738q1D2rRA8IgydlI14YBhL6E8imPck2M3pHi
+         0YFVw42aMovTJY/0uO0Az8C+FpfgC29Qz2kYF5lMTMedsZvd0g9W5dVXmkuOV6fXEI
+         4HcLUQ6H5ZgYH8BAJg9UOqSYnwtlrkXbQftLNY58=
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        pdx-caf-mail.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.7 required=2.0 tests=ALL_TRUSTED,BAYES_00,
+        DKIM_INVALID,DKIM_SIGNED autolearn=no autolearn_force=no version=3.4.0
+Received: from mail.codeaurora.org (localhost.localdomain [127.0.0.1])
+        by smtp.codeaurora.org (Postfix) with ESMTP id A836C60A42;
+        Fri,  3 May 2019 06:56:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
+        s=default; t=1556866591;
+        bh=CKHYLK4DMOav1+dBN3bvyTVHIGXKptSbPxL7DAcePzI=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=Xacl/NGWlsu3lN4nf1razueereOTFaSruNhtKUKQzv5g4jW+Y00Ed4kjNvQcg6PsH
+         DB2PELOW96ZqoXoIobU56ZH+sXINMCkfru6DUlUVizk5ihD55uN3mxf6wYG//w7xn2
+         vBUIORBsCkO5ePnNsxHYI0QFDAqayv8JziD8Rw0k=
 MIME-Version: 1.0
-From:   Chris Chiu <chiu@endlessm.com>
-Date:   Fri, 3 May 2019 14:38:50 +0800
-Message-ID: <CAB4CAwdHPfi3rhQofxbH+yWJZnLJCFK+r901HZ6HLxmHPjkU4w@mail.gmail.com>
-Subject: Improve TX performance of RTL8723BU on rtl8xxxu driver
-To:     Jes Sorensen <jes.sorensen@gmail.com>, kvalo@codeaurora.org,
-        davem@davemloft.net
-Cc:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        Linux Kernel <linux-kernel@vger.kernel.org>,
-        Linux Upstreaming Team <linux@endlessm.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=US-ASCII;
+ format=flowed
+Content-Transfer-Encoding: 7bit
+Date:   Fri, 03 May 2019 12:26:31 +0530
+From:   Rakesh Pillai <pillair@codeaurora.org>
+To:     Kalle Valo <kvalo@codeaurora.org>
+Cc:     ath10k@lists.infradead.org, linux-wireless@vger.kernel.org
+Subject: Re: [PATCH 1/2] ath10k: Fix rate table updation in tx stats
+In-Reply-To: <20190503060032.23F1C61195@smtp.codeaurora.org>
+References: <1552319602-17795-2-git-send-email-pillair@codeaurora.org>
+ <20190503060032.23F1C61195@smtp.codeaurora.org>
+Message-ID: <edfbff30627849996b0597b964ed018c@codeaurora.org>
+X-Sender: pillair@codeaurora.org
+User-Agent: Roundcube Webmail/1.2.5
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-We have 3 laptops which connect the wifi by the same RTL8723BU.
-The PCI VID/PID of the wifi chip is 10EC:B720 which is supported.
-They have the same problem with the in-kernel rtl8xxxu driver, the
-iperf (as a client to an ethernet-connected server) gets ~1Mbps.
-Nevertheless, the signal strength is reported as around -40dBm,
-which is quite good. From the wireshark capture, the tx rate for each
-data and qos data packet is only 1Mbps. Compare to the driver from
-https://github.com/lwfinger/rtl8723bu, the same iperf test gets ~12
-Mbps or more. The signal strength is reported similarly around
--40dBm. That's why we want to find out the cause and improve.
+Hi Kalle,
 
-After reading the source code of the rtl8xxxu driver and Larry's, the
-major difference is that Larry's driver has a watchdog which will keep
-monitoring the signal quality and updating the rate mask just like the
-rtl8xxxu_gen2_update_rate_mask() does if signal quality changes.
-And this kind of watchdog also exists in rtlwifi driver of some specific
-chips, ex rtl8192ee, rtl8188ee, rtl8723ae, rtl8821ae...etc. They have
-the same member function named dm_watchdog and will invoke the
-corresponding dm_refresh_rate_adaptive_mask to adjust the tx rate
-mask.
+This set of patches is dependent on 
+https://patchwork.kernel.org/patch/10831319/
+I can send out v2 for this patchset, marking the dependency, if needed.
 
-Thus I created 2 commits and try to do the same thing on rtl8xxxu.
-https://github.com/endlessm/linux/commit/503d0b6eb61f25984042b1f00e6293776ae722c7
-https://github.com/endlessm/linux/commit/5b06665766d6c3e25cbf649022989a8f3abc83d6
-The 1st commit brings a data structure for rate adaptive which will be
-useful for determining higher or lower the tx rate. The second commit
-adds a watchdog to monitor and update the tx rate mask and tell the
-firmware. After applying these commits, the tx rate of each data and
-qos data packet will be 39Mbps (MCS4) with the 0xf00000 as its tx
-rate mask. The 20th bit ~ 23th bit means MCS4 to MCS7. It means
-that the firmware still picks the lowest rate from the rate mask and
-explains why the tx rate of data and qos data is always lowest 1Mbps
-because the default rate mask passed is almost 0xFFFFFFF ranges
-from the basic CCK rate, OFDM rate, and MCS rate. However, with
-Larry's driver, the tx rate observed from wireshark under the same
-condition is almost 65Mbps or 72Mbps.
+Thanks,
+Rakesh Pillai.
 
-I believe the firmware of RTL8723BU may need fix. And I think we
-can still bring in the dm_watchdog as rtlwifi to improve from the
-driver side. Please leave precious comments for my commits and
-suggest what I can do better to get them upstream. Or suggest if
-there's any better idea to fix this. Thanks.
 
-Chris
+On 2019-05-03 11:30, Kalle Valo wrote:
+> Rakesh Pillai <pillair@codeaurora.org> wrote:
+> 
+>> The index for updating rate table, which is displayed
+>> in the tx stats via debugfs, is calculated using the
+>> bandwidth value. The bandwidth values do not map
+>> correctly with the bandwidth values shown in the rate table.
+>> 
+>> Correct the bandwidth value calculation which is used
+>> to calculate the index for rate table updation for tx stats.
+>> 
+>> Tested HW: WCN3990
+>> Tested FW: WLAN.HL.3.1-00784-QCAHLSWMTPLZ-1
+>> 
+>> Fixes: e88975ca37d1 ("ath10k: dump tx stats in rate table format")
+>> Signed-off-by: Rakesh Pillai <pillair@codeaurora.org>
+> 
+> Fails to compile:
+> 
+> drivers/net/wireless/ath/ath10k/htt_rx.c: In function
+> 'ath10k_accumulate_per_peer_tx_stats':
+> drivers/net/wireless/ath/ath10k/htt_rx.c:3252:14: error: implicit
+> declaration of function 'ath10k_get_bw'; did you mean
+> 'ath10k_get_tid'? [-Werror=implicit-function-declaration]
+>   rtable_bw = ath10k_get_bw(&ar->hw_params, pstats->flags);
+>               ^~~~~~~~~~~~~
+>               ath10k_get_tid
+> cc1: some warnings being treated as errors
+> make[5]: *** [drivers/net/wireless/ath/ath10k/htt_rx.o] Error 1
+> make[4]: *** [drivers/net/wireless/ath/ath10k] Error 2
+> make[3]: *** [drivers/net/wireless/ath] Error 2
+> make[2]: *** [drivers/net/wireless] Error 2
+> make[1]: *** [drivers/net] Error 2
+> make[1]: *** Waiting for unfinished jobs....
+> make: *** [drivers] Error 2
+> 
+> 2 patches set to Changes Requested.
+> 
+> 10847733 [1/2] ath10k: Fix rate table updation in tx stats
+> 10847737 [2/2] ath10k: Fix NSS tx stats for legacy rates
