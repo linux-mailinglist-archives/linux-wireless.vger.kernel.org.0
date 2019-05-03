@@ -2,67 +2,46 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id CC7A312B7F
-	for <lists+linux-wireless@lfdr.de>; Fri,  3 May 2019 12:32:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 59A4F12BDC
+	for <lists+linux-wireless@lfdr.de>; Fri,  3 May 2019 12:49:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727423AbfECKcV (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 3 May 2019 06:32:21 -0400
-Received: from rtits2.realtek.com ([211.75.126.72]:48834 "EHLO
-        rtits2.realtek.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727381AbfECKcU (ORCPT
+        id S1726377AbfECKtG (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 3 May 2019 06:49:06 -0400
+Received: from s3.sipsolutions.net ([144.76.43.62]:53336 "EHLO
+        sipsolutions.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725816AbfECKtG (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 3 May 2019 06:32:20 -0400
-Authenticated-By: 
-X-SpamFilter-By: BOX Solutions SpamTrap 5.62 with qID x43AWG4O012132, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtitcasv01.realtek.com.tw[172.21.6.18])
-        by rtits2.realtek.com.tw (8.15.2/2.57/5.78) with ESMTPS id x43AWG4O012132
-        (version=TLSv1 cipher=AES256-SHA bits=256 verify=NOT);
-        Fri, 3 May 2019 18:32:17 +0800
-Received: from localhost.localdomain (172.21.68.126) by
- RTITCASV01.realtek.com.tw (172.21.6.18) with Microsoft SMTP Server id
- 14.3.408.0; Fri, 3 May 2019 18:32:16 +0800
-From:   <yhchuang@realtek.com>
-To:     <kvalo@codeaurora.org>
-CC:     <linux-wireless@vger.kernel.org>
-Subject: [PATCH 6/6] rtw88: more descriptions about LPS
-Date:   Fri, 3 May 2019 18:31:42 +0800
-Message-ID: <1556879502-16211-7-git-send-email-yhchuang@realtek.com>
-X-Mailer: git-send-email 2.7.4
-In-Reply-To: <1556879502-16211-1-git-send-email-yhchuang@realtek.com>
+        Fri, 3 May 2019 06:49:06 -0400
+Received: by sipsolutions.net with esmtpsa (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <johannes@sipsolutions.net>)
+        id 1hMVkT-0005mQ-QO; Fri, 03 May 2019 12:49:01 +0200
+Message-ID: <315fea6071bc29c20b3f71f8e725433c64ad195d.camel@sipsolutions.net>
+Subject: Re: [PATCH 5/6] rtw88: mac: remove dangerous while (1)
+From:   Johannes Berg <johannes@sipsolutions.net>
+To:     yhchuang@realtek.com, kvalo@codeaurora.org
+Cc:     linux-wireless@vger.kernel.org
+Date:   Fri, 03 May 2019 12:48:58 +0200
+In-Reply-To: <1556879502-16211-6-git-send-email-yhchuang@realtek.com> (sfid-20190503_123228_124010_1BC9DA36)
 References: <1556879502-16211-1-git-send-email-yhchuang@realtek.com>
-MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [172.21.68.126]
+         <1556879502-16211-6-git-send-email-yhchuang@realtek.com>
+         (sfid-20190503_123228_124010_1BC9DA36)
+Content-Type: text/plain; charset="UTF-8"
+X-Mailer: Evolution 3.28.5 (3.28.5-2.fc28) 
+Mime-Version: 1.0
+Content-Transfer-Encoding: 7bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Yan-Hsuan Chuang <yhchuang@realtek.com>
+On Fri, 2019-05-03 at 18:31 +0800, yhchuang@realtek.com wrote:
+> 
+> +	while ((cmd = cmd_seq[idx])) {
+...
+> +	};
 
-The LPS represents Leisure Power Save. When enabled, firmware will be in
-charge of turning radio off between beacons. Also firmware should turn
-on the radio when beacon is coming, and the data queued should be
-transmitted in TBTT period.
+That semicolon is pretty pointless there :-)
 
-Signed-off-by: Yan-Hsuan Chuang <yhchuang@realtek.com>
----
- drivers/net/wireless/realtek/rtw88/main.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/net/wireless/realtek/rtw88/main.c b/drivers/net/wireless/realtek/rtw88/main.c
-index f447361..6953013 100644
---- a/drivers/net/wireless/realtek/rtw88/main.c
-+++ b/drivers/net/wireless/realtek/rtw88/main.c
-@@ -20,7 +20,7 @@ EXPORT_SYMBOL(rtw_debug_mask);
- module_param_named(support_lps, rtw_fw_support_lps, bool, 0644);
- module_param_named(debug_mask, rtw_debug_mask, uint, 0644);
- 
--MODULE_PARM_DESC(support_lps, "Set Y to enable LPS support");
-+MODULE_PARM_DESC(support_lps, "Set Y to enable Leisure Power Save support, turn radio off between beacons");
- MODULE_PARM_DESC(debug_mask, "Debugging mask");
- 
- static struct ieee80211_channel rtw_channeltable_2g[] = {
--- 
-2.7.4
+johannes
 
