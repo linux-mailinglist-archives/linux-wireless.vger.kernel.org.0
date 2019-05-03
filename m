@@ -2,90 +2,195 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 6284E121D7
-	for <lists+linux-wireless@lfdr.de>; Thu,  2 May 2019 20:24:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8A14F12672
+	for <lists+linux-wireless@lfdr.de>; Fri,  3 May 2019 05:17:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726120AbfEBSYN (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 2 May 2019 14:24:13 -0400
-Received: from mail-lf1-f65.google.com ([209.85.167.65]:37823 "EHLO
-        mail-lf1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725962AbfEBSYN (ORCPT
+        id S1726255AbfECDRY (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 2 May 2019 23:17:24 -0400
+Received: from mail-ed1-f67.google.com ([209.85.208.67]:35742 "EHLO
+        mail-ed1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726114AbfECDRX (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 2 May 2019 14:24:13 -0400
-Received: by mail-lf1-f65.google.com with SMTP id h126so2613557lfh.4
-        for <linux-wireless@vger.kernel.org>; Thu, 02 May 2019 11:24:11 -0700 (PDT)
+        Thu, 2 May 2019 23:17:23 -0400
+Received: by mail-ed1-f67.google.com with SMTP id p26so4345835edr.2;
+        Thu, 02 May 2019 20:17:22 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=n+j627VNtYu9oTIOSNUI61HYi4gX8hdlesITEjnAgcc=;
-        b=e2DXXOcnaOQdTc8G1Ffgclt3BIrHSiZK7pNjYbYL9UkogyY3SqnJPWabSYkyrgT8vi
-         7/koh8Vd4xDT198WPDBmWETwJcTq/GcpJWUwGYVL6/tf5fZ0lShHtXph0xhxN45HQRFm
-         VTbhoP2SaZbfKTL0rRc0EK+gnJfsVt6Rx4v1o=
+        d=gmail.com; s=20161025;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=exm4N7u1IvYx+pAgkJoEgIpNRAWHACWM3KM/oLglz1E=;
+        b=L52EIfbjMFkrvpnCBpB2Ic0diQIMkhnGNXTc8F8TeXGqPFqcwI8pM9IPnseH7Zjue/
+         XZdgY1E0k1acaDyfNbPrzRP4Ic5q8ShLFqqBHZXowhrwMosClo76xtBRkNEXBlDwJ3ro
+         bnJ2XHdXT51FPoGHvuq4W1Mrbb/C+bPUfcjziK0GlpY4jA1sC0UAI8vxy3QEbzOhr1gv
+         bSD244mwxge46W1PyQU6p1l2xvf6kaxb4+U/b49sQNYi5qpRHQzH08L+RdRR7sH45DvU
+         upQoiiAyGgS8WUBOg9jizo9pWj3R25tO0UlqTCgO6IUZ1A6bD7OalKmRwQKikHj0kuVJ
+         1RnQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=n+j627VNtYu9oTIOSNUI61HYi4gX8hdlesITEjnAgcc=;
-        b=iQZ/PjbzfGGo9oqKAbFLzSfgcpTGi8EaSUO9Kya8FsLBw6SR9S4/k0Wc14VfQMw6Ku
-         x7FhwfeblZ1ZabhzgnySI/FnKUPVbcOF/3D5cDzB8U+Y4yIxRsRRRWPn7nHTrAIikq90
-         3bEIYS9NGIrCtaUtVZiZtG1iltY0EOI5DQPOFEnbWo+xOaJiJhteqFeIq4jwNYxNUWt6
-         08m+wWnsZcYGYc/ONtOoQCdz4TKu/X21r7+EjgIdFz/FZknDLRgZJ7u/ZlxXp5mWD27K
-         XPflzsY5Z5JSU1AgKvIYFK+oXOiy8I9XrSppPH8z2HKFBQn/LgqXNmQ313pqfNwqE+2Y
-         Bh1Q==
-X-Gm-Message-State: APjAAAUiidxbcOenU0G1D/Fh4s596I0bHTpAjYFLD7t1Hz28elsvqetu
-        v+fBqf1iGPMvvbhraeNSTWTlSi3L5Pg=
-X-Google-Smtp-Source: APXvYqyjJtDc3GqJU9D+P3ykebLuMM/4sa9ENESdmefZARyg5jy/H2xW6fRW3mMUstCSGl+KvmBkNQ==
-X-Received: by 2002:ac2:4205:: with SMTP id y5mr2733434lfh.15.1556821450485;
-        Thu, 02 May 2019 11:24:10 -0700 (PDT)
-Received: from mail-lj1-f176.google.com (mail-lj1-f176.google.com. [209.85.208.176])
-        by smtp.gmail.com with ESMTPSA id j27sm9554951lfk.97.2019.05.02.11.24.08
-        for <linux-wireless@vger.kernel.org>
-        (version=TLS1_3 cipher=AEAD-AES128-GCM-SHA256 bits=128/128);
-        Thu, 02 May 2019 11:24:09 -0700 (PDT)
-Received: by mail-lj1-f176.google.com with SMTP id e18so3090431lja.5
-        for <linux-wireless@vger.kernel.org>; Thu, 02 May 2019 11:24:08 -0700 (PDT)
-X-Received: by 2002:a2e:3e18:: with SMTP id l24mr2673440lja.68.1556821448424;
- Thu, 02 May 2019 11:24:08 -0700 (PDT)
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=exm4N7u1IvYx+pAgkJoEgIpNRAWHACWM3KM/oLglz1E=;
+        b=k+oobnOqqz1eSvBiLinAiaMiF8Mq907Zq2C0fk+FyhD3U0W05CFD6k0MVq6/91mc7h
+         H99A2E5b3RUe4d0m1+zPx4qjlWf3ysT/aw+hzAyd/HoX9W/ww3kOrGyZN9ZnFIxQf+0S
+         hmTEOmcR2IqW7FbukkxiyRp20wg65BHK5RniOKM8Rmx/h/Rp+tlp6qvyM9Oxkxcnicz7
+         mQUzizgk95yK1JLC7mpOcsTOutQBBWvb2aw3xVsba59fGmxpJnHoTJ8LPw8jufxHBss1
+         /TGkU4BwEf10DUT0RjeyaW/7naodhm3o39U6euM/37meU8IE2pqEsotNVeyGvzGts172
+         gQFw==
+X-Gm-Message-State: APjAAAXwF57GGTG2FfLXWFFe7iztmNx3kzuw57nZfSZzblOKvIcJEPHQ
+        P/tIVeZu5Nzw5ePTnMmJ0vY=
+X-Google-Smtp-Source: APXvYqzgq+VHW0yGO5hJ1ZnRyxSpb3YrJW9d7xNPwzFkJDfP4QdW501wWw7j5Td6gr8cNm5bLafnAg==
+X-Received: by 2002:a17:906:9519:: with SMTP id u25mr4120326ejx.34.1556853441256;
+        Thu, 02 May 2019 20:17:21 -0700 (PDT)
+Received: from archlinux-i9 ([2a01:4f9:2b:2b84::2])
+        by smtp.gmail.com with ESMTPSA id o9sm243533edh.95.2019.05.02.20.17.19
+        (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
+        Thu, 02 May 2019 20:17:20 -0700 (PDT)
+Date:   Thu, 2 May 2019 20:17:18 -0700
+From:   Nathan Chancellor <natechancellor@gmail.com>
+To:     Nick Desaulniers <ndesaulniers@google.com>
+Cc:     Amitkumar Karwar <amitkarwar@gmail.com>,
+        Siva Rebbagondla <siva8118@gmail.com>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        LKML <linux-kernel@vger.kernel.org>,
+        clang-built-linux <clang-built-linux@googlegroups.com>
+Subject: Re: [PATCH] rsi: Properly initialize data in rsi_sdio_ta_reset
+Message-ID: <20190503031718.GB6969@archlinux-i9>
+References: <20190502151548.11143-1-natechancellor@gmail.com>
+ <CAKwvOd=nvKGGW5jvN+WFUXzOm9xeiNNUD0F9--9YcpuRmnWWhA@mail.gmail.com>
 MIME-Version: 1.0
-References: <1555653004-1795-1-git-send-email-yhchuang@realtek.com>
- <1555653004-1795-5-git-send-email-yhchuang@realtek.com> <87bm0npsp7.fsf@kamboji.qca.qualcomm.com>
- <04c534eb-af32-adfc-62bb-90d83526af1a@lwfinger.net> <87a7g6ni31.fsf@kamboji.qca.qualcomm.com>
-In-Reply-To: <87a7g6ni31.fsf@kamboji.qca.qualcomm.com>
-From:   Brian Norris <briannorris@chromium.org>
-Date:   Thu, 2 May 2019 11:23:56 -0700
-X-Gmail-Original-Message-ID: <CA+ASDXPB3_uhg4dkoQBk+33E0kFay_BnHXKyudyhvorePuH2qA@mail.gmail.com>
-Message-ID: <CA+ASDXPB3_uhg4dkoQBk+33E0kFay_BnHXKyudyhvorePuH2qA@mail.gmail.com>
-Subject: Re: [PATCH v9 04/14] rtw88: trx files
-To:     Kalle Valo <kvalo@codeaurora.org>
-Cc:     Larry Finger <Larry.Finger@lwfinger.net>,
-        Tony Chuang <yhchuang@realtek.com>,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        Johannes Berg <johannes@sipsolutions.net>,
-        Pkshih <pkshih@realtek.com>, Andy Huang <tehuang@realtek.com>,
-        Stanislaw Gruszka <sgruszka@redhat.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAKwvOd=nvKGGW5jvN+WFUXzOm9xeiNNUD0F9--9YcpuRmnWWhA@mail.gmail.com>
+User-Agent: Mutt/1.11.4 (2019-03-13)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Wed, May 1, 2019 at 11:30 AM Kalle Valo <kvalo@codeaurora.org> wrote:
-> My comment was about handling firmware commands and events as a byte
-> array, not about bitfields. So that instead of accessing 'index + 1' and
-> 'index + 4' you should create a proper struct for the command and access
-> it using 'cmd->foo' and 'cmd->bar'. Sure, bitfields you still need to
-> access using FIELD_GET() or similar but having a struct for commands is
-> a lot cleaner approach. And most upstream drivers do this: ath10k,
-> ath6kl, iwlwifi, p54 and whatnot.
+On Thu, May 02, 2019 at 11:18:01AM -0700, Nick Desaulniers wrote:
+> On Thu, May 2, 2019 at 8:16 AM Nathan Chancellor
+> <natechancellor@gmail.com> wrote:
+> >
+> > When building with -Wuninitialized, Clang warns:
+> >
+> > drivers/net/wireless/rsi/rsi_91x_sdio.c:940:43: warning: variable 'data'
+> > is uninitialized when used here [-Wuninitialized]
+> >         put_unaligned_le32(TA_HOLD_THREAD_VALUE, data);
+> >                                                  ^~~~
+> > drivers/net/wireless/rsi/rsi_91x_sdio.c:930:10: note: initialize the
+> > variable 'data' to silence this warning
+> >         u8 *data;
+> >                 ^
+> >                  = NULL
+> > 1 warning generated.
+> >
+> > Using Clang's suggestion of initializing data to NULL wouldn't work out
+> > because data will be dereferenced by put_unaligned_le32. Use kzalloc to
+> > properly initialize data, which matches a couple of other places in this
+> > driver.
+> >
+> > Fixes: e5a1ecc97e5f ("rsi: add firmware loading for 9116 device")
+> > Link: https://github.com/ClangBuiltLinux/linux/issues/464
+> > Signed-off-by: Nathan Chancellor <natechancellor@gmail.com>
+> > ---
+> >  drivers/net/wireless/rsi/rsi_91x_sdio.c | 21 ++++++++++++++-------
+> >  1 file changed, 14 insertions(+), 7 deletions(-)
+> >
+> > diff --git a/drivers/net/wireless/rsi/rsi_91x_sdio.c b/drivers/net/wireless/rsi/rsi_91x_sdio.c
+> > index f9c67ed473d1..b35728564c7b 100644
+> > --- a/drivers/net/wireless/rsi/rsi_91x_sdio.c
+> > +++ b/drivers/net/wireless/rsi/rsi_91x_sdio.c
+> > @@ -929,11 +929,15 @@ static int rsi_sdio_ta_reset(struct rsi_hw *adapter)
+> >         u32 addr;
+> >         u8 *data;
+> >
+> > +       data = kzalloc(sizeof(u32), GFP_KERNEL);
+> 
+> Something fishy is going on here.  We allocate 4 B but declare data as
+> a u8* (pointer to individual bytes)?  In general, dynamically
+> allocating that few bytes is a code smell; either you meant to just
+> use the stack, or this memory's lifetime extends past the lifetime of
+> this stackframe, at which point you probably just meant to stack
+> allocate space in a higher parent frame and pass this preallocated
+> memory down to the child frame to get filled in.
+> 
+> Reading through this code, I don't think that the memory is meant to
+> outlive the stack frame.  Is there a reason why we can't just declare
+> data as:
+> 
+> u8 data [4];
 
-I think I pushed Tony away from the bitfields (he was using a struct
-plus some ugly bitfields / #ifdefs pre-v8), and he ended up with this
-(in v8). I noted on the v8 cover letter that one can still use a
-struct, but just avoid using bitfields -- so you would still have 'u8'
-and '__le32' fields (or similar), and do the right le32_to_cpu()
-accessors (sparse will help you) plus FIELD_GET() (for any necessary
-bitfields).
+data was __le32 in rsi_reset_chip() before commit f700546682a6 ("rsi:
+fix nommu_map_sg overflow kernel panic").
 
-Brian
+I wonder if this would be okay for this function:
+
+-------------------------------------------------
+
+diff --git a/drivers/net/wireless/rsi/rsi_91x_sdio.c b/drivers/net/wireless/rsi/rsi_91x_sdio.c
+index f9c67ed473d1..0330c50ab99c 100644
+--- a/drivers/net/wireless/rsi/rsi_91x_sdio.c
++++ b/drivers/net/wireless/rsi/rsi_91x_sdio.c
+@@ -927,7 +927,7 @@ static int rsi_sdio_ta_reset(struct rsi_hw *adapter)
+ {
+        int status;
+        u32 addr;
+-       u8 *data;
++       u8 data;
+ 
+        status = rsi_sdio_master_access_msword(adapter, TA_BASE_ADDR);
+        if (status < 0) {
+@@ -937,7 +937,7 @@ static int rsi_sdio_ta_reset(struct rsi_hw *adapter)
+        }
+ 
+        rsi_dbg(INIT_ZONE, "%s: Bring TA out of reset\n", __func__);
+-       put_unaligned_le32(TA_HOLD_THREAD_VALUE, data);
++       put_unaligned_le32(TA_HOLD_THREAD_VALUE, &data);
+        addr = TA_HOLD_THREAD_REG | RSI_SD_REQUEST_MASTER;
+        status = rsi_sdio_write_register_multiple(adapter, addr,
+                                                  (u8 *)&data,
+@@ -947,7 +947,7 @@ static int rsi_sdio_ta_reset(struct rsi_hw *adapter)
+                return status;
+        }
+ 
+-       put_unaligned_le32(TA_SOFT_RST_CLR, data);
++       put_unaligned_le32(TA_SOFT_RST_CLR, &data);
+        addr = TA_SOFT_RESET_REG | RSI_SD_REQUEST_MASTER;
+        status = rsi_sdio_write_register_multiple(adapter, addr,
+                                                  (u8 *)&data,
+@@ -957,7 +957,7 @@ static int rsi_sdio_ta_reset(struct rsi_hw *adapter)
+                return status;
+        }
+ 
+-       put_unaligned_le32(TA_PC_ZERO, data);
++       put_unaligned_le32(TA_PC_ZERO, &data);
+        addr = TA_TH0_PC_REG | RSI_SD_REQUEST_MASTER;
+        status = rsi_sdio_write_register_multiple(adapter, addr,
+                                                  (u8 *)&data,
+@@ -967,7 +967,7 @@ static int rsi_sdio_ta_reset(struct rsi_hw *adapter)
+                return -EINVAL;
+        }
+ 
+-       put_unaligned_le32(TA_RELEASE_THREAD_VALUE, data);
++       put_unaligned_le32(TA_RELEASE_THREAD_VALUE, &data);
+        addr = TA_RELEASE_THREAD_REG | RSI_SD_REQUEST_MASTER;
+        status = rsi_sdio_write_register_multiple(adapter, addr,
+                                                  (u8 *)&data,
+
+
+> 
+> then use ARRAY_SIZE(data) or RSI_9116_REG_SIZE in rsi_reset_chip(),
+> getting rid of the kzalloc/kfree?
+> 
+> (Sorry, I hate when a simple fixup becomes a "hey let's rewrite all
+> this code" thus becoming "that guy.")
+
+If we aren't actually improving the code, then why bother? :)
+
+Thank you for the review!
+Nathan
+
+> -- 
+> Thanks,
+> ~Nick Desaulniers
