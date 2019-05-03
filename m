@@ -2,114 +2,115 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 8E26313259
-	for <lists+linux-wireless@lfdr.de>; Fri,  3 May 2019 18:41:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 18FDB13377
+	for <lists+linux-wireless@lfdr.de>; Fri,  3 May 2019 20:01:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727780AbfECQlG (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 3 May 2019 12:41:06 -0400
-Received: from paleale.coelho.fi ([176.9.41.70]:54150 "EHLO
-        farmhouse.coelho.fi" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1726719AbfECQlF (ORCPT
+        id S1728257AbfECSB0 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 3 May 2019 14:01:26 -0400
+Received: from mail-io1-f66.google.com ([209.85.166.66]:45331 "EHLO
+        mail-io1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727226AbfECSB0 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 3 May 2019 12:41:05 -0400
-Received: from 91-156-6-193.elisa-laajakaista.fi ([91.156.6.193] helo=redipa)
-        by farmhouse.coelho.fi with esmtpsa (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <luca@coelho.fi>)
-        id 1hMbF8-0000go-52; Fri, 03 May 2019 19:41:02 +0300
-Message-ID: <76e0ec375091a0b0f16d3cd9b15abc7b1840e89d.camel@coelho.fi>
-Subject: pull request: iwlwifi firmware updates 2019-05-03
-From:   Luca Coelho <luca@coelho.fi>
-To:     "linux-firmware@kernel.org" <linux-firmware@kernel.org>
-Cc:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        linuxwifi <linuxwifi@intel.com>,
-        "kyle@infradead.org" <kyle@infradead.org>,
-        "jwboyer@kernel.org" <jwboyer@kernel.org>,
-        "ben@decadent.org.uk" <ben@decadent.org.uk>
-Date:   Fri, 03 May 2019 19:40:59 +0300
-References: <1546157106.3213.3.camel@intel.com>
-In-Reply-To: <1546157106.3213.3.camel@intel.com>
-Content-Type: multipart/signed; micalg="pgp-sha512";
-        protocol="application/pgp-signature"; boundary="=-VGeJXWaL+5YeP7W2r2pb"
-User-Agent: Evolution 3.30.5-1 
+        Fri, 3 May 2019 14:01:26 -0400
+Received: by mail-io1-f66.google.com with SMTP id b3so210843iob.12
+        for <linux-wireless@vger.kernel.org>; Fri, 03 May 2019 11:01:26 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=Zv9JCTHuA/ieeqwCt9ck9JDHpFDwCPi7mkzJ1bgK9rE=;
+        b=g6VSBOMfRstBRXhWLGho9f79ivN87N8N+FaSn5O+bRoMEaBIb9GdpL+/HwfNBDkWRv
+         6TLXtXy/A8CwJ0u2w8W5tVqt+a1xLiKJJ+k7gjwqpzFSKUNPh6vmR47Nt27dxufnrhz/
+         Ki817y+WYBz/HQ2geou4H/4BT0KLEY3luCWgf4ZStmbhEGZ9dtEQJqp9kd7iV+F9/Jva
+         g2PxiX+dquGLWzzE0HZ3ZVWIKqBPecBsFipwsN0nyJ2k7qdabAzrdQOo6QBUiQQ1rmA4
+         +1OUs2xIBtY2bHkhw/cKvVB9onJZkZMYV2Tr3hK84uNTfQOHrSFpmm+DbGK3RbgtmfDO
+         +A2w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=Zv9JCTHuA/ieeqwCt9ck9JDHpFDwCPi7mkzJ1bgK9rE=;
+        b=eZBAbCC4tWceb75mZVEG3a5dbNYfG2We+HKDjqUXs3eC4ava5jIi2oiRBs4x8SO94U
+         VzB9AZlbAY/puvUpeLRRWDdABRVT61Ux38/1Ri7lvQh0mSXXWHVhOjI8xTRqAFnPwmn4
+         FxNwfNYh10wSD9IICTjPK/Egw7y7p86ezFBoOlILpqua8ePDcxwGBAkpoe4hzDrN/yD2
+         gZ4qYMKIfXvOYep3HynEXjcEEYQbtCUSt8nyOvLucHMBw1IOpOOQQoOt8icSxIDTtNLK
+         w3E5LwZsS8uDq0kWTjwwf2SoOORxaDVMfR/ckxQBKNgUD7kwWK+Ia6HgPezcjdY9wUhh
+         JNNQ==
+X-Gm-Message-State: APjAAAVDLwjEWGKFfDWe3TmMC9X0Dximmh/HEfbIrQQblQ9ILf67Ytb+
+        LVVQngkbC5p+J+ARrktOhY9E5LALc6TytYQUabaYzjeruRU=
+X-Google-Smtp-Source: APXvYqy72ztBEaWcSQIJS831AMS3FKoAxr7WAYTH5HkAPSKGn7G4hP28qwLijK/1iQm6IlQfYMAPE0SW4Y3nHC9P6Qo=
+X-Received: by 2002:a5d:914e:: with SMTP id y14mr296244ioq.77.1556906485088;
+ Fri, 03 May 2019 11:01:25 -0700 (PDT)
 MIME-Version: 1.0
+References: <1556417825-13713-1-git-send-email-wgong@codeaurora.org>
+In-Reply-To: <1556417825-13713-1-git-send-email-wgong@codeaurora.org>
+From:   Grant Grundler <grundler@google.com>
+Date:   Fri, 3 May 2019 11:01:14 -0700
+Message-ID: <CANEJEGug_YregN5vZq_R=ppUV5ptb4WUq_TB+JApzQ4DEO_AfQ@mail.gmail.com>
+Subject: Re: [PATCH] ath10k: remove mmc_hw_reset while hif power down
+To:     Wen Gong <wgong@codeaurora.org>
+Cc:     ath10k@lists.infradead.org, linux-wireless@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+[repeating comments I made in the gerrit review for Chrome OS :
+https://chromium-review.googlesource.com/c/chromiumos/third_party/kernel/+/1585667
+]
 
---=-VGeJXWaL+5YeP7W2r2pb
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+On Sat, Apr 27, 2019 at 7:17 PM Wen Gong <wgong@codeaurora.org> wrote:
+>
+> For sdio 3.0 chip, the clock will drop from 200M Hz to 50M Hz after load
+> ath10k driver, it is because mmc_hw_reset will reset the sdio's power,
+> then mmc will consider it as sdio 2.0 and drop the clock.
 
-Hi,
+Wen,
+5468e784c0600551ca03263f5255a375c05f88e7 commit message gives reasons
+for adding the mmc_hw_reset() call. The commit message for removing
+gives different reason for removal. Both are good but second one is
+incomplete.
 
-This contains some new versions of firmwares for the 9000 series of
-devices and the firmware for a new device, namely 22260.
+The commit message for removal should ALSO explain why adding this
+call wasn't necessary in the first place OR move the call to a
+different code path.
 
-Please pull or let me know if there are any issues.
+> Remove mmc_hw_reset will avoid the drop of clock.
 
---
-Cheers,
-Luca.
+This commit message makes it clear the original patch introduced a new
+problem. But the original patch fixed a different problem and that
+this proposed change seems likely to re-introduce and the commit
+message should explain why that isn't true (or how the original was
+fixed differently)
 
+cheers,
+grant
 
-The following changes since commit 92e17d0dd2437140fab044ae62baf69b35d7d1fa=
-:
-
-  amdgpu: update vega20 to the latest 19.10 firmware (2019-05-02 06:24:19 -=
-0400)
-
-are available in the Git repository at:
-
-  git://git.kernel.org/pub/scm/linux/kernel/git/iwlwifi/linux-firmware.git =
-tags/iwlwifi-fw-2019-05-03
-
-for you to fetch changes up to 95a93535b723085ff74845eb8733d01c8ff5c052:
-
-  iwlwifi: update -46 firmwares for 22260 and 9000 series (2019-05-03 19:33=
-:53 +0300)
-
-----------------------------------------------------------------
-updates for -46.ucode for 9260, 9000 and 22260
-
-----------------------------------------------------------------
-Luca Coelho (3):
-      iwlwifi: add -46.ucode firmwares for 9000 series
-      iwlwifi: add firmware for 22260 and update 9000 series -46 firmwares
-      iwlwifi: update -46 firmwares for 22260 and 9000 series
-
- WHENCE                            |   9 +++++++++
- iwlwifi-9000-pu-b0-jf-b0-46.ucode | Bin 0 -> 1448644 bytes
- iwlwifi-9260-th-b0-jf-b0-46.ucode | Bin 0 -> 1456088 bytes
- iwlwifi-cc-a0-46.ucode            | Bin 0 -> 1044072 bytes
- 4 files changed, 9 insertions(+)
- create mode 100644 iwlwifi-9000-pu-b0-jf-b0-46.ucode
- create mode 100644 iwlwifi-9260-th-b0-jf-b0-46.ucode
- create mode 100644 iwlwifi-cc-a0-46.ucode
-
---=-VGeJXWaL+5YeP7W2r2pb
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: This is a digitally signed message part
-Content-Transfer-Encoding: 7bit
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCgAdFiEEF3LNfgb2BPWm68smoUecoho8xfoFAlzMbxsACgkQoUecoho8
-xfpOJRAAnoaP2M6KhwyHgTkaBQbogPk5d5SW/IkyTp24C01Rx84a6sfLfsraSZTp
-v+PrYWJ59sD5ZFeenhNAldwvPE7Eo5q2RYSeZKrP0LfjcFYBOpviuPj8GkxO3yD/
-MJQO7StUU8ehQz4zDyoZnwcgpNvnHVFrAfjFVuKW+Dy4WdAAfov73u53eI2a4FLZ
-FyRv724Yn5pPfKNSEhxZrmQx7AgoMw2nE6JZEn83gCu5spQDxUHiNuqLpeGsT7A9
-ksSDpr0Qwpi8wmc3rm+zmW8JpT2KsvPbDAZbLYxF3WZKG3w5cMLX4iPbATLiA/2R
-55GH/2bwrauXswzsWVEtrUKuyl60Ym1VE61DYCvmFQxSg+N1sDCsEVRCOxQBmuuK
-HqQaLNsu4WOh8WLUC9tAsYeEaw6rBYyXGvxWtl1dOwtXxnKayMw6lYG8P6wQR8ZM
-UOQ9/QKlKh7RMYpHoAFv6ev+WW0hA0h+dWEIysd6Vu/N+6HCd2dC72e4ykurAX1F
-8aIhWo+AxpDFK3q8dnZEDSdokupWzlu1k5KBGd1JWdchgAbTXJlL7ZExS565j9zZ
-6bo7UWbaTNz+ye3h1xN1Ch6a0ptoT/fTWl9L+s1BOozLzG5rewmwJARYXoGuKzOO
-mIVZ6cRIOvo+4stWdw62zJSLVvOJO4+1rM3YaGRjjxqnDtY6c9Q=
-=eQ21
------END PGP SIGNATURE-----
-
---=-VGeJXWaL+5YeP7W2r2pb--
-
+>
+> Tested with QCA6174 SDIO with firmware
+> WLAN.RMH.4.4.1-00007-QCARMSWP-1.
+>
+> Signed-off-by: Wen Gong <wgong@codeaurora.org>
+> ---
+>  drivers/net/wireless/ath/ath10k/sdio.c | 4 ----
+>  1 file changed, 4 deletions(-)
+>
+> diff --git a/drivers/net/wireless/ath/ath10k/sdio.c b/drivers/net/wireless/ath/ath10k/sdio.c
+> index fae56c6..f1d2af8 100644
+> --- a/drivers/net/wireless/ath/ath10k/sdio.c
+> +++ b/drivers/net/wireless/ath/ath10k/sdio.c
+> @@ -1433,10 +1433,6 @@ static void ath10k_sdio_hif_power_down(struct ath10k *ar)
+>                 return;
+>         }
+>
+> -       ret = mmc_hw_reset(ar_sdio->func->card->host);
+> -       if (ret)
+> -               ath10k_warn(ar, "unable to reset sdio: %d\n", ret);
+> -
+>         sdio_release_host(ar_sdio->func);
+>
+>         ar_sdio->is_disabled = true;
+> --
+> 1.9.1
+>
