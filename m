@@ -2,130 +2,94 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 5E881126F2
-	for <lists+linux-wireless@lfdr.de>; Fri,  3 May 2019 06:39:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AE3E4126FB
+	for <lists+linux-wireless@lfdr.de>; Fri,  3 May 2019 07:06:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726400AbfECEi7 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 3 May 2019 00:38:59 -0400
-Received: from smtp.codeaurora.org ([198.145.29.96]:38780 "EHLO
+        id S1726193AbfECFFz (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 3 May 2019 01:05:55 -0400
+Received: from smtp.codeaurora.org ([198.145.29.96]:49884 "EHLO
         smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726121AbfECEi7 (ORCPT
+        with ESMTP id S1725777AbfECFFz (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 3 May 2019 00:38:59 -0400
+        Fri, 3 May 2019 01:05:55 -0400
 Received: by smtp.codeaurora.org (Postfix, from userid 1000)
-        id 8FD2961132; Fri,  3 May 2019 04:38:57 +0000 (UTC)
+        id DBC19611FA; Fri,  3 May 2019 05:05:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1556858337;
-        bh=tmO9bZ8OSVF3w2WCn5bCHHR5VcAERihrVuWPn4eTVVo=;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=WbnuGeem6wmks0G9pvkliRJ6bjIvrLEVb6rrx++NvPHTdORn3mOwTDs6+pFTzinpB
-         h7Kf6R/cDEEoHkPiwIUZ5WBrAPbCVfcRWKaVQft497o7Q7dKMqfRukBXM/YWKzBKwy
-         lCyBYfXos0w7Fk8v81YA1Frrw92+fKX/lOmk24Bc=
+        s=default; t=1556859954;
+        bh=F+twRZuYtMfzGNKN2y3io8vWyqlHIqIv5xB4evmZB+g=;
+        h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
+        b=kl4c7PX8dEOBgsfdgr5ocdMw7n5FQO3jIrXffGOlLT6E6y35hsKQzVJqbRR9GnUms
+         +Ut2zBe+aresw7fwiKA8yrJoUiHpCWM8YXJw4I78jyM70Rs6FuDIGjuQTmEieM4blL
+         uldKj/hNhwhwyZTMUmap3njXq21wPJCh3HX9XvmM=
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         pdx-caf-mail.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-2.7 required=2.0 tests=ALL_TRUSTED,BAYES_00,
-        DKIM_INVALID,DKIM_SIGNED autolearn=no autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-0.8 required=2.0 tests=ALL_TRUSTED,BAYES_00,
+        DKIM_INVALID,DKIM_SIGNED,MISSING_DATE,MISSING_MID autolearn=no
+        autolearn_force=no version=3.4.0
 Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
         (Authenticated sender: kvalo@smtp.codeaurora.org)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 0C86761132;
-        Fri,  3 May 2019 04:38:54 +0000 (UTC)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 4B12A611C3;
+        Fri,  3 May 2019 05:05:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1556858336;
-        bh=tmO9bZ8OSVF3w2WCn5bCHHR5VcAERihrVuWPn4eTVVo=;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=fpIR+sx5CPmg8HXT9vrjKMg1KHUbBWFs1aO5cxUOWDpbKGz2qI2tfGlh57TuLckqx
-         gjobOfW5e64o+zFQ489u4LtJX981TYPVJPcfR85Qv6SHq29+HXvxjfEihIZXNqnT9T
-         R7L0A2poNp4dT2nbjSvNiW9qvzgHAoetI7ndp0Gk=
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 0C86761132
+        s=default; t=1556859954;
+        bh=F+twRZuYtMfzGNKN2y3io8vWyqlHIqIv5xB4evmZB+g=;
+        h=Subject:From:In-Reply-To:References:To:Cc:From;
+        b=OiRu0WUNFwgN6dwjrLNZQo9yhzAk0LIR1E97YClK7cQxgFM8W8B/o741QzqVSca16
+         0i8RS0dmPFfsolN+COH4FC+U2Mx+wxxk2VdL/HDKZMhUW4jOw5eZTKB+g0JWDQGH4y
+         EkW1aJg3Xy4ppqRzDHP9sVP6CYSasnPlPZce2ckc=
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 4B12A611C3
 Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
 Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
-From:   Kalle Valo <kvalo@codeaurora.org>
-To:     Nick Desaulniers <ndesaulniers@google.com>
-Cc:     Nathan Chancellor <natechancellor@gmail.com>,
-        Amitkumar Karwar <amitkarwar@gmail.com>,
-        Siva Rebbagondla <siva8118@gmail.com>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        LKML <linux-kernel@vger.kernel.org>,
-        clang-built-linux <clang-built-linux@googlegroups.com>
-Subject: Re: [PATCH] rsi: Properly initialize data in rsi_sdio_ta_reset
-References: <20190502151548.11143-1-natechancellor@gmail.com>
-        <CAKwvOd=nvKGGW5jvN+WFUXzOm9xeiNNUD0F9--9YcpuRmnWWhA@mail.gmail.com>
-Date:   Fri, 03 May 2019 07:38:52 +0300
-In-Reply-To: <CAKwvOd=nvKGGW5jvN+WFUXzOm9xeiNNUD0F9--9YcpuRmnWWhA@mail.gmail.com>
-        (Nick Desaulniers's message of "Thu, 2 May 2019 11:18:01 -0700")
-Message-ID: <87h8ackv8j.fsf@kamboji.qca.qualcomm.com>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH 1/9] wil6210: fix spurious interrupts in 3-msi
+From:   Kalle Valo <kvalo@codeaurora.org>
+In-Reply-To: <1556293417-27097-2-git-send-email-merez@codeaurora.org>
+References: <1556293417-27097-2-git-send-email-merez@codeaurora.org>
+To:     Maya Erez <merez@codeaurora.org>
+Cc:     Maya Erez <merez@codeaurora.org>, linux-wireless@vger.kernel.org,
+        wil6210@qti.qualcomm.com
+User-Agent: pwcli/0.0.0-git (https://github.com/kvalo/pwcli/) Python/2.7.12
+Message-Id: <20190503050554.DBC19611FA@smtp.codeaurora.org>
+Date:   Fri,  3 May 2019 05:05:54 +0000 (UTC)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Nick Desaulniers <ndesaulniers@google.com> writes:
+Maya Erez <merez@codeaurora.org> wrote:
 
-> On Thu, May 2, 2019 at 8:16 AM Nathan Chancellor
-> <natechancellor@gmail.com> wrote:
->>
->> When building with -Wuninitialized, Clang warns:
->>
->> drivers/net/wireless/rsi/rsi_91x_sdio.c:940:43: warning: variable 'data'
->> is uninitialized when used here [-Wuninitialized]
->>         put_unaligned_le32(TA_HOLD_THREAD_VALUE, data);
->>                                                  ^~~~
->> drivers/net/wireless/rsi/rsi_91x_sdio.c:930:10: note: initialize the
->> variable 'data' to silence this warning
->>         u8 *data;
->>                 ^
->>                  = NULL
->> 1 warning generated.
->>
->> Using Clang's suggestion of initializing data to NULL wouldn't work out
->> because data will be dereferenced by put_unaligned_le32. Use kzalloc to
->> properly initialize data, which matches a couple of other places in this
->> driver.
->>
->> Fixes: e5a1ecc97e5f ("rsi: add firmware loading for 9116 device")
->> Link: https://github.com/ClangBuiltLinux/linux/issues/464
->> Signed-off-by: Nathan Chancellor <natechancellor@gmail.com>
->> ---
->>  drivers/net/wireless/rsi/rsi_91x_sdio.c | 21 ++++++++++++++-------
->>  1 file changed, 14 insertions(+), 7 deletions(-)
->>
->> diff --git a/drivers/net/wireless/rsi/rsi_91x_sdio.c b/drivers/net/wireless/rsi/rsi_91x_sdio.c
->> index f9c67ed473d1..b35728564c7b 100644
->> --- a/drivers/net/wireless/rsi/rsi_91x_sdio.c
->> +++ b/drivers/net/wireless/rsi/rsi_91x_sdio.c
->> @@ -929,11 +929,15 @@ static int rsi_sdio_ta_reset(struct rsi_hw *adapter)
->>         u32 addr;
->>         u8 *data;
->>
->> +       data = kzalloc(sizeof(u32), GFP_KERNEL);
->
-> Something fishy is going on here.  We allocate 4 B but declare data as
-> a u8* (pointer to individual bytes)?  In general, dynamically
-> allocating that few bytes is a code smell; either you meant to just
-> use the stack, or this memory's lifetime extends past the lifetime of
-> this stackframe, at which point you probably just meant to stack
-> allocate space in a higher parent frame and pass this preallocated
-> memory down to the child frame to get filled in.
->
-> Reading through this code, I don't think that the memory is meant to
-> outlive the stack frame.  Is there a reason why we can't just declare
-> data as:
->
-> u8 data [4];
->
-> then use ARRAY_SIZE(data) or RSI_9116_REG_SIZE in rsi_reset_chip(),
-> getting rid of the kzalloc/kfree?
+> Interrupt is set in ICM (ICR & ~IMV) rising trigger.
+> As the driver masks the IRQ after clearing it, there can
+> be a race where an additional spurious interrupt is triggered
+> when the driver unmask the IRQ.
+> This can happen in case HW triggers an interrupt after the clear
+> and before the mask.
+> 
+> To prevent the second spurious interrupt the driver needs to mask the
+> IRQ before reading and clearing it.
+> 
+> Signed-off-by: Maya Erez <merez@codeaurora.org>
+> Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
 
-I haven't checked the details but AFAIK stack variables are not supposed
-to be used with DMA. So in that case I think it's ok alloc four bytes,
-unless the DMA rules have changed of course. But I didn't check if rsi
-is using DMA here, just a general comment.
+9 patches applied to ath-next branch of ath.git, thanks.
+
+e10b0eddd523 wil6210: fix spurious interrupts in 3-msi
+9c6465979276 wil6210: fix _desc access in __wil_tx_vring_tso
+0131d1851338 wil6210: add printout of platform capabilities
+a7feb56f204f wil6210: add support for multiple sections in brd file
+9a874d045473 wil6210: enhancements for descriptor and status ring debugfs
+ddf7afdde824 wil6210: fix overwriting max_assoc_sta module param
+7441be71ba7e wil6210: fix missed MISC mbox interrupt
+d6a553c0c61b wil6210: check rx_buff_mgmt before accessing it
+3d0aa9198446 wil6210: remove HALP for Talyn devices
 
 -- 
-Kalle Valo
+https://patchwork.kernel.org/patch/10919277/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+
