@@ -2,65 +2,78 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 1AC9812CF3
-	for <lists+linux-wireless@lfdr.de>; Fri,  3 May 2019 13:53:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0D09912CF0
+	for <lists+linux-wireless@lfdr.de>; Fri,  3 May 2019 13:53:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727700AbfECLxq (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 3 May 2019 07:53:46 -0400
-Received: from rtits2.realtek.com ([211.75.126.72]:58249 "EHLO
-        rtits2.realtek.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727639AbfECLxq (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 3 May 2019 07:53:46 -0400
-Authenticated-By: 
-X-SpamFilter-By: BOX Solutions SpamTrap 5.62 with qID x43BrfuZ000724, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtitcasv01.realtek.com.tw[172.21.6.18])
-        by rtits2.realtek.com.tw (8.15.2/2.57/5.78) with ESMTPS id x43BrfuZ000724
-        (version=TLSv1 cipher=AES256-SHA bits=256 verify=NOT);
-        Fri, 3 May 2019 19:53:41 +0800
-Received: from localhost.localdomain (172.21.68.126) by
- RTITCASV01.realtek.com.tw (172.21.6.18) with Microsoft SMTP Server id
- 14.3.408.0; Fri, 3 May 2019 19:53:41 +0800
-From:   <yhchuang@realtek.com>
-To:     <kvalo@codeaurora.org>
-CC:     <linux-wireless@vger.kernel.org>
-Subject: [PATCH v2 3/5] rtw88: pci: check if queue mapping exceeds size of ac_to_hwq
-Date:   Fri, 3 May 2019 19:53:33 +0800
-Message-ID: <1556884415-23474-4-git-send-email-yhchuang@realtek.com>
-X-Mailer: git-send-email 2.7.4
-In-Reply-To: <1556884415-23474-1-git-send-email-yhchuang@realtek.com>
-References: <1556884415-23474-1-git-send-email-yhchuang@realtek.com>
+        id S1727425AbfECLxg (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 3 May 2019 07:53:36 -0400
+Received: from mx1.redhat.com ([209.132.183.28]:48116 "EHLO mx1.redhat.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726572AbfECLxg (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 3 May 2019 07:53:36 -0400
+Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.phx2.redhat.com [10.5.11.16])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mx1.redhat.com (Postfix) with ESMTPS id 4DC3D5277B;
+        Fri,  3 May 2019 11:53:36 +0000 (UTC)
+Received: from localhost (unknown [10.43.2.51])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id EC7CC5C6AA;
+        Fri,  3 May 2019 11:53:35 +0000 (UTC)
+Date:   Fri, 3 May 2019 13:53:33 +0200
+From:   Stanislaw Gruszka <sgruszka@redhat.com>
+To:     Tony Chuang <yhchuang@realtek.com>
+Cc:     linux-wireless@vger.kernel.org
+Subject: [RFC] rtw88: fix subscript above array bounds compiler warning
+Message-ID: <20190503115333.GA23109@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [172.21.68.126]
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+User-Agent: Mutt/1.5.21 (2010-09-15)
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.16
+X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16 (mx1.redhat.com [10.5.110.29]); Fri, 03 May 2019 11:53:36 +0000 (UTC)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Yan-Hsuan Chuang <yhchuang@realtek.com>
+My compiler complain about:
 
-Dump warning messages when we get a q_mapping larger than the AC
-numbers. And pick BE queue as default.
+drivers/net/wireless/realtek/rtw88/phy.c: In function ‘rtw_phy_rf_power_2_rssi’:
+drivers/net/wireless/realtek/rtw88/phy.c:430:26: warning: array subscript is above array bounds [-Warray-bounds]
+  linear = db_invert_table[i][j];
 
-Signed-off-by: Yan-Hsuan Chuang <yhchuang@realtek.com>
+According to comment power_db should be in range 1 ~ 96 .
+Correct rtw_phy_power_2_db() to make max power 96 db
+(still min is 0). This make the warning gone.
+
+However power >= 20 check still looks somewhat suspicious to me.
+
+Signed-off-by: Stanislaw Gruszka <sgruszka@redhat.com>
 ---
- drivers/net/wireless/realtek/rtw88/pci.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/net/wireless/realtek/rtw88/phy.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/wireless/realtek/rtw88/pci.c b/drivers/net/wireless/realtek/rtw88/pci.c
-index 87bfcb3..353871c 100644
---- a/drivers/net/wireless/realtek/rtw88/pci.c
-+++ b/drivers/net/wireless/realtek/rtw88/pci.c
-@@ -504,6 +504,8 @@ static u8 rtw_hw_queue_mapping(struct sk_buff *skb)
- 		queue = RTW_TX_QUEUE_BCN;
- 	else if (unlikely(ieee80211_is_mgmt(fc) || ieee80211_is_ctl(fc)))
- 		queue = RTW_TX_QUEUE_MGMT;
-+	else if (WARN_ON_ONCE(q_mapping >= ARRAY_SIZE(ac_to_hwq)))
-+		queue = ac_to_hwq[IEEE80211_AC_BE];
- 	else
- 		queue = ac_to_hwq[q_mapping];
+diff --git a/drivers/net/wireless/realtek/rtw88/phy.c b/drivers/net/wireless/realtek/rtw88/phy.c
+index 35a35dbca85f..a716a44d78b0 100644
+--- a/drivers/net/wireless/realtek/rtw88/phy.c
++++ b/drivers/net/wireless/realtek/rtw88/phy.c
+@@ -410,12 +410,12 @@ void rtw_phy_dynamic_mechanism(struct rtw_dev *rtwdev)
  
+ static u8 rtw_phy_power_2_db(s8 power)
+ {
+-	if (power <= -100 || power >= 20)
++	if (power <= -96 || power >= 20)
+ 		return 0;
+ 	else if (power >= 0)
+-		return 100;
++		return 96;
+ 	else
+-		return 100 + power;
++		return 96 + power;
+ }
+ 
+ static u64 rtw_phy_db_2_linear(u8 power_db)
 -- 
-2.7.4
+1.9.3
 
