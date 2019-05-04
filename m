@@ -2,102 +2,76 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 6373013968
-	for <lists+linux-wireless@lfdr.de>; Sat,  4 May 2019 13:02:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9960C13AE8
+	for <lists+linux-wireless@lfdr.de>; Sat,  4 May 2019 17:29:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727376AbfEDLCe (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 4 May 2019 07:02:34 -0400
-Received: from mail-wm1-f65.google.com ([209.85.128.65]:38172 "EHLO
-        mail-wm1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725981AbfEDLCe (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 4 May 2019 07:02:34 -0400
-Received: by mail-wm1-f65.google.com with SMTP id f2so4594037wmj.3;
-        Sat, 04 May 2019 04:02:32 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=d9xqRvQ7LglnQSyEdyWwx0LaW1NdfXcmsha1uWwwA5U=;
-        b=aEV5cKHE7rw5w8phwcnK4XYABmhkwlqMGBjm4KtKfMkB3HMEFI0UbjyP1MWPKSsuO4
-         kV10cFluOgdaRPFW8lcQTDEA3j6cDs/KB4XFx2CjN2ohfEB9IiBX+JjKmplO9ehRUnXi
-         M8IfK57Avok/aRvhLtp5YxHlQLOWE/Bf7q4La4FNtfqWZkqCHBTtTAwVTTKze3VeRFBN
-         jUM10tGMTAIUns2YSTTTq+AynStJ805mdf6251QBordFuPHO+HdxdEtTAj/LpZX+tWIy
-         xwyNyGDc/gxwOuofptU3PJSSPHcKfeq+DuG5LdMzWZ5DzC+Otm7ocsyICkodvIuAUyS+
-         O1Hw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=d9xqRvQ7LglnQSyEdyWwx0LaW1NdfXcmsha1uWwwA5U=;
-        b=WOp5zGp+rJXnUjfAak9oDZimyNV3QY9dzv5gZOI6TKWFUomqtVTdczkTy9kYbhmzOv
-         NKkh8p0iXDyvlBunZ1a0EbCVjem3l4t8JviqIbU4dl0QEBOXE+OCQtLH182xBSS8o1Aw
-         1bSLciZ6stovJT0zHy+JljzCyIIyKGQWX8SsM5qejhCb5pssMXgL0n2V++lHqDhBzllj
-         T0opQRhUL+DLhnTX7dZQIjBF0pAL0WQEX65z6ztcztag3/oRdrKlsJLdycSzigbdGHA8
-         ZxICLAoMaXaql/zgvbyHsasF8UHeB7yC7VlaGp81ov9P4TKCzEk4PjRNRLzItZMKpEPJ
-         hvlw==
-X-Gm-Message-State: APjAAAVTJ63JHIuQOPEqw5gmyxKUwl6JK5N5OuoFJpJA+fgYmu1joDAE
-        8FeG7wVsXOvdYKs3YHmcHagvf6jB7/o=
-X-Google-Smtp-Source: APXvYqy3dfTFdLwZrygw5pSCGAvurOj9VwUtSKJIX0E/y05IQOuv2UX4urpxWai1LbIz2W3WXRPigg==
-X-Received: by 2002:a1c:a008:: with SMTP id j8mr9967493wme.73.1556967751884;
-        Sat, 04 May 2019 04:02:31 -0700 (PDT)
-Received: from ?IPv6:2003:ea:8bd4:5700:4cd8:8005:fc98:c429? (p200300EA8BD457004CD88005FC98C429.dip0.t-ipconnect.de. [2003:ea:8bd4:5700:4cd8:8005:fc98:c429])
-        by smtp.googlemail.com with ESMTPSA id z4sm3251606wrq.75.2019.05.04.04.02.30
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Sat, 04 May 2019 04:02:30 -0700 (PDT)
-Subject: Re: [PATCH] net: wireless: ath9k: Return an error when
- ath9k_hw_reset() fails
-To:     Jia-Ju Bai <baijiaju1990@gmail.com>, ath9k-devel@qca.qualcomm.com,
-        kvalo@codeaurora.org, davem@davemloft.net
-Cc:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-References: <20190504100815.19876-1-baijiaju1990@gmail.com>
-From:   Heiner Kallweit <hkallweit1@gmail.com>
-Message-ID: <e47117d6-f918-1dd0-834e-d056534bfead@gmail.com>
-Date:   Sat, 4 May 2019 13:02:25 +0200
-User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:60.0) Gecko/20100101
- Thunderbird/60.6.1
+        id S1726445AbfEDP3X (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 4 May 2019 11:29:23 -0400
+Received: from mail.kernel.org ([198.145.29.99]:49312 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726217AbfEDP3X (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Sat, 4 May 2019 11:29:23 -0400
+Received: from lore-desk-wlan.lan (unknown [151.66.59.15])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 42EB620644;
+        Sat,  4 May 2019 15:29:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1556983762;
+        bh=8UrpEQTy2iVjsoMcSg9OkGhUL4czwuxJIvchZ2ZGkrY=;
+        h=From:To:Cc:Subject:Date:From;
+        b=bRa9oNJp8zDAnmdfzB1SdVRYejwPu+SUOxNGp2CUWlP8r5zLXiU5LzoiXXNEBA5ZS
+         RwXXWFURbL4E6KNze/JyhFHwqOjwZ44LBRhdt04zpgH9qK/w+thKV8aEmf1Nj9T3XQ
+         NsHKBuTtWkmaia+glSGSqlD2HQIKo/IpMS7vQUmA=
+From:   Lorenzo Bianconi <lorenzo@kernel.org>
+To:     nbd@nbd.name
+Cc:     lorenzo.bianconi@redhat.com, linux-wireless@vger.kernel.org,
+        ryder.lee@mediatek.com, royluo@google.com
+Subject: [PATCH 00/17] use standard signature for mt7615 mcu api
+Date:   Sat,  4 May 2019 17:28:52 +0200
+Message-Id: <cover.1556981521.git.lorenzo@kernel.org>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-In-Reply-To: <20190504100815.19876-1-baijiaju1990@gmail.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 04.05.2019 12:08, Jia-Ju Bai wrote:
-> ath9k_hw_reset() in ath9k_start() can fail, and in this case, 
-> ath9k_start() should return an error instead of executing the 
-> subsequent code.
-> 
-Such mechanical patches w/o understanding the code are always
-problematic. Do you have any proof that this error is fatal?
-I think it is not, else we wouldn't have this line:
-ah->reset_power_on = false;
-Also you should consider that a mutex and a spinlock are held.
-Maybe changing the error message to a warning would be more
-appropriate. But this I would leave to somebody being more
-familiar with this driver.
+Introduce mt76_mcu_ops data structure in mt7615 mcu code in order
+to reuse the code with other bus types and unify the code with mt7603
+driver
 
-> Signed-off-by: Jia-Ju Bai <baijiaju1990@gmail.com>
-> ---
->  drivers/net/wireless/ath/ath9k/main.c | 1 +
->  1 file changed, 1 insertion(+)
-> 
-> diff --git a/drivers/net/wireless/ath/ath9k/main.c b/drivers/net/wireless/ath/ath9k/main.c
-> index f23cb2f3d296..f78e7c46764d 100644
-> --- a/drivers/net/wireless/ath/ath9k/main.c
-> +++ b/drivers/net/wireless/ath/ath9k/main.c
-> @@ -681,6 +681,7 @@ static int ath9k_start(struct ieee80211_hw *hw)
->  			"Unable to reset hardware; reset status %d (freq %u MHz)\n",
->  			r, curchan->center_freq);
->  		ah->reset_power_on = false;
-> +		return r;
->  	}
->  
->  	/* Setup our intr mask. */
-> 
+Changes since RFC:
+- rebase ontop of https://patchwork.kernel.org/patch/10928753/
+- fix net_type initialization in mt7615_mcu_set_bss_info
+
+Lorenzo Bianconi (17):
+  mt7615: mcu: simplify __mt7615_mcu_set_wtbl
+  mt7615: mcu: simplify __mt7615_mcu_set_sta_rec
+  mt7615: mcu: remove bss_info_convert_vif_type routine
+  mt7615: mcu: use proper msg size in mt7615_mcu_add_wtbl_bmc
+  mt7615: mcu: use proper msg size in mt7615_mcu_add_wtbl
+  mt7615: mcu: unify mt7615_mcu_add_wtbl_bmc and mt7615_mcu_del_wtbl_bmc
+  mt7615: mcu: remove unused parameter in mt7615_mcu_del_wtbl
+  mt7615: remove query from mt7615_mcu_msg_send signature
+  mt7615: remove dest from mt7615_mcu_msg_send signature
+  mt7615: mcu: remove skb_ret from mt7615_mcu_msg_send
+  mt7615: mcu: unify __mt7615_mcu_set_dev_info and
+    mt7615_mcu_set_dev_info
+  mt7615: mcu: do not use function pointers whenever possible
+  mt7615: mcu: remove unused structure in mcu.h
+  mt7615: mcu: use standard signature for mt7615_mcu_msg_send
+  mt7615: initialize mt76_mcu_ops data structure
+  mt7615: mcu: init mcu_restart function pointer
+  mt7615: mcu: run __mt76_mcu_send_msg in mt7615_mcu_send_firmware
+
+ .../net/wireless/mediatek/mt76/mt7615/main.c  |   17 +-
+ .../net/wireless/mediatek/mt76/mt7615/mcu.c   | 1147 ++++++++---------
+ .../net/wireless/mediatek/mt76/mt7615/mcu.h   |   49 +-
+ .../wireless/mediatek/mt76/mt7615/mt7615.h    |   11 +-
+ 4 files changed, 556 insertions(+), 668 deletions(-)
+
+-- 
+2.20.1
 
