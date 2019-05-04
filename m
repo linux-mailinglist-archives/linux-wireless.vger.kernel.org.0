@@ -2,89 +2,126 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A9A5D13BE8
-	for <lists+linux-wireless@lfdr.de>; Sat,  4 May 2019 21:18:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 88D9013BFD
+	for <lists+linux-wireless@lfdr.de>; Sat,  4 May 2019 21:44:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726760AbfEDTSV (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 4 May 2019 15:18:21 -0400
-Received: from mail-wm1-f51.google.com ([209.85.128.51]:35067 "EHLO
-        mail-wm1-f51.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726596AbfEDTSV (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 4 May 2019 15:18:21 -0400
-Received: by mail-wm1-f51.google.com with SMTP id y197so10405608wmd.0
-        for <linux-wireless@vger.kernel.org>; Sat, 04 May 2019 12:18:20 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=HI5w6ujO6T0yJN9Qynb2wYlJVmzdy1Uxf1JSDTX/jJE=;
-        b=QsMLywWmFfZHolAXf9gVDS/QpKgOOj5xasXqGL6ErgqJWOObr6XfOPH9HDtJsl6V5I
-         sgROGd577LJLCSfyPe2ldUsyt7bmMTt8npw1bi85jmbOAQYy+uwXwSHPBq2LFAb1Giiu
-         iXFlfbmxuPhWvX21x2NR1FzADh2b2vLIEdQptP8p0arghFZO29RcAs0FLOpPAwdsemlj
-         kzIoJr5PY7aFUrQRUuzGJuYU5j91vYzDVopupEEa3zeb47EEstXfoUvNgBnF6mHJons+
-         rhaUK8sJt3oO+BKwD5OaXwxuDnDREUVwXbqtCt/usTlVKOyp/xugwvD+xlbaVWbjLNg9
-         qz4Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=HI5w6ujO6T0yJN9Qynb2wYlJVmzdy1Uxf1JSDTX/jJE=;
-        b=FHnW9Fi7EbcKm5i64OtqeQVcYuE1hekA1GnDg5Z+IJUHbE/sS/7iZ2GEcsBN1zbqWN
-         F6gUzg1Y4OggCSpWcHVe7R4jySGBgS2sr+uhPBrQIvVq7MOI2ciVBlrbvymA5A98vu/F
-         8ir0VEBTOY/053Dv9to8unVN0JQEjEDF0RBZZE8gkbAjlVguuySb99Ak8ERIBkWr6NV9
-         939huLl/qjQUKSxQLfZaIZLgV7MAZuv7i3NiAZcxWcoKQPMZIn+Zodmco5GAIWaDcCev
-         voWfpAn8wqTccp/gkf247LQqoEMI9ersiQn27CAUmu2LPDlDdUwy6Lylty1jXFsO+gKu
-         4fEg==
-X-Gm-Message-State: APjAAAUtxLv1QJvfSSYs4mh6Oq1lDzcKdRsbVAZweqxFPnDZ79O+GPD/
-        2mouC8sB1YZ1Wem7D5bzpA==
-X-Google-Smtp-Source: APXvYqwtq2/V9I/cKC2WcKKas66yHRw6TElQkA9W1c5xu+FMiz62e3WnjWFYgJCfjDTTwKxcWCC3MA==
-X-Received: by 2002:a1c:be10:: with SMTP id o16mr10981542wmf.67.1556997499519;
-        Sat, 04 May 2019 12:18:19 -0700 (PDT)
-Received: from localhost (238.red-83-37-105.dynamicip.rima-tde.net. [83.37.105.238])
-        by smtp.gmail.com with ESMTPSA id h9sm5480048wmb.5.2019.05.04.12.18.18
-        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
-        Sat, 04 May 2019 12:18:18 -0700 (PDT)
-From:   Xose Vazquez Perez <xose.vazquez@gmail.com>
-Cc:     Xose Vazquez Perez <xose.vazquez@gmail.com>,
-        Seth Forshee <seth.forshee@canonical.com>,
-        WIRELESS ML <linux-wireless@vger.kernel.org>,
-        REGDB ML <wireless-regdb@lists.infradead.org>
-Subject: [PATCH] wireless-regdb: update source of information for ES
-Date:   Sat,  4 May 2019 21:18:17 +0200
-Message-Id: <20190504191817.3668-1-xose.vazquez@gmail.com>
-X-Mailer: git-send-email 2.21.0
+        id S1727259AbfEDTou (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 4 May 2019 15:44:50 -0400
+Received: from 0.ictbs.com ([203.137.112.168]:48400 "EHLO 0.ictbs.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726596AbfEDTot (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Sat, 4 May 2019 15:44:49 -0400
+Received: by hq.local (Postfix, from userid 1000)
+        id 4B53B66477; Sat,  4 May 2019 21:44:40 +0200 (CEST)
+Date:   Sat, 4 May 2019 21:44:40 +0200
+From:   Victor Bravo <1905@spmblk.com>
+To:     Arend Van Spriel <arend.vanspriel@broadcom.com>
+Cc:     Franky Lin <franky.lin@broadcom.com>,
+        Hante Meuleman <hante.meuleman@broadcom.com>,
+        Chi-Hsien Lin <chi-hsien.lin@cypress.com>,
+        Wright Feng <wright.feng@cypress.com>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        linux-wireless@vger.kernel.org,
+        brcm80211-dev-list.pdl@broadcom.com,
+        brcm80211-dev-list@cypress.com, linux-kernel@vger.kernel.org,
+        Hans de Goede <hdegoede@redhat.com>
+Subject: Re: PROBLEM: brcmfmac's DMI-based fw file names break built-in fw
+ loader
+Message-ID: <20190504194440.4zcxjrtj2aft3ka4@localhost>
+References: <20190504162633.ldrz2nqfocg55grb@localhost>
+ <cce7604e-2b02-80ed-1df5-6f304cada0cb@broadcom.com>
 MIME-Version: 1.0
-X-Patchwork-Bot: notify
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-To:     unlisted-recipients:; (no To-header on input)
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <cce7604e-2b02-80ed-1df5-6f304cada0cb@broadcom.com>
+User-Agent: NeoMutt/20170113 (1.7.2)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Cc: Seth Forshee <seth.forshee@canonical.com>
-Cc: WIRELESS ML <linux-wireless@vger.kernel.org>
-Cc: REGDB ML <wireless-regdb@lists.infradead.org>
-Signed-off-by: Xose Vazquez Perez <xose.vazquez@gmail.com>
----
- db.txt | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+On Sat, May 04, 2019 at 09:11:09PM +0200, Arend Van Spriel wrote:
+> + Hans, Luis
+> 
+> On 5/4/2019 6:26 PM, Victor Bravo wrote:
+> > The brcmfmac driver seems to have partially fixed problems which
+> > prevented it to be used in shared system/kernel images for multiple
+> > hardware by trying to load it's <config>.txt as
+> > <config>.<dmi_sys_vendor>.<dmi_product_name>.txt first and then
+> > falling back to <config>.txt. Real-life example:
+> > 
+> > brcmfmac mmc1:0001:1: Direct firmware load for brcm/brcmfmac43340-sdio.ASUSTeK COMPUTER INC.-T100HAN.txt failed with
+> > error -2
+> > brcmfmac: brcmf_fw_alloc_request: using brcm/brcmfmac43340-sdio for chip
+> > BCM43340/2
+> > 
+> > Unfortunately this doesn't really help on systems which use static
+> > kernel with firmware blobs (and also text configuration files in case of
+> > brcmfmac) built-in using CONFIG_EXTRA_FIRMWARE, as CONFIG_EXTRA_FIRMWARE
+> > doesn't support spaces in file names - kernel build fails with
+> > 
+> > CONFIG_EXTRA_FIRMWARE="brcm/brcmfmac43340-sdio.bin brcm/brcmfmac43340-sdio.ASUSTeK COMPUTER INC.-T100HAN.txt"
+> > 
+> > for obvious reasons. So the only way here is to stay with good old
+> > brcmfmac43340-sdio.txt and support at most one brcmfmac-equipped machine
+> > per kernel image.
+> > 
+> > Please consider filtering the DMI strings and replacing spaces and
+> > possibly other invalid characters with underscores, and/or adding module
+> > parameter to allow passing the string from command line (using
+> > brcmfmac.tag=t100 or brcmfmac.board=t100 to make the module load
+> > brcmfmac43340-sdio.t100.txt seems nicer to me, and isn't prone to
+> > breaking when DMI strings change on BIOS update).
+> 
+> The intent of the DMI approach was to avoid end-users from passing module
+> parameters for this. As to fixing DMI string usage patches are welcome.
 
-diff --git a/db.txt b/db.txt
-index 4fb1948..fe909a8 100644
---- a/db.txt
-+++ b/db.txt
-@@ -432,7 +432,7 @@ country EG: DFS-ETSI
- 
- # Source:
- # Cuadro nacional de atribución de frecuencias (CNAF)
--# http://www.mincotur.gob.es/telecomunicaciones/espectro/paginas/cnaf.aspx
-+# https://avancedigital.gob.es/espectro/Paginas/cnaf.aspx
- country ES: DFS-ETSI
- 	(2400 - 2483.5 @ 40), (100 mW)
- 	(5150 - 5250 @ 80), (200 mW), NO-OUTDOOR, AUTO-BW, wmmrule=ETSI
--- 
-2.21.0
+Well I think I could also provide a patch to fix, this can be easily
+done by adding a string of allowed characters and then replacing
+unknown ones with underscores.
 
+> > My brief grep-based research also suggest that strings retrieved
+> > by dmi_get_system_info() are passed to firmware loader without any
+> > checks for special character, /../ etc. I'm not sure whether this is
+> > considered to be proper & safe use, but if it's not, it may also have
+> > some security implications, as it allows attacker with access to DMI
+> > strings (using root rights/other OS/BIOS/physical access) to mess
+> > with kernel space or secure boot.
+> 
+> Hmm. Attackers with that kind of access can do bad is a gazillion ways.
+
+Agreed. It will be definitely easier to make filenames contain only safe
+characters than to discuss those ways.
+
+> > I would also really appreciate not allowing future brcm (and other)
+> > drivers to leave staging area before they fully support =y.
+> 
+> Define fully support. At the time we moved into the wireless tree (almost a
+> decade ago) we did support =y. As such you could consider the DMI approach a
+> regression, but I find that a bit harsh to say. Hans made a honest attempt
+> and it is something that can be fixed. It can be you providing just that ;-)
+
+Well... I agree that the idea wasn't really complete ;).
+
+As for the patches, I also realized that the txt config file actually
+comes from EFI/BIOS, so it's quite possible that it may differ between
+BIOS versions. So I'm thinking of 3 patches here:
+
+  1) Character filtering as described above.
+
+  2) Adding bios_version next to board_type, and changing load order to
+
+    <config>.<dmi_sys_vendor>.<dmi_product_name>.<dmi_bios_version>.txt
+    <config>.<dmi_sys_vendor>.<dmi_product_name>.txt
+    <config>.txt
+
+  3) Adding command-line parameters to override these on problems.
+
+1) breaks backward compatibility, but the DMI code seems to be quite
+new so hopefully many people don't rely on it yet.
+
+2) & 3) are backward compatible.
+
+Regards,
+v.
