@@ -2,106 +2,102 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 4C53513939
-	for <lists+linux-wireless@lfdr.de>; Sat,  4 May 2019 12:34:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6373013968
+	for <lists+linux-wireless@lfdr.de>; Sat,  4 May 2019 13:02:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727333AbfEDKdS (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 4 May 2019 06:33:18 -0400
-Received: from szxga07-in.huawei.com ([45.249.212.35]:34840 "EHLO huawei.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1726776AbfEDKdS (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 4 May 2019 06:33:18 -0400
-Received: from DGGEMS401-HUB.china.huawei.com (unknown [172.30.72.59])
-        by Forcepoint Email with ESMTP id 9B1C75067530B2D663B0;
-        Sat,  4 May 2019 18:33:15 +0800 (CST)
-Received: from localhost (10.177.31.96) by DGGEMS401-HUB.china.huawei.com
- (10.3.19.201) with Microsoft SMTP Server id 14.3.439.0; Sat, 4 May 2019
- 18:33:08 +0800
-From:   YueHaibing <yuehaibing@huawei.com>
-To:     <yhchuang@realtek.com>, <kvalo@codeaurora.org>
-CC:     <linux-kernel@vger.kernel.org>, <netdev@vger.kernel.org>,
-        <linux-wireless@vger.kernel.org>, <davem@davemloft.net>,
-        YueHaibing <yuehaibing@huawei.com>
-Subject: [PATCH] rtw88: Make some symbols static
-Date:   Sat, 4 May 2019 18:32:24 +0800
-Message-ID: <20190504103224.27524-1-yuehaibing@huawei.com>
-X-Mailer: git-send-email 2.10.2.windows.1
+        id S1727376AbfEDLCe (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 4 May 2019 07:02:34 -0400
+Received: from mail-wm1-f65.google.com ([209.85.128.65]:38172 "EHLO
+        mail-wm1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725981AbfEDLCe (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Sat, 4 May 2019 07:02:34 -0400
+Received: by mail-wm1-f65.google.com with SMTP id f2so4594037wmj.3;
+        Sat, 04 May 2019 04:02:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=d9xqRvQ7LglnQSyEdyWwx0LaW1NdfXcmsha1uWwwA5U=;
+        b=aEV5cKHE7rw5w8phwcnK4XYABmhkwlqMGBjm4KtKfMkB3HMEFI0UbjyP1MWPKSsuO4
+         kV10cFluOgdaRPFW8lcQTDEA3j6cDs/KB4XFx2CjN2ohfEB9IiBX+JjKmplO9ehRUnXi
+         M8IfK57Avok/aRvhLtp5YxHlQLOWE/Bf7q4La4FNtfqWZkqCHBTtTAwVTTKze3VeRFBN
+         jUM10tGMTAIUns2YSTTTq+AynStJ805mdf6251QBordFuPHO+HdxdEtTAj/LpZX+tWIy
+         xwyNyGDc/gxwOuofptU3PJSSPHcKfeq+DuG5LdMzWZ5DzC+Otm7ocsyICkodvIuAUyS+
+         O1Hw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=d9xqRvQ7LglnQSyEdyWwx0LaW1NdfXcmsha1uWwwA5U=;
+        b=WOp5zGp+rJXnUjfAak9oDZimyNV3QY9dzv5gZOI6TKWFUomqtVTdczkTy9kYbhmzOv
+         NKkh8p0iXDyvlBunZ1a0EbCVjem3l4t8JviqIbU4dl0QEBOXE+OCQtLH182xBSS8o1Aw
+         1bSLciZ6stovJT0zHy+JljzCyIIyKGQWX8SsM5qejhCb5pssMXgL0n2V++lHqDhBzllj
+         T0opQRhUL+DLhnTX7dZQIjBF0pAL0WQEX65z6ztcztag3/oRdrKlsJLdycSzigbdGHA8
+         ZxICLAoMaXaql/zgvbyHsasF8UHeB7yC7VlaGp81ov9P4TKCzEk4PjRNRLzItZMKpEPJ
+         hvlw==
+X-Gm-Message-State: APjAAAVTJ63JHIuQOPEqw5gmyxKUwl6JK5N5OuoFJpJA+fgYmu1joDAE
+        8FeG7wVsXOvdYKs3YHmcHagvf6jB7/o=
+X-Google-Smtp-Source: APXvYqy3dfTFdLwZrygw5pSCGAvurOj9VwUtSKJIX0E/y05IQOuv2UX4urpxWai1LbIz2W3WXRPigg==
+X-Received: by 2002:a1c:a008:: with SMTP id j8mr9967493wme.73.1556967751884;
+        Sat, 04 May 2019 04:02:31 -0700 (PDT)
+Received: from ?IPv6:2003:ea:8bd4:5700:4cd8:8005:fc98:c429? (p200300EA8BD457004CD88005FC98C429.dip0.t-ipconnect.de. [2003:ea:8bd4:5700:4cd8:8005:fc98:c429])
+        by smtp.googlemail.com with ESMTPSA id z4sm3251606wrq.75.2019.05.04.04.02.30
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Sat, 04 May 2019 04:02:30 -0700 (PDT)
+Subject: Re: [PATCH] net: wireless: ath9k: Return an error when
+ ath9k_hw_reset() fails
+To:     Jia-Ju Bai <baijiaju1990@gmail.com>, ath9k-devel@qca.qualcomm.com,
+        kvalo@codeaurora.org, davem@davemloft.net
+Cc:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+References: <20190504100815.19876-1-baijiaju1990@gmail.com>
+From:   Heiner Kallweit <hkallweit1@gmail.com>
+Message-ID: <e47117d6-f918-1dd0-834e-d056534bfead@gmail.com>
+Date:   Sat, 4 May 2019 13:02:25 +0200
+User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:60.0) Gecko/20100101
+ Thunderbird/60.6.1
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [10.177.31.96]
-X-CFilter-Loop: Reflected
+In-Reply-To: <20190504100815.19876-1-baijiaju1990@gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Fix sparse warnings:
+On 04.05.2019 12:08, Jia-Ju Bai wrote:
+> ath9k_hw_reset() in ath9k_start() can fail, and in this case, 
+> ath9k_start() should return an error instead of executing the 
+> subsequent code.
+> 
+Such mechanical patches w/o understanding the code are always
+problematic. Do you have any proof that this error is fatal?
+I think it is not, else we wouldn't have this line:
+ah->reset_power_on = false;
+Also you should consider that a mutex and a spinlock are held.
+Maybe changing the error message to a warning would be more
+appropriate. But this I would leave to somebody being more
+familiar with this driver.
 
-drivers/net/wireless/realtek/rtw88/phy.c:851:4: warning: symbol 'rtw_cck_size' was not declared. Should it be static?
-drivers/net/wireless/realtek/rtw88/phy.c:852:4: warning: symbol 'rtw_ofdm_size' was not declared. Should it be static?
-drivers/net/wireless/realtek/rtw88/phy.c:853:4: warning: symbol 'rtw_ht_1s_size' was not declared. Should it be static?
-drivers/net/wireless/realtek/rtw88/phy.c:854:4: warning: symbol 'rtw_ht_2s_size' was not declared. Should it be static?
-drivers/net/wireless/realtek/rtw88/phy.c:855:4: warning: symbol 'rtw_vht_1s_size' was not declared. Should it be static?
-drivers/net/wireless/realtek/rtw88/phy.c:856:4: warning: symbol 'rtw_vht_2s_size' was not declared. Should it be static?
-drivers/net/wireless/realtek/rtw88/fw.c:11:6: warning: symbol 'rtw_fw_c2h_cmd_handle_ext' was not declared. Should it be static?
-drivers/net/wireless/realtek/rtw88/fw.c:50:6: warning: symbol 'rtw_fw_send_h2c_command' was not declared. Should it be static?
-
-Reported-by: Hulk Robot <hulkci@huawei.com>
-Signed-off-by: YueHaibing <yuehaibing@huawei.com>
----
- drivers/net/wireless/realtek/rtw88/fw.c  |  6 ++++--
- drivers/net/wireless/realtek/rtw88/phy.c | 13 +++++++------
- 2 files changed, 11 insertions(+), 8 deletions(-)
-
-diff --git a/drivers/net/wireless/realtek/rtw88/fw.c b/drivers/net/wireless/realtek/rtw88/fw.c
-index cf4265c..62847797 100644
---- a/drivers/net/wireless/realtek/rtw88/fw.c
-+++ b/drivers/net/wireless/realtek/rtw88/fw.c
-@@ -8,7 +8,8 @@
- #include "reg.h"
- #include "debug.h"
- 
--void rtw_fw_c2h_cmd_handle_ext(struct rtw_dev *rtwdev, struct sk_buff *skb)
-+static void rtw_fw_c2h_cmd_handle_ext(struct rtw_dev *rtwdev,
-+				      struct sk_buff *skb)
- {
- 	struct rtw_c2h_cmd *c2h;
- 	u8 sub_cmd_id;
-@@ -47,7 +48,8 @@ void rtw_fw_c2h_cmd_handle(struct rtw_dev *rtwdev, struct sk_buff *skb)
- 	}
- }
- 
--void rtw_fw_send_h2c_command(struct rtw_dev *rtwdev, u8 *h2c)
-+static void rtw_fw_send_h2c_command(struct rtw_dev *rtwdev,
-+				    u8 *h2c)
- {
- 	u8 box;
- 	u8 box_state;
-diff --git a/drivers/net/wireless/realtek/rtw88/phy.c b/drivers/net/wireless/realtek/rtw88/phy.c
-index 4381b36..2105fc4 100644
---- a/drivers/net/wireless/realtek/rtw88/phy.c
-+++ b/drivers/net/wireless/realtek/rtw88/phy.c
-@@ -848,12 +848,13 @@ u8 rtw_vht_2s_rates[] = {
- 	DESC_RATEVHT2SS_MCS6, DESC_RATEVHT2SS_MCS7,
- 	DESC_RATEVHT2SS_MCS8, DESC_RATEVHT2SS_MCS9
- };
--u8 rtw_cck_size = ARRAY_SIZE(rtw_cck_rates);
--u8 rtw_ofdm_size = ARRAY_SIZE(rtw_ofdm_rates);
--u8 rtw_ht_1s_size = ARRAY_SIZE(rtw_ht_1s_rates);
--u8 rtw_ht_2s_size = ARRAY_SIZE(rtw_ht_2s_rates);
--u8 rtw_vht_1s_size = ARRAY_SIZE(rtw_vht_1s_rates);
--u8 rtw_vht_2s_size = ARRAY_SIZE(rtw_vht_2s_rates);
-+
-+static u8 rtw_cck_size = ARRAY_SIZE(rtw_cck_rates);
-+static u8 rtw_ofdm_size = ARRAY_SIZE(rtw_ofdm_rates);
-+static u8 rtw_ht_1s_size = ARRAY_SIZE(rtw_ht_1s_rates);
-+static u8 rtw_ht_2s_size = ARRAY_SIZE(rtw_ht_2s_rates);
-+static u8 rtw_vht_1s_size = ARRAY_SIZE(rtw_vht_1s_rates);
-+static u8 rtw_vht_2s_size = ARRAY_SIZE(rtw_vht_2s_rates);
- u8 *rtw_rate_section[RTW_RATE_SECTION_MAX] = {
- 	rtw_cck_rates, rtw_ofdm_rates,
- 	rtw_ht_1s_rates, rtw_ht_2s_rates,
--- 
-2.7.4
-
+> Signed-off-by: Jia-Ju Bai <baijiaju1990@gmail.com>
+> ---
+>  drivers/net/wireless/ath/ath9k/main.c | 1 +
+>  1 file changed, 1 insertion(+)
+> 
+> diff --git a/drivers/net/wireless/ath/ath9k/main.c b/drivers/net/wireless/ath/ath9k/main.c
+> index f23cb2f3d296..f78e7c46764d 100644
+> --- a/drivers/net/wireless/ath/ath9k/main.c
+> +++ b/drivers/net/wireless/ath/ath9k/main.c
+> @@ -681,6 +681,7 @@ static int ath9k_start(struct ieee80211_hw *hw)
+>  			"Unable to reset hardware; reset status %d (freq %u MHz)\n",
+>  			r, curchan->center_freq);
+>  		ah->reset_power_on = false;
+> +		return r;
+>  	}
+>  
+>  	/* Setup our intr mask. */
+> 
 
