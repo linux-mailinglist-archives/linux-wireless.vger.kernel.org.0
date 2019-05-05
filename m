@@ -2,35 +2,33 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 6488A14272
-	for <lists+linux-wireless@lfdr.de>; Sun,  5 May 2019 23:16:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1BF5714286
+	for <lists+linux-wireless@lfdr.de>; Sun,  5 May 2019 23:31:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727958AbfEEVQa (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 5 May 2019 17:16:30 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:56518 "EHLO
+        id S1727861AbfEEVbo (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 5 May 2019 17:31:44 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:56614 "EHLO
         youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727765AbfEEVQa (ORCPT
+        with ESMTP id S1726905AbfEEVbn (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 5 May 2019 17:16:30 -0400
+        Sun, 5 May 2019 17:31:43 -0400
 Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
         by youngberry.canonical.com with esmtpsa (TLS1.0:RSA_AES_256_CBC_SHA1:32)
         (Exim 4.76)
         (envelope-from <colin.king@canonical.com>)
-        id 1hNOUh-0006yv-SY; Sun, 05 May 2019 21:16:24 +0000
+        id 1hNOjQ-0007uz-Ax; Sun, 05 May 2019 21:31:36 +0000
 From:   Colin King <colin.king@canonical.com>
-To:     Franky Lin <franky.lin@broadcom.com>,
-        Hante Meuleman <hante.meuleman@broadcom.com>,
-        Chi-Hsien Lin <chi-hsien.lin@cypress.com>,
-        Wright Feng <wright.feng@cypress.com>,
+To:     Felix Fietkau <nbd@nbd.name>, Roy Luo <royluo@google.com>,
         Kalle Valo <kvalo@codeaurora.org>,
         "David S . Miller" <davem@davemloft.net>,
-        linux-wireless@vger.kernel.org,
-        brcm80211-dev-list.pdl@broadcom.com,
-        brcm80211-dev-list@cypress.com, netdev@vger.kernel.org
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-mediatek@lists.infradead.org
 Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH][next] brcmfmac: remove redundant u32 comparison with less than zero
-Date:   Sun,  5 May 2019 22:16:23 +0100
-Message-Id: <20190505211623.3153-1-colin.king@canonical.com>
+Subject: [PATCH][next] mt76: fix less than zero check on a u8 variable
+Date:   Sun,  5 May 2019 22:31:35 +0100
+Message-Id: <20190505213135.3895-1-colin.king@canonical.com>
 X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
@@ -42,28 +40,37 @@ X-Mailing-List: linux-wireless@vger.kernel.org
 
 From: Colin Ian King <colin.king@canonical.com>
 
-The check for the u32 variable idx being less than zero is
-always false and is redundant. Remove it.
+The signed return from the call to get_omac_idx is being assigned to the
+u8 variable mac_idx and then checked for a negative error condition
+which is always going to be false. Fix this by assigning the return to
+the int variable ret and checking this instead.
 
 Addresses-Coverity: ("Unsigned compared against 0")
+Fixes: 04b8e65922f6 ("mt76: add mac80211 driver for MT7615 PCIe-based chipsets")
 Signed-off-by: Colin Ian King <colin.king@canonical.com>
 ---
- drivers/net/wireless/broadcom/brcm80211/brcmfmac/msgbuf.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/wireless/mediatek/mt76/mt7615/main.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/msgbuf.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/msgbuf.c
-index 9d1f9ff25bfa..e874dddc7b7f 100644
---- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/msgbuf.c
-+++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/msgbuf.c
-@@ -375,7 +375,7 @@ brcmf_msgbuf_get_pktid(struct device *dev, struct brcmf_msgbuf_pktids *pktids,
- 	struct brcmf_msgbuf_pktid *pktid;
- 	struct sk_buff *skb;
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/main.c b/drivers/net/wireless/mediatek/mt76/mt7615/main.c
+index 80e6b211f60b..460d90d5ed6d 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7615/main.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7615/main.c
+@@ -77,11 +77,12 @@ static int mt7615_add_interface(struct ieee80211_hw *hw,
+ 		goto out;
+ 	}
  
--	if (idx < 0 || idx >= pktids->array_size) {
-+	if (idx >= pktids->array_size) {
- 		brcmf_err("Invalid packet id %d (max %d)\n", idx,
- 			  pktids->array_size);
- 		return NULL;
+-	mvif->omac_idx = get_omac_idx(vif->type, dev->omac_mask);
+-	if (mvif->omac_idx < 0) {
++	ret = get_omac_idx(vif->type, dev->omac_mask);
++	if (ret < 0) {
+ 		ret = -ENOSPC;
+ 		goto out;
+ 	}
++	mvif->omac_idx = ret;
+ 
+ 	/* TODO: DBDC support. Use band 0 and wmm 0 for now */
+ 	mvif->band_idx = 0;
 -- 
 2.20.1
 
