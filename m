@@ -2,18 +2,18 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C224D14047
-	for <lists+linux-wireless@lfdr.de>; Sun,  5 May 2019 16:36:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1E2A214063
+	for <lists+linux-wireless@lfdr.de>; Sun,  5 May 2019 16:49:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727626AbfEEOgq (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 5 May 2019 10:36:46 -0400
-Received: from 0.ictbs.com ([203.137.112.168]:52174 "EHLO 0.ictbs.com"
+        id S1727670AbfEEOs5 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 5 May 2019 10:48:57 -0400
+Received: from 0.ictbs.com ([203.137.112.168]:50019 "EHLO 0.ictbs.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726905AbfEEOgp (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 5 May 2019 10:36:45 -0400
+        id S1727565AbfEEOs5 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Sun, 5 May 2019 10:48:57 -0400
 Received: by hq.local (Postfix, from userid 1000)
-        id 9ACDB6641B; Sun,  5 May 2019 16:36:38 +0200 (CEST)
-Date:   Sun, 5 May 2019 16:36:38 +0200
+        id 380E46641B; Sun,  5 May 2019 16:48:52 +0200 (CEST)
+Date:   Sun, 5 May 2019 16:48:52 +0200
 From:   Victor Bravo <1905@spmblk.com>
 To:     Arend Van Spriel <arend.vanspriel@broadcom.com>
 Cc:     Franky Lin <franky.lin@broadcom.com>,
@@ -26,9 +26,8 @@ Cc:     Franky Lin <franky.lin@broadcom.com>,
         brcm80211-dev-list.pdl@broadcom.com,
         brcm80211-dev-list@cypress.com, linux-kernel@vger.kernel.org,
         Hans de Goede <hdegoede@redhat.com>
-Subject: Re: PROBLEM: brcmfmac's DMI-based fw file names break built-in fw
- loader
-Message-ID: <20190505143638.2fxtnc4wxfdkegpj@localhost>
+Subject: [PATCH RFC] brcmfmac: sanitize DMI strings
+Message-ID: <20190505144852.addbdluel7edoevm@localhost>
 References: <20190504162633.ldrz2nqfocg55grb@localhost>
  <cce7604e-2b02-80ed-1df5-6f304cada0cb@broadcom.com>
  <20190504194440.4zcxjrtj2aft3ka4@localhost>
@@ -43,104 +42,85 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Sun, May 05, 2019 at 10:20:33AM +0200, Arend Van Spriel wrote:
-> On May 4, 2019 9:44:51 PM Victor Bravo <1905@spmblk.com> wrote:
-> 
-> > On Sat, May 04, 2019 at 09:11:09PM +0200, Arend Van Spriel wrote:
-> > > + Hans, Luis
-> > > 
-> > > On 5/4/2019 6:26 PM, Victor Bravo wrote:
-> > > > The brcmfmac driver seems to have partially fixed problems which
-> > > > prevented it to be used in shared system/kernel images for multiple
-> > > > hardware by trying to load it's <config>.txt as
-> > > > <config>.<dmi_sys_vendor>.<dmi_product_name>.txt first and then
-> > > > falling back to <config>.txt. Real-life example:
-> > > >
-> > > > brcmfmac mmc1:0001:1: Direct firmware load for
-> > > brcm/brcmfmac43340-sdio.ASUSTeK COMPUTER INC.-T100HAN.txt failed
-> > > with
-> > > > error -2
-> > > > brcmfmac: brcmf_fw_alloc_request: using brcm/brcmfmac43340-sdio for chip
-> > > > BCM43340/2
-> > > >
-> > > > Unfortunately this doesn't really help on systems which use static
-> > > > kernel with firmware blobs (and also text configuration files in case of
-> > > > brcmfmac) built-in using CONFIG_EXTRA_FIRMWARE, as CONFIG_EXTRA_FIRMWARE
-> > > > doesn't support spaces in file names - kernel build fails with
-> > > >
-> > > > CONFIG_EXTRA_FIRMWARE="brcm/brcmfmac43340-sdio.bin
-> > > brcm/brcmfmac43340-sdio.ASUSTeK COMPUTER INC.-T100HAN.txt"
-> > > >
-> > > > for obvious reasons. So the only way here is to stay with good old
-> > > > brcmfmac43340-sdio.txt and support at most one brcmfmac-equipped machine
-> > > > per kernel image.
-> > > >
-> > > > Please consider filtering the DMI strings and replacing spaces and
-> > > > possibly other invalid characters with underscores, and/or adding module
-> > > > parameter to allow passing the string from command line (using
-> > > > brcmfmac.tag=t100 or brcmfmac.board=t100 to make the module load
-> > > > brcmfmac43340-sdio.t100.txt seems nicer to me, and isn't prone to
-> > > > breaking when DMI strings change on BIOS update).
-> > > 
-> > > The intent of the DMI approach was to avoid end-users from passing module
-> > > parameters for this. As to fixing DMI string usage patches are welcome.
-> > 
-> > Well I think I could also provide a patch to fix, this can be easily
-> > done by adding a string of allowed characters and then replacing
-> > unknown ones with underscores.
-> > 
-> > > > My brief grep-based research also suggest that strings retrieved
-> > > > by dmi_get_system_info() are passed to firmware loader without any
-> > > > checks for special character, /../ etc. I'm not sure whether this is
-> > > > considered to be proper & safe use, but if it's not, it may also have
-> > > > some security implications, as it allows attacker with access to DMI
-> > > > strings (using root rights/other OS/BIOS/physical access) to mess
-> > > > with kernel space or secure boot.
-> > > 
-> > > Hmm. Attackers with that kind of access can do bad is a gazillion ways.
-> > 
-> > Agreed. It will be definitely easier to make filenames contain only safe
-> > characters than to discuss those ways.
-> > 
-> > > > I would also really appreciate not allowing future brcm (and other)
-> > > > drivers to leave staging area before they fully support =y.
-> > > 
-> > > Define fully support. At the time we moved into the wireless tree (almost a
-> > > decade ago) we did support =y. As such you could consider the DMI approach a
-> > > regression, but I find that a bit harsh to say. Hans made a honest attempt
-> > > and it is something that can be fixed. It can be you providing just that ;-)
-> > 
-> > Well... I agree that the idea wasn't really complete ;).
-> > 
-> > As for the patches, I also realized that the txt config file actually
-> > comes from EFI/BIOS, so it's quite possible that it may differ between
-> > BIOS versions. So I'm thinking of 3 patches here:
-> > 
-> >   1) Character filtering as described above.
-> > 
-> >   2) Adding bios_version next to board_type, and changing load order to
-> > 
-> >     <config>.<dmi_sys_vendor>.<dmi_product_name>.<dmi_bios_version>.txt
-> >     <config>.<dmi_sys_vendor>.<dmi_product_name>.txt
-> >     <config>.txt
-> > 
-> >   3) Adding command-line parameters to override these on problems.
-> > 
-> > 1) breaks backward compatibility, but the DMI code seems to be quite
-> > new so hopefully many people don't rely on it yet.
-> > 
-> > 2) & 3) are backward compatible.
-> 
-> Actually, the configuration file, or nvram file as we tend to call it, does
-> not come from EFI/BIOS. There are a few platforms that have the nvram file
-> stored in EFI and it's name is well-defined. It does assume there is only
-> one brcmfmac device in the system.
+Sanitize DMI strings in brcmfmac driver to make resulting filenames
+contain only safe characters. This version replaces all non-printable
+characters incl. delete (0-31, 127-255), spaces and slashes with
+underscores.
 
-Good to know. Sounds like working nvram file should never need update
-and changes related to BIOS version are not needed.
+This change breaks backward compatibility, but adds control over strings
+passed to firmware loader and compatibility with CONFIG_EXTRA_FIRMWARE
+which doesn't support spaces in filenames.
 
-I've meanwhile prepared patch for character filtering, will post in
-new thread w/ better subject.
+Signed-off-by: Victor Bravo <1905@spmblk.com>
 
-Regards,
-v.
+diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/dmi.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/dmi.c
+index 7535cb0d4ac0..fa654ce7172b 100644
+--- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/dmi.c
++++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/dmi.c
+@@ -23,6 +23,14 @@
+ /* The DMI data never changes so we can use a static buf for this */
+ static char dmi_board_type[128];
+ 
++/* Array of 128 bits representing 7-bit characters allowed in DMI strings. */
++static unsigned char brcmf_dmi_allowed_chars[] = {
++	0x00, 0x00, 0x00, 0x00, 0xfe, 0x7f, 0xff, 0xff,
++	0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0x7f
++};
++
++#define BRCMF_DMI_SAFE_CHAR '_'
++
+ struct brcmf_dmi_data {
+ 	u32 chip;
+ 	u32 chiprev;
+@@ -43,10 +51,6 @@ static const struct brcmf_dmi_data meegopad_t08_data = {
+ 	BRCM_CC_43340_CHIP_ID, 2, "meegopad-t08"
+ };
+ 
+-static const struct brcmf_dmi_data pov_tab_p1006w_data = {
+-	BRCM_CC_43340_CHIP_ID, 2, "pov-tab-p1006w-data"
+-};
+-
+ static const struct dmi_system_id dmi_platform_data[] = {
+ 	{
+ 		/* Match for the GPDwin which unfortunately uses somewhat
+@@ -85,20 +89,18 @@ static const struct dmi_system_id dmi_platform_data[] = {
+ 		},
+ 		.driver_data = (void *)&meegopad_t08_data,
+ 	},
+-	{
+-		/* Point of View TAB-P1006W-232 */
+-		.matches = {
+-			DMI_EXACT_MATCH(DMI_SYS_VENDOR, "Insyde"),
+-			DMI_EXACT_MATCH(DMI_PRODUCT_NAME, "BayTrail"),
+-			/* Note 105b is Foxcon's USB/PCI vendor id */
+-			DMI_EXACT_MATCH(DMI_BOARD_VENDOR, "105B"),
+-			DMI_EXACT_MATCH(DMI_BOARD_NAME, "0E57"),
+-		},
+-		.driver_data = (void *)&pov_tab_p1006w_data,
+-	},
+ 	{}
+ };
+ 
++void brcmf_dmi_sanitize(char *dst, const unsigned char *allowed, char safe)
++{
++	while (*dst) {
++		if ((*dst < 0) || !(allowed[*dst / 8] & (1 << (*dst % 8))))
++			*dst = safe;
++		dst++;
++	}
++}
++
+ void brcmf_dmi_probe(struct brcmf_mp_device *settings, u32 chip, u32 chiprev)
+ {
+ 	const struct dmi_system_id *match;
+@@ -126,6 +128,9 @@ void brcmf_dmi_probe(struct brcmf_mp_device *settings, u32 chip, u32 chiprev)
+ 	if (sys_vendor && product_name) {
+ 		snprintf(dmi_board_type, sizeof(dmi_board_type), "%s-%s",
+ 			 sys_vendor, product_name);
++		brcmf_dmi_sanitize(dmi_board_type,
++				   brcmf_dmi_allowed_chars,
++				   BRCMF_DMI_SAFE_CHAR);
+ 		settings->board_type = dmi_board_type;
+ 	}
+ }
+
