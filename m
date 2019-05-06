@@ -2,288 +2,304 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C6034152DF
-	for <lists+linux-wireless@lfdr.de>; Mon,  6 May 2019 19:39:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 34A731543C
+	for <lists+linux-wireless@lfdr.de>; Mon,  6 May 2019 21:12:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726523AbfEFRjY (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 6 May 2019 13:39:24 -0400
-Received: from mail-ot1-f66.google.com ([209.85.210.66]:34114 "EHLO
-        mail-ot1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726095AbfEFRjY (ORCPT
+        id S1726924AbfEFTMr (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 6 May 2019 15:12:47 -0400
+Received: from 9.mo69.mail-out.ovh.net ([46.105.56.78]:50915 "EHLO
+        9.mo69.mail-out.ovh.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726277AbfEFTMr (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 6 May 2019 13:39:24 -0400
-Received: by mail-ot1-f66.google.com with SMTP id l17so2720856otq.1
-        for <linux-wireless@vger.kernel.org>; Mon, 06 May 2019 10:39:23 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=sender:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=Wt5U1v1Ut1PuD1bJa6JYik9CGW3GmdcNVSMP6n6/Uic=;
-        b=U/6ZjbyJxtuc+SrDPU6YGhYBM/5smxfdyCU7NJwdAR7Jd8HTWyH4thLJjXW2eL/U1H
-         TPEI5gIUJeJ803pH2PR692sgMjhYDDdy2yvwqwBsDwDfoJP8PVd8mdqMu96+R90YvRcZ
-         W7if8hZoHNWfZw+jbCjYOc4KJWN+m5Dbee7pJPTbnyL21cKpohVPImxYxHe5eRNpe3bv
-         gRBuqT/0dihNRx6pqRxwUI3Y5JQOQBy67I5tzzl0w4SeoUvVHqrFr0GI+bQnrNO+S2ft
-         1iZMqZmS7aVyXr3IyQXy+EdsYfBA9Y4lQz/iGoc+0I9HYc0yX64MJEgS2U1uQsUs7mfv
-         DUjA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:sender:from:to:cc:subject:date:message-id
-         :mime-version:content-transfer-encoding;
-        bh=Wt5U1v1Ut1PuD1bJa6JYik9CGW3GmdcNVSMP6n6/Uic=;
-        b=oYagTmMOMnFLXUozv3b2a06VDj3whHxWJ1zbY/wguq6zDxm5uhZf/SXpLb3jsTHK7n
-         ZuU3MPeLmutdnBd1gCYmvXXRa6BgTmgCOf4uazbC29m+Fbt6hGQDl8lrd+rnITcVciWQ
-         iP+5bRci5tPF95JIDmKd6ETXkjCWCnA3SmTicEGlmVmERue7nh+rMdas4sZ8banUttfo
-         HjwvXB+OZnR01V1HjGqPni0bmMF9sTnVNREFpkQqYJoq+aCLKvhXex867Zkis+SsaO8H
-         f02tNZ/+7Hz3m6oNo8UUrJxwHitvXwswHn2LCVUUhKUeq+p5COd7K/DI6CdV6tB3+Bdy
-         PzsQ==
-X-Gm-Message-State: APjAAAXl1vsa4TSWS6/Rwcv83WrXn+eYHHhv5Xe2trh3VR4gM/kqIlOZ
-        GlwUeESMYZGQjSn/P84+6KI=
-X-Google-Smtp-Source: APXvYqwtcaoykiUcI7oPgSFM0uPa75x/22w4QuE8un62zntXs88qT6xqSo6Uql+3non27qKCoSklfA==
-X-Received: by 2002:a9d:758d:: with SMTP id s13mr18192259otk.306.1557164362622;
-        Mon, 06 May 2019 10:39:22 -0700 (PDT)
-Received: from localhost.localdomain (cpe-24-31-245-230.kc.res.rr.com. [24.31.245.230])
-        by smtp.gmail.com with ESMTPSA id m14sm4168682oih.6.2019.05.06.10.39.20
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Mon, 06 May 2019 10:39:21 -0700 (PDT)
-From:   Larry Finger <Larry.Finger@lwfinger.net>
-To:     kvalo@codeaurora.org
-Cc:     linux-wireless@vger.kernel.org, pkshih@realtek.com,
-        Larry Finger <Larry.Finger@lwfinger.net>
-Subject: [RFC] rtlwifi: rtl8821ae: Use inline routines rather than macros for descriptor word 0
-Date:   Mon,  6 May 2019 12:39:16 -0500
-Message-Id: <20190506173916.16486-1-Larry.Finger@lwfinger.net>
+        Mon, 6 May 2019 15:12:47 -0400
+Received: from player762.ha.ovh.net (unknown [10.109.146.168])
+        by mo69.mail-out.ovh.net (Postfix) with ESMTP id 86D8B50B98
+        for <linux-wireless@vger.kernel.org>; Mon,  6 May 2019 21:05:06 +0200 (CEST)
+Received: from awhome.eu (p4FF91A34.dip0.t-ipconnect.de [79.249.26.52])
+        (Authenticated sender: postmaster@awhome.eu)
+        by player762.ha.ovh.net (Postfix) with ESMTPSA id D24AC57959A8;
+        Mon,  6 May 2019 19:05:04 +0000 (UTC)
+From:   Alexander Wetzel <alexander@wetzel-home.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=wetzel-home.de;
+        s=wetzel-home; t=1557169503;
+        bh=WmUTWww/r1arv2Axmk4PbiiEtymCF53AnYSy9d45a2I=;
+        h=From:To:Cc:Subject:Date;
+        b=buuAvjp9CIFhdqNdgB6FYHDICx2g7wAAsgKrF70QlPtxepK2/T4dHbwco6RSdUlzW
+         h96Is0ThoPeCk/ObXvzrFBGn/ryiFRf9dvyqfTuQcgwoIjmv/hzKcitgEGP3+z9V7Z
+         5RxH0fZICHw9MxxyJHGobsBeXpzcaezgEZGpHLzE=
+To:     johannes@sipsolutions.net
+Cc:     linux-wireless@vger.kernel.org,
+        Alexander Wetzel <alexander@wetzel-home.de>
+Subject: [PATCH 1/2] mac80211: AMPDU handling for Extended Key ID
+Date:   Mon,  6 May 2019 21:01:48 +0200
+Message-Id: <20190506190149.3624-1-alexander@wetzel-home.de>
 X-Mailer: git-send-email 2.21.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Ovh-Tracer-Id: 9611244555594243271
+X-VR-SPAMSTATE: OK
+X-VR-SPAMSCORE: 0
+X-VR-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgeduuddrjeekgdefiecutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfqggfjpdevjffgvefmvefgnecuuegrihhlohhuthemucehtddtnecu
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-The driver uses complicated macros to set parts of word 0 of the TX and RX
-descriptors. These are changed into inline routines.
+IEEE 802.11 - 2016 forbids mixing MPDUs with different keyIDs in one
+A-MPDU. Drivers supporting A-MPDUs and Extended Key ID must actively
+enforce that requirement due to the available two unicast keyIDs.
 
-Signed-off-by: Larry Finger <Larry.Finger@lwfinger.net>
+Allow driver to signal mac80211 that they will not check the keyID in
+MPDUs when aggregating them and that they expect mac80211 to stop Tx
+aggregation when rekeying a connection using Extended Key ID.
+
+Signed-off-by: Alexander Wetzel <alexander@wetzel-home.de>
 ---
 
-Kalle,
+This is now just the simple and obvious solution for the A-MPDU mixing
+problem. Just stopping Tx aggregation may not be very elegant, but for
+drivers like iwlwifi - which can't control how many MPDUs can be
+aggregated - the sane solution.
+Once we have more cards supporting A-MPDU and Extended Key ID it may make
+sense to add another mechanism, like the proposed Key ID border signal.
+But then maybe not...
 
-Based on your comment on how much you dislike those "byte macros", I have
-converted a few of them from rtl8821ae into static inline functions.
+The patch is looking bigger than it really is, It's moving some code
+around to clean up the logic and replace ieee80211_hw_key_replace() with
+ieee80211_pairwise_rekey() which is then of course no longer installing
+the keys to the HW.
+That way we can have the "special cases" for unicast key crypto handling
+in one function, for both HW and SW crypto.
+(Which so far are PTK0 rekey and Extended Key ID A-MPDU keyID mixing.)
 
-Is this what you had in mind, and do you consider these changes to
-improve the code?
+Not so nice is the use of WLAN_STA_BLOCK_BA. We only have to make sure
+no new Tx aggregation sessions can be started but block both. It just
+seems to be overkill to add a more granular control here.
+WLAN_STA_BLOCK_BA is also used when suspending, so with some bad timing
+Extended Key ID or PTK0 rekeys can unlock the lock from suspend.
+It just looks pretty harmless, since a suspend will disconnect us anyhow.
+I can of course add something like a lock counter, but that again seems
+to be overkill for now. (After all this is intended to be the minimal
+solution to get the job done:-)
 
-These routines still need to mask the value before the ! operation with
-the masked original value.
+I've of course ran some tests with the patch and can confirm that this
+seems to solves the observed MPDU corruptions with mvm cards while not
+causing undesired side effects.
 
-Thanks,
-Larry
----
+I've also uploaded two captures taken on a STA connected to an AP and
+uploaded them again to https://www.awhome.eu/index.php/s/AJJXBLsZmzHdxpX
+iwlwifi-fixed.pcap.gz has been taken with an older, simpler and
+incomplete patch, iwlwifi-fixed-final.pcap was then taken with the patch
+provided here.
 
- .../wireless/realtek/rtlwifi/rtl8821ae/trx.c  | 33 ++++----
- .../wireless/realtek/rtlwifi/rtl8821ae/trx.h  | 80 ++++++++++++++-----
- 2 files changed, 78 insertions(+), 35 deletions(-)
+Note that I did not drop the unused variable "old" YueHaibing provided a
+patch for on 29th of April. That is indeed a leftover from a older patch
+without any function which somehow crept into the final patch.
+I assume you'll apply his patch and prefer that I do not remove it here
+also...
 
-diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8821ae/trx.c b/drivers/net/wireless/realtek/rtlwifi/rtl8821ae/trx.c
-index 7b6faf38e09c..2ad33cfb1656 100644
---- a/drivers/net/wireless/realtek/rtlwifi/rtl8821ae/trx.c
-+++ b/drivers/net/wireless/realtek/rtlwifi/rtl8821ae/trx.c
-@@ -703,8 +703,8 @@ void rtl8821ae_tx_fill_desc(struct ieee80211_hw *hw,
- 	if (firstseg) {
- 		if (rtlhal->earlymode_enable) {
- 			SET_TX_DESC_PKT_OFFSET(pdesc, 1);
--			SET_TX_DESC_OFFSET(pdesc, USB_HWDESC_HEADER_LEN +
--					   EM_HDR_LEN);
-+			set_tx_desc_offset((__le32 *)pdesc,
-+					   USB_HWDESC_HEADER_LEN + EM_HDR_LEN);
- 			if (ptcb_desc->empkt_num) {
- 				RT_TRACE(rtlpriv, COMP_SEND, DBG_TRACE,
- 					 "Insert 8 byte.pTcb->EMPktNum:%d\n",
-@@ -713,7 +713,8 @@ void rtl8821ae_tx_fill_desc(struct ieee80211_hw *hw,
- 					 (u8 *)(skb->data));
- 			}
- 		} else {
--			SET_TX_DESC_OFFSET(pdesc, USB_HWDESC_HEADER_LEN);
-+			set_tx_desc_offset((__le32 *)pdesc,
-+					   USB_HWDESC_HEADER_LEN);
- 		}
+ include/net/mac80211.h |   4 ++
+ net/mac80211/debugfs.c |   1 +
+ net/mac80211/key.c     | 100 +++++++++++++++++++++++------------------
+ 3 files changed, 61 insertions(+), 44 deletions(-)
+
+diff --git a/include/net/mac80211.h b/include/net/mac80211.h
+index 72080d9d617e..b7f0b56a09f4 100644
+--- a/include/net/mac80211.h
++++ b/include/net/mac80211.h
+@@ -2269,6 +2269,9 @@ struct ieee80211_txq {
+  * @IEEE80211_HW_EXT_KEY_ID_NATIVE: Driver and hardware are supporting Extended
+  *	Key ID and can handle two unicast keys per station for Rx and Tx.
+  *
++ * @IEEE80211_HW_NO_AMPDU_KEYBORDER_SUPPORT: The card/driver can't handle
++ *	active Tx A-MPDU sessions with Extended Key IDs during rekey.
++ *
+  * @NUM_IEEE80211_HW_FLAGS: number of hardware flags, used for sizing arrays
+  */
+ enum ieee80211_hw_flags {
+@@ -2321,6 +2324,7 @@ enum ieee80211_hw_flags {
+ 	IEEE80211_HW_SUPPORTS_MULTI_BSSID,
+ 	IEEE80211_HW_SUPPORTS_ONLY_HE_MULTI_BSSID,
+ 	IEEE80211_HW_EXT_KEY_ID_NATIVE,
++	IEEE80211_HW_NO_AMPDU_KEYBORDER_SUPPORT,
  
+ 	/* keep last, obviously */
+ 	NUM_IEEE80211_HW_FLAGS
+diff --git a/net/mac80211/debugfs.c b/net/mac80211/debugfs.c
+index 0d462206eef6..7c580010836e 100644
+--- a/net/mac80211/debugfs.c
++++ b/net/mac80211/debugfs.c
+@@ -274,6 +274,7 @@ static const char *hw_flag_names[] = {
+ 	FLAG(SUPPORTS_MULTI_BSSID),
+ 	FLAG(SUPPORTS_ONLY_HE_MULTI_BSSID),
+ 	FLAG(EXT_KEY_ID_NATIVE),
++	FLAG(NO_AMPDU_KEYBORDER_SUPPORT),
+ #undef FLAG
+ };
  
-@@ -752,8 +753,8 @@ void rtl8821ae_tx_fill_desc(struct ieee80211_hw *hw,
- 		SET_TX_DESC_TX_SUB_CARRIER(pdesc,
- 			rtl8821ae_sc_mapping(hw, ptcb_desc));
+diff --git a/net/mac80211/key.c b/net/mac80211/key.c
+index 20bf9db7a388..faadfeea7127 100644
+--- a/net/mac80211/key.c
++++ b/net/mac80211/key.c
+@@ -274,50 +274,61 @@ int ieee80211_set_tx_key(struct ieee80211_key *key)
  
--		SET_TX_DESC_LINIP(pdesc, 0);
--		SET_TX_DESC_PKT_SIZE(pdesc, (u16)skb_len);
-+		set_tx_desc_linip((__le32 *)pdesc, 0);
-+		set_tx_desc_pkt_size((__le32 *)pdesc, (u16)skb_len);
- 		if (sta) {
- 			u8 ampdu_density = sta->ht_cap.ampdu_density;
+ 	old = key_mtx_dereference(local, sta->ptk[sta->ptk_idx]);
+ 	sta->ptk_idx = key->conf.keyidx;
++
++	if (ieee80211_hw_check(&local->hw, NO_AMPDU_KEYBORDER_SUPPORT))
++		clear_sta_flag(sta, WLAN_STA_BLOCK_BA);
+ 	ieee80211_check_fast_xmit(sta);
  
-@@ -789,15 +790,15 @@ void rtl8821ae_tx_fill_desc(struct ieee80211_hw *hw,
- 				RT_TRACE(rtlpriv, COMP_SEND, DBG_TRACE,
- 					 "Enable RDG function.\n");
- 				SET_TX_DESC_RDG_ENABLE(pdesc, 1);
--				SET_TX_DESC_HTC(pdesc, 1);
-+				set_tx_desc_htc((__le32 *)pdesc, 1);
- 			}
- 		}
- 		/* tx report */
- 		rtl_set_tx_report(ptcb_desc, pdesc, hw, tx_info);
- 	}
+ 	return 0;
+ }
  
--	SET_TX_DESC_FIRST_SEG(pdesc, (firstseg ? 1 : 0));
--	SET_TX_DESC_LAST_SEG(pdesc, (lastseg ? 1 : 0));
-+	set_tx_desc_first_seg((__le32 *)pdesc, (firstseg ? 1 : 0));
-+	set_tx_desc_last_seg((__le32 *)pdesc, (lastseg ? 1 : 0));
- 	SET_TX_DESC_TX_BUFFER_SIZE(pdesc, (u16)buf_len);
- 	SET_TX_DESC_TX_BUFFER_ADDRESS(pdesc, mapping);
- 	/* if (rtlpriv->dm.useramask) { */
-@@ -815,7 +816,7 @@ void rtl8821ae_tx_fill_desc(struct ieee80211_hw *hw,
- 	SET_TX_DESC_MORE_FRAG(pdesc, (lastseg ? 0 : 1));
- 	if (is_multicast_ether_addr(ieee80211_get_DA(hdr)) ||
- 	    is_broadcast_ether_addr(ieee80211_get_DA(hdr))) {
--		SET_TX_DESC_BMC(pdesc, 1);
-+		set_tx_desc_bmc((__le32 *)pdesc, 1);
- 	}
- 
- 	rtl8821ae_dm_set_tx_ant_by_tx_info(hw, pdesc, ptcb_desc->mac_id);
-@@ -841,12 +842,12 @@ void rtl8821ae_tx_fill_cmddesc(struct ieee80211_hw *hw,
- 	}
- 	CLEAR_PCI_TX_DESC_CONTENT(pdesc, TX_DESC_SIZE);
- 
--	SET_TX_DESC_FIRST_SEG(pdesc, 1);
--	SET_TX_DESC_LAST_SEG(pdesc, 1);
-+	set_tx_desc_first_seg((__le32 *)pdesc, 1);
-+	set_tx_desc_last_seg((__le32 *)pdesc, 1);
- 
--	SET_TX_DESC_PKT_SIZE((u8 *)pdesc, (u16)(skb->len));
-+	set_tx_desc_pkt_size((__le32 *)pdesc, (u16)(skb->len));
- 
--	SET_TX_DESC_OFFSET(pdesc, USB_HWDESC_HEADER_LEN);
-+	set_tx_desc_offset((__le32 *)pdesc, USB_HWDESC_HEADER_LEN);
- 
- 	SET_TX_DESC_USE_RATE(pdesc, 1);
- 	SET_TX_DESC_TX_RATE(pdesc, DESC_RATE1M);
-@@ -864,7 +865,7 @@ void rtl8821ae_tx_fill_cmddesc(struct ieee80211_hw *hw,
- 
- 	SET_TX_DESC_MACID(pdesc, 0);
- 
--	SET_TX_DESC_OWN(pdesc, 1);
-+	set_tx_desc_own((__le32 *)pdesc, 1);
- 
- 	RT_PRINT_DATA(rtlpriv, COMP_CMD, DBG_LOUD,
- 		      "H2C Tx Cmd Content\n",
-@@ -877,7 +878,7 @@ void rtl8821ae_set_desc(struct ieee80211_hw *hw, u8 *pdesc,
- 	if (istx) {
- 		switch (desc_name) {
- 		case HW_DESC_OWN:
--			SET_TX_DESC_OWN(pdesc, 1);
-+			set_tx_desc_own((__le32 *)pdesc, 1);
- 			break;
- 		case HW_DESC_TX_NEXTDESC_ADDR:
- 			SET_TX_DESC_NEXT_DESC_ADDRESS(pdesc, *(u32 *)val);
-@@ -919,7 +920,7 @@ u64 rtl8821ae_get_desc(struct ieee80211_hw *hw,
- 	if (istx) {
- 		switch (desc_name) {
- 		case HW_DESC_OWN:
--			ret = GET_TX_DESC_OWN(pdesc);
-+			ret = get_tx_desc_own((__le32 *)pdesc);
- 			break;
- 		case HW_DESC_TXBUFF_ADDR:
- 			ret = GET_TX_DESC_TX_BUFFER_ADDRESS(pdesc);
-diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8821ae/trx.h b/drivers/net/wireless/realtek/rtlwifi/rtl8821ae/trx.h
-index 861d78a24d05..64deaf4dab23 100644
---- a/drivers/net/wireless/realtek/rtlwifi/rtl8821ae/trx.h
-+++ b/drivers/net/wireless/realtek/rtlwifi/rtl8821ae/trx.h
-@@ -14,25 +14,67 @@
- #define USB_HWDESC_HEADER_LEN			40
- #define CRCLENGTH						4
- 
--#define SET_TX_DESC_PKT_SIZE(__pdesc, __val)		\
--	SET_BITS_TO_LE_4BYTE(__pdesc, 0, 16, __val)
--#define SET_TX_DESC_OFFSET(__pdesc, __val)			\
--	SET_BITS_TO_LE_4BYTE(__pdesc, 16, 8, __val)
--#define SET_TX_DESC_BMC(__pdesc, __val)				\
--	SET_BITS_TO_LE_4BYTE(__pdesc, 24, 1, __val)
--#define SET_TX_DESC_HTC(__pdesc, __val)				\
--	SET_BITS_TO_LE_4BYTE(__pdesc, 25, 1, __val)
--#define SET_TX_DESC_LAST_SEG(__pdesc, __val)		\
--	SET_BITS_TO_LE_4BYTE(__pdesc, 26, 1, __val)
--#define SET_TX_DESC_FIRST_SEG(__pdesc, __val)		\
--	SET_BITS_TO_LE_4BYTE(__pdesc, 27, 1, __val)
--#define SET_TX_DESC_LINIP(__pdesc, __val)			\
--	SET_BITS_TO_LE_4BYTE(__pdesc, 28, 1, __val)
--#define SET_TX_DESC_OWN(__pdesc, __val)				\
--	SET_BITS_TO_LE_4BYTE(__pdesc, 31, 1, __val)
+-static int ieee80211_hw_key_replace(struct ieee80211_key *old_key,
+-				    struct ieee80211_key *new_key,
+-				    bool pairwise)
++static void ieee80211_pairwise_rekey(struct ieee80211_key *old,
++				     struct ieee80211_key *new)
+ {
+-	struct ieee80211_sub_if_data *sdata;
+-	struct ieee80211_local *local;
+-	struct sta_info *sta;
+-	int ret;
 -
--#define GET_TX_DESC_OWN(__pdesc)					\
--	LE_BITS_TO_4BYTE(__pdesc, 31, 1)
-+/* Set packet size (16 bits) in TX descriptor word 0 */
-+static inline void set_tx_desc_pkt_size(__le32 *__pdesc, u16 __val)
-+{
-+	*__pdesc = cpu_to_le32((le32_to_cpu(*__pdesc) & ~GENMASK(0, 15)) |
-+			       __val);
-+}
-+
-+/* Set offset (8 bits) in TX descriptor word 0 */
-+static inline void set_tx_desc_offset(__le32 *__pdesc, u8 __val)
-+{
-+	*__pdesc = cpu_to_le32((le32_to_cpu(*__pdesc) & ~GENMASK(16, 23)) |
-+			       __val << 16);
-+}
-+
-+/* Set bmc (1 bit) in TX descriptor word 0 */
-+static inline void set_tx_desc_bmc(__le32 *__pdesc, u8 __val)
-+{
-+	*__pdesc = cpu_to_le32((le32_to_cpu(*__pdesc) & ~GENMASK(24, 24)) |
-+			       __val << 24);
-+}
-+
-+/* Set htc (1 bit) in TX descriptor word 0 */
-+static inline void set_tx_desc_htc(__le32 *__pdesc, u8 __val)
-+{
-+	*__pdesc = cpu_to_le32((le32_to_cpu(*__pdesc) & ~GENMASK(25, 25)) |
-+			       __val << 25);
-+}
-+
-+/* Set last segment flag (1 bit) in TX descriptor word 0 */
-+static inline void set_tx_desc_last_seg(__le32 *__pdesc, u8 __val)
-+{
-+	*__pdesc = cpu_to_le32((le32_to_cpu(*__pdesc) & ~GENMASK(26, 26)) |
-+			       __val << 26);
-+}
-+
-+/* Set first segment iflag (1 bit) in TX descriptor word 0 */
-+static inline void set_tx_desc_first_seg(__le32 *__pdesc, u8 __val)
-+{
-+	*__pdesc = cpu_to_le32((le32_to_cpu(*__pdesc) & ~GENMASK(27, 27)) |
-+			       __val << 27);
-+}
-+
-+/* Set linip (1 bit) in TX descriptor word 0 */
-+static inline void set_tx_desc_linip(__le32 *__pdesc, u8 __val)
-+{
-+	*__pdesc = cpu_to_le32((le32_to_cpu(*__pdesc) & ~GENMASK(28, 28)) |
-+			       __val << 18);
-+}
-+
-+/* Set own flag (1 bit) in TX descriptor word 0 */
-+static inline void set_tx_desc_own(__le32 *__pdesc, u8 __val)
-+{
-+	*__pdesc = cpu_to_le32((le32_to_cpu(*__pdesc) & ~GENMASK(31, 31)) |
-+			       __val << 31);
-+}
-+
-+/* Get own flag (1 bit) from TX descriptor word 0 */
-+static inline u8 get_tx_desc_own(__le32 *__pdesc)
-+{
-+	return (le32_to_cpu(*__pdesc) & ~GENMASK(31, 31)) >> 31;
-+}
+-	/* Aggregation sessions are OK when running on SW crypto.
+-	 * A broken remote STA may cause issues not observed with HW
+-	 * crypto, though.
+-	 */
+-	if (!(old_key->flags & KEY_FLAG_UPLOADED_TO_HARDWARE))
+-		return 0;
++	struct ieee80211_local *local = new->local;
++	struct sta_info *sta = new->sta;
++	int i;
  
- #define SET_TX_DESC_MACID(__pdesc, __val)			\
- 	SET_BITS_TO_LE_4BYTE(__pdesc+4, 0, 7, __val)
+-	assert_key_lock(old_key->local);
+-	sta = old_key->sta;
++	assert_key_lock(local);
+ 
+-	/* Unicast rekey without Extended Key ID needs special handling */
+-	if (new_key && sta && pairwise &&
+-	    rcu_access_pointer(sta->ptk[sta->ptk_idx]) == old_key) {
+-		local = old_key->local;
+-		sdata = old_key->sdata;
++	if (new->conf.flags & IEEE80211_KEY_FLAG_NO_AUTO_TX) {
++		/* Extended Key ID key install, initial one or rekey */
++
++		if (sta->ptk_idx != INVALID_PTK_KEYIDX &&
++		    ieee80211_hw_check(&local->hw,
++				       NO_AMPDU_KEYBORDER_SUPPORT)) {
++			/* Aggregation Sessions with Extended Key ID must not
++			 * mix MPDUs with different keyIDs within one A-MPDU.
++			 * Tear down any running Tx aggregation and all new
++			 * Rx/Tx aggregation request during rekey if the driver
++			 * asks us to do so. (Blocking Tx only would be
++			 * sufficient but WLAN_STA_BLOCK_BA gets the job done
++			 * for the few ms we need it.)
++			 */
++			set_sta_flag(sta, WLAN_STA_BLOCK_BA);
++			mutex_lock(&sta->ampdu_mlme.mtx);
++			for (i = 0; i <  IEEE80211_NUM_TIDS; i++)
++				___ieee80211_stop_tx_ba_session(sta, i,
++								AGG_STOP_LOCAL_REQUEST);
++			mutex_unlock(&sta->ampdu_mlme.mtx);
++		}
++	} else if (old) {
++		/* Rekey without Extended Key ID.
++		 * Aggregation sessions are OK when running on SW crypto.
++		 * A broken remote STA may cause issues not observed with HW
++		 * crypto, though.
++		 */
++		if (!(old->flags & KEY_FLAG_UPLOADED_TO_HARDWARE))
++			return;
+ 
+-		/* Stop TX till we are on the new key */
+-		old_key->flags |= KEY_FLAG_TAINTED;
++		/* Stop Tx till we are on the new key */
++		old->flags |= KEY_FLAG_TAINTED;
+ 		ieee80211_clear_fast_xmit(sta);
+-
+-		/* Aggregation sessions during rekey are complicated due to the
+-		 * reorder buffer and retransmits. Side step that by blocking
+-		 * aggregation during rekey and tear down running sessions.
+-		 */
+ 		if (ieee80211_hw_check(&local->hw, AMPDU_AGGREGATION)) {
+ 			set_sta_flag(sta, WLAN_STA_BLOCK_BA);
+ 			ieee80211_sta_tear_down_BA_sessions(sta,
+ 							    AGG_STOP_LOCAL_REQUEST);
+ 		}
+-
+ 		if (!wiphy_ext_feature_isset(local->hw.wiphy,
+ 					     NL80211_EXT_FEATURE_CAN_REPLACE_PTK0)) {
+ 			pr_warn_ratelimited("Rekeying PTK for STA %pM but driver can't safely do that.",
+@@ -325,18 +336,9 @@ static int ieee80211_hw_key_replace(struct ieee80211_key *old_key,
+ 			/* Flushing the driver queues *may* help prevent
+ 			 * the clear text leaks and freezes.
+ 			 */
+-			ieee80211_flush_queues(local, sdata, false);
++			ieee80211_flush_queues(local, old->sdata, false);
+ 		}
+ 	}
+-
+-	ieee80211_key_disable_hw_accel(old_key);
+-
+-	if (new_key)
+-		ret = ieee80211_key_enable_hw_accel(new_key);
+-	else
+-		ret = 0;
+-
+-	return ret;
+ }
+ 
+ static void __ieee80211_set_default_key(struct ieee80211_sub_if_data *sdata,
+@@ -394,7 +396,6 @@ void ieee80211_set_default_mgmt_key(struct ieee80211_sub_if_data *sdata,
+ 	mutex_unlock(&sdata->local->key_mtx);
+ }
+ 
+-
+ static int ieee80211_key_replace(struct ieee80211_sub_if_data *sdata,
+ 				  struct sta_info *sta,
+ 				  bool pairwise,
+@@ -402,7 +403,7 @@ static int ieee80211_key_replace(struct ieee80211_sub_if_data *sdata,
+ 				  struct ieee80211_key *new)
+ {
+ 	int idx;
+-	int ret;
++	int ret = 0;
+ 	bool defunikey, defmultikey, defmgmtkey;
+ 
+ 	/* caller must provide at least one old/new */
+@@ -414,16 +415,27 @@ static int ieee80211_key_replace(struct ieee80211_sub_if_data *sdata,
+ 
+ 	WARN_ON(new && old && new->conf.keyidx != old->conf.keyidx);
+ 
++	if (new && sta && pairwise) {
++		/* Unicast rekey needs special handling. With Extended Key ID
++		 * old is still NULL for the first rekey.
++		 */
++		ieee80211_pairwise_rekey(old, new);
++	}
++
+ 	if (old) {
+ 		idx = old->conf.keyidx;
+-		ret = ieee80211_hw_key_replace(old, new, pairwise);
++
++		if (old->flags & KEY_FLAG_UPLOADED_TO_HARDWARE) {
++			ieee80211_key_disable_hw_accel(old);
++
++			if (new)
++				ret = ieee80211_key_enable_hw_accel(new);
++		}
+ 	} else {
+ 		/* new must be provided in case old is not */
+ 		idx = new->conf.keyidx;
+ 		if (!new->local->wowlan)
+ 			ret = ieee80211_key_enable_hw_accel(new);
+-		else
+-			ret = 0;
+ 	}
+ 
+ 	if (ret)
 -- 
 2.21.0
 
