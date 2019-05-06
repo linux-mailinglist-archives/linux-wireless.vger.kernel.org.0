@@ -2,98 +2,184 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 001C4149D9
-	for <lists+linux-wireless@lfdr.de>; Mon,  6 May 2019 14:36:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9CF3F14A49
+	for <lists+linux-wireless@lfdr.de>; Mon,  6 May 2019 14:54:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726250AbfEFMfK (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 6 May 2019 08:35:10 -0400
-Received: from smtp.codeaurora.org ([198.145.29.96]:59996 "EHLO
-        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725853AbfEFMfJ (ORCPT
+        id S1726190AbfEFMy1 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 6 May 2019 08:54:27 -0400
+Received: from aserp2130.oracle.com ([141.146.126.79]:48096 "EHLO
+        aserp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725852AbfEFMy1 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 6 May 2019 08:35:09 -0400
-Received: by smtp.codeaurora.org (Postfix, from userid 1000)
-        id 726FD60A00; Mon,  6 May 2019 12:35:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1557146108;
-        bh=Sl1Jad6J9aoFlZ5p3cIAH0XrZsM7leN/gWNTry1oNl0=;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=kupzxsCMPJz1OH2Jm/fvkw9sC3uslA3KRNjKpLbGielzd56tqLfDPQ9SduNqgnwlI
-         QepGhTQqp4IVTx13C1xAu+SDDZy3oJ9nohw4MYeRBbmCfbdIzN2VWbeMXvf1PkGqAN
-         RbDFV9BLIbH+oIC86SsiL5SGabG/cUqGLi+UMjhk=
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        pdx-caf-mail.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.7 required=2.0 tests=ALL_TRUSTED,BAYES_00,
-        DKIM_INVALID,DKIM_SIGNED autolearn=no autolearn_force=no version=3.4.0
-Received: from x230.qca.qualcomm.com (85-76-75-57-nat.elisa-mobile.fi [85.76.75.57])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        (Authenticated sender: kvalo@smtp.codeaurora.org)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 405B560A05;
-        Mon,  6 May 2019 12:35:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1557146107;
-        bh=Sl1Jad6J9aoFlZ5p3cIAH0XrZsM7leN/gWNTry1oNl0=;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=LQEN6T6ejOd98MpjGhQHprdRlBftPBHporEqGxDCWujiGfhsFlXF3K6fh3ttsMECQ
-         D03UVVbjBAjRNmcB9qWRjy9mAGvPpsKp8WUBDWAuV4nGn0+fa0GEt1dIcIoplwjcfP
-         8hyGh2/EVfW20F5yFTkASNDkkO3KfUTNcckxOvbE=
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 405B560A05
-Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
-From:   Kalle Valo <kvalo@codeaurora.org>
-To:     Tony Chuang <yhchuang@realtek.com>
-Cc:     "linux-wireless\@vger.kernel.org" <linux-wireless@vger.kernel.org>
-Subject: Re: [PATCH v2 4/5] rtw88: fix unassigned rssi_level in rtw_sta_info
-References: <1556884415-23474-1-git-send-email-yhchuang@realtek.com>
-        <1556884415-23474-5-git-send-email-yhchuang@realtek.com>
-        <874l68vuhi.fsf@purkki.adurom.net>
-        <F7CD281DE3E379468C6D07993EA72F84D17EB4C9@RTITMBSVM04.realtek.com.tw>
-Date:   Mon, 06 May 2019 15:35:03 +0300
-In-Reply-To: <F7CD281DE3E379468C6D07993EA72F84D17EB4C9@RTITMBSVM04.realtek.com.tw>
-        (Tony Chuang's message of "Mon, 6 May 2019 08:54:14 +0000")
-Message-ID: <874l67vk08.fsf@codeaurora.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
+        Mon, 6 May 2019 08:54:27 -0400
+Received: from pps.filterd (aserp2130.oracle.com [127.0.0.1])
+        by aserp2130.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x46CiOL0157962;
+        Mon, 6 May 2019 12:54:23 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
+ : subject : message-id : mime-version : content-type; s=corp-2018-07-02;
+ bh=+QirhigEffLdcMVAjibEhy8hlxrWaK2VezDFWTYfl9o=;
+ b=dOBcNcXyMVl4RNOr43UgQ1umiEbL0MtwvJiemCRcVFRT6FxAhIn/KgENLHFj9kaIUIY+
+ BjD7LIojVANf1Qd+xuJgJc7WW+TgPebQFnMqb950LtAgPfiUz5tSnlTWsr2q+kNp68hJ
+ uOUGpUKrqqewbuJ5UC+tUl7t7ZiCOsSh6rJTx0Jbq0tXHksFQutXXF53lhrt228duKFr
+ pPhZcC01w3+O3nJjMVp+gTDt2KqWdLGegs+Cvrj45mBct6V5jOMlMcYDK0C1OjV6shuQ
+ tEE+s6/mWnG/kg/tegzVIXrG4WN5GrxBfTPPtiLL2ioyNBi/oAZ7pTxTUzOzIMxHt41D 7A== 
+Received: from aserp3020.oracle.com (aserp3020.oracle.com [141.146.126.70])
+        by aserp2130.oracle.com with ESMTP id 2s94b5p9jv-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Mon, 06 May 2019 12:54:22 +0000
+Received: from pps.filterd (aserp3020.oracle.com [127.0.0.1])
+        by aserp3020.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x46Cr1YJ140473;
+        Mon, 6 May 2019 12:54:22 GMT
+Received: from userv0121.oracle.com (userv0121.oracle.com [156.151.31.72])
+        by aserp3020.oracle.com with ESMTP id 2s9aye9q4w-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Mon, 06 May 2019 12:54:22 +0000
+Received: from abhmp0013.oracle.com (abhmp0013.oracle.com [141.146.116.19])
+        by userv0121.oracle.com (8.14.4/8.13.8) with ESMTP id x46CsKwR009565;
+        Mon, 6 May 2019 12:54:20 GMT
+Received: from mwanda (/105.52.123.240)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Mon, 06 May 2019 05:54:20 -0700
+Date:   Mon, 6 May 2019 15:54:09 +0300
+From:   Dan Carpenter <dan.carpenter@oracle.com>
+To:     Johannes Berg <johannes.berg@intel.com>
+Cc:     Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
+        Luca Coelho <luciano.coelho@intel.com>,
+        Intel Linux Wireless <linuxwifi@intel.com>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        Naftali Goldstein <naftali.goldstein@intel.com>,
+        Sara Sharon <sara.sharon@intel.com>,
+        Shaul Triebitz <shaul.triebitz@intel.com>,
+        Mordechay Goodstein <mordechay.goodstein@intel.com>,
+        Liad Kaufman <liad.kaufman@intel.com>,
+        Gregory Greenman <gregory.greenman@intel.com>,
+        linux-wireless@vger.kernel.org, kernel-janitors@vger.kernel.org
+Subject: [PATCH] iwlwifi: remove some unnecessary NULL checks
+Message-ID: <20190506125409.GC13799@mwanda>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Mailer: git-send-email haha only kidding
+User-Agent: Mutt/1.10.1 (2018-07-13)
+X-Proofpoint-Virus-Version: vendor=nai engine=5900 definitions=9248 signatures=668686
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 malwarescore=0
+ phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=999
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.0.1-1810050000 definitions=main-1905060112
+X-Proofpoint-Virus-Version: vendor=nai engine=5900 definitions=9248 signatures=668686
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
+ suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1011
+ lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=999 adultscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1810050000
+ definitions=main-1905060112
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Tony Chuang <yhchuang@realtek.com> writes:
+These pointers are an offset into the "sta" struct.  They're assigned
+like this:
 
->> -----Original Message-----
->> From: Kalle Valo [mailto:kvalo@codeaurora.org]
->> Sent: Monday, May 06, 2019 4:49 PM
->> To: Tony Chuang
->> Cc: linux-wireless@vger.kernel.org
->> Subject: Re: [PATCH v2 4/5] rtw88: fix unassigned rssi_level in rtw_sta_info
->> 
->> <yhchuang@realtek.com> writes:
->> 
->> > From: Yan-Hsuan Chuang <yhchuang@realtek.com>
->> >
->> > The new rssi_level should be stored in si, otherwise the rssi_level will
->> > never be updated and get a wrong RA mask, which is calculated by the
->> > rssi level
->> >
->> > Signed-off-by: Yan-Hsuan Chuang <yhchuang@realtek.com>
->> 
->> Stanislaw suggested that this should go to 5.2. So what breaks from
->> user's point of view if this is not applied?
->> 
->
-> If the rssi level remains unchanged, then we could choose wrong ra_mask.
-> And some *bad rates* we be chosen by firmware.
-> The most hurtful scene would be *noisy environment* such as office, or public.
-> The latency would be high and overall throughput would be only half.
-> (This was tested, such as 4x Mbps -> 1x Mbps)
+	const struct ieee80211_sta_vht_cap *vht_cap = &sta->vht_cap;
 
-Yeah, then this is definitely suitable for 5.2. Could you please resend
-the patch and mention the symtomps in the commit log? And mark the patch
-as "[PATCH 5.2 v3]" so that I can easily see it's for v5.2, please.
+They're not the first member of the struct (->supp_rates[] is first) so
+they can't be NULL.
 
+Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+---
+ .../net/wireless/intel/iwlwifi/mvm/rs-fw.c    | 23 +++++++++----------
+ 1 file changed, 11 insertions(+), 12 deletions(-)
+
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/rs-fw.c b/drivers/net/wireless/intel/iwlwifi/mvm/rs-fw.c
+index 659e21b2d4e7..b6fb670d249c 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/rs-fw.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/rs-fw.c
+@@ -101,7 +101,7 @@ static u8 rs_fw_sgi_cw_support(struct ieee80211_sta *sta)
+ 	struct ieee80211_sta_he_cap *he_cap = &sta->he_cap;
+ 	u8 supp = 0;
+ 
+-	if (he_cap && he_cap->has_he)
++	if (he_cap->has_he)
+ 		return 0;
+ 
+ 	if (ht_cap->cap & IEEE80211_HT_CAP_SGI_20)
+@@ -123,12 +123,12 @@ static u16 rs_fw_get_config_flags(struct iwl_mvm *mvm,
+ 	struct ieee80211_sta_ht_cap *ht_cap = &sta->ht_cap;
+ 	struct ieee80211_sta_vht_cap *vht_cap = &sta->vht_cap;
+ 	struct ieee80211_sta_he_cap *he_cap = &sta->he_cap;
+-	bool vht_ena = vht_cap && vht_cap->vht_supported;
++	bool vht_ena = vht_cap->vht_supported;
+ 	u16 flags = 0;
+ 
+ 	if (mvm->cfg->ht_params->stbc &&
+ 	    (num_of_ant(iwl_mvm_get_valid_tx_ant(mvm)) > 1)) {
+-		if (he_cap && he_cap->has_he) {
++		if (he_cap->has_he) {
+ 			if (he_cap->he_cap_elem.phy_cap_info[2] &
+ 			    IEEE80211_HE_PHY_CAP2_STBC_RX_UNDER_80MHZ)
+ 				flags |= IWL_TLC_MNG_CFG_FLAGS_STBC_MSK;
+@@ -136,15 +136,14 @@ static u16 rs_fw_get_config_flags(struct iwl_mvm *mvm,
+ 			if (he_cap->he_cap_elem.phy_cap_info[7] &
+ 			    IEEE80211_HE_PHY_CAP7_STBC_RX_ABOVE_80MHZ)
+ 				flags |= IWL_TLC_MNG_CFG_FLAGS_HE_STBC_160MHZ_MSK;
+-		} else if ((ht_cap &&
+-			    (ht_cap->cap & IEEE80211_HT_CAP_RX_STBC)) ||
++		} else if ((ht_cap->cap & IEEE80211_HT_CAP_RX_STBC) ||
+ 			   (vht_ena &&
+ 			    (vht_cap->cap & IEEE80211_VHT_CAP_RXSTBC_MASK)))
+ 			flags |= IWL_TLC_MNG_CFG_FLAGS_STBC_MSK;
+ 	}
+ 
+ 	if (mvm->cfg->ht_params->ldpc &&
+-	    ((ht_cap && (ht_cap->cap & IEEE80211_HT_CAP_LDPC_CODING)) ||
++	    ((ht_cap->cap & IEEE80211_HT_CAP_LDPC_CODING) ||
+ 	     (vht_ena && (vht_cap->cap & IEEE80211_VHT_CAP_RXLDPC))))
+ 		flags |= IWL_TLC_MNG_CFG_FLAGS_LDPC_MSK;
+ 
+@@ -154,7 +153,7 @@ static u16 rs_fw_get_config_flags(struct iwl_mvm *mvm,
+ 	     IEEE80211_HE_PHY_CAP1_LDPC_CODING_IN_PAYLOAD))
+ 		flags &= ~IWL_TLC_MNG_CFG_FLAGS_LDPC_MSK;
+ 
+-	if (he_cap && he_cap->has_he &&
++	if (he_cap->has_he &&
+ 	    (he_cap->he_cap_elem.phy_cap_info[3] &
+ 	     IEEE80211_HE_PHY_CAP3_DCM_MAX_CONST_RX_MASK))
+ 		flags |= IWL_TLC_MNG_CFG_FLAGS_HE_DCM_NSS_1_MSK;
+@@ -293,13 +292,13 @@ static void rs_fw_set_supp_rates(struct ieee80211_sta *sta,
+ 	cmd->mode = IWL_TLC_MNG_MODE_NON_HT;
+ 
+ 	/* HT/VHT rates */
+-	if (he_cap && he_cap->has_he) {
++	if (he_cap->has_he) {
+ 		cmd->mode = IWL_TLC_MNG_MODE_HE;
+ 		rs_fw_he_set_enabled_rates(sta, sband, cmd);
+-	} else if (vht_cap && vht_cap->vht_supported) {
++	} else if (vht_cap->vht_supported) {
+ 		cmd->mode = IWL_TLC_MNG_MODE_VHT;
+ 		rs_fw_vht_set_enabled_rates(sta, vht_cap, cmd);
+-	} else if (ht_cap && ht_cap->ht_supported) {
++	} else if (ht_cap->ht_supported) {
+ 		cmd->mode = IWL_TLC_MNG_MODE_HT;
+ 		cmd->ht_rates[0][0] = cpu_to_le16(ht_cap->mcs.rx_mask[0]);
+ 		cmd->ht_rates[1][0] = cpu_to_le16(ht_cap->mcs.rx_mask[1]);
+@@ -381,7 +380,7 @@ static u16 rs_fw_get_max_amsdu_len(struct ieee80211_sta *sta)
+ 	const struct ieee80211_sta_vht_cap *vht_cap = &sta->vht_cap;
+ 	const struct ieee80211_sta_ht_cap *ht_cap = &sta->ht_cap;
+ 
+-	if (vht_cap && vht_cap->vht_supported) {
++	if (vht_cap->vht_supported) {
+ 		switch (vht_cap->cap & IEEE80211_VHT_CAP_MAX_MPDU_MASK) {
+ 		case IEEE80211_VHT_CAP_MAX_MPDU_LENGTH_11454:
+ 			return IEEE80211_MAX_MPDU_LEN_VHT_11454;
+@@ -391,7 +390,7 @@ static u16 rs_fw_get_max_amsdu_len(struct ieee80211_sta *sta)
+ 			return IEEE80211_MAX_MPDU_LEN_VHT_3895;
+ 	}
+ 
+-	} else if (ht_cap && ht_cap->ht_supported) {
++	} else if (ht_cap->ht_supported) {
+ 		if (ht_cap->cap & IEEE80211_HT_CAP_MAX_AMSDU)
+ 			/*
+ 			 * agg is offloaded so we need to assume that agg
 -- 
-Kalle Valo
+2.18.0
+
