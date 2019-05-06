@@ -2,73 +2,96 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id AA01A14698
-	for <lists+linux-wireless@lfdr.de>; Mon,  6 May 2019 10:42:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2182A14699
+	for <lists+linux-wireless@lfdr.de>; Mon,  6 May 2019 10:42:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726034AbfEFImL (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 6 May 2019 04:42:11 -0400
-Received: from mx1.redhat.com ([209.132.183.28]:37536 "EHLO mx1.redhat.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725981AbfEFImL (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 6 May 2019 04:42:11 -0400
-Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.phx2.redhat.com [10.5.11.23])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        id S1726149AbfEFImN (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 6 May 2019 04:42:13 -0400
+Received: from smtp.codeaurora.org ([198.145.29.96]:47102 "EHLO
+        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725981AbfEFImM (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 6 May 2019 04:42:12 -0400
+Received: by smtp.codeaurora.org (Postfix, from userid 1000)
+        id EBB7C61157; Mon,  6 May 2019 08:42:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
+        s=default; t=1557132131;
+        bh=U0HcKzTKhMJAx+L7DrntSHVJn8Uwl4RoExSSOsr90rA=;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+        b=LzTCcbmlUE/ubC1rumbvwkOkGg9dENA5ms3hX24F4AERKl+o2w31ByGKHjn+ThRR8
+         k63Wj6bH5YHf6NwNs3ROVFYkxG7NAOLS/NtFBrHwvI/98L+N2o66LTVRUjQfHhRFZY
+         /plx+IcESnNDnrK+rTBBF+yxCTajnFEFmcNxXASc=
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        pdx-caf-mail.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.7 required=2.0 tests=ALL_TRUSTED,BAYES_00,
+        DKIM_INVALID,DKIM_SIGNED autolearn=no autolearn_force=no version=3.4.0
+Received: from x230.qca.qualcomm.com (37-136-65-53.rev.dnainternet.fi [37.136.65.53])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mx1.redhat.com (Postfix) with ESMTPS id 80E72308FECF;
-        Mon,  6 May 2019 08:42:11 +0000 (UTC)
-Received: from localhost (unknown [10.43.2.51])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 2656C19C4F;
-        Mon,  6 May 2019 08:42:10 +0000 (UTC)
-Date:   Mon, 6 May 2019 10:40:55 +0200
-From:   Stanislaw Gruszka <sgruszka@redhat.com>
-To:     Kalle Valo <kvalo@codeaurora.org>
-Cc:     yhchuang@realtek.com, linux-wireless@vger.kernel.org
-Subject: Re: [PATCH v2 0/5] rtw88: minor fixes from suggestions during review
-Message-ID: <20190506084054.GA2714@redhat.com>
-References: <1556884415-23474-1-git-send-email-yhchuang@realtek.com>
- <87ftpvkal1.fsf@kamboji.qca.qualcomm.com>
+        (Authenticated sender: kvalo@smtp.codeaurora.org)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 92E1B60DB3;
+        Mon,  6 May 2019 08:42:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
+        s=default; t=1557132131;
+        bh=U0HcKzTKhMJAx+L7DrntSHVJn8Uwl4RoExSSOsr90rA=;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+        b=LzTCcbmlUE/ubC1rumbvwkOkGg9dENA5ms3hX24F4AERKl+o2w31ByGKHjn+ThRR8
+         k63Wj6bH5YHf6NwNs3ROVFYkxG7NAOLS/NtFBrHwvI/98L+N2o66LTVRUjQfHhRFZY
+         /plx+IcESnNDnrK+rTBBF+yxCTajnFEFmcNxXASc=
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 92E1B60DB3
+Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
+From:   Kalle Valo <kvalo@codeaurora.org>
+To:     Hans de Goede <hdegoede@redhat.com>
+Cc:     Victor Bravo <1905@spmblk.com>,
+        Arend Van Spriel <arend.vanspriel@broadcom.com>,
+        Franky Lin <franky.lin@broadcom.com>,
+        Hante Meuleman <hante.meuleman@broadcom.com>,
+        Chi-Hsien Lin <chi-hsien.lin@cypress.com>,
+        Wright Feng <wright.feng@cypress.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        linux-wireless@vger.kernel.org,
+        brcm80211-dev-list.pdl@broadcom.com,
+        brcm80211-dev-list@cypress.com, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH RFC] brcmfmac: sanitize DMI strings v2
+References: <20190504162633.ldrz2nqfocg55grb@localhost>
+        <cce7604e-2b02-80ed-1df5-6f304cada0cb@broadcom.com>
+        <20190504194440.4zcxjrtj2aft3ka4@localhost>
+        <16a87149068.2764.9b12b7fc0a3841636cfb5e919b41b954@broadcom.com>
+        <20190505150355.3fbng4ny34x255vk@localhost>
+        <0f75a3d4-94af-5503-94c3-e8af2364448d@redhat.com>
+Date:   Mon, 06 May 2019 11:42:06 +0300
+In-Reply-To: <0f75a3d4-94af-5503-94c3-e8af2364448d@redhat.com> (Hans de
+        Goede's message of "Mon, 6 May 2019 10:13:38 +0200")
+Message-ID: <87o94gug81.fsf@codeaurora.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <87ftpvkal1.fsf@kamboji.qca.qualcomm.com>
-User-Agent: Mutt/1.5.20 (2009-12-10)
-X-Scanned-By: MIMEDefang 2.84 on 10.5.11.23
-X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16 (mx1.redhat.com [10.5.110.49]); Mon, 06 May 2019 08:42:11 +0000 (UTC)
+Content-Type: text/plain
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Fri, May 03, 2019 at 03:04:58PM +0300, Kalle Valo wrote:
-> <yhchuang@realtek.com> writes:
-> 
-> > From: Yan-Hsuan Chuang <yhchuang@realtek.com>
-> >
-> > The series fix some small problems for rtw88, most of the suggestions
-> > are from the review process.
-> >
-> >
-> > v1 -> v2
-> >
-> >  - modify description for LPS, ", turn off" -> ", to turn off"
-> >  - drop patch "rtw88: mac: remove dangerous while (1)",
-> >    should re-write the power sequence parsing code to make sense of avoiding
-> >    infinite loop
-> >  - unify Makefile license to Dual GPL/BSD
-> >
-> >
-> > Yan-Hsuan Chuang (5):
-> >   rtw88: add license for Makefile
-> >   rtw88: pci: use ieee80211_ac_numbers instead of 0-3
-> >   rtw88: pci: check if queue mapping exceeds size of ac_to_hwq
-> >   rtw88: fix unassigned rssi_level in rtw_sta_info
-> >   rtw88: more descriptions about LPS
-> 
-> I was just in the next few minutes about to tag the last -next pull for
-> 5.2. I'll apply patch 1 now so that we have consistent licenses for 5.2
-> but the rest have to wait for 5.3.
+Hans de Goede <hdegoede@redhat.com> writes:
 
-I think '[PATCH v2 4/5] rtw88: fix unassigned rssi_level in rtw_sta_inf'
-should go to 5.2 .
+>> @@ -99,6 +107,15 @@ static const struct dmi_system_id dmi_platform_data[] = {
+>>   	{}
+>>   };
+>>   +void brcmf_dmi_sanitize(char *dst, const unsigned char *allowed,
+>> char safe)
+>> +{
+>> +	while (*dst) {
+>> +		if ((*dst < 0) || !(allowed[*dst / 8] & (1 << (*dst % 8))))
+>
+> At a first look I have no clue what this code is doing and I honestly do not feel
+> like figuring it out, this is clever, but IMHO not readable.
+>
+> Please just write this as if (*dst < 0x21 || (*dst > foo && < bar) || etc,
+> so that a human can actually see in one look what the code is doing.
 
-Stanislaw
+Is there an existing function for sanitising filenames so that we don't
+need to reinvent the wheel, maybe something like isalnum()?
+
+-- 
+Kalle Valo
