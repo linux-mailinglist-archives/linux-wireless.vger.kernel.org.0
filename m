@@ -2,173 +2,89 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 3494A145D4
-	for <lists+linux-wireless@lfdr.de>; Mon,  6 May 2019 10:13:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 636901461A
+	for <lists+linux-wireless@lfdr.de>; Mon,  6 May 2019 10:22:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726175AbfEFINm (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 6 May 2019 04:13:42 -0400
-Received: from mail-ed1-f66.google.com ([209.85.208.66]:44957 "EHLO
-        mail-ed1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725836AbfEFINm (ORCPT
+        id S1726516AbfEFIWE (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 6 May 2019 04:22:04 -0400
+Received: from smtp.codeaurora.org ([198.145.29.96]:36496 "EHLO
+        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726466AbfEFIWD (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 6 May 2019 04:13:42 -0400
-Received: by mail-ed1-f66.google.com with SMTP id b8so14309112edm.11
-        for <linux-wireless@vger.kernel.org>; Mon, 06 May 2019 01:13:41 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=QNvN8OqIbd2dPdzBBPVcOe2NRqEy3Q9v/swnK/nbM9Q=;
-        b=KDhmqpacYg0+m7OlGoHP1VBd6sNnPHyoavT3mfoGvnCwQ6xq3h8fpQJbrEHkuLknex
-         Iw1OBDVvfZGxoq+L6KwjtjN0ZAZcD92/o95tQ53vBJlHhpdxk06NZeVelbyj0fVUbpKL
-         PnwiLV+6RrCijejgksWD5r23zwQUfw0iB2YgQXbFX9WVCzK3HA7dkQlPpAPG24gN42tE
-         SKtq+PrzaZ4q9UC9sHEaGHAtTVNnynxxT4FjY9ssXpb8tVIT+Fh2UiieoEZule6jIY9z
-         7UVPc9VosC5dZar7W93Ujr3Kw+P3CE72KlYdSjKKmsjxdL4Vr4RXsvqIuHvvuMwMEPgk
-         qHkA==
-X-Gm-Message-State: APjAAAWnK0QcWg+7+1VBJrhdmWaI+0kxaXDOsaCcyKSb38yoJqv2RmoP
-        nxgvrAavRP0EXAOhX9mh2FpkAw==
-X-Google-Smtp-Source: APXvYqw67dt/5kqRfhyvR2PWuu6bLBz4NWBrEcYKuCB2vbs72gHOr5g5FWhIaIT8SBagdj86Q71UXg==
-X-Received: by 2002:aa7:d9cb:: with SMTP id v11mr2912156eds.159.1557130420772;
-        Mon, 06 May 2019 01:13:40 -0700 (PDT)
-Received: from shalem.localdomain (84-106-84-65.cable.dynamic.v4.ziggo.nl. [84.106.84.65])
-        by smtp.gmail.com with ESMTPSA id k37sm2886520edb.11.2019.05.06.01.13.39
-        (version=TLS1_3 cipher=AEAD-AES128-GCM-SHA256 bits=128/128);
-        Mon, 06 May 2019 01:13:39 -0700 (PDT)
-Subject: Re: [PATCH RFC] brcmfmac: sanitize DMI strings v2
-To:     Victor Bravo <1905@spmblk.com>,
-        Arend Van Spriel <arend.vanspriel@broadcom.com>
-Cc:     Franky Lin <franky.lin@broadcom.com>,
-        Hante Meuleman <hante.meuleman@broadcom.com>,
-        Chi-Hsien Lin <chi-hsien.lin@cypress.com>,
-        Wright Feng <wright.feng@cypress.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        linux-wireless@vger.kernel.org,
-        brcm80211-dev-list.pdl@broadcom.com,
-        brcm80211-dev-list@cypress.com, linux-kernel@vger.kernel.org
-References: <20190504162633.ldrz2nqfocg55grb@localhost>
- <cce7604e-2b02-80ed-1df5-6f304cada0cb@broadcom.com>
- <20190504194440.4zcxjrtj2aft3ka4@localhost>
- <16a87149068.2764.9b12b7fc0a3841636cfb5e919b41b954@broadcom.com>
- <20190505150355.3fbng4ny34x255vk@localhost>
-From:   Hans de Goede <hdegoede@redhat.com>
-Message-ID: <0f75a3d4-94af-5503-94c3-e8af2364448d@redhat.com>
-Date:   Mon, 6 May 2019 10:13:38 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.6.1
+        Mon, 6 May 2019 04:22:03 -0400
+Received: by smtp.codeaurora.org (Postfix, from userid 1000)
+        id 7533760770; Mon,  6 May 2019 08:22:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
+        s=default; t=1557130923;
+        bh=ZZzz+rr8wUgFTo9VKrB62hBLxoIXWzDCDWK5CKHD47c=;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+        b=AAysGIPa1wpc6nexIkzNVQsIm3FJQNLGxIoo1KXbNUTpTSZpOtbwu0oN2saJjHSd+
+         qZFywZpj3gndNs47ou0IDwFRfjvs+bgnMjSW971xgygSVBWyX136wD5ryoTgquy+CM
+         4uR9jH/xXRhLtKDog+NGIb0HgZpWfPKMykgma3Bw=
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        pdx-caf-mail.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.7 required=2.0 tests=ALL_TRUSTED,BAYES_00,
+        DKIM_INVALID,DKIM_SIGNED autolearn=no autolearn_force=no version=3.4.0
+Received: from x230.qca.qualcomm.com (37-136-65-53.rev.dnainternet.fi [37.136.65.53])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo@smtp.codeaurora.org)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id A7E8F60770;
+        Mon,  6 May 2019 08:21:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
+        s=default; t=1557130921;
+        bh=ZZzz+rr8wUgFTo9VKrB62hBLxoIXWzDCDWK5CKHD47c=;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+        b=lSRn3hu5N/n0P+oGt6NqE4QpryoJ5SmalOwAxzaiMOn7s415F4X0ULqCUeiEucDQB
+         ZP9RRennoLrtyU4NEqSfQyNGan1k7eXt9YkyBybcfHEkKRCzBmSEX3HYykvhpaO8M0
+         L6WwHtMe3NiIGJCdB9OslHXkv7bTkdg0agGfiBzA=
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org A7E8F60770
+Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
+From:   Kalle Valo <kvalo@codeaurora.org>
+To:     Jia-Ju Bai <baijiaju1990@gmail.com>
+Cc:     davem@davemloft.net, colin.king@canonical.com,
+        yuehaibing@huawei.com, linux-wireless@vger.kernel.org,
+        b43-dev@lists.infradead.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] net: wireless: b43: Avoid possible double calls to b43_one_core_detach()
+References: <20190504091000.18665-1-baijiaju1990@gmail.com>
+Date:   Mon, 06 May 2019 11:21:55 +0300
+In-Reply-To: <20190504091000.18665-1-baijiaju1990@gmail.com> (Jia-Ju Bai's
+        message of "Sat, 4 May 2019 17:10:00 +0800")
+Message-ID: <874l68vvq4.fsf@codeaurora.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
 MIME-Version: 1.0
-In-Reply-To: <20190505150355.3fbng4ny34x255vk@localhost>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi,
+Jia-Ju Bai <baijiaju1990@gmail.com> writes:
 
-On 05-05-19 17:03, Victor Bravo wrote:
-> Sanitize DMI strings in brcmfmac driver to make resulting filenames
-> contain only safe characters. This version replaces all non-printable
-> characters incl. delete (0-31, 127-255), spaces and slashes with
-> underscores.
-> 
-> This change breaks backward compatibility, but adds control over strings
-> passed to firmware loader and compatibility with CONFIG_EXTRA_FIRMWARE
-> which doesn't support spaces in filenames.
-> 
-> Changes from v1: don't revert fresh commit by someone else
-> 
-> Signed-off-by: Victor Bravo <1905@spmblk.com>
+> In b43_request_firmware(), when ieee80211_register_hw() fails,
+> b43_one_core_detach() is called. In b43_bcma_remove() and
+> b43_ssb_remove(), b43_one_core_detach() is called again. In this case, 
+> null-pointer dereferences and double-free problems can occur when 
+> the driver is removed.
+>
+> To fix this bug, the call to b43_one_core_detach() in
+> b43_request_firmware() is deleted.
+>
+> This bug is found by a runtime fuzzing tool named FIZZER written by us.
+>
+> Signed-off-by: Jia-Ju Bai <baijiaju1990@gmail.com>
+> ---
+>  drivers/net/wireless/broadcom/b43/main.c | 7 +------
+>  1 file changed, 1 insertion(+), 6 deletions(-)
 
-Thank you for the patch, but I'm sorry to say this patch cannot go in as is,
-because it will break existing systems.
+You can use just "b43:" as prefix, no need to have "net:" nor
+"wireless:" in the title. I'll fix it this time, but please use correct
+style in the future.
 
-If you look here:
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches#commit_title_is_wrong
 
-https://git.kernel.org/pub/scm/linux/kernel/git/firmware/linux-firmware.git/tree/brcm
-
-You will see a file named: "brcmfmac43430a0-sdio.ONDA-V80 PLUS.txt" there, which
-has a space in its name (and which works fine).
-
-I'm fine with doing some sanitizing of the strings, but replacing spaces with _
-breaks existing use-cases (will cause a regression for them) and a space is absolutely
-a valid character in a filename and the firmware-loader can deal with this just fine.
-
-If the code for building firmwares into the kernel cannot deal with spaces then IMHO
-that code should be fixed instead. Have you looked into fixing that?
-
-As for your T100HA example from earlier in this thread, the brcmfmac driver now
-also supports getting the firmware from a special EFI nvram variable, which the
-T100HA sets, so you do not need to provide a nvram file on the T100HA and things
-will still work.
-
-> diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/dmi.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/dmi.c
-> index 7535cb0d4ac0..84571e09b465 100644
-> --- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/dmi.c
-> +++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/dmi.c
-> @@ -23,6 +23,14 @@
->   /* The DMI data never changes so we can use a static buf for this */
->   static char dmi_board_type[128];
->   
-> +/* Array of 128 bits representing 7-bit characters allowed in DMI strings. */
-> +static unsigned char brcmf_dmi_allowed_chars[] = {
-> +	0x00, 0x00, 0x00, 0x00, 0xfe, 0x7f, 0xff, 0xff,
-> +	0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0x7f
-> +};
-> +
-> +#define BRCMF_DMI_SAFE_CHAR '_'
-> +
->   struct brcmf_dmi_data {
->   	u32 chip;
->   	u32 chiprev;
-> @@ -99,6 +107,15 @@ static const struct dmi_system_id dmi_platform_data[] = {
->   	{}
->   };
->   
-> +void brcmf_dmi_sanitize(char *dst, const unsigned char *allowed, char safe)
-> +{
-> +	while (*dst) {
-> +		if ((*dst < 0) || !(allowed[*dst / 8] & (1 << (*dst % 8))))
-
-At a first look I have no clue what this code is doing and I honestly do not feel
-like figuring it out, this is clever, but IMHO not readable.
-
-Please just write this as if (*dst < 0x21 || (*dst > foo && < bar) || etc,
-so that a human can actually see in one look what the code is doing.
-
-You may want to wait for Arend to give his opinion before changing this though,
-maybe he likes the code as is.
-
-Also note that that should be < 0x20 of course, since we need to preserve spaces
-as is to avoid a regression.
-
-Regards,
-
-Hans
-
-
-
-
-
-> +			*dst = safe;
-> +		dst++;
-> +	}
-> +}
-> +
->   void brcmf_dmi_probe(struct brcmf_mp_device *settings, u32 chip, u32 chiprev)
->   {
->   	const struct dmi_system_id *match;
-> @@ -126,6 +143,9 @@ void brcmf_dmi_probe(struct brcmf_mp_device *settings, u32 chip, u32 chiprev)
->   	if (sys_vendor && product_name) {
->   		snprintf(dmi_board_type, sizeof(dmi_board_type), "%s-%s",
->   			 sys_vendor, product_name);
-> +		brcmf_dmi_sanitize(dmi_board_type,
-> +				   brcmf_dmi_allowed_chars,
-> +				   BRCMF_DMI_SAFE_CHAR);
->   		settings->board_type = dmi_board_type;
->   	}
->   }
-> 
+-- 
+Kalle Valo
