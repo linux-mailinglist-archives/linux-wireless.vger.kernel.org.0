@@ -2,75 +2,151 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 1BF5714286
-	for <lists+linux-wireless@lfdr.de>; Sun,  5 May 2019 23:31:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 96F9114332
+	for <lists+linux-wireless@lfdr.de>; Mon,  6 May 2019 02:20:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727861AbfEEVbo (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 5 May 2019 17:31:44 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:56614 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726905AbfEEVbn (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 5 May 2019 17:31:43 -0400
-Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
-        by youngberry.canonical.com with esmtpsa (TLS1.0:RSA_AES_256_CBC_SHA1:32)
-        (Exim 4.76)
-        (envelope-from <colin.king@canonical.com>)
-        id 1hNOjQ-0007uz-Ax; Sun, 05 May 2019 21:31:36 +0000
-From:   Colin King <colin.king@canonical.com>
-To:     Felix Fietkau <nbd@nbd.name>, Roy Luo <royluo@google.com>,
+        id S1728033AbfEFAUt (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 5 May 2019 20:20:49 -0400
+Received: from mga18.intel.com ([134.134.136.126]:43916 "EHLO mga18.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727373AbfEFAUt (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Sun, 5 May 2019 20:20:49 -0400
+X-Amp-Result: UNSCANNABLE
+X-Amp-File-Uploaded: False
+Received: from orsmga008.jf.intel.com ([10.7.209.65])
+  by orsmga106.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 05 May 2019 17:20:48 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.60,435,1549958400"; 
+   d="scan'208";a="140297852"
+Received: from romley-ivt3.sc.intel.com ([172.25.110.60])
+  by orsmga008.jf.intel.com with ESMTP; 05 May 2019 17:20:47 -0700
+Date:   Sun, 5 May 2019 17:12:21 -0700
+From:   Fenghua Yu <fenghua.yu@intel.com>
+To:     Ingo Molnar <mingo@kernel.org>
+Cc:     Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+        H Peter Anvin <hpa@zytor.com>,
+        Paolo Bonzini <pbonzini@redhat.com>,
+        Dave Hansen <dave.hansen@intel.com>,
+        Ashok Raj <ashok.raj@intel.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Ravi V Shankar <ravi.v.shankar@intel.com>,
+        Xiaoyao Li <xiaoyao.li@intel.com>,
+        Christopherson Sean J <sean.j.christopherson@intel.com>,
         Kalle Valo <kvalo@codeaurora.org>,
-        "David S . Miller" <davem@davemloft.net>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        linux-mediatek@lists.infradead.org
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH][next] mt76: fix less than zero check on a u8 variable
-Date:   Sun,  5 May 2019 22:31:35 +0100
-Message-Id: <20190505213135.3895-1-colin.king@canonical.com>
-X-Mailer: git-send-email 2.20.1
+        Michael Chan <michael.chan@broadcom.com>,
+        linux-kernel <linux-kernel@vger.kernel.org>,
+        x86 <x86@kernel.org>, kvm@vger.kernel.org,
+        netdev@vger.kernel.org, linux-wireless@vger.kernel.org
+Subject: Re: [PATCH v8 05/15] x86/msr-index: Define MSR_IA32_CORE_CAPABILITY
+ and split lock detection bit
+Message-ID: <20190506001219.GA110479@romley-ivt3.sc.intel.com>
+References: <1556134382-58814-1-git-send-email-fenghua.yu@intel.com>
+ <1556134382-58814-6-git-send-email-fenghua.yu@intel.com>
+ <20190425054511.GA40105@gmail.com>
+ <20190425190148.GA64477@romley-ivt3.sc.intel.com>
+ <20190425194714.GA58719@gmail.com>
+ <20190425195154.GC64477@romley-ivt3.sc.intel.com>
+ <20190425200830.GD58719@gmail.com>
+ <20190425202226.GD64477@romley-ivt3.sc.intel.com>
+ <20190426060010.GB122831@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20190426060010.GB122831@gmail.com>
+User-Agent: Mutt/1.5.23 (2014-03-12)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Colin Ian King <colin.king@canonical.com>
+On Fri, Apr 26, 2019 at 08:00:10AM +0200, Ingo Molnar wrote:
+> 
+> * Fenghua Yu <fenghua.yu@intel.com> wrote:
+> 
+> > On Thu, Apr 25, 2019 at 10:08:30PM +0200, Ingo Molnar wrote:
+> > > 
+> > > * Fenghua Yu <fenghua.yu@intel.com> wrote:
+> > > 
+> > > > On Thu, Apr 25, 2019 at 09:47:14PM +0200, Ingo Molnar wrote:
+> > > > > 
+> > > > > * Fenghua Yu <fenghua.yu@intel.com> wrote:
+> > > > > 
+> > > > > > On Thu, Apr 25, 2019 at 07:45:11AM +0200, Ingo Molnar wrote:
+> > > > > > > 
+> > > > > > > * Fenghua Yu <fenghua.yu@intel.com> wrote:
+> > > > > > > 
+> > > > > > > > A new MSR_IA32_CORE_CAPABILITY (0xcf) is defined. Each bit in the MSR
+> > > > > > > > enumerates a model specific feature. Currently bit 5 enumerates split
+> > > > > > > > lock detection. When bit 5 is 1, split lock detection is supported.
+> > > > > > > > When the bit is 0, split lock detection is not supported.
+> > > > > > > > 
+> > > > > > > > Please check the latest Intel 64 and IA-32 Architectures Software
+> > > > > > > > Developer's Manual for more detailed information on the MSR and the
+> > > > > > > > split lock detection bit.
+> > > > > > > > 
+> > > > > > > > Signed-off-by: Fenghua Yu <fenghua.yu@intel.com>
+> > > > > > > > ---
+> > > > > > > >  arch/x86/include/asm/msr-index.h | 3 +++
+> > > > > > > >  1 file changed, 3 insertions(+)
+> > > > > > > > 
+> > > > > > > > diff --git a/arch/x86/include/asm/msr-index.h b/arch/x86/include/asm/msr-index.h
+> > > > > > > > index ca5bc0eacb95..f65ef6f783d2 100644
+> > > > > > > > --- a/arch/x86/include/asm/msr-index.h
+> > > > > > > > +++ b/arch/x86/include/asm/msr-index.h
+> > > > > > > > @@ -59,6 +59,9 @@
+> > > > > > > >  #define MSR_PLATFORM_INFO_CPUID_FAULT_BIT	31
+> > > > > > > >  #define MSR_PLATFORM_INFO_CPUID_FAULT		BIT_ULL(MSR_PLATFORM_INFO_CPUID_FAULT_BIT)
+> > > > > > > >  
+> > > > > > > > +#define MSR_IA32_CORE_CAPABILITY	0x000000cf
+> > > > > > > > +#define CORE_CAP_SPLIT_LOCK_DETECT	BIT(5)     /* Detect split lock */
+> > > > > > > 
+> > > > > > > Please don't put comments into definitions.
+> > > > > > 
+> > > > > > I'll remove the comment and change definitions of the MSR and the split lock
+> > > > > > detection bit as following:
+> > > > > > 
+> > > > > > +#define MSR_IA32_CORE_CAPABILITY                       0x000000cf
+> > > > > > +#define MSR_IA32_CORE_CAPABILITY_SPLIT_LOCK_DETECT_BIT 5
+> > > > > > +#define MSR_IA32_CORE_CAPABILITY_SPLIT_LOCK_DETECT     BIT(MSR_IA32_CORE_CAPABILITY_SPLIT_LOCK_DETECT_BIT)
+> > > > > > 
+> > > > > > Are these right changes?
+> > > > > 
+> > > > > I suspect it could be shortened to CORE_CAP as you (partly) did it 
+> > > > > originally.
+> > > > 
+> > > > IA32_CORE_CAPABILITY is the MSR's exact name in the latest SDM (in Table 2-14):
+> > > > https://software.intel.com/en-us/download/intel-64-and-ia-32-architectures-sdm-combined-volumes-1-2a-2b-2c-2d-3a-3b-3c-3d-and-4
+> > > > 
+> > > > So can I define the MSR and the bits as follows?
+> > > > 
+> > > > +#define MSR_IA32_CORE_CAP                       0x000000cf
+> > > > +#define MSR_IA32_CORE_CAP_SPLIT_LOCK_DETECT_BIT 5
+> > > > +#define MSR_IA32_CORE_CAP_SPLIT_LOCK_DETECT     BIT(MSR_IA32_CORE_CAP_SPLIT_LOCK_DETECT_BIT)
+> > > 
+> > > Yeah, I suppose that looks OK.
+> > 
+> > Should I also change the feature definition 'X86_FEATURE_CORE_CAPABILITY' to
+> > 'X86_FEATURE_CORE_CAP' in cpufeatures.h in patch #0006 to match the
+> > MSR definition here? Or should I still keep the current feature definition?
+> > 
+> > Thanks.
+> 
+> Hm, no, for CPU features it's good to follow the vendor convention.
+> 
+> So I guess the long-form CPU_CAPABILITY for all of these is the best 
+> after all.
 
-The signed return from the call to get_omac_idx is being assigned to the
-u8 variable mac_idx and then checked for a negative error condition
-which is always going to be false. Fix this by assigning the return to
-the int variable ret and checking this instead.
+Since MSR_IA32_CORE_CAP_SPLIT_LOCK_DETECT_BIT is not used anywhere else
+except in this patch, is it OK not to define this macro?
 
-Addresses-Coverity: ("Unsigned compared against 0")
-Fixes: 04b8e65922f6 ("mt76: add mac80211 driver for MT7615 PCIe-based chipsets")
-Signed-off-by: Colin Ian King <colin.king@canonical.com>
----
- drivers/net/wireless/mediatek/mt76/mt7615/main.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+So this patch will only has two shorter lines:
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/main.c b/drivers/net/wireless/mediatek/mt76/mt7615/main.c
-index 80e6b211f60b..460d90d5ed6d 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7615/main.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7615/main.c
-@@ -77,11 +77,12 @@ static int mt7615_add_interface(struct ieee80211_hw *hw,
- 		goto out;
- 	}
- 
--	mvif->omac_idx = get_omac_idx(vif->type, dev->omac_mask);
--	if (mvif->omac_idx < 0) {
-+	ret = get_omac_idx(vif->type, dev->omac_mask);
-+	if (ret < 0) {
- 		ret = -ENOSPC;
- 		goto out;
- 	}
-+	mvif->omac_idx = ret;
- 
- 	/* TODO: DBDC support. Use band 0 and wmm 0 for now */
- 	mvif->band_idx = 0;
--- 
-2.20.1
++#define MSR_IA32_CORE_CAP                      0x000000cf
++#define MSR_IA32_CORE_CAP_SPLIT_LOCK_DETECT	BIT(5)
 
+Is this OK for this patch to only define these two macros?
+
+Thanks.
+
+-Fenghua
