@@ -2,92 +2,73 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id CDED514651
-	for <lists+linux-wireless@lfdr.de>; Mon,  6 May 2019 10:29:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AA01A14698
+	for <lists+linux-wireless@lfdr.de>; Mon,  6 May 2019 10:42:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726352AbfEFI3j (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 6 May 2019 04:29:39 -0400
-Received: from smtp.codeaurora.org ([198.145.29.96]:39300 "EHLO
-        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726063AbfEFI3j (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 6 May 2019 04:29:39 -0400
-Received: by smtp.codeaurora.org (Postfix, from userid 1000)
-        id 64EC760DA8; Mon,  6 May 2019 08:29:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1557131378;
-        bh=lrmi5R4AZI3gF9Ncy7xLnfPSXtgWNbQ9CagJI2qZ7+M=;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=RHi4YtGwgHzqvCu1ud3ucO7u3R77mQCk2xODHPcoxrP+EQivknugVQHl94txl6ZYj
-         iA3PWT4GL3s3SSJLCCSake0xAqfDP3JdU9HpI/sGMDwZFAbaLfth0USUE44DVOcdGG
-         nYxSV8OYekuGBShow4V0xsIuk0Zbeq3M58uNfSLE=
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        pdx-caf-mail.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.7 required=2.0 tests=ALL_TRUSTED,BAYES_00,
-        DKIM_INVALID,DKIM_SIGNED autolearn=no autolearn_force=no version=3.4.0
-Received: from x230.qca.qualcomm.com (37-136-65-53.rev.dnainternet.fi [37.136.65.53])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        id S1726034AbfEFImL (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 6 May 2019 04:42:11 -0400
+Received: from mx1.redhat.com ([209.132.183.28]:37536 "EHLO mx1.redhat.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725981AbfEFImL (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 6 May 2019 04:42:11 -0400
+Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.phx2.redhat.com [10.5.11.23])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
         (No client certificate requested)
-        (Authenticated sender: kvalo@smtp.codeaurora.org)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 9B6EF60CEC;
-        Mon,  6 May 2019 08:29:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1557131377;
-        bh=lrmi5R4AZI3gF9Ncy7xLnfPSXtgWNbQ9CagJI2qZ7+M=;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=HFVHKT+4XIcM5qAVlIob4+mQjYOF3TYIfL91ASGWFwwOmpVk0FaEyD8+x0gGt76PP
-         ag0S2s2j813Cv4M6mgOWspQG8EK1HG2TSOKM3XdrhYiGrKvz/g2wW4N4Yfvu0aDoIG
-         dsk+g8E9MKv4NUN6yX3paB0P6hW0ksKlhDhtr25U=
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 9B6EF60CEC
-Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
-From:   Kalle Valo <kvalo@codeaurora.org>
-To:     David Miller <davem@davemloft.net>
-Cc:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: pull-request: wireless-drivers 2019-04-30
-References: <8736lzpm0m.fsf@kamboji.qca.qualcomm.com>
-        <20190430.120117.1616322040923778364.davem@davemloft.net>
-        <87r29jo2jy.fsf@kamboji.qca.qualcomm.com>
-        <20190505.005130.1921658214241614481.davem@davemloft.net>
-Date:   Mon, 06 May 2019 11:29:34 +0300
-In-Reply-To: <20190505.005130.1921658214241614481.davem@davemloft.net> (David
-        Miller's message of "Sun, 05 May 2019 00:51:30 -0700 (PDT)")
-Message-ID: <87v9yougsx.fsf@codeaurora.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
+        by mx1.redhat.com (Postfix) with ESMTPS id 80E72308FECF;
+        Mon,  6 May 2019 08:42:11 +0000 (UTC)
+Received: from localhost (unknown [10.43.2.51])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id 2656C19C4F;
+        Mon,  6 May 2019 08:42:10 +0000 (UTC)
+Date:   Mon, 6 May 2019 10:40:55 +0200
+From:   Stanislaw Gruszka <sgruszka@redhat.com>
+To:     Kalle Valo <kvalo@codeaurora.org>
+Cc:     yhchuang@realtek.com, linux-wireless@vger.kernel.org
+Subject: Re: [PATCH v2 0/5] rtw88: minor fixes from suggestions during review
+Message-ID: <20190506084054.GA2714@redhat.com>
+References: <1556884415-23474-1-git-send-email-yhchuang@realtek.com>
+ <87ftpvkal1.fsf@kamboji.qca.qualcomm.com>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <87ftpvkal1.fsf@kamboji.qca.qualcomm.com>
+User-Agent: Mutt/1.5.20 (2009-12-10)
+X-Scanned-By: MIMEDefang 2.84 on 10.5.11.23
+X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16 (mx1.redhat.com [10.5.110.49]); Mon, 06 May 2019 08:42:11 +0000 (UTC)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-David Miller <davem@davemloft.net> writes:
+On Fri, May 03, 2019 at 03:04:58PM +0300, Kalle Valo wrote:
+> <yhchuang@realtek.com> writes:
+> 
+> > From: Yan-Hsuan Chuang <yhchuang@realtek.com>
+> >
+> > The series fix some small problems for rtw88, most of the suggestions
+> > are from the review process.
+> >
+> >
+> > v1 -> v2
+> >
+> >  - modify description for LPS, ", turn off" -> ", to turn off"
+> >  - drop patch "rtw88: mac: remove dangerous while (1)",
+> >    should re-write the power sequence parsing code to make sense of avoiding
+> >    infinite loop
+> >  - unify Makefile license to Dual GPL/BSD
+> >
+> >
+> > Yan-Hsuan Chuang (5):
+> >   rtw88: add license for Makefile
+> >   rtw88: pci: use ieee80211_ac_numbers instead of 0-3
+> >   rtw88: pci: check if queue mapping exceeds size of ac_to_hwq
+> >   rtw88: fix unassigned rssi_level in rtw_sta_info
+> >   rtw88: more descriptions about LPS
+> 
+> I was just in the next few minutes about to tag the last -next pull for
+> 5.2. I'll apply patch 1 now so that we have consistent licenses for 5.2
+> but the rest have to wait for 5.3.
 
-> From: Kalle Valo <kvalo@codeaurora.org>
-> Date: Tue, 30 Apr 2019 19:55:45 +0300
->
->> David Miller <davem@davemloft.net> writes:
->> 
->>> Thanks for the conflict resolution information, it is very helpful.
->>>
->>> However, can you put it into the merge commit text next time as well?
->>> I cut and pasted it in there when I pulled this stuff in.
->> 
->> A good idea, I'll do that. Just to be sure, do you mean that I should
->> add it only with conflicts between net and net-next (like in this case)?
->> Or should I add it everytime I see a conflict, for example between
->> wireless-drivers-next and net-next? I hope my question is not too
->> confusing...
->
-> When there is a major conflict for me to resolve when I pull in your
-> pull reqeust, please place the conflict resolution help text into the
-> merge commit message.
->
-> I hope this is now clear :-)
+I think '[PATCH v2 4/5] rtw88: fix unassigned rssi_level in rtw_sta_inf'
+should go to 5.2 .
 
-Got it now, thanks!
-
--- 
-Kalle Valo
+Stanislaw
