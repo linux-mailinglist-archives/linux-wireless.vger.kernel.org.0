@@ -2,245 +2,99 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D725014BC4
-	for <lists+linux-wireless@lfdr.de>; Mon,  6 May 2019 16:26:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8B13015010
+	for <lists+linux-wireless@lfdr.de>; Mon,  6 May 2019 17:24:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726037AbfEFO0L (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 6 May 2019 10:26:11 -0400
-Received: from smtp.codeaurora.org ([198.145.29.96]:54842 "EHLO
-        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725883AbfEFO0L (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 6 May 2019 10:26:11 -0400
-Received: by smtp.codeaurora.org (Postfix, from userid 1000)
-        id 2AC8060741; Mon,  6 May 2019 14:26:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1557152770;
-        bh=OeYrEMrhyC+yJSREA9uaCKqx/NT+8qWhBWFZj54qQSE=;
-        h=From:To:Cc:Subject:Date:From;
-        b=UeHIdt9e7egNQXn6xCuHwFOPmWuQZFspdrYuWGxF8Wm6krunuYsdml+5MhHZaQpjn
-         604rUiRheNUC9qAWYrtFG5UkXarI2SJXmWFhOfyVvZfrCP18Sr15m061w5T174qLyU
-         xOv6ItvAiSrGli5bIGzbh3xE0wVrlsWnXqoytjyg=
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        pdx-caf-mail.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.7 required=2.0 tests=ALL_TRUSTED,BAYES_00,
-        DKIM_INVALID,DKIM_SIGNED autolearn=no autolearn_force=no version=3.4.0
-Received: from govinds-linux.qualcomm.com (blr-c-bdr-fw-01_globalnat_allzones-outside.qualcomm.com [103.229.19.19])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-SHA256 (128/128 bits))
-        (No client certificate requested)
-        (Authenticated sender: govinds@smtp.codeaurora.org)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 41B92608FC;
-        Mon,  6 May 2019 14:26:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1557152769;
-        bh=OeYrEMrhyC+yJSREA9uaCKqx/NT+8qWhBWFZj54qQSE=;
-        h=From:To:Cc:Subject:Date:From;
-        b=ZAO0EuIUsGzeoKbSjD4QVmKrBPk+yzzdcpkH0VHTt9RgmM05ffAf2sYG+tSsf6Vgd
-         nfXwiKF3UWKpXHIqh7N3s3BFk2uWlxGPfW1SPhHh/RiheYhQhjEbdLFh5v51FIDKqd
-         sLDAOrwVvofkQs0CoxrkFQl0xyQ/eDZX0drEa8Kk=
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 41B92608FC
-Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=govinds@codeaurora.org
-From:   Govind Singh <govinds@codeaurora.org>
-To:     ath10k@lists.infradead.org
-Cc:     linux-wireless@vger.kernel.org,
-        Govind Singh <govinds@codeaurora.org>
-Subject: [PATCH v2 1/1] ath10k: Enable MSA region dump support for WCN3990
-Date:   Mon,  6 May 2019 19:56:03 +0530
-Message-Id: <20190506142603.1746-1-govinds@codeaurora.org>
-X-Mailer: git-send-email 2.21.0
+        id S1726765AbfEFPYs (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 6 May 2019 11:24:48 -0400
+Received: from 0.ictbs.com ([203.137.112.168]:33899 "EHLO 0.ictbs.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726680AbfEFPYr (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 6 May 2019 11:24:47 -0400
+Received: by hq.local (Postfix, from userid 1000)
+        id 6287766429; Mon,  6 May 2019 17:24:41 +0200 (CEST)
+Date:   Mon, 6 May 2019 17:24:41 +0200
+From:   Victor Bravo <1905@spmblk.com>
+To:     Kalle Valo <kvalo@codeaurora.org>
+Cc:     Hans de Goede <hdegoede@redhat.com>,
+        Arend Van Spriel <arend.vanspriel@broadcom.com>,
+        Franky Lin <franky.lin@broadcom.com>,
+        Hante Meuleman <hante.meuleman@broadcom.com>,
+        Chi-Hsien Lin <chi-hsien.lin@cypress.com>,
+        Wright Feng <wright.feng@cypress.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        linux-wireless@vger.kernel.org,
+        brcm80211-dev-list.pdl@broadcom.com,
+        brcm80211-dev-list@cypress.com, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH RFC] brcmfmac: sanitize DMI strings v2
+Message-ID: <20190506152441.ifjcdi73elxuq5it@localhost>
+References: <cce7604e-2b02-80ed-1df5-6f304cada0cb@broadcom.com>
+ <20190504194440.4zcxjrtj2aft3ka4@localhost>
+ <16a87149068.2764.9b12b7fc0a3841636cfb5e919b41b954@broadcom.com>
+ <20190505150355.3fbng4ny34x255vk@localhost>
+ <0f75a3d4-94af-5503-94c3-e8af2364448d@redhat.com>
+ <20190506090609.msudhncj7e5vdtzw@localhost>
+ <70677dff-4336-28d5-7ab9-7ba7c3d74ebc@redhat.com>
+ <20190506102032.3ximjecado4mz62j@localhost>
+ <fb07ae01-4cca-98e7-1c2d-dfdf44909900@redhat.com>
+ <87d0kvvkej.fsf@codeaurora.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <87d0kvvkej.fsf@codeaurora.org>
+User-Agent: NeoMutt/20170113 (1.7.2)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-MSA memory region caries the hw descriptors information.
-Dump MSA region in core dump as this is very helpful in debugging
-hw issues.
+On Mon, May 06, 2019 at 03:26:28PM +0300, Kalle Valo wrote:
+> Hans de Goede <hdegoede@redhat.com> writes:
+> 
+> > If we're going to do some filtering, then I suggest we play it safe and also
+> > disallow other chars which may be used as a separator somewhere, specifically
+> > ':' and ','.
+> >
+> > Currently upstream linux-firmware has these files which rely on the DMI
+> > matching:
+> >
+> > brcmfmac4330-sdio.Prowise-PT301.txt
+> > brcmfmac43430-sdio.Hampoo-D2D3_Vi8A1.txt
+> > brcmfmac43430a0-sdio.ONDA-V80 PLUS.txt
+> >
+> > The others are either part of the DMI override table for devices with unsuitable
+> > DMI strings like "Default String"; or are device-tree based.
+> >
+> > So as long as we don't break those 3 (or break the ONDA one but get a symlink
+> > in place) we can sanitize a bit more then just non-printable and '/'.
+> >
+> > Kalle, Arend, what is your opinion on this?
+> >
+> > Note I do not expect the ONDA V80 Plus to have a lot of Linux users,
+> > but it definitely has some.
+> 
+> To me having spaces in filenames is a bad idea, but on the other hand we
+> do have the "don't break existing setups" rule, so it's not so simple. I
+> vote for not allowing spaces, I think that's the best for the long run,
+> but don't know what Arend thinks.
 
-Testing: Tested on WCN3990 HW
-Tested FW: WLAN.HL.3.1-00959-QCAHLSWMTPLZ-1
+I have found a fresh judicate on this:
+https://lkml.org/lkml/2018/12/22/221
 
-Signed-off-by: Govind Singh <govinds@codeaurora.org>
----
- drivers/net/wireless/ath/ath10k/coredump.c | 21 +++++++
- drivers/net/wireless/ath/ath10k/coredump.h |  1 +
- drivers/net/wireless/ath/ath10k/qmi.c      |  6 ++
- drivers/net/wireless/ath/ath10k/snoc.c     | 67 ++++++++++++++++++++++
- drivers/net/wireless/ath/ath10k/snoc.h     |  1 +
- 5 files changed, 96 insertions(+)
+It seems clear that we have to support at least spaces for some time
+(maybe wih separate config option which will be deprecated but on by
+defaut until old files are considered gone).
 
-diff --git a/drivers/net/wireless/ath/ath10k/coredump.c b/drivers/net/wireless/ath/ath10k/coredump.c
-index eadae2f9206b..56d62035c988 100644
---- a/drivers/net/wireless/ath/ath10k/coredump.c
-+++ b/drivers/net/wireless/ath/ath10k/coredump.c
-@@ -962,6 +962,19 @@ static const struct ath10k_mem_region qca4019_hw10_mem_regions[] = {
- 	},
- };
- 
-+static const struct ath10k_mem_region wcn399x_hw10_mem_regions[] = {
-+	{
-+		/* MSA region start is not fixed, hence it is assigned at runtime */
-+		.type = ATH10K_MEM_REGION_TYPE_MSA,
-+		.len = 0x100000,
-+		.name = "DRAM",
-+		.section_table = {
-+			.sections = NULL,
-+			.size = 0,
-+		},
-+	},
-+};
-+
- static const struct ath10k_hw_mem_layout hw_mem_layouts[] = {
- 	{
- 		.hw_id = QCA6174_HW_1_0_VERSION,
-@@ -1059,6 +1072,14 @@ static const struct ath10k_hw_mem_layout hw_mem_layouts[] = {
- 			.size = ARRAY_SIZE(qca4019_hw10_mem_regions),
- 		},
- 	},
-+	{
-+		.hw_id = WCN3990_HW_1_0_DEV_VERSION,
-+		.hw_rev = ATH10K_HW_WCN3990,
-+		.region_table = {
-+			.regions = wcn399x_hw10_mem_regions,
-+			.size = ARRAY_SIZE(wcn399x_hw10_mem_regions),
-+		},
-+	},
- };
- 
- static u32 ath10k_coredump_get_ramdump_size(struct ath10k *ar)
-diff --git a/drivers/net/wireless/ath/ath10k/coredump.h b/drivers/net/wireless/ath/ath10k/coredump.h
-index 5dac653e1649..9802e90483f4 100644
---- a/drivers/net/wireless/ath/ath10k/coredump.h
-+++ b/drivers/net/wireless/ath/ath10k/coredump.h
-@@ -126,6 +126,7 @@ enum ath10k_mem_region_type {
- 	ATH10K_MEM_REGION_TYPE_IRAM2	= 5,
- 	ATH10K_MEM_REGION_TYPE_IOSRAM	= 6,
- 	ATH10K_MEM_REGION_TYPE_IOREG	= 7,
-+	ATH10K_MEM_REGION_TYPE_MSA	= 8,
- };
- 
- /* Define a section of the region which should be copied. As not all parts
-diff --git a/drivers/net/wireless/ath/ath10k/qmi.c b/drivers/net/wireless/ath/ath10k/qmi.c
-index ba8f5a8f83d1..47da492a326b 100644
---- a/drivers/net/wireless/ath/ath10k/qmi.c
-+++ b/drivers/net/wireless/ath/ath10k/qmi.c
-@@ -817,9 +817,15 @@ ath10k_qmi_driver_event_post(struct ath10k_qmi *qmi,
- static void ath10k_qmi_event_server_exit(struct ath10k_qmi *qmi)
- {
- 	struct ath10k *ar = qmi->ar;
-+	struct ath10k_snoc *ar_snoc = ath10k_snoc_priv(ar);
- 
- 	ath10k_qmi_remove_msa_permission(qmi);
- 	ath10k_core_free_board_files(ar);
-+	if (!test_bit(ATH10K_SNOC_FLAG_UNREGISTERING, &ar_snoc->flags)) {
-+		ath10k_qmi_remove_msa_permission(qmi);
-+		ath10k_snoc_fw_crashed_dump(ar);
-+		ath10k_qmi_setup_msa_permissions(qmi);
-+	}
- 	ath10k_snoc_fw_indication(ar, ATH10K_QMI_EVENT_FW_DOWN_IND);
- 	ath10k_dbg(ar, ATH10K_DBG_QMI, "wifi fw qmi service disconnected\n");
- }
-diff --git a/drivers/net/wireless/ath/ath10k/snoc.c b/drivers/net/wireless/ath/ath10k/snoc.c
-index 0be12996beba..252dd4ee782d 100644
---- a/drivers/net/wireless/ath/ath10k/snoc.c
-+++ b/drivers/net/wireless/ath/ath10k/snoc.c
-@@ -24,6 +24,7 @@
- #include <linux/regulator/consumer.h>
- 
- #include "ce.h"
-+#include "coredump.h"
- #include "debug.h"
- #include "hif.h"
- #include "htc.h"
-@@ -1586,6 +1587,72 @@ static int ath10k_hw_power_off(struct ath10k *ar)
- 	return ret;
- }
- 
-+static void ath10k_msa_dump_memory(struct ath10k *ar,
-+				   struct ath10k_fw_crash_data *crash_data)
-+{
-+	struct ath10k_snoc *ar_snoc = ath10k_snoc_priv(ar);
-+	const struct ath10k_hw_mem_layout *mem_layout;
-+	const struct ath10k_mem_region *current_region;
-+	struct ath10k_dump_ram_data_hdr *hdr;
-+	size_t buf_len;
-+	u8 *buf;
-+
-+	lockdep_assert_held(&ar->data_lock);
-+
-+	if (!crash_data && !crash_data->ramdump_buf)
-+		return;
-+
-+	mem_layout = ath10k_coredump_get_mem_layout(ar);
-+	if (!mem_layout)
-+		return;
-+
-+	current_region = &mem_layout->region_table.regions[0];
-+
-+	buf = crash_data->ramdump_buf;
-+	buf_len = crash_data->ramdump_buf_len;
-+	memset(buf, 0, buf_len);
-+
-+	/* Reserve space for the header. */
-+	hdr = (void *)buf;
-+	buf += sizeof(*hdr);
-+	buf_len -= sizeof(*hdr);
-+
-+	hdr->region_type = cpu_to_le32(current_region->type);
-+	hdr->start = cpu_to_le32(ar_snoc->qmi->msa_va);
-+	hdr->length = cpu_to_le32(ar_snoc->qmi->msa_mem_size);
-+
-+	if (current_region->len < ar_snoc->qmi->msa_mem_size) {
-+		memcpy(buf, ar_snoc->qmi->msa_va, current_region->len);
-+		ath10k_warn(ar, "msa dump length is less than msa size %x, %x\n",
-+			    current_region->len, ar_snoc->qmi->msa_mem_size);
-+	} else {
-+		memcpy(buf, ar_snoc->qmi->msa_va, ar_snoc->qmi->msa_mem_size);
-+	}
-+}
-+
-+void ath10k_snoc_fw_crashed_dump(struct ath10k *ar)
-+{
-+	struct ath10k_fw_crash_data *crash_data;
-+	char guid[UUID_STRING_LEN + 1];
-+
-+	spin_lock_bh(&ar->data_lock);
-+
-+	ar->stats.fw_crash_counter++;
-+
-+	crash_data = ath10k_coredump_new(ar);
-+
-+	if (crash_data)
-+		scnprintf(guid, sizeof(guid), "%pUl", &crash_data->guid);
-+	else
-+		scnprintf(guid, sizeof(guid), "n/a");
-+
-+	ath10k_err(ar, "firmware crashed! (guid %s)\n", guid);
-+	ath10k_print_driver_info(ar);
-+	ath10k_msa_dump_memory(ar, crash_data);
-+
-+	spin_unlock_bh(&ar->data_lock);
-+}
-+
- static const struct of_device_id ath10k_snoc_dt_match[] = {
- 	{ .compatible = "qcom,wcn3990-wifi",
- 	 .data = &drv_priv,
-diff --git a/drivers/net/wireless/ath/ath10k/snoc.h b/drivers/net/wireless/ath/ath10k/snoc.h
-index 25383de8f17d..6d28a6290a94 100644
---- a/drivers/net/wireless/ath/ath10k/snoc.h
-+++ b/drivers/net/wireless/ath/ath10k/snoc.h
-@@ -101,5 +101,6 @@ static inline struct ath10k_snoc *ath10k_snoc_priv(struct ath10k *ar)
- }
- 
- int ath10k_snoc_fw_indication(struct ath10k *ar, u64 type);
-+void ath10k_snoc_fw_crashed_dump(struct ath10k *ar);
- 
- #endif /* _SNOC_H_ */
--- 
-The Qualcomm Innovation Center, Inc. is a member of the Code Aurora Forum,
-a Linux Foundation Collaborative Project
+> Maybe we could do some kind of fallback mechanism, like first trying the
+> sanitised filename and if that's not found then we try the old filename
+> with spaces? And if that old filename works we print a big fat warning
+> that the user should update the file and that the old "filename with
+> spaces" support is going away soon?
 
+In case of parametric sanitizing function, this might be achievable
+by sanitizing using "final" character set first, and falling back
+to "compatible" character set on file not found. So this may actually
+bring another requirement on the sanitizing function.
+
+Regards,
+v.
