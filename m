@@ -2,181 +2,146 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C92D215471
-	for <lists+linux-wireless@lfdr.de>; Mon,  6 May 2019 21:31:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5A77615514
+	for <lists+linux-wireless@lfdr.de>; Mon,  6 May 2019 22:51:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726503AbfEFTan (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 6 May 2019 15:30:43 -0400
-Received: from mail-ed1-f65.google.com ([209.85.208.65]:43597 "EHLO
-        mail-ed1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726447AbfEFTam (ORCPT
+        id S1726416AbfEFUv3 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 6 May 2019 16:51:29 -0400
+Received: from mail-ed1-f68.google.com ([209.85.208.68]:35847 "EHLO
+        mail-ed1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726197AbfEFUv3 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 6 May 2019 15:30:42 -0400
-Received: by mail-ed1-f65.google.com with SMTP id w33so14103191edb.10
-        for <linux-wireless@vger.kernel.org>; Mon, 06 May 2019 12:30:41 -0700 (PDT)
+        Mon, 6 May 2019 16:51:29 -0400
+Received: by mail-ed1-f68.google.com with SMTP id a8so16677617edx.3;
+        Mon, 06 May 2019 13:51:27 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=BkXKBq90mXwDT4zz4HsE8h1StMIK9Hh0uKPdjQ2tYS8=;
-        b=Bw6QmIvKGsh0iz7yDilnpkH8w71UbQLmjgd71lykAwoMStr2Nv00n2zOW+FENZgP7C
-         8a4RCAXJvrZhCDNXPW2B15kw9ppvFRLfOz7j6zc5pgHvUuDHEZkyfEyxHwNrX52hPoeO
-         SxWirtMb2sqmi5nGreHbNhKas1yg4OiObvTiQ=
+        d=gmail.com; s=20161025;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=Bsvy77V2BabW+yLUp1HGYQuE0fTStgpoE1+/qytzq1s=;
+        b=Gdi526GL5SLBSrFzSNH2cZhQTQcqkwWSKruwyg5I24oUNCSjXjBGiy1p6rR8+LPVQ3
+         rC5k6Wo1AdZuWVwM20IdXb14YnLjmupTiDHkVm1xvHWfxPMjU7xtBLSchLh8nuaJ21NA
+         hAwp5a4GEi5DCM3dDH4T0xhvnK56aTDxCotMzqJtFLaCXHfAoxuALyJ0o3qjfotXsseE
+         SPUJ5no8Gr+bxmmICEuehz6GZLeio5Kb1yB+fzMSBBFls8dCUoig1omE51fIJeFrhnyC
+         d7LjP/FupmguhcJBCiaTksw0tTedrkeAGbketDuNB6PxWc//3NJi6CjHTAjMAKgndZkz
+         aVUg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=BkXKBq90mXwDT4zz4HsE8h1StMIK9Hh0uKPdjQ2tYS8=;
-        b=MizDjjEe9I9DkCKF8iWFBdZMgVP6wNqZNymDtrVyrifXQKspSc+JtmPmjpW8v2RSbC
-         mKYJiWuukHxPe24EmxihlHsfSTeXDlVE6yRtSYNN7GHOCNfABW+vHw3DndsKVL1HgD9+
-         Xf/HWDgTrLHypH1feFYSf55bXRFwynUbSSfWGKzJKlqwqJM4eH76tXALC3yuzM1BVAUy
-         NV8hlVvu71DQdrvOCDqlbDCJpITWLbKcyHNKMvvZHILgSU/wjSZGbxhDWXwF4smNyPnC
-         v6MwFoPRilJd3CL+/5gKIECm8w8bWLvkV+XnKiA+9sKacn7T6xpGu2/ST1OUBn/SkB7r
-         qg9g==
-X-Gm-Message-State: APjAAAXv9SaqFlKWJk/LmMCv+KnO9W7ax/YmQ7mTDdaA5R19SRn1Tabd
-        lwk2M3Iqw8fedhlq2O1GNNg6pw==
-X-Google-Smtp-Source: APXvYqzzQqcCkYDkcHIBlcWm1/kEUzBpdlyIcNAvW1SbVwa3nptXzdGQ/cYaDjTG8Op8XJ+ENTfemg==
-X-Received: by 2002:a17:906:1811:: with SMTP id v17mr20740858eje.109.1557171040765;
-        Mon, 06 May 2019 12:30:40 -0700 (PDT)
-Received: from [192.168.178.129] (f140230.upc-f.chello.nl. [80.56.140.230])
-        by smtp.gmail.com with ESMTPSA id g30sm1646576edg.57.2019.05.06.12.30.39
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Mon, 06 May 2019 12:30:40 -0700 (PDT)
-Subject: Re: [PATCH RFC] brcmfmac: sanitize DMI strings v2
-To:     Hans de Goede <hdegoede@redhat.com>,
-        Victor Bravo <1905@spmblk.com>,
-        Kalle Valo <kvalo@codeaurora.org>
-Cc:     Franky Lin <franky.lin@broadcom.com>,
-        Hante Meuleman <hante.meuleman@broadcom.com>,
-        Chi-Hsien Lin <chi-hsien.lin@cypress.com>,
-        Wright Feng <wright.feng@cypress.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        linux-wireless@vger.kernel.org,
-        brcm80211-dev-list.pdl@broadcom.com,
-        brcm80211-dev-list@cypress.com, linux-kernel@vger.kernel.org,
-        Luis Chamberlain <mcgrof@kernel.org>
-References: <cce7604e-2b02-80ed-1df5-6f304cada0cb@broadcom.com>
- <20190504194440.4zcxjrtj2aft3ka4@localhost>
- <16a87149068.2764.9b12b7fc0a3841636cfb5e919b41b954@broadcom.com>
- <20190505150355.3fbng4ny34x255vk@localhost>
- <0f75a3d4-94af-5503-94c3-e8af2364448d@redhat.com>
- <20190506090609.msudhncj7e5vdtzw@localhost>
- <70677dff-4336-28d5-7ab9-7ba7c3d74ebc@redhat.com>
- <20190506102032.3ximjecado4mz62j@localhost>
- <fb07ae01-4cca-98e7-1c2d-dfdf44909900@redhat.com>
- <87d0kvvkej.fsf@codeaurora.org> <20190506152441.ifjcdi73elxuq5it@localhost>
- <3f3cca6e-50b7-c61d-4a62-26ce508af9e7@redhat.com>
-From:   Arend Van Spriel <arend.vanspriel@broadcom.com>
-Message-ID: <95cd81ea-3970-92de-7983-5c1919e2bbd9@broadcom.com>
-Date:   Mon, 6 May 2019 21:30:38 +0200
-User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:60.0) Gecko/20100101
- Thunderbird/60.6.1
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=Bsvy77V2BabW+yLUp1HGYQuE0fTStgpoE1+/qytzq1s=;
+        b=AllwfkREJlW5rkrTdrOe2a3qq3ArCbkq3J1LYpYgVgOYkttDMg9cHc8KXVvv9/1ZVw
+         /F2emcHzVNdPF8dRPpQdbCX1Oj/KacFruIyTPpcVPaSVxOT9WI5dfA3Rxaebs7cn2fgb
+         b4Vr8jQFXMehAvlLAOMpGfH/Nnd+NcFyx1OWf8Qak4iY0CZ+PIAR3mXOhcymXxo7w0Wz
+         NXsVjFbX2K3pUPqdtAp4UNZWxeE2wzwJSJiyQBF8ORq0bYmBHORYwVS/+beJkpwvHybZ
+         LaqtLC/XF76EN9dpA8KOKFMYoJalLPHfN2p9xbD9mQjTVONaboHYMvY/KO1EyK4kjzu0
+         Dk/w==
+X-Gm-Message-State: APjAAAUiDonDb1YN1dLZHOQM07uhUFp8TfQFxBq0k8A2hKTAM8083B1n
+        LNhfvma2Fp3dJG0HMeDlyCI=
+X-Google-Smtp-Source: APXvYqx792ZxnRPmeKSlVuPcmkI5N4D9ONfjaQkrJxkqIgpWXAAKDFTpL6xQkKVarA5y32JLLzeE/Q==
+X-Received: by 2002:a50:dece:: with SMTP id d14mr28348575edl.97.1557175886802;
+        Mon, 06 May 2019 13:51:26 -0700 (PDT)
+Received: from archlinux-i9 ([2a01:4f9:2b:2b84::2])
+        by smtp.gmail.com with ESMTPSA id n7sm1761506ejk.72.2019.05.06.13.51.25
+        (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
+        Mon, 06 May 2019 13:51:26 -0700 (PDT)
+Date:   Mon, 6 May 2019 13:51:24 -0700
+From:   Nathan Chancellor <natechancellor@gmail.com>
+To:     Kalle Valo <kvalo@codeaurora.org>
+Cc:     Nick Desaulniers <ndesaulniers@google.com>,
+        Amitkumar Karwar <amitkarwar@gmail.com>,
+        Siva Rebbagondla <siva8118@gmail.com>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        LKML <linux-kernel@vger.kernel.org>,
+        clang-built-linux <clang-built-linux@googlegroups.com>
+Subject: Re: [PATCH] rsi: Properly initialize data in rsi_sdio_ta_reset
+Message-ID: <20190506205124.GA23683@archlinux-i9>
+References: <20190502151548.11143-1-natechancellor@gmail.com>
+ <CAKwvOd=nvKGGW5jvN+WFUXzOm9xeiNNUD0F9--9YcpuRmnWWhA@mail.gmail.com>
+ <87h8ackv8j.fsf@kamboji.qca.qualcomm.com>
 MIME-Version: 1.0
-In-Reply-To: <3f3cca6e-50b7-c61d-4a62-26ce508af9e7@redhat.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <87h8ackv8j.fsf@kamboji.qca.qualcomm.com>
+User-Agent: Mutt/1.11.4 (2019-03-13)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-+ Luis (for real this time)
-
-On 5/6/2019 6:05 PM, Hans de Goede wrote:
-> Hi,
+On Fri, May 03, 2019 at 07:38:52AM +0300, Kalle Valo wrote:
+> Nick Desaulniers <ndesaulniers@google.com> writes:
 > 
-> On 06-05-19 17:24, Victor Bravo wrote:
->> On Mon, May 06, 2019 at 03:26:28PM +0300, Kalle Valo wrote:
->>> Hans de Goede <hdegoede@redhat.com> writes:
->>>
->>>> If we're going to do some filtering, then I suggest we play it safe 
->>>> and also
->>>> disallow other chars which may be used as a separator somewhere, 
->>>> specifically
->>>> ':' and ','.
->>>>
->>>> Currently upstream linux-firmware has these files which rely on the DMI
->>>> matching:
->>>>
->>>> brcmfmac4330-sdio.Prowise-PT301.txt
->>>> brcmfmac43430-sdio.Hampoo-D2D3_Vi8A1.txt
->>>> brcmfmac43430a0-sdio.ONDA-V80 PLUS.txt
->>>>
->>>> The others are either part of the DMI override table for devices 
->>>> with unsuitable
->>>> DMI strings like "Default String"; or are device-tree based.
->>>>
->>>> So as long as we don't break those 3 (or break the ONDA one but get 
->>>> a symlink
->>>> in place) we can sanitize a bit more then just non-printable and '/'.
->>>>
->>>> Kalle, Arend, what is your opinion on this?
->>>>
->>>> Note I do not expect the ONDA V80 Plus to have a lot of Linux users,
->>>> but it definitely has some.
->>>
->>> To me having spaces in filenames is a bad idea, but on the other hand we
->>> do have the "don't break existing setups" rule, so it's not so simple. I
->>> vote for not allowing spaces, I think that's the best for the long run,
->>> but don't know what Arend thinks.
-
-Hi,
-
-Had a day off today so I did see some of the discussion, but was not 
-able to chime in until now.
-
-To be honest I always disliked spaces in filenames, but that does not 
-necessarily make it a bad idea. What I would like to know is why 
-built-in firmware can not deal with spaces in the firmware file names. I 
-think Hans mentioned it in the thread and it crossed my mind as well 
-last night. From driver perspective, being brcmfmac or any other for 
-that matter, there is only one API to request firmware and in my opinion 
-it should behave the same no matter where the firmware is coming from. I 
-would prefer to fix that for built-in firmware, but we need to 
-understand where this limitation is coming from. Hopefully Luis can 
-elaborate on that.
-
->>
->> I have found a fresh judicate on this:
->> https://lkml.org/lkml/2018/12/22/221
->>
->> It seems clear that we have to support at least spaces for some time
->> (maybe wih separate config option which will be deprecated but on by
->> defaut until old files are considered gone).
+> > On Thu, May 2, 2019 at 8:16 AM Nathan Chancellor
+> > <natechancellor@gmail.com> wrote:
+> >>
+> >> When building with -Wuninitialized, Clang warns:
+> >>
+> >> drivers/net/wireless/rsi/rsi_91x_sdio.c:940:43: warning: variable 'data'
+> >> is uninitialized when used here [-Wuninitialized]
+> >>         put_unaligned_le32(TA_HOLD_THREAD_VALUE, data);
+> >>                                                  ^~~~
+> >> drivers/net/wireless/rsi/rsi_91x_sdio.c:930:10: note: initialize the
+> >> variable 'data' to silence this warning
+> >>         u8 *data;
+> >>                 ^
+> >>                  = NULL
+> >> 1 warning generated.
+> >>
+> >> Using Clang's suggestion of initializing data to NULL wouldn't work out
+> >> because data will be dereferenced by put_unaligned_le32. Use kzalloc to
+> >> properly initialize data, which matches a couple of other places in this
+> >> driver.
+> >>
+> >> Fixes: e5a1ecc97e5f ("rsi: add firmware loading for 9116 device")
+> >> Link: https://github.com/ClangBuiltLinux/linux/issues/464
+> >> Signed-off-by: Nathan Chancellor <natechancellor@gmail.com>
+> >> ---
+> >>  drivers/net/wireless/rsi/rsi_91x_sdio.c | 21 ++++++++++++++-------
+> >>  1 file changed, 14 insertions(+), 7 deletions(-)
+> >>
+> >> diff --git a/drivers/net/wireless/rsi/rsi_91x_sdio.c b/drivers/net/wireless/rsi/rsi_91x_sdio.c
+> >> index f9c67ed473d1..b35728564c7b 100644
+> >> --- a/drivers/net/wireless/rsi/rsi_91x_sdio.c
+> >> +++ b/drivers/net/wireless/rsi/rsi_91x_sdio.c
+> >> @@ -929,11 +929,15 @@ static int rsi_sdio_ta_reset(struct rsi_hw *adapter)
+> >>         u32 addr;
+> >>         u8 *data;
+> >>
+> >> +       data = kzalloc(sizeof(u32), GFP_KERNEL);
+> >
+> > Something fishy is going on here.  We allocate 4 B but declare data as
+> > a u8* (pointer to individual bytes)?  In general, dynamically
+> > allocating that few bytes is a code smell; either you meant to just
+> > use the stack, or this memory's lifetime extends past the lifetime of
+> > this stackframe, at which point you probably just meant to stack
+> > allocate space in a higher parent frame and pass this preallocated
+> > memory down to the child frame to get filled in.
+> >
+> > Reading through this code, I don't think that the memory is meant to
+> > outlive the stack frame.  Is there a reason why we can't just declare
+> > data as:
+> >
+> > u8 data [4];
+> >
+> > then use ARRAY_SIZE(data) or RSI_9116_REG_SIZE in rsi_reset_chip(),
+> > getting rid of the kzalloc/kfree?
 > 
-> Ah that issue, well that is not really comparable in that case a lot of
-> peoples setups were completely broken by that commit and it was a
-> quite surprising behavior change in a userspace facing API.
+> I haven't checked the details but AFAIK stack variables are not supposed
+> to be used with DMA. So in that case I think it's ok alloc four bytes,
+> unless the DMA rules have changed of course. But I didn't check if rsi
+> is using DMA here, just a general comment.
 > 
-> The nvram loading path already does 2 tries, I really don't want to
-> unnecessary complicate it with a third try.
-> 
-> The Onda V80 Plus is a X86 based Windows / Android dual boot tablet,
-> as said before I do not expect a ton of users to be running regular
-> Linux on it.
-> 
-> Given Kalle's clear preference for getting rid of the spaces lets
-> just do that. But first we must get a symlink added to linux-firmware
-> using the name with the _, newer kernels requiring a newer linux-firmware
-> to match is not unheard of AFAIK, so combined with the limited amount
-> of users I think this is a reasonable compromise.
+> -- 
+> Kalle Valo
 
-Right. In the brcm folder we have bcm4329-fullmac-4.bin for older 
-kernels and brcmfmac4329-sdio.bin for later kernels when we switched to 
-stricter firmware naming convention.
+I don't think it is using the DMA API but it might be the same thing for
+SDIO. If passing that around on the stack is okay, great but we don't
+want what commit f700546682a6 ("rsi: fix nommu_map_sg overflow kernel
+panic") fixes to happen here.
 
-> Kalle, do you agree with getting the symlink added to linux-firmware
-> ASAP as a fix for the V80 Plus issue; or do you want to see a fallback
-> to the un-cleaned name as you suggested before ?
+I can't answer that for sure though since I am not at all familiar with
+this driver or the SDIO APIs.
 
-How many releases have an issue and how many V80 Plus users running 
-regular linux are actually using built-in firmware. And is it really a 
-regression for them? Not saying it does not require fixing. However, as 
-stated above I would prefer to fix the built-in firmware limitation if 
-possible and backport that fix if it is only a few kernel releases 
-provided stable allows such a backport.
-
-Regards,
-Arend
+Cheers,
+Nathan
