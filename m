@@ -2,86 +2,108 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 5FE1814499
-	for <lists+linux-wireless@lfdr.de>; Mon,  6 May 2019 08:51:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 642D81456E
+	for <lists+linux-wireless@lfdr.de>; Mon,  6 May 2019 09:39:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726046AbfEFGv1 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 6 May 2019 02:51:27 -0400
-Received: from rtits2.realtek.com ([211.75.126.72]:60777 "EHLO
-        rtits2.realtek.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725840AbfEFGv0 (ORCPT
+        id S1726464AbfEFHin (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 6 May 2019 03:38:43 -0400
+Received: from mail-pf1-f193.google.com ([209.85.210.193]:39725 "EHLO
+        mail-pf1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726414AbfEFHin (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 6 May 2019 02:51:26 -0400
-Authenticated-By: 
-X-SpamFilter-By: BOX Solutions SpamTrap 5.62 with qID x466pK8a007711, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtitcas12.realtek.com.tw[172.21.6.16])
-        by rtits2.realtek.com.tw (8.15.2/2.57/5.78) with ESMTPS id x466pK8a007711
-        (version=TLSv1 cipher=DHE-RSA-AES256-SHA bits=256 verify=NOT);
-        Mon, 6 May 2019 14:51:20 +0800
-Received: from RTITEXH01.realtek.com.tw (172.21.6.62) by
- RTITCAS12.realtek.com.tw (172.21.6.16) with Microsoft SMTP Server (TLS) id
- 14.3.439.0; Mon, 6 May 2019 14:51:20 +0800
-Received: from RTITMBSVM04.realtek.com.tw ([fe80::e404:880:2ef1:1aa1]) by
- RTITEXH01.realtek.com.tw ([::1]) with mapi id 14.03.0439.000; Mon, 6 May 2019
- 14:51:19 +0800
-From:   Tony Chuang <yhchuang@realtek.com>
-To:     Stanislaw Gruszka <sgruszka@redhat.com>
-CC:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-Subject: RE: [PATCH 5.1] rtw88: fix subscript above array bounds compiler warning
-Thread-Topic: [PATCH 5.1] rtw88: fix subscript above array bounds compiler
- warning
-Thread-Index: AQHVA9RMKpvIEyXpjEKtw8K3sUTCjaZdoZeA//9+zICAAIcHIA==
-Date:   Mon, 6 May 2019 06:51:18 +0000
-Message-ID: <F7CD281DE3E379468C6D07993EA72F84D17EB310@RTITMBSVM04.realtek.com.tw>
-References: <20190506062358.8288-1-sgruszka@redhat.com>
- <F7CD281DE3E379468C6D07993EA72F84D17EB2B5@RTITMBSVM04.realtek.com.tw>
- <20190506064357.GB5115@redhat.com>
-In-Reply-To: <20190506064357.GB5115@redhat.com>
-Accept-Language: zh-TW, en-US
-Content-Language: zh-TW
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [172.21.68.183]
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+        Mon, 6 May 2019 03:38:43 -0400
+Received: by mail-pf1-f193.google.com with SMTP id z26so6294447pfg.6
+        for <linux-wireless@vger.kernel.org>; Mon, 06 May 2019 00:38:43 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=eH0f+Eu6ZUxRZIXEvgdiO6zx0qQSRtdsKIC2yQILbks=;
+        b=QaOdz86fyFLQbeHUAfpKUqy3CHKbeux5DBpACGjpPyo5X5D0c57mvy24MVgWmQMSvz
+         1egUVxNVsRmcBa1TR61KPKVkgGejeSZq/pxfK9a/KsMK1rhJ0ejqJgqIU3lpo7i3oXRY
+         z5gPdKl+vOu/z6ctMbqgWQHCiczTJp7MZqxQQ=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=eH0f+Eu6ZUxRZIXEvgdiO6zx0qQSRtdsKIC2yQILbks=;
+        b=N5eSRwGdgIOg43UFDGcCKK2oHxmRSj7r/WKzBViK9FeFWWkAVERbrcLzeL+oKAMT+q
+         T2sx0WdjgfCm4wWBYr/tPZK+1qBmD5fZp2eQREd6hTEXTfGMlouL3GLC7qeqgHCzTgLf
+         +fVLklHhSkNkewAKcQ8WtF8pvKRyjngakeyBBAn56kbqVV+Y5DEeqeoi7/DtyAsNkx2J
+         B65HCb3VCMhCJU1DJjU+Z3SJA1H+UpOem86BO4Gq3jx2fUpDFkTMGz4NXyVFI+M9LAdK
+         Tkeru/hoV01PI8HAUZt6pbzjQCcTaxQ3G3CzTsNJOd/bCnDjUS0PzAFFvLYmzN3RvJQM
+         TLXw==
+X-Gm-Message-State: APjAAAW73LaoJI+IvvdPFekd7A6XCfzvFqDqc0Ds5bec7gDiVzyqnAGA
+        deXIN09GsAxN2LWDetiLIqUM5f4+QpvE8Q==
+X-Google-Smtp-Source: APXvYqzq7+RiKLUM1UGBJdOhCrgnYMsbITyjWDoqQRHZeLPQtrTv4DFlBT7QlqC+j+2pVCeGskmVHA==
+X-Received: by 2002:aa7:8212:: with SMTP id k18mr31160168pfi.50.1557128322639;
+        Mon, 06 May 2019 00:38:42 -0700 (PDT)
+Received: from localhost ([2401:fa00:1:10:3db2:76bf:938b:be05])
+        by smtp.gmail.com with ESMTPSA id j189sm14464852pfc.72.2019.05.06.00.38.40
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Mon, 06 May 2019 00:38:41 -0700 (PDT)
+From:   Claire Chang <tientzu@chromium.org>
+To:     kvalo@codeaurora.org
+Cc:     linux-wireless@vger.kernel.org, ath10k@lists.infradead.org,
+        wgong@codeaurora.org, drinkcat@chromium.org,
+        Claire Chang <tientzu@chromium.org>
+Subject: [PATCH] ath10k: acquire lock to fix lockdep's warning
+Date:   Mon,  6 May 2019 15:38:36 +0800
+Message-Id: <20190506073836.184059-1-tientzu@chromium.org>
+X-Mailer: git-send-email 2.21.0.1020.gf2820cf01a-goog
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-PiBTdWJqZWN0OiBSZTogW1BBVENIIDUuMV0gcnR3ODg6IGZpeCBzdWJzY3JpcHQgYWJvdmUgYXJy
-YXkgYm91bmRzIGNvbXBpbGVyDQo+IHdhcm5pbmcNCj4gDQo+IE9uIE1vbiwgTWF5IDA2LCAyMDE5
-IGF0IDA2OjMyOjAxQU0gKzAwMDAsIFRvbnkgQ2h1YW5nIHdyb3RlOg0KPiA+ID4gU3ViamVjdDog
-W1BBVENIIDUuMV0gcnR3ODg6IGZpeCBzdWJzY3JpcHQgYWJvdmUgYXJyYXkgYm91bmRzIGNvbXBp
-bGVyDQo+IHdhcm5pbmcNCj4gPiA+DQo+ID4gPiBNeSBjb21waWxlciBjb21wbGFpbnMgYWJvdXQ6
-DQo+ID4gPg0KPiA+ID4gZHJpdmVycy9uZXQvd2lyZWxlc3MvcmVhbHRlay9ydHc4OC9waHkuYzog
-SW4gZnVuY3Rpb24NCj4gPiA+IOKAmHJ0d19waHlfcmZfcG93ZXJfMl9yc3Np4oCZOg0KPiA+ID4g
-ZHJpdmVycy9uZXQvd2lyZWxlc3MvcmVhbHRlay9ydHc4OC9waHkuYzo0MzA6MjY6IHdhcm5pbmc6
-IGFycmF5IHN1YnNjcmlwdCBpcw0KPiA+ID4gYWJvdmUgYXJyYXkgYm91bmRzIFstV2FycmF5LWJv
-dW5kc10NCj4gPiA+ICAgbGluZWFyID0gZGJfaW52ZXJ0X3RhYmxlW2ldW2pdOw0KPiA+ID4NCj4g
-PiA+IEFjY29yZGluZyB0byBjb21tZW50IHBvd2VyX2RiIHNob3VsZCBiZSBpbiByYW5nZSAxIH4g
-OTYgLg0KPiA+ID4gVG8gZml4IGFkZCBjaGVjayBmb3IgYm91bmRhcmllcyBiZWZvcmUgYWNjZXNz
-IHRoZSBhcnJheS4NCj4gPiA+DQo+ID4gPiBTaWduZWQtb2ZmLWJ5OiBTdGFuaXNsYXcgR3J1c3pr
-YSA8c2dydXN6a2FAcmVkaGF0LmNvbT4NCj4gPiA+IC0tLQ0KPiA+ID4gUkZDIC0+IHYxDQo+ID4g
-PiAtIGFkZCBjaGVjayBiZWZvcmUgYWNjZXNzaW5nIHRoZSBhcnJheSBpbnN0ZWQgb2YNCj4gPiA+
-ICAgcnR3X3BoeV9wb3dlcl8yX2RiKCkgY2hhbmdlLg0KPiA+ID4NCj4gPiA+ICBkcml2ZXJzL25l
-dC93aXJlbGVzcy9yZWFsdGVrL3J0dzg4L3BoeS5jIHwgNSArKysrKw0KPiA+ID4gIDEgZmlsZSBj
-aGFuZ2VkLCA1IGluc2VydGlvbnMoKykNCj4gPiA+DQo+ID4gPiBkaWZmIC0tZ2l0IGEvZHJpdmVy
-cy9uZXQvd2lyZWxlc3MvcmVhbHRlay9ydHc4OC9waHkuYw0KPiA+ID4gYi9kcml2ZXJzL25ldC93
-aXJlbGVzcy9yZWFsdGVrL3J0dzg4L3BoeS5jDQo+ID4gPiBpbmRleCA0MzgxYjM2MGI1YjUuLjlj
-YTUyYTRkMDI1YSAxMDA2NDQNCj4gPiA+IC0tLSBhL2RyaXZlcnMvbmV0L3dpcmVsZXNzL3JlYWx0
-ZWsvcnR3ODgvcGh5LmMNCj4gPiA+ICsrKyBiL2RyaXZlcnMvbmV0L3dpcmVsZXNzL3JlYWx0ZWsv
-cnR3ODgvcGh5LmMNCj4gPiA+IEBAIC00MjMsNiArNDIzLDExIEBAIHN0YXRpYyB1NjQgcnR3X3Bo
-eV9kYl8yX2xpbmVhcih1OCBwb3dlcl9kYikNCj4gPiA+ICAJdTggaSwgajsNCj4gPiA+ICAJdTY0
-IGxpbmVhcjsNCj4gPiA+DQo+ID4gPiArCWlmIChwb3dlcl9kYiA+IDk2KQ0KPiA+ID4gKwkJcG93
-ZXJfZGIgPSA5NjsNCj4gPiA+ICsJZWxzZSBpZiAocG93ZXJfZGIgPCAxKQ0KPiA+ID4gKwkJcG93
-ZXJfZGIgPSAxOw0KPiA+DQo+ID4gSSB0aGluayBpdCdzICJyZXR1cm4gMSIgaGVyZS4NCj4gDQo+
-IEVoaCwgSSBtaXNzZWQgdGhhdCBpbiB5b3VyIGNvbW1lbnQuIEhvd2V2ZXIgJ3JldHVybiAxJyBj
-aGFuZ2UNCj4gdGhlIG91dHB1dCBvZiBydHdfcGh5X2RiXzJfbGluZWFyKCkgcXVpdGUgc3Vic3Rh
-bnRpYWxseQ0KPiBhcyB0aGUgc21hbGxlc3QgdmFsdWUgKGZvciBwb3dlcl9kYiA9IDEpIGZyb20g
-ZGJfaW52ZXJ0X3RhYmxlW11bXQ0KPiBpcyAxMC4gSSdsbCBwb3N0IHYyIHBhdGNoLCBidXQgcGxl
-YXNlIGRvdWJsZSBjaGVjayBpdCdzIGluZGVlZA0KPiBjb3JyZWN0IGxvZ2ljLiBUaGFua3MuDQo+
-IA0KDQpJIHRoaW5rICJyZXR1cm4gMSIgaXMgY29ycmVjdCBiZWNhdXNlIDAgaXMgbm90IGluIGRv
-bWFpbiAxfjk2Lg0KQW5kIGluZGVlZCBhbnl0aGluZyB0byB0aGUgcG93ZXIgb2YgemVybyBpcyAx
-Lg0KVGhhbmtzLg0KDQpZYW4tSHN1YW4NCg0K
+Lockdep warns at lockdep_assert_held(&ar->data_lock) in
+ath10k_htt_rx_pn_check_replay_hl(). Acquire ar->data_lock before calling
+ath10k_htt_rx_pn_check_replay_hl() to fix it.
+
+Call trace:
+ath10k_htt_rx_pn_check_replay_hl+0x118/0x134 [ath10k_core]
+ath10k_htt_rx_proc_rx_ind_hl+0xd8/0x250 [ath10k_core]
+ath10k_htt_t2h_msg_handler+0x148/0xf30 [ath10k_core]
+ath10k_htt_htc_t2h_msg_handler+0x24/0x40 [ath10k_core]
+ath10k_sdio_irq_handler+0x374/0xaa4 [ath10k_sdio]
+
+Fixes: 130c77495708 ("ath10k: add PN replay protection for high latency devices")
+Signed-off-by: Claire Chang <tientzu@chromium.org>
+---
+ drivers/net/wireless/ath/ath10k/htt_rx.c | 11 ++++++++---
+ 1 file changed, 8 insertions(+), 3 deletions(-)
+
+diff --git a/drivers/net/wireless/ath/ath10k/htt_rx.c b/drivers/net/wireless/ath/ath10k/htt_rx.c
+index 9eed1cb17fda..3e3be1e5bbaf 100644
+--- a/drivers/net/wireless/ath/ath10k/htt_rx.c
++++ b/drivers/net/wireless/ath/ath10k/htt_rx.c
+@@ -1952,6 +1952,7 @@ static bool ath10k_htt_rx_proc_rx_ind_hl(struct ath10k_htt *htt,
+ 	int num_mpdu_ranges;
+ 	size_t tot_hdr_len;
+ 	struct ieee80211_channel *ch;
++	bool pn_invalid;
+ 
+ 	peer_id = __le16_to_cpu(rx->hdr.peer_id);
+ 
+@@ -1983,9 +1984,13 @@ static bool ath10k_htt_rx_proc_rx_ind_hl(struct ath10k_htt *htt,
+ 		goto err;
+ 	}
+ 
+-	if (check_pn_type == HTT_RX_PN_CHECK &&
+-	    ath10k_htt_rx_pn_check_replay_hl(ar, peer, rx))
+-		goto err;
++	if (check_pn_type == HTT_RX_PN_CHECK) {
++		spin_lock_bh(&ar->data_lock);
++		pn_invalid = ath10k_htt_rx_pn_check_replay_hl(ar, peer, rx);
++		spin_unlock_bh(&ar->data_lock);
++		if (pn_invalid)
++			goto err;
++	}
+ 
+ 	/* Strip off all headers before the MAC header before delivery to
+ 	 * mac80211
+-- 
+2.21.0.1020.gf2820cf01a-goog
+
