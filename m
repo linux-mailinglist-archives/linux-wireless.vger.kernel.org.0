@@ -2,172 +2,115 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 0B6F7148C4
-	for <lists+linux-wireless@lfdr.de>; Mon,  6 May 2019 13:16:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C26D414986
+	for <lists+linux-wireless@lfdr.de>; Mon,  6 May 2019 14:26:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726447AbfEFLQJ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 6 May 2019 07:16:09 -0400
-Received: from mail-it1-f199.google.com ([209.85.166.199]:59971 "EHLO
-        mail-it1-f199.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726408AbfEFLQH (ORCPT
+        id S1726037AbfEFM0f (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 6 May 2019 08:26:35 -0400
+Received: from smtp.codeaurora.org ([198.145.29.96]:56716 "EHLO
+        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725852AbfEFM0f (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 6 May 2019 07:16:07 -0400
-Received: by mail-it1-f199.google.com with SMTP id x143so10993838itb.9
-        for <linux-wireless@vger.kernel.org>; Mon, 06 May 2019 04:16:06 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:date:message-id:subject:from:to;
-        bh=BN9kMr6VZQzhqffxvPGpBVCV4wBfOVi6hr2TY26skHA=;
-        b=CVzSIWSmZTAy23o3srtpqKVjpVrj/44vmQgHWs1O2N3KJHvw0Cr7WVNVVwoZe6LbDF
-         iYSAJQhupRtTQnfKzVaqlC4LDwAl85McrTuEg3GbHk6KL/641UmWqm4LPwQFCtIkG83j
-         rm1IMLHgPAXdbaczU3lbQ2Dkj5qODNsUFM9Bbb8db+ms+Nb9Up5MroCnPRrwuyTOTbKo
-         slnDiy6OaN1SqyXU8LwlabOT4/CFZU5ntAiD6iRqjl3X1B7tWbHMppknkIJSHHH62rk8
-         UusuBoEyseoVTLA75brwXfqEjgMYo4mgWN958Us+r7pr5Q8jxNZG1FLWBW8jRCS2zr7X
-         YZwA==
-X-Gm-Message-State: APjAAAUnInAokmsEbjq/Z4W3EKOH8uPe12aq0fViM2bpdGJgv66s294l
-        Vf9z4LwioWYdmNdTVeHW/yGY2bFHL9RDOiBPS/HYEYzHfI7C
-X-Google-Smtp-Source: APXvYqwH7JIUqnnfwXRVpaboE17nKjPnok0C1QhbL3fT4ZnqNAOx/7oJEKcTnzHpuJcUaTseJzHM4uzXDo3ZluJWDJEumSHbmy+i
+        Mon, 6 May 2019 08:26:35 -0400
+Received: by smtp.codeaurora.org (Postfix, from userid 1000)
+        id 806FF60A44; Mon,  6 May 2019 12:26:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
+        s=default; t=1557145594;
+        bh=mjz5y1YF37BWba0/Yf7ZhLw5CnmxhMPjN802sVr7vdg=;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+        b=Or9Q36x1FeTpHbWu3Ld28q89P55CwOHkCDs1rDZ14ldfdwqCQgRpSbyh8W2q0Y0E5
+         2vdqcoYZG6fzkRWZGSssr7+e5hlUIsipW2hhORP+bnJrNpqm0QCc/wrrz/Nm7vppcP
+         B1TvpPtrclutmNUuQNfW5r8C5fm2T4EB6PkbZWK8=
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        pdx-caf-mail.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.7 required=2.0 tests=ALL_TRUSTED,BAYES_00,
+        DKIM_INVALID,DKIM_SIGNED autolearn=no autolearn_force=no version=3.4.0
+Received: from x230.qca.qualcomm.com (85-76-75-57-nat.elisa-mobile.fi [85.76.75.57])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo@smtp.codeaurora.org)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 4FD4560590;
+        Mon,  6 May 2019 12:26:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
+        s=default; t=1557145593;
+        bh=mjz5y1YF37BWba0/Yf7ZhLw5CnmxhMPjN802sVr7vdg=;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+        b=oWhz0ypyIvO8lOLmqXuQCAr3zqDj67mpRw2qEng2XilGn9DVvn04zuM3LDkbC43YP
+         +Yaicj+MrP5txKLnkXmQA9f1Z1RiTlA8AG13k2ied7KS7ws/79o6cIlcgFykLfU0ir
+         1TSK5TZSslbk8QGol11Bv3k9xIfmHt0WsPd9Y7ZU=
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 4FD4560590
+Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
+From:   Kalle Valo <kvalo@codeaurora.org>
+To:     Hans de Goede <hdegoede@redhat.com>
+Cc:     Victor Bravo <1905@spmblk.com>,
+        Arend Van Spriel <arend.vanspriel@broadcom.com>,
+        Franky Lin <franky.lin@broadcom.com>,
+        Hante Meuleman <hante.meuleman@broadcom.com>,
+        Chi-Hsien Lin <chi-hsien.lin@cypress.com>,
+        Wright Feng <wright.feng@cypress.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        linux-wireless@vger.kernel.org,
+        brcm80211-dev-list.pdl@broadcom.com,
+        brcm80211-dev-list@cypress.com, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH RFC] brcmfmac: sanitize DMI strings v2
+References: <20190504162633.ldrz2nqfocg55grb@localhost>
+        <cce7604e-2b02-80ed-1df5-6f304cada0cb@broadcom.com>
+        <20190504194440.4zcxjrtj2aft3ka4@localhost>
+        <16a87149068.2764.9b12b7fc0a3841636cfb5e919b41b954@broadcom.com>
+        <20190505150355.3fbng4ny34x255vk@localhost>
+        <0f75a3d4-94af-5503-94c3-e8af2364448d@redhat.com>
+        <20190506090609.msudhncj7e5vdtzw@localhost>
+        <70677dff-4336-28d5-7ab9-7ba7c3d74ebc@redhat.com>
+        <20190506102032.3ximjecado4mz62j@localhost>
+        <fb07ae01-4cca-98e7-1c2d-dfdf44909900@redhat.com>
+Date:   Mon, 06 May 2019 15:26:28 +0300
+In-Reply-To: <fb07ae01-4cca-98e7-1c2d-dfdf44909900@redhat.com> (Hans de
+        Goede's message of "Mon, 6 May 2019 12:34:17 +0200")
+Message-ID: <87d0kvvkej.fsf@codeaurora.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
 MIME-Version: 1.0
-X-Received: by 2002:a5e:920a:: with SMTP id y10mr12746024iop.115.1557141366362;
- Mon, 06 May 2019 04:16:06 -0700 (PDT)
-Date:   Mon, 06 May 2019 04:16:06 -0700
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <00000000000001de810588363aaf@google.com>
-Subject: KASAN: slab-out-of-bounds Read in p54u_load_firmware_cb
-From:   syzbot <syzbot+6d237e74cdc13f036473@syzkaller.appspotmail.com>
-To:     andreyknvl@google.com, chunkeey@googlemail.com,
-        davem@davemloft.net, kvalo@codeaurora.org,
-        linux-kernel@vger.kernel.org, linux-usb@vger.kernel.org,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        syzkaller-bugs@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"; format=flowed; delsp=yes
+Content-Type: text/plain
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hello,
+Hans de Goede <hdegoede@redhat.com> writes:
 
-syzbot found the following crash on:
+> If we're going to do some filtering, then I suggest we play it safe and also
+> disallow other chars which may be used as a separator somewhere, specifically
+> ':' and ','.
+>
+> Currently upstream linux-firmware has these files which rely on the DMI
+> matching:
+>
+> brcmfmac4330-sdio.Prowise-PT301.txt
+> brcmfmac43430-sdio.Hampoo-D2D3_Vi8A1.txt
+> brcmfmac43430a0-sdio.ONDA-V80 PLUS.txt
+>
+> The others are either part of the DMI override table for devices with unsuitable
+> DMI strings like "Default String"; or are device-tree based.
+>
+> So as long as we don't break those 3 (or break the ONDA one but get a symlink
+> in place) we can sanitize a bit more then just non-printable and '/'.
+>
+> Kalle, Arend, what is your opinion on this?
+>
+> Note I do not expect the ONDA V80 Plus to have a lot of Linux users,
+> but it definitely has some.
 
-HEAD commit:    43151d6c usb-fuzzer: main usb gadget fuzzer driver
-git tree:       https://github.com/google/kasan.git usb-fuzzer
-console output: https://syzkaller.appspot.com/x/log.txt?x=12c0112ca00000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=4183eeef650d1234
-dashboard link: https://syzkaller.appspot.com/bug?extid=6d237e74cdc13f036473
-compiler:       gcc (GCC) 9.0.0 20181231 (experimental)
+To me having spaces in filenames is a bad idea, but on the other hand we
+do have the "don't break existing setups" rule, so it's not so simple. I
+vote for not allowing spaces, I think that's the best for the long run,
+but don't know what Arend thinks.
 
-Unfortunately, I don't have any reproducer for this crash yet.
+Maybe we could do some kind of fallback mechanism, like first trying the
+sanitised filename and if that's not found then we try the old filename
+with spaces? And if that old filename works we print a big fat warning
+that the user should update the file and that the old "filename with
+spaces" support is going away soon?
 
-IMPORTANT: if you fix the bug, please add the following tag to the commit:
-Reported-by: syzbot+6d237e74cdc13f036473@syzkaller.appspotmail.com
-
-cx231xx 2-1:0.1: New device   @ 480 Mbps (2040:b111) with 1 interfaces
-cx231xx 2-1:0.1: Not found matching IAD interface
-usb 6-1: Direct firmware load for isl3887usb failed with error -2
-usb 6-1: Firmware not found.
-==================================================================
-BUG: KASAN: slab-out-of-bounds in p54u_load_firmware_cb.cold+0x97/0x13a  
-drivers/net/wireless/intersil/p54/p54usb.c:936
-Read of size 8 at addr ffff888099763588 by task kworker/0:1/12
-
-CPU: 0 PID: 12 Comm: kworker/0:1 Not tainted 5.1.0-rc3-319004-g43151d6 #6
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS  
-Google 01/01/2011
-Workqueue: events request_firmware_work_func
-Call Trace:
-  __dump_stack lib/dump_stack.c:77 [inline]
-  dump_stack+0xe8/0x16e lib/dump_stack.c:113
-  print_address_description+0x6c/0x236 mm/kasan/report.c:187
-  kasan_report.cold+0x1a/0x3c mm/kasan/report.c:317
-  p54u_load_firmware_cb.cold+0x97/0x13a  
-drivers/net/wireless/intersil/p54/p54usb.c:936
-  request_firmware_work_func+0x12d/0x249  
-drivers/base/firmware_loader/main.c:785
-  process_one_work+0x90f/0x1580 kernel/workqueue.c:2269
-  worker_thread+0x9b/0xe20 kernel/workqueue.c:2415
-  kthread+0x313/0x420 kernel/kthread.c:253
-  ret_from_fork+0x3a/0x50 arch/x86/entry/entry_64.S:352
-
-Allocated by task 7931:
-  set_track mm/kasan/common.c:87 [inline]
-  __kasan_kmalloc mm/kasan/common.c:497 [inline]
-  __kasan_kmalloc.constprop.0+0xbf/0xd0 mm/kasan/common.c:470
-  slab_post_alloc_hook mm/slab.h:437 [inline]
-  slab_alloc_node mm/slub.c:2756 [inline]
-  __kmalloc_node_track_caller+0xf3/0x320 mm/slub.c:4372
-  __kmalloc_reserve.isra.0+0x3e/0xf0 net/core/skbuff.c:140
-  __alloc_skb+0xf4/0x5a0 net/core/skbuff.c:208
-  alloc_skb include/linux/skbuff.h:1058 [inline]
-  alloc_uevent_skb+0x7b/0x210 lib/kobject_uevent.c:289
-  uevent_net_broadcast_untagged lib/kobject_uevent.c:325 [inline]
-  kobject_uevent_net_broadcast lib/kobject_uevent.c:408 [inline]
-  kobject_uevent_env+0x865/0x13d0 lib/kobject_uevent.c:589
-  udc_bind_to_driver+0x33e/0x5e0 drivers/usb/gadget/udc/core.c:1357
-  usb_gadget_probe_driver+0x23f/0x380 drivers/usb/gadget/udc/core.c:1408
-  fuzzer_ioctl_run drivers/usb/gadget/fuzzer/fuzzer.c:718 [inline]
-  fuzzer_ioctl+0x15be/0x1d90 drivers/usb/gadget/fuzzer/fuzzer.c:1130
-  full_proxy_unlocked_ioctl+0x11b/0x180 fs/debugfs/file.c:205
-  vfs_ioctl fs/ioctl.c:46 [inline]
-  file_ioctl fs/ioctl.c:509 [inline]
-  do_vfs_ioctl+0xced/0x12f0 fs/ioctl.c:696
-  ksys_ioctl+0xa0/0xc0 fs/ioctl.c:713
-  __do_sys_ioctl fs/ioctl.c:720 [inline]
-  __se_sys_ioctl fs/ioctl.c:718 [inline]
-  __x64_sys_ioctl+0x74/0xb0 fs/ioctl.c:718
-  do_syscall_64+0xcf/0x4f0 arch/x86/entry/common.c:290
-  entry_SYSCALL_64_after_hwframe+0x49/0xbe
-
-Freed by task 805:
-  set_track mm/kasan/common.c:87 [inline]
-  __kasan_slab_free+0x130/0x180 mm/kasan/common.c:459
-  slab_free_hook mm/slub.c:1429 [inline]
-  slab_free_freelist_hook+0x5e/0x140 mm/slub.c:1456
-  slab_free mm/slub.c:3003 [inline]
-  kfree+0xce/0x290 mm/slub.c:3958
-  skb_free_head+0x90/0xb0 net/core/skbuff.c:557
-  skb_release_data+0x543/0x8b0 net/core/skbuff.c:577
-  skb_release_all+0x4b/0x60 net/core/skbuff.c:631
-  __kfree_skb net/core/skbuff.c:645 [inline]
-  consume_skb net/core/skbuff.c:705 [inline]
-  consume_skb+0xc5/0x2f0 net/core/skbuff.c:699
-  skb_free_datagram+0x1b/0xf0 net/core/datagram.c:329
-  netlink_recvmsg+0x663/0xea0 net/netlink/af_netlink.c:2004
-  sock_recvmsg_nosec net/socket.c:881 [inline]
-  sock_recvmsg net/socket.c:888 [inline]
-  sock_recvmsg+0xd1/0x110 net/socket.c:884
-  ___sys_recvmsg+0x278/0x5a0 net/socket.c:2422
-  __sys_recvmsg+0xee/0x1b0 net/socket.c:2471
-  do_syscall_64+0xcf/0x4f0 arch/x86/entry/common.c:290
-  entry_SYSCALL_64_after_hwframe+0x49/0xbe
-
-The buggy address belongs to the object at ffff888099763180
-  which belongs to the cache kmalloc-1k of size 1024
-The buggy address is located 8 bytes to the right of
-  1024-byte region [ffff888099763180, ffff888099763580)
-The buggy address belongs to the page:
-page:ffffea000265d800 count:1 mapcount:0 mapping:ffff88812c3f4a00 index:0x0  
-compound_mapcount: 0
-flags: 0xfff00000010200(slab|head)
-raw: 00fff00000010200 dead000000000100 dead000000000200 ffff88812c3f4a00
-raw: 0000000000000000 00000000000e000e 00000001ffffffff 0000000000000000
-page dumped because: kasan: bad access detected
-
-Memory state around the buggy address:
-  ffff888099763480: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
-  ffff888099763500: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
-> ffff888099763580: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
-                       ^
-  ffff888099763600: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
-  ffff888099763680: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
-==================================================================
-
-
----
-This bug is generated by a bot. It may contain errors.
-See https://goo.gl/tpsmEJ for more information about syzbot.
-syzbot engineers can be reached at syzkaller@googlegroups.com.
-
-syzbot will keep track of this bug report. See:
-https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
+-- 
+Kalle Valo
