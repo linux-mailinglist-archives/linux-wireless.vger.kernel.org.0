@@ -2,75 +2,74 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id CD6831456F
-	for <lists+linux-wireless@lfdr.de>; Mon,  6 May 2019 09:39:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D9B1D145A1
+	for <lists+linux-wireless@lfdr.de>; Mon,  6 May 2019 09:56:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726347AbfEFHjT (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 6 May 2019 03:39:19 -0400
-Received: from mx1.redhat.com ([209.132.183.28]:13146 "EHLO mx1.redhat.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725864AbfEFHjT (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 6 May 2019 03:39:19 -0400
-Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.phx2.redhat.com [10.5.11.11])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mx1.redhat.com (Postfix) with ESMTPS id D561B307D924;
-        Mon,  6 May 2019 07:39:18 +0000 (UTC)
-Received: from localhost (ovpn-204-123.brq.redhat.com [10.40.204.123])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 4C672620DB;
-        Mon,  6 May 2019 07:39:18 +0000 (UTC)
-From:   Stanislaw Gruszka <sgruszka@redhat.com>
-To:     linux-wireless@vger.kernel.org
-Cc:     Yan-Hsuan Chuang <yhchuang@realtek.com>
-Subject: [PATCH 5.1] rtw88: fix subscript above array bounds compiler warning
-Date:   Mon,  6 May 2019 09:39:17 +0200
-Message-Id: <20190506073917.10106-1-sgruszka@redhat.com>
+        id S1726270AbfEFH4s (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 6 May 2019 03:56:48 -0400
+Received: from rtits2.realtek.com ([211.75.126.72]:49692 "EHLO
+        rtits2.realtek.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725828AbfEFH4r (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 6 May 2019 03:56:47 -0400
+Authenticated-By: 
+X-SpamFilter-By: BOX Solutions SpamTrap 5.62 with qID x467uWU0014879, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtitcasv01.realtek.com.tw[172.21.6.18])
+        by rtits2.realtek.com.tw (8.15.2/2.57/5.78) with ESMTPS id x467uWU0014879
+        (version=TLSv1 cipher=AES256-SHA bits=256 verify=NOT);
+        Mon, 6 May 2019 15:56:32 +0800
+Received: from RTITMBSVM04.realtek.com.tw ([fe80::e404:880:2ef1:1aa1]) by
+ RTITCASV01.realtek.com.tw ([::1]) with mapi id 14.03.0415.000; Mon, 6 May
+ 2019 15:56:31 +0800
+From:   Pkshih <pkshih@realtek.com>
+To:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        "colin.king@canonical.com" <colin.king@canonical.com>,
+        "kvalo@codeaurora.org" <kvalo@codeaurora.org>,
+        "Larry.Finger@lwfinger.net" <Larry.Finger@lwfinger.net>
+CC:     "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: Re: static analysis issue in rtl8188de driver
+Thread-Topic: static analysis issue in rtl8188de driver
+Thread-Index: AQHVAsNxM98Kauqi0ket4FYZEsHsOaZdNsoA
+Date:   Mon, 6 May 2019 07:56:30 +0000
+Message-ID: <1557129390.28660.4.camel@realtek.com>
+References: <a1842b3e-f0af-d1a1-8609-a76c25dfd37b@canonical.com>
+In-Reply-To: <a1842b3e-f0af-d1a1-8609-a76c25dfd37b@canonical.com>
+Accept-Language: en-US, zh-TW
+Content-Language: zh-TW
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [172.21.69.114]
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <087B30BC917E234B836B5C961AEB8BAF@realtek.com>
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.11
-X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16 (mx1.redhat.com [10.5.110.48]); Mon, 06 May 2019 07:39:19 +0000 (UTC)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-My compiler complains about:
-
-drivers/net/wireless/realtek/rtw88/phy.c: In function ‘rtw_phy_rf_power_2_rssi’:
-drivers/net/wireless/realtek/rtw88/phy.c:430:26: warning: array subscript is above array bounds [-Warray-bounds]
-  linear = db_invert_table[i][j];
-
-According to comment power_db should be in range 1 ~ 96 .
-To fix add check for boundaries before access the array.
-
-Signed-off-by: Stanislaw Gruszka <sgruszka@redhat.com>
----
-RFC -> v1
-- add check before accessing the array insted of
-  rtw_phy_power_2_db() change.
-v1 -> v2:
-- return 1 for power_db < 1
-
- drivers/net/wireless/realtek/rtw88/phy.c | 5 +++++
- 1 file changed, 5 insertions(+)
-
-diff --git a/drivers/net/wireless/realtek/rtw88/phy.c b/drivers/net/wireless/realtek/rtw88/phy.c
-index 4381b360b5b5..9ca52a4d025a 100644
---- a/drivers/net/wireless/realtek/rtw88/phy.c
-+++ b/drivers/net/wireless/realtek/rtw88/phy.c
-@@ -423,6 +423,11 @@ static u64 rtw_phy_db_2_linear(u8 power_db)
- 	u8 i, j;
- 	u64 linear;
- 
-+	if (power_db > 96)
-+		power_db = 96;
-+	else if (power_db < 1)
-+		return 1;
-+
- 	/* 1dB ~ 96dB */
- 	i = (power_db - 1) >> 3;
- 	j = (power_db - 1) - (i << 3);
--- 
-2.20.1
-
+T24gU2F0LCAyMDE5LTA1LTA0IGF0IDIxOjUwICswMDAwLCBDb2xpbiBJYW4gS2luZyB3cm90ZToN
+Cj4gSGksDQo+IA0KPiBTdGF0aWMgYW5hbHlzaXMgd2l0aCBDb3Zlcml0eSBoYXMgZm91bmQgYW4g
+aXNzdWUgaW4gdGhlIHJ0bDgxODhkZQ0KPiB3aXJlbGVzcyBkcml2ZXIgaW4gZHJpdmVycy9uZXQv
+d2lyZWxlc3MvcmVhbHRlay9ydGx3aWZpL3J0bDgxOTJkZS9kbS5jDQo+IGluIGZ1bmN0aW9uIHRs
+OTJkX2RtX3R4cG93ZXJfdHJhY2tpbmdfY2FsbGJhY2tfdGhlcm1hbG1ldGVyLg0KPiANCj4gVGhl
+IGlzc3VlIGlzIHRoYXQgdTggYXJyYXkgb2ZkbV9pbmRleFszXSBpcyBuZXZlciBpbml0aWFsaXpl
+ZCwgaG93ZXZlcg0KPiBpdCBpcyBkZWNyZW1lbnRlZCBhbmQgaW5jcmVtZW50ZWQgaW4gdHdvIHBs
+YWNlcyByZXN1bHRpbmcgaW4gZ2FyYmFnZQ0KPiB2YWx1ZSBmcm9tIHRoZSBzdGFjayBiZWluZyB1
+cGRhdGVkIGluIHRoZSBmb2xsb3dpbmcgY29kZToNCj4gDQo+IAlpZiAodGhlcm1hbHZhbHVlID4g
+cnRscHJpdi0+ZG0udGhlcm1hbHZhbHVlKSB7DQo+IMKgwqDCoMKgwqDCoMKgwqAJZm9yIChpID0g
+MDsgaSA8IHJmOyBpKyspDQo+IMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgCW9mZG1f
+aW5kZXhbaV0gLT0gZGVsdGE7DQo+IMKgwqDCoMKgwqDCoMKgwqAJY2NrX2luZGV4IC09IGRlbHRh
+Ow0KPiAJfSBlbHNlIHsNCj4gwqDCoMKgwqDCoMKgwqDCoAlmb3IgKGkgPSAwOyBpIDwgcmY7IGkr
+KykNCj4gwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAJb2ZkbV9pbmRleFtpXSArPSBp
+bmRleDsNCj4gwqDCoMKgwqDCoMKgwqDCoAljY2tfaW5kZXggKz0gaW5kZXg7CQ0KPiAJfQ0KPiAN
+Cj4gQXQgbXkgZmlyc3QgbG9vayBhdCB0aGUgY29kZSBJIGJlbGlldmUgb2ZkbV9pbmRleCBzaG91
+bGQgYmUganVzdA0KPiB6ZXJvLWluaXRpYWxpemVkIGF0IGRlY2xhcmF0aW9uIHRpbWUsIGJ1dCBJ
+IHN1c3BlY3QgdGhhdCBJJ20gb3Zlcmxvb2tpbmcNCj4gc29tZXRoaW5nIG1heWJlIGEgYml0IGRl
+ZXBlci4gQW55IGlkZWFzPw0KPiANCg0KDQpIaSBDb2xpbiwNCg0KVGhhbmtzIGZvciB5b3VyIHJl
+cG9ydC4NCg0KQWZ0ZXIgbXkgcXVpY2sgbG9vaywgdGhlcmUgYXJlIGF0IGxlYXN0IHR3byBvYnZp
+b3VzIHByb2JsZW1zLg0KT25lIGlzIGFycmF5IHNpemUgb2bCoG9mZG1faW5kZXhbXSBzaG91bGQg
+YmUgdHdvIGluc3RlYWQuIEFub3RoZXIgaXMgdGhlIHZhbHVlDQpvZiBvZmRtX2luZGV4W10gc2hv
+dWxkIGJlIG9idGFpbmVkIGZyb20gcnRscHJpdi0+ZG0ub2ZkbV9pbmRleFtdLsKgDQpTaW5jZSB0
+aGUgbG9naWMgaXMgcXVpdGUgY29tcGxleCwgSSBuZWVkIHNvbWUgdGltZSB0byBmaXggaXQuDQoN
+ClBLDQoNCg==
