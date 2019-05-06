@@ -2,72 +2,92 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 6488D14648
-	for <lists+linux-wireless@lfdr.de>; Mon,  6 May 2019 10:29:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CDED514651
+	for <lists+linux-wireless@lfdr.de>; Mon,  6 May 2019 10:29:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726085AbfEFI3V (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 6 May 2019 04:29:21 -0400
-Received: from rtits2.realtek.com ([211.75.126.72]:43958 "EHLO
-        rtits2.realtek.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725836AbfEFI3V (ORCPT
+        id S1726352AbfEFI3j (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 6 May 2019 04:29:39 -0400
+Received: from smtp.codeaurora.org ([198.145.29.96]:39300 "EHLO
+        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726063AbfEFI3j (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 6 May 2019 04:29:21 -0400
-Authenticated-By: 
-X-SpamFilter-By: BOX Solutions SpamTrap 5.62 with qID x468TE9k030442, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtitcasv02.realtek.com.tw[172.21.6.19])
-        by rtits2.realtek.com.tw (8.15.2/2.57/5.78) with ESMTPS id x468TE9k030442
-        (version=TLSv1 cipher=DHE-RSA-AES256-SHA bits=256 verify=NOT);
-        Mon, 6 May 2019 16:29:14 +0800
-Received: from RTITMBSVM04.realtek.com.tw ([fe80::e404:880:2ef1:1aa1]) by
- RTITCASV02.realtek.com.tw ([::1]) with mapi id 14.03.0439.000; Mon, 6 May
- 2019 16:29:13 +0800
-From:   Tony Chuang <yhchuang@realtek.com>
-To:     Stanislaw Gruszka <sgruszka@redhat.com>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-Subject: RE: [PATCH 5.1] rtw88: fix subscript above array bounds compiler warning
-Thread-Topic: [PATCH 5.1] rtw88: fix subscript above array bounds compiler
- warning
-Thread-Index: AQHVA97RehUJoZ7290GKHCDr+G3fWaZdw6iA
-Date:   Mon, 6 May 2019 08:29:13 +0000
-Message-ID: <F7CD281DE3E379468C6D07993EA72F84D17EB40A@RTITMBSVM04.realtek.com.tw>
-References: <20190506073917.10106-1-sgruszka@redhat.com>
-In-Reply-To: <20190506073917.10106-1-sgruszka@redhat.com>
-Accept-Language: zh-TW, en-US
-Content-Language: zh-TW
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [172.21.68.183]
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+        Mon, 6 May 2019 04:29:39 -0400
+Received: by smtp.codeaurora.org (Postfix, from userid 1000)
+        id 64EC760DA8; Mon,  6 May 2019 08:29:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
+        s=default; t=1557131378;
+        bh=lrmi5R4AZI3gF9Ncy7xLnfPSXtgWNbQ9CagJI2qZ7+M=;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+        b=RHi4YtGwgHzqvCu1ud3ucO7u3R77mQCk2xODHPcoxrP+EQivknugVQHl94txl6ZYj
+         iA3PWT4GL3s3SSJLCCSake0xAqfDP3JdU9HpI/sGMDwZFAbaLfth0USUE44DVOcdGG
+         nYxSV8OYekuGBShow4V0xsIuk0Zbeq3M58uNfSLE=
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        pdx-caf-mail.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.7 required=2.0 tests=ALL_TRUSTED,BAYES_00,
+        DKIM_INVALID,DKIM_SIGNED autolearn=no autolearn_force=no version=3.4.0
+Received: from x230.qca.qualcomm.com (37-136-65-53.rev.dnainternet.fi [37.136.65.53])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo@smtp.codeaurora.org)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 9B6EF60CEC;
+        Mon,  6 May 2019 08:29:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
+        s=default; t=1557131377;
+        bh=lrmi5R4AZI3gF9Ncy7xLnfPSXtgWNbQ9CagJI2qZ7+M=;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+        b=HFVHKT+4XIcM5qAVlIob4+mQjYOF3TYIfL91ASGWFwwOmpVk0FaEyD8+x0gGt76PP
+         ag0S2s2j813Cv4M6mgOWspQG8EK1HG2TSOKM3XdrhYiGrKvz/g2wW4N4Yfvu0aDoIG
+         dsk+g8E9MKv4NUN6yX3paB0P6hW0ksKlhDhtr25U=
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 9B6EF60CEC
+Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
+From:   Kalle Valo <kvalo@codeaurora.org>
+To:     David Miller <davem@davemloft.net>
+Cc:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: pull-request: wireless-drivers 2019-04-30
+References: <8736lzpm0m.fsf@kamboji.qca.qualcomm.com>
+        <20190430.120117.1616322040923778364.davem@davemloft.net>
+        <87r29jo2jy.fsf@kamboji.qca.qualcomm.com>
+        <20190505.005130.1921658214241614481.davem@davemloft.net>
+Date:   Mon, 06 May 2019 11:29:34 +0300
+In-Reply-To: <20190505.005130.1921658214241614481.davem@davemloft.net> (David
+        Miller's message of "Sun, 05 May 2019 00:51:30 -0700 (PDT)")
+Message-ID: <87v9yougsx.fsf@codeaurora.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
 MIME-Version: 1.0
+Content-Type: text/plain
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-PiBTdWJqZWN0OiBbUEFUQ0ggNS4xXSBydHc4ODogZml4IHN1YnNjcmlwdCBhYm92ZSBhcnJheSBi
-b3VuZHMgY29tcGlsZXIgd2FybmluZw0KPiANCj4gTXkgY29tcGlsZXIgY29tcGxhaW5zIGFib3V0
-Og0KPiANCj4gZHJpdmVycy9uZXQvd2lyZWxlc3MvcmVhbHRlay9ydHc4OC9waHkuYzogSW4gZnVu
-Y3Rpb24NCj4g4oCYcnR3X3BoeV9yZl9wb3dlcl8yX3Jzc2nigJk6DQo+IGRyaXZlcnMvbmV0L3dp
-cmVsZXNzL3JlYWx0ZWsvcnR3ODgvcGh5LmM6NDMwOjI2OiB3YXJuaW5nOiBhcnJheSBzdWJzY3Jp
-cHQgaXMNCj4gYWJvdmUgYXJyYXkgYm91bmRzIFstV2FycmF5LWJvdW5kc10NCj4gICBsaW5lYXIg
-PSBkYl9pbnZlcnRfdGFibGVbaV1bal07DQo+IA0KPiBBY2NvcmRpbmcgdG8gY29tbWVudCBwb3dl
-cl9kYiBzaG91bGQgYmUgaW4gcmFuZ2UgMSB+IDk2IC4NCj4gVG8gZml4IGFkZCBjaGVjayBmb3Ig
-Ym91bmRhcmllcyBiZWZvcmUgYWNjZXNzIHRoZSBhcnJheS4NCj4gDQo+IFNpZ25lZC1vZmYtYnk6
-IFN0YW5pc2xhdyBHcnVzemthIDxzZ3J1c3prYUByZWRoYXQuY29tPg0KPiAtLS0NCj4gUkZDIC0+
-IHYxDQo+IC0gYWRkIGNoZWNrIGJlZm9yZSBhY2Nlc3NpbmcgdGhlIGFycmF5IGluc3RlZCBvZg0K
-PiAgIHJ0d19waHlfcG93ZXJfMl9kYigpIGNoYW5nZS4NCj4gdjEgLT4gdjI6DQo+IC0gcmV0dXJu
-IDEgZm9yIHBvd2VyX2RiIDwgMQ0KPiANCj4gIGRyaXZlcnMvbmV0L3dpcmVsZXNzL3JlYWx0ZWsv
-cnR3ODgvcGh5LmMgfCA1ICsrKysrDQo+ICAxIGZpbGUgY2hhbmdlZCwgNSBpbnNlcnRpb25zKCsp
-DQo+IA0KPiBkaWZmIC0tZ2l0IGEvZHJpdmVycy9uZXQvd2lyZWxlc3MvcmVhbHRlay9ydHc4OC9w
-aHkuYw0KPiBiL2RyaXZlcnMvbmV0L3dpcmVsZXNzL3JlYWx0ZWsvcnR3ODgvcGh5LmMNCj4gaW5k
-ZXggNDM4MWIzNjBiNWI1Li45Y2E1MmE0ZDAyNWEgMTAwNjQ0DQo+IC0tLSBhL2RyaXZlcnMvbmV0
-L3dpcmVsZXNzL3JlYWx0ZWsvcnR3ODgvcGh5LmMNCj4gKysrIGIvZHJpdmVycy9uZXQvd2lyZWxl
-c3MvcmVhbHRlay9ydHc4OC9waHkuYw0KPiBAQCAtNDIzLDYgKzQyMywxMSBAQCBzdGF0aWMgdTY0
-IHJ0d19waHlfZGJfMl9saW5lYXIodTggcG93ZXJfZGIpDQo+ICAJdTggaSwgajsNCj4gIAl1NjQg
-bGluZWFyOw0KPiANCj4gKwlpZiAocG93ZXJfZGIgPiA5NikNCj4gKwkJcG93ZXJfZGIgPSA5NjsN
-Cj4gKwllbHNlIGlmIChwb3dlcl9kYiA8IDEpDQo+ICsJCXJldHVybiAxOw0KPiArDQo+ICAJLyog
-MWRCIH4gOTZkQiAqLw0KPiAgCWkgPSAocG93ZXJfZGIgLSAxKSA+PiAzOw0KPiAgCWogPSAocG93
-ZXJfZGIgLSAxKSAtIChpIDw8IDMpOw0KPiAtLQ0KDQpUaGFua3MuIEZvciB0aGlzIHBhdGNoLg0K
-DQpBY2tlZC1ieTogWWFuLUhzdWFuIENodWFuZyA8eWhjaHVhbmdAcmVhbHRlay5jb20+DQoNCllh
-bi1Ic3Vhbg0K
+David Miller <davem@davemloft.net> writes:
+
+> From: Kalle Valo <kvalo@codeaurora.org>
+> Date: Tue, 30 Apr 2019 19:55:45 +0300
+>
+>> David Miller <davem@davemloft.net> writes:
+>> 
+>>> Thanks for the conflict resolution information, it is very helpful.
+>>>
+>>> However, can you put it into the merge commit text next time as well?
+>>> I cut and pasted it in there when I pulled this stuff in.
+>> 
+>> A good idea, I'll do that. Just to be sure, do you mean that I should
+>> add it only with conflicts between net and net-next (like in this case)?
+>> Or should I add it everytime I see a conflict, for example between
+>> wireless-drivers-next and net-next? I hope my question is not too
+>> confusing...
+>
+> When there is a major conflict for me to resolve when I pull in your
+> pull reqeust, please place the conflict resolution help text into the
+> merge commit message.
+>
+> I hope this is now clear :-)
+
+Got it now, thanks!
+
+-- 
+Kalle Valo
