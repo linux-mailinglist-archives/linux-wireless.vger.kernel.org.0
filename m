@@ -2,151 +2,288 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id F226B151A0
-	for <lists+linux-wireless@lfdr.de>; Mon,  6 May 2019 18:33:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C6034152DF
+	for <lists+linux-wireless@lfdr.de>; Mon,  6 May 2019 19:39:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726997AbfEFQdL (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 6 May 2019 12:33:11 -0400
-Received: from mail-lf1-f67.google.com ([209.85.167.67]:39494 "EHLO
-        mail-lf1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726982AbfEFQb3 (ORCPT
+        id S1726523AbfEFRjY (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 6 May 2019 13:39:24 -0400
+Received: from mail-ot1-f66.google.com ([209.85.210.66]:34114 "EHLO
+        mail-ot1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726095AbfEFRjY (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 6 May 2019 12:31:29 -0400
-Received: by mail-lf1-f67.google.com with SMTP id z124so3478591lfd.6
-        for <linux-wireless@vger.kernel.org>; Mon, 06 May 2019 09:31:28 -0700 (PDT)
+        Mon, 6 May 2019 13:39:24 -0400
+Received: by mail-ot1-f66.google.com with SMTP id l17so2720856otq.1
+        for <linux-wireless@vger.kernel.org>; Mon, 06 May 2019 10:39:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=wagpSFeZjiSYROHr7BDwlgLPN1h4XicGjvtdDBu+n9c=;
-        b=KvPbQf5ojgfmelT2YV7IcRcMLqR9GapZoa4g4+qAbBdlWZSTS1KiFKUTm+kBQd/Byr
-         JffruthirxsW3We/MAlRPJMY55Ee0Ir8Map29okquwu2v9cSocVP227PFBp0i55V9WR7
-         lw4BhqMJYwuXp5kBp0Kr0LUpTLTMdEEQBvjog=
+        d=gmail.com; s=20161025;
+        h=sender:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=Wt5U1v1Ut1PuD1bJa6JYik9CGW3GmdcNVSMP6n6/Uic=;
+        b=U/6ZjbyJxtuc+SrDPU6YGhYBM/5smxfdyCU7NJwdAR7Jd8HTWyH4thLJjXW2eL/U1H
+         TPEI5gIUJeJ803pH2PR692sgMjhYDDdy2yvwqwBsDwDfoJP8PVd8mdqMu96+R90YvRcZ
+         W7if8hZoHNWfZw+jbCjYOc4KJWN+m5Dbee7pJPTbnyL21cKpohVPImxYxHe5eRNpe3bv
+         gRBuqT/0dihNRx6pqRxwUI3Y5JQOQBy67I5tzzl0w4SeoUvVHqrFr0GI+bQnrNO+S2ft
+         1iZMqZmS7aVyXr3IyQXy+EdsYfBA9Y4lQz/iGoc+0I9HYc0yX64MJEgS2U1uQsUs7mfv
+         DUjA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=wagpSFeZjiSYROHr7BDwlgLPN1h4XicGjvtdDBu+n9c=;
-        b=LPEml8il9DNlMwzSfs/08Mhd2dxsHtc+IoCby/zzU89N8DA6qTs+qd1xkAJkXRzUWV
-         Sju2cQLgSL62asYsmqfzQlmYJ9FAENktlTxeEiQ/vHveQsCe1HtMc0OW0Ww48oco5GTY
-         0vuNQvblRVsBz5j8H3OZemYmAZMAMmY3DDbUeTq9t4hlJhJws6iY4eqa9qqdkw7oIni6
-         H1jDnqJzBgr0FWJuuSVqQ5t3i4qghnlGAbPjSylcAvwOXPsLWyL7B3EbZktw4Jcjkih9
-         7z2cdzpgnxGujg10VKnnuYeqhakm+OFNiU8eGKUmgv7toXAf82cCyfQu9edfHO9Sm+ul
-         ic+Q==
-X-Gm-Message-State: APjAAAX+DlkCTVd1fnyHZh1I4GjdN3OrGoFe95QnC7pyOip0TJ76+V4l
-        GvWU2ufd9XNx5vrkwgj/Mi50U0CE4M4=
-X-Google-Smtp-Source: APXvYqyXkyXoEPyg9nnIBAvx0uwzWEVV8DAPaQokOo4lhZxgrxfAwZn75E2wdnY1dkPPZaRz+9K5gA==
-X-Received: by 2002:ac2:5609:: with SMTP id v9mr13107457lfd.159.1557160287071;
-        Mon, 06 May 2019 09:31:27 -0700 (PDT)
-Received: from mail-lf1-f42.google.com (mail-lf1-f42.google.com. [209.85.167.42])
-        by smtp.gmail.com with ESMTPSA id n12sm1904483lfk.95.2019.05.06.09.31.25
-        for <linux-wireless@vger.kernel.org>
-        (version=TLS1_3 cipher=AEAD-AES128-GCM-SHA256 bits=128/128);
-        Mon, 06 May 2019 09:31:25 -0700 (PDT)
-Received: by mail-lf1-f42.google.com with SMTP id o16so9608381lfl.7
-        for <linux-wireless@vger.kernel.org>; Mon, 06 May 2019 09:31:25 -0700 (PDT)
-X-Received: by 2002:a19:4bc5:: with SMTP id y188mr12592750lfa.24.1557160285265;
- Mon, 06 May 2019 09:31:25 -0700 (PDT)
+        h=x-gm-message-state:sender:from:to:cc:subject:date:message-id
+         :mime-version:content-transfer-encoding;
+        bh=Wt5U1v1Ut1PuD1bJa6JYik9CGW3GmdcNVSMP6n6/Uic=;
+        b=oYagTmMOMnFLXUozv3b2a06VDj3whHxWJ1zbY/wguq6zDxm5uhZf/SXpLb3jsTHK7n
+         ZuU3MPeLmutdnBd1gCYmvXXRa6BgTmgCOf4uazbC29m+Fbt6hGQDl8lrd+rnITcVciWQ
+         iP+5bRci5tPF95JIDmKd6ETXkjCWCnA3SmTicEGlmVmERue7nh+rMdas4sZ8banUttfo
+         HjwvXB+OZnR01V1HjGqPni0bmMF9sTnVNREFpkQqYJoq+aCLKvhXex867Zkis+SsaO8H
+         f02tNZ/+7Hz3m6oNo8UUrJxwHitvXwswHn2LCVUUhKUeq+p5COd7K/DI6CdV6tB3+Bdy
+         PzsQ==
+X-Gm-Message-State: APjAAAXl1vsa4TSWS6/Rwcv83WrXn+eYHHhv5Xe2trh3VR4gM/kqIlOZ
+        GlwUeESMYZGQjSn/P84+6KI=
+X-Google-Smtp-Source: APXvYqwtcaoykiUcI7oPgSFM0uPa75x/22w4QuE8un62zntXs88qT6xqSo6Uql+3non27qKCoSklfA==
+X-Received: by 2002:a9d:758d:: with SMTP id s13mr18192259otk.306.1557164362622;
+        Mon, 06 May 2019 10:39:22 -0700 (PDT)
+Received: from localhost.localdomain (cpe-24-31-245-230.kc.res.rr.com. [24.31.245.230])
+        by smtp.gmail.com with ESMTPSA id m14sm4168682oih.6.2019.05.06.10.39.20
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Mon, 06 May 2019 10:39:21 -0700 (PDT)
+From:   Larry Finger <Larry.Finger@lwfinger.net>
+To:     kvalo@codeaurora.org
+Cc:     linux-wireless@vger.kernel.org, pkshih@realtek.com,
+        Larry Finger <Larry.Finger@lwfinger.net>
+Subject: [RFC] rtlwifi: rtl8821ae: Use inline routines rather than macros for descriptor word 0
+Date:   Mon,  6 May 2019 12:39:16 -0500
+Message-Id: <20190506173916.16486-1-Larry.Finger@lwfinger.net>
+X-Mailer: git-send-email 2.21.0
 MIME-Version: 1.0
-References: <20190506142603.1746-1-govinds@codeaurora.org>
-In-Reply-To: <20190506142603.1746-1-govinds@codeaurora.org>
-From:   Brian Norris <briannorris@chromium.org>
-Date:   Mon, 6 May 2019 09:31:13 -0700
-X-Gmail-Original-Message-ID: <CA+ASDXNuf5=Q4v8HqtM2xGvqN1c_0q9mBNo9wdO3pRcBBqe2oQ@mail.gmail.com>
-Message-ID: <CA+ASDXNuf5=Q4v8HqtM2xGvqN1c_0q9mBNo9wdO3pRcBBqe2oQ@mail.gmail.com>
-Subject: Re: [PATCH v2 1/1] ath10k: Enable MSA region dump support for WCN3990
-To:     Govind Singh <govinds@codeaurora.org>
-Cc:     ath10k@lists.infradead.org,
-        linux-wireless <linux-wireless@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Mon, May 6, 2019 at 7:26 AM Govind Singh <govinds@codeaurora.org> wrote:
-> --- a/drivers/net/wireless/ath/ath10k/snoc.c
-> +++ b/drivers/net/wireless/ath/ath10k/snoc.c
+The driver uses complicated macros to set parts of word 0 of the TX and RX
+descriptors. These are changed into inline routines.
 
-> @@ -1586,6 +1587,72 @@ static int ath10k_hw_power_off(struct ath10k *ar)
->         return ret;
->  }
->
-> +static void ath10k_msa_dump_memory(struct ath10k *ar,
-> +                                  struct ath10k_fw_crash_data *crash_data)
-> +{
-> +       struct ath10k_snoc *ar_snoc = ath10k_snoc_priv(ar);
-> +       const struct ath10k_hw_mem_layout *mem_layout;
-> +       const struct ath10k_mem_region *current_region;
-> +       struct ath10k_dump_ram_data_hdr *hdr;
-> +       size_t buf_len;
-> +       u8 *buf;
-> +
-> +       lockdep_assert_held(&ar->data_lock);
+Signed-off-by: Larry Finger <Larry.Finger@lwfinger.net>
+---
 
-I believe that's the wrong lock now. See below.
+Kalle,
 
-> +
-> +       if (!crash_data && !crash_data->ramdump_buf)
-> +               return;
-> +
-> +       mem_layout = ath10k_coredump_get_mem_layout(ar);
-> +       if (!mem_layout)
-> +               return;
-> +
-> +       current_region = &mem_layout->region_table.regions[0];
-> +
-> +       buf = crash_data->ramdump_buf;
-> +       buf_len = crash_data->ramdump_buf_len;
-> +       memset(buf, 0, buf_len);
-> +
-> +       /* Reserve space for the header. */
-> +       hdr = (void *)buf;
-> +       buf += sizeof(*hdr);
-> +       buf_len -= sizeof(*hdr);
-> +
-> +       hdr->region_type = cpu_to_le32(current_region->type);
-> +       hdr->start = cpu_to_le32(ar_snoc->qmi->msa_va);
-> +       hdr->length = cpu_to_le32(ar_snoc->qmi->msa_mem_size);
-> +
-> +       if (current_region->len < ar_snoc->qmi->msa_mem_size) {
-> +               memcpy(buf, ar_snoc->qmi->msa_va, current_region->len);
-> +               ath10k_warn(ar, "msa dump length is less than msa size %x, %x\n",
-> +                           current_region->len, ar_snoc->qmi->msa_mem_size);
-> +       } else {
-> +               memcpy(buf, ar_snoc->qmi->msa_va, ar_snoc->qmi->msa_mem_size);
-> +       }
-> +}
-> +
-> +void ath10k_snoc_fw_crashed_dump(struct ath10k *ar)
-> +{
-> +       struct ath10k_fw_crash_data *crash_data;
-> +       char guid[UUID_STRING_LEN + 1];
-> +
-> +       spin_lock_bh(&ar->data_lock);
-> +
-> +       ar->stats.fw_crash_counter++;
-> +
-> +       crash_data = ath10k_coredump_new(ar);
+Based on your comment on how much you dislike those "byte macros", I have
+converted a few of them from rtl8821ae into static inline functions.
 
-This will (for good reason) spit a lockdep warning after this, I think:
+Is this what you had in mind, and do you consider these changes to
+improve the code?
 
-38faed150438 ath10k: perform crash dump collection in workqueue
+These routines still need to mask the value before the ! operation with
+the masked original value.
 
-You need to hold 'dump_mutex' now. I believe you only need to hold
-'data_lock' for the sake of the crash counter.
+Thanks,
+Larry
+---
 
-Brian
+ .../wireless/realtek/rtlwifi/rtl8821ae/trx.c  | 33 ++++----
+ .../wireless/realtek/rtlwifi/rtl8821ae/trx.h  | 80 ++++++++++++++-----
+ 2 files changed, 78 insertions(+), 35 deletions(-)
 
-> +
-> +       if (crash_data)
-> +               scnprintf(guid, sizeof(guid), "%pUl", &crash_data->guid);
-> +       else
-> +               scnprintf(guid, sizeof(guid), "n/a");
-> +
-> +       ath10k_err(ar, "firmware crashed! (guid %s)\n", guid);
-> +       ath10k_print_driver_info(ar);
-> +       ath10k_msa_dump_memory(ar, crash_data);
-> +
-> +       spin_unlock_bh(&ar->data_lock);
-> +}
+diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8821ae/trx.c b/drivers/net/wireless/realtek/rtlwifi/rtl8821ae/trx.c
+index 7b6faf38e09c..2ad33cfb1656 100644
+--- a/drivers/net/wireless/realtek/rtlwifi/rtl8821ae/trx.c
++++ b/drivers/net/wireless/realtek/rtlwifi/rtl8821ae/trx.c
+@@ -703,8 +703,8 @@ void rtl8821ae_tx_fill_desc(struct ieee80211_hw *hw,
+ 	if (firstseg) {
+ 		if (rtlhal->earlymode_enable) {
+ 			SET_TX_DESC_PKT_OFFSET(pdesc, 1);
+-			SET_TX_DESC_OFFSET(pdesc, USB_HWDESC_HEADER_LEN +
+-					   EM_HDR_LEN);
++			set_tx_desc_offset((__le32 *)pdesc,
++					   USB_HWDESC_HEADER_LEN + EM_HDR_LEN);
+ 			if (ptcb_desc->empkt_num) {
+ 				RT_TRACE(rtlpriv, COMP_SEND, DBG_TRACE,
+ 					 "Insert 8 byte.pTcb->EMPktNum:%d\n",
+@@ -713,7 +713,8 @@ void rtl8821ae_tx_fill_desc(struct ieee80211_hw *hw,
+ 					 (u8 *)(skb->data));
+ 			}
+ 		} else {
+-			SET_TX_DESC_OFFSET(pdesc, USB_HWDESC_HEADER_LEN);
++			set_tx_desc_offset((__le32 *)pdesc,
++					   USB_HWDESC_HEADER_LEN);
+ 		}
+ 
+ 
+@@ -752,8 +753,8 @@ void rtl8821ae_tx_fill_desc(struct ieee80211_hw *hw,
+ 		SET_TX_DESC_TX_SUB_CARRIER(pdesc,
+ 			rtl8821ae_sc_mapping(hw, ptcb_desc));
+ 
+-		SET_TX_DESC_LINIP(pdesc, 0);
+-		SET_TX_DESC_PKT_SIZE(pdesc, (u16)skb_len);
++		set_tx_desc_linip((__le32 *)pdesc, 0);
++		set_tx_desc_pkt_size((__le32 *)pdesc, (u16)skb_len);
+ 		if (sta) {
+ 			u8 ampdu_density = sta->ht_cap.ampdu_density;
+ 
+@@ -789,15 +790,15 @@ void rtl8821ae_tx_fill_desc(struct ieee80211_hw *hw,
+ 				RT_TRACE(rtlpriv, COMP_SEND, DBG_TRACE,
+ 					 "Enable RDG function.\n");
+ 				SET_TX_DESC_RDG_ENABLE(pdesc, 1);
+-				SET_TX_DESC_HTC(pdesc, 1);
++				set_tx_desc_htc((__le32 *)pdesc, 1);
+ 			}
+ 		}
+ 		/* tx report */
+ 		rtl_set_tx_report(ptcb_desc, pdesc, hw, tx_info);
+ 	}
+ 
+-	SET_TX_DESC_FIRST_SEG(pdesc, (firstseg ? 1 : 0));
+-	SET_TX_DESC_LAST_SEG(pdesc, (lastseg ? 1 : 0));
++	set_tx_desc_first_seg((__le32 *)pdesc, (firstseg ? 1 : 0));
++	set_tx_desc_last_seg((__le32 *)pdesc, (lastseg ? 1 : 0));
+ 	SET_TX_DESC_TX_BUFFER_SIZE(pdesc, (u16)buf_len);
+ 	SET_TX_DESC_TX_BUFFER_ADDRESS(pdesc, mapping);
+ 	/* if (rtlpriv->dm.useramask) { */
+@@ -815,7 +816,7 @@ void rtl8821ae_tx_fill_desc(struct ieee80211_hw *hw,
+ 	SET_TX_DESC_MORE_FRAG(pdesc, (lastseg ? 0 : 1));
+ 	if (is_multicast_ether_addr(ieee80211_get_DA(hdr)) ||
+ 	    is_broadcast_ether_addr(ieee80211_get_DA(hdr))) {
+-		SET_TX_DESC_BMC(pdesc, 1);
++		set_tx_desc_bmc((__le32 *)pdesc, 1);
+ 	}
+ 
+ 	rtl8821ae_dm_set_tx_ant_by_tx_info(hw, pdesc, ptcb_desc->mac_id);
+@@ -841,12 +842,12 @@ void rtl8821ae_tx_fill_cmddesc(struct ieee80211_hw *hw,
+ 	}
+ 	CLEAR_PCI_TX_DESC_CONTENT(pdesc, TX_DESC_SIZE);
+ 
+-	SET_TX_DESC_FIRST_SEG(pdesc, 1);
+-	SET_TX_DESC_LAST_SEG(pdesc, 1);
++	set_tx_desc_first_seg((__le32 *)pdesc, 1);
++	set_tx_desc_last_seg((__le32 *)pdesc, 1);
+ 
+-	SET_TX_DESC_PKT_SIZE((u8 *)pdesc, (u16)(skb->len));
++	set_tx_desc_pkt_size((__le32 *)pdesc, (u16)(skb->len));
+ 
+-	SET_TX_DESC_OFFSET(pdesc, USB_HWDESC_HEADER_LEN);
++	set_tx_desc_offset((__le32 *)pdesc, USB_HWDESC_HEADER_LEN);
+ 
+ 	SET_TX_DESC_USE_RATE(pdesc, 1);
+ 	SET_TX_DESC_TX_RATE(pdesc, DESC_RATE1M);
+@@ -864,7 +865,7 @@ void rtl8821ae_tx_fill_cmddesc(struct ieee80211_hw *hw,
+ 
+ 	SET_TX_DESC_MACID(pdesc, 0);
+ 
+-	SET_TX_DESC_OWN(pdesc, 1);
++	set_tx_desc_own((__le32 *)pdesc, 1);
+ 
+ 	RT_PRINT_DATA(rtlpriv, COMP_CMD, DBG_LOUD,
+ 		      "H2C Tx Cmd Content\n",
+@@ -877,7 +878,7 @@ void rtl8821ae_set_desc(struct ieee80211_hw *hw, u8 *pdesc,
+ 	if (istx) {
+ 		switch (desc_name) {
+ 		case HW_DESC_OWN:
+-			SET_TX_DESC_OWN(pdesc, 1);
++			set_tx_desc_own((__le32 *)pdesc, 1);
+ 			break;
+ 		case HW_DESC_TX_NEXTDESC_ADDR:
+ 			SET_TX_DESC_NEXT_DESC_ADDRESS(pdesc, *(u32 *)val);
+@@ -919,7 +920,7 @@ u64 rtl8821ae_get_desc(struct ieee80211_hw *hw,
+ 	if (istx) {
+ 		switch (desc_name) {
+ 		case HW_DESC_OWN:
+-			ret = GET_TX_DESC_OWN(pdesc);
++			ret = get_tx_desc_own((__le32 *)pdesc);
+ 			break;
+ 		case HW_DESC_TXBUFF_ADDR:
+ 			ret = GET_TX_DESC_TX_BUFFER_ADDRESS(pdesc);
+diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8821ae/trx.h b/drivers/net/wireless/realtek/rtlwifi/rtl8821ae/trx.h
+index 861d78a24d05..64deaf4dab23 100644
+--- a/drivers/net/wireless/realtek/rtlwifi/rtl8821ae/trx.h
++++ b/drivers/net/wireless/realtek/rtlwifi/rtl8821ae/trx.h
+@@ -14,25 +14,67 @@
+ #define USB_HWDESC_HEADER_LEN			40
+ #define CRCLENGTH						4
+ 
+-#define SET_TX_DESC_PKT_SIZE(__pdesc, __val)		\
+-	SET_BITS_TO_LE_4BYTE(__pdesc, 0, 16, __val)
+-#define SET_TX_DESC_OFFSET(__pdesc, __val)			\
+-	SET_BITS_TO_LE_4BYTE(__pdesc, 16, 8, __val)
+-#define SET_TX_DESC_BMC(__pdesc, __val)				\
+-	SET_BITS_TO_LE_4BYTE(__pdesc, 24, 1, __val)
+-#define SET_TX_DESC_HTC(__pdesc, __val)				\
+-	SET_BITS_TO_LE_4BYTE(__pdesc, 25, 1, __val)
+-#define SET_TX_DESC_LAST_SEG(__pdesc, __val)		\
+-	SET_BITS_TO_LE_4BYTE(__pdesc, 26, 1, __val)
+-#define SET_TX_DESC_FIRST_SEG(__pdesc, __val)		\
+-	SET_BITS_TO_LE_4BYTE(__pdesc, 27, 1, __val)
+-#define SET_TX_DESC_LINIP(__pdesc, __val)			\
+-	SET_BITS_TO_LE_4BYTE(__pdesc, 28, 1, __val)
+-#define SET_TX_DESC_OWN(__pdesc, __val)				\
+-	SET_BITS_TO_LE_4BYTE(__pdesc, 31, 1, __val)
+-
+-#define GET_TX_DESC_OWN(__pdesc)					\
+-	LE_BITS_TO_4BYTE(__pdesc, 31, 1)
++/* Set packet size (16 bits) in TX descriptor word 0 */
++static inline void set_tx_desc_pkt_size(__le32 *__pdesc, u16 __val)
++{
++	*__pdesc = cpu_to_le32((le32_to_cpu(*__pdesc) & ~GENMASK(0, 15)) |
++			       __val);
++}
++
++/* Set offset (8 bits) in TX descriptor word 0 */
++static inline void set_tx_desc_offset(__le32 *__pdesc, u8 __val)
++{
++	*__pdesc = cpu_to_le32((le32_to_cpu(*__pdesc) & ~GENMASK(16, 23)) |
++			       __val << 16);
++}
++
++/* Set bmc (1 bit) in TX descriptor word 0 */
++static inline void set_tx_desc_bmc(__le32 *__pdesc, u8 __val)
++{
++	*__pdesc = cpu_to_le32((le32_to_cpu(*__pdesc) & ~GENMASK(24, 24)) |
++			       __val << 24);
++}
++
++/* Set htc (1 bit) in TX descriptor word 0 */
++static inline void set_tx_desc_htc(__le32 *__pdesc, u8 __val)
++{
++	*__pdesc = cpu_to_le32((le32_to_cpu(*__pdesc) & ~GENMASK(25, 25)) |
++			       __val << 25);
++}
++
++/* Set last segment flag (1 bit) in TX descriptor word 0 */
++static inline void set_tx_desc_last_seg(__le32 *__pdesc, u8 __val)
++{
++	*__pdesc = cpu_to_le32((le32_to_cpu(*__pdesc) & ~GENMASK(26, 26)) |
++			       __val << 26);
++}
++
++/* Set first segment iflag (1 bit) in TX descriptor word 0 */
++static inline void set_tx_desc_first_seg(__le32 *__pdesc, u8 __val)
++{
++	*__pdesc = cpu_to_le32((le32_to_cpu(*__pdesc) & ~GENMASK(27, 27)) |
++			       __val << 27);
++}
++
++/* Set linip (1 bit) in TX descriptor word 0 */
++static inline void set_tx_desc_linip(__le32 *__pdesc, u8 __val)
++{
++	*__pdesc = cpu_to_le32((le32_to_cpu(*__pdesc) & ~GENMASK(28, 28)) |
++			       __val << 18);
++}
++
++/* Set own flag (1 bit) in TX descriptor word 0 */
++static inline void set_tx_desc_own(__le32 *__pdesc, u8 __val)
++{
++	*__pdesc = cpu_to_le32((le32_to_cpu(*__pdesc) & ~GENMASK(31, 31)) |
++			       __val << 31);
++}
++
++/* Get own flag (1 bit) from TX descriptor word 0 */
++static inline u8 get_tx_desc_own(__le32 *__pdesc)
++{
++	return (le32_to_cpu(*__pdesc) & ~GENMASK(31, 31)) >> 31;
++}
+ 
+ #define SET_TX_DESC_MACID(__pdesc, __val)			\
+ 	SET_BITS_TO_LE_4BYTE(__pdesc+4, 0, 7, __val)
+-- 
+2.21.0
+
