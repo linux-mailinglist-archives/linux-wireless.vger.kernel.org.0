@@ -2,84 +2,72 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D3B0A14623
-	for <lists+linux-wireless@lfdr.de>; Mon,  6 May 2019 10:25:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6488D14648
+	for <lists+linux-wireless@lfdr.de>; Mon,  6 May 2019 10:29:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725887AbfEFIY5 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 6 May 2019 04:24:57 -0400
-Received: from smtp.codeaurora.org ([198.145.29.96]:37348 "EHLO
-        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725856AbfEFIY4 (ORCPT
+        id S1726085AbfEFI3V (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 6 May 2019 04:29:21 -0400
+Received: from rtits2.realtek.com ([211.75.126.72]:43958 "EHLO
+        rtits2.realtek.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725836AbfEFI3V (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 6 May 2019 04:24:56 -0400
-Received: by smtp.codeaurora.org (Postfix, from userid 1000)
-        id 0349460E41; Mon,  6 May 2019 08:24:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1557131096;
-        bh=CcStSjrO0gVGsOcZ+KnnAXuOwgsmdjWUfXEyxrzscwE=;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=TPr27RmGJaEbJjwIbWL28kN1dLHSGJWLGaDb83v4W3h7WTje6INgnb2t1DtGLtTR/
-         0X6dlULTaVMEtebKtKowTNasii11czcYJ1yWF85zXXJvF23QAgU9klY3ecTuyifhtO
-         divp09Q5LeTLA9VMXEdd8zke+XpVWy+axtm6vmTI=
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        pdx-caf-mail.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.7 required=2.0 tests=ALL_TRUSTED,BAYES_00,
-        DKIM_INVALID,DKIM_SIGNED autolearn=no autolearn_force=no version=3.4.0
-Received: from x230.qca.qualcomm.com (37-136-65-53.rev.dnainternet.fi [37.136.65.53])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        (Authenticated sender: kvalo@smtp.codeaurora.org)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id BA7DF60741;
-        Mon,  6 May 2019 08:24:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1557131095;
-        bh=CcStSjrO0gVGsOcZ+KnnAXuOwgsmdjWUfXEyxrzscwE=;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=i1KkOMmbsX4M0yNhzHTOAjfoTNmSJvMmW5iv3BFydA0Jyaj8ui26Ei/HiGiD3L4II
-         PesZcD4LdQ8dXyyM3SSqcFO1w0Do/MCZIY6E5ENf3Ykp7zXTaarEo9HQkLr2+0+XCA
-         jcr8MQLiAy+EF/TmcBG7xieW/bzFTNnIjizLpubY=
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org BA7DF60741
-Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
-From:   Kalle Valo <kvalo@codeaurora.org>
-To:     Heiner Kallweit <hkallweit1@gmail.com>
-Cc:     Jia-Ju Bai <baijiaju1990@gmail.com>, ath9k-devel@qca.qualcomm.com,
-        davem@davemloft.net, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] net: wireless: ath9k: Return an error when ath9k_hw_reset() fails
-References: <20190504100815.19876-1-baijiaju1990@gmail.com>
-        <e47117d6-f918-1dd0-834e-d056534bfead@gmail.com>
-Date:   Mon, 06 May 2019 11:24:51 +0300
-In-Reply-To: <e47117d6-f918-1dd0-834e-d056534bfead@gmail.com> (Heiner
-        Kallweit's message of "Sat, 4 May 2019 13:02:25 +0200")
-Message-ID: <87zho0uh0s.fsf@codeaurora.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
+        Mon, 6 May 2019 04:29:21 -0400
+Authenticated-By: 
+X-SpamFilter-By: BOX Solutions SpamTrap 5.62 with qID x468TE9k030442, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtitcasv02.realtek.com.tw[172.21.6.19])
+        by rtits2.realtek.com.tw (8.15.2/2.57/5.78) with ESMTPS id x468TE9k030442
+        (version=TLSv1 cipher=DHE-RSA-AES256-SHA bits=256 verify=NOT);
+        Mon, 6 May 2019 16:29:14 +0800
+Received: from RTITMBSVM04.realtek.com.tw ([fe80::e404:880:2ef1:1aa1]) by
+ RTITCASV02.realtek.com.tw ([::1]) with mapi id 14.03.0439.000; Mon, 6 May
+ 2019 16:29:13 +0800
+From:   Tony Chuang <yhchuang@realtek.com>
+To:     Stanislaw Gruszka <sgruszka@redhat.com>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+Subject: RE: [PATCH 5.1] rtw88: fix subscript above array bounds compiler warning
+Thread-Topic: [PATCH 5.1] rtw88: fix subscript above array bounds compiler
+ warning
+Thread-Index: AQHVA97RehUJoZ7290GKHCDr+G3fWaZdw6iA
+Date:   Mon, 6 May 2019 08:29:13 +0000
+Message-ID: <F7CD281DE3E379468C6D07993EA72F84D17EB40A@RTITMBSVM04.realtek.com.tw>
+References: <20190506073917.10106-1-sgruszka@redhat.com>
+In-Reply-To: <20190506073917.10106-1-sgruszka@redhat.com>
+Accept-Language: zh-TW, en-US
+Content-Language: zh-TW
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [172.21.68.183]
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Type: text/plain
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Heiner Kallweit <hkallweit1@gmail.com> writes:
-
-> On 04.05.2019 12:08, Jia-Ju Bai wrote:
->> ath9k_hw_reset() in ath9k_start() can fail, and in this case, 
->> ath9k_start() should return an error instead of executing the 
->> subsequent code.
->> 
-> Such mechanical patches w/o understanding the code are always
-> problematic. Do you have any proof that this error is fatal?
-> I think it is not, else we wouldn't have this line:
-> ah->reset_power_on = false;
-> Also you should consider that a mutex and a spinlock are held.
-> Maybe changing the error message to a warning would be more
-> appropriate. But this I would leave to somebody being more
-> familiar with this driver.
-
-A very good point, thanks Heiner! I will drop this unless someone
-familiar with ath9k says that this is ok.
-
--- 
-Kalle Valo
+PiBTdWJqZWN0OiBbUEFUQ0ggNS4xXSBydHc4ODogZml4IHN1YnNjcmlwdCBhYm92ZSBhcnJheSBi
+b3VuZHMgY29tcGlsZXIgd2FybmluZw0KPiANCj4gTXkgY29tcGlsZXIgY29tcGxhaW5zIGFib3V0
+Og0KPiANCj4gZHJpdmVycy9uZXQvd2lyZWxlc3MvcmVhbHRlay9ydHc4OC9waHkuYzogSW4gZnVu
+Y3Rpb24NCj4g4oCYcnR3X3BoeV9yZl9wb3dlcl8yX3Jzc2nigJk6DQo+IGRyaXZlcnMvbmV0L3dp
+cmVsZXNzL3JlYWx0ZWsvcnR3ODgvcGh5LmM6NDMwOjI2OiB3YXJuaW5nOiBhcnJheSBzdWJzY3Jp
+cHQgaXMNCj4gYWJvdmUgYXJyYXkgYm91bmRzIFstV2FycmF5LWJvdW5kc10NCj4gICBsaW5lYXIg
+PSBkYl9pbnZlcnRfdGFibGVbaV1bal07DQo+IA0KPiBBY2NvcmRpbmcgdG8gY29tbWVudCBwb3dl
+cl9kYiBzaG91bGQgYmUgaW4gcmFuZ2UgMSB+IDk2IC4NCj4gVG8gZml4IGFkZCBjaGVjayBmb3Ig
+Ym91bmRhcmllcyBiZWZvcmUgYWNjZXNzIHRoZSBhcnJheS4NCj4gDQo+IFNpZ25lZC1vZmYtYnk6
+IFN0YW5pc2xhdyBHcnVzemthIDxzZ3J1c3prYUByZWRoYXQuY29tPg0KPiAtLS0NCj4gUkZDIC0+
+IHYxDQo+IC0gYWRkIGNoZWNrIGJlZm9yZSBhY2Nlc3NpbmcgdGhlIGFycmF5IGluc3RlZCBvZg0K
+PiAgIHJ0d19waHlfcG93ZXJfMl9kYigpIGNoYW5nZS4NCj4gdjEgLT4gdjI6DQo+IC0gcmV0dXJu
+IDEgZm9yIHBvd2VyX2RiIDwgMQ0KPiANCj4gIGRyaXZlcnMvbmV0L3dpcmVsZXNzL3JlYWx0ZWsv
+cnR3ODgvcGh5LmMgfCA1ICsrKysrDQo+ICAxIGZpbGUgY2hhbmdlZCwgNSBpbnNlcnRpb25zKCsp
+DQo+IA0KPiBkaWZmIC0tZ2l0IGEvZHJpdmVycy9uZXQvd2lyZWxlc3MvcmVhbHRlay9ydHc4OC9w
+aHkuYw0KPiBiL2RyaXZlcnMvbmV0L3dpcmVsZXNzL3JlYWx0ZWsvcnR3ODgvcGh5LmMNCj4gaW5k
+ZXggNDM4MWIzNjBiNWI1Li45Y2E1MmE0ZDAyNWEgMTAwNjQ0DQo+IC0tLSBhL2RyaXZlcnMvbmV0
+L3dpcmVsZXNzL3JlYWx0ZWsvcnR3ODgvcGh5LmMNCj4gKysrIGIvZHJpdmVycy9uZXQvd2lyZWxl
+c3MvcmVhbHRlay9ydHc4OC9waHkuYw0KPiBAQCAtNDIzLDYgKzQyMywxMSBAQCBzdGF0aWMgdTY0
+IHJ0d19waHlfZGJfMl9saW5lYXIodTggcG93ZXJfZGIpDQo+ICAJdTggaSwgajsNCj4gIAl1NjQg
+bGluZWFyOw0KPiANCj4gKwlpZiAocG93ZXJfZGIgPiA5NikNCj4gKwkJcG93ZXJfZGIgPSA5NjsN
+Cj4gKwllbHNlIGlmIChwb3dlcl9kYiA8IDEpDQo+ICsJCXJldHVybiAxOw0KPiArDQo+ICAJLyog
+MWRCIH4gOTZkQiAqLw0KPiAgCWkgPSAocG93ZXJfZGIgLSAxKSA+PiAzOw0KPiAgCWogPSAocG93
+ZXJfZGIgLSAxKSAtIChpIDw8IDMpOw0KPiAtLQ0KDQpUaGFua3MuIEZvciB0aGlzIHBhdGNoLg0K
+DQpBY2tlZC1ieTogWWFuLUhzdWFuIENodWFuZyA8eWhjaHVhbmdAcmVhbHRlay5jb20+DQoNCllh
+bi1Ic3Vhbg0K
