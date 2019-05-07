@@ -2,161 +2,93 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 98DB31684E
-	for <lists+linux-wireless@lfdr.de>; Tue,  7 May 2019 18:45:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B18E816934
+	for <lists+linux-wireless@lfdr.de>; Tue,  7 May 2019 19:28:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727296AbfEGQpL (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 7 May 2019 12:45:11 -0400
-Received: from mail.kernel.org ([198.145.29.99]:51246 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726322AbfEGQpL (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 7 May 2019 12:45:11 -0400
-Received: from mail-qt1-f173.google.com (mail-qt1-f173.google.com [209.85.160.173])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 97C9921019;
-        Tue,  7 May 2019 16:45:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1557247509;
-        bh=iM8J/j10jYr+vXCxXzUjgCYgZk17YUkoK9VE/2fhJ1I=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=INXumkFeyNf58pU/qjd3huFH5ZfaxLIpyMXHCnZHxbXpsPJF6T1W6Vkh88hhOGvrJ
-         GIheX5UtWz5QwB5Diw5nYE1jqJSPYf2nUHSJh66NP2uXzpdCBhwXjr4Np+l7L8hUOv
-         mxoIiNV+EIzMpgJ0Ex/W0XZsuvBDRvLXKk1WcejY=
-Received: by mail-qt1-f173.google.com with SMTP id f24so9394033qtk.11;
-        Tue, 07 May 2019 09:45:09 -0700 (PDT)
-X-Gm-Message-State: APjAAAW38M9Gj0afQsWp34yIMtcPqexEj+ZkKDww0vcMTa0oFMgsPMU2
-        lL3t6er9pY7fTllc6G2RqfdislO1NyFIcY2ddQ==
-X-Google-Smtp-Source: APXvYqy7rk1sMMIHbSD/9OOZe8P3NIAyg7u8OPXuXWtwWi2WaDv6h/Xnf9ZSQ+8dUBlM+SULUoG2eW9wkEEg+3BdjGk=
-X-Received: by 2002:ac8:641:: with SMTP id e1mr27644859qth.76.1557247508777;
- Tue, 07 May 2019 09:45:08 -0700 (PDT)
+        id S1727437AbfEGR2m (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 7 May 2019 13:28:42 -0400
+Received: from mail-lf1-f67.google.com ([209.85.167.67]:37437 "EHLO
+        mail-lf1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726756AbfEGR2m (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 7 May 2019 13:28:42 -0400
+Received: by mail-lf1-f67.google.com with SMTP id h126so1297324lfh.4;
+        Tue, 07 May 2019 10:28:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=g2iUlVP64B2mzLY3euJhUyPC/WiAyczzIatnN26YIr4=;
+        b=rBiraV4bY43nhAuKrEAKN6qbERrC5Fq3dLY/R6+/JYtmzEqLkeJD3AOzxDIxTYev3J
+         TcFO7j0rlZIjByPFomGjkB2Hr+MIubYbVDUcFvEdZBrtOTgZ52bIUMjkK13KOXur9T4R
+         ubmxwov172/40dUY9EN1k2pZcd+RAFGT+/6FXMpFzf7WMiniFUlGO0fOzN36EREl6oQd
+         mdaX1+nJQendM9oBrLdgAtw9lbS6T6YM08P5yp7jnhLMlqQgmGHq9lHHbNUNbsFrY6sZ
+         wCR0dwqc3j38tfcMv9O7xf++hC+bZ/2KfKvybXOJt3HmehhEF0xb6/RkDssYwKkzQ8Ax
+         4QGg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=g2iUlVP64B2mzLY3euJhUyPC/WiAyczzIatnN26YIr4=;
+        b=Gh4+LNQoFBVKLDVF8zl92X46Im5jYfarvEEhvfjNoSv2E1UVTzPuC+dhjS1V6iDSBt
+         3mZuHQgzMonA+NVQ4yGjtoQBXr+QQYLIrdZXs9n66RxOz8ZFCH6wDLXp0Off4TL+Dxm5
+         9AIJv2k5BLvjvsC0k++s4Bw5W3VhIatjbsr8MUD/Q8SAWokri3r+ejX9A7nRWf+MUvNQ
+         /DRZjNQpE5cWbpKBAYSmHs6iicNMyHG3yC6Hb71Tb5EzTaQTRao5CZKymqpJe3X+RMnO
+         WMbimAmDnWhkANrf5TsZowvyZJCNc4Won4Uwk1WQskZSagQD2XoVZG89e+bdPluMIAcw
+         rhGg==
+X-Gm-Message-State: APjAAAVOdEH3uEdLMLZQedlgDPOrH875eyvpexMqCUmWdsw2ujZiwipk
+        UGAnteg1X72PSnf+c0EZCYc=
+X-Google-Smtp-Source: APXvYqx1J8055B/Ne5M/re5N3dRbayqXHyOtNQFtQy2INVNg5cpa46gnD5H+HrYMbw7/vUX+AXC2vA==
+X-Received: by 2002:ac2:42d5:: with SMTP id n21mr13109582lfl.162.1557250119915;
+        Tue, 07 May 2019 10:28:39 -0700 (PDT)
+Received: from satellite.lan ([2001:470:b62f:eee0:5a2:17b3:c882:c86c])
+        by smtp.gmail.com with ESMTPSA id k10sm3309500ljh.86.2019.05.07.10.28.37
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Tue, 07 May 2019 10:28:38 -0700 (PDT)
+From:   Maxim Mikityanskiy <maxtram95@gmail.com>
+To:     Johannes Berg <johannes@sipsolutions.net>,
+        "David S. Miller" <davem@davemloft.net>
+Cc:     netdev@vger.kernel.org, linux-wireless@vger.kernel.org,
+        Maxim Mikityanskiy <maxtram95@gmail.com>
+Subject: [PATCH net] wireless: Skip directory when generating certificates
+Date:   Tue,  7 May 2019 20:28:15 +0300
+Message-Id: <20190507172815.17773-1-maxtram95@gmail.com>
+X-Mailer: git-send-email 2.21.0
 MIME-Version: 1.0
-References: <1556893635-18549-1-git-send-email-ynezz@true.cz> <1556893635-18549-3-git-send-email-ynezz@true.cz>
-In-Reply-To: <1556893635-18549-3-git-send-email-ynezz@true.cz>
-From:   Rob Herring <robh+dt@kernel.org>
-Date:   Tue, 7 May 2019 11:44:57 -0500
-X-Gmail-Original-Message-ID: <CAL_JsqLt6UFU_6bmh3Pc0taXUgMtAEV7kL7eZU13cLOjoakf=Q@mail.gmail.com>
-Message-ID: <CAL_JsqLt6UFU_6bmh3Pc0taXUgMtAEV7kL7eZU13cLOjoakf=Q@mail.gmail.com>
-Subject: Re: [PATCH v4 02/10] dt-bindings: doc: reflect new NVMEM
- of_get_mac_address behaviour
-To:     =?UTF-8?Q?Petr_=C5=A0tetiar?= <ynezz@true.cz>
-Cc:     netdev <netdev@vger.kernel.org>, devicetree@vger.kernel.org,
-        "David S. Miller" <davem@davemloft.net>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Andrew Lunn <andrew@lunn.ch>,
-        Vivien Didelot <vivien.didelot@gmail.com>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        Yisen Zhuang <yisen.zhuang@huawei.com>,
-        Salil Mehta <salil.mehta@huawei.com>,
-        Woojung Huh <woojung.huh@microchip.com>,
-        Microchip Linux Driver Support <UNGLinuxDriver@microchip.com>,
-        Kunihiko Hayashi <hayashi.kunihiko@socionext.com>,
-        Masahiro Yamada <yamada.masahiro@socionext.com>,
-        Jassi Brar <jaswinder.singh@linaro.org>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        Heiner Kallweit <hkallweit1@gmail.com>,
-        Frank Rowand <frowand.list@gmail.com>,
-        Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
-        Maxime Ripard <maxime.ripard@bootlin.com>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" 
-        <linux-arm-kernel@lists.infradead.org>,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        "moderated list:ARM/Mediatek SoC support" 
-        <linux-mediatek@lists.infradead.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Fri, May 3, 2019 at 9:27 AM Petr =C5=A0tetiar <ynezz@true.cz> wrote:
->
-> As of_get_mac_address now supports NVMEM under the hood, we need to updat=
-e
-> the bindings documentation with the new nvmem-cell* properties, which wou=
-ld
-> mean copy&pasting a lot of redundant information to every binding
-> documentation currently referencing some of the MAC address properties.
->
-> So I've just removed all the references to the optional MAC address
-> properties and replaced them with the small note referencing
-> net/ethernet.txt file.
->
-> Signed-off-by: Petr =C5=A0tetiar <ynezz@true.cz>
-> ---
->
->  Changes since v2:
->
->  * replaced only MAC address related optional properties with a text
->    referencing ethernet.txt
->
->  Documentation/devicetree/bindings/net/altera_tse.txt           |  5 ++--=
--
->  Documentation/devicetree/bindings/net/amd-xgbe.txt             |  5 +++-=
--
->  Documentation/devicetree/bindings/net/brcm,amac.txt            |  4 ++--
->  Documentation/devicetree/bindings/net/cpsw.txt                 |  4 +++-
->  Documentation/devicetree/bindings/net/davinci_emac.txt         |  5 +++-=
--
->  Documentation/devicetree/bindings/net/dsa/dsa.txt              |  5 ++--=
--
->  Documentation/devicetree/bindings/net/ethernet.txt             |  6 ++++=
---
->  Documentation/devicetree/bindings/net/hisilicon-femac.txt      |  4 +++-
->  .../devicetree/bindings/net/hisilicon-hix5hd2-gmac.txt         |  4 +++-
->  Documentation/devicetree/bindings/net/keystone-netcp.txt       | 10 ++++=
-+-----
->  Documentation/devicetree/bindings/net/macb.txt                 |  5 ++--=
--
->  Documentation/devicetree/bindings/net/marvell-pxa168.txt       |  4 +++-
->  Documentation/devicetree/bindings/net/microchip,enc28j60.txt   |  3 ++-
->  Documentation/devicetree/bindings/net/microchip,lan78xx.txt    |  5 ++--=
--
->  Documentation/devicetree/bindings/net/qca,qca7000.txt          |  4 +++-
->  Documentation/devicetree/bindings/net/samsung-sxgbe.txt        |  4 +++-
->  .../devicetree/bindings/net/snps,dwc-qos-ethernet.txt          |  5 +++-=
--
->  .../devicetree/bindings/net/socionext,uniphier-ave4.txt        |  4 ++--
->  Documentation/devicetree/bindings/net/socionext-netsec.txt     |  5 +++-=
--
->  .../devicetree/bindings/net/wireless/mediatek,mt76.txt         |  5 +++-=
--
->  Documentation/devicetree/bindings/net/wireless/qca,ath9k.txt   |  4 ++--
->  21 files changed, 58 insertions(+), 42 deletions(-)
+Commit 715a12334764 ("wireless: don't write C files on failures") drops
+the `test -f $$f` check. The list of targets contains the
+CONFIG_CFG80211_EXTRA_REGDB_KEYDIR directory itself, and this check used
+to filter it out. After the check was removed, the extra keydir option
+no longer works, failing with the following message:
 
-[...]
+od: 'standard input': read error: Is a directory
 
-> diff --git a/Documentation/devicetree/bindings/net/keystone-netcp.txt b/D=
-ocumentation/devicetree/bindings/net/keystone-netcp.txt
-> index 04ba1dc..3a65aab 100644
-> --- a/Documentation/devicetree/bindings/net/keystone-netcp.txt
-> +++ b/Documentation/devicetree/bindings/net/keystone-netcp.txt
-> @@ -135,14 +135,14 @@ Optional properties:
->                 are swapped.  The netcp driver will swap the two DWORDs
->                 back to the proper order when this property is set to 2
->                 when it obtains the mac address from efuse.
-> -- local-mac-address:   the driver is designed to use the of_get_mac_addr=
-ess api
-> -                       only if efuse-mac is 0. When efuse-mac is 0, the =
-MAC
-> -                       address is obtained from local-mac-address. If th=
-is
-> -                       attribute is not present, then the driver will us=
-e a
-> -                       random MAC address.
->  - "netcp-device label":        phandle to the device specification for e=
-ach of NetCP
->                         sub-module attached to this interface.
->
-> +The MAC address will be determined using the optional properties defined=
- in
-> +ethernet.txt, as provided by the of_get_mac_address API and only if efus=
-e-mac
+This commit restores the check to make extra keydir work again.
 
-Don't make references to Linux in bindings. You can talk about
-expectations of client programs (e.g Linux, u-boot, BSD, etc.) though.
+Fixes: 715a12334764 ("wireless: don't write C files on failures")
+Signed-off-by: Maxim Mikityanskiy <maxtram95@gmail.com>
+---
+ net/wireless/Makefile | 1 +
+ 1 file changed, 1 insertion(+)
 
-Rob
+diff --git a/net/wireless/Makefile b/net/wireless/Makefile
+index 72a224ce8..2eee93985 100644
+--- a/net/wireless/Makefile
++++ b/net/wireless/Makefile
+@@ -39,6 +39,7 @@ $(obj)/extra-certs.c: $(CONFIG_CFG80211_EXTRA_REGDB_KEYDIR:"%"=%) \
+ 	@(set -e; \
+ 	  allf=""; \
+ 	  for f in $^ ; do \
++	      test -f $$f || continue;\
+ 	      # similar to hexdump -v -e '1/1 "0x%.2x," "\n"' \
+ 	      thisf=$$(od -An -v -tx1 < $$f | \
+ 	                   sed -e 's/ /\n/g' | \
+-- 
+2.21.0
+
