@@ -2,93 +2,131 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B18E816934
-	for <lists+linux-wireless@lfdr.de>; Tue,  7 May 2019 19:28:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7A23216CB7
+	for <lists+linux-wireless@lfdr.de>; Tue,  7 May 2019 22:57:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727437AbfEGR2m (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 7 May 2019 13:28:42 -0400
-Received: from mail-lf1-f67.google.com ([209.85.167.67]:37437 "EHLO
-        mail-lf1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726756AbfEGR2m (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 7 May 2019 13:28:42 -0400
-Received: by mail-lf1-f67.google.com with SMTP id h126so1297324lfh.4;
-        Tue, 07 May 2019 10:28:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=g2iUlVP64B2mzLY3euJhUyPC/WiAyczzIatnN26YIr4=;
-        b=rBiraV4bY43nhAuKrEAKN6qbERrC5Fq3dLY/R6+/JYtmzEqLkeJD3AOzxDIxTYev3J
-         TcFO7j0rlZIjByPFomGjkB2Hr+MIubYbVDUcFvEdZBrtOTgZ52bIUMjkK13KOXur9T4R
-         ubmxwov172/40dUY9EN1k2pZcd+RAFGT+/6FXMpFzf7WMiniFUlGO0fOzN36EREl6oQd
-         mdaX1+nJQendM9oBrLdgAtw9lbS6T6YM08P5yp7jnhLMlqQgmGHq9lHHbNUNbsFrY6sZ
-         wCR0dwqc3j38tfcMv9O7xf++hC+bZ/2KfKvybXOJt3HmehhEF0xb6/RkDssYwKkzQ8Ax
-         4QGg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=g2iUlVP64B2mzLY3euJhUyPC/WiAyczzIatnN26YIr4=;
-        b=Gh4+LNQoFBVKLDVF8zl92X46Im5jYfarvEEhvfjNoSv2E1UVTzPuC+dhjS1V6iDSBt
-         3mZuHQgzMonA+NVQ4yGjtoQBXr+QQYLIrdZXs9n66RxOz8ZFCH6wDLXp0Off4TL+Dxm5
-         9AIJv2k5BLvjvsC0k++s4Bw5W3VhIatjbsr8MUD/Q8SAWokri3r+ejX9A7nRWf+MUvNQ
-         /DRZjNQpE5cWbpKBAYSmHs6iicNMyHG3yC6Hb71Tb5EzTaQTRao5CZKymqpJe3X+RMnO
-         WMbimAmDnWhkANrf5TsZowvyZJCNc4Won4Uwk1WQskZSagQD2XoVZG89e+bdPluMIAcw
-         rhGg==
-X-Gm-Message-State: APjAAAVOdEH3uEdLMLZQedlgDPOrH875eyvpexMqCUmWdsw2ujZiwipk
-        UGAnteg1X72PSnf+c0EZCYc=
-X-Google-Smtp-Source: APXvYqx1J8055B/Ne5M/re5N3dRbayqXHyOtNQFtQy2INVNg5cpa46gnD5H+HrYMbw7/vUX+AXC2vA==
-X-Received: by 2002:ac2:42d5:: with SMTP id n21mr13109582lfl.162.1557250119915;
-        Tue, 07 May 2019 10:28:39 -0700 (PDT)
-Received: from satellite.lan ([2001:470:b62f:eee0:5a2:17b3:c882:c86c])
-        by smtp.gmail.com with ESMTPSA id k10sm3309500ljh.86.2019.05.07.10.28.37
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Tue, 07 May 2019 10:28:38 -0700 (PDT)
-From:   Maxim Mikityanskiy <maxtram95@gmail.com>
-To:     Johannes Berg <johannes@sipsolutions.net>,
-        "David S. Miller" <davem@davemloft.net>
-Cc:     netdev@vger.kernel.org, linux-wireless@vger.kernel.org,
-        Maxim Mikityanskiy <maxtram95@gmail.com>
-Subject: [PATCH net] wireless: Skip directory when generating certificates
-Date:   Tue,  7 May 2019 20:28:15 +0300
-Message-Id: <20190507172815.17773-1-maxtram95@gmail.com>
-X-Mailer: git-send-email 2.21.0
+        id S1727951AbfEGU4m (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 7 May 2019 16:56:42 -0400
+Received: from mga11.intel.com ([192.55.52.93]:10113 "EHLO mga11.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727944AbfEGU4m (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 7 May 2019 16:56:42 -0400
+X-Amp-Result: UNKNOWN
+X-Amp-Original-Verdict: FILE UNKNOWN
+X-Amp-File-Uploaded: False
+Received: from orsmga008.jf.intel.com ([10.7.209.65])
+  by fmsmga102.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 07 May 2019 13:56:41 -0700
+X-ExtLoop1: 1
+Received: from romley-ivt3.sc.intel.com ([172.25.110.60])
+  by orsmga008.jf.intel.com with ESMTP; 07 May 2019 13:56:40 -0700
+Date:   Tue, 7 May 2019 13:48:12 -0700
+From:   Fenghua Yu <fenghua.yu@intel.com>
+To:     Thomas Gleixner <tglx@linutronix.de>
+Cc:     David Laight <David.Laight@ACULAB.COM>,
+        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+        H Peter Anvin <hpa@zytor.com>,
+        Paolo Bonzini <pbonzini@redhat.com>,
+        Dave Hansen <dave.hansen@intel.com>,
+        Ashok Raj <ashok.raj@intel.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Ravi V Shankar <ravi.v.shankar@intel.com>,
+        Xiaoyao Li <xiaoyao.li@intel.com>,
+        Christopherson Sean J <sean.j.christopherson@intel.com>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        Michael Chan <michael.chan@broadcom.com>,
+        linux-kernel <linux-kernel@vger.kernel.org>,
+        x86 <x86@kernel.org>,
+        "kvm@vger.kernel.org" <kvm@vger.kernel.org>,
+        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+Subject: Re: [PATCH v8 13/15] x86/split_lock: Enable split lock detection by
+ default
+Message-ID: <20190507204812.GC124959@romley-ivt3.sc.intel.com>
+References: <1556134382-58814-1-git-send-email-fenghua.yu@intel.com>
+ <1556134382-58814-14-git-send-email-fenghua.yu@intel.com>
+ <762682ba43a0468897ff5ddbf6633d58@AcuMS.aculab.com>
+ <alpine.DEB.2.21.1904251255590.1960@nanos.tec.linutronix.de>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <alpine.DEB.2.21.1904251255590.1960@nanos.tec.linutronix.de>
+User-Agent: Mutt/1.5.23 (2014-03-12)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Commit 715a12334764 ("wireless: don't write C files on failures") drops
-the `test -f $$f` check. The list of targets contains the
-CONFIG_CFG80211_EXTRA_REGDB_KEYDIR directory itself, and this check used
-to filter it out. After the check was removed, the extra keydir option
-no longer works, failing with the following message:
+On Thu, Apr 25, 2019 at 12:58:32PM +0200, Thomas Gleixner wrote:
+> On Thu, 25 Apr 2019, David Laight wrote:
+> 
+> > From:  Fenghua Yu
+> > > Sent: 24 April 2019 20:33
+> > > A split locked access locks bus and degrades overall memory access
+> > > performance. When split lock detection feature is enumerated, enable
+> > > the feature by default by writing 1 to bit 29 in MSR TEST_CTL to find
+> > > any split lock issue.
+> > 
+> > You can't enable this by default until ALL the known potentially
+> > misaligned locked memory operations have been fixed.
+> 
+> Errm? The result will be a WARN_ON() printed and no further damage. It's
+> not making anything worse than it is now. In fact we just should add a
+> 
+>     WARN_ON_ONCE(!aligned_to_long(p)) to all the xxx_bit() operations.
+> 
+> so we catch them even when they do not trigger that #AC thingy.
 
-od: 'standard input': read error: Is a directory
+I add WARN_ON_ONCE() in atomic xxx_bit(). But the code cannot be compiled.
 
-This commit restores the check to make extra keydir work again.
+Here is a simplified patch (only adding warning in set_bit()):
 
-Fixes: 715a12334764 ("wireless: don't write C files on failures")
-Signed-off-by: Maxim Mikityanskiy <maxtram95@gmail.com>
----
- net/wireless/Makefile | 1 +
- 1 file changed, 1 insertion(+)
+diff --git a/arch/x86/include/asm/bitops.h b/arch/x86/include/asm/bitops.h
+index 8e790ec219a5..bc889ac12e26 100644
+--- a/arch/x86/include/asm/bitops.h
++++ b/arch/x86/include/asm/bitops.h
+@@ -14,6 +14,8 @@
+ #endif
 
-diff --git a/net/wireless/Makefile b/net/wireless/Makefile
-index 72a224ce8..2eee93985 100644
---- a/net/wireless/Makefile
-+++ b/net/wireless/Makefile
-@@ -39,6 +39,7 @@ $(obj)/extra-certs.c: $(CONFIG_CFG80211_EXTRA_REGDB_KEYDIR:"%"=%) \
- 	@(set -e; \
- 	  allf=""; \
- 	  for f in $^ ; do \
-+	      test -f $$f || continue;\
- 	      # similar to hexdump -v -e '1/1 "0x%.2x," "\n"' \
- 	      thisf=$$(od -An -v -tx1 < $$f | \
- 	                   sed -e 's/ /\n/g' | \
--- 
-2.21.0
+ #include <linux/compiler.h>
++#include <linux/kernel.h>
++#include <asm-generic/bug.h>
+ #include <asm/alternative.h>
+ #include <asm/rmwcc.h>
+ #include <asm/barrier.h>
+@@ -67,6 +69,8 @@
+ static __always_inline void
+ set_bit(long nr, volatile unsigned long *addr)
+ {
++       WARN_ON_ONCE(!IS_ALIGNED((unsigned long)addr, sizeof(unsigned long)));
++
+        if (IS_IMMEDIATE(nr)) {
+                asm volatile(LOCK_PREFIX "orb %1,%0"
+                        : CONST_MASK_ADDR(nr, addr)
 
+gcc reports errors:
+  CC      kernel/bounds.s
+  CALL    scripts/atomic/check-atomics.sh
+In file included from ./include/linux/bitops.h:19,
+                 from ./include/linux/kernel.h:12,
+                 from ./include/asm-generic/bug.h:18,
+                 from ./arch/x86/include/asm/bug.h:83,
+                 from ./include/linux/bug.h:5,
+                 from ./include/linux/page-flags.h:10,
+                 from kernel/bounds.c:10:
+./arch/x86/include/asm/bitops.h: In function ‘set_bit’:
+./arch/x86/include/asm/bitops.h:72:2: error: implicit declaration of function ‘WARN_ON_ONCE’; did you mean ‘WRITE_ONCE’? [-Werror=implicit-function-declaration]
+  WARN_ON_ONCE(!IS_ALIGNED((unsigned long)addr, sizeof(unsigned long)));
+  ^~~~~~~~~~~~
+./arch/x86/include/asm/bitops.h:72:16: error: implicit declaration of function ‘IS_ALIGNED’; did you mean ‘IS_ENABLED’? [-Werror=implicit-function-declaration]
+  WARN_ON_ONCE(!IS_ALIGNED((unsigned long)addr, sizeof(unsigned long)));
+                ^~~~~~~~~~
+I think it's because arch/x86/include/asm/bitops.h is included in
+include/linux/kernel.h before IS_ALIGNED() is defined and in
+include/asm-generic/bug.h before WARN_ON_ONCE() is defined.
+
+How to write a right warn patch and solve the compilation issue?
+
+Thanks.
+
+-Fenghua
