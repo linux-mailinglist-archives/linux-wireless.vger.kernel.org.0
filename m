@@ -2,39 +2,39 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 1C46F15C54
-	for <lists+linux-wireless@lfdr.de>; Tue,  7 May 2019 08:03:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4055915C23
+	for <lists+linux-wireless@lfdr.de>; Tue,  7 May 2019 08:01:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727770AbfEGFfV (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 7 May 2019 01:35:21 -0400
-Received: from mail.kernel.org ([198.145.29.99]:55368 "EHLO mail.kernel.org"
+        id S1727389AbfEGGBA (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 7 May 2019 02:01:00 -0400
+Received: from mail.kernel.org ([198.145.29.99]:56182 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726924AbfEGFfU (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 7 May 2019 01:35:20 -0400
+        id S1727994AbfEGFgK (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 7 May 2019 01:36:10 -0400
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 8CF522087F;
-        Tue,  7 May 2019 05:35:18 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 3252420989;
+        Tue,  7 May 2019 05:36:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1557207319;
-        bh=EiAGYo1E9SxfPaS0i1ndJq2wTAwaTy0SAsYy7NBE9E4=;
+        s=default; t=1557207370;
+        bh=pHpX70e2DWIaL+qUl7lj7qgJrjw/6jMx8pPh2TTmG84=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=a/u0jRbRufFrj8/VqPVoaK9jwQvBxIz5i++3TqJ8jVw7skMj6LmWdEdMJRrGERbEg
-         22We8d2aEPVESKIxU1gUJasXY4ud+Z6/dn4es26aAZO9nKKWioSAdbpdGNsAEIFxZd
-         ipn9bD69NJ+5k5sLSU5OzEatxOyIsZOcyztIWvj8=
+        b=Kq4ZCnvZztZdRZXYTB3NHiAJwqHohm4llYfRxSdFf6WxyzkqSLe48Z7j7f2PmGT9J
+         0njpRUhz2lX/sLZ8fv49Zf9nL/5r3PnVNcsX0kCOqG7AGT3UjDnfoHAk0D/yZrPgQX
+         20JMa1G/rf4STXhR7rLm8custPw5rmDEE5mwsTPg=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Daniel Gomez <dagmcr@gmail.com>,
-        Javier Martinez Canillas <javier@dowhile0.org>,
-        "David S . Miller" <davem@davemloft.net>,
-        Sasha Levin <sashal@kernel.org>, linux-wireless@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.0 83/99] spi: ST ST95HF NFC: declare missing of table
-Date:   Tue,  7 May 2019 01:32:17 -0400
-Message-Id: <20190507053235.29900-83-sashal@kernel.org>
+Cc:     Felix Fietkau <nbd@nbd.name>,
+        Johannes Berg <johannes.berg@intel.com>,
+        Sasha Levin <sashal@kernel.org>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org
+Subject: [PATCH AUTOSEL 4.19 11/81] mac80211: fix unaligned access in mesh table hash function
+Date:   Tue,  7 May 2019 01:34:42 -0400
+Message-Id: <20190507053554.30848-11-sashal@kernel.org>
 X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20190507053235.29900-1-sashal@kernel.org>
-References: <20190507053235.29900-1-sashal@kernel.org>
+In-Reply-To: <20190507053554.30848-1-sashal@kernel.org>
+References: <20190507053554.30848-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -44,56 +44,33 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Daniel Gomez <dagmcr@gmail.com>
+From: Felix Fietkau <nbd@nbd.name>
 
-[ Upstream commit d04830531d0c4a99c897a44038e5da3d23331d2f ]
+[ Upstream commit 40586e3fc400c00c11151804dcdc93f8c831c808 ]
 
-Add missing <of_device_id> table for SPI driver relying on SPI
-device match since compatible is in a DT binding or in a DTS.
+The pointer to the last four bytes of the address is not guaranteed to be
+aligned, so we need to use __get_unaligned_cpu32 here
 
-Before this patch:
-modinfo drivers/nfc/st95hf/st95hf.ko | grep alias
-alias:          spi:st95hf
-
-After this patch:
-modinfo drivers/nfc/st95hf/st95hf.ko | grep alias
-alias:          spi:st95hf
-alias:          of:N*T*Cst,st95hfC*
-alias:          of:N*T*Cst,st95hf
-
-Reported-by: Javier Martinez Canillas <javier@dowhile0.org>
-Signed-off-by: Daniel Gomez <dagmcr@gmail.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nfc/st95hf/core.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ net/mac80211/mesh_pathtbl.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/nfc/st95hf/core.c b/drivers/nfc/st95hf/core.c
-index 2b26f762fbc3..01acb6e53365 100644
---- a/drivers/nfc/st95hf/core.c
-+++ b/drivers/nfc/st95hf/core.c
-@@ -1074,6 +1074,12 @@ static const struct spi_device_id st95hf_id[] = {
- };
- MODULE_DEVICE_TABLE(spi, st95hf_id);
- 
-+static const struct of_device_id st95hf_spi_of_match[] = {
-+        { .compatible = "st,st95hf" },
-+        { },
-+};
-+MODULE_DEVICE_TABLE(of, st95hf_spi_of_match);
-+
- static int st95hf_probe(struct spi_device *nfc_spi_dev)
+diff --git a/net/mac80211/mesh_pathtbl.c b/net/mac80211/mesh_pathtbl.c
+index c3a7396fb955..49a90217622b 100644
+--- a/net/mac80211/mesh_pathtbl.c
++++ b/net/mac80211/mesh_pathtbl.c
+@@ -23,7 +23,7 @@ static void mesh_path_free_rcu(struct mesh_table *tbl, struct mesh_path *mpath);
+ static u32 mesh_table_hash(const void *addr, u32 len, u32 seed)
  {
- 	int ret;
-@@ -1260,6 +1266,7 @@ static struct spi_driver st95hf_driver = {
- 	.driver = {
- 		.name = "st95hf",
- 		.owner = THIS_MODULE,
-+		.of_match_table = of_match_ptr(st95hf_spi_of_match),
- 	},
- 	.id_table = st95hf_id,
- 	.probe = st95hf_probe,
+ 	/* Use last four bytes of hw addr as hash index */
+-	return jhash_1word(*(u32 *)(addr+2), seed);
++	return jhash_1word(__get_unaligned_cpu32((u8 *)addr + 2), seed);
+ }
+ 
+ static const struct rhashtable_params mesh_rht_params = {
 -- 
 2.20.1
 
