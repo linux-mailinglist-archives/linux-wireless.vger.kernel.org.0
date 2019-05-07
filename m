@@ -2,192 +2,161 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 1D2CC166FC
-	for <lists+linux-wireless@lfdr.de>; Tue,  7 May 2019 17:39:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 98DB31684E
+	for <lists+linux-wireless@lfdr.de>; Tue,  7 May 2019 18:45:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726546AbfEGPi4 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 7 May 2019 11:38:56 -0400
-Received: from mail-ed1-f67.google.com ([209.85.208.67]:40770 "EHLO
-        mail-ed1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726521AbfEGPiz (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 7 May 2019 11:38:55 -0400
-Received: by mail-ed1-f67.google.com with SMTP id e56so19145065ede.7
-        for <linux-wireless@vger.kernel.org>; Tue, 07 May 2019 08:38:54 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=lhOeBJyYPj/2xFqOsRFr3svYvc4ZmMF8TMLQhzpX+Nk=;
-        b=qrBg/CyZNzogJVti+AME9cpjw07t4syLPF/59xwO2SDyGLJwlRv0Flh9E+0DKCJwtg
-         dGzGJ7bXC3zFdxC/tVw3eLJVgvvAUz5LH4r2N21zxuWEdEgIYMUY3uqb4c+dJVSvyHeM
-         bfi/M0fV4UDqobDLpK2m6ED53N4h7GW1SC0V9BRPpIFBr12ll0f4XwSfNpsGj5p9DsWA
-         swN0A+39diomTtES6AL7NH811MbKXaweNti2Nz3nFCDFJeamV83N50Ci2+sx02rMUCb/
-         PYcxuQS2v0SqI3Uq6JHBOy/AzJ930LaQOxNkMGHiVeSGSx28d29faGUZtjdO3qc2qfzI
-         a7cQ==
-X-Gm-Message-State: APjAAAXnXEUAojCBP3sQseSIBoa2vUfz1HHeaNA7+0Ccjw8imQ237jQU
-        MlrOcBUC396Y3zc9Fn7x4X7uAQ==
-X-Google-Smtp-Source: APXvYqzqRVjvsHYPB7HNahla42M8BPHt/LdhjXouCI2RW5NMjuN35WYNIXfQpz7wBSkBhLyfV5FXaw==
-X-Received: by 2002:a50:97d2:: with SMTP id f18mr33311946edb.130.1557243533683;
-        Tue, 07 May 2019 08:38:53 -0700 (PDT)
-Received: from shalem.localdomain (84-106-84-65.cable.dynamic.v4.ziggo.nl. [84.106.84.65])
-        by smtp.gmail.com with ESMTPSA id a61sm4240118edf.8.2019.05.07.08.38.52
-        (version=TLS1_3 cipher=AEAD-AES128-GCM-SHA256 bits=128/128);
-        Tue, 07 May 2019 08:38:52 -0700 (PDT)
-Subject: Re: [PATCH RFC] brcmfmac: sanitize DMI strings v2
-To:     Arend Van Spriel <arend.vanspriel@broadcom.com>,
-        Victor Bravo <1905@spmblk.com>,
-        Kalle Valo <kvalo@codeaurora.org>
-Cc:     Franky Lin <franky.lin@broadcom.com>,
-        Hante Meuleman <hante.meuleman@broadcom.com>,
-        Chi-Hsien Lin <chi-hsien.lin@cypress.com>,
-        Wright Feng <wright.feng@cypress.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        linux-wireless@vger.kernel.org,
-        brcm80211-dev-list.pdl@broadcom.com,
-        brcm80211-dev-list@cypress.com, linux-kernel@vger.kernel.org,
-        Luis Chamberlain <mcgrof@kernel.org>
-References: <cce7604e-2b02-80ed-1df5-6f304cada0cb@broadcom.com>
- <20190504194440.4zcxjrtj2aft3ka4@localhost>
- <16a87149068.2764.9b12b7fc0a3841636cfb5e919b41b954@broadcom.com>
- <20190505150355.3fbng4ny34x255vk@localhost>
- <0f75a3d4-94af-5503-94c3-e8af2364448d@redhat.com>
- <20190506090609.msudhncj7e5vdtzw@localhost>
- <70677dff-4336-28d5-7ab9-7ba7c3d74ebc@redhat.com>
- <20190506102032.3ximjecado4mz62j@localhost>
- <fb07ae01-4cca-98e7-1c2d-dfdf44909900@redhat.com>
- <87d0kvvkej.fsf@codeaurora.org> <20190506152441.ifjcdi73elxuq5it@localhost>
- <3f3cca6e-50b7-c61d-4a62-26ce508af9e7@redhat.com>
- <95cd81ea-3970-92de-7983-5c1919e2bbd9@broadcom.com>
-From:   Hans de Goede <hdegoede@redhat.com>
-Message-ID: <02a6dc11-7def-7d72-4640-d9d42ccec47c@redhat.com>
-Date:   Tue, 7 May 2019 17:38:51 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.6.1
+        id S1727296AbfEGQpL (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 7 May 2019 12:45:11 -0400
+Received: from mail.kernel.org ([198.145.29.99]:51246 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726322AbfEGQpL (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 7 May 2019 12:45:11 -0400
+Received: from mail-qt1-f173.google.com (mail-qt1-f173.google.com [209.85.160.173])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 97C9921019;
+        Tue,  7 May 2019 16:45:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1557247509;
+        bh=iM8J/j10jYr+vXCxXzUjgCYgZk17YUkoK9VE/2fhJ1I=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=INXumkFeyNf58pU/qjd3huFH5ZfaxLIpyMXHCnZHxbXpsPJF6T1W6Vkh88hhOGvrJ
+         GIheX5UtWz5QwB5Diw5nYE1jqJSPYf2nUHSJh66NP2uXzpdCBhwXjr4Np+l7L8hUOv
+         mxoIiNV+EIzMpgJ0Ex/W0XZsuvBDRvLXKk1WcejY=
+Received: by mail-qt1-f173.google.com with SMTP id f24so9394033qtk.11;
+        Tue, 07 May 2019 09:45:09 -0700 (PDT)
+X-Gm-Message-State: APjAAAW38M9Gj0afQsWp34yIMtcPqexEj+ZkKDww0vcMTa0oFMgsPMU2
+        lL3t6er9pY7fTllc6G2RqfdislO1NyFIcY2ddQ==
+X-Google-Smtp-Source: APXvYqy7rk1sMMIHbSD/9OOZe8P3NIAyg7u8OPXuXWtwWi2WaDv6h/Xnf9ZSQ+8dUBlM+SULUoG2eW9wkEEg+3BdjGk=
+X-Received: by 2002:ac8:641:: with SMTP id e1mr27644859qth.76.1557247508777;
+ Tue, 07 May 2019 09:45:08 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <95cd81ea-3970-92de-7983-5c1919e2bbd9@broadcom.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+References: <1556893635-18549-1-git-send-email-ynezz@true.cz> <1556893635-18549-3-git-send-email-ynezz@true.cz>
+In-Reply-To: <1556893635-18549-3-git-send-email-ynezz@true.cz>
+From:   Rob Herring <robh+dt@kernel.org>
+Date:   Tue, 7 May 2019 11:44:57 -0500
+X-Gmail-Original-Message-ID: <CAL_JsqLt6UFU_6bmh3Pc0taXUgMtAEV7kL7eZU13cLOjoakf=Q@mail.gmail.com>
+Message-ID: <CAL_JsqLt6UFU_6bmh3Pc0taXUgMtAEV7kL7eZU13cLOjoakf=Q@mail.gmail.com>
+Subject: Re: [PATCH v4 02/10] dt-bindings: doc: reflect new NVMEM
+ of_get_mac_address behaviour
+To:     =?UTF-8?Q?Petr_=C5=A0tetiar?= <ynezz@true.cz>
+Cc:     netdev <netdev@vger.kernel.org>, devicetree@vger.kernel.org,
+        "David S. Miller" <davem@davemloft.net>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Andrew Lunn <andrew@lunn.ch>,
+        Vivien Didelot <vivien.didelot@gmail.com>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        Yisen Zhuang <yisen.zhuang@huawei.com>,
+        Salil Mehta <salil.mehta@huawei.com>,
+        Woojung Huh <woojung.huh@microchip.com>,
+        Microchip Linux Driver Support <UNGLinuxDriver@microchip.com>,
+        Kunihiko Hayashi <hayashi.kunihiko@socionext.com>,
+        Masahiro Yamada <yamada.masahiro@socionext.com>,
+        Jassi Brar <jaswinder.singh@linaro.org>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        Heiner Kallweit <hkallweit1@gmail.com>,
+        Frank Rowand <frowand.list@gmail.com>,
+        Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
+        Maxime Ripard <maxime.ripard@bootlin.com>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" 
+        <linux-arm-kernel@lists.infradead.org>,
+        linux-wireless <linux-wireless@vger.kernel.org>,
+        "moderated list:ARM/Mediatek SoC support" 
+        <linux-mediatek@lists.infradead.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi,
+On Fri, May 3, 2019 at 9:27 AM Petr =C5=A0tetiar <ynezz@true.cz> wrote:
+>
+> As of_get_mac_address now supports NVMEM under the hood, we need to updat=
+e
+> the bindings documentation with the new nvmem-cell* properties, which wou=
+ld
+> mean copy&pasting a lot of redundant information to every binding
+> documentation currently referencing some of the MAC address properties.
+>
+> So I've just removed all the references to the optional MAC address
+> properties and replaced them with the small note referencing
+> net/ethernet.txt file.
+>
+> Signed-off-by: Petr =C5=A0tetiar <ynezz@true.cz>
+> ---
+>
+>  Changes since v2:
+>
+>  * replaced only MAC address related optional properties with a text
+>    referencing ethernet.txt
+>
+>  Documentation/devicetree/bindings/net/altera_tse.txt           |  5 ++--=
+-
+>  Documentation/devicetree/bindings/net/amd-xgbe.txt             |  5 +++-=
+-
+>  Documentation/devicetree/bindings/net/brcm,amac.txt            |  4 ++--
+>  Documentation/devicetree/bindings/net/cpsw.txt                 |  4 +++-
+>  Documentation/devicetree/bindings/net/davinci_emac.txt         |  5 +++-=
+-
+>  Documentation/devicetree/bindings/net/dsa/dsa.txt              |  5 ++--=
+-
+>  Documentation/devicetree/bindings/net/ethernet.txt             |  6 ++++=
+--
+>  Documentation/devicetree/bindings/net/hisilicon-femac.txt      |  4 +++-
+>  .../devicetree/bindings/net/hisilicon-hix5hd2-gmac.txt         |  4 +++-
+>  Documentation/devicetree/bindings/net/keystone-netcp.txt       | 10 ++++=
++-----
+>  Documentation/devicetree/bindings/net/macb.txt                 |  5 ++--=
+-
+>  Documentation/devicetree/bindings/net/marvell-pxa168.txt       |  4 +++-
+>  Documentation/devicetree/bindings/net/microchip,enc28j60.txt   |  3 ++-
+>  Documentation/devicetree/bindings/net/microchip,lan78xx.txt    |  5 ++--=
+-
+>  Documentation/devicetree/bindings/net/qca,qca7000.txt          |  4 +++-
+>  Documentation/devicetree/bindings/net/samsung-sxgbe.txt        |  4 +++-
+>  .../devicetree/bindings/net/snps,dwc-qos-ethernet.txt          |  5 +++-=
+-
+>  .../devicetree/bindings/net/socionext,uniphier-ave4.txt        |  4 ++--
+>  Documentation/devicetree/bindings/net/socionext-netsec.txt     |  5 +++-=
+-
+>  .../devicetree/bindings/net/wireless/mediatek,mt76.txt         |  5 +++-=
+-
+>  Documentation/devicetree/bindings/net/wireless/qca,ath9k.txt   |  4 ++--
+>  21 files changed, 58 insertions(+), 42 deletions(-)
 
-On 06-05-19 21:30, Arend Van Spriel wrote:
-> + Luis (for real this time)
-> 
-> On 5/6/2019 6:05 PM, Hans de Goede wrote:
->> Hi,
->>
->> On 06-05-19 17:24, Victor Bravo wrote:
->>> On Mon, May 06, 2019 at 03:26:28PM +0300, Kalle Valo wrote:
->>>> Hans de Goede <hdegoede@redhat.com> writes:
->>>>
->>>>> If we're going to do some filtering, then I suggest we play it safe and also
->>>>> disallow other chars which may be used as a separator somewhere, specifically
->>>>> ':' and ','.
->>>>>
->>>>> Currently upstream linux-firmware has these files which rely on the DMI
->>>>> matching:
->>>>>
->>>>> brcmfmac4330-sdio.Prowise-PT301.txt
->>>>> brcmfmac43430-sdio.Hampoo-D2D3_Vi8A1.txt
->>>>> brcmfmac43430a0-sdio.ONDA-V80 PLUS.txt
->>>>>
->>>>> The others are either part of the DMI override table for devices with unsuitable
->>>>> DMI strings like "Default String"; or are device-tree based.
->>>>>
->>>>> So as long as we don't break those 3 (or break the ONDA one but get a symlink
->>>>> in place) we can sanitize a bit more then just non-printable and '/'.
->>>>>
->>>>> Kalle, Arend, what is your opinion on this?
->>>>>
->>>>> Note I do not expect the ONDA V80 Plus to have a lot of Linux users,
->>>>> but it definitely has some.
->>>>
->>>> To me having spaces in filenames is a bad idea, but on the other hand we
->>>> do have the "don't break existing setups" rule, so it's not so simple. I
->>>> vote for not allowing spaces, I think that's the best for the long run,
->>>> but don't know what Arend thinks.
-> 
-> Hi,
-> 
-> Had a day off today so I did see some of the discussion, but was not able to chime in until now.
-> 
-> To be honest I always disliked spaces in filenames, but that does not necessarily make it a bad idea. What I would like to know is why built-in firmware can not deal with spaces in the firmware file names. I think Hans mentioned it in the thread and it crossed my mind as well last night. From driver perspective, being brcmfmac or any other for that matter, there is only one API to request firmware and in my opinion it should behave the same no matter where the firmware is coming from. I would prefer to fix that for built-in firmware, but we need to understand where this limitation is coming 
-> from. Hopefully Luis can elaborate on that.
+[...]
 
-Ok.
+> diff --git a/Documentation/devicetree/bindings/net/keystone-netcp.txt b/D=
+ocumentation/devicetree/bindings/net/keystone-netcp.txt
+> index 04ba1dc..3a65aab 100644
+> --- a/Documentation/devicetree/bindings/net/keystone-netcp.txt
+> +++ b/Documentation/devicetree/bindings/net/keystone-netcp.txt
+> @@ -135,14 +135,14 @@ Optional properties:
+>                 are swapped.  The netcp driver will swap the two DWORDs
+>                 back to the proper order when this property is set to 2
+>                 when it obtains the mac address from efuse.
+> -- local-mac-address:   the driver is designed to use the of_get_mac_addr=
+ess api
+> -                       only if efuse-mac is 0. When efuse-mac is 0, the =
+MAC
+> -                       address is obtained from local-mac-address. If th=
+is
+> -                       attribute is not present, then the driver will us=
+e a
+> -                       random MAC address.
+>  - "netcp-device label":        phandle to the device specification for e=
+ach of NetCP
+>                         sub-module attached to this interface.
+>
+> +The MAC address will be determined using the optional properties defined=
+ in
+> +ethernet.txt, as provided by the of_get_mac_address API and only if efus=
+e-mac
 
+Don't make references to Linux in bindings. You can talk about
+expectations of client programs (e.g Linux, u-boot, BSD, etc.) though.
 
->>> I have found a fresh judicate on this:
->>> https://lkml.org/lkml/2018/12/22/221
->>>
->>> It seems clear that we have to support at least spaces for some time
->>> (maybe wih separate config option which will be deprecated but on by
->>> defaut until old files are considered gone).
->>
->> Ah that issue, well that is not really comparable in that case a lot of
->> peoples setups were completely broken by that commit and it was a
->> quite surprising behavior change in a userspace facing API.
->>
->> The nvram loading path already does 2 tries, I really don't want to
->> unnecessary complicate it with a third try.
->>
->> The Onda V80 Plus is a X86 based Windows / Android dual boot tablet,
->> as said before I do not expect a ton of users to be running regular
->> Linux on it.
->>
->> Given Kalle's clear preference for getting rid of the spaces lets
->> just do that. But first we must get a symlink added to linux-firmware
->> using the name with the _, newer kernels requiring a newer linux-firmware
->> to match is not unheard of AFAIK, so combined with the limited amount
->> of users I think this is a reasonable compromise.
-> 
-> Right. In the brcm folder we have bcm4329-fullmac-4.bin for older kernels and brcmfmac4329-sdio.bin for later kernels when we switched to stricter firmware naming convention.
-> 
->> Kalle, do you agree with getting the symlink added to linux-firmware
->> ASAP as a fix for the V80 Plus issue; or do you want to see a fallback
->> to the un-cleaned name as you suggested before ?
-> 
-> How many releases have an issue and how many V80 Plus users running regular linux are actually using built-in firmware. And is it really a regression for them? Not saying it does not require fixing. However, as stated above I would prefer to fix the built-in firmware limitation if possible and backport that fix if it is only a few kernel releases provided stable allows such a backport.
-
-The issue is not V80 Plus users running regular linux with built-in firmware.
-The issue is that the 5.0+ kernel + a new enough linux-firmware will just
-work on the V80 Plus, since linux-firmware contains a nvram file for the V80 Plus,
-with the space in the name.
-
-So if we replace the space with an _ then things will stop working for those
-users. But we can avoid this by adding a compat symlink to linux-firmware, then
-users will require a new linux-firmware together with the new kernel, but that
-is not unheard of.
-
-As for how many users / releases. Users who have a fresh Fedora 30 install or
-a fresh install of a rolling-release distro may rely on things working ootb.
-
-Users with an older Linux install will have manually added the nvram using
-the non board specific name to get things to work, so I expect things to
-stay working for them.
-
-So taking the group of people putting regular Linux on a V80 Plus
-and then taking the cross-section of the group with users with a very recent
-install, I expect the amount of affected users to be very small and both
-Fedora and rolling-release updates update linux-firmware regularly.
-
-So IMHO we should be fine with the sanitizing of the DMI strings, combined
-with pushing a compat patch to linux-firmware.
-
-Regards,
-
-Hans
-
-
-
-
-> 
-> Regards,
-> Arend
+Rob
