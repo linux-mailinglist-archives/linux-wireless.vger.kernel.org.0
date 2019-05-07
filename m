@@ -2,36 +2,36 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 100B615CDD
-	for <lists+linux-wireless@lfdr.de>; Tue,  7 May 2019 08:07:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1C46F15C54
+	for <lists+linux-wireless@lfdr.de>; Tue,  7 May 2019 08:03:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726736AbfEGFdG (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 7 May 2019 01:33:06 -0400
-Received: from mail.kernel.org ([198.145.29.99]:53170 "EHLO mail.kernel.org"
+        id S1727770AbfEGFfV (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 7 May 2019 01:35:21 -0400
+Received: from mail.kernel.org ([198.145.29.99]:55368 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726731AbfEGFdF (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 7 May 2019 01:33:05 -0400
+        id S1726924AbfEGFfU (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 7 May 2019 01:35:20 -0400
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 30983214AE;
-        Tue,  7 May 2019 05:33:04 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 8CF522087F;
+        Tue,  7 May 2019 05:35:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1557207185;
-        bh=YlQuGwAHeK0mc4QWtXD6WY/m1BDOpX0GZj6Qku8Z/b0=;
+        s=default; t=1557207319;
+        bh=EiAGYo1E9SxfPaS0i1ndJq2wTAwaTy0SAsYy7NBE9E4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=UFBADaETzztdCDi0ppaxZWhNf/UvstOPYfg4T4svcsBn9V9hwj0UyBizLsNB31A23
-         fJl1nzc07ks9F2B6MnTAgsCvpoV6KS+/RPmwzDoTLxxVfMFWZCjrfAZEyrCpvZ7l9r
-         F3Gdbk4j8r8/s8uQZGzhI/mKElt09FHnegzpySNM=
+        b=a/u0jRbRufFrj8/VqPVoaK9jwQvBxIz5i++3TqJ8jVw7skMj6LmWdEdMJRrGERbEg
+         22We8d2aEPVESKIxU1gUJasXY4ud+Z6/dn4es26aAZO9nKKWioSAdbpdGNsAEIFxZd
+         ipn9bD69NJ+5k5sLSU5OzEatxOyIsZOcyztIWvj8=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Alexander Wetzel <alexander@wetzel-home.de>,
-        Johannes Berg <johannes.berg@intel.com>,
-        Sasha Levin <sashal@kernel.org>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.0 20/99] mac80211: Honor SW_CRYPTO_CONTROL for unicast keys in AP VLAN mode
-Date:   Tue,  7 May 2019 01:31:14 -0400
-Message-Id: <20190507053235.29900-20-sashal@kernel.org>
+Cc:     Daniel Gomez <dagmcr@gmail.com>,
+        Javier Martinez Canillas <javier@dowhile0.org>,
+        "David S . Miller" <davem@davemloft.net>,
+        Sasha Levin <sashal@kernel.org>, linux-wireless@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.0 83/99] spi: ST ST95HF NFC: declare missing of table
+Date:   Tue,  7 May 2019 01:32:17 -0400
+Message-Id: <20190507053235.29900-83-sashal@kernel.org>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20190507053235.29900-1-sashal@kernel.org>
 References: <20190507053235.29900-1-sashal@kernel.org>
@@ -44,61 +44,56 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Alexander Wetzel <alexander@wetzel-home.de>
+From: Daniel Gomez <dagmcr@gmail.com>
 
-[ Upstream commit 78ad2341521d5ea96cb936244ed4c4c4ef9ec13b ]
+[ Upstream commit d04830531d0c4a99c897a44038e5da3d23331d2f ]
 
-Restore SW_CRYPTO_CONTROL operation on AP_VLAN interfaces for unicast
-keys, the original override was intended to be done for group keys as
-those are treated specially by mac80211 and would always have been
-rejected.
+Add missing <of_device_id> table for SPI driver relying on SPI
+device match since compatible is in a DT binding or in a DTS.
 
-Now the situation is that AP_VLAN support must be enabled by the driver
-if it can support it (meaning it can support software crypto GTK TX).
+Before this patch:
+modinfo drivers/nfc/st95hf/st95hf.ko | grep alias
+alias:          spi:st95hf
 
-Thus, also simplify the code - if we get here with AP_VLAN and non-
-pairwise key, software crypto must be used (driver doesn't know about
-the interface) and can be used (driver must've advertised AP_VLAN if
-it also uses SW_CRYPTO_CONTROL).
+After this patch:
+modinfo drivers/nfc/st95hf/st95hf.ko | grep alias
+alias:          spi:st95hf
+alias:          of:N*T*Cst,st95hfC*
+alias:          of:N*T*Cst,st95hf
 
-Fixes: db3bdcb9c3ff ("mac80211: allow AP_VLAN operation on crypto controlled devices")
-Signed-off-by: Alexander Wetzel <alexander@wetzel-home.de>
-[rewrite commit message]
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Reported-by: Javier Martinez Canillas <javier@dowhile0.org>
+Signed-off-by: Daniel Gomez <dagmcr@gmail.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mac80211/key.c | 9 ++++-----
- 1 file changed, 4 insertions(+), 5 deletions(-)
+ drivers/nfc/st95hf/core.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/net/mac80211/key.c b/net/mac80211/key.c
-index 4700718e010f..37e372896230 100644
---- a/net/mac80211/key.c
-+++ b/net/mac80211/key.c
-@@ -167,8 +167,10 @@ static int ieee80211_key_enable_hw_accel(struct ieee80211_key *key)
- 		 * The driver doesn't know anything about VLAN interfaces.
- 		 * Hence, don't send GTKs for VLAN interfaces to the driver.
- 		 */
--		if (!(key->conf.flags & IEEE80211_KEY_FLAG_PAIRWISE))
-+		if (!(key->conf.flags & IEEE80211_KEY_FLAG_PAIRWISE)) {
-+			ret = 1;
- 			goto out_unsupported;
-+		}
- 	}
+diff --git a/drivers/nfc/st95hf/core.c b/drivers/nfc/st95hf/core.c
+index 2b26f762fbc3..01acb6e53365 100644
+--- a/drivers/nfc/st95hf/core.c
++++ b/drivers/nfc/st95hf/core.c
+@@ -1074,6 +1074,12 @@ static const struct spi_device_id st95hf_id[] = {
+ };
+ MODULE_DEVICE_TABLE(spi, st95hf_id);
  
- 	ret = drv_set_key(key->local, SET_KEY, sdata,
-@@ -213,11 +215,8 @@ static int ieee80211_key_enable_hw_accel(struct ieee80211_key *key)
- 		/* all of these we can do in software - if driver can */
- 		if (ret == 1)
- 			return 0;
--		if (ieee80211_hw_check(&key->local->hw, SW_CRYPTO_CONTROL)) {
--			if (sdata->vif.type == NL80211_IFTYPE_AP_VLAN)
--				return 0;
-+		if (ieee80211_hw_check(&key->local->hw, SW_CRYPTO_CONTROL))
- 			return -EINVAL;
--		}
- 		return 0;
- 	default:
- 		return -EINVAL;
++static const struct of_device_id st95hf_spi_of_match[] = {
++        { .compatible = "st,st95hf" },
++        { },
++};
++MODULE_DEVICE_TABLE(of, st95hf_spi_of_match);
++
+ static int st95hf_probe(struct spi_device *nfc_spi_dev)
+ {
+ 	int ret;
+@@ -1260,6 +1266,7 @@ static struct spi_driver st95hf_driver = {
+ 	.driver = {
+ 		.name = "st95hf",
+ 		.owner = THIS_MODULE,
++		.of_match_table = of_match_ptr(st95hf_spi_of_match),
+ 	},
+ 	.id_table = st95hf_id,
+ 	.probe = st95hf_probe,
 -- 
 2.20.1
 
