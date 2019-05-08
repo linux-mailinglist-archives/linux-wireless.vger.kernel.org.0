@@ -2,127 +2,168 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 4960B174EE
-	for <lists+linux-wireless@lfdr.de>; Wed,  8 May 2019 11:20:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AC3CB1751C
+	for <lists+linux-wireless@lfdr.de>; Wed,  8 May 2019 11:25:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727094AbfEHJT4 convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 8 May 2019 05:19:56 -0400
-Received: from eu-smtp-delivery-151.mimecast.com ([207.82.80.151]:32063 "EHLO
-        eu-smtp-delivery-151.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726760AbfEHJT4 (ORCPT
+        id S1726952AbfEHJZr (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 8 May 2019 05:25:47 -0400
+Received: from smtp.codeaurora.org ([198.145.29.96]:46984 "EHLO
+        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726806AbfEHJZr (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 8 May 2019 05:19:56 -0400
-Received: from AcuMS.aculab.com (156.67.243.126 [156.67.243.126]) (Using
- TLS) by relay.mimecast.com with ESMTP id
- uk-mta-20-fr8XoZJNPVSqTqULhvI6mg-1; Wed, 08 May 2019 10:19:52 +0100
-Received: from AcuMS.Aculab.com (fd9f:af1c:a25b::d117) by AcuMS.aculab.com
- (fd9f:af1c:a25b::d117) with Microsoft SMTP Server (TLS) id 15.0.1347.2; Wed,
- 8 May 2019 10:19:51 +0100
-Received: from AcuMS.Aculab.com ([fe80::43c:695e:880f:8750]) by
- AcuMS.aculab.com ([fe80::43c:695e:880f:8750%12]) with mapi id 15.00.1347.000;
- Wed, 8 May 2019 10:19:51 +0100
-From:   David Laight <David.Laight@ACULAB.COM>
-To:     'Alastair D'Silva' <alastair@au1.ibm.com>,
-        "alastair@d-silva.org" <alastair@d-silva.org>
-CC:     Jani Nikula <jani.nikula@linux.intel.com>,
-        Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
-        Rodrigo Vivi <rodrigo.vivi@intel.com>,
-        David Airlie <airlied@linux.ie>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        "Dan Carpenter" <dan.carpenter@oracle.com>,
-        Karsten Keil <isdn@linux-pingi.de>,
-        Jassi Brar <jassisinghbrar@gmail.com>,
-        Tom Lendacky <thomas.lendacky@amd.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        "Jose Abreu" <Jose.Abreu@synopsys.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        "Stanislaw Gruszka" <sgruszka@redhat.com>,
-        Benson Leung <bleung@chromium.org>,
-        "Enric Balletbo i Serra" <enric.balletbo@collabora.com>,
-        "James E.J. Bottomley" <jejb@linux.ibm.com>,
-        "Martin K. Petersen" <martin.petersen@oracle.com>,
-        "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>,
-        Alexander Viro <viro@zeniv.linux.org.uk>,
-        Petr Mladek <pmladek@suse.com>,
-        Sergey Senozhatsky <sergey.senozhatsky@gmail.com>,
-        Steven Rostedt <rostedt@goodmis.org>,
-        "Andrew Morton" <akpm@linux-foundation.org>,
-        "intel-gfx@lists.freedesktop.org" <intel-gfx@lists.freedesktop.org>,
-        "dri-devel@lists.freedesktop.org" <dri-devel@lists.freedesktop.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-        "ath10k@lists.infradead.org" <ath10k@lists.infradead.org>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "linux-scsi@vger.kernel.org" <linux-scsi@vger.kernel.org>,
-        "linux-fbdev@vger.kernel.org" <linux-fbdev@vger.kernel.org>,
-        "devel@driverdev.osuosl.org" <devel@driverdev.osuosl.org>,
-        "linux-fsdevel@vger.kernel.org" <linux-fsdevel@vger.kernel.org>
-Subject: RE: [PATCH v2 4/7] lib/hexdump.c: Replace ascii bool in
- hex_dump_to_buffer with flags
-Thread-Topic: [PATCH v2 4/7] lib/hexdump.c: Replace ascii bool in
- hex_dump_to_buffer with flags
-Thread-Index: AQHVBWwP4v5z/92cRUaSHokPgMaM4aZg8Maw
-Date:   Wed, 8 May 2019 09:19:51 +0000
-Message-ID: <c98a499a4e824bcd824d5ad53d037c67@AcuMS.aculab.com>
-References: <20190508070148.23130-1-alastair@au1.ibm.com>
- <20190508070148.23130-5-alastair@au1.ibm.com>
-In-Reply-To: <20190508070148.23130-5-alastair@au1.ibm.com>
-Accept-Language: en-GB, en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-ms-exchange-transport-fromentityheader: Hosted
-x-originating-ip: [10.202.205.107]
-MIME-Version: 1.0
-X-MC-Unique: fr8XoZJNPVSqTqULhvI6mg-1
-X-Mimecast-Spam-Score: 0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8BIT
+        Wed, 8 May 2019 05:25:47 -0400
+Received: by smtp.codeaurora.org (Postfix, from userid 1000)
+        id 0982E608BA; Wed,  8 May 2019 09:25:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
+        s=default; t=1557307546;
+        bh=RUymTc+lw5kGwoKFqDJUk6yF3c6FJxnP3Cj5rY7mqUQ=;
+        h=From:To:Cc:Subject:Date:From;
+        b=AdxnsVMsbO6aH7JKUQwYTCPFei2eXuJNgdEi3D46qcaCxYF5+XCSBnAKkxH+ZLosX
+         yqpaGNAr9c6RHt7htsnRE5xUfki+d0kpn/0cFvZeWoN9t6eZH0fRS3UZt0XYdc69SM
+         2Y5c3FkXNE9Y8+E3sfkxPr9XdOhk2rd9RWfCh188=
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        pdx-caf-mail.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.7 required=2.0 tests=ALL_TRUSTED,BAYES_00,
+        DKIM_INVALID,DKIM_SIGNED autolearn=no autolearn_force=no version=3.4.0
+Received: from vnaralas-linux.qualcomm.com (blr-c-bdr-fw-01_globalnat_allzones-outside.qualcomm.com [103.229.19.19])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-SHA256 (128/128 bits))
+        (No client certificate requested)
+        (Authenticated sender: mpubbise@codeaurora.org)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 2ECD9602FC;
+        Wed,  8 May 2019 09:25:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
+        s=default; t=1557307545;
+        bh=RUymTc+lw5kGwoKFqDJUk6yF3c6FJxnP3Cj5rY7mqUQ=;
+        h=From:To:Cc:Subject:Date:From;
+        b=LjH1r2TRHcTqBKHNNNapE4jt9F1Wb7hy904NQHl/t1uGoY2kf8JEGrmt8a7GkC5LP
+         CCKZgq3PrmnGdDWEe+tfusMrI8sQ/brPSsXkexMOlwdCnf8bWo4xzRKHRXfOnOKvsL
+         g4c4iEwyGhc7FgWShUKG6BAlWCMDipJoLGK0TYo8=
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 2ECD9602FC
+Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=mpubbise@codeaurora.org
+From:   Manikanta Pubbisetty <mpubbise@codeaurora.org>
+To:     johannes@sipsolutions.net
+Cc:     linux-wireless@vger.kernel.org,
+        Manikanta Pubbisetty <mpubbise@codeaurora.org>
+Subject: [PATCH v3] {nl,mac}80211: allow 4addr AP operation on crypto controlled devices
+Date:   Wed,  8 May 2019 14:55:33 +0530
+Message-Id: <1557307533-5795-1-git-send-email-mpubbise@codeaurora.org>
+X-Mailer: git-send-email 2.7.4
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Alastair D'Silva
-> Sent: 08 May 2019 08:02
-> To: alastair@d-silva.org
-...
-> --- a/include/linux/printk.h
-> +++ b/include/linux/printk.h
-> @@ -480,13 +480,13 @@ enum {
->  	DUMP_PREFIX_OFFSET
->  };
-> 
-> -extern int hex_dump_to_buffer(const void *buf, size_t len, int rowsize,
-> -			      int groupsize, char *linebuf, size_t linebuflen,
-> -			      bool ascii);
-> -
->  #define HEXDUMP_ASCII			(1 << 0)
->  #define HEXDUMP_SUPPRESS_REPEATED	(1 << 1)
+As per the current design, in the case of sw crypto controlled devices,
+it is the device which advertises the support for AP/VLAN iftype based
+on it's ability to tranmsit packets encrypted in software
+(In VLAN functionality, group traffic generated for a specific
+VLAN group is always encrypted in software). Commit db3bdcb9c3ff
+("mac80211: allow AP_VLAN operation on crypto controlled devices")
+has introduced this change.
 
-These ought to be BIT(0) and BIT(1)
+Since 4addr AP operation also uses AP/VLAN iftype, this conditional
+way of advertising AP/VLAN support has broken 4addr AP mode operation on
+crypto controlled devices which do not support VLAN functionality.
 
-> +extern int hex_dump_to_buffer(const void *buf, size_t len, int rowsize,
-> +			      int groupsize, char *linebuf, size_t linebuflen,
-> +			      u64 flags);
+In the case of ath10k driver, not all firmwares have support for VLAN
+functionality but all can support 4addr AP operation. Because AP/VLAN
+support is not advertised for these devices, 4addr AP operations are
+also blocked.
 
-Why 'u64 flags' ?
-How many flags do you envisage ??
-Your HEXDUMP_ASCII (etc) flags are currently signed values and might
-get sign extended causing grief.
-'unsigned int flags' is probably sufficient.
+Fix this by allowing 4addr operation on devices which do not support
+AP/VLAN iftype but can support 4addr AP operation (decision is based on
+the wiphy flag WIPHY_FLAG_4ADDR_AP).
 
-I've not really looked at the code, it seems OTT in places though.
+Fixes: db3bdcb9c3ff ("mac80211: allow AP_VLAN operation on crypto controlled devices")
+Signed-off-by: Manikanta Pubbisetty <mpubbise@codeaurora.org>
+---
+v3:
+	- Fixes line correction
+v2:
+	- Commit message changes
+	- Squashed two if conditions into one
 
-If someone copies it somewhere where the performance matters
-(I've user space code which is dominated by its tracing!)
-then you don't want all the function calls and conditionals
-even if you want some of the functionality.
+ include/net/cfg80211.h | 3 ++-
+ net/mac80211/util.c    | 4 +++-
+ net/wireless/core.c    | 6 +++++-
+ net/wireless/nl80211.c | 8 ++++++--
+ 4 files changed, 16 insertions(+), 5 deletions(-)
 
-	David
-
--
-Registered Address Lakeside, Bramley Road, Mount Farm, Milton Keynes, MK1 1PT, UK
-Registration No: 1397386 (Wales)
+diff --git a/include/net/cfg80211.h b/include/net/cfg80211.h
+index 87dae86..9481396 100644
+--- a/include/net/cfg80211.h
++++ b/include/net/cfg80211.h
+@@ -3839,7 +3839,8 @@ struct cfg80211_ops {
+  *	on wiphy_new(), but can be changed by the driver if it has a good
+  *	reason to override the default
+  * @WIPHY_FLAG_4ADDR_AP: supports 4addr mode even on AP (with a single station
+- *	on a VLAN interface)
++ *	on a VLAN interface). This flag also serves an extra purpose of
++ *	supporting 4ADDR AP mode on devices which do not support AP/VLAN iftype.
+  * @WIPHY_FLAG_4ADDR_STATION: supports 4addr mode even as a station
+  * @WIPHY_FLAG_CONTROL_PORT_PROTOCOL: This device supports setting the
+  *	control port protocol ethertype. The device also honours the
+diff --git a/net/mac80211/util.c b/net/mac80211/util.c
+index cba4633..1c8384f 100644
+--- a/net/mac80211/util.c
++++ b/net/mac80211/util.c
+@@ -3795,7 +3795,9 @@ int ieee80211_check_combinations(struct ieee80211_sub_if_data *sdata,
+ 	}
+ 
+ 	/* Always allow software iftypes */
+-	if (local->hw.wiphy->software_iftypes & BIT(iftype)) {
++	if (local->hw.wiphy->software_iftypes & BIT(iftype) ||
++	    (iftype == NL80211_IFTYPE_AP_VLAN &&
++	     local->hw.wiphy->flags & WIPHY_FLAG_4ADDR_AP)) {
+ 		if (radar_detect)
+ 			return -EINVAL;
+ 		return 0;
+diff --git a/net/wireless/core.c b/net/wireless/core.c
+index b36ad8e..4e83892 100644
+--- a/net/wireless/core.c
++++ b/net/wireless/core.c
+@@ -1396,8 +1396,12 @@ static int cfg80211_netdev_notifier_call(struct notifier_block *nb,
+ 		}
+ 		break;
+ 	case NETDEV_PRE_UP:
+-		if (!(wdev->wiphy->interface_modes & BIT(wdev->iftype)))
++		if (!(wdev->wiphy->interface_modes & BIT(wdev->iftype)) &&
++		    !(wdev->iftype == NL80211_IFTYPE_AP_VLAN &&
++		      rdev->wiphy.flags & WIPHY_FLAG_4ADDR_AP &&
++		      wdev->use_4addr))
+ 			return notifier_from_errno(-EOPNOTSUPP);
++
+ 		if (rfkill_blocked(rdev->rfkill))
+ 			return notifier_from_errno(-ERFKILL);
+ 		break;
+diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
+index fffe4b3..4b3c528 100644
+--- a/net/wireless/nl80211.c
++++ b/net/wireless/nl80211.c
+@@ -3419,8 +3419,7 @@ static int nl80211_new_interface(struct sk_buff *skb, struct genl_info *info)
+ 	if (info->attrs[NL80211_ATTR_IFTYPE])
+ 		type = nla_get_u32(info->attrs[NL80211_ATTR_IFTYPE]);
+ 
+-	if (!rdev->ops->add_virtual_intf ||
+-	    !(rdev->wiphy.interface_modes & (1 << type)))
++	if (!rdev->ops->add_virtual_intf)
+ 		return -EOPNOTSUPP;
+ 
+ 	if ((type == NL80211_IFTYPE_P2P_DEVICE || type == NL80211_IFTYPE_NAN ||
+@@ -3439,6 +3438,11 @@ static int nl80211_new_interface(struct sk_buff *skb, struct genl_info *info)
+ 			return err;
+ 	}
+ 
++	if (!(rdev->wiphy.interface_modes & (1 << type)) &&
++	    !(type == NL80211_IFTYPE_AP_VLAN && params.use_4addr &&
++	      rdev->wiphy.flags & WIPHY_FLAG_4ADDR_AP))
++		return -EOPNOTSUPP;
++
+ 	err = nl80211_parse_mon_options(rdev, type, info, &params);
+ 	if (err < 0)
+ 		return err;
+-- 
+2.7.4
 
