@@ -2,131 +2,160 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 7A23216CB7
-	for <lists+linux-wireless@lfdr.de>; Tue,  7 May 2019 22:57:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1C3E417208
+	for <lists+linux-wireless@lfdr.de>; Wed,  8 May 2019 09:02:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727951AbfEGU4m (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 7 May 2019 16:56:42 -0400
-Received: from mga11.intel.com ([192.55.52.93]:10113 "EHLO mga11.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727944AbfEGU4m (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 7 May 2019 16:56:42 -0400
-X-Amp-Result: UNKNOWN
-X-Amp-Original-Verdict: FILE UNKNOWN
-X-Amp-File-Uploaded: False
-Received: from orsmga008.jf.intel.com ([10.7.209.65])
-  by fmsmga102.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 07 May 2019 13:56:41 -0700
-X-ExtLoop1: 1
-Received: from romley-ivt3.sc.intel.com ([172.25.110.60])
-  by orsmga008.jf.intel.com with ESMTP; 07 May 2019 13:56:40 -0700
-Date:   Tue, 7 May 2019 13:48:12 -0700
-From:   Fenghua Yu <fenghua.yu@intel.com>
-To:     Thomas Gleixner <tglx@linutronix.de>
-Cc:     David Laight <David.Laight@ACULAB.COM>,
-        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-        H Peter Anvin <hpa@zytor.com>,
-        Paolo Bonzini <pbonzini@redhat.com>,
-        Dave Hansen <dave.hansen@intel.com>,
-        Ashok Raj <ashok.raj@intel.com>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Ravi V Shankar <ravi.v.shankar@intel.com>,
-        Xiaoyao Li <xiaoyao.li@intel.com>,
-        Christopherson Sean J <sean.j.christopherson@intel.com>,
+        id S1726883AbfEHHCz (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 8 May 2019 03:02:55 -0400
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1]:49202 "EHLO
+        mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726817AbfEHHCw (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Wed, 8 May 2019 03:02:52 -0400
+Received: from pps.filterd (m0098399.ppops.net [127.0.0.1])
+        by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id x48722h7138618
+        for <linux-wireless@vger.kernel.org>; Wed, 8 May 2019 03:02:52 -0400
+Received: from e06smtp01.uk.ibm.com (e06smtp01.uk.ibm.com [195.75.94.97])
+        by mx0a-001b2d01.pphosted.com with ESMTP id 2sbs3hkav5-1
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+        for <linux-wireless@vger.kernel.org>; Wed, 08 May 2019 03:02:51 -0400
+Received: from localhost
+        by e06smtp01.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted
+        for <linux-wireless@vger.kernel.org> from <alastair@au1.ibm.com>;
+        Wed, 8 May 2019 08:02:47 +0100
+Received: from b06cxnps3074.portsmouth.uk.ibm.com (9.149.109.194)
+        by e06smtp01.uk.ibm.com (192.168.101.131) with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted;
+        (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+        Wed, 8 May 2019 08:02:39 +0100
+Received: from d06av24.portsmouth.uk.ibm.com (d06av24.portsmouth.uk.ibm.com [9.149.105.60])
+        by b06cxnps3074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id x4872cSV59900032
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Wed, 8 May 2019 07:02:38 GMT
+Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 17E1442045;
+        Wed,  8 May 2019 07:02:38 +0000 (GMT)
+Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 646DD4203F;
+        Wed,  8 May 2019 07:02:37 +0000 (GMT)
+Received: from ozlabs.au.ibm.com (unknown [9.192.253.14])
+        by d06av24.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+        Wed,  8 May 2019 07:02:37 +0000 (GMT)
+Received: from adsilva.ozlabs.ibm.com (haven.au.ibm.com [9.192.254.114])
+        (using TLSv1.2 with cipher DHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ozlabs.au.ibm.com (Postfix) with ESMTPSA id 04A30A01A2;
+        Wed,  8 May 2019 17:02:35 +1000 (AEST)
+From:   "Alastair D'Silva" <alastair@au1.ibm.com>
+To:     alastair@d-silva.org
+Cc:     Jani Nikula <jani.nikula@linux.intel.com>,
+        Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
+        Rodrigo Vivi <rodrigo.vivi@intel.com>,
+        David Airlie <airlied@linux.ie>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        Dan Carpenter <dan.carpenter@oracle.com>,
+        Karsten Keil <isdn@linux-pingi.de>,
+        Jassi Brar <jassisinghbrar@gmail.com>,
+        Tom Lendacky <thomas.lendacky@amd.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jose Abreu <Jose.Abreu@synopsys.com>,
         Kalle Valo <kvalo@codeaurora.org>,
-        Michael Chan <michael.chan@broadcom.com>,
-        linux-kernel <linux-kernel@vger.kernel.org>,
-        x86 <x86@kernel.org>,
-        "kvm@vger.kernel.org" <kvm@vger.kernel.org>,
-        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-Subject: Re: [PATCH v8 13/15] x86/split_lock: Enable split lock detection by
- default
-Message-ID: <20190507204812.GC124959@romley-ivt3.sc.intel.com>
-References: <1556134382-58814-1-git-send-email-fenghua.yu@intel.com>
- <1556134382-58814-14-git-send-email-fenghua.yu@intel.com>
- <762682ba43a0468897ff5ddbf6633d58@AcuMS.aculab.com>
- <alpine.DEB.2.21.1904251255590.1960@nanos.tec.linutronix.de>
+        Stanislaw Gruszka <sgruszka@redhat.com>,
+        Benson Leung <bleung@chromium.org>,
+        Enric Balletbo i Serra <enric.balletbo@collabora.com>,
+        "James E.J. Bottomley" <jejb@linux.ibm.com>,
+        "Martin K. Petersen" <martin.petersen@oracle.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Alexander Viro <viro@zeniv.linux.org.uk>,
+        Petr Mladek <pmladek@suse.com>,
+        Sergey Senozhatsky <sergey.senozhatsky@gmail.com>,
+        Steven Rostedt <rostedt@goodmis.org>,
+        David Laight <David.Laight@ACULAB.COM>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        intel-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
+        linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
+        ath10k@lists.infradead.org, linux-wireless@vger.kernel.org,
+        linux-scsi@vger.kernel.org, linux-fbdev@vger.kernel.org,
+        devel@driverdev.osuosl.org, linux-fsdevel@vger.kernel.org
+Subject: [PATCH v2 0/7] Hexdump Enhancements
+Date:   Wed,  8 May 2019 17:01:40 +1000
+X-Mailer: git-send-email 2.21.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <alpine.DEB.2.21.1904251255590.1960@nanos.tec.linutronix.de>
-User-Agent: Mutt/1.5.23 (2014-03-12)
+X-TM-AS-GCONF: 00
+x-cbid: 19050807-4275-0000-0000-00000332844B
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 19050807-4276-0000-0000-00003841F1F3
+Message-Id: <20190508070148.23130-1-alastair@au1.ibm.com>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:,, definitions=2019-05-08_05:,,
+ signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
+ malwarescore=0 suspectscore=1 phishscore=0 bulkscore=0 spamscore=0
+ clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
+ mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.0.1-1810050000 definitions=main-1905080046
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Thu, Apr 25, 2019 at 12:58:32PM +0200, Thomas Gleixner wrote:
-> On Thu, 25 Apr 2019, David Laight wrote:
-> 
-> > From:  Fenghua Yu
-> > > Sent: 24 April 2019 20:33
-> > > A split locked access locks bus and degrades overall memory access
-> > > performance. When split lock detection feature is enumerated, enable
-> > > the feature by default by writing 1 to bit 29 in MSR TEST_CTL to find
-> > > any split lock issue.
-> > 
-> > You can't enable this by default until ALL the known potentially
-> > misaligned locked memory operations have been fixed.
-> 
-> Errm? The result will be a WARN_ON() printed and no further damage. It's
-> not making anything worse than it is now. In fact we just should add a
-> 
->     WARN_ON_ONCE(!aligned_to_long(p)) to all the xxx_bit() operations.
-> 
-> so we catch them even when they do not trigger that #AC thingy.
+From: Alastair D'Silva <alastair@d-silva.org>
 
-I add WARN_ON_ONCE() in atomic xxx_bit(). But the code cannot be compiled.
+Apologies for the large CC list, it's a heads up for those responsible
+for subsystems where a prototype change in generic code causes a change
+in those subsystems.
 
-Here is a simplified patch (only adding warning in set_bit()):
+This series enhances hexdump.
 
-diff --git a/arch/x86/include/asm/bitops.h b/arch/x86/include/asm/bitops.h
-index 8e790ec219a5..bc889ac12e26 100644
---- a/arch/x86/include/asm/bitops.h
-+++ b/arch/x86/include/asm/bitops.h
-@@ -14,6 +14,8 @@
- #endif
+These improve the readability of the dumped data in certain situations
+(eg. wide terminals are available, many lines of empty bytes exist, etc).
 
- #include <linux/compiler.h>
-+#include <linux/kernel.h>
-+#include <asm-generic/bug.h>
- #include <asm/alternative.h>
- #include <asm/rmwcc.h>
- #include <asm/barrier.h>
-@@ -67,6 +69,8 @@
- static __always_inline void
- set_bit(long nr, volatile unsigned long *addr)
- {
-+       WARN_ON_ONCE(!IS_ALIGNED((unsigned long)addr, sizeof(unsigned long)));
-+
-        if (IS_IMMEDIATE(nr)) {
-                asm volatile(LOCK_PREFIX "orb %1,%0"
-                        : CONST_MASK_ADDR(nr, addr)
+The default behaviour of hexdump is unchanged, however, the prototype
+for hex_dump_to_buffer() has changed, and print_hex_dump() has been
+renamed to print_hex_dump_ext(), with a wrapper replacing it for
+compatibility with existing code, which would have been too invasive to
+change.
 
-gcc reports errors:
-  CC      kernel/bounds.s
-  CALL    scripts/atomic/check-atomics.sh
-In file included from ./include/linux/bitops.h:19,
-                 from ./include/linux/kernel.h:12,
-                 from ./include/asm-generic/bug.h:18,
-                 from ./arch/x86/include/asm/bug.h:83,
-                 from ./include/linux/bug.h:5,
-                 from ./include/linux/page-flags.h:10,
-                 from kernel/bounds.c:10:
-./arch/x86/include/asm/bitops.h: In function ‘set_bit’:
-./arch/x86/include/asm/bitops.h:72:2: error: implicit declaration of function ‘WARN_ON_ONCE’; did you mean ‘WRITE_ONCE’? [-Werror=implicit-function-declaration]
-  WARN_ON_ONCE(!IS_ALIGNED((unsigned long)addr, sizeof(unsigned long)));
-  ^~~~~~~~~~~~
-./arch/x86/include/asm/bitops.h:72:16: error: implicit declaration of function ‘IS_ALIGNED’; did you mean ‘IS_ENABLED’? [-Werror=implicit-function-declaration]
-  WARN_ON_ONCE(!IS_ALIGNED((unsigned long)addr, sizeof(unsigned long)));
-                ^~~~~~~~~~
-I think it's because arch/x86/include/asm/bitops.h is included in
-include/linux/kernel.h before IS_ALIGNED() is defined and in
-include/asm-generic/bug.h before WARN_ON_ONCE() is defined.
+Hexdump selftests have be run & confirmed passed.
 
-How to write a right warn patch and solve the compilation issue?
+Changelog:
+ - Fix failing selftests
+ - Fix precedence bug in 'Replace ascii bool in hex_dump_to_buffer...'
+ - Remove hardcoded new lengths & instead relax the checks in
+   hex_dump_to_buffer, allocating the buffer from the heap instead of the
+   stack.
+ - Replace the skipping of lines of 0x00/0xff with skipping lines of
+   repeated characters, announcing what has been skipped.
+ - Add spaces as an optional N-group separator
+ - Allow byte ordering to be maintained when HEXDUMP_RETAIN_BYTE_ORDERING
+   is set.
+ - Updated selftests to cover 'Relax rowsize checks' &
+   'Optionally retain byte ordering'
 
-Thanks.
+Alastair D'Silva (7):
+  lib/hexdump.c: Fix selftests
+  lib/hexdump.c: Relax rowsize checks in hex_dump_to_buffer
+  lib/hexdump.c: Optionally suppress lines of repeated bytes
+  lib/hexdump.c: Replace ascii bool in hex_dump_to_buffer with flags
+  lib/hexdump.c: Allow multiple groups to be separated by lines '|'
+  lib/hexdump.c: Allow multiple groups to be separated by spaces
+  lib/hexdump.c: Optionally retain byte ordering
 
--Fenghua
+ drivers/gpu/drm/i915/intel_engine_cs.c        |   2 +-
+ drivers/isdn/hardware/mISDN/mISDNisar.c       |   6 +-
+ drivers/mailbox/mailbox-test.c                |   2 +-
+ drivers/net/ethernet/amd/xgbe/xgbe-drv.c      |   2 +-
+ .../net/ethernet/synopsys/dwc-xlgmac-common.c |   2 +-
+ drivers/net/wireless/ath/ath10k/debug.c       |   3 +-
+ .../net/wireless/intel/iwlegacy/3945-mac.c    |   2 +-
+ drivers/platform/chrome/wilco_ec/debugfs.c    |   2 +-
+ drivers/scsi/scsi_logging.c                   |   8 +-
+ drivers/staging/fbtft/fbtft-core.c            |   2 +-
+ fs/seq_file.c                                 |   3 +-
+ include/linux/printk.h                        |  34 ++-
+ lib/hexdump.c                                 | 260 +++++++++++++++---
+ lib/test_hexdump.c                            | 146 +++++++---
+ 14 files changed, 372 insertions(+), 102 deletions(-)
+
+-- 
+2.21.0
+
