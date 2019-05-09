@@ -2,140 +2,336 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 0D20318302
-	for <lists+linux-wireless@lfdr.de>; Thu,  9 May 2019 02:59:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 53B3918667
+	for <lists+linux-wireless@lfdr.de>; Thu,  9 May 2019 09:54:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726557AbfEIA7F (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 8 May 2019 20:59:05 -0400
-Received: from bombadil.infradead.org ([198.137.202.133]:34062 "EHLO
-        bombadil.infradead.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725778AbfEIA7E (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 8 May 2019 20:59:04 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=bombadil.20170209; h=Content-Transfer-Encoding:
-        Content-Type:In-Reply-To:MIME-Version:Date:Message-ID:From:References:Cc:To:
-        Subject:Sender:Reply-To:Content-ID:Content-Description:Resent-Date:
-        Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-        List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-         bh=jF6l3iV1rXe+x0MwS+AXxE/3MQbA5vLmSrDtVx8hKJ0=; b=iDLjyMGHb2MtEiX7sNEsrIOc+
-        r555boyzgroaM/roefjfl/8sPXIlDAXxtafMFPJgts5KIWBA3q3sxMLL9Wjox7NuUoSN+lZsyGDWw
-        1YIQfXQ89Etqt/gh+FhXMlhdhbL9rncYRHCp1u5Ydd7sskuGKJOM6SqnvXr8Ix+x0A1cHoy/Pusmm
-        afAw4Qn3zKr+mSjjshNzlrS6rfxIYZK+kWmsANoEiID2eXPgmAt9+V8rVX6zZpa52fnCPoRfx1GZ/
-        Wu13zOk/d8d44/7sOxIazBgLErLk/FQfGqZzRDcPlEkhHnuFiQz1PmBOXDcuzYl28U3M+xDV4tosD
-        uSeh53laQ==;
-Received: from static-50-53-52-16.bvtn.or.frontiernet.net ([50.53.52.16] helo=midway.dunlab)
-        by bombadil.infradead.org with esmtpsa (Exim 4.90_1 #2 (Red Hat Linux))
-        id 1hOXOb-0001bQ-J1; Thu, 09 May 2019 00:58:49 +0000
-Subject: Re: [PATCH v2 3/7] lib/hexdump.c: Optionally suppress lines of
- repeated bytes
-To:     Alastair D'Silva <alastair@au1.ibm.com>, alastair@d-silva.org
-Cc:     linux-fbdev@vger.kernel.org,
-        Stanislaw Gruszka <sgruszka@redhat.com>,
-        Petr Mladek <pmladek@suse.com>,
-        David Airlie <airlied@linux.ie>,
-        Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
-        dri-devel@lists.freedesktop.org, devel@driverdev.osuosl.org,
-        linux-scsi@vger.kernel.org, Jassi Brar <jassisinghbrar@gmail.com>,
-        ath10k@lists.infradead.org, intel-gfx@lists.freedesktop.org,
-        Dan Carpenter <dan.carpenter@oracle.com>,
-        Jose Abreu <Jose.Abreu@synopsys.com>,
-        Tom Lendacky <thomas.lendacky@amd.com>,
-        "James E.J. Bottomley" <jejb@linux.ibm.com>,
-        Jani Nikula <jani.nikula@linux.intel.com>,
-        linux-fsdevel@vger.kernel.org,
-        Steven Rostedt <rostedt@goodmis.org>,
-        Rodrigo Vivi <rodrigo.vivi@intel.com>,
-        Benson Leung <bleung@chromium.org>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        Karsten Keil <isdn@linux-pingi.de>,
-        "Martin K. Petersen" <martin.petersen@oracle.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Sergey Senozhatsky <sergey.senozhatsky@gmail.com>,
-        David Laight <David.Laight@ACULAB.COM>,
-        Daniel Vetter <daniel@ffwll.ch>, netdev@vger.kernel.org,
-        Enric Balletbo i Serra <enric.balletbo@collabora.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Alexander Viro <viro@zeniv.linux.org.uk>
-References: <20190508070148.23130-1-alastair@au1.ibm.com>
- <20190508070148.23130-4-alastair@au1.ibm.com>
-From:   Randy Dunlap <rdunlap@infradead.org>
-Message-ID: <dc093079-43a0-0a45-f5dd-88b20702fd93@infradead.org>
-Date:   Wed, 8 May 2019 17:58:46 -0700
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.6.1
+        id S1726476AbfEIHyL (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 9 May 2019 03:54:11 -0400
+Received: from mail.kernel.org ([198.145.29.99]:54604 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725774AbfEIHyK (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 9 May 2019 03:54:10 -0400
+Received: from lore-desk-wlan.lan (unknown [151.66.17.19])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id C6C5921019;
+        Thu,  9 May 2019 07:54:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1557388449;
+        bh=Pje+PND48YG4qJjBUZJfvYA5cQ7XYKTncDe6lcv+U6g=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=FtNg7t7vOAR7/mZNwLF7MmF6fO0y/B3H5+HxJ2GDsN9Mvdlnjc4UmWE2KGjcMcwUB
+         XC102Q+SGjCbFHuD1eGHtXf7sfy++ZUwI2CX/5xBz7zU6iN5pVTgu56c4vA9JuleMe
+         7jerDo0F3h0ZDd9lRZ9hjZfEvOXS8iHDN5jn/rfc=
+From:   Lorenzo Bianconi <lorenzo@kernel.org>
+To:     nbd@nbd.name
+Cc:     lorenzo.bianconi@redhat.com, linux-wireless@vger.kernel.org,
+        ryder.lee@mediatek.com, royluo@google.com
+Subject: [PATCH v2 12/17] mt7615: mcu: do not use function pointers whenever possible
+Date:   Thu,  9 May 2019 09:54:00 +0200
+Message-Id: <8247dc48c7404e79ae22c0b4a26151474de674e6.1557388046.git.lorenzo@kernel.org>
+X-Mailer: git-send-email 2.20.1
+In-Reply-To: <cover.1557388046.git.lorenzo@kernel.org>
+References: <cover.1557388046.git.lorenzo@kernel.org>
 MIME-Version: 1.0
-In-Reply-To: <20190508070148.23130-4-alastair@au1.ibm.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 5/8/19 12:01 AM, Alastair D'Silva wrote:
-> From: Alastair D'Silva <alastair@d-silva.org>
-> 
-> Some buffers may only be partially filled with useful data, while the rest
-> is padded (typically with 0x00 or 0xff).
-> 
-> This patch introduces a flag to allow the supression of lines of repeated
-> bytes, which are replaced with '** Skipped %u bytes of value 0x%x **'
-> 
-> An inline wrapper function is provided for backwards compatibility with
-> existing code, which maintains the original behaviour.
-> 
-> Signed-off-by: Alastair D'Silva <alastair@d-silva.org>
-> ---
->  include/linux/printk.h | 25 +++++++++---
->  lib/hexdump.c          | 91 ++++++++++++++++++++++++++++++++++++------
->  2 files changed, 99 insertions(+), 17 deletions(-)
-> 
+Remove function pointers in mt7615_mcu_set_bss_info and run function
+directly. Moreover remove __mt7615_mcu_set_bss_info since it is run just
+by mt7615_mcu_set_bss_info and remove duplicated istructions
 
-Hi,
-Did you do "make htmldocs" or something similar on this?
+Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+---
+Changes since v1:
+- fix tag computation in mt7615_mcu_set_bss_info
+---
+ .../net/wireless/mediatek/mt76/mt7615/mcu.c   | 220 +++++++++---------
+ 1 file changed, 105 insertions(+), 115 deletions(-)
 
-> diff --git a/lib/hexdump.c b/lib/hexdump.c
-> index 3943507bc0e9..d61a1e4f19fa 100644
-> --- a/lib/hexdump.c
-> +++ b/lib/hexdump.c
-> @@ -212,8 +212,44 @@ int hex_dump_to_buffer(const void *buf, size_t len, int rowsize, int groupsize,
->  EXPORT_SYMBOL(hex_dump_to_buffer);
->  
->  #ifdef CONFIG_PRINTK
-> +
-> +/**
-> + * Check if a buffer contains only a single byte value
-> + * @buf: pointer to the buffer
-> + * @len: the size of the buffer in bytes
-> + * @val: outputs the value if if the bytes are identical
-
-Does this work without a function name?
-Documentation/doc-guide/kernel-doc.rst says the general format is:
-
-  /**
-   * function_name() - Brief description of function.
-   * @arg1: Describe the first argument.
-   * @arg2: Describe the second argument.
-   *        One can provide multiple line descriptions
-   *        for arguments.
-   *
-
-> + */
-
->  /**
-> - * print_hex_dump - print a text hex dump to syslog for a binary blob of data
-> + * print_hex_dump_ext: dump a binary blob of data to syslog in hexadecimal
-
-Also not in the general documented format.
-
->   * @level: kernel log level (e.g. KERN_DEBUG)
->   * @prefix_str: string to prefix each line with;
->   *  caller supplies trailing spaces for alignment if desired
-
-
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c
+index 0e82fcb34e07..2ef4e4ef3a78 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c
+@@ -676,154 +676,107 @@ int mt7615_mcu_set_dev_info(struct mt7615_dev *dev,
+ 	return mt7615_mcu_msg_send(dev, skb, MCU_EXT_CMD_DEV_INFO_UPDATE);
+ }
+ 
+-static void bss_info_omac_handler (struct mt7615_dev *dev,
+-				   struct bss_info *bss_info,
+-				   struct sk_buff *skb)
++static void
++mt7615_mcu_bss_info_omac_header(struct mt7615_vif *mvif, u8 *data,
++				u32 conn_type)
+ {
+-	struct bss_info_omac tlv = {0};
+-
+-	tlv.tag = cpu_to_le16(BSS_INFO_OMAC);
+-	tlv.len = cpu_to_le16(sizeof(tlv));
+-	tlv.hw_bss_idx = (bss_info->omac_idx > EXT_BSSID_START) ?
+-			 HW_BSSID_0 : bss_info->omac_idx;
+-	tlv.omac_idx = bss_info->omac_idx;
+-	tlv.band_idx = bss_info->band_idx;
+-	tlv.conn_type = cpu_to_le32(bss_info->conn_type);
+-
+-	memcpy(skb_put(skb, sizeof(tlv)), &tlv, sizeof(tlv));
++	struct bss_info_omac *hdr = (struct bss_info_omac *)data;
++	u8 idx;
++
++	idx = mvif->omac_idx > EXT_BSSID_START ? HW_BSSID_0 : mvif->omac_idx;
++	hdr->tag = cpu_to_le16(BSS_INFO_OMAC);
++	hdr->len = cpu_to_le16(sizeof(struct bss_info_omac));
++	hdr->hw_bss_idx = idx;
++	hdr->omac_idx = mvif->omac_idx;
++	hdr->band_idx = mvif->band_idx;
++	hdr->conn_type = cpu_to_le32(conn_type);
+ }
+ 
+-static void bss_info_basic_handler (struct mt7615_dev *dev,
+-				    struct bss_info *bss_info,
+-				    struct sk_buff *skb)
++static void
++mt7615_mcu_bss_info_basic_header(struct ieee80211_vif *vif, u8 *data,
++				 u32 net_type, u8 tx_wlan_idx,
++				 bool enable)
+ {
+-	struct bss_info_basic tlv = {0};
+-
+-	tlv.tag = cpu_to_le16(BSS_INFO_BASIC);
+-	tlv.len = cpu_to_le16(sizeof(tlv));
+-	tlv.network_type = cpu_to_le32(bss_info->network_type);
+-	tlv.active = bss_info->enable;
+-	tlv.bcn_interval = cpu_to_le16(bss_info->bcn_interval);
+-	memcpy(tlv.bssid, bss_info->bssid, ETH_ALEN);
+-	tlv.wmm_idx = bss_info->wmm_idx;
+-	tlv.dtim_period = bss_info->dtim_period;
+-	tlv.bmc_tx_wlan_idx = bss_info->bmc_tx_wlan_idx;
+-
+-	memcpy(skb_put(skb, sizeof(tlv)), &tlv, sizeof(tlv));
++	struct mt7615_vif *mvif = (struct mt7615_vif *)vif->drv_priv;
++	struct bss_info_basic *hdr = (struct bss_info_basic *)data;
++
++	hdr->tag = cpu_to_le16(BSS_INFO_BASIC);
++	hdr->len = cpu_to_le16(sizeof(struct bss_info_basic));
++	hdr->network_type = cpu_to_le32(net_type);
++	hdr->active = enable;
++	hdr->bcn_interval = cpu_to_le16(vif->bss_conf.beacon_int);
++	memcpy(hdr->bssid, vif->bss_conf.bssid, ETH_ALEN);
++	hdr->wmm_idx = mvif->wmm_idx;
++	hdr->dtim_period = vif->bss_conf.dtim_period;
++	hdr->bmc_tx_wlan_idx = tx_wlan_idx;
+ }
+ 
+-static void bss_info_ext_bss_handler (struct mt7615_dev *dev,
+-				      struct bss_info *bss_info,
+-				      struct sk_buff *skb)
++static void
++mt7615_mcu_bss_info_ext_header(struct mt7615_vif *mvif, u8 *data)
+ {
+ /* SIFS 20us + 512 byte beacon tranmitted by 1Mbps (3906us) */
+ #define BCN_TX_ESTIMATE_TIME (4096 + 20)
+-	struct bss_info_ext_bss tlv = {0};
++	struct bss_info_ext_bss *hdr = (struct bss_info_ext_bss *)data;
+ 	int ext_bss_idx;
+ 
+-	ext_bss_idx = bss_info->omac_idx - EXT_BSSID_START;
+-
++	ext_bss_idx = mvif->omac_idx - EXT_BSSID_START;
+ 	if (ext_bss_idx < 0)
+ 		return;
+ 
+-	tlv.tag = cpu_to_le16(BSS_INFO_EXT_BSS);
+-	tlv.len = cpu_to_le16(sizeof(tlv));
+-	tlv.mbss_tsf_offset = ext_bss_idx * BCN_TX_ESTIMATE_TIME;
+-
+-	memcpy(skb_put(skb, sizeof(tlv)), &tlv, sizeof(tlv));
++	hdr->tag = cpu_to_le16(BSS_INFO_EXT_BSS);
++	hdr->len = cpu_to_le16(sizeof(struct bss_info_ext_bss));
++	hdr->mbss_tsf_offset = ext_bss_idx * BCN_TX_ESTIMATE_TIME;
+ }
+ 
+-static struct bss_info_tag_handler bss_info_tag_handler[] = {
+-	{BSS_INFO_OMAC, sizeof(struct bss_info_omac), bss_info_omac_handler},
+-	{BSS_INFO_BASIC, sizeof(struct bss_info_basic), bss_info_basic_handler},
+-	{BSS_INFO_RF_CH, sizeof(struct bss_info_rf_ch), NULL},
+-	{BSS_INFO_PM, 0, NULL},
+-	{BSS_INFO_UAPSD, 0, NULL},
+-	{BSS_INFO_ROAM_DETECTION, 0, NULL},
+-	{BSS_INFO_LQ_RM, 0, NULL},
+-	{BSS_INFO_EXT_BSS, sizeof(struct bss_info_ext_bss), bss_info_ext_bss_handler},
+-	{BSS_INFO_BMC_INFO, 0, NULL},
+-	{BSS_INFO_SYNC_MODE, 0, NULL},
+-	{BSS_INFO_RA, 0, NULL},
+-	{BSS_INFO_MAX_NUM, 0, NULL},
+-};
+-
+-static int __mt7615_mcu_set_bss_info(struct mt7615_dev *dev,
+-				     struct bss_info *bss_info)
++int mt7615_mcu_set_bss_info(struct mt7615_dev *dev,
++			    struct ieee80211_vif *vif, int en)
+ {
++	struct mt7615_vif *mvif = (struct mt7615_vif *)vif->drv_priv;
+ 	struct req_hdr {
+ 		u8 bss_idx;
+ 		u8 rsv0;
+ 		__le16 tlv_num;
+ 		u8 is_tlv_append;
+ 		u8 rsv1[3];
+-	} __packed req_hdr = {0};
++	} __packed;
++	int len = sizeof(struct req_hdr) + sizeof(struct bss_info_basic);
++	int ret, i, features = BIT(BSS_INFO_BASIC), ntlv = 1;
++	u32 conn_type = 0, net_type = NETWORK_INFRA;
++	u8 *buf, *data, tx_wlan_idx = 0;
++	struct req_hdr *hdr;
+ 	struct sk_buff *skb;
+-	u16 tlv_num = 0;
+-	u32 size = 0;
+-	int i;
+ 
+-	for (i = 0; i < BSS_INFO_MAX_NUM; i++)
+-		if ((BIT(bss_info_tag_handler[i].tag) & bss_info->feature) &&
+-		    bss_info_tag_handler[i].handler) {
+-			tlv_num++;
+-			size += bss_info_tag_handler[i].len;
++	if (en) {
++		len += sizeof(struct bss_info_omac);
++		features |= BIT(BSS_INFO_OMAC);
++		if (mvif->omac_idx > EXT_BSSID_START) {
++			len += sizeof(struct bss_info_ext_bss);
++			features |= BIT(BSS_INFO_EXT_BSS);
++			ntlv++;
+ 		}
+-
+-	skb = mt7615_mcu_msg_alloc(NULL, sizeof(req_hdr) + size);
+-
+-	req_hdr.bss_idx = bss_info->bss_idx;
+-	req_hdr.tlv_num = cpu_to_le16(tlv_num);
+-	req_hdr.is_tlv_append = tlv_num ? 1 : 0;
+-
+-	memcpy(skb_put(skb, sizeof(req_hdr)), &req_hdr, sizeof(req_hdr));
+-
+-	for (i = 0; i < BSS_INFO_MAX_NUM; i++)
+-		if ((BIT(bss_info_tag_handler[i].tag) & bss_info->feature) &&
+-		    bss_info_tag_handler[i].handler)
+-			bss_info_tag_handler[i].handler(dev, bss_info, skb);
+-
+-	return mt7615_mcu_msg_send(dev, skb, MCU_EXT_CMD_BSS_INFO_UPDATE);
+-}
+-
+-int mt7615_mcu_set_bss_info(struct mt7615_dev *dev,
+-			    struct ieee80211_vif *vif, int en)
+-{
+-	struct mt7615_vif *mvif = (struct mt7615_vif *)vif->drv_priv;
+-	struct bss_info bss_info = {
+-		.bss_idx = mvif->idx,
+-		.omac_idx = mvif->omac_idx,
+-		.band_idx = mvif->band_idx,
+-		.bcn_interval = vif->bss_conf.beacon_int,
+-		.dtim_period = vif->bss_conf.dtim_period,
+-		.enable = en,
+-		.feature = BIT(BSS_INFO_BASIC),
+-		.wmm_idx = mvif->wmm_idx,
+-	};
++		ntlv++;
++	}
+ 
+ 	switch (vif->type) {
+ 	case NL80211_IFTYPE_AP:
+-		bss_info.bmc_tx_wlan_idx = mvif->sta.wcid.idx;
+-		bss_info.network_type = NETWORK_INFRA;
+-		bss_info.conn_type = CONNECTION_INFRA_AP;
++		tx_wlan_idx = mvif->sta.wcid.idx;
++		conn_type = CONNECTION_INFRA_AP;
+ 		break;
+ 	case NL80211_IFTYPE_STATION: {
+-		/* find the unicast entry for sta mode bmc tx */
+-		struct ieee80211_sta *ap_sta;
++		struct ieee80211_sta *sta;
+ 		struct mt7615_sta *msta;
+ 
+ 		rcu_read_lock();
+ 
+-		ap_sta = ieee80211_find_sta(vif, vif->bss_conf.bssid);
+-		if (!ap_sta) {
++		sta = ieee80211_find_sta(vif, vif->bss_conf.bssid);
++		if (!sta) {
+ 			rcu_read_unlock();
+ 			return -EINVAL;
+ 		}
+ 
+-		msta = (struct mt7615_sta *)ap_sta->drv_priv;
+-		bss_info.bmc_tx_wlan_idx = msta->wcid.idx;
+-		bss_info.network_type = NETWORK_INFRA;
+-		bss_info.conn_type = CONNECTION_INFRA_STA;
++		msta = (struct mt7615_sta *)sta->drv_priv;
++		tx_wlan_idx = msta->wcid.idx;
++		conn_type = CONNECTION_INFRA_STA;
+ 
+ 		rcu_read_unlock();
+ 		break;
+@@ -832,15 +785,52 @@ int mt7615_mcu_set_bss_info(struct mt7615_dev *dev,
+ 		WARN_ON(1);
+ 		break;
+ 	}
+-	memcpy(bss_info.bssid, vif->bss_conf.bssid, ETH_ALEN);
+ 
+-	if (en) {
+-		bss_info.feature |= BIT(BSS_INFO_OMAC);
+-		if (mvif->omac_idx > EXT_BSSID_START)
+-			bss_info.feature |= BIT(BSS_INFO_EXT_BSS);
++	buf = kzalloc(len, GFP_KERNEL);
++	if (!buf)
++		return -ENOMEM;
++
++	hdr = (struct req_hdr *)buf;
++	hdr->bss_idx = mvif->idx;
++	hdr->tlv_num = cpu_to_le16(ntlv);
++	hdr->is_tlv_append = 1;
++
++	data = buf + sizeof(*hdr);
++	for (i = 0; i < BSS_INFO_MAX_NUM; i++) {
++		int tag = ffs(features & BIT(i)) - 1;
++
++		switch (tag) {
++		case BSS_INFO_OMAC:
++			mt7615_mcu_bss_info_omac_header(mvif, data,
++							conn_type);
++			data += sizeof(struct bss_info_omac);
++			break;
++		case BSS_INFO_BASIC:
++			mt7615_mcu_bss_info_basic_header(vif, data, net_type,
++							 tx_wlan_idx, en);
++			data += sizeof(struct bss_info_basic);
++			break;
++		case BSS_INFO_EXT_BSS:
++			mt7615_mcu_bss_info_ext_header(mvif, data);
++			data += sizeof(struct bss_info_ext_bss);
++			break;
++		default:
++			break;
++		}
++	}
++
++	skb = mt7615_mcu_msg_alloc(buf, len);
++	if (!skb) {
++		ret = -ENOMEM;
++		goto out;
+ 	}
+ 
+-	return __mt7615_mcu_set_bss_info(dev, &bss_info);
++	ret = mt7615_mcu_msg_send(dev, skb, MCU_EXT_CMD_BSS_INFO_UPDATE);
++
++out:
++	kfree(buf);
++
++	return ret;
+ }
+ 
+ static int
 -- 
-~Randy
+2.20.1
+
