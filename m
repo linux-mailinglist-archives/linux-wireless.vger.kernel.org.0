@@ -2,110 +2,88 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E0E641894B
-	for <lists+linux-wireless@lfdr.de>; Thu,  9 May 2019 13:54:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0D31F18986
+	for <lists+linux-wireless@lfdr.de>; Thu,  9 May 2019 14:15:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725963AbfEILyh (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 9 May 2019 07:54:37 -0400
-Received: from mail-yw1-f67.google.com ([209.85.161.67]:46739 "EHLO
-        mail-yw1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725943AbfEILyh (ORCPT
+        id S1726495AbfEIMPT (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 9 May 2019 08:15:19 -0400
+Received: from mail-qt1-f193.google.com ([209.85.160.193]:34889 "EHLO
+        mail-qt1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726448AbfEIMPT (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 9 May 2019 07:54:37 -0400
-Received: by mail-yw1-f67.google.com with SMTP id a130so1597784ywe.13
-        for <linux-wireless@vger.kernel.org>; Thu, 09 May 2019 04:54:37 -0700 (PDT)
+        Thu, 9 May 2019 08:15:19 -0400
+Received: by mail-qt1-f193.google.com with SMTP id a39so1353516qtk.2
+        for <linux-wireless@vger.kernel.org>; Thu, 09 May 2019 05:15:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=WP0bLcCMNhbDrikns73eGACwFVs6dA5eEIoy+HuF4cY=;
-        b=c46N9UpyXRs7elWpZBhfIGkWYVIfXcB3l9sFtfMCafyuL9ibb+wPKo7M0VBYvlRyTq
-         vwMf9eXd3hJ+keEs0nXu0aS4AWls3FkGSrARTiXdHVuhxmab4hrsXQTZbhussjjRXhgC
-         WQBcEmBnuZP/bR2nxK7/imzEZSCiUeRj2CKyA=
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id;
+        bh=IKMDkwdrLcqX/qesr5m3IU/imK5EeBRe8xlw3bBhjGk=;
+        b=h721oY8UqCUOn6c8xbqobJgJFx8EXnnkOiGxFsk0mpSdpKmYXgJP67riWL1V3t1n2U
+         uLFiEULrv4VU9Ttn0mPYeMbwKIxxExpVurE1e6UYhC+vdmg7wBGbhgRhLFIQtvEd45D0
+         EP9lCDzmd2NXLngNM3N77rVk9caVAfBSMWZUTd1xmXmTMjsNM8iyuyw+U/1nhTPv+0EK
+         ZBa/ZH+wgQWBJ8gbw5yluE8mvDO5AG9+NTbb+b72Z+98L5KvldRpSPLQeXW+4MfC1dsA
+         r8XlkFegStSyh9MK7rvGASimjFnLSFbQrxyIJ/dELyQWtu5Hrtg8GI4/x6q9qd5UdZuv
+         IyJg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=WP0bLcCMNhbDrikns73eGACwFVs6dA5eEIoy+HuF4cY=;
-        b=JFxNbUNKrNOswVvySoPL6Bty+mHr6bhYtBqdpJJFJ00l4LkWrDU6ENELRx8fwlX4lB
-         /qcbfuZ0AnB+XuhbQcHXr7CpfK9VaMhwath9mH0FVbfTTsM57Tblwu5YL6tV2OWdUaHW
-         H73Ug/nt12+y8wbejY6avykARr+bs7/hqe3u6aCi0oGylty2KQEALitf+R51W4FNYIHW
-         Xa/3zsgBdf243eYGpi8+oXZaICkPjLbCYgLA5QGLyDhxSYbCBp7TpmDpmsq8Ag6vg6c1
-         PZv5HkJ0bgfsENpBPUfse385YajigDCoGlIMlo7QWN5ve6hLyVdwmN8R0Js/PbCvhIOc
-         kOgg==
-X-Gm-Message-State: APjAAAXXOsQanw6GrYYm7iFKOUJWu9TVHvn8wwvcALgbze9ygUAsJotJ
-        VPnaOJtv3aToVAWfQwO5PoVnNw==
-X-Google-Smtp-Source: APXvYqyScgHB03Fm7d+gQ6CcgDOqyzGuziHrDngx9SmS3BWlqeNq4cPX2bzbjStSdMS/pGmudbmRIA==
-X-Received: by 2002:a5b:d0e:: with SMTP id y14mr2005473ybp.103.1557402876614;
-        Thu, 09 May 2019 04:54:36 -0700 (PDT)
-Received: from [10.230.40.234] ([192.19.215.250])
-        by smtp.gmail.com with ESMTPSA id i13sm517290ywl.22.2019.05.09.04.54.34
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=IKMDkwdrLcqX/qesr5m3IU/imK5EeBRe8xlw3bBhjGk=;
+        b=OndDjfxnFfyRCgjyVaERWv8O2NmGty75UCt6dJnjk+B+TvOhtO3+edsDGXgxjTjx7I
+         BGLT9bRSSLQ+tppTlnXPje4eUHW78jM/ZIOUgAESvC+kPiXys/YTkCAP52cbFNpA0Dzx
+         omLcTFbh3hYflr0wH462jhT//kwSsK2tCUMDSuhP5IJ2EnfHkEN4oqaDf53EAdgfIQE0
+         TnjqeyGOcGMDh/rk8gqSvNNQMSMkPNTQf7InnHPGiAoWt/8UoiOREBlN/eZRLrFrxabG
+         ApAY7AuXRc3wdpPYYdeSwzk9BMB7gLC2RlXP1FCGlsCBYUUeEE7tZ9JzqpXB1Ybvufiv
+         PIiw==
+X-Gm-Message-State: APjAAAWGw0o6NepVvELA2Po3GFT6hn6r8IC9xZrM/LwBVKb8wjTvqNOL
+        mVUfqz+LDr6OyJQlzDswuPI=
+X-Google-Smtp-Source: APXvYqwqSfGjDRb3AxYDUp1+tJP8NCNud6YMOtgVKmQl+6U2MiJe0ROsEKCnWIG0ELTffiBXwDg/2Q==
+X-Received: by 2002:ac8:24cf:: with SMTP id t15mr3325992qtt.112.1557404117947;
+        Thu, 09 May 2019 05:15:17 -0700 (PDT)
+Received: from localhost.localdomain ([2804:14c:482:3c8:56cb:1049:60d2:137b])
+        by smtp.gmail.com with ESMTPSA id 76sm980563qke.46.2019.05.09.05.15.14
         (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Thu, 09 May 2019 04:54:35 -0700 (PDT)
-Subject: Re: [PATCH 2/6] brcmfmac: send port authorized event for 802.1X 4-way
- handshake offload
-To:     Stanley Hsu <Stanley.Hsu@cypress.com>
-Cc:     Chi-Hsien Lin <Chi-Hsien.Lin@cypress.com>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "brcm80211-dev-list@broadcom.com" <brcm80211-dev-list@broadcom.com>,
-        brcm80211-dev-list <brcm80211-dev-list@cypress.com>,
-        Franky Lin <franky.lin@broadcom.com>,
-        Hante Meuleman <hante.meuleman@broadcom.com>,
-        Wright Feng <Wright.Feng@cypress.com>,
-        Kalle Valo <kvalo@codeaurora.org>, Jouni Malinen <j@w1.fi>
-References: <1546582221-143220-1-git-send-email-chi-hsien.lin@cypress.com>
- <1546582221-143220-2-git-send-email-chi-hsien.lin@cypress.com>
- <d89b1304-471d-f064-02f1-6a9fab0ca25d@broadcom.com>
- <20190509085836.GB74912@aremote06.aus.cypress.com>
-From:   Arend Van Spriel <arend.vanspriel@broadcom.com>
-Message-ID: <8062d7c7-332c-8a10-40bd-9eadf682493f@broadcom.com>
-Date:   Thu, 9 May 2019 13:54:32 +0200
-User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:60.0) Gecko/20100101
- Thunderbird/60.6.1
-MIME-Version: 1.0
-In-Reply-To: <20190509085836.GB74912@aremote06.aus.cypress.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+        Thu, 09 May 2019 05:15:17 -0700 (PDT)
+From:   Fabio Estevam <festevam@gmail.com>
+To:     kvalo@codeaurora.org
+Cc:     ath10k@lists.infradead.org, andreyknvl@google.com,
+        gregkh@linuxfoundation.org, linux-wireless@vger.kernel.org,
+        Fabio Estevam <festevam@gmail.com>
+Subject: [PATCH] ath10k: Change the warning message string
+Date:   Thu,  9 May 2019 09:15:00 -0300
+Message-Id: <20190509121500.4730-1-festevam@gmail.com>
+X-Mailer: git-send-email 2.17.1
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-+ Jouni
+The "WARNING" string confuses syzbot, which thinks it found
+a crash [1].
 
-On 5/9/2019 10:58 AM, Stanley Hsu wrote:
-> On Mon, Jan 07, 2019 at 10:44:01AM +0100, Arend Van Spriel wrote:
->> On 1/4/2019 7:11 AM, Chi-Hsien Lin wrote:
->>> From: Chung-Hsien Hsu <stanley.hsu@cypress.com>
->>>
->>> With 4-way handshake offload for 802.1X authentication, a port
->>> authorized event should be sent to user space after the completion of
->>> 4-way handshake. It is used to indicate that a connection is authorized
->>> and 802.1X authentication is no longer required.
->>
->> It had been a while since I had looked at our offload code
->> (basically since the initial implementation for the nl80211 work) so
->> I was unsure why this would be needed.
->>
->> So initially we added a PORT_AUTHORIZED *attribute* in the nl80211
->> api and later on the PORT_AUTHORIZED *event* was introduced and
->> 4-way hs offload support in wpa_supplicant is ignoring the
->> *attribute* and only handling the *event*. I think this information
->> is important enough to add to this commit message with a reference
->> to commit 503c1fb98ba3 ("cfg80211/nl80211: add a port authorized
->> event") which "broke" the functionality in brcmfmac.
-> 
-> Thanks a lot for the feedback.
-> After looking further, it is observed that the connection state will be
-> set to WPA_COMPLETED in wpa_supplicant after it sets PMK to the driver.
-> So no need to have this change. Let's drop it form the series.
+Change the string to avoid such problem.
 
-In my opinion wpa_supplicant does set WPA_COMPLETED too early. If we 
-were to use eapol-over-nl80211 and set the netdev carrier when the 
-connection is authorized it would be kinda ok and we would not need the 
-event. Added Jouni to chime in on this.
+[1] https://lkml.org/lkml/2019/5/9/243
 
-Regards,
-Arend
+Reported-by: syzbot+c1b25598aa60dcd47e78@syzkaller.appspotmail.com
+Suggested-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Fabio Estevam <festevam@gmail.com>
+---
+ drivers/net/wireless/ath/ath10k/usb.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/net/wireless/ath/ath10k/usb.c b/drivers/net/wireless/ath/ath10k/usb.c
+index 970cf69ac35f..a3ecf7d77949 100644
+--- a/drivers/net/wireless/ath/ath10k/usb.c
++++ b/drivers/net/wireless/ath/ath10k/usb.c
+@@ -1016,7 +1016,7 @@ static int ath10k_usb_probe(struct usb_interface *interface,
+ 	}
+ 
+ 	/* TODO: remove this once USB support is fully implemented */
+-	ath10k_warn(ar, "WARNING: ath10k USB support is incomplete, don't expect anything to work!\n");
++	ath10k_warn(ar, "Warning: ath10k USB support is incomplete, don't expect anything to work!\n");
+ 
+ 	return 0;
+ 
+-- 
+2.17.1
+
