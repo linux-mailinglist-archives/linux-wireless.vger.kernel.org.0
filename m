@@ -2,336 +2,391 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 53B3918667
-	for <lists+linux-wireless@lfdr.de>; Thu,  9 May 2019 09:54:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E5F9818692
+	for <lists+linux-wireless@lfdr.de>; Thu,  9 May 2019 10:11:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726476AbfEIHyL (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 9 May 2019 03:54:11 -0400
-Received: from mail.kernel.org ([198.145.29.99]:54604 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725774AbfEIHyK (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 9 May 2019 03:54:10 -0400
-Received: from lore-desk-wlan.lan (unknown [151.66.17.19])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id C6C5921019;
-        Thu,  9 May 2019 07:54:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1557388449;
-        bh=Pje+PND48YG4qJjBUZJfvYA5cQ7XYKTncDe6lcv+U6g=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=FtNg7t7vOAR7/mZNwLF7MmF6fO0y/B3H5+HxJ2GDsN9Mvdlnjc4UmWE2KGjcMcwUB
-         XC102Q+SGjCbFHuD1eGHtXf7sfy++ZUwI2CX/5xBz7zU6iN5pVTgu56c4vA9JuleMe
-         7jerDo0F3h0ZDd9lRZ9hjZfEvOXS8iHDN5jn/rfc=
-From:   Lorenzo Bianconi <lorenzo@kernel.org>
-To:     nbd@nbd.name
-Cc:     lorenzo.bianconi@redhat.com, linux-wireless@vger.kernel.org,
-        ryder.lee@mediatek.com, royluo@google.com
-Subject: [PATCH v2 12/17] mt7615: mcu: do not use function pointers whenever possible
-Date:   Thu,  9 May 2019 09:54:00 +0200
-Message-Id: <8247dc48c7404e79ae22c0b4a26151474de674e6.1557388046.git.lorenzo@kernel.org>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <cover.1557388046.git.lorenzo@kernel.org>
-References: <cover.1557388046.git.lorenzo@kernel.org>
+        id S1726281AbfEIILa (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 9 May 2019 04:11:30 -0400
+Received: from mail-qt1-f193.google.com ([209.85.160.193]:40472 "EHLO
+        mail-qt1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725963AbfEIILa (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 9 May 2019 04:11:30 -0400
+Received: by mail-qt1-f193.google.com with SMTP id k24so745795qtq.7
+        for <linux-wireless@vger.kernel.org>; Thu, 09 May 2019 01:11:29 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=endlessm-com.20150623.gappssmtp.com; s=20150623;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=29b/Cz6gRH2L4oI6e8shpAVeSBly6WQGApdA4f9yTaY=;
+        b=wvOpATp51jN4QQPqidZNyKp0nIfDyaUh9DmHE5NcmNLnvLioq3K2hai3OdXsmfXcmv
+         NVD1mxm0Ru+JUezlYW0wUKqggdxYDmPTzzKWkvYINo1HN4rWQ9U0IKIYQ2oHZPehk1MF
+         ZV8DsFZF28lR/yqzGQgl50a9dmQ9itr1GLY0ojsWGqyPGuGB5yzbLNz6T6Mze5IEnv47
+         ykb5qFQAJzcNQqajWSSjK2aM+VtNwHgmwgboKr4DPtSBzj/M344/LEec2ajN4gdiZBil
+         y5NoXrDlQ3dOZrZPIcDy1dAlZ9I/lPJG20ddqUqRb53gesKtfbfn8lBVp8C/Vmc2e0Av
+         D1XQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=29b/Cz6gRH2L4oI6e8shpAVeSBly6WQGApdA4f9yTaY=;
+        b=EW3i/vj8GBPLoVzLhUjnT5lsLX0Ke/FoWR3YwXY9WJtJUIeWFrb1bn/qsRtpBfSF78
+         zdO/YeI+bOmpdVzTP6vjLjXE3kJBt/BieFadRIAMbVP2QeKPyOOK5ldXd6WAJgI76Kdv
+         j35x1utC6FQCYYQXY05Yt3D+P2uyt1tdWzgMtxKRW+6NTVeCW4A/kP/ozp+bPo8rQu6v
+         qPDuTZ2wx+ZfnzM4hp9O6jCGlj5xm6DiOJMN+X8oQHPk6OPgdf6OsjnHZRY26jkmF9FC
+         PWGrUfDk383oIpbwPGU3oh0UxogGUcGwg4ttGnq+Qly4RfphBoLQNOD/sK4Ea5eyjDBa
+         eLUA==
+X-Gm-Message-State: APjAAAUzL6Fdx+GP17J/N5Kr5713vcSkECPEhJtweJHIUhc3dAcArIii
+        GPGhXDe2Xm3brHXyzxrw9yMSbQTaRdpZDeK7DObd6Q==
+X-Google-Smtp-Source: APXvYqznyN3oiTuX5lMuO2HWl7b7hvZgomm+R+03hq3bZFLw+Rr0cBCIiIkzphM+57U83E2cjsfHE8hnbYXYUg+DbH4=
+X-Received: by 2002:ac8:e0f:: with SMTP id a15mr2379460qti.360.1557389489200;
+ Thu, 09 May 2019 01:11:29 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20190503072146.49999-1-chiu@endlessm.com> <20190503072146.49999-3-chiu@endlessm.com>
+In-Reply-To: <20190503072146.49999-3-chiu@endlessm.com>
+From:   Daniel Drake <drake@endlessm.com>
+Date:   Thu, 9 May 2019 16:11:17 +0800
+Message-ID: <CAD8Lp47_-6d2wCAs5QbuR6Mw2w91TyJ9W3kFiJHH4F_6dXqnHg@mail.gmail.com>
+Subject: Re: [RFC PATCH 2/2] rtl8xxxu: Add watchdog to update rate mask by
+ signal strength
+To:     Chris Chiu <chiu@endlessm.com>
+Cc:     jes.sorensen@gmail.com, Kalle Valo <kvalo@codeaurora.org>,
+        David Miller <davem@davemloft.net>,
+        linux-wireless <linux-wireless@vger.kernel.org>,
+        netdev <netdev@vger.kernel.org>,
+        Linux Kernel <linux-kernel@vger.kernel.org>,
+        Linux Upstreaming Team <linux@endlessm.com>,
+        Larry Finger <Larry.Finger@lwfinger.net>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Remove function pointers in mt7615_mcu_set_bss_info and run function
-directly. Moreover remove __mt7615_mcu_set_bss_info since it is run just
-by mt7615_mcu_set_bss_info and remove duplicated istructions
+Hi Chris,
 
-Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
----
-Changes since v1:
-- fix tag computation in mt7615_mcu_set_bss_info
----
- .../net/wireless/mediatek/mt76/mt7615/mcu.c   | 220 +++++++++---------
- 1 file changed, 105 insertions(+), 115 deletions(-)
+Great work on finding this!
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c
-index 0e82fcb34e07..2ef4e4ef3a78 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c
-@@ -676,154 +676,107 @@ int mt7615_mcu_set_dev_info(struct mt7615_dev *dev,
- 	return mt7615_mcu_msg_send(dev, skb, MCU_EXT_CMD_DEV_INFO_UPDATE);
- }
- 
--static void bss_info_omac_handler (struct mt7615_dev *dev,
--				   struct bss_info *bss_info,
--				   struct sk_buff *skb)
-+static void
-+mt7615_mcu_bss_info_omac_header(struct mt7615_vif *mvif, u8 *data,
-+				u32 conn_type)
- {
--	struct bss_info_omac tlv = {0};
--
--	tlv.tag = cpu_to_le16(BSS_INFO_OMAC);
--	tlv.len = cpu_to_le16(sizeof(tlv));
--	tlv.hw_bss_idx = (bss_info->omac_idx > EXT_BSSID_START) ?
--			 HW_BSSID_0 : bss_info->omac_idx;
--	tlv.omac_idx = bss_info->omac_idx;
--	tlv.band_idx = bss_info->band_idx;
--	tlv.conn_type = cpu_to_le32(bss_info->conn_type);
--
--	memcpy(skb_put(skb, sizeof(tlv)), &tlv, sizeof(tlv));
-+	struct bss_info_omac *hdr = (struct bss_info_omac *)data;
-+	u8 idx;
-+
-+	idx = mvif->omac_idx > EXT_BSSID_START ? HW_BSSID_0 : mvif->omac_idx;
-+	hdr->tag = cpu_to_le16(BSS_INFO_OMAC);
-+	hdr->len = cpu_to_le16(sizeof(struct bss_info_omac));
-+	hdr->hw_bss_idx = idx;
-+	hdr->omac_idx = mvif->omac_idx;
-+	hdr->band_idx = mvif->band_idx;
-+	hdr->conn_type = cpu_to_le32(conn_type);
- }
- 
--static void bss_info_basic_handler (struct mt7615_dev *dev,
--				    struct bss_info *bss_info,
--				    struct sk_buff *skb)
-+static void
-+mt7615_mcu_bss_info_basic_header(struct ieee80211_vif *vif, u8 *data,
-+				 u32 net_type, u8 tx_wlan_idx,
-+				 bool enable)
- {
--	struct bss_info_basic tlv = {0};
--
--	tlv.tag = cpu_to_le16(BSS_INFO_BASIC);
--	tlv.len = cpu_to_le16(sizeof(tlv));
--	tlv.network_type = cpu_to_le32(bss_info->network_type);
--	tlv.active = bss_info->enable;
--	tlv.bcn_interval = cpu_to_le16(bss_info->bcn_interval);
--	memcpy(tlv.bssid, bss_info->bssid, ETH_ALEN);
--	tlv.wmm_idx = bss_info->wmm_idx;
--	tlv.dtim_period = bss_info->dtim_period;
--	tlv.bmc_tx_wlan_idx = bss_info->bmc_tx_wlan_idx;
--
--	memcpy(skb_put(skb, sizeof(tlv)), &tlv, sizeof(tlv));
-+	struct mt7615_vif *mvif = (struct mt7615_vif *)vif->drv_priv;
-+	struct bss_info_basic *hdr = (struct bss_info_basic *)data;
-+
-+	hdr->tag = cpu_to_le16(BSS_INFO_BASIC);
-+	hdr->len = cpu_to_le16(sizeof(struct bss_info_basic));
-+	hdr->network_type = cpu_to_le32(net_type);
-+	hdr->active = enable;
-+	hdr->bcn_interval = cpu_to_le16(vif->bss_conf.beacon_int);
-+	memcpy(hdr->bssid, vif->bss_conf.bssid, ETH_ALEN);
-+	hdr->wmm_idx = mvif->wmm_idx;
-+	hdr->dtim_period = vif->bss_conf.dtim_period;
-+	hdr->bmc_tx_wlan_idx = tx_wlan_idx;
- }
- 
--static void bss_info_ext_bss_handler (struct mt7615_dev *dev,
--				      struct bss_info *bss_info,
--				      struct sk_buff *skb)
-+static void
-+mt7615_mcu_bss_info_ext_header(struct mt7615_vif *mvif, u8 *data)
- {
- /* SIFS 20us + 512 byte beacon tranmitted by 1Mbps (3906us) */
- #define BCN_TX_ESTIMATE_TIME (4096 + 20)
--	struct bss_info_ext_bss tlv = {0};
-+	struct bss_info_ext_bss *hdr = (struct bss_info_ext_bss *)data;
- 	int ext_bss_idx;
- 
--	ext_bss_idx = bss_info->omac_idx - EXT_BSSID_START;
--
-+	ext_bss_idx = mvif->omac_idx - EXT_BSSID_START;
- 	if (ext_bss_idx < 0)
- 		return;
- 
--	tlv.tag = cpu_to_le16(BSS_INFO_EXT_BSS);
--	tlv.len = cpu_to_le16(sizeof(tlv));
--	tlv.mbss_tsf_offset = ext_bss_idx * BCN_TX_ESTIMATE_TIME;
--
--	memcpy(skb_put(skb, sizeof(tlv)), &tlv, sizeof(tlv));
-+	hdr->tag = cpu_to_le16(BSS_INFO_EXT_BSS);
-+	hdr->len = cpu_to_le16(sizeof(struct bss_info_ext_bss));
-+	hdr->mbss_tsf_offset = ext_bss_idx * BCN_TX_ESTIMATE_TIME;
- }
- 
--static struct bss_info_tag_handler bss_info_tag_handler[] = {
--	{BSS_INFO_OMAC, sizeof(struct bss_info_omac), bss_info_omac_handler},
--	{BSS_INFO_BASIC, sizeof(struct bss_info_basic), bss_info_basic_handler},
--	{BSS_INFO_RF_CH, sizeof(struct bss_info_rf_ch), NULL},
--	{BSS_INFO_PM, 0, NULL},
--	{BSS_INFO_UAPSD, 0, NULL},
--	{BSS_INFO_ROAM_DETECTION, 0, NULL},
--	{BSS_INFO_LQ_RM, 0, NULL},
--	{BSS_INFO_EXT_BSS, sizeof(struct bss_info_ext_bss), bss_info_ext_bss_handler},
--	{BSS_INFO_BMC_INFO, 0, NULL},
--	{BSS_INFO_SYNC_MODE, 0, NULL},
--	{BSS_INFO_RA, 0, NULL},
--	{BSS_INFO_MAX_NUM, 0, NULL},
--};
--
--static int __mt7615_mcu_set_bss_info(struct mt7615_dev *dev,
--				     struct bss_info *bss_info)
-+int mt7615_mcu_set_bss_info(struct mt7615_dev *dev,
-+			    struct ieee80211_vif *vif, int en)
- {
-+	struct mt7615_vif *mvif = (struct mt7615_vif *)vif->drv_priv;
- 	struct req_hdr {
- 		u8 bss_idx;
- 		u8 rsv0;
- 		__le16 tlv_num;
- 		u8 is_tlv_append;
- 		u8 rsv1[3];
--	} __packed req_hdr = {0};
-+	} __packed;
-+	int len = sizeof(struct req_hdr) + sizeof(struct bss_info_basic);
-+	int ret, i, features = BIT(BSS_INFO_BASIC), ntlv = 1;
-+	u32 conn_type = 0, net_type = NETWORK_INFRA;
-+	u8 *buf, *data, tx_wlan_idx = 0;
-+	struct req_hdr *hdr;
- 	struct sk_buff *skb;
--	u16 tlv_num = 0;
--	u32 size = 0;
--	int i;
- 
--	for (i = 0; i < BSS_INFO_MAX_NUM; i++)
--		if ((BIT(bss_info_tag_handler[i].tag) & bss_info->feature) &&
--		    bss_info_tag_handler[i].handler) {
--			tlv_num++;
--			size += bss_info_tag_handler[i].len;
-+	if (en) {
-+		len += sizeof(struct bss_info_omac);
-+		features |= BIT(BSS_INFO_OMAC);
-+		if (mvif->omac_idx > EXT_BSSID_START) {
-+			len += sizeof(struct bss_info_ext_bss);
-+			features |= BIT(BSS_INFO_EXT_BSS);
-+			ntlv++;
- 		}
--
--	skb = mt7615_mcu_msg_alloc(NULL, sizeof(req_hdr) + size);
--
--	req_hdr.bss_idx = bss_info->bss_idx;
--	req_hdr.tlv_num = cpu_to_le16(tlv_num);
--	req_hdr.is_tlv_append = tlv_num ? 1 : 0;
--
--	memcpy(skb_put(skb, sizeof(req_hdr)), &req_hdr, sizeof(req_hdr));
--
--	for (i = 0; i < BSS_INFO_MAX_NUM; i++)
--		if ((BIT(bss_info_tag_handler[i].tag) & bss_info->feature) &&
--		    bss_info_tag_handler[i].handler)
--			bss_info_tag_handler[i].handler(dev, bss_info, skb);
--
--	return mt7615_mcu_msg_send(dev, skb, MCU_EXT_CMD_BSS_INFO_UPDATE);
--}
--
--int mt7615_mcu_set_bss_info(struct mt7615_dev *dev,
--			    struct ieee80211_vif *vif, int en)
--{
--	struct mt7615_vif *mvif = (struct mt7615_vif *)vif->drv_priv;
--	struct bss_info bss_info = {
--		.bss_idx = mvif->idx,
--		.omac_idx = mvif->omac_idx,
--		.band_idx = mvif->band_idx,
--		.bcn_interval = vif->bss_conf.beacon_int,
--		.dtim_period = vif->bss_conf.dtim_period,
--		.enable = en,
--		.feature = BIT(BSS_INFO_BASIC),
--		.wmm_idx = mvif->wmm_idx,
--	};
-+		ntlv++;
-+	}
- 
- 	switch (vif->type) {
- 	case NL80211_IFTYPE_AP:
--		bss_info.bmc_tx_wlan_idx = mvif->sta.wcid.idx;
--		bss_info.network_type = NETWORK_INFRA;
--		bss_info.conn_type = CONNECTION_INFRA_AP;
-+		tx_wlan_idx = mvif->sta.wcid.idx;
-+		conn_type = CONNECTION_INFRA_AP;
- 		break;
- 	case NL80211_IFTYPE_STATION: {
--		/* find the unicast entry for sta mode bmc tx */
--		struct ieee80211_sta *ap_sta;
-+		struct ieee80211_sta *sta;
- 		struct mt7615_sta *msta;
- 
- 		rcu_read_lock();
- 
--		ap_sta = ieee80211_find_sta(vif, vif->bss_conf.bssid);
--		if (!ap_sta) {
-+		sta = ieee80211_find_sta(vif, vif->bss_conf.bssid);
-+		if (!sta) {
- 			rcu_read_unlock();
- 			return -EINVAL;
- 		}
- 
--		msta = (struct mt7615_sta *)ap_sta->drv_priv;
--		bss_info.bmc_tx_wlan_idx = msta->wcid.idx;
--		bss_info.network_type = NETWORK_INFRA;
--		bss_info.conn_type = CONNECTION_INFRA_STA;
-+		msta = (struct mt7615_sta *)sta->drv_priv;
-+		tx_wlan_idx = msta->wcid.idx;
-+		conn_type = CONNECTION_INFRA_STA;
- 
- 		rcu_read_unlock();
- 		break;
-@@ -832,15 +785,52 @@ int mt7615_mcu_set_bss_info(struct mt7615_dev *dev,
- 		WARN_ON(1);
- 		break;
- 	}
--	memcpy(bss_info.bssid, vif->bss_conf.bssid, ETH_ALEN);
- 
--	if (en) {
--		bss_info.feature |= BIT(BSS_INFO_OMAC);
--		if (mvif->omac_idx > EXT_BSSID_START)
--			bss_info.feature |= BIT(BSS_INFO_EXT_BSS);
-+	buf = kzalloc(len, GFP_KERNEL);
-+	if (!buf)
-+		return -ENOMEM;
-+
-+	hdr = (struct req_hdr *)buf;
-+	hdr->bss_idx = mvif->idx;
-+	hdr->tlv_num = cpu_to_le16(ntlv);
-+	hdr->is_tlv_append = 1;
-+
-+	data = buf + sizeof(*hdr);
-+	for (i = 0; i < BSS_INFO_MAX_NUM; i++) {
-+		int tag = ffs(features & BIT(i)) - 1;
-+
-+		switch (tag) {
-+		case BSS_INFO_OMAC:
-+			mt7615_mcu_bss_info_omac_header(mvif, data,
-+							conn_type);
-+			data += sizeof(struct bss_info_omac);
-+			break;
-+		case BSS_INFO_BASIC:
-+			mt7615_mcu_bss_info_basic_header(vif, data, net_type,
-+							 tx_wlan_idx, en);
-+			data += sizeof(struct bss_info_basic);
-+			break;
-+		case BSS_INFO_EXT_BSS:
-+			mt7615_mcu_bss_info_ext_header(mvif, data);
-+			data += sizeof(struct bss_info_ext_bss);
-+			break;
-+		default:
-+			break;
-+		}
-+	}
-+
-+	skb = mt7615_mcu_msg_alloc(buf, len);
-+	if (!skb) {
-+		ret = -ENOMEM;
-+		goto out;
- 	}
- 
--	return __mt7615_mcu_set_bss_info(dev, &bss_info);
-+	ret = mt7615_mcu_msg_send(dev, skb, MCU_EXT_CMD_BSS_INFO_UPDATE);
-+
-+out:
-+	kfree(buf);
-+
-+	return ret;
- }
- 
- static int
--- 
-2.20.1
+On Fri, May 3, 2019 at 3:22 PM Chris Chiu <chiu@endlessm.com> wrote:
+> Introduce watchdog to monitor signal then update the rate mask
+> accordingly. The rate mask update logic comes from the rtlwifi
+> refresh_rate_adaptive_mask() from different chips.
 
+You should expand your commit message here to summarise the key points
+in the cover letter. Specifically that matching this aspect of the
+vendor driver results in a significant TX performance increase which
+was previously stuck at 1mbps.
+
+> ---
+>  .../net/wireless/realtek/rtl8xxxu/rtl8xxxu.h  |   8 +
+>  .../realtek/rtl8xxxu/rtl8xxxu_8723b.c         | 151 ++++++++++++++++++
+>  .../wireless/realtek/rtl8xxxu/rtl8xxxu_core.c |  38 +++++
+>  3 files changed, 197 insertions(+)
+>
+> diff --git a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu.h b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu.h
+> index 771f58aa7cae..f97271951053 100644
+> --- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu.h
+> +++ b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu.h
+> @@ -1239,6 +1239,11 @@ struct rtl8xxxu_rate_adaptive {
+>         u8 rssi_level;          /* INIT, HIGH, MIDDLE, LOW */
+>  } __packed;
+>
+> +struct rtl8xxxu_watchdog {
+> +       struct ieee80211_vif *vif;
+> +       struct delayed_work ra_wq;
+> +};
+
+Having to store the vif address under the device-specific private
+structure may be a layering violation, but I'm not fully grasping how
+all this fits together. Can anyone from linux-wireless help?
+
+The existing rtl8xxxu_add_interface() code appears to allow multiple
+STA interfaces to be added. Does that imply that the hardware should
+support connecting to multiple APs on different channels? I'm pretty
+sure the hardware doesn't support that; if so we could do something
+similar to ar5523.c where it only allows a single vif, and can easily
+store that pointer in the device-specific structure.
+
+Or if there's a valid reason to support multiple vifs, then we need to
+figure out how to implement this watchdog. As shown below, the
+watchdog needs to know the supported rate info of the AP you are
+connected to, and the RSSI, and that comes from a specific vif. If
+multiple vifs are present, how would we know which one to choose for
+this rate adjustment?
+
+>  struct rtl8xxxu_priv {
+>         struct ieee80211_hw *hw;
+>         struct usb_device *udev;
+> @@ -1344,6 +1349,7 @@ struct rtl8xxxu_priv {
+>         u8 no_pape:1;
+>         u8 int_buf[USB_INTR_CONTENT_LENGTH];
+>         struct rtl8xxxu_rate_adaptive ra_info;
+> +       struct rtl8xxxu_watchdog watchdog;
+>  };
+>
+>  struct rtl8xxxu_rx_urb {
+> @@ -1380,6 +1386,8 @@ struct rtl8xxxu_fileops {
+>                               bool ht40);
+>         void (*update_rate_mask) (struct rtl8xxxu_priv *priv,
+>                                   u32 ramask, int sgi);
+> +       void (*refresh_rate_mask) (struct rtl8xxxu_priv *priv, int signal,
+> +                                  struct ieee80211_sta *sta);
+>         void (*report_connect) (struct rtl8xxxu_priv *priv,
+>                                 u8 macid, bool connect);
+>         void (*fill_txdesc) (struct ieee80211_hw *hw, struct ieee80211_hdr *hdr,
+> diff --git a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8723b.c b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8723b.c
+> index 26b674aca125..92c35afecae0 100644
+> --- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8723b.c
+> +++ b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8723b.c
+> @@ -1645,6 +1645,156 @@ static void rtl8723bu_init_statistics(struct rtl8xxxu_priv *priv)
+>         rtl8xxxu_write32(priv, REG_OFDM0_FA_RSTC, val32);
+>  }
+>
+> +static u8 rtl8723b_signal_to_rssi(int signal)
+> +{
+> +       if (signal < -95)
+> +               signal = -95;
+> +       return (u8)(signal + 95);
+> +}
+> +
+> +static void rtl8723b_refresh_rate_mask(struct rtl8xxxu_priv *priv,
+> +                                      int signal, struct ieee80211_sta *sta)
+> +{
+> +       struct rtl8xxxu_rate_adaptive *ra;
+> +       struct ieee80211_hw *hw = priv->hw;
+> +       u16 wireless_mode;
+> +       u8 rssi_level, ratr_index;
+> +       u8 txbw_40mhz;
+> +       u8 rssi, rssi_thresh_high, rssi_thresh_low;
+> +
+> +       ra = &priv->ra_info;
+> +       wireless_mode = ra->wireless_mode;
+> +       rssi_level = ra->rssi_level;
+> +       rssi = rtl8723b_signal_to_rssi(signal);
+> +       ratr_index = ra->ratr_index;
+> +       txbw_40mhz = (hw->conf.chandef.width == NL80211_CHAN_WIDTH_40)? 1 : 0;
+> +
+> +       switch (rssi_level) {
+> +       case RTL8XXXU_RATR_STA_HIGH:
+> +               rssi_thresh_high = 50;
+> +               rssi_thresh_low = 20;
+> +               break;
+> +       case RTL8XXXU_RATR_STA_MID:
+> +               rssi_thresh_high = 55;
+> +               rssi_thresh_low = 20;
+> +               break;
+> +       case RTL8XXXU_RATR_STA_LOW:
+> +               rssi_thresh_high = 60;
+> +               rssi_thresh_low = 25;
+> +               break;
+> +       default:
+> +               rssi_thresh_high = 50;
+> +               rssi_thresh_low = 20;
+> +               break;
+> +       }
+> +
+> +       if (rssi > rssi_thresh_high)
+> +               rssi_level = RTL8XXXU_RATR_STA_HIGH;
+> +       else if (rssi > rssi_thresh_low)
+> +               rssi_level = RTL8XXXU_RATR_STA_MID;
+> +       else
+> +               rssi_level = RTL8XXXU_RATR_STA_LOW;
+> +
+> +       if (rssi_level != ra->rssi_level) {
+> +               int sgi = 0;
+> +               u32 rate_bitmap = 0;
+> +
+> +               rcu_read_lock();
+> +               rate_bitmap = (sta->supp_rates[0] & 0xfff) |
+> +                             sta->ht_cap.mcs.rx_mask[0] << 12 |
+> +                              sta->ht_cap.mcs.rx_mask[1] << 20;
+> +               if (sta->ht_cap.cap &
+> +                   (IEEE80211_HT_CAP_SGI_40 | IEEE80211_HT_CAP_SGI_20))
+> +                       sgi = 1;
+> +               rcu_read_unlock();
+> +
+> +               switch (wireless_mode) {
+> +               case WIRELESS_MODE_B:
+> +                       ratr_index = RATEID_IDX_B;
+> +                       if (rate_bitmap & 0x0000000c)
+> +                               rate_bitmap &= 0x0000000d;
+> +                       else
+> +                               rate_bitmap &= 0x0000000f;
+> +                       break;
+> +               case WIRELESS_MODE_A:
+> +               case WIRELESS_MODE_G:
+> +                       ratr_index = RATEID_IDX_G;
+> +                       if (rssi_level == RTL8XXXU_RATR_STA_HIGH)
+> +                               rate_bitmap &= 0x00000f00;
+> +                       else
+> +                               rate_bitmap &= 0x00000ff0;
+> +                       break;
+> +               case (WIRELESS_MODE_B|WIRELESS_MODE_G):
+> +                       ratr_index = RATEID_IDX_BG;
+> +                       if (rssi_level == RTL8XXXU_RATR_STA_HIGH)
+> +                               rate_bitmap &= 0x00000f00;
+> +                       else if (rssi_level == RTL8XXXU_RATR_STA_MID)
+> +                               rate_bitmap &= 0x00000ff0;
+> +                       else
+> +                               rate_bitmap &= 0x00000ff5;
+> +                       break;
+> +               case WIRELESS_MODE_N_24G:
+> +               case WIRELESS_MODE_N_5G:
+> +               case (WIRELESS_MODE_G|WIRELESS_MODE_N_24G):
+> +               case (WIRELESS_MODE_A|WIRELESS_MODE_N_5G):
+> +                       if (priv->tx_paths == 2 && priv->rx_paths == 2)
+> +                               ratr_index = RATEID_IDX_GN_N2SS;
+> +                       else
+> +                               ratr_index = RATEID_IDX_GN_N1SS;
+> +               case (WIRELESS_MODE_B|WIRELESS_MODE_G|WIRELESS_MODE_N_24G):
+> +               case (WIRELESS_MODE_B|WIRELESS_MODE_N_24G):
+> +                       if (txbw_40mhz) {
+> +                               if (priv->tx_paths == 2 && priv->rx_paths == 2)
+> +                                       ratr_index = RATEID_IDX_BGN_40M_2SS;
+> +                               else
+> +                                       ratr_index = RATEID_IDX_BGN_40M_1SS;
+> +                       }
+> +                       else {
+> +                               if (priv->tx_paths == 2 && priv->rx_paths == 2)
+> +                                       ratr_index = RATEID_IDX_BGN_20M_2SS_BN;
+> +                               else
+> +                                       ratr_index = RATEID_IDX_BGN_20M_1SS_BN;
+> +                       }
+> +
+> +                       if (priv->tx_paths == 2 && priv->rx_paths == 2) {
+> +                               if (rssi_level == RTL8XXXU_RATR_STA_HIGH)
+> +                                       rate_bitmap &= 0x0f8f0000;
+> +                               else if (rssi_level == RTL8XXXU_RATR_STA_MID)
+> +                                       rate_bitmap &= 0x0f8ff000;
+> +                               else {
+> +                                       if (txbw_40mhz)
+> +                                               rate_bitmap &= 0x0f8ff015;
+> +                                       else
+> +                                               rate_bitmap &= 0x0f8ff005;
+> +                               }
+> +                       }
+> +                       else {
+> +                               if (rssi_level == RTL8XXXU_RATR_STA_HIGH)
+> +                                       rate_bitmap &= 0x000f0000;
+> +                               else if (rssi_level == RTL8XXXU_RATR_STA_MID)
+> +                                       rate_bitmap &= 0x000ff000;
+> +                               else {
+> +                                       if (txbw_40mhz)
+> +                                               rate_bitmap &= 0x000ff015;
+> +                                       else
+> +                                               rate_bitmap &= 0x000ff005;
+> +                               }
+> +                       }
+> +                       break;
+> +               default:
+> +                       ratr_index = RATEID_IDX_BGN_40M_2SS;
+> +                       rate_bitmap &= 0x0fffffff;
+> +                       break;
+> +               }
+> +
+> +               ra->ratr_index = ratr_index;
+> +               ra->rssi_level = rssi_level;
+> +               priv->fops->update_rate_mask(priv, rate_bitmap, sgi);
+> +       }
+> +
+> +       return;
+> +}
+> +
+>  struct rtl8xxxu_fileops rtl8723bu_fops = {
+>         .parse_efuse = rtl8723bu_parse_efuse,
+>         .load_firmware = rtl8723bu_load_firmware,
+> @@ -1665,6 +1815,7 @@ struct rtl8xxxu_fileops rtl8723bu_fops = {
+>         .usb_quirks = rtl8xxxu_gen2_usb_quirks,
+>         .set_tx_power = rtl8723b_set_tx_power,
+>         .update_rate_mask = rtl8xxxu_gen2_update_rate_mask,
+> +       .refresh_rate_mask = rtl8723b_refresh_rate_mask,
+>         .report_connect = rtl8xxxu_gen2_report_connect,
+>         .fill_txdesc = rtl8xxxu_fill_txdesc_v2,
+>         .writeN_block_size = 1024,
+> diff --git a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
+> index 360e9bd837e5..8db479986e97 100644
+> --- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
+> +++ b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
+> @@ -4565,6 +4565,7 @@ rtl8xxxu_bss_info_changed(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
+>                                 sgi = 1;
+>                         rcu_read_unlock();
+>
+> +                       priv->watchdog.vif = vif;
+>                         ra = &priv->ra_info;
+>                         ra->wireless_mode = rtl8xxxu_wireless_mode(hw, sta);
+>                         ra->ratr_index = RATEID_IDX_BGN_40M_2SS;
+> @@ -5822,6 +5823,38 @@ rtl8xxxu_ampdu_action(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
+>         return 0;
+>  }
+>
+> +static void rtl8xxxu_watchdog_callback(struct work_struct *work)
+> +{
+> +       struct ieee80211_vif *vif;
+> +       struct rtl8xxxu_watchdog *wdog;
+> +       struct rtl8xxxu_priv *priv;
+> +
+> +       wdog = container_of(work, struct rtl8xxxu_watchdog, ra_wq.work);
+> +       priv = container_of(wdog, struct rtl8xxxu_priv, watchdog);
+> +       vif = wdog->vif;
+> +
+> +       if (vif) {
+> +               int signal;
+> +               struct ieee80211_sta *sta;
+> +
+> +               rcu_read_lock();
+
+Can you explain the lock/unlock here?
+
+> +               sta = ieee80211_find_sta(vif, vif->bss_conf.bssid);
+> +               if (!sta) {
+> +                       struct device *dev = &priv->udev->dev;
+> +                       dev_info(dev, "%s: no sta found\n", __func__);
+
+Does this result in a kernel log message every 2 seconds when the wifi
+interface is not associated to an AP?
+
+> +                       rcu_read_unlock();
+> +                       return;
+> +               }
+> +               rcu_read_unlock();
+> +
+> +               signal = ieee80211_ave_rssi(vif);
+> +               if (priv->fops->refresh_rate_mask)
+> +                       priv->fops->refresh_rate_mask(priv, signal, sta);
+> +       }
+> +
+> +       schedule_delayed_work(&priv->watchdog.ra_wq, 2 * HZ);
+> +}
+> +
+>  static int rtl8xxxu_start(struct ieee80211_hw *hw)
+>  {
+>         struct rtl8xxxu_priv *priv = hw->priv;
+> @@ -5878,6 +5911,8 @@ static int rtl8xxxu_start(struct ieee80211_hw *hw)
+>
+>                 ret = rtl8xxxu_submit_rx_urb(priv, rx_urb);
+>         }
+> +
+> +       schedule_delayed_work(&priv->watchdog.ra_wq, 2* HZ);
+>  exit:
+>         /*
+>          * Accept all data and mgmt frames
+> @@ -6101,6 +6136,7 @@ static int rtl8xxxu_probe(struct usb_interface *interface,
+>         INIT_LIST_HEAD(&priv->rx_urb_pending_list);
+>         spin_lock_init(&priv->rx_urb_lock);
+>         INIT_WORK(&priv->rx_urb_wq, rtl8xxxu_rx_urb_work);
+> +       INIT_DELAYED_WORK(&priv->watchdog.ra_wq, rtl8xxxu_watchdog_callback);
+>
+>         usb_set_intfdata(interface, hw);
+>
+> @@ -6226,6 +6262,8 @@ static void rtl8xxxu_disconnect(struct usb_interface *interface)
+>         mutex_destroy(&priv->usb_buf_mutex);
+>         mutex_destroy(&priv->h2c_mutex);
+>
+> +       cancel_delayed_work_sync(&priv->watchdog.ra_wq);
+> +
+>         if (priv->udev->state != USB_STATE_NOTATTACHED) {
+>                 dev_info(&priv->udev->dev,
+>                          "Device still attached, trying to reset\n");
+> --
+> 2.21.0
+>
