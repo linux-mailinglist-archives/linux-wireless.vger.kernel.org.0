@@ -2,203 +2,413 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 1DCC318761
-	for <lists+linux-wireless@lfdr.de>; Thu,  9 May 2019 11:03:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0A43318793
+	for <lists+linux-wireless@lfdr.de>; Thu,  9 May 2019 11:18:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726415AbfEIJC6 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 9 May 2019 05:02:58 -0400
-Received: from mail-eopbgr690129.outbound.protection.outlook.com ([40.107.69.129]:25101
-        "EHLO NAM04-CO1-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1725847AbfEIJC6 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 9 May 2019 05:02:58 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cypress.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=KuIflwrXXHWNMyPOF/LbcAoYcDJtq9U1LahscHARRBE=;
- b=Cl0blMU6B9OXRaV5vRd6cDxtHOe40Ci5aKqyEQzQTXvRpVvkdGDP94NILNdj27VXNvTtg1fln8dwFVvfbhKzKmQWxlqhI2j0eRz6axCFQcdTraeqCmv1j9ImdfXtVQ8CAzFV2ma1yZsIRzRpXJ/gPFTxSxwjrrM2vgm6X8aem98=
-Received: from BN8PR06MB6291.namprd06.prod.outlook.com (20.178.215.213) by
- BN8PR06MB5540.namprd06.prod.outlook.com (20.178.210.148) with Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.1856.11; Thu, 9 May 2019 09:02:52 +0000
-Received: from BN8PR06MB6291.namprd06.prod.outlook.com
- ([fe80::65ff:9743:b958:8d65]) by BN8PR06MB6291.namprd06.prod.outlook.com
- ([fe80::65ff:9743:b958:8d65%7]) with mapi id 15.20.1856.012; Thu, 9 May 2019
- 09:02:52 +0000
-From:   Stanley Hsu <Stanley.Hsu@cypress.com>
-To:     Arend Van Spriel <arend.vanspriel@broadcom.com>
-CC:     Chi-Hsien Lin <Chi-Hsien.Lin@cypress.com>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "brcm80211-dev-list@broadcom.com" <brcm80211-dev-list@broadcom.com>,
-        brcm80211-dev-list <brcm80211-dev-list@cypress.com>,
-        Franky Lin <franky.lin@broadcom.com>,
-        Hante Meuleman <hante.meuleman@broadcom.com>,
-        Wright Feng <Wright.Feng@cypress.com>,
-        Kalle Valo <kvalo@codeaurora.org>
-Subject: Re: [PATCH 5/6] cfg80211: add support for SAE authentication offload
-Thread-Topic: [PATCH 5/6] cfg80211: add support for SAE authentication offload
-Thread-Index: AQHUo/RNj9f6v3v5e0G194Uvkb4gAqWe9CmAgMRP3gA=
-Date:   Thu, 9 May 2019 09:02:52 +0000
-Message-ID: <20190509090246.GC74912@aremote06.aus.cypress.com>
-References: <1546582221-143220-1-git-send-email-chi-hsien.lin@cypress.com>
- <1546582221-143220-5-git-send-email-chi-hsien.lin@cypress.com>
- <6c17fb65-d070-51d5-17cf-4d6788e8cbcb@broadcom.com>
-In-Reply-To: <6c17fb65-d070-51d5-17cf-4d6788e8cbcb@broadcom.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-clientproxiedby: BYAPR08CA0022.namprd08.prod.outlook.com
- (2603:10b6:a03:100::35) To BN8PR06MB6291.namprd06.prod.outlook.com
- (2603:10b6:408:57::21)
-authentication-results: spf=none (sender IP is )
- smtp.mailfrom=Stanley.Hsu@cypress.com; 
-x-ms-exchange-messagesentrepresentingtype: 1
-x-originating-ip: [12.110.209.245]
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: 1600d8e6-b10c-4842-7d41-08d6d45d1e00
-x-ms-office365-filtering-ht: Tenant
-x-microsoft-antispam: BCL:0;PCL:0;RULEID:(2390118)(7020095)(4652040)(8989299)(4534185)(4627221)(201703031133081)(201702281549075)(8990200)(5600141)(711020)(4605104)(4618075)(2017052603328)(7193020);SRVR:BN8PR06MB5540;
-x-ms-traffictypediagnostic: BN8PR06MB5540:
-x-microsoft-antispam-prvs: <BN8PR06MB55404C2A406AFD527B663A79F0330@BN8PR06MB5540.namprd06.prod.outlook.com>
-x-ms-oob-tlc-oobclassifiers: OLM:8273;
-x-forefront-prvs: 003245E729
-x-forefront-antispam-report: SFV:NSPM;SFS:(10019020)(136003)(366004)(39860400002)(376002)(396003)(346002)(51914003)(189003)(199004)(186003)(478600001)(4326008)(316002)(6916009)(66066001)(86362001)(8936002)(7736002)(305945005)(14454004)(26005)(72206003)(33656002)(6512007)(6246003)(6436002)(2906002)(54906003)(6116002)(71190400001)(3846002)(71200400001)(81156014)(8676002)(81166006)(476003)(486006)(11346002)(256004)(446003)(6486002)(53936002)(5024004)(14444005)(1076003)(76176011)(229853002)(44832011)(99286004)(68736007)(102836004)(66476007)(66556008)(64756008)(66446008)(73956011)(25786009)(386003)(6506007)(53546011)(52116002)(5660300002)(66946007);DIR:OUT;SFP:1102;SCL:1;SRVR:BN8PR06MB5540;H:BN8PR06MB6291.namprd06.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;MX:1;A:1;
-received-spf: None (protection.outlook.com: cypress.com does not designate
- permitted sender hosts)
-x-ms-exchange-senderadcheck: 1
-x-microsoft-antispam-message-info: vfm1qQBXjcNRsw8acpYNinS0xi1bQoLUqCT7BOwANhGe4y1YO3Ep5wXZC3sEaVGC69A7/ZUqSeZs88mQ0rnXzsdIBVL/f51URfumHy5au1CMfsopXlRn+f0L2Nlui+K5eCQ2dzc2sjwYsEEdD0SW8wOpwUPDjqrKPpT86cpYi7i2crrCyLryijmbeeJ2rr4yrxCcokUGT6+zGCDQHx2inRfgiIByAbKEpyLw30bKM/6cSrF/Su0QXkd9Tntdpz8OsfloNqsxetWWrVoLme90QA3cQT1sncFlO3+tA/3ubtv4ZWk6ioLrOSj9RGvbP1j7fXSmpWkeMx950NPK9YpTyc388VeMYhXWWILd/6mDe1MczZ3VUd4vCQndOYapGsr0wfo0o+vKc2+4NpIVs7kYtXsPoYkgkgybQgDQOhN0Btw=
-Content-Type: text/plain; charset="us-ascii"
-Content-ID: <DC5E14249658C844A61C02A6896C2BF5@namprd06.prod.outlook.com>
-Content-Transfer-Encoding: quoted-printable
+        id S1726526AbfEIJRy (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 9 May 2019 05:17:54 -0400
+Received: from mail-qk1-f196.google.com ([209.85.222.196]:39005 "EHLO
+        mail-qk1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725826AbfEIJRx (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 9 May 2019 05:17:53 -0400
+Received: by mail-qk1-f196.google.com with SMTP id z128so1002923qkb.6
+        for <linux-wireless@vger.kernel.org>; Thu, 09 May 2019 02:17:52 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=endlessm-com.20150623.gappssmtp.com; s=20150623;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=d5pv0PHtaywRf0p6FU0Md7Np/podTGV8Ipcy5/zKmG8=;
+        b=w3fNPOYmx+UHvoJE+Uf5q/2/xDkD6vaMGbLzSLSkmBHHdHv/8CO2s2LaG4NzAkWSIJ
+         gzD8Y8lJteFDuzb/9olpgknOWp20NlQGhq2sAYyzF39jV+DAETWgrORFBFURGT86/V7P
+         +6HOxvhwgwYdQjE+PfVGEXtzrEZJeb5NcUASEGtfRR11jc/tWrkfjZKYS1HpSn0dYKGi
+         tzuaXnd2hI8yMvGuDDeDaDvzEYV0KYikQCu5vZoc1CFeQcq7tiSliA5szM2WFUjaCDHu
+         /fseyL/mN2Zg2g2uzeYzgjcMmaCLFdPxr8gVwblbOcfUJjLDNvG1P2xoR5lYCSHs8UXO
+         84dw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=d5pv0PHtaywRf0p6FU0Md7Np/podTGV8Ipcy5/zKmG8=;
+        b=g7acPA46W1JZZVadyi8dvJCkWCJgVTesbx8kDnp+ZPLTrafGc1j/9VcxHTgoenohRP
+         LXBCwnxG7v0OvfNPAa6OXf9vEjtLvRULUUR+PY/vGxgBP/98O3tjsaTkleQYJWxD1d3I
+         zq9We+8gLzKgpVjaRbGuQLzMhRnWy1atZQCFnHTFfvwegikuAh+CC1b3hBC1VE+a3sZQ
+         moAbn2yv5MKyqr2x5I0KScbRWRhnBHf0s8REXAQA+wz5+u/s+lTLael8Lb32N94PILxx
+         eXTwE+LtOID++fyV9uHHvtta1nujmnlPQAk+Ogut+uesT/sbp67oS5E9NW1+8zp5x24d
+         Mhlw==
+X-Gm-Message-State: APjAAAUocoqpKsyn+t3xxNF14pfro4kJX6Uz2ulURkzUIm63akqTZY7t
+        jdE5OqKSLe2LSG8E9RFGekK53mcyX4vgJU6aKqGSuw==
+X-Google-Smtp-Source: APXvYqzXSaJ+63yxUcmxHyPPNY/LITdV3CqoNmrfoXw4tcMUfSziYHEoRQUhXWpqY/ikjgaPiE5JtvVGEJtTd25EVt0=
+X-Received: by 2002:a37:8d06:: with SMTP id p6mr2306723qkd.315.1557393472284;
+ Thu, 09 May 2019 02:17:52 -0700 (PDT)
 MIME-Version: 1.0
-X-OriginatorOrg: cypress.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 1600d8e6-b10c-4842-7d41-08d6d45d1e00
-X-MS-Exchange-CrossTenant-originalarrivaltime: 09 May 2019 09:02:52.4966
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 011addfc-2c09-450d-8938-e0bbc2dd2376
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BN8PR06MB5540
+References: <20190503072146.49999-1-chiu@endlessm.com> <20190503072146.49999-3-chiu@endlessm.com>
+ <CAD8Lp47_-6d2wCAs5QbuR6Mw2w91TyJ9W3kFiJHH4F_6dXqnHg@mail.gmail.com>
+In-Reply-To: <CAD8Lp47_-6d2wCAs5QbuR6Mw2w91TyJ9W3kFiJHH4F_6dXqnHg@mail.gmail.com>
+From:   Chris Chiu <chiu@endlessm.com>
+Date:   Thu, 9 May 2019 17:17:40 +0800
+Message-ID: <CAB4CAweQXz=wQGA5t7BwWYdwbRrHCji+BWc0G52SUcZFGc8Pnw@mail.gmail.com>
+Subject: Re: [RFC PATCH 2/2] rtl8xxxu: Add watchdog to update rate mask by
+ signal strength
+To:     Daniel Drake <drake@endlessm.com>
+Cc:     Jes Sorensen <jes.sorensen@gmail.com>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        David Miller <davem@davemloft.net>,
+        linux-wireless <linux-wireless@vger.kernel.org>,
+        netdev <netdev@vger.kernel.org>,
+        Linux Kernel <linux-kernel@vger.kernel.org>,
+        Linux Upstreaming Team <linux@endlessm.com>,
+        Larry Finger <Larry.Finger@lwfinger.net>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Fri, Jan 04, 2019 at 12:10:01PM +0100, Arend Van Spriel wrote:
-> On 1/4/2019 7:11 AM, Chi-Hsien Lin wrote:
-> >From: Chung-Hsien Hsu <stanley.hsu@cypress.com>
+On Thu, May 9, 2019 at 4:11 PM Daniel Drake <drake@endlessm.com> wrote:
+>
+> Hi Chris,
+>
+> Great work on finding this!
+>
+> On Fri, May 3, 2019 at 3:22 PM Chris Chiu <chiu@endlessm.com> wrote:
+> > Introduce watchdog to monitor signal then update the rate mask
+> > accordingly. The rate mask update logic comes from the rtlwifi
+> > refresh_rate_adaptive_mask() from different chips.
+>
+> You should expand your commit message here to summarise the key points
+> in the cover letter. Specifically that matching this aspect of the
+> vendor driver results in a significant TX performance increase which
+> was previously stuck at 1mbps.
+>
+> > ---
+> >  .../net/wireless/realtek/rtl8xxxu/rtl8xxxu.h  |   8 +
+> >  .../realtek/rtl8xxxu/rtl8xxxu_8723b.c         | 151 ++++++++++++++++++
+> >  .../wireless/realtek/rtl8xxxu/rtl8xxxu_core.c |  38 +++++
+> >  3 files changed, 197 insertions(+)
 > >
-> >Let drivers advertise support for station-mode SAE authentication
-> >offload with a new NL80211_EXT_FEATURE_SAE_OFFLOAD flag.
->
-> When touching nl80211 api I prefer 'nl80211:' prefix instead of 'cfg80211=
-:'.
-
-Thanks for the comment. Will change it in V2.
-
->
-> >Signed-off-by: Chung-Hsien Hsu <stanley.hsu@cypress.com>
-> >Signed-off-by: Chi-Hsien Lin <chi-hsien.lin@cypress.com>
-> >---
-> >  include/linux/ieee80211.h    |  1 +
-> >  include/net/cfg80211.h       |  5 +++++
-> >  include/uapi/linux/nl80211.h | 16 ++++++++++++++++
-> >  net/wireless/nl80211.c       | 14 ++++++++++++++
-> >  4 files changed, 36 insertions(+)
+> > diff --git a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu.h b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu.h
+> > index 771f58aa7cae..f97271951053 100644
+> > --- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu.h
+> > +++ b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu.h
+> > @@ -1239,6 +1239,11 @@ struct rtl8xxxu_rate_adaptive {
+> >         u8 rssi_level;          /* INIT, HIGH, MIDDLE, LOW */
+> >  } __packed;
 > >
-> >diff --git a/include/linux/ieee80211.h b/include/linux/ieee80211.h
-> >index 3b04e72315e1..37d3e655e547 100644
-> >--- a/include/linux/ieee80211.h
-> >+++ b/include/linux/ieee80211.h
-> >@@ -2596,6 +2596,7 @@ enum ieee80211_key_len {
-> >  #define FILS_ERP_MAX_RRK_LEN64
-> >  #define PMK_MAX_LEN64
-> >+#define SAE_PASSWORD_MAX_LEN128
-> >  /* Public action codes (IEEE Std 802.11-2016, 9.6.8.1, Table 9-307) */
-> >  enum ieee80211_pub_actioncode {
-> >diff --git a/include/net/cfg80211.h b/include/net/cfg80211.h
-> >index e0c41eb1c860..5809dac97b33 100644
-> >--- a/include/net/cfg80211.h
-> >+++ b/include/net/cfg80211.h
-> >@@ -740,6 +740,9 @@ struct survey_info {
-> >   *CFG80211_MAX_WEP_KEYS WEP keys
-> >   * @wep_tx_key: key index (0..3) of the default TX static WEP key
-> >   * @psk: PSK (for devices supporting 4-way-handshake offload)
-> >+ * @sae_pwd: password for SAE authentication (for devices supporting SA=
-E
-> >+ *offload)
-> >+ * @sae_pwd_len: length of SAE password (for devices supporting SAE off=
-load)
-> >   */
-> >  struct cfg80211_crypto_settings {
-> >  u32 wpa_versions;
-> >@@ -755,6 +758,8 @@ struct cfg80211_crypto_settings {
-> >  struct key_params *wep_keys;
-> >  int wep_tx_key;
-> >  const u8 *psk;
-> >+const u8 *sae_pwd;
-> >+u16 sae_pwd_len;
+> > +struct rtl8xxxu_watchdog {
+> > +       struct ieee80211_vif *vif;
+> > +       struct delayed_work ra_wq;
+> > +};
 >
-> Not really need u16 as max length is defined earlier as 128.
-
-It will be changed to u8 in V2.
-
+> Having to store the vif address under the device-specific private
+> structure may be a layering violation, but I'm not fully grasping how
+> all this fits together. Can anyone from linux-wireless help?
 >
+> The existing rtl8xxxu_add_interface() code appears to allow multiple
+> STA interfaces to be added. Does that imply that the hardware should
+> support connecting to multiple APs on different channels? I'm pretty
+> sure the hardware doesn't support that; if so we could do something
+> similar to ar5523.c where it only allows a single vif, and can easily
+> store that pointer in the device-specific structure.
+>
+> Or if there's a valid reason to support multiple vifs, then we need to
+> figure out how to implement this watchdog. As shown below, the
+> watchdog needs to know the supported rate info of the AP you are
+> connected to, and the RSSI, and that comes from a specific vif. If
+> multiple vifs are present, how would we know which one to choose for
+> this rate adjustment?
+>
+
+I need the vif because there's seems no easy way to get RSSI. Please
+suggest if there's any better idea for this. I believe multiple vifs is for AP
+mode (with more than 1 virtual AP/SSIDs) and the Station+AP coexist
+mode. But the rtl8xxxu driver basically supports only Station mode. So
+the vif helps get the RSSI. Or I will need to record the RSSI in
+rtl8xxxu_rx_parse_phystats() and store in rtl8xxxu_priv. That's a little
+nasty. Maybe someone can point out how to retrieve the RSSI from
+specific register or which part of code in rtlwifi I can use to get the
+undecorated signal strength.
+
+> >  struct rtl8xxxu_priv {
+> >         struct ieee80211_hw *hw;
+> >         struct usb_device *udev;
+> > @@ -1344,6 +1349,7 @@ struct rtl8xxxu_priv {
+> >         u8 no_pape:1;
+> >         u8 int_buf[USB_INTR_CONTENT_LENGTH];
+> >         struct rtl8xxxu_rate_adaptive ra_info;
+> > +       struct rtl8xxxu_watchdog watchdog;
 > >  };
-> >  /**
-> >diff --git a/include/uapi/linux/nl80211.h b/include/uapi/linux/nl80211.h
-> >index 12762afb3a07..4840aaed39ba 100644
-> >--- a/include/uapi/linux/nl80211.h
-> >+++ b/include/uapi/linux/nl80211.h
-> >@@ -235,6 +235,15 @@
-> >   */
-> >  /**
-> >+ * DOC: SAE authentication offload
-> >+ *
-> >+ * By setting @NL80211_EXT_FEATURE_SAE_OFFLOAD flag drivers can indicat=
-e they
-> >+ * support offloading SAE authentication for WPA3-Personal networks. In
-> >+ * %NL80211_CMD_CONNECT the password for SAE should be specified using
-> >+ * %NL80211_ATTR_SAE_PASSWORD.
-> >+ */
-> >+
-> >+/**
-> >   * enum nl80211_commands - supported nl80211 commands
-> >   *
-> >   * @NL80211_CMD_UNSPEC: unspecified command to catch errors
-> >@@ -2288,6 +2297,9 @@ enum nl80211_commands {
-> >   *
-> >   * @NL80211_ATTR_FTM_RESPONDER_STATS: Nested attribute with FTM respon=
-der
-> >   *statistics, see &enum nl80211_ftm_responder_stats.
-> >+ * @NL80211_ATTR_SAE_PASSWORD: attribute for passing SAE password mater=
-ial. It
-> >+ *is used with %NL80211_CMD_CONNECT to provide password for offloading
-> >+ *SAE authentication for WPA3-Personal networks.
-> >   *
-> >   * @NL80211_ATTR_TIMEOUT: Timeout for the given operation in milliseco=
-nds (u32),
-> >   *if the attribute is not given no timeout is requested. Note that 0 i=
-s an
-> >@@ -2743,6 +2755,7 @@ enum nl80211_attrs {
-> >  NL80211_ATTR_FTM_RESPONDER,
-> >  NL80211_ATTR_FTM_RESPONDER_STATS,
-> >+NL80211_ATTR_SAE_PASSWORD,
+> >
+> >  struct rtl8xxxu_rx_urb {
+> > @@ -1380,6 +1386,8 @@ struct rtl8xxxu_fileops {
+> >                               bool ht40);
+> >         void (*update_rate_mask) (struct rtl8xxxu_priv *priv,
+> >                                   u32 ramask, int sgi);
+> > +       void (*refresh_rate_mask) (struct rtl8xxxu_priv *priv, int signal,
+> > +                                  struct ieee80211_sta *sta);
+> >         void (*report_connect) (struct rtl8xxxu_priv *priv,
+> >                                 u8 macid, bool connect);
+> >         void (*fill_txdesc) (struct ieee80211_hw *hw, struct ieee80211_hdr *hdr,
+> > diff --git a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8723b.c b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8723b.c
+> > index 26b674aca125..92c35afecae0 100644
+> > --- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8723b.c
+> > +++ b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8723b.c
+> > @@ -1645,6 +1645,156 @@ static void rtl8723bu_init_statistics(struct rtl8xxxu_priv *priv)
+> >         rtl8xxxu_write32(priv, REG_OFDM0_FA_RSTC, val32);
+> >  }
+> >
+> > +static u8 rtl8723b_signal_to_rssi(int signal)
+> > +{
+> > +       if (signal < -95)
+> > +               signal = -95;
+> > +       return (u8)(signal + 95);
+> > +}
+> > +
+> > +static void rtl8723b_refresh_rate_mask(struct rtl8xxxu_priv *priv,
+> > +                                      int signal, struct ieee80211_sta *sta)
+> > +{
+> > +       struct rtl8xxxu_rate_adaptive *ra;
+> > +       struct ieee80211_hw *hw = priv->hw;
+> > +       u16 wireless_mode;
+> > +       u8 rssi_level, ratr_index;
+> > +       u8 txbw_40mhz;
+> > +       u8 rssi, rssi_thresh_high, rssi_thresh_low;
+> > +
+> > +       ra = &priv->ra_info;
+> > +       wireless_mode = ra->wireless_mode;
+> > +       rssi_level = ra->rssi_level;
+> > +       rssi = rtl8723b_signal_to_rssi(signal);
+> > +       ratr_index = ra->ratr_index;
+> > +       txbw_40mhz = (hw->conf.chandef.width == NL80211_CHAN_WIDTH_40)? 1 : 0;
+> > +
+> > +       switch (rssi_level) {
+> > +       case RTL8XXXU_RATR_STA_HIGH:
+> > +               rssi_thresh_high = 50;
+> > +               rssi_thresh_low = 20;
+> > +               break;
+> > +       case RTL8XXXU_RATR_STA_MID:
+> > +               rssi_thresh_high = 55;
+> > +               rssi_thresh_low = 20;
+> > +               break;
+> > +       case RTL8XXXU_RATR_STA_LOW:
+> > +               rssi_thresh_high = 60;
+> > +               rssi_thresh_low = 25;
+> > +               break;
+> > +       default:
+> > +               rssi_thresh_high = 50;
+> > +               rssi_thresh_low = 20;
+> > +               break;
+> > +       }
+> > +
+> > +       if (rssi > rssi_thresh_high)
+> > +               rssi_level = RTL8XXXU_RATR_STA_HIGH;
+> > +       else if (rssi > rssi_thresh_low)
+> > +               rssi_level = RTL8XXXU_RATR_STA_MID;
+> > +       else
+> > +               rssi_level = RTL8XXXU_RATR_STA_LOW;
+> > +
+> > +       if (rssi_level != ra->rssi_level) {
+> > +               int sgi = 0;
+> > +               u32 rate_bitmap = 0;
+> > +
+> > +               rcu_read_lock();
+> > +               rate_bitmap = (sta->supp_rates[0] & 0xfff) |
+> > +                             sta->ht_cap.mcs.rx_mask[0] << 12 |
+> > +                              sta->ht_cap.mcs.rx_mask[1] << 20;
+> > +               if (sta->ht_cap.cap &
+> > +                   (IEEE80211_HT_CAP_SGI_40 | IEEE80211_HT_CAP_SGI_20))
+> > +                       sgi = 1;
+> > +               rcu_read_unlock();
+> > +
+> > +               switch (wireless_mode) {
+> > +               case WIRELESS_MODE_B:
+> > +                       ratr_index = RATEID_IDX_B;
+> > +                       if (rate_bitmap & 0x0000000c)
+> > +                               rate_bitmap &= 0x0000000d;
+> > +                       else
+> > +                               rate_bitmap &= 0x0000000f;
+> > +                       break;
+> > +               case WIRELESS_MODE_A:
+> > +               case WIRELESS_MODE_G:
+> > +                       ratr_index = RATEID_IDX_G;
+> > +                       if (rssi_level == RTL8XXXU_RATR_STA_HIGH)
+> > +                               rate_bitmap &= 0x00000f00;
+> > +                       else
+> > +                               rate_bitmap &= 0x00000ff0;
+> > +                       break;
+> > +               case (WIRELESS_MODE_B|WIRELESS_MODE_G):
+> > +                       ratr_index = RATEID_IDX_BG;
+> > +                       if (rssi_level == RTL8XXXU_RATR_STA_HIGH)
+> > +                               rate_bitmap &= 0x00000f00;
+> > +                       else if (rssi_level == RTL8XXXU_RATR_STA_MID)
+> > +                               rate_bitmap &= 0x00000ff0;
+> > +                       else
+> > +                               rate_bitmap &= 0x00000ff5;
+> > +                       break;
+> > +               case WIRELESS_MODE_N_24G:
+> > +               case WIRELESS_MODE_N_5G:
+> > +               case (WIRELESS_MODE_G|WIRELESS_MODE_N_24G):
+> > +               case (WIRELESS_MODE_A|WIRELESS_MODE_N_5G):
+> > +                       if (priv->tx_paths == 2 && priv->rx_paths == 2)
+> > +                               ratr_index = RATEID_IDX_GN_N2SS;
+> > +                       else
+> > +                               ratr_index = RATEID_IDX_GN_N1SS;
+> > +               case (WIRELESS_MODE_B|WIRELESS_MODE_G|WIRELESS_MODE_N_24G):
+> > +               case (WIRELESS_MODE_B|WIRELESS_MODE_N_24G):
+> > +                       if (txbw_40mhz) {
+> > +                               if (priv->tx_paths == 2 && priv->rx_paths == 2)
+> > +                                       ratr_index = RATEID_IDX_BGN_40M_2SS;
+> > +                               else
+> > +                                       ratr_index = RATEID_IDX_BGN_40M_1SS;
+> > +                       }
+> > +                       else {
+> > +                               if (priv->tx_paths == 2 && priv->rx_paths == 2)
+> > +                                       ratr_index = RATEID_IDX_BGN_20M_2SS_BN;
+> > +                               else
+> > +                                       ratr_index = RATEID_IDX_BGN_20M_1SS_BN;
+> > +                       }
+> > +
+> > +                       if (priv->tx_paths == 2 && priv->rx_paths == 2) {
+> > +                               if (rssi_level == RTL8XXXU_RATR_STA_HIGH)
+> > +                                       rate_bitmap &= 0x0f8f0000;
+> > +                               else if (rssi_level == RTL8XXXU_RATR_STA_MID)
+> > +                                       rate_bitmap &= 0x0f8ff000;
+> > +                               else {
+> > +                                       if (txbw_40mhz)
+> > +                                               rate_bitmap &= 0x0f8ff015;
+> > +                                       else
+> > +                                               rate_bitmap &= 0x0f8ff005;
+> > +                               }
+> > +                       }
+> > +                       else {
+> > +                               if (rssi_level == RTL8XXXU_RATR_STA_HIGH)
+> > +                                       rate_bitmap &= 0x000f0000;
+> > +                               else if (rssi_level == RTL8XXXU_RATR_STA_MID)
+> > +                                       rate_bitmap &= 0x000ff000;
+> > +                               else {
+> > +                                       if (txbw_40mhz)
+> > +                                               rate_bitmap &= 0x000ff015;
+> > +                                       else
+> > +                                               rate_bitmap &= 0x000ff005;
+> > +                               }
+> > +                       }
+> > +                       break;
+> > +               default:
+> > +                       ratr_index = RATEID_IDX_BGN_40M_2SS;
+> > +                       rate_bitmap &= 0x0fffffff;
+> > +                       break;
+> > +               }
+> > +
+> > +               ra->ratr_index = ratr_index;
+> > +               ra->rssi_level = rssi_level;
+> > +               priv->fops->update_rate_mask(priv, rate_bitmap, sgi);
+> > +       }
+> > +
+> > +       return;
+> > +}
+> > +
+> >  struct rtl8xxxu_fileops rtl8723bu_fops = {
+> >         .parse_efuse = rtl8723bu_parse_efuse,
+> >         .load_firmware = rtl8723bu_load_firmware,
+> > @@ -1665,6 +1815,7 @@ struct rtl8xxxu_fileops rtl8723bu_fops = {
+> >         .usb_quirks = rtl8xxxu_gen2_usb_quirks,
+> >         .set_tx_power = rtl8723b_set_tx_power,
+> >         .update_rate_mask = rtl8xxxu_gen2_update_rate_mask,
+> > +       .refresh_rate_mask = rtl8723b_refresh_rate_mask,
+> >         .report_connect = rtl8xxxu_gen2_report_connect,
+> >         .fill_txdesc = rtl8xxxu_fill_txdesc_v2,
+> >         .writeN_block_size = 1024,
+> > diff --git a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
+> > index 360e9bd837e5..8db479986e97 100644
+> > --- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
+> > +++ b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
+> > @@ -4565,6 +4565,7 @@ rtl8xxxu_bss_info_changed(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
+> >                                 sgi = 1;
+> >                         rcu_read_unlock();
+> >
+> > +                       priv->watchdog.vif = vif;
+> >                         ra = &priv->ra_info;
+> >                         ra->wireless_mode = rtl8xxxu_wireless_mode(hw, sta);
+> >                         ra->ratr_index = RATEID_IDX_BGN_40M_2SS;
+> > @@ -5822,6 +5823,38 @@ rtl8xxxu_ampdu_action(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
+> >         return 0;
+> >  }
+> >
+> > +static void rtl8xxxu_watchdog_callback(struct work_struct *work)
+> > +{
+> > +       struct ieee80211_vif *vif;
+> > +       struct rtl8xxxu_watchdog *wdog;
+> > +       struct rtl8xxxu_priv *priv;
+> > +
+> > +       wdog = container_of(work, struct rtl8xxxu_watchdog, ra_wq.work);
+> > +       priv = container_of(wdog, struct rtl8xxxu_priv, watchdog);
+> > +       vif = wdog->vif;
+> > +
+> > +       if (vif) {
+> > +               int signal;
+> > +               struct ieee80211_sta *sta;
+> > +
+> > +               rcu_read_lock();
 >
-> Marcel already commented on this. These enumerations are ABI. You
-> should also change the nl80211_policy to assure the max length
-> SAE_PASSWORD_MAX_LEN is not exceeded.
+> Can you explain the lock/unlock here?
+>
 
-It will be moved to the bottom. The corresponding change in
-nl80211_policy has been made.
+Actually it may not be mandatory because the sta_info_get_bss()
+will do this inside ieee80211_find_sta().
 
-Regards,
-Chung-Hsien
+> > +               sta = ieee80211_find_sta(vif, vif->bss_conf.bssid);
+> > +               if (!sta) {
+> > +                       struct device *dev = &priv->udev->dev;
+> > +                       dev_info(dev, "%s: no sta found\n", __func__);
+>
+> Does this result in a kernel log message every 2 seconds when the wifi
+> interface is not associated to an AP?
+
+Yes. It prints every 2 seconds if not associated.
 
 >
-> Gr. AvS
-
-This message and any attachments may contain confidential information from =
-Cypress or its subsidiaries. If it has been received in error, please advis=
-e the sender and immediately delete this message.
+> > +                       rcu_read_unlock();
+> > +                       return;
+> > +               }
+> > +               rcu_read_unlock();
+> > +
+> > +               signal = ieee80211_ave_rssi(vif);
+> > +               if (priv->fops->refresh_rate_mask)
+> > +                       priv->fops->refresh_rate_mask(priv, signal, sta);
+> > +       }
+> > +
+> > +       schedule_delayed_work(&priv->watchdog.ra_wq, 2 * HZ);
+> > +}
+> > +
+> >  static int rtl8xxxu_start(struct ieee80211_hw *hw)
+> >  {
+> >         struct rtl8xxxu_priv *priv = hw->priv;
+> > @@ -5878,6 +5911,8 @@ static int rtl8xxxu_start(struct ieee80211_hw *hw)
+> >
+> >                 ret = rtl8xxxu_submit_rx_urb(priv, rx_urb);
+> >         }
+> > +
+> > +       schedule_delayed_work(&priv->watchdog.ra_wq, 2* HZ);
+> >  exit:
+> >         /*
+> >          * Accept all data and mgmt frames
+> > @@ -6101,6 +6136,7 @@ static int rtl8xxxu_probe(struct usb_interface *interface,
+> >         INIT_LIST_HEAD(&priv->rx_urb_pending_list);
+> >         spin_lock_init(&priv->rx_urb_lock);
+> >         INIT_WORK(&priv->rx_urb_wq, rtl8xxxu_rx_urb_work);
+> > +       INIT_DELAYED_WORK(&priv->watchdog.ra_wq, rtl8xxxu_watchdog_callback);
+> >
+> >         usb_set_intfdata(interface, hw);
+> >
+> > @@ -6226,6 +6262,8 @@ static void rtl8xxxu_disconnect(struct usb_interface *interface)
+> >         mutex_destroy(&priv->usb_buf_mutex);
+> >         mutex_destroy(&priv->h2c_mutex);
+> >
+> > +       cancel_delayed_work_sync(&priv->watchdog.ra_wq);
+> > +
+> >         if (priv->udev->state != USB_STATE_NOTATTACHED) {
+> >                 dev_info(&priv->udev->dev,
+> >                          "Device still attached, trying to reset\n");
+> > --
+> > 2.21.0
+> >
