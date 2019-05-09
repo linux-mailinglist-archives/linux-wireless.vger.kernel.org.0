@@ -2,157 +2,127 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 3EA6D18694
-	for <lists+linux-wireless@lfdr.de>; Thu,  9 May 2019 10:12:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 72AA41870E
+	for <lists+linux-wireless@lfdr.de>; Thu,  9 May 2019 10:52:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726734AbfEIILi (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 9 May 2019 04:11:38 -0400
-Received: from mail-qk1-f195.google.com ([209.85.222.195]:43967 "EHLO
-        mail-qk1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726720AbfEIILh (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 9 May 2019 04:11:37 -0400
-Received: by mail-qk1-f195.google.com with SMTP id z6so70947qkl.10
-        for <linux-wireless@vger.kernel.org>; Thu, 09 May 2019 01:11:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=endlessm-com.20150623.gappssmtp.com; s=20150623;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=MZ9j8DW6C0QPBPihBypnn3DlkomTOJO7L08Uqx5vJYU=;
-        b=HHGeg5nTEZtwEihgdWHuHLbrIH9mh0jmv2zT7N0nIbOS1yqrPGZ2oFF/SS3Mfox+Ua
-         kEE3TnCfDG6KOYuxxu41TjHEZcHan75RCtjB4NNkc5SbI/60fMcRJD8xAWPNyn0N7zRg
-         bZrLmt53b43Ac/AXmG3idX2X83a6knJF3Y41TYfk7LqV+JHK7pHRPI/VKXw2hqmJtwaM
-         7+5Pripdq3aP16Kxu8SYSw1phMZpr9uBzFEYRIN2vMB5Z00zQQ+Cb/I/SqhG/D/T3pFP
-         ct9nyhk/MCwyWZttZ2Hv2IYBdLBJAfEfi2cljj2ixY4Rb27iULi317KtEKem1Hy3vzT2
-         OU5w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=MZ9j8DW6C0QPBPihBypnn3DlkomTOJO7L08Uqx5vJYU=;
-        b=TQ+sc/8SBq0aSaMTjjXGXAMvedO43rHr+hbajpQupMUsO3uTSHtsMxFEKg17BpxAFH
-         rIeFwER9j8F4Pry30joTR4itHSkMz1UZ+DYKEbRkB3t2EodZi1iIO0scCdmeonwpl/+i
-         m+FiQuPGw4y5WwjVMeTonbhmXOOt7imzGd//UYN1iByTpfZL+csVUqk/pL6fb3ENYGbl
-         TTjg4jgL93XbMLcKYASRBvychMrkWRh2spqH0WUEwAm7simr5yaQmGq+5hogYFeOkttU
-         N4N21E5LWeiCIwCsPGb6dfl8GH5iR55/8B5TS8XJ6zXwHi/9uh8IQJtNDl4r7Bhw2vY1
-         iOCA==
-X-Gm-Message-State: APjAAAU4YGwCBhBzpVbTRorwALH5gJSf9yZPMhi58tHaytC5Jl2RYL60
-        E83cvUGNmlpU+3dLSW1RCkb30OSCl7Oh6YyGKPg87A==
-X-Google-Smtp-Source: APXvYqxWvqXBsvrh/XSSgmp5AEHQq9IidEJZXlP3PpzWVoV6Col2TMUYGWzcFEYtr9kCGTdGZaUw1Q7Ip/ofVuVlSz8=
-X-Received: by 2002:ae9:dcc3:: with SMTP id q186mr2136160qkf.114.1557389496781;
- Thu, 09 May 2019 01:11:36 -0700 (PDT)
+        id S1726078AbfEIIwD (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 9 May 2019 04:52:03 -0400
+Received: from mail-eopbgr750091.outbound.protection.outlook.com ([40.107.75.91]:59909
+        "EHLO NAM02-BL2-obe.outbound.protection.outlook.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1725869AbfEIIwD (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 9 May 2019 04:52:03 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cypress.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=65+CC/gJg9AqSo8nUjTIFW4TFPIljsFCkeYMBfp2pE8=;
+ b=N4rz8NPxFu5fvXV56QUWc/PXmMBzsq0MCHa3VkT08lqpomJ0Xd5J34V8osme5Iftmw6JRGSIX2ZqNsUrATfDTQfYbDzOAxhCIyDWs44Ai8sgZfaQuLzaXRk+yJua4CN6Op9vwPDtoMXaR3MRZfrEGCyheoF3obDk+hX5gGfDRwA=
+Received: from BN8PR06MB6291.namprd06.prod.outlook.com (20.178.215.213) by
+ BN8PR06MB6242.namprd06.prod.outlook.com (20.178.216.89) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.1878.22; Thu, 9 May 2019 08:51:45 +0000
+Received: from BN8PR06MB6291.namprd06.prod.outlook.com
+ ([fe80::65ff:9743:b958:8d65]) by BN8PR06MB6291.namprd06.prod.outlook.com
+ ([fe80::65ff:9743:b958:8d65%7]) with mapi id 15.20.1856.012; Thu, 9 May 2019
+ 08:51:45 +0000
+From:   Stanley Hsu <Stanley.Hsu@cypress.com>
+To:     Arend Van Spriel <arend.vanspriel@broadcom.com>
+CC:     Chi-Hsien Lin <Chi-Hsien.Lin@cypress.com>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        "brcm80211-dev-list@broadcom.com" <brcm80211-dev-list@broadcom.com>,
+        brcm80211-dev-list <brcm80211-dev-list@cypress.com>,
+        Franky Lin <franky.lin@broadcom.com>,
+        Hante Meuleman <hante.meuleman@broadcom.com>,
+        Wright Feng <Wright.Feng@cypress.com>,
+        Kalle Valo <kvalo@codeaurora.org>
+Subject: Re: [PATCH 1/6] nl80211: add NL80211_ATTR_IFINDEX to port authorized
+ event
+Thread-Topic: [PATCH 1/6] nl80211: add NL80211_ATTR_IFINDEX to port authorized
+ event
+Thread-Index: AQHUo/RIrwg9QxtW2Uu4Zr8hlj6YTaWe7vCAgMRR8IA=
+Date:   Thu, 9 May 2019 08:51:45 +0000
+Message-ID: <20190509085128.GA74912@aremote06.aus.cypress.com>
+References: <1546582221-143220-1-git-send-email-chi-hsien.lin@cypress.com>
+ <c8927d9e-09fc-e707-35b3-33a71966b29d@broadcom.com>
+In-Reply-To: <c8927d9e-09fc-e707-35b3-33a71966b29d@broadcom.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-clientproxiedby: SN6PR2101CA0013.namprd21.prod.outlook.com
+ (2603:10b6:805:106::23) To BN8PR06MB6291.namprd06.prod.outlook.com
+ (2603:10b6:408:57::21)
+authentication-results: spf=none (sender IP is )
+ smtp.mailfrom=Stanley.Hsu@cypress.com; 
+x-ms-exchange-messagesentrepresentingtype: 1
+x-originating-ip: [12.110.209.245]
+x-ms-publictraffictype: Email
+x-ms-office365-filtering-correlation-id: ac425831-ad00-4940-4a4a-08d6d45b9054
+x-ms-office365-filtering-ht: Tenant
+x-microsoft-antispam: BCL:0;PCL:0;RULEID:(2390118)(7020095)(4652040)(8989299)(4534185)(4627221)(201703031133081)(201702281549075)(8990200)(5600141)(711020)(4605104)(4618075)(2017052603328)(7193020);SRVR:BN8PR06MB6242;
+x-ms-traffictypediagnostic: BN8PR06MB6242:
+x-microsoft-antispam-prvs: <BN8PR06MB6242B5D7C06EFE3DDE797175F0330@BN8PR06MB6242.namprd06.prod.outlook.com>
+x-ms-oob-tlc-oobclassifiers: OLM:5516;
+x-forefront-prvs: 003245E729
+x-forefront-antispam-report: SFV:NSPM;SFS:(10019020)(39860400002)(346002)(376002)(136003)(366004)(396003)(189003)(199004)(51914003)(305945005)(33656002)(7736002)(73956011)(11346002)(81166006)(446003)(66946007)(71200400001)(71190400001)(5660300002)(229853002)(81156014)(6916009)(8936002)(8676002)(6116002)(256004)(3846002)(6246003)(68736007)(5024004)(14444005)(2906002)(25786009)(4326008)(44832011)(14454004)(6486002)(6436002)(476003)(486006)(53936002)(72206003)(6512007)(478600001)(316002)(54906003)(66066001)(102836004)(52116002)(26005)(53546011)(86362001)(6506007)(386003)(76176011)(1076003)(99286004)(186003)(66446008)(64756008)(66556008)(66476007);DIR:OUT;SFP:1102;SCL:1;SRVR:BN8PR06MB6242;H:BN8PR06MB6291.namprd06.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;MX:1;A:1;
+received-spf: None (protection.outlook.com: cypress.com does not designate
+ permitted sender hosts)
+x-ms-exchange-senderadcheck: 1
+x-microsoft-antispam-message-info: mxIjPbnJ3lkPfkRS2CaEiX5omGQexl3acxah9sivwbahUZk13iGCduh5GCHL44sebp/hkbhhOj2MM8NjMt11czeZvhKeRfADdvVwnckFsmsKXsplYGA333SNT9VN5OmVU2LPSyekbp5k/iBHoljtjQkSTxrlVS7q03tCo3OVVc3bo5Ncryn459fUg4mtm0P3TrE1P+K96GcMIvBVAMOL/DDNW+1ypY9K2ziK8xJOlGQmac9Wr3isxYNl+Td2geZ1XCCE0kR4NBZPqRCjKLgcGsAP1bbcCDepMaP96oWz3xKEmuPF8fX4hUREBVvTAsKCE55NcHXkspqOLzWT6SQpst35Y3JbfoG2FoAv4Ufr/kWNkmwv3+h7vfjCCr4NbQWz3WM4aV5KtaRFAiqu0Um7XB7RteZCHlfFuiEvaeEd/H0=
+Content-Type: text/plain; charset="us-ascii"
+Content-ID: <F8AF6D632CEC2D4AB852E230CD0F7C18@namprd06.prod.outlook.com>
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-References: <20190503072146.49999-1-chiu@endlessm.com> <20190503072146.49999-2-chiu@endlessm.com>
-In-Reply-To: <20190503072146.49999-2-chiu@endlessm.com>
-From:   Daniel Drake <drake@endlessm.com>
-Date:   Thu, 9 May 2019 16:11:25 +0800
-Message-ID: <CAD8Lp45WmPz2c+OnszFyaRL=veF0avEffwv3muwXNoeLcE0fhw@mail.gmail.com>
-Subject: Re: [RFC PATCH 1/2] rtl8xxxu: Add rate adaptive related data
-To:     Chris Chiu <chiu@endlessm.com>
-Cc:     jes.sorensen@gmail.com, Kalle Valo <kvalo@codeaurora.org>,
-        David Miller <davem@davemloft.net>,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        netdev <netdev@vger.kernel.org>,
-        Linux Kernel <linux-kernel@vger.kernel.org>,
-        Linux Upstreaming Team <linux@endlessm.com>,
-        Larry Finger <Larry.Finger@lwfinger.net>
-Content-Type: text/plain; charset="UTF-8"
+X-OriginatorOrg: cypress.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: ac425831-ad00-4940-4a4a-08d6d45b9054
+X-MS-Exchange-CrossTenant-originalarrivaltime: 09 May 2019 08:51:45.3536
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 011addfc-2c09-450d-8938-e0bbc2dd2376
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BN8PR06MB6242
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi Chris,
-
-Thanks for this! Some suggestions below, although let me know if any
-don't make sense.
-
-On Fri, May 3, 2019 at 3:22 PM Chris Chiu <chiu@endlessm.com> wrote:
+On Fri, Jan 04, 2019 at 11:51:19AM +0100, Arend Van Spriel wrote:
+> On 1/4/2019 7:11 AM, Chi-Hsien Lin wrote:
+> >From: Chung-Hsien Hsu <stanley.hsu@cypress.com>
+> >
+> >Add NL80211_ATTR_IFINDEX attribute to port authorized event to indicate
+> >the operating interface of the device.
+> >
+> >Signed-off-by: Chung-Hsien Hsu <stanley.hsu@cypress.com>
+> >Signed-off-by: Chi-Hsien Lin <chi-hsien.lin@cypress.com>
+> >---
+> >  net/wireless/nl80211.c | 3 ++-
+> >  1 file changed, 2 insertions(+), 1 deletion(-)
+> >
+> >diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
+> >index 5e49492d5911..594aeba2982a 100644
+> >--- a/net/wireless/nl80211.c
+> >+++ b/net/wireless/nl80211.c
+> >@@ -14727,7 +14727,8 @@ void nl80211_send_port_authorized(struct cfg8021=
+1_registered_device *rdev,
+> >  return;
+> >  }
+> >-if (nla_put(msg, NL80211_ATTR_MAC, ETH_ALEN, bssid))
+> >+if (nla_put_u32(msg, NL80211_ATTR_IFINDEX, netdev->ifindex) ||
+> >+    nla_put(msg, NL80211_ATTR_MAC, ETH_ALEN, bssid))
+> >  goto nla_put_failure;
 >
-> Add wireless mode, signal strength level, and rate table index
-> to tell the firmware that we need to adjust the tx rate bitmap
-> accordingly.
-> ---
->  .../net/wireless/realtek/rtl8xxxu/rtl8xxxu.h  | 45 +++++++++++++++++++
->  .../wireless/realtek/rtl8xxxu/rtl8xxxu_core.c | 45 ++++++++++++++++++-
->  2 files changed, 89 insertions(+), 1 deletion(-)
+> Maybe also put NL80211_ATTR_WIPHY in the notification to be
+> consistent with the other MLME notifications.
+
+Thanks for the comment. Will include it in V2.
+
+Regards,
+Chung-Hsien
 >
-> diff --git a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu.h b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu.h
-> index 8828baf26e7b..771f58aa7cae 100644
-> --- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu.h
-> +++ b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu.h
-> @@ -1195,6 +1195,50 @@ struct rtl8723bu_c2h {
->
->  struct rtl8xxxu_fileops;
->
-> +/*mlme related.*/
-> +enum wireless_mode {
-> +       WIRELESS_MODE_UNKNOWN = 0,
-> +       //Sub-Element
+> Regards,
+> Arend
 
-Run these patches through checkpatch.pl, it'll have some suggestions
-to bring the coding style in line, for example not using // style
-comments.
-
-> +       WIRELESS_MODE_B = BIT(0), // tx: cck only , rx: cck only, hw: cck
-> +       WIRELESS_MODE_G = BIT(1), // tx: ofdm only, rx: ofdm & cck, hw: cck & ofdm
-> +       WIRELESS_MODE_A = BIT(2), // tx: ofdm only, rx: ofdm only, hw: ofdm only
-> +       WIRELESS_MODE_N_24G = BIT(3), // tx: MCS only, rx: MCS & cck, hw: MCS & cck
-> +       WIRELESS_MODE_N_5G = BIT(4), // tx: MCS only, rx: MCS & ofdm, hw: ofdm only
-> +       WIRELESS_AUTO = BIT(5),
-> +       WIRELESS_MODE_AC = BIT(6),
-> +       WIRELESS_MODE_MAX = (WIRELESS_MODE_B|WIRELESS_MODE_G|WIRELESS_MODE_A|WIRELESS_MODE_N_24G|WIRELESS_MODE_N_5G|WIRELESS_MODE_AC),
-> +};
-> +
-> +/* from rtlwifi/wifi.h */
-> +enum ratr_table_mode_new {
-> +        RATEID_IDX_BGN_40M_2SS = 0,
-> +        RATEID_IDX_BGN_40M_1SS = 1,
-> +        RATEID_IDX_BGN_20M_2SS_BN = 2,
-> +        RATEID_IDX_BGN_20M_1SS_BN = 3,
-> +        RATEID_IDX_GN_N2SS = 4,
-> +        RATEID_IDX_GN_N1SS = 5,
-> +        RATEID_IDX_BG = 6,
-> +        RATEID_IDX_G = 7,
-> +        RATEID_IDX_B = 8,
-> +        RATEID_IDX_VHT_2SS = 9,
-> +        RATEID_IDX_VHT_1SS = 10,
-> +        RATEID_IDX_MIX1 = 11,
-> +        RATEID_IDX_MIX2 = 12,
-> +        RATEID_IDX_VHT_3SS = 13,
-> +        RATEID_IDX_BGN_3SS = 14,
-> +};
-> +
-> +#define RTL8XXXU_RATR_STA_INIT 0
-> +#define RTL8XXXU_RATR_STA_HIGH 1
-> +#define RTL8XXXU_RATR_STA_MID  2
-> +#define RTL8XXXU_RATR_STA_LOW  3
-> +
-> +struct rtl8xxxu_rate_adaptive {
-> +       u16 wireless_mode;
-> +       u8 ratr_index;
-> +       u8 rssi_level;          /* INIT, HIGH, MIDDLE, LOW */
-> +} __packed;
-
-It would be better/cleaner to avoid storing data in per-device
-structures if at all possible.
-
-For wireless_mode, I think you should just call
-rtl8xxxu_wireless_mode() every time from rtl8723b_refresh_rate_mask().
-The work done there is simple (i.e. it's not expensive to call) and
-then we avoid having to store data (which might become stale etc).
-
-For ratr_index, I believe you can just make it a parameter passed to
-rtl8xxxu_gen2_update_rate_mask which is the only consumer of this
-variable. The two callsites (rtl8xxxu_bss_info_changed and
-rtl8723b_refresh_rate_mask) already know which value they want to be
-used.
-
-rssi_level is the one that you probably do want to store, since I see
-the logic in patch 2 - if the rssi level hasn't changed then you don't
-need to set the rate mask again, and that's a good idea since it
-reduces bus traffic. You could move this into rtl8xxxu_priv rather
-than having its own separate structure.
-
-After making those changes it might even make sense to collapse this
-all into a single patch; you can judge!
+This message and any attachments may contain confidential information from =
+Cypress or its subsidiaries. If it has been received in error, please advis=
+e the sender and immediately delete this message.
