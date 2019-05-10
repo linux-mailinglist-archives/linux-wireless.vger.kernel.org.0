@@ -2,160 +2,93 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B2EE1195F9
-	for <lists+linux-wireless@lfdr.de>; Fri, 10 May 2019 02:17:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 532AD198AD
+	for <lists+linux-wireless@lfdr.de>; Fri, 10 May 2019 09:02:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726802AbfEJAR2 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 9 May 2019 20:17:28 -0400
-Received: from [66.55.73.32] ([66.55.73.32]:51484 "EHLO
-        ushosting.nmnhosting.com" rhost-flags-FAIL-FAIL-OK-OK)
-        by vger.kernel.org with ESMTP id S1726694AbfEJAR1 (ORCPT
+        id S1726972AbfEJHCD (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 10 May 2019 03:02:03 -0400
+Received: from smtp.codeaurora.org ([198.145.29.96]:45300 "EHLO
+        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726855AbfEJHCC (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 9 May 2019 20:17:27 -0400
-Received: from mail2.nmnhosting.com (unknown [202.169.106.97])
-        by ushosting.nmnhosting.com (Postfix) with ESMTPS id B6DC82DC0070;
-        Thu,  9 May 2019 20:17:22 -0400 (EDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=d-silva.org;
-        s=201810a; t=1557447443;
-        bh=rJY0+D6TdRtTv0MtwykFJbYOSu46lpL7vkuRS2Zg75k=;
-        h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
-        b=FgHPIPlYLmuLNtrMoQ1JdXOJBzIramXRU528FDdwgmUbYDUSurbrKOmk66MlGYzGl
-         0ruDR9MsmWn6Wa1JGtiiUa7MDmH9NnRiXxafLrfVNihMUrJYoUiQlr9ZF1I4HIM0PV
-         bZ9W5c9BAYVyzA9PfwGf5o+hGD2hYyBjKLixvrQ1vno4Whs2Nw5LmAFMtjJBE96JB5
-         3A/TpZPKlUH/LZ9QviX5sPNxejvENaMBIYUal2Z2Hup4BijYTYYiF1F+eWLEYbhMu2
-         YBrAElUv44shUa1aHwy6Pfl3sYtAppFsneNmta4kToubNSSN/EMWCAgt+GOmMNuiZU
-         dScx2/r4DfVPHVsLyA/C0IlAGJW5xx1NFqr3GJcu3u2ljmH/j2VABFWX8mKiViOjya
-         UMzCeSKOTZj7GhaZKQ4wNLMdnnGeX0xRzwZxBPPwQPpa98wFjqGa4P4+HDIkphprBS
-         cLR2rNyVdb5sI8TuETSE/d/sK5ExHhfuWol5Jk5PXVNE/IO16n6e0dCf3bBoCa8bTw
-         zs4jlO1owv47NzN5dYrbV7R3mEfn3Wk/R8zsonqePsZtnUOe/9EZUeGRp5ITrVsRIK
-         bdLoMtcOXzpm23UAwIN2Fr4caFvxOuuMjHxqg9nDMraA52HHWsxcudXZEv+JQvxYxU
-         WRl4Hh/Ieej3f+hWeieXK7mA=
-Received: from adsilva.ozlabs.ibm.com (static-82-10.transact.net.au [122.99.82.10] (may be forged))
-        (authenticated bits=0)
-        by mail2.nmnhosting.com (8.15.2/8.15.2) with ESMTPSA id x4A0GhJ3030327
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NO);
-        Fri, 10 May 2019 10:17:01 +1000 (AEST)
-        (envelope-from alastair@d-silva.org)
-Message-ID: <80e51facb280e96018a4220adf8efa6fac823a94.camel@d-silva.org>
-Subject: Re: [PATCH v2 3/7] lib/hexdump.c: Optionally suppress lines of
- repeated bytes
-From:   "Alastair D'Silva" <alastair@d-silva.org>
-To:     Randy Dunlap <rdunlap@infradead.org>
-Cc:     linux-fbdev@vger.kernel.org,
-        Stanislaw Gruszka <sgruszka@redhat.com>,
-        Petr Mladek <pmladek@suse.com>,
-        David Airlie <airlied@linux.ie>,
-        Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
-        dri-devel@lists.freedesktop.org, devel@driverdev.osuosl.org,
-        linux-scsi@vger.kernel.org, Jassi Brar <jassisinghbrar@gmail.com>,
-        ath10k@lists.infradead.org, intel-gfx@lists.freedesktop.org,
-        Dan Carpenter <dan.carpenter@oracle.com>,
-        Jose Abreu <Jose.Abreu@synopsys.com>,
-        Tom Lendacky <thomas.lendacky@amd.com>,
-        "James E.J. Bottomley" <jejb@linux.ibm.com>,
-        Jani Nikula <jani.nikula@linux.intel.com>,
-        linux-fsdevel@vger.kernel.org,
-        Steven Rostedt <rostedt@goodmis.org>,
-        Rodrigo Vivi <rodrigo.vivi@intel.com>,
-        Benson Leung <bleung@chromium.org>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        Karsten Keil <isdn@linux-pingi.de>,
-        "Martin K. Petersen" <martin.petersen@oracle.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Sergey Senozhatsky <sergey.senozhatsky@gmail.com>,
-        David Laight <David.Laight@ACULAB.COM>,
-        Daniel Vetter <daniel@ffwll.ch>, netdev@vger.kernel.org,
-        Enric Balletbo i Serra <enric.balletbo@collabora.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Alexander Viro <viro@zeniv.linux.org.uk>
-Date:   Fri, 10 May 2019 10:16:42 +1000
-In-Reply-To: <dc093079-43a0-0a45-f5dd-88b20702fd93@infradead.org>
-References: <20190508070148.23130-1-alastair@au1.ibm.com>
-         <20190508070148.23130-4-alastair@au1.ibm.com>
-         <dc093079-43a0-0a45-f5dd-88b20702fd93@infradead.org>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.32.1 (3.32.1-1.fc30) 
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-X-Greylist: Sender succeeded SMTP AUTH, not delayed by milter-greylist-4.6.2 (mail2.nmnhosting.com [10.0.1.20]); Fri, 10 May 2019 10:17:17 +1000 (AEST)
+        Fri, 10 May 2019 03:02:02 -0400
+Received: by smtp.codeaurora.org (Postfix, from userid 1000)
+        id E4D46607EB; Fri, 10 May 2019 07:02:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
+        s=default; t=1557471721;
+        bh=jOTxeffynwtDEKNRNC1OxZc+a8+J8mZ7VRSufbn91VU=;
+        h=From:To:Cc:Subject:Date:From;
+        b=bArGWL9nJ66fYJj7+WZZ3ygFZH0RM7D4Z7nht3etTIzG/CiAZ4pQonmD/cm+Hdf7E
+         dLC8hd68qQXZ4xvLVQHN1+G8SCpBSA+6+NimHoDr90TFnWbjtVxQmVOPuitKptC4R7
+         maq0EB1zXdUP3zOHtqVjVGRJxy3rLFnbVL611j7o=
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        pdx-caf-mail.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.7 required=2.0 tests=ALL_TRUSTED,BAYES_00,
+        DKIM_INVALID,DKIM_SIGNED autolearn=no autolearn_force=no version=3.4.0
+Received: from ybzhao-Latitude-E5440.ap.qualcomm.com (unknown [180.166.53.21])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-SHA256 (128/128 bits))
+        (No client certificate requested)
+        (Authenticated sender: yiboz@codeaurora.org)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 00A8F6076C;
+        Fri, 10 May 2019 07:01:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
+        s=default; t=1557471721;
+        bh=jOTxeffynwtDEKNRNC1OxZc+a8+J8mZ7VRSufbn91VU=;
+        h=From:To:Cc:Subject:Date:From;
+        b=bArGWL9nJ66fYJj7+WZZ3ygFZH0RM7D4Z7nht3etTIzG/CiAZ4pQonmD/cm+Hdf7E
+         dLC8hd68qQXZ4xvLVQHN1+G8SCpBSA+6+NimHoDr90TFnWbjtVxQmVOPuitKptC4R7
+         maq0EB1zXdUP3zOHtqVjVGRJxy3rLFnbVL611j7o=
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 00A8F6076C
+Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=yiboz@codeaurora.org
+From:   Yibo Zhao <yiboz@codeaurora.org>
+To:     linux-wireless@vger.kernel.org
+Cc:     ath10k@lists.infradead.org, Yibo Zhao <yiboz@codeaurora.org>,
+        Zhi Chen <zhichen@codeaurora.org>
+Subject: [PATCH] mac80211: remove warning message
+Date:   Fri, 10 May 2019 15:01:02 +0800
+Message-Id: <1557471662-1355-1-git-send-email-yiboz@codeaurora.org>
+X-Mailer: git-send-email 1.9.1
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Wed, 2019-05-08 at 17:58 -0700, Randy Dunlap wrote:
-> On 5/8/19 12:01 AM, Alastair D'Silva wrote:
-> > From: Alastair D'Silva <alastair@d-silva.org>
-> > 
-> > Some buffers may only be partially filled with useful data, while
-> > the rest
-> > is padded (typically with 0x00 or 0xff).
-> > 
-> > This patch introduces a flag to allow the supression of lines of
-> > repeated
-> > bytes, which are replaced with '** Skipped %u bytes of value 0x%x
-> > **'
-> > 
-> > An inline wrapper function is provided for backwards compatibility
-> > with
-> > existing code, which maintains the original behaviour.
-> > 
-> > Signed-off-by: Alastair D'Silva <alastair@d-silva.org>
-> > ---
-> >  include/linux/printk.h | 25 +++++++++---
-> >  lib/hexdump.c          | 91 ++++++++++++++++++++++++++++++++++++
-> > ------
-> >  2 files changed, 99 insertions(+), 17 deletions(-)
-> > 
-> 
-> Hi,
-> Did you do "make htmldocs" or something similar on this?
-> 
-> > diff --git a/lib/hexdump.c b/lib/hexdump.c
-> > index 3943507bc0e9..d61a1e4f19fa 100644
-> > --- a/lib/hexdump.c
-> > +++ b/lib/hexdump.c
-> > @@ -212,8 +212,44 @@ int hex_dump_to_buffer(const void *buf, size_t
-> > len, int rowsize, int groupsize,
-> >  EXPORT_SYMBOL(hex_dump_to_buffer);
-> >  
-> >  #ifdef CONFIG_PRINTK
-> > +
-> > +/**
-> > + * Check if a buffer contains only a single byte value
-> > + * @buf: pointer to the buffer
-> > + * @len: the size of the buffer in bytes
-> > + * @val: outputs the value if if the bytes are identical
-> 
-> Does this work without a function name?
-> Documentation/doc-guide/kernel-doc.rst says the general format is:
-> 
->   /**
->    * function_name() - Brief description of function.
->    * @arg1: Describe the first argument.
->    * @arg2: Describe the second argument.
->    *        One can provide multiple line descriptions
->    *        for arguments.
->    *
-> 
-> > + */
-> >  /**
-> > - * print_hex_dump - print a text hex dump to syslog for a binary
-> > blob of data
-> > + * print_hex_dump_ext: dump a binary blob of data to syslog in
-> > hexadecimal
-> 
-> Also not in the general documented format.
-> 
+In multiple SSID cases, it takes time to prepare every AP interface
+to be ready in initializing phase. If a sta already knows everything it
+needs to join one of the APs and sends authentication to the AP which
+is not fully prepared at this point of time, AP's channel context
+could be NULL. As a result, warning message occurs.
 
-Thanks Randy, I'll address these.
+Even worse, if the AP is under attack via tools such as MDK3 and massive
+authentication requests are received in a very short time, console will
+be hung due to kernel warning messages.
 
+If this case can be hit during normal functionality, there should be no
+WARN_ON(). Those should be reserved to cases that are not supposed to be
+hit at all or some other more specific cases like indicating obsolete
+interface.
+
+Signed-off-by: Zhi Chen <zhichen@codeaurora.org>
+Signed-off-by: Yibo Zhao <yiboz@codeaurora.org>
+---
+ net/mac80211/ieee80211_i.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/net/mac80211/ieee80211_i.h b/net/mac80211/ieee80211_i.h
+index 2ae0364..f39c289 100644
+--- a/net/mac80211/ieee80211_i.h
++++ b/net/mac80211/ieee80211_i.h
+@@ -1435,7 +1435,7 @@ struct ieee80211_local {
+ 	rcu_read_lock();
+ 	chanctx_conf = rcu_dereference(sdata->vif.chanctx_conf);
+ 
+-	if (WARN_ON_ONCE(!chanctx_conf)) {
++	if (!chanctx_conf) {
+ 		rcu_read_unlock();
+ 		return NULL;
+ 	}
 -- 
-Alastair D'Silva           mob: 0423 762 819
-skype: alastair_dsilva    
-Twitter: @EvilDeece
-blog: http://alastair.d-silva.org
-
+1.9.1
 
