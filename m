@@ -2,98 +2,281 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 8D80319F46
-	for <lists+linux-wireless@lfdr.de>; Fri, 10 May 2019 16:34:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DCDA21A1B1
+	for <lists+linux-wireless@lfdr.de>; Fri, 10 May 2019 18:40:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728017AbfEJOee (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 10 May 2019 10:34:34 -0400
-Received: from mail-lf1-f54.google.com ([209.85.167.54]:39898 "EHLO
-        mail-lf1-f54.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727248AbfEJOed (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 10 May 2019 10:34:33 -0400
-Received: by mail-lf1-f54.google.com with SMTP id f1so4308504lfl.6
-        for <linux-wireless@vger.kernel.org>; Fri, 10 May 2019 07:34:32 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=to:from:subject:message-id:date:user-agent:mime-version
-         :content-transfer-encoding:content-language;
-        bh=FSvmskLf5GBVtS5ttSj3/IPhe6ZWfD/DXpP9Pb8ZXTc=;
-        b=ibFzl7qEHgzJMy/rW8QjaV8zrCRiER/L1MgLHFaf9iJh3P2CGkdwsL4pnLGfl7Ro6l
-         zmG/EQCzWbEBmQiOgju+8jCO9dNDwANKg0y8MJVIq8Ks/34gmyWItqyqBy/uhswZzWpM
-         x2yhncbZFGork6ApCZo2DSfyEilw3BqPOD+E2A7HbKhlc/B9WEaEFKeT2ICjZ+DzLXev
-         qfXk3n9L4YfcPUGKEq0oAiwRCFRS28/7ayv+OfX7DA76e7uPqhUlxu7uMKQygoXIfLnl
-         wVC3SeUR+kbX2cXS0cPO3Z9Fvtb8BtayM9AMXaFDb4/MH6RyM1VCK09y5emiiERQk5fK
-         1xhQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:to:from:subject:message-id:date:user-agent
-         :mime-version:content-transfer-encoding:content-language;
-        bh=FSvmskLf5GBVtS5ttSj3/IPhe6ZWfD/DXpP9Pb8ZXTc=;
-        b=M3QkE03lIfX49G9gMsOLT1w8YNHdX+7rN3VOBEtBaa4tcFrE3qVn9qany+QsQRW8VP
-         WxVONNkk1ygbxB5ZLQBJu001os6XCshIl5xutl8zXUrv1QDn98OQDBzSNDDJ0WGqlhCR
-         f/u2IjWNK0GemVgG88ZvBOX+2A6w0E/wNY98S9Di0zRk8osUBAifDoaa7dH8oTjG2HTN
-         qB29usrv6wzHBYhpb87XpEuIyqint+wAvbCyVvQA7z529fCSGwbwmZH0sOMDuNHdDU37
-         P9P/eLrWvmx/iTwec7sFAdi9+NhpNCDeRnXKYFi2RUFnJzzgjbcWT08hbUVlZnwtbxc3
-         I9Ug==
-X-Gm-Message-State: APjAAAWE8IOQ11cn0A1jxcnvhUOEf8++jJOBOMuPmmNrlVUfFq7qY0pQ
-        0CQWM/FJdeuG6iU1k16rnxmvBbgd
-X-Google-Smtp-Source: APXvYqxqF0mZT+/yXKpUlpxuNMG60/Ba/NTIALyogKPdF7LRpflXn6IolHJ/Csniv1f5Kuta5+XWuQ==
-X-Received: by 2002:ac2:4205:: with SMTP id y5mr6111439lfh.15.1557498871354;
-        Fri, 10 May 2019 07:34:31 -0700 (PDT)
-Received: from [192.168.1.120] (host-176-36-255-241.la.net.ua. [176.36.255.241])
-        by smtp.gmail.com with ESMTPSA id o7sm1403336lfl.13.2019.05.10.07.34.30
-        for <linux-wireless@vger.kernel.org>
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Fri, 10 May 2019 07:34:30 -0700 (PDT)
-To:     linux-wireless@vger.kernel.org
-From:   Andy Lavr <andy.lavr@gmail.com>
-Subject: mainline kernel brcmfmac regression
-Message-ID: <6ba17e5c-0afc-ef53-8869-907bea1cc1c4@gmail.com>
-Date:   Fri, 10 May 2019 17:34:29 +0300
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.6.1
+        id S1727660AbfEJQks (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 10 May 2019 12:40:48 -0400
+Received: from mga02.intel.com ([134.134.136.20]:2811 "EHLO mga02.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727496AbfEJQks (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 10 May 2019 12:40:48 -0400
+X-Amp-Result: UNSCANNABLE
+X-Amp-File-Uploaded: False
+Received: from orsmga005.jf.intel.com ([10.7.209.41])
+  by orsmga101.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 10 May 2019 09:40:33 -0700
+X-ExtLoop1: 1
+Received: from smile.fi.intel.com (HELO smile) ([10.237.72.86])
+  by orsmga005.jf.intel.com with ESMTP; 10 May 2019 09:40:31 -0700
+Received: from andy by smile with local (Exim 4.92)
+        (envelope-from <andriy.shevchenko@linux.intel.com>)
+        id 1hP8ZS-0005uv-7S; Fri, 10 May 2019 19:40:30 +0300
+Date:   Fri, 10 May 2019 19:40:30 +0300
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To:     Sedat Dilek <sedat.dilek@gmail.com>
+Cc:     Samuel Ortiz <sameo@linux.intel.com>, linux-nfc@lists.01.org,
+        linux-wireless@vger.kernel.org,
+        Cristian Sovaiala <cristian.sovaiala@nxp.com>,
+        jgeslin <jeremy.geslin@nxp.com>,
+        Oleg Zhurakivskyy <oleg.zhurakivskyy@intel.com>
+Subject: Re: ThinkPad T470 and NXP PN5xx (PN547 or PN548)
+Message-ID: <20190510164030.GG9224@smile.fi.intel.com>
+References: <CA+icZUX+VNtk00YQnNYCnDeeH2Onq6s1vbdzYrv-OHf7q186Ww@mail.gmail.com>
+ <CA+icZUX1N9zK_SGN-OyDVbZ1Jq9EjRxpOfQ0Oe0iSDwuEaJRfg@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-Content-Language: ru-RU
+In-Reply-To: <CA+icZUX1N9zK_SGN-OyDVbZ1Jq9EjRxpOfQ0Oe0iSDwuEaJRfg@mail.gmail.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi,
+(+Cc: Oleg)
+
+On Fri, May 10, 2019 at 09:43:29AM +0200, Sedat Dilek wrote:
+> On Thu, May 9, 2019 at 3:46 PM Sedat Dilek <sedat.dilek@gmail.com> wrote:
+> >
+> > Hi,
+> >
+> > I am here on Debian/buster AMD64 and Linux v5.1 final.
+> >
+> > I have successfully installed and tested the NXP NFC driver from
+> > Lenovo under Windows 10 as a first step (see [1] and [2]).
+> >
+> > As a testcase I used my YubiKey which was recognized via NFC and I
+> > could automatically register at the YubiKey demo website.
+> >
+> > Under Linux v5.1 I have activated all sort of CONFIG_NFC_XXX as
+> > modules if available (see below and attached files).
+> >
+> > I am not sure if I need to load the PN544 (I2C) driver?
+> >
+> > I can see in /sys ...
+> >
+> > # cd /sys/bus/i2c/devices/i2c-NXP1001:00
+
+> > The NXP NFC Windows driver lists (I have both firmware files copied to Linux)...
+> > [Firmware.CopyFiles]
+> > NXPPN548FW.DAT
+> > NXPPN547FW.DAT
+
+First of all it seems the driver lacks of ID. And the ID seems odd.
+Looking for this ID in tables I see mention of NXP NPC100. The driver is
+drivers/nfc/nxp-nci for it.
+
+> > Last question: Do I need these firmware files installed?
+> > Rename them?
+> > Which directory - /lib/firmware?
+> >
+> > I ran out of ideas...
+> >
+> > Do you need more informations?
+> >
+> > I have attached my linux-config and the dmesg output.
+> >
+> > Thanks in advance.
+> >
+> > Kind regards,
+> > - Sedat -
+> >
+> > [1] https://pcsupport.lenovo.com/us/de/products/laptops-and-netbooks/thinkpad-t-series-laptops/thinkpad-t470/downloads
+> > [2] https://download.lenovo.com/pccbbs/mobiles/n1qnb04w.txt
+> > [3] https://github.com/NXPNFCLinux/linux_libnfc-nci
+> > [4] https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/Documentation/nfc/nfc-hci.txt
+> > [5] https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/Documentation/nfc/nfc-pn544.txt
+> >
+> > P.S.: Some interesting outputs and files
+> >
+> > [ LINUX-CONFIG ]
+> >
+> > $ grep NFC /boot/config-5.1.0-1-amd64-cbl-asmgoto | sort
+> > CONFIG_IP_VS_NFCT=y
+> > CONFIG_MLX5_EN_RXNFC=y
+> > CONFIG_NFC_DIGITAL=m
+> > CONFIG_NFC_FDP_I2C=m
+> > CONFIG_NFC_FDP=m
+> > CONFIG_NFC_HCI=m
+> > CONFIG_NFC=m
+> > CONFIG_NFC_MEI_PHY=m
+> > CONFIG_NFC_MICROREAD_I2C=m
+> > CONFIG_NFC_MICROREAD=m
+> > CONFIG_NFC_MICROREAD_MEI=m
+> > CONFIG_NFC_MRVL_I2C=m
+> > CONFIG_NFC_MRVL=m
+> > CONFIG_NFC_MRVL_SPI=m
+> > CONFIG_NFC_MRVL_UART=m
+> > CONFIG_NFC_MRVL_USB=m
+> > CONFIG_NFC_NCI=m
+> > CONFIG_NFC_NCI_SPI=m
+> > CONFIG_NFC_NCI_UART=m
+> > CONFIG_NFC_NXP_NCI_I2C=m
+> > CONFIG_NFC_NXP_NCI=m
+> > CONFIG_NFC_PN533_I2C=m
+> > CONFIG_NFC_PN533=m
+> > CONFIG_NFC_PN533_USB=m
+> > CONFIG_NFC_PN544_I2C=m
+> > CONFIG_NFC_PN544=m
+> > CONFIG_NFC_PN544_MEI=m
+> > CONFIG_NFC_PORT100=m
+> > CONFIG_NFC_S3FWRN5_I2C=m
+> > CONFIG_NFC_S3FWRN5=m
+> > CONFIG_NFC_SHDLC=y
+> > CONFIG_NFC_SIM=m
+> > CONFIG_NFC_ST21NFCA_I2C=m
+> > CONFIG_NFC_ST21NFCA=m
+> > CONFIG_NFC_ST95HF=m
+> > CONFIG_NFC_ST_NCI_I2C=m
+> > CONFIG_NFC_ST_NCI=m
+> > CONFIG_NFC_ST_NCI_SPI=m
+> > CONFIG_NFC_TRF7970A=m
+> > # Near Field Communication (NFC) devices
+> >
+> > [ WINDOWS 10 INF DRIVER ]
+> >
+> > $ cat NxpNfcClientDriver.inf
+> > ��;
+> > ; NxpNfcClientDriver.inf
+> > ;
+> >
+> > [Version]
+> > Signature="$Windows NT$"
+> > Class=Proximity
+> > ClassGuid={5630831C-06C9-4856-B327-F5D32586E060}
+> > Provider=%ManufacturerName%
+> > CatalogFile=NxpNfcClientDriver.cat
+> > DriverVer=03/30/2018,12.0.3.0
+> >
+> > [Manufacturer]
+> > %ManufacturerName%=Standard,NTamd64
+> >
+> > [Standard.NTamd64]
+> > %DeviceName%=MyDevice_Install,ACPI\NXP1000
+> > %DeviceName%=MyDevice_Install,ACPI\NXP1001
+> > %DeviceName%=MyDevice_Install,ACPI\NXP1002
+> > %DeviceName%=MyDevice_Install,ACPI\NXP1003
+> > %DeviceName%=MyDevice_Install,ACPI\NXP7471
+> > %DeviceName%=MyDevice_Install,ACPI\NXP8013
+> > %DeviceName%=MyDevice_Install,ACPI\NXP3001
+> >
+> > [SourceDisksNames]
+> > 1=%DiskName%
+> >
+> > [SourceDisksFiles]
+> > NxpNfcClientDriver.dll=1
+> > NXPPN548FW.DAT=1
+> > NXPPN547FW.DAT=1
+> >
+> > ; =================== UMDF Device ==================================
+> >
+> > [MyDevice_Install.NT]
+> > CopyFiles=UMDriverCopy,Firmware.CopyFiles
+> > AddReg=NxpNfpProviderProximityCustomValuesRegister
+> >
+> > [MyDevice_Install.NT.hw]
+> > AddReg=NxpNfcClientDriver_AddReg
+> >
+> > [MyDevice_Install.NT.Services]
+> > AddService=WUDFRd,0x000001fa,WUDFRD_ServiceInstall
+> >
+> > [MyDevice_Install.NT.CoInstallers]
+> > AddReg=CoInstallers_AddReg
+> >
+> > [MyDevice_Install.NT.Wdf]
+> > UmdfService=NxpNfcClientDriver,NxpNfcClientDriver_Install
+> > UmdfServiceOrder=NxpNfcClientDriver
+> > UmdfDirectHardwareAccess=AllowDirectHardwareAccess
+> > UmdfFileObjectPolicy=AllowNullAndUnknownFileObjects
+> > UmdfImpersonationLevel=Impersonation
+> >
+> > [NxpNfcClientDriver_Install]
+> > UmdfLibraryVersion=2.0.0
+> > ServiceBinary=%12%\UMDF\NxpNfcClientDriver.dll
+> > UmdfExtensions=NfcCx0102
+> >
+> > [NxpNfcClientDriver_AddReg]
+> > HKR,FirmwareMap,"8",0x00020000,"%%SystemRoot%%\System32\NXPPN547FW.dat"
+> > ; HW version of PN547 is 8
+> > HKR,FirmwareMap,"10",0x00020000,"%%SystemRoot%%\System32\NXPPN548FW.dat"
+> > ; HW version of PN548 is 10
+> > HKR,NxpNfcClientDriver, "RfConfigData",            0x00000001, 00
+> > HKR,NxpNfcClientDriver, "EEPROMConfigBlob",        0x00000001, 00
+> > HKR,NxpNfcClientDriver, "RfSessionMgmt",           0x00010001, 1
+> > HKR,NxpNfcClientDriver, "KeepRfData",              0x00010001, 1
+> >
+> > ; ============== custom registry sections ==================
+> >
+> > [NxpNfpProviderProximityCustomValuesRegister]
+> > HKLM,"SYSTEM\CurrentControlSet\Proximity\","Dummy",0x00000010,0
+> >
+> >
+> > [NxpNfpProviderProximityCustomValuesRegister.Security]
+> > "D:P(A;OICI;GA;;;LS)(A;;GA;;;BA)(A;;GA;;;SY)"
+> >
+> > [WUDFRD_ServiceInstall]
+> > DisplayName=%WudfRdDisplayName%
+> > ServiceType=1
+> > StartType=3
+> > ErrorControl=1
+> > ServiceBinary=%12%\WUDFRd.sys
+> >
+> > [CoInstallers_AddReg]
+> > HKR,,CoInstallers32,0x00010000,"WUDFCoinstaller.dll"
+> >
+> >
+> > [DestinationDirs]
+> > UMDriverCopy=12,UMDF ; copy to Drivers\UMDF
+> > Firmware.CopyFiles=11
+> >
+> > [UMDriverCopy]
+> > NxpNfcClientDriver.dll,,,0x100
+> >
+> > [Firmware.CopyFiles]
+> > NXPPN548FW.DAT
+> > NXPPN547FW.DAT
+> >
+> > [ControlFlags]
+> > ExcludeFromSelect=*
+> >
+> > ; =================== Generic ==================================
+> >
+> > [Strings]
+> > ManufacturerName="NXP Semiconductors"
+> > DiskName="NxpNfcClientDriver Installation Disk"
+> > WudfRdDisplayName="NxpNfcClientDriver"
+> > DeviceName="NxpNfcClientDriver"
+> >
+> > - EOT -
+> 
+> [ CC Cristian and Jeremy of NXP ]
+> 
+> What Linux-kernel configs do I need that PN544 I2C NFC driver works?
+> 
+> Additionally, I have set CONFIG_I2C_GPIO=m.
+> 
+> What else is important to be activated?
+> 
+> Thanks.
+> 
+> - Sedat -
 
 
-*Kernel 5.1 WiFi work fine:*
 
-[   20.659502] brcmfmac: brcmf_fw_alloc_request: using 
-brcm/brcmfmac43340-sdio for chip BCM43340/2
-
-[   20.664444] usbcore: registered new interface driver brcmfmac
-
-[   21.089209] brcmfmac: brcmf_fw_alloc_request: using 
-brcm/brcmfmac43340-sdio for chip BCM43340/2
-
-[   21.094169] brcmfmac: brcmf_c_process_clm_blob: no clm_blob available 
-(err=-2), device may have limited channels available
-
-[   21.099805] brcmfmac: brcmf_c_preinit_dcmds: Firmware: BCM43340/2 
-wl0: Oct 23 2017 08:41:23 version 6.10.190.70 (r674464) FWID 01-98d71006
+-- 
+With Best Regards,
+Andy Shevchenko
 
 
-*Kernel mainline* 
-(https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/log/) 
-*WiFi dont work:*
-
-
-[   21.120466] brcmfmac: brcmf_fw_alloc_request: using 
-brcm/brcmfmac43340-sdio for chip BCM43340/2
-
-[   21.125156] usbcore: registered new interface driver brcmfmac
-
-
-Same device and system.
-
-
-Best regards, Andy Lavr.
