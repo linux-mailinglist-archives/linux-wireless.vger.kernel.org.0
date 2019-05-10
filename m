@@ -2,171 +2,94 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E91F5199B9
-	for <lists+linux-wireless@lfdr.de>; Fri, 10 May 2019 10:32:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 965F9199C5
+	for <lists+linux-wireless@lfdr.de>; Fri, 10 May 2019 10:37:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727043AbfEJIct convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 10 May 2019 04:32:49 -0400
-Received: from coyote.holtmann.net ([212.227.132.17]:40792 "EHLO
-        mail.holtmann.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727010AbfEJIct (ORCPT
+        id S1727075AbfEJIhE (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 10 May 2019 04:37:04 -0400
+Received: from mail-qt1-f194.google.com ([209.85.160.194]:44836 "EHLO
+        mail-qt1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726992AbfEJIhE (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 10 May 2019 04:32:49 -0400
-Received: from [172.20.10.2] (x590fee18.dyn.telefonica.de [89.15.238.24])
-        by mail.holtmann.org (Postfix) with ESMTPSA id A1DD0CF170;
-        Fri, 10 May 2019 10:41:01 +0200 (CEST)
-Content-Type: text/plain;
-        charset=us-ascii
-Mime-Version: 1.0 (Mac OS X Mail 12.4 \(3445.104.8\))
-Subject: Re: [PATCH 5/6] cfg80211: add support for SAE authentication offload
-From:   Marcel Holtmann <marcel@holtmann.org>
-In-Reply-To: <20190509092103.GD74912@aremote06.aus.cypress.com>
-Date:   Fri, 10 May 2019 10:32:44 +0200
-Cc:     Chi-Hsien Lin <Chi-Hsien.Lin@cypress.com>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "brcm80211-dev-list@broadcom.com" <brcm80211-dev-list@broadcom.com>,
-        brcm80211-dev-list <brcm80211-dev-list@cypress.com>,
-        Arend van Spriel <arend.vanspriel@broadcom.com>,
-        Franky Lin <franky.lin@broadcom.com>,
-        Hante Meuleman <hante.meuleman@broadcom.com>,
-        Wright Feng <Wright.Feng@cypress.com>,
-        Kalle Valo <kvalo@codeaurora.org>
-Content-Transfer-Encoding: 8BIT
-Message-Id: <5B8ACEB5-FDD4-46D0-AC9C-2DF04EE4AC4F@holtmann.org>
-References: <1546582221-143220-1-git-send-email-chi-hsien.lin@cypress.com>
- <1546582221-143220-5-git-send-email-chi-hsien.lin@cypress.com>
- <2FC4C72C-9E57-4195-A682-F7BAE7F3981E@holtmann.org>
- <20190509092103.GD74912@aremote06.aus.cypress.com>
-To:     Stanley Hsu <Stanley.Hsu@cypress.com>
-X-Mailer: Apple Mail (2.3445.104.8)
+        Fri, 10 May 2019 04:37:04 -0400
+Received: by mail-qt1-f194.google.com with SMTP id f24so1261314qtk.11
+        for <linux-wireless@vger.kernel.org>; Fri, 10 May 2019 01:37:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=endlessm-com.20150623.gappssmtp.com; s=20150623;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=6q0OaTNhxy4z4NJtiUVwPY8QmQQzdj/ZZVApy0GJMI4=;
+        b=iELlAWp8uu1w9QKiqsaCDDQUQZVz8W7Axyi1mnxbi0BiAfs+E4txY0WxHylQWI7/Ie
+         kEl6z5C/Emaw0fQRI6D7NkEJhoFhEmattbkSrZj6CnA4samxPOlYRqcjwt0uyWUpXOwt
+         MSCK8uPjMuzMjgx7xg4cIRI4vmsDnrucQVGgHCeFPGyUkUxqw6aAeChk/AFFHS7mw7F6
+         sMMJz+grUiuBh91XLPH5oEAuTVGufIx5c7IRSYlZnveFOb3HVEKgbP8rPku1Ktqebwmb
+         zU7I/kHcwWHm8kcSyzf8eHN2KGexnO6N3bBc3Xy9+xssu+OtLg6gop+0xBAWBoQ4Bd5m
+         BsEg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=6q0OaTNhxy4z4NJtiUVwPY8QmQQzdj/ZZVApy0GJMI4=;
+        b=R+/B2SBP46uxRD42qoFUPVeQMRQE1D2OB50kvcogtPyMMBidVFt9Elw4ZopZs4FLYG
+         WdsOHddYUBhMfzjEwgTEBmdQ1YiVatffSAaRiDw1oJKQSKrD3J5NjZRimNgOce9Jmf4a
+         mvnEGroXUIdMJLeGoeuDY3t9NYvg3X+JfvQ6vUV1hFgHry9Tht53Xq8H/kIqeImqFgzR
+         IshiJlXre9HMEpttcY+bj0IpVyclDR/lpYMRt6w+vw5UxIuIW9FVpim9UoeXckd5SJvy
+         FagqJPj56tnlOEJDu41NuE02tzZr5ibe1oTopP9z+Fv/shOpL+qgXBCa5cBPAtML3nNx
+         cNGg==
+X-Gm-Message-State: APjAAAVauE2VWhSNifCQqBuf8ASn3Zu8uJeq0iWf1TsiGKcuv5x5SO6h
+        j6CHYIn7jyWZn0EIvrlKB7Zq8bADRUlWWUZkGXAbkLo9+Ac4Kg==
+X-Google-Smtp-Source: APXvYqw4qHdkcVnmbbairiiIOuet0C5L8KHTlEuaG0iO/gCejSKaySvSBAsfB9wxI2MBrau5nbVgefJaBuBg8UnoKPA=
+X-Received: by 2002:a0c:8a93:: with SMTP id 19mr820888qvv.7.1557477423165;
+ Fri, 10 May 2019 01:37:03 -0700 (PDT)
+MIME-Version: 1.0
+References: <20190503072146.49999-1-chiu@endlessm.com> <20190503072146.49999-3-chiu@endlessm.com>
+ <CAD8Lp47_-6d2wCAs5QbuR6Mw2w91TyJ9W3kFiJHH4F_6dXqnHg@mail.gmail.com>
+ <CAB4CAweQXz=wQGA5t7BwWYdwbRrHCji+BWc0G52SUcZFGc8Pnw@mail.gmail.com> <CAD8Lp46hcx0ZHFMUdXdR6unbeMQJsfyuEQ7hUFpHY2jU9R7Gcw@mail.gmail.com>
+In-Reply-To: <CAD8Lp46hcx0ZHFMUdXdR6unbeMQJsfyuEQ7hUFpHY2jU9R7Gcw@mail.gmail.com>
+From:   Chris Chiu <chiu@endlessm.com>
+Date:   Fri, 10 May 2019 16:36:51 +0800
+Message-ID: <CAB4CAwf26pdCY7FJA5H7d1aEY2xpjSto4JxARwczmVJ==41yng@mail.gmail.com>
+Subject: Re: [RFC PATCH 2/2] rtl8xxxu: Add watchdog to update rate mask by
+ signal strength
+To:     Daniel Drake <drake@endlessm.com>
+Cc:     Jes Sorensen <jes.sorensen@gmail.com>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        David Miller <davem@davemloft.net>,
+        linux-wireless <linux-wireless@vger.kernel.org>,
+        netdev <netdev@vger.kernel.org>,
+        Linux Kernel <linux-kernel@vger.kernel.org>,
+        Linux Upstreaming Team <linux@endlessm.com>,
+        Larry Finger <Larry.Finger@lwfinger.net>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi Stanley,
+On Thu, May 9, 2019 at 7:24 PM Daniel Drake <drake@endlessm.com> wrote:
+>
+> On Thu, May 9, 2019 at 5:17 PM Chris Chiu <chiu@endlessm.com> wrote:
+> > I need the vif because there's seems no easy way to get RSSI. Please
+> > suggest if there's any better idea for this. I believe multiple vifs is for AP
+> > mode (with more than 1 virtual AP/SSIDs) and the Station+AP coexist
+> > mode. But the rtl8xxxu driver basically supports only Station mode.
+>
+> Yes, the driver only lets you create station interfaces, but it lets
+> you create several of them.
+> I'm not sure if that is intentional (and meaningful), or if its a bug.
+> Maybe you can experiment with multiple station interfaces and see if
+> it works in a meaningful way?
+>
+> Daniel
 
->>> Let drivers advertise support for station-mode SAE authentication
->>> offload with a new NL80211_EXT_FEATURE_SAE_OFFLOAD flag.
->>> 
->>> Signed-off-by: Chung-Hsien Hsu <stanley.hsu@cypress.com>
->>> Signed-off-by: Chi-Hsien Lin <chi-hsien.lin@cypress.com>
->>> ---
->>> include/linux/ieee80211.h    |  1 +
->>> include/net/cfg80211.h       |  5 +++++
->>> include/uapi/linux/nl80211.h | 16 ++++++++++++++++
->>> net/wireless/nl80211.c       | 14 ++++++++++++++
->>> 4 files changed, 36 insertions(+)
->>> 
->>> diff --git a/include/linux/ieee80211.h b/include/linux/ieee80211.h
->>> index 3b04e72315e1..37d3e655e547 100644
->>> --- a/include/linux/ieee80211.h
->>> +++ b/include/linux/ieee80211.h
->>> @@ -2596,6 +2596,7 @@ enum ieee80211_key_len {
->>> #define FILS_ERP_MAX_RRK_LEN64
->>> 
->>> #define PMK_MAX_LEN64
->>> +#define SAE_PASSWORD_MAX_LEN128
->>> 
->>> /* Public action codes (IEEE Std 802.11-2016, 9.6.8.1, Table 9-307) */
->>> enum ieee80211_pub_actioncode {
->>> diff --git a/include/net/cfg80211.h b/include/net/cfg80211.h
->>> index e0c41eb1c860..5809dac97b33 100644
->>> --- a/include/net/cfg80211.h
->>> +++ b/include/net/cfg80211.h
->>> @@ -740,6 +740,9 @@ struct survey_info {
->>> *CFG80211_MAX_WEP_KEYS WEP keys
->>> * @wep_tx_key: key index (0..3) of the default TX static WEP key
->>> * @psk: PSK (for devices supporting 4-way-handshake offload)
->>> + * @sae_pwd: password for SAE authentication (for devices supporting SAE
->>> + *offload)
->>> + * @sae_pwd_len: length of SAE password (for devices supporting SAE offload)
->>> */
->>> struct cfg80211_crypto_settings {
->>> u32 wpa_versions;
->>> @@ -755,6 +758,8 @@ struct cfg80211_crypto_settings {
->>> struct key_params *wep_keys;
->>> int wep_tx_key;
->>> const u8 *psk;
->>> +const u8 *sae_pwd;
->>> +u16 sae_pwd_len;
->>> };
->>> 
->>> /**
->>> diff --git a/include/uapi/linux/nl80211.h b/include/uapi/linux/nl80211.h
->>> index 12762afb3a07..4840aaed39ba 100644
->>> --- a/include/uapi/linux/nl80211.h
->>> +++ b/include/uapi/linux/nl80211.h
->>> @@ -235,6 +235,15 @@
->>> */
->>> 
->>> /**
->>> + * DOC: SAE authentication offload
->>> + *
->>> + * By setting @NL80211_EXT_FEATURE_SAE_OFFLOAD flag drivers can indicate they
->>> + * support offloading SAE authentication for WPA3-Personal networks. In
->>> + * %NL80211_CMD_CONNECT the password for SAE should be specified using
->>> + * %NL80211_ATTR_SAE_PASSWORD.
->>> + */
->>> +
->>> +/**
->>> * enum nl80211_commands - supported nl80211 commands
->>> *
->>> * @NL80211_CMD_UNSPEC: unspecified command to catch errors
->>> @@ -2288,6 +2297,9 @@ enum nl80211_commands {
->>> *
->>> * @NL80211_ATTR_FTM_RESPONDER_STATS: Nested attribute with FTM responder
->>> *statistics, see &enum nl80211_ftm_responder_stats.
->>> + * @NL80211_ATTR_SAE_PASSWORD: attribute for passing SAE password material. It
->>> + *is used with %NL80211_CMD_CONNECT to provide password for offloading
->>> + *SAE authentication for WPA3-Personal networks.
->>> *
->>> * @NL80211_ATTR_TIMEOUT: Timeout for the given operation in milliseconds (u32),
->>> *if the attribute is not given no timeout is requested. Note that 0 is an
->>> @@ -2743,6 +2755,7 @@ enum nl80211_attrs {
->>> NL80211_ATTR_FTM_RESPONDER,
->>> 
->>> NL80211_ATTR_FTM_RESPONDER_STATS,
->>> +NL80211_ATTR_SAE_PASSWORD,
->>> 
->>> NL80211_ATTR_TIMEOUT,
->> 
->> so you are breaking user-space API on purpose here even when there was a clear comment where to add new attributes:
->> 
->> /* add attributes here, update the policy in nl80211.c */
-> 
-> Hi Marcel,
-> 
-> Thanks for pointing this out. It was a mistake caused by rebasing the
-> patch. Will fix it in V2.
-> 
->> 
->> More importantly, does this actually need a new attribute and you can not utilize what has already been added for mesh? If this attribute is solely for offload cases, then it might be better named accordingly. Also I am curious on how mixed WPA1/WPA2/WPA3 network credentials are now provided to a CMD_CONNECT. So the CMD_CONNECT description might require an update as well.
-> 
-> This new attribute is used to pass the sae_password value, set in the
-> configuration file of wpa_supplicant, for offloading SAE authentication.
-> It seems that the existing attributes can not be utilized for the
-> purpose. Could you please point it out if you know the proper one? To
-> reflect the content of the attribute, NL80211_ATTR_SAE_PASSWORD should
-> be a proper name.
+I've verified that multiple virtual interface can not work simultaneously in
+STA mode. I assigned different mac address for different vifs, I can only
+bring only one interface up. If I want to bring the second vif up, it always
+complains "SIOCSIFFLAGS: Device or resource busy". But I'm sure that
+STA vif can coexist with monitor mode vif. So I may need to add the code
+login to make the watchdog only work with the vif in STA mode. Then I
+can also store vif in the rtl8xxxu_priv structure if we presume it only works
+for station mode. Anyone can suggest whether if this assumption is correct
+or not?
 
-not everything is wpa_supplicant config files. How does this work with iwd for example. The user can not set a specific SAW password since that is all handled internally.
-
-> As for the mixed WPA/WPA2/WPA3 network credentials, no key materials
-> will be provided in a NL80211_CMD_CONNECT for non-offload cases. When
-> offload is considered, there is no conflict between WPA/WPA2 4-way
-> handshake offload and SAE authentication offload. For the WPA/WPA2
-> 4-way handshake offload, the PSK is specified using NL80211_ATTR_PMK in
-> the NL80211_CMD_CONNECT. The corresponding description can be found in
-> the section "DOC: WPA/WPA2 EAPOL handshake offload". As for the SAE
-> authentication offload, the sae_password value is provided by
-> NL80211_ATTR_SAE_PASSWORD in NL80211_CMD_CONNECT. It is described in
-> the section "DOC: SAE authentication offload" proposed in this patch.
-
-Do we have some documentation on how to handle offload for mixed WPA/WPA2/WPA3 networks? I really wonder how nl80211 is supposed to be used in these cases. As mentioned above, not everything is wpa_supplicant and I am curious on how seamless roaming will actually work for offload cases.
-
-Regards
-
-Marcel
-
+Chris
