@@ -2,94 +2,168 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 965F9199C5
-	for <lists+linux-wireless@lfdr.de>; Fri, 10 May 2019 10:37:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8ACD219A37
+	for <lists+linux-wireless@lfdr.de>; Fri, 10 May 2019 11:05:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727075AbfEJIhE (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 10 May 2019 04:37:04 -0400
-Received: from mail-qt1-f194.google.com ([209.85.160.194]:44836 "EHLO
-        mail-qt1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726992AbfEJIhE (ORCPT
+        id S1727097AbfEJJFC (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 10 May 2019 05:05:02 -0400
+Received: from smtp.codeaurora.org ([198.145.29.96]:57408 "EHLO
+        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726992AbfEJJFC (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 10 May 2019 04:37:04 -0400
-Received: by mail-qt1-f194.google.com with SMTP id f24so1261314qtk.11
-        for <linux-wireless@vger.kernel.org>; Fri, 10 May 2019 01:37:03 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=endlessm-com.20150623.gappssmtp.com; s=20150623;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=6q0OaTNhxy4z4NJtiUVwPY8QmQQzdj/ZZVApy0GJMI4=;
-        b=iELlAWp8uu1w9QKiqsaCDDQUQZVz8W7Axyi1mnxbi0BiAfs+E4txY0WxHylQWI7/Ie
-         kEl6z5C/Emaw0fQRI6D7NkEJhoFhEmattbkSrZj6CnA4samxPOlYRqcjwt0uyWUpXOwt
-         MSCK8uPjMuzMjgx7xg4cIRI4vmsDnrucQVGgHCeFPGyUkUxqw6aAeChk/AFFHS7mw7F6
-         sMMJz+grUiuBh91XLPH5oEAuTVGufIx5c7IRSYlZnveFOb3HVEKgbP8rPku1Ktqebwmb
-         zU7I/kHcwWHm8kcSyzf8eHN2KGexnO6N3bBc3Xy9+xssu+OtLg6gop+0xBAWBoQ4Bd5m
-         BsEg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=6q0OaTNhxy4z4NJtiUVwPY8QmQQzdj/ZZVApy0GJMI4=;
-        b=R+/B2SBP46uxRD42qoFUPVeQMRQE1D2OB50kvcogtPyMMBidVFt9Elw4ZopZs4FLYG
-         WdsOHddYUBhMfzjEwgTEBmdQ1YiVatffSAaRiDw1oJKQSKrD3J5NjZRimNgOce9Jmf4a
-         mvnEGroXUIdMJLeGoeuDY3t9NYvg3X+JfvQ6vUV1hFgHry9Tht53Xq8H/kIqeImqFgzR
-         IshiJlXre9HMEpttcY+bj0IpVyclDR/lpYMRt6w+vw5UxIuIW9FVpim9UoeXckd5SJvy
-         FagqJPj56tnlOEJDu41NuE02tzZr5ibe1oTopP9z+Fv/shOpL+qgXBCa5cBPAtML3nNx
-         cNGg==
-X-Gm-Message-State: APjAAAVauE2VWhSNifCQqBuf8ASn3Zu8uJeq0iWf1TsiGKcuv5x5SO6h
-        j6CHYIn7jyWZn0EIvrlKB7Zq8bADRUlWWUZkGXAbkLo9+Ac4Kg==
-X-Google-Smtp-Source: APXvYqw4qHdkcVnmbbairiiIOuet0C5L8KHTlEuaG0iO/gCejSKaySvSBAsfB9wxI2MBrau5nbVgefJaBuBg8UnoKPA=
-X-Received: by 2002:a0c:8a93:: with SMTP id 19mr820888qvv.7.1557477423165;
- Fri, 10 May 2019 01:37:03 -0700 (PDT)
-MIME-Version: 1.0
-References: <20190503072146.49999-1-chiu@endlessm.com> <20190503072146.49999-3-chiu@endlessm.com>
- <CAD8Lp47_-6d2wCAs5QbuR6Mw2w91TyJ9W3kFiJHH4F_6dXqnHg@mail.gmail.com>
- <CAB4CAweQXz=wQGA5t7BwWYdwbRrHCji+BWc0G52SUcZFGc8Pnw@mail.gmail.com> <CAD8Lp46hcx0ZHFMUdXdR6unbeMQJsfyuEQ7hUFpHY2jU9R7Gcw@mail.gmail.com>
-In-Reply-To: <CAD8Lp46hcx0ZHFMUdXdR6unbeMQJsfyuEQ7hUFpHY2jU9R7Gcw@mail.gmail.com>
-From:   Chris Chiu <chiu@endlessm.com>
-Date:   Fri, 10 May 2019 16:36:51 +0800
-Message-ID: <CAB4CAwf26pdCY7FJA5H7d1aEY2xpjSto4JxARwczmVJ==41yng@mail.gmail.com>
-Subject: Re: [RFC PATCH 2/2] rtl8xxxu: Add watchdog to update rate mask by
- signal strength
-To:     Daniel Drake <drake@endlessm.com>
-Cc:     Jes Sorensen <jes.sorensen@gmail.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        David Miller <davem@davemloft.net>,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        netdev <netdev@vger.kernel.org>,
-        Linux Kernel <linux-kernel@vger.kernel.org>,
-        Linux Upstreaming Team <linux@endlessm.com>,
-        Larry Finger <Larry.Finger@lwfinger.net>
-Content-Type: text/plain; charset="UTF-8"
+        Fri, 10 May 2019 05:05:02 -0400
+Received: by smtp.codeaurora.org (Postfix, from userid 1000)
+        id D6FA460592; Fri, 10 May 2019 09:05:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
+        s=default; t=1557479100;
+        bh=blmfcAf7YUjIe9vLn0MW8s7FG+amc+L9kkZ+TyFU7Yg=;
+        h=From:To:Cc:Subject:Date:From;
+        b=D1qnQwH8/nmjaL7A+ilCkNk+igIzrHkEU7lnTQA1Lt0lqQRgxx2/Q0bg0T0edl39a
+         +p/+nIrAiz1xAw6vqXQXCJCA8o3TlLwr/fS4gnFSaqA+v+dw8rmAsZeOJ+B67f1dSe
+         TYRivjOWZPFW86kDmRM5qBP7u/NLwyLLxvso3SPA=
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        pdx-caf-mail.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.7 required=2.0 tests=ALL_TRUSTED,BAYES_00,
+        DKIM_INVALID,DKIM_SIGNED autolearn=no autolearn_force=no version=3.4.0
+Received: from yyuwang-64bit.qca.qualcomm.com (unknown [180.166.53.21])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-SHA256 (128/128 bits))
+        (No client certificate requested)
+        (Authenticated sender: yyuwang@smtp.codeaurora.org)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 35B7A6028D;
+        Fri, 10 May 2019 09:04:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
+        s=default; t=1557479100;
+        bh=blmfcAf7YUjIe9vLn0MW8s7FG+amc+L9kkZ+TyFU7Yg=;
+        h=From:To:Cc:Subject:Date:From;
+        b=D1qnQwH8/nmjaL7A+ilCkNk+igIzrHkEU7lnTQA1Lt0lqQRgxx2/Q0bg0T0edl39a
+         +p/+nIrAiz1xAw6vqXQXCJCA8o3TlLwr/fS4gnFSaqA+v+dw8rmAsZeOJ+B67f1dSe
+         TYRivjOWZPFW86kDmRM5qBP7u/NLwyLLxvso3SPA=
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 35B7A6028D
+Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=yyuwang@codeaurora.org
+From:   Yu Wang <yyuwang@codeaurora.org>
+To:     johannes@sipsolutions.net
+Cc:     linux-wireless@vger.kernel.org, Yu Wang <yyuwang@codeaurora.org>
+Subject: [PATCH] mac80211: handle deauthentication/disassociation from TDLS peer
+Date:   Fri, 10 May 2019 17:04:52 +0800
+Message-Id: <1557479092-18276-1-git-send-email-yyuwang@codeaurora.org>
+X-Mailer: git-send-email 2.7.4
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Thu, May 9, 2019 at 7:24 PM Daniel Drake <drake@endlessm.com> wrote:
->
-> On Thu, May 9, 2019 at 5:17 PM Chris Chiu <chiu@endlessm.com> wrote:
-> > I need the vif because there's seems no easy way to get RSSI. Please
-> > suggest if there's any better idea for this. I believe multiple vifs is for AP
-> > mode (with more than 1 virtual AP/SSIDs) and the Station+AP coexist
-> > mode. But the rtl8xxxu driver basically supports only Station mode.
->
-> Yes, the driver only lets you create station interfaces, but it lets
-> you create several of them.
-> I'm not sure if that is intentional (and meaningful), or if its a bug.
-> Maybe you can experiment with multiple station interfaces and see if
-> it works in a meaningful way?
->
-> Daniel
+When receiving a deauthentication/disassociation frame from a TDLS
+peer, a station should not disconnect the current AP, but only
+disable the current TDLS link if it's enabled.
 
-I've verified that multiple virtual interface can not work simultaneously in
-STA mode. I assigned different mac address for different vifs, I can only
-bring only one interface up. If I want to bring the second vif up, it always
-complains "SIOCSIFFLAGS: Device or resource busy". But I'm sure that
-STA vif can coexist with monitor mode vif. So I may need to add the code
-login to make the watchdog only work with the vif in STA mode. Then I
-can also store vif in the rtl8xxxu_priv structure if we presume it only works
-for station mode. Anyone can suggest whether if this assumption is correct
-or not?
+Without this change, a TDLS issue can be reproduced by following the
+steps as below:
 
-Chris
+1. STA-1 and STA-2 are connected to AP, bidirection traffic is running
+   between STA-1 and STA-2.
+2. Set up TDLS link between STA-1 and STA-2, stay for a while, then
+   teardown TDLS link.
+3. Repeat step #2 and monitor the connection between STA and AP.
+
+During the test, one STA may send a deauthentication/disassociation
+frame to another, after TDLS teardown, with reason code 6/7, which
+means: Class 2/3 frame received from nonassociated STA.
+
+On receive this frame, the receiver STA will disconnect the current
+AP and then reconnect. It's not a expected behavior, purpose of this
+frame should be disabling the TDLS link, not the link with AP.
+
+Signed-off-by: Yu Wang <yyuwang@codeaurora.org>
+---
+ net/mac80211/ieee80211_i.h |  3 +++
+ net/mac80211/mlme.c        | 12 +++++++++++-
+ net/mac80211/tdls.c        | 23 +++++++++++++++++++++++
+ 3 files changed, 37 insertions(+), 1 deletion(-)
+
+diff --git a/net/mac80211/ieee80211_i.h b/net/mac80211/ieee80211_i.h
+index 861bf83..3a360b0 100644
+--- a/net/mac80211/ieee80211_i.h
++++ b/net/mac80211/ieee80211_i.h
+@@ -2223,6 +2223,9 @@ void ieee80211_tdls_cancel_channel_switch(struct wiphy *wiphy,
+ 					  const u8 *addr);
+ void ieee80211_teardown_tdls_peers(struct ieee80211_sub_if_data *sdata);
+ void ieee80211_tdls_chsw_work(struct work_struct *wk);
++void ieee80211_tdls_handle_disconnect(struct ieee80211_sub_if_data *sdata,
++				      const u8 *peer, u16 reason);
++const char *ieee80211_get_reason_code_string(u16 reason_code);
+ 
+ extern const struct ethtool_ops ieee80211_ethtool_ops;
+ 
+diff --git a/net/mac80211/mlme.c b/net/mac80211/mlme.c
+index b7a9fe3..383b0df 100644
+--- a/net/mac80211/mlme.c
++++ b/net/mac80211/mlme.c
+@@ -2963,7 +2963,7 @@ static void ieee80211_rx_mgmt_auth(struct ieee80211_sub_if_data *sdata,
+ #define case_WLAN(type) \
+ 	case WLAN_REASON_##type: return #type
+ 
+-static const char *ieee80211_get_reason_code_string(u16 reason_code)
++const char *ieee80211_get_reason_code_string(u16 reason_code)
+ {
+ 	switch (reason_code) {
+ 	case_WLAN(UNSPECIFIED);
+@@ -3028,6 +3028,11 @@ static void ieee80211_rx_mgmt_deauth(struct ieee80211_sub_if_data *sdata,
+ 	if (len < 24 + 2)
+ 		return;
+ 
++	if (!ether_addr_equal(mgmt->bssid, mgmt->sa)) {
++		ieee80211_tdls_handle_disconnect(sdata, mgmt->sa, reason_code);
++		return;
++	}
++
+ 	if (ifmgd->associated &&
+ 	    ether_addr_equal(mgmt->bssid, ifmgd->associated->bssid)) {
+ 		const u8 *bssid = ifmgd->associated->bssid;
+@@ -3077,6 +3082,11 @@ static void ieee80211_rx_mgmt_disassoc(struct ieee80211_sub_if_data *sdata,
+ 
+ 	reason_code = le16_to_cpu(mgmt->u.disassoc.reason_code);
+ 
++	if (!ether_addr_equal(mgmt->bssid, mgmt->sa)) {
++		ieee80211_tdls_handle_disconnect(sdata, mgmt->sa, reason_code);
++		return;
++	}
++
+ 	sdata_info(sdata, "disassociated from %pM (Reason: %u=%s)\n",
+ 		   mgmt->sa, reason_code,
+ 		   ieee80211_get_reason_code_string(reason_code));
+diff --git a/net/mac80211/tdls.c b/net/mac80211/tdls.c
+index d30690d..fcc5cd4 100644
+--- a/net/mac80211/tdls.c
++++ b/net/mac80211/tdls.c
+@@ -1994,3 +1994,26 @@ void ieee80211_tdls_chsw_work(struct work_struct *wk)
+ 	}
+ 	rtnl_unlock();
+ }
++
++void ieee80211_tdls_handle_disconnect(struct ieee80211_sub_if_data *sdata,
++				      const u8 *peer, u16 reason)
++{
++	struct ieee80211_sta *sta;
++
++	rcu_read_lock();
++	sta = ieee80211_find_sta(&sdata->vif, peer);
++	if (!sta || !sta->tdls) {
++		rcu_read_unlock();
++		return;
++	}
++	rcu_read_unlock();
++
++	tdls_dbg(sdata, "disconnected from TDLS peer %pM (Reason: %u=%s)\n",
++		 peer, reason,
++		 ieee80211_get_reason_code_string(reason));
++
++	ieee80211_tdls_oper_request(&sdata->vif, peer,
++				    NL80211_TDLS_TEARDOWN,
++				    WLAN_REASON_TDLS_TEARDOWN_UNREACHABLE,
++				    GFP_ATOMIC);
++}
+-- 
+2.7.4
+
