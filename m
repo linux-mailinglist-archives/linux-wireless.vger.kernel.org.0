@@ -2,90 +2,102 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 58B0519AB8
-	for <lists+linux-wireless@lfdr.de>; Fri, 10 May 2019 11:36:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9F10E19D32
+	for <lists+linux-wireless@lfdr.de>; Fri, 10 May 2019 14:25:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727402AbfEJJfz (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 10 May 2019 05:35:55 -0400
-Received: from smtp-out.xnet.cz ([178.217.244.18]:33330 "EHLO smtp-out.xnet.cz"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727397AbfEJJfz (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 10 May 2019 05:35:55 -0400
-Received: from meh.true.cz (meh.true.cz [108.61.167.218])
-        (Authenticated sender: petr@true.cz)
-        by smtp-out.xnet.cz (Postfix) with ESMTPSA id D30F2434E;
-        Fri, 10 May 2019 11:35:51 +0200 (CEST)
-Received: by meh.true.cz (OpenSMTPD) with ESMTP id 608a6a61;
-        Fri, 10 May 2019 11:35:50 +0200 (CEST)
-From:   =?UTF-8?q?Petr=20=C5=A0tetiar?= <ynezz@true.cz>
-To:     netdev@vger.kernel.org, Felix Fietkau <nbd@nbd.name>,
-        Lorenzo Bianconi <lorenzo.bianconi83@gmail.com>,
-        Ryder Lee <ryder.lee@mediatek.com>,
-        Roy Luo <royluo@google.com>, Kalle Valo <kvalo@codeaurora.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Matthias Brugger <matthias.bgg@gmail.com>
-Cc:     Andrew Lunn <andrew@lunn.ch>, Rob Herring <robh@kernel.org>,
-        =?UTF-8?q?Petr=20=C5=A0tetiar?= <ynezz@true.cz>,
-        linux-wireless@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        linux-mediatek@lists.infradead.org, linux-kernel@vger.kernel.org
-Subject: [PATCH net 5/5] net: wireless: mt76: fix similar warning reported by kbuild test robot
-Date:   Fri, 10 May 2019 11:35:18 +0200
-Message-Id: <1557480918-9627-6-git-send-email-ynezz@true.cz>
-X-Mailer: git-send-email 1.9.1
-In-Reply-To: <1557480918-9627-1-git-send-email-ynezz@true.cz>
-References: <1557480918-9627-1-git-send-email-ynezz@true.cz>
+        id S1727464AbfEJMZa (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 10 May 2019 08:25:30 -0400
+Received: from mail-pl1-f195.google.com ([209.85.214.195]:46472 "EHLO
+        mail-pl1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727210AbfEJMZ3 (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 10 May 2019 08:25:29 -0400
+Received: by mail-pl1-f195.google.com with SMTP id bi2so2758459plb.13
+        for <linux-wireless@vger.kernel.org>; Fri, 10 May 2019 05:25:29 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=JnVIZDxnd0kEyrDCPIaIICh1v6B5djz4lFgkebP+I0U=;
+        b=ks6g1IZri8AzzL2Z/Sekh46nlKvX0lPLCP6q1vHc3VawPqG2JBFcUNQIbMhWVfRNck
+         /g60XtjGD56oSr91jQlB/0vZcCLyCOeVcfFoIUIz0XuvSwpi2xuwCS0/EM/hMBtB2d50
+         /6Rwih2UKTjYyXtBSFY8Rt7/dqy4eXiizaAGoT6YBAZAUCDM7NDW0x8U+ovpb7ZSRd9p
+         3S9MVF9KPIN6zroUuD8lNa5PFbG49LBYSDupu1rXiQ5aiuOHOg18M2z0bNkO4i/cgODP
+         vOKBFAHp6OXxrQA4Zdh9TxdBWU7TmEeVLK6yiv5ssaXttd8Dz9wHGvzwohyk131sj1vU
+         wE7Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=JnVIZDxnd0kEyrDCPIaIICh1v6B5djz4lFgkebP+I0U=;
+        b=B/mD43DKGCgGAi5cNcD8z9gCb6mNvO1iVddeqJvSeT2+ZEeT9Ln99ejO638Fd5NUEH
+         C5Up65pgHR63vuWQm8fnKY094Ajtgk5o+LTCXW5E4L1MXVqWHVX//TyjtV3T68U3n56/
+         6JYNHQcHWpND7Re8Pgvi+NY5CUM8q+qnv00/+Wvwz6d51gvcaKhYuA9GIQfflKrmB1Te
+         OhNrLBd+r/rj7l1dqzVMdESaZR49yPMhr6IBBzD515U/hF8wccXSbpJ/bFR/FPQKxTEn
+         X5SVRpjyQqt4T+2sc/+240IznoTG1YWpaKy5I4rDkBT4TAWVoD63gICBSfQa3L6Rs0Cd
+         OJJA==
+X-Gm-Message-State: APjAAAXyszhm/M/IjUeD8Aif6IAW6pyClWlp7x87wrMkTQcXNrC5EAct
+        ofPKSxjov5AiWjz/QIlXufu3xE7RQ60rQcZjv0v+qD84IIs=
+X-Google-Smtp-Source: APXvYqymw800JfAsq/fca67/PjD5ZO/DNdkah38J2POt71VwpmYcmFgZY9hcOodBnt4cn72VZwx8gC/PQBgnGj1upRY=
+X-Received: by 2002:a17:902:9a9:: with SMTP id 38mr12658630pln.10.1557491128296;
+ Fri, 10 May 2019 05:25:28 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+References: <75ce3040b4086ffa2d2e088ad7f24f5e4a87be56.1523552145.git.andreyknvl@google.com>
+ <20180604042900.GB31498@zurbaran.ger.intel.com> <CAAeHK+yvf-LqrfdQ18FMzaCNqdNHqAjgrDMrwUReZq8ei=hTYQ@mail.gmail.com>
+In-Reply-To: <CAAeHK+yvf-LqrfdQ18FMzaCNqdNHqAjgrDMrwUReZq8ei=hTYQ@mail.gmail.com>
+From:   Andrey Konovalov <andreyknvl@google.com>
+Date:   Fri, 10 May 2019 14:25:17 +0200
+Message-ID: <CAAeHK+wDMGOWYAegV20A5VpkwtT3_jFXSraT3LeueASzb8gEUw@mail.gmail.com>
+Subject: Re: [PATCH] NFC: fix attrs checks in netlink interface
+To:     Samuel Ortiz <sameo@linux.intel.com>,
+        "David S . Miller" <davem@davemloft.net>,
+        linux-wireless@vger.kernel.org, netdev <netdev@vger.kernel.org>
+Cc:     LKML <linux-kernel@vger.kernel.org>,
+        Dmitry Vyukov <dvyukov@google.com>,
+        Kostya Serebryany <kcc@google.com>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-This patch fixes following (similar) warning reported by kbuild test robot:
+From: Andrey Konovalov <andreyknvl@google.com>
+Date: Wed, Jan 2, 2019 at 4:30 PM
+To: Samuel Ortiz
+Cc: David S . Miller, <linux-wireless@vger.kernel.org>, netdev, LKML,
+Dmitry Vyukov, Kostya Serebryany
 
- In function ‘memcpy’,
-  inlined from ‘smsc75xx_init_mac_address’ at drivers/net/usb/smsc75xx.c:778:3,
-  inlined from ‘smsc75xx_bind’ at drivers/net/usb/smsc75xx.c:1501:2:
-  ./include/linux/string.h:355:9: warning: argument 2 null where non-null expected [-Wnonnull]
-  return __builtin_memcpy(p, q, size);
-         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  drivers/net/usb/smsc75xx.c: In function ‘smsc75xx_bind’:
-  ./include/linux/string.h:355:9: note: in a call to built-in function ‘__builtin_memcpy’
+> On Mon, Jun 4, 2018 at 6:29 AM Samuel Ortiz <sameo@linux.intel.com> wrote:
+> >
+> > Hi Andrey,
+> >
+> > On Thu, Apr 12, 2018 at 06:56:56PM +0200, Andrey Konovalov wrote:
+> > > nfc_genl_deactivate_target() relies on the NFC_ATTR_TARGET_INDEX
+> > > attribute being present, but doesn't check whether it is actually
+> > > provided by the user. Same goes for nfc_genl_fw_download() and
+> > > NFC_ATTR_FIRMWARE_NAME.
+> > >
+> > > This patch adds appropriate checks.
+> > >
+> > > Found with syzkaller.
+> > >
+> > > Signed-off-by: Andrey Konovalov <andreyknvl@google.com>
+> > > ---
+> > >  net/nfc/netlink.c | 6 ++++--
+> > >  1 file changed, 4 insertions(+), 2 deletions(-)
+> > Thanks, applied to nfc-next.
+>
+> Hi Samuel,
+>
+> It's been 6 months and this fix is still not in mainline. Did it get lost?
 
-I've replaced the offending memcpy with ether_addr_copy, because I'm
-100% sure, that of_get_mac_address can't return NULL as it returns valid
-pointer or ERR_PTR encoded value, nothing else.
+More than a year passed since I've sent this patch, it's still sitting
+in the nfc-next tree which hasn't been updated since June last year.
+Did NFC stopped being maintained?
 
-I'm hesitant to just change IS_ERR into IS_ERR_OR_NULL check, as this
-would make the warning disappear also, but it would be confusing to
-check for impossible return value just to make a compiler happy.
-
-I'm now changing all occurencies of memcpy to ether_addr_copy after the
-of_get_mac_address call, as it's very likely, that we're going to get
-similar reports from kbuild test robot in the future.
-
-Fixes: d31a36b5f407 ("net: wireless: support of_get_mac_address new ERR_PTR error")
-Reported-by: kbuild test robot <lkp@intel.com>
-Signed-off-by: Petr Štetiar <ynezz@true.cz>
----
- drivers/net/wireless/mediatek/mt76/eeprom.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/net/wireless/mediatek/mt76/eeprom.c b/drivers/net/wireless/mediatek/mt76/eeprom.c
-index 04964937a3af..b7a49ae6b327 100644
---- a/drivers/net/wireless/mediatek/mt76/eeprom.c
-+++ b/drivers/net/wireless/mediatek/mt76/eeprom.c
-@@ -95,7 +95,7 @@
- 
- 	mac = of_get_mac_address(np);
- 	if (!IS_ERR(mac))
--		memcpy(dev->macaddr, mac, ETH_ALEN);
-+		ether_addr_copy(dev->macaddr, mac);
- #endif
- 
- 	if (!is_valid_ether_addr(dev->macaddr)) {
--- 
-1.9.1
-
+>
+> Thanks!
+>
+> >
+> > Cheers,
+> > Samuel.
