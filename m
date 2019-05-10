@@ -2,96 +2,113 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 9ED1719EA8
-	for <lists+linux-wireless@lfdr.de>; Fri, 10 May 2019 16:04:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0BBEA19F38
+	for <lists+linux-wireless@lfdr.de>; Fri, 10 May 2019 16:34:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727588AbfEJOES (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 10 May 2019 10:04:18 -0400
-Received: from [208.74.158.174] ([208.74.158.174]:45378 "EHLO
-        mail3.candelatech.com" rhost-flags-FAIL-FAIL-OK-OK) by vger.kernel.org
-        with ESMTP id S1727247AbfEJOES (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 10 May 2019 10:04:18 -0400
-Received: from [192.168.1.47] (104-235-164-208.evrt.wa.frontiernet.net [104.235.164.208])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail3.candelatech.com (Postfix) with ESMTPSA id 475A513C283;
-        Fri, 10 May 2019 07:04:17 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail3.candelatech.com 475A513C283
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=candelatech.com;
-        s=default; t=1557497057;
-        bh=UT7XXwLjv+cm5Bmav1pIo62BEvkN/zYwL30xac0ShlA=;
-        h=Subject:To:References:Cc:From:Date:In-Reply-To:From;
-        b=nkWtPSrlPt6sNP/H4ZxnnzlbLA963kuEK05IWqfADSYK72x+VAMDGIJiZJiaqA2TV
-         IvwpBjytGHqiVmYPW11uuGvG+BNY/JVfcXL3XNtBQGJk/SS2N/e3GionZPSVMK9eDa
-         6cwf+lL9w64UmTztIbnVE3nFS7NCiUPwLGuiIi2s=
-Subject: Re: [PATCH] mac80211: remove warning message
-To:     Yibo Zhao <yiboz@codeaurora.org>, linux-wireless@vger.kernel.org
-References: <1557471662-1355-1-git-send-email-yiboz@codeaurora.org>
-Cc:     ath10k@lists.infradead.org, Zhi Chen <zhichen@codeaurora.org>
-From:   Ben Greear <greearb@candelatech.com>
-Message-ID: <7119f24f-5b88-629a-d507-73776b841f65@candelatech.com>
-Date:   Fri, 10 May 2019 07:04:16 -0700
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:45.0) Gecko/20100101
- Thunderbird/45.8.0
+        id S1727989AbfEJOeU (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 10 May 2019 10:34:20 -0400
+Received: from mga14.intel.com ([192.55.52.115]:32461 "EHLO mga14.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727248AbfEJOeT (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 10 May 2019 10:34:19 -0400
+X-Amp-Result: UNKNOWN
+X-Amp-Original-Verdict: FILE UNKNOWN
+X-Amp-File-Uploaded: False
+Received: from orsmga002.jf.intel.com ([10.7.209.21])
+  by fmsmga103.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 10 May 2019 07:34:16 -0700
+X-ExtLoop1: 1
+Received: from smile.fi.intel.com (HELO smile) ([10.237.72.86])
+  by orsmga002.jf.intel.com with ESMTP; 10 May 2019 07:34:08 -0700
+Received: from andy by smile with local (Exim 4.92)
+        (envelope-from <andriy.shevchenko@linux.intel.com>)
+        id 1hP6b9-0004Sg-Pc; Fri, 10 May 2019 17:34:07 +0300
+Date:   Fri, 10 May 2019 17:34:07 +0300
+From:   "andriy.shevchenko@linux.intel.com" 
+        <andriy.shevchenko@linux.intel.com>
+To:     "Ardelean, Alexandru" <alexandru.Ardelean@analog.com>
+Cc:     "gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>,
+        "kvm@vger.kernel.org" <kvm@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "linux-ide@vger.kernel.org" <linux-ide@vger.kernel.org>,
+        "linux-usb@vger.kernel.org" <linux-usb@vger.kernel.org>,
+        "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
+        "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
+        "cgroups@vger.kernel.org" <cgroups@vger.kernel.org>,
+        "intel-gfx@lists.freedesktop.org" <intel-gfx@lists.freedesktop.org>,
+        "linux-pm@vger.kernel.org" <linux-pm@vger.kernel.org>,
+        "linux-mm@kvack.org" <linux-mm@kvack.org>,
+        "linux-omap@vger.kernel.org" <linux-omap@vger.kernel.org>,
+        "linux-gpio@vger.kernel.org" <linux-gpio@vger.kernel.org>,
+        "linux-security-module@vger.kernel.org" 
+        <linux-security-module@vger.kernel.org>,
+        "devel@driverdev.osuosl.org" <devel@driverdev.osuosl.org>,
+        "linux-integrity@vger.kernel.org" <linux-integrity@vger.kernel.org>,
+        "linux-fbdev@vger.kernel.org" <linux-fbdev@vger.kernel.org>,
+        "dri-devel@lists.freedesktop.org" <dri-devel@lists.freedesktop.org>,
+        "linux-rpi-kernel@lists.infradead.org" 
+        <linux-rpi-kernel@lists.infradead.org>,
+        "linux-arm-kernel@lists.infradead.org" 
+        <linux-arm-kernel@lists.infradead.org>,
+        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+        "alsa-devel@alsa-project.org" <alsa-devel@alsa-project.org>,
+        "linux-rockchip@lists.infradead.org" 
+        <linux-rockchip@lists.infradead.org>,
+        "linux-clk@vger.kernel.org" <linux-clk@vger.kernel.org>,
+        "linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        "linux-mtd@lists.infradead.org" <linux-mtd@lists.infradead.org>,
+        "linux-tegra@vger.kernel.org" <linux-tegra@vger.kernel.org>
+Subject: Re: [PATCH 03/16] lib,treewide: add new match_string() helper/macro
+Message-ID: <20190510143407.GA9224@smile.fi.intel.com>
+References: <20190508112842.11654-1-alexandru.ardelean@analog.com>
+ <20190508112842.11654-5-alexandru.ardelean@analog.com>
+ <20190508131128.GL9224@smile.fi.intel.com>
+ <20190508131856.GB10138@kroah.com>
+ <b2440bc9485456a7a90a488c528997587b22088b.camel@analog.com>
+ <4df165bc4247e60aa4952fd55cb0c77e60712767.camel@analog.com>
 MIME-Version: 1.0
-In-Reply-To: <1557471662-1355-1-git-send-email-yiboz@codeaurora.org>
-Content-Type: text/plain; charset=windows-1252; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <4df165bc4247e60aa4952fd55cb0c77e60712767.camel@analog.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+On Fri, May 10, 2019 at 09:15:27AM +0000, Ardelean, Alexandru wrote:
+> On Wed, 2019-05-08 at 16:22 +0300, Alexandru Ardelean wrote:
+> > On Wed, 2019-05-08 at 15:18 +0200, Greg KH wrote:
+> > > On Wed, May 08, 2019 at 04:11:28PM +0300, Andy Shevchenko wrote:
+> > > > On Wed, May 08, 2019 at 02:28:29PM +0300, Alexandru Ardelean wrote:
 
+> > > > Can you split include/linux/ change from the rest?
+> > > 
+> > > That would break the build, why do you want it split out?  This makes
+> > > sense all as a single patch to me.
+> > > 
+> > 
+> > Not really.
+> > It would be just be the new match_string() helper/macro in a new commit.
+> > And the conversions of the simple users of match_string() (the ones using
+> > ARRAY_SIZE()) in another commit.
+> > 
+> 
+> I should have asked in my previous reply.
+> Leave this as-is or re-formulate in 2 patches ?
 
-On 05/10/2019 12:01 AM, Yibo Zhao wrote:
-> In multiple SSID cases, it takes time to prepare every AP interface
-> to be ready in initializing phase. If a sta already knows everything it
-> needs to join one of the APs and sends authentication to the AP which
-> is not fully prepared at this point of time, AP's channel context
-> could be NULL. As a result, warning message occurs.
->
-> Even worse, if the AP is under attack via tools such as MDK3 and massive
-> authentication requests are received in a very short time, console will
-> be hung due to kernel warning messages.
+Depends on on what you would like to spend your time: collecting Acks for all
+pieces in treewide patch or send new API first followed up by per driver /
+module update in next cycle.
 
-Since it is a WARN_ON_ONCE, how it the console hang due to warnings?  You should
-get no more than once per boot?
-
-I have no problem with removing it though.  Seems a harmless splat and I removed
-it from my tree some time back as well.
-
-Thanks,
-Ben
-
->
-> If this case can be hit during normal functionality, there should be no
-> WARN_ON(). Those should be reserved to cases that are not supposed to be
-> hit at all or some other more specific cases like indicating obsolete
-> interface.
->
-> Signed-off-by: Zhi Chen <zhichen@codeaurora.org>
-> Signed-off-by: Yibo Zhao <yiboz@codeaurora.org>
-> ---
->  net/mac80211/ieee80211_i.h | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/net/mac80211/ieee80211_i.h b/net/mac80211/ieee80211_i.h
-> index 2ae0364..f39c289 100644
-> --- a/net/mac80211/ieee80211_i.h
-> +++ b/net/mac80211/ieee80211_i.h
-> @@ -1435,7 +1435,7 @@ struct ieee80211_local {
->  	rcu_read_lock();
->  	chanctx_conf = rcu_dereference(sdata->vif.chanctx_conf);
->
-> -	if (WARN_ON_ONCE(!chanctx_conf)) {
-> +	if (!chanctx_conf) {
->  		rcu_read_unlock();
->  		return NULL;
->  	}
->
+I also have no strong preference.
+And I think it's good to add Heikki Krogerus to Cc list for both patch series,
+since he is the author of sysfs variant and may have something to comment on
+the rest.
 
 -- 
-Ben Greear <greearb@candelatech.com>
-Candela Technologies Inc  http://www.candelatech.com
+With Best Regards,
+Andy Shevchenko
+
+
