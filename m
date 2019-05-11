@@ -2,38 +2,39 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 7EA471A7F5
-	for <lists+linux-wireless@lfdr.de>; Sat, 11 May 2019 15:29:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 25CF61A7FA
+	for <lists+linux-wireless@lfdr.de>; Sat, 11 May 2019 15:31:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728599AbfEKN3D (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 11 May 2019 09:29:03 -0400
-Received: from nbd.name ([46.4.11.11]:55120 "EHLO nbd.name"
+        id S1728573AbfEKNbk (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 11 May 2019 09:31:40 -0400
+Received: from nbd.name ([46.4.11.11]:55338 "EHLO nbd.name"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726147AbfEKN3D (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 11 May 2019 09:29:03 -0400
+        id S1726147AbfEKNbk (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Sat, 11 May 2019 09:31:40 -0400
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name;
          s=20160729; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:
         MIME-Version:Date:Message-ID:From:References:Cc:To:Subject:Sender:Reply-To:
         Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
         Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
         List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=mdvjgPMA9eI8DprNFHPPXca19zBL7cdKnNyLoDx9Ga0=; b=sS+6V2Sn8YFUOqu0V/2wEiKpWi
-        ELbhxnofZ8dnUCQG0ncooK+ySrMewXD7wJXGOwyt8bIoy+rYo1KozYo3Afgi+pdD2mOngM9MjNltj
-        /C8vn30bTUx+Vol69muawWXpPlpRGM0okIgR5Y1SITpuIP9Zkg3W1d5F7Yywm04oVy74=;
+        bh=s/AZSOJdvUNU5yPgVGE8CutgVSk3rVEECA+FUX1RXDw=; b=Pd1sGj7GJ++06en9Qla/DwHFxy
+        jLRvRo7YD1PLcTj+xmf05M9cwjo+4FcZ8NBQiPoKTy329QTs17V3Z0FKNcZqtO6LkJxqD53I5GqPI
+        9rE89PBKHg/+YTcurS0k0iwItGOB+DHzRpNf0v4lvL2d8/J8yisH54Pez4SM6mvY8Qto=;
 Received: from p54ae9c89.dip0.t-ipconnect.de ([84.174.156.137] helo=nf.local)
         by ds12 with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
         (Exim 4.89)
         (envelope-from <nbd@nbd.name>)
-        id 1hPS3g-00022e-8R; Sat, 11 May 2019 15:29:00 +0200
-Subject: Re: [PATCH] mt76: Fix a signedness bug in mt7615_add_interface()
-To:     Dan Carpenter <dan.carpenter@oracle.com>,
-        Ryder Lee <ryder.lee@mediatek.com>
-Cc:     Lorenzo Bianconi <lorenzo.bianconi83@gmail.com>,
-        Roy Luo <royluo@google.com>, Kalle Valo <kvalo@codeaurora.org>,
+        id 1hPS6B-00028f-17; Sat, 11 May 2019 15:31:35 +0200
+Subject: Re: [PATCH][next] mt76: fix less than zero check on a u8 variable
+To:     Colin King <colin.king@canonical.com>, Roy Luo <royluo@google.com>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        "David S . Miller" <davem@davemloft.net>,
         Matthias Brugger <matthias.bgg@gmail.com>,
-        linux-wireless@vger.kernel.org, linux-mediatek@lists.infradead.org,
-        kernel-janitors@vger.kernel.org
-References: <20190502212341.GA31847@mwanda>
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-mediatek@lists.infradead.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20190505213135.3895-1-colin.king@canonical.com>
 From:   Felix Fietkau <nbd@nbd.name>
 Openpgp: preference=signencrypt
 Autocrypt: addr=nbd@nbd.name; prefer-encrypt=mutual; keydata=
@@ -59,12 +60,12 @@ Autocrypt: addr=nbd@nbd.name; prefer-encrypt=mutual; keydata=
  TspgwBWLnXQvP5EDvlZnNaKa/3oBes6z0QdaSOwZCRA3QSLHBwtgUsrT6RxRSweLrcabiEkE
  GBECAAkFAkah5FQCGwwACgkQ130UHQKnbvW2GgCfTKx80VvCR/PvsUlrvdOLsIgeRGAAn1ee
  RjMaxwtSdaCKMw3j33ZbsWS4
-Message-ID: <c554f3b8-e46d-9137-ad06-c31f7961a958@nbd.name>
-Date:   Sat, 11 May 2019 15:28:59 +0200
+Message-ID: <a0d21c98-9421-547f-6dd9-5153812107e5@nbd.name>
+Date:   Sat, 11 May 2019 15:31:34 +0200
 User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.14; rv:60.0)
  Gecko/20100101 Thunderbird/60.6.1
 MIME-Version: 1.0
-In-Reply-To: <20190502212341.GA31847@mwanda>
+In-Reply-To: <20190505213135.3895-1-colin.king@canonical.com>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
@@ -73,13 +74,17 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 2019-05-03 14:54, Dan Carpenter wrote:
-> The problem is that "mvif->omac_idx" is a u8 so it can't be negative
-> and the error handling won't work.  The get_omac_idx() function returns
-> -1 on error.
+On 2019-05-05 23:31, Colin King wrote:
+> From: Colin Ian King <colin.king@canonical.com>
 > 
+> The signed return from the call to get_omac_idx is being assigned to the
+> u8 variable mac_idx and then checked for a negative error condition
+> which is always going to be false. Fix this by assigning the return to
+> the int variable ret and checking this instead.
+> 
+> Addresses-Coverity: ("Unsigned compared against 0")
 > Fixes: 04b8e65922f6 ("mt76: add mac80211 driver for MT7615 PCIe-based chipsets")
-> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
-Applied, thanks.
+> Signed-off-by: Colin Ian King <colin.king@canonical.com>
+Already fixed by a similar patch by Dan Carpenter.
 
 - Felix
