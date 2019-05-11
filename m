@@ -2,101 +2,116 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id DB0F01A81B
-	for <lists+linux-wireless@lfdr.de>; Sat, 11 May 2019 16:30:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3CA311A83D
+	for <lists+linux-wireless@lfdr.de>; Sat, 11 May 2019 17:30:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726319AbfEKOaE (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 11 May 2019 10:30:04 -0400
-Received: from nbd.name ([46.4.11.11]:59278 "EHLO nbd.name"
+        id S1728618AbfEKPa0 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 11 May 2019 11:30:26 -0400
+Received: from mail.kernel.org ([198.145.29.99]:33062 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726147AbfEKOaD (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 11 May 2019 10:30:03 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name;
-         s=20160729; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:
-        MIME-Version:Date:Message-ID:From:References:Cc:To:Subject:Sender:Reply-To:
-        Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-        Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
-        List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=DZMSeZjs6cT5UxXd9HXggx65pMslrrA4MG2HLlwOw1o=; b=ahTt9l507pBJL7z3zVQV4YuwLJ
-        mOVGGf+e6RcrzOgjymccEBmLzPNzHzTtX4kIWkvMwfgmVmxDjOGV0gFT7t7DM80646nrlbssX5upY
-        a0aPevRikCfAzGeobOcVznTIBYD0EhtRTgcvgPGofa5MT9f1bUZSLUtca63IQGqinrxY=;
-Received: from p54ae9c89.dip0.t-ipconnect.de ([84.174.156.137] helo=nf.local)
-        by ds12 with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        (Exim 4.89)
-        (envelope-from <nbd@nbd.name>)
-        id 1hPT0k-0006WK-PD; Sat, 11 May 2019 16:30:02 +0200
-Subject: Re: [PATCH 4/4] mt76: mt76x02: run mt76x02_edcca_init atomically in
- mt76_edcca_set
-To:     Lorenzo Bianconi <lorenzo.bianconi@redhat.com>
-Cc:     Lorenzo Bianconi <lorenzo@kernel.org>,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        Stanislaw Gruszka <sgruszka@redhat.com>
-References: <cover.1557567465.git.lorenzo@kernel.org>
- <436469e1a4c1e0c11ae43a0b002378708d31f15d.1557567465.git.lorenzo@kernel.org>
- <97ef0073-6dae-f9d1-e97f-9aadaa629628@nbd.name>
- <CAJ0CqmW8RyBmn1_-M0gQGvLOsTd45kAji7wmurs-GHBLac9Dyg@mail.gmail.com>
-From:   Felix Fietkau <nbd@nbd.name>
-Openpgp: preference=signencrypt
-Autocrypt: addr=nbd@nbd.name; prefer-encrypt=mutual; keydata=
- mQGiBEah5CcRBADIY7pu4LIv3jBlyQ/2u87iIZGe6f0f8pyB4UjzfJNXhJb8JylYYRzIOSxh
- ExKsdLCnJqsG1PY1mqTtoG8sONpwsHr2oJ4itjcGHfn5NJSUGTbtbbxLro13tHkGFCoCr4Z5
- Pv+XRgiANSpYlIigiMbOkide6wbggQK32tC20QxUIwCg4k6dtV/4kwEeiOUfErq00TVqIiEE
- AKcUi4taOuh/PQWx/Ujjl/P1LfJXqLKRPa8PwD4j2yjoc9l+7LptSxJThL9KSu6gtXQjcoR2
- vCK0OeYJhgO4kYMI78h1TSaxmtImEAnjFPYJYVsxrhay92jisYc7z5R/76AaELfF6RCjjGeP
- wdalulG+erWju710Bif7E1yjYVWeA/9Wd1lsOmx6uwwYgNqoFtcAunDaMKi9xVQW18FsUusM
- TdRvTZLBpoUAy+MajAL+R73TwLq3LnKpIcCwftyQXK5pEDKq57OhxJVv1Q8XkA9Dn1SBOjNB
- l25vJDFAT9ntp9THeDD2fv15yk4EKpWhu4H00/YX8KkhFsrtUs69+vZQwbQcRmVsaXggRmll
- dGthdSA8bmJkQG5iZC5uYW1lPohgBBMRAgAgBQJGoeQnAhsjBgsJCAcDAgQVAggDBBYCAwEC
- HgECF4AACgkQ130UHQKnbvXsvgCgjsAIIOsY7xZ8VcSm7NABpi91yTMAniMMmH7FRenEAYMa
- VrwYTIThkTlQuQINBEah5FQQCACMIep/hTzgPZ9HbCTKm9xN4bZX0JjrqjFem1Nxf3MBM5vN
- CYGBn8F4sGIzPmLhl4xFeq3k5irVg/YvxSDbQN6NJv8o+tP6zsMeWX2JjtV0P4aDIN1pK2/w
- VxcicArw0VYdv2ZCarccFBgH2a6GjswqlCqVM3gNIMI8ikzenKcso8YErGGiKYeMEZLwHaxE
- Y7mTPuOTrWL8uWWRL5mVjhZEVvDez6em/OYvzBwbkhImrryF29e3Po2cfY2n7EKjjr3/141K
- DHBBdgXlPNfDwROnA5ugjjEBjwkwBQqPpDA7AYPvpHh5vLbZnVGu5CwG7NAsrb2isRmjYoqk
- wu++3117AAMFB/9S0Sj7qFFQcD4laADVsabTpNNpaV4wAgVTRHKV/kC9luItzwDnUcsZUPdQ
- f3MueRJ3jIHU0UmRBG3uQftqbZJj3ikhnfvyLmkCNe+/hXhPu9sGvXyi2D4vszICvc1KL4RD
- aLSrOsROx22eZ26KqcW4ny7+va2FnvjsZgI8h4sDmaLzKczVRIiLITiMpLFEU/VoSv0m1F4B
- FtRgoiyjFzigWG0MsTdAN6FJzGh4mWWGIlE7o5JraNhnTd+yTUIPtw3ym6l8P+gbvfoZida0
- TspgwBWLnXQvP5EDvlZnNaKa/3oBes6z0QdaSOwZCRA3QSLHBwtgUsrT6RxRSweLrcabiEkE
- GBECAAkFAkah5FQCGwwACgkQ130UHQKnbvW2GgCfTKx80VvCR/PvsUlrvdOLsIgeRGAAn1ee
- RjMaxwtSdaCKMw3j33ZbsWS4
-Message-ID: <b1f8f1c1-a3f5-d94d-1790-320350578100@nbd.name>
-Date:   Sat, 11 May 2019 16:30:02 +0200
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.14; rv:60.0)
- Gecko/20100101 Thunderbird/60.6.1
+        id S1728617AbfEKPaZ (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Sat, 11 May 2019 11:30:25 -0400
+Received: from localhost.localdomain (unknown [151.66.17.19])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 1E72E2183F;
+        Sat, 11 May 2019 15:30:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1557588625;
+        bh=UD9mweJo81tzm8Nlut+OGiZeWBc70Q9rMqUPKdPqA20=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=YJb4+/C5DrSRx0opN1Us8AJWalyBejOE9SgKEka1milqXi1eqociXA/a//gCw+5iH
+         mm7G07oNZIy30Vi67r0bt3dirfzAcTN8+/KW89XqIrtzQ/ujdJ32T+xi+4jS7Qw/5A
+         zJ0ZLvGap9nn7d7MvJ2OYM/CEhz2y/51w1U6rhn0=
+From:   Lorenzo Bianconi <lorenzo@kernel.org>
+To:     nbd@nbd.name
+Cc:     lorenzo.bianconi@redhat.com, linux-wireless@vger.kernel.org,
+        sgruszka@redhat.com
+Subject: [PATCH v2 4/4] mt76: mt76x02: run mt76x02_edcca_init atomically in mt76_edcca_set
+Date:   Sat, 11 May 2019 17:30:10 +0200
+Message-Id: <fde3fda80e04bc1957f98ec48bb33485bb60e3c2.1557587336.git.lorenzo@kernel.org>
+X-Mailer: git-send-email 2.20.1
+In-Reply-To: <cover.1557587336.git.lorenzo@kernel.org>
+References: <cover.1557587336.git.lorenzo@kernel.org>
 MIME-Version: 1.0
-In-Reply-To: <CAJ0CqmW8RyBmn1_-M0gQGvLOsTd45kAji7wmurs-GHBLac9Dyg@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 2019-05-11 16:29, Lorenzo Bianconi wrote:
->>
->> On 2019-05-11 12:17, Lorenzo Bianconi wrote:
->> > Run mt76x02_edcca_init atomically in mt76_edcca_set since it runs
->> > concurrently with calibration work and mt76x2_set_channel.
->> > Introduce __mt76x02_edcca_init helper routine
->> >
->> > Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
->> I don't think this is enough. To prevent issues with calibration, we
->> probably need to hold the mutex for the duration of the calibration
->> anyway. Otherwise it might get enabled right in the middle of it and
->> screw things up.
->> Also, it probably simplifies the patch if you don't add the wrapper
->> function that takes the mutex, and instead just explicitly take the
->> mutex where needed.
-> 
-> So IIUC it would be better to hold the mutex during
-> mt76x2_phy_calibrate processing, right?
-Right.
+Run mt76x02_edcca_init atomically in mt76_edcca_set since it runs
+concurrently with calibration work and mt76x2_set_channel.
+Moreover perform phy calibration atomically
 
-> If so, do I need to repost all the series or just this patch?
-Feel free to repost just this patch.
+Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+---
+ drivers/net/wireless/mediatek/mt76/mt76x02_debugfs.c | 4 ++++
+ drivers/net/wireless/mediatek/mt76/mt76x2/pci_phy.c  | 6 ++++++
+ drivers/net/wireless/mediatek/mt76/mt76x2/usb_phy.c  | 5 +++++
+ 3 files changed, 15 insertions(+)
 
-Thanks,
+diff --git a/drivers/net/wireless/mediatek/mt76/mt76x02_debugfs.c b/drivers/net/wireless/mediatek/mt76/mt76x02_debugfs.c
+index 7853078e8ca4..f412c779d8e2 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt76x02_debugfs.c
++++ b/drivers/net/wireless/mediatek/mt76/mt76x02_debugfs.c
+@@ -122,11 +122,15 @@ mt76_edcca_set(void *data, u64 val)
+ 	struct mt76x02_dev *dev = data;
+ 	enum nl80211_dfs_regions region = dev->dfs_pd.region;
+ 
++	mutex_lock(&dev->mt76.mutex);
++
+ 	dev->ed_monitor_enabled = !!val;
+ 	dev->ed_monitor = dev->ed_monitor_enabled &&
+ 			  region == NL80211_DFS_ETSI;
+ 	mt76x02_edcca_init(dev);
+ 
++	mutex_unlock(&dev->mt76.mutex);
++
+ 	return 0;
+ }
+ 
+diff --git a/drivers/net/wireless/mediatek/mt76/mt76x2/pci_phy.c b/drivers/net/wireless/mediatek/mt76/mt76x2/pci_phy.c
+index 7a39a390a7ac..2edf1bd0c18c 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt76x2/pci_phy.c
++++ b/drivers/net/wireless/mediatek/mt76/mt76x2/pci_phy.c
+@@ -294,10 +294,16 @@ void mt76x2_phy_calibrate(struct work_struct *work)
+ 	struct mt76x02_dev *dev;
+ 
+ 	dev = container_of(work, struct mt76x02_dev, cal_work.work);
++
++	mutex_lock(&dev->mt76.mutex);
++
+ 	mt76x2_phy_channel_calibrate(dev, false);
+ 	mt76x2_phy_tssi_compensate(dev);
+ 	mt76x2_phy_temp_compensate(dev);
+ 	mt76x2_phy_update_channel_gain(dev);
++
++	mutex_unlock(&dev->mt76.mutex);
++
+ 	ieee80211_queue_delayed_work(mt76_hw(dev), &dev->cal_work,
+ 				     MT_CALIBRATE_INTERVAL);
+ }
+diff --git a/drivers/net/wireless/mediatek/mt76/mt76x2/usb_phy.c b/drivers/net/wireless/mediatek/mt76/mt76x2/usb_phy.c
+index c7208c5375ac..dfd54f9b0e97 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt76x2/usb_phy.c
++++ b/drivers/net/wireless/mediatek/mt76/mt76x2/usb_phy.c
+@@ -55,10 +55,15 @@ void mt76x2u_phy_calibrate(struct work_struct *work)
+ 	struct mt76x02_dev *dev;
+ 
+ 	dev = container_of(work, struct mt76x02_dev, cal_work.work);
++
++	mutex_lock(&dev->mt76.mutex);
++
+ 	mt76x2u_phy_channel_calibrate(dev, false);
+ 	mt76x2_phy_tssi_compensate(dev);
+ 	mt76x2_phy_update_channel_gain(dev);
+ 
++	mutex_unlock(&dev->mt76.mutex);
++
+ 	ieee80211_queue_delayed_work(mt76_hw(dev), &dev->cal_work,
+ 				     MT_CALIBRATE_INTERVAL);
+ }
+-- 
+2.20.1
 
-- Felix
