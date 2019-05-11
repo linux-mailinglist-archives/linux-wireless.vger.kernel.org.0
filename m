@@ -2,38 +2,35 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id F142C1A814
-	for <lists+linux-wireless@lfdr.de>; Sat, 11 May 2019 16:24:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 67D3B1A815
+	for <lists+linux-wireless@lfdr.de>; Sat, 11 May 2019 16:24:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728603AbfEKOYJ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 11 May 2019 10:24:09 -0400
-Received: from nbd.name ([46.4.11.11]:58496 "EHLO nbd.name"
+        id S1728627AbfEKOYT (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 11 May 2019 10:24:19 -0400
+Received: from nbd.name ([46.4.11.11]:58516 "EHLO nbd.name"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726147AbfEKOYJ (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 11 May 2019 10:24:09 -0400
+        id S1726147AbfEKOYT (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Sat, 11 May 2019 10:24:19 -0400
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name;
          s=20160729; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:
         MIME-Version:Date:Message-ID:From:References:Cc:To:Subject:Sender:Reply-To:
         Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
         Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
         List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=6D8lHhlPnErlwBUUg7pykhDXuLB10RpnRmnHan5006c=; b=M6sOyTv2Vw0yg/RJTR8macl6dL
-        Ts1wn7fHpqTg9blYEtrdghH4NTRvSy3Gnxm8pytbHCfVeDpsrgJXszmhz+FsOnCOXqRgL3xZfKc1f
-        FsUHZxSaN5GGZ4fzVv19MRS8/BYG8RhDht/W3brnmRaTr3y+R5pVtajyPKDrvcbiUTVQ=;
+        bh=f2SVeA9Ut1MsduHjrIJMB+HHgWOq8GitEueMMxAUSNw=; b=A1npVW9g84fduNlh5vFa4R4KYq
+        0XZzC8jl11ceEbAF9E6tc7wVlq+matAT71aqHt+uyHUaXs79sB5mowEivPgP1rt0K/Y0zwmcr+K7b
+        1188YLYPUIXmKOP8sIlOP/lsYwDvIO0x6X2AEESvsS8X7XcWMPWsLP8FolzGyIDzVolw=;
 Received: from p54ae9c89.dip0.t-ipconnect.de ([84.174.156.137] helo=nf.local)
         by ds12 with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
         (Exim 4.89)
         (envelope-from <nbd@nbd.name>)
-        id 1hPSuy-0005td-Hp; Sat, 11 May 2019 16:24:04 +0200
-Subject: Re: [PATCH] mt76: mt7615: Make mt7615_irq_handler static
-To:     YueHaibing <yuehaibing@huawei.com>, lorenzo.bianconi83@gmail.com,
-        ryder.lee@mediatek.com, royluo@google.com, kvalo@codeaurora.org,
-        matthias.bgg@gmail.com
-Cc:     linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
-        linux-mediatek@lists.infradead.org,
-        linux-arm-kernel@lists.infradead.org,
-        linux-wireless@vger.kernel.org
-References: <20190504102247.43720-1-yuehaibing@huawei.com>
+        id 1hPSvB-00061H-Ea; Sat, 11 May 2019 16:24:17 +0200
+Subject: Re: [PATCH] mt76: mt7603: stop mac80211 queues before setting the
+ channel
+To:     Lorenzo Bianconi <lorenzo@kernel.org>
+Cc:     lorenzo.bianconi@redhat.com, linux-wireless@vger.kernel.org
+References: <cover.1557016660.git.lorenzo@kernel.org>
+ <31a4fa56c854a64a25f2e7aa37cba23e9d3fb3d6.1557016660.git.lorenzo@kernel.org>
 From:   Felix Fietkau <nbd@nbd.name>
 Openpgp: preference=signencrypt
 Autocrypt: addr=nbd@nbd.name; prefer-encrypt=mutual; keydata=
@@ -59,12 +56,12 @@ Autocrypt: addr=nbd@nbd.name; prefer-encrypt=mutual; keydata=
  TspgwBWLnXQvP5EDvlZnNaKa/3oBes6z0QdaSOwZCRA3QSLHBwtgUsrT6RxRSweLrcabiEkE
  GBECAAkFAkah5FQCGwwACgkQ130UHQKnbvW2GgCfTKx80VvCR/PvsUlrvdOLsIgeRGAAn1ee
  RjMaxwtSdaCKMw3j33ZbsWS4
-Message-ID: <eb17d602-ab87-2d75-7d82-acbf93ede150@nbd.name>
-Date:   Sat, 11 May 2019 16:24:03 +0200
+Message-ID: <f54b8921-2900-a58d-5c6b-e4c4a3324fc0@nbd.name>
+Date:   Sat, 11 May 2019 16:24:16 +0200
 User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.14; rv:60.0)
  Gecko/20100101 Thunderbird/60.6.1
 MIME-Version: 1.0
-In-Reply-To: <20190504102247.43720-1-yuehaibing@huawei.com>
+In-Reply-To: <31a4fa56c854a64a25f2e7aa37cba23e9d3fb3d6.1557016660.git.lorenzo@kernel.org>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
@@ -73,13 +70,9 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 2019-05-04 12:22, YueHaibing wrote:
-> Fix sparse warning:
+On 2019-05-05 02:53, Lorenzo Bianconi wrote:
+> Suspend data transmission during channel switch
 > 
-> drivers/net/wireless/mediatek/mt76/mt7615/pci.c:37:13:
->  warning: symbol 'mt7615_irq_handler' was not declared. Should it be static?
-> 
-> Signed-off-by: YueHaibing <yuehaibing@huawei.com>
-Applied, thanks.
+> Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>Applied, thanks.
 
 - Felix
