@@ -2,39 +2,34 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 25CF61A7FA
-	for <lists+linux-wireless@lfdr.de>; Sat, 11 May 2019 15:31:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2A2EB1A80D
+	for <lists+linux-wireless@lfdr.de>; Sat, 11 May 2019 16:00:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728573AbfEKNbk (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 11 May 2019 09:31:40 -0400
-Received: from nbd.name ([46.4.11.11]:55338 "EHLO nbd.name"
+        id S1728584AbfEKOAo (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 11 May 2019 10:00:44 -0400
+Received: from nbd.name ([46.4.11.11]:57120 "EHLO nbd.name"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726147AbfEKNbk (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 11 May 2019 09:31:40 -0400
+        id S1726016AbfEKOAo (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Sat, 11 May 2019 10:00:44 -0400
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name;
          s=20160729; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:
         MIME-Version:Date:Message-ID:From:References:Cc:To:Subject:Sender:Reply-To:
         Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
         Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
         List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=s/AZSOJdvUNU5yPgVGE8CutgVSk3rVEECA+FUX1RXDw=; b=Pd1sGj7GJ++06en9Qla/DwHFxy
-        jLRvRo7YD1PLcTj+xmf05M9cwjo+4FcZ8NBQiPoKTy329QTs17V3Z0FKNcZqtO6LkJxqD53I5GqPI
-        9rE89PBKHg/+YTcurS0k0iwItGOB+DHzRpNf0v4lvL2d8/J8yisH54Pez4SM6mvY8Qto=;
+        bh=9XuCHkqZm6RJ5XeNwlulvaLKXxnZIENevXtLcjNMIOg=; b=hFmX952W1otROjDjklawndU8U9
+        +jRmP+2sufW0VHCMsqzzPMCDlwOcznXgjvT50qohFNyZPB95++P9/25BrVkXtEDKvJMYSG4dAxW3t
+        /J2JQMV4eSzmhjtS3J5qHwsTnmuN+xdAufIBx+eBZBDDyO0cUObuVzTIE9MuTggP9Orw=;
 Received: from p54ae9c89.dip0.t-ipconnect.de ([84.174.156.137] helo=nf.local)
         by ds12 with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
         (Exim 4.89)
         (envelope-from <nbd@nbd.name>)
-        id 1hPS6B-00028f-17; Sat, 11 May 2019 15:31:35 +0200
-Subject: Re: [PATCH][next] mt76: fix less than zero check on a u8 variable
-To:     Colin King <colin.king@canonical.com>, Roy Luo <royluo@google.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        "David S . Miller" <davem@davemloft.net>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        linux-mediatek@lists.infradead.org
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20190505213135.3895-1-colin.king@canonical.com>
+        id 1hPSYI-0004EH-IU; Sat, 11 May 2019 16:00:38 +0200
+Subject: Re: [PATCH 00/17] use standard signature for mt7615 mcu api
+To:     Lorenzo Bianconi <lorenzo@kernel.org>
+Cc:     lorenzo.bianconi@redhat.com, linux-wireless@vger.kernel.org,
+        ryder.lee@mediatek.com, royluo@google.com
+References: <cover.1556981521.git.lorenzo@kernel.org>
 From:   Felix Fietkau <nbd@nbd.name>
 Openpgp: preference=signencrypt
 Autocrypt: addr=nbd@nbd.name; prefer-encrypt=mutual; keydata=
@@ -60,12 +55,12 @@ Autocrypt: addr=nbd@nbd.name; prefer-encrypt=mutual; keydata=
  TspgwBWLnXQvP5EDvlZnNaKa/3oBes6z0QdaSOwZCRA3QSLHBwtgUsrT6RxRSweLrcabiEkE
  GBECAAkFAkah5FQCGwwACgkQ130UHQKnbvW2GgCfTKx80VvCR/PvsUlrvdOLsIgeRGAAn1ee
  RjMaxwtSdaCKMw3j33ZbsWS4
-Message-ID: <a0d21c98-9421-547f-6dd9-5153812107e5@nbd.name>
-Date:   Sat, 11 May 2019 15:31:34 +0200
+Message-ID: <f937d234-13e6-75b7-c00d-c07f2b108027@nbd.name>
+Date:   Sat, 11 May 2019 16:00:37 +0200
 User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.14; rv:60.0)
  Gecko/20100101 Thunderbird/60.6.1
 MIME-Version: 1.0
-In-Reply-To: <20190505213135.3895-1-colin.king@canonical.com>
+In-Reply-To: <cover.1556981521.git.lorenzo@kernel.org>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
@@ -74,17 +69,34 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 2019-05-05 23:31, Colin King wrote:
-> From: Colin Ian King <colin.king@canonical.com>
+On 2019-05-04 17:28, Lorenzo Bianconi wrote:
+> Introduce mt76_mcu_ops data structure in mt7615 mcu code in order
+> to reuse the code with other bus types and unify the code with mt7603
+> driver
 > 
-> The signed return from the call to get_omac_idx is being assigned to the
-> u8 variable mac_idx and then checked for a negative error condition
-> which is always going to be false. Fix this by assigning the return to
-> the int variable ret and checking this instead.
+> Changes since RFC:
+> - rebase ontop of https://patchwork.kernel.org/patch/10928753/
+> - fix net_type initialization in mt7615_mcu_set_bss_info
 > 
-> Addresses-Coverity: ("Unsigned compared against 0")
-> Fixes: 04b8e65922f6 ("mt76: add mac80211 driver for MT7615 PCIe-based chipsets")
-> Signed-off-by: Colin Ian King <colin.king@canonical.com>
-Already fixed by a similar patch by Dan Carpenter.
+> Lorenzo Bianconi (17):
+>   mt7615: mcu: simplify __mt7615_mcu_set_wtbl
+>   mt7615: mcu: simplify __mt7615_mcu_set_sta_rec
+>   mt7615: mcu: remove bss_info_convert_vif_type routine
+>   mt7615: mcu: use proper msg size in mt7615_mcu_add_wtbl_bmc
+>   mt7615: mcu: use proper msg size in mt7615_mcu_add_wtbl
+>   mt7615: mcu: unify mt7615_mcu_add_wtbl_bmc and mt7615_mcu_del_wtbl_bmc
+>   mt7615: mcu: remove unused parameter in mt7615_mcu_del_wtbl
+>   mt7615: remove query from mt7615_mcu_msg_send signature
+>   mt7615: remove dest from mt7615_mcu_msg_send signature
+>   mt7615: mcu: remove skb_ret from mt7615_mcu_msg_send
+>   mt7615: mcu: unify __mt7615_mcu_set_dev_info and
+>     mt7615_mcu_set_dev_info
+>   mt7615: mcu: do not use function pointers whenever possible
+>   mt7615: mcu: remove unused structure in mcu.h
+>   mt7615: mcu: use standard signature for mt7615_mcu_msg_send
+>   mt7615: initialize mt76_mcu_ops data structure
+>   mt7615: mcu: init mcu_restart function pointer
+>   mt7615: mcu: run __mt76_mcu_send_msg in mt7615_mcu_send_firmware
+Applied (including updated patch 12/17), thanks.
 
 - Felix
