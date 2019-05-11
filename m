@@ -2,37 +2,36 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 3CA311A83D
-	for <lists+linux-wireless@lfdr.de>; Sat, 11 May 2019 17:30:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A0C151A878
+	for <lists+linux-wireless@lfdr.de>; Sat, 11 May 2019 18:39:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728618AbfEKPa0 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 11 May 2019 11:30:26 -0400
-Received: from mail.kernel.org ([198.145.29.99]:33062 "EHLO mail.kernel.org"
+        id S1726783AbfEKQji (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 11 May 2019 12:39:38 -0400
+Received: from mail.kernel.org ([198.145.29.99]:42652 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728617AbfEKPaZ (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 11 May 2019 11:30:25 -0400
+        id S1726761AbfEKQji (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Sat, 11 May 2019 12:39:38 -0400
 Received: from localhost.localdomain (unknown [151.66.17.19])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 1E72E2183F;
-        Sat, 11 May 2019 15:30:23 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 0ED152173B;
+        Sat, 11 May 2019 16:39:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1557588625;
-        bh=UD9mweJo81tzm8Nlut+OGiZeWBc70Q9rMqUPKdPqA20=;
+        s=default; t=1557592776;
+        bh=RtgoM9DeejIGT7ufGEo8ae75G01dGRfaJReFQNbYBgc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=YJb4+/C5DrSRx0opN1Us8AJWalyBejOE9SgKEka1milqXi1eqociXA/a//gCw+5iH
-         mm7G07oNZIy30Vi67r0bt3dirfzAcTN8+/KW89XqIrtzQ/ujdJ32T+xi+4jS7Qw/5A
-         zJ0ZLvGap9nn7d7MvJ2OYM/CEhz2y/51w1U6rhn0=
+        b=wtZ+T915IPMYQmpMgNmXVlhvK4Mra8ztgjztmP9WxmOg8Uf0UBo/3309ateTtZyoq
+         YHAqtLc5Ub3K42+5/UUraZQ8MT28hJBh04OEkLQZ8YYy8dpN9PT1IdWYyKYXIQ/ttM
+         zUMKCiS2MZnex7W3x8R5Us10TweHnP3POfb5vDAA=
 From:   Lorenzo Bianconi <lorenzo@kernel.org>
 To:     nbd@nbd.name
-Cc:     lorenzo.bianconi@redhat.com, linux-wireless@vger.kernel.org,
-        sgruszka@redhat.com
-Subject: [PATCH v2 4/4] mt76: mt76x02: run mt76x02_edcca_init atomically in mt76_edcca_set
-Date:   Sat, 11 May 2019 17:30:10 +0200
-Message-Id: <fde3fda80e04bc1957f98ec48bb33485bb60e3c2.1557587336.git.lorenzo@kernel.org>
+Cc:     lorenzo.bianconi@redhat.com, linux-wireless@vger.kernel.org
+Subject: [PATCH] mt76: mt7603: add debugfs knob to enable/disable edcca
+Date:   Sat, 11 May 2019 18:38:41 +0200
+Message-Id: <0691acb931e963cb6028d4687cdd61032d0aaf52.1557591530.git.lorenzo@kernel.org>
 X-Mailer: git-send-email 2.20.1
-In-Reply-To: <cover.1557587336.git.lorenzo@kernel.org>
-References: <cover.1557587336.git.lorenzo@kernel.org>
+In-Reply-To: <cover.1557591530.git.lorenzo@kernel.org>
+References: <cover.1557591530.git.lorenzo@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
@@ -40,78 +39,117 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Run mt76x02_edcca_init atomically in mt76_edcca_set since it runs
-concurrently with calibration work and mt76x2_set_channel.
-Moreover perform phy calibration atomically
+Introduce a knob in mt7603 debugfs in order to enable/disable
+edcca processing
 
 Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
 ---
- drivers/net/wireless/mediatek/mt76/mt76x02_debugfs.c | 4 ++++
- drivers/net/wireless/mediatek/mt76/mt76x2/pci_phy.c  | 6 ++++++
- drivers/net/wireless/mediatek/mt76/mt76x2/usb_phy.c  | 5 +++++
- 3 files changed, 15 insertions(+)
+ .../wireless/mediatek/mt76/mt7603/debugfs.c   | 30 +++++++++++++++++++
+ .../net/wireless/mediatek/mt76/mt7603/init.c  |  4 ++-
+ .../net/wireless/mediatek/mt76/mt7603/main.c  |  3 +-
+ .../wireless/mediatek/mt76/mt7603/mt7603.h    |  6 +++-
+ 4 files changed, 39 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76x02_debugfs.c b/drivers/net/wireless/mediatek/mt76/mt76x02_debugfs.c
-index 7853078e8ca4..f412c779d8e2 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76x02_debugfs.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt76x02_debugfs.c
-@@ -122,11 +122,15 @@ mt76_edcca_set(void *data, u64 val)
- 	struct mt76x02_dev *dev = data;
- 	enum nl80211_dfs_regions region = dev->dfs_pd.region;
- 
-+	mutex_lock(&dev->mt76.mutex);
-+
- 	dev->ed_monitor_enabled = !!val;
- 	dev->ed_monitor = dev->ed_monitor_enabled &&
- 			  region == NL80211_DFS_ETSI;
- 	mt76x02_edcca_init(dev);
- 
-+	mutex_unlock(&dev->mt76.mutex);
-+
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7603/debugfs.c b/drivers/net/wireless/mediatek/mt76/mt7603/debugfs.c
+index f8b3b6ab6297..efc1cf5ae870 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7603/debugfs.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7603/debugfs.c
+@@ -40,6 +40,35 @@ mt7603_radio_read(struct seq_file *s, void *data)
  	return 0;
  }
  
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76x2/pci_phy.c b/drivers/net/wireless/mediatek/mt76/mt76x2/pci_phy.c
-index 7a39a390a7ac..2edf1bd0c18c 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76x2/pci_phy.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt76x2/pci_phy.c
-@@ -294,10 +294,16 @@ void mt76x2_phy_calibrate(struct work_struct *work)
- 	struct mt76x02_dev *dev;
- 
- 	dev = container_of(work, struct mt76x02_dev, cal_work.work);
++static int
++mt7603_edcca_set(void *data, u64 val)
++{
++	struct mt7603_dev *dev = data;
 +
 +	mutex_lock(&dev->mt76.mutex);
 +
- 	mt76x2_phy_channel_calibrate(dev, false);
- 	mt76x2_phy_tssi_compensate(dev);
- 	mt76x2_phy_temp_compensate(dev);
- 	mt76x2_phy_update_channel_gain(dev);
++	dev->ed_monitor_enabled = !!val;
++	dev->ed_monitor = dev->ed_monitor_enabled &&
++			  dev->region == NL80211_DFS_ETSI;
++	mt7603_init_edcca(dev);
 +
 +	mutex_unlock(&dev->mt76.mutex);
 +
- 	ieee80211_queue_delayed_work(mt76_hw(dev), &dev->cal_work,
- 				     MT_CALIBRATE_INTERVAL);
- }
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76x2/usb_phy.c b/drivers/net/wireless/mediatek/mt76/mt76x2/usb_phy.c
-index c7208c5375ac..dfd54f9b0e97 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76x2/usb_phy.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt76x2/usb_phy.c
-@@ -55,10 +55,15 @@ void mt76x2u_phy_calibrate(struct work_struct *work)
- 	struct mt76x02_dev *dev;
++	return 0;
++}
++
++static int
++mt7603_edcca_get(void *data, u64 *val)
++{
++	struct mt7603_dev *dev = data;
++
++	*val = dev->ed_monitor_enabled;
++	return 0;
++}
++
++DEFINE_DEBUGFS_ATTRIBUTE(fops_edcca, mt7603_edcca_get,
++			 mt7603_edcca_set, "%lld\n");
++
+ void mt7603_init_debugfs(struct mt7603_dev *dev)
+ {
+ 	struct dentry *dir;
+@@ -48,6 +77,7 @@ void mt7603_init_debugfs(struct mt7603_dev *dev)
+ 	if (!dir)
+ 		return;
  
- 	dev = container_of(work, struct mt76x02_dev, cal_work.work);
-+
-+	mutex_lock(&dev->mt76.mutex);
-+
- 	mt76x2u_phy_channel_calibrate(dev, false);
- 	mt76x2_phy_tssi_compensate(dev);
- 	mt76x2_phy_update_channel_gain(dev);
++	debugfs_create_file("edcca", 0400, dir, dev, &fops_edcca);
+ 	debugfs_create_u32("reset_test", 0600, dir, &dev->reset_test);
+ 	debugfs_create_devm_seqfile(dev->mt76.dev, "reset", dir,
+ 				    mt7603_reset_read);
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7603/init.c b/drivers/net/wireless/mediatek/mt76/mt7603/init.c
+index 78cdbb70e178..4e269044f8a4 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7603/init.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7603/init.c
+@@ -437,7 +437,9 @@ mt7603_regd_notifier(struct wiphy *wiphy,
+ 	struct ieee80211_hw *hw = wiphy_to_ieee80211_hw(wiphy);
+ 	struct mt7603_dev *dev = hw->priv;
  
-+	mutex_unlock(&dev->mt76.mutex);
-+
- 	ieee80211_queue_delayed_work(mt76_hw(dev), &dev->cal_work,
- 				     MT_CALIBRATE_INTERVAL);
+-	dev->ed_monitor = request->dfs_region == NL80211_DFS_ETSI;
++	dev->region = request->dfs_region;
++	dev->ed_monitor = dev->ed_monitor_enabled &&
++			  dev->region == NL80211_DFS_ETSI;
  }
+ 
+ static int
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7603/main.c b/drivers/net/wireless/mediatek/mt76/mt7603/main.c
+index 0a0334dc40d5..e931af92af43 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7603/main.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7603/main.c
+@@ -103,8 +103,7 @@ mt7603_remove_interface(struct ieee80211_hw *hw, struct ieee80211_vif *vif)
+ 	mutex_unlock(&dev->mt76.mutex);
+ }
+ 
+-static void
+-mt7603_init_edcca(struct mt7603_dev *dev)
++void mt7603_init_edcca(struct mt7603_dev *dev)
+ {
+ 	/* Set lower signal level to -65dBm */
+ 	mt76_rmw_field(dev, MT_RXTD(8), MT_RXTD_8_LOWER_SIGNAL, 0x23);
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7603/mt7603.h b/drivers/net/wireless/mediatek/mt76/mt7603/mt7603.h
+index fa64bbaab0d2..944dc9a11a15 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7603/mt7603.h
++++ b/drivers/net/wireless/mediatek/mt76/mt7603/mt7603.h
+@@ -117,8 +117,11 @@ struct mt7603_dev {
+ 	u8 mac_work_count;
+ 
+ 	u8 mcu_running;
+-	u8 ed_monitor;
+ 
++	enum nl80211_dfs_regions region;
++
++	u8 ed_monitor_enabled;
++	u8 ed_monitor;
+ 	s8 ed_trigger;
+ 	u8 ed_strict_mode;
+ 	u8 ed_strong_signal;
+@@ -241,4 +244,5 @@ void mt7603_update_channel(struct mt76_dev *mdev);
+ void mt7603_edcca_set_strict(struct mt7603_dev *dev, bool val);
+ void mt7603_cca_stats_reset(struct mt7603_dev *dev);
+ 
++void mt7603_init_edcca(struct mt7603_dev *dev);
+ #endif
 -- 
 2.20.1
 
