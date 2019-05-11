@@ -2,34 +2,36 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2A2EB1A80D
-	for <lists+linux-wireless@lfdr.de>; Sat, 11 May 2019 16:00:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9C33D1A811
+	for <lists+linux-wireless@lfdr.de>; Sat, 11 May 2019 16:22:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728584AbfEKOAo (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 11 May 2019 10:00:44 -0400
-Received: from nbd.name ([46.4.11.11]:57120 "EHLO nbd.name"
+        id S1728584AbfEKOWq (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 11 May 2019 10:22:46 -0400
+Received: from nbd.name ([46.4.11.11]:58394 "EHLO nbd.name"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726016AbfEKOAo (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 11 May 2019 10:00:44 -0400
+        id S1728559AbfEKOWq (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Sat, 11 May 2019 10:22:46 -0400
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name;
          s=20160729; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:
         MIME-Version:Date:Message-ID:From:References:Cc:To:Subject:Sender:Reply-To:
         Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
         Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
         List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=9XuCHkqZm6RJ5XeNwlulvaLKXxnZIENevXtLcjNMIOg=; b=hFmX952W1otROjDjklawndU8U9
-        +jRmP+2sufW0VHCMsqzzPMCDlwOcznXgjvT50qohFNyZPB95++P9/25BrVkXtEDKvJMYSG4dAxW3t
-        /J2JQMV4eSzmhjtS3J5qHwsTnmuN+xdAufIBx+eBZBDDyO0cUObuVzTIE9MuTggP9Orw=;
+        bh=GbnJ+RFzqGkO5NfCMeLpbtrxT6gCD1AHh8OJcGehwtQ=; b=C+yj4eUfbet8ZIQtN4ja4sb7GX
+        czJI3X8lm3YByFisiRxIzr4Zfl6stYv9Qtc4CUQQAd2rr6Dx4/kw+RqMZYHZZmLoxSH9RQfWHH1Pu
+        JKH31SrsiJD6hEKTbLpL3Dy+4LZ7L+Z5Gv4JJrfB0P1/fY6d6Ehlq7iaZHCng2w+ndI8=;
 Received: from p54ae9c89.dip0.t-ipconnect.de ([84.174.156.137] helo=nf.local)
         by ds12 with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
         (Exim 4.89)
         (envelope-from <nbd@nbd.name>)
-        id 1hPSYI-0004EH-IU; Sat, 11 May 2019 16:00:38 +0200
-Subject: Re: [PATCH 00/17] use standard signature for mt7615 mcu api
+        id 1hPStg-0005lv-Q5; Sat, 11 May 2019 16:22:44 +0200
+Subject: Re: [PATCH 4/4] mt76: mt76x02: run mt76x02_edcca_init atomically in
+ mt76_edcca_set
 To:     Lorenzo Bianconi <lorenzo@kernel.org>
 Cc:     lorenzo.bianconi@redhat.com, linux-wireless@vger.kernel.org,
-        ryder.lee@mediatek.com, royluo@google.com
-References: <cover.1556981521.git.lorenzo@kernel.org>
+        sgruszka@redhat.com
+References: <cover.1557567465.git.lorenzo@kernel.org>
+ <436469e1a4c1e0c11ae43a0b002378708d31f15d.1557567465.git.lorenzo@kernel.org>
 From:   Felix Fietkau <nbd@nbd.name>
 Openpgp: preference=signencrypt
 Autocrypt: addr=nbd@nbd.name; prefer-encrypt=mutual; keydata=
@@ -55,48 +57,32 @@ Autocrypt: addr=nbd@nbd.name; prefer-encrypt=mutual; keydata=
  TspgwBWLnXQvP5EDvlZnNaKa/3oBes6z0QdaSOwZCRA3QSLHBwtgUsrT6RxRSweLrcabiEkE
  GBECAAkFAkah5FQCGwwACgkQ130UHQKnbvW2GgCfTKx80VvCR/PvsUlrvdOLsIgeRGAAn1ee
  RjMaxwtSdaCKMw3j33ZbsWS4
-Message-ID: <f937d234-13e6-75b7-c00d-c07f2b108027@nbd.name>
-Date:   Sat, 11 May 2019 16:00:37 +0200
+Message-ID: <97ef0073-6dae-f9d1-e97f-9aadaa629628@nbd.name>
+Date:   Sat, 11 May 2019 16:22:44 +0200
 User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.14; rv:60.0)
  Gecko/20100101 Thunderbird/60.6.1
 MIME-Version: 1.0
-In-Reply-To: <cover.1556981521.git.lorenzo@kernel.org>
+In-Reply-To: <436469e1a4c1e0c11ae43a0b002378708d31f15d.1557567465.git.lorenzo@kernel.org>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 2019-05-04 17:28, Lorenzo Bianconi wrote:
-> Introduce mt76_mcu_ops data structure in mt7615 mcu code in order
-> to reuse the code with other bus types and unify the code with mt7603
-> driver
+On 2019-05-11 12:17, Lorenzo Bianconi wrote:
+> Run mt76x02_edcca_init atomically in mt76_edcca_set since it runs
+> concurrently with calibration work and mt76x2_set_channel.
+> Introduce __mt76x02_edcca_init helper routine
 > 
-> Changes since RFC:
-> - rebase ontop of https://patchwork.kernel.org/patch/10928753/
-> - fix net_type initialization in mt7615_mcu_set_bss_info
-> 
-> Lorenzo Bianconi (17):
->   mt7615: mcu: simplify __mt7615_mcu_set_wtbl
->   mt7615: mcu: simplify __mt7615_mcu_set_sta_rec
->   mt7615: mcu: remove bss_info_convert_vif_type routine
->   mt7615: mcu: use proper msg size in mt7615_mcu_add_wtbl_bmc
->   mt7615: mcu: use proper msg size in mt7615_mcu_add_wtbl
->   mt7615: mcu: unify mt7615_mcu_add_wtbl_bmc and mt7615_mcu_del_wtbl_bmc
->   mt7615: mcu: remove unused parameter in mt7615_mcu_del_wtbl
->   mt7615: remove query from mt7615_mcu_msg_send signature
->   mt7615: remove dest from mt7615_mcu_msg_send signature
->   mt7615: mcu: remove skb_ret from mt7615_mcu_msg_send
->   mt7615: mcu: unify __mt7615_mcu_set_dev_info and
->     mt7615_mcu_set_dev_info
->   mt7615: mcu: do not use function pointers whenever possible
->   mt7615: mcu: remove unused structure in mcu.h
->   mt7615: mcu: use standard signature for mt7615_mcu_msg_send
->   mt7615: initialize mt76_mcu_ops data structure
->   mt7615: mcu: init mcu_restart function pointer
->   mt7615: mcu: run __mt76_mcu_send_msg in mt7615_mcu_send_firmware
-Applied (including updated patch 12/17), thanks.
+> Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+I don't think this is enough. To prevent issues with calibration, we
+probably need to hold the mutex for the duration of the calibration
+anyway. Otherwise it might get enabled right in the middle of it and
+screw things up.
+Also, it probably simplifies the patch if you don't add the wrapper
+function that takes the mutex, and instead just explicitly take the
+mutex where needed.
 
 - Felix
