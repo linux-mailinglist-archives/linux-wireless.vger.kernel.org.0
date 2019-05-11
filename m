@@ -2,36 +2,34 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C58A81A7EC
-	for <lists+linux-wireless@lfdr.de>; Sat, 11 May 2019 15:22:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 483C71A7F0
+	for <lists+linux-wireless@lfdr.de>; Sat, 11 May 2019 15:27:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728573AbfEKNWQ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 11 May 2019 09:22:16 -0400
-Received: from nbd.name ([46.4.11.11]:54510 "EHLO nbd.name"
+        id S1728610AbfEKN1b (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 11 May 2019 09:27:31 -0400
+Received: from nbd.name ([46.4.11.11]:54958 "EHLO nbd.name"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728566AbfEKNWP (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 11 May 2019 09:22:15 -0400
+        id S1728559AbfEKN1a (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Sat, 11 May 2019 09:27:30 -0400
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name;
          s=20160729; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:
         MIME-Version:Date:Message-ID:From:References:Cc:To:Subject:Sender:Reply-To:
         Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
         Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
         List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=CsUg0o9elKqeGIVUFKfRK8gOuxXmcrUeY+Z813r4Xr4=; b=sDR/ctZrRtomBWeTrV6PErDXvW
-        soggBIpTPiSjmiTpgZb+viuAH48RSfge0k8BC+klA2ktbcZOdx+sZ4zGQGgNhbyp0KE16a3hKgPdx
-        DDo2H0Be6nTFVgEC2TIh3R/dROCXqJDgSBI6h/n6DnwWTViUacWjhc2PMHdnhEtTBm5Y=;
+        bh=q4AeWb8viT/DSKwtG8Bdx77wAsj2Ui4HNxC/xgYm38M=; b=O/NWXQ47oh6/e+/MU9wWfSc5N+
+        CGOQuaTPNrsh8Vuomi9lmJ3aZMFHuBF2+5shVn4QH1kWCu7ZpmfmM25LrdKXwsGEZt046eFrdr69s
+        DsEA1B2U05sTL/9YM2qTGir1AmwINZhKPnm0w7VYIoiqpQ+gtR41tUVi467w9MLUlWLA=;
 Received: from p54ae9c89.dip0.t-ipconnect.de ([84.174.156.137] helo=nf.local)
         by ds12 with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
         (Exim 4.89)
         (envelope-from <nbd@nbd.name>)
-        id 1hPRx7-0001I9-0D; Sat, 11 May 2019 15:22:13 +0200
-Subject: Re: [PATCH] mt76: mt76x02: remove useless return in
- mt76x02_resync_beacon_timer
+        id 1hPS2B-0001qx-BY; Sat, 11 May 2019 15:27:27 +0200
+Subject: Re: [PATCH 0/4] mt76: add tx napi polling support to mt7603/mt7615
 To:     Lorenzo Bianconi <lorenzo@kernel.org>
 Cc:     lorenzo.bianconi@redhat.com, linux-wireless@vger.kernel.org,
-        sgruszka@redhat.com
-References: <cover.1556717431.git.lorenzo@kernel.org>
- <b6e845207d947ce62161d98ea79a011211709062.1556717431.git.lorenzo@kernel.org>
+        ryder.lee@mediatek.com
+References: <cover.1556718795.git.lorenzo@kernel.org>
 From:   Felix Fietkau <nbd@nbd.name>
 Openpgp: preference=signencrypt
 Autocrypt: addr=nbd@nbd.name; prefer-encrypt=mutual; keydata=
@@ -57,12 +55,12 @@ Autocrypt: addr=nbd@nbd.name; prefer-encrypt=mutual; keydata=
  TspgwBWLnXQvP5EDvlZnNaKa/3oBes6z0QdaSOwZCRA3QSLHBwtgUsrT6RxRSweLrcabiEkE
  GBECAAkFAkah5FQCGwwACgkQ130UHQKnbvW2GgCfTKx80VvCR/PvsUlrvdOLsIgeRGAAn1ee
  RjMaxwtSdaCKMw3j33ZbsWS4
-Message-ID: <a9bb9211-20dc-697e-6956-27693f8769a8@nbd.name>
-Date:   Sat, 11 May 2019 15:22:12 +0200
+Message-ID: <74d7c326-83ca-1cf9-288b-a4dd8bb28c84@nbd.name>
+Date:   Sat, 11 May 2019 15:27:26 +0200
 User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.14; rv:60.0)
  Gecko/20100101 Thunderbird/60.6.1
 MIME-Version: 1.0
-In-Reply-To: <b6e845207d947ce62161d98ea79a011211709062.1556717431.git.lorenzo@kernel.org>
+In-Reply-To: <cover.1556718795.git.lorenzo@kernel.org>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
@@ -71,10 +69,15 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 2019-05-01 15:44, Lorenzo Bianconi wrote:
-> Remove useless return statment in mt76x02_resync_beacon_timer routine
+On 2019-05-01 16:06, Lorenzo Bianconi wrote:
+> Use napi polling for tx cleanup in mt7603 and mt7615 drivers in order
+> to allow tx scheduling and tx cleanup to run concurrently
 > 
-> Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+> Lorenzo Bianconi (4):
+>   mt76: move tx_napi in mt76_dev
+>   mt76: mt7603: use napi polling for tx cleanup
+>   mt76: mt7615: use napi polling for tx cleanup
+>   mt76: move netif_napi_del in mt76_dma_cleanup
 Applied, thanks.
 
 - Felix
