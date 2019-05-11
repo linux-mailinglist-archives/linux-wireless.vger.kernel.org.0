@@ -2,270 +2,79 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 021391A788
-	for <lists+linux-wireless@lfdr.de>; Sat, 11 May 2019 12:18:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C58A81A7EC
+	for <lists+linux-wireless@lfdr.de>; Sat, 11 May 2019 15:22:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728566AbfEKKS1 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 11 May 2019 06:18:27 -0400
-Received: from mail.kernel.org ([198.145.29.99]:36932 "EHLO mail.kernel.org"
+        id S1728573AbfEKNWQ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 11 May 2019 09:22:16 -0400
+Received: from nbd.name ([46.4.11.11]:54510 "EHLO nbd.name"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728477AbfEKKS1 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 11 May 2019 06:18:27 -0400
-Received: from localhost.localdomain (unknown [151.66.17.19])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 2F8372146F;
-        Sat, 11 May 2019 10:18:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1557569906;
-        bh=DZavJf1n2mJZuYNur/fJSukMQbZjHTtIpfG0gof9g8U=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=F8w7IQh/Bsno85bYircrKPqFPqaAATqWVLMUKVn4xJPg0JvyjNKMU3kuEBEWQvAvr
-         L9onCmv/ZVkgBCiKcd2v5kB1WEnOXNQrqqPxhbS/cP52k54BJnLiAjEOj+meDQYeBx
-         kqVTRUIwoPWqw0tQ+ZImvMYs+jIGKpU/pE7275Zk=
-From:   Lorenzo Bianconi <lorenzo@kernel.org>
-To:     nbd@nbd.name
+        id S1728566AbfEKNWP (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Sat, 11 May 2019 09:22:15 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name;
+         s=20160729; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:
+        MIME-Version:Date:Message-ID:From:References:Cc:To:Subject:Sender:Reply-To:
+        Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+        Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+        List-Subscribe:List-Post:List-Owner:List-Archive;
+        bh=CsUg0o9elKqeGIVUFKfRK8gOuxXmcrUeY+Z813r4Xr4=; b=sDR/ctZrRtomBWeTrV6PErDXvW
+        soggBIpTPiSjmiTpgZb+viuAH48RSfge0k8BC+klA2ktbcZOdx+sZ4zGQGgNhbyp0KE16a3hKgPdx
+        DDo2H0Be6nTFVgEC2TIh3R/dROCXqJDgSBI6h/n6DnwWTViUacWjhc2PMHdnhEtTBm5Y=;
+Received: from p54ae9c89.dip0.t-ipconnect.de ([84.174.156.137] helo=nf.local)
+        by ds12 with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        (Exim 4.89)
+        (envelope-from <nbd@nbd.name>)
+        id 1hPRx7-0001I9-0D; Sat, 11 May 2019 15:22:13 +0200
+Subject: Re: [PATCH] mt76: mt76x02: remove useless return in
+ mt76x02_resync_beacon_timer
+To:     Lorenzo Bianconi <lorenzo@kernel.org>
 Cc:     lorenzo.bianconi@redhat.com, linux-wireless@vger.kernel.org,
         sgruszka@redhat.com
-Subject: [PATCH 4/4] mt76: mt76x02: run mt76x02_edcca_init atomically in mt76_edcca_set
-Date:   Sat, 11 May 2019 12:17:54 +0200
-Message-Id: <436469e1a4c1e0c11ae43a0b002378708d31f15d.1557567465.git.lorenzo@kernel.org>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <cover.1557567465.git.lorenzo@kernel.org>
-References: <cover.1557567465.git.lorenzo@kernel.org>
+References: <cover.1556717431.git.lorenzo@kernel.org>
+ <b6e845207d947ce62161d98ea79a011211709062.1556717431.git.lorenzo@kernel.org>
+From:   Felix Fietkau <nbd@nbd.name>
+Openpgp: preference=signencrypt
+Autocrypt: addr=nbd@nbd.name; prefer-encrypt=mutual; keydata=
+ mQGiBEah5CcRBADIY7pu4LIv3jBlyQ/2u87iIZGe6f0f8pyB4UjzfJNXhJb8JylYYRzIOSxh
+ ExKsdLCnJqsG1PY1mqTtoG8sONpwsHr2oJ4itjcGHfn5NJSUGTbtbbxLro13tHkGFCoCr4Z5
+ Pv+XRgiANSpYlIigiMbOkide6wbggQK32tC20QxUIwCg4k6dtV/4kwEeiOUfErq00TVqIiEE
+ AKcUi4taOuh/PQWx/Ujjl/P1LfJXqLKRPa8PwD4j2yjoc9l+7LptSxJThL9KSu6gtXQjcoR2
+ vCK0OeYJhgO4kYMI78h1TSaxmtImEAnjFPYJYVsxrhay92jisYc7z5R/76AaELfF6RCjjGeP
+ wdalulG+erWju710Bif7E1yjYVWeA/9Wd1lsOmx6uwwYgNqoFtcAunDaMKi9xVQW18FsUusM
+ TdRvTZLBpoUAy+MajAL+R73TwLq3LnKpIcCwftyQXK5pEDKq57OhxJVv1Q8XkA9Dn1SBOjNB
+ l25vJDFAT9ntp9THeDD2fv15yk4EKpWhu4H00/YX8KkhFsrtUs69+vZQwbQcRmVsaXggRmll
+ dGthdSA8bmJkQG5iZC5uYW1lPohgBBMRAgAgBQJGoeQnAhsjBgsJCAcDAgQVAggDBBYCAwEC
+ HgECF4AACgkQ130UHQKnbvXsvgCgjsAIIOsY7xZ8VcSm7NABpi91yTMAniMMmH7FRenEAYMa
+ VrwYTIThkTlQuQINBEah5FQQCACMIep/hTzgPZ9HbCTKm9xN4bZX0JjrqjFem1Nxf3MBM5vN
+ CYGBn8F4sGIzPmLhl4xFeq3k5irVg/YvxSDbQN6NJv8o+tP6zsMeWX2JjtV0P4aDIN1pK2/w
+ VxcicArw0VYdv2ZCarccFBgH2a6GjswqlCqVM3gNIMI8ikzenKcso8YErGGiKYeMEZLwHaxE
+ Y7mTPuOTrWL8uWWRL5mVjhZEVvDez6em/OYvzBwbkhImrryF29e3Po2cfY2n7EKjjr3/141K
+ DHBBdgXlPNfDwROnA5ugjjEBjwkwBQqPpDA7AYPvpHh5vLbZnVGu5CwG7NAsrb2isRmjYoqk
+ wu++3117AAMFB/9S0Sj7qFFQcD4laADVsabTpNNpaV4wAgVTRHKV/kC9luItzwDnUcsZUPdQ
+ f3MueRJ3jIHU0UmRBG3uQftqbZJj3ikhnfvyLmkCNe+/hXhPu9sGvXyi2D4vszICvc1KL4RD
+ aLSrOsROx22eZ26KqcW4ny7+va2FnvjsZgI8h4sDmaLzKczVRIiLITiMpLFEU/VoSv0m1F4B
+ FtRgoiyjFzigWG0MsTdAN6FJzGh4mWWGIlE7o5JraNhnTd+yTUIPtw3ym6l8P+gbvfoZida0
+ TspgwBWLnXQvP5EDvlZnNaKa/3oBes6z0QdaSOwZCRA3QSLHBwtgUsrT6RxRSweLrcabiEkE
+ GBECAAkFAkah5FQCGwwACgkQ130UHQKnbvW2GgCfTKx80VvCR/PvsUlrvdOLsIgeRGAAn1ee
+ RjMaxwtSdaCKMw3j33ZbsWS4
+Message-ID: <a9bb9211-20dc-697e-6956-27693f8769a8@nbd.name>
+Date:   Sat, 11 May 2019 15:22:12 +0200
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.14; rv:60.0)
+ Gecko/20100101 Thunderbird/60.6.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+In-Reply-To: <b6e845207d947ce62161d98ea79a011211709062.1556717431.git.lorenzo@kernel.org>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Run mt76x02_edcca_init atomically in mt76_edcca_set since it runs
-concurrently with calibration work and mt76x2_set_channel.
-Introduce __mt76x02_edcca_init helper routine
+On 2019-05-01 15:44, Lorenzo Bianconi wrote:
+> Remove useless return statment in mt76x02_resync_beacon_timer routine
+> 
+> Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+Applied, thanks.
 
-Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
----
- drivers/net/wireless/mediatek/mt76/mt76x0/main.c  |  2 +-
- drivers/net/wireless/mediatek/mt76/mt76x02.h      |  7 +++++++
- .../net/wireless/mediatek/mt76/mt76x02_debugfs.c  |  6 +++++-
- drivers/net/wireless/mediatek/mt76/mt76x02_dfs.c  |  2 +-
- drivers/net/wireless/mediatek/mt76/mt76x02_mac.c  |  4 ++--
- drivers/net/wireless/mediatek/mt76/mt76x02_mac.h  |  1 -
- .../net/wireless/mediatek/mt76/mt76x2/pci_phy.c   | 15 ++++++++++-----
- .../net/wireless/mediatek/mt76/mt76x2/usb_phy.c   | 15 ++++++++++-----
- 8 files changed, 36 insertions(+), 16 deletions(-)
-
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76x0/main.c b/drivers/net/wireless/mediatek/mt76/mt76x0/main.c
-index 800ebbfc3055..115961a054e3 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76x0/main.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt76x0/main.c
-@@ -33,7 +33,7 @@ mt76x0_set_channel(struct mt76x02_dev *dev, struct cfg80211_chan_def *chandef)
- 	mt76_rr(dev, MT_CH_IDLE);
- 	mt76_rr(dev, MT_CH_BUSY);
- 
--	mt76x02_edcca_init(dev);
-+	__mt76x02_edcca_init(dev);
- 
- 	if (mt76_is_mmio(dev)) {
- 		mt76x02_dfs_init_params(dev);
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76x02.h b/drivers/net/wireless/mediatek/mt76/mt76x02.h
-index f7fd53a1738a..e028c1a4cf88 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76x02.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt76x02.h
-@@ -268,4 +268,11 @@ mt76x02_rx_get_sta_wcid(struct mt76x02_sta *sta, bool unicast)
- 		return &sta->vif->group_wcid;
- }
- 
-+void __mt76x02_edcca_init(struct mt76x02_dev *dev);
-+static inline void mt76x02_edcca_init(struct mt76x02_dev *dev)
-+{
-+	mutex_lock(&dev->mt76.mutex);
-+	__mt76x02_edcca_init(dev);
-+	mutex_unlock(&dev->mt76.mutex);
-+}
- #endif /* __MT76x02_H */
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76x02_debugfs.c b/drivers/net/wireless/mediatek/mt76/mt76x02_debugfs.c
-index 7853078e8ca4..501794a6076b 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76x02_debugfs.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt76x02_debugfs.c
-@@ -122,10 +122,14 @@ mt76_edcca_set(void *data, u64 val)
- 	struct mt76x02_dev *dev = data;
- 	enum nl80211_dfs_regions region = dev->dfs_pd.region;
- 
-+	mutex_lock(&dev->mt76.mutex);
-+
- 	dev->ed_monitor_enabled = !!val;
- 	dev->ed_monitor = dev->ed_monitor_enabled &&
- 			  region == NL80211_DFS_ETSI;
--	mt76x02_edcca_init(dev);
-+	__mt76x02_edcca_init(dev);
-+
-+	mutex_unlock(&dev->mt76.mutex);
- 
- 	return 0;
- }
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76x02_dfs.c b/drivers/net/wireless/mediatek/mt76/mt76x02_dfs.c
-index 84b845647881..e372621c3798 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76x02_dfs.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt76x02_dfs.c
-@@ -887,7 +887,7 @@ mt76x02_dfs_set_domain(struct mt76x02_dev *dev,
- 
- 		dev->ed_monitor = dev->ed_monitor_enabled &&
- 				  region == NL80211_DFS_ETSI;
--		mt76x02_edcca_init(dev);
-+		__mt76x02_edcca_init(dev);
- 
- 		dfs_pd->region = region;
- 		mt76x02_dfs_init_params(dev);
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76x02_mac.c b/drivers/net/wireless/mediatek/mt76/mt76x02_mac.c
-index ee4a86971be7..ac29422b5335 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76x02_mac.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt76x02_mac.c
-@@ -945,7 +945,7 @@ mt76x02_edcca_tx_enable(struct mt76x02_dev *dev, bool enable)
- 	dev->ed_tx_blocked = !enable;
- }
- 
--void mt76x02_edcca_init(struct mt76x02_dev *dev)
-+void __mt76x02_edcca_init(struct mt76x02_dev *dev)
- {
- 	dev->ed_trigger = 0;
- 	dev->ed_silent = 0;
-@@ -979,7 +979,7 @@ void mt76x02_edcca_init(struct mt76x02_dev *dev)
- 	mt76_rr(dev, MT_ED_CCA_TIMER);
- 	dev->ed_time = ktime_get_boottime();
- }
--EXPORT_SYMBOL_GPL(mt76x02_edcca_init);
-+EXPORT_SYMBOL_GPL(__mt76x02_edcca_init);
- 
- #define MT_EDCCA_TH		92
- #define MT_EDCCA_BLOCK_TH	2
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76x02_mac.h b/drivers/net/wireless/mediatek/mt76/mt76x02_mac.h
-index cb39da79527a..ce73c60c579a 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76x02_mac.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt76x02_mac.h
-@@ -209,5 +209,4 @@ int mt76x02_mac_set_beacon(struct mt76x02_dev *dev, u8 vif_idx,
- void mt76x02_mac_set_beacon_enable(struct mt76x02_dev *dev,
- 				   struct ieee80211_vif *vif, bool val);
- 
--void mt76x02_edcca_init(struct mt76x02_dev *dev);
- #endif
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76x2/pci_phy.c b/drivers/net/wireless/mediatek/mt76/mt76x2/pci_phy.c
-index 7a39a390a7ac..818c4f051df3 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76x2/pci_phy.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt76x2/pci_phy.c
-@@ -43,17 +43,17 @@ mt76x2_phy_tssi_init_cal(struct mt76x02_dev *dev)
- 	return true;
- }
- 
--static void
-+static bool
- mt76x2_phy_channel_calibrate(struct mt76x02_dev *dev, bool mac_stopped)
- {
- 	struct ieee80211_channel *chan = dev->mt76.chandef.chan;
- 	bool is_5ghz = chan->band == NL80211_BAND_5GHZ;
- 
- 	if (dev->cal.channel_cal_done)
--		return;
-+		return false;
- 
- 	if (mt76x2_channel_silent(dev))
--		return;
-+		return false;
- 
- 	if (!dev->cal.tssi_cal_done)
- 		mt76x2_phy_tssi_init_cal(dev);
-@@ -74,9 +74,10 @@ mt76x2_phy_channel_calibrate(struct mt76x02_dev *dev, bool mac_stopped)
- 		mt76x2_mac_resume(dev);
- 
- 	mt76x2_apply_gain_adj(dev);
--	mt76x02_edcca_init(dev);
- 
- 	dev->cal.channel_cal_done = true;
-+
-+	return true;
- }
- 
- void mt76x2_phy_set_antenna(struct mt76x02_dev *dev)
-@@ -245,6 +246,7 @@ int mt76x2_phy_set_channel(struct mt76x02_dev *dev,
- 		return 0;
- 
- 	mt76x2_phy_channel_calibrate(dev, true);
-+	__mt76x02_edcca_init(dev);
- 	mt76x02_init_agc_gain(dev);
- 
- 	/* init default values for temp compensation */
-@@ -292,9 +294,12 @@ mt76x2_phy_temp_compensate(struct mt76x02_dev *dev)
- void mt76x2_phy_calibrate(struct work_struct *work)
- {
- 	struct mt76x02_dev *dev;
-+	bool ret;
- 
- 	dev = container_of(work, struct mt76x02_dev, cal_work.work);
--	mt76x2_phy_channel_calibrate(dev, false);
-+	ret = mt76x2_phy_channel_calibrate(dev, false);
-+	if (ret)
-+		mt76x02_edcca_init(dev);
- 	mt76x2_phy_tssi_compensate(dev);
- 	mt76x2_phy_temp_compensate(dev);
- 	mt76x2_phy_update_channel_gain(dev);
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76x2/usb_phy.c b/drivers/net/wireless/mediatek/mt76/mt76x2/usb_phy.c
-index c7208c5375ac..2576654f2920 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76x2/usb_phy.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt76x2/usb_phy.c
-@@ -18,17 +18,17 @@
- #include "eeprom.h"
- #include "../mt76x02_phy.h"
- 
--static void
-+static bool
- mt76x2u_phy_channel_calibrate(struct mt76x02_dev *dev, bool mac_stopped)
- {
- 	struct ieee80211_channel *chan = dev->mt76.chandef.chan;
- 	bool is_5ghz = chan->band == NL80211_BAND_5GHZ;
- 
- 	if (dev->cal.channel_cal_done)
--		return;
-+		return false;
- 
- 	if (mt76x2_channel_silent(dev))
--		return;
-+		return false;
- 
- 	if (!mac_stopped)
- 		mt76x2u_mac_stop(dev);
-@@ -45,17 +45,21 @@ mt76x2u_phy_channel_calibrate(struct mt76x02_dev *dev, bool mac_stopped)
- 	if (!mac_stopped)
- 		mt76x2_mac_resume(dev);
- 	mt76x2_apply_gain_adj(dev);
--	mt76x02_edcca_init(dev);
- 
- 	dev->cal.channel_cal_done = true;
-+
-+	return true;
- }
- 
- void mt76x2u_phy_calibrate(struct work_struct *work)
- {
- 	struct mt76x02_dev *dev;
-+	bool ret;
- 
- 	dev = container_of(work, struct mt76x02_dev, cal_work.work);
--	mt76x2u_phy_channel_calibrate(dev, false);
-+	ret = mt76x2u_phy_channel_calibrate(dev, false);
-+	if (ret)
-+		mt76x02_edcca_init(dev);
- 	mt76x2_phy_tssi_compensate(dev);
- 	mt76x2_phy_update_channel_gain(dev);
- 
-@@ -177,6 +181,7 @@ int mt76x2u_phy_set_channel(struct mt76x02_dev *dev,
- 		return 0;
- 
- 	mt76x2u_phy_channel_calibrate(dev, true);
-+	__mt76x02_edcca_init(dev);
- 	mt76x02_init_agc_gain(dev);
- 
- 	if (mt76x2_tssi_enabled(dev)) {
--- 
-2.20.1
-
+- Felix
