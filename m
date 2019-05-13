@@ -2,68 +2,59 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 1BEEF1B333
-	for <lists+linux-wireless@lfdr.de>; Mon, 13 May 2019 11:51:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 556271B3BF
+	for <lists+linux-wireless@lfdr.de>; Mon, 13 May 2019 12:15:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727854AbfEMJvC (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 13 May 2019 05:51:02 -0400
-Received: from mga05.intel.com ([192.55.52.43]:17892 "EHLO mga05.intel.com"
+        id S1728772AbfEMKPZ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 13 May 2019 06:15:25 -0400
+Received: from mga07.intel.com ([134.134.136.100]:38178 "EHLO mga07.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727414AbfEMJvC (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 13 May 2019 05:51:02 -0400
-X-Amp-Result: UNKNOWN
-X-Amp-Original-Verdict: FILE UNKNOWN
+        id S1728770AbfEMKPZ (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 13 May 2019 06:15:25 -0400
+X-Amp-Result: SKIPPED(no attachment in message)
 X-Amp-File-Uploaded: False
-Received: from orsmga001.jf.intel.com ([10.7.209.18])
-  by fmsmga105.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 13 May 2019 02:51:02 -0700
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+  by orsmga105.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 13 May 2019 03:15:24 -0700
 X-ExtLoop1: 1
-Received: from smile.fi.intel.com (HELO smile) ([10.237.72.86])
-  by orsmga001.jf.intel.com with ESMTP; 13 May 2019 02:51:00 -0700
-Received: from andy by smile with local (Exim 4.92)
-        (envelope-from <andriy.shevchenko@linux.intel.com>)
-        id 1hQ7bn-00085Y-Vc; Mon, 13 May 2019 12:50:59 +0300
-Date:   Mon, 13 May 2019 12:50:59 +0300
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     Sedat Dilek <sedat.dilek@gmail.com>
-Cc:     Oleg Zhurakivskyy <oleg.zhurakivskyy@intel.com>,
-        Samuel Ortiz <sameo@linux.intel.com>,
-        linux-wireless@vger.kernel.org, linux-nfc@lists.01.org
+Received: from ozhuraki-desk.fi.intel.com (HELO [10.237.67.35]) ([10.237.67.35])
+  by fmsmga001.fm.intel.com with ESMTP; 13 May 2019 03:15:23 -0700
 Subject: Re: [linux-nfc] ThinkPad T470 and NXP PN5xx (PN547 or PN548)
-Message-ID: <20190513095059.GN9224@smile.fi.intel.com>
+To:     sedat.dilek@gmail.com
+Cc:     Samuel Ortiz <sameo@linux.intel.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        linux-wireless@vger.kernel.org, linux-nfc@lists.01.org
 References: <CA+icZUX+VNtk00YQnNYCnDeeH2Onq6s1vbdzYrv-OHf7q186Ww@mail.gmail.com>
  <154e3e74-38b5-850b-5993-295f9db8fe3c@intel.com>
  <CA+icZUWhBeup95PTP_k58xs8Lf2Ofqb0S_gkdBfbuc0-wdpF-w@mail.gmail.com>
  <06fbacb5-7739-1ca1-3bf4-8049a3ef019b@intel.com>
  <CA+icZUWJ0kZSqogg18LdP2YkNXk=_SNnT7-ufkd_Xp1ak7uchg@mail.gmail.com>
+From:   Oleg Zhurakivskyy <oleg.zhurakivskyy@intel.com>
+Message-ID: <2b1bd56f-8797-fb90-e2af-218edaedd089@intel.com>
+Date:   Mon, 13 May 2019 13:15:15 +0300
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.6.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
 In-Reply-To: <CA+icZUWJ0kZSqogg18LdP2YkNXk=_SNnT7-ufkd_Xp1ak7uchg@mail.gmail.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Mon, May 13, 2019 at 11:27:07AM +0200, Sedat Dilek wrote:
 
-> Sorry to say, I still have not get all correlations...
+Hi Sedat,
 
-Can you provide the output of the following on running Linux system with latest
-possible kernel you can install (I am expecting v5.1) and command line with
-'ignore_loglevel'?
+On 5/13/19 12:27 PM, Sedat Dilek wrote:
 
-1. `dmesg`
-2. `grep -H 15 /sys/bus/acpi/devices/*/status`
-3. `acpidump -o t470-tables.dat` # the file t470-tables.dat
-4. `lspci -vv -nk`
+> So, this seems to work.
 
-P.S. You may use GitHub gist for this set (please, don't share archives) or any
-other resource like pastebin.
+I spent a bit of time trying to find T470, couldn’t, anyway managed to get to ”NXP 1001” and was going to hint you further.
 
--- 
-With Best Regards,
-Andy Shevchenko
+Congratulations, great job!
 
+And thanks a lot for documenting everything and posting it here. Perhaps, eventually it could be upstreamed.
 
+Regards,
+Oleg
