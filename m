@@ -2,37 +2,37 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 6C6491B3EF
-	for <lists+linux-wireless@lfdr.de>; Mon, 13 May 2019 12:24:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4C4681B438
+	for <lists+linux-wireless@lfdr.de>; Mon, 13 May 2019 12:44:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727640AbfEMKYE (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 13 May 2019 06:24:04 -0400
-Received: from mail.kernel.org ([198.145.29.99]:46380 "EHLO mail.kernel.org"
+        id S1729096AbfEMKoD (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 13 May 2019 06:44:03 -0400
+Received: from mga04.intel.com ([192.55.52.120]:54978 "EHLO mga04.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725980AbfEMKYD (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 13 May 2019 06:24:03 -0400
-Received: from localhost.localdomain (unknown [151.66.17.19])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 67E3C208CA;
-        Mon, 13 May 2019 10:24:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1557743043;
-        bh=uAmW4lkgyoXXVu7OEyGc79pNfqmPd12Lj52dDKXhFjk=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=lGdSSewsRyImU1lXUbcUIEjX9lfsfkhUUwcbTRIL1rYIw4MN/S+d43oPZOz2O4V5I
-         SwVej4QUQsvM0lnayuLVEstrk6NOY+C1f2issENvgtDPU7FOEK7QldLodlOoH4E5nu
-         xbuLZYNk7c3k6tpW7cfNTzRtJqG4FiglmGIP/4/g=
-From:   Lorenzo Bianconi <lorenzo@kernel.org>
-To:     nbd@nbd.name
-Cc:     lorenzo.bianconi@redhat.com, linux-wireless@vger.kernel.org,
-        sgruszka@redhat.com
-Subject: [PATCH] mt76: mt76x02: fix edcca file permission
-Date:   Mon, 13 May 2019 12:23:29 +0200
-Message-Id: <0e4f22246404d095de2a7e28ddf7572ff71bdb05.1557742856.git.lorenzo@kernel.org>
+        id S1727849AbfEMKoC (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 13 May 2019 06:44:02 -0400
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+  by fmsmga104.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 13 May 2019 03:44:02 -0700
+X-ExtLoop1: 1
+Received: from black.fi.intel.com ([10.237.72.28])
+  by fmsmga001.fm.intel.com with ESMTP; 13 May 2019 03:44:00 -0700
+Received: by black.fi.intel.com (Postfix, from userid 1003)
+        id 5A2FB141; Mon, 13 May 2019 13:43:59 +0300 (EEST)
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To:     =?UTF-8?q?Cl=C3=A9ment=20Perrochaud?= 
+        <clement.perrochaud@effinnov.com>,
+        Charles Gorand <charles.gorand@effinnov.com>,
+        linux-nfc@lists.01.org, Samuel Ortiz <sameo@linux.intel.com>,
+        linux-wireless@vger.kernel.org,
+        Sedat Dilek <sedat.dilek@gmail.com>,
+        Oleg Zhurakivskyy <oleg.zhurakivskyy@intel.com>
+Cc:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Subject: [PATCH v2 00/12] NFC: nxp-nci: clean up and support new ID
+Date:   Mon, 13 May 2019 13:43:46 +0300
+Message-Id: <20190513104358.59716-1-andriy.shevchenko@linux.intel.com>
 X-Mailer: git-send-email 2.20.1
-In-Reply-To: <cover.1557742856.git.lorenzo@kernel.org>
-References: <cover.1557742856.git.lorenzo@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
@@ -40,27 +40,46 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Use 0600 as edcca file permission in mt76x02 debugfs
+It has been reported that some laptops, equipped with NXP NFC300, have
+different ID then mentioned in the driver.
 
-Fixes: 643749d4a82b ("mt76: mt76x02: disable ED/CCA by default")
-Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
----
- drivers/net/wireless/mediatek/mt76/mt76x02_debugfs.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+While at it, I found that the driver has a lot of duplication and redundant
+platform data. The rest of the series (11 out of 12 patches) is dedicated to
+clean the driver up.
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76x02_debugfs.c b/drivers/net/wireless/mediatek/mt76/mt76x02_debugfs.c
-index f412c779d8e2..ffdba5ffc22d 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76x02_debugfs.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt76x02_debugfs.c
-@@ -157,7 +157,7 @@ void mt76x02_init_debugfs(struct mt76x02_dev *dev)
- 	debugfs_create_u8("temperature", 0400, dir, &dev->cal.temp);
- 	debugfs_create_bool("tpc", 0600, dir, &dev->enable_tpc);
- 
--	debugfs_create_file("edcca", 0400, dir, dev, &fops_edcca);
-+	debugfs_create_file("edcca", 0600, dir, dev, &fops_edcca);
- 	debugfs_create_file("ampdu_stat", 0400, dir, dev, &fops_ampdu_stat);
- 	debugfs_create_file("dfs_stats", 0400, dir, dev, &fops_dfs_stat);
- 	debugfs_create_devm_seqfile(dev->mt76.dev, "txpower", dir,
+Sedat, would be nice if you can compile kernel with this patch series applied
+and test on your laptop.
+
+In v2:
+- added new ID patch
+- added new clean up patch
+- Cc'ed to linux-wireless@ as well, since linux-nfc@ bounces my mails
+- Cc'ed to the reported of the problem with T470 laptop
+
+Andy Shevchenko (12):
+  NFC: nxp-nci: Add NXP1001 to the ACPI ID table
+  NFC: nxp-nci: Get rid of platform data
+  NFC: nxp-nci: Convert to use GPIO descriptor
+  NFC: nxp-nci: Add GPIO ACPI mapping table
+  NFC: nxp-nci: Get rid of code duplication in ->probe()
+  NFC: nxp-nci: Get rid of useless label
+  NFC: nxp-nci: Constify acpi_device_id
+  NFC: nxp-nci: Drop of_match_ptr() use
+  NFC: nxp-nci: Drop comma in terminator lines
+  NFC: nxp-nci: Remove unused macro pr_fmt()
+  NFC: nxp-nci: Remove 'default n' for tests
+  NFC: nxp-nci: Convert to SPDX license tags
+
+ MAINTAINERS                           |   1 -
+ drivers/nfc/nxp-nci/Kconfig           |   1 -
+ drivers/nfc/nxp-nci/core.c            |  15 +--
+ drivers/nfc/nxp-nci/firmware.c        |  13 +--
+ drivers/nfc/nxp-nci/i2c.c             | 147 ++++++--------------------
+ drivers/nfc/nxp-nci/nxp-nci.h         |   1 -
+ include/linux/platform_data/nxp-nci.h |  27 -----
+ 7 files changed, 37 insertions(+), 168 deletions(-)
+ delete mode 100644 include/linux/platform_data/nxp-nci.h
+
 -- 
 2.20.1
 
