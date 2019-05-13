@@ -2,159 +2,111 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B27051B2D5
-	for <lists+linux-wireless@lfdr.de>; Mon, 13 May 2019 11:27:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 42F1A1B2DE
+	for <lists+linux-wireless@lfdr.de>; Mon, 13 May 2019 11:30:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728023AbfEMJ1V (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 13 May 2019 05:27:21 -0400
-Received: from mail-wr1-f67.google.com ([209.85.221.67]:36508 "EHLO
-        mail-wr1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726132AbfEMJ1V (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 13 May 2019 05:27:21 -0400
-Received: by mail-wr1-f67.google.com with SMTP id o4so14403311wra.3
-        for <linux-wireless@vger.kernel.org>; Mon, 13 May 2019 02:27:20 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:reply-to:from:date:message-id
-         :subject:to:cc:content-transfer-encoding;
-        bh=9bk6EauoZZs35rRixLFtmrIOLz8P6rskznTT13qGWUE=;
-        b=rE1MPjn8y2XTA+LFJ+qVbOEtR9+6U8H+FbjzLeKlUmgomJxh85cFdFaA0FNZO90NdM
-         7OI8o/zRCY51M8I4MFPCzcvdm/AhHU1n6BKBPebVCKJG3HCU2XN+1LV0MvvA36uGm+jl
-         MUUU0Jx5Tt+qhTF675136mDp0o3VM3kVGeRYYlghq0i8uuIfh69foGefuXYJNap/zKf2
-         0RPlz5bZZ2d1Rs6StBjIzLvzyE6ArMDSck5tTqjrl/4rH5ZsXB+jEmy3h11gJXtMbI+6
-         XumKjpC1n52t0nDV+/raCav2qSC86/FjKb8n0zYKY4QOY9JhjJvmyiD9DC18ewzgBwSN
-         t+ZA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:reply-to
-         :from:date:message-id:subject:to:cc:content-transfer-encoding;
-        bh=9bk6EauoZZs35rRixLFtmrIOLz8P6rskznTT13qGWUE=;
-        b=Xs7SVNVMrQXNPfGq63wJ0+jig2YCfa8xbMdjEZgSjxcchihQetTxTR5FIJjpEd3dH1
-         Felz1ovluLuYQ1FLfugHgxDNC5aL423KDeourvmD4WwjwaNHpeElLq+USul+FK9nGxnz
-         HSvwkkeFTifRtd0U1NHr/kL0nt/gn64hirZJb7Qwpt8Cec2NUOq57+sP4vKyJPRd1vp+
-         GkTIOPInpXP9wePmveh9e9tE5CoWNIp9S7cw7ND0XKr5hYPN8JqNJZwFMp7kxGR3R3Ge
-         0mlVc95cyNq1jI1yE5x173viLP/SGxL4LIM5d0SvblwZCpP0JcMwB0Q45ZfaAThpbqI4
-         d8YQ==
-X-Gm-Message-State: APjAAAUywVudnG7D+HJcouRDfq/8luFnXEl0etR0fiuGBJmubcHTg8rD
-        MP2mdtS8rRCoT14iX90R9komyZDI8dvn5lkXnxQWTn4PPFg=
-X-Google-Smtp-Source: APXvYqzwG/66abezFY+5is0yn7ttbCPQ0RRnaohq1EV0D0+92NLiqI4SvZ+iMS2nzrjaTAKaaxLFKmH9M3FcmeOfrh0=
-X-Received: by 2002:adf:dd0d:: with SMTP id a13mr11257110wrm.153.1557739639328;
- Mon, 13 May 2019 02:27:19 -0700 (PDT)
+        id S1728406AbfEMJag (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 13 May 2019 05:30:36 -0400
+Received: from nbd.name ([46.4.11.11]:56882 "EHLO nbd.name"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726218AbfEMJae (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 13 May 2019 05:30:34 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name;
+         s=20160729; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:
+        MIME-Version:Date:Message-ID:From:References:Cc:To:Subject:Sender:Reply-To:
+        Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+        Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+        List-Subscribe:List-Post:List-Owner:List-Archive;
+        bh=Tt/BANLlImzkjsM3UzyLhwyPn0bAVuqJVjAzJQuIRbc=; b=ZVm36oYPkU7M5FkSIm7QUVrl60
+        Cbp6AgVi92hM8hvIAdjxgdYnToQuas4VWEcm/QWXuIrkZJbnM22p/8yGVY4Dk3HdLEcH70Cj3OlFS
+        XUrmmIxl/Mm3MuZfsznyuSds77e/w0p8IcaCV2vVht32k/yFjLRaYpYgeZI1kw8vUNok=;
+Received: from p54ae9c89.dip0.t-ipconnect.de ([84.174.156.137] helo=nf.local)
+        by ds12 with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        (Exim 4.89)
+        (envelope-from <nbd@nbd.name>)
+        id 1hQ7I1-0002q2-66; Mon, 13 May 2019 11:30:33 +0200
+Subject: Re: [PATCH 3/4] mt76: mt76x2: move mutex_lock inside
+ mt76x2_set_channel
+To:     Lorenzo Bianconi <lorenzo@kernel.org>,
+        Stanislaw Gruszka <sgruszka@redhat.com>
+Cc:     lorenzo.bianconi@redhat.com, linux-wireless@vger.kernel.org
+References: <cover.1557567465.git.lorenzo@kernel.org>
+ <1527e88fc4a307aa218f515811f2f2c15786caec.1557567465.git.lorenzo@kernel.org>
+ <20190513083755.GA13726@redhat.com>
+ <20190513091905.GB3127@localhost.localdomain>
+From:   Felix Fietkau <nbd@nbd.name>
+Openpgp: preference=signencrypt
+Autocrypt: addr=nbd@nbd.name; prefer-encrypt=mutual; keydata=
+ mQGiBEah5CcRBADIY7pu4LIv3jBlyQ/2u87iIZGe6f0f8pyB4UjzfJNXhJb8JylYYRzIOSxh
+ ExKsdLCnJqsG1PY1mqTtoG8sONpwsHr2oJ4itjcGHfn5NJSUGTbtbbxLro13tHkGFCoCr4Z5
+ Pv+XRgiANSpYlIigiMbOkide6wbggQK32tC20QxUIwCg4k6dtV/4kwEeiOUfErq00TVqIiEE
+ AKcUi4taOuh/PQWx/Ujjl/P1LfJXqLKRPa8PwD4j2yjoc9l+7LptSxJThL9KSu6gtXQjcoR2
+ vCK0OeYJhgO4kYMI78h1TSaxmtImEAnjFPYJYVsxrhay92jisYc7z5R/76AaELfF6RCjjGeP
+ wdalulG+erWju710Bif7E1yjYVWeA/9Wd1lsOmx6uwwYgNqoFtcAunDaMKi9xVQW18FsUusM
+ TdRvTZLBpoUAy+MajAL+R73TwLq3LnKpIcCwftyQXK5pEDKq57OhxJVv1Q8XkA9Dn1SBOjNB
+ l25vJDFAT9ntp9THeDD2fv15yk4EKpWhu4H00/YX8KkhFsrtUs69+vZQwbQcRmVsaXggRmll
+ dGthdSA8bmJkQG5iZC5uYW1lPohgBBMRAgAgBQJGoeQnAhsjBgsJCAcDAgQVAggDBBYCAwEC
+ HgECF4AACgkQ130UHQKnbvXsvgCgjsAIIOsY7xZ8VcSm7NABpi91yTMAniMMmH7FRenEAYMa
+ VrwYTIThkTlQuQINBEah5FQQCACMIep/hTzgPZ9HbCTKm9xN4bZX0JjrqjFem1Nxf3MBM5vN
+ CYGBn8F4sGIzPmLhl4xFeq3k5irVg/YvxSDbQN6NJv8o+tP6zsMeWX2JjtV0P4aDIN1pK2/w
+ VxcicArw0VYdv2ZCarccFBgH2a6GjswqlCqVM3gNIMI8ikzenKcso8YErGGiKYeMEZLwHaxE
+ Y7mTPuOTrWL8uWWRL5mVjhZEVvDez6em/OYvzBwbkhImrryF29e3Po2cfY2n7EKjjr3/141K
+ DHBBdgXlPNfDwROnA5ugjjEBjwkwBQqPpDA7AYPvpHh5vLbZnVGu5CwG7NAsrb2isRmjYoqk
+ wu++3117AAMFB/9S0Sj7qFFQcD4laADVsabTpNNpaV4wAgVTRHKV/kC9luItzwDnUcsZUPdQ
+ f3MueRJ3jIHU0UmRBG3uQftqbZJj3ikhnfvyLmkCNe+/hXhPu9sGvXyi2D4vszICvc1KL4RD
+ aLSrOsROx22eZ26KqcW4ny7+va2FnvjsZgI8h4sDmaLzKczVRIiLITiMpLFEU/VoSv0m1F4B
+ FtRgoiyjFzigWG0MsTdAN6FJzGh4mWWGIlE7o5JraNhnTd+yTUIPtw3ym6l8P+gbvfoZida0
+ TspgwBWLnXQvP5EDvlZnNaKa/3oBes6z0QdaSOwZCRA3QSLHBwtgUsrT6RxRSweLrcabiEkE
+ GBECAAkFAkah5FQCGwwACgkQ130UHQKnbvW2GgCfTKx80VvCR/PvsUlrvdOLsIgeRGAAn1ee
+ RjMaxwtSdaCKMw3j33ZbsWS4
+Message-ID: <26124e15-b410-42d4-631e-4a814176dac0@nbd.name>
+Date:   Mon, 13 May 2019 11:30:32 +0200
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.14; rv:60.0)
+ Gecko/20100101 Thunderbird/60.6.1
 MIME-Version: 1.0
-References: <CA+icZUX+VNtk00YQnNYCnDeeH2Onq6s1vbdzYrv-OHf7q186Ww@mail.gmail.com>
- <154e3e74-38b5-850b-5993-295f9db8fe3c@intel.com> <CA+icZUWhBeup95PTP_k58xs8Lf2Ofqb0S_gkdBfbuc0-wdpF-w@mail.gmail.com>
- <06fbacb5-7739-1ca1-3bf4-8049a3ef019b@intel.com>
-In-Reply-To: <06fbacb5-7739-1ca1-3bf4-8049a3ef019b@intel.com>
-Reply-To: sedat.dilek@gmail.com
-From:   Sedat Dilek <sedat.dilek@gmail.com>
-Date:   Mon, 13 May 2019 11:27:07 +0200
-Message-ID: <CA+icZUWJ0kZSqogg18LdP2YkNXk=_SNnT7-ufkd_Xp1ak7uchg@mail.gmail.com>
-Subject: Re: [linux-nfc] ThinkPad T470 and NXP PN5xx (PN547 or PN548)
-To:     Oleg Zhurakivskyy <oleg.zhurakivskyy@intel.com>
-Cc:     Samuel Ortiz <sameo@linux.intel.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        linux-wireless@vger.kernel.org, linux-nfc@lists.01.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <20190513091905.GB3127@localhost.localdomain>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Sat, May 11, 2019 at 3:28 PM Oleg Zhurakivskyy
-<oleg.zhurakivskyy@intel.com> wrote:
->
->
-> Hi Sedat,
->
-> On 5/10/19 10:40 PM, Sedat Dilek wrote:
->
-> > Can you guide me how to do that?
->
-> I try and then decide whether this is help or not.
->
-> If I remember correctly, support for PN547 was done by multiple parties f=
-or some Broadwell based designs through the upstream, both on the kernel an=
-d neard side.
->
-> Assuming the integration details of PN547 didn=E2=80=99t deviate much, th=
-is might be:
->
-> - From relatively simple, i.e. getting the relevant data from ACPI and hi=
-nting the kernel/driver with a minimally sufficient changes. Most likely, o=
-nce you sort the basic details (i2c, gpio, etc), everything would just work=
-.
->
-> - To more laborious and would require a working and ideally open source r=
-eference. An option here might be Broadwell based Chromebooks with PN547 (j=
-ust not sure whether plain or OEMs).
->
+On 2019-05-13 11:19, Lorenzo Bianconi wrote:
+>> On Sat, May 11, 2019 at 12:17:53PM +0200, Lorenzo Bianconi wrote:
+>> > This is a preliminary patch to run mt76x02_edcca_init atomically
+>> > 
+>> > Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+>> > ---
+>> >  .../wireless/mediatek/mt76/mt76x2/pci_main.c  | 16 ++++++++------
+>> >  .../wireless/mediatek/mt76/mt76x2/usb_main.c  | 22 ++++++++++---------
+>> >  2 files changed, 21 insertions(+), 17 deletions(-)
+>> > 
+>> > diff --git a/drivers/net/wireless/mediatek/mt76/mt76x2/pci_main.c b/drivers/net/wireless/mediatek/mt76/mt76x2/pci_main.c
+>> > index e416eee6a306..3a1467326f4d 100644
+>> > --- a/drivers/net/wireless/mediatek/mt76/mt76x2/pci_main.c
+>> > +++ b/drivers/net/wireless/mediatek/mt76/mt76x2/pci_main.c
+>> > @@ -54,14 +54,14 @@ mt76x2_set_channel(struct mt76x02_dev *dev, struct cfg80211_chan_def *chandef)
+>> >  	int ret;
+>> >  
+>> >  	cancel_delayed_work_sync(&dev->cal_work);
+>> 
+>> Since now you use mutex in mt76x2_phy_calibrate() you can remove  
+>> cancel_delayed_work_sync() and drop other changes from this patch
+>> as releasing mutex just to acquire it in almost next step make
+>> no sense.
+> 
+> I agree with you, the only difference is in that way we will perform phy
+> calibration even during scanning. If the there are no
+> objections I will post a v3 removing cancel_delayed_work_sync and
+> reworking patch 3/4
+I don't agree for two reasons:
 
-By cloning the driver from [1] which enhances the original driver [1]
-with ACPI support and auto-detecting/auto-configuring the "NXP 1001"
-device (see [1] and [2])...
+1. If we only rely on the mutex, we're blocking the workqueue. That
+might have some unwanted side effects.
+2. We really should avoid having the calibration work during scanning,
+otherwise this creates extra latency on channel changes, making the
+whole scan slower.
 
-...and using NXP's libnfc-nci...
-
-configure-line: PREFIX=3D"/opt/libnfc-nci" ; ./configure
---prefix=3D"$PREFIX" --enable-i2c --enable-debug
-
-...and enabling all available debug options in the provided *.conf
-files in /usr/local/etc/...
-
-...en plus I have activated all sort of I2C and GPIO debug kernel options..=
-.
-
-...I was able to run the demo-app...
-
-# /opt/libnfc-nci/sbin/nfcDemoApp poll 2>&1 | tee /tmp/nfcDemoApp-poll.txt
-
-While in polling mode, I threw my YubiKey on the NFC device on my
-Lenovo ThinkPad T470 and see...
-
-NxpTml:     PN54X - I2C Read successful.....
-
-NxpNciR:     len =3D  44 >
-61052901020400FF010C4400072700000092D3490120000000121178B384008073C021C0575=
-97562694B6579
-NxpTml:     PN54X - Posting read message.....
-
-NxpHal:     read successful status =3D 0x0
-NxpHal:     NxpNci: RF Interface =3D ISO-DEP
-NxpHal:     NxpNci: Protocol =3D ISO-DEP
-NxpHal:     NxpNci: Mode =3D A Passive Poll
-NxpFunc:    NfcAdaptation::HalDeviceContextDataCallback: len=3D44
-NxpFunc:    NxpTml:     PN54X - Read requested.....
-
-Then I checked what the value...
-
-HEX: 61052901020400FF010C4400072700000092D3490120000000121178B384008073C021=
-C057597562694B6579
-
-...means in ASCII...
-
-$ cut -c 11- HEX.txt | xxd -r -p
-=EF=BF=BD
- D'=EF=BF=BD=EF=BF=BDI x=EF=BF=BD=EF=BF=BD=EF=BF=BDs=EF=BF=BD!=EF=BF=BDWYub=
-iKey
-
-So, this seems to work.
-
-I still have no glue how to use this experience in Linux to use NFC
-and especially my YubiKey.
-
-The binaries provided by Debian's libnfc-bin do not work.
-
-Sorry to say, I still have not get all correlations...
-
-- Sedat -
-
-[0] https://github.com/nfc-tools/libnfc/issues/455
-[1] https://github.com/NXPNFCLinux/nxp-pn5xx
-[2] https://github.com/jr64/nxp-pn5xx
-[3] https://github.com/NXPNFCLinux/nxp-pn5xx/issues/20
-[4] https://github.com/NXPNFCLinux/linux_libnfc-nci
-[5] https://www.rapidtables.com/convert/number/hex-to-ascii.html
-[6] https://superuser.com/questions/244025/tool-to-convert-a-file-of-hex-to=
--ascii-character-set
+- Felix
