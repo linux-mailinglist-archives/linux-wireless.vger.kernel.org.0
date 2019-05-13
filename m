@@ -2,97 +2,74 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 7E28B1B718
-	for <lists+linux-wireless@lfdr.de>; Mon, 13 May 2019 15:33:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DCC411B7D8
+	for <lists+linux-wireless@lfdr.de>; Mon, 13 May 2019 16:11:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730133AbfEMNdi (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 13 May 2019 09:33:38 -0400
-Received: from mail-pg1-f193.google.com ([209.85.215.193]:35674 "EHLO
-        mail-pg1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728566AbfEMNdi (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 13 May 2019 09:33:38 -0400
-Received: by mail-pg1-f193.google.com with SMTP id h1so6805779pgs.2;
-        Mon, 13 May 2019 06:33:38 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id;
-        bh=dHB+2UT2SbFOUCgxQjFqk9pofSt4ba6bP6xlRWy9uz8=;
-        b=KuXvSRMYMKGzAylOkSf6HZsrUBzZMXGa86X+6uv3efqmd+6ImnKgro2FqOsBr2V44w
-         ELvJmk5nJEWhJjUmtdgHpYgUtNfZ1Fk9TKFzXNxMzQess1GQ3XObF0QfDHbhIEVtUUFB
-         dN2jQ3JgzsRrAGO49aEiYDrL956oBcs/o8kEoz46lQ2CSCQ6Eyrduhiiacr9lLcvUdvF
-         1NDIALBson6SKLJeebv1XRoNFMdl1sMLIoh1OPwXVBeOsbVacm8W/E7Ms9BxuWbWwOPk
-         Ab7BfgP9UmGxW2nVDG/z4uuffyE+gF6CsnxG7iF//EdmqheaG8SZwcVypUAUcZYNl2zo
-         CbSg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id;
-        bh=dHB+2UT2SbFOUCgxQjFqk9pofSt4ba6bP6xlRWy9uz8=;
-        b=XiQ1SA6Kn8pHx4KuaPC633+HRy6da5+R+IDK6Qe+Lt/xjvBEeqrTk6LrGlL2hV3spu
-         6vA+kQEcoUf+ZBtDjoUzqDeyazZSS9yzUPkmVhKA1aYc8sHnhOFIJIHwBpQ+5Ky4NtFi
-         goAQyPmEBtyLhhlou1n5VJp3bwLp8C61GQ5njPTZ/yBZ/9buoICSsEp+XeeNlVtqQf4z
-         84GcDozcaIFvrZ5Xn/PoPyGTgYom4hZ/Yjmr8D5a7nkDlSh93hR76sgU19E1CAmyL6U9
-         bLbewU6Juw5Ioyv+Ynv7pUS57HJrIaUfy8GnBH81z6Qrm41E1kncgvVR4iqXDI6mlWxD
-         lvxA==
-X-Gm-Message-State: APjAAAXU5sZBB7Z8E+fh0HZD9A1hiC4Uhy8mC8mKQcYnZuM+58FVqd3f
-        VIZwT+fk5Yw1QhNivGPVTnI=
-X-Google-Smtp-Source: APXvYqzCHEBbsQ9j/TAQ9YLva9rBRXDXM3fwxild9xMkA+ykPkX3PCo9l3kUOGRoDUw95ZR47IUmEw==
-X-Received: by 2002:a62:1c06:: with SMTP id c6mr22162703pfc.168.1557754417788;
-        Mon, 13 May 2019 06:33:37 -0700 (PDT)
-Received: from localhost (36-225-62-102.dynamic-ip.hinet.net. [36.225.62.102])
-        by smtp.gmail.com with ESMTPSA id h6sm28582717pfk.188.2019.05.13.06.33.36
-        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
-        Mon, 13 May 2019 06:33:37 -0700 (PDT)
-From:   Cyrus Lien <cyruslien@gmail.com>
-X-Google-Original-From: Cyrus Lien <cyrus.lien@canonical.com>
-To:     Johannes Berg <johannes.berg@intel.com>,
-        Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
-        Luca Coelho <luciano.coelho@intel.com>,
-        Intel Linux Wireless <linuxwifi@intel.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Shahar S Matityahu <shahar.s.matityahu@intel.com>,
-        Sara Sharon <sara.sharon@intel.com>,
-        Golan Ben Ami <golan.ben.ami@intel.com>,
-        Lior Cohen <lior2.cohen@intel.com>,
-        Shaul Triebitz <shaul.triebitz@intel.com>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Cc:     Cyrus Lien <cyrus.lien@canonical.com>
-Subject: [PATCH] iwlwifi: trans: fix killer series loadded incorrect firmware
-Date:   Mon, 13 May 2019 21:33:35 +0800
-Message-Id: <20190513133335.14536-1-cyrus.lien@canonical.com>
-X-Mailer: git-send-email 2.17.1
+        id S1729567AbfEMOLb (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 13 May 2019 10:11:31 -0400
+Received: from mga01.intel.com ([192.55.52.88]:56103 "EHLO mga01.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1729561AbfEMOLb (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 13 May 2019 10:11:31 -0400
+X-Amp-Result: UNKNOWN
+X-Amp-Original-Verdict: FILE UNKNOWN
+X-Amp-File-Uploaded: False
+Received: from fmsmga007.fm.intel.com ([10.253.24.52])
+  by fmsmga101.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 13 May 2019 07:11:30 -0700
+X-ExtLoop1: 1
+Received: from smile.fi.intel.com (HELO smile) ([10.237.72.86])
+  by fmsmga007.fm.intel.com with ESMTP; 13 May 2019 07:11:29 -0700
+Received: from andy by smile with local (Exim 4.92)
+        (envelope-from <andriy.shevchenko@linux.intel.com>)
+        id 1hQBfs-0002o5-Pg; Mon, 13 May 2019 17:11:28 +0300
+Date:   Mon, 13 May 2019 17:11:28 +0300
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To:     Sedat Dilek <sedat.dilek@gmail.com>
+Cc:     Oleg Zhurakivskyy <oleg.zhurakivskyy@intel.com>,
+        Samuel Ortiz <sameo@linux.intel.com>,
+        linux-wireless@vger.kernel.org, linux-nfc@lists.01.org
+Subject: Re: [linux-nfc] ThinkPad T470 and NXP PN5xx (PN547 or PN548)
+Message-ID: <20190513141128.GY9224@smile.fi.intel.com>
+References: <154e3e74-38b5-850b-5993-295f9db8fe3c@intel.com>
+ <CA+icZUWhBeup95PTP_k58xs8Lf2Ofqb0S_gkdBfbuc0-wdpF-w@mail.gmail.com>
+ <06fbacb5-7739-1ca1-3bf4-8049a3ef019b@intel.com>
+ <CA+icZUWJ0kZSqogg18LdP2YkNXk=_SNnT7-ufkd_Xp1ak7uchg@mail.gmail.com>
+ <20190513095059.GN9224@smile.fi.intel.com>
+ <CA+icZUWXSup0BfXNZXxcrAAbu-b9KCiBU++OkC+eFqacMrTwRg@mail.gmail.com>
+ <20190513105745.GR9224@smile.fi.intel.com>
+ <CA+icZUVDTx_ZUuOgHVDmg5_a4tgrRkPp880+0KPaRJ1d=zF5VQ@mail.gmail.com>
+ <20190513124049.GT9224@smile.fi.intel.com>
+ <CA+icZUWU2OQszOYi1Jzp7yW+gB-TmhkBfmqaLAvy3WEOn9Rh8g@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CA+icZUWU2OQszOYi1Jzp7yW+gB-TmhkBfmqaLAvy3WEOn9Rh8g@mail.gmail.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Killer series loadded IWL_22000_HR_B_FW_PRE prefixed firmware instead
-IWL_CC_A_FW_PRE prefixed firmware.
+On Mon, May 13, 2019 at 03:32:52PM +0200, Sedat Dilek wrote:
+> BTW, which Linux Kconfig setting are minimum?
+> 
+> scripts/config -m NFC_NCI -m NFC_NXP_NCI -m NFC_NXP_NCI_I2C
+> 
+> What about?
+> 
+> scripts/config -m NFC_NCI_SPI -m NFC_NCI_UART -m I2C_GPIO -m SPI_GPIO
+> 
+> Required?
+> Not needed?
 
-Add killer series to the check logic as iwl_ax200_cfg_cc.
+I2C_GPIO and SPI_GPIO has nothing to do with all this. What indeed is needed is
+the pin control of the actual Intel SoC (unfortunately I don't know what
+exactly you have, so, you better to check yourself), something like
+CONFIG_PINCTRL_SKYLAKE=y.
 
-Signed-off-by: Cyrus Lien <cyrus.lien@canonical.com>
----
- drivers/net/wireless/intel/iwlwifi/pcie/trans.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/trans.c b/drivers/net/wireless/intel/iwlwifi/pcie/trans.c
-index 79c1dc05f948..576c2186b6bf 100644
---- a/drivers/net/wireless/intel/iwlwifi/pcie/trans.c
-+++ b/drivers/net/wireless/intel/iwlwifi/pcie/trans.c
-@@ -3565,7 +3565,9 @@ struct iwl_trans *iwl_trans_pcie_alloc(struct pci_dev *pdev,
- 		}
- 	} else if (CSR_HW_RF_ID_TYPE_CHIP_ID(trans->hw_rf_id) ==
- 		   CSR_HW_RF_ID_TYPE_CHIP_ID(CSR_HW_RF_ID_TYPE_HR) &&
--		   (trans->cfg != &iwl_ax200_cfg_cc ||
-+		   ((trans->cfg != &iwl_ax200_cfg_cc &&
-+		     trans->cfg != &killer1650x_2ax_cfg &&
-+		     trans->cfg != &killer1650w_2ax_cfg) ||
- 		    trans->hw_rev == CSR_HW_REV_TYPE_QNJ_B0)) {
- 		u32 hw_status;
- 
 -- 
-2.17.1
+With Best Regards,
+Andy Shevchenko
+
 
