@@ -2,121 +2,234 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 7453B1B841
-	for <lists+linux-wireless@lfdr.de>; Mon, 13 May 2019 16:23:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 458B81B876
+	for <lists+linux-wireless@lfdr.de>; Mon, 13 May 2019 16:38:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728365AbfEMOXp (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 13 May 2019 10:23:45 -0400
-Received: from mail-wr1-f66.google.com ([209.85.221.66]:39290 "EHLO
-        mail-wr1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727788AbfEMOXp (ORCPT
+        id S1729180AbfEMOip (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 13 May 2019 10:38:45 -0400
+Received: from smtp.codeaurora.org ([198.145.29.96]:58558 "EHLO
+        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728225AbfEMOio (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 13 May 2019 10:23:45 -0400
-Received: by mail-wr1-f66.google.com with SMTP id w8so13082855wrl.6
-        for <linux-wireless@vger.kernel.org>; Mon, 13 May 2019 07:23:43 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:reply-to:from:date:message-id
-         :subject:to:cc;
-        bh=eYwTzeU6ZY30B/JYnW2PX8dKTbyzANTuzswZ9p11ZEE=;
-        b=VZJkhTIgl37jUXlLXnsuLgOhuH43bGJG0ixecoW20T67XwGLoAKWsQTYctLThEXhCV
-         ShQaSkbVLsNHnL/sXrDG0f1IL0EdKDOD2EIwXJYbX8XR2OJS0snbblyj0kkWaU2nSsD/
-         D2uUF1vIuOKigClHpNTvS38dXZLwqG6ewhtm+48iYAQ504A1ecx8LzfRhb79434GHseO
-         flKKsfcTRadEYNDTv1iLpvIl/f09F506kdwq/jALijTDTSnQQl7TUeQvKluOG+sn4DN6
-         jXBNqFTBKiYpO2unbft/RJZ54CIxEYCh6k/f9SZvLkXuoNzMfvvvkOAbWoSHCuydltH6
-         agng==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:reply-to
-         :from:date:message-id:subject:to:cc;
-        bh=eYwTzeU6ZY30B/JYnW2PX8dKTbyzANTuzswZ9p11ZEE=;
-        b=tgGwg2v9Epak6poX3QwXw9++xWyeco2eeOkXNRSj1Q4z3jiUJ6rm/0WcKvxTRUMqKC
-         WDbfgQOq1YFPnlnZSoJ9qZEOBIMOt2dAVuBaUw5xjgxsP5ls/bCX2MUFNaf3VbXmd13f
-         JzGQcBpfNoEypEXvmlrVFS/C17/ezxFT23B6uZH4rwLZln4YWtlg+tKvVDeG4CqN8PNw
-         TNlOCLuKaWFv5H8FJNFlCCbhKpV+EyA3Ip3pi/IXouypr15mMax6O0d3rJMtbnkprA6r
-         dKYd4EcAe+gsZ4lHLbJV9eMWXFyZIBTkfUzn4Ys+g0K8nv+pfm6GR4ZovRZNlNs087Hz
-         M0bw==
-X-Gm-Message-State: APjAAAUDPu8ajglwz/CMpHxVMk0gFlwZFY+7PG1j6IvK88hXEYBFY7zz
-        /GcE//YdOKmfagF8a4S4x0OS6S0+QUQzeC6DyQE=
-X-Google-Smtp-Source: APXvYqwFTQAbqNWHE8FU4DdQRT0B9flIPbOAZGghsOWBHjjYaUiQxXOvU0hiuUnV8D5JIgnzCTOSfiuddMfxVrIDV1A=
-X-Received: by 2002:a5d:4692:: with SMTP id u18mr5774572wrq.285.1557757423219;
- Mon, 13 May 2019 07:23:43 -0700 (PDT)
+        Mon, 13 May 2019 10:38:44 -0400
+Received: by smtp.codeaurora.org (Postfix, from userid 1000)
+        id 6B4A160AA3; Mon, 13 May 2019 14:38:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
+        s=default; t=1557758323;
+        bh=uL33hlIrxs+lapC+prVidP+zdzFCBH/xX5edNuqKeIs=;
+        h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
+        b=bkQFrlfvz1BTj6ELseHPAVCwAAS8EoyelFp0mtCrV4JbWkV5KYWB2XH3usFAh6RNN
+         Pyp9CkAEeXA+a0Q7XsFIOZgyoWRQt0pmXd7QYM8R0PBHoc4pH7tInLWQuaU9mrvWE/
+         vTG47nDv2uzk8tHfy3nEGPvJSsToZUiS0PS8hEFA=
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        pdx-caf-mail.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.7 required=2.0 tests=ALL_TRUSTED,BAYES_00,
+        DKIM_INVALID,DKIM_SIGNED autolearn=no autolearn_force=no version=3.4.0
+Received: from [10.18.172.35] (unknown [185.23.60.4])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        (Authenticated sender: ailizaro@smtp.codeaurora.org)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 52213608A5;
+        Mon, 13 May 2019 14:38:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
+        s=default; t=1557758322;
+        bh=uL33hlIrxs+lapC+prVidP+zdzFCBH/xX5edNuqKeIs=;
+        h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
+        b=bp9zhU6tbCo+/5IPdzRl9/2Y+xiSHq6HW9eEO8OeYl9xu9pPnY+ihBmdGWqO3mJj3
+         qE/9R5huRvlrbnI8M/hqT0AgXMeixi7lOQP2KXsTKoc8nQ68fk73X/kQWiLbjkA1bv
+         5TDuQOjD6fKq+F/gjTbagi6Nq9EoqUluLyjedbMU=
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 52213608A5
+Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=ailizaro@codeaurora.org
+Subject: Re: [PATCH 2/3] nl80211: Add support for EDMG channels
+To:     Johannes Berg <johannes@sipsolutions.net>
+Cc:     linux-wireless@vger.kernel.org, wil6210@qti.qualcomm.com
+References: <1534163582-9983-1-git-send-email-ailizaro@codeaurora.org>
+ <1534163582-9983-3-git-send-email-ailizaro@codeaurora.org>
+ <1535448830.5895.30.camel@sipsolutions.net>
+From:   Alexei Avshalom Lazar <ailizaro@codeaurora.org>
+Message-ID: <9b69bcd6-8576-f900-c556-94c8e62ea91b@codeaurora.org>
+Date:   Mon, 13 May 2019 17:38:39 +0300
+User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:60.0) Gecko/20100101
+ Thunderbird/60.6.1
 MIME-Version: 1.0
-References: <154e3e74-38b5-850b-5993-295f9db8fe3c@intel.com>
- <CA+icZUWhBeup95PTP_k58xs8Lf2Ofqb0S_gkdBfbuc0-wdpF-w@mail.gmail.com>
- <06fbacb5-7739-1ca1-3bf4-8049a3ef019b@intel.com> <CA+icZUWJ0kZSqogg18LdP2YkNXk=_SNnT7-ufkd_Xp1ak7uchg@mail.gmail.com>
- <20190513095059.GN9224@smile.fi.intel.com> <CA+icZUWXSup0BfXNZXxcrAAbu-b9KCiBU++OkC+eFqacMrTwRg@mail.gmail.com>
- <20190513105745.GR9224@smile.fi.intel.com> <CA+icZUVDTx_ZUuOgHVDmg5_a4tgrRkPp880+0KPaRJ1d=zF5VQ@mail.gmail.com>
- <20190513124049.GT9224@smile.fi.intel.com> <CA+icZUWU2OQszOYi1Jzp7yW+gB-TmhkBfmqaLAvy3WEOn9Rh8g@mail.gmail.com>
- <20190513141128.GY9224@smile.fi.intel.com>
-In-Reply-To: <20190513141128.GY9224@smile.fi.intel.com>
-Reply-To: sedat.dilek@gmail.com
-From:   Sedat Dilek <sedat.dilek@gmail.com>
-Date:   Mon, 13 May 2019 16:23:32 +0200
-Message-ID: <CA+icZUWLhvn66Tx4ao8sZA_=-cjMHQ01rshmsRWEYWXY_3Jw4A@mail.gmail.com>
-Subject: Re: [linux-nfc] ThinkPad T470 and NXP PN5xx (PN547 or PN548)
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc:     Oleg Zhurakivskyy <oleg.zhurakivskyy@intel.com>,
-        Samuel Ortiz <sameo@linux.intel.com>,
-        linux-wireless@vger.kernel.org, linux-nfc@lists.01.org
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <1535448830.5895.30.camel@sipsolutions.net>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Mon, May 13, 2019 at 4:11 PM Andy Shevchenko
-<andriy.shevchenko@linux.intel.com> wrote:
->
-> On Mon, May 13, 2019 at 03:32:52PM +0200, Sedat Dilek wrote:
-> > BTW, which Linux Kconfig setting are minimum?
-> >
-> > scripts/config -m NFC_NCI -m NFC_NXP_NCI -m NFC_NXP_NCI_I2C
-> >
-> > What about?
-> >
-> > scripts/config -m NFC_NCI_SPI -m NFC_NCI_UART -m I2C_GPIO -m SPI_GPIO
-> >
-> > Required?
-> > Not needed?
->
-> I2C_GPIO and SPI_GPIO has nothing to do with all this. What indeed is needed is
-> the pin control of the actual Intel SoC (unfortunately I don't know what
-> exactly you have, so, you better to check yourself), something like
-> CONFIG_PINCTRL_SKYLAKE=y.
->
 
-OK.
 
-What is with NFC_NCI_SPI and NFC_NCI_UART Kconfigs?
+On 8/28/2018 12:33 PM, Johannes Berg wrote:
+> On Mon, 2018-08-13 at 15:33 +0300, Alexei Avshalom Lazar wrote:
+>>
 
-I had never changed PINCTRL Kconfigs, so what I have is/was...
+Hi Johannes
 
-$ grep PINCTRL .config | grep ^CONFIG | sort
-CONFIG_PINCTRL_AMD=y
-CONFIG_PINCTRL_BAYTRAIL=y
-CONFIG_PINCTRL_BROXTON=y
-CONFIG_PINCTRL_CHERRYVIEW=y
-CONFIG_PINCTRL_INTEL=y
-CONFIG_PINCTRL_SUNRISEPOINT=y
-CONFIG_PINCTRL=y
+The implementation has been updated according to the latest spec draft, 
+Draft P802.11ay_D3.0
+Most of the code that you commented has been updated in the new patch 
+and your comments were taken into consideration where applicable.
+I will upload an updated version of the patches shortly.
 
-Which one is this?
+>>   /**
+>> + * struct ieee80211_sta_edmg_cap - EDMG capabilities
+>> + *
+>> + * This structure describes most essential parameters needed
+>> + * to describe 802.11ay EDMG capabilities
+>> + *
+>> + * @supported: is EDMG supported, Device may support EDMG
+>> + *	without supporting channel bonding. In this case
+>> + *	supported would be TRUE with n_channels = 0
+> 
+> TRUE -> %true
 
-And if PINCTRL_XXX is mandatory, shall it be added as Kconfig
-dependency in drivers/nfc/nxp-nci/Kconfig?
+Not relevant with new patch.
 
-- Sedat -
+> 
+>> + * @channels: supported ieee EDMG channel numbers
+> 
+> IEEE
 
-P.S.: List of unset PINCTRL Kconfigs
+Not relevant with new patch.
 
-$ grep PINCTRL .config | grep ^'# CONFIG' | sort
-# CONFIG_DEBUG_PINCTRL is not set
-# CONFIG_PINCTRL_CANNONLAKE is not set
-# CONFIG_PINCTRL_CEDARFORK is not set
-# CONFIG_PINCTRL_DENVERTON is not set
-# CONFIG_PINCTRL_GEMINILAKE is not set
-# CONFIG_PINCTRL_ICELAKE is not set
-# CONFIG_PINCTRL_LEWISBURG is not set
-# CONFIG_PINCTRL_MCP23S08 is not set
-# CONFIG_PINCTRL_SX150X is not set
+> 
+>> + * @n_channels: Number of channels in @channels
+>> + */
+>> +struct ieee80211_sta_edmg_cap {
+>> +	bool supported;
+>> +	u8 *channels;
+> 
+> const?
+> 
+> But really this is pointless - there are *two* channels here (6 and 7),
+> and so at most you point to a 2-byte array? Just make it
+> 
+> 	u8 channels[2];
+> 
+> or something and save the whole pointering?
+> 
+> Ok, no, there are 9-25 or something, so I guess more than that...
+> 
+> Uh. Why do we bother though? Do we need the channel number anywhere? Why
+> not just let userspace specify the bitmap to start with?
+> 
+> Would there really be devices that base their support for channels on
+> anything other than support for the underlying DMG channels?
+
+Devices will base their support on the combination of EDMG CB1 channels 
+with the allowed bandwidth, for example if channels 1-3 are supported it 
+doesn’t necessarily mean that CB3 (channel bonding of 3 channels) is 
+supported. It is possible that device supports only CB2 (bonding of 2 
+channels).
+Please notice that the representation of the capabilities has been 
+updated in the new patch.
+
+> 
+> 
+>>    * @center_freq1: center frequency of first segment
+>>    * @center_freq2: center frequency of second segment
+>>    *	(only with 80+80 MHz)
+>> + * @edmg_mode: if defined, edmg supported and primary channel is EDMG
+>> + * @edmg_channel: the EDMG channel
+>>    */
+>>   struct cfg80211_chan_def {
+>>   	struct ieee80211_channel *chan;
+>>   	enum nl80211_chan_width width;
+>>   	u32 center_freq1;
+>>   	u32 center_freq2;
+>> +	bool edmg_mode;
+>> +	u8 edmg_channel;
+> 
+> This seems odd. What do you put into chan_width if it's EDMG then? What
+> do you put into the chan pointer?
+
+chan_width is not used today for the 11ad and cannot be used for channel 
+bonding because the 11ay bandwidth configuration can have more than one 
+option, for example - bandwidth configuration #13 means device can 
+choose to associate on 2.16 or 4.32 or 2.16+2.16 channel width.
+For the 11ay purposes the chan pointer has the information for the 
+primary channel, band,  c_freq, hw_value (same as DMG case).
+
+> 
+>> + * @NL80211_ATTR_WIPHY_EDMG_CHANNEL: EDMG channel to be used for AP
+>> + *      configuration and connect command.
+> 
+> u8 is intended, I assume?
+> 
+> But why do you need this anyhow? The EDMG channel has a frequency just
+> like all other channels, no? Can't we continue to use the existing
+> attributes?
+
+This has been updated to bitmap of the legacy channel and the bandwidth 
+configuration.
+frequency attribute will be meaningless because they won't represent the 
+relevant possibilities that defined by the spec, for example if the AP 
+support CB2 and CB3 we won't be able to represent it with the frequencies.
+
+> 
+>> +static const struct edmg_chan_table {
+>> +	/* the edmg channel - 9,10,11... */
+>> +	u8 edmg_chan;
+>> +	/* the sub channels represented as a bitfield where the bit-index
+>> +	 * corresponds to the legacy channel (bit 0 not used).
+>> +	 */
+>> +	u8 sub_chans;
+> 
+> Uh, ok, so I guess it's more complicated?
+> 
+> I'm not familiar with 802.11ay ... I guess a short primer should be in
+> the patch set here somewhere :)
+> 
+>> +} cfg80211_edmg_table[] = {
+>> +	{9, 0x06},	/* channels 1,2 */
+> 
+> BIT(1) | BIT(2) ? then you don't really need the comments ...
+
+Agree but not relevant with new patch.
+
+> 
+>> +	{10, 0x0c},	/* channels 2,3 */
+>> +	{11, 0x18},	/* channels 3,4 */
+>> +	{12, 0x30},	/* channels 4,5 */
+>> +	{13, 0x60},	/* channels 5,6 */
+>> +	{17, 0x0e},	/* channels 1,2,3 */
+>> +	{18, 0x1c},	/* channels 2,3,4 */
+>> +	{19, 0x38},	/* channels 3,4,5 */
+>> +	{20, 0x70},	/* channels 4,5,6 */
+> 
+> What happened to 21-24?
+
+The spec doesn’t define contiguous channel numbers so 21-24 are not 
+defined, same for 14-16.
+
+> 
+>> +	{25, 0x1e},	/* channels 1,2,3,4 */
+> 
+>> +static u8 cfg80211_get_edmg_sub_chans(u8 edmg_channel)
+>> +{
+>> +	int i;
+>> +
+>> +	for (i = 0; i < ARRAY_SIZE(cfg80211_edmg_table); i++)
+>> +		if (cfg80211_edmg_table[i].edmg_chan == edmg_channel)
+>> +			return cfg80211_edmg_table[i].sub_chans;
+> 
+> Maybe just index the array at "edmg_channel - 9", add dummies for 21-24
+> and save the whole loop? I guess it doesn't matter so much though.
+
+Not relevant with new patch.
+
+> 
+> johannes
+> 
+
+-- 
+Alexei Lazar
+Qualcomm Israel, on behalf of Qualcomm Innovation Center, Inc.
+The Qualcomm Innovation Center, Inc. is a member of Code Aurora Forum a 
+Linux Foundation Collaborative Project
