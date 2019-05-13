@@ -2,107 +2,89 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 3E2AD1B452
-	for <lists+linux-wireless@lfdr.de>; Mon, 13 May 2019 12:52:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0F23B1B45F
+	for <lists+linux-wireless@lfdr.de>; Mon, 13 May 2019 12:57:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729175AbfEMKwK (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 13 May 2019 06:52:10 -0400
-Received: from mail-wm1-f65.google.com ([209.85.128.65]:34723 "EHLO
-        mail-wm1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728833AbfEMKwJ (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 13 May 2019 06:52:09 -0400
-Received: by mail-wm1-f65.google.com with SMTP id j187so300943wma.1
-        for <linux-wireless@vger.kernel.org>; Mon, 13 May 2019 03:52:08 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:reply-to:from:date:message-id
-         :subject:to:cc:content-transfer-encoding;
-        bh=AYtx5hBxa9dcVDHYSg+x/xz/m3EBPuTCozc29imMpkc=;
-        b=UjRApXS2Ma7DFSBM2yH/4HdTzAoopwuNJ4zORhHVoCXdWNdOmVM9xl84JRcUoJUjfc
-         hWcHBhvQqQKp34+skSyAf1DP2OSQz6Gw07oI0ypILwvaamuqaqs0nyrdfcruYoM1aqX8
-         1mHnis/1YRHGrWAke8QCeE/HhB7pSGKBAUfGGt638hV3Z1YXUHlEHNpcJk8Prr1PFuWK
-         /nu7R7WAwZDBYyD/cuFKSEVECWmegtIWSpEsXwdJsQwXQlZ0AEvFNdgBXYXDw5Tp/YBu
-         plWIzxx0ZOVYrHvgn4YQ5L7VUMI60kTkafIj0JhxZo/+wQCb4pIUvTLc1CF2w06kTHty
-         U2Cw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:reply-to
-         :from:date:message-id:subject:to:cc:content-transfer-encoding;
-        bh=AYtx5hBxa9dcVDHYSg+x/xz/m3EBPuTCozc29imMpkc=;
-        b=kDPrN4DHiIdHDeBvF+1RvAUEArojOGUfkJT9FvReKcUbgosrIjZuKAwVUcqFDPYqTt
-         pwcsPl6HbNQvBkU7awoMiNnwb7fuyQPewEpViVWeE0pcMg8GyhxkWNsdvnzmsuB2xNme
-         BjBeKwPNjNQ+mdek012zYqg5tS2l+EXcmczQAUJmJILgygIW6QYdxpbvrCkKQjHJ+6hr
-         qKE4yR8urdXa/mwVFJfIarwqwcMYFgON9jp8qnARb6af5KWfXXoRne9uQkw9iBq/Fy0V
-         DjGWUxzmew0kY+JFfkhhHrUrjbtbPgh+wGnOIctzj0Mc2YgV3lsZHgSbBpwB/1jrmTaA
-         VO8g==
-X-Gm-Message-State: APjAAAUXX56eTI664KrrKZ3SexBIBlaoJHM+Vq1huIWlhNb9jbMqkvGM
-        KXBSfRc0A1WJFabVWxEbeYA2KXOvYLR4sw8rXk2wO5nXobA=
-X-Google-Smtp-Source: APXvYqwChQbVqTQlTZgIMY+lJrzW7kWpx6AimfvhfXyEQWPCiGuidbvtNzzIuGMKkgz6n7KQ6TUMaIavMGL+fTKoOwg=
-X-Received: by 2002:a1c:9616:: with SMTP id y22mr4499448wmd.73.1557744727424;
- Mon, 13 May 2019 03:52:07 -0700 (PDT)
-MIME-Version: 1.0
-References: <CA+icZUX+VNtk00YQnNYCnDeeH2Onq6s1vbdzYrv-OHf7q186Ww@mail.gmail.com>
- <154e3e74-38b5-850b-5993-295f9db8fe3c@intel.com> <CA+icZUWhBeup95PTP_k58xs8Lf2Ofqb0S_gkdBfbuc0-wdpF-w@mail.gmail.com>
- <06fbacb5-7739-1ca1-3bf4-8049a3ef019b@intel.com> <CA+icZUWJ0kZSqogg18LdP2YkNXk=_SNnT7-ufkd_Xp1ak7uchg@mail.gmail.com>
- <2b1bd56f-8797-fb90-e2af-218edaedd089@intel.com>
-In-Reply-To: <2b1bd56f-8797-fb90-e2af-218edaedd089@intel.com>
-Reply-To: sedat.dilek@gmail.com
-From:   Sedat Dilek <sedat.dilek@gmail.com>
-Date:   Mon, 13 May 2019 12:51:55 +0200
-Message-ID: <CA+icZUVMjCWwuC-ee1-+EPU6+mYqFZ7w4ai4t4EJcrsvZ2_BYg@mail.gmail.com>
-Subject: Re: [linux-nfc] ThinkPad T470 and NXP PN5xx (PN547 or PN548)
-To:     Oleg Zhurakivskyy <oleg.zhurakivskyy@intel.com>
-Cc:     Samuel Ortiz <sameo@linux.intel.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        id S1729155AbfEMK5r (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 13 May 2019 06:57:47 -0400
+Received: from mga04.intel.com ([192.55.52.120]:55733 "EHLO mga04.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1728114AbfEMK5r (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 13 May 2019 06:57:47 -0400
+X-Amp-Result: UNKNOWN
+X-Amp-Original-Verdict: FILE UNKNOWN
+X-Amp-File-Uploaded: False
+Received: from fmsmga007.fm.intel.com ([10.253.24.52])
+  by fmsmga104.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 13 May 2019 03:57:47 -0700
+X-ExtLoop1: 1
+Received: from smile.fi.intel.com (HELO smile) ([10.237.72.86])
+  by fmsmga007.fm.intel.com with ESMTP; 13 May 2019 03:57:46 -0700
+Received: from andy by smile with local (Exim 4.92)
+        (envelope-from <andriy.shevchenko@linux.intel.com>)
+        id 1hQ8eP-0000MC-Gt; Mon, 13 May 2019 13:57:45 +0300
+Date:   Mon, 13 May 2019 13:57:45 +0300
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To:     Sedat Dilek <sedat.dilek@gmail.com>
+Cc:     Oleg Zhurakivskyy <oleg.zhurakivskyy@intel.com>,
+        Samuel Ortiz <sameo@linux.intel.com>,
         linux-wireless@vger.kernel.org, linux-nfc@lists.01.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Subject: Re: [linux-nfc] ThinkPad T470 and NXP PN5xx (PN547 or PN548)
+Message-ID: <20190513105745.GR9224@smile.fi.intel.com>
+References: <CA+icZUX+VNtk00YQnNYCnDeeH2Onq6s1vbdzYrv-OHf7q186Ww@mail.gmail.com>
+ <154e3e74-38b5-850b-5993-295f9db8fe3c@intel.com>
+ <CA+icZUWhBeup95PTP_k58xs8Lf2Ofqb0S_gkdBfbuc0-wdpF-w@mail.gmail.com>
+ <06fbacb5-7739-1ca1-3bf4-8049a3ef019b@intel.com>
+ <CA+icZUWJ0kZSqogg18LdP2YkNXk=_SNnT7-ufkd_Xp1ak7uchg@mail.gmail.com>
+ <20190513095059.GN9224@smile.fi.intel.com>
+ <CA+icZUWXSup0BfXNZXxcrAAbu-b9KCiBU++OkC+eFqacMrTwRg@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CA+icZUWXSup0BfXNZXxcrAAbu-b9KCiBU++OkC+eFqacMrTwRg@mail.gmail.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Mon, May 13, 2019 at 12:15 PM Oleg Zhurakivskyy
-<oleg.zhurakivskyy@intel.com> wrote:
->
->
-> Hi Sedat,
->
-> On 5/13/19 12:27 PM, Sedat Dilek wrote:
->
-> > So, this seems to work.
->
-> I spent a bit of time trying to find T470, couldn=E2=80=99t, anyway manag=
-ed to get to =E2=80=9DNXP 1001=E2=80=9D and was going to hint you further.
->
-> Congratulations, great job!
->
-> And thanks a lot for documenting everything and posting it here. Perhaps,=
- eventually it could be upstreamed.
->
+On Mon, May 13, 2019 at 12:38:27PM +0200, Sedat Dilek wrote:
+> On Mon, May 13, 2019 at 11:51 AM Andy Shevchenko
+> <andriy.shevchenko@linux.intel.com> wrote:
+> >
+> > On Mon, May 13, 2019 at 11:27:07AM +0200, Sedat Dilek wrote:
+> >
+> > > Sorry to say, I still have not get all correlations...
+> >
+> > Can you provide the output of the following on running Linux system with latest
+> > possible kernel you can install (I am expecting v5.1) and command line with
+> > 'ignore_loglevel'?
+> >
+> > 1. `dmesg`
+> > 2. `grep -H 15 /sys/bus/acpi/devices/*/status`
+> > 3. `acpidump -o t470-tables.dat` # the file t470-tables.dat
+> > 4. `lspci -vv -nk`
+> >
+> > P.S. You may use GitHub gist for this set (please, don't share archives) or any
+> > other resource like pastebin.
+> >
+> 
+> Looks like I am unable to use Debian's gist-paste package today or
+> need more coffee.
+> 
+> So, I add this here.
+> 
+> I added my kernel-config.
 
-Hi Oleg,
 
-Thanks to you and Andy.
+Thanks. I just sent a series to (hopefully) support it in the vanilla kernel.
+Can you test it?
 
-As far as I have understood the pn5xx_i2c kernel driver (from NXP or
-better to say the ACPI support modified one by jr64 user) is needed as
-the NFC device is not auto-detected/configured via I2C and GPIO and
-ACPI.
+P.S. I see in dmesg the pn544 tries to bind to the NXP1001. Do you have some
+custom patches for that in your kernel? If so, please drop them.
 
-Unsure, why the pn544_i2c NFC driver shipped with the Linux v5.1.1
-does not work.
-Or what it is missing.
+-- 
+With Best Regards,
+Andy Shevchenko
 
-Helpful was the PDF from [1].
 
-Furthermore, I have seen that Debian refused to integrate the NXP
-libnfc-nci library due to policy issues (see [2]).
-
-libnfc library shipped with Debian does not work.
-
-- Sedat -
-
-[1] http://www.nxp.com/documents/application_note/AN11697.pdf
-[2] https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=3D854606
