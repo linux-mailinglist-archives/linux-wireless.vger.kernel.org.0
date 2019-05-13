@@ -2,89 +2,103 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 8BB531B619
-	for <lists+linux-wireless@lfdr.de>; Mon, 13 May 2019 14:37:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8DF131B61A
+	for <lists+linux-wireless@lfdr.de>; Mon, 13 May 2019 14:37:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728159AbfEMMhx (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 13 May 2019 08:37:53 -0400
-Received: from smtp.codeaurora.org ([198.145.29.96]:50544 "EHLO
-        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728109AbfEMMhx (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 13 May 2019 08:37:53 -0400
-Received: by smtp.codeaurora.org (Postfix, from userid 1000)
-        id BE95560A0A; Mon, 13 May 2019 12:37:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1557751072;
-        bh=tPouinMg0xgfsTmzm8uB5YRUndo7XORITezmpzKY0e4=;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=XiTCIf/K8DtOspxYZgRABk4aiFxx3SLiezeucaPd/Id1bGiti2bqtR78/3ZFXz5dO
-         5cevAfsU015Pu8RnuSHTDMFACfTWjET0tzmMYZ+jQJivL6dUiA+1Ec477pyw1p6Vul
-         JkpPNjIdoXCg1Oci7NQC0iP2AdpQv0lpJGoYPAtg=
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        pdx-caf-mail.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.7 required=2.0 tests=ALL_TRUSTED,BAYES_00,
-        DKIM_INVALID,DKIM_SIGNED autolearn=no autolearn_force=no version=3.4.0
-Received: from x230.qca.qualcomm.com (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        (Authenticated sender: kvalo@smtp.codeaurora.org)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 2E0486030E;
-        Mon, 13 May 2019 12:37:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1557751072;
-        bh=tPouinMg0xgfsTmzm8uB5YRUndo7XORITezmpzKY0e4=;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=XiTCIf/K8DtOspxYZgRABk4aiFxx3SLiezeucaPd/Id1bGiti2bqtR78/3ZFXz5dO
-         5cevAfsU015Pu8RnuSHTDMFACfTWjET0tzmMYZ+jQJivL6dUiA+1Ec477pyw1p6Vul
-         JkpPNjIdoXCg1Oci7NQC0iP2AdpQv0lpJGoYPAtg=
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 2E0486030E
-Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
-From:   Kalle Valo <kvalo@codeaurora.org>
-To:     Lorenzo Bianconi <lorenzo@kernel.org>
-Cc:     nbd@nbd.name, lorenzo.bianconi@redhat.com,
-        linux-wireless@vger.kernel.org
-Subject: Re: [PATCH] mt76: mt7603: add debugfs knob to enable/disable edcca
-References: <cover.1557591530.git.lorenzo@kernel.org>
-        <0691acb931e963cb6028d4687cdd61032d0aaf52.1557591530.git.lorenzo@kernel.org>
-        <87r293ugia.fsf@purkki.adurom.net>
-        <20190513084127.GA3127@localhost.localdomain>
-Date:   Mon, 13 May 2019 15:37:48 +0300
-In-Reply-To: <20190513084127.GA3127@localhost.localdomain> (Lorenzo Bianconi's
-        message of "Mon, 13 May 2019 10:41:28 +0200")
-Message-ID: <87sgtiil7n.fsf@codeaurora.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
+        id S1728167AbfEMMh7 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 13 May 2019 08:37:59 -0400
+Received: from mga01.intel.com ([192.55.52.88]:50251 "EHLO mga01.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1728062AbfEMMh6 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 13 May 2019 08:37:58 -0400
+X-Amp-Result: UNKNOWN
+X-Amp-Original-Verdict: FILE UNKNOWN
+X-Amp-File-Uploaded: False
+Received: from fmsmga005.fm.intel.com ([10.253.24.32])
+  by fmsmga101.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 13 May 2019 05:37:53 -0700
+X-ExtLoop1: 1
+Received: from smile.fi.intel.com (HELO smile) ([10.237.72.86])
+  by fmsmga005.fm.intel.com with ESMTP; 13 May 2019 05:37:52 -0700
+Received: from andy by smile with local (Exim 4.92)
+        (envelope-from <andriy.shevchenko@linux.intel.com>)
+        id 1hQADH-0001fj-Es; Mon, 13 May 2019 15:37:51 +0300
+Date:   Mon, 13 May 2019 15:37:51 +0300
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To:     Sedat Dilek <sedat.dilek@gmail.com>
+Cc:     =?iso-8859-1?Q?Cl=E9ment?= Perrochaud 
+        <clement.perrochaud@effinnov.com>,
+        Charles Gorand <charles.gorand@effinnov.com>,
+        linux-nfc@lists.01.org, Samuel Ortiz <sameo@linux.intel.com>,
+        linux-wireless@vger.kernel.org,
+        Oleg Zhurakivskyy <oleg.zhurakivskyy@intel.com>
+Subject: Re: [PATCH v2 00/12] NFC: nxp-nci: clean up and support new ID
+Message-ID: <20190513123751.GS9224@smile.fi.intel.com>
+References: <20190513104358.59716-1-andriy.shevchenko@linux.intel.com>
+ <CA+icZUV_g5mJnmHQKZgtcPj3YfZSYp1DQJT9tmi+892AzRCm3A@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CA+icZUV_g5mJnmHQKZgtcPj3YfZSYp1DQJT9tmi+892AzRCm3A@mail.gmail.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Lorenzo Bianconi <lorenzo@kernel.org> writes:
+On Mon, May 13, 2019 at 02:18:03PM +0200, Sedat Dilek wrote:
+> On Mon, May 13, 2019 at 12:44 PM Andy Shevchenko
+> <andriy.shevchenko@linux.intel.com> wrote:
+> >
+> > It has been reported that some laptops, equipped with NXP NFC300, have
+> > different ID then mentioned in the driver.
+> >
+> > While at it, I found that the driver has a lot of duplication and redundant
+> > platform data. The rest of the series (11 out of 12 patches) is dedicated to
+> > clean the driver up.
+> >
+> > Sedat, would be nice if you can compile kernel with this patch series applied
+> > and test on your laptop.
+> >
+> > In v2:
+> > - added new ID patch
+> > - added new clean up patch
+> > - Cc'ed to linux-wireless@ as well, since linux-nfc@ bounces my mails
+> > - Cc'ed to the reported of the problem with T470 laptop
+> >
+> > Andy Shevchenko (12):
+> >   NFC: nxp-nci: Add NXP1001 to the ACPI ID table
+> >   NFC: nxp-nci: Get rid of platform data
+> >   NFC: nxp-nci: Convert to use GPIO descriptor
+> >   NFC: nxp-nci: Add GPIO ACPI mapping table
+> >   NFC: nxp-nci: Get rid of code duplication in ->probe()
+> >   NFC: nxp-nci: Get rid of useless label
+> >   NFC: nxp-nci: Constify acpi_device_id
+> >   NFC: nxp-nci: Drop of_match_ptr() use
+> >   NFC: nxp-nci: Drop comma in terminator lines
+> >   NFC: nxp-nci: Remove unused macro pr_fmt()
+> >   NFC: nxp-nci: Remove 'default n' for tests
+> >   NFC: nxp-nci: Convert to SPDX license tags
+> >
+> >  MAINTAINERS                           |   1 -
+> >  drivers/nfc/nxp-nci/Kconfig           |   1 -
+> >  drivers/nfc/nxp-nci/core.c            |  15 +--
+> >  drivers/nfc/nxp-nci/firmware.c        |  13 +--
+> >  drivers/nfc/nxp-nci/i2c.c             | 147 ++++++--------------------
+> >  drivers/nfc/nxp-nci/nxp-nci.h         |   1 -
+> >  include/linux/platform_data/nxp-nci.h |  27 -----
+> >  7 files changed, 37 insertions(+), 168 deletions(-)
+> >  delete mode 100644 include/linux/platform_data/nxp-nci.h
+> 
+> Can we have NPC300 listed in the Kconfg help text?
 
->> Lorenzo Bianconi <lorenzo@kernel.org> writes:
->> 
->> > Introduce a knob in mt7603 debugfs in order to enable/disable
->> > edcca processing
->> >
->> > Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
->> 
->> It's good to explain what edcca does and how the file is used supposed
->> to be used. In other words, have a small introduction for the user.
->
-> Hi Kalle,
->
-> edcca is used for adjusting energy detect based on CCA thresholds.
-> The code was already there so I just reported the acronym.
+Sure, it's good thing to do!
 
-A lot of people read commit logs but not everyone (myself included) are
-familiar with mt76 internals so please try to explain the acronyms and
-the background of the patch. Also you should explain in the commit log
-_why_ you are adding the debugfs file, how it helps the user and how to
-use it.
+Either as a separate patch or I may incorporate in the next iteration.
+Samuel, what do you prefer?
 
 -- 
-Kalle Valo
+With Best Regards,
+Andy Shevchenko
+
+
