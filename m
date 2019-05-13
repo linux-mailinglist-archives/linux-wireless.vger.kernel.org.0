@@ -2,175 +2,66 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 02E3E1B13E
-	for <lists+linux-wireless@lfdr.de>; Mon, 13 May 2019 09:36:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 48DED1B1FA
+	for <lists+linux-wireless@lfdr.de>; Mon, 13 May 2019 10:38:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728031AbfEMHf7 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 13 May 2019 03:35:59 -0400
-Received: from ushosting.nmnhosting.com ([66.55.73.32]:37960 "EHLO
-        ushosting.nmnhosting.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727347AbfEMHf7 (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 13 May 2019 03:35:59 -0400
-Received: from mail2.nmnhosting.com (unknown [202.169.106.97])
-        by ushosting.nmnhosting.com (Postfix) with ESMTPS id 231832DC0069;
-        Mon, 13 May 2019 03:35:57 -0400 (EDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=d-silva.org;
-        s=201810a; t=1557732958;
-        bh=aa+i95blYOSxhGwoRx9zFnMo5oG4XUfXT748BNmFJIU=;
-        h=From:To:Cc:References:In-Reply-To:Subject:Date:From;
-        b=aSet9rLYykQxcyXFS2GF9u8JjdaPfKwlu1qpX3Ek5B3X+zmGgF+1WtmJH8QDHUKVR
-         POJW18jnNWqKlc9WV/y9wswfLzQAdORTjoBGt6wbLb+XQzz+YSA8YT8exQIamI1hKA
-         NgBZZqdAOIFcj5X4mKMcpOALzVECo4ayuE60g+CPH7CvPt6lSOfmFpWRNnpn+wYPF4
-         P6SqYrz3uRsFocaNWbLb6GRXp8TE8CKtYMYUEeB/QfMAnGJ7U/FZrL/hYqxDE0ryBG
-         /8/mtlXRqGs0pBJCO5WKEQDm1lzWRXt40l8YPyEBjUBm/McmvG1Iafbx2EfRhysC43
-         vKIF2BpJNTxkposUCWaXgJuoNekulC6f7wlHUlNkNooeQHpAKXYuClI/ikmvCrnCff
-         Vy/fK7azMrun4S9M5k0UdX9IUayiM9Y1AVv1iAHjIJrMhP8ELgeNkTypKa35MyJMjx
-         LmIQVy3zVwlAOW1mMnZhrLapo90FKO26dOcJq140LOTx0ZahhIuR6KISKy+FuwYBfp
-         cNemDFNeNEkfGRWxw0VhCsOArzkI9iJJSDwhVYx2DI4O1xJX2kFEObBeq4rx25ClRK
-         PDCjVeuymuPU3aUBQKrJtdTxur1fcbH6SvSnl3OKtvCVGly9Za8zstBXG1KdRUNuvp
-         kOJclMVcOxeDGLfkA1Mcr7AQ=
-Received: from Hawking (ntp.lan [10.0.1.1])
-        (authenticated bits=0)
-        by mail2.nmnhosting.com (8.15.2/8.15.2) with ESMTPSA id x4D7ZjC4057687
-        (version=TLSv1.2 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO);
-        Mon, 13 May 2019 17:35:46 +1000 (AEST)
-        (envelope-from alastair@d-silva.org)
-From:   "Alastair D'Silva" <alastair@d-silva.org>
-To:     "'Geert Uytterhoeven'" <geert@linux-m68k.org>,
-        "'Alastair D'Silva'" <alastair@au1.ibm.com>
-Cc:     "'Jani Nikula'" <jani.nikula@linux.intel.com>,
-        "'Joonas Lahtinen'" <joonas.lahtinen@linux.intel.com>,
-        "'Rodrigo Vivi'" <rodrigo.vivi@intel.com>,
-        "'David Airlie'" <airlied@linux.ie>,
-        "'Daniel Vetter'" <daniel@ffwll.ch>,
-        "'Dan Carpenter'" <dan.carpenter@oracle.com>,
-        "'Karsten Keil'" <isdn@linux-pingi.de>,
-        "'Jassi Brar'" <jassisinghbrar@gmail.com>,
-        "'Tom Lendacky'" <thomas.lendacky@amd.com>,
-        "'David S. Miller'" <davem@davemloft.net>,
-        "'Jose Abreu'" <Jose.Abreu@synopsys.com>,
-        "'Kalle Valo'" <kvalo@codeaurora.org>,
-        "'Stanislaw Gruszka'" <sgruszka@redhat.com>,
-        "'Benson Leung'" <bleung@chromium.org>,
-        "'Enric Balletbo i Serra'" <enric.balletbo@collabora.com>,
-        "'James E.J. Bottomley'" <jejb@linux.ibm.com>,
-        "'Martin K. Petersen'" <martin.petersen@oracle.com>,
-        "'Greg Kroah-Hartman'" <gregkh@linuxfoundation.org>,
-        "'Alexander Viro'" <viro@zeniv.linux.org.uk>,
-        "'Petr Mladek'" <pmladek@suse.com>,
-        "'Sergey Senozhatsky'" <sergey.senozhatsky@gmail.com>,
-        "'Steven Rostedt'" <rostedt@goodmis.org>,
-        "'David Laight'" <David.Laight@aculab.com>,
-        "'Andrew Morton'" <akpm@linux-foundation.org>,
-        "'Intel Graphics Development'" <intel-gfx@lists.freedesktop.org>,
-        "'DRI Development'" <dri-devel@lists.freedesktop.org>,
-        "'Linux Kernel Mailing List'" <linux-kernel@vger.kernel.org>,
-        "'netdev'" <netdev@vger.kernel.org>, <ath10k@lists.infradead.org>,
-        "'linux-wireless'" <linux-wireless@vger.kernel.org>,
-        "'scsi'" <linux-scsi@vger.kernel.org>,
-        "'Linux Fbdev development list'" <linux-fbdev@vger.kernel.org>,
-        "'driverdevel'" <devel@driverdev.osuosl.org>,
-        "'Linux FS Devel'" <linux-fsdevel@vger.kernel.org>
-References: <20190508070148.23130-1-alastair@au1.ibm.com> <20190508070148.23130-4-alastair@au1.ibm.com> <CAMuHMdVefYTgHzGKBc0ebku1z8V3wsM0ydN+6-S2nFKaB8eH_Q@mail.gmail.com>
-In-Reply-To: <CAMuHMdVefYTgHzGKBc0ebku1z8V3wsM0ydN+6-S2nFKaB8eH_Q@mail.gmail.com>
-Subject: RE: [PATCH v2 3/7] lib/hexdump.c: Optionally suppress lines of repeated bytes
-Date:   Mon, 13 May 2019 17:35:47 +1000
-Message-ID: <04de01d5095e$7f6af730$7e40e590$@d-silva.org>
+        id S1728088AbfEMIiA (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 13 May 2019 04:38:00 -0400
+Received: from mx1.redhat.com ([209.132.183.28]:34788 "EHLO mx1.redhat.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727347AbfEMIiA (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 13 May 2019 04:38:00 -0400
+Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.phx2.redhat.com [10.5.11.12])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mx1.redhat.com (Postfix) with ESMTPS id 26AEF30917A8;
+        Mon, 13 May 2019 08:38:00 +0000 (UTC)
+Received: from localhost (unknown [10.40.205.200])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id 4134E60BEC;
+        Mon, 13 May 2019 08:37:57 +0000 (UTC)
+Date:   Mon, 13 May 2019 10:37:56 +0200
+From:   Stanislaw Gruszka <sgruszka@redhat.com>
+To:     Lorenzo Bianconi <lorenzo@kernel.org>
+Cc:     nbd@nbd.name, lorenzo.bianconi@redhat.com,
+        linux-wireless@vger.kernel.org
+Subject: Re: [PATCH 3/4] mt76: mt76x2: move mutex_lock inside
+ mt76x2_set_channel
+Message-ID: <20190513083755.GA13726@redhat.com>
+References: <cover.1557567465.git.lorenzo@kernel.org>
+ <1527e88fc4a307aa218f515811f2f2c15786caec.1557567465.git.lorenzo@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain;
-        charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
-X-Mailer: Microsoft Outlook 16.0
-Content-Language: en-au
-Thread-Index: AQGz7QD7bMLLz3XdMyQiMIIzLY+D4AJkmwv+AXBy99KmjDiokA==
-X-Greylist: Sender succeeded SMTP AUTH, not delayed by milter-greylist-4.6.2 (mail2.nmnhosting.com [10.0.1.20]); Mon, 13 May 2019 17:35:53 +1000 (AEST)
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1527e88fc4a307aa218f515811f2f2c15786caec.1557567465.git.lorenzo@kernel.org>
+User-Agent: Mutt/1.8.3 (2017-05-23)
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.12
+X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16 (mx1.redhat.com [10.5.110.41]); Mon, 13 May 2019 08:38:00 +0000 (UTC)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-> -----Original Message-----
-> From: Geert Uytterhoeven <geert@linux-m68k.org>
-> Sent: Monday, 13 May 2019 5:01 PM
-> To: Alastair D'Silva <alastair@au1.ibm.com>
-> Cc: alastair@d-silva.org; Jani Nikula <jani.nikula@linux.intel.com>; =
-Joonas
-> Lahtinen <joonas.lahtinen@linux.intel.com>; Rodrigo Vivi
-> <rodrigo.vivi@intel.com>; David Airlie <airlied@linux.ie>; Daniel =
-Vetter
-> <daniel@ffwll.ch>; Dan Carpenter <dan.carpenter@oracle.com>; Karsten
-> Keil <isdn@linux-pingi.de>; Jassi Brar <jassisinghbrar@gmail.com>; Tom
-> Lendacky <thomas.lendacky@amd.com>; David S. Miller
-> <davem@davemloft.net>; Jose Abreu <Jose.Abreu@synopsys.com>; Kalle
-> Valo <kvalo@codeaurora.org>; Stanislaw Gruszka <sgruszka@redhat.com>;
-> Benson Leung <bleung@chromium.org>; Enric Balletbo i Serra
-> <enric.balletbo@collabora.com>; James E.J. Bottomley
-> <jejb@linux.ibm.com>; Martin K. Petersen <martin.petersen@oracle.com>;
-> Greg Kroah-Hartman <gregkh@linuxfoundation.org>; Alexander Viro
-> <viro@zeniv.linux.org.uk>; Petr Mladek <pmladek@suse.com>; Sergey
-> Senozhatsky <sergey.senozhatsky@gmail.com>; Steven Rostedt
-> <rostedt@goodmis.org>; David Laight <David.Laight@aculab.com>; Andrew
-> Morton <akpm@linux-foundation.org>; Intel Graphics Development <intel-
-> gfx@lists.freedesktop.org>; DRI Development <dri-
-> devel@lists.freedesktop.org>; Linux Kernel Mailing List <linux-
-> kernel@vger.kernel.org>; netdev <netdev@vger.kernel.org>;
-> ath10k@lists.infradead.org; linux-wireless =
-<linux-wireless@vger.kernel.org>;
-> scsi <linux-scsi@vger.kernel.org>; Linux Fbdev development list =
-<linux-
-> fbdev@vger.kernel.org>; driverdevel <devel@driverdev.osuosl.org>; =
-Linux
-> FS Devel <linux-fsdevel@vger.kernel.org>
-> Subject: Re: [PATCH v2 3/7] lib/hexdump.c: Optionally suppress lines =
-of
-> repeated bytes
->=20
-> Hi Alastair,
->=20
-> Thanks for your patch!
+On Sat, May 11, 2019 at 12:17:53PM +0200, Lorenzo Bianconi wrote:
+> This is a preliminary patch to run mt76x02_edcca_init atomically
+> 
+> Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+> ---
+>  .../wireless/mediatek/mt76/mt76x2/pci_main.c  | 16 ++++++++------
+>  .../wireless/mediatek/mt76/mt76x2/usb_main.c  | 22 ++++++++++---------
+>  2 files changed, 21 insertions(+), 17 deletions(-)
+> 
+> diff --git a/drivers/net/wireless/mediatek/mt76/mt76x2/pci_main.c b/drivers/net/wireless/mediatek/mt76/mt76x2/pci_main.c
+> index e416eee6a306..3a1467326f4d 100644
+> --- a/drivers/net/wireless/mediatek/mt76/mt76x2/pci_main.c
+> +++ b/drivers/net/wireless/mediatek/mt76/mt76x2/pci_main.c
+> @@ -54,14 +54,14 @@ mt76x2_set_channel(struct mt76x02_dev *dev, struct cfg80211_chan_def *chandef)
+>  	int ret;
+>  
+>  	cancel_delayed_work_sync(&dev->cal_work);
 
-And thanks for your politeness :)
+Since now you use mutex in mt76x2_phy_calibrate() you can remove  
+cancel_delayed_work_sync() and drop other changes from this patch
+as releasing mutex just to acquire it in almost next step make
+no sense.
 
->=20
-> On Wed, May 8, 2019 at 9:04 AM Alastair D'Silva <alastair@au1.ibm.com>
-> wrote:
-> > From: Alastair D'Silva <alastair@d-silva.org>
-> >
-> > Some buffers may only be partially filled with useful data, while =
-the
-> > rest is padded (typically with 0x00 or 0xff).
-> >
-> > This patch introduces a flag to allow the supression of lines of
-> > repeated bytes,
->=20
-> Given print_hex_dump() operates on entities of groupsize (1, 2, 4, or =
-8)
-> bytes, wouldn't it make more sense to consider repeated groups instead =
-of
-> repeated bytes?
-
-Maybe, it would mean that subsequent addresses may not be a multiple of =
-rowsize though, which is useful.
-
-> > which are replaced with '** Skipped %u bytes of value 0x%x **'
->=20
-> Using a custom message instead of just "*", like "hexdump" uses, will =
-require
-> preprocessing the output when recovering the original binary data by
-> feeding it to e.g. "xxd".
-> This may sound worse than it is, though, as I never got "xxd" to work =
-without
-> preprocessing anyway ;-)
-
-I think showing the details of the skipped values is useful when reading =
-the output directly. In situations where binary extracts are desired, =
-the feature can always be disabled.
-
---=20
-Alastair D'Silva           mob: 0423 762 819
-skype: alastair_dsilva     msn: alastair@d-silva.org
-blog: http://alastair.d-silva.org    Twitter: @EvilDeece
-
-
-
+Stanislaw
