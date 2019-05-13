@@ -2,122 +2,485 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E81DE1BE4C
-	for <lists+linux-wireless@lfdr.de>; Mon, 13 May 2019 22:03:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 61E681BE79
+	for <lists+linux-wireless@lfdr.de>; Mon, 13 May 2019 22:14:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726109AbfEMUDN (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 13 May 2019 16:03:13 -0400
-Received: from mail-wm1-f65.google.com ([209.85.128.65]:54128 "EHLO
-        mail-wm1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725928AbfEMUDN (ORCPT
+        id S1726180AbfEMUOt (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 13 May 2019 16:14:49 -0400
+Received: from mail-pl1-f194.google.com ([209.85.214.194]:46630 "EHLO
+        mail-pl1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726142AbfEMUOs (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 13 May 2019 16:03:13 -0400
-Received: by mail-wm1-f65.google.com with SMTP id 198so556854wme.3
-        for <linux-wireless@vger.kernel.org>; Mon, 13 May 2019 13:03:12 -0700 (PDT)
+        Mon, 13 May 2019 16:14:48 -0400
+Received: by mail-pl1-f194.google.com with SMTP id r18so2257006pls.13
+        for <linux-wireless@vger.kernel.org>; Mon, 13 May 2019 13:14:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:reply-to:from:date:message-id
-         :subject:to:cc;
-        bh=U2V70HHgq1G8IBAe48iadiBr2eJH/xQZxJnZViWgA4s=;
-        b=K0R9v5xEBOGo+2EQkGypkZFNd0TDfuRi9yYCnpmXT7M0vEVkcTVDCdPBlKkCW3mJg4
-         mnIk0wni/j+eYSK+aZ7Q0n/Ka9pBjL89QEO1+yQ46b014uPLRjiHN4N8aKtLDUVpM2BE
-         BvTHJ04iUsZh3YTo1uabjy+ToOz6dpcFH1p/sOQpkNmy+yp7qhz4AgkVZA6+EPQf4SxM
-         xstucGBmq5NpGiKiK+omtA6jY2yDL6cAWb3Z9dkRudfWXj1JkX9Lxkn8ffvRU/HoGRJ9
-         JN1PE506ShT+OKs1XRljJVRZIB2SkuNDQgoEUsB6TWERyy8MFTS8xWyS2HpDXSORE1u1
-         cO7Q==
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=yphK1FihobvqottMbEnnbqx9OA0rvyKmOaAsL+sRr0g=;
+        b=YRtRJdtMRoUJiDqKVUsqhpaVIvU9734gx6LX0x0eAad+AHZSRD7Ozc2xKCwg5nihd6
+         J/BQJAYNly0/idSipu1pcYjhMOLQOy7b0PwNbRuwNXkJLIXmWDc+u0AQ1Lra2gFiyDS9
+         DwHfIDGsuuCAmY2SYt8RKy8obKo1URZaZTH5IR2dRYCL1+ao+CfBy/VOzYKANZuuLIAv
+         OBugmfGjZLa6eyUS8ApOgpx6e0dUmtqKGYONTGNuPmfgfmO/SToFu8VIwcr5ndx18w6g
+         oG0gbL50ER4Ykjb9Nueiq4qSA5lJKny+9Nx77Q274dMnVhtcws6RklwvNAAfuh9knrHb
+         66rw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:reply-to
-         :from:date:message-id:subject:to:cc;
-        bh=U2V70HHgq1G8IBAe48iadiBr2eJH/xQZxJnZViWgA4s=;
-        b=FqW8DP3kRUSl5jmTW4NcZMl8sY1JdaHwEfZgCjn2K5g7y0B1aOb8JuhEjG1h2grboy
-         NM5lWbNxsiKWiwbOqxnqv0c8Qh4XkoaxgLeeW4evKYtB6vMwhhtNRW+yspNDYCG0lthb
-         If1BUUhcmyEoXvN4HQUGBPhTVgQLiPWXj9tPE6STDswBlBvCUlwj8uQfzNhTg2350Mbt
-         Dh1UeOEPlvW8Hzl0KY63cbCV+kBEKcJHAnqfSzZUCWA4cQHAZ1g7TNHQYCWgKfNm+Gb3
-         6WbitWbt8PyMruhKT6anY8cR6c5Fiye6zgaWsTMpN+HSCmFh+8SA38//cHtbpWxTw7Hv
-         OHdA==
-X-Gm-Message-State: APjAAAUa8ieJeFKChF3kZz9YO+2WAlev2/wMpQrM7uByS36ASv9WMcpx
-        +HoDV4iIhykSpMZp5tzVpt5ldGTlorm/0desz64joPDMFtk=
-X-Google-Smtp-Source: APXvYqwzoneKL8ojrC8BcmjTUH07XF4Mv3gYTVaF4KZr9FLK0iqIm2jBeLxloXRciUvL1G8pSRlFZuhvHPDxW0PfwM8=
-X-Received: by 2002:a1c:9616:: with SMTP id y22mr6079303wmd.73.1557777792012;
- Mon, 13 May 2019 13:03:12 -0700 (PDT)
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=yphK1FihobvqottMbEnnbqx9OA0rvyKmOaAsL+sRr0g=;
+        b=cOPzgvS8vflqzNolf4SPZogYXtQiCJp+tdU5OH7Uv61UcPP5jm+CNyOJ4avrgUW/Oj
+         M41Cku24gGC6so4nL8UMPmcuD0ZbKMQYqm7QcMn0kV9jjmxZw1DA2BhJTdWfrcLAOLj7
+         fiHb4gCu077ZDMSFKhoQFFb2UGNbNExa/ly0lX4caKmwRDEwSsQf4h3FJyDG29gvL9x6
+         6nffCU/mno1KAiY1+3tDq86BSlGcGvQTkoZ2jrhuhFKHqer2BWMGYoxW6ACG/BYaGeB0
+         zLYFQfuCVzNjMhh3SXORB79WjTq3oxRrS0G7MvG4TdPOXxzel159D28cmb9bkBSajSxO
+         5T/A==
+X-Gm-Message-State: APjAAAV09y/htDhWb4B++eJtSqNT8RXQrLJfQavkkBgBmQOWqa1LWTrf
+        IsD1KsTdpB40gsbrvywrGFJC0RISCR44mfcCg0b0znI3tQ==
+X-Google-Smtp-Source: APXvYqymZSchep7h5srlejYdD2WaJTrzT4YPbSM7eSd2L0f3kdNhQMN1yT+N1R0fQ9ycgYKKax4boP4kP/QLBew8SbM=
+X-Received: by 2002:a17:902:a510:: with SMTP id s16mr33373618plq.334.1557778487387;
+ Mon, 13 May 2019 13:14:47 -0700 (PDT)
 MIME-Version: 1.0
-References: <154e3e74-38b5-850b-5993-295f9db8fe3c@intel.com>
- <CA+icZUWhBeup95PTP_k58xs8Lf2Ofqb0S_gkdBfbuc0-wdpF-w@mail.gmail.com>
- <06fbacb5-7739-1ca1-3bf4-8049a3ef019b@intel.com> <CA+icZUWJ0kZSqogg18LdP2YkNXk=_SNnT7-ufkd_Xp1ak7uchg@mail.gmail.com>
- <20190513095059.GN9224@smile.fi.intel.com> <CA+icZUWXSup0BfXNZXxcrAAbu-b9KCiBU++OkC+eFqacMrTwRg@mail.gmail.com>
- <20190513105745.GR9224@smile.fi.intel.com> <CA+icZUVDTx_ZUuOgHVDmg5_a4tgrRkPp880+0KPaRJ1d=zF5VQ@mail.gmail.com>
- <20190513124049.GT9224@smile.fi.intel.com> <CA+icZUWU2OQszOYi1Jzp7yW+gB-TmhkBfmqaLAvy3WEOn9Rh8g@mail.gmail.com>
- <20190513141128.GY9224@smile.fi.intel.com> <CA+icZUUsutHt1NXLNFd17J3QK-LtFCuUUEw4qqp9urJ++dDaKA@mail.gmail.com>
-In-Reply-To: <CA+icZUUsutHt1NXLNFd17J3QK-LtFCuUUEw4qqp9urJ++dDaKA@mail.gmail.com>
-Reply-To: sedat.dilek@gmail.com
-From:   Sedat Dilek <sedat.dilek@gmail.com>
-Date:   Mon, 13 May 2019 22:02:58 +0200
-Message-ID: <CA+icZUXrJieuF8DLVbce=sTVa_2Wc+sgjzh0z3d2Zw91cC9kXw@mail.gmail.com>
-Subject: Re: [linux-nfc] ThinkPad T470 and NXP PN5xx (PN547 or PN548)
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc:     Oleg Zhurakivskyy <oleg.zhurakivskyy@intel.com>,
-        Samuel Ortiz <sameo@linux.intel.com>,
-        linux-wireless@vger.kernel.org, linux-nfc@lists.01.org
+References: <CAPGJ1o_KskiCKQ8V-6U0nxWGgXXa4NWHV0EEwo41bMPSj1bbdg@mail.gmail.com>
+ <CAPGJ1o9qDYPQF882cw65uysjCmUYi6kJCmL2EUa0AXbwHj59Mg@mail.gmail.com>
+ <a236cf47-556d-c515-0093-82dce6e8ad8e@candelatech.com> <CAPGJ1o96QSfoFzFpSPbh_4TwSgAU-1FGhX6P5MVCmfZv_bugHw@mail.gmail.com>
+ <79695018-5ac9-d7c8-a386-c6dd3f9ed474@candelatech.com> <CAPGJ1o8k4WoK1cwBBYMge8m6n-Mm5nC7G=ku29iMRrSsJ1AMQw@mail.gmail.com>
+ <CAPGJ1o-i8Gy8baAf+MHcuWoF6oHuSiRYwyADCZDkYS8fmeOy8A@mail.gmail.com> <3ed8dd0c-47e0-16a0-082d-c60f1dabdce7@candelatech.com>
+In-Reply-To: <3ed8dd0c-47e0-16a0-082d-c60f1dabdce7@candelatech.com>
+From:   Sam Samy <to.swami1@gmail.com>
+Date:   Mon, 13 May 2019 13:14:36 -0700
+Message-ID: <CAPGJ1o8NUXw2G8hxHkHHwVhqqOGN8atHeaWFZjm-Vhw6ZM8bBw@mail.gmail.com>
+Subject: Re: ath10k 5Ghz RSSI low
+To:     Ben Greear <greearb@candelatech.com>
+Cc:     linux-wireless@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Mon, May 13, 2019 at 9:46 PM Sedat Dilek <sedat.dilek@gmail.com> wrote:
+>I think you should write to the openwrt mailing list and/or its bug tracker
+>and see if they can help.
+
+Ok. Thanks Ben. will do. Just curious. I am not able to get the reg.
+domain codes in TPC by googling. Do you know where I can get those?
+What is the reg. domains 0x20 and 0x58 value points to?
+
+Thanks
+
+On Mon, May 13, 2019 at 11:17 AM Ben Greear <greearb@candelatech.com> wrote:
 >
-> On Mon, May 13, 2019 at 4:11 PM Andy Shevchenko
-> <andriy.shevchenko@linux.intel.com> wrote:
+> On 5/13/19 11:10 AM, Sam Samy wrote:
+> > hi Ben,
 > >
-> > On Mon, May 13, 2019 at 03:32:52PM +0200, Sedat Dilek wrote:
-> > > BTW, which Linux Kconfig setting are minimum?
-> > >
-> > > scripts/config -m NFC_NCI -m NFC_NXP_NCI -m NFC_NXP_NCI_I2C
-> > >
-> > > What about?
-> > >
-> > > scripts/config -m NFC_NCI_SPI -m NFC_NCI_UART -m I2C_GPIO -m SPI_GPIO
-> > >
-> > > Required?
-> > > Not needed?
+> >    I also looked at the TPC on the stock firmware on the AP. There is a
+> > difference.
+>
+> I think you should write to the openwrt mailing list and/or its bug tracker
+> and see if they can help.
+>
+> Thanks,
+> Ben
+>
 > >
-> > I2C_GPIO and SPI_GPIO has nothing to do with all this. What indeed is needed is
-> > the pin control of the actual Intel SoC (unfortunately I don't know what
-> > exactly you have, so, you better to check yourself), something like
-> > CONFIG_PINCTRL_SKYLAKE=y.
+> > Here is the snippet from stock firmware:
+> >
+> > TPC Config for channel 5765 mode 10
+> > **************************************************
+> > CTL           = 0x10   Reg. Domain           = 20
+> > Antenna Gain  =  0     Reg. Max Antenna Gain = 12
+> > Power Limit   = 63     Reg. Max Power        = 60
+> > Num tx chains =  2    Num  Supported Rates  = 109
+> > **************************************************
+> > **************** CDD  POWER TABLE ****************
+> > **************************************************
+> >
+> > Where as in openwrt it is:
+> >
+> > *************************************
+> > TPC config for channel 5765 mode 10
+> > *************************************
+> > CTL        =  0x10 Reg. Domain        = 58
+> > Antenna Gain    =  0 Reg. Max Antenna Gain    =   0
+> > Power Limit    = 60 Reg. Max Power        = 30
+> > Num tx chains    =  2 Num supported rates    = 109
+> > ********************************
+> >
+> >
+> > So looks like reg ,domain is different even though both are US.
+> > (Although I didnt set anything on stock firmware. The countrycode from
+> > iwpriv get_countrycode says its 841.)
+> >
+> > Also, the antenna gain seems different between stock and openwrt firmware..
+> >
+> >
+> > How to change the reg. domain like in stock firmware in openwrt
+> > although I set to US in the uci.
+> >
+> > root@OpenWrt:/sys# uci show | grep country
+> > uhttpd.defaults.country='ZZ'
+> > wireless.radio0.country='US'
+> > wireless.radio1.country='US'
+> > wireless.radio2.country='US'
+> > root@OpenWrt:/sys#
+> >
+> > Thanks
+> >
+> >
+> > On Mon, May 13, 2019 at 10:36 AM Sam Samy <to.swami1@gmail.com> wrote:
+> >>
+> >>> Probably it is a board-file and/or calibration data issue then.
+> >>>
+> >>> The debugfs 'ath10k/tpc_stats' file may show very low values?
+> >>
+> >> I am not sure if the values are right. Here is one of the 5Ghz radio stats:
+> >>
+> >> root@OpenWrt:/sys# cat ./kernel/debug/ieee80211/phy0/ath10k/tpc_stats
+> >>
+> >> *************************************
+> >> TPC config for channel 5320 mode 10
+> >> *************************************
+> >> CTL        =  0x10 Reg. Domain        = 58
+> >> Antenna Gain    =  0 Reg. Max Antenna Gain    =   0
+> >> Power Limit    = 46 Reg. Max Power        = 46
+> >> Num tx chains    =  2 Num supported rates    = 129
+> >> ********************************
+> >> ******************* CDD POWER TABLE ****************
+> >> ********************************
+> >> No.  Preamble Rate_code tpc_value0 tpc_value1 tpc_value2 tpc_value3
+> >>         0 CCK 0x40        0        0
+> >>         1 CCK 0x41        0        0
+> >>         2 CCK 0x42        0        0
+> >>         3 CCK 0x43        0        0
+> >>         4 OFDM 0x 0       36       34
+> >>         5 OFDM 0x 1       38       34
+> >>         6 OFDM 0x 2       38       34
+> >>         7 OFDM 0x 3       38       34
+> >>         8 OFDM 0x 4       34       34
+> >>         9 OFDM 0x 5       38       34
+> >>        10 OFDM 0x 6       38       34
+> >>        11 OFDM 0x 7       38       34
+> >>        12 HT20 0x80       38       34
+> >>        13 HT20 0x81       38       34
+> >>        14 HT20 0x82       38       34
+> >>        15 HT20 0x83       38       34
+> >>        16 HT20 0x84       38       34
+> >>        17 HT20 0x85       36       34
+> >>        18 HT20 0x86       34       34
+> >>        19 HT20 0x87       32       32
+> >>        20 HT20 0x90       38       38
+> >>        21 HT20 0x91       38       38
+> >>        22 HT20 0x92       38       38
+> >>        23 HT20 0x93       38       38
+> >>        24 HT20 0x94       38       38
+> >>        25 HT20 0x95       36       36
+> >>        26 HT20 0x96       34       34
+> >>        27 HT20 0x97       32       32
+> >>        28 HT40 0x80       37       34
+> >>        29 HT40 0x81       37       34
+> >>        30 HT40 0x82       37       34
+> >>        31 HT40 0x83       37       34
+> >>        32 HT40 0x84       37       34
+> >>        33 HT40 0x85       35       34
+> >>        34 HT40 0x86       33       33
+> >>        35 HT40 0x87       31       31
+> >>        36 HT40 0x90       37       37
+> >>        37 HT40 0x91       37       37
+> >>        38 HT40 0x92       37       37
+> >>        39 HT40 0x93       37       37
+> >>        40 HT40 0x94       37       37
+> >>        41 HT40 0x95       35       35
+> >>        42 HT40 0x96       33       33
+> >>        43 HT40 0x97       31       31
+> >>        44 VHT20 0xc0       38       34
+> >>        45 VHT20 0xc1       38       34
+> >>        46 VHT20 0xc2       38       34
+> >>        47 VHT20 0xc3       38       34
+> >>        48 VHT20 0xc4       38       34
+> >>        49 VHT20 0xc5       36       34
+> >>        50 VHT20 0xc6       34       34
+> >>        51 VHT20 0xc7       32       32
+> >>        52 VHT20 0xc8       31       31
+> >>        53 VHT20 0xc9       30       30
+> >>        54 VHT20 0xd0       38       38
+> >>        55 VHT20 0xd1       38       38
+> >>        56 VHT20 0xd2       38       38
+> >>        57 VHT20 0xd3       38       38
+> >>        58 VHT20 0xd4       38       38
+> >>        59 VHT20 0xd5       36       36
+> >>        60 VHT20 0xd6       34       34
+> >>        61 VHT20 0xd7       32       32
+> >>        62 VHT20 0xd8       31       31
+> >>        63 VHT20 0xd9       30       30
+> >>        64 VHT40 0xc0       37       34
+> >>        65 VHT40 0xc1       37       34
+> >>        66 VHT40 0xc2       37       34
+> >>        67 VHT40 0xc3       37       34
+> >>        68 VHT40 0xc4       37       34
+> >>        69 VHT40 0xc5       35       34
+> >>        70 VHT40 0xc6       33       33
+> >>        71 VHT40 0xc7       31       31
+> >>        72 VHT40 0xc8       30       30
+> >>        73 VHT40 0xc9       29       29
+> >>        74 VHT40 0xd0       37       37
+> >>        75 VHT40 0xd1       37       37
+> >>        76 VHT40 0xd2       37       37
+> >>        77 VHT40 0xd3       37       37
+> >>        78 VHT40 0xd4       37       37
+> >>        79 VHT40 0xd5       35       35
+> >>        80 VHT40 0xd6       33       33
+> >>        81 VHT40 0xd7       31       31
+> >>        82 VHT40 0xd8       30       30
+> >>        83 VHT40 0xd9       29       29
+> >>        84 VHT80 0xc0       36       34
+> >>        85 VHT80 0xc1       36       34
+> >>        86 VHT80 0xc2       36       34
+> >>        87 VHT80 0xc3       36       34
+> >>        88 VHT80 0xc4       36       34
+> >>        89 VHT80 0xc5       34       34
+> >>        90 VHT80 0xc6       32       32
+> >>        91 VHT80 0xc7       30       30
+> >>        92 VHT80 0xc8       29       29
+> >>        93 VHT80 0xc9       28       28
+> >>        94 VHT80 0xd0       36       36
+> >>        95 VHT80 0xd1       36       36
+> >>        96 VHT80 0xd2       36       36
+> >>        97 VHT80 0xd3       36       36
+> >>        98 VHT80 0xd4       36       36
+> >>        99 VHT80 0xd5       34       34
+> >>       100 VHT80 0xd6       32       32
+> >>       101 VHT80 0xd7       30       30
+> >>       102 VHT80 0xd8       29       29
+> >>       103 VHT80 0xd9       28       28
+> >>       104 HTCUP 0x40       36       36
+> >>       105 HTCUP 0x 0       36       34
+> >>       106 HTCUP 0x40       36       36
+> >>       107 HTCUP 0x 0       36       34
+> >>       108 HTCUP 0x 0       36       34
+> >>       109 HTCUP 0x7a       34       34
+> >>       110 HTCUP 0x8a       32       32
+> >>       111 HTCUP 0x a       30       30
+> >>       112 HTCUP 0xee       27       27
+> >>       113 HTCUP 0xa6       26       26
+> >>       114 HTCUP 0x90       36       36
+> >>       115 HTCUP 0x1d       36       36
+> >>       116 HTCUP 0x80       36       34
+> >>       117 HTCUP 0x41       36       36
+> >>       118 HTCUP 0xd9       36       36
+> >>       119 HTCUP 0x64       34       34
+> >>       120 HTCUP 0xf9       32       32
+> >>       121 HTCUP 0x 0       30       30
+> >>       122 HTCUP 0x 0       27       27
+> >>       123 HTCUP 0x 0       26       26
+> >>       124 HTCUP 0x64        0        0
+> >>       125 HTCUP 0x 0       37       34
+> >>       126 HTCUP 0x31        0        0
+> >>       127 HTCUP 0x 4       37       34
+> >>       128 HTCUP 0x 0       38       34
+> >> ***********************************
+> >> ********************************
+> >> ******************* STBC POWER TABLE ****************
+> >> ********************************
+> >> No.  Preamble Rate_code tpc_value0 tpc_value1 tpc_value2 tpc_value3
+> >>         0 CCK 0x40        0        0
+> >>         1 CCK 0x41        0        0
+> >>         2 CCK 0x42        0        0
+> >>         3 CCK 0x43        0        0
+> >>         4 OFDM 0x 0       36       36
+> >>         5 OFDM 0x 1       38       38
+> >>         6 OFDM 0x 2       38       38
+> >>         7 OFDM 0x 3       38       38
+> >>         8 OFDM 0x 4       34       34
+> >>         9 OFDM 0x 5       38       38
+> >>        10 OFDM 0x 6       38       38
+> >>        11 OFDM 0x 7       38       38
+> >>        12 HT20 0x80       38       38
+> >>        13 HT20 0x81       38       38
+> >>        14 HT20 0x82       38       38
+> >>        15 HT20 0x83       38       38
+> >>        16 HT20 0x84       38       38
+> >>        17 HT20 0x85       36       36
+> >>        18 HT20 0x86       34       34
+> >>        19 HT20 0x87       32       32
+> >>        20 HT20 0x90       38       38
+> >>        21 HT20 0x91       38       38
+> >>        22 HT20 0x92       38       38
+> >>        23 HT20 0x93       38       38
+> >>        24 HT20 0x94       38       38
+> >>        25 HT20 0x95       36       36
+> >>        26 HT20 0x96       34       34
+> >>        27 HT20 0x97       32       32
+> >>        28 HT40 0x80       37       37
+> >>        29 HT40 0x81       37       37
+> >>        30 HT40 0x82       37       37
+> >>        31 HT40 0x83       37       37
+> >>        32 HT40 0x84       37       37
+> >>        33 HT40 0x85       35       35
+> >>        34 HT40 0x86       33       33
+> >>        35 HT40 0x87       31       31
+> >>        36 HT40 0x90       37       37
+> >>        37 HT40 0x91       37       37
+> >>        38 HT40 0x92       37       37
+> >>        39 HT40 0x93       37       37
+> >>        40 HT40 0x94       37       37
+> >>        41 HT40 0x95       35       35
+> >>        42 HT40 0x96       33       33
+> >>        43 HT40 0x97       31       31
+> >>        44 VHT20 0xc0       38       38
+> >>        45 VHT20 0xc1       38       38
+> >>        46 VHT20 0xc2       38       38
+> >>        47 VHT20 0xc3       38       38
+> >>        48 VHT20 0xc4       38       38
+> >>        49 VHT20 0xc5       36       36
+> >>        50 VHT20 0xc6       34       34
+> >>        51 VHT20 0xc7       32       32
+> >>        52 VHT20 0xc8       31       31
+> >>        53 VHT20 0xc9       30       30
+> >>        54 VHT20 0xd0       38       38
+> >>        55 VHT20 0xd1       38       38
+> >>        56 VHT20 0xd2       38       38
+> >>        57 VHT20 0xd3       38       38
+> >>        58 VHT20 0xd4       38       38
+> >>        59 VHT20 0xd5       36       36
+> >>        60 VHT20 0xd6       34       34
+> >>        61 VHT20 0xd7       32       32
+> >>        62 VHT20 0xd8       31       31
+> >>        63 VHT20 0xd9       30       30
+> >>        64 VHT40 0xc0       37       37
+> >>        65 VHT40 0xc1       37       37
+> >>        66 VHT40 0xc2       37       37
+> >>        67 VHT40 0xc3       37       37
+> >>        68 VHT40 0xc4       37       37
+> >>        69 VHT40 0xc5       35       35
+> >>        70 VHT40 0xc6       33       33
+> >>        71 VHT40 0xc7       31       31
+> >>        72 VHT40 0xc8       30       30
+> >>        73 VHT40 0xc9       29       29
+> >>        74 VHT40 0xd0       37       37
+> >>        75 VHT40 0xd1       37       37
+> >>        76 VHT40 0xd2       37       37
+> >>        77 VHT40 0xd3       37       37
+> >>        78 VHT40 0xd4       37       37
+> >>        79 VHT40 0xd5       35       35
+> >>        80 VHT40 0xd6       33       33
+> >>        81 VHT40 0xd7       31       31
+> >>        82 VHT40 0xd8       30       30
+> >>        83 VHT40 0xd9       29       29
+> >>        84 VHT80 0xc0       36       36
+> >>        85 VHT80 0xc1       36       36
+> >>        86 VHT80 0xc2       36       36
+> >>        87 VHT80 0xc3       36       36
+> >>        88 VHT80 0xc4       36       36
+> >>        89 VHT80 0xc5       34       34
+> >>        90 VHT80 0xc6       32       32
+> >>        91 VHT80 0xc7       30       30
+> >>        92 VHT80 0xc8       29       29
+> >>        93 VHT80 0xc9       28       28
+> >>        94 VHT80 0xd0       36       36
+> >>        95 VHT80 0xd1       36       36
+> >>        96 VHT80 0xd2       36       36
+> >>        97 VHT80 0xd3       36       36
+> >>        98 VHT80 0xd4       36       36
+> >>        99 VHT80 0xd5       34       34
+> >>       100 VHT80 0xd6       32       32
+> >>       101 VHT80 0xd7       30       30
+> >>       102 VHT80 0xd8       29       29
+> >>       103 VHT80 0xd9       28       28
+> >>       104 HTCUP 0x40       36       36
+> >>       105 HTCUP 0x 0       36       36
+> >>       106 HTCUP 0x40       36       36
+> >>       107 HTCUP 0x 0       36       36
+> >>       108 HTCUP 0x 0       36       36
+> >>       109 HTCUP 0x7a       34       34
+> >>       110 HTCUP 0x8a       32       32
+> >>       111 HTCUP 0x a       30       30
+> >>       112 HTCUP 0xee       27       27
+> >>       113 HTCUP 0xa6       26       26
+> >>       114 HTCUP 0x90       36       36
+> >>       115 HTCUP 0x1d       36       36
+> >>       116 HTCUP 0x80       36       36
+> >>       117 HTCUP 0x41       36       36
+> >>       118 HTCUP 0xd9       36       36
+> >>       119 HTCUP 0x64       34       34
+> >>       120 HTCUP 0xf9       32       32
+> >>       121 HTCUP 0x 0       30       30
+> >>       122 HTCUP 0x 0       27       27
+> >>       123 HTCUP 0x 0       26       26
+> >>       124 HTCUP 0x64        0        0
+> >>       125 HTCUP 0x 0       37       37
+> >>       126 HTCUP 0x31        0        0
+> >>       127 HTCUP 0x 4       37       37
+> >>       128 HTCUP 0x 0       38       38
+> >> ***********************************
+> >> TXBF not supported
+> >> ***************************
+> >> root@OpenWrt:/sys#
+> >>
+> >>
+> >> Thanks
+> >>
+> >> On Mon, May 13, 2019 at 10:27 AM Ben Greear <greearb@candelatech.com> wrote:
+> >>>
+> >>> On 5/13/19 10:26 AM, Sam Samy wrote:
+> >>>> hi Ben,
+> >>>>
+> >>>>> Hello, what firmware are you using (ath10k-ct, or QCA?)  If using -ct firmware,
+> >>>>> please try QCA firmware and let me know if that fixes the problem.
+> >>>>>
+> >>>>     I tried both. Both have the same problem. I tried various versions
+> >>>> of the both(-ct and QCA) firmware as well. All have the same problem.
+> >>>
+> >>> Probably it is a board-file and/or calibration data issue then.
+> >>>
+> >>> The debugfs 'ath10k/tpc_stats' file may show very low values?
+> >>>
+> >>> Thanks,
+> >>> Ben
+> >>>
+> >>>>
+> >>>> Thanks
+> >>>>
+> >>>> On Mon, May 13, 2019 at 10:00 AM Ben Greear <greearb@candelatech.com> wrote:
+> >>>>>
+> >>>>> On 5/13/19 9:56 AM, Sam Samy wrote:
+> >>>>>>     Hi,
+> >>>>>>     I installed master branch openwrt onto Asus MAP-AC2200 AP. It has tri
+> >>>>>> band. Its based on IPQ4019 DK04 QCA reference platform. 2 radios
+> >>>>>> (2Ghz/5Ghz) on AHB bus and one 5GHZ on PCIe bus. Its generally working
+> >>>>>> fine except one problem in 5Ghz. On both the 5Ghz radios the RSSI is
+> >>>>>> pretty low on any channel I put it in.  In one feet range I see -60dB
+> >>>>>> RSSI, where as the stock firmware that came with the AP gives an RSSI
+> >>>>>> of -36dB at one foot distance.The downstream transmit rates are MCS8/9
+> >>>>>> for most part. The 2Ghz is working fine. Its using the cal data from
+> >>>>>> the flash that came with the AP.
+> >>>>>>
+> >>>>>>     Can you please suggest anyway to debug this or improve the RSSI?
+> >>>>>>
+> >>>>>>     Thanks you!
+> >>>>>>
+> >>>>>
+> >>>>> Hello, what firmware are you using (ath10k-ct, or QCA?)  If using -ct firmware,
+> >>>>> please try QCA firmware and let me know if that fixes the problem.
+> >>>>>
+> >>>>> Thanks,
+> >>>>> Ben
+> >>>>>
+> >>>>> --
+> >>>>> Ben Greear <greearb@candelatech.com>
+> >>>>> Candela Technologies Inc  http://www.candelatech.com
+> >>>>>
+> >>>>
+> >>>
+> >>>
+> >>> --
+> >>> Ben Greear <greearb@candelatech.com>
+> >>> Candela Technologies Inc  http://www.candelatech.com
+> >>>
 > >
 >
-> I played a bit with the Kconfigs...
 >
-> scripts/config -m NFC_NCI -m NFC_NXP_NCI -m NFC_NXP_NCI_I2C
+> --
+> Ben Greear <greearb@candelatech.com>
+> Candela Technologies Inc  http://www.candelatech.com
 >
-> ...is sufficient.
->
-> I don't know which CONFIG_PINCTRL_XXX is needed.
->
-
-I looked at lspci output and I see a lot of "Intel Corporation Sunrise
-Point-LP", especially...
-
-00:15.0 Signal processing controller: Intel Corporation Sunrise
-Point-LP Serial IO I2C Controller #0 (rev 21)
-
-I have set...
-
-CONFIG_PINCTRL_SUNRISEPOINT=y
-
-From [1]:
-
-config PINCTRL_SUNRISEPOINT
-tristate "Intel Sunrisepoint pinctrl and GPIO driver"
-depends on ACPI
-select PINCTRL_INTEL
-help
-Sunrisepoint is the PCH of Intel Skylake. This pinctrl driver
-provides an interface that allows configuring of PCH pins and
-using them as GPIOs.
-
-- Sedat -
-
-[1] https://github.com/torvalds/linux/blob/master/drivers/pinctrl/intel/Kconfig#L109
