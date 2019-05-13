@@ -2,24 +2,26 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 4C4681B438
+	by mail.lfdr.de (Postfix) with ESMTP id B80291B439
 	for <lists+linux-wireless@lfdr.de>; Mon, 13 May 2019 12:44:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729096AbfEMKoD (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        id S1729121AbfEMKoD (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
         Mon, 13 May 2019 06:44:03 -0400
-Received: from mga04.intel.com ([192.55.52.120]:54978 "EHLO mga04.intel.com"
+Received: from mga18.intel.com ([134.134.136.126]:27307 "EHLO mga18.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727849AbfEMKoC (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        id S1728459AbfEMKoC (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
         Mon, 13 May 2019 06:44:02 -0400
 X-Amp-Result: SKIPPED(no attachment in message)
 X-Amp-File-Uploaded: False
-Received: from fmsmga001.fm.intel.com ([10.253.24.23])
-  by fmsmga104.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 13 May 2019 03:44:02 -0700
+Received: from fmsmga002.fm.intel.com ([10.253.24.26])
+  by orsmga106.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 13 May 2019 03:44:02 -0700
 X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.60,465,1549958400"; 
+   d="scan'208";a="171146751"
 Received: from black.fi.intel.com ([10.237.72.28])
-  by fmsmga001.fm.intel.com with ESMTP; 13 May 2019 03:44:00 -0700
+  by fmsmga002.fm.intel.com with ESMTP; 13 May 2019 03:44:00 -0700
 Received: by black.fi.intel.com (Postfix, from userid 1003)
-        id 5A2FB141; Mon, 13 May 2019 13:43:59 +0300 (EEST)
+        id 68C6D86; Mon, 13 May 2019 13:43:59 +0300 (EEST)
 From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 To:     =?UTF-8?q?Cl=C3=A9ment=20Perrochaud?= 
         <clement.perrochaud@effinnov.com>,
@@ -29,10 +31,12 @@ To:     =?UTF-8?q?Cl=C3=A9ment=20Perrochaud?=
         Sedat Dilek <sedat.dilek@gmail.com>,
         Oleg Zhurakivskyy <oleg.zhurakivskyy@intel.com>
 Cc:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Subject: [PATCH v2 00/12] NFC: nxp-nci: clean up and support new ID
-Date:   Mon, 13 May 2019 13:43:46 +0300
-Message-Id: <20190513104358.59716-1-andriy.shevchenko@linux.intel.com>
+Subject: [PATCH v2 01/12] NFC: nxp-nci: Add NXP1001 to the ACPI ID table
+Date:   Mon, 13 May 2019 13:43:47 +0300
+Message-Id: <20190513104358.59716-2-andriy.shevchenko@linux.intel.com>
 X-Mailer: git-send-email 2.20.1
+In-Reply-To: <20190513104358.59716-1-andriy.shevchenko@linux.intel.com>
+References: <20190513104358.59716-1-andriy.shevchenko@linux.intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
@@ -40,46 +44,29 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-It has been reported that some laptops, equipped with NXP NFC300, have
-different ID then mentioned in the driver.
+It seems a lot of laptops are equipped with NXP NFC300 chip with
+the ACPI ID NXP1001 as per DSDT.
 
-While at it, I found that the driver has a lot of duplication and redundant
-platform data. The rest of the series (11 out of 12 patches) is dedicated to
-clean the driver up.
+Append it to the driver's ACPI ID table.
 
-Sedat, would be nice if you can compile kernel with this patch series applied
-and test on your laptop.
+Reported-by: Sedat Dilek <sedat.dilek@gmail.com>
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+---
+ drivers/nfc/nxp-nci/i2c.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-In v2:
-- added new ID patch
-- added new clean up patch
-- Cc'ed to linux-wireless@ as well, since linux-nfc@ bounces my mails
-- Cc'ed to the reported of the problem with T470 laptop
-
-Andy Shevchenko (12):
-  NFC: nxp-nci: Add NXP1001 to the ACPI ID table
-  NFC: nxp-nci: Get rid of platform data
-  NFC: nxp-nci: Convert to use GPIO descriptor
-  NFC: nxp-nci: Add GPIO ACPI mapping table
-  NFC: nxp-nci: Get rid of code duplication in ->probe()
-  NFC: nxp-nci: Get rid of useless label
-  NFC: nxp-nci: Constify acpi_device_id
-  NFC: nxp-nci: Drop of_match_ptr() use
-  NFC: nxp-nci: Drop comma in terminator lines
-  NFC: nxp-nci: Remove unused macro pr_fmt()
-  NFC: nxp-nci: Remove 'default n' for tests
-  NFC: nxp-nci: Convert to SPDX license tags
-
- MAINTAINERS                           |   1 -
- drivers/nfc/nxp-nci/Kconfig           |   1 -
- drivers/nfc/nxp-nci/core.c            |  15 +--
- drivers/nfc/nxp-nci/firmware.c        |  13 +--
- drivers/nfc/nxp-nci/i2c.c             | 147 ++++++--------------------
- drivers/nfc/nxp-nci/nxp-nci.h         |   1 -
- include/linux/platform_data/nxp-nci.h |  27 -----
- 7 files changed, 37 insertions(+), 168 deletions(-)
- delete mode 100644 include/linux/platform_data/nxp-nci.h
-
+diff --git a/drivers/nfc/nxp-nci/i2c.c b/drivers/nfc/nxp-nci/i2c.c
+index ba695e392c3b..fec904ad624b 100644
+--- a/drivers/nfc/nxp-nci/i2c.c
++++ b/drivers/nfc/nxp-nci/i2c.c
+@@ -407,6 +407,7 @@ MODULE_DEVICE_TABLE(of, of_nxp_nci_i2c_match);
+ 
+ #ifdef CONFIG_ACPI
+ static struct acpi_device_id acpi_id[] = {
++	{ "NXP1001" },
+ 	{ "NXP7471" },
+ 	{ },
+ };
 -- 
 2.20.1
 
