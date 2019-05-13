@@ -2,66 +2,98 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 48DED1B1FA
-	for <lists+linux-wireless@lfdr.de>; Mon, 13 May 2019 10:38:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4DBEA1B1FE
+	for <lists+linux-wireless@lfdr.de>; Mon, 13 May 2019 10:41:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728088AbfEMIiA (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 13 May 2019 04:38:00 -0400
-Received: from mx1.redhat.com ([209.132.183.28]:34788 "EHLO mx1.redhat.com"
+        id S1727555AbfEMIle (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 13 May 2019 04:41:34 -0400
+Received: from mail.kernel.org ([198.145.29.99]:50266 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727347AbfEMIiA (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 13 May 2019 04:38:00 -0400
-Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.phx2.redhat.com [10.5.11.12])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        id S1727347AbfEMIle (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 13 May 2019 04:41:34 -0400
+Received: from localhost.localdomain (nat-pool-mxp-t.redhat.com [149.6.153.186])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mx1.redhat.com (Postfix) with ESMTPS id 26AEF30917A8;
-        Mon, 13 May 2019 08:38:00 +0000 (UTC)
-Received: from localhost (unknown [10.40.205.200])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 4134E60BEC;
-        Mon, 13 May 2019 08:37:57 +0000 (UTC)
-Date:   Mon, 13 May 2019 10:37:56 +0200
-From:   Stanislaw Gruszka <sgruszka@redhat.com>
-To:     Lorenzo Bianconi <lorenzo@kernel.org>
+        by mail.kernel.org (Postfix) with ESMTPSA id 6744920879;
+        Mon, 13 May 2019 08:41:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1557736893;
+        bh=FvdUtuG7Ih8Awe6R6tv49B4Wf/lue5RkYTeKYIst6Zk=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=lOI2uzSN4vw2xvAZ/dw24hqeV3C4mVSPtVsbyq++z/mAkg+TH2Qk3nD7KyrFynta6
+         AxwUnUbbkEuowt4ueP0rHda6cHo68CcsMY0gbsC57hlLaF/o68kH/OeZ0baniQNW+F
+         J6I40FGuC681Rzp1ZEHeyCzQ0S3xINqtEIvb5fsU=
+Date:   Mon, 13 May 2019 10:41:28 +0200
+From:   Lorenzo Bianconi <lorenzo@kernel.org>
+To:     Kalle Valo <kvalo@codeaurora.org>
 Cc:     nbd@nbd.name, lorenzo.bianconi@redhat.com,
         linux-wireless@vger.kernel.org
-Subject: Re: [PATCH 3/4] mt76: mt76x2: move mutex_lock inside
- mt76x2_set_channel
-Message-ID: <20190513083755.GA13726@redhat.com>
-References: <cover.1557567465.git.lorenzo@kernel.org>
- <1527e88fc4a307aa218f515811f2f2c15786caec.1557567465.git.lorenzo@kernel.org>
+Subject: Re: [PATCH] mt76: mt7603: add debugfs knob to enable/disable edcca
+Message-ID: <20190513084127.GA3127@localhost.localdomain>
+References: <cover.1557591530.git.lorenzo@kernel.org>
+ <0691acb931e963cb6028d4687cdd61032d0aaf52.1557591530.git.lorenzo@kernel.org>
+ <87r293ugia.fsf@purkki.adurom.net>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="gKMricLos+KVdGMg"
 Content-Disposition: inline
-In-Reply-To: <1527e88fc4a307aa218f515811f2f2c15786caec.1557567465.git.lorenzo@kernel.org>
-User-Agent: Mutt/1.8.3 (2017-05-23)
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.12
-X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16 (mx1.redhat.com [10.5.110.41]); Mon, 13 May 2019 08:38:00 +0000 (UTC)
+In-Reply-To: <87r293ugia.fsf@purkki.adurom.net>
+User-Agent: Mutt/1.11.3 (2019-02-01)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Sat, May 11, 2019 at 12:17:53PM +0200, Lorenzo Bianconi wrote:
-> This is a preliminary patch to run mt76x02_edcca_init atomically
-> 
-> Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
-> ---
->  .../wireless/mediatek/mt76/mt76x2/pci_main.c  | 16 ++++++++------
->  .../wireless/mediatek/mt76/mt76x2/usb_main.c  | 22 ++++++++++---------
->  2 files changed, 21 insertions(+), 17 deletions(-)
-> 
-> diff --git a/drivers/net/wireless/mediatek/mt76/mt76x2/pci_main.c b/drivers/net/wireless/mediatek/mt76/mt76x2/pci_main.c
-> index e416eee6a306..3a1467326f4d 100644
-> --- a/drivers/net/wireless/mediatek/mt76/mt76x2/pci_main.c
-> +++ b/drivers/net/wireless/mediatek/mt76/mt76x2/pci_main.c
-> @@ -54,14 +54,14 @@ mt76x2_set_channel(struct mt76x02_dev *dev, struct cfg80211_chan_def *chandef)
->  	int ret;
->  
->  	cancel_delayed_work_sync(&dev->cal_work);
 
-Since now you use mutex in mt76x2_phy_calibrate() you can remove  
-cancel_delayed_work_sync() and drop other changes from this patch
-as releasing mutex just to acquire it in almost next step make
-no sense.
+--gKMricLos+KVdGMg
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Stanislaw
+> Lorenzo Bianconi <lorenzo@kernel.org> writes:
+>=20
+> > Introduce a knob in mt7603 debugfs in order to enable/disable
+> > edcca processing
+> >
+> > Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+>=20
+> It's good to explain what edcca does and how the file is used supposed
+> to be used. In other words, have a small introduction for the user.
+
+Hi Kalle,
+
+edcca is used for adjusting energy detect based on CCA thresholds.
+The code was already there so I just reported the acronym.
+
+>=20
+> > @@ -48,6 +77,7 @@ void mt7603_init_debugfs(struct mt7603_dev *dev)
+> >  	if (!dir)
+> >  		return;
+> > =20
+> > +	debugfs_create_file("edcca", 0400, dir, dev, &fops_edcca);
+>=20
+> Why 0400 and not 0600?
+
+yes, right. There is the same issue in mt76x02 code, I will fix both of the=
+m.
+Thx.
+
+Regards,
+Lorenzo
+
+>=20
+> --=20
+> Kalle Valo
+
+--gKMricLos+KVdGMg
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYIAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCXNkttAAKCRA6cBh0uS2t
+rKlUAP4gy4CzjEsmAF3cyz3NpPT/XK7YDTh2wKOqLVxwS6IYqwEAg6aRSKFvOfb2
+SpNafihGOYy6+iXf3Ng3HMrv9LOiMwc=
+=b5GZ
+-----END PGP SIGNATURE-----
+
+--gKMricLos+KVdGMg--
