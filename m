@@ -2,67 +2,109 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 83CF21C5B9
-	for <lists+linux-wireless@lfdr.de>; Tue, 14 May 2019 11:12:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BEED31C5D8
+	for <lists+linux-wireless@lfdr.de>; Tue, 14 May 2019 11:19:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726084AbfENJMN (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 14 May 2019 05:12:13 -0400
-Received: from s3.sipsolutions.net ([144.76.43.62]:40626 "EHLO
-        sipsolutions.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725916AbfENJMN (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 14 May 2019 05:12:13 -0400
-Received: by sipsolutions.net with esmtpsa (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <johannes@sipsolutions.net>)
-        id 1hQTTn-0007VU-CC; Tue, 14 May 2019 11:12:11 +0200
-Message-ID: <e2a6596b99085541a5886c0d0d6393c849ac2d57.camel@sipsolutions.net>
-Subject: Re: [PATCH v2] mac80211: remove warning message
-From:   Johannes Berg <johannes@sipsolutions.net>
-To:     Yibo Zhao <yiboz@codeaurora.org>
-Cc:     linux-wireless@vger.kernel.org, ath10k@lists.infradead.org,
-        Zhi Chen <zhichen@codeaurora.org>
-Date:   Tue, 14 May 2019 11:12:10 +0200
-In-Reply-To: <ccb48284f0d96e72f4c041e12c943f0a@codeaurora.org>
-References: <1557824507-17668-1-git-send-email-yiboz@codeaurora.org>
-         (sfid-20190514_110314_752671_7E53E9A2) <7c92f5cf51eaec1d5449698d90f5b6c5ca6c2bea.camel@sipsolutions.net>
-         <ccb48284f0d96e72f4c041e12c943f0a@codeaurora.org>
-Content-Type: text/plain; charset="UTF-8"
-X-Mailer: Evolution 3.28.5 (3.28.5-2.fc28) 
-Mime-Version: 1.0
-Content-Transfer-Encoding: 7bit
+        id S1726122AbfENJTG (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 14 May 2019 05:19:06 -0400
+Received: from mail.kernel.org ([198.145.29.99]:42238 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725916AbfENJTF (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 14 May 2019 05:19:05 -0400
+Received: from lore-desk-wlan.redhat.com (unknown [151.66.17.19])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 37BA820843;
+        Tue, 14 May 2019 09:19:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1557825544;
+        bh=UWu65s8fklFxGAd8cAu4ZkXRcD6Fd/ugPltRfGOZ+bY=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=JjYyG/R7foGq3mN18syfiXbIg4KmVYXzwelkWOLW0nl44va5iid58V+R1RzooMhBV
+         FlDfJfFwRpvpUkK6sFcHKONisYQWShIOgIo0FxhwpFLHG/1HHeOHlwLE6jYupBGATe
+         6HTG9icAhgWfpRzyxOH1BaKaxmjhZUsgOkOsP7QQ=
+From:   Lorenzo Bianconi <lorenzo@kernel.org>
+To:     nbd@nbd.name
+Cc:     lorenzo.bianconi@redhat.com, linux-wireless@vger.kernel.org,
+        ryder.lee@mediatek.com, royluo@google.com
+Subject: [PATCH] mt76: mt7615: do not process rx packets if the device is not initialized
+Date:   Tue, 14 May 2019 11:18:52 +0200
+Message-Id: <f3117ed5577bdcc2b0bf98c20d07e81f0f52476e.1557825294.git.lorenzo@kernel.org>
+X-Mailer: git-send-email 2.20.1
+In-Reply-To: <cover.1557825294.git.lorenzo@kernel.org>
+References: <cover.1557825294.git.lorenzo@kernel.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Tue, 2019-05-14 at 17:10 +0800, Yibo Zhao wrote:
-> On 2019-05-14 17:05, Johannes Berg wrote:
-> > On Tue, 2019-05-14 at 17:01 +0800, Yibo Zhao wrote:
-> > > In multiple SSID cases, it takes time to prepare every AP interface
-> > > to be ready in initializing phase. If a sta already knows everything 
-> > > it
-> > > needs to join one of the APs and sends authentication to the AP which
-> > > is not fully prepared at this point of time, AP's channel context
-> > > could be NULL. As a result, warning message occurs.
-> > > 
-> > 
-> > Err, what was the point in sending v2 without any changes?
-> > 
-> > johannes
-> 
-> Hi Johannes,
-> 
-> I was planning to use WARN_ON_ONCE() in the first place to replace 
-> WARN_ON() then after some discussion, we think removing it could be 
-> better. So the first patch was based on my first version which is sent 
-> incorrectly. Please check again.
+Fix following crash that occurs when the driver is processing rx packets
+while the device is not initialized yet
 
-Oops, I didn't pay attention to the - code.
+$ rmmod mt7615e
+[   67.210261] mt7615e 0000:01:00.0: Message -239 (seq 2) timeout
+$ modprobe mt7615e
+[   72.406937] bus=0x1, slot = 0x0, irq=0x16
+[   72.436590] CPU 0 Unable to handle kernel paging request at virtual address 00000004, epc == 8eec4240, ra == 8eec41e0
+[   72.450291] mt7615e 0000:01:00.0: Firmware is not ready for download
+[   72.457724] Oops[#1]:
+[   72.470494] mt7615e: probe of 0000:01:00.0 failed with error -5
+[   72.474829] CPU: 0 PID: 0 Comm: swapper/0 Not tainted 4.14.114 #0
+[   72.498702] task: 805769e0 task.stack: 80564000
+[   72.507709] $ 0   : 00000000 00000001 00000000 00000001
+[   72.518106] $ 4   : 8f704dbc 00000000 00000000 8f7046c0
+[   72.528500] $ 8   : 00000024 8045e98c 81210008 11000000
+[   72.538895] $12   : 8fc09f60 00000008 00000019 00000033
+[   72.549289] $16   : 8f704d80 e00000ff 8f0c7800 3c182406
+[   72.559684] $20   : 00000006 8ee615a0 4e000108 00000000
+[   72.570078] $24   : 0000004c 8000cf94
+[   72.580474] $28   : 80564000 8fc09e38 00000001 8eec41e0
+[   72.590869] Hi    : 00000001
+[   72.596582] Lo    : 00000000
+[   72.602319] epc   : 8eec4240 mt7615_mac_fill_rx+0xac/0x494 [mt7615e]
+[   72.614953] ra    : 8eec41e0 mt7615_mac_fill_rx+0x4c/0x494 [mt7615e]
+[   72.627580] Status: 11008403 KERNEL EXL IE
+[   72.635899] Cause : 40800008 (ExcCode 02)
+[   72.643860] BadVA : 00000004
+[   72.649573] PrId  : 0001992f (MIPS 1004Kc)
+[   72.657704] Modules linked in: mt7615e pppoe ppp_async pppox ppp_generic nf_conntrack_ipv6 mt76x2e mt76x2_common mt76x02_lib mt7603e mt76 mac80211 iptable_nat ipt_REJECT ipt_MASQUERADE cfg80211 xt_time xt_tcpudp xt_state xt_nat xt_mu]
+[   72.792717] Process swapper/0 (pid: 0, threadinfo=80564000, task=805769e0, tls=00000000)
+[   72.808799] Stack : 8f0c7800 00000800 8f0c7800 8032b874 00000000 40000000 8f704d80 8ee615a0
+[   72.825428]         8dc88010 00000001 8ee615e0 8eec09b0 8dc88010 8032b914 8f3aee80 80567d20
+[   72.842055]         00000000 8ee615e0 40000000 8f0c7800 00000108 8eec9944 00000000 00000000
+[   72.858682]         80508f10 80510000 00000001 80567d20 8ee615a0 00000000 00000000 8ee61c00
+[   72.875308]         8ee61c40 00000040 80610000 80580000 00000000 8ee615dc 8ee61a68 00000001
+[   72.891936]         ...
+[   72.896793] Call Trace:
+[   72.901649] [<8eec4240>] mt7615_mac_fill_rx+0xac/0x494 [mt7615e]
+[   72.913602] [<8eec09b0>] mt7615_queue_rx_skb+0xe4/0x12c [mt7615e]
+[   72.925734] [<8eec9944>] mt76_dma_cleanup+0x390/0x42c [mt76]
+[   72.936988] Code: ae020018  8ea20004  24030001 <94420004> a602002a  8ea20004  90420000  14430003  a2020034
+[   72.956390]
+[   72.959676] ---[ end trace f176967739edb19f ]---
 
-I guess changing it to WARN_ON_ONCE() makes sense, but as per my earlier
-email I'm really not sure about removing it entirely, it doesn't seem
-like a valid scenario and we should take steps elsewhere to prevent it.
+Fixes: 04b8e65922f6 ("mt76: add mac80211 driver for MT7615 PCIe-based chipsets")
+Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+---
+ drivers/net/wireless/mediatek/mt76/mt7615/mac.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-johannes
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/mac.c b/drivers/net/wireless/mediatek/mt76/mt7615/mac.c
+index 1d6ebea17132..1547bce561d3 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7615/mac.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7615/mac.c
+@@ -73,6 +73,9 @@ int mt7615_mac_fill_rx(struct mt7615_dev *dev, struct sk_buff *skb)
+ 	bool unicast, remove_pad, insert_ccmp_hdr = false;
+ 	int i, idx;
+ 
++	if (!test_bit(MT76_STATE_RUNNING, &dev->mt76.state))
++		return -EINVAL;
++
+ 	memset(status, 0, sizeof(*status));
+ 
+ 	unicast = (rxd1 & MT_RXD1_NORMAL_ADDR_TYPE) == MT_RXD1_NORMAL_U2M;
+-- 
+2.20.1
 
