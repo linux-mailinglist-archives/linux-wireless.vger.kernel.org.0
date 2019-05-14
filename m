@@ -2,155 +2,150 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 0DFC91C389
-	for <lists+linux-wireless@lfdr.de>; Tue, 14 May 2019 08:58:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0CA2E1C3AA
+	for <lists+linux-wireless@lfdr.de>; Tue, 14 May 2019 09:12:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726525AbfENG6A (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 14 May 2019 02:58:00 -0400
-Received: from mail-wm1-f54.google.com ([209.85.128.54]:51778 "EHLO
-        mail-wm1-f54.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726148AbfENG57 (ORCPT
+        id S1726248AbfENHMS (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 14 May 2019 03:12:18 -0400
+Received: from mail-wr1-f65.google.com ([209.85.221.65]:42368 "EHLO
+        mail-wr1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725946AbfENHMS (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 14 May 2019 02:57:59 -0400
-Received: by mail-wm1-f54.google.com with SMTP id o189so1568542wmb.1
-        for <linux-wireless@vger.kernel.org>; Mon, 13 May 2019 23:57:58 -0700 (PDT)
+        Tue, 14 May 2019 03:12:18 -0400
+Received: by mail-wr1-f65.google.com with SMTP id l2so17848778wrb.9
+        for <linux-wireless@vger.kernel.org>; Tue, 14 May 2019 00:12:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=I0rBrXLg5VRcd0C8hroYvLC3dED5HBq3ulgFWJfT7NM=;
-        b=Dfg9NpyRo9vu9s7Zdf9JK26sw3flcmt5i/OrYSz/H9MOS5quJdGSa4b+/7ptWv1KAE
-         8xOQ4Qmc+7IpD9hFy45jtKR8pTY9SayZ5qN7puz0es4KpivdsYPpL8GAL+EIW3D33wDq
-         zWt+yqDD0GNNWlBlV3IeNhEfOoYEq6IcnNUNj5Ellmj4QZd2fcYCLqlx+wrYax7v9z31
-         TDNdK5QmOYEMgtJaMkFa1ToqQ3A7YLq/dal975L+B0LSm2xp4LrLErN6zJkWrPr6LXC0
-         EBFeu6kXxhQBeAKAT4uPyGdd296jSF/+OTYaybOSczQ5k1/kgCF1JG5fqOuq5PvmUOXK
-         LdIA==
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:reply-to:from:date:message-id
+         :subject:to:cc;
+        bh=5TBZtrU9B5v1RR9R3L6q6afA0gwCnyufeN3SvVzQC6U=;
+        b=SscvLm85rwUhgPIOI+6lXjo/V8Kk8l/aF5XFDdS+S+PFGs1jAUTuzlEbEDG84q1F+5
+         1DjU2NkK6gL55w5cYr9eAtQ3Knfy9XHjoTkc29XSE2SdR2CdAQNRxN+tL1S+uz183bBi
+         dqxS/f3cJ2JX+hPf3+376olf1Vo6/+vRBF9jkYXdg8Lu4iteDqE3FursycqyDSKq4zyP
+         HuMTgTkp3/3IvPXc3tp6eBXMMYFaZYhlaabvFTvrIzYUI5+qdFWw2dWc4ITeEjZe8Tdd
+         NuzMNtgWMHIr/AB4yzNNwqQE/vwi7U4v0z0PVdfEA4jqEaakV+nIC4dFJDyKrx+qT5J0
+         VNHg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=I0rBrXLg5VRcd0C8hroYvLC3dED5HBq3ulgFWJfT7NM=;
-        b=M46KtBLHfVohR0ADxyMz7/cWwrIUeZ3iBx2lL+NNUd3u1SuwUmBh7WebpgP+Ix6nsW
-         i9/nA6zqHI/7g1luTJdRh/KCA5g7ts9KUvS8sf6/aj5BPl0KilIdOh+oAAvOteX+SeSZ
-         ELkAs+2aAEiFru9T4qcHul6kXVJcwv8/JPA//+tp/wgvXYu+d+A5YaE2poKIig8XnYuA
-         yBnK64HpP76sCXnZXiuL3tnMTzz59Uhx55+X3XHRmwOf+A+7S9cJOTvCLJIw2d5W/Rkc
-         9zWPHSn7S76+bUz1LEOWjamIVfejr1kZz5dUeUDfQ2L0Pj+tZG6OSq2+sBBdwJvPi6tQ
-         krUQ==
-X-Gm-Message-State: APjAAAXxXZfbeh0aqrljzMYLTlpz3EH7cQSSgrCKC4nkijMjpruoETu7
-        1dIVMuPlpE1qfXx871RkbMQNeg==
-X-Google-Smtp-Source: APXvYqxxGzNACTGLieUiUb0+plIRdIlRJVeIm2nbCILHxOl6bXyAdLvsze24o58FAW52dYCnsY3yVQ==
-X-Received: by 2002:a1c:6783:: with SMTP id b125mr18759584wmc.41.1557817077715;
-        Mon, 13 May 2019 23:57:57 -0700 (PDT)
-Received: from [192.168.0.41] (229.78.129.77.rev.sfr.net. [77.129.78.229])
-        by smtp.googlemail.com with ESMTPSA id d3sm2363713wmf.46.2019.05.13.23.57.56
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Mon, 13 May 2019 23:57:57 -0700 (PDT)
-Subject: Re: NXP NFC version and ACPI
-To:     sedat.dilek@gmail.com
-Cc:     Samuel Ortiz <sameo@linux.intel.com>,
-        linux-wireless@vger.kernel.org, linux-nfc@lists.01.org,
-        robert.dolca@intel.com, oleg.zhurakivskyy@intel.com,
-        clement.perrochaud@effinnov.com, charles.gorand@effinnov.com,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+        h=x-gm-message-state:mime-version:references:in-reply-to:reply-to
+         :from:date:message-id:subject:to:cc;
+        bh=5TBZtrU9B5v1RR9R3L6q6afA0gwCnyufeN3SvVzQC6U=;
+        b=gN56XfTUDD2Argoi8nevetXV2wJK3+fbbE1BGuT17bXY0uZwxHmWwVVrJV/0a7InDI
+         YcYCSFDVFYtweFfPiUEAPS5UBjCN7rToHiKR50XwNRVnN3E2u9ts1gC8drcvvQQAp0Nk
+         1linYrSZLK0uDMOjG1Y6aoZdrVDd9StUtRwQBTq4PvHlmArTv4yl3tVU6bGYuEv4nz/G
+         UheLS7C8GFXLC5sYx4vwKByZOihJUgaN07tmkDVGtdDp/+rrF4qbtuzlAACMj3Ed70bh
+         L8S15SsommXH7i+WipOnlpnk6VCqC3+D759EQXtMbelI2GDakb3D7ZWzX+rG12lq21Ay
+         eLqw==
+X-Gm-Message-State: APjAAAW4X3jTjOTt2ar/dG70ZTrXcvp5zPaiCB3LjkweHM8coTdgi9CJ
+        tnDNQLd9Kmq11oHi/SnCuyNNQI8wmykEnolq3hQ=
+X-Google-Smtp-Source: APXvYqzCNWIgXU60uvNcpiMtFkO2Pt7ILXzWpruzNIgkqHknyDSPzew4pknH6+wxdFZCdIqEFn7WvnDbpwj/cZFtYQY=
+X-Received: by 2002:a5d:4692:: with SMTP id u18mr8484033wrq.285.1557817936299;
+ Tue, 14 May 2019 00:12:16 -0700 (PDT)
+MIME-Version: 1.0
 References: <c2d0d19f-d814-8f41-4860-77b9cc7f9d26@linaro.org>
  <CA+icZUVz7sB6hv4fhL_rqhR_D8RePBJFXk1PaUy5tMw2z4xC_Q@mail.gmail.com>
- <5ae87449-83a1-ecce-c72c-b4742c507497@linaro.org>
- <CA+icZUWLBjTtcFS0Fo8M5gSb90GbEUpetUgwr3fy=NxGAVqCyw@mail.gmail.com>
-From:   Daniel Lezcano <daniel.lezcano@linaro.org>
-Message-ID: <ecfdf017-59b0-dcb8-f684-1e4ba3d82a28@linaro.org>
-Date:   Tue, 14 May 2019 08:57:55 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.6.1
-MIME-Version: 1.0
-In-Reply-To: <CA+icZUWLBjTtcFS0Fo8M5gSb90GbEUpetUgwr3fy=NxGAVqCyw@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
+ <5ae87449-83a1-ecce-c72c-b4742c507497@linaro.org> <CA+icZUWLBjTtcFS0Fo8M5gSb90GbEUpetUgwr3fy=NxGAVqCyw@mail.gmail.com>
+ <ecfdf017-59b0-dcb8-f684-1e4ba3d82a28@linaro.org>
+In-Reply-To: <ecfdf017-59b0-dcb8-f684-1e4ba3d82a28@linaro.org>
+Reply-To: sedat.dilek@gmail.com
+From:   Sedat Dilek <sedat.dilek@gmail.com>
+Date:   Tue, 14 May 2019 09:12:04 +0200
+Message-ID: <CA+icZUV0qVmtz6xXYMM7gxJs21H_sQxYK=EeHeXbv=H6LAXeNw@mail.gmail.com>
+Subject: Re: NXP NFC version and ACPI
+To:     Daniel Lezcano <daniel.lezcano@linaro.org>
+Cc:     Samuel Ortiz <sameo@linux.intel.com>,
+        linux-wireless@vger.kernel.org, linux-nfc@lists.01.org,
+        oleg.zhurakivskyy@intel.com, clement.perrochaud@effinnov.com,
+        charles.gorand@effinnov.com,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 14/05/2019 08:52, Sedat Dilek wrote:
-
-[ ... ]
-
->>> Please give this a try and report.
->>
->> My laptop is the first one I have with a NFC reader, so I'm not used to
->> test this as it was not working yet.
->>
->> I booted the machine with a 5.1.1, the series applied on top, and the
->> config options set as mentioned above.
->>
->> The nxp-nci kernel module is loaded and neard is installed.
->>
->> I used the sniffing tool with the command libnfc -d nfc0 -n but when
->> passing my NFC devices on the laptop's NFC mark, nothing happens.
->>
->> Is that correct?
->>
-> 
-> Hi Daniel,
-> 
-> I am new to the topic Linux NFC.
-> 
-> I have installed neard (daemon) v0.16 and neard-tools from Debian/buster AMD64.
-> 
-> root@iniza:~# systemctl is-active neard.service
-> active
-
-Same for me
-
-> root@iniza:~# nfctool --list
+On Tue, May 14, 2019 at 8:57 AM Daniel Lezcano
+<daniel.lezcano@linaro.org> wrote:
+>
+> On 14/05/2019 08:52, Sedat Dilek wrote:
+>
+> [ ... ]
+>
+> >>> Please give this a try and report.
+> >>
+> >> My laptop is the first one I have with a NFC reader, so I'm not used to
+> >> test this as it was not working yet.
+> >>
+> >> I booted the machine with a 5.1.1, the series applied on top, and the
+> >> config options set as mentioned above.
+> >>
+> >> The nxp-nci kernel module is loaded and neard is installed.
+> >>
+> >> I used the sniffing tool with the command libnfc -d nfc0 -n but when
+> >> passing my NFC devices on the laptop's NFC mark, nothing happens.
+> >>
+> >> Is that correct?
+> >>
+> >
+> > Hi Daniel,
+> >
+> > I am new to the topic Linux NFC.
+> >
+> > I have installed neard (daemon) v0.16 and neard-tools from Debian/buster AMD64.
+> >
+> > root@iniza:~# systemctl is-active neard.service
+> > active
+>
+> Same for me
+>
+> > root@iniza:~# nfctool --list
+> > nfc0:
+> >           Tags: [ ]
+> >           Devices: [ ]
+> >           Protocols: [ Felica MIFARE Jewel ISO-DEP NFC-DEP ]
+> >           Powered: No
+> >           RF Mode: None
+> >           lto: 150
+> >           rw: 15
+> >           miux: 2047
+>
+> I have:
+>
 > nfc0:
 >           Tags: [ ]
 >           Devices: [ ]
 >           Protocols: [ Felica MIFARE Jewel ISO-DEP NFC-DEP ]
->           Powered: No
+>           Powered: Yes
 >           RF Mode: None
 >           lto: 150
 >           rw: 15
 >           miux: 2047
+>
+> The powered field is different.
+>
+> > root@iniza:~# nfctool --poll -d nfc0
+>
+> > Start polling on nfc0 as initiator
+> >
+>
+> I have:
+>
+> Protocol error
+>
+>
+> And the dmesg show me the errors related to nci:
+>
+> [  343.056021] nci: nci_ntf_packet: unknown ntf opcode 0x0
+> ...
+> [31611.394308] nci: nci_start_poll: failed to set local general bytes
+>
+>
 
-I have:
+I cannot say much to this.
 
-nfc0:
-          Tags: [ ]
-          Devices: [ ]
-          Protocols: [ Felica MIFARE Jewel ISO-DEP NFC-DEP ]
-          Powered: Yes
-          RF Mode: None
-          lto: 150
-          rw: 15
-          miux: 2047
+For the sake of completeness:
+I have the patch "NFC: fix attrs checks in netlink interface" applied.
 
-The powered field is different.
+- Sedat -
 
-> root@iniza:~# nfctool --poll -d nfc0
-
-> Start polling on nfc0 as initiator
-> 
-
-I have:
-
-Protocol error
-
-
-And the dmesg show me the errors related to nci:
-
-[  343.056021] nci: nci_ntf_packet: unknown ntf opcode 0x0
-...
-[31611.394308] nci: nci_start_poll: failed to set local general bytes
-
-
-
-
--- 
- <http://www.linaro.org/> Linaro.org │ Open source software for ARM SoCs
-
-Follow Linaro:  <http://www.facebook.com/pages/Linaro> Facebook |
-<http://twitter.com/#!/linaroorg> Twitter |
-<http://www.linaro.org/linaro-blog/> Blog
-
+[1] https://patchwork.kernel.org/patch/10339089/
