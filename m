@@ -2,147 +2,67 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 224B91C4FD
-	for <lists+linux-wireless@lfdr.de>; Tue, 14 May 2019 10:31:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2853F1C503
+	for <lists+linux-wireless@lfdr.de>; Tue, 14 May 2019 10:33:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726238AbfENIbN (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 14 May 2019 04:31:13 -0400
-Received: from mail-wr1-f65.google.com ([209.85.221.65]:39099 "EHLO
-        mail-wr1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726180AbfENIbN (ORCPT
+        id S1726151AbfENIdH (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 14 May 2019 04:33:07 -0400
+Received: from s3.sipsolutions.net ([144.76.43.62]:39722 "EHLO
+        sipsolutions.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726078AbfENIdH (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 14 May 2019 04:31:13 -0400
-Received: by mail-wr1-f65.google.com with SMTP id w8so15703045wrl.6
-        for <linux-wireless@vger.kernel.org>; Tue, 14 May 2019 01:31:12 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:reply-to:from:date:message-id
-         :subject:to:cc:content-transfer-encoding;
-        bh=u6tl+Ifw5QQe79ZvuXQPkJ9D7TkExDuPgGsND9OkpAo=;
-        b=ef4iPNpNhJt4nT/oY72Lq9mZ1T6CHfS2Epp2Z1i+i3BVNkZO4FExiiruTVLvisqEXC
-         1sd2R0H/AB1/4FH0RNN5/I8Ikmgh79XtHUdj3Sx6gfx3XEpYqaOIpwNU9/egL+NlzAka
-         o7x7Vj+Au/c/B37Z3YY7tXXd2V4Eb5RlhL5ehRMzEQCR+RrQ22pUbhOgaKGONIobKAoj
-         reUrX4KmufrR9p0hqxwxOZF+DweNaFOweK+plr1ZNwj4Dn+kx5iejTDwYCxBu2r0EMSx
-         aohYlw/63qzwxhZxGSXDInOEF/hr4ZIzJUSoY5rfwbSNGGc0kSFDybdyTgl2oKySCekK
-         zcgw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:reply-to
-         :from:date:message-id:subject:to:cc:content-transfer-encoding;
-        bh=u6tl+Ifw5QQe79ZvuXQPkJ9D7TkExDuPgGsND9OkpAo=;
-        b=FCu9vzEQZAN/cqBE0ss77LogvPTJfK48nZHGnsLRR3HEcapq4MFfB2ZWOfxIgfzFM0
-         Cq/zJfZx8d91QL8VfzKjt/c4SXMxnJqRYzfdrCUwQ+1dH4pzpfYKc6INKCM/40VcOh9i
-         fR4zCTKxGdX5fHBBE5xcd33yaLOfZPHk9Y940zv6tfLzthY7K8HH5/Mfh9pjhMKcpBhh
-         ewAtaLDxOA90VOp/r5LtrPFvtjyZcwHNnUqkKuMDG5iQIVDjkdEgrJF/OROUOvtaKn+J
-         5j8il+ggdIhmdfLR2v+BYi1uK3V9v/vDFndHa5W9erw6iv7wkhdObBS5JMmZO2Yyj/tv
-         syOg==
-X-Gm-Message-State: APjAAAUUzq+A29bOcBlhAlXiTZyF6V7I18JRPQQ+07iLcKfufkbHEVZu
-        Zvu3LDXbUZpuNILgFDBZdH3+PC59/zQbZxT+/eQ=
-X-Google-Smtp-Source: APXvYqxGwhc5aZI4+oS3BDbMXI+y/GcYiGI4n6TEunXE84FU5BFgY0JcI3NgF8V1cCAZhO36cBFNGnwpZYmSExDHY64=
-X-Received: by 2002:adf:dc4b:: with SMTP id m11mr21321753wrj.66.1557822671465;
- Tue, 14 May 2019 01:31:11 -0700 (PDT)
-MIME-Version: 1.0
-References: <c2d0d19f-d814-8f41-4860-77b9cc7f9d26@linaro.org>
- <CA+icZUVz7sB6hv4fhL_rqhR_D8RePBJFXk1PaUy5tMw2z4xC_Q@mail.gmail.com>
- <5ae87449-83a1-ecce-c72c-b4742c507497@linaro.org> <CA+icZUXDLQKyTH-_pPi7A2=Bu5ratwab930Fcecrdr4NtMnFcw@mail.gmail.com>
- <27f2ce02-8deb-384f-af10-7737b703770a@linaro.org>
-In-Reply-To: <27f2ce02-8deb-384f-af10-7737b703770a@linaro.org>
-Reply-To: sedat.dilek@gmail.com
-From:   Sedat Dilek <sedat.dilek@gmail.com>
-Date:   Tue, 14 May 2019 10:30:59 +0200
-Message-ID: <CA+icZUVa_Sfcp-P=cLyH1VOpZ=pFmrLDG1Epebe9s7Qa9fghaA@mail.gmail.com>
-Subject: Re: NXP NFC version and ACPI
-To:     Daniel Lezcano <daniel.lezcano@linaro.org>
-Cc:     Samuel Ortiz <sameo@linux.intel.com>,
-        linux-wireless@vger.kernel.org, linux-nfc@lists.01.org,
-        oleg.zhurakivskyy@intel.com, clement.perrochaud@effinnov.com,
-        charles.gorand@effinnov.com,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+        Tue, 14 May 2019 04:33:07 -0400
+Received: by sipsolutions.net with esmtpsa (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <johannes@sipsolutions.net>)
+        id 1hQSrt-0004y8-U3; Tue, 14 May 2019 10:33:02 +0200
+Message-ID: <9c8492a1f5dbe3a8d743a40b6788a1a21d6b977f.camel@sipsolutions.net>
+Subject: Re: [PATCH] mac80211: fix possible deadlock in TX path
+From:   Johannes Berg <johannes@sipsolutions.net>
+To:     Erik Stromdahl <erik.stromdahl@gmail.com>, davem@davemloft.net,
+        linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org
+Cc:     Toke =?ISO-8859-1?Q?H=F8iland-J=F8rgensen?= <toke@redhat.com>
+Date:   Tue, 14 May 2019 10:33:00 +0200
+In-Reply-To: <20190427204155.14211-1-erik.stromdahl@gmail.com> (sfid-20190427_224204_178829_B91A7E8B)
+References: <20190427204155.14211-1-erik.stromdahl@gmail.com>
+         (sfid-20190427_224204_178829_B91A7E8B)
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-Mailer: Evolution 3.28.5 (3.28.5-2.fc28) 
+Mime-Version: 1.0
+Content-Transfer-Encoding: 7bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Tue, May 14, 2019 at 10:17 AM Daniel Lezcano
-<daniel.lezcano@linaro.org> wrote:
->
-> On 14/05/2019 09:49, Sedat Dilek wrote:
-> > On Tue, May 14, 2019 at 8:43 AM Daniel Lezcano
-> > <daniel.lezcano@linaro.org> wrote:
-> > [...]
-> >
-> >> The nxp-nci kernel module is loaded and neard is installed.
-> >
-> > You have to...
-> >
-> > # modprobe -v nxp-nci_i2c
-> >
-> > # lsmod | egrep 'nfc|nci|nxp|i2c' | sort
-> > i2c_algo_bit           16384  1 i915
-> > i2c_dev                24576  0
-> > i2c_i801               32768  0
-> > nci                    77824  2 nxp_nci,nxp_nci_i2c
-> > nfc                   131072  16 nci,nxp_nci
-> > nxp_nci                16384  1 nxp_nci_i2c
-> > nxp_nci_i2c            16384  0
-> > rfkill                 28672  10 nfc,bluetooth,thinkpad_acpi,cfg80211
->
-> I have the same modules except 'rfkill'
->
-> > # modinfo nxp_nci_i2c
-> > filename:
-> > /lib/modules/5.1.1-1-amd64-iniza/kernel/drivers/nfc/nxp-nci/nxp-nci_i2c=
-.ko
-> > author:         Oleg Zhurakivskyy <oleg.zhurakivskyy@intel.com>
-> > author:         Cl=C3=A9ment Perrochaud <clement.perrochaud@nxp.com>
-> > description:    I2C driver for NXP NCI NFC controllers
-> > license:        GPL
-> > alias:          i2c:nxp-nci_i2c
-> > alias:          acpi*:NXP7471:*
-> > alias:          acpi*:NXP1001:*
-> > alias:          of:N*T*Cnxp,nxp-nci-i2cC*
-> > alias:          of:N*T*Cnxp,nxp-nci-i2c
-> > depends:        nci,nxp-nci
-> > retpoline:      Y
-> > intree:         Y
-> > name:           nxp_nci_i2c
-> > vermagic:       5.1.1-1-amd64-iniza SMP mod_unload modversions
->
-> Same result for the modinfo.
->
-> -----
->
-> So the first time I run:
->
-> [mark]
-> nfctool -d nfc0 -p
-> Start polling on nfc0 as initiator
->
-> With an error in syslog/dmesg:
-> nci: nci_ntf_packet: unknown ntf opcode 0x0
->
->
-> The second time:
->
-> nfctool -p -d nfc0
-> Protocol error
->
-> With an error in syslog/dmesg:
-> nci: nci_start_poll: failed to set local general bytes
->
-> Then I do:
->
-> nfctool -0 -d nfc0
->
-> it returns to point [mark]
->
+On Sat, 2019-04-27 at 22:41 +0200, Erik Stromdahl wrote:
+> This patch fixes a possible deadlock when updating the TX statistics
+> (when calling into ieee80211_tx_stats()) from ieee80211_tx_dequeue().
+> 
+> ieee80211_tx_dequeue() might be called from process context.
 
-I cannot help with (debugging) nci.
+I think this really is the problem.
 
-I had all I2C and GPIO debug Kconfigs enabled to see a bit more
-informations in the logs.
-Maybe that helps you.
+> [<c0cb1864>] (ieee80211_xmit_fast_finish) from [<c0cb4504>] (ieee80211_tx_dequeue+0x30c/0xb9c)
+>  r10:d2f1a900 r9:d2d607a4 r8:d2cf20dc r7:d330b29c r6:d2cf2000 r5:d2c342ba
+>  r4:d2899d3c
+> [<c0cb41f8>] (ieee80211_tx_dequeue) from [<bf057f64>] (ath10k_mac_tx_push_txq+0x78/0x2a4 [ath10k_core])
+>  r10:d2d607cc r9:d2fe06a0 r8:00000000 r7:d2fe1e30 r6:d2fe1d38 r5:d2fe1540
+>  r4:d2cf20dc
+> [<bf057eec>] (ath10k_mac_tx_push_txq [ath10k_core]) from [<bf058364>] (ath10k_mac_tx_push_pending+0x1d4/0x2e0 [ath10k_core])
+>  r10:d2cf20dc r9:bf0582b4 r8:bf0b1dba r7:00000002 r6:c1429994 r5:00000000
+>  r4:d2fe06a0
+> [<bf058190>] (ath10k_mac_tx_push_pending [ath10k_core]) from [<bf0e25a4>] (ath10k_sdio_irq_handler+0x30c/0x4d8 [ath10k_sdio])
+>  r10:00005b5a r9:d2fcc040 r8:00180201 r7:d2fe6540 r6:d2fe6a7c r5:00000000
+>  r4:d2fe1540
 
-- Sedat -
+It seems to be entirely ath10k's fault, and quite possibly our
+documentation, but we probably should have local_bh_disable() there
+rather than try to do u64_stats_update_begin_irqsave() in some path that
+really doesn't need it.
+
+This is going to be whack-a-mole otherwise - the TX path in mac80211
+really expects to not be interrupted by softirqs.
+
+johannes
+
