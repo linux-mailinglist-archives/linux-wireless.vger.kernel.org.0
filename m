@@ -2,98 +2,59 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 425EA1C744
-	for <lists+linux-wireless@lfdr.de>; Tue, 14 May 2019 12:54:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3511A1C7F3
+	for <lists+linux-wireless@lfdr.de>; Tue, 14 May 2019 13:45:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726272AbfENKyq (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 14 May 2019 06:54:46 -0400
-Received: from mail.kernel.org ([198.145.29.99]:50234 "EHLO mail.kernel.org"
+        id S1726370AbfENLpM (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 14 May 2019 07:45:12 -0400
+Received: from mga17.intel.com ([192.55.52.151]:22690 "EHLO mga17.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725892AbfENKyq (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 14 May 2019 06:54:46 -0400
-Received: from mail-qt1-f181.google.com (mail-qt1-f181.google.com [209.85.160.181])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 0A49D2166E
-        for <linux-wireless@vger.kernel.org>; Tue, 14 May 2019 10:54:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1557831286;
-        bh=sfROtJyJvbXTyfXmcjKTQsK+QNZQayNvVmxuBao/JH0=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=ezlIjubQpMoYzozoFSp52Y8fffxHHb9WRuOMeEWcPJj7e/Salm3IT6lAUDzAWoqcU
-         FMBD7CBVaesp5BxFegVMEvkKlCmwq2zjvOhAtdZ98XpPdaoFHlNrBh/mLDaMrcUuPX
-         hJ+TZv1AT7dJsxLbE8ZVdV33IlIDkDGnK5s0aw7U=
-Received: by mail-qt1-f181.google.com with SMTP id a17so17109591qth.3
-        for <linux-wireless@vger.kernel.org>; Tue, 14 May 2019 03:54:46 -0700 (PDT)
-X-Gm-Message-State: APjAAAUGyUe7zRTOa72yG9MZc8Qco6TKbouLY0WbB7IpXkRsJANwmxuE
-        mYFRMSZbS2n9lNHaQW7kVvmG1DCuks8Rw2FMHqs=
-X-Google-Smtp-Source: APXvYqzVEudAngmazxlnYPHElobyRR6ElyaiODyA+Kv/Co0jQumNg48ltBsZZEwbMETHlYVjpxaU2tz7E6bNGkb710A=
-X-Received: by 2002:a0c:8aad:: with SMTP id 42mr27561243qvv.200.1557831285254;
- Tue, 14 May 2019 03:54:45 -0700 (PDT)
+        id S1725893AbfENLpM (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 14 May 2019 07:45:12 -0400
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from orsmga008.jf.intel.com ([10.7.209.65])
+  by fmsmga107.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 14 May 2019 04:45:11 -0700
+X-ExtLoop1: 1
+Received: from ozhuraki-desk.fi.intel.com (HELO [10.237.67.35]) ([10.237.67.35])
+  by orsmga008.jf.intel.com with ESMTP; 14 May 2019 04:45:09 -0700
+Subject: Re: [PATCH v2 00/12] NFC: nxp-nci: clean up and support new ID
+To:     sedat.dilek@gmail.com,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc:     =?UTF-8?Q?Cl=c3=a9ment_Perrochaud?= 
+        <clement.perrochaud@effinnov.com>,
+        Charles Gorand <charles.gorand@effinnov.com>,
+        linux-nfc@lists.01.org, Samuel Ortiz <sameo@linux.intel.com>,
+        linux-wireless@vger.kernel.org
+References: <20190513104358.59716-1-andriy.shevchenko@linux.intel.com>
+ <CA+icZUV_g5mJnmHQKZgtcPj3YfZSYp1DQJT9tmi+892AzRCm3A@mail.gmail.com>
+ <20190513123751.GS9224@smile.fi.intel.com>
+ <CA+icZUUA8TfU--6b+RwXMf=ui7ww0DK=EurzdMeDUkGvwcJ_rg@mail.gmail.com>
+From:   Oleg Zhurakivskyy <oleg.zhurakivskyy@intel.com>
+Message-ID: <2d39b39b-27eb-abef-747f-400433daefee@intel.com>
+Date:   Tue, 14 May 2019 14:44:56 +0300
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.6.1
 MIME-Version: 1.0
-References: <1546157106.3213.3.camel@intel.com> <76e0ec375091a0b0f16d3cd9b15abc7b1840e89d.camel@coelho.fi>
-In-Reply-To: <76e0ec375091a0b0f16d3cd9b15abc7b1840e89d.camel@coelho.fi>
-From:   Josh Boyer <jwboyer@kernel.org>
-Date:   Tue, 14 May 2019 06:54:33 -0400
-X-Gmail-Original-Message-ID: <CA+5PVA5DO6fGiFa0x3jfbEgWUJaFaFS1ivu=Y60xUG=Kx1MexA@mail.gmail.com>
-Message-ID: <CA+5PVA5DO6fGiFa0x3jfbEgWUJaFaFS1ivu=Y60xUG=Kx1MexA@mail.gmail.com>
-Subject: Re: pull request: iwlwifi firmware updates 2019-05-03
-To:     Luca Coelho <luca@coelho.fi>
-Cc:     "linux-firmware@kernel.org" <linux-firmware@kernel.org>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        linuxwifi <linuxwifi@intel.com>,
-        "kyle@infradead.org" <kyle@infradead.org>,
-        "ben@decadent.org.uk" <ben@decadent.org.uk>
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <CA+icZUUA8TfU--6b+RwXMf=ui7ww0DK=EurzdMeDUkGvwcJ_rg@mail.gmail.com>
+Content-Type: text/plain; charset=windows-1252; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Fri, May 3, 2019 at 1:16 PM Luca Coelho <luca@coelho.fi> wrote:
->
-> Hi,
->
-> This contains some new versions of firmwares for the 9000 series of
-> devices and the firmware for a new device, namely 22260.
->
-> Please pull or let me know if there are any issues.
->
-> --
-> Cheers,
-> Luca.
->
->
-> The following changes since commit 92e17d0dd2437140fab044ae62baf69b35d7d1fa:
->
->   amdgpu: update vega20 to the latest 19.10 firmware (2019-05-02 06:24:19 -0400)
->
-> are available in the Git repository at:
->
->   git://git.kernel.org/pub/scm/linux/kernel/git/iwlwifi/linux-firmware.git tags/iwlwifi-fw-2019-05-03
->
-> for you to fetch changes up to 95a93535b723085ff74845eb8733d01c8ff5c052:
->
->   iwlwifi: update -46 firmwares for 22260 and 9000 series (2019-05-03 19:33:53 +0300)
->
-> ----------------------------------------------------------------
-> updates for -46.ucode for 9260, 9000 and 22260
->
-> ----------------------------------------------------------------
-> Luca Coelho (3):
->       iwlwifi: add -46.ucode firmwares for 9000 series
->       iwlwifi: add firmware for 22260 and update 9000 series -46 firmwares
->       iwlwifi: update -46 firmwares for 22260 and 9000 series
->
->  WHENCE                            |   9 +++++++++
->  iwlwifi-9000-pu-b0-jf-b0-46.ucode | Bin 0 -> 1448644 bytes
->  iwlwifi-9260-th-b0-jf-b0-46.ucode | Bin 0 -> 1456088 bytes
->  iwlwifi-cc-a0-46.ucode            | Bin 0 -> 1044072 bytes
->  4 files changed, 9 insertions(+)
->  create mode 100644 iwlwifi-9000-pu-b0-jf-b0-46.ucode
->  create mode 100644 iwlwifi-9260-th-b0-jf-b0-46.ucode
->  create mode 100644 iwlwifi-cc-a0-46.ucode
 
-Pulled and pushed out.
+On 5/14/19 11:34 AM, Sedat Dilek wrote:
+  
+> Am I correct that "NPC100" is "PN547" and "NPC300" is "PN548"?
 
-josh
+Yes, NPC100 is PN547.
+
+Don’t know on NPC300, but a quick web search reveals it’s PN548.
+
+Might it make sense to drop NPC... and to keep just the chip names in Kconfig?
+
+Regards,
+Oleg
