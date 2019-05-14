@@ -2,72 +2,103 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id DE7471CC13
-	for <lists+linux-wireless@lfdr.de>; Tue, 14 May 2019 17:44:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0EB3D1CD1B
+	for <lists+linux-wireless@lfdr.de>; Tue, 14 May 2019 18:36:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726416AbfENPoH (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 14 May 2019 11:44:07 -0400
-Received: from smtprelay0137.hostedemail.com ([216.40.44.137]:42410 "EHLO
-        smtprelay.hostedemail.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1726296AbfENPoH (ORCPT
+        id S1726109AbfENQgE (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 14 May 2019 12:36:04 -0400
+Received: from mail-wr1-f46.google.com ([209.85.221.46]:46553 "EHLO
+        mail-wr1-f46.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726036AbfENQgE (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 14 May 2019 11:44:07 -0400
-Received: from filter.hostedemail.com (clb03-v110.bra.tucows.net [216.40.38.60])
-        by smtprelay08.hostedemail.com (Postfix) with ESMTP id 69906182CF668;
-        Tue, 14 May 2019 15:44:05 +0000 (UTC)
-X-Session-Marker: 6A6F6540706572636865732E636F6D
-X-Spam-Summary: 2,0,0,,d41d8cd98f00b204,joe@perches.com,:::::::::,RULES_HIT:41:355:379:599:988:989:1260:1277:1311:1313:1314:1345:1359:1437:1515:1516:1518:1534:1541:1593:1594:1711:1730:1747:1777:1792:2393:2559:2562:2828:3138:3139:3140:3141:3142:3353:3622:3865:3866:3867:3868:3870:3871:3872:4250:4321:5007:7903:10004:10400:10848:11026:11232:11473:11658:11914:12663:12740:12760:12895:13019:13069:13095:13311:13357:13439:14659:14777:21080:21212:21433:21627:21819:30022:30054:30070:30091,0,RBL:23.242.196.136:@perches.com:.lbl8.mailshell.net-62.14.0.180 64.201.201.201,CacheIP:none,Bayesian:0.5,0.5,0.5,Netcheck:none,DomainCache:0,MSF:not bulk,SPF:fn,MSBL:0,DNSBL:neutral,Custom_rules:0:0:0,LFtime:26,LUA_SUMMARY:none
-X-HE-Tag: note02_5d98fc2c7d635
-X-Filterd-Recvd-Size: 2261
-Received: from XPS-9350 (cpe-23-242-196-136.socal.res.rr.com [23.242.196.136])
-        (Authenticated sender: joe@perches.com)
-        by omf18.hostedemail.com (Postfix) with ESMTPA;
-        Tue, 14 May 2019 15:44:03 +0000 (UTC)
-Message-ID: <34f72d5db336b9898618bf1c5c15ec41094d7d06.camel@perches.com>
-Subject: Re: [PATCH v2] mac80211: remove warning message
-From:   Joe Perches <joe@perches.com>
-To:     Johannes Berg <johannes@sipsolutions.net>,
-        Yibo Zhao <yiboz@codeaurora.org>
-Cc:     linux-wireless@vger.kernel.org, ath10k@lists.infradead.org,
-        Zhi Chen <zhichen@codeaurora.org>
-Date:   Tue, 14 May 2019 08:44:01 -0700
-In-Reply-To: <e2a6596b99085541a5886c0d0d6393c849ac2d57.camel@sipsolutions.net>
-References: <1557824507-17668-1-git-send-email-yiboz@codeaurora.org>
-         (sfid-20190514_110314_752671_7E53E9A2) <7c92f5cf51eaec1d5449698d90f5b6c5ca6c2bea.camel@sipsolutions.net>
-         <ccb48284f0d96e72f4c041e12c943f0a@codeaurora.org>
-         <e2a6596b99085541a5886c0d0d6393c849ac2d57.camel@sipsolutions.net>
-Content-Type: text/plain; charset="ISO-8859-1"
-User-Agent: Evolution 3.30.1-1build1 
-Mime-Version: 1.0
-Content-Transfer-Encoding: 7bit
+        Tue, 14 May 2019 12:36:04 -0400
+Received: by mail-wr1-f46.google.com with SMTP id r7so2137167wrr.13
+        for <linux-wireless@vger.kernel.org>; Tue, 14 May 2019 09:36:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=XveLFzCb5KHPyye9JOs96NPh1yJsNROqoUari4A22f4=;
+        b=W0mtepiRX95RHyP1+6mzs1OABESMcQl6C2JwbmSF1CTn7BXzoNNKIEv9KgrPFy13K6
+         ZwG3xFotsCBpaaVJfuvmt1X1rJDByICesO8VkguK+4Wgo2TOxk5G7ujBd4z0AuT1FG/K
+         /o3R7hQca5HAXrJAbIW7SeiaAiX83UhL2zY3FNuKBCZBUuNAgaqlwUbiLsk5wvh/Iar3
+         777yjQAQlRlmc+DRIT6HOCARz0ttbxnJAEcI9MckzwjQt4kGEwYmaSxKhTHTToekSXFg
+         bWj6xRpHfsWVYdN9vzHqKctcw0LIifIaNEml7DjkhNNfsEf4Soz7/fieOn/X8coKO9Id
+         lrpg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=XveLFzCb5KHPyye9JOs96NPh1yJsNROqoUari4A22f4=;
+        b=dS7RBRfMsfiLdF75SVhKVZUbXn0sfXnks0K2YuNNbJO5L7r2QJSFOETqMV/JzcM6WV
+         nRN5zu0qIz9UBbNIvuga9L7L+fNOVBdoeLkRqxcOf/4gdUDY0PvrUuC/62PXB+OpwDA3
+         GxLDDVcsfuokb0Y7kC9UdRz3ReGRrf2+nCNec9Zt6Cm8Bh9lDo20X0OgEPiYp8xNETT2
+         TQcJX/QEWsDjXKjm4X/0SYfQEN5XQnQKb/Ho3Q4E5fmvH0EI9UczxSbO7XOqR1wc+utu
+         oFyA8ntMnPSKoQoVE5Jno23V+Ezc+no1pC/JfA5omFIzf9HysVwjUfRHnH/ak6LqjNYN
+         OicQ==
+X-Gm-Message-State: APjAAAXOHkEu2gCrf6H+aJMKHLPrHMHJVEzmcPwinFWpB2JojgT57TEX
+        /H7big6XnZf6yHb6Nh2kDkwWGQ==
+X-Google-Smtp-Source: APXvYqwzu9DXFh7MRoFOA1+bogimnRcdJNLazl0C3QmsrUD2jWawVP8Eo1nxf//2+gHBMSOeO4j1AQ==
+X-Received: by 2002:a5d:4308:: with SMTP id h8mr1844962wrq.22.1557851762202;
+        Tue, 14 May 2019 09:36:02 -0700 (PDT)
+Received: from [192.168.0.41] (sju31-1-78-210-255-2.fbx.proxad.net. [78.210.255.2])
+        by smtp.googlemail.com with ESMTPSA id s22sm4995768wmh.45.2019.05.14.09.36.00
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Tue, 14 May 2019 09:36:01 -0700 (PDT)
+Subject: Re: NXP NFC version and ACPI
+To:     sedat.dilek@gmail.com
+Cc:     Samuel Ortiz <sameo@linux.intel.com>,
+        linux-wireless@vger.kernel.org, linux-nfc@lists.01.org,
+        oleg.zhurakivskyy@intel.com, clement.perrochaud@effinnov.com,
+        charles.gorand@effinnov.com,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+References: <c2d0d19f-d814-8f41-4860-77b9cc7f9d26@linaro.org>
+ <CA+icZUVz7sB6hv4fhL_rqhR_D8RePBJFXk1PaUy5tMw2z4xC_Q@mail.gmail.com>
+ <5ae87449-83a1-ecce-c72c-b4742c507497@linaro.org>
+ <CA+icZUXDLQKyTH-_pPi7A2=Bu5ratwab930Fcecrdr4NtMnFcw@mail.gmail.com>
+ <27f2ce02-8deb-384f-af10-7737b703770a@linaro.org>
+ <CA+icZUVaBdswfmRfbRtdVJY8ymeDOwDSFEf7G6jneqEmpW84bg@mail.gmail.com>
+From:   Daniel Lezcano <daniel.lezcano@linaro.org>
+Message-ID: <a44f7d09-a0f0-6e3b-c097-f736cfa28444@linaro.org>
+Date:   Tue, 14 May 2019 18:36:00 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.6.1
+MIME-Version: 1.0
+In-Reply-To: <CA+icZUVaBdswfmRfbRtdVJY8ymeDOwDSFEf7G6jneqEmpW84bg@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Tue, 2019-05-14 at 11:12 +0200, Johannes Berg wrote:
-> On Tue, 2019-05-14 at 17:10 +0800, Yibo Zhao wrote:
-> > On 2019-05-14 17:05, Johannes Berg wrote:
-> > > On Tue, 2019-05-14 at 17:01 +0800, Yibo Zhao wrote:
-> > > > In multiple SSID cases, it takes time to prepare every AP interface
-> > > > to be ready in initializing phase. If a sta already knows everything 
-> > > > it
-> > > > needs to join one of the APs and sends authentication to the AP which
-> > > > is not fully prepared at this point of time, AP's channel context
-> > > > could be NULL. As a result, warning message occurs.
-[]
-> > I was planning to use WARN_ON_ONCE() in the first place to replace 
-> > WARN_ON() then after some discussion, we think removing it could be 
-> > better. So the first patch was based on my first version which is sent 
-> > incorrectly. Please check again.
-[]
-> I guess changing it to WARN_ON_ONCE() makes sense,
+On 14/05/2019 16:59, Sedat Dilek wrote:
+> On Tue, May 14, 2019 at 10:17 AM Daniel Lezcano
+> <daniel.lezcano@linaro.org> wrote:
+> [...]
+> 
+> Just for the records:
+> 
+> root@iniza:~# rfkill --output ID,TYPE
+> ID TYPE
+>  0 bluetooth
+>  1 nfc
+>  2 wlan
+>  3 bluetooth
+> 
+> root@iniza:~# rfkill list nfc
+> 1: nfc0: NFC
+>         Soft blocked: no
+>         Hard blocked: no
+> 
 
-WARN_ON_RATELIMIT exists.
+Thanks, I have checked and it is the same values.
+-- 
+ <http://www.linaro.org/> Linaro.org │ Open source software for ARM SoCs
 
-> but as per my earlier
-> email I'm really not sure about removing it entirely, it doesn't seem
-> like a valid scenario and we should take steps elsewhere to prevent it.
-
-
+Follow Linaro:  <http://www.facebook.com/pages/Linaro> Facebook |
+<http://twitter.com/#!/linaroorg> Twitter |
+<http://www.linaro.org/linaro-blog/> Blog
 
