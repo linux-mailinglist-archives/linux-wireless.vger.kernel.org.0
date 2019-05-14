@@ -2,98 +2,104 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id EF1701C81F
-	for <lists+linux-wireless@lfdr.de>; Tue, 14 May 2019 14:04:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4F4341C83F
+	for <lists+linux-wireless@lfdr.de>; Tue, 14 May 2019 14:12:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726211AbfENMEM (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 14 May 2019 08:04:12 -0400
-Received: from mail-wr1-f67.google.com ([209.85.221.67]:41750 "EHLO
+        id S1726248AbfENMMN (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 14 May 2019 08:12:13 -0400
+Received: from mail-wr1-f67.google.com ([209.85.221.67]:33726 "EHLO
         mail-wr1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726075AbfENMEM (ORCPT
+        with ESMTP id S1726036AbfENMMM (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 14 May 2019 08:04:12 -0400
-Received: by mail-wr1-f67.google.com with SMTP id d12so18875939wrm.8
-        for <linux-wireless@vger.kernel.org>; Tue, 14 May 2019 05:04:11 -0700 (PDT)
+        Tue, 14 May 2019 08:12:12 -0400
+Received: by mail-wr1-f67.google.com with SMTP id d9so10577912wrx.0
+        for <linux-wireless@vger.kernel.org>; Tue, 14 May 2019 05:12:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=mime-version:references:in-reply-to:reply-to:from:date:message-id
-         :subject:to:cc:content-transfer-encoding;
-        bh=l7WDIT3xdi0gOSJQozDJ4q2UDbYV5Prpi350z/iT3mg=;
-        b=K0uSptrdkId+Sb6Kw/D1WArRSbnA2B6DCCEYBp97NU68hoWX4m6qESepNGcrNacyCU
-         OfT5Cax7tQ1/WUdA4FPvI9mqJNZe4im2jOBKMN7VfUWfcjretcWGJ10ijkg2mHJW0g8q
-         eNHcLaHC4PBy1B3o9DL7Whv3CtV17EfHC6LerqziYDcUf8SU+Sz4kEjqtbNfAJvYbCSo
-         ugFH0Y5JOel9ftLLAGWFCIe3U8b/9YzYDh3gc3phDiJouJUlyFFtGwKl3O5EHxRmnmkY
-         n4/k+PWpD7+6L8/CNpiJBSn3Qj+FAyypVtSjJWZqeyD/oWaa0G85/t1wSM6S1iAMiWDY
-         wesA==
+         :subject:to:cc;
+        bh=LU/y2PLG6rVuITKR4Wa/pGlYz/fiYSoIqXWFjQFGsvM=;
+        b=MGK5RXrU+bPs8RahQSCBCWyWmiTRMj5W36Vss6v8eMXEeGPh8vooAjouUVsTTShgqW
+         /D6KI8iXfBMp5Pkb/HF5BSMQKVvNH2A1Xo1vDgPvG3HqoULDLmlcEHL6VFpBgNppUpGx
+         313TizLO2n3yz29rb6TQs3H+OMjQoCYdSlVIRPuiD7892pQSrlVNFZiDeVNWrDFU6vRZ
+         pCsgQKBhUxqDckCSZqdsbhzFZ1VXjWv8quBjHM/29NLe8TbxX4Ne3W+YHFTlS3a104F6
+         JoOci2GVwadh92DnuKOJzXRffotkB2hOBNY0HVVuaV5TvclYT9MaRmhYigIDUETTO6od
+         RgoA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:reply-to
-         :from:date:message-id:subject:to:cc:content-transfer-encoding;
-        bh=l7WDIT3xdi0gOSJQozDJ4q2UDbYV5Prpi350z/iT3mg=;
-        b=EdHb0QlKwp15CMFi18jGuwAE+/3ypm9/LC/p9nxXaoRU74Xz6sPeo+7W0DjWsK18xX
-         NQUn68vlzs7BDSje/H5aKbp7E2tZDIfQ9XP9VQ1/WjbBfa2bFAdzGvppHxme/CZdgM1O
-         cpEh00eN2YdjaERmApIQ4MKx6PetPWqDSjEO8cvI6+XPChjffvJnSFPZCJajBKqgK5aj
-         ZYoR31O8LBXZVYuTM3AduEFXmirjC/rAwp0GgP9xRDl7hQ76zb7Acl7K4gHvP30WKsnt
-         8P+FXJTk6lNN24OQ2GeASrb0i1e/xnbyyyeZhFC0zzMjtHtwBLJrs0584UUaNe793hPz
-         3Bpw==
-X-Gm-Message-State: APjAAAUC9hwb8giwBIJirTJBToZuOrJDt2DKRDJXJp40UPVem3g6ipdd
-        4Tws9rPdJMGocuEwHGAU/ALN+zgKEI5cMOZviH4=
-X-Google-Smtp-Source: APXvYqx0coIeaiX7HouucYZfPpqoG4VHiTzn75fcd8lm77jsnx6iC4l5IQ1i+ZD+bG9JpPvJyldZGxr/MpXkpL2kQ+c=
-X-Received: by 2002:adf:dc4b:: with SMTP id m11mr22090810wrj.66.1557835450452;
- Tue, 14 May 2019 05:04:10 -0700 (PDT)
+         :from:date:message-id:subject:to:cc;
+        bh=LU/y2PLG6rVuITKR4Wa/pGlYz/fiYSoIqXWFjQFGsvM=;
+        b=VbNOI/CnLqS///mkcVhjoSDP3SYINO/NOvi5nN3VvfL7xE6Jroay6dQHPTHw+tj1qx
+         ogbQ7cJ2O8erZAnS2ggNbcQLzXE03L6WNNuZAWzDKn2YhzWmeicZWq/ZZLGgjHuL5TRU
+         304a/ILTzZd/NXPlu1E5P7S2LKZADyetjPS/vDVdH7cIRZJAZe6mR0dBWwA9rNygcWXU
+         IUaFY/fTsjN5wwWdf7VB6hdHKiT9F4rBJOMbVcmnA+OQvVmAMe2Fj7DrP5lxZUDXAXjR
+         VGTfG/6LLo6MEuTwhfbWAdAy8DcgF66FcAy0kVnfoBPFo/6FDFRNugFFWqSHrI4ullPE
+         LW/g==
+X-Gm-Message-State: APjAAAW9l3EKMnXz3fzd9GnuMpTDwcdwJJkrkpFQjTkNfujE1+OEEvxA
+        sjOOeDN/LTE74/lryOciwYPIaZjPy8RDj8EiZhc=
+X-Google-Smtp-Source: APXvYqy7ZnnsvJB/JkNl3MLE2nsysLUbcMDHOyT+lseiBsAIqoDUZpxZ4XadbtMObROThQhixq00rJqkn3dxMhaC/PM=
+X-Received: by 2002:a5d:4692:: with SMTP id u18mr9628728wrq.285.1557835931138;
+ Tue, 14 May 2019 05:12:11 -0700 (PDT)
 MIME-Version: 1.0
 References: <20190513104358.59716-1-andriy.shevchenko@linux.intel.com>
- <CA+icZUV_g5mJnmHQKZgtcPj3YfZSYp1DQJT9tmi+892AzRCm3A@mail.gmail.com>
- <20190513123751.GS9224@smile.fi.intel.com> <CA+icZUUA8TfU--6b+RwXMf=ui7ww0DK=EurzdMeDUkGvwcJ_rg@mail.gmail.com>
- <2d39b39b-27eb-abef-747f-400433daefee@intel.com>
-In-Reply-To: <2d39b39b-27eb-abef-747f-400433daefee@intel.com>
+ <CA+icZUVn9tHQ3Zug0u2scbvGFfrLag_WYdzs9FCBJsGJ4bhuzw@mail.gmail.com> <20190514100328.GB9224@smile.fi.intel.com>
+In-Reply-To: <20190514100328.GB9224@smile.fi.intel.com>
 Reply-To: sedat.dilek@gmail.com
 From:   Sedat Dilek <sedat.dilek@gmail.com>
-Date:   Tue, 14 May 2019 14:03:58 +0200
-Message-ID: <CA+icZUW6vttB8EvgBZYi3kT7uhcbQr+baYbif_V6D78ZNEDbHQ@mail.gmail.com>
+Date:   Tue, 14 May 2019 14:12:00 +0200
+Message-ID: <CA+icZUXS1eLAndPD=Fk=HwW+P3YrZq+enFO5aEvyixotXdrTvg@mail.gmail.com>
 Subject: Re: [PATCH v2 00/12] NFC: nxp-nci: clean up and support new ID
-To:     Oleg Zhurakivskyy <oleg.zhurakivskyy@intel.com>
-Cc:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        =?UTF-8?Q?Cl=C3=A9ment_Perrochaud?= 
+To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc:     =?UTF-8?Q?Cl=C3=A9ment_Perrochaud?= 
         <clement.perrochaud@effinnov.com>,
         Charles Gorand <charles.gorand@effinnov.com>,
         linux-nfc@lists.01.org, Samuel Ortiz <sameo@linux.intel.com>,
-        linux-wireless@vger.kernel.org
+        linux-wireless@vger.kernel.org,
+        Oleg Zhurakivskyy <oleg.zhurakivskyy@intel.com>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Tue, May 14, 2019 at 1:45 PM Oleg Zhurakivskyy
-<oleg.zhurakivskyy@intel.com> wrote:
+On Tue, May 14, 2019 at 12:03 PM Andy Shevchenko
+<andriy.shevchenko@linux.intel.com> wrote:
 >
+> On Mon, May 13, 2019 at 09:48:15PM +0200, Sedat Dilek wrote:
+> > On Mon, May 13, 2019 at 12:44 PM Andy Shevchenko
+> > <andriy.shevchenko@linux.intel.com> wrote:
 >
-> On 5/14/19 11:34 AM, Sedat Dilek wrote:
+> > Is it possible to have an info in dmesg log when nxp-nci_i2c kernel
+> > module is loaded?
 >
-> > Am I correct that "NPC100" is "PN547" and "NPC300" is "PN548"?
->
-> Yes, NPC100 is PN547.
->
-> Don=E2=80=99t know on NPC300, but a quick web search reveals it=E2=80=99s=
- PN548.
->
-> Might it make sense to drop NPC... and to keep just the chip names in Kco=
-nfig?
+> We have 'initcall_debug' for such purposes.
 >
 
-Thanks for the clarification.
+Thanks.
 
-I found NXP NPC300 windows driver from Lenovo's support website - not
-on the support websites for ThinkPad T470 but for other ThinkPads like
-T480.
-It's the same driver and by accident I could update via Microsoft
-device-manager to version 12.0.4.0.
+That's nice for retrieving helpful informations, especially the proble
+line (see below).
 
-So if you search in the Wild Wild Web for a Linux driver and have the
-information "NXP NPC300", you will find it.
-It's good to keep both informations - preferable put them into the
-Kconfig help text?
+Unload nxp_nci_i2c module...
+
+[  277.362813] NET: Unregistered protocol family 39
+
+...and reload nxp_nci_i2c module...
+
+[  291.640491] calling  nfc_init+0x0/0x8e [nfc] @ 2998
+[  291.640499] nfc: nfc_init: NFC Core ver 0.1
+[  291.640603] NET: Registered protocol family 39
+[  291.640651] initcall nfc_init+0x0/0x8e [nfc] returned 0 after 111 usecs
+[  291.653179] calling  nxp_nci_i2c_driver_init+0x0/0x1000 [nxp_nci_i2c] @ 2998
+[  291.669584] probe of i2c-NXP1001:00 returned 1 after 16364 usecs
+[  291.669841] initcall nxp_nci_i2c_driver_init+0x0/0x1000
+[nxp_nci_i2c] returned 0 after 16244 usecs
+
+What I mean is (here: btrfs and vboxdrv built as modules)...
+
+[   21.285569] Btrfs loaded, crc32c=crc32c-intel
+[   28.823902] vboxdrv: Successfully loaded version 6.0.6_Debian
+(interface 0x00290008)
 
 - Sedat -
