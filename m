@@ -2,186 +2,89 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 7001F1C900
-	for <lists+linux-wireless@lfdr.de>; Tue, 14 May 2019 14:48:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7D6631C911
+	for <lists+linux-wireless@lfdr.de>; Tue, 14 May 2019 14:55:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726272AbfENMsm (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 14 May 2019 08:48:42 -0400
-Received: from mail.kernel.org ([198.145.29.99]:33968 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726036AbfENMsm (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 14 May 2019 08:48:42 -0400
-Received: from lore-desk-wlan.redhat.com (unknown [151.66.17.19])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id B100520881;
-        Tue, 14 May 2019 12:48:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1557838120;
-        bh=kxnE46J7d2X67fLKKEcm0ZoO+eVOET2YehxYgQRaVM8=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=y9/j2wXZ57EqHJsUsmj78Uxq57Cd/kajXLqP3uGOmv7cVUINmLsaEnjGuFdvKab10
-         1A/IkQiIhBa79ryYxWdpRajJkl0PRRUDW4O0zZ5eJ11JhK0DlyGlRTVX0hklI5FDtf
-         6JSWbNzjDxmuk3VcHWwaLo8O9uaMmRhS0hePi0Gk=
-From:   Lorenzo Bianconi <lorenzo@kernel.org>
-To:     nbd@nbd.name
-Cc:     lorenzo.bianconi@redhat.com, linux-wireless@vger.kernel.org,
-        ryder.lee@mediatek.com, royluo@google.com
-Subject: [PATCH] mt76: move mt76_insert_ccmp_hdr in mt76-module
-Date:   Tue, 14 May 2019 14:48:31 +0200
-Message-Id: <99370eaa04916a871b6cc2413ae00e1370e09292.1557838049.git.lorenzo@kernel.org>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <cover.1557838049.git.lorenzo@kernel.org>
-References: <cover.1557838049.git.lorenzo@kernel.org>
+        id S1726078AbfENMzl (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 14 May 2019 08:55:41 -0400
+Received: from mail-pf1-f172.google.com ([209.85.210.172]:38926 "EHLO
+        mail-pf1-f172.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725901AbfENMzl (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 14 May 2019 08:55:41 -0400
+Received: by mail-pf1-f172.google.com with SMTP id z26so9109731pfg.6;
+        Tue, 14 May 2019 05:55:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:subject:to:cc:message-id:date:user-agent:mime-version
+         :content-transfer-encoding:content-language;
+        bh=ivZhgPRsPy6zp/Syvj+/ZJXkxMnZ4T63yw6MhGlwYzE=;
+        b=JN2Ml9ScBqjHNWc9zRtLejdGxae7BOkPMYS4IOIeUnoP3MW6aAhM5SBookEpMuPxtP
+         wbV/8hox/6OqR0R3+Epm8UF9Vol7K7GOwFbsnhz799RrpMSErUcTifjUdEGHUCvVbdLO
+         d53ZITZA+H7yEVOryslcCJ6u58RNdGDnceVTdKs0ntSBNyK3l0Mn1UXkzKiixx+SCuaj
+         vEPQnATAIm9h/iugReWnJs6qNB8G4EAf8HWGSlvk5NJoosJeu78bdwe7UUXM79QZRpek
+         1za2QAsF4xPOXf7M/a+2HuZFzRWrqG5PVDE3pFTJbT/jfWwJKaD8pY6f2oaEvpgB33gt
+         LTKw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:subject:to:cc:message-id:date:user-agent
+         :mime-version:content-transfer-encoding:content-language;
+        bh=ivZhgPRsPy6zp/Syvj+/ZJXkxMnZ4T63yw6MhGlwYzE=;
+        b=l/ysB74JhSVWs/Yim1ddifmS3HU9lwVtHukTQe1vADGVE2S4FhNsrdDq419WUSvbce
+         QNjCJrwopOfYl4NcNDSuGwYTWFqcSsKyTQ+oYWicF9GQ5UKJ8e9Jx/god8d54u0P8x7e
+         xkUHpoZKZut1sMkIUnfQN5CcMhNc2eFHvjatvotC8jPURDJOrm2n8I9HNMSt892YZfrp
+         3TLzOZjD+074YZqwWJWZ2p6lLysw8ExQ4lrayVfAvHn1QLG6sK6l1bC5PcotCdyv9ZG1
+         10HoQhUuATK1l/H3idQ1tG6/GhpADvMGfn6U4ORP9kg9atqVqhsVSm92zbh/gdtXzg11
+         ZYxw==
+X-Gm-Message-State: APjAAAUxxtPyuhJy5W6QyORPl8/Hgnkxn9rcHuRcGbrz9/YMkykHIlDd
+        zGAuNHRP/+ujQptpvhIAlTJIE/aq
+X-Google-Smtp-Source: APXvYqzNz4IDjwn58z8svv4G9wGQ2kABhyMAAlmhdQpO1zfYwpiDGDQdox4hI0aqvB2rMXuKVLKHLQ==
+X-Received: by 2002:a62:e101:: with SMTP id q1mr40766334pfh.160.1557838540166;
+        Tue, 14 May 2019 05:55:40 -0700 (PDT)
+Received: from ?IPv6:2402:f000:1:1501:200:5efe:166.111.71.27? ([2402:f000:1:1501:200:5efe:a66f:471b])
+        by smtp.gmail.com with ESMTPSA id 125sm9051773pge.45.2019.05.14.05.55.37
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Tue, 14 May 2019 05:55:39 -0700 (PDT)
+From:   Jia-Ju Bai <baijiaju1990@gmail.com>
+Subject: [BUG] rtlwifi: Resource leaks in error handling code of
+ rtl_pci_probe()
+To:     pkshih@realtek.com, kvalo@codeaurora.org, davem@davemloft.net
+Cc:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Message-ID: <508009c2-6ebf-6c11-1f52-ef488c70ce32@gmail.com>
+Date:   Tue, 14 May 2019 20:55:31 +0800
+User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:52.0) Gecko/20100101
+ Thunderbird/52.2.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Content-Language: en-US
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Move mt7615_insert_ccmp_hdr in mac80211.c and rename it in
-mt76_insert_ccmp_hdr since it is shared between mt7603 and mt7615
-drivers
+In rtl_pci_probe(), rtl_pci_init() allocates some resources, such as:
+_rtl_pci_init_trx_ring
+   _rtl_pci_init_rx_ring
+     _rtl_pci_init_rx_ring
+       pci_zalloc_consistent() -- resource
+       _rtl_pci_init_one_rxdesc
+         dev_alloc_skb() -- resource
 
-Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
----
- drivers/net/wireless/mediatek/mt76/mac80211.c | 23 ++++++++++++++++
- drivers/net/wireless/mediatek/mt76/mt76.h     |  1 +
- .../net/wireless/mediatek/mt76/mt7603/mac.c   | 26 +------------------
- .../net/wireless/mediatek/mt76/mt7615/mac.c   | 25 +-----------------
- 4 files changed, 26 insertions(+), 49 deletions(-)
+_rtl_pci_init_trx_ring
+   _rtl_pci_init_tx_ring
+     pci_zalloc_consistent() -- resource
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mac80211.c b/drivers/net/wireless/mediatek/mt76/mac80211.c
-index 5b6a81ee457e..e70507a4b14d 100644
---- a/drivers/net/wireless/mediatek/mt76/mac80211.c
-+++ b/drivers/net/wireless/mediatek/mt76/mac80211.c
-@@ -820,3 +820,26 @@ mt76_set_tim(struct ieee80211_hw *hw, struct ieee80211_sta *sta, bool set)
- 	return 0;
- }
- EXPORT_SYMBOL_GPL(mt76_set_tim);
-+
-+void mt76_insert_ccmp_hdr(struct sk_buff *skb, u8 key_id)
-+{
-+	struct mt76_rx_status *status = (struct mt76_rx_status *)skb->cb;
-+	int hdr_len = ieee80211_get_hdrlen_from_skb(skb);
-+	u8 *hdr, *pn = status->iv;
-+
-+	__skb_push(skb, 8);
-+	memmove(skb->data, skb->data + 8, hdr_len);
-+	hdr = skb->data + hdr_len;
-+
-+	hdr[0] = pn[5];
-+	hdr[1] = pn[4];
-+	hdr[2] = 0;
-+	hdr[3] = 0x20 | (key_id << 6);
-+	hdr[4] = pn[3];
-+	hdr[5] = pn[2];
-+	hdr[6] = pn[1];
-+	hdr[7] = pn[0];
-+
-+	status->flag &= ~RX_FLAG_IV_STRIPPED;
-+}
-+EXPORT_SYMBOL_GPL(mt76_insert_ccmp_hdr);
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76.h b/drivers/net/wireless/mediatek/mt76/mt76.h
-index fc4169c83e76..8edf476f9f2f 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt76.h
-@@ -750,6 +750,7 @@ void mt76_csa_check(struct mt76_dev *dev);
- void mt76_csa_finish(struct mt76_dev *dev);
- 
- int mt76_set_tim(struct ieee80211_hw *hw, struct ieee80211_sta *sta, bool set);
-+void mt76_insert_ccmp_hdr(struct sk_buff *skb, u8 key_id);
- 
- /* internal */
- void mt76_tx_free(struct mt76_dev *dev);
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7603/mac.c b/drivers/net/wireless/mediatek/mt76/mt7603/mac.c
-index 0ccba5926b68..5c09b2dbf3fd 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7603/mac.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7603/mac.c
-@@ -418,30 +418,6 @@ mt7603_rx_get_wcid(struct mt7603_dev *dev, u8 idx, bool unicast)
- 	return &sta->vif->sta.wcid;
- }
- 
--static void
--mt7603_insert_ccmp_hdr(struct sk_buff *skb, u8 key_id)
--{
--	struct mt76_rx_status *status = (struct mt76_rx_status *)skb->cb;
--	int hdr_len = ieee80211_get_hdrlen_from_skb(skb);
--	u8 *pn = status->iv;
--	u8 *hdr;
--
--	__skb_push(skb, 8);
--	memmove(skb->data, skb->data + 8, hdr_len);
--	hdr = skb->data + hdr_len;
--
--	hdr[0] = pn[5];
--	hdr[1] = pn[4];
--	hdr[2] = 0;
--	hdr[3] = 0x20 | (key_id << 6);
--	hdr[4] = pn[3];
--	hdr[5] = pn[2];
--	hdr[6] = pn[1];
--	hdr[7] = pn[0];
--
--	status->flag &= ~RX_FLAG_IV_STRIPPED;
--}
--
- int
- mt7603_mac_fill_rx(struct mt7603_dev *dev, struct sk_buff *skb)
- {
-@@ -580,7 +556,7 @@ mt7603_mac_fill_rx(struct mt7603_dev *dev, struct sk_buff *skb)
- 	if (insert_ccmp_hdr) {
- 		u8 key_id = FIELD_GET(MT_RXD1_NORMAL_KEY_ID, rxd1);
- 
--		mt7603_insert_ccmp_hdr(skb, key_id);
-+		mt76_insert_ccmp_hdr(skb, key_id);
- 	}
- 
- 	hdr = (struct ieee80211_hdr *)skb->data;
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/mac.c b/drivers/net/wireless/mediatek/mt76/mt7615/mac.c
-index b8f48d10f27a..1d6ebea17132 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7615/mac.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7615/mac.c
-@@ -61,29 +61,6 @@ static int mt7615_get_rate(struct mt7615_dev *dev,
- 	return 0;
- }
- 
--static void mt7615_insert_ccmp_hdr(struct sk_buff *skb, u8 key_id)
--{
--	struct mt76_rx_status *status = (struct mt76_rx_status *)skb->cb;
--	int hdr_len = ieee80211_get_hdrlen_from_skb(skb);
--	u8 *pn = status->iv;
--	u8 *hdr;
--
--	__skb_push(skb, 8);
--	memmove(skb->data, skb->data + 8, hdr_len);
--	hdr = skb->data + hdr_len;
--
--	hdr[0] = pn[5];
--	hdr[1] = pn[4];
--	hdr[2] = 0;
--	hdr[3] = 0x20 | (key_id << 6);
--	hdr[4] = pn[3];
--	hdr[5] = pn[2];
--	hdr[6] = pn[1];
--	hdr[7] = pn[0];
--
--	status->flag &= ~RX_FLAG_IV_STRIPPED;
--}
--
- int mt7615_mac_fill_rx(struct mt7615_dev *dev, struct sk_buff *skb)
- {
- 	struct mt76_rx_status *status = (struct mt76_rx_status *)skb->cb;
-@@ -225,7 +202,7 @@ int mt7615_mac_fill_rx(struct mt7615_dev *dev, struct sk_buff *skb)
- 	if (insert_ccmp_hdr) {
- 		u8 key_id = FIELD_GET(MT_RXD1_NORMAL_KEY_ID, rxd1);
- 
--		mt7615_insert_ccmp_hdr(skb, key_id);
-+		mt76_insert_ccmp_hdr(skb, key_id);
- 	}
- 
- 	hdr = (struct ieee80211_hdr *)skb->data;
--- 
-2.20.1
+When ieee80211_register_hw() or rtl_pci_intr_mode_decide() fails, these 
+resources are not released in error handling code.
 
+A possible fix is to call rtl_pci_deinit() in error handling code, but I 
+am not sure whether this is correct.
+Thus, I only report the bugs.
+
+These bugs are found by a runtime fuzzing tool named FIZZER written by us.
+
+
+Best wishes,
+Jia-Ju Bai
