@@ -2,115 +2,91 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B869F1BE7A
-	for <lists+linux-wireless@lfdr.de>; Mon, 13 May 2019 22:15:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 62BCF1C1BD
+	for <lists+linux-wireless@lfdr.de>; Tue, 14 May 2019 07:16:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726254AbfEMUPR (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 13 May 2019 16:15:17 -0400
-Received: from mail-wr1-f66.google.com ([209.85.221.66]:44697 "EHLO
-        mail-wr1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726142AbfEMUPR (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 13 May 2019 16:15:17 -0400
-Received: by mail-wr1-f66.google.com with SMTP id c5so16655049wrs.11
-        for <linux-wireless@vger.kernel.org>; Mon, 13 May 2019 13:15:16 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:reply-to:from:date:message-id
-         :subject:to:cc;
-        bh=WseHiS737oljtnoWHZSGwODZuVgoSFVRNVAi+JX4ZKo=;
-        b=LJuQoAeG9sNoH/rt3nDFVsTOoqMD2S/rAlTereAb9m5ZdXNBxki+1340Ey0bpj6Q08
-         T8gXC2cO2bKz1OygbTDe5CF7xxiEAqNvRFM8+/JMrFmGtU0bwztoydMt+0jFmLLrEyRF
-         70VSlNeCGzzVGG5ltH5xbQ4uLjD0SleKxDVx8qpCVArxhz9VfIjA5UFhsjjybWDZkVxi
-         uV1TKARmgNbDusa2QRQBFyZN62vvKj9Fq+s3hjncJOJIDz8AY5uLEBNcMVoZSNi8SUBv
-         KRDyiRjhdl/B2PTLSYhiJx+kM8bXDLLj0sf4YSDruj0I8xXbsADPGJYE3Kd3S7qqG3/X
-         IoKw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:reply-to
-         :from:date:message-id:subject:to:cc;
-        bh=WseHiS737oljtnoWHZSGwODZuVgoSFVRNVAi+JX4ZKo=;
-        b=KKqfILNLGFC+A6kNiZsTDE+MIcIIw9xncron+fnT1USadGdjE+ThLZh7SVdCceQvqW
-         GvBIBkrMjhYjRqIj13YZZzIQmJF8vLcHgWfAjeETSgqd4ZLfOlxWAkpfGVKhq32OxQ5h
-         ZZ9CaT4AYCvYryeFk2OOEzqDTFCrylBLWzfjb3TxZR03qJ65k6gnSiIh05Q6Kj+1/X6m
-         jYDW/FQUOAcSM8j6bp4j8VGqfW4ewQvOFy/k6YaYgjNKaKKYAPU6NqKsV2mt3+HnmHCl
-         mUh89OdXA6CBehMdRqSTw0cQ5xmhPGzPhQlpmXgxjIrIpJIEvP/8jCH1aZxIocuX6g8L
-         0zlw==
-X-Gm-Message-State: APjAAAU+1tEd8PoVURUDZGSuq//JQbRb0nVzlv6hP3tu71Bvtn/PhAR9
-        QEdaMSp5ffGdjbF1+Ji4viJl2epkz2LEfHCdg1g=
-X-Google-Smtp-Source: APXvYqyJ3LBZ1Vw7Zu4BUBw+/9RMxuP8SjrM9N+MIHZuAlAgWc9U5uueDq7nfKIHhqBwMRWboqaP+x1l+vloSFw6QGI=
-X-Received: by 2002:adf:9e46:: with SMTP id v6mr7193558wre.141.1557778515522;
- Mon, 13 May 2019 13:15:15 -0700 (PDT)
-MIME-Version: 1.0
-References: <c2d0d19f-d814-8f41-4860-77b9cc7f9d26@linaro.org>
-In-Reply-To: <c2d0d19f-d814-8f41-4860-77b9cc7f9d26@linaro.org>
-Reply-To: sedat.dilek@gmail.com
-From:   Sedat Dilek <sedat.dilek@gmail.com>
-Date:   Mon, 13 May 2019 22:15:02 +0200
-Message-ID: <CA+icZUVz7sB6hv4fhL_rqhR_D8RePBJFXk1PaUy5tMw2z4xC_Q@mail.gmail.com>
-Subject: Re: NXP NFC version and ACPI
-To:     Daniel Lezcano <daniel.lezcano@linaro.org>
-Cc:     Samuel Ortiz <sameo@linux.intel.com>,
-        linux-wireless@vger.kernel.org, linux-nfc@lists.01.org,
-        robert.dolca@intel.com, oleg.zhurakivskyy@intel.com,
-        clement.perrochaud@effinnov.com, charles.gorand@effinnov.com,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+        id S1726387AbfENFQP (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 14 May 2019 01:16:15 -0400
+Received: from mga11.intel.com ([192.55.52.93]:61702 "EHLO mga11.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725935AbfENFQP (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 14 May 2019 01:16:15 -0400
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from fmsmga006.fm.intel.com ([10.253.24.20])
+  by fmsmga102.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 13 May 2019 22:16:15 -0700
+X-ExtLoop1: 1
+Received: from llanecki-mobl1.ger.corp.intel.com ([10.252.11.109])
+  by fmsmga006.fm.intel.com with ESMTP; 13 May 2019 22:16:12 -0700
+Message-ID: <731a28ba06246e57e9cc8a681dda720ff76f1925.camel@intel.com>
+Subject: Re: [PATCH][next] iwlwifi: lib: Use struct_size() helper
+From:   Luciano Coelho <luciano.coelho@intel.com>
+To:     "Gustavo A. R. Silva" <gustavo@embeddedor.com>,
+        Johannes Berg <johannes.berg@intel.com>,
+        Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
+        Intel Linux Wireless <linuxwifi@intel.com>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        "David S. Miller" <davem@davemloft.net>
+Cc:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Date:   Tue, 14 May 2019 08:16:11 +0300
+In-Reply-To: <20190403155901.GA22686@embeddedor>
+References: <20190403155901.GA22686@embeddedor>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.30.5-1 
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Wed, Dec 5, 2018 at 8:38 AM Daniel Lezcano <daniel.lezcano@linaro.org> wrote:
->
->
-> Hi,
->
-> the discussion reference is on github [1].
->
-> I acquired a Lenovo x280 with a NFC chip. It is unclear what chip is it
-> really, it is called NXP NPC300 which could be a PN7xxx chip range.
->
-> A hacked version of an old deprecated out-of-tree module made the PN5xxx
-> to work with my laptop but I suspect it brought some subtle instability
-> on my system.
->
-> Now it would be nice to have this correctly supported upstream.
->
-> I dumped the ACPI DSDT table and got the id NXP1001. This one is not
-> listed in the match table of the nxp-nci driver.
->
->  - is the driver missing for the so called NXP NPC300 ?
->  - should the NXP1001 matching string to be added to nxp-nci?
->  - is my firmware sending me garbage ?
->
-> Thanks in advance for any input
->
+On Wed, 2019-04-03 at 10:59 -0500, Gustavo A. R. Silva wrote:
+> Make use of the struct_size() helper instead of an open-coded version
+> in order to avoid any potential type mistakes, in particular in the
+> context in which this code is being used.
+> 
+> So, change the following form:
+> 
+> sizeof(*pattern_cmd) +
+>                wowlan->n_patterns * sizeof(struct
+> iwlagn_wowlan_pattern)
+> 
+>  to :
+> 
+> struct_size(pattern_cmd, patterns, wowlan->n_patterns)
+> 
+> This code was detected with the help of Coccinelle.
+> 
+> Signed-off-by: Gustavo A. R. Silva <gustavo@embeddedor.com>
+> ---
+>  drivers/net/wireless/intel/iwlwifi/dvm/lib.c | 3 +--
+>  1 file changed, 1 insertion(+), 2 deletions(-)
+> 
+> diff --git a/drivers/net/wireless/intel/iwlwifi/dvm/lib.c
+> b/drivers/net/wireless/intel/iwlwifi/dvm/lib.c
+> index b2f172d4f78a..cae9cd438697 100644
+> --- a/drivers/net/wireless/intel/iwlwifi/dvm/lib.c
+> +++ b/drivers/net/wireless/intel/iwlwifi/dvm/lib.c
+> @@ -1022,8 +1022,7 @@ int iwlagn_send_patterns(struct iwl_priv *priv,
+>  	if (!wowlan->n_patterns)
+>  		return 0;
+>  
+> -	cmd.len[0] = sizeof(*pattern_cmd) +
+> -		wowlan->n_patterns * sizeof(struct
+> iwlagn_wowlan_pattern);
+> +	cmd.len[0] = struct_size(pattern_cmd, patterns, wowlan-
+> >n_patterns);
+>  
+>  	pattern_cmd = kmalloc(cmd.len[0], GFP_KERNEL);
+>  	if (!pattern_cmd)
 
-[ CC Andy ]
+Thanks! Applied to our internal tree and it will reach the mainline
+following our normal upstreaming process.
 
-Hi Daniel,
+--
+Cheers,
+Luca.
 
-I was able to get a NXP NPC300 NFC device run on Lenovo ThinkPad T470.
 
-Look at the patchset "[PATCH v2 00/12] NFC: nxp-nci: clean up and
-support new ID".
-I have tested on top of Linux v5.1.1.
-
-Here I have set...
-
-scripts/config -m NFC_NCI -m NFC_NXP_NCI -m NFC_NXP_NCI_I2C -e
-PINCTRL_SUNRISEPOINT
-
-Please give this a try and report.
-
-For details see the below references.
-
-Thanks.
-
-Regards,
-- Sedat -
-
-[1] https://patchwork.kernel.org/project/linux-wireless/list/?submitter=33142
-[2] https://marc.info/?t=155740978400003&r=1&w=2
-[3] https://marc.info/?t=155774435600001&r=1&w=2
