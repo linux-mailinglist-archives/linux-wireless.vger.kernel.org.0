@@ -2,144 +2,186 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 66DCD1C8DC
-	for <lists+linux-wireless@lfdr.de>; Tue, 14 May 2019 14:34:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7001F1C900
+	for <lists+linux-wireless@lfdr.de>; Tue, 14 May 2019 14:48:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726314AbfENMes (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 14 May 2019 08:34:48 -0400
-Received: from mail-pg1-f196.google.com ([209.85.215.196]:35405 "EHLO
-        mail-pg1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725893AbfENMes (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 14 May 2019 08:34:48 -0400
-Received: by mail-pg1-f196.google.com with SMTP id h1so8581691pgs.2;
-        Tue, 14 May 2019 05:34:47 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id;
-        bh=aGu1f+RrnUPQT+gHJR7zuBRu3GeHB/WJgEjaROthtGg=;
-        b=Z7pnFkGAH2BlUDH3+FhIH0sOO38syFyZBNQ8mewx3bzSMfHIZauAYn7CRsxJ1BYS49
-         CcQHC7TjzP84vvbTkkmKHpbuPh7s5PrGgSZ9OAeY1R+helnNcLmQgRix200T8eD7tYi+
-         0k2Vrgkb/yz4TyEoRv1oF+YJyeh4Z0pI2EKVe448kCeuyq/uFpR74wy6rPfMX8/Rcy9l
-         rYLw+AZTi+CduC7I9ErJv6pZENbrXAPFHyVnkyF2PDSiKOI7F+/v5tHd+BNmkKAi0s3T
-         ur4hi/kKaBRYzw2rBEnFiUkF+JDg2ECWXSHrNJ49YhM1bqFB7F9jkmgPYS0tKqxDKg5W
-         vg+A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id;
-        bh=aGu1f+RrnUPQT+gHJR7zuBRu3GeHB/WJgEjaROthtGg=;
-        b=OA8jpmaoTVLj3dn0NRpqWlQedB2+8pHeP3h7pEpXR+CV2BJU44zjmbLLtNETTZdYyV
-         iZBNPLE+YV1HraB81hyhDfYUiD0zuYWzWMAEpdBdcUkG8CAK9T9XL2yi+BHaz81QwhIP
-         QljahR9PuKqKAiz+pMDIREr50zdlprA/t9AFERAM8wcQfWOz7nJghGoJJQH2KTBjkk7U
-         JLls3wwf9OZZahPOyInIxVFZGgE4EDI39PPl6KlxgwkAYDcuva4ZkTykYSwlF4nNTO1h
-         fCv1t964DfMhyCupdXSASltoo8/xwU207AtGAJYACQsIfN1T4CUWUNEKVBWLOseHCM30
-         lasQ==
-X-Gm-Message-State: APjAAAUD9MvFDYeF5Wmlge9C7EENamNq+9YthYu0S+sA9PSMNtVd5Bq/
-        sU3A9Mri+ting7yBZOZU1bYnw/XH
-X-Google-Smtp-Source: APXvYqzxHQFvg7B1IoR9HrYpc+EV3zMUO+76rqpp/XVWBMUrpldAgOKUQpKy1Q8NRcFwZME2iPGndQ==
-X-Received: by 2002:a62:3501:: with SMTP id c1mr41146426pfa.184.1557837287163;
-        Tue, 14 May 2019 05:34:47 -0700 (PDT)
-Received: from oslab.tsinghua.edu.cn ([2402:f000:4:72:808::3ca])
-        by smtp.gmail.com with ESMTPSA id g17sm20699149pfk.55.2019.05.14.05.34.44
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Tue, 14 May 2019 05:34:46 -0700 (PDT)
-From:   Jia-Ju Bai <baijiaju1990@gmail.com>
-To:     pkshih@realtek.com, kvalo@codeaurora.org, davem@davemloft.net
-Cc:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Jia-Ju Bai <baijiaju1990@gmail.com>
-Subject: [PATCH] rtlwifi: Fix null-pointer dereferences in error handling code of rtl_pci_probe()
-Date:   Tue, 14 May 2019 20:34:39 +0800
-Message-Id: <20190514123439.10524-1-baijiaju1990@gmail.com>
-X-Mailer: git-send-email 2.17.0
+        id S1726272AbfENMsm (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 14 May 2019 08:48:42 -0400
+Received: from mail.kernel.org ([198.145.29.99]:33968 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726036AbfENMsm (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 14 May 2019 08:48:42 -0400
+Received: from lore-desk-wlan.redhat.com (unknown [151.66.17.19])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id B100520881;
+        Tue, 14 May 2019 12:48:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1557838120;
+        bh=kxnE46J7d2X67fLKKEcm0ZoO+eVOET2YehxYgQRaVM8=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=y9/j2wXZ57EqHJsUsmj78Uxq57Cd/kajXLqP3uGOmv7cVUINmLsaEnjGuFdvKab10
+         1A/IkQiIhBa79ryYxWdpRajJkl0PRRUDW4O0zZ5eJ11JhK0DlyGlRTVX0hklI5FDtf
+         6JSWbNzjDxmuk3VcHWwaLo8O9uaMmRhS0hePi0Gk=
+From:   Lorenzo Bianconi <lorenzo@kernel.org>
+To:     nbd@nbd.name
+Cc:     lorenzo.bianconi@redhat.com, linux-wireless@vger.kernel.org,
+        ryder.lee@mediatek.com, royluo@google.com
+Subject: [PATCH] mt76: move mt76_insert_ccmp_hdr in mt76-module
+Date:   Tue, 14 May 2019 14:48:31 +0200
+Message-Id: <99370eaa04916a871b6cc2413ae00e1370e09292.1557838049.git.lorenzo@kernel.org>
+X-Mailer: git-send-email 2.20.1
+In-Reply-To: <cover.1557838049.git.lorenzo@kernel.org>
+References: <cover.1557838049.git.lorenzo@kernel.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-*BUG 1:
-In rtl_pci_probe(), when rtlpriv->cfg->ops->init_sw_vars() fails,
-rtl_deinit_core() in the error handling code is executed.
-rtl_deinit_core() calls rtl_free_entries_from_scan_list(), which uses
-rtlpriv->scan_list.list in list_for_each_entry_safe(), but it has been
-initialized. Thus a null-pointer dereference occurs.
-The reason is that rtlpriv->scan_list.list is initialized by
-INIT_LIST_HEAD() in rtl_init_core(), which has not been called.
+Move mt7615_insert_ccmp_hdr in mac80211.c and rename it in
+mt76_insert_ccmp_hdr since it is shared between mt7603 and mt7615
+drivers
 
-To fix this bug, rtl_deinit_core() should not be called when
-rtlpriv->cfg->ops->init_sw_vars() fails.
-
-*BUG 2:
-In rtl_pci_probe(), rtl_init_core() can fail when rtl_regd_init() in
-this function fails, and rtlpriv->scan_list.list has not been
-initialized by INIT_LIST_HEAD(). Then, rtl_deinit_core() in the error
-handling code of rtl_pci_probe() is executed. Finally, a null-pointer
-dereference occurs due to the same reason of the above bug.
-
-To fix this bug, the initialization of lists in rtl_init_core() are
-performed before the call to rtl_regd_init().
-
-These bugs are found by a runtime fuzzing tool named FIZZER written by
-us.
-
-Signed-off-by: Jia-Ju Bai <baijiaju1990@gmail.com>
+Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
 ---
- drivers/net/wireless/realtek/rtlwifi/base.c | 15 ++++++++-------
- drivers/net/wireless/realtek/rtlwifi/pci.c  |  4 ++--
- 2 files changed, 10 insertions(+), 9 deletions(-)
+ drivers/net/wireless/mediatek/mt76/mac80211.c | 23 ++++++++++++++++
+ drivers/net/wireless/mediatek/mt76/mt76.h     |  1 +
+ .../net/wireless/mediatek/mt76/mt7603/mac.c   | 26 +------------------
+ .../net/wireless/mediatek/mt76/mt7615/mac.c   | 25 +-----------------
+ 4 files changed, 26 insertions(+), 49 deletions(-)
 
-diff --git a/drivers/net/wireless/realtek/rtlwifi/base.c b/drivers/net/wireless/realtek/rtlwifi/base.c
-index 217d2a7a43c7..b3f341ec3710 100644
---- a/drivers/net/wireless/realtek/rtlwifi/base.c
-+++ b/drivers/net/wireless/realtek/rtlwifi/base.c
-@@ -526,8 +526,14 @@ int rtl_init_core(struct ieee80211_hw *hw)
- 	/* <2> rate control register */
- 	hw->rate_control_algorithm = "rtl_rc";
- 
-+	/* <3> init list */
-+	INIT_LIST_HEAD(&rtlpriv->entry_list);
-+	INIT_LIST_HEAD(&rtlpriv->scan_list.list);
-+	skb_queue_head_init(&rtlpriv->tx_report.queue);
-+	skb_queue_head_init(&rtlpriv->c2hcmd_queue);
+diff --git a/drivers/net/wireless/mediatek/mt76/mac80211.c b/drivers/net/wireless/mediatek/mt76/mac80211.c
+index 5b6a81ee457e..e70507a4b14d 100644
+--- a/drivers/net/wireless/mediatek/mt76/mac80211.c
++++ b/drivers/net/wireless/mediatek/mt76/mac80211.c
+@@ -820,3 +820,26 @@ mt76_set_tim(struct ieee80211_hw *hw, struct ieee80211_sta *sta, bool set)
+ 	return 0;
+ }
+ EXPORT_SYMBOL_GPL(mt76_set_tim);
 +
- 	/*
--	 * <3> init CRDA must come after init
-+	 * <4> init CRDA must come after init
- 	 * mac80211 hw  in _rtl_init_mac80211.
- 	 */
- 	if (rtl_regd_init(hw, rtl_reg_notifier)) {
-@@ -535,7 +541,7 @@ int rtl_init_core(struct ieee80211_hw *hw)
- 		return 1;
++void mt76_insert_ccmp_hdr(struct sk_buff *skb, u8 key_id)
++{
++	struct mt76_rx_status *status = (struct mt76_rx_status *)skb->cb;
++	int hdr_len = ieee80211_get_hdrlen_from_skb(skb);
++	u8 *hdr, *pn = status->iv;
++
++	__skb_push(skb, 8);
++	memmove(skb->data, skb->data + 8, hdr_len);
++	hdr = skb->data + hdr_len;
++
++	hdr[0] = pn[5];
++	hdr[1] = pn[4];
++	hdr[2] = 0;
++	hdr[3] = 0x20 | (key_id << 6);
++	hdr[4] = pn[3];
++	hdr[5] = pn[2];
++	hdr[6] = pn[1];
++	hdr[7] = pn[0];
++
++	status->flag &= ~RX_FLAG_IV_STRIPPED;
++}
++EXPORT_SYMBOL_GPL(mt76_insert_ccmp_hdr);
+diff --git a/drivers/net/wireless/mediatek/mt76/mt76.h b/drivers/net/wireless/mediatek/mt76/mt76.h
+index fc4169c83e76..8edf476f9f2f 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt76.h
++++ b/drivers/net/wireless/mediatek/mt76/mt76.h
+@@ -750,6 +750,7 @@ void mt76_csa_check(struct mt76_dev *dev);
+ void mt76_csa_finish(struct mt76_dev *dev);
+ 
+ int mt76_set_tim(struct ieee80211_hw *hw, struct ieee80211_sta *sta, bool set);
++void mt76_insert_ccmp_hdr(struct sk_buff *skb, u8 key_id);
+ 
+ /* internal */
+ void mt76_tx_free(struct mt76_dev *dev);
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7603/mac.c b/drivers/net/wireless/mediatek/mt76/mt7603/mac.c
+index 0ccba5926b68..5c09b2dbf3fd 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7603/mac.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7603/mac.c
+@@ -418,30 +418,6 @@ mt7603_rx_get_wcid(struct mt7603_dev *dev, u8 idx, bool unicast)
+ 	return &sta->vif->sta.wcid;
+ }
+ 
+-static void
+-mt7603_insert_ccmp_hdr(struct sk_buff *skb, u8 key_id)
+-{
+-	struct mt76_rx_status *status = (struct mt76_rx_status *)skb->cb;
+-	int hdr_len = ieee80211_get_hdrlen_from_skb(skb);
+-	u8 *pn = status->iv;
+-	u8 *hdr;
+-
+-	__skb_push(skb, 8);
+-	memmove(skb->data, skb->data + 8, hdr_len);
+-	hdr = skb->data + hdr_len;
+-
+-	hdr[0] = pn[5];
+-	hdr[1] = pn[4];
+-	hdr[2] = 0;
+-	hdr[3] = 0x20 | (key_id << 6);
+-	hdr[4] = pn[3];
+-	hdr[5] = pn[2];
+-	hdr[6] = pn[1];
+-	hdr[7] = pn[0];
+-
+-	status->flag &= ~RX_FLAG_IV_STRIPPED;
+-}
+-
+ int
+ mt7603_mac_fill_rx(struct mt7603_dev *dev, struct sk_buff *skb)
+ {
+@@ -580,7 +556,7 @@ mt7603_mac_fill_rx(struct mt7603_dev *dev, struct sk_buff *skb)
+ 	if (insert_ccmp_hdr) {
+ 		u8 key_id = FIELD_GET(MT_RXD1_NORMAL_KEY_ID, rxd1);
+ 
+-		mt7603_insert_ccmp_hdr(skb, key_id);
++		mt76_insert_ccmp_hdr(skb, key_id);
  	}
  
--	/* <4> locks */
-+	/* <5> locks */
- 	mutex_init(&rtlpriv->locks.conf_mutex);
- 	mutex_init(&rtlpriv->locks.ips_mutex);
- 	mutex_init(&rtlpriv->locks.lps_mutex);
-@@ -550,11 +556,6 @@ int rtl_init_core(struct ieee80211_hw *hw)
- 	spin_lock_init(&rtlpriv->locks.cck_and_rw_pagea_lock);
- 	spin_lock_init(&rtlpriv->locks.fw_ps_lock);
- 	spin_lock_init(&rtlpriv->locks.iqk_lock);
--	/* <5> init list */
--	INIT_LIST_HEAD(&rtlpriv->entry_list);
--	INIT_LIST_HEAD(&rtlpriv->scan_list.list);
--	skb_queue_head_init(&rtlpriv->tx_report.queue);
--	skb_queue_head_init(&rtlpriv->c2hcmd_queue);
+ 	hdr = (struct ieee80211_hdr *)skb->data;
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/mac.c b/drivers/net/wireless/mediatek/mt76/mt7615/mac.c
+index b8f48d10f27a..1d6ebea17132 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7615/mac.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7615/mac.c
+@@ -61,29 +61,6 @@ static int mt7615_get_rate(struct mt7615_dev *dev,
+ 	return 0;
+ }
  
- 	rtlmac->link_state = MAC80211_NOLINK;
+-static void mt7615_insert_ccmp_hdr(struct sk_buff *skb, u8 key_id)
+-{
+-	struct mt76_rx_status *status = (struct mt76_rx_status *)skb->cb;
+-	int hdr_len = ieee80211_get_hdrlen_from_skb(skb);
+-	u8 *pn = status->iv;
+-	u8 *hdr;
+-
+-	__skb_push(skb, 8);
+-	memmove(skb->data, skb->data + 8, hdr_len);
+-	hdr = skb->data + hdr_len;
+-
+-	hdr[0] = pn[5];
+-	hdr[1] = pn[4];
+-	hdr[2] = 0;
+-	hdr[3] = 0x20 | (key_id << 6);
+-	hdr[4] = pn[3];
+-	hdr[5] = pn[2];
+-	hdr[6] = pn[1];
+-	hdr[7] = pn[0];
+-
+-	status->flag &= ~RX_FLAG_IV_STRIPPED;
+-}
+-
+ int mt7615_mac_fill_rx(struct mt7615_dev *dev, struct sk_buff *skb)
+ {
+ 	struct mt76_rx_status *status = (struct mt76_rx_status *)skb->cb;
+@@ -225,7 +202,7 @@ int mt7615_mac_fill_rx(struct mt7615_dev *dev, struct sk_buff *skb)
+ 	if (insert_ccmp_hdr) {
+ 		u8 key_id = FIELD_GET(MT_RXD1_NORMAL_KEY_ID, rxd1);
  
-diff --git a/drivers/net/wireless/realtek/rtlwifi/pci.c b/drivers/net/wireless/realtek/rtlwifi/pci.c
-index 48ca52102cef..864cb76230c4 100644
---- a/drivers/net/wireless/realtek/rtlwifi/pci.c
-+++ b/drivers/net/wireless/realtek/rtlwifi/pci.c
-@@ -2267,7 +2267,7 @@ int rtl_pci_probe(struct pci_dev *pdev,
- 	if (rtlpriv->cfg->ops->init_sw_vars(hw)) {
- 		pr_err("Can't init_sw_vars\n");
- 		err = -ENODEV;
--		goto fail3;
-+		goto fail2;
+-		mt7615_insert_ccmp_hdr(skb, key_id);
++		mt76_insert_ccmp_hdr(skb, key_id);
  	}
- 	rtlpriv->cfg->ops->init_sw_leds(hw);
+ 
+ 	hdr = (struct ieee80211_hdr *)skb->data;
 -- 
-2.17.0
+2.20.1
 
