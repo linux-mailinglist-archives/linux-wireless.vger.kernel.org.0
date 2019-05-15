@@ -2,65 +2,90 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C10C31F44B
-	for <lists+linux-wireless@lfdr.de>; Wed, 15 May 2019 14:24:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 915271F34E
+	for <lists+linux-wireless@lfdr.de>; Wed, 15 May 2019 14:13:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726521AbfEOMYs (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 15 May 2019 08:24:48 -0400
-Received: from bsmtp8.bon.at ([213.33.87.20]:9723 "EHLO bsmtp8.bon.at"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726441AbfEOMYr (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 15 May 2019 08:24:47 -0400
-X-Greylist: delayed 2025 seconds by postgrey-1.27 at vger.kernel.org; Wed, 15 May 2019 08:24:46 EDT
-Received: from bsmtp7.bon.at (unknown [192.168.181.105])
-        by bsmtp8.bon.at (Postfix) with ESMTPS id 453tDQ0VvQz5vN9
-        for <linux-wireless@vger.kernel.org>; Wed, 15 May 2019 13:51:02 +0200 (CEST)
-Received: from [10.2.1.2] (81.89.61.168.host.vnet.sk [81.89.61.168])
-        by bsmtp7.bon.at (Postfix) with ESMTPSA id 453tDN0vbrz5tl9;
-        Wed, 15 May 2019 13:51:00 +0200 (CEST)
-Cc:     wireless-regdb@lists.infradead.org, linux-wireless@vger.kernel.org
-To:     seth.forshee@canonical.com
-From:   Vladimir Koutny <vladimir.koutny@streamunlimited.com>
-Subject: [PATCH] wireless-regdb: Update regulatory rules for Japan (JP) on
- 5GHz
-Openpgp: preference=signencrypt
-Message-ID: <82a15f3c-fe0c-a5dc-9846-13b3efb01f0d@streamunlimited.com>
-Date:   Wed, 15 May 2019 13:50:59 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.6.1
+        id S1729171AbfEOMM1 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 15 May 2019 08:12:27 -0400
+Received: from gauss.credativ.com ([93.94.130.89]:38863 "EHLO
+        gauss.credativ.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727385AbfEOMMY (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Wed, 15 May 2019 08:12:24 -0400
+X-Greylist: delayed 564 seconds by postgrey-1.27 at vger.kernel.org; Wed, 15 May 2019 08:12:22 EDT
+Received: from gauss.credativ.com (localhost [127.0.0.1])
+        by gauss.credativ.com (Postfix) with ESMTP id EB9971E319C;
+        Wed, 15 May 2019 14:02:54 +0200 (CEST)
+Received: from iniza.credativ.lan (fw-front.credativ.com [62.154.226.94])
+        (using TLSv1 with cipher ECDHE-RSA-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        (Authenticated sender: sdi@gauss.credativ.com)
+        by gauss.credativ.com (Postfix) with ESMTPSA id C04CB1E1A54;
+        Wed, 15 May 2019 14:02:54 +0200 (CEST)
+From:   Sedat Dilek <sedat.dilek@credativ.de>
+To:     Samuel Ortiz <sameo@linux.intel.com>,
+        Charles Gorand <charles.gorand@effinnov.com>,
+        =?UTF-8?q?Cl=C3=A9ment=20Perrochaud?= 
+        <clement.perrochaud@effinnov.com>, linux-nfc@lists.01.org,
+        linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org
+Cc:     Sedat Dilek <sedat.dilek@credativ.de>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Oleg Zhurakivskyy <oleg.zhurakivskyy@intel.com>
+Subject: [PATCH 1/2] NFC: nxp-nci: Clarify on supported chips
+Date:   Wed, 15 May 2019 14:02:33 +0200
+Message-Id: <20190515120233.19159-1-sedat.dilek@credativ.de>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-According to multiple sources channels 8-16 (5030-5090MHz) were only
-allowed in Japan until Nov-30, 2017 (later extended to Nov-30, 2018).
+This patch clarifies on the supported NXP NCI chips and families
+and lists PN547 and PN548 separately which are known as NPC100
+respectively NPC300.
 
-https://www.tele.soumu.go.jp/j/adm/system/trunk/wimax/5ghz/index.htm
-http://www.dspr.co.jp/wp/wp-content/uploads/2017/10/The-expiration-date-of-some-frequency-of-the-5GHz-band-radio-access-system_eng.pdf
+This helps to find informations and identify drivers on vendor's
+support websites.
 
-Signed-off-by: Vladimir Koutny <vladimir.koutny@streamunlimited.com>
+This patch is on top of Andy Shevchenko's patchset:
+"[PATCH v2 00/12] NFC: nxp-nci: clean up and support new ID"
 
+For details see the discussion in [1] and [2].
+
+I add the references to the linux-wireless mailing-list and patchwork
+URLs as Linux NFC is marked orphan now (see commit "NFC: Orphan the
+subsystem").
+
+NOTE: Tested above patchset against Linux v5.1.1 and v5.1.2.
+
+[1] https://marc.info/?t=155774435600001&r=1&w=2
+[2] https://patchwork.kernel.org/project/linux-wireless/list/?submitter=33142
+[3] https://git.kernel.org/pub/scm/linux/kernel/git/davem/net.git/commit/?id=d0a7e8cb3c9d7d4fa2bcdd557be19f0841e2a3be
+
+Suggested-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Suggested-by: Oleg Zhurakivskyy <oleg.zhurakivskyy@intel.com>
+Signed-off-by: Sedat Dilek <sedat.dilek@credativ.de>
 ---
- db.txt | 1 -
- 1 file changed, 1 deletion(-)
+ drivers/nfc/nxp-nci/Kconfig | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/db.txt b/db.txt
-index 4fb1948..7e10d0d 100644
---- a/db.txt
-+++ b/db.txt
-@@ -658,7 +658,6 @@ country JP: DFS-JP
- 	(2402 - 2482 @ 40), (20)
- 	(2474 - 2494 @ 20), (20), NO-OFDM
- 	(4910 - 4990 @ 40), (23)
--	(5030 - 5090 @ 40), (23)
- 	(5170 - 5250 @ 80), (20), AUTO-BW
- 	(5250 - 5330 @ 80), (20), DFS, AUTO-BW
- 	(5490 - 5710 @ 160), (23), DFS
+diff --git a/drivers/nfc/nxp-nci/Kconfig b/drivers/nfc/nxp-nci/Kconfig
+index a28c4265354d..16473cfcb1d8 100644
+--- a/drivers/nfc/nxp-nci/Kconfig
++++ b/drivers/nfc/nxp-nci/Kconfig
+@@ -2,8 +2,8 @@ config NFC_NXP_NCI
+ 	tristate "NXP-NCI NFC driver"
+ 	depends on NFC_NCI
+ 	---help---
+-	  Generic core driver for NXP NCI chips such as the NPC100
+-	  or PN7150 families.
++	  Generic core driver for NXP NCI chips such as the NPC100 (PN547),
++	  NPC300 (PN548) or PN7150 families.
+ 	  This is a driver based on the NCI NFC kernel layers and
+ 	  will thus not work with NXP libnfc library.
+ 
 -- 
-2.11.0
+2.20.1
 
