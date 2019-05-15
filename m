@@ -2,72 +2,122 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 7CC5D1F59E
-	for <lists+linux-wireless@lfdr.de>; Wed, 15 May 2019 15:32:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A052B1F5E1
+	for <lists+linux-wireless@lfdr.de>; Wed, 15 May 2019 15:48:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727419AbfEONcp (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 15 May 2019 09:32:45 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:44187 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726567AbfEONcp (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 15 May 2019 09:32:45 -0400
-Received: from mail-io1-f72.google.com ([209.85.166.72])
-        by youngberry.canonical.com with esmtps (TLS1.0:RSA_AES_128_CBC_SHA1:16)
-        (Exim 4.76)
-        (envelope-from <seth.forshee@canonical.com>)
-        id 1hQu1T-0008Kh-Bd
-        for linux-wireless@vger.kernel.org; Wed, 15 May 2019 13:32:43 +0000
-Received: by mail-io1-f72.google.com with SMTP id y15so1828331iod.10
-        for <linux-wireless@vger.kernel.org>; Wed, 15 May 2019 06:32:43 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=uZ7zVLl9pn27V4CtgnPBdr2cnJN7Avbjtf6kgEMl0SE=;
-        b=QkPSZvb7YznbMB0X7tFciv7ERI0BrLz6ptZIyNB/X4t3uF7oCNabmrGkJiDvq/N6J4
-         5o1Taa7qzDC0zlVZI5X2i8CEMyMliwdV44TqVTYrz3uaXd9iC88h8i2Tgo6a6+GsAENO
-         DyD+tfGpkN+ryOjzSzBS6GVJN+MpUHTpyt0NO4D7GL5YB2NRJu0Yj9jIId5uSorkcf/N
-         IdkIIE0jgyl9ihiXaggSO7SgyL+HQAJlwV+GYopUuvmWYSi58yBEbpTA5dk/YZBCq4k8
-         BEDukMDyeSJkUOzh7CjVuZJmWXFRQOJ8LYfFd1Hn9rmRt8r64AxSrKq3PrlAILTk7PWP
-         LGMQ==
-X-Gm-Message-State: APjAAAXaU2RaRHlcZpAlc7Idbj7pWuXkDdPBVtRMXIXZsxR5A+UI297t
-        oBJhIMa045EXai3FBmQl7zGAR31TeFzAUc0HdkPabf+Zb1hD6gdkhFV7EzUN/QXev8Es2+8stN9
-        5M3zeSuoYcFMbPi1PxMUL6wrdJwR1XBzd4Uhp06Ym7iUp
-X-Received: by 2002:a05:6602:2248:: with SMTP id o8mr19406279ioo.0.1557927161965;
-        Wed, 15 May 2019 06:32:41 -0700 (PDT)
-X-Google-Smtp-Source: APXvYqxMbr60t1T5vL88Uni67Lsu9uDp9nyHODi5K3dAdyTiV9mPZ4JRS25RKCIoV/0P2XMRvX3JSg==
-X-Received: by 2002:a05:6602:2248:: with SMTP id o8mr19406252ioo.0.1557927161727;
-        Wed, 15 May 2019 06:32:41 -0700 (PDT)
-Received: from localhost ([2605:a601:ac2:fb20:4dea:9e3c:35e:c3dc])
-        by smtp.gmail.com with ESMTPSA id 8sm607437ioe.1.2019.05.15.06.32.41
-        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
-        Wed, 15 May 2019 06:32:41 -0700 (PDT)
-Date:   Wed, 15 May 2019 08:32:40 -0500
-From:   Seth Forshee <seth.forshee@canonical.com>
-To:     Vladimir Koutny <vladimir.koutny@streamunlimited.com>
-Cc:     wireless-regdb@lists.infradead.org, linux-wireless@vger.kernel.org
-Subject: Re: [PATCH] wireless-regdb: Update regulatory rules for Japan (JP)
- on 5GHz
-Message-ID: <20190515133240.GB4357@ubuntu-xps13>
-References: <82a15f3c-fe0c-a5dc-9846-13b3efb01f0d@streamunlimited.com>
+        id S1728136AbfEONse (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 15 May 2019 09:48:34 -0400
+Received: from mx1.redhat.com ([209.132.183.28]:41226 "EHLO mx1.redhat.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1728068AbfEONsd (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Wed, 15 May 2019 09:48:33 -0400
+Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.phx2.redhat.com [10.5.11.16])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mx1.redhat.com (Postfix) with ESMTPS id AA3063082B5F;
+        Wed, 15 May 2019 13:48:33 +0000 (UTC)
+Received: from localhost (ovpn-204-245.brq.redhat.com [10.40.204.245])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id 946FD5C28E;
+        Wed, 15 May 2019 13:48:30 +0000 (UTC)
+Date:   Wed, 15 May 2019 15:48:29 +0200
+From:   Stanislaw Gruszka <sgruszka@redhat.com>
+To:     Lorenzo Bianconi <lorenzo@kernel.org>
+Cc:     Kalle Valo <kvalo@codeaurora.org>, nbd@nbd.name,
+        lorenzo.bianconi@redhat.com, linux-wireless@vger.kernel.org
+Subject: Re: [PATCH] mt76: mt7603: add debugfs knob to enable/disable edcca
+Message-ID: <20190515134828.GA2992@redhat.com>
+References: <20190513084127.GA3127@localhost.localdomain>
+ <20190513094837.GB15694@redhat.com>
+ <20190515093333.GA2333@redhat.com>
+ <20190515094354.GA30757@localhost.localdomain>
+ <20190515095440.GB3407@redhat.com>
+ <20190515100343.GB30757@localhost.localdomain>
+ <20190515103309.GA15134@redhat.com>
+ <20190515111348.GC30757@localhost.localdomain>
+ <20190515114615.GB15134@redhat.com>
+ <20190515120741.GD30757@localhost.localdomain>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <82a15f3c-fe0c-a5dc-9846-13b3efb01f0d@streamunlimited.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+In-Reply-To: <20190515120741.GD30757@localhost.localdomain>
+User-Agent: Mutt/1.11.3 (2019-02-01)
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.16
+X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16 (mx1.redhat.com [10.5.110.45]); Wed, 15 May 2019 13:48:33 +0000 (UTC)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Wed, May 15, 2019 at 01:50:59PM +0200, Vladimir Koutny wrote:
-> According to multiple sources channels 8-16 (5030-5090MHz) were only
-> allowed in Japan until Nov-30, 2017 (later extended to Nov-30, 2018).
+On Wed, May 15, 2019 at 02:07:42PM +0200, Lorenzo Bianconi wrote:
+> > On Wed, May 15, 2019 at 01:13:49PM +0200, Lorenzo Bianconi wrote:
+> > > > On Wed, May 15, 2019 at 12:03:44PM +0200, Lorenzo Bianconi wrote:
+> > > > > > On Wed, May 15, 2019 at 11:43:55AM +0200, Lorenzo Bianconi wrote:
+> > > > > > > > On Mon, May 13, 2019 at 11:48:37AM +0200, Stanislaw Gruszka wrote:
+> > > > > > > > > On Mon, May 13, 2019 at 10:41:28AM +0200, Lorenzo Bianconi wrote:
+> > > > > > > > > > > Lorenzo Bianconi <lorenzo@kernel.org> writes:
+> > > > > > > > > > > 
+> > > > > > > > > > > > Introduce a knob in mt7603 debugfs in order to enable/disable
+> > > > > > > > > > > > edcca processing
+> > > > > > > > > > > >
+> > > > > > > > > > > > Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+> > > > > > > > > > > 
+> > > > > > > > > > > It's good to explain what edcca does and how the file is used supposed
+> > > > > > > > > > > to be used. In other words, have a small introduction for the user.
+> > > > > > > > > > 
+> > > > > > > > > > Hi Kalle,
+> > > > > > > > > > 
+> > > > > > > > > > edcca is used for adjusting energy detect based on CCA thresholds.
+> > > > > > > > > > The code was already there so I just reported the acronym.
+> > > > > > > > > 
+> > > > > > > > > What for it is needed ?
+> > > > > > > > 
+> > > > > > > > Care to comment why EDCCA is needed at all ?
+> > > > > > > > 
+> > > > > > > > Taking that debugfs file that enable it is read-only, it looks like
+> > > > > > > > feature that nobody needs nor tests.
+> > > > > > > 
+> > > > > > > already fixed in v2
+> > > > > > > https://patchwork.kernel.org/patch/10940645/
+> > > > > > 
+> > > > > > I'm aware of this patch and other one for mt76x02. But so far in the
+> > > > > > sources EDCCA is disabled for mt76x02 without possibility to enable it
+> > > > > > (and this permission file issue was pointed by Kalle during review, not
+> > > > > > by someone who want to test EDCCA). So again, what for EDCCA is needed ?
+> > > > > 
+> > > > > As I have already written in a previous email, ED/CCA is used to control tx power
+> > > > > according to the CCA MIB counters (e.g do not transmit if the channel busy time
+> > > > > is higher than 90% for given amount of time in a row). I guess it is required
+> > > > > by ETSI regulatory.
+> > > > But what is user case for that, i.e. who need this (it wasn't implemented in
+> > > > mt76x2 since you added it on Dec 2018). What will happen if it will be removed?
+> > > > 
+> > > > > Regarding file permission for mt76x02 debugfs edcca node is a typo.
+> > > > Typo or not, effectively disable the feature and show nobody is
+> > > > testing it.
+> > > > 
+> > > > The reason I'm asking is that seems EDCCA is the main reason to
+> > > > implement watchod for mt76x2, it wasn't necessary to have a watchdog
+> > > > as seems devices did not hung before EDCCA was added.
+> > > 
+> > > IIRC I added the first watchdog implementation to fix tx hangs that occur
+> > > under heavy load even using FCC regulatory (so when EDCCA processing is
+> > > disabled)
+> > 
+> > There was changes in various registers programming introduced by EDCCA
+> > support, even with EDCCA disabled. It's rally not convenient that
+> > watchdog and EDCCA are not related, since you added tx hung watchdog
+> > 2 weeks after adding EDCCA.
+> > 
+> > You can look at this report:
+> > https://github.com/openwrt/mt76/issues/246
+> > Before mt76x2e worked without hungs & watchodg. Now, even with EDCCA
+> > disabled watchdog and HW restarts are required to fix hungs on runtime.
 > 
-> https://www.tele.soumu.go.jp/j/adm/system/trunk/wimax/5ghz/index.htm
-> http://www.dspr.co.jp/wp/wp-content/uploads/2017/10/The-expiration-date-of-some-frequency-of-the-5GHz-band-radio-access-system_eng.pdf
-> 
-> Signed-off-by: Vladimir Koutny <vladimir.koutny@streamunlimited.com>
+> Tx hangs occur in very particular conditions (e.g 200Mbps bidirectional
+> traffic) and moreover they do not always occur so I am not convinced they
+> are always EDCCA related and so I am not confident to remove the watchdog
 
-Applied, thanks!
+I'm not opting for watchdog removal, but for full EDCCA removal.
+Apparently nobody cares, if it can be enabled or not.
+
+Stanislaw
