@@ -2,90 +2,86 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 98D951F542
-	for <lists+linux-wireless@lfdr.de>; Wed, 15 May 2019 15:15:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CB71F1F58D
+	for <lists+linux-wireless@lfdr.de>; Wed, 15 May 2019 15:26:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727480AbfEONPi (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 15 May 2019 09:15:38 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:43814 "EHLO
+        id S1726653AbfEON0W (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 15 May 2019 09:26:22 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:44071 "EHLO
         youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726752AbfEONPi (ORCPT
+        with ESMTP id S1726407AbfEON0V (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 15 May 2019 09:15:38 -0400
-Received: from mail-it1-f200.google.com ([209.85.166.200])
+        Wed, 15 May 2019 09:26:21 -0400
+Received: from mail-io1-f72.google.com ([209.85.166.72])
         by youngberry.canonical.com with esmtps (TLS1.0:RSA_AES_128_CBC_SHA1:16)
         (Exim 4.76)
         (envelope-from <seth.forshee@canonical.com>)
-        id 1hQtku-0007GF-Ep
-        for linux-wireless@vger.kernel.org; Wed, 15 May 2019 13:15:36 +0000
-Received: by mail-it1-f200.google.com with SMTP id m20so2261297itn.3
-        for <linux-wireless@vger.kernel.org>; Wed, 15 May 2019 06:15:36 -0700 (PDT)
+        id 1hQtvI-0007x3-0P
+        for linux-wireless@vger.kernel.org; Wed, 15 May 2019 13:26:20 +0000
+Received: by mail-io1-f72.google.com with SMTP id d22so1815858ioh.14
+        for <linux-wireless@vger.kernel.org>; Wed, 15 May 2019 06:26:19 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=ZTYhlJ094zJt/vNwV3kdaT2+0TA4LhAFNVXEjPr34X0=;
-        b=pkyuGU9oXnB9hRfwiWN67o1lLkqZxDwyy6bhDvMTvtb3Vij5HCQUtvcBfV9ZCWeXp+
-         xcF5Kz/0vgXeqjT1yEU6TgFcpyotve/lykrf85XZ1wiNIYc9dJEK1rfFKzOlpLvMrx7t
-         YnrpzaTREO5jICrbr2gdVGjfXfHW+/TJX7Viv2ZxtaQGoB3NAAxL5i0l5yA79ZLcUJxP
-         FWLn2qKT8+Gy/X2EpBoROJMxYIw6rWiAWjAM1B2VCr+3vNVBZDp7eYaKiPQUPT6L4K3u
-         KwhqmiiVj5xk1PAtLx/kW23WcKmiJyYs5ksOeRFwKA/DyUC2NE54WB26i2WFKDqA7Qnh
-         eumw==
-X-Gm-Message-State: APjAAAVGqWa/eqYqSelQVAjnlSImrXKH40yhQdVORDjNOpZZBN8Xd4QK
-        tWLZr35gzf9eM1jmwmO+2xN+r7WR5iKdda76WjcgFOG1bKyMHXioMgmKfSk8TyfRjl5hmVmUOGK
-        EI5blGsSlGveQ1oXczJ2xXxQZZjb1pN20WSIhTAgv2bOf
-X-Received: by 2002:a02:828c:: with SMTP id t12mr27575145jag.18.1557926135157;
-        Wed, 15 May 2019 06:15:35 -0700 (PDT)
-X-Google-Smtp-Source: APXvYqzPIeOtbAYG4Y5WvYIE87JrZO9jmf2xm88TWXxvPkhyq8yk1bjBEVUjzA5BFENiH2sTBAuIGA==
-X-Received: by 2002:a02:828c:: with SMTP id t12mr27575115jag.18.1557926134893;
-        Wed, 15 May 2019 06:15:34 -0700 (PDT)
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=lyyPK/ttNK3yVa2nl40/3kjtonXN5aqatNlD6xkp1J4=;
+        b=Wbw+5bKDywpXBMgexxHGY9uPg7GhG9geUYbKNPfle5/d/uUtAH7howHmfY+cvNUQ53
+         RAcNQx1/gLWe2ee5glbeYgOlkImp7mQ+E/+ZcXTh1/u292ZpEa2oZrqB1xo50ldfzzjP
+         IJ0ETtmZ1c485BdRyzIR1Nyia9ChM4ikRwlCaLyAuyBFyJRuMl8uxfRpvjMWQaIZoTTm
+         Wdw6yYlj1Q8mc/8ScoZplr47Fv67Vqm7s/z4FEFKn5Y2GEmqEx6Ci1Up9LgcCQFYrXX5
+         F80MYjNR7teED6s1vesejtH7csaKGQ6ov5WDJ6M/yMvfSGp4PgWqgm6qH2BenJVdWyMx
+         xA/Q==
+X-Gm-Message-State: APjAAAXyB87zCrbcrmzWLM01h0pZBc80m2JxTkb+7CvG2U9idVW+qr7g
+        wTBN2OZO3Gd7JKShMIHdgVIxywwngzbn1pe2+R+0r51qjtD4BnGL82PkoTsn5bjAe1anTKQ4ZUj
+        UHDbJ+8hIa23xLuM3sj37HvWYBFvw04flnIVoPt09EMfh
+X-Received: by 2002:a05:6602:21d7:: with SMTP id c23mr26101201ioc.66.1557926778670;
+        Wed, 15 May 2019 06:26:18 -0700 (PDT)
+X-Google-Smtp-Source: APXvYqyO0n6Jcd5OaVwtRdVjBHXpu4I2gf5hesNIT8015nW6YBWuZ2NJqGaHyDgy7P82Boyj8952Uw==
+X-Received: by 2002:a05:6602:21d7:: with SMTP id c23mr26101185ioc.66.1557926778407;
+        Wed, 15 May 2019 06:26:18 -0700 (PDT)
 Received: from localhost ([2605:a601:ac2:fb20:4dea:9e3c:35e:c3dc])
-        by smtp.gmail.com with ESMTPSA id z21sm681596ioz.16.2019.05.15.06.15.33
+        by smtp.gmail.com with ESMTPSA id x4sm123733ita.0.2019.05.15.06.26.17
         (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
-        Wed, 15 May 2019 06:15:34 -0700 (PDT)
-Date:   Wed, 15 May 2019 08:15:33 -0500
-From:   "seth.forshee" <seth.forshee@canonical.com>
-To:     b.K.il.h.u+tigbuh@gmail.com
-Cc:     "junping.xu@jaguarwave.com" <junping.xu@jaguarwave.com>,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        wireless-regdb <wireless-regdb@lists.infradead.org>
-Subject: Re: [wireless-regdb] wireless-regdb: Please update regulatory rules
- for Japan (JP) on 60GHz
-Message-ID: <20190515131533.GZ4357@ubuntu-xps13>
-References: <2019040118074276659215@jaguarwave.com>
- <20190408124829.GD15126@ubuntu-xps13>
- <CAPuHQ=EvWzXtxk0fLOT6PyeYkcNOOXmw0ck-yT-JsqhhDmu2gA@mail.gmail.com>
+        Wed, 15 May 2019 06:26:17 -0700 (PDT)
+From:   Seth Forshee <seth.forshee@canonical.com>
+To:     wireless-regdb@lists.infradead.org
+Cc:     linux-wireless@vger.kernel.org
+Subject: [PATCH] wireless-regdb: Expand 60 GHz band for Japan to 57-66 GHz
+Date:   Wed, 15 May 2019 08:26:17 -0500
+Message-Id: <20190515132617.12852-1-seth.forshee@canonical.com>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAPuHQ=EvWzXtxk0fLOT6PyeYkcNOOXmw0ck-yT-JsqhhDmu2gA@mail.gmail.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Fri, Apr 26, 2019 at 12:00:22AM +0200, b.K.il.h.u+tigbuh@gmail.com wrote:
-> This seems to be the page for the previous standard:
-> https://www.arib.or.jp/english/std_tr/telecommunications/std-t74.html
-> 
-> And the following should be the new standard, but I don't know where
-> to obtain it:
-> https://www.arib.or.jp/english/std_tr/telecommunications/std-t117.html
-> 
-> The description fields here do note the range of 57-66GHz, though:
-> https://www.arib.or.jp/kikaku/kikaku_tushin/desc/std-t117.html
-> https://webstore.arib.or.jp/en/products/detail.php?product_id=288
-> 
-> Similar mentions in the news (search for T117):
-> https://www.arib.or.jp/image/osirase/news/1044.pdf
-> https://www.arib.or.jp/image/iinkai/kikaku-kaigi/rireki/101.pdf
-> 
-> Testing procedure is described here, not sure if it's considered useful:
-> file:///home/bkil/chrome.root/Downloads/60ghz2_1_19_4_2_1.pdf
+The official documents are not feely available, but based on
+summaries such as [1] and numerous third-party resources the 60
+GHz band in Japan has been 57-66 GHz for some time now. Update
+our rules accordingly.
 
-Thanks. Judging by these and numerous other third-party resources I've
-found, I think it's safe to say that the range was expanded back to 57
-GHz quite some time ago. I'll send a patch to update this range.
+[1] https://webstore.arib.or.jp/en/products/detail.php?product_id=288
 
-Seth
+Signed-off-by: Seth Forshee <seth.forshee@canonical.com>
+---
+ db.txt | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/db.txt b/db.txt
+index 4fb194835116..e11e0f747386 100644
+--- a/db.txt
++++ b/db.txt
+@@ -664,7 +664,7 @@ country JP: DFS-JP
+ 	(5490 - 5710 @ 160), (23), DFS
+ 	# 60 GHz band channels 2-4 at 10mW,
+ 	# ref: http://www.arib.or.jp/english/html/overview/doc/1-STD-T74v1_1.pdf
+-	(59000 - 66000 @ 2160), (10 mW)
++	(57000 - 66000 @ 2160), (10 mW)
+ 
+ country KE: DFS-JP
+ 	(2402 - 2482 @ 40), (20)
+-- 
+2.20.1
+
