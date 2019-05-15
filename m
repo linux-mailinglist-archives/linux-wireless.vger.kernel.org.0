@@ -2,52 +2,110 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id DA9231F32A
-	for <lists+linux-wireless@lfdr.de>; Wed, 15 May 2019 14:11:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 387B11F451
+	for <lists+linux-wireless@lfdr.de>; Wed, 15 May 2019 14:26:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728762AbfEOMLF (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 15 May 2019 08:11:05 -0400
-Received: from mga04.intel.com ([192.55.52.120]:43796 "EHLO mga04.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726360AbfEOMLE (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 15 May 2019 08:11:04 -0400
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from fmsmga005.fm.intel.com ([10.253.24.32])
-  by fmsmga104.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 15 May 2019 05:11:03 -0700
-X-ExtLoop1: 1
-Received: from ozhuraki-desk.fi.intel.com (HELO [10.237.67.35]) ([10.237.67.35])
-  by fmsmga005.fm.intel.com with ESMTP; 15 May 2019 05:11:01 -0700
-Subject: Re: [PATCH 1/2] NFC: nxp-nci: Clarify on supported chips
-To:     Sedat Dilek <sedat.dilek@credativ.de>,
-        Samuel Ortiz <sameo@linux.intel.com>,
-        Charles Gorand <charles.gorand@effinnov.com>,
-        =?UTF-8?Q?Cl=c3=a9ment_Perrochaud?= 
-        <clement.perrochaud@effinnov.com>, linux-nfc@lists.01.org,
-        linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org
-Cc:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-References: <20190515120233.19159-1-sedat.dilek@credativ.de>
-From:   Oleg Zhurakivskyy <oleg.zhurakivskyy@intel.com>
-Message-ID: <f794b70e-2614-9779-0768-e6b8ebdc302a@intel.com>
-Date:   Wed, 15 May 2019 15:10:48 +0300
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+        id S1726703AbfEOM0T (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 15 May 2019 08:26:19 -0400
+Received: from smtp.codeaurora.org ([198.145.29.96]:42700 "EHLO
+        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726652AbfEOM0T (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Wed, 15 May 2019 08:26:19 -0400
+Received: by smtp.codeaurora.org (Postfix, from userid 1000)
+        id 1B6DC6072E; Wed, 15 May 2019 12:26:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
+        s=default; t=1557923178;
+        bh=9MqGVcO6uYUQ2aNqwWZf4c/ySF737WfbAu840JeYXQE=;
+        h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
+        b=h+LrIjbWVYhw3DeNZQ3ebZLBfDoaCcSwaAkgVBr+WjcDi6/pdKVXYH/hDqwJr8wh6
+         6/34sreNw60+j4YjrQzsE9t1rEej5Gg+Z/EeTPep8kEPD7hZVKUSFgGRo5flyhD6ZL
+         qTzYz+ADMjkDjQVP/g+Nix1HohRAsnmdLFtBzADE=
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        pdx-caf-mail.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.7 required=2.0 tests=ALL_TRUSTED,BAYES_00,
+        DKIM_INVALID,DKIM_SIGNED autolearn=no autolearn_force=no version=3.4.0
+Received: from [10.204.79.15] (blr-c-bdr-fw-01_globalnat_allzones-outside.qualcomm.com [103.229.19.19])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        (Authenticated sender: mojha@smtp.codeaurora.org)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 37937607F4;
+        Wed, 15 May 2019 12:26:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
+        s=default; t=1557923177;
+        bh=9MqGVcO6uYUQ2aNqwWZf4c/ySF737WfbAu840JeYXQE=;
+        h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
+        b=SfllZBh9wAj1akKJtLKrDfIvh8upprGZG7nEkfm+T67WrefhLWfdeXAnwBwndDmHB
+         T4HKEhkJHBfAyjJXBd7c26dXsLtxVf2j+KyqyyqYm9Ip4M2bV0hsPU/G0079fZl3ml
+         GuX/HBVcME0N78YkxKntfJgJaUt3+cjMN3KAcLFI=
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 37937607F4
+Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=mojha@codeaurora.org
+Subject: Re: [PATCH] libertas/libertas_tf: fix spelling mistake "Donwloading"
+ -> "Downloading"
+To:     Colin King <colin.king@canonical.com>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        "David S . Miller" <davem@davemloft.net>,
+        libertas-dev@lists.infradead.org, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20190514211406.6353-1-colin.king@canonical.com>
+From:   Mukesh Ojha <mojha@codeaurora.org>
+Message-ID: <2661269b-7404-5534-05e1-b3b963dc2036@codeaurora.org>
+Date:   Wed, 15 May 2019 17:56:11 +0530
+User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:60.0) Gecko/20100101
  Thunderbird/60.6.1
 MIME-Version: 1.0
-In-Reply-To: <20190515120233.19159-1-sedat.dilek@credativ.de>
+In-Reply-To: <20190514211406.6353-1-colin.king@canonical.com>
 Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
 Content-Transfer-Encoding: 7bit
+Content-Language: en-US
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 5/15/19 3:02 PM, Sedat Dilek wrote:
-> This patch clarifies on the supported NXP NCI chips and families
-> and lists PN547 and PN548 separately which are known as NPC100
-> respectively NPC300.
 
-LGTM and thanks!
+On 5/15/2019 2:44 AM, Colin King wrote:
+> From: Colin Ian King <colin.king@canonical.com>
+>
+> There is are two spelling mistakes in lbtf_deb_usb2 messages, fix these.
+>
+> Signed-off-by: Colin Ian King <colin.king@canonical.com>
+Reviewed-by: Mukesh Ojha <mojha@codeaurora.org>
 
-Regards,
-Oleg
+Cheers,
+-Mukesh
+
+> ---
+>   drivers/net/wireless/marvell/libertas/if_usb.c    | 2 +-
+>   drivers/net/wireless/marvell/libertas_tf/if_usb.c | 2 +-
+>   2 files changed, 2 insertions(+), 2 deletions(-)
+>
+> diff --git a/drivers/net/wireless/marvell/libertas/if_usb.c b/drivers/net/wireless/marvell/libertas/if_usb.c
+> index 220dcdee8d2b..1d06fa564e28 100644
+> --- a/drivers/net/wireless/marvell/libertas/if_usb.c
+> +++ b/drivers/net/wireless/marvell/libertas/if_usb.c
+> @@ -367,7 +367,7 @@ static int if_usb_send_fw_pkt(struct if_usb_card *cardp)
+>   			     cardp->fwseqnum, cardp->totalbytes);
+>   	} else if (fwdata->hdr.dnldcmd == cpu_to_le32(FW_HAS_LAST_BLOCK)) {
+>   		lbs_deb_usb2(&cardp->udev->dev, "Host has finished FW downloading\n");
+> -		lbs_deb_usb2(&cardp->udev->dev, "Donwloading FW JUMP BLOCK\n");
+> +		lbs_deb_usb2(&cardp->udev->dev, "Downloading FW JUMP BLOCK\n");
+>   
+>   		cardp->fwfinalblk = 1;
+>   	}
+> diff --git a/drivers/net/wireless/marvell/libertas_tf/if_usb.c b/drivers/net/wireless/marvell/libertas_tf/if_usb.c
+> index a4b9ede70705..38f77b1a02ca 100644
+> --- a/drivers/net/wireless/marvell/libertas_tf/if_usb.c
+> +++ b/drivers/net/wireless/marvell/libertas_tf/if_usb.c
+> @@ -319,7 +319,7 @@ static int if_usb_send_fw_pkt(struct if_usb_card *cardp)
+>   	} else if (fwdata->hdr.dnldcmd == cpu_to_le32(FW_HAS_LAST_BLOCK)) {
+>   		lbtf_deb_usb2(&cardp->udev->dev,
+>   			"Host has finished FW downloading\n");
+> -		lbtf_deb_usb2(&cardp->udev->dev, "Donwloading FW JUMP BLOCK\n");
+> +		lbtf_deb_usb2(&cardp->udev->dev, "Downloading FW JUMP BLOCK\n");
+>   
+>   		/* Host has finished FW downloading
+>   		 * Donwloading FW JUMP BLOCK
