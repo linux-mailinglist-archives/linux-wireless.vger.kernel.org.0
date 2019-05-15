@@ -2,117 +2,97 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 58CDA1EB9D
-	for <lists+linux-wireless@lfdr.de>; Wed, 15 May 2019 12:03:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 533801EBD5
+	for <lists+linux-wireless@lfdr.de>; Wed, 15 May 2019 12:09:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726168AbfEOKDv (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 15 May 2019 06:03:51 -0400
-Received: from mail.kernel.org ([198.145.29.99]:56508 "EHLO mail.kernel.org"
+        id S1726406AbfEOKJY (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 15 May 2019 06:09:24 -0400
+Received: from mga07.intel.com ([134.134.136.100]:3238 "EHLO mga07.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725966AbfEOKDu (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 15 May 2019 06:03:50 -0400
-Received: from localhost.localdomain (nat-pool-mxp-t.redhat.com [149.6.153.186])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 50AFA2084A;
-        Wed, 15 May 2019 10:03:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1557914629;
-        bh=VD4tegmkqkOg95dEhB30JPWx50Q5LVCLUuv7xs5wBxI=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=HhMos16Vi53zyiMTWr4CjLVak4U9NIF9mUNdCChG/iw0BAeHHh0bDWQaDzICIygMb
-         hu0GXPAgeFyDt2WovO9DkthcXUDNp1XH84TiMDwWSxSiSvp3V2ZEiHeSN8mzkyycLg
-         YKSIj4+DRFhPx+detxw6cjADGGpKGEVzqg0Yk+88=
-Date:   Wed, 15 May 2019 12:03:44 +0200
-From:   Lorenzo Bianconi <lorenzo@kernel.org>
-To:     Stanislaw Gruszka <sgruszka@redhat.com>
-Cc:     Kalle Valo <kvalo@codeaurora.org>, nbd@nbd.name,
-        lorenzo.bianconi@redhat.com, linux-wireless@vger.kernel.org
-Subject: Re: [PATCH] mt76: mt7603: add debugfs knob to enable/disable edcca
-Message-ID: <20190515100343.GB30757@localhost.localdomain>
-References: <cover.1557591530.git.lorenzo@kernel.org>
- <0691acb931e963cb6028d4687cdd61032d0aaf52.1557591530.git.lorenzo@kernel.org>
- <87r293ugia.fsf@purkki.adurom.net>
- <20190513084127.GA3127@localhost.localdomain>
- <20190513094837.GB15694@redhat.com>
- <20190515093333.GA2333@redhat.com>
- <20190515094354.GA30757@localhost.localdomain>
- <20190515095440.GB3407@redhat.com>
+        id S1726136AbfEOKJX (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Wed, 15 May 2019 06:09:23 -0400
+X-Amp-Result: UNSCANNABLE
+X-Amp-File-Uploaded: False
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+  by orsmga105.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 15 May 2019 03:09:22 -0700
+X-ExtLoop1: 1
+Received: from smile.fi.intel.com (HELO smile) ([10.237.72.86])
+  by fmsmga001.fm.intel.com with ESMTP; 15 May 2019 03:09:20 -0700
+Received: from andy by smile with local (Exim 4.92)
+        (envelope-from <andriy.shevchenko@linux.intel.com>)
+        id 1hQqqd-0003py-Pf; Wed, 15 May 2019 13:09:19 +0300
+Date:   Wed, 15 May 2019 13:09:19 +0300
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To:     Sedat Dilek <sedat.dilek@gmail.com>
+Cc:     Oleg Zhurakivskyy <oleg.zhurakivskyy@intel.com>,
+        =?iso-8859-1?Q?Cl=E9ment?= Perrochaud 
+        <clement.perrochaud@effinnov.com>,
+        Charles Gorand <charles.gorand@effinnov.com>,
+        linux-nfc@lists.01.org, Samuel Ortiz <sameo@linux.intel.com>,
+        linux-wireless@vger.kernel.org
+Subject: Re: [PATCH v2 00/12] NFC: nxp-nci: clean up and support new ID
+Message-ID: <20190515100919.GJ9224@smile.fi.intel.com>
+References: <20190513123751.GS9224@smile.fi.intel.com>
+ <CA+icZUUA8TfU--6b+RwXMf=ui7ww0DK=EurzdMeDUkGvwcJ_rg@mail.gmail.com>
+ <2d39b39b-27eb-abef-747f-400433daefee@intel.com>
+ <CA+icZUW6vttB8EvgBZYi3kT7uhcbQr+baYbif_V6D78ZNEDbHQ@mail.gmail.com>
+ <4f297fa0-257d-5036-8a1a-0f5434bb5d26@intel.com>
+ <CA+icZUWZH-JS=JHLieVd2ga=Zutac2BXd4tk0tSXs+izQ5txOQ@mail.gmail.com>
+ <787aff34-b1b9-b9e2-faf3-409d7fc95a52@intel.com>
+ <CA+icZUV=TBfabHsbzj_JPnxXBjo114LWVJ==xSS7zVPkajmNgw@mail.gmail.com>
+ <20190514170136.GI9224@smile.fi.intel.com>
+ <CA+icZUW0KM07sUH=muhRwFBZQKQpeqN6wCDHSDrQM-L35bA+SQ@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="Yylu36WmvOXNoKYn"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20190515095440.GB3407@redhat.com>
-User-Agent: Mutt/1.11.3 (2019-02-01)
+In-Reply-To: <CA+icZUW0KM07sUH=muhRwFBZQKQpeqN6wCDHSDrQM-L35bA+SQ@mail.gmail.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+On Wed, May 15, 2019 at 10:32:36AM +0200, Sedat Dilek wrote:
+> On Tue, May 14, 2019 at 7:01 PM Andy Shevchenko
+> <andriy.shevchenko@linux.intel.com> wrote:
 
---Yylu36WmvOXNoKYn
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+> So, this is enough?
 
-> On Wed, May 15, 2019 at 11:43:55AM +0200, Lorenzo Bianconi wrote:
-> > > On Mon, May 13, 2019 at 11:48:37AM +0200, Stanislaw Gruszka wrote:
-> > > > On Mon, May 13, 2019 at 10:41:28AM +0200, Lorenzo Bianconi wrote:
-> > > > > > Lorenzo Bianconi <lorenzo@kernel.org> writes:
-> > > > > >=20
-> > > > > > > Introduce a knob in mt7603 debugfs in order to enable/disable
-> > > > > > > edcca processing
-> > > > > > >
-> > > > > > > Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
-> > > > > >=20
-> > > > > > It's good to explain what edcca does and how the file is used s=
-upposed
-> > > > > > to be used. In other words, have a small introduction for the u=
-ser.
-> > > > >=20
-> > > > > Hi Kalle,
-> > > > >=20
-> > > > > edcca is used for adjusting energy detect based on CCA thresholds.
-> > > > > The code was already there so I just reported the acronym.
-> > > >=20
-> > > > What for it is needed ?
-> > >=20
-> > > Care to comment why EDCCA is needed at all ?
-> > >=20
-> > > Taking that debugfs file that enable it is read-only, it looks like
-> > > feature that nobody needs nor tests.
-> >=20
-> > already fixed in v2
-> > https://patchwork.kernel.org/patch/10940645/
->=20
-> I'm aware of this patch and other one for mt76x02. But so far in the
-> sources EDCCA is disabled for mt76x02 without possibility to enable it
-> (and this permission file issue was pointed by Kalle during review, not
-> by someone who want to test EDCCA). So again, what for EDCCA is needed ?
+Yes, please send it as a formal patch, I will chain it to my series and resend
+in a bunch of v3.
 
-As I have already written in a previous email, ED/CCA is used to control tx=
- power
-according to the CCA MIB counters (e.g do not transmit if the channel busy =
-time
-is higher than 90% for given amount of time in a row). I guess it is requir=
-ed
-by ETSI regulatory.
-Regarding file permission for mt76x02 debugfs edcca node is a typo.
+> $ git diff
+> diff --git a/drivers/nfc/nxp-nci/Kconfig b/drivers/nfc/nxp-nci/Kconfig
+> index a28c4265354d..d85a4761e271 100644
+> --- a/drivers/nfc/nxp-nci/Kconfig
+> +++ b/drivers/nfc/nxp-nci/Kconfig
+> @@ -2,8 +2,8 @@ config NFC_NXP_NCI
+>         tristate "NXP-NCI NFC driver"
+>         depends on NFC_NCI
+>         ---help---
+> -         Generic core driver for NXP NCI chips such as the NPC100
+> -         or PN7150 families.
+> +         Generic core driver for NXP NCI chips such as the PN547 (NPC100),
+> +         PN548 (NPC300) or PN7150 families.
+>           This is a driver based on the NCI NFC kernel layers and
+>           will thus not work with NXP libnfc library.
+> 
+> @@ -21,4 +21,4 @@ config NFC_NXP_NCI_I2C
+> 
+>           To compile this driver as a module, choose m here. The module will
+>           be called nxp_nci_i2c.
+> -         Say Y if unsure.
+> +         Say N if unsure.
+> 
+> Shall I sent a patch for this, or do you want to that yourself?
+> 
+> Thanks.
+> 
+> - Sedat -
 
-Lorenzo
+-- 
+With Best Regards,
+Andy Shevchenko
 
->=20
-> Stanislaw
 
---Yylu36WmvOXNoKYn
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYIAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCXNvj/AAKCRA6cBh0uS2t
-rEdQAQD4YcmmbO8cooWRbgCwesXnFnjEbxYovLBY6/vBihAUUwD+IruDiQ77GWqm
-L5pr8w4RYhR9dbdM937d+obSWNLktgo=
-=wWbq
------END PGP SIGNATURE-----
-
---Yylu36WmvOXNoKYn--
