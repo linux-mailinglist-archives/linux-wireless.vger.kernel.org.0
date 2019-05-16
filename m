@@ -2,170 +2,91 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 19B5E202E1
-	for <lists+linux-wireless@lfdr.de>; Thu, 16 May 2019 11:53:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BE5D1204CD
+	for <lists+linux-wireless@lfdr.de>; Thu, 16 May 2019 13:36:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727156AbfEPJxJ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 16 May 2019 05:53:09 -0400
-Received: from s3.sipsolutions.net ([144.76.43.62]:39766 "EHLO
-        sipsolutions.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726336AbfEPJxI (ORCPT
+        id S1726736AbfEPLgD (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 16 May 2019 07:36:03 -0400
+Received: from mail-ed1-f46.google.com ([209.85.208.46]:45460 "EHLO
+        mail-ed1-f46.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726363AbfEPLgD (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 16 May 2019 05:53:08 -0400
-Received: by sipsolutions.net with esmtpsa (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <johannes@sipsolutions.net>)
-        id 1hRD4T-0007MT-38; Thu, 16 May 2019 11:53:05 +0200
-From:   Johannes Berg <johannes@sipsolutions.net>
-To:     linux-wireless@vger.kernel.org
-Cc:     Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH 2/2] mac80211: use STA info in rate_control_send_low()
-Date:   Thu, 16 May 2019 11:52:57 +0200
-Message-Id: <20190516095257.11503-2-johannes@sipsolutions.net>
-X-Mailer: git-send-email 2.17.2
-In-Reply-To: <20190516095257.11503-1-johannes@sipsolutions.net>
-References: <20190516095257.11503-1-johannes@sipsolutions.net>
+        Thu, 16 May 2019 07:36:03 -0400
+Received: by mail-ed1-f46.google.com with SMTP id g57so4726359edc.12
+        for <linux-wireless@vger.kernel.org>; Thu, 16 May 2019 04:36:02 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=broadcom.com; s=google;
+        h=to:cc:from:subject:message-id:date:user-agent:mime-version
+         :content-language:content-transfer-encoding;
+        bh=ABrVTP7tfNstYHlzKLELFT1T8Cqmuc4h4Q2Nb4CnxtE=;
+        b=FDW8pGuKbCJJXcInHZJE+oeQT+pWHvG4Hj4HJOqDn/Q+Vy8vgejYeOgUa3lrSaYnXj
+         GWG8vwvOGx5sQg9HlZ6s+GSuqYVTrdIu/lnHo8+HnI16QEr90Wp7CPMnxH9mAttE5V+o
+         IxWIVzXU60xczTnQGkUNHKxnq8JbUiDALc6oY=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:to:cc:from:subject:message-id:date:user-agent
+         :mime-version:content-language:content-transfer-encoding;
+        bh=ABrVTP7tfNstYHlzKLELFT1T8Cqmuc4h4Q2Nb4CnxtE=;
+        b=MndhX2byjiuKtxJlutPtJ4FHn34PIhC8oEBe8Xkpe1icDMoDuO26bIzHCZDQkHjJan
+         2TIzR8n3T1hIvIxCFxEu+ItHDDdVgtqwzF6b4aR69Gdm4agwFJGO1dvBwGB++8e+LlrR
+         skRuzCWhh2wRf9kRTpQ+XCk7HtRsAlCgfErNx/d+Y5MHiiy/McJWqv8GG6j8M2CSI4o+
+         GZrNaTKZIB2cE/AUC15SqZwyItC0OS0nJL1knP21Ehkro2x2WYmnRtImiGmDawNwjgHF
+         qVpunHy375ur5aTL3anFtuBcyKdGpPTbMvVUaJI4XbGdEmoUzI7FxqutqNDWD8EFSD1i
+         kk7w==
+X-Gm-Message-State: APjAAAUttVPFTjKD49fwWuzo+WrvSRHh4zVbYDQiqpcJ0aQ4yoXy4Vpt
+        Nw4+TyGktgTwAc8LXKD7gdDJVw==
+X-Google-Smtp-Source: APXvYqzY8ZkwhHTuVhimaYiXS2Aj/XQSkH+JNlE7KZ6PuHoVOzLaNjhlAwgu/jUUwMgoFOavmfYV7A==
+X-Received: by 2002:a50:ca45:: with SMTP id e5mr13596691edi.1.1558006561564;
+        Thu, 16 May 2019 04:36:01 -0700 (PDT)
+Received: from [10.230.33.15] ([192.19.248.250])
+        by smtp.gmail.com with ESMTPSA id w54sm1836109edw.40.2019.05.16.04.36.00
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Thu, 16 May 2019 04:36:01 -0700 (PDT)
+To:     Kalle Valo <kvalo@codeaurora.org>
+Cc:     linux-wireless <linux-wireless@vger.kernel.org>,
+        Thomas Gleixner <tglx@linutronix.de>
+From:   Arend Van Spriel <arend.vanspriel@broadcom.com>
+Subject: SPDX identifier
+Message-ID: <b04655c7-5a6e-b510-5fcf-30ecca489882@broadcom.com>
+Date:   Thu, 16 May 2019 13:35:59 +0200
+User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:60.0) Gecko/20100101
+ Thunderbird/60.6.1
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Johannes Berg <johannes.berg@intel.com>
+Hi Kalle, Thomas,
 
-Even if we have a station, we currently call rate_control_send_low()
-with the NULL station unless further rate control (driver, minstrel)
-has been initialized.
+I added SPDX tags in brcm80211 driver sources. Although it is a 
+no-brainer I decided to run checkpatch for the changes and quirky stuff 
+started to happen. For all files I added:
 
-Change this so we can use more information about the station to use
-a better rate. For example, when we associate with an AP, we will
-now use the lowest rate it advertised as supported (that we can)
-rather than the lowest mandatory rate. This aligns our behaviour
-with most other 802.11 implementations.
+// SPDX-License-Identifier
 
-To make this possible, we need to also ensure that we have non-zero
-rates at all times, so in case we really have *nothing* pre-fill
-the supp_rates bitmap with the very lowest mandatory bitmap (11b
-and 11a on 2.4 and 5 GHz respectively).
+but checkpatch started complaining I should use /* ... */ instead of //.
 
-Additionally, hostapd appears to be giving us an empty supported
-rates bitmap (it can and should do better, since the STA must have
-supported for at least the basic rates in the BSS), so ignore any
-such bitmaps that would actually zero out the supp_rates, and in
-that case just keep the pre-filled mandatory rates.
+WARNING: Improper SPDX comment style for 
+'drivers/net/wireless/broadcom/brcm80211/include/brcm_hw_ids.h', please 
+use '/*' instead
+#29: FILE: drivers/net/wireless/broadcom/brcm80211/include/brcm_hw_ids.h:1:
++// SPDX-License-Identifier: ISC
 
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
----
- net/mac80211/cfg.c      |  2 +-
- net/mac80211/mlme.c     |  7 ++++++-
- net/mac80211/rate.c     | 12 ++++++------
- net/mac80211/sta_info.c | 31 +++++++++++++++++++++++++++++++
- 4 files changed, 44 insertions(+), 8 deletions(-)
+So I edited all patches and ran again. And again it started complaining.
 
-diff --git a/net/mac80211/cfg.c b/net/mac80211/cfg.c
-index 52e6a091b7e4..58c97e6dadb0 100644
---- a/net/mac80211/cfg.c
-+++ b/net/mac80211/cfg.c
-@@ -1466,7 +1466,7 @@ static int sta_apply_parameters(struct ieee80211_local *local,
- 			return ret;
- 	}
- 
--	if (params->supported_rates) {
-+	if (params->supported_rates && params->supported_rates_len) {
- 		ieee80211_parse_bitrates(&sdata->vif.bss_conf.chandef,
- 					 sband, params->supported_rates,
- 					 params->supported_rates_len,
-diff --git a/net/mac80211/mlme.c b/net/mac80211/mlme.c
-index b7a9fe3d5fcb..bc2fdadf69bc 100644
---- a/net/mac80211/mlme.c
-+++ b/net/mac80211/mlme.c
-@@ -4941,7 +4941,12 @@ static int ieee80211_prep_connection(struct ieee80211_sub_if_data *sdata,
- 			basic_rates = BIT(min_rate_index);
- 		}
- 
--		new_sta->sta.supp_rates[cbss->channel->band] = rates;
-+		if (rates)
-+			new_sta->sta.supp_rates[cbss->channel->band] = rates;
-+		else
-+			sdata_info(sdata,
-+				   "No rates found, keeping mandatory only\n");
-+
- 		sdata->vif.bss_conf.basic_rates = basic_rates;
- 
- 		/* cf. IEEE 802.11 9.2.12 */
-diff --git a/net/mac80211/rate.c b/net/mac80211/rate.c
-index 09f89d004a70..bc3cedc653f0 100644
---- a/net/mac80211/rate.c
-+++ b/net/mac80211/rate.c
-@@ -886,11 +886,6 @@ void rate_control_get_rate(struct ieee80211_sub_if_data *sdata,
- 	struct ieee80211_tx_info *info = IEEE80211_SKB_CB(txrc->skb);
- 	int i;
- 
--	if (sta && test_sta_flag(sta, WLAN_STA_RATE_CONTROL)) {
--		ista = &sta->sta;
--		priv_sta = sta->rate_ctrl_priv;
--	}
--
- 	for (i = 0; i < IEEE80211_TX_MAX_RATES; i++) {
- 		info->control.rates[i].idx = -1;
- 		info->control.rates[i].flags = 0;
-@@ -900,9 +895,14 @@ void rate_control_get_rate(struct ieee80211_sub_if_data *sdata,
- 	if (ieee80211_hw_check(&sdata->local->hw, HAS_RATE_CONTROL))
- 		return;
- 
--	if (rate_control_send_low(ista, txrc))
-+	if (rate_control_send_low(sta ? &sta->sta : NULL, txrc))
- 		return;
- 
-+	if (sta && test_sta_flag(sta, WLAN_STA_RATE_CONTROL)) {
-+		ista = &sta->sta;
-+		priv_sta = sta->rate_ctrl_priv;
-+	}
-+
- 	if (ista) {
- 		spin_lock_bh(&sta->rate_ctrl_lock);
- 		ref->ops->get_rate(ref->priv, ista, priv_sta, txrc);
-diff --git a/net/mac80211/sta_info.c b/net/mac80211/sta_info.c
-index a4932ee3595c..4b4774e07151 100644
---- a/net/mac80211/sta_info.c
-+++ b/net/mac80211/sta_info.c
-@@ -404,6 +404,37 @@ struct sta_info *sta_info_alloc(struct ieee80211_sub_if_data *sdata,
- 	for (i = 0; i < IEEE80211_NUM_TIDS; i++)
- 		sta->last_seq_ctrl[i] = cpu_to_le16(USHRT_MAX);
- 
-+	for (i = 0; i < NUM_NL80211_BANDS; i++) {
-+		u32 mandatory = 0;
-+		int r;
-+
-+		if (!hw->wiphy->bands[i])
-+			continue;
-+
-+		switch (i) {
-+		case NL80211_BAND_2GHZ:
-+			mandatory = IEEE80211_RATE_MANDATORY_B;
-+			break;
-+		case NL80211_BAND_5GHZ:
-+			mandatory = IEEE80211_RATE_MANDATORY_G;
-+			break;
-+		case NL80211_BAND_60GHZ:
-+			WARN_ON(1);
-+			mandatory = 0;
-+			break;
-+		}
-+
-+		for (r = 0; r < hw->wiphy->bands[i]->n_bitrates; r++) {
-+			struct ieee80211_rate *rate;
-+
-+			rate = &hw->wiphy->bands[i]->bitrates[r];
-+
-+			if (!(rate->flags & mandatory))
-+				continue;
-+			sta->sta.supp_rates[i] |= BIT(r);
-+		}
-+	}
-+
- 	sta->sta.smps_mode = IEEE80211_SMPS_OFF;
- 	if (sdata->vif.type == NL80211_IFTYPE_AP ||
- 	    sdata->vif.type == NL80211_IFTYPE_AP_VLAN) {
--- 
-2.17.2
+WARNING: Improper SPDX comment style for 
+'drivers/net/wireless/broadcom/brcm80211/brcmsmac/aiutils.c', please use 
+'//' instead
 
+So now I am in a bonkers state. It seems for header files we want /* */ 
+and for c files we want //. For real?
+
+This is on wireless-drivers-next so maybe it is already fixed, but I 
+think this should be fixed.
+
+Regards,
+Arend
