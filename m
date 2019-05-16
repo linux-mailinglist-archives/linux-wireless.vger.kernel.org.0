@@ -2,106 +2,92 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 213C020F50
-	for <lists+linux-wireless@lfdr.de>; Thu, 16 May 2019 21:48:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4876420F6C
+	for <lists+linux-wireless@lfdr.de>; Thu, 16 May 2019 22:01:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727091AbfEPTsF (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 16 May 2019 15:48:05 -0400
-Received: from mail-ed1-f54.google.com ([209.85.208.54]:42807 "EHLO
-        mail-ed1-f54.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726948AbfEPTsF (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 16 May 2019 15:48:05 -0400
-Received: by mail-ed1-f54.google.com with SMTP id l25so6875381eda.9
-        for <linux-wireless@vger.kernel.org>; Thu, 16 May 2019 12:48:04 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=7BcZufcPSEpqc805Y0v0Pyi0qibUQi4HpJsgg2Ly3lM=;
-        b=Dc7DGW7gFlIR0h6wNiPysgB95qTNqmrleG8yY10+P8GCMAklThvklYUPphrFvHDKS5
-         DTdI42DfiUTirdXT8CFFbmgn9/Wlwt08XkuBZ/i1o45EtLB8ZkHY3WhA7JQvt9MHfUY7
-         GkW15ngzI6B+Bxm6+0RreoT6IMtgp804qxqiE=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=7BcZufcPSEpqc805Y0v0Pyi0qibUQi4HpJsgg2Ly3lM=;
-        b=HKuUSvSS1UPif5CGkvNH+WHkoVjx+XUiwEl0C3CNeGW8qlCDmDmwj+Ef817BNERSq3
-         RFIDnMnJcMe3en+aIkzAnBXRLdAvvfxQglG8+6yYw6UIhbphGWvNNclbUNVCPF5dwVXO
-         1tfNmHkLVenj+L+lAmukemTU0+MGQWUyVHWyIymfhkk5MkOrpSOoksG++i8WntHTqWEs
-         mFs9qM6seZNM/ERNnN6Wb3l9nKHQrQSL6AmiT9F6o75+klPqC99dNFR6Slc/lw4Ou8RS
-         Gu9EH26FlYORyGjp9EU/MVlfpMTJtr8ziEHP9foIvx4Tv3VvwzYXj59wROwQ0MSz3LqL
-         Diwg==
-X-Gm-Message-State: APjAAAWlT2CDFlS75D9Es9SOrGa0gpIDSq6x8Gu6QnMqlfFB2uDAQ2JC
-        4l+G1wxkc556KQ4OEtaZvp1EWTqd4EruWSQr9DNX++jTif05RsPcRahFYH1af4QOXbvNGUwu55m
-        2+WH5eUbIqzg3Sjx0giWCerYrOh4Ia8UsPiTaRU98KeGfzC6+3ilVJQrAat71jdEbUcvXSd1bVS
-        MOlKO2Ez2cBA8I/w==
-X-Google-Smtp-Source: APXvYqyMr4J7GGKLKWte6Io6Uj0cjtux6Mcx6UA8tsi65o5LtdNbt8a5A7PDnuOadwJXHh6I+BlibQ==
-X-Received: by 2002:a50:9858:: with SMTP id h24mr5155905edb.147.1558036083033;
-        Thu, 16 May 2019 12:48:03 -0700 (PDT)
-Received: from [192.168.178.129] (f140230.upc-f.chello.nl. [80.56.140.230])
-        by smtp.gmail.com with ESMTPSA id 44sm2136201eds.90.2019.05.16.12.48.02
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Thu, 16 May 2019 12:48:02 -0700 (PDT)
-Subject: Re: SPDX identifier
-To:     Thomas Gleixner <tglx@linutronix.de>
-Cc:     Kalle Valo <kvalo@codeaurora.org>,
-        linux-wireless <linux-wireless@vger.kernel.org>
-References: <b04655c7-5a6e-b510-5fcf-30ecca489882@broadcom.com>
- <alpine.DEB.2.21.1905162015460.3196@nanos.tec.linutronix.de>
-From:   Arend Van Spriel <arend.vanspriel@broadcom.com>
-Message-ID: <7cc73717-def2-effa-f0d9-4512b8501955@broadcom.com>
-Date:   Thu, 16 May 2019 21:48:01 +0200
-User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:60.0) Gecko/20100101
- Thunderbird/60.6.1
+        id S1727549AbfEPUBe (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 16 May 2019 16:01:34 -0400
+Received: from mail.kernel.org ([198.145.29.99]:44774 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726409AbfEPUBe (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 16 May 2019 16:01:34 -0400
+Received: from localhost (83-86-89-107.cable.dynamic.v4.ziggo.nl [83.86.89.107])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id D10FC20818;
+        Thu, 16 May 2019 20:01:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1558036893;
+        bh=j28WNRxuKs/eVHJk8EWiLQ6sZGFMvN32tC2GoehiYQw=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=0PgbkkFHemtttpjYh7lH/5A1Rj5NoiBdelMo9OlKy9jLifWHCAjGL0YwhJRNV4HVX
+         KawJBNGcrtdyV0D3PXlFzJ9CNdIImP2E334BJOI12NA9OLE+0KAcMpq0KccNHBlLzR
+         i953/YdhopNKFZDJbzoNdW8BrbDkVjzIBH1C8SGc=
+Date:   Thu, 16 May 2019 22:01:31 +0200
+From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To:     Arend Van Spriel <arend.vanspriel@broadcom.com>
+Cc:     Kalle Valo <kvalo@codeaurora.org>, linux-wireless@vger.kernel.org,
+        Thomas Gleixner <tglx@linutronix.de>
+Subject: Re: [PATCH 3/7] brcmsmac: switch source files to using SPDX license
+ identifier
+Message-ID: <20190516200131.GA15814@kroah.com>
+References: <1558008251-13692-1-git-send-email-arend.vanspriel@broadcom.com>
+ <1558008251-13692-4-git-send-email-arend.vanspriel@broadcom.com>
+ <20190516173113.GA540@kroah.com>
+ <a5d32b2f-a99b-a248-1acd-9de532732e30@broadcom.com>
 MIME-Version: 1.0
-In-Reply-To: <alpine.DEB.2.21.1905162015460.3196@nanos.tec.linutronix.de>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <a5d32b2f-a99b-a248-1acd-9de532732e30@broadcom.com>
+User-Agent: Mutt/1.11.4 (2019-03-13)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 5/16/2019 8:17 PM, Thomas Gleixner wrote:
-> Arend,
+On Thu, May 16, 2019 at 09:45:19PM +0200, Arend Van Spriel wrote:
+> On 5/16/2019 7:31 PM, Greg Kroah-Hartman wrote:
+> > On Thu, May 16, 2019 at 02:04:07PM +0200, Arend van Spriel wrote:
+> > > With ISC license text in place under the LICENSES folder switch
+> > > to using the SPDX license identifier to refer to the ISC license.
+> > > 
+> > > Cc: Thomas Gleixner <tglx@linutronix.de>
+> > > Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> > > Reviewed-by: Hante Meuleman <hante.meuleman@broadcom.com>
+> > > Reviewed-by: Pieter-Paul Giesberts <pieter-paul.giesberts@broadcom.com>
+> > > Reviewed-by: Franky Lin <franky.lin@broadcom.com>
+> > > Signed-off-by: Arend van Spriel <arend.vanspriel@broadcom.com>
+> > > ---
+> > > Hi Thomas, Greg,
+> > > 
+> > > The file drivers/net/wireless/broadcom/brcm80211/brcmsmac/led.c
+> > > did not have license information nor copyright notice and as such
+> > > it got included in commit b24413180f56 ("License cleanup: add SPDX
+> > > GPL-2.0 license identifier to files with no license"). I added you
+> > > guys as I propose to align this source file with the rest of
+> > > the driver sources and change it to ISC license and add the missing
+> > > copyright notice while at it (not sure if that warrants a separate
+> > > patch).
+> > 
+> > A separate patch would be good, to make it explicit that you are
+> > changing the license of the file.
 > 
-> On Thu, 16 May 2019, Arend Van Spriel wrote:
+> Ok.
 > 
->> Hi Kalle, Thomas,
->>
->> I added SPDX tags in brcm80211 driver sources. Although it is a no-brainer I
->> decided to run checkpatch for the changes and quirky stuff started to happen.
->> For all files I added:
->>
->> // SPDX-License-Identifier
->>
->> but checkpatch started complaining I should use /* ... */ instead of //.
->>
->> WARNING: Improper SPDX comment style for
->> 'drivers/net/wireless/broadcom/brcm80211/include/brcm_hw_ids.h', please use
->> '/*' instead
->> #29: FILE: drivers/net/wireless/broadcom/brcm80211/include/brcm_hw_ids.h:1:
->> +// SPDX-License-Identifier: ISC
->>
->> So I edited all patches and ran again. And again it started complaining.
->>
->> WARNING: Improper SPDX comment style for
->> 'drivers/net/wireless/broadcom/brcm80211/brcmsmac/aiutils.c', please use '//'
->> instead
->>
->> So now I am in a bonkers state. It seems for header files we want /* */ and
->> for c files we want //. For real?
+> > And ISC, ick, why...  :)
 > 
-> See Documentation. This is historical because the older binutils choked on
-> '//' comments. Not longer an issue as we moved to more modern binutils by
-> now. So we can fixup the documentation and allow // style for headers as well.
+> Because the license text in the other driver source files is a 1:1 match
+> with the ISC license.
 
-Right. I was pointed at the documentation already. I will ignore the 
-warning for my series and stick with // style for both.
+Oh, I am not disagreeing with that, yes, that is obviously the license
+of the files.  Just complaining about that choice for Linux kernel code :)
 
-Thanks,
-Arend
+> Another option could be MIT license which is in the preferred folder.
+> Will have to consult our legal department about it though.
+
+Hey, if your legal department is going to get asked this, why not just
+switch it to GPLv2?  That would make everything much simpler.
+
+thanks,
+
+greg k-h
