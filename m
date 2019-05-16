@@ -2,91 +2,85 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id BE5D1204CD
-	for <lists+linux-wireless@lfdr.de>; Thu, 16 May 2019 13:36:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8130520630
+	for <lists+linux-wireless@lfdr.de>; Thu, 16 May 2019 13:59:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726736AbfEPLgD (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 16 May 2019 07:36:03 -0400
-Received: from mail-ed1-f46.google.com ([209.85.208.46]:45460 "EHLO
-        mail-ed1-f46.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726363AbfEPLgD (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 16 May 2019 07:36:03 -0400
-Received: by mail-ed1-f46.google.com with SMTP id g57so4726359edc.12
-        for <linux-wireless@vger.kernel.org>; Thu, 16 May 2019 04:36:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google;
-        h=to:cc:from:subject:message-id:date:user-agent:mime-version
-         :content-language:content-transfer-encoding;
-        bh=ABrVTP7tfNstYHlzKLELFT1T8Cqmuc4h4Q2Nb4CnxtE=;
-        b=FDW8pGuKbCJJXcInHZJE+oeQT+pWHvG4Hj4HJOqDn/Q+Vy8vgejYeOgUa3lrSaYnXj
-         GWG8vwvOGx5sQg9HlZ6s+GSuqYVTrdIu/lnHo8+HnI16QEr90Wp7CPMnxH9mAttE5V+o
-         IxWIVzXU60xczTnQGkUNHKxnq8JbUiDALc6oY=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:to:cc:from:subject:message-id:date:user-agent
-         :mime-version:content-language:content-transfer-encoding;
-        bh=ABrVTP7tfNstYHlzKLELFT1T8Cqmuc4h4Q2Nb4CnxtE=;
-        b=MndhX2byjiuKtxJlutPtJ4FHn34PIhC8oEBe8Xkpe1icDMoDuO26bIzHCZDQkHjJan
-         2TIzR8n3T1hIvIxCFxEu+ItHDDdVgtqwzF6b4aR69Gdm4agwFJGO1dvBwGB++8e+LlrR
-         skRuzCWhh2wRf9kRTpQ+XCk7HtRsAlCgfErNx/d+Y5MHiiy/McJWqv8GG6j8M2CSI4o+
-         GZrNaTKZIB2cE/AUC15SqZwyItC0OS0nJL1knP21Ehkro2x2WYmnRtImiGmDawNwjgHF
-         qVpunHy375ur5aTL3anFtuBcyKdGpPTbMvVUaJI4XbGdEmoUzI7FxqutqNDWD8EFSD1i
-         kk7w==
-X-Gm-Message-State: APjAAAUttVPFTjKD49fwWuzo+WrvSRHh4zVbYDQiqpcJ0aQ4yoXy4Vpt
-        Nw4+TyGktgTwAc8LXKD7gdDJVw==
-X-Google-Smtp-Source: APXvYqzY8ZkwhHTuVhimaYiXS2Aj/XQSkH+JNlE7KZ6PuHoVOzLaNjhlAwgu/jUUwMgoFOavmfYV7A==
-X-Received: by 2002:a50:ca45:: with SMTP id e5mr13596691edi.1.1558006561564;
-        Thu, 16 May 2019 04:36:01 -0700 (PDT)
-Received: from [10.230.33.15] ([192.19.248.250])
-        by smtp.gmail.com with ESMTPSA id w54sm1836109edw.40.2019.05.16.04.36.00
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Thu, 16 May 2019 04:36:01 -0700 (PDT)
-To:     Kalle Valo <kvalo@codeaurora.org>
-Cc:     linux-wireless <linux-wireless@vger.kernel.org>,
-        Thomas Gleixner <tglx@linutronix.de>
-From:   Arend Van Spriel <arend.vanspriel@broadcom.com>
-Subject: SPDX identifier
-Message-ID: <b04655c7-5a6e-b510-5fcf-30ecca489882@broadcom.com>
-Date:   Thu, 16 May 2019 13:35:59 +0200
-User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:60.0) Gecko/20100101
- Thunderbird/60.6.1
+        id S1728056AbfEPLsP (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 16 May 2019 07:48:15 -0400
+Received: from mail.kernel.org ([198.145.29.99]:47968 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727505AbfEPLj4 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 16 May 2019 07:39:56 -0400
+Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id D8AB02168B;
+        Thu, 16 May 2019 11:39:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1558006795;
+        bh=IU7dbmBet8D7PQiNPsgkIHhkDL7DlqrrB8YRpyNY6hA=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=Sx9PssXZBFlyahF6DfN2rlE7Xua/F2JgFIYrsYqonFH89jKNmjIxv1pBLvaNd3OLp
+         weYGG4pmg3cKlmsXR1o9y2gjUeV5udq/wsOrXfRmnJESEoxpi8hxROjg/FvQ6LpxMK
+         GGtD+JmGBxQOfGaHDRQ8NPQ62jSxDLRoN4C7MkLc=
+From:   Sasha Levin <sashal@kernel.org>
+To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Cc:     Bhagavathi Perumal S <bperumal@codeaurora.org>,
+        =?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>,
+        Johannes Berg <johannes.berg@intel.com>,
+        Sasha Levin <sashal@kernel.org>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.0 18/34] mac80211: Fix kernel panic due to use of txq after free
+Date:   Thu, 16 May 2019 07:39:15 -0400
+Message-Id: <20190516113932.8348-18-sashal@kernel.org>
+X-Mailer: git-send-email 2.20.1
+In-Reply-To: <20190516113932.8348-1-sashal@kernel.org>
+References: <20190516113932.8348-1-sashal@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=UTF-8
+X-stable: review
+X-Patchwork-Hint: Ignore
+Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi Kalle, Thomas,
+From: Bhagavathi Perumal S <bperumal@codeaurora.org>
 
-I added SPDX tags in brcm80211 driver sources. Although it is a 
-no-brainer I decided to run checkpatch for the changes and quirky stuff 
-started to happen. For all files I added:
+[ Upstream commit f1267cf3c01b12e0f843fb6a7450a7f0b2efab8a ]
 
-// SPDX-License-Identifier
+The txq of vif is added to active_txqs list for ATF TXQ scheduling
+in the function ieee80211_queue_skb(), but it was not properly removed
+before freeing the txq object. It was causing use after free of the txq
+objects from the active_txqs list, result was kernel panic
+due to invalid memory access.
 
-but checkpatch started complaining I should use /* ... */ instead of //.
+Fix kernel invalid memory access by properly removing txq object
+from active_txqs list before free the object.
 
-WARNING: Improper SPDX comment style for 
-'drivers/net/wireless/broadcom/brcm80211/include/brcm_hw_ids.h', please 
-use '/*' instead
-#29: FILE: drivers/net/wireless/broadcom/brcm80211/include/brcm_hw_ids.h:1:
-+// SPDX-License-Identifier: ISC
+Signed-off-by: Bhagavathi Perumal S <bperumal@codeaurora.org>
+Acked-by: Toke Høiland-Jørgensen <toke@redhat.com>
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ net/mac80211/iface.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-So I edited all patches and ran again. And again it started complaining.
+diff --git a/net/mac80211/iface.c b/net/mac80211/iface.c
+index 4a6ff1482a9ff..02d2e6f11e936 100644
+--- a/net/mac80211/iface.c
++++ b/net/mac80211/iface.c
+@@ -1908,6 +1908,9 @@ void ieee80211_if_remove(struct ieee80211_sub_if_data *sdata)
+ 	list_del_rcu(&sdata->list);
+ 	mutex_unlock(&sdata->local->iflist_mtx);
+ 
++	if (sdata->vif.txq)
++		ieee80211_txq_purge(sdata->local, to_txq_info(sdata->vif.txq));
++
+ 	synchronize_rcu();
+ 
+ 	if (sdata->dev) {
+-- 
+2.20.1
 
-WARNING: Improper SPDX comment style for 
-'drivers/net/wireless/broadcom/brcm80211/brcmsmac/aiutils.c', please use 
-'//' instead
-
-So now I am in a bonkers state. It seems for header files we want /* */ 
-and for c files we want //. For real?
-
-This is on wireless-drivers-next so maybe it is already fixed, but I 
-think this should be fixed.
-
-Regards,
-Arend
