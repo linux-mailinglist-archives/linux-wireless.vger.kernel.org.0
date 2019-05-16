@@ -2,121 +2,74 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id AB93C20DAE
-	for <lists+linux-wireless@lfdr.de>; Thu, 16 May 2019 19:03:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AF16A20DFE
+	for <lists+linux-wireless@lfdr.de>; Thu, 16 May 2019 19:31:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727210AbfEPRDi (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 16 May 2019 13:03:38 -0400
-Received: from mail-wr1-f68.google.com ([209.85.221.68]:36143 "EHLO
-        mail-wr1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726452AbfEPRDi (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 16 May 2019 13:03:38 -0400
-Received: by mail-wr1-f68.google.com with SMTP id s17so4250383wru.3
-        for <linux-wireless@vger.kernel.org>; Thu, 16 May 2019 10:03:37 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=q8mz36wEZoMW3KFmJ0eiiK+mWxlbrwexQOr/Z7OWr2c=;
-        b=ehbvzUdtHrnnihEAVukt2ZRr34An4/JCIyx6uHCfEV4HFmp/bQ/X1EeMuc2kxB2Tp6
-         3vtGKX3YyvntBCcfPz3o5Se25ARE7pyXdT+lBV+eB88bvouFXq75VXaIBsRAvd+W/Ts7
-         5xhlkmagdJWiUnNm+bOfrthqppaz+AK0xhg4FKHrVhlMBD1v+aDexkyJHETzeYLvlYO3
-         68osBp8p1QhvdfgdEc118lx9znUqVoDwgMCI0LwcAknUC8wvd5guqoOwRD7mQPWkmO5B
-         YhgERUyF73xnT0MCB0Qy1tr7Hgu2Kfk7iW6ukh5VbHYMvvkfQGubQ+nOWP3n8M6zF3aq
-         hK8Q==
-X-Gm-Message-State: APjAAAVqO+Km/36/krwegJbf9nY7F2wIfAL7OxeVyIkBMj0be3vCW1Kh
-        dgHLblJKl7f/5bkK3okPXRjv5A==
-X-Google-Smtp-Source: APXvYqw3eCxOUh3Rc/E6+Xb+uQe3t+D0F0jcHFvKDXiFezK0of5qmKBcJq9QRF54inwpyVKw90X3GQ==
-X-Received: by 2002:adf:b446:: with SMTP id v6mr30617185wrd.30.1558026216549;
-        Thu, 16 May 2019 10:03:36 -0700 (PDT)
-Received: from localhost.localdomain (nat-pool-mxp-t.redhat.com. [149.6.153.186])
-        by smtp.gmail.com with ESMTPSA id f16sm4705498wrx.58.2019.05.16.10.03.35
-        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
-        Thu, 16 May 2019 10:03:35 -0700 (PDT)
-Date:   Thu, 16 May 2019 19:03:33 +0200
-From:   Lorenzo Bianconi <lorenzo.bianconi@redhat.com>
-To:     Lorenzo Bianconi <lorenzo@kernel.org>
-Cc:     nbd@nbd.name, linux-wireless@vger.kernel.org,
-        ryder.lee@mediatek.com, royluo@google.com
-Subject: Re: [PATCH] mt76: mt7615: add preliminary support for mtd eeprom
- parsing
-Message-ID: <20190516170332.GA21478@localhost.localdomain>
-References: <cover.1557853278.git.lorenzo@kernel.org>
- <80210f745a12498fc6fc0f2616c2afb43658f0f6.1557853278.git.lorenzo@kernel.org>
+        id S1727585AbfEPRbR (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 16 May 2019 13:31:17 -0400
+Received: from mail.kernel.org ([198.145.29.99]:53686 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726409AbfEPRbQ (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 16 May 2019 13:31:16 -0400
+Received: from localhost (83-86-89-107.cable.dynamic.v4.ziggo.nl [83.86.89.107])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id D09F12082E;
+        Thu, 16 May 2019 17:31:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1558027876;
+        bh=f1ON+82/F3DXvbbnXS03tpeiges3G7FLV8YMGZogVMg=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=VJldWsNcPNJnlFDpM+671bvKuo63jpPtISyoK0+HAIwL+P8R/Pfxb39sa9Me87O9+
+         QL/WQIzNxM4TgFukDn9DJu0Qw3Dt/fWUh8EcSTRLGpgbUh4aTEN5+RtT5EiZBcVfz4
+         BcuzUry2Y7A+lFaScOAwnCe5kGHIeLWZ3lSKvstY=
+Date:   Thu, 16 May 2019 19:31:14 +0200
+From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To:     Arend van Spriel <arend.vanspriel@broadcom.com>
+Cc:     Kalle Valo <kvalo@codeaurora.org>, linux-wireless@vger.kernel.org,
+        Thomas Gleixner <tglx@linutronix.de>
+Subject: Re: [PATCH 3/7] brcmsmac: switch source files to using SPDX license
+ identifier
+Message-ID: <20190516173113.GA540@kroah.com>
+References: <1558008251-13692-1-git-send-email-arend.vanspriel@broadcom.com>
+ <1558008251-13692-4-git-send-email-arend.vanspriel@broadcom.com>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="BXVAT5kNtrzKuDFl"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <80210f745a12498fc6fc0f2616c2afb43658f0f6.1557853278.git.lorenzo@kernel.org>
-User-Agent: Mutt/1.11.3 (2019-02-01)
+In-Reply-To: <1558008251-13692-4-git-send-email-arend.vanspriel@broadcom.com>
+User-Agent: Mutt/1.11.4 (2019-03-13)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-
---BXVAT5kNtrzKuDFl
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-
-> Calibration data are often available on a specific mtd partition on
-> embedded devices. Take into account eeprom calibration data if
-> available. Calibration free data parsing is currently missing
->=20
-> Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+On Thu, May 16, 2019 at 02:04:07PM +0200, Arend van Spriel wrote:
+> With ISC license text in place under the LICENSES folder switch
+> to using the SPDX license identifier to refer to the ISC license.
+> 
+> Cc: Thomas Gleixner <tglx@linutronix.de>
+> Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> Reviewed-by: Hante Meuleman <hante.meuleman@broadcom.com>
+> Reviewed-by: Pieter-Paul Giesberts <pieter-paul.giesberts@broadcom.com>
+> Reviewed-by: Franky Lin <franky.lin@broadcom.com>
+> Signed-off-by: Arend van Spriel <arend.vanspriel@broadcom.com>
 > ---
->  .../wireless/mediatek/mt76/mt7615/eeprom.c    | 32 +++++++++++++++----
->  1 file changed, 26 insertions(+), 6 deletions(-)
->=20
-> diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/eeprom.c b/drivers=
-/net/wireless/mediatek/mt76/mt7615/eeprom.c
-> index dd5ab46a4f66..0313c604ea61 100644
-> --- a/drivers/net/wireless/mediatek/mt76/mt7615/eeprom.c
-> +++ b/drivers/net/wireless/mediatek/mt76/mt7615/eeprom.c
+> Hi Thomas, Greg,
+> 
+> The file drivers/net/wireless/broadcom/brcm80211/brcmsmac/led.c
+> did not have license information nor copyright notice and as such
+> it got included in commit b24413180f56 ("License cleanup: add SPDX
+> GPL-2.0 license identifier to files with no license"). I added you
+> guys as I propose to align this source file with the rest of
+> the driver sources and change it to ISC license and add the missing
+> copyright notice while at it (not sure if that warrants a separate
+> patch).
 
-[...]
+A separate patch would be good, to make it explicit that you are
+changing the license of the file.
 
->  int mt7615_eeprom_init(struct mt7615_dev *dev)
->  {
->  	int ret;
-> @@ -84,7 +98,13 @@ int mt7615_eeprom_init(struct mt7615_dev *dev)
->  	if (ret < 0)
->  		return ret;
-> =20
-> -	memcpy(dev->mt76.eeprom.data, dev->mt76.otp.data, MT7615_EEPROM_SIZE);
-> +	if (dev->mt76.otp.data) {
-> +		ret =3D mt7615_check_eeprom(&dev->mt76);
-> +		if (ret < 0)
-> +			memcpy(dev->mt76.eeprom.data, dev->mt76.otp.data,
-> +			       MT7615_EEPROM_SIZE);
-> +		/* TODO: take into account cal free data */
+And ISC, ick, why...  :)
 
-reviewing sdk code it seems we do not have cal free data here, I will post =
-a v2
-removing the comment
+thanks,
 
-Regards,
-Lorenzo
-
-> +	}
-> =20
->  	dev->mt76.cap.has_2ghz =3D true;
->  	dev->mt76.cap.has_5ghz =3D true;
-> --=20
-> 2.20.1
->=20
-
---BXVAT5kNtrzKuDFl
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYIAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCXN2X4QAKCRA6cBh0uS2t
-rNjZAP9/C/+xwUz9egyNUx9DbUpxgNbZm9Crzfzycwkzd3c9dQEA748mEPixqH3X
-gT3pFkYOcprV1caxiuSlIM2NYIUiYwk=
-=Isd7
------END PGP SIGNATURE-----
-
---BXVAT5kNtrzKuDFl--
+greg k-h
