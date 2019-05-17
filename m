@@ -2,142 +2,176 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id BF2D721D3B
-	for <lists+linux-wireless@lfdr.de>; Fri, 17 May 2019 20:22:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F3FE321E23
+	for <lists+linux-wireless@lfdr.de>; Fri, 17 May 2019 21:21:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729207AbfEQSWV (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 17 May 2019 14:22:21 -0400
-Received: from mail-ed1-f67.google.com ([209.85.208.67]:44340 "EHLO
-        mail-ed1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726295AbfEQSWV (ORCPT
+        id S1728093AbfEQTVg (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 17 May 2019 15:21:36 -0400
+Received: from mail-wm1-f66.google.com ([209.85.128.66]:37790 "EHLO
+        mail-wm1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726586AbfEQTVf (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 17 May 2019 14:22:21 -0400
-Received: by mail-ed1-f67.google.com with SMTP id b8so11794326edm.11
-        for <linux-wireless@vger.kernel.org>; Fri, 17 May 2019 11:22:20 -0700 (PDT)
+        Fri, 17 May 2019 15:21:35 -0400
+Received: by mail-wm1-f66.google.com with SMTP id 7so7756995wmo.2;
+        Fri, 17 May 2019 12:21:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=RH7omgbErV7ikDnfSDtSL1nx+YSaC1W4YouoDOopNbw=;
-        b=FhD2DTcCcDd8U9yrnqM2N0pDQ1Cmktxpf+9bTOshgIYxyGuKyWXBQAVk4mrk5tVJCu
-         ygTGCaGDQo/cj3SbmSGazXRSn+NZyKhfToUlfsfGAuFnZmAJ0N+vcfD3F8mDxpB3ZMAf
-         W/s1vKu50fejwZ9X3ul2YHIOcp1r966MGTN48=
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id:in-reply-to:references
+         :mime-version:content-transfer-encoding;
+        bh=1LrDbmdht42NHNTjhMaxI7/6/Ah2311xDAKcQ2ToODs=;
+        b=LFbsId247qeWYOiJU+eivFNTE5hncHzgUl4azsXgMd2KW2oOj9MNIQfq1+rKsnfF88
+         NdRkTqRRvSpxtY70lTSwyReR6B9gNWJW/Qq5iLkBRpNUvCBt97MC6ASLtC2BBv4631UK
+         Co+uyTH9rxjfVeRGtcbvEvd2K/g1ZnI8C49eJjOSNLILDdvCjM3LmwzmA8mMGIAqRO7E
+         1mdnpG2pkq+VFzjdP1oAy8SIz9YRIYpSYnXuqEgCZp+khba9P4o9MYgsp7YaCUq6iutk
+         PMKrGNX3Ucq+niMdQ2tc2fNwiLXuuT47ymwEaUA7pXnz/6vxnm+P2bC1++P2lsyJluID
+         Wg4A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=RH7omgbErV7ikDnfSDtSL1nx+YSaC1W4YouoDOopNbw=;
-        b=ABMvLml2bjb8oJ3r27K7im9njml6jiHfbA4NgBIGDGF98M6WjiSE9NsyxbdzQ24OTo
-         hkz7Rsx6tAlM0M338CZlfbv6QAGnwqplWFvv7EnMVZ2Qq6iJ6a10XGvm4J73yUHr4ld/
-         GXCJzShm0HHMMMttLvPwUNigF0rT/FrwkLpBp2fLSBBIpgPLVI5nB6b9P0U7mNN2kXW+
-         RxMbobKF74ID1FTW8TEBPuv5+mndzTB8VvdnaNuuqBFjVAJZl3kPHqAu5lOWwDaL5IU8
-         NdIr+BEoU8rX9NfF3cDT388s+AfOGvHSti/1I6sQLle1QdVqjJbJ3b8bPwcYlPFvVdN5
-         rn5w==
-X-Gm-Message-State: APjAAAWm5HKUE1zQ4HVj2/erRavK7h59M/L7OzgQxkeLiQ/3oAto1D+s
-        zK8vv54cl9W+xdO485/uScYJ+O5EMAfj7Q==
-X-Google-Smtp-Source: APXvYqzoMAS170U/T7sRHFItvSsA8XIbYU1AhkeBqmhn/t6ii5XylV2PYJQAa7ek0uFNa6RiQZvFVw==
-X-Received: by 2002:a17:906:2482:: with SMTP id e2mr46193743ejb.289.1558117339721;
-        Fri, 17 May 2019 11:22:19 -0700 (PDT)
-Received: from [192.168.178.129] (f140230.upc-f.chello.nl. [80.56.140.230])
-        by smtp.gmail.com with ESMTPSA id i45sm2971338eda.67.2019.05.17.11.22.18
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Fri, 17 May 2019 11:22:19 -0700 (PDT)
-Subject: Re: [PATCH 3/7] brcmsmac: switch source files to using SPDX license
- identifier
-To:     =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        Thomas Gleixner <tglx@linutronix.de>
-References: <1558008251-13692-1-git-send-email-arend.vanspriel@broadcom.com>
- <1558008251-13692-4-git-send-email-arend.vanspriel@broadcom.com>
- <20190516173113.GA540@kroah.com>
- <a5d32b2f-a99b-a248-1acd-9de532732e30@broadcom.com>
- <20190516200131.GA15814@kroah.com>
- <eeebea29-4237-6e49-7578-8d3b1ad7df85@broadcom.com>
- <CACna6rxuSFWN8eib7FpJiVQqLwdD5GOTaAFr7msJa01rBSTLKA@mail.gmail.com>
-From:   Arend Van Spriel <arend.vanspriel@broadcom.com>
-Message-ID: <ee5abd5c-a496-7d70-7f84-9ff0210ebe1c@broadcom.com>
-Date:   Fri, 17 May 2019 20:22:17 +0200
-User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:60.0) Gecko/20100101
- Thunderbird/60.6.1
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+         :references:mime-version:content-transfer-encoding;
+        bh=1LrDbmdht42NHNTjhMaxI7/6/Ah2311xDAKcQ2ToODs=;
+        b=uKJaHZ0Usc+1CaR/ck6xQp1hodSXw6fuGsRl45sbKRHdZi7NK7kO3K2SiMRyNtGnMh
+         NkQ+Le0NBycXd84jgxGwHXCxY3+yTcjEHGXNzLV/7WeN/hZO5V6NJULWxDat+FZO87tY
+         LG3+bBfMghV86uegTo6Ofyu2763sC6NAnan6mwrXj0LXhlPF9Yh/py8ERnukbe1gOJ5G
+         aLk9H+66/m2EOkohkUt8LRULACeF8O2lGnpPbdzyUL/sHBci9raDyylr99QHCBWB3m5v
+         NNMwqP2hLlWXcpb1IUop0BU1YcaHATrk+ra105SRhQV70txujqd0lMP7Etu/iIg+6VSZ
+         tlDQ==
+X-Gm-Message-State: APjAAAXrPTQ9f6pafXgWvTl8wtoDH3uXwPNwbKWDr8+szlH91qC8ZUXP
+        wq19m6Pgbwxlnq6Lc+lu1jQ=
+X-Google-Smtp-Source: APXvYqw40gJFN+V8j4/nIi6KggbDf9c0koNIuOBrWhXH0hlqXnYtVuRbC/BrdSCUfvsIbI3uYGfQZw==
+X-Received: by 2002:a1c:7ed2:: with SMTP id z201mr29436687wmc.113.1558120891918;
+        Fri, 17 May 2019 12:21:31 -0700 (PDT)
+Received: from debian64.daheim (p4FD09697.dip0.t-ipconnect.de. [79.208.150.151])
+        by smtp.gmail.com with ESMTPSA id a4sm7088219wrr.39.2019.05.17.12.21.30
+        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
+        Fri, 17 May 2019 12:21:30 -0700 (PDT)
+Received: from localhost.daheim ([127.0.0.1] helo=debian64.localnet)
+        by debian64.daheim with esmtp (Exim 4.92)
+        (envelope-from <chunkeey@gmail.com>)
+        id 1hRiQ4-0001oJ-9k; Fri, 17 May 2019 21:21:28 +0200
+From:   Christian Lamparter <chunkeey@gmail.com>
+To:     Oliver Neukum <oneukum@suse.com>
+Cc:     syzbot <syzbot+200d4bb11b23d929335f@syzkaller.appspotmail.com>,
+        kvalo@codeaurora.org, davem@davemloft.net, andreyknvl@google.com,
+        syzkaller-bugs@googlegroups.com, chunkeey@googlemail.com,
+        linux-kernel@vger.kernel.org, linux-usb@vger.kernel.org,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        Michael Wu <flamingice@sourmilk.net>
+Subject: Re: KASAN: use-after-free Read in p54u_load_firmware_cb
+Date:   Fri, 17 May 2019 21:21:27 +0200
+Message-ID: <5014675.0cgHOJIxtM@debian64>
+In-Reply-To: <1557754110.2793.7.camel@suse.com>
+References: <00000000000073512b0588c24d09@google.com> <1557754110.2793.7.camel@suse.com>
 MIME-Version: 1.0
-In-Reply-To: <CACna6rxuSFWN8eib7FpJiVQqLwdD5GOTaAFr7msJa01rBSTLKA@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="us-ascii"
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 5/17/2019 8:07 PM, Rafał Miłecki wrote:
-> On Fri, 17 May 2019 at 01:25, Arend Van Spriel
-> <arend.vanspriel@broadcom.com> wrote:
->> On 5/16/2019 10:01 PM, Greg Kroah-Hartman wrote:
->>> On Thu, May 16, 2019 at 09:45:19PM +0200, Arend Van Spriel wrote:
->>>> On 5/16/2019 7:31 PM, Greg Kroah-Hartman wrote:
->>>>> On Thu, May 16, 2019 at 02:04:07PM +0200, Arend van Spriel wrote:
->>>>>> With ISC license text in place under the LICENSES folder switch
->>>>>> to using the SPDX license identifier to refer to the ISC license.
->>>>>>
->>>>>> Cc: Thomas Gleixner <tglx@linutronix.de>
->>>>>> Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
->>>>>> Reviewed-by: Hante Meuleman <hante.meuleman@broadcom.com>
->>>>>> Reviewed-by: Pieter-Paul Giesberts <pieter-paul.giesberts@broadcom.com>
->>>>>> Reviewed-by: Franky Lin <franky.lin@broadcom.com>
->>>>>> Signed-off-by: Arend van Spriel <arend.vanspriel@broadcom.com>
->>>>>> ---
->>>>>> Hi Thomas, Greg,
->>>>>>
->>>>>> The file drivers/net/wireless/broadcom/brcm80211/brcmsmac/led.c
->>>>>> did not have license information nor copyright notice and as such
->>>>>> it got included in commit b24413180f56 ("License cleanup: add SPDX
->>>>>> GPL-2.0 license identifier to files with no license"). I added you
->>>>>> guys as I propose to align this source file with the rest of
->>>>>> the driver sources and change it to ISC license and add the missing
->>>>>> copyright notice while at it (not sure if that warrants a separate
->>>>>> patch).
->>>>>
->>>>> A separate patch would be good, to make it explicit that you are
->>>>> changing the license of the file.
->>>>
->>>> Ok.
->>>>
->>>>> And ISC, ick, why...  :)
->>>>
->>>> Because the license text in the other driver source files is a 1:1 match
->>>> with the ISC license.
->>>
->>> Oh, I am not disagreeing with that, yes, that is obviously the license
->>> of the files. Just complaining about that choice for Linux kernel code :)
->>
->> I see.
->>
->>>> Another option could be MIT license which is in the preferred folder.
->>>> Will have to consult our legal department about it though.
->>>
->>> Hey, if your legal department is going to get asked this, why not just
->>> switch it to GPLv2?  That would make everything much simpler.
->>
->> Hah. Because I already know the answer to that. ;-)
+On Monday, May 13, 2019 3:28:30 PM CEST Oliver Neukum wrote:
+> On Mo, 2019-05-13 at 03:23 -0700, syzbot wrote:
+> > syzbot has found a reproducer for the following crash on:
+> > 
+> > HEAD commit:    43151d6c usb-fuzzer: main usb gadget fuzzer driver
+> > git tree:       https://github.com/google/kasan.git usb-fuzzer
+> > console output: https://syzkaller.appspot.com/x/log.txt?x=16b64110a00000
+> > kernel config:  https://syzkaller.appspot.com/x/.config?x=4183eeef650d1234
+> > dashboard link: https://syzkaller.appspot.com/bug?extid=200d4bb11b23d929335f
+> > compiler:       gcc (GCC) 9.0.0 20181231 (experimental)
+> > syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=1634c900a00000
+> > 
+> > IMPORTANT: if you fix the bug, please add the following tag to the commit:
+> > Reported-by: syzbot+200d4bb11b23d929335f@syzkaller.appspotmail.com
+> > 
+> > usb 1-1: config 0 descriptor??
+> > usb 1-1: reset high-speed USB device number 2 using dummy_hcd
+> > usb 1-1: device descriptor read/64, error -71
+> > usb 1-1: Using ep0 maxpacket: 8
+> > usb 1-1: Loading firmware file isl3887usb
+> > usb 1-1: Direct firmware load for isl3887usb failed with error -2
+> > usb 1-1: Firmware not found.
+> > ==================================================================
+> > BUG: KASAN: use-after-free in p54u_load_firmware_cb.cold+0x97/0x13a  
+> > drivers/net/wireless/intersil/p54/p54usb.c:936
+> > Read of size 8 at addr ffff88809803f588 by task kworker/1:0/17
 > 
-> It's not that obvious to me, sorry. Does your legal department require
-> something more permissive than GPLv2? Is that worth asking them about
-> dual-licensing? Something like
-> GPL-2.0 OR MIT
-> ? That assures driver is compatible with Linux, no matter what's the
-> current lawyers interpretation of MIT vs. GPL 2.0. I believe Alan Cox
-> once told/suggested that dual-licensing is safer for legal reasons.
+> Hi,
+> 
+> it looks to me as if refcounting is broken.
+> You should have a usb_put_dev() in p54u_load_firmware_cb() or in
+> p54u_disconnect(), but not both.
 
-Thanks, Rafał
+There's more to that refcounting that meets the eye. Do you see that
+request_firmware_nowait() in the driver? That's the async firmware
+request call that get's completed by the p54u_load_firmware_cb()
+So what's happening here is that the driver has to be protected
+against rmmod when the driver is waiting for request_firmware_nowait
+to "finally" callback, which depending on the system can be up to 
+60 seconds.
 
-Indeed we want a more permissive license. I decided to stick with ISC 
-for now. MIT is not off the table, but pending responses from copyright 
-holders. If you or anyone else for that matter has additional and/or 
-more accurate information about dual-licensing (and its legal safety) 
-please let me know.
+Now, what seems to be odd is that it's at line 936
+> > BUG: KASAN: use-after-free in p54u_load_firmware_cb.cold+0x97/0x13a  
+> > drivers/net/wireless/intersil/p54/p54usb.c:936
+
+because if you put it in context:
+
+|
+|static void p54u_load_firmware_cb(const struct firmware *firmware,
+|				  void *context)
+|{
+|	struct p54u_priv *priv = context;
+|	struct usb_device *udev = priv->udev;
+|	int err;
+|
+|	complete(&priv->fw_wait_load);
+|	if (firmware) {
+|		priv->fw = firmware;
+|		err = p54u_start_ops(priv);
+|	} else {
+|		err = -ENOENT;
+|		dev_err(&udev->dev, "Firmware not found.\n");
+|	}
+|
+|	if (err) {
+|>>	>>	struct device *parent = priv->udev->dev.parent; <<<<-- 936 is here
+|
+|		dev_err(&udev->dev, "failed to initialize device (%d)\n", err);
+|
+|		if (parent)
+|			device_lock(parent);
+|
+|		device_release_driver(&udev->dev);
+|		/*
+|		 * At this point p54u_disconnect has already freed
+|		 * the "priv" context. Do not use it anymore!
+|		 */
+|		priv = NULL;
+|
+|		if (parent)
+|			device_unlock(parent);
+|	}
+|
+|	usb_put_dev(udev);
+|}
+
+it seems very out of place, because at that line the device is still bound to
+the driver! Only with device_release_driver in line 942, I could see that
+something woulb be aray... !BUT! that's why we do have the extra
+usb_get_dev(udev) in p54u_load_firmware() so we can do the usb_put_dev(udev) in
+line 953 to ensure that nothing (like the rmmod I talked above) will interfere
+until everything is done.
+
+I've no idea what's wrong here, is gcc 9.0 aggressivly reording the put? Or is
+something else going on with the sanitizers? Because this report does look
+dogdy there!
+
+(Note: p54usb has !strategic! dev_err/infos in place right around the
+usb_get_dev/usb_put_dev so we can sort of tell the refvalue of the udev
+and it all seems to be correct from what I can gleam) 
 
 Regards,
-Arend
+Christian
+
+
