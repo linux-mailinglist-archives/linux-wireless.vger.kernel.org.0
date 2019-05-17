@@ -2,132 +2,118 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 3104C21FA9
-	for <lists+linux-wireless@lfdr.de>; Fri, 17 May 2019 23:35:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 74C7E2208B
+	for <lists+linux-wireless@lfdr.de>; Sat, 18 May 2019 00:55:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727215AbfEQVft (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 17 May 2019 17:35:49 -0400
-Received: from mail-io1-f67.google.com ([209.85.166.67]:33087 "EHLO
-        mail-io1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726960AbfEQVfs (ORCPT
+        id S1729376AbfEQWyo (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 17 May 2019 18:54:44 -0400
+Received: from mail-pl1-f193.google.com ([209.85.214.193]:36025 "EHLO
+        mail-pl1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727181AbfEQWyo (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 17 May 2019 17:35:48 -0400
-Received: by mail-io1-f67.google.com with SMTP id z4so6668946iol.0
-        for <linux-wireless@vger.kernel.org>; Fri, 17 May 2019 14:35:48 -0700 (PDT)
+        Fri, 17 May 2019 18:54:44 -0400
+Received: by mail-pl1-f193.google.com with SMTP id d21so3997723plr.3
+        for <linux-wireless@vger.kernel.org>; Fri, 17 May 2019 15:54:43 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=ul1gLClLY2RLZ2itEzzFB2yOFIqulLy55JPQTAySFDo=;
+        b=IF+6pl0A6m1fIH81uzmdTDMrurVWOxHBgZdzg9ueW18kyGxlj6N5aPcTRqNNCU+vTS
+         LKiCjnkbIC7ajqH/YtTymknHPW/NY4yPjYIJzDwwYqMMyIAHIYA46a6IB8NY149qfCHK
+         CVTekqT/FiWMIwMhhNjynCJ139h41IPM+Swp8=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=8vsolVvxUAyaGD+ep6hBLxhR4l5wSZuWQlF+qKUotMQ=;
-        b=msKXmY+I7Ub8YEJ3xKA/XcNkPSBNyWjcc2hNyOizN+/+f+WysTEuRK7v+FoSPBitC4
-         9qNfNpmPYhTn9taZx/eTbeTMUGUbmM0Fl9kz0Qmj91YHodeZVbj65acBpz0h1/bCxHej
-         bm6whG6GgObYZ3ui9k4LQFFaCOFGio9VcbQh+lZ7a+07/9eqT2ywp9bmBvzRHJ/UY+pa
-         6c4LsM5Nicbso1WN8e5wOKjL9nhf8H/ByMco2J0bgn7Ub3v/YZG9oH/p53dn6GxtnVdA
-         7DMd2xEgkKHYlajl2fK0iu1Osn6X5GtmaqfvUk21mJD5WlVwC9rhz1o5JnQkM3yL6u+N
-         hZ5g==
-X-Gm-Message-State: APjAAAXIEaWcWHxfJrVQCDSyfdtyxEnyK/jG5QnrGhbCzF1rJ+mT9D0i
-        /6fnkKxZuHlHU+iZWUPkF1MuoQu7lVOyoMAyq2EW8A==
-X-Google-Smtp-Source: APXvYqxHQ6FTN0GBZEX3Eql3QrZLqWW2mP7z5YZDwvBQskiqrBuqA0CCtz06bsbkoUrJlCcx7dvow/zz1fNUNGL9idk=
-X-Received: by 2002:a6b:b408:: with SMTP id d8mr10061196iof.12.1558128948222;
- Fri, 17 May 2019 14:35:48 -0700 (PDT)
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=ul1gLClLY2RLZ2itEzzFB2yOFIqulLy55JPQTAySFDo=;
+        b=QaGi81YJMkOu035NPuuA/RnXYrAn8CYnlVV3RzfSnUT5/1X+ZTb3H1XMkJjhqi/yhW
+         wBto1LtXUVZIYeuyeQifuau74Ic8erLUOXKYySXDqSzGJbXnM8nURa/7MIxc/pyr+BBF
+         RVWDf39ZgUXI0YOzl6wSHTyTvGxIeZjMmv0+CmXJBN+AkgsVs+SlIPx+MlVsWm3KJZxz
+         VdyF+21kd5wpHAP5+j7psyEj8B1UjMrdtRWBUraQoB4Hh6aoc0zoGXE64/n6R3MNOqlF
+         FmE/Zxh9AOBlzTgrEBrLHWOaLcjVojE4fFBIeho9Xl2WM+wXeTo/geK20gVGrQWRqyyC
+         BzDA==
+X-Gm-Message-State: APjAAAXOTfaTWTR51eN4CaybRBa1V1P8qkysUD2rbT9SxkuawzCcymjg
+        8fgCNtPcQyIPyUNvVGQ+VRBddw==
+X-Google-Smtp-Source: APXvYqz/J4eNQzJXQjOFtQWVtg1bZz7U+KE/9+kUa8iLb3eFelZBp/fzq1UlgJul23Nw2JUqc2sKmA==
+X-Received: by 2002:a17:902:7797:: with SMTP id o23mr58590219pll.147.1558133683494;
+        Fri, 17 May 2019 15:54:43 -0700 (PDT)
+Received: from tictac2.mtv.corp.google.com ([2620:15c:202:1:24fa:e766:52c9:e3b2])
+        by smtp.gmail.com with ESMTPSA id u11sm11174450pfh.130.2019.05.17.15.54.42
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Fri, 17 May 2019 15:54:42 -0700 (PDT)
+From:   Douglas Anderson <dianders@chromium.org>
+To:     Ulf Hansson <ulf.hansson@linaro.org>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        Adrian Hunter <adrian.hunter@intel.com>,
+        Arend van Spriel <arend.vanspriel@broadcom.com>
+Cc:     linux-rockchip@lists.infradead.org,
+        Double Lo <double.lo@cypress.com>, briannorris@chromium.org,
+        Madhan Mohan R <madhanmohan.r@cypress.com>, mka@chromium.org,
+        Wright Feng <wright.feng@cypress.com>,
+        Chi-Hsien Lin <chi-hsien.lin@cypress.com>,
+        Douglas Anderson <dianders@chromium.org>,
+        linux-mmc@vger.kernel.org, Shawn Lin <shawn.lin@rock-chips.com>,
+        brcm80211-dev-list@cypress.com, YueHaibing <yuehaibing@huawei.com>,
+        Hante Meuleman <hante.meuleman@broadcom.com>,
+        Martin Hicks <mort@bork.org>,
+        Ritesh Harjani <riteshh@codeaurora.org>,
+        Michael Trimarchi <michael@amarulasolutions.com>,
+        Wolfram Sang <wsa+renesas@sang-engineering.com>,
+        Franky Lin <franky.lin@broadcom.com>,
+        Jiong Wu <lohengrin1024@gmail.com>,
+        brcm80211-dev-list.pdl@broadcom.com,
+        "David S. Miller" <davem@davemloft.net>, netdev@vger.kernel.org,
+        linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Naveen Gupta <naveen.gupta@cypress.com>,
+        Madhan Mohan R <MadhanMohan.R@cypress.com>,
+        Avri Altman <avri.altman@wdc.com>
+Subject: [PATCH 0/3] brcmfmac: sdio: Deal better w/ transmission errors waking from sleep
+Date:   Fri, 17 May 2019 15:54:17 -0700
+Message-Id: <20190517225420.176893-1-dianders@chromium.org>
+X-Mailer: git-send-email 2.21.0.1020.gf2820cf01a-goog
 MIME-Version: 1.0
-References: <cover.1558127930.git.lorenzo@kernel.org> <38aa977df45a92f60d78d9cb7e575289ccbaeef6.1558127930.git.lorenzo@kernel.org>
-In-Reply-To: <38aa977df45a92f60d78d9cb7e575289ccbaeef6.1558127930.git.lorenzo@kernel.org>
-From:   Lorenzo Bianconi <lorenzo.bianconi@redhat.com>
-Date:   Fri, 17 May 2019 23:35:37 +0200
-Message-ID: <CAJ0CqmXen_WGJRxjt4Kzr0SPrT=rTSUToUXFz=d7EZnLP11a3w@mail.gmail.com>
-Subject: Re: [PATCH] mt76: mt7615: select wifi band according to eeprom
-To:     Felix Fietkau <nbd@nbd.name>
-Cc:     linux-wireless <linux-wireless@vger.kernel.org>,
-        Ryder Lee <ryder.lee@mediatek.com>, royluo@google.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
->
-> Select supported band according to the value read from
-> eeprom mtd/otp partition
->
+This series attempts to deal better with the expected transmission
+errors that we get when waking up the SDIO-based WiFi on
+rk3288-veyron-minnie, rk3288-veyron-speedy, and rk3288-veyron-mickey.
 
-I forgot to mention this patch is based on 'mt76: mt7615: add support
-for mtd eeprom parsing'
-https://patchwork.kernel.org/patch/10947385/
+Some details about those errors can be found in
+<https://crbug.com/960222>, but to summarize it here: if we try to
+send the wakeup command to the WiFi card at the same time it has
+decided to wake up itself then it will behave badly on the SDIO bus.
+This can cause timeouts or CRC errors.
 
-Regards,
-Lorenzo
+When I tested on 4.19 and 4.20 these CRC errors can be seen to cause
+re-tuning.  Since I am currently developing on 4.19 this was the
+original problem I attempted to solve.
 
-> Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
-> ---
->  .../wireless/mediatek/mt76/mt7615/eeprom.c    | 24 ++++++++++++++++---
->  .../wireless/mediatek/mt76/mt7615/eeprom.h    |  9 +++++++
->  2 files changed, 30 insertions(+), 3 deletions(-)
->
-> diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/eeprom.c b/drivers/net/wireless/mediatek/mt76/mt7615/eeprom.c
-> index 1712f66520a8..714590878d65 100644
-> --- a/drivers/net/wireless/mediatek/mt76/mt7615/eeprom.c
-> +++ b/drivers/net/wireless/mediatek/mt76/mt7615/eeprom.c
-> @@ -90,6 +90,26 @@ static int mt7615_check_eeprom(struct mt76_dev *dev)
->         }
->  }
->
-> +static void mt7615_eeprom_parse_hw_cap(struct mt7615_dev *dev)
-> +{
-> +       u8 val, *eeprom = dev->mt76.eeprom.data;
-> +
-> +       val = FIELD_GET(MT_EE_NIC_WIFI_CONF_BAND_SEL,
-> +                       eeprom[MT_EE_WIFI_CONF]);
-> +       switch (val) {
-> +       case MT_EE_5GHZ:
-> +               dev->mt76.cap.has_5ghz = true;
-> +               break;
-> +       case MT_EE_2GHZ:
-> +               dev->mt76.cap.has_2ghz = true;
-> +               break;
-> +       default:
-> +               dev->mt76.cap.has_2ghz = true;
-> +               dev->mt76.cap.has_5ghz = true;
-> +               break;
-> +       }
-> +}
-> +
->  int mt7615_eeprom_init(struct mt7615_dev *dev)
->  {
->         int ret;
-> @@ -103,9 +123,7 @@ int mt7615_eeprom_init(struct mt7615_dev *dev)
->                 memcpy(dev->mt76.eeprom.data, dev->mt76.otp.data,
->                        MT7615_EEPROM_SIZE);
->
-> -       dev->mt76.cap.has_2ghz = true;
-> -       dev->mt76.cap.has_5ghz = true;
-> -
-> +       mt7615_eeprom_parse_hw_cap(dev);
->         memcpy(dev->mt76.macaddr, dev->mt76.eeprom.data + MT_EE_MAC_ADDR,
->                ETH_ALEN);
->
-> diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/eeprom.h b/drivers/net/wireless/mediatek/mt76/mt7615/eeprom.h
-> index a4cf16688171..b422e395d6ee 100644
-> --- a/drivers/net/wireless/mediatek/mt76/mt7615/eeprom.h
-> +++ b/drivers/net/wireless/mediatek/mt76/mt7615/eeprom.h
-> @@ -11,8 +11,17 @@ enum mt7615_eeprom_field {
->         MT_EE_VERSION =                         0x002,
->         MT_EE_MAC_ADDR =                        0x004,
->         MT_EE_NIC_CONF_0 =                      0x034,
-> +       MT_EE_WIFI_CONF =                       0x03e,
->
->         __MT_EE_MAX =                           0x3bf
->  };
->
-> +#define MT_EE_NIC_WIFI_CONF_BAND_SEL           GENMASK(5, 4)
-> +enum mt7615_eeprom_band {
-> +       MT_EE_DUAL_BAND,
-> +       MT_EE_5GHZ,
-> +       MT_EE_2GHZ,
-> +       MT_EE_DBDC,
-> +};
-> +
->  #endif
-> --
-> 2.20.1
->
+On mainline it turns out that you don't see the retuning errors but
+you see tons of spam about timeouts trying to wakeup from sleep.  I
+tracked down the commit that was causing that and have partially
+reverted it here.  I have no real knowledge about Broadcom WiFi, but
+the commit that was causing problems sounds (from the descriptioin) to
+be a hack commit penalizing all Broadcom WiFi users because of a bug
+in a Cypress SD controller.  I will let others comment if this is
+truly the case and, if so, what the right solution should be.
+
+
+Douglas Anderson (3):
+  brcmfmac: re-enable command decode in sdio_aos for BRCM 4354
+  mmc: core: API for temporarily disabling auto-retuning due to errors
+  brcmfmac: sdio: Disable auto-tuning around commands expected to fail
+
+ drivers/mmc/core/core.c                       | 27 +++++++++++++++++--
+ .../broadcom/brcm80211/brcmfmac/sdio.c        |  6 +++--
+ include/linux/mmc/core.h                      |  2 ++
+ include/linux/mmc/host.h                      |  1 +
+ 4 files changed, 32 insertions(+), 4 deletions(-)
+
+-- 
+2.21.0.1020.gf2820cf01a-goog
+
