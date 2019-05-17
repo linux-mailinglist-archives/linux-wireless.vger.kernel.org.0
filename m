@@ -2,84 +2,127 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 8E06121D0A
-	for <lists+linux-wireless@lfdr.de>; Fri, 17 May 2019 20:04:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CB3B321D19
+	for <lists+linux-wireless@lfdr.de>; Fri, 17 May 2019 20:08:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726586AbfEQSEr (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 17 May 2019 14:04:47 -0400
-Received: from mail-ed1-f68.google.com ([209.85.208.68]:34642 "EHLO
-        mail-ed1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726422AbfEQSEr (ORCPT
+        id S1729050AbfEQSIG (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 17 May 2019 14:08:06 -0400
+Received: from mail-yw1-f66.google.com ([209.85.161.66]:46612 "EHLO
+        mail-yw1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727183AbfEQSIG (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 17 May 2019 14:04:47 -0400
-Received: by mail-ed1-f68.google.com with SMTP id p27so11831252eda.1
-        for <linux-wireless@vger.kernel.org>; Fri, 17 May 2019 11:04:45 -0700 (PDT)
+        Fri, 17 May 2019 14:08:06 -0400
+Received: by mail-yw1-f66.google.com with SMTP id a130so3064024ywe.13
+        for <linux-wireless@vger.kernel.org>; Fri, 17 May 2019 11:08:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google;
-        h=subject:from:to:cc:references:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=ValCeoI/W4Lu5SHsLwRVyZA9aQ8FRAo5kQwhXjV+Tj8=;
-        b=VsFt6eBjNZcpheueBUCNWV+WYPieiDAmr7QyKruBVwOjtrjdbZ8a0ytVlD6SNW4V0F
-         LTMfDuAvRaQMf0DiacFUxdfYTrXfw03CAKL58g0HZyNB3ryycNgPmmIKMNQldEmas1r/
-         GPRSOJdgkZ6EQQLtlsg+482br88rjX7/ZaMEI=
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc:content-transfer-encoding;
+        bh=bz2B8Jk4th8PTqpI5vOS78BcaIYStVbY1xY/BzsFktc=;
+        b=LxFFlt+l67rmHEPzsA5ux7NJFJWrjTlQdLQrF33NKs2CbEZsp0PW6v1rVFyLFVxx7U
+         l6u0WGrqidColvzkqMHriaY7E/f5vTDFh6cdaaLvj0rEBaPv3hSlO772sMOY9Y388MI4
+         XKBYgmBq9jkBnOry2bwCXt0fWM3O/bx0DSMnw5lIZmFRd1PBG4OIhy58eIsylN6T0lgh
+         cb6PaViatI97y42rfdZjAPRylCDI82c1Uu3aIotMrUj8ZBxtKDSQFQ0vHnrFEMIBR2oe
+         sjB35vGUO+1ZtYdvynnIx/otNQJcXB9LWe+t4kCG0Fh9/+idWIRYAzCbYgptY3yBNi9e
+         6OiA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:from:to:cc:references:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=ValCeoI/W4Lu5SHsLwRVyZA9aQ8FRAo5kQwhXjV+Tj8=;
-        b=uE2GdCc73I5mGNOD1m+kf4gaIulGVSMMcpP7RyZwFTi4gHq7KNUSxN+tA91kQWUzRe
-         VMu+RUDZeFkx8MsNhHHJG5ZwO/FR3kUOnWSnP3YeFXqK/zSHtssH2U1VJEAg0/g5HCA2
-         1j+vFq7rUuwEmxdkCn10/Bn8u2S1cYl+HEdOgaa/r1rd329XdApqe5Qd/+dZk7nZBbe1
-         VMNLHBdEf+rDp5SE0VTyVr12tt/YaLkEOP1lAru+LfQhdeyDUYEwysiW1AgJmIsjQGes
-         musmT59WlKlbCllmgU9hs5KtrWR00qqBkY4EEHIX8qihO1jMf8cJx1oX2SMZb1vaEFAT
-         SaHw==
-X-Gm-Message-State: APjAAAU/h2h94t1ORoo8v43NWD416gyOuMT4PejW8ry79bg6rGAdX8NE
-        RLnyKBJjLxrkPYtRp4OVHhrpRv/H4a3wHWf6qWbsLVEnGUVuJYKvzzleBYfISDH+BX/IbC3oamU
-        1iTnL0LLyyvcqaMBd0ENX7+s4c3AKfJJqP2yyE+3O19Wy1f7S82hJLiYGHSnPQthK9GOnKAbPxN
-        uIivbvVGRRIr6bjQ==
-X-Google-Smtp-Source: APXvYqyAXwxgDway+evC2H/8urpFE/xKiHjMx910KQGidKBSaTIqXVEDg90HCzuoXiRmAh1eNt1xTw==
-X-Received: by 2002:a50:95af:: with SMTP id w44mr59036645eda.95.1558116285034;
-        Fri, 17 May 2019 11:04:45 -0700 (PDT)
-Received: from [192.168.178.129] (f140230.upc-f.chello.nl. [80.56.140.230])
-        by smtp.gmail.com with ESMTPSA id y46sm2922971edd.29.2019.05.17.11.04.43
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Fri, 17 May 2019 11:04:44 -0700 (PDT)
-Subject: Re: [PATCH 1/7] brcm80211: switch common header files to using SPDX
- license identifier
-From:   Arend Van Spriel <arend.vanspriel@broadcom.com>
-To:     Kalle Valo <kvalo@codeaurora.org>
-Cc:     linux-wireless@vger.kernel.org
-References: <1558008251-13692-1-git-send-email-arend.vanspriel@broadcom.com>
- <1558008251-13692-2-git-send-email-arend.vanspriel@broadcom.com>
- <3dcbfbab-a1f0-bdc6-909a-d9ed225e060a@broadcom.com>
-Message-ID: <f35219bc-88c2-cc8d-530e-516fb7a4ce80@broadcom.com>
-Date:   Fri, 17 May 2019 20:04:42 +0200
-User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:60.0) Gecko/20100101
- Thunderbird/60.6.1
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc:content-transfer-encoding;
+        bh=bz2B8Jk4th8PTqpI5vOS78BcaIYStVbY1xY/BzsFktc=;
+        b=oxndW8oA8VS3o3g2hGZlyQbukquU0sCT6ch92nguA2RCJ/tswBTlDnzwdmXy3zynP6
+         tOevn/dhagyMj6kAQ2w0WNhsRKWgoAVPurwkf06kcFQHE/TXkE4sPoWsKyn/foTPbAzs
+         nIy+7FgF9jXpOKzJRXRk5SVpJQRtVbajKDdcd6C1xtxTEYqzb6ZiJ3rzcKFOweCSY6U2
+         6Yl0UV6xAD2Q/cLTLz8iUJWdB6YGVs0IHgEDg8xIl8Ndhi0SZ+/S+utWO0ChTeDmvTkE
+         Kg82m94JVNJZOvAaZS4mSyWtMPuG8PNZhRmLqfoxLObYkROlVfXB2eeJa4bQa1R6YSs9
+         XLmw==
+X-Gm-Message-State: APjAAAWMfTThBnQzzIhPv1ChXqpipHyioCxLeezJ/P3RSz0ar3+a8Ikv
+        uDADMG9/jgQ/cpe1X1AsXjzjnImHB2KoiKGDFsM=
+X-Google-Smtp-Source: APXvYqwV/HP+dA2a1qXye6rBX7x4y8ngMQU21wUlPDKQCS+AhVAOe+3cED5fan4OPRepKYO+MS3JCtWtERpb4C6Qod8=
+X-Received: by 2002:a81:ac46:: with SMTP id z6mr28150922ywj.255.1558116485184;
+ Fri, 17 May 2019 11:08:05 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <3dcbfbab-a1f0-bdc6-909a-d9ed225e060a@broadcom.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+References: <1558008251-13692-1-git-send-email-arend.vanspriel@broadcom.com>
+ <1558008251-13692-4-git-send-email-arend.vanspriel@broadcom.com>
+ <20190516173113.GA540@kroah.com> <a5d32b2f-a99b-a248-1acd-9de532732e30@broadcom.com>
+ <20190516200131.GA15814@kroah.com> <eeebea29-4237-6e49-7578-8d3b1ad7df85@broadcom.com>
+In-Reply-To: <eeebea29-4237-6e49-7578-8d3b1ad7df85@broadcom.com>
+From:   =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>
+Date:   Fri, 17 May 2019 20:07:53 +0200
+Message-ID: <CACna6rxuSFWN8eib7FpJiVQqLwdD5GOTaAFr7msJa01rBSTLKA@mail.gmail.com>
+Subject: Re: [PATCH 3/7] brcmsmac: switch source files to using SPDX license identifier
+To:     Arend Van Spriel <arend.vanspriel@broadcom.com>
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        Thomas Gleixner <tglx@linutronix.de>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 5/16/2019 10:57 PM, Arend Van Spriel wrote:
-> On 5/16/2019 2:04 PM, Arend van Spriel wrote:
->> With ISC license text in place under the LICENSES folder switch
->> to using the SPDX license identifier to refer to the ISC license.
-> 
-> Hi Kalle,
-> 
-> Given the feedback on checkpatch (or spdxcheck) failures let me respin 
-> this series.
+On Fri, 17 May 2019 at 01:25, Arend Van Spriel
+<arend.vanspriel@broadcom.com> wrote:
+> On 5/16/2019 10:01 PM, Greg Kroah-Hartman wrote:
+> > On Thu, May 16, 2019 at 09:45:19PM +0200, Arend Van Spriel wrote:
+> >> On 5/16/2019 7:31 PM, Greg Kroah-Hartman wrote:
+> >>> On Thu, May 16, 2019 at 02:04:07PM +0200, Arend van Spriel wrote:
+> >>>> With ISC license text in place under the LICENSES folder switch
+> >>>> to using the SPDX license identifier to refer to the ISC license.
+> >>>>
+> >>>> Cc: Thomas Gleixner <tglx@linutronix.de>
+> >>>> Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> >>>> Reviewed-by: Hante Meuleman <hante.meuleman@broadcom.com>
+> >>>> Reviewed-by: Pieter-Paul Giesberts <pieter-paul.giesberts@broadcom.c=
+om>
+> >>>> Reviewed-by: Franky Lin <franky.lin@broadcom.com>
+> >>>> Signed-off-by: Arend van Spriel <arend.vanspriel@broadcom.com>
+> >>>> ---
+> >>>> Hi Thomas, Greg,
+> >>>>
+> >>>> The file drivers/net/wireless/broadcom/brcm80211/brcmsmac/led.c
+> >>>> did not have license information nor copyright notice and as such
+> >>>> it got included in commit b24413180f56 ("License cleanup: add SPDX
+> >>>> GPL-2.0 license identifier to files with no license"). I added you
+> >>>> guys as I propose to align this source file with the rest of
+> >>>> the driver sources and change it to ISC license and add the missing
+> >>>> copyright notice while at it (not sure if that warrants a separate
+> >>>> patch).
+> >>>
+> >>> A separate patch would be good, to make it explicit that you are
+> >>> changing the license of the file.
+> >>
+> >> Ok.
+> >>
+> >>> And ISC, ick, why...  :)
+> >>
+> >> Because the license text in the other driver source files is a 1:1 mat=
+ch
+> >> with the ISC license.
+> >
+> > Oh, I am not disagreeing with that, yes, that is obviously the license
+> > of the files. Just complaining about that choice for Linux kernel code =
+:)
+>
+> I see.
+>
+> >> Another option could be MIT license which is in the preferred folder.
+> >> Will have to consult our legal department about it though.
+> >
+> > Hey, if your legal department is going to get asked this, why not just
+> > switch it to GPLv2?  That would make everything much simpler.
+>
+> Hah. Because I already know the answer to that. ;-)
 
-Actually let's *NOT* respin and leave this series as is and ignore the 
-warning for the header files as Thomas wrote in his response: " So we 
-can fixup the documentation and allow // style for headers as well.".
+It's not that obvious to me, sorry. Does your legal department require
+something more permissive than GPLv2? Is that worth asking them about
+dual-licensing? Something like
+GPL-2.0 OR MIT
+? That assures driver is compatible with Linux, no matter what's the
+current lawyers interpretation of MIT vs. GPL 2.0. I believe Alan Cox
+once told/suggested that dual-licensing is safer for legal reasons.
 
-Regards,
-Arend
+--
+Rafa=C5=82
