@@ -2,77 +2,120 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E06D520FCA
-	for <lists+linux-wireless@lfdr.de>; Thu, 16 May 2019 22:57:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D8554213B0
+	for <lists+linux-wireless@lfdr.de>; Fri, 17 May 2019 08:26:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727950AbfEPU5q (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 16 May 2019 16:57:46 -0400
-Received: from mail-ed1-f66.google.com ([209.85.208.66]:38631 "EHLO
-        mail-ed1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726785AbfEPU5p (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 16 May 2019 16:57:45 -0400
-Received: by mail-ed1-f66.google.com with SMTP id w11so7160435edl.5
-        for <linux-wireless@vger.kernel.org>; Thu, 16 May 2019 13:57:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=4XRNMyEkvaaS1Z60Jwn1Q6UuSoDUMF44bfh/UfU+GCY=;
-        b=dhxit1wfwozYhjzH6SAWanqrrwgPaKLye1ic2qqQdtnhlVKVLY/hlSjU14n1/3yzcL
-         zIv6JZyNIsdtglyZZlzF21m1zR3Iz8RbITFOcrzGgtftS+YR6+GJxBWb+xh64ndhBGsw
-         NGo5qRcGbakCjNYXVknUWylathuFxlqP00xos=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=4XRNMyEkvaaS1Z60Jwn1Q6UuSoDUMF44bfh/UfU+GCY=;
-        b=c3LC0aKSPK475ywuru7XgVk/Req7+7s5JB65+D0wwfxdLWLsxlcv40e5TiaydupXL4
-         +VppemB5cfH/nfnUnTOxCTuUsge1nnvcbqSH4axHexto1zM3/nkttZ09/PIvg4ptkKnN
-         9qeLlkIHc7Ldun6f52Is7Qc6CDXoV3S+/4qPPcB+75a2Y45WucEHgU9fO7QXMhx8OI4P
-         n7DyIzOZm6WWOzqci5qtN+DbnRz+ArODeZKxI3Z2cB0Pfzt/R0B9em8YjjtCw/gNjUdw
-         FxKL7ooKF+wlupJPLJW4zvGJkhRfkhGKTUAm8w//4AYWiF/vFd5LYL9p3Ov841KRI056
-         fA3Q==
-X-Gm-Message-State: APjAAAVNeqtTM1kwYFpHCj3OP2sx9n/Y2TkYSUG2U/cLiqeIUbkHtFgT
-        tCHPrQE1W9wH9m0cnhgTIPDCKDwAv1NLeuTr07mlu4Z5AcIMVTDfGxrbxZpvEEVjz5ew28Qs1gh
-        1kY1aO9w3dNX6U7i2XJVKv04RWF4TUi8PtGUbhibkkgkGG/RaQD1FbE7HffpQ2mzoK0VPVZIFQL
-        Qk58vVIZY6uhuQAw==
-X-Google-Smtp-Source: APXvYqyIsRNVunziKDJ60b3LdWLfgiyu3LIQDPFPeo/lqY3ewZdmwVU37wUcxSZLq0qY5V4JjHLrtQ==
-X-Received: by 2002:a50:9016:: with SMTP id b22mr51031168eda.99.1558040264059;
-        Thu, 16 May 2019 13:57:44 -0700 (PDT)
-Received: from [10.230.33.15] ([192.19.248.250])
-        by smtp.gmail.com with ESMTPSA id d24sm1219752ejt.12.2019.05.16.13.57.43
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Thu, 16 May 2019 13:57:43 -0700 (PDT)
-Subject: Re: [PATCH 1/7] brcm80211: switch common header files to using SPDX
- license identifier
-To:     Kalle Valo <kvalo@codeaurora.org>
-Cc:     linux-wireless@vger.kernel.org
-References: <1558008251-13692-1-git-send-email-arend.vanspriel@broadcom.com>
- <1558008251-13692-2-git-send-email-arend.vanspriel@broadcom.com>
-From:   Arend Van Spriel <arend.vanspriel@broadcom.com>
-Message-ID: <3dcbfbab-a1f0-bdc6-909a-d9ed225e060a@broadcom.com>
-Date:   Thu, 16 May 2019 22:57:41 +0200
-User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:60.0) Gecko/20100101
- Thunderbird/60.6.1
+        id S1727581AbfEQG0P (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 17 May 2019 02:26:15 -0400
+Received: from mail.kernel.org ([198.145.29.99]:58528 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727184AbfEQG0P (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 17 May 2019 02:26:15 -0400
+Received: from lore-desk-wlan.lan (unknown [151.66.17.19])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 3152F20833;
+        Fri, 17 May 2019 06:26:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1558074374;
+        bh=GdNj1kVcG98Mh6w82ct3kOQTIhlA8j7gO0BlJ8ugMj0=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=uwk4G9ebyRl8DwRaQURcxQRs/yG/Okw/udEu3xItCEhZKomFLLtHuuGgsmHmQ/p6U
+         p78CjlvQpXNhGIw9ytP3lmORySjpcHOUTy43+pxjSVpgj4+ECfwoDDejNHzPznaJno
+         nszlyjhdYCpxOnXrLhEWhTYUwXe8Gmo60/PJNPBo=
+From:   Lorenzo Bianconi <lorenzo@kernel.org>
+To:     nbd@nbd.name
+Cc:     lorenzo.bianconi@redhat.com, linux-wireless@vger.kernel.org,
+        ryder.lee@mediatek.com, royluo@google.com
+Subject: [PATCH v2] mt76: mt7615: add support for mtd eeprom parsing
+Date:   Fri, 17 May 2019 08:26:05 +0200
+Message-Id: <12c5ae00296007af2da0021cc0872dac9b6960dc.1558074163.git.lorenzo@kernel.org>
+X-Mailer: git-send-email 2.20.1
+In-Reply-To: <cover.1558074163.git.lorenzo@kernel.org>
+References: <cover.1558074163.git.lorenzo@kernel.org>
 MIME-Version: 1.0
-In-Reply-To: <1558008251-13692-2-git-send-email-arend.vanspriel@broadcom.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 5/16/2019 2:04 PM, Arend van Spriel wrote:
-> With ISC license text in place under the LICENSES folder switch
-> to using the SPDX license identifier to refer to the ISC license.
+Calibration data are often available on a specific mtd partition on
+embedded devices. Take into account eeprom calibration data if
+available.
 
-Hi Kalle,
+Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+---
+Changes since v1:
+- remove TODO comment
+- take into account mtd partition even if otp one is empty
+---
+ .../wireless/mediatek/mt76/mt7615/eeprom.c    | 29 +++++++++++++++----
+ 1 file changed, 23 insertions(+), 6 deletions(-)
 
-Given the feedback on checkpatch (or spdxcheck) failures let me respin 
-this series.
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/eeprom.c b/drivers/net/wireless/mediatek/mt76/mt7615/eeprom.c
+index dd5ab46a4f66..1712f66520a8 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7615/eeprom.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7615/eeprom.c
+@@ -42,13 +42,13 @@ static int mt7615_efuse_read(struct mt7615_dev *dev, u32 base,
+ 
+ static int mt7615_efuse_init(struct mt7615_dev *dev)
+ {
+-	u32 base = mt7615_reg_map(dev, MT_EFUSE_BASE);
+-	int len = MT7615_EEPROM_SIZE;
+-	int ret, i;
++	u32 val, base = mt7615_reg_map(dev, MT_EFUSE_BASE);
++	int i, len = MT7615_EEPROM_SIZE;
+ 	void *buf;
+ 
+-	if (mt76_rr(dev, base + MT_EFUSE_BASE_CTRL) & MT_EFUSE_BASE_CTRL_EMPTY)
+-		return -EINVAL;
++	val = mt76_rr(dev, base + MT_EFUSE_BASE_CTRL);
++	if (val & MT_EFUSE_BASE_CTRL_EMPTY)
++		return 0;
+ 
+ 	dev->mt76.otp.data = devm_kzalloc(dev->mt76.dev, len, GFP_KERNEL);
+ 	dev->mt76.otp.size = len;
+@@ -57,6 +57,8 @@ static int mt7615_efuse_init(struct mt7615_dev *dev)
+ 
+ 	buf = dev->mt76.otp.data;
+ 	for (i = 0; i + 16 <= len; i += 16) {
++		int ret;
++
+ 		ret = mt7615_efuse_read(dev, base, i, buf + i);
+ 		if (ret)
+ 			return ret;
+@@ -76,6 +78,18 @@ static int mt7615_eeprom_load(struct mt7615_dev *dev)
+ 	return mt7615_efuse_init(dev);
+ }
+ 
++static int mt7615_check_eeprom(struct mt76_dev *dev)
++{
++	u16 val = get_unaligned_le16(dev->eeprom.data);
++
++	switch (val) {
++	case 0x7615:
++		return 0;
++	default:
++		return -EINVAL;
++	}
++}
++
+ int mt7615_eeprom_init(struct mt7615_dev *dev)
+ {
+ 	int ret;
+@@ -84,7 +98,10 @@ int mt7615_eeprom_init(struct mt7615_dev *dev)
+ 	if (ret < 0)
+ 		return ret;
+ 
+-	memcpy(dev->mt76.eeprom.data, dev->mt76.otp.data, MT7615_EEPROM_SIZE);
++	ret = mt7615_check_eeprom(&dev->mt76);
++	if (ret && dev->mt76.otp.data)
++		memcpy(dev->mt76.eeprom.data, dev->mt76.otp.data,
++		       MT7615_EEPROM_SIZE);
+ 
+ 	dev->mt76.cap.has_2ghz = true;
+ 	dev->mt76.cap.has_5ghz = true;
+-- 
+2.20.1
 
-Gr. AvS
