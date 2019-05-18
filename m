@@ -2,166 +2,176 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 093C322446
-	for <lists+linux-wireless@lfdr.de>; Sat, 18 May 2019 19:36:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5467A22455
+	for <lists+linux-wireless@lfdr.de>; Sat, 18 May 2019 19:49:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729487AbfERRgB (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 18 May 2019 13:36:01 -0400
-Received: from mail-it1-f197.google.com ([209.85.166.197]:55413 "EHLO
-        mail-it1-f197.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728105AbfERRgB (ORCPT
+        id S1729713AbfERRtu (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 18 May 2019 13:49:50 -0400
+Received: from netrider.rowland.org ([192.131.102.5]:43293 "HELO
+        netrider.rowland.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with SMTP id S1727073AbfERRtu (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 18 May 2019 13:36:01 -0400
-Received: by mail-it1-f197.google.com with SMTP id o126so9786428itc.5
-        for <linux-wireless@vger.kernel.org>; Sat, 18 May 2019 10:36:00 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:date:in-reply-to:message-id:subject
-         :from:to;
-        bh=1CvcmZSlB35QHwFTvpa0OM2vzXbECFOPgO/fzHPp5Ac=;
-        b=XctyWOM9xugJnH/2me8OQK8tuCW1DIu1QgR8RyTUgWjMph9TA3xCaJp9s15L/R7pyD
-         DJdQebeluewVad/Gqhq6QJE9469e0zb2O1RWdHaUVrbWUeHhQu+Z3yyuwE700WgvpPVc
-         ItM+8MG4rDN5iWk9P7y491jm4muN4tihGf6QbIVMVxmKPxzLsZqHRX7m/cPbEEcNvXpT
-         KmsuEp4wMYA2s4BpNEqrw0F/UiJFAayDOtEUGxGMxMhiN7WQdy60Ku65TGLB5TMhWZ/O
-         ENqXOK4vz0mkED/Y/6tJIRb+cSUREt2X2adJy91m6Pic6HX2l8TTTsOAzmg+JtyK/G8Q
-         h5zg==
-X-Gm-Message-State: APjAAAXUTg5yBjy3xxfYqTwDrOpbwVNmW15dtNbafY02uc8CL3vZNhh4
-        APhVKv6Gy88a/1ZLbibNvzqI5jU2trx/cGfmtRFZDSQ4adQi
-X-Google-Smtp-Source: APXvYqzV8JeqBUYGAkEVFE/5tCLRs4BmMrMFHmykStvb7KmZgsRjuQCv2kRQa4EwNhkn41ukasbGIvtLxrHG8k6Baekq06RWo1k4
-MIME-Version: 1.0
-X-Received: by 2002:a5e:d703:: with SMTP id v3mr30942144iom.197.1558200960160;
- Sat, 18 May 2019 10:36:00 -0700 (PDT)
-Date:   Sat, 18 May 2019 10:36:00 -0700
-In-Reply-To: <Pine.LNX.4.44L0.1905181300440.10594-100000@netrider.rowland.org>
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <000000000000b8203405892cee43@google.com>
+        Sat, 18 May 2019 13:49:50 -0400
+Received: (qmail 11573 invoked by uid 500); 18 May 2019 13:49:49 -0400
+Received: from localhost (sendmail-bs@127.0.0.1)
+  by localhost with SMTP; 18 May 2019 13:49:49 -0400
+Date:   Sat, 18 May 2019 13:49:49 -0400 (EDT)
+From:   Alan Stern <stern@rowland.harvard.edu>
+X-X-Sender: stern@netrider.rowland.org
+To:     syzbot <syzbot+200d4bb11b23d929335f@syzkaller.appspotmail.com>
+cc:     andreyknvl@google.com, <chunkeey@gmail.com>,
+        <chunkeey@googlemail.com>, <davem@davemloft.net>,
+        <kvalo@codeaurora.org>, <linux-kernel@vger.kernel.org>,
+        <linux-usb@vger.kernel.org>, <linux-wireless@vger.kernel.org>,
+        <netdev@vger.kernel.org>, <oneukum@suse.com>,
+        <syzkaller-bugs@googlegroups.com>
 Subject: Re: KASAN: use-after-free Read in p54u_load_firmware_cb
-From:   syzbot <syzbot+200d4bb11b23d929335f@syzkaller.appspotmail.com>
-To:     andreyknvl@google.com, chunkeey@gmail.com, chunkeey@googlemail.com,
-        davem@davemloft.net, kvalo@codeaurora.org,
-        linux-kernel@vger.kernel.org, linux-usb@vger.kernel.org,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        oneukum@suse.com, stern@rowland.harvard.edu,
-        syzkaller-bugs@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"; format=flowed; delsp=yes
+In-Reply-To: <000000000000b8203405892cee43@google.com>
+Message-ID: <Pine.LNX.4.44L0.1905181346380.10594-100000@netrider.rowland.org>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hello,
+On Sat, 18 May 2019, syzbot wrote:
 
-syzbot has tested the proposed patch but the reproducer still triggered  
-crash:
-KASAN: use-after-free Read in usb_driver_release_interface
+> Hello,
+> 
+> syzbot has tested the proposed patch but the reproducer still triggered  
+> crash:
+> KASAN: use-after-free Read in usb_driver_release_interface
+> 
+> usb 1-1: Loading firmware file isl3887usb
+> usb 1-1: Direct firmware load for isl3887usb failed with error -2
+> usb 1-1: Firmware not found.
+> p54usb 1-1:0.143: failed to initialize device (-2)
+> ==================================================================
+> BUG: KASAN: use-after-free in usb_driver_release_interface+0x16b/0x190  
+> drivers/usb/core/driver.c:584
+> Read of size 8 at addr ffff88808fc31218 by task kworker/0:1/12
 
-usb 1-1: Loading firmware file isl3887usb
-usb 1-1: Direct firmware load for isl3887usb failed with error -2
-usb 1-1: Firmware not found.
-p54usb 1-1:0.143: failed to initialize device (-2)
-==================================================================
-BUG: KASAN: use-after-free in usb_driver_release_interface+0x16b/0x190  
-drivers/usb/core/driver.c:584
-Read of size 8 at addr ffff88808fc31218 by task kworker/0:1/12
+Now the bad access is in a different place.  That's a good sign.
+In this case it indicates that although udev is still hanging around, 
+intf has already been freed.  We really should acquire a reference to 
+it instead.
 
-CPU: 0 PID: 12 Comm: kworker/0:1 Not tainted 5.1.0-rc3-g43151d6-dirty #1
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS  
-Google 01/01/2011
-Workqueue: events request_firmware_work_func
-Call Trace:
-  __dump_stack lib/dump_stack.c:77 [inline]
-  dump_stack+0xe8/0x16e lib/dump_stack.c:113
-  print_address_description+0x6c/0x236 mm/kasan/report.c:187
-  kasan_report.cold+0x1a/0x3c mm/kasan/report.c:317
-  usb_driver_release_interface+0x16b/0x190 drivers/usb/core/driver.c:584
-  p54u_load_firmware_cb+0x390/0x420  
-drivers/net/wireless/intersil/p54/p54usb.c:948
-  request_firmware_work_func+0x12d/0x249  
-drivers/base/firmware_loader/main.c:785
-  process_one_work+0x90f/0x1580 kernel/workqueue.c:2269
-  worker_thread+0x9b/0xe20 kernel/workqueue.c:2415
-  kthread+0x313/0x420 kernel/kthread.c:253
-  ret_from_fork+0x3a/0x50 arch/x86/entry/entry_64.S:352
-
-Allocated by task 12:
-  set_track mm/kasan/common.c:87 [inline]
-  __kasan_kmalloc mm/kasan/common.c:497 [inline]
-  __kasan_kmalloc.constprop.0+0xbf/0xd0 mm/kasan/common.c:470
-  kmalloc include/linux/slab.h:547 [inline]
-  kzalloc include/linux/slab.h:742 [inline]
-  usb_set_configuration+0x2e0/0x1740 drivers/usb/core/message.c:1846
-  generic_probe+0xa2/0xda drivers/usb/core/generic.c:210
-  usb_probe_device+0xc0/0x150 drivers/usb/core/driver.c:266
-  really_probe+0x2da/0xb10 drivers/base/dd.c:509
-  driver_probe_device+0x21d/0x350 drivers/base/dd.c:671
-  __device_attach_driver+0x1d8/0x290 drivers/base/dd.c:778
-  bus_for_each_drv+0x163/0x1e0 drivers/base/bus.c:454
-  __device_attach+0x223/0x3a0 drivers/base/dd.c:844
-  bus_probe_device+0x1f1/0x2a0 drivers/base/bus.c:514
-  device_add+0xad2/0x16e0 drivers/base/core.c:2106
-  usb_new_device.cold+0x537/0xccf drivers/usb/core/hub.c:2534
-  hub_port_connect drivers/usb/core/hub.c:5089 [inline]
-  hub_port_connect_change drivers/usb/core/hub.c:5204 [inline]
-  port_event drivers/usb/core/hub.c:5350 [inline]
-  hub_event+0x138e/0x3b00 drivers/usb/core/hub.c:5432
-  process_one_work+0x90f/0x1580 kernel/workqueue.c:2269
-  worker_thread+0x9b/0xe20 kernel/workqueue.c:2415
-  kthread+0x313/0x420 kernel/kthread.c:253
-  ret_from_fork+0x3a/0x50 arch/x86/entry/entry_64.S:352
-
-Freed by task 5394:
-  set_track mm/kasan/common.c:87 [inline]
-  __kasan_slab_free+0x130/0x180 mm/kasan/common.c:459
-  slab_free_hook mm/slub.c:1429 [inline]
-  slab_free_freelist_hook+0x5e/0x140 mm/slub.c:1456
-  slab_free mm/slub.c:3003 [inline]
-  kfree+0xce/0x290 mm/slub.c:3958
-  device_release+0x7d/0x210 drivers/base/core.c:1064
-  kobject_cleanup lib/kobject.c:662 [inline]
-  kobject_release lib/kobject.c:691 [inline]
-  kref_put include/linux/kref.h:67 [inline]
-  kobject_put+0x1df/0x4f0 lib/kobject.c:708
-  put_device+0x21/0x30 drivers/base/core.c:2205
-  usb_disable_device+0x309/0x790 drivers/usb/core/message.c:1244
-  usb_disconnect+0x298/0x870 drivers/usb/core/hub.c:2197
-  hub_port_connect drivers/usb/core/hub.c:4940 [inline]
-  hub_port_connect_change drivers/usb/core/hub.c:5204 [inline]
-  port_event drivers/usb/core/hub.c:5350 [inline]
-  hub_event+0xcd2/0x3b00 drivers/usb/core/hub.c:5432
-  process_one_work+0x90f/0x1580 kernel/workqueue.c:2269
-  worker_thread+0x9b/0xe20 kernel/workqueue.c:2415
-  kthread+0x313/0x420 kernel/kthread.c:253
-  ret_from_fork+0x3a/0x50 arch/x86/entry/entry_64.S:352
-
-The buggy address belongs to the object at ffff88808fc31100
-  which belongs to the cache kmalloc-2k of size 2048
-The buggy address is located 280 bytes inside of
-  2048-byte region [ffff88808fc31100, ffff88808fc31900)
-The buggy address belongs to the page:
-page:ffffea00023f0c00 count:1 mapcount:0 mapping:ffff88812c3f4800 index:0x0  
-compound_mapcount: 0
-flags: 0xfff00000010200(slab|head)
-raw: 00fff00000010200 dead000000000100 dead000000000200 ffff88812c3f4800
-raw: 0000000000000000 00000000000f000f 00000001ffffffff 0000000000000000
-page dumped because: kasan: bad access detected
-
-Memory state around the buggy address:
-  ffff88808fc31100: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
-  ffff88808fc31180: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
-> ffff88808fc31200: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
-                             ^
-  ffff88808fc31280: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
-  ffff88808fc31300: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
-==================================================================
+Alan Stern
 
 
-Tested on:
+#syz test: https://github.com/google/kasan.git usb-fuzzer
 
-commit:         43151d6c usb-fuzzer: main usb gadget fuzzer driver
-git tree:       https://github.com/google/kasan.git usb-fuzzer
-console output: https://syzkaller.appspot.com/x/log.txt?x=148b9428a00000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=4183eeef650d1234
-compiler:       gcc (GCC) 9.0.0 20181231 (experimental)
-patch:          https://syzkaller.appspot.com/x/patch.diff?x=17642018a00000
+ drivers/net/wireless/intersil/p54/p54usb.c |   43 ++++++++++++-----------------
+ 1 file changed, 18 insertions(+), 25 deletions(-)
+
+Index: usb-devel/drivers/net/wireless/intersil/p54/p54usb.c
+===================================================================
+--- usb-devel.orig/drivers/net/wireless/intersil/p54/p54usb.c
++++ usb-devel/drivers/net/wireless/intersil/p54/p54usb.c
+@@ -33,6 +33,8 @@ MODULE_ALIAS("prism54usb");
+ MODULE_FIRMWARE("isl3886usb");
+ MODULE_FIRMWARE("isl3887usb");
+ 
++static struct usb_driver p54u_driver;
++
+ /*
+  * Note:
+  *
+@@ -921,9 +923,9 @@ static void p54u_load_firmware_cb(const
+ {
+ 	struct p54u_priv *priv = context;
+ 	struct usb_device *udev = priv->udev;
++	struct usb_interface *intf = priv->intf;
+ 	int err;
+ 
+-	complete(&priv->fw_wait_load);
+ 	if (firmware) {
+ 		priv->fw = firmware;
+ 		err = p54u_start_ops(priv);
+@@ -932,26 +934,22 @@ static void p54u_load_firmware_cb(const
+ 		dev_err(&udev->dev, "Firmware not found.\n");
+ 	}
+ 
+-	if (err) {
+-		struct device *parent = priv->udev->dev.parent;
+-
+-		dev_err(&udev->dev, "failed to initialize device (%d)\n", err);
+-
+-		if (parent)
+-			device_lock(parent);
++	complete(&priv->fw_wait_load);
++	/*
++	 * At this point p54u_disconnect may have already freed
++	 * the "priv" context. Do not use it anymore!
++	 */
++	priv = NULL;
+ 
+-		device_release_driver(&udev->dev);
+-		/*
+-		 * At this point p54u_disconnect has already freed
+-		 * the "priv" context. Do not use it anymore!
+-		 */
+-		priv = NULL;
++	if (err) {
++		dev_err(&intf->dev, "failed to initialize device (%d)\n", err);
+ 
+-		if (parent)
+-			device_unlock(parent);
++		usb_lock_device(udev);
++		usb_driver_release_interface(&p54u_driver, intf);
++		usb_unlock_device(udev);
+ 	}
+ 
+-	usb_put_dev(udev);
++	usb_put_intf(intf);
+ }
+ 
+ static int p54u_load_firmware(struct ieee80211_hw *dev,
+@@ -972,14 +970,14 @@ static int p54u_load_firmware(struct iee
+ 	dev_info(&priv->udev->dev, "Loading firmware file %s\n",
+ 	       p54u_fwlist[i].fw);
+ 
+-	usb_get_dev(udev);
++	usb_get_intf(intf);
+ 	err = request_firmware_nowait(THIS_MODULE, 1, p54u_fwlist[i].fw,
+ 				      device, GFP_KERNEL, priv,
+ 				      p54u_load_firmware_cb);
+ 	if (err) {
+ 		dev_err(&priv->udev->dev, "(p54usb) cannot load firmware %s "
+ 					  "(%d)!\n", p54u_fwlist[i].fw, err);
+-		usb_put_dev(udev);
++		usb_put_intf(intf);
+ 	}
+ 
+ 	return err;
+@@ -1011,8 +1009,6 @@ static int p54u_probe(struct usb_interfa
+ 	skb_queue_head_init(&priv->rx_queue);
+ 	init_usb_anchor(&priv->submitted);
+ 
+-	usb_get_dev(udev);
+-
+ 	/* really lazy and simple way of figuring out if we're a 3887 */
+ 	/* TODO: should just stick the identification in the device table */
+ 	i = intf->altsetting->desc.bNumEndpoints;
+@@ -1053,10 +1049,8 @@ static int p54u_probe(struct usb_interfa
+ 		priv->upload_fw = p54u_upload_firmware_net2280;
+ 	}
+ 	err = p54u_load_firmware(dev, intf);
+-	if (err) {
+-		usb_put_dev(udev);
++	if (err)
+ 		p54_free_common(dev);
+-	}
+ 	return err;
+ }
+ 
+@@ -1072,7 +1066,6 @@ static void p54u_disconnect(struct usb_i
+ 	wait_for_completion(&priv->fw_wait_load);
+ 	p54_unregister_common(dev);
+ 
+-	usb_put_dev(interface_to_usbdev(intf));
+ 	release_firmware(priv->fw);
+ 	p54_free_common(dev);
+ }
 
