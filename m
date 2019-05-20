@@ -2,27 +2,26 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 8047022F6E
-	for <lists+linux-wireless@lfdr.de>; Mon, 20 May 2019 10:55:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8301322F73
+	for <lists+linux-wireless@lfdr.de>; Mon, 20 May 2019 10:55:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731681AbfETIzZ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 20 May 2019 04:55:25 -0400
-Received: from nbd.name ([46.4.11.11]:41464 "EHLO nbd.name"
+        id S1731685AbfETIz2 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 20 May 2019 04:55:28 -0400
+Received: from nbd.name ([46.4.11.11]:41466 "EHLO nbd.name"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1731669AbfETIzX (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 20 May 2019 04:55:23 -0400
+        id S1731660AbfETIzW (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 20 May 2019 04:55:22 -0400
 Received: from p548c87ba.dip0.t-ipconnect.de ([84.140.135.186] helo=bertha.datto.lan)
         by ds12 with esmtpa (Exim 4.89)
         (envelope-from <john@phrozen.org>)
-        id 1hSe4k-0002Y7-PH; Mon, 20 May 2019 10:55:18 +0200
+        id 1hSe4l-0002Y7-31; Mon, 20 May 2019 10:55:19 +0200
 From:   John Crispin <john@phrozen.org>
 To:     Kalle Valo <kvalo@codeaurora.org>
 Cc:     ath11k@lists.infradead.org, linux-wireless@vger.kernel.org,
-        John Crispin <john@phrozen.org>,
-        Shashidhar Lakkavalli <slakkavalli@datto.com>
-Subject: [PATCH V5 5/8] ath11k: extend reading of FW capabilities
-Date:   Mon, 20 May 2019 10:55:05 +0200
-Message-Id: <20190520085508.5888-6-john@phrozen.org>
+        John Crispin <john@phrozen.org>
+Subject: [PATCH V5 6/8] ath11k: add defines for max MCS rates per phymode
+Date:   Mon, 20 May 2019 10:55:06 +0200
+Message-Id: <20190520085508.5888-7-john@phrozen.org>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20190520085508.5888-1-john@phrozen.org>
 References: <20190520085508.5888-1-john@phrozen.org>
@@ -33,70 +32,49 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Read the additional mcs and extended mac capabilities field from the
-service ready callback and store them inside the ath11k_pdev_cap
-structure. This allows us to generate the sband_iftype_data dynamically.
-
-Signed-off-by: Shashidhar Lakkavalli <slakkavalli@datto.com>
 Signed-off-by: John Crispin <john@phrozen.org>
 ---
- drivers/net/wireless/ath/ath11k/core.h | 3 ++-
- drivers/net/wireless/ath/ath11k/wmi.c  | 7 +++++--
- 2 files changed, 7 insertions(+), 3 deletions(-)
+ drivers/net/wireless/ath/ath11k/core.h  | 4 ++++
+ drivers/net/wireless/ath/ath11k/dp_rx.c | 4 ++--
+ 2 files changed, 6 insertions(+), 2 deletions(-)
 
 diff --git a/drivers/net/wireless/ath/ath11k/core.h b/drivers/net/wireless/ath/ath11k/core.h
-index 994170e08cc5..a7c59ea0c228 100644
+index a7c59ea0c228..d0d960b384e7 100644
 --- a/drivers/net/wireless/ath/ath11k/core.h
 +++ b/drivers/net/wireless/ath/ath11k/core.h
-@@ -523,7 +523,7 @@ struct ath11k {
- struct ath11k_band_cap {
- 	u32 max_bw_supported;
- 	u32 ht_cap_info;
--	u32 he_cap_info;
-+	u32 he_cap_info[2];
- 	u32 he_mcs;
- 	u32 he_cap_phy_info[PSOC_HOST_MAX_PHY_SIZE];
- 	struct ath11k_ppe_threshold he_ppet;
-@@ -534,6 +534,7 @@ struct ath11k_pdev_cap {
- 	u32 ampdu_density;
- 	u32 vht_cap;
- 	u32 vht_mcs;
-+	u32 he_mcs;
- 	u32 tx_chain_mask;
- 	u32 rx_chain_mask;
- 	u32 tx_chain_mask_shift;
-diff --git a/drivers/net/wireless/ath/ath11k/wmi.c b/drivers/net/wireless/ath/ath11k/wmi.c
-index 9ca44c4b24f8..807c42d5bb22 100644
---- a/drivers/net/wireless/ath/ath11k/wmi.c
-+++ b/drivers/net/wireless/ath/ath11k/wmi.c
-@@ -325,6 +325,7 @@ static int ath11k_pull_mac_phy_cap_service_ready_ext(
- 	} else if (mac_phy_caps->supported_bands & WMI_HOST_WLAN_5G_CAP) {
- 		pdev_cap->vht_cap = mac_phy_caps->vht_cap_info_5g;
- 		pdev_cap->vht_mcs = mac_phy_caps->vht_supp_mcs_5g;
-+		pdev_cap->he_mcs = mac_phy_caps->he_supp_mcs_5g;
- 		pdev_cap->tx_chain_mask = mac_phy_caps->tx_chain_mask_5g;
- 		pdev_cap->rx_chain_mask = mac_phy_caps->rx_chain_mask_5g;
- 	} else {
-@@ -347,7 +348,8 @@ static int ath11k_pull_mac_phy_cap_service_ready_ext(
- 	cap_band = &pdev_cap->band[NL80211_BAND_2GHZ];
- 	cap_band->max_bw_supported = mac_phy_caps->max_bw_supported_2g;
- 	cap_band->ht_cap_info = mac_phy_caps->ht_cap_info_2g;
--	cap_band->he_cap_info = mac_phy_caps->he_cap_info_2g;
-+	cap_band->he_cap_info[0] = mac_phy_caps->he_cap_info_2g;
-+	cap_band->he_cap_info[1] = mac_phy_caps->he_cap_info_2g_ext;
- 	cap_band->he_mcs = mac_phy_caps->he_supp_mcs_2g;
- 	memcpy(cap_band->he_cap_phy_info, &mac_phy_caps->he_cap_phy_info_2g,
- 	       sizeof(u32) * PSOC_HOST_MAX_PHY_SIZE);
-@@ -357,7 +359,8 @@ static int ath11k_pull_mac_phy_cap_service_ready_ext(
- 	cap_band = &pdev_cap->band[NL80211_BAND_5GHZ];
- 	cap_band->max_bw_supported = mac_phy_caps->max_bw_supported_5g;
- 	cap_band->ht_cap_info = mac_phy_caps->ht_cap_info_5g;
--	cap_band->he_cap_info = mac_phy_caps->he_cap_info_5g;
-+	cap_band->he_cap_info[0] = mac_phy_caps->he_cap_info_5g;
-+	cap_band->he_cap_info[1] = mac_phy_caps->he_cap_info_5g_ext;
- 	cap_band->he_mcs = mac_phy_caps->he_supp_mcs_5g;
- 	memcpy(cap_band->he_cap_phy_info, &mac_phy_caps->he_cap_phy_info_5g,
- 	       sizeof(u32) * PSOC_HOST_MAX_PHY_SIZE);
+@@ -46,6 +46,10 @@ enum wme_ac {
+ 	WME_NUM_AC
+ };
+ 
++#define ATH11K_HT_MCS_MAX	7
++#define ATH11K_VHT_MCS_MAX	9
++#define ATH11K_HE_MCS_MAX	11
++
+ static inline enum wme_ac ath11k_tid_to_ac(u32 tid)
+ {
+ 	return (((tid == 0) || (tid == 3)) ? WME_AC_BE :
+diff --git a/drivers/net/wireless/ath/ath11k/dp_rx.c b/drivers/net/wireless/ath/ath11k/dp_rx.c
+index 62820c20f7c1..e52a54cd2b79 100644
+--- a/drivers/net/wireless/ath/ath11k/dp_rx.c
++++ b/drivers/net/wireless/ath/ath11k/dp_rx.c
+@@ -1705,7 +1705,7 @@ static void ath11k_dp_rx_h_rate(struct ath11k *ar, void *rx_desc,
+ 		break;
+ 	case RX_MSDU_START_PKT_TYPE_11N:
+ 		rx_status->encoding = RX_ENC_HT;
+-		if (rate_mcs > 7) {
++		if (rate_mcs > ATH11K_HT_MCS_MAX) {
+ 			ath11k_warn(ar->ab, "Received with invalid mcs in HT mode %d\n", rate_mcs);
+ 			break;
+ 		}
+@@ -1717,7 +1717,7 @@ static void ath11k_dp_rx_h_rate(struct ath11k *ar, void *rx_desc,
+ 	case RX_MSDU_START_PKT_TYPE_11AC:
+ 		rx_status->encoding = RX_ENC_VHT;
+ 		rx_status->rate_idx = rate_mcs;
+-		if (rate_mcs > 9) {
++		if (rate_mcs > ATH11K_VHT_MCS_MAX) {
+ 			ath11k_warn(ar->ab, "Received with invalid mcs in VHT mode %d\n", rate_mcs);
+ 			break;
+ 		}
 -- 
 2.20.1
 
