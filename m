@@ -2,65 +2,74 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 93F7923342
-	for <lists+linux-wireless@lfdr.de>; Mon, 20 May 2019 14:12:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7FAB823320
+	for <lists+linux-wireless@lfdr.de>; Mon, 20 May 2019 14:00:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732638AbfETMMx (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 20 May 2019 08:12:53 -0400
-Received: from 4.mo173.mail-out.ovh.net ([46.105.34.219]:38059 "EHLO
-        4.mo173.mail-out.ovh.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730921AbfETMMx (ORCPT
+        id S1731830AbfETMAy (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 20 May 2019 08:00:54 -0400
+Received: from rnd-relay.smtp.broadcom.com ([192.19.229.170]:35334 "EHLO
+        rnd-relay.smtp.broadcom.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1730479AbfETMAx (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 20 May 2019 08:12:53 -0400
-X-Greylist: delayed 1160 seconds by postgrey-1.27 at vger.kernel.org; Mon, 20 May 2019 08:12:52 EDT
-Received: from player735.ha.ovh.net (unknown [10.109.146.211])
-        by mo173.mail-out.ovh.net (Postfix) with ESMTP id 1F12B103F14
-        for <linux-wireless@vger.kernel.org>; Mon, 20 May 2019 13:53:31 +0200 (CEST)
-Received: from RCM-web1.webmail.mail.ovh.net (ip-194-187-74-233.konfederacka.maverick.com.pl [194.187.74.233])
-        (Authenticated sender: rafal@milecki.pl)
-        by player735.ha.ovh.net (Postfix) with ESMTPSA id 541335F67566;
-        Mon, 20 May 2019 11:53:18 +0000 (UTC)
-MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII;
- format=flowed
-Content-Transfer-Encoding: 7bit
-Date:   Mon, 20 May 2019 13:53:18 +0200
-From:   =?UTF-8?Q?Rafa=C5=82_Mi=C5=82ecki?= <rafal@milecki.pl>
-To:     Weitao Hou <houweitaoo@gmail.com>
-Cc:     arend.vanspriel@broadcom.com, franky.lin@broadcom.com,
-        hante.meuleman@broadcom.com, chi-hsien.lin@cypress.com,
-        wright.feng@cypress.com, kvalo@codeaurora.org, davem@davemloft.net,
-        linux-wireless@vger.kernel.org,
-        brcm80211-dev-list.pdl@broadcom.com,
-        brcm80211-dev-list@cypress.com, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] wireless: fix typos in code comments
-In-Reply-To: <20190519032256.19346-1-houweitaoo@gmail.com>
-References: <20190519032256.19346-1-houweitaoo@gmail.com>
-Message-ID: <6cd5d69d936ba2a2033041bcddb206e0@milecki.pl>
-X-Sender: rafal@milecki.pl
-User-Agent: Roundcube Webmail/1.3.9
-X-Originating-IP: 194.187.74.233
-X-Webmail-UserID: rafal@milecki.pl
-X-Ovh-Tracer-Id: 10752907064325344891
-X-VR-SPAMSTATE: OK
-X-VR-SPAMSCORE: 0
-X-VR-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgeduuddruddtkedggeeiucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuqfggjfdpvefjgfevmfevgfenuceurghilhhouhhtmecuhedttdenuc
+        Mon, 20 May 2019 08:00:53 -0400
+Received: from mail-irv-17.broadcom.com (mail-irv-17.lvn.broadcom.net [10.75.224.233])
+        by rnd-relay.smtp.broadcom.com (Postfix) with ESMTP id C686630C09A;
+        Mon, 20 May 2019 05:00:51 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.10.3 rnd-relay.smtp.broadcom.com C686630C09A
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=broadcom.com;
+        s=dkimrelay; t=1558353651;
+        bh=SHlSA0kru7mjeLCL92KqU3JRgoPYjIUqmltuDn2qzBw=;
+        h=From:To:Cc:Subject:Date:From;
+        b=iZCQQVJouf08RmcHUNdxa905qmhJUwJ26skEKhjxWxuFSkyvUTSobc8y9hMokBBXa
+         AdV6ji3pKVb0YXohKaBDHas31IO1RnQ+Qnt3eePzbr1pqnO4wek/EGl4rSIuAdsw0p
+         P5Dshs0X+YYJPafx4cdiuyPV4Kqg/OuuJTkZUPLI=
+Received: from bld-bun-01.bun.broadcom.com (bld-bun-01.bun.broadcom.com [10.176.128.83])
+        by mail-irv-17.broadcom.com (Postfix) with ESMTP id 2AA7460D69;
+        Mon, 20 May 2019 05:00:52 -0700 (PDT)
+Received: by bld-bun-01.bun.broadcom.com (Postfix, from userid 25152)
+        id 9B8D5B02EF1; Mon, 20 May 2019 14:00:50 +0200 (CEST)
+From:   Arend van Spriel <arend.vanspriel@broadcom.com>
+To:     Johannes Berg <johannes@sipsolutions.net>
+Cc:     linux-wireless@vger.kernel.org,
+        Arend van Spriel <arend.vanspriel@broadcom.com>
+Subject: [RFC 0/8] nl80211: add 6GHz band support
+Date:   Mon, 20 May 2019 14:00:37 +0200
+Message-Id: <1558353645-18119-1-git-send-email-arend.vanspriel@broadcom.com>
+X-Mailer: git-send-email 1.9.1
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 2019-05-19 05:22, Weitao Hou wrote:
-> fix lengh to length
-> 
-> Signed-off-by: Weitao Hou <houweitaoo@gmail.com>
-> ---
->  drivers/net/wireless/broadcom/brcm80211/brcmfmac/fwil.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+In 802.11ax D4.0 a new band has been proposed. This series contains
+changes to cfg80211 for supporting this band. With 2GHz and 5GHz there
+was no overlap in channel number. However, this new band has channel
+numbers with a range from 1 up to 253. The only place I could find an
+issue with this is in cfg80211_wext_freq(). Not sure how to deal with
+that so it is not part of this series.
 
-Please use:
-git log --oneline drivers/net/wireless/broadcom/brcm80211/brcmfmac/
-to see how patches for this drivers were subjected in the past.
+The series applies to the master branch of the mac80211-next repository.
 
-Please resend V2 with a proper prefix instead of "wireless: ".
+Arend van Spriel (8):
+  nl80211: add 6GHz band definition to enum nl80211_band
+  cfg80211: add 6GHz UNII band definitions
+  cfg80211: util: add 6GHz channel to freq conversion and vice versa
+  cfg80211: extend ieee80211_operating_class_to_band() for 6GHz
+  cfg80211: add 6GHz in code handling array with NUM_NL80211_BANDS
+    entries
+  cfg80211: use same IR permissive rules for 6GHz band
+  cfg80211: ibss: use 11a mandatory rates for 6GHz band operation
+  cfg80211: apply same mandatory rate flags for 5GHz and 6GHz
+
+ include/uapi/linux/nl80211.h |  2 ++
+ net/wireless/chan.c          |  3 ++-
+ net/wireless/ibss.c          | 16 +++++++++++-----
+ net/wireless/nl80211.c       |  1 +
+ net/wireless/reg.c           | 21 +++++++++++++++++++--
+ net/wireless/trace.h         |  3 ++-
+ net/wireless/util.c          | 14 +++++++++++++-
+ 7 files changed, 50 insertions(+), 10 deletions(-)
+
+-- 
+1.9.1
+
