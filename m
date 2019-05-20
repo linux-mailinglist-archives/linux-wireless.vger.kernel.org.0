@@ -2,101 +2,207 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 179A7238F9
-	for <lists+linux-wireless@lfdr.de>; Mon, 20 May 2019 15:56:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 19C4123AB3
+	for <lists+linux-wireless@lfdr.de>; Mon, 20 May 2019 16:44:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731361AbfETN44 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 20 May 2019 09:56:56 -0400
-Received: from smtp.codeaurora.org ([198.145.29.96]:34472 "EHLO
-        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728000AbfETN44 (ORCPT
+        id S2391956AbfETOoW (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 20 May 2019 10:44:22 -0400
+Received: from iolanthe.rowland.org ([192.131.102.54]:58816 "HELO
+        iolanthe.rowland.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with SMTP id S2387969AbfETOoW (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 20 May 2019 09:56:56 -0400
-Received: by smtp.codeaurora.org (Postfix, from userid 1000)
-        id 0A489611CE; Mon, 20 May 2019 13:56:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1558360615;
-        bh=lpzkQhinW+CdE25UU6vfCZ3VEc/mSbUJunMa0yH8T5s=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=JKcQyElwaI7wbLWVWImvpOnu1joBYw36xjYUSudFiD/noouYIcZAWqsMlhryKlHCV
-         NMqcsgqxzME6wQFvfapbWpFwAO1bHN2TJpTD6gkH6t1z3PU7Ir9/r7t7rG0SsL9w75
-         DOvDrJLxv1FMdkN3uUzoHdAhxitbmqF/KpTY1dWk=
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        pdx-caf-mail.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.7 required=2.0 tests=ALL_TRUSTED,BAYES_00,
-        DKIM_INVALID,DKIM_SIGNED autolearn=no autolearn_force=no version=3.4.0
-Received: from mail.codeaurora.org (localhost.localdomain [127.0.0.1])
-        by smtp.codeaurora.org (Postfix) with ESMTP id 9A6B2608D4;
-        Mon, 20 May 2019 13:56:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1558360612;
-        bh=lpzkQhinW+CdE25UU6vfCZ3VEc/mSbUJunMa0yH8T5s=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=QyI6EFyC2jURPnStsICFWd1yeggqoqz7a/uzXQharivrl+6S5tQnXKzUTdIoyjzwE
-         nbec4VFr4oDvh18pVKeVYKMF11riOvCKmSspPU/L74D627/AV0zDcUWAdGLIo54ylW
-         kovjqkPyga01sCJMqy9EvSLStnHAAkgPMoiHC+Hc=
+        Mon, 20 May 2019 10:44:22 -0400
+Received: (qmail 2121 invoked by uid 2102); 20 May 2019 10:44:21 -0400
+Received: from localhost (sendmail-bs@127.0.0.1)
+  by localhost with SMTP; 20 May 2019 10:44:21 -0400
+Date:   Mon, 20 May 2019 10:44:21 -0400 (EDT)
+From:   Alan Stern <stern@rowland.harvard.edu>
+X-X-Sender: stern@iolanthe.rowland.org
+To:     Christian Lamparter <chunkeey@gmail.com>
+cc:     syzbot <syzbot+200d4bb11b23d929335f@syzkaller.appspotmail.com>,
+        <kvalo@codeaurora.org>, <davem@davemloft.net>,
+        <andreyknvl@google.com>, <syzkaller-bugs@googlegroups.com>,
+        Kernel development list <linux-kernel@vger.kernel.org>,
+        USB list <linux-usb@vger.kernel.org>,
+        <linux-wireless@vger.kernel.org>, <netdev@vger.kernel.org>
+Subject: [PATCH] network: wireless: p54u: Fix race between disconnect and
+ firmware loading
+In-Reply-To: <5014675.0cgHOJIxtM@debian64>
+Message-ID: <Pine.LNX.4.44L0.1905201042110.1498-100000@iolanthe.rowland.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII;
- format=flowed
-Content-Transfer-Encoding: 7bit
-Date:   Mon, 20 May 2019 21:56:52 +0800
-From:   Yibo Zhao <yiboz@codeaurora.org>
-To:     Johannes Berg <johannes@sipsolutions.net>
-Cc:     Ben Greear <greearb@candelatech.com>,
-        linux-wireless@vger.kernel.org, ath10k@lists.infradead.org,
-        Zhi Chen <zhichen@codeaurora.org>
-Subject: Re: [PATCH v2] mac80211: remove warning message
-In-Reply-To: <ea87337c24666355059488b42d97ee22711ce7b8.camel@sipsolutions.net>
-References: <1557824507-17668-1-git-send-email-yiboz@codeaurora.org>
- <7c92f5cf51eaec1d5449698d90f5b6c5ca6c2bea.camel@sipsolutions.net>
- <ccb48284f0d96e72f4c041e12c943f0a@codeaurora.org>
- <e2a6596b99085541a5886c0d0d6393c849ac2d57.camel@sipsolutions.net>
- <34f72d5db336b9898618bf1c5c15ec41094d7d06.camel@perches.com>
- <4d013893-3302-14f0-c957-b3771f4b6b82@candelatech.com>
- <8eacb8e107c854b64a0c6116fca9731ddd99dcac.camel@sipsolutions.net>
- <730d3664-488d-7d57-04d5-1a57e91fa070@candelatech.com>
- <ea87337c24666355059488b42d97ee22711ce7b8.camel@sipsolutions.net>
-Message-ID: <bbfd69ccb4289ba3f1767c1066f61ee1@codeaurora.org>
-X-Sender: yiboz@codeaurora.org
-User-Agent: Roundcube Webmail/1.2.5
+Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 2019-05-15 02:57, Johannes Berg wrote:
-> On Tue, 2019-05-14 at 11:54 -0700, Ben Greear wrote:
->> 
->> Here is the info I have in my commit that changed this to 
->> WARN_ON_ONCE.
->> I never posted it because I had to hack ath10k to get to this state, 
->> so maybe
->> this is not a valid case to debug.
->> 
->> 
->> Maybe Yibo Zhao has a better example.
->> 
->>      mac80211: don't spam kernel logs when chantx is null.
->> 
->>      I set up ath10k to be chandef based again in order to test
->>      WDS.  My WDS stations are not very functional yet, and
->>      when ethtool stats are queried, there is a WARN_ON splat
->>      generated.  Change this to WARN_ON_ONCE so that there is
->>      less kernel spam.
-> 
-> I'm totally fine with WARN_ON_ONCE, FWIW.
-> 
-> Sounds like different bugs though. You're talking about WDS here, and
-> Yibo was talking about something with AP interfaces prematurely
-> accepting frames or so.
+The syzbot fuzzer found a bug in the p54 USB wireless driver.  The
+issue involves a race between disconnect and the firmware-loader
+callback routine, and it has several aspects.
 
-Yes, they might be different bugs that hit the same point. Looks like 
-others found this too many warnings issue as well. Then I believe 
-WARN_ON_ONCE() seems to be our solution for now.
+One big problem is that when the firmware can't be loaded, the
+callback routine tries to unbind the driver from the USB _device_ (by
+calling device_release_driver) instead of from the USB _interface_ to
+which it is actually bound (by calling usb_driver_release_interface).
 
-> 
-> johannes
+The race involves access to the private data structure.  The driver's
+disconnect handler waits for a completion that is signalled by the
+firmware-loader callback routine.  As soon as the completion is
+signalled, you have to assume that the private data structure may have
+been deallocated by the disconnect handler -- even if the firmware was
+loaded without errors.  However, the callback routine does access the
+private data several times after that point.
 
--- 
-Yibo
+Another problem is that, in order to ensure that the USB device
+structure hasn't been freed when the callback routine runs, the driver
+takes a reference to it.  This isn't good enough any more, because now
+that the callback routine calls usb_driver_release_interface, it has
+to ensure that the interface structure hasn't been freed.
+
+Finally, the driver takes an unnecessary reference to the USB device
+structure in the probe function and drops the reference in the
+disconnect handler.  This extra reference doesn't accomplish anything,
+because the USB core already guarantees that a device structure won't
+be deallocated while a driver is still bound to any of its interfaces.
+
+To fix these problems, this patch makes the following changes:
+
+	Call usb_driver_release_interface() rather than
+	device_release_driver().
+
+	Don't signal the completion until after the important
+	information has been copied out of the private data structure,
+	and don't refer to the private data at all thereafter.
+
+	Lock udev (the interface's parent) before unbinding the driver
+	instead of locking udev->parent.
+
+	During the firmware loading process, take a reference to the
+	USB interface instead of the USB device.
+
+	Don't take an unnecessary reference to the device during probe
+	(and then don't drop it during disconnect).
+
+Signed-off-by: Alan Stern <stern@rowland.harvard.edu>
+Reported-and-tested-by: syzbot+200d4bb11b23d929335f@syzkaller.appspotmail.com
+CC: <stable@vger.kernel.org>
+
+---
+
+
+[as1899]
+
+
+ drivers/net/wireless/intersil/p54/p54usb.c |   43 ++++++++++++-----------------
+ 1 file changed, 18 insertions(+), 25 deletions(-)
+
+Index: usb-devel/drivers/net/wireless/intersil/p54/p54usb.c
+===================================================================
+--- usb-devel.orig/drivers/net/wireless/intersil/p54/p54usb.c
++++ usb-devel/drivers/net/wireless/intersil/p54/p54usb.c
+@@ -33,6 +33,8 @@ MODULE_ALIAS("prism54usb");
+ MODULE_FIRMWARE("isl3886usb");
+ MODULE_FIRMWARE("isl3887usb");
+ 
++static struct usb_driver p54u_driver;
++
+ /*
+  * Note:
+  *
+@@ -921,9 +923,9 @@ static void p54u_load_firmware_cb(const
+ {
+ 	struct p54u_priv *priv = context;
+ 	struct usb_device *udev = priv->udev;
++	struct usb_interface *intf = priv->intf;
+ 	int err;
+ 
+-	complete(&priv->fw_wait_load);
+ 	if (firmware) {
+ 		priv->fw = firmware;
+ 		err = p54u_start_ops(priv);
+@@ -932,26 +934,22 @@ static void p54u_load_firmware_cb(const
+ 		dev_err(&udev->dev, "Firmware not found.\n");
+ 	}
+ 
+-	if (err) {
+-		struct device *parent = priv->udev->dev.parent;
+-
+-		dev_err(&udev->dev, "failed to initialize device (%d)\n", err);
+-
+-		if (parent)
+-			device_lock(parent);
++	complete(&priv->fw_wait_load);
++	/*
++	 * At this point p54u_disconnect may have already freed
++	 * the "priv" context. Do not use it anymore!
++	 */
++	priv = NULL;
+ 
+-		device_release_driver(&udev->dev);
+-		/*
+-		 * At this point p54u_disconnect has already freed
+-		 * the "priv" context. Do not use it anymore!
+-		 */
+-		priv = NULL;
++	if (err) {
++		dev_err(&intf->dev, "failed to initialize device (%d)\n", err);
+ 
+-		if (parent)
+-			device_unlock(parent);
++		usb_lock_device(udev);
++		usb_driver_release_interface(&p54u_driver, intf);
++		usb_unlock_device(udev);
+ 	}
+ 
+-	usb_put_dev(udev);
++	usb_put_intf(intf);
+ }
+ 
+ static int p54u_load_firmware(struct ieee80211_hw *dev,
+@@ -972,14 +970,14 @@ static int p54u_load_firmware(struct iee
+ 	dev_info(&priv->udev->dev, "Loading firmware file %s\n",
+ 	       p54u_fwlist[i].fw);
+ 
+-	usb_get_dev(udev);
++	usb_get_intf(intf);
+ 	err = request_firmware_nowait(THIS_MODULE, 1, p54u_fwlist[i].fw,
+ 				      device, GFP_KERNEL, priv,
+ 				      p54u_load_firmware_cb);
+ 	if (err) {
+ 		dev_err(&priv->udev->dev, "(p54usb) cannot load firmware %s "
+ 					  "(%d)!\n", p54u_fwlist[i].fw, err);
+-		usb_put_dev(udev);
++		usb_put_intf(intf);
+ 	}
+ 
+ 	return err;
+@@ -1011,8 +1009,6 @@ static int p54u_probe(struct usb_interfa
+ 	skb_queue_head_init(&priv->rx_queue);
+ 	init_usb_anchor(&priv->submitted);
+ 
+-	usb_get_dev(udev);
+-
+ 	/* really lazy and simple way of figuring out if we're a 3887 */
+ 	/* TODO: should just stick the identification in the device table */
+ 	i = intf->altsetting->desc.bNumEndpoints;
+@@ -1053,10 +1049,8 @@ static int p54u_probe(struct usb_interfa
+ 		priv->upload_fw = p54u_upload_firmware_net2280;
+ 	}
+ 	err = p54u_load_firmware(dev, intf);
+-	if (err) {
+-		usb_put_dev(udev);
++	if (err)
+ 		p54_free_common(dev);
+-	}
+ 	return err;
+ }
+ 
+@@ -1072,7 +1066,6 @@ static void p54u_disconnect(struct usb_i
+ 	wait_for_completion(&priv->fw_wait_load);
+ 	p54_unregister_common(dev);
+ 
+-	usb_put_dev(interface_to_usbdev(intf));
+ 	release_firmware(priv->fw);
+ 	p54_free_common(dev);
+ }
+
