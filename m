@@ -2,207 +2,108 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 19C4123AB3
-	for <lists+linux-wireless@lfdr.de>; Mon, 20 May 2019 16:44:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DF5F823B27
+	for <lists+linux-wireless@lfdr.de>; Mon, 20 May 2019 16:50:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2391956AbfETOoW (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 20 May 2019 10:44:22 -0400
-Received: from iolanthe.rowland.org ([192.131.102.54]:58816 "HELO
-        iolanthe.rowland.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with SMTP id S2387969AbfETOoW (ORCPT
+        id S1731352AbfETOu1 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 20 May 2019 10:50:27 -0400
+Received: from smtp.codeaurora.org ([198.145.29.96]:45874 "EHLO
+        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726053AbfETOu1 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 20 May 2019 10:44:22 -0400
-Received: (qmail 2121 invoked by uid 2102); 20 May 2019 10:44:21 -0400
-Received: from localhost (sendmail-bs@127.0.0.1)
-  by localhost with SMTP; 20 May 2019 10:44:21 -0400
-Date:   Mon, 20 May 2019 10:44:21 -0400 (EDT)
-From:   Alan Stern <stern@rowland.harvard.edu>
-X-X-Sender: stern@iolanthe.rowland.org
-To:     Christian Lamparter <chunkeey@gmail.com>
-cc:     syzbot <syzbot+200d4bb11b23d929335f@syzkaller.appspotmail.com>,
-        <kvalo@codeaurora.org>, <davem@davemloft.net>,
-        <andreyknvl@google.com>, <syzkaller-bugs@googlegroups.com>,
-        Kernel development list <linux-kernel@vger.kernel.org>,
-        USB list <linux-usb@vger.kernel.org>,
-        <linux-wireless@vger.kernel.org>, <netdev@vger.kernel.org>
-Subject: [PATCH] network: wireless: p54u: Fix race between disconnect and
- firmware loading
-In-Reply-To: <5014675.0cgHOJIxtM@debian64>
-Message-ID: <Pine.LNX.4.44L0.1905201042110.1498-100000@iolanthe.rowland.org>
+        Mon, 20 May 2019 10:50:27 -0400
+Received: by smtp.codeaurora.org (Postfix, from userid 1000)
+        id 1013F61ACF; Mon, 20 May 2019 14:50:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
+        s=default; t=1558363826;
+        bh=LnnYhUQIsVDx3eoOmf0xQEXvOjKavJ7vu2egjrVCWEQ=;
+        h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
+        b=CoG6Tpt/gAExgrKXQ2+VviFzGxMYSvos4WkQ/sBOt8qltMeb84gjpkrB8Mi1RyaQW
+         MDgRm84pNt/3wobMzGGHiRzzTQqXpUfdbm2aLzPtzK193AYUyMg01fcCCj5EIE/SyS
+         hoo+tKUF9YThds5hJR7H1UGlXJj3RcBvQCTagmQI=
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        pdx-caf-mail.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.7 required=2.0 tests=ALL_TRUSTED,BAYES_00,
+        DKIM_INVALID,DKIM_SIGNED,SPF_NONE autolearn=no autolearn_force=no
+        version=3.4.0
+Received: from [10.18.172.35] (unknown [185.23.60.4])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        (Authenticated sender: ailizaro@smtp.codeaurora.org)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 2DB9A615E8;
+        Mon, 20 May 2019 14:50:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
+        s=default; t=1558363825;
+        bh=LnnYhUQIsVDx3eoOmf0xQEXvOjKavJ7vu2egjrVCWEQ=;
+        h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
+        b=VBFpLb/Q1A9yh5Hn3lXPsdE4xpDPTHt3PkrqBUWzrTfwCVI+1603Q4WVzN8DDIOV3
+         CgoSoaxeNS2cdIxD46I7NXsb0mRBT2pw7C/5anEutXz0xbmaL+5AtvHKSV33qfdVkn
+         hUSkbUyEqGwxLOXZEK2V2M0U6bWxNGaKD02Tj8Ek=
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 2DB9A615E8
+Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=ailizaro@codeaurora.org
+Subject: Re: [PATCH v2 1/2] nl80211: Add support for EDMG channels
+To:     Kalle Valo <kvalo@codeaurora.org>
+Cc:     Johannes Berg <johannes@sipsolutions.net>,
+        linux-wireless@vger.kernel.org, wil6210@qti.qualcomm.com
+References: <1557758554-18907-1-git-send-email-ailizaro@codeaurora.org>
+ <1557758554-18907-2-git-send-email-ailizaro@codeaurora.org>
+ <87k1eluvlg.fsf@purkki.adurom.net>
+From:   Alexei Avshalom Lazar <ailizaro@codeaurora.org>
+Message-ID: <ba9f1ac9-5658-a530-dbd8-a2c3ec6203df@codeaurora.org>
+Date:   Mon, 20 May 2019 17:50:15 +0300
+User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:60.0) Gecko/20100101
+ Thunderbird/60.6.1
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
+In-Reply-To: <87k1eluvlg.fsf@purkki.adurom.net>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-The syzbot fuzzer found a bug in the p54 USB wireless driver.  The
-issue involves a race between disconnect and the firmware-loader
-callback routine, and it has several aspects.
-
-One big problem is that when the firmware can't be loaded, the
-callback routine tries to unbind the driver from the USB _device_ (by
-calling device_release_driver) instead of from the USB _interface_ to
-which it is actually bound (by calling usb_driver_release_interface).
-
-The race involves access to the private data structure.  The driver's
-disconnect handler waits for a completion that is signalled by the
-firmware-loader callback routine.  As soon as the completion is
-signalled, you have to assume that the private data structure may have
-been deallocated by the disconnect handler -- even if the firmware was
-loaded without errors.  However, the callback routine does access the
-private data several times after that point.
-
-Another problem is that, in order to ensure that the USB device
-structure hasn't been freed when the callback routine runs, the driver
-takes a reference to it.  This isn't good enough any more, because now
-that the callback routine calls usb_driver_release_interface, it has
-to ensure that the interface structure hasn't been freed.
-
-Finally, the driver takes an unnecessary reference to the USB device
-structure in the probe function and drops the reference in the
-disconnect handler.  This extra reference doesn't accomplish anything,
-because the USB core already guarantees that a device structure won't
-be deallocated while a driver is still bound to any of its interfaces.
-
-To fix these problems, this patch makes the following changes:
-
-	Call usb_driver_release_interface() rather than
-	device_release_driver().
-
-	Don't signal the completion until after the important
-	information has been copied out of the private data structure,
-	and don't refer to the private data at all thereafter.
-
-	Lock udev (the interface's parent) before unbinding the driver
-	instead of locking udev->parent.
-
-	During the firmware loading process, take a reference to the
-	USB interface instead of the USB device.
-
-	Don't take an unnecessary reference to the device during probe
-	(and then don't drop it during disconnect).
-
-Signed-off-by: Alan Stern <stern@rowland.harvard.edu>
-Reported-and-tested-by: syzbot+200d4bb11b23d929335f@syzkaller.appspotmail.com
-CC: <stable@vger.kernel.org>
-
----
 
 
-[as1899]
+On 5/20/2019 4:03 PM, Kalle Valo wrote:
+> Alexei Avshalom Lazar <ailizaro@codeaurora.org> writes:
+> 
+>> 802.11ay specification defines Enhanced Directional Multi-Gigabit
+>> (EDMG) STA and AP which allow channel bonding of 2 channels and more.
+>> Introduce NL80211_ATTR_WIPHY_EDMG_CHANNELS,
+>> NL80211_ATTR_WIPHY_EDMG_BW_CONFIG, NL80211_BAND_ATTR_EDMG_CHANNELS,
+>> NL80211_BAND_ATTR_EDMG_BW_CONFIG and RATE_INFO_FLAGS_EDMG
+>> that needed for enabling and configuring EDMG support.
+>> Driver is expected to report its EDMG capabilities: whether EDMG
+>> is supported and the supported EDMG channels.
+>> Bitrate calculation is enhanced to take into account EDMG support
+>> according to the 802.11ay specification.
+>> The kernel uses NL80211_BAND_ATTR_EDMG_CHANNELS and
+>> NL80211_BAND_ATTR_EDMG_BW_CONFIG attributes in order to publish
+>> the EDMG capabilities to the userspace.
+>> NL80211_BAND_ATTR_EDMG_CHANNELS is a bitmap field that indicates
+>> the 2.16 GHz channel(s) that are allowed to be used for transmissions
+>> in the BSS.
+>> If NL80211_BAND_ATTR_EDMG_CHANNELS is not set then EDMG not
+>> supported. NL80211_BAND_ATTR_EDMG_BW_CONFIG represent the allowed
+>> channel bandwidth configurations.
+>> NL80211_ATTR_WIPHY_EDMG_CHANNELS and NL80211_ATTR_WIPHY_EDMG_BW_CONFIG
+>> will be used by the userspace for AP configuration and connect command.
+>>
+>> Change-Id: I534f4a750354a4b0baad28c47dc29afb9cbc36ac
+> 
+> No Change-Id in upstream patches. And please read:
+> 
+> https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches#signed-off-by_missing
+> 
 
+Hi Kalle,
+Thanks for sharing the Wiki page, I will raise updated patches.
 
- drivers/net/wireless/intersil/p54/p54usb.c |   43 ++++++++++++-----------------
- 1 file changed, 18 insertions(+), 25 deletions(-)
-
-Index: usb-devel/drivers/net/wireless/intersil/p54/p54usb.c
-===================================================================
---- usb-devel.orig/drivers/net/wireless/intersil/p54/p54usb.c
-+++ usb-devel/drivers/net/wireless/intersil/p54/p54usb.c
-@@ -33,6 +33,8 @@ MODULE_ALIAS("prism54usb");
- MODULE_FIRMWARE("isl3886usb");
- MODULE_FIRMWARE("isl3887usb");
- 
-+static struct usb_driver p54u_driver;
-+
- /*
-  * Note:
-  *
-@@ -921,9 +923,9 @@ static void p54u_load_firmware_cb(const
- {
- 	struct p54u_priv *priv = context;
- 	struct usb_device *udev = priv->udev;
-+	struct usb_interface *intf = priv->intf;
- 	int err;
- 
--	complete(&priv->fw_wait_load);
- 	if (firmware) {
- 		priv->fw = firmware;
- 		err = p54u_start_ops(priv);
-@@ -932,26 +934,22 @@ static void p54u_load_firmware_cb(const
- 		dev_err(&udev->dev, "Firmware not found.\n");
- 	}
- 
--	if (err) {
--		struct device *parent = priv->udev->dev.parent;
--
--		dev_err(&udev->dev, "failed to initialize device (%d)\n", err);
--
--		if (parent)
--			device_lock(parent);
-+	complete(&priv->fw_wait_load);
-+	/*
-+	 * At this point p54u_disconnect may have already freed
-+	 * the "priv" context. Do not use it anymore!
-+	 */
-+	priv = NULL;
- 
--		device_release_driver(&udev->dev);
--		/*
--		 * At this point p54u_disconnect has already freed
--		 * the "priv" context. Do not use it anymore!
--		 */
--		priv = NULL;
-+	if (err) {
-+		dev_err(&intf->dev, "failed to initialize device (%d)\n", err);
- 
--		if (parent)
--			device_unlock(parent);
-+		usb_lock_device(udev);
-+		usb_driver_release_interface(&p54u_driver, intf);
-+		usb_unlock_device(udev);
- 	}
- 
--	usb_put_dev(udev);
-+	usb_put_intf(intf);
- }
- 
- static int p54u_load_firmware(struct ieee80211_hw *dev,
-@@ -972,14 +970,14 @@ static int p54u_load_firmware(struct iee
- 	dev_info(&priv->udev->dev, "Loading firmware file %s\n",
- 	       p54u_fwlist[i].fw);
- 
--	usb_get_dev(udev);
-+	usb_get_intf(intf);
- 	err = request_firmware_nowait(THIS_MODULE, 1, p54u_fwlist[i].fw,
- 				      device, GFP_KERNEL, priv,
- 				      p54u_load_firmware_cb);
- 	if (err) {
- 		dev_err(&priv->udev->dev, "(p54usb) cannot load firmware %s "
- 					  "(%d)!\n", p54u_fwlist[i].fw, err);
--		usb_put_dev(udev);
-+		usb_put_intf(intf);
- 	}
- 
- 	return err;
-@@ -1011,8 +1009,6 @@ static int p54u_probe(struct usb_interfa
- 	skb_queue_head_init(&priv->rx_queue);
- 	init_usb_anchor(&priv->submitted);
- 
--	usb_get_dev(udev);
--
- 	/* really lazy and simple way of figuring out if we're a 3887 */
- 	/* TODO: should just stick the identification in the device table */
- 	i = intf->altsetting->desc.bNumEndpoints;
-@@ -1053,10 +1049,8 @@ static int p54u_probe(struct usb_interfa
- 		priv->upload_fw = p54u_upload_firmware_net2280;
- 	}
- 	err = p54u_load_firmware(dev, intf);
--	if (err) {
--		usb_put_dev(udev);
-+	if (err)
- 		p54_free_common(dev);
--	}
- 	return err;
- }
- 
-@@ -1072,7 +1066,6 @@ static void p54u_disconnect(struct usb_i
- 	wait_for_completion(&priv->fw_wait_load);
- 	p54_unregister_common(dev);
- 
--	usb_put_dev(interface_to_usbdev(intf));
- 	release_firmware(priv->fw);
- 	p54_free_common(dev);
- }
-
+-- 
+Alexei Lazar
+Qualcomm Israel, on behalf of Qualcomm Innovation Center, Inc.
+The Qualcomm Innovation Center, Inc. is a member of Code Aurora Forum a 
+Linux Foundation Collaborative Project
