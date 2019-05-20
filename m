@@ -2,26 +2,27 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 6FF83231CD
-	for <lists+linux-wireless@lfdr.de>; Mon, 20 May 2019 12:54:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6D5F1231E7
+	for <lists+linux-wireless@lfdr.de>; Mon, 20 May 2019 13:02:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730554AbfETKyZ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 20 May 2019 06:54:25 -0400
-Received: from nbd.name ([46.4.11.11]:47308 "EHLO nbd.name"
+        id S1732229AbfETLCN (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 20 May 2019 07:02:13 -0400
+Received: from nbd.name ([46.4.11.11]:47758 "EHLO nbd.name"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725601AbfETKyZ (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 20 May 2019 06:54:25 -0400
+        id S1730854AbfETLCN (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 20 May 2019 07:02:13 -0400
 Received: from p548c87ba.dip0.t-ipconnect.de ([84.140.135.186] helo=bertha.datto.lan)
         by ds12 with esmtpa (Exim 4.89)
         (envelope-from <john@phrozen.org>)
-        id 1hSfvy-0003OO-9z; Mon, 20 May 2019 12:54:22 +0200
+        id 1hSg3V-0003rt-LE; Mon, 20 May 2019 13:02:09 +0200
 From:   John Crispin <john@phrozen.org>
-To:     Johannes Berg <johannes@sipsolutions.net>
-Cc:     linux-wireless@vger.kernel.org, John Crispin <john@phrozen.org>,
-        Shashidhar Lakkavalli <slakkavalli@datto.com>
-Subject: [PATCH] iw: print HE capabilities
-Date:   Mon, 20 May 2019 12:54:16 +0200
-Message-Id: <20190520105416.27185-1-john@phrozen.org>
+To:     Johannes Berg <johannes@sipsolutions.net>,
+        Kalle Valo <kvalo@codeaurora.org>
+Cc:     ath11k@lists.infradead.org, linux-wireless@vger.kernel.org,
+        John Crispin <john@phrozen.org>
+Subject: [PATCH 0/7] mac80211: HE: add TWT and SPR/OBSSPD support
+Date:   Mon, 20 May 2019 13:01:57 +0200
+Message-Id: <20190520110204.27588-1-john@phrozen.org>
 X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -30,288 +31,39 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Print the HE MAC/PHY capabilities and MCS/NSS sets.
+This series adds support for propagating the TWT and OBSS PD information
+from userland/assocs to a wireless driver. The patches for making use of
+these features inside ath11k are also included.
 
-Signed-off-by: Shashidhar Lakkavalli <slakkavalli@datto.com>
-Signed-off-by: John Crispin <john@phrozen.org>
----
- info.c |   6 ++
- iw.h   |   1 +
- util.c | 231 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++
- 3 files changed, 238 insertions(+)
+I already have the hostapd patches ready and will send them once these
+changes are inside nl80211.h.
 
-diff --git a/info.c b/info.c
-index 92c7d1d..e6270c8 100644
---- a/info.c
-+++ b/info.c
-@@ -162,7 +162,13 @@ static int print_phy_handler(struct nl_msg *msg, void *arg)
- 			    tb_band[NL80211_BAND_ATTR_VHT_MCS_SET])
- 				print_vht_info(nla_get_u32(tb_band[NL80211_BAND_ATTR_VHT_CAPA]),
- 					       nla_data(tb_band[NL80211_BAND_ATTR_VHT_MCS_SET]));
-+			if (tb_band[NL80211_BAND_ATTR_IFTYPE_DATA]) {
-+				struct nlattr *nl_iftype;
-+				int rem_band;
- 
-+				nla_for_each_nested(nl_iftype, tb_band[NL80211_BAND_ATTR_IFTYPE_DATA], rem_band)
-+					print_he_info(nl_iftype);
-+			}
- 			if (tb_band[NL80211_BAND_ATTR_FREQS]) {
- 				if (!band_had_freq) {
- 					printf("\t\tFrequencies:\n");
-diff --git a/iw.h b/iw.h
-index ca8a0ff..bc0b3ac 100644
---- a/iw.h
-+++ b/iw.h
-@@ -197,6 +197,7 @@ void print_ampdu_length(__u8 exponent);
- void print_ampdu_spacing(__u8 spacing);
- void print_ht_capability(__u16 cap);
- void print_vht_info(__u32 capa, const __u8 *mcs);
-+void print_he_info(struct nlattr *nl_iftype);
- 
- char *channel_width_name(enum nl80211_chan_width width);
- const char *iftype_name(enum nl80211_iftype iftype);
-diff --git a/util.c b/util.c
-index 2fa0b74..1b5aae1 100644
---- a/util.c
-+++ b/util.c
-@@ -1101,6 +1101,237 @@ void print_vht_info(__u32 capa, const __u8 *mcs)
- 	printf("\t\tVHT TX highest supported: %d Mbps\n", tmp & 0x1fff);
- }
- 
-+void print_he_info(struct nlattr *nl_iftype)
-+{
-+	struct nlattr *tb[NL80211_BAND_IFTYPE_ATTR_MAX + 1];
-+	struct nlattr *tb_flags[NL80211_IFTYPE_MAX + 1];
-+	char *iftypes[NUM_NL80211_IFTYPES] = {
-+		"Unspec", "Adhoc", "Station", "AP", "AP/VLAN", "WDS", "Monitor"
-+		"Mesh", "P2P/Client", "P2P/Go", "P2P/Device", "OCB", "NAN",
-+	};
-+	__u16 mac_cap[3] = { 0 };
-+	__u16 phy_cap[6] = { 0 };
-+	__u16 mcs_set[6] = { 0 };
-+	__u8 ppet[25] = { 0 };
-+	size_t len;
-+	int i;
-+
-+	#define PRINT_HE_CAP(_var, _idx, _bit, _str) \
-+	do { \
-+		if (_var[_idx] & BIT(_bit)) \
-+			printf("\t\t\t\t" _str "\n"); \
-+	} while (0)
-+
-+	#define PRINT_HE_CAP_MASK(_var, _idx, _shift, _mask, _str) \
-+	do { \
-+		if ((_var[_idx] >> _shift) & _mask) \
-+			printf("\t\t\t\t" _str ": %d\n", (_var[_idx] >> _shift) & _mask); \
-+	} while (0)
-+
-+	#define PRINT_HE_MAC_CAP(...) PRINT_HE_CAP(mac_cap, __VA_ARGS__)
-+	#define PRINT_HE_MAC_CAP_MASK(...) PRINT_HE_CAP_MASK(mac_cap, __VA_ARGS__)
-+	#define PRINT_HE_PHY_CAP(...) PRINT_HE_CAP(phy_cap, __VA_ARGS__)
-+	#define PRINT_HE_PHY_CAP0(_idx, _bit, ...) PRINT_HE_CAP(phy_cap, _idx, _bit + 8, __VA_ARGS__)
-+	#define PRINT_HE_PHY_CAP_MASK(...) PRINT_HE_CAP_MASK(phy_cap, __VA_ARGS__)
-+
-+	nla_parse(tb, NL80211_BAND_IFTYPE_ATTR_MAX,
-+		  nla_data(nl_iftype), nla_len(nl_iftype), NULL);
-+
-+	if (!tb[NL80211_BAND_IFTYPE_ATTR_IFTYPES])
-+		return;
-+
-+	if (nla_parse_nested(tb_flags, NL80211_IFTYPE_MAX,
-+			     tb[NL80211_BAND_IFTYPE_ATTR_IFTYPES], NULL))
-+		return;
-+
-+	printf("\t\tHE Iftypes:");
-+	for (i = 0; i < NUM_NL80211_IFTYPES; i++)
-+		if (nla_get_flag(tb_flags[i]) && iftypes[i])
-+			printf(" %s", iftypes[i]);
-+	printf("\n");
-+
-+	if (tb[NL80211_BAND_IFTYPE_ATTR_HE_CAP_MAC]) {
-+		len = nla_len(tb[NL80211_BAND_IFTYPE_ATTR_HE_CAP_MAC]);
-+		if (len > sizeof(mac_cap))
-+			len = sizeof(mac_cap);
-+		memcpy(mac_cap,
-+		       nla_data(tb[NL80211_BAND_IFTYPE_ATTR_HE_CAP_MAC]),
-+		       len);
-+	}
-+	printf("\t\t\tHE MAC Capabilities (0x");
-+	for (i = 0; i < 3; i++)
-+		printf("%04x", mac_cap[i]);
-+	printf("):\n");
-+
-+	PRINT_HE_MAC_CAP(0, 0, "+HTC HE Supported");
-+	PRINT_HE_MAC_CAP(0, 1, "TWT Requester");
-+	PRINT_HE_MAC_CAP(0, 2, "TWT Responder");
-+	PRINT_HE_MAC_CAP_MASK(0, 3, 0x3, "Dynamic BA Fragementation Level");
-+	PRINT_HE_MAC_CAP_MASK(0, 5, 0x7, "Maximum number of MSDUS Fragments");
-+	PRINT_HE_MAC_CAP_MASK(0, 8, 0x3, "Minimum Payload size of 128 bytes");
-+	PRINT_HE_MAC_CAP_MASK(0, 10, 0x3, "Trigger Frame MAC Padding Duration");
-+	PRINT_HE_MAC_CAP_MASK(0, 12, 0x7, "Multi-TID Aggregation Support");
-+
-+	PRINT_HE_MAC_CAP(1, 1, "All Ack");
-+	PRINT_HE_MAC_CAP(1, 2, "TRS");
-+	PRINT_HE_MAC_CAP(1, 3, "BSR");
-+	PRINT_HE_MAC_CAP(1, 4, "Broadcast TWT");
-+	PRINT_HE_MAC_CAP(1, 5, "32-bit BA Bitmap");
-+	PRINT_HE_MAC_CAP(1, 6, "MU Cascading");
-+	PRINT_HE_MAC_CAP(1, 7, "Ack-Enabled Aggregation");
-+	PRINT_HE_MAC_CAP(1, 9, "OM Control");
-+	PRINT_HE_MAC_CAP(1, 10, "OFDMA RA");
-+	PRINT_HE_MAC_CAP_MASK(1, 11, 0x3, "Maximum A-MPDU Length Exponent");
-+	PRINT_HE_MAC_CAP(1, 13, "A-MSDU Fragmentation");
-+	PRINT_HE_MAC_CAP(1, 14, "Flexible TWT Scheduling");
-+	PRINT_HE_MAC_CAP(1, 15, "RX Control Frame to MultiBSS");
-+
-+	PRINT_HE_MAC_CAP(2, 0, "BSRP BQRP A-MPDU Aggregation");
-+	PRINT_HE_MAC_CAP(2, 1, "QTP");
-+	PRINT_HE_MAC_CAP(2, 2, "BQR");
-+	PRINT_HE_MAC_CAP(2, 3, "SRP Responder Role");
-+	PRINT_HE_MAC_CAP(2, 4, "NDP Feedback Report");
-+	PRINT_HE_MAC_CAP(2, 5, "OPS");
-+	PRINT_HE_MAC_CAP(2, 6, "A-MSDU in A-MPDU");
-+	PRINT_HE_MAC_CAP_MASK(2, 7, 7, "Multi-TID Aggregation TX");
-+	PRINT_HE_MAC_CAP(2, 10, "HE Subchannel Selective Transmission");
-+	PRINT_HE_MAC_CAP(2, 11, "UL 2x996-Tone RU");
-+	PRINT_HE_MAC_CAP(2, 12, "OM Control UL MU Data Disable RX");
-+
-+	if (tb[NL80211_BAND_IFTYPE_ATTR_HE_CAP_PHY]) {
-+		len = nla_len(tb[NL80211_BAND_IFTYPE_ATTR_HE_CAP_PHY]);
-+
-+		if (len > sizeof(phy_cap) - 1)
-+			len = sizeof(phy_cap) - 1;
-+		memcpy(&((__u8 *)phy_cap)[1],
-+		       nla_data(tb[NL80211_BAND_IFTYPE_ATTR_HE_CAP_PHY]),
-+		       len);
-+	}
-+	printf("\t\t\tHE PHY Capabilities: (0x");
-+	for (i = 0; i < 11; i++)
-+		printf("%02x", ((__u8 *)phy_cap)[i + 1]);
-+	printf("):\n");
-+
-+	PRINT_HE_PHY_CAP0(0, 1, "HE40/2.4GHz");
-+	PRINT_HE_PHY_CAP0(0, 2, "HE40/HE80/5GHz");
-+	PRINT_HE_PHY_CAP0(0, 3, "HE160/5GHz");
-+	PRINT_HE_PHY_CAP0(0, 4, "HE160/HE80+80/5GHz");
-+	PRINT_HE_PHY_CAP0(0, 5, "242 tone RUs/2.4GHz");
-+	PRINT_HE_PHY_CAP0(0, 6, "242 tone RUs/5GHz");
-+
-+	PRINT_HE_PHY_CAP_MASK(1, 0, 0xf, "Punctured Preamble RX");
-+	PRINT_HE_PHY_CAP_MASK(1, 4, 0x1, "Device Class");
-+	PRINT_HE_PHY_CAP(1, 5, "LDPC Coding in Payload");
-+	PRINT_HE_PHY_CAP(1, 6, "HE SU PPDU with 1x HE-LTF and 0.8us GI");
-+	PRINT_HE_PHY_CAP_MASK(1, 7, 0x3, "Midamble Rx Max NSTS");
-+	PRINT_HE_PHY_CAP(1, 9, "NDP with 4x HE-LTF and 3.2us GI");
-+	PRINT_HE_PHY_CAP(1, 10, "STBC Tx <= 80MHz");
-+	PRINT_HE_PHY_CAP(1, 11, "STBC Rx <= 80MHz");
-+	PRINT_HE_PHY_CAP(1, 12, "Doppler Tx");
-+	PRINT_HE_PHY_CAP(1, 13, "Doppler Rx");
-+	PRINT_HE_PHY_CAP(1, 14, "Full Bandwidth UL MU-MIMO");
-+	PRINT_HE_PHY_CAP(1, 15, "Partial Bandwidth UL MU-MIMO");
-+
-+	PRINT_HE_PHY_CAP_MASK(2, 0, 0x3, "DCM Max Constellation");
-+	PRINT_HE_PHY_CAP_MASK(2, 2, 0x1, "DCM Max NSS Tx");
-+	PRINT_HE_PHY_CAP_MASK(2, 3, 0x3, "DCM Max Constellation Rx");
-+	PRINT_HE_PHY_CAP_MASK(2, 5, 0x1, "DCM Max NSS Rx");
-+	PRINT_HE_PHY_CAP(2, 6, "Rx HE MU PPDU from Non-AP STA");
-+	PRINT_HE_PHY_CAP(2, 7, "SU Beamformer");
-+	PRINT_HE_PHY_CAP(2, 8, "SU Beamformee");
-+	PRINT_HE_PHY_CAP(2, 9, "MU Beamformer");
-+	PRINT_HE_PHY_CAP_MASK(2, 10, 0x7, "Beamformee STS <= 80Mhz");
-+	PRINT_HE_PHY_CAP_MASK(2, 13, 0x7, "Beamformee STS > 80Mhz");
-+
-+	PRINT_HE_PHY_CAP_MASK(3, 0, 0x7, "Sounding Dimensions <= 80Mhz");
-+	PRINT_HE_PHY_CAP_MASK(3, 3, 0x7, "Sounding Dimensions > 80Mhz");
-+	PRINT_HE_PHY_CAP(3, 6, "Ng = 16 SU Feedback");
-+	PRINT_HE_PHY_CAP(3, 7, "Ng = 16 MU Feedback");
-+	PRINT_HE_PHY_CAP(3, 8, "Codebook Size SU Feedback");
-+	PRINT_HE_PHY_CAP(3, 9, "Codebook Size MU Feedback");
-+	PRINT_HE_PHY_CAP(3, 10, "Triggered SU Beamforming Feedback");
-+	PRINT_HE_PHY_CAP(3, 11, "Triggered MU Beamforming Feedback");
-+	PRINT_HE_PHY_CAP(3, 12, "Triggered CQI Feedback");
-+	PRINT_HE_PHY_CAP(3, 13, "Partial Bandwidth Extended Range");
-+	PRINT_HE_PHY_CAP(3, 14, "Partial Bandwidth DL MU-MIMO");
-+	PRINT_HE_PHY_CAP(3, 15, "PPE Threshold Present");
-+
-+	PRINT_HE_PHY_CAP(4, 0, "SRP-based SR");
-+	PRINT_HE_PHY_CAP(4, 1, "Power Boost Factor ar");
-+	PRINT_HE_PHY_CAP(4, 2, "HE SU PPDU & HE PPDU 4x HE-LTF 0.8us GI");
-+	PRINT_HE_PHY_CAP_MASK(4, 3, 0x7, "Max NC");
-+	PRINT_HE_PHY_CAP(4, 6, "STBC Tx > 80MHz");
-+	PRINT_HE_PHY_CAP(4, 7, "STBC Rx > 80MHz");
-+	PRINT_HE_PHY_CAP(4, 8, "HE ER SU PPDU 4x HE-LTF 0.8us GI");
-+	PRINT_HE_PHY_CAP(4, 9, "20MHz in 40MHz HE PPDU 2.4GHz");
-+	PRINT_HE_PHY_CAP(4, 10, "20MHz in 160/80+80MHz HE PPDU");
-+	PRINT_HE_PHY_CAP(4, 11, "80MHz in 160/80+80MHz HE PPDU");
-+	PRINT_HE_PHY_CAP(4, 12, "HE ER SU PPDU 1x HE-LTF 0.8us GI");
-+	PRINT_HE_PHY_CAP(4, 13, "Midamble Rx 2x & 1x HE-LTF");
-+	PRINT_HE_PHY_CAP_MASK(4, 14, 0x3, "DCM Max BW");
-+
-+	PRINT_HE_PHY_CAP(5, 0, "Longer Than 16HE SIG-B OFDM Symbols");
-+	PRINT_HE_PHY_CAP(5, 1, "Non-Triggered CQI Feedback");
-+	PRINT_HE_PHY_CAP(5, 2, "TX 1024-QAM");
-+	PRINT_HE_PHY_CAP(5, 3, "RX 1024-QAM");
-+	PRINT_HE_PHY_CAP(5, 4, "RX Full BW SU Using HE MU PPDU with Compression SIGB");
-+	PRINT_HE_PHY_CAP(5, 5, "RX Full BW SU Using HE MU PPDU with Non-Compression SIGB");
-+
-+	if (tb[NL80211_BAND_IFTYPE_ATTR_HE_CAP_MCS_SET]) {
-+		len = nla_len(tb[NL80211_BAND_IFTYPE_ATTR_HE_CAP_MCS_SET]);
-+		if (len > sizeof(mcs_set))
-+			len = sizeof(mcs_set);
-+		memcpy(mcs_set,
-+		       nla_data(tb[NL80211_BAND_IFTYPE_ATTR_HE_CAP_MCS_SET]),
-+		       len);
-+	}
-+
-+	for (i = 0; i < 3; i++) {
-+		__u8 phy_cap_support[] = { BIT(1) | BIT(2), BIT(3), BIT(4) };
-+		char *bw[] = { "<= 80", "160", "80+80" };
-+		int j;
-+
-+		if ((phy_cap[0] & (phy_cap_support[i] << 8)) == 0)
-+			continue;
-+
-+		for (j = 0; j < 2; j++) {
-+			int k;
-+			printf("\t\t\tHE %s MCS and NSS set %s MHz\n", j ? "TX" : "RX", bw[i]);
-+			for (k = 0; k < 8; k++) {
-+				__u16 mcs = mcs_set[(i * 2) + j];
-+				mcs >>= k * 2;
-+				mcs &= 0x3;
-+				printf("\t\t\t\t\t %d streams: ", k + 1);
-+				if (mcs == 3)
-+					printf("not supported\n");
-+				else
-+					printf("MCS 0-%d\n", 7 + (mcs * 2));
-+			}
-+
-+		}
-+	}
-+
-+	len = 0;
-+	if (tb[NL80211_BAND_IFTYPE_ATTR_HE_CAP_PPE]) {
-+		len = nla_len(tb[NL80211_BAND_IFTYPE_ATTR_HE_CAP_PPE]);
-+		if (len > sizeof(ppet))
-+			len = sizeof(ppet);
-+		memcpy(ppet,
-+		       nla_data(tb[NL80211_BAND_IFTYPE_ATTR_HE_CAP_PPE]),
-+		       len);
-+	}
-+
-+	if (len && (phy_cap[3] & BIT(15))) {
-+		size_t i;
-+
-+		printf("\t\t\tPPE Threshold ");
-+		for (i = 0; i < len; i++)
-+			if (ppet[i])
-+				printf("0x%02x ", ppet[i]);
-+		printf("\n");
-+	}
-+}
-+
- void iw_hexdump(const char *prefix, const __u8 *buf, size_t size)
- {
- 	size_t i;
+John Crispin (7):
+  mac80211: dynamically enable the TWT requester support on STA
+    interfaces
+  mac80211: allow turning TWT responder support on and off via netlink
+  ath11k: add TWT support
+  mac80211: HE: add Spatial Reuse IE parsing support
+  mac80211: allow setting spatial reuse parameters when bringing up an
+    AP
+  mac80211: propagate spatial reuse info into ieee80211_sta
+  ath11k: add spatial reuse support
+
+ drivers/net/wireless/ath/ath11k/mac.c |  22 +++++
+ drivers/net/wireless/ath/ath11k/wmi.c | 126 ++++++++++++++++++++++++++
+ drivers/net/wireless/ath/ath11k/wmi.h |  87 ++++++++++++++++++
+ include/linux/ieee80211.h             |  49 ++++++++++
+ include/net/cfg80211.h                |  17 ++++
+ include/net/mac80211.h                |  10 ++
+ include/uapi/linux/nl80211.h          |  31 +++++++
+ net/mac80211/cfg.c                    |   7 +-
+ net/mac80211/he.c                     |  24 +++++
+ net/mac80211/ieee80211_i.h            |   5 +
+ net/mac80211/mlme.c                   |  19 +++-
+ net/mac80211/util.c                   |   4 +
+ net/wireless/nl80211.c                |  47 ++++++++++
+ 13 files changed, 445 insertions(+), 3 deletions(-)
+
 -- 
 2.20.1
 
