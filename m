@@ -2,39 +2,39 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D3B9B23324
-	for <lists+linux-wireless@lfdr.de>; Mon, 20 May 2019 14:01:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EAFAD23321
+	for <lists+linux-wireless@lfdr.de>; Mon, 20 May 2019 14:00:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732391AbfETMA4 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 20 May 2019 08:00:56 -0400
-Received: from rnd-relay.smtp.broadcom.com ([192.19.229.170]:35388 "EHLO
+        id S1732134AbfETMAy (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 20 May 2019 08:00:54 -0400
+Received: from rnd-relay.smtp.broadcom.com ([192.19.229.170]:35346 "EHLO
         rnd-relay.smtp.broadcom.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1732281AbfETMAy (ORCPT
+        by vger.kernel.org with ESMTP id S1730727AbfETMAy (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
         Mon, 20 May 2019 08:00:54 -0400
 Received: from mail-irv-17.broadcom.com (mail-irv-17.lvn.broadcom.net [10.75.224.233])
-        by rnd-relay.smtp.broadcom.com (Postfix) with ESMTP id 4CA5A30C092;
-        Mon, 20 May 2019 05:00:53 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.10.3 rnd-relay.smtp.broadcom.com 4CA5A30C092
+        by rnd-relay.smtp.broadcom.com (Postfix) with ESMTP id 69F8C30C088;
+        Mon, 20 May 2019 05:00:52 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.10.3 rnd-relay.smtp.broadcom.com 69F8C30C088
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=broadcom.com;
-        s=dkimrelay; t=1558353653;
-        bh=7gKdcWw1g/gAr/ehJps0oXJtouh+u+eoLCIGgNo/bAU=;
+        s=dkimrelay; t=1558353652;
+        bh=bGicLqcp1/dHgg4bDICFA/Z0PBvU7+StOn1XcGfHNdg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=K5nCS/y3sQKnvSiGM/UFyn8xEw0dMbzuLYNTrl92HPIPSpwn5OmIvb1mJUh3ew0TU
-         3QMUSVSVrTjUoTBCFQQG1qjdT0yQvYeK1ZbQS73MFHYd59rxupneXynuggWZQOZWep
-         Rc9j2/tDA+n/II/G5bNO1r9BqEZzFMS1sf30PYNM=
+        b=ihc0POf/ohgnzjOxmUXHxI43sclldB50DGoMHIqAqQyxNkgehrDYopTa03wC0gHu0
+         NT89gvymCNr1BGQxKl10QA2mRKY35sFyuGX57dwa56PTqc4VFElaXfxWAr3SHYGjTN
+         clazXTZUsESh6m7lqhehg/ac0poX6FHni7MraAYc=
 Received: from bld-bun-01.bun.broadcom.com (bld-bun-01.bun.broadcom.com [10.176.128.83])
-        by mail-irv-17.broadcom.com (Postfix) with ESMTP id A6B9060D6F;
-        Mon, 20 May 2019 05:00:53 -0700 (PDT)
+        by mail-irv-17.broadcom.com (Postfix) with ESMTP id BB99560D77;
+        Mon, 20 May 2019 05:00:52 -0700 (PDT)
 Received: by bld-bun-01.bun.broadcom.com (Postfix, from userid 25152)
-        id F0715B03037; Mon, 20 May 2019 14:00:50 +0200 (CEST)
+        id EE58FB00F37; Mon, 20 May 2019 14:00:50 +0200 (CEST)
 From:   Arend van Spriel <arend.vanspriel@broadcom.com>
 To:     Johannes Berg <johannes@sipsolutions.net>
 Cc:     linux-wireless@vger.kernel.org,
         Arend van Spriel <arend.vanspriel@broadcom.com>
-Subject: [RFC 1/8] nl80211: add 6GHz band definition to enum nl80211_band
-Date:   Mon, 20 May 2019 14:00:38 +0200
-Message-Id: <1558353645-18119-2-git-send-email-arend.vanspriel@broadcom.com>
+Subject: [RFC 2/8] cfg80211: add 6GHz UNII band definitions
+Date:   Mon, 20 May 2019 14:00:39 +0200
+Message-Id: <1558353645-18119-3-git-send-email-arend.vanspriel@broadcom.com>
 X-Mailer: git-send-email 1.9.1
 In-Reply-To: <1558353645-18119-1-git-send-email-arend.vanspriel@broadcom.com>
 References: <1558353645-18119-1-git-send-email-arend.vanspriel@broadcom.com>
@@ -43,37 +43,57 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-In the 802.11ax specification a new band is introduced, which
-is also proposed by FCC for unlicensed use. This band is referred
-to as 6GHz spanning frequency range from 5925 to 7125 MHz.
+For the new 6GHz there are new UNII band definitions as listed
+in the FCC notice [1].
+
+[1] https://docs.fcc.gov/public/attachments/FCC-18-147A1_Rcd.pdf
 
 Reviewed-by: Pieter-Paul Giesberts <pieter-paul.giesberts@broadcom.com>
 Reviewed-by: Leon Zegers <leon.zegers@broadcom.com>
 Signed-off-by: Arend van Spriel <arend.vanspriel@broadcom.com>
 ---
- include/uapi/linux/nl80211.h | 2 ++
- 1 file changed, 2 insertions(+)
+ net/wireless/reg.c | 21 +++++++++++++++++++--
+ 1 file changed, 19 insertions(+), 2 deletions(-)
 
-diff --git a/include/uapi/linux/nl80211.h b/include/uapi/linux/nl80211.h
-index 6f09d1500..5ea3c8c 100644
---- a/include/uapi/linux/nl80211.h
-+++ b/include/uapi/linux/nl80211.h
-@@ -4515,6 +4515,7 @@ enum nl80211_txrate_gi {
-  * enum nl80211_band - Frequency band
-  * @NL80211_BAND_2GHZ: 2.4 GHz ISM band
-  * @NL80211_BAND_5GHZ: around 5 GHz band (4.9 - 5.7 GHz)
-+ * @NL80211_BAND_6GHZ: around 6 GHz band (5.9 - 7.2 GHz)
-  * @NL80211_BAND_60GHZ: around 60 GHz band (58.32 - 69.12 GHz)
-  * @NUM_NL80211_BANDS: number of bands, avoid using this in userspace
-  *	since newer kernel versions may support more bands
-@@ -4522,6 +4523,7 @@ enum nl80211_txrate_gi {
- enum nl80211_band {
- 	NL80211_BAND_2GHZ,
- 	NL80211_BAND_5GHZ,
-+	NL80211_BAND_6GHZ,
- 	NL80211_BAND_60GHZ,
+diff --git a/net/wireless/reg.c b/net/wireless/reg.c
+index 4831ad74..646107a 100644
+--- a/net/wireless/reg.c
++++ b/net/wireless/reg.c
+@@ -3806,8 +3806,9 @@ void wiphy_regulatory_deregister(struct wiphy *wiphy)
+ }
  
- 	NUM_NL80211_BANDS,
+ /*
+- * See http://www.fcc.gov/document/5-ghz-unlicensed-spectrum-unii, for
+- * UNII band definitions
++ * See FCC notices for UNII band definitions
++ *  5GHz: https://www.fcc.gov/document/5-ghz-unlicensed-spectrum-unii
++ *  6GHz: https://www.fcc.gov/document/fcc-proposes-more-spectrum-unlicensed-use-0
+  */
+ int cfg80211_get_unii(int freq)
+ {
+@@ -3831,6 +3832,22 @@ int cfg80211_get_unii(int freq)
+ 	if (freq > 5725 && freq <= 5825)
+ 		return 4;
+ 
++	/* UNII-5 */
++	if (freq > 5925 && freq <= 6425)
++		return 5;
++
++	/* UNII-6 */
++	if (freq > 6425 && freq <= 6525)
++		return 6;
++
++	/* UNII-7 */
++	if (freq > 6525 && freq <= 6875)
++		return 7;
++
++	/* UNII-8 */
++	if (freq > 6875 && freq <= 7125)
++		return 8;
++
+ 	return -EINVAL;
+ }
+ 
 -- 
 1.9.1
 
