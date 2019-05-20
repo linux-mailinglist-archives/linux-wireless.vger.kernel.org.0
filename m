@@ -2,122 +2,316 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D5CFB22F66
-	for <lists+linux-wireless@lfdr.de>; Mon, 20 May 2019 10:55:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6FF83231CD
+	for <lists+linux-wireless@lfdr.de>; Mon, 20 May 2019 12:54:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731644AbfETIzS (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 20 May 2019 04:55:18 -0400
-Received: from mail-ed1-f67.google.com ([209.85.208.67]:42506 "EHLO
-        mail-ed1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1731641AbfETIzR (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 20 May 2019 04:55:17 -0400
-Received: by mail-ed1-f67.google.com with SMTP id l25so22637914eda.9
-        for <linux-wireless@vger.kernel.org>; Mon, 20 May 2019 01:55:16 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=vFTt0M6+AyIysvwKwIils2X+lM/meF2sxJjj46Wd1sg=;
-        b=B8xJgG9Mfe/9MxL0HtY4ca/tirLNmh0C9lj/ex3fDZnQ/Z3N+iZcFmu5S4eMsAkmPs
-         9RAJQWBHGH5GhRDnKoHem++eVfSdl+KDJPtcw1herR9fhhgxrP2D3m+xKdRfMPEMMJ84
-         JjtKJ6FHMv3vFq5XsnkSq3Esh6InwnFnUWBaI=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=vFTt0M6+AyIysvwKwIils2X+lM/meF2sxJjj46Wd1sg=;
-        b=dkXOZasFJgwFFkyOYAHK9ZEwReZZXeY2HrTd3DFYMkdY9SJmOH19iSMNPlIvDhYqcG
-         /e6htEgf3EvI7URIUAVPwIigcrCtGLgoVMs1zZQMaEIQ4/uFo9vy6iXsWH138ptlxHvf
-         squCtY13HBb0Ih11afqGgYs0xFeqg+L+wfg7zbAzD1nso4Xdtlwi4DgdWmdIHEYD34Dx
-         p3o1YlSuRDm8hponC64Jy/ZpA0j/vm/DgIl9wDHzyOvcghnHDfAyMUCDR19MBTQIoSST
-         aR9E2aSmQYZm4JRq9GkjtqHq5G1ywVMIFHdGfHEnesWsbeDXFWXYlsit3YyTkeFglr6S
-         mLcw==
-X-Gm-Message-State: APjAAAU7Gf/ORv/CZr3H9uKO6xVCi3+3SThRcWlZ81r5qRPWmbmdlLdv
-        Hjh8hv+0CWp7cDw2L7+2b0J/ww==
-X-Google-Smtp-Source: APXvYqx4flRS6cM748otmtPJ0wEKEab4DlGo6iNP+Fai8ttXEGXbq+CZSmv1FMlVMKWOwJno0wfUnA==
-X-Received: by 2002:a50:aef6:: with SMTP id f51mr73838766edd.225.1558342516174;
-        Mon, 20 May 2019 01:55:16 -0700 (PDT)
-Received: from [10.176.68.125] ([192.19.248.250])
-        by smtp.gmail.com with ESMTPSA id g30sm5412048edg.57.2019.05.20.01.55.13
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Mon, 20 May 2019 01:55:15 -0700 (PDT)
-Subject: Re: [PATCH 0/3] brcmfmac: sdio: Deal better w/ transmission errors
- waking from sleep
-To:     Douglas Anderson <dianders@chromium.org>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        Adrian Hunter <adrian.hunter@intel.com>
-Cc:     linux-rockchip@lists.infradead.org,
-        Double Lo <double.lo@cypress.com>, briannorris@chromium.org,
-        Madhan Mohan R <madhanmohan.r@cypress.com>, mka@chromium.org,
-        Wright Feng <wright.feng@cypress.com>,
-        Chi-Hsien Lin <chi-hsien.lin@cypress.com>,
-        linux-mmc@vger.kernel.org, Shawn Lin <shawn.lin@rock-chips.com>,
-        brcm80211-dev-list@cypress.com, YueHaibing <yuehaibing@huawei.com>,
-        Hante Meuleman <hante.meuleman@broadcom.com>,
-        Martin Hicks <mort@bork.org>,
-        Ritesh Harjani <riteshh@codeaurora.org>,
-        Michael Trimarchi <michael@amarulasolutions.com>,
-        Wolfram Sang <wsa+renesas@sang-engineering.com>,
-        Franky Lin <franky.lin@broadcom.com>,
-        Jiong Wu <lohengrin1024@gmail.com>,
-        brcm80211-dev-list.pdl@broadcom.com,
-        "David S. Miller" <davem@davemloft.net>, netdev@vger.kernel.org,
-        linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Naveen Gupta <naveen.gupta@cypress.com>,
-        Avri Altman <avri.altman@wdc.com>
-References: <20190517225420.176893-1-dianders@chromium.org>
-From:   Arend Van Spriel <arend.vanspriel@broadcom.com>
-Message-ID: <8c3fa57a-3843-947c-ec6b-a6144ccde1e9@broadcom.com>
-Date:   Mon, 20 May 2019 10:55:12 +0200
-User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:60.0) Gecko/20100101
- Thunderbird/60.6.1
+        id S1730554AbfETKyZ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 20 May 2019 06:54:25 -0400
+Received: from nbd.name ([46.4.11.11]:47308 "EHLO nbd.name"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725601AbfETKyZ (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 20 May 2019 06:54:25 -0400
+Received: from p548c87ba.dip0.t-ipconnect.de ([84.140.135.186] helo=bertha.datto.lan)
+        by ds12 with esmtpa (Exim 4.89)
+        (envelope-from <john@phrozen.org>)
+        id 1hSfvy-0003OO-9z; Mon, 20 May 2019 12:54:22 +0200
+From:   John Crispin <john@phrozen.org>
+To:     Johannes Berg <johannes@sipsolutions.net>
+Cc:     linux-wireless@vger.kernel.org, John Crispin <john@phrozen.org>,
+        Shashidhar Lakkavalli <slakkavalli@datto.com>
+Subject: [PATCH] iw: print HE capabilities
+Date:   Mon, 20 May 2019 12:54:16 +0200
+Message-Id: <20190520105416.27185-1-john@phrozen.org>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-In-Reply-To: <20190517225420.176893-1-dianders@chromium.org>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 5/18/2019 12:54 AM, Douglas Anderson wrote:
-> This series attempts to deal better with the expected transmission
-> errors that we get when waking up the SDIO-based WiFi on
-> rk3288-veyron-minnie, rk3288-veyron-speedy, and rk3288-veyron-mickey.
-> 
-> Some details about those errors can be found in
-> <https://crbug.com/960222>, but to summarize it here: if we try to
-> send the wakeup command to the WiFi card at the same time it has
-> decided to wake up itself then it will behave badly on the SDIO bus.
-> This can cause timeouts or CRC errors.
-> 
-> When I tested on 4.19 and 4.20 these CRC errors can be seen to cause
-> re-tuning.  Since I am currently developing on 4.19 this was the
-> original problem I attempted to solve.
-> 
-> On mainline it turns out that you don't see the retuning errors but
-> you see tons of spam about timeouts trying to wakeup from sleep.  I
-> tracked down the commit that was causing that and have partially
-> reverted it here.  I have no real knowledge about Broadcom WiFi, but
-> the commit that was causing problems sounds (from the descriptioin) to
-> be a hack commit penalizing all Broadcom WiFi users because of a bug
-> in a Cypress SD controller.  I will let others comment if this is
-> truly the case and, if so, what the right solution should be.
+Print the HE MAC/PHY capabilities and MCS/NSS sets.
 
-Let me give a bit of background. The brcmfmac driver implements its own 
-runtime-pm like functionality, ie. if the driver is idle for some time 
-it will put the device in a low-power state. When it does that it powers 
-down several cores in the chip among which the SDIO core. However, the 
-SDIO bus used be very bad at handling devices that do that so instead it 
-has the Always-On-Station (AOS) block take over the SDIO core in 
-handling the bus. Default is will send a R1 response, but only for CMD52 
-(and CMD14 but no host is using that cruft). In noCmdDecode it does not 
-respond and simply wakes up the SDIO core, which takes over again. 
-Because it does not respond timeouts (-110) are kinda expected in this mode.
+Signed-off-by: Shashidhar Lakkavalli <slakkavalli@datto.com>
+Signed-off-by: John Crispin <john@phrozen.org>
+---
+ info.c |   6 ++
+ iw.h   |   1 +
+ util.c | 231 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ 3 files changed, 238 insertions(+)
 
-Regards,
-Arend
+diff --git a/info.c b/info.c
+index 92c7d1d..e6270c8 100644
+--- a/info.c
++++ b/info.c
+@@ -162,7 +162,13 @@ static int print_phy_handler(struct nl_msg *msg, void *arg)
+ 			    tb_band[NL80211_BAND_ATTR_VHT_MCS_SET])
+ 				print_vht_info(nla_get_u32(tb_band[NL80211_BAND_ATTR_VHT_CAPA]),
+ 					       nla_data(tb_band[NL80211_BAND_ATTR_VHT_MCS_SET]));
++			if (tb_band[NL80211_BAND_ATTR_IFTYPE_DATA]) {
++				struct nlattr *nl_iftype;
++				int rem_band;
+ 
++				nla_for_each_nested(nl_iftype, tb_band[NL80211_BAND_ATTR_IFTYPE_DATA], rem_band)
++					print_he_info(nl_iftype);
++			}
+ 			if (tb_band[NL80211_BAND_ATTR_FREQS]) {
+ 				if (!band_had_freq) {
+ 					printf("\t\tFrequencies:\n");
+diff --git a/iw.h b/iw.h
+index ca8a0ff..bc0b3ac 100644
+--- a/iw.h
++++ b/iw.h
+@@ -197,6 +197,7 @@ void print_ampdu_length(__u8 exponent);
+ void print_ampdu_spacing(__u8 spacing);
+ void print_ht_capability(__u16 cap);
+ void print_vht_info(__u32 capa, const __u8 *mcs);
++void print_he_info(struct nlattr *nl_iftype);
+ 
+ char *channel_width_name(enum nl80211_chan_width width);
+ const char *iftype_name(enum nl80211_iftype iftype);
+diff --git a/util.c b/util.c
+index 2fa0b74..1b5aae1 100644
+--- a/util.c
++++ b/util.c
+@@ -1101,6 +1101,237 @@ void print_vht_info(__u32 capa, const __u8 *mcs)
+ 	printf("\t\tVHT TX highest supported: %d Mbps\n", tmp & 0x1fff);
+ }
+ 
++void print_he_info(struct nlattr *nl_iftype)
++{
++	struct nlattr *tb[NL80211_BAND_IFTYPE_ATTR_MAX + 1];
++	struct nlattr *tb_flags[NL80211_IFTYPE_MAX + 1];
++	char *iftypes[NUM_NL80211_IFTYPES] = {
++		"Unspec", "Adhoc", "Station", "AP", "AP/VLAN", "WDS", "Monitor"
++		"Mesh", "P2P/Client", "P2P/Go", "P2P/Device", "OCB", "NAN",
++	};
++	__u16 mac_cap[3] = { 0 };
++	__u16 phy_cap[6] = { 0 };
++	__u16 mcs_set[6] = { 0 };
++	__u8 ppet[25] = { 0 };
++	size_t len;
++	int i;
++
++	#define PRINT_HE_CAP(_var, _idx, _bit, _str) \
++	do { \
++		if (_var[_idx] & BIT(_bit)) \
++			printf("\t\t\t\t" _str "\n"); \
++	} while (0)
++
++	#define PRINT_HE_CAP_MASK(_var, _idx, _shift, _mask, _str) \
++	do { \
++		if ((_var[_idx] >> _shift) & _mask) \
++			printf("\t\t\t\t" _str ": %d\n", (_var[_idx] >> _shift) & _mask); \
++	} while (0)
++
++	#define PRINT_HE_MAC_CAP(...) PRINT_HE_CAP(mac_cap, __VA_ARGS__)
++	#define PRINT_HE_MAC_CAP_MASK(...) PRINT_HE_CAP_MASK(mac_cap, __VA_ARGS__)
++	#define PRINT_HE_PHY_CAP(...) PRINT_HE_CAP(phy_cap, __VA_ARGS__)
++	#define PRINT_HE_PHY_CAP0(_idx, _bit, ...) PRINT_HE_CAP(phy_cap, _idx, _bit + 8, __VA_ARGS__)
++	#define PRINT_HE_PHY_CAP_MASK(...) PRINT_HE_CAP_MASK(phy_cap, __VA_ARGS__)
++
++	nla_parse(tb, NL80211_BAND_IFTYPE_ATTR_MAX,
++		  nla_data(nl_iftype), nla_len(nl_iftype), NULL);
++
++	if (!tb[NL80211_BAND_IFTYPE_ATTR_IFTYPES])
++		return;
++
++	if (nla_parse_nested(tb_flags, NL80211_IFTYPE_MAX,
++			     tb[NL80211_BAND_IFTYPE_ATTR_IFTYPES], NULL))
++		return;
++
++	printf("\t\tHE Iftypes:");
++	for (i = 0; i < NUM_NL80211_IFTYPES; i++)
++		if (nla_get_flag(tb_flags[i]) && iftypes[i])
++			printf(" %s", iftypes[i]);
++	printf("\n");
++
++	if (tb[NL80211_BAND_IFTYPE_ATTR_HE_CAP_MAC]) {
++		len = nla_len(tb[NL80211_BAND_IFTYPE_ATTR_HE_CAP_MAC]);
++		if (len > sizeof(mac_cap))
++			len = sizeof(mac_cap);
++		memcpy(mac_cap,
++		       nla_data(tb[NL80211_BAND_IFTYPE_ATTR_HE_CAP_MAC]),
++		       len);
++	}
++	printf("\t\t\tHE MAC Capabilities (0x");
++	for (i = 0; i < 3; i++)
++		printf("%04x", mac_cap[i]);
++	printf("):\n");
++
++	PRINT_HE_MAC_CAP(0, 0, "+HTC HE Supported");
++	PRINT_HE_MAC_CAP(0, 1, "TWT Requester");
++	PRINT_HE_MAC_CAP(0, 2, "TWT Responder");
++	PRINT_HE_MAC_CAP_MASK(0, 3, 0x3, "Dynamic BA Fragementation Level");
++	PRINT_HE_MAC_CAP_MASK(0, 5, 0x7, "Maximum number of MSDUS Fragments");
++	PRINT_HE_MAC_CAP_MASK(0, 8, 0x3, "Minimum Payload size of 128 bytes");
++	PRINT_HE_MAC_CAP_MASK(0, 10, 0x3, "Trigger Frame MAC Padding Duration");
++	PRINT_HE_MAC_CAP_MASK(0, 12, 0x7, "Multi-TID Aggregation Support");
++
++	PRINT_HE_MAC_CAP(1, 1, "All Ack");
++	PRINT_HE_MAC_CAP(1, 2, "TRS");
++	PRINT_HE_MAC_CAP(1, 3, "BSR");
++	PRINT_HE_MAC_CAP(1, 4, "Broadcast TWT");
++	PRINT_HE_MAC_CAP(1, 5, "32-bit BA Bitmap");
++	PRINT_HE_MAC_CAP(1, 6, "MU Cascading");
++	PRINT_HE_MAC_CAP(1, 7, "Ack-Enabled Aggregation");
++	PRINT_HE_MAC_CAP(1, 9, "OM Control");
++	PRINT_HE_MAC_CAP(1, 10, "OFDMA RA");
++	PRINT_HE_MAC_CAP_MASK(1, 11, 0x3, "Maximum A-MPDU Length Exponent");
++	PRINT_HE_MAC_CAP(1, 13, "A-MSDU Fragmentation");
++	PRINT_HE_MAC_CAP(1, 14, "Flexible TWT Scheduling");
++	PRINT_HE_MAC_CAP(1, 15, "RX Control Frame to MultiBSS");
++
++	PRINT_HE_MAC_CAP(2, 0, "BSRP BQRP A-MPDU Aggregation");
++	PRINT_HE_MAC_CAP(2, 1, "QTP");
++	PRINT_HE_MAC_CAP(2, 2, "BQR");
++	PRINT_HE_MAC_CAP(2, 3, "SRP Responder Role");
++	PRINT_HE_MAC_CAP(2, 4, "NDP Feedback Report");
++	PRINT_HE_MAC_CAP(2, 5, "OPS");
++	PRINT_HE_MAC_CAP(2, 6, "A-MSDU in A-MPDU");
++	PRINT_HE_MAC_CAP_MASK(2, 7, 7, "Multi-TID Aggregation TX");
++	PRINT_HE_MAC_CAP(2, 10, "HE Subchannel Selective Transmission");
++	PRINT_HE_MAC_CAP(2, 11, "UL 2x996-Tone RU");
++	PRINT_HE_MAC_CAP(2, 12, "OM Control UL MU Data Disable RX");
++
++	if (tb[NL80211_BAND_IFTYPE_ATTR_HE_CAP_PHY]) {
++		len = nla_len(tb[NL80211_BAND_IFTYPE_ATTR_HE_CAP_PHY]);
++
++		if (len > sizeof(phy_cap) - 1)
++			len = sizeof(phy_cap) - 1;
++		memcpy(&((__u8 *)phy_cap)[1],
++		       nla_data(tb[NL80211_BAND_IFTYPE_ATTR_HE_CAP_PHY]),
++		       len);
++	}
++	printf("\t\t\tHE PHY Capabilities: (0x");
++	for (i = 0; i < 11; i++)
++		printf("%02x", ((__u8 *)phy_cap)[i + 1]);
++	printf("):\n");
++
++	PRINT_HE_PHY_CAP0(0, 1, "HE40/2.4GHz");
++	PRINT_HE_PHY_CAP0(0, 2, "HE40/HE80/5GHz");
++	PRINT_HE_PHY_CAP0(0, 3, "HE160/5GHz");
++	PRINT_HE_PHY_CAP0(0, 4, "HE160/HE80+80/5GHz");
++	PRINT_HE_PHY_CAP0(0, 5, "242 tone RUs/2.4GHz");
++	PRINT_HE_PHY_CAP0(0, 6, "242 tone RUs/5GHz");
++
++	PRINT_HE_PHY_CAP_MASK(1, 0, 0xf, "Punctured Preamble RX");
++	PRINT_HE_PHY_CAP_MASK(1, 4, 0x1, "Device Class");
++	PRINT_HE_PHY_CAP(1, 5, "LDPC Coding in Payload");
++	PRINT_HE_PHY_CAP(1, 6, "HE SU PPDU with 1x HE-LTF and 0.8us GI");
++	PRINT_HE_PHY_CAP_MASK(1, 7, 0x3, "Midamble Rx Max NSTS");
++	PRINT_HE_PHY_CAP(1, 9, "NDP with 4x HE-LTF and 3.2us GI");
++	PRINT_HE_PHY_CAP(1, 10, "STBC Tx <= 80MHz");
++	PRINT_HE_PHY_CAP(1, 11, "STBC Rx <= 80MHz");
++	PRINT_HE_PHY_CAP(1, 12, "Doppler Tx");
++	PRINT_HE_PHY_CAP(1, 13, "Doppler Rx");
++	PRINT_HE_PHY_CAP(1, 14, "Full Bandwidth UL MU-MIMO");
++	PRINT_HE_PHY_CAP(1, 15, "Partial Bandwidth UL MU-MIMO");
++
++	PRINT_HE_PHY_CAP_MASK(2, 0, 0x3, "DCM Max Constellation");
++	PRINT_HE_PHY_CAP_MASK(2, 2, 0x1, "DCM Max NSS Tx");
++	PRINT_HE_PHY_CAP_MASK(2, 3, 0x3, "DCM Max Constellation Rx");
++	PRINT_HE_PHY_CAP_MASK(2, 5, 0x1, "DCM Max NSS Rx");
++	PRINT_HE_PHY_CAP(2, 6, "Rx HE MU PPDU from Non-AP STA");
++	PRINT_HE_PHY_CAP(2, 7, "SU Beamformer");
++	PRINT_HE_PHY_CAP(2, 8, "SU Beamformee");
++	PRINT_HE_PHY_CAP(2, 9, "MU Beamformer");
++	PRINT_HE_PHY_CAP_MASK(2, 10, 0x7, "Beamformee STS <= 80Mhz");
++	PRINT_HE_PHY_CAP_MASK(2, 13, 0x7, "Beamformee STS > 80Mhz");
++
++	PRINT_HE_PHY_CAP_MASK(3, 0, 0x7, "Sounding Dimensions <= 80Mhz");
++	PRINT_HE_PHY_CAP_MASK(3, 3, 0x7, "Sounding Dimensions > 80Mhz");
++	PRINT_HE_PHY_CAP(3, 6, "Ng = 16 SU Feedback");
++	PRINT_HE_PHY_CAP(3, 7, "Ng = 16 MU Feedback");
++	PRINT_HE_PHY_CAP(3, 8, "Codebook Size SU Feedback");
++	PRINT_HE_PHY_CAP(3, 9, "Codebook Size MU Feedback");
++	PRINT_HE_PHY_CAP(3, 10, "Triggered SU Beamforming Feedback");
++	PRINT_HE_PHY_CAP(3, 11, "Triggered MU Beamforming Feedback");
++	PRINT_HE_PHY_CAP(3, 12, "Triggered CQI Feedback");
++	PRINT_HE_PHY_CAP(3, 13, "Partial Bandwidth Extended Range");
++	PRINT_HE_PHY_CAP(3, 14, "Partial Bandwidth DL MU-MIMO");
++	PRINT_HE_PHY_CAP(3, 15, "PPE Threshold Present");
++
++	PRINT_HE_PHY_CAP(4, 0, "SRP-based SR");
++	PRINT_HE_PHY_CAP(4, 1, "Power Boost Factor ar");
++	PRINT_HE_PHY_CAP(4, 2, "HE SU PPDU & HE PPDU 4x HE-LTF 0.8us GI");
++	PRINT_HE_PHY_CAP_MASK(4, 3, 0x7, "Max NC");
++	PRINT_HE_PHY_CAP(4, 6, "STBC Tx > 80MHz");
++	PRINT_HE_PHY_CAP(4, 7, "STBC Rx > 80MHz");
++	PRINT_HE_PHY_CAP(4, 8, "HE ER SU PPDU 4x HE-LTF 0.8us GI");
++	PRINT_HE_PHY_CAP(4, 9, "20MHz in 40MHz HE PPDU 2.4GHz");
++	PRINT_HE_PHY_CAP(4, 10, "20MHz in 160/80+80MHz HE PPDU");
++	PRINT_HE_PHY_CAP(4, 11, "80MHz in 160/80+80MHz HE PPDU");
++	PRINT_HE_PHY_CAP(4, 12, "HE ER SU PPDU 1x HE-LTF 0.8us GI");
++	PRINT_HE_PHY_CAP(4, 13, "Midamble Rx 2x & 1x HE-LTF");
++	PRINT_HE_PHY_CAP_MASK(4, 14, 0x3, "DCM Max BW");
++
++	PRINT_HE_PHY_CAP(5, 0, "Longer Than 16HE SIG-B OFDM Symbols");
++	PRINT_HE_PHY_CAP(5, 1, "Non-Triggered CQI Feedback");
++	PRINT_HE_PHY_CAP(5, 2, "TX 1024-QAM");
++	PRINT_HE_PHY_CAP(5, 3, "RX 1024-QAM");
++	PRINT_HE_PHY_CAP(5, 4, "RX Full BW SU Using HE MU PPDU with Compression SIGB");
++	PRINT_HE_PHY_CAP(5, 5, "RX Full BW SU Using HE MU PPDU with Non-Compression SIGB");
++
++	if (tb[NL80211_BAND_IFTYPE_ATTR_HE_CAP_MCS_SET]) {
++		len = nla_len(tb[NL80211_BAND_IFTYPE_ATTR_HE_CAP_MCS_SET]);
++		if (len > sizeof(mcs_set))
++			len = sizeof(mcs_set);
++		memcpy(mcs_set,
++		       nla_data(tb[NL80211_BAND_IFTYPE_ATTR_HE_CAP_MCS_SET]),
++		       len);
++	}
++
++	for (i = 0; i < 3; i++) {
++		__u8 phy_cap_support[] = { BIT(1) | BIT(2), BIT(3), BIT(4) };
++		char *bw[] = { "<= 80", "160", "80+80" };
++		int j;
++
++		if ((phy_cap[0] & (phy_cap_support[i] << 8)) == 0)
++			continue;
++
++		for (j = 0; j < 2; j++) {
++			int k;
++			printf("\t\t\tHE %s MCS and NSS set %s MHz\n", j ? "TX" : "RX", bw[i]);
++			for (k = 0; k < 8; k++) {
++				__u16 mcs = mcs_set[(i * 2) + j];
++				mcs >>= k * 2;
++				mcs &= 0x3;
++				printf("\t\t\t\t\t %d streams: ", k + 1);
++				if (mcs == 3)
++					printf("not supported\n");
++				else
++					printf("MCS 0-%d\n", 7 + (mcs * 2));
++			}
++
++		}
++	}
++
++	len = 0;
++	if (tb[NL80211_BAND_IFTYPE_ATTR_HE_CAP_PPE]) {
++		len = nla_len(tb[NL80211_BAND_IFTYPE_ATTR_HE_CAP_PPE]);
++		if (len > sizeof(ppet))
++			len = sizeof(ppet);
++		memcpy(ppet,
++		       nla_data(tb[NL80211_BAND_IFTYPE_ATTR_HE_CAP_PPE]),
++		       len);
++	}
++
++	if (len && (phy_cap[3] & BIT(15))) {
++		size_t i;
++
++		printf("\t\t\tPPE Threshold ");
++		for (i = 0; i < len; i++)
++			if (ppet[i])
++				printf("0x%02x ", ppet[i]);
++		printf("\n");
++	}
++}
++
+ void iw_hexdump(const char *prefix, const __u8 *buf, size_t size)
+ {
+ 	size_t i;
+-- 
+2.20.1
+
