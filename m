@@ -2,110 +2,101 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 5975022E00
-	for <lists+linux-wireless@lfdr.de>; Mon, 20 May 2019 10:09:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id ABBB622F23
+	for <lists+linux-wireless@lfdr.de>; Mon, 20 May 2019 10:44:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729594AbfETIJo (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 20 May 2019 04:09:44 -0400
-Received: from mail-ed1-f67.google.com ([209.85.208.67]:36364 "EHLO
-        mail-ed1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725983AbfETIJn (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 20 May 2019 04:09:43 -0400
-Received: by mail-ed1-f67.google.com with SMTP id a8so22502595edx.3
-        for <linux-wireless@vger.kernel.org>; Mon, 20 May 2019 01:09:43 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=hKt31xD+Dl8MzM54WFXgU95OQA9AwS6wGbeoPpSKfXE=;
-        b=I2Lnt/WtkJjDLrDgWSYRJHdM95JskcT/jxH9QckQMcj/7PmrJgwgQz6Q6ftoKRwTZ9
-         9vCkHGOEX5MxLnlEtV98FPcLqUiMFStugzKSpO0A48EXDefeXgWbIHhMTwzBSzmXikZ5
-         CPJXahNcXca0FGjVF22eGZbd6XPVxBMapmwYg=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=hKt31xD+Dl8MzM54WFXgU95OQA9AwS6wGbeoPpSKfXE=;
-        b=ErlZSsAI11nltbzmvNNw2uRrRVMx3Pa2UgfQWuE1walc+ayjc+1Df6edgqXSyDUb8N
-         BksNV/mjTkywScFshWLAQQ/Be9l1wyQcrVlZzSs6cdodCJkCFhbeTvSCANguKqJDybog
-         AhhszIYQ0hd0tM/DPDw79+emkj3cIVPcS+BNAxnP6qp8pIIwLBQ695s28ZC2iNlrLt06
-         Iib2uZzAPcJ0Fm9prFDuREW+XLmORxo5bF4AoNYz7z/rKD9Sc68JM9PFmUZ5FPfP9CPd
-         7YYHF5A0xpp5Q3JXXBvikhdEC3isEFn3NkERl3L9KsOj87Hs0Zw0VviXoUAxGSnYUnFC
-         LZEQ==
-X-Gm-Message-State: APjAAAXU1TaB8kk4/UNaOxd4iHmQTdQyEcMSjtHYLPZE5gVMUvFACeUr
-        I2C68dXIViN6HMt6RgyNcNMXJw==
-X-Google-Smtp-Source: APXvYqyzT9sszHOtK0V/iwAwNW8LGsXi2uW7QI5DTUVDOy96+wSa9nUb5iDqOpm++yl3P0LW/Icifw==
-X-Received: by 2002:aa7:c4d2:: with SMTP id p18mr73940804edr.232.1558339782382;
-        Mon, 20 May 2019 01:09:42 -0700 (PDT)
-Received: from [10.176.68.125] ([192.19.248.250])
-        by smtp.gmail.com with ESMTPSA id x22sm5441295edd.59.2019.05.20.01.09.40
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Mon, 20 May 2019 01:09:41 -0700 (PDT)
-Subject: Re: [PATCH 1/3] brcmfmac: re-enable command decode in sdio_aos for
- BRCM 4354
-To:     Douglas Anderson <dianders@chromium.org>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        Adrian Hunter <adrian.hunter@intel.com>
-Cc:     linux-rockchip@lists.infradead.org,
-        Double Lo <double.lo@cypress.com>, briannorris@chromium.org,
-        Madhan Mohan R <madhanmohan.r@cypress.com>, mka@chromium.org,
-        Wright Feng <wright.feng@cypress.com>,
-        Chi-Hsien Lin <chi-hsien.lin@cypress.com>,
-        brcm80211-dev-list.pdl@broadcom.com,
-        Franky Lin <franky.lin@broadcom.com>, netdev@vger.kernel.org,
-        linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Hante Meuleman <hante.meuleman@broadcom.com>,
-        Naveen Gupta <naveen.gupta@cypress.com>,
-        brcm80211-dev-list@cypress.com, YueHaibing <yuehaibing@huawei.com>,
-        "David S. Miller" <davem@davemloft.net>
-References: <20190517225420.176893-1-dianders@chromium.org>
- <20190517225420.176893-2-dianders@chromium.org>
-From:   Arend Van Spriel <arend.vanspriel@broadcom.com>
-Message-ID: <e3f54bcb-8d10-1336-1458-2bd11cfc1010@broadcom.com>
-Date:   Mon, 20 May 2019 10:09:39 +0200
-User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:60.0) Gecko/20100101
- Thunderbird/60.6.1
+        id S1729432AbfETIoo (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 20 May 2019 04:44:44 -0400
+Received: from canardo.mork.no ([148.122.252.1]:44795 "EHLO canardo.mork.no"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725951AbfETIoo (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 20 May 2019 04:44:44 -0400
+Received: from miraculix.mork.no ([IPv6:2a02:2121:340:66a5:f0c1:6ff:fe1f:cac9])
+        (authenticated bits=0)
+        by canardo.mork.no (8.15.2/8.15.2) with ESMTPSA id x4K8gHrN032429
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO);
+        Mon, 20 May 2019 10:42:18 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mork.no; s=b;
+        t=1558341739; bh=o0E1/HFfUTNvSCD20OJ6Y5M/hnSJMjBXfroAVF8mgn0=;
+        h=From:To:Cc:Subject:References:Date:Message-ID:From;
+        b=ExqPKmyl+jBx37GydIJo6Z3NjQsixL2pBD/5ep7O6CtJ05zmQ6/TiOxisnr2JkICJ
+         QHSAXiQDJB1hDoMi4i2W4Ce8JCKKKljFMAGpoNdnMRXfjkeb9PM4CMJIY8j7z8v5vw
+         2jIhBUNAt5j2jtnqe1+ek7reYCA5VnDvdE2lNIdc=
+Received: from bjorn by miraculix.mork.no with local (Exim 4.89)
+        (envelope-from <bjorn@mork.no>)
+        id 1hSds2-0006bk-Ob; Mon, 20 May 2019 10:42:10 +0200
+From:   =?utf-8?Q?Bj=C3=B8rn_Mork?= <bjorn@mork.no>
+To:     Luca Coelho <luca@coelho.fi>
+Cc:     kvalo@codeaurora.org, linux-wireless@vger.kernel.org,
+        Luca Coelho <luciano.coelho@intel.com>
+Subject: Re: [PATCH 3/3] iwlwifi: add support for quz firmwares
+Organization: m
+References: <20190322124744.17924-1-luca@coelho.fi>
+        <20190322124744.17924-4-luca@coelho.fi>
+Date:   Mon, 20 May 2019 10:42:10 +0200
+In-Reply-To: <20190322124744.17924-4-luca@coelho.fi> (Luca Coelho's message of
+        "Fri, 22 Mar 2019 14:47:44 +0200")
+Message-ID: <87k1el8ql9.fsf@miraculix.mork.no>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
 MIME-Version: 1.0
-In-Reply-To: <20190517225420.176893-2-dianders@chromium.org>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Virus-Scanned: clamav-milter 0.100.3 at canardo
+X-Virus-Status: Clean
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+Luca Coelho <luca@coelho.fi> writes:
+
+> --- a/drivers/net/wireless/intel/iwlwifi/iwl-config.h
+> +++ b/drivers/net/wireless/intel/iwlwifi/iwl-config.h
+> @@ -549,6 +549,7 @@ extern const struct iwl_cfg iwl22000_2ac_cfg_hr;
+>  extern const struct iwl_cfg iwl22000_2ac_cfg_hr_cdb;
+>  extern const struct iwl_cfg iwl22000_2ac_cfg_jf;
+>  extern const struct iwl_cfg iwl_ax101_cfg_qu_hr;
+> +extern const struct iwl_cfg iwl_ax101_cfg_quz_hr;
+>  extern const struct iwl_cfg iwl22000_2ax_cfg_hr;
+>  extern const struct iwl_cfg iwl_ax200_cfg_cc;
+>  extern const struct iwl_cfg killer1650s_2ax_cfg_qu_b0_hr_b0;
+> diff --git a/drivers/net/wireless/intel/iwlwifi/iwl-csr.h b/drivers/net/w=
+ireless/intel/iwlwifi/iwl-csr.h
+> index aea6d03e545a..e539bc94eff7 100644
+> --- a/drivers/net/wireless/intel/iwlwifi/iwl-csr.h
+> +++ b/drivers/net/wireless/intel/iwlwifi/iwl-csr.h
+> @@ -327,6 +327,7 @@ enum {
+>  #define CSR_HW_REV_TYPE_NONE		(0x00001F0)
+>  #define CSR_HW_REV_TYPE_QNJ		(0x0000360)
+>  #define CSR_HW_REV_TYPE_QNJ_B0		(0x0000364)
+> +#define CSR_HW_REV_TYPE_QUZ		(0x0000354)
+>  #define CSR_HW_REV_TYPE_HR_CDB		(0x0000340)
+>  #define CSR_HW_REV_TYPE_SO		(0x0000370)
+>  #define CSR_HW_REV_TYPE_TY		(0x0000420)
+> diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/trans.c b/drivers/ne=
+t/wireless/intel/iwlwifi/pcie/trans.c
+> index 1d6f3053f233..79c1dc05f948 100644
+> --- a/drivers/net/wireless/intel/iwlwifi/pcie/trans.c
+> +++ b/drivers/net/wireless/intel/iwlwifi/pcie/trans.c
+> @@ -3543,6 +3543,10 @@ struct iwl_trans *iwl_trans_pcie_alloc(struct pci_=
+dev *pdev,
+>  		}
+>  	} else if (cfg =3D=3D &iwl_ax101_cfg_qu_hr) {
+>  		if (CSR_HW_RF_ID_TYPE_CHIP_ID(trans->hw_rf_id) =3D=3D
+> +		    CSR_HW_RF_ID_TYPE_CHIP_ID(CSR_HW_RF_ID_TYPE_HR) &&
+> +		    trans->hw_rev =3D=3D CSR_HW_REV_TYPE_QNJ_B0) {
+> +			trans->cfg =3D &iwl22000_2ax_cfg_qnj_hr_b0;
+> +		} else if (CSR_HW_RF_ID_TYPE_CHIP_ID(trans->hw_rf_id) =3D=3D
+>  		    CSR_HW_RF_ID_TYPE_CHIP_ID(CSR_HW_RF_ID_TYPE_HR)) {
+>  			trans->cfg =3D &iwl_ax101_cfg_qu_hr;
+>  		} else if (CSR_HW_RF_ID_TYPE_CHIP_ID(trans->hw_rf_id) =3D=3D
+
+Did you intend to use CSR_HW_REV_TYPE_QUZ and iwl_cfg
+iwl_ax101_cfg_quz_hr here, or am I misunderstanding something?
+
+Must admit that I didn't actually read the code.  Just happend to look
+at this patch briefly while glancing through linux-wireless...  Sorry if
+I'just adding noise.
 
 
-On 5/18/2019 12:54 AM, Douglas Anderson wrote:
-> In commit 29f6589140a1 ("brcmfmac: disable command decode in
-> sdio_aos") we disabled something called "command decode in sdio_aos"
-> for a whole bunch of Broadcom SDIO WiFi parts.
-> 
-> After that patch landed I find that my kernel log on
-> rk3288-veyron-minnie and rk3288-veyron-speedy is filled with:
->    brcmfmac: brcmf_sdio_bus_sleep: error while changing bus sleep state -110
-> 
-> This seems to happen every time the Broadcom WiFi transitions out of
-> sleep mode.  Reverting the part of the commit that affects the WiFi on
-> my boards fixes the problem for me, so that's what this patch does.
-
-This sounds very similar to the issue we had during integration of wifi 
-on rk3288 chromebooks years ago.
-
-> Note that, in general, the justification in the original commit seemed
-> a little weak.  It looked like someone was testing on a SD card
-> controller that would sometimes die if there were CRC errors on the
-> bus.  This used to happen back in early days of dw_mmc (the controller
-> on my boards), but we fixed it.  Disabling a feature on all boards
-> just because one SD card controller is broken seems bad.  ...so
-> instead of just this patch possibly the right thing to do is to fully
-> revert the original commit.
-
-I am leaning towards a full revert, but let's wait for more background info.
-
-Regards,
-Arend
+Bj=C3=B8rn
