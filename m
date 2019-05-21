@@ -2,66 +2,91 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id CD01624FE8
-	for <lists+linux-wireless@lfdr.de>; Tue, 21 May 2019 15:17:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EC8F32535D
+	for <lists+linux-wireless@lfdr.de>; Tue, 21 May 2019 17:03:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728065AbfEUNRK (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 21 May 2019 09:17:10 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:42293 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726750AbfEUNRJ (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 21 May 2019 09:17:09 -0400
-Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
-        by youngberry.canonical.com with esmtpsa (TLS1.0:RSA_AES_256_CBC_SHA1:32)
-        (Exim 4.76)
-        (envelope-from <colin.king@canonical.com>)
-        id 1hT4de-0003es-QC; Tue, 21 May 2019 13:17:06 +0000
-From:   Colin King <colin.king@canonical.com>
-To:     Adham Abozaeid <adham.abozaeid@microchip.com>,
-        Ajay Singh <ajay.kathat@microchip.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        linux-wireless@vger.kernel.org, devel@driverdev.osuosl.org
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] staging: wilc1000: remove redundant masking of pkt_offset
-Date:   Tue, 21 May 2019 14:17:06 +0100
-Message-Id: <20190521131706.30236-1-colin.king@canonical.com>
+        id S1728661AbfEUPDK (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 21 May 2019 11:03:10 -0400
+Received: from nbd.name ([46.4.11.11]:38154 "EHLO nbd.name"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1728318AbfEUPDK (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 21 May 2019 11:03:10 -0400
+Received: from p548c8ce3.dip0.t-ipconnect.de ([84.140.140.227] helo=bertha.fritz.box)
+        by ds12 with esmtpa (Exim 4.89)
+        (envelope-from <john@phrozen.org>)
+        id 1hT6IF-00007m-7R; Tue, 21 May 2019 17:03:07 +0200
+From:   John Crispin <john@phrozen.org>
+To:     Johannes Berg <johannes@sipsolutions.net>
+Cc:     linux-wireless@vger.kernel.org, ath11k@lists.infradead.org,
+        John Crispin <john@phrozen.org>,
+        Shashidhar Lakkavalli <slakkavalli@datto.com>
+Subject: [PATCH 1/2] mac80211: add ieee80211_get_he_iftype_cap() helper
+Date:   Tue, 21 May 2019 17:02:58 +0200
+Message-Id: <20190521150259.2414-1-john@phrozen.org>
 X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Colin Ian King <colin.king@canonical.com>
+This function is similar to ieee80211_get_he_sta_cap() but allows passing
+the iftype. Also make ieee80211_get_he_sta_cap() use the new helper
+rather than duplicating the code.
 
-The masking update of pkg_offset is redundant as the updated
-value is never read and pkg_offset is re-assigned on the next
-iteration of the loop.  Clean this up by removing the redundant
-assignment.
-
-Addresses-Coverity: ("Unused value")
-Signed-off-by: Colin Ian King <colin.king@canonical.com>
+Signed-off-by: Shashidhar Lakkavalli <slakkavalli@datto.com>
+Signed-off-by: John Crispin <john@phrozen.org>
 ---
- drivers/staging/wilc1000/wilc_wlan.c | 3 ---
- 1 file changed, 3 deletions(-)
+ include/net/cfg80211.h | 22 ++++++++++++++++++----
+ 1 file changed, 18 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/staging/wilc1000/wilc_wlan.c b/drivers/staging/wilc1000/wilc_wlan.c
-index 95eaf8fdf4f2..dcd728557958 100644
---- a/drivers/staging/wilc1000/wilc_wlan.c
-+++ b/drivers/staging/wilc1000/wilc_wlan.c
-@@ -709,9 +709,6 @@ static void wilc_wlan_handle_rx_buff(struct wilc *wilc, u8 *buffer, int size)
- 			break;
+diff --git a/include/net/cfg80211.h b/include/net/cfg80211.h
+index 3f67f01b5f7a..379202ff3d14 100644
+--- a/include/net/cfg80211.h
++++ b/include/net/cfg80211.h
+@@ -395,16 +395,18 @@ ieee80211_get_sband_iftype_data(const struct ieee80211_supported_band *sband,
+ }
  
- 		if (pkt_offset & IS_MANAGMEMENT) {
--			pkt_offset &= ~(IS_MANAGMEMENT |
--					IS_MANAGMEMENT_CALLBACK |
--					IS_MGMT_STATUS_SUCCES);
- 			buff_ptr += HOST_HDR_OFFSET;
- 			wilc_wfi_mgmt_rx(wilc, buff_ptr, pkt_len);
- 		} else {
+ /**
+- * ieee80211_get_he_sta_cap - return HE capabilities for an sband's STA
+- * @sband: the sband to search for the STA on
++ * ieee80211_get_he_iftype_cap - return HE capabilities for an sband's iftype
++ * @sband: the sband to search for the iftype on
++ * @iftype: enum nl80211_iftype
+  *
+  * Return: pointer to the struct ieee80211_sta_he_cap, or NULL is none found
+  */
+ static inline const struct ieee80211_sta_he_cap *
+-ieee80211_get_he_sta_cap(const struct ieee80211_supported_band *sband)
++ieee80211_get_he_iftype_cap(const struct ieee80211_supported_band *sband,
++			    u8 iftype)
+ {
+ 	const struct ieee80211_sband_iftype_data *data =
+-		ieee80211_get_sband_iftype_data(sband, NL80211_IFTYPE_STATION);
++		ieee80211_get_sband_iftype_data(sband, iftype);
+ 
+ 	if (data && data->he_cap.has_he)
+ 		return &data->he_cap;
+@@ -412,6 +414,18 @@ ieee80211_get_he_sta_cap(const struct ieee80211_supported_band *sband)
+ 	return NULL;
+ }
+ 
++/**
++ * ieee80211_get_he_sta_cap - return HE capabilities for an sband's STA
++ * @sband: the sband to search for the STA on
++ *
++ * Return: pointer to the struct ieee80211_sta_he_cap, or NULL is none found
++ */
++static inline const struct ieee80211_sta_he_cap *
++ieee80211_get_he_sta_cap(const struct ieee80211_supported_band *sband)
++{
++	return ieee80211_get_he_iftype_cap(sband, NL80211_IFTYPE_STATION);
++}
++
+ /**
+  * wiphy_read_of_freq_limits - read frequency limits from device tree
+  *
 -- 
 2.20.1
 
