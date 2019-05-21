@@ -2,84 +2,128 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 369C0257A7
-	for <lists+linux-wireless@lfdr.de>; Tue, 21 May 2019 20:38:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 08CC4257B0
+	for <lists+linux-wireless@lfdr.de>; Tue, 21 May 2019 20:43:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728331AbfEUSif (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 21 May 2019 14:38:35 -0400
-Received: from mail-qt1-f196.google.com ([209.85.160.196]:39147 "EHLO
-        mail-qt1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728114AbfEUSie (ORCPT
+        id S1729216AbfEUSnh (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 21 May 2019 14:43:37 -0400
+Received: from esa2.microchip.iphmx.com ([68.232.149.84]:62723 "EHLO
+        esa2.microchip.iphmx.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727969AbfEUSnh (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 21 May 2019 14:38:34 -0400
-Received: by mail-qt1-f196.google.com with SMTP id y42so21735180qtk.6
-        for <linux-wireless@vger.kernel.org>; Tue, 21 May 2019 11:38:34 -0700 (PDT)
+        Tue, 21 May 2019 14:43:37 -0400
+Received-SPF: Pass (esa2.microchip.iphmx.com: domain of
+  Adham.Abozaeid@microchip.com designates 198.175.253.82 as
+  permitted sender) identity=mailfrom;
+  client-ip=198.175.253.82; receiver=esa2.microchip.iphmx.com;
+  envelope-from="Adham.Abozaeid@microchip.com";
+  x-sender="Adham.Abozaeid@microchip.com";
+  x-conformance=spf_only; x-record-type="v=spf1";
+  x-record-text="v=spf1 mx a:ushub1.microchip.com
+  a:smtpout.microchip.com a:mx1.microchip.iphmx.com
+  a:mx2.microchip.iphmx.com include:servers.mcsv.net
+  include:mktomail.com include:spf.protection.outlook.com ~all"
+Received-SPF: None (esa2.microchip.iphmx.com: no sender
+  authenticity information available from domain of
+  postmaster@email.microchip.com) identity=helo;
+  client-ip=198.175.253.82; receiver=esa2.microchip.iphmx.com;
+  envelope-from="Adham.Abozaeid@microchip.com";
+  x-sender="postmaster@email.microchip.com";
+  x-conformance=spf_only
+Authentication-Results: esa2.microchip.iphmx.com; spf=Pass smtp.mailfrom=Adham.Abozaeid@microchip.com; spf=None smtp.helo=postmaster@email.microchip.com; dkim=pass (signature verified) header.i=@microchiptechnology.onmicrosoft.com; dmarc=pass (p=none dis=none) d=microchip.com
+X-IronPort-AV: E=Sophos;i="5.60,496,1549954800"; 
+   d="scan'208";a="34046847"
+Received: from smtpout.microchip.com (HELO email.microchip.com) ([198.175.253.82])
+  by esa2.microchip.iphmx.com with ESMTP/TLS/DHE-RSA-AES256-SHA; 21 May 2019 11:43:36 -0700
+Received: from NAM03-CO1-obe.outbound.protection.outlook.com (10.10.215.89) by
+ email.microchip.com (10.10.76.38) with Microsoft SMTP Server (TLS) id
+ 14.3.352.0; Tue, 21 May 2019 11:43:35 -0700
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=endlessm-com.20150623.gappssmtp.com; s=20150623;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=h8+aGeYT5qXDSdkx6yR9bpYe/TTOAuzsAfwvtvzf5Is=;
-        b=Eh/0/qLlE+PGEv0szp/tME8Mf492pAcyTPjOVx74OXnRf+jIxZatVgsDae4oYvjtZl
-         chwtNLzvs9AxfrmUu4yhjTOPtkscRUuZLj22BLVREdhGSQB8nOGDWtvSCooK4/Cer76G
-         8PcTM4k7z6NtwPzs9T+GmXkUaScvZTMQ2yheSiQ8nVxEnFRmmYZUldUvi2k9LMq+Mjye
-         REKMlkuBqlOMWao8ae9PoGnQLnH9jvCUe2S12yiNkgo0Nen4GZ8ZlWj+T4qU2PF9HO4j
-         IqTYxFWEM8Yd+lQN50zrDaEqGPzNsWRlTdWijeEC+3JtDacBp8V2h3dsTCSDH2zYdUuw
-         W2VQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=h8+aGeYT5qXDSdkx6yR9bpYe/TTOAuzsAfwvtvzf5Is=;
-        b=eyVXPhrSTaaXJaDzbXN7NdJ4Lm0ie+wfrwiXJNHyZO0yqN5hFg9oYrfR3Tq/hBkYPe
-         L6ZVIB11uIwjxxofBU5jZ7qImvswG3I8TnjkbIvKBm9j0DyReg3pdxrFRqQzlDF2sS9p
-         Qg9ZffPcSZ+Nqd1kNq/36UTrCzEORPB4GHnucR02tI7ppiDH+3nLMOp/p45oFtwJa1do
-         uMvK4N0W/JzkDaD2j346DGQroUJ2b2/JGNm1jf2ZAu3HQjrMCD5Nbou7ClPCu9f6p+kd
-         V177WkCPONReny2xGC57RpsvscpUb9nG9Kz07HgO8mJVwUXSVqzTp9/Sy60n4qk23yVi
-         QpNQ==
-X-Gm-Message-State: APjAAAVSz6NcN2g/Yf3lYHW4ou20CCQ+4FPu/U652U0di4n5NAnOavr6
-        hw9o7F+boGFO12bbwVUiw1E+LidyAn7NbUh0u4g/hA==
-X-Google-Smtp-Source: APXvYqxjLR1+JQUK3DsrE04xtBbnElUmnO1bZ+gsciVGSjeY1MzK8qqbHWhPwzBsh15GBYPHvv+1xO7G5Aes2mpTzK4=
-X-Received: by 2002:ac8:6b14:: with SMTP id w20mr48888998qts.110.1558463913900;
- Tue, 21 May 2019 11:38:33 -0700 (PDT)
+ d=microchiptechnology.onmicrosoft.com;
+ s=selector1-microchiptechnology-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=O8L7sQcUUreJzvv+KdquaYGZ3YdkFj/9QthmEThiJJY=;
+ b=UQamTczc0Psv7OgHGjHPvAV3XBPUw17YR4UXAFlVcTuxupCIsOd4JBBPYptiVTmsEg8h0FUpr+0IuyEHkKgthlsg9WcPEsGFztbprFWbis638IagC4iGSCdNG2Ghg6pazeHlAmaidjams8+jTvZywaeWbQpsRaz99ZYSoX/pznc=
+Received: from MWHPR11MB1373.namprd11.prod.outlook.com (10.169.234.141) by
+ MWHPR11MB1327.namprd11.prod.outlook.com (10.169.237.9) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.1922.15; Tue, 21 May 2019 18:43:27 +0000
+Received: from MWHPR11MB1373.namprd11.prod.outlook.com
+ ([fe80::9ce9:4621:3c3f:a961]) by MWHPR11MB1373.namprd11.prod.outlook.com
+ ([fe80::9ce9:4621:3c3f:a961%4]) with mapi id 15.20.1900.019; Tue, 21 May 2019
+ 18:43:27 +0000
+From:   <Adham.Abozaeid@microchip.com>
+To:     <colin.king@canonical.com>, <Ajay.Kathat@microchip.com>,
+        <gregkh@linuxfoundation.org>, <linux-wireless@vger.kernel.org>,
+        <devel@driverdev.osuosl.org>
+CC:     <kernel-janitors@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH] staging: wilc1000: remove redundant masking of pkt_offset
+Thread-Topic: [PATCH] staging: wilc1000: remove redundant masking of
+ pkt_offset
+Thread-Index: AQHVD9egnn/gbMbCgE+l/pOShkDQxKZ16nWA
+Date:   Tue, 21 May 2019 18:43:27 +0000
+Message-ID: <f7460c62-2a44-df0d-afaf-04d1c990d2a1@microchip.com>
+References: <20190521131706.30236-1-colin.king@canonical.com>
+In-Reply-To: <20190521131706.30236-1-colin.king@canonical.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [198.175.253.81]
+user-agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.3.0
+x-clientproxiedby: BYAPR08CA0043.namprd08.prod.outlook.com
+ (2603:10b6:a03:117::20) To MWHPR11MB1373.namprd11.prod.outlook.com
+ (2603:10b6:300:25::13)
+x-ms-exchange-messagesentrepresentingtype: 1
+x-ms-publictraffictype: Email
+x-ms-office365-filtering-correlation-id: 667d34e9-56cf-40e5-3e11-08d6de1c368a
+x-microsoft-antispam: BCL:0;PCL:0;RULEID:(2390118)(7020095)(4652040)(8989299)(4534185)(4627221)(201703031133081)(201702281549075)(8990200)(5600141)(711020)(4605104)(2017052603328)(7193020);SRVR:MWHPR11MB1327;
+x-ms-traffictypediagnostic: MWHPR11MB1327:
+x-microsoft-antispam-prvs: <MWHPR11MB13272826BF33DD4C3F7F4F848D070@MWHPR11MB1327.namprd11.prod.outlook.com>
+x-ms-oob-tlc-oobclassifiers: OLM:1091;
+x-forefront-prvs: 0044C17179
+x-forefront-antispam-report: SFV:NSPM;SFS:(10009020)(396003)(346002)(376002)(366004)(136003)(39860400002)(199004)(189003)(54906003)(53546011)(68736007)(4326008)(6506007)(256004)(110136005)(305945005)(386003)(7736002)(58126008)(64126003)(316002)(6116002)(3846002)(53936002)(14454004)(102836004)(52116002)(6512007)(5660300002)(6246003)(65826007)(2501003)(73956011)(25786009)(11346002)(76176011)(486006)(2616005)(66946007)(66446008)(64756008)(66556008)(66476007)(6436002)(476003)(71200400001)(71190400001)(26005)(31696002)(6486002)(86362001)(2201001)(8676002)(36756003)(478600001)(66066001)(65806001)(72206003)(81166006)(446003)(81156014)(8936002)(31686004)(99286004)(2906002)(65956001)(14444005)(229853002)(186003);DIR:OUT;SFP:1101;SCL:1;SRVR:MWHPR11MB1327;H:MWHPR11MB1373.namprd11.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;A:1;MX:1;
+received-spf: None (protection.outlook.com: microchip.com does not designate
+ permitted sender hosts)
+x-ms-exchange-senderadcheck: 1
+x-microsoft-antispam-message-info: 8eCPFPERT7ZPRGwIFBzvDQMs5IzEce6BPjMHoArICZXRmho5o0xhS8OVZu5ASKNUFE21ydfsZdNZKPGFgUmcaqjBAKJb6WL14wj5i4jwRey8MYH+r9GfaD1sY6P1PXfcI3ZKb2TlCmNrgeoIZQ1VrZuHPvJLFVxt94khm1ba6pgDc9iOIiZil0xR7Ah0xiopg6kXiTjNBIsLp0wq+EPJDEDfz4aiZceyyP6VQOhEjXuwoTFCN5iNMB9q7D0JEoaLA8Z6xZzukPN6E98C4LCquVQ1KME+Js8PIGenQAJYKxR0GH5XdXE5rmugYHbbXKdCS9t+1ax8kdDfsJzzRoRBB+R3ZMRMSJjgKkxS8rwJ/ZPlfLDcFa0anfAfeGgemScUYTslWVgc5H5105kEToZLMdgLOQgKVaQVBNjjsLdi/x8=
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <BFFFBADA9DF8FD4CB170D5E21D1F32BC@namprd11.prod.outlook.com>
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-References: <20190503072146.49999-1-chiu@endlessm.com> <20190503072146.49999-3-chiu@endlessm.com>
- <CAD8Lp47_-6d2wCAs5QbuR6Mw2w91TyJ9W3kFiJHH4F_6dXqnHg@mail.gmail.com>
- <CAB4CAweQXz=wQGA5t7BwWYdwbRrHCji+BWc0G52SUcZFGc8Pnw@mail.gmail.com>
- <CAD8Lp46hcx0ZHFMUdXdR6unbeMQJsfyuEQ7hUFpHY2jU9R7Gcw@mail.gmail.com> <CAB4CAwf26pdCY7FJA5H7d1aEY2xpjSto4JxARwczmVJ==41yng@mail.gmail.com>
-In-Reply-To: <CAB4CAwf26pdCY7FJA5H7d1aEY2xpjSto4JxARwczmVJ==41yng@mail.gmail.com>
-From:   Daniel Drake <drake@endlessm.com>
-Date:   Tue, 21 May 2019 12:38:22 -0600
-Message-ID: <CAD8Lp47K0Jn2wotANdQV3kT9yPP7bLnVd0eYhWui-vNDOEXBTA@mail.gmail.com>
-Subject: Re: [RFC PATCH 2/2] rtl8xxxu: Add watchdog to update rate mask by
- signal strength
-To:     Chris Chiu <chiu@endlessm.com>
-Cc:     Jes Sorensen <jes.sorensen@gmail.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        David Miller <davem@davemloft.net>,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        netdev <netdev@vger.kernel.org>,
-        Linux Kernel <linux-kernel@vger.kernel.org>,
-        Linux Upstreaming Team <linux@endlessm.com>,
-        Larry Finger <Larry.Finger@lwfinger.net>
-Content-Type: text/plain; charset="UTF-8"
+X-MS-Exchange-CrossTenant-Network-Message-Id: 667d34e9-56cf-40e5-3e11-08d6de1c368a
+X-MS-Exchange-CrossTenant-originalarrivaltime: 21 May 2019 18:43:27.8596
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 3f4057f3-b418-4d4e-ba84-d55b4e897d88
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MWHPR11MB1327
+X-OriginatorOrg: microchip.com
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Fri, May 10, 2019 at 2:37 AM Chris Chiu <chiu@endlessm.com> wrote:
-> I've verified that multiple virtual interface can not work simultaneously in
-> STA mode. I assigned different mac address for different vifs, I can only
-> bring only one interface up. If I want to bring the second vif up, it always
-> complains "SIOCSIFFLAGS: Device or resource busy".
-
-Interesting. Can you go deeper into that so that we can be more
-confident of this limitation?
-
-ieee80211_open() is the starting point.
-ieee80211_check_concurrent_iface() is one candidate to generate -EBUSY
-but from inspection, I don't think that's happening in this case,
-perhaps you can keep following through in order to figure out which
-part of the code is not allowing the 2nd STA interface to come up.
-
-Daniel
+DQpPbiA1LzIxLzE5IDY6MTcgQU0sIENvbGluIEtpbmcgd3JvdGU6DQo+IEV4dGVybmFsIEUtTWFp
+bA0KPg0KPg0KPiBGcm9tOiBDb2xpbiBJYW4gS2luZyA8Y29saW4ua2luZ0BjYW5vbmljYWwuY29t
+Pg0KPg0KPiBUaGUgbWFza2luZyB1cGRhdGUgb2YgcGtnX29mZnNldCBpcyByZWR1bmRhbnQgYXMg
+dGhlIHVwZGF0ZWQNCj4gdmFsdWUgaXMgbmV2ZXIgcmVhZCBhbmQgcGtnX29mZnNldCBpcyByZS1h
+c3NpZ25lZCBvbiB0aGUgbmV4dA0KPiBpdGVyYXRpb24gb2YgdGhlIGxvb3AuICBDbGVhbiB0aGlz
+IHVwIGJ5IHJlbW92aW5nIHRoZSByZWR1bmRhbnQNCj4gYXNzaWdubWVudC4NCj4NCj4gQWRkcmVz
+c2VzLUNvdmVyaXR5OiAoIlVudXNlZCB2YWx1ZSIpDQo+IFNpZ25lZC1vZmYtYnk6IENvbGluIElh
+biBLaW5nIDxjb2xpbi5raW5nQGNhbm9uaWNhbC5jb20+DQoNClJldmlld2VkLWJ5OiBBZGhhbSBB
+Ym96YWVpZCA8YWRoYW0uYWJvemFlaWRAbWljcm9jaGlwLmNvbT4NCg0KDQpUaGFua3MsDQoNCkFk
+aGFtDQoNCj4gLS0tDQo+ICBkcml2ZXJzL3N0YWdpbmcvd2lsYzEwMDAvd2lsY193bGFuLmMgfCAz
+IC0tLQ0KPiAgMSBmaWxlIGNoYW5nZWQsIDMgZGVsZXRpb25zKC0pDQo+DQo+IGRpZmYgLS1naXQg
+YS9kcml2ZXJzL3N0YWdpbmcvd2lsYzEwMDAvd2lsY193bGFuLmMgYi9kcml2ZXJzL3N0YWdpbmcv
+d2lsYzEwMDAvd2lsY193bGFuLmMNCj4gaW5kZXggOTVlYWY4ZmRmNGYyLi5kY2Q3Mjg1NTc5NTgg
+MTAwNjQ0DQo+IC0tLSBhL2RyaXZlcnMvc3RhZ2luZy93aWxjMTAwMC93aWxjX3dsYW4uYw0KPiAr
+KysgYi9kcml2ZXJzL3N0YWdpbmcvd2lsYzEwMDAvd2lsY193bGFuLmMNCj4gQEAgLTcwOSw5ICs3
+MDksNiBAQCBzdGF0aWMgdm9pZCB3aWxjX3dsYW5faGFuZGxlX3J4X2J1ZmYoc3RydWN0IHdpbGMg
+KndpbGMsIHU4ICpidWZmZXIsIGludCBzaXplKQ0KPiAgCQkJYnJlYWs7DQo+ICANCj4gIAkJaWYg
+KHBrdF9vZmZzZXQgJiBJU19NQU5BR01FTUVOVCkgew0KPiAtCQkJcGt0X29mZnNldCAmPSB+KElT
+X01BTkFHTUVNRU5UIHwNCj4gLQkJCQkJSVNfTUFOQUdNRU1FTlRfQ0FMTEJBQ0sgfA0KPiAtCQkJ
+CQlJU19NR01UX1NUQVRVU19TVUNDRVMpOw0KPiAgCQkJYnVmZl9wdHIgKz0gSE9TVF9IRFJfT0ZG
+U0VUOw0KPiAgCQkJd2lsY193ZmlfbWdtdF9yeCh3aWxjLCBidWZmX3B0ciwgcGt0X2xlbik7DQo+
+ICAJCX0gZWxzZSB7DQo=
