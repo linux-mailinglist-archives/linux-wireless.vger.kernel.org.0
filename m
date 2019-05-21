@@ -2,97 +2,90 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 0FEBB249E5
-	for <lists+linux-wireless@lfdr.de>; Tue, 21 May 2019 10:11:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4407A24B40
+	for <lists+linux-wireless@lfdr.de>; Tue, 21 May 2019 11:12:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727453AbfEUILe (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 21 May 2019 04:11:34 -0400
-Received: from mail-pl1-f194.google.com ([209.85.214.194]:33796 "EHLO
-        mail-pl1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727448AbfEUILd (ORCPT
+        id S1727047AbfEUJMc (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 21 May 2019 05:12:32 -0400
+Received: from mail-pf1-f195.google.com ([209.85.210.195]:33066 "EHLO
+        mail-pf1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726296AbfEUJMb (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 21 May 2019 04:11:33 -0400
-Received: by mail-pl1-f194.google.com with SMTP id w7so8075140plz.1
-        for <linux-wireless@vger.kernel.org>; Tue, 21 May 2019 01:11:33 -0700 (PDT)
+        Tue, 21 May 2019 05:12:31 -0400
+Received: by mail-pf1-f195.google.com with SMTP id z28so8768842pfk.0;
+        Tue, 21 May 2019 02:12:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=seG9nkQSqs8RhZuvy16Lfz590I3pgtHI3E7ZJ7O1oS4=;
-        b=axNqkDqBEkqOMiqvkILmD8H7xVgy/yxds+U6jMpqoyfzdLG/rwofCIkPqUuMQdxacR
-         Q5Fz2SzCkRczK8YfaLqUUcCWeB2jiKxreM3rezGEF+2EBr6u690bTbC6UapRNBUbxGEU
-         SB7hz3Ih8eUkmKBbq1IT07rrvkf83XY12Ot1o=
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id;
+        bh=WFNnK9H0K3Ber2neUCNJ4Uwp9UCDDXpkHqDNEykoK1U=;
+        b=W644JxlBVI3+KbYZ/4msgiMKep2yUr1vVE8T9T59526jPWWcWIAodg0uZrPmJmvQ2P
+         JGI1l5zrMJpy+g1HaUtg9Do8pAKqYRUHUUxrDP9n1RUWZzrHJQeIZJ2yN/g9YIoMY8LN
+         gKr1o3vOv4ployX/pkhR4dwSEh8YzODeZp57kseFQ5jr8achYT3s5L6tY2Q17D476kFM
+         R3f750EXEkhfDIEDlJFpmoaV3GtUmgxmWr/BMGE79REiPKy8RmnsNhZtQayV5S0OmPuw
+         /eZKGY2dbp3HZtONbwJ/iycJXh2ifSCI07nfof9iRV9xEpnr3XIkqu4hJ30xthX1gj5u
+         oPfw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=seG9nkQSqs8RhZuvy16Lfz590I3pgtHI3E7ZJ7O1oS4=;
-        b=KBsWViOv+Mt62+Q60622jZcwhW/Ux1nigk9LT/TrwpU7f2dIzxkeo7ukiITNp6Mt5w
-         vMcoaofHfDWuPIGMAXEDD1Y9I3j0zvBMohFNRJZ9ckEFTUQJsVpY0HVXGEUxg9IS4N6+
-         xxjmuIB5AwsgOjyl6WCPyArFehXsrMoXSjk4eGkX51aGQ5Q/v3LTgpfpuARKlY4StLiP
-         svvL1jPT7H9XiE21VPY59Y2+EAd1OtaDvs4Yt6W/NIA9+gxfviRAIrF9pJZk/UyOmKwq
-         XUU0LWx47C5M2I5Ze5drMckEj2DryChxKgYc562mPirgaBS4EP6mEzKdFMu9y7ieovhN
-         2Hmw==
-X-Gm-Message-State: APjAAAXrF7kH2kevtdhOGCxs2J5bcwc9zaXe7l1a4okMBUVRWC3jrHES
-        sKQ/eq/6Rl1aMW5+nQwaVTuuooa3lrYRVm1Ep8XJUN1fru5sn9yNIV9Vt1dBqgGxSz6yMmGBWfd
-        1Ol7vK7uufyenivrG6CfKnRse4Vm6724OWiLtCuE2WYnHXH1UibfoCoyPIKJ64FOm0UmSBO1Xh6
-        7KTba4t7vv/C0Exg==
-X-Google-Smtp-Source: APXvYqwc+e5LsnNpHPJjD1/qzsKQuz6hwdw7dR66MWxYMtjsdNeCdCypFY1mYpyWfd9u5iBzgGDIvg==
-X-Received: by 2002:a17:902:3383:: with SMTP id b3mr35209830plc.193.1558426292671;
-        Tue, 21 May 2019 01:11:32 -0700 (PDT)
-Received: from [10.176.68.125] ([192.19.248.250])
-        by smtp.gmail.com with ESMTPSA id f22sm20724092pgl.25.2019.05.21.01.11.30
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=WFNnK9H0K3Ber2neUCNJ4Uwp9UCDDXpkHqDNEykoK1U=;
+        b=BBgeVD+maijPnOoo5YMOdPzzh7hQfqWB4qL8FG92785zmZS4B0w4I8ZFIlS9GfG7am
+         NLllu2fbcuieiD890dZnOYgVEbLHa1KU7EAzGgZNmFM7FQE688Tq+orCBP/L4Wq407Tw
+         Srnx+aQAX1dJv/znkGrEkB1pmIX7KZIegmlH3eTtcobwGsf0EZBJyH4rcWPpGjNdLGUU
+         f7z5J5sN/M+7nVa3ewWakAm+LfH3qUcN8UPyjb+mlEIfC/m5Ebo0b6bunSDqPuaLOn+U
+         /tLKy8kNrV3xmLgmzi+X82UceWBn0glD/Ks1YDDq2UFQBwv1ZoA98xrR1fgkW2LymfFA
+         OmLQ==
+X-Gm-Message-State: APjAAAWU2b39BcABs0mlGdHqs7i2BQw83loIDoEWoHVyq6qANLiL2NMM
+        tLVsjzgwxHIJF6l/0NoTZ/0=
+X-Google-Smtp-Source: APXvYqzOAOrYS9rJhvcv1i/2h2CrHY8ltTh6nYiFU1m7HP097CbBxTgHa0DVHHQxMdoRZvpYb2g74Q==
+X-Received: by 2002:a65:42ca:: with SMTP id l10mr27448771pgp.181.1558429951093;
+        Tue, 21 May 2019 02:12:31 -0700 (PDT)
+Received: from localhost ([115.82.227.102])
+        by smtp.gmail.com with ESMTPSA id 129sm23870702pff.140.2019.05.21.02.12.30
         (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Tue, 21 May 2019 01:11:31 -0700 (PDT)
-Subject: Re: [PATCH 1/7] brcm80211: switch common header files to using SPDX
- license identifier
-To:     Kalle Valo <kvalo@codeaurora.org>
-Cc:     linux-wireless@vger.kernel.org
-References: <1558008251-13692-1-git-send-email-arend.vanspriel@broadcom.com>
- <1558008251-13692-2-git-send-email-arend.vanspriel@broadcom.com>
- <3dcbfbab-a1f0-bdc6-909a-d9ed225e060a@broadcom.com>
- <f35219bc-88c2-cc8d-530e-516fb7a4ce80@broadcom.com>
- <87mujhoymm.fsf@codeaurora.org>
-From:   Arend Van Spriel <arend.vanspriel@broadcom.com>
-Message-ID: <f4d582e8-3d65-959f-78bd-88b7c47131a5@broadcom.com>
-Date:   Tue, 21 May 2019 10:11:28 +0200
-User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:60.0) Gecko/20100101
- Thunderbird/60.6.1
-MIME-Version: 1.0
-In-Reply-To: <87mujhoymm.fsf@codeaurora.org>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+        Tue, 21 May 2019 02:12:30 -0700 (PDT)
+From:   neojou@gmail.com
+To:     arend.vanspriel@broadcom.com, franky.lin@broadcom.com,
+        hante.meuleman@broadcom.com, chi-hsien.lin@cypress.com,
+        wright.feng@cypress.com, kvalo@codeaurora.org, davem@davemloft.net,
+        rafal@milecki.pl, hdegoedg@redhat.com,
+        p.figiel@camlintechnologies.com
+Cc:     linux-wireless@vger.kernel.org,
+        brcm80211-dev-list.pdl@braodcom.com,
+        brcm80211-dev-list@cypress.com, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Neo Jou <neojou@gmail.com>
+Subject: [PATCH] brcmfmac: use strlcpy() instead of strcpy()
+Date:   Tue, 21 May 2019 17:12:20 +0800
+Message-Id: <1558429940-8709-1-git-send-email-neojou@gmail.com>
+X-Mailer: git-send-email 2.7.4
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+From: Neo Jou <neojou@gmail.com>
 
+The function strcpy() is inherently not safe. Though the function
+works without problems here, it would be better to use other safer
+function, e.g. strlcpy(), to replace strcpy() still.
 
-On 5/20/2019 6:54 PM, Kalle Valo wrote:
-> Arend Van Spriel <arend.vanspriel@broadcom.com> writes:
-> 
->> On 5/16/2019 10:57 PM, Arend Van Spriel wrote:
->>> On 5/16/2019 2:04 PM, Arend van Spriel wrote:
->>>> With ISC license text in place under the LICENSES folder switch
->>>> to using the SPDX license identifier to refer to the ISC license.
->>>
->>> Hi Kalle,
->>>
->>> Given the feedback on checkpatch (or spdxcheck) failures let me
->>> respin this series.
->>
->> Actually let's *NOT* respin and leave this series as is and ignore the
->> warning for the header files as Thomas wrote in his response: " So we
->> can fixup the documentation and allow // style for headers as well.".
-> 
-> What about patch 3, should I drop that patch? Wasn't the conclusion that
-> you need separately change led.c?
+Signed-off-by: Neo Jou <neojou@gmail.com>
+---
+ drivers/net/wireless/broadcom/brcm80211/brcmfmac/common.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Okay. Let's do that. Or do you want me to resend the whole series 
-without patch 3?
+diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/common.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/common.c
+index 96b8d5b..9e0bd2b 100644
+--- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/common.c
++++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/common.c
+@@ -269,7 +269,7 @@ int brcmf_c_preinit_dcmds(struct brcmf_if *ifp)
+ 
+ 	/* query for 'ver' to get version info from firmware */
+ 	memset(buf, 0, sizeof(buf));
+-	strcpy(buf, "ver");
++	strlcpy(buf, "ver", sizeof(buf));
+ 	err = brcmf_fil_iovar_data_get(ifp, "ver", buf, sizeof(buf));
+ 	if (err < 0) {
+ 		bphy_err(drvr, "Retrieving version information failed, %d\n",
+-- 
+2.7.4
 
-Regards,
-Arend
