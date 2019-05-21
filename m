@@ -2,173 +2,117 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 90E0C24099
-	for <lists+linux-wireless@lfdr.de>; Mon, 20 May 2019 20:41:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 91CBF2450A
+	for <lists+linux-wireless@lfdr.de>; Tue, 21 May 2019 02:23:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725985AbfETSle (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 20 May 2019 14:41:34 -0400
-Received: from mail-ua1-f68.google.com ([209.85.222.68]:42043 "EHLO
-        mail-ua1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725536AbfETSle (ORCPT
+        id S1727213AbfEUAXT (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 20 May 2019 20:23:19 -0400
+Received: from mail-pf1-f196.google.com ([209.85.210.196]:33130 "EHLO
+        mail-pf1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727043AbfEUAXS (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 20 May 2019 14:41:34 -0400
-Received: by mail-ua1-f68.google.com with SMTP id e9so5639039uar.9
-        for <linux-wireless@vger.kernel.org>; Mon, 20 May 2019 11:41:33 -0700 (PDT)
+        Mon, 20 May 2019 20:23:18 -0400
+Received: by mail-pf1-f196.google.com with SMTP id z28so8075388pfk.0
+        for <linux-wireless@vger.kernel.org>; Mon, 20 May 2019 17:23:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=chromium.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=eXzq25JjkHKfqM12yrowm3Yo57M4GMY0BfDmn8niRoc=;
-        b=a5ju2t/4nHOU5nEcrI65+QzWOU6crA5EBdKI3G/l/upgB/reaEtlAi/v4+LbS8hPso
-         8pDE5IpJCVggowauiA0vT/v4VrL6nsfI9HiXEH+UJlT8lbmzsXva69SSqkHcjwym+5wk
-         yqWoQuKYtV8KdIzEPlkCkqCTtbE/U/mBOqTk4=
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=LPu70Acl0dDSmwm46W0owNu3b5RSfGh3FzFKNjihb00=;
+        b=MZQdLOQw3W9V15ULJxTQ96AipAiJ1kcuFGGW2c9VkUElP4pINsXi9UyEKmOKHIxKVz
+         wbH2J3shvQbhbLV4ZTggOKN/KSP2TzN+miO9Q/uJDdjiIDVdhHg0R3n3qQh0fpFnEFvB
+         jAif5optmrvx3phb9f3Hy8Am1MI4LkPVP+DZs=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=eXzq25JjkHKfqM12yrowm3Yo57M4GMY0BfDmn8niRoc=;
-        b=YNYplfRq1yT0awYdeAkf1XbWBZaz3FPFuv1D5VJNb4oTPNbYVNVs71nOP2ZN+EF2mW
-         x21OqW/O11B3ocARYF+K+Zllx+S0qiKXlj/i0/+FkNx4RoAgpRMe1XQmH1N2NeNNU9Mu
-         eAhXpbAXTLjeSauTxVaILGbFKPuD8Uwq4zKrEugiRtweKH/a2niHx0UgntSP4HQSO40h
-         CafOa3O1iurKLDU0Upb5kYPwiReD3XpbvVJOnHFg8Hu3BbzBtW6B0Zz53sfJDBEn3tuG
-         RK7j0rBtssJwN7zohj/qWl/7dzb0KiZMe3FSMTfOxyoBc1ddGSTnmveQkk8Wil6pkB9C
-         HM7Q==
-X-Gm-Message-State: APjAAAWL2FRtFTx/3NMRYCG5214Z+LQ1SshIQO49s9JyCONg5d4Xqk3X
-        0DQJBxUDMwJkXXp6ALEfYR+Y4RFJ3Xk=
-X-Google-Smtp-Source: APXvYqz1bmFqHEJ4ApsKfEdJX+GrNUR8ipys+685M+ApSzUOVlyvjgPyUMOTG3HArlU1vFwrK7dFhg==
-X-Received: by 2002:ab0:337:: with SMTP id 52mr13035120uat.23.1558377693029;
-        Mon, 20 May 2019 11:41:33 -0700 (PDT)
-Received: from mail-vk1-f174.google.com (mail-vk1-f174.google.com. [209.85.221.174])
-        by smtp.gmail.com with ESMTPSA id b140sm4553743vka.52.2019.05.20.11.41.31
-        for <linux-wireless@vger.kernel.org>
-        (version=TLS1_3 cipher=AEAD-AES128-GCM-SHA256 bits=128/128);
-        Mon, 20 May 2019 11:41:31 -0700 (PDT)
-Received: by mail-vk1-f174.google.com with SMTP id d7so4142526vkf.1
-        for <linux-wireless@vger.kernel.org>; Mon, 20 May 2019 11:41:31 -0700 (PDT)
-X-Received: by 2002:a1f:1e48:: with SMTP id e69mr8852626vke.16.1558377691267;
- Mon, 20 May 2019 11:41:31 -0700 (PDT)
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=LPu70Acl0dDSmwm46W0owNu3b5RSfGh3FzFKNjihb00=;
+        b=BfC/J2lO3KFmR4RR1STaZJMZAr94ZMLepW5cZcFp1xD3orDNm/YiONmwu8EVuN0X1c
+         wGDCoaVxwuwfbJ+k64xgx4GrKNNfLvBAlJno4s4nKrK30JKboXVVttr1KDLUhu16kThW
+         TnB0RvH/aEaKeHZDUXVJXkUznjX6Sd4pBRzIJKGLNabej6aBbWSb98oecmcZ3Hi7fNyc
+         fLib+czzwyDq7xw3gYzMEda+Sz1v0QkSkMVxRmtDJNQPtrMIq8F9kvestUAcm5TfMeKO
+         zLa1XtVIWAciXfchTNlcLThaQ0qyyJC2E43yCEy0aHGNHJhHxJK5FrM39KV+tjjqVfP7
+         WYCw==
+X-Gm-Message-State: APjAAAWEbOHA856LQHGZrP3+HO8GmgQu7Ys0QFZyHx1GfoHdnyWqLRpC
+        igG23/a2Olebvgi014f7qNo6iA==
+X-Google-Smtp-Source: APXvYqyHRvjDKJM7g5pNBmpglQaLaCNbnuq/wX0yAuGrBgJFe6RRW2bXvYhCXJl4QWmy07O1Y2HwHA==
+X-Received: by 2002:aa7:9e51:: with SMTP id z17mr83145568pfq.212.1558398198034;
+        Mon, 20 May 2019 17:23:18 -0700 (PDT)
+Received: from google.com ([2620:15c:202:1:534:b7c0:a63c:460c])
+        by smtp.gmail.com with ESMTPSA id j184sm19177690pge.83.2019.05.20.17.23.15
+        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
+        Mon, 20 May 2019 17:23:16 -0700 (PDT)
+Date:   Mon, 20 May 2019 17:23:14 -0700
+From:   Brian Norris <briannorris@chromium.org>
+To:     Avri Altman <Avri.Altman@wdc.com>
+Cc:     Douglas Anderson <dianders@chromium.org>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        Adrian Hunter <adrian.hunter@intel.com>,
+        Arend van Spriel <arend.vanspriel@broadcom.com>,
+        "linux-rockchip@lists.infradead.org" 
+        <linux-rockchip@lists.infradead.org>,
+        Double Lo <double.lo@cypress.com>,
+        Madhan Mohan R <madhanmohan.r@cypress.com>,
+        "mka@chromium.org" <mka@chromium.org>,
+        Wright Feng <wright.feng@cypress.com>,
+        Chi-Hsien Lin <chi-hsien.lin@cypress.com>,
+        "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
+        Shawn Lin <shawn.lin@rock-chips.com>,
+        "brcm80211-dev-list@cypress.com" <brcm80211-dev-list@cypress.com>,
+        YueHaibing <yuehaibing@huawei.com>,
+        Hante Meuleman <hante.meuleman@broadcom.com>,
+        Martin Hicks <mort@bork.org>,
+        Ritesh Harjani <riteshh@codeaurora.org>,
+        Michael Trimarchi <michael@amarulasolutions.com>,
+        Wolfram Sang <wsa+renesas@sang-engineering.com>,
+        Franky Lin <franky.lin@broadcom.com>,
+        Jiong Wu <lohengrin1024@gmail.com>,
+        "brcm80211-dev-list.pdl@broadcom.com" 
+        <brcm80211-dev-list.pdl@broadcom.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        Naveen Gupta <naveen.gupta@cypress.com>
+Subject: Re: [PATCH 0/3] brcmfmac: sdio: Deal better w/ transmission errors
+ waking from sleep
+Message-ID: <20190521002312.GA89786@google.com>
+References: <20190517225420.176893-1-dianders@chromium.org>
+ <SN6PR04MB49258D4FBE0B4D739E8BAF7EFC040@SN6PR04MB4925.namprd04.prod.outlook.com>
 MIME-Version: 1.0
-References: <20190429204040.18725-1-dianders@chromium.org>
-In-Reply-To: <20190429204040.18725-1-dianders@chromium.org>
-From:   Doug Anderson <dianders@chromium.org>
-Date:   Mon, 20 May 2019 11:41:19 -0700
-X-Gmail-Original-Message-ID: <CAD=FV=WEDkufoEUYv9U+c+Y_bm8MYEWS25n63vUeNG0LLCFnuw@mail.gmail.com>
-Message-ID: <CAD=FV=WEDkufoEUYv9U+c+Y_bm8MYEWS25n63vUeNG0LLCFnuw@mail.gmail.com>
-Subject: Re: [PATCH v2] mmc: dw_mmc: Disable SDIO interrupts while suspended
- to fix suspend/resume
-To:     Ulf Hansson <ulf.hansson@linaro.org>
-Cc:     Kalle Valo <kvalo@codeaurora.org>,
-        =?UTF-8?Q?Heiko_St=C3=BCbner?= <heiko@sntech.de>,
-        "open list:ARM/Rockchip SoC..." <linux-rockchip@lists.infradead.org>,
-        Guenter Roeck <groeck@chromium.org>,
-        Brian Norris <briannorris@chromium.org>,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        Sonny Rao <sonnyrao@chromium.org>,
-        Emil Renner Berthing <emil.renner.berthing@gmail.com>,
-        Matthias Kaehlcke <mka@chromium.org>,
-        Ryan Case <ryandcase@chromium.org>, stable@vger.kernel.org,
-        Linux MMC List <linux-mmc@vger.kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        Jaehoon Chung <jh80.chung@samsung.com>,
-        Shawn Lin <shawn.lin@rock-chips.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <SN6PR04MB49258D4FBE0B4D739E8BAF7EFC040@SN6PR04MB4925.namprd04.prod.outlook.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi,
+On Sat, May 18, 2019 at 03:09:44PM +0000, Avri Altman wrote:
+> > 
+> > This series attempts to deal better with the expected transmission
+> > errors that we get when waking up the SDIO-based WiFi on
+> > rk3288-veyron-minnie, rk3288-veyron-speedy, and rk3288-veyron-mickey.
+> > 
+> > Some details about those errors can be found in
+> > <https://crbug.com/960222>, but to summarize it here: if we try to
+> > send the wakeup command to the WiFi card at the same time it has
+> > decided to wake up itself then it will behave badly on the SDIO bus.
+> > This can cause timeouts or CRC errors.
+> Wake-up itself: as part of a WoWlan, or d0i3?
 
-On Mon, Apr 29, 2019 at 1:41 PM Douglas Anderson <dianders@chromium.org> wrote:
->
-> Processing SDIO interrupts while dw_mmc is suspended (or partly
-> suspended) seems like a bad idea.  We really don't want to be
-> processing them until we've gotten ourselves fully powered up.
->
-> You might be wondering how it's even possible to become suspended when
-> an SDIO interrupt is active.  As can be seen in
-> dw_mci_enable_sdio_irq(), we explicitly keep dw_mmc out of runtime
-> suspend when the SDIO interrupt is enabled.  ...but even though we
-> stop normal runtime suspend transitions when SDIO interrupts are
-> enabled, the dw_mci_runtime_suspend() can still get called for a full
-> system suspend.
->
-> Let's handle all this by explicitly masking SDIO interrupts in the
-> suspend call and unmasking them later in the resume call.  To do this
-> cleanly I'll keep track of whether the client requested that SDIO
-> interrupts be enabled so that we can reliably restore them regardless
-> of whether we're masking them for one reason or another.
->
-> It should be noted that if dw_mci_enable_sdio_irq() is never called
-> (for instance, if we don't have an SDIO card plugged in) that
-> "client_sdio_enb" will always be false.  In those cases this patch
-> adds a tiny bit of overhead to suspend/resume (a spinlock and a
-> read/write of INTMASK) but other than that is a no-op.  The
-> SDMMC_INT_SDIO bit should always be clear and clearing it again won't
-> hurt.
->
-> Without this fix it can be seen that rk3288-veyron Chromebooks with
-> Marvell WiFi would sometimes fail to resume WiFi even after picking my
-> recent mwifiex patch [1].  Specifically you'd see messages like this:
->   mwifiex_sdio mmc1:0001:1: Firmware wakeup failed
->   mwifiex_sdio mmc1:0001:1: PREP_CMD: FW in reset state
->
-> ...and tracing through the resume code in the failing cases showed
-> that we were processing a SDIO interrupt really early in the resume
-> call.
->
-> NOTE: downstream in Chrome OS 3.14 and 3.18 kernels (both of which
-> support the Marvell SDIO WiFi card) we had a patch ("CHROMIUM: sdio:
-> Defer SDIO interrupt handling until after resume") [2].  Presumably
-> this is the same problem that was solved by that patch.
->
-> [1] https://lkml.kernel.org/r/20190404040106.40519-1-dianders@chromium.org
-> [2] https://crrev.com/c/230765
->
-> Cc: <stable@vger.kernel.org> # 4.14.x
-> Signed-off-by: Douglas Anderson <dianders@chromium.org>
-> ---
-> I didn't put any "Fixes" tag here, but presumably this could be
-> backported to whichever kernels folks found it useful for.  I have at
-> least confirmed that kernels v4.14 and v4.19 (as well as v5.1-rc2)
-> show the problem.  It is very easy to pick this to v4.19 and it
-> definitely fixes the problem there.
->
-> I haven't spent the time to pick this to 4.14 myself, but presumably
-> it wouldn't be too hard to backport this as far as v4.13 since that
-> contains commit 32dba73772f8 ("mmc: dw_mmc: Convert to use
-> MMC_CAP2_SDIO_IRQ_NOTHREAD for SDIO IRQs").  Prior to that it might
-> make sense for anyone experiencing this problem to just pick the old
-> CHROMIUM patch to fix them.
->
-> Changes in v2:
-> - Suggested 4.14+ in the stable tag (Sasha-bot)
-> - Extra note that this is a noop on non-SDIO (Shawn / Emil)
-> - Make boolean logic cleaner as per https://crrev.com/c/1586207/1
-> - Hopefully clear comments as per https://crrev.com/c/1586207/1
->
->  drivers/mmc/host/dw_mmc.c | 27 +++++++++++++++++++++++----
->  drivers/mmc/host/dw_mmc.h |  3 +++
->  2 files changed, 26 insertions(+), 4 deletions(-)
+Neither, IIUC. (It's definitely not WoWLAN, and D0i3 sounds like an
+Intel thing.)
 
-Ulf: are you the right person to land this?  With 5.2-rc1 out it might
-be a good time for it?  To refresh your memory about this patch:
+I believe it's a Broadcom-specific mode. See also Arend's response to
+this thread:
 
-* Patch v1 was posted back on April 10th [1] so we're at about 1.5
-months of time for people to comment about it now.  Should be more
-than enough.
+http://lkml.kernel.org/linux-wireless/8c3fa57a-3843-947c-ec6b-a6144ccde1e9@broadcom.com
 
-* Shawn Lin saw it and didn't hate it.  He had some confusion about
-how it worked and I've hopefully alleviated via extra comments / text.
+> Looks like this calls for a wifi driver fix, and not WA in the mmc driver.
 
-* Emil Renner Berthing thought it caused a regression for him but then
-tested further and was convinced that it didn't.  This is extra
-confirmation that someone other than me did try the patch and found it
-to not break things.  ;-)
+Basically asked and answered in patch 2's thread:
 
-* It has been reviewed by Guenter Roeck (in v2)
-
-[1] https://lkml.kernel.org/r/20190410221237.160856-1-dianders@chromium.org
-
-
--Doug
+https://lkml.kernel.org/lkml/20190520085201.GA1021@kunai/
