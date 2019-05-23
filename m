@@ -2,139 +2,206 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 7E05F26C2F
-	for <lists+linux-wireless@lfdr.de>; Wed, 22 May 2019 21:34:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 52AD227423
+	for <lists+linux-wireless@lfdr.de>; Thu, 23 May 2019 03:54:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2387681AbfEVTbz (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 22 May 2019 15:31:55 -0400
-Received: from mail.kernel.org ([198.145.29.99]:55554 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1733271AbfEVTby (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 22 May 2019 15:31:54 -0400
-Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 8378F204FD;
-        Wed, 22 May 2019 19:31:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1558553513;
-        bh=bUV7btzIiYVMzojYWVtdJYvd+jQvuHheVwfOPfUHK5o=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=OAIIH4ioS+xbRg2GDAeKgi/7RYVMzhrCKzAk+eiQ+t7vxq2RZbrzeKWnQEj2SBZZM
-         9Ac07vaNELS3TFQhaJHoA5EOLhlDtjv7ljTzoxbq457btaTr+nbjgbrlFkI6uX8WA0
-         B/iVV9xYDCU0PqynaV8Er65GNJh4cD635TztcPHs=
-From:   Sasha Levin <sashal@kernel.org>
-To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     YueHaibing <yuehaibing@huawei.com>, Hulk Robot <hulkci@huawei.com>,
+        id S1728050AbfEWByU (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 22 May 2019 21:54:20 -0400
+Received: from mail-ed1-f65.google.com ([209.85.208.65]:45209 "EHLO
+        mail-ed1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727305AbfEWByU (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Wed, 22 May 2019 21:54:20 -0400
+Received: by mail-ed1-f65.google.com with SMTP id g57so6649713edc.12;
+        Wed, 22 May 2019 18:54:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=5u0t7AAd+0Akj7skAMQeDcpEP8cSjZVN+OVD/pxT1/E=;
+        b=qFSff1fUSIvDW/T0PQVR2KeYDE888ODYH/Anez7ZdheVJkuNjDBpIH4l6Q2ttyqrb0
+         VS2XM6ivseElqe+dbjZfp87N2UNEyxTNkEIcC8fYyIIaAf2Vd529843lxbGi19ol5VTo
+         cMVjIMH9vpDH0EeDlKljWvoaQrRkl7U7HbIadsZgkQPmSPKNBKihZjB5nKuMwwi+NsE1
+         qJtHSUNdRkcG9yKadt3p4V+5/wKJZkR6X0Dzs23waOKr6O3yMpOhgoJXa4GyiglqybC+
+         El2K7SQnck3DQNqnRY4U2L2j1hjExXTKxtudkmmqy0G0DG+1ORkbRg9PUrSzcVSDzOtm
+         JbIQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=5u0t7AAd+0Akj7skAMQeDcpEP8cSjZVN+OVD/pxT1/E=;
+        b=KHPmbYb0AhP5mNefpg25ZpifPEjsn4BE7XRQB929Wjxw8uPfsg8Ovaagl7Hv+TC+59
+         89kHqT18Cu6xDHCnyIThgAV5smUdHH08f7Qlnnb+I+jvkmEjiA0zOoMx06EWBowqAdYp
+         +aK3Dhx6/RfDD2X94f+l4sR2gL4y136IRGOnmUXEdFymH7L7x8k9uMV+it5rn5gNX3oi
+         GraZ1zndMEuJUD+LiSc2fO3xPxnnO6ikHEjH2zkakg11lTxPD7toWDBFsZjaCTZRguLh
+         AyTh37xgfbWZSW7AkR1u9xTSJNeNQzwot6zMezbfuGWM23+5Ix6Efh1VrZNkrf0+DfPs
+         VRcA==
+X-Gm-Message-State: APjAAAWgKHNQ/3Fu/aIbJwmYjEjrDINlCHcItoeGiK4fZVbydlHU6bm/
+        x4ENungfvHwHAv1y64qIAn+DjGrMsvM4GA==
+X-Google-Smtp-Source: APXvYqyEWW0X2xH4tHn/Yhfmpkbx+3mH6Knzj1h2CFwUEc8AIQFagt/gm772M4PJCTKvOiJGCVmLXA==
+X-Received: by 2002:a17:906:1303:: with SMTP id w3mr22081885ejb.196.1558576457574;
+        Wed, 22 May 2019 18:54:17 -0700 (PDT)
+Received: from archlinux-epyc ([2a01:4f9:2b:2b15::2])
+        by smtp.gmail.com with ESMTPSA id hk1sm2288680ejb.36.2019.05.22.18.54.16
+        (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
+        Wed, 22 May 2019 18:54:16 -0700 (PDT)
+Date:   Wed, 22 May 2019 18:54:15 -0700
+From:   Nathan Chancellor <natechancellor@gmail.com>
+To:     Nick Desaulniers <ndesaulniers@google.com>
+Cc:     Amitkumar Karwar <amitkarwar@gmail.com>,
+        Siva Rebbagondla <siva8118@gmail.com>,
         Kalle Valo <kvalo@codeaurora.org>,
-        Sasha Levin <sashal@kernel.org>,
         linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        bpf@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.4 17/92] ssb: Fix possible NULL pointer dereference in ssb_host_pcmcia_exit
-Date:   Wed, 22 May 2019 15:30:12 -0400
-Message-Id: <20190522193127.27079-17-sashal@kernel.org>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20190522193127.27079-1-sashal@kernel.org>
-References: <20190522193127.27079-1-sashal@kernel.org>
+        LKML <linux-kernel@vger.kernel.org>,
+        clang-built-linux <clang-built-linux@googlegroups.com>
+Subject: Re: [PATCH] rsi: Properly initialize data in rsi_sdio_ta_reset
+Message-ID: <20190523015415.GA17819@archlinux-epyc>
+References: <20190502151548.11143-1-natechancellor@gmail.com>
+ <CAKwvOd=nvKGGW5jvN+WFUXzOm9xeiNNUD0F9--9YcpuRmnWWhA@mail.gmail.com>
+ <20190503031718.GB6969@archlinux-i9>
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20190503031718.GB6969@archlinux-i9>
+User-Agent: Mutt/1.11.4 (2019-03-13)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: YueHaibing <yuehaibing@huawei.com>
+On Thu, May 02, 2019 at 08:17:18PM -0700, Nathan Chancellor wrote:
+> On Thu, May 02, 2019 at 11:18:01AM -0700, Nick Desaulniers wrote:
+> > On Thu, May 2, 2019 at 8:16 AM Nathan Chancellor
+> > <natechancellor@gmail.com> wrote:
+> > >
+> > > When building with -Wuninitialized, Clang warns:
+> > >
+> > > drivers/net/wireless/rsi/rsi_91x_sdio.c:940:43: warning: variable 'data'
+> > > is uninitialized when used here [-Wuninitialized]
+> > >         put_unaligned_le32(TA_HOLD_THREAD_VALUE, data);
+> > >                                                  ^~~~
+> > > drivers/net/wireless/rsi/rsi_91x_sdio.c:930:10: note: initialize the
+> > > variable 'data' to silence this warning
+> > >         u8 *data;
+> > >                 ^
+> > >                  = NULL
+> > > 1 warning generated.
+> > >
+> > > Using Clang's suggestion of initializing data to NULL wouldn't work out
+> > > because data will be dereferenced by put_unaligned_le32. Use kzalloc to
+> > > properly initialize data, which matches a couple of other places in this
+> > > driver.
+> > >
+> > > Fixes: e5a1ecc97e5f ("rsi: add firmware loading for 9116 device")
+> > > Link: https://github.com/ClangBuiltLinux/linux/issues/464
+> > > Signed-off-by: Nathan Chancellor <natechancellor@gmail.com>
+> > > ---
+> > >  drivers/net/wireless/rsi/rsi_91x_sdio.c | 21 ++++++++++++++-------
+> > >  1 file changed, 14 insertions(+), 7 deletions(-)
+> > >
+> > > diff --git a/drivers/net/wireless/rsi/rsi_91x_sdio.c b/drivers/net/wireless/rsi/rsi_91x_sdio.c
+> > > index f9c67ed473d1..b35728564c7b 100644
+> > > --- a/drivers/net/wireless/rsi/rsi_91x_sdio.c
+> > > +++ b/drivers/net/wireless/rsi/rsi_91x_sdio.c
+> > > @@ -929,11 +929,15 @@ static int rsi_sdio_ta_reset(struct rsi_hw *adapter)
+> > >         u32 addr;
+> > >         u8 *data;
+> > >
+> > > +       data = kzalloc(sizeof(u32), GFP_KERNEL);
+> > 
+> > Something fishy is going on here.  We allocate 4 B but declare data as
+> > a u8* (pointer to individual bytes)?  In general, dynamically
+> > allocating that few bytes is a code smell; either you meant to just
+> > use the stack, or this memory's lifetime extends past the lifetime of
+> > this stackframe, at which point you probably just meant to stack
+> > allocate space in a higher parent frame and pass this preallocated
+> > memory down to the child frame to get filled in.
+> > 
+> > Reading through this code, I don't think that the memory is meant to
+> > outlive the stack frame.  Is there a reason why we can't just declare
+> > data as:
+> > 
+> > u8 data [4];
+> 
+> data was __le32 in rsi_reset_chip() before commit f700546682a6 ("rsi:
+> fix nommu_map_sg overflow kernel panic").
+> 
+> I wonder if this would be okay for this function:
+> 
+> -------------------------------------------------
+> 
+> diff --git a/drivers/net/wireless/rsi/rsi_91x_sdio.c b/drivers/net/wireless/rsi/rsi_91x_sdio.c
+> index f9c67ed473d1..0330c50ab99c 100644
+> --- a/drivers/net/wireless/rsi/rsi_91x_sdio.c
+> +++ b/drivers/net/wireless/rsi/rsi_91x_sdio.c
+> @@ -927,7 +927,7 @@ static int rsi_sdio_ta_reset(struct rsi_hw *adapter)
+>  {
+>         int status;
+>         u32 addr;
+> -       u8 *data;
+> +       u8 data;
+>  
+>         status = rsi_sdio_master_access_msword(adapter, TA_BASE_ADDR);
+>         if (status < 0) {
+> @@ -937,7 +937,7 @@ static int rsi_sdio_ta_reset(struct rsi_hw *adapter)
+>         }
+>  
+>         rsi_dbg(INIT_ZONE, "%s: Bring TA out of reset\n", __func__);
+> -       put_unaligned_le32(TA_HOLD_THREAD_VALUE, data);
+> +       put_unaligned_le32(TA_HOLD_THREAD_VALUE, &data);
+>         addr = TA_HOLD_THREAD_REG | RSI_SD_REQUEST_MASTER;
+>         status = rsi_sdio_write_register_multiple(adapter, addr,
+>                                                   (u8 *)&data,
+> @@ -947,7 +947,7 @@ static int rsi_sdio_ta_reset(struct rsi_hw *adapter)
+>                 return status;
+>         }
+>  
+> -       put_unaligned_le32(TA_SOFT_RST_CLR, data);
+> +       put_unaligned_le32(TA_SOFT_RST_CLR, &data);
+>         addr = TA_SOFT_RESET_REG | RSI_SD_REQUEST_MASTER;
+>         status = rsi_sdio_write_register_multiple(adapter, addr,
+>                                                   (u8 *)&data,
+> @@ -957,7 +957,7 @@ static int rsi_sdio_ta_reset(struct rsi_hw *adapter)
+>                 return status;
+>         }
+>  
+> -       put_unaligned_le32(TA_PC_ZERO, data);
+> +       put_unaligned_le32(TA_PC_ZERO, &data);
+>         addr = TA_TH0_PC_REG | RSI_SD_REQUEST_MASTER;
+>         status = rsi_sdio_write_register_multiple(adapter, addr,
+>                                                   (u8 *)&data,
+> @@ -967,7 +967,7 @@ static int rsi_sdio_ta_reset(struct rsi_hw *adapter)
+>                 return -EINVAL;
+>         }
+>  
+> -       put_unaligned_le32(TA_RELEASE_THREAD_VALUE, data);
+> +       put_unaligned_le32(TA_RELEASE_THREAD_VALUE, &data);
+>         addr = TA_RELEASE_THREAD_REG | RSI_SD_REQUEST_MASTER;
+>         status = rsi_sdio_write_register_multiple(adapter, addr,
+>                                                   (u8 *)&data,
+> 
+> 
+> > 
+> > then use ARRAY_SIZE(data) or RSI_9116_REG_SIZE in rsi_reset_chip(),
+> > getting rid of the kzalloc/kfree?
+> > 
+> > (Sorry, I hate when a simple fixup becomes a "hey let's rewrite all
+> > this code" thus becoming "that guy.")
+> 
+> If we aren't actually improving the code, then why bother? :)
+> 
+> Thank you for the review!
+> Nathan
+> 
+> > -- 
+> > Thanks,
+> > ~Nick Desaulniers
 
-[ Upstream commit b2c01aab9646ed8ffb7c549afe55d5349c482425 ]
+Hi all,
 
-Syzkaller report this:
+Did any of the maintainers have any comments on what the correct
+solution is here to resolve this warning? It is one of the few left
+before we can turn on -Wuninitialized for the whole kernel.
 
-kasan: GPF could be caused by NULL-ptr deref or user memory access
-general protection fault: 0000 [#1] SMP KASAN PTI
-CPU: 0 PID: 4492 Comm: syz-executor.0 Not tainted 5.0.0-rc7+ #45
-Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.10.2-1ubuntu1 04/01/2014
-RIP: 0010:sysfs_remove_file_ns+0x27/0x70 fs/sysfs/file.c:468
-Code: 00 00 00 41 54 55 48 89 fd 53 49 89 d4 48 89 f3 e8 ee 76 9c ff 48 8d 7d 30 48 b8 00 00 00 00 00 fc ff df 48 89 fa 48 c1 ea 03 <80> 3c 02 00 75 2d 48 89 da 48 b8 00 00 00 00 00 fc ff df 48 8b 6d
-RSP: 0018:ffff8881e9d9fc00 EFLAGS: 00010206
-RAX: dffffc0000000000 RBX: ffffffff900367e0 RCX: ffffffff81a95952
-RDX: 0000000000000006 RSI: ffffc90001405000 RDI: 0000000000000030
-RBP: 0000000000000000 R08: fffffbfff1fa22ed R09: fffffbfff1fa22ed
-R10: 0000000000000001 R11: fffffbfff1fa22ec R12: 0000000000000000
-R13: ffffffffc1abdac0 R14: 1ffff1103d3b3f8b R15: 0000000000000000
-FS:  00007fe409dc1700(0000) GS:ffff8881f1200000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 0000001b2d721000 CR3: 00000001e98b6005 CR4: 00000000007606f0
-DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-PKRU: 55555554
-Call Trace:
- sysfs_remove_file include/linux/sysfs.h:519 [inline]
- driver_remove_file+0x40/0x50 drivers/base/driver.c:122
- pcmcia_remove_newid_file drivers/pcmcia/ds.c:163 [inline]
- pcmcia_unregister_driver+0x7d/0x2b0 drivers/pcmcia/ds.c:209
- ssb_modexit+0xa/0x1b [ssb]
- __do_sys_delete_module kernel/module.c:1018 [inline]
- __se_sys_delete_module kernel/module.c:961 [inline]
- __x64_sys_delete_module+0x3dc/0x5e0 kernel/module.c:961
- do_syscall_64+0x147/0x600 arch/x86/entry/common.c:290
- entry_SYSCALL_64_after_hwframe+0x49/0xbe
-RIP: 0033:0x462e99
-Code: f7 d8 64 89 02 b8 ff ff ff ff c3 66 0f 1f 44 00 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 bc ff ff ff f7 d8 64 89 01 48
-RSP: 002b:00007fe409dc0c58 EFLAGS: 00000246 ORIG_RAX: 00000000000000b0
-RAX: ffffffffffffffda RBX: 000000000073bf00 RCX: 0000000000462e99
-RDX: 0000000000000000 RSI: 0000000000000000 RDI: 00000000200000c0
-RBP: 0000000000000002 R08: 0000000000000000 R09: 0000000000000000
-R10: 0000000000000000 R11: 0000000000000246 R12: 00007fe409dc16bc
-R13: 00000000004bccaa R14: 00000000006f6bc8 R15: 00000000ffffffff
-Modules linked in: ssb(-) 3c59x nvme_core macvlan tap pata_hpt3x3 rt2x00pci null_blk tsc40 pm_notifier_error_inject notifier_error_inject mdio cdc_wdm nf_reject_ipv4 ath9k_common ath9k_hw ath pppox ppp_generic slhc ehci_platform wl12xx wlcore tps6507x_ts ioc4 nf_synproxy_core ide_gd_mod ax25 can_dev iwlwifi can_raw atm tm2_touchkey can_gw can sundance adp5588_keys rt2800mmio rt2800lib rt2x00mmio rt2x00lib eeprom_93cx6 pn533 lru_cache elants_i2c ip_set nfnetlink gameport tipc hampshire nhc_ipv6 nhc_hop nhc_udp nhc_fragment nhc_routing nhc_mobility nhc_dest 6lowpan silead brcmutil nfc mt76_usb mt76 mac80211 iptable_security iptable_raw iptable_mangle iptable_nat nf_nat_ipv4 nf_nat nf_conntrack nf_defrag_ipv6 nf_defrag_ipv4 iptable_filter bpfilter ip6_vti ip_gre sit hsr veth vxcan batman_adv cfg80211 rfkill chnl_net caif nlmon vcan bridge stp llc ip6_gre ip6_tunnel tunnel6 tun joydev mousedev serio_raw ide_pci_generic piix floppy ide_core sch_fq_codel ip_tables x_tables ipv6
- [last unloaded: 3c59x]
-Dumping ftrace buffer:
-   (ftrace buffer empty)
----[ end trace 3913cbf8011e1c05 ]---
-
-In ssb_modinit, it does not fail SSB init when ssb_host_pcmcia_init failed,
-however in ssb_modexit, ssb_host_pcmcia_exit calls pcmcia_unregister_driver
-unconditionally, which may tigger a NULL pointer dereference issue as above.
-
-Reported-by: Hulk Robot <hulkci@huawei.com>
-Fixes: 399500da18f7 ("ssb: pick PCMCIA host code support from b43 driver")
-Signed-off-by: YueHaibing <yuehaibing@huawei.com>
-Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- drivers/ssb/bridge_pcmcia_80211.c | 9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/ssb/bridge_pcmcia_80211.c b/drivers/ssb/bridge_pcmcia_80211.c
-index d70568ea02d53..2ff7d90e166ac 100644
---- a/drivers/ssb/bridge_pcmcia_80211.c
-+++ b/drivers/ssb/bridge_pcmcia_80211.c
-@@ -113,16 +113,21 @@ static struct pcmcia_driver ssb_host_pcmcia_driver = {
- 	.resume		= ssb_host_pcmcia_resume,
- };
- 
-+static int pcmcia_init_failed;
-+
- /*
-  * These are not module init/exit functions!
-  * The module_pcmcia_driver() helper cannot be used here.
-  */
- int ssb_host_pcmcia_init(void)
- {
--	return pcmcia_register_driver(&ssb_host_pcmcia_driver);
-+	pcmcia_init_failed = pcmcia_register_driver(&ssb_host_pcmcia_driver);
-+
-+	return pcmcia_init_failed;
- }
- 
- void ssb_host_pcmcia_exit(void)
- {
--	pcmcia_unregister_driver(&ssb_host_pcmcia_driver);
-+	if (!pcmcia_init_failed)
-+		pcmcia_unregister_driver(&ssb_host_pcmcia_driver);
- }
--- 
-2.20.1
-
+Thanks,
+Nathan
