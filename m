@@ -2,175 +2,88 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 9D47528139
-	for <lists+linux-wireless@lfdr.de>; Thu, 23 May 2019 17:31:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 920A528400
+	for <lists+linux-wireless@lfdr.de>; Thu, 23 May 2019 18:42:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730932AbfEWPba (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 23 May 2019 11:31:30 -0400
-Received: from mail-ed1-f66.google.com ([209.85.208.66]:36756 "EHLO
-        mail-ed1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730760AbfEWPb3 (ORCPT
+        id S1731212AbfEWQme (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 23 May 2019 12:42:34 -0400
+Received: from mail-lj1-f195.google.com ([209.85.208.195]:37116 "EHLO
+        mail-lj1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1731107AbfEWQme (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 23 May 2019 11:31:29 -0400
-Received: by mail-ed1-f66.google.com with SMTP id a8so9831471edx.3;
-        Thu, 23 May 2019 08:31:28 -0700 (PDT)
+        Thu, 23 May 2019 12:42:34 -0400
+Received: by mail-lj1-f195.google.com with SMTP id h19so635264ljj.4
+        for <linux-wireless@vger.kernel.org>; Thu, 23 May 2019 09:42:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=PiGyHyQZ8LHM1OYtHic8yAJxd7r19cMB3vpmM17O/Tk=;
-        b=OEstBFl6Pv5yiCjvX2V1LFuTtKFeAPY5Fm3hPe3+FLcRM7XuCG8Rst9B6j85OMvBUy
-         /0pQxT9n5M4qEqyib/2VTTznI1oVtk5L6U0XJgZne/3lkTey62apoBzMCFB8MCA6ezJ+
-         Qy6W1JIBKMbzyMjRrDghrsGeWh1rNQ6/619CVIy21T1T7/KqUmsYi6FZbZV185/l7JFO
-         WjBwfDLYbLemYGGYODwvap1dXV0XtscTFei7zPDjNSueCQLzrdf8Y2/ZU+CmdnTdQFQH
-         1mrLMioFHh3XM9DNbX/mfpcouT6Kt30Q0Sko7jSlGRL3qR5UccTHFjO0JLi0kcOIUDR1
-         RDaQ==
+        d=chromium.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=omMwdyh9wtTqdxcHIQUMSQldil51FIXUWgVsjyb0s0U=;
+        b=KUnSmQpJU2YN62tQE6JYfetN+ZdS1twcY6q48/iMfV30g6wIKl6c8Ssfq7ZiOO88K3
+         tYeuZhe7uq5JD94F9pMqxbamfhlyD1Ub+7i16SPX+o9y25B/4lLYDIgH4iQ4+jBTXhqe
+         +ePBlAZA+gI3aI2xDAcYYorH6l0LiB+rHj0ac=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=PiGyHyQZ8LHM1OYtHic8yAJxd7r19cMB3vpmM17O/Tk=;
-        b=O9S4c7/dzmovZiKzk3P4O/zmTOIn9fw5Z1RTyhTEov/pQ+Zn7VAYA0Q3bvOTHb5urn
-         KA3/BicGjtROV8ZUirl3Lp3dmFrjjL/119paOW9EtBYHmqRyNKsNy69JJ0ylV1SdRAvp
-         jtw0U/6qzuQwXE+d1i/FcIlvoxfwL1Xvzn/CzgYFDw1RDNl8R8roVXV+PgUU0CXPT1Yw
-         F5zrB6fWeUUTV2dndMxqG4NrLAu0Jy125EoQ2j6XpH/mD/RwlOeCu+mlybajo/+nc5CY
-         VNFg+otLnDHF3uP2RFxox6YeDbpJb9tQs6WXTHnWfLhARHT2TSgQF+F7RnRwbKM4obGg
-         Pb3g==
-X-Gm-Message-State: APjAAAW/eG0cfl6eFFaUz3P5KqzeIgSD0o4fTXoNL4MemCnPaia749eh
-        GUdfI/B3vf7nRf05ySwIic0=
-X-Google-Smtp-Source: APXvYqziauBYmeiv1KJjJonuVENYXzwdeuIYXeli6zRcLXfp+aqM29rGxkCEPB7y4q2vIDY2TbsO7Q==
-X-Received: by 2002:a50:bb24:: with SMTP id y33mr97321551ede.116.1558625487453;
-        Thu, 23 May 2019 08:31:27 -0700 (PDT)
-Received: from localhost.localdomain ([2a01:4f9:2b:2b15::2])
-        by smtp.gmail.com with ESMTPSA id c20sm4498011ejr.69.2019.05.23.08.31.26
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Thu, 23 May 2019 08:31:26 -0700 (PDT)
-From:   Nathan Chancellor <natechancellor@gmail.com>
-To:     Amitkumar Karwar <amitkarwar@gmail.com>,
-        Siva Rebbagondla <siva8118@gmail.com>,
-        Kalle Valo <kvalo@codeaurora.org>
-Cc:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>,
-        Nick Desaulniers <ndesaulniers@google.com>,
-        clang-built-linux@googlegroups.com,
-        Nathan Chancellor <natechancellor@gmail.com>
-Subject: [PATCH v2 5.2] rsi: Properly initialize data in rsi_sdio_ta_reset
-Date:   Thu, 23 May 2019 08:30:08 -0700
-Message-Id: <20190523153007.112231-1-natechancellor@gmail.com>
-X-Mailer: git-send-email 2.22.0.rc1
-In-Reply-To: <20190502151548.11143-1-natechancellor@gmail.com>
-References: <20190502151548.11143-1-natechancellor@gmail.com>
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=omMwdyh9wtTqdxcHIQUMSQldil51FIXUWgVsjyb0s0U=;
+        b=VdRiRJWzqIVp49/QpujDv180j6UK7PY17YYvQBs0o/UqxXxmWtH6W3XqUKc8QDpxyS
+         IOiya6177kVUxHmXrMmVNxhPmmHK+9lKRV2GlMUDUHtyJGCVhfeK60iROIgIQsm/gWBM
+         +aSpK+lilekxFs1vEV5dLojR829ibfBxWFZdlqEPHQvVz3XL7Zck9DAkQRjzF4BSyeHW
+         lcde02rV54CyqMnnpOZvThFXUYViZW3HY67TEk3wSZ1KlzyjiusNF1WZ66DD3OUWmrBn
+         lh/Q2Jb8iYG98/siLjfGs02Z1W+GO1eKOHpptmPB9trCo+WyforPa1VpMJKLsdrnPuFS
+         g74Q==
+X-Gm-Message-State: APjAAAVDa/9E5sBuHeyVlWvrcqr+iK3MqVMzOIwBQocJG9TE3tndYwEG
+        U7CZkhCOZ0CatCUjOMVwIswg9m5UPLE=
+X-Google-Smtp-Source: APXvYqzC/IHrsv9vaPA61rgIQTp6Aqe3NVhwC5t/7UCz6wZIFMgPL84BCbDJ2P91dL9yEikSb0d9fw==
+X-Received: by 2002:a2e:98d5:: with SMTP id s21mr30557724ljj.142.1558629751628;
+        Thu, 23 May 2019 09:42:31 -0700 (PDT)
+Received: from mail-lj1-f170.google.com (mail-lj1-f170.google.com. [209.85.208.170])
+        by smtp.gmail.com with ESMTPSA id v16sm5972251lji.88.2019.05.23.09.42.30
+        for <linux-wireless@vger.kernel.org>
+        (version=TLS1_3 cipher=AEAD-AES128-GCM-SHA256 bits=128/128);
+        Thu, 23 May 2019 09:42:30 -0700 (PDT)
+Received: by mail-lj1-f170.google.com with SMTP id 14so6115075ljj.5
+        for <linux-wireless@vger.kernel.org>; Thu, 23 May 2019 09:42:30 -0700 (PDT)
+X-Received: by 2002:a2e:9849:: with SMTP id e9mr381999ljj.185.1558629750272;
+ Thu, 23 May 2019 09:42:30 -0700 (PDT)
 MIME-Version: 1.0
-X-Patchwork-Bot: notify
-Content-Transfer-Encoding: 8bit
+References: <20190523071534.254611-1-tientzu@chromium.org>
+In-Reply-To: <20190523071534.254611-1-tientzu@chromium.org>
+From:   Brian Norris <briannorris@chromium.org>
+Date:   Thu, 23 May 2019 09:42:18 -0700
+X-Gmail-Original-Message-ID: <CA+ASDXMaKpMWnLnKxeft-8eKfpM6qGDsmEzvh290JCCjeRRtxQ@mail.gmail.com>
+Message-ID: <CA+ASDXMaKpMWnLnKxeft-8eKfpM6qGDsmEzvh290JCCjeRRtxQ@mail.gmail.com>
+Subject: Re: [PATCH] ath10k: add missing error handling
+To:     Claire Chang <tientzu@chromium.org>
+Cc:     Kalle Valo <kvalo@codeaurora.org>, ath10k@lists.infradead.org,
+        linux-wireless <linux-wireless@vger.kernel.org>,
+        Wen Gong <wgong@codeaurora.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-When building with -Wuninitialized, Clang warns:
+On Thu, May 23, 2019 at 12:15 AM Claire Chang <tientzu@chromium.org> wrote:
+> --- a/drivers/net/wireless/ath/ath10k/sdio.c
+> +++ b/drivers/net/wireless/ath/ath10k/sdio.c
+> @@ -607,6 +607,10 @@ static int ath10k_sdio_mbox_rx_alloc(struct ath10k *ar,
+>                                                     full_len,
+>                                                     last_in_bundle,
+>                                                     last_in_bundle);
+> +               if (ret) {
 
-drivers/net/wireless/rsi/rsi_91x_sdio.c:940:43: warning: variable 'data'
-is uninitialized when used here [-Wuninitialized]
-        put_unaligned_le32(TA_HOLD_THREAD_VALUE, data);
-                                                 ^~~~
-drivers/net/wireless/rsi/rsi_91x_sdio.c:930:10: note: initialize the
-variable 'data' to silence this warning
-        u8 *data;
-                ^
-                 = NULL
-1 warning generated.
+IIUC, you have basically the same failure case a few lines up, where
+ath10k_sdio_mbox_alloc_pkt_bundle() may fail. Do the same there?
 
-Using Clang's suggestion of initializing data to NULL wouldn't work out
-because data will be dereferenced by put_unaligned_le32. Use kzalloc to
-properly initialize data, which matches a couple of other places in this
-driver.
+This (including the error label to which it's jumping) looks fine to me though:
 
-Fixes: e5a1ecc97e5f ("rsi: add firmware loading for 9116 device")
-Link: https://github.com/ClangBuiltLinux/linux/issues/464
-Signed-off-by: Nathan Chancellor <natechancellor@gmail.com>
----
+Reviewed-by: Brian Norris <briannorris@chromium.org>
 
-v1 -> v2:
-
-* Use RSI_9116_REG_SIZE instead of sizeof(u32) for kzalloc thanks to
-  review from Arnd.
-
- drivers/net/wireless/rsi/rsi_91x_sdio.c | 21 ++++++++++++++-------
- 1 file changed, 14 insertions(+), 7 deletions(-)
-
-diff --git a/drivers/net/wireless/rsi/rsi_91x_sdio.c b/drivers/net/wireless/rsi/rsi_91x_sdio.c
-index f9c67ed473d1..b42cd50b837e 100644
---- a/drivers/net/wireless/rsi/rsi_91x_sdio.c
-+++ b/drivers/net/wireless/rsi/rsi_91x_sdio.c
-@@ -929,11 +929,15 @@ static int rsi_sdio_ta_reset(struct rsi_hw *adapter)
- 	u32 addr;
- 	u8 *data;
- 
-+	data = kzalloc(RSI_9116_REG_SIZE, GFP_KERNEL);
-+	if (!data)
-+		return -ENOMEM;
-+
- 	status = rsi_sdio_master_access_msword(adapter, TA_BASE_ADDR);
- 	if (status < 0) {
- 		rsi_dbg(ERR_ZONE,
- 			"Unable to set ms word to common reg\n");
--		return status;
-+		goto err;
- 	}
- 
- 	rsi_dbg(INIT_ZONE, "%s: Bring TA out of reset\n", __func__);
-@@ -944,7 +948,7 @@ static int rsi_sdio_ta_reset(struct rsi_hw *adapter)
- 						  RSI_9116_REG_SIZE);
- 	if (status < 0) {
- 		rsi_dbg(ERR_ZONE, "Unable to hold TA threads\n");
--		return status;
-+		goto err;
- 	}
- 
- 	put_unaligned_le32(TA_SOFT_RST_CLR, data);
-@@ -954,7 +958,7 @@ static int rsi_sdio_ta_reset(struct rsi_hw *adapter)
- 						  RSI_9116_REG_SIZE);
- 	if (status < 0) {
- 		rsi_dbg(ERR_ZONE, "Unable to get TA out of reset\n");
--		return status;
-+		goto err;
- 	}
- 
- 	put_unaligned_le32(TA_PC_ZERO, data);
-@@ -964,7 +968,8 @@ static int rsi_sdio_ta_reset(struct rsi_hw *adapter)
- 						  RSI_9116_REG_SIZE);
- 	if (status < 0) {
- 		rsi_dbg(ERR_ZONE, "Unable to Reset TA PC value\n");
--		return -EINVAL;
-+		status = -EINVAL;
-+		goto err;
- 	}
- 
- 	put_unaligned_le32(TA_RELEASE_THREAD_VALUE, data);
-@@ -974,17 +979,19 @@ static int rsi_sdio_ta_reset(struct rsi_hw *adapter)
- 						  RSI_9116_REG_SIZE);
- 	if (status < 0) {
- 		rsi_dbg(ERR_ZONE, "Unable to release TA threads\n");
--		return status;
-+		goto err;
- 	}
- 
- 	status = rsi_sdio_master_access_msword(adapter, MISC_CFG_BASE_ADDR);
- 	if (status < 0) {
- 		rsi_dbg(ERR_ZONE, "Unable to set ms word to common reg\n");
--		return status;
-+		goto err;
- 	}
- 	rsi_dbg(INIT_ZONE, "***** TA Reset done *****\n");
- 
--	return 0;
-+err:
-+	kfree(data);
-+	return status;
- }
- 
- static struct rsi_host_intf_ops sdio_host_intf_ops = {
--- 
-2.22.0.rc1
-
+> +                       ath10k_warn(ar, "alloc_rx_pkt error %d\n", ret);
+> +                       goto err;
+> +               }
+>         }
+>
+>         ar_sdio->n_rx_pkts = i;
