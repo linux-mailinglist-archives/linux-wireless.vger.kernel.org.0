@@ -2,75 +2,135 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 77B3828DB2
-	for <lists+linux-wireless@lfdr.de>; Fri, 24 May 2019 01:18:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 19B4C28F3A
+	for <lists+linux-wireless@lfdr.de>; Fri, 24 May 2019 04:43:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2387981AbfEWXS2 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 23 May 2019 19:18:28 -0400
-Received: from mail-lj1-f196.google.com ([209.85.208.196]:45125 "EHLO
-        mail-lj1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2387693AbfEWXS1 (ORCPT
+        id S2388064AbfEXCnZ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 23 May 2019 22:43:25 -0400
+Received: from mail-pl1-f193.google.com ([209.85.214.193]:37592 "EHLO
+        mail-pl1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2387921AbfEXCnY (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 23 May 2019 19:18:27 -0400
-Received: by mail-lj1-f196.google.com with SMTP id r76so1539381lja.12
-        for <linux-wireless@vger.kernel.org>; Thu, 23 May 2019 16:18:26 -0700 (PDT)
+        Thu, 23 May 2019 22:43:24 -0400
+Received: by mail-pl1-f193.google.com with SMTP id p15so3535082pll.4;
+        Thu, 23 May 2019 19:43:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=C2BTRxtLLw78fa6kno1i9B0/BXhxWW4AzWK5CCqXNE8=;
-        b=NfOm5pkktYdxYTbFoiBlpz4z5rB5egdzlT1fh+Q4OtzA9ZT/k3fC/AD0iOPnBmiaVK
-         0WGZxfHoR1cwJUDilgEm7Q6p9eCbJXzhzxikXfdglcu7yisAsZwmBwojvr1mq20W1ime
-         n7bXgYgqrqA98cTQ5W13KizyuLQZNJ0xQnmMU=
+        d=gmail.com; s=20161025;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=FL96OWjGjcZazAQC1Z3siZkSXdl0SwuUzJLZikcp/Hw=;
+        b=tjePZEjMOCilcX+1AimSHAvkEpIIKcT32GMGbPNHoHaZcEJO8pSPzwX/lV+4h4ttyX
+         6j9g8Dhqvu7nxpTNQcwvdkzmcKWYS4sGLfeeG7qDuxf7m415pvnWXoYxie9fsbnOlGTr
+         SBkvpqOxdMOKtZobvDBVTB1tE8RXvgg6WmFqSUpedADnfhrhDDXtxL1o6puhJ5Vjr3LT
+         +TtRVSqeXxA2IByIYDmrpKUxyCgbou3Cx9gv/OXQfIJBAH0t8xFAxgnxIz5l4hdbuOdR
+         TXHcNHzvtIVUN32sMZHL8yXVktbzv6BtHkcdY7ghPngXX2h9b3pNDVz8Ac2+zDTtbh8A
+         tAJg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=C2BTRxtLLw78fa6kno1i9B0/BXhxWW4AzWK5CCqXNE8=;
-        b=AmSqtOuldiGAtRe2zdE/uPK1r1zwBtA7f8NRlvaCmoF1KNLBlG9YNq5iOtG8bAv+Kc
-         JvJZmILRoyXUN11dZDnb7ydl4SZWjafL75mvQ9tv4o2cai7R5gZGdGkZvyBajufENNHs
-         CUSMtn1TNRUX5IIsCmODHmMahQcWisIhwPT42GQ3BKzeZFEG9sEeYXebOOeFlyYIak/T
-         iSpqg3nGNO5eWEwtmOKQ8scVDotjFBsmJfRSFtXfvxBMU1uJiqGoB4KTTTv0b1XEuPVu
-         +o0FZXzUGvpIElNaJyRBefF/Wa75RbATqRnP/9k0rTyzrGZhk4P6OVf4JAVdwkpunojL
-         23SQ==
-X-Gm-Message-State: APjAAAX8ziXhTiYcVsUi68U6Ou5FInZz2ozPn5dzfBmPBL70R/totQPN
-        93tndaQqm7GJgh42MOB+6JIGONywtFQ=
-X-Google-Smtp-Source: APXvYqzH1rYnigqrLiXXz2PeYcsStxRgoQ6JZ1HXTEn57sBXPhvkS6C+llYLvv7YYfdm/s4Tt2yBbw==
-X-Received: by 2002:a2e:914d:: with SMTP id q13mr29938419ljg.140.1558653505074;
-        Thu, 23 May 2019 16:18:25 -0700 (PDT)
-Received: from mail-lj1-f173.google.com (mail-lj1-f173.google.com. [209.85.208.173])
-        by smtp.gmail.com with ESMTPSA id p3sm247511lfh.27.2019.05.23.16.18.23
-        for <linux-wireless@vger.kernel.org>
-        (version=TLS1_3 cipher=AEAD-AES128-GCM-SHA256 bits=128/128);
-        Thu, 23 May 2019 16:18:23 -0700 (PDT)
-Received: by mail-lj1-f173.google.com with SMTP id j24so7026193ljg.1
-        for <linux-wireless@vger.kernel.org>; Thu, 23 May 2019 16:18:23 -0700 (PDT)
-X-Received: by 2002:a2e:9849:: with SMTP id e9mr1249837ljj.185.1558653502848;
- Thu, 23 May 2019 16:18:22 -0700 (PDT)
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=FL96OWjGjcZazAQC1Z3siZkSXdl0SwuUzJLZikcp/Hw=;
+        b=PU9F6DvHHZW02gDbVruFTjT+36lBm8bw0OUO1v7TuZT/tFf1fKOe2U7afIB7WRCrw4
+         jsA4kFckMStRB3CUQT5z4bsIs/eT1Fu1OAbIK/D6ic4XGFmybW2eEdMFx2DB9bBqjy7b
+         /iqw460xCojbDmbOHpHtIgfMSTDl4N0+OHDMMQdrWoj5sGosYICbTvUg37ISGvEQIhOB
+         9vVSYC58z5LTPeAdtsiTzCOBaKt/syTr6UxrTufdru2V/SQdqT82VF7LySiMfPjV181M
+         llXpsCtwX4G6eDVtfKdDFiUg8hjli7s+QLH5EZ/g55KtXHH8I58aM4GQHqHKEXdX2x3T
+         b43Q==
+X-Gm-Message-State: APjAAAUI2f/6T0qXKiD0Xvq8jBCR0JSr8BYF80/hHRu9tLibshSMcjtF
+        Mr+1CEtdfQzus+1lxWvzPvTZqoOYFxQ=
+X-Google-Smtp-Source: APXvYqw32qj9q34/35k79W04/iywkYz/YBpdBqrQy7r6HlVSYyCUHYMUNjnnDhwTrLHMsraqygRV5w==
+X-Received: by 2002:a17:902:8ec3:: with SMTP id x3mr47512107plo.340.1558665802696;
+        Thu, 23 May 2019 19:43:22 -0700 (PDT)
+Received: from zhanggen-UX430UQ ([66.42.35.75])
+        by smtp.gmail.com with ESMTPSA id r77sm645844pgr.93.2019.05.23.19.43.15
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Thu, 23 May 2019 19:43:22 -0700 (PDT)
+Date:   Fri, 24 May 2019 10:43:07 +0800
+From:   Gen Zhang <blackgod016574@gmail.com>
+To:     Kalle Valo <kvalo@codeaurora.org>
+Cc:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: [PATCH v2] wlcore: sdio: Fix a memory leaking bug in wl1271_probe()
+Message-ID: <20190524024307.GA5639@zhanggen-UX430UQ>
+References: <20190523144425.GA26766@zhanggen-UX430UQ>
+ <87d0k9b4hm.fsf@kamboji.qca.qualcomm.com>
 MIME-Version: 1.0
-References: <20190523071534.254611-1-tientzu@chromium.org> <CA+ASDXMaKpMWnLnKxeft-8eKfpM6qGDsmEzvh290JCCjeRRtxQ@mail.gmail.com>
-In-Reply-To: <CA+ASDXMaKpMWnLnKxeft-8eKfpM6qGDsmEzvh290JCCjeRRtxQ@mail.gmail.com>
-From:   Brian Norris <briannorris@chromium.org>
-Date:   Thu, 23 May 2019 16:18:11 -0700
-X-Gmail-Original-Message-ID: <CA+ASDXPn4fJeqnupzXqJqqCiSZfKqD827OUHg+VFrENfjrLzqQ@mail.gmail.com>
-Message-ID: <CA+ASDXPn4fJeqnupzXqJqqCiSZfKqD827OUHg+VFrENfjrLzqQ@mail.gmail.com>
-Subject: Re: [PATCH] ath10k: add missing error handling
-To:     Claire Chang <tientzu@chromium.org>
-Cc:     Kalle Valo <kvalo@codeaurora.org>, ath10k@lists.infradead.org,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        Wen Gong <wgong@codeaurora.org>,
-        Erik Stromdahl <erik.stromdahl@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <87d0k9b4hm.fsf@kamboji.qca.qualcomm.com>
+User-Agent: Mutt/1.5.24 (2015-08-30)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Thu, May 23, 2019 at 9:42 AM Brian Norris <briannorris@chromium.org> wrote:
-> IIUC, you have basically the same failure case a few lines up, where
-> ath10k_sdio_mbox_alloc_pkt_bundle() may fail. Do the same there?
+In wl1271_probe(), 'glue->core' is allocated by platform_device_alloc(),
+when this allocation fails, ENOMEM is returned. However, 'pdev_data'
+and 'glue' are allocated by devm_kzalloc() before 'glue->core'. When
+platform_device_alloc() returns NULL, we should also free 'pdev_data'
+and 'glue' before wl1271_probe() ends to prevent leaking memory.
 
-Oh, I see Erik Stromdahl already got that one:
+Similarly, we should free 'pdev_data' when 'glue' is NULL. And we
+should free 'pdev_data' and 'glue' when 'ret' is error.
 
-ath10k: sdio: add missing error check
-https://patchwork.kernel.org/patch/10906009/
+Further, we shoulf free 'glue->dev', 'pdev_data' and 'glue' when this
+function normally ends to prevent memory leaking.
+
+Signed-off-by: Gen Zhang <blackgod016574@gmail.com>
+---
+diff --git a/drivers/net/wireless/ti/wlcore/sdio.c b/drivers/net/wireless/ti/wlcore/sdio.c
+index 4d4b0770..9110891 100644
+--- a/drivers/net/wireless/ti/wlcore/sdio.c
++++ b/drivers/net/wireless/ti/wlcore/sdio.c
+@@ -298,8 +298,10 @@ static int wl1271_probe(struct sdio_func *func,
+ 	pdev_data->if_ops = &sdio_ops;
+ 
+ 	glue = devm_kzalloc(&func->dev, sizeof(*glue), GFP_KERNEL);
+-	if (!glue)
+-		return -ENOMEM;
++	if (!glue) {
++		ret = -ENOMEM;
++		goto out_free1;
++	}
+ 
+ 	glue->dev = &func->dev;
+ 
+@@ -311,7 +313,7 @@ static int wl1271_probe(struct sdio_func *func,
+ 
+ 	ret = wlcore_probe_of(&func->dev, &irq, &wakeirq, pdev_data);
+ 	if (ret)
+-		goto out;
++		goto out_free2;
+ 
+ 	/* if sdio can keep power while host is suspended, enable wow */
+ 	mmcflags = sdio_get_host_pm_caps(func);
+@@ -340,7 +342,7 @@ static int wl1271_probe(struct sdio_func *func,
+ 	if (!glue->core) {
+ 		dev_err(glue->dev, "can't allocate platform_device");
+ 		ret = -ENOMEM;
+-		goto out;
++		goto out_free2;
+ 	}
+ 
+ 	glue->core->dev.parent = &func->dev;
+@@ -380,12 +382,17 @@ static int wl1271_probe(struct sdio_func *func,
+ 		dev_err(glue->dev, "can't add platform device\n");
+ 		goto out_dev_put;
+ 	}
+-	return 0;
++	ret = 0;
+ 
+ out_dev_put:
+ 	platform_device_put(glue->core);
+ 
+-out:
++out_free2:
++	devm_kfree(&func->dev, glue);
++
++out_free1:
++	devm_kfree(&func->dev, pdev_data);
++
+ 	return ret;
+ }
+ 
+---
