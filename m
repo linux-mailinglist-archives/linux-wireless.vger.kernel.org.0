@@ -2,159 +2,124 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 832A628F5F
-	for <lists+linux-wireless@lfdr.de>; Fri, 24 May 2019 05:02:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9118228F82
+	for <lists+linux-wireless@lfdr.de>; Fri, 24 May 2019 05:16:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2387940AbfEXDCr (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 23 May 2019 23:02:47 -0400
-Received: from mail-pg1-f196.google.com ([209.85.215.196]:46788 "EHLO
-        mail-pg1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2387408AbfEXDCq (ORCPT
+        id S1731551AbfEXDQn (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 23 May 2019 23:16:43 -0400
+Received: from smtp.codeaurora.org ([198.145.29.96]:33594 "EHLO
+        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1731490AbfEXDQn (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 23 May 2019 23:02:46 -0400
-Received: by mail-pg1-f196.google.com with SMTP id o11so4001952pgm.13;
-        Thu, 23 May 2019 20:02:46 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=date:from:to:cc:subject:message-id:mime-version:content-disposition
-         :user-agent;
-        bh=9i4cdB60faPnhj45QCC3TV0kbSmOz80HuRNljtezoro=;
-        b=Pl6kuPKCqT2Q2oqWLMY2G/Aqvgnsz1h3rLNo9Ip+f9K51gbOm4wbz4gzPIh23B4zFt
-         de0y8r8yLnm3vrKDEWnPBcABSrqVskubxL6cCsSlrxHKVUTt8u3oYJL9Thh8UEHrNfav
-         95GYHvUmUtKe15ViJGyKHxPtAgSCFPmKWL2Y69uhBVG7HR/5FPJY0crXj5ov2e8OKZrL
-         YZvvfdWJ9zrwUBTu65KHkfVsX36i09gyOtxEVN01SPznbDnETM2CzOvCeCgxs0kX8Uvg
-         eLzcUUHht/UaG+ZFqXyOZ1cRuc7X3TDMM0m+/AT+avXiAp+RowA83sUCkju/J3odSk7W
-         agYg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:mime-version
-         :content-disposition:user-agent;
-        bh=9i4cdB60faPnhj45QCC3TV0kbSmOz80HuRNljtezoro=;
-        b=MffBXsMNSlzxP29rE85Ekcy1r2wkEGCdaIVqWlAfet2Y6fp+3tGrnAt1gg6EmSJeJq
-         LTqoUJ8InV8ZKBhR3D82ufb1r+0kPyEi6upzve30FhxUK69B4rN9x/OeHhL2Sn/QYz76
-         FPGOp6Ja3CVS88xelXieUI1foTIlttsIqcWxun3PgkFSFd3SvKIy1pZviu/YLvLsb+1r
-         W0s3junLaTM8FRvJS60lU5QV5rDqgIL+N0zlnujS7xUfvFy4GYAe7V9316xob44KN0jn
-         SGkza8BFx7Se04z743O6xYdboOZUaysNkB8UDW0wfPL1Eq9gI29c4gHD4C8ybipKfIzH
-         rGzg==
-X-Gm-Message-State: APjAAAWKNqL2id9bNtv8nyL7GiMYviAbRBo29CF6Lk1W0BM4gj2QEfZV
-        8f2Yto9dB48o5dEzy64acEg=
-X-Google-Smtp-Source: APXvYqxFnZzo4mqSLdYWWn4mWlqTNetxBxGG8ORG2e9Mz6qv9InBYuy1nKjifzuIF79F+cfmc+Zk1g==
-X-Received: by 2002:a65:62d8:: with SMTP id m24mr8026193pgv.141.1558666965582;
-        Thu, 23 May 2019 20:02:45 -0700 (PDT)
-Received: from zhanggen-UX430UQ ([66.42.35.75])
-        by smtp.gmail.com with ESMTPSA id e184sm857669pfa.169.2019.05.23.20.02.40
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Thu, 23 May 2019 20:02:45 -0700 (PDT)
-Date:   Fri, 24 May 2019 11:02:35 +0800
-From:   Gen Zhang <blackgod016574@gmail.com>
-To:     kvalo@codeaurora.org, davem@davemloft.net
-Cc:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: [PATCH] wlcore: spi: Fix a memory leaking bug in wl1271_probe()
-Message-ID: <20190524030117.GA6024@zhanggen-UX430UQ>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.5.24 (2015-08-30)
+        Thu, 23 May 2019 23:16:43 -0400
+Received: by smtp.codeaurora.org (Postfix, from userid 1000)
+        id EF0B16087D; Fri, 24 May 2019 03:16:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
+        s=default; t=1558667802;
+        bh=KfH87lSkJ7hpFH9obuGjQSRv2pB4WFr3MC32uwO+sTQ=;
+        h=From:To:Cc:Subject:Date:From;
+        b=kIhf8neneuk7DcpISVKopnkCzP1+EKdClXCJpMYZhCB+P5tvTrRXvXgmd8QTxUbmS
+         IyBsQqPPgrYbIRbVCaqTHT07S3Kgy6sUOxQBLruQlLUxJBV+4RAaIxDtJgO7deHm0P
+         tmh89kAG+qy1eZao7LHpIu5L3QfK+zpJX79Sp7Bo=
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        pdx-caf-mail.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.7 required=2.0 tests=ALL_TRUSTED,BAYES_00,
+        DKIM_INVALID,DKIM_SIGNED,SPF_NONE autolearn=no autolearn_force=no
+        version=3.4.0
+Received: from smtp.codeaurora.org (unknown [180.166.53.21])
+        (using TLSv1 with cipher AES128-SHA (128/128 bits))
+        (No client certificate requested)
+        (Authenticated sender: miaoqing@smtp.codeaurora.org)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 8E86F602F8;
+        Fri, 24 May 2019 03:16:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
+        s=default; t=1558667801;
+        bh=KfH87lSkJ7hpFH9obuGjQSRv2pB4WFr3MC32uwO+sTQ=;
+        h=From:To:Cc:Subject:Date:From;
+        b=otJwjpLpFBb0TjQccYs/C+mI+3wpz8JagCeiS/hh4Ne5qXe6SU/bt7gFK3ba5k4iO
+         5S+rDmeYDv7kTL+JUWhj/yM2QM2xydxXtrZ5mRLvoHlLx4g8mu6Pu5c/reLucSNrzZ
+         //0KSV0TJv4HxnvFnxycXRsXp7+GbuPoiJHZYM+o=
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 8E86F602F8
+Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=miaoqing@codeaurora.org
+Received: by smtp.codeaurora.org (sSMTP sendmail emulation); Fri, 24 May 2019 11:16:30 +0800
+From:   Miaoqing Pan <miaoqing@codeaurora.org>
+To:     ath10k@lists.infradead.org
+Cc:     linux-wireless@vger.kernel.org,
+        Miaoqing Pan <miaoqing@codeaurora.org>
+Subject: [PATCH v2] ath10k: fix fw crash by moving chip reset after napi disabled
+Date:   Fri, 24 May 2019 11:16:22 +0800
+Message-Id: <1558667782-10998-1-git-send-email-miaoqing@codeaurora.org>
+X-Mailer: git-send-email 1.9.1
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-In wl1271_probe(), 'glue->core' is allocated by platform_device_alloc(),
-when this allocation fails, ENOMEM is returned. However, 'pdev_data'
-and 'glue' are allocated by devm_kzalloc() before 'glue->core'. When
-platform_device_alloc() returns NULL, we should also free 'pdev_data'
-and 'glue' before wl1271_probe() ends to prevent leaking memory.
+On SMP platform, when continuously running wifi up/down, the napi
+poll can be scheduled during chip reset, which will call
+ath10k_pci_has_fw_crashed() to check the fw status. But in the reset
+period, the value from FW_INDICATOR_ADDRESS register will return
+0xdeadbeef, which also be treated as fw crash. Fix the issue by
+moving chip reset after napi disabled.
 
-Similarly, we shoulf free 'pdev_data' when 'glue' is NULL. And we should
-free 'pdev_data' and 'glue' when 'glue->reg' is error and when 'ret' is
-error.
+ath10k_pci 0000:01:00.0: firmware crashed! (guid 73b30611-5b1e-4bdd-90b4-64c81eb947b6)
+ath10k_pci 0000:01:00.0: qca9984/qca9994 hw1.0 target 0x01000000 chip_id 0x00000000 sub 168c:cafe
+ath10k_pci 0000:01:00.0: htt-ver 2.2 wmi-op 6 htt-op 4 cal otp max-sta 512 raw 0 hwcrypto 1
+ath10k_pci 0000:01:00.0: failed to get memcpy hi address for firmware address 4: -16
+ath10k_pci 0000:01:00.0: failed to read firmware dump area: -16
+ath10k_pci 0000:01:00.0: Copy Engine register dump:
+ath10k_pci 0000:01:00.0: [00]: 0x0004a000   0   0   0   0
+ath10k_pci 0000:01:00.0: [01]: 0x0004a400   0   0   0   0
+ath10k_pci 0000:01:00.0: [02]: 0x0004a800   0   0   0   0
+ath10k_pci 0000:01:00.0: [03]: 0x0004ac00   0   0   0   0
+ath10k_pci 0000:01:00.0: [04]: 0x0004b000   0   0   0   0
+ath10k_pci 0000:01:00.0: [05]: 0x0004b400   0   0   0   0
+ath10k_pci 0000:01:00.0: [06]: 0x0004b800   0   0   0   0
+ath10k_pci 0000:01:00.0: [07]: 0x0004bc00   1   0   1   0
+ath10k_pci 0000:01:00.0: [08]: 0x0004c000   0   0   0   0
+ath10k_pci 0000:01:00.0: [09]: 0x0004c400   0   0   0   0
+ath10k_pci 0000:01:00.0: [10]: 0x0004c800   0   0   0   0
+ath10k_pci 0000:01:00.0: [11]: 0x0004cc00   0   0   0   0
 
-Further, we should free 'glue->core', 'pdev_data' and 'glue' when this 
-function normally ends to prevent leaking memory.
+Tested HW: QCA9984,QCA9887,WCN3990
 
-Signed-off-by: Gen Zhang <blackgod016574@gmail.com>
+Signed-off-by: Miaoqing Pan <miaoqing@codeaurora.org>
 ---
-diff --git a/drivers/net/wireless/ti/wlcore/spi.c b/drivers/net/wireless/ti/wlcore/spi.c
-index 62ce54a..ea0ec26 100644
---- a/drivers/net/wireless/ti/wlcore/spi.c
-+++ b/drivers/net/wireless/ti/wlcore/spi.c
-@@ -480,7 +480,7 @@ static int wl1271_probe(struct spi_device *spi)
- 	struct wl12xx_spi_glue *glue;
- 	struct wlcore_platdev_data *pdev_data;
- 	struct resource res[1];
--	int ret;
-+	int ret = -ENOMEM;
- 
- 	pdev_data = devm_kzalloc(&spi->dev, sizeof(*pdev_data), GFP_KERNEL);
- 	if (!pdev_data)
-@@ -491,7 +491,8 @@ static int wl1271_probe(struct spi_device *spi)
- 	glue = devm_kzalloc(&spi->dev, sizeof(*glue), GFP_KERNEL);
- 	if (!glue) {
- 		dev_err(&spi->dev, "can't allocate glue\n");
--		return -ENOMEM;
-+		ret = -ENOMEM;
-+		goto out_free1;
- 	}
- 
- 	glue->dev = &spi->dev;
-@@ -503,31 +504,35 @@ static int wl1271_probe(struct spi_device *spi)
- 	spi->bits_per_word = 32;
- 
- 	glue->reg = devm_regulator_get(&spi->dev, "vwlan");
--	if (PTR_ERR(glue->reg) == -EPROBE_DEFER)
--		return -EPROBE_DEFER;
-+	if (PTR_ERR(glue->reg) == -EPROBE_DEFER) {
-+		ret = -EPROBE_DEFER;
-+		goto out_free2;
-+	}
- 	if (IS_ERR(glue->reg)) {
- 		dev_err(glue->dev, "can't get regulator\n");
--		return PTR_ERR(glue->reg);
-+		ret = PTR_ERR(glue->reg);
-+		goto out_free2;
- 	}
- 
- 	ret = wlcore_probe_of(spi, glue, pdev_data);
- 	if (ret) {
- 		dev_err(glue->dev,
- 			"can't get device tree parameters (%d)\n", ret);
--		return ret;
-+		goto out_free2;
- 	}
- 
- 	ret = spi_setup(spi);
- 	if (ret < 0) {
- 		dev_err(glue->dev, "spi_setup failed\n");
--		return ret;
-+		goto out_free2;
- 	}
- 
- 	glue->core = platform_device_alloc(pdev_data->family->name,
- 					   PLATFORM_DEVID_AUTO);
- 	if (!glue->core) {
- 		dev_err(glue->dev, "can't allocate platform_device\n");
--		return -ENOMEM;
-+		ret = -ENOMEM;
-+		goto out_free2;
- 	}
- 
- 	glue->core->dev.parent = &spi->dev;
-@@ -557,10 +562,14 @@ static int wl1271_probe(struct spi_device *spi)
- 		goto out_dev_put;
- 	}
- 
--	return 0;
-+	ret =  0;
- 
- out_dev_put:
- 	platform_device_put(glue->core);
-+out_free2:
-+	devm_kfree(&func->dev, glue);
-+out_free1:
-+	devm_kfree(&func->dev, pdev_data);
- 	return ret;
- }
- 
+Changes since v1:
+- update commit message
 ---
+ drivers/net/wireless/ath/ath10k/pci.c | 9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
+
+diff --git a/drivers/net/wireless/ath/ath10k/pci.c b/drivers/net/wireless/ath/ath10k/pci.c
+index 2bd6cba..80bcb2e 100644
+--- a/drivers/net/wireless/ath/ath10k/pci.c
++++ b/drivers/net/wireless/ath/ath10k/pci.c
+@@ -2059,6 +2059,11 @@ static void ath10k_pci_hif_stop(struct ath10k *ar)
+ 
+ 	ath10k_dbg(ar, ATH10K_DBG_BOOT, "boot hif stop\n");
+ 
++	ath10k_pci_irq_disable(ar);
++	ath10k_pci_irq_sync(ar);
++	napi_synchronize(&ar->napi);
++	napi_disable(&ar->napi);
++
+ 	/* Most likely the device has HTT Rx ring configured. The only way to
+ 	 * prevent the device from accessing (and possible corrupting) host
+ 	 * memory is to reset the chip now.
+@@ -2072,10 +2077,6 @@ static void ath10k_pci_hif_stop(struct ath10k *ar)
+ 	 */
+ 	ath10k_pci_safe_chip_reset(ar);
+ 
+-	ath10k_pci_irq_disable(ar);
+-	ath10k_pci_irq_sync(ar);
+-	napi_synchronize(&ar->napi);
+-	napi_disable(&ar->napi);
+ 	ath10k_pci_flush(ar);
+ 
+ 	spin_lock_irqsave(&ar_pci->ps_lock, flags);
+-- 
+1.9.1
+
