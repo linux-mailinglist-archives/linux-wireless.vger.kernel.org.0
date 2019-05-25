@@ -2,108 +2,89 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 6E44B2A2B0
-	for <lists+linux-wireless@lfdr.de>; Sat, 25 May 2019 06:16:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 23B6B2A32E
+	for <lists+linux-wireless@lfdr.de>; Sat, 25 May 2019 08:28:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725858AbfEYEQ0 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 25 May 2019 00:16:26 -0400
-Received: from mail-pl1-f196.google.com ([209.85.214.196]:41959 "EHLO
-        mail-pl1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725843AbfEYEQ0 (ORCPT
+        id S1726304AbfEYG2D (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 25 May 2019 02:28:03 -0400
+Received: from mail-pf1-f195.google.com ([209.85.210.195]:42504 "EHLO
+        mail-pf1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726145AbfEYG2D (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 25 May 2019 00:16:26 -0400
-Received: by mail-pl1-f196.google.com with SMTP id f12so4905947plt.8
-        for <linux-wireless@vger.kernel.org>; Fri, 24 May 2019 21:16:25 -0700 (PDT)
+        Sat, 25 May 2019 02:28:03 -0400
+Received: by mail-pf1-f195.google.com with SMTP id r22so3692214pfh.9
+        for <linux-wireless@vger.kernel.org>; Fri, 24 May 2019 23:28:03 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=eero.com; s=google;
+        d=andrewstrohman-com.20150623.gappssmtp.com; s=20150623;
         h=from:to:cc:subject:date:message-id;
-        bh=VdDQH+QybpJuQuwob6y4AAaL3QBAr+372aK8MmZ7O3c=;
-        b=Yhv1YHJeSa2rVx3RxNjoi7Gj/Knj/WAD+KiLlaRKcKldFBQ5L3gHvHVSaDN6NKA4Am
-         RadWzBUWODwpFhfDomQvJb5o6tIKPRk0y1U5VjupoW0536exU09AM6uyHobDJ/sD6nO/
-         EJAK8lmW6gvz5GK401IKkvMTxFGZSA/CzTXww=
+        bh=UfLxhCRU0Qk56sAzET0S82rUG0xDTXTxGSmZ9LvlCRs=;
+        b=z75VKWDeqMNv2bEum4lV0fE61PNvK/EdKL/OrWZH80quBeWsTOuYqhT/UdJnkUbSqc
+         qwua07kljYJPDOMm6HUAkDYS7ypK4qsxiveuMyOfQ5V+Q3GeHiGGqm2OzFtPafXPKNgk
+         BihGwIV9v1EqAl7hPsjS6YG7GMwwgEF4SV5f2nJ6SY4/h41Jw0QIhM8IQ44qt/pEMOfL
+         FeO69kIa3ncRv+gmMZKLVRHQG6ZLtsC0AXBq2ngRWkxE9w0CCRMZDhZmn/OKVR77xNQX
+         oNy21iSQaLU86QUh9xsAKBO5ApzN4AAvhqyX6+ZMlFs79sfQcQJmNcx+qmIyVHfU1dBd
+         mmkw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id;
-        bh=VdDQH+QybpJuQuwob6y4AAaL3QBAr+372aK8MmZ7O3c=;
-        b=f3oiGsm2BTzrl+yYUGO8p3yRfrkVRy2eflS637iPYLBDImoCvqJ3g8l82FJYSm6TB0
-         tTFQXvN50bdOIxODKpdVaxzhwaV9HkqW3EmCvRDsLYzEIRouA/ydatUXIHY7VsVPF9Va
-         A5RqU4PiK+jPTh+HPU7abLA50nmYuOKxdrJWNq8Cd+qL3XKlzsd8n5h3Y8PdgS1s1bGH
-         jMy9/rsAzAEvczY2V16WXVBnaG/l9V+WD8rO1smPwH4EJWUafB+9QcjmZKCOsdsA7np+
-         zm2VtXmFrcW4ez9TjO+Y7NBnkpVX1o+kS/EVarrfz7zizVu6zkjhYhB/Z0I+WzbMEinn
-         bIXQ==
-X-Gm-Message-State: APjAAAVlpi8XnkmYkoqa9YqVEONvf0UYL8gjUYJNezfJsVsKUfbCYvzZ
-        gJOlAPQyjlCxyr0iezIX1cCJdg==
-X-Google-Smtp-Source: APXvYqxk7cbIvomWGFWxcrCA4sIDn0X+FSQSY0mYo184t35gJazAbmxtBZAxUX0zZT+uccyxskDa+A==
-X-Received: by 2002:a17:902:e00a:: with SMTP id ca10mr113298356plb.18.1558757785576;
-        Fri, 24 May 2019 21:16:25 -0700 (PDT)
-Received: from uf8ac7dbfedf154.ant.amazon.com (c-73-158-126-35.hsd1.ca.comcast.net. [73.158.126.35])
-        by smtp.gmail.com with ESMTPSA id z11sm5086742pfg.187.2019.05.24.21.16.24
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
-        Fri, 24 May 2019 21:16:25 -0700 (PDT)
-From:   Thomas Pedersen <thomas@eero.com>
-To:     Johannes Berg <johannes.berg@intel.com>
-Cc:     linux-wireless@vger.kernel.org, Thomas Pedersen <thomas@eero.com>
-Subject: [PATCH v2] mac80211: mesh: fix RCU warning
-Date:   Fri, 24 May 2019 21:16:24 -0700
-Message-Id: <1558757784-23179-1-git-send-email-thomas@eero.com>
-X-Mailer: git-send-email 2.7.4
+        bh=UfLxhCRU0Qk56sAzET0S82rUG0xDTXTxGSmZ9LvlCRs=;
+        b=mvdxw+asxQyyFT0JwuBn2fc14AG31e7dDrd4BcJuxSPeFeNWwlN6exE18Kn+CazAva
+         OQv0c7RhTrhv8Hl/EzE3RlD1WVDN8FsRTZkE+13GNvKNYKIBZf5+7+azeENN66irAsUV
+         q3ckjJFn7RcfHOisBq29YXgte6gCL2lSkDWO2V/C8KVTZMT2Nm6Ubg9npFEbmztVMNvA
+         PhzHESCkBUlly03+3nb9xAA+TLCT4WF/UgnD8N6mNX4tFx0cLJ8HWq2EtKgumuBiVbkp
+         E+A3Ly8jqvSTS2i+WUIvxtJUGqdD02L5/O15EXSnVBrcUf8kFrl9MNkTkiIS2Q/uP6dh
+         KZCg==
+X-Gm-Message-State: APjAAAVDuBLWI6aOVXfNAx6JUyBaLWKAeyRtQVXw2rIEN4EXqB8v5hGe
+        WkZUq5Oz1G62HsTp5SCiBgAe93Btt2A=
+X-Google-Smtp-Source: APXvYqwzhPvdyy4kxXR74V2aFvdzLx5CmmC6bh+gXOqFV7MNNorz9G974bH4r1snV8Ld0DPMPhFlJw==
+X-Received: by 2002:a63:1f55:: with SMTP id q21mr49710482pgm.51.1558765682984;
+        Fri, 24 May 2019 23:28:02 -0700 (PDT)
+Received: from xps.stroh ([174.127.216.63])
+        by smtp.gmail.com with ESMTPSA id 8sm4605950pfj.93.2019.05.24.23.28.01
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Fri, 24 May 2019 23:28:02 -0700 (PDT)
+From:   Andy Strohman <andrew@andrewstrohman.com>
+X-Google-Original-From: Andy Strohman <andy@uplevelsystems.com>
+To:     johannes@sipsolutions.net
+Cc:     linux-wireless@vger.kernel.org,
+        Andy Strohman <andy@uplevelsystems.com>
+Subject: [PATCH] netlink: fix station_info pertid memory leak
+Date:   Fri, 24 May 2019 23:27:29 -0700
+Message-Id: <20190525062729.8504-1-andy@uplevelsystems.com>
+X-Mailer: git-send-email 2.17.1
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-ifmsh->csa is an RCU-protected pointer. The writer context
-in ieee80211_mesh_finish_csa() is already mutually
-exclusive with wdev->sdata.mtx, but the RCU checker did
-not know this. Use rcu_dereference_protected() to avoid a
-warning.
+When dumping stations, memory allocated for station_info's
+pertid member will leak if the nl80211 header cannot be added to
+the sk_buff due to insufficient tail room.
 
-fixes the following warning:
+I noticed this leak in the kmalloc-2048 cache.
 
-[   12.519089] =============================
-[   12.520042] WARNING: suspicious RCU usage
-[   12.520652] 5.1.0-rc7-wt+ #16 Tainted: G        W
-[   12.521409] -----------------------------
-[   12.521972] net/mac80211/mesh.c:1223 suspicious rcu_dereference_check() usage!
-[   12.522928] other info that might help us debug this:
-[   12.523984] rcu_scheduler_active = 2, debug_locks = 1
-[   12.524855] 5 locks held by kworker/u8:2/152:
-[   12.525438]  #0: 00000000057be08c ((wq_completion)phy0){+.+.}, at: process_one_work+0x1a2/0x620
-[   12.526607]  #1: 0000000059c6b07a ((work_completion)(&sdata->csa_finalize_work)){+.+.}, at: process_one_work+0x1a2/0x620
-[   12.528001]  #2: 00000000f184ba7d (&wdev->mtx){+.+.}, at: ieee80211_csa_finalize_work+0x2f/0x90
-[   12.529116]  #3: 00000000831a1f54 (&local->mtx){+.+.}, at: ieee80211_csa_finalize_work+0x47/0x90
-[   12.530233]  #4: 00000000fd06f988 (&local->chanctx_mtx){+.+.}, at: ieee80211_csa_finalize_work+0x51/0x90
-
-Signed-off-by: Thomas Pedersen <thomas@eero.com>
+Fixes: 8689c051a201 ("cfg80211: dynamically allocate per-tid stats for station info")
+Signed-off-by: Andy Strohman <andy@uplevelsystems.com>
 ---
-v2: rcu_read_lock() doesn't make sense. Use rcu_dereference_protected() (Johannes)
----
- net/mac80211/mesh.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ net/wireless/nl80211.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/net/mac80211/mesh.c b/net/mac80211/mesh.c
-index 766e5e5..d5aba50 100644
---- a/net/mac80211/mesh.c
-+++ b/net/mac80211/mesh.c
-@@ -1220,7 +1220,8 @@ int ieee80211_mesh_finish_csa(struct ieee80211_sub_if_data *sdata)
- 	ifmsh->chsw_ttl = 0;
+diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
+index fffe4b371e23..a82ecfe14d8d 100644
+--- a/net/wireless/nl80211.c
++++ b/net/wireless/nl80211.c
+@@ -4855,8 +4855,10 @@ static int nl80211_send_station(struct sk_buff *msg, u32 cmd, u32 portid,
+ 	struct nlattr *sinfoattr, *bss_param;
  
- 	/* Remove the CSA and MCSP elements from the beacon */
--	tmp_csa_settings = rcu_dereference(ifmsh->csa);
-+	tmp_csa_settings = rcu_dereference_protected(ifmsh->csa,
-+					    lockdep_is_held(&sdata->wdev.mtx));
- 	RCU_INIT_POINTER(ifmsh->csa, NULL);
- 	if (tmp_csa_settings)
- 		kfree_rcu(tmp_csa_settings, rcu_head);
-@@ -1242,6 +1243,8 @@ int ieee80211_mesh_csa_beacon(struct ieee80211_sub_if_data *sdata,
- 	struct mesh_csa_settings *tmp_csa_settings;
- 	int ret = 0;
+ 	hdr = nl80211hdr_put(msg, portid, seq, flags, cmd);
+-	if (!hdr)
++	if (!hdr) {
++		cfg80211_sinfo_release_content(sinfo);
+ 		return -1;
++	}
  
-+	lockdep_assert_held(&sdata->wdev.mtx);
-+
- 	tmp_csa_settings = kmalloc(sizeof(*tmp_csa_settings),
- 				   GFP_ATOMIC);
- 	if (!tmp_csa_settings)
+ 	if (nla_put_u32(msg, NL80211_ATTR_IFINDEX, dev->ifindex) ||
+ 	    nla_put(msg, NL80211_ATTR_MAC, ETH_ALEN, mac_addr) ||
 -- 
-2.7.4
+2.17.1
 
