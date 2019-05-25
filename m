@@ -2,102 +2,115 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 987C92A06A
-	for <lists+linux-wireless@lfdr.de>; Fri, 24 May 2019 23:33:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CE6512A2A3
+	for <lists+linux-wireless@lfdr.de>; Sat, 25 May 2019 05:46:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2404249AbfEXVdM (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 24 May 2019 17:33:12 -0400
-Received: from mail-wm1-f67.google.com ([209.85.128.67]:53613 "EHLO
-        mail-wm1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2391745AbfEXVdM (ORCPT
+        id S1726668AbfEYDqf (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 24 May 2019 23:46:35 -0400
+Received: from mail-oi1-f194.google.com ([209.85.167.194]:43148 "EHLO
+        mail-oi1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726641AbfEYDqe (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 24 May 2019 17:33:12 -0400
-Received: by mail-wm1-f67.google.com with SMTP id 198so10698284wme.3
-        for <linux-wireless@vger.kernel.org>; Fri, 24 May 2019 14:33:10 -0700 (PDT)
+        Fri, 24 May 2019 23:46:34 -0400
+Received: by mail-oi1-f194.google.com with SMTP id t187so8447673oie.10
+        for <linux-wireless@vger.kernel.org>; Fri, 24 May 2019 20:46:34 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=xFni9jtRRxUdDmA43yqyYLPLzOMVbPJFUYV2ZNviRZU=;
-        b=JPKd2OvyYiPKIe1EP5/4psKek2cFxS4SjLNRtJO4vT1BoMcUheBPcf3oWgdvdpgCu3
-         eAnNlzHYSGsIHRbkkoe9OuQFVNZLjKpoDjD4ugTA/2pnII5VL5Fz6h1NLH7MLUR71nXY
-         /cuaoiGZ+WLuQ72RbIkhVjGqkVgppnx7ITW5/kHHyO/5IHo34mmYNIOZp8AIr+LFd97h
-         IF+0Fiyb0AOyZhEV/132L1yLUCfQOGU7o8tXDVE4qrhuMWS4ePSK28Jet9naGXAL8d74
-         r0b2FEn+kZkQSYcro66MsWxrk0F/jJAy8N4wPXt/APl338HT9M7XT66r39BaIdz8pYzR
-         YAGQ==
+        d=eero.com; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=ReUtPBqL58WYnd/5rJenMtO9LN3Zrp2YnhBMRbcxDAo=;
+        b=YAQgyvIHQrUUQeGs1jC5DxqBe0SGCvlV/F2vlAV8Pubm9zc15GgQh7aMmb95w+0u5J
+         /+iteHtow+ANm9bq/5FebeH4o3ZdCCQRUzcSLi1ziVFml/6VqHfVPjkAyKxYnRErcn2s
+         L/H9ie+j6BxVQMZF0Plg9br1+1rRt+F3zHhnM=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=xFni9jtRRxUdDmA43yqyYLPLzOMVbPJFUYV2ZNviRZU=;
-        b=H2DwrklSrrLCJA7lJ//TN+roIJ14W13wWYnJpTtAj7MsFhzKTRUx013T+1veeYwpsd
-         Nvou6KmNj05KEfTy0CdRdNHcVV/Fy31No8oFSdabM8K6+LMxnjvgtOVNPEMBtYAdRFw6
-         sJXV5G9ib2+gEgWnJHYFYT9RxFyTrgsjY7dLCDppiBFodi6fdoO3bZTfZReAPhhSlmv8
-         hanBkANP/XnE78A+YMQaBqzXbrdyu8R1p0UutiPAI3bOB1Cb1TUB142hLuBPs5ryLxId
-         VAL4GF5CiNLQINWnkfuLyYgiv867CfYtJUPhV5wJFnPzovZdetsJhgsaE+pbVPsRIO/A
-         MGNg==
-X-Gm-Message-State: APjAAAWnzCXmZO02BoQR2YX7YR/06EB/VI71rJBxUNppWzfZwWMqBoyQ
-        2eC2W4D8sVtZ5fS2NQJzs8HKDQni
-X-Google-Smtp-Source: APXvYqxoXB5MRns7ZIeS670XOiVB5Yp4SoMl8mRpqW5urMQWbe4CmO1ptUSsX01MqqcJpiSbjjR64A==
-X-Received: by 2002:a1c:96c9:: with SMTP id y192mr17072667wmd.75.1558733589552;
-        Fri, 24 May 2019 14:33:09 -0700 (PDT)
-Received: from debian64.daheim (p4FD09F8E.dip0.t-ipconnect.de. [79.208.159.142])
-        by smtp.gmail.com with ESMTPSA id j206sm6247678wma.47.2019.05.24.14.33.08
-        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
-        Fri, 24 May 2019 14:33:09 -0700 (PDT)
-Received: from chuck by debian64.daheim with local (Exim 4.92)
-        (envelope-from <chunkeey@gmail.com>)
-        id 1hUHoK-0004qL-CA; Fri, 24 May 2019 23:33:08 +0200
-From:   Christian Lamparter <chunkeey@gmail.com>
-To:     linux-wireless@vger.kernel.org
-Cc:     Kalle Valo <kvalo@codeaurora.org>
-Subject: [PATCH] p54: Support boottime in scan results
-Date:   Fri, 24 May 2019 23:33:08 +0200
-Message-Id: <20190524213308.18575-1-chunkeey@gmail.com>
-X-Mailer: git-send-email 2.20.1
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=ReUtPBqL58WYnd/5rJenMtO9LN3Zrp2YnhBMRbcxDAo=;
+        b=nshqIbyF4sDFsHB8GvSUbWyGVk1AfA0E6RgVg1OdH9gHkhdXcd/6l0vQT6B471c8wV
+         7OLBJCSwKZKaaAUcaR9UTozaVho+qwQrBxPzzzYkDCtH3jqZ5kBpMIqSZms7xaJqjjm8
+         /NJk7P38Y0D1YOzXMLFcyECylFig/ZuI1Rn+kSgN+qTAnds42hnqwrJuT9n36NkYGAwm
+         BtEYBQFVhuS9/o6B4nwRv/F5miw5IC4UMOSirdOKqDuijo1/SYQLBNC70OVu53hiQkvS
+         ES57MCBEWQoX/ipcsL87PaMyjZwEk2yg9Ugx6X/FwrD+vAVjCaFrjygDmf5GyC8NE71O
+         PntQ==
+X-Gm-Message-State: APjAAAXmuqvCsx0mlLLpH9I9yAdap7rJsFy+huCuklACs4z5OVyE6lPY
+        DbjKP5dEvGWmRcWhGLTiNIOUgJJaZ8me3o+G/+xb9Q==
+X-Google-Smtp-Source: APXvYqzI8wwW8AMr/ncLZ24Gq+ks7Oazi/crybwQoy0J9jh47czDbh8o4brI+/jrCgdGeFLeVA8f8EJjdq3PJnVPYKc=
+X-Received: by 2002:aca:f189:: with SMTP id p131mr601289oih.89.1558755993830;
+ Fri, 24 May 2019 20:46:33 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <1557958906-1432-1-git-send-email-thomas@eero.com> <6e162d98ba05a71577c623fe1e8e06a7051eb01c.camel@sipsolutions.net>
+In-Reply-To: <6e162d98ba05a71577c623fe1e8e06a7051eb01c.camel@sipsolutions.net>
+From:   Thomas Pedersen <thomas@eero.com>
+Date:   Fri, 24 May 2019 20:46:22 -0700
+Message-ID: <CADjYELz_4VC+14Ko0Lp2zxpMGDSF9SboqN_-LKDjFXmdsxqvXw@mail.gmail.com>
+Subject: Re: [PATCH] mac80211: mesh: fix RCU warning
+To:     Johannes Berg <johannes@sipsolutions.net>
+Cc:     linux-wireless@vger.kernel.org,
+        Peter Oh <peter.oh@bowerswilkins.com>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-This patch fixes an issue with wpa_supplicant dropping all scan
-results because their where considered to be "too old" (e.g.:
-"skip - scan result not recent enough (121056.086325 seconds too old)")
-which is very weird because this looks like that the scan results have
-been received before a scan started. This is due to the inaccuracy of
-the default timing mechanism for calculating the BSS entry age.
+On Fri, May 24, 2019 at 1:29 AM Johannes Berg <johannes@sipsolutions.net> wrote:
+>
+> On Wed, 2019-05-15 at 15:21 -0700, Thomas Pedersen wrote:
+> > ifmsh->csa was being dereferenced without the RCU read
+> > lock held.
+>
+> > +++ b/net/mac80211/mesh.c
+> > @@ -1220,10 +1220,12 @@ int ieee80211_mesh_finish_csa(struct ieee80211_sub_if_data *sdata)
+> >       ifmsh->chsw_ttl = 0;
+> >
+> >       /* Remove the CSA and MCSP elements from the beacon */
+> > +     rcu_read_lock();
+> >       tmp_csa_settings = rcu_dereference(ifmsh->csa);
+> >       RCU_INIT_POINTER(ifmsh->csa, NULL);
+> >       if (tmp_csa_settings)
+> >               kfree_rcu(tmp_csa_settings, rcu_head);
+> > +     rcu_read_unlock();
+>
+> This seems wrong to me.
+>
+> Really this code is the *writer* side, so you should do something like
+> this:
 
-Signed-off-by: Christian Lamparter <chunkeey@gmail.com>
----
- drivers/net/wireless/intersil/p54/txrx.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+Thanks this looks correct. I should've thought about this a tiny bit more ;)
 
-diff --git a/drivers/net/wireless/intersil/p54/txrx.c b/drivers/net/wireless/intersil/p54/txrx.c
-index 5bf1c19ecced..f80c5056ccb7 100644
---- a/drivers/net/wireless/intersil/p54/txrx.c
-+++ b/drivers/net/wireless/intersil/p54/txrx.c
-@@ -334,6 +334,7 @@ static int p54_rx_data(struct p54_common *priv, struct sk_buff *skb)
- 	u16 freq = le16_to_cpu(hdr->freq);
- 	size_t header_len = sizeof(*hdr);
- 	u32 tsf32;
-+	__le16 fc;
- 	u8 rate = hdr->rate & 0xf;
- 
- 	/*
-@@ -382,6 +383,11 @@ static int p54_rx_data(struct p54_common *priv, struct sk_buff *skb)
- 
- 	skb_pull(skb, header_len);
- 	skb_trim(skb, le16_to_cpu(hdr->len));
-+
-+	fc = ((struct ieee80211_hdr *)skb->data)->frame_control;
-+	if (ieee80211_is_probe_resp(fc) || ieee80211_is_beacon(fc))
-+		rx_status->boottime_ns = ktime_get_boot_ns();
-+
- 	if (unlikely(priv->hw->conf.flags & IEEE80211_CONF_PS))
- 		p54_pspoll_workaround(priv, skb);
- 
+> diff --git a/net/mac80211/mesh.c b/net/mac80211/mesh.c
+> index 766e5e5bab8a..d578147ad7e8 100644
+> --- a/net/mac80211/mesh.c
+> +++ b/net/mac80211/mesh.c
+> @@ -1220,7 +1220,8 @@ int ieee80211_mesh_finish_csa(struct
+> ieee80211_sub_if_data *sdata)
+>         ifmsh->chsw_ttl = 0;
+>
+>         /* Remove the CSA and MCSP elements from the beacon */
+> -       tmp_csa_settings = rcu_dereference(ifmsh->csa);
+> +       tmp_csa_settings = rcu_dereference_protected(ifmsh->csa,
+> +                               lockdep_is_held(&sdata->wdev.mtx));
+>         RCU_INIT_POINTER(ifmsh->csa, NULL);
+>         if (tmp_csa_settings)
+>                 kfree_rcu(tmp_csa_settings, rcu_head);
+> @@ -1242,6 +1243,8 @@ int ieee80211_mesh_csa_beacon(struct
+> ieee80211_sub_if_data *sdata,
+>         struct mesh_csa_settings *tmp_csa_settings;
+>         int ret = 0;
+>
+> +       lockdep_assert_held(&sdata->wdev.mtx);
+> +
+>         tmp_csa_settings = kmalloc(sizeof(*tmp_csa_settings),
+>                                    GFP_ATOMIC);
+>         if (!tmp_csa_settings)
+>
+>
+> Can you test that and send a proper patch?
+>
+> johannes
+>
+
+
 -- 
-2.20.1
-
+thomas
