@@ -2,93 +2,158 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A29012AA33
-	for <lists+linux-wireless@lfdr.de>; Sun, 26 May 2019 16:05:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 11DFB2ABAD
+	for <lists+linux-wireless@lfdr.de>; Sun, 26 May 2019 20:42:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727879AbfEZOFj (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 26 May 2019 10:05:39 -0400
-Received: from mail.kernel.org ([198.145.29.99]:34002 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727767AbfEZOFj (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 26 May 2019 10:05:39 -0400
-Received: from lore-desk-wlan.lan (unknown [151.66.36.254])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 8579420863;
-        Sun, 26 May 2019 14:05:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1558879538;
-        bh=WdhM3MZo2iIxOsg9rZ19IvSHSmhtIkZxZnwbm+UnTj0=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ssKqD1K6FaEIjpPv+gXo6TSMeTOBfj3bbD5TcdMz/Obbz6v2DZQ9sKKzV7LPwbc5p
-         9Z5QmRa+sAIh+xV4R+NeZND+A32+cV9mc4IcfKYE4zrQ52Nps98iZzTABfPYGhJ0E8
-         phu9WAyQVzGNuBf8liyGtxQWE60cm1NqsHgz8XtY=
-From:   Lorenzo Bianconi <lorenzo@kernel.org>
-To:     nbd@nbd.name
-Cc:     lorenzo.bianconi@redhat.com, linux-wireless@vger.kernel.org,
-        ryder.lee@mediatek.com, royluo@google.com
-Subject: [PATCH 4/4] mt76: mt7615: rearrange locking in mt7615_config
-Date:   Sun, 26 May 2019 16:05:13 +0200
-Message-Id: <aa106a4711bd96351e9cb397a658c75171ee14c7.1558879234.git.lorenzo@kernel.org>
-X-Mailer: git-send-email 2.21.0
-In-Reply-To: <cover.1558879234.git.lorenzo@kernel.org>
-References: <cover.1558879234.git.lorenzo@kernel.org>
+        id S1728097AbfEZSm3 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 26 May 2019 14:42:29 -0400
+Received: from mail-pg1-f194.google.com ([209.85.215.194]:38438 "EHLO
+        mail-pg1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728078AbfEZSm3 (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Sun, 26 May 2019 14:42:29 -0400
+Received: by mail-pg1-f194.google.com with SMTP id v11so7791770pgl.5
+        for <linux-wireless@vger.kernel.org>; Sun, 26 May 2019 11:42:28 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=broadcom.com; s=google;
+        h=subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=OLaJRa4hCtuEEMwKNtUZMZ+QEafCBrmCJfsSQcoxk78=;
+        b=ZpKF+rNte3zJzdktFMth5dLBIMKQN/Wi/DOrVKbWsETZufYdcs05WlRw8s4ebyKPOa
+         vfTyk7yEeJnMKF7ehV4l8z0/1vQvx8YEkx2rBH+Izid83ssvISnn8ifLJs5FyKEQJ0UQ
+         XEXVoZcGBn/ZoT/UAu1KKsgnLnmQSZiSvQhSw=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=OLaJRa4hCtuEEMwKNtUZMZ+QEafCBrmCJfsSQcoxk78=;
+        b=OrYvqmnRDQlpIyW8xkprQmrK7buc1EpS1OiAFg7VeSOv3z+z9QmFaa77zvRCP6Ehkj
+         RI0xkZekZtFOzTXYTDNEfyWUmc0Tv122DAs8HCvwt2vfEyOECx05PqxCrdrpAG1zAUuh
+         aigfpc72uyu4iBsjm3EQIwtwe3z9fzLIx6XV0nFKLFns9wNYh68iQPKRNdgk/j9g6rcL
+         uKp1yT9zDj4aLxDKgyyLhsVRejh5dE2RY9EjadFBoJPI4O8ubcgP+IsHw8Pw1XnVtXZc
+         na7gdPy8Rk4M8VcfhLbtTcjDcRyF65fFZ21RUCdoA2vA5MQi1ZBMSKShvENz6KTDoMzY
+         Sh+A==
+X-Gm-Message-State: APjAAAU0W/8ZNKdwTiaTyRVwR5QAheTta44VamMtdJ3c0mOW7CAqLOSi
+        zL0QhwcEgDO5A7A2N6yYKg65Kg==
+X-Google-Smtp-Source: APXvYqy+Z0E8VktDWKwW+/AEDsqgzRsoImYfM8kS6UqnH5p2lHYy+Bm32NEhHRGz1iAfShMpVEIPeA==
+X-Received: by 2002:a62:fb18:: with SMTP id x24mr65735472pfm.76.1558896148261;
+        Sun, 26 May 2019 11:42:28 -0700 (PDT)
+Received: from [10.230.40.234] ([192.19.215.250])
+        by smtp.gmail.com with ESMTPSA id d6sm8297881pjo.32.2019.05.26.11.42.23
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Sun, 26 May 2019 11:42:27 -0700 (PDT)
+Subject: Re: Issue with Broadcom wireless in 5.2rc1 (was Re: [PATCH] mmc:
+ sdhci: queue work after sdhci_defer_done())
+To:     Brian Masney <masneyb@onstation.org>,
+        Adrian Hunter <adrian.hunter@intel.com>,
+        Franky Lin <franky.lin@broadcom.com>,
+        Hante Meuleman <hante.meuleman@broadcom.com>,
+        Chi-Hsien Lin <chi-hsien.lin@cypress.com>,
+        Wright Feng <wright.feng@cypress.com>
+Cc:     ulf.hansson@linaro.org, faiz_abbas@ti.com,
+        linux-mmc@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-arm-msm@vger.kernel.org, Kalle Valo <kvalo@codeaurora.org>,
+        linux-wireless@vger.kernel.org,
+        brcm80211-dev-list.pdl@broadcom.com,
+        brcm80211-dev-list@cypress.com, netdev@vger.kernel.org
+References: <20190524111053.12228-1-masneyb@onstation.org>
+ <70782901-a9ac-5647-1abe-89c86a44a01b@intel.com>
+ <20190524154958.GB16322@basecamp> <20190526122136.GA26456@basecamp>
+From:   Arend Van Spriel <arend.vanspriel@broadcom.com>
+Message-ID: <e8c049ce-07e1-8b34-678d-41b3d6d41983@broadcom.com>
+Date:   Sun, 26 May 2019 20:42:21 +0200
+User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:60.0) Gecko/20100101
+ Thunderbird/60.7.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+In-Reply-To: <20190526122136.GA26456@basecamp>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Since all the routines in mt7615_config grub mt76.mutex moves
-mutex_lock/mutex_unlock at the beginning/end of mt7615_config
+On 5/26/2019 2:21 PM, Brian Masney wrote:
+> + Broadcom wireless maintainers
+> 
+> On Fri, May 24, 2019 at 11:49:58AM -0400, Brian Masney wrote:
+>> On Fri, May 24, 2019 at 03:17:13PM +0300, Adrian Hunter wrote:
+>>> On 24/05/19 2:10 PM, Brian Masney wrote:
+>>>> WiFi stopped working on the LG Nexus 5 phone and the issue was bisected
+>>>> to the commit c07a48c26519 ("mmc: sdhci: Remove finish_tasklet") that
+>>>> moved from using a tasklet to a work queue. That patch also changed
+>>>> sdhci_irq() to return IRQ_WAKE_THREAD instead of finishing the work when
+>>>> sdhci_defer_done() is true. Change it to queue work to the complete work
+>>>> queue if sdhci_defer_done() is true so that the functionality is
+>>>> equilivent to what was there when the finish_tasklet was present. This
+>>>> corrects the WiFi breakage on the Nexus 5 phone.
+>>>>
+>>>> Signed-off-by: Brian Masney <masneyb@onstation.org>
+>>>> Fixes: c07a48c26519 ("mmc: sdhci: Remove finish_tasklet")
+>>>> ---
+>>>> [ ... ]
+>>>>
+>>>>   drivers/mmc/host/sdhci.c | 2 +-
+>>>>   1 file changed, 1 insertion(+), 1 deletion(-)
+>>>>
+>>>> diff --git a/drivers/mmc/host/sdhci.c b/drivers/mmc/host/sdhci.c
+>>>> index 97158344b862..3563c3bc57c9 100644
+>>>> --- a/drivers/mmc/host/sdhci.c
+>>>> +++ b/drivers/mmc/host/sdhci.c
+>>>> @@ -3115,7 +3115,7 @@ static irqreturn_t sdhci_irq(int irq, void *dev_id)
+>>>>   			continue;
+>>>>   
+>>>>   		if (sdhci_defer_done(host, mrq)) {
+>>>> -			result = IRQ_WAKE_THREAD;
+>>>> +			queue_work(host->complete_wq, &host->complete_work);
+>>>
+>>> The IRQ thread has a lot less latency than the work queue, which is why it
+>>> is done that way.
+>>>
+>>> I am not sure why you say this change is equivalent to what was there
+>>> before, nor why it fixes your problem.
+>>>
+>>> Can you explain some more?
+>>
+>> [ ... ]
+>>
+>> drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c calls
+>> sdio_claim_host() and it appears to never return.
+> 
+> When the brcmfmac driver is loaded, the firmware is requested from disk,
+> and that's when the deadlock occurs in 5.2rc1. Specifically:
+> 
+> 1) brcmf_sdio_download_firmware() in
+>     drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c calls
+>     sdio_claim_host()
+> 
+> 2) brcmf_sdio_firmware_callback() is called and brcmf_sdiod_ramrw()
+>     tries to claim the host, but has to wait since its already claimed
+>     in #1 and the deadlock occurs.
 
-Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
----
- drivers/net/wireless/mediatek/mt76/mt7615/main.c | 13 +++++--------
- 1 file changed, 5 insertions(+), 8 deletions(-)
+This does not make any sense to me. brcmf_sdio_download_firmware() is 
+called from brcmf_sdio_firmware_callback() so they are in the same 
+context. So #2 is not waiting for #1, but something else I would say. 
+Also #2 calls sdio_claim_host() after brcmf_sdio_download_firmware has 
+completed so definitely not waiting for #1.
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/main.c b/drivers/net/wireless/mediatek/mt76/mt7615/main.c
-index cedc4c25f34d..c8411750f62b 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7615/main.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7615/main.c
-@@ -191,31 +191,28 @@ static int mt7615_config(struct ieee80211_hw *hw, u32 changed)
- 	struct mt7615_dev *dev = hw->priv;
- 	int ret = 0;
- 
--	if (changed & IEEE80211_CONF_CHANGE_CHANNEL) {
--		mutex_lock(&dev->mt76.mutex);
-+	mutex_lock(&dev->mt76.mutex);
- 
-+	if (changed & IEEE80211_CONF_CHANGE_CHANNEL) {
- 		ieee80211_stop_queues(hw);
- 		ret = mt7615_set_channel(dev, &hw->conf.chandef);
- 		ieee80211_wake_queues(hw);
--
--		mutex_unlock(&dev->mt76.mutex);
- 	}
- 
- 	if (changed & IEEE80211_CONF_CHANGE_POWER)
- 		ret = mt7615_mcu_set_tx_power(dev);
- 
- 	if (changed & IEEE80211_CONF_CHANGE_MONITOR) {
--		mutex_lock(&dev->mt76.mutex);
--
- 		if (!(hw->conf.flags & IEEE80211_CONF_MONITOR))
- 			dev->mt76.rxfilter |= MT_WF_RFCR_DROP_OTHER_UC;
- 		else
- 			dev->mt76.rxfilter &= ~MT_WF_RFCR_DROP_OTHER_UC;
- 
- 		mt76_wr(dev, MT_WF_RFCR, dev->mt76.rxfilter);
--
--		mutex_unlock(&dev->mt76.mutex);
- 	}
-+
-+	mutex_unlock(&dev->mt76.mutex);
-+
- 	return ret;
- }
- 
--- 
-2.21.0
+> I tried to release the host before the firmware is requested, however
+> parts of brcmf_chip_set_active() needs the host to be claimed, and a
+> similar deadlock occurs in brcmf_sdiod_ramrw() if I claim the host
+> before calling brcmf_chip_set_active().
+> 
+> I started to look at moving the sdio_{claim,release}_host() calls out of
+> brcmf_sdiod_ramrw() but there's a fair number of callers, so I'd like to
+> get feedback about the best course of action here.
 
+Long ago Franky reworked the sdio critical sections requiring sdio 
+claim/release and I am pretty sure they are correct.
+
+Could you try with lockdep kernel and see if that brings any more 
+information. In the mean time I will update my dev branch to 5.2-rc1 and 
+see if I can find any clues.
+
+Regards,
+Arend
