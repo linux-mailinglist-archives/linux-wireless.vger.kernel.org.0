@@ -2,102 +2,86 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 73F7B2BBD1
-	for <lists+linux-wireless@lfdr.de>; Mon, 27 May 2019 23:49:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E50702BC42
+	for <lists+linux-wireless@lfdr.de>; Tue, 28 May 2019 00:58:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727503AbfE0Vs2 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 27 May 2019 17:48:28 -0400
-Received: from ozlabs.org ([203.11.71.1]:48463 "EHLO ozlabs.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726772AbfE0Vs2 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 27 May 2019 17:48:28 -0400
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
-        (No client certificate requested)
-        by mail.ozlabs.org (Postfix) with ESMTPSA id 45CVw90CqYz9s1c;
-        Tue, 28 May 2019 07:48:25 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=canb.auug.org.au;
-        s=201702; t=1558993705;
-        bh=xHqG+VZ3uOmhfBms6e5VSwJ6zWyDyy/VHolsyRkHHx0=;
-        h=Date:From:To:Cc:Subject:From;
-        b=VAK7GuJyqTx60/7BHPj4Pf+P8nm6sShWynbpBAWclyD5XgrfeD/4Q3kdlWRKdHc/x
-         R4tw0RDY5rzT2+F1bUADN3sbyRJPBKjh1eQrj2bBKqi97qIB6WyJ1ihhf1d+mN3ZGC
-         QmjixXTg/RX/rHFbp4Wodk0eNlkTgmKNAGiL6RH/cuoNW1ncBLjKIr0Iij2qqMz+y4
-         ngQCzIZ8/MbRGI9Y+9qe2SD6OJZAHUN1B96hCPo/UXPEZf51vv1onbtcT0PPXkDs3R
-         ubMIci7U35ZYKX4JVPIOFE9UF5rYufMcEs9ZLzPlFPxgSTgM98lwWfavwMEcA0G7KA
-         nqhbEKsv24H/w==
-Date:   Tue, 28 May 2019 07:48:13 +1000
-From:   Stephen Rothwell <sfr@canb.auug.org.au>
-To:     Kalle Valo <kvalo@codeaurora.org>,
-        Wireless <linux-wireless@vger.kernel.org>
-Cc:     Linux Next Mailing List <linux-next@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Surabhi Vishnoi <svishnoi@codeaurora.org>,
-        Pradeep kumar Chitrapu <pradeepc@codeaurora.org>,
-        Zhi Chen <zhichen@codeaurora.org>
-Subject: linux-next: Fixes tag needs some work in the wireless-drivers-next
- tree
-Message-ID: <20190528074813.122bdddb@canb.auug.org.au>
+        id S1727584AbfE0W4L (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 27 May 2019 18:56:11 -0400
+Received: from mail.w1.fi ([212.71.239.96]:43242 "EHLO
+        li674-96.members.linode.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726931AbfE0W4L (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 27 May 2019 18:56:11 -0400
+X-Greylist: delayed 554 seconds by postgrey-1.27 at vger.kernel.org; Mon, 27 May 2019 18:56:11 EDT
+Received: from localhost (localhost [127.0.0.1])
+        by li674-96.members.linode.com (Postfix) with ESMTP id 2E28E1220A;
+        Mon, 27 May 2019 22:46:56 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at w1.fi
+Received: from li674-96.members.linode.com ([127.0.0.1])
+        by localhost (mail.w1.fi [127.0.0.1]) (amavisd-new, port 10024)
+        with ESMTP id QYXDCQAvehPZ; Mon, 27 May 2019 22:46:54 +0000 (UTC)
+From:   Jouni Malinen <j@w1.fi>
+To:     Johannes Berg <johannes@sipsolutions.net>
+Cc:     linux-wireless@vger.kernel.org, Jouni Malinen <j@w1.fi>
+Subject: [PATCH] mac80211: Do not use stack memory with scatterlist for GMAC
+Date:   Tue, 28 May 2019 01:46:43 +0300
+Message-Id: <20190527224643.26084-1-j@w1.fi>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
- boundary="Sig_/BrxpA.sp=dhLlqfhF1hlmg/"; protocol="application/pgp-signature"
+Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
---Sig_/BrxpA.sp=dhLlqfhF1hlmg/
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: quoted-printable
+ieee80211_aes_gmac() uses the mic argument directly in sg_set_buf() and
+that does not allow use of stack memory (e.g., BUG_ON() is hit in
+sg_set_buf() with CONFIG_DEBUG_SG). BIP GMAC TX side is fine for this
+since it can use the skb data buffer, but the RX side was using a stack
+variable for deriving the local MIC value to compare against the
+received one.
 
-Hi all,
+Fix this by allocating heap memory for the mic buffer.
 
-In commit
+This was found with hwsim test case ap_cipher_bip_gmac_128 hitting that
+BUG_ON() and kernel panic.
 
-  9280f4fc06f4 ("ath10k: Fix the wrong value of enums for wmi tlv stats id")
+Signed-off-by: Jouni Malinen <j@w1.fi>
+---
+ net/mac80211/wpa.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-Fixes tag
+diff --git a/net/mac80211/wpa.c b/net/mac80211/wpa.c
+index 58d0b258b684..5dd48f0a4b1b 100644
+--- a/net/mac80211/wpa.c
++++ b/net/mac80211/wpa.c
+@@ -1175,7 +1175,7 @@ ieee80211_crypto_aes_gmac_decrypt(struct ieee80211_rx_data *rx)
+ 	struct ieee80211_rx_status *status = IEEE80211_SKB_RXCB(skb);
+ 	struct ieee80211_key *key = rx->key;
+ 	struct ieee80211_mmie_16 *mmie;
+-	u8 aad[GMAC_AAD_LEN], mic[GMAC_MIC_LEN], ipn[6], nonce[GMAC_NONCE_LEN];
++	u8 aad[GMAC_AAD_LEN], *mic, ipn[6], nonce[GMAC_NONCE_LEN];
+ 	struct ieee80211_hdr *hdr = (struct ieee80211_hdr *)skb->data;
+ 
+ 	if (!ieee80211_is_mgmt(hdr->frame_control))
+@@ -1206,13 +1206,18 @@ ieee80211_crypto_aes_gmac_decrypt(struct ieee80211_rx_data *rx)
+ 		memcpy(nonce, hdr->addr2, ETH_ALEN);
+ 		memcpy(nonce + ETH_ALEN, ipn, 6);
+ 
++		mic = kmalloc(GMAC_MIC_LEN, GFP_ATOMIC);
++		if (!mic)
++			return RX_DROP_UNUSABLE;
+ 		if (ieee80211_aes_gmac(key->u.aes_gmac.tfm, aad, nonce,
+ 				       skb->data + 24, skb->len - 24,
+ 				       mic) < 0 ||
+ 		    crypto_memneq(mic, mmie->mic, sizeof(mmie->mic))) {
+ 			key->u.aes_gmac.icverrors++;
++			kfree(mic);
+ 			return RX_DROP_UNUSABLE;
+ 		}
++		kfree(mic);
+ 	}
+ 
+ 	memcpy(key->u.aes_gmac.rx_pn, ipn, 6);
+-- 
+2.20.1
 
-  Fixes: f40a307eb92c ("ath10k: Fill rx duration for each peer in fw_stats =
-for WCN3990)
-
-has these problem(s):
-
-  - Subject has leading but no trailing quotes
-
-In commit
-
-  93ee3d108fc7 ("ath10k: fix incorrect multicast/broadcast rate setting")
-
-Fixes tag
-
-  Fixes: cd93b83ad92 ("ath10k: support for multicast rate control")
-
-has these problem(s):
-
-  - SHA1 should be at least 12 digits long
-    Can be fixed by setting core.abbrev to 12 (or more) or (for git v2.11
-    or later) just making sure it is not set (or set to "auto").
-
---=20
-Cheers,
-Stephen Rothwell
-
---Sig_/BrxpA.sp=dhLlqfhF1hlmg/
-Content-Type: application/pgp-signature
-Content-Description: OpenPGP digital signature
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAEBCAAdFiEENIC96giZ81tWdLgKAVBC80lX0GwFAlzsWx0ACgkQAVBC80lX
-0Gzg+Af+Lb89BcVA/rGFGnEEurc2Q7yTKeOJdfirGZEvGWUfNG+u1Rnpvjk26PDo
-+F6glbpYfjrNuNyv/9+a/DPUKndL+7eNBojV/sK2Za406DpFxkeEho+15wWByg88
-h1rt/k2DlhFjV8izI/lYOpfI0NU0bhzvwdZoVQ8CTlKuRvsDNqILL+AhusOLUBrs
-mW+veapxaGMJk/YKSuw082n3EgoCn3bRTxR2IpBfv+8AhM0qHzcBHZBfhaCrg5Nq
-xW7Eh1HhoDLYSMr3IWG4fchRe3vrmyWiX3wD3LioCstqLWOmwg7G48hY/PzYw8AR
-Yav5nf1CPxs8/NEnTif0/hG70EZvBA==
-=8IXb
------END PGP SIGNATURE-----
-
---Sig_/BrxpA.sp=dhLlqfhF1hlmg/--
