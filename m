@@ -2,102 +2,141 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 8CCD92B5BE
-	for <lists+linux-wireless@lfdr.de>; Mon, 27 May 2019 14:50:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 178282B62B
+	for <lists+linux-wireless@lfdr.de>; Mon, 27 May 2019 15:20:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726304AbfE0Mu1 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 27 May 2019 08:50:27 -0400
-Received: from onstation.org ([52.200.56.107]:36804 "EHLO onstation.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725991AbfE0Mu1 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 27 May 2019 08:50:27 -0400
-Received: from localhost (c-98-239-145-235.hsd1.wv.comcast.net [98.239.145.235])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        (Authenticated sender: masneyb)
-        by onstation.org (Postfix) with ESMTPSA id 6DA123E8DE;
-        Mon, 27 May 2019 12:50:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=onstation.org;
-        s=default; t=1558961426;
-        bh=jTtzWSOIGKn0fkQo40d1XpoMwyOF6Fujvlz+J+wVGrs=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=H+c4wVstJrtVTNZHM5dBbtBD9KNkr7WRbF2I7N7juKzi4/JKRyvNseklTpSauSpWB
-         cRmbY632ruZkf7ziPB+HEQ267L0rg5bMYnijg0fKSF0WebnFvC8mk7OuS+SYxZMD2y
-         /h/c1EAvSxZDDNC1lYbtjjVxAYJU7g5YBkxzSINQ=
-Date:   Mon, 27 May 2019 08:50:26 -0400
-From:   Brian Masney <masneyb@onstation.org>
-To:     Adrian Hunter <adrian.hunter@intel.com>
-Cc:     Arend Van Spriel <arend.vanspriel@broadcom.com>,
-        Franky Lin <franky.lin@broadcom.com>,
-        Hante Meuleman <hante.meuleman@broadcom.com>,
-        Chi-Hsien Lin <chi-hsien.lin@cypress.com>,
-        Wright Feng <wright.feng@cypress.com>, ulf.hansson@linaro.org,
-        faiz_abbas@ti.com, linux-mmc@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org,
-        Kalle Valo <kvalo@codeaurora.org>,
-        linux-wireless@vger.kernel.org,
-        brcm80211-dev-list.pdl@broadcom.com,
-        brcm80211-dev-list@cypress.com, netdev@vger.kernel.org
-Subject: Re: Issue with Broadcom wireless in 5.2rc1 (was Re: [PATCH] mmc:
- sdhci: queue work after sdhci_defer_done())
-Message-ID: <20190527125026.GA4272@basecamp>
-References: <20190524111053.12228-1-masneyb@onstation.org>
- <70782901-a9ac-5647-1abe-89c86a44a01b@intel.com>
- <20190524154958.GB16322@basecamp>
- <20190526122136.GA26456@basecamp>
- <e8c049ce-07e1-8b34-678d-41b3d6d41983@broadcom.com>
- <20190526195819.GA29665@basecamp>
- <20190527093711.GA853@basecamp>
- <ead7f268-b730-3541-31f7-4499556efec0@intel.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ead7f268-b730-3541-31f7-4499556efec0@intel.com>
+        id S1726501AbfE0NUU (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 27 May 2019 09:20:20 -0400
+Received: from s3.sipsolutions.net ([144.76.43.62]:49206 "EHLO
+        sipsolutions.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726063AbfE0NUU (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 27 May 2019 09:20:20 -0400
+Received: by sipsolutions.net with esmtpsa (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <johannes@sipsolutions.net>)
+        id 1hVFY1-0006cw-9c; Mon, 27 May 2019 15:20:17 +0200
+Message-ID: <b59be15f1d0caa4eaa4476bbd8457afc44d57089.camel@sipsolutions.net>
+Subject: cellular modem APIs - take 2
+From:   Johannes Berg <johannes@sipsolutions.net>
+To:     netdev@vger.kernel.org, linux-wireless@vger.kernel.org
+Cc:     Subash Abhinov Kasiviswanathan <subashab@codeaurora.org>,
+        Dan Williams <dcbw@redhat.com>,
+        Sean Tranchetti <stranche@codeaurora.org>,
+        Daniele Palmas <dnlplm@gmail.com>,
+        Aleksander Morgado <aleksander@aleksander.es>,
+        =?ISO-8859-1?Q?Bj=F8rn?= Mork <bjorn@mork.no>
+Date:   Mon, 27 May 2019 15:20:16 +0200
+Content-Type: text/plain; charset="UTF-8"
+X-Mailer: Evolution 3.28.5 (3.28.5-2.fc28) 
+Mime-Version: 1.0
+Content-Transfer-Encoding: 7bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Mon, May 27, 2019 at 03:08:07PM +0300, Adrian Hunter wrote:
-> On 27/05/19 12:37 PM, Brian Masney wrote:
-> > On Sun, May 26, 2019 at 03:58:19PM -0400, Brian Masney wrote:
-> >> I attached a patch that shows how I was able to determine what had
-> >> already claimed the host.
-> > On Mon, May 27, 2019 at 10:48:24AM +0300, Adrian Hunter wrote:
-> >> This is because SDHCI is using the IRQ thread to process the SDIO card
-> >> interrupt (sdio_run_irqs()).  When the card driver tries to use the card, it
-> >> causes interrupts which deadlocks since c07a48c26519 ("mmc: sdhci: Remove
-> >> finish_tasklet") has moved the tasklet processing to the IRQ thread.
-> >>
-> >> I would expect to be able to use the IRQ thread to complete requests, and it
-> >> is desirable to do so because it is lower latency.
-> >>
-> >> Probably, SDHCI should use sdio_signal_irq() which queues a work item, and
-> >> is what other drivers are doing.
-> >>
-> >> I will investigate some more and send a patch.
-> 
-> Please try the patch below:
-> 
-> From: Adrian Hunter <adrian.hunter@intel.com>
-> Date: Mon, 27 May 2019 14:45:55 +0300
-> Subject: [PATCH] mmc: sdhci: Fix SDIO IRQ thread deadlock
-> 
-> Since commit c07a48c26519 ("mmc: sdhci: Remove finish_tasklet"), the IRQ
-> thread might be used to complete requests, but the IRQ thread is also used
-> to process SDIO card interrupts. This can cause a deadlock when the SDIO
-> processing tries to access the card since that would also require the IRQ
-> thread. Change SDHCI to use sdio_signal_irq() to schedule a work item
-> instead. That also requires implementing the ->ack_sdio_irq() mmc host op.
-> 
-> Signed-off-by: Adrian Hunter <adrian.hunter@intel.com>
-> Fixes: c07a48c26519 ("mmc: sdhci: Remove finish_tasklet")
+Hi all,
 
-Yes, this fixes the issue for me. You can add my:
+Sorry for the long delay in getting back to this. I'm meaning to write
+some code soon also for this, to illustrate better, but I figured I'd
+still get some thoughts out before I do that.
 
-Reported-by: Brian Masney <masneyb@onstation.org>
-Tested-by: Brian Masney <masneyb@onstation.org>
+After more discussion (@Intel) and the previous thread(s), I've pretty
+much come to the conclusion that we should have a small subsystem for
+WWAN, rather than fudging everything like we previously did.
+
+We can debate whether or not that should use 'real' netlink or generic
+netlink - personally I know the latter better and I think it has some
+real advantages like easier message parsing (it's automatic more or
+less) including strict checking and automatic policy introspection (I
+recently wrote the code for this and it's plugged into generic netlink
+family, for other netlink families it needs more hand-written code). But
+I could possibly be convinced of doing something else, and/or perhaps
+building more infrastructure for 'real' netlink to realize those
+benefits there as well.
+
+
+In terms of what I APIs are needed, the kernel-driver side and userspace
+side go pretty much hand in hand (the wwan subsystem just providing the
+glue), so what I say below is pretty much both a method/function call
+(kernel internal API) or a netlink message (userspace API).
+
+1) I think a generic abstraction of WWAN device that is not a netdev
+   is needed. Yes, on the one hand it's quite nice to be able to work on
+   top of a given netdev, but it's also limiting because it requires the
+   data flow to go through there, and packets that are tagged in some
+   way be exchanged there.
+   For VLANs this can be out-of-band (in a sense) with hw-accel, but for
+   rmnet-style it's in-band, and that limits what we can do.
+
+   Now, of course this doesn't mean there shouldn't be a netdev created
+   by default in most cases, but it gives us a way to do additional
+   things that we cannot do with *just* a netdev.
+
+   From a driver POV though, it would register a new "wwan_device", and
+   then get some generic callback to create a netdev on top, maybe by
+   default from the subsystem or from the user.
+
+2) Clearly, one needs to be able to create PDN netdevs, with the PDN
+   given to the command. Here's another advantage: If these are created
+   on top of another abstraction, not another netdev, they can have
+   their own queues, multiqueue RX etc. much more easily.
+
+   Also, things like the "if I have just a single channel, drop the mux
+   headers" can then be entirely done in the driver, and the default
+   netdev no longer has the possibility of muxed and IP frames on the
+   same datapath.
+
+   This also enables more things like handling checksum offload directly
+   in the driver, which doesn't behave so well with VLANs I think.
+
+   All of that will just be easier for 5G too, I believe, with
+   acceleration being handled per PDN, multi-queue working without
+   ndo_select_queue, etc.
+
+   Quite possibly there might be some additional (vendor-dependent?)
+   configuration for when such netdevs are created, but we need to
+   figure out if that really needs to be at creation time, or just
+   ethtool later or something like that. I guess it depends on how
+   generic it needs to be.
+
+3) Separately, we need to have an ability to create "generalized control
+   channels". I'm thinking there would be a general command "create
+   control channel" with a given type (e.g. ATCMD, RPC, MBIM, GNSS) plus
+   a list of vendor-specific channels (e.g. for tracing).
+
+   I'm unsure where this channel should really go - somehow it seems to
+   me that for many (most?) of these registering them as a serial line
+   would be most appropriate, but some, especially vendor-defined
+   channels like tracing, would probably better use a transport that's
+   higher bandwidth than, e.g. netdevs.
+
+   One way I thought of doing this was to create an abstraction in the
+   wwan framework that lets the driver use SKBs anyway (i.e. TX and RX
+   on these channels using SKBs) and then translate them to some channel
+   in the framework - that way, we can even select at runtime if we want
+   a netdev (not really plugged into the network stack, ARPHDR_VOID?) or
+   some other kind of transport. Building that would allow us to add
+   transport types in the future too.
+
+   I guess such a channel should also be created by default, if it's
+   not already created by the driver in some out-of-band way anyway (and
+   most likely it shouldn't be, but I guess drivers might have some
+   entirely different communication channels for AT CMDs?)
+
+4) There was a question about something like pure IP channels that
+   belong to another PDN and apparently now separate netdevs might be
+   used, but it seems to me that could just be a queue reserved on the
+   regular netdevs and then when you say ("enable video streaming on
+   wwan1 interface") that can do some magic to classify the video
+   packets (DSCP?) to another hardware queue for better QoS.
+
+
+
+Anyway, if all of this doesn't seem completely outlandish I'll try to
+write some code to illustrate it (sooner, rather than later).
 
 Thanks,
+johannes
 
-Brian
