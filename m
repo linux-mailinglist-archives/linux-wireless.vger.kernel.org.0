@@ -2,80 +2,98 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2C1672AD7F
-	for <lists+linux-wireless@lfdr.de>; Mon, 27 May 2019 06:16:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 51FBB2AED0
+	for <lists+linux-wireless@lfdr.de>; Mon, 27 May 2019 08:39:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725847AbfE0EQy (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 27 May 2019 00:16:54 -0400
-Received: from smtp.codeaurora.org ([198.145.29.96]:45136 "EHLO
-        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725774AbfE0EQy (ORCPT
+        id S1726396AbfE0Giw (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 27 May 2019 02:38:52 -0400
+Received: from mail-qk1-f194.google.com ([209.85.222.194]:35739 "EHLO
+        mail-qk1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726238AbfE0Giv (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 27 May 2019 00:16:54 -0400
-Received: by smtp.codeaurora.org (Postfix, from userid 1000)
-        id B0CD960850; Mon, 27 May 2019 04:16:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1558930613;
-        bh=2U+FWdNTCUE+5AySKg68tPWk8Kf3LLCb0bMzaMCXmOI=;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=ZlO5Pevn3ev4kYs5I2z+m23G5tQXhFRzytki1lBhUudnUomk33BNsWi7hpVvLZDqz
-         mSCd0WoYOSVQDWeKAQWtCOX4Zb4MlVu/Q5lvCrfV/vr2Ak0vanqaIppwgsD1Hf5As+
-         Yvl3yBAvdOJOxLayVjWTaXXU+RmlUvSP5BFMx1fc=
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        pdx-caf-mail.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.7 required=2.0 tests=ALL_TRUSTED,BAYES_00,
-        DKIM_INVALID,DKIM_SIGNED,SPF_NONE autolearn=no autolearn_force=no
-        version=3.4.0
-Received: from purkki.adurom.net (purkki.adurom.net [80.68.90.206])
-        (using TLSv1.2 with cipher DHE-RSA-AES128-SHA (128/128 bits))
-        (No client certificate requested)
-        (Authenticated sender: kvalo@smtp.codeaurora.org)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 6C5E56087B;
-        Mon, 27 May 2019 04:16:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1558930613;
-        bh=2U+FWdNTCUE+5AySKg68tPWk8Kf3LLCb0bMzaMCXmOI=;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=ZlO5Pevn3ev4kYs5I2z+m23G5tQXhFRzytki1lBhUudnUomk33BNsWi7hpVvLZDqz
-         mSCd0WoYOSVQDWeKAQWtCOX4Zb4MlVu/Q5lvCrfV/vr2Ak0vanqaIppwgsD1Hf5As+
-         Yvl3yBAvdOJOxLayVjWTaXXU+RmlUvSP5BFMx1fc=
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 6C5E56087B
-Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
-From:   Kalle Valo <kvalo@codeaurora.org>
-To:     Andy Strohman <andrew@andrewstrohman.com>
-Cc:     johannes@sipsolutions.net, linux-wireless@vger.kernel.org,
-        Andy Strohman <andy@uplevelsystems.com>
-Subject: Re: [PATCH] netlink: fix station_info pertid memory leak
-References: <20190525062729.8504-1-andy@uplevelsystems.com>
-Date:   Mon, 27 May 2019 07:16:50 +0300
-In-Reply-To: <20190525062729.8504-1-andy@uplevelsystems.com> (Andy Strohman's
-        message of "Fri, 24 May 2019 23:27:29 -0700")
-Message-ID: <877eacv8el.fsf@purkki.adurom.net>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/23.4 (gnu/linux)
+        Mon, 27 May 2019 02:38:51 -0400
+Received: by mail-qk1-f194.google.com with SMTP id l128so3477800qke.2
+        for <linux-wireless@vger.kernel.org>; Sun, 26 May 2019 23:38:51 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=endlessm-com.20150623.gappssmtp.com; s=20150623;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=HHxpS8GHNFczohBNmU/4hGO+nucs8Ap0lRCjYNwMm+U=;
+        b=Z3+ujjmXN4PtI+z7DMZcCXWOgT9fcIZii2m6C0wngPB6ltt55kx7UFgpm7+ldQrDdb
+         M9HmuXhYGolCOseNPBd7ucxDAawtYlZBROSShy6h8NougfZbYckdRpBmYVJikkNi923L
+         Smw/6I1tZquqKSkMC+GlaX/KudPYUh5KQEz/iNSNqjqzZuSG90izIFke6A38g4dj7F0b
+         0dZXj7k8AypGiyssOh4MtMsjYYcsKqdryGoMoqJMFP/l9wb9Bhy4yqM3LhnI/YHx29OA
+         RIbQ3C7biSTc9TSPG2buxIE1BI0vC2Dz1yapS9vuzSJssE1e/f0hNVWOwMJ9Potc0teC
+         fq5g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=HHxpS8GHNFczohBNmU/4hGO+nucs8Ap0lRCjYNwMm+U=;
+        b=Y3+gF7iGe/RYXRBBnoxDo65ES3TcZwA7a9DZhB18QgASU8qbcUhfN21s5j+7DdX90E
+         0npGvwBxquZQDIWmXUubO+xwIxFCfSUwz/L/MLfBA0Rrrr/Nv4CYgFyQXLKS7to+0Fnr
+         PUqqi1qjQAZGsOKBf8Uy2/3H3GXRzu3Ys6kLpb0vJm5lIR5Y+nJ1No28qUNv8wdxV6jg
+         nTbdddzMb0jIJqsNt3XJ8zGTB3c20+D5FqHKLwkZoosIPT6rCrPtDlQIIUIfvxCebBFd
+         +g90zf1QZp4RFQrnojhlqXbKDCYCRvXu8/txLopqcxv1diFWDyRVog6vpXH3zfb7a8en
+         a58A==
+X-Gm-Message-State: APjAAAWQM+rFOjDwEFGV8lyLzBCKGvDDpr0xkzmX4I+UydnKG3TzB/74
+        GLaZJJlaqrt/iNfwNZ9AKfSs+5FWmnh/pp6n4DGcldTX9jZuEA==
+X-Google-Smtp-Source: APXvYqwXmCCSkefGNRFAEBLGtLWO8/FD3BjQ6UIoj//q1bJvMH9lNtKnGCPeUFP7BXWy7Q9aAj3RnvVKFLZBU3RFjug=
+X-Received: by 2002:a05:620a:1ee:: with SMTP id x14mr650094qkn.70.1558939130658;
+ Sun, 26 May 2019 23:38:50 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+References: <20190503072146.49999-1-chiu@endlessm.com> <20190503072146.49999-3-chiu@endlessm.com>
+ <CAD8Lp47_-6d2wCAs5QbuR6Mw2w91TyJ9W3kFiJHH4F_6dXqnHg@mail.gmail.com>
+ <CAB4CAweQXz=wQGA5t7BwWYdwbRrHCji+BWc0G52SUcZFGc8Pnw@mail.gmail.com>
+ <CAD8Lp46hcx0ZHFMUdXdR6unbeMQJsfyuEQ7hUFpHY2jU9R7Gcw@mail.gmail.com>
+ <CAB4CAwf26pdCY7FJA5H7d1aEY2xpjSto4JxARwczmVJ==41yng@mail.gmail.com> <CAD8Lp47K0Jn2wotANdQV3kT9yPP7bLnVd0eYhWui-vNDOEXBTA@mail.gmail.com>
+In-Reply-To: <CAD8Lp47K0Jn2wotANdQV3kT9yPP7bLnVd0eYhWui-vNDOEXBTA@mail.gmail.com>
+From:   Chris Chiu <chiu@endlessm.com>
+Date:   Mon, 27 May 2019 14:38:38 +0800
+Message-ID: <CAB4CAwf7O9tyUwc+gPSZrBES+Bt7iTjhE1fbbVxYKqzjtmZBxw@mail.gmail.com>
+Subject: Re: [RFC PATCH 2/2] rtl8xxxu: Add watchdog to update rate mask by
+ signal strength
+To:     Daniel Drake <drake@endlessm.com>
+Cc:     Jes Sorensen <jes.sorensen@gmail.com>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        David Miller <davem@davemloft.net>,
+        linux-wireless <linux-wireless@vger.kernel.org>,
+        netdev <netdev@vger.kernel.org>,
+        Linux Kernel <linux-kernel@vger.kernel.org>,
+        Linux Upstreaming Team <linux@endlessm.com>,
+        Larry Finger <Larry.Finger@lwfinger.net>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Andy Strohman <andrew@andrewstrohman.com> writes:
-
-> When dumping stations, memory allocated for station_info's
-> pertid member will leak if the nl80211 header cannot be added to
-> the sk_buff due to insufficient tail room.
+On Wed, May 22, 2019 at 2:38 AM Daniel Drake <drake@endlessm.com> wrote:
 >
-> I noticed this leak in the kmalloc-2048 cache.
+> On Fri, May 10, 2019 at 2:37 AM Chris Chiu <chiu@endlessm.com> wrote:
+> > I've verified that multiple virtual interface can not work simultaneously in
+> > STA mode. I assigned different mac address for different vifs, I can only
+> > bring only one interface up. If I want to bring the second vif up, it always
+> > complains "SIOCSIFFLAGS: Device or resource busy".
 >
-> Fixes: 8689c051a201 ("cfg80211: dynamically allocate per-tid stats for station info")
-> Signed-off-by: Andy Strohman <andy@uplevelsystems.com>
-> ---
->  net/wireless/nl80211.c | 4 +++-
->  1 file changed, 3 insertions(+), 1 deletion(-)
+> Interesting. Can you go deeper into that so that we can be more
+> confident of this limitation?
+>
+> ieee80211_open() is the starting point.
+> ieee80211_check_concurrent_iface() is one candidate to generate -EBUSY
+> but from inspection, I don't think that's happening in this case,
+> perhaps you can keep following through in order to figure out which
+> part of the code is not allowing the 2nd STA interface to come up.
+>
+> Daniel
 
-The correct prefix should be "nl80211:".
+The -EBUSY is returned by the ieee80211_check_combinations() in the
+ieee80211_check_concurrent_iface() function which is invoked each time
+doing ieee80211_open().
+The ieee80211_check_combinations() returns the -EBUSY because of
+cfg80211_check_combinations() will iterate all interfaces of different types
+then checks the combination is valid or not, which in this case the number
+of interface combination accumulated by cfg80211_iter_sum_ifcombos is 0
+when I'm trying to bring up the second station interface.
 
--- 
-Kalle Valo
+Chris
