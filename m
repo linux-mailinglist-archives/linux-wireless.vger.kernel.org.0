@@ -2,234 +2,87 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B0E492C653
-	for <lists+linux-wireless@lfdr.de>; Tue, 28 May 2019 14:19:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F151D2C666
+	for <lists+linux-wireless@lfdr.de>; Tue, 28 May 2019 14:24:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727074AbfE1MTO (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 28 May 2019 08:19:14 -0400
-Received: from s3.sipsolutions.net ([144.76.43.62]:49026 "EHLO
-        sipsolutions.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726933AbfE1MTO (ORCPT
+        id S1727163AbfE1MYz (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 28 May 2019 08:24:55 -0400
+Received: from smtp.codeaurora.org ([198.145.29.96]:60738 "EHLO
+        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726853AbfE1MYy (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 28 May 2019 08:19:14 -0400
-Received: by sipsolutions.net with esmtpsa (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <johannes@sipsolutions.net>)
-        id 1hVb4Q-0004vf-CG; Tue, 28 May 2019 14:19:10 +0200
-From:   Johannes Berg <johannes@sipsolutions.net>
-To:     linux-wireless@vger.kernel.org
-Cc:     j@w1.fi, Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH] nl80211: fill all policy .type entries
-Date:   Tue, 28 May 2019 14:19:07 +0200
-Message-Id: <20190528121907.4115-1-johannes@sipsolutions.net>
-X-Mailer: git-send-email 2.17.2
+        Tue, 28 May 2019 08:24:54 -0400
+Received: by smtp.codeaurora.org (Postfix, from userid 1000)
+        id 6EEA3607CA; Tue, 28 May 2019 12:24:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
+        s=default; t=1559046294;
+        bh=ZfOKgZcqQIQIic0D0LZNKlWwGoCAeKr3nnInuCpqXV4=;
+        h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
+        b=WyvYAwXKqP9phnH2QO1GhoeugcYXuVWqFPkC2THd85Ng/8ffNcAsbRhVMLsElaRLx
+         EGgcmWpuPJwu9AfgIH3MogX3u77N9ZZIsVwmSyzBl31+r0LsUyvQfQ26lTQdcruS81
+         tTV5spOr86PA70Xh0jdMQw+Qna/WZSFLvwC+jOdc=
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        pdx-caf-mail.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-0.8 required=2.0 tests=ALL_TRUSTED,BAYES_00,
+        DKIM_INVALID,DKIM_SIGNED,MISSING_DATE,MISSING_MID,SPF_NONE autolearn=no
+        autolearn_force=no version=3.4.0
+Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo@smtp.codeaurora.org)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 5562C60128;
+        Tue, 28 May 2019 12:24:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
+        s=default; t=1559046294;
+        bh=ZfOKgZcqQIQIic0D0LZNKlWwGoCAeKr3nnInuCpqXV4=;
+        h=Subject:From:In-Reply-To:References:To:Cc:From;
+        b=hl80nfIwVcuinyqkMhw8PMu3Uj5yKGm/yHZ+HkJpu+UvOoDC/Vdgbp+4CAm+vdVsZ
+         buIYtrk+m6JD+iTtSPzNkDUsmXIpPemd9100qyWUj5pfF+snqrBwLl3vppMCIm7qRv
+         JVVtpIZlY9eezCWCfL9hbBAmr8AYKo2whtYgq+Gw=
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 5562C60128
+Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH 1/7] brcm80211: switch common header files to using SPDX
+ license identifier
+From:   Kalle Valo <kvalo@codeaurora.org>
+In-Reply-To: <1558008251-13692-2-git-send-email-arend.vanspriel@broadcom.com>
+References: <1558008251-13692-2-git-send-email-arend.vanspriel@broadcom.com>
+To:     Arend van Spriel <arend.vanspriel@broadcom.com>
+Cc:     linux-wireless@vger.kernel.org,
+        Arend van Spriel <arend.vanspriel@broadcom.com>
+User-Agent: pwcli/0.0.0-git (https://github.com/kvalo/pwcli/) Python/2.7.12
+Message-Id: <20190528122454.6EEA3607CA@smtp.codeaurora.org>
+Date:   Tue, 28 May 2019 12:24:54 +0000 (UTC)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Johannes Berg <johannes.berg@intel.com>
+Arend van Spriel <arend.vanspriel@broadcom.com> wrote:
 
-For old commands, it's fine to have .type = NLA_UNSPEC and it
-behaves the same as NLA_MIN_LEN. However, for new commands with
-strict validation this is no longer true, and for policy export
-to userspace these are also ignored.
+> With ISC license text in place under the LICENSES folder switch
+> to using the SPDX license identifier to refer to the ISC license.
+> 
+> Reviewed-by: Hante Meuleman <hante.meuleman@broadcom.com>
+> Reviewed-by: Pieter-Paul Giesberts <pieter-paul.giesberts@broadcom.com>
+> Reviewed-by: Franky Lin <franky.lin@broadcom.com>
+> Signed-off-by: Arend van Spriel <arend.vanspriel@broadcom.com>
 
-Fix up the remaining ones that don't have a type.
+6 patches applied to wireless-drivers-next.git, thanks.
 
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
----
- net/wireless/nl80211.c | 78 ++++++++++++++++++++++++++++++------------
- 1 file changed, 57 insertions(+), 21 deletions(-)
+7e5677de8e0c brcm80211: switch common header files to using SPDX license identifier
+afe06f822035 brcmutil: switch source files to using SPDX license identifier
+f843863d6d10 brcmsmac: switch phy source files to using SPDX license identifier
+daeccac2d5e7 brcmfmac: switch source files to using SPDX license identifier
+9ff8614a3dbe brcmfmac: use separate Kconfig file for brcmfmac
+885a93cf3110 brcm80211: select WANT_DEV_COREDUMP conditionally for brcmfmac
 
-diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
-index c391b560d986..4892f307f51d 100644
---- a/net/wireless/nl80211.c
-+++ b/net/wireless/nl80211.c
-@@ -304,8 +304,11 @@ const struct nla_policy nl80211_policy[NUM_NL80211_ATTR] = {
- 	[NL80211_ATTR_IFINDEX] = { .type = NLA_U32 },
- 	[NL80211_ATTR_IFNAME] = { .type = NLA_NUL_STRING, .len = IFNAMSIZ-1 },
- 
--	[NL80211_ATTR_MAC] = { .len = ETH_ALEN },
--	[NL80211_ATTR_PREV_BSSID] = { .len = ETH_ALEN },
-+	[NL80211_ATTR_MAC] = { .type = NLA_EXACT_LEN_WARN, .len = ETH_ALEN },
-+	[NL80211_ATTR_PREV_BSSID] = {
-+		.type = NLA_EXACT_LEN_WARN,
-+		.len = ETH_ALEN
-+	},
- 
- 	[NL80211_ATTR_KEY] = { .type = NLA_NESTED, },
- 	[NL80211_ATTR_KEY_DATA] = { .type = NLA_BINARY,
-@@ -356,7 +359,10 @@ const struct nla_policy nl80211_policy[NUM_NL80211_ATTR] = {
- 	[NL80211_ATTR_MESH_CONFIG] = { .type = NLA_NESTED },
- 	[NL80211_ATTR_SUPPORT_MESH_AUTH] = { .type = NLA_FLAG },
- 
--	[NL80211_ATTR_HT_CAPABILITY] = { .len = NL80211_HT_CAPABILITY_LEN },
-+	[NL80211_ATTR_HT_CAPABILITY] = {
-+		.type = NLA_EXACT_LEN_WARN,
-+		.len = NL80211_HT_CAPABILITY_LEN
-+	},
- 
- 	[NL80211_ATTR_MGMT_SUBTYPE] = { .type = NLA_U8 },
- 	[NL80211_ATTR_IE] = NLA_POLICY_VALIDATE_FN(NLA_BINARY,
-@@ -386,7 +392,10 @@ const struct nla_policy nl80211_policy[NUM_NL80211_ATTR] = {
- 	[NL80211_ATTR_WPA_VERSIONS] = { .type = NLA_U32 },
- 	[NL80211_ATTR_PID] = { .type = NLA_U32 },
- 	[NL80211_ATTR_4ADDR] = { .type = NLA_U8 },
--	[NL80211_ATTR_PMKID] = { .len = WLAN_PMKID_LEN },
-+	[NL80211_ATTR_PMKID] = {
-+		.type = NLA_EXACT_LEN_WARN,
-+		.len = WLAN_PMKID_LEN
-+	},
- 	[NL80211_ATTR_DURATION] = { .type = NLA_U32 },
- 	[NL80211_ATTR_COOKIE] = { .type = NLA_U64 },
- 	[NL80211_ATTR_TX_RATES] = { .type = NLA_NESTED },
-@@ -448,7 +457,10 @@ const struct nla_policy nl80211_policy[NUM_NL80211_ATTR] = {
- 	[NL80211_ATTR_WDEV] = { .type = NLA_U64 },
- 	[NL80211_ATTR_USER_REG_HINT_TYPE] = { .type = NLA_U32 },
- 	[NL80211_ATTR_AUTH_DATA] = { .type = NLA_BINARY, },
--	[NL80211_ATTR_VHT_CAPABILITY] = { .len = NL80211_VHT_CAPABILITY_LEN },
-+	[NL80211_ATTR_VHT_CAPABILITY] = {
-+		.type = NLA_EXACT_LEN_WARN,
-+		.len = NL80211_VHT_CAPABILITY_LEN
-+	},
- 	[NL80211_ATTR_SCAN_FLAGS] = { .type = NLA_U32 },
- 	[NL80211_ATTR_P2P_CTWINDOW] = NLA_POLICY_MAX(NLA_U8, 127),
- 	[NL80211_ATTR_P2P_OPPPS] = NLA_POLICY_MAX(NLA_U8, 1),
-@@ -484,7 +496,10 @@ const struct nla_policy nl80211_policy[NUM_NL80211_ATTR] = {
- 	[NL80211_ATTR_VENDOR_DATA] = { .type = NLA_BINARY },
- 	[NL80211_ATTR_QOS_MAP] = { .type = NLA_BINARY,
- 				   .len = IEEE80211_QOS_MAP_LEN_MAX },
--	[NL80211_ATTR_MAC_HINT] = { .len = ETH_ALEN },
-+	[NL80211_ATTR_MAC_HINT] = {
-+		.type = NLA_EXACT_LEN_WARN,
-+		.len = ETH_ALEN
-+	},
- 	[NL80211_ATTR_WIPHY_FREQ_HINT] = { .type = NLA_U32 },
- 	[NL80211_ATTR_TDLS_PEER_CAPABILITY] = { .type = NLA_U32 },
- 	[NL80211_ATTR_SOCKET_OWNER] = { .type = NLA_FLAG },
-@@ -495,7 +510,10 @@ const struct nla_policy nl80211_policy[NUM_NL80211_ATTR] = {
- 		NLA_POLICY_MAX(NLA_U8, IEEE80211_NUM_UPS - 1),
- 	[NL80211_ATTR_ADMITTED_TIME] = { .type = NLA_U16 },
- 	[NL80211_ATTR_SMPS_MODE] = { .type = NLA_U8 },
--	[NL80211_ATTR_MAC_MASK] = { .len = ETH_ALEN },
-+	[NL80211_ATTR_MAC_MASK] = {
-+		.type = NLA_EXACT_LEN_WARN,
-+		.len = ETH_ALEN
-+	},
- 	[NL80211_ATTR_WIPHY_SELF_MANAGED_REG] = { .type = NLA_FLAG },
- 	[NL80211_ATTR_NETNS_FD] = { .type = NLA_U32 },
- 	[NL80211_ATTR_SCHED_SCAN_DELAY] = { .type = NLA_U32 },
-@@ -507,15 +525,21 @@ const struct nla_policy nl80211_policy[NUM_NL80211_ATTR] = {
- 	[NL80211_ATTR_MU_MIMO_GROUP_DATA] = {
- 		.len = VHT_MUMIMO_GROUPS_DATA_LEN
- 	},
--	[NL80211_ATTR_MU_MIMO_FOLLOW_MAC_ADDR] = { .len = ETH_ALEN },
-+	[NL80211_ATTR_MU_MIMO_FOLLOW_MAC_ADDR] = {
-+		.type = NLA_EXACT_LEN_WARN,
-+		.len = ETH_ALEN
-+	},
- 	[NL80211_ATTR_NAN_MASTER_PREF] = NLA_POLICY_MIN(NLA_U8, 1),
- 	[NL80211_ATTR_BANDS] = { .type = NLA_U32 },
- 	[NL80211_ATTR_NAN_FUNC] = { .type = NLA_NESTED },
- 	[NL80211_ATTR_FILS_KEK] = { .type = NLA_BINARY,
- 				    .len = FILS_MAX_KEK_LEN },
--	[NL80211_ATTR_FILS_NONCES] = { .len = 2 * FILS_NONCE_LEN },
-+	[NL80211_ATTR_FILS_NONCES] = {
-+		.type = NLA_EXACT_LEN_WARN,
-+		.len = 2 * FILS_NONCE_LEN
-+	},
- 	[NL80211_ATTR_MULTICAST_TO_UNICAST_ENABLED] = { .type = NLA_FLAG, },
--	[NL80211_ATTR_BSSID] = { .len = ETH_ALEN },
-+	[NL80211_ATTR_BSSID] = { .type = NLA_EXACT_LEN_WARN, .len = ETH_ALEN },
- 	[NL80211_ATTR_SCHED_SCAN_RELATIVE_RSSI] = { .type = NLA_S8 },
- 	[NL80211_ATTR_SCHED_SCAN_RSSI_ADJUST] = {
- 		.len = sizeof(struct nl80211_bss_select_rssi_adjust)
-@@ -528,7 +552,7 @@ const struct nla_policy nl80211_policy[NUM_NL80211_ATTR] = {
- 	[NL80211_ATTR_FILS_ERP_NEXT_SEQ_NUM] = { .type = NLA_U16 },
- 	[NL80211_ATTR_FILS_ERP_RRK] = { .type = NLA_BINARY,
- 					.len = FILS_ERP_MAX_RRK_LEN },
--	[NL80211_ATTR_FILS_CACHE_ID] = { .len = 2 },
-+	[NL80211_ATTR_FILS_CACHE_ID] = { .type = NLA_EXACT_LEN_WARN, .len = 2 },
- 	[NL80211_ATTR_PMK] = { .type = NLA_BINARY, .len = PMK_MAX_LEN },
- 	[NL80211_ATTR_SCHED_SCAN_MULTI] = { .type = NLA_FLAG },
- 	[NL80211_ATTR_EXTERNAL_AUTH_SUPPORT] = { .type = NLA_FLAG },
-@@ -589,10 +613,13 @@ static const struct nla_policy
- nl80211_wowlan_tcp_policy[NUM_NL80211_WOWLAN_TCP] = {
- 	[NL80211_WOWLAN_TCP_SRC_IPV4] = { .type = NLA_U32 },
- 	[NL80211_WOWLAN_TCP_DST_IPV4] = { .type = NLA_U32 },
--	[NL80211_WOWLAN_TCP_DST_MAC] = { .len = ETH_ALEN },
-+	[NL80211_WOWLAN_TCP_DST_MAC] = {
-+		.type = NLA_EXACT_LEN_WARN,
-+		.len = ETH_ALEN
-+	},
- 	[NL80211_WOWLAN_TCP_SRC_PORT] = { .type = NLA_U16 },
- 	[NL80211_WOWLAN_TCP_DST_PORT] = { .type = NLA_U16 },
--	[NL80211_WOWLAN_TCP_DATA_PAYLOAD] = { .len = 1 },
-+	[NL80211_WOWLAN_TCP_DATA_PAYLOAD] = { .type = NLA_MIN_LEN, .len = 1 },
- 	[NL80211_WOWLAN_TCP_DATA_PAYLOAD_SEQ] = {
- 		.len = sizeof(struct nl80211_wowlan_tcp_data_seq)
- 	},
-@@ -600,8 +627,8 @@ nl80211_wowlan_tcp_policy[NUM_NL80211_WOWLAN_TCP] = {
- 		.len = sizeof(struct nl80211_wowlan_tcp_data_token)
- 	},
- 	[NL80211_WOWLAN_TCP_DATA_INTERVAL] = { .type = NLA_U32 },
--	[NL80211_WOWLAN_TCP_WAKE_PAYLOAD] = { .len = 1 },
--	[NL80211_WOWLAN_TCP_WAKE_MASK] = { .len = 1 },
-+	[NL80211_WOWLAN_TCP_WAKE_PAYLOAD] = { .type = NLA_MIN_LEN, .len = 1 },
-+	[NL80211_WOWLAN_TCP_WAKE_MASK] = { .type = NLA_MIN_LEN, .len = 1 },
- };
- #endif /* CONFIG_PM */
- 
-@@ -619,9 +646,12 @@ nl80211_coalesce_policy[NUM_NL80211_ATTR_COALESCE_RULE] = {
- /* policy for GTK rekey offload attributes */
- static const struct nla_policy
- nl80211_rekey_policy[NUM_NL80211_REKEY_DATA] = {
--	[NL80211_REKEY_DATA_KEK] = { .len = NL80211_KEK_LEN },
--	[NL80211_REKEY_DATA_KCK] = { .len = NL80211_KCK_LEN },
--	[NL80211_REKEY_DATA_REPLAY_CTR] = { .len = NL80211_REPLAY_CTR_LEN },
-+	[NL80211_REKEY_DATA_KEK] = { .type = NLA_EXACT_LEN_WARN, .len = NL80211_KEK_LEN },
-+	[NL80211_REKEY_DATA_KCK] = { .type = NLA_EXACT_LEN_WARN, .len = NL80211_KCK_LEN },
-+	[NL80211_REKEY_DATA_REPLAY_CTR] = {
-+		.type = NLA_EXACT_LEN_WARN,
-+		.len = NL80211_REPLAY_CTR_LEN
-+	},
- };
- 
- static const struct nla_policy
-@@ -635,7 +665,10 @@ static const struct nla_policy
- nl80211_match_policy[NL80211_SCHED_SCAN_MATCH_ATTR_MAX + 1] = {
- 	[NL80211_SCHED_SCAN_MATCH_ATTR_SSID] = { .type = NLA_BINARY,
- 						 .len = IEEE80211_MAX_SSID_LEN },
--	[NL80211_SCHED_SCAN_MATCH_ATTR_BSSID] = { .len = ETH_ALEN },
-+	[NL80211_SCHED_SCAN_MATCH_ATTR_BSSID] = {
-+		.type = NLA_EXACT_LEN_WARN,
-+		.len = ETH_ALEN
-+	},
- 	[NL80211_SCHED_SCAN_MATCH_ATTR_RSSI] = { .type = NLA_U32 },
- 	[NL80211_SCHED_SCAN_MATCH_PER_BAND_RSSI] =
- 		NLA_POLICY_NESTED(nl80211_match_band_rssi_policy),
-@@ -667,7 +700,10 @@ nl80211_nan_func_policy[NL80211_NAN_FUNC_ATTR_MAX + 1] = {
- 	[NL80211_NAN_FUNC_SUBSCRIBE_ACTIVE] = { .type = NLA_FLAG },
- 	[NL80211_NAN_FUNC_FOLLOW_UP_ID] = { .type = NLA_U8 },
- 	[NL80211_NAN_FUNC_FOLLOW_UP_REQ_ID] = { .type = NLA_U8 },
--	[NL80211_NAN_FUNC_FOLLOW_UP_DEST] = { .len = ETH_ALEN },
-+	[NL80211_NAN_FUNC_FOLLOW_UP_DEST] = {
-+		.type = NLA_EXACT_LEN_WARN,
-+		.len = ETH_ALEN
-+	},
- 	[NL80211_NAN_FUNC_CLOSE_RANGE] = { .type = NLA_FLAG },
- 	[NL80211_NAN_FUNC_TTL] = { .type = NLA_U32 },
- 	[NL80211_NAN_FUNC_SERVICE_INFO] = { .type = NLA_BINARY,
-@@ -4057,7 +4093,7 @@ static const struct nla_policy nl80211_txattr_policy[NL80211_TXRATE_MAX + 1] = {
- 				    .len = NL80211_MAX_SUPP_RATES },
- 	[NL80211_TXRATE_HT] = { .type = NLA_BINARY,
- 				.len = NL80211_MAX_SUPP_HT_RATES },
--	[NL80211_TXRATE_VHT] = { .len = sizeof(struct nl80211_txrate_vht)},
-+	[NL80211_TXRATE_VHT] = { .type = NLA_EXACT_LEN_WARN, .len = sizeof(struct nl80211_txrate_vht)},
- 	[NL80211_TXRATE_GI] = { .type = NLA_U8 },
- };
- 
 -- 
-2.17.2
+https://patchwork.kernel.org/patch/10946467/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
