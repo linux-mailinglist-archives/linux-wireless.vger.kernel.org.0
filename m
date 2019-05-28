@@ -2,26 +2,26 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 4DB632C0F8
-	for <lists+linux-wireless@lfdr.de>; Tue, 28 May 2019 10:12:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 52FE62C1DC
+	for <lists+linux-wireless@lfdr.de>; Tue, 28 May 2019 10:56:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726330AbfE1IMs (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 28 May 2019 04:12:48 -0400
-Received: from s3.sipsolutions.net ([144.76.43.62]:44428 "EHLO
+        id S1726441AbfE1I4M (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 28 May 2019 04:56:12 -0400
+Received: from s3.sipsolutions.net ([144.76.43.62]:45126 "EHLO
         sipsolutions.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725943AbfE1IMs (ORCPT
+        with ESMTP id S1726438AbfE1I4M (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 28 May 2019 04:12:48 -0400
+        Tue, 28 May 2019 04:56:12 -0400
 Received: by sipsolutions.net with esmtpsa (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
         (Exim 4.92)
         (envelope-from <johannes@sipsolutions.net>)
-        id 1hVXDx-00078O-C3; Tue, 28 May 2019 10:12:45 +0200
+        id 1hVXty-000815-0H; Tue, 28 May 2019 10:56:10 +0200
 From:   Johannes Berg <johannes@sipsolutions.net>
 To:     linux-wireless@vger.kernel.org
 Cc:     Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH] nl80211: require and validate vendor command policy
-Date:   Tue, 28 May 2019 10:12:39 +0200
-Message-Id: <20190528081239.22495-1-johannes@sipsolutions.net>
+Subject: [PATCH v2] nl80211: require and validate vendor command policy
+Date:   Tue, 28 May 2019 10:56:03 +0200
+Message-Id: <20190528085603.24770-1-johannes@sipsolutions.net>
 X-Mailer: git-send-email 2.17.2
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
@@ -41,12 +41,26 @@ data is just passed as is to the command.
 
 Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 ---
- include/net/cfg80211.h |  8 ++++++++
- include/net/netlink.h  |  9 +++++++++
- net/wireless/core.c    | 13 +++++++++++++
- net/wireless/nl80211.c | 39 +++++++++++++++++++++++++++++++++++++--
- 4 files changed, 67 insertions(+), 2 deletions(-)
+ drivers/net/wireless/mac80211_hwsim.c |  2 ++
+ include/net/cfg80211.h                |  8 ++++++
+ include/net/netlink.h                 |  9 +++++++
+ net/wireless/core.c                   | 13 +++++++++
+ net/wireless/nl80211.c                | 39 +++++++++++++++++++++++++--
+ 5 files changed, 69 insertions(+), 2 deletions(-)
 
+diff --git a/drivers/net/wireless/mac80211_hwsim.c b/drivers/net/wireless/mac80211_hwsim.c
+index b5274d1f30fa..0ddfce6b94ea 100644
+--- a/drivers/net/wireless/mac80211_hwsim.c
++++ b/drivers/net/wireless/mac80211_hwsim.c
+@@ -457,6 +457,8 @@ static struct wiphy_vendor_command mac80211_hwsim_vendor_commands[] = {
+ 			  .subcmd = QCA_NL80211_SUBCMD_TEST },
+ 		.flags = WIPHY_VENDOR_CMD_NEED_NETDEV,
+ 		.doit = mac80211_hwsim_vendor_cmd_test,
++		.policy = hwsim_vendor_test_policy,
++		.maxattr = QCA_WLAN_VENDOR_ATTR_MAX,
+ 	}
+ };
+ 
 diff --git a/include/net/cfg80211.h b/include/net/cfg80211.h
 index 948139690a58..56dd141d8c89 100644
 --- a/include/net/cfg80211.h
