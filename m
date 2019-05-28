@@ -2,114 +2,181 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 4AA5E2C76E
-	for <lists+linux-wireless@lfdr.de>; Tue, 28 May 2019 15:10:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D60732C784
+	for <lists+linux-wireless@lfdr.de>; Tue, 28 May 2019 15:12:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727444AbfE1NJu (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 28 May 2019 09:09:50 -0400
-Received: from smtp.codeaurora.org ([198.145.29.96]:43982 "EHLO
-        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727010AbfE1NJt (ORCPT
+        id S1727469AbfE1NMN (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 28 May 2019 09:12:13 -0400
+Received: from mail-vs1-f65.google.com ([209.85.217.65]:38971 "EHLO
+        mail-vs1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727121AbfE1NMN (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 28 May 2019 09:09:49 -0400
-Received: by smtp.codeaurora.org (Postfix, from userid 1000)
-        id BAAE46087F; Tue, 28 May 2019 13:09:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1559048988;
-        bh=LwktVprX+okLjofcVDA3KhlIJIxmhxsXuCyjGZ1pF8Y=;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=FzVjXmWJ0ItkDT6ygp9ShWa3YpFC0xSFTAxG15f6ot1HIA3kj1hJMrB7WR4w7HDBZ
-         oEUVKgtj2CxzWfO8xeO50VJpj7CFqL9KjjhSU7rfd6a7Nd3EUvWoAhx2TTD9K0PYQe
-         qyvHaVfipHEmIURuwtnZPuPCVpUTLvRoaZSfXjRA=
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        pdx-caf-mail.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.7 required=2.0 tests=ALL_TRUSTED,BAYES_00,
-        DKIM_INVALID,DKIM_SIGNED,SPF_NONE autolearn=no autolearn_force=no
-        version=3.4.0
-Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        (Authenticated sender: kvalo@smtp.codeaurora.org)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 4724060271;
-        Tue, 28 May 2019 13:09:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1559048988;
-        bh=LwktVprX+okLjofcVDA3KhlIJIxmhxsXuCyjGZ1pF8Y=;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=FzVjXmWJ0ItkDT6ygp9ShWa3YpFC0xSFTAxG15f6ot1HIA3kj1hJMrB7WR4w7HDBZ
-         oEUVKgtj2CxzWfO8xeO50VJpj7CFqL9KjjhSU7rfd6a7Nd3EUvWoAhx2TTD9K0PYQe
-         qyvHaVfipHEmIURuwtnZPuPCVpUTLvRoaZSfXjRA=
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 4724060271
-Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
-From:   Kalle Valo <kvalo@codeaurora.org>
-To:     Larry Finger <Larry.Finger@lwfinger.net>
-Cc:     Jia-Ju Bai <baijiaju1990@gmail.com>, pkshih@realtek.com,
-        davem@davemloft.net, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] rtlwifi: Fix null-pointer dereferences in error handling code of rtl_pci_probe()
-References: <20190514123439.10524-1-baijiaju1990@gmail.com>
-        <20190528115555.301E760F3C@smtp.codeaurora.org>
-        <2658b691-b992-b773-c6cf-85801adc479f@lwfinger.net>
-Date:   Tue, 28 May 2019 16:09:44 +0300
-In-Reply-To: <2658b691-b992-b773-c6cf-85801adc479f@lwfinger.net> (Larry
-        Finger's message of "Tue, 28 May 2019 08:00:24 -0500")
-Message-ID: <87pno24tev.fsf@kamboji.qca.qualcomm.com>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
+        Tue, 28 May 2019 09:12:13 -0400
+Received: by mail-vs1-f65.google.com with SMTP id m1so12748152vsr.6
+        for <linux-wireless@vger.kernel.org>; Tue, 28 May 2019 06:12:12 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=bC7uw0Q16zbyERQODkexpXA2Wd01jXJNxJW/+MlJ9xU=;
+        b=Un77SM1w1goDa3c6DvxwIsX0kDLmOvL2Y1zimTrA14lpFXxjlDic5GclMqdJjEhLCS
+         ASXMlXba2HEP51VIS0sa2KUQKpcBFRwe28efbz7agSSudIwQYmDg5LNUzt68rGp6GoWX
+         r4/SdY8Gy9sMO5J94QuO3Aj6VPs8XGeLPQKcexOROzBsy9iBKT1c9FNYzKE6FqbbkiKj
+         /DCEykKW1JwbkCq3eivfpJLqV/9mU1qRmkipruY61Xrl4BK4N9+DnTxYP/yq8BkSHOEs
+         OVyQRhm66+p9unCSMvHzjonrl50Tsz/cSwPTVXfx15CPIJz52AOW3SGZ9dLRzKniXOjQ
+         AzrQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=bC7uw0Q16zbyERQODkexpXA2Wd01jXJNxJW/+MlJ9xU=;
+        b=pp4bQLGg+1bnt4Cpgon+cKg8M/aqtA2bSE0VzBhkwldGld8A0SrenASZ8N9WjR/1/d
+         0bPgfk5WIL8NDOdyMTIIL8cRA0xSj5RX8RXhCOagSYSfxfPJd1ku1+3tdz/5FL+IQD0Q
+         S87iTVxWL4DnH4E5y5Rnx8d/yV9Ju6RpRgunCRUKYgfiTJY9g2gLwrp7j/MmCLzzxoLm
+         Xxa7jDkviXOkA/avi/yUFKxLIPYaePmpxhhMKaRrSNBkGT8+xguW4cn/WEB0puxhkDWp
+         2Q32mzHpPS1pHt862JQGn30R6fGJBWdgKkAYkP7CZFPJ9KRY0el6wjeu2DdPC/RnTiLO
+         7GqQ==
+X-Gm-Message-State: APjAAAWcEO8Z67EjP3na8Ch/2/d2MLFDtHSQ8BSUlZBt4kWk3bniw8mc
+        +vfa2/NvEAId3/RkZVAgXStwtEihetJZV5mjLJdoIw==
+X-Google-Smtp-Source: APXvYqwTe3cBfi7yoieBrPEOzAHDsyDItiIt5TIFzafoyt6gFPbn2plZTRIfhuSVs5s07ZrfzfqOfiGH6UOFacw77v8=
+X-Received: by 2002:a67:ebc5:: with SMTP id y5mr72159764vso.34.1559049131411;
+ Tue, 28 May 2019 06:12:11 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain
+References: <20190429204040.18725-1-dianders@chromium.org> <CAD=FV=WEDkufoEUYv9U+c+Y_bm8MYEWS25n63vUeNG0LLCFnuw@mail.gmail.com>
+In-Reply-To: <CAD=FV=WEDkufoEUYv9U+c+Y_bm8MYEWS25n63vUeNG0LLCFnuw@mail.gmail.com>
+From:   Ulf Hansson <ulf.hansson@linaro.org>
+Date:   Tue, 28 May 2019 15:11:34 +0200
+Message-ID: <CAPDyKFoKN2zUNvDkgciO6r_ohdh2Vaj5qQaAPwMq21y02XAK8A@mail.gmail.com>
+Subject: Re: [PATCH v2] mmc: dw_mmc: Disable SDIO interrupts while suspended
+ to fix suspend/resume
+To:     Doug Anderson <dianders@chromium.org>
+Cc:     Kalle Valo <kvalo@codeaurora.org>,
+        =?UTF-8?Q?Heiko_St=C3=BCbner?= <heiko@sntech.de>,
+        "open list:ARM/Rockchip SoC..." <linux-rockchip@lists.infradead.org>,
+        Guenter Roeck <groeck@chromium.org>,
+        Brian Norris <briannorris@chromium.org>,
+        linux-wireless <linux-wireless@vger.kernel.org>,
+        Sonny Rao <sonnyrao@chromium.org>,
+        Emil Renner Berthing <emil.renner.berthing@gmail.com>,
+        Matthias Kaehlcke <mka@chromium.org>,
+        Ryan Case <ryandcase@chromium.org>,
+        "# 4.0+" <stable@vger.kernel.org>,
+        Linux MMC List <linux-mmc@vger.kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>,
+        Jaehoon Chung <jh80.chung@samsung.com>,
+        Shawn Lin <shawn.lin@rock-chips.com>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Larry Finger <Larry.Finger@lwfinger.net> writes:
-
-> On 5/28/19 6:55 AM, Kalle Valo wrote:
->> Jia-Ju Bai <baijiaju1990@gmail.com> wrote:
->>
->>> *BUG 1:
->>> In rtl_pci_probe(), when rtlpriv->cfg->ops->init_sw_vars() fails,
->>> rtl_deinit_core() in the error handling code is executed.
->>> rtl_deinit_core() calls rtl_free_entries_from_scan_list(), which uses
->>> rtlpriv->scan_list.list in list_for_each_entry_safe(), but it has been
->>> initialized. Thus a null-pointer dereference occurs.
->>> The reason is that rtlpriv->scan_list.list is initialized by
->>> INIT_LIST_HEAD() in rtl_init_core(), which has not been called.
->>>
->>> To fix this bug, rtl_deinit_core() should not be called when
->>> rtlpriv->cfg->ops->init_sw_vars() fails.
->>>
->>> *BUG 2:
->>> In rtl_pci_probe(), rtl_init_core() can fail when rtl_regd_init() in
->>> this function fails, and rtlpriv->scan_list.list has not been
->>> initialized by INIT_LIST_HEAD(). Then, rtl_deinit_core() in the error
->>> handling code of rtl_pci_probe() is executed. Finally, a null-pointer
->>> dereference occurs due to the same reason of the above bug.
->>>
->>> To fix this bug, the initialization of lists in rtl_init_core() are
->>> performed before the call to rtl_regd_init().
->>>
->>> These bugs are found by a runtime fuzzing tool named FIZZER written by
->>> us.
->>>
->>> Signed-off-by: Jia-Ju Bai <baijiaju1990@gmail.com>
->>
->> Ping & Larry, is this ok to take?
->>
+On Mon, 20 May 2019 at 20:41, Doug Anderson <dianders@chromium.org> wrote:
 >
-> Kalle,
+> Hi,
 >
-> Not at the moment. In reviewing the code, I was unable to see how this
-> situation could develop, and his backtrace did not mention any rtlwifi
-> code. For that reason, I asked him to add printk stat4ements to show
-> the last part of rtl_pci that executed correctly. In
-> https://marc.info/?l=linux-wireless&m=155788322631134&w=2, he promised
-> to do that, but I have not seen the result.
+> On Mon, Apr 29, 2019 at 1:41 PM Douglas Anderson <dianders@chromium.org> wrote:
+> >
+> > Processing SDIO interrupts while dw_mmc is suspended (or partly
+> > suspended) seems like a bad idea.  We really don't want to be
+> > processing them until we've gotten ourselves fully powered up.
+> >
+> > You might be wondering how it's even possible to become suspended when
+> > an SDIO interrupt is active.  As can be seen in
+> > dw_mci_enable_sdio_irq(), we explicitly keep dw_mmc out of runtime
+> > suspend when the SDIO interrupt is enabled.  ...but even though we
+> > stop normal runtime suspend transitions when SDIO interrupts are
+> > enabled, the dw_mci_runtime_suspend() can still get called for a full
+> > system suspend.
+> >
+> > Let's handle all this by explicitly masking SDIO interrupts in the
+> > suspend call and unmasking them later in the resume call.  To do this
+> > cleanly I'll keep track of whether the client requested that SDIO
+> > interrupts be enabled so that we can reliably restore them regardless
+> > of whether we're masking them for one reason or another.
+> >
+> > It should be noted that if dw_mci_enable_sdio_irq() is never called
+> > (for instance, if we don't have an SDIO card plugged in) that
+> > "client_sdio_enb" will always be false.  In those cases this patch
+> > adds a tiny bit of overhead to suspend/resume (a spinlock and a
+> > read/write of INTMASK) but other than that is a no-op.  The
+> > SDMMC_INT_SDIO bit should always be clear and clearing it again won't
+> > hurt.
+> >
+> > Without this fix it can be seen that rk3288-veyron Chromebooks with
+> > Marvell WiFi would sometimes fail to resume WiFi even after picking my
+> > recent mwifiex patch [1].  Specifically you'd see messages like this:
+> >   mwifiex_sdio mmc1:0001:1: Firmware wakeup failed
+> >   mwifiex_sdio mmc1:0001:1: PREP_CMD: FW in reset state
+> >
+> > ...and tracing through the resume code in the failing cases showed
+> > that we were processing a SDIO interrupt really early in the resume
+> > call.
+> >
+> > NOTE: downstream in Chrome OS 3.14 and 3.18 kernels (both of which
+> > support the Marvell SDIO WiFi card) we had a patch ("CHROMIUM: sdio:
+> > Defer SDIO interrupt handling until after resume") [2].  Presumably
+> > this is the same problem that was solved by that patch.
+> >
+> > [1] https://lkml.kernel.org/r/20190404040106.40519-1-dianders@chromium.org
+> > [2] https://crrev.com/c/230765
+> >
+> > Cc: <stable@vger.kernel.org> # 4.14.x
+> > Signed-off-by: Douglas Anderson <dianders@chromium.org>
+> > ---
+> > I didn't put any "Fixes" tag here, but presumably this could be
+> > backported to whichever kernels folks found it useful for.  I have at
+> > least confirmed that kernels v4.14 and v4.19 (as well as v5.1-rc2)
+> > show the problem.  It is very easy to pick this to v4.19 and it
+> > definitely fixes the problem there.
+> >
+> > I haven't spent the time to pick this to 4.14 myself, but presumably
+> > it wouldn't be too hard to backport this as far as v4.13 since that
+> > contains commit 32dba73772f8 ("mmc: dw_mmc: Convert to use
+> > MMC_CAP2_SDIO_IRQ_NOTHREAD for SDIO IRQs").  Prior to that it might
+> > make sense for anyone experiencing this problem to just pick the old
+> > CHROMIUM patch to fix them.
+> >
+> > Changes in v2:
+> > - Suggested 4.14+ in the stable tag (Sasha-bot)
+> > - Extra note that this is a noop on non-SDIO (Shawn / Emil)
+> > - Make boolean logic cleaner as per https://crrev.com/c/1586207/1
+> > - Hopefully clear comments as per https://crrev.com/c/1586207/1
+> >
+> >  drivers/mmc/host/dw_mmc.c | 27 +++++++++++++++++++++++----
+> >  drivers/mmc/host/dw_mmc.h |  3 +++
+> >  2 files changed, 26 insertions(+), 4 deletions(-)
+>
+> Ulf: are you the right person to land this?  With 5.2-rc1 out it might
+> be a good time for it?  To refresh your memory about this patch:
+>
+> * Patch v1 was posted back on April 10th [1] so we're at about 1.5
+> months of time for people to comment about it now.  Should be more
+> than enough.
 
-Ok, thanks. I'll then drop this, please resubmit once everything is
-understood and the patch is ready to be applied.
+Apologize for the delay, not sure why this has slipped through my
+filters. Anyway, let me have a look at it now.
 
--- 
-Kalle Valo
+>
+> * Shawn Lin saw it and didn't hate it.  He had some confusion about
+> how it worked and I've hopefully alleviated via extra comments / text.
+>
+> * Emil Renner Berthing thought it caused a regression for him but then
+> tested further and was convinced that it didn't.  This is extra
+> confirmation that someone other than me did try the patch and found it
+> to not break things.  ;-)
+>
+> * It has been reviewed by Guenter Roeck (in v2)
+
+One question, I am guessing you are considering
+https://lkml.org/lkml/2019/5/17/761 as the long term solution, and
+thus $subject patch should go as fix+stable? No?
+
+>
+> [1] https://lkml.kernel.org/r/20190410221237.160856-1-dianders@chromium.org
+>
+>
+> -Doug
+
+Kind regards
+Uffe
