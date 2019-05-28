@@ -2,81 +2,45 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 457A22C5CC
-	for <lists+linux-wireless@lfdr.de>; Tue, 28 May 2019 13:52:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BE9532C5D1
+	for <lists+linux-wireless@lfdr.de>; Tue, 28 May 2019 13:52:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727094AbfE1LvF (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 28 May 2019 07:51:05 -0400
-Received: from smtp.codeaurora.org ([198.145.29.96]:37108 "EHLO
-        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726820AbfE1LvF (ORCPT
+        id S1726793AbfE1Lv7 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 28 May 2019 07:51:59 -0400
+Received: from s3.sipsolutions.net ([144.76.43.62]:48534 "EHLO
+        sipsolutions.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726824AbfE1Lv7 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 28 May 2019 07:51:05 -0400
-Received: by smtp.codeaurora.org (Postfix, from userid 1000)
-        id C28C860A33; Tue, 28 May 2019 11:51:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1559044264;
-        bh=uHgyjXhdBxPyrqxB5Ywri5s3koSwbiC4Qi0x6gXswYY=;
-        h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-        b=cSuRdDH2soKiyEybRkiVm86CncDblP0RquGKMeSGBMftL1XWr+UUUdt38ZMD0wm68
-         6T+Uq9nISsJJZ8DSmF/CGniq1y25kFhM8HAzwSUqW5IWBkYPVbTTdPnTXf8I9W/gBi
-         fRG/xCn0lcRJj9gng0x4ImlwkEklXtFc8hTEBAIo=
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        pdx-caf-mail.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-0.8 required=2.0 tests=ALL_TRUSTED,BAYES_00,
-        DKIM_INVALID,DKIM_SIGNED,MISSING_DATE,MISSING_MID,SPF_NONE autolearn=no
-        autolearn_force=no version=3.4.0
-Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        (Authenticated sender: kvalo@smtp.codeaurora.org)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 1ED0860769;
-        Tue, 28 May 2019 11:51:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1559044264;
-        bh=uHgyjXhdBxPyrqxB5Ywri5s3koSwbiC4Qi0x6gXswYY=;
-        h=Subject:From:In-Reply-To:References:To:Cc:From;
-        b=Ph1XyTeFhopsKfdcjbQRfzBCer4K387vJY3qPMV9Cgih4RVE0AGDrrcybDfvu8TFR
-         r/JFgnFUoQ5r1w2aCAfTu5XcNWSocM5bvhHZkWqJcmR5y+KTIv3xZiF4GeFEGsNjVP
-         NPP+zuEey7rvi+ed+GiJmVSt/giicalLr/usCx00=
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 1ED0860769
-Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
+        Tue, 28 May 2019 07:51:59 -0400
+Received: by sipsolutions.net with esmtpsa (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <johannes@sipsolutions.net>)
+        id 1hVae6-0004HX-7R
+        for linux-wireless@vger.kernel.org; Tue, 28 May 2019 13:51:58 +0200
+Message-ID: <c138fac51c7f49bbcd8617ae0a2c750d78abb35d.camel@sipsolutions.net>
+Subject: FYI: vendor specific nl80211 API upstream
+From:   Johannes Berg <johannes@sipsolutions.net>
+To:     linux-wireless@vger.kernel.org
+Date:   Tue, 28 May 2019 13:51:55 +0200
+Content-Type: text/plain; charset="UTF-8"
+X-Mailer: Evolution 3.28.5 (3.28.5-2.fc28) 
+Mime-Version: 1.0
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH v2 2/5] rtw88: pci: use ieee80211_ac_numbers instead of 0-3
-From:   Kalle Valo <kvalo@codeaurora.org>
-In-Reply-To: <1556884415-23474-3-git-send-email-yhchuang@realtek.com>
-References: <1556884415-23474-3-git-send-email-yhchuang@realtek.com>
-To:     <yhchuang@realtek.com>
-Cc:     <linux-wireless@vger.kernel.org>
-User-Agent: pwcli/0.0.0-git (https://github.com/kvalo/pwcli/) Python/2.7.12
-Message-Id: <20190528115104.C28C860A33@smtp.codeaurora.org>
-Date:   Tue, 28 May 2019 11:51:04 +0000 (UTC)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-<yhchuang@realtek.com> wrote:
+Hi all,
 
-> From: Yan-Hsuan Chuang <yhchuang@realtek.com>
-> 
-> AC numbers are defined as enum in mac80211, use them instead of bare
-> 0-3 indexing.
-> 
-> Signed-off-by: Yan-Hsuan Chuang <yhchuang@realtek.com>
+FYI - at the discussions in Prague we decided to let some vendor
+specific nl80211 API go upstream, and I've just documented the expected
+rules here:
 
-3 patches applied to wireless-drivers-next.git, thanks.
+https://wireless.wiki.kernel.org/en/developers/documentation/nl80211#vendor-specific_api
 
-82dea406c509 rtw88: pci: use ieee80211_ac_numbers instead of 0-3
-0d7882950c73 rtw88: pci: check if queue mapping exceeds size of ac_to_hwq
-a3b0c66c5928 rtw88: more descriptions about LPS
+I guess this will be fine-tuned as we go along, but wanted all to be
+aware.
 
--- 
-https://patchwork.kernel.org/patch/10928423/
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+johannes
 
