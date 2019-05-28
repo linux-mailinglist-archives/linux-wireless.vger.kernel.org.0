@@ -2,78 +2,125 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C13D02C694
+	by mail.lfdr.de (Postfix) with ESMTP id 424342C693
 	for <lists+linux-wireless@lfdr.de>; Tue, 28 May 2019 14:33:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726997AbfE1Md0 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 28 May 2019 08:33:26 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:41797 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726592AbfE1MdZ (ORCPT
+        id S1727087AbfE1MdP (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 28 May 2019 08:33:15 -0400
+Received: from smtp.codeaurora.org ([198.145.29.96]:44100 "EHLO
+        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726592AbfE1MdO (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 28 May 2019 08:33:25 -0400
-Received: from mail-io1-f71.google.com ([209.85.166.71])
-        by youngberry.canonical.com with esmtps (TLS1.0:RSA_AES_128_CBC_SHA1:16)
-        (Exim 4.76)
-        (envelope-from <seth.forshee@canonical.com>)
-        id 1hVbHX-0007fi-VD
-        for linux-wireless@vger.kernel.org; Tue, 28 May 2019 12:32:44 +0000
-Received: by mail-io1-f71.google.com with SMTP id s24so15746341iot.0
-        for <linux-wireless@vger.kernel.org>; Tue, 28 May 2019 05:32:43 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=KJC4faTeLfUe+h38+g3iffsCSLuUIxdqKCzCVYdBzBs=;
-        b=lh4U+oz7AUHmcBsVOx6lEDgSpVnKHwSbAxjRN9ymci8pQ7DC5E0SCSDTra201dK1Kr
-         nXoAKejl8Ed1rGkcDm+d5xLL6Y6hGZ+RvCj3ugynWVGZJtJ5IJwcwJTj1oJ3rJ6W+6GJ
-         PUIKEpLQBmmUeqpW8GdnomsfDCccNP+2gk5j6UTSWxKdsfKjkD929kE53GARKBIP7gGr
-         9+HuUr5V5ynhA6y8/t/uQsA7B2p4Ek7GrUFxBh5g/96wKqIOIIM8IOehihvltKLCxDMg
-         yLKoMVRB+3PX21NdpfgW/CtanXAtMD+ySaz6RFzouXZgCHoaNhf7Ool6pBwSQaz4ig/y
-         6gtA==
-X-Gm-Message-State: APjAAAWOP5Zf/y+IFcHXclzoQuWo/vy8rJYgMupvFSYGUlPlsi9kzYvk
-        nKn9AnddKx0Wd5qwXaPfCzlrH20ri2oJp9bXux4Ch8KSef82dKMpYt94cReP8qWg0pQT/L2FQVc
-        lSKbwyz3Rk8Jxc0ujbsh7JlUVvxRUq4/xk+5tj/xPOHis
-X-Received: by 2002:a5d:8043:: with SMTP id b3mr69996242ior.115.1559046762629;
-        Tue, 28 May 2019 05:32:42 -0700 (PDT)
-X-Google-Smtp-Source: APXvYqwrxJ0FkxnvEXNsToKFhzojUgadPWMfYoa9jBJpdn1IEm+V3JBCdXf4/RRZTwLCNM9/9e7Rdw==
-X-Received: by 2002:a5d:8043:: with SMTP id b3mr69996230ior.115.1559046762380;
-        Tue, 28 May 2019 05:32:42 -0700 (PDT)
-Received: from localhost ([2605:a601:ac2:fb20:706d:2b0b:401e:a226])
-        by smtp.gmail.com with ESMTPSA id c128sm1127853itc.19.2019.05.28.05.32.41
-        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
-        Tue, 28 May 2019 05:32:41 -0700 (PDT)
-Date:   Tue, 28 May 2019 07:32:40 -0500
-From:   Seth Forshee <seth.forshee@canonical.com>
-To:     Peter Oh <peter.oh@bowerswilkins.com>
-Cc:     "wireless-regdb@lists.infradead.org" 
-        <wireless-regdb@lists.infradead.org>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-Subject: Re: [wireless-regdb] [PATCH v3] wireless-regdb: Update regulatory
- rules for South Korea
-Message-ID: <20190528123240.GK4357@ubuntu-xps13>
-References: <1557948501-12579-1-git-send-email-peter.oh@bowerswilkins.com>
+        Tue, 28 May 2019 08:33:14 -0400
+Received: by smtp.codeaurora.org (Postfix, from userid 1000)
+        id 6718A606FC; Tue, 28 May 2019 12:33:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
+        s=default; t=1559046793;
+        bh=bCv8mmjaGHjRz1CnWoZ7MkvsZKR9B/r/zM9ICGN2FzI=;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+        b=bPR5FFdHt8arbTjleQmE0qcAT4rZbty8w6d9x6eTol6R5pLoiGXxRgCCRHOrTC++X
+         hgU6GQuWBo5eUIajk9MPoevVLYleDCaMTXTZjDSNzY4Qbw5RKBB5pn11sCv98+YqHV
+         uJamfztJ+a1qJ0/zVgS6LNzy504yPILGrCMNTR/Y=
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        pdx-caf-mail.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.7 required=2.0 tests=ALL_TRUSTED,BAYES_00,
+        DKIM_INVALID,DKIM_SIGNED,SPF_NONE autolearn=no autolearn_force=no
+        version=3.4.0
+Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo@smtp.codeaurora.org)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 9710D602FA;
+        Tue, 28 May 2019 12:33:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
+        s=default; t=1559046792;
+        bh=bCv8mmjaGHjRz1CnWoZ7MkvsZKR9B/r/zM9ICGN2FzI=;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+        b=Jg1QSY+ATUDIpm6kBbkH5TMWFsrffh5idO6s9lLv/b5ls6mTh3I6ezyveDLaft+JS
+         BLdKrCLxmCEIvyhsaDjjEwYol9wC0UQZpxsOP2+b+/iHLpBmNm3tFsDFSBB+l8ZvFn
+         MenAf/9rpCqoNCj9b171qNhpFXsJTUUGCqOWc4dg=
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 9710D602FA
+Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
+From:   Kalle Valo <kvalo@codeaurora.org>
+To:     Gen Zhang <blackgod016574@gmail.com>
+Cc:     davem@davemloft.net, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] wlcore: spi: Fix a memory leaking bug in wl1271_probe()
+References: <20190524030117.GA6024@zhanggen-UX430UQ>
+        <20190528113922.E2B1060312@smtp.codeaurora.org>
+        <20190528121452.GA23464@zhanggen-UX430UQ>
+Date:   Tue, 28 May 2019 15:33:09 +0300
+In-Reply-To: <20190528121452.GA23464@zhanggen-UX430UQ> (Gen Zhang's message of
+        "Tue, 28 May 2019 20:14:52 +0800")
+Message-ID: <87tvde4v3u.fsf@kamboji.qca.qualcomm.com>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1557948501-12579-1-git-send-email-peter.oh@bowerswilkins.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Type: text/plain
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Wed, May 15, 2019 at 07:28:29PM +0000, Peter Oh wrote:
-> From: Peter Oh <peter.oh@bowerswilkins.com>
-> 
-> Update power limit as documented in:
-> http://www.law.go.kr/%ED%96%89%EC%A0%95%EA%B7%9C%EC%B9%99/
-> %EC%8B%A0%EA%B3%A0%ED%95%98%EC%A7%80%EC%95%84%EB%8B%88%ED
-> %95%98%EA%B3%A0%EA%B0%9C%EC%84%A4%ED%95%A0%EC%88%98%EC%9E
-> %88%EB%8A%94%EB%AC%B4%EC%84%A0%EA%B5%AD%EC%9A%A9%EB%AC%B4
-> %EC%84%A0%EA%B8%B0%EA%B8%B0/(2018-89,20181227)
-> which revised on December 27, 2018.
-> 
-> Signed-off-by: Peter Oh <peter.oh@bowerswilkins.com>
+Gen Zhang <blackgod016574@gmail.com> writes:
 
-Applied, thanks!
+> On Tue, May 28, 2019 at 11:39:22AM +0000, Kalle Valo wrote:
+>> Gen Zhang <blackgod016574@gmail.com> wrote:
+>> 
+>> > In wl1271_probe(), 'glue->core' is allocated by platform_device_alloc(),
+>> > when this allocation fails, ENOMEM is returned. However, 'pdev_data'
+>> > and 'glue' are allocated by devm_kzalloc() before 'glue->core'. When
+>> > platform_device_alloc() returns NULL, we should also free 'pdev_data'
+>> > and 'glue' before wl1271_probe() ends to prevent leaking memory.
+>> > 
+>> > Similarly, we shoulf free 'pdev_data' when 'glue' is NULL. And we should
+>> > free 'pdev_data' and 'glue' when 'glue->reg' is error and when 'ret' is
+>> > error.
+>> > 
+>> > Further, we should free 'glue->core', 'pdev_data' and 'glue' when this 
+>> > function normally ends to prevent leaking memory.
+>> > 
+>> > Signed-off-by: Gen Zhang <blackgod016574@gmail.com>
+>> 
+>> Same questions as with similar SDIO patch:
+>> 
+>> https://patchwork.kernel.org/patch/10959049/
+>> 
+>> Patch set to Changes Requested.
+>> 
+>> -- 
+>> https://patchwork.kernel.org/patch/10959053/
+>> 
+>> https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+>> 
+> Thanks for your reply, Kalle. I had debate with Jon about this patch. 
+> You could kindly refer to lkml: https://lkml.org/lkml/2019/5/23/1547. 
+> And I don't think a practical conclusion is made there.
+
+Yeah, I don't see how that thread proves that these patches are correct.
+
+> Further, I e-mailed Greg K-H about when should we use devm_kmalloc().
+>
+> On Tue, May 28, 2019 at 08:32:57AM +0800, Gen Zhang wrote:
+>> devm_kmalloc() is used to allocate memory for a driver dev. Comments
+>> above the definition and doc 
+>> (https://www.kernel.org/doc/Documentation/driver-model/devres.txt) all
+>> imply that allocated the memory is automatically freed on driver attach,
+>> no matter allocation fail or not. However, I examined the code, and
+>> there are many sites that devm_kfree() is used to free devm_kmalloc().
+>> e.g. hisi_sas_debugfs_init() in drivers/scsi/hisi_sas/hisi_sas_main.c.
+>> So I am totally confused about this issue. Can anybody give me some
+>> guidance? When should we use devm_kfree()?
+> He replied: If you "know" you need to free the memory now, 
+> call devm_kfree(). If you want to wait for it to be cleaned up latter, 
+> like normal, then do not call it.
+>
+> So could please look in to this issue?
+
+Sorry, no time to investigate this in detail. If you think the patches
+are correct you can resend them and get someone familiar with the driver
+to provide Reviewed-by, then I will apply them.
+
+-- 
+Kalle Valo
