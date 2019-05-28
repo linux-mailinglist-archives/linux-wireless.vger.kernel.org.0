@@ -2,248 +2,195 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 45CE22C08E
-	for <lists+linux-wireless@lfdr.de>; Tue, 28 May 2019 09:48:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4DB632C0F8
+	for <lists+linux-wireless@lfdr.de>; Tue, 28 May 2019 10:12:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727261AbfE1HsK (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 28 May 2019 03:48:10 -0400
-Received: from lucky1.263xmail.com ([211.157.147.131]:50500 "EHLO
-        lucky1.263xmail.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726693AbfE1HsJ (ORCPT
+        id S1726330AbfE1IMs (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 28 May 2019 04:12:48 -0400
+Received: from s3.sipsolutions.net ([144.76.43.62]:44428 "EHLO
+        sipsolutions.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725943AbfE1IMs (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 28 May 2019 03:48:09 -0400
-Received: from shawn.lin?rock-chips.com (unknown [192.168.167.139])
-        by lucky1.263xmail.com (Postfix) with ESMTP id 15EDC59FD7;
-        Tue, 28 May 2019 15:48:02 +0800 (CST)
-X-263anti-spam: KSV:0;BIG:0;
-X-MAIL-GRAY: 1
-X-MAIL-DELIVERY: 0
-X-KSVirus-check: 0
-X-ADDR-CHECKED4: 1
-X-ABS-CHECKED: 1
-X-SKE-CHECKED: 1
-X-ANTISPAM-LEVEL: 2
-Received: from [172.16.12.37] (unknown [58.22.7.114])
-        by smtp.263.net (postfix) whith ESMTP id P11884T140492318693120S1559029676862359_;
-        Tue, 28 May 2019 15:47:59 +0800 (CST)
-X-IP-DOMAINF: 1
-X-UNIQUE-TAG: <d51cbbad6d0037a5de7fbac59c2fc291>
-X-RL-SENDER: shawn.lin@rock-chips.com
-X-SENDER: lintao@rock-chips.com
-X-LOGIN-NAME: shawn.lin@rock-chips.com
-X-FST-TO: kvalo@codeaurora.org
-X-SENDER-IP: 58.22.7.114
-X-ATTACHMENT-NUM: 0
-X-DNS-TYPE: 0
-Cc:     shawn.lin@rock-chips.com, heiko@sntech.de,
-        linux-mmc@vger.kernel.org, briannorris@chromium.org,
-        linux-wireless@vger.kernel.org, stable@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-rockchip@lists.infradead.org,
-        mka@chromium.org, ryandcase@chromium.org,
-        Guenter Roeck <groeck@chromium.org>,
-        Emil Renner Berthing <emil.renner.berthing@gmail.com>,
-        Sonny Rao <sonnyrao@chromium.org>,
-        Kalle Valo <kvalo@codeaurora.org>
-Subject: =?UTF-8?Q?Re=3a_=5bPATCH_v2=5d_mmc=3a_dw=5fmmc=3a_Disable_SDIO_inte?=
- =?UTF-8?Q?rrupts_while_suspended_to_fix_suspend/resume=e3=80=90=e8=af=b7?=
- =?UTF-8?B?5rOo5oSP77yM6YKu5Lu255SxbGludXgtcm9ja2NoaXAtYm91bmNlcytzaGF3bi5s?=
- =?UTF-8?B?aW49cm9jay1jaGlwcy5jb21AbGlzdHMuaW5mcmFkZWFkLm9yZ+S7o+WPkeOAkQ==?=
-To:     Douglas Anderson <dianders@chromium.org>,
-        Jaehoon Chung <jh80.chung@samsung.com>,
-        Ulf Hansson <ulf.hansson@linaro.org>
-References: <20190429204040.18725-1-dianders@chromium.org>
-From:   Shawn Lin <shawn.lin@rock-chips.com>
-Message-ID: <982ffba1-c599-e73d-e5e0-b1be5668851c@rock-chips.com>
-Date:   Tue, 28 May 2019 15:47:59 +0800
-User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:60.0) Gecko/20100101
- Thunderbird/60.6.1
-MIME-Version: 1.0
-In-Reply-To: <20190429204040.18725-1-dianders@chromium.org>
-Content-Type: text/plain; charset=gbk; format=flowed
-Content-Transfer-Encoding: 7bit
+        Tue, 28 May 2019 04:12:48 -0400
+Received: by sipsolutions.net with esmtpsa (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <johannes@sipsolutions.net>)
+        id 1hVXDx-00078O-C3; Tue, 28 May 2019 10:12:45 +0200
+From:   Johannes Berg <johannes@sipsolutions.net>
+To:     linux-wireless@vger.kernel.org
+Cc:     Johannes Berg <johannes.berg@intel.com>
+Subject: [PATCH] nl80211: require and validate vendor command policy
+Date:   Tue, 28 May 2019 10:12:39 +0200
+Message-Id: <20190528081239.22495-1-johannes@sipsolutions.net>
+X-Mailer: git-send-email 2.17.2
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+From: Johannes Berg <johannes.berg@intel.com>
 
-On 2019/4/30 4:40, Douglas Anderson wrote:
-> Processing SDIO interrupts while dw_mmc is suspended (or partly
-> suspended) seems like a bad idea.  We really don't want to be
-> processing them until we've gotten ourselves fully powered up.
-> 
-> You might be wondering how it's even possible to become suspended when
-> an SDIO interrupt is active.  As can be seen in
-> dw_mci_enable_sdio_irq(), we explicitly keep dw_mmc out of runtime
-> suspend when the SDIO interrupt is enabled.  ...but even though we
-> stop normal runtime suspend transitions when SDIO interrupts are
-> enabled, the dw_mci_runtime_suspend() can still get called for a full
-> system suspend.
-> 
-> Let's handle all this by explicitly masking SDIO interrupts in the
-> suspend call and unmasking them later in the resume call.  To do this
-> cleanly I'll keep track of whether the client requested that SDIO
-> interrupts be enabled so that we can reliably restore them regardless
-> of whether we're masking them for one reason or another.
-> 
-> It should be noted that if dw_mci_enable_sdio_irq() is never called
-> (for instance, if we don't have an SDIO card plugged in) that
-> "client_sdio_enb" will always be false.  In those cases this patch
-> adds a tiny bit of overhead to suspend/resume (a spinlock and a
-> read/write of INTMASK) but other than that is a no-op.  The
-> SDMMC_INT_SDIO bit should always be clear and clearing it again won't
-> hurt.
-> 
-> Without this fix it can be seen that rk3288-veyron Chromebooks with
-> Marvell WiFi would sometimes fail to resume WiFi even after picking my
-> recent mwifiex patch [1].  Specifically you'd see messages like this:
->    mwifiex_sdio mmc1:0001:1: Firmware wakeup failed
->    mwifiex_sdio mmc1:0001:1: PREP_CMD: FW in reset state
-> 
-> ...and tracing through the resume code in the failing cases showed
-> that we were processing a SDIO interrupt really early in the resume
-> call.
-> 
-> NOTE: downstream in Chrome OS 3.14 and 3.18 kernels (both of which
-> support the Marvell SDIO WiFi card) we had a patch ("CHROMIUM: sdio:
-> Defer SDIO interrupt handling until after resume") [2].  Presumably
-> this is the same problem that was solved by that patch.
-> 
-> [1] https://lkml.kernel.org/r/20190404040106.40519-1-dianders@chromium.org
-> [2] https://crrev.com/c/230765
-> 
+Require that each vendor command give a policy of its sub-attributes
+in NL80211_ATTR_VENDOR_DATA, and then (stricly) check the contents,
+including the NLA_F_NESTED flag that we couldn't check on the outer
+layer because there we don't know yet.
 
-Sorry for late, but FWIW:
+It is possible to use VENDOR_CMD_RAW_DATA for raw data, but then no
+nested data can be given (NLA_F_NESTED flag must be clear) and the
+data is just passed as is to the command.
 
-Reviewed-by: Shawn Lin <shawn.lin@rock-chips.com>
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+---
+ include/net/cfg80211.h |  8 ++++++++
+ include/net/netlink.h  |  9 +++++++++
+ net/wireless/core.c    | 13 +++++++++++++
+ net/wireless/nl80211.c | 39 +++++++++++++++++++++++++++++++++++++--
+ 4 files changed, 67 insertions(+), 2 deletions(-)
 
-> Cc: <stable@vger.kernel.org> # 4.14.x
-> Signed-off-by: Douglas Anderson <dianders@chromium.org>
-> ---
-> I didn't put any "Fixes" tag here, but presumably this could be
-> backported to whichever kernels folks found it useful for.  I have at
-> least confirmed that kernels v4.14 and v4.19 (as well as v5.1-rc2)
-> show the problem.  It is very easy to pick this to v4.19 and it
-> definitely fixes the problem there.
-> 
-> I haven't spent the time to pick this to 4.14 myself, but presumably
-> it wouldn't be too hard to backport this as far as v4.13 since that
-> contains commit 32dba73772f8 ("mmc: dw_mmc: Convert to use
-> MMC_CAP2_SDIO_IRQ_NOTHREAD for SDIO IRQs").  Prior to that it might
-> make sense for anyone experiencing this problem to just pick the old
-> CHROMIUM patch to fix them.
-> 
-> Changes in v2:
-> - Suggested 4.14+ in the stable tag (Sasha-bot)
-> - Extra note that this is a noop on non-SDIO (Shawn / Emil)
-> - Make boolean logic cleaner as per https://crrev.com/c/1586207/1
-> - Hopefully clear comments as per https://crrev.com/c/1586207/1
-> 
->   drivers/mmc/host/dw_mmc.c | 27 +++++++++++++++++++++++----
->   drivers/mmc/host/dw_mmc.h |  3 +++
->   2 files changed, 26 insertions(+), 4 deletions(-)
-> 
-> diff --git a/drivers/mmc/host/dw_mmc.c b/drivers/mmc/host/dw_mmc.c
-> index 80dc2fd6576c..480067b87a94 100644
-> --- a/drivers/mmc/host/dw_mmc.c
-> +++ b/drivers/mmc/host/dw_mmc.c
-> @@ -1664,7 +1664,8 @@ static void dw_mci_init_card(struct mmc_host *mmc, struct mmc_card *card)
->   	}
->   }
->   
-> -static void __dw_mci_enable_sdio_irq(struct dw_mci_slot *slot, int enb)
-> +static void __dw_mci_enable_sdio_irq(struct dw_mci_slot *slot, bool enb,
-> +				     bool client_requested)
->   {
->   	struct dw_mci *host = slot->host;
->   	unsigned long irqflags;
-> @@ -1672,6 +1673,20 @@ static void __dw_mci_enable_sdio_irq(struct dw_mci_slot *slot, int enb)
->   
->   	spin_lock_irqsave(&host->irq_lock, irqflags);
->   
-> +	/*
-> +	 * If we're being called directly from dw_mci_enable_sdio_irq()
-> +	 * (which means that the client driver actually wants to enable or
-> +	 * disable interrupts) then save the request.  Otherwise this
-> +	 * wasn't directly requested by the client and we should logically
-> +	 * AND it with the client request since we want to disable if
-> +	 * _either_ the client disabled OR we have some other reason to
-> +	 * disable temporarily.
-> +	 */
-> +	if (client_requested)
-> +		host->client_sdio_enb = enb;
-> +	else
-> +		enb &= host->client_sdio_enb;
-> +
->   	/* Enable/disable Slot Specific SDIO interrupt */
->   	int_mask = mci_readl(host, INTMASK);
->   	if (enb)
-> @@ -1688,7 +1703,7 @@ static void dw_mci_enable_sdio_irq(struct mmc_host *mmc, int enb)
->   	struct dw_mci_slot *slot = mmc_priv(mmc);
->   	struct dw_mci *host = slot->host;
->   
-> -	__dw_mci_enable_sdio_irq(slot, enb);
-> +	__dw_mci_enable_sdio_irq(slot, enb, true);
->   
->   	/* Avoid runtime suspending the device when SDIO IRQ is enabled */
->   	if (enb)
-> @@ -1701,7 +1716,7 @@ static void dw_mci_ack_sdio_irq(struct mmc_host *mmc)
->   {
->   	struct dw_mci_slot *slot = mmc_priv(mmc);
->   
-> -	__dw_mci_enable_sdio_irq(slot, 1);
-> +	__dw_mci_enable_sdio_irq(slot, true, false);
->   }
->   
->   static int dw_mci_execute_tuning(struct mmc_host *mmc, u32 opcode)
-> @@ -2734,7 +2749,7 @@ static irqreturn_t dw_mci_interrupt(int irq, void *dev_id)
->   		if (pending & SDMMC_INT_SDIO(slot->sdio_id)) {
->   			mci_writel(host, RINTSTS,
->   				   SDMMC_INT_SDIO(slot->sdio_id));
-> -			__dw_mci_enable_sdio_irq(slot, 0);
-> +			__dw_mci_enable_sdio_irq(slot, false, false);
->   			sdio_signal_irq(slot->mmc);
->   		}
->   
-> @@ -3424,6 +3439,8 @@ int dw_mci_runtime_suspend(struct device *dev)
->   {
->   	struct dw_mci *host = dev_get_drvdata(dev);
->   
-> +	__dw_mci_enable_sdio_irq(host->slot, false, false);
-> +
->   	if (host->use_dma && host->dma_ops->exit)
->   		host->dma_ops->exit(host);
->   
-> @@ -3490,6 +3507,8 @@ int dw_mci_runtime_resume(struct device *dev)
->   	/* Now that slots are all setup, we can enable card detect */
->   	dw_mci_enable_cd(host);
->   
-> +	__dw_mci_enable_sdio_irq(host->slot, true, false);
-> +
->   	return 0;
->   
->   err:
-> diff --git a/drivers/mmc/host/dw_mmc.h b/drivers/mmc/host/dw_mmc.h
-> index 46e9f8ec5398..dfbace0f5043 100644
-> --- a/drivers/mmc/host/dw_mmc.h
-> +++ b/drivers/mmc/host/dw_mmc.h
-> @@ -127,6 +127,7 @@ struct dw_mci_dma_slave {
->    * @cmd11_timer: Timer for SD3.0 voltage switch over scheme.
->    * @cto_timer: Timer for broken command transfer over scheme.
->    * @dto_timer: Timer for broken data transfer over scheme.
-> + * @client_sdio_enb: The value last passed to enable_sdio_irq.
->    *
->    * Locking
->    * =======
-> @@ -234,6 +235,8 @@ struct dw_mci {
->   	struct timer_list       cmd11_timer;
->   	struct timer_list       cto_timer;
->   	struct timer_list       dto_timer;
-> +
-> +	bool			client_sdio_enb;
->   };
->   
->   /* DMA ops for Internal/External DMAC interface */
-> 
-
+diff --git a/include/net/cfg80211.h b/include/net/cfg80211.h
+index 948139690a58..56dd141d8c89 100644
+--- a/include/net/cfg80211.h
++++ b/include/net/cfg80211.h
+@@ -4152,6 +4152,8 @@ struct sta_opmode_info {
+ 	u8 rx_nss;
+ };
+ 
++#define VENDOR_CMD_RAW_DATA ((const struct nla_policy *)ERR_PTR(-ENODATA))
++
+ /**
+  * struct wiphy_vendor_command - vendor command definition
+  * @info: vendor command identifying information, as used in nl80211
+@@ -4162,6 +4164,10 @@ struct sta_opmode_info {
+  * @dumpit: dump callback, for transferring bigger/multiple items. The
+  *	@storage points to cb->args[5], ie. is preserved over the multiple
+  *	dumpit calls.
++ * @policy: policy pointer for attributes within %NL80211_ATTR_VENDOR_DATA.
++ *	Set this to %VENDOR_CMD_RAW_DATA if no policy can be given and the
++ *	attribute is just raw data (e.g. a firmware command).
++ * @maxattr: highest attribute number in policy
+  * It's recommended to not have the same sub command with both @doit and
+  * @dumpit, so that userspace can assume certain ones are get and others
+  * are used with dump requests.
+@@ -4174,6 +4180,8 @@ struct wiphy_vendor_command {
+ 	int (*dumpit)(struct wiphy *wiphy, struct wireless_dev *wdev,
+ 		      struct sk_buff *skb, const void *data, int data_len,
+ 		      unsigned long *storage);
++	const struct nla_policy *policy;
++	unsigned int maxattr;
+ };
+ 
+ /**
+diff --git a/include/net/netlink.h b/include/net/netlink.h
+index 395b4406f4b0..28ece67f5312 100644
+--- a/include/net/netlink.h
++++ b/include/net/netlink.h
+@@ -1754,6 +1754,15 @@ static inline int __nla_validate_nested(const struct nlattr *start, int maxtype,
+ 			      validate, extack);
+ }
+ 
++static inline int
++nl80211_validate_nested(const struct nlattr *start, int maxtype,
++			const struct nla_policy *policy,
++			struct netlink_ext_ack *extack)
++{
++	return __nla_validate_nested(start, maxtype, policy,
++				     NL_VALIDATE_STRICT, extack);
++}
++
+ static inline int
+ nla_validate_nested_deprecated(const struct nlattr *start, int maxtype,
+ 			       const struct nla_policy *policy,
+diff --git a/net/wireless/core.c b/net/wireless/core.c
+index 4e83892f1ac2..305290a109c0 100644
+--- a/net/wireless/core.c
++++ b/net/wireless/core.c
+@@ -858,6 +858,19 @@ int wiphy_register(struct wiphy *wiphy)
+ 		return -EINVAL;
+ 	}
+ 
++	for (i = 0; i < rdev->wiphy.n_vendor_commands; i++) {
++		/*
++		 * Validate we have a policy (can be explicitly set to
++		 * VENDOR_CMD_RAW_DATA which is non-NULL) and also that
++		 * we have at least one of doit/dumpit.
++		 */
++		if (WARN_ON(!rdev->wiphy.vendor_commands[i].policy))
++			return -EINVAL;
++		if (WARN_ON(!rdev->wiphy.vendor_commands[i].doit &&
++			    !rdev->wiphy.vendor_commands[i].dumpit))
++			return -EINVAL;
++	}
++
+ #ifdef CONFIG_PM
+ 	if (WARN_ON(rdev->wiphy.wowlan && rdev->wiphy.wowlan->n_patterns &&
+ 		    (!rdev->wiphy.wowlan->pattern_min_len ||
+diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
+index 140d24e5718f..70eb841a56c4 100644
+--- a/net/wireless/nl80211.c
++++ b/net/wireless/nl80211.c
+@@ -12623,6 +12623,29 @@ static int nl80211_crit_protocol_stop(struct sk_buff *skb,
+ 	return 0;
+ }
+ 
++static int nl80211_vendor_check_policy(const struct wiphy_vendor_command *vcmd,
++				       struct nlattr *attr,
++				       struct netlink_ext_ack *extack)
++{
++	if (vcmd->policy == VENDOR_CMD_RAW_DATA) {
++		if (attr->nla_type & NLA_F_NESTED) {
++			NL_SET_ERR_MSG_ATTR(extack, attr,
++					    "unexpected nested data");
++			return -EINVAL;
++		}
++
++		return 0;
++	}
++
++	if (!(attr->nla_type & NLA_F_NESTED)) {
++		NL_SET_ERR_MSG_ATTR(extack, attr, "expected nested data");
++		return -EINVAL;
++	}
++
++	return nl80211_validate_nested(attr, vcmd->maxattr, vcmd->policy,
++				       extack);
++}
++
+ static int nl80211_vendor_cmd(struct sk_buff *skb, struct genl_info *info)
+ {
+ 	struct cfg80211_registered_device *rdev = info->user_ptr[0];
+@@ -12681,11 +12704,16 @@ static int nl80211_vendor_cmd(struct sk_buff *skb, struct genl_info *info)
+ 		if (info->attrs[NL80211_ATTR_VENDOR_DATA]) {
+ 			data = nla_data(info->attrs[NL80211_ATTR_VENDOR_DATA]);
+ 			len = nla_len(info->attrs[NL80211_ATTR_VENDOR_DATA]);
++
++			err = nl80211_vendor_check_policy(vcmd,
++					info->attrs[NL80211_ATTR_VENDOR_DATA],
++					info->extack);
++			if (err)
++				return err;
+ 		}
+ 
+ 		rdev->cur_cmd_info = info;
+-		err = rdev->wiphy.vendor_commands[i].doit(&rdev->wiphy, wdev,
+-							  data, len);
++		err = vcmd->doit(&rdev->wiphy, wdev, data, len);
+ 		rdev->cur_cmd_info = NULL;
+ 		return err;
+ 	}
+@@ -12772,6 +12800,13 @@ static int nl80211_prepare_vendor_dump(struct sk_buff *skb,
+ 	if (attrbuf[NL80211_ATTR_VENDOR_DATA]) {
+ 		data = nla_data(attrbuf[NL80211_ATTR_VENDOR_DATA]);
+ 		data_len = nla_len(attrbuf[NL80211_ATTR_VENDOR_DATA]);
++
++		err = nl80211_vendor_check_policy(
++				&(*rdev)->wiphy.vendor_commands[vcmd_idx],
++				attrbuf[NL80211_ATTR_VENDOR_DATA],
++				cb->extack);
++		if (err)
++			return err;
+ 	}
+ 
+ 	/* 0 is the first index - add 1 to parse only once */
+-- 
+2.17.2
 
