@@ -2,319 +2,103 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 313852BFCB
-	for <lists+linux-wireless@lfdr.de>; Tue, 28 May 2019 08:58:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8B15F2BFD6
+	for <lists+linux-wireless@lfdr.de>; Tue, 28 May 2019 09:03:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727067AbfE1G6k (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 28 May 2019 02:58:40 -0400
-Received: from nbd.name ([46.4.11.11]:57130 "EHLO nbd.name"
+        id S1727603AbfE1HCW (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 28 May 2019 03:02:22 -0400
+Received: from narfation.org ([79.140.41.39]:46976 "EHLO v3-1039.vlinux.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726305AbfE1G6k (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 28 May 2019 02:58:40 -0400
-Received: from p5dcfb1b7.dip0.t-ipconnect.de ([93.207.177.183] helo=bertha.fritz.box)
-        by ds12 with esmtpa (Exim 4.89)
-        (envelope-from <john@phrozen.org>)
-        id 1hVW4D-0002QQ-1E; Tue, 28 May 2019 08:58:37 +0200
-From:   John Crispin <john@phrozen.org>
-To:     Johannes Berg <johannes@sipsolutions.net>
-Cc:     linux-wireless@vger.kernel.org, John Crispin <john@phrozen.org>,
+        id S1726203AbfE1HCW (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 28 May 2019 03:02:22 -0400
+Received: from bentobox.localnet (p200300C59712C6EA00000000000002FB.dip0.t-ipconnect.de [IPv6:2003:c5:9712:c6ea::2fb])
+        by v3-1039.vlinux.de (Postfix) with ESMTPSA id C81431100D3;
+        Tue, 28 May 2019 09:02:19 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=narfation.org;
+        s=20121; t=1559026940;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=ukNVcz26LrZdBiIqJZMtQS98DaVUsP6U1/L6SzkgMK8=;
+        b=rTWdQpOYPiXK7AJDN3AVFOWnR+BqpEMfGITp737rTskaJnq3lHWFufXrgl2Ejp6c4mTFb6
+        yHWX0FFMKmzN3wVNBlZ6iiQV4HcTgYUts1MC5VmCuXL5VYWPvudwEO4XVYl0IhdrS4BWlq
+        0Qxokm8NPt22dZrsme+glCVgLq6GBwU=
+From:   Sven Eckelmann <sven@narfation.org>
+To:     John Crispin <john@phrozen.org>
+Cc:     Johannes Berg <johannes@sipsolutions.net>,
+        linux-wireless@vger.kernel.org,
         Shashidhar Lakkavalli <slakkavalli@datto.com>
-Subject: [PATCH V2] iw: print HE capabilities
-Date:   Tue, 28 May 2019 08:58:28 +0200
-Message-Id: <20190528065828.25356-1-john@phrozen.org>
-X-Mailer: git-send-email 2.20.1
+Subject: Re: [PATCH V2] iw: print HE capabilities
+Date:   Tue, 28 May 2019 09:02:12 +0200
+Message-ID: <2100673.vGQeuS8Cl6@bentobox>
+In-Reply-To: <20190528065828.25356-1-john@phrozen.org>
+References: <20190528065828.25356-1-john@phrozen.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/signed; boundary="nextPart31819263.QlU1AoI2qx"; micalg="pgp-sha512"; protocol="application/pgp-signature"
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=narfation.org;
+        s=20121; t=1559026940;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=ukNVcz26LrZdBiIqJZMtQS98DaVUsP6U1/L6SzkgMK8=;
+        b=YNrnWrLLJXwzhoR0Y2VhrUd/P0qiRMIs7REisxoa3m9ax+UtkBuiC2fZo17jIxLT1r9Pg5
+        AqmWfX4gWyce/u5RzuupWKNQVACAmPjOrzyS9yMdzETxDjp+75OLO9nVmRWi4D0CPQ7Xqf
+        OX7lSWiXQ9yW0blo9BEikW9r2POpODI=
+ARC-Seal: i=1; s=20121; d=narfation.org; t=1559026940; a=rsa-sha256;
+        cv=none;
+        b=Q8WudUaUeT2OmrH2B1pM5y72HeQZn/RsmfhGFnStyABF9C7rvICCPoEr6JjXr2kwq1ZmtU
+        cBirmx5ULF8G0a989ia3iwGGeLTNU2kHoBNOXX8AB3M9yD/UxzXPyakJENxhRa3FoMctES
+        LDJ7r4aT4EEtYGWRdPPjkGa8QR2eA7Q=
+ARC-Authentication-Results: i=1;
+        v3-1039.vlinux.de;
+        auth=pass smtp.auth=sven smtp.mailfrom=sven@narfation.org
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Print the HE MAC/PHY capabilities and MCS/NSS sets.
+--nextPart31819263.QlU1AoI2qx
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="us-ascii"
 
-Signed-off-by: Shashidhar Lakkavalli <slakkavalli@datto.com>
-Signed-off-by: John Crispin <john@phrozen.org>
----
-Changes in V2
-* add a missing ',' in the iftypes name list
+On Tuesday, 28 May 2019 08:58:28 CEST John Crispin wrote:
+> Print the HE MAC/PHY capabilities and MCS/NSS sets.
+> 
+> Signed-off-by: Shashidhar Lakkavalli <slakkavalli@datto.com>
+> Signed-off-by: John Crispin <john@phrozen.org>
+> ---
+> Changes in V2
+> * add a missing ',' in the iftypes name list
 
- info.c |   6 ++
- iw.h   |   1 +
- util.c | 231 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++
- 3 files changed, 238 insertions(+)
+The patch was already added with the bugfix [1].
 
-diff --git a/info.c b/info.c
-index 92c7d1d..e6270c8 100644
---- a/info.c
-+++ b/info.c
-@@ -162,7 +162,13 @@ static int print_phy_handler(struct nl_msg *msg, void *arg)
- 			    tb_band[NL80211_BAND_ATTR_VHT_MCS_SET])
- 				print_vht_info(nla_get_u32(tb_band[NL80211_BAND_ATTR_VHT_CAPA]),
- 					       nla_data(tb_band[NL80211_BAND_ATTR_VHT_MCS_SET]));
-+			if (tb_band[NL80211_BAND_ATTR_IFTYPE_DATA]) {
-+				struct nlattr *nl_iftype;
-+				int rem_band;
- 
-+				nla_for_each_nested(nl_iftype, tb_band[NL80211_BAND_ATTR_IFTYPE_DATA], rem_band)
-+					print_he_info(nl_iftype);
-+			}
- 			if (tb_band[NL80211_BAND_ATTR_FREQS]) {
- 				if (!band_had_freq) {
- 					printf("\t\tFrequencies:\n");
-diff --git a/iw.h b/iw.h
-index ca8a0ff..bc0b3ac 100644
---- a/iw.h
-+++ b/iw.h
-@@ -197,6 +197,7 @@ void print_ampdu_length(__u8 exponent);
- void print_ampdu_spacing(__u8 spacing);
- void print_ht_capability(__u16 cap);
- void print_vht_info(__u32 capa, const __u8 *mcs);
-+void print_he_info(struct nlattr *nl_iftype);
- 
- char *channel_width_name(enum nl80211_chan_width width);
- const char *iftype_name(enum nl80211_iftype iftype);
-diff --git a/util.c b/util.c
-index 2fa0b74..bb34fd3 100644
---- a/util.c
-+++ b/util.c
-@@ -1101,6 +1101,237 @@ void print_vht_info(__u32 capa, const __u8 *mcs)
- 	printf("\t\tVHT TX highest supported: %d Mbps\n", tmp & 0x1fff);
- }
- 
-+void print_he_info(struct nlattr *nl_iftype)
-+{
-+	struct nlattr *tb[NL80211_BAND_IFTYPE_ATTR_MAX + 1];
-+	struct nlattr *tb_flags[NL80211_IFTYPE_MAX + 1];
-+	char *iftypes[NUM_NL80211_IFTYPES] = {
-+		"Unspec", "Adhoc", "Station", "AP", "AP/VLAN", "WDS", "Monitor",
-+		"Mesh", "P2P/Client", "P2P/Go", "P2P/Device", "OCB", "NAN",
-+	};
-+	__u16 mac_cap[3] = { 0 };
-+	__u16 phy_cap[6] = { 0 };
-+	__u16 mcs_set[6] = { 0 };
-+	__u8 ppet[25] = { 0 };
-+	size_t len;
-+	int i;
-+
-+	#define PRINT_HE_CAP(_var, _idx, _bit, _str) \
-+	do { \
-+		if (_var[_idx] & BIT(_bit)) \
-+			printf("\t\t\t\t" _str "\n"); \
-+	} while (0)
-+
-+	#define PRINT_HE_CAP_MASK(_var, _idx, _shift, _mask, _str) \
-+	do { \
-+		if ((_var[_idx] >> _shift) & _mask) \
-+			printf("\t\t\t\t" _str ": %d\n", (_var[_idx] >> _shift) & _mask); \
-+	} while (0)
-+
-+	#define PRINT_HE_MAC_CAP(...) PRINT_HE_CAP(mac_cap, __VA_ARGS__)
-+	#define PRINT_HE_MAC_CAP_MASK(...) PRINT_HE_CAP_MASK(mac_cap, __VA_ARGS__)
-+	#define PRINT_HE_PHY_CAP(...) PRINT_HE_CAP(phy_cap, __VA_ARGS__)
-+	#define PRINT_HE_PHY_CAP0(_idx, _bit, ...) PRINT_HE_CAP(phy_cap, _idx, _bit + 8, __VA_ARGS__)
-+	#define PRINT_HE_PHY_CAP_MASK(...) PRINT_HE_CAP_MASK(phy_cap, __VA_ARGS__)
-+
-+	nla_parse(tb, NL80211_BAND_IFTYPE_ATTR_MAX,
-+		  nla_data(nl_iftype), nla_len(nl_iftype), NULL);
-+
-+	if (!tb[NL80211_BAND_IFTYPE_ATTR_IFTYPES])
-+		return;
-+
-+	if (nla_parse_nested(tb_flags, NL80211_IFTYPE_MAX,
-+			     tb[NL80211_BAND_IFTYPE_ATTR_IFTYPES], NULL))
-+		return;
-+
-+	printf("\t\tHE Iftypes:");
-+	for (i = 0; i < NUM_NL80211_IFTYPES; i++)
-+		if (nla_get_flag(tb_flags[i]) && iftypes[i])
-+			printf(" %s", iftypes[i]);
-+	printf("\n");
-+
-+	if (tb[NL80211_BAND_IFTYPE_ATTR_HE_CAP_MAC]) {
-+		len = nla_len(tb[NL80211_BAND_IFTYPE_ATTR_HE_CAP_MAC]);
-+		if (len > sizeof(mac_cap))
-+			len = sizeof(mac_cap);
-+		memcpy(mac_cap,
-+		       nla_data(tb[NL80211_BAND_IFTYPE_ATTR_HE_CAP_MAC]),
-+		       len);
-+	}
-+	printf("\t\t\tHE MAC Capabilities (0x");
-+	for (i = 0; i < 3; i++)
-+		printf("%04x", mac_cap[i]);
-+	printf("):\n");
-+
-+	PRINT_HE_MAC_CAP(0, 0, "+HTC HE Supported");
-+	PRINT_HE_MAC_CAP(0, 1, "TWT Requester");
-+	PRINT_HE_MAC_CAP(0, 2, "TWT Responder");
-+	PRINT_HE_MAC_CAP_MASK(0, 3, 0x3, "Dynamic BA Fragmentation Level");
-+	PRINT_HE_MAC_CAP_MASK(0, 5, 0x7, "Maximum number of MSDUS Fragments");
-+	PRINT_HE_MAC_CAP_MASK(0, 8, 0x3, "Minimum Payload size of 128 bytes");
-+	PRINT_HE_MAC_CAP_MASK(0, 10, 0x3, "Trigger Frame MAC Padding Duration");
-+	PRINT_HE_MAC_CAP_MASK(0, 12, 0x7, "Multi-TID Aggregation Support");
-+
-+	PRINT_HE_MAC_CAP(1, 1, "All Ack");
-+	PRINT_HE_MAC_CAP(1, 2, "TRS");
-+	PRINT_HE_MAC_CAP(1, 3, "BSR");
-+	PRINT_HE_MAC_CAP(1, 4, "Broadcast TWT");
-+	PRINT_HE_MAC_CAP(1, 5, "32-bit BA Bitmap");
-+	PRINT_HE_MAC_CAP(1, 6, "MU Cascading");
-+	PRINT_HE_MAC_CAP(1, 7, "Ack-Enabled Aggregation");
-+	PRINT_HE_MAC_CAP(1, 9, "OM Control");
-+	PRINT_HE_MAC_CAP(1, 10, "OFDMA RA");
-+	PRINT_HE_MAC_CAP_MASK(1, 11, 0x3, "Maximum A-MPDU Length Exponent");
-+	PRINT_HE_MAC_CAP(1, 13, "A-MSDU Fragmentation");
-+	PRINT_HE_MAC_CAP(1, 14, "Flexible TWT Scheduling");
-+	PRINT_HE_MAC_CAP(1, 15, "RX Control Frame to MultiBSS");
-+
-+	PRINT_HE_MAC_CAP(2, 0, "BSRP BQRP A-MPDU Aggregation");
-+	PRINT_HE_MAC_CAP(2, 1, "QTP");
-+	PRINT_HE_MAC_CAP(2, 2, "BQR");
-+	PRINT_HE_MAC_CAP(2, 3, "SRP Responder Role");
-+	PRINT_HE_MAC_CAP(2, 4, "NDP Feedback Report");
-+	PRINT_HE_MAC_CAP(2, 5, "OPS");
-+	PRINT_HE_MAC_CAP(2, 6, "A-MSDU in A-MPDU");
-+	PRINT_HE_MAC_CAP_MASK(2, 7, 7, "Multi-TID Aggregation TX");
-+	PRINT_HE_MAC_CAP(2, 10, "HE Subchannel Selective Transmission");
-+	PRINT_HE_MAC_CAP(2, 11, "UL 2x996-Tone RU");
-+	PRINT_HE_MAC_CAP(2, 12, "OM Control UL MU Data Disable RX");
-+
-+	if (tb[NL80211_BAND_IFTYPE_ATTR_HE_CAP_PHY]) {
-+		len = nla_len(tb[NL80211_BAND_IFTYPE_ATTR_HE_CAP_PHY]);
-+
-+		if (len > sizeof(phy_cap) - 1)
-+			len = sizeof(phy_cap) - 1;
-+		memcpy(&((__u8 *)phy_cap)[1],
-+		       nla_data(tb[NL80211_BAND_IFTYPE_ATTR_HE_CAP_PHY]),
-+		       len);
-+	}
-+	printf("\t\t\tHE PHY Capabilities: (0x");
-+	for (i = 0; i < 11; i++)
-+		printf("%02x", ((__u8 *)phy_cap)[i + 1]);
-+	printf("):\n");
-+
-+	PRINT_HE_PHY_CAP0(0, 1, "HE40/2.4GHz");
-+	PRINT_HE_PHY_CAP0(0, 2, "HE40/HE80/5GHz");
-+	PRINT_HE_PHY_CAP0(0, 3, "HE160/5GHz");
-+	PRINT_HE_PHY_CAP0(0, 4, "HE160/HE80+80/5GHz");
-+	PRINT_HE_PHY_CAP0(0, 5, "242 tone RUs/2.4GHz");
-+	PRINT_HE_PHY_CAP0(0, 6, "242 tone RUs/5GHz");
-+
-+	PRINT_HE_PHY_CAP_MASK(1, 0, 0xf, "Punctured Preamble RX");
-+	PRINT_HE_PHY_CAP_MASK(1, 4, 0x1, "Device Class");
-+	PRINT_HE_PHY_CAP(1, 5, "LDPC Coding in Payload");
-+	PRINT_HE_PHY_CAP(1, 6, "HE SU PPDU with 1x HE-LTF and 0.8us GI");
-+	PRINT_HE_PHY_CAP_MASK(1, 7, 0x3, "Midamble Rx Max NSTS");
-+	PRINT_HE_PHY_CAP(1, 9, "NDP with 4x HE-LTF and 3.2us GI");
-+	PRINT_HE_PHY_CAP(1, 10, "STBC Tx <= 80MHz");
-+	PRINT_HE_PHY_CAP(1, 11, "STBC Rx <= 80MHz");
-+	PRINT_HE_PHY_CAP(1, 12, "Doppler Tx");
-+	PRINT_HE_PHY_CAP(1, 13, "Doppler Rx");
-+	PRINT_HE_PHY_CAP(1, 14, "Full Bandwidth UL MU-MIMO");
-+	PRINT_HE_PHY_CAP(1, 15, "Partial Bandwidth UL MU-MIMO");
-+
-+	PRINT_HE_PHY_CAP_MASK(2, 0, 0x3, "DCM Max Constellation");
-+	PRINT_HE_PHY_CAP_MASK(2, 2, 0x1, "DCM Max NSS Tx");
-+	PRINT_HE_PHY_CAP_MASK(2, 3, 0x3, "DCM Max Constellation Rx");
-+	PRINT_HE_PHY_CAP_MASK(2, 5, 0x1, "DCM Max NSS Rx");
-+	PRINT_HE_PHY_CAP(2, 6, "Rx HE MU PPDU from Non-AP STA");
-+	PRINT_HE_PHY_CAP(2, 7, "SU Beamformer");
-+	PRINT_HE_PHY_CAP(2, 8, "SU Beamformee");
-+	PRINT_HE_PHY_CAP(2, 9, "MU Beamformer");
-+	PRINT_HE_PHY_CAP_MASK(2, 10, 0x7, "Beamformee STS <= 80Mhz");
-+	PRINT_HE_PHY_CAP_MASK(2, 13, 0x7, "Beamformee STS > 80Mhz");
-+
-+	PRINT_HE_PHY_CAP_MASK(3, 0, 0x7, "Sounding Dimensions <= 80Mhz");
-+	PRINT_HE_PHY_CAP_MASK(3, 3, 0x7, "Sounding Dimensions > 80Mhz");
-+	PRINT_HE_PHY_CAP(3, 6, "Ng = 16 SU Feedback");
-+	PRINT_HE_PHY_CAP(3, 7, "Ng = 16 MU Feedback");
-+	PRINT_HE_PHY_CAP(3, 8, "Codebook Size SU Feedback");
-+	PRINT_HE_PHY_CAP(3, 9, "Codebook Size MU Feedback");
-+	PRINT_HE_PHY_CAP(3, 10, "Triggered SU Beamforming Feedback");
-+	PRINT_HE_PHY_CAP(3, 11, "Triggered MU Beamforming Feedback");
-+	PRINT_HE_PHY_CAP(3, 12, "Triggered CQI Feedback");
-+	PRINT_HE_PHY_CAP(3, 13, "Partial Bandwidth Extended Range");
-+	PRINT_HE_PHY_CAP(3, 14, "Partial Bandwidth DL MU-MIMO");
-+	PRINT_HE_PHY_CAP(3, 15, "PPE Threshold Present");
-+
-+	PRINT_HE_PHY_CAP(4, 0, "SRP-based SR");
-+	PRINT_HE_PHY_CAP(4, 1, "Power Boost Factor ar");
-+	PRINT_HE_PHY_CAP(4, 2, "HE SU PPDU & HE PPDU 4x HE-LTF 0.8us GI");
-+	PRINT_HE_PHY_CAP_MASK(4, 3, 0x7, "Max NC");
-+	PRINT_HE_PHY_CAP(4, 6, "STBC Tx > 80MHz");
-+	PRINT_HE_PHY_CAP(4, 7, "STBC Rx > 80MHz");
-+	PRINT_HE_PHY_CAP(4, 8, "HE ER SU PPDU 4x HE-LTF 0.8us GI");
-+	PRINT_HE_PHY_CAP(4, 9, "20MHz in 40MHz HE PPDU 2.4GHz");
-+	PRINT_HE_PHY_CAP(4, 10, "20MHz in 160/80+80MHz HE PPDU");
-+	PRINT_HE_PHY_CAP(4, 11, "80MHz in 160/80+80MHz HE PPDU");
-+	PRINT_HE_PHY_CAP(4, 12, "HE ER SU PPDU 1x HE-LTF 0.8us GI");
-+	PRINT_HE_PHY_CAP(4, 13, "Midamble Rx 2x & 1x HE-LTF");
-+	PRINT_HE_PHY_CAP_MASK(4, 14, 0x3, "DCM Max BW");
-+
-+	PRINT_HE_PHY_CAP(5, 0, "Longer Than 16HE SIG-B OFDM Symbols");
-+	PRINT_HE_PHY_CAP(5, 1, "Non-Triggered CQI Feedback");
-+	PRINT_HE_PHY_CAP(5, 2, "TX 1024-QAM");
-+	PRINT_HE_PHY_CAP(5, 3, "RX 1024-QAM");
-+	PRINT_HE_PHY_CAP(5, 4, "RX Full BW SU Using HE MU PPDU with Compression SIGB");
-+	PRINT_HE_PHY_CAP(5, 5, "RX Full BW SU Using HE MU PPDU with Non-Compression SIGB");
-+
-+	if (tb[NL80211_BAND_IFTYPE_ATTR_HE_CAP_MCS_SET]) {
-+		len = nla_len(tb[NL80211_BAND_IFTYPE_ATTR_HE_CAP_MCS_SET]);
-+		if (len > sizeof(mcs_set))
-+			len = sizeof(mcs_set);
-+		memcpy(mcs_set,
-+		       nla_data(tb[NL80211_BAND_IFTYPE_ATTR_HE_CAP_MCS_SET]),
-+		       len);
-+	}
-+
-+	for (i = 0; i < 3; i++) {
-+		__u8 phy_cap_support[] = { BIT(1) | BIT(2), BIT(3), BIT(4) };
-+		char *bw[] = { "<= 80", "160", "80+80" };
-+		int j;
-+
-+		if ((phy_cap[0] & (phy_cap_support[i] << 8)) == 0)
-+			continue;
-+
-+		for (j = 0; j < 2; j++) {
-+			int k;
-+			printf("\t\t\tHE %s MCS and NSS set %s MHz\n", j ? "TX" : "RX", bw[i]);
-+			for (k = 0; k < 8; k++) {
-+				__u16 mcs = mcs_set[(i * 2) + j];
-+				mcs >>= k * 2;
-+				mcs &= 0x3;
-+				printf("\t\t\t\t\t %d streams: ", k + 1);
-+				if (mcs == 3)
-+					printf("not supported\n");
-+				else
-+					printf("MCS 0-%d\n", 7 + (mcs * 2));
-+			}
-+
-+		}
-+	}
-+
-+	len = 0;
-+	if (tb[NL80211_BAND_IFTYPE_ATTR_HE_CAP_PPE]) {
-+		len = nla_len(tb[NL80211_BAND_IFTYPE_ATTR_HE_CAP_PPE]);
-+		if (len > sizeof(ppet))
-+			len = sizeof(ppet);
-+		memcpy(ppet,
-+		       nla_data(tb[NL80211_BAND_IFTYPE_ATTR_HE_CAP_PPE]),
-+		       len);
-+	}
-+
-+	if (len && (phy_cap[3] & BIT(15))) {
-+		size_t i;
-+
-+		printf("\t\t\tPPE Threshold ");
-+		for (i = 0; i < len; i++)
-+			if (ppet[i])
-+				printf("0x%02x ", ppet[i]);
-+		printf("\n");
-+	}
-+}
-+
- void iw_hexdump(const char *prefix, const __u8 *buf, size_t size)
- {
- 	size_t i;
--- 
-2.20.1
+Kind regards,
+	Sven
+
+[1] https://git.kernel.org/pub/scm/linux/kernel/git/jberg/iw.git/commit/?id=c741be9f6ca34411c4dbeb03dd13e0dd794713a5
+--nextPart31819263.QlU1AoI2qx
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: This is a digitally signed message part.
+Content-Transfer-Encoding: 7Bit
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCgAdFiEEF10rh2Elc9zjMuACXYcKB8Eme0YFAlzs3PUACgkQXYcKB8Em
+e0YEWxAAmOG1CNXIO7LPMkGzhFg1YSuvC+PvC8v7p2tdQ2atspuzk0XyNdu3daNQ
+xigLpu4EGOHP7XjmnI1HJ2S3OPkOLebTfnAN9hdau2jtkyoqBBV6nBxj3PKiVyLD
+vrgFB2j7HBw0g+PNxuZV1EUPapbrw+qxoGrp0gpmHH3wJSQ85fg8HQkA1FaBJKLU
+EfW1xoltWBI4sUrUA6AI2QDHs3/2HS9aET5cS5epeuHb8lFHl4Qlm3C00iEFbUbM
+qgiW6qqVsM4LH1ZhpwW1dRfxWjlVbQsK59NiKsnE0Lun0SGLHO0O0fxmn3+gDyPD
+vt17V38LuSx9XM+/OCYeIgeufGlvggOJxlZwJmKJGjWzEeHitZqgxIcxTpDsoI/3
+COFYjXT5Xqchey0GLTlxM2/jHibLj1TObaqBUTXLhvoEbpjfFy+mQ1Um/HtAXdNq
+yvrqSoqCaOEgnrpMyqTFKfvnz4XDeXHmGbPN0DaQzC5Em+V3EsUiKHgGpo6Q73xx
+d4K80p9CPif09y5bfYV30xo8g7X0gk8ItXQDYMv0tqKwX25KQIjLBlnlMXA4yjoM
+LhqfYeN4IhNqWNqb7OqRQGZyx5D9DMjPCH3m+rtdGJvhZ3pDHKmRlD7S5UQ+iVE/
+LaFk22pA5sC1DwWzAQUau/30IrsJd3JNFo/95dDs0doKXfhe4/w=
+=98tm
+-----END PGP SIGNATURE-----
+
+--nextPart31819263.QlU1AoI2qx--
+
+
 
