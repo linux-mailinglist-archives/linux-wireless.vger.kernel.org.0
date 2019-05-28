@@ -2,100 +2,145 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C9AE22C5F1
-	for <lists+linux-wireless@lfdr.de>; Tue, 28 May 2019 13:56:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5DD8A2C628
+	for <lists+linux-wireless@lfdr.de>; Tue, 28 May 2019 14:08:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727058AbfE1Lz4 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 28 May 2019 07:55:56 -0400
-Received: from smtp.codeaurora.org ([198.145.29.96]:42538 "EHLO
+        id S1726776AbfE1MIx (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 28 May 2019 08:08:53 -0400
+Received: from smtp.codeaurora.org ([198.145.29.96]:52094 "EHLO
         smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726809AbfE1Lz4 (ORCPT
+        with ESMTP id S1726620AbfE1MIx (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 28 May 2019 07:55:56 -0400
+        Tue, 28 May 2019 08:08:53 -0400
 Received: by smtp.codeaurora.org (Postfix, from userid 1000)
-        id 301E760F3C; Tue, 28 May 2019 11:55:50 +0000 (UTC)
+        id 396BE6063A; Tue, 28 May 2019 12:08:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1559044555;
-        bh=k813bqE5/UfBXGr5ARK+Gx4QKOpZv/nuAkDg3b3jzBQ=;
-        h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-        b=JUZBtdgJYCs5pblKIc0RuQHtvm6TnBNEVhH8aoqE71dcShKITPGDsMnvnPPmPvHla
-         LSWMrEhVGZdChMYtAZcoNU6PYY9OwM6UpZoqLKHS85MtGrrctE2H+Vl6d13GWSLfRK
-         N1hVofqV4A4eBNF1OisaJKWSkL41tfN4nb7JjlSk=
+        s=default; t=1559045332;
+        bh=RtXJvUfbgw1LtqQFqRyyk/z4x2/PjEJlT9VprU9ofVE=;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+        b=W96iT3+zpN/4O6QO0cF6AHOm+OI18Emf4AgIEryUfdH8YU7KXI3i6FQet6e2aVPVR
+         B2oNTfbhh/WOmKIXSzzrHdCtdVBx4Y4MKBKn/dVkaN8Cm2JCf7whES1t6EfNRDYWLX
+         JxYLNvfckaZCIQZAa1FY6f5ctyVXlcu7FsU0/O4A=
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         pdx-caf-mail.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-0.8 required=2.0 tests=ALL_TRUSTED,BAYES_00,
-        DKIM_INVALID,DKIM_SIGNED,MISSING_DATE,MISSING_MID,SPF_NONE autolearn=no
-        autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-2.7 required=2.0 tests=ALL_TRUSTED,BAYES_00,
+        DKIM_INVALID,DKIM_SIGNED,SPF_NONE autolearn=no autolearn_force=no
+        version=3.4.0
 Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
         (Authenticated sender: kvalo@smtp.codeaurora.org)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 5FD3560EA5;
-        Tue, 28 May 2019 11:55:48 +0000 (UTC)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id B1DFC60271;
+        Tue, 28 May 2019 12:08:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1559044550;
-        bh=k813bqE5/UfBXGr5ARK+Gx4QKOpZv/nuAkDg3b3jzBQ=;
-        h=Subject:From:In-Reply-To:References:To:Cc:From;
-        b=WOvlO9OiVt/8dVWyeJQBAOLYO+j8JM2gLCQRAgk5U9cO7vYYd2hVBhSBDn8Yic4mP
-         gLeREwi2xjWCnce+jNnmZU1EpjP7pLVFJ65dljaJ1re9TosnZampAEcLgvdHn4Tsc/
-         0HF4c0DbiFI5ds0Qa6wLLVuGDWmuxq+Hh1ntp+Hk=
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 5FD3560EA5
+        s=default; t=1559045331;
+        bh=RtXJvUfbgw1LtqQFqRyyk/z4x2/PjEJlT9VprU9ofVE=;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+        b=csNqf+XKKN2droBRW1OSVU7cAKPPGaGpEYn0RrkB1SKAatjMhtw5a/cWM2nYKaTTA
+         bLIoFoy06GoGASMq5w+VHPtakWZKUAMk9Jp6AYfEqK4rBGrRZxZyNiif+xcLbT/CBE
+         hLEmGkR3AOv8AUlP6Jy6NCuZingAV9hadXnz6NAM=
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org B1DFC60271
 Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
 Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH] rtlwifi: Fix null-pointer dereferences in error handling
- code of rtl_pci_probe()
 From:   Kalle Valo <kvalo@codeaurora.org>
-In-Reply-To: <20190514123439.10524-1-baijiaju1990@gmail.com>
-References: <20190514123439.10524-1-baijiaju1990@gmail.com>
-To:     Jia-Ju Bai <baijiaju1990@gmail.com>
-Cc:     pkshih@realtek.com, davem@davemloft.net,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Jia-Ju Bai <baijiaju1990@gmail.com>
-User-Agent: pwcli/0.0.0-git (https://github.com/kvalo/pwcli/) Python/2.7.12
-Message-Id: <20190528115555.301E760F3C@smtp.codeaurora.org>
-Date:   Tue, 28 May 2019 11:55:50 +0000 (UTC)
+To:     Larry Finger <Larry.Finger@lwfinger.net>
+Cc:     linux-wireless@vger.kernel.org, pkshih@realtek.com
+Subject: Re: [RFC] rtlwifi: rtl8821ae: Use inline routines rather than macros for descriptor word 0
+References: <20190506173916.16486-1-Larry.Finger@lwfinger.net>
+Date:   Tue, 28 May 2019 15:08:48 +0300
+In-Reply-To: <20190506173916.16486-1-Larry.Finger@lwfinger.net> (Larry
+        Finger's message of "Mon, 6 May 2019 12:39:16 -0500")
+Message-ID: <87y32q4w8f.fsf@kamboji.qca.qualcomm.com>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
+MIME-Version: 1.0
+Content-Type: text/plain
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Jia-Ju Bai <baijiaju1990@gmail.com> wrote:
+Larry Finger <Larry.Finger@lwfinger.net> writes:
 
-> *BUG 1:
-> In rtl_pci_probe(), when rtlpriv->cfg->ops->init_sw_vars() fails,
-> rtl_deinit_core() in the error handling code is executed.
-> rtl_deinit_core() calls rtl_free_entries_from_scan_list(), which uses
-> rtlpriv->scan_list.list in list_for_each_entry_safe(), but it has been
-> initialized. Thus a null-pointer dereference occurs.
-> The reason is that rtlpriv->scan_list.list is initialized by
-> INIT_LIST_HEAD() in rtl_init_core(), which has not been called.
-> 
-> To fix this bug, rtl_deinit_core() should not be called when
-> rtlpriv->cfg->ops->init_sw_vars() fails.
-> 
-> *BUG 2:
-> In rtl_pci_probe(), rtl_init_core() can fail when rtl_regd_init() in
-> this function fails, and rtlpriv->scan_list.list has not been
-> initialized by INIT_LIST_HEAD(). Then, rtl_deinit_core() in the error
-> handling code of rtl_pci_probe() is executed. Finally, a null-pointer
-> dereference occurs due to the same reason of the above bug.
-> 
-> To fix this bug, the initialization of lists in rtl_init_core() are
-> performed before the call to rtl_regd_init().
-> 
-> These bugs are found by a runtime fuzzing tool named FIZZER written by
-> us.
-> 
-> Signed-off-by: Jia-Ju Bai <baijiaju1990@gmail.com>
+> The driver uses complicated macros to set parts of word 0 of the TX and RX
+> descriptors. These are changed into inline routines.
+>
+> Signed-off-by: Larry Finger <Larry.Finger@lwfinger.net>
+> ---
+>
+> Kalle,
+>
+> Based on your comment on how much you dislike those "byte macros", I have
+> converted a few of them from rtl8821ae into static inline functions.
+>
+> Is this what you had in mind, and do you consider these changes to
+> improve the code?
 
-Ping & Larry, is this ok to take?
+[...]
+
+> --- a/drivers/net/wireless/realtek/rtlwifi/rtl8821ae/trx.h
+> +++ b/drivers/net/wireless/realtek/rtlwifi/rtl8821ae/trx.h
+> @@ -14,25 +14,67 @@
+>  #define USB_HWDESC_HEADER_LEN			40
+>  #define CRCLENGTH						4
+>  
+> -#define SET_TX_DESC_PKT_SIZE(__pdesc, __val)		\
+> -	SET_BITS_TO_LE_4BYTE(__pdesc, 0, 16, __val)
+> -#define SET_TX_DESC_OFFSET(__pdesc, __val)			\
+> -	SET_BITS_TO_LE_4BYTE(__pdesc, 16, 8, __val)
+> -#define SET_TX_DESC_BMC(__pdesc, __val)				\
+> -	SET_BITS_TO_LE_4BYTE(__pdesc, 24, 1, __val)
+> -#define SET_TX_DESC_HTC(__pdesc, __val)				\
+> -	SET_BITS_TO_LE_4BYTE(__pdesc, 25, 1, __val)
+> -#define SET_TX_DESC_LAST_SEG(__pdesc, __val)		\
+> -	SET_BITS_TO_LE_4BYTE(__pdesc, 26, 1, __val)
+> -#define SET_TX_DESC_FIRST_SEG(__pdesc, __val)		\
+> -	SET_BITS_TO_LE_4BYTE(__pdesc, 27, 1, __val)
+> -#define SET_TX_DESC_LINIP(__pdesc, __val)			\
+> -	SET_BITS_TO_LE_4BYTE(__pdesc, 28, 1, __val)
+> -#define SET_TX_DESC_OWN(__pdesc, __val)				\
+> -	SET_BITS_TO_LE_4BYTE(__pdesc, 31, 1, __val)
+> -
+> -#define GET_TX_DESC_OWN(__pdesc)					\
+> -	LE_BITS_TO_4BYTE(__pdesc, 31, 1)
+> +/* Set packet size (16 bits) in TX descriptor word 0 */
+> +static inline void set_tx_desc_pkt_size(__le32 *__pdesc, u16 __val)
+> +{
+> +	*__pdesc = cpu_to_le32((le32_to_cpu(*__pdesc) & ~GENMASK(0, 15)) |
+> +			       __val);
+> +}
+
+This was not exactly what I had mind. My point was that the firmware
+command or event should be handled as a complete structure, not parsed
+one (or four) bytes at a time. To show what I mean here's a random
+example from iwlwifi:
+
+struct iwl_alive_resp {
+	u8 ucode_minor;
+	u8 ucode_major;
+	__le16 reserved1;
+	u8 sw_rev[8];
+	u8 ver_type;
+	u8 ver_subtype;			/* not "9" for runtime alive */
+	__le16 reserved2;
+	__le32 log_event_table_ptr;	/* SRAM address for event log */
+	__le32 error_event_table_ptr;	/* SRAM address for error log */
+	__le32 timestamp;
+	__le32 is_valid;
+} __packed;
+
+This a nice, clean and robust way both use AND document an event coming
+from the firmware. And the driver can pass around 'struct iwl_alive_res
+*resp' pointer to other functions to make it easy to understand what
+event the buffer contains. Compared to rtlwifi where there's just 'u8
+buf[]' and nobody has any clue what it contains, and need to spend at
+least five minutes figuring that out everytime they are looking at a
+function.
+
+But to be honest I'm not sure if it's worth trying to cleanup rtlwifi,
+it really would need a full rewrite to become a clean driver. IMHO much
+better to put more effort on rtl8xxxxu and rtw88, which both already are
+clean drivers.
 
 -- 
-https://patchwork.kernel.org/patch/10942971/
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
-
+Kalle Valo
