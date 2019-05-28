@@ -2,25 +2,25 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D433A2C569
-	for <lists+linux-wireless@lfdr.de>; Tue, 28 May 2019 13:30:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6B1F02C576
+	for <lists+linux-wireless@lfdr.de>; Tue, 28 May 2019 13:33:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726320AbfE1LaY (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 28 May 2019 07:30:24 -0400
-Received: from smtp.codeaurora.org ([198.145.29.96]:45838 "EHLO
+        id S1726574AbfE1Ldw (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 28 May 2019 07:33:52 -0400
+Received: from smtp.codeaurora.org ([198.145.29.96]:52374 "EHLO
         smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726234AbfE1LaY (ORCPT
+        with ESMTP id S1726305AbfE1Ldw (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 28 May 2019 07:30:24 -0400
+        Tue, 28 May 2019 07:33:52 -0400
 Received: by smtp.codeaurora.org (Postfix, from userid 1000)
-        id 076016077A; Tue, 28 May 2019 11:30:24 +0000 (UTC)
+        id 44BE460388; Tue, 28 May 2019 11:33:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1559043024;
-        bh=QQFHc7KHGT1XlP39+/THNeGXGy/8ShnovAPHytS2qgQ=;
+        s=default; t=1559043231;
+        bh=L1NbZxiLtq3rlmMS9o/rSgkfR5rPEvxTXSc6OnbhHco=;
         h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-        b=X2i9qTl5tSvcr0hOq975DFNXJwYiet/j+KX9g+vGU8h4q+J1hCsf3CSzTVVtrlIgB
-         WzHvVm+5QWk+rg/rGKU2zjAkxXOYF7F7joJI0+5V2quBwbNIOIgaL2mPZOBYB0Ppq2
-         e1vQa0GpCR7uHQpHZWZhyqOEf9Qo0NG6Kc7oVR/g=
+        b=fB0H+7YMCFozgKGcSbatyDncJKV7Veu0X1mHZ8K39Jq+kugmwUFfgZQNqIBTx8ZVN
+         IJ05O3cEnl5jGYg3yHO5lfV5gTCgYObImstmFD6XTRFwFP6f1P/LVME/Nnf4rs4B7B
+         Hh2jjmEOuU5AsGHE4GjjCrOPmWCYQVpKXG0hEPzg=
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         pdx-caf-mail.web.codeaurora.org
 X-Spam-Level: 
@@ -31,60 +31,71 @@ Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
         (Authenticated sender: kvalo@smtp.codeaurora.org)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 1AE1560312;
-        Tue, 28 May 2019 11:30:22 +0000 (UTC)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 45EA360E5A;
+        Tue, 28 May 2019 11:33:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1559043023;
-        bh=QQFHc7KHGT1XlP39+/THNeGXGy/8ShnovAPHytS2qgQ=;
+        s=default; t=1559043228;
+        bh=L1NbZxiLtq3rlmMS9o/rSgkfR5rPEvxTXSc6OnbhHco=;
         h=Subject:From:In-Reply-To:References:To:Cc:From;
-        b=FQCIgX9O+L+4cy96JtwAefRUeCJCPaPzqJ2VspWzA7s8n2Dr6inhkgJUyZFTQUHTu
-         xonJwTR19Qg//tYhjYli6A6U1FGJtJ9WwxYnd2ZRhXYJzVHkiHuRFGq0CYwjMsvwCy
-         ZClPoafBo08NvZV/LmDRvgOEywQ4QuRXMPmbqa5k=
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 1AE1560312
+        b=epXRGH2nFWQAVz/MQJzPp7tO1NHsMRRmGiIUHfBrmUov29KtEeATI6exYBp0Vez7J
+         DESnJG4ayMktH1rOIKkPYAJBZ6eHKgimEi7bLOO3WFcByq4JOvVVUeMbjR8Qshp931
+         egX9WxpIzpV3njFlKh3C2wLfxNhTQm0ZdwkzGW28=
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 45EA360E5A
 Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
 Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH 5.2 v3] rtw88: fix unassigned rssi_level in rtw_sta_info
+Subject: Re: [PATCH v2 5.2] rsi: Properly initialize data in rsi_sdio_ta_reset
 From:   Kalle Valo <kvalo@codeaurora.org>
-In-Reply-To: <1557196098-1479-1-git-send-email-yhchuang@realtek.com>
-References: <1557196098-1479-1-git-send-email-yhchuang@realtek.com>
-To:     <yhchuang@realtek.com>
-Cc:     <linux-wireless@vger.kernel.org>
+In-Reply-To: <20190523153007.112231-1-natechancellor@gmail.com>
+References: <20190523153007.112231-1-natechancellor@gmail.com>
+To:     Nathan Chancellor <natechancellor@gmail.com>
+Cc:     Amitkumar Karwar <amitkarwar@gmail.com>,
+        Siva Rebbagondla <siva8118@gmail.com>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>,
+        Nick Desaulniers <ndesaulniers@google.com>,
+        clang-built-linux@googlegroups.com,
+        Nathan Chancellor <natechancellor@gmail.com>
 User-Agent: pwcli/0.0.0-git (https://github.com/kvalo/pwcli/) Python/2.7.12
-Message-Id: <20190528113024.076016077A@smtp.codeaurora.org>
-Date:   Tue, 28 May 2019 11:30:24 +0000 (UTC)
+Message-Id: <20190528113351.44BE460388@smtp.codeaurora.org>
+Date:   Tue, 28 May 2019 11:33:50 +0000 (UTC)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-<yhchuang@realtek.com> wrote:
+Nathan Chancellor <natechancellor@gmail.com> wrote:
 
-> From: Yan-Hsuan Chuang <yhchuang@realtek.com>
+> When building with -Wuninitialized, Clang warns:
 > 
-> The new rssi_level should be stored in si, otherwise the rssi_level will
-> never be updated and get a wrong RA mask, which is calculated by the
-> rssi level
+> drivers/net/wireless/rsi/rsi_91x_sdio.c:940:43: warning: variable 'data'
+> is uninitialized when used here [-Wuninitialized]
+>         put_unaligned_le32(TA_HOLD_THREAD_VALUE, data);
+>                                                  ^~~~
+> drivers/net/wireless/rsi/rsi_91x_sdio.c:930:10: note: initialize the
+> variable 'data' to silence this warning
+>         u8 *data;
+>                 ^
+>                  = NULL
+> 1 warning generated.
 > 
-> If a wrong RA mask is chosen, the firmware will pick some *bad rates*.
-> The most hurtful scene will be in *noisy environment*, such as office or
-> public area with many APs and users.
-> The latency would be high and the overall throughput would be only half
-> or less.
+> Using Clang's suggestion of initializing data to NULL wouldn't work out
+> because data will be dereferenced by put_unaligned_le32. Use kzalloc to
+> properly initialize data, which matches a couple of other places in this
+> driver.
 > 
-> Tested in 2.4G in office area, with this patch the throughput increased
-> from such as "1x Mbps -> 4x Mbps".
-> 
-> Signed-off-by: Yan-Hsuan Chuang <yhchuang@realtek.com>
+> Fixes: e5a1ecc97e5f ("rsi: add firmware loading for 9116 device")
+> Link: https://github.com/ClangBuiltLinux/linux/issues/464
+> Signed-off-by: Nathan Chancellor <natechancellor@gmail.com>
 
 Patch applied to wireless-drivers.git, thanks.
 
-a24bad74737f rtw88: fix unassigned rssi_level in rtw_sta_info
+f57b5d85ed58 rsi: Properly initialize data in rsi_sdio_ta_reset
 
 -- 
-https://patchwork.kernel.org/patch/10932181/
+https://patchwork.kernel.org/patch/10958063/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
