@@ -2,209 +2,86 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 52FE62C1DC
-	for <lists+linux-wireless@lfdr.de>; Tue, 28 May 2019 10:56:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4C8EF2C567
+	for <lists+linux-wireless@lfdr.de>; Tue, 28 May 2019 13:29:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726441AbfE1I4M (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 28 May 2019 04:56:12 -0400
-Received: from s3.sipsolutions.net ([144.76.43.62]:45126 "EHLO
-        sipsolutions.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726438AbfE1I4M (ORCPT
+        id S1726341AbfE1L34 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 28 May 2019 07:29:56 -0400
+Received: from smtp.codeaurora.org ([198.145.29.96]:45598 "EHLO
+        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726236AbfE1L34 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 28 May 2019 04:56:12 -0400
-Received: by sipsolutions.net with esmtpsa (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <johannes@sipsolutions.net>)
-        id 1hVXty-000815-0H; Tue, 28 May 2019 10:56:10 +0200
-From:   Johannes Berg <johannes@sipsolutions.net>
-To:     linux-wireless@vger.kernel.org
-Cc:     Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH v2] nl80211: require and validate vendor command policy
-Date:   Tue, 28 May 2019 10:56:03 +0200
-Message-Id: <20190528085603.24770-1-johannes@sipsolutions.net>
-X-Mailer: git-send-email 2.17.2
+        Tue, 28 May 2019 07:29:56 -0400
+Received: by smtp.codeaurora.org (Postfix, from userid 1000)
+        id 907246087F; Tue, 28 May 2019 11:29:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
+        s=default; t=1559042995;
+        bh=FeM1B7S1k5cqeMl9o/LwP3eyRGc45nofIGS55xOJA/c=;
+        h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
+        b=f1ycf40rL89EiOcxUDUmDz9dcZESnBm7u5eqK+EkY+/L1NrRr3wJ/W4IBOUs9wY+y
+         In8wsZbOaGMOw62ovMxop67AQSwDGO8FOkI+dCtLB6tHPNGLm7b4W6m9fBbiklKmpz
+         p9jIsS/vZK65Hl8fntuz50SExuEqe9aY79bEUOHc=
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        pdx-caf-mail.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-0.8 required=2.0 tests=ALL_TRUSTED,BAYES_00,
+        DKIM_INVALID,DKIM_SIGNED,MISSING_DATE,MISSING_MID,SPF_NONE autolearn=no
+        autolearn_force=no version=3.4.0
+Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo@smtp.codeaurora.org)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 570D3607C3;
+        Tue, 28 May 2019 11:29:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
+        s=default; t=1559042995;
+        bh=FeM1B7S1k5cqeMl9o/LwP3eyRGc45nofIGS55xOJA/c=;
+        h=Subject:From:In-Reply-To:References:To:Cc:From;
+        b=ZZHnVDenG+hD2tZ9v/P5cNhkj99IosApMYyGXMEOIwQvk516ABmwEi/4hZ+bHEUSh
+         G+l7y2Ma7wCsVZ7tHEJiT9sKORZh5c4gaDNUT0xCVLg+lP++6LwlJm0DIe2Ean/ETh
+         AdmjD+0QXNTrnUrlengbmkmWyV9FGPdgEnYsvgYg=
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 570D3607C3
+Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH 5.1] rtw88: fix subscript above array bounds compiler
+ warning
+From:   Kalle Valo <kvalo@codeaurora.org>
+In-Reply-To: <20190506073917.10106-1-sgruszka@redhat.com>
+References: <20190506073917.10106-1-sgruszka@redhat.com>
+To:     Stanislaw Gruszka <sgruszka@redhat.com>
+Cc:     linux-wireless@vger.kernel.org,
+        Yan-Hsuan Chuang <yhchuang@realtek.com>
+User-Agent: pwcli/0.0.0-git (https://github.com/kvalo/pwcli/) Python/2.7.12
+Message-Id: <20190528112955.907246087F@smtp.codeaurora.org>
+Date:   Tue, 28 May 2019 11:29:55 +0000 (UTC)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Johannes Berg <johannes.berg@intel.com>
+Stanislaw Gruszka <sgruszka@redhat.com> wrote:
 
-Require that each vendor command give a policy of its sub-attributes
-in NL80211_ATTR_VENDOR_DATA, and then (stricly) check the contents,
-including the NLA_F_NESTED flag that we couldn't check on the outer
-layer because there we don't know yet.
+> My compiler complains about:
+> 
+> drivers/net/wireless/realtek/rtw88/phy.c: In function ‘rtw_phy_rf_power_2_rssi’:
+> drivers/net/wireless/realtek/rtw88/phy.c:430:26: warning: array subscript is above array bounds [-Warray-bounds]
+>   linear = db_invert_table[i][j];
+> 
+> According to comment power_db should be in range 1 ~ 96 .
+> To fix add check for boundaries before access the array.
+> 
+> Signed-off-by: Stanislaw Gruszka <sgruszka@redhat.com>
+> Acked-by: Yan-Hsuan Chuang <yhchuang@realtek.com>
 
-It is possible to use VENDOR_CMD_RAW_DATA for raw data, but then no
-nested data can be given (NLA_F_NESTED flag must be clear) and the
-data is just passed as is to the command.
+Patch applied to wireless-drivers.git, thanks.
 
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
----
- drivers/net/wireless/mac80211_hwsim.c |  2 ++
- include/net/cfg80211.h                |  8 ++++++
- include/net/netlink.h                 |  9 +++++++
- net/wireless/core.c                   | 13 +++++++++
- net/wireless/nl80211.c                | 39 +++++++++++++++++++++++++--
- 5 files changed, 69 insertions(+), 2 deletions(-)
+8a03447dd311 rtw88: fix subscript above array bounds compiler warning
 
-diff --git a/drivers/net/wireless/mac80211_hwsim.c b/drivers/net/wireless/mac80211_hwsim.c
-index b5274d1f30fa..0ddfce6b94ea 100644
---- a/drivers/net/wireless/mac80211_hwsim.c
-+++ b/drivers/net/wireless/mac80211_hwsim.c
-@@ -457,6 +457,8 @@ static struct wiphy_vendor_command mac80211_hwsim_vendor_commands[] = {
- 			  .subcmd = QCA_NL80211_SUBCMD_TEST },
- 		.flags = WIPHY_VENDOR_CMD_NEED_NETDEV,
- 		.doit = mac80211_hwsim_vendor_cmd_test,
-+		.policy = hwsim_vendor_test_policy,
-+		.maxattr = QCA_WLAN_VENDOR_ATTR_MAX,
- 	}
- };
- 
-diff --git a/include/net/cfg80211.h b/include/net/cfg80211.h
-index 948139690a58..56dd141d8c89 100644
---- a/include/net/cfg80211.h
-+++ b/include/net/cfg80211.h
-@@ -4152,6 +4152,8 @@ struct sta_opmode_info {
- 	u8 rx_nss;
- };
- 
-+#define VENDOR_CMD_RAW_DATA ((const struct nla_policy *)ERR_PTR(-ENODATA))
-+
- /**
-  * struct wiphy_vendor_command - vendor command definition
-  * @info: vendor command identifying information, as used in nl80211
-@@ -4162,6 +4164,10 @@ struct sta_opmode_info {
-  * @dumpit: dump callback, for transferring bigger/multiple items. The
-  *	@storage points to cb->args[5], ie. is preserved over the multiple
-  *	dumpit calls.
-+ * @policy: policy pointer for attributes within %NL80211_ATTR_VENDOR_DATA.
-+ *	Set this to %VENDOR_CMD_RAW_DATA if no policy can be given and the
-+ *	attribute is just raw data (e.g. a firmware command).
-+ * @maxattr: highest attribute number in policy
-  * It's recommended to not have the same sub command with both @doit and
-  * @dumpit, so that userspace can assume certain ones are get and others
-  * are used with dump requests.
-@@ -4174,6 +4180,8 @@ struct wiphy_vendor_command {
- 	int (*dumpit)(struct wiphy *wiphy, struct wireless_dev *wdev,
- 		      struct sk_buff *skb, const void *data, int data_len,
- 		      unsigned long *storage);
-+	const struct nla_policy *policy;
-+	unsigned int maxattr;
- };
- 
- /**
-diff --git a/include/net/netlink.h b/include/net/netlink.h
-index 395b4406f4b0..28ece67f5312 100644
---- a/include/net/netlink.h
-+++ b/include/net/netlink.h
-@@ -1754,6 +1754,15 @@ static inline int __nla_validate_nested(const struct nlattr *start, int maxtype,
- 			      validate, extack);
- }
- 
-+static inline int
-+nl80211_validate_nested(const struct nlattr *start, int maxtype,
-+			const struct nla_policy *policy,
-+			struct netlink_ext_ack *extack)
-+{
-+	return __nla_validate_nested(start, maxtype, policy,
-+				     NL_VALIDATE_STRICT, extack);
-+}
-+
- static inline int
- nla_validate_nested_deprecated(const struct nlattr *start, int maxtype,
- 			       const struct nla_policy *policy,
-diff --git a/net/wireless/core.c b/net/wireless/core.c
-index 4e83892f1ac2..305290a109c0 100644
---- a/net/wireless/core.c
-+++ b/net/wireless/core.c
-@@ -858,6 +858,19 @@ int wiphy_register(struct wiphy *wiphy)
- 		return -EINVAL;
- 	}
- 
-+	for (i = 0; i < rdev->wiphy.n_vendor_commands; i++) {
-+		/*
-+		 * Validate we have a policy (can be explicitly set to
-+		 * VENDOR_CMD_RAW_DATA which is non-NULL) and also that
-+		 * we have at least one of doit/dumpit.
-+		 */
-+		if (WARN_ON(!rdev->wiphy.vendor_commands[i].policy))
-+			return -EINVAL;
-+		if (WARN_ON(!rdev->wiphy.vendor_commands[i].doit &&
-+			    !rdev->wiphy.vendor_commands[i].dumpit))
-+			return -EINVAL;
-+	}
-+
- #ifdef CONFIG_PM
- 	if (WARN_ON(rdev->wiphy.wowlan && rdev->wiphy.wowlan->n_patterns &&
- 		    (!rdev->wiphy.wowlan->pattern_min_len ||
-diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
-index 140d24e5718f..70eb841a56c4 100644
---- a/net/wireless/nl80211.c
-+++ b/net/wireless/nl80211.c
-@@ -12623,6 +12623,29 @@ static int nl80211_crit_protocol_stop(struct sk_buff *skb,
- 	return 0;
- }
- 
-+static int nl80211_vendor_check_policy(const struct wiphy_vendor_command *vcmd,
-+				       struct nlattr *attr,
-+				       struct netlink_ext_ack *extack)
-+{
-+	if (vcmd->policy == VENDOR_CMD_RAW_DATA) {
-+		if (attr->nla_type & NLA_F_NESTED) {
-+			NL_SET_ERR_MSG_ATTR(extack, attr,
-+					    "unexpected nested data");
-+			return -EINVAL;
-+		}
-+
-+		return 0;
-+	}
-+
-+	if (!(attr->nla_type & NLA_F_NESTED)) {
-+		NL_SET_ERR_MSG_ATTR(extack, attr, "expected nested data");
-+		return -EINVAL;
-+	}
-+
-+	return nl80211_validate_nested(attr, vcmd->maxattr, vcmd->policy,
-+				       extack);
-+}
-+
- static int nl80211_vendor_cmd(struct sk_buff *skb, struct genl_info *info)
- {
- 	struct cfg80211_registered_device *rdev = info->user_ptr[0];
-@@ -12681,11 +12704,16 @@ static int nl80211_vendor_cmd(struct sk_buff *skb, struct genl_info *info)
- 		if (info->attrs[NL80211_ATTR_VENDOR_DATA]) {
- 			data = nla_data(info->attrs[NL80211_ATTR_VENDOR_DATA]);
- 			len = nla_len(info->attrs[NL80211_ATTR_VENDOR_DATA]);
-+
-+			err = nl80211_vendor_check_policy(vcmd,
-+					info->attrs[NL80211_ATTR_VENDOR_DATA],
-+					info->extack);
-+			if (err)
-+				return err;
- 		}
- 
- 		rdev->cur_cmd_info = info;
--		err = rdev->wiphy.vendor_commands[i].doit(&rdev->wiphy, wdev,
--							  data, len);
-+		err = vcmd->doit(&rdev->wiphy, wdev, data, len);
- 		rdev->cur_cmd_info = NULL;
- 		return err;
- 	}
-@@ -12772,6 +12800,13 @@ static int nl80211_prepare_vendor_dump(struct sk_buff *skb,
- 	if (attrbuf[NL80211_ATTR_VENDOR_DATA]) {
- 		data = nla_data(attrbuf[NL80211_ATTR_VENDOR_DATA]);
- 		data_len = nla_len(attrbuf[NL80211_ATTR_VENDOR_DATA]);
-+
-+		err = nl80211_vendor_check_policy(
-+				&(*rdev)->wiphy.vendor_commands[vcmd_idx],
-+				attrbuf[NL80211_ATTR_VENDOR_DATA],
-+				cb->extack);
-+		if (err)
-+			return err;
- 	}
- 
- 	/* 0 is the first index - add 1 to parse only once */
 -- 
-2.17.2
+https://patchwork.kernel.org/patch/10930671/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
