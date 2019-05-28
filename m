@@ -2,94 +2,78 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E07E12C679
-	for <lists+linux-wireless@lfdr.de>; Tue, 28 May 2019 14:28:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C13D02C694
+	for <lists+linux-wireless@lfdr.de>; Tue, 28 May 2019 14:33:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726816AbfE1M2j (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 28 May 2019 08:28:39 -0400
-Received: from smtp.codeaurora.org ([198.145.29.96]:39270 "EHLO
-        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726580AbfE1M2j (ORCPT
+        id S1726997AbfE1Md0 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 28 May 2019 08:33:26 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:41797 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726592AbfE1MdZ (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 28 May 2019 08:28:39 -0400
-Received: by smtp.codeaurora.org (Postfix, from userid 1000)
-        id 9DFCC607CA; Tue, 28 May 2019 12:28:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1559046518;
-        bh=VWyaDCfFJGBHWFrbs/WrgqYDyCsaFwNYuMp2vPDqxzU=;
-        h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-        b=jqWdp596lVDPadwR+S0BmRjW7WEL9Gee9SRsXibiajCRqSFYwYIwbVbO7ykLovm/v
-         kcJkWPx2mde2/4RhnI0oRsjQygxYtK6PAXLDByIdWKb3YSnezVbvKLILsixzwMxgj9
-         noTzw1hXbVZfXm1F7zOMSg1/ATw/Jy9Cm0+wkhqI=
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        pdx-caf-mail.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-0.8 required=2.0 tests=ALL_TRUSTED,BAYES_00,
-        DKIM_INVALID,DKIM_SIGNED,MISSING_DATE,MISSING_MID,SPF_NONE autolearn=no
-        autolearn_force=no version=3.4.0
-Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        (Authenticated sender: kvalo@smtp.codeaurora.org)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 929EF6034D;
-        Tue, 28 May 2019 12:28:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1559046517;
-        bh=VWyaDCfFJGBHWFrbs/WrgqYDyCsaFwNYuMp2vPDqxzU=;
-        h=Subject:From:In-Reply-To:References:To:Cc:From;
-        b=CB50bJslUYXYYzC5zUzcYM6uIAhHCXU1/CUx+ywVgbzf2MH7tfmOo0Mar/lqQA216
-         X8diKvx/Mfvym1B3SD+Q+VCdbuVylGyu9VOrFyMqR41U+k7ZsKU10rO+mSHyxLoiZU
-         V0HgxEWTjWpQRVPXKqY0plgQu8h/RP8YywUslI3k=
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 929EF6034D
-Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
-Content-Type: text/plain; charset="utf-8"
+        Tue, 28 May 2019 08:33:25 -0400
+Received: from mail-io1-f71.google.com ([209.85.166.71])
+        by youngberry.canonical.com with esmtps (TLS1.0:RSA_AES_128_CBC_SHA1:16)
+        (Exim 4.76)
+        (envelope-from <seth.forshee@canonical.com>)
+        id 1hVbHX-0007fi-VD
+        for linux-wireless@vger.kernel.org; Tue, 28 May 2019 12:32:44 +0000
+Received: by mail-io1-f71.google.com with SMTP id s24so15746341iot.0
+        for <linux-wireless@vger.kernel.org>; Tue, 28 May 2019 05:32:43 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=KJC4faTeLfUe+h38+g3iffsCSLuUIxdqKCzCVYdBzBs=;
+        b=lh4U+oz7AUHmcBsVOx6lEDgSpVnKHwSbAxjRN9ymci8pQ7DC5E0SCSDTra201dK1Kr
+         nXoAKejl8Ed1rGkcDm+d5xLL6Y6hGZ+RvCj3ugynWVGZJtJ5IJwcwJTj1oJ3rJ6W+6GJ
+         PUIKEpLQBmmUeqpW8GdnomsfDCccNP+2gk5j6UTSWxKdsfKjkD929kE53GARKBIP7gGr
+         9+HuUr5V5ynhA6y8/t/uQsA7B2p4Ek7GrUFxBh5g/96wKqIOIIM8IOehihvltKLCxDMg
+         yLKoMVRB+3PX21NdpfgW/CtanXAtMD+ySaz6RFzouXZgCHoaNhf7Ool6pBwSQaz4ig/y
+         6gtA==
+X-Gm-Message-State: APjAAAWOP5Zf/y+IFcHXclzoQuWo/vy8rJYgMupvFSYGUlPlsi9kzYvk
+        nKn9AnddKx0Wd5qwXaPfCzlrH20ri2oJp9bXux4Ch8KSef82dKMpYt94cReP8qWg0pQT/L2FQVc
+        lSKbwyz3Rk8Jxc0ujbsh7JlUVvxRUq4/xk+5tj/xPOHis
+X-Received: by 2002:a5d:8043:: with SMTP id b3mr69996242ior.115.1559046762629;
+        Tue, 28 May 2019 05:32:42 -0700 (PDT)
+X-Google-Smtp-Source: APXvYqwrxJ0FkxnvEXNsToKFhzojUgadPWMfYoa9jBJpdn1IEm+V3JBCdXf4/RRZTwLCNM9/9e7Rdw==
+X-Received: by 2002:a5d:8043:: with SMTP id b3mr69996230ior.115.1559046762380;
+        Tue, 28 May 2019 05:32:42 -0700 (PDT)
+Received: from localhost ([2605:a601:ac2:fb20:706d:2b0b:401e:a226])
+        by smtp.gmail.com with ESMTPSA id c128sm1127853itc.19.2019.05.28.05.32.41
+        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
+        Tue, 28 May 2019 05:32:41 -0700 (PDT)
+Date:   Tue, 28 May 2019 07:32:40 -0500
+From:   Seth Forshee <seth.forshee@canonical.com>
+To:     Peter Oh <peter.oh@bowerswilkins.com>
+Cc:     "wireless-regdb@lists.infradead.org" 
+        <wireless-regdb@lists.infradead.org>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+Subject: Re: [wireless-regdb] [PATCH v3] wireless-regdb: Update regulatory
+ rules for South Korea
+Message-ID: <20190528123240.GK4357@ubuntu-xps13>
+References: <1557948501-12579-1-git-send-email-peter.oh@bowerswilkins.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH 1/7] rt2x00: allow to specify watchdog interval
-From:   Kalle Valo <kvalo@codeaurora.org>
-In-Reply-To: <1556788021-6531-2-git-send-email-sgruszka@redhat.com>
-References: <1556788021-6531-2-git-send-email-sgruszka@redhat.com>
-To:     Stanislaw Gruszka <sgruszka@redhat.com>
-Cc:     linux-wireless@vger.kernel.org,
-        =?utf-8?q?Tomislav_Po=C5=BEega?= <pozega.tomislav@gmail.com>,
-        Daniel Golle <daniel@makrotopia.org>,
-        Felix Fietkau <nbd@nbd.name>, Mathias Kresin <dev@kresin.me>
-User-Agent: pwcli/0.0.0-git (https://github.com/kvalo/pwcli/) Python/2.7.12
-Message-Id: <20190528122838.9DFCC607CA@smtp.codeaurora.org>
-Date:   Tue, 28 May 2019 12:28:38 +0000 (UTC)
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1557948501-12579-1-git-send-email-peter.oh@bowerswilkins.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Stanislaw Gruszka <sgruszka@redhat.com> wrote:
-
-> Allow subdriver to change watchdog interval by intialize
-> link->watchdog_interval value before rt2x00link_register().
+On Wed, May 15, 2019 at 07:28:29PM +0000, Peter Oh wrote:
+> From: Peter Oh <peter.oh@bowerswilkins.com>
 > 
-> Signed-off-by: Stanislaw Gruszka <sgruszka@redhat.com>
+> Update power limit as documented in:
+> http://www.law.go.kr/%ED%96%89%EC%A0%95%EA%B7%9C%EC%B9%99/
+> %EC%8B%A0%EA%B3%A0%ED%95%98%EC%A7%80%EC%95%84%EB%8B%88%ED
+> %95%98%EA%B3%A0%EA%B0%9C%EC%84%A4%ED%95%A0%EC%88%98%EC%9E
+> %88%EB%8A%94%EB%AC%B4%EC%84%A0%EA%B5%AD%EC%9A%A9%EB%AC%B4
+> %EC%84%A0%EA%B8%B0%EA%B8%B0/(2018-89,20181227)
+> which revised on December 27, 2018.
+> 
+> Signed-off-by: Peter Oh <peter.oh@bowerswilkins.com>
 
-Failed to apply:
-
-fatal: sha1 information is lacking or useless (drivers/net/wireless/ralink/rt2x00/rt2800lib.c).
-error: could not build fake ancestor
-Applying: rt2800: initial watchdog implementation
-Patch failed at 0001 rt2800: initial watchdog implementation
-The copy of the patch that failed is found in: .git/rebase-apply/patch
-
-7 patches set to Changes Requested.
-
-10926395 [1/7] rt2x00: allow to specify watchdog interval
-10926397 [2/7] rt2800: add helpers for reading dma done index
-10926401 [3/7] rt2800: initial watchdog implementation
-10926403 [4/7] rt2800: add pre_reset_hw callback
-10926405 [5/7] rt2800: do not nullify initialization vector data
-10926407 [6/7] rt2x00: add restart hw
-10926409 [7/7] rt2800: do not enable watchdog by default
-
--- 
-https://patchwork.kernel.org/patch/10926395/
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
-
+Applied, thanks!
