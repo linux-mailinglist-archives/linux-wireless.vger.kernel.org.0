@@ -2,25 +2,25 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 4C8EF2C567
-	for <lists+linux-wireless@lfdr.de>; Tue, 28 May 2019 13:29:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D433A2C569
+	for <lists+linux-wireless@lfdr.de>; Tue, 28 May 2019 13:30:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726341AbfE1L34 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 28 May 2019 07:29:56 -0400
-Received: from smtp.codeaurora.org ([198.145.29.96]:45598 "EHLO
+        id S1726320AbfE1LaY (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 28 May 2019 07:30:24 -0400
+Received: from smtp.codeaurora.org ([198.145.29.96]:45838 "EHLO
         smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726236AbfE1L34 (ORCPT
+        with ESMTP id S1726234AbfE1LaY (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 28 May 2019 07:29:56 -0400
+        Tue, 28 May 2019 07:30:24 -0400
 Received: by smtp.codeaurora.org (Postfix, from userid 1000)
-        id 907246087F; Tue, 28 May 2019 11:29:55 +0000 (UTC)
+        id 076016077A; Tue, 28 May 2019 11:30:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1559042995;
-        bh=FeM1B7S1k5cqeMl9o/LwP3eyRGc45nofIGS55xOJA/c=;
+        s=default; t=1559043024;
+        bh=QQFHc7KHGT1XlP39+/THNeGXGy/8ShnovAPHytS2qgQ=;
         h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-        b=f1ycf40rL89EiOcxUDUmDz9dcZESnBm7u5eqK+EkY+/L1NrRr3wJ/W4IBOUs9wY+y
-         In8wsZbOaGMOw62ovMxop67AQSwDGO8FOkI+dCtLB6tHPNGLm7b4W6m9fBbiklKmpz
-         p9jIsS/vZK65Hl8fntuz50SExuEqe9aY79bEUOHc=
+        b=X2i9qTl5tSvcr0hOq975DFNXJwYiet/j+KX9g+vGU8h4q+J1hCsf3CSzTVVtrlIgB
+         WzHvVm+5QWk+rg/rGKU2zjAkxXOYF7F7joJI0+5V2quBwbNIOIgaL2mPZOBYB0Ppq2
+         e1vQa0GpCR7uHQpHZWZhyqOEf9Qo0NG6Kc7oVR/g=
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         pdx-caf-mail.web.codeaurora.org
 X-Spam-Level: 
@@ -31,57 +31,60 @@ Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
         (Authenticated sender: kvalo@smtp.codeaurora.org)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 570D3607C3;
-        Tue, 28 May 2019 11:29:54 +0000 (UTC)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 1AE1560312;
+        Tue, 28 May 2019 11:30:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1559042995;
-        bh=FeM1B7S1k5cqeMl9o/LwP3eyRGc45nofIGS55xOJA/c=;
+        s=default; t=1559043023;
+        bh=QQFHc7KHGT1XlP39+/THNeGXGy/8ShnovAPHytS2qgQ=;
         h=Subject:From:In-Reply-To:References:To:Cc:From;
-        b=ZZHnVDenG+hD2tZ9v/P5cNhkj99IosApMYyGXMEOIwQvk516ABmwEi/4hZ+bHEUSh
-         G+l7y2Ma7wCsVZ7tHEJiT9sKORZh5c4gaDNUT0xCVLg+lP++6LwlJm0DIe2Ean/ETh
-         AdmjD+0QXNTrnUrlengbmkmWyV9FGPdgEnYsvgYg=
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 570D3607C3
+        b=FQCIgX9O+L+4cy96JtwAefRUeCJCPaPzqJ2VspWzA7s8n2Dr6inhkgJUyZFTQUHTu
+         xonJwTR19Qg//tYhjYli6A6U1FGJtJ9WwxYnd2ZRhXYJzVHkiHuRFGq0CYwjMsvwCy
+         ZClPoafBo08NvZV/LmDRvgOEywQ4QuRXMPmbqa5k=
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 1AE1560312
 Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
 Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH 5.1] rtw88: fix subscript above array bounds compiler
- warning
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH 5.2 v3] rtw88: fix unassigned rssi_level in rtw_sta_info
 From:   Kalle Valo <kvalo@codeaurora.org>
-In-Reply-To: <20190506073917.10106-1-sgruszka@redhat.com>
-References: <20190506073917.10106-1-sgruszka@redhat.com>
-To:     Stanislaw Gruszka <sgruszka@redhat.com>
-Cc:     linux-wireless@vger.kernel.org,
-        Yan-Hsuan Chuang <yhchuang@realtek.com>
+In-Reply-To: <1557196098-1479-1-git-send-email-yhchuang@realtek.com>
+References: <1557196098-1479-1-git-send-email-yhchuang@realtek.com>
+To:     <yhchuang@realtek.com>
+Cc:     <linux-wireless@vger.kernel.org>
 User-Agent: pwcli/0.0.0-git (https://github.com/kvalo/pwcli/) Python/2.7.12
-Message-Id: <20190528112955.907246087F@smtp.codeaurora.org>
-Date:   Tue, 28 May 2019 11:29:55 +0000 (UTC)
+Message-Id: <20190528113024.076016077A@smtp.codeaurora.org>
+Date:   Tue, 28 May 2019 11:30:24 +0000 (UTC)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Stanislaw Gruszka <sgruszka@redhat.com> wrote:
+<yhchuang@realtek.com> wrote:
 
-> My compiler complains about:
+> From: Yan-Hsuan Chuang <yhchuang@realtek.com>
 > 
-> drivers/net/wireless/realtek/rtw88/phy.c: In function ‘rtw_phy_rf_power_2_rssi’:
-> drivers/net/wireless/realtek/rtw88/phy.c:430:26: warning: array subscript is above array bounds [-Warray-bounds]
->   linear = db_invert_table[i][j];
+> The new rssi_level should be stored in si, otherwise the rssi_level will
+> never be updated and get a wrong RA mask, which is calculated by the
+> rssi level
 > 
-> According to comment power_db should be in range 1 ~ 96 .
-> To fix add check for boundaries before access the array.
+> If a wrong RA mask is chosen, the firmware will pick some *bad rates*.
+> The most hurtful scene will be in *noisy environment*, such as office or
+> public area with many APs and users.
+> The latency would be high and the overall throughput would be only half
+> or less.
 > 
-> Signed-off-by: Stanislaw Gruszka <sgruszka@redhat.com>
-> Acked-by: Yan-Hsuan Chuang <yhchuang@realtek.com>
+> Tested in 2.4G in office area, with this patch the throughput increased
+> from such as "1x Mbps -> 4x Mbps".
+> 
+> Signed-off-by: Yan-Hsuan Chuang <yhchuang@realtek.com>
 
 Patch applied to wireless-drivers.git, thanks.
 
-8a03447dd311 rtw88: fix subscript above array bounds compiler warning
+a24bad74737f rtw88: fix unassigned rssi_level in rtw_sta_info
 
 -- 
-https://patchwork.kernel.org/patch/10930671/
+https://patchwork.kernel.org/patch/10932181/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
