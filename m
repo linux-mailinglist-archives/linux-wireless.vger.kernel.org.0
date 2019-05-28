@@ -2,122 +2,85 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E7C292D01F
-	for <lists+linux-wireless@lfdr.de>; Tue, 28 May 2019 22:12:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B56B02D03C
+	for <lists+linux-wireless@lfdr.de>; Tue, 28 May 2019 22:27:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726453AbfE1UMd (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 28 May 2019 16:12:33 -0400
-Received: from mail-vs1-f67.google.com ([209.85.217.67]:42434 "EHLO
-        mail-vs1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726619AbfE1UMc (ORCPT
+        id S1726678AbfE1U14 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 28 May 2019 16:27:56 -0400
+Received: from mail-ed1-f54.google.com ([209.85.208.54]:40677 "EHLO
+        mail-ed1-f54.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726481AbfE1U14 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 28 May 2019 16:12:32 -0400
-Received: by mail-vs1-f67.google.com with SMTP id z11so112898vsq.9
-        for <linux-wireless@vger.kernel.org>; Tue, 28 May 2019 13:12:32 -0700 (PDT)
+        Tue, 28 May 2019 16:27:56 -0400
+Received: by mail-ed1-f54.google.com with SMTP id s19so5533824edq.7
+        for <linux-wireless@vger.kernel.org>; Tue, 28 May 2019 13:27:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=gi/kDB0T8blaZ4N3Go9mHKUpJE7iS399aaXlXpsJB/M=;
-        b=JLxYOnmDJcrvrx0TjCujM/n0knfusm2CntjGzV4VPzAD+EFhlo8bMTG9t7aal/sQvQ
-         KPH6TmOjB26vlVux4qFF2O7y0N3OLKr3gAJH/DJGCfmBrsadoIeWKCNpm3fBOPswf3Ba
-         6by4zMVQHchTKPYZV4Sc0dM7vt5MIxMKhWGK8F+toGpf0xixHkbFMljAUDpVxZ/LNjen
-         fxCbCXU8wIgSXM+/Nytt81ZkmCUgDWHkB1l6JSa87KEV9ETuHHhjodSJ1RBbqtHpA8SJ
-         fE8OC9iG1QauEooEVyrRXOLAFESuw9fIG7TkKzagGOcjZoImxM5Z7R51VbDlxDGe0BcB
-         fH2w==
+        d=broadcom.com; s=google;
+        h=subject:to:references:cc:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=cPP04IloFnPa5c9+YmxzQndzfuK3JG2EmKKmkSkTymk=;
+        b=TVqEK++cs6d68l17eMOOwsj1y0iplkc2yY+Q7mFXoUU7dQ/Sh4kFcae3HHneyNiG2L
+         yKuJgon5q1ZpHpkC6UiS8QPwt1tY8TOqmeogQ+gSKU5q/93X3XRrawKeOSNYyf0WdSqp
+         MHsaNF//h1NKru5bGKA9WytTHTJur15+WyRto=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=gi/kDB0T8blaZ4N3Go9mHKUpJE7iS399aaXlXpsJB/M=;
-        b=oob/1r/mA4upLVJdM7OhSktMlHNZvVuc8psgcVwTHv1ydOng3DU5J67EVpv/BQWvcW
-         TuQ2PYqKvHYNHhZOvHgcoAEVNs2pni/MKQT9caqijVeVZsOFvZMf9CzmncA7SJ+UPOJW
-         UJX0HtyTWhMLeCHPe1NfKP9uJ1B4PdbXvo8ZmV73CRTbXm2+FCiOYFxCmeo4O/VCQxZd
-         pm5UJPSKOUSa1x9+2z+v1SX50Q8OPxSjNvNG4px9QejsWSz02TyXGGYT/vOVvOTcPD1R
-         kOJTJeVeQ/pKxFqW9i2a3q9rufcYEJPWAGO5o5vbHFtPcrAEgn2myt2H5NKgNAmzNSCE
-         KAbw==
-X-Gm-Message-State: APjAAAWLq81nC9POPjuAKzzBCJmHHhAtoxIuCoD5unT1j2g2xkDjWkb7
-        3uCwYQzKUVKReU9oFAAVIHFLM4SZeyMa1joL4TMp7Q==
-X-Google-Smtp-Source: APXvYqyhr2ApjSz9LQBsYYyEvA4OOcCsPCc4JI8zHRQcvXybJdPh+Anw9su0Trv01Aesw4jSdtAj6GclPuv7+IfWTV0=
-X-Received: by 2002:a67:ebc5:: with SMTP id y5mr75082391vso.34.1559074351753;
- Tue, 28 May 2019 13:12:31 -0700 (PDT)
+        h=x-gm-message-state:subject:to:references:cc:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=cPP04IloFnPa5c9+YmxzQndzfuK3JG2EmKKmkSkTymk=;
+        b=M0xxP8zLAgn3HjIyPKT5F5FOG24TqEU9O6hSIjy4gYMIPEQ9bEY/10cEEJ8IZ6Fm5u
+         9yNFAuAruaSX0/es4wjlAUrzAyfwFerSH6zpP1tinr7n+ILYIR7Y3YyS86E7GIFIChrN
+         8q7zYjKxzU2Uvi23iBmHJCz1bQGD1uW6gVPzo5NG01ujiuGM8PW9C91xvcL/iVNZDAjw
+         PC356E4qvxjxfpXorNKL+xAM97PIi/8Uev7lhxM0zSaVtRGJFqRHIOx7zCjB4VyoU/rl
+         DpuLad9uymcb+N38ENB6rxjPjs+3m+fqQ5wyfjes4dJ+tHTs9SQG14xO0Tzm/611zKu1
+         1FwA==
+X-Gm-Message-State: APjAAAVWnaA+bPu/d473KuRK63AB6B5ugvf974ZD0YrcUcO0F4n4LKLf
+        vB5rA8XIBFmats0Rf1KW6QM0xQL2bRrhjWSQf0KsvZytYKN5w6R6p8X/GBEJbhxrJssxSVQL9FX
+        i7K6vBIc8xm01PYHFhdhFFbaCFdOOkdfag8rGRFSr35cS6jNG+V305Pjqb2pWwlau+Yqzkl7mgU
+        uMVhw43fjcwQKdbRgQ
+X-Google-Smtp-Source: APXvYqwLWTUmCN4Acox7uQM8nCikEEBjt0DWvz9E6ha4e3e2tgwrqnv/IPDFrVz0nIIat1loRnGfcg==
+X-Received: by 2002:aa7:c0d3:: with SMTP id j19mr99838732edp.179.1559075274825;
+        Tue, 28 May 2019 13:27:54 -0700 (PDT)
+Received: from [192.168.178.129] (f140230.upc-f.chello.nl. [80.56.140.230])
+        by smtp.gmail.com with ESMTPSA id h4sm2415748ejx.81.2019.05.28.13.27.53
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Tue, 28 May 2019 13:27:54 -0700 (PDT)
+Subject: Re: brcmfmac & DEL_INTERFACE
+To:     Denis Kenzior <denkenz@gmail.com>
+References: <089d2d0a-a802-3c2b-4993-e17326028d1f@gmail.com>
+Cc:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+From:   Arend Van Spriel <arend.vanspriel@broadcom.com>
+Message-ID: <5679a6a1-e4a1-1f55-5b6d-21b178201078@broadcom.com>
+Date:   Tue, 28 May 2019 22:27:53 +0200
+User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:60.0) Gecko/20100101
+ Thunderbird/60.7.0
 MIME-Version: 1.0
-References: <20190524111053.12228-1-masneyb@onstation.org> <70782901-a9ac-5647-1abe-89c86a44a01b@intel.com>
- <20190524154958.GB16322@basecamp> <20190526122136.GA26456@basecamp>
- <e8c049ce-07e1-8b34-678d-41b3d6d41983@broadcom.com> <20190526195819.GA29665@basecamp>
- <20190527093711.GA853@basecamp> <ead7f268-b730-3541-31f7-4499556efec0@intel.com>
- <20190527125026.GA4272@basecamp>
-In-Reply-To: <20190527125026.GA4272@basecamp>
-From:   Ulf Hansson <ulf.hansson@linaro.org>
-Date:   Tue, 28 May 2019 22:11:55 +0200
-Message-ID: <CAPDyKFrm=NTKjsEPiwzUVbDDzjW5PwZteXbKtPUi9GTUB4kbMQ@mail.gmail.com>
-Subject: Re: Issue with Broadcom wireless in 5.2rc1 (was Re: [PATCH] mmc:
- sdhci: queue work after sdhci_defer_done())
-To:     Brian Masney <masneyb@onstation.org>,
-        Adrian Hunter <adrian.hunter@intel.com>
-Cc:     Arend Van Spriel <arend.vanspriel@broadcom.com>,
-        Franky Lin <franky.lin@broadcom.com>,
-        Hante Meuleman <hante.meuleman@broadcom.com>,
-        Chi-Hsien Lin <chi-hsien.lin@cypress.com>,
-        Wright Feng <wright.feng@cypress.com>,
-        Faiz Abbas <faiz_abbas@ti.com>,
-        "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        linux-arm-msm <linux-arm-msm@vger.kernel.org>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        brcm80211-dev-list.pdl@broadcom.com,
-        brcm80211-dev-list@cypress.com, netdev@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <089d2d0a-a802-3c2b-4993-e17326028d1f@gmail.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Mon, 27 May 2019 at 14:50, Brian Masney <masneyb@onstation.org> wrote:
->
-> On Mon, May 27, 2019 at 03:08:07PM +0300, Adrian Hunter wrote:
-> > On 27/05/19 12:37 PM, Brian Masney wrote:
-> > > On Sun, May 26, 2019 at 03:58:19PM -0400, Brian Masney wrote:
-> > >> I attached a patch that shows how I was able to determine what had
-> > >> already claimed the host.
-> > > On Mon, May 27, 2019 at 10:48:24AM +0300, Adrian Hunter wrote:
-> > >> This is because SDHCI is using the IRQ thread to process the SDIO card
-> > >> interrupt (sdio_run_irqs()).  When the card driver tries to use the card, it
-> > >> causes interrupts which deadlocks since c07a48c26519 ("mmc: sdhci: Remove
-> > >> finish_tasklet") has moved the tasklet processing to the IRQ thread.
-> > >>
-> > >> I would expect to be able to use the IRQ thread to complete requests, and it
-> > >> is desirable to do so because it is lower latency.
-> > >>
-> > >> Probably, SDHCI should use sdio_signal_irq() which queues a work item, and
-> > >> is what other drivers are doing.
-> > >>
-> > >> I will investigate some more and send a patch.
-> >
-> > Please try the patch below:
-> >
-> > From: Adrian Hunter <adrian.hunter@intel.com>
-> > Date: Mon, 27 May 2019 14:45:55 +0300
-> > Subject: [PATCH] mmc: sdhci: Fix SDIO IRQ thread deadlock
-> >
-> > Since commit c07a48c26519 ("mmc: sdhci: Remove finish_tasklet"), the IRQ
-> > thread might be used to complete requests, but the IRQ thread is also used
-> > to process SDIO card interrupts. This can cause a deadlock when the SDIO
-> > processing tries to access the card since that would also require the IRQ
-> > thread. Change SDHCI to use sdio_signal_irq() to schedule a work item
-> > instead. That also requires implementing the ->ack_sdio_irq() mmc host op.
-> >
-> > Signed-off-by: Adrian Hunter <adrian.hunter@intel.com>
-> > Fixes: c07a48c26519 ("mmc: sdhci: Remove finish_tasklet")
->
-> Yes, this fixes the issue for me. You can add my:
->
-> Reported-by: Brian Masney <masneyb@onstation.org>
-> Tested-by: Brian Masney <masneyb@onstation.org>
->
+On 5/28/2019 8:16 PM, Denis Kenzior wrote:
+> Hi Arend,
+> 
+> We noticed that brcmfmac doesn't support .del_virtual_intf for 
+> non-p2p/ap interface types.  Any chance this can be added?
+> 
+> We currently remove all wifi interfaces and re-create the needed ones 
+> with SOCKET_OWNER set, and it would be nice if we didn't need to treat 
+> brcmfmac specially.
 
-Applied for fixes, thanks!
+This came up recently. During probe the driver creates a network 
+interface that we refer to as primary interface. We consider this 
+non-virtual and ownership is with the driver. My guess is that this 
+concept comes from the WEXT era, where we did not have the ieee80211 phy 
+objects to interact with the driver from user-space. I suppose you don't 
+mind the creation of this interface and just want to allow removing it, 
+right?
 
-Kind regards
-Uffe
+Regards,
+Arend
