@@ -2,145 +2,115 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 8CF842C6EA
-	for <lists+linux-wireless@lfdr.de>; Tue, 28 May 2019 14:46:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CF3992C735
+	for <lists+linux-wireless@lfdr.de>; Tue, 28 May 2019 15:01:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727330AbfE1MqY (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 28 May 2019 08:46:24 -0400
-Received: from mail-vs1-f66.google.com ([209.85.217.66]:43203 "EHLO
-        mail-vs1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727195AbfE1MqY (ORCPT
+        id S1727414AbfE1NA3 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 28 May 2019 09:00:29 -0400
+Received: from mail-ot1-f68.google.com ([209.85.210.68]:40262 "EHLO
+        mail-ot1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726870AbfE1NA2 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 28 May 2019 08:46:24 -0400
-Received: by mail-vs1-f66.google.com with SMTP id d128so12670114vsc.10
-        for <linux-wireless@vger.kernel.org>; Tue, 28 May 2019 05:46:23 -0700 (PDT)
+        Tue, 28 May 2019 09:00:28 -0400
+Received: by mail-ot1-f68.google.com with SMTP id u11so17624135otq.7;
+        Tue, 28 May 2019 06:00:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=WPMhKOX/2gDQVdTUPpeGGgiNX2GpsAfTBvJ6RzuLwtQ=;
-        b=P9ikhGQsg6tKRQDqhMorBGKpTZgL3XDpoYbj+uXXtn1FsjfhbnAxrwR2EfkM9/DWTj
-         Aj6f0SdmeAjDLrwbRpbugp8dp4FvGe2N+5EvmUt0O5Umk+2rg8/pmDgAhhs2Y0BdsSq/
-         JpxeSqISDSBp4IySMpUtQOjAmJb29dE8uBw37hOJ/am0olsovqafHMQ5oxpKlPxRs6qY
-         7RsZn012zz9sZiuzn8ToIj8HrPLINrPsk1oZUDZgNuYUogTRni2ZABJTFjzJIe0OxEMe
-         lzpxZPVQ6ABUoqSeRS9wRBiwh/LnBR1hUQ/zDBMfPzo3JepeVSYYLz6wioYy8cHouf4t
-         1B+w==
+        d=gmail.com; s=20161025;
+        h=sender:subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=nyuMvCRbSUhq6xRTrLcgr4MhHdrWBhaLhwL3jkImdAk=;
+        b=kJr6nC6wrPy5BVs3UbPGlGOpYy1mOQInAXwlimyLqnlUIpPK00WuQlilHm9ZkotRJV
+         h1pimdnhh82LoIBRfEUIipy8n2O6qQ0YczA6pgyJoYpGCUygXY678yviVL4fhVkEUgsz
+         +8nfHCoTn/OZjMT7tRrLdZOZ6h61WdEqz8i77woSak5lD9Htc1qXqrRmxKs87NU0T2WV
+         wL0IhC4phxSDwOZ/F2mSVY1uRh7Yc5oaTTly+R19n72jm1/Ap7RexNayfL0Oyrut/+3O
+         e4LNIHxFNNQWMXrXIunt+Fz6Mc6Rle4hsvX8CsJoaw5qoAcy6fsz3uQIhJnaq72WOnwM
+         K9Fg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=WPMhKOX/2gDQVdTUPpeGGgiNX2GpsAfTBvJ6RzuLwtQ=;
-        b=NhyKXYvVBiN+ertn01jTliAkUXC26tITFFnrWXRrWjOqH7LlalWKFzep+PKzIGlF5t
-         QNyye+S1snfzQ5vMhsIDD1krXgda0dQnFnYGMy5E3CDYLU9lJKSnngJU1g7oVOsqFARm
-         +FqM6beOJMEOwv0FaE7YYPsi3Z8xfwYhShH9Q34DumXJ2HMVGZk53OAtEU2VxRij0XYr
-         W3rAnAU9nfuZJNvnS1jd9PLzUV5AH2/xGGdMXxZpUHkncOQu0BFr2jEWQRHgbZrCXQBy
-         lFCXrnD4wDoNxLXJm926vHRKyaDngNjDohF1NgbfpQ+g/RIxZ6W2La044qoJEYQsH3ij
-         OlMA==
-X-Gm-Message-State: APjAAAU6gxUrWQ+87J4eOC6ueorWAZQzQ/X5oaQ8zI5ky5YYbgMJkPZy
-        3CAAd+MScCzJDfO61tgyistay/lqt+FZUC4W3LTrXQ==
-X-Google-Smtp-Source: APXvYqwN3R4lENeMMTq+jxVugEfI89RxItVy4N2zPnBYc+/r6+aULWRh3QKl197OvGwTzHhtpH9GZ7f/zXhZ1GQiPfU=
-X-Received: by 2002:a67:ebc5:: with SMTP id y5mr71977373vso.34.1559047583180;
- Tue, 28 May 2019 05:46:23 -0700 (PDT)
-MIME-Version: 1.0
-References: <1556417825-13713-1-git-send-email-wgong@codeaurora.org>
- <CANEJEGug_YregN5vZq_R=ppUV5ptb4WUq_TB+JApzQ4DEO_AfQ@mail.gmail.com>
- <36950ff25c0747629e60ccb68819e93a@aptaiexm02f.ap.qualcomm.com> <87pnour4jg.fsf@codeaurora.org>
-In-Reply-To: <87pnour4jg.fsf@codeaurora.org>
-From:   Ulf Hansson <ulf.hansson@linaro.org>
-Date:   Tue, 28 May 2019 14:45:46 +0200
-Message-ID: <CAPDyKFrs1rO38yd-yQ50y2Oo1JE=R2hWM-5FWp=Ng_TM1df7ww@mail.gmail.com>
-Subject: Re: [PATCH] ath10k: remove mmc_hw_reset while hif power down
+        h=x-gm-message-state:sender:subject:to:cc:references:from:message-id
+         :date:user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=nyuMvCRbSUhq6xRTrLcgr4MhHdrWBhaLhwL3jkImdAk=;
+        b=p8+ow/gAXKTF/Wd+1yFRaYTFItFLifLRC5qz7uXHLj7/jYh7957QuZtv5bHWxUvveF
+         /pmgE8kmZwbPApDAlmTz7c7qSDFLs+VxKFwxPL5/7XaL7qdceqqACfObMeiofQb8VB6e
+         SH/k2VTKA6sp7GMvYzeEmv3qyRw8mMDjyqt03yWAFpOLH6rRlqeGhoRaG8GgTBC38OuS
+         xmeTZQ8kxDDcBAiMtmXMAOTjw4nBqWs0DUnPBX14Sg/v7ZDbNYj/mEqGpfOAMdVKRl/U
+         Vdl9c14N2/qGQUcE1H0VnSa2R1oXFVC6O9QParxv3YU6FwwWvW3dgmXA+ZbCEjHXJTvs
+         v7/Q==
+X-Gm-Message-State: APjAAAXOKQTyWCC1EmkL5+0kIn4QN4ZXgSid5w6WX4TSjaPwFpPYvaaF
+        /RE6887t6bc3q5P858kPN4x/ramx
+X-Google-Smtp-Source: APXvYqzCcbSRy8Xk4z+5gflTGtO2qnD2GXWsU7hV9w9ZfqG/x4WuJz1gn0nW5TIGH72uN8BHw9aXeA==
+X-Received: by 2002:a05:6830:1692:: with SMTP id k18mr53205otr.73.1559048426883;
+        Tue, 28 May 2019 06:00:26 -0700 (PDT)
+Received: from [192.168.1.112] (cpe-24-31-245-230.kc.res.rr.com. [24.31.245.230])
+        by smtp.gmail.com with ESMTPSA id f7sm5385458otb.66.2019.05.28.06.00.25
+        (version=TLS1_3 cipher=AEAD-AES128-GCM-SHA256 bits=128/128);
+        Tue, 28 May 2019 06:00:26 -0700 (PDT)
+Subject: Re: [PATCH] rtlwifi: Fix null-pointer dereferences in error handling
+ code of rtl_pci_probe()
 To:     Kalle Valo <kvalo@codeaurora.org>,
-        Wen Gong <wgong@qti.qualcomm.com>,
-        Grant Grundler <grundler@google.com>
-Cc:     Wen Gong <wgong@codeaurora.org>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "ath10k@lists.infradead.org" <ath10k@lists.infradead.org>
-Content-Type: text/plain; charset="UTF-8"
+        Jia-Ju Bai <baijiaju1990@gmail.com>
+Cc:     pkshih@realtek.com, davem@davemloft.net,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+References: <20190514123439.10524-1-baijiaju1990@gmail.com>
+ <20190528115555.301E760F3C@smtp.codeaurora.org>
+From:   Larry Finger <Larry.Finger@lwfinger.net>
+Message-ID: <2658b691-b992-b773-c6cf-85801adc479f@lwfinger.net>
+Date:   Tue, 28 May 2019 08:00:24 -0500
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.6.1
+MIME-Version: 1.0
+In-Reply-To: <20190528115555.301E760F3C@smtp.codeaurora.org>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Tue, 7 May 2019 at 11:35, Kalle Valo <kvalo@codeaurora.org> wrote:
->
-> + Ulf to give comments from SDIO point of view
+On 5/28/19 6:55 AM, Kalle Valo wrote:
+> Jia-Ju Bai <baijiaju1990@gmail.com> wrote:
+> 
+>> *BUG 1:
+>> In rtl_pci_probe(), when rtlpriv->cfg->ops->init_sw_vars() fails,
+>> rtl_deinit_core() in the error handling code is executed.
+>> rtl_deinit_core() calls rtl_free_entries_from_scan_list(), which uses
+>> rtlpriv->scan_list.list in list_for_each_entry_safe(), but it has been
+>> initialized. Thus a null-pointer dereference occurs.
+>> The reason is that rtlpriv->scan_list.list is initialized by
+>> INIT_LIST_HEAD() in rtl_init_core(), which has not been called.
+>>
+>> To fix this bug, rtl_deinit_core() should not be called when
+>> rtlpriv->cfg->ops->init_sw_vars() fails.
+>>
+>> *BUG 2:
+>> In rtl_pci_probe(), rtl_init_core() can fail when rtl_regd_init() in
+>> this function fails, and rtlpriv->scan_list.list has not been
+>> initialized by INIT_LIST_HEAD(). Then, rtl_deinit_core() in the error
+>> handling code of rtl_pci_probe() is executed. Finally, a null-pointer
+>> dereference occurs due to the same reason of the above bug.
+>>
+>> To fix this bug, the initialization of lists in rtl_init_core() are
+>> performed before the call to rtl_regd_init().
+>>
+>> These bugs are found by a runtime fuzzing tool named FIZZER written by
+>> us.
+>>
+>> Signed-off-by: Jia-Ju Bai <baijiaju1990@gmail.com>
+> 
+> Ping & Larry, is this ok to take?
+> 
 
-Apologize for the delay, it's been a busy period.
+Kalle,
 
->
-> Wen Gong <wgong@qti.qualcomm.com> writes:
->
-> >> -----Original Message-----
-> >> From: ath10k <ath10k-bounces@lists.infradead.org> On Behalf Of Grant
-> >> Grundler
-> >> Sent: Saturday, May 4, 2019 2:01 AM
-> >> To: Wen Gong <wgong@codeaurora.org>
-> >> Cc: linux-wireless@vger.kernel.org; ath10k@lists.infradead.org
-> >> Subject: [EXT] Re: [PATCH] ath10k: remove mmc_hw_reset while hif power
-> >> down
-> >>
-> >> [repeating comments I made in the gerrit review for Chrome OS :
-> >> https://chromium-
-> >> review.googlesource.com/c/chromiumos/third_party/kernel/+/1585667
-> >> ]
-> >>
-> >> On Sat, Apr 27, 2019 at 7:17 PM Wen Gong <wgong@codeaurora.org> wrote:
-> >> >
-> >> > For sdio 3.0 chip, the clock will drop from 200M Hz to 50M Hz after load
-> >> > ath10k driver, it is because mmc_hw_reset will reset the sdio's power,
-> >> > then mmc will consider it as sdio 2.0 and drop the clock.
-> >>
-> >> Wen,
-> >> 5468e784c0600551ca03263f5255a375c05f88e7 commit message gives
-> >> reasons
-> >> for adding the mmc_hw_reset() call. The commit message for removing
-> >> gives different reason for removal. Both are good but second one is
-> >> incomplete.
-> >>
-> >> The commit message for removal should ALSO explain why adding this
-> >> call wasn't necessary in the first place OR move the call to a
-> >> different code path.
-> >>
-> >> > Remove mmc_hw_reset will avoid the drop of clock.
-> >>
-> >> This commit message makes it clear the original patch introduced a new
-> >> problem. But the original patch fixed a different problem and that
-> >> this proposed change seems likely to re-introduce and the commit
-> >> message should explain why that isn't true (or how the original was
-> >> fixed differently)
-> >
-> > The mmc_hw_reset's effect depends on the hardware layout/configure
-> > software's behavior, recently it will effect the clock of sdio for the
-> > platform I used. And it will still work well without mmc_hw_reset for
-> > the platform I Used currently. If sdio cannot work on other platform,
-> > I think it can add flag in ath10k_hw_params_list for the platform to
-> > call the mmc_hw_reset depends on the flag.
->
-> I don't see how you can use ath10k_hw_params_list to separate SDIO
-> controller functionality, I assume that's the real reason for difference
-> of functionality? Maybe this is a bug on the SDIO controller?
+Not at the moment. In reviewing the code, I was unable to see how this situation 
+could develop, and his backtrace did not mention any rtlwifi code. For that 
+reason, I asked him to add printk stat4ements to show the last part of rtl_pci 
+that executed correctly. In 
+https://marc.info/?l=linux-wireless&m=155788322631134&w=2, he promised to do 
+that, but I have not seen the result.
 
-Ideally mmc_hw_reset() should not make the SDIO card to become
-re-initialized differently than it was originally.
+Larry
 
-However, as that is the case here, it sounds like that there is a bug
-somewhere. Perhaps the boot-loader have done some pre-initialization,
-which isn't covered in the second case, or maybe a bug in the mmc host
-driver.
-
->
-> Ulf, what do you think? Any suggestions? Full discussion here:
->
-> https://patchwork.kernel.org/patch/10920563/
->
-> --
-> Kalle Valo
-
-In the end, it seems like this needs a more detailed debug study, to
-figure out what exactly happens during the re-initialization of the
-SDIO card, rather than just papering over the problem by removing the
-call to mmc_hw_reset() in the SDIO func driver. Hope this helps.
-
-Kind regards
-Uffe
