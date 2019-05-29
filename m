@@ -2,204 +2,121 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 47AAF2E5ED
-	for <lists+linux-wireless@lfdr.de>; Wed, 29 May 2019 22:16:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E86CE2E639
+	for <lists+linux-wireless@lfdr.de>; Wed, 29 May 2019 22:35:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726139AbfE2UQK (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 29 May 2019 16:16:10 -0400
-Received: from s3.sipsolutions.net ([144.76.43.62]:32854 "EHLO
-        sipsolutions.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726024AbfE2UQJ (ORCPT
+        id S1726326AbfE2Uf2 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 29 May 2019 16:35:28 -0400
+Received: from mail-ot1-f66.google.com ([209.85.210.66]:44648 "EHLO
+        mail-ot1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726240AbfE2Uf2 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 29 May 2019 16:16:09 -0400
-Received: by sipsolutions.net with esmtpsa (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <johannes@sipsolutions.net>)
-        id 1hW4zW-0005uo-H0; Wed, 29 May 2019 22:16:06 +0200
-Message-ID: <58bc88b7eda912133ad0fc4718ac917adc8fa63b.camel@sipsolutions.net>
+        Wed, 29 May 2019 16:35:28 -0400
+Received: by mail-ot1-f66.google.com with SMTP id g18so3400388otj.11;
+        Wed, 29 May 2019 13:35:27 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=JZf/KUpVGbO+aa71myahG/LJYO4Ln8SWPddjSV6CGEY=;
+        b=IkL1IQvBWqwF8FOA+9slLTyMLLisFAftKB2uSB5DQM/RTA5jjJBkS8uBpGkz9Oa7no
+         1WTxwPpJZz5gz5fJUdpUyNFrgULoYOJE6pQcSUtWDvf+DA9K2FPSr42EDnmpqycVdWGw
+         JWsW1qV4FgcyoB+dcarPRqnoEGYoWNA7UTVpER66vaGBfoRAYgPm4X9hOq0WVCdZPj0x
+         Wl84urzicC4p/K/LayIFbbjt7fJOQ4ybeXwK/V6mRICzWWTcKTcyRSywpyjpMN40/jzS
+         YulM+ZWsWZGkMt12ep/EWeuQoPZYuxUwJ0jb1EJfEq/80og9X2KOzf0jWUlxwTZAV5/0
+         Qpzg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=JZf/KUpVGbO+aa71myahG/LJYO4Ln8SWPddjSV6CGEY=;
+        b=tCPC8McoFyecDPZP6HBZWlpcFO6+ORflCWK5HjtQYDKVCqRqwZm/ztaytwQwLpNGAg
+         trvbe0lU176Icv30cRt8iwBwn0Dwi3wfMfz/FIhvBnv3BuYOrGhlzHyMCZQ6ou373lb/
+         drrsxlKAe0ql7AZup2FA1SuaVleP+25n9IiP13H9GxK7Nuxzp1PfvLYxVWDmHPFocY0b
+         CEmPFm9aURjbrPbCnPEkuzQ++loBisoEMZsNHvvTfR4YcbvxBSdahbz4Da1TW50tIxhz
+         rVTbZ8ubgGCaydx4EstdNVTjEPAYn7o9l9fLll5oex9apNxl5TuC2LGp0RCKuadRTSG0
+         8M2A==
+X-Gm-Message-State: APjAAAV9SdTyy7BGz0Ox9CZ1n6n5qz5KvswlmKpJn6AUwUqQSNbtI8Jf
+        9ZMxG8Uo9YgZYUMiyXf1QNs=
+X-Google-Smtp-Source: APXvYqyZZ2DA3L96zPN0AYVjNJ5gQHvl0/JpFog0zHMJOkooeNjgiqw1YwiBXFN4EcG+1SUSg3hjIQ==
+X-Received: by 2002:a9d:3de1:: with SMTP id l88mr11469320otc.222.1559162127529;
+        Wed, 29 May 2019 13:35:27 -0700 (PDT)
+Received: from [192.168.1.249] (cpe-70-114-247-242.austin.res.rr.com. [70.114.247.242])
+        by smtp.googlemail.com with ESMTPSA id r7sm202279oia.22.2019.05.29.13.35.26
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Wed, 29 May 2019 13:35:26 -0700 (PDT)
 Subject: Re: cellular modem APIs - take 2
-From:   Johannes Berg <johannes@sipsolutions.net>
-To:     Dan Williams <dcbw@redhat.com>, netdev@vger.kernel.org,
+To:     Johannes Berg <johannes@sipsolutions.net>,
+        Dan Williams <dcbw@redhat.com>, netdev@vger.kernel.org,
         linux-wireless@vger.kernel.org
 Cc:     Subash Abhinov Kasiviswanathan <subashab@codeaurora.org>,
         Sean Tranchetti <stranche@codeaurora.org>,
         Daniele Palmas <dnlplm@gmail.com>,
         Aleksander Morgado <aleksander@aleksander.es>,
-        =?ISO-8859-1?Q?Bj=F8rn?= Mork <bjorn@mork.no>
-Date:   Wed, 29 May 2019 22:16:05 +0200
-In-Reply-To: <cb2ef612be9e347a7cbceb26831f8d5ebea4eacf.camel@redhat.com>
+        =?UTF-8?Q?Bj=c3=b8rn_Mork?= <bjorn@mork.no>
 References: <b59be15f1d0caa4eaa4476bbd8457afc44d57089.camel@sipsolutions.net>
-         <cb2ef612be9e347a7cbceb26831f8d5ebea4eacf.camel@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Mailer: Evolution 3.28.5 (3.28.5-2.fc28) 
-Mime-Version: 1.0
+ <cb2ef612be9e347a7cbceb26831f8d5ebea4eacf.camel@redhat.com>
+ <58bc88b7eda912133ad0fc4718ac917adc8fa63b.camel@sipsolutions.net>
+From:   Denis Kenzior <denkenz@gmail.com>
+Message-ID: <350b9aad-7b08-2f77-6000-095538f32abc@gmail.com>
+Date:   Wed, 29 May 2019 15:35:26 -0500
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
+ Thunderbird/52.3.0
+MIME-Version: 1.0
+In-Reply-To: <58bc88b7eda912133ad0fc4718ac917adc8fa63b.camel@sipsolutions.net>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
 Content-Transfer-Encoding: 7bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi Dan,
+Hi Johannes,
 
-> >    Quite possibly there might be some additional (vendor-dependent?)
-> >    configuration for when such netdevs are created, but we need to
-> >    figure out if that really needs to be at creation time, or just
-> >    ethtool later or something like that. I guess it depends on how
-> >    generic it needs to be.
 > 
-> I'm pretty sure it would have to be async via netlink or ethtool or
-> whatever later, because the control plane (ModemManager,
-> libmbim/libqmi, oFono, etc) is what sets up the PDP/EPS context and
-> thus the data channel. A netdev (or a queue on that netdev) would be a
-> representation of that data channel, but that's not something the
-> kernel knows beforehand.
+> It just seemed that people do want to have a netdev (if only to see that
+> their driver loaded and use ethtool to dump the firmware version), and
+> then you can reassign it to some actual context later?
 
-Right.
+I can see that this is useful for developers, but really 
+counterproductive in production.  You have a bunch of services (systemd, 
+NM, ConnMan, dhcpcd, etc, etc, etc) all observing the newly created 
+devices and trying to 'own' them.  Which makes no freaking sense to do 
+until those devices are really usable.  Just because it is a netdev, 
+doesn't mean it is ethernet or behaves like it.
 
-It just seemed that people do want to have a netdev (if only to see that
-their driver loaded and use ethtool to dump the firmware version), and
-then you can reassign it to some actual context later?
+That also leads to expectations from users that want stuff like 
+udev-consistent-naming to work, even though udev has no idea wtf a given 
+device is, when it is ready or not ready, etc.  And the flip side, there 
+may be systems that do not use systemd/udevd, so the daemons responsible 
+for management of such devices cannot sanely assume anything.  It is 
+just pure chaos.
 
-It doesn't really matter much. If you have a control channel and higher-
-level abstraction (wwan device) then having the netdev is probably more
-of a nuisance and mostly irrelevant, just might be useful for legacy
-reasons.
+And then there's hotplug/unplug to worry about ;)
 
-> > 3) Separately, we need to have an ability to create "generalized control
-> >    channels". I'm thinking there would be a general command "create
-> >    control channel" with a given type (e.g. ATCMD, RPC, MBIM, GNSS) plus
-> >    a list of vendor-specific channels (e.g. for tracing).
-> > 
-> >    I'm unsure where this channel should really go - somehow it seems to
-> >    me that for many (most?) of these registering them as a serial line
-> >    would be most appropriate, but some, especially vendor-defined
-> >    channels like tracing, would probably better use a transport that's
-> >    higher bandwidth than, e.g. netdevs.
+So I would like to reiterate Marcel's point: creating unmanaged devices 
+should not be the default behavior.
+
 > 
-> There's only a couple protocols that are run over serial transport,
-> namely AT, DM/DIAG, and Sierra's CnS.
+> It doesn't really matter much. If you have a control channel and higher-
+> level abstraction (wwan device) then having the netdev is probably more
+> of a nuisance and mostly irrelevant, just might be useful for legacy
+> reasons.
 
-Right.
+Which we should be trying to eradicate, not encourage ;)
 
-> Most of the rest like QMI and MBIM are packet-based protocols that can
-> use different transports. QMI for example can use CDC-WDM for USB
-> devices but on SoCs will use Qualcomm's SMD I believe.
+>> Should you really need to account for these specially, or would some
+>> kind of sysfs linkage like SET_NETDEV_DEV() be more appropriate?
+>>
+>> Really all you want to do is (a) identify which WWAN device a given
+>> control/data channel is for and (b) perhaps tag different control/data
+>> channels with attributes like primary/secondary/gps/sim/etc often
+>> through USB attributes or hardcoded data on SoCs.
 
-Right, though transport and protocol are sort of different issues.
+Userspace can also choose to do its own multiplexing, so you can't even 
+really assume the above is what you 'want'.
 
-> Should you really need to account for these specially, or would some
-> kind of sysfs linkage like SET_NETDEV_DEV() be more appropriate?
-> 
-> Really all you want to do is (a) identify which WWAN device a given
-> control/data channel is for and (b) perhaps tag different control/data
-> channels with attributes like primary/secondary/gps/sim/etc often
-> through USB attributes or hardcoded data on SoCs.
-
-Ah, that brings up something I completely forgot.
-
-I was thinking only of the case that the control channel(s) to the
-device is/are all managed by the *kernel* driver, i.e. you'd have some
-device-specific driver that has an interface into userspace to talk to
-the modem's control channel (and that we could abstract).
-
-However, yes, that's not true - many will be like USB where the control
-channel is driven by a generic kernel driver (e.g. maybe usb-serial) or
-no kernel driver at all, and then this linkage is probably the right
-approach. Need to think about it.
-
-OTOH, there will be device-specific ways to add more control channels
-(say for debug/trace purposes etc.) and those would not have a "natural"
-interface to userspace like control channels with generic/no drivers.
-
-> >    One way I thought of doing this was to create an abstraction in the
-> >    wwan framework that lets the driver use SKBs anyway (i.e. TX and RX
-> >    on these channels using SKBs) and then translate them to some channel
-> >    in the framework - that way, we can even select at runtime if we want
-> >    a netdev (not really plugged into the network stack, ARPHDR_VOID?) or
-> >    some other kind of transport. Building that would allow us to add
-> >    transport types in the future too.
-> 
-> I'm not quite sure what you mean here, can you explain?
-
-I was just thinking of the mechanics of doing this in the driver (while,
-like I said above, completely forgetting about the non-monolithic driver
-case). It's not really that important.
-
-> >    I guess such a channel should also be created by default, if it's
-> >    not already created by the driver in some out-of-band way anyway (and
-> >    most likely it shouldn't be, but I guess drivers might have some
-> >    entirely different communication channels for AT CMDs?)
-> 
-> For existing devices we're not talking about monolithic drivers here
-> (excepting 'hso') which I guess is part of the issue. 
-
-Right, and doesn't help I forgot about this ;-)
-
-> A given device
-> might be driven by 2 or 3 different kernel drivers (usb-serial derived,
-> netdev, cdc-wdm) and they all expose different channels and none of
-> them coordinate. You have to do sysfs matching up the family tree to
-> find out they are associated with each other. If the kernel can take
-> over some of that responsibility great.
-
-Right. I guess it's hard for the kernel to take responsibility unless we
-teach all the components (usb-serial, ...) that certain devices are
-modems and should get some (additional?) registration?
-
-> But the diversity is large. Any given TTY representing an AT channel
-> could be from USB drivers (usb-serial, cdc-wdm, vendor-specific driver
-> like sierra/hso, option) or PCI (nozomi) or platform stuff (Qualcomm
-> SoC ones). You can also do AT-over-QMI if you want.
-
-Right. The linkage here is the interesting part - for platform stuff
-that might be easier (devicetree?) but not sure how we could teach that
-to e.g. usb-serial, and nozomi is interesting because ... where is the
-data plane even?
-
-> I think it's worth discussing how this could be better unified but
-> maybe small steps to get there are more feasible.
-
-Fair point.
-
-> > 4) There was a question about something like pure IP channels that
-> >    belong to another PDN and apparently now separate netdevs might be
-> >    used, but it seems to me that could just be a queue reserved on the
-> >    regular netdevs and then when you say ("enable video streaming on
-> >    wwan1 interface") that can do some magic to classify the video
-> >    packets (DSCP?) to another hardware queue for better QoS.
-> 
-> Most stuff is pure IP these days (both for QMI/rmnet and MBIM at least)
-> and having ethernet encapsulation is kinda pointless. 
-
-Yeah, true, not really sure why I was distinguishing this in these
-terms. I think the use case really was just giving some packets higher
-priority, putting them into a different *hardware* queue so the device
-can see them even if the "normal" hardware queue is completely
-backlogged.
-
-Kinda a typical multi-queue TX use case.
-
-> But anyway you'd
-> need some mechanism to map that particular queue to a given channel/PDN
-> created by the control channel.
-
-Well, I was thinking that mechanism was creating the netdev, but then
-*within* that some QoS seems to be desired.
-
-> But classification is mostly done in the hardware/network because
-> setting different QoS for a given PDP/EPS context is basically saying
-> how much airtime the queue gets. No amount of kernel involvement is
-> going to change what the network lets you transmit. 
-
-Right.
-
-> And I honestly
-> don't know how the firmware responds when its internal queues for a
-> given context are full that would tell a kernel queue to stop sending
-> more.
-
-Well, at the very least it'll stop pulling packets from DMA/whatever, so
-the kernel has to back off, right?
-
-johannes
-
+Regards,
+-Denis
