@@ -2,66 +2,55 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 641482DCB2
-	for <lists+linux-wireless@lfdr.de>; Wed, 29 May 2019 14:25:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D1ED82DD81
+	for <lists+linux-wireless@lfdr.de>; Wed, 29 May 2019 14:52:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727040AbfE2MZz (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 29 May 2019 08:25:55 -0400
-Received: from paleale.coelho.fi ([176.9.41.70]:54332 "EHLO
-        farmhouse.coelho.fi" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1727034AbfE2MZy (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 29 May 2019 08:25:54 -0400
-Received: from 91-156-6-193.elisa-laajakaista.fi ([91.156.6.193] helo=redipa.ger.corp.intel.com)
-        by farmhouse.coelho.fi with esmtpsa (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <luca@coelho.fi>)
-        id 1hVxeQ-0007wy-5T; Wed, 29 May 2019 15:25:50 +0300
-From:   Luca Coelho <luca@coelho.fi>
-To:     johannes@sipsolutions.net
-Cc:     linux-wireless@vger.kernel.org,
-        Johannes Berg <johannes.berg@intel.com>,
-        Luca Coelho <luciano.coelho@intel.com>
-Subject: [PATCH 10/10] mac80211: extend __rate_control_send_low warning
-Date:   Wed, 29 May 2019 15:25:37 +0300
-Message-Id: <20190529122537.8564-11-luca@coelho.fi>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20190529122537.8564-1-luca@coelho.fi>
-References: <20190529122537.8564-1-luca@coelho.fi>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+        id S1727038AbfE2Mwk (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 29 May 2019 08:52:40 -0400
+Received: from mx2.suse.de ([195.135.220.15]:33788 "EHLO mx1.suse.de"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1727014AbfE2Mwj (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Wed, 29 May 2019 08:52:39 -0400
+X-Virus-Scanned: by amavisd-new at test-mx.suse.de
+Received: from relay2.suse.de (unknown [195.135.220.254])
+        by mx1.suse.de (Postfix) with ESMTP id E19BBB008;
+        Wed, 29 May 2019 12:52:37 +0000 (UTC)
+From:   Takashi Iwai <tiwai@suse.de>
+To:     linux-wireless@vger.kernel.org
+Cc:     Amitkumar Karwar <amitkarwar@gmail.com>,
+        Nishant Sarmukadam <nishants@marvell.com>,
+        Ganapathi Bhat <gbhat@marvell.com>,
+        Xinming Hu <huxinming820@gmail.com>,
+        Kalle Valo <kvalo@codeaurora.org>, huangwen@venustech.com.cn,
+        Solar Designer <solar@openwall.com>,
+        Marcus Meissner <meissner@suse.de>
+Subject: [PATCH 0/2] Buffer overflow / read checks in mwifiex
+Date:   Wed, 29 May 2019 14:52:18 +0200
+Message-Id: <20190529125220.17066-1-tiwai@suse.de>
+X-Mailer: git-send-email 2.16.4
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Johannes Berg <johannes.berg@intel.com>
+Hi,
 
-This appears to happen occasionally, and if it does we
-really want even more information than we have now.
+this is fixes for a few spots that perform memcpy() without checking
+the source and the destination size in mwifiex driver, which may lead
+to buffer overflows or read over boundary.
 
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Luca Coelho <luciano.coelho@intel.com>
----
- net/mac80211/rate.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/net/mac80211/rate.c b/net/mac80211/rate.c
-index 5d94576dd683..d298bb222491 100644
---- a/net/mac80211/rate.c
-+++ b/net/mac80211/rate.c
-@@ -358,8 +358,10 @@ static void __rate_control_send_low(struct ieee80211_hw *hw,
- 		break;
- 	}
- 	WARN_ONCE(i == sband->n_bitrates,
--		  "no supported rates (0x%x) in rate_mask 0x%x with flags 0x%x\n",
-+		  "no supported rates for sta %pM (0x%x, band %d) in rate_mask 0x%x with flags 0x%x\n",
-+		  sta ? sta->addr : NULL,
- 		  sta ? sta->supp_rates[sband->band] : -1,
-+		  sband->band,
- 		  rate_mask, rate_flags);
- 
- 	info->control.rates[0].count =
+Takashi
+
+===
+
+Takashi Iwai (2):
+  mwifiex: Fix possible buffer overflows at parsing bss descriptor
+  mwifiex: Abort at too short BSS descriptor element
+
+ drivers/net/wireless/marvell/mwifiex/scan.c | 19 +++++++++++++++++++
+ 1 file changed, 19 insertions(+)
+
 -- 
-2.20.1
+2.16.4
 
