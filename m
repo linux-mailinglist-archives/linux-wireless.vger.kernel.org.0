@@ -2,118 +2,160 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2DB812E45C
-	for <lists+linux-wireless@lfdr.de>; Wed, 29 May 2019 20:22:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3BF222E4F6
+	for <lists+linux-wireless@lfdr.de>; Wed, 29 May 2019 21:05:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727003AbfE2SW0 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 29 May 2019 14:22:26 -0400
-Received: from mail-ot1-f66.google.com ([209.85.210.66]:44842 "EHLO
-        mail-ot1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726947AbfE2SW0 (ORCPT
+        id S1726139AbfE2TFQ convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 29 May 2019 15:05:16 -0400
+Received: from coyote.holtmann.net ([212.227.132.17]:60331 "EHLO
+        mail.holtmann.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725990AbfE2TFQ (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 29 May 2019 14:22:26 -0400
-Received: by mail-ot1-f66.google.com with SMTP id g18so2993114otj.11;
-        Wed, 29 May 2019 11:22:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=sender:subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=amJi0jbjD9M6vUHKgUTYZgac6U4sNICfW2Wh2jnSQXI=;
-        b=R8c2oA5Fl36xHbwRZd3mPECu98msS2gC5wxHUo1gjNyD42EJWz14QKvHjGofU1qbos
-         snZb+IxY8/sp9K3ckuwl7SAOOde9Lc9Bd/0Ju1zOgMki4HJZ/W7+GEOw+/6nFV9Shc7N
-         tdzmCJifBTO8UHIPOnv9S3TIo05p8AA4gOML2aZD49Oj06qsQT0cYgHTGcl/oJuEeqpA
-         TzHC+Z32hjbRXqaMM3ZqP3gw33B5+wc/keNRFb7SJgLZTeEP3UvQinmq9pyfzCiYHaUs
-         uNqV8278AmSpyNisgMzDNToAR0XdeDErauSyPCdVZSG6nW206TH7+VrwdH8uz5zxkpfh
-         9BzQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:sender:subject:to:cc:references:from:message-id
-         :date:user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=amJi0jbjD9M6vUHKgUTYZgac6U4sNICfW2Wh2jnSQXI=;
-        b=ZlDPOTSo0GriI009l4yAIJSsOSnFCQpp5pSg9hsUAB9xfOZxtN/S1padtRb6D/7WWG
-         CNMXemGwShM8kYMXEi+g70cktzxyHdsUP/9mYtiShUhQUJWW1r3htq0H6HX8oGQTZggw
-         RrZycFDKrZZV1nzOwofpnrvx1aa0B1vREoDqsP5JQRYzlmbYGtWJLHhp3718GnRTWitX
-         ubeQ2PMHrhJOnLs3D1YLN7c1fLnx/dMJ+pBU0ca6mS3AxoD/Hp0YXAzTOZ8b8h3z5c1d
-         O52H8UH7dZHnKdG587SwFmQkkdFuCiD/R9wAUZRg4eydXg6egDinv6/UVAtkJm1DCbJQ
-         7bzg==
-X-Gm-Message-State: APjAAAX4tZMj+tAa+sB+n09WZ240zkqjTjnA4zt6vhVeVVlJ3e7QqGOO
-        RXqkIuhF7O1BL8r6pZZdbKA=
-X-Google-Smtp-Source: APXvYqy6PhVo7GdXSqPk35HHEzvt77Cl8Mfv8o7XWp1rLaQgOadm5LbsmmBsvUWFA4R59/KnVTZeHQ==
-X-Received: by 2002:a9d:7a4d:: with SMTP id z13mr172718otm.246.1559154145557;
-        Wed, 29 May 2019 11:22:25 -0700 (PDT)
-Received: from [192.168.1.112] (cpe-24-31-245-230.kc.res.rr.com. [24.31.245.230])
-        by smtp.gmail.com with ESMTPSA id t139sm122687oie.21.2019.05.29.11.22.24
-        (version=TLS1_3 cipher=AEAD-AES128-GCM-SHA256 bits=128/128);
-        Wed, 29 May 2019 11:22:24 -0700 (PDT)
-Subject: Re: [RFC PATCH v3] rtl8xxxu: Improve TX performance of RTL8723BU on
- rtl8xxxu driver
-To:     Chris Chiu <chiu@endlessm.com>, jes.sorensen@gmail.com,
-        kvalo@codeaurora.org, davem@davemloft.net
-Cc:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux@endlessm.com
-References: <20190529050335.72061-1-chiu@endlessm.com>
-From:   Larry Finger <Larry.Finger@lwfinger.net>
-Message-ID: <5f5e262d-aadb-cca0-8576-879735366a73@lwfinger.net>
-Date:   Wed, 29 May 2019 13:22:23 -0500
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.6.1
-MIME-Version: 1.0
-In-Reply-To: <20190529050335.72061-1-chiu@endlessm.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+        Wed, 29 May 2019 15:05:16 -0400
+Received: from [172.20.12.219] (unknown [94.75.125.194])
+        by mail.holtmann.org (Postfix) with ESMTPSA id 824B2CEE14;
+        Wed, 29 May 2019 21:13:35 +0200 (CEST)
+Content-Type: text/plain;
+        charset=utf-8
+Mime-Version: 1.0 (Mac OS X Mail 12.4 \(3445.104.11\))
+Subject: Re: cellular modem APIs - take 2
+From:   Marcel Holtmann <marcel@holtmann.org>
+In-Reply-To: <b59be15f1d0caa4eaa4476bbd8457afc44d57089.camel@sipsolutions.net>
+Date:   Wed, 29 May 2019 21:05:12 +0200
+Cc:     netdev@vger.kernel.org, linux-wireless@vger.kernel.org,
+        Subash Abhinov Kasiviswanathan <subashab@codeaurora.org>,
+        Dan Williams <dcbw@redhat.com>,
+        Sean Tranchetti <stranche@codeaurora.org>,
+        Daniele Palmas <dnlplm@gmail.com>,
+        Aleksander Morgado <aleksander@aleksander.es>,
+        =?utf-8?Q?Bj=C3=B8rn_Mork?= <bjorn@mork.no>
+Content-Transfer-Encoding: 8BIT
+Message-Id: <662BBC5C-D0C7-4B2C-A001-D6F490D0F36F@holtmann.org>
+References: <b59be15f1d0caa4eaa4476bbd8457afc44d57089.camel@sipsolutions.net>
+To:     Johannes Berg <johannes@sipsolutions.net>
+X-Mailer: Apple Mail (2.3445.104.11)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 5/29/19 12:03 AM, Chris Chiu wrote:
-> We have 3 laptops which connect the wifi by the same RTL8723BU.
-> The PCI VID/PID of the wifi chip is 10EC:B720 which is supported.
-> They have the same problem with the in-kernel rtl8xxxu driver, the
-> iperf (as a client to an ethernet-connected server) gets ~1Mbps.
-> Nevertheless, the signal strength is reported as around -40dBm,
-> which is quite good. From the wireshark capture, the tx rate for each
-> data and qos data packet is only 1Mbps. Compare to the driver from
-> https://github.com/lwfinger/rtl8723bu, the same iperf test gets ~12
-> Mbps or more. The signal strength is reported similarly around
-> -40dBm. That's why we want to improve.
+Hi Johannes,
 
-The driver at GitHub was written by Realtek. I only published it in a prominent 
-location, and fix it for kernel API changes. I would say "the Realtek driver at 
-https://...", and every mention of "Larry's driver" should say "Realtek's 
-driver". That attribution is more correct.
+> Sorry for the long delay in getting back to this. I'm meaning to write
+> some code soon also for this, to illustrate better, but I figured I'd
+> still get some thoughts out before I do that.
 > 
-> After reading the source code of the rtl8xxxu driver and Larry's, the
-> major difference is that Larry's driver has a watchdog which will keep
-> monitoring the signal quality and updating the rate mask just like the
-> rtl8xxxu_gen2_update_rate_mask() does if signal quality changes.
-> And this kind of watchdog also exists in rtlwifi driver of some specific
-> chips, ex rtl8192ee, rtl8188ee, rtl8723ae, rtl8821ae...etc. They have
-> the same member function named dm_watchdog and will invoke the
-> corresponding dm_refresh_rate_adaptive_mask to adjust the tx rate
-> mask.
+> After more discussion (@Intel) and the previous thread(s), I've pretty
+> much come to the conclusion that we should have a small subsystem for
+> WWAN, rather than fudging everything like we previously did.
 > 
-> With this commit, the tx rate of each data and qos data packet will
-> be 39Mbps (MCS4) with the 0xF00000 as the tx rate mask. The 20th bit
-> to 23th bit means MCS4 to MCS7. It means that the firmware still picks
-> the lowest rate from the rate mask and explains why the tx rate of
-> data and qos data is always lowest 1Mbps because the default rate mask
-> passed is always 0xFFFFFFF ranges from the basic CCK rate, OFDM rate,
-> and MCS rate. However, with Larry's driver, the tx rate observed from
-> wireshark under the same condition is almost 65Mbps or 72Mbps.
+> We can debate whether or not that should use 'real' netlink or generic
+> netlink - personally I know the latter better and I think it has some
+> real advantages like easier message parsing (it's automatic more or
+> less) including strict checking and automatic policy introspection (I
+> recently wrote the code for this and it's plugged into generic netlink
+> family, for other netlink families it needs more hand-written code). But
+> I could possibly be convinced of doing something else, and/or perhaps
+> building more infrastructure for 'real' netlink to realize those
+> benefits there as well.
 > 
-> I believe the firmware of RTL8723BU may need fix. And I think we
-> can still bring in the dm_watchdog as rtlwifi to improve from the
-> driver side. Please leave precious comments for my commits and
-> suggest what I can do better. Or suggest if there's any better idea
-> to fix this. Thanks.
 > 
-> Signed-off-by: Chris Chiu <chiu@endlessm.com>
+> In terms of what I APIs are needed, the kernel-driver side and userspace
+> side go pretty much hand in hand (the wwan subsystem just providing the
+> glue), so what I say below is pretty much both a method/function call
+> (kernel internal API) or a netlink message (userspace API).
+> 
+> 1) I think a generic abstraction of WWAN device that is not a netdev
+>   is needed. Yes, on the one hand it's quite nice to be able to work on
+>   top of a given netdev, but it's also limiting because it requires the
+>   data flow to go through there, and packets that are tagged in some
+>   way be exchanged there.
+>   For VLANs this can be out-of-band (in a sense) with hw-accel, but for
+>   rmnet-style it's in-band, and that limits what we can do.
+> 
+>   Now, of course this doesn't mean there shouldn't be a netdev created
+>   by default in most cases, but it gives us a way to do additional
+>   things that we cannot do with *just* a netdev.
+> 
+>   From a driver POV though, it would register a new "wwan_device", and
+>   then get some generic callback to create a netdev on top, maybe by
+>   default from the subsystem or from the user.
 
-I have not tested this patch, but I plan to soon.
+Have you actually looked at Phonet or CAIF.
 
-Larry
+And netdev by default seems like repeating the same mistake we have done with WiFi. Your default context in LTE cases is only available when actually registered to the LTE bearer. It is pretty much pointless to have a netdev if you are not registered to the network.
 
+You have to do a lot of initial modem setup before you ever get to the having your default context connected. Have a look at oFono and what it does to bring up the modem.
+
+> 2) Clearly, one needs to be able to create PDN netdevs, with the PDN
+>   given to the command. Here's another advantage: If these are created
+>   on top of another abstraction, not another netdev, they can have
+>   their own queues, multiqueue RX etc. much more easily.
+> 
+>   Also, things like the "if I have just a single channel, drop the mux
+>   headers" can then be entirely done in the driver, and the default
+>   netdev no longer has the possibility of muxed and IP frames on the
+>   same datapath.
+> 
+>   This also enables more things like handling checksum offload directly
+>   in the driver, which doesn't behave so well with VLANs I think.
+> 
+>   All of that will just be easier for 5G too, I believe, with
+>   acceleration being handled per PDN, multi-queue working without
+>   ndo_select_queue, etc.
+> 
+>   Quite possibly there might be some additional (vendor-dependent?)
+>   configuration for when such netdevs are created, but we need to
+>   figure out if that really needs to be at creation time, or just
+>   ethtool later or something like that. I guess it depends on how
+>   generic it needs to be.
+
+I think you need to provide actually a lot more details on how queue control inside Linux would be helpful and actually work in the first place. I don’t see how Linux will be ever in charge and not the modem do this all for you.
+
+> 3) Separately, we need to have an ability to create "generalized control
+>   channels". I'm thinking there would be a general command "create
+>   control channel" with a given type (e.g. ATCMD, RPC, MBIM, GNSS) plus
+>   a list of vendor-specific channels (e.g. for tracing).
+> 
+>   I'm unsure where this channel should really go - somehow it seems to
+>   me that for many (most?) of these registering them as a serial line
+>   would be most appropriate, but some, especially vendor-defined
+>   channels like tracing, would probably better use a transport that's
+>   higher bandwidth than, e.g. netdevs.
+> 
+>   One way I thought of doing this was to create an abstraction in the
+>   wwan framework that lets the driver use SKBs anyway (i.e. TX and RX
+>   on these channels using SKBs) and then translate them to some channel
+>   in the framework - that way, we can even select at runtime if we want
+>   a netdev (not really plugged into the network stack, ARPHDR_VOID?) or
+>   some other kind of transport. Building that would allow us to add
+>   transport types in the future too.
+> 
+>   I guess such a channel should also be created by default, if it's
+>   not already created by the driver in some out-of-band way anyway (and
+>   most likely it shouldn't be, but I guess drivers might have some
+>   entirely different communication channels for AT CMDs?)
+
+I would just use sockets like Phonet and CAIF.
+
+> 4) There was a question about something like pure IP channels that
+>   belong to another PDN and apparently now separate netdevs might be
+>   used, but it seems to me that could just be a queue reserved on the
+>   regular netdevs and then when you say ("enable video streaming on
+>   wwan1 interface") that can do some magic to classify the video
+>   packets (DSCP?) to another hardware queue for better QoS.
+> 
+> 
+> 
+> Anyway, if all of this doesn't seem completely outlandish I'll try to
+> write some code to illustrate it (sooner, rather than later).
+
+Frankly I have a problem if this is designed from the hardware point of view. Unless you are familiar with how 3GPP works and what a telephony stack like oFono has to do, there is really no point in trying to create a WWAN subsystem.
+
+Anything defined needs to be defined in terms of 3GPP and not what current drivers have hacked together.
+
+Regards
+
+Marcel
 
