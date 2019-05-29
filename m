@@ -2,69 +2,70 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E86CE2E639
-	for <lists+linux-wireless@lfdr.de>; Wed, 29 May 2019 22:35:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DD9DE2E660
+	for <lists+linux-wireless@lfdr.de>; Wed, 29 May 2019 22:44:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726326AbfE2Uf2 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 29 May 2019 16:35:28 -0400
-Received: from mail-ot1-f66.google.com ([209.85.210.66]:44648 "EHLO
-        mail-ot1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726240AbfE2Uf2 (ORCPT
+        id S1726464AbfE2UoT (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 29 May 2019 16:44:19 -0400
+Received: from mail-oi1-f177.google.com ([209.85.167.177]:45661 "EHLO
+        mail-oi1-f177.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725990AbfE2UoT (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 29 May 2019 16:35:28 -0400
-Received: by mail-ot1-f66.google.com with SMTP id g18so3400388otj.11;
-        Wed, 29 May 2019 13:35:27 -0700 (PDT)
+        Wed, 29 May 2019 16:44:19 -0400
+Received: by mail-oi1-f177.google.com with SMTP id w144so3189872oie.12;
+        Wed, 29 May 2019 13:44:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=subject:to:cc:references:from:message-id:date:user-agent
          :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=JZf/KUpVGbO+aa71myahG/LJYO4Ln8SWPddjSV6CGEY=;
-        b=IkL1IQvBWqwF8FOA+9slLTyMLLisFAftKB2uSB5DQM/RTA5jjJBkS8uBpGkz9Oa7no
-         1WTxwPpJZz5gz5fJUdpUyNFrgULoYOJE6pQcSUtWDvf+DA9K2FPSr42EDnmpqycVdWGw
-         JWsW1qV4FgcyoB+dcarPRqnoEGYoWNA7UTVpER66vaGBfoRAYgPm4X9hOq0WVCdZPj0x
-         Wl84urzicC4p/K/LayIFbbjt7fJOQ4ybeXwK/V6mRICzWWTcKTcyRSywpyjpMN40/jzS
-         YulM+ZWsWZGkMt12ep/EWeuQoPZYuxUwJ0jb1EJfEq/80og9X2KOzf0jWUlxwTZAV5/0
-         Qpzg==
+        bh=VZGSPRNTu5KLWtlJIz9+NTNedpNZDMEiLUXIhHi/rWo=;
+        b=DFbsdDwmsd0Y+1s18SvJcNDWqIMcHGOm8RcO8xcvmcnhZt+KyvgtGVtnxQfv8053AT
+         sLPl6aSTS0osIRzIiuYXjoX9SCfSnnz/B+L0B5tw/8LPvCtPoYgDCLutSq7703WRYL4C
+         xGpuHnKn32bfCxn4xxLwxcQa7YY8d0RGekfG8hZ3Nyxs7PL86ACULL2wNKX5ls8DqwMW
+         bIQNGOHun1S6lSl2mkyEs5D5ULBslY9aVA2uzdKoS2AN4JGW6CrcJalLJAUXdDx8t/eh
+         MG2RPQsdlfZk8SZbAUKRElFk7D2cguy4CCzTuuiUxnyuMJPITZp2NAxvHYQzGKkmVx16
+         boZg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:subject:to:cc:references:from:message-id:date
          :user-agent:mime-version:in-reply-to:content-language
          :content-transfer-encoding;
-        bh=JZf/KUpVGbO+aa71myahG/LJYO4Ln8SWPddjSV6CGEY=;
-        b=tCPC8McoFyecDPZP6HBZWlpcFO6+ORflCWK5HjtQYDKVCqRqwZm/ztaytwQwLpNGAg
-         trvbe0lU176Icv30cRt8iwBwn0Dwi3wfMfz/FIhvBnv3BuYOrGhlzHyMCZQ6ou373lb/
-         drrsxlKAe0ql7AZup2FA1SuaVleP+25n9IiP13H9GxK7Nuxzp1PfvLYxVWDmHPFocY0b
-         CEmPFm9aURjbrPbCnPEkuzQ++loBisoEMZsNHvvTfR4YcbvxBSdahbz4Da1TW50tIxhz
-         rVTbZ8ubgGCaydx4EstdNVTjEPAYn7o9l9fLll5oex9apNxl5TuC2LGp0RCKuadRTSG0
-         8M2A==
-X-Gm-Message-State: APjAAAV9SdTyy7BGz0Ox9CZ1n6n5qz5KvswlmKpJn6AUwUqQSNbtI8Jf
-        9ZMxG8Uo9YgZYUMiyXf1QNs=
-X-Google-Smtp-Source: APXvYqyZZ2DA3L96zPN0AYVjNJ5gQHvl0/JpFog0zHMJOkooeNjgiqw1YwiBXFN4EcG+1SUSg3hjIQ==
-X-Received: by 2002:a9d:3de1:: with SMTP id l88mr11469320otc.222.1559162127529;
-        Wed, 29 May 2019 13:35:27 -0700 (PDT)
+        bh=VZGSPRNTu5KLWtlJIz9+NTNedpNZDMEiLUXIhHi/rWo=;
+        b=IOzYgKdF2e/hM0K1PuXk4rza9bD8wOh4Y9xgaJR7Nzc3EdflqN4ZAtRlgYDtQgFgqt
+         GmJ5wa6f9yjNly0gqAQq84q3cVhMh1WZy+SLz1XMugx/lBLCAG0ERIAbn510/GGjYGxJ
+         uDsB2kKCWXG1sNh5Bhhq94Tb2B8AzrfToHot2qJH8F0qFnRbFKVx4OfeduyaXY4qeRVK
+         ugOvJNlDQ4GtOSQy+MFo5/YkM+xxokFOcSQEV+xAQPOd70mNqdc+nE3errGmW9agj2mb
+         vfDxkjDsvM8oc2j6SQn8Fl9KArgu4CxMZS4M+6jvZz3C/OEDQ1U24cGNhaoOz3hejft+
+         MMKQ==
+X-Gm-Message-State: APjAAAW5y3v29Pv91H3+5MLGWaXYwgq3O3rvWHTSC2/9vEcmbW7140c5
+        0gGxYMi2/XygoqYemBL/HJk=
+X-Google-Smtp-Source: APXvYqzTSAR2JK8vJuUkx0N+FPhXnJHMvEPBhQvTwb3/X94x8kQ+WuNktSPJqalZ4XJAE/4ilQucvg==
+X-Received: by 2002:aca:3149:: with SMTP id x70mr123700oix.97.1559162653523;
+        Wed, 29 May 2019 13:44:13 -0700 (PDT)
 Received: from [192.168.1.249] (cpe-70-114-247-242.austin.res.rr.com. [70.114.247.242])
-        by smtp.googlemail.com with ESMTPSA id r7sm202279oia.22.2019.05.29.13.35.26
+        by smtp.googlemail.com with ESMTPSA id p64sm224498oif.8.2019.05.29.13.44.12
         (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Wed, 29 May 2019 13:35:26 -0700 (PDT)
+        Wed, 29 May 2019 13:44:13 -0700 (PDT)
 Subject: Re: cellular modem APIs - take 2
 To:     Johannes Berg <johannes@sipsolutions.net>,
-        Dan Williams <dcbw@redhat.com>, netdev@vger.kernel.org,
-        linux-wireless@vger.kernel.org
-Cc:     Subash Abhinov Kasiviswanathan <subashab@codeaurora.org>,
+        Marcel Holtmann <marcel@holtmann.org>
+Cc:     netdev@vger.kernel.org, linux-wireless@vger.kernel.org,
+        Subash Abhinov Kasiviswanathan <subashab@codeaurora.org>,
+        Dan Williams <dcbw@redhat.com>,
         Sean Tranchetti <stranche@codeaurora.org>,
         Daniele Palmas <dnlplm@gmail.com>,
         Aleksander Morgado <aleksander@aleksander.es>,
         =?UTF-8?Q?Bj=c3=b8rn_Mork?= <bjorn@mork.no>
 References: <b59be15f1d0caa4eaa4476bbd8457afc44d57089.camel@sipsolutions.net>
- <cb2ef612be9e347a7cbceb26831f8d5ebea4eacf.camel@redhat.com>
- <58bc88b7eda912133ad0fc4718ac917adc8fa63b.camel@sipsolutions.net>
+ <662BBC5C-D0C7-4B2C-A001-D6F490D0F36F@holtmann.org>
+ <acf18b398fd63f2dfece5981ebd5057141529e6a.camel@sipsolutions.net>
 From:   Denis Kenzior <denkenz@gmail.com>
-Message-ID: <350b9aad-7b08-2f77-6000-095538f32abc@gmail.com>
-Date:   Wed, 29 May 2019 15:35:26 -0500
+Message-ID: <8b6b6174-7de4-b9a9-242b-765da647402e@gmail.com>
+Date:   Wed, 29 May 2019 15:44:12 -0500
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
  Thunderbird/52.3.0
 MIME-Version: 1.0
-In-Reply-To: <58bc88b7eda912133ad0fc4718ac917adc8fa63b.camel@sipsolutions.net>
+In-Reply-To: <acf18b398fd63f2dfece5981ebd5057141529e6a.camel@sipsolutions.net>
 Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
@@ -76,47 +77,27 @@ X-Mailing-List: linux-wireless@vger.kernel.org
 Hi Johannes,
 
 > 
-> It just seemed that people do want to have a netdev (if only to see that
-> their driver loaded and use ethtool to dump the firmware version), and
-> then you can reassign it to some actual context later?
+> After all, I'm not really proposing that we put oFono or something like
+> it into the kernel - far from it! I'm only proposing that we kill the
+> many various ways of creating and managing the necessary netdevs (VLANs,
+> sysfs, rmnet, ...) from a piece of software like oFono (or libmbim or
+> whatever else).
 
-I can see that this is useful for developers, but really 
-counterproductive in production.  You have a bunch of services (systemd, 
-NM, ConnMan, dhcpcd, etc, etc, etc) all observing the newly created 
-devices and trying to 'own' them.  Which makes no freaking sense to do 
-until those devices are really usable.  Just because it is a netdev, 
-doesn't mean it is ethernet or behaves like it.
-
-That also leads to expectations from users that want stuff like 
-udev-consistent-naming to work, even though udev has no idea wtf a given 
-device is, when it is ready or not ready, etc.  And the flip side, there 
-may be systems that do not use systemd/udevd, so the daemons responsible 
-for management of such devices cannot sanely assume anything.  It is 
-just pure chaos.
-
-And then there's hotplug/unplug to worry about ;)
-
-So I would like to reiterate Marcel's point: creating unmanaged devices 
-should not be the default behavior.
+I do like the concept of unifying this if possible.  The question is, is 
+it actually possible :)  I think Dan covered most of the aspects of what 
+userspace has to deal with already.  But the basic issue is that there's 
+a heck of a lot of different ways of doing it.
 
 > 
-> It doesn't really matter much. If you have a control channel and higher-
-> level abstraction (wwan device) then having the netdev is probably more
-> of a nuisance and mostly irrelevant, just might be useful for legacy
-> reasons.
+> Apart from CAIF and phonet, oFono doesn't even try to do this though,
+> afaict, so I guess it relies on the default netdev created, or some out-
+> of-band configuration is still needed?
 
-Which we should be trying to eradicate, not encourage ;)
-
->> Should you really need to account for these specially, or would some
->> kind of sysfs linkage like SET_NETDEV_DEV() be more appropriate?
->>
->> Really all you want to do is (a) identify which WWAN device a given
->> control/data channel is for and (b) perhaps tag different control/data
->> channels with attributes like primary/secondary/gps/sim/etc often
->> through USB attributes or hardcoded data on SoCs.
-
-Userspace can also choose to do its own multiplexing, so you can't even 
-really assume the above is what you 'want'.
+Actually it can.  We can drive modems which provide only a single serial 
+port and run multiplexing over that.  So we fully control the number of 
+control channels created, the number of netdevs created and even 
+create/destroy them on as needed basis.  And these netdevs can be PPP 
+encapsulated or pure IP or whatever else.
 
 Regards,
 -Denis
