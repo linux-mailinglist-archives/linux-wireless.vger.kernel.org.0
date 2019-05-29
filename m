@@ -2,78 +2,114 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id F01E82E245
-	for <lists+linux-wireless@lfdr.de>; Wed, 29 May 2019 18:28:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A51112E43E
+	for <lists+linux-wireless@lfdr.de>; Wed, 29 May 2019 20:12:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727271AbfE2Q2a (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 29 May 2019 12:28:30 -0400
-Received: from smtp.codeaurora.org ([198.145.29.96]:60280 "EHLO
-        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726062AbfE2Q2a (ORCPT
+        id S1727195AbfE2SMS (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 29 May 2019 14:12:18 -0400
+Received: from mail-qt1-f194.google.com ([209.85.160.194]:37172 "EHLO
+        mail-qt1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727096AbfE2SMK (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 29 May 2019 12:28:30 -0400
-Received: by smtp.codeaurora.org (Postfix, from userid 1000)
-        id 898E8606DB; Wed, 29 May 2019 16:28:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1559147309;
-        bh=gWDSvMXq8PTtNST6XRxQu7MBbCp4hBydBgUt6B8bKpE=;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=gjGxxJ1tTiyN0pXCEIy45EYw0bglkcOatjpmgqa5uc/YCL+Fl4GHRUwAD03ec72xp
-         zvwoIAujpNVv3dAPBO4sGWFlLgGxU05F6q8ymnSA2Rii5rw6qaEyZ5osBV8ca1TVWj
-         m3uuwW3vqjVw44eK0PiFcwBy2hmb2dfQiTLcaX9g=
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        pdx-caf-mail.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.7 required=2.0 tests=ALL_TRUSTED,BAYES_00,
-        DKIM_INVALID,DKIM_SIGNED,SPF_NONE autolearn=no autolearn_force=no
-        version=3.4.0
-Received: from purkki.adurom.net (purkki.adurom.net [80.68.90.206])
-        (using TLSv1.2 with cipher DHE-RSA-AES128-SHA (128/128 bits))
-        (No client certificate requested)
-        (Authenticated sender: kvalo@smtp.codeaurora.org)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 01A466063A;
-        Wed, 29 May 2019 16:28:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1559147308;
-        bh=gWDSvMXq8PTtNST6XRxQu7MBbCp4hBydBgUt6B8bKpE=;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=bZTUONI4gRzqNM1VIqeeUDsc9ywGSa1iRzcJwVo5WyhZIMkVj82feV7kDEDagtuug
-         D+SpIFXd63LSJn4rq1Gy4zaoq3tx6t0s6rR/+SNplhi5WULxeRnwtH0tpe/zbhDH/P
-         HC9a9GRaWMV+JwfnUfUjYHGu1OMTNow12IJ/JJkU=
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 01A466063A
-Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
-From:   Kalle Valo <kvalo@codeaurora.org>
-To:     Luca Coelho <luca@coelho.fi>
-Cc:     johannes@sipsolutions.net, linux-wireless@vger.kernel.org,
-        Luca Coelho <luciano.coelho@intel.com>,
-        Dan Carpented <dan.carpenter@oracle.com>
-Subject: Re: [PATCH 02/10] cfg80211: use BIT_ULL in cfg80211_parse_mbssid_data()
-References: <20190529122537.8564-1-luca@coelho.fi>
-        <20190529122537.8564-3-luca@coelho.fi>
-Date:   Wed, 29 May 2019 19:28:25 +0300
-In-Reply-To: <20190529122537.8564-3-luca@coelho.fi> (Luca Coelho's message of
-        "Wed, 29 May 2019 15:25:29 +0300")
-Message-ID: <87v9xttec6.fsf@purkki.adurom.net>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/23.4 (gnu/linux)
+        Wed, 29 May 2019 14:12:10 -0400
+Received: by mail-qt1-f194.google.com with SMTP id y57so3805560qtk.4
+        for <linux-wireless@vger.kernel.org>; Wed, 29 May 2019 11:12:10 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=endlessm-com.20150623.gappssmtp.com; s=20150623;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=ViODfuhWnYhc2s3Kjea5F7ZIJ8Ml/xHbr11ntjMzkwg=;
+        b=hfFSlTtHf223et1zp+zz4Fft/wcc9MB9YlSBND/88dfUQDV8o2hrr8X077o4+DX6ED
+         udJQ5BVvWDtu+f6v77bjmSJs3N8kmDv1b8CcUXlmCK5qpnJ6oq3RdjEBuDIy7ASj/h3h
+         bQotgD7n8ejIKLbCXzWI+Y0OpPIwp2Q9apDj4WQ9pVWRWzrdQiuWvkX4H6x4VVuzdvXn
+         kR1Y5GSMkhLNnC1Nfr9mteFhaFil97va81T/sy/2voPtFc4bvg/5QcHaimDLYorXtqY6
+         db08Zg5JLqly5ozBatzETFl0Ec7JdDrI4R8CtxgVM06U/oseASC6mHza1fefFRzXZIuw
+         lGlA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=ViODfuhWnYhc2s3Kjea5F7ZIJ8Ml/xHbr11ntjMzkwg=;
+        b=uJvcLkrQ494DTFp/mnKovJsIVLeqytehNY09yLQhJ6qbfzd3OnFXMZ6PGmZbBQHmTr
+         eLKVZEvUZJ9xsf+TS9b27LqBktwHZa9/LNdTdfsib3ypPKyMqXN+CPhWG+XcGJyblx7W
+         c1GNFngnVfTw0y6lV/NRxWVa+qR9cQyl1xiL073xhfmG1F829l1FNA0iNM3vKgs3zdQt
+         OpdqFDx1XQmTdnxE2JyciclnNh9LoM0+VxRQTLPt2bq3BTznNVl8gntLWWoDh27aoPkW
+         bF8Xv/9shz0sGJUOk2jDnDU6sPAPnZNn9ZQLn+v7LuWfvvqjSAdFD9B3J98kXgvwYk2D
+         JzPw==
+X-Gm-Message-State: APjAAAUy2CN8L5als1B9GKfH+3OHxnME9czVqwC9ip1McN6Z4U3DhkNv
+        wsrf9Ke4g3ciaq6OpFaveF7Hb3UzvpODeUzw1zMfBA==
+X-Google-Smtp-Source: APXvYqyxAS6nfNEEguifsrx3x6g5lgGT4VyR8//RpwjqFTV2M0Aw3Jpm9dumVCfx0v/V68hCmEGgrHA6vjJNBAlb+LU=
+X-Received: by 2002:ac8:6b06:: with SMTP id w6mr5556447qts.80.1559153529538;
+ Wed, 29 May 2019 11:12:09 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+References: <20190529050335.72061-1-chiu@endlessm.com>
+In-Reply-To: <20190529050335.72061-1-chiu@endlessm.com>
+From:   Daniel Drake <drake@endlessm.com>
+Date:   Wed, 29 May 2019 12:11:58 -0600
+Message-ID: <CAD8Lp46on32VgWtCe7WsGHXp3Jk16qTh6saf0Vj0Y4Ry5z1n7g@mail.gmail.com>
+Subject: Re: [RFC PATCH v3] rtl8xxxu: Improve TX performance of RTL8723BU on
+ rtl8xxxu driver
+To:     Chris Chiu <chiu@endlessm.com>
+Cc:     Jes Sorensen <jes.sorensen@gmail.com>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        David Miller <davem@davemloft.net>,
+        linux-wireless <linux-wireless@vger.kernel.org>,
+        netdev <netdev@vger.kernel.org>,
+        Linux Kernel <linux-kernel@vger.kernel.org>,
+        Linux Upstreaming Team <linux@endlessm.com>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Luca Coelho <luca@coelho.fi> writes:
+Hi Chris,
 
-> From: Luca Coelho <luciano.coelho@intel.com>
+On Tue, May 28, 2019 at 11:03 PM Chris Chiu <chiu@endlessm.com> wrote:
+> +       /*
+> +        * Single virtual interface permitted since the driver supports STATION
+> +        * mode only.
+
+I think you can be a bit more explicit by saying e.g.:
+
+Only one virtual interface permitted because only STA mode is
+supported and no iface_combinations are provided.
+
+> diff --git a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
+> index 039e5ca9d2e4..2d612c2df5b2 100644
+> --- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
+> +++ b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
+> @@ -4345,7 +4345,7 @@ void rtl8xxxu_gen2_update_rate_mask(struct rtl8xxxu_priv *priv,
+>         h2c.b_macid_cfg.ramask3 = (ramask >> 24) & 0xff;
 >
-> The seen_indices variable is u64 and in other parts of the code we
-> assume mbssid_index_ie[2] can be up to 45, so we should use the 64-bit
-> versions of BIT, namely, BIT_ULL().
+>         h2c.ramask.arg = 0x80;
+> -       h2c.b_macid_cfg.data1 = 0;
+> +       h2c.b_macid_cfg.data1 = priv->ratr_index;
+
+I think ratr_index can be moved to be a function parameter of the
+update_rate_mask function. It looks like all callsites already know
+which value they want to set. Then you don't have to store it in the
+priv structure.
+
+> @@ -5471,6 +5509,10 @@ static int rtl8xxxu_add_interface(struct ieee80211_hw *hw,
 >
-> Reported-by: Dan Carpented <dan.carpenter@oracle.com>
+>         switch (vif->type) {
+>         case NL80211_IFTYPE_STATION:
+> +               if (!priv->vif)
+> +                       priv->vif = vif;
+> +               else
+> +                       return -EOPNOTSUPP;
+>                 rtl8xxxu_stop_tx_beacon(priv);
 
-s/ted/ter/ :)
+rtl8xxxu_remove_interface should also set priv->vif back to NULL.
 
--- 
-Kalle Valo
+> @@ -6183,6 +6259,8 @@ static void rtl8xxxu_disconnect(struct usb_interface *interface)
+>         mutex_destroy(&priv->usb_buf_mutex);
+>         mutex_destroy(&priv->h2c_mutex);
+>
+> +       cancel_delayed_work_sync(&priv->ra_watchdog);
+
+Given that the work was started in rtl8xxxu_start, I think it should
+be cancelled in rtl8xxxu_stop() instead.
+
+Daniel
