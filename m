@@ -2,29 +2,29 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 033A02DEA1
-	for <lists+linux-wireless@lfdr.de>; Wed, 29 May 2019 15:40:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 833792DEA0
+	for <lists+linux-wireless@lfdr.de>; Wed, 29 May 2019 15:40:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727542AbfE2NkF (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        id S1727556AbfE2NkF (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
         Wed, 29 May 2019 09:40:05 -0400
-Received: from paleale.coelho.fi ([176.9.41.70]:54352 "EHLO
+Received: from paleale.coelho.fi ([176.9.41.70]:54356 "EHLO
         farmhouse.coelho.fi" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1727097AbfE2NkE (ORCPT
+        with ESMTP id S1727106AbfE2NkE (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
         Wed, 29 May 2019 09:40:04 -0400
 Received: from 91-156-6-193.elisa-laajakaista.fi ([91.156.6.193] helo=redipa.ger.corp.intel.com)
         by farmhouse.coelho.fi with esmtpsa (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
         (Exim 4.92)
         (envelope-from <luca@coelho.fi>)
-        id 1hVyoE-00080o-GI; Wed, 29 May 2019 16:40:02 +0300
+        id 1hVyoF-00080o-02; Wed, 29 May 2019 16:40:03 +0300
 From:   Luca Coelho <luca@coelho.fi>
 To:     kvalo@codeaurora.org
 Cc:     linux-wireless@vger.kernel.org,
         Shahar S Matityahu <shahar.s.matityahu@intel.com>,
         Luca Coelho <luciano.coelho@intel.com>
-Subject: [PATCH 3/7] iwlwifi: clear persistence bit according to device family
-Date:   Wed, 29 May 2019 16:39:51 +0300
-Message-Id: <20190529133955.31082-4-luca@coelho.fi>
+Subject: [PATCH 4/7] iwlwifi: print fseq info upon fw assert
+Date:   Wed, 29 May 2019 16:39:52 +0300
+Message-Id: <20190529133955.31082-5-luca@coelho.fi>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20190529133955.31082-1-luca@coelho.fi>
 References: <20190529133955.31082-1-luca@coelho.fi>
@@ -37,110 +37,136 @@ X-Mailing-List: linux-wireless@vger.kernel.org
 
 From: Shahar S Matityahu <shahar.s.matityahu@intel.com>
 
-The driver attempts to clear persistence bit on any device familiy even
-though only 9000 and 22000 families require it. Clear the bit only on
-the relevant device families.
-
-Each HW has different address to the write protection register. Use the
-right register for each HW
+Read fseq info from FW registers and print it upon fw assert.
+The print is needed since the fseq version coming from the TLV might
+not be the actual version that is used.
 
 Signed-off-by: Shahar S Matityahu <shahar.s.matityahu@intel.com>
-Fixes: 8954e1eb2270 ("iwlwifi: trans: Clear persistence bit when starting the FW")
 Signed-off-by: Luca Coelho <luciano.coelho@intel.com>
 ---
- drivers/net/wireless/intel/iwlwifi/iwl-prph.h |  7 ++-
- .../net/wireless/intel/iwlwifi/pcie/trans.c   | 46 +++++++++++++------
- 2 files changed, 39 insertions(+), 14 deletions(-)
+ drivers/net/wireless/intel/iwlwifi/fw/dbg.c   | 39 +++++++++++++++++++
+ drivers/net/wireless/intel/iwlwifi/fw/dbg.h   |  2 +
+ drivers/net/wireless/intel/iwlwifi/iwl-prph.h | 15 ++++++-
+ .../net/wireless/intel/iwlwifi/mvm/utils.c    |  2 +
+ .../net/wireless/intel/iwlwifi/pcie/trans.c   |  3 +-
+ 5 files changed, 59 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/iwl-prph.h b/drivers/net/wireless/intel/iwlwifi/iwl-prph.h
-index 8e6a0c363c0d..925f308764bf 100644
---- a/drivers/net/wireless/intel/iwlwifi/iwl-prph.h
-+++ b/drivers/net/wireless/intel/iwlwifi/iwl-prph.h
-@@ -408,7 +408,12 @@ enum aux_misc_master1_en {
- #define AUX_MISC_MASTER1_SMPHR_STATUS	0xA20800
- #define RSA_ENABLE			0xA24B08
- #define PREG_AUX_BUS_WPROT_0		0xA04CC0
--#define PREG_PRPH_WPROT_0		0xA04CE0
+diff --git a/drivers/net/wireless/intel/iwlwifi/fw/dbg.c b/drivers/net/wireless/intel/iwlwifi/fw/dbg.c
+index 5f52e40a2903..33d7bc5500db 100644
+--- a/drivers/net/wireless/intel/iwlwifi/fw/dbg.c
++++ b/drivers/net/wireless/intel/iwlwifi/fw/dbg.c
+@@ -2747,3 +2747,42 @@ void iwl_fw_dbg_periodic_trig_handler(struct timer_list *t)
+ 			  jiffies + msecs_to_jiffies(collect_interval));
+ 	}
+ }
 +
-+/* device family 9000 WPROT register */
-+#define PREG_PRPH_WPROT_9000		0xA04CE0
-+/* device family 22000 WPROT register */
-+#define PREG_PRPH_WPROT_22000		0xA04D00
++#define FSEQ_REG(x) { .addr = (x), .str = #x, }
 +
- #define SB_CPU_1_STATUS			0xA01E30
- #define SB_CPU_2_STATUS			0xA01E34
- #define UMAG_SB_CPU_1_STATUS		0xA038C0
-diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/trans.c b/drivers/net/wireless/intel/iwlwifi/pcie/trans.c
-index 803fcbac4152..e9d1075d91db 100644
---- a/drivers/net/wireless/intel/iwlwifi/pcie/trans.c
-+++ b/drivers/net/wireless/intel/iwlwifi/pcie/trans.c
-@@ -1698,26 +1698,26 @@ static int iwl_pcie_init_msix_handler(struct pci_dev *pdev,
- 	return 0;
++void iwl_fw_error_print_fseq_regs(struct iwl_fw_runtime *fwrt)
++{
++	struct iwl_trans *trans = fwrt->trans;
++	unsigned long flags;
++	int i;
++	struct {
++		u32 addr;
++		const char *str;
++	} fseq_regs[] = {
++		FSEQ_REG(FSEQ_ERROR_CODE),
++		FSEQ_REG(FSEQ_TOP_INIT_VERSION),
++		FSEQ_REG(FSEQ_CNVIO_INIT_VERSION),
++		FSEQ_REG(FSEQ_OTP_VERSION),
++		FSEQ_REG(FSEQ_TOP_CONTENT_VERSION),
++		FSEQ_REG(FSEQ_ALIVE_TOKEN),
++		FSEQ_REG(FSEQ_CNVI_ID),
++		FSEQ_REG(FSEQ_CNVR_ID),
++		FSEQ_REG(CNVI_AUX_MISC_CHIP),
++		FSEQ_REG(CNVR_AUX_MISC_CHIP),
++		FSEQ_REG(CNVR_SCU_SD_REGS_SD_REG_DIG_DCDC_VTRIM),
++		FSEQ_REG(CNVR_SCU_SD_REGS_SD_REG_ACTIVE_VDIG_MIRROR),
++	};
++
++	if (!iwl_trans_grab_nic_access(trans, &flags))
++		return;
++
++	IWL_ERR(fwrt, "Fseq Registers:\n");
++
++	for (i = 0; i < ARRAY_SIZE(fseq_regs); i++)
++		IWL_ERR(fwrt, "0x%08X | %s\n",
++			iwl_read_prph_no_grab(trans, fseq_regs[i].addr),
++			fseq_regs[i].str);
++
++	iwl_trans_release_nic_access(trans, &flags);
++}
++IWL_EXPORT_SYMBOL(iwl_fw_error_print_fseq_regs);
+diff --git a/drivers/net/wireless/intel/iwlwifi/fw/dbg.h b/drivers/net/wireless/intel/iwlwifi/fw/dbg.h
+index 2a9e560a906b..fd0ad220e961 100644
+--- a/drivers/net/wireless/intel/iwlwifi/fw/dbg.h
++++ b/drivers/net/wireless/intel/iwlwifi/fw/dbg.h
+@@ -471,4 +471,6 @@ static inline void iwl_fw_error_collect(struct iwl_fw_runtime *fwrt)
  }
  
--static int _iwl_trans_pcie_start_hw(struct iwl_trans *trans, bool low_power)
-+static int iwl_trans_pcie_clear_persistence_bit(struct iwl_trans *trans)
- {
--	struct iwl_trans_pcie *trans_pcie = IWL_TRANS_GET_PCIE_TRANS(trans);
--	u32 hpm;
--	int err;
--
--	lockdep_assert_held(&trans_pcie->mutex);
-+	u32 hpm, wprot;
- 
--	err = iwl_pcie_prepare_card_hw(trans);
--	if (err) {
--		IWL_ERR(trans, "Error while preparing HW: %d\n", err);
--		return err;
-+	switch (trans->cfg->device_family) {
-+	case IWL_DEVICE_FAMILY_9000:
-+		wprot = PREG_PRPH_WPROT_9000;
-+		break;
-+	case IWL_DEVICE_FAMILY_22000:
-+		wprot = PREG_PRPH_WPROT_22000;
-+		break;
-+	default:
-+		return 0;
- 	}
- 
- 	hpm = iwl_read_umac_prph_no_grab(trans, HPM_DEBUG);
- 	if (hpm != 0xa5a5a5a0 && (hpm & PERSISTENCE_BIT)) {
--		int wfpm_val = iwl_read_umac_prph_no_grab(trans,
--							  PREG_PRPH_WPROT_0);
-+		u32 wprot_val = iwl_read_umac_prph_no_grab(trans, wprot);
- 
--		if (wfpm_val & PREG_WFPM_ACCESS) {
-+		if (wprot_val & PREG_WFPM_ACCESS) {
- 			IWL_ERR(trans,
- 				"Error, can not clear persistence bit\n");
- 			return -EPERM;
-@@ -1726,6 +1726,26 @@ static int _iwl_trans_pcie_start_hw(struct iwl_trans *trans, bool low_power)
- 					    hpm & ~PERSISTENCE_BIT);
- 	}
- 
-+	return 0;
-+}
+ void iwl_fw_dbg_periodic_trig_handler(struct timer_list *t);
 +
-+static int _iwl_trans_pcie_start_hw(struct iwl_trans *trans, bool low_power)
-+{
-+	struct iwl_trans_pcie *trans_pcie = IWL_TRANS_GET_PCIE_TRANS(trans);
-+	int err;
-+
-+	lockdep_assert_held(&trans_pcie->mutex);
-+
-+	err = iwl_pcie_prepare_card_hw(trans);
-+	if (err) {
-+		IWL_ERR(trans, "Error while preparing HW: %d\n", err);
-+		return err;
-+	}
-+
-+	err = iwl_trans_pcie_clear_persistence_bit(trans);
-+	if (err)
-+		return err;
-+
- 	iwl_trans_pcie_sw_reset(trans);
++void iwl_fw_error_print_fseq_regs(struct iwl_fw_runtime *fwrt);
+ #endif  /* __iwl_fw_dbg_h__ */
+diff --git a/drivers/net/wireless/intel/iwlwifi/iwl-prph.h b/drivers/net/wireless/intel/iwlwifi/iwl-prph.h
+index 925f308764bf..8d930bfe0727 100644
+--- a/drivers/net/wireless/intel/iwlwifi/iwl-prph.h
++++ b/drivers/net/wireless/intel/iwlwifi/iwl-prph.h
+@@ -395,7 +395,11 @@ enum {
+ 	WFPM_AUX_CTL_AUX_IF_MAC_OWNER_MSK	= 0x80000000,
+ };
  
- 	err = iwl_pcie_apm_init(trans);
+-#define AUX_MISC_REG			0xA200B0
++#define CNVI_AUX_MISC_CHIP				0xA200B0
++#define CNVR_AUX_MISC_CHIP				0xA2B800
++#define CNVR_SCU_SD_REGS_SD_REG_DIG_DCDC_VTRIM		0xA29890
++#define CNVR_SCU_SD_REGS_SD_REG_ACTIVE_VDIG_MIRROR	0xA29938
++
+ enum {
+ 	HW_STEP_LOCATION_BITS = 24,
+ };
+@@ -447,4 +451,13 @@ enum {
+ 
+ #define UREG_DOORBELL_TO_ISR6		0xA05C04
+ #define UREG_DOORBELL_TO_ISR6_NMI_BIT	BIT(0)
++
++#define FSEQ_ERROR_CODE			0xA340C8
++#define FSEQ_TOP_INIT_VERSION		0xA34038
++#define FSEQ_CNVIO_INIT_VERSION		0xA3403C
++#define FSEQ_OTP_VERSION		0xA340FC
++#define FSEQ_TOP_CONTENT_VERSION	0xA340F4
++#define FSEQ_ALIVE_TOKEN		0xA340F0
++#define FSEQ_CNVI_ID			0xA3408C
++#define FSEQ_CNVR_ID			0xA34090
+ #endif				/* __iwl_prph_h__ */
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/utils.c b/drivers/net/wireless/intel/iwlwifi/mvm/utils.c
+index b9914efc55c4..cc56ab88fb43 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/utils.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/utils.c
+@@ -596,6 +596,8 @@ void iwl_mvm_dump_nic_error_log(struct iwl_mvm *mvm)
+ 		iwl_mvm_dump_lmac_error_log(mvm, 1);
+ 
+ 	iwl_mvm_dump_umac_error_log(mvm);
++
++	iwl_fw_error_print_fseq_regs(&mvm->fwrt);
+ }
+ 
+ int iwl_mvm_reconfig_scd(struct iwl_mvm *mvm, int queue, int fifo, int sta_id,
+diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/trans.c b/drivers/net/wireless/intel/iwlwifi/pcie/trans.c
+index e9d1075d91db..21da18af0155 100644
+--- a/drivers/net/wireless/intel/iwlwifi/pcie/trans.c
++++ b/drivers/net/wireless/intel/iwlwifi/pcie/trans.c
+@@ -3546,7 +3546,8 @@ struct iwl_trans *iwl_trans_pcie_alloc(struct pci_dev *pdev,
+ 			hw_step |= ENABLE_WFPM;
+ 			iwl_write_umac_prph_no_grab(trans, WFPM_CTRL_REG,
+ 						    hw_step);
+-			hw_step = iwl_read_prph_no_grab(trans, AUX_MISC_REG);
++			hw_step = iwl_read_prph_no_grab(trans,
++							CNVI_AUX_MISC_CHIP);
+ 			hw_step = (hw_step >> HW_STEP_LOCATION_BITS) & 0xF;
+ 			if (hw_step == 0x3)
+ 				trans->hw_rev = (trans->hw_rev & 0xFFFFFFF3) |
 -- 
 2.20.1
 
