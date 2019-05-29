@@ -2,135 +2,100 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 3597A2D5C7
-	for <lists+linux-wireless@lfdr.de>; Wed, 29 May 2019 08:57:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 39D5E2D70D
+	for <lists+linux-wireless@lfdr.de>; Wed, 29 May 2019 09:54:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725948AbfE2G5w (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 29 May 2019 02:57:52 -0400
-Received: from rtits2.realtek.com ([211.75.126.72]:58863 "EHLO
+        id S1726112AbfE2Hyz (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 29 May 2019 03:54:55 -0400
+Received: from rtits2.realtek.com ([211.75.126.72]:37188 "EHLO
         rtits2.realtek.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725882AbfE2G5w (ORCPT
+        with ESMTP id S1726055AbfE2Hyz (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 29 May 2019 02:57:52 -0400
+        Wed, 29 May 2019 03:54:55 -0400
 Authenticated-By: 
-X-SpamFilter-By: BOX Solutions SpamTrap 5.62 with qID x4T6vYkw009687, This message is accepted by code: ctloc85258
+X-SpamFilter-By: BOX Solutions SpamTrap 5.62 with qID x4T7soVv005538, This message is accepted by code: ctloc85258
 Received: from mail.realtek.com (rtitcasv01.realtek.com.tw[172.21.6.18])
-        by rtits2.realtek.com.tw (8.15.2/2.57/5.78) with ESMTPS id x4T6vYkw009687
+        by rtits2.realtek.com.tw (8.15.2/2.57/5.78) with ESMTPS id x4T7soVv005538
         (version=TLSv1 cipher=AES256-SHA bits=256 verify=NOT);
-        Wed, 29 May 2019 14:57:34 +0800
-Received: from localhost.localdomain (172.21.69.114) by
+        Wed, 29 May 2019 15:54:50 +0800
+Received: from localhost.localdomain (172.21.68.126) by
  RTITCASV01.realtek.com.tw (172.21.6.18) with Microsoft SMTP Server id
- 14.3.408.0; Wed, 29 May 2019 14:57:33 +0800
-From:   <pkshih@realtek.com>
+ 14.3.408.0; Wed, 29 May 2019 15:54:50 +0800
+From:   <yhchuang@realtek.com>
 To:     <kvalo@codeaurora.org>
-CC:     <linux-wireless@vger.kernel.org>, <andreyknvl@google.com>,
-        <Larry.Finger@lwfinger.net>
-Subject: [PATCH] rtlwifi: rtl8192cu: fix error handle when usb probe failed
-Date:   Wed, 29 May 2019 14:57:30 +0800
-Message-ID: <20190529065730.25951-1-pkshih@realtek.com>
-X-Mailer: git-send-email 2.21.0
+CC:     <linux-wireless@vger.kernel.org>
+Subject: [PATCH 00/11] rtw88: power index setting routine updates and fixes
+Date:   Wed, 29 May 2019 15:54:36 +0800
+Message-ID: <1559116487-5244-1-git-send-email-yhchuang@realtek.com>
+X-Mailer: git-send-email 2.7.4
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7BIT
-Content-Type:   text/plain; charset=US-ASCII
-X-Originating-IP: [172.21.69.114]
+Content-Type: text/plain
+X-Originating-IP: [172.21.68.126]
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Ping-Ke Shih <pkshih@realtek.com>
+From: Yan-Hsuan Chuang <yhchuang@realtek.com>
 
-rtl_usb_probe() must do error handle rtl_deinit_core() only if
-rtl_init_core() is done, otherwise goto error_out2.
+This patch set updates the power index setting routine for rtw88.
 
-| usb 1-1: New USB device strings: Mfr=0, Product=0, SerialNumber=0
-| rtl_usb: reg 0xf0, usbctrl_vendorreq TimeOut! status:0xffffffb9 value=0x0
-| rtl8192cu: Chip version 0x10
-| rtl_usb: reg 0xa, usbctrl_vendorreq TimeOut! status:0xffffffb9 value=0x0
-| rtl_usb: Too few input end points found
-| INFO: trying to register non-static key.
-| the code is fine but needs lockdep annotation.
-| turning off the locking correctness validator.
-| CPU: 0 PID: 12 Comm: kworker/0:1 Not tainted 5.1.0-rc4-319354-g9a33b36 #3
-| Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS
-| Google 01/01/2011
-| Workqueue: usb_hub_wq hub_event
-| Call Trace:
-|   __dump_stack lib/dump_stack.c:77 [inline]
-|   dump_stack+0xe8/0x16e lib/dump_stack.c:113
-|   assign_lock_key kernel/locking/lockdep.c:786 [inline]
-|   register_lock_class+0x11b8/0x1250 kernel/locking/lockdep.c:1095
-|   __lock_acquire+0xfb/0x37c0 kernel/locking/lockdep.c:3582
-|   lock_acquire+0x10d/0x2f0 kernel/locking/lockdep.c:4211
-|   __raw_spin_lock_irqsave include/linux/spinlock_api_smp.h:110 [inline]
-|   _raw_spin_lock_irqsave+0x44/0x60 kernel/locking/spinlock.c:152
-|   rtl_c2hcmd_launcher+0xd1/0x390
-| drivers/net/wireless/realtek/rtlwifi/base.c:2344
-|   rtl_deinit_core+0x25/0x2d0 drivers/net/wireless/realtek/rtlwifi/base.c:574
-|   rtl_usb_probe.cold+0x861/0xa70
-| drivers/net/wireless/realtek/rtlwifi/usb.c:1093
-|   usb_probe_interface+0x31d/0x820 drivers/usb/core/driver.c:361
-|   really_probe+0x2da/0xb10 drivers/base/dd.c:509
-|   driver_probe_device+0x21d/0x350 drivers/base/dd.c:671
-|   __device_attach_driver+0x1d8/0x290 drivers/base/dd.c:778
-|   bus_for_each_drv+0x163/0x1e0 drivers/base/bus.c:454
-|   __device_attach+0x223/0x3a0 drivers/base/dd.c:844
-|   bus_probe_device+0x1f1/0x2a0 drivers/base/bus.c:514
-|   device_add+0xad2/0x16e0 drivers/base/core.c:2106
-|   usb_set_configuration+0xdf7/0x1740 drivers/usb/core/message.c:2021
-|   generic_probe+0xa2/0xda drivers/usb/core/generic.c:210
-|   usb_probe_device+0xc0/0x150 drivers/usb/core/driver.c:266
-|   really_probe+0x2da/0xb10 drivers/base/dd.c:509
-|   driver_probe_device+0x21d/0x350 drivers/base/dd.c:671
-|   __device_attach_driver+0x1d8/0x290 drivers/base/dd.c:778
-|   bus_for_each_drv+0x163/0x1e0 drivers/base/bus.c:454
-|   __device_attach+0x223/0x3a0 drivers/base/dd.c:844
-|   bus_probe_device+0x1f1/0x2a0 drivers/base/bus.c:514
-|   device_add+0xad2/0x16e0 drivers/base/core.c:2106
-|   usb_new_device.cold+0x537/0xccf drivers/usb/core/hub.c:2534
-|   hub_port_connect drivers/usb/core/hub.c:5089 [inline]
-|   hub_port_connect_change drivers/usb/core/hub.c:5204 [inline]
-|   port_event drivers/usb/core/hub.c:5350 [inline]
-|   hub_event+0x138e/0x3b00 drivers/usb/core/hub.c:5432
-|   process_one_work+0x90f/0x1580 kernel/workqueue.c:2269
-|   worker_thread+0x9b/0xe20 kernel/workqueue.c:2415
-|   kthread+0x313/0x420 kernel/kthread.c:253
-|   ret_from_fork+0x3a/0x50 arch/x86/entry/entry_64.S:352
+The first commit "rtw88: resolve order of tx power setting routines"
+is to reorder the functions to not to expose some functions used
+internally.
 
-Reported-by: syzbot+1fcc5ef45175fc774231@syzkaller.appspotmail.com
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
----
- drivers/net/wireless/realtek/rtlwifi/usb.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+The following commits:
+    "rtw88: do not use (void *) as argument"
+    "rtw88: unify prefixes for tx power setting routine"
+    "rtw88: remove unused variable"
 
-diff --git a/drivers/net/wireless/realtek/rtlwifi/usb.c b/drivers/net/wireless/realtek/rtlwifi/usb.c
-index e24fda5e9087..34d68dbf4b4c 100644
---- a/drivers/net/wireless/realtek/rtlwifi/usb.c
-+++ b/drivers/net/wireless/realtek/rtlwifi/usb.c
-@@ -1064,13 +1064,13 @@ int rtl_usb_probe(struct usb_interface *intf,
- 	rtlpriv->cfg->ops->read_eeprom_info(hw);
- 	err = _rtl_usb_init(hw);
- 	if (err)
--		goto error_out;
-+		goto error_out2;
- 	rtl_usb_init_sw(hw);
- 	/* Init mac80211 sw */
- 	err = rtl_init_core(hw);
- 	if (err) {
- 		pr_err("Can't allocate sw for mac80211\n");
--		goto error_out;
-+		goto error_out2;
- 	}
- 	if (rtlpriv->cfg->ops->init_sw_vars(hw)) {
- 		pr_err("Can't init_sw_vars\n");
-@@ -1091,6 +1091,7 @@ int rtl_usb_probe(struct usb_interface *intf,
- 
- error_out:
- 	rtl_deinit_core(hw);
-+error_out2:
- 	_rtl_usb_io_handler_release(hw);
- 	usb_put_dev(udev);
- 	complete(&rtlpriv->firmware_loading_complete);
+are minor refinements to make the routine look better.
+
+The following commits:
+    "rtw88: fix incorrect tx power limit at 5G"
+    "rtw88: choose the lowest as world-wide power limit"
+    "rtw88: correct power limit selection"
+    "rtw88: update tx power limit table to RF v20"
+    "rtw88: remove all RTW_MAX_POWER_INDEX macro"
+
+are fixes to get correct tx power index, also update the power
+limit table to the latest.
+
+The following commits:
+    "rtw88: refine flow to get tx power index"
+    "rtw88: debug: dump tx power indexes in use"
+
+add a debugfs entry to dump power index by rate, by limit and by base.
+This is useful for us to check if correct power indexes are used.
+
+
+Tzu-En Huang (1):
+  rtw88: remove all RTW_MAX_POWER_INDEX macro
+
+Yan-Hsuan Chuang (6):
+  rtw88: resolve order of tx power setting routines
+  rtw88: do not use (void *) as argument
+  rtw88: unify prefixes for tx power setting routine
+  rtw88: remove unused variable
+  rtw88: fix incorrect tx power limit at 5G
+  rtw88: choose the lowest as world-wide power limit
+
+Zong-Zhe Yang (4):
+  rtw88: correct power limit selection
+  rtw88: update tx power limit table to RF v20
+  rtw88: refine flow to get tx power index
+  rtw88: debug: dump tx power indexes in use
+
+ drivers/net/wireless/realtek/rtw88/debug.c         |  112 ++
+ drivers/net/wireless/realtek/rtw88/main.c          |   26 +-
+ drivers/net/wireless/realtek/rtw88/main.h          |   27 +-
+ drivers/net/wireless/realtek/rtw88/phy.c           | 1298 +++++++++++---------
+ drivers/net/wireless/realtek/rtw88/phy.h           |   18 +-
+ drivers/net/wireless/realtek/rtw88/regd.c          |   69 +-
+ drivers/net/wireless/realtek/rtw88/regd.h          |    4 +
+ .../net/wireless/realtek/rtw88/rtw8822c_table.c    |  799 +++++++++++-
+ 8 files changed, 1653 insertions(+), 700 deletions(-)
+
 -- 
-2.21.0
+2.7.4
 
