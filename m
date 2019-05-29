@@ -2,102 +2,148 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id DD9DE2E660
-	for <lists+linux-wireless@lfdr.de>; Wed, 29 May 2019 22:44:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BF63E2E6F4
+	for <lists+linux-wireless@lfdr.de>; Wed, 29 May 2019 23:02:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726464AbfE2UoT (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 29 May 2019 16:44:19 -0400
-Received: from mail-oi1-f177.google.com ([209.85.167.177]:45661 "EHLO
-        mail-oi1-f177.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725990AbfE2UoT (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 29 May 2019 16:44:19 -0400
-Received: by mail-oi1-f177.google.com with SMTP id w144so3189872oie.12;
-        Wed, 29 May 2019 13:44:18 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=VZGSPRNTu5KLWtlJIz9+NTNedpNZDMEiLUXIhHi/rWo=;
-        b=DFbsdDwmsd0Y+1s18SvJcNDWqIMcHGOm8RcO8xcvmcnhZt+KyvgtGVtnxQfv8053AT
-         sLPl6aSTS0osIRzIiuYXjoX9SCfSnnz/B+L0B5tw/8LPvCtPoYgDCLutSq7703WRYL4C
-         xGpuHnKn32bfCxn4xxLwxcQa7YY8d0RGekfG8hZ3Nyxs7PL86ACULL2wNKX5ls8DqwMW
-         bIQNGOHun1S6lSl2mkyEs5D5ULBslY9aVA2uzdKoS2AN4JGW6CrcJalLJAUXdDx8t/eh
-         MG2RPQsdlfZk8SZbAUKRElFk7D2cguy4CCzTuuiUxnyuMJPITZp2NAxvHYQzGKkmVx16
-         boZg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=VZGSPRNTu5KLWtlJIz9+NTNedpNZDMEiLUXIhHi/rWo=;
-        b=IOzYgKdF2e/hM0K1PuXk4rza9bD8wOh4Y9xgaJR7Nzc3EdflqN4ZAtRlgYDtQgFgqt
-         GmJ5wa6f9yjNly0gqAQq84q3cVhMh1WZy+SLz1XMugx/lBLCAG0ERIAbn510/GGjYGxJ
-         uDsB2kKCWXG1sNh5Bhhq94Tb2B8AzrfToHot2qJH8F0qFnRbFKVx4OfeduyaXY4qeRVK
-         ugOvJNlDQ4GtOSQy+MFo5/YkM+xxokFOcSQEV+xAQPOd70mNqdc+nE3errGmW9agj2mb
-         vfDxkjDsvM8oc2j6SQn8Fl9KArgu4CxMZS4M+6jvZz3C/OEDQ1U24cGNhaoOz3hejft+
-         MMKQ==
-X-Gm-Message-State: APjAAAW5y3v29Pv91H3+5MLGWaXYwgq3O3rvWHTSC2/9vEcmbW7140c5
-        0gGxYMi2/XygoqYemBL/HJk=
-X-Google-Smtp-Source: APXvYqzTSAR2JK8vJuUkx0N+FPhXnJHMvEPBhQvTwb3/X94x8kQ+WuNktSPJqalZ4XJAE/4ilQucvg==
-X-Received: by 2002:aca:3149:: with SMTP id x70mr123700oix.97.1559162653523;
-        Wed, 29 May 2019 13:44:13 -0700 (PDT)
-Received: from [192.168.1.249] (cpe-70-114-247-242.austin.res.rr.com. [70.114.247.242])
-        by smtp.googlemail.com with ESMTPSA id p64sm224498oif.8.2019.05.29.13.44.12
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Wed, 29 May 2019 13:44:13 -0700 (PDT)
-Subject: Re: cellular modem APIs - take 2
-To:     Johannes Berg <johannes@sipsolutions.net>,
-        Marcel Holtmann <marcel@holtmann.org>
-Cc:     netdev@vger.kernel.org, linux-wireless@vger.kernel.org,
-        Subash Abhinov Kasiviswanathan <subashab@codeaurora.org>,
-        Dan Williams <dcbw@redhat.com>,
-        Sean Tranchetti <stranche@codeaurora.org>,
-        Daniele Palmas <dnlplm@gmail.com>,
-        Aleksander Morgado <aleksander@aleksander.es>,
-        =?UTF-8?Q?Bj=c3=b8rn_Mork?= <bjorn@mork.no>
-References: <b59be15f1d0caa4eaa4476bbd8457afc44d57089.camel@sipsolutions.net>
- <662BBC5C-D0C7-4B2C-A001-D6F490D0F36F@holtmann.org>
- <acf18b398fd63f2dfece5981ebd5057141529e6a.camel@sipsolutions.net>
-From:   Denis Kenzior <denkenz@gmail.com>
-Message-ID: <8b6b6174-7de4-b9a9-242b-765da647402e@gmail.com>
-Date:   Wed, 29 May 2019 15:44:12 -0500
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
- Thunderbird/52.3.0
+        id S1726515AbfE2VCS (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 29 May 2019 17:02:18 -0400
+Received: from mail.kernel.org ([198.145.29.99]:43578 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726186AbfE2VCS (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Wed, 29 May 2019 17:02:18 -0400
+Received: from lore-desk.lan (unknown [151.66.7.110])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id F04EA241C8;
+        Wed, 29 May 2019 21:02:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1559163737;
+        bh=gmqkPtICtyUU7QKcNr6dY2pR4PCmYI/iQLKU6Y/Tr/s=;
+        h=From:To:Cc:Subject:Date:From;
+        b=eSr+7YuqeqcOcuZ+2RrDREUxlPD+qeNDhN3ZVPFgloYmea+rla+oOQ7On5TfgnFMw
+         VRZa2o9GUZWaUwKWka9jtgJF5uDOKaqFzeioCVDgtz3V28Eocv/o2z9CtTMwtlrQLy
+         K+qgMJCZPlr+PDtIukJq2vwTskQxMOwMUEbDQpDA=
+From:   Lorenzo Bianconi <lorenzo@kernel.org>
+To:     kvalo@codeaurora.org
+Cc:     linux-wireless@vger.kernel.org, nbd@nbd.name,
+        lorenzo.bianconi@redhat.com, sgruszka@redhat.com
+Subject: [PATCH wireless-drivers] mt76: usb: fix buffer allocation for scatter-gather capable devices
+Date:   Wed, 29 May 2019 23:01:49 +0200
+Message-Id: <f1f5b9f564e374174a9a2bbae29f4b72fd4c6ddd.1559163190.git.lorenzo@kernel.org>
+X-Mailer: git-send-email 2.21.0
 MIME-Version: 1.0
-In-Reply-To: <acf18b398fd63f2dfece5981ebd5057141529e6a.camel@sipsolutions.net>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi Johannes,
+Partially revert commit f8f527b16db5 ("mt76: usb: use EP max packet
+aligned buffer sizes for rx") since it breaks A-MSDU support.
+When A-MSDU is enable the device can receive frames up to
+q->buf_size but they will be discarded in mt76u_process_rx_entry
+since there is no enough room for skb_shared_info.
+Fix it by introducing q->data_size and take info account
+skb_shared_info size in q->buf_size
+Moreover increase buffer size even for legacy mode (scatter-gather not
+available)
 
-> 
-> After all, I'm not really proposing that we put oFono or something like
-> it into the kernel - far from it! I'm only proposing that we kill the
-> many various ways of creating and managing the necessary netdevs (VLANs,
-> sysfs, rmnet, ...) from a piece of software like oFono (or libmbim or
-> whatever else).
+Fixes: f8f527b16db5 ("mt76: usb: use EP max packet aligned buffer sizes for rx")
+Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+---
+ drivers/net/wireless/mediatek/mt76/mt76.h |  4 ++++
+ drivers/net/wireless/mediatek/mt76/usb.c  | 26 ++++++++++++-----------
+ 2 files changed, 18 insertions(+), 12 deletions(-)
 
-I do like the concept of unifying this if possible.  The question is, is 
-it actually possible :)  I think Dan covered most of the aspects of what 
-userspace has to deal with already.  But the basic issue is that there's 
-a heck of a lot of different ways of doing it.
+diff --git a/drivers/net/wireless/mediatek/mt76/mt76.h b/drivers/net/wireless/mediatek/mt76/mt76.h
+index 8ecbf81a906f..f118919ca5ff 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt76.h
++++ b/drivers/net/wireless/mediatek/mt76/mt76.h
+@@ -31,6 +31,9 @@
+ #define MT_MCU_RING_SIZE    32
+ #define MT_RX_BUF_SIZE      2048
+ 
++#define MT_BUF_WITH_OVERHEAD(x) \
++	((x) + SKB_DATA_ALIGN(sizeof(struct skb_shared_info)))
++
+ struct mt76_dev;
+ struct mt76_wcid;
+ 
+@@ -124,6 +127,7 @@ struct mt76_queue {
+ 	u16 tail;
+ 	int ndesc;
+ 	int queued;
++	int data_size;
+ 	int buf_size;
+ 	bool stopped;
+ 
+diff --git a/drivers/net/wireless/mediatek/mt76/usb.c b/drivers/net/wireless/mediatek/mt76/usb.c
+index bbaa1365bbda..9e328e4532b3 100644
+--- a/drivers/net/wireless/mediatek/mt76/usb.c
++++ b/drivers/net/wireless/mediatek/mt76/usb.c
+@@ -299,7 +299,7 @@ mt76u_fill_rx_sg(struct mt76_dev *dev, struct mt76_queue *q, struct urb *urb,
+ 
+ 		page = virt_to_head_page(data);
+ 		offset = data - page_address(page);
+-		sg_set_page(&urb->sg[i], page, q->buf_size, offset);
++		sg_set_page(&urb->sg[i], page, q->data_size, offset);
+ 	}
+ 
+ 	if (i < nsgs) {
+@@ -311,7 +311,7 @@ mt76u_fill_rx_sg(struct mt76_dev *dev, struct mt76_queue *q, struct urb *urb,
+ 	}
+ 
+ 	urb->num_sgs = max_t(int, i, urb->num_sgs);
+-	urb->transfer_buffer_length = urb->num_sgs * q->buf_size,
++	urb->transfer_buffer_length = urb->num_sgs * q->data_size;
+ 	sg_init_marker(urb->sg, urb->num_sgs);
+ 
+ 	return i ? : -ENOMEM;
+@@ -322,14 +322,13 @@ mt76u_refill_rx(struct mt76_dev *dev, struct urb *urb, int nsgs, gfp_t gfp)
+ {
+ 	struct mt76_queue *q = &dev->q_rx[MT_RXQ_MAIN];
+ 
+-	if (dev->usb.sg_en) {
++	if (dev->usb.sg_en)
+ 		return mt76u_fill_rx_sg(dev, q, urb, nsgs, gfp);
+-	} else {
+-		urb->transfer_buffer_length = q->buf_size;
+-		urb->transfer_buffer = page_frag_alloc(&q->rx_page,
+-						       q->buf_size, gfp);
+-		return urb->transfer_buffer ? 0 : -ENOMEM;
+-	}
++
++	urb->transfer_buffer_length = q->data_size;
++	urb->transfer_buffer = page_frag_alloc(&q->rx_page, q->buf_size, gfp);
++
++	return urb->transfer_buffer ? 0 : -ENOMEM;
+ }
+ 
+ static int
+@@ -446,8 +445,9 @@ mt76u_process_rx_entry(struct mt76_dev *dev, struct urb *urb)
+ 		return 0;
+ 
+ 	data_len = min_t(int, len, data_len - MT_DMA_HDR_LEN);
+-	if (MT_DMA_HDR_LEN + data_len > SKB_WITH_OVERHEAD(q->buf_size)) {
+-		dev_err_ratelimited(dev->dev, "rx data too big %d\n", data_len);
++	if (MT_DMA_HDR_LEN + data_len > q->data_size) {
++		dev_err_ratelimited(dev->dev, "rx data too big %d\n",
++				    data_len);
+ 		return 0;
+ 	}
+ 
+@@ -577,8 +577,10 @@ static int mt76u_alloc_rx(struct mt76_dev *dev)
+ 	if (!q->entry)
+ 		return -ENOMEM;
+ 
+-	q->buf_size = dev->usb.sg_en ? MT_RX_BUF_SIZE : PAGE_SIZE;
++	q->data_size = dev->usb.sg_en ? MT_RX_BUF_SIZE : PAGE_SIZE;
++	q->buf_size = MT_BUF_WITH_OVERHEAD(q->data_size);
+ 	q->ndesc = MT_NUM_RX_ENTRIES;
++
+ 	for (i = 0; i < q->ndesc; i++) {
+ 		err = mt76u_rx_urb_alloc(dev, &q->entry[i]);
+ 		if (err < 0)
+-- 
+2.21.0
 
-> 
-> Apart from CAIF and phonet, oFono doesn't even try to do this though,
-> afaict, so I guess it relies on the default netdev created, or some out-
-> of-band configuration is still needed?
-
-Actually it can.  We can drive modems which provide only a single serial 
-port and run multiplexing over that.  So we fully control the number of 
-control channels created, the number of netdevs created and even 
-create/destroy them on as needed basis.  And these netdevs can be PPP 
-encapsulated or pure IP or whatever else.
-
-Regards,
--Denis
