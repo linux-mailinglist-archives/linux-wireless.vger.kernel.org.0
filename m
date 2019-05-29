@@ -2,29 +2,32 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id BD3712DCAC
-	for <lists+linux-wireless@lfdr.de>; Wed, 29 May 2019 14:25:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8D28B2DCB6
+	for <lists+linux-wireless@lfdr.de>; Wed, 29 May 2019 14:26:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726961AbfE2MZs (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 29 May 2019 08:25:48 -0400
-Received: from paleale.coelho.fi ([176.9.41.70]:54272 "EHLO
+        id S1726970AbfE2MZt (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 29 May 2019 08:25:49 -0400
+Received: from paleale.coelho.fi ([176.9.41.70]:54274 "EHLO
         farmhouse.coelho.fi" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1725914AbfE2MZr (ORCPT
+        with ESMTP id S1726791AbfE2MZs (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 29 May 2019 08:25:47 -0400
+        Wed, 29 May 2019 08:25:48 -0400
 Received: from 91-156-6-193.elisa-laajakaista.fi ([91.156.6.193] helo=redipa.ger.corp.intel.com)
         by farmhouse.coelho.fi with esmtpsa (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
         (Exim 4.92)
         (envelope-from <luca@coelho.fi>)
-        id 1hVxeL-0007wy-3Z; Wed, 29 May 2019 15:25:45 +0300
+        id 1hVxeL-0007wy-L6; Wed, 29 May 2019 15:25:45 +0300
 From:   Luca Coelho <luca@coelho.fi>
 To:     johannes@sipsolutions.net
 Cc:     linux-wireless@vger.kernel.org,
+        Avraham Stern <avraham.stern@intel.com>,
         Luca Coelho <luciano.coelho@intel.com>
-Subject: [PATCH 00/10] cfg80211/mac80211 patches from our internal tree 2019-05-29
-Date:   Wed, 29 May 2019 15:25:27 +0300
-Message-Id: <20190529122537.8564-1-luca@coelho.fi>
+Subject: [PATCH 01/10] cfg80211: report measurement start TSF correctly
+Date:   Wed, 29 May 2019 15:25:28 +0300
+Message-Id: <20190529122537.8564-2-luca@coelho.fi>
 X-Mailer: git-send-email 2.20.1
+In-Reply-To: <20190529122537.8564-1-luca@coelho.fi>
+References: <20190529122537.8564-1-luca@coelho.fi>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
@@ -32,63 +35,37 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Luca Coelho <luciano.coelho@intel.com>
+From: Avraham Stern <avraham.stern@intel.com>
 
-Hi,
+Instead of reporting the AP's TSF, host time was reported. Fix it.
 
-Some patches with mac80211 and cfg80211 changes from our internal
-tree.
+Signed-off-by: Avraham Stern <avraham.stern@intel.com>
+Signed-off-by: Luca Coelho <luciano.coelho@intel.com>
+---
+ net/wireless/pmsr.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-Please review, though you have already reviewed most if not all of
-them ;)
-
-Cheers,
-Luca.
-
-
-Avraham Stern (1):
-  cfg80211: report measurement start TSF correctly
-
-Ilan Peer (2):
-  cfg80211: Add a function to iterate all BSS entries
-  ieee80211: Add a missing extended capability flag definition
-
-Johannes Berg (4):
-  mac80211: call rate_control_send_low() internally
-  mac80211: use STA info in rate_control_send_low()
-  mac80211: fill low rate even for HAS_RATE_CONTROL
-  mac80211: extend __rate_control_send_low warning
-
-Luca Coelho (1):
-  cfg80211: use BIT_ULL in cfg80211_parse_mbssid_data()
-
-Mordechay Goodstein (1):
-  cfg80211: util: fix bit count off by one
-
-Naftali Goldstein (1):
-  mac80211: do not start any work during reconfigure flow
-
- drivers/net/wireless/intel/iwlegacy/3945-rs.c |  3 --
- drivers/net/wireless/intel/iwlegacy/4965-rs.c |  4 --
- drivers/net/wireless/intel/iwlwifi/dvm/rs.c   | 26 ++++-------
- drivers/net/wireless/intel/iwlwifi/mvm/rs.c   |  4 --
- drivers/net/wireless/realtek/rtlwifi/rc.c     |  3 --
- include/linux/ieee80211.h                     |  7 +++
- include/net/cfg80211.h                        | 20 +++++++++
- include/net/mac80211.h                        | 23 ----------
- net/mac80211/cfg.c                            |  4 +-
- net/mac80211/ieee80211_i.h                    |  7 +++
- net/mac80211/mlme.c                           |  7 ++-
- net/mac80211/rate.c                           | 28 ++++++------
- net/mac80211/rc80211_minstrel.c               |  5 +--
- net/mac80211/rc80211_minstrel_ht.c            |  4 +-
- net/mac80211/sta_info.c                       | 43 ++++++++++++++++++-
- net/mac80211/util.c                           |  4 ++
- net/wireless/pmsr.c                           |  4 +-
- net/wireless/scan.c                           | 25 ++++++++++-
- net/wireless/util.c                           |  2 +-
- 19 files changed, 141 insertions(+), 82 deletions(-)
-
+diff --git a/net/wireless/pmsr.c b/net/wireless/pmsr.c
+index 1b190475359a..c09fbf09549d 100644
+--- a/net/wireless/pmsr.c
++++ b/net/wireless/pmsr.c
+@@ -1,6 +1,6 @@
+ /* SPDX-License-Identifier: GPL-2.0 */
+ /*
+- * Copyright (C) 2018 Intel Corporation
++ * Copyright (C) 2018 - 2019 Intel Corporation
+  */
+ #ifndef __PMSR_H
+ #define __PMSR_H
+@@ -448,7 +448,7 @@ static int nl80211_pmsr_send_result(struct sk_buff *msg,
+ 
+ 	if (res->ap_tsf_valid &&
+ 	    nla_put_u64_64bit(msg, NL80211_PMSR_RESP_ATTR_AP_TSF,
+-			      res->host_time, NL80211_PMSR_RESP_ATTR_PAD))
++			      res->ap_tsf, NL80211_PMSR_RESP_ATTR_PAD))
+ 		goto error;
+ 
+ 	if (res->final && nla_put_flag(msg, NL80211_PMSR_RESP_ATTR_FINAL))
 -- 
 2.20.1
 
