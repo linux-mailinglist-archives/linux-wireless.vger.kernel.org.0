@@ -2,88 +2,92 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 0F9F12FA9C
-	for <lists+linux-wireless@lfdr.de>; Thu, 30 May 2019 13:00:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 196982FACF
+	for <lists+linux-wireless@lfdr.de>; Thu, 30 May 2019 13:22:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726359AbfE3LAw (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 30 May 2019 07:00:52 -0400
-Received: from mail-wr1-f50.google.com ([209.85.221.50]:45279 "EHLO
-        mail-wr1-f50.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726563AbfE3LAw (ORCPT
+        id S1726610AbfE3LW6 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 30 May 2019 07:22:58 -0400
+Received: from smtp.codeaurora.org ([198.145.29.96]:49954 "EHLO
+        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725440AbfE3LW6 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 30 May 2019 07:00:52 -0400
-Received: by mail-wr1-f50.google.com with SMTP id b18so3875772wrq.12
-        for <linux-wireless@vger.kernel.org>; Thu, 30 May 2019 04:00:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=MGPVSvsyKkN6sDIhHTrpeJlzh0x/CzT2w7QlXH6Xvy0=;
-        b=KiaAOaDvOsiPSwH83Hpw+7stZDBgTmT5AgqYI9ExYk2RVu3jpecfhZ2PW9wf0qGP8G
-         9TltfC/MM1+heZMb9OkVRTcX7SzJuTpkldF0zgSyXiIzcEptIGN8fpZHW4QB/3GPT7h7
-         mGuHJuGwfWn1VZ+mFAVDdlhqjdsfkjilKxr4CbGLUM21uhgZaO0kEsJsVqQ3GPO7CEpH
-         oxEx3piaksfnb5c/zkJVvElpSesTQWVkH3oHjb445r01grjfY7WrbqYRnmLUkIayQgcG
-         3T698YqHEznrelnfEBGHj7RIc0z2jV5elKZNISsPtNsL9XKIbwVatdrP4p/HKkr8GXwb
-         L3og==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=MGPVSvsyKkN6sDIhHTrpeJlzh0x/CzT2w7QlXH6Xvy0=;
-        b=bpGQTg2YLL+/61Fay69wIn5ue7/tBJoYnChlzYu7jzUzyr9eVUKsGDYm2kRn5fMc4a
-         AaL8UXn/AhmpOSLgNdKClJI4cMG/lcO28ljItDrfuM2vOgWKKb7KtOlcjAQb1mdYte7U
-         EXIMG1nUIX3pZsYVUMpguGXmB61EKKcrx8oOqC+Zf87WrEcy8G5w6rRD6O/I0rLXeaWY
-         x+x+H4fUwEnMSg0hRC1/eEiKJjeLbLK4Vv1Q9YPBHbQUnsbeF8Bd4JXQm3xs3RVQWdfC
-         aIjNpMKmTiPLMyJT2d4tB8nl+BVhg+gjX7ykfWT120r6qdC5hpK2tTNOoNQ9QcogwPNk
-         EfBg==
-X-Gm-Message-State: APjAAAV1YWVNMOkdX56KhLg7FLThR8AlLlcLx4AbRv0ID0T/3ZN4v4jC
-        0h5uQEvThCXc4m2qqGimmw==
-X-Google-Smtp-Source: APXvYqzj8Mzt2UCrtly1Zq1k+Ayl3WykmdVC77eZ8UoUaO4RYLV1qY5dREXs6UegIIJpA5tP97vHUA==
-X-Received: by 2002:adf:f250:: with SMTP id b16mr2241237wrp.24.1559214050549;
-        Thu, 30 May 2019 04:00:50 -0700 (PDT)
-Received: from localhost (118.red-88-12-24.staticip.rima-tde.net. [88.12.24.118])
-        by smtp.gmail.com with ESMTPSA id u205sm2841767wmu.47.2019.05.30.04.00.49
-        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
-        Thu, 30 May 2019 04:00:49 -0700 (PDT)
-From:   Xose Vazquez Perez <xose.vazquez@gmail.com>
-Cc:     Xose Vazquez Perez <xose.vazquez@gmail.com>,
-        Seth Forshee <seth.forshee@canonical.com>,
-        WIRELESS ML <linux-wireless@vger.kernel.org>,
-        REGDB ML <wireless-regdb@lists.infradead.org>
-Subject: [PATCH] wireless-regdb: update source of information for CU
-Date:   Thu, 30 May 2019 13:00:47 +0200
-Message-Id: <20190530110047.3449-1-xose.vazquez@gmail.com>
-X-Mailer: git-send-email 2.21.0
+        Thu, 30 May 2019 07:22:58 -0400
+Received: by smtp.codeaurora.org (Postfix, from userid 1000)
+        id 63D0260A33; Thu, 30 May 2019 11:22:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
+        s=default; t=1559215377;
+        bh=47ymiYIkobMeFci27erzsKJ1pSwLy75eawLOiymclzE=;
+        h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
+        b=n/8lwSep4mSpJny4UMWsUZOrG1RUYNAzv4mnEWQEQ3sFzfZCXnnvhORHVkEizTsDu
+         ifOaj+xPmnQz+tYCvZe5A9g+f27X2A3saUwcIUEt5GBapfc/RxzUmzyOq3K5Vts3E1
+         kkw0penauJzYZki1W/r44gyOnq0l55wPwaejmNa8=
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        pdx-caf-mail.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-0.8 required=2.0 tests=ALL_TRUSTED,BAYES_00,
+        DKIM_INVALID,DKIM_SIGNED,MISSING_DATE,MISSING_MID,SPF_NONE autolearn=no
+        autolearn_force=no version=3.4.0
+Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo@smtp.codeaurora.org)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 6E714607CA;
+        Thu, 30 May 2019 11:22:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
+        s=default; t=1559215376;
+        bh=47ymiYIkobMeFci27erzsKJ1pSwLy75eawLOiymclzE=;
+        h=Subject:From:In-Reply-To:References:To:Cc:From;
+        b=Er2gshbuwi98mx5dZQR76t/T1KWifWB/TUZV0k/rKq2uQ0CuwvqaK/Pp9P7NqCqVW
+         gBHWpkssZkhxBxBCSafhL5WzZ92CjChIK1Ya6EOUtRFzHqvnTEjLeTbRGqntvKfEhZ
+         K6eWqTu2adUeJQz6SFBkvjediPppn6TSdc3pDt7w=
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 6E714607CA
+Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-To:     unlisted-recipients:; (no To-header on input)
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH 1/2] mwifiex: Fix possible buffer overflows at parsing bss
+ descriptor
+From:   Kalle Valo <kvalo@codeaurora.org>
+In-Reply-To: <20190529125220.17066-2-tiwai@suse.de>
+References: <20190529125220.17066-2-tiwai@suse.de>
+To:     Takashi Iwai <tiwai@suse.de>
+Cc:     linux-wireless@vger.kernel.org,
+        Amitkumar Karwar <amitkarwar@gmail.com>,
+        Nishant Sarmukadam <nishants@marvell.com>,
+        Ganapathi Bhat <gbhat@marvell.com>,
+        Xinming Hu <huxinming820@gmail.com>, huangwen@venustech.com.cn,
+        Solar Designer <solar@openwall.com>,
+        Marcus Meissner <meissner@suse.de>
+User-Agent: pwcli/0.0.0-git (https://github.com/kvalo/pwcli/) Python/2.7.12
+Message-Id: <20190530112257.63D0260A33@smtp.codeaurora.org>
+Date:   Thu, 30 May 2019 11:22:57 +0000 (UTC)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Cc: Seth Forshee <seth.forshee@canonical.com>
-Cc: WIRELESS ML <linux-wireless@vger.kernel.org>
-Cc: REGDB ML <wireless-regdb@lists.infradead.org>
-Signed-off-by: Xose Vazquez Perez <xose.vazquez@gmail.com>
----
- db.txt | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Takashi Iwai <tiwai@suse.de> wrote:
 
-diff --git a/db.txt b/db.txt
-index 6b65312..3bdc7c0 100644
---- a/db.txt
-+++ b/db.txt
-@@ -316,7 +316,7 @@ country CR: DFS-FCC
- 	(5735 - 5835 @ 20), (30)
- 
- # Source:
--# http://www.mincom.gob.cu/?q=marcoregulatorio
-+# https://www.mincom.gob.cu/es/marco-legal
- # - Redes Informáticas
- # Resolución 127- 2011 Reglamento de Banda de frecuencias de 2,4 GHz.
- country CU: DFS-FCC
+> mwifiex_update_bss_desc_with_ie() calls memcpy() unconditionally in
+> a couple places without checking the destination size.  Since the
+> source is given from user-space, this may trigger a heap buffer
+> overflow.
+> 
+> Fix it by putting the length check before performing memcpy().
+> 
+> This fix addresses CVE-2019-3846.
+> 
+> Reported-by: huangwen <huangwen@venustech.com.cn>
+> Signed-off-by: Takashi Iwai <tiwai@suse.de>
+
+2 patches applied to wireless-drivers.git, thanks.
+
+13ec7f10b87f mwifiex: Fix possible buffer overflows at parsing bss descriptor
+685c9b7750bf mwifiex: Abort at too short BSS descriptor element
+
 -- 
-2.21.0
+https://patchwork.kernel.org/patch/10967049/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
