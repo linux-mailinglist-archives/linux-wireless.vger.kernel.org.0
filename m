@@ -2,148 +2,98 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id BF63E2E6F4
-	for <lists+linux-wireless@lfdr.de>; Wed, 29 May 2019 23:02:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 15A6C2EA5F
+	for <lists+linux-wireless@lfdr.de>; Thu, 30 May 2019 03:51:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726515AbfE2VCS (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 29 May 2019 17:02:18 -0400
-Received: from mail.kernel.org ([198.145.29.99]:43578 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726186AbfE2VCS (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 29 May 2019 17:02:18 -0400
-Received: from lore-desk.lan (unknown [151.66.7.110])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id F04EA241C8;
-        Wed, 29 May 2019 21:02:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1559163737;
-        bh=gmqkPtICtyUU7QKcNr6dY2pR4PCmYI/iQLKU6Y/Tr/s=;
+        id S1727314AbfE3BvB (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 29 May 2019 21:51:01 -0400
+Received: from smtp.codeaurora.org ([198.145.29.96]:48602 "EHLO
+        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726527AbfE3BvB (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Wed, 29 May 2019 21:51:01 -0400
+Received: by smtp.codeaurora.org (Postfix, from userid 1000)
+        id 5ABB86077A; Thu, 30 May 2019 01:51:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
+        s=default; t=1559181060;
+        bh=Xnovgrnh7liuRwbqkCJd299d7uMVnRRBq/RGfcDJ8ks=;
         h=From:To:Cc:Subject:Date:From;
-        b=eSr+7YuqeqcOcuZ+2RrDREUxlPD+qeNDhN3ZVPFgloYmea+rla+oOQ7On5TfgnFMw
-         VRZa2o9GUZWaUwKWka9jtgJF5uDOKaqFzeioCVDgtz3V28Eocv/o2z9CtTMwtlrQLy
-         K+qgMJCZPlr+PDtIukJq2vwTskQxMOwMUEbDQpDA=
-From:   Lorenzo Bianconi <lorenzo@kernel.org>
-To:     kvalo@codeaurora.org
-Cc:     linux-wireless@vger.kernel.org, nbd@nbd.name,
-        lorenzo.bianconi@redhat.com, sgruszka@redhat.com
-Subject: [PATCH wireless-drivers] mt76: usb: fix buffer allocation for scatter-gather capable devices
-Date:   Wed, 29 May 2019 23:01:49 +0200
-Message-Id: <f1f5b9f564e374174a9a2bbae29f4b72fd4c6ddd.1559163190.git.lorenzo@kernel.org>
-X-Mailer: git-send-email 2.21.0
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+        b=U4voDM/t3iEoYEOz67zJfjwgs3g/J+Q1rvq9CsOQ6z/o44luQr1Ml7D28vfDlGHRf
+         cMXox77S0DMXAqZUeaVynJN+0Mn3uWh7+L3UMI8/VPwDDunPemjJeg2J4TmT1Zo5Vd
+         CHf7lv8EGljkMJtwV0l/mkQ8qfrCy9CJY2+123Y8=
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        pdx-caf-mail.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.7 required=2.0 tests=ALL_TRUSTED,BAYES_00,
+        DKIM_INVALID,DKIM_SIGNED,SPF_NONE autolearn=no autolearn_force=no
+        version=3.4.0
+Received: from smtp.codeaurora.org (unknown [180.166.53.21])
+        (using TLSv1 with cipher AES128-SHA (128/128 bits))
+        (No client certificate requested)
+        (Authenticated sender: miaoqing@smtp.codeaurora.org)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 1A5216029B;
+        Thu, 30 May 2019 01:50:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
+        s=default; t=1559181060;
+        bh=Xnovgrnh7liuRwbqkCJd299d7uMVnRRBq/RGfcDJ8ks=;
+        h=From:To:Cc:Subject:Date:From;
+        b=U4voDM/t3iEoYEOz67zJfjwgs3g/J+Q1rvq9CsOQ6z/o44luQr1Ml7D28vfDlGHRf
+         cMXox77S0DMXAqZUeaVynJN+0Mn3uWh7+L3UMI8/VPwDDunPemjJeg2J4TmT1Zo5Vd
+         CHf7lv8EGljkMJtwV0l/mkQ8qfrCy9CJY2+123Y8=
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 1A5216029B
+Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=miaoqing@codeaurora.org
+Received: by smtp.codeaurora.org (sSMTP sendmail emulation); Thu, 30 May 2019 09:50:47 +0800
+From:   Miaoqing Pan <miaoqing@codeaurora.org>
+To:     ath10k@lists.infradead.org
+Cc:     linux-wireless@vger.kernel.org,
+        Miaoqing Pan <miaoqing@codeaurora.org>
+Subject: [PATCH] ath10k: fix PCIE device wake up failed
+Date:   Thu, 30 May 2019 09:49:20 +0800
+Message-Id: <1559180960-13565-1-git-send-email-miaoqing@codeaurora.org>
+X-Mailer: git-send-email 1.9.1
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Partially revert commit f8f527b16db5 ("mt76: usb: use EP max packet
-aligned buffer sizes for rx") since it breaks A-MSDU support.
-When A-MSDU is enable the device can receive frames up to
-q->buf_size but they will be discarded in mt76u_process_rx_entry
-since there is no enough room for skb_shared_info.
-Fix it by introducing q->data_size and take info account
-skb_shared_info size in q->buf_size
-Moreover increase buffer size even for legacy mode (scatter-gather not
-available)
+Observed PCIE device wake up failed after ~120 iterations of
+soft-reboot test. The error message is
+"ath10k_pci 0000:01:00.0: failed to wake up device : -110"
 
-Fixes: f8f527b16db5 ("mt76: usb: use EP max packet aligned buffer sizes for rx")
-Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+The call trace as below:
+ath10k_pci_probe -> ath10k_pci_force_wake -> ath10k_pci_wake_wait ->
+ath10k_pci_is_awake
+
+Once trigger the device to wake up, we will continuously check the RTC
+state until it returns RTC_STATE_V_ON or timeout.
+
+But for QCA99x0 chips, we use wrong value for RTC_STATE_V_ON.
+Occasionally, we get 0x7 on the fist read, we thought as a failure
+case, but actually is the right value, also verified with the spec.
+So fix the issue by changing RTC_STATE_V_ON from 0x5 to 0x7, passed
+~2000 iterations.
+
+Tested HW: QCA9984
+
+Signed-off-by: Miaoqing Pan <miaoqing@codeaurora.org>
 ---
- drivers/net/wireless/mediatek/mt76/mt76.h |  4 ++++
- drivers/net/wireless/mediatek/mt76/usb.c  | 26 ++++++++++++-----------
- 2 files changed, 18 insertions(+), 12 deletions(-)
+ drivers/net/wireless/ath/ath10k/hw.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76.h b/drivers/net/wireless/mediatek/mt76/mt76.h
-index 8ecbf81a906f..f118919ca5ff 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt76.h
-@@ -31,6 +31,9 @@
- #define MT_MCU_RING_SIZE    32
- #define MT_RX_BUF_SIZE      2048
+diff --git a/drivers/net/wireless/ath/ath10k/hw.c b/drivers/net/wireless/ath/ath10k/hw.c
+index ad082b7..b242085 100644
+--- a/drivers/net/wireless/ath/ath10k/hw.c
++++ b/drivers/net/wireless/ath/ath10k/hw.c
+@@ -158,7 +158,7 @@
+ };
  
-+#define MT_BUF_WITH_OVERHEAD(x) \
-+	((x) + SKB_DATA_ALIGN(sizeof(struct skb_shared_info)))
-+
- struct mt76_dev;
- struct mt76_wcid;
- 
-@@ -124,6 +127,7 @@ struct mt76_queue {
- 	u16 tail;
- 	int ndesc;
- 	int queued;
-+	int data_size;
- 	int buf_size;
- 	bool stopped;
- 
-diff --git a/drivers/net/wireless/mediatek/mt76/usb.c b/drivers/net/wireless/mediatek/mt76/usb.c
-index bbaa1365bbda..9e328e4532b3 100644
---- a/drivers/net/wireless/mediatek/mt76/usb.c
-+++ b/drivers/net/wireless/mediatek/mt76/usb.c
-@@ -299,7 +299,7 @@ mt76u_fill_rx_sg(struct mt76_dev *dev, struct mt76_queue *q, struct urb *urb,
- 
- 		page = virt_to_head_page(data);
- 		offset = data - page_address(page);
--		sg_set_page(&urb->sg[i], page, q->buf_size, offset);
-+		sg_set_page(&urb->sg[i], page, q->data_size, offset);
- 	}
- 
- 	if (i < nsgs) {
-@@ -311,7 +311,7 @@ mt76u_fill_rx_sg(struct mt76_dev *dev, struct mt76_queue *q, struct urb *urb,
- 	}
- 
- 	urb->num_sgs = max_t(int, i, urb->num_sgs);
--	urb->transfer_buffer_length = urb->num_sgs * q->buf_size,
-+	urb->transfer_buffer_length = urb->num_sgs * q->data_size;
- 	sg_init_marker(urb->sg, urb->num_sgs);
- 
- 	return i ? : -ENOMEM;
-@@ -322,14 +322,13 @@ mt76u_refill_rx(struct mt76_dev *dev, struct urb *urb, int nsgs, gfp_t gfp)
- {
- 	struct mt76_queue *q = &dev->q_rx[MT_RXQ_MAIN];
- 
--	if (dev->usb.sg_en) {
-+	if (dev->usb.sg_en)
- 		return mt76u_fill_rx_sg(dev, q, urb, nsgs, gfp);
--	} else {
--		urb->transfer_buffer_length = q->buf_size;
--		urb->transfer_buffer = page_frag_alloc(&q->rx_page,
--						       q->buf_size, gfp);
--		return urb->transfer_buffer ? 0 : -ENOMEM;
--	}
-+
-+	urb->transfer_buffer_length = q->data_size;
-+	urb->transfer_buffer = page_frag_alloc(&q->rx_page, q->buf_size, gfp);
-+
-+	return urb->transfer_buffer ? 0 : -ENOMEM;
- }
- 
- static int
-@@ -446,8 +445,9 @@ mt76u_process_rx_entry(struct mt76_dev *dev, struct urb *urb)
- 		return 0;
- 
- 	data_len = min_t(int, len, data_len - MT_DMA_HDR_LEN);
--	if (MT_DMA_HDR_LEN + data_len > SKB_WITH_OVERHEAD(q->buf_size)) {
--		dev_err_ratelimited(dev->dev, "rx data too big %d\n", data_len);
-+	if (MT_DMA_HDR_LEN + data_len > q->data_size) {
-+		dev_err_ratelimited(dev->dev, "rx data too big %d\n",
-+				    data_len);
- 		return 0;
- 	}
- 
-@@ -577,8 +577,10 @@ static int mt76u_alloc_rx(struct mt76_dev *dev)
- 	if (!q->entry)
- 		return -ENOMEM;
- 
--	q->buf_size = dev->usb.sg_en ? MT_RX_BUF_SIZE : PAGE_SIZE;
-+	q->data_size = dev->usb.sg_en ? MT_RX_BUF_SIZE : PAGE_SIZE;
-+	q->buf_size = MT_BUF_WITH_OVERHEAD(q->data_size);
- 	q->ndesc = MT_NUM_RX_ENTRIES;
-+
- 	for (i = 0; i < q->ndesc; i++) {
- 		err = mt76u_rx_urb_alloc(dev, &q->entry[i]);
- 		if (err < 0)
+ const struct ath10k_hw_values qca99x0_values = {
+-	.rtc_state_val_on		= 5,
++	.rtc_state_val_on		= 7,
+ 	.ce_count			= 12,
+ 	.msi_assign_ce_max		= 12,
+ 	.num_target_ce_config_wlan	= 10,
 -- 
-2.21.0
+1.9.1
 
