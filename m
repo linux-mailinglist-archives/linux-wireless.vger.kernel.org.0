@@ -2,64 +2,80 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 90A3F30126
-	for <lists+linux-wireless@lfdr.de>; Thu, 30 May 2019 19:43:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 14BCE3013F
+	for <lists+linux-wireless@lfdr.de>; Thu, 30 May 2019 19:52:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726307AbfE3Rn1 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 30 May 2019 13:43:27 -0400
-Received: from smtp.codeaurora.org ([198.145.29.96]:60222 "EHLO
-        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725961AbfE3Rn1 (ORCPT
+        id S1726485AbfE3RwP (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 30 May 2019 13:52:15 -0400
+Received: from mail-ed1-f49.google.com ([209.85.208.49]:46702 "EHLO
+        mail-ed1-f49.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725961AbfE3RwP (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 30 May 2019 13:43:27 -0400
-Received: by smtp.codeaurora.org (Postfix, from userid 1000)
-        id 07DF5604D4; Thu, 30 May 2019 17:43:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1559238207;
-        bh=no5ZQcCRRsEmp6RRYQSrMgwzYaEgM1bWoGevzG1+9+Y=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=U+UlTkHt1DlEha2VUY6k0mfGeTaCk+lF/lIwJ/Dwn+HSsTkpQ21IFTtUVLMhSiz8b
-         274+fNwae8bUQRpC6w10qAXYMuhQeuCqqf5sZLDtOkJjO5pOKNFUz2CMyQO13/d2Dq
-         2g/Xmf1vGsy+EKa09S5tMnCZgxqepdNxkqoKwmAM=
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        pdx-caf-mail.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.7 required=2.0 tests=ALL_TRUSTED,BAYES_00,
-        DKIM_INVALID,DKIM_SIGNED autolearn=no autolearn_force=no version=3.4.0
-Received: from mail.codeaurora.org (localhost.localdomain [127.0.0.1])
-        by smtp.codeaurora.org (Postfix) with ESMTP id AF0786019D;
-        Thu, 30 May 2019 17:43:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1559238206;
-        bh=no5ZQcCRRsEmp6RRYQSrMgwzYaEgM1bWoGevzG1+9+Y=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=Z8KLr1g6FJcLYzjOk9JOEIv74/JRghiMQjNIzfXMIxyeHnsyoQoGhncxoHBgcMirp
-         ABRkiK+TV63e5L5FB29WKJM3VSTQXdP652tGZbmnfQUXQdiL/4LDSgb+bdptvqLIcN
-         OXHWuYtpy7e9mMNxIpnj/Z+FBumAWjhpXkLH5As0=
-MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII;
- format=flowed
-Content-Transfer-Encoding: 7bit
-Date:   Thu, 30 May 2019 10:43:26 -0700
-From:   Jeff Johnson <jjohnson@codeaurora.org>
-To:     Arend Van Spriel <arend.vanspriel@broadcom.com>
-Cc:     linux-wireless@vger.kernel.org
-Subject: Re: [RFC 1/8] nl80211: add 6GHz band definition to enum nl80211_band
-In-Reply-To: <16b097efa48.2764.9b12b7fc0a3841636cfb5e919b41b954@broadcom.com>
+        Thu, 30 May 2019 13:52:15 -0400
+Received: by mail-ed1-f49.google.com with SMTP id n12so2326947edt.13
+        for <linux-wireless@vger.kernel.org>; Thu, 30 May 2019 10:52:14 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=broadcom.com; s=google;
+        h=from:to:cc:date:message-id:in-reply-to:references:user-agent
+         :subject:mime-version:content-transfer-encoding;
+        bh=9pbCm2eYs4Tpvx+HTqshSR3pHIOzgYxl1PLxwBCqpxY=;
+        b=fVlDymOdgUDMiyRhrTwDE71VPQhtquvtMq4Pjm63er2J5+fvM5li7b+VPz/NRPHzIj
+         gqbOyaSWHxY7kRVHe5az6sazuIGHc7sqTlPOV0uqmC3STQ0B9NLTyYlPwSAz0bFIfy5W
+         E3JZqJIX8PAwxVQr3rOxmN1wG88+7+NT4TybI=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:date:message-id:in-reply-to
+         :references:user-agent:subject:mime-version
+         :content-transfer-encoding;
+        bh=9pbCm2eYs4Tpvx+HTqshSR3pHIOzgYxl1PLxwBCqpxY=;
+        b=DGDaZgqJWBWHbbSpNET+p1DN+glYA8GEj67VoTuzuTxuWGHN/KojJgYaGqu2dVx4xa
+         8FLgoETRJRbu7msESEOvnoIZdLNYcuRZmCI496y3PlsTQrjvWhtWzpFLZINAzeb0YEn/
+         c928GHb5uux5Bv7CzgjdJHXp1CLxfgrxc5zyJykbKFU7lse8Hq8s5VaGVdaBCk+sgbyd
+         f8zRXS/G+lqsi+oV7kTJMOJKI2HAOKWoAAl8HB7xS1PxvtCeL4R9EbHLArvigmWgEH6p
+         soLoTV9Vx9b2rR/79xBha1gKtDIUVSbzESb47NUi0gLxLKjukckB2OadHSbwQLFFPfyh
+         nqQg==
+X-Gm-Message-State: APjAAAWs0rmDKmyVBB8jSZeGi+a9rcbCuA/gXHH3NJ27CbynIPfEozuQ
+        HLrHN+m47Kc8zOpLvyfKNLVsgg==
+X-Google-Smtp-Source: APXvYqy746hiCgJhqr9OvqByl46oNSIkZUwnbTGVSeEdl2K07lCbT/OxHE8eYjRt/mhobxXOuzaWyg==
+X-Received: by 2002:a17:906:a414:: with SMTP id l20mr4848811ejz.255.1559238733975;
+        Thu, 30 May 2019 10:52:13 -0700 (PDT)
+Received: from [192.168.178.17] (f140230.upc-f.chello.nl. [80.56.140.230])
+        by smtp.gmail.com with ESMTPSA id e46sm889348edd.80.2019.05.30.10.52.12
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
+        Thu, 30 May 2019 10:52:13 -0700 (PDT)
+From:   Arend Van Spriel <arend.vanspriel@broadcom.com>
+To:     Jeff Johnson <jjohnson@codeaurora.org>
+CC:     <linux-wireless@vger.kernel.org>
+Date:   Thu, 30 May 2019 19:52:12 +0200
+Message-ID: <16b09dee4f8.2764.9b12b7fc0a3841636cfb5e919b41b954@broadcom.com>
+In-Reply-To: <284014c56afe555b5fda60a8467f8e6a@codeaurora.org>
 References: <1558353645-18119-1-git-send-email-arend.vanspriel@broadcom.com>
  <1558353645-18119-2-git-send-email-arend.vanspriel@broadcom.com>
  <d27aac46e682d6cb93ac97df0073818c@codeaurora.org>
  <16b097efa48.2764.9b12b7fc0a3841636cfb5e919b41b954@broadcom.com>
-Message-ID: <284014c56afe555b5fda60a8467f8e6a@codeaurora.org>
-X-Sender: jjohnson@codeaurora.org
-User-Agent: Roundcube Webmail/1.2.5
+ <284014c56afe555b5fda60a8467f8e6a@codeaurora.org>
+User-Agent: AquaMail/1.20.0-1451 (build: 102000001)
+Subject: Re: [RFC 1/8] nl80211: add 6GHz band definition to enum nl80211_band
+MIME-Version: 1.0
+Content-Type: text/plain; format=flowed; charset="us-ascii"
+Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 2019-05-30 09:07, Arend Van Spriel wrote:
-> Sigh! Obviously that is a concern. Johannes already mentioned it.
+On May 30, 2019 7:43:27 PM Jeff Johnson <jjohnson@codeaurora.org> wrote:
 
-Sorry, overlooked his comment on the [0/8] patch. I'll climb back under 
-my rock.
+> On 2019-05-30 09:07, Arend Van Spriel wrote:
+>> Sigh! Obviously that is a concern. Johannes already mentioned it.
+>
+> Sorry, overlooked his comment on the [0/8] patch. I'll climb back under
+> my rock.
+
+No need to do that. It is mainly me feeling stupid about making such a 
+mistake that makes me sigh ;-)
+
+Regards,
+Arend
+
+
