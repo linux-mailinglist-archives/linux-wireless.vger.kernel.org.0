@@ -2,227 +2,226 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 3CD042F9D4
-	for <lists+linux-wireless@lfdr.de>; Thu, 30 May 2019 11:47:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id ED4132F9ED
+	for <lists+linux-wireless@lfdr.de>; Thu, 30 May 2019 12:01:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727471AbfE3Jr1 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 30 May 2019 05:47:27 -0400
-Received: from smtp.codeaurora.org ([198.145.29.96]:43318 "EHLO
-        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727171AbfE3Jr1 (ORCPT
+        id S1727676AbfE3KBk (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 30 May 2019 06:01:40 -0400
+Received: from mx0b-0016f401.pphosted.com ([67.231.156.173]:60800 "EHLO
+        mx0b-0016f401.pphosted.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1727671AbfE3KBk (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 30 May 2019 05:47:27 -0400
-Received: by smtp.codeaurora.org (Postfix, from userid 1000)
-        id 2F1196122D; Thu, 30 May 2019 09:47:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1559209646;
-        bh=ZIFNe1Vm8PNCgpBZ186FQ8xv/J8gFD9jafYqAPeOhac=;
-        h=From:To:Cc:Subject:Date:From;
-        b=ZdQjAtx+SPU35O03T3zI6KdISEwO7MpfZdeBEKqVXYNsoxNtz+9aKUCxOBb0UTsn+
-         +JYM3EqqU5ywiKFp3kYayIG+IuwSGrNECUom942/9YMkRx6xthpYWBW7cCy6+lA4Sm
-         qEv4qb2n/kZexxYgFJ94Ot0Vq7hHxUkl6lZD80s8=
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        pdx-caf-mail.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.7 required=2.0 tests=ALL_TRUSTED,BAYES_00,
-        DKIM_INVALID,DKIM_SIGNED,SPF_NONE autolearn=no autolearn_force=no
-        version=3.4.0
-Received: from checstex0244823-lin.qca.qualcomm.com (blr-c-bdr-fw-01_globalnat_allzones-outside.qualcomm.com [103.229.19.19])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-SHA256 (128/128 bits))
-        (No client certificate requested)
-        (Authenticated sender: bpothuno@codeaurora.org)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 6289760F3E;
-        Thu, 30 May 2019 09:47:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1559209644;
-        bh=ZIFNe1Vm8PNCgpBZ186FQ8xv/J8gFD9jafYqAPeOhac=;
-        h=From:To:Cc:Subject:Date:From;
-        b=oBco/EeSI4+ucNl24bTOTDTlvVSyLVXiaPZkApiiU1BJTNb2obPEFgBoyfzgdERvX
-         OCXFQ/Plb2vmZyMFPNlBJKec0RvRKfYHnZaBY2rsKntWyQEerMMvzfaCYraok4uzsM
-         u+GjA0FoipFKs/lkr+mKIUEqfOTlGc6xqAMXFXWE=
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 6289760F3E
-Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=bpothuno@codeaurora.org
-From:   Balaji Pothunoori <bpothuno@codeaurora.org>
-To:     ath10k@lists.infradead.org
-Cc:     linux-wireless@vger.kernel.org,
-        Ashok Raj Nagarajan <arnagara@codeaurora.org>,
-        Balaji Pothunoori <bpothuno@codeaurora.org>
-Subject: [PATCH v5] ath10k: add support for controlling tx power to a station
-Date:   Thu, 30 May 2019 15:17:18 +0530
-Message-Id: <1559209638-23887-1-git-send-email-bpothuno@codeaurora.org>
-X-Mailer: git-send-email 2.7.4
+        Thu, 30 May 2019 06:01:40 -0400
+Received: from pps.filterd (m0045851.ppops.net [127.0.0.1])
+        by mx0b-0016f401.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id x4U9nfbR021114
+        for <linux-wireless@vger.kernel.org>; Thu, 30 May 2019 03:01:38 -0700
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=marvell.com; h=from : to : cc :
+ subject : date : message-id : references : in-reply-to : content-type :
+ content-transfer-encoding : mime-version; s=pfpt0818;
+ bh=1V0CgiGH9Cx5q9TVR74o4NLbC5+nFzgT9nQocLFsf/Q=;
+ b=c6jJVFH01dvBZe04svHklbAoZOx495pVLcpHpdqluHwf/VQxP+iTthroz18pQu/7Anob
+ IQm0kGUTHbN3NOkqpMv3tyfn05jvCo7RQzK4+HEgXS3ZsjXW5Tlw5q6y9GeaHEZ5c8co
+ 1/1SfmwPeAcbi6KF0Owv7/tuqiaIIy1u6LEsExwek1+7oCH++NrbhWz8Us12i5lYkHLP
+ GKDpEww1j13j3P2ciN1Y5MlMRqDvCKnIduA+MvEQf7SVr97NDm4X+K7xYYneHq2qPQpH
+ cmXFiG5m6Wuq7yd1BaXbIcwGwUkJLq3PV/2x0YuG0uPUSBE6fOmUyUH8bniatUma+xHb mg== 
+Received: from sc-exch04.marvell.com ([199.233.58.184])
+        by mx0b-0016f401.pphosted.com with ESMTP id 2st4489y1s-3
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-SHA384 bits=256 verify=NOT)
+        for <linux-wireless@vger.kernel.org>; Thu, 30 May 2019 03:01:38 -0700
+Received: from SC-EXCH02.marvell.com (10.93.176.82) by SC-EXCH04.marvell.com
+ (10.93.176.84) with Microsoft SMTP Server (TLS) id 15.0.1367.3; Thu, 30 May
+ 2019 03:01:37 -0700
+Received: from NAM02-CY1-obe.outbound.protection.outlook.com (104.47.37.53) by
+ SC-EXCH02.marvell.com (10.93.176.82) with Microsoft SMTP Server (TLS) id
+ 15.0.1367.3 via Frontend Transport; Thu, 30 May 2019 03:01:37 -0700
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=marvell.onmicrosoft.com; s=selector2-marvell-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=1V0CgiGH9Cx5q9TVR74o4NLbC5+nFzgT9nQocLFsf/Q=;
+ b=WJZ85xk23z8Qq5dOfyQkT5hCeXgpCbTTLkPp6yuW2u8o3b0u84aRVEseAeERdo45lASSHu8KkEynwImx7L7AQ1qLA613VypUPVLL3vpZ9bBSlJ3FWCJ0wdFSeciJt4lFkdFL9CY79KUS1xZPS4H91DpNOt1DxCXI4jcozYbpkIE=
+Received: from MN2PR18MB2637.namprd18.prod.outlook.com (20.179.80.147) by
+ MN2PR18MB3104.namprd18.prod.outlook.com (10.255.86.29) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.1922.16; Thu, 30 May 2019 10:01:36 +0000
+Received: from MN2PR18MB2637.namprd18.prod.outlook.com
+ ([fe80::3c77:9f53:7e47:7eb8]) by MN2PR18MB2637.namprd18.prod.outlook.com
+ ([fe80::3c77:9f53:7e47:7eb8%7]) with mapi id 15.20.1922.021; Thu, 30 May 2019
+ 10:01:36 +0000
+From:   Ganapathi Bhat <gbhat@marvell.com>
+To:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+CC:     Cathy Luo <cluo@marvell.com>, Zhiyuan Yang <yangzy@marvell.com>,
+        James Cao <jcao@marvell.com>,
+        Rakesh Parmar <rakeshp@marvell.com>,
+        Sharvari Harisangam <sharvari@marvell.com>
+Subject: RE: [PATCH 1/2] mwifiex: add support for host wakeup via PCIE wake#
+Thread-Topic: [PATCH 1/2] mwifiex: add support for host wakeup via PCIE wake#
+Thread-Index: AQHVFs12ovvWc7GpoUetU5v2gRFEBaaDbeXg
+Date:   Thu, 30 May 2019 10:01:35 +0000
+Message-ID: <MN2PR18MB26379DF16EADA38F72A87412A0180@MN2PR18MB2637.namprd18.prod.outlook.com>
+References: <1559209955-10089-1-git-send-email-gbhat@marvell.com>
+In-Reply-To: <1559209955-10089-1-git-send-email-gbhat@marvell.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [182.72.17.59]
+x-ms-publictraffictype: Email
+x-ms-office365-filtering-correlation-id: 1e6d4a62-acd5-428b-220c-08d6e4e5cd27
+x-microsoft-antispam: BCL:0;PCL:0;RULEID:(2390118)(7020095)(4652040)(8989299)(5600148)(711020)(4605104)(1401327)(4534185)(7168020)(4627221)(201703031133081)(201702281549075)(8990200)(2017052603328)(7193020);SRVR:MN2PR18MB3104;
+x-ms-traffictypediagnostic: MN2PR18MB3104:
+x-ms-exchange-purlcount: 1
+x-microsoft-antispam-prvs: <MN2PR18MB31045FCE65AA5947AEE31E34A0180@MN2PR18MB3104.namprd18.prod.outlook.com>
+x-ms-oob-tlc-oobclassifiers: OLM:639;
+x-forefront-prvs: 00531FAC2C
+x-forefront-antispam-report: SFV:NSPM;SFS:(10009020)(376002)(396003)(39860400002)(366004)(136003)(346002)(199004)(189003)(13464003)(486006)(478600001)(7696005)(86362001)(476003)(14444005)(6436002)(8936002)(6916009)(81156014)(53936002)(446003)(8676002)(71190400001)(76176011)(107886003)(5640700003)(14454004)(2906002)(3846002)(6246003)(6116002)(11346002)(71200400001)(256004)(2351001)(54906003)(25786009)(99286004)(4326008)(81166006)(9686003)(305945005)(68736007)(76116006)(91956017)(186003)(33656002)(66446008)(64756008)(73956011)(55016002)(66556008)(52536014)(316002)(66066001)(66476007)(26005)(66946007)(5660300002)(53546011)(7736002)(6506007)(102836004)(229853002)(6306002)(74316002)(55236004)(78486014)(2501003);DIR:OUT;SFP:1101;SCL:1;SRVR:MN2PR18MB3104;H:MN2PR18MB2637.namprd18.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;A:1;MX:1;
+received-spf: None (protection.outlook.com: marvell.com does not designate
+ permitted sender hosts)
+x-ms-exchange-senderadcheck: 1
+x-microsoft-antispam-message-info: 19qeAibZSFdcYAEzdDRYKNqm6f285XfJ7uSZOhtf5fDZ37TcQlS8K+maBSakMGbS29tWnQaA45vPZjTeagDPX8AE/ZDIIqZn3P9z3AFWr+StUH75/F586qypgJALDYk5N41Lrue3+/aB+/wDCoScb+TkERGcUcJXHp5barysCC72tbKeQIsvPSPepk85aarZ3FaZgatqmB1jrNwHG5def3FQG9S8wuo6fJ+CuVCEZg8cYgv0kPnXbSvXDkoqlAaY+NLTl1Yxsz3zG11T/20Aj9BxYZa/rOk0g0XUeTpn0HO5uxxebZU76HtZmxM/z1nT77EYZoKqhJr6ewo4VKJsUxWLccxj48Kr8VmcavPZvATWd3p2LAug44VlHIbb9tAb/7D5mM211K9bUpeaOA4yuqWw9xFNYDIrONv+NlipY3o=
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+X-MS-Exchange-CrossTenant-Network-Message-Id: 1e6d4a62-acd5-428b-220c-08d6e4e5cd27
+X-MS-Exchange-CrossTenant-originalarrivaltime: 30 May 2019 10:01:35.9431
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 70e1fb47-1155-421d-87fc-2e58f638b6e0
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: gbhat@marvell.com
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN2PR18MB3104
+X-OriginatorOrg: marvell.com
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:,, definitions=2019-05-30_05:,,
+ signatures=0
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Ashok Raj Nagarajan <arnagara@codeaurora.org>
+Hi Kalle,
 
-This patch will add the support to control the transmit power for traffic
-to a station associated with the AP.
+I have pushed two patches usingn 'git send-mail' and below patch is the fir=
+st one;=20
 
-Underlying firmware will enforce that the maximum tx power will be based
-on the regulatory requirements. If the user given transmit power is greater
-than the allowed tx power in the given channel, then the firmware will use
-the maximum tx power in the same channel.
+I could not see the patches in patchwork page(https://patchwork.kernel.org/=
+project/linux-wireless/list/); Did you get this patch?=20
 
-Max and Min tx power values will depends on no of tx chain masks,
-for QCA9984 allowed tx power range values from 6 to 23.
-
-When 0 is sent to the firmware as tx power, it will revert to the default
-tx power for the station.
-
-Tested Hardware : QCA9984
-Tested Firmware : 10.4-3.9.0.2-00046
-
-Co-developed-by: Balaji Pothunoori <bpothuno@codeaurora.org>
-Signed-off-by: Ashok Raj Nagarajan <arnagara@codeaurora.org>
-Signed-off-by: Balaji Pothunoori <bpothuno@codeaurora.org>
----
-v2: removed mBm to dBm conversion
-v3: rebased wmi.h changes
-v4: no changes, rebased 
-v5: updated firmware details which 
-    addresses Bob comments.
-    updated commit log.
-
-Note: mac80211/cfg80211 patches got merged hence sending
-      ath10k alone with v5 and mentioned 10.4-3.9.0.2-00046
-      firmware is yet to be upstream.
-
-patchwork links :
- 	https://patchwork.kernel.org/patch/10876859/
-	https://patchwork.kernel.org/patch/10876853/
-
- drivers/net/wireless/ath/ath10k/debug.h |  3 +++
- drivers/net/wireless/ath/ath10k/mac.c   | 39 +++++++++++++++++++++++++++++++++
- drivers/net/wireless/ath/ath10k/wmi.h   |  6 +++++
- 3 files changed, 48 insertions(+)
-
-diff --git a/drivers/net/wireless/ath/ath10k/debug.h b/drivers/net/wireless/ath/ath10k/debug.h
-index db78e85..2e43d8d 100644
---- a/drivers/net/wireless/ath/ath10k/debug.h
-+++ b/drivers/net/wireless/ath/ath10k/debug.h
-@@ -71,6 +71,9 @@ struct ath10k_pktlog_hdr {
- /* FIXME: How to calculate the buffer size sanely? */
- #define ATH10K_FW_STATS_BUF_SIZE (1024 * 1024)
- 
-+#define ATH10K_TX_POWER_MAX_VAL 70
-+#define ATH10K_TX_POWER_MIN_VAL 0
-+
- extern unsigned int ath10k_debug_mask;
- 
- __printf(2, 3) void ath10k_info(struct ath10k *ar, const char *fmt, ...);
-diff --git a/drivers/net/wireless/ath/ath10k/mac.c b/drivers/net/wireless/ath/ath10k/mac.c
-index b500fd4..7e3e403 100644
---- a/drivers/net/wireless/ath/ath10k/mac.c
-+++ b/drivers/net/wireless/ath/ath10k/mac.c
-@@ -6358,6 +6358,41 @@ static void ath10k_mac_dec_num_stations(struct ath10k_vif *arvif,
- 	ar->num_stations--;
- }
- 
-+static int ath10k_sta_set_txpwr(struct ieee80211_hw *hw,
-+				struct ieee80211_vif *vif,
-+				struct ieee80211_sta *sta)
-+{
-+	struct ath10k *ar = hw->priv;
-+	struct ath10k_vif *arvif = (void *)vif->drv_priv;
-+	int ret = 0;
-+	s16 txpwr;
-+
-+	if (sta->txpwr.type == NL80211_TX_POWER_AUTOMATIC) {
-+		txpwr = 0;
-+	} else {
-+		txpwr = sta->txpwr.power;
-+		if (!txpwr)
-+			return -EINVAL;
-+	}
-+
-+	if (txpwr > ATH10K_TX_POWER_MAX_VAL || txpwr < ATH10K_TX_POWER_MIN_VAL)
-+		return -EINVAL;
-+
-+	mutex_lock(&ar->conf_mutex);
-+
-+	ret = ath10k_wmi_peer_set_param(ar, arvif->vdev_id, sta->addr,
-+					WMI_PEER_USE_FIXED_PWR, txpwr);
-+	if (ret) {
-+		ath10k_warn(ar, "failed to set tx power for station ret: %d\n",
-+			    ret);
-+		goto out;
-+	}
-+
-+out:
-+	mutex_unlock(&ar->conf_mutex);
-+	return ret;
-+}
-+
- static int ath10k_sta_state(struct ieee80211_hw *hw,
- 			    struct ieee80211_vif *vif,
- 			    struct ieee80211_sta *sta,
-@@ -8015,6 +8050,7 @@ static const struct ieee80211_ops ath10k_ops = {
- 	.set_key			= ath10k_set_key,
- 	.set_default_unicast_key        = ath10k_set_default_unicast_key,
- 	.sta_state			= ath10k_sta_state,
-+	.sta_set_txpwr			= ath10k_sta_set_txpwr,
- 	.conf_tx			= ath10k_conf_tx,
- 	.remain_on_channel		= ath10k_remain_on_channel,
- 	.cancel_remain_on_channel	= ath10k_cancel_remain_on_channel,
-@@ -8703,6 +8739,9 @@ int ath10k_mac_register(struct ath10k *ar)
- 		wiphy_ext_feature_set(ar->hw->wiphy,
- 				      NL80211_EXT_FEATURE_ENABLE_FTM_RESPONDER);
- 
-+	if (test_bit(WMI_SERVICE_TX_PWR_PER_PEER, ar->wmi.svc_map))
-+		wiphy_ext_feature_set(ar->hw->wiphy,
-+				      NL80211_EXT_FEATURE_STA_TX_PWR);
- 	/*
- 	 * on LL hardware queues are managed entirely by the FW
- 	 * so we only advertise to mac we can do the queues thing
-diff --git a/drivers/net/wireless/ath/ath10k/wmi.h b/drivers/net/wireless/ath/ath10k/wmi.h
-index 12f57f9..a0ed078 100644
---- a/drivers/net/wireless/ath/ath10k/wmi.h
-+++ b/drivers/net/wireless/ath/ath10k/wmi.h
-@@ -200,6 +200,7 @@ enum wmi_service {
- 	WMI_SERVICE_RTT_RESPONDER_ROLE,
- 	WMI_SERVICE_PER_PACKET_SW_ENCRYPT,
- 	WMI_SERVICE_REPORT_AIRTIME,
-+	WMI_SERVICE_TX_PWR_PER_PEER,
- 
- 	/* Remember to add the new value to wmi_service_name()! */
- 
-@@ -367,6 +368,7 @@ enum wmi_10_4_service {
- 	WMI_10_4_SERVICE_RTT_RESPONDER_ROLE,
- 	WMI_10_4_SERVICE_EXT_PEER_TID_CONFIGS_SUPPORT,
- 	WMI_10_4_SERVICE_REPORT_AIRTIME,
-+	WMI_10_4_SERVICE_TX_PWR_PER_PEER,
- };
- 
- static inline char *wmi_service_name(enum wmi_service service_id)
-@@ -491,6 +493,7 @@ static inline char *wmi_service_name(enum wmi_service service_id)
- 	SVCSTR(WMI_SERVICE_RTT_RESPONDER_ROLE);
- 	SVCSTR(WMI_SERVICE_PER_PACKET_SW_ENCRYPT);
- 	SVCSTR(WMI_SERVICE_REPORT_AIRTIME);
-+	SVCSTR(WMI_SERVICE_TX_PWR_PER_PEER);
- 
- 	case WMI_SERVICE_MAX:
- 		return NULL;
-@@ -818,6 +821,8 @@ static inline void wmi_10_4_svc_map(const __le32 *in, unsigned long *out,
- 	       WMI_SERVICE_PER_PACKET_SW_ENCRYPT, len);
- 	SVCMAP(WMI_10_4_SERVICE_REPORT_AIRTIME,
- 	       WMI_SERVICE_REPORT_AIRTIME, len);
-+	SVCMAP(WMI_10_4_SERVICE_TX_PWR_PER_PEER,
-+	       WMI_SERVICE_TX_PWR_PER_PEER, len);
- }
- 
- #undef SVCMAP
-@@ -6262,6 +6267,7 @@ enum wmi_peer_param {
- 	WMI_PEER_USE_4ADDR  = 0x6,
- 	WMI_PEER_DEBUG      = 0xa,
- 	WMI_PEER_PHYMODE    = 0xd,
-+	WMI_PEER_USE_FIXED_PWR = 0x8,
- 	WMI_PEER_DUMMY_VAR  = 0xff, /* dummy parameter for STA PS workaround */
- };
- 
--- 
-2.7.4
+Regards,
+Ganapathi
+> -----Original Message-----
+> From: Ganapathi Bhat <gbhat@marvell.com>
+> Sent: Thursday, May 30, 2019 3:23 PM
+> To: linux-wireless@vger.kernel.org
+> Cc: Cathy Luo <cluo@marvell.com>; Zhiyuan Yang <yangzy@marvell.com>;
+> James Cao <jcao@marvell.com>; Rakesh Parmar <rakeshp@marvell.com>;
+> Sharvari Harisangam <sharvari@marvell.com>; Ganapathi Bhat
+> <gbhat@marvell.com>
+> Subject: [PATCH 1/2] mwifiex: add support for host wakeup via PCIE wake#
+>=20
+> From: Sharvari Harisangam <sharvari@marvell.com>
+>=20
+> PCIE WAKE# is asserted by firmware, when WoWLAN conditions are
+> matched. Current driver does not enable PME bit needed for WAKE#
+> assertion, causing host to remain in sleep even after WoWLAN conditions a=
+re
+> matched. This commit fixes it by enabling wakeup (PME bit) in suspend
+> handler.
+>=20
+> Signed-off-by: Sharvari Harisangam <sharvari@marvell.com>
+> Signed-off-by: Ganapathi Bhat <gbhat@marvell.com>
+> ---
+>  drivers/net/wireless/marvell/mwifiex/pcie.c | 27 +++++++++++++++--------=
+----
+>  1 file changed, 15 insertions(+), 12 deletions(-)
+>=20
+> diff --git a/drivers/net/wireless/marvell/mwifiex/pcie.c
+> b/drivers/net/wireless/marvell/mwifiex/pcie.c
+> index 3fe81b2..0bd81d4 100644
+> --- a/drivers/net/wireless/marvell/mwifiex/pcie.c
+> +++ b/drivers/net/wireless/marvell/mwifiex/pcie.c
+> @@ -147,11 +147,10 @@ static bool mwifiex_pcie_ok_to_access_hw(struct
+> mwifiex_adapter *adapter)
+>   * If already not suspended, this function allocates and sends a host
+>   * sleep activate request to the firmware and turns off the traffic.
+>   */
+> -static int mwifiex_pcie_suspend(struct device *dev)
+> +static int mwifiex_pcie_suspend(struct pci_dev *pdev, pm_message_t
+> +state)
+>  {
+>  	struct mwifiex_adapter *adapter;
+>  	struct pcie_service_card *card;
+> -	struct pci_dev *pdev =3D to_pci_dev(dev);
+>=20
+>  	card =3D pci_get_drvdata(pdev);
+>=20
+> @@ -160,7 +159,7 @@ static int mwifiex_pcie_suspend(struct device *dev)
+>=20
+>  	adapter =3D card->adapter;
+>  	if (!adapter) {
+> -		dev_err(dev, "adapter is not valid\n");
+> +		dev_err(&pdev->dev, "adapter is not valid\n");
+>  		return 0;
+>  	}
+>=20
+> @@ -181,6 +180,10 @@ static int mwifiex_pcie_suspend(struct device *dev)
+>  	set_bit(MWIFIEX_IS_SUSPENDED, &adapter->work_flags);
+>  	clear_bit(MWIFIEX_IS_HS_ENABLING, &adapter->work_flags);
+>=20
+> +	pci_enable_wake(pdev, pci_choose_state(pdev, state), 1);
+> +	pci_save_state(pdev);
+> +	pci_set_power_state(pdev, pci_choose_state(pdev, state));
+> +
+>  	return 0;
+>  }
+>=20
+> @@ -192,16 +195,20 @@ static int mwifiex_pcie_suspend(struct device
+> *dev)
+>   * If already not resumed, this function turns on the traffic and
+>   * sends a host sleep cancel request to the firmware.
+>   */
+> -static int mwifiex_pcie_resume(struct device *dev)
+> +static int mwifiex_pcie_resume(struct pci_dev *pdev)
+>  {
+>  	struct mwifiex_adapter *adapter;
+>  	struct pcie_service_card *card;
+> -	struct pci_dev *pdev =3D to_pci_dev(dev);
+> +
+> +	pci_set_power_state(pdev, PCI_D0);
+> +	pci_restore_state(pdev);
+> +	pci_enable_wake(pdev, PCI_D0, 0);
+> +
+>=20
+>  	card =3D pci_get_drvdata(pdev);
+>=20
+>  	if (!card->adapter) {
+> -		dev_err(dev, "adapter structure is not valid\n");
+> +		dev_err(&pdev->dev, "adapter structure is not valid\n");
+>  		return 0;
+>  	}
+>=20
+> @@ -416,11 +423,6 @@ static void mwifiex_pcie_reset_done(struct pci_dev
+> *pdev)
+>  	.reset_done		=3D mwifiex_pcie_reset_done,
+>  };
+>=20
+> -#ifdef CONFIG_PM_SLEEP
+> -/* Power Management Hooks */
+> -static SIMPLE_DEV_PM_OPS(mwifiex_pcie_pm_ops, mwifiex_pcie_suspend,
+> -				mwifiex_pcie_resume);
+> -#endif
+>=20
+>  /* PCI Device Driver */
+>  static struct pci_driver __refdata mwifiex_pcie =3D { @@ -431,7 +433,8 @=
+@
+> static SIMPLE_DEV_PM_OPS(mwifiex_pcie_pm_ops, mwifiex_pcie_suspend,
+>  	.driver   =3D {
+>  		.coredump =3D mwifiex_pcie_coredump,
+>  #ifdef CONFIG_PM_SLEEP
+> -		.pm =3D &mwifiex_pcie_pm_ops,
+> +	.suspend  =3D mwifiex_pcie_suspend,
+> +	.resume   =3D mwifiex_pcie_resume,
+>  #endif
+>  	},
+>  	.shutdown =3D mwifiex_pcie_shutdown,
+> --
+> 1.9.1
 
