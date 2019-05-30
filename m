@@ -2,81 +2,118 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 9BABA2F686
-	for <lists+linux-wireless@lfdr.de>; Thu, 30 May 2019 06:57:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 617CA2F6B5
+	for <lists+linux-wireless@lfdr.de>; Thu, 30 May 2019 06:59:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728682AbfE3E46 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 30 May 2019 00:56:58 -0400
-Received: from smtp.codeaurora.org ([198.145.29.96]:51672 "EHLO
-        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727887AbfE3E45 (ORCPT
+        id S1728364AbfE3E6h (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 30 May 2019 00:58:37 -0400
+Received: from mail-qt1-f196.google.com ([209.85.160.196]:43670 "EHLO
+        mail-qt1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727785AbfE3E6a (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 30 May 2019 00:56:57 -0400
-Received: by smtp.codeaurora.org (Postfix, from userid 1000)
-        id 41D4460A00; Thu, 30 May 2019 04:56:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1559192217;
-        bh=HzjoCcQKElgW5yawy9MIbUKp4D4xCMIcf8BixISztcs=;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=QFR54PCTm4J7TLMW0iFACyrmqQhyN/4tb7iMpG+u8kEWBrOgYI/okbFnY5yveNGQa
-         +dyd/xrMnMVcIrgkumTHkacNX9JM9QZLhi6iNk8fJnyGerGegbNiVDLTACwph1Fro7
-         fm4yTZ8nMmHOt7Af1uEppt8nnThvUdHKVrLwitB0=
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        pdx-caf-mail.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.7 required=2.0 tests=ALL_TRUSTED,BAYES_00,
-        DKIM_INVALID,DKIM_SIGNED,SPF_NONE autolearn=no autolearn_force=no
-        version=3.4.0
-Received: from x230.qca.qualcomm.com (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        (Authenticated sender: kvalo@smtp.codeaurora.org)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 557F6604D4;
-        Thu, 30 May 2019 04:56:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1559192216;
-        bh=HzjoCcQKElgW5yawy9MIbUKp4D4xCMIcf8BixISztcs=;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=JD5wbx4k2uQcsUNV/1vgILMgdoGGespvwZH2C8Ej/XTaL60Il8rMNhCKt1MfGpFJ5
-         qu9bES6rgagQ7uQ72rzKgwdI+lXF5Ef6Ux+FyOWaGro6htSdRnca1bpAeIUuT5+Cda
-         sqJc3Iu2nZ+r/JqgFBxUrQBHTWX2xSQLzSXLTOvE=
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 557F6604D4
-Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
-From:   Kalle Valo <kvalo@codeaurora.org>
-To:     Lorenzo Bianconi <lorenzo@kernel.org>
-Cc:     linux-wireless@vger.kernel.org, nbd@nbd.name,
-        lorenzo.bianconi@redhat.com, sgruszka@redhat.com
-Subject: Re: [PATCH wireless-drivers] mt76: usb: fix buffer allocation for scatter-gather capable devices
-References: <f1f5b9f564e374174a9a2bbae29f4b72fd4c6ddd.1559163190.git.lorenzo@kernel.org>
-Date:   Thu, 30 May 2019 07:56:52 +0300
-In-Reply-To: <f1f5b9f564e374174a9a2bbae29f4b72fd4c6ddd.1559163190.git.lorenzo@kernel.org>
-        (Lorenzo Bianconi's message of "Wed, 29 May 2019 23:01:49 +0200")
-Message-ID: <87zhn4pmjv.fsf@codeaurora.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
+        Thu, 30 May 2019 00:58:30 -0400
+Received: by mail-qt1-f196.google.com with SMTP id z24so5439303qtj.10
+        for <linux-wireless@vger.kernel.org>; Wed, 29 May 2019 21:58:30 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=endlessm-com.20150623.gappssmtp.com; s=20150623;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=rLmgEjHoFbZEgDIpNdCHV3eTKhj4yByl9zF5X6YEDyU=;
+        b=RPnZUCBgRQHtYNK14mI5pN632nIxFQ9nLcYN1I5h78/zyx3v50ePjNHdlKRtRu/G3C
+         hWbB0se/iWL0ROpD9gWbN28s4bBolC9R9WmpJRKZC2D8eoPKqSvW0def9L5GLi1i/Wry
+         /pDU7Y8f9zQecUtCv0HO2QRN3jWQE9FmsnMbyQOFm7EnrJeXK4zBTV7Hn3MZXpoe51Kq
+         iXtMHowwtmYgFLmJ7S19FxXG5pOdjdcZ/Is90S8cWSvOKjbufCIYwRFwMViwfBAhxYg0
+         Yt+jtrrJdpuLDcqwyEaSLafp6AHzuWRI7L9f2qdZE+jVHczQoWI41SvYEzs+Bx/Nuat3
+         gadg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=rLmgEjHoFbZEgDIpNdCHV3eTKhj4yByl9zF5X6YEDyU=;
+        b=doYg0qXi30Zf4J4qa41CcCTcty0gMMJJeEfd9T/u5rqQl0tIdNYzpjH6TrZargaj+N
+         66JttHJiflYn5EjFDLfVVdIOYWvRa/AAyHQAP9wsGyS/VUOM9uf43X7fEDVd78+2g/o8
+         l7fsBBtlDTpXuYoGM9evMD7kU5UhEhSwyslsm2y63ElIq1qECfC4D8vyEdTmgNB4GH2k
+         FhToxPxeOryjDcZiCQa7obd2Z8jfgvyMs82SkTPPHQiQaRD0x3tXdXfIn8cms6wwXiij
+         NCevWbdUvUsP/9k4SRUaToO5radVtQqg4ykQ0eDchTzFu7Vu5vsbr2FzfHGdutmkLgYM
+         dFag==
+X-Gm-Message-State: APjAAAVUiD92US6PBT36VOhxU1iAjIZd+zqGA4dtuCfrd0ve/8RWeQTC
+        5ORI5lR2hPrQTYGvk2x9Okz7ybP1zSSZuHEABrikGQ==
+X-Google-Smtp-Source: APXvYqykJVzyUNjoIJTxPOCOl5J357hUfTlOmm8qycXoUfA80/eqCZBpMHgAh/kbPPhBE08WD9UbtmZTxYfSv0n8FEA=
+X-Received: by 2002:a0c:be87:: with SMTP id n7mr1524590qvi.65.1559192309628;
+ Wed, 29 May 2019 21:58:29 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain
+References: <20190529050335.72061-1-chiu@endlessm.com> <5f5e262d-aadb-cca0-8576-879735366a73@lwfinger.net>
+In-Reply-To: <5f5e262d-aadb-cca0-8576-879735366a73@lwfinger.net>
+From:   Chris Chiu <chiu@endlessm.com>
+Date:   Thu, 30 May 2019 12:58:18 +0800
+Message-ID: <CAB4CAwdB_8f-JZWWpXdYDghaGQv+Kc4H=G4UUrEK-_xbNg4Ctw@mail.gmail.com>
+Subject: Re: [RFC PATCH v3] rtl8xxxu: Improve TX performance of RTL8723BU on
+ rtl8xxxu driver
+To:     Larry Finger <Larry.Finger@lwfinger.net>
+Cc:     Jes Sorensen <jes.sorensen@gmail.com>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        David Miller <davem@davemloft.net>,
+        linux-wireless <linux-wireless@vger.kernel.org>,
+        netdev <netdev@vger.kernel.org>,
+        Linux Kernel <linux-kernel@vger.kernel.org>,
+        Linux Upstreaming Team <linux@endlessm.com>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Lorenzo Bianconi <lorenzo@kernel.org> writes:
-
-> Partially revert commit f8f527b16db5 ("mt76: usb: use EP max packet
-> aligned buffer sizes for rx") since it breaks A-MSDU support.
-> When A-MSDU is enable the device can receive frames up to
-> q->buf_size but they will be discarded in mt76u_process_rx_entry
-> since there is no enough room for skb_shared_info.
-> Fix it by introducing q->data_size and take info account
-> skb_shared_info size in q->buf_size
-> Moreover increase buffer size even for legacy mode (scatter-gather not
-> available)
+On Thu, May 30, 2019 at 2:22 AM Larry Finger <Larry.Finger@lwfinger.net> wrote:
 >
-> Fixes: f8f527b16db5 ("mt76: usb: use EP max packet aligned buffer sizes for rx")
-> Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+> On 5/29/19 12:03 AM, Chris Chiu wrote:
+> > We have 3 laptops which connect the wifi by the same RTL8723BU.
+> > The PCI VID/PID of the wifi chip is 10EC:B720 which is supported.
+> > They have the same problem with the in-kernel rtl8xxxu driver, the
+> > iperf (as a client to an ethernet-connected server) gets ~1Mbps.
+> > Nevertheless, the signal strength is reported as around -40dBm,
+> > which is quite good. From the wireshark capture, the tx rate for each
+> > data and qos data packet is only 1Mbps. Compare to the driver from
+> > https://github.com/lwfinger/rtl8723bu, the same iperf test gets ~12
+> > Mbps or more. The signal strength is reported similarly around
+> > -40dBm. That's why we want to improve.
+>
+> The driver at GitHub was written by Realtek. I only published it in a prominent
+> location, and fix it for kernel API changes. I would say "the Realtek driver at
+> https://...", and every mention of "Larry's driver" should say "Realtek's
+> driver". That attribution is more correct.
 
-Felix, can I take this directly to wireless-drivers?
+Thanks. I'll modify this in next revision.
 
--- 
-Kalle Valo
+> >
+> > After reading the source code of the rtl8xxxu driver and Larry's, the
+> > major difference is that Larry's driver has a watchdog which will keep
+> > monitoring the signal quality and updating the rate mask just like the
+> > rtl8xxxu_gen2_update_rate_mask() does if signal quality changes.
+> > And this kind of watchdog also exists in rtlwifi driver of some specific
+> > chips, ex rtl8192ee, rtl8188ee, rtl8723ae, rtl8821ae...etc. They have
+> > the same member function named dm_watchdog and will invoke the
+> > corresponding dm_refresh_rate_adaptive_mask to adjust the tx rate
+> > mask.
+> >
+> > With this commit, the tx rate of each data and qos data packet will
+> > be 39Mbps (MCS4) with the 0xF00000 as the tx rate mask. The 20th bit
+> > to 23th bit means MCS4 to MCS7. It means that the firmware still picks
+> > the lowest rate from the rate mask and explains why the tx rate of
+> > data and qos data is always lowest 1Mbps because the default rate mask
+> > passed is always 0xFFFFFFF ranges from the basic CCK rate, OFDM rate,
+> > and MCS rate. However, with Larry's driver, the tx rate observed from
+> > wireshark under the same condition is almost 65Mbps or 72Mbps.
+> >
+> > I believe the firmware of RTL8723BU may need fix. And I think we
+> > can still bring in the dm_watchdog as rtlwifi to improve from the
+> > driver side. Please leave precious comments for my commits and
+> > suggest what I can do better. Or suggest if there's any better idea
+> > to fix this. Thanks.
+> >
+> > Signed-off-by: Chris Chiu <chiu@endlessm.com>
+>
+> I have not tested this patch, but I plan to soon.
+>
+> Larry
+>
+>
