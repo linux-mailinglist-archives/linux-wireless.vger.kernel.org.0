@@ -2,118 +2,114 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 617CA2F6B5
-	for <lists+linux-wireless@lfdr.de>; Thu, 30 May 2019 06:59:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 133E22F6DE
+	for <lists+linux-wireless@lfdr.de>; Thu, 30 May 2019 07:01:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728364AbfE3E6h (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 30 May 2019 00:58:37 -0400
-Received: from mail-qt1-f196.google.com ([209.85.160.196]:43670 "EHLO
-        mail-qt1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727785AbfE3E6a (ORCPT
+        id S2389201AbfE3E7k (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 30 May 2019 00:59:40 -0400
+Received: from smtp.codeaurora.org ([198.145.29.96]:53164 "EHLO
+        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727672AbfE3E7j (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 30 May 2019 00:58:30 -0400
-Received: by mail-qt1-f196.google.com with SMTP id z24so5439303qtj.10
-        for <linux-wireless@vger.kernel.org>; Wed, 29 May 2019 21:58:30 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=endlessm-com.20150623.gappssmtp.com; s=20150623;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=rLmgEjHoFbZEgDIpNdCHV3eTKhj4yByl9zF5X6YEDyU=;
-        b=RPnZUCBgRQHtYNK14mI5pN632nIxFQ9nLcYN1I5h78/zyx3v50ePjNHdlKRtRu/G3C
-         hWbB0se/iWL0ROpD9gWbN28s4bBolC9R9WmpJRKZC2D8eoPKqSvW0def9L5GLi1i/Wry
-         /pDU7Y8f9zQecUtCv0HO2QRN3jWQE9FmsnMbyQOFm7EnrJeXK4zBTV7Hn3MZXpoe51Kq
-         iXtMHowwtmYgFLmJ7S19FxXG5pOdjdcZ/Is90S8cWSvOKjbufCIYwRFwMViwfBAhxYg0
-         Yt+jtrrJdpuLDcqwyEaSLafp6AHzuWRI7L9f2qdZE+jVHczQoWI41SvYEzs+Bx/Nuat3
-         gadg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=rLmgEjHoFbZEgDIpNdCHV3eTKhj4yByl9zF5X6YEDyU=;
-        b=doYg0qXi30Zf4J4qa41CcCTcty0gMMJJeEfd9T/u5rqQl0tIdNYzpjH6TrZargaj+N
-         66JttHJiflYn5EjFDLfVVdIOYWvRa/AAyHQAP9wsGyS/VUOM9uf43X7fEDVd78+2g/o8
-         l7fsBBtlDTpXuYoGM9evMD7kU5UhEhSwyslsm2y63ElIq1qECfC4D8vyEdTmgNB4GH2k
-         FhToxPxeOryjDcZiCQa7obd2Z8jfgvyMs82SkTPPHQiQaRD0x3tXdXfIn8cms6wwXiij
-         NCevWbdUvUsP/9k4SRUaToO5radVtQqg4ykQ0eDchTzFu7Vu5vsbr2FzfHGdutmkLgYM
-         dFag==
-X-Gm-Message-State: APjAAAVUiD92US6PBT36VOhxU1iAjIZd+zqGA4dtuCfrd0ve/8RWeQTC
-        5ORI5lR2hPrQTYGvk2x9Okz7ybP1zSSZuHEABrikGQ==
-X-Google-Smtp-Source: APXvYqykJVzyUNjoIJTxPOCOl5J357hUfTlOmm8qycXoUfA80/eqCZBpMHgAh/kbPPhBE08WD9UbtmZTxYfSv0n8FEA=
-X-Received: by 2002:a0c:be87:: with SMTP id n7mr1524590qvi.65.1559192309628;
- Wed, 29 May 2019 21:58:29 -0700 (PDT)
+        Thu, 30 May 2019 00:59:39 -0400
+Received: by smtp.codeaurora.org (Postfix, from userid 1000)
+        id A411D60213; Thu, 30 May 2019 04:59:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
+        s=default; t=1559192378;
+        bh=1SgeDXWgbQ0KV936oxZHawpgAwsFnvw+M3W5urT1mUI=;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+        b=aQPI2/srpN6qewMq/vZqieIC8Iux3YhEbmlCENYLEtm5Dtk/G1q0WHBiv8gWU9tty
+         Wf7IFgWOF14DK3jvM+AbU0AzWYQFJ9IEMX7gLVGEsbfSvxfOXrY0IqqYwx7ebsA4up
+         KthpFNVVYQe6kgFKJjjNPjAXvgrQRpSY0F6rfs+k=
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        pdx-caf-mail.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.7 required=2.0 tests=ALL_TRUSTED,BAYES_00,
+        DKIM_INVALID,DKIM_SIGNED,SPF_NONE autolearn=no autolearn_force=no
+        version=3.4.0
+Received: from x230.qca.qualcomm.com (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo@smtp.codeaurora.org)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 50C7E60213;
+        Thu, 30 May 2019 04:59:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
+        s=default; t=1559192377;
+        bh=1SgeDXWgbQ0KV936oxZHawpgAwsFnvw+M3W5urT1mUI=;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+        b=MEaxeEnmed/F3fSESFGAbuuwZNg6hk+iTPitU1xNS/BSlPLSAZahGF5vpPitJ05Sz
+         sCPPWy4LRUM7N3SVDrlpUcyYMN2hVlq2IUkkW8+nK0ExY1j0tagnSnbrEiNQ7rhRGY
+         YDrnStmCsLc8NChvqOT5pSx9B7W9xBHMUSnOxvX0=
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 50C7E60213
+Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
+From:   Kalle Valo <kvalo@codeaurora.org>
+To:     Tony Chuang <yhchuang@realtek.com>
+Cc:     Larry Finger <Larry.Finger@lwfinger.net>,
+        "linux-wireless\@vger.kernel.org" <linux-wireless@vger.kernel.org>
+Subject: Re: [PATCH 01/11] rtw88: resolve order of tx power setting routines
+References: <1559116487-5244-1-git-send-email-yhchuang@realtek.com>
+        <1559116487-5244-2-git-send-email-yhchuang@realtek.com>
+        <f5bd9ab0-c32c-dcc6-9451-09e6b7f50a96@lwfinger.net>
+        <F7CD281DE3E379468C6D07993EA72F84D17FABBF@RTITMBSVM04.realtek.com.tw>
+Date:   Thu, 30 May 2019 07:59:34 +0300
+In-Reply-To: <F7CD281DE3E379468C6D07993EA72F84D17FABBF@RTITMBSVM04.realtek.com.tw>
+        (Tony Chuang's message of "Thu, 30 May 2019 02:29:10 +0000")
+Message-ID: <87v9xspmfd.fsf@codeaurora.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
 MIME-Version: 1.0
-References: <20190529050335.72061-1-chiu@endlessm.com> <5f5e262d-aadb-cca0-8576-879735366a73@lwfinger.net>
-In-Reply-To: <5f5e262d-aadb-cca0-8576-879735366a73@lwfinger.net>
-From:   Chris Chiu <chiu@endlessm.com>
-Date:   Thu, 30 May 2019 12:58:18 +0800
-Message-ID: <CAB4CAwdB_8f-JZWWpXdYDghaGQv+Kc4H=G4UUrEK-_xbNg4Ctw@mail.gmail.com>
-Subject: Re: [RFC PATCH v3] rtl8xxxu: Improve TX performance of RTL8723BU on
- rtl8xxxu driver
-To:     Larry Finger <Larry.Finger@lwfinger.net>
-Cc:     Jes Sorensen <jes.sorensen@gmail.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        David Miller <davem@davemloft.net>,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        netdev <netdev@vger.kernel.org>,
-        Linux Kernel <linux-kernel@vger.kernel.org>,
-        Linux Upstreaming Team <linux@endlessm.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Thu, May 30, 2019 at 2:22 AM Larry Finger <Larry.Finger@lwfinger.net> wrote:
->
-> On 5/29/19 12:03 AM, Chris Chiu wrote:
-> > We have 3 laptops which connect the wifi by the same RTL8723BU.
-> > The PCI VID/PID of the wifi chip is 10EC:B720 which is supported.
-> > They have the same problem with the in-kernel rtl8xxxu driver, the
-> > iperf (as a client to an ethernet-connected server) gets ~1Mbps.
-> > Nevertheless, the signal strength is reported as around -40dBm,
-> > which is quite good. From the wireshark capture, the tx rate for each
-> > data and qos data packet is only 1Mbps. Compare to the driver from
-> > https://github.com/lwfinger/rtl8723bu, the same iperf test gets ~12
-> > Mbps or more. The signal strength is reported similarly around
-> > -40dBm. That's why we want to improve.
->
-> The driver at GitHub was written by Realtek. I only published it in a prominent
-> location, and fix it for kernel API changes. I would say "the Realtek driver at
-> https://...", and every mention of "Larry's driver" should say "Realtek's
-> driver". That attribution is more correct.
+Tony Chuang <yhchuang@realtek.com> writes:
 
-Thanks. I'll modify this in next revision.
+>> -----Original Message-----
+>> From: Larry Finger [mailto:larry.finger@gmail.com] On Behalf Of Larry Finger
+>> Sent: Wednesday, May 29, 2019 11:17 PM
+>> To: Tony Chuang; kvalo@codeaurora.org
+>> Cc: linux-wireless@vger.kernel.org
+>> Subject: Re: [PATCH 01/11] rtw88: resolve order of tx power setting routines
+>> 
+>> On 5/29/19 2:54 AM, yhchuang@realtek.com wrote:
+>> > From: Yan-Hsuan Chuang <yhchuang@realtek.com>
+>> >
+>> > Some functions that should be static are unnecessarily exposed, remove
+>> > their declaration in header file phy.h.
+>> >
+>> > After resolving their declaration order, they can be declared as static.
+>> > So this commit changes nothing except the order and marking them static.
+>> >
+>> > Signed-off-by: Yan-Hsuan Chuang <yhchuang@realtek.com>
+>> 
+>> This patch does not apply. Using quilt to see what is wrong, there are 6
+>> changes
+>> that have already been applied.
+>> 
+>> Larry
+>> 
+>
+>
+> These patches are based on
+>
+> https://kernel.googlesource.com/pub/scm/linux/kernel/git/kvalo/wireless-drivers
+> branch master
+>
+> commit 6aca09771db4277a78853d6ac680d8d5f0d915e3
+> Author: YueHaibing <yuehaibing@huawei.com>
+> Date:   Sat May 4 18:32:24 2019 +0800
+>
+>     rtw88: Make some symbols static
+>
+>
+> It should apply, did I miss something?
 
-> >
-> > After reading the source code of the rtl8xxxu driver and Larry's, the
-> > major difference is that Larry's driver has a watchdog which will keep
-> > monitoring the signal quality and updating the rate mask just like the
-> > rtl8xxxu_gen2_update_rate_mask() does if signal quality changes.
-> > And this kind of watchdog also exists in rtlwifi driver of some specific
-> > chips, ex rtl8192ee, rtl8188ee, rtl8723ae, rtl8821ae...etc. They have
-> > the same member function named dm_watchdog and will invoke the
-> > corresponding dm_refresh_rate_adaptive_mask to adjust the tx rate
-> > mask.
-> >
-> > With this commit, the tx rate of each data and qos data packet will
-> > be 39Mbps (MCS4) with the 0xF00000 as the tx rate mask. The 20th bit
-> > to 23th bit means MCS4 to MCS7. It means that the firmware still picks
-> > the lowest rate from the rate mask and explains why the tx rate of
-> > data and qos data is always lowest 1Mbps because the default rate mask
-> > passed is always 0xFFFFFFF ranges from the basic CCK rate, OFDM rate,
-> > and MCS rate. However, with Larry's driver, the tx rate observed from
-> > wireshark under the same condition is almost 65Mbps or 72Mbps.
-> >
-> > I believe the firmware of RTL8723BU may need fix. And I think we
-> > can still bring in the dm_watchdog as rtlwifi to improve from the
-> > driver side. Please leave precious comments for my commits and
-> > suggest what I can do better. Or suggest if there's any better idea
-> > to fix this. Thanks.
-> >
-> > Signed-off-by: Chris Chiu <chiu@endlessm.com>
->
-> I have not tested this patch, but I plan to soon.
->
-> Larry
->
->
+I keep the bar high and take to wireless-drivers only patches which fix
+important, user visible problems. Everything else goes to
+wireless-drivers-next. So you should use wireless-drivers-next as the
+baseline for all regular patches.
+
+-- 
+Kalle Valo
