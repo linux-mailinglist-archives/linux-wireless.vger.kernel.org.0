@@ -2,130 +2,81 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 951112F602
-	for <lists+linux-wireless@lfdr.de>; Thu, 30 May 2019 06:53:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9BABA2F686
+	for <lists+linux-wireless@lfdr.de>; Thu, 30 May 2019 06:57:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728615AbfE3EwA (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 30 May 2019 00:52:00 -0400
-Received: from mail-qk1-f193.google.com ([209.85.222.193]:39247 "EHLO
-        mail-qk1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728436AbfE3EwA (ORCPT
+        id S1728682AbfE3E46 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 30 May 2019 00:56:58 -0400
+Received: from smtp.codeaurora.org ([198.145.29.96]:51672 "EHLO
+        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727887AbfE3E45 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 30 May 2019 00:52:00 -0400
-Received: by mail-qk1-f193.google.com with SMTP id i125so3033167qkd.6
-        for <linux-wireless@vger.kernel.org>; Wed, 29 May 2019 21:51:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=endlessm-com.20150623.gappssmtp.com; s=20150623;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=sHOf1/WDs1TjZmoF3swY2gMBdaFm4kQJB8zDdbqYUtY=;
-        b=f825F3Seg4ieVRUakmG+2nGqhhygBqwqBaEc1iOc0MaaO0sTSgNmD0hr/deWGkkk8D
-         oSBHHzB7EF7mqP05QR1/t5lDvwyi/eGEyhi4RZ0QM2XtWegAbglgw2jrHuJxJtGEE+U9
-         VnJmOLG9LhCt2JYLoUxhPWPUkW3FUk81O7cn3GOxPEAw18lba1Uv+HZVT2yS5fqk0gPm
-         jFk18XIsCuviYZzfzpUXg5AH9TqFYqgcps9uvKOir++7jxxwIY/nuYgf5ONNA4hBYvl3
-         1KlZphriIqtMRf/ZEXrcrdiDzkzZi/lXz4lIkn2ZlRqLkse/MEEdkcMY3XsfRpUhX9bW
-         0tjA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=sHOf1/WDs1TjZmoF3swY2gMBdaFm4kQJB8zDdbqYUtY=;
-        b=cNe/OVL+aXaXIw5OAHzMs3u9N1R5XcKlU1RiV7foW0OegSlxg2qJOTIMQaPUUsGjV/
-         4M/acVoYXwuSYrz5tcuyzbKhW7AUcFrCdANrdsLFDIK8aSPg0RzPEMu7mlL9joWdsaBi
-         sF+nRy92+vWSpV7cnwI9IE0MdFWND7ZK2hbMl1ZUOwgtjabOAkn78fxXORPUBv1E7pTX
-         Jmf2oUUFQBRh0HXl5tPq6Gg6lzWIfGXuVrYLtcpeeZ8QhN4mYWMGSTGOrpSQ8vCYLvuF
-         8XScyTroItGldFBjsg1iQsGmP1NI7g9gX4d6YV/vQpHMGvGkqOVAXN1DYgT9/TQtIObY
-         euhQ==
-X-Gm-Message-State: APjAAAWFFi6NXDPV2gIFbyZMsWzDt2U4uAeIP+CrhcJ6aZIdTIat+vTC
-        MCTTy7hIrpUBg2ZhG/06B4pmKgIWfZWFkr0hoUf5ZQ==
-X-Google-Smtp-Source: APXvYqwJqY9emE8P8Vz0UaW1tHbFbmoM/x5fzvRbbHX2yA78QWUp92wyAA0LNjazNuKGR/CZ3jZwhs+os92Tr1JE+Ug=
-X-Received: by 2002:a37:48c4:: with SMTP id v187mr1318465qka.314.1559191919082;
- Wed, 29 May 2019 21:51:59 -0700 (PDT)
+        Thu, 30 May 2019 00:56:57 -0400
+Received: by smtp.codeaurora.org (Postfix, from userid 1000)
+        id 41D4460A00; Thu, 30 May 2019 04:56:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
+        s=default; t=1559192217;
+        bh=HzjoCcQKElgW5yawy9MIbUKp4D4xCMIcf8BixISztcs=;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+        b=QFR54PCTm4J7TLMW0iFACyrmqQhyN/4tb7iMpG+u8kEWBrOgYI/okbFnY5yveNGQa
+         +dyd/xrMnMVcIrgkumTHkacNX9JM9QZLhi6iNk8fJnyGerGegbNiVDLTACwph1Fro7
+         fm4yTZ8nMmHOt7Af1uEppt8nnThvUdHKVrLwitB0=
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        pdx-caf-mail.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.7 required=2.0 tests=ALL_TRUSTED,BAYES_00,
+        DKIM_INVALID,DKIM_SIGNED,SPF_NONE autolearn=no autolearn_force=no
+        version=3.4.0
+Received: from x230.qca.qualcomm.com (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo@smtp.codeaurora.org)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 557F6604D4;
+        Thu, 30 May 2019 04:56:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
+        s=default; t=1559192216;
+        bh=HzjoCcQKElgW5yawy9MIbUKp4D4xCMIcf8BixISztcs=;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+        b=JD5wbx4k2uQcsUNV/1vgILMgdoGGespvwZH2C8Ej/XTaL60Il8rMNhCKt1MfGpFJ5
+         qu9bES6rgagQ7uQ72rzKgwdI+lXF5Ef6Ux+FyOWaGro6htSdRnca1bpAeIUuT5+Cda
+         sqJc3Iu2nZ+r/JqgFBxUrQBHTWX2xSQLzSXLTOvE=
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 557F6604D4
+Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
+From:   Kalle Valo <kvalo@codeaurora.org>
+To:     Lorenzo Bianconi <lorenzo@kernel.org>
+Cc:     linux-wireless@vger.kernel.org, nbd@nbd.name,
+        lorenzo.bianconi@redhat.com, sgruszka@redhat.com
+Subject: Re: [PATCH wireless-drivers] mt76: usb: fix buffer allocation for scatter-gather capable devices
+References: <f1f5b9f564e374174a9a2bbae29f4b72fd4c6ddd.1559163190.git.lorenzo@kernel.org>
+Date:   Thu, 30 May 2019 07:56:52 +0300
+In-Reply-To: <f1f5b9f564e374174a9a2bbae29f4b72fd4c6ddd.1559163190.git.lorenzo@kernel.org>
+        (Lorenzo Bianconi's message of "Wed, 29 May 2019 23:01:49 +0200")
+Message-ID: <87zhn4pmjv.fsf@codeaurora.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
 MIME-Version: 1.0
-References: <20190529050335.72061-1-chiu@endlessm.com> <CAD8Lp46on32VgWtCe7WsGHXp3Jk16qTh6saf0Vj0Y4Ry5z1n7g@mail.gmail.com>
-In-Reply-To: <CAD8Lp46on32VgWtCe7WsGHXp3Jk16qTh6saf0Vj0Y4Ry5z1n7g@mail.gmail.com>
-From:   Chris Chiu <chiu@endlessm.com>
-Date:   Thu, 30 May 2019 12:51:47 +0800
-Message-ID: <CAB4CAwfVDfphWNAN5L1f9BCT9Oo3AQwL19BOUTNJNFM=QR7rjQ@mail.gmail.com>
-Subject: Re: [RFC PATCH v3] rtl8xxxu: Improve TX performance of RTL8723BU on
- rtl8xxxu driver
-To:     Daniel Drake <drake@endlessm.com>
-Cc:     Jes Sorensen <jes.sorensen@gmail.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        David Miller <davem@davemloft.net>,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        netdev <netdev@vger.kernel.org>,
-        Linux Kernel <linux-kernel@vger.kernel.org>,
-        Linux Upstreaming Team <linux@endlessm.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Thu, May 30, 2019 at 2:12 AM Daniel Drake <drake@endlessm.com> wrote:
->
-> Hi Chris,
->
-> On Tue, May 28, 2019 at 11:03 PM Chris Chiu <chiu@endlessm.com> wrote:
-> > +       /*
-> > +        * Single virtual interface permitted since the driver supports STATION
-> > +        * mode only.
->
-> I think you can be a bit more explicit by saying e.g.:
->
-> Only one virtual interface permitted because only STA mode is
-> supported and no iface_combinations are provided.
->
-> > diff --git a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
-> > index 039e5ca9d2e4..2d612c2df5b2 100644
-> > --- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
-> > +++ b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
-> > @@ -4345,7 +4345,7 @@ void rtl8xxxu_gen2_update_rate_mask(struct rtl8xxxu_priv *priv,
-> >         h2c.b_macid_cfg.ramask3 = (ramask >> 24) & 0xff;
-> >
-> >         h2c.ramask.arg = 0x80;
-> > -       h2c.b_macid_cfg.data1 = 0;
-> > +       h2c.b_macid_cfg.data1 = priv->ratr_index;
->
-> I think ratr_index can be moved to be a function parameter of the
-> update_rate_mask function. It looks like all callsites already know
-> which value they want to set. Then you don't have to store it in the
-> priv structure.
->
+Lorenzo Bianconi <lorenzo@kernel.org> writes:
 
-You mean moving the ratr_index to be the 4th function parameter of
-update_rate_mask which has 2 candidates rtl8xxxu_update_rate_mask
-and rtl8xxxu_gen2_update_rate_mask? I was planning to keep the
-rtl8xxxu_update_rate_mask the same because old chips seems don't
-need the rate index when invoking H2C command to change rate mask.
-And rate index is not a common phrase/term for rate adaptive. Theoretically
-we just need packet error rate, sgi and other factors to determine the rate
-mask. This rate index seems to be only specific to newer Realtek drivers
-or firmware for rate adaptive algorithm.  I'd like to keep this for gen2 but
-I admit it's ugly to put it in the priv structure. Any suggestion is
-appreciated.
-Thanks
+> Partially revert commit f8f527b16db5 ("mt76: usb: use EP max packet
+> aligned buffer sizes for rx") since it breaks A-MSDU support.
+> When A-MSDU is enable the device can receive frames up to
+> q->buf_size but they will be discarded in mt76u_process_rx_entry
+> since there is no enough room for skb_shared_info.
+> Fix it by introducing q->data_size and take info account
+> skb_shared_info size in q->buf_size
+> Moreover increase buffer size even for legacy mode (scatter-gather not
+> available)
+>
+> Fixes: f8f527b16db5 ("mt76: usb: use EP max packet aligned buffer sizes for rx")
+> Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
 
-> > @@ -5471,6 +5509,10 @@ static int rtl8xxxu_add_interface(struct ieee80211_hw *hw,
-> >
-> >         switch (vif->type) {
-> >         case NL80211_IFTYPE_STATION:
-> > +               if (!priv->vif)
-> > +                       priv->vif = vif;
-> > +               else
-> > +                       return -EOPNOTSUPP;
-> >                 rtl8xxxu_stop_tx_beacon(priv);
->
-> rtl8xxxu_remove_interface should also set priv->vif back to NULL.
->
-> > @@ -6183,6 +6259,8 @@ static void rtl8xxxu_disconnect(struct usb_interface *interface)
-> >         mutex_destroy(&priv->usb_buf_mutex);
-> >         mutex_destroy(&priv->h2c_mutex);
-> >
-> > +       cancel_delayed_work_sync(&priv->ra_watchdog);
->
-> Given that the work was started in rtl8xxxu_start, I think it should
-> be cancelled in rtl8xxxu_stop() instead.
->
-> Daniel
+Felix, can I take this directly to wireless-drivers?
+
+-- 
+Kalle Valo
