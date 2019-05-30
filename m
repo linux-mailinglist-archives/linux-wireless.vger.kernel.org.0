@@ -2,92 +2,69 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 196982FACF
-	for <lists+linux-wireless@lfdr.de>; Thu, 30 May 2019 13:22:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9C4CD2FE8D
+	for <lists+linux-wireless@lfdr.de>; Thu, 30 May 2019 16:54:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726610AbfE3LW6 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 30 May 2019 07:22:58 -0400
-Received: from smtp.codeaurora.org ([198.145.29.96]:49954 "EHLO
+        id S1726169AbfE3OxN (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 30 May 2019 10:53:13 -0400
+Received: from smtp.codeaurora.org ([198.145.29.96]:60570 "EHLO
         smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725440AbfE3LW6 (ORCPT
+        with ESMTP id S1725934AbfE3OxN (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 30 May 2019 07:22:58 -0400
+        Thu, 30 May 2019 10:53:13 -0400
 Received: by smtp.codeaurora.org (Postfix, from userid 1000)
-        id 63D0260A33; Thu, 30 May 2019 11:22:57 +0000 (UTC)
+        id 239AB60252; Thu, 30 May 2019 14:53:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1559215377;
-        bh=47ymiYIkobMeFci27erzsKJ1pSwLy75eawLOiymclzE=;
-        h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-        b=n/8lwSep4mSpJny4UMWsUZOrG1RUYNAzv4mnEWQEQ3sFzfZCXnnvhORHVkEizTsDu
-         ifOaj+xPmnQz+tYCvZe5A9g+f27X2A3saUwcIUEt5GBapfc/RxzUmzyOq3K5Vts3E1
-         kkw0penauJzYZki1W/r44gyOnq0l55wPwaejmNa8=
+        s=default; t=1559227993;
+        bh=qOOoiCFWMZlsdRFhPnCxTNGKF2WJRw82w7WvYl9gLCQ=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=NAZouPqW62cfNDMNNhHslEsZRucUYWlUaKIyv1cxwNZA6ptomX5TRyF9cYjPOXZXD
+         Nw4BBe6ZMpG0uQH1krGs++L821I+zYZ9Az5gBLfJY82hRaXZznkBTm0F5Oj8E0fJEa
+         zOALiDebl0dUySOJ0G0UVnT1vZcsj9kdsj5HRAVo=
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         pdx-caf-mail.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-0.8 required=2.0 tests=ALL_TRUSTED,BAYES_00,
-        DKIM_INVALID,DKIM_SIGNED,MISSING_DATE,MISSING_MID,SPF_NONE autolearn=no
-        autolearn_force=no version=3.4.0
-Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        (Authenticated sender: kvalo@smtp.codeaurora.org)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 6E714607CA;
-        Thu, 30 May 2019 11:22:54 +0000 (UTC)
+X-Spam-Status: No, score=-2.7 required=2.0 tests=ALL_TRUSTED,BAYES_00,
+        DKIM_INVALID,DKIM_SIGNED autolearn=no autolearn_force=no version=3.4.0
+Received: from mail.codeaurora.org (localhost.localdomain [127.0.0.1])
+        by smtp.codeaurora.org (Postfix) with ESMTP id CFF0660252;
+        Thu, 30 May 2019 14:53:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1559215376;
-        bh=47ymiYIkobMeFci27erzsKJ1pSwLy75eawLOiymclzE=;
-        h=Subject:From:In-Reply-To:References:To:Cc:From;
-        b=Er2gshbuwi98mx5dZQR76t/T1KWifWB/TUZV0k/rKq2uQ0CuwvqaK/Pp9P7NqCqVW
-         gBHWpkssZkhxBxBCSafhL5WzZ92CjChIK1Ya6EOUtRFzHqvnTEjLeTbRGqntvKfEhZ
-         K6eWqTu2adUeJQz6SFBkvjediPppn6TSdc3pDt7w=
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 6E714607CA
-Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
-Content-Type: text/plain; charset="utf-8"
+        s=default; t=1559227992;
+        bh=qOOoiCFWMZlsdRFhPnCxTNGKF2WJRw82w7WvYl9gLCQ=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=SW6WkMXwH/O/vw8gbEWZXp1XrmFtAFzQhMezGKU0PLE9HO/fAvUhX5r0NYH2JvUhj
+         vFTnYmxWYnerxDcjFL5sHJZ1CvUKmTWg11UCs2LszogQLNDurF1pKkYEc9vANSiJgQ
+         Cx6t0Fogp+4tyRmLe9yveAtoA4yqKMECVIzOi4Ew=
 MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII;
+ format=flowed
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH 1/2] mwifiex: Fix possible buffer overflows at parsing bss
- descriptor
-From:   Kalle Valo <kvalo@codeaurora.org>
-In-Reply-To: <20190529125220.17066-2-tiwai@suse.de>
-References: <20190529125220.17066-2-tiwai@suse.de>
-To:     Takashi Iwai <tiwai@suse.de>
-Cc:     linux-wireless@vger.kernel.org,
-        Amitkumar Karwar <amitkarwar@gmail.com>,
-        Nishant Sarmukadam <nishants@marvell.com>,
-        Ganapathi Bhat <gbhat@marvell.com>,
-        Xinming Hu <huxinming820@gmail.com>, huangwen@venustech.com.cn,
-        Solar Designer <solar@openwall.com>,
-        Marcus Meissner <meissner@suse.de>
-User-Agent: pwcli/0.0.0-git (https://github.com/kvalo/pwcli/) Python/2.7.12
-Message-Id: <20190530112257.63D0260A33@smtp.codeaurora.org>
-Date:   Thu, 30 May 2019 11:22:57 +0000 (UTC)
+Date:   Thu, 30 May 2019 07:53:12 -0700
+From:   Jeff Johnson <jjohnson@codeaurora.org>
+To:     Arend van Spriel <arend.vanspriel@broadcom.com>
+Cc:     linux-wireless@vger.kernel.org
+Subject: Re: [RFC 1/8] nl80211: add 6GHz band definition to enum nl80211_band
+In-Reply-To: <1558353645-18119-2-git-send-email-arend.vanspriel@broadcom.com>
+References: <1558353645-18119-1-git-send-email-arend.vanspriel@broadcom.com>
+ <1558353645-18119-2-git-send-email-arend.vanspriel@broadcom.com>
+Message-ID: <d27aac46e682d6cb93ac97df0073818c@codeaurora.org>
+X-Sender: jjohnson@codeaurora.org
+User-Agent: Roundcube Webmail/1.2.5
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Takashi Iwai <tiwai@suse.de> wrote:
-
-> mwifiex_update_bss_desc_with_ie() calls memcpy() unconditionally in
-> a couple places without checking the destination size.  Since the
-> source is given from user-space, this may trigger a heap buffer
-> overflow.
+On 2019-05-20 05:00, Arend van Spriel wrote:
+> [...snip...]
+>  enum nl80211_band {
+>  	NL80211_BAND_2GHZ,
+>  	NL80211_BAND_5GHZ,
+> +	NL80211_BAND_6GHZ,
+>  	NL80211_BAND_60GHZ,
 > 
-> Fix it by putting the length check before performing memcpy().
-> 
-> This fix addresses CVE-2019-3846.
-> 
-> Reported-by: huangwen <huangwen@venustech.com.cn>
-> Signed-off-by: Takashi Iwai <tiwai@suse.de>
+>  	NUM_NL80211_BANDS,
 
-2 patches applied to wireless-drivers.git, thanks.
-
-13ec7f10b87f mwifiex: Fix possible buffer overflows at parsing bss descriptor
-685c9b7750bf mwifiex: Abort at too short BSS descriptor element
-
--- 
-https://patchwork.kernel.org/patch/10967049/
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
-
+Is it not a concern that this changes the value of NL80211_BAND_60GHZ 
+and hence will break any ABI which expects the current value?
