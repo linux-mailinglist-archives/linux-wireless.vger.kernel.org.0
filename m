@@ -2,125 +2,151 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 9F9F930C96
-	for <lists+linux-wireless@lfdr.de>; Fri, 31 May 2019 12:31:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CF64C30EBC
+	for <lists+linux-wireless@lfdr.de>; Fri, 31 May 2019 15:19:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726683AbfEaKbh (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 31 May 2019 06:31:37 -0400
-Received: from mailgw02.mediatek.com ([210.61.82.184]:50287 "EHLO
-        mailgw02.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1726233AbfEaKbh (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 31 May 2019 06:31:37 -0400
-X-UUID: ad0d1c2b08554872854e3b038420a56c-20190531
-X-UUID: ad0d1c2b08554872854e3b038420a56c-20190531
-Received: from mtkcas06.mediatek.inc [(172.21.101.30)] by mailgw02.mediatek.com
-        (envelope-from <ryder.lee@mediatek.com>)
-        (mhqrelay.mediatek.com ESMTP with TLS)
-        with ESMTP id 661529757; Fri, 31 May 2019 18:31:28 +0800
-Received: from mtkcas09.mediatek.inc (172.21.101.178) by
- mtkmbs07n1.mediatek.inc (172.21.101.16) with Microsoft SMTP Server (TLS) id
- 15.0.1395.4; Fri, 31 May 2019 18:31:27 +0800
-Received: from [172.21.77.33] (172.21.77.33) by mtkcas09.mediatek.inc
- (172.21.101.73) with Microsoft SMTP Server id 15.0.1395.4 via Frontend
- Transport; Fri, 31 May 2019 18:31:21 +0800
-Message-ID: <1559298681.3296.3.camel@mtkswgap22>
-Subject: Re: [PATCH 1/2] mt76: mt7615: enable support for mesh
-From:   Ryder Lee <ryder.lee@mediatek.com>
-To:     Lorenzo Bianconi <lorenzo@kernel.org>
-CC:     Felix Fietkau <nbd@nbd.name>,
-        Lorenzo Bianconi <lorenzo.bianconi@redhat.com>,
-        Roy Luo <royluo@google.com>, YF Luo <yf.luo@mediatek.com>,
-        Yiwei Chung <yiwei.chung@mediatek.com>,
-        Sean Wang <sean.wang@mediatek.com>,
-        Chih-Min Chen <chih-min.Chen@mediatek.com>,
-        <linux-wireless@vger.kernel.org>,
-        <linux-mediatek@lists.infradead.org>,
-        <linux-kernel@vger.kernel.org>
-Date:   Fri, 31 May 2019 18:31:21 +0800
-In-Reply-To: <20190531100201.GA3527@localhost.localdomain>
-References: <7f167d09736652f81383991c971506630bbedacc.1559287432.git.ryder.lee@mediatek.com>
-         <20190531100201.GA3527@localhost.localdomain>
-Content-Type: text/plain; charset="UTF-8"
-X-Mailer: Evolution 3.2.3-0ubuntu6 
-Content-Transfer-Encoding: 7bit
-MIME-Version: 1.0
-X-MTK:  N
+        id S1726682AbfEaNTR (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 31 May 2019 09:19:17 -0400
+Received: from mx2.suse.de ([195.135.220.15]:46148 "EHLO mx1.suse.de"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1726330AbfEaNTR (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 31 May 2019 09:19:17 -0400
+X-Virus-Scanned: by amavisd-new at test-mx.suse.de
+Received: from relay2.suse.de (unknown [195.135.220.254])
+        by mx1.suse.de (Postfix) with ESMTP id A72A4AE4D;
+        Fri, 31 May 2019 13:19:15 +0000 (UTC)
+From:   Takashi Iwai <tiwai@suse.de>
+To:     Kalle Valo <kvalo@codeaurora.org>
+Cc:     Amitkumar Karwar <amitkarwar@gmail.com>,
+        Nishant Sarmukadam <nishants@marvell.com>,
+        Ganapathi Bhat <gbhat@marvell.com>,
+        Xinming Hu <huxinming820@gmail.com>,
+        huangwen <huangwen@venustech.com.cn>,
+        Solar Designer <solar@openwall.com>,
+        Marcus Meissner <meissner@suse.de>,
+        linux-wireless@vger.kernel.org
+Subject: [PATCH] mwifiex: Fix heap overflow in mwifiex_uap_parse_tail_ies()
+Date:   Fri, 31 May 2019 15:18:41 +0200
+Message-Id: <20190531131841.7552-1-tiwai@suse.de>
+X-Mailer: git-send-email 2.16.4
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Fri, 2019-05-31 at 12:02 +0200, Lorenzo Bianconi wrote:
-> > Enable NL80211_IFTYPE_MESH_POINT and add its path.
-> > 
-> > Signed-off-by: Ryder Lee <ryder.lee@mediatek.com>
-> > ---
-> >  drivers/net/wireless/mediatek/mt76/mt7615/init.c | 6 ++++++
-> >  drivers/net/wireless/mediatek/mt76/mt7615/main.c | 1 +
-> >  drivers/net/wireless/mediatek/mt76/mt7615/mcu.c  | 5 ++++-
-> >  3 files changed, 11 insertions(+), 1 deletion(-)
-> > 
-> 
-> [...]
-> 
-> > diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/main.c b/drivers/net/wireless/mediatek/mt76/mt7615/main.c
-> > index b0bb7cc12385..585e67fa2728 100644
-> > --- a/drivers/net/wireless/mediatek/mt76/mt7615/main.c
-> > +++ b/drivers/net/wireless/mediatek/mt76/mt7615/main.c
-> > @@ -37,6 +37,7 @@ static int get_omac_idx(enum nl80211_iftype type, u32 mask)
-> >  
-> >  	switch (type) {
-> >  	case NL80211_IFTYPE_AP:
-> > +	case NL80211_IFTYPE_MESH_POINT:
-> >  		/* ap use hw bssid 0 and ext bssid */
-> >  		if (~mask & BIT(HW_BSSID_0))
-> >  			return HW_BSSID_0;
-> > diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c
-> > index 43f70195244c..8b8db526cb16 100644
-> > --- a/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c
-> > +++ b/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c
-> > @@ -754,6 +754,7 @@ int mt7615_mcu_set_bss_info(struct mt7615_dev *dev,
-> >  
-> >  	switch (vif->type) {
-> >  	case NL80211_IFTYPE_AP:
-> > +	case NL80211_IFTYPE_MESH_POINT:
-> >  		tx_wlan_idx = mvif->sta.wcid.idx;
-> >  		conn_type = CONNECTION_INFRA_AP;
-> 
-> Just out of curiosity, why not using CONNECTION_MESH_{AP,STA} here?
-> why not NETWORK_MESH?
+A few places in mwifiex_uap_parse_tail_ies() perform memcpy()
+unconditionally, which may lead to either buffer overflow or read over
+boundary.
 
-Actually the CONNECTION_MESH_{AP,STA} are useless and I will send v2 to
-remove them.
+This patch addresses the issues by checking the read size and the
+destination size at each place more properly.  Along with the fixes,
+the patch cleans up the code slightly by introducing a temporary
+variable for the token size, and unifies the error path with the
+standard goto statement.
 
-> >  		break;
-> > @@ -968,7 +969,8 @@ int mt7615_mcu_add_wtbl(struct mt7615_dev *dev, struct ieee80211_vif *vif,
-> >  		.rx_wtbl = {
-> >  			.tag = cpu_to_le16(WTBL_RX),
-> >  			.len = cpu_to_le16(sizeof(struct wtbl_rx)),
-> > -			.rca1 = vif->type != NL80211_IFTYPE_AP,
-> > +			.rca1 = vif->type != (NL80211_IFTYPE_AP ||
-> > +					      NL80211_IFTYPE_MESH_POINT),
-> >  			.rca2 = 1,
-> >  			.rv = 1,
-> >  		},
-> > @@ -1042,6 +1044,7 @@ static void sta_rec_convert_vif_type(enum nl80211_iftype type, u32 *conn_type)
-> >  {
-> >  	switch (type) {
-> >  	case NL80211_IFTYPE_AP:
-> > +	case NL80211_IFTYPE_MESH_POINT:
-> >  		if (conn_type)
-> >  			*conn_type = CONNECTION_INFRA_STA;
-> >  		break;
-> 
-> same here.
-> 
-> Regards,
-> Lorenzo
-> 
-> > -- 
-> > 2.18.0
-> > 
+Reported-by: huangwen <huangwen@venustech.com.cn>
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+---
+ drivers/net/wireless/marvell/mwifiex/ie.c | 47 ++++++++++++++++++++-----------
+ 1 file changed, 31 insertions(+), 16 deletions(-)
 
+diff --git a/drivers/net/wireless/marvell/mwifiex/ie.c b/drivers/net/wireless/marvell/mwifiex/ie.c
+index 6845eb57b39a..653d347a9a19 100644
+--- a/drivers/net/wireless/marvell/mwifiex/ie.c
++++ b/drivers/net/wireless/marvell/mwifiex/ie.c
+@@ -329,6 +329,8 @@ static int mwifiex_uap_parse_tail_ies(struct mwifiex_private *priv,
+ 	struct ieee80211_vendor_ie *vendorhdr;
+ 	u16 gen_idx = MWIFIEX_AUTO_IDX_MASK, ie_len = 0;
+ 	int left_len, parsed_len = 0;
++	unsigned int token_len;
++	int err = 0;
+ 
+ 	if (!info->tail || !info->tail_len)
+ 		return 0;
+@@ -344,6 +346,12 @@ static int mwifiex_uap_parse_tail_ies(struct mwifiex_private *priv,
+ 	 */
+ 	while (left_len > sizeof(struct ieee_types_header)) {
+ 		hdr = (void *)(info->tail + parsed_len);
++		token_len = hdr->len + sizeof(struct ieee_types_header);
++		if (token_len > left_len) {
++			err = -EINVAL;
++			goto out;
++		}
++
+ 		switch (hdr->element_id) {
+ 		case WLAN_EID_SSID:
+ 		case WLAN_EID_SUPP_RATES:
+@@ -361,17 +369,20 @@ static int mwifiex_uap_parse_tail_ies(struct mwifiex_private *priv,
+ 			if (cfg80211_find_vendor_ie(WLAN_OUI_MICROSOFT,
+ 						    WLAN_OUI_TYPE_MICROSOFT_WMM,
+ 						    (const u8 *)hdr,
+-						    hdr->len + sizeof(struct ieee_types_header)))
++						    token_len))
+ 				break;
+ 			/* fall through */
+ 		default:
+-			memcpy(gen_ie->ie_buffer + ie_len, hdr,
+-			       hdr->len + sizeof(struct ieee_types_header));
+-			ie_len += hdr->len + sizeof(struct ieee_types_header);
++			if (ie_len + token_len > IEEE_MAX_IE_SIZE) {
++				err = -EINVAL;
++				goto out;
++			}
++			memcpy(gen_ie->ie_buffer + ie_len, hdr, token_len);
++			ie_len += token_len;
+ 			break;
+ 		}
+-		left_len -= hdr->len + sizeof(struct ieee_types_header);
+-		parsed_len += hdr->len + sizeof(struct ieee_types_header);
++		left_len -= token_len;
++		parsed_len += token_len;
+ 	}
+ 
+ 	/* parse only WPA vendor IE from tail, WMM IE is configured by
+@@ -381,15 +392,17 @@ static int mwifiex_uap_parse_tail_ies(struct mwifiex_private *priv,
+ 						    WLAN_OUI_TYPE_MICROSOFT_WPA,
+ 						    info->tail, info->tail_len);
+ 	if (vendorhdr) {
+-		memcpy(gen_ie->ie_buffer + ie_len, vendorhdr,
+-		       vendorhdr->len + sizeof(struct ieee_types_header));
+-		ie_len += vendorhdr->len + sizeof(struct ieee_types_header);
++		token_len = vendorhdr->len + sizeof(struct ieee_types_header);
++		if (ie_len + token_len > IEEE_MAX_IE_SIZE) {
++			err = -EINVAL;
++			goto out;
++		}
++		memcpy(gen_ie->ie_buffer + ie_len, vendorhdr, token_len);
++		ie_len += token_len;
+ 	}
+ 
+-	if (!ie_len) {
+-		kfree(gen_ie);
+-		return 0;
+-	}
++	if (!ie_len)
++		goto out;
+ 
+ 	gen_ie->ie_index = cpu_to_le16(gen_idx);
+ 	gen_ie->mgmt_subtype_mask = cpu_to_le16(MGMT_MASK_BEACON |
+@@ -399,13 +412,15 @@ static int mwifiex_uap_parse_tail_ies(struct mwifiex_private *priv,
+ 
+ 	if (mwifiex_update_uap_custom_ie(priv, gen_ie, &gen_idx, NULL, NULL,
+ 					 NULL, NULL)) {
+-		kfree(gen_ie);
+-		return -1;
++		err = -EINVAL;
++		goto out;
+ 	}
+ 
+ 	priv->gen_idx = gen_idx;
++
++ out:
+ 	kfree(gen_ie);
+-	return 0;
++	return err;
+ }
+ 
+ /* This function parses different IEs-head & tail IEs, beacon IEs,
+-- 
+2.16.4
 
