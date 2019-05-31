@@ -2,34 +2,34 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 7FAEF30BC8
-	for <lists+linux-wireless@lfdr.de>; Fri, 31 May 2019 11:39:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B6E3830BC9
+	for <lists+linux-wireless@lfdr.de>; Fri, 31 May 2019 11:39:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726555AbfEaJjP (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 31 May 2019 05:39:15 -0400
-Received: from mail.kernel.org ([198.145.29.99]:42350 "EHLO mail.kernel.org"
+        id S1726240AbfEaJj0 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 31 May 2019 05:39:26 -0400
+Received: from mail.kernel.org ([198.145.29.99]:42374 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726002AbfEaJjP (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 31 May 2019 05:39:15 -0400
+        id S1726002AbfEaJjZ (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 31 May 2019 05:39:25 -0400
 Received: from localhost.localdomain.com (nat-pool-mxp-t.redhat.com [149.6.153.186])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 6F014266FF;
-        Fri, 31 May 2019 09:39:13 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id EDC3E266FD;
+        Fri, 31 May 2019 09:39:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1559295554;
-        bh=bAbzMFZ0AUjdEkjq7Nay/dtboD7/WSZO3GN3rXEPqoE=;
+        s=default; t=1559295565;
+        bh=nuYyx7BnilCyWILdkj0IGIG3O3W8VBq8qW3kbUvyHtA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=lTrE/MOoOBEzm7mGxME3qSj7iWaDGOBgtRxyayMKkreKnLEJDHFJSJAaBlCxc9c2E
-         7kvl13H6Lu/bb5QUCk/IDN+dqgG2t7F+DBeDMjNH0Aqphqj9TaI/l35Pb4rp6ub2Ca
-         76T3Rml18Xq+hlQiHph7rHcYfWWIep8WNgL6AEps=
+        b=qZI0geNaWdvZi3Eq+rG92kpRxC+ymhcKA4L0HDNNM4HomWQOnx7bHsi7TAhjTwvgW
+         km/DgXnf/ykJ6QfH9bymO57JsQ7joTYC2YkxOsYyS2QAfihpTHUajNXrDnW0oCG+s+
+         +57s4yHdmQQrqH9knJsY7hNxyC+2iD6sqXbw2TU8=
 From:   Lorenzo Bianconi <lorenzo@kernel.org>
 To:     nbd@nbd.name
 Cc:     kvalo@codeaurora.org, linux-wireless@vger.kernel.org,
         lorenzo.bianconi@redhat.com, sgruszka@redhat.com
-Subject: [PATCH v2 1/2] mt76: usb: fix rx A-MSDU support
-Date:   Fri, 31 May 2019 11:38:22 +0200
-Message-Id: <52ea155d9889aa15df44b4910806b74fa2fd9056.1559293385.git.lorenzo@kernel.org>
+Subject: [PATCH v2 2/2] mt76: usb: do not always copy the first part of received frames
+Date:   Fri, 31 May 2019 11:38:23 +0200
+Message-Id: <2ed0b595a12944a8cfea14e066bcc4fa24f0ba44.1559293385.git.lorenzo@kernel.org>
 X-Mailer: git-send-email 2.21.0
 In-Reply-To: <cover.1559293385.git.lorenzo@kernel.org>
 References: <cover.1559293385.git.lorenzo@kernel.org>
@@ -40,107 +40,75 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Commit f8f527b16db5 ("mt76: usb: use EP max packet aligned buffer sizes
-for rx") breaks A-MSDU support. When A-MSDU is enable the device can
-receive frames up to q->buf_size but they will be discarded in
-mt76u_process_rx_entry since there is no enough room for
-skb_shared_info. Fix the issue reallocating the skb and copying in the
-linear area the first 128B of the received frames and in the frag_list
-the remaining part.
+Set usb buffer size taking into account skb_shared_info in order to
+not always copy the first part of received frames if A-MSDU is enabled
+for SG capable devices
 
-Fixes: f8f527b16db5 ("mt76: usb: use EP max packet aligned buffer sizes for rx")
 Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
 ---
- drivers/net/wireless/mediatek/mt76/mt76.h |  1 +
- drivers/net/wireless/mediatek/mt76/usb.c  | 52 +++++++++++++++++++----
- 2 files changed, 44 insertions(+), 9 deletions(-)
+ drivers/net/wireless/mediatek/mt76/mt76.h |  3 +++
+ drivers/net/wireless/mediatek/mt76/usb.c  | 12 ++++++++----
+ 2 files changed, 11 insertions(+), 4 deletions(-)
 
 diff --git a/drivers/net/wireless/mediatek/mt76/mt76.h b/drivers/net/wireless/mediatek/mt76/mt76.h
-index 97a1296562d0..74d4edf941d6 100644
+index 74d4edf941d6..7899e9b88b54 100644
 --- a/drivers/net/wireless/mediatek/mt76/mt76.h
 +++ b/drivers/net/wireless/mediatek/mt76/mt76.h
-@@ -30,6 +30,7 @@
- #define MT_TX_RING_SIZE     256
- #define MT_MCU_RING_SIZE    32
+@@ -32,6 +32,9 @@
  #define MT_RX_BUF_SIZE      2048
-+#define MT_SKB_HEAD_LEN     128
+ #define MT_SKB_HEAD_LEN     128
  
++#define MT_BUF_WITH_OVERHEAD(x) \
++	((x) + SKB_DATA_ALIGN(sizeof(struct skb_shared_info)))
++
  struct mt76_dev;
  struct mt76_wcid;
+ 
 diff --git a/drivers/net/wireless/mediatek/mt76/usb.c b/drivers/net/wireless/mediatek/mt76/usb.c
-index bbaa1365bbda..2bfc8214c0d8 100644
+index 2bfc8214c0d8..5081643ce701 100644
 --- a/drivers/net/wireless/mediatek/mt76/usb.c
 +++ b/drivers/net/wireless/mediatek/mt76/usb.c
-@@ -429,6 +429,48 @@ static int mt76u_get_rx_entry_len(u8 *data, u32 data_len)
- 	return dma_len;
- }
- 
-+static struct sk_buff *
-+mt76u_build_rx_skb(u8 *data, int len, int buf_size,
-+		   int *nsgs)
-+{
-+	int data_len = min(len, MT_SKB_HEAD_LEN);
-+	struct sk_buff *skb;
-+
-+	if (SKB_WITH_OVERHEAD(buf_size) >= MT_DMA_HDR_LEN + len) {
-+		/* fast path */
-+		skb = build_skb(data, buf_size);
-+		if (!skb)
-+			return NULL;
-+
-+		skb_reserve(skb, MT_DMA_HDR_LEN);
-+		__skb_put(skb, len);
-+
-+		return skb;
-+	}
-+
-+	/* slow path, not enough space for data and
-+	 * skb_shared_info
-+	 */
-+	skb = alloc_skb(data_len, GFP_ATOMIC);
-+	if (!skb)
-+		return NULL;
-+
-+	skb_put_data(skb, data + MT_DMA_HDR_LEN, data_len);
-+	data += (data_len + MT_DMA_HDR_LEN);
-+	len -= data_len;
-+	if (len > 0) {
-+		struct page *page = virt_to_head_page(data);
-+		int offset = data - (u8 *)page_address(page);
-+
-+		skb_add_rx_frag(skb, skb_shinfo(skb)->nr_frags,
-+				page, offset, len, buf_size);
-+	} else {
-+		*nsgs = 0;
-+	}
-+
-+	return skb;
-+}
-+
- static int
- mt76u_process_rx_entry(struct mt76_dev *dev, struct urb *urb)
+@@ -286,7 +286,7 @@ static int
+ mt76u_fill_rx_sg(struct mt76_dev *dev, struct mt76_queue *q, struct urb *urb,
+ 		 int nsgs, gfp_t gfp)
  {
-@@ -446,19 +488,11 @@ mt76u_process_rx_entry(struct mt76_dev *dev, struct urb *urb)
- 		return 0;
+-	int i;
++	int i, data_size = SKB_WITH_OVERHEAD(q->buf_size);
  
- 	data_len = min_t(int, len, data_len - MT_DMA_HDR_LEN);
--	if (MT_DMA_HDR_LEN + data_len > SKB_WITH_OVERHEAD(q->buf_size)) {
--		dev_err_ratelimited(dev->dev, "rx data too big %d\n", data_len);
--		return 0;
--	}
--
--	skb = build_skb(data, q->buf_size);
-+	skb = mt76u_build_rx_skb(data, data_len, q->buf_size, &nsgs);
- 	if (!skb)
- 		return 0;
+ 	for (i = 0; i < nsgs; i++) {
+ 		struct page *page;
+@@ -299,7 +299,7 @@ mt76u_fill_rx_sg(struct mt76_dev *dev, struct mt76_queue *q, struct urb *urb,
  
--	skb_reserve(skb, MT_DMA_HDR_LEN);
--	__skb_put(skb, data_len);
- 	len -= data_len;
--
- 	while (len > 0 && nsgs < urb->num_sgs) {
- 		data_len = min_t(int, len, urb->sg[nsgs].length);
- 		skb_add_rx_frag(skb, skb_shinfo(skb)->nr_frags,
+ 		page = virt_to_head_page(data);
+ 		offset = data - page_address(page);
+-		sg_set_page(&urb->sg[i], page, q->buf_size, offset);
++		sg_set_page(&urb->sg[i], page, data_size, offset);
+ 	}
+ 
+ 	if (i < nsgs) {
+@@ -311,7 +311,7 @@ mt76u_fill_rx_sg(struct mt76_dev *dev, struct mt76_queue *q, struct urb *urb,
+ 	}
+ 
+ 	urb->num_sgs = max_t(int, i, urb->num_sgs);
+-	urb->transfer_buffer_length = urb->num_sgs * q->buf_size,
++	urb->transfer_buffer_length = urb->num_sgs * data_size;
+ 	sg_init_marker(urb->sg, urb->num_sgs);
+ 
+ 	return i ? : -ENOMEM;
+@@ -611,8 +611,12 @@ static int mt76u_alloc_rx(struct mt76_dev *dev)
+ 	if (!q->entry)
+ 		return -ENOMEM;
+ 
+-	q->buf_size = dev->usb.sg_en ? MT_RX_BUF_SIZE : PAGE_SIZE;
++	if (dev->usb.sg_en)
++		q->buf_size = MT_BUF_WITH_OVERHEAD(MT_RX_BUF_SIZE);
++	else
++		q->buf_size = PAGE_SIZE;
+ 	q->ndesc = MT_NUM_RX_ENTRIES;
++
+ 	for (i = 0; i < q->ndesc; i++) {
+ 		err = mt76u_rx_urb_alloc(dev, &q->entry[i]);
+ 		if (err < 0)
 -- 
 2.21.0
 
