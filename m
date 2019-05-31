@@ -2,100 +2,140 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 4C24730BCA
-	for <lists+linux-wireless@lfdr.de>; Fri, 31 May 2019 11:39:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1354230C43
+	for <lists+linux-wireless@lfdr.de>; Fri, 31 May 2019 12:02:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726415AbfEaJj2 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 31 May 2019 05:39:28 -0400
-Received: from mail-wr1-f65.google.com ([209.85.221.65]:44175 "EHLO
-        mail-wr1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726617AbfEaJj2 (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 31 May 2019 05:39:28 -0400
-Received: by mail-wr1-f65.google.com with SMTP id w13so6019248wru.11
-        for <linux-wireless@vger.kernel.org>; Fri, 31 May 2019 02:39:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to
-         :content-transfer-encoding;
-        bh=LQMs5veyy1DmRY16cVaCLdbyErCuXgCDTOaqxDJNT88=;
-        b=tPeQK3WXZaWlwveNCYjvAk78Q+UWZ57+5G0c+hJwZQ7tU2+Y/R2VYK7LU2I7i+qpJF
-         m34mX2dppbC4RgcJX936bZn6l56zl4vVC1wXf89XBfAYwMA+8reVEKn8AhuV1Ep7LPH/
-         bA8/Qfvru0ekmvGtGuaz+VpKvYZF0VhRT/UZZ81ZnsNs4zkoMEbbnD/p7fA5W+KQCEVI
-         uQCASSrieWWdNA4FL49ZCThqQQBx0l0e8hjvJ+d5ys5o0X1eHTXUxA7KRCZKNWnXeNV8
-         NXOztjdYgiG14UntcJllJeTOgCjVbQKzxoVrgS6rsQrttDKWeLrYMFOrn+U8UaJyWio7
-         7e8Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to:content-transfer-encoding;
-        bh=LQMs5veyy1DmRY16cVaCLdbyErCuXgCDTOaqxDJNT88=;
-        b=GHBdGyx3ivvwb1BrS7gIn0vevpYgjFeCNpuHsghfVzl+aP9FES9r4QrpCuoP9BPmxZ
-         xh0+2+/NosqiIWSfeY2PTTH7s+JErUKl+hvyKoZxydDqV8wIf9D8FGhUwwkxGLE9HgAy
-         JwXzOd6Kp9L1HvkAU6YoCxsWNqmc52eQFttWio8RwpzvUNMYBx7eacfkE7aFCn0uDpiJ
-         /cdiJ9vO/xYdKjLqkaA66z2OOHqf2PWTwCmVTxfHJ5Zjy6BwFJlzyfSBpa7+PwoFek2S
-         8YB8Ct9Z4z8tA9RygaPLZpRDBvgFNLWyoxSXMdMR5LyOweuc72/QO7CVCkAzslbCdKR8
-         ZDKQ==
-X-Gm-Message-State: APjAAAXSp1m5kW2qHj3e/Nkw+c2kaEe76v1i2vPQfdfB4tVucrzkEt3p
-        Ez8YFU/kcrKElkfMMnAXUU+FVkynlWGxM600LkY=
-X-Google-Smtp-Source: APXvYqyT+OaPqKv/DmJWmESXNYde7AWqAxs+KOW5iNravG4jPYhC2VDET/2XQJdXkCzGaWEcddqxXKTAoaPUz0tBUqk=
-X-Received: by 2002:a5d:6709:: with SMTP id o9mr5774118wru.301.1559295567011;
- Fri, 31 May 2019 02:39:27 -0700 (PDT)
+        id S1726240AbfEaKCK (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 31 May 2019 06:02:10 -0400
+Received: from mail.kernel.org ([198.145.29.99]:59286 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726002AbfEaKCK (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 31 May 2019 06:02:10 -0400
+Received: from localhost.localdomain (nat-pool-mxp-t.redhat.com [149.6.153.186])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id A714726748;
+        Fri, 31 May 2019 10:02:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1559296929;
+        bh=ZfRv0Yrgp+Zd8xGJN40ArXNdaxOgATDzT4hykN3QQJs=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=ACH+Tw7vIyV0rlXKYRfqQ1cbiCIGHPIqfXHltfSFrCgExnxiBmQBCWIbU2kbUmEUg
+         MjwxNpGjZeHzza3xx3EfCsClyJACURIDexq5rzy2wXNxyBaxhsN1coZJc1AEMD3fm7
+         sMRYh5T79vi47/5gymd7Dxol6fYQUUIOlEuCvD40=
+Date:   Fri, 31 May 2019 12:02:03 +0200
+From:   Lorenzo Bianconi <lorenzo@kernel.org>
+To:     Ryder Lee <ryder.lee@mediatek.com>
+Cc:     Felix Fietkau <nbd@nbd.name>,
+        Lorenzo Bianconi <lorenzo.bianconi@redhat.com>,
+        Roy Luo <royluo@google.com>, YF Luo <yf.luo@mediatek.com>,
+        Yiwei Chung <yiwei.chung@mediatek.com>,
+        Sean Wang <sean.wang@mediatek.com>,
+        Chih-Min Chen <chih-min.Chen@mediatek.com>,
+        linux-wireless@vger.kernel.org, linux-mediatek@lists.infradead.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 1/2] mt76: mt7615: enable support for mesh
+Message-ID: <20190531100201.GA3527@localhost.localdomain>
+References: <7f167d09736652f81383991c971506630bbedacc.1559287432.git.ryder.lee@mediatek.com>
 MIME-Version: 1.0
-Received: by 2002:a1c:2546:0:0:0:0:0 with HTTP; Fri, 31 May 2019 02:39:26
- -0700 (PDT)
-Reply-To: hishamlatifa21@gmail.com
-From:   Hisham Latifa <madinalin23@gmail.com>
-Date:   Fri, 31 May 2019 11:39:26 +0200
-Message-ID: <CAG1b4P6qs9bTnR7SqyaHBGYLWjeOZy+-LDyaweifhtgd1MGU2g@mail.gmail.com>
-Subject: Hello Dear,
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="envbJBWh7q8WU6mo"
+Content-Disposition: inline
+In-Reply-To: <7f167d09736652f81383991c971506630bbedacc.1559287432.git.ryder.lee@mediatek.com>
+User-Agent: Mutt/1.11.4 (2019-03-13)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hello Dear,
 
-Please forgive me for stressing you with my predicaments as I know
-that this letter may come to you as big surprise. Actually, I came
-across your E-mail from my personal search afterward I decided to
-email you directly believing that you will be honest to fulfill my
-final wish
-before or after my death.
+--envbJBWh7q8WU6mo
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Meanwhile, I am  Mrs Hisham Latifa, 73 years, from France, childless and
-a widow. I am suffering from Adenocarcinoma Cancer of the lungs for
-the last 8 years and from all indication my condition is really
-deteriorating as my doctors have confirmed and courageously advised me
-that I may not live beyond 6 weeks from now for the reason that my
-tumor has reached a critical stage which has defiled all forms of
-medical treatment.
+> Enable NL80211_IFTYPE_MESH_POINT and add its path.
+>=20
+> Signed-off-by: Ryder Lee <ryder.lee@mediatek.com>
+> ---
+>  drivers/net/wireless/mediatek/mt76/mt7615/init.c | 6 ++++++
+>  drivers/net/wireless/mediatek/mt76/mt7615/main.c | 1 +
+>  drivers/net/wireless/mediatek/mt76/mt7615/mcu.c  | 5 ++++-
+>  3 files changed, 11 insertions(+), 1 deletion(-)
+>=20
 
-Since my days are numbered, I=E2=80=99ve decided willingly to fulfill my
-long-time vow to donate to the underprivileged the sum of Eighteen
-million five hundred thousand dollars. (18,500,000.00 USD) I have
-tried to exercise this project by myself but I have seen that my
-health could not allow me to do so anymore. My promise for the poor
-includes building of well-equipped charity foundation hospital and a
-technical school.
+[...]
 
-If you will be honest, kind, humble and willing to assist me exercise
-this function as I=E2=80=99ve mentioned here, I will like you to provide me
-your personal data like,
+> diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/main.c b/drivers/n=
+et/wireless/mediatek/mt76/mt7615/main.c
+> index b0bb7cc12385..585e67fa2728 100644
+> --- a/drivers/net/wireless/mediatek/mt76/mt7615/main.c
+> +++ b/drivers/net/wireless/mediatek/mt76/mt7615/main.c
+> @@ -37,6 +37,7 @@ static int get_omac_idx(enum nl80211_iftype type, u32 m=
+ask)
+> =20
+>  	switch (type) {
+>  	case NL80211_IFTYPE_AP:
+> +	case NL80211_IFTYPE_MESH_POINT:
+>  		/* ap use hw bssid 0 and ext bssid */
+>  		if (~mask & BIT(HW_BSSID_0))
+>  			return HW_BSSID_0;
+> diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c b/drivers/ne=
+t/wireless/mediatek/mt76/mt7615/mcu.c
+> index 43f70195244c..8b8db526cb16 100644
+> --- a/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c
+> +++ b/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c
+> @@ -754,6 +754,7 @@ int mt7615_mcu_set_bss_info(struct mt7615_dev *dev,
+> =20
+>  	switch (vif->type) {
+>  	case NL80211_IFTYPE_AP:
+> +	case NL80211_IFTYPE_MESH_POINT:
+>  		tx_wlan_idx =3D mvif->sta.wcid.idx;
+>  		conn_type =3D CONNECTION_INFRA_AP;
 
-(1) Your full name:
+Just out of curiosity, why not using CONNECTION_MESH_{AP,STA} here?
+why not NETWORK_MESH?
 
-(2) country:
+>  		break;
+> @@ -968,7 +969,8 @@ int mt7615_mcu_add_wtbl(struct mt7615_dev *dev, struc=
+t ieee80211_vif *vif,
+>  		.rx_wtbl =3D {
+>  			.tag =3D cpu_to_le16(WTBL_RX),
+>  			.len =3D cpu_to_le16(sizeof(struct wtbl_rx)),
+> -			.rca1 =3D vif->type !=3D NL80211_IFTYPE_AP,
+> +			.rca1 =3D vif->type !=3D (NL80211_IFTYPE_AP ||
+> +					      NL80211_IFTYPE_MESH_POINT),
+>  			.rca2 =3D 1,
+>  			.rv =3D 1,
+>  		},
+> @@ -1042,6 +1044,7 @@ static void sta_rec_convert_vif_type(enum nl80211_i=
+ftype type, u32 *conn_type)
+>  {
+>  	switch (type) {
+>  	case NL80211_IFTYPE_AP:
+> +	case NL80211_IFTYPE_MESH_POINT:
+>  		if (conn_type)
+>  			*conn_type =3D CONNECTION_INFRA_STA;
+>  		break;
 
-(3) phone number:
+same here.
 
-(4) Age:
+Regards,
+Lorenzo
 
-Pray for me if you love humanity
+> --=20
+> 2.18.0
+>=20
 
-Best Regards!
+--envbJBWh7q8WU6mo
+Content-Type: application/pgp-signature; name="signature.asc"
 
-Mrs Hisham Latifa
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYIAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCXPD7lgAKCRA6cBh0uS2t
+rFA6AP9xl4wUemuHlJ2lNcCI2smmKaZNi4KmXW4gSR0kGjaB3wEAsww6TO6o9pAq
+PI3sKVdjK8j31EW9B+ekCKNxFmSPBgA=
+=w7DQ
+-----END PGP SIGNATURE-----
+
+--envbJBWh7q8WU6mo--
