@@ -2,113 +2,100 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B6E3830BC9
-	for <lists+linux-wireless@lfdr.de>; Fri, 31 May 2019 11:39:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4C24730BCA
+	for <lists+linux-wireless@lfdr.de>; Fri, 31 May 2019 11:39:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726240AbfEaJj0 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 31 May 2019 05:39:26 -0400
-Received: from mail.kernel.org ([198.145.29.99]:42374 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726002AbfEaJjZ (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 31 May 2019 05:39:25 -0400
-Received: from localhost.localdomain.com (nat-pool-mxp-t.redhat.com [149.6.153.186])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id EDC3E266FD;
-        Fri, 31 May 2019 09:39:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1559295565;
-        bh=nuYyx7BnilCyWILdkj0IGIG3O3W8VBq8qW3kbUvyHtA=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=qZI0geNaWdvZi3Eq+rG92kpRxC+ymhcKA4L0HDNNM4HomWQOnx7bHsi7TAhjTwvgW
-         km/DgXnf/ykJ6QfH9bymO57JsQ7joTYC2YkxOsYyS2QAfihpTHUajNXrDnW0oCG+s+
-         +57s4yHdmQQrqH9knJsY7hNxyC+2iD6sqXbw2TU8=
-From:   Lorenzo Bianconi <lorenzo@kernel.org>
-To:     nbd@nbd.name
-Cc:     kvalo@codeaurora.org, linux-wireless@vger.kernel.org,
-        lorenzo.bianconi@redhat.com, sgruszka@redhat.com
-Subject: [PATCH v2 2/2] mt76: usb: do not always copy the first part of received frames
-Date:   Fri, 31 May 2019 11:38:23 +0200
-Message-Id: <2ed0b595a12944a8cfea14e066bcc4fa24f0ba44.1559293385.git.lorenzo@kernel.org>
-X-Mailer: git-send-email 2.21.0
-In-Reply-To: <cover.1559293385.git.lorenzo@kernel.org>
-References: <cover.1559293385.git.lorenzo@kernel.org>
+        id S1726415AbfEaJj2 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 31 May 2019 05:39:28 -0400
+Received: from mail-wr1-f65.google.com ([209.85.221.65]:44175 "EHLO
+        mail-wr1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726617AbfEaJj2 (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 31 May 2019 05:39:28 -0400
+Received: by mail-wr1-f65.google.com with SMTP id w13so6019248wru.11
+        for <linux-wireless@vger.kernel.org>; Fri, 31 May 2019 02:39:27 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:reply-to:from:date:message-id:subject:to
+         :content-transfer-encoding;
+        bh=LQMs5veyy1DmRY16cVaCLdbyErCuXgCDTOaqxDJNT88=;
+        b=tPeQK3WXZaWlwveNCYjvAk78Q+UWZ57+5G0c+hJwZQ7tU2+Y/R2VYK7LU2I7i+qpJF
+         m34mX2dppbC4RgcJX936bZn6l56zl4vVC1wXf89XBfAYwMA+8reVEKn8AhuV1Ep7LPH/
+         bA8/Qfvru0ekmvGtGuaz+VpKvYZF0VhRT/UZZ81ZnsNs4zkoMEbbnD/p7fA5W+KQCEVI
+         uQCASSrieWWdNA4FL49ZCThqQQBx0l0e8hjvJ+d5ys5o0X1eHTXUxA7KRCZKNWnXeNV8
+         NXOztjdYgiG14UntcJllJeTOgCjVbQKzxoVrgS6rsQrttDKWeLrYMFOrn+U8UaJyWio7
+         7e8Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to:content-transfer-encoding;
+        bh=LQMs5veyy1DmRY16cVaCLdbyErCuXgCDTOaqxDJNT88=;
+        b=GHBdGyx3ivvwb1BrS7gIn0vevpYgjFeCNpuHsghfVzl+aP9FES9r4QrpCuoP9BPmxZ
+         xh0+2+/NosqiIWSfeY2PTTH7s+JErUKl+hvyKoZxydDqV8wIf9D8FGhUwwkxGLE9HgAy
+         JwXzOd6Kp9L1HvkAU6YoCxsWNqmc52eQFttWio8RwpzvUNMYBx7eacfkE7aFCn0uDpiJ
+         /cdiJ9vO/xYdKjLqkaA66z2OOHqf2PWTwCmVTxfHJ5Zjy6BwFJlzyfSBpa7+PwoFek2S
+         8YB8Ct9Z4z8tA9RygaPLZpRDBvgFNLWyoxSXMdMR5LyOweuc72/QO7CVCkAzslbCdKR8
+         ZDKQ==
+X-Gm-Message-State: APjAAAXSp1m5kW2qHj3e/Nkw+c2kaEe76v1i2vPQfdfB4tVucrzkEt3p
+        Ez8YFU/kcrKElkfMMnAXUU+FVkynlWGxM600LkY=
+X-Google-Smtp-Source: APXvYqyT+OaPqKv/DmJWmESXNYde7AWqAxs+KOW5iNravG4jPYhC2VDET/2XQJdXkCzGaWEcddqxXKTAoaPUz0tBUqk=
+X-Received: by 2002:a5d:6709:: with SMTP id o9mr5774118wru.301.1559295567011;
+ Fri, 31 May 2019 02:39:27 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Received: by 2002:a1c:2546:0:0:0:0:0 with HTTP; Fri, 31 May 2019 02:39:26
+ -0700 (PDT)
+Reply-To: hishamlatifa21@gmail.com
+From:   Hisham Latifa <madinalin23@gmail.com>
+Date:   Fri, 31 May 2019 11:39:26 +0200
+Message-ID: <CAG1b4P6qs9bTnR7SqyaHBGYLWjeOZy+-LDyaweifhtgd1MGU2g@mail.gmail.com>
+Subject: Hello Dear,
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Set usb buffer size taking into account skb_shared_info in order to
-not always copy the first part of received frames if A-MSDU is enabled
-for SG capable devices
+Hello Dear,
 
-Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
----
- drivers/net/wireless/mediatek/mt76/mt76.h |  3 +++
- drivers/net/wireless/mediatek/mt76/usb.c  | 12 ++++++++----
- 2 files changed, 11 insertions(+), 4 deletions(-)
+Please forgive me for stressing you with my predicaments as I know
+that this letter may come to you as big surprise. Actually, I came
+across your E-mail from my personal search afterward I decided to
+email you directly believing that you will be honest to fulfill my
+final wish
+before or after my death.
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76.h b/drivers/net/wireless/mediatek/mt76/mt76.h
-index 74d4edf941d6..7899e9b88b54 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt76.h
-@@ -32,6 +32,9 @@
- #define MT_RX_BUF_SIZE      2048
- #define MT_SKB_HEAD_LEN     128
- 
-+#define MT_BUF_WITH_OVERHEAD(x) \
-+	((x) + SKB_DATA_ALIGN(sizeof(struct skb_shared_info)))
-+
- struct mt76_dev;
- struct mt76_wcid;
- 
-diff --git a/drivers/net/wireless/mediatek/mt76/usb.c b/drivers/net/wireless/mediatek/mt76/usb.c
-index 2bfc8214c0d8..5081643ce701 100644
---- a/drivers/net/wireless/mediatek/mt76/usb.c
-+++ b/drivers/net/wireless/mediatek/mt76/usb.c
-@@ -286,7 +286,7 @@ static int
- mt76u_fill_rx_sg(struct mt76_dev *dev, struct mt76_queue *q, struct urb *urb,
- 		 int nsgs, gfp_t gfp)
- {
--	int i;
-+	int i, data_size = SKB_WITH_OVERHEAD(q->buf_size);
- 
- 	for (i = 0; i < nsgs; i++) {
- 		struct page *page;
-@@ -299,7 +299,7 @@ mt76u_fill_rx_sg(struct mt76_dev *dev, struct mt76_queue *q, struct urb *urb,
- 
- 		page = virt_to_head_page(data);
- 		offset = data - page_address(page);
--		sg_set_page(&urb->sg[i], page, q->buf_size, offset);
-+		sg_set_page(&urb->sg[i], page, data_size, offset);
- 	}
- 
- 	if (i < nsgs) {
-@@ -311,7 +311,7 @@ mt76u_fill_rx_sg(struct mt76_dev *dev, struct mt76_queue *q, struct urb *urb,
- 	}
- 
- 	urb->num_sgs = max_t(int, i, urb->num_sgs);
--	urb->transfer_buffer_length = urb->num_sgs * q->buf_size,
-+	urb->transfer_buffer_length = urb->num_sgs * data_size;
- 	sg_init_marker(urb->sg, urb->num_sgs);
- 
- 	return i ? : -ENOMEM;
-@@ -611,8 +611,12 @@ static int mt76u_alloc_rx(struct mt76_dev *dev)
- 	if (!q->entry)
- 		return -ENOMEM;
- 
--	q->buf_size = dev->usb.sg_en ? MT_RX_BUF_SIZE : PAGE_SIZE;
-+	if (dev->usb.sg_en)
-+		q->buf_size = MT_BUF_WITH_OVERHEAD(MT_RX_BUF_SIZE);
-+	else
-+		q->buf_size = PAGE_SIZE;
- 	q->ndesc = MT_NUM_RX_ENTRIES;
-+
- 	for (i = 0; i < q->ndesc; i++) {
- 		err = mt76u_rx_urb_alloc(dev, &q->entry[i]);
- 		if (err < 0)
--- 
-2.21.0
+Meanwhile, I am  Mrs Hisham Latifa, 73 years, from France, childless and
+a widow. I am suffering from Adenocarcinoma Cancer of the lungs for
+the last 8 years and from all indication my condition is really
+deteriorating as my doctors have confirmed and courageously advised me
+that I may not live beyond 6 weeks from now for the reason that my
+tumor has reached a critical stage which has defiled all forms of
+medical treatment.
 
+Since my days are numbered, I=E2=80=99ve decided willingly to fulfill my
+long-time vow to donate to the underprivileged the sum of Eighteen
+million five hundred thousand dollars. (18,500,000.00 USD) I have
+tried to exercise this project by myself but I have seen that my
+health could not allow me to do so anymore. My promise for the poor
+includes building of well-equipped charity foundation hospital and a
+technical school.
+
+If you will be honest, kind, humble and willing to assist me exercise
+this function as I=E2=80=99ve mentioned here, I will like you to provide me
+your personal data like,
+
+(1) Your full name:
+
+(2) country:
+
+(3) phone number:
+
+(4) Age:
+
+Pray for me if you love humanity
+
+Best Regards!
+
+Mrs Hisham Latifa
