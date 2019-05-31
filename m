@@ -2,135 +2,115 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 60F64312FA
-	for <lists+linux-wireless@lfdr.de>; Fri, 31 May 2019 18:48:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8E54B313D6
+	for <lists+linux-wireless@lfdr.de>; Fri, 31 May 2019 19:29:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727108AbfEaQrt (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 31 May 2019 12:47:49 -0400
-Received: from mail-lf1-f66.google.com ([209.85.167.66]:33366 "EHLO
-        mail-lf1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726985AbfEaQrt (ORCPT
+        id S1726695AbfEaR3P (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 31 May 2019 13:29:15 -0400
+Received: from mail-ot1-f67.google.com ([209.85.210.67]:35156 "EHLO
+        mail-ot1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726550AbfEaR3P (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 31 May 2019 12:47:49 -0400
-Received: by mail-lf1-f66.google.com with SMTP id y17so8460710lfe.0
-        for <linux-wireless@vger.kernel.org>; Fri, 31 May 2019 09:47:48 -0700 (PDT)
+        Fri, 31 May 2019 13:29:15 -0400
+Received: by mail-ot1-f67.google.com with SMTP id n14so9971875otk.2;
+        Fri, 31 May 2019 10:29:15 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=umRgW7C+tO4b3P+SNMV0Rx/bJLg4L2IeD7Igx4rfhs4=;
-        b=N7KaoI1rtdwVdRLo2srZXPg1dAzOva/R606WNk8BGKcFLmoQXMKvyjUqI0Uk7K42/e
-         sWAoQZF5wJva1QB382HoWSuWS2PfZ8lY71z1frUeCt3+2emHU3YGuazy7UMIwQKb6BbS
-         MdIWBb8kb1/M6Kc2Nsz8vyqIAan9wHtNMvaJo=
+        d=gmail.com; s=20161025;
+        h=sender:subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=+iyqTcaxt908BOdR/nmvy7fBX5IAvraUTsrYyfpy9lM=;
+        b=UoBFbazk3bF/rwQHpGBuPllAqZAXvZsjxgtdmcBwMPvgO42L4cdQH3h72o4TlQyRru
+         tM0IIF7ewnRRTYgkPDh2P3kn3spIaz2gLe9v2/ISK8fvbM+/QWEAPUyYw5bxAaW2GY5G
+         RiFZ8zjaLVK+shs+jkA5voWmN560eZqheSvuhP9kirDBqFvRNGcrhyCNw7WylKooPjQc
+         0aLg+LJsI93LEveN5rnFKmCdY10L6SoB6EmRE1EeceEtH1UGjQ1ZVWyq8BK3LwIUPOaq
+         4ZKttkXP4rjP63mcuCeTjmvQIcMLhK5jzEpONK/Ul5o63ECKblmyXKupkhY1HXlUL8s0
+         o6Ug==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=umRgW7C+tO4b3P+SNMV0Rx/bJLg4L2IeD7Igx4rfhs4=;
-        b=TTLc8WTdUjnlxz6NtNPFRrmUoAUXMLJ8l3wOVJRy0IcxWRydTPdaO4bWunJHtmwMJg
-         1yeU7w5itzvCHtAbVXUucu47dhBMy8/uYXUWrZBgs3+WimctWmNgodSByuPQF8axn9ZL
-         JniCXl9MP/TADFMWKk2xcuOr74uR7yRb5dRXe+x+tfll8zIhzzHyDJqJCirmoMyfBWUB
-         9R/pWXmDr2GPCBe1fGqEBZtpjRX1JLrTl56+iC98vgyA3r9koAElr38sE9RhsdkQr2bv
-         Iq57l/w10ghpLCR07idN/1UfjIwKG2rua3o7fvNh31sLZZzMhjn5WKXuqcU7R31ApUKZ
-         tYaQ==
-X-Gm-Message-State: APjAAAXPQLbhqWdGuE6iuzLcdAl5FxPUJmnrwaVG48KgufubEOqER5Ub
-        znTAmCGmzWKJHYYkGvlgY4CCk5nG3f4=
-X-Google-Smtp-Source: APXvYqyI9L/EMVtIXqKoeydMjVExrVVN2v4C/UVXEhdTxTkLlO18u3bK3V2nOSlEqRmb2U0a26Uj7g==
-X-Received: by 2002:ac2:4286:: with SMTP id m6mr6356534lfh.150.1559321266745;
-        Fri, 31 May 2019 09:47:46 -0700 (PDT)
-Received: from mail-lj1-f180.google.com (mail-lj1-f180.google.com. [209.85.208.180])
-        by smtp.gmail.com with ESMTPSA id a4sm1274564lfj.31.2019.05.31.09.47.45
-        for <linux-wireless@vger.kernel.org>
+        h=x-gm-message-state:sender:subject:to:cc:references:from:message-id
+         :date:user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=+iyqTcaxt908BOdR/nmvy7fBX5IAvraUTsrYyfpy9lM=;
+        b=DIOVRJpl5FDK6FsB7GmjuwbtFOkFGJc+khpkMCRGyidGd3dK8ZBDEZwR+Jo+e9aUBf
+         k3CbatI9yzZF349CYcDqA5dCVt6v1XIpOJhLVk3PiAIoRopbTJkcZ+b+GZADssm86saa
+         OmhOb4On/1oDxy4kXN1nwN//kWzH1DC2fBJbhicfiFFhPsI1XCP38wCklMes4GM3onuG
+         8B31FTchcuW+Hzs/g6dAkRXxlJZEkOwDv13CPy/hoEq6W9oMKUs1tixGV6VQOe2c57TJ
+         brWHD5WD4kXflZmFxnJitRXIxTCN4djIqNYXIk5Oe37PlwRjLDqtBE6QDp/Ki19b3VDP
+         pR6w==
+X-Gm-Message-State: APjAAAWZyGVkcsHcOqWCkS0UanWxslYum/0e7b7vCZPEJRTQRmCcqHH7
+        6j00fQAiFSyW4GDCAH6Y/pqOP/rU
+X-Google-Smtp-Source: APXvYqzkAHmyyxrH7D112NjIZLyafOEDSWW854tF2Umsok58KvfnyV7z58ZtX5EZoQoIdN8g1+GjJg==
+X-Received: by 2002:a9d:3d76:: with SMTP id a109mr2645090otc.212.1559323754602;
+        Fri, 31 May 2019 10:29:14 -0700 (PDT)
+Received: from [192.168.1.112] (cpe-24-31-245-230.kc.res.rr.com. [24.31.245.230])
+        by smtp.gmail.com with ESMTPSA id a15sm2194992otl.20.2019.05.31.10.29.12
         (version=TLS1_3 cipher=AEAD-AES128-GCM-SHA256 bits=128/128);
-        Fri, 31 May 2019 09:47:45 -0700 (PDT)
-Received: by mail-lj1-f180.google.com with SMTP id j24so10292001ljg.1
-        for <linux-wireless@vger.kernel.org>; Fri, 31 May 2019 09:47:45 -0700 (PDT)
-X-Received: by 2002:a2e:95d2:: with SMTP id y18mr6490072ljh.167.1559321264696;
- Fri, 31 May 2019 09:47:44 -0700 (PDT)
+        Fri, 31 May 2019 10:29:13 -0700 (PDT)
+Subject: Re: [PATCH] rtlwifi: remove redundant assignment to variable k
+To:     Colin King <colin.king@canonical.com>,
+        Ping-Ke Shih <pkshih@realtek.com>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        "David S . Miller" <davem@davemloft.net>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20190531141412.18632-1-colin.king@canonical.com>
+From:   Larry Finger <Larry.Finger@lwfinger.net>
+Message-ID: <14372bed-6522-d81c-7d68-04adc0d71193@lwfinger.net>
+Date:   Fri, 31 May 2019 12:29:12 -0500
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.6.1
 MIME-Version: 1.0
-References: <1559209955-10089-1-git-send-email-gbhat@marvell.com> <MN2PR18MB26379DF16EADA38F72A87412A0180@MN2PR18MB2637.namprd18.prod.outlook.com>
-In-Reply-To: <MN2PR18MB26379DF16EADA38F72A87412A0180@MN2PR18MB2637.namprd18.prod.outlook.com>
-From:   Brian Norris <briannorris@chromium.org>
-Date:   Fri, 31 May 2019 09:47:33 -0700
-X-Gmail-Original-Message-ID: <CA+ASDXPDtr7jo=Tt=53VaLNYFwz2MgoSAFxTMLvxvVOMTuL2Cg@mail.gmail.com>
-Message-ID: <CA+ASDXPDtr7jo=Tt=53VaLNYFwz2MgoSAFxTMLvxvVOMTuL2Cg@mail.gmail.com>
-Subject: Re: [PATCH 1/2] mwifiex: add support for host wakeup via PCIE wake#
-To:     Ganapathi Bhat <gbhat@marvell.com>
-Cc:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        Cathy Luo <cluo@marvell.com>,
-        Zhiyuan Yang <yangzy@marvell.com>,
-        James Cao <jcao@marvell.com>,
-        Rakesh Parmar <rakeshp@marvell.com>,
-        Sharvari Harisangam <sharvari@marvell.com>
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <20190531141412.18632-1-colin.king@canonical.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-(You really should re-send your patches, as they didn't make it to the
-list. But while you're here:)
+On 5/31/19 9:14 AM, Colin King wrote:
+> From: Colin Ian King <colin.king@canonical.com>
+> 
+> The assignment of 0 to variable k is never read once we break out of
+> the loop, so the assignment is redundant and can be removed.
+> 
+> Addresses-Coverity: ("Unused value")
+> Signed-off-by: Colin Ian King <colin.king@canonical.com>
+> ---
+>   drivers/net/wireless/realtek/rtlwifi/efuse.c | 4 +---
+>   1 file changed, 1 insertion(+), 3 deletions(-)
+> 
+> diff --git a/drivers/net/wireless/realtek/rtlwifi/efuse.c b/drivers/net/wireless/realtek/rtlwifi/efuse.c
+> index e68340dfd980..83e5318ca04f 100644
+> --- a/drivers/net/wireless/realtek/rtlwifi/efuse.c
+> +++ b/drivers/net/wireless/realtek/rtlwifi/efuse.c
+> @@ -117,10 +117,8 @@ u8 efuse_read_1byte(struct ieee80211_hw *hw, u16 address)
+>   						 rtlpriv->cfg->
+>   						 maps[EFUSE_CTRL] + 3);
+>   			k++;
+> -			if (k == 1000) {
+> -				k = 0;
+> +			if (k == 1000)
+>   				break;
+> -			}
+>   		}
+>   		data = rtl_read_byte(rtlpriv, rtlpriv->cfg->maps[EFUSE_CTRL]);
+>   		return data;
 
-On Thu, May 30, 2019 at 3:01 AM Ganapathi Bhat <gbhat@marvell.com> wrote:
-> > From: Sharvari Harisangam <sharvari@marvell.com>
-> >
-> > PCIE WAKE# is asserted by firmware, when WoWLAN conditions are
-> > matched. Current driver does not enable PME bit needed for WAKE#
-> > assertion, causing host to remain in sleep even after WoWLAN conditions are
-> > matched. This commit fixes it by enabling wakeup (PME bit) in suspend
-> > handler.
+Colin,
 
-Are you sure said devices actually have their 'wakeup' attribute set
-to 'enabled' (e.g., in sysfs)? I think the PCI core should probably be
-taking care of this for you already. See below.
+Your patch is not wrong, but it fails to address a basic deficiency of this code 
+snippet - when an error is detected, there is no attempt to either fix the 
+problem or report it upstream. As the data returned will be garbage if this 
+condition happens, we might as well replace the "break" with "return 0xFF", as 
+well as deleting the "k = 0" line. Most of the callers of efuse_read_1byte() 
+ignore the returned result when bits 0 and 4 are set, thus returning all 8 bits 
+is not a bad fixup.
 
-> > Signed-off-by: Sharvari Harisangam <sharvari@marvell.com>
-> > Signed-off-by: Ganapathi Bhat <gbhat@marvell.com>
-> > ---
-> >  drivers/net/wireless/marvell/mwifiex/pcie.c | 27 +++++++++++++++------------
-> >  1 file changed, 15 insertions(+), 12 deletions(-)
-> >
-> > diff --git a/drivers/net/wireless/marvell/mwifiex/pcie.c
-> > b/drivers/net/wireless/marvell/mwifiex/pcie.c
-> > index 3fe81b2..0bd81d4 100644
-> > --- a/drivers/net/wireless/marvell/mwifiex/pcie.c
-> > +++ b/drivers/net/wireless/marvell/mwifiex/pcie.c
-...
-> > @@ -181,6 +180,10 @@ static int mwifiex_pcie_suspend(struct device *dev)
-> >       set_bit(MWIFIEX_IS_SUSPENDED, &adapter->work_flags);
-> >       clear_bit(MWIFIEX_IS_HS_ENABLING, &adapter->work_flags);
-> >
-> > +     pci_enable_wake(pdev, pci_choose_state(pdev, state), 1);
-> > +     pci_save_state(pdev);
-> > +     pci_set_power_state(pdev, pci_choose_state(pdev, state));
+My suspicion is that this test is in the code merely to prevent an potential 
+unterminated "while" loop, and that this condition is extremely unlikely to happen.
 
-From Documentation/power/pci.txt:
+Larry
 
-"""
-3.1.2. suspend()
-...
-This callback is expected to quiesce the device and prepare it to be put into a
-low-power state by the PCI subsystem.  It is not required (in fact it even is
-not recommended) that a PCI driver's suspend() callback save the standard
-configuration registers of the device, prepare it for waking up the system, or
-put it into a low-power state.  All of these operations can very well be taken
-care of by the PCI subsystem, without the driver's participation.
 
-However, in some rare case it is convenient to carry out these operations in
-a PCI driver. [...]
-"""
-
-I think you need to do a little more work to justify why you are one
-of those rare cases.
-
-On a related note: some of the existing "configure wakeup" stuff we do
-here should probably be gated behind a call to device_may_wakeup().
-That would help make it more obvious that such configuration is
-futile, if the device was marked as wake-disabled.
-
-Brian
-
-> > +
-> >       return 0;
-> >  }
-> >
