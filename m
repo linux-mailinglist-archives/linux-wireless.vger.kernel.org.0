@@ -2,134 +2,66 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id DE01D30FA9
-	for <lists+linux-wireless@lfdr.de>; Fri, 31 May 2019 16:10:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1219730FB9
+	for <lists+linux-wireless@lfdr.de>; Fri, 31 May 2019 16:14:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726576AbfEaOKG (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 31 May 2019 10:10:06 -0400
-Received: from mailgw02.mediatek.com ([210.61.82.184]:21176 "EHLO
-        mailgw02.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1726037AbfEaOKG (ORCPT
+        id S1726589AbfEaOOT (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 31 May 2019 10:14:19 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:48217 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726037AbfEaOOT (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 31 May 2019 10:10:06 -0400
-X-UUID: be41b96eef4743b3afb8372cf6ec3245-20190531
-X-UUID: be41b96eef4743b3afb8372cf6ec3245-20190531
-Received: from mtkexhb02.mediatek.inc [(172.21.101.103)] by mailgw02.mediatek.com
-        (envelope-from <ryder.lee@mediatek.com>)
-        (mhqrelay.mediatek.com ESMTP with TLS)
-        with ESMTP id 1679655166; Fri, 31 May 2019 22:10:01 +0800
-Received: from mtkcas07.mediatek.inc (172.21.101.84) by
- mtkmbs06n2.mediatek.inc (172.21.101.130) with Microsoft SMTP Server (TLS) id
- 15.0.1395.4; Fri, 31 May 2019 22:09:59 +0800
-Received: from mtksdccf07.mediatek.inc (172.21.84.99) by mtkcas07.mediatek.inc
- (172.21.101.73) with Microsoft SMTP Server id 15.0.1395.4 via Frontend
- Transport; Fri, 31 May 2019 22:09:59 +0800
-From:   Ryder Lee <ryder.lee@mediatek.com>
-To:     Felix Fietkau <nbd@nbd.name>,
-        Lorenzo Bianconi <lorenzo.bianconi@redhat.com>
-CC:     Roy Luo <royluo@google.com>, YF Luo <yf.luo@mediatek.com>,
-        Yiwei Chung <yiwei.chung@mediatek.com>,
-        Sean Wang <sean.wang@mediatek.com>,
-        Chih-Min Chen <chih-min.Chen@mediatek.com>,
-        <linux-wireless@vger.kernel.org>,
-        <linux-mediatek@lists.infradead.org>,
-        <linux-kernel@vger.kernel.org>, Ryder Lee <ryder.lee@mediatek.com>
-Subject: [PATCH v2 2/2] mt76: mt7615: fix slow performance when enable encryption
-Date:   Fri, 31 May 2019 22:09:57 +0800
-Message-ID: <ed4cb230af57cb8f3bbe3d1851ce7f8ab7eeb9d5.1559301203.git.ryder.lee@mediatek.com>
-X-Mailer: git-send-email 1.9.1
-In-Reply-To: <e459fbc79154da9e0e6e098d2c49a9b17e842f47.1559301203.git.ryder.lee@mediatek.com>
-References: <e459fbc79154da9e0e6e098d2c49a9b17e842f47.1559301203.git.ryder.lee@mediatek.com>
+        Fri, 31 May 2019 10:14:19 -0400
+Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
+        by youngberry.canonical.com with esmtpsa (TLS1.0:RSA_AES_256_CBC_SHA1:32)
+        (Exim 4.76)
+        (envelope-from <colin.king@canonical.com>)
+        id 1hWiIP-0001I2-0F; Fri, 31 May 2019 14:14:13 +0000
+From:   Colin King <colin.king@canonical.com>
+To:     Ping-Ke Shih <pkshih@realtek.com>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        "David S . Miller" <davem@davemloft.net>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH] rtlwifi: remove redundant assignment to variable k
+Date:   Fri, 31 May 2019 15:14:12 +0100
+Message-Id: <20190531141412.18632-1-colin.king@canonical.com>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-X-TM-SNTS-SMTP: AD9480DA8A1DFA8B30958A0EB9B5D3731966CFCEAE90CCE5F638CB3AA38699AB2000:8
-X-MTK:  N
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Fix wrong WCID assignment and add RKV (RX Key of this entry is valid)
-flag to check if peer uses the same configuration with previous
-handshaking.
+From: Colin Ian King <colin.king@canonical.com>
 
-If the configuration is mismatch, WTBL indicates a “cipher mismatch”
-to stop SEC decryption to prevent the packet from damage.
+The assignment of 0 to variable k is never read once we break out of
+the loop, so the assignment is redundant and can be removed.
 
-Suggested-by: YF Luo <yf.luo@mediatek.com>
-Suggested-by: Yiwei Chung <yiwei.chung@mediatek.com>
-Signed-off-by: Ryder Lee <ryder.lee@mediatek.com>
+Addresses-Coverity: ("Unused value")
+Signed-off-by: Colin Ian King <colin.king@canonical.com>
 ---
-Changes since v2 - none
----
- drivers/net/wireless/mediatek/mt76/mt7615/init.c | 15 +++++++++------
- drivers/net/wireless/mediatek/mt76/mt7615/main.c |  2 +-
- drivers/net/wireless/mediatek/mt76/mt7615/mcu.c  |  1 +
- 3 files changed, 11 insertions(+), 7 deletions(-)
+ drivers/net/wireless/realtek/rtlwifi/efuse.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/init.c b/drivers/net/wireless/mediatek/mt76/mt7615/init.c
-index f860af6a42da..b96c753b7532 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7615/init.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7615/init.c
-@@ -62,16 +62,11 @@ static void mt7615_mac_init(struct mt7615_dev *dev)
- 		 MT_AGG_ARCR_RATE_DOWN_RATIO_EN |
- 		 FIELD_PREP(MT_AGG_ARCR_RATE_DOWN_RATIO, 1) |
- 		 FIELD_PREP(MT_AGG_ARCR_RATE_UP_EXTRA_TH, 4)));
--
--	dev->mt76.global_wcid.idx = MT7615_WTBL_RESERVED;
--	dev->mt76.global_wcid.hw_key_idx = -1;
--	rcu_assign_pointer(dev->mt76.wcid[MT7615_WTBL_RESERVED],
--			   &dev->mt76.global_wcid);
- }
- 
- static int mt7615_init_hardware(struct mt7615_dev *dev)
- {
--	int ret;
-+	int ret, idx;
- 
- 	mt76_wr(dev, MT_INT_SOURCE_CSR, ~0);
- 
-@@ -98,6 +93,14 @@ static int mt7615_init_hardware(struct mt7615_dev *dev)
- 	mt7615_mcu_ctrl_pm_state(dev, 0);
- 	mt7615_mcu_del_wtbl_all(dev);
- 
-+	/* Beacon and mgmt frames should occupy wcid 0 */
-+	idx = mt76_wcid_alloc(dev->mt76.wcid_mask, MT7615_WTBL_STA - 1);
-+	if (idx)
-+		return -ENOSPC;
-+
-+	dev->mt76.global_wcid.idx = idx;
-+	dev->mt76.global_wcid.hw_key_idx = -1;
-+	rcu_assign_pointer(dev->mt76.wcid[idx], &dev->mt76.global_wcid);
- 	return 0;
- }
- 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/main.c b/drivers/net/wireless/mediatek/mt76/mt7615/main.c
-index 585e67fa2728..2cdd339453c8 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7615/main.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7615/main.c
-@@ -95,7 +95,7 @@ static int mt7615_add_interface(struct ieee80211_hw *hw,
- 
- 	dev->vif_mask |= BIT(mvif->idx);
- 	dev->omac_mask |= BIT(mvif->omac_idx);
--	idx = MT7615_WTBL_RESERVED - 1 - mvif->idx;
-+	idx = MT7615_WTBL_RESERVED - mvif->idx;
- 	mvif->sta.wcid.idx = idx;
- 	mvif->sta.wcid.hw_key_idx = -1;
- 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c
-index 8b8db526cb16..5f38741e7366 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c
-@@ -882,6 +882,7 @@ int mt7615_mcu_set_wtbl_key(struct mt7615_dev *dev, int wcid,
- 		if (cipher == MT_CIPHER_NONE && key)
- 			return -EOPNOTSUPP;
- 
-+		req.key.rkv = 1;
- 		req.key.cipher_id = cipher;
- 		req.key.key_id = key->keyidx;
- 		req.key.key_len = key->keylen;
+diff --git a/drivers/net/wireless/realtek/rtlwifi/efuse.c b/drivers/net/wireless/realtek/rtlwifi/efuse.c
+index e68340dfd980..83e5318ca04f 100644
+--- a/drivers/net/wireless/realtek/rtlwifi/efuse.c
++++ b/drivers/net/wireless/realtek/rtlwifi/efuse.c
+@@ -117,10 +117,8 @@ u8 efuse_read_1byte(struct ieee80211_hw *hw, u16 address)
+ 						 rtlpriv->cfg->
+ 						 maps[EFUSE_CTRL] + 3);
+ 			k++;
+-			if (k == 1000) {
+-				k = 0;
++			if (k == 1000)
+ 				break;
+-			}
+ 		}
+ 		data = rtl_read_byte(rtlpriv, rtlpriv->cfg->maps[EFUSE_CTRL]);
+ 		return data;
 -- 
-2.18.0
+2.20.1
 
