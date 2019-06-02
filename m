@@ -2,125 +2,192 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id DEC8A32194
-	for <lists+linux-wireless@lfdr.de>; Sun,  2 Jun 2019 03:57:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A2E92322C4
+	for <lists+linux-wireless@lfdr.de>; Sun,  2 Jun 2019 11:06:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726652AbfFBB4z (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 1 Jun 2019 21:56:55 -0400
-Received: from mx0a-0016f401.pphosted.com ([67.231.148.174]:53552 "EHLO
-        mx0b-0016f401.pphosted.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1726211AbfFBB4z (ORCPT
+        id S1726190AbfFBJG0 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 2 Jun 2019 05:06:26 -0400
+Received: from mail-wm1-f66.google.com ([209.85.128.66]:53978 "EHLO
+        mail-wm1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725977AbfFBJG0 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 1 Jun 2019 21:56:55 -0400
-Received: from pps.filterd (m0045849.ppops.net [127.0.0.1])
-        by mx0a-0016f401.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id x521tNCf000880;
-        Sat, 1 Jun 2019 18:56:48 -0700
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=marvell.com; h=from : to : cc :
- subject : date : message-id : references : in-reply-to : content-type :
- content-transfer-encoding : mime-version; s=pfpt0818;
- bh=I2BxbWkKL0jf9qti1QbXX+jAOviDQblfeOUGJa0Yv+0=;
- b=i/jrck+DrR0bEMiLBeGv00a87L9pZhHSnis/O96vvphpd4i6vI7X6b17XV4mVYC6Ob8B
- WvANXQqxMV9aV1C8gGPkgioiHHlosMXsxH+OwHTuDkgg3T2/1p49Z95JaB7iNqtqvuwF
- nLricDfqreuQQzvk1oJ/SDMw/gbzJaJGYdyC5Okhs3vuyBIt5KigjwnSVMcO2SGQ8d6m
- 8PDE3XNMytA9aESrZ8x6uS5YhKmBiHJbJGbh+8r4fkryi7aLuih9/XH+6XvxYRN59ZOd
- L9opWU1zJEfoI5ohZIp9UuDrqkHz6ovtuHJgepKS8XHcaa7sqgYgXisw3807p8T9CmM0 HQ== 
-Received: from sc-exch01.marvell.com ([199.233.58.181])
-        by mx0a-0016f401.pphosted.com with ESMTP id 2supqktfwf-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-SHA384 bits=256 verify=NOT);
-        Sat, 01 Jun 2019 18:56:48 -0700
-Received: from SC-EXCH03.marvell.com (10.93.176.83) by SC-EXCH01.marvell.com
- (10.93.176.81) with Microsoft SMTP Server (TLS) id 15.0.1367.3; Sat, 1 Jun
- 2019 18:56:48 -0700
-Received: from NAM02-BL2-obe.outbound.protection.outlook.com (104.47.38.53) by
- SC-EXCH03.marvell.com (10.93.176.83) with Microsoft SMTP Server (TLS) id
- 15.0.1367.3 via Frontend Transport; Sat, 1 Jun 2019 18:56:47 -0700
+        Sun, 2 Jun 2019 05:06:26 -0400
+Received: by mail-wm1-f66.google.com with SMTP id d17so848633wmb.3;
+        Sun, 02 Jun 2019 02:06:24 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=marvell.onmicrosoft.com; s=selector2-marvell-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=I2BxbWkKL0jf9qti1QbXX+jAOviDQblfeOUGJa0Yv+0=;
- b=B4nmPj6UjvBIFFk6GDfQiNzXgsw7T5EVz8nWpRMg/llFtVppSbHzrljSJSfxU2aOJJpSqeVzZ6WZLz8FVAEcMcPCHNXD347RcK1R18chH6AUJp4HSYFkFzHyiH5DR3ccXWx+nb9d9vxBs3zqrusRcg+Em8xCtpO1/8AEap7bxqk=
-Received: from BYAPR18MB2630.namprd18.prod.outlook.com (20.179.94.155) by
- BYAPR18MB2358.namprd18.prod.outlook.com (20.179.90.155) with Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.1943.22; Sun, 2 Jun 2019 01:56:45 +0000
-Received: from BYAPR18MB2630.namprd18.prod.outlook.com
- ([fe80::c1f4:51ab:bb47:c671]) by BYAPR18MB2630.namprd18.prod.outlook.com
- ([fe80::c1f4:51ab:bb47:c671%7]) with mapi id 15.20.1943.018; Sun, 2 Jun 2019
- 01:56:45 +0000
-From:   Ganapathi Bhat <gbhat@marvell.com>
-To:     Dan Carpenter <dan.carpenter@oracle.com>
-CC:     Colin King <colin.king@canonical.com>,
-        Amitkumar Karwar <amitkarwar@gmail.com>,
-        Nishant Sarmukadam <nishants@marvell.com>,
-        Xinming Hu <huxinming820@gmail.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        "David S . Miller" <davem@davemloft.net>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-        "kernel-janitors@vger.kernel.org" <kernel-janitors@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: RE: [EXT] Re: [PATCH] mwifiex: check for null return from skb_copy
-Thread-Topic: [EXT] Re: [PATCH] mwifiex: check for null return from skb_copy
-Thread-Index: AQHU8i7/8jDHsxlJZE+NM+DVVJab26aHWmowgAA9rACAAFAfAA==
-Date:   Sun, 2 Jun 2019 01:56:44 +0000
-Message-ID: <BYAPR18MB26301A09FB55C44949AD8E30A01B0@BYAPR18MB2630.namprd18.prod.outlook.com>
-References: <20190413161438.6376-1-colin.king@canonical.com>
- <20190413192729.GL6095@kadam>
- <MN2PR18MB2637DAA4852542EDA2BBC01DA01A0@MN2PR18MB2637.namprd18.prod.outlook.com>
- <20190601210858.GG31203@kadam>
-In-Reply-To: <20190601210858.GG31203@kadam>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [157.45.193.103]
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: 75e8877e-2f2f-4130-5c91-08d6e6fd90ce
-x-microsoft-antispam: BCL:0;PCL:0;RULEID:(2390118)(7020095)(4652040)(8989299)(4534185)(4627221)(201703031133081)(201702281549075)(8990200)(5600148)(711020)(4605104)(1401327)(2017052603328)(7193020);SRVR:BYAPR18MB2358;
-x-ms-traffictypediagnostic: BYAPR18MB2358:
-x-microsoft-antispam-prvs: <BYAPR18MB23584688A1980DF628776FBBA01B0@BYAPR18MB2358.namprd18.prod.outlook.com>
-x-ms-oob-tlc-oobclassifiers: OLM:2399;
-x-forefront-prvs: 005671E15D
-x-forefront-antispam-report: SFV:NSPM;SFS:(10009020)(346002)(396003)(39850400004)(366004)(136003)(376002)(189003)(199004)(7416002)(229853002)(478600001)(7696005)(76176011)(186003)(446003)(26005)(66066001)(11346002)(81166006)(4744005)(81156014)(25786009)(54906003)(476003)(14454004)(86362001)(8676002)(8936002)(486006)(4326008)(68736007)(5660300002)(2906002)(71200400001)(71190400001)(52536014)(3846002)(6916009)(6506007)(6116002)(55016002)(74316002)(6246003)(33656002)(76116006)(7736002)(305945005)(6436002)(66446008)(66556008)(64756008)(66476007)(73956011)(102836004)(9686003)(256004)(66946007)(53936002)(316002)(99286004);DIR:OUT;SFP:1101;SCL:1;SRVR:BYAPR18MB2358;H:BYAPR18MB2630.namprd18.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;MX:1;A:1;
-received-spf: None (protection.outlook.com: marvell.com does not designate
- permitted sender hosts)
-x-ms-exchange-senderadcheck: 1
-x-microsoft-antispam-message-info: LkuYFwxtrcvn7QFUlLio5lDPl/EqRsc5lHgGkDE7xWRaJvzLQIalb+LMhO7HuSUh/eHPkoe38KO3hgpAjWaRxpmhDoI/yRt8wn5w1PBSnbNi72DFJ1WNBkD8iahoHN9iDedDFW+yeWTAn4srN/ugFTLNAaBYPCfOxELNGG+C+GfPWcwLmqT8JEzwcz8nGZhMrJN6CwXZjj1C2O9tiPBA28TGv807rfVjn3gv2HAaaqBeEuM4JpotXMUi06wxrmnQVVV68GexrkSfLiawIbJpvHZ6nO75YJEG4xW11I1mg6l21iFppLy2Zs9xAb9WOljQeXJyUqKftsSHZGbA0UObSAxvW8hWAW3vsZodTbSTLLDmLGCLKwV9XIRNWJy7RpvY1Kgj33Mv0YW3GqCyoqR/kTXWHR86W1wvx0xla7QkpoQ=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=cUgqrtnNCrNgdH7RxnKnTZ25cFkzrfwXIvqrOhjb+M4=;
+        b=Uhyl95P2agOSqF7eBT1Vvacwh9DYD9gATseg0PHZX9sR9+9MVu1OwK0hPUPmghxVkZ
+         WQvJiYBzUgHnhtlV/4poTCFRJfhGg36E+VfzMKfb3gRTpxtcUzk1XVitnYxgZBwksTtf
+         Bliwyial7RvN+7tIkDu12+HALc+Mf3z3MVtTc/KKRJQNV3DNnHPSoS553oFnrF8LuriR
+         U3GkIYlTt1n7hPVaghQ5rXdtJ6vwpHpUrnfhs5jZ0vFA+Hb3MpbM3xHUfxrDp+ZnNGBH
+         AylD2D72OQg73HhCitnak4qoF5EKstSwUHFVjA/PC4n9mODPSrBLRMoEo2bVIk1RWDjt
+         pzzw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=cUgqrtnNCrNgdH7RxnKnTZ25cFkzrfwXIvqrOhjb+M4=;
+        b=Csh3Lksvmbu2kp8BNdO3D4NsIQ+4m39ImZlU+4PXccgCGljWtPpYLcz5NhUYcozeqK
+         RPKeJOs+Y7UhkZ8wN97vUTsWp0KAHKI8myhf/W3nhRWYnIFwXQVeKZe2pDsXydUqf19I
+         Us1ZgtLV0ugD8k/9TNfA7z1B/8N4ENIfOcAlfQ2WjpTy6vhzwmeTKQ/FwjwHyN7rfyoc
+         Rrk4UBGDoeThftddTURx/NcdeDEpVX/ZSC91iz/zKjY3lmf/TaPFVJHj9Pa+GB3Lxw3e
+         s7yqEgJAXClYlTzgNFhqK0KtakkfXVZ4vn18UyUxN/y+hJBayg/bf0yo9diXKJsFBj0B
+         ZxVA==
+X-Gm-Message-State: APjAAAWiCSQnIpU1sPsy4RZFHLrOBF1UHvFUaXLng4AwtKEagPHKE8X9
+        wtqUJFWk7A6TEbdxXkPXwsdYIXPm
+X-Google-Smtp-Source: APXvYqxPJbtNd2bKWTeZcQQ+oJpbcmUNpfCyWLpAGGD/MtvV1+7Spbs5RufNg0j1iiCSBsNxQN6A4w==
+X-Received: by 2002:a1c:7e8d:: with SMTP id z135mr10590160wmc.72.1559466383914;
+        Sun, 02 Jun 2019 02:06:23 -0700 (PDT)
+Received: from debian64.daheim (p4FD09A91.dip0.t-ipconnect.de. [79.208.154.145])
+        by smtp.gmail.com with ESMTPSA id k2sm19186735wrg.41.2019.06.02.02.06.22
+        (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
+        Sun, 02 Jun 2019 02:06:23 -0700 (PDT)
+Received: from chuck by debian64.daheim with local (Exim 4.92)
+        (envelope-from <chunkeey@gmail.com>)
+        id 1hXMRa-0003Z0-8p; Sun, 02 Jun 2019 11:06:22 +0200
+From:   Christian Lamparter <chunkeey@gmail.com>
+To:     linux-wireless@vger.kernel.org
+Cc:     Kalle Valo <kvalo@codeaurora.org>,
+        Alan Stern <stern@rowland.harvard.edu>,
+        USB list <linux-usb@vger.kernel.org>
+Subject: [PATCH] carl9170: Fix misuse of device driver API
+Date:   Sun,  2 Jun 2019 11:06:22 +0200
+Message-Id: <20190602090622.13656-1-chunkeey@gmail.com>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-X-MS-Exchange-CrossTenant-Network-Message-Id: 75e8877e-2f2f-4130-5c91-08d6e6fd90ce
-X-MS-Exchange-CrossTenant-originalarrivaltime: 02 Jun 2019 01:56:44.8912
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 70e1fb47-1155-421d-87fc-2e58f638b6e0
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: gbhat@marvell.com
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BYAPR18MB2358
-X-OriginatorOrg: marvell.com
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:,, definitions=2019-06-01_16:,,
- signatures=0
+Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi Dan,
+This patch follows Alan Stern's recent patch:
+"p54: Fix race between disconnect and firmware loading"
 
-> > > >  	if (is_multicast_ether_addr(ra)) {
-> > > >  		skb_uap =3D skb_copy(skb, GFP_ATOMIC);
-> > > > +		if (!skb_uap)
-> > > > +			return -ENOMEM;
-> > >
-> > > I think we would want to free dev_kfree_skb_any(skb) before returning=
-.
-> > I think if the pointer is NULL, no need to free it;
->=20
-> You're misreading skb vs skb_uap.  "skb_uap" is NULL but "skb" is non-NUL=
-L
-> and I'm pretty sure we should free it.
+that overhauled carl9170 buggy firmware loading and driver
+unbinding procedures.
 
-Oh, right. I missed it; Yes you are correct.
+Since the carl9170 code was adapted from p54 it uses the
+same functions and is likely to have the same problem, but
+it's just that the syzbot hasn't reproduce them (yet).
 
-Regards,
-Ganapathi
+a summary from the changes (copied from the p54 patch):
+ * Call usb_driver_release_interface() rather than
+   device_release_driver().
+
+ * Lock udev (the interface's parent) before unbinding the
+   driver instead of locking udev->parent.
+
+ * During the firmware loading process, take a reference
+   to the USB interface instead of the USB device.
+
+ * Don't take an unnecessary reference to the device during
+   probe (and then don't drop it during disconnect).
+
+and
+
+ * Make sure to prevent use-after-free bugs by explicitly
+   setting the driver context to NULL after signaling the
+   completion.
+
+Cc: <stable@vger.kernel.org>
+Cc: Alan Stern <stern@rowland.harvard.edu>
+Signed-off-by: Christian Lamparter <chunkeey@gmail.com>
+---
+ drivers/net/wireless/ath/carl9170/usb.c | 26 ++++++++++++-------------
+ 1 file changed, 12 insertions(+), 14 deletions(-)
+
+diff --git a/drivers/net/wireless/ath/carl9170/usb.c b/drivers/net/wireless/ath/carl9170/usb.c
+index e7c3f3b8457d..297a7b877d31 100644
+--- a/drivers/net/wireless/ath/carl9170/usb.c
++++ b/drivers/net/wireless/ath/carl9170/usb.c
+@@ -128,6 +128,8 @@ static const struct usb_device_id carl9170_usb_ids[] = {
+ };
+ MODULE_DEVICE_TABLE(usb, carl9170_usb_ids);
+ 
++static struct usb_driver carl9170_driver;
++
+ static void carl9170_usb_submit_data_urb(struct ar9170 *ar)
+ {
+ 	struct urb *urb;
+@@ -966,7 +968,7 @@ static int carl9170_usb_init_device(struct ar9170 *ar)
+ 
+ static void carl9170_usb_firmware_failed(struct ar9170 *ar)
+ {
+-	struct device *parent = ar->udev->dev.parent;
++	struct usb_interface *intf = ar->intf;
+ 	struct usb_device *udev;
+ 
+ 	/*
+@@ -978,16 +980,15 @@ static void carl9170_usb_firmware_failed(struct ar9170 *ar)
+ 	udev = ar->udev;
+ 
+ 	complete(&ar->fw_load_wait);
++	/* at this point 'ar' could be already freed. Don't use it anymore */
++	ar = NULL;
+ 
+ 	/* unbind anything failed */
+-	if (parent)
+-		device_lock(parent);
+-
+-	device_release_driver(&udev->dev);
+-	if (parent)
+-		device_unlock(parent);
++	usb_lock_device(udev);
++	usb_driver_release_interface(&carl9170_driver, intf);
++	usb_unlock_device(udev);
+ 
+-	usb_put_dev(udev);
++	usb_put_intf(intf);
+ }
+ 
+ static void carl9170_usb_firmware_finish(struct ar9170 *ar)
+@@ -1009,7 +1010,7 @@ static void carl9170_usb_firmware_finish(struct ar9170 *ar)
+ 		goto err_unrx;
+ 
+ 	complete(&ar->fw_load_wait);
+-	usb_put_dev(ar->udev);
++	usb_put_intf(ar->intf);
+ 	return;
+ 
+ err_unrx:
+@@ -1052,7 +1053,6 @@ static int carl9170_usb_probe(struct usb_interface *intf,
+ 		return PTR_ERR(ar);
+ 
+ 	udev = interface_to_usbdev(intf);
+-	usb_get_dev(udev);
+ 	ar->udev = udev;
+ 	ar->intf = intf;
+ 	ar->features = id->driver_info;
+@@ -1094,15 +1094,14 @@ static int carl9170_usb_probe(struct usb_interface *intf,
+ 	atomic_set(&ar->rx_anch_urbs, 0);
+ 	atomic_set(&ar->rx_pool_urbs, 0);
+ 
+-	usb_get_dev(ar->udev);
++	usb_get_intf(intf);
+ 
+ 	carl9170_set_state(ar, CARL9170_STOPPED);
+ 
+ 	err = request_firmware_nowait(THIS_MODULE, 1, CARL9170FW_NAME,
+ 		&ar->udev->dev, GFP_KERNEL, ar, carl9170_usb_firmware_step2);
+ 	if (err) {
+-		usb_put_dev(udev);
+-		usb_put_dev(udev);
++		usb_put_intf(intf);
+ 		carl9170_free(ar);
+ 	}
+ 	return err;
+@@ -1131,7 +1130,6 @@ static void carl9170_usb_disconnect(struct usb_interface *intf)
+ 
+ 	carl9170_release_firmware(ar);
+ 	carl9170_free(ar);
+-	usb_put_dev(udev);
+ }
+ 
+ #ifdef CONFIG_PM
+-- 
+2.20.1
+
