@@ -2,24 +2,24 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 5537032854
+	by mail.lfdr.de (Postfix) with ESMTP id BF71A32855
 	for <lists+linux-wireless@lfdr.de>; Mon,  3 Jun 2019 08:09:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726719AbfFCGJO (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 3 Jun 2019 02:09:14 -0400
-Received: from mailgw02.mediatek.com ([210.61.82.184]:25340 "EHLO
+        id S1726894AbfFCGJP (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 3 Jun 2019 02:09:15 -0400
+Received: from mailgw02.mediatek.com ([210.61.82.184]:64760 "EHLO
         mailgw02.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1726383AbfFCGJO (ORCPT
+        with ESMTP id S1726520AbfFCGJO (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
         Mon, 3 Jun 2019 02:09:14 -0400
-X-UUID: 214002602fcd426283422b64a153e3fa-20190603
-X-UUID: 214002602fcd426283422b64a153e3fa-20190603
-Received: from mtkcas07.mediatek.inc [(172.21.101.84)] by mailgw02.mediatek.com
+X-UUID: 99e2ff9279804aa483ff7a88a735f8f9-20190603
+X-UUID: 99e2ff9279804aa483ff7a88a735f8f9-20190603
+Received: from mtkexhb01.mediatek.inc [(172.21.101.102)] by mailgw02.mediatek.com
         (envelope-from <ryder.lee@mediatek.com>)
         (mhqrelay.mediatek.com ESMTP with TLS)
-        with ESMTP id 1521034927; Mon, 03 Jun 2019 14:09:04 +0800
+        with ESMTP id 1844633180; Mon, 03 Jun 2019 14:09:05 +0800
 Received: from mtkcas09.mediatek.inc (172.21.101.178) by
- mtkmbs08n1.mediatek.inc (172.21.101.55) with Microsoft SMTP Server (TLS) id
+ mtkmbs07n2.mediatek.inc (172.21.101.141) with Microsoft SMTP Server (TLS) id
  15.0.1395.4; Mon, 3 Jun 2019 14:09:03 +0800
 Received: from mtksdccf07.mediatek.inc (172.21.84.99) by mtkcas09.mediatek.inc
  (172.21.101.73) with Microsoft SMTP Server id 15.0.1395.4 via Frontend
@@ -34,126 +34,103 @@ CC:     Roy Luo <royluo@google.com>, YF Luo <yf.luo@mediatek.com>,
         <linux-wireless@vger.kernel.org>,
         <linux-mediatek@lists.infradead.org>,
         <linux-kernel@vger.kernel.org>, Ryder Lee <ryder.lee@mediatek.com>
-Subject: [PATCH v3 1/2] mt76: mt7615: enable support for mesh
-Date:   Mon, 3 Jun 2019 14:08:43 +0800
-Message-ID: <a1ff446dfc06e2443552e7ec2d754099aacce7df.1559541944.git.ryder.lee@mediatek.com>
+Subject: [PATCH v3 2/2] mt76: mt7615: fix slow performance when enable encryption
+Date:   Mon, 3 Jun 2019 14:08:44 +0800
+Message-ID: <429cf8c1421017b4030b8b6e4fa9e5cbea953d3c.1559541944.git.ryder.lee@mediatek.com>
 X-Mailer: git-send-email 1.9.1
+In-Reply-To: <a1ff446dfc06e2443552e7ec2d754099aacce7df.1559541944.git.ryder.lee@mediatek.com>
+References: <a1ff446dfc06e2443552e7ec2d754099aacce7df.1559541944.git.ryder.lee@mediatek.com>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 X-MTK:  N
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Enable NL80211_IFTYPE_MESH_POINT and update its path.
+Fix wrong WCID assignment and add RKV (RX Key of this entry is valid)
+flag to check if peer uses the same configuration with previous
+handshaking.
 
+If the configuration is mismatch, WTBL indicates a “cipher mismatch”
+to stop SEC decryption to prevent the packet from damage.
+
+Suggested-by: YF Luo <yf.luo@mediatek.com>
+Suggested-by: Yiwei Chung <yiwei.chung@mediatek.com>
 Signed-off-by: Ryder Lee <ryder.lee@mediatek.com>
 ---
-Changes since v3 - fix a wrong expression
-Changes since v2 - remove unused definitions
+Changes since v3 - none
+Changes since v2 - none
 ---
- drivers/net/wireless/mediatek/mt76/mt7615/init.c | 6 ++++++
- drivers/net/wireless/mediatek/mt76/mt7615/main.c | 1 +
- drivers/net/wireless/mediatek/mt76/mt7615/mcu.c  | 4 +++-
- drivers/net/wireless/mediatek/mt76/mt7615/mcu.h  | 6 ------
- 4 files changed, 10 insertions(+), 7 deletions(-)
+ drivers/net/wireless/mediatek/mt76/mt7615/init.c | 16 ++++++++++------
+ drivers/net/wireless/mediatek/mt76/mt7615/main.c |  2 +-
+ drivers/net/wireless/mediatek/mt76/mt7615/mcu.c  |  1 +
+ 3 files changed, 12 insertions(+), 7 deletions(-)
 
 diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/init.c b/drivers/net/wireless/mediatek/mt76/mt7615/init.c
-index 59f604f3161f..f860af6a42da 100644
+index f860af6a42da..b3e08154ccbe 100644
 --- a/drivers/net/wireless/mediatek/mt76/mt7615/init.c
 +++ b/drivers/net/wireless/mediatek/mt76/mt7615/init.c
-@@ -133,6 +133,9 @@ static const struct ieee80211_iface_limit if_limits[] = {
- 	{
- 		.max = MT7615_MAX_INTERFACES,
- 		.types = BIT(NL80211_IFTYPE_AP) |
-+#ifdef CONFIG_MAC80211_MESH
-+			 BIT(NL80211_IFTYPE_MESH_POINT) |
-+#endif
- 			 BIT(NL80211_IFTYPE_STATION)
- 	}
- };
-@@ -195,6 +198,9 @@ int mt7615_register_device(struct mt7615_dev *dev)
- 	dev->mt76.antenna_mask = 0xf;
+@@ -62,16 +62,11 @@ static void mt7615_mac_init(struct mt7615_dev *dev)
+ 		 MT_AGG_ARCR_RATE_DOWN_RATIO_EN |
+ 		 FIELD_PREP(MT_AGG_ARCR_RATE_DOWN_RATIO, 1) |
+ 		 FIELD_PREP(MT_AGG_ARCR_RATE_UP_EXTRA_TH, 4)));
+-
+-	dev->mt76.global_wcid.idx = MT7615_WTBL_RESERVED;
+-	dev->mt76.global_wcid.hw_key_idx = -1;
+-	rcu_assign_pointer(dev->mt76.wcid[MT7615_WTBL_RESERVED],
+-			   &dev->mt76.global_wcid);
+ }
  
- 	wiphy->interface_modes = BIT(NL80211_IFTYPE_STATION) |
-+#ifdef CONFIG_MAC80211_MESH
-+				 BIT(NL80211_IFTYPE_MESH_POINT) |
-+#endif
- 				 BIT(NL80211_IFTYPE_AP);
+ static int mt7615_init_hardware(struct mt7615_dev *dev)
+ {
+-	int ret;
++	int ret, idx;
  
- 	ret = mt76_register_device(&dev->mt76, true, mt7615_rates,
+ 	mt76_wr(dev, MT_INT_SOURCE_CSR, ~0);
+ 
+@@ -98,6 +93,15 @@ static int mt7615_init_hardware(struct mt7615_dev *dev)
+ 	mt7615_mcu_ctrl_pm_state(dev, 0);
+ 	mt7615_mcu_del_wtbl_all(dev);
+ 
++	/* Beacon and mgmt frames should occupy wcid 0 */
++	idx = mt76_wcid_alloc(dev->mt76.wcid_mask, MT7615_WTBL_STA - 1);
++	if (idx)
++		return -ENOSPC;
++
++	dev->mt76.global_wcid.idx = idx;
++	dev->mt76.global_wcid.hw_key_idx = -1;
++	rcu_assign_pointer(dev->mt76.wcid[idx], &dev->mt76.global_wcid);
++
+ 	return 0;
+ }
+ 
 diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/main.c b/drivers/net/wireless/mediatek/mt76/mt7615/main.c
-index b0bb7cc12385..585e67fa2728 100644
+index 585e67fa2728..2cdd339453c8 100644
 --- a/drivers/net/wireless/mediatek/mt76/mt7615/main.c
 +++ b/drivers/net/wireless/mediatek/mt76/mt7615/main.c
-@@ -37,6 +37,7 @@ static int get_omac_idx(enum nl80211_iftype type, u32 mask)
+@@ -95,7 +95,7 @@ static int mt7615_add_interface(struct ieee80211_hw *hw,
  
- 	switch (type) {
- 	case NL80211_IFTYPE_AP:
-+	case NL80211_IFTYPE_MESH_POINT:
- 		/* ap use hw bssid 0 and ext bssid */
- 		if (~mask & BIT(HW_BSSID_0))
- 			return HW_BSSID_0;
+ 	dev->vif_mask |= BIT(mvif->idx);
+ 	dev->omac_mask |= BIT(mvif->omac_idx);
+-	idx = MT7615_WTBL_RESERVED - 1 - mvif->idx;
++	idx = MT7615_WTBL_RESERVED - mvif->idx;
+ 	mvif->sta.wcid.idx = idx;
+ 	mvif->sta.wcid.hw_key_idx = -1;
+ 
 diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c
-index 43f70195244c..e82297048449 100644
+index e82297048449..b3802f18b37b 100644
 --- a/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c
 +++ b/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c
-@@ -754,6 +754,7 @@ int mt7615_mcu_set_bss_info(struct mt7615_dev *dev,
+@@ -882,6 +882,7 @@ int mt7615_mcu_set_wtbl_key(struct mt7615_dev *dev, int wcid,
+ 		if (cipher == MT_CIPHER_NONE && key)
+ 			return -EOPNOTSUPP;
  
- 	switch (vif->type) {
- 	case NL80211_IFTYPE_AP:
-+	case NL80211_IFTYPE_MESH_POINT:
- 		tx_wlan_idx = mvif->sta.wcid.idx;
- 		conn_type = CONNECTION_INFRA_AP;
- 		break;
-@@ -968,7 +969,7 @@ int mt7615_mcu_add_wtbl(struct mt7615_dev *dev, struct ieee80211_vif *vif,
- 		.rx_wtbl = {
- 			.tag = cpu_to_le16(WTBL_RX),
- 			.len = cpu_to_le16(sizeof(struct wtbl_rx)),
--			.rca1 = vif->type != NL80211_IFTYPE_AP,
-+			.rca1 = vif->type == NL80211_IFTYPE_STATION,
- 			.rca2 = 1,
- 			.rv = 1,
- 		},
-@@ -1042,6 +1043,7 @@ static void sta_rec_convert_vif_type(enum nl80211_iftype type, u32 *conn_type)
- {
- 	switch (type) {
- 	case NL80211_IFTYPE_AP:
-+	case NL80211_IFTYPE_MESH_POINT:
- 		if (conn_type)
- 			*conn_type = CONNECTION_INFRA_STA;
- 		break;
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/mcu.h b/drivers/net/wireless/mediatek/mt76/mt7615/mcu.h
-index e96efb13fa4d..0915cb735699 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7615/mcu.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt7615/mcu.h
-@@ -105,25 +105,19 @@ enum {
- #define STA_TYPE_STA		BIT(0)
- #define STA_TYPE_AP		BIT(1)
- #define STA_TYPE_ADHOC		BIT(2)
--#define STA_TYPE_TDLS		BIT(3)
- #define STA_TYPE_WDS		BIT(4)
- #define STA_TYPE_BC		BIT(5)
- 
- #define NETWORK_INFRA		BIT(16)
- #define NETWORK_P2P		BIT(17)
- #define NETWORK_IBSS		BIT(18)
--#define NETWORK_MESH		BIT(19)
--#define NETWORK_BOW		BIT(20)
- #define NETWORK_WDS		BIT(21)
- 
- #define CONNECTION_INFRA_STA	(STA_TYPE_STA | NETWORK_INFRA)
- #define CONNECTION_INFRA_AP	(STA_TYPE_AP | NETWORK_INFRA)
- #define CONNECTION_P2P_GC	(STA_TYPE_STA | NETWORK_P2P)
- #define CONNECTION_P2P_GO	(STA_TYPE_AP | NETWORK_P2P)
--#define CONNECTION_MESH_STA	(STA_TYPE_STA | NETWORK_MESH)
--#define CONNECTION_MESH_AP	(STA_TYPE_AP | NETWORK_MESH)
- #define CONNECTION_IBSS_ADHOC	(STA_TYPE_ADHOC | NETWORK_IBSS)
--#define CONNECTION_TDLS		(STA_TYPE_STA | NETWORK_INFRA | STA_TYPE_TDLS)
- #define CONNECTION_WDS		(STA_TYPE_WDS | NETWORK_WDS)
- #define CONNECTION_INFRA_BC	(STA_TYPE_BC | NETWORK_INFRA)
- 
++		req.key.rkv = 1;
+ 		req.key.cipher_id = cipher;
+ 		req.key.key_id = key->keyidx;
+ 		req.key.key_len = key->keylen;
 -- 
 2.18.0
 
