@@ -2,179 +2,123 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 975A133374
-	for <lists+linux-wireless@lfdr.de>; Mon,  3 Jun 2019 17:25:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 27F163384C
+	for <lists+linux-wireless@lfdr.de>; Mon,  3 Jun 2019 20:38:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726823AbfFCPZe (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 3 Jun 2019 11:25:34 -0400
-Received: from narfation.org ([79.140.41.39]:59414 "EHLO v3-1039.vlinux.de"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726315AbfFCPZe (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 3 Jun 2019 11:25:34 -0400
-Received: from sven-desktop.home.narfation.org (p200300C5970CA3FE0000000000000DF6.dip0.t-ipconnect.de [IPv6:2003:c5:970c:a3fe::df6])
-        by v3-1039.vlinux.de (Postfix) with ESMTPSA id 7A5A611011C;
-        Mon,  3 Jun 2019 17:25:31 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=narfation.org;
-        s=20121; t=1559575531;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:
-         content-transfer-encoding:content-transfer-encoding;
-        bh=SSrcVBztvjIi1xyN1jAaZOAKwrHAF2mGSbg780mY7go=;
-        b=jnHo8yFksNUE1NHpT2ZTsPUnlkM116w+4cfNJOG8HzuBz4xOFYbXeFJ1AdKLDZlEqZrhbx
-        oIFI0VYVjusbW6yMX8PW0gPuKYWQ3xWJS8coi3kjmV8hvBRX5ZVpjVc5YYMaIm51M58aU2
-        ZUWs2Iup8DUIYYcJh0AmQMGtVae2C8s=
-From:   Sven Eckelmann <sven@narfation.org>
-To:     ath10k@lists.infradead.org
-Cc:     linux-wireless@vger.kernel.org,
-        Sven Eckelmann <seckelmann@datto.com>,
+        id S1726797AbfFCSh6 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 3 Jun 2019 14:37:58 -0400
+Received: from mail-pg1-f193.google.com ([209.85.215.193]:38736 "EHLO
+        mail-pg1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726656AbfFCSh5 (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 3 Jun 2019 14:37:57 -0400
+Received: by mail-pg1-f193.google.com with SMTP id v11so8769784pgl.5
+        for <linux-wireless@vger.kernel.org>; Mon, 03 Jun 2019 11:37:57 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=YZsnBAN22tVtHFJc56q+rxbdD8fX8T8HXkSym7OyHiQ=;
+        b=Ps1O4MtbD2rEMRtRw6yvXGSxDXrH7HjPdY7KCq/lSlW7htShDFp+u033WFVJDjOXPb
+         OLNlYon0Wpzph3sUz2BCPyDgUNjVZMpJf1kV0lUidQnpFyFPagCNB03AVdSVyyqUvAr/
+         bxUU+BnIId5lrXnzJ6D/l5svsqW8IvWW9U+R8=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=YZsnBAN22tVtHFJc56q+rxbdD8fX8T8HXkSym7OyHiQ=;
+        b=Orewtg/bPGD5qi/bS8lniW9B0+QenA++dyHRPR8VdMtRSsWppXgvi2hklfIBEsX0gC
+         PQ8acNLUc3fjPW+5CSJ4qgmuUDULLHDHt+OWblnr075t64v9fzWxyBz3wOLMLyX5fcwY
+         yWJCS/nUhXeSyqfPCMeYAS+QX16LhHDeP3YbsHxxm2iGWgmOUAfx6E/suFil9ZvtfngX
+         p1iTU/xWM2SNJbqTjcOnbCrgsUaoAZaNxtIHdkDj/c5mGj3hqByR0jGJNwdkDlMthK1C
+         gm7Xh6hVq5irj7bciel0i7OM36p+fJn8EM7qthW1Zes/ZTZsVqyfXu0K5XQKBEyUcmEu
+         Hyag==
+X-Gm-Message-State: APjAAAU2TmbGj7chZdl0ORjpBa/JwcN+/tguxd3L2EAnyDsFSOdUKRB8
+        XqgQrPC1LgVwnYlBkPeD1scHug==
+X-Google-Smtp-Source: APXvYqwbLiM1y3Cof2KgcMMeZ8t9NIYK+vbdXny/5bFAdCAVPmxQ/CP9Y2AV9T+xZdprrAWMKhZjdw==
+X-Received: by 2002:a62:764d:: with SMTP id r74mr9422273pfc.110.1559587076759;
+        Mon, 03 Jun 2019 11:37:56 -0700 (PDT)
+Received: from tictac2.mtv.corp.google.com ([2620:15c:202:1:24fa:e766:52c9:e3b2])
+        by smtp.gmail.com with ESMTPSA id t2sm14808969pfh.166.2019.06.03.11.37.55
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Mon, 03 Jun 2019 11:37:56 -0700 (PDT)
+From:   Douglas Anderson <dianders@chromium.org>
+To:     Ulf Hansson <ulf.hansson@linaro.org>,
         Kalle Valo <kvalo@codeaurora.org>,
-        Sriram R <srirrama@codeaurora.org>
-Subject: [PATCH v2] ath10k: avoid leaving .bss_info_changed prematurely
-Date:   Mon,  3 Jun 2019 17:25:07 +0200
-Message-Id: <20190603152507.22011-1-sven@narfation.org>
-X-Mailer: git-send-email 2.20.1
+        Adrian Hunter <adrian.hunter@intel.com>,
+        Arend van Spriel <arend.vanspriel@broadcom.com>
+Cc:     brcm80211-dev-list.pdl@broadcom.com,
+        linux-rockchip@lists.infradead.org,
+        Double Lo <double.lo@cypress.com>, briannorris@chromium.org,
+        linux-wireless@vger.kernel.org,
+        Naveen Gupta <naveen.gupta@cypress.com>,
+        Madhan Mohan R <madhanmohan.r@cypress.com>, mka@chromium.org,
+        Wright Feng <wright.feng@cypress.com>,
+        Chi-Hsien Lin <chi-hsien.lin@cypress.com>,
+        netdev@vger.kernel.org, brcm80211-dev-list@cypress.com,
+        Douglas Anderson <dianders@chromium.org>,
+        linux-mmc@vger.kernel.org, Shawn Lin <shawn.lin@rock-chips.com>,
+        YueHaibing <yuehaibing@huawei.com>,
+        Hans de Goede <hdegoede@redhat.com>,
+        Hante Meuleman <hante.meuleman@broadcom.com>,
+        Michael Trimarchi <michael@amarulasolutions.com>,
+        Wolfram Sang <wsa+renesas@sang-engineering.com>,
+        Franky Lin <franky.lin@broadcom.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        linux-kernel@vger.kernel.org, Avri Altman <avri.altman@wdc.com>
+Subject: [PATCH v2 0/3] brcmfmac: sdio: Deal better w/ transmission errors waking from idle
+Date:   Mon,  3 Jun 2019 11:37:37 -0700
+Message-Id: <20190603183740.239031-1-dianders@chromium.org>
+X-Mailer: git-send-email 2.22.0.rc1.311.g5d7573a151-goog
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=narfation.org;
-        s=20121; t=1559575531;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:
-         content-transfer-encoding:content-transfer-encoding;
-        bh=SSrcVBztvjIi1xyN1jAaZOAKwrHAF2mGSbg780mY7go=;
-        b=jkeIAHx6E7aEZDSQrHwocC7qS8y4EMRxA9znqWg1bxdJh2vsZUvean3olk6Hi5ci1VQPeP
-        mjxAi4LhRvbalb+7JfTlX3eToCgLCXFniohgrnn5eeYwzcjU1ym7y3dACH/ntICsAAtd5r
-        fzl6uzDFtn+PbGTxExdjLMzLiP+3QqE=
-ARC-Seal: i=1; s=20121; d=narfation.org; t=1559575531; a=rsa-sha256;
-        cv=none;
-        b=SSGAxdp0waSEIXJEURQHLuEUEKP9LAHrg2YztOY8PAv6lzONmHN2Dhe8ZbQhphHfmgMv+m
-        FZNF3H4Yn6DDV8TA5DTxTDuU+jPgifEjmhjSGOs3nxKxBS7NhvahEilFfjYsUrfuzSJKzM
-        rXkTKBoqAbknQM9j90trC/2SB55UbOM=
-ARC-Authentication-Results: i=1;
-        ORIGINATING;
-        auth=pass smtp.auth=sven smtp.mailfrom=sven@narfation.org
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Sven Eckelmann <seckelmann@datto.com>
+This series attempts to deal better with the expected transmission
+errors that we get when waking up (from idle) the SDIO-based WiFi on
+rk3288-veyron-minnie, rk3288-veyron-speedy, and rk3288-veyron-mickey.
 
-ath10k_bss_info_changed() handles various events from the upper layers. It
-parses the changed bitfield and then configures the driver/firmware
-accordingly. Each detected event is handled in a separate scope which is
-independent of each other - but in the same function.
+Some details about those errors can be found in
+<https://crbug.com/960222>, but to summarize it here: if we try to
+send the wakeup command to the WiFi card at the same time it has
+decided to wake up itself then it will behave badly on the SDIO bus.
+This can cause timeouts or CRC errors.
 
-The commit f279294e9ee2 ("ath10k: add support for configuring management
-packet rate") changed this behavior by returning from this function
-prematurely when some precondition was not fulfilled. All new event
-handlers added after the BSS_CHANGED_BASIC_RATES event handler would then
-also be skipped.
+When I tested on 4.19 and 4.20 these CRC errors can be seen to cause
+re-tuning.  Since I am currently developing on 4.19 this was the
+original problem I attempted to solve.
 
-Signed-off-by: Sven Eckelmann <seckelmann@datto.com>
----
-Cc: Kalle Valo <kvalo@codeaurora.org>
-Cc: Sriram R <srirrama@codeaurora.org>
+On mainline it turns out that you don't see the retuning errors but
+you see tons of spam about timeouts trying to wakeup from sleep.  I
+tracked down the commit that was causing that and have partially
+reverted it here.  I have no real knowledge about Broadcom WiFi, but
+the commit that was causing problems sounds (from the descriptioin) to
+be a hack commit penalizing all Broadcom WiFi users because of a bug
+in a Cypress SD controller.  I will let others comment if this is
+truly the case and, if so, what the right solution should be.
 
-Only compile tested
+There wasn't a good resolution on v1 and it's been a while, so I'm
+sending out a v2.  Other than changing patch #1 to a full revert, the
+only other changes here are just to the patch descriptions.
 
-v2:
+Changes in v2:
+- A full revert, not just a partial one (Arend).  ...with explicit Cc.
+- Updated commit message to clarify based on discussion of v1.
 
-* rebased on top of commit 9e7251fa3897 ("ath10k: Check tx_stats before
-  use it")
+Douglas Anderson (3):
+  Revert "brcmfmac: disable command decode in sdio_aos"
+  mmc: core: API for temporarily disabling auto-retuning due to errors
+  brcmfmac: sdio: Disable auto-tuning around commands expected to fail
 
- drivers/net/wireless/ath/ath10k/mac.c | 64 ++++++++++++++++-----------
- 1 file changed, 38 insertions(+), 26 deletions(-)
+ drivers/mmc/core/core.c                       | 27 +++++++++++++++++--
+ .../broadcom/brcm80211/brcmfmac/sdio.c        |  9 +++----
+ include/linux/mmc/core.h                      |  2 ++
+ include/linux/mmc/host.h                      |  1 +
+ 4 files changed, 32 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath10k/mac.c b/drivers/net/wireless/ath/ath10k/mac.c
-index 98a7842e09b1..90f59117a04d 100644
---- a/drivers/net/wireless/ath/ath10k/mac.c
-+++ b/drivers/net/wireless/ath/ath10k/mac.c
-@@ -5582,6 +5582,40 @@ static void ath10k_configure_filter(struct ieee80211_hw *hw,
- 	mutex_unlock(&ar->conf_mutex);
- }
- 
-+static void ath10k_recalculate_mgmt_rate(struct ath10k *ar,
-+					 struct ieee80211_vif *vif)
-+{
-+	struct ath10k_vif *arvif = (void *)vif->drv_priv;
-+	const struct ieee80211_supported_band *sband;
-+	struct cfg80211_chan_def def;
-+	u8 basic_rate_idx;
-+	int hw_rate_code;
-+	u32 vdev_param;
-+	u16 bitrate;
-+	int ret;
-+
-+	lockdep_assert_held(&ar->conf_mutex);
-+
-+	if (WARN_ON(ath10k_mac_vif_chan(vif, &def)))
-+		return;
-+
-+	sband = ar->hw->wiphy->bands[def.chan->band];
-+	basic_rate_idx = ffs(vif->bss_conf.basic_rates) - 1;
-+	bitrate = sband->bitrates[basic_rate_idx].bitrate;
-+
-+	hw_rate_code = ath10k_mac_get_rate_hw_value(bitrate);
-+	if (hw_rate_code < 0) {
-+		ath10k_warn(ar, "bitrate not supported %d\n", bitrate);
-+		return;
-+	}
-+
-+	vdev_param = ar->wmi.vdev_param->mgmt_rate;
-+	ret = ath10k_wmi_vdev_set_param(ar, arvif->vdev_id, vdev_param,
-+					hw_rate_code);
-+	if (ret)
-+		ath10k_warn(ar, "failed to set mgmt tx rate %d\n", ret);
-+}
-+
- static void ath10k_bss_info_changed(struct ieee80211_hw *hw,
- 				    struct ieee80211_vif *vif,
- 				    struct ieee80211_bss_conf *info,
-@@ -5592,10 +5626,9 @@ static void ath10k_bss_info_changed(struct ieee80211_hw *hw,
- 	struct cfg80211_chan_def def;
- 	u32 vdev_param, pdev_param, slottime, preamble;
- 	u16 bitrate, hw_value;
--	u8 rate, basic_rate_idx, rateidx;
--	int ret = 0, hw_rate_code, mcast_rate;
-+	u8 rate, rateidx;
-+	int ret = 0, mcast_rate;
- 	enum nl80211_band band;
--	const struct ieee80211_supported_band *sband;
- 
- 	mutex_lock(&ar->conf_mutex);
- 
-@@ -5819,29 +5852,8 @@ static void ath10k_bss_info_changed(struct ieee80211_hw *hw,
- 				    arvif->vdev_id,  ret);
- 	}
- 
--	if (changed & BSS_CHANGED_BASIC_RATES) {
--		if (WARN_ON(ath10k_mac_vif_chan(vif, &def))) {
--			mutex_unlock(&ar->conf_mutex);
--			return;
--		}
--
--		sband = ar->hw->wiphy->bands[def.chan->band];
--		basic_rate_idx = ffs(vif->bss_conf.basic_rates) - 1;
--		bitrate = sband->bitrates[basic_rate_idx].bitrate;
--
--		hw_rate_code = ath10k_mac_get_rate_hw_value(bitrate);
--		if (hw_rate_code < 0) {
--			ath10k_warn(ar, "bitrate not supported %d\n", bitrate);
--			mutex_unlock(&ar->conf_mutex);
--			return;
--		}
--
--		vdev_param = ar->wmi.vdev_param->mgmt_rate;
--		ret = ath10k_wmi_vdev_set_param(ar, arvif->vdev_id, vdev_param,
--						hw_rate_code);
--		if (ret)
--			ath10k_warn(ar, "failed to set mgmt tx rate %d\n", ret);
--	}
-+	if (changed & BSS_CHANGED_BASIC_RATES)
-+		ath10k_recalculate_mgmt_rate(ar, vif);
- 
- 	mutex_unlock(&ar->conf_mutex);
- }
 -- 
-2.20.1
+2.22.0.rc1.311.g5d7573a151-goog
 
