@@ -2,138 +2,99 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 4F5CB33235
-	for <lists+linux-wireless@lfdr.de>; Mon,  3 Jun 2019 16:32:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 11BCE33299
+	for <lists+linux-wireless@lfdr.de>; Mon,  3 Jun 2019 16:48:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729120AbfFCOcE (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 3 Jun 2019 10:32:04 -0400
-Received: from mail-pg1-f194.google.com ([209.85.215.194]:36306 "EHLO
-        mail-pg1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729019AbfFCOcC (ORCPT
+        id S1729120AbfFCOsa (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 3 Jun 2019 10:48:30 -0400
+Received: from smtp.codeaurora.org ([198.145.29.96]:38340 "EHLO
+        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727650AbfFCOsa (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 3 Jun 2019 10:32:02 -0400
-Received: by mail-pg1-f194.google.com with SMTP id a3so996750pgb.3
-        for <linux-wireless@vger.kernel.org>; Mon, 03 Jun 2019 07:32:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=hzUTYLyJIfqWCjhTtjBG0SwXN5C9pieJX1yZ/fNJlfM=;
-        b=eaLPFr+Eaf59bCyCzpVAHIPnC8xqLgpWXZaR4rZz8ItD+0nBJJeq69I92bv3/zpy2O
-         41hZVzQIDPfP+wD63PGly4n4s0gTBx70DvVQMCVrx/HhSth24Q5Wi4TakwbZhuJS6rip
-         cz3RHY+nauj3rE0y4a8pBcSQOdRwozKlJSWLGK9DK4i3eTakYP7btsk4XWihEYedjE2n
-         3pChjIa2/IfYRg/2RQcCBUhi1yUFmNqcbvSA0QzljaudvdI/ZVQnpRQFz/hiiCleLfkq
-         iI4SLIlK93MtjqC67lx6+neBootb9ne1ziuUOW7s51yCKC4B2MK723+klvt9EfbBrR93
-         fJLA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=hzUTYLyJIfqWCjhTtjBG0SwXN5C9pieJX1yZ/fNJlfM=;
-        b=Vx2gEoQWRGCpA3FSS8EMgSmP97Bhz9mCr+UcXoI2yzS8qacBlt//i5OIMbMAOoOH0B
-         yFU9o9fM4IvpL4isAuBPUvEH1UIsL+8CDkLzftYZlUxhkb7LFtT4TOgrrF+vB6oXKJIk
-         F8x5+G1CpBXMIdAY3UJ6QxzZHzNstgsmBLU5+V8p0sbBC2KhaNSkN5UomQ+mAkQsUCM/
-         qr4036+PDiFo1mdb2IFSgyoTUi//YvC8VhlJxXhd7ewsxbSIqA4vD1ynLcpNqCzO6UBB
-         ODB6EcGTz2uTz0nx2Vk/xJU92/4l0iXsYobLWt9iH6UcHoluHMzWzRtVbwyVDV4V2Ea6
-         aVVg==
-X-Gm-Message-State: APjAAAXoB/Px7TWd2/b09F8EzxauOaWc578W99WDp4Ou0r/aN4pninWI
-        vVa+HZfXTlbSn97XnJWP3dYpPQpiE7dl9WXOTftG1g==
-X-Google-Smtp-Source: APXvYqz62JARGj8JxGWFy+5viuvU32dXkhQ5iv+X79Ts4VPYi9LH21dOu2hiS+UtzZDuokRswnFwn9epckI55I9JNQY=
-X-Received: by 2002:a65:64d9:: with SMTP id t25mr28553940pgv.130.1559572321848;
- Mon, 03 Jun 2019 07:32:01 -0700 (PDT)
+        Mon, 3 Jun 2019 10:48:30 -0400
+Received: by smtp.codeaurora.org (Postfix, from userid 1000)
+        id 65AD660252; Mon,  3 Jun 2019 14:48:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
+        s=default; t=1559573309;
+        bh=4cZEGaj9UQufwOw+P10SLYwCO4sIdBPkTCOKNXaAYrU=;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+        b=pKmumP+lRXOqMs+XpnojsSc5mMFfAS5NN8gLBJoWy66a6s2PPmuUMpmfpEdFBhrwx
+         zVBprnPVkHkZmMBZa16/8RoZUd30RdDI+sSQk/POJhxJ+HYyubcXuDNeMds1Vb/Vml
+         1BbTYfvR8bPYqXluXs0u8Z6dcLViK2rgLpu2k+6I=
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        pdx-caf-mail.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.7 required=2.0 tests=ALL_TRUSTED,BAYES_00,
+        DKIM_INVALID,DKIM_SIGNED,SPF_NONE autolearn=no autolearn_force=no
+        version=3.4.0
+Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo@smtp.codeaurora.org)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id C2F1460252;
+        Mon,  3 Jun 2019 14:48:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
+        s=default; t=1559573308;
+        bh=4cZEGaj9UQufwOw+P10SLYwCO4sIdBPkTCOKNXaAYrU=;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+        b=J38/2kwXDfwSKhj+j4I0uBKwWafBspE+pcysiRe6q0bqMU2P3SObSe00nj3D/4LJ+
+         DYTd9FmwlIVklaQJ6xIXLrzztWhpQIQbmA+k+D6gg8J+0URDy/AtDTOFrtSyHhwMMq
+         inIaa6I4b7lwFCeSGYQvVZKTiyABHFQF/cEeY6Ys=
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org C2F1460252
+Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
+From:   Kalle Valo <kvalo@codeaurora.org>
+To:     Sven Eckelmann <sven@narfation.org>
+Cc:     ath10k@lists.infradead.org, linux-wireless@vger.kernel.org,
+        Sven Eckelmann <seckelmann@datto.com>,
+        Sriram R <srirrama@codeaurora.org>
+Subject: Re: [PATCH] ath10k: avoid leaving .bss_info_changed prematurely
+References: <20190311083107.311-1-sven@narfation.org>
+Date:   Mon, 03 Jun 2019 17:48:24 +0300
+In-Reply-To: <20190311083107.311-1-sven@narfation.org> (Sven Eckelmann's
+        message of "Mon, 11 Mar 2019 09:31:07 +0100")
+Message-ID: <878suiwwqv.fsf@kamboji.qca.qualcomm.com>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
 MIME-Version: 1.0
-References: <00000000000044cec9058a6b6003@google.com>
-In-Reply-To: <00000000000044cec9058a6b6003@google.com>
-From:   Andrey Konovalov <andreyknvl@google.com>
-Date:   Mon, 3 Jun 2019 16:31:50 +0200
-Message-ID: <CAAeHK+z6wQA_ZMG0bC7M9792JXDY=-y4qG=_qypVjwuNbFnFpw@mail.gmail.com>
-Subject: Re: INFO: trying to register non-static key in mwifiex_unregister_dev
-To:     syzbot <syzbot+373e6719b49912399d21@syzkaller.appspotmail.com>
-Cc:     amitkarwar@gmail.com, "David S. Miller" <davem@davemloft.net>,
-        gbhat@marvell.com, huxinming820@gmail.com,
-        Kalle Valo <kvalo@codeaurora.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        USB list <linux-usb@vger.kernel.org>,
-        linux-wireless@vger.kernel.org, netdev <netdev@vger.kernel.org>,
-        nishants@marvell.com,
-        syzkaller-bugs <syzkaller-bugs@googlegroups.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Mon, Jun 3, 2019 at 3:31 PM syzbot
-<syzbot+373e6719b49912399d21@syzkaller.appspotmail.com> wrote:
->
-> Hello,
->
-> syzbot found the following crash on:
->
-> HEAD commit:    69bbe8c7 usb-fuzzer: main usb gadget fuzzer driver
-> git tree:       https://github.com/google/kasan.git usb-fuzzer
-> console output: https://syzkaller.appspot.com/x/log.txt?x=1448d0f2a00000
-> kernel config:  https://syzkaller.appspot.com/x/.config?x=193d8457178b3229
-> dashboard link: https://syzkaller.appspot.com/bug?extid=373e6719b49912399d21
-> compiler:       gcc (GCC) 9.0.0 20181231 (experimental)
-> syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=16e57ca6a00000
-> C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=1106eda2a00000
->
-> IMPORTANT: if you fix the bug, please add the following tag to the commit:
-> Reported-by: syzbot+373e6719b49912399d21@syzkaller.appspotmail.com
->
-> usb 1-1: Using ep0 maxpacket: 8
-> usb 1-1: config 0 has an invalid interface number: 182 but max is 0
-> usb 1-1: config 0 has no interface number 0
-> usb 1-1: New USB device found, idVendor=1286, idProduct=2052,
-> bcdDevice=61.43
-> usb 1-1: New USB device strings: Mfr=0, Product=0, SerialNumber=0
-> usb 1-1: config 0 descriptor??
-> usb 1-1: Direct firmware load for mrvl/usbusb8997_combo_v4.bin failed with
-> error -2
-> usb 1-1: Failed to get firmware mrvl/usbusb8997_combo_v4.bin
-> usb 1-1: info: _mwifiex_fw_dpc: unregister device
-> INFO: trying to register non-static key.
-> the code is fine but needs lockdep annotation.
-> turning off the locking correctness validator.
-> CPU: 1 PID: 21 Comm: kworker/1:1 Not tainted 5.2.0-rc1+ #10
-> Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS
-> Google 01/01/2011
-> Workqueue: events request_firmware_work_func
-> Call Trace:
->   __dump_stack lib/dump_stack.c:77 [inline]
->   dump_stack+0xca/0x13e lib/dump_stack.c:113
->   assign_lock_key kernel/locking/lockdep.c:774 [inline]
->   register_lock_class+0x11ae/0x1240 kernel/locking/lockdep.c:1083
->   __lock_acquire+0x11d/0x5340 kernel/locking/lockdep.c:3673
->   lock_acquire+0x100/0x2b0 kernel/locking/lockdep.c:4302
->   del_timer_sync+0x3a/0x130 kernel/time/timer.c:1277
->   mwifiex_usb_cleanup_tx_aggr
-> drivers/net/wireless/marvell/mwifiex/usb.c:1358 [inline]
->   mwifiex_unregister_dev+0x416/0x690
-> drivers/net/wireless/marvell/mwifiex/usb.c:1370
->   _mwifiex_fw_dpc+0x577/0xda0 drivers/net/wireless/marvell/mwifiex/main.c:651
->   request_firmware_work_func+0x126/0x242
-> drivers/base/firmware_loader/main.c:785
->   process_one_work+0x905/0x1570 kernel/workqueue.c:2268
->   worker_thread+0x96/0xe20 kernel/workqueue.c:2414
->   kthread+0x30b/0x410 kernel/kthread.c:254
->   ret_from_fork+0x24/0x30 arch/x86/entry/entry_64.S:352
-> ------------[ cut here ]------------
-> ODEBUG: assert_init not available (active state 0) object type: timer_list
-> hint: 0x0
-> WARNING: CPU: 1 PID: 21 at lib/debugobjects.c:325
-> debug_print_object+0x160/0x250 lib/debugobjects.c:325
->
->
-> ---
-> This bug is generated by a bot. It may contain errors.
-> See https://goo.gl/tpsmEJ for more information about syzbot.
-> syzbot engineers can be reached at syzkaller@googlegroups.com.
->
-> syzbot will keep track of this bug report. See:
-> https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
-> syzbot can test patches for this bug, for details see:
-> https://goo.gl/tpsmEJ#testing-patches
+Sven Eckelmann <sven@narfation.org> writes:
 
-#syz dup: INFO: trying to register non-static key in del_timer_sync (2)
+> From: Sven Eckelmann <seckelmann@datto.com>
+>
+> ath10k_bss_info_changed() handles various events from the upper layers. It
+> parses the changed bitfield and then configures the driver/firmware
+> accordingly. Each detected event is handled in a separate scope which is
+> independent of each other - but in the same function.
+>
+> The commit f279294e9ee2 ("ath10k: add support for configuring management
+> packet rate") changed this behavior by returning from this function
+> prematurely when some precondition was not fulfilled. All new event
+> handlers added after the BSS_CHANGED_BASIC_RATES event handler would then
+> also be skipped.
+>
+> Signed-off-by: Sven Eckelmann <seckelmann@datto.com>
+> ---
+> Cc: Kalle Valo <kvalo@codeaurora.org>
+> Cc: Sriram R <srirrama@codeaurora.org>
+>
+> Only compile tested
+
+Unfortunately doesn't apply anymore, please rebase.
+
+Applying: ath10k: avoid leaving .bss_info_changed prematurely
+Using index info to reconstruct a base tree...
+M       drivers/net/wireless/ath/ath10k/mac.c
+Falling back to patching base and 3-way merge...
+Auto-merging drivers/net/wireless/ath/ath10k/mac.c
+CONFLICT (content): Merge conflict in drivers/net/wireless/ath/ath10k/mac.c
+Recorded preimage for 'drivers/net/wireless/ath/ath10k/mac.c'
+error: Failed to merge in the changes.
+Patch failed at 0001 ath10k: avoid leaving .bss_info_changed prematurely
+
+-- 
+Kalle Valo
