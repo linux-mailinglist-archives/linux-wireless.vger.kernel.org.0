@@ -2,122 +2,117 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 900B632EE0
-	for <lists+linux-wireless@lfdr.de>; Mon,  3 Jun 2019 13:41:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 349C633115
+	for <lists+linux-wireless@lfdr.de>; Mon,  3 Jun 2019 15:31:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726809AbfFCLld convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 3 Jun 2019 07:41:33 -0400
-Received: from mail1.bemta23.messagelabs.com ([67.219.246.210]:51263 "EHLO
-        mail1.bemta23.messagelabs.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726609AbfFCLld (ORCPT
+        id S1728244AbfFCNbF (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 3 Jun 2019 09:31:05 -0400
+Received: from mail-io1-f70.google.com ([209.85.166.70]:43232 "EHLO
+        mail-io1-f70.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727846AbfFCNbF (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 3 Jun 2019 07:41:33 -0400
-Received: from [67.219.247.53] (using TLSv1.2 with cipher DHE-RSA-AES256-GCM-SHA384 (256 bits))
-        by server-3.bemta.az-d.us-east-1.aws.symcld.net id 88/95-23491-A6705FC5; Mon, 03 Jun 2019 11:41:30 +0000
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFtrKKsWRWlGSWpSXmKPExsXi5LtOQDeL/Wu
-  MQccWNYuPGz6xWLxZcYfdgcmjv3cbi8fnTXIBTFGsmXlJ+RUJrBnLX8xlKegQqLi4bzJbA+MW
-  3i5GLg4hgVWMEntfzmWGcPYwSnz/0MzexcjJwSZgKLF6wREwW0RAV+LipNssIDazgKvEmfuvm
-  UFsYYEQiQ/dvcwQNZESM+dvY4Ow9SRWHJwAZrMIqEjsXvuaEcTmFdCU+Pm8iRXEZhSQlXjRPo
-  EJYqa4xK0n88FsCQEBiSV7zjND2KISLx//A6rn4BAFmtOzuwgirCAx9SLEGGYBHYkFuz+xQdj
-  mElNnr4E6U1ti2UKIM3kFBCVOznwCFhcCGrNtSjfbBEbRWUg2z0IyahaSUbOQjJqFZNQCRtZV
-  jOZJRZnpGSW5iZk5uoYGBrqGhkZArGtoYaiXWKWboldarJuaWFyiC+SWF+sVV+Ym56To5aWWb
-  GIExl1KAffWHYxTj7zWO8QoycGkJMpb+O5jjBBfUn5KZUZicUZ8UWlOavEhRhkODiUJ3mvMX2
-  OEBItS01Mr0jJzgCkAJi3BwaMkwtvGBpTmLS5IzC3OTIdInWI05jiw6OFcZo6HrZ/nMgux5OX
-  npUqJ81qBlAqAlGaU5sENgqWmS4yyUsK8jAwMDEI8BalFuZklqPKvGMU5GJWEeYNYgKbwZOaV
-  wO17BXQKE9Ap/rc/gZxSkoiQkmpg2vNTnt/9+ZwtZxN3M4umMjpk3np9T2Dr8dinx+TO6Hgu/
-  6GScetpbdx9t2dO+62/ak533V8rYyTuJqFkXGhmZT9RVPnrmV8smUeTt+1dvuG/4L6vSwuXL5
-  kezrp7UlTbmj1TJq3OjtitEi8ny7S//tLWdWoZITcYvpzYIdk681fFR92dIVUT3E5ulup62XN
-  9o2C1lkOg1vlb7V82308yl+zdfM5f93h9wtzVnYK8PNN1dKZrbT/Ke0B/8pKyj+yvpeRD5OaZ
-  XajuL3nT8fgr9/TnKYV3fpTmWCkWv3nceewRc6OiDGfGnccOQt5Va16fNv18Rz10r/W1hr+Xu
-  xySTy+ufFV6OPpN2RXPH2wpU5RYijMSDbWYi4oTAanxNpvIAwAA
-X-Env-Sender: Robert.Hodaszi@digi.com
-X-Msg-Ref: server-6.tower-425.messagelabs.com!1559562090!397051!1
-X-Originating-IP: [66.77.174.16]
-X-SYMC-ESS-Client-Auth: outbound-route-from=pass
-X-StarScan-Received: 
-X-StarScan-Version: 9.43.8; banners=-,-,-
-X-VirusChecked: Checked
-Received: (qmail 30384 invoked from network); 3 Jun 2019 11:41:30 -0000
-Received: from owa.digi.com (HELO MCL-VMS-XCH01.digi.com) (66.77.174.16)
-  by server-6.tower-425.messagelabs.com with SMTP; 3 Jun 2019 11:41:30 -0000
-Received: from MTK-SMS-XCH05.digi.com (10.10.8.199) by MCL-VMS-XCH01.digi.com
- (10.5.8.49) with Microsoft SMTP Server (TLS) id 14.3.439.0; Mon, 3 Jun 2019
- 06:41:30 -0500
-Received: from MTK-SMS-XCH02.digi.com ([fe80::4960:cfbf:ad5e:3cdb]) by
- MTK-SMS-XCH05.digi.com ([fe80::a576:56af:8463:b976%15]) with mapi id
- 14.03.0415.000; Mon, 3 Jun 2019 06:41:29 -0500
-From:   "Hodaszi, Robert" <Robert.Hodaszi@digi.com>
-To:     Johannes Berg <johannes@sipsolutions.net>
-CC:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-Subject: [PATCH] Revert "cfg80211: fix processing world regdomain when non
- modular"
-Thread-Topic: [PATCH] Revert "cfg80211: fix processing world regdomain when
- non modular"
-Thread-Index: AQHVGgFI810D8jFG1Uy8KCwn3eEVJw==
-Date:   Mon, 3 Jun 2019 11:41:28 +0000
-Message-ID: <20190603114127.GA8091@a1-hr>
-Accept-Language: en-US, hu-HU
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-user-agent: Mutt/1.10.1 (2018-07-13)
-x-originating-ip: [188.6.70.133]
-Content-Type: text/plain; charset="us-ascii"
-Content-ID: <953ACBF925A74E4D8D9662A987F7BE57@digi.com>
-Content-Transfer-Encoding: 8BIT
+        Mon, 3 Jun 2019 09:31:05 -0400
+Received: by mail-io1-f70.google.com with SMTP id y5so13870993ioj.10
+        for <linux-wireless@vger.kernel.org>; Mon, 03 Jun 2019 06:31:05 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:date:message-id:subject:from:to;
+        bh=Xd9c0wiNMk6Apek2lhhQ7MeiJewPRVMefJXoiTf1Kzk=;
+        b=AascuOcJ2bvF40HolaW+mhNgkkKRLcBEzDRvylVzL2WCh/SiIKVP7vRACE2FzjOXxi
+         nGzIN+zLIkpP+me+qZoiS7z7xR8ajNam93Zeq8sNBdQWrPvM32QfKcy6qpeJeKu4lYw0
+         vkanDfLs5SC/kduPMMYVO3tIEdtohbLmIvKAMvZ+iFP1OyhbO2w6+nGVTQ6HiBOQ6376
+         nxbewTEUDkSXTJlTqbAZGCg5bXuS3HCCQ8pm+PhQlNemiK20p+MbLdE01B+WvApKqMEQ
+         so9ZMKf3xLdO1bIqnt/getrMHziunDT4NCyoac6rBLtcnIwEGBcjCvCT2OZvwkO+UZ+3
+         o1UA==
+X-Gm-Message-State: APjAAAWGIrvssYvrZdERAxwBHYOBVd/Am+pBwN3Pu68kETwCfpsJZPuj
+        iS+NY9Ouk7uxry5FSKHWVNvxGNXHqN0Wi4s/5B9H2oUDgk7D
+X-Google-Smtp-Source: APXvYqzgujQbAIS/Q+3FyQrH3nuh9kfgM04XgvloUsUlk8OX4StVb91+53wTYXM1u9UxnN/Ag0AEck9BFvOQ2gzYiBIaW0D8pNES
 MIME-Version: 1.0
+X-Received: by 2002:a24:6e90:: with SMTP id w138mr17164666itc.150.1559568664806;
+ Mon, 03 Jun 2019 06:31:04 -0700 (PDT)
+Date:   Mon, 03 Jun 2019 06:31:04 -0700
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <00000000000044cec9058a6b6003@google.com>
+Subject: INFO: trying to register non-static key in mwifiex_unregister_dev
+From:   syzbot <syzbot+373e6719b49912399d21@syzkaller.appspotmail.com>
+To:     amitkarwar@gmail.com, andreyknvl@google.com, davem@davemloft.net,
+        gbhat@marvell.com, huxinming820@gmail.com, kvalo@codeaurora.org,
+        linux-kernel@vger.kernel.org, linux-usb@vger.kernel.org,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        nishants@marvell.com, syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"; format=flowed; delsp=yes
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-This reverts commit 96cce12ff6e0bc9d9fcb2235e08b7fc150f96fd2.
+Hello,
 
-Re-triggering a reg_process_hint with the last request on all events,
-can make the regulatory domain fail in case of multiple WiFi modules. On
-slower boards (espacially with mdev), enumeration of the WiFi modules
-can end up in an intersected regulatory domain, and user cannot set it
-with 'iw reg set' anymore.
+syzbot found the following crash on:
 
-This is happening, because:
-- 1st module enumerates, queues up a regulatory request
-- request gets processed by __reg_process_hint_driver():
-  - checks if previous was set by CORE -> yes
-    - checks if regulator domain changed -> yes, from '00' to e.g. 'US'
-      -> sends request to the 'crda'
-- 2nd module enumerates, queues up a regulator request (which triggers
-the reg_todo() work)
-- reg_todo() -> reg_process_pending_hints() sees, that the last request
-is not processed yet, so it tries to process it again.
-__reg_process_hint driver() will run again, and:
-  - checks if the last request's initiator was the core -> no, it was
-the driver (1st WiFi module)
-  - checks, if the previous initiator was the driver -> yes
-    - checks if the regulator domain changed -> yes, it was '00' (set by
-core, and crda call did not return yet), and should be changed to 'US'
+HEAD commit:    69bbe8c7 usb-fuzzer: main usb gadget fuzzer driver
+git tree:       https://github.com/google/kasan.git usb-fuzzer
+console output: https://syzkaller.appspot.com/x/log.txt?x=1448d0f2a00000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=193d8457178b3229
+dashboard link: https://syzkaller.appspot.com/bug?extid=373e6719b49912399d21
+compiler:       gcc (GCC) 9.0.0 20181231 (experimental)
+syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=16e57ca6a00000
+C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=1106eda2a00000
 
-------> __reg_process_hint_driver calls an intersect
+IMPORTANT: if you fix the bug, please add the following tag to the commit:
+Reported-by: syzbot+373e6719b49912399d21@syzkaller.appspotmail.com
 
-Besides, the reg_process_hint call with the last request is meaningless
-since the crda call has a timeout work. If that timeout expires, the
-first module's request will lost.
+usb 1-1: Using ep0 maxpacket: 8
+usb 1-1: config 0 has an invalid interface number: 182 but max is 0
+usb 1-1: config 0 has no interface number 0
+usb 1-1: New USB device found, idVendor=1286, idProduct=2052,  
+bcdDevice=61.43
+usb 1-1: New USB device strings: Mfr=0, Product=0, SerialNumber=0
+usb 1-1: config 0 descriptor??
+usb 1-1: Direct firmware load for mrvl/usbusb8997_combo_v4.bin failed with  
+error -2
+usb 1-1: Failed to get firmware mrvl/usbusb8997_combo_v4.bin
+usb 1-1: info: _mwifiex_fw_dpc: unregister device
+INFO: trying to register non-static key.
+the code is fine but needs lockdep annotation.
+turning off the locking correctness validator.
+CPU: 1 PID: 21 Comm: kworker/1:1 Not tainted 5.2.0-rc1+ #10
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS  
+Google 01/01/2011
+Workqueue: events request_firmware_work_func
+Call Trace:
+  __dump_stack lib/dump_stack.c:77 [inline]
+  dump_stack+0xca/0x13e lib/dump_stack.c:113
+  assign_lock_key kernel/locking/lockdep.c:774 [inline]
+  register_lock_class+0x11ae/0x1240 kernel/locking/lockdep.c:1083
+  __lock_acquire+0x11d/0x5340 kernel/locking/lockdep.c:3673
+  lock_acquire+0x100/0x2b0 kernel/locking/lockdep.c:4302
+  del_timer_sync+0x3a/0x130 kernel/time/timer.c:1277
+  mwifiex_usb_cleanup_tx_aggr  
+drivers/net/wireless/marvell/mwifiex/usb.c:1358 [inline]
+  mwifiex_unregister_dev+0x416/0x690  
+drivers/net/wireless/marvell/mwifiex/usb.c:1370
+  _mwifiex_fw_dpc+0x577/0xda0 drivers/net/wireless/marvell/mwifiex/main.c:651
+  request_firmware_work_func+0x126/0x242  
+drivers/base/firmware_loader/main.c:785
+  process_one_work+0x905/0x1570 kernel/workqueue.c:2268
+  worker_thread+0x96/0xe20 kernel/workqueue.c:2414
+  kthread+0x30b/0x410 kernel/kthread.c:254
+  ret_from_fork+0x24/0x30 arch/x86/entry/entry_64.S:352
+------------[ cut here ]------------
+ODEBUG: assert_init not available (active state 0) object type: timer_list  
+hint: 0x0
+WARNING: CPU: 1 PID: 21 at lib/debugobjects.c:325  
+debug_print_object+0x160/0x250 lib/debugobjects.c:325
 
-Signed-off-by: Robert Hodaszi <robert.hodaszi@digi.com>
+
 ---
- net/wireless/reg.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+This bug is generated by a bot. It may contain errors.
+See https://goo.gl/tpsmEJ for more information about syzbot.
+syzbot engineers can be reached at syzkaller@googlegroups.com.
 
-diff --git a/net/wireless/reg.c b/net/wireless/reg.c
-index 4831ad745f91..b00ebf6fc696 100644
---- a/net/wireless/reg.c
-+++ b/net/wireless/reg.c
-@@ -2788,7 +2788,7 @@ static void reg_process_pending_hints(void)
- 
- 	/* When last_request->processed becomes true this will be rescheduled */
- 	if (lr && !lr->processed) {
--		reg_process_hint(lr);
-+		REG_DBG_PRINT("Pending regulatory request, waiting for it to be processed...\n");
- 		return;
- 	}
- 
+syzbot will keep track of this bug report. See:
+https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
+syzbot can test patches for this bug, for details see:
+https://goo.gl/tpsmEJ#testing-patches
