@@ -2,86 +2,158 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E500E327F1
-	for <lists+linux-wireless@lfdr.de>; Mon,  3 Jun 2019 07:20:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5537032854
+	for <lists+linux-wireless@lfdr.de>; Mon,  3 Jun 2019 08:09:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726707AbfFCFUs (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 3 Jun 2019 01:20:48 -0400
-Received: from mail-it1-f178.google.com ([209.85.166.178]:54148 "EHLO
-        mail-it1-f178.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726427AbfFCFUs (ORCPT
+        id S1726719AbfFCGJO (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 3 Jun 2019 02:09:14 -0400
+Received: from mailgw02.mediatek.com ([210.61.82.184]:25340 "EHLO
+        mailgw02.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
+        with ESMTP id S1726383AbfFCGJO (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 3 Jun 2019 01:20:48 -0400
-Received: by mail-it1-f178.google.com with SMTP id m141so25335131ita.3
-        for <linux-wireless@vger.kernel.org>; Sun, 02 Jun 2019 22:20:47 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=WLqb9lzllH51vODwbKirEsKH2Zaem62+62kV1ROkpBk=;
-        b=AuDvbJR+WQPLdfJ95q2QB4kr1wjZqpbRlfgEJ2k/jg6ey4Qz5EgaBXQ1j7gV39SKAn
-         eoP00HQpDvbEt+ajoLB6kabXPL0llL99ikdbv8ZHd8+UxEgL1ciwSUVdko9NIGg74CSB
-         JqLHR82cnNtAamTkNX80THJfnA4RaY/97+bXGybOKBfxL0HtIwgD+qjYBst+jIT+yeDb
-         UU9EIMSIM++tPG8+HOunHKotL8MKGiSuP/KtYX0FnDIviZj5qDCP1SKbZg/YK1s5MNzp
-         4X6Z04MjpOKVl3fMOIkdciMHMFWxf2hvqGuIYBFDeb11zOh08CKqWJ1aW2vQN6bLk2l5
-         2y0g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=WLqb9lzllH51vODwbKirEsKH2Zaem62+62kV1ROkpBk=;
-        b=JAHLws7k7VcPg8aX5TdTqGBgYXorFIt3Wo4ZhZUtGRPuNhdvvt+ot8SqqK6P7scxSB
-         EnYf2vW3hUZ/2hlb9SPor2t9WxVhjf6tD/j2lVm6evszVnXWMzQFJWf26XfT1C3jYc2S
-         qwl+Fht1p2clWPvFe6abKlQx9BYOi9n/iNJ7krrDq9BJsPR9ekZLVT3tkAeWoRnXmcRq
-         I0U9mu1G2TRs3Xw7prz/oFH63sOYuQgMSWE1ZKTsyTh+j7eBcntP6pvkC1Jofj1pXwl2
-         qKLIgcg1/DaALhqHXcN2c3HrhOdXgIiw0YGfwN8+j0hZSMcrHbVQRsFJ19h7EUxBSbHO
-         vfuA==
-X-Gm-Message-State: APjAAAXK3Rte4LjXU/R7opHiRBFWdwrGrC7/qq3efMYxB8LuxbOQ1WdG
-        GLH6MOh9kWJggVd3nR6dmge3MonhNxcmyOmMyWixbA==
-X-Google-Smtp-Source: APXvYqzcTIOOyY1SqkMZ7PLOyIMYJeR6UGPJ/82VlqIilUZqtVwvf4mcLy/2WuWN8lMk3O/Ef/H+g77Ik69S39VJ8d0=
-X-Received: by 2002:a24:9083:: with SMTP id x125mr9248429itd.76.1559539246962;
- Sun, 02 Jun 2019 22:20:46 -0700 (PDT)
+        Mon, 3 Jun 2019 02:09:14 -0400
+X-UUID: 214002602fcd426283422b64a153e3fa-20190603
+X-UUID: 214002602fcd426283422b64a153e3fa-20190603
+Received: from mtkcas07.mediatek.inc [(172.21.101.84)] by mailgw02.mediatek.com
+        (envelope-from <ryder.lee@mediatek.com>)
+        (mhqrelay.mediatek.com ESMTP with TLS)
+        with ESMTP id 1521034927; Mon, 03 Jun 2019 14:09:04 +0800
+Received: from mtkcas09.mediatek.inc (172.21.101.178) by
+ mtkmbs08n1.mediatek.inc (172.21.101.55) with Microsoft SMTP Server (TLS) id
+ 15.0.1395.4; Mon, 3 Jun 2019 14:09:03 +0800
+Received: from mtksdccf07.mediatek.inc (172.21.84.99) by mtkcas09.mediatek.inc
+ (172.21.101.73) with Microsoft SMTP Server id 15.0.1395.4 via Frontend
+ Transport; Mon, 3 Jun 2019 14:09:03 +0800
+From:   Ryder Lee <ryder.lee@mediatek.com>
+To:     Felix Fietkau <nbd@nbd.name>,
+        Lorenzo Bianconi <lorenzo.bianconi@redhat.com>
+CC:     Roy Luo <royluo@google.com>, YF Luo <yf.luo@mediatek.com>,
+        Yiwei Chung <yiwei.chung@mediatek.com>,
+        Sean Wang <sean.wang@mediatek.com>,
+        Chih-Min Chen <chih-min.Chen@mediatek.com>,
+        <linux-wireless@vger.kernel.org>,
+        <linux-mediatek@lists.infradead.org>,
+        <linux-kernel@vger.kernel.org>, Ryder Lee <ryder.lee@mediatek.com>
+Subject: [PATCH v3 1/2] mt76: mt7615: enable support for mesh
+Date:   Mon, 3 Jun 2019 14:08:43 +0800
+Message-ID: <a1ff446dfc06e2443552e7ec2d754099aacce7df.1559541944.git.ryder.lee@mediatek.com>
+X-Mailer: git-send-email 1.9.1
 MIME-Version: 1.0
-References: <000000000000927a7b0586561537@google.com> <MN2PR18MB263783F52CAD4A335FD8BB34A01A0@MN2PR18MB2637.namprd18.prod.outlook.com>
-In-Reply-To: <MN2PR18MB263783F52CAD4A335FD8BB34A01A0@MN2PR18MB2637.namprd18.prod.outlook.com>
-From:   Dmitry Vyukov <dvyukov@google.com>
-Date:   Mon, 3 Jun 2019 07:20:35 +0200
-Message-ID: <CACT4Y+aQzBkAq86Hx4jNFnAUzjXnq8cS2NZKfeCaFrZa__g-cg@mail.gmail.com>
-Subject: Re: [EXT] INFO: trying to register non-static key in del_timer_sync (2)
-To:     Ganapathi Bhat <gbhat@marvell.com>
-Cc:     syzbot <syzbot+dc4127f950da51639216@syzkaller.appspotmail.com>,
-        "amitkarwar@gmail.com" <amitkarwar@gmail.com>,
-        "andreyknvl@google.com" <andreyknvl@google.com>,
-        "davem@davemloft.net" <davem@davemloft.net>,
-        "huxinming820@gmail.com" <huxinming820@gmail.com>,
-        "kvalo@codeaurora.org" <kvalo@codeaurora.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-usb@vger.kernel.org" <linux-usb@vger.kernel.org>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-        "nishants@marvell.com" <nishants@marvell.com>,
-        "syzkaller-bugs@googlegroups.com" <syzkaller-bugs@googlegroups.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain
+X-MTK:  N
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Sat, Jun 1, 2019 at 7:52 PM Ganapathi Bhat <gbhat@marvell.com> wrote:
->
-> Hi syzbot,
->
-> >
-> > syzbot found the following crash on:
-> >
-> As per the link(https://syzkaller.appspot.com/bug?extid=dc4127f950da51639216), the issue is fixed; Is it OK? Let us know if we need to do something?
+Enable NL80211_IFTYPE_MESH_POINT and update its path.
 
-Hi Ganapathi,
+Signed-off-by: Ryder Lee <ryder.lee@mediatek.com>
+---
+Changes since v3 - fix a wrong expression
+Changes since v2 - remove unused definitions
+---
+ drivers/net/wireless/mediatek/mt76/mt7615/init.c | 6 ++++++
+ drivers/net/wireless/mediatek/mt76/mt7615/main.c | 1 +
+ drivers/net/wireless/mediatek/mt76/mt7615/mcu.c  | 4 +++-
+ drivers/net/wireless/mediatek/mt76/mt7615/mcu.h  | 6 ------
+ 4 files changed, 10 insertions(+), 7 deletions(-)
 
-The "fixed" status relates to the similar past bug that was reported
-and fixed more than a year ago:
-https://groups.google.com/forum/#!msg/syzkaller-bugs/3YnGX1chF2w/jeQjeihtBAAJ
-https://syzkaller.appspot.com/bug?id=b4b5c74c57c4b69f4fff86131abb799106182749
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/init.c b/drivers/net/wireless/mediatek/mt76/mt7615/init.c
+index 59f604f3161f..f860af6a42da 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7615/init.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7615/init.c
+@@ -133,6 +133,9 @@ static const struct ieee80211_iface_limit if_limits[] = {
+ 	{
+ 		.max = MT7615_MAX_INTERFACES,
+ 		.types = BIT(NL80211_IFTYPE_AP) |
++#ifdef CONFIG_MAC80211_MESH
++			 BIT(NL80211_IFTYPE_MESH_POINT) |
++#endif
+ 			 BIT(NL80211_IFTYPE_STATION)
+ 	}
+ };
+@@ -195,6 +198,9 @@ int mt7615_register_device(struct mt7615_dev *dev)
+ 	dev->mt76.antenna_mask = 0xf;
+ 
+ 	wiphy->interface_modes = BIT(NL80211_IFTYPE_STATION) |
++#ifdef CONFIG_MAC80211_MESH
++				 BIT(NL80211_IFTYPE_MESH_POINT) |
++#endif
+ 				 BIT(NL80211_IFTYPE_AP);
+ 
+ 	ret = mt76_register_device(&dev->mt76, true, mt7615_rates,
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/main.c b/drivers/net/wireless/mediatek/mt76/mt7615/main.c
+index b0bb7cc12385..585e67fa2728 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7615/main.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7615/main.c
+@@ -37,6 +37,7 @@ static int get_omac_idx(enum nl80211_iftype type, u32 mask)
+ 
+ 	switch (type) {
+ 	case NL80211_IFTYPE_AP:
++	case NL80211_IFTYPE_MESH_POINT:
+ 		/* ap use hw bssid 0 and ext bssid */
+ 		if (~mask & BIT(HW_BSSID_0))
+ 			return HW_BSSID_0;
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c
+index 43f70195244c..e82297048449 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c
+@@ -754,6 +754,7 @@ int mt7615_mcu_set_bss_info(struct mt7615_dev *dev,
+ 
+ 	switch (vif->type) {
+ 	case NL80211_IFTYPE_AP:
++	case NL80211_IFTYPE_MESH_POINT:
+ 		tx_wlan_idx = mvif->sta.wcid.idx;
+ 		conn_type = CONNECTION_INFRA_AP;
+ 		break;
+@@ -968,7 +969,7 @@ int mt7615_mcu_add_wtbl(struct mt7615_dev *dev, struct ieee80211_vif *vif,
+ 		.rx_wtbl = {
+ 			.tag = cpu_to_le16(WTBL_RX),
+ 			.len = cpu_to_le16(sizeof(struct wtbl_rx)),
+-			.rca1 = vif->type != NL80211_IFTYPE_AP,
++			.rca1 = vif->type == NL80211_IFTYPE_STATION,
+ 			.rca2 = 1,
+ 			.rv = 1,
+ 		},
+@@ -1042,6 +1043,7 @@ static void sta_rec_convert_vif_type(enum nl80211_iftype type, u32 *conn_type)
+ {
+ 	switch (type) {
+ 	case NL80211_IFTYPE_AP:
++	case NL80211_IFTYPE_MESH_POINT:
+ 		if (conn_type)
+ 			*conn_type = CONNECTION_INFRA_STA;
+ 		break;
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/mcu.h b/drivers/net/wireless/mediatek/mt76/mt7615/mcu.h
+index e96efb13fa4d..0915cb735699 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7615/mcu.h
++++ b/drivers/net/wireless/mediatek/mt76/mt7615/mcu.h
+@@ -105,25 +105,19 @@ enum {
+ #define STA_TYPE_STA		BIT(0)
+ #define STA_TYPE_AP		BIT(1)
+ #define STA_TYPE_ADHOC		BIT(2)
+-#define STA_TYPE_TDLS		BIT(3)
+ #define STA_TYPE_WDS		BIT(4)
+ #define STA_TYPE_BC		BIT(5)
+ 
+ #define NETWORK_INFRA		BIT(16)
+ #define NETWORK_P2P		BIT(17)
+ #define NETWORK_IBSS		BIT(18)
+-#define NETWORK_MESH		BIT(19)
+-#define NETWORK_BOW		BIT(20)
+ #define NETWORK_WDS		BIT(21)
+ 
+ #define CONNECTION_INFRA_STA	(STA_TYPE_STA | NETWORK_INFRA)
+ #define CONNECTION_INFRA_AP	(STA_TYPE_AP | NETWORK_INFRA)
+ #define CONNECTION_P2P_GC	(STA_TYPE_STA | NETWORK_P2P)
+ #define CONNECTION_P2P_GO	(STA_TYPE_AP | NETWORK_P2P)
+-#define CONNECTION_MESH_STA	(STA_TYPE_STA | NETWORK_MESH)
+-#define CONNECTION_MESH_AP	(STA_TYPE_AP | NETWORK_MESH)
+ #define CONNECTION_IBSS_ADHOC	(STA_TYPE_ADHOC | NETWORK_IBSS)
+-#define CONNECTION_TDLS		(STA_TYPE_STA | NETWORK_INFRA | STA_TYPE_TDLS)
+ #define CONNECTION_WDS		(STA_TYPE_WDS | NETWORK_WDS)
+ #define CONNECTION_INFRA_BC	(STA_TYPE_BC | NETWORK_INFRA)
+ 
+-- 
+2.18.0
 
-This one is still well alive and kicking, with 1200+ crashes and the
-last one happened less then 30min ago.
