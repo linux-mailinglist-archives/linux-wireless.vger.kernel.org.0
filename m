@@ -2,117 +2,156 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 7608533862
-	for <lists+linux-wireless@lfdr.de>; Mon,  3 Jun 2019 20:42:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4FCD633891
+	for <lists+linux-wireless@lfdr.de>; Mon,  3 Jun 2019 20:51:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726693AbfFCSl7 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 3 Jun 2019 14:41:59 -0400
-Received: from mail-vs1-f65.google.com ([209.85.217.65]:43264 "EHLO
-        mail-vs1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726663AbfFCSl6 (ORCPT
+        id S1726272AbfFCSvH (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 3 Jun 2019 14:51:07 -0400
+Received: from mail-io1-f71.google.com ([209.85.166.71]:50090 "EHLO
+        mail-io1-f71.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726055AbfFCSvH (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 3 Jun 2019 14:41:58 -0400
-Received: by mail-vs1-f65.google.com with SMTP id d128so11868172vsc.10
-        for <linux-wireless@vger.kernel.org>; Mon, 03 Jun 2019 11:41:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=VsSotgwA1nxU4EAySnnvJ5ZgB7iMM3DB2x56bZwTUg8=;
-        b=a09cCL26+bNOhQdoUo4x1wwzRc4g9+ZUKrcQIliCV1lVo86BnM7yonXBOHs3n8ThUp
-         tBeLLscjAUtngd30ZkAshMl1RND5mQUFk5hVmajXhWgn0Q6ATNrv0OJKmvUbmJLKJjZp
-         7PN3dXgD7aCNGHhYS/nSswGo8LZlcgEqVC4Fc=
+        Mon, 3 Jun 2019 14:51:07 -0400
+Received: by mail-io1-f71.google.com with SMTP id z15so7305243ioz.16
+        for <linux-wireless@vger.kernel.org>; Mon, 03 Jun 2019 11:51:06 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=VsSotgwA1nxU4EAySnnvJ5ZgB7iMM3DB2x56bZwTUg8=;
-        b=fUgoU3d88pCR5491Cf7Z/mWlDFkyCkOpXWEUH+ix1gN9TQRBiuBlDRWccif0fdS319
-         xzO04APmovFynXLI1cMLJRI8bYMpj0/D2g1VQ+GAPFpC+i++lIGlQ0kr7BUhtWkKSDic
-         77sSuevIKJN26Ec75tguv8KkblEYp9CoSBC1f4KWlWIOYTD7/1eXkKkSa/0uNGiJa83W
-         sjfvmLfHkjODZLj+zE6YeiNqpr27PM5TZ93DGKIFt4AbO4zLLNi9KM65+27b7Um/LMsO
-         Rh/uKg8PMaztcyddWcVfW6PQ1/YJOLFgM7qjUAF8lMCckzTrxA7wEc/Ve4G5Pcs6cHMG
-         vyjw==
-X-Gm-Message-State: APjAAAWM8Ks0XImChGhTRazggdiGuPsYu+XZvs+nbhxTvSo6PP05JCIb
-        qxCeo6hT0PaQfSfQtOceUcooe1mPqDs=
-X-Google-Smtp-Source: APXvYqwbDhoV5jQ9obPrGKEF3t2VKMuo8YVjpmXQsg+r8K8kautMlUIMxwtSNAkBnc8SxKgfX/lv/Q==
-X-Received: by 2002:a67:e9ca:: with SMTP id q10mr1840484vso.105.1559587317645;
-        Mon, 03 Jun 2019 11:41:57 -0700 (PDT)
-Received: from mail-vs1-f44.google.com (mail-vs1-f44.google.com. [209.85.217.44])
-        by smtp.gmail.com with ESMTPSA id h13sm3766596vke.50.2019.06.03.11.41.55
-        for <linux-wireless@vger.kernel.org>
-        (version=TLS1_3 cipher=AEAD-AES128-GCM-SHA256 bits=128/128);
-        Mon, 03 Jun 2019 11:41:55 -0700 (PDT)
-Received: by mail-vs1-f44.google.com with SMTP id q64so2241489vsd.1
-        for <linux-wireless@vger.kernel.org>; Mon, 03 Jun 2019 11:41:55 -0700 (PDT)
-X-Received: by 2002:a67:ec5a:: with SMTP id z26mr9662027vso.144.1559587314889;
- Mon, 03 Jun 2019 11:41:54 -0700 (PDT)
+        h=x-gm-message-state:mime-version:date:message-id:subject:from:to;
+        bh=Hc/Ql5pBCcEqkkw7qSEADSbLYyZ9Yl7/t4LfmUF/Rso=;
+        b=pGqj2dtELjou00UqeJOmr/jGyFH+SJ1I597HWCwzm1xoWMuWrAuMQ/5DWPAIfAy/su
+         LVKMV1ou9G6rKh3nBYDMAXaTSS3QynXG0qaLBI/0LVkW1cGaK29BLgTTRpiYdGTvvaDl
+         JY6yNlpYdG3JIyoQfUSz2trwypsD7r+mLu7TofiSz/zw/dL48iQ2B/ve9RhArxAtH5a5
+         2NdIggYvmJcGdpgkqAlHNl5C1XzOwM9bwCwwfylrTOLvOdtQ5qxNh/+DsJNuRKOTj6zx
+         RFdOWwMkMq5VaxA6f9yfecITtN96veDiGcJS30vJLt9AgX8eC8KXSaBXjxlgKjFoSRLQ
+         8YJw==
+X-Gm-Message-State: APjAAAXIqazdKuSIChUhGHajJOxQJdYXnb/c+lqftRrAsKyfio3gaPyL
+        i5PzrKYg2Fv9M7ijvMAC1jMrjg9/DzVjEhXzMuOVaaTHIPbg
+X-Google-Smtp-Source: APXvYqyv0SnXMwc5y1PdJYmwJwPRSYd45Ii8i3pUCXQWuobZWIPev3JRvnZPyZdLwYw0Im3FKuWPa925cFr0Gdovko4iIv/+z6ee
 MIME-Version: 1.0
-References: <20190429204040.18725-1-dianders@chromium.org> <CAPDyKFp0fQ+3CS-DadE9rO-9Npzve-nztY9hRaMdX7Pw9sUZMw@mail.gmail.com>
- <CAD=FV=XMph_CE3pFZGP+5d0K2FgbPbheF1oX72TfZn_dpf8SQA@mail.gmail.com>
-In-Reply-To: <CAD=FV=XMph_CE3pFZGP+5d0K2FgbPbheF1oX72TfZn_dpf8SQA@mail.gmail.com>
-From:   Doug Anderson <dianders@chromium.org>
-Date:   Mon, 3 Jun 2019 11:41:42 -0700
-X-Gmail-Original-Message-ID: <CAD=FV=U7_ek_z7UfaDn9My8UfZfpNom04OJHowoH-sNsGZQnxA@mail.gmail.com>
-Message-ID: <CAD=FV=U7_ek_z7UfaDn9My8UfZfpNom04OJHowoH-sNsGZQnxA@mail.gmail.com>
-Subject: Re: [PATCH v2] mmc: dw_mmc: Disable SDIO interrupts while suspended
- to fix suspend/resume
-To:     Ulf Hansson <ulf.hansson@linaro.org>
-Cc:     Jaehoon Chung <jh80.chung@samsung.com>,
-        Shawn Lin <shawn.lin@rock-chips.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        Heiko Stuebner <heiko@sntech.de>,
-        "open list:ARM/Rockchip SoC..." <linux-rockchip@lists.infradead.org>,
-        Guenter Roeck <groeck@chromium.org>,
-        Brian Norris <briannorris@chromium.org>,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        Sonny Rao <sonnyrao@chromium.org>,
-        Emil Renner Berthing <emil.renner.berthing@gmail.com>,
-        Matthias Kaehlcke <mka@chromium.org>,
-        Ryan Case <ryandcase@chromium.org>,
-        "# 4.0+" <stable@vger.kernel.org>,
-        "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+X-Received: by 2002:a24:7585:: with SMTP id y127mr18509944itc.112.1559587865933;
+ Mon, 03 Jun 2019 11:51:05 -0700 (PDT)
+Date:   Mon, 03 Jun 2019 11:51:05 -0700
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <000000000000bec591058a6fd889@google.com>
+Subject: WARNING: suspicious RCU usage in in_dev_dump_addr
+From:   syzbot <syzbot+bad6e32808a3a97b1515@syzkaller.appspotmail.com>
+To:     amitkarwar@gmail.com, anshuman.khandual@arm.com, axboe@kernel.dk,
+        benedictwong@google.com, benve@cisco.com, coreteam@netfilter.org,
+        davej@codemonkey.org.uk, davem@davemloft.net, dbanerje@akamai.com,
+        devel@driverdev.osuosl.org, dledford@redhat.com, doshir@vmware.com,
+        edumazet@google.com, faisal.latif@intel.com, fw@strlen.de,
+        gbhat@marvell.com, gregkh@linuxfoundation.org,
+        gustavo@embeddedor.com, huxinming820@gmail.com,
+        idosch@mellanox.com, jakub.kicinski@netronome.com, jgg@ziepe.ca,
+        johannes@sipsolutions.net, kadlec@blackhole.kfki.hu,
+        keescook@chromium.org, kuznet@ms2.inr.ac.ru, kvalo@codeaurora.org,
+        linux-kernel@vger.kernel.org, linux-rdma@vger.kernel.org,
+        linux-wireless@vger.kernel.org, liuhangbin@gmail.com,
+        lucien.xin@gmail.com, matwey@sai.msu.ru, mpe@ellerman.id.au,
+        neescoba@cisco.com, netdev@vger.kernel.org,
+        netfilter-devel@vger.kernel.org, nishants@marvell.com,
+        pablo@netfilter.org, paulmck@linux.ibm.com, petrm@mellanox.com,
+        pkaustub@cisco.com, pv-drivers@vmware.com, romieu@fr.zoreil.com,
+        shannon.nelson@oracle.com, shiraz.saleem@intel.com,
+        steffen.klassert@secunet.com, syzkaller-bugs@googlegroups.com,
+        yoshfuji@linux-ipv6.org
+Content-Type: text/plain; charset="UTF-8"; format=flowed; delsp=yes
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Ulf,
+Hello,
 
-On Tue, May 28, 2019 at 3:49 PM Doug Anderson <dianders@chromium.org> wrote:
->
-> > 1) As kind of stated above, did you consider a solution where the core
-> > simply disables the SDIO IRQ in case it isn't enabled for system
-> > wakeup? In this way all host drivers would benefit.
->
-> I can give it a shot if you can give me a bunch of specific advice,
-> but I only have access to a few devices doing anything with SDIO and
-> they are all using Marvell or Broadcom on dw_mmc.
->
-> In general I have no idea how SDIO wakeup (plumbed through the SD
-> controller) would work.  As per below the only way I've seen it done
-> is totally out-of-band.  ...and actually, I'm not sure I've actually
-> ever seen even the out of band stuff truly work on a system myself.
-> It's always been one of those "we should support wake on WiFi" but
-> never made it all the way to implementation.  In any case, if there
-> are examples of people plumbing wakeup through the SD controller I'd
-> need to figure out how to not break them.  Just doing a solution for
-> dw_mmc means I don't have to worry about this since dw_mmc definitely
-> doesn't support SDIO wakeup.
->
-> Maybe one way to get a more generic solution is if you had an idea for
-> a patch that would work for many host controllers then you could post
-> it and I could test to confirm that it's happy on dw_mmc?  ...similar
-> to when you switched dw_mmc away from the old kthread-based SDIO
-> stuff?
+syzbot found the following crash on:
 
-Unless you have time to help dig into all the possibilities here to
-help understand how this should behave across all the different host
-controllers / wakeup setups, maybe we could just land ${SUBJECT} patch
-for now and when there is more clarity we can revisit?
+HEAD commit:    b33bc2b8 nexthop: Add entry to MAINTAINERS
+git tree:       net-next
+console output: https://syzkaller.appspot.com/x/log.txt?x=13f46f52a00000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=1004db091673bbaf
+dashboard link: https://syzkaller.appspot.com/bug?extid=bad6e32808a3a97b1515
+compiler:       gcc (GCC) 9.0.0 20181231 (experimental)
+syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=11dc685aa00000
+C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=16229e36a00000
 
-Thanks!
+The bug was bisected to:
 
--Doug
+commit 2638eb8b50cfc16240e0bb080b9afbf541a9b39d
+Author: Florian Westphal <fw@strlen.de>
+Date:   Fri May 31 16:27:09 2019 +0000
+
+     net: ipv4: provide __rcu annotation for ifa_list
+
+bisection log:  https://syzkaller.appspot.com/x/bisect.txt?x=170e1a0ea00000
+final crash:    https://syzkaller.appspot.com/x/report.txt?x=148e1a0ea00000
+console output: https://syzkaller.appspot.com/x/log.txt?x=108e1a0ea00000
+
+IMPORTANT: if you fix the bug, please add the following tag to the commit:
+Reported-by: syzbot+bad6e32808a3a97b1515@syzkaller.appspotmail.com
+Fixes: 2638eb8b50cf ("net: ipv4: provide __rcu annotation for ifa_list")
+
+=============================
+WARNING: suspicious RCU usage
+5.2.0-rc2+ #13 Not tainted
+-----------------------------
+net/ipv4/devinet.c:1766 suspicious rcu_dereference_check() usage!
+
+other info that might help us debug this:
+
+
+rcu_scheduler_active = 2, debug_locks = 1
+1 lock held by syz-executor924/9000:
+  #0: 0000000087fe3874 (rtnl_mutex){+.+.}, at: netlink_dump+0xe7/0xfb0  
+net/netlink/af_netlink.c:2208
+
+stack backtrace:
+CPU: 0 PID: 9000 Comm: syz-executor924 Not tainted 5.2.0-rc2+ #13
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS  
+Google 01/01/2011
+Call Trace:
+  __dump_stack lib/dump_stack.c:77 [inline]
+  dump_stack+0x172/0x1f0 lib/dump_stack.c:113
+  lockdep_rcu_suspicious+0x153/0x15d kernel/locking/lockdep.c:5250
+  in_dev_dump_addr+0x36f/0x3d0 net/ipv4/devinet.c:1766
+  inet_dump_ifaddr+0xa8f/0xca0 net/ipv4/devinet.c:1826
+  rtnl_dump_all+0x295/0x490 net/core/rtnetlink.c:3444
+  netlink_dump+0x558/0xfb0 net/netlink/af_netlink.c:2253
+  __netlink_dump_start+0x5b1/0x7d0 net/netlink/af_netlink.c:2361
+  netlink_dump_start include/linux/netlink.h:226 [inline]
+  rtnetlink_rcv_msg+0x73d/0xb00 net/core/rtnetlink.c:5181
+  netlink_rcv_skb+0x177/0x450 net/netlink/af_netlink.c:2486
+  rtnetlink_rcv+0x1d/0x30 net/core/rtnetlink.c:5236
+  netlink_unicast_kernel net/netlink/af_netlink.c:1311 [inline]
+  netlink_unicast+0x531/0x710 net/netlink/af_netlink.c:1337
+  netlink_sendmsg+0x8ae/0xd70 net/netlink/af_netlink.c:1926
+  sock_sendmsg_nosec net/socket.c:652 [inline]
+  sock_sendmsg+0xd7/0x130 net/socket.c:671
+  ___sys_sendmsg+0x803/0x920 net/socket.c:2292
+  __sys_sendmsg+0x105/0x1d0 net/socket.c:2330
+  __do_sys_sendmsg net/socket.c:2339 [inline]
+  __se_sys_sendmsg net/socket.c:2337 [inline]
+  __x64_sys_sendmsg+0x78/0xb0 net/socket.c:2337
+  do_syscall_64+0xfd/0x680 arch/x86/entry/common.c:301
+  entry_SYSCALL_64_after_hwframe+0x49/0xbe
+RIP: 0033:0x4402a9
+Code: 18 89 d0 c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 00 48 89 f8 48 89 f7  
+48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff  
+ff 0f 83 fb 13 fc ff c3 66 2e 0f 1f 84 00 00 00 00
+RSP: 002b:00007fffe5f26f18 EFLAGS: 00000246 ORIG_RAX: 000000000000002e
+RAX: ffffffffffffffda RBX: 00000000004002c8 RCX: 00000000004402a9
+RDX: 0000000000000000 RSI: 0000000020000240 RDI: 0000000000000003
+RBP: 00000000006ca018 R08: 00000000004002c8 R09: 00000000004002c8
+R10:
+
+
+---
+This bug is generated by a bot. It may contain errors.
+See https://goo.gl/tpsmEJ for more information about syzbot.
+syzbot engineers can be reached at syzkaller@googlegroups.com.
+
+syzbot will keep track of this bug report. See:
+https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
+For information about bisection process see: https://goo.gl/tpsmEJ#bisection
+syzbot can test patches for this bug, for details see:
+https://goo.gl/tpsmEJ#testing-patches
