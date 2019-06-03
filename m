@@ -2,156 +2,418 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 4FCD633891
-	for <lists+linux-wireless@lfdr.de>; Mon,  3 Jun 2019 20:51:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 74608338FF
+	for <lists+linux-wireless@lfdr.de>; Mon,  3 Jun 2019 21:21:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726272AbfFCSvH (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 3 Jun 2019 14:51:07 -0400
-Received: from mail-io1-f71.google.com ([209.85.166.71]:50090 "EHLO
-        mail-io1-f71.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726055AbfFCSvH (ORCPT
+        id S1726724AbfFCTVz (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 3 Jun 2019 15:21:55 -0400
+Received: from mail-pf1-f196.google.com ([209.85.210.196]:36732 "EHLO
+        mail-pf1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726049AbfFCTVz (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 3 Jun 2019 14:51:07 -0400
-Received: by mail-io1-f71.google.com with SMTP id z15so7305243ioz.16
-        for <linux-wireless@vger.kernel.org>; Mon, 03 Jun 2019 11:51:06 -0700 (PDT)
+        Mon, 3 Jun 2019 15:21:55 -0400
+Received: by mail-pf1-f196.google.com with SMTP id u22so11170397pfm.3;
+        Mon, 03 Jun 2019 12:21:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:subject:to:cc:references:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=Pu9hCSqx8PysXiFd4y8tfcVLYuTg76vpiN0buypU1s4=;
+        b=LZ6JdUYPvORvpXy9XNPxwkOZCuaMepLoaGd6Ta5FmoLrqsIpNwrFqfyc/MxyEZOgVv
+         1KncqltBjEXiO+p2f8VeqEFHFX5EJyNPaJRwdPR/GG/AsZ1/dEc2UcnSLaUovr3iDYxH
+         bmQutQhzgZze1quTht2vQ66+eKE4BTTwfraNCOgtgv9Y2PRL4f7V3TYNMFeogDmU5lBD
+         GsfYdp03YEJeBUsKCd9IgAVoV+sIvEVcEk1UvrZyxMVYkAcZEaLQmBX7799u2HIOpOZy
+         mH4PtEdQu9laJZw/jWFat0gu2QS+d200Ju7OFQhhL1BX3RhiiH7VTgV6R+BxmIp8xoNB
+         IHFw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:date:message-id:subject:from:to;
-        bh=Hc/Ql5pBCcEqkkw7qSEADSbLYyZ9Yl7/t4LfmUF/Rso=;
-        b=pGqj2dtELjou00UqeJOmr/jGyFH+SJ1I597HWCwzm1xoWMuWrAuMQ/5DWPAIfAy/su
-         LVKMV1ou9G6rKh3nBYDMAXaTSS3QynXG0qaLBI/0LVkW1cGaK29BLgTTRpiYdGTvvaDl
-         JY6yNlpYdG3JIyoQfUSz2trwypsD7r+mLu7TofiSz/zw/dL48iQ2B/ve9RhArxAtH5a5
-         2NdIggYvmJcGdpgkqAlHNl5C1XzOwM9bwCwwfylrTOLvOdtQ5qxNh/+DsJNuRKOTj6zx
-         RFdOWwMkMq5VaxA6f9yfecITtN96veDiGcJS30vJLt9AgX8eC8KXSaBXjxlgKjFoSRLQ
-         8YJw==
-X-Gm-Message-State: APjAAAXIqazdKuSIChUhGHajJOxQJdYXnb/c+lqftRrAsKyfio3gaPyL
-        i5PzrKYg2Fv9M7ijvMAC1jMrjg9/DzVjEhXzMuOVaaTHIPbg
-X-Google-Smtp-Source: APXvYqyv0SnXMwc5y1PdJYmwJwPRSYd45Ii8i3pUCXQWuobZWIPev3JRvnZPyZdLwYw0Im3FKuWPa925cFr0Gdovko4iIv/+z6ee
+        h=x-gm-message-state:from:subject:to:cc:references:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=Pu9hCSqx8PysXiFd4y8tfcVLYuTg76vpiN0buypU1s4=;
+        b=nDtcfJ8sRogd8g3N7Mr9ehEKNCHL8fV3f66WicuvXsjZNek6fxAqM+fVHV7kHbLm5G
+         vKbgQtwePedhtf7Vm3RSKxXAq3OsRIVZzZUJK/lYQOmibB8cgukpaGgObK13x3QqM5tm
+         /gIVW7vy7jLA89KDFHv0Hg+57Oryzx+xIhKxu+/IJ9MyP/wi5yFQt1CrRKtotl+1RFTQ
+         Rcy2RE9Z1wYjqi0ADgsct0DyhygszrpcKKZdPPnU3ecXTCEaV4nTkFNnWjTxusiu3Cv6
+         MrADQra19xdaZkTwyMNtJXf9mLZ+XlyKWLXXr2RZwX7OhrBCTTj1PEKFTYjKGB2xEAd2
+         gFIA==
+X-Gm-Message-State: APjAAAUKsfmKKyqKZ8oSmlBegEa2H0GbRVWb7g/neJOl3T+jfy1qAhZS
+        WLlhwsRCiBOFhJxGjqXzZDdjVPgl
+X-Google-Smtp-Source: APXvYqzbOeWo6skLJnisx00Mmulb/Yd+W+8OZoLdcBaHOn2LkfzFx4N8EBusqEki0OCTNkxSMpGnog==
+X-Received: by 2002:a17:90a:8d09:: with SMTP id c9mr19032878pjo.131.1559589713628;
+        Mon, 03 Jun 2019 12:21:53 -0700 (PDT)
+Received: from ?IPv6:2620:10d:c0a3:10e0::2ed7? ([2620:10d:c091:500::1:27b5])
+        by smtp.gmail.com with ESMTPSA id t187sm16345650pfb.64.2019.06.03.12.21.51
+        (version=TLS1_3 cipher=AEAD-AES128-GCM-SHA256 bits=128/128);
+        Mon, 03 Jun 2019 12:21:52 -0700 (PDT)
+From:   Jes Sorensen <jes.sorensen@gmail.com>
+X-Google-Original-From: Jes Sorensen <Jes.Sorensen@gmail.com>
+Subject: Re: [RFC PATCH v4] rtl8xxxu: Improve TX performance of RTL8723BU on
+ rtl8xxxu driver
+To:     Chris Chiu <chiu@endlessm.com>, kvalo@codeaurora.org,
+        davem@davemloft.net
+Cc:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux@endlessm.com
+References: <20190531091229.93033-1-chiu@endlessm.com>
+Message-ID: <f1c54f97-16a5-2618-569b-9101f9657fcb@gmail.com>
+Date:   Mon, 3 Jun 2019 15:21:50 -0400
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.6.1
 MIME-Version: 1.0
-X-Received: by 2002:a24:7585:: with SMTP id y127mr18509944itc.112.1559587865933;
- Mon, 03 Jun 2019 11:51:05 -0700 (PDT)
-Date:   Mon, 03 Jun 2019 11:51:05 -0700
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <000000000000bec591058a6fd889@google.com>
-Subject: WARNING: suspicious RCU usage in in_dev_dump_addr
-From:   syzbot <syzbot+bad6e32808a3a97b1515@syzkaller.appspotmail.com>
-To:     amitkarwar@gmail.com, anshuman.khandual@arm.com, axboe@kernel.dk,
-        benedictwong@google.com, benve@cisco.com, coreteam@netfilter.org,
-        davej@codemonkey.org.uk, davem@davemloft.net, dbanerje@akamai.com,
-        devel@driverdev.osuosl.org, dledford@redhat.com, doshir@vmware.com,
-        edumazet@google.com, faisal.latif@intel.com, fw@strlen.de,
-        gbhat@marvell.com, gregkh@linuxfoundation.org,
-        gustavo@embeddedor.com, huxinming820@gmail.com,
-        idosch@mellanox.com, jakub.kicinski@netronome.com, jgg@ziepe.ca,
-        johannes@sipsolutions.net, kadlec@blackhole.kfki.hu,
-        keescook@chromium.org, kuznet@ms2.inr.ac.ru, kvalo@codeaurora.org,
-        linux-kernel@vger.kernel.org, linux-rdma@vger.kernel.org,
-        linux-wireless@vger.kernel.org, liuhangbin@gmail.com,
-        lucien.xin@gmail.com, matwey@sai.msu.ru, mpe@ellerman.id.au,
-        neescoba@cisco.com, netdev@vger.kernel.org,
-        netfilter-devel@vger.kernel.org, nishants@marvell.com,
-        pablo@netfilter.org, paulmck@linux.ibm.com, petrm@mellanox.com,
-        pkaustub@cisco.com, pv-drivers@vmware.com, romieu@fr.zoreil.com,
-        shannon.nelson@oracle.com, shiraz.saleem@intel.com,
-        steffen.klassert@secunet.com, syzkaller-bugs@googlegroups.com,
-        yoshfuji@linux-ipv6.org
-Content-Type: text/plain; charset="UTF-8"; format=flowed; delsp=yes
+In-Reply-To: <20190531091229.93033-1-chiu@endlessm.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hello,
+On 5/31/19 5:12 AM, Chris Chiu wrote:
+> We have 3 laptops which connect the wifi by the same RTL8723BU.
+> The PCI VID/PID of the wifi chip is 10EC:B720 which is supported.
+> They have the same problem with the in-kernel rtl8xxxu driver, the
+> iperf (as a client to an ethernet-connected server) gets ~1Mbps.
+> Nevertheless, the signal strength is reported as around -40dBm,
+> which is quite good. From the wireshark capture, the tx rate for each
+> data and qos data packet is only 1Mbps. Compare to the Realtek driver
+> at https://github.com/lwfinger/rtl8723bu, the same iperf test gets
+> ~12Mbps or better. The signal strength is reported similarly around
+> -40dBm. That's why we want to improve.
+> 
+> After reading the source code of the rtl8xxxu driver and Realtek's, the
+> major difference is that Realtek's driver has a watchdog which will keep
+> monitoring the signal quality and updating the rate mask just like the
+> rtl8xxxu_gen2_update_rate_mask() does if signal quality changes.
+> And this kind of watchdog also exists in rtlwifi driver of some specific
+> chips, ex rtl8192ee, rtl8188ee, rtl8723ae, rtl8821ae...etc. They have
+> the same member function named dm_watchdog and will invoke the
+> corresponding dm_refresh_rate_adaptive_mask to adjust the tx rate
+> mask.
+> 
+> With this commit, the tx rate of each data and qos data packet will
+> be 39Mbps (MCS4) with the 0xF00000 as the tx rate mask. The 20th bit
+> to 23th bit means MCS4 to MCS7. It means that the firmware still picks
+> the lowest rate from the rate mask and explains why the tx rate of
+> data and qos data is always lowest 1Mbps because the default rate mask
+> passed is always 0xFFFFFFF ranges from the basic CCK rate, OFDM rate,
+> and MCS rate. However, with Realtek's driver, the tx rate observed from
+> wireshark under the same condition is almost 65Mbps or 72Mbps.
+> 
+> I believe the firmware of RTL8723BU may need fix. And I think we
+> can still bring in the dm_watchdog as rtlwifi to improve from the
+> driver side. Please leave precious comments for my commits and
+> suggest what I can do better. Or suggest if there's any better idea
+> to fix this. Thanks.
+> 
+> Signed-off-by: Chris Chiu <chiu@endlessm.com>
 
-syzbot found the following crash on:
+I am really pleased to see you're investigating some of these issues,
+since I've been pretty swamped and not had time to work on this driver
+for a long time.
 
-HEAD commit:    b33bc2b8 nexthop: Add entry to MAINTAINERS
-git tree:       net-next
-console output: https://syzkaller.appspot.com/x/log.txt?x=13f46f52a00000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=1004db091673bbaf
-dashboard link: https://syzkaller.appspot.com/bug?extid=bad6e32808a3a97b1515
-compiler:       gcc (GCC) 9.0.0 20181231 (experimental)
-syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=11dc685aa00000
-C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=16229e36a00000
+The firmware should allow for two rate modes, either firmware handled or
+controlled by the driver. Ideally we would want the driver to handle it,
+but I never was able to make that work reliable.
 
-The bug was bisected to:
+This fix should at least improve the situation, and it may explain some
+of the performance issues with the 8192eu as well?
 
-commit 2638eb8b50cfc16240e0bb080b9afbf541a9b39d
-Author: Florian Westphal <fw@strlen.de>
-Date:   Fri May 31 16:27:09 2019 +0000
+> diff --git a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu.h b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu.h
+> index 8828baf26e7b..216f603827a8 100644
+> --- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu.h
+> +++ b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu.h
+> @@ -1195,6 +1195,44 @@ struct rtl8723bu_c2h {
+>  
+>  struct rtl8xxxu_fileops;
+>  
+> +/*mlme related.*/
+> +enum wireless_mode {
+> +	WIRELESS_MODE_UNKNOWN = 0,
+> +	/* Sub-Element */
+> +	WIRELESS_MODE_B = BIT(0),
+> +	WIRELESS_MODE_G = BIT(1),
+> +	WIRELESS_MODE_A = BIT(2),
+> +	WIRELESS_MODE_N_24G = BIT(3),
+> +	WIRELESS_MODE_N_5G = BIT(4),
+> +	WIRELESS_AUTO = BIT(5),
+> +	WIRELESS_MODE_AC = BIT(6),
+> +	WIRELESS_MODE_MAX = 0x7F,
+> +};
+> +
+> +/* from rtlwifi/wifi.h */
+> +enum ratr_table_mode_new {
+> +	RATEID_IDX_BGN_40M_2SS = 0,
+> +	RATEID_IDX_BGN_40M_1SS = 1,
+> +	RATEID_IDX_BGN_20M_2SS_BN = 2,
+> +	RATEID_IDX_BGN_20M_1SS_BN = 3,
+> +	RATEID_IDX_GN_N2SS = 4,
+> +	RATEID_IDX_GN_N1SS = 5,
+> +	RATEID_IDX_BG = 6,
+> +	RATEID_IDX_G = 7,
+> +	RATEID_IDX_B = 8,
+> +	RATEID_IDX_VHT_2SS = 9,
+> +	RATEID_IDX_VHT_1SS = 10,
+> +	RATEID_IDX_MIX1 = 11,
+> +	RATEID_IDX_MIX2 = 12,
+> +	RATEID_IDX_VHT_3SS = 13,
+> +	RATEID_IDX_BGN_3SS = 14,
+> +};
+> +
+> +#define RTL8XXXU_RATR_STA_INIT 0
+> +#define RTL8XXXU_RATR_STA_HIGH 1
+> +#define RTL8XXXU_RATR_STA_MID  2
+> +#define RTL8XXXU_RATR_STA_LOW  3
+> +
 
-     net: ipv4: provide __rcu annotation for ifa_list
+>  extern struct rtl8xxxu_fileops rtl8192cu_fops;
+>  extern struct rtl8xxxu_fileops rtl8192eu_fops;
+> diff --git a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8723b.c b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8723b.c
+> index 26b674aca125..2071ab9fd001 100644
+> --- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8723b.c
+> +++ b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8723b.c
+> @@ -1645,6 +1645,148 @@ static void rtl8723bu_init_statistics(struct rtl8xxxu_priv *priv)
+>  	rtl8xxxu_write32(priv, REG_OFDM0_FA_RSTC, val32);
+>  }
+>  
+> +static u8 rtl8723b_signal_to_rssi(int signal)
+> +{
+> +	if (signal < -95)
+> +		signal = -95;
+> +	return (u8)(signal + 95);
+> +}
 
-bisection log:  https://syzkaller.appspot.com/x/bisect.txt?x=170e1a0ea00000
-final crash:    https://syzkaller.appspot.com/x/report.txt?x=148e1a0ea00000
-console output: https://syzkaller.appspot.com/x/log.txt?x=108e1a0ea00000
+Could you make this more generic so it can be used by the other sub-drivers?
 
-IMPORTANT: if you fix the bug, please add the following tag to the commit:
-Reported-by: syzbot+bad6e32808a3a97b1515@syzkaller.appspotmail.com
-Fixes: 2638eb8b50cf ("net: ipv4: provide __rcu annotation for ifa_list")
+> +static void rtl8723b_refresh_rate_mask(struct rtl8xxxu_priv *priv,
+> +				       int signal, struct ieee80211_sta *sta)
+> +{
+> +	struct ieee80211_hw *hw = priv->hw;
+> +	u16 wireless_mode;
+> +	u8 rssi_level, ratr_idx;
+> +	u8 txbw_40mhz;
+> +	u8 rssi, rssi_thresh_high, rssi_thresh_low;
+> +
+> +	rssi_level = priv->rssi_level;
+> +	rssi = rtl8723b_signal_to_rssi(signal);
+> +	txbw_40mhz = (hw->conf.chandef.width == NL80211_CHAN_WIDTH_40) ? 1 : 0;
+> +
+> +	switch (rssi_level) {
+> +	case RTL8XXXU_RATR_STA_HIGH:
+> +		rssi_thresh_high = 50;
+> +		rssi_thresh_low = 20;
+> +		break;
+> +	case RTL8XXXU_RATR_STA_MID:
+> +		rssi_thresh_high = 55;
+> +		rssi_thresh_low = 20;
+> +		break;
+> +	case RTL8XXXU_RATR_STA_LOW:
+> +		rssi_thresh_high = 60;
+> +		rssi_thresh_low = 25;
+> +		break;
+> +	default:
+> +		rssi_thresh_high = 50;
+> +		rssi_thresh_low = 20;
+> +		break;
+> +	}
 
-=============================
-WARNING: suspicious RCU usage
-5.2.0-rc2+ #13 Not tainted
------------------------------
-net/ipv4/devinet.c:1766 suspicious rcu_dereference_check() usage!
+Can we make this use defined values with some explanation rather than
+hard coded values?
 
-other info that might help us debug this:
+> +	if (rssi > rssi_thresh_high)
+> +		rssi_level = RTL8XXXU_RATR_STA_HIGH;
+> +	else if (rssi > rssi_thresh_low)
+> +		rssi_level = RTL8XXXU_RATR_STA_MID;
+> +	else
+> +		rssi_level = RTL8XXXU_RATR_STA_LOW;
+> +
+> +	if (rssi_level != priv->rssi_level) {
+> +		int sgi = 0;
+> +		u32 rate_bitmap = 0;
+> +
+> +		rcu_read_lock();
+> +		rate_bitmap = (sta->supp_rates[0] & 0xfff) |
+> +				(sta->ht_cap.mcs.rx_mask[0] << 12) |
+> +				(sta->ht_cap.mcs.rx_mask[1] << 20);
+> +		if (sta->ht_cap.cap &
+> +		    (IEEE80211_HT_CAP_SGI_40 | IEEE80211_HT_CAP_SGI_20))
+> +			sgi = 1;
+> +		rcu_read_unlock();
+> +
+> +		wireless_mode = rtl8xxxu_wireless_mode(hw, sta);
+> +		switch (wireless_mode) {
+> +		case WIRELESS_MODE_B:
+> +			ratr_idx = RATEID_IDX_B;
+> +			if (rate_bitmap & 0x0000000c)
+> +				rate_bitmap &= 0x0000000d;
+> +			else
+> +				rate_bitmap &= 0x0000000f;
+> +			break;
+> +		case WIRELESS_MODE_A:
+> +		case WIRELESS_MODE_G:
+> +			ratr_idx = RATEID_IDX_G;
+> +			if (rssi_level == RTL8XXXU_RATR_STA_HIGH)
+> +				rate_bitmap &= 0x00000f00;
+> +			else
+> +				rate_bitmap &= 0x00000ff0;
+> +			break;
+> +		case (WIRELESS_MODE_B | WIRELESS_MODE_G):
+> +			ratr_idx = RATEID_IDX_BG;
+> +			if (rssi_level == RTL8XXXU_RATR_STA_HIGH)
+> +				rate_bitmap &= 0x00000f00;
+> +			else if (rssi_level == RTL8XXXU_RATR_STA_MID)
+> +				rate_bitmap &= 0x00000ff0;
+> +			else
+> +				rate_bitmap &= 0x00000ff5;
+> +			break;
+
+It would be nice as well to get all these masks into generic names.
+
+> +		case WIRELESS_MODE_N_24G:
+> +		case WIRELESS_MODE_N_5G:
+> +		case (WIRELESS_MODE_G | WIRELESS_MODE_N_24G):
+> +		case (WIRELESS_MODE_A | WIRELESS_MODE_N_5G):
+> +			if (priv->tx_paths == 2 && priv->rx_paths == 2)
+> +				ratr_idx = RATEID_IDX_GN_N2SS;
+> +			else
+> +				ratr_idx = RATEID_IDX_GN_N1SS;
+> +		case (WIRELESS_MODE_B | WIRELESS_MODE_G | WIRELESS_MODE_N_24G):
+> +		case (WIRELESS_MODE_B | WIRELESS_MODE_N_24G):
+> +			if (txbw_40mhz) {
+> +				if (priv->tx_paths == 2 && priv->rx_paths == 2)
+> +					ratr_idx = RATEID_IDX_BGN_40M_2SS;
+> +				else
+> +					ratr_idx = RATEID_IDX_BGN_40M_1SS;
+> +			} else {
+> +				if (priv->tx_paths == 2 && priv->rx_paths == 2)
+> +					ratr_idx = RATEID_IDX_BGN_20M_2SS_BN;
+> +				else
+> +					ratr_idx = RATEID_IDX_BGN_20M_1SS_BN;
+> +			}
+> +
+> +			if (priv->tx_paths == 2 && priv->rx_paths == 2) {
+> +				if (rssi_level == RTL8XXXU_RATR_STA_HIGH) {
+> +					rate_bitmap &= 0x0f8f0000;
+> +				} else if (rssi_level == RTL8XXXU_RATR_STA_MID) {
+> +					rate_bitmap &= 0x0f8ff000;
+> +				} else {
+> +					if (txbw_40mhz)
+> +						rate_bitmap &= 0x0f8ff015;
+> +					else
+> +						rate_bitmap &= 0x0f8ff005;
+> +				}
+> +			} else {
+> +				if (rssi_level == RTL8XXXU_RATR_STA_HIGH) {
+> +					rate_bitmap &= 0x000f0000;
+> +				} else if (rssi_level == RTL8XXXU_RATR_STA_MID) {
+> +					rate_bitmap &= 0x000ff000;
+> +				} else {
+> +					if (txbw_40mhz)
+> +						rate_bitmap &= 0x000ff015;
+> +					else
+> +						rate_bitmap &= 0x000ff005;
+> +				}
+> +			}
+> +			break;
+> +		default:
+> +			ratr_idx = RATEID_IDX_BGN_40M_2SS;
+> +			rate_bitmap &= 0x0fffffff;
+> +			break;
+> +		}
+> +
+> +		priv->rssi_level = rssi_level;
+> +		priv->fops->update_rate_mask(priv, rate_bitmap, ratr_idx, sgi);
+> +	}
+> +}
+> +
+
+In general I think all of this should be fairly generic and the other
+subdrivers should be able to benefit from it?
 
 
-rcu_scheduler_active = 2, debug_locks = 1
-1 lock held by syz-executor924/9000:
-  #0: 0000000087fe3874 (rtnl_mutex){+.+.}, at: netlink_dump+0xe7/0xfb0  
-net/netlink/af_netlink.c:2208
+>  struct rtl8xxxu_fileops rtl8723bu_fops = {
+>  	.parse_efuse = rtl8723bu_parse_efuse,
+>  	.load_firmware = rtl8723bu_load_firmware,
+> @@ -1665,6 +1807,7 @@ struct rtl8xxxu_fileops rtl8723bu_fops = {
+>  	.usb_quirks = rtl8xxxu_gen2_usb_quirks,
+>  	.set_tx_power = rtl8723b_set_tx_power,
+>  	.update_rate_mask = rtl8xxxu_gen2_update_rate_mask,
+> +	.refresh_rate_mask = rtl8723b_refresh_rate_mask,
+>  	.report_connect = rtl8xxxu_gen2_report_connect,
+>  	.fill_txdesc = rtl8xxxu_fill_txdesc_v2,
+>  	.writeN_block_size = 1024,
+> diff --git a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
+> index 039e5ca9d2e4..be322402ca01 100644
+> --- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
+> +++ b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
+> @@ -4311,7 +4311,8 @@ static void rtl8xxxu_sw_scan_complete(struct ieee80211_hw *hw,
+>  	rtl8xxxu_write8(priv, REG_BEACON_CTRL, val8);
+>  }
+>  
+> -void rtl8xxxu_update_rate_mask(struct rtl8xxxu_priv *priv, u32 ramask, int sgi)
+> +void rtl8xxxu_update_rate_mask(struct rtl8xxxu_priv *priv,
+> +			       u32 ramask, u8 rateid, int sgi)
+>  {
+>  	struct h2c_cmd h2c;
+>  
+> @@ -4331,7 +4332,7 @@ void rtl8xxxu_update_rate_mask(struct rtl8xxxu_priv *priv, u32 ramask, int sgi)
+>  }
+>  
+>  void rtl8xxxu_gen2_update_rate_mask(struct rtl8xxxu_priv *priv,
+> -				    u32 ramask, int sgi)
+> +				    u32 ramask, u8 rateid, int sgi)
+>  {
+>  	struct h2c_cmd h2c;
+>  	u8 bw = 0;
+> @@ -4345,7 +4346,7 @@ void rtl8xxxu_gen2_update_rate_mask(struct rtl8xxxu_priv *priv,
+>  	h2c.b_macid_cfg.ramask3 = (ramask >> 24) & 0xff;
+>  
+>  	h2c.ramask.arg = 0x80;
+> -	h2c.b_macid_cfg.data1 = 0;
+> +	h2c.b_macid_cfg.data1 = rateid;
+>  	if (sgi)
+>  		h2c.b_macid_cfg.data1 |= BIT(7);
+>  
+> @@ -4485,6 +4486,40 @@ static void rtl8xxxu_set_basic_rates(struct rtl8xxxu_priv *priv, u32 rate_cfg)
+>  	rtl8xxxu_write8(priv, REG_INIRTS_RATE_SEL, rate_idx);
+>  }
+>  
+> +u16
+> +rtl8xxxu_wireless_mode(struct ieee80211_hw *hw, struct ieee80211_sta *sta)
+> +{
+> +	u16 network_type = WIRELESS_MODE_UNKNOWN;
+> +	u32 rate_mask;
+> +
+> +	rate_mask = (sta->supp_rates[0] & 0xfff) |
+> +		    (sta->ht_cap.mcs.rx_mask[0] << 12) |
+> +		    (sta->ht_cap.mcs.rx_mask[0] << 20);
+> +
+> +	if (hw->conf.chandef.chan->band == NL80211_BAND_5GHZ) {
+> +		if (sta->vht_cap.vht_supported)
+> +			network_type = WIRELESS_MODE_AC;
+> +		else if (sta->ht_cap.ht_supported)
+> +			network_type = WIRELESS_MODE_N_5G;
+> +
+> +		network_type |= WIRELESS_MODE_A;
+> +	} else {
+> +		if (sta->vht_cap.vht_supported)
+> +			network_type = WIRELESS_MODE_AC;
+> +		else if (sta->ht_cap.ht_supported)
+> +			network_type = WIRELESS_MODE_N_24G;
+> +
+> +		if (sta->supp_rates[0] <= 0xf)
+> +			network_type |= WIRELESS_MODE_B;
+> +		else if (sta->supp_rates[0] & 0xf)
+> +			network_type |= (WIRELESS_MODE_B | WIRELESS_MODE_G);
+> +		else
+> +			network_type |= WIRELESS_MODE_G;
+> +	}
+> +
+> +	return network_type;
+> +}
 
-stack backtrace:
-CPU: 0 PID: 9000 Comm: syz-executor924 Not tainted 5.2.0-rc2+ #13
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS  
-Google 01/01/2011
-Call Trace:
-  __dump_stack lib/dump_stack.c:77 [inline]
-  dump_stack+0x172/0x1f0 lib/dump_stack.c:113
-  lockdep_rcu_suspicious+0x153/0x15d kernel/locking/lockdep.c:5250
-  in_dev_dump_addr+0x36f/0x3d0 net/ipv4/devinet.c:1766
-  inet_dump_ifaddr+0xa8f/0xca0 net/ipv4/devinet.c:1826
-  rtnl_dump_all+0x295/0x490 net/core/rtnetlink.c:3444
-  netlink_dump+0x558/0xfb0 net/netlink/af_netlink.c:2253
-  __netlink_dump_start+0x5b1/0x7d0 net/netlink/af_netlink.c:2361
-  netlink_dump_start include/linux/netlink.h:226 [inline]
-  rtnetlink_rcv_msg+0x73d/0xb00 net/core/rtnetlink.c:5181
-  netlink_rcv_skb+0x177/0x450 net/netlink/af_netlink.c:2486
-  rtnetlink_rcv+0x1d/0x30 net/core/rtnetlink.c:5236
-  netlink_unicast_kernel net/netlink/af_netlink.c:1311 [inline]
-  netlink_unicast+0x531/0x710 net/netlink/af_netlink.c:1337
-  netlink_sendmsg+0x8ae/0xd70 net/netlink/af_netlink.c:1926
-  sock_sendmsg_nosec net/socket.c:652 [inline]
-  sock_sendmsg+0xd7/0x130 net/socket.c:671
-  ___sys_sendmsg+0x803/0x920 net/socket.c:2292
-  __sys_sendmsg+0x105/0x1d0 net/socket.c:2330
-  __do_sys_sendmsg net/socket.c:2339 [inline]
-  __se_sys_sendmsg net/socket.c:2337 [inline]
-  __x64_sys_sendmsg+0x78/0xb0 net/socket.c:2337
-  do_syscall_64+0xfd/0x680 arch/x86/entry/common.c:301
-  entry_SYSCALL_64_after_hwframe+0x49/0xbe
-RIP: 0033:0x4402a9
-Code: 18 89 d0 c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 00 48 89 f8 48 89 f7  
-48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff  
-ff 0f 83 fb 13 fc ff c3 66 2e 0f 1f 84 00 00 00 00
-RSP: 002b:00007fffe5f26f18 EFLAGS: 00000246 ORIG_RAX: 000000000000002e
-RAX: ffffffffffffffda RBX: 00000000004002c8 RCX: 00000000004402a9
-RDX: 0000000000000000 RSI: 0000000020000240 RDI: 0000000000000003
-RBP: 00000000006ca018 R08: 00000000004002c8 R09: 00000000004002c8
-R10:
+I always hated the wireless_mode nonsense in the realtek driver, but
+maybe we cannot avoid it :(
 
-
----
-This bug is generated by a bot. It may contain errors.
-See https://goo.gl/tpsmEJ for more information about syzbot.
-syzbot engineers can be reached at syzkaller@googlegroups.com.
-
-syzbot will keep track of this bug report. See:
-https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
-For information about bisection process see: https://goo.gl/tpsmEJ#bisection
-syzbot can test patches for this bug, for details see:
-https://goo.gl/tpsmEJ#testing-patches
+Cheers,
+Jes
