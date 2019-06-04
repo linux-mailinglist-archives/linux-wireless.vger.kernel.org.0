@@ -2,120 +2,105 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id BD37434022
-	for <lists+linux-wireless@lfdr.de>; Tue,  4 Jun 2019 09:31:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 61812341A2
+	for <lists+linux-wireless@lfdr.de>; Tue,  4 Jun 2019 10:18:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726789AbfFDHbP (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 4 Jun 2019 03:31:15 -0400
-Received: from mail-ua1-f65.google.com ([209.85.222.65]:45641 "EHLO
-        mail-ua1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726747AbfFDHbP (ORCPT
+        id S1726934AbfFDISv convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 4 Jun 2019 04:18:51 -0400
+Received: from rtits2.realtek.com ([211.75.126.72]:50275 "EHLO
+        rtits2.realtek.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726732AbfFDISv (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 4 Jun 2019 03:31:15 -0400
-Received: by mail-ua1-f65.google.com with SMTP id v18so1444133uad.12
-        for <linux-wireless@vger.kernel.org>; Tue, 04 Jun 2019 00:31:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=liKHPncWOckMU0VpUC12b4lHB8RDKVamTsMkqWq9QS8=;
-        b=pBWhAx1YgC0xfBUniJ64GQxUiO+aAT1hfrtvJ3NHp7giCrOXogoNhXvDhHaneh0wvt
-         3LNcd2E9BBt5jRT4Hh8q2/pxIP4n/6QfNng62w1L9Na2TniGZKWcRbo45voYqcLguccz
-         qTv55JDhWIHfY4Jjl/P53uPtQVNQvtfOIfjbbEuWh3fQngdSz5k1sa4NaQ9+DC8012Ot
-         DDHkh4Lew+iPe8KLIZymjj1fOf3tinN0ERo6InehQK22Mppo7htd85X5kdeew7KW6n3W
-         jRvG/NNzn4+76SVcU9CeRQDGRV4PFWOKQwiyV4dMGkr4o0CY1yjM9KtiObPKEYD9IBt9
-         9jcw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=liKHPncWOckMU0VpUC12b4lHB8RDKVamTsMkqWq9QS8=;
-        b=AlbhkYIwoxnLxrrZjEBMdgw7JCgLZjFKP7jBZMjXWOkRAAkbIfrRh5zCff7jnkPhCt
-         G3dV1H6d8E188uDt1//8kcbCXrP+hEC2l3CvLjUemOHIawq+kdNqeZadBBrJ3OhlGkXO
-         RyTAC9j2Fb0qLdH+o7gzZQKbYFqA2EAfbGB5HkIvncnHBnm84psYwem007ZR+xliKHUM
-         d7z+I0fpE7U1tQakwT0qStPJgTAwKR0OymHe6ufh+T+/pY09lc5EI8/xmFw3eBOFCrm2
-         YVXqo1LBlnqV+NkRCYRZ2IbBZBuU51recOiDtFijyDAmCMMGF5YoEAIP3duyJtIkqT8z
-         zhpA==
-X-Gm-Message-State: APjAAAXeD/pFb++t4sYQCgJdcII/v0bE1DQKx+1oeByiKR9/znl84sl8
-        7VdGyOKUw5Y8f0xiz+b4IJOFhia26uBiyqVlOSEBLA==
-X-Google-Smtp-Source: APXvYqwRSbtZYdCjB8whq7+U5NeLJqf4f+zeXI8CzJ2cgm83LN/kdT2cdEZ7iFkIM1drZeG9nKJsq5islj1NytCSefw=
-X-Received: by 2002:ab0:5608:: with SMTP id y8mr15100647uaa.129.1559633474312;
- Tue, 04 Jun 2019 00:31:14 -0700 (PDT)
+        Tue, 4 Jun 2019 04:18:51 -0400
+Authenticated-By: 
+X-SpamFilter-By: BOX Solutions SpamTrap 5.62 with qID x548IaOX019946, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtitcasv01.realtek.com.tw[172.21.6.18])
+        by rtits2.realtek.com.tw (8.15.2/2.57/5.78) with ESMTPS id x548IaOX019946
+        (version=TLSv1 cipher=AES256-SHA bits=256 verify=NOT);
+        Tue, 4 Jun 2019 16:18:36 +0800
+Received: from RTITMBSVM04.realtek.com.tw ([fe80::e404:880:2ef1:1aa1]) by
+ RTITCASV01.realtek.com.tw ([::1]) with mapi id 14.03.0439.000; Tue, 4 Jun
+ 2019 16:18:35 +0800
+From:   Tony Chuang <yhchuang@realtek.com>
+To:     Joe Perches <joe@perches.com>,
+        "kvalo@codeaurora.org" <kvalo@codeaurora.org>
+CC:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+Subject: RE: [PATCH 11/11] rtw88: debug: dump tx power indexes in use
+Thread-Topic: [PATCH 11/11] rtw88: debug: dump tx power indexes in use
+Thread-Index: AQHVFfPUdYk/ZiyYCUumG1g5tKAANqaG5yaAgARIvzA=
+Date:   Tue, 4 Jun 2019 08:18:35 +0000
+Message-ID: <F7CD281DE3E379468C6D07993EA72F84D17FED3E@RTITMBSVM04.realtek.com.tw>
+References: <1559116487-5244-1-git-send-email-yhchuang@realtek.com>
+         <1559116487-5244-12-git-send-email-yhchuang@realtek.com>
+ <39d56df83cc8de95969c6ba3003d8101caedc045.camel@perches.com>
+In-Reply-To: <39d56df83cc8de95969c6ba3003d8101caedc045.camel@perches.com>
+Accept-Language: zh-TW, en-US
+Content-Language: zh-TW
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [172.21.68.183]
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 8BIT
 MIME-Version: 1.0
-References: <20190429204040.18725-1-dianders@chromium.org> <CAPDyKFp0fQ+3CS-DadE9rO-9Npzve-nztY9hRaMdX7Pw9sUZMw@mail.gmail.com>
- <CAD=FV=XMph_CE3pFZGP+5d0K2FgbPbheF1oX72TfZn_dpf8SQA@mail.gmail.com> <CAD=FV=U7_ek_z7UfaDn9My8UfZfpNom04OJHowoH-sNsGZQnxA@mail.gmail.com>
-In-Reply-To: <CAD=FV=U7_ek_z7UfaDn9My8UfZfpNom04OJHowoH-sNsGZQnxA@mail.gmail.com>
-From:   Ulf Hansson <ulf.hansson@linaro.org>
-Date:   Tue, 4 Jun 2019 09:30:37 +0200
-Message-ID: <CAPDyKFoo7yyhZq8G3PzHSNnF5nWPL7Dy5a-abL-kQTP2jEt9KQ@mail.gmail.com>
-Subject: Re: [PATCH v2] mmc: dw_mmc: Disable SDIO interrupts while suspended
- to fix suspend/resume
-To:     Doug Anderson <dianders@chromium.org>
-Cc:     Jaehoon Chung <jh80.chung@samsung.com>,
-        Shawn Lin <shawn.lin@rock-chips.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        Heiko Stuebner <heiko@sntech.de>,
-        "open list:ARM/Rockchip SoC..." <linux-rockchip@lists.infradead.org>,
-        Guenter Roeck <groeck@chromium.org>,
-        Brian Norris <briannorris@chromium.org>,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        Sonny Rao <sonnyrao@chromium.org>,
-        Emil Renner Berthing <emil.renner.berthing@gmail.com>,
-        Matthias Kaehlcke <mka@chromium.org>,
-        Ryan Case <ryandcase@chromium.org>,
-        "# 4.0+" <stable@vger.kernel.org>,
-        "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Mon, 3 Jun 2019 at 20:41, Doug Anderson <dianders@chromium.org> wrote:
->
-> Ulf,
->
-> On Tue, May 28, 2019 at 3:49 PM Doug Anderson <dianders@chromium.org> wrote:
+> Subject: Re: [PATCH 11/11] rtw88: debug: dump tx power indexes in use
+> 
+> On Wed, 2019-05-29 at 15:54 +0800, yhchuang@realtek.com wrote:
+> > From: Zong-Zhe Yang <kevin_yang@realtek.com>
 > >
-> > > 1) As kind of stated above, did you consider a solution where the core
-> > > simply disables the SDIO IRQ in case it isn't enabled for system
-> > > wakeup? In this way all host drivers would benefit.
+> > Add a read entry in debugfs to dump current tx power
+> > indexes in use for each path and each rate section.
+> > The corresponding power bases, power by rate, and
+> > power limit are also included.
 > >
-> > I can give it a shot if you can give me a bunch of specific advice,
-> > but I only have access to a few devices doing anything with SDIO and
-> > they are all using Marvell or Broadcom on dw_mmc.
+> > Signed-off-by: Zong-Zhe Yang <kevin_yang@realtek.com>
+> > Signed-off-by: Yan-Hsuan Chuang <yhchuang@realtek.com>
+> > ---
+> >  drivers/net/wireless/realtek/rtw88/debug.c | 112
+> +++++++++++++++++++++++++++++
+> >  1 file changed, 112 insertions(+)
 > >
-> > In general I have no idea how SDIO wakeup (plumbed through the SD
-> > controller) would work.  As per below the only way I've seen it done
-> > is totally out-of-band.  ...and actually, I'm not sure I've actually
-> > ever seen even the out of band stuff truly work on a system myself.
-> > It's always been one of those "we should support wake on WiFi" but
-> > never made it all the way to implementation.  In any case, if there
-> > are examples of people plumbing wakeup through the SD controller I'd
-> > need to figure out how to not break them.  Just doing a solution for
-> > dw_mmc means I don't have to worry about this since dw_mmc definitely
-> > doesn't support SDIO wakeup.
+> > diff --git a/drivers/net/wireless/realtek/rtw88/debug.c
+> b/drivers/net/wireless/realtek/rtw88/debug.c
+> > index f0ae260..ee2937c2 100644
+> > --- a/drivers/net/wireless/realtek/rtw88/debug.c
+> > +++ b/drivers/net/wireless/realtek/rtw88/debug.c
+> > @@ -8,6 +8,7 @@
+> >  #include "sec.h"
+> >  #include "fw.h"
+> >  #include "debug.h"
+> > +#include "phy.h"
 > >
-> > Maybe one way to get a more generic solution is if you had an idea for
-> > a patch that would work for many host controllers then you could post
-> > it and I could test to confirm that it's happy on dw_mmc?  ...similar
-> > to when you switched dw_mmc away from the old kthread-based SDIO
-> > stuff?
+> >  #ifdef CONFIG_RTW88_DEBUGFS
+> >
+> > @@ -460,6 +461,112 @@ static int rtw_debug_get_rf_dump(struct seq_file
+> *m, void *v)
+> >  	return 0;
+> >  }
+> >
+> > +static void rtw_print_cck_rate_txt(struct seq_file *m, u8 rate)
+> > +{
+> > +	static const char * const
+> > +	cck_rate[] = {"1M", "2M", "5.5M", "11M"};
+> > +	u8 idx = rate - DESC_RATE1M;
+> > +
+> > +	seq_printf(m, "%5s%-5s", "CCK_", cck_rate[idx]);
+> 
+> Why use %5s instead of just embedding the prefix directly?
+> Also why use %5s at all when the length is 4?
+> 
+> I think it'd be more sensible as:
+> 
+> 	seq_printf(m, " CCK_%-5s", cck_rate[idx]);
+> 
 
-Let me have a look and see if I can post something for you to test.
+Ok, it is better.
+Will send a v2 later :)
+Thanks
 
->
-> Unless you have time to help dig into all the possibilities here to
-> help understand how this should behave across all the different host
-> controllers / wakeup setups, maybe we could just land ${SUBJECT} patch
-> for now and when there is more clarity we can revisit?
-
-That's an option. I only fear that the revisit part never happens
-(because of me personally being occupied with other things).
-
-If I not able to come up with something within a week, then I will
-queue up this as fix.
-
-Kind regards
-Uffe
+Yan-Hsuan
