@@ -2,168 +2,90 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E811834DF9
-	for <lists+linux-wireless@lfdr.de>; Tue,  4 Jun 2019 18:49:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CE66834EC3
+	for <lists+linux-wireless@lfdr.de>; Tue,  4 Jun 2019 19:29:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727951AbfFDQtF (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 4 Jun 2019 12:49:05 -0400
-Received: from mail-ed1-f66.google.com ([209.85.208.66]:46924 "EHLO
-        mail-ed1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727814AbfFDQtF (ORCPT
+        id S1726373AbfFDR3F (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 4 Jun 2019 13:29:05 -0400
+Received: from mail-pl1-f195.google.com ([209.85.214.195]:34952 "EHLO
+        mail-pl1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726245AbfFDR3E (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 4 Jun 2019 12:49:05 -0400
-Received: by mail-ed1-f66.google.com with SMTP id h10so1320607edi.13
-        for <linux-wireless@vger.kernel.org>; Tue, 04 Jun 2019 09:49:04 -0700 (PDT)
+        Tue, 4 Jun 2019 13:29:04 -0400
+Received: by mail-pl1-f195.google.com with SMTP id p1so8611123plo.2
+        for <linux-wireless@vger.kernel.org>; Tue, 04 Jun 2019 10:29:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google;
-        h=from:to:cc:date:message-id:in-reply-to:references:user-agent
-         :subject:mime-version:content-transfer-encoding;
-        bh=htJGxlotLvs1Z4U6dZKpFxplNjTIfrsnnYtpYuTDheU=;
-        b=R65lslW41TgbT3+HYxMMjdC1uaQkK3+KBb3U0Ny04v00ZXQz0M5njpJO0tzBd/YuNW
-         RxIApA/5BN6eLgog0OTyD225kmO2K54y61DD+jOoUglq8uH3oRxCm/TWybHsmKXMFkWn
-         c/6tNH9A+v0XZFWm5dCH8txy2CUadmZk/a7Gk=
+        d=chromium.org; s=google;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=mFo+Cml7JxiPey2gwmiRmH8tPb+Deo/oS3silL2yxZc=;
+        b=cBf5XbKESWpXtgyIzi/8h+k25RwP+X0uA6/LU0BccXujypKyhJkbIKEYGQd9tcfPNs
+         W4vSpAt8axOiZd5j3jvEjzXC79+UULFH5sAYlOVAyzP3Y2GzclNlGnuY1LdnmSKSXRgT
+         3oHdfwDdRi7oMHldyCnZX6D/9a15qwBJmqK9A=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:date:message-id:in-reply-to
-         :references:user-agent:subject:mime-version
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
          :content-transfer-encoding;
-        bh=htJGxlotLvs1Z4U6dZKpFxplNjTIfrsnnYtpYuTDheU=;
-        b=UR7vFnrAaBGZU6OjOu7UJxgtMEBCGVlp6z5yDGOW6fJ0BH7tzRHmcKnaM7+tsvyuQb
-         Dk6f5dccZ64lpHAebJIcCPSk9Ebd1YjWJri58sWTpx0FfEbKrU0C+Ld40iFdsv7JAHx2
-         Fbx68v1bYjpbjlGYg83j4kzw8xGbadY2OMbHZclNTDKrMLY2O26Fp/AUVAidvywpoSa7
-         FFhOhk7x4zqmfsPfOxhbvhutTZH1WLoOZiI4A2ZC0UuNetyUp3Im95QDUmcf45Ap6Ou/
-         J9zUvhu2VxcEenkM3nG0QJ4unY2s6ytlE7/5JZLYvx8irU6PzasmNHaBRtjIvSMk3UBL
-         AS/w==
-X-Gm-Message-State: APjAAAUlowFSdHF4nOL4nJdPUIlvMgmTts2m68Zs0w7CU5aTl3WF7JTV
-        rcHG6WEfkaPjpS2ydHWieulhRg==
-X-Google-Smtp-Source: APXvYqztipAoz79D/S8ve0jSHSJoCk4kQevwSEFXnnm7enKqQcPjs6vXyDkTT7yXt9aaPM5FJWIVHw==
-X-Received: by 2002:a17:906:d7ab:: with SMTP id pk11mr11277278ejb.216.1559666943273;
-        Tue, 04 Jun 2019 09:49:03 -0700 (PDT)
-Received: from [192.168.178.17] (f140230.upc-f.chello.nl. [80.56.140.230])
-        by smtp.gmail.com with ESMTPSA id e45sm4818556edb.12.2019.06.04.09.48.58
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
-        Tue, 04 Jun 2019 09:49:02 -0700 (PDT)
-From:   Arend Van Spriel <arend.vanspriel@broadcom.com>
-To:     Doug Anderson <dianders@chromium.org>,
-        Wright Feng <Wright.Feng@cypress.com>
-CC:     Kalle Valo <kvalo@codeaurora.org>,
-        Madhan Mohan R <MadhanMohan.R@cypress.com>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        Hante Meuleman <hante.meuleman@broadcom.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        netdev <netdev@vger.kernel.org>,
-        "Chi-Hsien Lin" <Chi-Hsien.Lin@cypress.com>,
-        Brian Norris <briannorris@chromium.org>,
-        "linux-wireless" <linux-wireless@vger.kernel.org>,
-        YueHaibing <yuehaibing@huawei.com>,
-        Adrian Hunter <adrian.hunter@intel.com>,
-        "open list:ARM/Rockchip SoC..." <linux-rockchip@lists.infradead.org>,
-        <brcm80211-dev-list.pdl@broadcom.com>,
-        Matthias Kaehlcke <mka@chromium.org>,
-        Naveen Gupta <Naveen.Gupta@cypress.com>,
-        "brcm80211-dev-list" <brcm80211-dev-list@cypress.com>,
-        Double Lo <Double.Lo@cypress.com>,
-        Franky Lin <franky.lin@broadcom.com>
-Date:   Tue, 04 Jun 2019 18:48:57 +0200
-Message-ID: <16b2364c8c0.2764.9b12b7fc0a3841636cfb5e919b41b954@broadcom.com>
-In-Reply-To: <CAD=FV=Wr4WsO7Xmei5GB4X91L_sDN331B1_oH+CPZOeFUkxyMg@mail.gmail.com>
-References: <20190517225420.176893-2-dianders@chromium.org>
- <20190528121833.7D3A460A00@smtp.codeaurora.org>
- <CAD=FV=VtxdEeFQsdF=U7-_7R+TXfVmA2_JMB_-WYidGHTLDgLw@mail.gmail.com>
- <16aff33f3e0.2764.9b12b7fc0a3841636cfb5e919b41b954@broadcom.com>
- <16aff358a20.2764.9b12b7fc0a3841636cfb5e919b41b954@broadcom.com>
- <40587a64-490b-8b1e-8a11-1e1aebdab2f3@cypress.com>
- <CAD=FV=Wr4WsO7Xmei5GB4X91L_sDN331B1_oH+CPZOeFUkxyMg@mail.gmail.com>
-User-Agent: AquaMail/1.20.0-1451 (build: 102000001)
-Subject: Re: [PATCH 1/3] brcmfmac: re-enable command decode in sdio_aos for BRCM 4354
+        bh=mFo+Cml7JxiPey2gwmiRmH8tPb+Deo/oS3silL2yxZc=;
+        b=rYzyO6AK1vfEr6nBUJwmEXIJpE9YhJJ2Tf/qGmmpqE9z328hnXtch+vUbkq9ICViFc
+         oRxNbfHDPQyORxBdmoIK/A29WSaBSwaCChg5/2DGHJ62owfIDGaY1yM+S46KjBe+hE3i
+         N0DCF7saLPpGRy+GA6TBtvFAkSdjaLoaZXMrA2oYdiUiknpScIhdfhRKcAetPwIhcpqA
+         gHRLRXHiFK2WwV5XQ0K2uF+gYLJXknXJQ8yX1CfvP9yuXhIEdL4KwswKkzEQhnuPYZ0U
+         4SVfRxY6s9g0xDtKnSOkVg8oE4WPIgk5AlU0mZIGpQlgFvCaEl9bJ0sT+oMq40hjOUZX
+         IiCg==
+X-Gm-Message-State: APjAAAV3bWUCCAroj6wz2/RoSQ8MViiQkTwKVaU6evy6/VH7qMxaLX30
+        ZLsPQ2msuKPnyEPm2aRKAKYLkg==
+X-Google-Smtp-Source: APXvYqzPO4ICaqAPtnx7zJzFCLLGLjyR8STtZCGEnKZqvBb6BI3ZWdE7H0kogepUqmM0OHWQkgdnQw==
+X-Received: by 2002:a17:902:9a06:: with SMTP id v6mr21601217plp.71.1559669344327;
+        Tue, 04 Jun 2019 10:29:04 -0700 (PDT)
+Received: from smtp.gmail.com ([2620:15c:202:1:534:b7c0:a63c:460c])
+        by smtp.gmail.com with ESMTPSA id b128sm13591829pfa.165.2019.06.04.10.29.02
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Tue, 04 Jun 2019 10:29:03 -0700 (PDT)
+From:   Brian Norris <briannorris@chromium.org>
+To:     Ganapathi Bhat <gbhat@marvell.com>,
+        Nishant Sarmukadam <nishants@marvell.com>,
+        Amitkumar Karwar <amitkarwar@gmail.com>,
+        Xinming Hu <huxinming820@gmail.com>
+Cc:     <linux-kernel@vger.kernel.org>, linux-wireless@vger.kernel.org,
+        Brian Norris <briannorris@chromium.org>
+Subject: [PATCH] mwifiex: drop 'set_consistent_dma_mask' log message
+Date:   Tue,  4 Jun 2019 10:28:58 -0700
+Message-Id: <20190604172858.107084-1-briannorris@chromium.org>
+X-Mailer: git-send-email 2.22.0.rc1.311.g5d7573a151-goog
 MIME-Version: 1.0
-Content-Type: text/plain; format=flowed; charset="UTF-8"
 Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On June 4, 2019 6:01:26 PM Doug Anderson <dianders@chromium.org> wrote:
+This message is pointless.
 
-> Hi,
->
-> On Mon, Jun 3, 2019 at 8:20 PM Wright Feng <Wright.Feng@cypress.com> wrote:
->>
->> On 2019/5/29 上午 12:11, Arend Van Spriel wrote:
->> > On May 28, 2019 6:09:21 PM Arend Van Spriel
->> > <arend.vanspriel@broadcom.com> wrote:
->> >
->> >> On May 28, 2019 5:52:10 PM Doug Anderson <dianders@chromium.org> wrote:
->> >>
->> >>> Hi,
->> >>>
->> >>> On Tue, May 28, 2019 at 5:18 AM Kalle Valo <kvalo@codeaurora.org> wrote:
->> >>>>
->> >>>> Douglas Anderson <dianders@chromium.org> wrote:
->> >>>>
->> >>>> > In commit 29f6589140a1 ("brcmfmac: disable command decode in
->> >>>> > sdio_aos") we disabled something called "command decode in sdio_aos"
->> >>>> > for a whole bunch of Broadcom SDIO WiFi parts.
->> >>>> >
->> >>>> > After that patch landed I find that my kernel log on
->> >>>> > rk3288-veyron-minnie and rk3288-veyron-speedy is filled with:
->> >>>> >   brcmfmac: brcmf_sdio_bus_sleep: error while changing bus sleep
->> >>>> state -110
->> >>>> >
->> >>>> > This seems to happen every time the Broadcom WiFi transitions out of
->> >>>> > sleep mode.  Reverting the part of the commit that affects the
->> >>>> WiFi on
->> >>>> > my boards fixes the problem for me, so that's what this patch does.
->> >>>> >
->> >>>> > Note that, in general, the justification in the original commit
->> >>>> seemed
->> >>>> > a little weak.  It looked like someone was testing on a SD card
->> >>>> > controller that would sometimes die if there were CRC errors on the
->> >>>> > bus.  This used to happen back in early days of dw_mmc (the
->> >>>> controller
->> >>>> > on my boards), but we fixed it.  Disabling a feature on all boards
->> >>>> > just because one SD card controller is broken seems bad.  ...so
->> >>>> > instead of just this patch possibly the right thing to do is to fully
->> >>>> > revert the original commit.
->> >>>> >
->> Since the commit 29f6589140a1 ("brcmfmac: disable command decode in
->> sdio_aos") causes the regression on other SD card controller, it is
->> better to revert it as you mentioned.
->> Actually, without the commit, we hit MMC timeout(-110) and hanged
->> instead of CRC error in our test.
->
-> Any chance I can convince you to provide some official tags like
-> Reviewed-by or Tested-by on the revert?
->
->> Would you please share the analysis of
->> dw_mmc issue which you fixed? We'd like to compare whether we got the
->> same issue.
->
-> I'm not sure there's any single magic commit I can point to.  When I
-> started working on dw_mmc it was terrible at handling error cases and
-> would often crash / hang / stop all future communication upon certain
-> classes or efforts.  There were dozens of problems we've had to fix
-> over the years.  These problems showed up when we started supporting
-> HS200 / UHS since the tuning phase really stress the error handling of
-> the host controller.
->
-> I searched and by the time we were supporting Broadcom SDIO cards the
-> error handling was already pretty good.  ...but if we hadn't already
-> made the error handling more robust for UHS tuning then we would have
-> definitely hit these types of problems.  The only problem I remember
-> having to solve in dw_mmc that was unique to Broadcom was commit
-> 0bdbd0e88cf6 ("mmc: dw_mmc: Don't start commands while busy").  Any
-> chance that could be what you're hitting?
+While we're at it, include the error code in the error message, which is
+not pointless.
 
-That is indeed an issue I recall resulting in -110 errors.
+Signed-off-by: Brian Norris <briannorris@chromium.org>
+---
+ drivers/net/wireless/marvell/mwifiex/pcie.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-> What host controller are you having problems with?
-
-Knowing that will be a good start.
-
-Regards,
-Arend
-
+diff --git a/drivers/net/wireless/marvell/mwifiex/pcie.c b/drivers/net/wireless/marvell/mwifiex/pcie.c
+index 3fe81b2a929a..82f58bf0fc43 100644
+--- a/drivers/net/wireless/marvell/mwifiex/pcie.c
++++ b/drivers/net/wireless/marvell/mwifiex/pcie.c
+@@ -2924,10 +2924,9 @@ static int mwifiex_init_pcie(struct mwifiex_adapter *adapter)
+ 
+ 	pci_set_master(pdev);
+ 
+-	pr_notice("try set_consistent_dma_mask(32)\n");
+ 	ret = pci_set_dma_mask(pdev, DMA_BIT_MASK(32));
+ 	if (ret) {
+-		pr_err("set_dma_mask(32) failed\n");
++		pr_err("set_dma_mask(32) failed: %d\n", ret);
+ 		goto err_set_dma_mask;
+ 	}
+ 
+-- 
+2.22.0.rc1.311.g5d7573a151-goog
 
