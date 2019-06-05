@@ -2,155 +2,129 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E756335817
-	for <lists+linux-wireless@lfdr.de>; Wed,  5 Jun 2019 09:55:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5183B35980
+	for <lists+linux-wireless@lfdr.de>; Wed,  5 Jun 2019 11:16:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726528AbfFEHy4 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 5 Jun 2019 03:54:56 -0400
-Received: from mail-pl1-f194.google.com ([209.85.214.194]:46643 "EHLO
-        mail-pl1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726464AbfFEHyz (ORCPT
+        id S1726857AbfFEJQD (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 5 Jun 2019 05:16:03 -0400
+Received: from mx0a-0016f401.pphosted.com ([67.231.148.174]:33688 "EHLO
+        mx0b-0016f401.pphosted.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1726831AbfFEJQD (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 5 Jun 2019 03:54:55 -0400
-Received: by mail-pl1-f194.google.com with SMTP id e5so7654683pls.13
-        for <linux-wireless@vger.kernel.org>; Wed, 05 Jun 2019 00:54:55 -0700 (PDT)
+        Wed, 5 Jun 2019 05:16:03 -0400
+Received: from pps.filterd (m0045849.ppops.net [127.0.0.1])
+        by mx0a-0016f401.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id x559Au50011101;
+        Wed, 5 Jun 2019 02:16:00 -0700
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=marvell.com; h=from : to : cc :
+ subject : date : message-id : references : in-reply-to : content-type :
+ content-transfer-encoding : mime-version; s=pfpt0818;
+ bh=bSNlKwRUWHQdeWlvsoHSg81ZXH/HDNKdNlg6eAHevvg=;
+ b=W94VHWr2guDg+kRLYRmKD2o8RULThwQUU56qk2anEvEuBJ6AH93JY65yDz9ImM9oT/lx
+ 65bfjzCnR+uS0JU7gDSWSwBj/M38AzMVtNR7BBW3mKiEcKcmsarhbT0CFSy1FoDP7Cus
+ /uz9xKVJrbdxemItAyAgwIdX27P2mxulsQMT2+Pq9aQO74JAsaXiaVi59wG6MwNlCMyn
+ dmelrLua/nJB5u8kTwrGHGWnfL6u8MJRKQEPGswtVJRhSaIGvsLNMiGHvOMIVas1LXNU
+ 5n25UsektPQHbx7f5VqdDtgu5+6+nXCCqqi0YItTXohLH3NsVRpv3DvnSROziCplrrbr pA== 
+Received: from sc-exch04.marvell.com ([199.233.58.184])
+        by mx0a-0016f401.pphosted.com with ESMTP id 2sx3kg9h0v-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-SHA384 bits=256 verify=NOT);
+        Wed, 05 Jun 2019 02:16:00 -0700
+Received: from SC-EXCH01.marvell.com (10.93.176.81) by SC-EXCH04.marvell.com
+ (10.93.176.84) with Microsoft SMTP Server (TLS) id 15.0.1367.3; Wed, 5 Jun
+ 2019 02:15:58 -0700
+Received: from NAM02-CY1-obe.outbound.protection.outlook.com (104.47.37.51) by
+ SC-EXCH01.marvell.com (10.93.176.81) with Microsoft SMTP Server (TLS) id
+ 15.0.1367.3 via Frontend Transport; Wed, 5 Jun 2019 02:15:58 -0700
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=aiue8tHWiumr4g0nytcyTjYaJHwPhuqRgFXgCDSDwM0=;
-        b=KGG4kw7mp5EISlgpPMNpn5iOHG3+VLhZMDhZ+778rosnxJtQ2DdjdZ5tkcWiWRFGGX
-         13t7oW58cPGQVxfvPViY7GfglNUiaobpnuA5U9Lhk/zaJJvJa8iiwJxVGhf39no86EP+
-         tHTVDIzoVY5+6E11qiOyJvAD7RzmosldNH4nY=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=aiue8tHWiumr4g0nytcyTjYaJHwPhuqRgFXgCDSDwM0=;
-        b=KYFk2G1OXCtK7hQ4jyG0yp/26cH18JmsSHLtgZzy+vj89PArH6eXBZgWZahjfuXV4U
-         FPfbpBxIasl0mRAlNYCedxCh56I9P0ZDtljXWy82acO/BxSWYFO/ppHIEEotect/KSjQ
-         /5sI4qrAq9RWBBmlbn/yssIePrpypXGeTdVnefTSGMMtNc/fV/BfBSwmp9cbHkKeQgHF
-         Z0wWK4pGomuVRXMwm/27bGFR7kz+MigW2W4mQz4xI3480NRi5cvRYQ1p6oihfYk393yq
-         wnYlZ3o0eVJiaWaw+mszlnYZl76u2tG/FvJgfqDLGLMynlBeqFLdPVaq+jgr/W7nuOo4
-         hPsA==
-X-Gm-Message-State: APjAAAWPV/gq2C107fOYx/X+5givvegiSRbq8aubx3uufXWQWt6g/SOF
-        k44WZY1LeZbuRjkRxDAgsTILgA==
-X-Google-Smtp-Source: APXvYqx1Gbz9qsU2PuuHu8YloVvKfIX0ptj4e8Hzpp+GXSquNY3RQsHEhI2ABswO9YBHJkaCFOSHnA==
-X-Received: by 2002:a17:902:8a87:: with SMTP id p7mr25322779plo.124.1559721294846;
-        Wed, 05 Jun 2019 00:54:54 -0700 (PDT)
-Received: from [10.230.40.234] ([192.19.215.250])
-        by smtp.gmail.com with ESMTPSA id 11sm28366590pfu.155.2019.06.05.00.54.49
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Wed, 05 Jun 2019 00:54:54 -0700 (PDT)
-Subject: Re: [PATCH v2 2/3] mmc: core: API for temporarily disabling
- auto-retuning due to errors
-To:     Douglas Anderson <dianders@chromium.org>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        Adrian Hunter <adrian.hunter@intel.com>
-Cc:     brcm80211-dev-list.pdl@broadcom.com,
-        linux-rockchip@lists.infradead.org,
-        Double Lo <double.lo@cypress.com>, briannorris@chromium.org,
-        linux-wireless@vger.kernel.org,
-        Naveen Gupta <naveen.gupta@cypress.com>,
-        Madhan Mohan R <madhanmohan.r@cypress.com>, mka@chromium.org,
-        Wright Feng <wright.feng@cypress.com>,
-        Chi-Hsien Lin <chi-hsien.lin@cypress.com>,
-        netdev@vger.kernel.org, brcm80211-dev-list@cypress.com,
-        linux-mmc@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Shawn Lin <shawn.lin@rock-chips.com>,
-        Wolfram Sang <wsa+renesas@sang-engineering.com>,
-        Avri Altman <avri.altman@wdc.com>
-References: <20190603183740.239031-1-dianders@chromium.org>
- <20190603183740.239031-3-dianders@chromium.org>
-From:   Arend Van Spriel <arend.vanspriel@broadcom.com>
-Message-ID: <25fe1725-76fa-2739-1427-b0e8823ea4ae@broadcom.com>
-Date:   Wed, 5 Jun 2019 09:54:48 +0200
-User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:60.0) Gecko/20100101
- Thunderbird/60.7.0
-MIME-Version: 1.0
-In-Reply-To: <20190603183740.239031-3-dianders@chromium.org>
-Content-Type: text/plain; charset=utf-8; format=flowed
+ d=marvell.onmicrosoft.com; s=selector2-marvell-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=bSNlKwRUWHQdeWlvsoHSg81ZXH/HDNKdNlg6eAHevvg=;
+ b=WHSzEdP/3zD5lWj3Yoe/HiboioNac0Ut2VoGVYp4zOOHsi7hpu2VPAQzWlsiUUvDc5Z2Oy826HTXfpHnTg4V3XemRkBsVmWCiqu6JgqepgNcN862ngeWL9Fx7MfpC5cWHxyzKzEoxp6ZjG76YYE4VoEjMkNcuVCv2DmJ4CKcKes=
+Received: from MN2PR18MB2637.namprd18.prod.outlook.com (20.179.80.147) by
+ MN2PR18MB3200.namprd18.prod.outlook.com (10.255.236.161) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.1943.22; Wed, 5 Jun 2019 09:15:53 +0000
+Received: from MN2PR18MB2637.namprd18.prod.outlook.com
+ ([fe80::3c77:9f53:7e47:7eb8]) by MN2PR18MB2637.namprd18.prod.outlook.com
+ ([fe80::3c77:9f53:7e47:7eb8%7]) with mapi id 15.20.1943.018; Wed, 5 Jun 2019
+ 09:15:53 +0000
+From:   Ganapathi Bhat <gbhat@marvell.com>
+To:     Brian Norris <briannorris@chromium.org>,
+        Nishant Sarmukadam <nishants@marvell.com>,
+        Amitkumar Karwar <amitkarwar@gmail.com>,
+        Xinming Hu <huxinming820@gmail.com>
+CC:     "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        "Doug Anderson" <dianders@chromium.org>
+Subject: RE: [EXT] [PATCH 1/2] mwifiex: dispatch/rotate from reorder table
+ atomically
+Thread-Topic: [EXT] [PATCH 1/2] mwifiex: dispatch/rotate from reorder table
+ atomically
+Thread-Index: AQHVGxea/zVcujTz8UmrfbHXEE3O2aaMxlVQ
+Date:   Wed, 5 Jun 2019 09:15:53 +0000
+Message-ID: <MN2PR18MB26374464564D1F5A418CA98EA0160@MN2PR18MB2637.namprd18.prod.outlook.com>
+References: <20190604205323.200361-1-briannorris@chromium.org>
+ <20190604205323.200361-2-briannorris@chromium.org>
+In-Reply-To: <20190604205323.200361-2-briannorris@chromium.org>
+Accept-Language: en-US
 Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [61.1.213.187]
+x-ms-publictraffictype: Email
+x-ms-office365-filtering-correlation-id: 6c57cc2b-2c33-426f-e488-08d6e9966924
+x-microsoft-antispam: BCL:0;PCL:0;RULEID:(2390118)(7020095)(4652040)(8989299)(4534185)(4627221)(201703031133081)(201702281549075)(8990200)(5600148)(711020)(4605104)(1401327)(2017052603328)(7193020);SRVR:MN2PR18MB3200;
+x-ms-traffictypediagnostic: MN2PR18MB3200:
+x-microsoft-antispam-prvs: <MN2PR18MB320090ED0999FE136002804AA0160@MN2PR18MB3200.namprd18.prod.outlook.com>
+x-ms-oob-tlc-oobclassifiers: OLM:1850;
+x-forefront-prvs: 00594E8DBA
+x-forefront-antispam-report: SFV:NSPM;SFS:(10009020)(39860400002)(376002)(366004)(136003)(346002)(396003)(199004)(189003)(11346002)(14444005)(446003)(476003)(486006)(256004)(186003)(66066001)(478600001)(86362001)(81166006)(8936002)(14454004)(8676002)(81156014)(316002)(26005)(7696005)(6506007)(3846002)(6116002)(76176011)(305945005)(102836004)(74316002)(9686003)(55016002)(7736002)(53936002)(66476007)(71190400001)(2906002)(52536014)(66556008)(76116006)(6436002)(229853002)(4326008)(5660300002)(54906003)(64756008)(66946007)(66446008)(110136005)(25786009)(68736007)(78486014)(4744005)(6246003)(33656002)(71200400001)(99286004)(73956011);DIR:OUT;SFP:1101;SCL:1;SRVR:MN2PR18MB3200;H:MN2PR18MB2637.namprd18.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;A:1;MX:1;
+received-spf: None (protection.outlook.com: marvell.com does not designate
+ permitted sender hosts)
+x-ms-exchange-senderadcheck: 1
+x-microsoft-antispam-message-info: eZmLFjSrFJ5TT/S0nkLbGWgJgfnxxJGfQWffe8xDSWNQ3x/TCHIEnxkJsBNQdrC1yO/VgfgI3jnN7IvR1T2mt4YtNxKzvLJL/3xeIGW0MYW41T0VmDyujGzttG+kTmMYjBZDSR8D7Jo4/hQyEEshZg4ouYbL0tnB0BipgvESmbbh0iW9+y3+kye3VeFUkGeZLi5YxdE7cJ/cNqNCqL+BdKgVkpt7KKwYNAPA9cQhktxCGCKQKnR3YjaNdRUg3f06Cl0oiwrW21x3MR1x8Q5S6aGfMs4RigSAwMhlTKea+SHmhDCRWiWNc5LbPVRo9RztREakH/wbEBFad19Gw136Z648ICIFkdgCmm+uWzy7XkiY5HxVBiYenEFCWRgViD1V7Z0ObC2llb+B0403ntjw6izY3PskAAb8UALpN6aiMHk=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+X-MS-Exchange-CrossTenant-Network-Message-Id: 6c57cc2b-2c33-426f-e488-08d6e9966924
+X-MS-Exchange-CrossTenant-originalarrivaltime: 05 Jun 2019 09:15:53.6076
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 70e1fb47-1155-421d-87fc-2e58f638b6e0
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: gbhat@marvell.com
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN2PR18MB3200
+X-OriginatorOrg: marvell.com
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:,, definitions=2019-06-05_06:,,
+ signatures=0
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 6/3/2019 8:37 PM, Douglas Anderson wrote:
-> Normally when the MMC core sees an "-EILSEQ" error returned by a host
-> controller then it will trigger a retuning of the card.  This is
-> generally a good idea.
-> 
-> However, if a command is expected to sometimes cause transfer errors
-> then these transfer errors shouldn't cause a re-tuning.  This
-> re-tuning will be a needless waste of time.  One example case where a
-> transfer is expected to cause errors is when transitioning between
-> idle (sometimes referred to as "sleep" in Broadcom code) and active
-> state on certain Broadcom WiFi cards.  Specifically if the card was
-> already transitioning between states when the command was sent it
-> could cause an error on the SDIO bus.
-> 
-> Let's add an API that the SDIO card drivers can call that will
-> temporarily disable the auto-tuning functionality.  Then we can add a
-> call to this in the Broadcom WiFi driver and any other driver that
-> might have similar needs.
-> 
-> NOTE: this makes the assumption that the card is already tuned well
-> enough that it's OK to disable the auto-retuning during one of these
-> error-prone situations.  Presumably the driver code performing the
-> error-prone transfer knows how to recover / retry from errors.  ...and
-> after we can get back to a state where transfers are no longer
-> error-prone then we can enable the auto-retuning again.  If we truly
-> find ourselves in a case where the card needs to be retuned sometimes
-> to handle one of these error-prone transfers then we can always try a
-> few transfers first without auto-retuning and then re-try with
-> auto-retuning if the first few fail.
-> 
-> Without this change on rk3288-veyron-minnie I periodically see this in
-> the logs of a machine just sitting there idle:
->    dwmmc_rockchip ff0d0000.dwmmc: Successfully tuned phase to XYZ
-> 
-> Fixes: bd11e8bd03ca ("mmc: core: Flag re-tuning is needed on CRC errors")
-> Signed-off-by: Douglas Anderson <dianders@chromium.org>
-> ---
-> Note that are are a whole boatload of different ways that we could
-> provide an API for the Broadcom WiFi SDIO driver.  This patch
-> illustrates one way but if maintainers feel strongly that this is too
-> ugly and have a better idea then I can give it a shot too.  From a
-> purist point of view I kinda felt that the "expect errors" really
-> belonged as part of the mmc_request structure, but getting it into
-> there meant changing a whole pile of core SD/MMC APIs.  Simply adding
-> it to the host seemed to match the current style better and was a less
-> intrusive change.
+Hi Brian,
 
-Hi Doug,
+> (1) iterating / clearing the mwifiex reordering table
+> (2) dispatching received packets to upper layers
+>=20
+> This makes it much harder to make lock recursion mistakes, as these two
+> steps no longer need to hold the same locks.
 
-Sorry for bringing this up, but there used to be an issue with retuning 
-in general, ie. the device handled tuning command 19 only once after 
-startup. I guess that is no longer an issue given your results. I guess 
-the problem goes away when you disable device sleep functionality. No 
-what you want in terms of power consumption, but would be good to know. 
-You can disable it with below patch.
+Yes, this is clean;
+
+>=20
+> Testing: I've played with a variety of stress tests, including download s=
+tress
+> tests on the same APs which caught regressions with commit
+> 5188d5453bc9 ("mwifiex: restructure rx_reorder_tbl_lock usage"). I've
+> primarily tested on Marvell 8997 / PCIe, although I've given 8897 / SDIO =
+a
+> quick spin as well.
+>=20
+
+Thanks a lot for this; We will also run the tests locally; But, I find the =
+change is good;
+
+Acked-by: Ganapathi Bhat <gbhat@marvell.com>
 
 Regards,
-Arend
----
-diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c 
-b/drivers
-index 15a40fd..18e90bd 100644
---- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c
-+++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c
-@@ -307,7 +307,7 @@ struct rte_console {
-  #define BRCMF_IDLE_ACTIVE      0       /* Do not request any SD clock 
-change
-                                          * when idle
-                                          */
--#define BRCMF_IDLE_INTERVAL    1
-+#define BRCMF_IDLE_INTERVAL    0
-
-  #define KSO_WAIT_US 50
-  #define MAX_KSO_ATTEMPTS (PMU_MAX_TRANSITION_DLY/KSO_WAIT_US)
-
+Ganapathi
