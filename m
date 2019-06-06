@@ -2,75 +2,203 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B9A9E37238
-	for <lists+linux-wireless@lfdr.de>; Thu,  6 Jun 2019 12:58:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AB1853724D
+	for <lists+linux-wireless@lfdr.de>; Thu,  6 Jun 2019 12:59:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727552AbfFFK6K (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 6 Jun 2019 06:58:10 -0400
-Received: from gate.crashing.org ([63.228.1.57]:37571 "EHLO gate.crashing.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725784AbfFFK6K (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 6 Jun 2019 06:58:10 -0400
-Received: from localhost (localhost.localdomain [127.0.0.1])
-        by gate.crashing.org (8.14.1/8.14.1) with ESMTP id x56Avni0032240;
-        Thu, 6 Jun 2019 05:57:50 -0500
-Message-ID: <f8df19ffe5b75537045119037459ae9ad4a1de39.camel@kernel.crashing.org>
-Subject: Re: [BISECTED REGRESSION] b43legacy broken on G4 PowerBook
-From:   Benjamin Herrenschmidt <benh@kernel.crashing.org>
-To:     Aaro Koskinen <aaro.koskinen@iki.fi>
-Cc:     Christoph Hellwig <hch@lst.de>,
-        Christian Zigotzky <chzigotzky@xenosoft.de>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Larry Finger <Larry.Finger@lwfinger.net>,
-        linuxppc-dev@lists.ozlabs.org, linux-wireless@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Date:   Thu, 06 Jun 2019 20:57:49 +1000
-In-Reply-To: <d87ac9a7faac0d5522cb496d74afc586410fed9c.camel@kernel.crashing.org>
-References: <20190605225059.GA9953@darkstar.musicnaut.iki.fi>
-         <dfe6451c93574b61d4bdde4a05c5f8ccf86b31a0.camel@kernel.crashing.org>
-         <20190606093149.GA11598@darkstar.musicnaut.iki.fi>
-         <d87ac9a7faac0d5522cb496d74afc586410fed9c.camel@kernel.crashing.org>
+        id S1727732AbfFFK7X (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 6 Jun 2019 06:59:23 -0400
+Received: from mail-ua1-f68.google.com ([209.85.222.68]:45874 "EHLO
+        mail-ua1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726906AbfFFK7X (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 6 Jun 2019 06:59:23 -0400
+Received: by mail-ua1-f68.google.com with SMTP id v18so681028uad.12
+        for <linux-wireless@vger.kernel.org>; Thu, 06 Jun 2019 03:59:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc:content-transfer-encoding;
+        bh=BCQjT/dN+S6PT9bic2mJjb0lJGYLVQpNMvJ1zYghNDc=;
+        b=QXtKos/kTzNpN15u7L22xuMZ+X/tFCdNDCGyhWw3JEmjnGpckmY3Zb26rEOzKhwUHv
+         3TJl3S0bbQrdyx2biZbkTcf3pmj7tvyArojCPmJiBpZOj6UJUAPt/4hZVXyXHPDuJOFP
+         XnI5PBY8mSW3ckXI+YKfEo73RtS6W8u4G8sxCW3rZMzkTMdnXd8NfpAzzII4cr1ZAa6t
+         vDzcfoys+KvDh2DCYEsRAaUO0Uz7fIcasFW7q8aHe1qb+IiNRTyruKmqHGbbBsZXfA9i
+         9TvyeqtcK73tS8KYsHvAKCUKY6LxPaeQwnY/EeDD0QqIwVfmtW64Wx2zBvMnShUiTs35
+         PR+w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc:content-transfer-encoding;
+        bh=BCQjT/dN+S6PT9bic2mJjb0lJGYLVQpNMvJ1zYghNDc=;
+        b=peVIyhNTqdbR5oQo23xxfaipq5veiXsAA8Z87YYTjX7NReJ40sVYIW2YFayuGG4oQZ
+         E3cA72KgMNBkl87+dQ33uhU82vanzy4uQ/Z0k0eUJuE1LAZ46Y6ivlmFu+IhhO337KiJ
+         ayoKAM29XFPNR/QAvFVIkVgb8gKAXsSlhHPjC08QlqakmoBnwUihDRwKys5vLPlr6ic1
+         k0x9u1kMjyIkQw4aoY8M6+1f8nCjxWLpQTgEv2DIdy06sT5xqtxi/wu8X66C0euvqmyk
+         2/rtbO065Yuh2wvFk485Sl7/F4nv+4DwVneEV58+GlXl6U+dEvDI4uFXTZwBUJynXVyq
+         RqcQ==
+X-Gm-Message-State: APjAAAUspNCJfs0mIVOC97VDNxddrhKyK90UYrC1BatO3PrEpV0n8KAG
+        7hoFn+3FcHWU4RST0j83Ffqu+LG5whB+PFUIs5m5qQ==
+X-Google-Smtp-Source: APXvYqxIqsPCf+QjrfA+yoMATC25AYnBEKSnSLTLpDgMldaWwYiUA0Otk95MzrliXpVNkDVeZpPEawnhtSpG+00cfWQ=
+X-Received: by 2002:ab0:64cc:: with SMTP id j12mr11087480uaq.110.1559818761644;
+ Thu, 06 Jun 2019 03:59:21 -0700 (PDT)
+MIME-Version: 1.0
+References: <000000000000cf6a70058aa48695@google.com>
+In-Reply-To: <000000000000cf6a70058aa48695@google.com>
+From:   Alexander Potapenko <glider@google.com>
+Date:   Thu, 6 Jun 2019 12:59:10 +0200
+Message-ID: <CAG_fn=Vk-7VH74e=E6fssHP25Jf84RDaJX_0z77xRNsnZquhvw@mail.gmail.com>
+Subject: Re: KMSAN: uninit-value in rt2500usb_bbp_read
+To:     syzbot <syzbot+a106a5b084a6890d2607@syzkaller.appspotmail.com>
+Cc:     David Miller <davem@davemloft.net>, helmut.schaa@googlemail.com,
+        kvalo@codeaurora.org, LKML <linux-kernel@vger.kernel.org>,
+        linux-wireless <linux-wireless@vger.kernel.org>,
+        Networking <netdev@vger.kernel.org>, sgruszka@redhat.com,
+        syzkaller-bugs <syzkaller-bugs@googlegroups.com>
 Content-Type: text/plain; charset="UTF-8"
-X-Mailer: Evolution 3.28.5-0ubuntu0.18.04.1 
-Mime-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: quoted-printable
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Thu, 2019-06-06 at 20:56 +1000, Benjamin Herrenschmidt wrote:
-> On Thu, 2019-06-06 at 12:31 +0300, Aaro Koskinen wrote:
-> > Hi,
-> > 
-> > On Thu, Jun 06, 2019 at 10:54:51AM +1000, Benjamin Herrenschmidt
-> > wrote:
-> > > On Thu, 2019-06-06 at 01:50 +0300, Aaro Koskinen wrote:
-> > > > Hi,
-> > > > 
-> > > > When upgrading from v5.0 -> v5.1 on G4 PowerBook, I noticed WLAN
-> > > > does
-> > > > not work anymore:
-> > > > 
-> > > > [   42.004303] b43legacy-phy0: Loading firmware version 0x127,
-> > > > patch level 14 (2005-04-18 02:36:27)
-> > > > [   42.184837] b43legacy-phy0 debug: Chip initialized
-> > > > [   42.184873] b43legacy-phy0 ERROR: The machine/kernel does not
-> > > > support the required 30-bit DMA mask
-> > > > 
-> > > > The same happens with the current mainline.
-> > > 
-> > > How much RAM do you have ?
-> > 
-> > The system has 1129 MB RAM. Booting with mem=1G makes it work.
-> 
-> Wow... that's an odd amount. One thing we could possibly do is add code
-> to limit the amount of RAM when we detect that device....
+On Thu, Jun 6, 2019 at 11:42 AM syzbot
+<syzbot+a106a5b084a6890d2607@syzkaller.appspotmail.com> wrote:
+>
+> Hello,
+>
+> syzbot found the following crash on:
+>
+> HEAD commit:    f75e4cfe kmsan: use kmsan_handle_urb() in urb.c
+> git tree:       kmsan
+> console output: https://syzkaller.appspot.com/x/log.txt?x=3D12f8b01ea0000=
+0
+> kernel config:  https://syzkaller.appspot.com/x/.config?x=3D602468164ccdc=
+30a
+> dashboard link: https://syzkaller.appspot.com/bug?extid=3Da106a5b084a6890=
+d2607
+> compiler:       clang version 9.0.0 (/home/glider/llvm/clang
+> 06d00afa61eef8f7f501ebdb4e8612ea43ec2d78)
+> syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=3D14f746f2a00=
+000
+> C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=3D153072d2a0000=
+0
+>
+> IMPORTANT: if you fix the bug, please add the following tag to the commit=
+:
+> Reported-by: syzbot+a106a5b084a6890d2607@syzkaller.appspotmail.com
+>
+> usb 1-1: New USB device strings: Mfr=3D0, Product=3D0, SerialNumber=3D0
+> usb 1-1: config 0 descriptor??
+> usb 1-1: reset high-speed USB device number 2 using dummy_hcd
+> usb 1-1: device descriptor read/64, error -71
+> ieee80211 phy3: rt2x00usb_vendor_request: Error - Vendor Request 0x09
+> failed for offset 0x0000 with error -71
+> ieee80211 phy3: rt2x00usb_vendor_request: Error - Vendor Request 0x07
+As this line suggests:
+> failed for offset 0x04d0 with error -71
+, rt2x00usb_vendor_req_buff_lock() fails with error -71, which means
+it doesn't initialize the buffer.
+But rt2500usb_register_read_lock() ignores that status code and just
+assumes the data is always initialized.
+> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+> BUG: KMSAN: uninit-value in rt2500usb_regbusy_read
+> drivers/net/wireless/ralink/rt2x00/rt2500usb.c:116 [inline]
+> BUG: KMSAN: uninit-value in rt2500usb_bbp_read+0x174/0x640
+> drivers/net/wireless/ralink/rt2x00/rt2500usb.c:172
+> CPU: 1 PID: 4943 Comm: kworker/1:2 Not tainted 5.1.0+ #1
+> Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS
+> Google 01/01/2011
+> Workqueue: usb_hub_wq hub_event
+> Call Trace:
+>   __dump_stack lib/dump_stack.c:77 [inline]
+>   dump_stack+0x191/0x1f0 lib/dump_stack.c:113
+>   kmsan_report+0x130/0x2a0 mm/kmsan/kmsan.c:622
+>   __msan_warning+0x75/0xe0 mm/kmsan/kmsan_instr.c:310
+>   rt2500usb_regbusy_read drivers/net/wireless/ralink/rt2x00/rt2500usb.c:1=
+16
+> [inline]
+>   rt2500usb_bbp_read+0x174/0x640
+> drivers/net/wireless/ralink/rt2x00/rt2500usb.c:172
+>   rt2500usb_validate_eeprom
+> drivers/net/wireless/ralink/rt2x00/rt2500usb.c:1387 [inline]
+>   rt2500usb_probe_hw+0x3b1/0x2230
+> drivers/net/wireless/ralink/rt2x00/rt2500usb.c:1764
+>   rt2x00lib_probe_dev+0xb81/0x3090
+> drivers/net/wireless/ralink/rt2x00/rt2x00dev.c:1427
+>   rt2x00usb_probe+0x7c7/0xf70
+> drivers/net/wireless/ralink/rt2x00/rt2x00usb.c:837
+>   rt2500usb_probe+0x50/0x60
+> drivers/net/wireless/ralink/rt2x00/rt2500usb.c:1977
+>   usb_probe_interface+0xd66/0x1320 drivers/usb/core/driver.c:361
+>   really_probe+0xdae/0x1d80 drivers/base/dd.c:513
+>   driver_probe_device+0x1b3/0x4f0 drivers/base/dd.c:671
+>   __device_attach_driver+0x5b8/0x790 drivers/base/dd.c:778
+>   bus_for_each_drv+0x28e/0x3b0 drivers/base/bus.c:454
+>   __device_attach+0x454/0x730 drivers/base/dd.c:844
+>   device_initial_probe+0x4a/0x60 drivers/base/dd.c:891
+>   bus_probe_device+0x137/0x390 drivers/base/bus.c:514
+>   device_add+0x288d/0x30e0 drivers/base/core.c:2106
+>   usb_set_configuration+0x30dc/0x3750 drivers/usb/core/message.c:2027
+>   generic_probe+0xe7/0x280 drivers/usb/core/generic.c:210
+>   usb_probe_device+0x14c/0x200 drivers/usb/core/driver.c:266
+>   really_probe+0xdae/0x1d80 drivers/base/dd.c:513
+>   driver_probe_device+0x1b3/0x4f0 drivers/base/dd.c:671
+>   __device_attach_driver+0x5b8/0x790 drivers/base/dd.c:778
+>   bus_for_each_drv+0x28e/0x3b0 drivers/base/bus.c:454
+>   __device_attach+0x454/0x730 drivers/base/dd.c:844
+>   device_initial_probe+0x4a/0x60 drivers/base/dd.c:891
+>   bus_probe_device+0x137/0x390 drivers/base/bus.c:514
+>   device_add+0x288d/0x30e0 drivers/base/core.c:2106
+>   usb_new_device+0x23e5/0x2ff0 drivers/usb/core/hub.c:2534
+>   hub_port_connect drivers/usb/core/hub.c:5089 [inline]
+>   hub_port_connect_change drivers/usb/core/hub.c:5204 [inline]
+>   port_event drivers/usb/core/hub.c:5350 [inline]
+>   hub_event+0x48d1/0x7290 drivers/usb/core/hub.c:5432
+>   process_one_work+0x1572/0x1f00 kernel/workqueue.c:2269
+>   worker_thread+0x111b/0x2460 kernel/workqueue.c:2415
+>   kthread+0x4b5/0x4f0 kernel/kthread.c:254
+>   ret_from_fork+0x35/0x40 arch/x86/entry/entry_64.S:355
+>
+> Local variable description: ----reg.i.i@rt2500usb_bbp_read
+> Variable was created at:
+>   rt2500usb_register_read_lock
+> drivers/net/wireless/ralink/rt2x00/rt2500usb.c:72 [inline]
+>   rt2500usb_regbusy_read drivers/net/wireless/ralink/rt2x00/rt2500usb.c:1=
+15
+> [inline]
+>   rt2500usb_bbp_read+0xa4/0x640
+> drivers/net/wireless/ralink/rt2x00/rt2500usb.c:172
+>   rt2500usb_validate_eeprom
+> drivers/net/wireless/ralink/rt2x00/rt2500usb.c:1387 [inline]
+>   rt2500usb_probe_hw+0x3b1/0x2230
+> drivers/net/wireless/ralink/rt2x00/rt2500usb.c:1764
+> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+>
+>
+> ---
+> This bug is generated by a bot. It may contain errors.
+> See https://goo.gl/tpsmEJ for more information about syzbot.
+> syzbot engineers can be reached at syzkaller@googlegroups.com.
+>
+> syzbot will keep track of this bug report. See:
+> https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
+> syzbot can test patches for this bug, for details see:
+> https://goo.gl/tpsmEJ#testing-patches
 
-Sent too quickly... I mean that *or* force swiotlb at 30-bits on those systems based
-on detecting the presence of that device in the device-tree.
-
-Cheers,
-Ben.
 
 
+--=20
+Alexander Potapenko
+Software Engineer
+
+Google Germany GmbH
+Erika-Mann-Stra=C3=9Fe, 33
+80636 M=C3=BCnchen
+
+Gesch=C3=A4ftsf=C3=BChrer: Paul Manicle, Halimah DeLaine Prado
+Registergericht und -nummer: Hamburg, HRB 86891
+Sitz der Gesellschaft: Hamburg
