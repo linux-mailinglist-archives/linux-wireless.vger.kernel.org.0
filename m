@@ -2,183 +2,78 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 196C03803F
-	for <lists+linux-wireless@lfdr.de>; Fri,  7 Jun 2019 00:06:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D61B138057
+	for <lists+linux-wireless@lfdr.de>; Fri,  7 Jun 2019 00:12:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727817AbfFFWGJ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 6 Jun 2019 18:06:09 -0400
-Received: from mail-it1-f196.google.com ([209.85.166.196]:38957 "EHLO
-        mail-it1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727742AbfFFWGJ (ORCPT
+        id S1729010AbfFFWMl (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 6 Jun 2019 18:12:41 -0400
+Received: from mail2.candelatech.com ([208.74.158.173]:38778 "EHLO
+        mail3.candelatech.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726837AbfFFWMk (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 6 Jun 2019 18:06:09 -0400
-Received: by mail-it1-f196.google.com with SMTP id j204so2422655ite.4
-        for <linux-wireless@vger.kernel.org>; Thu, 06 Jun 2019 15:06:08 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=W7Pb+cU0F9p+i6jMQIOeeBZ3W8hnq7Pe9ByDtoJbYrY=;
-        b=DYnykt/BrqZBrKT2TCqVRvEOpEqbT4MY6DAfCexl2wzmBgDz7gfnHMI/Qypa2QMiie
-         r15qZD2s9EcNZrxA6Ds/0JdJ2UfF7HFZRgcy+YiekDufnIsWPmTPL/OGXvQryhoXyHoY
-         vSXvHMbOmSjT5VuvwIgP3ngZHPOdH5MPTXQRCKmAvROKxieghisU9zwwwwqoxTcimRaY
-         QUtHp36HopSJIyaHsH30O6VxTg4JlxfiF6kVI0gHBPvN0vcY0xvbzN4fi85DuyaGTMfr
-         DHiFjFso4rHqw2bNwjE1i6PNMLUfqIkkUGe2ZUFaR1gSp+Bz8C4po43qB/5Ccft5Tk4g
-         dZ0w==
-X-Gm-Message-State: APjAAAVSdyJ+GnX15+FZxw6s6RRB0H5kK7JM3u4fIz9QcculjGVdZKZa
-        4dtZGb1fWx/krRzul6NAJnIm1VBXnbz0nTje3qv5Wypw2WA=
-X-Google-Smtp-Source: APXvYqwQj1QXn84pl78XMaMYbiHTtfutfsFENkNf0ww7YO8gyzKKveCCJA9kXL1Ci6wSU6wWAXal5uUVnF2ZClQ8z4E=
-X-Received: by 2002:a02:1948:: with SMTP id b69mr10458535jab.55.1559858768028;
- Thu, 06 Jun 2019 15:06:08 -0700 (PDT)
+        Thu, 6 Jun 2019 18:12:40 -0400
+Received: from [192.168.100.195] (50-251-239-81-static.hfc.comcastbusiness.net [50.251.239.81])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail3.candelatech.com (Postfix) with ESMTPSA id 0418913C283
+        for <linux-wireless@vger.kernel.org>; Thu,  6 Jun 2019 15:12:39 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail3.candelatech.com 0418913C283
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=candelatech.com;
+        s=default; t=1559859160;
+        bh=8QSUWnElWxKMhxnPCYbkDI2DecFkYqoNBA/kWv/icLA=;
+        h=Subject:From:To:References:Date:In-Reply-To:From;
+        b=qAnqpMVsXI9S57yUwARo4rUhOILMq+yRJ5uS13KW9MqOOn81djkIGAeRx12RGkoFh
+         3tPWmH1V8n//Ig4SYieC/cM6VkL3SfRflkkTAEFGUBUy2EPT3Ss358RdDtpa2ziIxc
+         3Tit30ybkhvMV/24sV8pV7fFtJ/3cFIVBMsDlSyI=
+Subject: Re: Help with encrypting PMF management frames
+From:   Ben Greear <greearb@candelatech.com>
+To:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+References: <fe571fe9-d5e5-38b8-5afa-2ba4fbb51f67@candelatech.com>
+Organization: Candela Technologies
+Message-ID: <bc99ae7e-ace3-94a4-03da-77db3698aadd@candelatech.com>
+Date:   Thu, 6 Jun 2019 15:12:39 -0700
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.4.0
 MIME-Version: 1.0
-References: <27c6d00cfb5936978cfb8304c6e1f03973905848.1559835089.git.lorenzo@kernel.org>
- <20190606114845.4026270e@cakuba.netronome.com> <CAJ0CqmUCch1dU1J24XDOg_fg35BfWLWjvXc3nV7QN6JHgWhZJw@mail.gmail.com>
- <20190606143627.575c2499@cakuba.netronome.com>
-In-Reply-To: <20190606143627.575c2499@cakuba.netronome.com>
-From:   Lorenzo Bianconi <lorenzo.bianconi@redhat.com>
-Date:   Fri, 7 Jun 2019 00:05:56 +0200
-Message-ID: <CAJ0CqmW4SMCPxDAR360XO-kpev-5kHAgqaai9uSAiXth2WP36A@mail.gmail.com>
-Subject: Re: [PATCH] mt7601u: fix possible memory leak when the device is disconnected
-To:     Jakub Kicinski <kubakici@wp.pl>
-Cc:     Lorenzo Bianconi <lorenzo@kernel.org>,
-        linux-wireless <linux-wireless@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <fe571fe9-d5e5-38b8-5afa-2ba4fbb51f67@candelatech.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
->
-> On Thu, 6 Jun 2019 23:10:15 +0200, Lorenzo Bianconi wrote:
-> > On Thu, Jun 6, 2019 at 8:49 PM Jakub Kicinski <kubakici@wp.pl> wrote:
-> > >
-> > > On Thu,  6 Jun 2019 17:34:16 +0200, Lorenzo Bianconi wrote:
-> > > > When the device is disconnected while passing traffic it is possible
-> > > > to receive out of order urbs causing a memory leak since the skb liked
-> > > > to the current tx urb is not removed. Fix the issue deallocating the skb
-> > > > cleaning up the tx ring. Moreover this patch fixes the following kernel
-> > > > warning
-> > >
-> > > Ugh if we don't have ordering guarantees then the entire "ring" scheme
-> > > no longer works :(  Should we move to URB queues, I don't remember now,
-> > > but there seem to had been a better way to manage URBs :S
-> > >
-> >
-> > actually I have observed these issues on tx/rx side just during device
-> > disconnection while passing traffic.
-> > I guess we can assume a proper urb ordering during normal operation
-> > (and so tx/rx ring works fine).
->
-> Ah, phew, okay.  That's fine then.
->
-> > Btw what do you mean with 'URB queues'? :)
->
-> I think it may have been URB anchors.  I remember looking at carl9170
-> and liking how the DMAs operated there.
+On 6/6/19 9:54 AM, Ben Greear wrote:
+> Hello,
+> 
+> My variant of ath10k uses the normal 'native-wifi' tx path for management frames.
+> Internally in the firmware, it seems that the management TID is flagged to expect
+> raw frames, and I think that is why I see Action frames on-air that are not actually
+> encrypted but which have some space added to their packet that should be filled in by
+> the hw-crypt engine.
+> 
+> Is there a way to get mac80211 to software-crypt just management-tid PMF frames?
+> 
+> So far, I have not been able to find the correct place in the tx logic of
+> mac80211...
+> 
+> Thanks,
+> Ben
+> 
 
-Uhm, interesting. AFAIK urb anchors are used to cease I/O operations
-but maybe they can be used even for other purposes (it will be
-interesting even for mt76).
-I guess this can be a future improvement, do you agree? Do I need to
-resubmit this patch?
+Ok, I found the issue.  It seems the ath10k hardware refuses to encrypt
+management frames unless they are sent in RAW mode (nwifi mgt frames are sent
+w/out encryption for whatever reason).
 
-Regards,
-Lorenzo
+So, the fix is in the ath10k driver (and just my driver I suppose, stock
+driver uses a different API for mgt frames that eventually is raw-tx down in
+the firmware).
 
->
-> > > > [   57.480771] usb 1-1: USB disconnect, device number 2
-> > > > [   57.483451] ------------[ cut here ]------------
-> > > > [   57.483462] TX urb mismatch
-> > > > [   57.483481] WARNING: CPU: 1 PID: 32 at drivers/net/wireless/mediatek/mt7601u/dma.c:245 mt7601u_complete_tx+0x165/00
-> > > > [   57.483483] Modules linked in:
-> > > > [   57.483496] CPU: 1 PID: 32 Comm: kworker/1:1 Not tainted 5.2.0-rc1+ #72
-> > > > [   57.483498] Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.12.0-2.fc30 04/01/2014
-> > > > [   57.483502] Workqueue: usb_hub_wq hub_event
-> > > > [   57.483507] RIP: 0010:mt7601u_complete_tx+0x165/0x1e0
-> > > > [   57.483510] Code: 8b b5 10 04 00 00 8b 8d 14 04 00 00 eb 8b 80 3d b1 cb e1 00 00 75 9e 48 c7 c7 a4 ea 05 82 c6 05 f
-> > > > [   57.483513] RSP: 0000:ffffc900000a0d28 EFLAGS: 00010092
-> > > > [   57.483516] RAX: 000000000000000f RBX: ffff88802c0a62c0 RCX: ffffc900000a0c2c
-> > > > [   57.483518] RDX: 0000000000000000 RSI: 0000000000000000 RDI: ffffffff810a8371
-> > > > [   57.483520] RBP: ffff88803ced6858 R08: 0000000000000000 R09: 0000000000000001
-> > > > [   57.483540] R10: 0000000000000002 R11: 0000000000000000 R12: 0000000000000046
-> > > > [   57.483542] R13: ffff88802c0a6c88 R14: ffff88803baab540 R15: ffff88803a0cc078
-> > > > [   57.483548] FS:  0000000000000000(0000) GS:ffff88803eb00000(0000) knlGS:0000000000000000
-> > > > [   57.483550] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-> > > > [   57.483552] CR2: 000055e7f6780100 CR3: 0000000028c86000 CR4: 00000000000006a0
-> > > > [   57.483554] DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-> > > > [   57.483556] DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-> > > > [   57.483559] Call Trace:
-> > > > [   57.483561]  <IRQ>
-> > > > [   57.483565]  __usb_hcd_giveback_urb+0x77/0xe0
-> > > > [   57.483570]  xhci_giveback_urb_in_irq.isra.0+0x8b/0x140
-> > > > [   57.483574]  handle_cmd_completion+0xf5b/0x12c0
-> > > > [   57.483577]  xhci_irq+0x1f6/0x1810
-> > > > [   57.483581]  ? lockdep_hardirqs_on+0x9e/0x180
-> > > > [   57.483584]  ? _raw_spin_unlock_irq+0x24/0x30
-> > > > [   57.483588]  __handle_irq_event_percpu+0x3a/0x260
-> > > > [   57.483592]  handle_irq_event_percpu+0x1c/0x60
-> > > > [   57.483595]  handle_irq_event+0x2f/0x4c
-> > > > [   57.483599]  handle_edge_irq+0x7e/0x1a0
-> > > > [   57.483603]  handle_irq+0x17/0x20
-> > > > [   57.483607]  do_IRQ+0x54/0x110
-> > > > [   57.483610]  common_interrupt+0xf/0xf
-> > > > [   57.483612]  </IRQ>
-> > > >
-> > > > Fixes: c869f77d6abb ("add mt7601u driver")
-> > > > Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
-> > > > ---
-> > > >  drivers/net/wireless/mediatek/mt7601u/dma.c | 24 +++++++++++++++------
-> > > >  drivers/net/wireless/mediatek/mt7601u/tx.c  |  4 ++--
-> > > >  2 files changed, 19 insertions(+), 9 deletions(-)
-> > > >
-> > > > diff --git a/drivers/net/wireless/mediatek/mt7601u/dma.c b/drivers/net/wireless/mediatek/mt7601u/dma.c
-> > > > index e7703990b291..bbf1deed7f3b 100644
-> > > > --- a/drivers/net/wireless/mediatek/mt7601u/dma.c
-> > > > +++ b/drivers/net/wireless/mediatek/mt7601u/dma.c
-> > > > @@ -238,14 +238,25 @@ static void mt7601u_complete_tx(struct urb *urb)
-> > > >       struct sk_buff *skb;
-> > > >       unsigned long flags;
-> > > >
-> > > > -     spin_lock_irqsave(&dev->tx_lock, flags);
-> > > > +     switch (urb->status) {
-> > > > +     case -ECONNRESET:
-> > > > +     case -ESHUTDOWN:
-> > > > +     case -ENOENT:
-> > > > +             return;
-> > > > +     default:
-> > > > +             dev_err_ratelimited(dev->dev, "tx urb failed: %d\n",
-> > > > +                                 urb->status);
-> > > > +             /* fall through */
-> > > > +     case 0:
-> > > > +             break;
-> > > > +     }
-> > > >
-> > > > -     if (mt7601u_urb_has_error(urb))
-> > > > -             dev_err(dev->dev, "Error: TX urb failed:%d\n", urb->status);
-> > > > +     spin_lock_irqsave(&dev->tx_lock, flags);
-> > > >       if (WARN_ONCE(q->e[q->start].urb != urb, "TX urb mismatch"))
-> > > >               goto out;
-> > > >
-> > > >       skb = q->e[q->start].skb;
-> > > > +     q->e[q->start].skb = NULL;
-> > > >       trace_mt_tx_dma_done(dev, skb);
-> > > >
-> > > >       __skb_queue_tail(&dev->tx_skb_done, skb);
-> > > > @@ -446,10 +457,10 @@ static void mt7601u_free_tx_queue(struct mt7601u_tx_queue *q)
-> > > >  {
-> > > >       int i;
-> > > >
-> > > > -     WARN_ON(q->used);
-> > > > -
-> > > >       for (i = 0; i < q->entries; i++)  {
-> > > >               usb_poison_urb(q->e[i].urb);
-> > > > +             if (q->e[i].skb)
-> > > > +                     mt7601u_tx_status(q->dev, q->e[i].skb);
-> > >
-> > > Perhaps a separate patch?
-> >
-> > As I did for rx side, if we do not schedule the tx tasklet when the
-> > device has been disconnected I guess we need this chuck in the same
-> > patch. What do you think?
->
-> Yeah, I see.
+Thanks,
+Ben
+
+-- 
+Ben Greear <greearb@candelatech.com>
+Candela Technologies Inc  http://www.candelatech.com
+
