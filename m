@@ -2,119 +2,119 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A86FE37C8A
-	for <lists+linux-wireless@lfdr.de>; Thu,  6 Jun 2019 20:49:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 29FF837C89
+	for <lists+linux-wireless@lfdr.de>; Thu,  6 Jun 2019 20:48:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727631AbfFFStR (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 6 Jun 2019 14:49:17 -0400
-Received: from mx4.wp.pl ([212.77.101.12]:45695 "EHLO mx4.wp.pl"
+        id S1727629AbfFFSsy (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 6 Jun 2019 14:48:54 -0400
+Received: from mx3.wp.pl ([212.77.101.9]:35642 "EHLO mx3.wp.pl"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727238AbfFFStR (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 6 Jun 2019 14:49:17 -0400
-Received: (wp-smtpd smtp.wp.pl 27836 invoked from network); 6 Jun 2019 20:42:34 +0200
+        id S1727446AbfFFSsy (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 6 Jun 2019 14:48:54 -0400
+X-Greylist: delayed 376 seconds by postgrey-1.27 at vger.kernel.org; Thu, 06 Jun 2019 14:48:52 EDT
+Received: (wp-smtpd smtp.wp.pl 6363 invoked from network); 6 Jun 2019 20:48:50 +0200
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wp.pl; s=1024a;
-          t=1559846554; bh=Lsx67oBhojXHqslSUFhVXRs8nln/3mpohFJjjUV6o9M=;
+          t=1559846931; bh=Q4uXcWqxnfiKK35xUxUuDfBI699GZMYJ7M08wC7xsAQ=;
           h=From:To:Cc:Subject;
-          b=KeWGigXQkH7eAtFGpKrl+Sy53wmVP4W9O9Qz8khMXmckWmyetwoqP76Gmx9V1+fD3
-           76V5ELC4rpZj0FoM2DmjUWGB+lSDlIyF2JKCDig9m3xsvFciNtPSQo7nrwq6SW2Lzo
-           xB0Msb6Eg7wDb1EClvvo25lvAptXdcrmR7qN2KEA=
+          b=JmPSPtkLJx4akFIunydHX8/b5U8GyjWpNjNX2BDk2CmITFqWDwN/gcTEWihziUxZc
+           E4DgBmCz+FXL6+2dtEmH5dNAxCN2+JBhW1fL6o3r7KQXF9KYYxWm+DEPBDA70dAnIV
+           +FL4JIro7d9aRfCIn66GIUo8s39XXj0XsmOJD7rQ=
 Received: from 014.152-60-66-biz-static.surewest.net (HELO cakuba.netronome.com) (kubakici@wp.pl@[66.60.152.14])
           (envelope-sender <kubakici@wp.pl>)
           by smtp.wp.pl (WP-SMTPD) with ECDHE-RSA-AES256-GCM-SHA384 encrypted SMTP
-          for <lorenzo@kernel.org>; 6 Jun 2019 20:42:34 +0200
-Date:   Thu, 6 Jun 2019 11:42:28 -0700
+          for <lorenzo@kernel.org>; 6 Jun 2019 20:48:50 +0200
+Date:   Thu, 6 Jun 2019 11:48:45 -0700
 From:   Jakub Kicinski <kubakici@wp.pl>
 To:     Lorenzo Bianconi <lorenzo@kernel.org>
 Cc:     linux-wireless@vger.kernel.org, lorenzo.bianconi@redhat.com
-Subject: Re: [PATCH] mt7601u: do not schedule rx_tasklet when the device has
- been disconnected
-Message-ID: <20190606114228.7a0ba115@cakuba.netronome.com>
-In-Reply-To: <a3c72b07e229e1d16e93438d741d69abba6a18cf.1559822991.git.lorenzo@kernel.org>
-References: <a3c72b07e229e1d16e93438d741d69abba6a18cf.1559822991.git.lorenzo@kernel.org>
+Subject: Re: [PATCH] mt7601u: fix possible memory leak when the device is
+ disconnected
+Message-ID: <20190606114845.4026270e@cakuba.netronome.com>
+In-Reply-To: <27c6d00cfb5936978cfb8304c6e1f03973905848.1559835089.git.lorenzo@kernel.org>
+References: <27c6d00cfb5936978cfb8304c6e1f03973905848.1559835089.git.lorenzo@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-WP-MailID: b17672e8b58add6efe8f92e6b17202dd
+X-WP-MailID: ec05270bb05e77ce495625164c2f2bce
 X-WP-AV: skaner antywirusowy Poczty Wirtualnej Polski
-X-WP-SPAM: NO 0000000 [URPE]                               
+X-WP-SPAM: NO 000000A [ceNE]                               
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Thu,  6 Jun 2019 14:26:12 +0200, Lorenzo Bianconi wrote:
-> Do not schedule rx_tasklet when the usb dongle is disconnected. This
-> patch fixes the common kernel warning reported when the device is
-> removed.
+On Thu,  6 Jun 2019 17:34:16 +0200, Lorenzo Bianconi wrote:
+> When the device is disconnected while passing traffic it is possible
+> to receive out of order urbs causing a memory leak since the skb liked
+> to the current tx urb is not removed. Fix the issue deallocating the skb
+> cleaning up the tx ring. Moreover this patch fixes the following kernel
+> warning
+
+Ugh if we don't have ordering guarantees then the entire "ring" scheme
+no longer works :(  Should we move to URB queues, I don't remember now,
+but there seem to had been a better way to manage URBs :S
+
+> [   57.480771] usb 1-1: USB disconnect, device number 2
+> [   57.483451] ------------[ cut here ]------------
+> [   57.483462] TX urb mismatch
+> [   57.483481] WARNING: CPU: 1 PID: 32 at drivers/net/wireless/mediatek/mt7601u/dma.c:245 mt7601u_complete_tx+0x165/00
+> [   57.483483] Modules linked in:
+> [   57.483496] CPU: 1 PID: 32 Comm: kworker/1:1 Not tainted 5.2.0-rc1+ #72
+> [   57.483498] Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.12.0-2.fc30 04/01/2014
+> [   57.483502] Workqueue: usb_hub_wq hub_event
+> [   57.483507] RIP: 0010:mt7601u_complete_tx+0x165/0x1e0
+> [   57.483510] Code: 8b b5 10 04 00 00 8b 8d 14 04 00 00 eb 8b 80 3d b1 cb e1 00 00 75 9e 48 c7 c7 a4 ea 05 82 c6 05 f
+> [   57.483513] RSP: 0000:ffffc900000a0d28 EFLAGS: 00010092
+> [   57.483516] RAX: 000000000000000f RBX: ffff88802c0a62c0 RCX: ffffc900000a0c2c
+> [   57.483518] RDX: 0000000000000000 RSI: 0000000000000000 RDI: ffffffff810a8371
+> [   57.483520] RBP: ffff88803ced6858 R08: 0000000000000000 R09: 0000000000000001
+> [   57.483540] R10: 0000000000000002 R11: 0000000000000000 R12: 0000000000000046
+> [   57.483542] R13: ffff88802c0a6c88 R14: ffff88803baab540 R15: ffff88803a0cc078
+> [   57.483548] FS:  0000000000000000(0000) GS:ffff88803eb00000(0000) knlGS:0000000000000000
+> [   57.483550] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+> [   57.483552] CR2: 000055e7f6780100 CR3: 0000000028c86000 CR4: 00000000000006a0
+> [   57.483554] DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+> [   57.483556] DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+> [   57.483559] Call Trace:
+> [   57.483561]  <IRQ>
+> [   57.483565]  __usb_hcd_giveback_urb+0x77/0xe0
+> [   57.483570]  xhci_giveback_urb_in_irq.isra.0+0x8b/0x140
+> [   57.483574]  handle_cmd_completion+0xf5b/0x12c0
+> [   57.483577]  xhci_irq+0x1f6/0x1810
+> [   57.483581]  ? lockdep_hardirqs_on+0x9e/0x180
+> [   57.483584]  ? _raw_spin_unlock_irq+0x24/0x30
+> [   57.483588]  __handle_irq_event_percpu+0x3a/0x260
+> [   57.483592]  handle_irq_event_percpu+0x1c/0x60
+> [   57.483595]  handle_irq_event+0x2f/0x4c
+> [   57.483599]  handle_edge_irq+0x7e/0x1a0
+> [   57.483603]  handle_irq+0x17/0x20
+> [   57.483607]  do_IRQ+0x54/0x110
+> [   57.483610]  common_interrupt+0xf/0xf
+> [   57.483612]  </IRQ>
 > 
-> [   24.921354] usb 3-14: USB disconnect, device number 7
-> [   24.921593] ------------[ cut here ]------------
-> [   24.921594] RX urb mismatch
-> [   24.921675] WARNING: CPU: 4 PID: 163 at drivers/net/wireless/mediatek/mt7601u/dma.c:200 mt7601u_complete_rx+0xcb/0xd0 [mt7601u]
-> [   24.921769] CPU: 4 PID: 163 Comm: kworker/4:2 Tainted: G           OE     4.19.31-041931-generic #201903231635
-> [   24.921770] Hardware name: To Be Filled By O.E.M. To Be Filled By O.E.M./Z97 Extreme4, BIOS P1.30 05/23/2014
-> [   24.921782] Workqueue: usb_hub_wq hub_event
-> [   24.921797] RIP: 0010:mt7601u_complete_rx+0xcb/0xd0 [mt7601u]
-> [   24.921800] RSP: 0018:ffff9bd9cfd03d08 EFLAGS: 00010086
-> [   24.921802] RAX: 0000000000000000 RBX: ffff9bd9bf043540 RCX: 0000000000000006
-> [   24.921803] RDX: 0000000000000007 RSI: 0000000000000096 RDI: ffff9bd9cfd16420
-> [   24.921804] RBP: ffff9bd9cfd03d28 R08: 0000000000000002 R09: 00000000000003a8
-> [   24.921805] R10: 0000002f485fca34 R11: 0000000000000000 R12: ffff9bd9bf043c1c
-> [   24.921806] R13: ffff9bd9c62fa3c0 R14: 0000000000000082 R15: 0000000000000000
-> [   24.921807] FS:  0000000000000000(0000) GS:ffff9bd9cfd00000(0000) knlGS:0000000000000000
-> [   24.921808] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-> [   24.921808] CR2: 00007fb2648b0000 CR3: 0000000142c0a004 CR4: 00000000001606e0
-> [   24.921809] Call Trace:
-> [   24.921812]  <IRQ>
-> [   24.921819]  __usb_hcd_giveback_urb+0x8b/0x140
-> [   24.921821]  usb_hcd_giveback_urb+0xca/0xe0
-> [   24.921828]  xhci_giveback_urb_in_irq.isra.42+0x82/0xf0
-> [   24.921834]  handle_cmd_completion+0xe02/0x10d0
-> [   24.921837]  xhci_irq+0x274/0x4a0
-> [   24.921838]  xhci_msi_irq+0x11/0x20
-> [   24.921851]  __handle_irq_event_percpu+0x44/0x190
-> [   24.921856]  handle_irq_event_percpu+0x32/0x80
-> [   24.921861]  handle_irq_event+0x3b/0x5a
-> [   24.921867]  handle_edge_irq+0x80/0x190
-> [   24.921874]  handle_irq+0x20/0x30
-> [   24.921889]  do_IRQ+0x4e/0xe0
-> [   24.921891]  common_interrupt+0xf/0xf
-> [   24.921892]  </IRQ>
-> [   24.921900] RIP: 0010:usb_hcd_flush_endpoint+0x78/0x180
-> [   24.921354] usb 3-14: USB disconnect, device number 7
-
-Is this a new thing?  I def tested unplugging the dongle under
-traffic, but that must had been in 3.19 days :S
-
 > Fixes: c869f77d6abb ("add mt7601u driver")
 > Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
 > ---
-> I will post a patch to fix tx side as well
-> ---
->  drivers/net/wireless/mediatek/mt7601u/dma.c | 33 ++++++++++-----------
->  1 file changed, 16 insertions(+), 17 deletions(-)
+>  drivers/net/wireless/mediatek/mt7601u/dma.c | 24 +++++++++++++++------
+>  drivers/net/wireless/mediatek/mt7601u/tx.c  |  4 ++--
+>  2 files changed, 19 insertions(+), 9 deletions(-)
 > 
 > diff --git a/drivers/net/wireless/mediatek/mt7601u/dma.c b/drivers/net/wireless/mediatek/mt7601u/dma.c
-> index f7edeffb2b19..e7703990b291 100644
+> index e7703990b291..bbf1deed7f3b 100644
 > --- a/drivers/net/wireless/mediatek/mt7601u/dma.c
 > +++ b/drivers/net/wireless/mediatek/mt7601u/dma.c
-> @@ -193,10 +193,20 @@ static void mt7601u_complete_rx(struct urb *urb)
->  	struct mt7601u_rx_queue *q = &dev->rx_q;
+> @@ -238,14 +238,25 @@ static void mt7601u_complete_tx(struct urb *urb)
+>  	struct sk_buff *skb;
 >  	unsigned long flags;
 >  
-> -	spin_lock_irqsave(&dev->rx_lock, flags);
+> -	spin_lock_irqsave(&dev->tx_lock, flags);
 > +	switch (urb->status) {
 > +	case -ECONNRESET:
 > +	case -ESHUTDOWN:
 > +	case -ENOENT:
 > +		return;
-
-So we assume this is non-recoverable?  Everything will fail after?
-Because pending is incremented linearly :S  That's why there is a
-warning here.
-
 > +	default:
-> +		dev_err_ratelimited(dev->dev, "rx urb failed: %d\n",
+> +		dev_err_ratelimited(dev->dev, "tx urb failed: %d\n",
 > +				    urb->status);
 > +		/* fall through */
 > +	case 0:
@@ -122,46 +122,61 @@ warning here.
 > +	}
 >  
 > -	if (mt7601u_urb_has_error(urb))
-> -		dev_err(dev->dev, "Error: RX urb failed:%d\n", urb->status);
-> +	spin_lock_irqsave(&dev->rx_lock, flags);
->  	if (WARN_ONCE(q->e[q->end].urb != urb, "RX urb mismatch"))
+> -		dev_err(dev->dev, "Error: TX urb failed:%d\n", urb->status);
+> +	spin_lock_irqsave(&dev->tx_lock, flags);
+>  	if (WARN_ONCE(q->e[q->start].urb != urb, "TX urb mismatch"))
 >  		goto out;
 >  
-> @@ -363,19 +373,10 @@ int mt7601u_dma_enqueue_tx(struct mt7601u_dev *dev, struct sk_buff *skb,
->  static void mt7601u_kill_rx(struct mt7601u_dev *dev)
+>  	skb = q->e[q->start].skb;
+> +	q->e[q->start].skb = NULL;
+>  	trace_mt_tx_dma_done(dev, skb);
+>  
+>  	__skb_queue_tail(&dev->tx_skb_done, skb);
+> @@ -446,10 +457,10 @@ static void mt7601u_free_tx_queue(struct mt7601u_tx_queue *q)
 >  {
 >  	int i;
-> -	unsigned long flags;
-> -
-> -	spin_lock_irqsave(&dev->rx_lock, flags);
 >  
-> -	for (i = 0; i < dev->rx_q.entries; i++) {
-> -		int next = dev->rx_q.end;
+> -	WARN_ON(q->used);
 > -
-> -		spin_unlock_irqrestore(&dev->rx_lock, flags);
-> -		usb_poison_urb(dev->rx_q.e[next].urb);
-> -		spin_lock_irqsave(&dev->rx_lock, flags);
-> -	}
+>  	for (i = 0; i < q->entries; i++)  {
+>  		usb_poison_urb(q->e[i].urb);
+> +		if (q->e[i].skb)
+> +			mt7601u_tx_status(q->dev, q->e[i].skb);
 
-Why is there no need to take the lock?  Admittedly it's not clear what
-this lock is protecting here :P  Perhaps a separate patch to remove the
-unnecessary locking with an explanation?
+Perhaps a separate patch?
 
-> -	spin_unlock_irqrestore(&dev->rx_lock, flags);
-> +	for (i = 0; i < dev->rx_q.entries; i++)
-> +		usb_poison_urb(dev->rx_q.e[i].urb);
-> +	tasklet_kill(&dev->rx_tasklet);
+>  		usb_free_urb(q->e[i].urb);
+>  	}
+>  }
+> @@ -463,6 +474,7 @@ static void mt7601u_free_tx(struct mt7601u_dev *dev)
+>  
+>  	for (i = 0; i < __MT_EP_OUT_MAX; i++)
+>  		mt7601u_free_tx_queue(&dev->tx_q[i]);
+> +	tasklet_kill(&dev->tx_tasklet);
 >  }
 >  
->  static int mt7601u_submit_rx_buf(struct mt7601u_dev *dev,
-> @@ -525,8 +526,6 @@ void mt7601u_dma_cleanup(struct mt7601u_dev *dev)
->  {
->  	mt7601u_kill_rx(dev);
+>  static int mt7601u_alloc_tx_queue(struct mt7601u_dev *dev,
+> @@ -528,6 +540,4 @@ void mt7601u_dma_cleanup(struct mt7601u_dev *dev)
 >  
-> -	tasklet_kill(&dev->rx_tasklet);
-
-Why the move?  Looks a bit unnecessary..
-
 >  	mt7601u_free_rx(dev);
 >  	mt7601u_free_tx(dev);
+> -
+> -	tasklet_kill(&dev->tx_tasklet);
+>  }
+> diff --git a/drivers/net/wireless/mediatek/mt7601u/tx.c b/drivers/net/wireless/mediatek/mt7601u/tx.c
+> index 3600e911a63e..4d81c45722fb 100644
+> --- a/drivers/net/wireless/mediatek/mt7601u/tx.c
+> +++ b/drivers/net/wireless/mediatek/mt7601u/tx.c
+> @@ -117,9 +117,9 @@ void mt7601u_tx_status(struct mt7601u_dev *dev, struct sk_buff *skb)
+>  	info->status.rates[0].idx = -1;
+>  	info->flags |= IEEE80211_TX_STAT_ACK;
 >  
+> -	spin_lock(&dev->mac_lock);
+> +	spin_lock_bh(&dev->mac_lock);
+>  	ieee80211_tx_status(dev->hw, skb);
+> -	spin_unlock(&dev->mac_lock);
+> +	spin_unlock_bh(&dev->mac_lock);
+>  }
+>  
+>  static int mt7601u_skb_rooms(struct mt7601u_dev *dev, struct sk_buff *skb)
+
