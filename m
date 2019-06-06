@@ -2,88 +2,169 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 4C5C1377AB
-	for <lists+linux-wireless@lfdr.de>; Thu,  6 Jun 2019 17:18:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C6FCE37814
+	for <lists+linux-wireless@lfdr.de>; Thu,  6 Jun 2019 17:34:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729257AbfFFPSe (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 6 Jun 2019 11:18:34 -0400
-Received: from mailgw01.mediatek.com ([210.61.82.183]:51237 "EHLO
-        mailgw01.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1729015AbfFFPSd (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 6 Jun 2019 11:18:33 -0400
-X-UUID: 5fb22adf88d34f0fb2e5dba7a463049b-20190606
-X-UUID: 5fb22adf88d34f0fb2e5dba7a463049b-20190606
-Received: from mtkcas06.mediatek.inc [(172.21.101.30)] by mailgw01.mediatek.com
-        (envelope-from <ryder.lee@mediatek.com>)
-        (mhqrelay.mediatek.com ESMTP with TLS)
-        with ESMTP id 972181061; Thu, 06 Jun 2019 23:18:24 +0800
-Received: from mtkcas08.mediatek.inc (172.21.101.126) by
- mtkmbs07n2.mediatek.inc (172.21.101.141) with Microsoft SMTP Server (TLS) id
- 15.0.1395.4; Thu, 6 Jun 2019 23:18:22 +0800
-Received: from [172.21.77.33] (172.21.77.33) by mtkcas08.mediatek.inc
- (172.21.101.73) with Microsoft SMTP Server id 15.0.1395.4 via Frontend
- Transport; Thu, 6 Jun 2019 23:18:22 +0800
-Message-ID: <1559834302.3339.1.camel@mtkswgap22>
-Subject: Re: [PATCH v3 1/2] mt76: mt7615: enable support for mesh
-From:   Ryder Lee <ryder.lee@mediatek.com>
-To:     Sebastian Gottschall <s.gottschall@newmedia-net.de>
-CC:     Felix Fietkau <nbd@nbd.name>,
-        Lorenzo Bianconi <lorenzo.bianconi@redhat.com>,
-        Roy Luo <royluo@google.com>, YF Luo <yf.luo@mediatek.com>,
-        Yiwei Chung <yiwei.chung@mediatek.com>,
-        Sean Wang <sean.wang@mediatek.com>,
-        Chih-Min Chen <chih-min.Chen@mediatek.com>,
-        <linux-wireless@vger.kernel.org>,
-        <linux-mediatek@lists.infradead.org>,
-        <linux-kernel@vger.kernel.org>
-Date:   Thu, 6 Jun 2019 23:18:22 +0800
-In-Reply-To: <a0a6f631-2eb1-87cc-5653-338c6126690c@newmedia-net.de>
-References: <a1ff446dfc06e2443552e7ec2d754099aacce7df.1559541944.git.ryder.lee@mediatek.com>
-         <a0a6f631-2eb1-87cc-5653-338c6126690c@newmedia-net.de>
-Content-Type: text/plain; charset="UTF-8"
-X-Mailer: Evolution 3.2.3-0ubuntu6 
-Content-Transfer-Encoding: 7bit
+        id S1729214AbfFFPea (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 6 Jun 2019 11:34:30 -0400
+Received: from mail.kernel.org ([198.145.29.99]:48628 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1729405AbfFFPea (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 6 Jun 2019 11:34:30 -0400
+Received: from localhost.localdomain.com (nat-pool-mxp-t.redhat.com [149.6.153.186])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 9B6472083E;
+        Thu,  6 Jun 2019 15:34:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1559835269;
+        bh=Pj6QmNdyVWRSiWwqmalpCt8XfGz2+RgURzkxclBY+PM=;
+        h=From:To:Cc:Subject:Date:From;
+        b=GozZqiMxaemXCHQSEoWAXe+RMQd3e7zF1wqGqkwMO/GT+l3HoMh37RCIXnnZQM+El
+         a9zdTUwcF07VodkU7Fs+fP82NasbkJz77RxpMTKjuqj6F0/jodwC6a1pKB6r3Bvc0E
+         mUHaPe70lOhu0NU7AlfK685JctTupXcUSj3oSkR4=
+From:   Lorenzo Bianconi <lorenzo@kernel.org>
+To:     kubakici@wp.pl
+Cc:     linux-wireless@vger.kernel.org, lorenzo.bianconi@redhat.com
+Subject: [PATCH] mt7601u: fix possible memory leak when the device is disconnected
+Date:   Thu,  6 Jun 2019 17:34:16 +0200
+Message-Id: <27c6d00cfb5936978cfb8304c6e1f03973905848.1559835089.git.lorenzo@kernel.org>
+X-Mailer: git-send-email 2.21.0
 MIME-Version: 1.0
-X-MTK:  N
+Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Thu, 2019-06-06 at 12:14 +0200, Sebastian Gottschall wrote:
-> in addition you should take care about this problem which is raised up 
-> if SAE is used. since AES-CMAC required tid to be non zero
-> 
-> WARNING: CPU: 2 PID: 15324 at 
-> /home/seg/DEV/mt7621/src/router/private/compat-wireless-2017-09-03/net/mac80211/key.c:1096 
-> mt76_wcid_key_setup+0x58/0x9c [mt76]
-> Modules linked in: shortcut_fe gcm ghash_generic ctr gf128mul mt7615e 
-> mt76 mac80211 compat
-> CPU: 2 PID: 15324 Comm: wpa_supplicant Tainted: G        W 4.14.123 #106
-> Stack : 00000000 87c2d000 00000000 8007d8b4 80480000 80482b9c 80610000 
-> 805a4390
->          8057e2b4 854fb99c 87ed045c 805e4767 80578288 00000001 854fb940 
-> 805e9f78
->          00000000 00000000 80640000 00000000 81147bb8 00000584 00000007 
-> 00000000
->          00000000 80650000 80650000 20202020 80000000 00000000 80610000 
-> 872b9fe0
->          872a2b14 00000448 00000000 87c2d000 00000010 8022d660 00000008 
-> 80640008
->          ...
-> Call Trace:
-> [<800153e0>] show_stack+0x58/0x100
-> [<8042e83c>] dump_stack+0x9c/0xe0
-> [<800349f0>] __warn+0xe4/0x144
-> [<8003468c>] warn_slowpath_null+0x1c/0x30
-> [<872b9fe0>] mt76_wcid_key_setup+0x58/0x9c [mt76]
-> [<87611690>] mt7615_eeprom_init+0x7b4/0xe9c [mt7615e]
-> ---[ end trace e24aeb4b542e0dea ]---
+When the device is disconnected while passing traffic it is possible
+to receive out of order urbs causing a memory leak since the skb liked
+to the current tx urb is not removed. Fix the issue deallocating the skb
+cleaning up the tx ring. Moreover this patch fixes the following kernel
+warning
 
-This is fixed by Lorenzo's patch -
-https://patchwork.kernel.org/patch/10976191/
+[   57.480771] usb 1-1: USB disconnect, device number 2
+[   57.483451] ------------[ cut here ]------------
+[   57.483462] TX urb mismatch
+[   57.483481] WARNING: CPU: 1 PID: 32 at drivers/net/wireless/mediatek/mt7601u/dma.c:245 mt7601u_complete_tx+0x165/00
+[   57.483483] Modules linked in:
+[   57.483496] CPU: 1 PID: 32 Comm: kworker/1:1 Not tainted 5.2.0-rc1+ #72
+[   57.483498] Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.12.0-2.fc30 04/01/2014
+[   57.483502] Workqueue: usb_hub_wq hub_event
+[   57.483507] RIP: 0010:mt7601u_complete_tx+0x165/0x1e0
+[   57.483510] Code: 8b b5 10 04 00 00 8b 8d 14 04 00 00 eb 8b 80 3d b1 cb e1 00 00 75 9e 48 c7 c7 a4 ea 05 82 c6 05 f
+[   57.483513] RSP: 0000:ffffc900000a0d28 EFLAGS: 00010092
+[   57.483516] RAX: 000000000000000f RBX: ffff88802c0a62c0 RCX: ffffc900000a0c2c
+[   57.483518] RDX: 0000000000000000 RSI: 0000000000000000 RDI: ffffffff810a8371
+[   57.483520] RBP: ffff88803ced6858 R08: 0000000000000000 R09: 0000000000000001
+[   57.483540] R10: 0000000000000002 R11: 0000000000000000 R12: 0000000000000046
+[   57.483542] R13: ffff88802c0a6c88 R14: ffff88803baab540 R15: ffff88803a0cc078
+[   57.483548] FS:  0000000000000000(0000) GS:ffff88803eb00000(0000) knlGS:0000000000000000
+[   57.483550] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[   57.483552] CR2: 000055e7f6780100 CR3: 0000000028c86000 CR4: 00000000000006a0
+[   57.483554] DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+[   57.483556] DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+[   57.483559] Call Trace:
+[   57.483561]  <IRQ>
+[   57.483565]  __usb_hcd_giveback_urb+0x77/0xe0
+[   57.483570]  xhci_giveback_urb_in_irq.isra.0+0x8b/0x140
+[   57.483574]  handle_cmd_completion+0xf5b/0x12c0
+[   57.483577]  xhci_irq+0x1f6/0x1810
+[   57.483581]  ? lockdep_hardirqs_on+0x9e/0x180
+[   57.483584]  ? _raw_spin_unlock_irq+0x24/0x30
+[   57.483588]  __handle_irq_event_percpu+0x3a/0x260
+[   57.483592]  handle_irq_event_percpu+0x1c/0x60
+[   57.483595]  handle_irq_event+0x2f/0x4c
+[   57.483599]  handle_edge_irq+0x7e/0x1a0
+[   57.483603]  handle_irq+0x17/0x20
+[   57.483607]  do_IRQ+0x54/0x110
+[   57.483610]  common_interrupt+0xf/0xf
+[   57.483612]  </IRQ>
 
-Thanks.
-Ryder
+Fixes: c869f77d6abb ("add mt7601u driver")
+Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+---
+ drivers/net/wireless/mediatek/mt7601u/dma.c | 24 +++++++++++++++------
+ drivers/net/wireless/mediatek/mt7601u/tx.c  |  4 ++--
+ 2 files changed, 19 insertions(+), 9 deletions(-)
+
+diff --git a/drivers/net/wireless/mediatek/mt7601u/dma.c b/drivers/net/wireless/mediatek/mt7601u/dma.c
+index e7703990b291..bbf1deed7f3b 100644
+--- a/drivers/net/wireless/mediatek/mt7601u/dma.c
++++ b/drivers/net/wireless/mediatek/mt7601u/dma.c
+@@ -238,14 +238,25 @@ static void mt7601u_complete_tx(struct urb *urb)
+ 	struct sk_buff *skb;
+ 	unsigned long flags;
+ 
+-	spin_lock_irqsave(&dev->tx_lock, flags);
++	switch (urb->status) {
++	case -ECONNRESET:
++	case -ESHUTDOWN:
++	case -ENOENT:
++		return;
++	default:
++		dev_err_ratelimited(dev->dev, "tx urb failed: %d\n",
++				    urb->status);
++		/* fall through */
++	case 0:
++		break;
++	}
+ 
+-	if (mt7601u_urb_has_error(urb))
+-		dev_err(dev->dev, "Error: TX urb failed:%d\n", urb->status);
++	spin_lock_irqsave(&dev->tx_lock, flags);
+ 	if (WARN_ONCE(q->e[q->start].urb != urb, "TX urb mismatch"))
+ 		goto out;
+ 
+ 	skb = q->e[q->start].skb;
++	q->e[q->start].skb = NULL;
+ 	trace_mt_tx_dma_done(dev, skb);
+ 
+ 	__skb_queue_tail(&dev->tx_skb_done, skb);
+@@ -446,10 +457,10 @@ static void mt7601u_free_tx_queue(struct mt7601u_tx_queue *q)
+ {
+ 	int i;
+ 
+-	WARN_ON(q->used);
+-
+ 	for (i = 0; i < q->entries; i++)  {
+ 		usb_poison_urb(q->e[i].urb);
++		if (q->e[i].skb)
++			mt7601u_tx_status(q->dev, q->e[i].skb);
+ 		usb_free_urb(q->e[i].urb);
+ 	}
+ }
+@@ -463,6 +474,7 @@ static void mt7601u_free_tx(struct mt7601u_dev *dev)
+ 
+ 	for (i = 0; i < __MT_EP_OUT_MAX; i++)
+ 		mt7601u_free_tx_queue(&dev->tx_q[i]);
++	tasklet_kill(&dev->tx_tasklet);
+ }
+ 
+ static int mt7601u_alloc_tx_queue(struct mt7601u_dev *dev,
+@@ -528,6 +540,4 @@ void mt7601u_dma_cleanup(struct mt7601u_dev *dev)
+ 
+ 	mt7601u_free_rx(dev);
+ 	mt7601u_free_tx(dev);
+-
+-	tasklet_kill(&dev->tx_tasklet);
+ }
+diff --git a/drivers/net/wireless/mediatek/mt7601u/tx.c b/drivers/net/wireless/mediatek/mt7601u/tx.c
+index 3600e911a63e..4d81c45722fb 100644
+--- a/drivers/net/wireless/mediatek/mt7601u/tx.c
++++ b/drivers/net/wireless/mediatek/mt7601u/tx.c
+@@ -117,9 +117,9 @@ void mt7601u_tx_status(struct mt7601u_dev *dev, struct sk_buff *skb)
+ 	info->status.rates[0].idx = -1;
+ 	info->flags |= IEEE80211_TX_STAT_ACK;
+ 
+-	spin_lock(&dev->mac_lock);
++	spin_lock_bh(&dev->mac_lock);
+ 	ieee80211_tx_status(dev->hw, skb);
+-	spin_unlock(&dev->mac_lock);
++	spin_unlock_bh(&dev->mac_lock);
+ }
+ 
+ static int mt7601u_skb_rooms(struct mt7601u_dev *dev, struct sk_buff *skb)
+-- 
+2.21.0
 
