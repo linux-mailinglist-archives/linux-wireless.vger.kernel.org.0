@@ -2,50 +2,50 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 5FD6A37D35
-	for <lists+linux-wireless@lfdr.de>; Thu,  6 Jun 2019 21:26:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2BF9337DDF
+	for <lists+linux-wireless@lfdr.de>; Thu,  6 Jun 2019 22:12:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729421AbfFFT0X (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 6 Jun 2019 15:26:23 -0400
-Received: from mail-ot1-f65.google.com ([209.85.210.65]:33345 "EHLO
-        mail-ot1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729335AbfFFT0X (ORCPT
+        id S1728573AbfFFUMC (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 6 Jun 2019 16:12:02 -0400
+Received: from mail-ot1-f66.google.com ([209.85.210.66]:41667 "EHLO
+        mail-ot1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727082AbfFFUMC (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 6 Jun 2019 15:26:23 -0400
-Received: by mail-ot1-f65.google.com with SMTP id p4so3098512oti.0;
-        Thu, 06 Jun 2019 12:26:22 -0700 (PDT)
+        Thu, 6 Jun 2019 16:12:02 -0400
+Received: by mail-ot1-f66.google.com with SMTP id 107so3173852otj.8;
+        Thu, 06 Jun 2019 13:12:01 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=sender:subject:to:cc:references:from:message-id:date:user-agent
          :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=//bEoSLNLLHE97BPxRCj2Ov+nlOv5NirkYFgfSUW6IE=;
-        b=tfehlKGsfTi1m7hhM0Xjrl6wu/1FJz5YNvaZjnKEboFeHFs3iFSgzJkRWdCSVxUQwK
-         VwB5xDNIKJGAxswP++nk/enpOXH6PlOVd/C3I9AfnISZHKR6GWlgLskNPRU1h/bNpnqo
-         2JnW7XY7REpC1hYxXeiCTaUPNwn92eJoeTNDKX6EQv0oHvsnJL2QZ0+lZ/t3sGaYOI+/
-         7w6bJjmTKe2MNEgBbHPFvZRtjdzrZBQRFh/HYvKkjCyoWw075tiXM0Qx1QVkY2amPY+w
-         R/vtWSsTe6/xnFN3nup4WWtmib3FF7B5uNi4TEwcEZ6t+gf7OGkesQQYLrz4/vmTG3kT
-         /pIw==
+        bh=ZplH1ueYIFTxbhcNaq6d9TNtLXhmYa3vn9NLw27k9Lg=;
+        b=stIiNeN9hdh/mk6PIsJUOcTV5NamnY+Y+K3zQGA/YUbAsxjwv51CGIsZSrrY1ygC5u
+         Ndjv8UvipwdJcvPnTGbXklxessOCWoR2PVsRgn7tauT5lgtngZvoq0M5wzWL7bpi+g9N
+         XdwMm8VvjAqoO3mCTAqphKPLlYiLz7IABHFHrfYUGnBPM8P1Wd0eWhQJWHzUz4Z2bgQq
+         2DwHS6Z2slz5m7Tq6KXezIEwPtYEhG/fj5ic/eCici/bSdauJ1rFG44EgZ55tfYqAAfr
+         Bspd6Y2TT//5MgX+Hb8pqXXVcU7WnLCRyajfW6952doLGSTff8CYoBhTEP+0DjqoAG8E
+         bXtQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:sender:subject:to:cc:references:from:message-id
          :date:user-agent:mime-version:in-reply-to:content-language
          :content-transfer-encoding;
-        bh=//bEoSLNLLHE97BPxRCj2Ov+nlOv5NirkYFgfSUW6IE=;
-        b=Er0eb3STw30y/Rei8bkTNeQ6KEByFbisgPBhDfl0ZeM0sT52zO0Dm6l3fH0h1afO14
-         IVzNFXNXAeAjOLdhBhkYBOWk8F26DqO/ttsGnmLcQ4PcRHkkFwLO3KNmlGsq8ULU9fHa
-         JHLeydcnrfMbDsD7knVNSXwQAq3WQzUmLoxxRe0zO4w2faUsU/+nolM10x4XIrasDTdT
-         XkNjFMyR2SesjkrcCQ1Ajjh1SLcXSWnrtZNFhtOVnBLVaxab0EI8k2E32xS4MJJvw67R
-         XuwvkMj1vTG6klsmoTgZG4SYN6FhDdMtaTm3KDQ6O9lE2LTgjITjFzqk6c2lriJ0PC6z
-         kp9Q==
-X-Gm-Message-State: APjAAAWkATjzBd8gafFnxz1eODkQNkDgMZrtw8c8h2cLqYD7Ij4lGq0w
-        njmBDjMoMAtKxmo5B4eM4rbkzNyv
-X-Google-Smtp-Source: APXvYqwL7j7Huo/G41SF8PlkxfC7vQ8YdiJ33WC5yoMAWg0YVvY404CgtKWoG3ue/NITZ97pzuvy4w==
-X-Received: by 2002:a05:6830:1303:: with SMTP id p3mr16235060otq.267.1559849182214;
-        Thu, 06 Jun 2019 12:26:22 -0700 (PDT)
+        bh=ZplH1ueYIFTxbhcNaq6d9TNtLXhmYa3vn9NLw27k9Lg=;
+        b=Cl3oEWk1xcCSVjdvqwMw/NaC3j9M6bZQUhJuYaPFMdGfs0LR0pQVHXkHgJoDwNT8zK
+         KYxVQtptksJCd8bq2WgrHNWUPrvH7iQquPxwmG5sNafz5FvQzx8tddYC+uPM11HjCYyH
+         xVINBhSwaHdJxSHG7VFFkVxDOgsSomZPLe8Sj1Um7Bp65rKfVgBtOyMC/G+rUq/PmAgE
+         WFnJPj044z+/qzd7EUf1u9B/ILdSNF8TQUO3eP+ugnlSRbsW4IawRXK8RojQjSBQG7/4
+         eYSuNN3fITJKBQrMYJWxTsQW8g+8fjU0c+4y2CyRDcV1gcB8O5ZYLgrEH5Xq1W+yPTe9
+         jzcQ==
+X-Gm-Message-State: APjAAAUXT2CxGlwuMuZuyuwGZFBMjLlW+xmoz2e5u7MjPwQK0ZE/nYJY
+        1pF2DR6ptTqkz5yqJfgN9ocypUUm
+X-Google-Smtp-Source: APXvYqz5aiOuHakWTOD3QUBMVJRMbspstMuG5nak7/mBIuhot/sBvNQAywuKuD4N3fv4rPTfgxvGyA==
+X-Received: by 2002:a9d:2f69:: with SMTP id h96mr15834204otb.366.1559851921100;
+        Thu, 06 Jun 2019 13:12:01 -0700 (PDT)
 Received: from [192.168.1.112] (cpe-24-31-245-230.kc.res.rr.com. [24.31.245.230])
-        by smtp.gmail.com with ESMTPSA id b12sm922890otk.59.2019.06.06.12.26.20
+        by smtp.gmail.com with ESMTPSA id a15sm2187otl.20.2019.06.06.13.11.56
         (version=TLS1_3 cipher=AEAD-AES128-GCM-SHA256 bits=128/128);
-        Thu, 06 Jun 2019 12:26:21 -0700 (PDT)
+        Thu, 06 Jun 2019 13:11:56 -0700 (PDT)
 Subject: Re: [BISECTED REGRESSION] b43legacy broken on G4 PowerBook
 To:     Christoph Hellwig <hch@lst.de>,
         Benjamin Herrenschmidt <benh@kernel.crashing.org>
@@ -61,8 +61,8 @@ References: <20190605225059.GA9953@darkstar.musicnaut.iki.fi>
  <f8df19ffe5b75537045119037459ae9ad4a1de39.camel@kernel.crashing.org>
  <20190606114325.GA7497@lst.de>
 From:   Larry Finger <Larry.Finger@lwfinger.net>
-Message-ID: <59528af0-f250-f5e7-50c0-0a163ccfa59c@lwfinger.net>
-Date:   Thu, 6 Jun 2019 14:26:19 -0500
+Message-ID: <1a9e2b2f-b388-bc13-3b90-9d6b4038073b@lwfinger.net>
+Date:   Thu, 6 Jun 2019 15:11:55 -0500
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
  Thunderbird/60.7.0
 MIME-Version: 1.0
@@ -120,15 +120,7 @@ On 6/6/19 6:43 AM, Christoph Hellwig wrote:
 >   #ifdef CONFIG_HIGHMEM
 > 
 
-I am generating a test kernel with this patch.
-
-FYI, the "free" command on my machine shows 1.5+ G of memory. That likely means 
-I have 2G installed.
-
-I have tested a patched kernel in which b43legacy falls back to a 31-bit DMA 
-mask when the 32-bit one failed. That worked, but would likely kill the x86 
-version. Let me know if think a fix in the driver rather than the kernel would 
-be better. I still need to understand why the same setup works in b43 and fails 
-in b43legacy. :(
+This trial patch failed.
 
 Larry
+
