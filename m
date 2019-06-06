@@ -2,181 +2,133 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 29FF837C89
-	for <lists+linux-wireless@lfdr.de>; Thu,  6 Jun 2019 20:48:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5FD6A37D35
+	for <lists+linux-wireless@lfdr.de>; Thu,  6 Jun 2019 21:26:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727629AbfFFSsy (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 6 Jun 2019 14:48:54 -0400
-Received: from mx3.wp.pl ([212.77.101.9]:35642 "EHLO mx3.wp.pl"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727446AbfFFSsy (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 6 Jun 2019 14:48:54 -0400
-X-Greylist: delayed 376 seconds by postgrey-1.27 at vger.kernel.org; Thu, 06 Jun 2019 14:48:52 EDT
-Received: (wp-smtpd smtp.wp.pl 6363 invoked from network); 6 Jun 2019 20:48:50 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wp.pl; s=1024a;
-          t=1559846931; bh=Q4uXcWqxnfiKK35xUxUuDfBI699GZMYJ7M08wC7xsAQ=;
-          h=From:To:Cc:Subject;
-          b=JmPSPtkLJx4akFIunydHX8/b5U8GyjWpNjNX2BDk2CmITFqWDwN/gcTEWihziUxZc
-           E4DgBmCz+FXL6+2dtEmH5dNAxCN2+JBhW1fL6o3r7KQXF9KYYxWm+DEPBDA70dAnIV
-           +FL4JIro7d9aRfCIn66GIUo8s39XXj0XsmOJD7rQ=
-Received: from 014.152-60-66-biz-static.surewest.net (HELO cakuba.netronome.com) (kubakici@wp.pl@[66.60.152.14])
-          (envelope-sender <kubakici@wp.pl>)
-          by smtp.wp.pl (WP-SMTPD) with ECDHE-RSA-AES256-GCM-SHA384 encrypted SMTP
-          for <lorenzo@kernel.org>; 6 Jun 2019 20:48:50 +0200
-Date:   Thu, 6 Jun 2019 11:48:45 -0700
-From:   Jakub Kicinski <kubakici@wp.pl>
-To:     Lorenzo Bianconi <lorenzo@kernel.org>
-Cc:     linux-wireless@vger.kernel.org, lorenzo.bianconi@redhat.com
-Subject: Re: [PATCH] mt7601u: fix possible memory leak when the device is
- disconnected
-Message-ID: <20190606114845.4026270e@cakuba.netronome.com>
-In-Reply-To: <27c6d00cfb5936978cfb8304c6e1f03973905848.1559835089.git.lorenzo@kernel.org>
-References: <27c6d00cfb5936978cfb8304c6e1f03973905848.1559835089.git.lorenzo@kernel.org>
+        id S1729421AbfFFT0X (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 6 Jun 2019 15:26:23 -0400
+Received: from mail-ot1-f65.google.com ([209.85.210.65]:33345 "EHLO
+        mail-ot1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729335AbfFFT0X (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 6 Jun 2019 15:26:23 -0400
+Received: by mail-ot1-f65.google.com with SMTP id p4so3098512oti.0;
+        Thu, 06 Jun 2019 12:26:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=sender:subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=//bEoSLNLLHE97BPxRCj2Ov+nlOv5NirkYFgfSUW6IE=;
+        b=tfehlKGsfTi1m7hhM0Xjrl6wu/1FJz5YNvaZjnKEboFeHFs3iFSgzJkRWdCSVxUQwK
+         VwB5xDNIKJGAxswP++nk/enpOXH6PlOVd/C3I9AfnISZHKR6GWlgLskNPRU1h/bNpnqo
+         2JnW7XY7REpC1hYxXeiCTaUPNwn92eJoeTNDKX6EQv0oHvsnJL2QZ0+lZ/t3sGaYOI+/
+         7w6bJjmTKe2MNEgBbHPFvZRtjdzrZBQRFh/HYvKkjCyoWw075tiXM0Qx1QVkY2amPY+w
+         R/vtWSsTe6/xnFN3nup4WWtmib3FF7B5uNi4TEwcEZ6t+gf7OGkesQQYLrz4/vmTG3kT
+         /pIw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:sender:subject:to:cc:references:from:message-id
+         :date:user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=//bEoSLNLLHE97BPxRCj2Ov+nlOv5NirkYFgfSUW6IE=;
+        b=Er0eb3STw30y/Rei8bkTNeQ6KEByFbisgPBhDfl0ZeM0sT52zO0Dm6l3fH0h1afO14
+         IVzNFXNXAeAjOLdhBhkYBOWk8F26DqO/ttsGnmLcQ4PcRHkkFwLO3KNmlGsq8ULU9fHa
+         JHLeydcnrfMbDsD7knVNSXwQAq3WQzUmLoxxRe0zO4w2faUsU/+nolM10x4XIrasDTdT
+         XkNjFMyR2SesjkrcCQ1Ajjh1SLcXSWnrtZNFhtOVnBLVaxab0EI8k2E32xS4MJJvw67R
+         XuwvkMj1vTG6klsmoTgZG4SYN6FhDdMtaTm3KDQ6O9lE2LTgjITjFzqk6c2lriJ0PC6z
+         kp9Q==
+X-Gm-Message-State: APjAAAWkATjzBd8gafFnxz1eODkQNkDgMZrtw8c8h2cLqYD7Ij4lGq0w
+        njmBDjMoMAtKxmo5B4eM4rbkzNyv
+X-Google-Smtp-Source: APXvYqwL7j7Huo/G41SF8PlkxfC7vQ8YdiJ33WC5yoMAWg0YVvY404CgtKWoG3ue/NITZ97pzuvy4w==
+X-Received: by 2002:a05:6830:1303:: with SMTP id p3mr16235060otq.267.1559849182214;
+        Thu, 06 Jun 2019 12:26:22 -0700 (PDT)
+Received: from [192.168.1.112] (cpe-24-31-245-230.kc.res.rr.com. [24.31.245.230])
+        by smtp.gmail.com with ESMTPSA id b12sm922890otk.59.2019.06.06.12.26.20
+        (version=TLS1_3 cipher=AEAD-AES128-GCM-SHA256 bits=128/128);
+        Thu, 06 Jun 2019 12:26:21 -0700 (PDT)
+Subject: Re: [BISECTED REGRESSION] b43legacy broken on G4 PowerBook
+To:     Christoph Hellwig <hch@lst.de>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>
+Cc:     Aaro Koskinen <aaro.koskinen@iki.fi>,
+        Christian Zigotzky <chzigotzky@xenosoft.de>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        linuxppc-dev@lists.ozlabs.org, linux-wireless@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+References: <20190605225059.GA9953@darkstar.musicnaut.iki.fi>
+ <dfe6451c93574b61d4bdde4a05c5f8ccf86b31a0.camel@kernel.crashing.org>
+ <20190606093149.GA11598@darkstar.musicnaut.iki.fi>
+ <d87ac9a7faac0d5522cb496d74afc586410fed9c.camel@kernel.crashing.org>
+ <f8df19ffe5b75537045119037459ae9ad4a1de39.camel@kernel.crashing.org>
+ <20190606114325.GA7497@lst.de>
+From:   Larry Finger <Larry.Finger@lwfinger.net>
+Message-ID: <59528af0-f250-f5e7-50c0-0a163ccfa59c@lwfinger.net>
+Date:   Thu, 6 Jun 2019 14:26:19 -0500
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.7.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+In-Reply-To: <20190606114325.GA7497@lst.de>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
 Content-Transfer-Encoding: 7bit
-X-WP-MailID: ec05270bb05e77ce495625164c2f2bce
-X-WP-AV: skaner antywirusowy Poczty Wirtualnej Polski
-X-WP-SPAM: NO 000000A [ceNE]                               
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Thu,  6 Jun 2019 17:34:16 +0200, Lorenzo Bianconi wrote:
-> When the device is disconnected while passing traffic it is possible
-> to receive out of order urbs causing a memory leak since the skb liked
-> to the current tx urb is not removed. Fix the issue deallocating the skb
-> cleaning up the tx ring. Moreover this patch fixes the following kernel
-> warning
-
-Ugh if we don't have ordering guarantees then the entire "ring" scheme
-no longer works :(  Should we move to URB queues, I don't remember now,
-but there seem to had been a better way to manage URBs :S
-
-> [   57.480771] usb 1-1: USB disconnect, device number 2
-> [   57.483451] ------------[ cut here ]------------
-> [   57.483462] TX urb mismatch
-> [   57.483481] WARNING: CPU: 1 PID: 32 at drivers/net/wireless/mediatek/mt7601u/dma.c:245 mt7601u_complete_tx+0x165/00
-> [   57.483483] Modules linked in:
-> [   57.483496] CPU: 1 PID: 32 Comm: kworker/1:1 Not tainted 5.2.0-rc1+ #72
-> [   57.483498] Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.12.0-2.fc30 04/01/2014
-> [   57.483502] Workqueue: usb_hub_wq hub_event
-> [   57.483507] RIP: 0010:mt7601u_complete_tx+0x165/0x1e0
-> [   57.483510] Code: 8b b5 10 04 00 00 8b 8d 14 04 00 00 eb 8b 80 3d b1 cb e1 00 00 75 9e 48 c7 c7 a4 ea 05 82 c6 05 f
-> [   57.483513] RSP: 0000:ffffc900000a0d28 EFLAGS: 00010092
-> [   57.483516] RAX: 000000000000000f RBX: ffff88802c0a62c0 RCX: ffffc900000a0c2c
-> [   57.483518] RDX: 0000000000000000 RSI: 0000000000000000 RDI: ffffffff810a8371
-> [   57.483520] RBP: ffff88803ced6858 R08: 0000000000000000 R09: 0000000000000001
-> [   57.483540] R10: 0000000000000002 R11: 0000000000000000 R12: 0000000000000046
-> [   57.483542] R13: ffff88802c0a6c88 R14: ffff88803baab540 R15: ffff88803a0cc078
-> [   57.483548] FS:  0000000000000000(0000) GS:ffff88803eb00000(0000) knlGS:0000000000000000
-> [   57.483550] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-> [   57.483552] CR2: 000055e7f6780100 CR3: 0000000028c86000 CR4: 00000000000006a0
-> [   57.483554] DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-> [   57.483556] DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-> [   57.483559] Call Trace:
-> [   57.483561]  <IRQ>
-> [   57.483565]  __usb_hcd_giveback_urb+0x77/0xe0
-> [   57.483570]  xhci_giveback_urb_in_irq.isra.0+0x8b/0x140
-> [   57.483574]  handle_cmd_completion+0xf5b/0x12c0
-> [   57.483577]  xhci_irq+0x1f6/0x1810
-> [   57.483581]  ? lockdep_hardirqs_on+0x9e/0x180
-> [   57.483584]  ? _raw_spin_unlock_irq+0x24/0x30
-> [   57.483588]  __handle_irq_event_percpu+0x3a/0x260
-> [   57.483592]  handle_irq_event_percpu+0x1c/0x60
-> [   57.483595]  handle_irq_event+0x2f/0x4c
-> [   57.483599]  handle_edge_irq+0x7e/0x1a0
-> [   57.483603]  handle_irq+0x17/0x20
-> [   57.483607]  do_IRQ+0x54/0x110
-> [   57.483610]  common_interrupt+0xf/0xf
-> [   57.483612]  </IRQ>
+On 6/6/19 6:43 AM, Christoph Hellwig wrote:
+> On Thu, Jun 06, 2019 at 08:57:49PM +1000, Benjamin Herrenschmidt wrote:
+>>> Wow... that's an odd amount. One thing we could possibly do is add code
+>>> to limit the amount of RAM when we detect that device....
+>>
+>> Sent too quickly... I mean that *or* force swiotlb at 30-bits on those systems based
+>> on detecting the presence of that device in the device-tree.
 > 
-> Fixes: c869f77d6abb ("add mt7601u driver")
-> Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
-> ---
->  drivers/net/wireless/mediatek/mt7601u/dma.c | 24 +++++++++++++++------
->  drivers/net/wireless/mediatek/mt7601u/tx.c  |  4 ++--
->  2 files changed, 19 insertions(+), 9 deletions(-)
+> swiotlb doesn't really help you, as these days swiotlb on matters for
+> the dma_map* case.  What would help is a ZONE_DMA that covers these
+> devices.  No need to do the 24-bit x86 does, but 30-bit would do it.
 > 
-> diff --git a/drivers/net/wireless/mediatek/mt7601u/dma.c b/drivers/net/wireless/mediatek/mt7601u/dma.c
-> index e7703990b291..bbf1deed7f3b 100644
-> --- a/drivers/net/wireless/mediatek/mt7601u/dma.c
-> +++ b/drivers/net/wireless/mediatek/mt7601u/dma.c
-> @@ -238,14 +238,25 @@ static void mt7601u_complete_tx(struct urb *urb)
->  	struct sk_buff *skb;
->  	unsigned long flags;
->  
-> -	spin_lock_irqsave(&dev->tx_lock, flags);
-> +	switch (urb->status) {
-> +	case -ECONNRESET:
-> +	case -ESHUTDOWN:
-> +	case -ENOENT:
-> +		return;
-> +	default:
-> +		dev_err_ratelimited(dev->dev, "tx urb failed: %d\n",
-> +				    urb->status);
-> +		/* fall through */
-> +	case 0:
-> +		break;
-> +	}
->  
-> -	if (mt7601u_urb_has_error(urb))
-> -		dev_err(dev->dev, "Error: TX urb failed:%d\n", urb->status);
-> +	spin_lock_irqsave(&dev->tx_lock, flags);
->  	if (WARN_ONCE(q->e[q->start].urb != urb, "TX urb mismatch"))
->  		goto out;
->  
->  	skb = q->e[q->start].skb;
-> +	q->e[q->start].skb = NULL;
->  	trace_mt_tx_dma_done(dev, skb);
->  
->  	__skb_queue_tail(&dev->tx_skb_done, skb);
-> @@ -446,10 +457,10 @@ static void mt7601u_free_tx_queue(struct mt7601u_tx_queue *q)
->  {
->  	int i;
->  
-> -	WARN_ON(q->used);
-> -
->  	for (i = 0; i < q->entries; i++)  {
->  		usb_poison_urb(q->e[i].urb);
-> +		if (q->e[i].skb)
-> +			mt7601u_tx_status(q->dev, q->e[i].skb);
+> WIP patch for testing below:
+> 
+> diff --git a/arch/powerpc/include/asm/page.h b/arch/powerpc/include/asm/page.h
+> index b8286a2013b4..7a367ce87c41 100644
+> --- a/arch/powerpc/include/asm/page.h
+> +++ b/arch/powerpc/include/asm/page.h
+> @@ -319,6 +319,10 @@ struct vm_area_struct;
+>   #endif /* __ASSEMBLY__ */
+>   #include <asm/slice.h>
+>   
+> +#if 1 /* XXX: pmac?  dynamic discovery? */
+> +#define ARCH_ZONE_DMA_BITS 30
+> +#else
+>   #define ARCH_ZONE_DMA_BITS 31
+> +#endif
+>   
+>   #endif /* _ASM_POWERPC_PAGE_H */
+> diff --git a/arch/powerpc/mm/mem.c b/arch/powerpc/mm/mem.c
+> index cba29131bccc..2540d3b2588c 100644
+> --- a/arch/powerpc/mm/mem.c
+> +++ b/arch/powerpc/mm/mem.c
+> @@ -248,7 +248,8 @@ void __init paging_init(void)
+>   	       (long int)((top_of_ram - total_ram) >> 20));
+>   
+>   #ifdef CONFIG_ZONE_DMA
+> -	max_zone_pfns[ZONE_DMA]	= min(max_low_pfn, 0x7fffffffUL >> PAGE_SHIFT);
+> +	max_zone_pfns[ZONE_DMA]	= min(max_low_pfn,
+> +			((1UL << ARCH_ZONE_DMA_BITS) - 1) >> PAGE_SHIFT);
+>   #endif
+>   	max_zone_pfns[ZONE_NORMAL] = max_low_pfn;
+>   #ifdef CONFIG_HIGHMEM
+> 
 
-Perhaps a separate patch?
+I am generating a test kernel with this patch.
 
->  		usb_free_urb(q->e[i].urb);
->  	}
->  }
-> @@ -463,6 +474,7 @@ static void mt7601u_free_tx(struct mt7601u_dev *dev)
->  
->  	for (i = 0; i < __MT_EP_OUT_MAX; i++)
->  		mt7601u_free_tx_queue(&dev->tx_q[i]);
-> +	tasklet_kill(&dev->tx_tasklet);
->  }
->  
->  static int mt7601u_alloc_tx_queue(struct mt7601u_dev *dev,
-> @@ -528,6 +540,4 @@ void mt7601u_dma_cleanup(struct mt7601u_dev *dev)
->  
->  	mt7601u_free_rx(dev);
->  	mt7601u_free_tx(dev);
-> -
-> -	tasklet_kill(&dev->tx_tasklet);
->  }
-> diff --git a/drivers/net/wireless/mediatek/mt7601u/tx.c b/drivers/net/wireless/mediatek/mt7601u/tx.c
-> index 3600e911a63e..4d81c45722fb 100644
-> --- a/drivers/net/wireless/mediatek/mt7601u/tx.c
-> +++ b/drivers/net/wireless/mediatek/mt7601u/tx.c
-> @@ -117,9 +117,9 @@ void mt7601u_tx_status(struct mt7601u_dev *dev, struct sk_buff *skb)
->  	info->status.rates[0].idx = -1;
->  	info->flags |= IEEE80211_TX_STAT_ACK;
->  
-> -	spin_lock(&dev->mac_lock);
-> +	spin_lock_bh(&dev->mac_lock);
->  	ieee80211_tx_status(dev->hw, skb);
-> -	spin_unlock(&dev->mac_lock);
-> +	spin_unlock_bh(&dev->mac_lock);
->  }
->  
->  static int mt7601u_skb_rooms(struct mt7601u_dev *dev, struct sk_buff *skb)
+FYI, the "free" command on my machine shows 1.5+ G of memory. That likely means 
+I have 2G installed.
 
+I have tested a patched kernel in which b43legacy falls back to a 31-bit DMA 
+mask when the 32-bit one failed. That worked, but would likely kill the x86 
+version. Let me know if think a fix in the driver rather than the kernel would 
+be better. I still need to understand why the same setup works in b43 and fails 
+in b43legacy. :(
+
+Larry
