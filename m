@@ -2,141 +2,88 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id AA7C2375EC
-	for <lists+linux-wireless@lfdr.de>; Thu,  6 Jun 2019 16:00:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4C5C1377AB
+	for <lists+linux-wireless@lfdr.de>; Thu,  6 Jun 2019 17:18:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728534AbfFFOAj (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 6 Jun 2019 10:00:39 -0400
-Received: from mga05.intel.com ([192.55.52.43]:6023 "EHLO mga05.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726924AbfFFOAj (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 6 Jun 2019 10:00:39 -0400
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from fmsmga005.fm.intel.com ([10.253.24.32])
-  by fmsmga105.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 06 Jun 2019 07:00:38 -0700
-X-ExtLoop1: 1
-Received: from ahunter-desktop.fi.intel.com (HELO [10.237.72.198]) ([10.237.72.198])
-  by fmsmga005.fm.intel.com with ESMTP; 06 Jun 2019 07:00:30 -0700
-Subject: Re: [PATCH v2 3/3] brcmfmac: sdio: Disable auto-tuning around
- commands expected to fail
-To:     Douglas Anderson <dianders@chromium.org>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        Arend van Spriel <arend.vanspriel@broadcom.com>
-Cc:     brcm80211-dev-list.pdl@broadcom.com,
-        linux-rockchip@lists.infradead.org,
-        Double Lo <double.lo@cypress.com>, briannorris@chromium.org,
-        linux-wireless@vger.kernel.org,
-        Naveen Gupta <naveen.gupta@cypress.com>,
-        Madhan Mohan R <madhanmohan.r@cypress.com>, mka@chromium.org,
-        Wright Feng <wright.feng@cypress.com>,
-        Chi-Hsien Lin <chi-hsien.lin@cypress.com>,
-        netdev@vger.kernel.org, brcm80211-dev-list@cypress.com,
-        "David S. Miller" <davem@davemloft.net>,
-        Franky Lin <franky.lin@broadcom.com>,
-        linux-kernel@vger.kernel.org,
-        Hante Meuleman <hante.meuleman@broadcom.com>,
-        YueHaibing <yuehaibing@huawei.com>,
-        Michael Trimarchi <michael@amarulasolutions.com>
-References: <20190603183740.239031-1-dianders@chromium.org>
- <20190603183740.239031-4-dianders@chromium.org>
-From:   Adrian Hunter <adrian.hunter@intel.com>
-Organization: Intel Finland Oy, Registered Address: PL 281, 00181 Helsinki,
- Business Identity Code: 0357606 - 4, Domiciled in Helsinki
-Message-ID: <42fc30b1-adab-7fa8-104c-cbb7855f2032@intel.com>
-Date:   Thu, 6 Jun 2019 16:59:17 +0300
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.7.0
-MIME-Version: 1.0
-In-Reply-To: <20190603183740.239031-4-dianders@chromium.org>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
+        id S1729257AbfFFPSe (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 6 Jun 2019 11:18:34 -0400
+Received: from mailgw01.mediatek.com ([210.61.82.183]:51237 "EHLO
+        mailgw01.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
+        with ESMTP id S1729015AbfFFPSd (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 6 Jun 2019 11:18:33 -0400
+X-UUID: 5fb22adf88d34f0fb2e5dba7a463049b-20190606
+X-UUID: 5fb22adf88d34f0fb2e5dba7a463049b-20190606
+Received: from mtkcas06.mediatek.inc [(172.21.101.30)] by mailgw01.mediatek.com
+        (envelope-from <ryder.lee@mediatek.com>)
+        (mhqrelay.mediatek.com ESMTP with TLS)
+        with ESMTP id 972181061; Thu, 06 Jun 2019 23:18:24 +0800
+Received: from mtkcas08.mediatek.inc (172.21.101.126) by
+ mtkmbs07n2.mediatek.inc (172.21.101.141) with Microsoft SMTP Server (TLS) id
+ 15.0.1395.4; Thu, 6 Jun 2019 23:18:22 +0800
+Received: from [172.21.77.33] (172.21.77.33) by mtkcas08.mediatek.inc
+ (172.21.101.73) with Microsoft SMTP Server id 15.0.1395.4 via Frontend
+ Transport; Thu, 6 Jun 2019 23:18:22 +0800
+Message-ID: <1559834302.3339.1.camel@mtkswgap22>
+Subject: Re: [PATCH v3 1/2] mt76: mt7615: enable support for mesh
+From:   Ryder Lee <ryder.lee@mediatek.com>
+To:     Sebastian Gottschall <s.gottschall@newmedia-net.de>
+CC:     Felix Fietkau <nbd@nbd.name>,
+        Lorenzo Bianconi <lorenzo.bianconi@redhat.com>,
+        Roy Luo <royluo@google.com>, YF Luo <yf.luo@mediatek.com>,
+        Yiwei Chung <yiwei.chung@mediatek.com>,
+        Sean Wang <sean.wang@mediatek.com>,
+        Chih-Min Chen <chih-min.Chen@mediatek.com>,
+        <linux-wireless@vger.kernel.org>,
+        <linux-mediatek@lists.infradead.org>,
+        <linux-kernel@vger.kernel.org>
+Date:   Thu, 6 Jun 2019 23:18:22 +0800
+In-Reply-To: <a0a6f631-2eb1-87cc-5653-338c6126690c@newmedia-net.de>
+References: <a1ff446dfc06e2443552e7ec2d754099aacce7df.1559541944.git.ryder.lee@mediatek.com>
+         <a0a6f631-2eb1-87cc-5653-338c6126690c@newmedia-net.de>
+Content-Type: text/plain; charset="UTF-8"
+X-Mailer: Evolution 3.2.3-0ubuntu6 
 Content-Transfer-Encoding: 7bit
+MIME-Version: 1.0
+X-MTK:  N
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 3/06/19 9:37 PM, Douglas Anderson wrote:
-> There are certain cases, notably when transitioning between sleep and
-> active state, when Broadcom SDIO WiFi cards will produce errors on the
-> SDIO bus.  This is evident from the source code where you can see that
-> we try commands in a loop until we either get success or we've tried
-> too many times.  The comment in the code reinforces this by saying
-> "just one write attempt may fail"
+On Thu, 2019-06-06 at 12:14 +0200, Sebastian Gottschall wrote:
+> in addition you should take care about this problem which is raised up 
+> if SAE is used. since AES-CMAC required tid to be non zero
 > 
-> Unfortunately these failures sometimes end up causing an "-EILSEQ"
-> back to the core which triggers a retuning of the SDIO card and that
-> blocks all traffic to the card until it's done.
-> 
-> Let's disable retuning around the commands we expect might fail.
+> WARNING: CPU: 2 PID: 15324 at 
+> /home/seg/DEV/mt7621/src/router/private/compat-wireless-2017-09-03/net/mac80211/key.c:1096 
+> mt76_wcid_key_setup+0x58/0x9c [mt76]
+> Modules linked in: shortcut_fe gcm ghash_generic ctr gf128mul mt7615e 
+> mt76 mac80211 compat
+> CPU: 2 PID: 15324 Comm: wpa_supplicant Tainted: G        W 4.14.123 #106
+> Stack : 00000000 87c2d000 00000000 8007d8b4 80480000 80482b9c 80610000 
+> 805a4390
+>          8057e2b4 854fb99c 87ed045c 805e4767 80578288 00000001 854fb940 
+> 805e9f78
+>          00000000 00000000 80640000 00000000 81147bb8 00000584 00000007 
+> 00000000
+>          00000000 80650000 80650000 20202020 80000000 00000000 80610000 
+> 872b9fe0
+>          872a2b14 00000448 00000000 87c2d000 00000010 8022d660 00000008 
+> 80640008
+>          ...
+> Call Trace:
+> [<800153e0>] show_stack+0x58/0x100
+> [<8042e83c>] dump_stack+0x9c/0xe0
+> [<800349f0>] __warn+0xe4/0x144
+> [<8003468c>] warn_slowpath_null+0x1c/0x30
+> [<872b9fe0>] mt76_wcid_key_setup+0x58/0x9c [mt76]
+> [<87611690>] mt7615_eeprom_init+0x7b4/0xe9c [mt7615e]
+> ---[ end trace e24aeb4b542e0dea ]---
 
-It seems to me that re-tuning needs to be prevented before the
-first access otherwise it might be attempted there, and it needs
-to continue to be prevented during the transition when it might
-reasonably be expected to fail.
+This is fixed by Lorenzo's patch -
+https://patchwork.kernel.org/patch/10976191/
 
-What about something along these lines:
+Thanks.
+Ryder
 
-diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c
-index 4e15ea57d4f5..d932780ef56e 100644
---- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c
-+++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c
-@@ -664,9 +664,18 @@ brcmf_sdio_kso_control(struct brcmf_sdio *bus, bool on)
- 	int err = 0;
- 	int err_cnt = 0;
- 	int try_cnt = 0;
-+	int need_retune = 0;
-+	bool retune_release = false;
- 
- 	brcmf_dbg(TRACE, "Enter: on=%d\n", on);
- 
-+	/* Cannot re-tune if device is asleep */
-+	if (on) {
-+		need_retune = sdio_retune_get_needed(bus->sdiodev->func1); // TODO: host->can_retune ? host->need_retune : 0
-+		sdio_retune_hold_now(bus->sdiodev->func1); // TODO: add sdio_retune_hold_now()
-+		retune_release = true;
-+	}
-+
- 	wr_val = (on << SBSDIO_FUNC1_SLEEPCSR_KSO_SHIFT);
- 	/* 1st KSO write goes to AOS wake up core if device is asleep  */
- 	brcmf_sdiod_writeb(bus->sdiodev, SBSDIO_FUNC1_SLEEPCSR, wr_val, &err);
-@@ -711,8 +720,16 @@ brcmf_sdio_kso_control(struct brcmf_sdio *bus, bool on)
- 			err_cnt = 0;
- 		}
- 		/* bail out upon subsequent access errors */
--		if (err && (err_cnt++ > BRCMF_SDIO_MAX_ACCESS_ERRORS))
--			break;
-+		if (err && (err_cnt++ > BRCMF_SDIO_MAX_ACCESS_ERRORS)) {
-+			if (!retune_release)
-+				break;
-+			/*
-+			 * Allow one more retry with re-tuning released in case
-+			 * it helps.
-+			 */
-+			sdio_retune_release(bus->sdiodev->func1);
-+			retune_release = false;
-+		}
- 
- 		udelay(KSO_WAIT_US);
- 		brcmf_sdiod_writeb(bus->sdiodev, SBSDIO_FUNC1_SLEEPCSR, wr_val,
-@@ -727,6 +744,18 @@ brcmf_sdio_kso_control(struct brcmf_sdio *bus, bool on)
- 	if (try_cnt > MAX_KSO_ATTEMPTS)
- 		brcmf_err("max tries: rd_val=0x%x err=%d\n", rd_val, err);
- 
-+	if (retune_release) {
-+		/*
-+		 * CRC errors are not unexpected during the transition but they
-+		 * also trigger re-tuning. Clear that here to avoid an
-+		 * unnecessary re-tune if it wasn't already triggered to start
-+		 * with.
-+		 */
-+		if (!need_retune)
-+			sdio_retune_clear_needed(bus->sdiodev->func1); // TODO: host->need_retune = 0
-+		sdio_retune_release(bus->sdiodev->func1); // TODO: add sdio_retune_release()
-+	}
-+
- 	return err;
- }
- 
