@@ -2,169 +2,276 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 6F40E37FAF
-	for <lists+linux-wireless@lfdr.de>; Thu,  6 Jun 2019 23:36:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 138E737FCA
+	for <lists+linux-wireless@lfdr.de>; Thu,  6 Jun 2019 23:44:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728452AbfFFVgg (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 6 Jun 2019 17:36:36 -0400
-Received: from mx4.wp.pl ([212.77.101.12]:18520 "EHLO mx4.wp.pl"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728483AbfFFVgg (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 6 Jun 2019 17:36:36 -0400
-Received: (wp-smtpd smtp.wp.pl 6579 invoked from network); 6 Jun 2019 23:36:32 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wp.pl; s=1024a;
-          t=1559856993; bh=vxHz7PUVLELV7/R5IngXn/VEEHDk+dDGniQDdb95p6s=;
-          h=From:To:Cc:Subject;
-          b=T1ffeOYn4p2m3CpTRYZdj4fBeIbkQ/awr1jcoMWgMkAXz3E8ut97XcpEaoW2JDgYG
-           IVpuHpBgVdzSr0ZiNDC+5U2lWnt3tf25SqHlzTpCEI18T6a8CqwrEvZVFxOlA9Y+fC
-           GtrCBOBkZX5mE5HL0zKl1BdeKrmqgCpiSgqdm7pQ=
-Received: from 014.152-60-66-biz-static.surewest.net (HELO cakuba.netronome.com) (kubakici@wp.pl@[66.60.152.14])
-          (envelope-sender <kubakici@wp.pl>)
-          by smtp.wp.pl (WP-SMTPD) with ECDHE-RSA-AES256-GCM-SHA384 encrypted SMTP
-          for <lorenzo.bianconi@redhat.com>; 6 Jun 2019 23:36:32 +0200
-Date:   Thu, 6 Jun 2019 14:36:27 -0700
-From:   Jakub Kicinski <kubakici@wp.pl>
-To:     Lorenzo Bianconi <lorenzo.bianconi@redhat.com>
-Cc:     Lorenzo Bianconi <lorenzo@kernel.org>,
-        linux-wireless <linux-wireless@vger.kernel.org>
-Subject: Re: [PATCH] mt7601u: fix possible memory leak when the device is
- disconnected
-Message-ID: <20190606143627.575c2499@cakuba.netronome.com>
-In-Reply-To: <CAJ0CqmUCch1dU1J24XDOg_fg35BfWLWjvXc3nV7QN6JHgWhZJw@mail.gmail.com>
-References: <27c6d00cfb5936978cfb8304c6e1f03973905848.1559835089.git.lorenzo@kernel.org>
-        <20190606114845.4026270e@cakuba.netronome.com>
-        <CAJ0CqmUCch1dU1J24XDOg_fg35BfWLWjvXc3nV7QN6JHgWhZJw@mail.gmail.com>
+        id S1728029AbfFFVom (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 6 Jun 2019 17:44:42 -0400
+Received: from mail-it1-f195.google.com ([209.85.166.195]:38483 "EHLO
+        mail-it1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726157AbfFFVom (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 6 Jun 2019 17:44:42 -0400
+Received: by mail-it1-f195.google.com with SMTP id h9so2370080itk.3
+        for <linux-wireless@vger.kernel.org>; Thu, 06 Jun 2019 14:44:41 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=+QBdyZj1I7drp/b50HZlmF43JSxnAeWa0jxxMiyIVXc=;
+        b=NolPoyDjYnIQMci7PwsT9RiWgwW+ar1+vnt93teKnZ+fxxJNLXO3YLuOLArf7tOCTZ
+         neucsp0wiztZ64STtyZMYnz0lS0niok/nsimcR0/BPboY/HHGPohUIqIVLGjoKryaGfk
+         xdAEjhPQnEEPaLFpGW/3rtXuLULRKrkaHRARM=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=+QBdyZj1I7drp/b50HZlmF43JSxnAeWa0jxxMiyIVXc=;
+        b=tPq9x+oY598/SdSeQo8iQmzO16Q3Wj1nA8k2A64TfjAUiEygyMfds8sKMNlAZYilWW
+         r+FB/loFJedQjdtGaWamm2o9ZDV0fPKeTc2EDDLnAdpp0vgy/+yGcq5qk1Y0hF6QiR3D
+         6j/LZTiG2i8WBFbWzEzUEZZYPHWsFOYYBjZtmD6S8JSLmuXkQBWdRQzILTxBDHfS1K8J
+         zv/bIlzBBmrtw8Gl0XY5mdJVVt7UKgRmQuk/LL9INYzmYsIbI2mvOpQCBY+j76uBmyLK
+         yd3qnR/mc4LLM8dMRE4XnfgaUqOt1IJPIQlfFTsaWEuR8ba2BAaVyCia4EO5nfzvcyzZ
+         BoPw==
+X-Gm-Message-State: APjAAAVhJz4TXN1jZ6pFiVqdbq7StKSm6mG9qe2a4tKQZvsRNO4p/UsC
+        mSVxWASsQF3fmvJGyzCCA9+AMVUXJsg=
+X-Google-Smtp-Source: APXvYqyCWwQ5PNl/5SvbLzrqmDcARohfbfDqiHRV6o3w6/ZouC4nEwnr8TUZj+hvowwx9RE6/MATcA==
+X-Received: by 2002:a02:b01c:: with SMTP id p28mr33404990jah.130.1559857480489;
+        Thu, 06 Jun 2019 14:44:40 -0700 (PDT)
+Received: from mail-io1-f54.google.com (mail-io1-f54.google.com. [209.85.166.54])
+        by smtp.gmail.com with ESMTPSA id j13sm16744ioa.76.2019.06.06.14.44.40
+        for <linux-wireless@vger.kernel.org>
+        (version=TLS1_3 cipher=AEAD-AES128-GCM-SHA256 bits=128/128);
+        Thu, 06 Jun 2019 14:44:40 -0700 (PDT)
+Received: by mail-io1-f54.google.com with SMTP id u13so1444371iop.0
+        for <linux-wireless@vger.kernel.org>; Thu, 06 Jun 2019 14:44:40 -0700 (PDT)
+X-Received: by 2002:a05:6602:2006:: with SMTP id y6mr29144619iod.218.1559857037515;
+ Thu, 06 Jun 2019 14:37:17 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-WP-MailID: 4fb067cce301b185043805f5bfa9d86d
-X-WP-AV: skaner antywirusowy Poczty Wirtualnej Polski
-X-WP-SPAM: NO 000000A [MdNU]                               
+References: <20190603183740.239031-1-dianders@chromium.org>
+ <20190603183740.239031-4-dianders@chromium.org> <42fc30b1-adab-7fa8-104c-cbb7855f2032@intel.com>
+In-Reply-To: <42fc30b1-adab-7fa8-104c-cbb7855f2032@intel.com>
+From:   Doug Anderson <dianders@chromium.org>
+Date:   Thu, 6 Jun 2019 14:37:03 -0700
+X-Gmail-Original-Message-ID: <CAD=FV=UPfCOr-syAbVZ-FjHQy7bgQf5BS5pdV-Bwd3hquRqEGg@mail.gmail.com>
+Message-ID: <CAD=FV=UPfCOr-syAbVZ-FjHQy7bgQf5BS5pdV-Bwd3hquRqEGg@mail.gmail.com>
+Subject: Re: [PATCH v2 3/3] brcmfmac: sdio: Disable auto-tuning around
+ commands expected to fail
+To:     Adrian Hunter <adrian.hunter@intel.com>
+Cc:     Ulf Hansson <ulf.hansson@linaro.org>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        Arend van Spriel <arend.vanspriel@broadcom.com>,
+        brcm80211-dev-list.pdl@broadcom.com,
+        "open list:ARM/Rockchip SoC..." <linux-rockchip@lists.infradead.org>,
+        Double Lo <double.lo@cypress.com>,
+        Brian Norris <briannorris@chromium.org>,
+        linux-wireless <linux-wireless@vger.kernel.org>,
+        Naveen Gupta <naveen.gupta@cypress.com>,
+        Madhan Mohan R <madhanmohan.r@cypress.com>,
+        Matthias Kaehlcke <mka@chromium.org>,
+        Wright Feng <wright.feng@cypress.com>,
+        Chi-Hsien Lin <chi-hsien.lin@cypress.com>,
+        netdev <netdev@vger.kernel.org>,
+        brcm80211-dev-list <brcm80211-dev-list@cypress.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Franky Lin <franky.lin@broadcom.com>,
+        LKML <linux-kernel@vger.kernel.org>,
+        Hante Meuleman <hante.meuleman@broadcom.com>,
+        YueHaibing <yuehaibing@huawei.com>,
+        Michael Trimarchi <michael@amarulasolutions.com>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Thu, 6 Jun 2019 23:10:15 +0200, Lorenzo Bianconi wrote:
-> On Thu, Jun 6, 2019 at 8:49 PM Jakub Kicinski <kubakici@wp.pl> wrote:
+Hi,
+
+On Thu, Jun 6, 2019 at 7:00 AM Adrian Hunter <adrian.hunter@intel.com> wrote:
+>
+> On 3/06/19 9:37 PM, Douglas Anderson wrote:
+> > There are certain cases, notably when transitioning between sleep and
+> > active state, when Broadcom SDIO WiFi cards will produce errors on the
+> > SDIO bus.  This is evident from the source code where you can see that
+> > we try commands in a loop until we either get success or we've tried
+> > too many times.  The comment in the code reinforces this by saying
+> > "just one write attempt may fail"
 > >
-> > On Thu,  6 Jun 2019 17:34:16 +0200, Lorenzo Bianconi wrote:  
-> > > When the device is disconnected while passing traffic it is possible
-> > > to receive out of order urbs causing a memory leak since the skb liked
-> > > to the current tx urb is not removed. Fix the issue deallocating the skb
-> > > cleaning up the tx ring. Moreover this patch fixes the following kernel
-> > > warning  
+> > Unfortunately these failures sometimes end up causing an "-EILSEQ"
+> > back to the core which triggers a retuning of the SDIO card and that
+> > blocks all traffic to the card until it's done.
 > >
-> > Ugh if we don't have ordering guarantees then the entire "ring" scheme
-> > no longer works :(  Should we move to URB queues, I don't remember now,
-> > but there seem to had been a better way to manage URBs :S
-> >  
-> 
-> actually I have observed these issues on tx/rx side just during device
-> disconnection while passing traffic.
-> I guess we can assume a proper urb ordering during normal operation
-> (and so tx/rx ring works fine).
+> > Let's disable retuning around the commands we expect might fail.
+>
+> It seems to me that re-tuning needs to be prevented before the
+> first access otherwise it might be attempted there,
 
-Ah, phew, okay.  That's fine then.
+By this I think you mean I wasn't starting my section early enough to
+catch the "1st KSO write".  Oops.  Thanks!
 
-> Btw what do you mean with 'URB queues'? :)
 
-I think it may have been URB anchors.  I remember looking at carl9170
-and liking how the DMAs operated there.  
+> and it needs
+> to continue to be prevented during the transition when it might
+> reasonably be expected to fail.
+>
+> What about something along these lines:
+>
+> diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c
+> index 4e15ea57d4f5..d932780ef56e 100644
+> --- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c
+> +++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c
+> @@ -664,9 +664,18 @@ brcmf_sdio_kso_control(struct brcmf_sdio *bus, bool on)
+>         int err = 0;
+>         int err_cnt = 0;
+>         int try_cnt = 0;
+> +       int need_retune = 0;
+> +       bool retune_release = false;
+>
+>         brcmf_dbg(TRACE, "Enter: on=%d\n", on);
+>
+> +       /* Cannot re-tune if device is asleep */
+> +       if (on) {
+> +               need_retune = sdio_retune_get_needed(bus->sdiodev->func1); // TODO: host->can_retune ? host->need_retune : 0
+> +               sdio_retune_hold_now(bus->sdiodev->func1); // TODO: add sdio_retune_hold_now()
+> +               retune_release = true;
+> +       }
 
-> > > [   57.480771] usb 1-1: USB disconnect, device number 2
-> > > [   57.483451] ------------[ cut here ]------------
-> > > [   57.483462] TX urb mismatch
-> > > [   57.483481] WARNING: CPU: 1 PID: 32 at drivers/net/wireless/mediatek/mt7601u/dma.c:245 mt7601u_complete_tx+0x165/00
-> > > [   57.483483] Modules linked in:
-> > > [   57.483496] CPU: 1 PID: 32 Comm: kworker/1:1 Not tainted 5.2.0-rc1+ #72
-> > > [   57.483498] Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.12.0-2.fc30 04/01/2014
-> > > [   57.483502] Workqueue: usb_hub_wq hub_event
-> > > [   57.483507] RIP: 0010:mt7601u_complete_tx+0x165/0x1e0
-> > > [   57.483510] Code: 8b b5 10 04 00 00 8b 8d 14 04 00 00 eb 8b 80 3d b1 cb e1 00 00 75 9e 48 c7 c7 a4 ea 05 82 c6 05 f
-> > > [   57.483513] RSP: 0000:ffffc900000a0d28 EFLAGS: 00010092
-> > > [   57.483516] RAX: 000000000000000f RBX: ffff88802c0a62c0 RCX: ffffc900000a0c2c
-> > > [   57.483518] RDX: 0000000000000000 RSI: 0000000000000000 RDI: ffffffff810a8371
-> > > [   57.483520] RBP: ffff88803ced6858 R08: 0000000000000000 R09: 0000000000000001
-> > > [   57.483540] R10: 0000000000000002 R11: 0000000000000000 R12: 0000000000000046
-> > > [   57.483542] R13: ffff88802c0a6c88 R14: ffff88803baab540 R15: ffff88803a0cc078
-> > > [   57.483548] FS:  0000000000000000(0000) GS:ffff88803eb00000(0000) knlGS:0000000000000000
-> > > [   57.483550] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-> > > [   57.483552] CR2: 000055e7f6780100 CR3: 0000000028c86000 CR4: 00000000000006a0
-> > > [   57.483554] DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-> > > [   57.483556] DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-> > > [   57.483559] Call Trace:
-> > > [   57.483561]  <IRQ>
-> > > [   57.483565]  __usb_hcd_giveback_urb+0x77/0xe0
-> > > [   57.483570]  xhci_giveback_urb_in_irq.isra.0+0x8b/0x140
-> > > [   57.483574]  handle_cmd_completion+0xf5b/0x12c0
-> > > [   57.483577]  xhci_irq+0x1f6/0x1810
-> > > [   57.483581]  ? lockdep_hardirqs_on+0x9e/0x180
-> > > [   57.483584]  ? _raw_spin_unlock_irq+0x24/0x30
-> > > [   57.483588]  __handle_irq_event_percpu+0x3a/0x260
-> > > [   57.483592]  handle_irq_event_percpu+0x1c/0x60
-> > > [   57.483595]  handle_irq_event+0x2f/0x4c
-> > > [   57.483599]  handle_edge_irq+0x7e/0x1a0
-> > > [   57.483603]  handle_irq+0x17/0x20
-> > > [   57.483607]  do_IRQ+0x54/0x110
-> > > [   57.483610]  common_interrupt+0xf/0xf
-> > > [   57.483612]  </IRQ>
-> > >
-> > > Fixes: c869f77d6abb ("add mt7601u driver")
-> > > Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
-> > > ---
-> > >  drivers/net/wireless/mediatek/mt7601u/dma.c | 24 +++++++++++++++------
-> > >  drivers/net/wireless/mediatek/mt7601u/tx.c  |  4 ++--
-> > >  2 files changed, 19 insertions(+), 9 deletions(-)
-> > >
-> > > diff --git a/drivers/net/wireless/mediatek/mt7601u/dma.c b/drivers/net/wireless/mediatek/mt7601u/dma.c
-> > > index e7703990b291..bbf1deed7f3b 100644
-> > > --- a/drivers/net/wireless/mediatek/mt7601u/dma.c
-> > > +++ b/drivers/net/wireless/mediatek/mt7601u/dma.c
-> > > @@ -238,14 +238,25 @@ static void mt7601u_complete_tx(struct urb *urb)
-> > >       struct sk_buff *skb;
-> > >       unsigned long flags;
-> > >
-> > > -     spin_lock_irqsave(&dev->tx_lock, flags);
-> > > +     switch (urb->status) {
-> > > +     case -ECONNRESET:
-> > > +     case -ESHUTDOWN:
-> > > +     case -ENOENT:
-> > > +             return;
-> > > +     default:
-> > > +             dev_err_ratelimited(dev->dev, "tx urb failed: %d\n",
-> > > +                                 urb->status);
-> > > +             /* fall through */
-> > > +     case 0:
-> > > +             break;
-> > > +     }
-> > >
-> > > -     if (mt7601u_urb_has_error(urb))
-> > > -             dev_err(dev->dev, "Error: TX urb failed:%d\n", urb->status);
-> > > +     spin_lock_irqsave(&dev->tx_lock, flags);
-> > >       if (WARN_ONCE(q->e[q->start].urb != urb, "TX urb mismatch"))
-> > >               goto out;
-> > >
-> > >       skb = q->e[q->start].skb;
-> > > +     q->e[q->start].skb = NULL;
-> > >       trace_mt_tx_dma_done(dev, skb);
-> > >
-> > >       __skb_queue_tail(&dev->tx_skb_done, skb);
-> > > @@ -446,10 +457,10 @@ static void mt7601u_free_tx_queue(struct mt7601u_tx_queue *q)
-> > >  {
-> > >       int i;
-> > >
-> > > -     WARN_ON(q->used);
-> > > -
-> > >       for (i = 0; i < q->entries; i++)  {
-> > >               usb_poison_urb(q->e[i].urb);
-> > > +             if (q->e[i].skb)
-> > > +                     mt7601u_tx_status(q->dev, q->e[i].skb);  
-> >
-> > Perhaps a separate patch?
-> 
-> As I did for rx side, if we do not schedule the tx tasklet when the
-> device has been disconnected I guess we need this chuck in the same
-> patch. What do you think?
+The code below still has retries even for the "!on" case.  That
+implies that you could still get CRC errors from the card in the "!on"
+direction too.  Any reason why we shouldn't just hold retuning even
+for the !on case?
 
-Yeah, I see.
+
+> +
+>         wr_val = (on << SBSDIO_FUNC1_SLEEPCSR_KSO_SHIFT);
+>         /* 1st KSO write goes to AOS wake up core if device is asleep  */
+>         brcmf_sdiod_writeb(bus->sdiodev, SBSDIO_FUNC1_SLEEPCSR, wr_val, &err);
+> @@ -711,8 +720,16 @@ brcmf_sdio_kso_control(struct brcmf_sdio *bus, bool on)
+>                         err_cnt = 0;
+>                 }
+>                 /* bail out upon subsequent access errors */
+> -               if (err && (err_cnt++ > BRCMF_SDIO_MAX_ACCESS_ERRORS))
+> -                       break;
+> +               if (err && (err_cnt++ > BRCMF_SDIO_MAX_ACCESS_ERRORS)) {
+> +                       if (!retune_release)
+> +                               break;
+> +                       /*
+> +                        * Allow one more retry with re-tuning released in case
+> +                        * it helps.
+> +                        */
+> +                       sdio_retune_release(bus->sdiodev->func1);
+> +                       retune_release = false;
+
+I would be tempted to wait before adding this logic until we actually
+see that it's needed.  Sure, doing one more transfer probably won't
+really hurt, but until we know that it actually helps it seems like
+we're just adding extra complexity?
+
+
+> +               }
+>
+>                 udelay(KSO_WAIT_US);
+>                 brcmf_sdiod_writeb(bus->sdiodev, SBSDIO_FUNC1_SLEEPCSR, wr_val,
+> @@ -727,6 +744,18 @@ brcmf_sdio_kso_control(struct brcmf_sdio *bus, bool on)
+>         if (try_cnt > MAX_KSO_ATTEMPTS)
+>                 brcmf_err("max tries: rd_val=0x%x err=%d\n", rd_val, err);
+>
+> +       if (retune_release) {
+> +               /*
+> +                * CRC errors are not unexpected during the transition but they
+> +                * also trigger re-tuning. Clear that here to avoid an
+> +                * unnecessary re-tune if it wasn't already triggered to start
+> +                * with.
+> +                */
+> +               if (!need_retune)
+> +                       sdio_retune_clear_needed(bus->sdiodev->func1); // TODO: host->need_retune = 0
+> +               sdio_retune_release(bus->sdiodev->func1); // TODO: add sdio_retune_release()
+> +       }
+
+Every time I re-look at this I have to re-figure out all the subtle
+differences between the variables and functions involved here.  Let me
+see if I got everything right:
+
+* need_retune: set to 1 if we can retune and some event happened that
+makes us truly believe that we need to be retuned, like we got a CRC
+error or a timer expired or our host controller told us to retune.
+
+* retune_now: set to 1 it's an OK time to be retuning.  Specifically
+if retune_now is false we won't send any retuning commands but we'll
+still keep track of the need to retune.
+
+* hold_retune: If this gets set to 1 by mmc_retune_hold_now() then a
+future call to mmc_retune_hold() will _not_ schedule a retune by
+setting retune_now (because mmc_retune_hold() will see that
+hold_retune was already 1).  ...and a future call to
+mmc_retune_recheck() between mmc_hold() and mmc_release() will also
+not schedule a retune because hold_retune will be 2 (or generally >
+1).
+
+---
+
+So overall trying to summarize what I think are the differences
+between your patch and my patch.
+
+1. If we needed to re-tune _before_ calling brcmf_sdio_kso_control(),
+with your patch we'll make sure that we don't actually attempt to
+retune until brcmf_sdio_kso_control() finishes.
+
+2. If we needed to retune during brcmf_sdio_kso_control() (because a
+timer expired?) then we wouldn't trigger that retune while
+brcmf_sdio_kso_control() is running.
+
+In the case of dw_mmc, which I'm most familiar with, we don't have any
+sort of automated or timed-based retuning.  ...so we'll only re-tune
+when we see the CRC error.  If I'm understanding things correctly then
+that for dw_mmc my solution and yours behave the same.  That means the
+difference is how we deal with other retuning requests, either ones
+that come about because of an interrupt that the host controller
+provided or because of a timer.  Did I get that right?
+
+...and I guess the reason we have to deal specially with these cases
+is because any time that SDIO card is "sleeping" we don't want to
+retune because it won't work.  Right?  NOTE: the solution that would
+come to my mind first to solve this would be to hold the retuning for
+the whole time that the card was sleeping and then release it once the
+card was awake again.  ...but I guess we don't truly need to do that
+because tuning only happens as a side effect of sending a command to
+the card and the only command we send to the card is the "wake up"
+command.  That's why your solution to hold tuning while sending the
+"wake up" command works, right?
+
+---
+
+OK, so assuming all the above is correct, I feel like we're actually
+solving two problems and in fact I believe we actually need both our
+approaches to solve everything correctly.  With just your patch in
+place there's a problem because we will clobber any external retuning
+requests that happened while we were waking up the card.  AKA, imagine
+this:
+
+A) brcmf_sdio_kso_control(on=True) gets called; need_retune starts as 0
+
+B) We call sdio_retune_hold_now()
+
+C) A retuning timer goes off or the SD Host controller tells us to retune
+
+D) We get to the end of brcmf_sdio_kso_control() and clear the "retune
+needed" since need_retune was 0 at the start.
+
+...so we dropped the retuning request from C), right?
+
+
+What we truly need is:
+
+1. CRC errors shouldn't trigger a retuning request when we're in
+brcmf_sdio_kso_control()
+
+2. A separate patch that holds any retuning requests while the SDIO
+card is off.  This patch _shouldn't_ do any clearing of retuning
+requests, just defer them.
+
+
+Does that make sense to you?  If so, I can try to code it up...
+
+
+-Doug
