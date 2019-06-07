@@ -2,149 +2,146 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id AA5D339819
-	for <lists+linux-wireless@lfdr.de>; Fri,  7 Jun 2019 23:54:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C91A239906
+	for <lists+linux-wireless@lfdr.de>; Sat,  8 Jun 2019 00:38:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731503AbfFGVyH (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 7 Jun 2019 17:54:07 -0400
-Received: from mail-oi1-f196.google.com ([209.85.167.196]:45874 "EHLO
-        mail-oi1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730523AbfFGVyH (ORCPT
+        id S1730882AbfFGWhl (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 7 Jun 2019 18:37:41 -0400
+Received: from mail-pf1-f195.google.com ([209.85.210.195]:36117 "EHLO
+        mail-pf1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729843AbfFGWhl (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 7 Jun 2019 17:54:07 -0400
-Received: by mail-oi1-f196.google.com with SMTP id m206so2444978oib.12;
-        Fri, 07 Jun 2019 14:54:06 -0700 (PDT)
+        Fri, 7 Jun 2019 18:37:41 -0400
+Received: by mail-pf1-f195.google.com with SMTP id u22so1952140pfm.3
+        for <linux-wireless@vger.kernel.org>; Fri, 07 Jun 2019 15:37:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=BTq3UDvMDxHefcWQxSqSVwm/O7Z2U4bL736xUIMRRcQ=;
-        b=gDLd4ZS7J8n1zNzxC5s7wKY+B0u/ULaapnaV/qpGqVQqItwjIjht2PS4kunRgIky4U
-         xx/Ao9YMOudGqaRLza8EBkS5M+vJeBtK9IkxkfXKntaegua8nBfOA8vM7q2LGBg/hjvP
-         1y0GW7i+Eh0eoUg8iqI1tZ8CG+qCrVB0LHNw2S8GFcR5vtrSusPoGSu22PcNLHFJBznL
-         2SVJmMbPAYQnNkQJ6E0KDUflhizBhUXgs2/lSbXXMa0E8DvsIKsW6bTStzZFjUHl2vxv
-         61qlToT4OhZ+CFVy3rLzdVx/Jds192mw9bAu7FpJPQ4S8zueb1H7mdVlBypJu6Ki1fkc
-         rzZA==
+        d=chromium.org; s=google;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=UkQI8hX0vIUpVc3tfTJ4CpjSb/8p01+g0dvWePLdY08=;
+        b=e+vKvdKnQ/cr5CGuTa5EK01cZ+MfRnMYC41CccgXzHQwKg/POij2RhNAaHeGK5TdVM
+         NYenBPuQyROBou1KlsUskYhDUQCGPp4n4PkvdKpwxUNIuxqAaQD3sMzt3joDkZBHy1C5
+         6uAsWmd444nBt/Xf4T4r+T1ujKXJx+/0JVRuQ=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
          :content-transfer-encoding;
-        bh=BTq3UDvMDxHefcWQxSqSVwm/O7Z2U4bL736xUIMRRcQ=;
-        b=NJCkOd2E4ksisRnvj9n0L1267BFXTv0qKF6kgEDyeC3cY9NBzVRZdSgD0WUAQwAcdN
-         MDAgaBdNTKZZS2PaMA80j5GhyIhztmAyU5WJdn8+knXP4DPhmfSPF+pUeBgq0qwZCel4
-         O6mnBE1CH+L1eFg2GT1ObUdLtHHiXg6k9ej/E5vS1B8UcLzbx9YrMRcNjo2xATHLZY3T
-         iRP/vLjPjxlNMtAJOnFKkgNCwjXS9E4XH1pNOLDwxtI2rqYnnuCgl8tqTxhlrK9IEGZ2
-         8+vA3EC0N3qzCs1Vb2cNbmEO9yafMwmt8GvFHs8ENqpSdTCjcPknbQOH/+64Hpu6b/l4
-         jEMg==
-X-Gm-Message-State: APjAAAUjxj+jznR9Ycha7jwfEiXc/SO8vzM6uvrDqH/UmjWjv87F/sde
-        N+Ur9l9bFNeVol9uwlIS5Mg=
-X-Google-Smtp-Source: APXvYqyyupJope+WTrF9MQ7KJmBrRBosIMdEZtxUlD7TICzP7fn9UAWBPAzqemauKv0VafKxeWmSGg==
-X-Received: by 2002:aca:b58b:: with SMTP id e133mr5090909oif.49.1559944446145;
-        Fri, 07 Jun 2019 14:54:06 -0700 (PDT)
-Received: from [192.168.1.249] (cpe-70-114-247-242.austin.res.rr.com. [70.114.247.242])
-        by smtp.googlemail.com with ESMTPSA id k11sm691030oic.6.2019.06.07.14.54.05
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Fri, 07 Jun 2019 14:54:05 -0700 (PDT)
-Subject: Re: [RFC PATCH 0/3] move WEP implementation to skcipher interface
-To:     Eric Biggers <ebiggers@kernel.org>
-Cc:     Ard Biesheuvel <ard.biesheuvel@linaro.org>,
-        Marcel Holtmann <marcel@holtmann.org>,
-        "open list:HARDWARE RANDOM NUMBER GENERATOR CORE" 
-        <linux-crypto@vger.kernel.org>,
-        Herbert Xu <herbert@gondor.apana.org.au>,
-        Johannes Berg <johannes@sipsolutions.net>,
-        "open list:NFC SUBSYSTEM" <linux-wireless@vger.kernel.org>,
-        "David S. Miller" <davem@davemloft.net>
-References: <20190607144944.13485-1-ard.biesheuvel@linaro.org>
- <20190607175947.GB648@sol.localdomain>
- <97BB95F6-4A4C-4984-9EAB-6069E19B4A4F@holtmann.org>
- <CAKv+Gu-ek4nK+cACx5QZTbp=ciQq_Fvtn9y3g-wFWSOabyczZg@mail.gmail.com>
- <f40ad169-93b9-636f-9656-634ff331ee2b@gmail.com>
- <20190607211514.GD648@sol.localdomain>
- <d394b421-799d-2019-fcf0-97ba0b2abb5f@gmail.com>
- <20190607214120.GE648@sol.localdomain>
-From:   Denis Kenzior <denkenz@gmail.com>
-Message-ID: <78298612-a36b-deaa-1510-94cf0001af9d@gmail.com>
-Date:   Fri, 7 Jun 2019 16:54:04 -0500
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
- Thunderbird/52.3.0
+        bh=UkQI8hX0vIUpVc3tfTJ4CpjSb/8p01+g0dvWePLdY08=;
+        b=CMfCcIirM/pLxdobtn4VpN9vMX9MaxK/vpZThpnx3mPbjVd9wnJxtZi/vt4fOTcWw3
+         2bMJI78RnnLuttXCqAWAGHMuzvC62RxvyYPkLsc5aKamoDCETgjTicwe8nlmQgXhRPuL
+         w6Uc/zADB/JWvqX1wzkZ5as3UHyW74IB8zMU+9fk8iyFY/vXYam2hk19LL2K+Xjee6KO
+         4wfQSetcsmx0lD8k332TFCnsQbRVyteWoZr1/zdPM4oISHBfXgyxb7sYlhkGATZtOACq
+         edKi5sHWkce1mMkdKUt2Dh+MI23LWuIS6zf8Xie1wD5iBa3sSHmwtM62QlFtQQd9nixr
+         ijpw==
+X-Gm-Message-State: APjAAAXcWUjwzOJkL5/1AK2FD70tNqzZpMoEcwVW9vgpySO51uD3wgGd
+        7nF/hq3aH5owjNVs/wjecFVOrQ==
+X-Google-Smtp-Source: APXvYqwiSuAGcVzbwTvmm2ZIw/J7BlC5c609f8Ulw7reX7J6HoWIpxjWRSnpfKnbC7g5fUiN6hOMHQ==
+X-Received: by 2002:a63:2206:: with SMTP id i6mr2387516pgi.349.1559947060322;
+        Fri, 07 Jun 2019 15:37:40 -0700 (PDT)
+Received: from tictac2.mtv.corp.google.com ([2620:15c:202:1:24fa:e766:52c9:e3b2])
+        by smtp.gmail.com with ESMTPSA id j23sm4185193pgb.63.2019.06.07.15.37.38
+        (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
+        Fri, 07 Jun 2019 15:37:39 -0700 (PDT)
+From:   Douglas Anderson <dianders@chromium.org>
+To:     Ulf Hansson <ulf.hansson@linaro.org>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        Adrian Hunter <adrian.hunter@intel.com>,
+        Arend van Spriel <arend.vanspriel@broadcom.com>
+Cc:     brcm80211-dev-list.pdl@broadcom.com,
+        linux-rockchip@lists.infradead.org,
+        Double Lo <double.lo@cypress.com>, briannorris@chromium.org,
+        linux-wireless@vger.kernel.org,
+        Naveen Gupta <naveen.gupta@cypress.com>,
+        Madhan Mohan R <madhanmohan.r@cypress.com>, mka@chromium.org,
+        Wright Feng <wright.feng@cypress.com>,
+        Chi-Hsien Lin <chi-hsien.lin@cypress.com>,
+        netdev@vger.kernel.org, brcm80211-dev-list@cypress.com,
+        Douglas Anderson <dianders@chromium.org>,
+        linux-mmc@vger.kernel.org,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Shawn Lin <shawn.lin@rock-chips.com>,
+        YueHaibing <yuehaibing@huawei.com>,
+        =?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <rafal@milecki.pl>,
+        Hante Meuleman <hante.meuleman@broadcom.com>,
+        Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
+        Ritesh Harjani <riteshh@codeaurora.org>,
+        Michael Trimarchi <michael@amarulasolutions.com>,
+        Mathieu Malaterre <malat@debian.org>,
+        Wolfram Sang <wsa+renesas@sang-engineering.com>,
+        Franky Lin <franky.lin@broadcom.com>,
+        Ondrej Jirman <megous@megous.com>,
+        Jiong Wu <lohengrin1024@gmail.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Pan Bian <bianpan2016@163.com>, linux-kernel@vger.kernel.org,
+        Madhan Mohan R <MadhanMohan.R@cypress.com>,
+        Tony Lindgren <tony@atomide.com>,
+        Avri Altman <avri.altman@wdc.com>, Pavel Machek <pavel@ucw.cz>
+Subject: [PATCH v3 0/5] brcmfmac: sdio: Deal better w/ transmission errors related to idle
+Date:   Fri,  7 Jun 2019 15:37:11 -0700
+Message-Id: <20190607223716.119277-1-dianders@chromium.org>
+X-Mailer: git-send-email 2.22.0.rc2.383.gf4fbbf30c2-goog
 MIME-Version: 1.0
-In-Reply-To: <20190607214120.GE648@sol.localdomain>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi Eric,
+This series attempts to deal better with the expected transmission
+errors related to the idle states (handled by the Always-On-Subsystem
+or AOS) on the SDIO-based WiFi on rk3288-veyron-minnie,
+rk3288-veyron-speedy, and rk3288-veyron-mickey.
 
-On 06/07/2019 04:41 PM, Eric Biggers wrote:
-> On Fri, Jun 07, 2019 at 04:28:59PM -0500, Denis Kenzior wrote:
->> Hi Eric,
->>
->> On 06/07/2019 04:15 PM, Eric Biggers wrote:
->>> On Fri, Jun 07, 2019 at 03:45:45PM -0500, Denis Kenzior wrote:
->>>> Hi Ard,
->>>>
->>>>>
->>>>> Ah ok, good to know. That does imply that the driver is not entirely
->>>>> broken, which is good news I suppose.
->>>>>
->>>>
->>>> Not entirely, but we did have to resort to using multiple sockets, otherwise
->>>> parallel encrypt/decrypt operations on the socket would result in invalid
->>>> behavior.  Probably due to the issue Eric already pointed out.
->>>>
->>>> No such issue with any other ciphers that we use.
->>>>
->>>> Regards,
->>>> -Denis
->>>
->>> Okay, that sucks, so we do have to keep "ecb(arc4)" in the crypto API then.  And
->>> we can't fix its name to be just "arc4".  It's odd that someone would choose to
->>> use AF_ALG over writing a 20 line arc4_crypt() in userspace, but whatever.
->>>
->>> Yes, "ecb(arc4)" isn't currently thread safe.  ARC4 uses a single key whereas
->>> modern stream ciphers use a key + IV.  To comply with the crypto API it would
->>> have to copy the key to a stack buffer for each encryption/decryption.  But it
->>> doesn't; it just updates the key instead, making it non thread safe.  If users
->>> are actually relying on that, we'll have to settle for adding a mutex instead.
->>
->> Well the issue isn't even about being thread safe.  We run a single thread
->> in iwd.  The details are a bit fuzzy now due to time elapsed, but if I
->> recall correctly, even behavior like:
->>
->> fd = socket();
->> bind(fd, ecb(arc4));
->> setsockopt(fd, ...key...);
->>
->> sendmsg(fd, OP_ENCRYPT, ...);
->> sendmsg(fd, OP_DECRYPT, ...);
->> sendmsg(fd, OP_ENCRYPT, ...);
->>
->> would produce different (incorrect) encrypted results compared to
->>
->> sendmsg(fd, OP_ENCRYPT, ...)
->> sendmsg(fd, OP_ENCRYPT, ...)
->>
-> 
-> That's because currently each operation uses the next bytes from the keystream,
-> and a new keystream is started only by setsockopt(..., ALG_SET_KEY, ...).
-> There's no difference between ARC4 encryption and decryption; both just XOR the
-> keystream with the data.  Are you saying you expected each encryption to be a
-> continuation of the previous encryption, but decryptions to be independent?
-> 
+Some details about those errors can be found in
+<https://crbug.com/960222>, but to summarize it here: if we try to
+send the wakeup command to the WiFi card at the same time it has
+decided to wake up itself then it will behave badly on the SDIO bus.
+This can cause timeouts or CRC errors.
 
- From a userspace / api perspective, yes I would have expected the 
-encrypt and decrypt to work independently.  No biggie now, but I 
-remember being surprised when this bit me as no other cipher had this 
-behavior.  E.g. interleaving of operations seemed to only affect arc4 
-results.
+When I tested on 4.19 and 4.20 these CRC errors can be seen to cause
+re-tuning.  Since I am currently developing on 4.19 this was the
+original problem I attempted to solve.
 
-Are the exact semantics spelled out somewhere?
+On mainline it turns out that you don't see the retuning errors but
+you see tons of spam about timeouts trying to wakeup from sleep.  I
+tracked down the commit that was causing that and have partially
+reverted it here.  I have no real knowledge about Broadcom WiFi, but
+the commit that was causing problems sounds (from the descriptioin) to
+be a hack commit penalizing all Broadcom WiFi users because of a bug
+in a Cypress SD controller.  I will let others comment if this is
+truly the case and, if so, what the right solution should be.
 
-Regards,
--Denis
+For v3 of this series I have added 2 patches to the end of the series
+to address errors that would show up on systems with these same SDIO
+WiFi cards when used on controllers that do periodic retuning.  These
+systems need an extra fix to prevent the retuning from happening when
+the card is asleep.
+
+Changes in v3:
+- Took out the spinlock since I believe this is all in one context.
+- Expect errors for all of brcmf_sdio_kso_control() (Adrian).
+- ("mmc: core: Export mmc_retune_hold_now() mmc_retune_release()") new for v3.
+- ("brcmfmac: sdio: Don't tune while the card is off") new for v3.
+
+Changes in v2:
+- A full revert, not just a partial one (Arend).  ...with explicit Cc.
+- Updated commit message to clarify based on discussion of v1.
+
+Douglas Anderson (5):
+  Revert "brcmfmac: disable command decode in sdio_aos"
+  mmc: core: API for temporarily disabling auto-retuning due to errors
+  brcmfmac: sdio: Disable auto-tuning around commands expected to fail
+  mmc: core: Export mmc_retune_hold_now() mmc_retune_release()
+  brcmfmac: sdio: Don't tune while the card is off
+
+ drivers/mmc/core/core.c                       | 19 +++++++++++++++++--
+ drivers/mmc/core/host.c                       |  7 +++++++
+ drivers/mmc/core/host.h                       |  7 -------
+ .../broadcom/brcm80211/brcmfmac/sdio.c        | 18 +++++++++++++-----
+ include/linux/mmc/core.h                      |  4 ++++
+ include/linux/mmc/host.h                      |  1 +
+ 6 files changed, 42 insertions(+), 14 deletions(-)
+
+-- 
+2.22.0.rc2.383.gf4fbbf30c2-goog
+
