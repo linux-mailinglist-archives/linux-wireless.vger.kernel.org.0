@@ -2,39 +2,41 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C77DC392AF
-	for <lists+linux-wireless@lfdr.de>; Fri,  7 Jun 2019 19:01:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C9A97392B2
+	for <lists+linux-wireless@lfdr.de>; Fri,  7 Jun 2019 19:02:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731131AbfFGRBo (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 7 Jun 2019 13:01:44 -0400
-Received: from nbd.name ([46.4.11.11]:59356 "EHLO nbd.name"
+        id S1731093AbfFGRCF (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 7 Jun 2019 13:02:05 -0400
+Received: from nbd.name ([46.4.11.11]:59402 "EHLO nbd.name"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1731099AbfFGRBo (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 7 Jun 2019 13:01:44 -0400
+        id S1729137AbfFGRCF (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 7 Jun 2019 13:02:05 -0400
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name;
          s=20160729; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:
         MIME-Version:Date:Message-ID:From:References:Cc:To:Subject:Sender:Reply-To:
         Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
         Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
         List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=UP3HYaBRyyZCgrGkjreuXPoJQnusxc/pp3ork1+U7J0=; b=NvvbWXHuJRSTpWUc/rF5CX0QxG
-        wG2uEqYO38wVscQkr6Apxn9JLac0sUUMgviV7orNAv5vVOSXymrV0r6gSaj4maQgAGKbq+cSzg6Gg
-        7Y2F1Bc8IifKwDNxZm1EKYe3tzjPDb7gGTy7yGkQ2zy3AMRwo8DhdtYa61Q/yUpDiVyM=;
+        bh=w1NkHhj3P/sBvSMvxpUd9PLtJQN0qShfm+pLtoheRUo=; b=kHGnpw7zxPutB/Ss7SbHat/1rJ
+        tLj2TGAlVTPJg84j5twrteZIN57pTyVLZDbRQRqb6XO/IPr6XdXfnnDBMzdy18glsMUk7X5Jn2xHD
+        l06jkGzivkfnK/5k6v7CLH0LsuiFcw+nb/SR+7bnr/ey9wWj6zay2Y/U4lKzoxBfjJP8=;
 Received: from p4ff13bc7.dip0.t-ipconnect.de ([79.241.59.199] helo=nf.local)
         by ds12 with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
         (Exim 4.89)
         (envelope-from <nbd@nbd.name>)
-        id 1hZIFF-00011f-Hm; Fri, 07 Jun 2019 19:01:37 +0200
-Subject: Re: [PATCH] mt76: Remove set but not used variables 'pid' and
- 'final_mpdu'
-To:     YueHaibing <yuehaibing@huawei.com>, lorenzo.bianconi83@gmail.com,
-        ryder.lee@mediatek.com, royluo@google.com, kvalo@codeaurora.org,
-        matthias.bgg@gmail.com, sgruszka@redhat.com
-Cc:     linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
-        linux-wireless@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        linux-mediatek@lists.infradead.org, davem@davemloft.net
-References: <20190529145356.13872-1-yuehaibing@huawei.com>
+        id 1hZIFf-00013n-CA; Fri, 07 Jun 2019 19:02:03 +0200
+Subject: Re: [PATCH v3 2/2] mt76: mt7615: fix slow performance when enable
+ encryption
+To:     Ryder Lee <ryder.lee@mediatek.com>,
+        Lorenzo Bianconi <lorenzo.bianconi@redhat.com>
+Cc:     Roy Luo <royluo@google.com>, YF Luo <yf.luo@mediatek.com>,
+        Yiwei Chung <yiwei.chung@mediatek.com>,
+        Sean Wang <sean.wang@mediatek.com>,
+        Chih-Min Chen <chih-min.Chen@mediatek.com>,
+        linux-wireless@vger.kernel.org, linux-mediatek@lists.infradead.org,
+        linux-kernel@vger.kernel.org
+References: <a1ff446dfc06e2443552e7ec2d754099aacce7df.1559541944.git.ryder.lee@mediatek.com>
+ <429cf8c1421017b4030b8b6e4fa9e5cbea953d3c.1559541944.git.ryder.lee@mediatek.com>
 From:   Felix Fietkau <nbd@nbd.name>
 Openpgp: preference=signencrypt
 Autocrypt: addr=nbd@nbd.name; prefer-encrypt=mutual; keydata=
@@ -60,33 +62,31 @@ Autocrypt: addr=nbd@nbd.name; prefer-encrypt=mutual; keydata=
  TspgwBWLnXQvP5EDvlZnNaKa/3oBes6z0QdaSOwZCRA3QSLHBwtgUsrT6RxRSweLrcabiEkE
  GBECAAkFAkah5FQCGwwACgkQ130UHQKnbvW2GgCfTKx80VvCR/PvsUlrvdOLsIgeRGAAn1ee
  RjMaxwtSdaCKMw3j33ZbsWS4
-Message-ID: <f3e5d386-e1de-d707-397d-2ef99e09f345@nbd.name>
-Date:   Fri, 7 Jun 2019 19:01:36 +0200
+Message-ID: <034e7eaa-5e39-57c4-1e5b-f58d41ad451a@nbd.name>
+Date:   Fri, 7 Jun 2019 19:02:02 +0200
 User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.14; rv:60.0)
  Gecko/20100101 Thunderbird/60.7.0
 MIME-Version: 1.0
-In-Reply-To: <20190529145356.13872-1-yuehaibing@huawei.com>
+In-Reply-To: <429cf8c1421017b4030b8b6e4fa9e5cbea953d3c.1559541944.git.ryder.lee@mediatek.com>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 2019-05-29 16:53, YueHaibing wrote:
-> Fixes gcc '-Wunused-but-set-variable' warnings:
+On 2019-06-03 08:08, Ryder Lee wrote:
+> Fix wrong WCID assignment and add RKV (RX Key of this entry is valid)
+> flag to check if peer uses the same configuration with previous
+> handshaking.
 > 
-> drivers/net/wireless/mediatek/mt76/mt7603/mac.c: In function mt7603_fill_txs:
-> drivers/net/wireless/mediatek/mt76/mt7603/mac.c:969:5: warning: variable pid set but not used [-Wunused-but-set-variable]
-> drivers/net/wireless/mediatek/mt76/mt7603/mac.c:961:7: warning: variable final_mpdu set but not used [-Wunused-but-set-variable]
-> drivers/net/wireless/mediatek/mt76/mt7615/mac.c: In function mt7615_fill_txs:
-> drivers/net/wireless/mediatek/mt76/mt7615/mac.c:555:5: warning: variable pid set but not used [-Wunused-but-set-variable]
-> drivers/net/wireless/mediatek/mt76/mt7615/mac.c:552:19: warning: variable final_mpdu set but not used [-Wunused-but-set-variable]
+> If the configuration is mismatch, WTBL indicates a “cipher mismatch”
+> to stop SEC decryption to prevent the packet from damage.
 > 
-> They are never used, so can be removed.
-> 
-> Signed-off-by: YueHaibing <yuehaibing@huawei.com>
+> Suggested-by: YF Luo <yf.luo@mediatek.com>
+> Suggested-by: Yiwei Chung <yiwei.chung@mediatek.com>
+> Signed-off-by: Ryder Lee <ryder.lee@mediatek.com>
 
 Applied, thanks.
 
