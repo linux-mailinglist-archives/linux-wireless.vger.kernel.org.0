@@ -2,222 +2,92 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 5AA2F396D9
-	for <lists+linux-wireless@lfdr.de>; Fri,  7 Jun 2019 22:31:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DF388396C4
+	for <lists+linux-wireless@lfdr.de>; Fri,  7 Jun 2019 22:24:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730242AbfFGUbG (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 7 Jun 2019 16:31:06 -0400
-Received: from saul.pp3345.net ([163.172.111.124]:55396 "EHLO saul.pp3345.net"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1729482AbfFGUbG (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 7 Jun 2019 16:31:06 -0400
-X-Greylist: delayed 605 seconds by postgrey-1.27 at vger.kernel.org; Fri, 07 Jun 2019 16:31:04 EDT
-Received: from localhost (localhost [127.0.0.1]) (Authenticated sender: dev@pp3345.net)
-        by saul.pp3345.net (Postcow) with ESMTPSA id A413E9A3D91;
-        Fri,  7 Jun 2019 22:20:57 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pp3345.net; s=saul;
-        t=1559938858; h=from:from:sender:reply-to:subject:subject:date:date:
-         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references:openpgp:autocrypt;
-        bh=QRpCL9CaNLwgsrXY1NZA4TdMi/3oB7KvdIXX0YrjYW4=;
-        b=fdzt7oke30OUze9bM1uFDrHICwBMcj2Xb5OE6igEmSU8WGzBuZOnxFbS2hi69p/4LBZK2v
-        ad+xSV6rcaWqpxW+XXyR/dc/Ine/IzM2BWL12gmB1Hhxyd3W32UFBfFa+Q/GRKro0I+e5+
-        wnZ4Cklk4kScuNtXaAemPLlHX7yWkh4LQ0sPUi3nrTmwFgm6ZjiyZEvVzF7kqYhJmeiifD
-        hdnZrvb0OffHj4ApU9lVJlCWw41N3DAt0JdZp/ID8/UdSOvKTA3wSUJk/V721nQCk7ZFSr
-        156lScAv76yjVogYk5oyvgFC60Dx9AhVtgP00wFUvirMFbaPDOiK8iq8tIuPEA==
-Subject: Re: iwl_mvm_add_new_dqa_stream_wk BUG in lib/list_debug.c:56
-To:     Marc Haber <mh+netdev@zugschlus.de>, linux-wireless@vger.kernel.org
-References: <20190530081257.GA26133@torres.zugschlus.de>
- <20190602134842.GC3249@torres.zugschlus.de>
-Cc:     linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
-        Johannes Berg <johannes.berg@intel.com>,
-        Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
-        Luca Coelho <luciano.coelho@intel.com>,
-        Intel Linux Wireless <linuxwifi@intel.com>
-From:   Yussuf Khalil <dev@pp3345.net>
-Message-ID: <29401822-d7e9-430b-d284-706bf68acb8a@pp3345.net>
-Date:   Fri, 7 Jun 2019 22:20:56 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.7.0
-MIME-Version: 1.0
-In-Reply-To: <20190602134842.GC3249@torres.zugschlus.de>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: base64
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=pp3345.net;
-        s=saul; t=1559938858; h=from:from:sender:reply-to:subject:subject:date:date:
-         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references:openpgp:autocrypt;
-        bh=QRpCL9CaNLwgsrXY1NZA4TdMi/3oB7KvdIXX0YrjYW4=;
-        b=P+u+KMtP8yJxrWnr4mtO2odyzc9Ix1jyBIGGLMSiRH0+Xv3h3SqlN9edXboQz/cQWFgZc1
-        3gT2GAeZI6jddEVhnt2U3FNvMllIph2tIxvA0S537jg8SxDSJtvdHjLfJE/0EENqP19jl3
-        hM+H/I7g/oGPtsrYsiHqzb2HV7ZbRpk2m24Ffjc/WfQ82R1ki7biOCaKcNUppjGkt46Gxn
-        LekfRPEhNy0uBgXp2rIHS8I6WB5BuiiUxlJoygfN8H+6pcMWPuDi9LPYx+D7tkc/Wbpe39
-        JkK/Hqkv8VJM/T5DNsSSZZLl6V6iL0ZtCuwVIDk7K9HQxpFqGe3cQzQMU2egLQ==
-ARC-Seal: i=1; s=saul; d=pp3345.net; t=1559938858; a=rsa-sha256; cv=none;
-        b=I2WdmbSXf4VLh7EYccieMDPkEMbTpRTppPE5ZGTaLgh2QnVxG9mIODyz2d+JImSMFdAMjM
-        E2lcb7LWngQtYNmkkB41H9kv8nOLZFwVCoK/D90aTwtguEkb17K3W2qzjgC4BTs+hTjdiO
-        esnNPNNls8PJU3jn7aZQKnkLbpzxSbJy/OgVw5b1vvNi8A22DLL8CBvurAPlslCk9O239q
-        TyHvffVJgpcotHK1Cv2rb0+s6+f/4X1pm70RIT/OEF13byC+PLWXpc4tZgdQzmvWPpfkOH
-        HKkiqk5wKlrCOa9Coc0pmPhLoU1n3+B/Nx65hrObqFSS/yaSjr4NNszOKtxONw==
-ARC-Authentication-Results: i=1;
-        saul.pp3345.net;
-        auth=pass smtp.auth=dev@pp3345.net smtp.mailfrom=dev@pp3345.net
+        id S1729456AbfFGUYR convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 7 Jun 2019 16:24:17 -0400
+Received: from coyote.holtmann.net ([212.227.132.17]:43536 "EHLO
+        mail.holtmann.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729268AbfFGUYR (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 7 Jun 2019 16:24:17 -0400
+Received: from marcel-macpro.fritz.box (p5B3D2A37.dip0.t-ipconnect.de [91.61.42.55])
+        by mail.holtmann.org (Postfix) with ESMTPSA id 71658CF2C8;
+        Fri,  7 Jun 2019 22:32:39 +0200 (CEST)
+Content-Type: text/plain;
+        charset=utf-8
+Mime-Version: 1.0 (Mac OS X Mail 12.4 \(3445.104.11\))
+Subject: Re: [RFC PATCH 0/3] move WEP implementation to skcipher interface
+From:   Marcel Holtmann <marcel@holtmann.org>
+In-Reply-To: <20190607175947.GB648@sol.localdomain>
+Date:   Fri, 7 Jun 2019 22:24:15 +0200
+Cc:     Ard Biesheuvel <ard.biesheuvel@linaro.org>,
+        linux-crypto@vger.kernel.org,
+        Herbert Xu <herbert@gondor.apana.org.au>,
+        Johannes Berg <johannes@sipsolutions.net>,
+        "open list:NFC SUBSYSTEM" <linux-wireless@vger.kernel.org>,
+        "David S. Miller" <davem@davemloft.net>
+Content-Transfer-Encoding: 8BIT
+Message-Id: <97BB95F6-4A4C-4984-9EAB-6069E19B4A4F@holtmann.org>
+References: <20190607144944.13485-1-ard.biesheuvel@linaro.org>
+ <20190607175947.GB648@sol.localdomain>
+To:     Eric Biggers <ebiggers@kernel.org>
+X-Mailer: Apple Mail (2.3445.104.11)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Q0MnaW5nIGl3bHdpZmkgbWFpbnRhaW5lcnMgdG8gZ2V0IHNvbWUgYXR0ZW50aW9uIGZvciB0
-aGlzIGlzc3VlLg0KDQpJIGFtIGV4cGVyaWVuY2luZyB0aGUgdmVyeSBzYW1lIGJ1ZyBvbiBh
-IFRoaW5rUGFkIFQ0ODBzIHJ1bm5pbmcgNS4xLjYgDQp3aXRoIEZlZG9yYSAzMC4gQSBmcmll
-bmQgaXMgc2VlaW5nIGl0IG9uIGhpcyBYMSBDYXJib24gNnRoIEdlbiwgdG9vLiANCkJvdGgg
-aGF2ZSBhbiAiSW50ZWwgQ29ycG9yYXRpb24gV2lyZWxlc3MgODI2NSAvIDgyNzUiIGNhcmQg
-YWNjb3JkaW5nIHRvIA0KbHNwY2kuDQoNCk5vdGFibHksIGluIGFsbCBjYXNlcyBJJ3ZlIG9i
-c2VydmVkIGl0IG9jY3VycmVkIHJpZ2h0IGFmdGVyIHJvYW1pbmcgZnJvbSANCm9uZSBBUCB0
-byBhbm90aGVyICh0aG91Z2ggSSBjYW4ndCBndWFyYW50ZWUgdGhpcyBpc24ndCBhIGNvaW5j
-aWRlbmNlKS4gDQpIZXJlIGlzIHRoZSBkbWVzZyBvdXRwdXQgZnJvbSBteSBtYWNoaW5lOg0K
-DQo+IEp1biAwMiAwMDozODoyNSBwcDMzNDUtbGFwdG9wIGtlcm5lbDogd2xwNjFzMDogZGlz
-Y29ubmVjdCBmcm9tIEFQIDljOjFjOjEyOjgyOjVhOmIwIGZvciBuZXcgYXV0aCB0byBhYzph
-MzoxZTpkOTo1ZTpkMA0KDQo+IEp1biAwMiAwMDozODoyNSBwcDMzNDUtbGFwdG9wIGtlcm5l
-bDogd2xwNjFzMDogYXV0aGVudGljYXRlIHdpdGggYWM6YTM6MWU6ZDk6NWU6ZDANCg0KPiBK
-dW4gMDIgMDA6Mzg6MjUgcHAzMzQ1LWxhcHRvcCBrZXJuZWw6IHdscDYxczA6IHNlbmQgYXV0
-aCB0byBhYzphMzoxZTpkOTo1ZTpkMCAodHJ5IDEvMykNCg0KPiBKdW4gMDIgMDA6Mzg6MjUg
-cHAzMzQ1LWxhcHRvcCBrZXJuZWw6IHdscDYxczA6IHNlbmQgYXV0aCB0byBhYzphMzoxZTpk
-OTo1ZTpkMCAodHJ5IDIvMykNCg0KPiBKdW4gMDIgMDA6Mzg6MjUgcHAzMzQ1LWxhcHRvcCBr
-ZXJuZWw6IHdscDYxczA6IHNlbmQgYXV0aCB0byBhYzphMzoxZTpkOTo1ZTpkMCAodHJ5IDMv
-MykNCg0KPiBKdW4gMDIgMDA6Mzg6MjUgcHAzMzQ1LWxhcHRvcCBrZXJuZWw6IHdscDYxczA6
-IGF1dGhlbnRpY2F0aW9uIHdpdGggYWM6YTM6MWU6ZDk6NWU6ZDAgdGltZWQgb3V0DQoNCj4g
-SnVuIDAyIDAwOjM4OjI2IHBwMzM0NS1sYXB0b3Aga2VybmVsOiB3bHA2MXMwOiBhdXRoZW50
-aWNhdGUgd2l0aCA5YzoxYzoxMjo4Mjo1YTpiMA0KDQo+IEp1biAwMiAwMDozODoyNiBwcDMz
-NDUtbGFwdG9wIGtlcm5lbDogd2xwNjFzMDogc2VuZCBhdXRoIHRvIDljOjFjOjEyOjgyOjVh
-OmIwICh0cnkgMS8zKQ0KDQo+IEp1biAwMiAwMDozODoyNiBwcDMzNDUtbGFwdG9wIGtlcm5l
-bDogd2xwNjFzMDogYXV0aGVudGljYXRlZA0KDQo+IEp1biAwMiAwMDozODoyNiBwcDMzNDUt
-bGFwdG9wIGtlcm5lbDogd2xwNjFzMDogYXNzb2NpYXRlIHdpdGggOWM6MWM6MTI6ODI6NWE6
-YjAgKHRyeSAxLzMpDQoNCj4gSnVuIDAyIDAwOjM4OjI2IHBwMzM0NS1sYXB0b3Aga2VybmVs
-OiB3bHA2MXMwOiBSWCBBc3NvY1Jlc3AgZnJvbSA5YzoxYzoxMjo4Mjo1YTpiMCAoY2FwYWI9
-MHgxIHN0YXR1cz0wIGFpZD00KQ0KDQo+IEp1biAwMiAwMDozODoyNiBwcDMzNDUtbGFwdG9w
-IGtlcm5lbDogd2xwNjFzMDogYXNzb2NpYXRlZA0KDQo+IEp1biAwMiAwMDozODoyNiBwcDMz
-NDUtbGFwdG9wIGtlcm5lbDogbGlzdF9kZWwgY29ycnVwdGlvbi4gbmV4dC0+cHJldiBzaG91
-bGQgYmUgZmZmZjlhOWY2NGU1MjdmOCwgYnV0IHdhcyBmZmZmOWE5ZjY0ZTUyMTA4DQoNCj4g
-SnVuIDAyIDAwOjM4OjI2IHBwMzM0NS1sYXB0b3Aga2VybmVsOiAtLS0tLS0tLS0tLS1bIGN1
-dCBoZXJlIF0tLS0tLS0tLS0tLS0NCg0KPiBKdW4gMDIgMDA6Mzg6MjYgcHAzMzQ1LWxhcHRv
-cCBrZXJuZWw6IGtlcm5lbCBCVUcgYXQgbGliL2xpc3RfZGVidWcuYzo1NCENCg0KPiBKdW4g
-MDIgMDA6Mzg6MjYgcHAzMzQ1LWxhcHRvcCBrZXJuZWw6IGludmFsaWQgb3Bjb2RlOiAwMDAw
-IFsjMV0gU01QIFBUSQ0KDQo+IEp1biAwMiAwMDozODoyNiBwcDMzNDUtbGFwdG9wIGtlcm5l
-bDogQ1BVOiA1IFBJRDogMjEyOCBDb21tOiBrd29ya2VyLzU6MyBOb3QgdGFpbnRlZCA1LjEu
-Ni0zMDAuZmMzMC54ODZfNjQgIzENCg0KPiBKdW4gMDIgMDA6Mzg6MjYgcHAzMzQ1LWxhcHRv
-cCBrZXJuZWw6IEhhcmR3YXJlIG5hbWU6IExFTk9WTyAyMEw4UzAyRTAwLzIwTDhTMDJFMDAs
-IEJJT1MgTjIyRVQ1NFcgKDEuMzEgKSAwNC8yMi8yMDE5DQoNCj4gSnVuIDAyIDAwOjM4OjI2
-IHBwMzM0NS1sYXB0b3Aga2VybmVsOiBXb3JrcXVldWU6IGV2ZW50cyBpd2xfbXZtX2FkZF9u
-ZXdfZHFhX3N0cmVhbV93ayBbaXdsbXZtXQ0KDQo+IEp1biAwMiAwMDozODoyNiBwcDMzNDUt
-bGFwdG9wIGtlcm5lbDogUklQOiAwMDEwOl9fbGlzdF9kZWxfZW50cnlfdmFsaWQuY29sZCsw
-eDFkLzB4NTUNCg0KPiBKdW4gMDIgMDA6Mzg6MjYgcHAzMzQ1LWxhcHRvcCBrZXJuZWw6IENv
-ZGU6IGM3IGM3IDE4IDU1IDExIGI4IGU4IGY1IDBiIGM3IGZmIDBmIDBiIDQ4IDg5IGZlIDQ4
-IGM3IGM3IGE4IDU1IDExIGI4IGU4IGU0IDBiIGM3IGZmIDBmIDBiIDQ4IGM3IGM3IDU4IDU2
-IDExIGI4IGU4IGQ2IDBiIGM3IGZmIDwwZj4gMGIgNDggODkgZjIgNDggODkgZmUgNDggYzcg
-YzcgMTggNTYgMTEgYjggZTggYzIgMGIgYzcgZmYgMGYgMGINCg0KPiBKdW4gMDIgMDA6Mzg6
-MjYgcHAzMzQ1LWxhcHRvcCBrZXJuZWw6IFJTUDogMDAwMDpmZmZmYThlYzRhZDczZGM4IEVG
-TEFHUzogMDAwMTAyNDYNCg0KPiBKdW4gMDIgMDA6Mzg6MjYgcHAzMzQ1LWxhcHRvcCBrZXJu
-ZWw6IFJBWDogMDAwMDAwMDAwMDAwMDA1NCBSQlg6IGZmZmY5YTlmNjRlNTI3ZjggUkNYOiAw
-MDAwMDAwMDAwMDAwMDAwDQoNCj4gSnVuIDAyIDAwOjM4OjI2IHBwMzM0NS1sYXB0b3Aga2Vy
-bmVsOiBSRFg6IDAwMDAwMDAwMDAwMDAwMDAgUlNJOiBmZmZmOWE5ZmNmMzU2OGM4IFJESTog
-ZmZmZjlhOWZjZjM1NjhjOA0KDQo+IEp1biAwMiAwMDozODoyNiBwcDMzNDUtbGFwdG9wIGtl
-cm5lbDogUkJQOiBmZmZmOWE5ZjY0ZTU2ODk4IFIwODogZmZmZjlhOWZjZjM1NjhjOCBSMDk6
-IDAwMDAwMDAwMDAwMDBjNmYNCg0KPiBKdW4gMDIgMDA6Mzg6MjYgcHAzMzQ1LWxhcHRvcCBr
-ZXJuZWw6IFIxMDogZmZmZmZmZmZiODlmOTMwYyBSMTE6IDAwMDAwMDAwMDAwMDAwMDMgUjEy
-OiAwMDAwMDAwMDAwMDAwMDA0DQoNCj4gSnVuIDAyIDAwOjM4OjI2IHBwMzM0NS1sYXB0b3Ag
-a2VybmVsOiBSMTM6IGZmZmY5YTlmYzg3OWEzODggUjE0OiAwMDAwMDAwMDAwMDAwMDAwIFIx
-NTogZmZmZjlhOWZjODc5OTYwOA0KDQo+IEp1biAwMiAwMDozODoyNiBwcDMzNDUtbGFwdG9w
-IGtlcm5lbDogRlM6ICAwMDAwMDAwMDAwMDAwMDAwKDAwMDApIEdTOmZmZmY5YTlmY2YzNDAw
-MDAoMDAwMCkga25sR1M6MDAwMDAwMDAwMDAwMDAwMA0KDQo+IEp1biAwMiAwMDozODoyNiBw
-cDMzNDUtbGFwdG9wIGtlcm5lbDogQ1M6ICAwMDEwIERTOiAwMDAwIEVTOiAwMDAwIENSMDog
-MDAwMDAwMDA4MDA1MDAzMw0KDQo+IEp1biAwMiAwMDozODoyNiBwcDMzNDUtbGFwdG9wIGtl
-cm5lbDogQ1IyOiAwMDAwMWQzYTkxNmJmMDAwIENSMzogMDAwMDAwMDQ4N2M5NDAwMyBDUjQ6
-IDAwMDAwMDAwMDAzNjA2ZTANCg0KPiBKdW4gMDIgMDA6Mzg6MjYgcHAzMzQ1LWxhcHRvcCBr
-ZXJuZWw6IENhbGwgVHJhY2U6DQoNCj4gSnVuIDAyIDAwOjM4OjI2IHBwMzM0NS1sYXB0b3Ag
-a2VybmVsOiAgaXdsX212bV9hZGRfbmV3X2RxYV9zdHJlYW1fd2srMHgyZjMvMHg4NzAgW2l3
-bG12bV0NCg0KPiBKdW4gMDIgMDA6Mzg6MjYgcHAzMzQ1LWxhcHRvcCBrZXJuZWw6ICA/IF9f
-c3dpdGNoX3RvKzB4NDAvMHg0YzANCg0KPiBKdW4gMDIgMDA6Mzg6MjYgcHAzMzQ1LWxhcHRv
-cCBrZXJuZWw6ICBwcm9jZXNzX29uZV93b3JrKzB4MTlkLzB4MzgwDQoNCj4gSnVuIDAyIDAw
-OjM4OjI2IHBwMzM0NS1sYXB0b3Aga2VybmVsOiAgd29ya2VyX3RocmVhZCsweDUwLzB4M2Iw
-DQoNCj4gSnVuIDAyIDAwOjM4OjI2IHBwMzM0NS1sYXB0b3Aga2VybmVsOiAga3RocmVhZCsw
-eGZiLzB4MTMwDQoNCj4gSnVuIDAyIDAwOjM4OjI2IHBwMzM0NS1sYXB0b3Aga2VybmVsOiAg
-PyBwcm9jZXNzX29uZV93b3JrKzB4MzgwLzB4MzgwDQoNCj4gSnVuIDAyIDAwOjM4OjI2IHBw
-MzM0NS1sYXB0b3Aga2VybmVsOiAgPyBrdGhyZWFkX3BhcmsrMHg5MC8weDkwDQoNCj4gSnVu
-IDAyIDAwOjM4OjI2IHBwMzM0NS1sYXB0b3Aga2VybmVsOiAgcmV0X2Zyb21fZm9yaysweDM1
-LzB4NDANCg0KPiBKdW4gMDIgMDA6Mzg6MjYgcHAzMzQ1LWxhcHRvcCBrZXJuZWw6IE1vZHVs
-ZXMgbGlua2VkIGluOiB4dF9DSEVDS1NVTSBpcHRfTUFTUVVFUkFERSB0dW4gYnJpZGdlIHN0
-cCBsbGMgbmZfY29ubnRyYWNrX25ldGJpb3NfbnMgbmZfY29ubnRyYWNrX2Jyb2FkY2FzdCB4
-dF9DVCBpcDZ0X3JwZmlsdGVyIGlwNnRfUkVKRUNUIG5mX3JlamVjdF9pcHY2IGlwdF9SRUpF
-Q1QgbmZfcmVqZWN0X2lwdjQgeHRfY29ubnRyYWNrIGVidGFibGVfbmF0IGlwNnRhYmxlX25h
-dCBpcDZ0YWJsZV9tYW5nbGUgaXA2dGFibGVfcmF3IGlwNnRhYmxlX3NlY3VyaXR5IGlwdGFi
-bGVfbmF0IG5mX25hdCBpcHRhYmxlX21hbmdsZSBpcHRhYmxlX3JhdyBpcHRhYmxlX3NlY3Vy
-aXR5IG5mX2Nvbm50cmFjayBuZl9kZWZyYWdfaXB2NiBuZl9kZWZyYWdfaXB2NCBsaWJjcmMz
-MmMgaXBfc2V0IG5mbmV0bGluayBlYnRhYmxlX2ZpbHRlciBlYnRhYmxlcyBpcDZ0YWJsZV9m
-aWx0ZXIgaXA2X3RhYmxlcyBpcHRhYmxlX2ZpbHRlciBpcF90YWJsZXMgYm5lcCBzdW5ycGMg
-dmZhdCBmYXQgYXJjNCBlbGFuX2kyYyBpd2xtdm0gbWFjODAyMTEgbWVpX2hkY3AgaVRDT193
-ZHQgaVRDT192ZW5kb3Jfc3VwcG9ydCBzbmRfc29jX3NrbCBzbmRfc29jX2hkYWNfaGRhIHNu
-ZF9oZGFfZXh0X2NvcmUgc25kX3NvY19za2xfaXBjIHNuZF9zb2Nfc3N0X2lwYyBpbnRlbF9y
-YXBsIHNuZF9zb2Nfc3N0X2RzcCBpd2x3aWZpIHNuZF9zb2NfYWNwaV9pbnRlbF9tYXRjaCBz
-bmRfc29jX2FjcGkgdXZjdmlkZW8gc25kX2hkYV9jb2RlY19oZG1pIHg4Nl9wa2dfdGVtcF90
-aGVybWFsIGludGVsX3Bvd2VyY2xhbXAgYnR1c2IgY29yZXRlbXAgYnRydGwgYnRiY20gc25k
-X3NvY19jb3JlIGJ0aW50ZWwga3ZtX2ludGVsIHZpZGVvYnVmMl92bWFsbG9jIGJsdWV0b290
-aCBzbmRfaGRhX2NvZGVjX3JlYWx0ZWsgdmlkZW9idWYyX21lbW9wcyB2aWRlb2J1ZjJfdjRs
-MiB2aWRlb2J1ZjJfY29tbW9uIHNuZF9oZGFfY29kZWNfZ2VuZXJpYyB2aWRlb2RldiBzbmRf
-Y29tcHJlc3MNCg0KPiBKdW4gMDIgMDA6Mzg6MjYgcHAzMzQ1LWxhcHRvcCBrZXJuZWw6ICBh
-Yzk3X2J1cyBzbmRfcGNtX2RtYWVuZ2luZSBqb3lkZXYgc25kX2hkYV9pbnRlbCBrdm0gY2Zn
-ODAyMTEgc25kX2hkYV9jb2RlYyBpbnRlbF93bWlfdGh1bmRlcmJvbHQgd21pX2Jtb2YgdGh1
-bmRlcmJvbHQgbWVkaWEgc25kX2hkYV9jb3JlIGVjZGhfZ2VuZXJpYyBzbmRfaHdkZXAgaXJx
-YnlwYXNzIHNuZF9zZXEgaW50ZWxfY3N0YXRlIGludGVsX3VuY29yZSBzbmRfc2VxX2Rldmlj
-ZSBpbnRlbF9yYXBsX3BlcmYgc25kX3BjbSBzbmRfdGltZXIgdGhpbmtwYWRfYWNwaSBtZWlf
-bWUgaW50ZWxfeGhjaV91c2Jfcm9sZV9zd2l0Y2ggaWRtYTY0IGkyY19pODAxIG1laSByb2xl
-cyBsZWR0cmlnX2F1ZGlvIHVjc2lfYWNwaSBzbmQgaW50ZWxfbHBzc19wY2kgdHlwZWNfdWNz
-aSBpbnRlbF9scHNzIHByb2Nlc3Nvcl90aGVybWFsX2RldmljZSBpbnRlbF9wY2hfdGhlcm1h
-bCB0eXBlYyBpbnRlbF9zb2NfZHRzX2lvc2Ygc291bmRjb3JlIHJma2lsbCBpbnQzNDAzX3Ro
-ZXJtYWwgaW50MzQweF90aGVybWFsX3pvbmUgaW50MzQwMF90aGVybWFsIGFjcGlfcGFkIGFj
-cGlfdGhlcm1hbF9yZWwgcGNjX2NwdWZyZXEgZG1fY3J5cHQgaTkxNSBub3V2ZWF1IG14bV93
-bWkgdHRtIGNyY3QxMGRpZl9wY2xtdWwgY3JjMzJfcGNsbXVsIGkyY19hbGdvX2JpdCBjcmMz
-MmNfaW50ZWwgZHJtX2ttc19oZWxwZXIgbnZtZSBkcm0gbnZtZV9jb3JlIGUxMDAwZSBnaGFz
-aF9jbG11bG5pX2ludGVsIHVhcyB1c2Jfc3RvcmFnZSBzZXJpb19yYXcgd21pIHZpZGVvIGZ1
-c2UNCg0KPiBKdW4gMDIgMDA6Mzg6MjYgcHAzMzQ1LWxhcHRvcCBrZXJuZWw6IC0tLVsgZW5k
-IHRyYWNlIDcxOGIwMTIyMTU1ODUyYzUgXS0tLQ0KDQo+IEp1biAwMiAwMDozODoyNiBwcDMz
-NDUtbGFwdG9wIGtlcm5lbDogUklQOiAwMDEwOl9fbGlzdF9kZWxfZW50cnlfdmFsaWQuY29s
-ZCsweDFkLzB4NTUNCg0KPiBKdW4gMDIgMDA6Mzg6MjYgcHAzMzQ1LWxhcHRvcCBrZXJuZWw6
-IENvZGU6IGM3IGM3IDE4IDU1IDExIGI4IGU4IGY1IDBiIGM3IGZmIDBmIDBiIDQ4IDg5IGZl
-IDQ4IGM3IGM3IGE4IDU1IDExIGI4IGU4IGU0IDBiIGM3IGZmIDBmIDBiIDQ4IGM3IGM3IDU4
-IDU2IDExIGI4IGU4IGQ2IDBiIGM3IGZmIDwwZj4gMGIgNDggODkgZjIgNDggODkgZmUgNDgg
-YzcgYzcgMTggNTYgMTEgYjggZTggYzIgMGIgYzcgZmYgMGYgMGINCg0KPiBKdW4gMDIgMDA6
-Mzg6MjYgcHAzMzQ1LWxhcHRvcCBrZXJuZWw6IFJTUDogMDAwMDpmZmZmYThlYzRhZDczZGM4
-IEVGTEFHUzogMDAwMTAyNDYNCg0KPiBKdW4gMDIgMDA6Mzg6MjYgcHAzMzQ1LWxhcHRvcCBr
-ZXJuZWw6IFJBWDogMDAwMDAwMDAwMDAwMDA1NCBSQlg6IGZmZmY5YTlmNjRlNTI3ZjggUkNY
-OiAwMDAwMDAwMDAwMDAwMDAwDQoNCj4gSnVuIDAyIDAwOjM4OjI2IHBwMzM0NS1sYXB0b3Ag
-a2VybmVsOiBSRFg6IDAwMDAwMDAwMDAwMDAwMDAgUlNJOiBmZmZmOWE5ZmNmMzU2OGM4IFJE
-STogZmZmZjlhOWZjZjM1NjhjOA0KDQo+IEp1biAwMiAwMDozODoyNiBwcDMzNDUtbGFwdG9w
-IGtlcm5lbDogUkJQOiBmZmZmOWE5ZjY0ZTU2ODk4IFIwODogZmZmZjlhOWZjZjM1NjhjOCBS
-MDk6IDAwMDAwMDAwMDAwMDBjNmYNCg0KPiBKdW4gMDIgMDA6Mzg6MjYgcHAzMzQ1LWxhcHRv
-cCBrZXJuZWw6IFIxMDogZmZmZmZmZmZiODlmOTMwYyBSMTE6IDAwMDAwMDAwMDAwMDAwMDMg
-UjEyOiAwMDAwMDAwMDAwMDAwMDA0DQoNCj4gSnVuIDAyIDAwOjM4OjI2IHBwMzM0NS1sYXB0
-b3Aga2VybmVsOiBSMTM6IGZmZmY5YTlmYzg3OWEzODggUjE0OiAwMDAwMDAwMDAwMDAwMDAw
-IFIxNTogZmZmZjlhOWZjODc5OTYwOA0KDQo+IEp1biAwMiAwMDozODoyNiBwcDMzNDUtbGFw
-dG9wIGtlcm5lbDogRlM6ICAwMDAwMDAwMDAwMDAwMDAwKDAwMDApIEdTOmZmZmY5YTlmY2Yz
-NDAwMDAoMDAwMCkga25sR1M6MDAwMDAwMDAwMDAwMDAwMA0KDQo+IEp1biAwMiAwMDozODoy
-NiBwcDMzNDUtbGFwdG9wIGtlcm5lbDogQ1M6ICAwMDEwIERTOiAwMDAwIEVTOiAwMDAwIENS
-MDogMDAwMDAwMDA4MDA1MDAzMw0KDQo+IEp1biAwMiAwMDozODoyNiBwcDMzNDUtbGFwdG9w
-IGtlcm5lbDogQ1IyOiAwMDAwMWQzYTkxNmJmMDAwIENSMzogMDAwMDAwMDQ4N2M5NDAwMyBD
-UjQ6IDAwMDAwMDAwMDAzNjA2ZTANCg0KDQpBbSAwMi4wNi4xOSB1bSAxNTo0OCBzY2hyaWVi
-IE1hcmMgSGFiZXI6DQo+IE9uIFRodSwgTWF5IDMwLCAyMDE5IGF0IDEwOjEyOjU3QU0gKzAy
-MDAsIE1hcmMgSGFiZXIgd3JvdGU6DQo+PiBvbiBteSBwcmltYXJ5IG5vdGVib29rLCBhIExl
-bm92byBYMjYwLCB3aXRoIGFuIEludGVsIFdpcmVsZXNzIDgyNjANCj4+ICg4MDg2OjI0ZjMp
-LCBydW5uaW5nIERlYmlhbiB1bnN0YWJsZSwgSSBoYXZlIHN0YXJ0ZWQgdG8gc2VlIG5ldHdv
-cmsNCj4+IGhhbmdzIHNpbmNlIHVwZ3JhZGluZyB0byBrZXJuZWwgNS4xLiBJbiB0aGlzIHNp
-dHVhdGlvbiwgSSBjYW5ub3QNCj4+IHJlc3RhcnQgTmV0d29yay1NYW5hZ2VyICh0aGUgY2Fs
-bCBqdXN0IGhhbmdzKSwgSSBjYW4gbG9nIG91dCBvZiBYLCBidXQNCj4+IHRoZSBzeXN0ZW0g
-ZG9lcyBub3QgY2xlYW5seSBzaHV0IGRvd24gYW5kIEkgbmVlZCB0byBNYWdpYyBTeXNScSBt
-eXNlbGYNCj4+IG91dCBvZiB0aGUgcnVubmluZyBzeXN0ZW0uIFRoaXMgaGFwcGVucyBhYm91
-dCBvbmNlIGV2ZXJ5IHR3byBkYXlzLg0KPiANCj4gVGhlIGlzc3VlIGlzIGFsc28gcHJlc2Vu
-dCBpbiA1LjEuNSBhbmQgNS4xLjYuDQo+IA0KPiBHcmVldGluZ3MNCj4gTWFyYw0KPiANCg==
+Hi Eric,
+
+>> One of the issues that I would like to see addressed in the crypto API
+>> is they way the cipher abstraction is used. In general, a cipher should
+>> never be used directly, and so it would be much better to clean up the
+>> existing uses of ciphers outside of the crypto subsystem itself, so that
+>> we can make the cipher abstraction part of the internal API, only to
+>> be used by templates or crypto drivers that require them as a callback.
+>> 
+>> As a first step, this series moves all users of the 'arc4' cipher to
+>> the ecb(arc4) skcipher, which happens to be implemented by the same
+>> driver, and is already a stream cipher, given that ARC4_BLOCK_SIZE
+>> actually evaluates to 1.
+>> 
+>> Next step would be to switch the users of the 'des' and 'aes' ciphers
+>> to other interfaces that are more appropriate, either ecb(...) or a
+>> library interface, which may be more appropriate in some cases. In any
+>> case, the end result should be that ciphers are no longer used outside
+>> of crypto/ and drivers/crypto/
+>> 
+>> This series is presented as an RFC, since I am mostly interested in
+>> discussing the above, but I prefer to do so in the context of actual
+>> patches rather than an abstract discussion.
+>> 
+>> Ard Biesheuvel (3):
+>>  net/mac80211: switch to skcipher interface for arc4
+>>  lib80211/tkip: switch to skcipher interface for arc4
+>>  lib80211/wep: switch to skcipher interface for arc4
+>> 
+> 
+> The way the crypto API exposes ARC4 is definitely broken.  It treats it as a
+> block cipher (with a block size of 1 byte...), when it's actually a stream
+> cipher.  Also, it violates the API by modifying the key during each encryption.
+> 
+> Since ARC4 is fast in software and is "legacy" crypto that people shouldn't be
+> using, and the users call it on virtual addresses, perhaps we should instead
+> remove it from the crypto API and provide a library function arc4_crypt()?  We'd
+> lose support for ARC4 in three hardware drivers, but are there real users who
+> really are using ARC4 and need those to get acceptable performance?  Note that
+> they aren't being used in the cases where the 'cipher' API is currently being
+> used, so it would only be the current 'skcipher' users that might matter.
+> 
+> Someone could theoretically be using "ecb(arc4)" via AF_ALG or dm-crypt, but it
+> seems unlikely…
+
+that is not unlikely, we use ecb(arc4) via AF_ALG in iwd. It is what the WiFi standard defines to be used.
+
+Regards
+
+Marcel
+
