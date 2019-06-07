@@ -2,113 +2,107 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C8E0D39503
-	for <lists+linux-wireless@lfdr.de>; Fri,  7 Jun 2019 20:56:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6771F395E6
+	for <lists+linux-wireless@lfdr.de>; Fri,  7 Jun 2019 21:40:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731234AbfFGS4u (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 7 Jun 2019 14:56:50 -0400
-Received: from mail-ed1-f67.google.com ([209.85.208.67]:43946 "EHLO
-        mail-ed1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730315AbfFGS4t (ORCPT
+        id S1730303AbfFGTkG (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 7 Jun 2019 15:40:06 -0400
+Received: from gateway30.websitewelcome.com ([192.185.160.12]:28463 "EHLO
+        gateway30.websitewelcome.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1729809AbfFGTkG (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 7 Jun 2019 14:56:49 -0400
-Received: by mail-ed1-f67.google.com with SMTP id w33so4386789edb.10
-        for <linux-wireless@vger.kernel.org>; Fri, 07 Jun 2019 11:56:48 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google;
-        h=from:to:cc:date:message-id:in-reply-to:references:user-agent
-         :subject:mime-version:content-transfer-encoding;
-        bh=pLHqHIiNEMpqBsq1VQWJdA+f/ogiGuALrvYvfOsre5w=;
-        b=JKBmHUupUT1En6Wm/PaAfDvWLs9G4reHIL/Dq7a28RXjQhW1bvj1OuB26Otd3Nzv/F
-         5ZMid02V6ON7krE7muBA6YEhkfXI5N+61Qho5iv95IBFh/MlqvIhkuqMpLLIh4Gx1vis
-         dD6p2HlT0owEbyLmy2rgkQ9McTJKn+DOb7v3g=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:date:message-id:in-reply-to
-         :references:user-agent:subject:mime-version
-         :content-transfer-encoding;
-        bh=pLHqHIiNEMpqBsq1VQWJdA+f/ogiGuALrvYvfOsre5w=;
-        b=EiD54BAKW3ZVelbrpSdv5SawFJ5DDk7gIMt/pEE39QIHXXxLg/DHGPH2JC3dDI7qAb
-         7ipsPRVc3kwP51830qNYSsV7Td77mHwLGFPiC/ASRAa4Nooyn2ND2UPX6p6NP5pv3JLX
-         y7Qlu3XAMYu8WN01QjXQQLoNIpWXOzdZyssshm7KJmcwBXo965d89iLGuagtYml6Rkou
-         lcouxB/jOlPWnOttjM65+iAasWWwHwRiP3gofzKiyOUMxUQo2LHPIcbmLvO/DgI6zCa/
-         ngKEh3+cLyrMNwHbajSfb76rlDIYmZejkZOZraMwhLcBVTjGdMmSCa9VSc6VNK2c0jnC
-         7jXg==
-X-Gm-Message-State: APjAAAWw5o4ZwwolEavivs/1okK0YJtuJTOg3ZumF2VSVj4miqH5IuP4
-        oX2We8SqF+jBvyblOtPAG094BQ==
-X-Google-Smtp-Source: APXvYqy/QInNnOY8qOmxzPqvg5vvvunnvhTKvbvtqEaMLJvI0LfXEgZqTasv/6lBtFt2xGxRunVBpA==
-X-Received: by 2002:a17:906:4ada:: with SMTP id u26mr28479238ejt.258.1559933807813;
-        Fri, 07 Jun 2019 11:56:47 -0700 (PDT)
-Received: from [192.168.178.17] (f140230.upc-f.chello.nl. [80.56.140.230])
-        by smtp.gmail.com with ESMTPSA id f9sm501183ejt.18.2019.06.07.11.56.45
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
-        Fri, 07 Jun 2019 11:56:47 -0700 (PDT)
-From:   Arend Van Spriel <arend.vanspriel@broadcom.com>
-To:     Doug Anderson <dianders@chromium.org>
-CC:     Adrian Hunter <adrian.hunter@intel.com>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
+        Fri, 7 Jun 2019 15:40:06 -0400
+X-Greylist: delayed 1336 seconds by postgrey-1.27 at vger.kernel.org; Fri, 07 Jun 2019 15:40:05 EDT
+Received: from cm16.websitewelcome.com (cm16.websitewelcome.com [100.42.49.19])
+        by gateway30.websitewelcome.com (Postfix) with ESMTP id 3200A10295
+        for <linux-wireless@vger.kernel.org>; Fri,  7 Jun 2019 14:17:49 -0500 (CDT)
+Received: from gator4166.hostgator.com ([108.167.133.22])
+        by cmsmtp with SMTP
+        id ZKN3hJcKj4FKpZKN3hd8lT; Fri, 07 Jun 2019 14:17:49 -0500
+X-Authority-Reason: nr=8
+Received: from [189.250.134.24] (port=48016 helo=embeddedor)
+        by gator4166.hostgator.com with esmtpa (Exim 4.92)
+        (envelope-from <gustavo@embeddedor.com>)
+        id 1hZKN1-002mT3-Kl; Fri, 07 Jun 2019 14:17:48 -0500
+Date:   Fri, 7 Jun 2019 14:17:45 -0500
+From:   "Gustavo A. R. Silva" <gustavo@embeddedor.com>
+To:     Igor Mitsyanko <imitsyanko@quantenna.com>,
+        Avinash Patil <avinashp@quantenna.com>,
+        Sergey Matyukevich <smatyukevich@quantenna.com>,
         Kalle Valo <kvalo@codeaurora.org>,
-        <brcm80211-dev-list.pdl@broadcom.com>,
-        "open list:ARM/Rockchip SoC..." <linux-rockchip@lists.infradead.org>,
-        Double Lo <double.lo@cypress.com>,
-        Brian Norris <briannorris@chromium.org>,
-        "linux-wireless" <linux-wireless@vger.kernel.org>,
-        Naveen Gupta <naveen.gupta@cypress.com>,
-        Madhan Mohan R <madhanmohan.r@cypress.com>,
-        Matthias Kaehlcke <mka@chromium.org>,
-        Wright Feng <wright.feng@cypress.com>,
-        "Chi-Hsien Lin" <chi-hsien.lin@cypress.com>,
-        netdev <netdev@vger.kernel.org>,
-        "brcm80211-dev-list" <brcm80211-dev-list@cypress.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Franky Lin <franky.lin@broadcom.com>,
-        LKML <linux-kernel@vger.kernel.org>,
-        Hante Meuleman <hante.meuleman@broadcom.com>,
-        YueHaibing <yuehaibing@huawei.com>,
-        Michael Trimarchi <michael@amarulasolutions.com>
-Date:   Fri, 07 Jun 2019 20:56:43 +0200
-Message-ID: <16b334cd9f8.2764.9b12b7fc0a3841636cfb5e919b41b954@broadcom.com>
-In-Reply-To: <CAD=FV=XVmCYWe9rtTFakq8yu67R-97EPyAHWck+o3dRXzHCchQ@mail.gmail.com>
-References: <20190603183740.239031-1-dianders@chromium.org>
- <20190603183740.239031-4-dianders@chromium.org>
- <42fc30b1-adab-7fa8-104c-cbb7855f2032@intel.com>
- <CAD=FV=UPfCOr-syAbVZ-FjHQy7bgQf5BS5pdV-Bwd3hquRqEGg@mail.gmail.com>
- <16b305a7110.2764.9b12b7fc0a3841636cfb5e919b41b954@broadcom.com>
- <ff0e7b7a-6a58-8bec-b182-944a8b64236d@intel.com>
- <16b3223dea0.2764.9b12b7fc0a3841636cfb5e919b41b954@broadcom.com>
- <CAD=FV=XVmCYWe9rtTFakq8yu67R-97EPyAHWck+o3dRXzHCchQ@mail.gmail.com>
-User-Agent: AquaMail/1.20.0-1451 (build: 102000001)
-Subject: Re: [PATCH v2 3/3] brcmfmac: sdio: Disable auto-tuning around commands expected to fail
+        "David S. Miller" <davem@davemloft.net>
+Cc:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        "Gustavo A. R. Silva" <gustavo@embeddedor.com>
+Subject: [PATCH][next] qtnfmac: Use struct_size() in kzalloc()
+Message-ID: <20190607191745.GA19120@embeddedor>
 MIME-Version: 1.0
-Content-Type: text/plain; format=flowed; charset="us-ascii"
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.9.4 (2018-02-28)
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - gator4166.hostgator.com
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - embeddedor.com
+X-BWhitelist: no
+X-Source-IP: 189.250.134.24
+X-Source-L: No
+X-Exim-ID: 1hZKN1-002mT3-Kl
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
+X-Source-Sender: (embeddedor) [189.250.134.24]:48016
+X-Source-Auth: gustavo@embeddedor.com
+X-Email-Count: 6
+X-Source-Cap: Z3V6aWRpbmU7Z3V6aWRpbmU7Z2F0b3I0MTY2Lmhvc3RnYXRvci5jb20=
+X-Local-Domain: yes
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On June 7, 2019 8:06:30 PM Doug Anderson <dianders@chromium.org> wrote:
+One of the more common cases of allocation size calculations is finding
+the size of a structure that has a zero-sized array at the end, along
+with memory for some number of elements for that array. For example:
 
-> Hi,
->
-> On Fri, Jun 7, 2019 at 6:32 AM Arend Van Spriel
-> <arend.vanspriel@broadcom.com> wrote:
->>
->> Right. I know it supports initial tuning, but I'm not sure about subsequent
->> retuning initiated by the host controller.
->
-> My evidence says that it supports subsequent tuning.  In fact, without
-> this series my logs would be filled with:
->
->   dwmmc_rockchip ff0d0000.dwmmc: Successfully tuned phase to XYZ
->
-> ...where the phase varied by a few degrees each time.  AKA: it was
-> retuning over and over again and getting sane results which implies
-> that the tuning was working just fine.
+struct ieee80211_regdomain {
+	...
+        struct ieee80211_reg_rule reg_rules[];
+};
 
-Ok. Thanks for confirming this.
+instance = kzalloc(sizeof(*mac->rd) +
+                          sizeof(struct ieee80211_reg_rule) *
+                          count, GFP_KERNEL);
 
-Regards,
-Arend
+Instead of leaving these open-coded and prone to type mistakes, we can
+now use the new struct_size() helper:
 
+instance = kzalloc(struct_size(instance, reg_rules, count), GFP_KERNEL);
+
+This code was detected with the help of Coccinelle.
+
+Signed-off-by: Gustavo A. R. Silva <gustavo@embeddedor.com>
+---
+ drivers/net/wireless/quantenna/qtnfmac/commands.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
+
+diff --git a/drivers/net/wireless/quantenna/qtnfmac/commands.c b/drivers/net/wireless/quantenna/qtnfmac/commands.c
+index 459f6b81d2eb..dc0c7244b60e 100644
+--- a/drivers/net/wireless/quantenna/qtnfmac/commands.c
++++ b/drivers/net/wireless/quantenna/qtnfmac/commands.c
+@@ -1011,9 +1011,8 @@ qtnf_parse_variable_mac_info(struct qtnf_wmac *mac,
+ 	if (WARN_ON(resp->n_reg_rules > NL80211_MAX_SUPP_REG_RULES))
+ 		return -E2BIG;
+ 
+-	mac->rd = kzalloc(sizeof(*mac->rd) +
+-			  sizeof(struct ieee80211_reg_rule) *
+-			  resp->n_reg_rules, GFP_KERNEL);
++	mac->rd = kzalloc(struct_size(mac->rd, reg_rules, resp->n_reg_rules),
++			  GFP_KERNEL);
+ 	if (!mac->rd)
+ 		return -ENOMEM;
+ 
+-- 
+2.21.0
 
