@@ -2,35 +2,34 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id EF5E739294
-	for <lists+linux-wireless@lfdr.de>; Fri,  7 Jun 2019 18:56:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B72C339296
+	for <lists+linux-wireless@lfdr.de>; Fri,  7 Jun 2019 18:56:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729904AbfFGQ4V (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 7 Jun 2019 12:56:21 -0400
-Received: from nbd.name ([46.4.11.11]:58994 "EHLO nbd.name"
+        id S1730655AbfFGQ4k (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 7 Jun 2019 12:56:40 -0400
+Received: from nbd.name ([46.4.11.11]:59010 "EHLO nbd.name"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1729241AbfFGQ4V (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 7 Jun 2019 12:56:21 -0400
+        id S1729241AbfFGQ4j (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 7 Jun 2019 12:56:39 -0400
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name;
          s=20160729; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:
         MIME-Version:Date:Message-ID:From:References:Cc:To:Subject:Sender:Reply-To:
         Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
         Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
         List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=0BnxRb09FfPzBS2KiUrct4Ki1iOUaTANWbX/t/K9pE4=; b=eC6rXo7UIZHTeVwpi2ltKE/5Z7
-        51s+mnHfIcVSJXWTXS/4D0Uf9si6crRqK6eke4dG43DmZ5+apwY31KRFhIZTywwMCkWHN0Pk2uhO7
-        ZohRKScp4nWPdaGGS3+pAVC0xftTY14udSYmZMgfThDwO1aN8Txxw7X8pB9qJTCxm5Yc=;
+        bh=Ze7oHkFWe10JKE/JODmAaBdTI2fhdqR/dWtGYEm+JE4=; b=Kro4KMJvcCkTsOfx0yqywaxp4G
+        8n0BBy4IKKsb8cM6ml2OftOOj61oMzFoc3p2KiZBG5rdWCHe85sCeCNnEGVMUkmVEydQYxHFLIfNS
+        xbGQ+2klkZg8Smg/cME9tCs9SyBv0su6DxnPMUVr1tOYOFIWVQK30eZVJblf5oPS7v4Y=;
 Received: from p4ff13bc7.dip0.t-ipconnect.de ([79.241.59.199] helo=nf.local)
         by ds12 with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
         (Exim 4.89)
         (envelope-from <nbd@nbd.name>)
-        id 1hZIA5-0000aH-Pt; Fri, 07 Jun 2019 18:56:17 +0200
-Subject: Re: [PATCH] mt76: mt7615: select wifi band according to eeprom
+        id 1hZIAO-0000ai-Rm; Fri, 07 Jun 2019 18:56:36 +0200
+Subject: Re: [PATCH 0/4] add tx power configuration support to mt7615 driver
 To:     Lorenzo Bianconi <lorenzo@kernel.org>
 Cc:     lorenzo.bianconi@redhat.com, linux-wireless@vger.kernel.org,
         ryder.lee@mediatek.com, royluo@google.com
-References: <cover.1558127930.git.lorenzo@kernel.org>
- <38aa977df45a92f60d78d9cb7e575289ccbaeef6.1558127930.git.lorenzo@kernel.org>
+References: <cover.1558879234.git.lorenzo@kernel.org>
 From:   Felix Fietkau <nbd@nbd.name>
 Openpgp: preference=signencrypt
 Autocrypt: addr=nbd@nbd.name; prefer-encrypt=mutual; keydata=
@@ -56,12 +55,12 @@ Autocrypt: addr=nbd@nbd.name; prefer-encrypt=mutual; keydata=
  TspgwBWLnXQvP5EDvlZnNaKa/3oBes6z0QdaSOwZCRA3QSLHBwtgUsrT6RxRSweLrcabiEkE
  GBECAAkFAkah5FQCGwwACgkQ130UHQKnbvW2GgCfTKx80VvCR/PvsUlrvdOLsIgeRGAAn1ee
  RjMaxwtSdaCKMw3j33ZbsWS4
-Message-ID: <c520cc29-ee38-e095-68a3-01962671eb37@nbd.name>
-Date:   Fri, 7 Jun 2019 18:56:17 +0200
+Message-ID: <381cf17e-345e-3ecc-4ba3-982ef0ed1b76@nbd.name>
+Date:   Fri, 7 Jun 2019 18:56:36 +0200
 User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.14; rv:60.0)
  Gecko/20100101 Thunderbird/60.7.0
 MIME-Version: 1.0
-In-Reply-To: <38aa977df45a92f60d78d9cb7e575289ccbaeef6.1558127930.git.lorenzo@kernel.org>
+In-Reply-To: <cover.1558879234.git.lorenzo@kernel.org>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
@@ -70,12 +69,18 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 2019-05-17 23:32, Lorenzo Bianconi wrote:
-> Select supported band according to the value read from
-> eeprom mtd/otp partition
+On 2019-05-26 16:05, Lorenzo Bianconi wrote:
+> Cap tx power according to the value configured by the user.
+> Initialize get_txpower mac80211 callback in order to report the
+> configured tx power to mac80211
 > 
-> Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+> Lorenzo Bianconi (4):
+>   mt76: generalize mt76_get_txpower for 4x4:4 devices
+>   mt76: mt7615: add the capability to configure tx power
+>   mt76: mt7615: init get_txpower mac80211 callback
+>   mt76: mt7615: rearrange locking in mt7615_config
 
 Applied, thanks.
 
 - Felix
+
