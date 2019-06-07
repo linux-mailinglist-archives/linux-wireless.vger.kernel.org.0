@@ -2,35 +2,34 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B73AB392B6
-	for <lists+linux-wireless@lfdr.de>; Fri,  7 Jun 2019 19:02:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 28CE8392B7
+	for <lists+linux-wireless@lfdr.de>; Fri,  7 Jun 2019 19:02:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729482AbfFGRC3 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 7 Jun 2019 13:02:29 -0400
-Received: from nbd.name ([46.4.11.11]:59458 "EHLO nbd.name"
+        id S1730828AbfFGRCi (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 7 Jun 2019 13:02:38 -0400
+Received: from nbd.name ([46.4.11.11]:59474 "EHLO nbd.name"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728989AbfFGRC3 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 7 Jun 2019 13:02:29 -0400
+        id S1728989AbfFGRCh (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 7 Jun 2019 13:02:37 -0400
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name;
          s=20160729; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:
         MIME-Version:Date:Message-ID:From:References:Cc:To:Subject:Sender:Reply-To:
         Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
         Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
         List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=0eNjcR5hK7+MDSsGS0ch8p6aJuGmeE1uFWN5mvPDW+k=; b=tKjKI1/jlT3HV+A0ncqQnEhfUi
-        IB8fsGBfOuoGd+SmB9iOhujChaTC8XydVveuXG1jbAzP5pO7nIxot+AtB+b74NfxcpibayqjTvwMw
-        zAzHyjbvZHM8NSR6V8f7jj4IjYUchHiiefvGvDDbyDxZT/LlOxIDITeV78Yfn35e2Zwk=;
+        bh=qvG1NrX14iwWdIJXUQBpSSBonW+vbEpNwYJBzzaE+Pw=; b=gLEqh8d4XeAlkSQQUnM2UcPjMq
+        AWOJqxOWv9CdR3OFrAgRnhR9tYK8tONVcNMv4wUPdUV13t368q2+uSpfTF4r/AhZPb4SWinxajv75
+        ugtNtqwy5hCPRFdb/274GC4PbtyM3WPHZxoflJlCkWLKDhrykmj8IJFMqqf4QjhUtbDU=;
 Received: from p4ff13bc7.dip0.t-ipconnect.de ([79.241.59.199] helo=nf.local)
         by ds12 with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
         (Exim 4.89)
         (envelope-from <nbd@nbd.name>)
-        id 1hZIG0-000158-0O; Fri, 07 Jun 2019 19:02:24 +0200
-Subject: Re: [PATCH] mt76: mt7615: remove unused variable in
- mt7615_mcu_set_bcn
+        id 1hZIG9-00016r-QE; Fri, 07 Jun 2019 19:02:33 +0200
+Subject: Re: [PATCH] mt76: mt7615: remove key check in mt7615_mcu_set_wtbl_key
 To:     Lorenzo Bianconi <lorenzo@kernel.org>
-Cc:     linux-wireless@vger.kernel.org, lorenzo.bianconi@redhat.com,
+Cc:     lorenzo.bianconi@redhat.com, linux-wireless@vger.kernel.org,
         ryder.lee@mediatek.com, royluo@google.com
-References: <d2b9a68b797fbbd67fe8f3be0fe851113eaa1488.1559641771.git.lorenzo@kernel.org>
+References: <51396ab29d290f95caecbb7fd817c654b74b36dc.1559686202.git.lorenzo@kernel.org>
 From:   Felix Fietkau <nbd@nbd.name>
 Openpgp: preference=signencrypt
 Autocrypt: addr=nbd@nbd.name; prefer-encrypt=mutual; keydata=
@@ -56,12 +55,12 @@ Autocrypt: addr=nbd@nbd.name; prefer-encrypt=mutual; keydata=
  TspgwBWLnXQvP5EDvlZnNaKa/3oBes6z0QdaSOwZCRA3QSLHBwtgUsrT6RxRSweLrcabiEkE
  GBECAAkFAkah5FQCGwwACgkQ130UHQKnbvW2GgCfTKx80VvCR/PvsUlrvdOLsIgeRGAAn1ee
  RjMaxwtSdaCKMw3j33ZbsWS4
-Message-ID: <bbbc7f7e-9420-111e-efef-51b937ab676a@nbd.name>
-Date:   Fri, 7 Jun 2019 19:02:23 +0200
+Message-ID: <75e3bc4e-e338-fbe2-1077-e59ec3fda8e4@nbd.name>
+Date:   Fri, 7 Jun 2019 19:02:33 +0200
 User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.14; rv:60.0)
  Gecko/20100101 Thunderbird/60.7.0
 MIME-Version: 1.0
-In-Reply-To: <d2b9a68b797fbbd67fe8f3be0fe851113eaa1488.1559641771.git.lorenzo@kernel.org>
+In-Reply-To: <51396ab29d290f95caecbb7fd817c654b74b36dc.1559686202.git.lorenzo@kernel.org>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
@@ -70,10 +69,12 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 2019-06-04 12:06, Lorenzo Bianconi wrote:
-> Remove tim_len in mt7615_mcu_set_bcn since it is not actually used
-> and ieee80211_beacon_get_tim checks if tim_length is NULL
+On 2019-06-05 00:12, Lorenzo Bianconi wrote:
+> Do not check key pointer in mt7615_mcu_set_wtbl_key since if set_key_cmd
+> is SET_KEY, key will be always not NULL. This patch will address a false
+> positive reported by Coverity-Scan
 > 
+> Addresses-Coverity-ID: 1445463 ("Dereference after null check")
 > Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
 
 Applied, thanks.
