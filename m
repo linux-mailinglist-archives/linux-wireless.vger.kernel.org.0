@@ -2,152 +2,136 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 1E2E4398F0
-	for <lists+linux-wireless@lfdr.de>; Sat,  8 Jun 2019 00:38:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1849439912
+	for <lists+linux-wireless@lfdr.de>; Sat,  8 Jun 2019 00:40:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731147AbfFGWh7 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 7 Jun 2019 18:37:59 -0400
-Received: from mail-pg1-f195.google.com ([209.85.215.195]:32905 "EHLO
-        mail-pg1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1731591AbfFGWhr (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 7 Jun 2019 18:37:47 -0400
-Received: by mail-pg1-f195.google.com with SMTP id k187so1375790pga.0
-        for <linux-wireless@vger.kernel.org>; Fri, 07 Jun 2019 15:37:47 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=z4uQcLhxDEep9Dd0+N4T4ar1lYZLNVNOCQMZpRaAcgQ=;
-        b=Wu5ODvnEgN+Dz3rZXFZGppPRarqh2wkcmSq/jdU0lxIYcSNaG6l9SM/cQ7rqNOQ+cx
-         zxBOamHsP0cMwIo+6syFyWFHtQZ64LbEArNImhJSma0pDWnZQVdsP77XNYh/mmK0Dm2q
-         qWYduKxF+F5spTIpgm3Rypp+nRk8xG2J2D5aM=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=z4uQcLhxDEep9Dd0+N4T4ar1lYZLNVNOCQMZpRaAcgQ=;
-        b=VLFIyR8pUdVIxgNKYKFTZ4tatutVNcr8ZzUBiHOLNR1j8bg4Moq9Dmc39av7dMyOe0
-         ntgpRsVhDySvX9UAMqkVPJA41GlCFpi5ND4VyYCKhJ1N19eShNVrlBeB/e5MpS1enNAt
-         Thm6T+85JbnfkZ82+nw52XVVIDXp2f+9yH3+IkXorgk0/cLJm9aVhddyRO+7cuMUQrW5
-         s5iF7eIyKSdvwR5BseCQ8fOYoNbYKB7SKnNqprzWaazvEFw+2Yn7Ow71hxlYJ5+35ngc
-         oq+xV2wr5m+e0X5/+3rALNV0LmpxHkLLYmAb5ujd2hArbNGzw2czQg+9osPWw7BJMCJu
-         n6eQ==
-X-Gm-Message-State: APjAAAVu5ZEgqYnW8X+vjuvsS7YT7TafBvemIztxY9CmSGB3eZfOpyCK
-        3akVD2Z4IAhnl97+uQe1sDeRqw==
-X-Google-Smtp-Source: APXvYqxs31BYhnz3CuDYoW0F6K1ef/NQQc4dhUPxacP60w15cFP3tld8eeafi1pEevxCtCS+7gK93A==
-X-Received: by 2002:a17:90a:9504:: with SMTP id t4mr8420374pjo.100.1559947066689;
-        Fri, 07 Jun 2019 15:37:46 -0700 (PDT)
-Received: from tictac2.mtv.corp.google.com ([2620:15c:202:1:24fa:e766:52c9:e3b2])
-        by smtp.gmail.com with ESMTPSA id j23sm4185193pgb.63.2019.06.07.15.37.45
-        (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
-        Fri, 07 Jun 2019 15:37:46 -0700 (PDT)
-From:   Douglas Anderson <dianders@chromium.org>
-To:     Ulf Hansson <ulf.hansson@linaro.org>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        Adrian Hunter <adrian.hunter@intel.com>,
-        Arend van Spriel <arend.vanspriel@broadcom.com>
-Cc:     brcm80211-dev-list.pdl@broadcom.com,
-        linux-rockchip@lists.infradead.org,
-        Double Lo <double.lo@cypress.com>, briannorris@chromium.org,
-        linux-wireless@vger.kernel.org,
-        Naveen Gupta <naveen.gupta@cypress.com>,
-        Madhan Mohan R <madhanmohan.r@cypress.com>, mka@chromium.org,
-        Wright Feng <wright.feng@cypress.com>,
-        Chi-Hsien Lin <chi-hsien.lin@cypress.com>,
-        netdev@vger.kernel.org, brcm80211-dev-list@cypress.com,
-        Douglas Anderson <dianders@chromium.org>,
-        Franky Lin <franky.lin@broadcom.com>,
-        linux-kernel@vger.kernel.org,
-        Hante Meuleman <hante.meuleman@broadcom.com>,
-        Ondrej Jirman <megous@megous.com>,
-        YueHaibing <yuehaibing@huawei.com>,
+        id S1729951AbfFGWkm (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 7 Jun 2019 18:40:42 -0400
+Received: from mail.kernel.org ([198.145.29.99]:50870 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1729345AbfFGWkm (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 7 Jun 2019 18:40:42 -0400
+Received: from sol.localdomain (c-24-5-143-220.hsd1.ca.comcast.net [24.5.143.220])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id CA50E20840;
+        Fri,  7 Jun 2019 22:40:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1559947242;
+        bh=9aTkaOerlb4Rleo7y3S1wIRbAA3fQBN+zxYN7HUhn1w=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=zvX+Bvu+bVJKmRo2P06UNV2bdpix/u+pn3XnrSVqE5+xSaOs67XXdXW1AUN9BQrtJ
+         jYOqx7PJrpiEuESOIntFpE0b5nw+Nnnd7ytlBOmqQREudCPzm7pvftkzxl5ea4LXMK
+         AA7DpwmX+IcCTVPl8rAJUh4f1F7s8sBX2sdyBy1Q=
+Date:   Fri, 7 Jun 2019 15:40:40 -0700
+From:   Eric Biggers <ebiggers@kernel.org>
+To:     Denis Kenzior <denkenz@gmail.com>
+Cc:     Ard Biesheuvel <ard.biesheuvel@linaro.org>,
+        Marcel Holtmann <marcel@holtmann.org>,
+        "open list:HARDWARE RANDOM NUMBER GENERATOR CORE" 
+        <linux-crypto@vger.kernel.org>,
+        Herbert Xu <herbert@gondor.apana.org.au>,
+        Johannes Berg <johannes@sipsolutions.net>,
+        "open list:NFC SUBSYSTEM" <linux-wireless@vger.kernel.org>,
         "David S. Miller" <davem@davemloft.net>
-Subject: [PATCH v3 5/5] brcmfmac: sdio: Don't tune while the card is off
-Date:   Fri,  7 Jun 2019 15:37:16 -0700
-Message-Id: <20190607223716.119277-6-dianders@chromium.org>
-X-Mailer: git-send-email 2.22.0.rc2.383.gf4fbbf30c2-goog
-In-Reply-To: <20190607223716.119277-1-dianders@chromium.org>
-References: <20190607223716.119277-1-dianders@chromium.org>
+Subject: Re: [RFC PATCH 0/3] move WEP implementation to skcipher interface
+Message-ID: <20190607224040.GG648@sol.localdomain>
+References: <20190607144944.13485-1-ard.biesheuvel@linaro.org>
+ <20190607175947.GB648@sol.localdomain>
+ <97BB95F6-4A4C-4984-9EAB-6069E19B4A4F@holtmann.org>
+ <CAKv+Gu-ek4nK+cACx5QZTbp=ciQq_Fvtn9y3g-wFWSOabyczZg@mail.gmail.com>
+ <f40ad169-93b9-636f-9656-634ff331ee2b@gmail.com>
+ <20190607211514.GD648@sol.localdomain>
+ <d394b421-799d-2019-fcf0-97ba0b2abb5f@gmail.com>
+ <20190607214120.GE648@sol.localdomain>
+ <78298612-a36b-deaa-1510-94cf0001af9d@gmail.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <78298612-a36b-deaa-1510-94cf0001af9d@gmail.com>
+User-Agent: Mutt/1.12.0 (2019-05-25)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-When Broadcom SDIO cards are idled they go to sleep and a whole
-separate subsystem takes over their SDIO communication.  This is the
-Always-On-Subsystem (AOS) and it can't handle tuning requests.
+On Fri, Jun 07, 2019 at 04:54:04PM -0500, Denis Kenzior wrote:
+> Hi Eric,
+> 
+> On 06/07/2019 04:41 PM, Eric Biggers wrote:
+> > On Fri, Jun 07, 2019 at 04:28:59PM -0500, Denis Kenzior wrote:
+> > > Hi Eric,
+> > > 
+> > > On 06/07/2019 04:15 PM, Eric Biggers wrote:
+> > > > On Fri, Jun 07, 2019 at 03:45:45PM -0500, Denis Kenzior wrote:
+> > > > > Hi Ard,
+> > > > > 
+> > > > > > 
+> > > > > > Ah ok, good to know. That does imply that the driver is not entirely
+> > > > > > broken, which is good news I suppose.
+> > > > > > 
+> > > > > 
+> > > > > Not entirely, but we did have to resort to using multiple sockets, otherwise
+> > > > > parallel encrypt/decrypt operations on the socket would result in invalid
+> > > > > behavior.  Probably due to the issue Eric already pointed out.
+> > > > > 
+> > > > > No such issue with any other ciphers that we use.
+> > > > > 
+> > > > > Regards,
+> > > > > -Denis
+> > > > 
+> > > > Okay, that sucks, so we do have to keep "ecb(arc4)" in the crypto API then.  And
+> > > > we can't fix its name to be just "arc4".  It's odd that someone would choose to
+> > > > use AF_ALG over writing a 20 line arc4_crypt() in userspace, but whatever.
+> > > > 
+> > > > Yes, "ecb(arc4)" isn't currently thread safe.  ARC4 uses a single key whereas
+> > > > modern stream ciphers use a key + IV.  To comply with the crypto API it would
+> > > > have to copy the key to a stack buffer for each encryption/decryption.  But it
+> > > > doesn't; it just updates the key instead, making it non thread safe.  If users
+> > > > are actually relying on that, we'll have to settle for adding a mutex instead.
+> > > 
+> > > Well the issue isn't even about being thread safe.  We run a single thread
+> > > in iwd.  The details are a bit fuzzy now due to time elapsed, but if I
+> > > recall correctly, even behavior like:
+> > > 
+> > > fd = socket();
+> > > bind(fd, ecb(arc4));
+> > > setsockopt(fd, ...key...);
+> > > 
+> > > sendmsg(fd, OP_ENCRYPT, ...);
+> > > sendmsg(fd, OP_DECRYPT, ...);
+> > > sendmsg(fd, OP_ENCRYPT, ...);
+> > > 
+> > > would produce different (incorrect) encrypted results compared to
+> > > 
+> > > sendmsg(fd, OP_ENCRYPT, ...)
+> > > sendmsg(fd, OP_ENCRYPT, ...)
+> > > 
+> > 
+> > That's because currently each operation uses the next bytes from the keystream,
+> > and a new keystream is started only by setsockopt(..., ALG_SET_KEY, ...).
+> > There's no difference between ARC4 encryption and decryption; both just XOR the
+> > keystream with the data.  Are you saying you expected each encryption to be a
+> > continuation of the previous encryption, but decryptions to be independent?
+> > 
+> 
+> From a userspace / api perspective, yes I would have expected the encrypt
+> and decrypt to work independently.  No biggie now, but I remember being
+> surprised when this bit me as no other cipher had this behavior.  E.g.
+> interleaving of operations seemed to only affect arc4 results.
+> 
+> Are the exact semantics spelled out somewhere?
+> 
 
-Specifically, as tested on rk3288-veyron-minnie (which reports having
-BCM4354/1 in dmesg), if I force a retune in brcmf_sdio_kso_control()
-when "on = 1" (aka we're transition from sleep to wake) by whacking:
-  bus->sdiodev->func1->card->host->need_retune = 1
-...then I can often see tuning fail.  In this case dw_mmc reports "All
-phases bad!").  Note that I don't get 100% failure, presumably because
-sometimes the card itself has already transitioned away from the AOS
-itself by the time we try to wake it up.  If I force retuning when "on
-= 0" (AKA force retuning right before sending the command to go to
-sleep) then retuning is always OK.
+For all other skcipher algorithms, every operation is independent and depends
+only on the key which was set previously on the algorithm socket, plus the IV
+provided for the operation.  There is no way to perform a single encryption or
+decryption incrementally in multiple parts, unless the algorithm supports it
+naturally by updating the IV (e.g. CBC mode).
 
-NOTE: we need _both_ this patch and the patch to avoid triggering
-tuning due to CRC errors in the sleep/wake transition, AKA ("brcmfmac:
-sdio: Disable auto-tuning around commands expected to fail").  Though
-both patches handle issues with Broadcom's AOS, the problems are
-distinct:
-1. We want to defer (but not ignore) asynchronous (like
-   timer-requested) tuning requests till the card is awake.  However,
-   we want to ignore CRC errors during the transition, we don't want
-   to queue deferred tuning request.
-2. You could imagine that the AOS could implement retuning but we
-   could still get errors while transitioning in and out of the AOS.
-   Similarly you could imagine a seamless transition into and out of
-   the AOS (with no CRC errors) even if the AOS couldn't handle
-   tuning.
+As I am attempting to explain, ecb(arc4) does not implement this API correctly
+because it updates the *key* after each operation, not the IV.  I doubt this is
+documented anywhere, but this can only be changed if people aren't relying on it
+already.
 
-ALSO NOTE: presumably there is never a desperate need to retune in
-order to wake up the card, since doing so is impossible.  Luckily the
-only way the card can get into sleep state is if we had a good enough
-tuning to send it a sleep command, so presumably that "good enough"
-tuning is enough to wake us up, at least with a few retries.
-
-Signed-off-by: Douglas Anderson <dianders@chromium.org>
----
-
-Changes in v3:
-- ("brcmfmac: sdio: Don't tune while the card is off") new for v3.
-
-Changes in v2: None
-
- drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c | 7 +++++++
- 1 file changed, 7 insertions(+)
-
-diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c
-index 4040aae1f9ed..98ffb4e90e15 100644
---- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c
-+++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c
-@@ -670,6 +670,10 @@ brcmf_sdio_kso_control(struct brcmf_sdio *bus, bool on)
- 
- 	mmc_expect_errors_begin(bus->sdiodev->func1->card->host);
- 
-+	/* Cannot re-tune if device is asleep; defer till we're awake */
-+	if (on)
-+		mmc_retune_hold_now(bus->sdiodev->func1->card->host);
-+
- 	wr_val = (on << SBSDIO_FUNC1_SLEEPCSR_KSO_SHIFT);
- 	/* 1st KSO write goes to AOS wake up core if device is asleep  */
- 	brcmf_sdiod_writeb(bus->sdiodev, SBSDIO_FUNC1_SLEEPCSR, wr_val, &err);
-@@ -730,6 +734,9 @@ brcmf_sdio_kso_control(struct brcmf_sdio *bus, bool on)
- 	if (try_cnt > MAX_KSO_ATTEMPTS)
- 		brcmf_err("max tries: rd_val=0x%x err=%d\n", rd_val, err);
- 
-+	if (on)
-+		mmc_retune_release(bus->sdiodev->func1->card->host);
-+
- 	mmc_expect_errors_end(bus->sdiodev->func1->card->host);
- 
- 	return err;
--- 
-2.22.0.rc2.383.gf4fbbf30c2-goog
-
+- Eric
