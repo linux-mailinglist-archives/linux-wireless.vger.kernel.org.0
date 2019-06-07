@@ -2,35 +2,35 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 0880139292
-	for <lists+linux-wireless@lfdr.de>; Fri,  7 Jun 2019 18:55:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 678BC39293
+	for <lists+linux-wireless@lfdr.de>; Fri,  7 Jun 2019 18:56:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729675AbfFGQzl (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 7 Jun 2019 12:55:41 -0400
-Received: from nbd.name ([46.4.11.11]:58966 "EHLO nbd.name"
+        id S1729775AbfFGQ4D (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 7 Jun 2019 12:56:03 -0400
+Received: from nbd.name ([46.4.11.11]:58980 "EHLO nbd.name"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1729241AbfFGQzl (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 7 Jun 2019 12:55:41 -0400
+        id S1729241AbfFGQ4D (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 7 Jun 2019 12:56:03 -0400
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name;
          s=20160729; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:
         MIME-Version:Date:Message-ID:From:References:Cc:To:Subject:Sender:Reply-To:
         Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
         Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
         List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=mcS8t8zi2rOS00yzWcD20KLZiq5iwaRXm0ulv4YTTXQ=; b=rCeaYatu5b6lX5cs7s1HYeGTBp
-        6DwASdEz/Lkqg4Bfv7AGRxjX9AkyVhwgEiofgRpCfLJas6E4/7VBIqm/LpMOElTTJDb/fdvjLf6Fs
-        VW/BCpCTvlOWemvHaYIWrlyDHKWaoIw+Ygi63HUTjKCX/zxLo48L/38kxJAxu5H7XtEs=;
+        bh=VDEWieTD9t3QlHLqw8gFk2XSrhN3Dt/pPGylAaY0FdI=; b=rWxm89vUOggNoMpQk/1wWDUM6s
+        uhrsW5eQ4ZmRVrKTtEWvXyCAtkwUp2T2pwS+hectZx9exQ8LKQPee0iymLAOWx10QaS9C65Ii+p0O
+        xNvK5n14XV9ZfK3vNSj/PWlv566KuG/zMUThNB4yVUGDmWRVtHFwuvzsy18vKkMo9ZnE=;
 Received: from p4ff13bc7.dip0.t-ipconnect.de ([79.241.59.199] helo=nf.local)
         by ds12 with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
         (Exim 4.89)
         (envelope-from <nbd@nbd.name>)
-        id 1hZI9S-0000ZO-Cl; Fri, 07 Jun 2019 18:55:38 +0200
-Subject: Re: [PATCH] mt76: move mt76_insert_ccmp_hdr in mt76-module
+        id 1hZI9n-0000Zq-Ds; Fri, 07 Jun 2019 18:55:59 +0200
+Subject: Re: [PATCH v2] mt76: mt7615: add support for mtd eeprom parsing
 To:     Lorenzo Bianconi <lorenzo@kernel.org>
 Cc:     lorenzo.bianconi@redhat.com, linux-wireless@vger.kernel.org,
         ryder.lee@mediatek.com, royluo@google.com
-References: <cover.1557838049.git.lorenzo@kernel.org>
- <99370eaa04916a871b6cc2413ae00e1370e09292.1557838049.git.lorenzo@kernel.org>
+References: <cover.1558074163.git.lorenzo@kernel.org>
+ <12c5ae00296007af2da0021cc0872dac9b6960dc.1558074163.git.lorenzo@kernel.org>
 From:   Felix Fietkau <nbd@nbd.name>
 Openpgp: preference=signencrypt
 Autocrypt: addr=nbd@nbd.name; prefer-encrypt=mutual; keydata=
@@ -56,12 +56,12 @@ Autocrypt: addr=nbd@nbd.name; prefer-encrypt=mutual; keydata=
  TspgwBWLnXQvP5EDvlZnNaKa/3oBes6z0QdaSOwZCRA3QSLHBwtgUsrT6RxRSweLrcabiEkE
  GBECAAkFAkah5FQCGwwACgkQ130UHQKnbvW2GgCfTKx80VvCR/PvsUlrvdOLsIgeRGAAn1ee
  RjMaxwtSdaCKMw3j33ZbsWS4
-Message-ID: <97c00dc7-17af-e2ee-fccf-dbe800206a42@nbd.name>
-Date:   Fri, 7 Jun 2019 18:55:37 +0200
+Message-ID: <cd2f8f19-10cd-a3e1-d825-dabd049a9607@nbd.name>
+Date:   Fri, 7 Jun 2019 18:55:58 +0200
 User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.14; rv:60.0)
  Gecko/20100101 Thunderbird/60.7.0
 MIME-Version: 1.0
-In-Reply-To: <99370eaa04916a871b6cc2413ae00e1370e09292.1557838049.git.lorenzo@kernel.org>
+In-Reply-To: <12c5ae00296007af2da0021cc0872dac9b6960dc.1558074163.git.lorenzo@kernel.org>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
@@ -70,12 +70,17 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 2019-05-14 14:48, Lorenzo Bianconi wrote:
-> Move mt7615_insert_ccmp_hdr in mac80211.c and rename it in
-> mt76_insert_ccmp_hdr since it is shared between mt7603 and mt7615
-> drivers
+On 2019-05-17 08:26, Lorenzo Bianconi wrote:
+> Calibration data are often available on a specific mtd partition on
+> embedded devices. Take into account eeprom calibration data if
+> available.
 > 
 > Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+> ---
+> Changes since v1:
+> - remove TODO comment
+> - take into account mtd partition even if otp one is empty
+
 Applied, thanks.
 
 - Felix
