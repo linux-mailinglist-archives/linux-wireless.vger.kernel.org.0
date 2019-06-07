@@ -2,34 +2,34 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B72C339296
-	for <lists+linux-wireless@lfdr.de>; Fri,  7 Jun 2019 18:56:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A19A3392A9
+	for <lists+linux-wireless@lfdr.de>; Fri,  7 Jun 2019 19:01:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730655AbfFGQ4k (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 7 Jun 2019 12:56:40 -0400
-Received: from nbd.name ([46.4.11.11]:59010 "EHLO nbd.name"
+        id S1729487AbfFGRB3 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 7 Jun 2019 13:01:29 -0400
+Received: from nbd.name ([46.4.11.11]:59316 "EHLO nbd.name"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1729241AbfFGQ4j (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 7 Jun 2019 12:56:39 -0400
+        id S1728974AbfFGRB3 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 7 Jun 2019 13:01:29 -0400
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name;
          s=20160729; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:
         MIME-Version:Date:Message-ID:From:References:Cc:To:Subject:Sender:Reply-To:
         Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
         Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
         List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=Ze7oHkFWe10JKE/JODmAaBdTI2fhdqR/dWtGYEm+JE4=; b=Kro4KMJvcCkTsOfx0yqywaxp4G
-        8n0BBy4IKKsb8cM6ml2OftOOj61oMzFoc3p2KiZBG5rdWCHe85sCeCNnEGVMUkmVEydQYxHFLIfNS
-        xbGQ+2klkZg8Smg/cME9tCs9SyBv0su6DxnPMUVr1tOYOFIWVQK30eZVJblf5oPS7v4Y=;
+        bh=6jn3LygPC5RfcCG0Zjzh+/g5UzbSe2AXpkL9UmPGxHo=; b=eYmkEO+ok0MQ4UjbLUcqFFzt9d
+        SLaiGCdVEBZfJjI6dMGgV0Os0+oHEyeNa91jkAGWmwjLjeI7mQAZHpJHI1WEtx/bvZ2OWwVCHcNhf
+        J4A1IpgQfJTq1xkU67lw0DxgcouWA1v8AYFT6MNPWYdNXU/NxUgP3Oj65K5fFMrnwuXU=;
 Received: from p4ff13bc7.dip0.t-ipconnect.de ([79.241.59.199] helo=nf.local)
         by ds12 with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
         (Exim 4.89)
         (envelope-from <nbd@nbd.name>)
-        id 1hZIAO-0000ai-Rm; Fri, 07 Jun 2019 18:56:36 +0200
-Subject: Re: [PATCH 0/4] add tx power configuration support to mt7615 driver
+        id 1hZIF2-00010V-RZ; Fri, 07 Jun 2019 19:01:24 +0200
+Subject: Re: [PATCH] mt76: move mt76_get_rate in mt76-module
 To:     Lorenzo Bianconi <lorenzo@kernel.org>
 Cc:     lorenzo.bianconi@redhat.com, linux-wireless@vger.kernel.org,
         ryder.lee@mediatek.com, royluo@google.com
-References: <cover.1558879234.git.lorenzo@kernel.org>
+References: <d6b2de1b739a394d5dcdd686a7dff198a743669e.1559118081.git.lorenzo@kernel.org>
 From:   Felix Fietkau <nbd@nbd.name>
 Openpgp: preference=signencrypt
 Autocrypt: addr=nbd@nbd.name; prefer-encrypt=mutual; keydata=
@@ -55,12 +55,12 @@ Autocrypt: addr=nbd@nbd.name; prefer-encrypt=mutual; keydata=
  TspgwBWLnXQvP5EDvlZnNaKa/3oBes6z0QdaSOwZCRA3QSLHBwtgUsrT6RxRSweLrcabiEkE
  GBECAAkFAkah5FQCGwwACgkQ130UHQKnbvW2GgCfTKx80VvCR/PvsUlrvdOLsIgeRGAAn1ee
  RjMaxwtSdaCKMw3j33ZbsWS4
-Message-ID: <381cf17e-345e-3ecc-4ba3-982ef0ed1b76@nbd.name>
-Date:   Fri, 7 Jun 2019 18:56:36 +0200
+Message-ID: <69a5cf9c-d41c-552f-6acc-8187cae765a4@nbd.name>
+Date:   Fri, 7 Jun 2019 19:01:24 +0200
 User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.14; rv:60.0)
  Gecko/20100101 Thunderbird/60.7.0
 MIME-Version: 1.0
-In-Reply-To: <cover.1558879234.git.lorenzo@kernel.org>
+In-Reply-To: <d6b2de1b739a394d5dcdd686a7dff198a743669e.1559118081.git.lorenzo@kernel.org>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
@@ -69,18 +69,15 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 2019-05-26 16:05, Lorenzo Bianconi wrote:
-> Cap tx power according to the value configured by the user.
-> Initialize get_txpower mac80211 callback in order to report the
-> configured tx power to mac80211
+On 2019-05-29 10:25, Lorenzo Bianconi wrote:
+> Move mt7603_get_rate in mac80211.c and rename it to mt76_get_rate
+> since it is shared between mt7603 and mt7615 drivers
 > 
-> Lorenzo Bianconi (4):
->   mt76: generalize mt76_get_txpower for 4x4:4 devices
->   mt76: mt7615: add the capability to configure tx power
->   mt76: mt7615: init get_txpower mac80211 callback
->   mt76: mt7615: rearrange locking in mt7615_config
+> Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+> ---
+> This patch is based on 'mt76: move mt76_insert_ccmp_hdr in mt76-module'
+> https://patchwork.kernel.org/patch/10942973/
 
 Applied, thanks.
 
 - Felix
-
