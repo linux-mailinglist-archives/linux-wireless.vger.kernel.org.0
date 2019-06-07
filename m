@@ -2,34 +2,35 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 098BD39228
-	for <lists+linux-wireless@lfdr.de>; Fri,  7 Jun 2019 18:32:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9AE5D39229
+	for <lists+linux-wireless@lfdr.de>; Fri,  7 Jun 2019 18:33:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730526AbfFGQcu (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 7 Jun 2019 12:32:50 -0400
-Received: from nbd.name ([46.4.11.11]:57560 "EHLO nbd.name"
+        id S1730272AbfFGQdA (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 7 Jun 2019 12:33:00 -0400
+Received: from nbd.name ([46.4.11.11]:57574 "EHLO nbd.name"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728595AbfFGQcu (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 7 Jun 2019 12:32:50 -0400
+        id S1728595AbfFGQdA (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 7 Jun 2019 12:33:00 -0400
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name;
          s=20160729; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:
         MIME-Version:Date:Message-ID:From:References:Cc:To:Subject:Sender:Reply-To:
         Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
         Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
         List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=aJxLzfApxfYEhIFAdkUpqDTUmM6UgeGWjS1Z+Zm5y1s=; b=Hq2oXW+dH1yPVCfXp5mBgAGVgI
-        Lg1uV3BJWxtXVTrdyd2yzK96z62GGREvMI7IVB5/rYC/jP7aT0a5ZGDck9VKGdNr9C8pWmu/et2mj
-        PT0fmsjPMw3NmsVm3XcZfPllD0sAQmOZm2Vhyjsb4u/TSgBs81JE21cM67ylarRWuw4I=;
+        bh=OkRGwEoeJPUR8r5IGH0H2cWiyC+qdJRaYMiiKsGRt3g=; b=U3VWGSnWxNzMPdwWLZyLZlSBE7
+        3TL8OdIS3ltARdhLbFZ74TGGd+CFmG/JhnhlRcj7orXHOCXF/XOakmionHz46yAwSTf8yHe9VdRw7
+        d3DcaJ8sp2ABJRM72tX3DWE575IfUXZOS4sJ3wv53TqjhDVWqlHDh15RQPcCUcGU6CoM=;
 Received: from p4ff13bc7.dip0.t-ipconnect.de ([79.241.59.199] helo=nf.local)
         by ds12 with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
         (Exim 4.89)
         (envelope-from <nbd@nbd.name>)
-        id 1hZHnM-0007Gr-UX; Fri, 07 Jun 2019 18:32:49 +0200
-Subject: Re: [PATCH v2] mt76: mt7603: add debugfs knob to enable/disable edcca
+        id 1hZHnW-0007Ih-Jz; Fri, 07 Jun 2019 18:32:58 +0200
+Subject: Re: [PATCH] mt76: mt76x02: fix edcca file permission
 To:     Lorenzo Bianconi <lorenzo@kernel.org>
-Cc:     lorenzo.bianconi@redhat.com, linux-wireless@vger.kernel.org
-References: <cover.1557739809.git.lorenzo@kernel.org>
- <95b37b61ae24afe3bd3da2fb3fb0b14169dee05c.1557739809.git.lorenzo@kernel.org>
+Cc:     lorenzo.bianconi@redhat.com, linux-wireless@vger.kernel.org,
+        sgruszka@redhat.com
+References: <cover.1557742856.git.lorenzo@kernel.org>
+ <0e4f22246404d095de2a7e28ddf7572ff71bdb05.1557742856.git.lorenzo@kernel.org>
 From:   Felix Fietkau <nbd@nbd.name>
 Openpgp: preference=signencrypt
 Autocrypt: addr=nbd@nbd.name; prefer-encrypt=mutual; keydata=
@@ -55,12 +56,12 @@ Autocrypt: addr=nbd@nbd.name; prefer-encrypt=mutual; keydata=
  TspgwBWLnXQvP5EDvlZnNaKa/3oBes6z0QdaSOwZCRA3QSLHBwtgUsrT6RxRSweLrcabiEkE
  GBECAAkFAkah5FQCGwwACgkQ130UHQKnbvW2GgCfTKx80VvCR/PvsUlrvdOLsIgeRGAAn1ee
  RjMaxwtSdaCKMw3j33ZbsWS4
-Message-ID: <94de7338-33e5-1d85-4860-6887022dddc8@nbd.name>
-Date:   Fri, 7 Jun 2019 18:32:48 +0200
+Message-ID: <a1ab6cfa-52ea-ebb2-8f25-f13bbf97b205@nbd.name>
+Date:   Fri, 7 Jun 2019 18:32:58 +0200
 User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.14; rv:60.0)
  Gecko/20100101 Thunderbird/60.7.0
 MIME-Version: 1.0
-In-Reply-To: <95b37b61ae24afe3bd3da2fb3fb0b14169dee05c.1557739809.git.lorenzo@kernel.org>
+In-Reply-To: <0e4f22246404d095de2a7e28ddf7572ff71bdb05.1557742856.git.lorenzo@kernel.org>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
@@ -69,11 +70,12 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 2019-05-13 12:19, Lorenzo Bianconi wrote:
-> Introduce a knob in mt7603 debugfs in order to enable/disable
-> energy detection based on CCA thresholds
+On 2019-05-13 12:23, Lorenzo Bianconi wrote:
+> Use 0600 as edcca file permission in mt76x02 debugfs
 > 
+> Fixes: 643749d4a82b ("mt76: mt76x02: disable ED/CCA by default")
 > Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+
 Applied, thanks.
 
 - Felix
