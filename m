@@ -2,93 +2,122 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C0035393D2
-	for <lists+linux-wireless@lfdr.de>; Fri,  7 Jun 2019 19:59:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0E21E393D3
+	for <lists+linux-wireless@lfdr.de>; Fri,  7 Jun 2019 20:00:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731517AbfFGR7t (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 7 Jun 2019 13:59:49 -0400
-Received: from mail.kernel.org ([198.145.29.99]:36838 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1730352AbfFGR7t (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 7 Jun 2019 13:59:49 -0400
-Received: from sol.localdomain (c-24-5-143-220.hsd1.ca.comcast.net [24.5.143.220])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 9D6D2212F5;
-        Fri,  7 Jun 2019 17:59:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1559930388;
-        bh=nRCIwBcdk3xHkjHKH9YvvTTdANQdS8/mNXTIjHJ8jXg=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=piwy5pU6pd5asVn95zXKs1rbcoLhYCyJDxsCg0HctMGH6gPimi+ffA4fLLQkLUzp3
-         zOCVnc5o2NDh+4xN8ziXnOhDliaN9iCkefmBSHr2uvRJt1gG7iOx8yY01ldrl/QURh
-         lR6YR8/rBb0jGZyIM8PkCY5+Mt7q0zSuZgqdsldU=
-Date:   Fri, 7 Jun 2019 10:59:47 -0700
-From:   Eric Biggers <ebiggers@kernel.org>
-To:     Ard Biesheuvel <ard.biesheuvel@linaro.org>
-Cc:     linux-crypto@vger.kernel.org, herbert@gondor.apana.org.au,
-        johannes@sipsolutions.net, linux-wireless@vger.kernel.org,
-        davem@davemloft.net
-Subject: Re: [RFC PATCH 0/3] move WEP implementation to skcipher interface
-Message-ID: <20190607175947.GB648@sol.localdomain>
-References: <20190607144944.13485-1-ard.biesheuvel@linaro.org>
+        id S1731181AbfFGSAR (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 7 Jun 2019 14:00:17 -0400
+Received: from mail-it1-f196.google.com ([209.85.166.196]:53283 "EHLO
+        mail-it1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1730025AbfFGSAQ (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 7 Jun 2019 14:00:16 -0400
+Received: by mail-it1-f196.google.com with SMTP id m187so4035309ite.3
+        for <linux-wireless@vger.kernel.org>; Fri, 07 Jun 2019 11:00:16 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=JpEKImARlNSrR2CnDXXq0hDAys3pJayRssH3rrFbf2w=;
+        b=B/6hqqM0rL+x3KFCsh7CUaMSPWa9JWojv6AjMWoMhrS0wrU1xTYxzwXiUvpjHpkUQw
+         SNx2W7ZoTf+ySa7oHh505uHwWR+M3fqOEIJUN0a63wixYrtcrvUANb5EgLcalI+np2RJ
+         HiB74IYHz905zihBSHU9WNQVreYfYBXw2lEW0=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=JpEKImARlNSrR2CnDXXq0hDAys3pJayRssH3rrFbf2w=;
+        b=MTM1pl6c2p+tE/gH4sGZDkp/nfqkoK7B0LdBIkaiDIAMMr9SPwGKSgg3z+WQKIsqbd
+         K2/M2SmnYsVVQZ3XMgV3+Fba7qkzbFSjcL6thjE8eZC9ZKBjgw8BLPQUSWeey/ucpUnQ
+         i+d+SD9ms0OOvdRGCwT3ST6zG4aI1yTgoH0VkLiYhjWIgF1hilaXIu4w3LmIgDnwsTcC
+         zOTIascGL1hLg/uFcJLWCD5VBQ8qJ2J3T83rJRtiLUBr/naeH1s3DTJ3sAwkTlm8Chq5
+         ah1KbxxmXG0qlZTiSGED8zHPfDZ6cxvSMlx1+4NEqA1t5gGIrDHiPztBwZJfHi4MXBPh
+         3KLQ==
+X-Gm-Message-State: APjAAAXtUH5MHGWWGoL7t+tHXnUSaPm/LsFM/B6FHIy/tT1jsyr61HMo
+        ypq5VFBG6bdSDHV13NwglhNJtbUX7/U=
+X-Google-Smtp-Source: APXvYqyfLh7Za9qpruhzCPkiGRL9uyaRdNnxeNzD5dYAb3hwh0hYr9D//gS9rj+79QUi/BSDkV04Mg==
+X-Received: by 2002:a02:6307:: with SMTP id j7mr36603435jac.65.1559930415740;
+        Fri, 07 Jun 2019 11:00:15 -0700 (PDT)
+Received: from mail-io1-f43.google.com (mail-io1-f43.google.com. [209.85.166.43])
+        by smtp.gmail.com with ESMTPSA id e3sm1111205ith.18.2019.06.07.11.00.14
+        for <linux-wireless@vger.kernel.org>
+        (version=TLS1_3 cipher=AEAD-AES128-GCM-SHA256 bits=128/128);
+        Fri, 07 Jun 2019 11:00:14 -0700 (PDT)
+Received: by mail-io1-f43.google.com with SMTP id w25so2080027ioc.8
+        for <linux-wireless@vger.kernel.org>; Fri, 07 Jun 2019 11:00:14 -0700 (PDT)
+X-Received: by 2002:a6b:b642:: with SMTP id g63mr18948289iof.142.1559930414169;
+ Fri, 07 Jun 2019 11:00:14 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20190607144944.13485-1-ard.biesheuvel@linaro.org>
-User-Agent: Mutt/1.12.0 (2019-05-25)
+References: <20190603183740.239031-1-dianders@chromium.org>
+ <20190603183740.239031-4-dianders@chromium.org> <42fc30b1-adab-7fa8-104c-cbb7855f2032@intel.com>
+ <CAD=FV=UPfCOr-syAbVZ-FjHQy7bgQf5BS5pdV-Bwd3hquRqEGg@mail.gmail.com> <2e9f80af-aa26-5590-9ff0-9889400068d6@intel.com>
+In-Reply-To: <2e9f80af-aa26-5590-9ff0-9889400068d6@intel.com>
+From:   Doug Anderson <dianders@chromium.org>
+Date:   Fri, 7 Jun 2019 11:00:02 -0700
+X-Gmail-Original-Message-ID: <CAD=FV=WGxXvcCuuspAkHY=m+vhQ+R96i4HCBZNCO1-jQ5U9+3Q@mail.gmail.com>
+Message-ID: <CAD=FV=WGxXvcCuuspAkHY=m+vhQ+R96i4HCBZNCO1-jQ5U9+3Q@mail.gmail.com>
+Subject: Re: [PATCH v2 3/3] brcmfmac: sdio: Disable auto-tuning around
+ commands expected to fail
+To:     Adrian Hunter <adrian.hunter@intel.com>
+Cc:     Ulf Hansson <ulf.hansson@linaro.org>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        Arend van Spriel <arend.vanspriel@broadcom.com>,
+        brcm80211-dev-list.pdl@broadcom.com,
+        "open list:ARM/Rockchip SoC..." <linux-rockchip@lists.infradead.org>,
+        Double Lo <double.lo@cypress.com>,
+        Brian Norris <briannorris@chromium.org>,
+        linux-wireless <linux-wireless@vger.kernel.org>,
+        Naveen Gupta <naveen.gupta@cypress.com>,
+        Madhan Mohan R <madhanmohan.r@cypress.com>,
+        Matthias Kaehlcke <mka@chromium.org>,
+        Wright Feng <wright.feng@cypress.com>,
+        Chi-Hsien Lin <chi-hsien.lin@cypress.com>,
+        netdev <netdev@vger.kernel.org>,
+        brcm80211-dev-list <brcm80211-dev-list@cypress.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Franky Lin <franky.lin@broadcom.com>,
+        LKML <linux-kernel@vger.kernel.org>,
+        Hante Meuleman <hante.meuleman@broadcom.com>,
+        YueHaibing <yuehaibing@huawei.com>,
+        Michael Trimarchi <michael@amarulasolutions.com>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Fri, Jun 07, 2019 at 04:49:41PM +0200, Ard Biesheuvel wrote:
-> One of the issues that I would like to see addressed in the crypto API
-> is they way the cipher abstraction is used. In general, a cipher should
-> never be used directly, and so it would be much better to clean up the
-> existing uses of ciphers outside of the crypto subsystem itself, so that
-> we can make the cipher abstraction part of the internal API, only to
-> be used by templates or crypto drivers that require them as a callback.
-> 
-> As a first step, this series moves all users of the 'arc4' cipher to
-> the ecb(arc4) skcipher, which happens to be implemented by the same
-> driver, and is already a stream cipher, given that ARC4_BLOCK_SIZE
-> actually evaluates to 1.
-> 
-> Next step would be to switch the users of the 'des' and 'aes' ciphers
-> to other interfaces that are more appropriate, either ecb(...) or a
-> library interface, which may be more appropriate in some cases. In any
-> case, the end result should be that ciphers are no longer used outside
-> of crypto/ and drivers/crypto/
-> 
-> This series is presented as an RFC, since I am mostly interested in
-> discussing the above, but I prefer to do so in the context of actual
-> patches rather than an abstract discussion.
-> 
-> Ard Biesheuvel (3):
->   net/mac80211: switch to skcipher interface for arc4
->   lib80211/tkip: switch to skcipher interface for arc4
->   lib80211/wep: switch to skcipher interface for arc4
-> 
+Hi,
 
-The way the crypto API exposes ARC4 is definitely broken.  It treats it as a
-block cipher (with a block size of 1 byte...), when it's actually a stream
-cipher.  Also, it violates the API by modifying the key during each encryption.
+On Fri, Jun 7, 2019 at 5:29 AM Adrian Hunter <adrian.hunter@intel.com> wrote:
+>
+> >> @@ -711,8 +720,16 @@ brcmf_sdio_kso_control(struct brcmf_sdio *bus, bool on)
+> >>                         err_cnt = 0;
+> >>                 }
+> >>                 /* bail out upon subsequent access errors */
+> >> -               if (err && (err_cnt++ > BRCMF_SDIO_MAX_ACCESS_ERRORS))
+> >> -                       break;
+> >> +               if (err && (err_cnt++ > BRCMF_SDIO_MAX_ACCESS_ERRORS)) {
+> >> +                       if (!retune_release)
+> >> +                               break;
+> >> +                       /*
+> >> +                        * Allow one more retry with re-tuning released in case
+> >> +                        * it helps.
+> >> +                        */
+> >> +                       sdio_retune_release(bus->sdiodev->func1);
+> >> +                       retune_release = false;
+> >
+> > I would be tempted to wait before adding this logic until we actually
+> > see that it's needed.  Sure, doing one more transfer probably won't
+> > really hurt, but until we know that it actually helps it seems like
+> > we're just adding extra complexity?
+>
+> Depends, what is the downside of unnecessarily returning an error from
+> brcmf_sdio_kso_control() in that case?
 
-Since ARC4 is fast in software and is "legacy" crypto that people shouldn't be
-using, and the users call it on virtual addresses, perhaps we should instead
-remove it from the crypto API and provide a library function arc4_crypt()?  We'd
-lose support for ARC4 in three hardware drivers, but are there real users who
-really are using ARC4 and need those to get acceptable performance?  Note that
-they aren't being used in the cases where the 'cipher' API is currently being
-used, so it would only be the current 'skcipher' users that might matter.
+I'm not aware of any downside, but without any example of it being
+needed it's just untested code that might or might not fix a problem.
+For now I'm going to leave it out of my patch and if someone later
+finds it needed or if you're convinced that we really need it we can
+add it as a patch atop.
 
-Someone could theoretically be using "ecb(arc4)" via AF_ALG or dm-crypt, but it
-seems unlikely...
-
-As for removing the "cipher" API entirely, we'd have to consider how to convert
-all the current users, not just ARC4, so that would be a somewhat different
-discussion.  How do you propose to handle dm-crypt and fscrypt which use the
-cipher API to do ESSIV?
-
-- Eric
+-Doug
