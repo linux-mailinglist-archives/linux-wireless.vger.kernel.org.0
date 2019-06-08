@@ -2,209 +2,177 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 15F4E3A050
-	for <lists+linux-wireless@lfdr.de>; Sat,  8 Jun 2019 16:49:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6499D3A089
+	for <lists+linux-wireless@lfdr.de>; Sat,  8 Jun 2019 17:51:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727148AbfFHOtw (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 8 Jun 2019 10:49:52 -0400
-Received: from mail-wr1-f66.google.com ([209.85.221.66]:41255 "EHLO
-        mail-wr1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727074AbfFHOtw (ORCPT
+        id S1727151AbfFHPvg (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 8 Jun 2019 11:51:36 -0400
+Received: from mail-it1-f196.google.com ([209.85.166.196]:51901 "EHLO
+        mail-it1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727035AbfFHPvg (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 8 Jun 2019 10:49:52 -0400
-Received: by mail-wr1-f66.google.com with SMTP id c2so4904042wrm.8;
-        Sat, 08 Jun 2019 07:49:49 -0700 (PDT)
+        Sat, 8 Jun 2019 11:51:36 -0400
+Received: by mail-it1-f196.google.com with SMTP id m3so7281495itl.1
+        for <linux-wireless@vger.kernel.org>; Sat, 08 Jun 2019 08:51:35 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=eWOdxQrFr4RFjEMoqWRjZksTgoTUFpfXgF0kmiG4tnM=;
-        b=QcE4ndQ8B18fmQ/brgW3sdTEjoYggt6GmVVYw+M4eUQT5SNjOOkc9cqyiwMx/aFryD
-         wX17evhox8dJ48qCvOrutZ6OXXbg5VNgZ156xUIkcQYS9fbpCP3VdVmSbuhQ0uHdvfq6
-         Ela9tp//984on3j3qUfoCPtPijRvd1lvETdh/6NOSl+ntHILYaCC0KW5Eug4MJ70FHWc
-         8GgIVIFAFu2eXm8bzFcga2WJuOtsW1IMVU/Ou6ZjOnB1XWtlccY0DxnjW7xKySTctVFW
-         awbUBZsCJ4Ga6DqMr+Izqehf9VCPWJnOqyO5nIGAQM6A76IXenaYMKpLECUHT3AOE1A3
-         JDSQ==
+        d=linaro.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=6hKpkFL1XfxDKGwehxlIu+lQy2Itff4tWF+Dz7nbA5Y=;
+        b=G427dAGFEGx349h3blBiwORFKD+GZBU2DsXkxAJST2pWyX+PHTykQuwP++jTYeI6Fb
+         fsTnuHYoTjSTcQbZoPwb/hu6yy6s3fj5QApXqz8IGeDcaNHehpeLneiHptcOAs6VUlRO
+         PjgzmMkzuy/qREToTSYvY/kkGit+pX0axQch7w4ytSgoL1vBhl7YiLdEhp1/mMKsZiZZ
+         lbH7SRrVy4i4jcmdkzHv8A7QgKbzCqV0Johmv3Uc7dnF3qtdyc2p5ymdYpsKk8srXD9M
+         fhoW+6nfvjFe41sCAcRb1gCC0Qx+J8vc+Z3J+wAg22X5yrhDyatZ6S2Afwma4jMUYfRQ
+         Q+uw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=eWOdxQrFr4RFjEMoqWRjZksTgoTUFpfXgF0kmiG4tnM=;
-        b=d0i6SB16wSMghCHNVrqP3QEg1CMlf7Rd3HQoMgsuYiFf+oMWPeDGvfivbORWJ+Kvm/
-         TvVJYrQFI3x6PIFhsDAaDCrt0NB0Un9Kkk/7zSkjRras1xwD+MV+HscMeGfo7mrebXXM
-         Kg0glC9rvU7J6+TJZ2BIMg1jjfu6mcuj0deIgTa0dhWC3iAVqqDiHEERbiLLmLWV5h3j
-         iRqkqTiXNO987GxVStOENVQ91QrogwfnUgxyRX2S3hMXRwzJid+k5HA4ywKZo0EILY/o
-         1RAs/5e0+hzuL9vPHQ6AdyozdX1ePV8uFjOUWtwj6VqEeTCEUk65V3KqdaE8iPwfZWpA
-         IkKw==
-X-Gm-Message-State: APjAAAUsTFrXke+6GuBnmyBSlbZgGKkDn4vXLjEJ+STjxCUAkCyTTned
-        bjN4WFHW/D/hGjGvXPhZ5lU4wO9s
-X-Google-Smtp-Source: APXvYqw1h4EYjbXpyqb4DFtM0Mb3nKNri2gXI9/A7BX0grqWAUM3+TB0cwu8a1B2RXqoIp0bsU//hA==
-X-Received: by 2002:adf:efc8:: with SMTP id i8mr9774465wrp.220.1560005388831;
-        Sat, 08 Jun 2019 07:49:48 -0700 (PDT)
-Received: from debian64.daheim (p5B0D753E.dip0.t-ipconnect.de. [91.13.117.62])
-        by smtp.gmail.com with ESMTPSA id j132sm9691200wmj.21.2019.06.08.07.49.47
-        (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
-        Sat, 08 Jun 2019 07:49:48 -0700 (PDT)
-Received: from chuck by debian64.daheim with local (Exim 4.92)
-        (envelope-from <chunkeey@gmail.com>)
-        id 1hZcfD-0000Cv-F2; Sat, 08 Jun 2019 16:49:47 +0200
-From:   Christian Lamparter <chunkeey@gmail.com>
-To:     linux-wireless@vger.kernel.org, linux-usb@vger.kernel.org
-Cc:     Alan Stern <stern@rowland.harvard.edu>,
-        Kalle Valo <kvalo@codeaurora.org>
-Subject: [PATCH v2] carl9170: fix misuse of device driver API
-Date:   Sat,  8 Jun 2019 16:49:47 +0200
-Message-Id: <20190608144947.744-3-chunkeey@gmail.com>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20190608144947.744-1-chunkeey@gmail.com>
-References: <20190608144947.744-1-chunkeey@gmail.com>
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=6hKpkFL1XfxDKGwehxlIu+lQy2Itff4tWF+Dz7nbA5Y=;
+        b=P7N1qKtmRlWHRUfqcb7vaqYECf0x6OZLrdUn/sNWV6qFzysdji81ci4FuZDxoqBT/Y
+         KaFpi4lX3iWb2Q/fN5X6bBKExrMS81rXMeOBJtCjBjI3Vx0EC8EsecyJOlhjphLjqtcQ
+         aaiSfaGRsljRrW6cAmoAJACQIdy5WKEpYGyC/wsVzVmviCp3ytt2VyXJQppNATYumbLt
+         id14NCY1BZOYrVjozRbveOlhCp9YptGJNtra30DsPlHjNMSNtKQVZCNl8PGFvrXJMnD4
+         qIy75u6E7kGEg/RMxaZn6txK1a4/ibiDpMkMyBpfnGJR2wXzB8Cl8jJF9VGxblozAFr1
+         SSlw==
+X-Gm-Message-State: APjAAAUsrXex7VBSNC2iKhX7CvRc9ZZAVCxrCeAIdFFdWE33GuImxXUR
+        C11rh+IdSCkSQ/xIabnieVuIi1dVshQHwzNCvK7+Gg==
+X-Google-Smtp-Source: APXvYqxxGFFQoHg4Epl9Jl+vGmUOR1uCz7PhvXaJ9Cw1I7OChP3tJXl/lWwFzVbQJLSQfnQhtbXcrixSLzKpHZuNVys=
+X-Received: by 2002:a05:660c:44a:: with SMTP id d10mr7371332itl.153.1560009095347;
+ Sat, 08 Jun 2019 08:51:35 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20190607144944.13485-1-ard.biesheuvel@linaro.org>
+ <20190607175947.GB648@sol.localdomain> <97BB95F6-4A4C-4984-9EAB-6069E19B4A4F@holtmann.org>
+ <CAKv+Gu-ek4nK+cACx5QZTbp=ciQq_Fvtn9y3g-wFWSOabyczZg@mail.gmail.com>
+ <f40ad169-93b9-636f-9656-634ff331ee2b@gmail.com> <20190607211514.GD648@sol.localdomain>
+ <d394b421-799d-2019-fcf0-97ba0b2abb5f@gmail.com> <20190607214120.GE648@sol.localdomain>
+ <78298612-a36b-deaa-1510-94cf0001af9d@gmail.com> <20190607224040.GG648@sol.localdomain>
+ <61e1cd8a-4891-4e37-417e-1c31cd95a278@gmail.com> <CACXcFm=2_1S75G7NWRCQjBS6gi+vDZFROzg6Ntjh-fAcPfYhyQ@mail.gmail.com>
+ <CAKv+Gu8Ex63n-YV7aaQEz7VBZ137vi113jv5NCPjbxP8=9Q=qQ@mail.gmail.com>
+In-Reply-To: <CAKv+Gu8Ex63n-YV7aaQEz7VBZ137vi113jv5NCPjbxP8=9Q=qQ@mail.gmail.com>
+From:   Ard Biesheuvel <ard.biesheuvel@linaro.org>
+Date:   Sat, 8 Jun 2019 17:51:20 +0200
+Message-ID: <CAKv+Gu_LOAreSxj=W_=RFnTOWB1zP+wXceqOBw63WgeyKB_EUg@mail.gmail.com>
+Subject: Re: [RFC PATCH 0/3] move WEP implementation to skcipher interface
+To:     Sandy Harris <sandyinchina@gmail.com>
+Cc:     Denis Kenzior <denkenz@gmail.com>,
+        Eric Biggers <ebiggers@kernel.org>,
+        Marcel Holtmann <marcel@holtmann.org>,
+        "open list:HARDWARE RANDOM NUMBER GENERATOR CORE" 
+        <linux-crypto@vger.kernel.org>,
+        Herbert Xu <herbert@gondor.apana.org.au>,
+        Johannes Berg <johannes@sipsolutions.net>,
+        "open list:NFC SUBSYSTEM" <linux-wireless@vger.kernel.org>,
+        "David S. Miller" <davem@davemloft.net>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-This patch follows Alan Stern's recent patch:
-"p54: Fix race between disconnect and firmware loading"
+On Sat, 8 Jun 2019 at 16:37, Ard Biesheuvel <ard.biesheuvel@linaro.org> wrote:
+>
+> On Sat, 8 Jun 2019 at 15:03, Sandy Harris <sandyinchina@gmail.com> wrote:
+> >
+> > First off, it is not clear we should implement WEP at all since it is
+> > fatally flawed. This has been known for about a decade, there have
+> > been at least two better algorithms added to the standards, & the only
+> > reason anyone would need WEP today would be to connect to an old
+> > router in an obviously insecure way.
+> > https://www.schneier.com/blog/archives/2007/04/breaking_wep_in.html
+> > https://www.tomshardware.com/reviews/wireless-security-hack,2981-4.html
+> >
+> > Twenty years ago the FreeS/WAN project implemented IPsec for Linux &
+> > deliberately did not include things like single DES which were known
+> > to be insecure:
+> > https://www.freeswan.org/freeswan_trees/freeswan-1.99/doc/compat.html#dropped
+> > I think a similar policy was would be a fine idea for the kernel today
+> > & WEP is hopelessly insecure.
+> >
+>
+> It is actually pretty clear that we should implement WEP, simply
+> because we already do. We all know how broken it is, but that does not
+> mean we should be the ones policing its use. People may have good
+> reasons to stick with WEP in their particular use case, or maybe they
+> have bad reasons, but the bottom line is that it does not really
+> matter: if it works today, we can't just remove it.
+>
+> What we can do is make the existing code less of an eyesore than it
+> already is, and in the context of what I want to achieve for the
+> crypto API, this involves moving it from the cipher API to something
+> else.
+>
+> > > > As I am attempting to explain, ecb(arc4) does not implement this API correctly
+> > > > because it updates the *key* after each operation, not the IV.  I doubt this is
+> > > > documented anywhere, but this can only be changed if people aren't relying on it
+> > > > already.
+> >
+> > It is more the case that the API does not apply to arc4, or more
+> > generally to stream ciphers, than that "ecb(arc4) does not implement
+> > this API correctly".
+> >
+> > ECB (electronic code book) is a mode of operation for block ciphers
+> > https://en.wikipedia.org/wiki/Block_cipher_mode_of_operation
+> > Stream ciphers do not have those modes.
+> >
+>
+> This is exactly the point Eric was making. Our skcipher abstraction
+> deals with stream ciphers fine, but the way the arc4 code is exposed
+> as ecb(arc4) and updates the key in the process makes absolutely no
+> sense.
+>
+> > For that matter, not all block cipher modes use an IV. The very common
+> > CBC mode -- the only mode used in IPsec, for example -- does, but
+> > others including ECB do not. I do not know of any mode that ever
+> > updates the IV. CBC uses the IV with the first block & on all other
+> > blocks uses the ciphertext from the previous block the same way; one
+> > might call that updating the IV I suppose, but I do not see why one
+> > would want to.
+> >
+>
+> If you want to split up a CBC transformation into several invocations
+> of the underlying API, then the last ciphertext block of the first
+> call serves as the IV for the next call. Arguing that we should not be
+> calling this an IV serves little purpose, since the code already
+> treats it exactly the same. In fact, our CTS template relies on this
+> feature as well, so a CBC implementation that does not return the last
+> ciphertext block in the IV buffer is broken wrt our API requirements.
+>
+> > > It sounds to me like it was broken and should be fixed.  So our vote /
+> > > preference is to have ARC4 fixed to follow the proper semantics.
+> >
+> > As I see it, those are clearly not "he proper semantics" for a stream
+> > cipher & the question of forcing it into them should not even arise.
+> >
+> > One alternative would be to drop arc4. That would make sense if WEP is
+> > the only usage & we elect to drop WEP. One could also argue the arc4
+> > itself is insecure & should go, but I'm not sure that is accurate.
+> > Certainly there have been some published attacks & other stream
+> > ciphers are now generally preferrred, but I have not followed things
+> > closely enough to know if RC$ should be considered fatally flawed.
+> >
+> > A better choice might be to change the interface, defining a new
+> > interface for stream ciphers and/or generalising the interface so it
+> > works for either stream ciphers or block ciphers.
+>
+> Dropping WEP is out of the question, and apparently, there are
+> userspace dependencies on the ecb(arc4) cipher as well, so
+> unfortunately, we have already painted ourselves into a corner here.
+>
+> skcipher works fine for block ciphers wrapped in CTR mode, and for
+> chacha/salsa as well, so I don't think there is a problem with the API
+> for other stream ciphers we care about. Calling the rc4 skcipher
+> 'ecb(arc4)' was obviously a mistake, but it seems we're stuck with
+> that as well :-(
 
-that overhauled carl9170 buggy firmware loading and driver
-unbinding procedures.
+As it turns out, we have other users of ecb(arc4) in the MPPE code,
+the kerberos code and some realtek code in the staging tree. More
+interestingly, the code this series changes was recently converted
+from skcipher to cipher, while I am doing the opposite.
 
-Since the carl9170 code was adapted from p54 it uses the
-same functions and is likely to have the same problem, but
-it's just that the syzbot hasn't reproduce them (yet).
-
-a summary from the changes (copied from the p54 patch):
- * Call usb_driver_release_interface() rather than
-   device_release_driver().
-
- * Lock udev (the interface's parent) before unbinding the
-   driver instead of locking udev->parent.
-
- * During the firmware loading process, take a reference
-   to the USB interface instead of the USB device.
-
- * Don't take an unnecessary reference to the device during
-   probe (and then don't drop it during disconnect).
-
-and
-
- * Make sure to prevent use-after-free bugs by explicitly
-   setting the driver context to NULL after signaling the
-   completion.
-
-Cc: <stable@vger.kernel.org>
-Cc: Alan Stern <stern@rowland.harvard.edu>
-Signed-off-by: Christian Lamparter <chunkeey@gmail.com>
----
-v2: Alan Stern's comments
-  - fixed possible use-after-free
----
- drivers/net/wireless/ath/carl9170/usb.c | 39 +++++++++++--------------
- 1 file changed, 17 insertions(+), 22 deletions(-)
-
-diff --git a/drivers/net/wireless/ath/carl9170/usb.c b/drivers/net/wireless/ath/carl9170/usb.c
-index e7c3f3b8457d..99f1897a775d 100644
---- a/drivers/net/wireless/ath/carl9170/usb.c
-+++ b/drivers/net/wireless/ath/carl9170/usb.c
-@@ -128,6 +128,8 @@ static const struct usb_device_id carl9170_usb_ids[] = {
- };
- MODULE_DEVICE_TABLE(usb, carl9170_usb_ids);
- 
-+static struct usb_driver carl9170_driver;
-+
- static void carl9170_usb_submit_data_urb(struct ar9170 *ar)
- {
- 	struct urb *urb;
-@@ -966,32 +968,28 @@ static int carl9170_usb_init_device(struct ar9170 *ar)
- 
- static void carl9170_usb_firmware_failed(struct ar9170 *ar)
- {
--	struct device *parent = ar->udev->dev.parent;
--	struct usb_device *udev;
--
--	/*
--	 * Store a copy of the usb_device pointer locally.
--	 * This is because device_release_driver initiates
--	 * carl9170_usb_disconnect, which in turn frees our
--	 * driver context (ar).
-+	/* Store a copies of the usb_interface and usb_device pointer locally.
-+	 * This is because release_driver initiates carl9170_usb_disconnect,
-+	 * which in turn frees our driver context (ar).
- 	 */
--	udev = ar->udev;
-+	struct usb_interface *intf = ar->intf;
-+	struct usb_device *udev = ar->udev;
- 
- 	complete(&ar->fw_load_wait);
-+	/* at this point 'ar' could be already freed. Don't use it anymore */
-+	ar = NULL;
- 
- 	/* unbind anything failed */
--	if (parent)
--		device_lock(parent);
--
--	device_release_driver(&udev->dev);
--	if (parent)
--		device_unlock(parent);
-+	usb_lock_device(udev);
-+	usb_driver_release_interface(&carl9170_driver, intf);
-+	usb_unlock_device(udev);
- 
--	usb_put_dev(udev);
-+	usb_put_intf(intf);
- }
- 
- static void carl9170_usb_firmware_finish(struct ar9170 *ar)
- {
-+	struct usb_interface *intf = ar->intf;
- 	int err;
- 
- 	err = carl9170_parse_firmware(ar);
-@@ -1009,7 +1007,7 @@ static void carl9170_usb_firmware_finish(struct ar9170 *ar)
- 		goto err_unrx;
- 
- 	complete(&ar->fw_load_wait);
--	usb_put_dev(ar->udev);
-+	usb_put_intf(intf);
- 	return;
- 
- err_unrx:
-@@ -1052,7 +1050,6 @@ static int carl9170_usb_probe(struct usb_interface *intf,
- 		return PTR_ERR(ar);
- 
- 	udev = interface_to_usbdev(intf);
--	usb_get_dev(udev);
- 	ar->udev = udev;
- 	ar->intf = intf;
- 	ar->features = id->driver_info;
-@@ -1094,15 +1091,14 @@ static int carl9170_usb_probe(struct usb_interface *intf,
- 	atomic_set(&ar->rx_anch_urbs, 0);
- 	atomic_set(&ar->rx_pool_urbs, 0);
- 
--	usb_get_dev(ar->udev);
-+	usb_get_intf(intf);
- 
- 	carl9170_set_state(ar, CARL9170_STOPPED);
- 
- 	err = request_firmware_nowait(THIS_MODULE, 1, CARL9170FW_NAME,
- 		&ar->udev->dev, GFP_KERNEL, ar, carl9170_usb_firmware_step2);
- 	if (err) {
--		usb_put_dev(udev);
--		usb_put_dev(udev);
-+		usb_put_intf(intf);
- 		carl9170_free(ar);
- 	}
- 	return err;
-@@ -1131,7 +1127,6 @@ static void carl9170_usb_disconnect(struct usb_interface *intf)
- 
- 	carl9170_release_firmware(ar);
- 	carl9170_free(ar);
--	usb_put_dev(udev);
- }
- 
- #ifdef CONFIG_PM
--- 
-2.20.1
-
+Given Eric's analysis that few of these users actually take advantage
+of the crypto API (i.e., they all use the sync variety and hardcode
+the algo name), we can simplify them to use library calls instead. The
+only remaining skcipher user would be the Kerberos code, which
+dynamically instantiates skciphers with a parameterized algo name.
