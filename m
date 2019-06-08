@@ -2,87 +2,88 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id BEA1539F52
-	for <lists+linux-wireless@lfdr.de>; Sat,  8 Jun 2019 13:56:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 83AAE39FA9
+	for <lists+linux-wireless@lfdr.de>; Sat,  8 Jun 2019 14:27:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728329AbfFHLz1 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 8 Jun 2019 07:55:27 -0400
-Received: from mail.kernel.org ([198.145.29.99]:57088 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727217AbfFHLkA (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 8 Jun 2019 07:40:00 -0400
-Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 31583214D8;
-        Sat,  8 Jun 2019 11:39:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1559993999;
-        bh=JiwfaLUvaigiDjDpiLv7jum12sUQVhzcqO8BoTfA/M4=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=zyisYZ/5M0OUNPS9FGqekYFnSIopHzqCtRJB5Beomu/u0Dw7TND38jPWOULpbOPEG
-         DhW5YMR+qR3/bxytiZmxtChMr/9SOP1x4xHnBkvo7exBgBcX0M2klBWZ+XZXxPJYNk
-         enrM0WIppmFBmnEVwWA8DedJy2A6VLhTNBvqF2ss=
-From:   Sasha Levin <sashal@kernel.org>
-To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Dan Carpenter <dan.carpenter@oracle.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Sasha Levin <sashal@kernel.org>,
-        linux-wireless@vger.kernel.org, devel@driverdev.osuosl.org
-Subject: [PATCH AUTOSEL 5.1 07/70] staging: wilc1000: Fix some double unlock bugs in wilc_wlan_cleanup()
-Date:   Sat,  8 Jun 2019 07:38:46 -0400
-Message-Id: <20190608113950.8033-7-sashal@kernel.org>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20190608113950.8033-1-sashal@kernel.org>
-References: <20190608113950.8033-1-sashal@kernel.org>
+        id S1727101AbfFHM1A (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 8 Jun 2019 08:27:00 -0400
+Received: from mail-ed1-f68.google.com ([209.85.208.68]:36713 "EHLO
+        mail-ed1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726907AbfFHM1A (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Sat, 8 Jun 2019 08:27:00 -0400
+Received: by mail-ed1-f68.google.com with SMTP id k21so3250536edq.3
+        for <linux-wireless@vger.kernel.org>; Sat, 08 Jun 2019 05:26:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=googlemail.com; s=20161025;
+        h=from:subject:openpgp:to:message-id:date:user-agent:mime-version
+         :content-language:content-transfer-encoding;
+        bh=kpMmEIHUpzCA0Zg/8LxrR0IoBys9bGvwLKIkWlO1dMM=;
+        b=bzYpF9cDkdSQskz7TkO980LFrkRh23TUNqFUR283rfBDUIA++GjiZaYyhYLwvnYB7I
+         RCkI1E6RNzaMo+vvgw3iFJ7JNQGOrJzBb6MjuqFxik+WN2RHGGdKjaMpV3PWclBcCnrp
+         bLOfTLviu7giM9XZ6CGuSijvj+18bcTGcH4Pw9xXqma5QrUcMts+Xst0Va3dBG3/+J6Y
+         TCxDI/pMnfW3XTEFbfYvxkh4sdwN784qG5fcnPMNJJM+y+gDEDDJt93UIzJeHEtlDJNG
+         mTUyRzRTnLIRJ5krefi9zzuRxSmrr1bqmhcwXrUz5xAboVe2d/2+OgWGLva59aSwQzho
+         mmuw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:subject:openpgp:to:message-id:date
+         :user-agent:mime-version:content-language:content-transfer-encoding;
+        bh=kpMmEIHUpzCA0Zg/8LxrR0IoBys9bGvwLKIkWlO1dMM=;
+        b=RTkN3HbA5zH14vD52WMmPBUalT5ZmXYbD6I6bTe8BKrvu1SUuMRYOkGeWIq+UCRu58
+         h0y/wXOtN8kXBCK761jULAbaSCOkj3JlbXBzEgsS6DuCRe+0ggsueE2jVTXffBV08KD7
+         0Zd9vuPpnJTZnYVd2Go6g3HiQ3eQ0FRkSt2Njhcwo7yR5L9ALJB2FUP/QforuBbz1Oyg
+         A8lttLETqeYLS+7ruWurGUElI8NQQ9TQ0ux++lzVs4BLEMZtFNrjTo5K/jbIo7IvEyQW
+         HwY6fJWp+zQVDOMhIzGHqzLfK5AEAd+lu8RaCOQCTCE/YpftDqRJ+3ZvE/trC46AvNSf
+         +jRg==
+X-Gm-Message-State: APjAAAXRS2XlugxzWs4EB0NbUoFCXVRNUizSPkl89FF81Te+0UCi4Fsr
+        /aTI6ASIeNGQj0khXvxKYRtZTqMt
+X-Google-Smtp-Source: APXvYqxheKVy82NAS7C/lGUTK+M7OPneIjfsckUNlAgaM1RAXCI/pU2GBi4kM2pVyc3uoIRlcfqSnA==
+X-Received: by 2002:a17:906:6550:: with SMTP id u16mr28580767ejn.7.1559996818267;
+        Sat, 08 Jun 2019 05:26:58 -0700 (PDT)
+Received: from ?IPv6:2001:db8:4b:222::197? ([2a02:810a:8c0:6498:f580:d228:718:3e98])
+        by smtp.gmail.com with ESMTPSA id i31sm1284405edd.90.2019.06.08.05.26.57
+        for <linux-wireless@vger.kernel.org>
+        (version=TLS1_3 cipher=AEAD-AES128-GCM-SHA256 bits=128/128);
+        Sat, 08 Jun 2019 05:26:57 -0700 (PDT)
+From:   "g.schlmm" <g.schlmm@googlemail.com>
+X-Google-Original-From: "g.schlmm" <g.schlmm@gmail.com>
+Subject: rtw88: M.2 RTL8822BE not working - rfe 3 isn't supported
+Openpgp: preference=signencrypt
+To:     linux-wireless@vger.kernel.org
+Message-ID: <0d0159a8-a83e-cef3-fd32-4928a2301719@gmail.com>
+Date:   Sat, 8 Jun 2019 14:26:51 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.7.0
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Language: fr-CA
+Content-Transfer-Encoding: 7bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Dan Carpenter <dan.carpenter@oracle.com>
+my RTL8822BE M.2 card is not working with linux 5.2rc3
 
-[ Upstream commit fea69916360468e364a4988db25a5afa835f3406 ]
+the staging r8822be driver in linux 5.1 was working for this card
 
-If ->hif_read_reg() or ->hif_write_reg() fail then the code unlocks
-and keeps executing.  It should just return.
+from dmesg:
+> [    8.001186] rtw_pci 0000:04:00.0: rfe 3 isn't supported                                                             
+> [    8.003870] rtw_pci 0000:04:00.0: failed to setup chip efuse info                                                   
+> [    8.006405] rtw_pci 0000:04:00.0: failed to setup chip information 
 
-Fixes: c5c77ba18ea6 ("staging: wilc1000: Add SDIO/SPI 802.11 driver")
-Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- drivers/staging/wilc1000/wilc_wlan.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/staging/wilc1000/wilc_wlan.c b/drivers/staging/wilc1000/wilc_wlan.c
-index c2389695fe20..70b1ab21f8a3 100644
---- a/drivers/staging/wilc1000/wilc_wlan.c
-+++ b/drivers/staging/wilc1000/wilc_wlan.c
-@@ -1076,13 +1076,17 @@ void wilc_wlan_cleanup(struct net_device *dev)
- 	acquire_bus(wilc, WILC_BUS_ACQUIRE_AND_WAKEUP);
- 
- 	ret = wilc->hif_func->hif_read_reg(wilc, WILC_GP_REG_0, &reg);
--	if (!ret)
-+	if (!ret) {
- 		release_bus(wilc, WILC_BUS_RELEASE_ALLOW_SLEEP);
-+		return;
-+	}
- 
- 	ret = wilc->hif_func->hif_write_reg(wilc, WILC_GP_REG_0,
- 					(reg | ABORT_INT));
--	if (!ret)
-+	if (!ret) {
- 		release_bus(wilc, WILC_BUS_RELEASE_ALLOW_SLEEP);
-+		return;
-+	}
- 
- 	release_bus(wilc, WILC_BUS_RELEASE_ALLOW_SLEEP);
- 	wilc->hif_func->hif_deinit(NULL);
--- 
-2.20.1
-
+lspci:
+> 04:00.0 Unassigned class [ff00]: Realtek Semiconductor Co., Ltd. RTL8822BE 802.11a/b/g/n/ac WiFi adapter
+>         Subsystem: Lenovo RTL8822BE 802.11a/b/g/n/ac WiFi adapter
+>         Flags: fast devsel, IRQ 19
+>         I/O ports at c000 [size=256]
+>         Memory at 81200000 (64-bit, non-prefetchable) [size=64K]
+>         Capabilities: [40] Power Management version 3
+>         Capabilities: [50] MSI: Enable- Count=1/1 Maskable- 64bit+
+>         Capabilities: [70] Express Endpoint, MSI 00
+>         Capabilities: [100] Advanced Error Reporting
+>         Capabilities: [148] Device Serial Number 00-e0-4c-ff-fe-b8-22-01
+>         Capabilities: [158] Latency Tolerance Reporting
+>         Capabilities: [160] L1 PM Substates
+>         Kernel modules: rtwpci
