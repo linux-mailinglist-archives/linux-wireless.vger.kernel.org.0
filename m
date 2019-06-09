@@ -2,372 +2,158 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 496563ABCA
-	for <lists+linux-wireless@lfdr.de>; Sun,  9 Jun 2019 22:36:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 712E53AC2B
+	for <lists+linux-wireless@lfdr.de>; Mon, 10 Jun 2019 00:04:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730054AbfFIUg0 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 9 Jun 2019 16:36:26 -0400
-Received: from mail-wr1-f66.google.com ([209.85.221.66]:38321 "EHLO
-        mail-wr1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725933AbfFIUgZ (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 9 Jun 2019 16:36:25 -0400
-Received: by mail-wr1-f66.google.com with SMTP id d18so7094627wrs.5
-        for <linux-wireless@vger.kernel.org>; Sun, 09 Jun 2019 13:36:24 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=Xn2nL+WvMbZOuYXiDMejUHsizKPBFpNy/C/zAAB20JI=;
-        b=Wvc8I5No+7aAFch0Q6gCQl732ZfaI2qrAF+7NJM5zwIj6BckgBNwJxepcD9np1VMDo
-         OBWWoBTv5BQz/zpsbo8x35OziZNCGHC5iqnzJNr21irbc5aKbh8aTqUTyf4IPF3POY7m
-         fx1uAZup6L5bU9g5+E9xff8VFPHw5l7FZPakNjfI0cDiGhCOexIU8TdZgInPatQPnlkZ
-         iK9DUVfmid+JttZu9fbAELzRp6BaEs8IfgOYuZsnC/K6528jXVMhUsjd0Bc4PxTv4nUO
-         2GM1CqmzPhNV1pwYkg0DRy34VCUAlQxFAgdSy+/nU6ve0vrgt3SkWXnQW0rnU+za9ifl
-         xBmQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=Xn2nL+WvMbZOuYXiDMejUHsizKPBFpNy/C/zAAB20JI=;
-        b=Im9P4mK/HQ0mRW8bOYxeI2XuqlF5ibOSTyvsgKk7i8SeomXH9LB9a0KXZ3t2HN8k/d
-         x2Ei/3NbO0CkAJI1o9a+uzgGS0ayZURLFLz/ttk5QIwf5u9fx8tML+gTHmhPiFGrAXdo
-         9IxivsTne7qnS7zRC5vLrlq3gK40lyIbpdwrEZjTvOfFho+j2S/D8q737fgMvzpMCHjh
-         E+k+NeYh8WeKTU8EvMyEZkwnFyBceoJZ/JEsjBS1UOhWFp+fUiAxcgTyRPSsom3akQuH
-         AVUJdeYTixRf0xfK65THDq82aFolpfiL5dYQ/A9rHpQSmKVSgwyES7D1DPKEztr2/v3U
-         pNFQ==
-X-Gm-Message-State: APjAAAUMeTE99VKYOI0NeF6HW4+mZ9j0DsNBHQyz0liD0ZLU0b4bfN3k
-        2/6IB0tZwgSImcFGGZfjn/ZikHog
-X-Google-Smtp-Source: APXvYqwORVopsdv8dtZfQdyxNRxKt8YBvk1o378fSFQ0jadK9HvebwiKE5vE3oB0rx16X3hZQUelFA==
-X-Received: by 2002:adf:9ed3:: with SMTP id b19mr19702079wrf.292.1560112582769;
-        Sun, 09 Jun 2019 13:36:22 -0700 (PDT)
-Received: from debian64.daheim (p200300D5FBCAD5FCD63D7EFFFEBDE96E.dip0.t-ipconnect.de. [2003:d5:fbca:d5fc:d63d:7eff:febd:e96e])
-        by smtp.gmail.com with ESMTPSA id 88sm14389176wrl.68.2019.06.09.13.36.21
-        (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
-        Sun, 09 Jun 2019 13:36:21 -0700 (PDT)
-Received: from chuck by debian64.daheim with local (Exim 4.92)
-        (envelope-from <chunkeey@gmail.com>)
-        id 1ha4Y9-0003Od-6D; Sun, 09 Jun 2019 22:36:21 +0200
-From:   Christian Lamparter <chunkeey@gmail.com>
-To:     linux-wireless@vger.kernel.org,
-        QCA ath9k Development <ath9k-devel@qca.qualcomm.com>
-Cc:     Kalle Valo <kvalo@codeaurora.org>,
-        Julian Calaby <julian.calaby@gmail.com>
-Subject: [PATCH v3] ath9k: add loader for AR92XX (and older) pci(e)
-Date:   Sun,  9 Jun 2019 22:36:21 +0200
-Message-Id: <20190609203621.13015-1-chunkeey@gmail.com>
-X-Mailer: git-send-email 2.20.1
+        id S1729531AbfFIWE0 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 9 Jun 2019 18:04:26 -0400
+Received: from smtp.knology.net ([64.8.71.112]:50743 "EHLO smtp.knology.net"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726211AbfFIWE0 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Sun, 9 Jun 2019 18:04:26 -0400
+X-Greylist: delayed 1215 seconds by postgrey-1.27 at vger.kernel.org; Sun, 09 Jun 2019 18:04:25 EDT
+X-CTCH-AV-ThreatsCount: 
+X-CTCH-VOD: Unknown
+X-CTCH-Spam: Unknown
+X-CTCH-RefID: str=0001.0A150201.5CFD7DA9.0042,ss=1,re=0.000,recu=0.000,reip=0.000,cl=1,cld=1,fgs=0
+X_CMAE_Category: , ,
+X-CNFS-Analysis: v=2.3 cv=OZ/m8SbY c=1 sm=1 tr=0 a=TJn/bo6x+BmUhJ5QWj0rSA==:117 a=TJn/bo6x+BmUhJ5QWj0rSA==:17 a=KGjhK52YXX0A:10 a=IkcTkHD0fZMA:10 a=t3LY3UrxeVQA:10 a=dq6fvYVFJ5YA:10 a=pO7Hyq7_a4YA:10 a=LpQP-O61AAAA:8 a=fhupR4f58NVJc1NYHSgA:9 a=QEXdDO2ut3YA:10 a=pioyyrs4ZptJ924tMmac:22
+X-CM-Score: 0
+X-Scanned-by: Cloudmark Authority Engine
+X-Authed-Username: YnV1c0B3b3d3YXkuY29t
+X_CMAE_Category: , ,
+X-CNFS-Analysis: 
+X-CM-Score: 
+X-Scanned-by: Cloudmark Authority Engine
+Authentication-Results:  smtp02.wow.cmh.synacor.com smtp.user=buus@wowway.com; auth=pass (LOGIN)
+Received: from [96.27.15.54] ([96.27.15.54:57100] helo=[192.168.1.245])
+        by smtp.mail.wowway.com (envelope-from <ubuntu@hbuus.com>)
+        (ecelerity 3.6.25.56547 r(Core:3.6.25.0)) with ESMTPSA (cipher=AES128-SHA) 
+        id 92/3E-27040-8AD7DFC5; Sun, 09 Jun 2019 17:44:09 -0400
+From:   H Buus <ubuntu@hbuus.com>
+Subject: Should b44_init lead to WARN_ON in drivers/ssb/driver_gpio.c:464?
+To:     Michael Buesch <m@bues.ch>, Kalle Valo <kvalo@codeaurora.org>,
+        Michael Chan <michael.chan@broadcom.com>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org
+Message-ID: <946c86bf-7e90-a981-b9fc-757adb98adfa@hbuus.com>
+Date:   Sun, 9 Jun 2019 17:44:10 -0400
+User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:60.0) Gecko/20100101
+ Thunderbird/60.6.1
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
 Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Atheros cards with a AR92XX generation (and older) chip usually
-store their pci(e) initialization vectors on an external eeprom chip.
-However these chips technically don't need the eeprom chip attached,
-the AR9280 Datasheet in section "6.1.2 DEVICE_ID" describes that
-"... if the EEPROM content is not valid, a value of 0xFF1C returns
-when read from the register". So, they will show up on the system's
-pci bus. However in that state, ath9k can't load, since it relies
-on having the correct pci-id, otherwise it doesn't know what chip it
-actually is. This happens on many embedded devices like routers
-and accesspoint since they want to keep the BOM low and store the
-pci(e) initialization vectors together with the calibration data
-on the system's FLASH, which is out of reach of the ath9k chip.
+I have an old 32 bit laptop with a BCM4401-B0 100Base-TX ethernet
+controller. For every kernel from 4.19-rc1 going forward, I get a
+warning and call trace within a few seconds of start up (see dmesg
+snippet below). I have traced it to a specific commit (see commit
+below). On the face of it, I would think it is a regression, but it
+doesn't seem to cause a problem, since networking over ethernet is working.
 
-Furthermore, Some devices (like the Cisco Meraki Z1 Cloud Managed
-Teleworker Gateway) need to be able to initialize the PCIe wifi device.
-Normally, this should be done as a pci quirk during the early stages of
-booting linux. However, this isn't possible for devices which have the
-init code for the Atheros chip stored on NAND in an UBI volume.
-Hence, this module can be used to initialize the chip when the
-user-space is ready to extract the init code.
+I might not have noticed the warning except for the fact that something
+in the 4.19 time frame is causing this laptop to be unstable. I still
+have to identify the source of the instability. The laptop appears
+stable with this commit but not with 4.19-rc7 or more recent kernels.
 
-Martin Blumenstingl prodived the following fixes:
-owl-loader: add support for OWL emulation PCI devices
-owl-loader: don't re-scan the bus when ath9k_pci_fixup failed
-owl-loader: use dev_* instead of pr_* logging functions
-owl-loader: auto-generate the eeprom filename as fallback
-owl-loader: add a debug message when swapping the eeprom data
-owl-loader: add missing newlines in log messages
+I thought I should at least ask if the following warning is an issue. If
+it is, I am happy to help with creating a proper bug report as well as
+debugging and testing. Is this an issue that should be addressed to the
+netdev or linux-wireless lists, or both, since it appears to be an
+interaction between the b44 driver which belongs to netdev and the ssb
+driver which belongs to linux-wireless?
 
-Reviewed-by: Julian Calaby <julian.calaby@gmail.com>
-Signed-off-by: Christian Lamparter <chunkeey@gmail.com>
-Signed-off-by: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+--- Begin dmesg snippet ---
+[    5.145764] ssb: Found chip with id 0x4318, rev 0x02 and package 0x02
+[    5.265914] b43-pci-bridge 0000:02:03.0: Sonics Silicon Backplane
+found on PCI device 0000:02:03.0
+[    5.353718] ssb: Found chip with id 0x4401, rev 0x02 and package 0x00
+[    5.421787] WARNING: CPU: 0 PID: 157 at drivers/ssb/driver_gpio.c:464
+ssb_gpio_init+0xa0/0xb0 [ssb]
+[    5.425679] Modules linked in: b44(+) psmouse pata_acpi ssb mii
+[    5.425679] CPU: 0 PID: 157 Comm: systemd-udevd Not tainted
+4.19.31-041931-generic #201903231635
+[    5.425679] Hardware name: Dell Inc. ME051
+/0DK344, BIOS A10 11/07/2006
+[    5.425679] EIP: ssb_gpio_init+0xa0/0xb0 [ssb]
+[    5.425679] Code: 00 31 c0 85 c9 0f 95 c0 31 c9 f7 d8 89 82 18 05 00
+00 8d 82 d8 04 00 00 6a 00 e8 1b b6 17 dd 5a c9 c3 8d b4 26 00 00 00 00
+90 <0f> 0b c9 b8 ff ff ff ff c3 8d b4 26 00 00 00 00 3e 8d 74 26 00 55
+[    5.425679] EAX: f58a3800 EBX: f58a3800 ECX: 00000000 EDX: f7e1ef94
+[    5.425679] ESI: 00000000 EDI: f58a3800 EBP: f585bc80 ESP: f585bc80
+[    5.425679] DS: 007b ES: 007b FS: 00d8 GS: 00e0 SS: 0068 EFLAGS: 00010246
+[    5.425679] CR0: 80050033 CR2: b7ab702b CR3: 3586c000 CR4: 000006f0
+[    5.425679] Call Trace:
+[    5.425679]  ssb_attach_queued_buses+0xe2/0x310 [ssb]
+[    5.425679]  ssb_bus_register+0x167/0x1c0 [ssb]
+[    5.425679]  ? ssb_pci_xtal+0x1d0/0x1d0 [ssb]
+[    5.425679]  ssb_bus_pcibus_register+0x29/0x80 [ssb]
+[    5.425679]  ssb_pcihost_probe+0xb7/0x110 [ssb]
+[    5.425679]  ? ssb_pcihost_remove+0x40/0x40 [ssb]
+[    5.425679]  pci_device_probe+0xc7/0x160
+[    5.425679]  really_probe+0x1fe/0x390
+[    5.425679]  driver_probe_device+0xe1/0x120
+[    5.425679]  ? pci_match_device+0xde/0x110
+[    5.425679]  ? _cond_resched+0x17/0x30
+[    5.425679]  __driver_attach+0xd9/0x100
+[    5.425679]  ? driver_probe_device+0x120/0x120
+[    5.425679]  bus_for_each_dev+0x5b/0xa0
+[    5.425679]  driver_attach+0x19/0x20
+[    5.425679]  ? driver_probe_device+0x120/0x120
+[    5.425679]  bus_add_driver+0x117/0x210
+[    5.425679]  ? pci_bus_num_vf+0x20/0x20
+[    5.425679]  driver_register+0x66/0xb0
+[    5.425679]  ? 0xf8365000
+[    5.425679]  __pci_register_driver+0x3d/0x40
+[    5.425679]  ssb_pcihost_register+0x2c/0x30 [ssb]
+[    5.425679]  b44_init+0x1d/0x1000 [b44]
+[    5.425679]  do_one_initcall+0x42/0x19a
+[    5.425679]  ? vunmap_page_range+0x1c9/0x260
+[    5.425679]  ? free_pcp_prepare+0x5d/0xf0
+[    5.425679]  ? _cond_resched+0x17/0x30
+[    5.425679]  ? kmem_cache_alloc_trace+0x15f/0x1b0
+[    5.425679]  ? do_init_module+0x21/0x210
+[    5.425679]  ? do_init_module+0x21/0x210
+[    5.425679]  do_init_module+0x50/0x210
+[    5.425679]  load_module+0x1368/0x1630
+[    5.425679]  ? security_kernel_post_read_file+0x54/0x60
+[    5.425679]  sys_finit_module+0x8a/0xe0
+[    5.425679]  do_fast_syscall_32+0x87/0x1e0
+[    5.425679]  entry_SYSENTER_32+0x6b/0xbe
+[    5.425679] EIP: 0xb7eead61
+[    5.425679] Code: f6 ff ff 55 89 e5 8b 55 08 8b 80 5c cd ff ff 85 d2
+74 02 89 02 5d c3 8b 04 24 c3 8b 1c 24 c3 90 90 51 52 55 89 e5 0f 34 cd
+80 <5d> 5a 59 c3 90 90 90 90 8d 76 00 58 b8 77 00 00 00 cd 80 90 8d 76
+[    5.425679] EAX: ffffffda EBX: 0000000d ECX: b7cfda15 EDX: 00000000
+[    5.425679] ESI: 00fcaf40 EDI: 00fcca40 EBP: 00000000 ESP: bfa404dc
+[    5.425679] DS: 007b ES: 007b FS: 0000 GS: 0033 SS: 007b EFLAGS: 00000296
+[    5.425679] ---[ end trace b0d87e1b3433e0ca ]---
+[    6.245890] b44 0000:02:00.0: Sonics Silicon Backplane found on PCI
+device 0000:02:00.0
+[    6.260263] b44: Broadcom 44xx/47xx 10/100 PCI ethernet driver
+version 2.0
+[    6.299684] b44 ssb1:0 eth0: Broadcom 44xx/47xx 10/100 PCI ethernet
+driver 00:14:22:af:83:9b
+[    6.367622] random: fast init done
+--- End dmesg snippet ---
 
----
-v3: changed module description
+--- Begin commit ---
+commit 209b43759d65b2cc99ce7757249aacc82b03c4e2
+Author: Michael Büsch <m@bues.ch>
+Date:   Tue Jul 31 22:15:09 2018 +0200
 
-v2: address Julian Calaby's comments:
-    - make it a separate driver again (much like OpenWrt)
-    - remove ar71xx leftovers (pdata)
----
- drivers/net/wireless/ath/ath9k/Kconfig        |  16 ++
- drivers/net/wireless/ath/ath9k/Makefile       |   2 +
- .../wireless/ath/ath9k/ath9k_pci_owl_loader.c | 215 ++++++++++++++++++
- 3 files changed, 233 insertions(+)
- create mode 100644 drivers/net/wireless/ath/ath9k/ath9k_pci_owl_loader.c
+    ssb: Remove SSB_WARN_ON, SSB_BUG_ON and SSB_DEBUG
 
-diff --git a/drivers/net/wireless/ath/ath9k/Kconfig b/drivers/net/wireless/ath/ath9k/Kconfig
-index a1ef8769983a..d6a87698a44a 100644
---- a/drivers/net/wireless/ath/ath9k/Kconfig
-+++ b/drivers/net/wireless/ath/ath9k/Kconfig
-@@ -157,6 +157,22 @@ config ATH9K_PCOEM
- 	depends on ATH9K
- 	default y
- 
-+config ATH9K_PCI_NO_EEPROM
-+	tristate "Atheros ath9k pci loader for EEPROM-less chips"
-+	depends on ATH9K_PCI
-+	default n
-+	help
-+	 This separate driver provides a loader in order to support the
-+	 AR500X to AR92XX-generation of ath9k PCI(e) WiFi chips, which have
-+	 their initialization data (which contains the real PCI Device ID
-+	 that ath9k will need) stored together with the calibration data out
-+	 of reach for the ath9k chip.
-+
-+	 These devices are usually various network appliances, routers or
-+	 access Points and such.
-+
-+	 If unsure say N.
-+
- config ATH9K_HTC
-        tristate "Atheros HTC based wireless cards support"
-        depends on USB && MAC80211
-diff --git a/drivers/net/wireless/ath/ath9k/Makefile b/drivers/net/wireless/ath/ath9k/Makefile
-index f71b2ad8275c..abd0f61370d9 100644
---- a/drivers/net/wireless/ath/ath9k/Makefile
-+++ b/drivers/net/wireless/ath/ath9k/Makefile
-@@ -77,3 +77,5 @@ ath9k_htc-y +=	htc_hst.o \
- ath9k_htc-$(CONFIG_ATH9K_HTC_DEBUGFS) += htc_drv_debug.o
- 
- obj-$(CONFIG_ATH9K_HTC) += ath9k_htc.o
-+
-+obj-$(CONFIG_ATH9K_PCI_NO_EEPROM) += ath9k_pci_owl_loader.o
-diff --git a/drivers/net/wireless/ath/ath9k/ath9k_pci_owl_loader.c b/drivers/net/wireless/ath/ath9k/ath9k_pci_owl_loader.c
-new file mode 100644
-index 000000000000..717dee7b6c4c
---- /dev/null
-+++ b/drivers/net/wireless/ath/ath9k/ath9k_pci_owl_loader.c
-@@ -0,0 +1,215 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/* Initialize Owl Emulation Devices
-+ *
-+ * Copyright (C) 2016 Christian Lamparter <chunkeey@gmail.com>
-+ * Copyright (C) 2016 Martin Blumenstingl <martin.blumenstingl@googlemail.com>
-+ *
-+ * Some devices (like the Cisco Meraki Z1 Cloud Managed Teleworker Gateway)
-+ * need to be able to initialize the PCIe wifi device. Normally, this is done
-+ * during the early stages as a pci quirk.
-+ * However, this isn't possible for devices which have the init code for the
-+ * Atheros chip stored on UBI Volume on NAND. Hence, this module can be used to
-+ * initialize the chip when the user-space is ready to extract the init code.
-+ */
-+#include <linux/module.h>
-+#include <linux/version.h>
-+#include <linux/completion.h>
-+#include <linux/etherdevice.h>
-+#include <linux/firmware.h>
-+#include <linux/pci.h>
-+#include <linux/delay.h>
-+#include <linux/platform_device.h>
-+#include <linux/ath9k_platform.h>
-+
-+struct owl_ctx {
-+	struct completion eeprom_load;
-+};
-+
-+#define EEPROM_FILENAME_LEN 100
-+
-+#define AR5416_EEPROM_MAGIC 0xa55a
-+
-+static int ath9k_pci_fixup(struct pci_dev *pdev, const u16 *cal_data,
-+			   size_t cal_len)
-+{
-+	void __iomem *mem;
-+	const void *cal_end = (void *)cal_data + cal_len;
-+	const struct {
-+		u16 reg;
-+		u16 low_val;
-+		u16 high_val;
-+	} __packed * data;
-+	u16 cmd;
-+	u32 bar0;
-+	bool swap_needed = false;
-+
-+	if (*cal_data != AR5416_EEPROM_MAGIC) {
-+		if (*cal_data != swab16(AR5416_EEPROM_MAGIC)) {
-+			dev_err(&pdev->dev, "invalid calibration data\n");
-+			return -EINVAL;
-+		}
-+
-+		dev_dbg(&pdev->dev, "calibration data needs swapping\n");
-+		swap_needed = true;
-+	}
-+
-+	dev_info(&pdev->dev, "fixup device configuration\n");
-+
-+	mem = pcim_iomap(pdev, 0, 0);
-+	if (!mem) {
-+		dev_err(&pdev->dev, "ioremap error\n");
-+		return -EINVAL;
-+	}
-+
-+	pci_read_config_dword(pdev, PCI_BASE_ADDRESS_0, &bar0);
-+	pci_write_config_dword(pdev, PCI_BASE_ADDRESS_0,
-+			       pci_resource_start(pdev, 0));
-+	pci_read_config_word(pdev, PCI_COMMAND, &cmd);
-+	cmd |= PCI_COMMAND_MASTER | PCI_COMMAND_MEMORY;
-+	pci_write_config_word(pdev, PCI_COMMAND, cmd);
-+
-+	/* set pointer to first reg address */
-+	for (data = (const void *)(cal_data + 3);
-+	     (const void *)data <= cal_end && data->reg != (u16)~0;
-+	     data++) {
-+		u32 val;
-+		u16 reg;
-+
-+		reg = data->reg;
-+		val = data->low_val;
-+		val |= ((u32)data->high_val) << 16;
-+
-+		if (swap_needed) {
-+			reg = swab16(reg);
-+			val = swahb32(val);
-+		}
-+
-+		__raw_writel(val, mem + reg);
-+		usleep_range(100, 120);
-+	}
-+
-+	pci_read_config_word(pdev, PCI_COMMAND, &cmd);
-+	cmd &= ~(PCI_COMMAND_MASTER | PCI_COMMAND_MEMORY);
-+	pci_write_config_word(pdev, PCI_COMMAND, cmd);
-+
-+	pci_write_config_dword(pdev, PCI_BASE_ADDRESS_0, bar0);
-+	pcim_iounmap(pdev, mem);
-+
-+	pci_disable_device(pdev);
-+
-+	return 0;
-+}
-+
-+static void owl_fw_cb(const struct firmware *fw, void *context)
-+{
-+	struct pci_dev *pdev = (struct pci_dev *)context;
-+	struct owl_ctx *ctx = (struct owl_ctx *)pci_get_drvdata(pdev);
-+	struct pci_bus *bus;
-+
-+	complete(&ctx->eeprom_load);
-+
-+	if (!fw) {
-+		dev_err(&pdev->dev, "no eeprom data received.\n");
-+		goto release;
-+	}
-+
-+	/* also note that we are doing *u16 operations on the file */
-+	if (fw->size > 4096 || fw->size < 0x200 || (fw->size & 1) == 1) {
-+		dev_err(&pdev->dev, "eeprom file has an invalid size.\n");
-+		goto release;
-+	}
-+
-+	if (ath9k_pci_fixup(pdev, (const u16 *)fw->data, fw->size))
-+		goto release;
-+
-+	pci_lock_rescan_remove();
-+	bus = pdev->bus;
-+	pci_stop_and_remove_bus_device(pdev);
-+	/* the device should come back with the proper
-+	 * ProductId. But we have to initiate a rescan.
-+	 */
-+	pci_rescan_bus(bus);
-+	pci_unlock_rescan_remove();
-+
-+release:
-+	release_firmware(fw);
-+}
-+
-+static const char *owl_get_eeprom_name(struct pci_dev *pdev)
-+{
-+	struct device *dev = &pdev->dev;
-+	char *eeprom_name;
-+
-+	dev_dbg(dev, "using auto-generated eeprom filename\n");
-+
-+	eeprom_name = devm_kzalloc(dev, EEPROM_FILENAME_LEN, GFP_KERNEL);
-+	if (!eeprom_name)
-+		return NULL;
-+
-+	/* this should match the pattern used in ath9k/init.c */
-+	scnprintf(eeprom_name, EEPROM_FILENAME_LEN, "ath9k-eeprom-pci-%s.bin",
-+		  dev_name(dev));
-+
-+	return eeprom_name;
-+}
-+
-+static int owl_probe(struct pci_dev *pdev,
-+		     const struct pci_device_id *id)
-+{
-+	struct owl_ctx *ctx;
-+	const char *eeprom_name;
-+	int err = 0;
-+
-+	if (pcim_enable_device(pdev))
-+		return -EIO;
-+
-+	pcim_pin_device(pdev);
-+
-+	eeprom_name = owl_get_eeprom_name(pdev);
-+	if (!eeprom_name) {
-+		dev_err(&pdev->dev, "no eeprom filename found.\n");
-+		return -ENODEV;
-+	}
-+
-+	ctx = devm_kzalloc(&pdev->dev, sizeof(*ctx), GFP_KERNEL);
-+	if (!ctx)
-+		return -ENOMEM;
-+
-+	init_completion(&ctx->eeprom_load);
-+
-+	pci_set_drvdata(pdev, ctx);
-+	err = request_firmware_nowait(THIS_MODULE, true, eeprom_name,
-+				      &pdev->dev, GFP_KERNEL, pdev, owl_fw_cb);
-+	if (err)
-+		dev_err(&pdev->dev, "failed to request caldata (%d).\n", err);
-+
-+	return err;
-+}
-+
-+static void owl_remove(struct pci_dev *pdev)
-+{
-+	struct owl_ctx *ctx = pci_get_drvdata(pdev);
-+
-+	if (ctx) {
-+		wait_for_completion(&ctx->eeprom_load);
-+		pci_set_drvdata(pdev, NULL);
-+	}
-+}
-+
-+static const struct pci_device_id owl_pci_table[] = {
-+	{ PCI_VDEVICE(ATHEROS, 0xff1c) }, /* PCIe */
-+	{ PCI_VDEVICE(ATHEROS, 0xff1d) }, /* PCI */
-+	{ },
-+};
-+MODULE_DEVICE_TABLE(pci, owl_pci_table);
-+
-+static struct pci_driver owl_driver = {
-+	.name		= KBUILD_MODNAME,
-+	.id_table	= owl_pci_table,
-+	.probe		= owl_probe,
-+	.remove		= owl_remove,
-+};
-+module_pci_driver(owl_driver);
-+MODULE_AUTHOR("Christian Lamparter <chunkeey@gmail.com>");
-+MODULE_DESCRIPTION("External EEPROM data loader for Atheros AR500X to AR92XX");
-+MODULE_LICENSE("GPL v2");
--- 
-2.20.1
+    Use the standard WARN_ON instead.
+    If a small kernel is desired, WARN_ON can be disabled globally.
 
+    Also remove SSB_DEBUG. Besides WARN_ON it only adds a tiny debug check.
+    Include this check unconditionally.
+
+    Signed-off-by: Michael Buesch <m@bues.ch>
+    Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
+--- End commit ---
