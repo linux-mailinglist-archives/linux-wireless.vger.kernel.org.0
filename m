@@ -2,226 +2,123 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 1072B3B90B
-	for <lists+linux-wireless@lfdr.de>; Mon, 10 Jun 2019 18:10:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 633A83B926
+	for <lists+linux-wireless@lfdr.de>; Mon, 10 Jun 2019 18:15:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2403814AbfFJQJw (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 10 Jun 2019 12:09:52 -0400
-Received: from mail-oi1-f194.google.com ([209.85.167.194]:39506 "EHLO
-        mail-oi1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2389968AbfFJQJw (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 10 Jun 2019 12:09:52 -0400
-Received: by mail-oi1-f194.google.com with SMTP id m202so6640367oig.6;
-        Mon, 10 Jun 2019 09:09:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=sender:subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language;
-        bh=o6kJfIIxf3+CLuDt60IWBugOj7DYo2cJ4pIJXDINxcQ=;
-        b=r6Jmcvz2cFKkJ6CTqjBzhvxeOFJ4KVWyE818wZ4KwtCLKljAY2IT2vM3t80hoTtMbY
-         8oh9zbpHVIRODOH06ZuEazfBGO/dChhf4nzkxDB29AToHowI5FXuk/8/t5MiKvp8FM4q
-         nGzHeF2WXRojWEfEGs/SvA/weGEDneodiygsuHCKyq4DfLkoNZYpBZTSe5LOFOxCroW0
-         hSlhJUJCvJkmm5emllO+K7uZd038eQA7XW3eIu6C/+t0y12awHExlcLw9xJ45AmNTT5J
-         IRm+D5RS6g+VddIPA3ujJZacxH6pH0Loi9NgbqrhjLiBzJlyt6zMwhR9qohatonGnQSx
-         lkVg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:sender:subject:to:cc:references:from:message-id
-         :date:user-agent:mime-version:in-reply-to:content-language;
-        bh=o6kJfIIxf3+CLuDt60IWBugOj7DYo2cJ4pIJXDINxcQ=;
-        b=BdfPi7/JNwTyHjiS8N3nElpIYUh607sHEsCx8b85qt31/yLN1rsx/aQdkYAxIVVLo7
-         af0tOGOTqEKZJb4RB7CESeBJ1o0YRkPnHMopX0q9kxf9kIiYR0vPiyxeIUUz0FbUH2wp
-         JL6/0m89C0nsUk1BOY6GQKOdgH7pdIvI0T5JgDoIsUAMcrRKPWG55/sQICCixd1u0oPu
-         14xwcJSbTTFrEX2iZbX5d1BdHOTbAJYzmXexXjlAH6v5MM8X3PDpNa3Vs+S13lagmHTU
-         mLT9Lr5+8EctdBRpgh73ZSIxssUoD76YmJU4YaZq5kp2FmVp3PjMXzvilfmXZD1JV6f2
-         U5UQ==
-X-Gm-Message-State: APjAAAXZWTrEWDnIIEyU7vs0HKky7PMKuHhTqEN5AcOLenyfRKoKXNwB
-        vmc7ObB/+ZsIC81B2V7gfVKHUTSO
-X-Google-Smtp-Source: APXvYqyPyr0j26tGMkWhtV43A0upDXJqDNFFrti25Vh1FAvy5t/Ay00kZncuJYv/jTolGck8yI/ccA==
-X-Received: by 2002:aca:50c6:: with SMTP id e189mr12465946oib.63.1560182991581;
-        Mon, 10 Jun 2019 09:09:51 -0700 (PDT)
-Received: from [192.168.1.112] (cpe-24-31-245-230.kc.res.rr.com. [24.31.245.230])
-        by smtp.gmail.com with ESMTPSA id l12sm416626otp.74.2019.06.10.09.09.48
-        (version=TLS1_3 cipher=AEAD-AES128-GCM-SHA256 bits=128/128);
-        Mon, 10 Jun 2019 09:09:49 -0700 (PDT)
-Subject: Re: [BISECTED REGRESSION] b43legacy broken on G4 PowerBook
-To:     Christoph Hellwig <hch@lst.de>
-Cc:     Aaro Koskinen <aaro.koskinen@iki.fi>,
-        Christian Zigotzky <chzigotzky@xenosoft.de>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org
-References: <20190605225059.GA9953@darkstar.musicnaut.iki.fi>
- <73da300c-871c-77ac-8a3a-deac226743ef@lwfinger.net>
- <20190607172902.GA8183@lst.de>
- <30000803-3772-3edf-f4a9-55122d504f3f@lwfinger.net>
- <20190610081825.GA16534@lst.de>
-From:   Larry Finger <Larry.Finger@lwfinger.net>
-Message-ID: <153c13f5-a829-1eab-a3c5-fecfb84127ff@lwfinger.net>
-Date:   Mon, 10 Jun 2019 11:09:47 -0500
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.7.0
-MIME-Version: 1.0
-In-Reply-To: <20190610081825.GA16534@lst.de>
-Content-Type: multipart/mixed;
- boundary="------------9E0BA6B24CBFDA3D78DB4932"
+        id S2389970AbfFJQO6 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 10 Jun 2019 12:14:58 -0400
+Received: from mail-eopbgr770050.outbound.protection.outlook.com ([40.107.77.50]:43074
+        "EHLO NAM02-SN1-obe.outbound.protection.outlook.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1725320AbfFJQO5 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 10 Jun 2019 12:14:57 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quantenna.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=9gO0nx2SmB2MRMZhDGxDIp4JMMlmjnEm4TPPDI2uaJI=;
+ b=gcyuFbikmiqlNzxbm6nHBvfdDbP83lyNZP0JbtE7/C2jnmXkN/v8A4odpTEjhk3gUBGTe9bDyWZkcLBxbf+U+MafTMO1tc3pchR+obDRJP2Bwuh7i8//uhRuRPtJcEQUPWyCAVrfDBtNZnhBrRJqgOJ95czpXe5aUiKpQpGdixo=
+Received: from BYAPR05MB4743.namprd05.prod.outlook.com (52.135.233.97) by
+ BYAPR05MB4757.namprd05.prod.outlook.com (52.135.233.139) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.1987.10; Mon, 10 Jun 2019 16:14:38 +0000
+Received: from BYAPR05MB4743.namprd05.prod.outlook.com
+ ([fe80::b83d:21d:3288:182a]) by BYAPR05MB4743.namprd05.prod.outlook.com
+ ([fe80::b83d:21d:3288:182a%6]) with mapi id 15.20.1987.004; Mon, 10 Jun 2019
+ 16:14:38 +0000
+Received: from SN6PR05MB4928.namprd05.prod.outlook.com (52.135.117.74) by
+ SN6PR05MB5231.namprd05.prod.outlook.com (20.177.248.218) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.1987.4; Mon, 10 Jun 2019 16:14:00 +0000
+Received: from SN6PR05MB4928.namprd05.prod.outlook.com
+ ([fe80::a902:576c:72d6:b358]) by SN6PR05MB4928.namprd05.prod.outlook.com
+ ([fe80::a902:576c:72d6:b358%5]) with mapi id 15.20.1987.004; Mon, 10 Jun 2019
+ 16:14:00 +0000
+From:   Sergey Matyukevich <sergey.matyukevich.os@quantenna.com>
+To:     "Gustavo A. R. Silva" <gustavo@embeddedor.com>
+CC:     Igor Mitsyanko <imitsyanko@quantenna.com>,
+        Avinash Patil <avinashp@quantenna.com>,
+        Sergey Matyukevich <smatyukevich@quantenna.com>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH][next] qtnfmac: Use struct_size() in kzalloc()
+Thread-Topic: [PATCH][next] qtnfmac: Use struct_size() in kzalloc()
+Thread-Index: AQHVHWjZ1AedDHs530eADQaD4eZD6aaVFC0A
+Date:   Mon, 10 Jun 2019 16:14:00 +0000
+Message-ID: <20190610161352.xymnc4lg2jad4lah@bars>
+References: <20190607191745.GA19120@embeddedor>
+In-Reply-To: <20190607191745.GA19120@embeddedor>
+Accept-Language: en-US
 Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-clientproxiedby: BYAPR07CA0023.namprd07.prod.outlook.com
+ (2603:10b6:a02:bc::36) To SN6PR05MB4928.namprd05.prod.outlook.com
+ (2603:10b6:805:9d::10)
+authentication-results: spf=none (sender IP is )
+ smtp.mailfrom=sergey.matyukevich.os@quantenna.com; 
+x-ms-exchange-messagesentrepresentingtype: 1
+x-originating-ip: [195.182.157.78]
+x-ms-publictraffictype: Email
+x-ms-office365-filtering-correlation-id: b04299bb-5e97-43e3-b0dc-08d6edbea5eb
+x-microsoft-antispam: BCL:0;PCL:0;RULEID:(2390118)(7020095)(4652040)(8989299)(5600148)(711020)(4605104)(1401327)(4534185)(4627221)(201703031133081)(201702281549075)(8990200)(2017052603328)(7193020);SRVR:SN6PR05MB5231;
+x-ms-traffictypediagnostic: SN6PR05MB5231:|BYAPR05MB4757:
+x-moderation-data: 6/10/2019 4:14:36 PM
+x-microsoft-antispam-prvs: <BYAPR05MB4757573F6D1C3D53B10B83B9A3130@BYAPR05MB4757.namprd05.prod.outlook.com>
+x-ms-oob-tlc-oobclassifiers: OLM:7691;
+x-forefront-prvs: 0064B3273C
+x-forefront-antispam-report: SFV:NSPM;SFS:(10009020)(7916004)(376002)(39840400004)(136003)(366004)(346002)(396003)(51914003)(189003)(199004)(26005)(446003)(11346002)(4744005)(102836004)(476003)(33716001)(76176011)(66946007)(2906002)(6436002)(486006)(4326008)(3846002)(186003)(52116002)(66556008)(6116002)(66446008)(86362001)(25786009)(5660300002)(66476007)(6506007)(386003)(64756008)(1076003)(99286004)(229853002)(68736007)(478600001)(316002)(6486002)(6246003)(54906003)(73956011)(66066001)(9686003)(6512007)(436003)(6916009)(53936002)(256004)(8676002)(305945005)(7736002)(14454004)(71200400001)(71190400001)(81156014)(81166006)(8936002);DIR:OUT;SFP:1101;SCL:1;SRVR:BYAPR05MB4757;H:BYAPR05MB4743.namprd05.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;MX:1;A:1;
+received-spf: None (protection.outlook.com: quantenna.com does not designate
+ permitted sender hosts)
+x-ms-exchange-senderadcheck: 1
+x-microsoft-antispam-message-info: Nbb3Ss4rYdCQWes7YwwXjaJMstTeTS7/5Q23akKPz4vBWC96OO8kmCAaCgyiJCzFadE1/tZGMdSv98ZYrR+LfZCyTH5WgdipVwjHYrVz+OD0fsbQnMtsKj+Hqd3ruCYa81Zar+Q3k3DS7fma125IUyCoe80Q2eufStkF1LfN6ivpm+i0AV/okLox5BbmgAGVCskH0k34mKavocOvED2TjeAiRucHoUbdqqD68CT19C9MgTULIMn+IlWdOy2jMBXRRCGzQ/bIWRferfxhp9FuhdbMWCgCdOC7YeUIen3OH7n7861Rw+L6Layjhd+Cin0+YVZ0/1kM7Fpj4UfDYhhRA4YTKg4WEsRe7fp44bdtwLE4M+ayFJMRsIVXCN3Cyq/brlM8hb9cmje/Hd4Phc0nzKq1T78kZ/YCzCtbKxH9+2g=
+Content-Type: text/plain; charset="us-ascii"
+Content-ID: <DED1CC9DFD99EA448ADB8F0B5D29DDDB@namprd05.prod.outlook.com>
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+X-OriginatorOrg: quantenna.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: b04299bb-5e97-43e3-b0dc-08d6edbea5eb
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: a355dbce-62b4-4789-9446-c1d5582180ff
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: SPO_Arbitration_d2f137f7-57a3-41a6-974a-9a603eeb68f6@quantenna.onmicrosoft.com
+X-MS-Exchange-CrossTenant-originalarrivaltime: 10 Jun 2019 16:14:38.4379
+ (UTC)
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BYAPR05MB4757
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-This is a multi-part message in MIME format.
---------------9E0BA6B24CBFDA3D78DB4932
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 7bit
+> One of the more common cases of allocation size calculations is finding
+> the size of a structure that has a zero-sized array at the end, along
+> with memory for some number of elements for that array. For example:
+>=20
+> struct ieee80211_regdomain {
+>         ...
+>         struct ieee80211_reg_rule reg_rules[];
+> };
+>=20
+> instance =3D kzalloc(sizeof(*mac->rd) +
+>                           sizeof(struct ieee80211_reg_rule) *
+>                           count, GFP_KERNEL);
+>=20
+> Instead of leaving these open-coded and prone to type mistakes, we can
+> now use the new struct_size() helper:
+>=20
+> instance =3D kzalloc(struct_size(instance, reg_rules, count), GFP_KERNEL)=
+;
+>=20
+> This code was detected with the help of Coccinelle.
+>=20
+> Signed-off-by: Gustavo A. R. Silva <gustavo@embeddedor.com>
+=20
+Hi Gustavo,
+Thanks for the patch !
 
-On 6/10/19 3:18 AM, Christoph Hellwig wrote:
-> On Sat, Jun 08, 2019 at 04:52:24PM -0500, Larry Finger wrote:
->> On 6/7/19 12:29 PM, Christoph Hellwig wrote:
->>> I don't think we should work around this in the driver, we need to fix
->>> it in the core.  I'm curious why my previous patch didn't work.  Can
->>> you throw in a few printks what failed?  I.e. did dma_direct_supported
->>> return false?  Did the actual allocation fail?
->>
->> Routine dma_direct_supported() returns true.
->>
->> The failure is in routine dma_set_mask() in the following if test:
->>
->>          if (!dev->dma_mask || !dma_supported(dev, mask))
->>                  return -EIO;
->>
->> For b43legacy, dev->dma_mask is 0xc265684800000000.
->>      dma_supported(dev, mask) is 0xc08b000000000000, mask is 0x3fffffff, and
->> the routine returns -EIO.
->>
->> For b43,       dev->dma_mask is 0xc265684800000001,
->>      dma_supported(dev, mask) is 0xc08b000000000000, mask is 0x77777777, and
->> the routine returns 0.
-> 
-> I don't fully understand what values the above map to.  Can you send
-> me your actual debugging patch as well?
+Reviewed-by: Sergey Matyukevich <sergey.matyukevich.os@quantenna.com>
 
-I do not understand why the if statement returns true as neither of the values 
-is zero. After seeing the x86 output shown below, I also do not understand all 
-the trailing zeros.
-
-My entire patch is attached. That output came from this section:
-
-diff --git a/kernel/dma/mapping.c b/kernel/dma/mapping.c
-index f7afdad..ba2489d 100644
---- a/kernel/dma/mapping.c
-+++ b/kernel/dma/mapping.c
-@@ -317,9 +317,12 @@ int dma_supported(struct device *dev, u64 mask)
-
-  int dma_set_mask(struct device *dev, u64 mask)
-  {
-+       pr_info("mask 0x%llx, dma_mask 0x%llx, dma_supported 0x%llx\n", mask, 
-dev->dma_mask,
-+               dma_supported(dev, mask));
-         if (!dev->dma_mask || !dma_supported(dev, mask))
-                 return -EIO;
-
-+       pr_info("Continuing in dma_set_mask()\n");
-         arch_dma_set_mask(dev, mask);
-         dma_check_mask(dev, mask);
-         *dev->dma_mask = mask;
-
-On a 32-bit x86 computer with 1GB of RAM, that same output was
-
-For b43legacy, dev->dma_mask is 0x01f4029044.
-     dma_supported(dev, mask) is 0x1ef37f7000, mask is 0x3fffffff, and
-the routine returns 0. 30-bit DMA works.
-
-For b43,       dev->dma_mask is 0x01f4029044,
-     dma_supported(dev, mask) is 0x1ef37f7000, mask is 0xffffffff, and
-  the routine also returns 0. This card supports 32-bit DMA.
-
-Larry
-
---------------9E0BA6B24CBFDA3D78DB4932
-Content-Type: text/plain; charset=UTF-8;
- name="b43legacy_tests"
-Content-Transfer-Encoding: base64
-Content-Disposition: attachment;
- filename="b43legacy_tests"
-
-ZGlmZiAtLWdpdCBhL2FyY2gvcG93ZXJwYy9pbmNsdWRlL2FzbS9wYWdlLmggYi9hcmNoL3Bv
-d2VycGMvaW5jbHVkZS9hc20vcGFnZS5oCmluZGV4IGI4Mjg2YTIuLjdhMzY3Y2UgMTAwNjQ0
-Ci0tLSBhL2FyY2gvcG93ZXJwYy9pbmNsdWRlL2FzbS9wYWdlLmgKKysrIGIvYXJjaC9wb3dl
-cnBjL2luY2x1ZGUvYXNtL3BhZ2UuaApAQCAtMzE5LDYgKzMxOSwxMCBAQCBleHRlcm4gdm9p
-ZCBjb3B5X3VzZXJfcGFnZSh2b2lkICp0bywgdm9pZCAqZnJvbSwgdW5zaWduZWQgbG9uZyB2
-YWRkciwKICNlbmRpZiAvKiBfX0FTU0VNQkxZX18gKi8KICNpbmNsdWRlIDxhc20vc2xpY2Uu
-aD4KIAorI2lmIDEgLyogWFhYOiBwbWFjPyAgZHluYW1pYyBkaXNjb3Zlcnk/ICovCisjZGVm
-aW5lIEFSQ0hfWk9ORV9ETUFfQklUUyAzMAorI2Vsc2UKICNkZWZpbmUgQVJDSF9aT05FX0RN
-QV9CSVRTIDMxCisjZW5kaWYKIAogI2VuZGlmIC8qIF9BU01fUE9XRVJQQ19QQUdFX0ggKi8K
-ZGlmZiAtLWdpdCBhL2FyY2gvcG93ZXJwYy9rZXJuZWwvZG1hLWlvbW11LmMgYi9hcmNoL3Bv
-d2VycGMva2VybmVsL2RtYS1pb21tdS5jCmluZGV4IDA5MjMxZWYuLjc2MWQ5NTEgMTAwNjQ0
-Ci0tLSBhL2FyY2gvcG93ZXJwYy9rZXJuZWwvZG1hLWlvbW11LmMKKysrIGIvYXJjaC9wb3dl
-cnBjL2tlcm5lbC9kbWEtaW9tbXUuYwpAQCAtMjAsNiArMjAsOCBAQAogICovCiBzdGF0aWMg
-aW5saW5lIGJvb2wgZG1hX2lvbW11X2FsbG9jX2J5cGFzcyhzdHJ1Y3QgZGV2aWNlICpkZXYp
-CiB7CisJcHJfaW5mbygiZGV2LT5hcmNoZGF0YS5pb21tdV9ieXBhc3MgJWQsICFpb21tdV9m
-aXhlZF9pc193ZWFrICVkXG4iLAorCQlkZXYtPmFyY2hkYXRhLmlvbW11X2J5cGFzcywgIWlv
-bW11X2ZpeGVkX2lzX3dlYWspCQkKIAlyZXR1cm4gZGV2LT5hcmNoZGF0YS5pb21tdV9ieXBh
-c3MgJiYgIWlvbW11X2ZpeGVkX2lzX3dlYWsgJiYKIAkJZG1hX2RpcmVjdF9zdXBwb3J0ZWQo
-ZGV2LCBkZXYtPmNvaGVyZW50X2RtYV9tYXNrKTsKIH0KQEAgLTI3LDYgKzI5LDggQEAgc3Rh
-dGljIGlubGluZSBib29sIGRtYV9pb21tdV9hbGxvY19ieXBhc3Moc3RydWN0IGRldmljZSAq
-ZGV2KQogc3RhdGljIGlubGluZSBib29sIGRtYV9pb21tdV9tYXBfYnlwYXNzKHN0cnVjdCBk
-ZXZpY2UgKmRldiwKIAkJdW5zaWduZWQgbG9uZyBhdHRycykKIHsKKwlwcl9pbmZvKCIoYXR0
-cnMgJiBETUFfQVRUUl9XRUFLX09SREVSSU5HKSAlZFxuIiwKKwkJKGF0dHJzICYgRE1BX0FU
-VFJfV0VBS19PUkRFUklORykpOwogCXJldHVybiBkZXYtPmFyY2hkYXRhLmlvbW11X2J5cGFz
-cyAmJgogCQkoIWlvbW11X2ZpeGVkX2lzX3dlYWsgfHwgKGF0dHJzICYgRE1BX0FUVFJfV0VB
-S19PUkRFUklORykpOwogfQpkaWZmIC0tZ2l0IGEvYXJjaC9wb3dlcnBjL21tL21lbS5jIGIv
-YXJjaC9wb3dlcnBjL21tL21lbS5jCmluZGV4IGNiYTI5MTMuLjI1NDBkM2IgMTAwNjQ0Ci0t
-LSBhL2FyY2gvcG93ZXJwYy9tbS9tZW0uYworKysgYi9hcmNoL3Bvd2VycGMvbW0vbWVtLmMK
-QEAgLTI0OCw3ICsyNDgsOCBAQCB2b2lkIF9faW5pdCBwYWdpbmdfaW5pdCh2b2lkKQogCSAg
-ICAgICAobG9uZyBpbnQpKCh0b3Bfb2ZfcmFtIC0gdG90YWxfcmFtKSA+PiAyMCkpOwogCiAj
-aWZkZWYgQ09ORklHX1pPTkVfRE1BCi0JbWF4X3pvbmVfcGZuc1taT05FX0RNQV0JPSBtaW4o
-bWF4X2xvd19wZm4sIDB4N2ZmZmZmZmZVTCA+PiBQQUdFX1NISUZUKTsKKwltYXhfem9uZV9w
-Zm5zW1pPTkVfRE1BXQk9IG1pbihtYXhfbG93X3BmbiwKKwkJCSgoMVVMIDw8IEFSQ0hfWk9O
-RV9ETUFfQklUUykgLSAxKSA+PiBQQUdFX1NISUZUKTsKICNlbmRpZgogCW1heF96b25lX3Bm
-bnNbWk9ORV9OT1JNQUxdID0gbWF4X2xvd19wZm47CiAjaWZkZWYgQ09ORklHX0hJR0hNRU0K
-ZGlmZiAtLWdpdCBhL2RyaXZlcnMvbmV0L3dpcmVsZXNzL2Jyb2FkY29tL2I0My9kbWEuYyBi
-L2RyaXZlcnMvbmV0L3dpcmVsZXNzL2Jyb2FkY29tL2I0My9kbWEuYwppbmRleCA4MDY0MDZh
-Li5lMDI3MGRhIDEwMDY0NAotLS0gYS9kcml2ZXJzL25ldC93aXJlbGVzcy9icm9hZGNvbS9i
-NDMvZG1hLmMKKysrIGIvZHJpdmVycy9uZXQvd2lyZWxlc3MvYnJvYWRjb20vYjQzL2RtYS5j
-CkBAIC0xMDUzLDYgKzEwNTMsNyBAQCBzdGF0aWMgaW50IGI0M19kbWFfc2V0X21hc2soc3Ry
-dWN0IGI0M193bGRldiAqZGV2LCB1NjQgbWFzaykKIAkgKiBsb3dlciBtYXNrLCBhcyB3ZSBj
-YW4gYWx3YXlzIGFsc28gc3VwcG9ydCBhIGxvd2VyIG9uZS4gKi8KIAl3aGlsZSAoMSkgewog
-CQllcnIgPSBkbWFfc2V0X21hc2tfYW5kX2NvaGVyZW50KGRldi0+ZGV2LT5kbWFfZGV2LCBt
-YXNrKTsKKwkJcHJfaW5mbygiZG1hX3NldF9tYXNrX2FuZF9jb2hlcmVudCAlZCwgbWFzayAw
-eCVsbHhcbiIsIGVyciwgbWFzayk7CiAJCWlmICghZXJyKQogCQkJYnJlYWs7CiAJCWlmICht
-YXNrID09IERNQV9CSVRfTUFTSyg2NCkpIHsKZGlmZiAtLWdpdCBhL2RyaXZlcnMvbmV0L3dp
-cmVsZXNzL2Jyb2FkY29tL2I0M2xlZ2FjeS9kbWEuYyBiL2RyaXZlcnMvbmV0L3dpcmVsZXNz
-L2Jyb2FkY29tL2I0M2xlZ2FjeS9kbWEuYwppbmRleCAxY2MyNWY0Li5jNjI1ZmZjIDEwMDY0
-NAotLS0gYS9kcml2ZXJzL25ldC93aXJlbGVzcy9icm9hZGNvbS9iNDNsZWdhY3kvZG1hLmMK
-KysrIGIvZHJpdmVycy9uZXQvd2lyZWxlc3MvYnJvYWRjb20vYjQzbGVnYWN5L2RtYS5jCkBA
-IC03OTQsNiArNzk0LDcgQEAgc3RhdGljIGludCBiNDNsZWdhY3lfZG1hX3NldF9tYXNrKHN0
-cnVjdCBiNDNsZWdhY3lfd2xkZXYgKmRldiwgdTY0IG1hc2spCiAJICogbG93ZXIgbWFzaywg
-YXMgd2UgY2FuIGFsd2F5cyBhbHNvIHN1cHBvcnQgYSBsb3dlciBvbmUuICovCiAJd2hpbGUg
-KDEpIHsKIAkJZXJyID0gZG1hX3NldF9tYXNrX2FuZF9jb2hlcmVudChkZXYtPmRldi0+ZG1h
-X2RldiwgbWFzayk7CisJCXByX2luZm8oImRtYV9zZXRfbWFza19hbmRfY29oZXJlbnQgJWQs
-IG1hc2sgMHglbGx4XG4iLCBlcnIsIG1hc2spOwogCQlpZiAoIWVycikKIAkJCWJyZWFrOwog
-CQlpZiAobWFzayA9PSBETUFfQklUX01BU0soNjQpKSB7CmRpZmYgLS1naXQgYS9rZXJuZWwv
-ZG1hL2RpcmVjdC5jIGIva2VybmVsL2RtYS9kaXJlY3QuYwppbmRleCAyYzI3NzJlLi5iNzE2
-ZTYyIDEwMDY0NAotLS0gYS9rZXJuZWwvZG1hL2RpcmVjdC5jCisrKyBiL2tlcm5lbC9kbWEv
-ZGlyZWN0LmMKQEAgLTM5MSw2ICszOTEsOCBAQCBpbnQgZG1hX2RpcmVjdF9zdXBwb3J0ZWQo
-c3RydWN0IGRldmljZSAqZGV2LCB1NjQgbWFzaykKIAkgKiB1c2UgX19waHlzX3RvX2RtYSgp
-IGhlcmUgc28gdGhhdCB0aGUgU01FIGVuY3J5cHRpb24gbWFzayBpc24ndAogCSAqIHBhcnQg
-b2YgdGhlIGNoZWNrLgogCSAqLworCXByX2luZm8oIm1pbl9tYXNrIDB4JXguIG1heF9wZm4g
-MHgleCwgX19waHlzX3RvX2RtYSAweCV4LCBtYXNrIDB4JXhcbiIsIG1pbl9tYXNrLAorCQlt
-YXhfcGZuLCBfX3BoeXNfdG9fZG1hKGRldiwgbWluX21hc2spLCBtYXNrKTsKIAlyZXR1cm4g
-bWFzayA+PSBfX3BoeXNfdG9fZG1hKGRldiwgbWluX21hc2spOwogfQogCmRpZmYgLS1naXQg
-YS9rZXJuZWwvZG1hL21hcHBpbmcuYyBiL2tlcm5lbC9kbWEvbWFwcGluZy5jCmluZGV4IGY3
-YWZkYWQuLmJhMjQ4OWQgMTAwNjQ0Ci0tLSBhL2tlcm5lbC9kbWEvbWFwcGluZy5jCisrKyBi
-L2tlcm5lbC9kbWEvbWFwcGluZy5jCkBAIC0zMTcsOSArMzE3LDEyIEBAIGludCBkbWFfc3Vw
-cG9ydGVkKHN0cnVjdCBkZXZpY2UgKmRldiwgdTY0IG1hc2spCiAKIGludCBkbWFfc2V0X21h
-c2soc3RydWN0IGRldmljZSAqZGV2LCB1NjQgbWFzaykKIHsKKwlwcl9pbmZvKCJtYXNrIDB4
-JWxseCwgZG1hX21hc2sgMHglbGx4LCBkbWFfc3VwcG9ydGVkIDB4JWxseFxuIiwgbWFzaywg
-ZGV2LT5kbWFfbWFzaywKKwkJZG1hX3N1cHBvcnRlZChkZXYsIG1hc2spKTsKIAlpZiAoIWRl
-di0+ZG1hX21hc2sgfHwgIWRtYV9zdXBwb3J0ZWQoZGV2LCBtYXNrKSkKIAkJcmV0dXJuIC1F
-SU87CiAKKwlwcl9pbmZvKCJDb250aW51aW5nIGluIGRtYV9zZXRfbWFzaygpXG4iKTsKIAlh
-cmNoX2RtYV9zZXRfbWFzayhkZXYsIG1hc2spOwogCWRtYV9jaGVja19tYXNrKGRldiwgbWFz
-ayk7CiAJKmRldi0+ZG1hX21hc2sgPSBtYXNrOwo=
---------------9E0BA6B24CBFDA3D78DB4932--
+Regards,
+Sergey
