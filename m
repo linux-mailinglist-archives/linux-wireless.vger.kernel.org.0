@@ -2,83 +2,94 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 632DA3AC6E
-	for <lists+linux-wireless@lfdr.de>; Mon, 10 Jun 2019 00:31:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id ED9AB3AC88
+	for <lists+linux-wireless@lfdr.de>; Mon, 10 Jun 2019 02:13:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729777AbfFIWbw (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 9 Jun 2019 18:31:52 -0400
-Received: from bues.ch ([80.190.117.144]:52170 "EHLO bues.ch"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1729304AbfFIWbw (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 9 Jun 2019 18:31:52 -0400
-X-Greylist: delayed 2063 seconds by postgrey-1.27 at vger.kernel.org; Sun, 09 Jun 2019 18:31:50 EDT
-Received: by bues.ch with esmtpsa (Exim 4.89)
-        (envelope-from <m@bues.ch>)
-        id 1ha5oX-0003kU-V0; Sun, 09 Jun 2019 23:57:21 +0200
-Date:   Sun, 9 Jun 2019 23:57:11 +0200
-From:   Michael =?UTF-8?B?QsO8c2No?= <m@bues.ch>
-To:     H Buus <ubuntu@hbuus.com>
+        id S1729774AbfFJANF (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 9 Jun 2019 20:13:05 -0400
+Received: from mail-oi1-f195.google.com ([209.85.167.195]:45055 "EHLO
+        mail-oi1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725933AbfFJANF (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Sun, 9 Jun 2019 20:13:05 -0400
+Received: by mail-oi1-f195.google.com with SMTP id e189so5030529oib.11;
+        Sun, 09 Jun 2019 17:13:05 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=sender:subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=ZY2Fx0K0tPufKRHglI4CEFMtmYuRgEIluvYk2snoK+s=;
+        b=JX4TcRdUV25LIJFzcwIAlzUOYawxxsU31Dyj/1SRZVJ40/u0n+o2x6HEegmuHLdv3d
+         +4+TNsUIlh5Ic7V/2Iu7hFNmwtC/hEK5AfzBdvyXLJdzVrmyrrNrlOYcQHuw69ujK6AZ
+         EFY59hD8CDlSeFJQBMsK7Uo2lhTwiDA4PnGbHjvtz+E9QkzjZFENWlTqhXwXT00Tppcz
+         90lGQu7JRWfOvzOxZ/0bzMc0L0cfBY8no9CIq9U7uQ1kzl3CgeytxxD+oC2m7x+qe0eC
+         HvZPdjtlDvMsTln9MxYYFW7bcX8Oij8c87i1QKAPZ2Jbe7T5iez4I/WQVM1gXPvA7GFj
+         L1dw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:sender:subject:to:cc:references:from:message-id
+         :date:user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=ZY2Fx0K0tPufKRHglI4CEFMtmYuRgEIluvYk2snoK+s=;
+        b=W+BMDM2Sj3pLtqySuBfbQnga0vMNyAoejC77AsuqF4PrmCwHC1GscQAGkgzi2VL4EL
+         dhZ/HxGbgxC60vo1OgGXw4ch/SUkREAiXAwdXgHwGpua04kMbzFT/v05R+jX/DnR6HKP
+         FVJSlumRTblv1TSFoCFT4Rekz7AWcAY+1+X6CUEck3RpK60JAnQCQ1iZClBC6kDMgZGj
+         axpQXTajv4JpCJlyVmLlHX926VGiHn9sCu5jsOM0pJSCwmM5nBQfLKVqrrU1KV1c8Qlu
+         xLbv1KCBt008ad98AmR71x60mosGFhBiBYmib9qB+H5JyOOu4WVCLO1YSzbwVOgc31NP
+         C5fQ==
+X-Gm-Message-State: APjAAAWnMv/zJoCXVtw6qQTUp6DMZkjEh8ohRWxcZzzV3IIwYmHsHqGz
+        +DBuRtC/MWY7m0vkbmM3LCWwtlbh
+X-Google-Smtp-Source: APXvYqy8SMuSyjsNcoKNl/6HJW/MQE4JcdMYkD8tSiMr0mi8kzGqqtrwAik6qWrpSnwadLRw6lKgZA==
+X-Received: by 2002:aca:f183:: with SMTP id p125mr10622543oih.13.1560125584546;
+        Sun, 09 Jun 2019 17:13:04 -0700 (PDT)
+Received: from [192.168.1.112] (cpe-24-31-245-230.kc.res.rr.com. [24.31.245.230])
+        by smtp.gmail.com with ESMTPSA id x7sm666152oif.27.2019.06.09.17.13.03
+        (version=TLS1_3 cipher=AEAD-AES128-GCM-SHA256 bits=128/128);
+        Sun, 09 Jun 2019 17:13:03 -0700 (PDT)
+Subject: Re: Should b44_init lead to WARN_ON in drivers/ssb/driver_gpio.c:464?
+To:     =?UTF-8?Q?Michael_B=c3=bcsch?= <m@bues.ch>,
+        H Buus <ubuntu@hbuus.com>
 Cc:     Kalle Valo <kvalo@codeaurora.org>,
         Michael Chan <michael.chan@broadcom.com>,
         linux-wireless@vger.kernel.org, netdev@vger.kernel.org
-Subject: Re: Should b44_init lead to WARN_ON in
- drivers/ssb/driver_gpio.c:464?
-Message-ID: <20190609235711.481bbac9@wiggum>
-In-Reply-To: <946c86bf-7e90-a981-b9fc-757adb98adfa@hbuus.com>
 References: <946c86bf-7e90-a981-b9fc-757adb98adfa@hbuus.com>
-X-Mailer: Claws Mail 3.17.3 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
+ <20190609235711.481bbac9@wiggum>
+From:   Larry Finger <Larry.Finger@lwfinger.net>
+Message-ID: <4fdd3b06-f3f7-87e0-93be-c5d6f2bf5ab4@lwfinger.net>
+Date:   Sun, 9 Jun 2019 19:13:02 -0500
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.7.0
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
- boundary="Sig_/j1ztxFZ/t9QL4ize+KYtKmd"; protocol="application/pgp-signature"
+In-Reply-To: <20190609235711.481bbac9@wiggum>
+Content-Type: text/plain; charset=windows-1252; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
---Sig_/j1ztxFZ/t9QL4ize+KYtKmd
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: quoted-printable
+On 6/9/19 4:57 PM, Michael Büsch wrote:
+> On Sun, 9 Jun 2019 17:44:10 -0400
+> H Buus <ubuntu@hbuus.com> wrote:
+> 
+>> I have an old 32 bit laptop with a BCM4401-B0 100Base-TX ethernet
+>> controller. For every kernel from 4.19-rc1 going forward, I get a
+>> warning and call trace within a few seconds of start up (see dmesg
+>> snippet below). I have traced it to a specific commit (see commit
+>> below). On the face of it, I would think it is a regression, but it
+>> doesn't seem to cause a problem, since networking over ethernet is working.
+> 
+> 
+> This warning is not a problem. The commit just exposes a warning, that
+> has always been there.
+> I suggest we just remove the WARN_ON from ssb_gpio_init and
+> ssb_gpio_unregister.
+> I don't see a reason to throw a warning in that case.
 
-On Sun, 9 Jun 2019 17:44:10 -0400
-H Buus <ubuntu@hbuus.com> wrote:
+Michael,
 
-> I have an old 32 bit laptop with a BCM4401-B0 100Base-TX ethernet
-> controller. For every kernel from 4.19-rc1 going forward, I get a
-> warning and call trace within a few seconds of start up (see dmesg
-> snippet below). I have traced it to a specific commit (see commit
-> below). On the face of it, I would think it is a regression, but it
-> doesn't seem to cause a problem, since networking over ethernet is workin=
-g.
+I agree. Do you want to prepare the patch, or should I?
 
+Larry
 
-This warning is not a problem. The commit just exposes a warning, that
-has always been there.
-I suggest we just remove the WARN_ON from ssb_gpio_init and
-ssb_gpio_unregister.
-I don't see a reason to throw a warning in that case.
-
---=20
-Michael
-
---Sig_/j1ztxFZ/t9QL4ize+KYtKmd
-Content-Type: application/pgp-signature
-Content-Description: OpenPGP digital signature
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAEBCgAdFiEEihRzkKVZOnT2ipsS9TK+HZCNiw4FAlz9gLcACgkQ9TK+HZCN
-iw4SdA//ckBMesNtmeE5ovBdzE4mhaRf4sSBmN2DP1ctMil/nhW5nH7jF5jtvqxL
-1RMT7aS5TZ1B+h50Y4rxpG4DFeyQCobaDaoHhqcbmXQp/zVRCOSbyb10zd/GC1q4
-pZyxwgOc58pCNseGB7PMTiAmZCdxbhUkdjFRwuadTdQ0QqFEzWhO5IN+YdT80T4W
-4htUP8ZDcQoQkjWF/tt/0bGuMrQaloqRzLDLP9C/gvZT4R1Uc3csh4rdaRHZCKQ1
-OHxj47DYID03hf3tYnxg4JptWUPuEsZQHSX3Tw/Y5IFf0LdznTKbSMfqvS0qkdxF
-d3U/ium0zqibJkeDcIpdUtWPPO353SMkaxYHV2KrWOnykG0cw9jhXevU+ZnmnAdy
-swLVoHwsr1HWzTcUAbEZoUeY//7X1JWlqE8VH47Fsk5f/lePhdfCsfuU3JKEdcCt
-ofgjpZbqR+8CY/rPMUxZ113vqLarFNNX6qaHYW0M35U7yu1SKw1wqpIFqwR8eXhN
-AKwX46sLv/VTTM4MUb55PqdU90hyQS03e5215d8OowqnIvPwLqCJh2nFKJq5disk
-nu19j2tPqrAyY5Q+2ts+BS6W3/aqZVrnK4OnJ+vyeYzE70dKgZ6MDYVyD1SzQhkZ
-VehX4/NZ4XHVXOxaRnfRdnq5uTl56j50VUDbBQFDIT5tyau8ZCU=
-=Br6O
------END PGP SIGNATURE-----
-
---Sig_/j1ztxFZ/t9QL4ize+KYtKmd--
