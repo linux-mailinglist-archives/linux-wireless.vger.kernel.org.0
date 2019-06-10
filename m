@@ -2,98 +2,93 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 5B2F13BBF3
-	for <lists+linux-wireless@lfdr.de>; Mon, 10 Jun 2019 20:44:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 629DC3BC05
+	for <lists+linux-wireless@lfdr.de>; Mon, 10 Jun 2019 20:50:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2387809AbfFJSov (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 10 Jun 2019 14:44:51 -0400
-Received: from mail-ot1-f67.google.com ([209.85.210.67]:46953 "EHLO
-        mail-ot1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2387643AbfFJSov (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 10 Jun 2019 14:44:51 -0400
-Received: by mail-ot1-f67.google.com with SMTP id z23so9283937ote.13;
-        Mon, 10 Jun 2019 11:44:50 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=sender:subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=D3rnPxkKkOcWLjb9M3zXKMP8YGdus9mVV7OMcZq7pcE=;
-        b=DVW5iXzx64p4Z3JZnxlxs0vIKwgxfFCNmYLEcmQukipOh4AkADT4du6f0HN/erCPT0
-         yuTL9qyCL6VAMwebjQD3hB1vTUCR3FJEraylBTE1PQ/6HfA7xk47lLm92/JbD/8kquWs
-         8whChl5q7Bd4PZZRchNe33DfU/HStFantcBM+eLHLsstePld5xV84aCqf4L03cmJiFu8
-         KH8bTM434yHlZjNa0ohDkL0oJz6qFfjNGcr8fw2SL9GgZvo5VgeYu5O5KL93bK2DNED2
-         5j3uNh1vklJhT2VMvsjlKcZjt2c/z7HiKLaKetkwy0kQXJCMJHv0GtezcsQrC1x6hZSa
-         T+dg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:sender:subject:to:cc:references:from:message-id
-         :date:user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=D3rnPxkKkOcWLjb9M3zXKMP8YGdus9mVV7OMcZq7pcE=;
-        b=lJ2DqAaD7/l+Bf5Sc4XmmllarcolpNILShmZmodr4nevzv2/ytlxkbJVq7iHZavmvP
-         FSULL2lgaODGd9poX0TGmfYUl0ZiQTNz4oKWMbfhc0i1DAdgiNGcEeY45clkej0l+kJ5
-         2T+JkCeOxLlHC6FmG2B2dEM6WLEIrZKVPdjD86IFqb5PkLJlNCDOy8/ELMSWqXtYKK2+
-         vULE542Hxi0bsrxm0F2gnxfUVxsmFzxDcaFD3QT+/SxIm8YNpQWUfbY9Y9Bj4lW3EUPo
-         XveYpJfpTn0NrVhZMsyqJGXFpEDhtP06KuON+FdX3Ra+FYUBNJ3eAeogiq/4bkmGzVz9
-         B41g==
-X-Gm-Message-State: APjAAAUCnwGAOM1jfquPrL5Zb0o5LZXQUSjvYBbBSDUVJo5aIBtl2Uc5
-        7fHT6uWDTxO5WJx1bTcUEHd5mh/M
-X-Google-Smtp-Source: APXvYqzFkDPZUfQTRZ+iIhDbbjsNqAeRD5O0Bl+f2oVgQX41yDJYVUD2AZA7z+ewtprdGgM6/MXViQ==
-X-Received: by 2002:a9d:6c46:: with SMTP id g6mr25448205otq.162.1560192290284;
-        Mon, 10 Jun 2019 11:44:50 -0700 (PDT)
-Received: from [192.168.1.112] (cpe-24-31-245-230.kc.res.rr.com. [24.31.245.230])
-        by smtp.gmail.com with ESMTPSA id f5sm4018251otl.51.2019.06.10.11.44.48
-        (version=TLS1_3 cipher=AEAD-AES128-GCM-SHA256 bits=128/128);
-        Mon, 10 Jun 2019 11:44:49 -0700 (PDT)
-Subject: Re: [BISECTED REGRESSION] b43legacy broken on G4 PowerBook
-To:     Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Aaro Koskinen <aaro.koskinen@iki.fi>,
-        Christoph Hellwig <hch@lst.de>,
-        Christian Zigotzky <chzigotzky@xenosoft.de>,
-        Michael Ellerman <mpe@ellerman.id.au>
-Cc:     linuxppc-dev@lists.ozlabs.org, linux-wireless@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-References: <20190605225059.GA9953@darkstar.musicnaut.iki.fi>
- <73da300c-871c-77ac-8a3a-deac226743ef@lwfinger.net>
- <7697a9d10777b28ae79fdffdde6d0985555f6310.camel@kernel.crashing.org>
-From:   Larry Finger <Larry.Finger@lwfinger.net>
-Message-ID: <3ed1ccfe-d7ca-11b9-17b3-303d1ae1bb0f@lwfinger.net>
-Date:   Mon, 10 Jun 2019 13:44:48 -0500
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.7.0
+        id S2387805AbfFJSux (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 10 Jun 2019 14:50:53 -0400
+Received: from bues.ch ([80.190.117.144]:52898 "EHLO bues.ch"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S2387643AbfFJSux (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 10 Jun 2019 14:50:53 -0400
+Received: by bues.ch with esmtpsa (Exim 4.89)
+        (envelope-from <m@bues.ch>)
+        id 1haPNS-0002VR-Rf; Mon, 10 Jun 2019 20:50:42 +0200
+Date:   Mon, 10 Jun 2019 20:49:27 +0200
+From:   Michael =?UTF-8?B?QsO8c2No?= <m@bues.ch>
+To:     Kalle Valo <kvalo@codeaurora.org>
+Cc:     H Buus <ubuntu@hbuus.com>,
+        Larry Finger <Larry.Finger@lwfinger.net>,
+        linux-wireless <linux-wireless@vger.kernel.org>
+Subject: [PATCH] ssb/gpio: Remove unnecessary WARN_ON from driver_gpio
+Message-ID: <20190610204927.2de21c9a@wiggum>
+In-Reply-To: <946c86bf-7e90-a981-b9fc-757adb98adfa@hbuus.com>
+References: <946c86bf-7e90-a981-b9fc-757adb98adfa@hbuus.com>
+X-Mailer: Claws Mail 3.17.3 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-In-Reply-To: <7697a9d10777b28ae79fdffdde6d0985555f6310.camel@kernel.crashing.org>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Type: multipart/signed; micalg=pgp-sha512;
+ boundary="Sig_/=aAChw9jp+ZBq/eLygL=Q5F"; protocol="application/pgp-signature"
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 6/7/19 11:21 PM, Benjamin Herrenschmidt wrote:
-> 
->> Please try the attached patch. I'm not really pleased with it and I will
->> continue to determine why the fallback to a 30-bit mask fails, but at least this
->> one works for me.
-> 
-> Your patch only makes sense if the device is indeed capable of
-> addressing 31-bits.
-> 
-> So either the driver is buggy and asks for a too small mask in which
-> case your patch is ok, or it's not and you're just going to cause all
-> sort of interesting random problems including possible memory
-> corruption.
+--Sig_/=aAChw9jp+ZBq/eLygL=Q5F
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
-Of course the driver may be buggy, but it asks for the correct mask.
+The WARN_ON triggers on older BCM4401-B0 100Base-TX ethernet controllers.
+The warning serves no purpose. So let's just remove it.
 
-This particular device is not capable of handling 32-bit DMA. The driver detects 
-the 32-bit failure and falls back to 30 bits. It works on x86, and did on PPC32 
-until 5.1. As Christoph said, it should always be possible to use fewer bits 
-than the maximum.
+Reported-by: H Buus <ubuntu@hbuus.com>
+Signed-off-by: Michael B=C3=BCsch <m@bues.ch>
 
-Similar devices that are new enough to use b43 rather than b43legacy work with 
-new kernels; however, they have and use 32-bit DMA.
+---
 
-Larry
+diff --git a/drivers/ssb/driver_gpio.c b/drivers/ssb/driver_gpio.c
+index e809dae4c470..66a76fd83248 100644
+--- a/drivers/ssb/driver_gpio.c
++++ b/drivers/ssb/driver_gpio.c
+@@ -460,9 +460,6 @@ int ssb_gpio_init(struct ssb_bus *bus)
+ 		return ssb_gpio_chipco_init(bus);
+ 	else if (ssb_extif_available(&bus->extif))
+ 		return ssb_gpio_extif_init(bus);
+-	else
+-		WARN_ON(1);
+-
+ 	return -1;
+ }
+=20
+@@ -472,9 +469,6 @@ int ssb_gpio_unregister(struct ssb_bus *bus)
+ 	    ssb_extif_available(&bus->extif)) {
+ 		gpiochip_remove(&bus->gpio);
+ 		return 0;
+-	} else {
+-		WARN_ON(1);
+ 	}
+-
+ 	return -1;
+ }
+
+--Sig_/=aAChw9jp+ZBq/eLygL=Q5F
+Content-Type: application/pgp-signature
+Content-Description: OpenPGP digital signature
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAEBCgAdFiEEihRzkKVZOnT2ipsS9TK+HZCNiw4FAlz+pjcACgkQ9TK+HZCN
+iw4Jdg//ehl1NpCjzEposBgzTwIUcrTrVMIOb7pM6uWKtJXJvy6Z8OypBgHXA5av
+P8r26xazFPf5mzAV0HLNyRJkx8yYK7D9a0mwh6fFaWtiNtiefxCrdJePUiradRZU
+TFvyXMCx7Qrnl4K9FjYTO+KF3m5ixLY2zjIPXVeKuydPz4xQj2oz0vO6l3YS2Bim
+nELFrX4pCwzHtJSIHKuPgi80DGBI0aAVyyvE5nRDOuDq8AnDn70aLARvXy715COZ
+dzfRPYinum/PBFLlkcV62YAtD/8enMiptj1vv67vKsImaYADatTnorTdqHGOJ/zB
+upvdr4iEQuBTtv2WuR/82Ui/gxwI9cz87HbQ7aLRDNqSlsDAqHCD81+K/djzYRe+
+2e4GTfVGV3/GTs5QdvC6jEOd9XfVTLkqMQs6USET58RxZrdnbaAhfdMVzexylw0H
+MnZMsEawL7TdFoE7fR+Lix9o9cO2tDt0Q9KUqnfQOnYlMWVqHkCmrLp1XD5oqXz8
+Rct7FMmEgfF1GXYbXBzqo8pdW0IB2RtMC6Al0VXeQwHQUdVRqN94z0+2JOjo/sxl
+NDw/TOn9h+llDYNFEehOOZHbhkVjIrq34E7WUWxTDEqYI0XqAZgYRqWaJgzfW8dW
+8P+PgzRXcM07vl/JyC84cLXKMgYvkLaoUcGf5PlHLbN15vJQvDw=
+=wwDB
+-----END PGP SIGNATURE-----
+
+--Sig_/=aAChw9jp+ZBq/eLygL=Q5F--
