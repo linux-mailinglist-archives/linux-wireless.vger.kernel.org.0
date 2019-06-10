@@ -2,180 +2,226 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 3CADB3B6FD
-	for <lists+linux-wireless@lfdr.de>; Mon, 10 Jun 2019 16:12:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1072B3B90B
+	for <lists+linux-wireless@lfdr.de>; Mon, 10 Jun 2019 18:10:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2390755AbfFJOMg (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 10 Jun 2019 10:12:36 -0400
-Received: from iolanthe.rowland.org ([192.131.102.54]:35070 "HELO
-        iolanthe.rowland.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with SMTP id S2390690AbfFJOMf (ORCPT
+        id S2403814AbfFJQJw (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 10 Jun 2019 12:09:52 -0400
+Received: from mail-oi1-f194.google.com ([209.85.167.194]:39506 "EHLO
+        mail-oi1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2389968AbfFJQJw (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 10 Jun 2019 10:12:35 -0400
-Received: (qmail 1728 invoked by uid 2102); 10 Jun 2019 10:12:34 -0400
-Received: from localhost (sendmail-bs@127.0.0.1)
-  by localhost with SMTP; 10 Jun 2019 10:12:34 -0400
-Date:   Mon, 10 Jun 2019 10:12:34 -0400 (EDT)
-From:   Alan Stern <stern@rowland.harvard.edu>
-X-X-Sender: stern@iolanthe.rowland.org
-To:     Christian Lamparter <chunkeey@gmail.com>
-cc:     linux-wireless@vger.kernel.org, <linux-usb@vger.kernel.org>,
-        Kalle Valo <kvalo@codeaurora.org>
-Subject: Re: [PATCH v2] carl9170: fix misuse of device driver API
-In-Reply-To: <20190608144947.744-3-chunkeey@gmail.com>
-Message-ID: <Pine.LNX.4.44L0.1906101012150.1560-100000@iolanthe.rowland.org>
+        Mon, 10 Jun 2019 12:09:52 -0400
+Received: by mail-oi1-f194.google.com with SMTP id m202so6640367oig.6;
+        Mon, 10 Jun 2019 09:09:51 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=sender:subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language;
+        bh=o6kJfIIxf3+CLuDt60IWBugOj7DYo2cJ4pIJXDINxcQ=;
+        b=r6Jmcvz2cFKkJ6CTqjBzhvxeOFJ4KVWyE818wZ4KwtCLKljAY2IT2vM3t80hoTtMbY
+         8oh9zbpHVIRODOH06ZuEazfBGO/dChhf4nzkxDB29AToHowI5FXuk/8/t5MiKvp8FM4q
+         nGzHeF2WXRojWEfEGs/SvA/weGEDneodiygsuHCKyq4DfLkoNZYpBZTSe5LOFOxCroW0
+         hSlhJUJCvJkmm5emllO+K7uZd038eQA7XW3eIu6C/+t0y12awHExlcLw9xJ45AmNTT5J
+         IRm+D5RS6g+VddIPA3ujJZacxH6pH0Loi9NgbqrhjLiBzJlyt6zMwhR9qohatonGnQSx
+         lkVg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:sender:subject:to:cc:references:from:message-id
+         :date:user-agent:mime-version:in-reply-to:content-language;
+        bh=o6kJfIIxf3+CLuDt60IWBugOj7DYo2cJ4pIJXDINxcQ=;
+        b=BdfPi7/JNwTyHjiS8N3nElpIYUh607sHEsCx8b85qt31/yLN1rsx/aQdkYAxIVVLo7
+         af0tOGOTqEKZJb4RB7CESeBJ1o0YRkPnHMopX0q9kxf9kIiYR0vPiyxeIUUz0FbUH2wp
+         JL6/0m89C0nsUk1BOY6GQKOdgH7pdIvI0T5JgDoIsUAMcrRKPWG55/sQICCixd1u0oPu
+         14xwcJSbTTFrEX2iZbX5d1BdHOTbAJYzmXexXjlAH6v5MM8X3PDpNa3Vs+S13lagmHTU
+         mLT9Lr5+8EctdBRpgh73ZSIxssUoD76YmJU4YaZq5kp2FmVp3PjMXzvilfmXZD1JV6f2
+         U5UQ==
+X-Gm-Message-State: APjAAAXZWTrEWDnIIEyU7vs0HKky7PMKuHhTqEN5AcOLenyfRKoKXNwB
+        vmc7ObB/+ZsIC81B2V7gfVKHUTSO
+X-Google-Smtp-Source: APXvYqyPyr0j26tGMkWhtV43A0upDXJqDNFFrti25Vh1FAvy5t/Ay00kZncuJYv/jTolGck8yI/ccA==
+X-Received: by 2002:aca:50c6:: with SMTP id e189mr12465946oib.63.1560182991581;
+        Mon, 10 Jun 2019 09:09:51 -0700 (PDT)
+Received: from [192.168.1.112] (cpe-24-31-245-230.kc.res.rr.com. [24.31.245.230])
+        by smtp.gmail.com with ESMTPSA id l12sm416626otp.74.2019.06.10.09.09.48
+        (version=TLS1_3 cipher=AEAD-AES128-GCM-SHA256 bits=128/128);
+        Mon, 10 Jun 2019 09:09:49 -0700 (PDT)
+Subject: Re: [BISECTED REGRESSION] b43legacy broken on G4 PowerBook
+To:     Christoph Hellwig <hch@lst.de>
+Cc:     Aaro Koskinen <aaro.koskinen@iki.fi>,
+        Christian Zigotzky <chzigotzky@xenosoft.de>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org
+References: <20190605225059.GA9953@darkstar.musicnaut.iki.fi>
+ <73da300c-871c-77ac-8a3a-deac226743ef@lwfinger.net>
+ <20190607172902.GA8183@lst.de>
+ <30000803-3772-3edf-f4a9-55122d504f3f@lwfinger.net>
+ <20190610081825.GA16534@lst.de>
+From:   Larry Finger <Larry.Finger@lwfinger.net>
+Message-ID: <153c13f5-a829-1eab-a3c5-fecfb84127ff@lwfinger.net>
+Date:   Mon, 10 Jun 2019 11:09:47 -0500
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.7.0
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
+In-Reply-To: <20190610081825.GA16534@lst.de>
+Content-Type: multipart/mixed;
+ boundary="------------9E0BA6B24CBFDA3D78DB4932"
+Content-Language: en-US
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Sat, 8 Jun 2019, Christian Lamparter wrote:
+This is a multi-part message in MIME format.
+--------------9E0BA6B24CBFDA3D78DB4932
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-> This patch follows Alan Stern's recent patch:
-> "p54: Fix race between disconnect and firmware loading"
+On 6/10/19 3:18 AM, Christoph Hellwig wrote:
+> On Sat, Jun 08, 2019 at 04:52:24PM -0500, Larry Finger wrote:
+>> On 6/7/19 12:29 PM, Christoph Hellwig wrote:
+>>> I don't think we should work around this in the driver, we need to fix
+>>> it in the core.  I'm curious why my previous patch didn't work.  Can
+>>> you throw in a few printks what failed?  I.e. did dma_direct_supported
+>>> return false?  Did the actual allocation fail?
+>>
+>> Routine dma_direct_supported() returns true.
+>>
+>> The failure is in routine dma_set_mask() in the following if test:
+>>
+>>          if (!dev->dma_mask || !dma_supported(dev, mask))
+>>                  return -EIO;
+>>
+>> For b43legacy, dev->dma_mask is 0xc265684800000000.
+>>      dma_supported(dev, mask) is 0xc08b000000000000, mask is 0x3fffffff, and
+>> the routine returns -EIO.
+>>
+>> For b43,       dev->dma_mask is 0xc265684800000001,
+>>      dma_supported(dev, mask) is 0xc08b000000000000, mask is 0x77777777, and
+>> the routine returns 0.
 > 
-> that overhauled carl9170 buggy firmware loading and driver
-> unbinding procedures.
-> 
-> Since the carl9170 code was adapted from p54 it uses the
-> same functions and is likely to have the same problem, but
-> it's just that the syzbot hasn't reproduce them (yet).
-> 
-> a summary from the changes (copied from the p54 patch):
->  * Call usb_driver_release_interface() rather than
->    device_release_driver().
-> 
->  * Lock udev (the interface's parent) before unbinding the
->    driver instead of locking udev->parent.
-> 
->  * During the firmware loading process, take a reference
->    to the USB interface instead of the USB device.
-> 
->  * Don't take an unnecessary reference to the device during
->    probe (and then don't drop it during disconnect).
-> 
-> and
-> 
->  * Make sure to prevent use-after-free bugs by explicitly
->    setting the driver context to NULL after signaling the
->    completion.
-> 
-> Cc: <stable@vger.kernel.org>
-> Cc: Alan Stern <stern@rowland.harvard.edu>
-> Signed-off-by: Christian Lamparter <chunkeey@gmail.com>
-> ---
-> v2: Alan Stern's comments
->   - fixed possible use-after-free
-> ---
+> I don't fully understand what values the above map to.  Can you send
+> me your actual debugging patch as well?
 
-Acked-by: Alan Stern <stern@rowland.harvard.edu>
+I do not understand why the if statement returns true as neither of the values 
+is zero. After seeing the x86 output shown below, I also do not understand all 
+the trailing zeros.
 
+My entire patch is attached. That output came from this section:
 
->  drivers/net/wireless/ath/carl9170/usb.c | 39 +++++++++++--------------
->  1 file changed, 17 insertions(+), 22 deletions(-)
-> 
-> diff --git a/drivers/net/wireless/ath/carl9170/usb.c b/drivers/net/wireless/ath/carl9170/usb.c
-> index e7c3f3b8457d..99f1897a775d 100644
-> --- a/drivers/net/wireless/ath/carl9170/usb.c
-> +++ b/drivers/net/wireless/ath/carl9170/usb.c
-> @@ -128,6 +128,8 @@ static const struct usb_device_id carl9170_usb_ids[] = {
->  };
->  MODULE_DEVICE_TABLE(usb, carl9170_usb_ids);
->  
-> +static struct usb_driver carl9170_driver;
-> +
->  static void carl9170_usb_submit_data_urb(struct ar9170 *ar)
->  {
->  	struct urb *urb;
-> @@ -966,32 +968,28 @@ static int carl9170_usb_init_device(struct ar9170 *ar)
->  
->  static void carl9170_usb_firmware_failed(struct ar9170 *ar)
->  {
-> -	struct device *parent = ar->udev->dev.parent;
-> -	struct usb_device *udev;
-> -
-> -	/*
-> -	 * Store a copy of the usb_device pointer locally.
-> -	 * This is because device_release_driver initiates
-> -	 * carl9170_usb_disconnect, which in turn frees our
-> -	 * driver context (ar).
-> +	/* Store a copies of the usb_interface and usb_device pointer locally.
-> +	 * This is because release_driver initiates carl9170_usb_disconnect,
-> +	 * which in turn frees our driver context (ar).
->  	 */
-> -	udev = ar->udev;
-> +	struct usb_interface *intf = ar->intf;
-> +	struct usb_device *udev = ar->udev;
->  
->  	complete(&ar->fw_load_wait);
-> +	/* at this point 'ar' could be already freed. Don't use it anymore */
-> +	ar = NULL;
->  
->  	/* unbind anything failed */
-> -	if (parent)
-> -		device_lock(parent);
-> -
-> -	device_release_driver(&udev->dev);
-> -	if (parent)
-> -		device_unlock(parent);
-> +	usb_lock_device(udev);
-> +	usb_driver_release_interface(&carl9170_driver, intf);
-> +	usb_unlock_device(udev);
->  
-> -	usb_put_dev(udev);
-> +	usb_put_intf(intf);
->  }
->  
->  static void carl9170_usb_firmware_finish(struct ar9170 *ar)
->  {
-> +	struct usb_interface *intf = ar->intf;
->  	int err;
->  
->  	err = carl9170_parse_firmware(ar);
-> @@ -1009,7 +1007,7 @@ static void carl9170_usb_firmware_finish(struct ar9170 *ar)
->  		goto err_unrx;
->  
->  	complete(&ar->fw_load_wait);
-> -	usb_put_dev(ar->udev);
-> +	usb_put_intf(intf);
->  	return;
->  
->  err_unrx:
-> @@ -1052,7 +1050,6 @@ static int carl9170_usb_probe(struct usb_interface *intf,
->  		return PTR_ERR(ar);
->  
->  	udev = interface_to_usbdev(intf);
-> -	usb_get_dev(udev);
->  	ar->udev = udev;
->  	ar->intf = intf;
->  	ar->features = id->driver_info;
-> @@ -1094,15 +1091,14 @@ static int carl9170_usb_probe(struct usb_interface *intf,
->  	atomic_set(&ar->rx_anch_urbs, 0);
->  	atomic_set(&ar->rx_pool_urbs, 0);
->  
-> -	usb_get_dev(ar->udev);
-> +	usb_get_intf(intf);
->  
->  	carl9170_set_state(ar, CARL9170_STOPPED);
->  
->  	err = request_firmware_nowait(THIS_MODULE, 1, CARL9170FW_NAME,
->  		&ar->udev->dev, GFP_KERNEL, ar, carl9170_usb_firmware_step2);
->  	if (err) {
-> -		usb_put_dev(udev);
-> -		usb_put_dev(udev);
-> +		usb_put_intf(intf);
->  		carl9170_free(ar);
->  	}
->  	return err;
-> @@ -1131,7 +1127,6 @@ static void carl9170_usb_disconnect(struct usb_interface *intf)
->  
->  	carl9170_release_firmware(ar);
->  	carl9170_free(ar);
-> -	usb_put_dev(udev);
->  }
->  
->  #ifdef CONFIG_PM
-> 
+diff --git a/kernel/dma/mapping.c b/kernel/dma/mapping.c
+index f7afdad..ba2489d 100644
+--- a/kernel/dma/mapping.c
++++ b/kernel/dma/mapping.c
+@@ -317,9 +317,12 @@ int dma_supported(struct device *dev, u64 mask)
 
+  int dma_set_mask(struct device *dev, u64 mask)
+  {
++       pr_info("mask 0x%llx, dma_mask 0x%llx, dma_supported 0x%llx\n", mask, 
+dev->dma_mask,
++               dma_supported(dev, mask));
+         if (!dev->dma_mask || !dma_supported(dev, mask))
+                 return -EIO;
+
++       pr_info("Continuing in dma_set_mask()\n");
+         arch_dma_set_mask(dev, mask);
+         dma_check_mask(dev, mask);
+         *dev->dma_mask = mask;
+
+On a 32-bit x86 computer with 1GB of RAM, that same output was
+
+For b43legacy, dev->dma_mask is 0x01f4029044.
+     dma_supported(dev, mask) is 0x1ef37f7000, mask is 0x3fffffff, and
+the routine returns 0. 30-bit DMA works.
+
+For b43,       dev->dma_mask is 0x01f4029044,
+     dma_supported(dev, mask) is 0x1ef37f7000, mask is 0xffffffff, and
+  the routine also returns 0. This card supports 32-bit DMA.
+
+Larry
+
+--------------9E0BA6B24CBFDA3D78DB4932
+Content-Type: text/plain; charset=UTF-8;
+ name="b43legacy_tests"
+Content-Transfer-Encoding: base64
+Content-Disposition: attachment;
+ filename="b43legacy_tests"
+
+ZGlmZiAtLWdpdCBhL2FyY2gvcG93ZXJwYy9pbmNsdWRlL2FzbS9wYWdlLmggYi9hcmNoL3Bv
+d2VycGMvaW5jbHVkZS9hc20vcGFnZS5oCmluZGV4IGI4Mjg2YTIuLjdhMzY3Y2UgMTAwNjQ0
+Ci0tLSBhL2FyY2gvcG93ZXJwYy9pbmNsdWRlL2FzbS9wYWdlLmgKKysrIGIvYXJjaC9wb3dl
+cnBjL2luY2x1ZGUvYXNtL3BhZ2UuaApAQCAtMzE5LDYgKzMxOSwxMCBAQCBleHRlcm4gdm9p
+ZCBjb3B5X3VzZXJfcGFnZSh2b2lkICp0bywgdm9pZCAqZnJvbSwgdW5zaWduZWQgbG9uZyB2
+YWRkciwKICNlbmRpZiAvKiBfX0FTU0VNQkxZX18gKi8KICNpbmNsdWRlIDxhc20vc2xpY2Uu
+aD4KIAorI2lmIDEgLyogWFhYOiBwbWFjPyAgZHluYW1pYyBkaXNjb3Zlcnk/ICovCisjZGVm
+aW5lIEFSQ0hfWk9ORV9ETUFfQklUUyAzMAorI2Vsc2UKICNkZWZpbmUgQVJDSF9aT05FX0RN
+QV9CSVRTIDMxCisjZW5kaWYKIAogI2VuZGlmIC8qIF9BU01fUE9XRVJQQ19QQUdFX0ggKi8K
+ZGlmZiAtLWdpdCBhL2FyY2gvcG93ZXJwYy9rZXJuZWwvZG1hLWlvbW11LmMgYi9hcmNoL3Bv
+d2VycGMva2VybmVsL2RtYS1pb21tdS5jCmluZGV4IDA5MjMxZWYuLjc2MWQ5NTEgMTAwNjQ0
+Ci0tLSBhL2FyY2gvcG93ZXJwYy9rZXJuZWwvZG1hLWlvbW11LmMKKysrIGIvYXJjaC9wb3dl
+cnBjL2tlcm5lbC9kbWEtaW9tbXUuYwpAQCAtMjAsNiArMjAsOCBAQAogICovCiBzdGF0aWMg
+aW5saW5lIGJvb2wgZG1hX2lvbW11X2FsbG9jX2J5cGFzcyhzdHJ1Y3QgZGV2aWNlICpkZXYp
+CiB7CisJcHJfaW5mbygiZGV2LT5hcmNoZGF0YS5pb21tdV9ieXBhc3MgJWQsICFpb21tdV9m
+aXhlZF9pc193ZWFrICVkXG4iLAorCQlkZXYtPmFyY2hkYXRhLmlvbW11X2J5cGFzcywgIWlv
+bW11X2ZpeGVkX2lzX3dlYWspCQkKIAlyZXR1cm4gZGV2LT5hcmNoZGF0YS5pb21tdV9ieXBh
+c3MgJiYgIWlvbW11X2ZpeGVkX2lzX3dlYWsgJiYKIAkJZG1hX2RpcmVjdF9zdXBwb3J0ZWQo
+ZGV2LCBkZXYtPmNvaGVyZW50X2RtYV9tYXNrKTsKIH0KQEAgLTI3LDYgKzI5LDggQEAgc3Rh
+dGljIGlubGluZSBib29sIGRtYV9pb21tdV9hbGxvY19ieXBhc3Moc3RydWN0IGRldmljZSAq
+ZGV2KQogc3RhdGljIGlubGluZSBib29sIGRtYV9pb21tdV9tYXBfYnlwYXNzKHN0cnVjdCBk
+ZXZpY2UgKmRldiwKIAkJdW5zaWduZWQgbG9uZyBhdHRycykKIHsKKwlwcl9pbmZvKCIoYXR0
+cnMgJiBETUFfQVRUUl9XRUFLX09SREVSSU5HKSAlZFxuIiwKKwkJKGF0dHJzICYgRE1BX0FU
+VFJfV0VBS19PUkRFUklORykpOwogCXJldHVybiBkZXYtPmFyY2hkYXRhLmlvbW11X2J5cGFz
+cyAmJgogCQkoIWlvbW11X2ZpeGVkX2lzX3dlYWsgfHwgKGF0dHJzICYgRE1BX0FUVFJfV0VB
+S19PUkRFUklORykpOwogfQpkaWZmIC0tZ2l0IGEvYXJjaC9wb3dlcnBjL21tL21lbS5jIGIv
+YXJjaC9wb3dlcnBjL21tL21lbS5jCmluZGV4IGNiYTI5MTMuLjI1NDBkM2IgMTAwNjQ0Ci0t
+LSBhL2FyY2gvcG93ZXJwYy9tbS9tZW0uYworKysgYi9hcmNoL3Bvd2VycGMvbW0vbWVtLmMK
+QEAgLTI0OCw3ICsyNDgsOCBAQCB2b2lkIF9faW5pdCBwYWdpbmdfaW5pdCh2b2lkKQogCSAg
+ICAgICAobG9uZyBpbnQpKCh0b3Bfb2ZfcmFtIC0gdG90YWxfcmFtKSA+PiAyMCkpOwogCiAj
+aWZkZWYgQ09ORklHX1pPTkVfRE1BCi0JbWF4X3pvbmVfcGZuc1taT05FX0RNQV0JPSBtaW4o
+bWF4X2xvd19wZm4sIDB4N2ZmZmZmZmZVTCA+PiBQQUdFX1NISUZUKTsKKwltYXhfem9uZV9w
+Zm5zW1pPTkVfRE1BXQk9IG1pbihtYXhfbG93X3BmbiwKKwkJCSgoMVVMIDw8IEFSQ0hfWk9O
+RV9ETUFfQklUUykgLSAxKSA+PiBQQUdFX1NISUZUKTsKICNlbmRpZgogCW1heF96b25lX3Bm
+bnNbWk9ORV9OT1JNQUxdID0gbWF4X2xvd19wZm47CiAjaWZkZWYgQ09ORklHX0hJR0hNRU0K
+ZGlmZiAtLWdpdCBhL2RyaXZlcnMvbmV0L3dpcmVsZXNzL2Jyb2FkY29tL2I0My9kbWEuYyBi
+L2RyaXZlcnMvbmV0L3dpcmVsZXNzL2Jyb2FkY29tL2I0My9kbWEuYwppbmRleCA4MDY0MDZh
+Li5lMDI3MGRhIDEwMDY0NAotLS0gYS9kcml2ZXJzL25ldC93aXJlbGVzcy9icm9hZGNvbS9i
+NDMvZG1hLmMKKysrIGIvZHJpdmVycy9uZXQvd2lyZWxlc3MvYnJvYWRjb20vYjQzL2RtYS5j
+CkBAIC0xMDUzLDYgKzEwNTMsNyBAQCBzdGF0aWMgaW50IGI0M19kbWFfc2V0X21hc2soc3Ry
+dWN0IGI0M193bGRldiAqZGV2LCB1NjQgbWFzaykKIAkgKiBsb3dlciBtYXNrLCBhcyB3ZSBj
+YW4gYWx3YXlzIGFsc28gc3VwcG9ydCBhIGxvd2VyIG9uZS4gKi8KIAl3aGlsZSAoMSkgewog
+CQllcnIgPSBkbWFfc2V0X21hc2tfYW5kX2NvaGVyZW50KGRldi0+ZGV2LT5kbWFfZGV2LCBt
+YXNrKTsKKwkJcHJfaW5mbygiZG1hX3NldF9tYXNrX2FuZF9jb2hlcmVudCAlZCwgbWFzayAw
+eCVsbHhcbiIsIGVyciwgbWFzayk7CiAJCWlmICghZXJyKQogCQkJYnJlYWs7CiAJCWlmICht
+YXNrID09IERNQV9CSVRfTUFTSyg2NCkpIHsKZGlmZiAtLWdpdCBhL2RyaXZlcnMvbmV0L3dp
+cmVsZXNzL2Jyb2FkY29tL2I0M2xlZ2FjeS9kbWEuYyBiL2RyaXZlcnMvbmV0L3dpcmVsZXNz
+L2Jyb2FkY29tL2I0M2xlZ2FjeS9kbWEuYwppbmRleCAxY2MyNWY0Li5jNjI1ZmZjIDEwMDY0
+NAotLS0gYS9kcml2ZXJzL25ldC93aXJlbGVzcy9icm9hZGNvbS9iNDNsZWdhY3kvZG1hLmMK
+KysrIGIvZHJpdmVycy9uZXQvd2lyZWxlc3MvYnJvYWRjb20vYjQzbGVnYWN5L2RtYS5jCkBA
+IC03OTQsNiArNzk0LDcgQEAgc3RhdGljIGludCBiNDNsZWdhY3lfZG1hX3NldF9tYXNrKHN0
+cnVjdCBiNDNsZWdhY3lfd2xkZXYgKmRldiwgdTY0IG1hc2spCiAJICogbG93ZXIgbWFzaywg
+YXMgd2UgY2FuIGFsd2F5cyBhbHNvIHN1cHBvcnQgYSBsb3dlciBvbmUuICovCiAJd2hpbGUg
+KDEpIHsKIAkJZXJyID0gZG1hX3NldF9tYXNrX2FuZF9jb2hlcmVudChkZXYtPmRldi0+ZG1h
+X2RldiwgbWFzayk7CisJCXByX2luZm8oImRtYV9zZXRfbWFza19hbmRfY29oZXJlbnQgJWQs
+IG1hc2sgMHglbGx4XG4iLCBlcnIsIG1hc2spOwogCQlpZiAoIWVycikKIAkJCWJyZWFrOwog
+CQlpZiAobWFzayA9PSBETUFfQklUX01BU0soNjQpKSB7CmRpZmYgLS1naXQgYS9rZXJuZWwv
+ZG1hL2RpcmVjdC5jIGIva2VybmVsL2RtYS9kaXJlY3QuYwppbmRleCAyYzI3NzJlLi5iNzE2
+ZTYyIDEwMDY0NAotLS0gYS9rZXJuZWwvZG1hL2RpcmVjdC5jCisrKyBiL2tlcm5lbC9kbWEv
+ZGlyZWN0LmMKQEAgLTM5MSw2ICszOTEsOCBAQCBpbnQgZG1hX2RpcmVjdF9zdXBwb3J0ZWQo
+c3RydWN0IGRldmljZSAqZGV2LCB1NjQgbWFzaykKIAkgKiB1c2UgX19waHlzX3RvX2RtYSgp
+IGhlcmUgc28gdGhhdCB0aGUgU01FIGVuY3J5cHRpb24gbWFzayBpc24ndAogCSAqIHBhcnQg
+b2YgdGhlIGNoZWNrLgogCSAqLworCXByX2luZm8oIm1pbl9tYXNrIDB4JXguIG1heF9wZm4g
+MHgleCwgX19waHlzX3RvX2RtYSAweCV4LCBtYXNrIDB4JXhcbiIsIG1pbl9tYXNrLAorCQlt
+YXhfcGZuLCBfX3BoeXNfdG9fZG1hKGRldiwgbWluX21hc2spLCBtYXNrKTsKIAlyZXR1cm4g
+bWFzayA+PSBfX3BoeXNfdG9fZG1hKGRldiwgbWluX21hc2spOwogfQogCmRpZmYgLS1naXQg
+YS9rZXJuZWwvZG1hL21hcHBpbmcuYyBiL2tlcm5lbC9kbWEvbWFwcGluZy5jCmluZGV4IGY3
+YWZkYWQuLmJhMjQ4OWQgMTAwNjQ0Ci0tLSBhL2tlcm5lbC9kbWEvbWFwcGluZy5jCisrKyBi
+L2tlcm5lbC9kbWEvbWFwcGluZy5jCkBAIC0zMTcsOSArMzE3LDEyIEBAIGludCBkbWFfc3Vw
+cG9ydGVkKHN0cnVjdCBkZXZpY2UgKmRldiwgdTY0IG1hc2spCiAKIGludCBkbWFfc2V0X21h
+c2soc3RydWN0IGRldmljZSAqZGV2LCB1NjQgbWFzaykKIHsKKwlwcl9pbmZvKCJtYXNrIDB4
+JWxseCwgZG1hX21hc2sgMHglbGx4LCBkbWFfc3VwcG9ydGVkIDB4JWxseFxuIiwgbWFzaywg
+ZGV2LT5kbWFfbWFzaywKKwkJZG1hX3N1cHBvcnRlZChkZXYsIG1hc2spKTsKIAlpZiAoIWRl
+di0+ZG1hX21hc2sgfHwgIWRtYV9zdXBwb3J0ZWQoZGV2LCBtYXNrKSkKIAkJcmV0dXJuIC1F
+SU87CiAKKwlwcl9pbmZvKCJDb250aW51aW5nIGluIGRtYV9zZXRfbWFzaygpXG4iKTsKIAlh
+cmNoX2RtYV9zZXRfbWFzayhkZXYsIG1hc2spOwogCWRtYV9jaGVja19tYXNrKGRldiwgbWFz
+ayk7CiAJKmRldi0+ZG1hX21hc2sgPSBtYXNrOwo=
+--------------9E0BA6B24CBFDA3D78DB4932--
