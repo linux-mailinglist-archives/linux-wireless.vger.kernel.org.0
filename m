@@ -2,164 +2,248 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C68DF3B162
-	for <lists+linux-wireless@lfdr.de>; Mon, 10 Jun 2019 10:57:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5B4A13B1CD
+	for <lists+linux-wireless@lfdr.de>; Mon, 10 Jun 2019 11:18:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2388552AbfFJI4y convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 10 Jun 2019 04:56:54 -0400
-Received: from mga11.intel.com ([192.55.52.93]:20077 "EHLO mga11.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2387890AbfFJI4y (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 10 Jun 2019 04:56:54 -0400
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from fmsmga002.fm.intel.com ([10.253.24.26])
-  by fmsmga102.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 10 Jun 2019 01:56:53 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.63,573,1557212400"; 
-   d="scan'208";a="183356562"
-Received: from irsmsx109.ger.corp.intel.com ([163.33.3.23])
-  by fmsmga002.fm.intel.com with ESMTP; 10 Jun 2019 01:56:50 -0700
-Received: from irsmsx106.ger.corp.intel.com ([169.254.8.159]) by
- IRSMSX109.ger.corp.intel.com ([169.254.13.115]) with mapi id 14.03.0415.000;
- Mon, 10 Jun 2019 09:56:49 +0100
-From:   "Hunter, Adrian" <adrian.hunter@intel.com>
-To:     Douglas Anderson <dianders@chromium.org>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        Arend van Spriel <arend.vanspriel@broadcom.com>
-CC:     "brcm80211-dev-list.pdl@broadcom.com" 
-        <brcm80211-dev-list.pdl@broadcom.com>,
-        "linux-rockchip@lists.infradead.org" 
-        <linux-rockchip@lists.infradead.org>,
-        Double Lo <double.lo@cypress.com>,
-        "briannorris@chromium.org" <briannorris@chromium.org>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "Naveen Gupta" <naveen.gupta@cypress.com>,
-        Madhan Mohan R <madhanmohan.r@cypress.com>,
-        "mka@chromium.org" <mka@chromium.org>,
-        Wright Feng <wright.feng@cypress.com>,
-        Chi-Hsien Lin <chi-hsien.lin@cypress.com>,
-        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-        "brcm80211-dev-list@cypress.com" <brcm80211-dev-list@cypress.com>,
-        Franky Lin <franky.lin@broadcom.com>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        Madhan Mohan R <MadhanMohan.R@cypress.com>,
-        Hante Meuleman <hante.meuleman@broadcom.com>,
-        YueHaibing <yuehaibing@huawei.com>,
-        "David S. Miller" <davem@davemloft.net>
-Subject: RE: [PATCH v3 3/5] brcmfmac: sdio: Disable auto-tuning around
- commands expected to fail
-Thread-Topic: [PATCH v3 3/5] brcmfmac: sdio: Disable auto-tuning around
- commands expected to fail
-Thread-Index: AQHVHYGgpJQnscIJM0Sp+tedAd/IWaaUmKDA
-Date:   Mon, 10 Jun 2019 08:56:48 +0000
-Message-ID: <363DA0ED52042842948283D2FC38E4649C52F8A0@IRSMSX106.ger.corp.intel.com>
-References: <20190607223716.119277-1-dianders@chromium.org>
- <20190607223716.119277-4-dianders@chromium.org>
-In-Reply-To: <20190607223716.119277-4-dianders@chromium.org>
-Accept-Language: en-NZ, en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-dlp-product: dlpe-windows
-dlp-version: 11.0.600.7
-dlp-reaction: no-action
-x-ctpclassification: CTP_NT
-x-titus-metadata-40: eyJDYXRlZ29yeUxhYmVscyI6IiIsIk1ldGFkYXRhIjp7Im5zIjoiaHR0cDpcL1wvd3d3LnRpdHVzLmNvbVwvbnNcL0ludGVsMyIsImlkIjoiMDI2YzI0OTgtNzI3MS00MjMzLWI1Y2ItM2UzYmQzMmNjNjI5IiwicHJvcHMiOlt7Im4iOiJDVFBDbGFzc2lmaWNhdGlvbiIsInZhbHMiOlt7InZhbHVlIjoiQ1RQX05UIn1dfV19LCJTdWJqZWN0TGFiZWxzIjpbXSwiVE1DVmVyc2lvbiI6IjE3LjEwLjE4MDQuNDkiLCJUcnVzdGVkTGFiZWxIYXNoIjoibXJTOFJGTDUyRTNsdUtXRHErakU5XC96bWhJYkZ6SERVekJnaDZtK3ZjWnF2YlM3ejQ1YlRhdHlKcnZvbERXSFEifQ==
-x-originating-ip: [163.33.239.181]
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 8BIT
+        id S2388802AbfFJJSH (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 10 Jun 2019 05:18:07 -0400
+Received: from smtp.codeaurora.org ([198.145.29.96]:34560 "EHLO
+        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2388218AbfFJJSH (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 10 Jun 2019 05:18:07 -0400
+Received: by smtp.codeaurora.org (Postfix, from userid 1000)
+        id 32FD16074C; Mon, 10 Jun 2019 09:18:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
+        s=default; t=1560158286;
+        bh=KprkNffYsw2j7JclhNw1CuiK8pEBzkZ2nitrCsD/ths=;
+        h=From:To:Cc:Subject:Date:From;
+        b=TNJuV6CpupFWIYEVYv+IYbizxoQ+T4GFnF/PIzOfyjXUUzVGmj/PNZjAnM/oMakwJ
+         /3GhfMijeZnVlDzvJfQbZwT6fttnTTHMvSV7wfTEqTkY+iWYSnQz3ToHY/P75fu7gY
+         SIWJBD3YC60tKU18jA2kFkW3iaeNjF1ZNr3I1I4E=
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        pdx-caf-mail.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.7 required=2.0 tests=ALL_TRUSTED,BAYES_00,
+        DKIM_INVALID,DKIM_SIGNED,SPF_NONE autolearn=no autolearn_force=no
+        version=3.4.0
+Received: from govinds-linux.qualcomm.com (blr-c-bdr-fw-01_globalnat_allzones-outside.qualcomm.com [103.229.19.19])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-SHA256 (128/128 bits))
+        (No client certificate requested)
+        (Authenticated sender: govinds@smtp.codeaurora.org)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 6C179602FE;
+        Mon, 10 Jun 2019 09:18:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
+        s=default; t=1560158285;
+        bh=KprkNffYsw2j7JclhNw1CuiK8pEBzkZ2nitrCsD/ths=;
+        h=From:To:Cc:Subject:Date:From;
+        b=gzvFM/c3k/Am6qZcOZvAdFkaN2kTZDaWCrDwbAnppUyyA6VwjAT0yGCJ1inLN/bM4
+         fRccvIGUuRghQmRfaVtV8Sr+Kh2dG1B0w3SUYLdMKEcecCaDCTHp/jwGzWeDSUiT9S
+         WBBMEdaR6XSrJ028IB5gfkCzfqyXjK7ZUG8GsI1c=
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 6C179602FE
+Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=govinds@codeaurora.org
+From:   Govind Singh <govinds@codeaurora.org>
+To:     ath10k@lists.infradead.org
+Cc:     linux-wireless@vger.kernel.org,
+        Govind Singh <govinds@codeaurora.org>
+Subject: [PATCH v3] ath10k: Enable MSA region dump support for WCN3990
+Date:   Mon, 10 Jun 2019 14:47:59 +0530
+Message-Id: <20190610091759.29508-1-govinds@codeaurora.org>
+X-Mailer: git-send-email 2.21.0
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-> -----Original Message-----
-> From: Douglas Anderson [mailto:dianders@chromium.org]
-> Sent: Saturday, June 8, 2019 1:37 AM
-> To: Ulf Hansson <ulf.hansson@linaro.org>; Kalle Valo
-> <kvalo@codeaurora.org>; Hunter, Adrian <adrian.hunter@intel.com>; Arend
-> van Spriel <arend.vanspriel@broadcom.com>
-> Cc: brcm80211-dev-list.pdl@broadcom.com; linux-
-> rockchip@lists.infradead.org; Double Lo <double.lo@cypress.com>;
-> briannorris@chromium.org; linux-wireless@vger.kernel.org; Naveen Gupta
-> <naveen.gupta@cypress.com>; Madhan Mohan R
-> <madhanmohan.r@cypress.com>; mka@chromium.org; Wright Feng
-> <wright.feng@cypress.com>; Chi-Hsien Lin <chi-hsien.lin@cypress.com>;
-> netdev@vger.kernel.org; brcm80211-dev-list@cypress.com; Douglas
-> Anderson <dianders@chromium.org>; Franky Lin
-> <franky.lin@broadcom.com>; linux-kernel@vger.kernel.org; Madhan Mohan
-> R <MadhanMohan.R@cypress.com>; Hante Meuleman
-> <hante.meuleman@broadcom.com>; YueHaibing
-> <yuehaibing@huawei.com>; David S. Miller <davem@davemloft.net>
-> Subject: [PATCH v3 3/5] brcmfmac: sdio: Disable auto-tuning around
-> commands expected to fail
-> 
-> There are certain cases, notably when transitioning between sleep and active
-> state, when Broadcom SDIO WiFi cards will produce errors on the SDIO bus.
-> This is evident from the source code where you can see that we try
-> commands in a loop until we either get success or we've tried too many
-> times.  The comment in the code reinforces this by saying "just one write
-> attempt may fail"
-> 
-> Unfortunately these failures sometimes end up causing an "-EILSEQ"
-> back to the core which triggers a retuning of the SDIO card and that blocks all
-> traffic to the card until it's done.
-> 
-> Let's disable retuning around the commands we expect might fail.
-> 
-> Fixes: bd11e8bd03ca ("mmc: core: Flag re-tuning is needed on CRC errors")
-> Signed-off-by: Douglas Anderson <dianders@chromium.org>
-> ---
-> 
-> Changes in v3:
-> - Expect errors for all of brcmf_sdio_kso_control() (Adrian).
-> 
-> Changes in v2: None
-> 
->  drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c | 5 +++++
->  1 file changed, 5 insertions(+)
-> 
-> diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c
-> b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c
-> index 4a750838d8cd..4040aae1f9ed 100644
-> --- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c
-> +++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c
-> @@ -16,6 +16,7 @@
->  #include <linux/mmc/sdio_ids.h>
->  #include <linux/mmc/sdio_func.h>
->  #include <linux/mmc/card.h>
-> +#include <linux/mmc/core.h>
+MSA memory region caries the hw descriptors information.
+Dump MSA region in core dump as this is very helpful in debugging
+hw issues.
 
-SDIO function drivers should not really include linux/mmc/core.h
-(Also don't know why linux/mmc/card.h is included)
+Testing: Tested on WCN3990 HW
+Tested FW: WLAN.HL.3.1-00959-QCAHLSWMTPLZ-1
 
->  #include <linux/semaphore.h>
->  #include <linux/firmware.h>
->  #include <linux/module.h>
-> @@ -667,6 +668,8 @@ brcmf_sdio_kso_control(struct brcmf_sdio *bus, bool
-> on)
-> 
->  	brcmf_dbg(TRACE, "Enter: on=%d\n", on);
-> 
-> +	mmc_expect_errors_begin(bus->sdiodev->func1->card->host);
-> +
->  	wr_val = (on << SBSDIO_FUNC1_SLEEPCSR_KSO_SHIFT);
->  	/* 1st KSO write goes to AOS wake up core if device is asleep  */
->  	brcmf_sdiod_writeb(bus->sdiodev, SBSDIO_FUNC1_SLEEPCSR,
-> wr_val, &err); @@ -727,6 +730,8 @@ brcmf_sdio_kso_control(struct
-> brcmf_sdio *bus, bool on)
->  	if (try_cnt > MAX_KSO_ATTEMPTS)
->  		brcmf_err("max tries: rd_val=0x%x err=%d\n", rd_val, err);
-> 
-> +	mmc_expect_errors_end(bus->sdiodev->func1->card->host);
-> +
->  	return err;
->  }
-> 
-> --
-> 2.22.0.rc2.383.gf4fbbf30c2-goog
+Signed-off-by: Govind Singh <govinds@codeaurora.org>
+
+---
+Changes from v2:
+- Rebased on top of 38faed150438 ath10k: perform crash dump collection in workqueue.
+- Removed redundant msa permission call.
+---
+ drivers/net/wireless/ath/ath10k/coredump.c | 21 +++++++
+ drivers/net/wireless/ath/ath10k/coredump.h |  1 +
+ drivers/net/wireless/ath/ath10k/qmi.c      |  4 ++
+ drivers/net/wireless/ath/ath10k/snoc.c     | 66 ++++++++++++++++++++++
+ drivers/net/wireless/ath/ath10k/snoc.h     |  1 +
+ 5 files changed, 93 insertions(+)
+
+diff --git a/drivers/net/wireless/ath/ath10k/coredump.c b/drivers/net/wireless/ath/ath10k/coredump.c
+index aa04fbf146e0..0ec690b49fb1 100644
+--- a/drivers/net/wireless/ath/ath10k/coredump.c
++++ b/drivers/net/wireless/ath/ath10k/coredump.c
+@@ -962,6 +962,19 @@ static const struct ath10k_mem_region qca4019_hw10_mem_regions[] = {
+ 	},
+ };
+ 
++static const struct ath10k_mem_region wcn399x_hw10_mem_regions[] = {
++	{
++		/* MSA region start is not fixed, hence it is assigned at runtime */
++		.type = ATH10K_MEM_REGION_TYPE_MSA,
++		.len = 0x100000,
++		.name = "DRAM",
++		.section_table = {
++			.sections = NULL,
++			.size = 0,
++		},
++	},
++};
++
+ static const struct ath10k_hw_mem_layout hw_mem_layouts[] = {
+ 	{
+ 		.hw_id = QCA6174_HW_1_0_VERSION,
+@@ -1059,6 +1072,14 @@ static const struct ath10k_hw_mem_layout hw_mem_layouts[] = {
+ 			.size = ARRAY_SIZE(qca4019_hw10_mem_regions),
+ 		},
+ 	},
++	{
++		.hw_id = WCN3990_HW_1_0_DEV_VERSION,
++		.hw_rev = ATH10K_HW_WCN3990,
++		.region_table = {
++			.regions = wcn399x_hw10_mem_regions,
++			.size = ARRAY_SIZE(wcn399x_hw10_mem_regions),
++		},
++	},
+ };
+ 
+ static u32 ath10k_coredump_get_ramdump_size(struct ath10k *ar)
+diff --git a/drivers/net/wireless/ath/ath10k/coredump.h b/drivers/net/wireless/ath/ath10k/coredump.h
+index 5dac653e1649..9802e90483f4 100644
+--- a/drivers/net/wireless/ath/ath10k/coredump.h
++++ b/drivers/net/wireless/ath/ath10k/coredump.h
+@@ -126,6 +126,7 @@ enum ath10k_mem_region_type {
+ 	ATH10K_MEM_REGION_TYPE_IRAM2	= 5,
+ 	ATH10K_MEM_REGION_TYPE_IOSRAM	= 6,
+ 	ATH10K_MEM_REGION_TYPE_IOREG	= 7,
++	ATH10K_MEM_REGION_TYPE_MSA	= 8,
+ };
+ 
+ /* Define a section of the region which should be copied. As not all parts
+diff --git a/drivers/net/wireless/ath/ath10k/qmi.c b/drivers/net/wireless/ath/ath10k/qmi.c
+index ba8f5a8f83d1..8eb0f0f0d3a7 100644
+--- a/drivers/net/wireless/ath/ath10k/qmi.c
++++ b/drivers/net/wireless/ath/ath10k/qmi.c
+@@ -817,9 +817,13 @@ ath10k_qmi_driver_event_post(struct ath10k_qmi *qmi,
+ static void ath10k_qmi_event_server_exit(struct ath10k_qmi *qmi)
+ {
+ 	struct ath10k *ar = qmi->ar;
++	struct ath10k_snoc *ar_snoc = ath10k_snoc_priv(ar);
+ 
+ 	ath10k_qmi_remove_msa_permission(qmi);
+ 	ath10k_core_free_board_files(ar);
++	if (!test_bit(ATH10K_SNOC_FLAG_UNREGISTERING, &ar_snoc->flags))
++		ath10k_snoc_fw_crashed_dump(ar);
++
+ 	ath10k_snoc_fw_indication(ar, ATH10K_QMI_EVENT_FW_DOWN_IND);
+ 	ath10k_dbg(ar, ATH10K_DBG_QMI, "wifi fw qmi service disconnected\n");
+ }
+diff --git a/drivers/net/wireless/ath/ath10k/snoc.c b/drivers/net/wireless/ath/ath10k/snoc.c
+index 0be12996beba..ecc0f884b123 100644
+--- a/drivers/net/wireless/ath/ath10k/snoc.c
++++ b/drivers/net/wireless/ath/ath10k/snoc.c
+@@ -24,6 +24,7 @@
+ #include <linux/regulator/consumer.h>
+ 
+ #include "ce.h"
++#include "coredump.h"
+ #include "debug.h"
+ #include "hif.h"
+ #include "htc.h"
+@@ -1586,6 +1587,71 @@ static int ath10k_hw_power_off(struct ath10k *ar)
+ 	return ret;
+ }
+ 
++static void ath10k_msa_dump_memory(struct ath10k *ar,
++				   struct ath10k_fw_crash_data *crash_data)
++{
++	struct ath10k_snoc *ar_snoc = ath10k_snoc_priv(ar);
++	const struct ath10k_hw_mem_layout *mem_layout;
++	const struct ath10k_mem_region *current_region;
++	struct ath10k_dump_ram_data_hdr *hdr;
++	size_t buf_len;
++	u8 *buf;
++
++	if (!crash_data && !crash_data->ramdump_buf)
++		return;
++
++	mem_layout = ath10k_coredump_get_mem_layout(ar);
++	if (!mem_layout)
++		return;
++
++	current_region = &mem_layout->region_table.regions[0];
++
++	buf = crash_data->ramdump_buf;
++	buf_len = crash_data->ramdump_buf_len;
++	memset(buf, 0, buf_len);
++
++	/* Reserve space for the header. */
++	hdr = (void *)buf;
++	buf += sizeof(*hdr);
++	buf_len -= sizeof(*hdr);
++
++	hdr->region_type = cpu_to_le32(current_region->type);
++	hdr->start = cpu_to_le32(ar_snoc->qmi->msa_va);
++	hdr->length = cpu_to_le32(ar_snoc->qmi->msa_mem_size);
++
++	if (current_region->len < ar_snoc->qmi->msa_mem_size) {
++		memcpy(buf, ar_snoc->qmi->msa_va, current_region->len);
++		ath10k_warn(ar, "msa dump length is less than msa size %x, %x\n",
++			    current_region->len, ar_snoc->qmi->msa_mem_size);
++	} else {
++		memcpy(buf, ar_snoc->qmi->msa_va, ar_snoc->qmi->msa_mem_size);
++	}
++}
++
++void ath10k_snoc_fw_crashed_dump(struct ath10k *ar)
++{
++	struct ath10k_fw_crash_data *crash_data;
++	char guid[UUID_STRING_LEN + 1];
++
++	mutex_lock(&ar->dump_mutex);
++
++	spin_lock_bh(&ar->data_lock);
++	ar->stats.fw_crash_counter++;
++	spin_unlock_bh(&ar->data_lock);
++
++	crash_data = ath10k_coredump_new(ar);
++
++	if (crash_data)
++		scnprintf(guid, sizeof(guid), "%pUl", &crash_data->guid);
++	else
++		scnprintf(guid, sizeof(guid), "n/a");
++
++	ath10k_err(ar, "firmware crashed! (guid %s)\n", guid);
++	ath10k_print_driver_info(ar);
++	ath10k_msa_dump_memory(ar, crash_data);
++	mutex_unlock(&ar->dump_mutex);
++}
++
+ static const struct of_device_id ath10k_snoc_dt_match[] = {
+ 	{ .compatible = "qcom,wcn3990-wifi",
+ 	 .data = &drv_priv,
+diff --git a/drivers/net/wireless/ath/ath10k/snoc.h b/drivers/net/wireless/ath/ath10k/snoc.h
+index 25383de8f17d..6d28a6290a94 100644
+--- a/drivers/net/wireless/ath/ath10k/snoc.h
++++ b/drivers/net/wireless/ath/ath10k/snoc.h
+@@ -101,5 +101,6 @@ static inline struct ath10k_snoc *ath10k_snoc_priv(struct ath10k *ar)
+ }
+ 
+ int ath10k_snoc_fw_indication(struct ath10k *ar, u64 type);
++void ath10k_snoc_fw_crashed_dump(struct ath10k *ar);
+ 
+ #endif /* _SNOC_H_ */
+-- 
+The Qualcomm Innovation Center, Inc. is a member of the Code Aurora Forum,
+a Linux Foundation Collaborative Project
 
