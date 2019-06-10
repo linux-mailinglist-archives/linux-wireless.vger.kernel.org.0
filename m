@@ -2,248 +2,445 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 5B4A13B1CD
-	for <lists+linux-wireless@lfdr.de>; Mon, 10 Jun 2019 11:18:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 92DC03B32C
+	for <lists+linux-wireless@lfdr.de>; Mon, 10 Jun 2019 12:29:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2388802AbfFJJSH (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 10 Jun 2019 05:18:07 -0400
-Received: from smtp.codeaurora.org ([198.145.29.96]:34560 "EHLO
-        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2388218AbfFJJSH (ORCPT
+        id S2389426AbfFJK3l (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 10 Jun 2019 06:29:41 -0400
+Received: from mail-qt1-f195.google.com ([209.85.160.195]:43508 "EHLO
+        mail-qt1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2389308AbfFJK3l (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 10 Jun 2019 05:18:07 -0400
-Received: by smtp.codeaurora.org (Postfix, from userid 1000)
-        id 32FD16074C; Mon, 10 Jun 2019 09:18:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1560158286;
-        bh=KprkNffYsw2j7JclhNw1CuiK8pEBzkZ2nitrCsD/ths=;
-        h=From:To:Cc:Subject:Date:From;
-        b=TNJuV6CpupFWIYEVYv+IYbizxoQ+T4GFnF/PIzOfyjXUUzVGmj/PNZjAnM/oMakwJ
-         /3GhfMijeZnVlDzvJfQbZwT6fttnTTHMvSV7wfTEqTkY+iWYSnQz3ToHY/P75fu7gY
-         SIWJBD3YC60tKU18jA2kFkW3iaeNjF1ZNr3I1I4E=
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        pdx-caf-mail.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.7 required=2.0 tests=ALL_TRUSTED,BAYES_00,
-        DKIM_INVALID,DKIM_SIGNED,SPF_NONE autolearn=no autolearn_force=no
-        version=3.4.0
-Received: from govinds-linux.qualcomm.com (blr-c-bdr-fw-01_globalnat_allzones-outside.qualcomm.com [103.229.19.19])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-SHA256 (128/128 bits))
-        (No client certificate requested)
-        (Authenticated sender: govinds@smtp.codeaurora.org)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 6C179602FE;
-        Mon, 10 Jun 2019 09:18:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1560158285;
-        bh=KprkNffYsw2j7JclhNw1CuiK8pEBzkZ2nitrCsD/ths=;
-        h=From:To:Cc:Subject:Date:From;
-        b=gzvFM/c3k/Am6qZcOZvAdFkaN2kTZDaWCrDwbAnppUyyA6VwjAT0yGCJ1inLN/bM4
-         fRccvIGUuRghQmRfaVtV8Sr+Kh2dG1B0w3SUYLdMKEcecCaDCTHp/jwGzWeDSUiT9S
-         WBBMEdaR6XSrJ028IB5gfkCzfqyXjK7ZUG8GsI1c=
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 6C179602FE
-Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=govinds@codeaurora.org
-From:   Govind Singh <govinds@codeaurora.org>
-To:     ath10k@lists.infradead.org
-Cc:     linux-wireless@vger.kernel.org,
-        Govind Singh <govinds@codeaurora.org>
-Subject: [PATCH v3] ath10k: Enable MSA region dump support for WCN3990
-Date:   Mon, 10 Jun 2019 14:47:59 +0530
-Message-Id: <20190610091759.29508-1-govinds@codeaurora.org>
-X-Mailer: git-send-email 2.21.0
+        Mon, 10 Jun 2019 06:29:41 -0400
+Received: by mail-qt1-f195.google.com with SMTP id z24so3299377qtj.10
+        for <linux-wireless@vger.kernel.org>; Mon, 10 Jun 2019 03:29:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=endlessm-com.20150623.gappssmtp.com; s=20150623;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=3Zr+Z62K+WJdeFBSjAxJN5w5XMu3o9gN+tqS/lIJFWM=;
+        b=usxA5wG1zD+JO7cBE1uOxlZ7VoyMxJ+B8rvr8yOAyKCcSRQRTYc1hw05IjUyW4XV77
+         HGS+h5jRvsIts9bPORSwns10xCICixRxazNUkZA1AktW67Uqv5Lw0brByH4r10qbgNni
+         H1UDEvzefPqIszOTJ44O26P85O7p8n9cGjjy4tZzuMv5q0CuCRCMihvr9HE//vNe8YcW
+         CpZgPasmAloMhAWbEmrgLmG8izteQcsIPFLn3CujcDBNZq1JxsItTRYlxtryB4XHXevY
+         2/3G1narGbbl24WSF0LwGjtVm9BhBioT+oay5ncTtusrzk9we1LqDXRcQfDm9kxxesOV
+         tWXg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=3Zr+Z62K+WJdeFBSjAxJN5w5XMu3o9gN+tqS/lIJFWM=;
+        b=HXd47GfIPbfECDVUsFrLT36/Kd8YLTfRvliBoZOZ7malUOjLxibgZzrLOqlQH81M2z
+         mFOs0L6g+HXUrCePyNEipZ+hpC28owDJuaYdFNZXXrMuEMdA1PlH0YkJOdUnHq6JlyyE
+         FtSeOw06tUXvPDF7NxacXVZI8Rx5GycwfKd3bHk9RKolF+cZgvBhH/HElf+LtMrQK6HR
+         RhcGoTjCSR/rrdAidhtc065lwJ5MhasuBarrhjE4XZoe4lQ5YWFm1NJm+4XamY5uYem6
+         L3IpfuGcNE3hwwtUWtpXqHTskx62jkHUM34gpTb2+S0B3FrIcgNLzlzin5Kvr03oLViG
+         pmDw==
+X-Gm-Message-State: APjAAAUTSeLOL9ESX6FZjN/VCtxzEt1CsjRGPqHkrnv7CPGrUsSGSJYq
+        WDoFNTUPVU0pL1WHIfRc0NOPx3u/ciHVDNmuXTSIwA==
+X-Google-Smtp-Source: APXvYqwlOR0EOa4D/XkPwQIRgQXTFvFDpq3lybt8ANB9wKuDDVV2tSLvo6dZkMwGGBnM3IokztPopdqaTeDRZqUGmYw=
+X-Received: by 2002:aed:3e3d:: with SMTP id l58mr8889413qtf.382.1560162579280;
+ Mon, 10 Jun 2019 03:29:39 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20190531091229.93033-1-chiu@endlessm.com> <f1c54f97-16a5-2618-569b-9101f9657fcb@gmail.com>
+ <CAB4CAwf3Mi2iuR7nAj1U4EoyU5ZnvY9xoLrv7QT2X-tc_1ex3g@mail.gmail.com>
+In-Reply-To: <CAB4CAwf3Mi2iuR7nAj1U4EoyU5ZnvY9xoLrv7QT2X-tc_1ex3g@mail.gmail.com>
+From:   Chris Chiu <chiu@endlessm.com>
+Date:   Mon, 10 Jun 2019 18:29:28 +0800
+Message-ID: <CAB4CAwcmJ_oNMD622Vbm3vHUdmYpMksiOYYWG0cJ5cBEnpvcog@mail.gmail.com>
+Subject: Re: [RFC PATCH v4] rtl8xxxu: Improve TX performance of RTL8723BU on
+ rtl8xxxu driver
+To:     Jes Sorensen <jes.sorensen@gmail.com>
+Cc:     Kalle Valo <kvalo@codeaurora.org>,
+        David Miller <davem@davemloft.net>,
+        linux-wireless <linux-wireless@vger.kernel.org>,
+        netdev <netdev@vger.kernel.org>,
+        Linux Kernel <linux-kernel@vger.kernel.org>,
+        Linux Upstreaming Team <linux@endlessm.com>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-MSA memory region caries the hw descriptors information.
-Dump MSA region in core dump as this is very helpful in debugging
-hw issues.
+On Wed, Jun 5, 2019 at 10:17 AM Chris Chiu <chiu@endlessm.com> wrote:
+>
+> On Tue, Jun 4, 2019 at 3:21 AM Jes Sorensen <jes.sorensen@gmail.com> wrote:
+> >
+> > On 5/31/19 5:12 AM, Chris Chiu wrote:
+> > > We have 3 laptops which connect the wifi by the same RTL8723BU.
+> > > The PCI VID/PID of the wifi chip is 10EC:B720 which is supported.
+> > > They have the same problem with the in-kernel rtl8xxxu driver, the
+> > > iperf (as a client to an ethernet-connected server) gets ~1Mbps.
+> > > Nevertheless, the signal strength is reported as around -40dBm,
+> > > which is quite good. From the wireshark capture, the tx rate for each
+> > > data and qos data packet is only 1Mbps. Compare to the Realtek driver
+> > > at https://github.com/lwfinger/rtl8723bu, the same iperf test gets
+> > > ~12Mbps or better. The signal strength is reported similarly around
+> > > -40dBm. That's why we want to improve.
+> > >
+> > > After reading the source code of the rtl8xxxu driver and Realtek's, the
+> > > major difference is that Realtek's driver has a watchdog which will keep
+> > > monitoring the signal quality and updating the rate mask just like the
+> > > rtl8xxxu_gen2_update_rate_mask() does if signal quality changes.
+> > > And this kind of watchdog also exists in rtlwifi driver of some specific
+> > > chips, ex rtl8192ee, rtl8188ee, rtl8723ae, rtl8821ae...etc. They have
+> > > the same member function named dm_watchdog and will invoke the
+> > > corresponding dm_refresh_rate_adaptive_mask to adjust the tx rate
+> > > mask.
+> > >
+> > > With this commit, the tx rate of each data and qos data packet will
+> > > be 39Mbps (MCS4) with the 0xF00000 as the tx rate mask. The 20th bit
+> > > to 23th bit means MCS4 to MCS7. It means that the firmware still picks
+> > > the lowest rate from the rate mask and explains why the tx rate of
+> > > data and qos data is always lowest 1Mbps because the default rate mask
+> > > passed is always 0xFFFFFFF ranges from the basic CCK rate, OFDM rate,
+> > > and MCS rate. However, with Realtek's driver, the tx rate observed from
+> > > wireshark under the same condition is almost 65Mbps or 72Mbps.
+> > >
+> > > I believe the firmware of RTL8723BU may need fix. And I think we
+> > > can still bring in the dm_watchdog as rtlwifi to improve from the
+> > > driver side. Please leave precious comments for my commits and
+> > > suggest what I can do better. Or suggest if there's any better idea
+> > > to fix this. Thanks.
+> > >
+> > > Signed-off-by: Chris Chiu <chiu@endlessm.com>
+> >
+> > I am really pleased to see you're investigating some of these issues,
+> > since I've been pretty swamped and not had time to work on this driver
+> > for a long time.
+> >
+> > The firmware should allow for two rate modes, either firmware handled or
+> > controlled by the driver. Ideally we would want the driver to handle it,
+> > but I never was able to make that work reliable.
+> >
+> > This fix should at least improve the situation, and it may explain some
+> > of the performance issues with the 8192eu as well?
+> >
+> > > diff --git a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu.h b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu.h
+> > > index 8828baf26e7b..216f603827a8 100644
+> > > --- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu.h
+> > > +++ b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu.h
+> > > @@ -1195,6 +1195,44 @@ struct rtl8723bu_c2h {
+> > >
+> > >  struct rtl8xxxu_fileops;
+> > >
+> > > +/*mlme related.*/
+> > > +enum wireless_mode {
+> > > +     WIRELESS_MODE_UNKNOWN = 0,
+> > > +     /* Sub-Element */
+> > > +     WIRELESS_MODE_B = BIT(0),
+> > > +     WIRELESS_MODE_G = BIT(1),
+> > > +     WIRELESS_MODE_A = BIT(2),
+> > > +     WIRELESS_MODE_N_24G = BIT(3),
+> > > +     WIRELESS_MODE_N_5G = BIT(4),
+> > > +     WIRELESS_AUTO = BIT(5),
+> > > +     WIRELESS_MODE_AC = BIT(6),
+> > > +     WIRELESS_MODE_MAX = 0x7F,
+> > > +};
+> > > +
+> > > +/* from rtlwifi/wifi.h */
+> > > +enum ratr_table_mode_new {
+> > > +     RATEID_IDX_BGN_40M_2SS = 0,
+> > > +     RATEID_IDX_BGN_40M_1SS = 1,
+> > > +     RATEID_IDX_BGN_20M_2SS_BN = 2,
+> > > +     RATEID_IDX_BGN_20M_1SS_BN = 3,
+> > > +     RATEID_IDX_GN_N2SS = 4,
+> > > +     RATEID_IDX_GN_N1SS = 5,
+> > > +     RATEID_IDX_BG = 6,
+> > > +     RATEID_IDX_G = 7,
+> > > +     RATEID_IDX_B = 8,
+> > > +     RATEID_IDX_VHT_2SS = 9,
+> > > +     RATEID_IDX_VHT_1SS = 10,
+> > > +     RATEID_IDX_MIX1 = 11,
+> > > +     RATEID_IDX_MIX2 = 12,
+> > > +     RATEID_IDX_VHT_3SS = 13,
+> > > +     RATEID_IDX_BGN_3SS = 14,
+> > > +};
+> > > +
+> > > +#define RTL8XXXU_RATR_STA_INIT 0
+> > > +#define RTL8XXXU_RATR_STA_HIGH 1
+> > > +#define RTL8XXXU_RATR_STA_MID  2
+> > > +#define RTL8XXXU_RATR_STA_LOW  3
+> > > +
+> >
+> > >  extern struct rtl8xxxu_fileops rtl8192cu_fops;
+> > >  extern struct rtl8xxxu_fileops rtl8192eu_fops;
+> > > diff --git a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8723b.c b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8723b.c
+> > > index 26b674aca125..2071ab9fd001 100644
+> > > --- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8723b.c
+> > > +++ b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8723b.c
+> > > @@ -1645,6 +1645,148 @@ static void rtl8723bu_init_statistics(struct rtl8xxxu_priv *priv)
+> > >       rtl8xxxu_write32(priv, REG_OFDM0_FA_RSTC, val32);
+> > >  }
+> > >
+> > > +static u8 rtl8723b_signal_to_rssi(int signal)
+> > > +{
+> > > +     if (signal < -95)
+> > > +             signal = -95;
+> > > +     return (u8)(signal + 95);
+> > > +}
+> >
+> > Could you make this more generic so it can be used by the other sub-drivers?
+> >
+> Sure. I'll do that.
+>
+> > > +static void rtl8723b_refresh_rate_mask(struct rtl8xxxu_priv *priv,
+> > > +                                    int signal, struct ieee80211_sta *sta)
+> > > +{
+> > > +     struct ieee80211_hw *hw = priv->hw;
+> > > +     u16 wireless_mode;
+> > > +     u8 rssi_level, ratr_idx;
+> > > +     u8 txbw_40mhz;
+> > > +     u8 rssi, rssi_thresh_high, rssi_thresh_low;
+> > > +
+> > > +     rssi_level = priv->rssi_level;
+> > > +     rssi = rtl8723b_signal_to_rssi(signal);
+> > > +     txbw_40mhz = (hw->conf.chandef.width == NL80211_CHAN_WIDTH_40) ? 1 : 0;
+> > > +
+> > > +     switch (rssi_level) {
+> > > +     case RTL8XXXU_RATR_STA_HIGH:
+> > > +             rssi_thresh_high = 50;
+> > > +             rssi_thresh_low = 20;
+> > > +             break;
+> > > +     case RTL8XXXU_RATR_STA_MID:
+> > > +             rssi_thresh_high = 55;
+> > > +             rssi_thresh_low = 20;
+> > > +             break;
+> > > +     case RTL8XXXU_RATR_STA_LOW:
+> > > +             rssi_thresh_high = 60;
+> > > +             rssi_thresh_low = 25;
+> > > +             break;
+> > > +     default:
+> > > +             rssi_thresh_high = 50;
+> > > +             rssi_thresh_low = 20;
+> > > +             break;
+> > > +     }
+> >
+> > Can we make this use defined values with some explanation rather than
+> > hard coded values?
+> >
+>
+> I also thought about this. So I refer to the same refresh_rateadaotive_mask
+> in rtlwifi/rtl8192se/dm.c, rtlwifi/rtl8723ae/dm.c, and rtl8188ee...etc. They
+> don't give a better explanation. And I also don't know if these values can be
+> generally applied to other subdrivers or specifically for 8723b series, for
+> example, the rtl8192se use different values for the threshold. It maybe due
+> to different noise floor for different chip?  I'm not sure. I took these values
+> from vendor driver and rtl8188ee. I can simply use defined values to replace
+> but I have to admit it's hard to find a good explanation.
+>
+> > > +     if (rssi > rssi_thresh_high)
+> > > +             rssi_level = RTL8XXXU_RATR_STA_HIGH;
+> > > +     else if (rssi > rssi_thresh_low)
+> > > +             rssi_level = RTL8XXXU_RATR_STA_MID;
+> > > +     else
+> > > +             rssi_level = RTL8XXXU_RATR_STA_LOW;
+> > > +
+> > > +     if (rssi_level != priv->rssi_level) {
+> > > +             int sgi = 0;
+> > > +             u32 rate_bitmap = 0;
+> > > +
+> > > +             rcu_read_lock();
+> > > +             rate_bitmap = (sta->supp_rates[0] & 0xfff) |
+> > > +                             (sta->ht_cap.mcs.rx_mask[0] << 12) |
+> > > +                             (sta->ht_cap.mcs.rx_mask[1] << 20);
+> > > +             if (sta->ht_cap.cap &
+> > > +                 (IEEE80211_HT_CAP_SGI_40 | IEEE80211_HT_CAP_SGI_20))
+> > > +                     sgi = 1;
+> > > +             rcu_read_unlock();
+> > > +
+> > > +             wireless_mode = rtl8xxxu_wireless_mode(hw, sta);
+> > > +             switch (wireless_mode) {
+> > > +             case WIRELESS_MODE_B:
+> > > +                     ratr_idx = RATEID_IDX_B;
+> > > +                     if (rate_bitmap & 0x0000000c)
+> > > +                             rate_bitmap &= 0x0000000d;
+> > > +                     else
+> > > +                             rate_bitmap &= 0x0000000f;
+> > > +                     break;
+> > > +             case WIRELESS_MODE_A:
+> > > +             case WIRELESS_MODE_G:
+> > > +                     ratr_idx = RATEID_IDX_G;
+> > > +                     if (rssi_level == RTL8XXXU_RATR_STA_HIGH)
+> > > +                             rate_bitmap &= 0x00000f00;
+> > > +                     else
+> > > +                             rate_bitmap &= 0x00000ff0;
+> > > +                     break;
+> > > +             case (WIRELESS_MODE_B | WIRELESS_MODE_G):
+> > > +                     ratr_idx = RATEID_IDX_BG;
+> > > +                     if (rssi_level == RTL8XXXU_RATR_STA_HIGH)
+> > > +                             rate_bitmap &= 0x00000f00;
+> > > +                     else if (rssi_level == RTL8XXXU_RATR_STA_MID)
+> > > +                             rate_bitmap &= 0x00000ff0;
+> > > +                     else
+> > > +                             rate_bitmap &= 0x00000ff5;
+> > > +                     break;
+> >
+> > It would be nice as well to get all these masks into generic names.
+> >
+>
+> I also take these mask values from the update_hal_rate_mask of the
+> vendor driver and other realtek drivers under rtlwifi. I thought about to
+> define the lower 12 bits like RTL8XXXU_BG_RATE_MASK, 13~20 bits
+> as RTL8XXXU_MCS0_7_RATE_MASK. But it's still hard to express
+> all the combinations here. So I just leave it as it is. I can try to add
+> explanations for the rate mapping of each bit. It would be a lot easier.
+>
+> > > +             case WIRELESS_MODE_N_24G:
+> > > +             case WIRELESS_MODE_N_5G:
+> > > +             case (WIRELESS_MODE_G | WIRELESS_MODE_N_24G):
+> > > +             case (WIRELESS_MODE_A | WIRELESS_MODE_N_5G):
+> > > +                     if (priv->tx_paths == 2 && priv->rx_paths == 2)
+> > > +                             ratr_idx = RATEID_IDX_GN_N2SS;
+> > > +                     else
+> > > +                             ratr_idx = RATEID_IDX_GN_N1SS;
+> > > +             case (WIRELESS_MODE_B | WIRELESS_MODE_G | WIRELESS_MODE_N_24G):
+> > > +             case (WIRELESS_MODE_B | WIRELESS_MODE_N_24G):
+> > > +                     if (txbw_40mhz) {
+> > > +                             if (priv->tx_paths == 2 && priv->rx_paths == 2)
+> > > +                                     ratr_idx = RATEID_IDX_BGN_40M_2SS;
+> > > +                             else
+> > > +                                     ratr_idx = RATEID_IDX_BGN_40M_1SS;
+> > > +                     } else {
+> > > +                             if (priv->tx_paths == 2 && priv->rx_paths == 2)
+> > > +                                     ratr_idx = RATEID_IDX_BGN_20M_2SS_BN;
+> > > +                             else
+> > > +                                     ratr_idx = RATEID_IDX_BGN_20M_1SS_BN;
+> > > +                     }
+> > > +
+> > > +                     if (priv->tx_paths == 2 && priv->rx_paths == 2) {
+> > > +                             if (rssi_level == RTL8XXXU_RATR_STA_HIGH) {
+> > > +                                     rate_bitmap &= 0x0f8f0000;
+> > > +                             } else if (rssi_level == RTL8XXXU_RATR_STA_MID) {
+> > > +                                     rate_bitmap &= 0x0f8ff000;
+> > > +                             } else {
+> > > +                                     if (txbw_40mhz)
+> > > +                                             rate_bitmap &= 0x0f8ff015;
+> > > +                                     else
+> > > +                                             rate_bitmap &= 0x0f8ff005;
+> > > +                             }
+> > > +                     } else {
+> > > +                             if (rssi_level == RTL8XXXU_RATR_STA_HIGH) {
+> > > +                                     rate_bitmap &= 0x000f0000;
+> > > +                             } else if (rssi_level == RTL8XXXU_RATR_STA_MID) {
+> > > +                                     rate_bitmap &= 0x000ff000;
+> > > +                             } else {
+> > > +                                     if (txbw_40mhz)
+> > > +                                             rate_bitmap &= 0x000ff015;
+> > > +                                     else
+> > > +                                             rate_bitmap &= 0x000ff005;
+> > > +                             }
+> > > +                     }
+> > > +                     break;
+> > > +             default:
+> > > +                     ratr_idx = RATEID_IDX_BGN_40M_2SS;
+> > > +                     rate_bitmap &= 0x0fffffff;
+> > > +                     break;
+> > > +             }
+> > > +
+> > > +             priv->rssi_level = rssi_level;
+> > > +             priv->fops->update_rate_mask(priv, rate_bitmap, ratr_idx, sgi);
+> > > +     }
+> > > +}
+> > > +
+> >
+> > In general I think all of this should be fairly generic and the other
+> > subdrivers should be able to benefit from it?
+> >
+> >
+> I agree. Mabe separates the rssi level judgement function to be chip specific,
+> and move the whole refresh_rate_mask thing generic?
+>
+> > >  struct rtl8xxxu_fileops rtl8723bu_fops = {
+> > >       .parse_efuse = rtl8723bu_parse_efuse,
+> > >       .load_firmware = rtl8723bu_load_firmware,
+> > > @@ -1665,6 +1807,7 @@ struct rtl8xxxu_fileops rtl8723bu_fops = {
+> > >       .usb_quirks = rtl8xxxu_gen2_usb_quirks,
+> > >       .set_tx_power = rtl8723b_set_tx_power,
+> > >       .update_rate_mask = rtl8xxxu_gen2_update_rate_mask,
+> > > +     .refresh_rate_mask = rtl8723b_refresh_rate_mask,
+> > >       .report_connect = rtl8xxxu_gen2_report_connect,
+> > >       .fill_txdesc = rtl8xxxu_fill_txdesc_v2,
+> > >       .writeN_block_size = 1024,
+> > > diff --git a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
+> > > index 039e5ca9d2e4..be322402ca01 100644
+> > > --- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
+> > > +++ b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
+> > > @@ -4311,7 +4311,8 @@ static void rtl8xxxu_sw_scan_complete(struct ieee80211_hw *hw,
+> > >       rtl8xxxu_write8(priv, REG_BEACON_CTRL, val8);
+> > >  }
+> > >
+> > > -void rtl8xxxu_update_rate_mask(struct rtl8xxxu_priv *priv, u32 ramask, int sgi)
+> > > +void rtl8xxxu_update_rate_mask(struct rtl8xxxu_priv *priv,
+> > > +                            u32 ramask, u8 rateid, int sgi)
+> > >  {
+> > >       struct h2c_cmd h2c;
+> > >
+> > > @@ -4331,7 +4332,7 @@ void rtl8xxxu_update_rate_mask(struct rtl8xxxu_priv *priv, u32 ramask, int sgi)
+> > >  }
+> > >
+> > >  void rtl8xxxu_gen2_update_rate_mask(struct rtl8xxxu_priv *priv,
+> > > -                                 u32 ramask, int sgi)
+> > > +                                 u32 ramask, u8 rateid, int sgi)
+> > >  {
+> > >       struct h2c_cmd h2c;
+> > >       u8 bw = 0;
+> > > @@ -4345,7 +4346,7 @@ void rtl8xxxu_gen2_update_rate_mask(struct rtl8xxxu_priv *priv,
+> > >       h2c.b_macid_cfg.ramask3 = (ramask >> 24) & 0xff;
+> > >
+> > >       h2c.ramask.arg = 0x80;
+> > > -     h2c.b_macid_cfg.data1 = 0;
+> > > +     h2c.b_macid_cfg.data1 = rateid;
+> > >       if (sgi)
+> > >               h2c.b_macid_cfg.data1 |= BIT(7);
+> > >
+> > > @@ -4485,6 +4486,40 @@ static void rtl8xxxu_set_basic_rates(struct rtl8xxxu_priv *priv, u32 rate_cfg)
+> > >       rtl8xxxu_write8(priv, REG_INIRTS_RATE_SEL, rate_idx);
+> > >  }
+> > >
+> > > +u16
+> > > +rtl8xxxu_wireless_mode(struct ieee80211_hw *hw, struct ieee80211_sta *sta)
+> > > +{
+> > > +     u16 network_type = WIRELESS_MODE_UNKNOWN;
+> > > +     u32 rate_mask;
+> > > +
+> > > +     rate_mask = (sta->supp_rates[0] & 0xfff) |
+> > > +                 (sta->ht_cap.mcs.rx_mask[0] << 12) |
+> > > +                 (sta->ht_cap.mcs.rx_mask[0] << 20);
+> > > +
+> > > +     if (hw->conf.chandef.chan->band == NL80211_BAND_5GHZ) {
+> > > +             if (sta->vht_cap.vht_supported)
+> > > +                     network_type = WIRELESS_MODE_AC;
+> > > +             else if (sta->ht_cap.ht_supported)
+> > > +                     network_type = WIRELESS_MODE_N_5G;
+> > > +
+> > > +             network_type |= WIRELESS_MODE_A;
+> > > +     } else {
+> > > +             if (sta->vht_cap.vht_supported)
+> > > +                     network_type = WIRELESS_MODE_AC;
+> > > +             else if (sta->ht_cap.ht_supported)
+> > > +                     network_type = WIRELESS_MODE_N_24G;
+> > > +
+> > > +             if (sta->supp_rates[0] <= 0xf)
+> > > +                     network_type |= WIRELESS_MODE_B;
+> > > +             else if (sta->supp_rates[0] & 0xf)
+> > > +                     network_type |= (WIRELESS_MODE_B | WIRELESS_MODE_G);
+> > > +             else
+> > > +                     network_type |= WIRELESS_MODE_G;
+> > > +     }
+> > > +
+> > > +     return network_type;
+> > > +}
+> >
+> > I always hated the wireless_mode nonsense in the realtek driver, but
+> > maybe we cannot avoid it :(
+> >
+> > Cheers,
+> > Jes
 
-Testing: Tested on WCN3990 HW
-Tested FW: WLAN.HL.3.1-00959-QCAHLSWMTPLZ-1
+Jes, look forward to any comments or suggestions from you. I would re-write a
+patch with generic refresh_rate_mask for all rtl8xxxu series chips in
+short time.
 
-Signed-off-by: Govind Singh <govinds@codeaurora.org>
-
----
-Changes from v2:
-- Rebased on top of 38faed150438 ath10k: perform crash dump collection in workqueue.
-- Removed redundant msa permission call.
----
- drivers/net/wireless/ath/ath10k/coredump.c | 21 +++++++
- drivers/net/wireless/ath/ath10k/coredump.h |  1 +
- drivers/net/wireless/ath/ath10k/qmi.c      |  4 ++
- drivers/net/wireless/ath/ath10k/snoc.c     | 66 ++++++++++++++++++++++
- drivers/net/wireless/ath/ath10k/snoc.h     |  1 +
- 5 files changed, 93 insertions(+)
-
-diff --git a/drivers/net/wireless/ath/ath10k/coredump.c b/drivers/net/wireless/ath/ath10k/coredump.c
-index aa04fbf146e0..0ec690b49fb1 100644
---- a/drivers/net/wireless/ath/ath10k/coredump.c
-+++ b/drivers/net/wireless/ath/ath10k/coredump.c
-@@ -962,6 +962,19 @@ static const struct ath10k_mem_region qca4019_hw10_mem_regions[] = {
- 	},
- };
- 
-+static const struct ath10k_mem_region wcn399x_hw10_mem_regions[] = {
-+	{
-+		/* MSA region start is not fixed, hence it is assigned at runtime */
-+		.type = ATH10K_MEM_REGION_TYPE_MSA,
-+		.len = 0x100000,
-+		.name = "DRAM",
-+		.section_table = {
-+			.sections = NULL,
-+			.size = 0,
-+		},
-+	},
-+};
-+
- static const struct ath10k_hw_mem_layout hw_mem_layouts[] = {
- 	{
- 		.hw_id = QCA6174_HW_1_0_VERSION,
-@@ -1059,6 +1072,14 @@ static const struct ath10k_hw_mem_layout hw_mem_layouts[] = {
- 			.size = ARRAY_SIZE(qca4019_hw10_mem_regions),
- 		},
- 	},
-+	{
-+		.hw_id = WCN3990_HW_1_0_DEV_VERSION,
-+		.hw_rev = ATH10K_HW_WCN3990,
-+		.region_table = {
-+			.regions = wcn399x_hw10_mem_regions,
-+			.size = ARRAY_SIZE(wcn399x_hw10_mem_regions),
-+		},
-+	},
- };
- 
- static u32 ath10k_coredump_get_ramdump_size(struct ath10k *ar)
-diff --git a/drivers/net/wireless/ath/ath10k/coredump.h b/drivers/net/wireless/ath/ath10k/coredump.h
-index 5dac653e1649..9802e90483f4 100644
---- a/drivers/net/wireless/ath/ath10k/coredump.h
-+++ b/drivers/net/wireless/ath/ath10k/coredump.h
-@@ -126,6 +126,7 @@ enum ath10k_mem_region_type {
- 	ATH10K_MEM_REGION_TYPE_IRAM2	= 5,
- 	ATH10K_MEM_REGION_TYPE_IOSRAM	= 6,
- 	ATH10K_MEM_REGION_TYPE_IOREG	= 7,
-+	ATH10K_MEM_REGION_TYPE_MSA	= 8,
- };
- 
- /* Define a section of the region which should be copied. As not all parts
-diff --git a/drivers/net/wireless/ath/ath10k/qmi.c b/drivers/net/wireless/ath/ath10k/qmi.c
-index ba8f5a8f83d1..8eb0f0f0d3a7 100644
---- a/drivers/net/wireless/ath/ath10k/qmi.c
-+++ b/drivers/net/wireless/ath/ath10k/qmi.c
-@@ -817,9 +817,13 @@ ath10k_qmi_driver_event_post(struct ath10k_qmi *qmi,
- static void ath10k_qmi_event_server_exit(struct ath10k_qmi *qmi)
- {
- 	struct ath10k *ar = qmi->ar;
-+	struct ath10k_snoc *ar_snoc = ath10k_snoc_priv(ar);
- 
- 	ath10k_qmi_remove_msa_permission(qmi);
- 	ath10k_core_free_board_files(ar);
-+	if (!test_bit(ATH10K_SNOC_FLAG_UNREGISTERING, &ar_snoc->flags))
-+		ath10k_snoc_fw_crashed_dump(ar);
-+
- 	ath10k_snoc_fw_indication(ar, ATH10K_QMI_EVENT_FW_DOWN_IND);
- 	ath10k_dbg(ar, ATH10K_DBG_QMI, "wifi fw qmi service disconnected\n");
- }
-diff --git a/drivers/net/wireless/ath/ath10k/snoc.c b/drivers/net/wireless/ath/ath10k/snoc.c
-index 0be12996beba..ecc0f884b123 100644
---- a/drivers/net/wireless/ath/ath10k/snoc.c
-+++ b/drivers/net/wireless/ath/ath10k/snoc.c
-@@ -24,6 +24,7 @@
- #include <linux/regulator/consumer.h>
- 
- #include "ce.h"
-+#include "coredump.h"
- #include "debug.h"
- #include "hif.h"
- #include "htc.h"
-@@ -1586,6 +1587,71 @@ static int ath10k_hw_power_off(struct ath10k *ar)
- 	return ret;
- }
- 
-+static void ath10k_msa_dump_memory(struct ath10k *ar,
-+				   struct ath10k_fw_crash_data *crash_data)
-+{
-+	struct ath10k_snoc *ar_snoc = ath10k_snoc_priv(ar);
-+	const struct ath10k_hw_mem_layout *mem_layout;
-+	const struct ath10k_mem_region *current_region;
-+	struct ath10k_dump_ram_data_hdr *hdr;
-+	size_t buf_len;
-+	u8 *buf;
-+
-+	if (!crash_data && !crash_data->ramdump_buf)
-+		return;
-+
-+	mem_layout = ath10k_coredump_get_mem_layout(ar);
-+	if (!mem_layout)
-+		return;
-+
-+	current_region = &mem_layout->region_table.regions[0];
-+
-+	buf = crash_data->ramdump_buf;
-+	buf_len = crash_data->ramdump_buf_len;
-+	memset(buf, 0, buf_len);
-+
-+	/* Reserve space for the header. */
-+	hdr = (void *)buf;
-+	buf += sizeof(*hdr);
-+	buf_len -= sizeof(*hdr);
-+
-+	hdr->region_type = cpu_to_le32(current_region->type);
-+	hdr->start = cpu_to_le32(ar_snoc->qmi->msa_va);
-+	hdr->length = cpu_to_le32(ar_snoc->qmi->msa_mem_size);
-+
-+	if (current_region->len < ar_snoc->qmi->msa_mem_size) {
-+		memcpy(buf, ar_snoc->qmi->msa_va, current_region->len);
-+		ath10k_warn(ar, "msa dump length is less than msa size %x, %x\n",
-+			    current_region->len, ar_snoc->qmi->msa_mem_size);
-+	} else {
-+		memcpy(buf, ar_snoc->qmi->msa_va, ar_snoc->qmi->msa_mem_size);
-+	}
-+}
-+
-+void ath10k_snoc_fw_crashed_dump(struct ath10k *ar)
-+{
-+	struct ath10k_fw_crash_data *crash_data;
-+	char guid[UUID_STRING_LEN + 1];
-+
-+	mutex_lock(&ar->dump_mutex);
-+
-+	spin_lock_bh(&ar->data_lock);
-+	ar->stats.fw_crash_counter++;
-+	spin_unlock_bh(&ar->data_lock);
-+
-+	crash_data = ath10k_coredump_new(ar);
-+
-+	if (crash_data)
-+		scnprintf(guid, sizeof(guid), "%pUl", &crash_data->guid);
-+	else
-+		scnprintf(guid, sizeof(guid), "n/a");
-+
-+	ath10k_err(ar, "firmware crashed! (guid %s)\n", guid);
-+	ath10k_print_driver_info(ar);
-+	ath10k_msa_dump_memory(ar, crash_data);
-+	mutex_unlock(&ar->dump_mutex);
-+}
-+
- static const struct of_device_id ath10k_snoc_dt_match[] = {
- 	{ .compatible = "qcom,wcn3990-wifi",
- 	 .data = &drv_priv,
-diff --git a/drivers/net/wireless/ath/ath10k/snoc.h b/drivers/net/wireless/ath/ath10k/snoc.h
-index 25383de8f17d..6d28a6290a94 100644
---- a/drivers/net/wireless/ath/ath10k/snoc.h
-+++ b/drivers/net/wireless/ath/ath10k/snoc.h
-@@ -101,5 +101,6 @@ static inline struct ath10k_snoc *ath10k_snoc_priv(struct ath10k *ar)
- }
- 
- int ath10k_snoc_fw_indication(struct ath10k *ar, u64 type);
-+void ath10k_snoc_fw_crashed_dump(struct ath10k *ar);
- 
- #endif /* _SNOC_H_ */
--- 
-The Qualcomm Innovation Center, Inc. is a member of the Code Aurora Forum,
-a Linux Foundation Collaborative Project
-
+Chris
