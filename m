@@ -2,113 +2,180 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 1DFC13B427
-	for <lists+linux-wireless@lfdr.de>; Mon, 10 Jun 2019 13:45:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3CADB3B6FD
+	for <lists+linux-wireless@lfdr.de>; Mon, 10 Jun 2019 16:12:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2389169AbfFJLpg (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 10 Jun 2019 07:45:36 -0400
-Received: from mail-wm1-f68.google.com ([209.85.128.68]:50351 "EHLO
-        mail-wm1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2388926AbfFJLpg (ORCPT
+        id S2390755AbfFJOMg (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 10 Jun 2019 10:12:36 -0400
+Received: from iolanthe.rowland.org ([192.131.102.54]:35070 "HELO
+        iolanthe.rowland.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with SMTP id S2390690AbfFJOMf (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 10 Jun 2019 07:45:36 -0400
-Received: by mail-wm1-f68.google.com with SMTP id c66so8171483wmf.0
-        for <linux-wireless@vger.kernel.org>; Mon, 10 Jun 2019 04:45:34 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=IOthGyXWQqHHqGJn/xuURBaXDymjEAyGi60HM5zS6VA=;
-        b=Cx4OAOFBeqQsEE0imVEi1ZhTJHr0+Jm9g/0G7GdNCNDi8TLY8D0uRf/xrp+5EADusX
-         8a6iDxB1fys0Uzcg6AWDOPl9Z2FA9SiYXzadVHkokZvjFinKjtKgjCvQvtXny6gmQPmc
-         l31CSnTZo4qFe2Z8vzwAPYbGViFSirpLxQpOoqFm3ij2VZ9ktSnrFcliE/s7GZDitd47
-         k+yKZFaghmuolvkWYn2saQ0cBbTpnSYfjUrtz+dacCE+UJZVUn5i+TnxlVwaR1VyHWWb
-         r8EnT0bFLFuXEYG9gxL5PwytH3Y3xL0MQkDVazb1k3brJ+IMAL7bZ9E/gru417gzoNu9
-         Zzdw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=IOthGyXWQqHHqGJn/xuURBaXDymjEAyGi60HM5zS6VA=;
-        b=bwv1u0wByezboRHwo9JMVfjixYhH0d1bZ8jP/rw/+ShDIn9qW+cajpbVS9KFC/cEpL
-         4xn+75L8NDgv2vJE4aPe0kJSmpjPNgYEdA4bOVM8BHDuQuha8b60juWX0FnG4obKOs8n
-         mCrYx36Ga2YewtNZTzFYd/TcDmTqWcjK0zCZGocT7H5OEvq4zPf7lmJwzPdwkgmtyXvJ
-         WhYDrruEWWwcjTX8DH1exot4SVltk1iy/2gOR5Wzug404ZHPobMbsvN10awj37YE6bPe
-         I6OYJOf+viJFDAIAJu7qVLX83wiVkzbg2LEjPFv1zSuTZ6d05ICBK2Kz5MwAmLcK/pen
-         G3yw==
-X-Gm-Message-State: APjAAAXpLeHFqerQ/20Eub5CdmJlb+a3LwtbmjDCZ6Jo3rDrsmmRk2jm
-        hGua+kwtBQ5mNIm9Xvftqx/Zo1MH
-X-Google-Smtp-Source: APXvYqwW24QWi+Eze+AttScy2o7FL0QjRgX7xnoPAuRhQSIufwIpVB/QJ+90HZA18dJHEgEafSKfQQ==
-X-Received: by 2002:a1c:1b81:: with SMTP id b123mr12777679wmb.144.1560167133997;
-        Mon, 10 Jun 2019 04:45:33 -0700 (PDT)
-Received: from debian64.daheim (pD9E29896.dip0.t-ipconnect.de. [217.226.152.150])
-        by smtp.gmail.com with ESMTPSA id r2sm8981284wma.26.2019.06.10.04.45.32
-        (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
-        Mon, 10 Jun 2019 04:45:32 -0700 (PDT)
-Received: from localhost.daheim ([127.0.0.1] helo=debian64.localnet)
-        by debian64.daheim with esmtp (Exim 4.92)
-        (envelope-from <chunkeey@gmail.com>)
-        id 1haIjz-0003hl-Kc; Mon, 10 Jun 2019 13:45:31 +0200
-From:   Christian Lamparter <chunkeey@gmail.com>
-To:     Kalle Valo <kvalo@codeaurora.org>
-Cc:     linux-wireless@vger.kernel.org
-Subject: Re: [PATCH] carl9170: fix enum compare splat
-Date:   Mon, 10 Jun 2019 13:45:31 +0200
-Message-ID: <1601416.I41mb68Wgz@debian64>
-In-Reply-To: <87pnnlncll.fsf@codeaurora.org>
-References: <20190608144947.744-1-chunkeey@gmail.com> <87pnnlncll.fsf@codeaurora.org>
+        Mon, 10 Jun 2019 10:12:35 -0400
+Received: (qmail 1728 invoked by uid 2102); 10 Jun 2019 10:12:34 -0400
+Received: from localhost (sendmail-bs@127.0.0.1)
+  by localhost with SMTP; 10 Jun 2019 10:12:34 -0400
+Date:   Mon, 10 Jun 2019 10:12:34 -0400 (EDT)
+From:   Alan Stern <stern@rowland.harvard.edu>
+X-X-Sender: stern@iolanthe.rowland.org
+To:     Christian Lamparter <chunkeey@gmail.com>
+cc:     linux-wireless@vger.kernel.org, <linux-usb@vger.kernel.org>,
+        Kalle Valo <kvalo@codeaurora.org>
+Subject: Re: [PATCH v2] carl9170: fix misuse of device driver API
+In-Reply-To: <20190608144947.744-3-chunkeey@gmail.com>
+Message-ID: <Pine.LNX.4.44L0.1906101012150.1560-100000@iolanthe.rowland.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Monday, June 10, 2019 9:06:30 AM CEST Kalle Valo wrote:
-> Christian Lamparter <chunkeey@gmail.com> writes:
->=20
-> > This patch fixes a noisy warning triggered by -Wenum-compare
-> >
-> > |main.c:1390:31: warning: comparison between =E2=80=98enum nl80211_ac=
-=E2=80=99
-> > |	and =E2=80=98enum ar9170_txq=E2=80=99 [-Wenum-compare]
-> > |  BUILD_BUG_ON(NL80211_NUM_ACS > __AR9170_NUM_TXQ);
-> > |                               ^
-> > | [...]
-> >
-> > This is a little bit unfortunate, since the number of queues
-> > (hence NL80211_NUM_ACS) is a constant based on the IEEE 802.11
-> > (much like IEEE80211_NUM_ACS) and __AR9170_NUM_TXQ is more or
-> > less defined by the AR9170 hardware.
->=20
-> Is the warning enabled by default? TBH I'm not seeing how useful this
-> warning is for kernel development.
+On Sat, 8 Jun 2019, Christian Lamparter wrote:
 
-It is included in the "-Wall" (which is coming from "KBUILD_CFLAGS"=20
-in the main Makefile).
+> This patch follows Alan Stern's recent patch:
+> "p54: Fix race between disconnect and firmware loading"
+> 
+> that overhauled carl9170 buggy firmware loading and driver
+> unbinding procedures.
+> 
+> Since the carl9170 code was adapted from p54 it uses the
+> same functions and is likely to have the same problem, but
+> it's just that the syzbot hasn't reproduce them (yet).
+> 
+> a summary from the changes (copied from the p54 patch):
+>  * Call usb_driver_release_interface() rather than
+>    device_release_driver().
+> 
+>  * Lock udev (the interface's parent) before unbinding the
+>    driver instead of locking udev->parent.
+> 
+>  * During the firmware loading process, take a reference
+>    to the USB interface instead of the USB device.
+> 
+>  * Don't take an unnecessary reference to the device during
+>    probe (and then don't drop it during disconnect).
+> 
+> and
+> 
+>  * Make sure to prevent use-after-free bugs by explicitly
+>    setting the driver context to NULL after signaling the
+>    completion.
+> 
+> Cc: <stable@vger.kernel.org>
+> Cc: Alan Stern <stern@rowland.harvard.edu>
+> Signed-off-by: Christian Lamparter <chunkeey@gmail.com>
+> ---
+> v2: Alan Stern's comments
+>   - fixed possible use-after-free
+> ---
 
-I tried debian's gcc starting from 4.6 to the lastest 8.3. They all
-complain about it in various degrees.
-
-https://gcc.gnu.org/onlinedocs/gcc-4.6.0/gcc/Warning-Options.html#Warning-O=
-ptions
-
-> > --- a/drivers/net/wireless/ath/carl9170/main.c
-> > +++ b/drivers/net/wireless/ath/carl9170/main.c
-> > @@ -1387,7 +1387,7 @@ static int carl9170_op_conf_tx(struct ieee80211_h=
-w *hw,
-> >  	int ret;
-> > =20
-> >  	BUILD_BUG_ON(ARRAY_SIZE(ar9170_qmap) !=3D __AR9170_NUM_TXQ);
-> > -	BUILD_BUG_ON(NL80211_NUM_ACS > __AR9170_NUM_TXQ);
-> > +	BUILD_BUG_ON((size_t)NL80211_NUM_ACS > (size_t)__AR9170_NUM_TXQ);
->=20
-> IMHO this just makes the code worse. Does it make sense to workaround
-> (stupid) compiler warnings like this?
-True. What's worse: This isn't really code. The BUILD_BUG_ON Macro is there
-to guard but it's getting compiled away. I could also just drop it.
+Acked-by: Alan Stern <stern@rowland.harvard.edu>
 
 
-
+>  drivers/net/wireless/ath/carl9170/usb.c | 39 +++++++++++--------------
+>  1 file changed, 17 insertions(+), 22 deletions(-)
+> 
+> diff --git a/drivers/net/wireless/ath/carl9170/usb.c b/drivers/net/wireless/ath/carl9170/usb.c
+> index e7c3f3b8457d..99f1897a775d 100644
+> --- a/drivers/net/wireless/ath/carl9170/usb.c
+> +++ b/drivers/net/wireless/ath/carl9170/usb.c
+> @@ -128,6 +128,8 @@ static const struct usb_device_id carl9170_usb_ids[] = {
+>  };
+>  MODULE_DEVICE_TABLE(usb, carl9170_usb_ids);
+>  
+> +static struct usb_driver carl9170_driver;
+> +
+>  static void carl9170_usb_submit_data_urb(struct ar9170 *ar)
+>  {
+>  	struct urb *urb;
+> @@ -966,32 +968,28 @@ static int carl9170_usb_init_device(struct ar9170 *ar)
+>  
+>  static void carl9170_usb_firmware_failed(struct ar9170 *ar)
+>  {
+> -	struct device *parent = ar->udev->dev.parent;
+> -	struct usb_device *udev;
+> -
+> -	/*
+> -	 * Store a copy of the usb_device pointer locally.
+> -	 * This is because device_release_driver initiates
+> -	 * carl9170_usb_disconnect, which in turn frees our
+> -	 * driver context (ar).
+> +	/* Store a copies of the usb_interface and usb_device pointer locally.
+> +	 * This is because release_driver initiates carl9170_usb_disconnect,
+> +	 * which in turn frees our driver context (ar).
+>  	 */
+> -	udev = ar->udev;
+> +	struct usb_interface *intf = ar->intf;
+> +	struct usb_device *udev = ar->udev;
+>  
+>  	complete(&ar->fw_load_wait);
+> +	/* at this point 'ar' could be already freed. Don't use it anymore */
+> +	ar = NULL;
+>  
+>  	/* unbind anything failed */
+> -	if (parent)
+> -		device_lock(parent);
+> -
+> -	device_release_driver(&udev->dev);
+> -	if (parent)
+> -		device_unlock(parent);
+> +	usb_lock_device(udev);
+> +	usb_driver_release_interface(&carl9170_driver, intf);
+> +	usb_unlock_device(udev);
+>  
+> -	usb_put_dev(udev);
+> +	usb_put_intf(intf);
+>  }
+>  
+>  static void carl9170_usb_firmware_finish(struct ar9170 *ar)
+>  {
+> +	struct usb_interface *intf = ar->intf;
+>  	int err;
+>  
+>  	err = carl9170_parse_firmware(ar);
+> @@ -1009,7 +1007,7 @@ static void carl9170_usb_firmware_finish(struct ar9170 *ar)
+>  		goto err_unrx;
+>  
+>  	complete(&ar->fw_load_wait);
+> -	usb_put_dev(ar->udev);
+> +	usb_put_intf(intf);
+>  	return;
+>  
+>  err_unrx:
+> @@ -1052,7 +1050,6 @@ static int carl9170_usb_probe(struct usb_interface *intf,
+>  		return PTR_ERR(ar);
+>  
+>  	udev = interface_to_usbdev(intf);
+> -	usb_get_dev(udev);
+>  	ar->udev = udev;
+>  	ar->intf = intf;
+>  	ar->features = id->driver_info;
+> @@ -1094,15 +1091,14 @@ static int carl9170_usb_probe(struct usb_interface *intf,
+>  	atomic_set(&ar->rx_anch_urbs, 0);
+>  	atomic_set(&ar->rx_pool_urbs, 0);
+>  
+> -	usb_get_dev(ar->udev);
+> +	usb_get_intf(intf);
+>  
+>  	carl9170_set_state(ar, CARL9170_STOPPED);
+>  
+>  	err = request_firmware_nowait(THIS_MODULE, 1, CARL9170FW_NAME,
+>  		&ar->udev->dev, GFP_KERNEL, ar, carl9170_usb_firmware_step2);
+>  	if (err) {
+> -		usb_put_dev(udev);
+> -		usb_put_dev(udev);
+> +		usb_put_intf(intf);
+>  		carl9170_free(ar);
+>  	}
+>  	return err;
+> @@ -1131,7 +1127,6 @@ static void carl9170_usb_disconnect(struct usb_interface *intf)
+>  
+>  	carl9170_release_firmware(ar);
+>  	carl9170_free(ar);
+> -	usb_put_dev(udev);
+>  }
+>  
+>  #ifdef CONFIG_PM
+> 
 
