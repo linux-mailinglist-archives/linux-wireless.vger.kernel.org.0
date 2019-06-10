@@ -2,131 +2,79 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B90DE3AF28
-	for <lists+linux-wireless@lfdr.de>; Mon, 10 Jun 2019 08:50:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C7F323AF2C
+	for <lists+linux-wireless@lfdr.de>; Mon, 10 Jun 2019 08:51:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2387839AbfFJGu2 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 10 Jun 2019 02:50:28 -0400
-Received: from mail-vs1-f45.google.com ([209.85.217.45]:34255 "EHLO
-        mail-vs1-f45.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2387718AbfFJGu2 (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 10 Jun 2019 02:50:28 -0400
-Received: by mail-vs1-f45.google.com with SMTP id q64so4683539vsd.1
-        for <linux-wireless@vger.kernel.org>; Sun, 09 Jun 2019 23:50:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=hpJ8laeRMo44o7Xfh9K1uH3yYvR4RdIiGg456hvouTw=;
-        b=XSe6WvK7p0WEAabV7k68XmK5ElwQhbgn18t6ZIoun5MUwvbXM1KLtcbCry/XUTLyS5
-         1nu7cwxho+cyFXfnd2F7p3wNDrGJrxL9GVGJgplE7syMtWCAzNHw3lof3oy7JoudwtV3
-         q4cUSEcNBghGYM7bu4ZCN7m0ERKWMU+qaNn+A7urbGzuxZrtc5RKLotKWHcag4ddEU+W
-         XCkt8Z0E/xILRtGl8GN9Xt6gkIBEYsS1ntYslmjFCjTUV+kgIKC5p+fPZ75U2cQjHgpE
-         Nt3ZFBQOy+KT5DcWuMPa/0wm+6JukPyVQ7rEiE9H5aglki/c87PMbt6ZvU4Pp1MH4PhN
-         rwqg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=hpJ8laeRMo44o7Xfh9K1uH3yYvR4RdIiGg456hvouTw=;
-        b=ps3T2A9srhDaNJWNF3EqURf4vCKVzFyalPa9kswbdcC1ZkLTjt9jAjP1+E9h36YTCk
-         ZlOjhfrXCGa7JxTyCuxD22iTPe+05FGZmTwq0u3nfYwM899ey1B9OtzMDtYR0xn9oz5q
-         ybONUUKEZCx/GcJ8LG94rPhG5YYPRqH/o+SuB5hHMPTNQDd4nS76/bgdhK0cyC1x5Coj
-         XaiF04h+kTIVC9Zhp9SX/RmQPcm0vfROZGQ0Gzu2MKY7B1CFSDjaQnwOASZEP3X+sxKj
-         iSfO3V71oMVoDi4wANHmi4MjXH/yrSwCjKQHP+KD+jpunChtuHZxF95XMMvXt9ukSWmh
-         caEg==
-X-Gm-Message-State: APjAAAVYXAq6pr/+r0aLcp8pKpCfOsO10NzCvqqWZ0SyaNtc4EP99+fV
-        ZphvdWFWNmMMbDBSsR6xH41QB4mll9/bjf7iEids+0IxJ7Dckg==
-X-Google-Smtp-Source: APXvYqyCaUU88aZcIqBjri8wNFL/kQtxWAMpweTPJMi7uWIeP2WZBHKXXMPgDioZHnnW6tUT6+Fge3gnJB/GVHSg13k=
-X-Received: by 2002:a67:e244:: with SMTP id w4mr8965940vse.176.1560149427063;
- Sun, 09 Jun 2019 23:50:27 -0700 (PDT)
+        id S2387714AbfFJGvs (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 10 Jun 2019 02:51:48 -0400
+Received: from bues.ch ([80.190.117.144]:52420 "EHLO bues.ch"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S2387582AbfFJGvs (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 10 Jun 2019 02:51:48 -0400
+Received: by bues.ch with esmtpsa (Exim 4.89)
+        (envelope-from <m@bues.ch>)
+        id 1haE9c-0006oL-7V; Mon, 10 Jun 2019 08:51:40 +0200
+Date:   Mon, 10 Jun 2019 08:51:37 +0200
+From:   Michael =?UTF-8?B?QsO8c2No?= <m@bues.ch>
+To:     H Buus <ubuntu@hbuus.com>
+Cc:     Larry Finger <Larry.Finger@lwfinger.net>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        Michael Chan <michael.chan@broadcom.com>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org
+Subject: Re: Should b44_init lead to WARN_ON in
+ drivers/ssb/driver_gpio.c:464?
+Message-ID: <20190610085137.7d6117ae@wiggum>
+In-Reply-To: <a7c07ad7-1ca2-c16d-4082-6ddc9325a20d@hbuus.com>
+References: <946c86bf-7e90-a981-b9fc-757adb98adfa@hbuus.com>
+        <20190609235711.481bbac9@wiggum>
+        <4fdd3b06-f3f7-87e0-93be-c5d6f2bf5ab4@lwfinger.net>
+        <a7c07ad7-1ca2-c16d-4082-6ddc9325a20d@hbuus.com>
+X-Mailer: Claws Mail 3.17.3 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-References: <2455026.F8Aexx8IWb@zadesk> <CANUX_P0=F4-Q5Drhcpk6-y7F7Ub3omQk=Pg6wh3pv=pLc9YHWQ@mail.gmail.com>
- <2696773.yqXG4m880n@zadesk>
-In-Reply-To: <2696773.yqXG4m880n@zadesk>
-From:   Emmanuel Grumbach <egrumbach@gmail.com>
-Date:   Mon, 10 Jun 2019 09:50:13 +0300
-Message-ID: <CANUX_P3jUBREM=cwLHs8LE+ZbUVKGZNsBWGGepbS-mcHq0w9ow@mail.gmail.com>
-Subject: Re: iwlwifi module crash
-To:     Balakrishnan Balasubramanian <linux-wireless-list@balki.me>
-Cc:     linux-wireless <linux-wireless@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: multipart/signed; micalg=pgp-sha512;
+ boundary="Sig_/l9Y0pu4CIeTAhwtB9wtBkw7"; protocol="application/pgp-signature"
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Fri, Jun 7, 2019 at 2:41 PM Balakrishnan Balasubramanian
-<linux-wireless-list@balki.me> wrote:
->
-> > This is because the device is removed from the PCI bus. Nothing from
-> > iwlwifi side can be done.
->
-> I am sure the device is not physically disturbed. If that was the case, should it not stay down when restarting the system?
+--Sig_/l9Y0pu4CIeTAhwtB9wtBkw7
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: quoted-printable
 
-Not necessarily. The disturbance may impact ASPM or something alike.
+On Mon, 10 Jun 2019 01:40:17 -0400
+H Buus <ubuntu@hbuus.com> wrote:
 
->
-> > If that happens upon suspend / resume, I know there are been fixes in
-> > PCI bus driver.
->
-> To my knowledge I have disabled all power/suspend features and I don't see releated logs in journal except the below. Not sure if relevant.
->
->     Jun 03 21:33:14 zadesk kernel: wlan0: Limiting TX power to 14 (17 - 3) dBm as advertised by d4:5d:df:25:ee:90
->
-> Is there a way to restart the module safely without restarting the system?
+> Unless I get lucky and figure
+> out what commit is making newer kernels unstable on this laptop.
 
-echo 1 > /sys/module/iwlwifi/devices/0000\:02\:00.0/remove
-echo 1 > /sys/bus/pci/rescan
 
->
-> Regards,
-> Bala
->
->
-> On Friday, June 7, 2019 5:25:41 AM EDT Emmanuel Grumbach wrote:
-> > On Fri, Jun 7, 2019 at 5:22 AM Balakrishnan Balasubramanian
-> >
-> > <linux-wireless-list@balki.me> wrote:
-> > > I am using iwd demon for wifi. Once a while I loose connectivity.
-> > > Restarting the demon does not help. But once I restart the system, it
-> > > starts working fine. Attaching stack trace from journal.
-> >
-> > This is because the device is removed from the PCI bus. Nothing from
-> > iwlwifi side can be done.
-> > If that happens upon suspend / resume, I know there are been fixes in
-> > PCI bus driver. If not, check that the device sits correctly in its
-> > socket.
-> >
-> > > Regards,
-> > > Bala
-> > >
-> > >
-> > > ---------- Forwarded message ----------
-> > > From: Denis Kenzior <denkenz@gmail.com>
-> > > To: Balakrishnan Balasubramanian <iwd-lists@balki.me>, iwd@lists.01.org
-> > > Cc:
-> > > Bcc:
-> > > Date: Thu, 06 Jun 2019 18:07:40 -0500
-> > > Subject: Re: iwd crashes randomly
-> > > Hi Bala,
-> > >
-> > > On 06/06/2019 06:00 PM, Balakrishnan Balasubramanian wrote:
-> > > > Sometimes after a week and sometimes after two days. Once crashed,
-> > > > restarting the service does not help. Had to restart the computer.
-> > > > Attaching stack trace from journal.
-> > >
-> > > That implies that your kernel is crashing, not iwd.  The attached log
-> > > shows a kernel stack trace somewhere inside iwlwifi module.  I would
-> > > post this trace to linux-wireless@vger.kernel.org.
-> > >
-> > > If you have an associated iwd backtrace, then certainly post this here,
-> > > but if the kernel module is crashing, there isn't much we can do.
-> > >
-> > > Regards,
-> > > -Denis
->
->
->
->
+You can use 'git bisect' to quickly find a commit that breaks something.
+
+I'll prepare a patch to get rid of the warning asap.
+
+--=20
+Michael
+
+--Sig_/l9Y0pu4CIeTAhwtB9wtBkw7
+Content-Type: application/pgp-signature
+Content-Description: OpenPGP digital signature
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAEBCgAdFiEEihRzkKVZOnT2ipsS9TK+HZCNiw4FAlz9/fkACgkQ9TK+HZCN
+iw4law//U51RmVK3MkDonmyNK1pyXt8Jvqul3dai8jpHTU25GzPRbc97A77Jv1I1
+ijjiniEJEvZJTgp0gKEYfv4xaK+uNBP/Zrj9PgB8taLuAiDkVO9yvmI9KAKuSCDd
+PNcoB8BKkKNunVMBTgoAhIyPaNdxG2r+5W0xsgQ8rg29PU6EGrY192Gymm2uQ6h5
+lIQtSq9rW7V+PO1EoJJ5ODmXE+U71f6JjjU8C1p46r1w78xBkNfnYrocMo23jRiA
+qCRwJiUyYeNSPbOwvbloEEmqT9dJTPiXZDQUicft2Yui+XHr1YszJMQm6o5Mr7BR
+2iKf51dy5XG0z+gFqrxxEIKm3mCOTX1glJSv2EGE5FEJZYQTjANQLZrlwHzzjdcN
+cxH5ilKMYHAC88DagbqnScQXfFT/YWFfbmnYPt9miCa11CoEO801aHOVThB5fH5F
+WZMwbxgWiaiRUFDtVkf7mcm2nIT93+sllemYoalgGcezZ5R2H2M7hoxCjP9E0S6f
+T4gtOydKqV+yQHY/QU6q+aWAPm6VMMip1YngIC+Ccbu9CDHGoV0kt2PppRvoavvg
+mXyNtrmB5/T+WnOgZ/xg6LVo6ZEzU7rbIGkZ4vA9yPa/p+ho0lViM2Vwp/oJfWJf
+IVt/MirYDq612aFirRUmsnOvq3RE56Qf/krTzQm0Osvr1fiWNi4=
+=5/7S
+-----END PGP SIGNATURE-----
+
+--Sig_/l9Y0pu4CIeTAhwtB9wtBkw7--
