@@ -2,25 +2,25 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A41793AF38
-	for <lists+linux-wireless@lfdr.de>; Mon, 10 Jun 2019 09:01:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0E5423AF4C
+	for <lists+linux-wireless@lfdr.de>; Mon, 10 Jun 2019 09:06:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2387781AbfFJHBM (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 10 Jun 2019 03:01:12 -0400
-Received: from smtp.codeaurora.org ([198.145.29.96]:59962 "EHLO
+        id S2387820AbfFJHGe (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 10 Jun 2019 03:06:34 -0400
+Received: from smtp.codeaurora.org ([198.145.29.96]:36480 "EHLO
         smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2387582AbfFJHBM (ORCPT
+        with ESMTP id S2387614AbfFJHGe (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 10 Jun 2019 03:01:12 -0400
+        Mon, 10 Jun 2019 03:06:34 -0400
 Received: by smtp.codeaurora.org (Postfix, from userid 1000)
-        id 06F6360867; Mon, 10 Jun 2019 07:01:10 +0000 (UTC)
+        id 0E03460734; Mon, 10 Jun 2019 07:06:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1560150071;
-        bh=a6pX4FZYFU7XLFLEDRMvNOAtnygOukRcVj56PNv7Q+Q=;
+        s=default; t=1560150394;
+        bh=zFMMXppuJQIvBzZR76Pbx9mhI24KZFTafp86Ids2NrM=;
         h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=kKhPtWRjkWGG0Ywp9i0Fs5eczlJ2bFdCLcuIpHABPfyUToOCDm1kYoJPBABqXpA3c
-         LVodgomkO6z7gfRQv1NR+mIFHeNg+CQmeQH8XN9F500eHPeZTlyQLKIrw2anOWPqOc
-         xVNJeJsj0R3oXDH7MhQg1X19ziWiwFqqY32Y8gsw=
+        b=f1g8KDUrw2ppMMsA3drFFSbicyfKA9N/q957uhsUV7KgEDS4OSlQCQ+zDaKbqtaVX
+         CjxBwa7Kqo2eguPTJIKjN34ZYVWkymyEYpxqRYs1RC6A+1Q0JgJ0VZXsZ0kFwXRy23
+         iPMzIj3scSwbJKNFsslOGjELPdWnX/UBvHm4wsOY=
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         pdx-caf-mail.web.codeaurora.org
 X-Spam-Level: 
@@ -31,95 +31,67 @@ Received: from x230.qca.qualcomm.com (88-114-240-156.elisa-laajakaista.fi [88.11
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
         (Authenticated sender: kvalo@smtp.codeaurora.org)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 7B3C760261;
-        Mon, 10 Jun 2019 07:01:05 +0000 (UTC)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id E7FCC60716;
+        Mon, 10 Jun 2019 07:06:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1560150069;
-        bh=a6pX4FZYFU7XLFLEDRMvNOAtnygOukRcVj56PNv7Q+Q=;
+        s=default; t=1560150393;
+        bh=zFMMXppuJQIvBzZR76Pbx9mhI24KZFTafp86Ids2NrM=;
         h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=oYlI9Fp/f805fO/brFLieU4EaN76YQ++wFVSyJoK4LZqYfrNcmANENdeUYiPKuAJu
-         cWU9SxSZVLSd2Q8NKeB+S2pSef4qNaRSwIq8CuwYHfcshwGQ4WrcxLBN7jSat+zN2h
-         rqIoaU+f7PL6+ZFuwCGZzug4wTVHUoAFUNTNPd2w=
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 7B3C760261
+        b=pGo1uPnvbvz5cQhYrgzAFIs2fdoRbpbMqNZ6jr3s10o0a/eY/9SrykUdcQelHih4v
+         iFF9pmI7Jmec0jL5E0/uWS/bH9X62QH+4CIV+0aPehGeCBknu16+2FttF4DUSnolRX
+         iwp7QBsT05G+1e7EyPV8bIQWdEtNfpblMGzGw9Fs=
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org E7FCC60716
 Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
 Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
 From:   Kalle Valo <kvalo@codeaurora.org>
-To:     Eugeniu Rosca <erosca@de.adit-jv.com>
-Cc:     Geert Uytterhoeven <geert@linux-m68k.org>,
-        Simon Horman <horms+renesas@verge.net.au>,
-        "David S. Miller" <davem@davemloft.net>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Randy Dunlap <rdunlap@infradead.org>,
-        Tony Lindgren <tony@atomide.com>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        John Stultz <john.stultz@linaro.org>,
-        <linux-wireless@vger.kernel.org>, <netdev@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>,
-        Spyridon Papageorgiou <spapageorgiou@de.adit-jv.com>,
-        Joshua Frkuska <joshua_frkuska@mentor.com>,
-        "George G . Davis" <george_davis@mentor.com>,
-        Andrey Gusakov <andrey.gusakov@cogentembedded.com>,
-        Linux-Renesas <linux-renesas-soc@vger.kernel.org>,
-        Eugeniu Rosca <roscaeugeniu@gmail.com>, eyalr@ti.com
-Subject: Re: [PATCH] wlcore/wl18xx: Add invert-irq OF property for physically inverted IRQ
-References: <20190607172958.20745-1-erosca@de.adit-jv.com>
-Date:   Mon, 10 Jun 2019 10:01:01 +0300
-In-Reply-To: <20190607172958.20745-1-erosca@de.adit-jv.com> (Eugeniu Rosca's
-        message of "Fri, 7 Jun 2019 19:29:58 +0200")
-Message-ID: <87tvcxncuq.fsf@codeaurora.org>
+To:     Christian Lamparter <chunkeey@gmail.com>
+Cc:     linux-wireless@vger.kernel.org
+Subject: Re: [PATCH] carl9170: fix enum compare splat
+References: <20190608144947.744-1-chunkeey@gmail.com>
+Date:   Mon, 10 Jun 2019 10:06:30 +0300
+In-Reply-To: <20190608144947.744-1-chunkeey@gmail.com> (Christian Lamparter's
+        message of "Sat, 8 Jun 2019 16:49:45 +0200")
+Message-ID: <87pnnlncll.fsf@codeaurora.org>
 User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Eugeniu Rosca <erosca@de.adit-jv.com> writes:
+Christian Lamparter <chunkeey@gmail.com> writes:
 
-> The wl1837mod datasheet [1] says about the WL_IRQ pin:
+> This patch fixes a noisy warning triggered by -Wenum-compare
 >
->  ---8<---
-> SDIO available, interrupt out. Active high. [..]
-> Set to rising edge (active high) on powerup.
->  ---8<---
+> |main.c:1390:31: warning: comparison between =E2=80=98enum nl80211_ac=E2=
+=80=99
+> |	and =E2=80=98enum ar9170_txq=E2=80=99 [-Wenum-compare]
+> |  BUILD_BUG_ON(NL80211_NUM_ACS > __AR9170_NUM_TXQ);
+> |                               ^
+> | [...]
 >
-> That's the reason of seeing the interrupt configured as:
->  - IRQ_TYPE_EDGE_RISING on HiKey 960/970
->  - IRQ_TYPE_LEVEL_HIGH on a number of i.MX6 platforms
->
-> We assert that all those platforms have the WL_IRQ pin connected
-> to the SoC _directly_ (confirmed on HiKey 970 [2]).
->
-> That's not the case for R-Car Kingfisher extension target, which carries
-> a WL1837MODGIMOCT IC. There is an SN74LV1T04DBVR inverter present
-> between the WLAN_IRQ pin of the WL18* chip and the SoC, effectively
-> reversing the requirement quoted from [1]. IOW, in Kingfisher DTS
-> configuration we would need to use IRQ_TYPE_EDGE_FALLING or
-> IRQ_TYPE_LEVEL_LOW.
->
-> Unfortunately, v4.2-rc1 commit bd763482c82ea2 ("wl18xx: wlan_irq:
-> support platform dependent interrupt types") made a special case out
-> of these interrupt types. After this commit, it is impossible to provide
-> an IRQ configuration via DTS which would describe an inverter present
-> between the WL18* chip and the SoC, generating the need for workarounds
-> like [3].
->
-> Create a boolean OF property, called "invert-irq" to specify that
-> the WLAN_IRQ pin of WL18* is connected to the SoC via an inverter.
->
-> This solution has been successfully tested on R-Car H3ULCB-KF-M06 using
-> the DTS configuration [4] combined with the "invert-irq" property.
->
-> [1] http://www.ti.com/lit/ds/symlink/wl1837mod.pdf
-> [2] https://www.96boards.org/documentation/consumer/hikey/hikey970/hardware-docs/
-> [3] https://github.com/CogentEmbedded/meta-rcar/blob/289fbd4f8354/meta-rcar-gen3-adas/recipes-kernel/linux/linux-renesas/0024-wl18xx-do-not-invert-IRQ-on-WLxxxx-side.patch
-> [4] https://patchwork.kernel.org/patch/10895879/
->     ("arm64: dts: ulcb-kf: Add support for TI WL1837")
->
-> Signed-off-by: Eugeniu Rosca <erosca@de.adit-jv.com>
+> This is a little bit unfortunate, since the number of queues
+> (hence NL80211_NUM_ACS) is a constant based on the IEEE 802.11
+> (much like IEEE80211_NUM_ACS) and __AR9170_NUM_TXQ is more or
+> less defined by the AR9170 hardware.
 
-Tony&Eyal, do you agree with this?
+Is the warning enabled by default? TBH I'm not seeing how useful this
+warning is for kernel development.
 
--- 
+> --- a/drivers/net/wireless/ath/carl9170/main.c
+> +++ b/drivers/net/wireless/ath/carl9170/main.c
+> @@ -1387,7 +1387,7 @@ static int carl9170_op_conf_tx(struct ieee80211_hw =
+*hw,
+>  	int ret;
+>=20=20
+>  	BUILD_BUG_ON(ARRAY_SIZE(ar9170_qmap) !=3D __AR9170_NUM_TXQ);
+> -	BUILD_BUG_ON(NL80211_NUM_ACS > __AR9170_NUM_TXQ);
+> +	BUILD_BUG_ON((size_t)NL80211_NUM_ACS > (size_t)__AR9170_NUM_TXQ);
+
+IMHO this just makes the code worse. Does it make sense to workaround
+(stupid) compiler warnings like this?
+
+--=20
 Kalle Valo
