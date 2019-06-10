@@ -2,123 +2,134 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 633A83B926
-	for <lists+linux-wireless@lfdr.de>; Mon, 10 Jun 2019 18:15:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 87C813BA2A
+	for <lists+linux-wireless@lfdr.de>; Mon, 10 Jun 2019 18:57:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2389970AbfFJQO6 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 10 Jun 2019 12:14:58 -0400
-Received: from mail-eopbgr770050.outbound.protection.outlook.com ([40.107.77.50]:43074
-        "EHLO NAM02-SN1-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1725320AbfFJQO5 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 10 Jun 2019 12:14:57 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quantenna.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=9gO0nx2SmB2MRMZhDGxDIp4JMMlmjnEm4TPPDI2uaJI=;
- b=gcyuFbikmiqlNzxbm6nHBvfdDbP83lyNZP0JbtE7/C2jnmXkN/v8A4odpTEjhk3gUBGTe9bDyWZkcLBxbf+U+MafTMO1tc3pchR+obDRJP2Bwuh7i8//uhRuRPtJcEQUPWyCAVrfDBtNZnhBrRJqgOJ95czpXe5aUiKpQpGdixo=
-Received: from BYAPR05MB4743.namprd05.prod.outlook.com (52.135.233.97) by
- BYAPR05MB4757.namprd05.prod.outlook.com (52.135.233.139) with Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.1987.10; Mon, 10 Jun 2019 16:14:38 +0000
-Received: from BYAPR05MB4743.namprd05.prod.outlook.com
- ([fe80::b83d:21d:3288:182a]) by BYAPR05MB4743.namprd05.prod.outlook.com
- ([fe80::b83d:21d:3288:182a%6]) with mapi id 15.20.1987.004; Mon, 10 Jun 2019
- 16:14:38 +0000
-Received: from SN6PR05MB4928.namprd05.prod.outlook.com (52.135.117.74) by
- SN6PR05MB5231.namprd05.prod.outlook.com (20.177.248.218) with Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.1987.4; Mon, 10 Jun 2019 16:14:00 +0000
-Received: from SN6PR05MB4928.namprd05.prod.outlook.com
- ([fe80::a902:576c:72d6:b358]) by SN6PR05MB4928.namprd05.prod.outlook.com
- ([fe80::a902:576c:72d6:b358%5]) with mapi id 15.20.1987.004; Mon, 10 Jun 2019
- 16:14:00 +0000
-From:   Sergey Matyukevich <sergey.matyukevich.os@quantenna.com>
-To:     "Gustavo A. R. Silva" <gustavo@embeddedor.com>
-CC:     Igor Mitsyanko <imitsyanko@quantenna.com>,
-        Avinash Patil <avinashp@quantenna.com>,
-        Sergey Matyukevich <smatyukevich@quantenna.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH][next] qtnfmac: Use struct_size() in kzalloc()
-Thread-Topic: [PATCH][next] qtnfmac: Use struct_size() in kzalloc()
-Thread-Index: AQHVHWjZ1AedDHs530eADQaD4eZD6aaVFC0A
-Date:   Mon, 10 Jun 2019 16:14:00 +0000
-Message-ID: <20190610161352.xymnc4lg2jad4lah@bars>
-References: <20190607191745.GA19120@embeddedor>
-In-Reply-To: <20190607191745.GA19120@embeddedor>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-clientproxiedby: BYAPR07CA0023.namprd07.prod.outlook.com
- (2603:10b6:a02:bc::36) To SN6PR05MB4928.namprd05.prod.outlook.com
- (2603:10b6:805:9d::10)
-authentication-results: spf=none (sender IP is )
- smtp.mailfrom=sergey.matyukevich.os@quantenna.com; 
-x-ms-exchange-messagesentrepresentingtype: 1
-x-originating-ip: [195.182.157.78]
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: b04299bb-5e97-43e3-b0dc-08d6edbea5eb
-x-microsoft-antispam: BCL:0;PCL:0;RULEID:(2390118)(7020095)(4652040)(8989299)(5600148)(711020)(4605104)(1401327)(4534185)(4627221)(201703031133081)(201702281549075)(8990200)(2017052603328)(7193020);SRVR:SN6PR05MB5231;
-x-ms-traffictypediagnostic: SN6PR05MB5231:|BYAPR05MB4757:
-x-moderation-data: 6/10/2019 4:14:36 PM
-x-microsoft-antispam-prvs: <BYAPR05MB4757573F6D1C3D53B10B83B9A3130@BYAPR05MB4757.namprd05.prod.outlook.com>
-x-ms-oob-tlc-oobclassifiers: OLM:7691;
-x-forefront-prvs: 0064B3273C
-x-forefront-antispam-report: SFV:NSPM;SFS:(10009020)(7916004)(376002)(39840400004)(136003)(366004)(346002)(396003)(51914003)(189003)(199004)(26005)(446003)(11346002)(4744005)(102836004)(476003)(33716001)(76176011)(66946007)(2906002)(6436002)(486006)(4326008)(3846002)(186003)(52116002)(66556008)(6116002)(66446008)(86362001)(25786009)(5660300002)(66476007)(6506007)(386003)(64756008)(1076003)(99286004)(229853002)(68736007)(478600001)(316002)(6486002)(6246003)(54906003)(73956011)(66066001)(9686003)(6512007)(436003)(6916009)(53936002)(256004)(8676002)(305945005)(7736002)(14454004)(71200400001)(71190400001)(81156014)(81166006)(8936002);DIR:OUT;SFP:1101;SCL:1;SRVR:BYAPR05MB4757;H:BYAPR05MB4743.namprd05.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;MX:1;A:1;
-received-spf: None (protection.outlook.com: quantenna.com does not designate
- permitted sender hosts)
-x-ms-exchange-senderadcheck: 1
-x-microsoft-antispam-message-info: Nbb3Ss4rYdCQWes7YwwXjaJMstTeTS7/5Q23akKPz4vBWC96OO8kmCAaCgyiJCzFadE1/tZGMdSv98ZYrR+LfZCyTH5WgdipVwjHYrVz+OD0fsbQnMtsKj+Hqd3ruCYa81Zar+Q3k3DS7fma125IUyCoe80Q2eufStkF1LfN6ivpm+i0AV/okLox5BbmgAGVCskH0k34mKavocOvED2TjeAiRucHoUbdqqD68CT19C9MgTULIMn+IlWdOy2jMBXRRCGzQ/bIWRferfxhp9FuhdbMWCgCdOC7YeUIen3OH7n7861Rw+L6Layjhd+Cin0+YVZ0/1kM7Fpj4UfDYhhRA4YTKg4WEsRe7fp44bdtwLE4M+ayFJMRsIVXCN3Cyq/brlM8hb9cmje/Hd4Phc0nzKq1T78kZ/YCzCtbKxH9+2g=
-Content-Type: text/plain; charset="us-ascii"
-Content-ID: <DED1CC9DFD99EA448ADB8F0B5D29DDDB@namprd05.prod.outlook.com>
-Content-Transfer-Encoding: quoted-printable
+        id S1728096AbfFJQ5t (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 10 Jun 2019 12:57:49 -0400
+Received: from mail-io1-f66.google.com ([209.85.166.66]:46545 "EHLO
+        mail-io1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727648AbfFJQ5t (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 10 Jun 2019 12:57:49 -0400
+Received: by mail-io1-f66.google.com with SMTP id i10so7417528iol.13
+        for <linux-wireless@vger.kernel.org>; Mon, 10 Jun 2019 09:57:48 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=jigJfFRZkdX+fDWDB3Z6i7DXek+TxEO+iFMi0ontPyI=;
+        b=NS6I1EfOS4Qln6O21W/qaWiFUMqu8lDW/jqsVurVgncwNQNmgiZ7ryVM5WNjFbA1tg
+         6okpyEoD7k4sfn32wuY4Hw3AvMOSF+FH1cyzQTqePdpEc4PxU4V1MR7kC4tb8xOzYBLB
+         9dcsOIODkMVEkDakGWmtbuSR/ZtezbmGzY+/k=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=jigJfFRZkdX+fDWDB3Z6i7DXek+TxEO+iFMi0ontPyI=;
+        b=UB8eRcmk8jTSepIO19Oeh0nCJKK3BhaRrI0/OmokIaqWpKJuFxGNxoSW93XZmf7ud1
+         eC9e4y2YMWb8Lb+Busqe0QK20yi5t7nmS62dR1jRp/Gl85PoetPI7+LSYKdYADdiF2ub
+         na5BPFWywARcLVIch3R0znrYzRVdaJpEpw+6WdmpsL5iOz0muFcREAa+bqA31qpP5tRx
+         C4dThDJPd/yywyl5tiFxmvnHsGIVa1m5FqVrY/uRboHWCU564cNZzkFL4QNx+SRQXRS5
+         jBQ2SsUkjVnM4Zfae1+MPb/xE3UQWbub7+GpQyRqI1HNJ0j6rwFduGHHRA0x28ro9zna
+         qhaA==
+X-Gm-Message-State: APjAAAXNt3Fq+wSazLtKPcZP/NZOQHncLAHeto/FTaJ1hJu1YMMV/AsG
+        jUeeumMxMyLWFqmw/Zs0PQpKqnsgNRY=
+X-Google-Smtp-Source: APXvYqySkATU0W+TJ2eDkW7Khqf9686XwN0MeG7MZzInjoS1wdSRBOIKCqbHmaRjxsLe+Ao6pARPpQ==
+X-Received: by 2002:a5e:c24b:: with SMTP id w11mr23210089iop.111.1560185868212;
+        Mon, 10 Jun 2019 09:57:48 -0700 (PDT)
+Received: from mail-io1-f43.google.com (mail-io1-f43.google.com. [209.85.166.43])
+        by smtp.gmail.com with ESMTPSA id 139sm21049itv.38.2019.06.10.09.57.48
+        for <linux-wireless@vger.kernel.org>
+        (version=TLS1_3 cipher=AEAD-AES128-GCM-SHA256 bits=128/128);
+        Mon, 10 Jun 2019 09:57:48 -0700 (PDT)
+Received: by mail-io1-f43.google.com with SMTP id u13so7461937iop.0
+        for <linux-wireless@vger.kernel.org>; Mon, 10 Jun 2019 09:57:48 -0700 (PDT)
+X-Received: by 2002:a6b:b642:: with SMTP id g63mr8234768iof.142.1560185419663;
+ Mon, 10 Jun 2019 09:50:19 -0700 (PDT)
 MIME-Version: 1.0
-X-OriginatorOrg: quantenna.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: b04299bb-5e97-43e3-b0dc-08d6edbea5eb
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: a355dbce-62b4-4789-9446-c1d5582180ff
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: SPO_Arbitration_d2f137f7-57a3-41a6-974a-9a603eeb68f6@quantenna.onmicrosoft.com
-X-MS-Exchange-CrossTenant-originalarrivaltime: 10 Jun 2019 16:14:38.4379
- (UTC)
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BYAPR05MB4757
+References: <20190607223716.119277-1-dianders@chromium.org>
+ <20190607223716.119277-4-dianders@chromium.org> <363DA0ED52042842948283D2FC38E4649C52F8A0@IRSMSX106.ger.corp.intel.com>
+In-Reply-To: <363DA0ED52042842948283D2FC38E4649C52F8A0@IRSMSX106.ger.corp.intel.com>
+From:   Doug Anderson <dianders@chromium.org>
+Date:   Mon, 10 Jun 2019 09:50:06 -0700
+X-Gmail-Original-Message-ID: <CAD=FV=U8eo78Ee9xjhGXJMv=8YF9o89KLX024GH3iBRnRjCRvQ@mail.gmail.com>
+Message-ID: <CAD=FV=U8eo78Ee9xjhGXJMv=8YF9o89KLX024GH3iBRnRjCRvQ@mail.gmail.com>
+Subject: Re: [PATCH v3 3/5] brcmfmac: sdio: Disable auto-tuning around
+ commands expected to fail
+To:     "Hunter, Adrian" <adrian.hunter@intel.com>
+Cc:     Ulf Hansson <ulf.hansson@linaro.org>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        Arend van Spriel <arend.vanspriel@broadcom.com>,
+        "brcm80211-dev-list.pdl@broadcom.com" 
+        <brcm80211-dev-list.pdl@broadcom.com>,
+        "linux-rockchip@lists.infradead.org" 
+        <linux-rockchip@lists.infradead.org>,
+        Double Lo <double.lo@cypress.com>,
+        "briannorris@chromium.org" <briannorris@chromium.org>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        Naveen Gupta <naveen.gupta@cypress.com>,
+        Madhan Mohan R <madhanmohan.r@cypress.com>,
+        "mka@chromium.org" <mka@chromium.org>,
+        Wright Feng <wright.feng@cypress.com>,
+        Chi-Hsien Lin <chi-hsien.lin@cypress.com>,
+        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+        "brcm80211-dev-list@cypress.com" <brcm80211-dev-list@cypress.com>,
+        Franky Lin <franky.lin@broadcom.com>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        Hante Meuleman <hante.meuleman@broadcom.com>,
+        YueHaibing <yuehaibing@huawei.com>,
+        "David S. Miller" <davem@davemloft.net>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-> One of the more common cases of allocation size calculations is finding
-> the size of a structure that has a zero-sized array at the end, along
-> with memory for some number of elements for that array. For example:
->=20
-> struct ieee80211_regdomain {
->         ...
->         struct ieee80211_reg_rule reg_rules[];
-> };
->=20
-> instance =3D kzalloc(sizeof(*mac->rd) +
->                           sizeof(struct ieee80211_reg_rule) *
->                           count, GFP_KERNEL);
->=20
-> Instead of leaving these open-coded and prone to type mistakes, we can
-> now use the new struct_size() helper:
->=20
-> instance =3D kzalloc(struct_size(instance, reg_rules, count), GFP_KERNEL)=
-;
->=20
-> This code was detected with the help of Coccinelle.
->=20
-> Signed-off-by: Gustavo A. R. Silva <gustavo@embeddedor.com>
-=20
-Hi Gustavo,
-Thanks for the patch !
+Hi,
 
-Reviewed-by: Sergey Matyukevich <sergey.matyukevich.os@quantenna.com>
+On Mon, Jun 10, 2019 at 1:56 AM Hunter, Adrian <adrian.hunter@intel.com> wrote:
+>
+> > --- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c
+> > +++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c
+> > @@ -16,6 +16,7 @@
+> >  #include <linux/mmc/sdio_ids.h>
+> >  #include <linux/mmc/sdio_func.h>
+> >  #include <linux/mmc/card.h>
+> > +#include <linux/mmc/core.h>
+>
+> SDIO function drivers should not really include linux/mmc/core.h
+> (Also don't know why linux/mmc/card.h is included)
 
-Regards,
-Sergey
+OK, so I guess you're requesting an extra level of "sdio_" wrappers
+for all the functions I need to call.  I don't think the wrappers buy
+us a ton other than to abstract things a little bit and make it look
+prettier.  :-)  ...but certainly I can code that up if that's what
+everyone wants.
+
+Just to make sure, I looked in "drivers/net/wireless/" and I do see
+quite a few instances of "mmc_" functions being used.  That doesn't
+mean all these instances are correct but it does appear to be
+commonplace.  Selected examples:
+
+drivers/net/wireless/ath/ath10k/sdio.c:
+  ret = mmc_hw_reset(ar_sdio->func->card->host);
+
+drivers/net/wireless/broadcom/brcm80211/brcmfmac/bcmsdh.c:
+  mmc_set_data_timeout(md, func->card);
+  mmc_wait_for_req(func->card->host, mr);
+
+drivers/net/wireless/marvell/mwifiex/sdio.c:
+  mmc_hw_reset(func->card->host);
+
+drivers/net/wireless/rsi/rsi_91x_sdio.c:
+  err = mmc_wait_for_cmd(host, &cmd, 3);
+
+
+...anyway, I'll give it a few days and if nobody else chimes in then
+I'll assume you indeed want "sdio_" wrappers for things and I'll post
+a v4.  If patch #1 happens to land in the meantime then I won't
+object.  ;-)
+
+
+-Doug
