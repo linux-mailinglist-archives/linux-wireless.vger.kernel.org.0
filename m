@@ -2,86 +2,75 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E1A233AEA8
-	for <lists+linux-wireless@lfdr.de>; Mon, 10 Jun 2019 07:40:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C23BD3AEEF
+	for <lists+linux-wireless@lfdr.de>; Mon, 10 Jun 2019 08:22:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2387598AbfFJFkV (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 10 Jun 2019 01:40:21 -0400
-Received: from smtp.knology.net ([64.8.71.112]:36237 "EHLO smtp.knology.net"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2387505AbfFJFkV (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 10 Jun 2019 01:40:21 -0400
-X-CTCH-AV-ThreatsCount: 
-X-CTCH-VOD: Unknown
-X-CTCH-Spam: Unknown
-X-CTCH-RefID: str=0001.0A020215.5CFDED42.0028,ss=1,re=0.000,recu=0.000,reip=0.000,cl=1,cld=1,fgs=0
-X_CMAE_Category: , ,
-X-CNFS-Analysis: v=2.3 cv=W+dGqiek c=1 sm=1 tr=0 a=TJn/bo6x+BmUhJ5QWj0rSA==:117 a=TJn/bo6x+BmUhJ5QWj0rSA==:17 a=jpOVt7BSZ2e4Z31A5e1TngXxSK0=:19 a=KGjhK52YXX0A:10 a=N659UExz7-8A:10 a=t3LY3UrxeVQA:10 a=dq6fvYVFJ5YA:10 a=pO7Hyq7_a4YA:10 a=5Pr6cp1LAAAA:8 a=XQhPHlg2INUB7sUMFCkA:9 a=pILNOxqGKmIA:10 a=0Hlou4YPydrkO5duKyP1:22
-X-CM-Score: 0
-X-Scanned-by: Cloudmark Authority Engine
-X-Authed-Username: YnV1c0B3b3d3YXkuY29t
-X_CMAE_Category: , ,
-X-CNFS-Analysis: 
-X-CM-Score: 
-X-Scanned-by: Cloudmark Authority Engine
-Authentication-Results:  smtp01.wow.cmh.synacor.com smtp.user=buus@wowway.com; auth=pass (LOGIN)
-Received: from [96.27.15.54] ([96.27.15.54:56828] helo=[192.168.1.245])
-        by smtp.mail.wowway.com (envelope-from <ubuntu@hbuus.com>)
-        (ecelerity 3.6.25.56547 r(Core:3.6.25.0)) with ESMTPSA (cipher=AES128-SHA) 
-        id 7F/81-16479-24DEDFC5; Mon, 10 Jun 2019 01:40:18 -0400
-Subject: Re: Should b44_init lead to WARN_ON in drivers/ssb/driver_gpio.c:464?
-To:     Larry Finger <Larry.Finger@lwfinger.net>,
-        =?UTF-8?Q?Michael_B=c3=bcsch?= <m@bues.ch>
-Cc:     Kalle Valo <kvalo@codeaurora.org>,
-        Michael Chan <michael.chan@broadcom.com>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org
-References: <946c86bf-7e90-a981-b9fc-757adb98adfa@hbuus.com>
- <20190609235711.481bbac9@wiggum>
- <4fdd3b06-f3f7-87e0-93be-c5d6f2bf5ab4@lwfinger.net>
-From:   H Buus <ubuntu@hbuus.com>
-Message-ID: <a7c07ad7-1ca2-c16d-4082-6ddc9325a20d@hbuus.com>
-Date:   Mon, 10 Jun 2019 01:40:17 -0400
-User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:60.0) Gecko/20100101
- Thunderbird/60.6.1
+        id S2387485AbfFJGWr (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 10 Jun 2019 02:22:47 -0400
+Received: from mail-pf1-f180.google.com ([209.85.210.180]:46129 "EHLO
+        mail-pf1-f180.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2387431AbfFJGWr (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 10 Jun 2019 02:22:47 -0400
+Received: by mail-pf1-f180.google.com with SMTP id 81so4642548pfy.13
+        for <linux-wireless@vger.kernel.org>; Sun, 09 Jun 2019 23:22:47 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:to:from:subject:message-id:date:user-agent
+         :mime-version:content-transfer-encoding:content-language;
+        bh=CRnw2NG6DCk+l5WEyFgPjsRb/U67ma9F4Vp/ZZ5KFBM=;
+        b=OoSydq7L6Qo/8QeSwOzhjlO2sj87IpgeY9EaIIR7gEGmyaa4XHYQjfaL9VQ2paP0dC
+         irl9ASJIcd+XgdOff/ueilTKDFZuBujakhdP8o45NXMC6mJ685RKairgOjPZRQOItRVs
+         96yfaUM4ojVTX6xHrJn/SMc1mTMerpW45Y+fYh4iJVdCZgWO5+CDUPq9L3h0v8L8p43B
+         bHFjQ+uyzsm7UHtIl8Hj5Uyll6GMODERhozbPOngX88+CrZJWel2PE+J0HczMm1fHZFc
+         HYPQ3X1Ag5AA/n2wPI1GpbE9C+BfWXraNicyZIWyBoZFQxeLDMr5JlPxYR9iHNG3q2iI
+         lYRg==
+X-Gm-Message-State: APjAAAWELOxFIGTgYqXoh1/S6mViPqG4ZvQupFK+UcbIVtMFg1og3CvZ
+        PxRSdbG9ssj81BSKFRYk1zsL297u
+X-Google-Smtp-Source: APXvYqyeUVzxzldRcOcd2L7sucCnBL8/456tZ7tJNNT/0Bq1Qg4Q5WNsFPVTqtWxDgCAMBeh5eoT4A==
+X-Received: by 2002:a17:90a:de08:: with SMTP id m8mr19664967pjv.18.1560147766602;
+        Sun, 09 Jun 2019 23:22:46 -0700 (PDT)
+Received: from ?IPv6:240f:104:8409:1:d9e2:c7bb:3005:f940? ([240f:104:8409:1:d9e2:c7bb:3005:f940])
+        by smtp.gmail.com with ESMTPSA id t13sm6424487pjo.13.2019.06.09.23.22.45
+        for <linux-wireless@vger.kernel.org>
+        (version=TLS1_3 cipher=AEAD-AES128-GCM-SHA256 bits=128/128);
+        Sun, 09 Jun 2019 23:22:46 -0700 (PDT)
+To:     linux-wireless@vger.kernel.org
+From:   Tetsuji Rai <tetsuji-rai@maverickonline.org>
+Subject: How to debug/show status of intel wifi card?
+Message-ID: <12cbcd3c-a23b-d95f-aa6f-1986ac3724cf@maverickonline.org>
+Date:   Mon, 10 Jun 2019 15:22:44 +0900
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.7.0
 MIME-Version: 1.0
-In-Reply-To: <4fdd3b06-f3f7-87e0-93be-c5d6f2bf5ab4@lwfinger.net>
-Content-Type: text/plain; charset=windows-1252
-Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
+Content-Language: en-US
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 6/9/2019 8:13 PM, Larry Finger wrote:
-> On 6/9/19 4:57 PM, Michael B�sch wrote:
->> On Sun, 9 Jun 2019 17:44:10 -0400
->> H Buus <ubuntu@hbuus.com> wrote:
->>
->>> I have an old 32 bit laptop with a BCM4401-B0 100Base-TX ethernet
->>> controller. For every kernel from 4.19-rc1 going forward, I get a
->>> warning and call trace within a few seconds of start up (see dmesg
->>> snippet below). I have traced it to a specific commit (see commit
->>> below). On the face of it, I would think it is a regression, but it
->>> doesn't seem to cause a problem, since networking over ethernet is
->>> working.
->>
->>
->> This warning is not a problem. The commit just exposes a warning, that
->> has always been there.
->> I suggest we just remove the WARN_ON from ssb_gpio_init and
->> ssb_gpio_unregister.
->> I don't see a reason to throw a warning in that case.
-> 
-> Michael,
-> 
-> I agree. Do you want to prepare the patch, or should I?
-> 
-> Larry
+Hi all,
 
-Let me know if you would like me to verify a patch when/if it is
-available. Since kernels 4.19 thru 5.1 are unstable on this laptop, I
-would either need to test with a 4.18 or older kernel, or limit my
-testing to recovery mode & verifying that the b44 module is initialized
-without causing a warning & call trace. Unless I get lucky and figure
-out what commit is making newer kernels unstable on this laptop.
+I installed kernel-5.2-rc4 and found my intel wireless-ac 7260 card
+stops working a moment (some seconds or minutes) after some browsing on
+chrome or receiving emails on thunderbird or any other file transfer.  
+After turning the wifi off and on again, it starts working again, a
+short while.   It doesn't happen with the stable kernel 5.1.8.
+
+I filed it bugzilla https://bugzilla.kernel.org/show_bug.cgi?id=203851
+but I still can't grasp the status of my wifi card while it's locked.  
+ifconfig, iwconfig, ethtool, trace-cmd show nothing abnormal even when
+the wifi card is locked.  They say my wifi card detects radio signal
+correctly, transfer mode is correct.
+
+So will you tell me how to see what happens with my wifi card?   It
+should be something like a bug of the new kernel.
+
+
+Thanks in advance!
+
+
+-Tetsuji Rai
+
