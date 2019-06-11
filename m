@@ -2,121 +2,147 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 027943C57A
-	for <lists+linux-wireless@lfdr.de>; Tue, 11 Jun 2019 09:56:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 985F43C647
+	for <lists+linux-wireless@lfdr.de>; Tue, 11 Jun 2019 10:47:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2404509AbfFKH4a (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 11 Jun 2019 03:56:30 -0400
-Received: from mail-wm1-f54.google.com ([209.85.128.54]:36842 "EHLO
-        mail-wm1-f54.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2403815AbfFKH4a (ORCPT
+        id S2403989AbfFKIp0 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 11 Jun 2019 04:45:26 -0400
+Received: from mail-lf1-f65.google.com ([209.85.167.65]:33567 "EHLO
+        mail-lf1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2391273AbfFKIpY (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 11 Jun 2019 03:56:30 -0400
-Received: by mail-wm1-f54.google.com with SMTP id u8so1748898wmm.1
-        for <linux-wireless@vger.kernel.org>; Tue, 11 Jun 2019 00:56:28 -0700 (PDT)
+        Tue, 11 Jun 2019 04:45:24 -0400
+Received: by mail-lf1-f65.google.com with SMTP id y17so8661254lfe.0;
+        Tue, 11 Jun 2019 01:45:22 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=BH0xS2IUPRB4/YXEafxiu4sK2eakrXkI+FZB/yCu8K4=;
-        b=AKDgNLbl2ihawVBxkJiutREqruEpJx7P/Y5Bjl08hOMSE1iEhu3aOsesoGQSuP1PtY
-         ++bXfcctQwbqSbcRbES4aTEnWMF8yg6rURSYXeC5bC9fMuHMyESIB+UwLrcm5cYoUByv
-         ZiniRyW8ic7E4qGSV0S+4O5d878gP66BopTCBislDSwzs46WNaLW0eECZtHdbcuoxTrw
-         RZs6p8na1q6SwTnJ0+1EtTfQ5y2TA7xf7sUllbpnhntClBTMYujN6ZJoLNr6AjsxLrp0
-         HEqS8q+5810RHtvXOU7ZfgKDiLKDybgaaXrGjaDYZCSVQ7aYqveqepVLmDBwYXmHcjlB
-         ZQZw==
-X-Gm-Message-State: APjAAAXm2AxaBQlK/en1f3J8UZDTwdVle3vzHBFq+A7HUpO6zAn56zrx
-        W+JI50d9rGBgtb2E3aA+Kaq7qA==
-X-Google-Smtp-Source: APXvYqwdco/WgidskQsztVsi6z0qHGNqfa0AxAyYFq3K44yXfRhGvM/BadYxiIVdeYNiPvubsq1gZQ==
-X-Received: by 2002:a1c:4987:: with SMTP id w129mr16283578wma.41.1560239787607;
-        Tue, 11 Jun 2019 00:56:27 -0700 (PDT)
-Received: from localhost.localdomain (nat-pool-mxp-t.redhat.com. [149.6.153.186])
-        by smtp.gmail.com with ESMTPSA id u13sm15674688wrq.62.2019.06.11.00.56.26
-        (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
-        Tue, 11 Jun 2019 00:56:27 -0700 (PDT)
-Date:   Tue, 11 Jun 2019 09:56:24 +0200
-From:   Lorenzo Bianconi <lorenzo.bianconi@redhat.com>
-To:     Sven Eckelmann <sven@narfation.org>
-Cc:     Lorenzo Bianconi <lorenzo@kernel.org>, nbd@nbd.name,
-        linux-wireless@vger.kernel.org, ryder.lee@mediatek.com,
-        royluo@google.com
-Subject: Re: [PATCH 1/2] mt76: mt7615: init per-channel target power
-Message-ID: <20190611075623.GA3091@localhost.localdomain>
-References: <cover.1560234876.git.lorenzo@kernel.org>
- <ade300b855949dcbe0a278e363415bd56b2e1299.1560234877.git.lorenzo@kernel.org>
- <3556594.76tU91ddA5@bentobox>
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=Y57jG1hTaYr//V6rbS7pGOghJQuFRY1IGCsOl42VTtw=;
+        b=sG+5h+hDch9dcy+V7HourwlMxNveon6WvUpYb9Kv/I2kr37d5scsZ6MhMy8eWoUrjp
+         4IxDSIAJddwRMIHfRUz0wadw/0hU/evqUnsc07C/zgUQRntRAzhw/kok91gIBJIFwFBT
+         sA6WPnLEHNZgMOHjBYQZ6NXnZXZVzlnE8JgjBBvToRJOKX+YSoFEkzydmuz8bokE84jT
+         1WpmnR/ov9p6X1LfR+mjS1VTesuZ2HlcFulbukFLRjGhjigNcZ5pCRszabvvskXT+oMH
+         NA0Q1ufHt7o9u7VL4iA3CdAAgwVZTJIp/aG7dZKRaIf/1Igxr4f4ikf0TG8c9cGYOztZ
+         XTfQ==
+X-Gm-Message-State: APjAAAWvp3500zZ/iGjzHVwGvB13dnABjf7QV3waxNv7vszoTxREEzzU
+        Tx8EeJhNYUbp3/7avocksiKPS0rijwjeG7ZPSFA=
+X-Google-Smtp-Source: APXvYqxdEI+m9gpVR9aDf6TiX8mC2NIvGhVvINnkOeatfGs/HFjyi0AXbZ47oirabwL+5YNhqaUJ8bMV5DqFEmGW2bE=
+X-Received: by 2002:ac2:5467:: with SMTP id e7mr13628892lfn.23.1560242721494;
+ Tue, 11 Jun 2019 01:45:21 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="u3/rZRmxL6MmkK24"
-Content-Disposition: inline
-In-Reply-To: <3556594.76tU91ddA5@bentobox>
-User-Agent: Mutt/1.11.4 (2019-03-13)
+References: <20190607172958.20745-1-erosca@de.adit-jv.com> <87tvcxncuq.fsf@codeaurora.org>
+ <20190610083012.GV5447@atomide.com>
+In-Reply-To: <20190610083012.GV5447@atomide.com>
+From:   Geert Uytterhoeven <geert@linux-m68k.org>
+Date:   Tue, 11 Jun 2019 10:45:08 +0200
+Message-ID: <CAMuHMdUOc17ocqmt=oNmyN1UT_K7_y=af1pwjwr5PTgQL2o2OQ@mail.gmail.com>
+Subject: Re: [PATCH] wlcore/wl18xx: Add invert-irq OF property for physically
+ inverted IRQ
+To:     Tony Lindgren <tony@atomide.com>
+Cc:     Kalle Valo <kvalo@codeaurora.org>,
+        Eugeniu Rosca <erosca@de.adit-jv.com>,
+        Simon Horman <horms+renesas@verge.net.au>,
+        "David S. Miller" <davem@davemloft.net>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Randy Dunlap <rdunlap@infradead.org>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        John Stultz <john.stultz@linaro.org>,
+        linux-wireless <linux-wireless@vger.kernel.org>,
+        netdev <netdev@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Spyridon Papageorgiou <spapageorgiou@de.adit-jv.com>,
+        Joshua Frkuska <joshua_frkuska@mentor.com>,
+        "George G . Davis" <george_davis@mentor.com>,
+        Andrey Gusakov <andrey.gusakov@cogentembedded.com>,
+        Linux-Renesas <linux-renesas-soc@vger.kernel.org>,
+        Eugeniu Rosca <roscaeugeniu@gmail.com>, eyalr@ti.com,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Jason Cooper <jason@lakedaemon.net>,
+        Marc Zyngier <Marc.Zyngier@arm.com>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+CC irqchip
 
---u3/rZRmxL6MmkK24
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Original thread at
+https://lore.kernel.org/lkml/20190607172958.20745-1-erosca@de.adit-jv.com/
 
-> On Tuesday, 11 June 2019 08:38:52 CEST Lorenzo Bianconi wrote:
-> > +               switch (n_chains) {
-> > +               case 4:
-> > +                       target_power +=3D 6;
-> > +                       break;
-> > +               case 3:
-> > +                       target_power +=3D 4;
-> > +                       break;
-> > +               case 2:
-> > +                       target_power +=3D 3;
-> > +                       break;
-> > +               default:
-> > +                       break;
-> > +               }
->=20
-> Any reason why you use different value for 3 chains than ath9k? Following=
-=20
-> values are used in ath9k:
->=20
-> * 1 chain: 0 dB
-> * 2 chains: 3 dB (max combined gain ~3.010299956639812 dB)
-> * 3 chains: 5 dB (max combined gain ~4.771212547196624 dB)
+On Mon, Jun 10, 2019 at 10:30 AM Tony Lindgren <tony@atomide.com> wrote:
+> * Kalle Valo <kvalo@codeaurora.org> [190610 07:01]:
+> > Eugeniu Rosca <erosca@de.adit-jv.com> writes:
+> >
+> > > The wl1837mod datasheet [1] says about the WL_IRQ pin:
+> > >
+> > >  ---8<---
+> > > SDIO available, interrupt out. Active high. [..]
+> > > Set to rising edge (active high) on powerup.
+> > >  ---8<---
+> > >
+> > > That's the reason of seeing the interrupt configured as:
+> > >  - IRQ_TYPE_EDGE_RISING on HiKey 960/970
+> > >  - IRQ_TYPE_LEVEL_HIGH on a number of i.MX6 platforms
+> > >
+> > > We assert that all those platforms have the WL_IRQ pin connected
+> > > to the SoC _directly_ (confirmed on HiKey 970 [2]).
+> > >
+> > > That's not the case for R-Car Kingfisher extension target, which carries
+> > > a WL1837MODGIMOCT IC. There is an SN74LV1T04DBVR inverter present
+> > > between the WLAN_IRQ pin of the WL18* chip and the SoC, effectively
+> > > reversing the requirement quoted from [1]. IOW, in Kingfisher DTS
+> > > configuration we would need to use IRQ_TYPE_EDGE_FALLING or
+> > > IRQ_TYPE_LEVEL_LOW.
+> > >
+> > > Unfortunately, v4.2-rc1 commit bd763482c82ea2 ("wl18xx: wlan_irq:
+> > > support platform dependent interrupt types") made a special case out
+> > > of these interrupt types. After this commit, it is impossible to provide
+> > > an IRQ configuration via DTS which would describe an inverter present
+> > > between the WL18* chip and the SoC, generating the need for workarounds
+> > > like [3].
+> > >
+> > > Create a boolean OF property, called "invert-irq" to specify that
+> > > the WLAN_IRQ pin of WL18* is connected to the SoC via an inverter.
+> > >
+> > > This solution has been successfully tested on R-Car H3ULCB-KF-M06 using
+> > > the DTS configuration [4] combined with the "invert-irq" property.
+> > >
+> > > [1] http://www.ti.com/lit/ds/symlink/wl1837mod.pdf
+> > > [2] https://www.96boards.org/documentation/consumer/hikey/hikey970/hardware-docs/
+> > > [3] https://github.com/CogentEmbedded/meta-rcar/blob/289fbd4f8354/meta-rcar-gen3-adas/recipes-kernel/linux/linux-renesas/0024-wl18xx-do-not-invert-IRQ-on-WLxxxx-side.patch
+> > > [4] https://patchwork.kernel.org/patch/10895879/
+> > >     ("arm64: dts: ulcb-kf: Add support for TI WL1837")
+> > >
+> > > Signed-off-by: Eugeniu Rosca <erosca@de.adit-jv.com>
+> >
+> > Tony&Eyal, do you agree with this?
+>
+> Yeah if there's some hardware between the WLAN device and the SoC
+> inverting the interrupt, I don't think we have clear a way to deal
+> with it short of setting up a separate irqchip that does the
+> translation.
 
-Hi Sven,
+Yeah, inverting the interrupt type in DT works only for simple devices,
+that don't need configuration.
+A simple irqchip driver that just inverts the type sounds like a good
+solution to me. Does something like that already exists?
 
-I just rounded down the values, but we can use 5db (in this case we need to=
- fix
-it even in mt76_get_power(), so I will do it in a different patch)
+> But in some cases we also do not want to invert the interrupt, so
+> I think this property should take IRQ_TYPE_EDGE_RISING and
+> IRQ_TYPE_EDGE_RISING values to override the setting for
+> the WLAN end of the hardware?
+>
+> Let's wait a bit longer for comments from Eyal too.
 
-Regards,
-Lorenzo
+Gr{oetje,eeting}s,
 
-> * 4 chains: not supported (max combined gain 6.020599913279624 dB)
->=20
-> Here are the definitions from ath9k (values are saved in .5 dB steps)
->=20
->     drivers/net/wireless/ath/ath9k/eeprom.h:#define POWER_CORRECTION_FOR_=
-TWO_CHAIN          6  /* 10*log10(2)*2 */
->     drivers/net/wireless/ath/ath9k/eeprom.h:#define POWER_CORRECTION_FOR_=
-THREE_CHAIN        10 /* 10*log10(3)*2 */
->=20
-> Kind regards,
-> 	Sven
+                        Geert
 
+-- 
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
 
-
---u3/rZRmxL6MmkK24
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYIAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCXP9epAAKCRA6cBh0uS2t
-rDXPAP4pZ7vUcobJhIskAId9K6En7k46IcTRktvEpTxHwI0NOgEAr4sY3igEDBiY
-Bbo+CvCvLwA9aQItZ7964BIboDMHTQg=
-=kTax
------END PGP SIGNATURE-----
-
---u3/rZRmxL6MmkK24--
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds
