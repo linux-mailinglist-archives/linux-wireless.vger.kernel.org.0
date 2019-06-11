@@ -2,132 +2,114 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id CAF5C3C3B8
-	for <lists+linux-wireless@lfdr.de>; Tue, 11 Jun 2019 08:02:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B737A3C3C3
+	for <lists+linux-wireless@lfdr.de>; Tue, 11 Jun 2019 08:07:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2391144AbfFKGCF (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 11 Jun 2019 02:02:05 -0400
-Received: from mail-qt1-f176.google.com ([209.85.160.176]:42856 "EHLO
-        mail-qt1-f176.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2390485AbfFKGCF (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 11 Jun 2019 02:02:05 -0400
-Received: by mail-qt1-f176.google.com with SMTP id s15so13136449qtk.9
-        for <linux-wireless@vger.kernel.org>; Mon, 10 Jun 2019 23:02:05 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=endlessm-com.20150623.gappssmtp.com; s=20150623;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=24nWy+FWO5DbLf1W2l/ocge/pj2/4txv8/6/17vj9UU=;
-        b=chKAVt7RsItNuyPFoOQgj3xFGEXvynDiPQjG1E7Ae5tNHPoZ0SZANcjCrF3oPs1hfM
-         2BSb4vV/kZFHFIBR4XC2pzyck36Sk3fxc7O7aNh+0QJTKUWUArjhBjSeX59p0VbGjAOc
-         /WFNdxp8snMMK0NVxJPQaYvrv1bM5zrB8SSNORtUOT8oQTxKUKDcmHFAnvcXu7yaaXkV
-         z320Ora10hFvSQ52CbS41sqCRKA1ZGSZJaS06L0yaaHQdOqEfcvD2ClLJ5CO35cFLGRp
-         ElvqO1OZgj/VmH4gMH83xbm9gTkJ9damZ1Yl3SB0MvwxdknHCUKgMfcwqlagez6RD4Nl
-         x1PQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=24nWy+FWO5DbLf1W2l/ocge/pj2/4txv8/6/17vj9UU=;
-        b=Bt4bbJILgCVwsnFrTe2cWn2/KMPdLEuoPDoSPZaY+39a8xRCip+R4ZTT/DhhQ9K1by
-         iQh+tYwYgDneAE8uRUoyC+ryQbu7paMjzmV4YPlFMLXiBtu82PEENdtMLlfO1VXXpYpm
-         IsfSuhf0/wb1WT9+u8CcXgOWfccihhJ37ghPsSspFCc+Ivd3ZVFlVtoR0gvYOAyVGy78
-         /c4Oo+IJol8rsR6XmviF0UWEdjzhZlie7WAdH4fEKKHKWF4fqS/VmDc8qztI9Z54F542
-         0vDAIgujZVKQ292r+XiVO6JorvEVnJ5as3XDhzFcIXG3uuBLlPUj9eby/MPhrHmha7fs
-         t3YA==
-X-Gm-Message-State: APjAAAUhQHUbeh2fwKcD0CJmSgtpzPBruocx4KfuoxQwhVrd6kmIPrRb
-        E8mpVt6O5DDQnJuW3QrE8tDY3OqqT8/s15fAM2Nn1Q==
-X-Google-Smtp-Source: APXvYqw+jAN4EGphnEuM72KJ8pOLtyMrnPXrI4aLvx/M6bZFWQmdeOMoVQWqciQOwI+ECZmWJP8hp+nSDWELFOazjuc=
-X-Received: by 2002:a0c:d24d:: with SMTP id o13mr7602665qvh.86.1560232924408;
- Mon, 10 Jun 2019 23:02:04 -0700 (PDT)
+        id S2403903AbfFKGFx (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 11 Jun 2019 02:05:53 -0400
+Received: from verein.lst.de ([213.95.11.211]:48358 "EHLO newverein.lst.de"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S2391051AbfFKGFx (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 11 Jun 2019 02:05:53 -0400
+Received: by newverein.lst.de (Postfix, from userid 2407)
+        id 98BEE68B20; Tue, 11 Jun 2019 08:05:22 +0200 (CEST)
+Date:   Tue, 11 Jun 2019 08:05:21 +0200
+From:   Christoph Hellwig <hch@lst.de>
+To:     Larry Finger <Larry.Finger@lwfinger.net>
+Cc:     Christoph Hellwig <hch@lst.de>,
+        Aaro Koskinen <aaro.koskinen@iki.fi>,
+        Christian Zigotzky <chzigotzky@xenosoft.de>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org
+Subject: Re: [BISECTED REGRESSION] b43legacy broken on G4 PowerBook
+Message-ID: <20190611060521.GA19512@lst.de>
+References: <20190605225059.GA9953@darkstar.musicnaut.iki.fi> <73da300c-871c-77ac-8a3a-deac226743ef@lwfinger.net> <20190607172902.GA8183@lst.de> <30000803-3772-3edf-f4a9-55122d504f3f@lwfinger.net> <20190610081825.GA16534@lst.de> <153c13f5-a829-1eab-a3c5-fecfb84127ff@lwfinger.net>
 MIME-Version: 1.0
-References: <CAD8Lp45wxQ3vL_ttq-yKYDxscjn2KyJVCx_vJBCn+u8Yc5QtOQ@mail.gmail.com>
- <87h89lei7e.fsf@kamboji.qca.qualcomm.com>
-In-Reply-To: <87h89lei7e.fsf@kamboji.qca.qualcomm.com>
-From:   Daniel Drake <drake@endlessm.com>
-Date:   Tue, 11 Jun 2019 14:01:53 +0800
-Message-ID: <CAD8Lp455PaQYqC0PKYK_2_nP2dP_bn=eCJnpiJP3=Dh34B0whw@mail.gmail.com>
-Subject: Re: ath10k QCA9377 firmware crashes and fails to recover
-To:     Kalle Valo <kvalo@codeaurora.org>
-Cc:     ath10k@lists.infradead.org,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        Endless Linux Upstreaming Team <linux@endlessm.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <153c13f5-a829-1eab-a3c5-fecfb84127ff@lwfinger.net>
+User-Agent: Mutt/1.5.17 (2007-11-01)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi Kalle,
-
-On Thu, May 23, 2019 at 3:36 PM Kalle Valo <kvalo@codeaurora.org> wrote:
+On Mon, Jun 10, 2019 at 11:09:47AM -0500, Larry Finger wrote:
+>>>                  return -EIO;
+>>>
+>>> For b43legacy, dev->dma_mask is 0xc265684800000000.
+>>>      dma_supported(dev, mask) is 0xc08b000000000000, mask is 0x3fffffff, and
+>>> the routine returns -EIO.
+>>>
+>>> For b43,       dev->dma_mask is 0xc265684800000001,
+>>>      dma_supported(dev, mask) is 0xc08b000000000000, mask is 0x77777777, and
+>>> the routine returns 0.
+>>
+>> I don't fully understand what values the above map to.  Can you send
+>> me your actual debugging patch as well?
 >
-> Daniel Drake <drake@endlessm.com> writes:
+> I do not understand why the if statement returns true as neither of the 
+> values is zero. After seeing the x86 output shown below, I also do not 
+> understand all the trailing zeros.
 >
-> > We are experiencing failures with QCA9377 wifi, using Linux 4.18 and
-> > Linux 5.0 with the latest firmware version:
-> >
-> > ath10k_pci 0000:02:00.0: firmware crashed! (guid
-> > 54a4649a-1240-4459-9442-9d498c49de79)
-> > ath10k_pci 0000:02:00.0: qca9377 hw1.1 target 0x05020001 chip_id
-> > 0x003821ff sub 1a3b:2b31
-> > ath10k_pci 0000:02:00.0: kconfig debug 0 debugfs 1 tracing 1 dfs 0 testmode 0
-> > ath10k_pci 0000:02:00.0: firmware ver WLAN.TF.1.0-00002-QCATFSWPZ-5
-> > api 5 features ignore-otp crc32 c3e0d04f
->
-> Is this a regression? For example, have you tried older firmware
-> versions?
+> My entire patch is attached. That output came from this section:
 
-Sorry for the delayed response, as we were testing old versions.
-It doesn't seem to be a regression, at least we tested:
+What might be confusing in your output is that dev->dma_mask is a pointer,
+and we are setting it in dma_set_mask.  That is before we only check
+if the pointer is set, and later we override it.  Of course this doesn't
+actually explain the failure.  But what is even more strange to me
+is that you get a return value from dma_supported() that isn't 0 or 1,
+as that function is supposed to return a boolean, and I really can't see
+how mask >= __phys_to_dma(dev, min_mask), would return anything but 0
+or 1.  Does the output change if you use the correct printk specifiers?
 
-Linux 5.0 / latest firmware API 6
-ath10k_pci 0000:02:00.0: firmware crashed! (guid
-697a3b62-bf3a-4953-bf3d-058eb3b828ff)
-ath10k_pci 0000:02:00.0: qca9377 hw1.1 target 0x05020001 chip_id
-0x003821ff sub 1a3b:2b31
-ath10k_pci 0000:02:00.0: kconfig debug 0 debugfs 1 tracing 1 dfs 0 testmode 0
-ath10k_pci 0000:02:00.0: firmware ver WLAN.TF.2.1-00021-QCARMSWP-1 api
-6 features wowlan,ignore-otp crc32 42e41877
-ath10k_pci 0000:02:00.0: board_file api 2 bmi_id N/A crc32 8aedfa4a
-ath10k_pci 0000:02:00.0: htt-ver 3.56 wmi-op 4 htt-op 3 cal otp
-max-sta 32 raw 0 hwcrypto 1
+i.e. with a debug patch like this:
 
-Linux 4.18 / latest firmware API 5
-ath10k_pci 0000:02:00.0: firmware crashed! (guid
-54a4649a-1240-4459-9442-9d498c49de79)
-ath10k_pci 0000:02:00.0: qca9377 hw1.1 target 0x05020001 chip_id
-0x003821ff sub 1a3b:2b31
-ath10k_pci 0000:02:00.0: kconfig debug 0 debugfs 1 tracing 1 dfs 0 testmode 0
-ath10k_pci 0000:02:00.0: firmware ver WLAN.TF.1.0-00002-QCATFSWPZ-5
-api 5 features ignore-otp crc32 c3e0d04f
 
-Linux 4.15 / older firmware
-ath10k_pci 0000:02:00.0: firmware crashed! (guid
-7e1505fa-49e1-4fab-a7c5-a2352f1a47f6)
-ath10k_pci 0000:02:00.0: qca9377 hw1.1 target 0x05020001 chip_id
-0x003821ff sub 1a3b:2b31
-ath10k_pci 0000:02:00.0: kconfig debug 0 debugfs 1 tracing 1 dfs 0 testmode 0
-ath10k_pci 0000:02:00.0: firmware ver WLAN.TF.1.0-00267-1 api 5
-features ignore-otp crc32 79cea2c7
-ath10k_pci 0000:02:00.0: board_file api 2 bmi_id N/A crc32 8aedfa4a
-ath10k_pci 0000:02:00.0: htt-ver 3.1 wmi-op 4 htt-op 3 cal otp max-sta
-32 raw 0 hwcrypto 1
-
-Linux 4.13 / same older firmware
-ath10k_pci 0000:02:00.0: firmware crashed! (uuid
-701e7d5e-b405-408c-ae27-7de285c38c8f)
-ath10k_pci 0000:02:00.0: qca9377 hw1.1 target 0x05020001 chip_id
-0x003821ff sub 1a3b:2b31
-ath10k_pci 0000:02:00.0: kconfig debug 0 debugfs 1 tracing 1 dfs 0 testmode 0
-ath10k_pci 0000:02:00.0: firmware ver WLAN.TF.1.0-00267-1 api 5
-features ignore-otp crc32 79cea2c7
-ath10k_pci 0000:02:00.0: board_file api 2 bmi_id N/A crc32 8aedfa4a
-ath10k_pci 0000:02:00.0: htt-ver 3.1 wmi-op 4 htt-op 3 cal otp max-sta
-32 raw 0 hwcrypto 1
-
-Any further suggestions?
-
-Thanks
-Daniel
+diff --git a/kernel/dma/direct.c b/kernel/dma/direct.c
+index 2c2772e9702a..9e5b30b12b10 100644
+--- a/kernel/dma/direct.c
++++ b/kernel/dma/direct.c
+@@ -378,6 +378,7 @@ EXPORT_SYMBOL(dma_direct_map_resource);
+ int dma_direct_supported(struct device *dev, u64 mask)
+ {
+ 	u64 min_mask;
++	bool ret;
+ 
+ 	if (IS_ENABLED(CONFIG_ZONE_DMA))
+ 		min_mask = DMA_BIT_MASK(ARCH_ZONE_DMA_BITS);
+@@ -391,7 +392,12 @@ int dma_direct_supported(struct device *dev, u64 mask)
+ 	 * use __phys_to_dma() here so that the SME encryption mask isn't
+ 	 * part of the check.
+ 	 */
+-	return mask >= __phys_to_dma(dev, min_mask);
++	ret = (mask >= __phys_to_dma(dev, min_mask));
++	if (!ret)
++		dev_info(dev,
++			"%s: failed (mask = 0x%llx, min_mask = 0x%llx/0x%llx, dma bits = %d\n",
++			__func__, mask, min_mask, __phys_to_dma(dev, min_mask), ARCH_ZONE_DMA_BITS);
++	return ret;
+ }
+ 
+ size_t dma_direct_max_mapping_size(struct device *dev)
+diff --git a/kernel/dma/mapping.c b/kernel/dma/mapping.c
+index f7afdadb6770..6c57ccdee2ae 100644
+--- a/kernel/dma/mapping.c
++++ b/kernel/dma/mapping.c
+@@ -317,8 +317,14 @@ void arch_dma_set_mask(struct device *dev, u64 mask);
+ 
+ int dma_set_mask(struct device *dev, u64 mask)
+ {
+-	if (!dev->dma_mask || !dma_supported(dev, mask))
++	if (!dev->dma_mask) {
++		dev_info(dev, "no DMA mask set!\n");
+ 		return -EIO;
++	}
++	if (!dma_supported(dev, mask)) {
++		printk("DMA not supported\n");
++		return -EIO;
++	}
+ 
+ 	arch_dma_set_mask(dev, mask);
+ 	dma_check_mask(dev, mask);
