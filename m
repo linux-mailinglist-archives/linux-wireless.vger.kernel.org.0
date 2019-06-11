@@ -2,118 +2,120 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 688063C4CB
-	for <lists+linux-wireless@lfdr.de>; Tue, 11 Jun 2019 09:19:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 831B33C508
+	for <lists+linux-wireless@lfdr.de>; Tue, 11 Jun 2019 09:28:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2404249AbfFKHTR (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 11 Jun 2019 03:19:17 -0400
-Received: from mga06.intel.com ([134.134.136.31]:42890 "EHLO mga06.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2404113AbfFKHTR (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 11 Jun 2019 03:19:17 -0400
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from orsmga007.jf.intel.com ([10.7.209.58])
-  by orsmga104.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 11 Jun 2019 00:19:16 -0700
-X-ExtLoop1: 1
-Received: from ahunter-desktop.fi.intel.com (HELO [10.237.72.198]) ([10.237.72.198])
-  by orsmga007.jf.intel.com with ESMTP; 11 Jun 2019 00:19:11 -0700
-Subject: Re: [PATCH v3 3/5] brcmfmac: sdio: Disable auto-tuning around
- commands expected to fail
-To:     Doug Anderson <dianders@chromium.org>
-Cc:     Ulf Hansson <ulf.hansson@linaro.org>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        Arend van Spriel <arend.vanspriel@broadcom.com>,
-        "brcm80211-dev-list.pdl@broadcom.com" 
-        <brcm80211-dev-list.pdl@broadcom.com>,
-        "linux-rockchip@lists.infradead.org" 
-        <linux-rockchip@lists.infradead.org>,
-        Double Lo <double.lo@cypress.com>,
-        "briannorris@chromium.org" <briannorris@chromium.org>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        Naveen Gupta <naveen.gupta@cypress.com>,
-        Madhan Mohan R <madhanmohan.r@cypress.com>,
-        "mka@chromium.org" <mka@chromium.org>,
-        Wright Feng <wright.feng@cypress.com>,
-        Chi-Hsien Lin <chi-hsien.lin@cypress.com>,
-        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-        "brcm80211-dev-list@cypress.com" <brcm80211-dev-list@cypress.com>,
-        Franky Lin <franky.lin@broadcom.com>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        Hante Meuleman <hante.meuleman@broadcom.com>,
-        YueHaibing <yuehaibing@huawei.com>,
-        "David S. Miller" <davem@davemloft.net>
-References: <20190607223716.119277-1-dianders@chromium.org>
- <20190607223716.119277-4-dianders@chromium.org>
- <363DA0ED52042842948283D2FC38E4649C52F8A0@IRSMSX106.ger.corp.intel.com>
- <CAD=FV=U8eo78Ee9xjhGXJMv=8YF9o89KLX024GH3iBRnRjCRvQ@mail.gmail.com>
-From:   Adrian Hunter <adrian.hunter@intel.com>
-Organization: Intel Finland Oy, Registered Address: PL 281, 00181 Helsinki,
- Business Identity Code: 0357606 - 4, Domiciled in Helsinki
-Message-ID: <ccdc4c80-2fcf-6938-c68e-dc2b21a57d92@intel.com>
-Date:   Tue, 11 Jun 2019 10:17:57 +0300
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.7.0
+        id S2404174AbfFKH2x (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 11 Jun 2019 03:28:53 -0400
+Received: from durin.narfation.org ([79.140.41.39]:51930 "EHLO
+        durin.narfation.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2404116AbfFKH2x (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 11 Jun 2019 03:28:53 -0400
+Received: from bentobox.localnet (p200300C5970379EE63D29F25F26A7ADB.dip0.t-ipconnect.de [IPv6:2003:c5:9703:79ee:63d2:9f25:f26a:7adb])
+        by durin.narfation.org (Postfix) with ESMTPSA id 5FF061100D3;
+        Tue, 11 Jun 2019 09:28:49 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=narfation.org;
+        s=20121; t=1560238130;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=DxINlGTTVUm4XF9ICyey9Lawgcbb29Z7d0RixPHFerM=;
+        b=uawrMKDecqdMTXI3lSDPlLlp0t7jW2GrC68lm54J/X4yHORL7ojajaiycloNj5RzQYAPH/
+        3vHjIStiXRvc6PShThIoATr/CaiJWtAofRXPqlSexT3CAyQbbpUP3Nph0htixH8bWkZlwk
+        z5JDElLtrlgJu6ffTGaI3tlgOUi8iKI=
+From:   Sven Eckelmann <sven@narfation.org>
+To:     Lorenzo Bianconi <lorenzo@kernel.org>
+Cc:     nbd@nbd.name, lorenzo.bianconi@redhat.com,
+        linux-wireless@vger.kernel.org, ryder.lee@mediatek.com,
+        royluo@google.com
+Subject: Re: [PATCH 1/2] mt76: mt7615: init per-channel target power
+Date:   Tue, 11 Jun 2019 09:28:43 +0200
+Message-ID: <3556594.76tU91ddA5@bentobox>
+In-Reply-To: <ade300b855949dcbe0a278e363415bd56b2e1299.1560234877.git.lorenzo@kernel.org>
+References: <cover.1560234876.git.lorenzo@kernel.org> <ade300b855949dcbe0a278e363415bd56b2e1299.1560234877.git.lorenzo@kernel.org>
 MIME-Version: 1.0
-In-Reply-To: <CAD=FV=U8eo78Ee9xjhGXJMv=8YF9o89KLX024GH3iBRnRjCRvQ@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Type: multipart/signed; boundary="nextPart4288889.7eYuho7uyT"; micalg="pgp-sha512"; protocol="application/pgp-signature"
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=narfation.org;
+        s=20121; t=1560238130;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=DxINlGTTVUm4XF9ICyey9Lawgcbb29Z7d0RixPHFerM=;
+        b=ACKjvV2AiQOOy0NuikmM76nO4hXLX7kXZoTBYbD+YuC4DPxy+UtMvS9ezYhwhAdHp2JDI0
+        rMEkVl0teCJ/O3adnYR/1sQ/Rsi93DoVTGKrWelJmmuLKZ2nFFNQJmXLhHHVIzGP3/qSL8
+        aO07olZN8im9J7Qqkxx/JN2gyd4JBg4=
+ARC-Seal: i=1; s=20121; d=narfation.org; t=1560238130; a=rsa-sha256;
+        cv=none;
+        b=CXGkS/Xmy1gAc72BUhURq7UHfEqQUs+WyChrJ7/GHzg4vuXibFo7SDSS9xLxlZsmd5jk9b
+        4xjlFj9cypFewQO/HBh5Gp0XYbJGowAXEOwKkgt6SvXdBkoRk22m7kVkMP7k1FEQncC1PM
+        jRZnDGoZH6ZKr2Os6pXWtQbP6BLgf5k=
+ARC-Authentication-Results: i=1;
+        durin.narfation.org;
+        auth=pass smtp.auth=sven smtp.mailfrom=sven@narfation.org
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 10/06/19 7:50 PM, Doug Anderson wrote:
-> Hi,
-> 
-> On Mon, Jun 10, 2019 at 1:56 AM Hunter, Adrian <adrian.hunter@intel.com> wrote:
->>
->>> --- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c
->>> +++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c
->>> @@ -16,6 +16,7 @@
->>>  #include <linux/mmc/sdio_ids.h>
->>>  #include <linux/mmc/sdio_func.h>
->>>  #include <linux/mmc/card.h>
->>> +#include <linux/mmc/core.h>
->>
->> SDIO function drivers should not really include linux/mmc/core.h
->> (Also don't know why linux/mmc/card.h is included)
-> 
-> OK, so I guess you're requesting an extra level of "sdio_" wrappers
-> for all the functions I need to call.  I don't think the wrappers buy
-> us a ton other than to abstract things a little bit and make it look
-> prettier.  :-)  ...but certainly I can code that up if that's what
-> everyone wants.
+--nextPart4288889.7eYuho7uyT
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="us-ascii"
 
-I guess it is really up to Ulf.
+On Tuesday, 11 June 2019 08:38:52 CEST Lorenzo Bianconi wrote:
+> +               switch (n_chains) {
+> +               case 4:
+> +                       target_power += 6;
+> +                       break;
+> +               case 3:
+> +                       target_power += 4;
+> +                       break;
+> +               case 2:
+> +                       target_power += 3;
+> +                       break;
+> +               default:
+> +                       break;
+> +               }
 
-> 
-> Just to make sure, I looked in "drivers/net/wireless/" and I do see
-> quite a few instances of "mmc_" functions being used.  That doesn't
-> mean all these instances are correct but it does appear to be
-> commonplace.  Selected examples:
-> 
-> drivers/net/wireless/ath/ath10k/sdio.c:
->   ret = mmc_hw_reset(ar_sdio->func->card->host);
-> 
-> drivers/net/wireless/broadcom/brcm80211/brcmfmac/bcmsdh.c:
->   mmc_set_data_timeout(md, func->card);
->   mmc_wait_for_req(func->card->host, mr);
-> 
-> drivers/net/wireless/marvell/mwifiex/sdio.c:
->   mmc_hw_reset(func->card->host);
-> 
-> drivers/net/wireless/rsi/rsi_91x_sdio.c:
->   err = mmc_wait_for_cmd(host, &cmd, 3);
-> 
-> 
-> ...anyway, I'll give it a few days and if nobody else chimes in then
-> I'll assume you indeed want "sdio_" wrappers for things and I'll post
-> a v4.  If patch #1 happens to land in the meantime then I won't
-> object.  ;-)
-> 
-> 
-> -Doug
-> 
+Any reason why you use different value for 3 chains than ath9k? Following 
+values are used in ath9k:
+
+* 1 chain: 0 dB
+* 2 chains: 3 dB (max combined gain ~3.010299956639812 dB)
+* 3 chains: 5 dB (max combined gain ~4.771212547196624 dB)
+* 4 chains: not supported (max combined gain 6.020599913279624 dB)
+
+Here are the definitions from ath9k (values are saved in .5 dB steps)
+
+    drivers/net/wireless/ath/ath9k/eeprom.h:#define POWER_CORRECTION_FOR_TWO_CHAIN          6  /* 10*log10(2)*2 */
+    drivers/net/wireless/ath/ath9k/eeprom.h:#define POWER_CORRECTION_FOR_THREE_CHAIN        10 /* 10*log10(3)*2 */
+
+Kind regards,
+	Sven
+
+--nextPart4288889.7eYuho7uyT
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: This is a digitally signed message part.
+Content-Transfer-Encoding: 7Bit
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCgAdFiEEF10rh2Elc9zjMuACXYcKB8Eme0YFAlz/WCsACgkQXYcKB8Em
+e0b5uRAA2YW58CTMI33MJsZp2S3xzAn+ZSEYJYG31MWAhTviWR0Lrz6+7HGhB2Fk
+6WVtBQvbHHTqfy376ipgFZJAHtnR48YefVdpVMEQvjNLAoxQiltLzN9Q3OD5Kh7l
+MqAgCbG5lZmLbQwAmzF+OKYPdjHu1wzBn8V189YVjC1zyPOqt4t6xSir5ox4DEVZ
+Iu1KP87Ae8Cy6GWlsP9yJSp9Ny2kgjwyWQHodHX5YnPmjWamW+4w7F1cVJsfrAOJ
+gEqDXwdIvUxSiwUVMXb12TRKy8V+C6svh4zBCfQUY08CjECwCuR/9r9mouys/60u
+XUeqsh6pxcBkxgz8UntpWbUD1GdyZwWa7F+U9N9uHGeIhypNI0hgX3dvXmMHk8zV
+nFn8s086DtG4QUxFbsQH6qyRdau4fD/cgFA1LvO2oaxIJR3gfjmDBew4gaEO2sij
+O2SWd/jbSVp3f+F6nWbML+pc+QyACUYua2B70zX5hGDGjpsvOjs3lWNA6jAPmU/7
+I5a8oBeqhwn7zPIzgdA2Tg54T93HemTz1ZAguh59Y3Z8wQVPArAo8NVeNaZDmj1A
+pdJ+WyFuJwdjjAv5yHsz9B4qM6pyEIJJjZ9xvKeQRmBoOE6ABpsgv3BOS5uBnBYf
+R7t0hxA8gf1yAoeTJmDx6Q8FiCQqjdBGE3inKp9sct8OaAjlDRU=
+=9asb
+-----END PGP SIGNATURE-----
+
+--nextPart4288889.7eYuho7uyT--
+
+
 
