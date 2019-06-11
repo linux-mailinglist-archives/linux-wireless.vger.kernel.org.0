@@ -2,114 +2,48 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B737A3C3C3
-	for <lists+linux-wireless@lfdr.de>; Tue, 11 Jun 2019 08:07:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D16FA3C3D5
+	for <lists+linux-wireless@lfdr.de>; Tue, 11 Jun 2019 08:08:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2403903AbfFKGFx (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 11 Jun 2019 02:05:53 -0400
-Received: from verein.lst.de ([213.95.11.211]:48358 "EHLO newverein.lst.de"
+        id S2391075AbfFKGIq (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 11 Jun 2019 02:08:46 -0400
+Received: from verein.lst.de ([213.95.11.211]:48379 "EHLO newverein.lst.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2391051AbfFKGFx (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 11 Jun 2019 02:05:53 -0400
+        id S2391044AbfFKGIq (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 11 Jun 2019 02:08:46 -0400
 Received: by newverein.lst.de (Postfix, from userid 2407)
-        id 98BEE68B20; Tue, 11 Jun 2019 08:05:22 +0200 (CEST)
-Date:   Tue, 11 Jun 2019 08:05:21 +0200
+        id 29D2768B02; Tue, 11 Jun 2019 08:08:17 +0200 (CEST)
+Date:   Tue, 11 Jun 2019 08:08:16 +0200
 From:   Christoph Hellwig <hch@lst.de>
-To:     Larry Finger <Larry.Finger@lwfinger.net>
-Cc:     Christoph Hellwig <hch@lst.de>,
+To:     Benjamin Herrenschmidt <benh@kernel.crashing.org>
+Cc:     Larry Finger <Larry.Finger@lwfinger.net>,
         Aaro Koskinen <aaro.koskinen@iki.fi>,
+        Christoph Hellwig <hch@lst.de>,
         Christian Zigotzky <chzigotzky@xenosoft.de>,
         Michael Ellerman <mpe@ellerman.id.au>,
-        linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org
+        linuxppc-dev@lists.ozlabs.org, linux-wireless@vger.kernel.org,
+        linux-kernel@vger.kernel.org
 Subject: Re: [BISECTED REGRESSION] b43legacy broken on G4 PowerBook
-Message-ID: <20190611060521.GA19512@lst.de>
-References: <20190605225059.GA9953@darkstar.musicnaut.iki.fi> <73da300c-871c-77ac-8a3a-deac226743ef@lwfinger.net> <20190607172902.GA8183@lst.de> <30000803-3772-3edf-f4a9-55122d504f3f@lwfinger.net> <20190610081825.GA16534@lst.de> <153c13f5-a829-1eab-a3c5-fecfb84127ff@lwfinger.net>
+Message-ID: <20190611060816.GA20158@lst.de>
+References: <20190605225059.GA9953@darkstar.musicnaut.iki.fi> <73da300c-871c-77ac-8a3a-deac226743ef@lwfinger.net> <7697a9d10777b28ae79fdffdde6d0985555f6310.camel@kernel.crashing.org> <3ed1ccfe-d7ca-11b9-17b3-303d1ae1bb0f@lwfinger.net> <c91ccbddd6a58dbee5705f10ed1d98fb44bd8f8d.camel@kernel.crashing.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <153c13f5-a829-1eab-a3c5-fecfb84127ff@lwfinger.net>
+In-Reply-To: <c91ccbddd6a58dbee5705f10ed1d98fb44bd8f8d.camel@kernel.crashing.org>
 User-Agent: Mutt/1.5.17 (2007-11-01)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Mon, Jun 10, 2019 at 11:09:47AM -0500, Larry Finger wrote:
->>>                  return -EIO;
->>>
->>> For b43legacy, dev->dma_mask is 0xc265684800000000.
->>>      dma_supported(dev, mask) is 0xc08b000000000000, mask is 0x3fffffff, and
->>> the routine returns -EIO.
->>>
->>> For b43,       dev->dma_mask is 0xc265684800000001,
->>>      dma_supported(dev, mask) is 0xc08b000000000000, mask is 0x77777777, and
->>> the routine returns 0.
->>
->> I don't fully understand what values the above map to.  Can you send
->> me your actual debugging patch as well?
->
-> I do not understand why the if statement returns true as neither of the 
-> values is zero. After seeing the x86 output shown below, I also do not 
-> understand all the trailing zeros.
->
-> My entire patch is attached. That output came from this section:
+On Tue, Jun 11, 2019 at 03:56:33PM +1000, Benjamin Herrenschmidt wrote:
+> The reason I think it sort-of-mostly-worked is that to get more than
+> 1GB of RAM, those machines use CONFIG_HIGHMEM. And *most* network
+> buffers aren't allocated in Highmem.... so you got lucky.
+> 
+> That said, there is such as thing as no-copy send on network, so I
+> wouldn't be surprised if some things would still have failed, just not
+> frequent enough for you to notice.
 
-What might be confusing in your output is that dev->dma_mask is a pointer,
-and we are setting it in dma_set_mask.  That is before we only check
-if the pointer is set, and later we override it.  Of course this doesn't
-actually explain the failure.  But what is even more strange to me
-is that you get a return value from dma_supported() that isn't 0 or 1,
-as that function is supposed to return a boolean, and I really can't see
-how mask >= __phys_to_dma(dev, min_mask), would return anything but 0
-or 1.  Does the output change if you use the correct printk specifiers?
-
-i.e. with a debug patch like this:
-
-
-diff --git a/kernel/dma/direct.c b/kernel/dma/direct.c
-index 2c2772e9702a..9e5b30b12b10 100644
---- a/kernel/dma/direct.c
-+++ b/kernel/dma/direct.c
-@@ -378,6 +378,7 @@ EXPORT_SYMBOL(dma_direct_map_resource);
- int dma_direct_supported(struct device *dev, u64 mask)
- {
- 	u64 min_mask;
-+	bool ret;
- 
- 	if (IS_ENABLED(CONFIG_ZONE_DMA))
- 		min_mask = DMA_BIT_MASK(ARCH_ZONE_DMA_BITS);
-@@ -391,7 +392,12 @@ int dma_direct_supported(struct device *dev, u64 mask)
- 	 * use __phys_to_dma() here so that the SME encryption mask isn't
- 	 * part of the check.
- 	 */
--	return mask >= __phys_to_dma(dev, min_mask);
-+	ret = (mask >= __phys_to_dma(dev, min_mask));
-+	if (!ret)
-+		dev_info(dev,
-+			"%s: failed (mask = 0x%llx, min_mask = 0x%llx/0x%llx, dma bits = %d\n",
-+			__func__, mask, min_mask, __phys_to_dma(dev, min_mask), ARCH_ZONE_DMA_BITS);
-+	return ret;
- }
- 
- size_t dma_direct_max_mapping_size(struct device *dev)
-diff --git a/kernel/dma/mapping.c b/kernel/dma/mapping.c
-index f7afdadb6770..6c57ccdee2ae 100644
---- a/kernel/dma/mapping.c
-+++ b/kernel/dma/mapping.c
-@@ -317,8 +317,14 @@ void arch_dma_set_mask(struct device *dev, u64 mask);
- 
- int dma_set_mask(struct device *dev, u64 mask)
- {
--	if (!dev->dma_mask || !dma_supported(dev, mask))
-+	if (!dev->dma_mask) {
-+		dev_info(dev, "no DMA mask set!\n");
- 		return -EIO;
-+	}
-+	if (!dma_supported(dev, mask)) {
-+		printk("DMA not supported\n");
-+		return -EIO;
-+	}
- 
- 	arch_dma_set_mask(dev, mask);
- 	dma_check_mask(dev, mask);
+Unless NETIF_F_HIGHDMA is set on a netdev, the core networkign code
+will bounce buffer highmem pages for the driver under all circumstances.
