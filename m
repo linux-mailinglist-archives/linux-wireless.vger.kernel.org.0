@@ -2,94 +2,106 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 284FE3CD56
-	for <lists+linux-wireless@lfdr.de>; Tue, 11 Jun 2019 15:49:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DE2233CE10
+	for <lists+linux-wireless@lfdr.de>; Tue, 11 Jun 2019 16:08:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2390582AbfFKNtA (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 11 Jun 2019 09:49:00 -0400
-Received: from mail.neratec.com ([46.140.151.2]:34027 "EHLO mail.neratec.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2387866AbfFKNtA (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 11 Jun 2019 09:49:00 -0400
-Received: from localhost (localhost.localdomain [127.0.0.1])
-        by mail.neratec.com (Postfix) with ESMTP id A6CA5CE0392;
-        Tue, 11 Jun 2019 15:48:58 +0200 (CEST)
-Received: from mail.neratec.com ([127.0.0.1])
-        by localhost (mail.neratec.com [127.0.0.1]) (amavisd-new, port 10032)
-        with ESMTP id E9IuFc_Ng8ht; Tue, 11 Jun 2019 15:48:58 +0200 (CEST)
-Received: from localhost (localhost.localdomain [127.0.0.1])
-        by mail.neratec.com (Postfix) with ESMTP id 837E7CE0395;
-        Tue, 11 Jun 2019 15:48:58 +0200 (CEST)
-DKIM-Filter: OpenDKIM Filter v2.10.3 mail.neratec.com 837E7CE0395
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=neratec.com;
-        s=9F5C293A-195B-11E9-BBA5-B4F3B9D999CA; t=1560260938;
-        bh=2ZnbpGhkbUkTw/gTpY2/UiYtzqcC8WJxOnjsgjEWBwk=;
-        h=To:From:Message-ID:Date:MIME-Version;
-        b=V379okPJV8+ep5hiHdTNfwjWyYITRH2TIYRPqcKVgsXpD+hHxi1sgTI8jmh7nIw8s
-         ybVCulJpdiBt6wTxwwPcgyuXlx0RF25VZO7K+u7UBDnV0ANgCwQ8JI+Bi9PScoVns0
-         boFEDe5Ni09rtmG6o4ofMQ73EMkh/2ZOU4owxY0ze0YhNXDi+Q+9yFSnpIc2hNTGb6
-         kCxoCc8QGSBF3WIXF0hCgpe5Ufci7iOiuU9lRgTWL2/4LpJXyLevpPycbnDHJ3UFwI
-         5JY+UT4xwC0z2FautSk0HxVj1Jbi0yVgL28pHuG9KUzC/3hFql3zS8qhIJspyccIS2
-         Y+uTTsxkQQCNw==
-X-Virus-Scanned: amavisd-new at neratec.com
-Received: from mail.neratec.com ([127.0.0.1])
-        by localhost (mail.neratec.com [127.0.0.1]) (amavisd-new, port 10026)
-        with ESMTP id Zap_hYuaALy3; Tue, 11 Jun 2019 15:48:58 +0200 (CEST)
-Received: from [172.29.80.18] (dynvpn-018.vpn.neratec.com [172.29.80.18])
-        by mail.neratec.com (Postfix) with ESMTPSA id 56406CE0392;
-        Tue, 11 Jun 2019 15:48:58 +0200 (CEST)
-Subject: Re: [PATCH v2] ath9k: correctly handle short radar pulses (fixes
- 3c0efb745a)
-To:     Kalle Valo <kvalo@codeaurora.org>
+        id S2388194AbfFKOIf (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 11 Jun 2019 10:08:35 -0400
+Received: from smtp.codeaurora.org ([198.145.29.96]:51876 "EHLO
+        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2387856AbfFKOIe (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 11 Jun 2019 10:08:34 -0400
+Received: by smtp.codeaurora.org (Postfix, from userid 1000)
+        id 4E4C0605A5; Tue, 11 Jun 2019 14:08:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
+        s=default; t=1560262114;
+        bh=fD3pzitmUeXv0XoRWkaWCHwjPgqdynfw/E17eJk74B0=;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+        b=LjCoH7nAX5KyR/iFzjKluJJUXhsvsVsYItWOYDdCNaL57lf4R7qCr2EG51bdFAdlQ
+         Xl6SF3Vz112M4jLB7MKCPCNubsQNPiS9IJ0GOJaX3INfOfOgKWZBD6DQrymYqZEQI0
+         x8q19dXenrk2mQ/fOB8z6enZD6VpFKlnIfsa6PdI=
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        pdx-caf-mail.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.7 required=2.0 tests=ALL_TRUSTED,BAYES_00,
+        DKIM_INVALID,DKIM_SIGNED,SPF_NONE autolearn=no autolearn_force=no
+        version=3.4.0
+Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo@smtp.codeaurora.org)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id AE60D6038E;
+        Tue, 11 Jun 2019 14:08:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
+        s=default; t=1560262113;
+        bh=fD3pzitmUeXv0XoRWkaWCHwjPgqdynfw/E17eJk74B0=;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+        b=XcqBuTRLU5ygxCPGkR8Eq5AO0YwoSx84Z+OBe+GQpvjsxJTWGVEoW7dRw+THYgcGN
+         pUH3x23Tny4nPxCGShltdYa+vi595bwQQpv0tudrXjz9Un9I7Q1AyW8Unvn0n7C3OP
+         jrUxH9z2iEnCgpedPELbmXGPrlIq4TKImIm1knvo=
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org AE60D6038E
+Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
+From:   Kalle Valo <kvalo@codeaurora.org>
+To:     Zefir Kurtisi <zefir.kurtisi@neratec.com>
 Cc:     linux-wireless@vger.kernel.org, nbd@nbd.name
+Subject: Re: [PATCH v2] ath9k: correctly handle short radar pulses (fixes 3c0efb745a)
 References: <20190611131006.29715-1-zefir.kurtisi@neratec.com>
- <20190611133656.16964-1-zefir.kurtisi@neratec.com>
- <87h88wgrui.fsf@kamboji.qca.qualcomm.com>
-From:   Zefir Kurtisi <zefir.kurtisi@neratec.com>
-Message-ID: <f3ec61f2-2b63-4d20-b9f4-d85cc2d44073@neratec.com>
-Date:   Tue, 11 Jun 2019 15:48:57 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.7.0
+        <20190611133656.16964-1-zefir.kurtisi@neratec.com>
+        <87h88wgrui.fsf@kamboji.qca.qualcomm.com>
+        <f3ec61f2-2b63-4d20-b9f4-d85cc2d44073@neratec.com>
+Date:   Tue, 11 Jun 2019 17:08:30 +0300
+In-Reply-To: <f3ec61f2-2b63-4d20-b9f4-d85cc2d44073@neratec.com> (Zefir
+        Kurtisi's message of "Tue, 11 Jun 2019 15:48:57 +0200")
+Message-ID: <87a7eogqox.fsf@kamboji.qca.qualcomm.com>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
 MIME-Version: 1.0
-In-Reply-To: <87h88wgrui.fsf@kamboji.qca.qualcomm.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-CA
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 6/11/19 3:43 PM, Kalle Valo wrote:
-> Zefir Kurtisi <zefir.kurtisi@neratec.com> writes:
-> 
->> Changes to v1:
->> * typos fixed in commit-message
->> --
->>
->> In commit '3c0efb745a17 ("ath9k: discard undersized packets")'
->> the lower bound of RX packets was set to 10 (min ACK size) to
->> filter those that would otherwise be treated as invalid at
->> mac80211.
->>
->> Alas, short radar pulses are reported as PHY_ERROR frames
->> with length set to 3. Therefore their detection stopped
->> working after that commit.
->>
->> NOTE: ath9k drivers built thereafter will not pass DFS
->> certification.
->>
->> This extends the criteria for short packets to explicitly
->> handle PHY_ERROR frames.
->>
->> Signed-off-by: Zefir Kurtisi <zefir.kurtisi@neratec.com>
-> 
-> Forgot to mention that the Fixes line should be before s-o-b, not in the
-> title:
-> 
-> Fixes: 3c0efb745a17 ("ath9k: discard undersized packets")
-> 
-> I'll fix (no pun intended) that as well.
-> 
-Thanks. Was unsure about that, checkpatch warned about format (mandatory 12 digit
-hash), but not the proper location. Will keep in mind.
+Zefir Kurtisi <zefir.kurtisi@neratec.com> writes:
+
+> On 6/11/19 3:43 PM, Kalle Valo wrote:
+>> Zefir Kurtisi <zefir.kurtisi@neratec.com> writes:
+>> 
+>>> Changes to v1:
+>>> * typos fixed in commit-message
+>>> --
+>>>
+>>> In commit '3c0efb745a17 ("ath9k: discard undersized packets")'
+>>> the lower bound of RX packets was set to 10 (min ACK size) to
+>>> filter those that would otherwise be treated as invalid at
+>>> mac80211.
+>>>
+>>> Alas, short radar pulses are reported as PHY_ERROR frames
+>>> with length set to 3. Therefore their detection stopped
+>>> working after that commit.
+>>>
+>>> NOTE: ath9k drivers built thereafter will not pass DFS
+>>> certification.
+>>>
+>>> This extends the criteria for short packets to explicitly
+>>> handle PHY_ERROR frames.
+>>>
+>>> Signed-off-by: Zefir Kurtisi <zefir.kurtisi@neratec.com>
+>> 
+>> Forgot to mention that the Fixes line should be before s-o-b, not in the
+>> title:
+>> 
+>> Fixes: 3c0efb745a17 ("ath9k: discard undersized packets")
+>> 
+>> I'll fix (no pun intended) that as well.
+>> 
+> Thanks. Was unsure about that, checkpatch warned about format (mandatory 12 digit
+> hash), but not the proper location. Will keep in mind.
+
+I have tried to document the most important parts to the wiki:
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches#fixes_line_is_incorrect
+
+-- 
+Kalle Valo
