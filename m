@@ -2,72 +2,40 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 101153BD48
-	for <lists+linux-wireless@lfdr.de>; Mon, 10 Jun 2019 22:04:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 46DD23C33E
+	for <lists+linux-wireless@lfdr.de>; Tue, 11 Jun 2019 07:10:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2389257AbfFJUEF (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 10 Jun 2019 16:04:05 -0400
-Received: from mail.kernel.org ([198.145.29.99]:38852 "EHLO mail.kernel.org"
+        id S2391234AbfFKFKK convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 11 Jun 2019 01:10:10 -0400
+Received: from slot0.etcslc.ga ([85.204.116.123]:39326 "EHLO slot0.etcslc.ga"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2389170AbfFJUEF (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 10 Jun 2019 16:04:05 -0400
-Received: from ebiggers-linuxstation.mtv.corp.google.com (unknown [104.132.1.77])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id BA517206E0;
-        Mon, 10 Jun 2019 20:04:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1560197044;
-        bh=EEM60hx0Cg11HZyZntSFHA/iscCPUJpHnXsJkgBcK8o=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Pv8oFNoQVwT2RW5VbB++HK+2YgQbfWB6yNMakBTBXq4KSdDzBNEiM5ZRHCNqkvNbC
-         d04saLAExi3vGh4ehkF/90ufwgCGmRL2AGVLySoXfPpK40lFp++Mcm0TydQ8QGrot5
-         liPTCrEuS50F0cZpYV/3Be9CSQIuv1s3ITaRkAGw=
-From:   Eric Biggers <ebiggers@kernel.org>
-To:     linux-wireless@vger.kernel.org,
-        Johannes Berg <johannes@sipsolutions.net>
-Cc:     gregkh@linuxfoundation.org, linux-kernel@vger.kernel.org,
-        rafael@kernel.org, syzkaller-bugs@googlegroups.com
-Subject: [PATCH] cfg80211: fix memory leak of wiphy device name
-Date:   Mon, 10 Jun 2019 13:02:19 -0700
-Message-Id: <20190610200219.241300-1-ebiggers@kernel.org>
-X-Mailer: git-send-email 2.22.0.rc2.383.gf4fbbf30c2-goog
-In-Reply-To: <00000000000026f98d058a0944ed@google.com>
-References: <00000000000026f98d058a0944ed@google.com>
+        id S2390911AbfFKFKK (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 11 Jun 2019 01:10:10 -0400
+X-Greylist: delayed 627 seconds by postgrey-1.27 at vger.kernel.org; Tue, 11 Jun 2019 01:10:10 EDT
+Content-Type: text/plain; charset="iso-8859-1"
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 8BIT
+Content-Description: Mail message body
+Subject: Quation needed For June Inquiry
+To:     Recipients <purchase@greattrades.ga>
+From:   "Jpexcc Salesi" <purchase@greattrades.ga>
+Date:   Tue, 11 Jun 2019 07:50:14 +0300
+Reply-To: jpexcc@aol.com
+Message-ID: <0.0.0.D06.1D520111A5B4CEA.0@slot0.etcslc.ga>
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Eric Biggers <ebiggers@google.com>
-
-In wiphy_new_nm(), if an error occurs after dev_set_name() and
-device_initialize() have already been called, it's necessary to call
-put_device() (via wiphy_free()) to avoid a memory leak.
-
-Reported-by: syzbot+7fddca22578bc67c3fe4@syzkaller.appspotmail.com
-Fixes: 1f87f7d3a3b4 ("cfg80211: add rfkill support")
-Cc: stable@vger.kernel.org
-Signed-off-by: Eric Biggers <ebiggers@google.com>
----
- net/wireless/core.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/net/wireless/core.c b/net/wireless/core.c
-index 037816163e70d..458f5e0906875 100644
---- a/net/wireless/core.c
-+++ b/net/wireless/core.c
-@@ -514,7 +514,7 @@ struct wiphy *wiphy_new_nm(const struct cfg80211_ops *ops, int sizeof_priv,
- 				   &rdev->rfkill_ops, rdev);
+Hello dear,
  
- 	if (!rdev->rfkill) {
--		kfree(rdev);
-+		wiphy_free(&rdev->wiphy);
- 		return NULL;
- 	}
+We are in the market for your products after meeting at your stand during last expo.
  
--- 
-2.22.0.rc2.383.gf4fbbf30c2-goog
-
+Please kindly send us your latest catalog and price list so as to start a new project/order as promised during the exhibition. 
+ 
+I would appreciate your response about the above details required so we can revert back to you asap.
+ 
+Kind regards
+ 
+Rhema Zoeh
