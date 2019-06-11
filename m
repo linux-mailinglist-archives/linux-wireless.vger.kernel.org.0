@@ -2,257 +2,216 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C9C763D4E1
-	for <lists+linux-wireless@lfdr.de>; Tue, 11 Jun 2019 20:03:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1287C3D683
+	for <lists+linux-wireless@lfdr.de>; Tue, 11 Jun 2019 21:11:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2406782AbfFKSDI (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 11 Jun 2019 14:03:08 -0400
-Received: from durin.narfation.org ([79.140.41.39]:35990 "EHLO
-        durin.narfation.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2406724AbfFKSDH (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 11 Jun 2019 14:03:07 -0400
-Received: from sven-desktop.home.narfation.org (p200300C5970379EE000000000000070D.dip0.t-ipconnect.de [IPv6:2003:c5:9703:79ee::70d])
-        by durin.narfation.org (Postfix) with ESMTPSA id DE01A1100EB;
-        Tue, 11 Jun 2019 20:03:05 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=narfation.org;
-        s=20121; t=1560276186;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=XwqR15hopOXR+2mli3A8zuXGO/XCdO1dpSdhKwiBQx0=;
-        b=i1OAq76N/PLzRy2al0bvUnA9ppZ/yeSiOmZ4SzRB182utVsYiEDqBjG3fTI4p+rq7pf1Fo
-        pRzExcN9BfDr5jSybRMC1/caGnVgq0s18A/OvbBNbgFOMDhfXPQd0oHip6NsDkvCoqqJm5
-        eaJpOi/7whoKyxvn6L1Trm5ACwWKtn0=
-From:   Sven Eckelmann <sven@narfation.org>
-To:     linux-wireless@vger.kernel.org
-Cc:     ath11k@lists.infradead.org, Sven Eckelmann <seckelmann@datto.com>
-Subject: [RFC PATCH v2 3/3] ath11k: register HE mesh capabilities
-Date:   Tue, 11 Jun 2019 20:02:47 +0200
-Message-Id: <20190611180247.19524-4-sven@narfation.org>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20190611180247.19524-1-sven@narfation.org>
-References: <20190611180247.19524-1-sven@narfation.org>
+        id S2407457AbfFKTKb (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 11 Jun 2019 15:10:31 -0400
+Received: from mail.kernel.org ([198.145.29.99]:43220 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S2407141AbfFKTKb (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 11 Jun 2019 15:10:31 -0400
+Received: from localhost (83-86-89-107.cable.dynamic.v4.ziggo.nl [83.86.89.107])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id F3E3D2183E;
+        Tue, 11 Jun 2019 19:10:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1560280229;
+        bh=IRI2jafQQVnG7eS8oJSDlBqbK7g+mxZls+7IGPq1zVM=;
+        h=Date:From:To:Cc:Subject:From;
+        b=cGYNrZ/7x0YqYE0ikIWkg4OL8Hp2wO7OkDNgP2gbVFdlXqFouYvNtZKTdcNNdvPu4
+         /lVEpVuW4NYgt2fwWot+ajNLm7+rGKDbtl5jPymIvAwtMftpOVUmay9twp+2QOx3NI
+         BpjGq1R+2tVmoNsXzc229u4hdLeFMTYxP0lke0Jg=
+Date:   Tue, 11 Jun 2019 21:10:24 +0200
+From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To:     Maya Erez <merez@codeaurora.org>, Kalle Valo <kvalo@codeaurora.org>
+Cc:     "David S. Miller" <davem@davemloft.net>,
+        linux-wireless@vger.kernel.org, wil6210@qti.qualcomm.com
+Subject: [PATCH] wireless: wil6210: no need to check return value of
+ debugfs_create functions
+Message-ID: <20190611191024.GA17227@kroah.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=narfation.org;
-        s=20121; t=1560276186;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=XwqR15hopOXR+2mli3A8zuXGO/XCdO1dpSdhKwiBQx0=;
-        b=aERcUkwLcwxHutaXcu6uB8fnsWmWmpDdq0TjkrP1kWdNuVYFTXcm5kmmxx/3E+5yZ6uIMb
-        0qVVUVq++aAUAj5mz3anq1OEmgJamhc7qqHjfOGN6RlhAfaDLkSRBtnZV8cSmdeTCKIdJv
-        m0owGLtJ0MFqR2dmm17bUjzCdsqHUhs=
-ARC-Seal: i=1; s=20121; d=narfation.org; t=1560276186; a=rsa-sha256;
-        cv=none;
-        b=pvSrxqWSjGmKT+eKua0aT9E+o+PdldWXXI7Gayr/sTZoMT6/PXVl97aglUSGpW8kxQYaCY
-        2ri8U62xSdNcbLf323qC4Q+PxbhJdzJl9+sXhMfd60tcANRVpSe409ppP8FdE+VKo6e88N
-        IyXC6lpqpYOvKdjX8PXA9I/dxetjEiA=
-ARC-Authentication-Results: i=1;
-        ORIGINATING;
-        auth=pass smtp.auth=sven smtp.mailfrom=sven@narfation.org
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.12.0 (2019-05-25)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Sven Eckelmann <seckelmann@datto.com>
+When calling debugfs functions, there is no need to ever check the
+return value.  The function can work or not, but the code logic should
+never do something different based on this.
 
-The capabilities for the HE mesh are generated from the capabilities
-reported by the fw. But the firmware only reports the overall capabilities
-and not the one which are specific for mesh. Some of them (TWT, MU UL/DL,
-TB PPDU, ...) require an infrastructure setup with a main STA (AP)
-controlling the operations. This is not the case for mesh and thus these
-capabilities are removed from the list of capabilities.
-
-Signed-off-by: Sven Eckelmann <seckelmann@datto.com>
+Cc: Maya Erez <merez@codeaurora.org>
+Cc: Kalle Valo <kvalo@codeaurora.org>
+Cc: "David S. Miller" <davem@davemloft.net>
+Cc: linux-wireless@vger.kernel.org
+Cc: wil6210@qti.qualcomm.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
-This doesn't work currently as expected. No HE rates are used between
-the two HE mesh peers:
+ drivers/net/wireless/ath/wil6210/debugfs.c | 80 ++++++----------------
+ 1 file changed, 22 insertions(+), 58 deletions(-)
 
-    root@OpenWrt:/# cat /sys/kernel/debug/ieee80211/phy2/netdev:mesh2/stations/00:03:7f:12:bb:97/he_capa
-    HE supported
-    MAC-CAP: 0x09 0x0d 0x08 0x0a 0x40 0x00
-                    HTC-HE
-                    DYNAMIC-FRAG-LEVEL-1
-                    MAX-NUM-FRAG-MSDU-1
-                    MIN-FRAG-SIZE-128
-                    TF-MAC-PAD-DUR-24US
-                    MULTI-TID-AGG-RX-QOS-1
-                    LINK-ADAPTATION-NO-FEEDBACK
-                    BSR
-                    OMI-CONTROL
-                    MAX-AMPDU-LEN-EXP-VHT-1
-                    AMSDU-IN-AMPDU
-                    MULTI-TID-AGG-TX-QOS-0
-    PHY CAP: 0x1c 0x70 0x0c 0x80 0x0d 0x43 0x81 0x1c 0x00 0x00 0x00
-                    CHANNEL-WIDTH-SET-40MHZ-80MHZ-IN-5G
-                    CHANNEL-WIDTH-SET-160MHZ-IN-5G
-                    CHANNEL-WIDTH-SET-80PLUS80-MHZ-IN-5G
-                    IEEE80211-HE-PHY-CAP1-DEVICE-CLASS-A
-                    LDPC-CODING-IN-PAYLOAD
-                    HY-CAP1-HE-LTF-AND-GI-FOR-HE-PPDUS-0-8US
-                    MIDAMBLE-RX-MAX-NSTS-0
-                    STBC-TX-UNDER-80MHZ
-                    STBC-RX-UNDER-80MHZ
-                    DCM-MAX-CONST-TX-NO-DCM
-                    DCM-MAX-CONST-RX-NO-DCM
-                    SU-BEAMFORMER
-                    SU-BEAMFORMEE
-                    BEAMFORMEE-MAX-STS-UNDER-7
-                    BEAMFORMEE-MAX-STS-ABOVE-4
-                    NUM-SND-DIM-UNDER-80MHZ-4
-                    NUM-SND-DIM-ABOVE-80MHZ-1
-                    NG16-SU-FEEDBACK
-                    CODEBOOK-SIZE-42-SU
-                    PPE-THRESHOLD-PRESENT
-                    HE-SU-MU-PPDU-4XLTF-AND-08-US-GI
-                    MAX-NC-4
-                    DCM-MAX-RU-242
-                    NOMINAL-PACKET-PADDING-0US
-    RX-MCS-80: 0xffaa
-                    RX-MCS-80-0-SUPPORT-0-11
-                    RX-MCS-80-1-SUPPORT-0-11
-                    RX-MCS-80-2-SUPPORT-0-11
-                    RX-MCS-80-3-SUPPORT-0-11
-    TX-MCS-80: 0xffaa
-                    TX-MCS-80-0-SUPPORT-0-11
-                    TX-MCS-80-1-SUPPORT-0-11
-                    TX-MCS-80-2-SUPPORT-0-11
-                    TX-MCS-80-3-SUPPORT-0-11
-    RX-MCS-160: 0xfffa
-                    RX-MCS-160-0-SUPPORT-0-11
-                    RX-MCS-160-1-SUPPORT-0-11
-                    RX-MCS-160-2-NOT-SUPPORTED
-                    RX-MCS-160-3-NOT-SUPPORTED
-    TX-MCS-160: 0xfffa
-                    TX-MCS-160-0-SUPPORT-0-11
-                    TX-MCS-160-1-SUPPORT-0-11
-                    TX-MCS-160-2-NOT-SUPPORTED
-                    TX-MCS-160-3-NOT-SUPPORTED
-    RX-MCS-80P80: 0xfffa
-                    RX-MCS-80P80-0-SUPPORT-0-11
-                    RX-MCS-80P80-1-SUPPORT-0-11
-                    RX-MCS-80P80-2-NOT-SUPPORTED
-                    RX-MCS-80P80-3-NOT-SUPPORTED
-    TX-MCS-80P80: 0xfffa
-                    TX-MCS-80P80-0-SUPPORT-0-11
-                    TX-MCS-80P80-1-SUPPORT-0-11
-                    TX-MCS-80P80-2-NOT-SUPPORTED
-                    TX-MCS-80P80-3-NOT-SUPPORTED
-    PPE-THRESHOLDS: 0x3b 0x1c 0xc7 0x71 0x1c 0xc7 0x71 0x1c 0xc7 0x71
-    root@OpenWrt:/# iw dev mesh2 station dump
-    Station 00:03:7f:12:bb:97 (on mesh2)
-            inactive time:  310 ms
-            rx bytes:       161064
-            rx packets:     1619
-            tx bytes:       55454
-            tx packets:     477
-            tx retries:     405
-            tx failed:      0
-            rx drop misc:   6
-            signal:         -95 dBm
-            signal avg:     -67 dBm
-            tx bitrate:     1733.3 MBit/s VHT-MCS 9 80MHz short GI VHT-NSS 4
-            rx bitrate:     1733.3 MBit/s VHT-MCS 9 80MHz short GI VHT-NSS 4
-            rx duration:    0 us
-            mesh llid:      0
-            mesh plid:      0
-            mesh plink:     ESTAB
-            mesh local PS mode:     ACTIVE
-            mesh peer PS mode:      ACTIVE
-            mesh non-peer PS mode:  ACTIVE
-            authorized:     yes
-            authenticated:  yes
-            associated:     yes
-            preamble:       long
-            WMM/WME:        yes
-            MFP:            no
-            TDLS peer:      no
-            DTIM period:    2
-            beacon interval:1000
-            connected time: 536 seconds
-
- drivers/net/wireless/ath/ath11k/mac.c | 56 +++++++++++++++++++++++++++
- 1 file changed, 56 insertions(+)
-
-diff --git a/drivers/net/wireless/ath/ath11k/mac.c b/drivers/net/wireless/ath/ath11k/mac.c
-index 13da2e8262ba..7dcf4bb896b5 100644
---- a/drivers/net/wireless/ath/ath11k/mac.c
-+++ b/drivers/net/wireless/ath/ath11k/mac.c
-@@ -3274,6 +3274,7 @@ static int ath11k_mac_copy_he_cap(struct ath11k *ar,
- 		switch (i) {
- 		case NL80211_IFTYPE_STATION:
- 		case NL80211_IFTYPE_AP:
-+		case NL80211_IFTYPE_MESH_POINT:
- 			break;
+diff --git a/drivers/net/wireless/ath/wil6210/debugfs.c b/drivers/net/wireless/ath/wil6210/debugfs.c
+index df2adff6c33a..ea5da93196fd 100644
+--- a/drivers/net/wireless/ath/wil6210/debugfs.c
++++ b/drivers/net/wireless/ath/wil6210/debugfs.c
+@@ -394,25 +394,18 @@ static int wil_debugfs_iomem_x32_get(void *data, u64 *val)
+ DEFINE_DEBUGFS_ATTRIBUTE(fops_iomem_x32, wil_debugfs_iomem_x32_get,
+ 			 wil_debugfs_iomem_x32_set, "0x%08llx\n");
  
- 		default:
-@@ -3314,6 +3315,61 @@ static int ath11k_mac_copy_he_cap(struct ath11k *ar,
- 			he_cap_elem->phy_cap_info[9] |=
- 				IEEE80211_HE_PHY_CAP9_TX_1024_QAM_LESS_THAN_242_TONE_RU;
+-static struct dentry *wil_debugfs_create_iomem_x32(const char *name,
+-						   umode_t mode,
+-						   struct dentry *parent,
+-						   void *value,
+-						   struct wil6210_priv *wil)
++static void wil_debugfs_create_iomem_x32(const char *name, umode_t mode,
++					 struct dentry *parent, void *value,
++					 struct wil6210_priv *wil)
+ {
+-	struct dentry *file;
+ 	struct wil_debugfs_iomem_data *data = &wil->dbg_data.data_arr[
+ 					      wil->dbg_data.iomem_data_count];
+ 
+ 	data->wil = wil;
+ 	data->offset = value;
+ 
+-	file = debugfs_create_file_unsafe(name, mode, parent, data,
+-					  &fops_iomem_x32);
+-	if (!IS_ERR_OR_NULL(file))
+-		wil->dbg_data.iomem_data_count++;
+-
+-	return file;
++	debugfs_create_file_unsafe(name, mode, parent, data, &fops_iomem_x32);
++	wil->dbg_data.iomem_data_count++;
+ }
+ 
+ static int wil_debugfs_ulong_set(void *data, u64 val)
+@@ -430,14 +423,6 @@ static int wil_debugfs_ulong_get(void *data, u64 *val)
+ DEFINE_DEBUGFS_ATTRIBUTE(wil_fops_ulong, wil_debugfs_ulong_get,
+ 			 wil_debugfs_ulong_set, "0x%llx\n");
+ 
+-static struct dentry *wil_debugfs_create_ulong(const char *name, umode_t mode,
+-					       struct dentry *parent,
+-					       ulong *value)
+-{
+-	return debugfs_create_file_unsafe(name, mode, parent, value,
+-					  &wil_fops_ulong);
+-}
+-
+ /**
+  * wil6210_debugfs_init_offset - create set of debugfs files
+  * @wil - driver's context, used for printing
+@@ -454,37 +439,30 @@ static void wil6210_debugfs_init_offset(struct wil6210_priv *wil,
+ 	int i;
+ 
+ 	for (i = 0; tbl[i].name; i++) {
+-		struct dentry *f;
+-
+ 		switch (tbl[i].type) {
+ 		case doff_u32:
+-			f = debugfs_create_u32(tbl[i].name, tbl[i].mode, dbg,
+-					       base + tbl[i].off);
++			debugfs_create_u32(tbl[i].name, tbl[i].mode, dbg,
++					   base + tbl[i].off);
  			break;
-+		case NL80211_IFTYPE_MESH_POINT:
-+			he_cap_elem->mac_cap_info[0] &=
-+				~(IEEE80211_HE_MAC_CAP0_TWT_RES |
-+				  IEEE80211_HE_MAC_CAP0_TWT_REQ);
-+			he_cap_elem->mac_cap_info[2] &=
-+				~(IEEE80211_HE_MAC_CAP2_TRS |
-+				  IEEE80211_HE_MAC_CAP2_BCAST_TWT |
-+				  IEEE80211_HE_MAC_CAP2_MU_CASCADING);
-+			he_cap_elem->mac_cap_info[3] &=
-+				~(IEEE80211_HE_MAC_CAP3_FLEX_TWT_SCHED |
-+				  IEEE80211_HE_MAC_CAP2_BCAST_TWT |
-+				  IEEE80211_HE_MAC_CAP2_MU_CASCADING);
-+			he_cap_elem->mac_cap_info[4] &=
-+				~(IEEE80211_HE_MAC_CAP4_BSRP_BQRP_A_MPDU_AGG |
-+				  IEEE80211_HE_MAC_CAP4_BQR);
-+			he_cap_elem->mac_cap_info[5] &=
-+				~(IEEE80211_HE_MAC_CAP5_SUBCHAN_SELECVITE_TRANSMISSION |
-+				  IEEE80211_HE_MAC_CAP5_UL_2x996_TONE_RU |
-+				  IEEE80211_HE_MAC_CAP5_PUNCTURED_SOUNDING |
-+				  IEEE80211_HE_MAC_CAP5_HT_VHT_TRIG_FRAME_RX);
-+
-+			he_cap_elem->phy_cap_info[2] &=
-+				~(IEEE80211_HE_PHY_CAP2_UL_MU_FULL_MU_MIMO |
-+				  IEEE80211_HE_PHY_CAP2_UL_MU_PARTIAL_MU_MIMO);
-+			he_cap_elem->phy_cap_info[3] &=
-+				~(IEEE80211_HE_PHY_CAP3_RX_HE_MU_PPDU_FROM_NON_AP_STA |
-+				  IEEE80211_HE_PHY_CAP3_DCM_MAX_CONST_TX_MASK |
-+				  IEEE80211_HE_PHY_CAP3_DCM_MAX_CONST_RX_MASK);
-+			he_cap_elem->phy_cap_info[4] &=
-+				~IEEE80211_HE_PHY_CAP4_MU_BEAMFORMER;
-+			he_cap_elem->phy_cap_info[5] &=
-+				~IEEE80211_HE_PHY_CAP5_NG16_MU_FEEDBACK;
-+			he_cap_elem->phy_cap_info[6] &=
-+				~(IEEE80211_HE_PHY_CAP6_CODEBOOK_SIZE_75_MU |
-+				  IEEE80211_HE_PHY_CAP6_TRIG_MU_BEAMFORMER_FB |
-+				  IEEE80211_HE_PHY_CAP6_TRIG_CQI_FB |
-+				  IEEE80211_HE_PHY_CAP6_PARTIAL_BANDWIDTH_DL_MUMIMO);
-+			he_cap_elem->phy_cap_info[7] &=
-+				~(IEEE80211_HE_PHY_CAP7_SRP_BASED_SR |
-+				  IEEE80211_HE_PHY_CAP7_POWER_BOOST_FACTOR_AR |
-+				  IEEE80211_HE_PHY_CAP7_STBC_TX_ABOVE_80MHZ |
-+				  IEEE80211_HE_PHY_CAP7_STBC_RX_ABOVE_80MHZ);
-+			he_cap_elem->phy_cap_info[8] &=
-+				~(IEEE80211_HE_PHY_CAP8_HE_ER_SU_PPDU_4XLTF_AND_08_US_GI |
-+				  IEEE80211_HE_PHY_CAP8_20MHZ_IN_40MHZ_HE_PPDU_IN_2G |
-+				  IEEE80211_HE_PHY_CAP8_20MHZ_IN_160MHZ_HE_PPDU |
-+				  IEEE80211_HE_PHY_CAP8_80MHZ_IN_160MHZ_HE_PPDU);
-+			he_cap_elem->phy_cap_info[9] &=
-+				~(IEEE80211_HE_PHY_CAP9_LONGER_THAN_16_SIGB_OFDM_SYM |
-+				  IEEE80211_HE_PHY_CAP9_NON_TRIGGERED_CQI_FEEDBACK |
-+				  IEEE80211_HE_PHY_CAP9_RX_1024_QAM_LESS_THAN_242_TONE_RU |
-+				  IEEE80211_HE_PHY_CAP9_TX_1024_QAM_LESS_THAN_242_TONE_RU |
-+				  IEEE80211_HE_PHY_CAP9_RX_FULL_BW_SU_USING_MU_WITH_COMP_SIGB |
-+				  IEEE80211_HE_PHY_CAP9_RX_FULL_BW_SU_USING_MU_WITH_NON_COMP_SIGB);
-+			break;
+ 		case doff_x32:
+-			f = debugfs_create_x32(tbl[i].name, tbl[i].mode, dbg,
+-					       base + tbl[i].off);
++			debugfs_create_x32(tbl[i].name, tbl[i].mode, dbg,
++					   base + tbl[i].off);
+ 			break;
+ 		case doff_ulong:
+-			f = wil_debugfs_create_ulong(tbl[i].name, tbl[i].mode,
+-						     dbg, base + tbl[i].off);
++			debugfs_create_file_unsafe(tbl[i].name, tbl[i].mode,
++						   dbg, base + tbl[i].off,
++						   &wil_fops_ulong);
+ 			break;
+ 		case doff_io32:
+-			f = wil_debugfs_create_iomem_x32(tbl[i].name,
+-							 tbl[i].mode, dbg,
+-							 base + tbl[i].off,
+-							 wil);
++			wil_debugfs_create_iomem_x32(tbl[i].name, tbl[i].mode,
++						     dbg, base + tbl[i].off,
++						     wil);
+ 			break;
+ 		case doff_u8:
+-			f = debugfs_create_u8(tbl[i].name, tbl[i].mode, dbg,
+-					      base + tbl[i].off);
++			debugfs_create_u8(tbl[i].name, tbl[i].mode, dbg,
++					  base + tbl[i].off);
+ 			break;
+-		default:
+-			f = ERR_PTR(-EINVAL);
  		}
+-		if (IS_ERR_OR_NULL(f))
+-			wil_err(wil, "Create file \"%s\": err %ld\n",
+-				tbl[i].name, PTR_ERR(f));
+ 	}
+ }
  
- 		he_cap->he_mcs_nss_supp.rx_mcs_80 =
+@@ -499,19 +477,14 @@ static const struct dbg_off isr_off[] = {
+ 	{},
+ };
+ 
+-static int wil6210_debugfs_create_ISR(struct wil6210_priv *wil,
+-				      const char *name,
+-				      struct dentry *parent, u32 off)
++static void wil6210_debugfs_create_ISR(struct wil6210_priv *wil,
++				       const char *name, struct dentry *parent,
++				       u32 off)
+ {
+ 	struct dentry *d = debugfs_create_dir(name, parent);
+ 
+-	if (IS_ERR_OR_NULL(d))
+-		return -ENODEV;
+-
+ 	wil6210_debugfs_init_offset(wil, d, (void * __force)wil->csr + off,
+ 				    isr_off);
+-
+-	return 0;
+ }
+ 
+ static const struct dbg_off pseudo_isr_off[] = {
+@@ -521,18 +494,13 @@ static const struct dbg_off pseudo_isr_off[] = {
+ 	{},
+ };
+ 
+-static int wil6210_debugfs_create_pseudo_ISR(struct wil6210_priv *wil,
+-					     struct dentry *parent)
++static void wil6210_debugfs_create_pseudo_ISR(struct wil6210_priv *wil,
++					      struct dentry *parent)
+ {
+ 	struct dentry *d = debugfs_create_dir("PSEUDO_ISR", parent);
+ 
+-	if (IS_ERR_OR_NULL(d))
+-		return -ENODEV;
+-
+ 	wil6210_debugfs_init_offset(wil, d, (void * __force)wil->csr,
+ 				    pseudo_isr_off);
+-
+-	return 0;
+ }
+ 
+ static const struct dbg_off lgc_itr_cnt_off[] = {
+@@ -580,13 +548,9 @@ static int wil6210_debugfs_create_ITR_CNT(struct wil6210_priv *wil,
+ 	struct dentry *d, *dtx, *drx;
+ 
+ 	d = debugfs_create_dir("ITR_CNT", parent);
+-	if (IS_ERR_OR_NULL(d))
+-		return -ENODEV;
+ 
+ 	dtx = debugfs_create_dir("TX", d);
+ 	drx = debugfs_create_dir("RX", d);
+-	if (IS_ERR_OR_NULL(dtx) || IS_ERR_OR_NULL(drx))
+-		return -ENODEV;
+ 
+ 	wil6210_debugfs_init_offset(wil, d, (void * __force)wil->csr,
+ 				    lgc_itr_cnt_off);
 -- 
-2.20.1
+2.22.0
 
