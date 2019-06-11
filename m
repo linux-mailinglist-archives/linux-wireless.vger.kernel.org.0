@@ -2,113 +2,136 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 243E63CAFC
-	for <lists+linux-wireless@lfdr.de>; Tue, 11 Jun 2019 14:19:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9E20B3CBB2
+	for <lists+linux-wireless@lfdr.de>; Tue, 11 Jun 2019 14:32:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2387835AbfFKMTY (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 11 Jun 2019 08:19:24 -0400
-Received: from durin.narfation.org ([79.140.41.39]:56866 "EHLO
-        durin.narfation.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727140AbfFKMTX (ORCPT
+        id S2388925AbfFKMck (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 11 Jun 2019 08:32:40 -0400
+Received: from mail-lf1-f66.google.com ([209.85.167.66]:44289 "EHLO
+        mail-lf1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2388708AbfFKMck (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 11 Jun 2019 08:19:23 -0400
-Received: from sven-desktop.home.narfation.org (p200300C5970379EE000000000000070D.dip0.t-ipconnect.de [IPv6:2003:c5:9703:79ee::70d])
-        by durin.narfation.org (Postfix) with ESMTPSA id EF9A91100D3;
-        Tue, 11 Jun 2019 14:19:20 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=narfation.org;
-        s=20121; t=1560255561;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:
-         content-transfer-encoding:content-transfer-encoding;
-        bh=qqBTwquj+/+qeCna/vowQ9lULWZujDdkUGiUnhQczqk=;
-        b=SW5T63ugWxYa8bRMH+6NvKyd47cX4jxj3osw7l041oJq55zx2msFBJfcIMtSk5cYBbme9f
-        G0HlrvXvcmWCZndT8u69RZNlYi7kGiH60wULZb/ts18Ka+j+/SHKmr5CyjHqZPG3wLCtiR
-        K2Cc8npAErMbD76sSAXhOrU4/SKoSTk=
-From:   Sven Eckelmann <sven@narfation.org>
-To:     ath10k@lists.infradead.org
-Cc:     linux-wireless@vger.kernel.org,
-        Sven Eckelmann <seckelmann@datto.com>,
-        Michal Kazior <michal@plume.com>
-Subject: [PATCH] ath10k: fix max antenna gain unit
-Date:   Tue, 11 Jun 2019 14:19:10 +0200
-Message-Id: <20190611121910.27643-1-sven@narfation.org>
-X-Mailer: git-send-email 2.20.1
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=narfation.org;
-        s=20121; t=1560255561;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:
-         content-transfer-encoding:content-transfer-encoding;
-        bh=qqBTwquj+/+qeCna/vowQ9lULWZujDdkUGiUnhQczqk=;
-        b=ORJyWRIRUK81kZ1FIv2c3gQ0vtA1VibKzesh8rXD8aW9izu/WWTfdSc3/7RYdt8hslf1CX
-        dPfkCcU7wJFLdm8JZIGR9lP3nVRSWLHJ3cNGmVPuB4nLi9sVsuCCstwD166xlpPjuwmClv
-        tnMFAI1qyFN5ulDh8OeoSE6D1+o+6BA=
-ARC-Seal: i=1; s=20121; d=narfation.org; t=1560255561; a=rsa-sha256;
-        cv=none;
-        b=hGOvKs1Whed3Q6xW+fPohBK/t/J9iKPkLUkpADy81S4tD634mf3vWxaFE9t77GTQANw2eH
-        EmAKADiXjrUlDDFNl5raHFKo7J9zx3GFh0OfcBO6Q4C/2hH7TQu3SCNfiXBpF0YYEwFMqx
-        lf4h+IoFTdixsYA+CBhN5Qvq/HYOnZY=
-ARC-Authentication-Results: i=1;
-        ORIGINATING;
-        auth=pass smtp.auth=sven smtp.mailfrom=sven@narfation.org
+        Tue, 11 Jun 2019 08:32:40 -0400
+Received: by mail-lf1-f66.google.com with SMTP id r15so9158972lfm.11
+        for <linux-wireless@vger.kernel.org>; Tue, 11 Jun 2019 05:32:39 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=from:to:cc:subject:date:message-id;
+        bh=HU9V86GjpX1Lj12E8HWKI4k2gg4I+vpQIUImDCvzWsk=;
+        b=Yg8wAqxtQ164zzGBJZ+PSgz4OXKHa+BMpdSLeROa+LthHzMbkjsycGsXdulp1vuBt8
+         wFcx8V53bpgpwEdomtgsYfi9jG6nCbdKwNPdiipsd59bPELpBhN5Cy6P9pvBuK9QT931
+         wDKtuzLKIPtSOkC98IQtTSI1/IFFeFq48SB6L/f17m8wYzTTPc6Lhx1e1bYnjV5LviTM
+         dPEZbj0uSf1XRAgY+vERPKPWe4nU/BY4V7cwDpQsIjrdTinPdUg4f3TdmT+CPIBENWLf
+         F6wxj5Uk1QciZygwjIt1FPTVduN/tRKsmvmZ1mjOXEZv8Uf8d//P5iZwwnjGEWMpYt4V
+         ezIA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=HU9V86GjpX1Lj12E8HWKI4k2gg4I+vpQIUImDCvzWsk=;
+        b=XTa5GRGtWSdidpnQfLpGQZgxbqqJiKQ8fAQ0mj3NlKWIz4zQaZZSYvwonXqJckfBfY
+         2mNjmTRaAI7M9klbxLSXArVj9crfCfKAnRLpl4SiMMtOx7QKH/a6u5KYlSPwT6zJkfsy
+         AFB+7Hw/eFSyWisO8rMwYnO+bJpX19VFbmQ19EW3b/a9YFOi1rCZbYeZ51W8JxvDORzg
+         SEevjd9wLxieA/pX04zeUreSSjFtxDiNYeaNwldiJUmtLv1WSg/s7wZ3HG1bNT+fh343
+         YT4Mfbmc4xnxKWN5YrrP/L1aj9pciRZOAm+uqfQgX1cCUm366HcZsNsfW87ab8zQQZu2
+         gFjw==
+X-Gm-Message-State: APjAAAXi7WRoNCUf9M/EYU0gkNsoey4CG/XWd61T6Z5KDMd194eCzdoR
+        mLppiR5CMMzFBpvyMyk4Y2X8VQ==
+X-Google-Smtp-Source: APXvYqyr2XAwpPPGK8DQ5jtLb+Bh0lIdk3lLxo3JrCyUxs9sNBmrrWH/obZnkRHF9jPP1YigO5UxhA==
+X-Received: by 2002:ac2:4312:: with SMTP id l18mr32475375lfh.139.1560256358658;
+        Tue, 11 Jun 2019 05:32:38 -0700 (PDT)
+Received: from uffe-XPS-13-9360.ideon.se ([85.235.10.227])
+        by smtp.gmail.com with ESMTPSA id m4sm2570653ljc.56.2019.06.11.05.32.36
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Tue, 11 Jun 2019 05:32:37 -0700 (PDT)
+From:   Ulf Hansson <ulf.hansson@linaro.org>
+To:     linux-mmc@vger.kernel.org, Ulf Hansson <ulf.hansson@linaro.org>,
+        Douglas Anderson <dianders@chromium.org>
+Cc:     Adrian Hunter <adrian.hunter@intel.com>,
+        Brian Norris <briannorris@chromium.org>,
+        Shawn Lin <shawn.lin@rock-chips.com>,
+        Guenter Roeck <groeck@chromium.org>,
+        Heiko Stuebner <heiko@sntech.de>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        linux-wireless@vger.kernel.org, stable@vger.kernel.org
+Subject: [PATCH] mmc: core: Prevent processing SDIO IRQs when the card is suspended
+Date:   Tue, 11 Jun 2019 14:32:21 +0200
+Message-Id: <20190611123221.11580-1-ulf.hansson@linaro.org>
+X-Mailer: git-send-email 2.17.1
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Sven Eckelmann <seckelmann@datto.com>
+Processing of SDIO IRQs must obviously be prevented while the card is
+system suspended, otherwise we may end up trying to communicate with an
+uninitialized SDIO card.
 
-Most of the txpower for the ath10k firmware is stored as twicepower (0.5 dB
-steps). This isn't the case for max_antenna_gain - which is still expected
-by the firmware as dB.
+Reports throughout the years shows that this is not only a theoretical
+problem, but a real issue. So, let's finally fix this problem, by keeping
+track of the state for the card and bail out before processing the SDIO
+IRQ, in case the card is suspended.
 
-The firmware is converting it from dB to the internal (twicepower)
-representation when it calculates the limits of a channel. This can be seen
-in tpc_stats when configuring "12" as max_antenna_gain. Instead of the
-expected 12 (6 dB), the tpc_stats shows 24 (12 dB).
-
-Tested on QCA9888 and IPQ4019 with firmware 10.4-3.5.3-00057.
-
-Fixes: 02256930d9b8 ("ath10k: use proper tx power unit")
-Signed-off-by: Sven Eckelmann <seckelmann@datto.com>
+Cc: stable@vger.kernel.org
+Reported-by: Douglas Anderson <dianders@chromium.org>
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 ---
-Cc: Michal Kazior <michal@plume.com>
 
- drivers/net/wireless/ath/ath10k/mac.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+This has only been compile tested so far, any help for real test on HW is
+greatly appreciated.
 
-diff --git a/drivers/net/wireless/ath/ath10k/mac.c b/drivers/net/wireless/ath/ath10k/mac.c
-index 9c703d287333..35d026a2772a 100644
---- a/drivers/net/wireless/ath/ath10k/mac.c
-+++ b/drivers/net/wireless/ath/ath10k/mac.c
-@@ -1008,7 +1008,7 @@ static int ath10k_monitor_vdev_start(struct ath10k *ar, int vdev_id)
- 	arg.channel.min_power = 0;
- 	arg.channel.max_power = channel->max_power * 2;
- 	arg.channel.max_reg_power = channel->max_reg_power * 2;
--	arg.channel.max_antenna_gain = channel->max_antenna_gain * 2;
-+	arg.channel.max_antenna_gain = channel->max_antenna_gain;
+Note that, this is only the initial part of what is needed to make power
+management of SDIO card more robust, but let's start somewhere and continue to
+improve things.
+
+The next step I am looking at right now, is to make sure the SDIO IRQ is turned
+off during system suspend, unless it's supported as a system wakeup (and enabled
+to be used).
+
+---
+ drivers/mmc/core/sdio.c     | 7 +++++++
+ drivers/mmc/core/sdio_irq.c | 4 ++++
+ 2 files changed, 11 insertions(+)
+
+diff --git a/drivers/mmc/core/sdio.c b/drivers/mmc/core/sdio.c
+index d1aa1c7577bb..9951295d3220 100644
+--- a/drivers/mmc/core/sdio.c
++++ b/drivers/mmc/core/sdio.c
+@@ -937,6 +937,10 @@ static int mmc_sdio_pre_suspend(struct mmc_host *host)
+  */
+ static int mmc_sdio_suspend(struct mmc_host *host)
+ {
++	/* Prevent processing of SDIO IRQs in suspended state. */
++	mmc_card_set_suspended(host->card);
++	cancel_delayed_work_sync(&host->sdio_irq_work);
++
+ 	mmc_claim_host(host);
  
- 	reinit_completion(&ar->vdev_setup_done);
+ 	if (mmc_card_keep_power(host) && mmc_card_wake_sdio_irq(host))
+@@ -985,6 +989,9 @@ static int mmc_sdio_resume(struct mmc_host *host)
+ 		err = sdio_enable_4bit_bus(host->card);
+ 	}
  
-@@ -1450,7 +1450,7 @@ static int ath10k_vdev_start_restart(struct ath10k_vif *arvif,
- 	arg.channel.min_power = 0;
- 	arg.channel.max_power = chandef->chan->max_power * 2;
- 	arg.channel.max_reg_power = chandef->chan->max_reg_power * 2;
--	arg.channel.max_antenna_gain = chandef->chan->max_antenna_gain * 2;
-+	arg.channel.max_antenna_gain = chandef->chan->max_antenna_gain;
++	/* Allow SDIO IRQs to be processed again. */
++	mmc_card_clr_suspended(host->card);
++
+ 	if (!err && host->sdio_irqs) {
+ 		if (!(host->caps2 & MMC_CAP2_SDIO_IRQ_NOTHREAD))
+ 			wake_up_process(host->sdio_irq_thread);
+diff --git a/drivers/mmc/core/sdio_irq.c b/drivers/mmc/core/sdio_irq.c
+index 931e6226c0b3..9f54a259a1b3 100644
+--- a/drivers/mmc/core/sdio_irq.c
++++ b/drivers/mmc/core/sdio_irq.c
+@@ -34,6 +34,10 @@ static int process_sdio_pending_irqs(struct mmc_host *host)
+ 	unsigned char pending;
+ 	struct sdio_func *func;
  
- 	if (arvif->vdev_type == WMI_VDEV_TYPE_AP) {
- 		arg.ssid = arvif->u.ap.ssid;
-@@ -3105,7 +3105,7 @@ static int ath10k_update_channel_list(struct ath10k *ar)
- 			ch->min_power = 0;
- 			ch->max_power = channel->max_power * 2;
- 			ch->max_reg_power = channel->max_reg_power * 2;
--			ch->max_antenna_gain = channel->max_antenna_gain * 2;
-+			ch->max_antenna_gain = channel->max_antenna_gain;
- 			ch->reg_class_id = 0; /* FIXME */
- 
- 			/* FIXME: why use only legacy modes, why not any
++	/* Don't process SDIO IRQs if the card is suspended. */
++	if (mmc_card_suspended(card))
++		return 0;
++
+ 	/*
+ 	 * Optimization, if there is only 1 function interrupt registered
+ 	 * and we know an IRQ was signaled then call irq handler directly.
 -- 
-2.20.1
+2.17.1
 
