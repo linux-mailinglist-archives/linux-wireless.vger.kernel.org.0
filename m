@@ -2,48 +2,56 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D16FA3C3D5
-	for <lists+linux-wireless@lfdr.de>; Tue, 11 Jun 2019 08:08:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 841F43C45E
+	for <lists+linux-wireless@lfdr.de>; Tue, 11 Jun 2019 08:39:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2391075AbfFKGIq (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 11 Jun 2019 02:08:46 -0400
-Received: from verein.lst.de ([213.95.11.211]:48379 "EHLO newverein.lst.de"
+        id S2391271AbfFKGjB (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 11 Jun 2019 02:39:01 -0400
+Received: from mail.kernel.org ([198.145.29.99]:37010 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2391044AbfFKGIq (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 11 Jun 2019 02:08:46 -0400
-Received: by newverein.lst.de (Postfix, from userid 2407)
-        id 29D2768B02; Tue, 11 Jun 2019 08:08:17 +0200 (CEST)
-Date:   Tue, 11 Jun 2019 08:08:16 +0200
-From:   Christoph Hellwig <hch@lst.de>
-To:     Benjamin Herrenschmidt <benh@kernel.crashing.org>
-Cc:     Larry Finger <Larry.Finger@lwfinger.net>,
-        Aaro Koskinen <aaro.koskinen@iki.fi>,
-        Christoph Hellwig <hch@lst.de>,
-        Christian Zigotzky <chzigotzky@xenosoft.de>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        linuxppc-dev@lists.ozlabs.org, linux-wireless@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [BISECTED REGRESSION] b43legacy broken on G4 PowerBook
-Message-ID: <20190611060816.GA20158@lst.de>
-References: <20190605225059.GA9953@darkstar.musicnaut.iki.fi> <73da300c-871c-77ac-8a3a-deac226743ef@lwfinger.net> <7697a9d10777b28ae79fdffdde6d0985555f6310.camel@kernel.crashing.org> <3ed1ccfe-d7ca-11b9-17b3-303d1ae1bb0f@lwfinger.net> <c91ccbddd6a58dbee5705f10ed1d98fb44bd8f8d.camel@kernel.crashing.org>
+        id S2390485AbfFKGjB (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 11 Jun 2019 02:39:01 -0400
+Received: from localhost.localdomain (unknown [151.66.40.206])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 72F6E20896;
+        Tue, 11 Jun 2019 06:38:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1560235140;
+        bh=GGXM3SZmdTjhKTjDtww6bhbDVxk7YucB7AQVgYMLpy0=;
+        h=From:To:Cc:Subject:Date:From;
+        b=IN4TJXi5dVBNFK2OKxubNpDydmzU18+e1do0AeUPQETVWkTpQrITUhZrdEiDOzoWr
+         edjOVNrSNS9hpJQDL6Mt8JZg0GBpugVBAijfGG01hJlXmHvAOhpw9ZDM9WkIqqghCU
+         R1ln8ezZIytN2dbj1pHsYWrJLnPWQfyNt4KEu+to=
+From:   Lorenzo Bianconi <lorenzo@kernel.org>
+To:     nbd@nbd.name
+Cc:     lorenzo.bianconi@redhat.com, linux-wireless@vger.kernel.org,
+        ryder.lee@mediatek.com, royluo@google.com
+Subject: [PATCH 0/2] take into account external PA when configuring tx power
+Date:   Tue, 11 Jun 2019 08:38:51 +0200
+Message-Id: <cover.1560234876.git.lorenzo@kernel.org>
+X-Mailer: git-send-email 2.21.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <c91ccbddd6a58dbee5705f10ed1d98fb44bd8f8d.camel@kernel.crashing.org>
-User-Agent: Mutt/1.5.17 (2007-11-01)
+Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Tue, Jun 11, 2019 at 03:56:33PM +1000, Benjamin Herrenschmidt wrote:
-> The reason I think it sort-of-mostly-worked is that to get more than
-> 1GB of RAM, those machines use CONFIG_HIGHMEM. And *most* network
-> buffers aren't allocated in Highmem.... so you got lucky.
-> 
-> That said, there is such as thing as no-copy send on network, so I
-> wouldn't be surprised if some things would still have failed, just not
-> frequent enough for you to notice.
+Refer to proper eeprom fields configuring tx power when TSSI calibration is
+disabled. Moreover initialize per-channel tx power
 
-Unless NETIF_F_HIGHDMA is set on a netdev, the core networkign code
-will bounce buffer highmem pages for the driver under all circumstances.
+Lorenzo Bianconi (2):
+  mt76: mt7615: init per-channel target power
+  mt76: mt7615: take into account extPA when configuring tx power
+
+ .../wireless/mediatek/mt76/mt7615/eeprom.c    | 12 ++++-
+ .../wireless/mediatek/mt76/mt7615/eeprom.h    | 17 +++++++
+ .../net/wireless/mediatek/mt76/mt7615/init.c  | 46 +++++++++++++++++++
+ .../net/wireless/mediatek/mt76/mt7615/mcu.c   | 10 ++--
+ .../wireless/mediatek/mt76/mt7615/mt7615.h    |  3 +-
+ 5 files changed, 82 insertions(+), 6 deletions(-)
+
+-- 
+2.21.0
+
