@@ -2,78 +2,118 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id DA5A63C4A2
-	for <lists+linux-wireless@lfdr.de>; Tue, 11 Jun 2019 09:01:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 688063C4CB
+	for <lists+linux-wireless@lfdr.de>; Tue, 11 Jun 2019 09:19:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2391322AbfFKHAZ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 11 Jun 2019 03:00:25 -0400
-Received: from gate.crashing.org ([63.228.1.57]:33688 "EHLO gate.crashing.org"
+        id S2404249AbfFKHTR (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 11 Jun 2019 03:19:17 -0400
+Received: from mga06.intel.com ([134.134.136.31]:42890 "EHLO mga06.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2391121AbfFKHAY (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 11 Jun 2019 03:00:24 -0400
-Received: from localhost (localhost.localdomain [127.0.0.1])
-        by gate.crashing.org (8.14.1/8.14.1) with ESMTP id x5B6xssf032050;
-        Tue, 11 Jun 2019 01:59:55 -0500
-Message-ID: <b30ced162fa96d0ca63b8b9629d6fe9bc5c78746.camel@kernel.crashing.org>
-Subject: Re: [BISECTED REGRESSION] b43legacy broken on G4 PowerBook
-From:   Benjamin Herrenschmidt <benh@kernel.crashing.org>
-To:     Christoph Hellwig <hch@lst.de>
-Cc:     Larry Finger <Larry.Finger@lwfinger.net>,
-        Aaro Koskinen <aaro.koskinen@iki.fi>,
-        Christian Zigotzky <chzigotzky@xenosoft.de>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        linuxppc-dev@lists.ozlabs.org, linux-wireless@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Date:   Tue, 11 Jun 2019 16:59:54 +1000
-In-Reply-To: <fdfc817d1dcdc83f5bc45f0ab12cbce0c61e6702.camel@kernel.crashing.org>
-References: <20190605225059.GA9953@darkstar.musicnaut.iki.fi>
-         <73da300c-871c-77ac-8a3a-deac226743ef@lwfinger.net>
-         <7697a9d10777b28ae79fdffdde6d0985555f6310.camel@kernel.crashing.org>
-         <3ed1ccfe-d7ca-11b9-17b3-303d1ae1bb0f@lwfinger.net>
-         <c91ccbddd6a58dbee5705f10ed1d98fb44bd8f8d.camel@kernel.crashing.org>
-         <20190611060816.GA20158@lst.de>
-         <fdfc817d1dcdc83f5bc45f0ab12cbce0c61e6702.camel@kernel.crashing.org>
-Content-Type: text/plain; charset="UTF-8"
-X-Mailer: Evolution 3.28.5-0ubuntu0.18.04.1 
-Mime-Version: 1.0
+        id S2404113AbfFKHTR (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 11 Jun 2019 03:19:17 -0400
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from orsmga007.jf.intel.com ([10.7.209.58])
+  by orsmga104.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 11 Jun 2019 00:19:16 -0700
+X-ExtLoop1: 1
+Received: from ahunter-desktop.fi.intel.com (HELO [10.237.72.198]) ([10.237.72.198])
+  by orsmga007.jf.intel.com with ESMTP; 11 Jun 2019 00:19:11 -0700
+Subject: Re: [PATCH v3 3/5] brcmfmac: sdio: Disable auto-tuning around
+ commands expected to fail
+To:     Doug Anderson <dianders@chromium.org>
+Cc:     Ulf Hansson <ulf.hansson@linaro.org>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        Arend van Spriel <arend.vanspriel@broadcom.com>,
+        "brcm80211-dev-list.pdl@broadcom.com" 
+        <brcm80211-dev-list.pdl@broadcom.com>,
+        "linux-rockchip@lists.infradead.org" 
+        <linux-rockchip@lists.infradead.org>,
+        Double Lo <double.lo@cypress.com>,
+        "briannorris@chromium.org" <briannorris@chromium.org>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        Naveen Gupta <naveen.gupta@cypress.com>,
+        Madhan Mohan R <madhanmohan.r@cypress.com>,
+        "mka@chromium.org" <mka@chromium.org>,
+        Wright Feng <wright.feng@cypress.com>,
+        Chi-Hsien Lin <chi-hsien.lin@cypress.com>,
+        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+        "brcm80211-dev-list@cypress.com" <brcm80211-dev-list@cypress.com>,
+        Franky Lin <franky.lin@broadcom.com>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        Hante Meuleman <hante.meuleman@broadcom.com>,
+        YueHaibing <yuehaibing@huawei.com>,
+        "David S. Miller" <davem@davemloft.net>
+References: <20190607223716.119277-1-dianders@chromium.org>
+ <20190607223716.119277-4-dianders@chromium.org>
+ <363DA0ED52042842948283D2FC38E4649C52F8A0@IRSMSX106.ger.corp.intel.com>
+ <CAD=FV=U8eo78Ee9xjhGXJMv=8YF9o89KLX024GH3iBRnRjCRvQ@mail.gmail.com>
+From:   Adrian Hunter <adrian.hunter@intel.com>
+Organization: Intel Finland Oy, Registered Address: PL 281, 00181 Helsinki,
+ Business Identity Code: 0357606 - 4, Domiciled in Helsinki
+Message-ID: <ccdc4c80-2fcf-6938-c68e-dc2b21a57d92@intel.com>
+Date:   Tue, 11 Jun 2019 10:17:57 +0300
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.7.0
+MIME-Version: 1.0
+In-Reply-To: <CAD=FV=U8eo78Ee9xjhGXJMv=8YF9o89KLX024GH3iBRnRjCRvQ@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
 Content-Transfer-Encoding: 7bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Tue, 2019-06-11 at 16:58 +1000, Benjamin Herrenschmidt wrote:
-> On Tue, 2019-06-11 at 08:08 +0200, Christoph Hellwig wrote:
-> > On Tue, Jun 11, 2019 at 03:56:33PM +1000, Benjamin Herrenschmidt
-> > wrote:
-> > > The reason I think it sort-of-mostly-worked is that to get more
-> > > than
-> > > 1GB of RAM, those machines use CONFIG_HIGHMEM. And *most* network
-> > > buffers aren't allocated in Highmem.... so you got lucky.
-> > > 
-> > > That said, there is such as thing as no-copy send on network, so I
-> > > wouldn't be surprised if some things would still have failed, just
-> > > not
-> > > frequent enough for you to notice.
-> > 
-> > Unless NETIF_F_HIGHDMA is set on a netdev, the core networkign code
-> > will bounce buffer highmem pages for the driver under all
-> > circumstances.
+On 10/06/19 7:50 PM, Doug Anderson wrote:
+> Hi,
 > 
->  ... which b43legacy doesn't set to the best of my knowledge ...
+> On Mon, Jun 10, 2019 at 1:56 AM Hunter, Adrian <adrian.hunter@intel.com> wrote:
+>>
+>>> --- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c
+>>> +++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c
+>>> @@ -16,6 +16,7 @@
+>>>  #include <linux/mmc/sdio_ids.h>
+>>>  #include <linux/mmc/sdio_func.h>
+>>>  #include <linux/mmc/card.h>
+>>> +#include <linux/mmc/core.h>
+>>
+>> SDIO function drivers should not really include linux/mmc/core.h
+>> (Also don't know why linux/mmc/card.h is included)
 > 
-> Which makes me wonder how come it didn't work even with your patches ?
-> AFAIK, we have less than 1GB of lowmem unless the config has been
-> tweaked....
+> OK, so I guess you're requesting an extra level of "sdio_" wrappers
+> for all the functions I need to call.  I don't think the wrappers buy
+> us a ton other than to abstract things a little bit and make it look
+> prettier.  :-)  ...but certainly I can code that up if that's what
+> everyone wants.
 
-Ah stupid me ... it's dma_set_mask that failed, since it has no idea
-that the calling driver is limited to lowmem.
+I guess it is really up to Ulf.
 
-That's also why the "wrong" patch worked.
-
-So yes, a ZONE_DMA at 30-bits will work, though it's somewhat overkill.
-
-Cheers,
-Ben.
-
+> 
+> Just to make sure, I looked in "drivers/net/wireless/" and I do see
+> quite a few instances of "mmc_" functions being used.  That doesn't
+> mean all these instances are correct but it does appear to be
+> commonplace.  Selected examples:
+> 
+> drivers/net/wireless/ath/ath10k/sdio.c:
+>   ret = mmc_hw_reset(ar_sdio->func->card->host);
+> 
+> drivers/net/wireless/broadcom/brcm80211/brcmfmac/bcmsdh.c:
+>   mmc_set_data_timeout(md, func->card);
+>   mmc_wait_for_req(func->card->host, mr);
+> 
+> drivers/net/wireless/marvell/mwifiex/sdio.c:
+>   mmc_hw_reset(func->card->host);
+> 
+> drivers/net/wireless/rsi/rsi_91x_sdio.c:
+>   err = mmc_wait_for_cmd(host, &cmd, 3);
+> 
+> 
+> ...anyway, I'll give it a few days and if nobody else chimes in then
+> I'll assume you indeed want "sdio_" wrappers for things and I'll post
+> a v4.  If patch #1 happens to land in the meantime then I won't
+> object.  ;-)
+> 
+> 
+> -Doug
+> 
 
