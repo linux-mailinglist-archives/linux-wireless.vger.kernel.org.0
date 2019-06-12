@@ -2,107 +2,105 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 78CF142904
-	for <lists+linux-wireless@lfdr.de>; Wed, 12 Jun 2019 16:29:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A5E0A42909
+	for <lists+linux-wireless@lfdr.de>; Wed, 12 Jun 2019 16:29:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2439760AbfFLO1b (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 12 Jun 2019 10:27:31 -0400
-Received: from mail.kernel.org ([198.145.29.99]:47238 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2439757AbfFLO1a (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 12 Jun 2019 10:27:30 -0400
-Received: from localhost (83-86-89-107.cable.dynamic.v4.ziggo.nl [83.86.89.107])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id A9E102082C;
-        Wed, 12 Jun 2019 14:27:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1560349650;
-        bh=+CG/em/WzEi+E/T+JrEm9KL+zZHCOsy1eQ83aVjigNI=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=OCSkQxqk8ps2zA10tVJqsyAYcXM7OwnwOSNqzElNma7SJabToksdhqfVtuf4DT2Mg
-         0+yLGDX2CEjTa8WAx5KRErU+ZuxKhvbIbZfXVdVvGohuEjXgDIAQ2h3eBw1i6fX7+4
-         Q4UBwZ93Jpsj470Y8fosSgpRUYUPczvk4pBAb1Bs=
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     Johannes Berg <johannes.berg@intel.com>
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Johannes Berg <johannes@sipsolutions.net>,
-        "David S. Miller" <davem@davemloft.net>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org
-Subject: [PATCH 5/5] mac80211: remove unused and unneeded remove_sta_debugfs callback
-Date:   Wed, 12 Jun 2019 16:26:58 +0200
-Message-Id: <20190612142658.12792-5-gregkh@linuxfoundation.org>
-X-Mailer: git-send-email 2.22.0
-In-Reply-To: <20190612142658.12792-1-gregkh@linuxfoundation.org>
-References: <20190612142658.12792-1-gregkh@linuxfoundation.org>
+        id S2439788AbfFLO1r (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 12 Jun 2019 10:27:47 -0400
+Received: from mail-wm1-f68.google.com ([209.85.128.68]:55944 "EHLO
+        mail-wm1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2439772AbfFLO1r (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Wed, 12 Jun 2019 10:27:47 -0400
+Received: by mail-wm1-f68.google.com with SMTP id a15so6788084wmj.5
+        for <linux-wireless@vger.kernel.org>; Wed, 12 Jun 2019 07:27:45 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=d8gfMoCdaL0F8v742YQvQN66e6m2Zpd9bYlkTemgt6o=;
+        b=m+0ekzLKrGf+5pxthWReMbmIbwM5KUdVBCSDXdZpp9VW/9P/49jN5+OKb7dcBue+k1
+         GBeb4y3ZvluWsHRvnDeRKiJ0DqfJC3SpiJ4PDZsZ/4CUYb7mkX6+lehTbILdhT+hf7K9
+         hHZGrR2eALUvbuPtsmKsueJYM1Er08vs78gNOe0YtQPwfeAtcDHbBtpZT4DpVzbS0ttX
+         MX5A9vqshnYQGTYiV9gWoWFBfg/Jk1ScKWrjStBdiFeKPTv9CKP5Sw1UZBqLytEEi7Er
+         pVsr00ohpvpdzmlGr6FD8Ed6/77MztXtrpvFttWMVKkETAslFdAXdkyXIb7yLIUdFUus
+         7WJA==
+X-Gm-Message-State: APjAAAUBsCyTvWLyJb9riBck4HRJIwmXCoZ1YgeD6qbc1eu+L4JoY09t
+        nYh/1KGatr7+vjiImYbClCCRww==
+X-Google-Smtp-Source: APXvYqwinxBY/FOqpwfWKEqLjLmLIHZxjGxDYzfh9yE2AGAghleZouF/fR9+uW1/ghsdxrq9X6aw2g==
+X-Received: by 2002:a7b:cb94:: with SMTP id m20mr21397392wmi.144.1560349665259;
+        Wed, 12 Jun 2019 07:27:45 -0700 (PDT)
+Received: from localhost.localdomain (nat-pool-mxp-t.redhat.com. [149.6.153.186])
+        by smtp.gmail.com with ESMTPSA id a2sm251928wmj.9.2019.06.12.07.27.44
+        (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
+        Wed, 12 Jun 2019 07:27:44 -0700 (PDT)
+Date:   Wed, 12 Jun 2019 16:27:42 +0200
+From:   Lorenzo Bianconi <lorenzo.bianconi@redhat.com>
+To:     Stanislaw Gruszka <sgruszka@redhat.com>
+Cc:     Lorenzo Bianconi <lorenzo@kernel.org>, nbd@nbd.name,
+        kvalo@codeaurora.org, linux-wireless@vger.kernel.org
+Subject: Re: [PATCH v2 2/2] mt76: usb: do not always copy the first part of
+ received frames
+Message-ID: <20190612142741.GA7016@localhost.localdomain>
+References: <cover.1559293385.git.lorenzo@kernel.org>
+ <2ed0b595a12944a8cfea14e066bcc4fa24f0ba44.1559293385.git.lorenzo@kernel.org>
+ <20190612091036.GB2965@redhat.com>
+ <20190612095302.GD8107@localhost.localdomain>
+ <20190612102502.GB4431@redhat.com>
+ <20190612104921.GF8107@localhost.localdomain>
+ <20190612115120.GA3496@redhat.com>
+ <20190612122845.GH8107@localhost.localdomain>
+ <20190612125905.GB2600@redhat.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="liOOAslEiF7prFVr"
+Content-Disposition: inline
+In-Reply-To: <20190612125905.GB2600@redhat.com>
+User-Agent: Mutt/1.11.4 (2019-03-13)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-The remove_sta_debugfs callback in struct rate_control_ops is no longer
-used by any driver, as there is no need for it (the debugfs directory is
-already removed recursivly by the mac80211 core.)  Because no one needs
-it, just remove it to keep anyone else from accidentally using it in the
-future.
 
-Cc: Johannes Berg <johannes@sipsolutions.net>
-Cc: "David S. Miller" <davem@davemloft.net>
-Cc: linux-wireless@vger.kernel.org
-Cc: netdev@vger.kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
----
- include/net/mac80211.h  | 1 -
- net/mac80211/rate.h     | 9 ---------
- net/mac80211/sta_info.c | 1 -
- 3 files changed, 11 deletions(-)
+--liOOAslEiF7prFVr
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-diff --git a/include/net/mac80211.h b/include/net/mac80211.h
-index 72080d9d617e..f42c61422fdf 100644
---- a/include/net/mac80211.h
-+++ b/include/net/mac80211.h
-@@ -5939,7 +5939,6 @@ struct rate_control_ops {
- 
- 	void (*add_sta_debugfs)(void *priv, void *priv_sta,
- 				struct dentry *dir);
--	void (*remove_sta_debugfs)(void *priv, void *priv_sta);
- 
- 	u32 (*get_expected_throughput)(void *priv_sta);
- };
-diff --git a/net/mac80211/rate.h b/net/mac80211/rate.h
-index d59198191a79..a94ce3804962 100644
---- a/net/mac80211/rate.h
-+++ b/net/mac80211/rate.h
-@@ -63,15 +63,6 @@ static inline void rate_control_add_sta_debugfs(struct sta_info *sta)
- #endif
- }
- 
--static inline void rate_control_remove_sta_debugfs(struct sta_info *sta)
--{
--#ifdef CONFIG_MAC80211_DEBUGFS
--	struct rate_control_ref *ref = sta->rate_ctrl;
--	if (ref && ref->ops->remove_sta_debugfs)
--		ref->ops->remove_sta_debugfs(ref->priv, sta->rate_ctrl_priv);
--#endif
--}
--
- void ieee80211_check_rate_mask(struct ieee80211_sub_if_data *sdata);
- 
- /* Get a reference to the rate control algorithm. If `name' is NULL, get the
-diff --git a/net/mac80211/sta_info.c b/net/mac80211/sta_info.c
-index a4932ee3595c..d2933b9f8197 100644
---- a/net/mac80211/sta_info.c
-+++ b/net/mac80211/sta_info.c
-@@ -1027,7 +1027,6 @@ static void __sta_info_destroy_part2(struct sta_info *sta)
- 	cfg80211_del_sta_sinfo(sdata->dev, sta->sta.addr, sinfo, GFP_KERNEL);
- 	kfree(sinfo);
- 
--	rate_control_remove_sta_debugfs(sta);
- 	ieee80211_sta_debugfs_remove(sta);
- 
- 	cleanup_single_sta(sta);
--- 
-2.22.0
+> On Wed, Jun 12, 2019 at 02:28:48PM +0200, Lorenzo Bianconi wrote:
 
+[...]
+
+> >=20
+> > using sg buffers we can support bigger rx AMSDU size in the future with=
+out using
+> > huge buffers (e.g. we can try to use IEEE80211_MAX_MPDU_LEN_HT_7935 with
+> > mt76x2u)
+>=20
+> I think it would be simpler just to allocate 2 pages for 7935B .
+>=20
+
+We should avoid increasing buffer size to more than PAGE_SIZE for
+performance reasons. As suggested by Felix what about of setting buf_size to
+PAGE_SIZE for both sg and non-sg cases and for sg setting usb data size to
+
+SKB_WITH_OVERHEAD(q->buf_size) & (usb_endpoint_maxp() - 1);
+
+Regards,
+Lorenzo
+
+> Stanislaw=20
+
+--liOOAslEiF7prFVr
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYIAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCXQEL2gAKCRA6cBh0uS2t
+rKlXAP0eY6stl9ffOWcHHio+rCSut6qlxjbWpQNgaow0Nrdf4AD/aUK/8nfaCr1j
+w/Qj3lElof3FjIeNbkbl2Po9bgM13Aw=
+=uzuA
+-----END PGP SIGNATURE-----
+
+--liOOAslEiF7prFVr--
