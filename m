@@ -2,107 +2,130 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 678B2424BD
-	for <lists+linux-wireless@lfdr.de>; Wed, 12 Jun 2019 13:51:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9CE35424C5
+	for <lists+linux-wireless@lfdr.de>; Wed, 12 Jun 2019 13:51:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729786AbfFLLtf (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 12 Jun 2019 07:49:35 -0400
-Received: from mail-ua1-f68.google.com ([209.85.222.68]:45915 "EHLO
-        mail-ua1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726167AbfFLLtf (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 12 Jun 2019 07:49:35 -0400
-Received: by mail-ua1-f68.google.com with SMTP id v18so5776827uad.12
-        for <linux-wireless@vger.kernel.org>; Wed, 12 Jun 2019 04:49:34 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=fL5+yAvFpszDdwrzAhEA7Ye5Luf0zjBze5h9taUU+T8=;
-        b=IWDvMyC9P5AiIW64CutGGY3WzwhVrLGaAwN6J8EHfw77V8yPYgGHANQJg8t7eiy16v
-         uMqvroecwGxZQhVf/oKmaAoo3x8Zv6b+o3OUoxe8P5B/4oLM4GhchWkpjqvRt+VvIA3l
-         OJa17Pfk4PgfzzVZjGVPa3deTyFnbxuDADm7WJ9Sc4pnYOc18CjiqS7J44hKqeXxDKCr
-         piablk8wr9MlnupnliBftfIn4flYndyYx6WkOtHT3Ju+Yeph+UIiWKaVCoxSyXhYEyIM
-         27B1y+7ahTL2MLr2dgibSIN4AwXg/MjbIfq1YkfB3kyLgGXCBK9ZErt71PtnX/DZhIjk
-         4Rlw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=fL5+yAvFpszDdwrzAhEA7Ye5Luf0zjBze5h9taUU+T8=;
-        b=RjJouszLcJRItIYJxc3Vynz1C3S/bVr4BXb0B+xAzDqJHvuvgNm/SRJEMzIpVTJKrq
-         Ul5ET2FtApt2khg94aVXnJc87H22aeEPIALCH9jAzuE3ZfTx2H9y+F7/roarbCvI8bQ/
-         5dZwbo9Xf7Nt6YVzJfN5jpbXRS/GYevtyv2+mNRtdLVQOGxj496GB2A9liYswLdN8l6M
-         zRoZpLNEgKZG/qPByG98A0TSWfGW5XOuHewMG9UpCOnJ/9l4+GpScCbNMJepT0J69/+I
-         z5V6B8gJ6La4fruD6Ydw03EpdMn3yE7rJHvrQlTNKs8GmZ0kkL6NCoBr6FyfCTrkuype
-         W2mA==
-X-Gm-Message-State: APjAAAXcoD0gq40CLdFaMpxlsTen9yMs5Ydn7gyCPAu3uYo4py5w6c1p
-        etsUhtJElBbZ2YGcwKvc2lu7WVsOHjIwOf2MNaytWA==
-X-Google-Smtp-Source: APXvYqy9Znw8HxyqdcJxmFY7a6Iw36a1N9tWz9NbjPT8mcjJotx9MWPFEjWPSQY9+rfUfMt64hGDugr+7AVqGSrtZqY=
-X-Received: by 2002:ab0:2705:: with SMTP id s5mr576634uao.104.1560340174391;
- Wed, 12 Jun 2019 04:49:34 -0700 (PDT)
+        id S1730437AbfFLLv0 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 12 Jun 2019 07:51:26 -0400
+Received: from mx1.redhat.com ([209.132.183.28]:45984 "EHLO mx1.redhat.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726004AbfFLLv0 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Wed, 12 Jun 2019 07:51:26 -0400
+Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.phx2.redhat.com [10.5.11.12])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mx1.redhat.com (Postfix) with ESMTPS id 9F96730917AC;
+        Wed, 12 Jun 2019 11:51:25 +0000 (UTC)
+Received: from localhost (unknown [10.43.2.57])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id 3F60D60CCC;
+        Wed, 12 Jun 2019 11:51:22 +0000 (UTC)
+Date:   Wed, 12 Jun 2019 13:51:21 +0200
+From:   Stanislaw Gruszka <sgruszka@redhat.com>
+To:     Lorenzo Bianconi <lorenzo.bianconi@redhat.com>
+Cc:     Lorenzo Bianconi <lorenzo@kernel.org>, nbd@nbd.name,
+        kvalo@codeaurora.org, linux-wireless@vger.kernel.org
+Subject: Re: [PATCH v2 2/2] mt76: usb: do not always copy the first part of
+ received frames
+Message-ID: <20190612115120.GA3496@redhat.com>
+References: <cover.1559293385.git.lorenzo@kernel.org>
+ <2ed0b595a12944a8cfea14e066bcc4fa24f0ba44.1559293385.git.lorenzo@kernel.org>
+ <20190612091036.GB2965@redhat.com>
+ <20190612095302.GD8107@localhost.localdomain>
+ <20190612102502.GB4431@redhat.com>
+ <20190612104921.GF8107@localhost.localdomain>
 MIME-Version: 1.0
-References: <20190607223716.119277-1-dianders@chromium.org>
- <20190607223716.119277-4-dianders@chromium.org> <363DA0ED52042842948283D2FC38E4649C52F8A0@IRSMSX106.ger.corp.intel.com>
- <CAD=FV=U8eo78Ee9xjhGXJMv=8YF9o89KLX024GH3iBRnRjCRvQ@mail.gmail.com>
- <CAPDyKFo=QMRTkNYUVSE2AqiZgytkTVRXF0Mvznn6trVT4-cR=Q@mail.gmail.com> <c7c6d3f4-ebb1-8964-0616-973fae1ab47d@broadcom.com>
-In-Reply-To: <c7c6d3f4-ebb1-8964-0616-973fae1ab47d@broadcom.com>
-From:   Ulf Hansson <ulf.hansson@linaro.org>
-Date:   Wed, 12 Jun 2019 13:48:57 +0200
-Message-ID: <CAPDyKFpM0+FfvoMo8Z_hxM9rzSjeQZHCsA2SPa8WP+SRDhhsPA@mail.gmail.com>
-Subject: Re: [PATCH v3 3/5] brcmfmac: sdio: Disable auto-tuning around
- commands expected to fail
-To:     Arend Van Spriel <arend.vanspriel@broadcom.com>
-Cc:     Doug Anderson <dianders@chromium.org>,
-        "Hunter, Adrian" <adrian.hunter@intel.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        "brcm80211-dev-list.pdl@broadcom.com" 
-        <brcm80211-dev-list.pdl@broadcom.com>,
-        "linux-rockchip@lists.infradead.org" 
-        <linux-rockchip@lists.infradead.org>,
-        Double Lo <double.lo@cypress.com>,
-        "briannorris@chromium.org" <briannorris@chromium.org>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        Naveen Gupta <naveen.gupta@cypress.com>,
-        Madhan Mohan R <madhanmohan.r@cypress.com>,
-        "mka@chromium.org" <mka@chromium.org>,
-        Wright Feng <wright.feng@cypress.com>,
-        Chi-Hsien Lin <chi-hsien.lin@cypress.com>,
-        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-        "brcm80211-dev-list@cypress.com" <brcm80211-dev-list@cypress.com>,
-        Franky Lin <franky.lin@broadcom.com>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        Hante Meuleman <hante.meuleman@broadcom.com>,
-        YueHaibing <yuehaibing@huawei.com>,
-        "David S. Miller" <davem@davemloft.net>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20190612104921.GF8107@localhost.localdomain>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.12
+X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16 (mx1.redhat.com [10.5.110.41]); Wed, 12 Jun 2019 11:51:25 +0000 (UTC)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Wed, 12 Jun 2019 at 13:11, Arend Van Spriel
-<arend.vanspriel@broadcom.com> wrote:
->
-> On 6/12/2019 12:10 PM, Ulf Hansson wrote:
-> >> drivers/net/wireless/broadcom/brcm80211/brcmfmac/bcmsdh.c:
-> >>    mmc_set_data_timeout(md, func->card);
-> >>    mmc_wait_for_req(func->card->host, mr);
-> > These are not okay, none of these things calls should really be done
-> > from an SDIO func driver.
-> >
-> > It tells me that the func driver is a doing workaround for something
-> > that should be managed in a common way.
->
-> We are using some low-level functions passing chain of skbuff to the
-> device using CMD53 with scatterlist. If I recall correctly Marvell made
-> an attempt to have a similar function for it in the mmc stack. Not sure
-> if that ever made it in. If so I can rework our driver using that API.
-> If not, I can make a new attempt.
+On Wed, Jun 12, 2019 at 12:49:22PM +0200, Lorenzo Bianconi wrote:
+> > On Wed, Jun 12, 2019 at 11:53:03AM +0200, Lorenzo Bianconi wrote:
+> > > > On Fri, May 31, 2019 at 11:38:23AM +0200, Lorenzo Bianconi wrote:
+> > > 
+> > > [...]
+> > > 
+> > > > >  	}
+> > > > >  
+> > > > >  	urb->num_sgs = max_t(int, i, urb->num_sgs);
+> > > > > -	urb->transfer_buffer_length = urb->num_sgs * q->buf_size,
+> > > > > +	urb->transfer_buffer_length = urb->num_sgs * data_size;
+> > > > >  	sg_init_marker(urb->sg, urb->num_sgs);
+> > > > >  
+> > > > >  	return i ? : -ENOMEM;
+> > > > > @@ -611,8 +611,12 @@ static int mt76u_alloc_rx(struct mt76_dev *dev)
+> > > > >  	if (!q->entry)
+> > > > >  		return -ENOMEM;
+> > > > >  
+> > > > > -	q->buf_size = dev->usb.sg_en ? MT_RX_BUF_SIZE : PAGE_SIZE;
+> > > > > +	if (dev->usb.sg_en)
+> > > > > +		q->buf_size = MT_BUF_WITH_OVERHEAD(MT_RX_BUF_SIZE);
+> > > > 
+> > > > I strongly recommend to not doing this. While this should work
+> > > > in theory creating buffer with size of 2k + some bytes might
+> > > > trigger various bugs in dma mapping or other low level code.
+> > > 
+> > > even in practice actually :)
+> > 
+> > I wouldn't be sure about this. It's not common to have buffers of
+> > such size and crossing pages boundaries. It really can trigger
+> > nasty bugs on various IOMMU drivers.
+> 
+> I was just joking, I mean that it worked in the tests I carried out, but I
+> agree it can trigger some issues in buggy IOMMU drivers
 
-I recall there were some patches, but not sure why we didn't merge them.
+My sense of humor declined quite drastically lastly ;-/
 
-Anyway, if you want to move this forward, that would be awesome!
+> > > but we can be more cautious since probably copying
+> > > the first 128B will not make any difference
+> > 
+> > Not sure if I understand what you mean.
+> 
+> Please correct me if I am wrong but I think max amsdu rx size is 3839B for
+> mt76. For the sg_en case this frame will span over multiple sg buffers since
+> sg buffer size is 2048B (2 sg buffers). Moreover if we do not take into account
+> skb_shared_info when configuring the sg buffer size we will need to always copy
+> the first 128B of the first buffer since received len will be set to 2048 and
+> the following if condition will always fail:
+> 
+> if (SKB_WITH_OVERHEAD(buf_size) >= MT_DMA_HDR_LEN + len) {
+> }
 
-Kind regards
-Uffe
+Ok, that I understand.
+
+> > > > And skb_shered_info is needed only in first buffer IIUC.
+> > > > 
+> > > > Also this patch seems to make first patch unnecessary except for
+> > > > non sg_en case (in which I think rx AMSDU is broken anyway),
+> > > > so I would prefer just to apply first patch.
+> > > 
+> > > I do not think rx AMSDU is broken for non sg_en case since the max rx value
+> > > allowed should be 3839 IIRC and we alloc one page in this case
+> > 
+> > If that's the case we should be fine, but then I do not understand
+> > why we allocate 8*2k buffers for sg_en case, isn't that AP can
+> > sent AMSDU frame 16k big?
+> 
+> Sorry I did not get what you mean here, could you please explain?
+
+If max RX AMSDU size is 3839B I do not see reason why we allocate
+MT_SG_MAX_SIZE=8 of MT_RX_BUF_SIZE=2k buffers for sg_en case.
+I thought the reason is that max AMSDU size is 16kB so it fit into
+8 sg buffers of 2k.
+
+In other words, for me, looks like either
+- we can not handle AMSDU for non sg case because we do not
+allocate big enough buffer
+or
+- we can just use one PAGE_SIZE buffer for rx and remove sg
+buffers for rx completely 
+
+Do I miss something ?
+
+Stanislaw
