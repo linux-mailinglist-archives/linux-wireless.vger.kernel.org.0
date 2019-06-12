@@ -2,118 +2,85 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D8C7A41E00
-	for <lists+linux-wireless@lfdr.de>; Wed, 12 Jun 2019 09:43:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 58BDA41EEF
+	for <lists+linux-wireless@lfdr.de>; Wed, 12 Jun 2019 10:22:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2406717AbfFLHmL (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 12 Jun 2019 03:42:11 -0400
-Received: from smtp.codeaurora.org ([198.145.29.96]:38792 "EHLO
-        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2406598AbfFLHmL (ORCPT
+        id S2404384AbfFLIWH (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 12 Jun 2019 04:22:07 -0400
+Received: from mail-wm1-f44.google.com ([209.85.128.44]:39642 "EHLO
+        mail-wm1-f44.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1730984AbfFLIWH (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 12 Jun 2019 03:42:11 -0400
-Received: by smtp.codeaurora.org (Postfix, from userid 1000)
-        id 7522F60A50; Wed, 12 Jun 2019 07:42:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1560325330;
-        bh=xNPHKoKqV1TutMy1xldj6g77SuBxNhjrNFll8kibEGs=;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=MiV+9jOoYb4rcUmtLC064Gi6LkvZgLAE+iEsir2POQTM2pi5jSBNeUfmv4QUFplAd
-         ZRAo0V5+PjNXCe6r/j3RrenDK9uEtBDeMc4uFwuT7YLZOTuj0vB7TWsmi5C5FgoL8w
-         dqxPVy60h01uqg8hWK1FpGxQc5X37x32QuPrzcfA=
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        pdx-caf-mail.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.7 required=2.0 tests=ALL_TRUSTED,BAYES_00,
-        DKIM_INVALID,DKIM_SIGNED,SPF_NONE autolearn=no autolearn_force=no
-        version=3.4.0
-Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        (Authenticated sender: kvalo@smtp.codeaurora.org)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 15AEA605A0;
-        Wed, 12 Jun 2019 07:42:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1560325329;
-        bh=xNPHKoKqV1TutMy1xldj6g77SuBxNhjrNFll8kibEGs=;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=NrmlUA3GK1/rPnPk27PqVUgPpD6YR9NzqBNVVCDMD+eGUKF4Wq+iBTGEeAPmoa1oc
-         MMQPcT7kI4gMft02HDbPLu/QOI7yOxhxs3a4/K8tY1AAPMpzPgDwOc+X0WfbWxr4+W
-         4E/JKVGDE9maJztyA2zWkMRgaizmL70sRpgKBOkk=
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 15AEA605A0
-Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
-From:   Kalle Valo <kvalo@codeaurora.org>
-To:     <yhchuang@realtek.com>
-Cc:     <linux-wireless@vger.kernel.org>
-Subject: Re: [PATCH 07/11] rtw88: 8822c: use more accurate ofdm fa counting
-References: <1560321917-17751-1-git-send-email-yhchuang@realtek.com>
-        <1560321917-17751-8-git-send-email-yhchuang@realtek.com>
-Date:   Wed, 12 Jun 2019 10:42:06 +0300
-In-Reply-To: <1560321917-17751-8-git-send-email-yhchuang@realtek.com>
-        (yhchuang@realtek.com's message of "Wed, 12 Jun 2019 14:45:13 +0800")
-Message-ID: <875zpbgshd.fsf@kamboji.qca.qualcomm.com>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
-MIME-Version: 1.0
-Content-Type: text/plain
+        Wed, 12 Jun 2019 04:22:07 -0400
+Received: by mail-wm1-f44.google.com with SMTP id z23so5524327wma.4
+        for <linux-wireless@vger.kernel.org>; Wed, 12 Jun 2019 01:22:05 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:subject:from:in-reply-to:date:cc
+         :content-transfer-encoding:message-id:references:to;
+        bh=1+zB9SSmFh0ZRp+m/jxFT1q7nXRM99Y+CuV6+121TM8=;
+        b=HmM0i7VkeXKOfPHuHE9nVl4onl12HsbWDkkgKze5IE9Y+a08aR/4FBZQa+GYPPBM0w
+         w1qK6l/xSarlAhYVyAgsb6F3zB0kO3fRNvXrO0KrlmIq9yG/kuyuXtu+Tx32oxAtmW39
+         hGLw5IxG42G2P2tOaBXwY5RF0eWz9Wduvg6SIiEiqKf0F5Wthent4w8R/dP6rFajwQ+D
+         JVPv6a/X9GKul6n+HMJZixIKLAvxFKglARuwFOduaQp4fB/IdHlBjJXP1RRZLfuO5TR1
+         EkOonr4TiogMkvpGEUYQbJd2ppFkFiXvrg/0aKl+NEsxJ5XPOFGbB6uCmHP98ccymTVC
+         RVLQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:subject:from:in-reply-to:date:cc
+         :content-transfer-encoding:message-id:references:to;
+        bh=1+zB9SSmFh0ZRp+m/jxFT1q7nXRM99Y+CuV6+121TM8=;
+        b=nERbOXPTHpcAxgJSQrF5HoRPvkkeUzjg9Q+Apnb0t4KXLgQuAUVn1/YKk02CGBk+p4
+         9w2VJPcKbvQD1BiZRfrAqXdNADodMsbvTIICOyH/9IPqXlHaXqnODvGkVtMO2Xcbd5oh
+         ipDt+sGp4Iko+mqpJ/8uFk+OH56ScUAtY7VJK4K2ZIYRIj5DlhcOYdCTDsp80q/Id3NJ
+         TZJhh7v/CO4NIzFrqHFbALq5fls5DY1InCPmzT0Fy/HO+4JsbNqIro4Gvp6MPIpjYLns
+         OUVUH5zIC0e9SSvACyiN3+p5yz1BqrFll4Lf6TIYlcPblrBfvSqzK4M1qisR2y9Jq1N0
+         sGtg==
+X-Gm-Message-State: APjAAAUsCKO4UNizcYrfxYOsJvvhi+TDep2BY107mi3OI0k9FE/eh/up
+        HlaAWkEcX8I3gEEbbi+qi68=
+X-Google-Smtp-Source: APXvYqy7W1SY8q9hH3R5oo3JnB2WBOien+c/I4BugnXNfG9EM782SPR8iPfHcHpJPy2cT8UAbhLZqg==
+X-Received: by 2002:a1c:9dc5:: with SMTP id g188mr21843227wme.93.1560327724953;
+        Wed, 12 Jun 2019 01:22:04 -0700 (PDT)
+Received: from [127.0.0.1] ([138.68.75.163])
+        by smtp.gmail.com with ESMTPSA id t140sm1628875wmt.0.2019.06.12.01.22.02
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Wed, 12 Jun 2019 01:22:04 -0700 (PDT)
+Content-Type: text/plain;
+        charset=utf-8
+Mime-Version: 1.0 (Mac OS X Mail 12.4 \(3445.104.11\))
+Subject: Re: [RESEND] brcmfmac support for BCM4359 sdio on arm64 ??
+From:   Christian Hewitt <christianshewitt@gmail.com>
+In-Reply-To: <37d2964d-1c2b-51bd-ac98-2cc171aa0c9c@broadcom.com>
+Date:   Wed, 12 Jun 2019 12:22:00 +0400
+Cc:     linux-wireless@vger.kernel.org,
+        brcm80211-dev-list.pdl@broadcom.com,
+        brcm80211-dev-list@cypress.com, Wright.Feng@cypress.com,
+        Neil Armstrong <narmstrong@baylibre.com>,
+        Christoph Muellner <christoph.muellner@theobroma-systems.com>
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <65388464-5328-4BF3-8C9A-7C59E3D361E1@gmail.com>
+References: <F5C2858A-498E-4AD3-859D-FA9D14BF6B37@gmail.com>
+ <37d2964d-1c2b-51bd-ac98-2cc171aa0c9c@broadcom.com>
+To:     Arend Van Spriel <arend.vanspriel@broadcom.com>
+X-Mailer: Apple Mail (2.3445.104.11)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-<yhchuang@realtek.com> writes:
 
-> From: Yan-Hsuan Chuang <yhchuang@realtek.com>
->
-> 8822c used to count OFDM FA count by subtracting tx count from FA count.
-> But it need to substract more counters to be accurate.
->
-> However, we can count it by adding up all of the FA counters we want.
-> And it is simpler to add than list all of the components to substract.
->
-> Signed-off-by: Yan-Hsuan Chuang <yhchuang@realtek.com>
+> On 11 Jun 2019, at 1:45 pm, Arend Van Spriel =
+<arend.vanspriel@broadcom.com> wrote:
 
-[...]
+[snip]
 
-> --- a/drivers/net/wireless/realtek/rtw88/rtw8822c.c
-> +++ b/drivers/net/wireless/realtek/rtw88/rtw8822c.c
-> @@ -1491,13 +1491,29 @@ static void rtw8822c_false_alarm_statistics(struct rtw_dev *rtwdev)
->  	u32 cck_enable;
->  	u32 cck_fa_cnt;
->  	u32 ofdm_fa_cnt;
-> -	u32 ofdm_tx_counter;
-> +	u32 ofdm_fa_cnt1, ofdm_fa_cnt2, ofdm_fa_cnt3, ofdm_fa_cnt4, ofdm_fa_cnt5;
-> +	u16 parity_fail, rate_illegal, crc8_fail, mcs_fail, sb_search_fail,
-> +	    fast_fsync, crc8_fail_vhta, mcs_fail_vht;
->  
->  	cck_enable = rtw_read32(rtwdev, REG_ENCCK) & BIT_CCK_BLK_EN;
->  	cck_fa_cnt = rtw_read16(rtwdev, REG_CCK_FACNT);
-> -	ofdm_fa_cnt = rtw_read16(rtwdev, REG_OFDM_FACNT);
-> -	ofdm_tx_counter = rtw_read16(rtwdev, REG_OFDM_TXCNT);
-> -	ofdm_fa_cnt -= ofdm_tx_counter;
-> +
-> +	ofdm_fa_cnt1 = rtw_read32(rtwdev, REG_OFDM_FACNT1);
-> +	ofdm_fa_cnt2 = rtw_read32(rtwdev, REG_OFDM_FACNT2);
-> +	ofdm_fa_cnt3 = rtw_read32(rtwdev, REG_OFDM_FACNT3);
-> +	ofdm_fa_cnt4 = rtw_read32(rtwdev, REG_OFDM_FACNT4);
-> +	ofdm_fa_cnt5 = rtw_read32(rtwdev, REG_OFDM_FACNT5);
-> +
-> +	parity_fail = (ofdm_fa_cnt1 & 0xffff0000) >> 16;
-> +	rate_illegal = (ofdm_fa_cnt2 & 0xffff);
-> +	crc8_fail = (ofdm_fa_cnt2 & 0xffff0000) >> 16;
-> +	crc8_fail_vhta = (ofdm_fa_cnt3 & 0xffff);
-> +	mcs_fail = (ofdm_fa_cnt4 & 0xffff);
-> +	mcs_fail_vht = (ofdm_fa_cnt4 & 0xffff0000) >> 16;
-> +	fast_fsync = (ofdm_fa_cnt5 & 0xffff);
-> +	sb_search_fail = (ofdm_fa_cnt5 & 0xffff0000) >> 16;
+> The splat could be relevant. Maybe try the patch below to get actual =
+values that are checked in the WARN_ON.
 
-No magic numbers, please. IMO the cleanest way is to use create defines
-using GENMASK() and FIELD_GET(), that way the values are proper
-documented. An example (but not compile tested so can be buggy!):
+Hi Arend,
 
-#define OFDM_FA_CNT1_PARITY_FAIL GENMASK(31, 16)
+I think the patch got mangled in transit - it wouldn=E2=80=99t compile. =
+Can you please resend, perhaps share via a paste site?
 
-parity_fail = FIELD_GET(OFDM_FA_CNT1_PARITY_FAIL, ofdm_fa_cnt1);
+Christian
 
--- 
-Kalle Valo
