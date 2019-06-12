@@ -2,65 +2,77 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 05B8B4206E
-	for <lists+linux-wireless@lfdr.de>; Wed, 12 Jun 2019 11:15:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3D90F420DB
+	for <lists+linux-wireless@lfdr.de>; Wed, 12 Jun 2019 11:33:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2407424AbfFLJNj (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 12 Jun 2019 05:13:39 -0400
-Received: from mx1.redhat.com ([209.132.183.28]:39084 "EHLO mx1.redhat.com"
+        id S2407201AbfFLJbd (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 12 Jun 2019 05:31:33 -0400
+Received: from mail.kernel.org ([198.145.29.99]:42402 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1730381AbfFLJNj (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 12 Jun 2019 05:13:39 -0400
-Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.phx2.redhat.com [10.5.11.23])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        id S1731492AbfFLJbd (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Wed, 12 Jun 2019 05:31:33 -0400
+Received: from localhost.localdomain.com (nat-pool-mxp-t.redhat.com [149.6.153.186])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mx1.redhat.com (Postfix) with ESMTPS id 3C74A30C0DCD;
-        Wed, 12 Jun 2019 09:13:34 +0000 (UTC)
-Received: from localhost (unknown [10.43.2.57])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id ABB8A2719B;
-        Wed, 12 Jun 2019 09:13:31 +0000 (UTC)
-Date:   Wed, 12 Jun 2019 11:13:30 +0200
-From:   Stanislaw Gruszka <sgruszka@redhat.com>
-To:     "g.schlmm" <g.schlmm@googlemail.com>
-Cc:     linux-wireless@vger.kernel.org, yhchuang@realtek.com
-Subject: Re: rtw88: M.2 RTL8822BE not working - rfe 3 isn't supported
-Message-ID: <20190612091330.GC2965@redhat.com>
-References: <0d0159a8-a83e-cef3-fd32-4928a2301719@gmail.com>
+        by mail.kernel.org (Postfix) with ESMTPSA id 4ACE1207E0;
+        Wed, 12 Jun 2019 09:31:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1560331891;
+        bh=Dd6PfEw1BJtzIEaTfBXhQUpB88l7lrGYX2e+WoB7ODI=;
+        h=From:To:Cc:Subject:Date:From;
+        b=Q5KVZSsrr/9yxfmwjrRxvlDVaPjjLAeKfT8mnCBR8AahRCwZu5DCyOs8PAhEDOTtS
+         VkqfyeldnlXc/5NBTHgLAPK47OCelPFrMljcZrTeJYYAF8MsTTtqrSPwlFV9MaAq8t
+         crkRImCb+aNpj+Hf0vhdb7D45gDyR9ErGJ0G9dAQ=
+From:   Lorenzo Bianconi <lorenzo@kernel.org>
+To:     nbd@nbd.name
+Cc:     linux-wireless@vger.kernel.org, lorenzo.bianconi@redhat.com,
+        sgruszka@redhat.com
+Subject: [PATCH] mt76: mt76x02u: fix sparse warnings: should it be static?
+Date:   Wed, 12 Jun 2019 11:31:15 +0200
+Message-Id: <c6348193727687b4b4dc7ba3397aef613ecfe289.1560331388.git.lorenzo@kernel.org>
+X-Mailer: git-send-email 2.21.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <0d0159a8-a83e-cef3-fd32-4928a2301719@gmail.com>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-X-Scanned-By: MIMEDefang 2.84 on 10.5.11.23
-X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16 (mx1.redhat.com [10.5.110.45]); Wed, 12 Jun 2019 09:13:39 +0000 (UTC)
+Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Cc Tony 
+Fix following sparse warnings in mt76x02_usb_core.c
 
-On Sat, Jun 08, 2019 at 02:26:51PM +0200, g.schlmm wrote:
-> my RTL8822BE M.2 card is not working with linux 5.2rc3
-> 
-> the staging r8822be driver in linux 5.1 was working for this card
-> 
-> from dmesg:
-> > [    8.001186] rtw_pci 0000:04:00.0: rfe 3 isn't supported                                                             
-> > [    8.003870] rtw_pci 0000:04:00.0: failed to setup chip efuse info                                                   
-> > [    8.006405] rtw_pci 0000:04:00.0: failed to setup chip information 
-> 
-> lspci:
-> > 04:00.0 Unassigned class [ff00]: Realtek Semiconductor Co., Ltd. RTL8822BE 802.11a/b/g/n/ac WiFi adapter
-> >         Subsystem: Lenovo RTL8822BE 802.11a/b/g/n/ac WiFi adapter
-> >         Flags: fast devsel, IRQ 19
-> >         I/O ports at c000 [size=256]
-> >         Memory at 81200000 (64-bit, non-prefetchable) [size=64K]
-> >         Capabilities: [40] Power Management version 3
-> >         Capabilities: [50] MSI: Enable- Count=1/1 Maskable- 64bit+
-> >         Capabilities: [70] Express Endpoint, MSI 00
-> >         Capabilities: [100] Advanced Error Reporting
-> >         Capabilities: [148] Device Serial Number 00-e0-4c-ff-fe-b8-22-01
-> >         Capabilities: [158] Latency Tolerance Reporting
-> >         Capabilities: [160] L1 PM Substates
-> >         Kernel modules: rtwpci
+drivers/net/wireless/mediatek/mt76/mt76x02_usb_core.c:29:6: warning:
+symbol 'mt76x02u_tx_complete_skb' was not declared. Should it be static?
+drivers/net/wireless/mediatek/mt76/mt76x02_usb_core.c:37:5: warning:
+symbol 'mt76x02u_skb_dma_info' was not declared. Should it be static?
+drivers/net/wireless/mediatek/mt76/mt76x02_usb_core.c:96:52: warning:
+restricted __le16 degrades to integer
+drivers/net/wireless/mediatek/mt76/mt76x02_usb_core.c:74:5: warning:
+symbol 'mt76x02u_tx_prepare_skb' was not declared. Should it be static?
+drivers/net/wireless/mediatek/mt76/mt76x02_usb_core.c:244:6: warning:
+symbol 'mt76x02u_init_beacon_config' was not declared. Should it be
+static?
+drivers/net/wireless/mediatek/mt76/mt76x02_usb_core.c:262:6: warning:
+symbol 'mt76x02u_exit_beacon_config' was not declared. Should it be
+static?
+
+Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+---
+ drivers/net/wireless/mediatek/mt76/mt76x02_usb_core.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/net/wireless/mediatek/mt76/mt76x02_usb_core.c b/drivers/net/wireless/mediatek/mt76/mt76x02_usb_core.c
+index f3696afc1dde..1157d905b28c 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt76x02_usb_core.c
++++ b/drivers/net/wireless/mediatek/mt76/mt76x02_usb_core.c
+@@ -14,7 +14,7 @@
+  * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
+  */
+ 
+-#include "mt76x02.h"
++#include "mt76x02_usb.h"
+ 
+ static void mt76x02u_remove_dma_hdr(struct sk_buff *skb)
+ {
+-- 
+2.21.0
+
