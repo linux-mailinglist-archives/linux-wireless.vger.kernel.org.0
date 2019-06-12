@@ -2,91 +2,107 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 9241542323
-	for <lists+linux-wireless@lfdr.de>; Wed, 12 Jun 2019 12:58:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 566D242394
+	for <lists+linux-wireless@lfdr.de>; Wed, 12 Jun 2019 13:13:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732327AbfFLK6H (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 12 Jun 2019 06:58:07 -0400
-Received: from mx1.redhat.com ([209.132.183.28]:55760 "EHLO mx1.redhat.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728127AbfFLK6H (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 12 Jun 2019 06:58:07 -0400
-Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.phx2.redhat.com [10.5.11.11])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mx1.redhat.com (Postfix) with ESMTPS id C331A316290B;
-        Wed, 12 Jun 2019 10:58:06 +0000 (UTC)
-Received: from localhost (unknown [10.43.2.57])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 6850C7BE8F;
-        Wed, 12 Jun 2019 10:58:04 +0000 (UTC)
-Date:   Wed, 12 Jun 2019 12:58:02 +0200
-From:   Stanislaw Gruszka <sgruszka@redhat.com>
-To:     Lorenzo Bianconi <lorenzo.bianconi@redhat.com>
-Cc:     Lorenzo Bianconi <lorenzo@kernel.org>, nbd@nbd.name,
-        kvalo@codeaurora.org, linux-wireless@vger.kernel.org
-Subject: Re: [PATCH v2 1/2] mt76: usb: fix rx A-MSDU support
-Message-ID: <20190612105801.GA2600@redhat.com>
-References: <cover.1559293385.git.lorenzo@kernel.org>
- <52ea155d9889aa15df44b4910806b74fa2fd9056.1559293385.git.lorenzo@kernel.org>
- <20190612085844.GA2965@redhat.com>
- <20190612094519.GC8107@localhost.localdomain>
- <20190612100014.GA4431@redhat.com>
- <20190612102133.GE8107@localhost.localdomain>
+        id S2407589AbfFLLLv (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 12 Jun 2019 07:11:51 -0400
+Received: from mail-wr1-f68.google.com ([209.85.221.68]:43528 "EHLO
+        mail-wr1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2406968AbfFLLLv (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Wed, 12 Jun 2019 07:11:51 -0400
+Received: by mail-wr1-f68.google.com with SMTP id p13so6335419wru.10
+        for <linux-wireless@vger.kernel.org>; Wed, 12 Jun 2019 04:11:50 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=broadcom.com; s=google;
+        h=subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=T0cZTEnUTvGGmjw5I8Wkm+xAGTXLp41aRjblrVtvO6s=;
+        b=JyatqGuFCTR9C17AwuSyJvET6Y0x6fp6Y5k8x7KKvWEwZhzRSKNY+9DIRrM50+Om9Y
+         WpMMP16n48yJ+G5mLjaHbe+AIIJrqRHDZXPYuhpIcfm1VjzPpUdxicueI0SOyL4HBkMt
+         3SOxQGDCQ/d0QJLUjQzOMtTSC6rQvOi7rCp94=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=T0cZTEnUTvGGmjw5I8Wkm+xAGTXLp41aRjblrVtvO6s=;
+        b=YMNKJcLDJgutnkYC8LQyKb8v0QbrLKhH1OvB4CFokIVGUai0aYVaAPJS/wEeCrE49j
+         xeJTm+RToQ8IzClCG+MRDc5LUIQ02YsXR015WGolm0qBZvnmfR7DCNhLqLJ9oxVj2Chf
+         E1zRV0CYQnYcYa19tQngcM7CUFhBBD77Fikfuj4lPaHV55dpBYTmRM6RyQO8Nn+bq4DU
+         fezTtsGuXHRFD6NRxs0ubZQMFuMOB6eiOl+EG0gClYC4sRzr0mBgkxp8GlEaAxTXoD8J
+         ZHe4aA8kNa6eHrsYpYe10vhPWpn2pq4cx1T+VSNjwbGO+m29Jdbb6Ijeye5ieAka6DGQ
+         sIdg==
+X-Gm-Message-State: APjAAAWtU/pAzfjuqOHybNpc+nPShSSeMObmVNvZZ7pixlWKEG+ZWxe3
+        d64Uj/hLsEanFbNgDkfuMpYbiA==
+X-Google-Smtp-Source: APXvYqz8aasOCe6ye7E5FfdTBcDAkR84x/KcKfNBPauTc6i9sI0Ku3jNcSHbU+R9NjuSPf/RBBPEVA==
+X-Received: by 2002:adf:f8cf:: with SMTP id f15mr40008967wrq.333.1560337909649;
+        Wed, 12 Jun 2019 04:11:49 -0700 (PDT)
+Received: from [10.176.68.125] ([192.19.248.250])
+        by smtp.gmail.com with ESMTPSA id 5sm5337449wmg.7.2019.06.12.04.11.47
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Wed, 12 Jun 2019 04:11:48 -0700 (PDT)
+Subject: Re: [PATCH v3 3/5] brcmfmac: sdio: Disable auto-tuning around
+ commands expected to fail
+To:     Ulf Hansson <ulf.hansson@linaro.org>,
+        Doug Anderson <dianders@chromium.org>
+Cc:     "Hunter, Adrian" <adrian.hunter@intel.com>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        "brcm80211-dev-list.pdl@broadcom.com" 
+        <brcm80211-dev-list.pdl@broadcom.com>,
+        "linux-rockchip@lists.infradead.org" 
+        <linux-rockchip@lists.infradead.org>,
+        Double Lo <double.lo@cypress.com>,
+        "briannorris@chromium.org" <briannorris@chromium.org>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        Naveen Gupta <naveen.gupta@cypress.com>,
+        Madhan Mohan R <madhanmohan.r@cypress.com>,
+        "mka@chromium.org" <mka@chromium.org>,
+        Wright Feng <wright.feng@cypress.com>,
+        Chi-Hsien Lin <chi-hsien.lin@cypress.com>,
+        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+        "brcm80211-dev-list@cypress.com" <brcm80211-dev-list@cypress.com>,
+        Franky Lin <franky.lin@broadcom.com>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        Hante Meuleman <hante.meuleman@broadcom.com>,
+        YueHaibing <yuehaibing@huawei.com>,
+        "David S. Miller" <davem@davemloft.net>
+References: <20190607223716.119277-1-dianders@chromium.org>
+ <20190607223716.119277-4-dianders@chromium.org>
+ <363DA0ED52042842948283D2FC38E4649C52F8A0@IRSMSX106.ger.corp.intel.com>
+ <CAD=FV=U8eo78Ee9xjhGXJMv=8YF9o89KLX024GH3iBRnRjCRvQ@mail.gmail.com>
+ <CAPDyKFo=QMRTkNYUVSE2AqiZgytkTVRXF0Mvznn6trVT4-cR=Q@mail.gmail.com>
+From:   Arend Van Spriel <arend.vanspriel@broadcom.com>
+Message-ID: <c7c6d3f4-ebb1-8964-0616-973fae1ab47d@broadcom.com>
+Date:   Wed, 12 Jun 2019 13:11:46 +0200
+User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:60.0) Gecko/20100101
+ Thunderbird/60.7.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20190612102133.GE8107@localhost.localdomain>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.11
-X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16 (mx1.redhat.com [10.5.110.41]); Wed, 12 Jun 2019 10:58:06 +0000 (UTC)
+In-Reply-To: <CAPDyKFo=QMRTkNYUVSE2AqiZgytkTVRXF0Mvznn6trVT4-cR=Q@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Wed, Jun 12, 2019 at 12:21:34PM +0200, Lorenzo Bianconi wrote:
-> On Jun 12, Stanislaw Gruszka wrote:
-> > On Wed, Jun 12, 2019 at 11:45:21AM +0200, Lorenzo Bianconi wrote:
-> > > > > +mt76u_build_rx_skb(u8 *data, int len, int buf_size,
-> > > > > +		   int *nsgs)
-> > > > > +{
-> > > > > +	int data_len = min(len, MT_SKB_HEAD_LEN);
-> > 
-> > Oh, and this looks unneeded as well as for len < MT_SKB_HEAD_LEN=128
-> > we will go through fast path.
+On 6/12/2019 12:10 PM, Ulf Hansson wrote:
+>> drivers/net/wireless/broadcom/brcm80211/brcmfmac/bcmsdh.c:
+>>    mmc_set_data_timeout(md, func->card);
+>>    mmc_wait_for_req(func->card->host, mr);
+> These are not okay, none of these things calls should really be done
+> from an SDIO func driver.
 > 
-> I guess if we remove data_len = min(len, MT_SKB_HEAD_LEN) and even *nsgs = 0 at
-> the end we are making some assumptions on the value of MT_SKB_HEAD_LEN and
-> buf_size. In the patch I just avoided them but maybe we can just assume that
-> MT_SKB_HEAD_LEN and buf_size will not changed in the future. What do you
-> think?
+> It tells me that the func driver is a doing workaround for something
+> that should be managed in a common way.
 
-Yes, sure. Other drivers just use 128 value directly and don't even
-create a macro for that. And if somebody will decide to change
-buf_size it will not be small value.
+We are using some low-level functions passing chain of skbuff to the 
+device using CMD53 with scatterlist. If I recall correctly Marvell made 
+an attempt to have a similar function for it in the mmc stack. Not sure 
+if that ever made it in. If so I can rework our driver using that API. 
+If not, I can make a new attempt.
 
-> > > > mt7601u and iwlmvm just copy hdrlen + 8 and put the rest
-> > > > of the buffer in fragment, which supose to be more efficient,
-> > > > see comment in iwl_mvm_pass_packet_to_mac80211().
-> > > 
-> > > Right here we copy 128B instead of 32 but I think it is good to have L3 and L4
-> > > header in the linear area of the skb since otherwise the stack will need to
-> > > align them
-> > 
-> > Not sure if understand, I think aliment of L3 & L4 headers will be
-> > the same, assuming ieee80211 header is aligned the same in fragment
-> > buffer and in linear area. But if you think this is better to copy those
-> > to linear area I'm ok with that.
-> 
-> Sorry I have not been so clear. I mean in the stack before accessing a given
-> header we will run pskb_may_pull() that can end up copying the skb if there is
-> not enough space in the skb->head
-
-Ok, so L3 and L4 headers should be in linear area of skb and if not 
-network stack will copy them from fragment. But I wonder why other
-drivers just copy ieee80211_hdr and SNAP ? Isn't that if we copy 
-128B then is possible that part of the payload will be in linear
-area and part in fragment, whereas is expected that payload
-will not be broken into two parts?
-
-Stanislaw
+Regards,
+Arend
