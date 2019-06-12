@@ -2,177 +2,193 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 3B5C242140
-	for <lists+linux-wireless@lfdr.de>; Wed, 12 Jun 2019 11:45:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AB43442147
+	for <lists+linux-wireless@lfdr.de>; Wed, 12 Jun 2019 11:46:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2437315AbfFLJp0 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 12 Jun 2019 05:45:26 -0400
-Received: from mail-wr1-f68.google.com ([209.85.221.68]:39924 "EHLO
-        mail-wr1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726636AbfFLJp0 (ORCPT
+        id S2437512AbfFLJpu (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 12 Jun 2019 05:45:50 -0400
+Received: from smtp1.de.adit-jv.com ([93.241.18.167]:35281 "EHLO
+        smtp1.de.adit-jv.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2437298AbfFLJpu (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 12 Jun 2019 05:45:26 -0400
-Received: by mail-wr1-f68.google.com with SMTP id x4so13496583wrt.6
-        for <linux-wireless@vger.kernel.org>; Wed, 12 Jun 2019 02:45:25 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=4G0qTrNn+C+lfTz9EpnbLNh1Ex6YTIsNzBbOSrulyDQ=;
-        b=p8J2vIVv1SXO1Gvm4dhOtlvI3L3qCJvdt2Vr0zs04QRpl+aqC0szu+Dfxo5p6ytExl
-         flE7NZh0n4Mrl2JkmsbVVgzJjqb4jm3mC1e36LrFoeS7cRAw/OH8nipDAqtWiAM+JCK6
-         qm1KGMKjQ2FaiDdxto5faX0HhZjQ0CUVsEpPhikYnJCZHGo+IpBf97bojCzEl2ouXVsu
-         V9JfHRrQRBHUelDpNHUj2icZC9FmNHtb/AgcOHZKT2bC1J8gShr4n2Hkcl/KmHl3iIfU
-         FsniUaxPV8AVw1gbrSw+QBWzxl5lX4oh/oyDRBFsBoP1RyNFzUMPxoeW8e9a3uZZoTew
-         R9rA==
-X-Gm-Message-State: APjAAAVJ1qhZ6Vj2KXm24gQZnqqsrL11+bVfbys3UYJOLOBQZ4PQ2V+C
-        jry9Oy0l2QcMggP9xSuPzwFLZQ==
-X-Google-Smtp-Source: APXvYqwI9jqu//+9FllAQZzG4XGCqNTcHbbLmvidNozrSmarJSf+Z/4v5ev7nn0+WFuFwsMUvujSzg==
-X-Received: by 2002:adf:df91:: with SMTP id z17mr47803825wrl.336.1560332724495;
-        Wed, 12 Jun 2019 02:45:24 -0700 (PDT)
-Received: from localhost.localdomain (nat-pool-mxp-t.redhat.com. [149.6.153.186])
-        by smtp.gmail.com with ESMTPSA id s7sm1782755wmc.2.2019.06.12.02.45.23
-        (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
-        Wed, 12 Jun 2019 02:45:23 -0700 (PDT)
-Date:   Wed, 12 Jun 2019 11:45:21 +0200
-From:   Lorenzo Bianconi <lorenzo.bianconi@redhat.com>
-To:     Stanislaw Gruszka <sgruszka@redhat.com>
-Cc:     Lorenzo Bianconi <lorenzo@kernel.org>, nbd@nbd.name,
-        kvalo@codeaurora.org, linux-wireless@vger.kernel.org
-Subject: Re: [PATCH v2 1/2] mt76: usb: fix rx A-MSDU support
-Message-ID: <20190612094519.GC8107@localhost.localdomain>
-References: <cover.1559293385.git.lorenzo@kernel.org>
- <52ea155d9889aa15df44b4910806b74fa2fd9056.1559293385.git.lorenzo@kernel.org>
- <20190612085844.GA2965@redhat.com>
+        Wed, 12 Jun 2019 05:45:50 -0400
+Received: from localhost (smtp1.de.adit-jv.com [127.0.0.1])
+        by smtp1.de.adit-jv.com (Postfix) with ESMTP id 57F603C00C6;
+        Wed, 12 Jun 2019 11:45:47 +0200 (CEST)
+Received: from smtp1.de.adit-jv.com ([127.0.0.1])
+        by localhost (smtp1.de.adit-jv.com [127.0.0.1]) (amavisd-new, port 10024)
+        with ESMTP id uyfoQNArz41o; Wed, 12 Jun 2019 11:45:41 +0200 (CEST)
+Received: from HI2EXCH01.adit-jv.com (hi2exch01.adit-jv.com [10.72.92.24])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by smtp1.de.adit-jv.com (Postfix) with ESMTPS id 3178E3C00BE;
+        Wed, 12 Jun 2019 11:45:41 +0200 (CEST)
+Received: from vmlxhi-102.adit-jv.com (10.72.93.184) by HI2EXCH01.adit-jv.com
+ (10.72.92.24) with Microsoft SMTP Server (TLS) id 14.3.439.0; Wed, 12 Jun
+ 2019 11:45:41 +0200
+Date:   Wed, 12 Jun 2019 11:45:38 +0200
+From:   Eugeniu Rosca <erosca@de.adit-jv.com>
+To:     Marc Zyngier <marc.zyngier@arm.com>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        Tony Lindgren <tony@atomide.com>,
+        Kalle Valo <kvalo@codeaurora.org>, Eyal Reizer <eyalr@ti.com>
+CC:     Simon Horman <horms+renesas@verge.net.au>,
+        "David S. Miller" <davem@davemloft.net>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Randy Dunlap <rdunlap@infradead.org>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        John Stultz <john.stultz@linaro.org>,
+        linux-wireless <linux-wireless@vger.kernel.org>,
+        netdev <netdev@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Spyridon Papageorgiou <spapageorgiou@de.adit-jv.com>,
+        Joshua Frkuska <joshua_frkuska@mentor.com>,
+        "George G . Davis" <george_davis@mentor.com>,
+        Andrey Gusakov <andrey.gusakov@cogentembedded.com>,
+        Linux-Renesas <linux-renesas-soc@vger.kernel.org>,
+        Eugeniu Rosca <roscaeugeniu@gmail.com>,
+        Eugeniu Rosca <erosca@de.adit-jv.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Jason Cooper <jason@lakedaemon.net>,
+        Linus Walleij <linus.walleij@linaro.org>
+Subject: Re: [PATCH] wlcore/wl18xx: Add invert-irq OF property for physically
+ inverted IRQ
+Message-ID: <20190612094538.GA16575@vmlxhi-102.adit-jv.com>
+References: <20190607172958.20745-1-erosca@de.adit-jv.com>
+ <87tvcxncuq.fsf@codeaurora.org>
+ <20190610083012.GV5447@atomide.com>
+ <CAMuHMdUOc17ocqmt=oNmyN1UT_K7_y=af1pwjwr5PTgQL2o2OQ@mail.gmail.com>
+ <08bc4755-5f47-d792-8b5a-927b5fbe7619@arm.com>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="qjNfmADvan18RZcF"
+Content-Type: text/plain; charset="us-ascii"
 Content-Disposition: inline
-In-Reply-To: <20190612085844.GA2965@redhat.com>
-User-Agent: Mutt/1.11.4 (2019-03-13)
+In-Reply-To: <08bc4755-5f47-d792-8b5a-927b5fbe7619@arm.com>
+User-Agent: Mutt/1.5.24 (2015-08-30)
+X-Originating-IP: [10.72.93.184]
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+Hi,
 
---qjNfmADvan18RZcF
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+cc: Linus Walleij
 
-> Hi and sorry for late comment.
->=20
+On Tue, Jun 11, 2019 at 10:00:41AM +0100, Marc Zyngier wrote:
+> On 11/06/2019 09:45, Geert Uytterhoeven wrote:
+> > CC irqchip
+> > 
+> > Original thread at
+> > https://lore.kernel.org/lkml/20190607172958.20745-1-erosca@de.adit-jv.com/
+> > 
+> > On Mon, Jun 10, 2019 at 10:30 AM Tony Lindgren <tony@atomide.com> wrote:
+> >> * Kalle Valo <kvalo@codeaurora.org> [190610 07:01]:
+> >>> Eugeniu Rosca <erosca@de.adit-jv.com> writes:
+> >>>
+> >>>> The wl1837mod datasheet [1] says about the WL_IRQ pin:
+> >>>>
+> >>>>  ---8<---
+> >>>> SDIO available, interrupt out. Active high. [..]
+> >>>> Set to rising edge (active high) on powerup.
+> >>>>  ---8<---
+> >>>>
+> >>>> That's the reason of seeing the interrupt configured as:
+> >>>>  - IRQ_TYPE_EDGE_RISING on HiKey 960/970
+> >>>>  - IRQ_TYPE_LEVEL_HIGH on a number of i.MX6 platforms
+> >>>>
+> >>>> We assert that all those platforms have the WL_IRQ pin connected
+> >>>> to the SoC _directly_ (confirmed on HiKey 970 [2]).
+> >>>>
+> >>>> That's not the case for R-Car Kingfisher extension target, which carries
+> >>>> a WL1837MODGIMOCT IC. There is an SN74LV1T04DBVR inverter present
+> >>>> between the WLAN_IRQ pin of the WL18* chip and the SoC, effectively
+> >>>> reversing the requirement quoted from [1]. IOW, in Kingfisher DTS
+> >>>> configuration we would need to use IRQ_TYPE_EDGE_FALLING or
+> >>>> IRQ_TYPE_LEVEL_LOW.
+> >>>>
+> >>>> Unfortunately, v4.2-rc1 commit bd763482c82ea2 ("wl18xx: wlan_irq:
+> >>>> support platform dependent interrupt types") made a special case out
+> >>>> of these interrupt types. After this commit, it is impossible to provide
+> >>>> an IRQ configuration via DTS which would describe an inverter present
+> >>>> between the WL18* chip and the SoC, generating the need for workarounds
+> >>>> like [3].
+> >>>>
+> >>>> Create a boolean OF property, called "invert-irq" to specify that
+> >>>> the WLAN_IRQ pin of WL18* is connected to the SoC via an inverter.
+> >>>>
+> >>>> This solution has been successfully tested on R-Car H3ULCB-KF-M06 using
+> >>>> the DTS configuration [4] combined with the "invert-irq" property.
+> >>>>
+> >>>> [1] http://www.ti.com/lit/ds/symlink/wl1837mod.pdf
+> >>>> [2] https://www.96boards.org/documentation/consumer/hikey/hikey970/hardware-docs/
+> >>>> [3] https://github.com/CogentEmbedded/meta-rcar/blob/289fbd4f8354/meta-rcar-gen3-adas/recipes-kernel/linux/linux-renesas/0024-wl18xx-do-not-invert-IRQ-on-WLxxxx-side.patch
+> >>>> [4] https://patchwork.kernel.org/patch/10895879/
+> >>>>     ("arm64: dts: ulcb-kf: Add support for TI WL1837")
+> >>>>
+> >>>> Signed-off-by: Eugeniu Rosca <erosca@de.adit-jv.com>
+> >>>
+> >>> Tony&Eyal, do you agree with this?
+> >>
+> >> Yeah if there's some hardware between the WLAN device and the SoC
+> >> inverting the interrupt, I don't think we have clear a way to deal
+> >> with it short of setting up a separate irqchip that does the
+> >> translation.
+> > 
+> > Yeah, inverting the interrupt type in DT works only for simple devices,
+> > that don't need configuration.
+> > A simple irqchip driver that just inverts the type sounds like a good
+> > solution to me. Does something like that already exists?
+> 
+> We already have plenty of that in the tree, the canonical example
+> probably being drivers/irqchip/irq-mtk-sysirq.c. It should be pretty
+> easy to turn this driver into something more generic.
 
-Hi Stanislaw,
+I don't think drivers/irqchip/irq-mtk-sysirq.c can serve the
+use-case/purpose of this patch. The MTK driver seems to be dealing with
+the polarity inversion of on-SoC interrupts which are routed to GiC,
+whereas in this patch we are talking about an off-chip interrupt
+wired to R-Car GPIO controller.
 
-> On Fri, May 31, 2019 at 11:38:22AM +0200, Lorenzo Bianconi wrote:
-> > Commit f8f527b16db5 ("mt76: usb: use EP max packet aligned buffer sizes
-> > for rx") breaks A-MSDU support. When A-MSDU is enable the device can
-> > receive frames up to q->buf_size but they will be discarded in
-> > mt76u_process_rx_entry since there is no enough room for
-> > skb_shared_info. Fix the issue reallocating the skb and copying in the
-> > linear area the first 128B of the received frames and in the frag_list
-> > the remaining part.
-> >=20
-> > Fixes: f8f527b16db5 ("mt76: usb: use EP max packet aligned buffer sizes=
- for rx")
-> > Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
-> > ---
-> >  drivers/net/wireless/mediatek/mt76/mt76.h |  1 +
-> >  drivers/net/wireless/mediatek/mt76/usb.c  | 52 +++++++++++++++++++----
-> >  2 files changed, 44 insertions(+), 9 deletions(-)
-> >=20
-> > diff --git a/drivers/net/wireless/mediatek/mt76/mt76.h b/drivers/net/wi=
-reless/mediatek/mt76/mt76.h
-> > index 97a1296562d0..74d4edf941d6 100644
-> > --- a/drivers/net/wireless/mediatek/mt76/mt76.h
-> > +++ b/drivers/net/wireless/mediatek/mt76/mt76.h
-> > @@ -30,6 +30,7 @@
-> >  #define MT_TX_RING_SIZE     256
-> >  #define MT_MCU_RING_SIZE    32
-> >  #define MT_RX_BUF_SIZE      2048
-> > +#define MT_SKB_HEAD_LEN     128
-> > =20
-> >  struct mt76_dev;
-> >  struct mt76_wcid;
-> > diff --git a/drivers/net/wireless/mediatek/mt76/usb.c b/drivers/net/wir=
-eless/mediatek/mt76/usb.c
-> > index bbaa1365bbda..2bfc8214c0d8 100644
-> > --- a/drivers/net/wireless/mediatek/mt76/usb.c
-> > +++ b/drivers/net/wireless/mediatek/mt76/usb.c
-> > @@ -429,6 +429,48 @@ static int mt76u_get_rx_entry_len(u8 *data, u32 da=
-ta_len)
-> >  	return dma_len;
-> >  }
-> > =20
-> > +static struct sk_buff *
-> > +mt76u_build_rx_skb(u8 *data, int len, int buf_size,
-> > +		   int *nsgs)
-> > +{
-> > +	int data_len =3D min(len, MT_SKB_HEAD_LEN);
-> > +	struct sk_buff *skb;
-> > +
-> > +	if (SKB_WITH_OVERHEAD(buf_size) >=3D MT_DMA_HDR_LEN + len) {
-> > +		/* fast path */
-> > +		skb =3D build_skb(data, buf_size);
-> > +		if (!skb)
-> > +			return NULL;
-> > +
-> > +		skb_reserve(skb, MT_DMA_HDR_LEN);
-> > +		__skb_put(skb, len);
-> > +
-> > +		return skb;
-> > +	}
-> > +
-> > +	/* slow path, not enough space for data and
-> > +	 * skb_shared_info
-> > +	 */
-> > +	skb =3D alloc_skb(data_len, GFP_ATOMIC);
-> > +	if (!skb)
-> > +		return NULL;
-> > +
-> > +	skb_put_data(skb, data + MT_DMA_HDR_LEN, data_len);
-> mt7601u and iwlmvm just copy hdrlen + 8 and put the rest
-> of the buffer in fragment, which supose to be more efficient,
-> see comment in iwl_mvm_pass_packet_to_mac80211().
+It looks to me that the nice DTS sketch shared by Linus Walleij in [5]
+might come closer to the concept proposed by Geert? FWIW, the
+infrastructure/implementation to make this possible is still not ready.
 
-Right here we copy 128B instead of 32 but I think it is good to have L3 and=
- L4
-header in the linear area of the skb since otherwise the stack will need to
-align them
+One question to the wlcore/wl18xx maintainers: Why exactly do you give
+freedom to users to set the interrupt as LEVEL_LOW/EDGE_FALLING [6]?
+Apparently, this:
+ - complicates the wl18xx driver, thus increasing the chance for bugs
+ - is not supposed to reflect any HW differences between boards using
+   LEVEL_LOW/EDGE_FALLING and the boards using LEVEL_HIGH/EDGE_RISING
+ - doesn't bring any obvious advantage to the users, who are expected to
+   sense the same behavior regardless of the IRQ type set in DTS
+ - prevent the users to set IRQ type to LEVEL_LOW/EDGE_FALLING when
+   there is an inverter present between WL_IRQ and SoC
+ - seems to be not used almost at all, as 99% of mainline DTS set the
+   IRQ type to the canonical/NLCP LEVEL_HIGH/EDGE_RISING
 
-> =20
-> > +	data +=3D (data_len + MT_DMA_HDR_LEN);
-> > +	len -=3D data_len;
-> > +	if (len > 0) {
-> > +		struct page *page =3D virt_to_head_page(data);
-> > +		int offset =3D data - (u8 *)page_address(page);
-> u8 cast not needed.
->=20
-> > +		skb_add_rx_frag(skb, skb_shinfo(skb)->nr_frags,
-> > +				page, offset, len, buf_size);
-> > +	} else {
-> > +		*nsgs =3D 0;
-> This seems to be not necessary or a bug (use first buffer 2 times).=20
+[5] https://patchwork.ozlabs.org/patch/1095690/#2167076
+  ("[V1,1/2] gpio: make it possible to set active-state on GPIO lines")
+ --------------------8<-------------------
+ gpio0: gpio {
+    compatible = "foo,chip";
+    gpio-controller;
+    (...)
+ };
 
-maybe I have been a little bit too paranoid here :)
+ inv0: inverter {
+     compatible = "inverter";
+     gpio-controller;
+     gpios = <&gpio0 0 GPIO_ACTIVE_HIGH>;
+ };
 
-Regards,
-Lorenzo
+ consumer {
+    compatible = "bar";
+    gpios = <&inv0 0 GPIO_ACTIVE_HIGH>;
+ };
+ --------------------8<-------------------
 
->=20
-> Stanislaw
+[6] bd763482c82ea2 ("wl18xx: wlan_irq: support platform dependent interrupt types")
 
---qjNfmADvan18RZcF
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYIAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCXQDJrQAKCRA6cBh0uS2t
-rB4KAQCr59RUB5bYyhhEooz+eF/YYbmqykMLt2omDXqOWBATLwEAgbc1fNJak68D
-MSgjyfEBwifUVRLQmpAXOk59GDtE5QY=
-=1PGn
------END PGP SIGNATURE-----
-
---qjNfmADvan18RZcF--
+-- 
+Best Regards,
+Eugeniu.
