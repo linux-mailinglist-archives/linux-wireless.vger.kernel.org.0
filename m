@@ -2,91 +2,85 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 390B241AB9
-	for <lists+linux-wireless@lfdr.de>; Wed, 12 Jun 2019 05:33:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4EE6F41C77
+	for <lists+linux-wireless@lfdr.de>; Wed, 12 Jun 2019 08:45:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2404721AbfFLDdR (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 11 Jun 2019 23:33:17 -0400
-Received: from gate.crashing.org ([63.228.1.57]:59994 "EHLO gate.crashing.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2404347AbfFLDdR (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 11 Jun 2019 23:33:17 -0400
-Received: from localhost (localhost.localdomain [127.0.0.1])
-        by gate.crashing.org (8.14.1/8.14.1) with ESMTP id x5C3WnMD029931;
-        Tue, 11 Jun 2019 22:32:50 -0500
-Message-ID: <9fc8153bf08d1a5fd166d0cb38585094bffa060b.camel@kernel.crashing.org>
-Subject: Re: [BISECTED REGRESSION] b43legacy broken on G4 PowerBook
-From:   Benjamin Herrenschmidt <benh@kernel.crashing.org>
-To:     Larry Finger <Larry.Finger@lwfinger.net>,
-        Christoph Hellwig <hch@lst.de>
-Cc:     Aaro Koskinen <aaro.koskinen@iki.fi>,
-        linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Christian Zigotzky <chzigotzky@xenosoft.de>,
-        linuxppc-dev@lists.ozlabs.org
-Date:   Wed, 12 Jun 2019 13:32:49 +1000
-In-Reply-To: <7dcf54a9-a7aa-3a4c-8e2d-556be633d6e0@lwfinger.net>
-References: <20190605225059.GA9953@darkstar.musicnaut.iki.fi>
-         <73da300c-871c-77ac-8a3a-deac226743ef@lwfinger.net>
-         <20190607172902.GA8183@lst.de>
-         <30000803-3772-3edf-f4a9-55122d504f3f@lwfinger.net>
-         <20190610081825.GA16534@lst.de>
-         <153c13f5-a829-1eab-a3c5-fecfb84127ff@lwfinger.net>
-         <20190611060521.GA19512@lst.de>
-         <5aaa600b-5b59-1f68-454f-20403c318f1a@lwfinger.net>
-         <0b257651bb7ac4a6f0a8dce5470120b7701720b9.camel@kernel.crashing.org>
-         <7dcf54a9-a7aa-3a4c-8e2d-556be633d6e0@lwfinger.net>
-Content-Type: text/plain; charset="UTF-8"
-X-Mailer: Evolution 3.28.5-0ubuntu0.18.04.1 
-Mime-Version: 1.0
-Content-Transfer-Encoding: 7bit
+        id S2390558AbfFLGpe (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 12 Jun 2019 02:45:34 -0400
+Received: from rtits2.realtek.com ([211.75.126.72]:51294 "EHLO
+        rtits2.realtek.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1731217AbfFLGpc (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Wed, 12 Jun 2019 02:45:32 -0400
+Authenticated-By: 
+X-SpamFilter-By: BOX Solutions SpamTrap 5.62 with qID x5C6jQmg004340, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtitcasv01.realtek.com.tw[172.21.6.18])
+        by rtits2.realtek.com.tw (8.15.2/2.57/5.78) with ESMTPS id x5C6jQmg004340
+        (version=TLSv1 cipher=DHE-RSA-AES256-SHA bits=256 verify=NOT);
+        Wed, 12 Jun 2019 14:45:26 +0800
+Received: from localhost.localdomain (172.21.68.126) by
+ RTITCASV01.realtek.com.tw (172.21.6.18) with Microsoft SMTP Server id
+ 14.3.439.0; Wed, 12 Jun 2019 14:45:25 +0800
+From:   <yhchuang@realtek.com>
+To:     <kvalo@codeaurora.org>
+CC:     <linux-wireless@vger.kernel.org>
+Subject: [PATCH 00/11] rtw88: regular driver upgrade with minor changes
+Date:   Wed, 12 Jun 2019 14:45:06 +0800
+Message-ID: <1560321917-17751-1-git-send-email-yhchuang@realtek.com>
+X-Mailer: git-send-email 2.7.4
+MIME-Version: 1.0
+Content-Type: text/plain
+X-Originating-IP: [172.21.68.126]
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Tue, 2019-06-11 at 20:52 -0500, Larry Finger wrote:
-> On 6/11/19 5:46 PM, Benjamin Herrenschmidt wrote:
-> > On Tue, 2019-06-11 at 17:20 -0500, Larry Finger wrote:
-> > > b43-pci-bridge 0001:11:00.0: dma_direct_supported: failed (mask =
-> > > 0x3fffffff,
-> > > min_mask = 0x5ffff000/0x5ffff000, dma bits = 0x1f
-> > 
-> > Ugh ? A mask with holes in it ? That's very wrong... That min_mask is
-> > bogus.
-> 
-> I agree, but that is not likely serious as most systems will have enough memory 
-> that the max_pfn term will be much larger than the initial min_mask, and 
-> min_mask will be unchanged by the min function. 
+From: Yan-Hsuan Chuang <yhchuang@realtek.com>
 
-Well no... it's too much memory that is the problem. If min_mask is
-bogus though it will cause problem later too, so one should look into
-it.
+These patch set are mostly minor fixes.
 
-> In addition, min_mask is not 
-> used beyond this routine, and then only to decide if direct dma is supported. 
-> The following patch generates masks with no holes, but I cannot see that it is 
-> needed.
+Some of them are adjustments for 8822c's phy setting.
 
-The right fix is to round up max_pfn to a power of 2, something like
+DACK reload is to speed up hardware power on.
 
-min_mask = min_t(u64, min_mask, (roundup_pow_of_two(max_pfn - 1)) <<
-		PAGE_SHIFT) 
+Beacon function setting make sure the hardware to sync the TSF
+for the beacon intervals (station mode). For other modes, disable
+TSF sync to avoid beacon interval getting violated.
 
-> diff --git a/kernel/dma/direct.c b/kernel/dma/direct.c
-> index 2c2772e9702a..e3edd4f29e80 100644
-> --- a/kernel/dma/direct.c
-> +++ b/kernel/dma/direct.c
-> @@ -384,7 +384,8 @@ int dma_direct_supported(struct device *dev, u64 mask)
->          else
->                  min_mask = DMA_BIT_MASK(32);
-> 
-> -       min_mask = min_t(u64, min_mask, (max_pfn - 1) << PAGE_SHIFT);
-> +       min_mask = min_t(u64, min_mask, ((max_pfn - 1) << PAGE_SHIFT) |
-> +                                        DMA_BIT_MASK(PAGE_SHIFT));
-> 
->          /*
->           * This check needs to be against the actual bit mask value, so
-> 
-> 
-> Larry
+And two of them make rtw88 has two new features "fast_xmit" and
+"random mac scan"
+
+Chien-Hsun Liao (2):
+  rtw88: 8822c: add rf write protection when switching channel
+  rtw88: 8822c: update channel and bandwidth BB setting
+
+Chin-Yen Lee (1):
+  rtw88: add beacon function setting
+
+Tzu-En Huang (1):
+  rtw88: fix typo rtw_writ16_set
+
+Yan-Hsuan Chuang (7):
+  rtw88: add fast xmit support
+  rtw88: add support for random mac scan
+  rtw88: 8822c: disable rx clock gating before counter reset
+  rtw88: 8822c: use more accurate ofdm fa counting
+  rtw88: power on again if it was already on
+  rtw88: restore DACK results to save time
+  rtw88: rsvd page should go though management queue
+
+ drivers/net/wireless/realtek/rtw88/hci.h      |   2 +-
+ drivers/net/wireless/realtek/rtw88/mac.c      |   8 +-
+ drivers/net/wireless/realtek/rtw88/mac80211.c |  32 ++
+ drivers/net/wireless/realtek/rtw88/main.c     |   8 +
+ drivers/net/wireless/realtek/rtw88/main.h     |  11 +
+ drivers/net/wireless/realtek/rtw88/phy.c      |  13 +-
+ drivers/net/wireless/realtek/rtw88/rtw8822c.c | 435 ++++++++++++++++++++++++--
+ drivers/net/wireless/realtek/rtw88/rtw8822c.h |  22 ++
+ drivers/net/wireless/realtek/rtw88/tx.c       |   2 +-
+ 9 files changed, 502 insertions(+), 31 deletions(-)
+
+-- 
+2.7.4
 
