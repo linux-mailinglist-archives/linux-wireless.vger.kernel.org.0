@@ -2,108 +2,237 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 49E84426CF
-	for <lists+linux-wireless@lfdr.de>; Wed, 12 Jun 2019 14:59:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 92AC74276D
+	for <lists+linux-wireless@lfdr.de>; Wed, 12 Jun 2019 15:27:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2437285AbfFLM7L (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 12 Jun 2019 08:59:11 -0400
-Received: from mx1.redhat.com ([209.132.183.28]:32658 "EHLO mx1.redhat.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2437214AbfFLM7L (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 12 Jun 2019 08:59:11 -0400
-Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.phx2.redhat.com [10.5.11.12])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mx1.redhat.com (Postfix) with ESMTPS id E9BBF356D3;
-        Wed, 12 Jun 2019 12:59:10 +0000 (UTC)
-Received: from localhost (unknown [10.43.2.57])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 8FD2068431;
-        Wed, 12 Jun 2019 12:59:08 +0000 (UTC)
-Date:   Wed, 12 Jun 2019 14:59:06 +0200
-From:   Stanislaw Gruszka <sgruszka@redhat.com>
-To:     Lorenzo Bianconi <lorenzo.bianconi@redhat.com>
-Cc:     Lorenzo Bianconi <lorenzo@kernel.org>, nbd@nbd.name,
-        kvalo@codeaurora.org, linux-wireless@vger.kernel.org
-Subject: Re: [PATCH v2 2/2] mt76: usb: do not always copy the first part of
- received frames
-Message-ID: <20190612125905.GB2600@redhat.com>
-References: <cover.1559293385.git.lorenzo@kernel.org>
- <2ed0b595a12944a8cfea14e066bcc4fa24f0ba44.1559293385.git.lorenzo@kernel.org>
- <20190612091036.GB2965@redhat.com>
- <20190612095302.GD8107@localhost.localdomain>
- <20190612102502.GB4431@redhat.com>
- <20190612104921.GF8107@localhost.localdomain>
- <20190612115120.GA3496@redhat.com>
- <20190612122845.GH8107@localhost.localdomain>
+        id S2407641AbfFLN0J (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 12 Jun 2019 09:26:09 -0400
+Received: from mail-vk1-f193.google.com ([209.85.221.193]:38941 "EHLO
+        mail-vk1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727303AbfFLN0J (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Wed, 12 Jun 2019 09:26:09 -0400
+Received: by mail-vk1-f193.google.com with SMTP id o19so2442197vkb.6
+        for <linux-wireless@vger.kernel.org>; Wed, 12 Jun 2019 06:26:08 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=E7fySMumjNmRNmMY5t+/ORC71GvUDcf7jQJsz2Lmu8Y=;
+        b=QYWBrnNjzTR4SGTlmO+2dMnBv0gF7OVThMta1UF3J+3SU6BeS6RM+NzORZ66PxnWMr
+         TN4VaBhSU8xmyY+EpiRD7RUp/3nb+aJxMFRBITrHO7pf7VOLwfr75hgtcrdjNdhikPqg
+         CQ0xBkMxoL13nkJCidmvZ5LkHGd1qFz+h1IAO85qJdsWiPFmVRRH9ubM6QwTjpUo0lRH
+         l8+unLl6yS22kj5G2/kesq8q0bzn8XxOe56vJ7Nwgq1hxtYfcbCqgmfsl9UPsih6Eq4f
+         44D0bXKixT4b/tmZKKQrVAKKLo9+5lz4OVfKHUOuvLssmnlfk4kDGpVhZNeT0V3qZoSs
+         Ezrg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=E7fySMumjNmRNmMY5t+/ORC71GvUDcf7jQJsz2Lmu8Y=;
+        b=Eddu2HQqSk73GreWnxwClWLCMIRTct+eN7VfoH5CPeumWIRVXmymjjKUck1GwZPCrn
+         HarxXoeSyo/igyL8Z3isbAFTC0hidpAzKdWtninp44D2LOVEz1E11gf8O7iB24rIrfVV
+         /5nOd5ELcsm37tzj7xDFlbqkwhSYT/KA0NHt78XgJR3b3/aAuUwYRLTn+q5JIifI2P/x
+         UdPuMSxHcj1D88S2ERvLei9i8uRJQIqqUvHMEKSZWiQSGN/lv++8oixg2ICYHkLwoZBY
+         5xutjt9eyRByc3bQVIdnDbWqT1QO+O+YgROi87i0Ev6ylYNSAnaUMr8B4ZJdb9+q9OR5
+         R2lg==
+X-Gm-Message-State: APjAAAXYdwGGjO8eGQNysm5xzkKXpwMSdxVWBIrdMeI/VbyJXRwWBn3x
+        O2l4zon/1IlNSRz51KDZYjYPgh/7G/UHT23JvF9SZQ==
+X-Google-Smtp-Source: APXvYqzHLztZ6A07mA3L0RxrvDr4TaNWEVgx7eQUPB1lNxzINC6SuMv7jHQOr/DXwamjqJh6KLqVETMYT0iIgnB+Yjs=
+X-Received: by 2002:ac5:c2d2:: with SMTP id i18mr23129212vkk.36.1560345967778;
+ Wed, 12 Jun 2019 06:26:07 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20190612122845.GH8107@localhost.localdomain>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.12
-X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16 (mx1.redhat.com [10.5.110.30]); Wed, 12 Jun 2019 12:59:11 +0000 (UTC)
+References: <20190607223716.119277-1-dianders@chromium.org> <20190607223716.119277-3-dianders@chromium.org>
+In-Reply-To: <20190607223716.119277-3-dianders@chromium.org>
+From:   Ulf Hansson <ulf.hansson@linaro.org>
+Date:   Wed, 12 Jun 2019 15:25:31 +0200
+Message-ID: <CAPDyKFpdkkzkbSy-uWL8TwdNFjJi10au7ZDOYjoWuDzftpoNsQ@mail.gmail.com>
+Subject: Re: [PATCH v3 2/5] mmc: core: API for temporarily disabling
+ auto-retuning due to errors
+To:     Douglas Anderson <dianders@chromium.org>
+Cc:     Kalle Valo <kvalo@codeaurora.org>,
+        Adrian Hunter <adrian.hunter@intel.com>,
+        Arend van Spriel <arend.vanspriel@broadcom.com>,
+        brcm80211-dev-list.pdl@broadcom.com,
+        "open list:ARM/Rockchip SoC..." <linux-rockchip@lists.infradead.org>,
+        Double Lo <double.lo@cypress.com>,
+        Brian Norris <briannorris@chromium.org>,
+        linux-wireless <linux-wireless@vger.kernel.org>,
+        Naveen Gupta <naveen.gupta@cypress.com>,
+        Madhan Mohan R <madhanmohan.r@cypress.com>,
+        Matthias Kaehlcke <mka@chromium.org>,
+        Wright Feng <wright.feng@cypress.com>,
+        Chi-Hsien Lin <chi-hsien.lin@cypress.com>,
+        netdev@vger.kernel.org, brcm80211-dev-list@cypress.com,
+        Jiong Wu <lohengrin1024@gmail.com>,
+        Ritesh Harjani <riteshh@codeaurora.org>,
+        "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Shawn Lin <shawn.lin@rock-chips.com>,
+        Wolfram Sang <wsa+renesas@sang-engineering.com>,
+        Avri Altman <avri.altman@wdc.com>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Wed, Jun 12, 2019 at 02:28:48PM +0200, Lorenzo Bianconi wrote:
-> [...]
-> > 
-> > My sense of humor declined quite drastically lastly ;-/
-> > 
-> > > > > but we can be more cautious since probably copying
-> > > > > the first 128B will not make any difference
-> > > > 
-> > > > Not sure if I understand what you mean.
-> > > 
-> > > Please correct me if I am wrong but I think max amsdu rx size is 3839B for
-> > > mt76. For the sg_en case this frame will span over multiple sg buffers since
-> > > sg buffer size is 2048B (2 sg buffers). Moreover if we do not take into account
-> > > skb_shared_info when configuring the sg buffer size we will need to always copy
-> > > the first 128B of the first buffer since received len will be set to 2048 and
-> > > the following if condition will always fail:
-> > > 
-> > > if (SKB_WITH_OVERHEAD(buf_size) >= MT_DMA_HDR_LEN + len) {
-> > > }
-> > 
-> > Ok, that I understand.
-> > 
-> > > > > > And skb_shered_info is needed only in first buffer IIUC.
-> > > > > > 
-> > > > > > Also this patch seems to make first patch unnecessary except for
-> > > > > > non sg_en case (in which I think rx AMSDU is broken anyway),
-> > > > > > so I would prefer just to apply first patch.
-> > > > > 
-> > > > > I do not think rx AMSDU is broken for non sg_en case since the max rx value
-> > > > > allowed should be 3839 IIRC and we alloc one page in this case
-> > > > 
-> > > > If that's the case we should be fine, but then I do not understand
-> > > > why we allocate 8*2k buffers for sg_en case, isn't that AP can
-> > > > sent AMSDU frame 16k big?
-> > > 
-> > > Sorry I did not get what you mean here, could you please explain?
-> > 
-> > If max RX AMSDU size is 3839B I do not see reason why we allocate
-> > MT_SG_MAX_SIZE=8 of MT_RX_BUF_SIZE=2k buffers for sg_en case.
-> > I thought the reason is that max AMSDU size is 16kB so it fit into
-> > 8 sg buffers of 2k.
-> > 
-> > In other words, for me, looks like either
-> > - we can not handle AMSDU for non sg case because we do not
-> > allocate big enough buffer
-> 
-> I think AMSDU is mandatory and we currently support it even for non-sg case
-> (since max rx AMSDU is 3839B)
-> 
-> > or
-> > - we can just use one PAGE_SIZE buffer for rx and remove sg
-> > buffers for rx completely 
-> 
-> using sg buffers we can support bigger rx AMSDU size in the future without using
-> huge buffers (e.g. we can try to use IEEE80211_MAX_MPDU_LEN_HT_7935 with
-> mt76x2u)
+On Sat, 8 Jun 2019 at 00:37, Douglas Anderson <dianders@chromium.org> wrote:
+>
+> Normally when the MMC core sees an "-EILSEQ" error returned by a host
+> controller then it will trigger a retuning of the card.  This is
+> generally a good idea.
+>
+> However, if a command is expected to sometimes cause transfer errors
+> then these transfer errors shouldn't cause a re-tuning.  This
+> re-tuning will be a needless waste of time.  One example case where a
+> transfer is expected to cause errors is when transitioning between
+> idle (sometimes referred to as "sleep" in Broadcom code) and active
+> state on certain Broadcom WiFi cards.  Specifically if the card was
+> already transitioning between states when the command was sent it
+> could cause an error on the SDIO bus.
+>
+> Let's add an API that the SDIO card drivers can call that will
+> temporarily disable the auto-tuning functionality.  Then we can add a
+> call to this in the Broadcom WiFi driver and any other driver that
+> might have similar needs.
+>
+> NOTE: this makes the assumption that the card is already tuned well
+> enough that it's OK to disable the auto-retuning during one of these
+> error-prone situations.  Presumably the driver code performing the
+> error-prone transfer knows how to recover / retry from errors.  ...and
+> after we can get back to a state where transfers are no longer
+> error-prone then we can enable the auto-retuning again.  If we truly
+> find ourselves in a case where the card needs to be retuned sometimes
+> to handle one of these error-prone transfers then we can always try a
+> few transfers first without auto-retuning and then re-try with
+> auto-retuning if the first few fail.
+>
+> Without this change on rk3288-veyron-minnie I periodically see this in
+> the logs of a machine just sitting there idle:
+>   dwmmc_rockchip ff0d0000.dwmmc: Successfully tuned phase to XYZ
+>
+> Fixes: bd11e8bd03ca ("mmc: core: Flag re-tuning is needed on CRC errors")
+> Signed-off-by: Douglas Anderson <dianders@chromium.org>
+> ---
+> Note that are are a whole boatload of different ways that we could
+> provide an API for the Broadcom WiFi SDIO driver.  This patch
+> illustrates one way but if maintainers feel strongly that this is too
+> ugly and have a better idea then I can give it a shot too.  From a
+> purist point of view I kinda felt that the "expect errors" really
+> belonged as part of the mmc_request structure, but getting it into
+> there meant changing a whole pile of core SD/MMC APIs.  Simply adding
+> it to the host seemed to match the current style better and was a less
+> intrusive change.
+>
+> Changes in v3:
+> - Took out the spinlock since I believe this is all in one context.
 
-I think it would be simpler just to allocate 2 pages for 7935B .
+This needs to be clarified, preferable also in a function header.
 
-Stanislaw 
+If I understand correctly, the SDIO func driver needs the host to be
+claimed when it calls mmc_expect_errors_begin(). More importantly, it
+also needs to be keep it claimed until after it had called
+mmc_expect_errors_end(). Correct?
+
+>
+> Changes in v2:
+> - Updated commit message to clarify based on discussion of v1.
+>
+>  drivers/mmc/core/core.c  | 19 +++++++++++++++++--
+>  include/linux/mmc/core.h |  2 ++
+>  include/linux/mmc/host.h |  1 +
+>  3 files changed, 20 insertions(+), 2 deletions(-)
+>
+> diff --git a/drivers/mmc/core/core.c b/drivers/mmc/core/core.c
+> index 6db36dc870b5..bc109ec49406 100644
+> --- a/drivers/mmc/core/core.c
+> +++ b/drivers/mmc/core/core.c
+> @@ -144,8 +144,9 @@ void mmc_request_done(struct mmc_host *host, struct mmc_request *mrq)
+>         int err = cmd->error;
+>
+>         /* Flag re-tuning needed on CRC errors */
+> -       if ((cmd->opcode != MMC_SEND_TUNING_BLOCK &&
+> -           cmd->opcode != MMC_SEND_TUNING_BLOCK_HS200) &&
+> +       if (cmd->opcode != MMC_SEND_TUNING_BLOCK &&
+> +           cmd->opcode != MMC_SEND_TUNING_BLOCK_HS200 &&
+> +           !host->expect_errors &&
+>             (err == -EILSEQ || (mrq->sbc && mrq->sbc->error == -EILSEQ) ||
+>             (mrq->data && mrq->data->error == -EILSEQ) ||
+>             (mrq->stop && mrq->stop->error == -EILSEQ)))
+> @@ -2163,6 +2164,20 @@ int mmc_sw_reset(struct mmc_host *host)
+>  }
+>  EXPORT_SYMBOL(mmc_sw_reset);
+>
+> +void mmc_expect_errors_begin(struct mmc_host *host)
+> +{
+> +       WARN_ON(host->expect_errors);
+
+Please remove the WARN_ON. If you believe there is a need for
+reference counting, then please add that instead (but likely not in
+the phase?).
+
+> +       host->expect_errors = true;
+> +}
+> +EXPORT_SYMBOL_GPL(mmc_expect_errors_begin);
+> +
+> +void mmc_expect_errors_end(struct mmc_host *host)
+> +{
+> +       WARN_ON(!host->expect_errors);
+
+Ditto.
+
+> +       host->expect_errors = false;
+> +}
+> +EXPORT_SYMBOL_GPL(mmc_expect_errors_end);
+
+These new APIs seems to be useful solely for SDIO. Even if it turns
+out later that they can be made generic, I suggest to start with a
+SDIO func API instead.
+
+However, using a new host variable (->expect_errors) is fine by me.
+
+> +
+>  static int mmc_rescan_try_freq(struct mmc_host *host, unsigned freq)
+>  {
+>         host->f_init = freq;
+> diff --git a/include/linux/mmc/core.h b/include/linux/mmc/core.h
+> index 134a6483347a..02a13abf0cda 100644
+> --- a/include/linux/mmc/core.h
+> +++ b/include/linux/mmc/core.h
+> @@ -178,6 +178,8 @@ int mmc_wait_for_cmd(struct mmc_host *host, struct mmc_command *cmd,
+>
+>  int mmc_hw_reset(struct mmc_host *host);
+>  int mmc_sw_reset(struct mmc_host *host);
+> +void mmc_expect_errors_begin(struct mmc_host *host);
+> +void mmc_expect_errors_end(struct mmc_host *host);
+
+The API prevents a new re-tune to be "scheduled" in case requests are
+failing with -EILSEQ.
+
+To better reflect that, may I suggest to rename this to
+sdio_retune_crc_disable() and sdio_retune_crc_enable(). Or something
+along those lines.
+
+
+>  void mmc_set_data_timeout(struct mmc_data *data, const struct mmc_card *card);
+>
+>  #endif /* LINUX_MMC_CORE_H */
+> diff --git a/include/linux/mmc/host.h b/include/linux/mmc/host.h
+> index 43d0f0c496f6..8d553fb8c834 100644
+> --- a/include/linux/mmc/host.h
+> +++ b/include/linux/mmc/host.h
+> @@ -398,6 +398,7 @@ struct mmc_host {
+>         unsigned int            retune_now:1;   /* do re-tuning at next req */
+>         unsigned int            retune_paused:1; /* re-tuning is temporarily disabled */
+>         unsigned int            use_blk_mq:1;   /* use blk-mq */
+> +       unsigned int            expect_errors:1; /* don't trigger retune upon errors */
+>
+>         int                     rescan_disable; /* disable card detection */
+>         int                     rescan_entered; /* used with nonremovable devices */
+> --
+> 2.22.0.rc2.383.gf4fbbf30c2-goog
+>
+
+Kind regards
+Uffe
