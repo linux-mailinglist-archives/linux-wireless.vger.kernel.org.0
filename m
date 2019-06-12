@@ -2,120 +2,66 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id EA1BE42174
-	for <lists+linux-wireless@lfdr.de>; Wed, 12 Jun 2019 11:53:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3A062421E1
+	for <lists+linux-wireless@lfdr.de>; Wed, 12 Jun 2019 12:00:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2437737AbfFLJxI (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 12 Jun 2019 05:53:08 -0400
-Received: from mail-wr1-f65.google.com ([209.85.221.65]:39892 "EHLO
-        mail-wr1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2437415AbfFLJxI (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 12 Jun 2019 05:53:08 -0400
-Received: by mail-wr1-f65.google.com with SMTP id x4so13523762wrt.6
-        for <linux-wireless@vger.kernel.org>; Wed, 12 Jun 2019 02:53:06 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=VVhE7iZd36zR1LOe4i7mf8BRoSS45j81UOesfJcvyiA=;
-        b=h8yc92XxmkSg1PzCyfukGwjh1H1hWYBGyshJuNDSa6IfjQYnhMApJLM+JFU0JlFCfM
-         Ore3bhibuhiak6eWou6xzpqqzC/mlN5yHLOteKLRY5Lc210/6X3x15QZ8iLqMJbR3/pV
-         NQArXGeVVjC5HPonPXe7gtboEsQ9L3Sg5BqxnrmXDg2Oy/+QUb9BpGT4SH1RFcc2vYcF
-         7KcJXA38SnfJVge9ET9lQO108+H3UWaSfGUrKzMex6HrE3wZYdL63oesZ5SLpSX+StmZ
-         rkUTpG1JPq5Hff+AeOEd2alWBR28Gtrd2eX3J5JkEzExi8koHW2RepUixcqrPC9FULDX
-         TCTw==
-X-Gm-Message-State: APjAAAVlz1ehYYGSUCXeiav91awx0hTKzZNz170pT6RBGd25CdnlYpCN
-        xAhGRo3NWlTgo710L2VRg+TZxg==
-X-Google-Smtp-Source: APXvYqylaKKe04PWmg6OFzVdLzP0QmzyjGVKfeBvl1N4aC+29oVkWS24CzujtOUm0kaIWTNY4QCSRg==
-X-Received: by 2002:adf:f909:: with SMTP id b9mr20595666wrr.119.1560333185919;
-        Wed, 12 Jun 2019 02:53:05 -0700 (PDT)
-Received: from localhost.localdomain (nat-pool-mxp-t.redhat.com. [149.6.153.186])
-        by smtp.gmail.com with ESMTPSA id s12sm3681516wmh.34.2019.06.12.02.53.05
-        (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
-        Wed, 12 Jun 2019 02:53:05 -0700 (PDT)
-Date:   Wed, 12 Jun 2019 11:53:03 +0200
-From:   Lorenzo Bianconi <lorenzo.bianconi@redhat.com>
-To:     Stanislaw Gruszka <sgruszka@redhat.com>
+        id S1732008AbfFLKAf (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 12 Jun 2019 06:00:35 -0400
+Received: from mx1.redhat.com ([209.132.183.28]:51860 "EHLO mx1.redhat.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1731793AbfFLKAf (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Wed, 12 Jun 2019 06:00:35 -0400
+Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.phx2.redhat.com [10.5.11.16])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mx1.redhat.com (Postfix) with ESMTPS id 6204A30872C3;
+        Wed, 12 Jun 2019 10:00:35 +0000 (UTC)
+Received: from localhost (unknown [10.43.2.57])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id 0698E79451;
+        Wed, 12 Jun 2019 10:00:22 +0000 (UTC)
+Date:   Wed, 12 Jun 2019 12:00:16 +0200
+From:   Stanislaw Gruszka <sgruszka@redhat.com>
+To:     Lorenzo Bianconi <lorenzo.bianconi@redhat.com>
 Cc:     Lorenzo Bianconi <lorenzo@kernel.org>, nbd@nbd.name,
         kvalo@codeaurora.org, linux-wireless@vger.kernel.org
-Subject: Re: [PATCH v2 2/2] mt76: usb: do not always copy the first part of
- received frames
-Message-ID: <20190612095302.GD8107@localhost.localdomain>
+Subject: Re: [PATCH v2 1/2] mt76: usb: fix rx A-MSDU support
+Message-ID: <20190612100014.GA4431@redhat.com>
 References: <cover.1559293385.git.lorenzo@kernel.org>
- <2ed0b595a12944a8cfea14e066bcc4fa24f0ba44.1559293385.git.lorenzo@kernel.org>
- <20190612091036.GB2965@redhat.com>
+ <52ea155d9889aa15df44b4910806b74fa2fd9056.1559293385.git.lorenzo@kernel.org>
+ <20190612085844.GA2965@redhat.com>
+ <20190612094519.GC8107@localhost.localdomain>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="Km1U/tdNT/EmXiR1"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20190612091036.GB2965@redhat.com>
-User-Agent: Mutt/1.11.4 (2019-03-13)
+In-Reply-To: <20190612094519.GC8107@localhost.localdomain>
+User-Agent: Mutt/1.8.3 (2017-05-23)
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.16
+X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16 (mx1.redhat.com [10.5.110.47]); Wed, 12 Jun 2019 10:00:35 +0000 (UTC)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+On Wed, Jun 12, 2019 at 11:45:21AM +0200, Lorenzo Bianconi wrote:
+> > > +mt76u_build_rx_skb(u8 *data, int len, int buf_size,
+> > > +		   int *nsgs)
+> > > +{
+> > > +	int data_len = min(len, MT_SKB_HEAD_LEN);
 
---Km1U/tdNT/EmXiR1
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Oh, and this looks unneeded as well as for len < MT_SKB_HEAD_LEN=128
+we will go through fast path.
 
-> On Fri, May 31, 2019 at 11:38:23AM +0200, Lorenzo Bianconi wrote:
+> > mt7601u and iwlmvm just copy hdrlen + 8 and put the rest
+> > of the buffer in fragment, which supose to be more efficient,
+> > see comment in iwl_mvm_pass_packet_to_mac80211().
+> 
+> Right here we copy 128B instead of 32 but I think it is good to have L3 and L4
+> header in the linear area of the skb since otherwise the stack will need to
+> align them
 
-[...]
+Not sure if understand, I think aliment of L3 & L4 headers will be
+the same, assuming ieee80211 header is aligned the same in fragment
+buffer and in linear area. But if you think this is better to copy those
+to linear area I'm ok with that.
 
-> >  	}
-> > =20
-> >  	urb->num_sgs =3D max_t(int, i, urb->num_sgs);
-> > -	urb->transfer_buffer_length =3D urb->num_sgs * q->buf_size,
-> > +	urb->transfer_buffer_length =3D urb->num_sgs * data_size;
-> >  	sg_init_marker(urb->sg, urb->num_sgs);
-> > =20
-> >  	return i ? : -ENOMEM;
-> > @@ -611,8 +611,12 @@ static int mt76u_alloc_rx(struct mt76_dev *dev)
-> >  	if (!q->entry)
-> >  		return -ENOMEM;
-> > =20
-> > -	q->buf_size =3D dev->usb.sg_en ? MT_RX_BUF_SIZE : PAGE_SIZE;
-> > +	if (dev->usb.sg_en)
-> > +		q->buf_size =3D MT_BUF_WITH_OVERHEAD(MT_RX_BUF_SIZE);
->=20
-> I strongly recommend to not doing this. While this should work
-> in theory creating buffer with size of 2k + some bytes might
-> trigger various bugs in dma mapping or other low level code.
-
-even in practice actually :) but we can be more cautious since probably cop=
-ying
-the first 128B will not make any difference
-
->=20
-> And skb_shered_info is needed only in first buffer IIUC.
->=20
-> Also this patch seems to make first patch unnecessary except for
-> non sg_en case (in which I think rx AMSDU is broken anyway),
-> so I would prefer just to apply first patch.
-
-I do not think rx AMSDU is broken for non sg_en case since the max rx value
-allowed should be 3839 IIRC and we alloc one page in this case
-
-Regards,
-Lorenzo
-
->=20
-> Stanislaw
->=20
-
---Km1U/tdNT/EmXiR1
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYIAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCXQDLewAKCRA6cBh0uS2t
-rB0vAP9wHIDCzMk96w27Q43y4bLilwtfv6S0/moHO8BdQFcNNQD/b3M4xvKXhmZz
-MlPFDgseZcnXMGhZXVaZ/DRaK9L8mQ0=
-=3Ukz
------END PGP SIGNATURE-----
-
---Km1U/tdNT/EmXiR1--
+Stanislaw
