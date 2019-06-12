@@ -2,161 +2,120 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C68BD42208
-	for <lists+linux-wireless@lfdr.de>; Wed, 12 Jun 2019 12:11:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 03D7A42244
+	for <lists+linux-wireless@lfdr.de>; Wed, 12 Jun 2019 12:22:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2437927AbfFLKL3 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 12 Jun 2019 06:11:29 -0400
-Received: from mail-vs1-f68.google.com ([209.85.217.68]:40372 "EHLO
-        mail-vs1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2437568AbfFLKL2 (ORCPT
+        id S1732036AbfFLKVk (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 12 Jun 2019 06:21:40 -0400
+Received: from mail-wr1-f68.google.com ([209.85.221.68]:43384 "EHLO
+        mail-wr1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727366AbfFLKVk (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 12 Jun 2019 06:11:28 -0400
-Received: by mail-vs1-f68.google.com with SMTP id a186so7966789vsd.7
-        for <linux-wireless@vger.kernel.org>; Wed, 12 Jun 2019 03:11:28 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=Vwwsd0tdKxa00vg2i3C1zrYsYmEGYn7C9UHSqxLUOAY=;
-        b=cNuXOLWUPlPjzsuZ7Z6BuN/fwPgNEqYjZXIJhRFvcMn54FRyd3mnAeCRjTPJEmoRxx
-         xDPmcvmPVRh581RobGwdUC2EsTF2EhwhYlmpZcuZ1sQCcejbMGT133Abgv/YaQPzr3CV
-         ///CpGcB3drMtVF/D1a9lHuUcbiWPZGDYJrkeshfN6hkMqBjOgV60A8iRBMSAj+m6YUx
-         5kpoq7HOqxzFwsqtg4spRZYFg0/dpuVf/aZaHr8rxUguZigoD5SiyuF8nBrVAclPtY/I
-         ASCtN2N1+XGfiS8vxP+riDAtTtka9iDhNlbnybkrK7T2xWiFKG+OL7N38Ketqfqe1GKg
-         mi2w==
+        Wed, 12 Jun 2019 06:21:40 -0400
+Received: by mail-wr1-f68.google.com with SMTP id p13so6166791wru.10
+        for <linux-wireless@vger.kernel.org>; Wed, 12 Jun 2019 03:21:38 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=Vwwsd0tdKxa00vg2i3C1zrYsYmEGYn7C9UHSqxLUOAY=;
-        b=IGhXVTLXnoax1t3T1NQ1ENi37g/btR00fJAGwBP8plo9/vP7uidWjnJ4QZcNiaN6Qk
-         juzJY9hYGo5121WJxQUA3QuDIzNAE+LKIKSyU9NzFDuLQ3jWcJ6x8ft24LfvxL3EKYQ4
-         w156fjjMIEGyAt8Mc00SaRxjuXPZUOkwpmfRKuDGBqR+sW4EnIVu3t4RACgHxe6PBh84
-         VE38bxaWkSacAtjDhtI+c5znKth386HyyjIG4HJPl8OKVFMheeuXI7q3+c7L5KyUBZ+i
-         crD5/cLPYFusVgC7l9cnmNBYFfQzEi1XDlK58oHFbKV5vhp52QNE3KJJDxH07HqU3RtU
-         JLhw==
-X-Gm-Message-State: APjAAAXc71xwpPF1+ZwxxYykphJQz4vKyAbAgT9kbM8gxgJhc/iv0cVF
-        XaqpHfRSs4ah59SD6keEs9Wixe0M3bV3qNIjEHaS1w==
-X-Google-Smtp-Source: APXvYqz9HdjKJz1FgwE/Nx/EZT4gQSK6X7I7/l+mUBC1IPdGylVrfi3vGB2PufieZ8KgmvsoIDewFF/91qoctXVN1SA=
-X-Received: by 2002:a67:ee16:: with SMTP id f22mr9599693vsp.191.1560334287942;
- Wed, 12 Jun 2019 03:11:27 -0700 (PDT)
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=kZgWxSPWlXejD04WeTmvWlz11dtlpiaCsl8iOQoe+2E=;
+        b=PgrFtzz3DOCkwkL/mdL04J9P3NmFgRP8T6+ih29WxEdIjKwTKJq/tVoSp9Evw5T8ov
+         lWicxoRyTjR9JYv/uhsq4pMRNdZbwybDSmha0PTr761i+NPOGHHKaOEz1Twd9rZjmt23
+         /QfcMzCndK37J55mHDeUGwEfDDzOPWD1UpIPIj7ziqi/UL9ii3s1G2r5NPmpGRCuiYmP
+         FiiGuCkfEzWn41czllPbp9P2+cE0WHqGMd+llAekxGHmU4qC0tZ4KndN2BioOFUTMXsd
+         v/ROFqATroSKeQqPa2awxAXS7pVJynJdwIqkkcB5Y9AwcEcs1DOkdgTAtUoxi1KykM1Z
+         o3XQ==
+X-Gm-Message-State: APjAAAUIY0OWEmRNRtAJf/HNbP5zUzkglJYicASaBqy6nSFh4bpiG3jN
+        fL/1QWKC9cG1oRb8QyeAhWuY2Q==
+X-Google-Smtp-Source: APXvYqxrL5Svc/wtWpGIGy0K0QjVt8XwSXh2fzgyi1YSyd7fZVaAZezv8OaCLEK2f55Og1M37bijtg==
+X-Received: by 2002:a5d:6144:: with SMTP id y4mr42104524wrt.84.1560334897838;
+        Wed, 12 Jun 2019 03:21:37 -0700 (PDT)
+Received: from localhost.localdomain (nat-pool-mxp-t.redhat.com. [149.6.153.186])
+        by smtp.gmail.com with ESMTPSA id c5sm5337151wma.19.2019.06.12.03.21.36
+        (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
+        Wed, 12 Jun 2019 03:21:37 -0700 (PDT)
+Date:   Wed, 12 Jun 2019 12:21:34 +0200
+From:   Lorenzo Bianconi <lorenzo.bianconi@redhat.com>
+To:     Stanislaw Gruszka <sgruszka@redhat.com>
+Cc:     Lorenzo Bianconi <lorenzo@kernel.org>, nbd@nbd.name,
+        kvalo@codeaurora.org, linux-wireless@vger.kernel.org
+Subject: Re: [PATCH v2 1/2] mt76: usb: fix rx A-MSDU support
+Message-ID: <20190612102133.GE8107@localhost.localdomain>
+References: <cover.1559293385.git.lorenzo@kernel.org>
+ <52ea155d9889aa15df44b4910806b74fa2fd9056.1559293385.git.lorenzo@kernel.org>
+ <20190612085844.GA2965@redhat.com>
+ <20190612094519.GC8107@localhost.localdomain>
+ <20190612100014.GA4431@redhat.com>
 MIME-Version: 1.0
-References: <20190607223716.119277-1-dianders@chromium.org>
- <20190607223716.119277-4-dianders@chromium.org> <363DA0ED52042842948283D2FC38E4649C52F8A0@IRSMSX106.ger.corp.intel.com>
- <CAD=FV=U8eo78Ee9xjhGXJMv=8YF9o89KLX024GH3iBRnRjCRvQ@mail.gmail.com>
-In-Reply-To: <CAD=FV=U8eo78Ee9xjhGXJMv=8YF9o89KLX024GH3iBRnRjCRvQ@mail.gmail.com>
-From:   Ulf Hansson <ulf.hansson@linaro.org>
-Date:   Wed, 12 Jun 2019 12:10:51 +0200
-Message-ID: <CAPDyKFo=QMRTkNYUVSE2AqiZgytkTVRXF0Mvznn6trVT4-cR=Q@mail.gmail.com>
-Subject: Re: [PATCH v3 3/5] brcmfmac: sdio: Disable auto-tuning around
- commands expected to fail
-To:     Doug Anderson <dianders@chromium.org>
-Cc:     "Hunter, Adrian" <adrian.hunter@intel.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        Arend van Spriel <arend.vanspriel@broadcom.com>,
-        "brcm80211-dev-list.pdl@broadcom.com" 
-        <brcm80211-dev-list.pdl@broadcom.com>,
-        "linux-rockchip@lists.infradead.org" 
-        <linux-rockchip@lists.infradead.org>,
-        Double Lo <double.lo@cypress.com>,
-        "briannorris@chromium.org" <briannorris@chromium.org>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        Naveen Gupta <naveen.gupta@cypress.com>,
-        Madhan Mohan R <madhanmohan.r@cypress.com>,
-        "mka@chromium.org" <mka@chromium.org>,
-        Wright Feng <wright.feng@cypress.com>,
-        Chi-Hsien Lin <chi-hsien.lin@cypress.com>,
-        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-        "brcm80211-dev-list@cypress.com" <brcm80211-dev-list@cypress.com>,
-        Franky Lin <franky.lin@broadcom.com>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        Hante Meuleman <hante.meuleman@broadcom.com>,
-        YueHaibing <yuehaibing@huawei.com>,
-        "David S. Miller" <davem@davemloft.net>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="5xSkJheCpeK0RUEJ"
+Content-Disposition: inline
+In-Reply-To: <20190612100014.GA4431@redhat.com>
+User-Agent: Mutt/1.11.4 (2019-03-13)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Mon, 10 Jun 2019 at 18:50, Doug Anderson <dianders@chromium.org> wrote:
->
-> Hi,
->
-> On Mon, Jun 10, 2019 at 1:56 AM Hunter, Adrian <adrian.hunter@intel.com> wrote:
-> >
-> > > --- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c
-> > > +++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c
-> > > @@ -16,6 +16,7 @@
-> > >  #include <linux/mmc/sdio_ids.h>
-> > >  #include <linux/mmc/sdio_func.h>
-> > >  #include <linux/mmc/card.h>
-> > > +#include <linux/mmc/core.h>
-> >
-> > SDIO function drivers should not really include linux/mmc/core.h
-> > (Also don't know why linux/mmc/card.h is included)
->
-> OK, so I guess you're requesting an extra level of "sdio_" wrappers
-> for all the functions I need to call.  I don't think the wrappers buy
-> us a ton other than to abstract things a little bit and make it look
-> prettier.  :-)  ...but certainly I can code that up if that's what
-> everyone wants.
 
-Are the new code you refer to going to be used for anything else but
-SDIO? If not, please put them in the sdio specific headers instead.
+--5xSkJheCpeK0RUEJ
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-BTW, apologize for not looking at this series any earlier, but I will
-come to it soon.
+On Jun 12, Stanislaw Gruszka wrote:
+> On Wed, Jun 12, 2019 at 11:45:21AM +0200, Lorenzo Bianconi wrote:
+> > > > +mt76u_build_rx_skb(u8 *data, int len, int buf_size,
+> > > > +		   int *nsgs)
+> > > > +{
+> > > > +	int data_len =3D min(len, MT_SKB_HEAD_LEN);
+>=20
+> Oh, and this looks unneeded as well as for len < MT_SKB_HEAD_LEN=3D128
+> we will go through fast path.
 
->
-> Just to make sure, I looked in "drivers/net/wireless/" and I do see
-> quite a few instances of "mmc_" functions being used.  That doesn't
-> mean all these instances are correct but it does appear to be
-> commonplace.  Selected examples:
->
-> drivers/net/wireless/ath/ath10k/sdio.c:
->   ret = mmc_hw_reset(ar_sdio->func->card->host);
+I guess if we remove data_len =3D min(len, MT_SKB_HEAD_LEN) and even *nsgs =
+=3D 0 at
+the end we are making some assumptions on the value of MT_SKB_HEAD_LEN and
+buf_size. In the patch I just avoided them but maybe we can just assume that
+MT_SKB_HEAD_LEN and buf_size will not changed in the future. What do you
+think?
 
-mmc_hw_reset() is already an exported function, used by the mmc block
-layer. So I think this is okay.
+>=20
+> > > mt7601u and iwlmvm just copy hdrlen + 8 and put the rest
+> > > of the buffer in fragment, which supose to be more efficient,
+> > > see comment in iwl_mvm_pass_packet_to_mac80211().
+> >=20
+> > Right here we copy 128B instead of 32 but I think it is good to have L3=
+ and L4
+> > header in the linear area of the skb since otherwise the stack will nee=
+d to
+> > align them
+>=20
+> Not sure if understand, I think aliment of L3 & L4 headers will be
+> the same, assuming ieee80211 header is aligned the same in fragment
+> buffer and in linear area. But if you think this is better to copy those
+> to linear area I'm ok with that.
 
->
-> drivers/net/wireless/broadcom/brcm80211/brcmfmac/bcmsdh.c:
->   mmc_set_data_timeout(md, func->card);
->   mmc_wait_for_req(func->card->host, mr);
+Sorry I have not been so clear. I mean in the stack before accessing a given
+header we will run pskb_may_pull() that can end up copying the skb if there=
+ is
+not enough space in the skb->head
 
-These are not okay, none of these things calls should really be done
-from an SDIO func driver.
+Regards,
+Lorenzo
 
-It tells me that the func driver is a doing workaround for something
-that should be managed in a common way.
+>=20
+> Stanislaw
 
->
-> drivers/net/wireless/marvell/mwifiex/sdio.c:
->   mmc_hw_reset(func->card->host);
+--5xSkJheCpeK0RUEJ
+Content-Type: application/pgp-signature; name="signature.asc"
 
-Okay.
+-----BEGIN PGP SIGNATURE-----
 
->
-> drivers/net/wireless/rsi/rsi_91x_sdio.c:
->   err = mmc_wait_for_cmd(host, &cmd, 3);
+iHUEABYIAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCXQDSKgAKCRA6cBh0uS2t
+rMHAAP4x05cvFjvHeUtq8ipwk5S1/icWVzngIQV/xQG7adVIXAEAtYK4SidBHBYA
+hs1AEgOlhZ1dJOUkweoi8y30cWKE0gc=
+=EqU9
+-----END PGP SIGNATURE-----
 
-Not okay.
-
->
->
-> ...anyway, I'll give it a few days and if nobody else chimes in then
-> I'll assume you indeed want "sdio_" wrappers for things and I'll post
-> a v4.  If patch #1 happens to land in the meantime then I won't
-> object.  ;-)
-
-Adrian has a very good point. We need to strive to avoid exporting
-APIs to here and there and just trust that they will be used wisely.
-
-If the above calls to mmc_wait_for_req|cmd() and
-mmc_set_data_timeout() could have been avoided, we would probably have
-a more proper solution by now.
-
-Kind regards
-Uffe
+--5xSkJheCpeK0RUEJ--
