@@ -2,141 +2,136 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 0522F42BD8
-	for <lists+linux-wireless@lfdr.de>; Wed, 12 Jun 2019 18:13:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A388A42C6B
+	for <lists+linux-wireless@lfdr.de>; Wed, 12 Jun 2019 18:35:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2409481AbfFLQNZ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 12 Jun 2019 12:13:25 -0400
-Received: from mail-pl1-f176.google.com ([209.85.214.176]:36869 "EHLO
-        mail-pl1-f176.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2409462AbfFLQNZ (ORCPT
+        id S2440275AbfFLQe7 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 12 Jun 2019 12:34:59 -0400
+Received: from mail-it1-f193.google.com ([209.85.166.193]:33456 "EHLO
+        mail-it1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2438250AbfFLQe7 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 12 Jun 2019 12:13:25 -0400
-Received: by mail-pl1-f176.google.com with SMTP id bh12so6829493plb.4
-        for <linux-wireless@vger.kernel.org>; Wed, 12 Jun 2019 09:13:24 -0700 (PDT)
+        Wed, 12 Jun 2019 12:34:59 -0400
+Received: by mail-it1-f193.google.com with SMTP id v193so5158772itc.0
+        for <linux-wireless@vger.kernel.org>; Wed, 12 Jun 2019 09:34:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=e4ItLxshqMfqM68z4YCARRhGpvs/wbTADgtzp6LLi8k=;
-        b=EByOcF5oR5p8jLYaIHj/W3OAyPEwMFyxrCSaDMZ710yE5WD1Y/b+UNqhkabWO+KS1l
-         IgRWkQvJ2NjRclyAP+f+rEMc+so66/pJayjBsfvCjka+fdtro0rRT+G7kG/mV7cxYud+
-         DqLOkvG+jeTuQuRkwivcdqKUg66y8+r9eNK3GSX6WWwVM0LTkEGNYmcMgV8xtaI71jUo
-         gFzG+TD6/zdIHpyrirE/qQrbJQeDR0ghIWFeujzm+5W4gmflXpO4QMnJsFIg6kJrAry+
-         pv87Rmlg0j8CYSgiU2v0e0ld97KdTEUF+/M94iRv9qKosgsTDP8ev18imoJavVyGJMMs
-         5lxQ==
+        d=bobcopeland-com.20150623.gappssmtp.com; s=20150623;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=9Mhrmu7ANLynrFAwomC5nV6Kvu395sgmRbmqA4wipUw=;
+        b=pApSugJBQb4mOg4taoJjqnVLFy4QHgnijz4cpkN33bj5GopPF592uKAD3tF6FoTTMw
+         VeEbr1PWPJNXVIz951CzxoXQEK7LnrZ5hkEBNc9da433JdD5JhuMGAE5X3Rn6rsie5dP
+         Oy5lrbgIbdB7WtF6R3GS0z5p0BxBbM/qBZ9MktxwtqTCdc/uyA8SIxR2YlE/fWdHIGVY
+         AcsU3Zn+KOMSn4Eu5qDkfsQsUdXWfTUsp6jA303yowzFGVcLVhbOlrqTHQjgEDDYtR6m
+         e1vcaTWF1d3HFzQLwODt90mqX2aEoW7+TfKwkGUKB2KW+FJ4Q1cjlYC/Xzc+O1p/XhI9
+         AKBg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=e4ItLxshqMfqM68z4YCARRhGpvs/wbTADgtzp6LLi8k=;
-        b=Xsv4XCAnrJjhn+WrULM6xM88lSV51WYBzTCFzXECUlDU/miAClVFKgDu+5/LKe/NgH
-         nitKKn8tsltHcZStCuLs0Y84qQhrgqEsd6zsKuozlxA/mZVgSNEJsn94stiNNfS57yOR
-         OJR7btw0RtzFU5uf0emgfsen1dun7rsZwZ5cIF5FoXVdlifIylu+chrriRAot1UTgglP
-         Mda6ynJmvW3IJrrlday3Z/vaW9VhJ1DVD9rnB4HW3YSSguR0F5cP1jp+jueSNEAXSDZm
-         NQXD8Z2MVvORiGXSOgcfQP8C3bkAbdhW+wUBfcjEDotO2110hItorehFMrHspMibeC6l
-         hAHw==
-X-Gm-Message-State: APjAAAUZ1KGZlYF/hsGt3YZpieQ/ufeRztYBBkAl9vszYfiSEOhYRjXf
-        IgL5/7p67d2YVom8P8gTg84YSrReXnVTvdEmvqxDtA==
-X-Google-Smtp-Source: APXvYqzmdD5qKrrrXe+HCEiDQQKVQS4JJibsx3w0GVW5imo8nYDvtycFLQxTBoJXvBBVIDupEJMTzYRQD7ldjOaUjJg=
-X-Received: by 2002:a17:902:1566:: with SMTP id b35mr84417865plh.147.1560356003612;
- Wed, 12 Jun 2019 09:13:23 -0700 (PDT)
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=9Mhrmu7ANLynrFAwomC5nV6Kvu395sgmRbmqA4wipUw=;
+        b=RAWQdeO/hLNkCfMcBZtBJl3q/EhP9aZSi1fl/ZWBrBUDz6T27wJn8Ug5Vvr35cDsf/
+         /DiO8q/K1gEYqM8hTeuk9f75YdxsjqEVwpzTOZTz1neJGCVV1mjxB01l5w67bNA5p2AP
+         go8OgOUZv2nXdRAiJfFGZkIujKeVEv/a5ywgEoMU3JDsa1YuvJH2RyeZh5nUIu3orsUI
+         zInBsvk0DP4Hsv9WkK4xo+jhwiyrapRng7RfToGtGfv/WqGl5I8fx9vAQOlpPbZh7q1W
+         9eHougGZkNqfkKh9nrmzxnkT9HC7beM+okjKneCdP9Ko+10ZFamBWX3q0OUOcnWbvVax
+         QVig==
+X-Gm-Message-State: APjAAAVP+Dqb2AUJ8u/88Oo9pa5Yj5eC9i9AMsMu+3rhTSYpKUizXuaa
+        1xrz2W7Xbfu81xZdry/pAsmiMlNq+Zk=
+X-Google-Smtp-Source: APXvYqxCBtaRUZmftKoBiKLRUUPq6jJpjplSuQVcrDzIw29zgEL+YnVV4yZZK0jcJsf/s/vSO6n1Dw==
+X-Received: by 2002:a02:70d6:: with SMTP id f205mr40851639jac.138.1560357298610;
+        Wed, 12 Jun 2019 09:34:58 -0700 (PDT)
+Received: from hash ([2607:fea8:5ac0:1dd8:230:48ff:fe9d:9c89])
+        by smtp.gmail.com with ESMTPSA id b188sm133239itc.19.2019.06.12.09.34.57
+        (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
+        Wed, 12 Jun 2019 09:34:58 -0700 (PDT)
+Received: from bob by hash with local (Exim 4.92)
+        (envelope-from <me@bobcopeland.com>)
+        id 1hb6DB-00044z-9o; Wed, 12 Jun 2019 12:34:57 -0400
+Date:   Wed, 12 Jun 2019 12:34:57 -0400
+From:   Bob Copeland <me@bobcopeland.com>
+To:     Sven Eckelmann <seckelmann@datto.com>
+Cc:     ath11k@lists.infradead.org, linux-wireless@vger.kernel.org
+Subject: Re: [RFC PATCH v2 3/3] ath11k: register HE mesh capabilities
+Message-ID: <20190612163457.GB4090@localhost>
+References: <20190611180247.19524-1-sven@narfation.org>
+ <20190611180247.19524-4-sven@narfation.org>
+ <1919330.hVZVHELXip@bentobox>
 MIME-Version: 1.0
-References: <000000000000927a7b0586561537@google.com> <MN2PR18MB263783F52CAD4A335FD8BB34A01A0@MN2PR18MB2637.namprd18.prod.outlook.com>
- <CACT4Y+aQzBkAq86Hx4jNFnAUzjXnq8cS2NZKfeCaFrZa__g-cg@mail.gmail.com>
- <MN2PR18MB26372D98386D79736A7947EEA0140@MN2PR18MB2637.namprd18.prod.outlook.com>
- <MN2PR18MB263710E8F1F8FFA06B2EDB3CA0EC0@MN2PR18MB2637.namprd18.prod.outlook.com>
-In-Reply-To: <MN2PR18MB263710E8F1F8FFA06B2EDB3CA0EC0@MN2PR18MB2637.namprd18.prod.outlook.com>
-From:   Andrey Konovalov <andreyknvl@google.com>
-Date:   Wed, 12 Jun 2019 18:13:12 +0200
-Message-ID: <CAAeHK+wpzHG73AbB+199-TN35Kb1kEjGrKScSqU++7q7RSUGGg@mail.gmail.com>
-Subject: Re: [EXT] INFO: trying to register non-static key in del_timer_sync (2)
-To:     Ganapathi Bhat <gbhat@marvell.com>
-Cc:     Dmitry Vyukov <dvyukov@google.com>,
-        syzbot <syzbot+dc4127f950da51639216@syzkaller.appspotmail.com>,
-        "amitkarwar@gmail.com" <amitkarwar@gmail.com>,
-        "davem@davemloft.net" <davem@davemloft.net>,
-        "huxinming820@gmail.com" <huxinming820@gmail.com>,
-        "kvalo@codeaurora.org" <kvalo@codeaurora.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-usb@vger.kernel.org" <linux-usb@vger.kernel.org>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-        "nishants@marvell.com" <nishants@marvell.com>,
-        "syzkaller-bugs@googlegroups.com" <syzkaller-bugs@googlegroups.com>
-Content-Type: multipart/mixed; boundary="00000000000052860b058b22b16c"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1919330.hVZVHELXip@bentobox>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
---00000000000052860b058b22b16c
-Content-Type: text/plain; charset="UTF-8"
+On Tue, Jun 11, 2019 at 09:52:20PM +0200, Sven Eckelmann wrote:
+> On Tuesday, 11 June 2019 20:02:47 CEST Sven Eckelmann wrote:
+> [...]
+> > ---
+> > This doesn't work currently as expected. No HE rates are used between
+> > the two HE mesh peers:
+> [...]
+> 
+> There seems to be also an ordering problem. ath11k_peer_assoc_h_he is only 
+> called before ieee80211_he_cap_ie_to_sta_he_cap is called. So ath11k_bss_assoc 
+> will not have the information whether the remote has HE support or not.
+> 
+> Looks like I have adjust mesh_sta_info_init to get this somehow to 
+> ath11k_peer_assoc_h_he. Maybe through ath11k_sta_rc_update but this is not 
+> called by mesh_sta_info_init at the moment. Just because 
+> rate_control_rate_init is called and not rate_control_rate_update.
+> 
+> The easiest method seems to adjust the check at the end of mesh_sta_info_init 
+> to 
+> 
+> 	if (!test_sta_flag(sta, WLAN_STA_RATE_CONTROL) &&
+> 	    !ieee80211_hw_check(&local->hw, HAS_RATE_CONTROL)) {
+> 		rate_control_rate_init(sta);
+> 	} else {
+> 		rate_control_rate_update(local, sband, sta, changed);
+> 	}
 
-On Wed, Jun 12, 2019 at 6:03 PM Ganapathi Bhat <gbhat@marvell.com> wrote:
->
-> Hi Dmitry,
->
-> We have a patch to fix this: https://patchwork.kernel.org/patch/10990275/
+Maybe we should just do this?
 
-Hi Ganapathi,
+diff --git a/net/mac80211/rate.c b/net/mac80211/rate.c
+index 76f303fda3ed..6f8bde840bb9 100644
+--- a/net/mac80211/rate.c
++++ b/net/mac80211/rate.c
+@@ -42,7 +42,7 @@ void rate_control_rate_init(struct sta_info *sta)
+ 	ieee80211_sta_set_rx_nss(sta);
+ 
+ 	if (!ref)
+-		return;
++		goto out;
+ 
+ 	rcu_read_lock();
+ 
+@@ -59,6 +59,7 @@ void rate_control_rate_init(struct sta_info *sta)
+ 			    priv_sta);
+ 	spin_unlock_bh(&sta->rate_ctrl_lock);
+ 	rcu_read_unlock();
++out:
+ 	set_sta_flag(sta, WLAN_STA_RATE_CONTROL);
+ }
 
-Great, thanks for working on this!
 
-We can ask syzbot to test the fix:
+That was my intent, anyway -- that NSS always got set before
+rate_control_rate_update() even if using HW rate control.
 
-#syz test: https://github.com/google/kasan.git usb-fuzzer
+> 	if (!test_sta_flag(sta, WLAN_STA_RATE_CONTROL))
+> 		rate_control_rate_init(sta);
+> 
+>    /* inform drivers about changes */
+> 	rate_control_rate_update(local, sband, sta, changed);
+> 
+> Both will at least cause a call to ath11k_peer_assoc_prepare + 
+> ath11k_wmi_send_peer_assoc_cmd but unfortunately the ath11k firmware hangs 
+> afterwards.
 
-Thanks!
+I think this would be OK.
 
->
-> Regards,
-> Ganapathi
-
---00000000000052860b058b22b16c
-Content-Type: text/x-patch; charset="US-ASCII"; 
-	name="mwifiex-avoid-deleting-uninitialized-timer-during-USB-cleanup.diff"
-Content-Disposition: attachment; 
-	filename="mwifiex-avoid-deleting-uninitialized-timer-during-USB-cleanup.diff"
-Content-Transfer-Encoding: base64
-Content-ID: <f_jwtfnzut0>
-X-Attachment-Id: f_jwtfnzut0
-
-ZGlmZiAtLWdpdCBhL2RyaXZlcnMvbmV0L3dpcmVsZXNzL21hcnZlbGwvbXdpZmlleC91c2IuYyBi
-L2RyaXZlcnMvbmV0L3dpcmVsZXNzL21hcnZlbGwvbXdpZmlleC91c2IuYwppbmRleCBjMjM2NWVl
-Li45MzlmMWU5IDEwMDY0NAotLS0gYS9kcml2ZXJzL25ldC93aXJlbGVzcy9tYXJ2ZWxsL213aWZp
-ZXgvdXNiLmMKKysrIGIvZHJpdmVycy9uZXQvd2lyZWxlc3MvbWFydmVsbC9td2lmaWV4L3VzYi5j
-CkBAIC0xMzQ4LDYgKzEzNDgsOCBAQCBzdGF0aWMgdm9pZCBtd2lmaWV4X3VzYl9jbGVhbnVwX3R4
-X2FnZ3Ioc3RydWN0IG13aWZpZXhfYWRhcHRlciAqYWRhcHRlcikKIAogCWZvciAoaWR4ID0gMDsg
-aWR4IDwgTVdJRklFWF9UWF9EQVRBX1BPUlQ7IGlkeCsrKSB7CiAJCXBvcnQgPSAmY2FyZC0+cG9y
-dFtpZHhdOworCQlpZiAoIXBvcnQtPnR4X2RhdGFfZXApCisJCQljb250aW51ZTsKIAkJaWYgKGFk
-YXB0ZXItPmJ1c19hZ2dyLmVuYWJsZSkKIAkJCXdoaWxlICgoc2tiX3RtcCA9CiAJCQkJc2tiX2Rl
-cXVldWUoJnBvcnQtPnR4X2FnZ3IuYWdncl9saXN0KSkpCkBAIC0xMzY1LDggKzEzNjcsNiBAQCBz
-dGF0aWMgdm9pZCBtd2lmaWV4X3VucmVnaXN0ZXJfZGV2KHN0cnVjdCBtd2lmaWV4X2FkYXB0ZXIg
-KmFkYXB0ZXIpCiAKIAltd2lmaWV4X3VzYl9mcmVlKGNhcmQpOwogCi0JbXdpZmlleF91c2JfY2xl
-YW51cF90eF9hZ2dyKGFkYXB0ZXIpOwotCiAJY2FyZC0+YWRhcHRlciA9IE5VTEw7CiB9CiAKQEAg
-LTE1MTAsNyArMTUxMCw3IEBAIHN0YXRpYyBpbnQgbXdpZmlleF9wcm9nX2Z3X3dfaGVscGVyKHN0
-cnVjdCBtd2lmaWV4X2FkYXB0ZXIgKmFkYXB0ZXIsCiBzdGF0aWMgaW50IG13aWZpZXhfdXNiX2Ru
-bGRfZncoc3RydWN0IG13aWZpZXhfYWRhcHRlciAqYWRhcHRlciwKIAkJCXN0cnVjdCBtd2lmaWV4
-X2Z3X2ltYWdlICpmdykKIHsKLQlpbnQgcmV0OworCWludCByZXQgPSAwOwogCXN0cnVjdCB1c2Jf
-Y2FyZF9yZWMgKmNhcmQgPSAoc3RydWN0IHVzYl9jYXJkX3JlYyAqKWFkYXB0ZXItPmNhcmQ7CiAK
-IAlpZiAoY2FyZC0+dXNiX2Jvb3Rfc3RhdGUgPT0gVVNCOFhYWF9GV19ETkxEKSB7CkBAIC0xNTIz
-LDEwICsxNTIzLDYgQEAgc3RhdGljIGludCBtd2lmaWV4X3VzYl9kbmxkX2Z3KHN0cnVjdCBtd2lm
-aWV4X2FkYXB0ZXIgKmFkYXB0ZXIsCiAJCQlyZXR1cm4gLTE7CiAJfQogCi0JcmV0ID0gbXdpZmll
-eF91c2JfcnhfaW5pdChhZGFwdGVyKTsKLQlpZiAoIXJldCkKLQkJcmV0ID0gbXdpZmlleF91c2Jf
-dHhfaW5pdChhZGFwdGVyKTsKLQogCXJldHVybiByZXQ7CiB9CiAKQEAgLTE1ODQsNyArMTU4MCwy
-OSBAQCBzdGF0aWMgdm9pZCBtd2lmaWV4X3VzYl9zdWJtaXRfcmVtX3J4X3VyYnMoc3RydWN0IG13
-aWZpZXhfYWRhcHRlciAqYWRhcHRlcikKIAlyZXR1cm4gMDsKIH0KIAorc3RhdGljIGludCBtd2lm
-aWV4X2luaXRfdXNiKHN0cnVjdCBtd2lmaWV4X2FkYXB0ZXIgKmFkYXB0ZXIpCit7CisJc3RydWN0
-IHVzYl9jYXJkX3JlYyAqY2FyZCA9IChzdHJ1Y3QgdXNiX2NhcmRfcmVjICopYWRhcHRlci0+Y2Fy
-ZDsKKwlpbnQgcmV0ID0gMDsKKworCWlmIChjYXJkLT51c2JfYm9vdF9zdGF0ZSA9PSBVU0I4WFhY
-X0ZXX0ROTEQpCisJCXJldHVybiAwOworCisJcmV0ID0gbXdpZmlleF91c2JfcnhfaW5pdChhZGFw
-dGVyKTsKKwlpZiAoIXJldCkKKwkJcmV0ID0gbXdpZmlleF91c2JfdHhfaW5pdChhZGFwdGVyKTsK
-KworCXJldHVybiByZXQ7Cit9CisKK3N0YXRpYyB2b2lkIG13aWZpZXhfY2xlYW51cF91c2Ioc3Ry
-dWN0IG13aWZpZXhfYWRhcHRlciAqYWRhcHRlcikKK3sKKwltd2lmaWV4X3VzYl9jbGVhbnVwX3R4
-X2FnZ3IoYWRhcHRlcik7Cit9CisKIHN0YXRpYyBzdHJ1Y3QgbXdpZmlleF9pZl9vcHMgdXNiX29w
-cyA9IHsKKwkuaW5pdF9pZiA9CQltd2lmaWV4X2luaXRfdXNiLAorCS5jbGVhbnVwX2lmID0JCW13
-aWZpZXhfY2xlYW51cF91c2IsCiAJLnJlZ2lzdGVyX2RldiA9CQltd2lmaWV4X3JlZ2lzdGVyX2Rl
-diwKIAkudW5yZWdpc3Rlcl9kZXYgPQltd2lmaWV4X3VucmVnaXN0ZXJfZGV2LAogCS53YWtldXAg
-PQkJbXdpZmlleF9wbV93YWtldXBfY2FyZCwK
---00000000000052860b058b22b16c--
+-- 
+Bob Copeland %% https://bobcopeland.com/
