@@ -2,31 +2,31 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 7FE4E41C7B
+	by mail.lfdr.de (Postfix) with ESMTP id 0257E41C7A
 	for <lists+linux-wireless@lfdr.de>; Wed, 12 Jun 2019 08:46:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731244AbfFLGpg (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 12 Jun 2019 02:45:36 -0400
-Received: from rtits2.realtek.com ([211.75.126.72]:51299 "EHLO
+        id S1731238AbfFLGpf (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 12 Jun 2019 02:45:35 -0400
+Received: from rtits2.realtek.com ([211.75.126.72]:51302 "EHLO
         rtits2.realtek.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727443AbfFLGpd (ORCPT
+        with ESMTP id S2390411AbfFLGpf (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 12 Jun 2019 02:45:33 -0400
+        Wed, 12 Jun 2019 02:45:35 -0400
 Authenticated-By: 
-X-SpamFilter-By: BOX Solutions SpamTrap 5.62 with qID x5C6jTj2004356, This message is accepted by code: ctloc85258
+X-SpamFilter-By: BOX Solutions SpamTrap 5.62 with qID x5C6jUYb004364, This message is accepted by code: ctloc85258
 Received: from mail.realtek.com (rtitcasv01.realtek.com.tw[172.21.6.18])
-        by rtits2.realtek.com.tw (8.15.2/2.57/5.78) with ESMTPS id x5C6jTj2004356
+        by rtits2.realtek.com.tw (8.15.2/2.57/5.78) with ESMTPS id x5C6jUYb004364
         (version=TLSv1 cipher=DHE-RSA-AES256-SHA bits=256 verify=NOT);
-        Wed, 12 Jun 2019 14:45:29 +0800
+        Wed, 12 Jun 2019 14:45:30 +0800
 Received: from localhost.localdomain (172.21.68.126) by
  RTITCASV01.realtek.com.tw (172.21.6.18) with Microsoft SMTP Server id
  14.3.439.0; Wed, 12 Jun 2019 14:45:29 +0800
 From:   <yhchuang@realtek.com>
 To:     <kvalo@codeaurora.org>
 CC:     <linux-wireless@vger.kernel.org>
-Subject: [PATCH 04/11] rtw88: 8822c: add rf write protection when switching channel
-Date:   Wed, 12 Jun 2019 14:45:10 +0800
-Message-ID: <1560321917-17751-5-git-send-email-yhchuang@realtek.com>
+Subject: [PATCH 05/11] rtw88: 8822c: update channel and bandwidth BB setting
+Date:   Wed, 12 Jun 2019 14:45:11 +0800
+Message-ID: <1560321917-17751-6-git-send-email-yhchuang@realtek.com>
 X-Mailer: git-send-email 2.7.4
 In-Reply-To: <1560321917-17751-1-git-send-email-yhchuang@realtek.com>
 References: <1560321917-17751-1-git-send-email-yhchuang@realtek.com>
@@ -40,53 +40,168 @@ X-Mailing-List: linux-wireless@vger.kernel.org
 
 From: Chien-Hsun Liao <ben.liao@realtek.com>
 
-Collision of writing rf registers could occur if the driver writes
-rf registers by direct write while the hardware is writing other rf
-registers by pi write simultaneously.
+In 2G channels, the cck source and rxagc should be set to different
+values based on different bandwidth to increase the performance of rx
+sensitivity.
 
-Hardware pi write can be triggered by rf calibrations sometimes, so
-the driver can not always write rf registers by direct write
-protection. Direct write protection can make sure that there is no
-hardware pi write during the direct write.
-
-According to some experiments, if we add direct write protection
-when switching channel, the performance of rf calibration will not
-be affected.
+To improve rx throughput performance, the values of sbd subtune and
+pt_opt should be changed in different bandwidth.
 
 Signed-off-by: Chien-Hsun Liao <ben.liao@realtek.com>
 Signed-off-by: Yan-Hsuan Chuang <yhchuang@realtek.com>
 ---
- drivers/net/wireless/realtek/rtw88/phy.c | 13 +++++++++----
- 1 file changed, 9 insertions(+), 4 deletions(-)
+ drivers/net/wireless/realtek/rtw88/rtw8822c.c | 56 +++++++++++++++++++++++----
+ drivers/net/wireless/realtek/rtw88/rtw8822c.h |  7 ++++
+ 2 files changed, 55 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/net/wireless/realtek/rtw88/phy.c b/drivers/net/wireless/realtek/rtw88/phy.c
-index 4381b36..580f310 100644
---- a/drivers/net/wireless/realtek/rtw88/phy.c
-+++ b/drivers/net/wireless/realtek/rtw88/phy.c
-@@ -596,14 +596,19 @@ bool rtw_phy_write_rf_reg(struct rtw_dev *rtwdev, enum rtw_rf_path rf_path,
- 	direct_addr = base_addr[rf_path] + (addr << 2);
- 	mask &= RFREG_MASK;
+diff --git a/drivers/net/wireless/realtek/rtw88/rtw8822c.c b/drivers/net/wireless/realtek/rtw88/rtw8822c.c
+index b4f7242e..86acf60 100644
+--- a/drivers/net/wireless/realtek/rtw88/rtw8822c.c
++++ b/drivers/net/wireless/realtek/rtw88/rtw8822c.c
+@@ -1015,8 +1015,28 @@ static void rtw8822c_set_channel_bb(struct rtw_dev *rtwdev, u8 channel, u8 bw,
+ 		rtw_write32_clr(rtwdev, REG_CCKTXONLY, BIT_BB_CCK_CHECK_EN);
+ 		rtw_write32_mask(rtwdev, REG_CCAMSK, 0x3F000000, 0xF);
  
--	rtw_write32_mask(rtwdev, REG_RSV_CTRL, BITS_RFC_DIRECT, DISABLE_PI);
--	rtw_write32_mask(rtwdev, REG_WLRF1, BITS_RFC_DIRECT, DISABLE_PI);
-+	if (addr == RF_CFGCH) {
-+		rtw_write32_mask(rtwdev, REG_RSV_CTRL, BITS_RFC_DIRECT, DISABLE_PI);
-+		rtw_write32_mask(rtwdev, REG_WLRF1, BITS_RFC_DIRECT, DISABLE_PI);
-+	}
-+
- 	rtw_write32_mask(rtwdev, direct_addr, mask, data);
+-		rtw_write32_mask(rtwdev, REG_RXAGCCTL0, 0x1f0, 0x0);
+-		rtw_write32_mask(rtwdev, REG_RXAGCCTL, 0x1f0, 0x0);
++		switch (bw) {
++		case RTW_CHANNEL_WIDTH_20:
++			rtw_write32_mask(rtwdev, REG_RXAGCCTL0, BIT_RXAGC_CCK,
++					 0x5);
++			rtw_write32_mask(rtwdev, REG_RXAGCCTL, BIT_RXAGC_CCK,
++					 0x5);
++			rtw_write32_mask(rtwdev, REG_RXAGCCTL0, BIT_RXAGC_OFDM,
++					 0x6);
++			rtw_write32_mask(rtwdev, REG_RXAGCCTL, BIT_RXAGC_OFDM,
++					 0x6);
++			break;
++		case RTW_CHANNEL_WIDTH_40:
++			rtw_write32_mask(rtwdev, REG_RXAGCCTL0, BIT_RXAGC_CCK,
++					 0x4);
++			rtw_write32_mask(rtwdev, REG_RXAGCCTL, BIT_RXAGC_CCK,
++					 0x4);
++			rtw_write32_mask(rtwdev, REG_RXAGCCTL0, BIT_RXAGC_OFDM,
++					 0x0);
++			rtw_write32_mask(rtwdev, REG_RXAGCCTL, BIT_RXAGC_OFDM,
++					 0x0);
++			break;
++		}
+ 		if (channel == 13 || channel == 14)
+ 			rtw_write32_mask(rtwdev, REG_SCOTRK, 0xfff, 0x969);
+ 		else if (channel == 11 || channel == 12)
+@@ -1061,14 +1081,20 @@ static void rtw8822c_set_channel_bb(struct rtw_dev *rtwdev, u8 channel, u8 bw,
+ 		rtw_write32_mask(rtwdev, REG_CCAMSK, 0x3F000000, 0x22);
+ 		rtw_write32_mask(rtwdev, REG_TXDFIR0, 0x70, 0x3);
+ 		if (channel >= 36 && channel <= 64) {
+-			rtw_write32_mask(rtwdev, REG_RXAGCCTL0, 0x1f0, 0x1);
+-			rtw_write32_mask(rtwdev, REG_RXAGCCTL, 0x1f0, 0x1);
++			rtw_write32_mask(rtwdev, REG_RXAGCCTL0, BIT_RXAGC_OFDM,
++					 0x1);
++			rtw_write32_mask(rtwdev, REG_RXAGCCTL, BIT_RXAGC_OFDM,
++					 0x1);
+ 		} else if (channel >= 100 && channel <= 144) {
+-			rtw_write32_mask(rtwdev, REG_RXAGCCTL0, 0x1f0, 0x2);
+-			rtw_write32_mask(rtwdev, REG_RXAGCCTL, 0x1f0, 0x2);
++			rtw_write32_mask(rtwdev, REG_RXAGCCTL0, BIT_RXAGC_OFDM,
++					 0x2);
++			rtw_write32_mask(rtwdev, REG_RXAGCCTL, BIT_RXAGC_OFDM,
++					 0x2);
+ 		} else if (channel >= 149) {
+-			rtw_write32_mask(rtwdev, REG_RXAGCCTL0, 0x1f0, 0x3);
+-			rtw_write32_mask(rtwdev, REG_RXAGCCTL, 0x1f0, 0x3);
++			rtw_write32_mask(rtwdev, REG_RXAGCCTL0, BIT_RXAGC_OFDM,
++					 0x3);
++			rtw_write32_mask(rtwdev, REG_RXAGCCTL, BIT_RXAGC_OFDM,
++					 0x3);
+ 		}
  
- 	udelay(1);
- 
--	rtw_write32_mask(rtwdev, REG_RSV_CTRL, BITS_RFC_DIRECT, ENABLE_PI);
--	rtw_write32_mask(rtwdev, REG_WLRF1, BITS_RFC_DIRECT, ENABLE_PI);
-+	if (addr == RF_CFGCH) {
-+		rtw_write32_mask(rtwdev, REG_RSV_CTRL, BITS_RFC_DIRECT, ENABLE_PI);
-+		rtw_write32_mask(rtwdev, REG_WLRF1, BITS_RFC_DIRECT, ENABLE_PI);
-+	}
- 
- 	return true;
+ 		if (channel >= 36 && channel <= 51)
+@@ -1092,6 +1118,9 @@ static void rtw8822c_set_channel_bb(struct rtw_dev *rtwdev, u8 channel, u8 bw,
+ 		rtw_write32_mask(rtwdev, REG_TXBWCTL, 0xffc0, 0x0);
+ 		rtw_write32_mask(rtwdev, REG_TXCLK, 0x700, 0x7);
+ 		rtw_write32_mask(rtwdev, REG_TXCLK, 0x700000, 0x6);
++		rtw_write32_mask(rtwdev, REG_CCK_SOURCE, BIT(30), 0x0);
++		rtw_write32_mask(rtwdev, REG_SBD, BIT_SUBTUNE, 0x1);
++		rtw_write32_mask(rtwdev, REG_PT_CHSMO, BIT_PT_OPT, 0x0);
+ 		break;
+ 	case RTW_CHANNEL_WIDTH_40:
+ 		rtw_write32_mask(rtwdev, REG_CCKSB, BIT(4),
+@@ -1100,12 +1129,17 @@ static void rtw8822c_set_channel_bb(struct rtw_dev *rtwdev, u8 channel, u8 bw,
+ 		rtw_write32_mask(rtwdev, REG_TXBWCTL, 0xc0, 0x0);
+ 		rtw_write32_mask(rtwdev, REG_TXBWCTL, 0xff00,
+ 				 (primary_ch_idx | (primary_ch_idx << 4)));
++		rtw_write32_mask(rtwdev, REG_CCK_SOURCE, BIT(30), 0x1);
++		rtw_write32_mask(rtwdev, REG_SBD, BIT_SUBTUNE, 0x1);
++		rtw_write32_mask(rtwdev, REG_PT_CHSMO, BIT_PT_OPT, 0x1);
+ 		break;
+ 	case RTW_CHANNEL_WIDTH_80:
+ 		rtw_write32_mask(rtwdev, REG_TXBWCTL, 0xf, 0xa);
+ 		rtw_write32_mask(rtwdev, REG_TXBWCTL, 0xc0, 0x0);
+ 		rtw_write32_mask(rtwdev, REG_TXBWCTL, 0xff00,
+ 				 (primary_ch_idx | (primary_ch_idx << 4)));
++		rtw_write32_mask(rtwdev, REG_SBD, BIT_SUBTUNE, 0x6);
++		rtw_write32_mask(rtwdev, REG_PT_CHSMO, BIT_PT_OPT, 0x1);
+ 		break;
+ 	case RTW_CHANNEL_WIDTH_5:
+ 		rtw_write32_mask(rtwdev, REG_DFIRBW, 0x3FF0, 0x2AB);
+@@ -1113,6 +1147,9 @@ static void rtw8822c_set_channel_bb(struct rtw_dev *rtwdev, u8 channel, u8 bw,
+ 		rtw_write32_mask(rtwdev, REG_TXBWCTL, 0xffc0, 0x1);
+ 		rtw_write32_mask(rtwdev, REG_TXCLK, 0x700, 0x4);
+ 		rtw_write32_mask(rtwdev, REG_TXCLK, 0x700000, 0x4);
++		rtw_write32_mask(rtwdev, REG_CCK_SOURCE, BIT(30), 0x0);
++		rtw_write32_mask(rtwdev, REG_SBD, BIT_SUBTUNE, 0x1);
++		rtw_write32_mask(rtwdev, REG_PT_CHSMO, BIT_PT_OPT, 0x0);
+ 		break;
+ 	case RTW_CHANNEL_WIDTH_10:
+ 		rtw_write32_mask(rtwdev, REG_DFIRBW, 0x3FF0, 0x2AB);
+@@ -1120,6 +1157,9 @@ static void rtw8822c_set_channel_bb(struct rtw_dev *rtwdev, u8 channel, u8 bw,
+ 		rtw_write32_mask(rtwdev, REG_TXBWCTL, 0xffc0, 0x2);
+ 		rtw_write32_mask(rtwdev, REG_TXCLK, 0x700, 0x6);
+ 		rtw_write32_mask(rtwdev, REG_TXCLK, 0x700000, 0x5);
++		rtw_write32_mask(rtwdev, REG_CCK_SOURCE, BIT(30), 0x0);
++		rtw_write32_mask(rtwdev, REG_SBD, BIT_SUBTUNE, 0x1);
++		rtw_write32_mask(rtwdev, REG_PT_CHSMO, BIT_PT_OPT, 0x0);
+ 		break;
+ 	}
  }
+diff --git a/drivers/net/wireless/realtek/rtw88/rtw8822c.h b/drivers/net/wireless/realtek/rtw88/rtw8822c.h
+index d3bd985..5fe6acb 100644
+--- a/drivers/net/wireless/realtek/rtw88/rtw8822c.h
++++ b/drivers/net/wireless/realtek/rtw88/rtw8822c.h
+@@ -133,6 +133,8 @@ struct rtw8822c_efuse {
+ #define REG_DYMPRITH	0x86c
+ #define REG_DYMENTH0	0x870
+ #define REG_DYMENTH	0x874
++#define REG_SBD		0x88c
++#define BIT_SUBTUNE	0xf000
+ #define REG_DYMTHMIN	0x8a4
+ #define REG_TXBWCTL	0x9b0
+ #define REG_TXCLK	0x9b4
+@@ -140,12 +142,16 @@ struct rtw8822c_efuse {
+ #define REG_MRCM	0xc38
+ #define REG_AGCSWSH	0xc44
+ #define REG_ANTWTPD	0xc54
++#define REG_PT_CHSMO	0xcbc
++#define BIT_PT_OPT		BIT(21)
+ #define REG_ORITXCODE	0x1800
+ #define REG_3WIRE	0x180c
+ #define BIT_3WIRE_TX_EN		BIT(0)
+ #define BIT_3WIRE_RX_EN		BIT(1)
+ #define BIT_3WIRE_PI_ON		BIT(28)
+ #define REG_RXAGCCTL0	0x18ac
++#define BIT_RXAGC_CCK	0xf000
++#define BIT_RXAGC_OFDM	0x1f0
+ #define REG_CCKSB	0x1a00
+ #define REG_RXCCKSEL	0x1a04
+ #define REG_BGCTRL	0x1a14
+@@ -164,6 +170,7 @@ struct rtw8822c_efuse {
+ #define REG_TXF5	0x1aa0
+ #define REG_TXF6	0x1aac
+ #define REG_TXF7	0x1ab0
++#define REG_CCK_SOURCE	0x1abc
+ #define REG_TXANT	0x1c28
+ #define REG_ENCCK	0x1c3c
+ #define BIT_CCK_BLK_EN		BIT(1)
 -- 
 2.7.4
 
