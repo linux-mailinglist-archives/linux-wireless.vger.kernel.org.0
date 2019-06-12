@@ -2,105 +2,165 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 769DD43047
-	for <lists+linux-wireless@lfdr.de>; Wed, 12 Jun 2019 21:35:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8E0864304C
+	for <lists+linux-wireless@lfdr.de>; Wed, 12 Jun 2019 21:36:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728198AbfFLTfc (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 12 Jun 2019 15:35:32 -0400
-Received: from mga04.intel.com ([192.55.52.120]:65222 "EHLO mga04.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727924AbfFLTfc (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 12 Jun 2019 15:35:32 -0400
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from fmsmga003.fm.intel.com ([10.253.24.29])
-  by fmsmga104.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 12 Jun 2019 12:35:31 -0700
-X-ExtLoop1: 1
-Received: from jprestwo-test.jf.intel.com ([10.54.74.49])
-  by FMSMGA003.fm.intel.com with ESMTP; 12 Jun 2019 12:35:31 -0700
-From:   James Prestwood <james.prestwood@linux.intel.com>
+        id S2387935AbfFLTgL (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 12 Jun 2019 15:36:11 -0400
+Received: from durin.narfation.org ([79.140.41.39]:33990 "EHLO
+        durin.narfation.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2387772AbfFLTgK (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Wed, 12 Jun 2019 15:36:10 -0400
+Received: from sven-desktop.home.narfation.org (p200300C5971631EE000000000000070D.dip0.t-ipconnect.de [IPv6:2003:c5:9716:31ee::70d])
+        by durin.narfation.org (Postfix) with ESMTPSA id E22AB110109;
+        Wed, 12 Jun 2019 21:36:08 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=narfation.org;
+        s=20121; t=1560368169;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=qNgY/HO91fUaSAW4h+RcL/4dMQgMlnTI5Tn5uIkoqNc=;
+        b=2SqKODrUIIjxWA3XPzhPlh1g0NhbPW/gAONi5iWcYvXClP3tk28EDpGmvyFxBLCoL7rtIL
+        bGnDrxxavM/XoQ9SU98Oxk5GC52YiVKn41bM3wddbkw5/rEDsqTSrNJY5wSo7g7W+mUpFf
+        Yqu4O0mwQcO1lpn+Qpgxe5ZUuvNV8ew=
+From:   Sven Eckelmann <sven@narfation.org>
 To:     linux-wireless@vger.kernel.org
-Cc:     James Prestwood <james.prestwood@linux.intel.com>
-Subject: [PATCH 2/3] nl80211: send event when CMD_FRAME duration expires
-Date:   Wed, 12 Jun 2019 12:35:09 -0700
-Message-Id: <20190612193510.27680-2-james.prestwood@linux.intel.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20190612193510.27680-1-james.prestwood@linux.intel.com>
-References: <20190612193510.27680-1-james.prestwood@linux.intel.com>
+Cc:     ath11k@lists.infradead.org, Sven Eckelmann <seckelmann@datto.com>
+Subject: [PATCH v3 3/3] ath11k: register HE mesh capabilities
+Date:   Wed, 12 Jun 2019 21:35:10 +0200
+Message-Id: <20190612193510.29489-4-sven@narfation.org>
+X-Mailer: git-send-email 2.20.1
+In-Reply-To: <20190612193510.29489-1-sven@narfation.org>
+References: <20190612193510.29489-1-sven@narfation.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=narfation.org;
+        s=20121; t=1560368169;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=qNgY/HO91fUaSAW4h+RcL/4dMQgMlnTI5Tn5uIkoqNc=;
+        b=JF0IEsMshYAEt+pEBcr5F3MXfzJO5t950wdTwaST7UD/t0iUzsl7e1bWWmVwQyn5i0qG2V
+        AE88MiLtg+g9vOi4eQ+z5mN9mD+kEjUVc54p+aGkXkYPjY0c2DkK1BVl9bROK0J2I5BYai
+        XoowTM7hrONstxSPLGGyP+3zhatyo7c=
+ARC-Seal: i=1; s=20121; d=narfation.org; t=1560368169; a=rsa-sha256;
+        cv=none;
+        b=pDGwhLectbqf96Lv1/ufUM4CeXKa+hvH6KmdX2cWYlE++e0L/K+klYUpwFU0O3eP0nT/o8
+        A8bGqwhpbw0DgtO9yP1VmrjM1+XCEpbcSwlyff+KHlydxWskIEidzb0i1cA9KKP++hFDr/
+        2LVP2UV/bRC7JfyW1svS7giSmT+bbn0=
+ARC-Authentication-Results: i=1;
+        ORIGINATING;
+        auth=pass smtp.auth=sven smtp.mailfrom=sven@narfation.org
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-cfg80211_remain_on_channel_expired is used to notify userspace when
-the remain on channel duration expired by sending an event. There is
-no such equivalent to CMD_FRAME, where if offchannel and a duration
-is provided, the card will go offchannel for that duration. Currently
-there is no way for userspace to tell when that duration expired
-apart from setting an independent timeout. This timeout is quite
-erroneous as the kernel may not immediately send out the frame
-because of scheduling or work queue delays. In testing, it was found
-this timeout had to be quite large to accomidate any potential delays.
+From: Sven Eckelmann <seckelmann@datto.com>
 
-A better solution is to have the kernel send an event when this
-duration has expired. There is already NL80211_CMD_FRAME_WAIT_CANCEL
-which can be used to cancel a NL80211_CMD_FRAME offchannel. Using this
-command matches perfectly to how NL80211_CMD_CANCEL_REMAIN_ON_CHANNEL
-works, where its both used to cancel and notify if the duration has
-expired.
+The capabilities for the HE mesh are generated from the capabilities
+reported by the fw. But the firmware only reports the overall capabilities
+and not the one which are specific for mesh. Some of them (TWT, MU UL/DL,
+TB PPDU, ...) require an infrastructure setup with a main STA (AP)
+controlling the operations. This is not the case for mesh and thus these
+capabilities are removed from the list of capabilities.
 
-Signed-off-by: James Prestwood <james.prestwood@linux.intel.com>
+Signed-off-by: Sven Eckelmann <seckelmann@datto.com>
 ---
- include/net/cfg80211.h | 11 +++++++++++
- net/wireless/nl80211.c | 13 +++++++++++++
- 2 files changed, 24 insertions(+)
+ drivers/net/wireless/ath/ath11k/mac.c | 63 +++++++++++++++++++++++++++
+ 1 file changed, 63 insertions(+)
 
-diff --git a/include/net/cfg80211.h b/include/net/cfg80211.h
-index 948139690a58..57f9774d8c90 100644
---- a/include/net/cfg80211.h
-+++ b/include/net/cfg80211.h
-@@ -6492,6 +6492,17 @@ void cfg80211_remain_on_channel_expired(struct wireless_dev *wdev, u64 cookie,
- 					struct ieee80211_channel *chan,
- 					gfp_t gfp);
+diff --git a/drivers/net/wireless/ath/ath11k/mac.c b/drivers/net/wireless/ath/ath11k/mac.c
+index 8c47e09a84e7..b55a98902fba 100644
+--- a/drivers/net/wireless/ath/ath11k/mac.c
++++ b/drivers/net/wireless/ath/ath11k/mac.c
+@@ -3274,6 +3274,7 @@ static int ath11k_mac_copy_he_cap(struct ath11k *ar,
+ 		switch (i) {
+ 		case NL80211_IFTYPE_STATION:
+ 		case NL80211_IFTYPE_AP:
++		case NL80211_IFTYPE_MESH_POINT:
+ 			break;
  
-+/**
-+ * cfg80211_tx_mgmt_expired - tx_mgmt duration expired
-+ * @wdev: wireless device
-+ * @cookie: the requested cookie
-+ * @chan: The current channel (from tx_mgmt request)
-+ * @gfp: allocation flags
-+ */
-+void cfg80211_tx_mgmt_expired(struct wireless_dev *wdev, u64 cookie,
-+					struct ieee80211_channel *chan,
-+					gfp_t gfp);
+ 		default:
+@@ -3314,6 +3315,61 @@ static int ath11k_mac_copy_he_cap(struct ath11k *ar,
+ 			he_cap_elem->phy_cap_info[9] |=
+ 				IEEE80211_HE_PHY_CAP9_TX_1024_QAM_LESS_THAN_242_TONE_RU;
+ 			break;
++		case NL80211_IFTYPE_MESH_POINT:
++			he_cap_elem->mac_cap_info[0] &=
++				~(IEEE80211_HE_MAC_CAP0_TWT_RES |
++				  IEEE80211_HE_MAC_CAP0_TWT_REQ);
++			he_cap_elem->mac_cap_info[2] &=
++				~(IEEE80211_HE_MAC_CAP2_TRS |
++				  IEEE80211_HE_MAC_CAP2_BCAST_TWT |
++				  IEEE80211_HE_MAC_CAP2_MU_CASCADING);
++			he_cap_elem->mac_cap_info[3] &=
++				~(IEEE80211_HE_MAC_CAP3_FLEX_TWT_SCHED |
++				  IEEE80211_HE_MAC_CAP2_BCAST_TWT |
++				  IEEE80211_HE_MAC_CAP2_MU_CASCADING);
++			he_cap_elem->mac_cap_info[4] &=
++				~(IEEE80211_HE_MAC_CAP4_BSRP_BQRP_A_MPDU_AGG |
++				  IEEE80211_HE_MAC_CAP4_BQR);
++			he_cap_elem->mac_cap_info[5] &=
++				~(IEEE80211_HE_MAC_CAP5_SUBCHAN_SELECVITE_TRANSMISSION |
++				  IEEE80211_HE_MAC_CAP5_UL_2x996_TONE_RU |
++				  IEEE80211_HE_MAC_CAP5_PUNCTURED_SOUNDING |
++				  IEEE80211_HE_MAC_CAP5_HT_VHT_TRIG_FRAME_RX);
 +
- /**
-  * cfg80211_sinfo_alloc_tid_stats - allocate per-tid statistics.
-  *
-diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
-index e3c0805af415..74dbe6000fe3 100644
---- a/net/wireless/nl80211.c
-+++ b/net/wireless/nl80211.c
-@@ -15375,6 +15375,19 @@ void cfg80211_remain_on_channel_expired(struct wireless_dev *wdev, u64 cookie,
- }
- EXPORT_SYMBOL(cfg80211_remain_on_channel_expired);
++			he_cap_elem->phy_cap_info[2] &=
++				~(IEEE80211_HE_PHY_CAP2_UL_MU_FULL_MU_MIMO |
++				  IEEE80211_HE_PHY_CAP2_UL_MU_PARTIAL_MU_MIMO);
++			he_cap_elem->phy_cap_info[3] &=
++				~(IEEE80211_HE_PHY_CAP3_RX_HE_MU_PPDU_FROM_NON_AP_STA |
++				  IEEE80211_HE_PHY_CAP3_DCM_MAX_CONST_TX_MASK |
++				  IEEE80211_HE_PHY_CAP3_DCM_MAX_CONST_RX_MASK);
++			he_cap_elem->phy_cap_info[4] &=
++				~IEEE80211_HE_PHY_CAP4_MU_BEAMFORMER;
++			he_cap_elem->phy_cap_info[5] &=
++				~IEEE80211_HE_PHY_CAP5_NG16_MU_FEEDBACK;
++			he_cap_elem->phy_cap_info[6] &=
++				~(IEEE80211_HE_PHY_CAP6_CODEBOOK_SIZE_75_MU |
++				  IEEE80211_HE_PHY_CAP6_TRIG_MU_BEAMFORMER_FB |
++				  IEEE80211_HE_PHY_CAP6_TRIG_CQI_FB |
++				  IEEE80211_HE_PHY_CAP6_PARTIAL_BANDWIDTH_DL_MUMIMO);
++			he_cap_elem->phy_cap_info[7] &=
++				~(IEEE80211_HE_PHY_CAP7_SRP_BASED_SR |
++				  IEEE80211_HE_PHY_CAP7_POWER_BOOST_FACTOR_AR |
++				  IEEE80211_HE_PHY_CAP7_STBC_TX_ABOVE_80MHZ |
++				  IEEE80211_HE_PHY_CAP7_STBC_RX_ABOVE_80MHZ);
++			he_cap_elem->phy_cap_info[8] &=
++				~(IEEE80211_HE_PHY_CAP8_HE_ER_SU_PPDU_4XLTF_AND_08_US_GI |
++				  IEEE80211_HE_PHY_CAP8_20MHZ_IN_40MHZ_HE_PPDU_IN_2G |
++				  IEEE80211_HE_PHY_CAP8_20MHZ_IN_160MHZ_HE_PPDU |
++				  IEEE80211_HE_PHY_CAP8_80MHZ_IN_160MHZ_HE_PPDU);
++			he_cap_elem->phy_cap_info[9] &=
++				~(IEEE80211_HE_PHY_CAP9_LONGER_THAN_16_SIGB_OFDM_SYM |
++				  IEEE80211_HE_PHY_CAP9_NON_TRIGGERED_CQI_FEEDBACK |
++				  IEEE80211_HE_PHY_CAP9_RX_1024_QAM_LESS_THAN_242_TONE_RU |
++				  IEEE80211_HE_PHY_CAP9_TX_1024_QAM_LESS_THAN_242_TONE_RU |
++				  IEEE80211_HE_PHY_CAP9_RX_FULL_BW_SU_USING_MU_WITH_COMP_SIGB |
++				  IEEE80211_HE_PHY_CAP9_RX_FULL_BW_SU_USING_MU_WITH_NON_COMP_SIGB);
++			break;
+ 		}
  
-+void cfg80211_tx_mgmt_expired(struct wireless_dev *wdev, u64 cookie,
-+					struct ieee80211_channel *chan,
-+					gfp_t gfp)
-+{
-+	struct wiphy *wiphy = wdev->wiphy;
-+	struct cfg80211_registered_device *rdev = wiphy_to_rdev(wiphy);
+ 		he_cap->he_mcs_nss_supp.rx_mcs_80 =
+@@ -4239,6 +4295,13 @@ ath11k_mac_vdev_start_restart(struct ath11k_vif *arvif,
+ 	int he_support = arvif->vif->bss_conf.he_support;
+ 	int ret = 0;
+ 
++	/* mesh_point interfaces don't use bss_conf.he_support and still
++	 * requires HE PHY mode to be set during vdev restart to avoid
++	 * FW hangs when a sta with HE support tries to associate
++	 */
++	if (arvif->vif->type == NL80211_IFTYPE_MESH_POINT)
++		he_support = true;
 +
-+	trace_cfg80211_tx_mgmt_expired(wdev, cookie, chan);
-+	nl80211_send_remain_on_chan_event(NL80211_CMD_FRAME_WAIT_CANCEL,
-+					  rdev, wdev, cookie, chan, 0, gfp);
-+}
-+EXPORT_SYMBOL(cfg80211_tx_mgmt_expired);
-+
- void cfg80211_new_sta(struct net_device *dev, const u8 *mac_addr,
- 		      struct station_info *sinfo, gfp_t gfp)
- {
+ 	lockdep_assert_held(&ar->conf_mutex);
+ 
+ 	reinit_completion(&ar->vdev_setup_done);
 -- 
-2.17.1
+2.20.1
 
