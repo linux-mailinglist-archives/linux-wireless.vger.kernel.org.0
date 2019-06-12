@@ -2,56 +2,64 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id F00BF421EC
-	for <lists+linux-wireless@lfdr.de>; Wed, 12 Jun 2019 12:04:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 30932421FB
+	for <lists+linux-wireless@lfdr.de>; Wed, 12 Jun 2019 12:07:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731861AbfFLKE4 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 12 Jun 2019 06:04:56 -0400
-Received: from s3.sipsolutions.net ([144.76.43.62]:45094 "EHLO
-        sipsolutions.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1731837AbfFLKE4 (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 12 Jun 2019 06:04:56 -0400
-Received: by sipsolutions.net with esmtpsa (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <johannes@sipsolutions.net>)
-        id 1hb07h-0002WU-RL; Wed, 12 Jun 2019 12:04:53 +0200
-From:   Johannes Berg <johannes@sipsolutions.net>
-To:     linux-wireless@vger.kernel.org
-Cc:     Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH] mac80211: drop robust management frames from unknown TA
-Date:   Wed, 12 Jun 2019 12:04:45 +0200
-Message-Id: <20190612100445.13067-1-johannes@sipsolutions.net>
-X-Mailer: git-send-email 2.17.2
+        id S2407412AbfFLKHU (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 12 Jun 2019 06:07:20 -0400
+Received: from mail.kernel.org ([198.145.29.99]:58966 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S2405946AbfFLKHU (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Wed, 12 Jun 2019 06:07:20 -0400
+Received: from localhost (83-86-89-107.cable.dynamic.v4.ziggo.nl [83.86.89.107])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 486A22080A;
+        Wed, 12 Jun 2019 10:07:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1560334039;
+        bh=Z0uFGeIYb8NOCYuMjBbf2vGG/B/zrmYzY6IbKTW5PuI=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=Hsygi9Ouhowtd80jDBfZMIFp2HBWyjceyODdZKcUaH5kE3NwpTtenD0Mm6GUm9FN+
+         0q6Kn9vtxWzaqK/bOOvpEOyM1pB4lhLrD8vJS4FyORGsx/1nj1J/qc12ElUOZNRCLS
+         Q8iksG83usxRGq1o56wF+1ZcxL7KiSJOM6b2kX58=
+Date:   Wed, 12 Jun 2019 12:07:17 +0200
+From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To:     Maya Erez <merez@codeaurora.org>, Kalle Valo <kvalo@codeaurora.org>
+Cc:     "David S. Miller" <davem@davemloft.net>,
+        linux-wireless@vger.kernel.org, wil6210@qti.qualcomm.com
+Subject: Re: [PATCH] wireless: wil6210: no need to check return value of
+ debugfs_create functions
+Message-ID: <20190612100717.GA19167@kroah.com>
+References: <20190611191024.GA17227@kroah.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20190611191024.GA17227@kroah.com>
+User-Agent: Mutt/1.12.0 (2019-05-25)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Johannes Berg <johannes.berg@intel.com>
+On Tue, Jun 11, 2019 at 09:10:24PM +0200, Greg Kroah-Hartman wrote:
+> When calling debugfs functions, there is no need to ever check the
+> return value.  The function can work or not, but the code logic should
+> never do something different based on this.
+> 
+> Cc: Maya Erez <merez@codeaurora.org>
+> Cc: Kalle Valo <kvalo@codeaurora.org>
+> Cc: "David S. Miller" <davem@davemloft.net>
+> Cc: linux-wireless@vger.kernel.org
+> Cc: wil6210@qti.qualcomm.com
+> Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> ---
+>  drivers/net/wireless/ath/wil6210/debugfs.c | 80 ++++++----------------
+>  1 file changed, 22 insertions(+), 58 deletions(-)
 
-When receiving a robust management frame, drop it if we don't have
-rx->sta since then we don't have a security association and thus
-couldn't possibly validate the frame.
+Oops, 0-day finally woke up and shows I messed this patch up.  Please
+drop it, I will submit a v2 soon.
 
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
----
- net/mac80211/rx.c | 2 ++
- 1 file changed, 2 insertions(+)
+thanks,
 
-diff --git a/net/mac80211/rx.c b/net/mac80211/rx.c
-index 25577ede2986..fd3740000e87 100644
---- a/net/mac80211/rx.c
-+++ b/net/mac80211/rx.c
-@@ -3831,6 +3831,8 @@ static bool ieee80211_accept_frame(struct ieee80211_rx_data *rx)
- 	case NL80211_IFTYPE_STATION:
- 		if (!bssid && !sdata->u.mgd.use_4addr)
- 			return false;
-+		if (ieee80211_is_robust_mgmt_frame(skb) && !rx->sta)
-+			return false;
- 		if (multicast)
- 			return true;
- 		return ether_addr_equal(sdata->vif.addr, hdr->addr1);
--- 
-2.17.2
-
+greg k-h
