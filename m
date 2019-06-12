@@ -2,99 +2,68 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 1997143049
-	for <lists+linux-wireless@lfdr.de>; Wed, 12 Jun 2019 21:36:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0A85B43046
+	for <lists+linux-wireless@lfdr.de>; Wed, 12 Jun 2019 21:35:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728305AbfFLTgD (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 12 Jun 2019 15:36:03 -0400
-Received: from durin.narfation.org ([79.140.41.39]:33950 "EHLO
-        durin.narfation.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727496AbfFLTgD (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 12 Jun 2019 15:36:03 -0400
-Received: from sven-desktop.home.narfation.org (p200300C5971631EE000000000000070D.dip0.t-ipconnect.de [IPv6:2003:c5:9716:31ee::70d])
-        by durin.narfation.org (Postfix) with ESMTPSA id C85BE1100ED;
-        Wed, 12 Jun 2019 21:36:00 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=narfation.org;
-        s=20121; t=1560368160;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:
-         content-transfer-encoding:content-transfer-encoding;
-        bh=1yok9X+eLKIU63OeWQG4dpp/52wQ+AsAlnmIWw9C1HU=;
-        b=vQx+IJPUZmLTlY7wKgYmsEyTnZqhyE2QCuWujNGP839+TrXAPIIPerx7F3CEu4WEJJeACV
-        SQRgdpTzWt/pYyiZpplX1cDvsYCm1Po3KObcooznVH8RNQT6JGrgQKKZQgUphKm6+vyc3D
-        NhmBWRzyKT01AYNFXRPsHxGADy89ASQ=
-From:   Sven Eckelmann <sven@narfation.org>
+        id S1728121AbfFLTfc (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 12 Jun 2019 15:35:32 -0400
+Received: from mga04.intel.com ([192.55.52.120]:65222 "EHLO mga04.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727826AbfFLTfb (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Wed, 12 Jun 2019 15:35:31 -0400
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from fmsmga003.fm.intel.com ([10.253.24.29])
+  by fmsmga104.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 12 Jun 2019 12:35:31 -0700
+X-ExtLoop1: 1
+Received: from jprestwo-test.jf.intel.com ([10.54.74.49])
+  by FMSMGA003.fm.intel.com with ESMTP; 12 Jun 2019 12:35:31 -0700
+From:   James Prestwood <james.prestwood@linux.intel.com>
 To:     linux-wireless@vger.kernel.org
-Cc:     ath11k@lists.infradead.org, Sven Eckelmann <sven@narfation.org>
-Subject: [PATCH v3 0/3] mac80211/ath11k: HE mesh support
-Date:   Wed, 12 Jun 2019 21:35:07 +0200
-Message-Id: <20190612193510.29489-1-sven@narfation.org>
-X-Mailer: git-send-email 2.20.1
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=narfation.org;
-        s=20121; t=1560368160;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:
-         content-transfer-encoding:content-transfer-encoding;
-        bh=1yok9X+eLKIU63OeWQG4dpp/52wQ+AsAlnmIWw9C1HU=;
-        b=RIC0ZdvTy+ZfgXFgVvb+9nuUJVdMmSFYPObzldEMorG1dvneoXjP88/6Wp0DHOC99ZxMTh
-        ehePOpbs+irOJY01ItN/YdUKWOegvrsBT/X/768ttZQ0caNJdoc0UcICjmsuHb9VLQzYcz
-        ZwBTbtpplwHQtfHP58RxREXccfuPRcg=
-ARC-Seal: i=1; s=20121; d=narfation.org; t=1560368160; a=rsa-sha256;
-        cv=none;
-        b=y+NqFZM7tFa8XPgSakfYPOFeF7w/yIe7D82Am2afNYSQk5e2aVlcBB1qO+Ma+aL5GvjuWw
-        KYy5lBLKAxYYBrgvnmkNJqAvlMGtDGFmxYYmVCbQCpAqGZD+hD6j6P4jkvKsIB34GhM9FP
-        M64GFyB4VUCg0mlBNsOeZUHGcv67QlA=
-ARC-Authentication-Results: i=1;
-        ORIGINATING;
-        auth=pass smtp.auth=sven smtp.mailfrom=sven@narfation.org
+Cc:     James Prestwood <james.prestwood@linux.intel.com>
+Subject: [PATCH 1/3] net: wireless: trace: add trace for tx_mgmt_expired
+Date:   Wed, 12 Jun 2019 12:35:08 -0700
+Message-Id: <20190612193510.27680-1-james.prestwood@linux.intel.com>
+X-Mailer: git-send-email 2.17.1
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi,
+Signed-off-by: James Prestwood <james.prestwood@linux.intel.com>
+---
+ net/wireless/trace.h | 18 ++++++++++++++++++
+ 1 file changed, 18 insertions(+)
 
-Some features of 802.11ax without central organizing (AP) STA can also be
-used in mesh mode. The main goal is to get HE mesh working with ath11k.
-For persons without ath11k compatible hw, hwsim can be used in the as basis
-for further development of these features.
-
-
-* v3
-
-  - force ath11k PHY mode for meshpoint vif to HE mode to avoid hang of
-    firmware when HE (or VHT on 2.4GHz) device tries to connect
-
-* v2:
-
-  - add of ath11k patch
-
-* v1:
-
-  - initial RFC
-
-
-Kind regards,
-        Sven
-
-Sven Eckelmann (3):
-  mac80211_hwsim: Register support for HE meshpoint
-  mac80211: implement HE support for mesh
-  ath11k: register HE mesh capabilities
-
- drivers/net/wireless/ath/ath11k/mac.c |  63 ++++++
- drivers/net/wireless/mac80211_hwsim.c | 283 +++++++++++++++++---------
- include/net/cfg80211.h                |  19 ++
- net/mac80211/ieee80211_i.h            |   2 +
- net/mac80211/mesh.c                   |  61 ++++++
- net/mac80211/mesh.h                   |   4 +
- net/mac80211/mesh_plink.c             |  11 +-
- net/mac80211/util.c                   |  52 +++++
- 8 files changed, 400 insertions(+), 95 deletions(-)
-
+diff --git a/net/wireless/trace.h b/net/wireless/trace.h
+index 2abfff925aac..4fbb91a511ae 100644
+--- a/net/wireless/trace.h
++++ b/net/wireless/trace.h
+@@ -2752,6 +2752,24 @@ TRACE_EVENT(cfg80211_ready_on_channel_expired,
+ 		  WDEV_PR_ARG, __entry->cookie, CHAN_PR_ARG)
+ );
+ 
++TRACE_EVENT(cfg80211_tx_mgmt_expired,
++	TP_PROTO(struct wireless_dev *wdev, u64 cookie,
++		 struct ieee80211_channel *chan),
++	TP_ARGS(wdev, cookie, chan),
++	TP_STRUCT__entry(
++		WDEV_ENTRY
++		__field(u64, cookie)
++		CHAN_ENTRY
++	),
++	TP_fast_assign(
++		WDEV_ASSIGN;
++		__entry->cookie = cookie;
++		CHAN_ASSIGN(chan);
++	),
++	TP_printk(WDEV_PR_FMT ", cookie: %llu, " CHAN_PR_FMT,
++		  WDEV_PR_ARG, __entry->cookie, CHAN_PR_ARG)
++);
++
+ TRACE_EVENT(cfg80211_new_sta,
+ 	TP_PROTO(struct net_device *netdev, const u8 *mac_addr,
+ 		 struct station_info *sinfo),
 -- 
-2.20.1
+2.17.1
 
