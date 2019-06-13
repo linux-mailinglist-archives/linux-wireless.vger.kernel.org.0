@@ -2,187 +2,59 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2F25443B7C
-	for <lists+linux-wireless@lfdr.de>; Thu, 13 Jun 2019 17:29:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 01F2144AEC
+	for <lists+linux-wireless@lfdr.de>; Thu, 13 Jun 2019 20:42:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729035AbfFMP3e (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 13 Jun 2019 11:29:34 -0400
-Received: from mail-eopbgr740050.outbound.protection.outlook.com ([40.107.74.50]:48048
-        "EHLO NAM01-BN3-obe.outbound.protection.outlook.com"
+        id S1728666AbfFMSmt (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 13 Jun 2019 14:42:49 -0400
+Received: from qf-corp.com ([43.252.215.172]:54122 "EHLO server1.qf-corp.com"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1728861AbfFMLYE (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 13 Jun 2019 07:24:04 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quantenna.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=3lk/vuAZF7oO7f2eJE+rZB4+fsRJ4dIavidYbN7D8lc=;
- b=PLcGC/W9flXvkCaXAMDU5AFvoJFtDuv8l7Zf7h9cr63NgCWJUr1gyUyWae6lhEp2osSB2+y2mALYZeSzly4HYPjBdE/ac9GPjOaLKSSHoDl2wan1mLt3imR7VDEzqf5fEMY+GtKZ6trdu6CrIdtXi/o+vZpTX7lFQadUCglrqQI=
-Received: from BN6PR05MB2946.namprd05.prod.outlook.com (10.173.19.143) by
- BN6PR05MB3140.namprd05.prod.outlook.com (10.172.147.12) with Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.1987.10; Thu, 13 Jun 2019 11:22:03 +0000
-Received: from BN6PR05MB2946.namprd05.prod.outlook.com
- ([fe80::c5c4:3ecc:8bd5:4d58]) by BN6PR05MB2946.namprd05.prod.outlook.com
- ([fe80::c5c4:3ecc:8bd5:4d58%3]) with mapi id 15.20.2008.002; Thu, 13 Jun 2019
- 11:22:03 +0000
-Received: from SN6PR05MB4928.namprd05.prod.outlook.com (52.135.117.74) by
- SN6PR05MB4256.namprd05.prod.outlook.com (52.135.73.19) with Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.1987.10; Thu, 13 Jun 2019 11:21:40 +0000
-Received: from SN6PR05MB4928.namprd05.prod.outlook.com
- ([fe80::a902:576c:72d6:b358]) by SN6PR05MB4928.namprd05.prod.outlook.com
- ([fe80::a902:576c:72d6:b358%5]) with mapi id 15.20.2008.002; Thu, 13 Jun 2019
- 11:21:40 +0000
-From:   Sergey Matyukevich <sergey.matyukevich.os@quantenna.com>
-To:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-CC:     Johannes Berg <johannes@sipsolutions.net>,
-        Igor Mitsyanko <igor.mitsyanko.os@quantenna.com>,
-        Mikhail Karpenko <mkarpenko@quantenna.com>,
-        Sergey Matyukevich <sergey.matyukevich.os@quantenna.com>
-Subject: [RFC PATCH] cfg80211: fix duplicated scan entries after channel
- switch
-Thread-Topic: [RFC PATCH] cfg80211: fix duplicated scan entries after channel
- switch
-Thread-Index: AQHVIdor2pKU2TPLDEKkmFBmH5mjfg==
-Date:   Thu, 13 Jun 2019 11:21:40 +0000
-Message-ID: <20190613112128.834-1-sergey.matyukevich.os@quantenna.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-clientproxiedby: BYAPR02CA0041.namprd02.prod.outlook.com
- (2603:10b6:a03:54::18) To SN6PR05MB4928.namprd05.prod.outlook.com
- (2603:10b6:805:9d::10)
-authentication-results: spf=none (sender IP is )
- smtp.mailfrom=sergey.matyukevich.os@quantenna.com; 
-x-ms-exchange-messagesentrepresentingtype: 1
-x-mailer: git-send-email 2.11.0
-x-originating-ip: [195.182.157.78]
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: c89e9ace-dde8-4329-b38c-08d6eff14ddc
-x-microsoft-antispam: BCL:0;PCL:0;RULEID:(2390118)(7020095)(4652040)(8989299)(4534185)(4627221)(201703031133081)(201702281549075)(8990200)(5600148)(711020)(4605104)(1401327)(2017052603328)(7193020);SRVR:SN6PR05MB4256;
-x-ms-traffictypediagnostic: SN6PR05MB4256:|BN6PR05MB3140:
-x-moderation-data: 6/13/2019 11:22:01 AM
-x-microsoft-antispam-prvs: <BN6PR05MB31400C5E83E636DCCDEB4764A3EF0@BN6PR05MB3140.namprd05.prod.outlook.com>
-x-ms-oob-tlc-oobclassifiers: OLM:4502;
-x-forefront-prvs: 0067A8BA2A
-x-forefront-antispam-report: SFV:NSPM;SFS:(10009020)(39850400004)(346002)(136003)(396003)(376002)(366004)(189003)(199004)(81166006)(7736002)(8936002)(6512007)(73956011)(66446008)(64756008)(66556008)(99286004)(54906003)(2906002)(66946007)(52116002)(316002)(103116003)(5640700003)(50226002)(6486002)(68736007)(305945005)(6436002)(107886003)(66476007)(6916009)(81156014)(8676002)(53936002)(14454004)(71200400001)(6506007)(386003)(25786009)(71190400001)(86362001)(4326008)(186003)(2616005)(2501003)(26005)(256004)(3846002)(14444005)(66066001)(486006)(102836004)(436003)(478600001)(476003)(6116002)(36756003)(5660300002)(1076003)(2351001);DIR:OUT;SFP:1101;SCL:1;SRVR:BN6PR05MB3140;H:BN6PR05MB2946.namprd05.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;MX:1;A:1;
-received-spf: None (protection.outlook.com: quantenna.com does not designate
- permitted sender hosts)
-x-ms-exchange-senderadcheck: 1
-x-microsoft-antispam-message-info: 3+yavuC01qrqEaNlsQUbQ1+ncmw6l+lgU5iUKvS1b44ZrNfplZnkAVIHEqJA4dsozN1FkG2rK16rLsB9NssFy5vCWYaPNA3wtoFOyP3c2BJ8hwb9T5G4vzbvC+D2sJDHpZkqBTRCzywC9GfFAfAbOiM7n6P9B8QElASluQ/n57C3YtgpuaMOMKUyMjF1dEqyMx7fU9b4hYUhIFhPl7gkiotOyj0wc3a8svznJ38mskdF05VYkY0BcKLkmJDcuh21n2cnd+XXGEEOHSTMHKyf3ko1m/i8HN2Ihaa5mIZ/niC2wP+aRxCFvhQp1okdYQ38KMz9KpAhE+AtKZR6b7jsxKqJ2dCP4am+yf+jwQ8+kbJJhmnDzBYuvjQgtrbG5KolSEDJuuY47NOHRuTQJsiK6Qw2+8WWieSPOi0xH61uDHI=
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+        id S1725851AbfFMSms (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 13 Jun 2019 14:42:48 -0400
+X-Greylist: delayed 10301 seconds by postgrey-1.27 at vger.kernel.org; Thu, 13 Jun 2019 14:42:47 EDT
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=qf-corp.com
+        ; s=default; h=Message-ID:Reply-To:Subject:To:From:Date:
+        Content-Transfer-Encoding:Content-Type:MIME-Version:Sender:Cc:Content-ID:
+        Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+        :Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
+        List-Subscribe:List-Post:List-Owner:List-Archive;
+        bh=x+wk2oDUMoo/hQHPqS9UCKstzOaLw+EthDvW07j7+BE=; b=O3VCmRrAFQB3rJQeuI7rQuXUFt
+        Dr2P4OJ3cWDKHD9XDFWKtLoxha0CVkNDtTakS2iRh7y/gis5qM53RHbRMYKkpdCVZxxvpb0uHJT2K
+        /nA9D3bFw10pNMd0OI8+OTAXkxbLB8SPf0sEbFrTOYzACm7Nn9zzVhW0RIe29nTIYkuOyMvvEDOxp
+        /NxAGZx6es3sC7pyHDM3cZRO1FIkmfBZDebff9oLhB0kDRQMiSI0gcDKDDWeHCZHe5YwPt8ZSitZP
+        dwM7PSNIvyno1yZNBm9xwS3XuGfhRjlFHBLj524EGtSNXnRdXG+Z/OyLoIZuY8rKKf7VDuxJT0WJo
+        crGa/HbQ==;
+Received: from [::1] (port=40630 helo=server1.qf-corp.com)
+        by server1.qf-corp.com with esmtpa (Exim 4.92)
+        (envelope-from <admin@qf-corp.com>)
+        id 1hbRxn-0007y7-PX; Thu, 13 Jun 2019 23:48:31 +0800
 MIME-Version: 1.0
-X-OriginatorOrg: quantenna.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: c89e9ace-dde8-4329-b38c-08d6eff14ddc
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: a355dbce-62b4-4789-9446-c1d5582180ff
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: SPO_Arbitration_b0b286b7-f867-4773-abab-9aa7f1e88f6f@quantenna.onmicrosoft.com
-X-MS-Exchange-CrossTenant-originalarrivaltime: 13 Jun 2019 11:22:03.5752
- (UTC)
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BN6PR05MB3140
+Content-Type: text/plain; charset=UTF-8;
+ format=flowed
+Content-Transfer-Encoding: 8bit
+Date:   Thu, 13 Jun 2019 23:48:31 +0800
+From:   Herr David Williams <admin@qf-corp.com>
+To:     undisclosed-recipients:;
+Subject: dringender Kredit
+Reply-To: david.loanfirm18@gmail.com
+Mail-Reply-To: david.loanfirm18@gmail.com
+Message-ID: <d6b97b9d383d6778fa671f6bc9a7109f@qf-corp.com>
+X-Sender: admin@qf-corp.com
+User-Agent: Roundcube Webmail/1.3.8
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - server1.qf-corp.com
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - qf-corp.com
+X-Get-Message-Sender-Via: server1.qf-corp.com: authenticated_id: admin@qf-corp.com
+X-Authenticated-Sender: server1.qf-corp.com: admin@qf-corp.com
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-V2hlbiBhc3NvY2lhdGVkIEJTUyBjb21wbGV0ZXMgY2hhbm5lbCBzd2l0Y2ggcHJvY2VkdXJlLCBp
-dHMgY2hhbm5lbCByZWNvcmQNCm5lZWRzIHRvIGJlIHVwZGF0ZWQuIFRoZSBleGlzdGluZyBtYWM4
-MDIxMSBzb2x1dGlvbiB3YXMgZXh0ZW5kZWQgdG8NCmNmZzgwMjExIGluIGNvbW1pdCA1ZGM4Y2Rj
-ZTFkNzIgKCJtYWM4MDIxMS9jZmc4MDIxMTogdXBkYXRlIGJzcw0KY2hhbm5lbCBvbiBjaGFubmVs
-IHN3aXRjaCIpDQoNCkhvd2V2ZXIgdGhpcyBzb2x1dGlvbiBhcHBlYXJzIHRvIGJlIGluY29tcGxl
-dGUgYXMgaXQgbWF5IGxlYWQgdG8NCmR1cGxpY2F0ZWQgc2NhbiBlbnRyaWVzIGZvciBhc3NvY2lh
-dGVkIEJTUyBhZnRlciBjaGFubmVsIHN3aXRjaC4NClRoZSByb290IGNhdXNlIG9mIHRoZSBwcm9i
-bGVtIGlzIGFzIGZvbGxvd3MuIEVhY2ggQlNTIGVudHJ5IGlzDQppbmNsdWRlZCBpbnRvIHRoZSBm
-b2xsb3dpbmcgZGF0YSBzdHJ1Y3R1cmVzOg0KLSBic3MgbGlzdCByZGV2LT5ic3NfbGlzdA0KLSBi
-c3Mgc2VhcmNoIHRyZWUgcmRldi0+YnNzX3RyZWUNClVwZGF0aW5nIEJTUyBjaGFubmVsIHJlY29y
-ZCB3aXRob3V0IHJlYnVpbGRpbmcgYnNzX3RyZWUgbWF5IGJyZWFrDQp0cmVlIHNlYXJjaCBzaW5j
-ZSBjbXBfYnNzIGNvbnNpZGVycyBhbGwgb2YgdGhlIGZvbGxvd2luZzogY2hhbm5lbCwNCmJzc2lk
-LCBzc2lkLiBXaGVuIEJTUyBjaGFubmVsIGlzIHVwZGF0ZWQsIGJ1dCBpdHMgbG9jYXRpb24gaW4g
-YnNzX3RyZWUNCmlzIG5vdCB1cGRhdGVkLCB0aGVuIHN1YnNlcXVlbnQgc2VhcmNoIG9wZXJhdGlv
-bnMgbWF5IGZhaWwgdG8gbG9jYXRlDQp0aGlzIEJTUyBzaW5jZSB0aGV5IHdpbGwgYmUgdHJhdmVy
-c2luZyBic3NfdHJlZSBpbiB3cm9uZyBkaXJlY3Rpb24uDQpBcyBhIHJlc3VsdCwgZm9yIHNjYW4g
-cGVyZm9ybWVkIGFmdGVyIGFzc29jaWF0ZWQgQlNTIGNoYW5uZWwgc3dpdGNoLA0KY2ZnODAyMTFf
-YnNzX3VwZGF0ZSBtYXkgYWRkIHRoZSBzZWNvbmQgZW50cnkgZm9yIHRoZSBzYW1lIEJTUyB0byBi
-b3RoDQpic3NfbGlzdCBhbmQgYnNzX3RyZWUsIHJhdGhlciB0aGVuIHVwZGF0ZSB0aGUgZXhpc3Rp
-bmcgb25lLg0KDQpUbyBzdW1tYXJpemUsIGlmIEJTUyBjaGFubmVsIG5lZWRzIHRvIGJlIHVwZGF0
-ZWQsIHRoZW4gYnNzX3RyZWUgc2hvdWxkDQpiZSByZWJ1aWx0IGluIG9yZGVyIHRvIHB1dCB1cGRh
-dGVkIEJTUyBlbnRyeSBpbnRvIGEgcHJvcGVyIGxvY2F0aW9uLg0KDQpUaGlzIGNvbW1pdCBzdWdn
-ZXN0cyB0aGUgZm9sbG93aW5nIHN0cmFpZ2h0Zm9yd2FyZCBzb2x1dGlvbjoNCi0gaWYgbmV3IGVu
-dHJ5IGhhcyBiZWVuIGFscmVhZHkgY3JlYXRlZCBmb3IgQlNTIGFmdGVyIGNoYW5uZWwgc3dpdGNo
-LA0KICB0aGVuIHJlbW92ZSBpdCBjb21wbGV0ZWx5DQotIHVzZSByYl9lcmFzZS9yYl9pbnNlcnRf
-YnNzIHJlaW5zdGFsbCB1cGRhdGVkIEJTUyBpbiBic3NfdHJlZQ0KDQpGaW5hbGx5LCBuZXh0IHNj
-YW4gb3BlcmF0aW9uIHdpbGwgZmluZCBCU1MgZW50cnkgaW4gZXhwZWN0ZWQgbG9jYXRpb24NCmlu
-IHJiX3RyZWUuIFNvIGFsbCB0aGUgSUVzLCBpbmNsdWRpbmcgSFQvVkhUIG9wZXJhdGlvbiBJRXMs
-DQp3aWxsIGJlIHByb3Blcmx5IHVwZGF0ZWQuDQoNClNpZ25lZC1vZmYtYnk6IFNlcmdleSBNYXR5
-dWtldmljaCA8c2VyZ2V5Lm1hdHl1a2V2aWNoLm9zQHF1YW50ZW5uYS5jb20+DQoNCi0tLQ0KDQpN
-aXNjIG5vdGVzLg0KDQoxLiBUZXN0ZWQgdXNpbmcgaXdsd2lmaSBhbmQgcXRuZm1hYyBkcml2ZXJz
-LCBsb29rcyBnb29kDQoNCjIuIEFsdGVybmF0aXZlIGFwcHJvYWNoOiByZW1vdmUgb2xkIEJTUyBl
-bnRyeSBhbmQga2VlcCBuZXcgYSBvbmUNClRoaXMgYXBwcm9hY2ggbWF5IGhhdmUgY2VydGFpbiBi
-ZW5lZml0cyBmb3IgbWFjODAyMTEgZHJpdmVycy4NCkZvciBpbnN0YW5jZSwgaW4gdGhpcyBjYXNl
-IEhUL1ZIVCBvcGVyYXRpb24gSUVzIGFyZSBnb2luZyB0byBiZQ0KdmFsaWQgZnJvbSB0aGUgc3Rh
-cnQsIG5vIG5lZWQgdG8gd2FpdCBmb3IgdGhlIG5leHQgc2Nhbi4NCg0KSG93ZXZlciB0aGUgZm9s
-bG93aW5nIHByb2NlZHVyZSBmb3IgcmVwbGFjaW5nIGN1cnJlbnRfYnNzLCBwcm90ZWN0ZWQNCmJ5
-IHdkZXYtPm10eCBhbmQgcmRldi0+YnNzX2xvY2sgbG9ja3MsIHNlZW1zIHRvIGJlIGluc3VmZmlj
-aWVudDoNCg0KICBic3NfcmVmX2dldChyZGV2LCBuZXcpOw0KICBjZmc4MDIxMV9ob2xkX2Jzcyhu
-ZXcpOw0KICB3ZGV2LT5jdXJyZW50X2JzcyA9IG5ldzsNCg0KICBjZmc4MDIxMV91bmhvbGRfYnNz
-KG9sZCk7DQogIGJzc19yZWZfcHV0KHJkZXYsIG9sZCk7DQogIF9fY2ZnODAyMTFfdW5saW5rX2Jz
-cyhyZGV2LCBvbGQpOw0KDQpXaGVuIHRlc3RpbmcgdGhpcyBhbHRlcm5hdGl2ZSBhcHByb2FjaCB1
-c2luZyBpd2x3aWZpIGRyaXZlciwNCm9jY2FzaW9uYWwgZ2VuZXJhbCBwcm90ZWN0aW9uIGZhdWx0
-IGNyYXNoZXMgaGF2ZSBiZWVuIG9ic2VydmVkDQpvbiBpZWVlODAyMTFfcnhfbWdtdF9iZWFjb24v
-aWVlZTgwMjExX2Jzc19pbmZvX3VwZGF0ZSBjb2RlIHBhdGhzLg0KU28gZmFyIEkgaGF2ZW4ndCB5
-ZXQgcm9vdCBjYXVzZWQgdGhlbS4NCg0KLS0tDQogbmV0L3dpcmVsZXNzL2NvcmUuaCAgICB8ICAy
-ICsrDQogbmV0L3dpcmVsZXNzL25sODAyMTEuYyB8ICA1ICsrKy0tDQogbmV0L3dpcmVsZXNzL3Nj
-YW4uYyAgICB8IDQ1ICsrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysr
-Kw0KIDMgZmlsZXMgY2hhbmdlZCwgNTAgaW5zZXJ0aW9ucygrKSwgMiBkZWxldGlvbnMoLSkNCg0K
-ZGlmZiAtLWdpdCBhL25ldC93aXJlbGVzcy9jb3JlLmggYi9uZXQvd2lyZWxlc3MvY29yZS5oDQpp
-bmRleCA4NGQzNmNhN2E3YWIuLjc2M2VkY2U2YjM0ZiAxMDA2NDQNCi0tLSBhL25ldC93aXJlbGVz
-cy9jb3JlLmgNCisrKyBiL25ldC93aXJlbGVzcy9jb3JlLmgNCkBAIC0zMDYsNiArMzA2LDggQEAg
-dm9pZCBpZWVlODAyMTFfc2V0X2JpdHJhdGVfZmxhZ3Moc3RydWN0IHdpcGh5ICp3aXBoeSk7DQog
-dm9pZCBjZmc4MDIxMV9ic3NfZXhwaXJlKHN0cnVjdCBjZmc4MDIxMV9yZWdpc3RlcmVkX2Rldmlj
-ZSAqcmRldik7DQogdm9pZCBjZmc4MDIxMV9ic3NfYWdlKHN0cnVjdCBjZmc4MDIxMV9yZWdpc3Rl
-cmVkX2RldmljZSAqcmRldiwNCiAgICAgICAgICAgICAgICAgICAgICAgdW5zaWduZWQgbG9uZyBh
-Z2Vfc2Vjcyk7DQordm9pZCBjZmc4MDIxMV91cGRhdGVfYXNzb2NfYnNzX2VudHJ5KHN0cnVjdCB3
-aXJlbGVzc19kZXYgKndkZXYsDQorCQkJCSAgICAgc3RydWN0IGllZWU4MDIxMV9jaGFubmVsICpj
-aGFubmVsKTsNCiANCiAvKiBJQlNTICovDQogaW50IF9fY2ZnODAyMTFfam9pbl9pYnNzKHN0cnVj
-dCBjZmc4MDIxMV9yZWdpc3RlcmVkX2RldmljZSAqcmRldiwNCmRpZmYgLS1naXQgYS9uZXQvd2ly
-ZWxlc3Mvbmw4MDIxMS5jIGIvbmV0L3dpcmVsZXNzL25sODAyMTEuYw0KaW5kZXggYzM5MWI1NjBk
-OTg2Li5iM2IxMzEzMWU0MmUgMTAwNjQ0DQotLS0gYS9uZXQvd2lyZWxlc3Mvbmw4MDIxMS5jDQor
-KysgYi9uZXQvd2lyZWxlc3Mvbmw4MDIxMS5jDQpAQCAtMTU5NzEsOCArMTU5NzEsOSBAQCB2b2lk
-IGNmZzgwMjExX2NoX3N3aXRjaF9ub3RpZnkoc3RydWN0IG5ldF9kZXZpY2UgKmRldiwNCiAJd2Rl
-di0+cHJlc2V0X2NoYW5kZWYgPSAqY2hhbmRlZjsNCiANCiAJaWYgKHdkZXYtPmlmdHlwZSA9PSBO
-TDgwMjExX0lGVFlQRV9TVEFUSU9OICYmDQotCSAgICAhV0FSTl9PTighd2Rldi0+Y3VycmVudF9i
-c3MpKQ0KLQkJd2Rldi0+Y3VycmVudF9ic3MtPnB1Yi5jaGFubmVsID0gY2hhbmRlZi0+Y2hhbjsN
-CisJICAgICFXQVJOX09OKCF3ZGV2LT5jdXJyZW50X2JzcykpIHsNCisJCWNmZzgwMjExX3VwZGF0
-ZV9hc3NvY19ic3NfZW50cnkod2RldiwgY2hhbmRlZi0+Y2hhbik7DQorCX0NCiANCiAJbmw4MDIx
-MV9jaF9zd2l0Y2hfbm90aWZ5KHJkZXYsIGRldiwgY2hhbmRlZiwgR0ZQX0tFUk5FTCwNCiAJCQkJ
-IE5MODAyMTFfQ01EX0NIX1NXSVRDSF9OT1RJRlksIDApOw0KZGlmZiAtLWdpdCBhL25ldC93aXJl
-bGVzcy9zY2FuLmMgYi9uZXQvd2lyZWxlc3Mvc2Nhbi5jDQppbmRleCBjMDRmNTQ1MWY4OWIuLjlh
-MTZjNDIyOTZkMCAxMDA2NDQNCi0tLSBhL25ldC93aXJlbGVzcy9zY2FuLmMNCisrKyBiL25ldC93
-aXJlbGVzcy9zY2FuLmMNCkBAIC0xOTcyLDYgKzE5NzIsNTEgQEAgdm9pZCBjZmc4MDIxMV91bmxp
-bmtfYnNzKHN0cnVjdCB3aXBoeSAqd2lwaHksIHN0cnVjdCBjZmc4MDIxMV9ic3MgKnB1YikNCiB9
-DQogRVhQT1JUX1NZTUJPTChjZmc4MDIxMV91bmxpbmtfYnNzKTsNCiANCit2b2lkIGNmZzgwMjEx
-X3VwZGF0ZV9hc3NvY19ic3NfZW50cnkoc3RydWN0IHdpcmVsZXNzX2RldiAqd2RldiwNCisJCQkJ
-ICAgICBzdHJ1Y3QgaWVlZTgwMjExX2NoYW5uZWwgKmNoYW4pDQorew0KKwlzdHJ1Y3Qgd2lwaHkg
-KndpcGh5ID0gd2Rldi0+d2lwaHk7DQorCXN0cnVjdCBjZmc4MDIxMV9yZWdpc3RlcmVkX2Rldmlj
-ZSAqcmRldiA9IHdpcGh5X3RvX3JkZXYod2lwaHkpOw0KKwlzdHJ1Y3QgY2ZnODAyMTFfaW50ZXJu
-YWxfYnNzICpjYnNzID0gd2Rldi0+Y3VycmVudF9ic3M7DQorCXN0cnVjdCBjZmc4MDIxMV9pbnRl
-cm5hbF9ic3MgKm5ldyA9IE5VTEw7DQorCXN0cnVjdCBjZmc4MDIxMV9pbnRlcm5hbF9ic3MgKmJz
-czsNCisNCisJc3Bpbl9sb2NrX2JoKCZyZGV2LT5ic3NfbG9jayk7DQorDQorCWlmIChXQVJOX09O
-KGNic3MtPnB1Yi5jaGFubmVsID09IGNoYW4pKQ0KKwkJZ290byBkb25lOw0KKw0KKwljYnNzLT5w
-dWIuY2hhbm5lbCA9IGNoYW47DQorCWNic3MtPnRzID0gamlmZmllczsNCisNCisJbGlzdF9mb3Jf
-ZWFjaF9lbnRyeShic3MsICZyZGV2LT5ic3NfbGlzdCwgbGlzdCkgew0KKwkJaWYgKCFjZmc4MDIx
-MV9ic3NfdHlwZV9tYXRjaChic3MtPnB1Yi5jYXBhYmlsaXR5LA0KKwkJCQkJICAgICBic3MtPnB1
-Yi5jaGFubmVsLT5iYW5kLA0KKwkJCQkJICAgICB3ZGV2LT5jb25uX2Jzc190eXBlKSkNCisJCQlj
-b250aW51ZTsNCisNCisJCWlmIChic3MgPT0gY2JzcykNCisJCQljb250aW51ZTsNCisNCisJCWlm
-ICghY21wX2JzcygmYnNzLT5wdWIsICZjYnNzLT5wdWIsIEJTU19DTVBfUkVHVUxBUikpIHsNCisJ
-CQluZXcgPSBic3M7DQorCQkJYnJlYWs7DQorCQl9DQorCX0NCisNCisJaWYgKG5ldykgew0KKwkJ
-V0FSTl9PTihhdG9taWNfcmVhZCgmbmV3LT5ob2xkKSk7DQorCQlXQVJOX09OKCFfX2NmZzgwMjEx
-X3VubGlua19ic3MocmRldiwgbmV3KSk7DQorCX0NCisNCisJcmJfZXJhc2UoJmNic3MtPnJibiwg
-JnJkZXYtPmJzc190cmVlKTsNCisJcmJfaW5zZXJ0X2JzcyhyZGV2LCBjYnNzKTsNCisJcmRldi0+
-YnNzX2dlbmVyYXRpb24rKzsNCisNCitkb25lOg0KKwlzcGluX3VubG9ja19iaCgmcmRldi0+YnNz
-X2xvY2spOw0KK30NCisNCiAjaWZkZWYgQ09ORklHX0NGRzgwMjExX1dFWFQNCiBzdGF0aWMgc3Ry
-dWN0IGNmZzgwMjExX3JlZ2lzdGVyZWRfZGV2aWNlICoNCiBjZmc4MDIxMV9nZXRfZGV2X2Zyb21f
-aWZpbmRleChzdHJ1Y3QgbmV0ICpuZXQsIGludCBpZmluZGV4KQ0KLS0gDQoyLjExLjANCg0K
+
+
+-- 
+Benötigen Sie dringend einen Kredit? Wenn ja, antworten Sie für weitere 
+Details
