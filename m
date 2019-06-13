@@ -2,46 +2,46 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 738DB45033
-	for <lists+linux-wireless@lfdr.de>; Fri, 14 Jun 2019 01:43:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 324E245037
+	for <lists+linux-wireless@lfdr.de>; Fri, 14 Jun 2019 01:43:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727673AbfFMXmO (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 13 Jun 2019 19:42:14 -0400
-Received: from mail-pg1-f196.google.com ([209.85.215.196]:34940 "EHLO
-        mail-pg1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727334AbfFMXmN (ORCPT
+        id S1727786AbfFMXmU (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 13 Jun 2019 19:42:20 -0400
+Received: from mail-pg1-f194.google.com ([209.85.215.194]:34942 "EHLO
+        mail-pg1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727637AbfFMXmP (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 13 Jun 2019 19:42:13 -0400
-Received: by mail-pg1-f196.google.com with SMTP id s27so406713pgl.2
-        for <linux-wireless@vger.kernel.org>; Thu, 13 Jun 2019 16:42:13 -0700 (PDT)
+        Thu, 13 Jun 2019 19:42:15 -0400
+Received: by mail-pg1-f194.google.com with SMTP id s27so406732pgl.2
+        for <linux-wireless@vger.kernel.org>; Thu, 13 Jun 2019 16:42:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=chromium.org; s=google;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=00LaqICpwM9YOieDteVKl28OeJvNxsjKf3w+38t5DQM=;
-        b=MvLy9Z5wXSd9OviDwGx/a9f6GyaM1INYAiT0IsoEyf4KpOIaHa3eRMwuu5IO/O0HlA
-         TnzMGBOrhOLake233PtHLia0lHm7DQz/GTZzDlnZYZJBJieXnzpvxpYc05eDbq1aR4A4
-         uv4Ma5UYC9SOgb0nuN11vIzWnPCFi0ZY9ey8I=
+        bh=asAFKY/6kW404t0swx66t/dNtCEl6Thr0JYkBAqMaR4=;
+        b=AtrQETD8maXPKp1qgnGxA8eeBx7Cjs5OFntvEBHxx8Y63Hfo8STjQB7T1kmrZIxhVv
+         baf4wlarO3zBU4HJwEuF2UysuOBmjOTzr1oAY/Po2KQUJFEL9/7sBH979Ox2KI22TRcV
+         NauLNa3uQxNcDx/j3YUJ7eaChBlNbfov6fKsA=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=00LaqICpwM9YOieDteVKl28OeJvNxsjKf3w+38t5DQM=;
-        b=gZBGXsxh6DMa89Ve9bVJXcOsmROMxidKjBpYW783lkl2XxzCGTrnlb5xA9ew2u7uHd
-         EfbeePi1pRwGkJMcd4c2Qi2PCcJ5OOHRoQ376ITMcc/zUSyaAYlWaQnKndAFw6I3y/pG
-         GL4dwZnSTpvVmMGgjhMqEhJvdKuruFKKKZDrpvYSj9270wC0s7OAsZwwwtVGbemVldRb
-         zw2wZTNgtcycNnBBJ5ACL9tLIH3hTTo9nt02g4Te01pBnUSSI+QmsUIgjD5ImhQpcwAv
-         adEAfDL2IrD5Ny8Hgx1RK5UB+sppDY+FY//4MIab8oZvEtgOVjYBEDLja9IbOtyCt8Eo
-         rKCA==
-X-Gm-Message-State: APjAAAV4dmK5Knl9eOR9RHvSarAb2hE1AL58As12nvKcYXAM+mG9T1V6
-        h0bRVjmMoW3R7QuBFJZGro9hjw==
-X-Google-Smtp-Source: APXvYqz3Xqez9uoGK3fVk6+p5Ke5NypkmIbmDEcShWic6SM+R4pi58ILoJD0wSRRnhH8nE17iF/u1w==
-X-Received: by 2002:a17:90a:db42:: with SMTP id u2mr8109422pjx.48.1560469333161;
-        Thu, 13 Jun 2019 16:42:13 -0700 (PDT)
+        bh=asAFKY/6kW404t0swx66t/dNtCEl6Thr0JYkBAqMaR4=;
+        b=ZE+PRJ/NbG6hkhpQS+DIvQeDHc3v6Wcse3et/hE+Q4nQQG1OQ+VOh1EkysTzswlBgw
+         Io2klcuWWB35CdYEb7CE1bphu0xW7zKf0YQcuhRVDgcmy/TatEcnHLQqgi0/0jwAbuCW
+         a5zJdj3bnNIkIa5iLDPjQOrZnCRVvprvakXP3qLO1i7NVRnPmy6K3pE/g7EaRS/fg2L9
+         jzz9UDjbCC17jzhNJd+IAscKNAeUdo1U1rsObujrkPDinidKHvSC3zAQG2UoNyMPCmgZ
+         Vk/v7u6+0dJUs9XfEyVaIwM5ZPL8gn8NIEgCpjEhVGz8oo0FiVLzoCzQxMeamu9oz3oy
+         0eHQ==
+X-Gm-Message-State: APjAAAUN+haJpCMiJGj7jhbpl8uqZKe3SYxboRkO27yMaIzbfi7F4O0n
+        0dYTkUPRca0DW2yAda+mwy4NLA==
+X-Google-Smtp-Source: APXvYqw9ZPafeIz8wf7SJLyfTJw4AF/ZuccsnJmitqQ0R7cOeNBJgsKmhTK6uMW7wmx88DQONcxcAw==
+X-Received: by 2002:a17:90a:ad89:: with SMTP id s9mr8114489pjq.41.1560469334233;
+        Thu, 13 Jun 2019 16:42:14 -0700 (PDT)
 Received: from tictac2.mtv.corp.google.com ([2620:15c:202:1:24fa:e766:52c9:e3b2])
-        by smtp.gmail.com with ESMTPSA id p7sm781088pfp.131.2019.06.13.16.42.11
+        by smtp.gmail.com with ESMTPSA id p7sm781088pfp.131.2019.06.13.16.42.13
         (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
-        Thu, 13 Jun 2019 16:42:12 -0700 (PDT)
+        Thu, 13 Jun 2019 16:42:13 -0700 (PDT)
 From:   Douglas Anderson <dianders@chromium.org>
 To:     Ulf Hansson <ulf.hansson@linaro.org>,
         Kalle Valo <kvalo@codeaurora.org>,
@@ -57,13 +57,15 @@ Cc:     brcm80211-dev-list.pdl@broadcom.com,
         Chi-Hsien Lin <chi-hsien.lin@cypress.com>,
         netdev@vger.kernel.org, brcm80211-dev-list@cypress.com,
         Douglas Anderson <dianders@chromium.org>,
-        linux-mmc@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Avri Altman <avri.altman@wdc.com>
-Subject: [PATCH v4 4/5] mmc: core: Add sdio_retune_hold_now() and sdio_retune_release()
-Date:   Thu, 13 Jun 2019 16:41:52 -0700
-Message-Id: <20190613234153.59309-5-dianders@chromium.org>
+        Franky Lin <franky.lin@broadcom.com>,
+        linux-kernel@vger.kernel.org,
+        Madhan Mohan R <MadhanMohan.R@cypress.com>,
+        Hante Meuleman <hante.meuleman@broadcom.com>,
+        YueHaibing <yuehaibing@huawei.com>,
+        "David S. Miller" <davem@davemloft.net>
+Subject: [PATCH v4 5/5] brcmfmac: sdio: Don't tune while the card is off
+Date:   Thu, 13 Jun 2019 16:41:53 -0700
+Message-Id: <20190613234153.59309-6-dianders@chromium.org>
 X-Mailer: git-send-email 2.22.0.rc2.383.gf4fbbf30c2-goog
 In-Reply-To: <20190613234153.59309-1-dianders@chromium.org>
 References: <20190613234153.59309-1-dianders@chromium.org>
@@ -74,93 +76,81 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-We want SDIO drivers to be able to temporarily stop retuning when the
-driver knows that the SDIO card is not in a state where retuning will
-work (maybe because the card is asleep).  We'll move the relevant
-functions to a place where drivers can call them.
+When Broadcom SDIO cards are idled they go to sleep and a whole
+separate subsystem takes over their SDIO communication.  This is the
+Always-On-Subsystem (AOS) and it can't handle tuning requests.
+
+Specifically, as tested on rk3288-veyron-minnie (which reports having
+BCM4354/1 in dmesg), if I force a retune in brcmf_sdio_kso_control()
+when "on = 1" (aka we're transition from sleep to wake) by whacking:
+  bus->sdiodev->func1->card->host->need_retune = 1
+...then I can often see tuning fail.  In this case dw_mmc reports "All
+phases bad!").  Note that I don't get 100% failure, presumably because
+sometimes the card itself has already transitioned away from the AOS
+itself by the time we try to wake it up.  If I force retuning when "on
+= 0" (AKA force retuning right before sending the command to go to
+sleep) then retuning is always OK.
+
+NOTE: we need _both_ this patch and the patch to avoid triggering
+tuning due to CRC errors in the sleep/wake transition, AKA ("brcmfmac:
+sdio: Disable auto-tuning around commands expected to fail").  Though
+both patches handle issues with Broadcom's AOS, the problems are
+distinct:
+1. We want to defer (but not ignore) asynchronous (like
+   timer-requested) tuning requests till the card is awake.  However,
+   we want to ignore CRC errors during the transition, we don't want
+   to queue deferred tuning request.
+2. You could imagine that the AOS could implement retuning but we
+   could still get errors while transitioning in and out of the AOS.
+   Similarly you could imagine a seamless transition into and out of
+   the AOS (with no CRC errors) even if the AOS couldn't handle
+   tuning.
+
+ALSO NOTE: presumably there is never a desperate need to retune in
+order to wake up the card, since doing so is impossible.  Luckily the
+only way the card can get into sleep state is if we had a good enough
+tuning to send it a sleep command, so presumably that "good enough"
+tuning is enough to wake us up, at least with a few retries.
 
 Signed-off-by: Douglas Anderson <dianders@chromium.org>
 ---
 
 Changes in v4:
-- Moved retune hold/release to SDIO API (Adrian).
+- Adjust to API rename (Adrian).
 
 Changes in v3:
-- ("mmc: core: Export mmc_retune_hold_now() mmc_retune_release()") new for v3.
+- ("brcmfmac: sdio: Don't tune while the card is off") new for v3.
 
 Changes in v2: None
 
- drivers/mmc/core/sdio_io.c    | 40 +++++++++++++++++++++++++++++++++++
- include/linux/mmc/sdio_func.h |  3 +++
- 2 files changed, 43 insertions(+)
+ drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/drivers/mmc/core/sdio_io.c b/drivers/mmc/core/sdio_io.c
-index f822a9630b0e..1b6fe737bd72 100644
---- a/drivers/mmc/core/sdio_io.c
-+++ b/drivers/mmc/core/sdio_io.c
-@@ -15,6 +15,7 @@
- #include "sdio_ops.h"
- #include "core.h"
- #include "card.h"
-+#include "host.h"
+diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c
+index ee76593259a7..629140b6d7e2 100644
+--- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c
++++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c
+@@ -669,6 +669,10 @@ brcmf_sdio_kso_control(struct brcmf_sdio *bus, bool on)
  
- /**
-  *	sdio_claim_host - exclusively claim a bus for a certain SDIO function
-@@ -770,3 +771,42 @@ void sdio_retune_crc_enable(struct sdio_func *func)
- 	func->card->host->retune_crc_disable = false;
- }
- EXPORT_SYMBOL_GPL(sdio_retune_crc_enable);
-+
-+/**
-+ *	sdio_retune_hold_now - start deferring retuning requests till release
-+ *	@func: SDIO function attached to host
-+ *
-+ *	This function can be called if it's currently a bad time to do
-+ *	a retune of the SDIO card.  Retune requests made during this time
-+ *	will be held and we'll actually do the retune sometime after the
-+ *	release.
-+ *
-+ *	This function could be useful if an SDIO card is in a power state
-+ *	where it can respond to a small subset of commands that doesn't
-+ *	include the retuning command.  Care should be taken when using
-+ *	this function since (presumably) the retuning request we might be
-+ *	deferring was made for a good reason.
-+ *
-+ *	This function should be called while the host is claimed.
-+ */
-+void sdio_retune_hold_now(struct sdio_func *func)
-+{
-+	mmc_retune_hold_now(func->card->host);
-+}
-+EXPORT_SYMBOL_GPL(sdio_retune_hold_now);
-+
-+/**
-+ *	sdio_retune_release - signal that it's OK to retune now
-+ *	@func: SDIO function attached to host
-+ *
-+ *	This is the complement to sdio_retune_hold_now().  Calling this
-+ *	function won't make a retune happen right away but will allow
-+ *	them to be scheduled normally.
-+ *
-+ *	This function should be called while the host is claimed.
-+ */
-+void sdio_retune_release(struct sdio_func *func)
-+{
-+	mmc_retune_release(func->card->host);
-+}
-+EXPORT_SYMBOL_GPL(sdio_retune_release);
-diff --git a/include/linux/mmc/sdio_func.h b/include/linux/mmc/sdio_func.h
-index 4820e6d09dac..5a177f7a83c3 100644
---- a/include/linux/mmc/sdio_func.h
-+++ b/include/linux/mmc/sdio_func.h
-@@ -170,4 +170,7 @@ extern int sdio_set_host_pm_flags(struct sdio_func *func, mmc_pm_flag_t flags);
- extern void sdio_retune_crc_disable(struct sdio_func *func);
- extern void sdio_retune_crc_enable(struct sdio_func *func);
+ 	sdio_retune_crc_disable(bus->sdiodev->func1);
  
-+extern void sdio_retune_hold_now(struct sdio_func *func);
-+extern void sdio_retune_release(struct sdio_func *func);
++	/* Cannot re-tune if device is asleep; defer till we're awake */
++	if (on)
++		sdio_retune_hold_now(bus->sdiodev->func1);
 +
- #endif /* LINUX_MMC_SDIO_FUNC_H */
+ 	wr_val = (on << SBSDIO_FUNC1_SLEEPCSR_KSO_SHIFT);
+ 	/* 1st KSO write goes to AOS wake up core if device is asleep  */
+ 	brcmf_sdiod_writeb(bus->sdiodev, SBSDIO_FUNC1_SLEEPCSR, wr_val, &err);
+@@ -729,6 +733,9 @@ brcmf_sdio_kso_control(struct brcmf_sdio *bus, bool on)
+ 	if (try_cnt > MAX_KSO_ATTEMPTS)
+ 		brcmf_err("max tries: rd_val=0x%x err=%d\n", rd_val, err);
+ 
++	if (on)
++		sdio_retune_release(bus->sdiodev->func1);
++
+ 	sdio_retune_crc_enable(bus->sdiodev->func1);
+ 
+ 	return err;
 -- 
 2.22.0.rc2.383.gf4fbbf30c2-goog
 
