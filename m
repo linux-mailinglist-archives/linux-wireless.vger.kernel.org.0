@@ -2,167 +2,135 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id BDED344769
-	for <lists+linux-wireless@lfdr.de>; Thu, 13 Jun 2019 18:59:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8D62D44760
+	for <lists+linux-wireless@lfdr.de>; Thu, 13 Jun 2019 18:59:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2392832AbfFMQ7U (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 13 Jun 2019 12:59:20 -0400
-Received: from mga05.intel.com ([192.55.52.43]:59080 "EHLO mga05.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1729822AbfFMASn (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 12 Jun 2019 20:18:43 -0400
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from fmsmga008.fm.intel.com ([10.253.24.58])
-  by fmsmga105.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 12 Jun 2019 17:18:42 -0700
-X-ExtLoop1: 1
-Received: from jprestwo-test.jf.intel.com ([10.54.74.49])
-  by fmsmga008.fm.intel.com with ESMTP; 12 Jun 2019 17:18:42 -0700
-Message-ID: <4eb4f622d2ee2aa79219fb256eb171379613a009.camel@linux.intel.com>
-Subject: iwlwifi/brcmfmac public action frames crash
-From:   James Prestwood <james.prestwood@linux.intel.com>
-To:     linux-wireless@vger.kernel.org
-Date:   Wed, 12 Jun 2019 17:18:27 -0700
-Content-Type: text/plain; charset="UTF-8"
-X-Mailer: Evolution 3.28.5-0ubuntu0.18.04.1 
-Mime-Version: 1.0
+        id S1729923AbfFMQ7L (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 13 Jun 2019 12:59:11 -0400
+Received: from outgoing-stata.csail.mit.edu ([128.30.2.210]:53158 "EHLO
+        outgoing-stata.csail.mit.edu" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1729848AbfFMAeY (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Wed, 12 Jun 2019 20:34:24 -0400
+X-Greylist: delayed 493 seconds by postgrey-1.27 at vger.kernel.org; Wed, 12 Jun 2019 20:34:23 EDT
+Received: from [4.30.142.84] (helo=srivatsab-a01.vmware.com)
+        by outgoing-stata.csail.mit.edu with esmtpsa (TLS1.2:RSA_AES_128_CBC_SHA1:128)
+        (Exim 4.82)
+        (envelope-from <srivatsa@csail.mit.edu>)
+        id 1hbDYq-000Xfo-J5; Wed, 12 Jun 2019 20:25:48 -0400
+Subject: Re: [PATCH v4 18/28] docs: convert docs to ReST and rename to *.rst
+To:     Mauro Carvalho Chehab <mchehab+samsung@kernel.org>,
+        Linux Doc Mailing List <linux-doc@vger.kernel.org>
+Cc:     Mauro Carvalho Chehab <mchehab@infradead.org>,
+        linux-kernel@vger.kernel.org, Jonathan Corbet <corbet@lwn.net>,
+        Sebastian Reichel <sre@kernel.org>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Viresh Kumar <viresh.kumar@linaro.org>,
+        Len Brown <len.brown@intel.com>, Pavel Machek <pavel@ucw.cz>,
+        Nishanth Menon <nm@ti.com>, Stephen Boyd <sboyd@kernel.org>,
+        Liam Girdwood <lgirdwood@gmail.com>,
+        Mark Brown <broonie@kernel.org>,
+        Mathieu Poirier <mathieu.poirier@linaro.org>,
+        Suzuki K Poulose <suzuki.poulose@arm.com>,
+        Harry Wei <harryxiyou@gmail.com>,
+        Alex Shi <alex.shi@linux.alibaba.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+        "H. Peter Anvin" <hpa@zytor.com>, x86@kernel.org,
+        Jani Nikula <jani.nikula@linux.intel.com>,
+        Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
+        Rodrigo Vivi <rodrigo.vivi@intel.com>,
+        David Airlie <airlied@linux.ie>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        Johannes Berg <johannes@sipsolutions.net>,
+        "David S. Miller" <davem@davemloft.net>, linux-pm@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        intel-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
+        linux-pci@vger.kernel.org, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org
+References: <cover.1560361364.git.mchehab+samsung@kernel.org>
+ <fac44e1fbab5ea755a93601a4fdfa34fcc57ae9e.1560361364.git.mchehab+samsung@kernel.org>
+From:   "Srivatsa S. Bhat" <srivatsa@csail.mit.edu>
+Message-ID: <7dc94cb4-ebf1-22ab-29c9-fcb2b875a9ac@csail.mit.edu>
+Date:   Wed, 12 Jun 2019 17:25:39 -0700
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.14; rv:60.0)
+ Gecko/20100101 Thunderbird/60.7.0
+MIME-Version: 1.0
+In-Reply-To: <fac44e1fbab5ea755a93601a4fdfa34fcc57ae9e.1560361364.git.mchehab+samsung@kernel.org>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
 Content-Transfer-Encoding: 7bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi,
+On 6/12/19 10:52 AM, Mauro Carvalho Chehab wrote:
+> Convert the PM documents to ReST, in order to allow them to
+> build with Sphinx.
+> 
+> The conversion is actually:
+>   - add blank lines and identation in order to identify paragraphs;
+>   - fix tables markups;
+>   - add some lists markups;
+>   - mark literal blocks;
+>   - adjust title markups.
+> 
+> At its new index.rst, let's add a :orphan: while this is not linked to
+> the main index.rst file, in order to avoid build warnings.
+> 
+> Signed-off-by: Mauro Carvalho Chehab <mchehab+samsung@kernel.org>
+> Acked-by: Bjorn Helgaas <bhelgaas@google.com>
+> Acked-by: Mark Brown <broonie@kernel.org>
+> ---
 
-Both iwlwifi/brcmfmac seem to be unable to send public action frames to
-an unassociated AP. I am attempting to do a GAS ANQP request with a
-public action frame (via CMD_FRAME). Immediately after CMD_FRAME any of
-the following happens depending on the card:
+[...]
 
-Intel 7260 (iwlwifi) - System lockup freeze (must hard reboot)
-Intel 3160 (iwlwifi) - CMD_FRAME returns -EINVAL
-BCM43602 (brcmfmac) - Kernel crash (below)
-AR9462 (ath9k) - works
-Random USB adapter (rt2800usb) - works
+> diff --git a/Documentation/power/suspend-and-cpuhotplug.txt b/Documentation/power/suspend-and-cpuhotplug.rst
+> similarity index 90%
+> rename from Documentation/power/suspend-and-cpuhotplug.txt
+> rename to Documentation/power/suspend-and-cpuhotplug.rst
+> index a8751b8df10e..9df664f5423a 100644
+> --- a/Documentation/power/suspend-and-cpuhotplug.txt
+> +++ b/Documentation/power/suspend-and-cpuhotplug.rst
+> @@ -1,10 +1,15 @@
+> +====================================================================
+>  Interaction of Suspend code (S3) with the CPU hotplug infrastructure
+> +====================================================================
+>  
+> -     (C) 2011 - 2014 Srivatsa S. Bhat <srivatsa.bhat@linux.vnet.ibm.com>
+> +(C) 2011 - 2014 Srivatsa S. Bhat <srivatsa.bhat@linux.vnet.ibm.com>
+>  
+>  
+> -I. How does the regular CPU hotplug code differ from how the Suspend-to-RAM
+> -   infrastructure uses it internally? And where do they share common code?
+> +I. Differences between CPU hotplug and Suspend-to-RAM
+> +======================================================
+> +
+> +How does the regular CPU hotplug code differ from how the Suspend-to-RAM
+> +infrastructure uses it internally? And where do they share common code?
+>  
+>  Well, a picture is worth a thousand words... So ASCII art follows :-)
+>  
 
-iwlwifi (on 7260) completely locks the system, where the only way to
-recover is hard reboot. I have reproduced this on two separate systems,
-both with a 7260. I *have* seen it not lock the system once although
-lately it seems to happen every time. The 3160 did not cause a hang
-with my limited testing, though it did not accept CMD_FRAME which is
-likely why it never hung.
+[...]
 
-Not sure how I can get any more info about the iwlwifi problem as the
-system is completely hung, but if there is a way I'll be happy to do
-that.
+> @@ -101,7 +108,7 @@ execution during resume):
+>  
+>  It is to be noted here that the system_transition_mutex lock is acquired at the very
+>  beginning, when we are just starting out to suspend, and then released only
+> -after the entire cycle is complete (i.e., suspend + resume).
+> +after the entire cycle is complete (i.e., suspend + resume)::
+>  
 
-Here is the brcmfmac crash:
+I think that should be a period, not a colon, because it is clarifying
+the text above it (as opposed to referring to the example below it).
 
-[19735.643941] BUG: unable to handle kernel NULL pointer dereference at
-0000000000000000
-[19735.643965] PGD 80000001874aa067 P4D 80000001874aa067 PUD 2735fe067
-PMD 0
-[19735.643984] Oops: 0000 [#1] SMP PTI
-[19735.643993] CPU: 7 PID: 5051 Comm: iwd Tainted: G        W
-I       4.19.0-rc2-custom #27
-[19735.644002] Hardware name: System manufacturer System Product
-Name/SABERTOOTH X58, BIOS 1402    08/09/2012
-[19735.644027] RIP: 0010:brcmf_p2p_send_action_frame+0x23a/0x850
-[brcmfmac]
-[19735.644037] Code: 41 c7 86 e0 00 00 00 00 00 00 00 f0 41 80 66 20 bf
-f0 41 80 66 20 7f 49 8b 46 48 b9 24 07 00 00 48 89 da 48 c7 c6 3d 00 8f
-c0 <48> 8b 38 e8 3e d7 ff ff 85 c0 41 89 c5 0f 85 c4 00 00 00 8b 03 49
-[19735.644051] RSP: 0018:ffffa879c8477a00 EFLAGS: 00010246
-[19735.644059] RAX: 0000000000000000 RBX: ffff954a2e059000 RCX:
-0000000000000724
-[19735.644067] RDX: ffff954a2e059000 RSI: ffffffffc08f003d RDI:
-0000000000000002
-[19735.644075] RBP: ffffa879c8477a50 R08: 000000000000001c R09:
-0000000000000999
-[19735.644083] R10: ffff954b157a2f00 R11: ffffffffc0720000 R12:
-ffff954c32f26021
-[19735.644091] R13: ffff954a2e059000 R14: ffff954c32f26000 R15:
-00000000ffffffff
-[19735.644099] FS:  00007f8d5aa30740(0000) GS:ffff954c369c0000(0000)
-knlGS:0000000000000000
-[19735.644108] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-[19735.644115] CR2: 0000000000000000 CR3: 00000001845c8000 CR4:
-00000000000006e0
-[19735.644123] Call Trace:
-[19735.644133]  ? _cond_resched+0x19/0x40
-[19735.644153]  brcmf_cfg80211_mgmt_tx+0x170/0x2f0 [brcmfmac]
-[19735.644192]  cfg80211_mlme_mgmt_tx+0x115/0x2f0 [cfg80211]
-[19735.644219]  nl80211_tx_mgmt+0x24d/0x3d0 [cfg80211]
-[19735.644228]  genl_family_rcv_msg+0x1fe/0x3f0
-[19735.644237]  ? nlmon_xmit+0x2c/0x30
-[19735.644246]  ? dev_hard_start_xmit+0xa8/0x210
-[19735.644254]  genl_rcv_msg+0x4c/0x90
-[19735.644261]  ? genl_family_rcv_msg+0x3f0/0x3f0
-[19735.644268]  netlink_rcv_skb+0x54/0x130
-[19735.644275]  genl_rcv+0x28/0x40
-[19735.644281]  netlink_unicast+0x1ab/0x250
-[19735.644288]  netlink_sendmsg+0x2d1/0x3d0
-[19735.644297]  sock_sendmsg+0x3e/0x50
-[19735.644304]  __sys_sendto+0x13f/0x180
-[19735.644313]  ? do_epoll_wait+0xb0/0xc0
-[19735.644321]  __x64_sys_sendto+0x28/0x30
-[19735.644329]  do_syscall_64+0x5a/0x120
-[19735.644336]  entry_SYSCALL_64_after_hwframe+0x44/0xa9
-[19735.644344] RIP: 0033:0x7f8d5a352c4d
-[19735.644350] Code: ff ff ff ff eb b6 0f 1f 80 00 00 00 00 48 8d 05 c1
-dc 2c 00 41 89 ca 8b 00 85 c0 75 20 45 31 c9 45 31 c0 b8 2c 00 00 00 0f
-05 <48> 3d 00 f0 ff ff 77 6b f3 c3 66 0f 1f 84 00 00 00 00 00 41 56 41
-[19735.644365] RSP: 002b:00007ffc9a618048 EFLAGS: 00000246 ORIG_RAX:
-000000000000002c
-[19735.644374] RAX: ffffffffffffffda RBX: 00000000007077d0 RCX:
-00007f8d5a352c4d
-[19735.644382] RDX: 0000000000000068 RSI: 000000000072bc40 RDI:
-0000000000000004
-[19735.644390] RBP: 0000000000733510 R08: 0000000000000000 R09:
-0000000000000000
-[19735.644397] R10: 0000000000000000 R11: 0000000000000246 R12:
-00007ffc9a618094
-[19735.644405] R13: 00007ffc9a61809c R14: 0000000000000000 R15:
-0000000000000000
-[19735.644414] Modules linked in: ccm algif_aead snd_hda_codec_realtek
-snd_hda_codec_generic snd_hda_codec_hdmi binfmt_misc arc4 nouveau
-gpio_ich ath9k mxm_wmi ath9k_common video rt2800usb intel_powerclamp
-snd_hda_intel ath9k_hw rt2x00usb iwlmvm rt2800lib snd_hda_codec
-rt2x00lib ath snd_seq_midi snd_seq_midi_event coretemp ttm mac80211
-snd_hda_core brcmfmac snd_hwdep snd_rawmidi iwlwifi intel_cstate
-drm_kms_helper brcmutil snd_seq drm snd_pcm input_leds serio_raw
-lpc_ich cfg80211 snd_seq_device i2c_algo_bit snd_timer fb_sys_fops
-syscopyarea sysfillrect snd sysimgblt i5500_temp wmi asus_atk0110
-soundcore mac_hid i7core_edac sch_fq_codel kvm_intel kvm vfio_pci
-vfio_virqfd irqbypass vfio_iommu_type1 vfio pci_stub parport_pc ppdev
-lp parport ip_tables x_tables autofs4 pata_acpi hid_generic usbhid hid
-firewire_ohci
-[19735.644521]  realtek psmouse firewire_core crc_itu_t r8169 i2c_i801
-ahci libahci
-[19735.644538] CR2: 0000000000000000
-[19735.653612] ---[ end trace 30dbecd734da3b73 ]---
-[19735.653641] RIP: 0010:brcmf_p2p_send_action_frame+0x23a/0x850
-[brcmfmac]
-[19735.653651] Code: 41 c7 86 e0 00 00 00 00 00 00 00 f0 41 80 66 20 bf
-f0 41 80 66 20 7f 49 8b 46 48 b9 24 07 00 00 48 89 da 48 c7 c6 3d 00 8f
-c0 <48> 8b 38 e8 3e d7 ff ff 85 c0 41 89 c5 0f 85 c4 00 00 00 8b 03 49
-[19735.653659] RSP: 0018:ffffa879c8477a00 EFLAGS: 00010246
-[19735.653672] RAX: 0000000000000000 RBX: ffff954a2e059000 RCX:
-0000000000000724
-[19735.653680] RDX: ffff954a2e059000 RSI: ffffffffc08f003d RDI:
-0000000000000002
-[19735.653688] RBP: ffffa879c8477a50 R08: 000000000000001c R09:
-0000000000000999
-[19735.653697] R10: ffff954b157a2f00 R11: ffffffffc0720000 R12:
-ffff954c32f26021
-[19735.653705] R13: ffff954a2e059000 R14: ffff954c32f26000 R15:
-00000000ffffffff
-[19735.653714] FS:  00007f8d5aa30740(0000) GS:ffff954c369c0000(0000)
-knlGS:0000000000000000
-[19735.653725] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-[19735.653731] CR2: 0000000000000000 CR3: 00000001845c8000 CR4:
-00000000000006e0
+Other than that, for suspend-and-cpuhotplug.txt:
 
-Thanks,
-James
-
+Acked-by: Srivatsa S. Bhat (VMware) <srivatsa@csail.mit.edu>
+ 
+Regards,
+Srivatsa
+VMware Photon OS
