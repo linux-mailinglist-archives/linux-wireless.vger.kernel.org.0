@@ -2,91 +2,112 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 47EBE453EF
-	for <lists+linux-wireless@lfdr.de>; Fri, 14 Jun 2019 07:26:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 674CA4552B
+	for <lists+linux-wireless@lfdr.de>; Fri, 14 Jun 2019 08:59:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725822AbfFNF0B (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 14 Jun 2019 01:26:01 -0400
-Received: from smtp.codeaurora.org ([198.145.29.96]:47352 "EHLO
-        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725767AbfFNF0B (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 14 Jun 2019 01:26:01 -0400
-Received: by smtp.codeaurora.org (Postfix, from userid 1000)
-        id 0024660867; Fri, 14 Jun 2019 05:26:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1560489961;
-        bh=6YXSV6HR11OJBzhjyk123lc8NA3juKrUYL/aoYkhVqw=;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=UJtHg8ndaKW7/U7ES16QK9QEDr8C7y3xRlegAoE/cc0RWXSrBp785ggqJfgitsciu
-         5q8jZB/d4oxJ3CpuKWO0+I3nwvan1QX2pPqecfsZet9anMqW+6EkNKxx5sYyyxBHQc
-         LLrJVKateihMYni3999PNtREpExfznTcVFVlm+KQ=
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        pdx-caf-mail.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.7 required=2.0 tests=ALL_TRUSTED,BAYES_00,
-        DKIM_INVALID,DKIM_SIGNED,SPF_NONE autolearn=no autolearn_force=no
-        version=3.4.0
-Received: from x230.qca.qualcomm.com (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        id S1725996AbfFNG7i (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 14 Jun 2019 02:59:38 -0400
+Received: from mail.kernel.org ([198.145.29.99]:39668 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725835AbfFNG7i (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 14 Jun 2019 02:59:38 -0400
+Received: from localhost (83-86-89-107.cable.dynamic.v4.ziggo.nl [83.86.89.107])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        (Authenticated sender: kvalo@smtp.codeaurora.org)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id DF0C460213;
-        Fri, 14 Jun 2019 05:25:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1560489960;
-        bh=6YXSV6HR11OJBzhjyk123lc8NA3juKrUYL/aoYkhVqw=;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=BWxrc8uO7ZtvrV4va+9aNXLMXXBIpnfojmvfOoCzqXrrNK8R9Tpmvn3Q7/CDK8z21
-         /gCAxebJ7CUSYQVxpPwg0RJXVvnTY1XeuQwrhRw74SfMi4CQAGYsP4Uv8DfwctoR2n
-         D/Qm9rV3/k3FIuRsfbb3sgXgX9UQsB3f2fZd7iYU=
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org DF0C460213
-Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
-From:   Kalle Valo <kvalo@codeaurora.org>
-To:     Nathan Huckleberry <nhuck@google.com>
-Cc:     eliad@wizery.com, davem@davemloft.net, netdev@vger.kernel.org,
-        linux-wireless@vger.kernel.org, clang-built-linux@googlegroups.com
-Subject: Re: Cleanup of -Wunused-const-variable in drivers/net/wireless/ti/wl18xx/main.c
-References: <CAJkfWY4WkeMv3Z+Nh4B0xtErTAi6mVCriURZTjd2Q__gMtaEqA@mail.gmail.com>
-Date:   Fri, 14 Jun 2019 08:25:56 +0300
-In-Reply-To: <CAJkfWY4WkeMv3Z+Nh4B0xtErTAi6mVCriURZTjd2Q__gMtaEqA@mail.gmail.com>
-        (Nathan Huckleberry's message of "Thu, 13 Jun 2019 11:00:33 -0700")
-Message-ID: <874l4slouz.fsf@codeaurora.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
+        by mail.kernel.org (Postfix) with ESMTPSA id 939C92063F;
+        Fri, 14 Jun 2019 06:59:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1560495577;
+        bh=GE6kHlZhWjeir7ihj8EED4mH6wyPeJJCUgG+az2TV5k=;
+        h=Date:From:To:Cc:Subject:From;
+        b=1D7uYNsXWMLUv5stOEuz+G6hJ4eG6KlOl07Z79zO2ayNnSFn0OztQDnYNABmyldyI
+         mSY5/Rk+IpihF/caIWfjXeTepLpJi3nLh3jle0uTBTeHqYvEmvI85XBGlbXeI9MwBc
+         8Vg/3H1vye5FuuH0TbiFlghN/xnqbLWX0OYG1eoA=
+Date:   Fri, 14 Jun 2019 08:59:34 +0200
+From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To:     Johannes Berg <johannes@sipsolutions.net>
+Cc:     "David S. Miller" <davem@davemloft.net>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org
+Subject: [PATCH] mac80211: no need to check return value of debugfs_create
+ functions
+Message-ID: <20190614065934.GA23295@kroah.com>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.12.0 (2019-05-25)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Nathan Huckleberry <nhuck@google.com> writes:
+When calling debugfs functions, there is no need to ever check the
+return value.  The function can work or not, but the code logic should
+never do something different based on this.
 
-> I'm looking into cleaning up ignored warnings in the kernel so we can
-> remove compiler flags to ignore warnings.
->
-> There are two unused variables ('wl18xx_iface_ap_cl_limits' and
-> 'wl18xx_iface_ap_go_limits') in drivers/net/wireless/ti/wl18xx/main.c.
-> These appear to be limits when using p2p devices, yet they are never
-> used.
->
-> Wanted to reach out for the best course of action to fix the warning.
->
-> https://github.com/ClangBuiltLinux/linux/issues/530
+Cc: Johannes Berg <johannes@sipsolutions.net>
+Cc: "David S. Miller" <davem@davemloft.net>
+Cc: linux-wireless@vger.kernel.org
+Cc: netdev@vger.kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+---
+ net/mac80211/debugfs_key.c    |  3 ---
+ net/mac80211/debugfs_netdev.c | 10 +++-------
+ net/mac80211/debugfs_sta.c    |  2 --
+ 3 files changed, 3 insertions(+), 12 deletions(-)
 
-The the variables were added in this commit:
-
-commit 7845af35e0deeb7537de759ebc69d6395d4123bf
-Author:     Eliad Peller <eliad@wizery.com>
-AuthorDate: Thu Jul 30 22:38:22 2015 +0300
-Commit:     Kalle Valo <kvalo@codeaurora.org>
-CommitDate: Mon Aug 10 22:16:34 2015 +0300
-
-    wlcore: add p2p device support
-
-And even that commit didn't use them, no idea why. Just send a patch
-removing them, if someone needs them later they can be added again.
-
+diff --git a/net/mac80211/debugfs_key.c b/net/mac80211/debugfs_key.c
+index a2ef95f16f11..1a25de4e7e78 100644
+--- a/net/mac80211/debugfs_key.c
++++ b/net/mac80211/debugfs_key.c
+@@ -342,9 +342,6 @@ void ieee80211_debugfs_key_add(struct ieee80211_key *key)
+ 	key->debugfs.dir = debugfs_create_dir(buf,
+ 					key->local->debugfs.keys);
+ 
+-	if (!key->debugfs.dir)
+-		return;
+-
+ 	sta = key->sta;
+ 	if (sta) {
+ 		sprintf(buf, "../../netdev:%s/stations/%pM",
+diff --git a/net/mac80211/debugfs_netdev.c b/net/mac80211/debugfs_netdev.c
+index deb3faf08337..f6508cf67944 100644
+--- a/net/mac80211/debugfs_netdev.c
++++ b/net/mac80211/debugfs_netdev.c
+@@ -818,9 +818,8 @@ void ieee80211_debugfs_add_netdev(struct ieee80211_sub_if_data *sdata)
+ 	sprintf(buf, "netdev:%s", sdata->name);
+ 	sdata->vif.debugfs_dir = debugfs_create_dir(buf,
+ 		sdata->local->hw.wiphy->debugfsdir);
+-	if (sdata->vif.debugfs_dir)
+-		sdata->debugfs.subdir_stations = debugfs_create_dir("stations",
+-			sdata->vif.debugfs_dir);
++	sdata->debugfs.subdir_stations = debugfs_create_dir("stations",
++							sdata->vif.debugfs_dir);
+ 	add_files(sdata);
+ }
+ 
+@@ -845,8 +844,5 @@ void ieee80211_debugfs_rename_netdev(struct ieee80211_sub_if_data *sdata)
+ 		return;
+ 
+ 	sprintf(buf, "netdev:%s", sdata->name);
+-	if (!debugfs_rename(dir->d_parent, dir, dir->d_parent, buf))
+-		sdata_err(sdata,
+-			  "debugfs: failed to rename debugfs dir to %s\n",
+-			  buf);
++	debugfs_rename(dir->d_parent, dir, dir->d_parent, buf);
+ }
+diff --git a/net/mac80211/debugfs_sta.c b/net/mac80211/debugfs_sta.c
+index 8e921281e0d5..b2542bb2814e 100644
+--- a/net/mac80211/debugfs_sta.c
++++ b/net/mac80211/debugfs_sta.c
+@@ -960,8 +960,6 @@ void ieee80211_sta_debugfs_add(struct sta_info *sta)
+ 	 * dir might still be around.
+ 	 */
+ 	sta->debugfs_dir = debugfs_create_dir(mac, stations_dir);
+-	if (!sta->debugfs_dir)
+-		return;
+ 
+ 	DEBUGFS_ADD(flags);
+ 	DEBUGFS_ADD(aid);
 -- 
-Kalle Valo
+2.22.0
+
