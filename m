@@ -2,43 +2,72 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 32EC145E97
-	for <lists+linux-wireless@lfdr.de>; Fri, 14 Jun 2019 15:42:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E0EB145EE6
+	for <lists+linux-wireless@lfdr.de>; Fri, 14 Jun 2019 15:48:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727954AbfFNNmR (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 14 Jun 2019 09:42:17 -0400
-Received: from s3.sipsolutions.net ([144.76.43.62]:42240 "EHLO
-        sipsolutions.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727918AbfFNNmR (ORCPT
+        id S1728625AbfFNNrp (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 14 Jun 2019 09:47:45 -0400
+Received: from bombadil.infradead.org ([198.137.202.133]:50618 "EHLO
+        bombadil.infradead.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728583AbfFNNro (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 14 Jun 2019 09:42:17 -0400
-Received: by sipsolutions.net with esmtpsa (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <johannes@sipsolutions.net>)
-        id 1hbmT9-0001G7-Kq; Fri, 14 Jun 2019 15:42:16 +0200
-Message-ID: <2d0f10306a2ea2583d2e94e88875997678e65398.camel@sipsolutions.net>
-Subject: Re: [PATCH 1/3] net: wireless: trace: add trace for tx_mgmt_expired
-From:   Johannes Berg <johannes@sipsolutions.net>
-To:     James Prestwood <james.prestwood@linux.intel.com>,
-        linux-wireless@vger.kernel.org
-Date:   Fri, 14 Jun 2019 15:42:14 +0200
-In-Reply-To: <20190612193510.27680-1-james.prestwood@linux.intel.com> (sfid-20190612_213640_498924_A969FAED)
-References: <20190612193510.27680-1-james.prestwood@linux.intel.com>
-         (sfid-20190612_213640_498924_A969FAED)
-Content-Type: text/plain; charset="UTF-8"
-X-Mailer: Evolution 3.28.5 (3.28.5-2.fc28) 
-Mime-Version: 1.0
-Content-Transfer-Encoding: 7bit
+        Fri, 14 Jun 2019 09:47:44 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=bombadil.20170209; h=Content-Transfer-Encoding:
+        MIME-Version:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:
+        Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+        Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Id:
+        List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+         bh=2klM0787YOypidTxFFKkFXrGCXrbMhQ5qreI3X9Vu1k=; b=Cj3+LM9vIrA6nltYCay8yBPba
+        y6IkbYwpLx9JZh8kK5t2kLy0T8EhKYFLd4ni8FEoVyGRGa1u1i3grWUes4UAS9IJ9k3PGBxh0Ddkp
+        +eH6rF5lBzxCwQMwke6G/c2TJda2p6rGBomPUsGZBfRc0dQxUxHgwIel6XPax0+lxmSXe9hnoqneL
+        tM4WnvDTXZk0YQhKyEzCwXVDmrezpr/WzX/aQS4stZilw7GkSoqCXo2Zka98OqbC6gFV5/7OKNZNF
+        BKEvRnmiaTr9rp4o4Y6qOWysCXUmGZc3uHBgRcuKZdrN51a9q9TVTZ/wz3VsIWst8b5uTNKZ6nDin
+        VS2+DYitQ==;
+Received: from 213-225-9-13.nat.highway.a1.net ([213.225.9.13] helo=localhost)
+        by bombadil.infradead.org with esmtpsa (Exim 4.92 #3 (Red Hat Linux))
+        id 1hbmYG-0004Xc-Jk; Fri, 14 Jun 2019 13:47:33 +0000
+From:   Christoph Hellwig <hch@lst.de>
+To:     Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+        Maxime Ripard <maxime.ripard@bootlin.com>,
+        Sean Paul <sean@poorly.run>, David Airlie <airlied@linux.ie>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        Jani Nikula <jani.nikula@linux.intel.com>,
+        Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
+        Rodrigo Vivi <rodrigo.vivi@intel.com>,
+        Ian Abbott <abbotti@mev.co.uk>,
+        H Hartley Sweeten <hsweeten@visionengravers.com>
+Cc:     Intel Linux Wireless <linuxwifi@intel.com>,
+        linux-arm-kernel@lists.infradead.org (moderated list:ARM PORT),
+        dri-devel@lists.freedesktop.org, intel-gfx@lists.freedesktop.org,
+        linux-rdma@vger.kernel.org, linux-media@vger.kernel.org,
+        netdev@vger.kernel.org, linux-wireless@vger.kernel.org,
+        linux-s390@vger.kernel.org, devel@driverdev.osuosl.org,
+        linux-mm@kvack.org, iommu@lists.linux-foundation.org,
+        linux-kernel@vger.kernel.org
+Subject: use exact allocation for dma coherent memory
+Date:   Fri, 14 Jun 2019 15:47:10 +0200
+Message-Id: <20190614134726.3827-1-hch@lst.de>
+X-Mailer: git-send-email 2.20.1
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Applied, but
+Hi all,
 
- * I squashed 1 and 2, there's no point in 1 standalone
- * please be more careful with indentation in the future,
-   I fixed a few places.
+various architectures have used exact memory allocations for dma
+allocations for a long time, but x86 and thus the common code based
+on it kept using our normal power of two allocator, which tends to
+waste a lot of memory for certain allocations.
 
-johannes
-
+Switching to a slightly cleaned up alloc_pages_exact is pretty easy,
+but it turns out that because we didn't filter valid gfp_t flags
+on the DMA allocator, a bunch of drivers were passing __GFP_COMP
+to it, which is rather bogus in too many ways to explain.  Arm has
+been filtering it for a while, but this series instead tries to fix
+the drivers and warn when __GFP_COMP is passed, which makes it much
+larger than just adding the functionality.
