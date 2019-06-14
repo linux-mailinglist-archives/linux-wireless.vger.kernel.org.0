@@ -2,137 +2,101 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 5C69145116
-	for <lists+linux-wireless@lfdr.de>; Fri, 14 Jun 2019 03:16:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 30A5045201
+	for <lists+linux-wireless@lfdr.de>; Fri, 14 Jun 2019 04:52:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726370AbfFNBQz (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 13 Jun 2019 21:16:55 -0400
-Received: from mail-pf1-f196.google.com ([209.85.210.196]:33717 "EHLO
-        mail-pf1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725616AbfFNBQz (ORCPT
+        id S1725809AbfFNCwN (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 13 Jun 2019 22:52:13 -0400
+Received: from a1i1011.smtp2go.com ([43.228.187.243]:47223 "EHLO
+        a1i1011.smtp2go.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725777AbfFNCwN (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 13 Jun 2019 21:16:55 -0400
-Received: by mail-pf1-f196.google.com with SMTP id x15so348612pfq.0
-        for <linux-wireless@vger.kernel.org>; Thu, 13 Jun 2019 18:16:54 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=vZViEBYZeL/z5EPk8qxP1sfyjHKjqDUy0obWXo7P9+g=;
-        b=W73u1rm7pEPUZ0dWGqzBGbZRpb62vvQkquRyfx5YrGwT1851/HQV3tRqiHxzHCiILU
-         Sunl4+rtfrmOtmkRHvqvxgnoydNDK+4Kfn6PMhG1eWe42Lt5mJ30K2HGH8ecJZPtFVUU
-         M7kAUOnqYgcRSOZxDFRx9OG9bwNXJ0gWELOeY=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=vZViEBYZeL/z5EPk8qxP1sfyjHKjqDUy0obWXo7P9+g=;
-        b=jSLPA/mtn1jAOfvGpei9t8MMgDjhC82DmJzkuf1G/ht5uaZG57gx9LMMMM1W6zYbkA
-         XxQq3mQlE6VZglnuC+g0gPSlU4yiZVHMS3xoEd3iXdYGyOX+SMvhBoxfBtpodkRuLZUS
-         pYBsDkqlweobRSccxjs9AjRNuKo3q1V9iv1wWlMMBxkBNEB/FnJT6zRKJCOxSg+ip/OM
-         /DZd7+q2o0fjXbMVEWwhlyJSscurKyQLSDqU6bi3AO2FQrVjOUL58ZAyVO2DAmJc4PJX
-         9d2+BbfE9olE2XibvC7/dCDU1Wj2EXvS20TCc6OGrtRFnKeF0UnTpXRm8Ye0IDD0kFoQ
-         1E8w==
-X-Gm-Message-State: APjAAAVlGBg/DAqydt8ZpzYWeMj8mLlO8Jeu1Lok7MCihNS9n8X3GVDW
-        QaW2zTuEd9M04Y1v9ODE2+3ByQ==
-X-Google-Smtp-Source: APXvYqwo6zzOwKPlHBhSHl9jU+cMBgxq3J653CP2HQ+0PRuQaQpWtTBYmKdhMCdz1A1KCUjjTKhiSA==
-X-Received: by 2002:a65:60c2:: with SMTP id r2mr32683960pgv.156.1560475014292;
-        Thu, 13 Jun 2019 18:16:54 -0700 (PDT)
-Received: from google.com ([2620:15c:202:1:534:b7c0:a63c:460c])
-        by smtp.gmail.com with ESMTPSA id r4sm919657pjd.28.2019.06.13.18.16.52
-        (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
-        Thu, 13 Jun 2019 18:16:52 -0700 (PDT)
-Date:   Thu, 13 Jun 2019 18:16:50 -0700
-From:   Brian Norris <briannorris@chromium.org>
-To:     Ganapathi Bhat <gbhat@marvell.com>
-Cc:     linux-wireless@vger.kernel.org, Cathy Luo <cluo@marvell.com>,
-        Zhiyuan Yang <yangzy@marvell.com>,
-        James Cao <jcao@marvell.com>,
-        Rakesh Parmar <rakeshp@marvell.com>,
-        Dmitry Vyukov <dvyukov@google.com>
-Subject: Re: [PATCH] mwifiex: avoid deleting uninitialized timer during USB
- cleanup
-Message-ID: <20190614011648.GA121099@google.com>
-References: <1560354873-17182-1-git-send-email-gbhat@marvell.com>
+        Thu, 13 Jun 2019 22:52:13 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=smtpservice.net; s=mb6cr0.a1-4.dyn; x=1560481632; h=Feedback-ID:
+        X-Smtpcorp-Track:Message-ID:Date:Subject:To:From:Reply-To:Sender:
+        List-Unsubscribe; bh=kKigLPys3Ytf2UgAKduP8wpKh6EQxl2Aoj2gmWgEv+o=; b=2P60reGY
+        bVDbYNkdi1IpLpnRa9GvkBga3nVGss2UqfgAcRt0ab6ThC5Wxf5XW2GTL+HUSgtUqdFIw8F8NtVwB
+        b5iwZjud3UbYlPJGhQv7qAHIb2Md/3ZcU5MVSYIHu/V61g37aBD/lpHpdRMQuY99/z7EoqVKQ/7aw
+        2Be/ouO0Cdaev9osiUioVzNxQ5IurS5zMfA9Em5BLkJLnxbxdtA/uYhhNr7a0llnsZUMeY4CnCiYM
+        HRWeChFVFpzI96ka9czSYPtGLHemF0l0HI3AE4kbsLF5bUbCHpcP7zVYwuEulI5xraEGt63Rc+juA
+        MYZFUT+Oo97QyQBDO3pHRUkUjg==;
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=balki.me; i=@balki.me; 
+ q=dns/txt; s=s521451; t=1560480732; h=from : subject : to : message-id 
+ : date; bh=kKigLPys3Ytf2UgAKduP8wpKh6EQxl2Aoj2gmWgEv+o=; 
+ b=IPVmokw+bfipWuD74xHhhbZSKrZ4rhXzf4lQAvCE0rAdybrOIZ1rsEWHV/uULNZF9mx2yR
+ L8w1rde+OHfdOx7jtVI7B9gwBaC+gJjZEAPpe9RBcFBkGv/yQdlFPvPR049aENmxs6yAz4b6
+ Jr6yaK1zhV23T2lFYXKltv/WB3Q4M6/974uNPTnWQhB+/+7m+RHIfHq7JU+RHW6WFPK8pBVj
+ nj9EBs+HkM8ESNocQPz0TrIPfoFUHCmEwvHbYwiZVszLuG7CV4PT9vlfu6JEKG4pwFV9OOZK
+ 8YrrsjTJBkfmkbzNFiUdyS16iVzCxbHe743GcqhnzhMrG+JWC5Ib2HkQ==
+Received: from [10.45.33.53] (helo=SmtpCorp)
+ by smtpcorp.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.92-S2G) (envelope-from <linux-wireless-list@balki.me>)
+ id 1hbcJy-4pkSPj-NU; Fri, 14 Jun 2019 02:52:06 +0000
+Received: from [10.135.23.123] (helo=zadesk.localnet)
+ by smtpcorp.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.92-S2G) (envelope-from <linux-wireless-list@balki.me>)
+ id 1hbcJx-rlZAOV-R8; Fri, 14 Jun 2019 02:52:05 +0000
+From:   Balakrishnan Balasubramanian <linux-wireless-list@balki.me>
+To:     Emmanuel Grumbach <egrumbach@gmail.com>
+Cc:     Balakrishnan Balasubramanian <linux-wireless-list@balki.me>,
+        linux-wireless <linux-wireless@vger.kernel.org>
+Subject: Re: iwlwifi module crash
+Date:   Thu, 13 Jun 2019 21:47:54 -0400
+Message-ID: <2021645.iB4347jUHV@zadesk>
+In-Reply-To: <CANUX_P3jUBREM=cwLHs8LE+ZbUVKGZNsBWGGepbS-mcHq0w9ow@mail.gmail.com>
+References: <2455026.F8Aexx8IWb@zadesk> <2696773.yqXG4m880n@zadesk>
+ <CANUX_P3jUBREM=cwLHs8LE+ZbUVKGZNsBWGGepbS-mcHq0w9ow@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1560354873-17182-1-git-send-email-gbhat@marvell.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Type: multipart/mixed; boundary="nextPart5498953.IlzcIGSqiQ"
+Content-Transfer-Encoding: 7Bit
+X-Smtpcorp-Track: 1hPcJxr_ZjOVR8.j8vWxLoLk
+Feedback-ID: 521451m:521451aMgsuo0:521451sZ9B4uoj52
+X-Report-Abuse: Please forward a copy of this message, including all headers,
+ to <abuse-report@smtp2go.com>
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi Ganapathi,
+This is a multi-part message in MIME format.
 
-This looks kinda wrong, but I'm not totally sure, as I'm not very familiar with
-your USB driver.
+--nextPart5498953.IlzcIGSqiQ
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="us-ascii"
 
-On Wed, Jun 12, 2019 at 09:24:33PM +0530, Ganapathi Bhat wrote:
-> Driver calls del_timer_sync(hold_timer), in unregister_dev(), but
-> there exists is a case when the timer is yet to be initialized. A
-> restructure of init and cleanup is needed to synchronize timer
-> creation and delee. Make use of init_if() / cleanup_if() handlers
+The issue occured again today. I tried to restart the module
 
-s/delee/delete/
+> echo 1 > /sys/module/iwlwifi/devices/0000\:02\:00.0/remove
 
-> to get this done.
-> 
-> Reported-by: syzbot+373e6719b49912399d21@syzkaller.appspotmail.com
-> Signed-off-by: Ganapathi Bhat <gbhat@marvell.com>
-> ---
->  drivers/net/wireless/marvell/mwifiex/usb.c | 32 +++++++++++++++++++++++-------
->  1 file changed, 25 insertions(+), 7 deletions(-)
-> 
-> diff --git a/drivers/net/wireless/marvell/mwifiex/usb.c b/drivers/net/wireless/marvell/mwifiex/usb.c
-> index c2365ee..939f1e9 100644
-> --- a/drivers/net/wireless/marvell/mwifiex/usb.c
-> +++ b/drivers/net/wireless/marvell/mwifiex/usb.c
-> @@ -1348,6 +1348,8 @@ static void mwifiex_usb_cleanup_tx_aggr(struct mwifiex_adapter *adapter)
->  
->  	for (idx = 0; idx < MWIFIEX_TX_DATA_PORT; idx++) {
->  		port = &card->port[idx];
-> +		if (!port->tx_data_ep)
-> +			continue;
+There is no folder 'devices'
 
-It's not clear to me what this is about. Are you sure you're not just cleaning
-stuff up in the wrong order?
+zadesk% ls /sys/module/iwlwifi 
+coresize  drivers  holders  initsize  initstate  notes  parameters  refcnt  
+sections  srcversion  taint  uevent
 
->  		if (adapter->bus_aggr.enable)
->  			while ((skb_tmp =
->  				skb_dequeue(&port->tx_aggr.aggr_list)))
+> echo 1 > /sys/bus/pci/rescan
 
-...
+Attached the error when trying to rescan.
 
-> @@ -1584,7 +1580,29 @@ static void mwifiex_usb_submit_rem_rx_urbs(struct mwifiex_adapter *adapter)
->  	return 0;
->  }
->  
-> +static int mwifiex_init_usb(struct mwifiex_adapter *adapter)
-> +{
-> +	struct usb_card_rec *card = (struct usb_card_rec *)adapter->card;
-> +	int ret = 0;
-> +
-> +	if (card->usb_boot_state == USB8XXX_FW_DNLD)
-> +		return 0;
+Thanks,
+Bala
 
-This looks wrong. You don't want to skip your basic initialization just because
-firmware isn't loaded yet. In fact, init_if() always gets called before FW
-init, so haven't you basically stubbed out this function most of the time?
 
-I guess the question is: is this step supposed to go before, or after firmware
-initilization? Based on that answer, we can make an appropriate patch.
 
-(The original code does this after FW initialization, and now you're only sort
-of moving it before.)
 
-> +
-> +	ret = mwifiex_usb_rx_init(adapter);
-> +	if (!ret)
-> +		ret = mwifiex_usb_tx_init(adapter);
-> +
-> +	return ret;
-> +}
 
-Brian
+--nextPart5498953.IlzcIGSqiQ
+Content-Disposition: inline; filename="error"
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="utf-8"; name="error"
+
+Jun 13 21:41:56 zadesk kernel: iwlwifi 0000:02:00.0: Failed to wake NIC for hcmd
+Jun 13 21:41:56 zadesk kernel: iwlwifi 0000:02:00.0: Error sending SCAN_OFFLOAD_REQUEST_CMD: enqueue_hcmd failed: -5
+Jun 13 21:41:56 zadesk kernel: iwlwifi 0000:02:00.0: Scan failed! ret -5
+Jun 13 21:41:56 zadesk iwd[483]: Received error during CMD_TRIGGER_SCAN: Input/output error (5)
+
+--nextPart5498953.IlzcIGSqiQ--
+
+
+
