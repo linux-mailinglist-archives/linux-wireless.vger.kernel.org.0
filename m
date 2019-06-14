@@ -2,97 +2,94 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 9A27C4624E
-	for <lists+linux-wireless@lfdr.de>; Fri, 14 Jun 2019 17:14:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5EFB446260
+	for <lists+linux-wireless@lfdr.de>; Fri, 14 Jun 2019 17:16:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726184AbfFNPOr (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 14 Jun 2019 11:14:47 -0400
-Received: from mail2.candelatech.com ([208.74.158.173]:56076 "EHLO
-        mail3.candelatech.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725942AbfFNPOh (ORCPT
+        id S1726575AbfFNPQr (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 14 Jun 2019 11:16:47 -0400
+Received: from eu-smtp-delivery-151.mimecast.com ([207.82.80.151]:26540 "EHLO
+        eu-smtp-delivery-151.mimecast.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726298AbfFNPQq (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 14 Jun 2019 11:14:37 -0400
-Received: from [192.168.100.195] (50-251-239-81-static.hfc.comcastbusiness.net [50.251.239.81])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail3.candelatech.com (Postfix) with ESMTPSA id B6AEED936;
-        Fri, 14 Jun 2019 08:14:36 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail3.candelatech.com B6AEED936
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=candelatech.com;
-        s=default; t=1560525276;
-        bh=8zcYqNn7o27L37A1IYkS/OReNpXSFzOmHnw8HWKbK0Y=;
-        h=Subject:To:References:From:Date:In-Reply-To:From;
-        b=mb5+b77vsrEu79tAtf+l/kcUhebXUR9Qdy3AvKkgtaZ9bChlC7ky2n9M6mzuTWnmZ
-         XNYMXVKhJnLs+mXOSbasiCEGwN4vCvNA4E0afFBAviehgS9Ax0gTEG2bePFnNJwgxX
-         JFFV7cgqK741RpjUd4EkKGp9C0X4JAFFpne23mp4=
-Subject: Re: [PATCH-v3 1/2] wireless: Support assoc-at-ms timer in sta-info
-To:     Johannes Berg <johannes@sipsolutions.net>,
-        linux-wireless@vger.kernel.org
-References: <20190415172123.6532-1-greearb@candelatech.com>
- <21fa668485f4eb0a8056aac1797854f267d5f1e0.camel@sipsolutions.net>
- <3ad69c55-2b88-a96b-d21e-99f4418466ee@candelatech.com>
- <e8343919c6851e6b5a7905b708661870c4c88481.camel@sipsolutions.net>
-From:   Ben Greear <greearb@candelatech.com>
-Organization: Candela Technologies
-Message-ID: <7d606df7-bb8e-c454-1eaf-24fd454eab8e@candelatech.com>
-Date:   Fri, 14 Jun 2019 08:14:36 -0700
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.4.0
-MIME-Version: 1.0
-In-Reply-To: <e8343919c6851e6b5a7905b708661870c4c88481.camel@sipsolutions.net>
-Content-Type: text/plain; charset=utf-8; format=flowed
+        Fri, 14 Jun 2019 11:16:46 -0400
+Received: from AcuMS.aculab.com (156.67.243.126 [156.67.243.126]) (Using
+ TLS) by relay.mimecast.com with ESMTP id
+ uk-mta-68-X-FdWeQ3PqmiCOAg4_EgNg-1; Fri, 14 Jun 2019 16:16:44 +0100
+Received: from AcuMS.Aculab.com (fd9f:af1c:a25b:0:43c:695e:880f:8750) by
+ AcuMS.aculab.com (fd9f:af1c:a25b:0:43c:695e:880f:8750) with Microsoft SMTP
+ Server (TLS) id 15.0.1347.2; Fri, 14 Jun 2019 16:16:43 +0100
+Received: from AcuMS.Aculab.com ([fe80::43c:695e:880f:8750]) by
+ AcuMS.aculab.com ([fe80::43c:695e:880f:8750%12]) with mapi id 15.00.1347.000;
+ Fri, 14 Jun 2019 16:16:43 +0100
+From:   David Laight <David.Laight@ACULAB.COM>
+To:     'Robin Murphy' <robin.murphy@arm.com>,
+        'Christoph Hellwig' <hch@lst.de>
+CC:     Maxime Ripard <maxime.ripard@bootlin.com>,
+        Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
+        "dri-devel@lists.freedesktop.org" <dri-devel@lists.freedesktop.org>,
+        "linux-mm@kvack.org" <linux-mm@kvack.org>,
+        "devel@driverdev.osuosl.org" <devel@driverdev.osuosl.org>,
+        "linux-s390@vger.kernel.org" <linux-s390@vger.kernel.org>,
+        "linux-rdma@vger.kernel.org" <linux-rdma@vger.kernel.org>,
+        David Airlie <airlied@linux.ie>,
+        "linux-media@vger.kernel.org" <linux-media@vger.kernel.org>,
+        Intel Linux Wireless <linuxwifi@intel.com>,
+        "intel-gfx@lists.freedesktop.org" <intel-gfx@lists.freedesktop.org>,
+        "Maarten Lankhorst" <maarten.lankhorst@linux.intel.com>,
+        Jani Nikula <jani.nikula@linux.intel.com>,
+        Ian Abbott <abbotti@mev.co.uk>,
+        Rodrigo Vivi <rodrigo.vivi@intel.com>,
+        Sean Paul <sean@poorly.run>,
+        "moderated list:ARM PORT" <linux-arm-kernel@lists.infradead.org>,
+        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        H Hartley Sweeten <hsweeten@visionengravers.com>,
+        "iommu@lists.linux-foundation.org" <iommu@lists.linux-foundation.org>,
+        Daniel Vetter <daniel@ffwll.ch>
+Subject: RE: [PATCH 16/16] dma-mapping: use exact allocation in
+ dma_alloc_contiguous
+Thread-Topic: [PATCH 16/16] dma-mapping: use exact allocation in
+ dma_alloc_contiguous
+Thread-Index: AQHVIrfpTFjppS25RkWUhwqPPyqZ4qabLzdwgAAQm/2AAAIJEA==
+Date:   Fri, 14 Jun 2019 15:16:43 +0000
+Message-ID: <d8009432a10549bbbda802021562a28b@AcuMS.aculab.com>
+References: <20190614134726.3827-1-hch@lst.de>
+ <20190614134726.3827-17-hch@lst.de>
+ <a90cf7ec5f1c4166b53c40e06d4d832a@AcuMS.aculab.com>
+ <20190614145001.GB9088@lst.de> <4113cd5f-5c13-e9c7-bc5e-dcf0b60e7054@arm.com>
+In-Reply-To: <4113cd5f-5c13-e9c7-bc5e-dcf0b60e7054@arm.com>
+Accept-Language: en-GB, en-US
 Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-ms-exchange-transport-fromentityheader: Hosted
+x-originating-ip: [10.202.205.107]
+MIME-Version: 1.0
+X-MC-Unique: X-FdWeQ3PqmiCOAg4_EgNg-1
+X-Mimecast-Spam-Score: 0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: base64
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 6/14/19 7:56 AM, Johannes Berg wrote:
-> On Fri, 2019-06-14 at 07:46 -0700, Ben Greear wrote:
->>
->> The point of my patch was to allow 'iw' to return a more precise time
->> that the station has been associated, so I am not sure that BOOTIME is
->> a good thing to use for that?
-> 
-> Depends what you want, really.
-> 
->> +       if (sinfo[NL80211_STA_INFO_ASSOC_AT_MS])
->> +               printf("\n\tassociated at:\t%llu ms",
->> +                        (unsigned long long)nla_get_u64(sinfo[NL80211_STA_INFO_ASSOC_AT_MS]));
->>
->> -       printf("\n");
->> +       printf("\n\tcurrent time:\t%llu ms\n", now_ms);
-> 
-> Since you just print the time in milliseconds, and the current time in
-> milliseconds, you don't even really have any value in the wall clock.
-> Quite the opposite - this lends itself to subtracting to try to figure
-> out how long it was associated, which is the completely wrong thing to
-> do with wall clock - timezone adjustment could've happened inbetween,
-> for example!
-> 
-> I really see no point in trying to give the wall clock at assoc time. If
-> no timezone adjustment happened, you can just as well give the boottime
-> and have the userspace figure out the wall clock. If timezone adjustment
-> happened, then any calculations are wrong anyway, what would the point
-> be?
-
-So, maybe I return instead the elapsed time in the netlink API instead of a
-timestamp.  I think that will give me the value that I am looking for,
-and I can still print out the 'real' time in iw so any tools reading that
-output and do some simple math and figure out the 'real' associated-at time.
-
-If that sounds good to you, I'll code that up.
-
-Thanks,
-Ben
-
-> 
-> johannes
-> 
-
-
--- 
-Ben Greear <greearb@candelatech.com>
-Candela Technologies Inc  http://www.candelatech.com
+RnJvbTogUm9iaW4gTXVycGh5DQo+IFNlbnQ6IDE0IEp1bmUgMjAxOSAxNjowNg0KLi4uDQo+IFdl
+bGwsIGFwYXJ0IGZyb20gdGhlIGJpdCBpbiBETUEtQVBJLUhPV1RPIHdoaWNoIGhhcyBzYWlkIHRo
+aXMgc2luY2UNCj4gZm9yZXZlciAod2VsbCwgYmVmb3JlIEdpdCBoaXN0b3J5LCBhdCBsZWFzdCk6
+DQo+IA0KPiAiVGhlIENQVSB2aXJ0dWFsIGFkZHJlc3MgYW5kIHRoZSBETUEgYWRkcmVzcyBhcmUg
+Ym90aA0KPiBndWFyYW50ZWVkIHRvIGJlIGFsaWduZWQgdG8gdGhlIHNtYWxsZXN0IFBBR0VfU0la
+RSBvcmRlciB3aGljaA0KPiBpcyBncmVhdGVyIHRoYW4gb3IgZXF1YWwgdG8gdGhlIHJlcXVlc3Rl
+ZCBzaXplLiAgVGhpcyBpbnZhcmlhbnQNCj4gZXhpc3RzIChmb3IgZXhhbXBsZSkgdG8gZ3VhcmFu
+dGVlIHRoYXQgaWYgeW91IGFsbG9jYXRlIGEgY2h1bmsNCj4gd2hpY2ggaXMgc21hbGxlciB0aGFu
+IG9yIGVxdWFsIHRvIDY0IGtpbG9ieXRlcywgdGhlIGV4dGVudCBvZiB0aGUNCj4gYnVmZmVyIHlv
+dSByZWNlaXZlIHdpbGwgbm90IGNyb3NzIGEgNjRLIGJvdW5kYXJ5LiINCg0KSSBrbmV3IGl0IHdh
+cyBzb21ld2hlcmUgOi0pDQpJbnRlcmVzdGluZ2x5IHRoYXQgYWxzbyBpbXBsaWVzIHRoYXQgdGhl
+IGFkZHJlc3MgcmV0dXJuZWQgZm9yIGEgc2l6ZQ0Kb2YgKHNheSkgMTI4IHdpbGwgYWxzbyBiZSBw
+YWdlIGFsaWduZWQuDQpJbiB0aGF0IGNhc2UgMTI4IGJ5dGUgYWxpZ25tZW50IHNob3VsZCBwcm9i
+YWJseSBiZSBvayAtIGJ1dCBpdCBpcyBzdGlsbA0KYW4gQVBJIGNoYW5nZSB0aGF0IGNvdWxkIGhh
+dmUgaG9ycmlkIGNvbnNlcXVlbmNlcy4NCg0KCURhdmlkDQoNCi0NClJlZ2lzdGVyZWQgQWRkcmVz
+cyBMYWtlc2lkZSwgQnJhbWxleSBSb2FkLCBNb3VudCBGYXJtLCBNaWx0b24gS2V5bmVzLCBNSzEg
+MVBULCBVSw0KUmVnaXN0cmF0aW9uIE5vOiAxMzk3Mzg2IChXYWxlcykNCg==
 
