@@ -2,223 +2,171 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C397445CDF
-	for <lists+linux-wireless@lfdr.de>; Fri, 14 Jun 2019 14:31:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EA81845CE4
+	for <lists+linux-wireless@lfdr.de>; Fri, 14 Jun 2019 14:32:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727896AbfFNMbh (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 14 Jun 2019 08:31:37 -0400
-Received: from s3.sipsolutions.net ([144.76.43.62]:41246 "EHLO
-        sipsolutions.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727544AbfFNMbg (ORCPT
+        id S1727686AbfFNMch (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 14 Jun 2019 08:32:37 -0400
+Received: from mail-wm1-f67.google.com ([209.85.128.67]:38840 "EHLO
+        mail-wm1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727544AbfFNMch (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 14 Jun 2019 08:31:36 -0400
-Received: by sipsolutions.net with esmtpsa (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <johannes@sipsolutions.net>)
-        id 1hblMG-0008Ae-CU; Fri, 14 Jun 2019 14:31:04 +0200
-Message-ID: <d1c2fd8d99d8f8420ba265f31709da9326ad38f1.camel@sipsolutions.net>
-Subject: Re: [PATCH v3 1/2] nl80211: Add support for EDMG channels
-From:   Johannes Berg <johannes@sipsolutions.net>
-To:     Alexei Avshalom Lazar <ailizaro@codeaurora.org>
-Cc:     linux-wireless@vger.kernel.org, wil6210@qti.qualcomm.com
-Date:   Fri, 14 Jun 2019 14:31:02 +0200
-In-Reply-To: <1558364020-11064-2-git-send-email-ailizaro@codeaurora.org>
-References: <1558364020-11064-1-git-send-email-ailizaro@codeaurora.org>
-         <1558364020-11064-2-git-send-email-ailizaro@codeaurora.org>
-Content-Type: text/plain; charset="UTF-8"
-X-Mailer: Evolution 3.28.5 (3.28.5-2.fc28) 
-Mime-Version: 1.0
-Content-Transfer-Encoding: 7bit
+        Fri, 14 Jun 2019 08:32:37 -0400
+Received: by mail-wm1-f67.google.com with SMTP id s15so2153753wmj.3
+        for <linux-wireless@vger.kernel.org>; Fri, 14 Jun 2019 05:32:35 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=uYMNsN5/tkP/4EN4gTdLpKb464bJ0qjMAdWBKZ0re9k=;
+        b=mVVsQCzJvi20cJuDAfu0lwTzDJ8XQl9f04LkvgXvvmy3SJNCI/RJ0xy0/OAAqncxHF
+         p8JB+88RCwplBg4XkaePbRZcDyhfjVxflg0uZJqaLshNV5KCsuxMV06cthoPuVyFJ0GU
+         /OVtbBlAEFmVhslJFvb78ET312n3y7vp/GFrMCOAzJGG48g6uFaXBQ7fJulvY1kYc115
+         NLr0ZQsBCJcToJLFIgANkYoNm3dl+/ORcmBw3FiAw3LLB2al7zEuxJAQoq2FZ+Ads3ZT
+         dwvjJ4UyMbNUYjIOl09qPkCAWiycFUubHXvq2jQc12+TP7h44pfO5bUWgPuAcAc+lq7N
+         lZWw==
+X-Gm-Message-State: APjAAAViiayu2RSpWzFXNcq3WsfpujSxx9KCwIuT4toVq1LAwwXdcwtE
+        5mZ8gNr3b5Lw74nPugdU1GZ3cg==
+X-Google-Smtp-Source: APXvYqxj99LhiNwkJSnv0vgJDIBkPrmau0OF1j7tLjXAzIy3RkXrBgsPpqsX96/J6X0KafmAK9r57A==
+X-Received: by 2002:a1c:343:: with SMTP id 64mr8313047wmd.116.1560515555290;
+        Fri, 14 Jun 2019 05:32:35 -0700 (PDT)
+Received: from localhost.localdomain (nat-pool-mxp-t.redhat.com. [149.6.153.186])
+        by smtp.gmail.com with ESMTPSA id t6sm4307128wmb.29.2019.06.14.05.32.34
+        (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
+        Fri, 14 Jun 2019 05:32:34 -0700 (PDT)
+Date:   Fri, 14 Jun 2019 14:32:32 +0200
+From:   Lorenzo Bianconi <lorenzo.bianconi@redhat.com>
+To:     Stanislaw Gruszka <sgruszka@redhat.com>
+Cc:     Lorenzo Bianconi <lorenzo@kernel.org>, kvalo@codeaurora.org,
+        linux-wireless@vger.kernel.org, nbd@nbd.name,
+        johannes@sipsolutions.net
+Subject: Re: [PATCH v3 wireless-drivers 1/3] mt76: usb: fix rx A-MSDU support
+Message-ID: <20190614123230.GC2669@localhost.localdomain>
+References: <cover.1560461404.git.lorenzo@kernel.org>
+ <66fc02e45fb5ce0d6176395b5ac43acbd53b3e66.1560461404.git.lorenzo@kernel.org>
+ <20190614072449.GA3395@redhat.com>
+ <20190614101115.GA2669@localhost.localdomain>
+ <20190614111414.GB17298@redhat.com>
+MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="m51xatjYGsM+13rf"
+Content-Disposition: inline
+In-Reply-To: <20190614111414.GB17298@redhat.com>
+User-Agent: Mutt/1.11.4 (2019-03-13)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi Alexei,
 
-Sorry for the long delay here.
+--m51xatjYGsM+13rf
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-I have a few questions.
+> On Fri, Jun 14, 2019 at 12:11:17PM +0200, Lorenzo Bianconi wrote:
+> > > On Thu, Jun 13, 2019 at 11:43:11PM +0200, Lorenzo Bianconi wrote:
+> > > > Commit f8f527b16db5 ("mt76: usb: use EP max packet aligned buffer s=
+izes
+> > > > for rx") breaks A-MSDU support. When A-MSDU is enable the device can
+> > > > receive frames up to q->buf_size but they will be discarded in
+> > > > mt76u_process_rx_entry since there is no enough room for
+> > > > skb_shared_info. Fix the issue reallocating the skb and copying in =
+the
+> > > > linear area the first 128B of the received frames and in the frag_l=
+ist
+> > > > the remaining part.
+> > > >=20
+> > > > Fixes: f8f527b16db5 ("mt76: usb: use EP max packet aligned buffer s=
+izes for rx")
+> > > > Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+> > > > ---
+> > > >  drivers/net/wireless/mediatek/mt76/mt76.h |  1 +
+> > > >  drivers/net/wireless/mediatek/mt76/usb.c  | 49 ++++++++++++++++++-=
+----
+> > > >  2 files changed, 41 insertions(+), 9 deletions(-)
+> > > >=20
+> > > > diff --git a/drivers/net/wireless/mediatek/mt76/mt76.h b/drivers/ne=
+t/wireless/mediatek/mt76/mt76.h
+> > > > index 8ecbf81a906f..889b76deb703 100644
+> > > > --- a/drivers/net/wireless/mediatek/mt76/mt76.h
+> > > > +++ b/drivers/net/wireless/mediatek/mt76/mt76.h
+> > > > @@ -30,6 +30,7 @@
+> > > >  #define MT_TX_RING_SIZE     256
+> > > >  #define MT_MCU_RING_SIZE    32
+> > > >  #define MT_RX_BUF_SIZE      2048
+> > > > +#define MT_SKB_HEAD_LEN     128
+> > > > =20
+> > > >  struct mt76_dev;
+> > > >  struct mt76_wcid;
+> > > > diff --git a/drivers/net/wireless/mediatek/mt76/usb.c b/drivers/net=
+/wireless/mediatek/mt76/usb.c
+> > > > index bbaa1365bbda..12d60d31cb51 100644
+> > > > --- a/drivers/net/wireless/mediatek/mt76/usb.c
+> > > > +++ b/drivers/net/wireless/mediatek/mt76/usb.c
+> > > > @@ -429,6 +429,45 @@ static int mt76u_get_rx_entry_len(u8 *data, u3=
+2 data_len)
+> > > >  	return dma_len;
+> > > >  }
+> > > > =20
+> > > > +static struct sk_buff *
+> > > > +mt76u_build_rx_skb(u8 *data, int len, int buf_size)
+> > > > +{
+> > > > +	struct sk_buff *skb;
+> > > > +
+> > > > +	if (SKB_WITH_OVERHEAD(buf_size) < MT_DMA_HDR_LEN + len) {
+> > > > +		struct page *page;
+> > > > +		int offset;
+> > > > +
+> > > > +		/* slow path, not enough space for data and
+> > > > +		 * skb_shared_info
+> > > > +		 */
+> > > > +		skb =3D alloc_skb(MT_SKB_HEAD_LEN, GFP_ATOMIC);
+> > > > +		if (!skb)
+> > > > +			return NULL;
+> > > > +
+> > > > +		skb_put_data(skb, data + MT_DMA_HDR_LEN, MT_SKB_HEAD_LEN);
+> > >=20
+> > > I looked how rx amsdu is processed in mac80211 and it is decomposed a=
+nd
+> > > copied into newly allocated individual skb's, see ieee80211_amsdu_to_=
+8023s()
+> > >=20
+> > > So copy L3 & L4 headers doesn't do anything good here, actually seems=
+ to
+> > > be better to have them in frag as __ieee80211_amsdu_copy_frag() do so=
+me
+> > > magic to avid copy.
+> >=20
+> > Looking at __ieee80211_amsdu_copy() now I got why other drivers copy hd=
+rlen +
+> > 8, thx :)
+> > In our case reuse_frag is true in __ieee80211_amsdu_copy, so we will en=
+d up
+>=20
+> I don't think reuse_frag is true in our case since skb->head_frag is
+> not set when we use alloc_skb().=20
 
-Looking at this:
+Oh, right. In this case it is probably better to use netdev_alloc_skb().
+I will repost using the approach used in mt7601u since for the moment it wi=
+ll
+not make any difference to copy more data.
 
->  /**
-> + * struct ieee80211_sta_edmg_cap - EDMG capabilities
-> + *
-> + * This structure describes most essential parameters needed
-> + * to describe 802.11ay EDMG capabilities
-> + *
-> + * @channels: bitmap that indicates the 2.16 GHz channel(s)
-> + *	that are allowed to be used for transmissions in the BSS.
-> + *	Set to 0 indicate EDMG not supported.
-> + * @bw_config: Channel BW Configuration subfield encodes
-> + *	the allowed channel bandwidth configurations
-> + */
-> +struct ieee80211_sta_edmg_cap {
-> +	u8 channels;
-> +	u8 bw_config;
-> +};
+Regards,
+Lorenzo
 
-What are the bits actually? Seems you should define some enum or so that
-shows which bits are used here?
+>=20
+> Stanislaw
 
->   * @center_freq1: center frequency of first segment
->   * @center_freq2: center frequency of second segment
->   *	(only with 80+80 MHz)
-> + * @edmg_channels: bitmap that indicates the 2.16 GHz channel(s)
-> + *	that are allowed to be used for transmissions in the BSS.
-> + * @edmg_bw_config: Channel BW Configuration subfield encodes
-> + *	the allowed channel bandwidth configurations
->   */
->  struct cfg80211_chan_def {
->  	struct ieee80211_channel *chan;
->  	enum nl80211_chan_width width;
->  	u32 center_freq1;
->  	u32 center_freq2;
-> +	u8 edmg_channels;
-> +	u8 edmg_bw_config;
->  };
+--m51xatjYGsM+13rf
+Content-Type: application/pgp-signature; name="signature.asc"
 
-This isn't clear to me. How can the capability and the configuration be
-exactly the same? In the capability, you should be able to capture
-multiple possible things, and in the setting only choose one?
+-----BEGIN PGP SIGNATURE-----
 
-And if they really are the same, why not use the struct
-ieee80211_sta_edmg_cap here? Seems weird to me, but I don't know 11ay.
+iHUEABYIAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCXQOT3AAKCRA6cBh0uS2t
+rPAfAP9tZlhPVqj5lRlgzTsyRshJPknJi+UG8yqsU/YDdDoaZAD/U2/0vJpQFgKn
+WXrymx/RjXJmmMND85DLZ4KDVhyNUww=
+=vXYR
+-----END PGP SIGNATURE-----
 
-
-Also, I think you should describe a bit more how this plays together
-with the existing settings. Will ->chan still be set, to something like
-the control channel?
-
->  /**
-> @@ -1144,15 +1169,17 @@ int cfg80211_check_station_change(struct wiphy *wiphy,
->   * @RATE_INFO_FLAGS_MCS: mcs field filled with HT MCS
->   * @RATE_INFO_FLAGS_VHT_MCS: mcs field filled with VHT MCS
->   * @RATE_INFO_FLAGS_SHORT_GI: 400ns guard interval
-> - * @RATE_INFO_FLAGS_60G: 60GHz MCS
-> + * @RATE_INFO_FLAGS_DMG: 60GHz MCS
->   * @RATE_INFO_FLAGS_HE_MCS: HE MCS information
-> + * @RATE_INFO_FLAGS_EDMG: 60GHz MCS in EDMG mode
->   */
->  enum rate_info_flags {
->  	RATE_INFO_FLAGS_MCS			= BIT(0),
->  	RATE_INFO_FLAGS_VHT_MCS			= BIT(1),
->  	RATE_INFO_FLAGS_SHORT_GI		= BIT(2),
-> -	RATE_INFO_FLAGS_60G			= BIT(3),
-> +	RATE_INFO_FLAGS_DMG			= BIT(3),
->  	RATE_INFO_FLAGS_HE_MCS			= BIT(4),
-> +	RATE_INFO_FLAGS_EDMG			= BIT(5),
->  };
->  
->  /**
-> @@ -1192,6 +1219,7 @@ enum rate_info_bw {
->   * @he_dcm: HE DCM value
->   * @he_ru_alloc: HE RU allocation (from &enum nl80211_he_ru_alloc,
->   *	only valid if bw is %RATE_INFO_BW_HE_RU)
-> + * @n_bonded_ch: In case of EDMG the number of bonded channels (1-4)
->   */
->  struct rate_info {
->  	u8 flags;
-> @@ -1202,6 +1230,7 @@ struct rate_info {
->  	u8 he_gi;
->  	u8 he_dcm;
->  	u8 he_ru_alloc;
-> +	u8 n_bonded_ch;
->  };
-
-
-It seems like this is missing corresponding nl80211.h changes?
-
-> @@ -2436,6 +2469,8 @@ struct cfg80211_connect_params {
->  	const u8 *fils_erp_rrk;
->  	size_t fils_erp_rrk_len;
->  	bool want_1x;
-> +	u8 edmg_channels;
-> +	u8 edmg_bw_config;
->  };
-
-Same question as above, why not embed the struct if it's the same?
-
-Again it seems like it shouldn't be the same though.
- 
-> + * @NL80211_ATTR_WIPHY_EDMG_CHANNELS: bitmap that indicates the 2.16 GHz
-> + *	channel(s) that are allowed to be used for EDMG transmissions in the
-> + *	BSS as defined by IEEE 802.11 section 9.4.2.251.
-> + * @NL80211_ATTR_WIPHY_EDMG_BW_CONFIG: Channel BW Configuration subfield encodes
-> + *	the allowed channel bandwidth configurations as defined by IEEE 802.11
-> + *	section 9.4.2.251, Table 13.
-
-This is unclear - "in the BSS" means nothing in this context, since
-you're using this to advertise capabilities?
-
-This isn't a BSS attribute, after all.
-
-Ah - but looking further, you use this to *set* the channel, not for
-capabilities... I guess that makes sense.
-
-
->   * @NL80211_BAND_ATTR_VHT_CAPA: VHT capabilities, as in the HT information IE
->   * @NL80211_BAND_ATTR_IFTYPE_DATA: nested array attribute, with each entry using
->   *	attributes from &enum nl80211_band_iftype_attr
-> + * @NL80211_BAND_ATTR_EDMG_CHANNELS: bitmap that indicates the 2.16 GHz
-> + *	channel(s) that are allowed to be used for EDMG transmissions in the
-> + *	BSS as defined by IEEE 802.11 section 9.4.2.251.
-> + * @NL80211_BAND_ATTR_EDMG_BW_CONFIG: Channel BW Configuration subfield
-> + *	encodes the allowed channel bandwidth configurations as defined by
-> + *	IEEE 802.11 section 9.4.2.251, Table 13.
->   * @NL80211_BAND_ATTR_MAX: highest band attribute currently defined
->   * @__NL80211_BAND_ATTR_AFTER_LAST: internal use
-
-And ... that makes more sense than the global attribute I guess?
-
-> +static bool cfg80211_edmg_chandef_valid(const struct cfg80211_chan_def *chandef)
-> +{
-> +	int max_continuous = 0;
-> +	int num_of_enabled = 0;
-> +	int continuous = 0;
-
-do you mean "contiguous"? "continuous" doesn't make much sense?
-
-> +	int i;
-> +
-> +	if (!chandef->edmg_channels && !chandef->edmg_bw_config)
-> +		return true;
-> +
-> +	if ((!chandef->edmg_channels && chandef->edmg_bw_config) ||
-> +	    (chandef->edmg_channels && !chandef->edmg_bw_config))
-> +		return false;
-
-There probably should be some kind of WARN_ON() check that validates you
-get here only if the ->chan is actually 60GHz?
-
-> +++ b/net/wireless/nl80211.c
-> @@ -288,6 +288,9 @@ static int validate_ie_attr(const struct nlattr *attr,
->  
->  	[NL80211_ATTR_WIPHY_FREQ] = { .type = NLA_U32 },
->  	[NL80211_ATTR_WIPHY_CHANNEL_TYPE] = { .type = NLA_U32 },
-> +	[NL80211_ATTR_WIPHY_EDMG_CHANNELS] = { .type = NLA_U8 },
-> +	[NL80211_ATTR_WIPHY_EDMG_BW_CONFIG] = { .type = NLA_U8 },
-
-You probably want something like NLA_POLICY_RANGE() here? This was only
-1-4 IIRC?
-
-> +	if (info->attrs[NL80211_ATTR_WIPHY_EDMG_CHANNELS]) {
-> +		chandef->edmg_channels =
-> +		      nla_get_u8(info->attrs[NL80211_ATTR_WIPHY_EDMG_CHANNELS]);
-> +
-> +		if (info->attrs[NL80211_ATTR_WIPHY_EDMG_BW_CONFIG])
-> +			chandef->edmg_bw_config =
-> +		     nla_get_u8(info->attrs[NL80211_ATTR_WIPHY_EDMG_BW_CONFIG]);
-> +	} else {
-> +		chandef->edmg_bw_config = 0;
-> +		chandef->edmg_channels = 0;
-> +	}
-> +
->  	if (!cfg80211_chandef_valid(chandef)) {
-
-So I guess what I suggested above shouldn't actually be a WARN_ON() but
-just a check w/o WARN_ON()?
-
-johannes
-
+--m51xatjYGsM+13rf--
