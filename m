@@ -2,91 +2,56 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A12EF46A02
-	for <lists+linux-wireless@lfdr.de>; Fri, 14 Jun 2019 22:36:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 683C446A4C
+	for <lists+linux-wireless@lfdr.de>; Fri, 14 Jun 2019 22:37:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728420AbfFNUgh (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 14 Jun 2019 16:36:37 -0400
-Received: from ms.lwn.net ([45.79.88.28]:54110 "EHLO ms.lwn.net"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727091AbfFNUge (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 14 Jun 2019 16:36:34 -0400
-Received: from lwn.net (localhost [127.0.0.1])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ms.lwn.net (Postfix) with ESMTPSA id 731B91427;
-        Fri, 14 Jun 2019 20:36:32 +0000 (UTC)
-Date:   Fri, 14 Jun 2019 14:36:31 -0600
-From:   Jonathan Corbet <corbet@lwn.net>
-To:     Mauro Carvalho Chehab <mchehab+samsung@kernel.org>
-Cc:     Linux Doc Mailing List <linux-doc@vger.kernel.org>,
-        Mauro Carvalho Chehab <mchehab@infradead.org>,
-        linux-kernel@vger.kernel.org, Sebastian Reichel <sre@kernel.org>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Viresh Kumar <viresh.kumar@linaro.org>,
-        Len Brown <len.brown@intel.com>, Pavel Machek <pavel@ucw.cz>,
-        Nishanth Menon <nm@ti.com>, Stephen Boyd <sboyd@kernel.org>,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        Mark Brown <broonie@kernel.org>,
-        Mathieu Poirier <mathieu.poirier@linaro.org>,
-        Suzuki K Poulose <suzuki.poulose@arm.com>,
-        Harry Wei <harryxiyou@gmail.com>,
-        Alex Shi <alex.shi@linux.alibaba.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-        "H. Peter Anvin" <hpa@zytor.com>, x86@kernel.org,
-        Jani Nikula <jani.nikula@linux.intel.com>,
-        Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
-        Rodrigo Vivi <rodrigo.vivi@intel.com>,
-        David Airlie <airlied@linux.ie>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        Johannes Berg <johannes@sipsolutions.net>,
-        "David S. Miller" <davem@davemloft.net>, linux-pm@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        intel-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
-        linux-pci@vger.kernel.org, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org,
-        "Srivatsa S . Bhat" <srivatsa@csail.mit.edu>
-Subject: Re: [PATCH v5] docs: power: convert docs to ReST and rename to
- *.rst
-Message-ID: <20190614143631.7c99719f@lwn.net>
-In-Reply-To: <72d1f8f360d395958dd0b49165fc51b58801f57e.1560420621.git.mchehab+samsung@kernel.org>
-References: <7dc94cb4-ebf1-22ab-29c9-fcb2b875a9ac@csail.mit.edu>
-        <72d1f8f360d395958dd0b49165fc51b58801f57e.1560420621.git.mchehab+samsung@kernel.org>
-Organization: LWN.net
-MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 8bit
+        id S1726860AbfFNUhS (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 14 Jun 2019 16:37:18 -0400
+Received: from s3.sipsolutions.net ([144.76.43.62]:52218 "EHLO
+        sipsolutions.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727032AbfFNUhR (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 14 Jun 2019 16:37:17 -0400
+Received: by sipsolutions.net with esmtpsa (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <johannes@sipsolutions.net>)
+        id 1hbswk-00037X-P9; Fri, 14 Jun 2019 22:37:14 +0200
+Message-ID: <5706f50a755ba082580483e1971ece33c42fa4da.camel@sipsolutions.net>
+Subject: Re: [PATCH v3] {nl,mac}80211: allow 4addr AP operation on crypto
+ controlled devices
+From:   Johannes Berg <johannes@sipsolutions.net>
+To:     Tom Psyborg <pozega.tomislav@gmail.com>
+Cc:     Manikanta Pubbisetty <mpubbise@codeaurora.org>,
+        linux-wireless@vger.kernel.org
+Date:   Fri, 14 Jun 2019 22:37:11 +0200
+In-Reply-To: <CAKR_QVLyxBdqJAN6CsVG3ts41NOED56MvWdgvgVKPm-GRJXo-g@mail.gmail.com> (sfid-20190614_222710_879124_F0A98FD0)
+References: <1557307533-5795-1-git-send-email-mpubbise@codeaurora.org>
+         <fd3addc01fc3f5362dba5771ee82659cf01c195b.camel@sipsolutions.net>
+         <c8484254-f4f7-9955-e3f8-8a423cc6c325@codeaurora.org>
+         <CAKR_QV+dVx+LK1HyCo6CQZQ7ZX_u6ON0hEH5adNiJTB+XaP3WA@mail.gmail.com>
+         <dc9039be42df8d241b14d4f673f3c472dc113991.camel@sipsolutions.net>
+         <CAKR_QV+5oY-5z4UB+HKV_57r5NneDme+TBg_c26h4C7Sy8R+UQ@mail.gmail.com>
+         <309ba2702f6b553a3dd08262efe34c4cecc4e445.camel@sipsolutions.net>
+         <CAKR_QVLyxBdqJAN6CsVG3ts41NOED56MvWdgvgVKPm-GRJXo-g@mail.gmail.com>
+         (sfid-20190614_222710_879124_F0A98FD0)
+Content-Type: text/plain; charset="UTF-8"
+X-Mailer: Evolution 3.28.5 (3.28.5-2.fc28) 
+Mime-Version: 1.0
+Content-Transfer-Encoding: 7bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Thu, 13 Jun 2019 07:10:36 -0300
-Mauro Carvalho Chehab <mchehab+samsung@kernel.org> wrote:
-
-> Convert the PM documents to ReST, in order to allow them to
-> build with Sphinx.
+On Fri, 2019-06-14 at 22:27 +0200, Tom Psyborg wrote:
 > 
-> The conversion is actually:
->   - add blank lines and identation in order to identify paragraphs;
->   - fix tables markups;
->   - add some lists markups;
->   - mark literal blocks;
->   - adjust title markups.
-> 
-> At its new index.rst, let's add a :orphan: while this is not linked to
-> the main index.rst file, in order to avoid build warnings.
-> 
-> Signed-off-by: Mauro Carvalho Chehab <mchehab+samsung@kernel.org>
-> Acked-by: Mark Brown <broonie@kernel.org>
-> Acked-by: Bjorn Helgaas <bhelgaas@google.com>
-> Acked-by: Srivatsa S. Bhat (VMware) <srivatsa@csail.mit.edu>
+> If you don't want to read posts but only topic title, in short, no
+> data pass thorugh with v2/v3 of this patch. Only v1 works.
 
-So I can't apply this one due to conflicts in include/linux/pci.h.  Bjorn,
-perhaps the easiest thing is for you to take this one through your tree?
+I can read what you're saying, but I cannot understand it.
 
-Thanks,
+This patch doesn't modify any TX/RX path in any way. It only affects
+whether you can or can not create certain interfaces.
 
-jon
+johannes
+
