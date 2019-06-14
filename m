@@ -2,112 +2,86 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 674CA4552B
-	for <lists+linux-wireless@lfdr.de>; Fri, 14 Jun 2019 08:59:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2A7A945575
+	for <lists+linux-wireless@lfdr.de>; Fri, 14 Jun 2019 09:12:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725996AbfFNG7i (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 14 Jun 2019 02:59:38 -0400
-Received: from mail.kernel.org ([198.145.29.99]:39668 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725835AbfFNG7i (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 14 Jun 2019 02:59:38 -0400
-Received: from localhost (83-86-89-107.cable.dynamic.v4.ziggo.nl [83.86.89.107])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 939C92063F;
-        Fri, 14 Jun 2019 06:59:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1560495577;
-        bh=GE6kHlZhWjeir7ihj8EED4mH6wyPeJJCUgG+az2TV5k=;
-        h=Date:From:To:Cc:Subject:From;
-        b=1D7uYNsXWMLUv5stOEuz+G6hJ4eG6KlOl07Z79zO2ayNnSFn0OztQDnYNABmyldyI
-         mSY5/Rk+IpihF/caIWfjXeTepLpJi3nLh3jle0uTBTeHqYvEmvI85XBGlbXeI9MwBc
-         8Vg/3H1vye5FuuH0TbiFlghN/xnqbLWX0OYG1eoA=
-Date:   Fri, 14 Jun 2019 08:59:34 +0200
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     Johannes Berg <johannes@sipsolutions.net>
-Cc:     "David S. Miller" <davem@davemloft.net>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org
-Subject: [PATCH] mac80211: no need to check return value of debugfs_create
- functions
-Message-ID: <20190614065934.GA23295@kroah.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.12.0 (2019-05-25)
+        id S1726252AbfFNHMC (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 14 Jun 2019 03:12:02 -0400
+Received: from mail-pg1-f194.google.com ([209.85.215.194]:34344 "EHLO
+        mail-pg1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726115AbfFNHMC (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 14 Jun 2019 03:12:02 -0400
+Received: by mail-pg1-f194.google.com with SMTP id p10so1032704pgn.1;
+        Fri, 14 Jun 2019 00:12:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id;
+        bh=Z24ehB4D4Ib9KAp40EZZmlh/Bvx/EOYlNXp8ka69OO8=;
+        b=B9BPcDseXlrG3ycjZwkqgwkcR4nbLzBIh5VosFrf0JeTSEKLiWEH6adqv8bIWjlg4W
+         BZ/ZOqF/A/WYbvWb9vmh7V/loVsJqBxoEIuQJweLvcYV0fIC4vlQ7lqYh3yxthPbgr2u
+         CNHzecQBxrBeIfgbc8ho7f7yZsrmweoLIveR4N3U2Yil8uZ4FE3XSSXjXYKBWBFuYn7o
+         PHQR8MyXRWvpnBsJhGbmXFj8ARsLEMGcjU2gmzLgPiBRvFrrWstDIaXjnW3gIG5E6kRG
+         grEUr886Mf21+FzGVkzxd2/v6C+saav0KjRjDR2PrUB29ZETxp+0Q3jgxtGQWB7IslDt
+         NP7Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=Z24ehB4D4Ib9KAp40EZZmlh/Bvx/EOYlNXp8ka69OO8=;
+        b=s8ahWKl+/lZpJFOUZpYoO2JWInshv2JYd7mA68ep6Hrf+calmT7qRiOFRwbUlAa6Q4
+         to8YVV+lv8dLZQ9Ca3hFZwo1fil9Ep66SLYsmBVWCzOIFyC3YSH6/Pv1SVbdAup87qOR
+         VYD/YPSGiFCxXsPXwP4wgeXtMdiPT56Eu2102vigyBG6hndaT128wHeJFnprDq75PHJ7
+         sQxnQvMdQJT9lGFqn1b82azAz8anXG7huqIHwzgw/QXK1e83FFwFJfC+NXIFo2/dhYiD
+         UJtbyzT5QFS3e1redzf3+JVfNNOxf5JV1PL1wpNVD5AxBPWGhD/lywOeAtfLBq8Ha3Xd
+         LBCw==
+X-Gm-Message-State: APjAAAUj2aPYrrfAAlSYPcZr9g8kW/mI6aiPsGfWBk3XbKGXOEv81j9D
+        buJT/F4jVGqnGgSJJ20j1Qo=
+X-Google-Smtp-Source: APXvYqzts64d3r5DidYI4YK6nxHWTCr4iviOKRGBsvDDVRUCcUr1GO2l5XgET6/yAn2cJC6dCRNUFw==
+X-Received: by 2002:a63:3148:: with SMTP id x69mr19476839pgx.226.1560496321289;
+        Fri, 14 Jun 2019 00:12:01 -0700 (PDT)
+Received: from xy-data.openstacklocal ([159.138.22.150])
+        by smtp.gmail.com with ESMTPSA id p68sm1634074pfb.80.2019.06.14.00.11.59
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
+        Fri, 14 Jun 2019 00:12:00 -0700 (PDT)
+From:   Young Xiao <92siuyang@gmail.com>
+To:     sameo@linux.intel.com, davem@davemloft.net,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Cc:     Young Xiao <92siuyang@gmail.com>
+Subject: [PATCH] nfc: Ensure presence of required attributes in the deactivate_target handler
+Date:   Fri, 14 Jun 2019 15:13:02 +0800
+Message-Id: <1560496382-32532-1-git-send-email-92siuyang@gmail.com>
+X-Mailer: git-send-email 2.7.4
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-When calling debugfs functions, there is no need to ever check the
-return value.  The function can work or not, but the code logic should
-never do something different based on this.
+Check that the NFC_ATTR_TARGET_INDEX attributes (in addition to
+NFC_ATTR_DEVICE_INDEX) are provided by the netlink client prior to
+accessing them. This prevents potential unhandled NULL pointer dereference
+exceptions which can be triggered by malicious user-mode programs,
+if they omit one or both of these attributes.
 
-Cc: Johannes Berg <johannes@sipsolutions.net>
-Cc: "David S. Miller" <davem@davemloft.net>
-Cc: linux-wireless@vger.kernel.org
-Cc: netdev@vger.kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Young Xiao <92siuyang@gmail.com>
 ---
- net/mac80211/debugfs_key.c    |  3 ---
- net/mac80211/debugfs_netdev.c | 10 +++-------
- net/mac80211/debugfs_sta.c    |  2 --
- 3 files changed, 3 insertions(+), 12 deletions(-)
+ net/nfc/netlink.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/net/mac80211/debugfs_key.c b/net/mac80211/debugfs_key.c
-index a2ef95f16f11..1a25de4e7e78 100644
---- a/net/mac80211/debugfs_key.c
-+++ b/net/mac80211/debugfs_key.c
-@@ -342,9 +342,6 @@ void ieee80211_debugfs_key_add(struct ieee80211_key *key)
- 	key->debugfs.dir = debugfs_create_dir(buf,
- 					key->local->debugfs.keys);
+diff --git a/net/nfc/netlink.c b/net/nfc/netlink.c
+index 04a8e47..89d885d 100644
+--- a/net/nfc/netlink.c
++++ b/net/nfc/netlink.c
+@@ -923,7 +923,8 @@ static int nfc_genl_deactivate_target(struct sk_buff *skb,
+ 	u32 device_idx, target_idx;
+ 	int rc;
  
--	if (!key->debugfs.dir)
--		return;
--
- 	sta = key->sta;
- 	if (sta) {
- 		sprintf(buf, "../../netdev:%s/stations/%pM",
-diff --git a/net/mac80211/debugfs_netdev.c b/net/mac80211/debugfs_netdev.c
-index deb3faf08337..f6508cf67944 100644
---- a/net/mac80211/debugfs_netdev.c
-+++ b/net/mac80211/debugfs_netdev.c
-@@ -818,9 +818,8 @@ void ieee80211_debugfs_add_netdev(struct ieee80211_sub_if_data *sdata)
- 	sprintf(buf, "netdev:%s", sdata->name);
- 	sdata->vif.debugfs_dir = debugfs_create_dir(buf,
- 		sdata->local->hw.wiphy->debugfsdir);
--	if (sdata->vif.debugfs_dir)
--		sdata->debugfs.subdir_stations = debugfs_create_dir("stations",
--			sdata->vif.debugfs_dir);
-+	sdata->debugfs.subdir_stations = debugfs_create_dir("stations",
-+							sdata->vif.debugfs_dir);
- 	add_files(sdata);
- }
+-	if (!info->attrs[NFC_ATTR_DEVICE_INDEX])
++	if (!info->attrs[NFC_ATTR_DEVICE_INDEX] ||
++	    !info->attrs[NFC_ATTR_TARGET_INDEX])
+ 		return -EINVAL;
  
-@@ -845,8 +844,5 @@ void ieee80211_debugfs_rename_netdev(struct ieee80211_sub_if_data *sdata)
- 		return;
- 
- 	sprintf(buf, "netdev:%s", sdata->name);
--	if (!debugfs_rename(dir->d_parent, dir, dir->d_parent, buf))
--		sdata_err(sdata,
--			  "debugfs: failed to rename debugfs dir to %s\n",
--			  buf);
-+	debugfs_rename(dir->d_parent, dir, dir->d_parent, buf);
- }
-diff --git a/net/mac80211/debugfs_sta.c b/net/mac80211/debugfs_sta.c
-index 8e921281e0d5..b2542bb2814e 100644
---- a/net/mac80211/debugfs_sta.c
-+++ b/net/mac80211/debugfs_sta.c
-@@ -960,8 +960,6 @@ void ieee80211_sta_debugfs_add(struct sta_info *sta)
- 	 * dir might still be around.
- 	 */
- 	sta->debugfs_dir = debugfs_create_dir(mac, stations_dir);
--	if (!sta->debugfs_dir)
--		return;
- 
- 	DEBUGFS_ADD(flags);
- 	DEBUGFS_ADD(aid);
+ 	device_idx = nla_get_u32(info->attrs[NFC_ATTR_DEVICE_INDEX]);
 -- 
-2.22.0
+2.7.4
 
