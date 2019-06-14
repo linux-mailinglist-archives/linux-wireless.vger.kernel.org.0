@@ -2,127 +2,84 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 620B846580
-	for <lists+linux-wireless@lfdr.de>; Fri, 14 Jun 2019 19:17:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7E2AE46602
+	for <lists+linux-wireless@lfdr.de>; Fri, 14 Jun 2019 19:45:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726338AbfFNRRU (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 14 Jun 2019 13:17:20 -0400
-Received: from mail-yb1-f201.google.com ([209.85.219.201]:45090 "EHLO
-        mail-yb1-f201.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725837AbfFNRRT (ORCPT
+        id S1726598AbfFNRpo (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 14 Jun 2019 13:45:44 -0400
+Received: from mail-ot1-f65.google.com ([209.85.210.65]:45422 "EHLO
+        mail-ot1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726082AbfFNRpo (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 14 Jun 2019 13:17:19 -0400
-Received: by mail-yb1-f201.google.com with SMTP id y3so3391585ybg.12
-        for <linux-wireless@vger.kernel.org>; Fri, 14 Jun 2019 10:17:18 -0700 (PDT)
+        Fri, 14 Jun 2019 13:45:44 -0400
+Received: by mail-ot1-f65.google.com with SMTP id x21so3386551otq.12
+        for <linux-wireless@vger.kernel.org>; Fri, 14 Jun 2019 10:45:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20161025;
-        h=date:message-id:mime-version:subject:from:to:cc;
-        bh=PfqzR6OCJuShUbiIZxhM7dStAsUG2Yzxrzdg+ytHsmg=;
-        b=SdJx5Sno739AYIvhyoAQWdwlLaTV0qZ/Z8oxt8cXTHYNWosTV5yjnKAP5MXP4Q7zp6
-         DM7EC/z7zMR71UIi6pm2oe5mPZVGCApReiP2mmd22fHXYk8gpVinxY7T0/OewUrpRIP7
-         5kTOlYELQyNI9ZrZDdZDStoQt5s+y87UCMlVAIpbv2o4DqZSg9JTMggBGK6+G3eoTxfr
-         274X9YibUaw1b2NYWuRwMcE5v1cWAa3LQKWZ7GmBfipWWHTM54oKOKSaSxbBuYJn3nlx
-         tcfUlgc+OohLEv6JHJMljgg9ICqHAlKxo9HRrmsEcCVDEZcmwqx6FJXMxkEfI4DYs9BX
-         pIng==
+        d=gmail.com; s=20161025;
+        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
+         :cc;
+        bh=7YR1zzyIqEKcXCftNMQz50qO47JyXP/bQkNB0DilVjI=;
+        b=Cujw9M+NsrnHRJXpa6MLUd40N92CxtYdeJ6bSms4SgiwUS8nAGaYI6lTMsFta4RHK5
+         hgUHsqlsEC/vszgIbqLQ3GkP6r9Bxr/vZzofbeESS2J2gEWn3B7e9AaGiYjJ9cfuDjeZ
+         wob4Gx5o1Tig+XAe+0Cbe6rfk4N7Bk/91okdC0Q+rkS0M0+B9T8kqTVYNr3MJHDtcUFf
+         iQMUbUe8z/Kic6QQYEkQGp9BhaNXVbLULSIjZGUB+SGsk7nRHDpiIg3r0A6+sCC5sh0W
+         K/DYAGPOJzJu6zr9BvGiSWFt+dxi9iMM6trbNjyB6Y6p8PNm+d68AWVZrZgQwIHZ+JO6
+         zqPg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:message-id:mime-version:subject:from:to:cc;
-        bh=PfqzR6OCJuShUbiIZxhM7dStAsUG2Yzxrzdg+ytHsmg=;
-        b=GEzPT3vST2MxF+9razsSRUyZ4tNR+c4cFJmoGEuGG/1VTXfq5Q31qhoIfGJK9nx+09
-         7kGb7CZV06TpoMLsGTC2D3TrVIT/7p2TeSpqQIB4iUJx6zelw01E/BhMmn2W6M3lu1g3
-         QOrU/hqwNhlHdw0eddd7XXixpNp7MUT9GxbyK70eVjlKEDkq0FbtNk15WRiHBRvVsOd9
-         zQMP1LW+zKHIbscLkeRzaOyvzSNrZtZRMvhwDIV1Uye1S03D94ltZ2udiEMjE3NC03Mx
-         tVk3V9vkUvx/Pyb1oeS15bmGE76YwcrysNnnQcOU1hif6dGcD4QnrJ56njBleFSfHzdV
-         6sMA==
-X-Gm-Message-State: APjAAAV8sICs7Dy6rU22oBJjmcr1VQZTKVhcVNS7suIDAxYoKH5W32/6
-        e4SUSF0VTeyeTMSNAuKR2Pikg6fZJw==
-X-Google-Smtp-Source: APXvYqwLFAxUgSeBg3lvZMfRSmKuSjWUy8qirfzUU6CTl88j+9AZEYIsfuCvJz9VcPkMGE1FsynuM3i3DQ==
-X-Received: by 2002:a0d:da84:: with SMTP id c126mr11206949ywe.133.1560532637768;
- Fri, 14 Jun 2019 10:17:17 -0700 (PDT)
-Date:   Fri, 14 Jun 2019 10:17:13 -0700
-Message-Id: <20190614171713.89262-1-nhuck@google.com>
-Mime-Version: 1.0
-X-Mailer: git-send-email 2.22.0.rc2.383.gf4fbbf30c2-goog
-Subject: [PATCH] wl18xx: Fix Wunused-const-variable
-From:   Nathan Huckleberry <nhuck@google.com>
-To:     kvalo@codeaurora.org, davem@davemloft.net
-Cc:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        Nathan Huckleberry <nhuck@google.com>,
-        clang-built-linux@googlegroups.com
+        h=x-gm-message-state:mime-version:in-reply-to:references:from:date
+         :message-id:subject:to:cc;
+        bh=7YR1zzyIqEKcXCftNMQz50qO47JyXP/bQkNB0DilVjI=;
+        b=PnSNjNFHmXrtucKxO8xYR2uYER88gTSXdhK4FefxU1gqmsicdbUWRICTqh4o+gazlY
+         bWOSfakJrxX1U5dLS5sSG1371Atci0Iv8m4xW8kReAJSIVm9so/I6j2GxSvVdA3zqCwi
+         8uKIthL/gp6SHwMmm7SJjtY0ZnAeaXzZUfN8DN34FPJRCf0mneEdbTyStDreIjeTwfNp
+         XLrfXMgopyvIAxGTS1WKfTGuV7kzdb7/v115ZAQdF/hk1EEvq7paewRD27xPCLgFLg4x
+         fvAix7wMWGAF0SBRYpXD2HEcFbS8TLMje5/Dpqbu/KTEfUr9sHXN45Y/fwsxk1kd+K4/
+         +mUw==
+X-Gm-Message-State: APjAAAVIOmTpAZM+i09MnSRDjJ8kwdohLUV/bJgCQZZ7/lEZ5gLYQ18S
+        s0WDntQZx6PJZPJ324kHYV6zLiwXn7lqOoiub/pJSw==
+X-Google-Smtp-Source: APXvYqyTUB8uEm4wtg+UfgZFgwZynP6V2p/Osx8NDmHA7sxcnkH4dwu80bP68/IVSNz1/f3qlsV+pV50srPXbAzp+nw=
+X-Received: by 2002:a9d:5510:: with SMTP id l16mr522924oth.63.1560534343133;
+ Fri, 14 Jun 2019 10:45:43 -0700 (PDT)
+MIME-Version: 1.0
+Received: by 2002:a05:6830:2015:0:0:0:0 with HTTP; Fri, 14 Jun 2019 10:45:42
+ -0700 (PDT)
+In-Reply-To: <dc9039be42df8d241b14d4f673f3c472dc113991.camel@sipsolutions.net>
+References: <1557307533-5795-1-git-send-email-mpubbise@codeaurora.org>
+ <fd3addc01fc3f5362dba5771ee82659cf01c195b.camel@sipsolutions.net>
+ <c8484254-f4f7-9955-e3f8-8a423cc6c325@codeaurora.org> <CAKR_QV+dVx+LK1HyCo6CQZQ7ZX_u6ON0hEH5adNiJTB+XaP3WA@mail.gmail.com>
+ <dc9039be42df8d241b14d4f673f3c472dc113991.camel@sipsolutions.net>
+From:   Tom Psyborg <pozega.tomislav@gmail.com>
+Date:   Fri, 14 Jun 2019 19:45:42 +0200
+Message-ID: <CAKR_QV+5oY-5z4UB+HKV_57r5NneDme+TBg_c26h4C7Sy8R+UQ@mail.gmail.com>
+Subject: Re: [PATCH v3] {nl,mac}80211: allow 4addr AP operation on crypto
+ controlled devices
+To:     Johannes Berg <johannes@sipsolutions.net>
+Cc:     Manikanta Pubbisetty <mpubbise@codeaurora.org>,
+        linux-wireless@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Clang produces the following warning
+On 12/06/2019, Johannes Berg <johannes@sipsolutions.net> wrote:
+> On Thu, 2019-06-06 at 20:41 +0200, Tom Psyborg wrote:
+>>
+>> Applying this patch instead of v1 broke WDS operation between two
+>> Litebeam AC Gen2 devices:
+>
+> I'm confused, and not even sure which version I applied now.
+>
+> Manikanta, can you please check this and which version I have and which
+> changes I might need?
+>
+> Thanks,
+> Johannes
+>
+>
+>
 
-drivers/net/wireless/ti/wl18xx/main.c:1850:43: warning: unused variable
-'wl18xx_iface_ap_cl_limits' [-Wunused-const-variable] static const struct
-ieee80211_iface_limit wl18xx_iface_ap_cl_limits[] = { ^
-drivers/net/wireless/ti/wl18xx/main.c:1869:43: warning: unused variable
-'wl18xx_iface_ap_go_limits' [-Wunused-const-variable] static const struct
-ieee80211_iface_limit wl18xx_iface_ap_go_limits[] = { ^
-
-The commit that added these variables never used them. Removing them.
-
-Cc: clang-built-linux@googlegroups.com
-Link: https://github.com/ClangBuiltLinux/linux/issues/530
-Signed-off-by: Nathan Huckleberry <nhuck@google.com>
----
- drivers/net/wireless/ti/wl18xx/main.c | 38 ---------------------------
- 1 file changed, 38 deletions(-)
-
-diff --git a/drivers/net/wireless/ti/wl18xx/main.c b/drivers/net/wireless/ti/wl18xx/main.c
-index a5e0604d3009..0b3cf8477c6c 100644
---- a/drivers/net/wireless/ti/wl18xx/main.c
-+++ b/drivers/net/wireless/ti/wl18xx/main.c
-@@ -1847,44 +1847,6 @@ static const struct ieee80211_iface_limit wl18xx_iface_ap_limits[] = {
- 	},
- };
- 
--static const struct ieee80211_iface_limit wl18xx_iface_ap_cl_limits[] = {
--	{
--		.max = 1,
--		.types = BIT(NL80211_IFTYPE_STATION),
--	},
--	{
--		.max = 1,
--		.types = BIT(NL80211_IFTYPE_AP),
--	},
--	{
--		.max = 1,
--		.types = BIT(NL80211_IFTYPE_P2P_CLIENT),
--	},
--	{
--		.max = 1,
--		.types = BIT(NL80211_IFTYPE_P2P_DEVICE),
--	},
--};
--
--static const struct ieee80211_iface_limit wl18xx_iface_ap_go_limits[] = {
--	{
--		.max = 1,
--		.types = BIT(NL80211_IFTYPE_STATION),
--	},
--	{
--		.max = 1,
--		.types = BIT(NL80211_IFTYPE_AP),
--	},
--	{
--		.max = 1,
--		.types = BIT(NL80211_IFTYPE_P2P_GO),
--	},
--	{
--		.max = 1,
--		.types = BIT(NL80211_IFTYPE_P2P_DEVICE),
--	},
--};
--
- static const struct ieee80211_iface_combination
- wl18xx_iface_combinations[] = {
- 	{
--- 
-2.22.0.rc2.383.gf4fbbf30c2-goog
-
+Never got reply. So I checked and definitely wrong version is applied
+(v2 or v3). Try to reproduce this yourself, I've posted details here:
+https://forum.openwrt.org/t/wds-client-wont-stay-connected-prev-auth-not-valid-using-recent-snapshot-builds/38194/20?u=psyborg
