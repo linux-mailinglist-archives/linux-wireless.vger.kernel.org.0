@@ -2,36 +2,32 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 6F9F3467C5
-	for <lists+linux-wireless@lfdr.de>; Fri, 14 Jun 2019 20:44:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 95770467D3
+	for <lists+linux-wireless@lfdr.de>; Fri, 14 Jun 2019 20:47:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726255AbfFNSoG (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 14 Jun 2019 14:44:06 -0400
-Received: from s3.sipsolutions.net ([144.76.43.62]:48006 "EHLO
+        id S1725889AbfFNSq7 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 14 Jun 2019 14:46:59 -0400
+Received: from s3.sipsolutions.net ([144.76.43.62]:48038 "EHLO
         sipsolutions.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725889AbfFNSoG (ORCPT
+        with ESMTP id S1725809AbfFNSq7 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 14 Jun 2019 14:44:06 -0400
+        Fri, 14 Jun 2019 14:46:59 -0400
 Received: by sipsolutions.net with esmtpsa (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
         (Exim 4.92)
         (envelope-from <johannes@sipsolutions.net>)
-        id 1hbrB6-0000fy-Qa; Fri, 14 Jun 2019 20:43:56 +0200
-Message-ID: <309ba2702f6b553a3dd08262efe34c4cecc4e445.camel@sipsolutions.net>
-Subject: Re: [PATCH v3] {nl,mac}80211: allow 4addr AP operation on crypto
- controlled devices
+        id 1hbrDm-0000jX-4d; Fri, 14 Jun 2019 20:46:42 +0200
+Message-ID: <231c9afd2aaca99c89bc73954307a28a60e86d18.camel@sipsolutions.net>
+Subject: Re: [PATCH-v3 1/2] wireless: Support assoc-at-ms timer in sta-info
 From:   Johannes Berg <johannes@sipsolutions.net>
-To:     Tom Psyborg <pozega.tomislav@gmail.com>
-Cc:     Manikanta Pubbisetty <mpubbise@codeaurora.org>,
+To:     Ben Greear <greearb@candelatech.com>,
         linux-wireless@vger.kernel.org
-Date:   Fri, 14 Jun 2019 20:43:55 +0200
-In-Reply-To: <CAKR_QV+5oY-5z4UB+HKV_57r5NneDme+TBg_c26h4C7Sy8R+UQ@mail.gmail.com> (sfid-20190614_194548_687163_33C42843)
-References: <1557307533-5795-1-git-send-email-mpubbise@codeaurora.org>
-         <fd3addc01fc3f5362dba5771ee82659cf01c195b.camel@sipsolutions.net>
-         <c8484254-f4f7-9955-e3f8-8a423cc6c325@codeaurora.org>
-         <CAKR_QV+dVx+LK1HyCo6CQZQ7ZX_u6ON0hEH5adNiJTB+XaP3WA@mail.gmail.com>
-         <dc9039be42df8d241b14d4f673f3c472dc113991.camel@sipsolutions.net>
-         <CAKR_QV+5oY-5z4UB+HKV_57r5NneDme+TBg_c26h4C7Sy8R+UQ@mail.gmail.com>
-         (sfid-20190614_194548_687163_33C42843)
+Date:   Fri, 14 Jun 2019 20:46:40 +0200
+In-Reply-To: <7d606df7-bb8e-c454-1eaf-24fd454eab8e@candelatech.com>
+References: <20190415172123.6532-1-greearb@candelatech.com>
+         <21fa668485f4eb0a8056aac1797854f267d5f1e0.camel@sipsolutions.net>
+         <3ad69c55-2b88-a96b-d21e-99f4418466ee@candelatech.com>
+         <e8343919c6851e6b5a7905b708661870c4c88481.camel@sipsolutions.net>
+         <7d606df7-bb8e-c454-1eaf-24fd454eab8e@candelatech.com>
 Content-Type: text/plain; charset="UTF-8"
 X-Mailer: Evolution 3.28.5 (3.28.5-2.fc28) 
 Mime-Version: 1.0
@@ -41,22 +37,23 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Fri, 2019-06-14 at 19:45 +0200, Tom Psyborg wrote:
+On Fri, 2019-06-14 at 08:14 -0700, Ben Greear wrote:
 > 
-> Never got reply. So I checked and definitely wrong version is applied
-> (v2 or v3). 
+> 
+> So, maybe I return instead the elapsed time in the netlink API instead of a
+> timestamp.  I think that will give me the value that I am looking for,
+> and I can still print out the 'real' time in iw so any tools reading that
+> output and do some simple math and figure out the 'real' associated-at time.
 
-Why would that be wrong? I shouldn't apply v1 when v2 and v3 fix
-comments I had ...
+I don't think that's good. There's a delay between filling the message
+and then processing it in userspace. We had this in the scan code and
+learned that was full of races.
 
-> Try to reproduce this yourself, I've posted details here:
-> https://forum.openwrt.org/t/wds-client-wont-stay-connected-prev-auth-not-valid-using-recent-snapshot-builds/38194/20?u=psyborg
-
-I might even have the requisite hardware, but not the required time now,
-sorry.
-
-I'm also not convinced how this patch would affect *staying*
-connected... it should affect connecting to start with?
+The better thing is to use CLOCK_BOOTTIME nanoseconds, and then
+userspace can use clock_gettime() to get the current time etc. and then
+do whatever calculations it needs. If it wants to print the realtime
+timestamp, it could even calculate that (with some jitter) by doing
+clock_gettime() on both realtime and boottime clocks...
 
 johannes
 
