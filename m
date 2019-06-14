@@ -2,75 +2,86 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D718645FD4
-	for <lists+linux-wireless@lfdr.de>; Fri, 14 Jun 2019 16:01:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7564445FEB
+	for <lists+linux-wireless@lfdr.de>; Fri, 14 Jun 2019 16:03:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728537AbfFNOBE (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 14 Jun 2019 10:01:04 -0400
-Received: from s3.sipsolutions.net ([144.76.43.62]:42548 "EHLO
-        sipsolutions.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727922AbfFNOBE (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 14 Jun 2019 10:01:04 -0400
-Received: by sipsolutions.net with esmtpsa (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <johannes@sipsolutions.net>)
-        id 1hbmlL-0001i4-0t; Fri, 14 Jun 2019 16:01:03 +0200
-Message-ID: <6a9c7642a2fcca60658036c605438ff2ac982bd0.camel@sipsolutions.net>
-Subject: Re: [PATCH v2] Revert "cfg80211: fix processing world regdomain
- when non modular"
-From:   Johannes Berg <johannes@sipsolutions.net>
-To:     "Hodaszi, Robert" <Robert.Hodaszi@digi.com>
-Cc:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-Date:   Fri, 14 Jun 2019 16:01:00 +0200
-In-Reply-To: <32951d52-3f9d-aaee-fa07-75585c03edba@digi.com>
-References: <20190614131600.GA13897@a1-hr>
-         <ebab80c3f632f792373bfcace252c7a1bf65ce89.camel@sipsolutions.net>
-         <32951d52-3f9d-aaee-fa07-75585c03edba@digi.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Mailer: Evolution 3.28.5 (3.28.5-2.fc28) 
-Mime-Version: 1.0
-Content-Transfer-Encoding: 7bit
+        id S1728557AbfFNOCm (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 14 Jun 2019 10:02:42 -0400
+Received: from mail.kernel.org ([198.145.29.99]:50708 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1728034AbfFNOCm (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 14 Jun 2019 10:02:42 -0400
+Received: from localhost (83-86-89-107.cable.dynamic.v4.ziggo.nl [83.86.89.107])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id F10F42064A;
+        Fri, 14 Jun 2019 14:02:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1560520961;
+        bh=yuQRJdK0c0k8QDLCPmaaUBPA4Gh5iMSc87ydddzUjLY=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=Adj/ubhVrddpf3XNZqH7bla3F/OQLtlWktGpnu78fRXaEWJVclE8EAVB7iVcwuXIj
+         MgEu3GKKHjwm4kv6V7mrBTfmdB65iAPolSabTzDn8Y8MigqQqnxVgShMq6aUvnqaEX
+         cqT5x9DBfftx8QKc8qPay9S9idxZcSOh+UlLdp+0=
+Date:   Fri, 14 Jun 2019 16:02:39 +0200
+From:   Greg KH <gregkh@linuxfoundation.org>
+To:     Christoph Hellwig <hch@lst.de>
+Cc:     Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+        Maxime Ripard <maxime.ripard@bootlin.com>,
+        Sean Paul <sean@poorly.run>, David Airlie <airlied@linux.ie>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        Jani Nikula <jani.nikula@linux.intel.com>,
+        Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
+        Rodrigo Vivi <rodrigo.vivi@intel.com>,
+        Ian Abbott <abbotti@mev.co.uk>,
+        H Hartley Sweeten <hsweeten@visionengravers.com>,
+        devel@driverdev.osuosl.org, linux-s390@vger.kernel.org,
+        Intel Linux Wireless <linuxwifi@intel.com>,
+        linux-rdma@vger.kernel.org, netdev@vger.kernel.org,
+        intel-gfx@lists.freedesktop.org, linux-wireless@vger.kernel.org,
+        linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        linux-mm@kvack.org, iommu@lists.linux-foundation.org,
+        "moderated list:ARM PORT" <linux-arm-kernel@lists.infradead.org>,
+        linux-media@vger.kernel.org
+Subject: Re: [PATCH 12/16] staging/comedi: mark as broken
+Message-ID: <20190614140239.GA7234@kroah.com>
+References: <20190614134726.3827-1-hch@lst.de>
+ <20190614134726.3827-13-hch@lst.de>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20190614134726.3827-13-hch@lst.de>
+User-Agent: Mutt/1.12.0 (2019-05-25)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Fri, 2019-06-14 at 13:58 +0000, Hodaszi, Robert wrote:
+On Fri, Jun 14, 2019 at 03:47:22PM +0200, Christoph Hellwig wrote:
+> comedi_buf.c abuse the DMA API in gravely broken ways, as it assumes it
+> can call virt_to_page on the result, and the just remap it as uncached
+> using vmap.  Disable the driver until this API abuse has been fixed.
 > 
-> I didn't just resend that. I just realized, accidentally I forgot to fix 
-> the debug message printing function, that define doesn't exist anymore. 
-> Sorry for the confusion!
-
-Oops. I looked too superficially then and didn't even see the
-difference, sorry.
-
-I guess that's why Kalle always says you should have a patch changelog
-:-)
-
-> Under "original issue", you mean the issue, which commit 
-> 96cce12ff6e0bc9d9fcb2235e08b7fc150f96fd2 (cfg80211: fix processing world 
-> regdomain when non modular) supposed to fix? 
-
-Yes.
-
-> That still won't work, but 
-> that didn't work neither before I reverted the patch, because crda call 
-> timeout will just drop the last packet. Also, as it re-processed the 
-> last request, not just resent it, it caused undesired states. Like when 
-> I used 2 WiFi modules with US regulatory domains, after enumeration, my 
-> global regulator domain was set to "Country 98".
+> Signed-off-by: Christoph Hellwig <hch@lst.de>
+> ---
+>  drivers/staging/comedi/Kconfig | 1 +
+>  1 file changed, 1 insertion(+)
 > 
-> To fix my issue, why I reverted the patch, and also fix the issue the 
-> reverted commit supposed to fix, I could imagine something like this. 
-> But I'm not sure, it doesn't have any side effect:
+> diff --git a/drivers/staging/comedi/Kconfig b/drivers/staging/comedi/Kconfig
+> index 049b659fa6ad..e7c021d76cfa 100644
+> --- a/drivers/staging/comedi/Kconfig
+> +++ b/drivers/staging/comedi/Kconfig
+> @@ -1,6 +1,7 @@
+>  # SPDX-License-Identifier: GPL-2.0
+>  config COMEDI
+>  	tristate "Data acquisition support (comedi)"
+> +	depends on BROKEN
 
-[snip]
+Um, that's a huge sledgehammer.
 
-Ok, thanks. I guess I'll have to look at this in more detail.
+Perhaps a hint as to how we can fix this up?  This is the first time
+I've heard of the comedi code not handling dma properly.
 
-You don't happen to have a way to reproduce either issue with a hwsim
-test case?
+thanks,
 
-johannes
-
+greg k-h
