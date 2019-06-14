@@ -2,98 +2,114 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E0B6745B13
-	for <lists+linux-wireless@lfdr.de>; Fri, 14 Jun 2019 13:04:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BECAB45B3C
+	for <lists+linux-wireless@lfdr.de>; Fri, 14 Jun 2019 13:14:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727164AbfFNLEt (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 14 Jun 2019 07:04:49 -0400
-Received: from mx1.redhat.com ([209.132.183.28]:31807 "EHLO mx1.redhat.com"
+        id S1727183AbfFNLOT (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 14 Jun 2019 07:14:19 -0400
+Received: from mx1.redhat.com ([209.132.183.28]:32944 "EHLO mx1.redhat.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727083AbfFNLEs (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 14 Jun 2019 07:04:48 -0400
-Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.phx2.redhat.com [10.5.11.14])
+        id S1727164AbfFNLOS (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 14 Jun 2019 07:14:18 -0400
+Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.phx2.redhat.com [10.5.11.23])
         (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
         (No client certificate requested)
-        by mx1.redhat.com (Postfix) with ESMTPS id 9F289309264F;
-        Fri, 14 Jun 2019 11:04:48 +0000 (UTC)
+        by mx1.redhat.com (Postfix) with ESMTPS id 7FBEB10C94;
+        Fri, 14 Jun 2019 11:14:18 +0000 (UTC)
 Received: from localhost (ovpn-204-80.brq.redhat.com [10.40.204.80])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 3EB0317CFE;
-        Fri, 14 Jun 2019 11:04:43 +0000 (UTC)
-Date:   Fri, 14 Jun 2019 13:04:43 +0200
+        by smtp.corp.redhat.com (Postfix) with ESMTP id 1D1F81A8F1;
+        Fri, 14 Jun 2019 11:14:15 +0000 (UTC)
+Date:   Fri, 14 Jun 2019 13:14:15 +0200
 From:   Stanislaw Gruszka <sgruszka@redhat.com>
 To:     Lorenzo Bianconi <lorenzo.bianconi@redhat.com>
 Cc:     Lorenzo Bianconi <lorenzo@kernel.org>, kvalo@codeaurora.org,
-        linux-wireless@vger.kernel.org, nbd@nbd.name
-Subject: Re: [PATCH v3 wireless-drivers 3/3] mt76: usb: do not always copy
- the first part of received frames
-Message-ID: <20190614110442.GA17298@redhat.com>
+        linux-wireless@vger.kernel.org, nbd@nbd.name,
+        johannes@sipsolutions.net
+Subject: Re: [PATCH v3 wireless-drivers 1/3] mt76: usb: fix rx A-MSDU support
+Message-ID: <20190614111414.GB17298@redhat.com>
 References: <cover.1560461404.git.lorenzo@kernel.org>
- <1a9566c0a41ad0d940487a9d3f0008993c075ef2.1560461404.git.lorenzo@kernel.org>
- <20190614075303.GB3395@redhat.com>
- <20190614102247.GB2669@localhost.localdomain>
+ <66fc02e45fb5ce0d6176395b5ac43acbd53b3e66.1560461404.git.lorenzo@kernel.org>
+ <20190614072449.GA3395@redhat.com>
+ <20190614101115.GA2669@localhost.localdomain>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20190614102247.GB2669@localhost.localdomain>
+In-Reply-To: <20190614101115.GA2669@localhost.localdomain>
 User-Agent: Mutt/1.11.3 (2019-02-01)
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.14
-X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16 (mx1.redhat.com [10.5.110.43]); Fri, 14 Jun 2019 11:04:48 +0000 (UTC)
+X-Scanned-By: MIMEDefang 2.84 on 10.5.11.23
+X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16 (mx1.redhat.com [10.5.110.38]); Fri, 14 Jun 2019 11:14:18 +0000 (UTC)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Fri, Jun 14, 2019 at 12:22:48PM +0200, Lorenzo Bianconi wrote:
-> > On Thu, Jun 13, 2019 at 11:43:13PM +0200, Lorenzo Bianconi wrote:
-> > > Set usb buffer size taking into account skb_shared_info in order to
-> > > not always copy the first part of received frames if A-MSDU is enabled
-> > > for SG capable devices. Moreover align usb buffer size to max_ep
-> > > boundaries and set buf_size to PAGE_SIZE even for sg case
-> > 
-> > I think this should not be applied to wirless-drivers, only first patch
-> > that fix the bug and optimizations should be done in -next.
-> 
-> ack, right. I think patch 2/3 and 3/3 can go directly in Felix's tree
-> 
-> > 
-> > > +	int i, data_size;
+On Fri, Jun 14, 2019 at 12:11:17PM +0200, Lorenzo Bianconi wrote:
+> > On Thu, Jun 13, 2019 at 11:43:11PM +0200, Lorenzo Bianconi wrote:
+> > > Commit f8f527b16db5 ("mt76: usb: use EP max packet aligned buffer sizes
+> > > for rx") breaks A-MSDU support. When A-MSDU is enable the device can
+> > > receive frames up to q->buf_size but they will be discarded in
+> > > mt76u_process_rx_entry since there is no enough room for
+> > > skb_shared_info. Fix the issue reallocating the skb and copying in the
+> > > linear area the first 128B of the received frames and in the frag_list
+> > > the remaining part.
+> > > 
+> > > Fixes: f8f527b16db5 ("mt76: usb: use EP max packet aligned buffer sizes for rx")
+> > > Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+> > > ---
+> > >  drivers/net/wireless/mediatek/mt76/mt76.h |  1 +
+> > >  drivers/net/wireless/mediatek/mt76/usb.c  | 49 ++++++++++++++++++-----
+> > >  2 files changed, 41 insertions(+), 9 deletions(-)
+> > > 
+> > > diff --git a/drivers/net/wireless/mediatek/mt76/mt76.h b/drivers/net/wireless/mediatek/mt76/mt76.h
+> > > index 8ecbf81a906f..889b76deb703 100644
+> > > --- a/drivers/net/wireless/mediatek/mt76/mt76.h
+> > > +++ b/drivers/net/wireless/mediatek/mt76/mt76.h
+> > > @@ -30,6 +30,7 @@
+> > >  #define MT_TX_RING_SIZE     256
+> > >  #define MT_MCU_RING_SIZE    32
+> > >  #define MT_RX_BUF_SIZE      2048
+> > > +#define MT_SKB_HEAD_LEN     128
 > > >  
-> > > +	data_size = rounddown(SKB_WITH_OVERHEAD(q->buf_size),
-> > > +			      dev->usb.in_ep[MT_EP_IN_PKT_RX].max_packet);
-> > >  	for (i = 0; i < nsgs; i++) {
-> > >  		struct page *page;
-> > >  		void *data;
-> > > @@ -302,7 +304,7 @@ mt76u_fill_rx_sg(struct mt76_dev *dev, struct mt76_queue *q, struct urb *urb,
+> > >  struct mt76_dev;
+> > >  struct mt76_wcid;
+> > > diff --git a/drivers/net/wireless/mediatek/mt76/usb.c b/drivers/net/wireless/mediatek/mt76/usb.c
+> > > index bbaa1365bbda..12d60d31cb51 100644
+> > > --- a/drivers/net/wireless/mediatek/mt76/usb.c
+> > > +++ b/drivers/net/wireless/mediatek/mt76/usb.c
+> > > @@ -429,6 +429,45 @@ static int mt76u_get_rx_entry_len(u8 *data, u32 data_len)
+> > >  	return dma_len;
+> > >  }
 > > >  
-> > >  		page = virt_to_head_page(data);
-> > >  		offset = data - page_address(page);
-> > > -		sg_set_page(&urb->sg[i], page, q->buf_size, offset);
-> > > +		sg_set_page(&urb->sg[i], page, data_size, offset);
-> > <snip>
-> > > -	q->buf_size = dev->usb.sg_en ? MT_RX_BUF_SIZE : PAGE_SIZE;
-> > >  	q->ndesc = MT_NUM_RX_ENTRIES;
-> > > +	q->buf_size = PAGE_SIZE;
+> > > +static struct sk_buff *
+> > > +mt76u_build_rx_skb(u8 *data, int len, int buf_size)
+> > > +{
+> > > +	struct sk_buff *skb;
 > > > +
+> > > +	if (SKB_WITH_OVERHEAD(buf_size) < MT_DMA_HDR_LEN + len) {
+> > > +		struct page *page;
+> > > +		int offset;
+> > > +
+> > > +		/* slow path, not enough space for data and
+> > > +		 * skb_shared_info
+> > > +		 */
+> > > +		skb = alloc_skb(MT_SKB_HEAD_LEN, GFP_ATOMIC);
+> > > +		if (!skb)
+> > > +			return NULL;
+> > > +
+> > > +		skb_put_data(skb, data + MT_DMA_HDR_LEN, MT_SKB_HEAD_LEN);
 > > 
-> > This should be associated with decrease of MT_SG_MAX_SIZE to value that
-> > is actually needed and currently this is 2 for 4k AMSDU.
+> > I looked how rx amsdu is processed in mac80211 and it is decomposed and
+> > copied into newly allocated individual skb's, see ieee80211_amsdu_to_8023s()
+> > 
+> > So copy L3 & L4 headers doesn't do anything good here, actually seems to
+> > be better to have them in frag as __ieee80211_amsdu_copy_frag() do some
+> > magic to avid copy.
 > 
-> MT_SG_MAX_SIZE is used even on tx side and I do not think we will end up with a
-> huge difference here
+> Looking at __ieee80211_amsdu_copy() now I got why other drivers copy hdrlen +
+> 8, thx :)
+> In our case reuse_frag is true in __ieee80211_amsdu_copy, so we will end up
 
-So use different value as argument for mt76u_fill_rx_sg() in
-mt76u_rx_urb_alloc(). After changing buf_size to PAGE_SIZE we will
-allocate 8 pages per rx queue entry, but only 2 pages will be used
-(with data_size change, 1 without data_size change). Or I'm wrong?
-
-> > However I don't think allocating 2 pages to avoid ieee80211 header and SNAP
-> > copy is worth to do. For me best approach would be allocate 1 page for
-> > 4k AMSDU, 2 for 8k and 3 for 12k (still using sg, but without data_size
-> > change to avoid 32B copying).
-> 
-> From my point of view it is better to avoid copying if it is possible. Are you
-> sure there is no difference?
-
-I do not understand what you mean by difference here.
+I don't think reuse_frag is true in our case since skb->head_frag is
+not set when we use alloc_skb(). 
 
 Stanislaw
