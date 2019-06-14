@@ -2,202 +2,165 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 74924458D7
-	for <lists+linux-wireless@lfdr.de>; Fri, 14 Jun 2019 11:36:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 813ED45A15
+	for <lists+linux-wireless@lfdr.de>; Fri, 14 Jun 2019 12:11:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726831AbfFNJgJ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 14 Jun 2019 05:36:09 -0400
-Received: from mail-wr1-f67.google.com ([209.85.221.67]:37910 "EHLO
+        id S1727385AbfFNKLW (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 14 Jun 2019 06:11:22 -0400
+Received: from mail-wr1-f67.google.com ([209.85.221.67]:33377 "EHLO
         mail-wr1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726479AbfFNJgI (ORCPT
+        with ESMTP id S1726798AbfFNKLW (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 14 Jun 2019 05:36:08 -0400
-Received: by mail-wr1-f67.google.com with SMTP id d18so1781410wrs.5
-        for <linux-wireless@vger.kernel.org>; Fri, 14 Jun 2019 02:36:06 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=1tGskau943T386kyJZ4GTkvXE83xs6wkbIyb/EV2Rpk=;
-        b=Y/CNx4L9VyVGfMTAWiKtKaJ81EJxZFYOlWZJ3RtsxYoKVeNFQt7lIQYQfdvxkDSVvO
-         ChOqSLc6wManoqjid9a86zGIIdKkGPIPcyg/oIf81fM5DokeCm3cP9R4eQC3bv1+W0NS
-         jTl0l23W5MXOqujBSEb9zOJX4fd/IxY+GWi/dY5y7SU9RPtLQFYDx5S7DRmnR+s3PWzl
-         PVa4B+45zS0Y9ifdm2yhDL1wr5m96QeDQuNdExqdwYDomNfZzpiNHVKSr0aW2S440jbS
-         Od6B1vXUzoJPvYPCgng1MpisQ7wJ0Ki3Cliu4GZ1DTqQqe//9yASEIeL6xmP6x8RbOVd
-         Ot3A==
+        Fri, 14 Jun 2019 06:11:22 -0400
+Received: by mail-wr1-f67.google.com with SMTP id n9so1927286wru.0
+        for <linux-wireless@vger.kernel.org>; Fri, 14 Jun 2019 03:11:21 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=1tGskau943T386kyJZ4GTkvXE83xs6wkbIyb/EV2Rpk=;
-        b=Tuo0hbaikSD77LeH0i4VLqJRjC2vbbRfQuzhpK+W6ufLLjb/wRAqdCb9d3g3/k8TS7
-         BkvgoVknQZQ7X4hbAU9gx/ZIl+ZLkYf9IQcXdrw3r2idOL245a2eqXTVAKFD1feWD5oW
-         PU2ktxM+EPordw00OfhvD6k920iKyZ+DrRa+KXfu3Is9fLLfgYMySLYU+qO3EraOd4Bu
-         JNkqQvxMhfjriAeKobxWixvchOtgpYdsL4aSGpuwn9LKkbitFO4bF8RhmC+zMqQH1Fdo
-         +kOy7IWiaE1lMc2hP56fnZ/TDiToEUlRyWDXIk9ov9pm+5DXujYnf2iG4cFHiYHjUC8l
-         J2jA==
-X-Gm-Message-State: APjAAAUmr0jQ9dB5AeJD2TusVpFGm9qBAOY3hpYRlSt/ZhmJ4hExrDYy
-        MpoNC1pIeJQafET16KsFDWdIWFChYSkYsg==
-X-Google-Smtp-Source: APXvYqwyDSumK+XyFiqwW8Qv/hrRrcOr3E3Q/uHc65nZw1hG/n0VN2Xi20DbXVRgm6yP++3J911mbA==
-X-Received: by 2002:adf:afde:: with SMTP id y30mr2274806wrd.197.1560504966014;
-        Fri, 14 Jun 2019 02:36:06 -0700 (PDT)
-Received: from sudo.home ([2a01:cb1d:112:6f00:8d0e:a5b1:c005:e3b5])
-        by smtp.gmail.com with ESMTPSA id 11sm2965086wmd.23.2019.06.14.02.36.05
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Fri, 14 Jun 2019 02:36:05 -0700 (PDT)
-From:   Ard Biesheuvel <ard.biesheuvel@linaro.org>
-To:     linux-wireless@vger.kernel.org
-Cc:     kvalo@codeaurora.org, linux-crypto@vger.kernel.org,
-        ebiggers@kernel.org, herbert@gondor.apana.org.au,
-        Ard Biesheuvel <ard.biesheuvel@linaro.org>
-Subject: [PATCH] wireless: airo: switch to skcipher interface
-Date:   Fri, 14 Jun 2019 11:36:03 +0200
-Message-Id: <20190614093603.22771-1-ard.biesheuvel@linaro.org>
-X-Mailer: git-send-email 2.20.1
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=Dd+8bqdPFkLJjWCC0g/EBpCO9m/Q7kHy0TAL2uVEsPQ=;
+        b=eHrkDy/iQDkd75GRQ89nKoNyl1pYML9j8T/ld6PUnc0RJf35iLp7Vn4TvBzP7JU840
+         LqFf+EnOhrvLpTIpFpUkRQfVwml8mgVSpcUURlSCnIZXbqWPQiVzMU2pQF6mGua6xgZn
+         k++SNZP4sUa+s7CdeLjvF2J1E2/8NbGN+JySN/ZFGQaUjvushM2ZbOfy2Yo+H8n3zrHR
+         DKJjZx6t2EQMzaGVJKifP0NhJmkyWw9w7qoiti0pt7OTDg+DU2Jhw257l9NGyvApDYOZ
+         xyRPPdeDgzPkcMV2df88/arnhrgN52qzz//8ZdTVT42lrSVC7X69lKe4Xk4dO2/F1/X7
+         tPew==
+X-Gm-Message-State: APjAAAV9mJghE3vAvvL8RnBflBhiTPpGysyzyXvbsqQRdj/Fa0qj/j5m
+        P7+//Oknbr8nTRgcWnjnk96SYg==
+X-Google-Smtp-Source: APXvYqwcbhReD2W1BWoUeYLRVSK7IuMdlVft/iIsRvI/aPmjOxD3EZw7c5w6z458uiapBSSbxu5FSw==
+X-Received: by 2002:a5d:5302:: with SMTP id e2mr48958562wrv.347.1560507080406;
+        Fri, 14 Jun 2019 03:11:20 -0700 (PDT)
+Received: from localhost.localdomain (nat-pool-mxp-t.redhat.com. [149.6.153.186])
+        by smtp.gmail.com with ESMTPSA id d3sm5365836wrf.87.2019.06.14.03.11.19
+        (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
+        Fri, 14 Jun 2019 03:11:19 -0700 (PDT)
+Date:   Fri, 14 Jun 2019 12:11:17 +0200
+From:   Lorenzo Bianconi <lorenzo.bianconi@redhat.com>
+To:     Stanislaw Gruszka <sgruszka@redhat.com>
+Cc:     Lorenzo Bianconi <lorenzo@kernel.org>, kvalo@codeaurora.org,
+        linux-wireless@vger.kernel.org, nbd@nbd.name,
+        johannes@sipsolutions.net
+Subject: Re: [PATCH v3 wireless-drivers 1/3] mt76: usb: fix rx A-MSDU support
+Message-ID: <20190614101115.GA2669@localhost.localdomain>
+References: <cover.1560461404.git.lorenzo@kernel.org>
+ <66fc02e45fb5ce0d6176395b5ac43acbd53b3e66.1560461404.git.lorenzo@kernel.org>
+ <20190614072449.GA3395@redhat.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="YZ5djTAD1cGYuMQK"
+Content-Disposition: inline
+In-Reply-To: <20190614072449.GA3395@redhat.com>
+User-Agent: Mutt/1.11.4 (2019-03-13)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-The AIRO driver applies a ctr(aes) on a buffer of considerable size
-(2400 bytes), and instead of invoking the crypto API to handle this
-in its entirety, it open codes the counter manipulation and invokes
-the AES block cipher directly.
 
-Let's fix this, by switching to the sync skcipher API instead.
+--YZ5djTAD1cGYuMQK
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Signed-off-by: Ard Biesheuvel <ard.biesheuvel@linaro.org>
----
-NOTE: build tested only, since I don't have the hardware
+> On Thu, Jun 13, 2019 at 11:43:11PM +0200, Lorenzo Bianconi wrote:
+> > Commit f8f527b16db5 ("mt76: usb: use EP max packet aligned buffer sizes
+> > for rx") breaks A-MSDU support. When A-MSDU is enable the device can
+> > receive frames up to q->buf_size but they will be discarded in
+> > mt76u_process_rx_entry since there is no enough room for
+> > skb_shared_info. Fix the issue reallocating the skb and copying in the
+> > linear area the first 128B of the received frames and in the frag_list
+> > the remaining part.
+> >=20
+> > Fixes: f8f527b16db5 ("mt76: usb: use EP max packet aligned buffer sizes=
+ for rx")
+> > Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+> > ---
+> >  drivers/net/wireless/mediatek/mt76/mt76.h |  1 +
+> >  drivers/net/wireless/mediatek/mt76/usb.c  | 49 ++++++++++++++++++-----
+> >  2 files changed, 41 insertions(+), 9 deletions(-)
+> >=20
+> > diff --git a/drivers/net/wireless/mediatek/mt76/mt76.h b/drivers/net/wi=
+reless/mediatek/mt76/mt76.h
+> > index 8ecbf81a906f..889b76deb703 100644
+> > --- a/drivers/net/wireless/mediatek/mt76/mt76.h
+> > +++ b/drivers/net/wireless/mediatek/mt76/mt76.h
+> > @@ -30,6 +30,7 @@
+> >  #define MT_TX_RING_SIZE     256
+> >  #define MT_MCU_RING_SIZE    32
+> >  #define MT_RX_BUF_SIZE      2048
+> > +#define MT_SKB_HEAD_LEN     128
+> > =20
+> >  struct mt76_dev;
+> >  struct mt76_wcid;
+> > diff --git a/drivers/net/wireless/mediatek/mt76/usb.c b/drivers/net/wir=
+eless/mediatek/mt76/usb.c
+> > index bbaa1365bbda..12d60d31cb51 100644
+> > --- a/drivers/net/wireless/mediatek/mt76/usb.c
+> > +++ b/drivers/net/wireless/mediatek/mt76/usb.c
+> > @@ -429,6 +429,45 @@ static int mt76u_get_rx_entry_len(u8 *data, u32 da=
+ta_len)
+> >  	return dma_len;
+> >  }
+> > =20
+> > +static struct sk_buff *
+> > +mt76u_build_rx_skb(u8 *data, int len, int buf_size)
+> > +{
+> > +	struct sk_buff *skb;
+> > +
+> > +	if (SKB_WITH_OVERHEAD(buf_size) < MT_DMA_HDR_LEN + len) {
+> > +		struct page *page;
+> > +		int offset;
+> > +
+> > +		/* slow path, not enough space for data and
+> > +		 * skb_shared_info
+> > +		 */
+> > +		skb =3D alloc_skb(MT_SKB_HEAD_LEN, GFP_ATOMIC);
+> > +		if (!skb)
+> > +			return NULL;
+> > +
+> > +		skb_put_data(skb, data + MT_DMA_HDR_LEN, MT_SKB_HEAD_LEN);
+>=20
+> I looked how rx amsdu is processed in mac80211 and it is decomposed and
+> copied into newly allocated individual skb's, see ieee80211_amsdu_to_8023=
+s()
+>=20
+> So copy L3 & L4 headers doesn't do anything good here, actually seems to
+> be better to have them in frag as __ieee80211_amsdu_copy_frag() do some
+> magic to avid copy.
 
- drivers/net/wireless/cisco/airo.c | 57 ++++++++++----------
- 1 file changed, 27 insertions(+), 30 deletions(-)
+Looking at __ieee80211_amsdu_copy() now I got why other drivers copy hdrlen=
+ +
+8, thx :)
+In our case reuse_frag is true in __ieee80211_amsdu_copy, so we will end up
+copying 32B + ether_len. Anyway I think 32 is a little bit too low and we c=
+ould get
+better performances increasing it a little bit.
+A typical use case (e.g IPv6 + TCP):
 
-diff --git a/drivers/net/wireless/cisco/airo.c b/drivers/net/wireless/cisco/airo.c
-index 3f5a14112c6b..2d29ad10505b 100644
---- a/drivers/net/wireless/cisco/airo.c
-+++ b/drivers/net/wireless/cisco/airo.c
-@@ -49,6 +49,9 @@
- #include <linux/kthread.h>
- #include <linux/freezer.h>
- 
-+#include <crypto/aes.h>
-+#include <crypto/skcipher.h>
-+
- #include <net/cfg80211.h>
- #include <net/iw_handler.h>
- 
-@@ -951,7 +954,7 @@ typedef struct {
- } mic_statistics;
- 
- typedef struct {
--	u32 coeff[((EMMH32_MSGLEN_MAX)+3)>>2];
-+	__be32 coeff[((EMMH32_MSGLEN_MAX)+3)>>2];
- 	u64 accum;	// accumulated mic, reduced to u32 in final()
- 	int position;	// current position (byte offset) in message
- 	union {
-@@ -1216,7 +1219,7 @@ struct airo_info {
- 	struct iw_spy_data	spy_data;
- 	struct iw_public_data	wireless_data;
- 	/* MIC stuff */
--	struct crypto_cipher	*tfm;
-+	struct crypto_sync_skcipher	*tfm;
- 	mic_module		mod[2];
- 	mic_statistics		micstats;
- 	HostRxDesc rxfids[MPI_MAX_FIDS]; // rx/tx/config MPI350 descriptors
-@@ -1291,14 +1294,14 @@ static int flashrestart(struct airo_info *ai,struct net_device *dev);
- static int RxSeqValid (struct airo_info *ai,miccntx *context,int mcast,u32 micSeq);
- static void MoveWindow(miccntx *context, u32 micSeq);
- static void emmh32_setseed(emmh32_context *context, u8 *pkey, int keylen,
--			   struct crypto_cipher *tfm);
-+			   struct crypto_sync_skcipher *tfm);
- static void emmh32_init(emmh32_context *context);
- static void emmh32_update(emmh32_context *context, u8 *pOctets, int len);
- static void emmh32_final(emmh32_context *context, u8 digest[4]);
- static int flashpchar(struct airo_info *ai,int byte,int dwelltime);
- 
- static void age_mic_context(miccntx *cur, miccntx *old, u8 *key, int key_len,
--			    struct crypto_cipher *tfm)
-+			    struct crypto_sync_skcipher *tfm)
- {
- 	/* If the current MIC context is valid and its key is the same as
- 	 * the MIC register, there's nothing to do.
-@@ -1359,7 +1362,7 @@ static int micsetup(struct airo_info *ai) {
- 	int i;
- 
- 	if (ai->tfm == NULL)
--		ai->tfm = crypto_alloc_cipher("aes", 0, 0);
-+		ai->tfm = crypto_alloc_sync_skcipher("ctr(aes)", 0, 0);
- 
-         if (IS_ERR(ai->tfm)) {
-                 airo_print_err(ai->dev->name, "failed to load transform for AES");
-@@ -1624,37 +1627,31 @@ static void MoveWindow(miccntx *context, u32 micSeq)
- 
- /* mic accumulate */
- #define MIC_ACCUM(val)	\
--	context->accum += (u64)(val) * context->coeff[coeff_position++];
--
--static unsigned char aes_counter[16];
-+	context->accum += (u64)(val) * be32_to_cpu(context->coeff[coeff_position++]);
- 
- /* expand the key to fill the MMH coefficient array */
- static void emmh32_setseed(emmh32_context *context, u8 *pkey, int keylen,
--			   struct crypto_cipher *tfm)
-+			   struct crypto_sync_skcipher *tfm)
- {
-   /* take the keying material, expand if necessary, truncate at 16-bytes */
-   /* run through AES counter mode to generate context->coeff[] */
-   
--	int i,j;
--	u32 counter;
--	u8 *cipher, plain[16];
--
--	crypto_cipher_setkey(tfm, pkey, 16);
--	counter = 0;
--	for (i = 0; i < ARRAY_SIZE(context->coeff); ) {
--		aes_counter[15] = (u8)(counter >> 0);
--		aes_counter[14] = (u8)(counter >> 8);
--		aes_counter[13] = (u8)(counter >> 16);
--		aes_counter[12] = (u8)(counter >> 24);
--		counter++;
--		memcpy (plain, aes_counter, 16);
--		crypto_cipher_encrypt_one(tfm, plain, plain);
--		cipher = plain;
--		for (j = 0; (j < 16) && (i < ARRAY_SIZE(context->coeff)); ) {
--			context->coeff[i++] = ntohl(*(__be32 *)&cipher[j]);
--			j += 4;
--		}
--	}
-+	SYNC_SKCIPHER_REQUEST_ON_STACK(req, tfm);
-+	struct scatterlist dst, src;
-+	u8 iv[AES_BLOCK_SIZE] = {};
-+	int ret;
-+
-+	crypto_sync_skcipher_setkey(tfm, pkey, 16);
-+
-+	sg_init_one(&dst, context->coeff, sizeof(context->coeff));
-+	sg_init_one(&src, page_address(ZERO_PAGE(0)), sizeof(context->coeff));
-+
-+	skcipher_request_set_sync_tfm(req, tfm);
-+	skcipher_request_set_callback(req, 0, NULL, NULL);
-+	skcipher_request_set_crypt(req, &src, &dst, sizeof(context->coeff), iv);
-+
-+	ret = crypto_skcipher_encrypt(req);
-+	WARN_ON_ONCE(ret);
- }
- 
- /* prepare for calculation of a new mic */
-@@ -2415,7 +2412,7 @@ void stop_airo_card( struct net_device *dev, int freeres )
- 				ai->shared, ai->shared_dma);
- 		}
-         }
--	crypto_free_cipher(ai->tfm);
-+	crypto_free_sync_skcipher(ai->tfm);
- 	del_airo_dev(ai);
- 	free_netdev( dev );
- }
--- 
-2.20.1
+IPv6 =3D 40B, TCP =3D 32B --> so 72B..I guess 128B is a good value :)
+@Felix, Johannes: what do you think?
 
+Regarding the patch I guess let's apply it as it is in order to fix the pen=
+ding
+issue and then we will figure out how to proceed (copy hdr_len + 3 or incre=
+ase
+the value in __ieee80211_amsdu_copy)
+
+Regards,
+Lorenzo
+
+>=20
+> Stanislaw
+
+--YZ5djTAD1cGYuMQK
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYIAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCXQNywQAKCRA6cBh0uS2t
+rNzZAPsFH8rrQqIxfBKmdHCQ01bIslM5qv4T19nhY6Xkky0EDQD9HoHe4wLq/zOc
+IfzgZmvp9wh+OJrfnK5zZhuM+yna2wo=
+=EUQJ
+-----END PGP SIGNATURE-----
+
+--YZ5djTAD1cGYuMQK--
