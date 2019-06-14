@@ -2,76 +2,101 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A5B1446B64
-	for <lists+linux-wireless@lfdr.de>; Fri, 14 Jun 2019 22:57:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D7A1B46B9A
+	for <lists+linux-wireless@lfdr.de>; Fri, 14 Jun 2019 23:14:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726105AbfFNU5t (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 14 Jun 2019 16:57:49 -0400
-Received: from mail-pl1-f194.google.com ([209.85.214.194]:34023 "EHLO
-        mail-pl1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726940AbfFNU5o (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 14 Jun 2019 16:57:44 -0400
-Received: by mail-pl1-f194.google.com with SMTP id i2so1482979plt.1
-        for <linux-wireless@vger.kernel.org>; Fri, 14 Jun 2019 13:57:43 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=Crq0nDZF9tOeX0bWwwm0JRIq5ybVrhhnr25YAZ6ufIk=;
-        b=X0jCDx7F0SrYSQdEhdgb8qtSIoOnS+O7rIM5pCHI2fzNeLRWb108SwXatySqbdvLpu
-         31wimHCq0BfcZCJIuWKv72X85SwLepwhMHxfqweuLbERfguUyRKocQW8zk+uteukHNJJ
-         qYg7rZeaw8z2Nq9dskFhmlQWvR64rxNvdGmqqOIgm5WjjET3HzwOk4D7Px/2kN+IdBMH
-         nT/IyyZbK7+X0ShOX+WB4iH4XGr+dZjq7477rgnyrCOYUAsjN8thUGBFtvJAA2P87JJA
-         p5ntvIPO26V2ikr3/Qn3nEpT3oRhNTYmOL5QJvq17c5XUSfrQ28D81lxnUgl0FCa7AXm
-         pgrA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=Crq0nDZF9tOeX0bWwwm0JRIq5ybVrhhnr25YAZ6ufIk=;
-        b=AgV+Y3QchuRzL2KXhB6Z4JWM19nkIVE+mOPe0WQrSB4RhsQGFBESESdocEcQDK7W4i
-         fVDgncyfPwBGjLB10q2w/KKzeja18PBYSsdSdAYnGfE45pxk3WkwvwR/4ip34NUZRIBQ
-         E9ToyniMYxZfm/TxlqWABN9qrs7n4GvbbmTlJ5n4KTuzeqHQt1519aksPYTtBdJkzLx9
-         Z2sNgUZGb/nEC95UyHXae0zkmdUlFyQvirN1UEfg8rUvIv5OJ/Am/B263yC5n691Y4Bo
-         cnPrhYhnam0GA4iXcXxh9uEhvaZ9yF1hNLAKcScYdUBimq2639iqQxahYLLcYk7k2Yws
-         FqKw==
-X-Gm-Message-State: APjAAAWhKU4Y2qGU/M170QYzZruOjatiMxgMJid6AEIGSWVVLOQB2xmI
-        n774p6JC+Q/jGRxmCzZz3jTz/fgcYBrR//gDxuWHsw==
-X-Google-Smtp-Source: APXvYqwc12Gjg3q9skOSADw86B+Ig7PVBJGMfmcIkBRi2fZRrjHVaP8V/as5dS2/3dv3WOPL1q50QL9DYJC3q6qfCg8=
-X-Received: by 2002:a17:902:b696:: with SMTP id c22mr91154189pls.119.1560545862866;
- Fri, 14 Jun 2019 13:57:42 -0700 (PDT)
+        id S1726397AbfFNVOt (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 14 Jun 2019 17:14:49 -0400
+Received: from mail.kernel.org ([198.145.29.99]:58562 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726252AbfFNVOt (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 14 Jun 2019 17:14:49 -0400
+Received: from localhost (unknown [69.71.4.100])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 7D0D921473;
+        Fri, 14 Jun 2019 21:14:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1560546889;
+        bh=wQlzv9GXi+d6YxFDj5qp88AVZygc6aohbfVT4AQR70Y=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=ks0AHcQ3CMMcp8lXmC5Q1q+mNRhg76nx20zz7WGQfrHmET+emzaWoOodcXQ82HPjk
+         /Q0wzICC14gHKtUH/c0hiVkAbFD6SklBQgeWeDifIfILXybbVlrUgOA2LE9404heew
+         9zZ4/WlS27thwm4E7UDC674PGe7hBqVr8gYg2J1U=
+Date:   Fri, 14 Jun 2019 16:14:47 -0500
+From:   Bjorn Helgaas <helgaas@kernel.org>
+To:     Jonathan Corbet <corbet@lwn.net>
+Cc:     Mauro Carvalho Chehab <mchehab+samsung@kernel.org>,
+        Linux Doc Mailing List <linux-doc@vger.kernel.org>,
+        Mauro Carvalho Chehab <mchehab@infradead.org>,
+        linux-kernel@vger.kernel.org, Sebastian Reichel <sre@kernel.org>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Viresh Kumar <viresh.kumar@linaro.org>,
+        Len Brown <len.brown@intel.com>, Pavel Machek <pavel@ucw.cz>,
+        Nishanth Menon <nm@ti.com>, Stephen Boyd <sboyd@kernel.org>,
+        Liam Girdwood <lgirdwood@gmail.com>,
+        Mark Brown <broonie@kernel.org>,
+        Mathieu Poirier <mathieu.poirier@linaro.org>,
+        Suzuki K Poulose <suzuki.poulose@arm.com>,
+        Harry Wei <harryxiyou@gmail.com>,
+        Alex Shi <alex.shi@linux.alibaba.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+        "H. Peter Anvin" <hpa@zytor.com>, x86@kernel.org,
+        Jani Nikula <jani.nikula@linux.intel.com>,
+        Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
+        Rodrigo Vivi <rodrigo.vivi@intel.com>,
+        David Airlie <airlied@linux.ie>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        Johannes Berg <johannes@sipsolutions.net>,
+        "David S. Miller" <davem@davemloft.net>, linux-pm@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        intel-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
+        linux-pci@vger.kernel.org, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org,
+        "Srivatsa S . Bhat" <srivatsa@csail.mit.edu>
+Subject: Re: [PATCH v5] docs: power: convert docs to ReST and rename to *.rst
+Message-ID: <20190614211447.GU13533@google.com>
+References: <7dc94cb4-ebf1-22ab-29c9-fcb2b875a9ac@csail.mit.edu>
+ <72d1f8f360d395958dd0b49165fc51b58801f57e.1560420621.git.mchehab+samsung@kernel.org>
+ <20190614143631.7c99719f@lwn.net>
 MIME-Version: 1.0
-References: <20190614171713.89262-1-nhuck@google.com> <CAKwvOd=jFYn=7NGPD8UDx3_g30qD+40bCjzmWJJSzmb6pNUusQ@mail.gmail.com>
-In-Reply-To: <CAKwvOd=jFYn=7NGPD8UDx3_g30qD+40bCjzmWJJSzmb6pNUusQ@mail.gmail.com>
-From:   Nick Desaulniers <ndesaulniers@google.com>
-Date:   Fri, 14 Jun 2019 13:57:31 -0700
-Message-ID: <CAKwvOdnrvfthPcmnducqyOpbkFAQq+25eDXgehf_aWMAG=7CRg@mail.gmail.com>
-Subject: Re: [PATCH] wl18xx: Fix Wunused-const-variable
-To:     Nathan Huckleberry <nhuck@google.com>, eliad@wizery.com,
-        arik@wizery.com
-Cc:     Kalle Valo <kvalo@codeaurora.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        LKML <linux-kernel@vger.kernel.org>,
-        clang-built-linux <clang-built-linux@googlegroups.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20190614143631.7c99719f@lwn.net>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Fri, Jun 14, 2019 at 1:54 PM Nick Desaulniers
-<ndesaulniers@google.com> wrote:
-> Looking at drivers/net/wireless/ti/wl18xx/main.c, there 4 globally
-> declared `struct ieee80211_iface_limit` but as your patch notes, only
-> 2 are used.  The thing is, their uses are in a `struct
-> ieee80211_iface_limit []`.
+On Fri, Jun 14, 2019 at 02:36:31PM -0600, Jonathan Corbet wrote:
+> On Thu, 13 Jun 2019 07:10:36 -0300
+> Mauro Carvalho Chehab <mchehab+samsung@kernel.org> wrote:
+> 
+> > Convert the PM documents to ReST, in order to allow them to
+> > build with Sphinx.
+> > 
+> > The conversion is actually:
+> >   - add blank lines and identation in order to identify paragraphs;
+> >   - fix tables markups;
+> >   - add some lists markups;
+> >   - mark literal blocks;
+> >   - adjust title markups.
+> > 
+> > At its new index.rst, let's add a :orphan: while this is not linked to
+> > the main index.rst file, in order to avoid build warnings.
+> > 
+> > Signed-off-by: Mauro Carvalho Chehab <mchehab+samsung@kernel.org>
+> > Acked-by: Mark Brown <broonie@kernel.org>
+> > Acked-by: Bjorn Helgaas <bhelgaas@google.com>
+> > Acked-by: Srivatsa S. Bhat (VMware) <srivatsa@csail.mit.edu>
+> 
+> So I can't apply this one due to conflicts in include/linux/pci.h.  Bjorn,
+> perhaps the easiest thing is for you to take this one through your tree?
 
-Sorry, that's not quite right; it's not a  `struct
-ieee80211_iface_limit []` but a `struct ieee80211_iface_combination
-[]`.  No idea what other values we'd put to add these limits to the
-array.
--- 
-Thanks,
-~Nick Desaulniers
+OK, I applied this to pci/docs for v5.3.  I applied this entire patch,
+but if you would prefer that I only apply the PCI-related parts, let
+me know and I'll split those out.
+
+Bjorn
