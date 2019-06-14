@@ -2,58 +2,76 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 95770467D3
-	for <lists+linux-wireless@lfdr.de>; Fri, 14 Jun 2019 20:47:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 90D19468D6
+	for <lists+linux-wireless@lfdr.de>; Fri, 14 Jun 2019 22:27:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725889AbfFNSq7 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 14 Jun 2019 14:46:59 -0400
-Received: from s3.sipsolutions.net ([144.76.43.62]:48038 "EHLO
-        sipsolutions.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725809AbfFNSq7 (ORCPT
+        id S1726193AbfFNU1C (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 14 Jun 2019 16:27:02 -0400
+Received: from mail-ot1-f66.google.com ([209.85.210.66]:41742 "EHLO
+        mail-ot1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725812AbfFNU1B (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 14 Jun 2019 14:46:59 -0400
-Received: by sipsolutions.net with esmtpsa (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <johannes@sipsolutions.net>)
-        id 1hbrDm-0000jX-4d; Fri, 14 Jun 2019 20:46:42 +0200
-Message-ID: <231c9afd2aaca99c89bc73954307a28a60e86d18.camel@sipsolutions.net>
-Subject: Re: [PATCH-v3 1/2] wireless: Support assoc-at-ms timer in sta-info
-From:   Johannes Berg <johannes@sipsolutions.net>
-To:     Ben Greear <greearb@candelatech.com>,
+        Fri, 14 Jun 2019 16:27:01 -0400
+Received: by mail-ot1-f66.google.com with SMTP id 107so3831665otj.8
+        for <linux-wireless@vger.kernel.org>; Fri, 14 Jun 2019 13:27:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
+         :cc;
+        bh=BzAuP59c+mnRQdrNGFF3JHkBjDs4c9FanIK2oGpuCJ0=;
+        b=YfDHaoIkhr6JKK7JMLaAHwgPwJXV+g1soRU/fj8dqWt4lVcpk+SrliJ/s4rGbxdfs/
+         oBmfa+208OH13QGmQVrgNJPUF2pqdeOxFPAHVIYwZVMOb6hSrx8/k2afVabh1NKomGGZ
+         vpovnPzT3A3wuBjfiN252S38aGBat0pNG9wpBrvTWZuYesikd2xZkzlIApB3wM3FVjiO
+         g4wvSAcLgPEdLEFG6LMwutzx6msGS/UXi244Dj8NBn3WVVOQGBKjh8/O0lYxF9KlTKil
+         qfQMvjy2ppJ90+UouG/2mF6d/RBFPUBTzrbpiqetq9VTiH6OZ1SmdOxZyn8Lf5tNVYc2
+         n8bA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:in-reply-to:references:from:date
+         :message-id:subject:to:cc;
+        bh=BzAuP59c+mnRQdrNGFF3JHkBjDs4c9FanIK2oGpuCJ0=;
+        b=HZ5zLiXfweb6yCCH7VUd3zUbcoN/NiR/SBvTCcYQfkwFFbEvaXcB0fw+xhCNIUNDou
+         e09RDDXuWB46r7AKwDwDnUDTy05ICK9LSA8Y1lWNgellQ7ZJG60lO76A9/Y9UN0teFaP
+         5HMab6AVcDCBbX4PMnr/hxxMjQ3sRpURcmU7iUDfmNyCFqBQoTd/pWDE3ZvlbE1RVCdK
+         f9LDdssyZDPbp7903R+xYZXOlHEbSA+MHShNHVNoeZoDKKlcwUv8E+gNgCCCx/0BZEJ4
+         mhugLi0I2fS3e0mz5S4DBebMJAuZu20YwfDAhYZM6yYBswfZgSMhFfmiVs4X7OBENtfU
+         YTZw==
+X-Gm-Message-State: APjAAAWU8UD5rLjxu3fFe9KfoIt059x1CYkPp/lbUvyFhdKxXBWbin8Q
+        ZE2hqszG5D7yWgOnTGDTr1H0owDm2779Ti36TDI=
+X-Google-Smtp-Source: APXvYqxN/jmymRQMwaDFmV+sVnktjEkSpfHpw5nDKAe1V7KfbAaGoS9cLcGkgyVXH8tVcY2eIgO88BCUaGd4LGcBVGc=
+X-Received: by 2002:a05:6830:12d6:: with SMTP id a22mr19599298otq.236.1560544021291;
+ Fri, 14 Jun 2019 13:27:01 -0700 (PDT)
+MIME-Version: 1.0
+Received: by 2002:a05:6830:2015:0:0:0:0 with HTTP; Fri, 14 Jun 2019 13:27:00
+ -0700 (PDT)
+In-Reply-To: <309ba2702f6b553a3dd08262efe34c4cecc4e445.camel@sipsolutions.net>
+References: <1557307533-5795-1-git-send-email-mpubbise@codeaurora.org>
+ <fd3addc01fc3f5362dba5771ee82659cf01c195b.camel@sipsolutions.net>
+ <c8484254-f4f7-9955-e3f8-8a423cc6c325@codeaurora.org> <CAKR_QV+dVx+LK1HyCo6CQZQ7ZX_u6ON0hEH5adNiJTB+XaP3WA@mail.gmail.com>
+ <dc9039be42df8d241b14d4f673f3c472dc113991.camel@sipsolutions.net>
+ <CAKR_QV+5oY-5z4UB+HKV_57r5NneDme+TBg_c26h4C7Sy8R+UQ@mail.gmail.com> <309ba2702f6b553a3dd08262efe34c4cecc4e445.camel@sipsolutions.net>
+From:   Tom Psyborg <pozega.tomislav@gmail.com>
+Date:   Fri, 14 Jun 2019 22:27:00 +0200
+Message-ID: <CAKR_QVLyxBdqJAN6CsVG3ts41NOED56MvWdgvgVKPm-GRJXo-g@mail.gmail.com>
+Subject: Re: [PATCH v3] {nl,mac}80211: allow 4addr AP operation on crypto
+ controlled devices
+To:     Johannes Berg <johannes@sipsolutions.net>
+Cc:     Manikanta Pubbisetty <mpubbise@codeaurora.org>,
         linux-wireless@vger.kernel.org
-Date:   Fri, 14 Jun 2019 20:46:40 +0200
-In-Reply-To: <7d606df7-bb8e-c454-1eaf-24fd454eab8e@candelatech.com>
-References: <20190415172123.6532-1-greearb@candelatech.com>
-         <21fa668485f4eb0a8056aac1797854f267d5f1e0.camel@sipsolutions.net>
-         <3ad69c55-2b88-a96b-d21e-99f4418466ee@candelatech.com>
-         <e8343919c6851e6b5a7905b708661870c4c88481.camel@sipsolutions.net>
-         <7d606df7-bb8e-c454-1eaf-24fd454eab8e@candelatech.com>
 Content-Type: text/plain; charset="UTF-8"
-X-Mailer: Evolution 3.28.5 (3.28.5-2.fc28) 
-Mime-Version: 1.0
-Content-Transfer-Encoding: 7bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Fri, 2019-06-14 at 08:14 -0700, Ben Greear wrote:
-> 
-> 
-> So, maybe I return instead the elapsed time in the netlink API instead of a
-> timestamp.  I think that will give me the value that I am looking for,
-> and I can still print out the 'real' time in iw so any tools reading that
-> output and do some simple math and figure out the 'real' associated-at time.
+On 14/06/2019, Johannes Berg <johannes@sipsolutions.net> wrote:
 
-I don't think that's good. There's a delay between filling the message
-and then processing it in userspace. We had this in the scan code and
-learned that was full of races.
+> I'm also not convinced how this patch would affect *staying*
+> connected... it should affect connecting to start with?
+>
+> johannes
+>
+>
 
-The better thing is to use CLOCK_BOOTTIME nanoseconds, and then
-userspace can use clock_gettime() to get the current time etc. and then
-do whatever calculations it needs. If it wants to print the realtime
-timestamp, it could even calculate that (with some jitter) by doing
-clock_gettime() on both realtime and boottime clocks...
-
-johannes
-
+If you don't want to read posts but only topic title, in short, no
+data pass thorugh with v2/v3 of this patch. Only v1 works.
