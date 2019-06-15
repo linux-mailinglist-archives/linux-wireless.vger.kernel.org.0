@@ -2,94 +2,125 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id DB48C46FD9
-	for <lists+linux-wireless@lfdr.de>; Sat, 15 Jun 2019 14:07:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 743E44700C
+	for <lists+linux-wireless@lfdr.de>; Sat, 15 Jun 2019 14:50:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725999AbfFOMGl (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 15 Jun 2019 08:06:41 -0400
-Received: from mail-io1-f66.google.com ([209.85.166.66]:42717 "EHLO
-        mail-io1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725446AbfFOMGl (ORCPT
+        id S1726626AbfFOMuZ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 15 Jun 2019 08:50:25 -0400
+Received: from mail-ed1-f65.google.com ([209.85.208.65]:43017 "EHLO
+        mail-ed1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725943AbfFOMuZ (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 15 Jun 2019 08:06:41 -0400
-Received: by mail-io1-f66.google.com with SMTP id u19so11527746ior.9
-        for <linux-wireless@vger.kernel.org>; Sat, 15 Jun 2019 05:06:40 -0700 (PDT)
+        Sat, 15 Jun 2019 08:50:25 -0400
+Received: by mail-ed1-f65.google.com with SMTP id e3so7819452edr.10
+        for <linux-wireless@vger.kernel.org>; Sat, 15 Jun 2019 05:50:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=googlemail.com; s=20161025;
+        h=from:subject:to:cc:references:openpgp:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=yh9Nx8oRAUAyws0D5sqXXyAoVwFxgqminG+bbb3CbKw=;
+        b=NtnYATcyGmfd4pnuK1Umqun/1PjX6jl98/q9C1+oKB+/Rq+TtwQ5klJEv2bc5WFZWy
+         U6CCahYGN1ugKDM+4Ksf9YjW3KodWBf7PnISBBTaWVAWwtlojrA5yzWlNKp/cz+OCKng
+         0djUXPAhnlB/8bwpmv/JwYUSnqyPzMpXjW/5bDGBi08J4DfHsIDfTdDvtzTdB4Awilwf
+         2YrWqvaDbCvYNEyfBQqLsiRK+7/sjfUPvr/GWEX/lfvF0jsLriI2TvVB+3Tlm1jqqkl2
+         0bAmEA7HEVi6Ygjwd/MWbEdi4Za89Ob1C0b/xY0rDd/BzkQyB8py8gG8ysybNyuWtw9Q
+         cPAQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=fBH04N+Oo+lXe+lOBJbxzQQ4w3sFgjWEUql4acbbqG4=;
-        b=o7tT/5BBSdw1FPd8ZOWTTzN5SrOza99GHSJ9j4acdbBgmbIPENhPok8gQsfupx30Ua
-         A9qbrHBqlvCDrGFTXbSg3+eT6LAeritrBpsB9pfkEOTOJ6T9LxvTy9J3iW4yhuc7IB/i
-         zmiEuX1/lgZle5g6SqTSIyecyEKTh8XvdAqhSFsgrUuQO4eYQFQwU2m11tkOQPfGqca8
-         ZBcsRVhkYHWlkcGeCiyOA6qbsrsXNm5s6/KXXBD4LcfX1cpGuV/I/zZAdEy46rbtn9i4
-         A+da9arn9Rv6ax0VBtiUhi82k0uCPypDe+6m/FsJZLJIu5Aj4tSS8PAXVKXwTML5Y/fI
-         HNWg==
-X-Gm-Message-State: APjAAAUibnf+HkYjcUNx5y/zbfp2SfalhFenfZ9g8RCMES9qX8yxskm8
-        GE0vHXjjXAj1BOyP5DgU7obu/AFh8OgjBzAzMgLSBg==
-X-Google-Smtp-Source: APXvYqzcB/AcApeA3AhPen19fHbvlQrV7TDlPOrqP8u4sy0ArR1WqCcG7GgYgIgKfMbDuwdi1pdkdYMKOdGaQXrYaZg=
-X-Received: by 2002:a02:ccd2:: with SMTP id k18mr21169672jaq.3.1560600400378;
- Sat, 15 Jun 2019 05:06:40 -0700 (PDT)
+        h=x-gm-message-state:from:subject:to:cc:references:openpgp:message-id
+         :date:user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=yh9Nx8oRAUAyws0D5sqXXyAoVwFxgqminG+bbb3CbKw=;
+        b=fovanVwISxJ3U0aBsiBmn7ZlUKiVQP4YIEkXED9ddkUQG/IM9ECUUR7WlYrbBu0ydn
+         VsYTmtz/p/BG85lCxn79wPTjC+ygJrcWH1gvfvRrMNQf0R1+alcZKC6sirPovAKlnu+f
+         RkFS9zYGmYVpOsJGh3IAeBcS+jgtvcXUa8XtG7r6jJWWh6ZyJmsHimlo7h+fNT8aOhJo
+         js4wz2fJZ6Z2rm3Ktq/FNw6w8btUI7dEauhSaMLqzBeDf6x/kjMBS1hDsDtjEgIY90VK
+         9oTdZElmgQv/9HGn3AuDs61BpAlf6s2JA/7n0bA43iTNHIzjCboHPBImjNvIFmFTFAFG
+         eS+Q==
+X-Gm-Message-State: APjAAAVe8Nzp94Sfp6L3l51RKMzFlLgl80OkTKnxDgM66orRU20/EDIK
+        aAcZn9EQDGm0mc7QPF0YJK7R8btQQ/w=
+X-Google-Smtp-Source: APXvYqwpeZDSc+mOrXIZQixY97/oFLvRAtmaYR85t/aaJla8xHAQe8lkVVMxPtI13U2ExQKbDwk7ng==
+X-Received: by 2002:a50:9d43:: with SMTP id j3mr108448813edk.59.1560603022956;
+        Sat, 15 Jun 2019 05:50:22 -0700 (PDT)
+Received: from ?IPv6:2001:db8:4b:222::197? ([2a02:810a:8c0:6498:61e4:37ed:10fa:e4d2])
+        by smtp.gmail.com with ESMTPSA id c24sm1149310ejd.2.2019.06.15.05.50.21
+        (version=TLS1_3 cipher=AEAD-AES128-GCM-SHA256 bits=128/128);
+        Sat, 15 Jun 2019 05:50:21 -0700 (PDT)
+From:   "g.schlmm" <g.schlmm@googlemail.com>
+X-Google-Original-From: "g.schlmm" <g.schlmm@gmail.com>
+Subject: Re: rtw88: M.2 RTL8822BE not working - rfe 3 isn't supported
+To:     Tony Chuang <yhchuang@realtek.com>,
+        Stanislaw Gruszka <sgruszka@redhat.com>,
+        "g.schlmm" <g.schlmm@googlemail.com>
+Cc:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+References: <0d0159a8-a83e-cef3-fd32-4928a2301719@gmail.com>
+ <20190612091330.GC2965@redhat.com>
+ <F7CD281DE3E379468C6D07993EA72F84D180639E@RTITMBSVM04.realtek.com.tw>
+Openpgp: preference=signencrypt
+Message-ID: <16b3aeaf-db0c-4ab8-c66f-e96dd01fec53@gmail.com>
+Date:   Sat, 15 Jun 2019 14:50:15 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.7.0
 MIME-Version: 1.0
-References: <cover.1560461404.git.lorenzo@kernel.org> <66fc02e45fb5ce0d6176395b5ac43acbd53b3e66.1560461404.git.lorenzo@kernel.org>
- <20190614072449.GA3395@redhat.com> <20190614101115.GA2669@localhost.localdomain>
- <a50de3e52ece8a636ae902b1a5b901d0d3cd068f.camel@sipsolutions.net> <20190614113120.GC17298@redhat.com>
-In-Reply-To: <20190614113120.GC17298@redhat.com>
-From:   Lorenzo Bianconi <lorenzo.bianconi@redhat.com>
-Date:   Sat, 15 Jun 2019 14:06:29 +0200
-Message-ID: <CAJ0CqmX00=d8BsoOfXQdxsh2JXha-d-F6+wAUQCgEYXs=4Z8Eg@mail.gmail.com>
-Subject: Re: [PATCH v3 wireless-drivers 1/3] mt76: usb: fix rx A-MSDU support
-To:     Stanislaw Gruszka <sgruszka@redhat.com>
-Cc:     Johannes Berg <johannes@sipsolutions.net>,
-        Lorenzo Bianconi <lorenzo@kernel.org>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        Felix Fietkau <nbd@nbd.name>
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <F7CD281DE3E379468C6D07993EA72F84D180639E@RTITMBSVM04.realtek.com.tw>
+Content-Type: text/plain; charset=windows-1252
+Content-Language: fr-CA
+Content-Transfer-Encoding: 7bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
->
-> On Fri, Jun 14, 2019 at 12:20:59PM +0200, Johannes Berg wrote:
-> > On Fri, 2019-06-14 at 12:11 +0200, Lorenzo Bianconi wrote:
-> >
-> > > Looking at __ieee80211_amsdu_copy() now I got why other drivers copy hdrlen +
-> > > 8, thx :)
-> > > In our case reuse_frag is true in __ieee80211_amsdu_copy, so we will end up
-> > > copying 32B + ether_len. Anyway I think 32 is a little bit too low and we could get
-> > > better performances increasing it a little bit.
-> > > A typical use case (e.g IPv6 + TCP):
-> > >
-> > > IPv6 = 40B, TCP = 32B --> so 72B..I guess 128B is a good value :)
-> > > @Felix, Johannes: what do you think?
-> >
-> > I think while we might *allocate* more, I don't think we should *copy*
-> > more, since then the TCP payload will no longer be in pages.
-> >
-> > It'd probably be better to implement leaving enough tailroom (allocate
-> > 128), but copying nothing, unless the *entire* packet fits.
->
-> iwl4965 put entire packet in fragment in il4965_pass_packet_to_mac80211() .
-> Initially I thought this is a bug, since mac80211 require header be
-> in the linear area, but looks like ieee80211_rx_monitor() copy header
-> before rest of mac80211 check it, so 4965 is fine.
->
-> Anyway I think the driver should put ieee80211 header in linear area
-> and iwlwifi & mt7601u implementation is somewhat optimal.
+On 14.06.19 10:24, Tony Chuang wrote:
+>> Subject: Re: rtw88: M.2 RTL8822BE not working - rfe 3 isn't supported
+>>
+>> Cc Tony
+>>
+>> On Sat, Jun 08, 2019 at 02:26:51PM +0200, g.schlmm wrote:
+>>> my RTL8822BE M.2 card is not working with linux 5.2rc3
+>>>
+>>> the staging r8822be driver in linux 5.1 was working for this card
+>>>
+>>> from dmesg:
+>>>> [    8.001186] rtw_pci 0000:04:00.0: rfe 3 isn't supported
+>>>> [    8.003870] rtw_pci 0000:04:00.0: failed to setup chip efuse info
+>>>> [    8.006405] rtw_pci 0000:04:00.0: failed to setup chip information
+>>>
+>>> lspci:
+>>>> 04:00.0 Unassigned class [ff00]: Realtek Semiconductor Co., Ltd.
+>> RTL8822BE 802.11a/b/g/n/ac WiFi adapter
+>>>>         Subsystem: Lenovo RTL8822BE 802.11a/b/g/n/ac WiFi adapter
+>>>>         Flags: fast devsel, IRQ 19
+>>>>         I/O ports at c000 [size=256]
+>>>>         Memory at 81200000 (64-bit, non-prefetchable) [size=64K]
+>>>>         Capabilities: [40] Power Management version 3
+>>>>         Capabilities: [50] MSI: Enable- Count=1/1 Maskable- 64bit+
+>>>>         Capabilities: [70] Express Endpoint, MSI 00
+>>>>         Capabilities: [100] Advanced Error Reporting
+>>>>         Capabilities: [148] Device Serial Number
+>> 00-e0-4c-ff-fe-b8-22-01
+>>>>         Capabilities: [158] Latency Tolerance Reporting
+>>>>         Capabilities: [160] L1 PM Substates
+>>>>         Kernel modules: rtwpci
+>>
+> 
+> Hi,
+> 
+> Please use the attached patch. And RFE type 3 has not been well tested,
+> I am not sure if the quality is expected. But it should work fine I guess.
+> If there is any further problems, just tell me, thanks.
+> 
+> Yan-Hsuan
+> 
 
-Actually the case is a little bit different for mt76 since we need
-even mt76x02_rxwi in the linear area of the received skb.
-Taking that into account the requested size to copy will be:
-32 + 802.11 hdr + SNAP hdr  = ~ 70B
-Moreover to pass rxwi size to usb module we need to add a field in
-mt76_driver_ops (e.g rxwi_size).
-I will carry out some tests and if there are no differences I will
-post a single patch to wireless-drivers using 128B as default size
+Hello,
 
-Regards,
-Lorenzo
+Thanks for the patch. i applied it on top of 5.2rc4 and everything is
+playing nice so far.
 
->
-> Stanislaw
+i use the card as a hotspot with hostapd
+
+the download speed changed from ~10Mbit/s (with the 5.1 staging driver)
+to ~100Mbit/s
+
+very nice work!
