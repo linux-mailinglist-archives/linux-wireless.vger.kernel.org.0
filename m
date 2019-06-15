@@ -2,113 +2,94 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D4B6946F62
-	for <lists+linux-wireless@lfdr.de>; Sat, 15 Jun 2019 12:01:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DB48C46FD9
+	for <lists+linux-wireless@lfdr.de>; Sat, 15 Jun 2019 14:07:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726637AbfFOKBN (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 15 Jun 2019 06:01:13 -0400
-Received: from mx1.redhat.com ([209.132.183.28]:48182 "EHLO mx1.redhat.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726620AbfFOKBM (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 15 Jun 2019 06:01:12 -0400
-Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.phx2.redhat.com [10.5.11.22])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mx1.redhat.com (Postfix) with ESMTPS id 03C6F308213A;
-        Sat, 15 Jun 2019 10:01:12 +0000 (UTC)
-Received: from localhost (ovpn-204-44.brq.redhat.com [10.40.204.44])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 980AD1001B1A;
-        Sat, 15 Jun 2019 10:01:11 +0000 (UTC)
-From:   Stanislaw Gruszka <sgruszka@redhat.com>
-To:     linux-wireless@vger.kernel.org
-Cc:     =?UTF-8?q?Tomislav=20Po=C5=BEega?= <pozega.tomislav@gmail.com>,
-        Daniel Golle <daniel@makrotopia.org>,
-        Felix Fietkau <nbd@nbd.name>, Mathias Kresin <dev@kresin.me>
-Subject: [PATCH v2 7/7] rt2800: do not enable watchdog by default
-Date:   Sat, 15 Jun 2019 12:01:00 +0200
-Message-Id: <20190615100100.29800-8-sgruszka@redhat.com>
-In-Reply-To: <20190615100100.29800-1-sgruszka@redhat.com>
-References: <20190615100100.29800-1-sgruszka@redhat.com>
+        id S1725999AbfFOMGl (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 15 Jun 2019 08:06:41 -0400
+Received: from mail-io1-f66.google.com ([209.85.166.66]:42717 "EHLO
+        mail-io1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725446AbfFOMGl (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Sat, 15 Jun 2019 08:06:41 -0400
+Received: by mail-io1-f66.google.com with SMTP id u19so11527746ior.9
+        for <linux-wireless@vger.kernel.org>; Sat, 15 Jun 2019 05:06:40 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=fBH04N+Oo+lXe+lOBJbxzQQ4w3sFgjWEUql4acbbqG4=;
+        b=o7tT/5BBSdw1FPd8ZOWTTzN5SrOza99GHSJ9j4acdbBgmbIPENhPok8gQsfupx30Ua
+         A9qbrHBqlvCDrGFTXbSg3+eT6LAeritrBpsB9pfkEOTOJ6T9LxvTy9J3iW4yhuc7IB/i
+         zmiEuX1/lgZle5g6SqTSIyecyEKTh8XvdAqhSFsgrUuQO4eYQFQwU2m11tkOQPfGqca8
+         ZBcsRVhkYHWlkcGeCiyOA6qbsrsXNm5s6/KXXBD4LcfX1cpGuV/I/zZAdEy46rbtn9i4
+         A+da9arn9Rv6ax0VBtiUhi82k0uCPypDe+6m/FsJZLJIu5Aj4tSS8PAXVKXwTML5Y/fI
+         HNWg==
+X-Gm-Message-State: APjAAAUibnf+HkYjcUNx5y/zbfp2SfalhFenfZ9g8RCMES9qX8yxskm8
+        GE0vHXjjXAj1BOyP5DgU7obu/AFh8OgjBzAzMgLSBg==
+X-Google-Smtp-Source: APXvYqzcB/AcApeA3AhPen19fHbvlQrV7TDlPOrqP8u4sy0ArR1WqCcG7GgYgIgKfMbDuwdi1pdkdYMKOdGaQXrYaZg=
+X-Received: by 2002:a02:ccd2:: with SMTP id k18mr21169672jaq.3.1560600400378;
+ Sat, 15 Jun 2019 05:06:40 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 2.84 on 10.5.11.22
-X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16 (mx1.redhat.com [10.5.110.42]); Sat, 15 Jun 2019 10:01:12 +0000 (UTC)
+References: <cover.1560461404.git.lorenzo@kernel.org> <66fc02e45fb5ce0d6176395b5ac43acbd53b3e66.1560461404.git.lorenzo@kernel.org>
+ <20190614072449.GA3395@redhat.com> <20190614101115.GA2669@localhost.localdomain>
+ <a50de3e52ece8a636ae902b1a5b901d0d3cd068f.camel@sipsolutions.net> <20190614113120.GC17298@redhat.com>
+In-Reply-To: <20190614113120.GC17298@redhat.com>
+From:   Lorenzo Bianconi <lorenzo.bianconi@redhat.com>
+Date:   Sat, 15 Jun 2019 14:06:29 +0200
+Message-ID: <CAJ0CqmX00=d8BsoOfXQdxsh2JXha-d-F6+wAUQCgEYXs=4Z8Eg@mail.gmail.com>
+Subject: Re: [PATCH v3 wireless-drivers 1/3] mt76: usb: fix rx A-MSDU support
+To:     Stanislaw Gruszka <sgruszka@redhat.com>
+Cc:     Johannes Berg <johannes@sipsolutions.net>,
+        Lorenzo Bianconi <lorenzo@kernel.org>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        linux-wireless <linux-wireless@vger.kernel.org>,
+        Felix Fietkau <nbd@nbd.name>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Make watchdog disabled by default and add module parameter to enable it.
+>
+> On Fri, Jun 14, 2019 at 12:20:59PM +0200, Johannes Berg wrote:
+> > On Fri, 2019-06-14 at 12:11 +0200, Lorenzo Bianconi wrote:
+> >
+> > > Looking at __ieee80211_amsdu_copy() now I got why other drivers copy hdrlen +
+> > > 8, thx :)
+> > > In our case reuse_frag is true in __ieee80211_amsdu_copy, so we will end up
+> > > copying 32B + ether_len. Anyway I think 32 is a little bit too low and we could get
+> > > better performances increasing it a little bit.
+> > > A typical use case (e.g IPv6 + TCP):
+> > >
+> > > IPv6 = 40B, TCP = 32B --> so 72B..I guess 128B is a good value :)
+> > > @Felix, Johannes: what do you think?
+> >
+> > I think while we might *allocate* more, I don't think we should *copy*
+> > more, since then the TCP payload will no longer be in pages.
+> >
+> > It'd probably be better to implement leaving enough tailroom (allocate
+> > 128), but copying nothing, unless the *entire* packet fits.
+>
+> iwl4965 put entire packet in fragment in il4965_pass_packet_to_mac80211() .
+> Initially I thought this is a bug, since mac80211 require header be
+> in the linear area, but looks like ieee80211_rx_monitor() copy header
+> before rest of mac80211 check it, so 4965 is fine.
+>
+> Anyway I think the driver should put ieee80211 header in linear area
+> and iwlwifi & mt7601u implementation is somewhat optimal.
 
-User will have to create file in /etc/modprobe.d/ with
+Actually the case is a little bit different for mt76 since we need
+even mt76x02_rxwi in the linear area of the received skb.
+Taking that into account the requested size to copy will be:
+32 + 802.11 hdr + SNAP hdr  = ~ 70B
+Moreover to pass rxwi size to usb module we need to add a field in
+mt76_driver_ops (e.g rxwi_size).
+I will carry out some tests and if there are no differences I will
+post a single patch to wireless-drivers using 128B as default size
 
-options rt2800lib watchdog=1
+Regards,
+Lorenzo
 
-to enable the watchdog or load "rt2800lib watchdog=1" module manually
-before loading rt2800{soc,pci,usb} module.
-
-Signed-off-by: Stanislaw Gruszka <sgruszka@redhat.com>
----
- drivers/net/wireless/ralink/rt2x00/rt2800lib.c  | 12 ++++++++++--
- drivers/net/wireless/ralink/rt2x00/rt2x00.h     |  1 +
- drivers/net/wireless/ralink/rt2x00/rt2x00link.c |  2 +-
- 3 files changed, 12 insertions(+), 3 deletions(-)
-
-diff --git a/drivers/net/wireless/ralink/rt2x00/rt2800lib.c b/drivers/net/wireless/ralink/rt2x00/rt2800lib.c
-index 0fb519f2b83f..c9b957ac5733 100644
---- a/drivers/net/wireless/ralink/rt2x00/rt2800lib.c
-+++ b/drivers/net/wireless/ralink/rt2x00/rt2800lib.c
-@@ -30,6 +30,10 @@
- #include "rt2800lib.h"
- #include "rt2800.h"
- 
-+static bool modparam_watchdog;
-+module_param_named(watchdog, modparam_watchdog, bool, S_IRUGO);
-+MODULE_PARM_DESC(watchdog, "Enable watchdog to detect tx/rx hangs and reset hardware if detected");
-+
- /*
-  * Register access.
-  * All access to the CSR registers will go through the methods
-@@ -10286,8 +10290,12 @@ int rt2800_probe_hw(struct rt2x00_dev *rt2x00dev)
- 		__set_bit(REQUIRE_TASKLET_CONTEXT, &rt2x00dev->cap_flags);
- 	}
- 
--	__set_bit(CAPABILITY_RESTART_HW, &rt2x00dev->cap_flags);
--	rt2x00dev->link.watchdog_interval = msecs_to_jiffies(100);
-+	if (modparam_watchdog) {
-+		__set_bit(CAPABILITY_RESTART_HW, &rt2x00dev->cap_flags);
-+		rt2x00dev->link.watchdog_interval = msecs_to_jiffies(100);
-+	} else {
-+		rt2x00dev->link.watchdog_disabled = true;
-+	}
- 
- 	/*
- 	 * Set the rssi offset.
-diff --git a/drivers/net/wireless/ralink/rt2x00/rt2x00.h b/drivers/net/wireless/ralink/rt2x00/rt2x00.h
-index 7c7cced009bd..7e43690a861c 100644
---- a/drivers/net/wireless/ralink/rt2x00/rt2x00.h
-+++ b/drivers/net/wireless/ralink/rt2x00/rt2x00.h
-@@ -326,6 +326,7 @@ struct link {
- 	 */
- 	struct delayed_work watchdog_work;
- 	unsigned int watchdog_interval;
-+	bool watchdog_disabled;
- 
- 	/*
- 	 * Work structure for scheduling periodic AGC adjustments.
-diff --git a/drivers/net/wireless/ralink/rt2x00/rt2x00link.c b/drivers/net/wireless/ralink/rt2x00/rt2x00link.c
-index 15ebebf88e72..b052c96347d6 100644
---- a/drivers/net/wireless/ralink/rt2x00/rt2x00link.c
-+++ b/drivers/net/wireless/ralink/rt2x00/rt2x00link.c
-@@ -384,7 +384,7 @@ void rt2x00link_start_watchdog(struct rt2x00_dev *rt2x00dev)
- 	struct link *link = &rt2x00dev->link;
- 
- 	if (test_bit(DEVICE_STATE_PRESENT, &rt2x00dev->flags) &&
--	    rt2x00dev->ops->lib->watchdog)
-+	    rt2x00dev->ops->lib->watchdog && !link->watchdog_disabled)
- 		ieee80211_queue_delayed_work(rt2x00dev->hw,
- 					     &link->watchdog_work,
- 					     link->watchdog_interval);
--- 
-2.20.1
-
+>
+> Stanislaw
