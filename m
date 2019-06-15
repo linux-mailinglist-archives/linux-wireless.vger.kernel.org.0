@@ -2,125 +2,150 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 743E44700C
-	for <lists+linux-wireless@lfdr.de>; Sat, 15 Jun 2019 14:50:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7E47647047
+	for <lists+linux-wireless@lfdr.de>; Sat, 15 Jun 2019 16:03:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726626AbfFOMuZ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 15 Jun 2019 08:50:25 -0400
-Received: from mail-ed1-f65.google.com ([209.85.208.65]:43017 "EHLO
-        mail-ed1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725943AbfFOMuZ (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 15 Jun 2019 08:50:25 -0400
-Received: by mail-ed1-f65.google.com with SMTP id e3so7819452edr.10
-        for <linux-wireless@vger.kernel.org>; Sat, 15 Jun 2019 05:50:23 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=googlemail.com; s=20161025;
-        h=from:subject:to:cc:references:openpgp:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=yh9Nx8oRAUAyws0D5sqXXyAoVwFxgqminG+bbb3CbKw=;
-        b=NtnYATcyGmfd4pnuK1Umqun/1PjX6jl98/q9C1+oKB+/Rq+TtwQ5klJEv2bc5WFZWy
-         U6CCahYGN1ugKDM+4Ksf9YjW3KodWBf7PnISBBTaWVAWwtlojrA5yzWlNKp/cz+OCKng
-         0djUXPAhnlB/8bwpmv/JwYUSnqyPzMpXjW/5bDGBi08J4DfHsIDfTdDvtzTdB4Awilwf
-         2YrWqvaDbCvYNEyfBQqLsiRK+7/sjfUPvr/GWEX/lfvF0jsLriI2TvVB+3Tlm1jqqkl2
-         0bAmEA7HEVi6Ygjwd/MWbEdi4Za89Ob1C0b/xY0rDd/BzkQyB8py8gG8ysybNyuWtw9Q
-         cPAQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:subject:to:cc:references:openpgp:message-id
-         :date:user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=yh9Nx8oRAUAyws0D5sqXXyAoVwFxgqminG+bbb3CbKw=;
-        b=fovanVwISxJ3U0aBsiBmn7ZlUKiVQP4YIEkXED9ddkUQG/IM9ECUUR7WlYrbBu0ydn
-         VsYTmtz/p/BG85lCxn79wPTjC+ygJrcWH1gvfvRrMNQf0R1+alcZKC6sirPovAKlnu+f
-         RkFS9zYGmYVpOsJGh3IAeBcS+jgtvcXUa8XtG7r6jJWWh6ZyJmsHimlo7h+fNT8aOhJo
-         js4wz2fJZ6Z2rm3Ktq/FNw6w8btUI7dEauhSaMLqzBeDf6x/kjMBS1hDsDtjEgIY90VK
-         9oTdZElmgQv/9HGn3AuDs61BpAlf6s2JA/7n0bA43iTNHIzjCboHPBImjNvIFmFTFAFG
-         eS+Q==
-X-Gm-Message-State: APjAAAVe8Nzp94Sfp6L3l51RKMzFlLgl80OkTKnxDgM66orRU20/EDIK
-        aAcZn9EQDGm0mc7QPF0YJK7R8btQQ/w=
-X-Google-Smtp-Source: APXvYqwpeZDSc+mOrXIZQixY97/oFLvRAtmaYR85t/aaJla8xHAQe8lkVVMxPtI13U2ExQKbDwk7ng==
-X-Received: by 2002:a50:9d43:: with SMTP id j3mr108448813edk.59.1560603022956;
-        Sat, 15 Jun 2019 05:50:22 -0700 (PDT)
-Received: from ?IPv6:2001:db8:4b:222::197? ([2a02:810a:8c0:6498:61e4:37ed:10fa:e4d2])
-        by smtp.gmail.com with ESMTPSA id c24sm1149310ejd.2.2019.06.15.05.50.21
-        (version=TLS1_3 cipher=AEAD-AES128-GCM-SHA256 bits=128/128);
-        Sat, 15 Jun 2019 05:50:21 -0700 (PDT)
-From:   "g.schlmm" <g.schlmm@googlemail.com>
-X-Google-Original-From: "g.schlmm" <g.schlmm@gmail.com>
-Subject: Re: rtw88: M.2 RTL8822BE not working - rfe 3 isn't supported
-To:     Tony Chuang <yhchuang@realtek.com>,
-        Stanislaw Gruszka <sgruszka@redhat.com>,
-        "g.schlmm" <g.schlmm@googlemail.com>
-Cc:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-References: <0d0159a8-a83e-cef3-fd32-4928a2301719@gmail.com>
- <20190612091330.GC2965@redhat.com>
- <F7CD281DE3E379468C6D07993EA72F84D180639E@RTITMBSVM04.realtek.com.tw>
-Openpgp: preference=signencrypt
-Message-ID: <16b3aeaf-db0c-4ab8-c66f-e96dd01fec53@gmail.com>
-Date:   Sat, 15 Jun 2019 14:50:15 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.7.0
+        id S1726626AbfFOODm (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 15 Jun 2019 10:03:42 -0400
+Received: from mail.kernel.org ([198.145.29.99]:35458 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726619AbfFOODm (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Sat, 15 Jun 2019 10:03:42 -0400
+Received: from localhost.localdomain (unknown [151.66.61.123])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 558B921473;
+        Sat, 15 Jun 2019 14:03:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1560607420;
+        bh=+o2JCYWCPKeptBk5RD6WN4/eRjLbYjoPthZU7Ycf3eg=;
+        h=From:To:Cc:Subject:Date:From;
+        b=znjpRaJLI5D8xHafWAgjVBAQ8yvoieUh686284J1Jv1cKw/o7uc5imCcQurUtFtYs
+         l4vr8I2uYdI6FtQoGlv1Qi2kQnN6JX409yimnn4siHYlpdZb01rJUyMtYu3ggfBjfM
+         KcWYfZ3ISmz4vc0Tnt3HCNdPsJMiAZsjkElriT9k=
+From:   Lorenzo Bianconi <lorenzo@kernel.org>
+To:     kvalo@codeaurora.org
+Cc:     nbd@nbd.name, lorenzo.bianconi@redhat.com,
+        linux-wireless@vger.kernel.org, sgruszka@redhat.com
+Subject: [PATCH v4 wireless-drivers] mt76: usb: fix rx A-MSDU support
+Date:   Sat, 15 Jun 2019 16:03:32 +0200
+Message-Id: <7d93cba766b5a0220c86fa900f9d29048d67e02c.1560607085.git.lorenzo@kernel.org>
+X-Mailer: git-send-email 2.21.0
 MIME-Version: 1.0
-In-Reply-To: <F7CD281DE3E379468C6D07993EA72F84D180639E@RTITMBSVM04.realtek.com.tw>
-Content-Type: text/plain; charset=windows-1252
-Content-Language: fr-CA
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 14.06.19 10:24, Tony Chuang wrote:
->> Subject: Re: rtw88: M.2 RTL8822BE not working - rfe 3 isn't supported
->>
->> Cc Tony
->>
->> On Sat, Jun 08, 2019 at 02:26:51PM +0200, g.schlmm wrote:
->>> my RTL8822BE M.2 card is not working with linux 5.2rc3
->>>
->>> the staging r8822be driver in linux 5.1 was working for this card
->>>
->>> from dmesg:
->>>> [    8.001186] rtw_pci 0000:04:00.0: rfe 3 isn't supported
->>>> [    8.003870] rtw_pci 0000:04:00.0: failed to setup chip efuse info
->>>> [    8.006405] rtw_pci 0000:04:00.0: failed to setup chip information
->>>
->>> lspci:
->>>> 04:00.0 Unassigned class [ff00]: Realtek Semiconductor Co., Ltd.
->> RTL8822BE 802.11a/b/g/n/ac WiFi adapter
->>>>         Subsystem: Lenovo RTL8822BE 802.11a/b/g/n/ac WiFi adapter
->>>>         Flags: fast devsel, IRQ 19
->>>>         I/O ports at c000 [size=256]
->>>>         Memory at 81200000 (64-bit, non-prefetchable) [size=64K]
->>>>         Capabilities: [40] Power Management version 3
->>>>         Capabilities: [50] MSI: Enable- Count=1/1 Maskable- 64bit+
->>>>         Capabilities: [70] Express Endpoint, MSI 00
->>>>         Capabilities: [100] Advanced Error Reporting
->>>>         Capabilities: [148] Device Serial Number
->> 00-e0-4c-ff-fe-b8-22-01
->>>>         Capabilities: [158] Latency Tolerance Reporting
->>>>         Capabilities: [160] L1 PM Substates
->>>>         Kernel modules: rtwpci
->>
-> 
-> Hi,
-> 
-> Please use the attached patch. And RFE type 3 has not been well tested,
-> I am not sure if the quality is expected. But it should work fine I guess.
-> If there is any further problems, just tell me, thanks.
-> 
-> Yan-Hsuan
-> 
+Commit f8f527b16db5 ("mt76: usb: use EP max packet aligned buffer sizes
+for rx") breaks A-MSDU support. When A-MSDU is enable the device can
+receive frames up to q->buf_size but they will be discarded in
+mt76u_process_rx_entry since there is no enough room for
+skb_shared_info. Fix the issue reallocating the skb and copying in the
+linear area the first 128B of the received frames and in the frag_list
+the remaining part
 
-Hello,
+Fixes: f8f527b16db5 ("mt76: usb: use EP max packet aligned buffer sizes for rx")
+Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+---
+Changes since v3:
+- drop patch 2/3 and 3/3
 
-Thanks for the patch. i applied it on top of 5.2rc4 and everything is
-playing nice so far.
+Changes since v2:
+- simplify mt76u_build_rx_skb
+- add patch 2/3: mt76u: introduce mt76u_ep data structure
+- align usb buffer size to usb max endpoint length
+- set buf_size to PAGE_SIZE even for sg case
 
-i use the card as a hotspot with hostapd
+Changes since v1:
+- do not allocate multiple page buffers but rely on fragmented skbs
+  if there is no enough space to manage the AMSDU rx packets
+---
+ drivers/net/wireless/mediatek/mt76/mt76.h |  1 +
+ drivers/net/wireless/mediatek/mt76/usb.c  | 46 ++++++++++++++++++-----
+ 2 files changed, 38 insertions(+), 9 deletions(-)
 
-the download speed changed from ~10Mbit/s (with the 5.1 staging driver)
-to ~100Mbit/s
+diff --git a/drivers/net/wireless/mediatek/mt76/mt76.h b/drivers/net/wireless/mediatek/mt76/mt76.h
+index 8ecbf81a906f..889b76deb703 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt76.h
++++ b/drivers/net/wireless/mediatek/mt76/mt76.h
+@@ -30,6 +30,7 @@
+ #define MT_TX_RING_SIZE     256
+ #define MT_MCU_RING_SIZE    32
+ #define MT_RX_BUF_SIZE      2048
++#define MT_SKB_HEAD_LEN     128
+ 
+ struct mt76_dev;
+ struct mt76_wcid;
+diff --git a/drivers/net/wireless/mediatek/mt76/usb.c b/drivers/net/wireless/mediatek/mt76/usb.c
+index bbaa1365bbda..dd90427b2d67 100644
+--- a/drivers/net/wireless/mediatek/mt76/usb.c
++++ b/drivers/net/wireless/mediatek/mt76/usb.c
+@@ -429,6 +429,42 @@ static int mt76u_get_rx_entry_len(u8 *data, u32 data_len)
+ 	return dma_len;
+ }
+ 
++static struct sk_buff *
++mt76u_build_rx_skb(void *data, int len, int buf_size)
++{
++	struct sk_buff *skb;
++
++	if (SKB_WITH_OVERHEAD(buf_size) < MT_DMA_HDR_LEN + len) {
++		struct page *page;
++
++		/* slow path, not enough space for data and
++		 * skb_shared_info
++		 */
++		skb = alloc_skb(MT_SKB_HEAD_LEN, GFP_ATOMIC);
++		if (!skb)
++			return NULL;
++
++		skb_put_data(skb, data + MT_DMA_HDR_LEN, MT_SKB_HEAD_LEN);
++		data += (MT_DMA_HDR_LEN + MT_SKB_HEAD_LEN);
++		page = virt_to_head_page(data);
++		skb_add_rx_frag(skb, skb_shinfo(skb)->nr_frags,
++				page, data - page_address(page),
++				len - MT_SKB_HEAD_LEN, buf_size);
++
++		return skb;
++	}
++
++	/* fast path */
++	skb = build_skb(data, buf_size);
++	if (!skb)
++		return NULL;
++
++	skb_reserve(skb, MT_DMA_HDR_LEN);
++	__skb_put(skb, len);
++
++	return skb;
++}
++
+ static int
+ mt76u_process_rx_entry(struct mt76_dev *dev, struct urb *urb)
+ {
+@@ -446,19 +482,11 @@ mt76u_process_rx_entry(struct mt76_dev *dev, struct urb *urb)
+ 		return 0;
+ 
+ 	data_len = min_t(int, len, data_len - MT_DMA_HDR_LEN);
+-	if (MT_DMA_HDR_LEN + data_len > SKB_WITH_OVERHEAD(q->buf_size)) {
+-		dev_err_ratelimited(dev->dev, "rx data too big %d\n", data_len);
+-		return 0;
+-	}
+-
+-	skb = build_skb(data, q->buf_size);
++	skb = mt76u_build_rx_skb(data, data_len, q->buf_size);
+ 	if (!skb)
+ 		return 0;
+ 
+-	skb_reserve(skb, MT_DMA_HDR_LEN);
+-	__skb_put(skb, data_len);
+ 	len -= data_len;
+-
+ 	while (len > 0 && nsgs < urb->num_sgs) {
+ 		data_len = min_t(int, len, urb->sg[nsgs].length);
+ 		skb_add_rx_frag(skb, skb_shinfo(skb)->nr_frags,
+-- 
+2.21.0
 
-very nice work!
