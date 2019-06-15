@@ -2,111 +2,100 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D2ABD46F51
-	for <lists+linux-wireless@lfdr.de>; Sat, 15 Jun 2019 11:40:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C417C46F5A
+	for <lists+linux-wireless@lfdr.de>; Sat, 15 Jun 2019 12:00:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726284AbfFOJkW (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 15 Jun 2019 05:40:22 -0400
-Received: from mx1.redhat.com ([209.132.183.28]:46348 "EHLO mx1.redhat.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725927AbfFOJkW (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 15 Jun 2019 05:40:22 -0400
-Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.phx2.redhat.com [10.5.11.11])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mx1.redhat.com (Postfix) with ESMTPS id 268B53082134;
-        Sat, 15 Jun 2019 09:40:21 +0000 (UTC)
-Received: from localhost (ovpn-204-44.brq.redhat.com [10.40.204.44])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 96707600CC;
-        Sat, 15 Jun 2019 09:40:18 +0000 (UTC)
-Date:   Sat, 15 Jun 2019 11:40:17 +0200
-From:   Stanislaw Gruszka <sgruszka@redhat.com>
-To:     Lorenzo Bianconi <lorenzo.bianconi@redhat.com>
-Cc:     Lorenzo Bianconi <lorenzo@kernel.org>, kvalo@codeaurora.org,
-        linux-wireless@vger.kernel.org, nbd@nbd.name
-Subject: Re: [PATCH v3 wireless-drivers 3/3] mt76: usb: do not always copy
- the first part of received frames
-Message-ID: <20190615094016.GA20197@redhat.com>
-References: <cover.1560461404.git.lorenzo@kernel.org>
- <1a9566c0a41ad0d940487a9d3f0008993c075ef2.1560461404.git.lorenzo@kernel.org>
- <20190614075303.GB3395@redhat.com>
- <20190614102247.GB2669@localhost.localdomain>
- <20190614110442.GA17298@redhat.com>
- <20190614124635.GD2669@localhost.localdomain>
+        id S1726289AbfFOKAN (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 15 Jun 2019 06:00:13 -0400
+Received: from mail-wm1-f66.google.com ([209.85.128.66]:35260 "EHLO
+        mail-wm1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725944AbfFOKAN (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Sat, 15 Jun 2019 06:00:13 -0400
+Received: by mail-wm1-f66.google.com with SMTP id c6so4542106wml.0
+        for <linux-wireless@vger.kernel.org>; Sat, 15 Jun 2019 03:00:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=Mf8bnwX+XcDVDtuj5IVbiX11VzU28F3msIAQcAlMbbg=;
+        b=rq/0GR4mxNIqx3Lw7QUXkv4KXvs8t8JTZtu9DKeRl7eqFuWlvUZAHx9gIigAE1BLph
+         eLcUeq9pplGUneqd06zo/jb/k+xGTS25vex9oqJeWvtPKmZAguTavm0amsh+839K2eGv
+         G1hssOOgwG4pw8sCtk+tZlry8M6xbE11oDtg136cPT/yzVcJa3KV7Vait41YBrf6jZXk
+         RS9EiJZO7haMqXFL7veVjFP6Rv9g1gb27JpTtVXrVU/N2iN+6L+rExpar+hgJ55obHa9
+         +PDPVTJAzcPDrRDe4Qu526g1w0/qQJaVqe43Z5WcIa0VkDP9HOOPZTM49PR8eTyBC9nJ
+         KUpw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=Mf8bnwX+XcDVDtuj5IVbiX11VzU28F3msIAQcAlMbbg=;
+        b=Kr3hmMaGRoSktvm9KAY2TzL96AQ256aIBmXxYGpZS7pfnAWeE18gV/So0ciaIB0fVq
+         eru4Wx6eDwRm8XySQJzNjvQCnSWYD5sCSU7Kj2tdI6n584eT0PacuRhvs2gFVHUMktfN
+         avtCtAjPU4EcF9jZ0/SBSS5PKuKINTC0J+z1pooCInpF9ggM/9Ub8BVdOncgOxUoNdFH
+         6CoIrFVYm9QxzFNFw0TSkT1tW2vPciC4Y+r8RP2kLqjKuFejfQxNB5oFisBfMrCG/0fp
+         r/gIpzqYZNg1EL7f9ntCH4Lhd8+GZD0N+L32DlSTUfmaiRluntDG+tCzDrOFNfMpOgyM
+         UQ/A==
+X-Gm-Message-State: APjAAAUIFcdQ2x8VK5rtaD3GkTOqC2Du+V84rK+3faNYZhBDvvlQVrNm
+        E/N4064v4cJs0WKvzha8hY5amj7skBg=
+X-Google-Smtp-Source: APXvYqym70kUvv7Zrrpom9mcumXtVvJrll81jxhqE4A5HV2CAJBmKz6xNa9ip+mY3es8bOHArFIOag==
+X-Received: by 2002:a7b:ca43:: with SMTP id m3mr11426882wml.45.1560592810838;
+        Sat, 15 Jun 2019 03:00:10 -0700 (PDT)
+Received: from debian64.daheim (pD9E2960F.dip0.t-ipconnect.de. [217.226.150.15])
+        by smtp.gmail.com with ESMTPSA id 18sm3968649wmg.43.2019.06.15.03.00.10
+        (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
+        Sat, 15 Jun 2019 03:00:10 -0700 (PDT)
+Received: from chuck by debian64.daheim with local (Exim 4.92)
+        (envelope-from <chunkeey@gmail.com>)
+        id 1hc5Tl-0003p4-Hv; Sat, 15 Jun 2019 12:00:09 +0200
+From:   Christian Lamparter <chunkeey@gmail.com>
+To:     linux-wireless@vger.kernel.org
+Cc:     Kalle Valo <kvalo@codeaurora.org>
+Subject: [PATCH] carl9170: remove dead branch in op_conf_tx callback
+Date:   Sat, 15 Jun 2019 12:00:08 +0200
+Message-Id: <20190615100009.14654-1-chunkeey@gmail.com>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20190614124635.GD2669@localhost.localdomain>
-User-Agent: Mutt/1.11.3 (2019-02-01)
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.11
-X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16 (mx1.redhat.com [10.5.110.42]); Sat, 15 Jun 2019 09:40:21 +0000 (UTC)
+Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Fri, Jun 14, 2019 at 02:46:36PM +0200, Lorenzo Bianconi wrote:
-> > > 
-> > > ack, right. I think patch 2/3 and 3/3 can go directly in Felix's tree
-> > > 
-> > > > 
-> > > > > +	int i, data_size;
-> > > > >  
-> > > > > +	data_size = rounddown(SKB_WITH_OVERHEAD(q->buf_size),
-> > > > > +			      dev->usb.in_ep[MT_EP_IN_PKT_RX].max_packet);
-> > > > >  	for (i = 0; i < nsgs; i++) {
-> > > > >  		struct page *page;
-> > > > >  		void *data;
-> > > > > @@ -302,7 +304,7 @@ mt76u_fill_rx_sg(struct mt76_dev *dev, struct mt76_queue *q, struct urb *urb,
-> > > > >  
-> > > > >  		page = virt_to_head_page(data);
-> > > > >  		offset = data - page_address(page);
-> > > > > -		sg_set_page(&urb->sg[i], page, q->buf_size, offset);
-> > > > > +		sg_set_page(&urb->sg[i], page, data_size, offset);
-> > > > <snip>
-> > > > > -	q->buf_size = dev->usb.sg_en ? MT_RX_BUF_SIZE : PAGE_SIZE;
-> > > > >  	q->ndesc = MT_NUM_RX_ENTRIES;
-> > > > > +	q->buf_size = PAGE_SIZE;
-> > > > > +
-> > > > 
-> > > > This should be associated with decrease of MT_SG_MAX_SIZE to value that
-> > > > is actually needed and currently this is 2 for 4k AMSDU.
-> > > 
-> > > MT_SG_MAX_SIZE is used even on tx side and I do not think we will end up with a
-> > > huge difference here
-> > 
-> > So use different value as argument for mt76u_fill_rx_sg() in
-> > mt76u_rx_urb_alloc(). After changing buf_size to PAGE_SIZE we will
-> > allocate 8 pages per rx queue entry, but only 2 pages will be used
-> > (with data_size change, 1 without data_size change). Or I'm wrong?
-> 
-> yes, it is right (we will use two pages with data_size change). Maybe better to
-> use 4 pages for each rx queue entry? (otherwise we will probably change it in
-> the future)
+This patch removes the error branch for (queue > ar->hw->queues).
+It is no longer needed anymore as the "queue" value is validated by
+cfg80211's parse_txq_params() before the driver code gets called.
 
-We should not allocate more than is required. If support for bigger
-rx AMSDUs will be added and announced in vht/ht capabilities to remote
-stations, then increase of number of segments will be needed.
+Some background:
+In the old days (linux 2.6 and early 3.x), the parse_txq_params()
+function did not verify the "queue" value. That's why these drivers
+had to do it.
 
-> > > > However I don't think allocating 2 pages to avoid ieee80211 header and SNAP
-> > > > copy is worth to do. For me best approach would be allocate 1 page for
-> > > > 4k AMSDU, 2 for 8k and 3 for 12k (still using sg, but without data_size
-> > > > change to avoid 32B copying).
-> > > 
-> > > From my point of view it is better to avoid copying if it is possible. Are you
-> > > sure there is no difference?
-> > 
-> > I do not understand what you mean by difference here.
-> 
-> tpt differences, not sure if there are any
+Signed-off-by: Christian Lamparter <chunkeey@gmail.com>
+---
+ drivers/net/wireless/ath/carl9170/main.c | 9 ++-------
+ 1 file changed, 2 insertions(+), 7 deletions(-)
 
-I would not expect any measurable difference in tpt nor in cpu usage
-either way.
+diff --git a/drivers/net/wireless/ath/carl9170/main.c b/drivers/net/wireless/ath/carl9170/main.c
+index 7f1bdea742b8..40a8054f8aa6 100644
+--- a/drivers/net/wireless/ath/carl9170/main.c
++++ b/drivers/net/wireless/ath/carl9170/main.c
+@@ -1387,13 +1387,8 @@ static int carl9170_op_conf_tx(struct ieee80211_hw *hw,
+ 	int ret;
+ 
+ 	mutex_lock(&ar->mutex);
+-	if (queue < ar->hw->queues) {
+-		memcpy(&ar->edcf[ar9170_qmap[queue]], param, sizeof(*param));
+-		ret = carl9170_set_qos(ar);
+-	} else {
+-		ret = -EINVAL;
+-	}
+-
++	memcpy(&ar->edcf[ar9170_qmap[queue]], param, sizeof(*param));
++	ret = carl9170_set_qos(ar);
+ 	mutex_unlock(&ar->mutex);
+ 	return ret;
+ }
+-- 
+2.20.1
 
-But I think, if some AMSDU subframe will be spited into two fragments,
-data most likely will need to be linearised/copied, at some point before
-passed to application, what will overcome any benefit of avoiding coping
-802.11 header. Thought, I don't think this somehow will be visible in
-benchmarking.
-
-Stanislaw
