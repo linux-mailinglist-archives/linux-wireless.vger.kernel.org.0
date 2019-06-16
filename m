@@ -2,80 +2,213 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 96E3947162
-	for <lists+linux-wireless@lfdr.de>; Sat, 15 Jun 2019 19:21:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CF8104738D
+	for <lists+linux-wireless@lfdr.de>; Sun, 16 Jun 2019 09:12:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725796AbfFORV0 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 15 Jun 2019 13:21:26 -0400
-Received: from mout.gmx.net ([212.227.17.21]:35697 "EHLO mout.gmx.net"
+        id S1725935AbfFPHMJ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 16 Jun 2019 03:12:09 -0400
+Received: from mail.kernel.org ([198.145.29.99]:49426 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725270AbfFORV0 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 15 Jun 2019 13:21:26 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
-        s=badeba3b8450; t=1560619281;
-        bh=CHLtpSwCk00f1BWbMejN+QhcdT7BoWQvNmaxe8ss8w8=;
-        h=X-UI-Sender-Class:Subject:From:To:References:Date:In-Reply-To;
-        b=QLm8bFm1BT2ofcsrlj+i0/ReGsiu81532JJSemPezMiCeBtIKsiOPXxQD0y0RY75r
-         8UhrEnUFQ4pa3kxkenyIcIGEThs6njnR6n+ku7jDnePslJtOaAEStgOKRkrS5KapxS
-         kSogXeu2sllmkyzDPo6EeU8FkagcBNPBTXyRYypI=
-X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
-Received: from [192.168.1.162] ([37.4.249.160]) by mail.gmx.com (mrgmx104
- [212.227.17.168]) with ESMTPSA (Nemesis) id 1Mi2O1-1iFfua1sNl-00e5m1; Sat, 15
- Jun 2019 19:21:21 +0200
-Subject: Re: wpa_supplicant 2.8 fails in brcmf_cfg80211_set_pmk
-From:   Stefan Wahren <wahrenst@gmx.net>
-To:     Arend van Spriel <arend.vanspriel@broadcom.com>,
-        Franky Lin <franky.lin@broadcom.com>,
-        Hante Meuleman <hante.meuleman@broadcom.com>,
-        Chi-Hsien Lin <chi-hsien.lin@cypress.com>,
-        Wright Feng <wright.feng@cypress.com>,
-        linux-wireless@vger.kernel.org,
-        brcm80211-dev-list.pdl@broadcom.com, brcm80211-dev-list@cypress.com
-References: <06f7bda7-eeaf-536b-a583-7c9bc5f681f5@gmx.net>
-Message-ID: <9da02861-9151-9700-2c09-b312d74155fa@gmx.net>
-Date:   Sat, 15 Jun 2019 19:21:20 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.7.0
+        id S1725860AbfFPHMJ (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Sun, 16 Jun 2019 03:12:09 -0400
+Received: from sol.localdomain (c-24-5-143-220.hsd1.ca.comcast.net [24.5.143.220])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 42C67216C8;
+        Sun, 16 Jun 2019 07:12:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1560669128;
+        bh=YaXvzbrJb2MW/D9EmOptLHN028VlAypqNsKcvcj9HiY=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=xv1AsSfIvwmm1hFnfbpdy0ZbONW2LwTvSEMgFEP+QWWpnxBChCU5wXnDuLeJNH1c1
+         yZU/K1Nl4tF0Qgw1CGounBLRTVCMGJ6NyMoXB7/8knkfypN40gmQfvSEEUle/s8WYw
+         aZBx4zm1DRZmOqS6Rdp9dtnr3jFzCjk0k0LJpBBo=
+Date:   Sun, 16 Jun 2019 00:12:06 -0700
+From:   Eric Biggers <ebiggers@kernel.org>
+To:     Ard Biesheuvel <ard.biesheuvel@linaro.org>
+Cc:     linux-wireless@vger.kernel.org, kvalo@codeaurora.org,
+        linux-crypto@vger.kernel.org, herbert@gondor.apana.org.au
+Subject: Re: [PATCH] wireless: airo: switch to skcipher interface
+Message-ID: <20190616071206.GB698@sol.localdomain>
+References: <20190614093603.22771-1-ard.biesheuvel@linaro.org>
 MIME-Version: 1.0
-In-Reply-To: <06f7bda7-eeaf-536b-a583-7c9bc5f681f5@gmx.net>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Content-Language: en-US
-X-Provags-ID: V03:K1:eEfnHjyNFYN0no3VvvnUj1kwyW4GGg8+CXeDwEyuAWLlxhjehF/
- TMAJyDtAmH4XcWHG+VcfiyHF4uJz9InRLLUuk+LsOLBFcsaFkSW6uSwb6HG1eVFY6R7QC/1
- A2kCxHYW2AJwf50XhLGkw3Zs4Zo466NB8HdCdmpRvoHk9pPl5sD4XsCPwQmiwYX+Ql7gY5T
- J7Yqpk1bmJqrk/4yU9s5Q==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:tuXSV8w7uZw=:UiGaM8AHWOiJpPZbIFYi9P
- a3NIdsLbCJV67N1INsFC1uMCWTjZNsp13gZjsXwiaw/zhZaYups/6v0U765bdBmOsMVvYYTFq
- eVaT+bh6GQanOxHViheHj2V3N7dLPqtuW/ORJkxeeRW9SR9VbX+yPUU+vyxh6k6QSm9jsFk57
- N2/Nukq8gEbeS3cHjurUYE4yrxN90qDOyvQtxmTbaBHMdjpsGJGO1LuQ/r3FPhuofakR5iur/
- roBO053TV7kaCWOhjtE/G57PAex4UPxf8p0iKa4ycLiv6gLAwu3dtLfvuhW6pQocwUMyGctkC
- xXk1yoLYSgId3hTsUBAFQMHXLbnZ5ptgZZVM2y6oTRretceZ2FhwCRXsaw6UCm3W5/Zd/ewpf
- ae2dBTHfx3k4qW3EMpNJq6vaBL0VgHB+/5uOT2O1GxTAjtmXe/x277bYCB44Hq+0jxnuOD7jY
- 5WwJ2bhq7gvFaFj17zh4XE32ggUgL4XYI924nLx/5gTLN7ZihhbfvTslflf4mPm+WncM9Bx4W
- Shi0oYUHnVyegotm2rpSGwVcDXDNYbD5fT35Z3z/2593Fk1urNzQYI/MlEdxHFNJeZ1itGvd4
- xWtIodS2mM9JLm/kKdScaBsaT5PnLXvCajvlciGRuW6vGgHAib8B1oiEPMf0rcXg2wcQhy2Wi
- k+DbgqGKX8e0xJc1a+AjB+gP8REGJNURaV/Xl+f4l1ykCfr7wRS2BCQdoxpCb5QrP/SdVgigw
- jVBzMZed28UEhFU3trQXGfpF0DhP1omQuhEjk13lDKOM6T7cTBAgzfKMMTr0AiGNwji6vNkQe
- UQ8obdGptdCIshsx35oeEUTjqzCZfcTgfa9PCMFJ4gtoKm0wVDlesx+u0Uq2UX+h9AuvjJhAm
- pH+fyZIbSGzmms0Tba4CC8vtLnIecB4stKR6tMDuieztAyqytsdZdthiibhRXsuiU+TWeJxd5
- BjroUmsdu8fJOaEujC3mkQJUwC91RJmyLARH/igRac+Q9RTRuGwyK
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20190614093603.22771-1-ard.biesheuvel@linaro.org>
+User-Agent: Mutt/1.12.0 (2019-05-25)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Am 15.06.19 um 19:01 schrieb Stefan Wahren:
-> Hi,
->
-> i was able to reproduce an (maybe older issue) with 4-way handshake
-> offloading for 802.1X in the brcmfmac driver. My setup consists of
-> Raspberry Pi 3 B (current linux-next, arm64/defconfig) on STA side and a
-> Raspberry Pi 3 A+ (Linux 4.19) on AP side.
+On Fri, Jun 14, 2019 at 11:36:03AM +0200, Ard Biesheuvel wrote:
+> The AIRO driver applies a ctr(aes) on a buffer of considerable size
+> (2400 bytes), and instead of invoking the crypto API to handle this
+> in its entirety, it open codes the counter manipulation and invokes
+> the AES block cipher directly.
+> 
+> Let's fix this, by switching to the sync skcipher API instead.
+> 
+> Signed-off-by: Ard Biesheuvel <ard.biesheuvel@linaro.org>
+> ---
+> NOTE: build tested only, since I don't have the hardware
+> 
+>  drivers/net/wireless/cisco/airo.c | 57 ++++++++++----------
+>  1 file changed, 27 insertions(+), 30 deletions(-)
+> 
 
-Looks like Raspberry Pi isn't the only affected platform [3], [4].
+Need to also select CRYPTO_CTR in drivers/net/wireless/cisco/Kconfig under
+AIRO_CS, and I think also CRYPTO_BLKCIPHER under AIRO.
 
-[3] - https://bugzilla.redhat.com/show_bug.cgi?id=3D1665608
-[4] - https://bugzilla.kernel.org/show_bug.cgi?id=3D202521
+> diff --git a/drivers/net/wireless/cisco/airo.c b/drivers/net/wireless/cisco/airo.c
+> index 3f5a14112c6b..2d29ad10505b 100644
+> --- a/drivers/net/wireless/cisco/airo.c
+> +++ b/drivers/net/wireless/cisco/airo.c
+> @@ -49,6 +49,9 @@
+>  #include <linux/kthread.h>
+>  #include <linux/freezer.h>
+>  
+> +#include <crypto/aes.h>
+> +#include <crypto/skcipher.h>
+> +
+>  #include <net/cfg80211.h>
+>  #include <net/iw_handler.h>
+>  
+> @@ -951,7 +954,7 @@ typedef struct {
+>  } mic_statistics;
+>  
+>  typedef struct {
+> -	u32 coeff[((EMMH32_MSGLEN_MAX)+3)>>2];
+> +	__be32 coeff[((EMMH32_MSGLEN_MAX)+3)>>2];
+>  	u64 accum;	// accumulated mic, reduced to u32 in final()
+>  	int position;	// current position (byte offset) in message
+>  	union {
+> @@ -1216,7 +1219,7 @@ struct airo_info {
+>  	struct iw_spy_data	spy_data;
+>  	struct iw_public_data	wireless_data;
+>  	/* MIC stuff */
+> -	struct crypto_cipher	*tfm;
+> +	struct crypto_sync_skcipher	*tfm;
+>  	mic_module		mod[2];
+>  	mic_statistics		micstats;
+>  	HostRxDesc rxfids[MPI_MAX_FIDS]; // rx/tx/config MPI350 descriptors
+> @@ -1291,14 +1294,14 @@ static int flashrestart(struct airo_info *ai,struct net_device *dev);
+>  static int RxSeqValid (struct airo_info *ai,miccntx *context,int mcast,u32 micSeq);
+>  static void MoveWindow(miccntx *context, u32 micSeq);
+>  static void emmh32_setseed(emmh32_context *context, u8 *pkey, int keylen,
+> -			   struct crypto_cipher *tfm);
+> +			   struct crypto_sync_skcipher *tfm);
+>  static void emmh32_init(emmh32_context *context);
+>  static void emmh32_update(emmh32_context *context, u8 *pOctets, int len);
+>  static void emmh32_final(emmh32_context *context, u8 digest[4]);
+>  static int flashpchar(struct airo_info *ai,int byte,int dwelltime);
+>  
+>  static void age_mic_context(miccntx *cur, miccntx *old, u8 *key, int key_len,
+> -			    struct crypto_cipher *tfm)
+> +			    struct crypto_sync_skcipher *tfm)
+>  {
+>  	/* If the current MIC context is valid and its key is the same as
+>  	 * the MIC register, there's nothing to do.
+> @@ -1359,7 +1362,7 @@ static int micsetup(struct airo_info *ai) {
+>  	int i;
+>  
+>  	if (ai->tfm == NULL)
+> -		ai->tfm = crypto_alloc_cipher("aes", 0, 0);
+> +		ai->tfm = crypto_alloc_sync_skcipher("ctr(aes)", 0, 0);
+>  
+>          if (IS_ERR(ai->tfm)) {
+>                  airo_print_err(ai->dev->name, "failed to load transform for AES");
+> @@ -1624,37 +1627,31 @@ static void MoveWindow(miccntx *context, u32 micSeq)
+>  
+>  /* mic accumulate */
+>  #define MIC_ACCUM(val)	\
+> -	context->accum += (u64)(val) * context->coeff[coeff_position++];
+> -
+> -static unsigned char aes_counter[16];
+> +	context->accum += (u64)(val) * be32_to_cpu(context->coeff[coeff_position++]);
 
+You could alternatively call be32_to_cpu_array() after the AES encryption.
+But this works too.
+
+>  
+>  /* expand the key to fill the MMH coefficient array */
+>  static void emmh32_setseed(emmh32_context *context, u8 *pkey, int keylen,
+> -			   struct crypto_cipher *tfm)
+> +			   struct crypto_sync_skcipher *tfm)
+>  {
+>    /* take the keying material, expand if necessary, truncate at 16-bytes */
+>    /* run through AES counter mode to generate context->coeff[] */
+>    
+> -	int i,j;
+> -	u32 counter;
+> -	u8 *cipher, plain[16];
+> -
+> -	crypto_cipher_setkey(tfm, pkey, 16);
+> -	counter = 0;
+> -	for (i = 0; i < ARRAY_SIZE(context->coeff); ) {
+> -		aes_counter[15] = (u8)(counter >> 0);
+> -		aes_counter[14] = (u8)(counter >> 8);
+> -		aes_counter[13] = (u8)(counter >> 16);
+> -		aes_counter[12] = (u8)(counter >> 24);
+> -		counter++;
+> -		memcpy (plain, aes_counter, 16);
+> -		crypto_cipher_encrypt_one(tfm, plain, plain);
+> -		cipher = plain;
+> -		for (j = 0; (j < 16) && (i < ARRAY_SIZE(context->coeff)); ) {
+> -			context->coeff[i++] = ntohl(*(__be32 *)&cipher[j]);
+> -			j += 4;
+> -		}
+> -	}
+> +	SYNC_SKCIPHER_REQUEST_ON_STACK(req, tfm);
+> +	struct scatterlist dst, src;
+> +	u8 iv[AES_BLOCK_SIZE] = {};
+> +	int ret;
+> +
+> +	crypto_sync_skcipher_setkey(tfm, pkey, 16);
+> +
+> +	sg_init_one(&dst, context->coeff, sizeof(context->coeff));
+> +	sg_init_one(&src, page_address(ZERO_PAGE(0)), sizeof(context->coeff));
+
+Should add:
+
+	BUILD_BUG_ON(sizeof(context->coeff) > PAGE_SIZE);
+
+Or alternatively, instead of using ZERO_PAGE, just memset() the buffer to zero
+and encrypt it in-place.  That would be less fragile.
+
+> +
+> +	skcipher_request_set_sync_tfm(req, tfm);
+> +	skcipher_request_set_callback(req, 0, NULL, NULL);
+> +	skcipher_request_set_crypt(req, &src, &dst, sizeof(context->coeff), iv);
+> +
+> +	ret = crypto_skcipher_encrypt(req);
+> +	WARN_ON_ONCE(ret);
+>  }
+>  
+>  /* prepare for calculation of a new mic */
+> @@ -2415,7 +2412,7 @@ void stop_airo_card( struct net_device *dev, int freeres )
+>  				ai->shared, ai->shared_dma);
+>  		}
+>          }
+> -	crypto_free_cipher(ai->tfm);
+> +	crypto_free_sync_skcipher(ai->tfm);
+>  	del_airo_dev(ai);
+>  	free_netdev( dev );
+>  }
+> -- 
+> 2.20.1
+> 
+
+Otherwise this patch looks correct to me.
+
+The actual crypto in this driver, on the other hand, looks very outdated and
+broken.  Apparently it's implementing some Cisco proprietary extension to WEP
+that uses a universal hashing based MAC, where the hash key is generated from
+AES-CTR.  But the MAC is only 32 bits, and the universal hash (MMH) is
+implemented incorrectly: there's an off-by-one error in emmh32_final() in the
+code that is supposed to be an optimized version of 'sum % ((1ULL << 32) + 15)'.
+
+Do we know whether anyone is actually using this, or is this just another old
+driver that's sitting around unused?
+
+- Eric
