@@ -2,29 +2,28 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 18C1D473A3
-	for <lists+linux-wireless@lfdr.de>; Sun, 16 Jun 2019 09:33:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1418A473A5
+	for <lists+linux-wireless@lfdr.de>; Sun, 16 Jun 2019 09:33:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726231AbfFPHd3 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 16 Jun 2019 03:33:29 -0400
-Received: from alexa-out-ams-02.qualcomm.com ([185.23.61.163]:60354 "EHLO
+        id S1726311AbfFPHdz (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 16 Jun 2019 03:33:55 -0400
+Received: from alexa-out-ams-02.qualcomm.com ([185.23.61.163]:59666 "EHLO
         alexa-out-ams-02.qualcomm.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1725992AbfFPHd3 (ORCPT
+        by vger.kernel.org with ESMTP id S1725992AbfFPHdz (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 16 Jun 2019 03:33:29 -0400
+        Sun, 16 Jun 2019 03:33:55 -0400
 Received: from ironmsg02-ams.qualcomm.com ([10.251.56.3])
-  by alexa-out-ams-02.qualcomm.com with ESMTP; 16 Jun 2019 09:26:14 +0200
-X-IronPort-AV: E=McAfee;i="6000,8403,9289"; a="8499837"
+  by alexa-out-ams-02.qualcomm.com with ESMTP; 16 Jun 2019 09:26:15 +0200
+X-IronPort-AV: E=McAfee;i="6000,8403,9289"; a="8499838"
 Received: from lx-merez1.mea.qualcomm.com ([10.18.173.103])
   by ironmsg02-ams.qualcomm.com with ESMTP; 16 Jun 2019 09:26:14 +0200
 From:   Maya Erez <merez@codeaurora.org>
 To:     Kalle Valo <kvalo@codeaurora.org>
-Cc:     Alexei Avshalom Lazar <ailizaro@codeaurora.org>,
-        linux-wireless@vger.kernel.org, wil6210@qti.qualcomm.com,
-        Maya Erez <merez@codeaurora.org>
-Subject: [PATCH 07/11] wil6210: update cid boundary check of wil_find_cid/_by_idx()
-Date:   Sun, 16 Jun 2019 10:26:03 +0300
-Message-Id: <1560669967-23706-8-git-send-email-merez@codeaurora.org>
+Cc:     Maya Erez <merez@codeaurora.org>, linux-wireless@vger.kernel.org,
+        wil6210@qti.qualcomm.com
+Subject: [PATCH 08/11] wil6210: publish max_msdu_size to FW on BCAST ring
+Date:   Sun, 16 Jun 2019 10:26:04 +0300
+Message-Id: <1560669967-23706-9-git-send-email-merez@codeaurora.org>
 X-Mailer: git-send-email 1.9.1
 In-Reply-To: <1560669967-23706-1-git-send-email-merez@codeaurora.org>
 References: <1560669967-23706-1-git-send-email-merez@codeaurora.org>
@@ -33,65 +32,26 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Alexei Avshalom Lazar <ailizaro@codeaurora.org>
+Set max_msdu_size in WMI_BCAST_DESC_RING_ADD_CMD to allow FW
+to optimize the buffers allocation for bcast packets.
 
-The return value of wil_find_cid()/wil_find_cid_by_idx() is
-validated with the lower boundary value.
-Check the upper boundary value as well.
-
-Signed-off-by: Alexei Avshalom Lazar <ailizaro@codeaurora.org>
 Signed-off-by: Maya Erez <merez@codeaurora.org>
 ---
- drivers/net/wireless/ath/wil6210/cfg80211.c | 6 +++---
- drivers/net/wireless/ath/wil6210/main.c     | 4 ++--
- 2 files changed, 5 insertions(+), 5 deletions(-)
+ drivers/net/wireless/ath/wil6210/wmi.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/wireless/ath/wil6210/cfg80211.c b/drivers/net/wireless/ath/wil6210/cfg80211.c
-index 1a4223f..cd41a0b 100644
---- a/drivers/net/wireless/ath/wil6210/cfg80211.c
-+++ b/drivers/net/wireless/ath/wil6210/cfg80211.c
-@@ -380,8 +380,8 @@ static int wil_cfg80211_get_station(struct wiphy *wiphy,
- 
- 	wil_dbg_misc(wil, "get_station: %pM CID %d MID %d\n", mac, cid,
- 		     vif->mid);
--	if (cid < 0)
--		return cid;
-+	if (!wil_cid_valid(wil, cid))
-+		return -ENOENT;
- 
- 	rc = wil_cid_fill_sinfo(vif, cid, sinfo);
- 
-@@ -417,7 +417,7 @@ static int wil_cfg80211_dump_station(struct wiphy *wiphy,
- 	int rc;
- 	int cid = wil_find_cid_by_idx(wil, vif->mid, idx);
- 
--	if (cid < 0)
-+	if (!wil_cid_valid(wil, cid))
- 		return -ENOENT;
- 
- 	ether_addr_copy(mac, wil->sta[cid].addr);
-diff --git a/drivers/net/wireless/ath/wil6210/main.c b/drivers/net/wireless/ath/wil6210/main.c
-index f7b9e6b..173561f 100644
---- a/drivers/net/wireless/ath/wil6210/main.c
-+++ b/drivers/net/wireless/ath/wil6210/main.c
-@@ -340,7 +340,7 @@ static void _wil6210_disconnect_complete(struct wil6210_vif *vif,
- 		wil_dbg_misc(wil,
- 			     "Disconnect complete %pM, CID=%d, reason=%d\n",
- 			     bssid, cid, reason_code);
--		if (cid >= 0) /* disconnect 1 peer */
-+		if (wil_cid_valid(wil, cid)) /* disconnect 1 peer */
- 			wil_disconnect_cid_complete(vif, cid, reason_code);
- 	} else { /* all */
- 		wil_dbg_misc(wil, "Disconnect complete all\n");
-@@ -452,7 +452,7 @@ static void _wil6210_disconnect(struct wil6210_vif *vif, const u8 *bssid,
- 		cid = wil_find_cid(wil, vif->mid, bssid);
- 		wil_dbg_misc(wil, "Disconnect %pM, CID=%d, reason=%d\n",
- 			     bssid, cid, reason_code);
--		if (cid >= 0) /* disconnect 1 peer */
-+		if (wil_cid_valid(wil, cid)) /* disconnect 1 peer */
- 			wil_disconnect_cid(vif, cid, reason_code);
- 	} else { /* all */
- 		wil_dbg_misc(wil, "Disconnect all\n");
+diff --git a/drivers/net/wireless/ath/wil6210/wmi.c b/drivers/net/wireless/ath/wil6210/wmi.c
+index 298c918..cacafab 100644
+--- a/drivers/net/wireless/ath/wil6210/wmi.c
++++ b/drivers/net/wireless/ath/wil6210/wmi.c
+@@ -3835,6 +3835,7 @@ int wil_wmi_bcast_desc_ring_add(struct wil6210_vif *vif, int ring_id)
+ 			.ring_size = cpu_to_le16(ring->size),
+ 			.ring_id = ring_id,
+ 		},
++		.max_msdu_size = cpu_to_le16(wil_mtu2macbuf(mtu_max)),
+ 		.status_ring_id = wil->tx_sring_idx,
+ 		.encap_trans_type = WMI_VRING_ENC_TYPE_802_3,
+ 	};
 -- 
 1.9.1
 
