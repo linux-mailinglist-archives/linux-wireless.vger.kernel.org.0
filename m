@@ -2,77 +2,73 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 22CFB47A6A
-	for <lists+linux-wireless@lfdr.de>; Mon, 17 Jun 2019 09:07:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EAF5D47AE7
+	for <lists+linux-wireless@lfdr.de>; Mon, 17 Jun 2019 09:28:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726047AbfFQHG4 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 17 Jun 2019 03:06:56 -0400
-Received: from s3.sipsolutions.net ([144.76.43.62]:33758 "EHLO
-        sipsolutions.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725778AbfFQHG4 (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 17 Jun 2019 03:06:56 -0400
-Received: by sipsolutions.net with esmtpsa (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <johannes@sipsolutions.net>)
-        id 1hcljA-0000UW-Sh; Mon, 17 Jun 2019 09:06:53 +0200
-Message-ID: <e13d86030df7a5222ee144d85bbeec400ed8fa07.camel@sipsolutions.net>
-Subject: Re: [PATCH v3] {nl,mac}80211: allow 4addr AP operation on crypto
- controlled devices
-From:   Johannes Berg <johannes@sipsolutions.net>
-To:     Stefan Lippers-Hollmann <s.l-h@gmx.de>
-Cc:     Tom Psyborg <pozega.tomislav@gmail.com>,
-        Manikanta Pubbisetty <mpubbise@codeaurora.org>,
-        linux-wireless@vger.kernel.org
-Date:   Mon, 17 Jun 2019 09:06:51 +0200
-In-Reply-To: <20190617070747.562b9388@mir> (sfid-20190617_070759_741392_4A382985)
-References: <1557307533-5795-1-git-send-email-mpubbise@codeaurora.org>
-         <fd3addc01fc3f5362dba5771ee82659cf01c195b.camel@sipsolutions.net>
-         <c8484254-f4f7-9955-e3f8-8a423cc6c325@codeaurora.org>
-         <CAKR_QV+dVx+LK1HyCo6CQZQ7ZX_u6ON0hEH5adNiJTB+XaP3WA@mail.gmail.com>
-         <dc9039be42df8d241b14d4f673f3c472dc113991.camel@sipsolutions.net>
-         <20190617070747.562b9388@mir> (sfid-20190617_070759_741392_4A382985)
-Content-Type: text/plain; charset="UTF-8"
-X-Mailer: Evolution 3.28.5 (3.28.5-2.fc28) 
-Mime-Version: 1.0
-Content-Transfer-Encoding: 7bit
+        id S1726642AbfFQH2s (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 17 Jun 2019 03:28:48 -0400
+Received: from slot0.nejknio.cf ([89.32.41.233]:44686 "EHLO slot0.nejknio.cf"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726557AbfFQH2s (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 17 Jun 2019 03:28:48 -0400
+DKIM-Signature: v=1; a=rsa-sha1; c=relaxed/relaxed; s=dkim; d=nejknio.cf;
+ h=Content-Type:MIME-Version:Content-Transfer-Encoding:Content-Description:Subject:To:From:Date:Reply-To:Message-ID; i=trade1@nejknio.cf;
+ bh=73Xs4LxjK+lP+h5mKCyFyWTpkoQ=;
+ b=Q1p2oV7pTSDEZkMlWY+UuXSeA8YSp+hoqCmbkYojBl4qmXORmx27pxGKCiXkWFwcmdAley3XRAQ+
+   bapUOwp0gKdSr5ojvnaALKkl6ax8oq7CJiV48uB0NX7Qtk/87nml5SY40s0pjZkS3OFKkCN9JAWW
+   HCyqoy72UNcgXVQLuyB8us0UHYZ1iOikR0kIFw8PS7t4Kv2HzcYsimEHWGVnzjoSfozIj/XCNpXe
+   gAPXBGgjhcnqISgQ/vYEJJBv3PykqWlMar0dddT99XkaAHbTdrSoqdoFD90iGLBUfOI0WgIZTyp/
+   A4Pw98CaPvNwaU3RAfqGsOZVMoL8D6ib0/uqPw==
+DomainKey-Signature: a=rsa-sha1; c=nofws; q=dns; s=dkim; d=nejknio.cf;
+ b=Hs8gETmkLGnp/D7odQkF99gouR/P4UPp9e4MSaCC5Sd1qZ6t6Tu+tYJBJ5f9hPCEwdPYKYFTuvk8
+   n3KZ6me/PMx4AjqVRtur7vF5D4hq8wmLjC++dqq7gFYVBq8E5N7O3BxLV0DMFhtll+yIyOHoeXAK
+   4qPVkOP8W7c1A60ulCvP+vPI8zc8ACF/x9iT1FlSQkGF7tHhARoXONec2kUa0wxrx+z0aCOsKjb5
+   i0eVpp4/UMYRx2r/esGNoOdV/z1DiG8Vw78Yva04GRXR9HtxBc+OgjaDH1w3pOc0kMYreV+rClJs
+   2GQd56M7CWH9+MaTRs7Tp6pNLxcGr5XQ+Nz0Bg==;
+Content-Type: text/plain; charset="iso-8859-1"
+MIME-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Description: Mail message body
+Subject: PRODUCT INQUIRY FOR EXPORT SHIPMENT
+To:     Recipients <trade1@nejknio.cf>
+From:   "Mark Maths" <trade1@nejknio.cf>
+Date:   Mon, 17 Jun 2019 10:08:34 +0300
+Reply-To: purchase_m.maths@aol.com
+Message-ID: <0.0.1.D50.1D524DB6EE58518.0@slot0.nejknio.cf>
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Mon, 2019-06-17 at 07:07 +0200, Stefan Lippers-Hollmann wrote:
-> Hi
-> 
-> On 2019-06-12, Johannes Berg wrote:
-> > On Thu, 2019-06-06 at 20:41 +0200, Tom Psyborg wrote:
-> > > 
-> > > Applying this patch instead of v1 broke WDS operation between two
-> > > Litebeam AC Gen2 devices:
-> > 
-> > I'm confused, and not even sure which version I applied now.
-> > 
-> > Manikanta, can you please check this and which version I have and which
-> > changes I might need?
-> 
-> I've tested (and left it running/ monitored) for two days without
-> any problems between QCA9984 (ZyXEL nbg6817/ ipq8065, WDS-AP, affected
-> before 33d915d9e8ce811d8958915ccd18d71a66c7c495 "{nl,mac}80211: allow
-> 4addr AP operation on crypto controlled devices" went in) and AR9340
-> (TP-Link TL-WDR3600/ AR9344, WDS-Client, not affected by this issue),
-> both under current (~2 days old) OpenWrt master[1] (ipq806x/ ath79,
-> respectively). This patch is working fine and fixes the previous
-> problems with 4addr on ath10k (QCA9984).
+Dear Sales team,
+ =
 
-"This patch" is v3 then, presumably? I just checked, and it looks like I
-indeed applied v3.
+In furtherance to our market research, we have reviewed all your products t=
+ypes and we have finally interested in your product for our market here in =
 
-So basically you're saying it works as affected, since you were
-previously affected by the unavailability of 4addr interfaces on ath10k
-hardware, which are now available, right?
 
-Tom, I notice you're using a very old base kernel ("backports-4.19.32-
-1") - are you sure you were even able to apply this patch correctly?
+United State for your production. We introduce ourselves as Emilxa Tram SRL=
+, A general group of company located in the United State. =
 
-johannes
 
+We are sourcing for new suppliers from your location =
+
+
+Kindly advice us if you accept new purchase orders, I will forward our PO f=
+or urgent order.
+
+Waiting for your response to send order. Reply to ( purchase_m.maths@aol.co=
+m)
+
+Best regards.
+Mark Maths
+Company Address:
+Emilxa Tram SRL Company Limited
+P.O. Box 978
+Road Town
+Tortola
+British Virgin Islands
+Contact information:
+Tel: +1 (284) 493 7235
+Email: purchase_m.maths@aol.com
+https://meridianbvi.com/contact-us/
