@@ -2,97 +2,151 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 666A7490B6
-	for <lists+linux-wireless@lfdr.de>; Mon, 17 Jun 2019 22:02:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E45EF49568
+	for <lists+linux-wireless@lfdr.de>; Tue, 18 Jun 2019 00:47:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728777AbfFQUC0 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 17 Jun 2019 16:02:26 -0400
-Received: from mail-lj1-f195.google.com ([209.85.208.195]:34038 "EHLO
-        mail-lj1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726568AbfFQUCZ (ORCPT
+        id S1728525AbfFQWr2 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 17 Jun 2019 18:47:28 -0400
+Received: from merlin.infradead.org ([205.233.59.134]:40474 "EHLO
+        merlin.infradead.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725839AbfFQWr1 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 17 Jun 2019 16:02:25 -0400
-Received: by mail-lj1-f195.google.com with SMTP id p17so10611061ljg.1;
-        Mon, 17 Jun 2019 13:02:24 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=el/lmx3URjPIgcoee+SzjF2RP1q5hM7+uu7Bj9EF3vk=;
-        b=tZ5OnQajpIZ9SBlSH6SWDGOMWySXm6XR9I7pogLt4tUnlyVOoBR1TPYGl6VdN9GsnH
-         +yhxHl1pAjCN3NO1qyVh9p65Q9oyiWJzkiQDlUJ8bHkYT2dE5rGB6/Po4IK9zp+Gdm4w
-         gHoahmZFLuAndWzPYtY6ovrhldh7xTwjMmtmLkjzJq1N0vAG8Q7/XIsJUuO/QwDDybFC
-         LCS5dhLZJ1KgbN5a29e/6JJyk65JfzbskDJc23CsxVVyo6c5/qRwsff4acnhMBXzZ/t7
-         CpoklaFA3H4577VW265ZeIdm0DTxR8i2FhnbCyPOeK3IFNz1+jYrJhvET6pUUk6l5IQK
-         qiXg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=el/lmx3URjPIgcoee+SzjF2RP1q5hM7+uu7Bj9EF3vk=;
-        b=PHI30DWZhRc8Ac/rdHstDITBuTEHAmBbNNOJjxovIPGm/fBT/WhSmZwlcBNH4xEWTR
-         68lSGTHwCEHFcvJzf49TpwXO4RITe5eIBbhc2fBTV0acHHt6wRvngbsyLBuNxqIDxi+U
-         iOey3Mqvr0y9DJuMZv8vUdJR3JwbHNkTzUH8EMzCDU1dwOEBTqBLab9Al53VZwc1aT9W
-         btIOQtA5SjR2zPLduITFkb9Zlu5Ojjy2+SwXGLqc77yEl+xuUFaeMUMCng+/NhkUautE
-         XiLDsk7AfCFgaUHOoFzzvfORPAZTS7sVtpGJqk3h9ncRcYK4z8ZRDweJLTu9tYB39zOy
-         qskA==
-X-Gm-Message-State: APjAAAXclNp9hEgP3eqZ+wOiKc8MLw/Lur2avFo1itYCTuEK+dUAW4tw
-        Miq61OC1g1TFtSD77Ml6epg=
-X-Google-Smtp-Source: APXvYqytxTqltTU/5ZwjjxHJxPCf68q2+FZPL9kg5tufSXQY1XiNTsj5qLJJNsms3tadjNQ6qNKUfQ==
-X-Received: by 2002:a2e:6313:: with SMTP id x19mr52311170ljb.25.1560801743538;
-        Mon, 17 Jun 2019 13:02:23 -0700 (PDT)
-Received: from localhost.localdomain (81-233-89-221-no75.tbcn.telia.com. [81.233.89.221])
-        by smtp.gmail.com with ESMTPSA id j90sm2245780ljb.29.2019.06.17.13.02.22
-        (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
-        Mon, 17 Jun 2019 13:02:23 -0700 (PDT)
-From:   Erik Stromdahl <erik.stromdahl@gmail.com>
-To:     johannes@sipsolutions.net, kvalo@codeaurora.org,
-        davem@davemloft.net, linux-wireless@vger.kernel.org,
-        ath10k@lists.infradead.org, linux-kernel@vger.kernel.org
-Cc:     Erik Stromdahl <erik.stromdahl@gmail.com>
-Subject: [PATCH 2/2] ath10k: switch to ieee80211_tx_dequeue_ni
-Date:   Mon, 17 Jun 2019 22:01:40 +0200
-Message-Id: <20190617200140.6189-2-erik.stromdahl@gmail.com>
-X-Mailer: git-send-email 2.22.0
-In-Reply-To: <20190617200140.6189-1-erik.stromdahl@gmail.com>
-References: <20190617200140.6189-1-erik.stromdahl@gmail.com>
+        Mon, 17 Jun 2019 18:47:27 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=merlin.20170209; h=Content-Transfer-Encoding:Content-Type:
+        In-Reply-To:MIME-Version:Date:Message-ID:From:References:Cc:To:Subject:Sender
+        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+        Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
+        List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+        bh=oWCvapawJTmHWfTi4W/xQzd/vam+JtASkBkdfBDmQPA=; b=n2EkBbCtepqSck3LcKcBk9ucLP
+        OopaIKVxH7Ft5pKUkNM6axeXE0K/dN0KlZBFHBkuZUjcuBojBVwA6eyj3zIf/SrSJ0AXP+ap36Tfr
+        X0WYpzcQ34E0H9clamwWKVPA2G5AqZgtlebPbdol2VZl3hzV0WHHKTyO/DPw8RjqxrUZIc7QdVFKM
+        vHCGFyYLYGCxZF9eADucfOb8FK17P9rwh5jOCnBGSKiVmNRqoUfswvbapl0LJeUcbgsSotAmzefsG
+        BuQwk3FdoCSOiq6Zwz2/pJMld3yRBwfY9eWtfMYCawPt2uqyoLPRXHwia2hme5jMcDzrgP6F97p9i
+        1TAbXIzA==;
+Received: from static-50-53-52-16.bvtn.or.frontiernet.net ([50.53.52.16] helo=midway.dunlab)
+        by merlin.infradead.org with esmtpsa (Exim 4.92 #3 (Red Hat Linux))
+        id 1hd0P6-0004pi-Aw; Mon, 17 Jun 2019 22:47:08 +0000
+Subject: Re: [PATCH v3 2/7] lib/hexdump.c: Relax rowsize checks in
+ hex_dump_to_buffer
+To:     Alastair D'Silva <alastair@au1.ibm.com>, alastair@d-silva.org
+Cc:     Jani Nikula <jani.nikula@linux.intel.com>,
+        Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
+        Rodrigo Vivi <rodrigo.vivi@intel.com>,
+        David Airlie <airlied@linux.ie>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        Dan Carpenter <dan.carpenter@oracle.com>,
+        Karsten Keil <isdn@linux-pingi.de>,
+        Jassi Brar <jassisinghbrar@gmail.com>,
+        Tom Lendacky <thomas.lendacky@amd.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jose Abreu <Jose.Abreu@synopsys.com>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        Stanislaw Gruszka <sgruszka@redhat.com>,
+        Benson Leung <bleung@chromium.org>,
+        Enric Balletbo i Serra <enric.balletbo@collabora.com>,
+        "James E.J. Bottomley" <jejb@linux.ibm.com>,
+        "Martin K. Petersen" <martin.petersen@oracle.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Alexander Viro <viro@zeniv.linux.org.uk>,
+        Petr Mladek <pmladek@suse.com>,
+        Sergey Senozhatsky <sergey.senozhatsky@gmail.com>,
+        Steven Rostedt <rostedt@goodmis.org>,
+        David Laight <David.Laight@ACULAB.COM>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        intel-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
+        linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
+        ath10k@lists.infradead.org, linux-wireless@vger.kernel.org,
+        linux-scsi@vger.kernel.org, linux-fbdev@vger.kernel.org,
+        devel@driverdev.osuosl.org, linux-fsdevel@vger.kernel.org
+References: <20190617020430.8708-1-alastair@au1.ibm.com>
+ <20190617020430.8708-3-alastair@au1.ibm.com>
+From:   Randy Dunlap <rdunlap@infradead.org>
+Message-ID: <94413756-c927-a4ca-dd59-47e3cc87d58d@infradead.org>
+Date:   Mon, 17 Jun 2019 15:47:03 -0700
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.7.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+In-Reply-To: <20190617020430.8708-3-alastair@au1.ibm.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Since ath10k_mac_tx_push_txq() can be called from process context, we
-must explicitly disable softirqs before the call into mac80211.
+Hi,
+Just a comment style nit below...
 
-By calling ieee80211_tx_dequeue_ni() instead of ieee80211_tx_dequeue()
-we make sure softirqs are always disabled even in the case when
-ath10k_mac_tx_push_txq() is called from process context.
+On 6/16/19 7:04 PM, Alastair D'Silva wrote:
+> From: Alastair D'Silva <alastair@d-silva.org>
+> 
+> This patch removes the hardcoded row limits and allows for
+> other lengths. These lengths must still be a multiple of
+> groupsize.
+> 
+> This allows structs that are not 16/32 bytes to display on
+> a single line.
+> 
+> This patch also expands the self-tests to test row sizes
+> up to 64 bytes (though they can now be arbitrarily long).
+> 
+> Signed-off-by: Alastair D'Silva <alastair@d-silva.org>
+> ---
+>  lib/hexdump.c      | 48 ++++++++++++++++++++++++++++--------------
+>  lib/test_hexdump.c | 52 ++++++++++++++++++++++++++++++++++++++--------
+>  2 files changed, 75 insertions(+), 25 deletions(-)
+> 
+> diff --git a/lib/hexdump.c b/lib/hexdump.c
+> index 81b70ed37209..3943507bc0e9 100644
+> --- a/lib/hexdump.c
+> +++ b/lib/hexdump.c
 
-Calling ieee80211_tx_dequeue_ni() with softirq's already disabled
-(e.g., from softirq context) should be safe as the local_bh_disable()
-and local_bh_enable() functions (called from ieee80211_tx_dequeue_ni)
-are fully reentrant.
+> @@ -246,17 +248,29 @@ void print_hex_dump(const char *level, const char *prefix_str, int prefix_type,
+>  {
+>  	const u8 *ptr = buf;
+>  	int i, linelen, remaining = len;
+> -	unsigned char linebuf[32 * 3 + 2 + 32 + 1];
+> +	unsigned char *linebuf;
+> +	unsigned int linebuf_len;
+>  
+> -	if (rowsize != 16 && rowsize != 32)
+> -		rowsize = 16;
+> +	if (rowsize % groupsize)
+> +		rowsize -= rowsize % groupsize;
+> +
+> +	/* Worst case line length:
+> +	 * 2 hex chars + space per byte in, 2 spaces, 1 char per byte in, NULL
+> +	 */
 
-Signed-off-by: Erik Stromdahl <erik.stromdahl@gmail.com>
----
- drivers/net/wireless/ath/ath10k/mac.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+According to Documentation/process/coding-style.rst:
 
-diff --git a/drivers/net/wireless/ath/ath10k/mac.c b/drivers/net/wireless/ath/ath10k/mac.c
-index 2d503d6cdcd2..bbed9f1b1778 100644
---- a/drivers/net/wireless/ath/ath10k/mac.c
-+++ b/drivers/net/wireless/ath/ath10k/mac.c
-@@ -4033,7 +4033,7 @@ int ath10k_mac_tx_push_txq(struct ieee80211_hw *hw,
- 	if (ret)
- 		return ret;
- 
--	skb = ieee80211_tx_dequeue(hw, txq);
-+	skb = ieee80211_tx_dequeue_ni(hw, txq);
- 	if (!skb) {
- 		spin_lock_bh(&ar->htt.tx_lock);
- 		ath10k_htt_tx_dec_pending(htt);
+The preferred style for long (multi-line) comments is:
+
+.. code-block:: c
+
+	/*
+	 * This is the preferred style for multi-line
+	 * comments in the Linux kernel source code.
+	 * Please use it consistently.
+	 *
+	 * Description:  A column of asterisks on the left side,
+	 * with beginning and ending almost-blank lines.
+	 */
+
+
+except in networking software.
+
+
+> +	linebuf_len = rowsize * 3 + 2 + rowsize + 1;
+> +	linebuf = kzalloc(linebuf_len, GFP_KERNEL);
+> +	if (!linebuf) {
+> +		printk("%s%shexdump: Could not alloc %u bytes for buffer\n",
+> +			level, prefix_str, linebuf_len);
+> +		return;
+> +	}
+
+
 -- 
-2.22.0
-
+~Randy
