@@ -2,135 +2,91 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 7342F48004
-	for <lists+linux-wireless@lfdr.de>; Mon, 17 Jun 2019 12:53:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A6ABB480B9
+	for <lists+linux-wireless@lfdr.de>; Mon, 17 Jun 2019 13:32:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727662AbfFQKw4 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 17 Jun 2019 06:52:56 -0400
-Received: from mail-wm1-f68.google.com ([209.85.128.68]:37815 "EHLO
-        mail-wm1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726872AbfFQKw4 (ORCPT
+        id S1727927AbfFQLcT (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 17 Jun 2019 07:32:19 -0400
+Received: from mail-ot1-f66.google.com ([209.85.210.66]:42421 "EHLO
+        mail-ot1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725681AbfFQLcT (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 17 Jun 2019 06:52:56 -0400
-Received: by mail-wm1-f68.google.com with SMTP id f17so6065248wme.2
-        for <linux-wireless@vger.kernel.org>; Mon, 17 Jun 2019 03:52:54 -0700 (PDT)
+        Mon, 17 Jun 2019 07:32:19 -0400
+Received: by mail-ot1-f66.google.com with SMTP id l15so8903232otn.9
+        for <linux-wireless@vger.kernel.org>; Mon, 17 Jun 2019 04:32:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=ZrGsAut7uTsx4N98mpJ5emxcDiHoXMt2HeuGIHuHDuY=;
-        b=ZmPOJv+uNeM7+bNBeQqLGswxWW9SMhfKnc014mIavxJdV79s0wjtcZT2VyUWK+UWrD
-         Movw97H2zsJ+JBlhl315a19BTQrUa1M7tC7Gn1UzYUsnywZm6KraZ77S5sjMvTlk+U8Z
-         LBfBBRYF8bxGvs2tbraE55QLhVFojz1qPLIU8=
+        d=gmail.com; s=20161025;
+        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
+         :cc;
+        bh=bFeLNRz90DozmUEBqcuHoNO0gJ8aYft6A7ssbyU+2Ns=;
+        b=crErvUYy+5U2jXXUkAPg2JiPmtCnGo5XO+8bgyT3vDmcxQrwB995MHArXO05jKc0M6
+         LXnPthe9U3aN05IJkucpZoyMHpYFLo+Y2DbTojcUYYzrlmFTl45adhbst+iOodk15DXX
+         bZ9PPlMaU7MNBFUctmZ7qcn67jm5rRHGcqaD4sHdvf9BgYqyzuBjxuba8H8/t0Qqlh0i
+         l0AHUnAHOU9XUyOb/52pDo3+dZKNl814pTvtPJYQdVkU/EK/1NG/16QB5ROxAtN1LFcR
+         /j8A4GVtCEvPsF6jjU+V/vqTRiVoyx54wPprqJKETn3xYdbMcD46PmSeKRMZiIcBpbps
+         NowA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=ZrGsAut7uTsx4N98mpJ5emxcDiHoXMt2HeuGIHuHDuY=;
-        b=kHCYaAXRJYKX/ZiA29X3bbwBhYTyDSGIQnFikLdesunzuiSgSy4c5ppLQPInniVM0h
-         7VZ9vwaYvvo1rarUGokjQF23jjdB8qEjBoAsAI6DU4Ij130iF06DZIaRb8FevR6juRA8
-         zQeMXy04sqVqZH8pI9am2itxAS67NLyKbOelIMSzxyCj3eDQi0bUCfBaMy1c+nJPgJOQ
-         jWuPkEDQa0G3oeSJ9rx748JtNq41LbKsVIF3f4vMT1Xk71Hsa99PAd3YXO/Kg/ZbZvHj
-         QC0IJbz3qxvy1nL+H7ZEdlfS/G7PCNWnZtmtNnAc28IEAlFS69xtn+VBbj6FREO0pgGh
-         bC+w==
-X-Gm-Message-State: APjAAAUeY85AcwZvbSahBBUJ1udhN1Oy79/No5OCcSQ2ZDTrL9x32kdN
-        CvgAFvjbti/+b+nXIDsuQ0DPQw==
-X-Google-Smtp-Source: APXvYqxwU5akwxSHDxkkxP8iCz4MY4SSgr81eWPc6HIAiFo2nQ2pP4CVo+hHo0NsY+yWo6H1GCq6JQ==
-X-Received: by 2002:a1c:96c7:: with SMTP id y190mr16834836wmd.87.1560768773522;
-        Mon, 17 Jun 2019 03:52:53 -0700 (PDT)
-Received: from [10.176.68.244] ([192.19.248.250])
-        by smtp.gmail.com with ESMTPSA id y184sm9396231wmg.14.2019.06.17.03.52.52
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Mon, 17 Jun 2019 03:52:52 -0700 (PDT)
-Subject: Re: [PATCH v4 5/5] brcmfmac: sdio: Don't tune while the card is off
-To:     Douglas Anderson <dianders@chromium.org>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        Adrian Hunter <adrian.hunter@intel.com>
-Cc:     brcm80211-dev-list.pdl@broadcom.com,
-        linux-rockchip@lists.infradead.org,
-        Double Lo <double.lo@cypress.com>, briannorris@chromium.org,
-        linux-wireless@vger.kernel.org,
-        Naveen Gupta <naveen.gupta@cypress.com>,
-        Madhan Mohan R <madhanmohan.r@cypress.com>, mka@chromium.org,
-        Wright Feng <wright.feng@cypress.com>,
-        Chi-Hsien Lin <chi-hsien.lin@cypress.com>,
-        netdev@vger.kernel.org, brcm80211-dev-list@cypress.com,
-        Franky Lin <franky.lin@broadcom.com>,
-        linux-kernel@vger.kernel.org,
-        Hante Meuleman <hante.meuleman@broadcom.com>,
-        YueHaibing <yuehaibing@huawei.com>,
-        "David S. Miller" <davem@davemloft.net>
-References: <20190613234153.59309-1-dianders@chromium.org>
- <20190613234153.59309-6-dianders@chromium.org>
-From:   Arend Van Spriel <arend.vanspriel@broadcom.com>
-Message-ID: <f0dc6ef8-b339-8656-14d6-cf7c4e872b22@broadcom.com>
-Date:   Mon, 17 Jun 2019 12:52:51 +0200
-User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:60.0) Gecko/20100101
- Thunderbird/60.7.1
+        h=x-gm-message-state:mime-version:in-reply-to:references:from:date
+         :message-id:subject:to:cc;
+        bh=bFeLNRz90DozmUEBqcuHoNO0gJ8aYft6A7ssbyU+2Ns=;
+        b=uOqZybKQ5V1MUmKWoIdEAmZKGb5zmvz70X4IO3e8/31kD/ha7iuHE/8xlVrxya8JLE
+         1tkklUKCVUGl3KcgG3t/dcMcIjFhoxWP82euVauSSdDnkmOzld74pEtONC7Im7uSwTsp
+         LN2kmbcTxURFiqZFIp3PRIQeEHgU/kcofamkBavAccZ+AzrALotuYCSnZqV0qcoPbk0I
+         79q2kmanyrRsSZiOLphoIvfVccN0DGw2EC/FziyylqEkfG+HJSDAfbN6O+htA6pSxRIg
+         kID01bVePdxXALchn/g8r2WaaPuQ56TkNsgW3ckuaXh/VK/jMu1YTy4dphMqSExIEgl+
+         TeLg==
+X-Gm-Message-State: APjAAAVRQno3d8Hu92g/siUgmMz7JXiRhu1Pe0XsZtR8Nd+tiOO3q0fo
+        wMDm+XFRhsr4DntLnXHakkavrYLn/ZSTZ01M3Hg=
+X-Google-Smtp-Source: APXvYqzHJPlN6vcmLC4BhL9wSpZF6995J/G8/LQZXHvZLNccR5hVqHikEHUSWp7S1IBLn+rIvRp0pbUlAM1Egog4Jvk=
+X-Received: by 2002:a05:6830:1681:: with SMTP id k1mr35982840otr.256.1560771138563;
+ Mon, 17 Jun 2019 04:32:18 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <20190613234153.59309-6-dianders@chromium.org>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Received: by 2002:a05:6830:2015:0:0:0:0 with HTTP; Mon, 17 Jun 2019 04:32:17
+ -0700 (PDT)
+In-Reply-To: <20190617093658.46591254@mir>
+References: <1557307533-5795-1-git-send-email-mpubbise@codeaurora.org>
+ <fd3addc01fc3f5362dba5771ee82659cf01c195b.camel@sipsolutions.net>
+ <c8484254-f4f7-9955-e3f8-8a423cc6c325@codeaurora.org> <CAKR_QV+dVx+LK1HyCo6CQZQ7ZX_u6ON0hEH5adNiJTB+XaP3WA@mail.gmail.com>
+ <dc9039be42df8d241b14d4f673f3c472dc113991.camel@sipsolutions.net>
+ <20190617070747.562b9388@mir> <e13d86030df7a5222ee144d85bbeec400ed8fa07.camel@sipsolutions.net>
+ <20190617093658.46591254@mir>
+From:   Tom Psyborg <pozega.tomislav@gmail.com>
+Date:   Mon, 17 Jun 2019 13:32:17 +0200
+Message-ID: <CAKR_QVJ9EkhcG893SjVMgDb5S-W2=jas5JG+VQyLDx-R5MMK5w@mail.gmail.com>
+Subject: Re: [PATCH v3] {nl,mac}80211: allow 4addr AP operation on crypto
+ controlled devices
+To:     Stefan Lippers-Hollmann <s.l-h@gmx.de>
+Cc:     Johannes Berg <johannes@sipsolutions.net>,
+        Manikanta Pubbisetty <mpubbise@codeaurora.org>,
+        linux-wireless@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 6/14/2019 1:41 AM, Douglas Anderson wrote:
-> When Broadcom SDIO cards are idled they go to sleep and a whole
-> separate subsystem takes over their SDIO communication.  This is the
-> Always-On-Subsystem (AOS) and it can't handle tuning requests.
-> 
-> Specifically, as tested on rk3288-veyron-minnie (which reports having
-> BCM4354/1 in dmesg), if I force a retune in brcmf_sdio_kso_control()
-> when "on = 1" (aka we're transition from sleep to wake) by whacking:
->    bus->sdiodev->func1->card->host->need_retune = 1
-> ...then I can often see tuning fail.  In this case dw_mmc reports "All
-> phases bad!").  Note that I don't get 100% failure, presumably because
-> sometimes the card itself has already transitioned away from the AOS
-> itself by the time we try to wake it up.  If I force retuning when "on
-> = 0" (AKA force retuning right before sending the command to go to
-> sleep) then retuning is always OK.
-> 
-> NOTE: we need _both_ this patch and the patch to avoid triggering
-> tuning due to CRC errors in the sleep/wake transition, AKA ("brcmfmac:
-> sdio: Disable auto-tuning around commands expected to fail").  Though
-> both patches handle issues with Broadcom's AOS, the problems are
-> distinct:
-> 1. We want to defer (but not ignore) asynchronous (like
->     timer-requested) tuning requests till the card is awake.  However,
->     we want to ignore CRC errors during the transition, we don't want
->     to queue deferred tuning request.
-> 2. You could imagine that the AOS could implement retuning but we
->     could still get errors while transitioning in and out of the AOS.
->     Similarly you could imagine a seamless transition into and out of
->     the AOS (with no CRC errors) even if the AOS couldn't handle
->     tuning.
-> 
-> ALSO NOTE: presumably there is never a desperate need to retune in
-> order to wake up the card, since doing so is impossible.  Luckily the
-> only way the card can get into sleep state is if we had a good enough
-> tuning to send it a sleep command, so presumably that "good enough"
-> tuning is enough to wake us up, at least with a few retries.
+Hi
 
-The term "sleep command" is a bit confusing. There actually is a CMD14 
-defined in the eSD spec, but that is not what we are using (unless we 
-program the chip to do so) here. It is simply a specific register access 
-using CMD52.
+Checked out r10011 from openwrt git on May, 15; built images and
+flashed devices; tried to set up WDS (AP) + WDS (Client); got this in
+logs: https://forum.openwrt.org/t/ath10k-wds-support-missing/30346/15?u=psyborg
 
-Apart from that....
+Saw this patch in my inbox and checked openwrt sources, to find out
+there was v1 used:
+https://git.openwrt.org/?p=openwrt/openwrt.git;a=blob;f=package/kernel/mac80211/patches/subsys/390-nl-mac-80211-allow-4addr-AP-operation-on-crypto-cont.patch
 
-Reviewed-by: Arend van Spriel <arend.vanspriel@broadcom.com>
-> 
-> Signed-off-by: Douglas Anderson <dianders@chromium.org>
+Reverted v1 of the patch and patched manually to v3 (double checked),
+did not help.
 
-I think the stable version is mostly determined by change in MMC/SDIO so 
-4.18 as mentioned Adrian seems most sensible. bcm4354 support was 
-introduced in 3.14 and there were some earlier devices (4335) using same 
-sleep mechanism.
+Found patch that fixes problem and applied;
+https://github.com/openwrt/openwrt/pull/2048
+Now I got this in logs:
+https://forum.openwrt.org/t/wds-client-wont-stay-connected-prev-auth-not-valid-using-recent-snapshot-builds/38194/20?u=psyborg
 
-Regards,
-Arend
+Reverted again v3 of this patch to v1, and the connection worked as expected.
+
+v4.19.32 is current in openwrt master, and testing against ath9k
+devices may not reveal exact issue. notice in one of my posts on
+forums that i was able to bridge it with archer c7 running tp-link fw
+without any of these patches
