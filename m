@@ -2,197 +2,136 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id CB31F48CDB
-	for <lists+linux-wireless@lfdr.de>; Mon, 17 Jun 2019 20:47:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 92884490B9
+	for <lists+linux-wireless@lfdr.de>; Mon, 17 Jun 2019 22:02:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726963AbfFQSrO (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 17 Jun 2019 14:47:14 -0400
-Received: from mail-io1-f66.google.com ([209.85.166.66]:34378 "EHLO
-        mail-io1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725844AbfFQSrN (ORCPT
+        id S1727061AbfFQUCZ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 17 Jun 2019 16:02:25 -0400
+Received: from mail-lf1-f68.google.com ([209.85.167.68]:34669 "EHLO
+        mail-lf1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726048AbfFQUCY (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 17 Jun 2019 14:47:13 -0400
-Received: by mail-io1-f66.google.com with SMTP id k8so23682612iot.1
-        for <linux-wireless@vger.kernel.org>; Mon, 17 Jun 2019 11:47:13 -0700 (PDT)
+        Mon, 17 Jun 2019 16:02:24 -0400
+Received: by mail-lf1-f68.google.com with SMTP id y198so7501455lfa.1;
+        Mon, 17 Jun 2019 13:02:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=N++lS1o+MDz9+i4mzKncc0qVpXXpsoR+Jo3R2g+KlCo=;
-        b=SAnZ3X0db+ry3DfdGKhXmDVRB1ay1ZXQyzAHIfdFfY354qGzD+/MI11JpexYGS29uJ
-         j/eWkJnZhvOuHS/+zRUH8o7WpVEbUQkgyLS8HmbtOP1YHy+H+Pbb/FMLh460HskPqysH
-         pUl3dQYa5lFFHCpPM7xu1Tgu8PXg+wPzShMxM=
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=B4P8y1ay39d+E4yB3whFfRjMbB7BKe2MvBm/2WeUpIM=;
+        b=of2v7ANgL9ex0bkfxQas0p6u4QAhgHfu5y1Y/3T039pKxnMxEKpETvUBNF+8c1SwzE
+         6jM+sSE/03uQiaK5khEyZjMn2Ut7hPZRVxfcfuB5s8/czVUudhGS8uBNby58nmRYHg69
+         jn8kPcsad2kZqqBr1UrtE+dhV6vvELpupT3ZxTaA8dppC/XbeeaIzyWX9rxSinYJr/AP
+         VuwG/cZSBh4kCIVhDAUFubuU7NFQ5//HE1i5I30jy3VIVYvNes3Ea6emUDfNfZbnW9gS
+         coS2IUV+LeoGPjZ/uwVAQAvVVDy6x/tYs5jZx5qfrHDh+buF7MNVzMCuWil7YJPZqgus
+         iXPA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=N++lS1o+MDz9+i4mzKncc0qVpXXpsoR+Jo3R2g+KlCo=;
-        b=KziRQaBd05tSje0QaNOwFuh5NlAN3GmYzc0q9wBAAyRNHsqYMq19goZpKtfdS768EZ
-         nLW7XOBtrekjYp4QbK8Elw6UyQLVJlMO1p9BKS/mPnkZygJE8/29WDXqK8a8i0bHMT8/
-         4DcOkL+89McqBkKX0GvpF5lMxtMgwh6yRsuDoaEq3vlK6ZMRwerqx9+hQzzTmS7YZ/kg
-         gaswdt17npVAtvsw7lsNkSin1x/WMm4QklKReeJx7rHffFjA5ak/GMKLJCCqPRHOnP3V
-         RJ6zI52AS0RMsUjn6acMo9GbaJhDUub16onWffUAqjN1kv6brd7dBUtnQmEzVgH1iH3O
-         kmAA==
-X-Gm-Message-State: APjAAAX7ZR8/rixd9EteuFnIYwLKyiU050qnPAkNXzzU5yaZJpsPtkVB
-        E32rSLUtxU9mEYsmUAUsbVQ4X69R2+k=
-X-Google-Smtp-Source: APXvYqznkhMBDJtw9CKqxpPhhCaNrNsc3AXwNszppRnnMf8uRjnVukJnJnNj1lGNJceyH0xSsHS4Kw==
-X-Received: by 2002:a6b:6a01:: with SMTP id x1mr2666602iog.77.1560797232902;
-        Mon, 17 Jun 2019 11:47:12 -0700 (PDT)
-Received: from mail-io1-f52.google.com (mail-io1-f52.google.com. [209.85.166.52])
-        by smtp.gmail.com with ESMTPSA id d7sm9469807iob.67.2019.06.17.11.47.12
-        for <linux-wireless@vger.kernel.org>
-        (version=TLS1_3 cipher=AEAD-AES128-GCM-SHA256 bits=128/128);
-        Mon, 17 Jun 2019 11:47:12 -0700 (PDT)
-Received: by mail-io1-f52.google.com with SMTP id w25so23501696ioc.8
-        for <linux-wireless@vger.kernel.org>; Mon, 17 Jun 2019 11:47:12 -0700 (PDT)
-X-Received: by 2002:a5e:db0a:: with SMTP id q10mr77753iop.168.1560797232212;
- Mon, 17 Jun 2019 11:47:12 -0700 (PDT)
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=B4P8y1ay39d+E4yB3whFfRjMbB7BKe2MvBm/2WeUpIM=;
+        b=RsV6ksv+6p+LaMAaWrhNTiYTpF7Ga08Q3+AFHyiVtB1KVaeNZ8Y2wOwS69ZHnTlZx9
+         oztz0G3g+UJvmOGaB7gi75UbiJKW9ls4q3XtX/QFGoEgAR0EUlHEL51kbUjMZ22GNmXT
+         BD0s9orMUx3522lkbdE0KdI8jRhl/6QdGLD/I7JWDyFfOYrpupXx0z5ujWVgl8WKEWg0
+         eb3AmLuEb2D9il1+FIVkHEwE9YDFFB3I8z7smexQ8gHpCqi7ItcKy9/EQchh1bk0Fi3a
+         mfCQnUnafZinhhHskgc+wtUTvUGgH4fwMEowVSsm6k2XnrDwgkjS+dUglbe81dNOqLdC
+         LXhA==
+X-Gm-Message-State: APjAAAWnpYFXRnb/4iTO0Gq4t7BMnjxn6oUizsdzWi9Uew97utt37qoW
+        cqhjQOm3cuu+NcAX1zy/+oA=
+X-Google-Smtp-Source: APXvYqzALujpPOG2xk/DqMQhHr3m6lA+WF68otalfSbL7+uhlJM7kYppPXRpUxk4fkH0Eui/GOj7vg==
+X-Received: by 2002:a19:5007:: with SMTP id e7mr60072377lfb.76.1560801742672;
+        Mon, 17 Jun 2019 13:02:22 -0700 (PDT)
+Received: from localhost.localdomain (81-233-89-221-no75.tbcn.telia.com. [81.233.89.221])
+        by smtp.gmail.com with ESMTPSA id j90sm2245780ljb.29.2019.06.17.13.02.21
+        (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
+        Mon, 17 Jun 2019 13:02:22 -0700 (PDT)
+From:   Erik Stromdahl <erik.stromdahl@gmail.com>
+To:     johannes@sipsolutions.net, kvalo@codeaurora.org,
+        davem@davemloft.net, linux-wireless@vger.kernel.org,
+        ath10k@lists.infradead.org, linux-kernel@vger.kernel.org
+Cc:     Erik Stromdahl <erik.stromdahl@gmail.com>
+Subject: [PATCH 1/2] mac80211: add tx dequeue function for process context
+Date:   Mon, 17 Jun 2019 22:01:39 +0200
+Message-Id: <20190617200140.6189-1-erik.stromdahl@gmail.com>
+X-Mailer: git-send-email 2.22.0
 MIME-Version: 1.0
-References: <20190617175653.21756-1-dianders@chromium.org> <CAPDyKFpaX6DSM_BjtghAHUf7qYCyEG+wMagXPUdgz3Eutovqfw@mail.gmail.com>
-In-Reply-To: <CAPDyKFpaX6DSM_BjtghAHUf7qYCyEG+wMagXPUdgz3Eutovqfw@mail.gmail.com>
-From:   Doug Anderson <dianders@chromium.org>
-Date:   Mon, 17 Jun 2019 11:46:59 -0700
-X-Gmail-Original-Message-ID: <CAD=FV=U5+j8V7qckLJf0N+xMeuaOqF+ThL3th98y63aTAVe57g@mail.gmail.com>
-Message-ID: <CAD=FV=U5+j8V7qckLJf0N+xMeuaOqF+ThL3th98y63aTAVe57g@mail.gmail.com>
-Subject: Re: [PATCH v5 0/5] brcmfmac: sdio: Deal better w/ transmission errors
- related to idle
-To:     Ulf Hansson <ulf.hansson@linaro.org>
-Cc:     Kalle Valo <kvalo@codeaurora.org>,
-        Adrian Hunter <adrian.hunter@intel.com>,
-        Arend van Spriel <arend.vanspriel@broadcom.com>,
-        brcm80211-dev-list.pdl@broadcom.com,
-        "open list:ARM/Rockchip SoC..." <linux-rockchip@lists.infradead.org>,
-        Double Lo <double.lo@cypress.com>,
-        Brian Norris <briannorris@chromium.org>,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        Naveen Gupta <naveen.gupta@cypress.com>,
-        Madhan Mohan R <madhanmohan.r@cypress.com>,
-        Matthias Kaehlcke <mka@chromium.org>,
-        Wright Feng <wright.feng@cypress.com>,
-        Chi-Hsien Lin <chi-hsien.lin@cypress.com>,
-        netdev <netdev@vger.kernel.org>,
-        brcm80211-dev-list <brcm80211-dev-list@cypress.com>,
-        YueHaibing <yuehaibing@huawei.com>,
-        Allison Randal <allison@lohutok.net>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Hante Meuleman <hante.meuleman@broadcom.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        =?UTF-8?Q?Niklas_S=C3=B6derlund?= 
-        <niklas.soderlund+renesas@ragnatech.se>,
-        Ritesh Harjani <riteshh@codeaurora.org>,
-        Michael Trimarchi <michael@amarulasolutions.com>,
-        Wolfram Sang <wsa+renesas@sang-engineering.com>,
-        Franky Lin <franky.lin@broadcom.com>,
-        Ondrej Jirman <megous@megous.com>,
-        Jiong Wu <lohengrin1024@gmail.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Avri Altman <avri.altman@wdc.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi,
+Since ieee80211_tx_dequeue() must not be called with softirqs enabled
+(i.e. from process context without proper disable of bottom halves),
+we add a wrapper that disables bottom halves before calling
+ieee80211_tx_dequeue()
 
-On Mon, Jun 17, 2019 at 11:39 AM Ulf Hansson <ulf.hansson@linaro.org> wrote:
->
-> On Mon, 17 Jun 2019 at 19:57, Douglas Anderson <dianders@chromium.org> wrote:
-> >
-> > This series attempts to deal better with the expected transmission
-> > errors related to the idle states (handled by the Always-On-Subsystem
-> > or AOS) on the SDIO-based WiFi on rk3288-veyron-minnie,
-> > rk3288-veyron-speedy, and rk3288-veyron-mickey.
-> >
-> > Some details about those errors can be found in
-> > <https://crbug.com/960222>, but to summarize it here: if we try to
-> > send the wakeup command to the WiFi card at the same time it has
-> > decided to wake up itself then it will behave badly on the SDIO bus.
-> > This can cause timeouts or CRC errors.
-> >
-> > When I tested on 4.19 and 4.20 these CRC errors can be seen to cause
-> > re-tuning.  Since I am currently developing on 4.19 this was the
-> > original problem I attempted to solve.
-> >
-> > On mainline it turns out that you don't see the retuning errors but
-> > you see tons of spam about timeouts trying to wakeup from sleep.  I
-> > tracked down the commit that was causing that and have partially
-> > reverted it here.  I have no real knowledge about Broadcom WiFi, but
-> > the commit that was causing problems sounds (from the descriptioin) to
-> > be a hack commit penalizing all Broadcom WiFi users because of a bug
-> > in a Cypress SD controller.  I will let others comment if this is
-> > truly the case and, if so, what the right solution should be.
-> >
-> > For v3 of this series I have added 2 patches to the end of the series
-> > to address errors that would show up on systems with these same SDIO
-> > WiFi cards when used on controllers that do periodic retuning.  These
-> > systems need an extra fix to prevent the retuning from happening when
-> > the card is asleep.
-> >
-> > I believe v5 of this series is all ready to go assuming Kalle Valo is
-> > good with it.  I've added after-the-cut notes to patches awaiting his
-> > Ack and have added other tags collected so far.
-> >
-> > Changes in v5:
-> > - Add missing sdio_retune_crc_enable() in comments (Ulf).
-> > - /s/reneable/re-enable (Ulf).
-> > - Remove leftover prototypes: mmc_expect_errors_begin() / end() (Ulf).
-> > - Rewording of "sleep command" in commit message (Arend).
-> >
-> > Changes in v4:
-> > - Moved to SDIO API only (Adrian, Ulf).
-> > - Renamed to make it less generic, now retune_crc_disable (Ulf).
-> > - Function header makes it clear host must be claimed (Ulf).
-> > - No more WARN_ON (Ulf).
-> > - Adjust to API rename (Adrian, Ulf).
-> > - Moved retune hold/release to SDIO API (Adrian).
-> > - Adjust to API rename (Adrian).
-> >
-> > Changes in v3:
-> > - Took out the spinlock since I believe this is all in one context.
-> > - Expect errors for all of brcmf_sdio_kso_control() (Adrian).
-> > - ("mmc: core: Export mmc_retune_hold_now() mmc_retune_release()") new for v3.
-> > - ("brcmfmac: sdio: Don't tune while the card is off") new for v3.
-> >
-> > Changes in v2:
-> > - A full revert, not just a partial one (Arend).  ...with explicit Cc.
-> > - Updated commit message to clarify based on discussion of v1.
-> >
-> > Douglas Anderson (5):
-> >   Revert "brcmfmac: disable command decode in sdio_aos"
-> >   mmc: core: API to temporarily disable retuning for SDIO CRC errors
-> >   brcmfmac: sdio: Disable auto-tuning around commands expected to fail
-> >   mmc: core: Add sdio_retune_hold_now() and sdio_retune_release()
-> >   brcmfmac: sdio: Don't tune while the card is off
-> >
-> >  drivers/mmc/core/core.c                       |  5 +-
-> >  drivers/mmc/core/sdio_io.c                    | 77 +++++++++++++++++++
-> >  .../broadcom/brcm80211/brcmfmac/sdio.c        | 17 ++--
-> >  include/linux/mmc/host.h                      |  1 +
-> >  include/linux/mmc/sdio_func.h                 |  6 ++
-> >  5 files changed, 99 insertions(+), 7 deletions(-)
-> >
-> > --
-> > 2.22.0.410.gd8fdbe21b5-goog
-> >
->
-> Applied for fixes, thanks!
->
-> Some minor changes:
-> 1) Dropped the a few "commit notes", that was more related to version
-> and practical information about the series.
-> 2) Dropped fixes tags for patch 2->5, but instead put a stable tag
-> targeted for v4.18+.
+The new function is named ieee80211_tx_dequeue_ni() just as all other
+from-process-context versions found in mac80211.
 
-OK, sounds good.  Thanks!  :-)
+The documentation of ieee80211_tx_dequeue() is also updated so it
+mentions that the function should not be called from process context.
 
-I guess when I see the # v4.18+ in the commit message it makes me
-believe that the problem only existed on 4.18+, but maybe that's just
-me reading too much into it.  ;-)  In any case, presumably anyone who
-had these problems on earlier kernels already has solved them with
-local patches.
+Signed-off-by: Erik Stromdahl <erik.stromdahl@gmail.com>
+---
+ include/net/mac80211.h | 26 ++++++++++++++++++++++++++
+ net/mac80211/tx.c      |  2 ++
+ 2 files changed, 28 insertions(+)
 
+diff --git a/include/net/mac80211.h b/include/net/mac80211.h
+index 72080d9d617e..c47990d8db79 100644
+--- a/include/net/mac80211.h
++++ b/include/net/mac80211.h
+@@ -6251,10 +6251,36 @@ void ieee80211_unreserve_tid(struct ieee80211_sta *sta, u8 tid);
+  * but for the duration of the frame handling.
+  * However, also note that while in the wake_tx_queue() method,
+  * rcu_read_lock() is already held.
++ *
++ * softirqs must also be disabled when this function is called.
++ * In process context, use ieee80211_tx_dequeue_ni() instead.
+  */
+ struct sk_buff *ieee80211_tx_dequeue(struct ieee80211_hw *hw,
+ 				     struct ieee80211_txq *txq);
+ 
++/**
++ * ieee80211_tx_dequeue_ni - dequeue a packet from a software tx queue
++ * (in process context)
++ *
++ * Like ieee80211_tx_dequeue() but can be called in process context
++ * (internally disables bottom halves).
++ *
++ * @hw: pointer as obtained from ieee80211_alloc_hw()
++ * @txq: pointer obtained from station or virtual interface, or from
++ *	ieee80211_next_txq()
++ */
++static inline struct sk_buff *ieee80211_tx_dequeue_ni(struct ieee80211_hw *hw,
++						      struct ieee80211_txq *txq)
++{
++	struct sk_buff *skb;
++
++	local_bh_disable();
++	skb = ieee80211_tx_dequeue(hw, txq);
++	local_bh_enable();
++
++	return skb;
++}
++
+ /**
+  * ieee80211_next_txq - get next tx queue to pull packets from
+  *
+diff --git a/net/mac80211/tx.c b/net/mac80211/tx.c
+index dd220b977025..4bd0066ea7cd 100644
+--- a/net/mac80211/tx.c
++++ b/net/mac80211/tx.c
+@@ -3550,6 +3550,8 @@ struct sk_buff *ieee80211_tx_dequeue(struct ieee80211_hw *hw,
+ 	ieee80211_tx_result r;
+ 	struct ieee80211_vif *vif = txq->vif;
+ 
++	WARN_ON_ONCE(softirq_count() == 0);
++
+ begin:
+ 	spin_lock_bh(&fq->lock);
+ 
+-- 
+2.22.0
 
--Doug
