@@ -2,115 +2,138 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 83DD247C1E
-	for <lists+linux-wireless@lfdr.de>; Mon, 17 Jun 2019 10:23:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C76C847D0A
+	for <lists+linux-wireless@lfdr.de>; Mon, 17 Jun 2019 10:29:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727507AbfFQIWz (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 17 Jun 2019 04:22:55 -0400
-Received: from userp2130.oracle.com ([156.151.31.86]:52336 "EHLO
-        userp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725862AbfFQIWy (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 17 Jun 2019 04:22:54 -0400
-Received: from pps.filterd (userp2130.oracle.com [127.0.0.1])
-        by userp2130.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x5H8EDPq036975;
-        Mon, 17 Jun 2019 08:22:24 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
- : subject : message-id : references : mime-version : content-type :
- in-reply-to; s=corp-2018-07-02;
- bh=FGXkU7eOmJXcfpTdOS3rFhVnp4//dWioBuU5JvbAozk=;
- b=HoOGFZ6IDRsf/WaCfXo2ZTPgY5pwDJWXjo1xX+qTvLOMlZocWpKu1Sf00Bmkx3VFzyma
- 10WCt0cIJkIFz7mHW+wD9GUOEQ0ivHG8jDJ0t4TRvpEWC+TsmSyquhiRY045QRVvKMqd
- BIDabSi8xq4vX0L9MhRibAwTnUvf3DfPIk//8VY7MahBLoeLEZ2KraHUQ39ijiOHMNDT
- 8ndBBvPX7iRqpB2l3z33gYX+RiPyyzfIf8yD1/MNNifpDFIZvAldxXl3FHTYVYXdGTMe
- /6jx2aoi8UlUxIMQRg+jUh/JipGQ+5QpEWrsTOM8x9vyDm7cYa5WG5PQ0L40CVIPJPpn iA== 
-Received: from userp3030.oracle.com (userp3030.oracle.com [156.151.31.80])
-        by userp2130.oracle.com with ESMTP id 2t4r3td2pj-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Mon, 17 Jun 2019 08:22:24 +0000
-Received: from pps.filterd (userp3030.oracle.com [127.0.0.1])
-        by userp3030.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x5H8LV8W126648;
-        Mon, 17 Jun 2019 08:22:24 GMT
-Received: from aserv0121.oracle.com (aserv0121.oracle.com [141.146.126.235])
-        by userp3030.oracle.com with ESMTP id 2t59gd3q66-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Mon, 17 Jun 2019 08:22:24 +0000
-Received: from abhmp0014.oracle.com (abhmp0014.oracle.com [141.146.116.20])
-        by aserv0121.oracle.com (8.14.4/8.13.8) with ESMTP id x5H8M5I4026605;
-        Mon, 17 Jun 2019 08:22:05 GMT
-Received: from kadam (/41.57.98.10)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Mon, 17 Jun 2019 01:22:05 -0700
-Date:   Mon, 17 Jun 2019 11:21:48 +0300
-From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     Christoph Hellwig <hch@lst.de>
-Cc:     Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-        Maxime Ripard <maxime.ripard@bootlin.com>,
-        Sean Paul <sean@poorly.run>, David Airlie <airlied@linux.ie>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        Jani Nikula <jani.nikula@linux.intel.com>,
-        Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
-        Rodrigo Vivi <rodrigo.vivi@intel.com>,
-        Ian Abbott <abbotti@mev.co.uk>,
-        H Hartley Sweeten <hsweeten@visionengravers.com>,
-        devel@driverdev.osuosl.org, linux-s390@vger.kernel.org,
-        Intel Linux Wireless <linuxwifi@intel.com>,
-        linux-rdma@vger.kernel.org, netdev@vger.kernel.org,
-        intel-gfx@lists.freedesktop.org, linux-wireless@vger.kernel.org,
-        linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        linux-mm@kvack.org, iommu@lists.linux-foundation.org,
-        "moderated list:ARM PORT" <linux-arm-kernel@lists.infradead.org>,
-        linux-media@vger.kernel.org
-Subject: Re: use exact allocation for dma coherent memory
-Message-ID: <20190617082148.GF28859@kadam>
-References: <20190614134726.3827-1-hch@lst.de>
+        id S1727726AbfFQI3c (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 17 Jun 2019 04:29:32 -0400
+Received: from mga01.intel.com ([192.55.52.88]:62593 "EHLO mga01.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725810AbfFQI3c (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 17 Jun 2019 04:29:32 -0400
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from fmsmga008.fm.intel.com ([10.253.24.58])
+  by fmsmga101.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 17 Jun 2019 01:29:31 -0700
+X-ExtLoop1: 1
+Received: from ahunter-desktop.fi.intel.com (HELO [10.237.72.198]) ([10.237.72.198])
+  by fmsmga008.fm.intel.com with ESMTP; 17 Jun 2019 01:29:27 -0700
+Subject: Re: [PATCH v4 5/5] brcmfmac: sdio: Don't tune while the card is off
+To:     Douglas Anderson <dianders@chromium.org>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        Arend van Spriel <arend.vanspriel@broadcom.com>
+Cc:     brcm80211-dev-list.pdl@broadcom.com,
+        linux-rockchip@lists.infradead.org,
+        Double Lo <double.lo@cypress.com>, briannorris@chromium.org,
+        linux-wireless@vger.kernel.org,
+        Naveen Gupta <naveen.gupta@cypress.com>,
+        Madhan Mohan R <madhanmohan.r@cypress.com>, mka@chromium.org,
+        Wright Feng <wright.feng@cypress.com>,
+        Chi-Hsien Lin <chi-hsien.lin@cypress.com>,
+        netdev@vger.kernel.org, brcm80211-dev-list@cypress.com,
+        Franky Lin <franky.lin@broadcom.com>,
+        linux-kernel@vger.kernel.org,
+        Hante Meuleman <hante.meuleman@broadcom.com>,
+        YueHaibing <yuehaibing@huawei.com>,
+        "David S. Miller" <davem@davemloft.net>
+References: <20190613234153.59309-1-dianders@chromium.org>
+ <20190613234153.59309-6-dianders@chromium.org>
+From:   Adrian Hunter <adrian.hunter@intel.com>
+Organization: Intel Finland Oy, Registered Address: PL 281, 00181 Helsinki,
+ Business Identity Code: 0357606 - 4, Domiciled in Helsinki
+Message-ID: <dac34482-cf74-5db9-ec0f-124af0ace811@intel.com>
+Date:   Mon, 17 Jun 2019 11:28:10 +0300
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.7.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20190614134726.3827-1-hch@lst.de>
-User-Agent: Mutt/1.9.4 (2018-02-28)
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9290 signatures=668687
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 malwarescore=0
- phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=782
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.0.1-1810050000 definitions=main-1906170078
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9290 signatures=668687
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
- suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1011
- lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=820 adultscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1810050000
- definitions=main-1906170078
+In-Reply-To: <20190613234153.59309-6-dianders@chromium.org>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-I once wrote a Smatch check based on a commit message that said we can't
-pass dma_alloc_coherent() pointers to virt_to_phys().  But then I never
-felt like I understood the rules enough to actually report the warnings
-as bugs.
+On 14/06/19 2:41 AM, Douglas Anderson wrote:
+> When Broadcom SDIO cards are idled they go to sleep and a whole
+> separate subsystem takes over their SDIO communication.  This is the
+> Always-On-Subsystem (AOS) and it can't handle tuning requests.
+> 
+> Specifically, as tested on rk3288-veyron-minnie (which reports having
+> BCM4354/1 in dmesg), if I force a retune in brcmf_sdio_kso_control()
+> when "on = 1" (aka we're transition from sleep to wake) by whacking:
+>   bus->sdiodev->func1->card->host->need_retune = 1
+> ...then I can often see tuning fail.  In this case dw_mmc reports "All
+> phases bad!").  Note that I don't get 100% failure, presumably because
+> sometimes the card itself has already transitioned away from the AOS
+> itself by the time we try to wake it up.  If I force retuning when "on
+> = 0" (AKA force retuning right before sending the command to go to
+> sleep) then retuning is always OK.
+> 
+> NOTE: we need _both_ this patch and the patch to avoid triggering
+> tuning due to CRC errors in the sleep/wake transition, AKA ("brcmfmac:
+> sdio: Disable auto-tuning around commands expected to fail").  Though
+> both patches handle issues with Broadcom's AOS, the problems are
+> distinct:
+> 1. We want to defer (but not ignore) asynchronous (like
+>    timer-requested) tuning requests till the card is awake.  However,
+>    we want to ignore CRC errors during the transition, we don't want
+>    to queue deferred tuning request.
+> 2. You could imagine that the AOS could implement retuning but we
+>    could still get errors while transitioning in and out of the AOS.
+>    Similarly you could imagine a seamless transition into and out of
+>    the AOS (with no CRC errors) even if the AOS couldn't handle
+>    tuning.
+> 
+> ALSO NOTE: presumably there is never a desperate need to retune in
+> order to wake up the card, since doing so is impossible.  Luckily the
+> only way the card can get into sleep state is if we had a good enough
+> tuning to send it a sleep command, so presumably that "good enough"
+> tuning is enough to wake us up, at least with a few retries.
+> 
+> Signed-off-by: Douglas Anderson <dianders@chromium.org>
 
-drivers/platform/x86/dcdbas.c:108 smi_data_buf_realloc() error: 'buf' came from dma_alloc_coherent() so we can't do virt_to_phys()
-drivers/net/caif/caif_virtio.c:414 cfv_create_genpool() error: 'cfv->alloc_addr' came from dma_alloc_coherent() so we can't do virt_to_phys()
-drivers/infiniband/hw/cxgb4/qp.c:135 alloc_host_sq() error: 'sq->queue' came from dma_alloc_coherent() so we can't do virt_to_phys()
-drivers/infiniband/hw/cxgb4/qp.c:272 create_qp() error: 'wq->rq.queue' came from dma_alloc_coherent() so we can't do virt_to_phys()
-drivers/infiniband/hw/cxgb4/qp.c:2628 alloc_srq_queue() error: 'wq->queue' came from dma_alloc_coherent() so we can't do virt_to_phys()
-drivers/infiniband/hw/ocrdma/ocrdma_verbs.c:494 ocrdma_alloc_ucontext() error: 'ctx->ah_tbl.va' came from dma_alloc_coherent() so we can't do virt_to_phys()
+Acked-by: Adrian Hunter <adrian.hunter@intel.com>
 
-drivers/infiniband/hw/cxgb4/qp.c
-   129  static int alloc_host_sq(struct c4iw_rdev *rdev, struct t4_sq *sq)
-   130  {
-   131          sq->queue = dma_alloc_coherent(&(rdev->lldi.pdev->dev), sq->memsize,
-   132                                         &(sq->dma_addr), GFP_KERNEL);
-   133          if (!sq->queue)
-   134                  return -ENOMEM;
-   135          sq->phys_addr = virt_to_phys(sq->queue);
-   136          dma_unmap_addr_set(sq, mapping, sq->dma_addr);
-   137          return 0;
-   138  }
-
-Is this a bug?
-
-regards,
-dan carpenter
+> ---
+> 
+> Changes in v4:
+> - Adjust to API rename (Adrian).
+> 
+> Changes in v3:
+> - ("brcmfmac: sdio: Don't tune while the card is off") new for v3.
+> 
+> Changes in v2: None
+> 
+>  drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c | 7 +++++++
+>  1 file changed, 7 insertions(+)
+> 
+> diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c
+> index ee76593259a7..629140b6d7e2 100644
+> --- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c
+> +++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c
+> @@ -669,6 +669,10 @@ brcmf_sdio_kso_control(struct brcmf_sdio *bus, bool on)
+>  
+>  	sdio_retune_crc_disable(bus->sdiodev->func1);
+>  
+> +	/* Cannot re-tune if device is asleep; defer till we're awake */
+> +	if (on)
+> +		sdio_retune_hold_now(bus->sdiodev->func1);
+> +
+>  	wr_val = (on << SBSDIO_FUNC1_SLEEPCSR_KSO_SHIFT);
+>  	/* 1st KSO write goes to AOS wake up core if device is asleep  */
+>  	brcmf_sdiod_writeb(bus->sdiodev, SBSDIO_FUNC1_SLEEPCSR, wr_val, &err);
+> @@ -729,6 +733,9 @@ brcmf_sdio_kso_control(struct brcmf_sdio *bus, bool on)
+>  	if (try_cnt > MAX_KSO_ATTEMPTS)
+>  		brcmf_err("max tries: rd_val=0x%x err=%d\n", rd_val, err);
+>  
+> +	if (on)
+> +		sdio_retune_release(bus->sdiodev->func1);
+> +
+>  	sdio_retune_crc_enable(bus->sdiodev->func1);
+>  
+>  	return err;
+> 
 
