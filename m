@@ -2,100 +2,107 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 62BFB47B43
-	for <lists+linux-wireless@lfdr.de>; Mon, 17 Jun 2019 09:38:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B880147B21
+	for <lists+linux-wireless@lfdr.de>; Mon, 17 Jun 2019 09:37:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727536AbfFQHie (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 17 Jun 2019 03:38:34 -0400
-Received: from smtp.codeaurora.org ([198.145.29.96]:60910 "EHLO
-        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725826AbfFQHid (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 17 Jun 2019 03:38:33 -0400
-Received: by smtp.codeaurora.org (Postfix, from userid 1000)
-        id 892AC6020A; Mon, 17 Jun 2019 07:38:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1560757113;
-        bh=4zwy2dPQuSTet8S1EGgrunmmJm4kL4MEEtL33hgHrUM=;
-        h=From:To:Cc:Subject:Date:From;
-        b=jso8wdaIbYRNrmE1jFazvWo1dUOcY8DogJwSfy7RTtrkpTvfKovU35104/SfEGef5
-         OxQimJyRt/znfRF+Opee+NqAYh2TE/tx6RO2B+XEeS8Fgd8zYCtKMTUqErcZD0YhOX
-         pUifjJpPI7YhRvt33vLkt3tHHuM1Pirb0+HGG1WI=
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        pdx-caf-mail.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.7 required=2.0 tests=ALL_TRUSTED,BAYES_00,
-        DKIM_INVALID,DKIM_SIGNED,SPF_NONE autolearn=no autolearn_force=no
-        version=3.4.0
-Received: from localhost.localdomain (unknown [180.166.53.21])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-SHA256 (128/128 bits))
-        (No client certificate requested)
-        (Authenticated sender: wgong@smtp.codeaurora.org)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 35CDA606FC;
-        Mon, 17 Jun 2019 07:38:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1560757113;
-        bh=4zwy2dPQuSTet8S1EGgrunmmJm4kL4MEEtL33hgHrUM=;
-        h=From:To:Cc:Subject:Date:From;
-        b=jso8wdaIbYRNrmE1jFazvWo1dUOcY8DogJwSfy7RTtrkpTvfKovU35104/SfEGef5
-         OxQimJyRt/znfRF+Opee+NqAYh2TE/tx6RO2B+XEeS8Fgd8zYCtKMTUqErcZD0YhOX
-         pUifjJpPI7YhRvt33vLkt3tHHuM1Pirb0+HGG1WI=
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 35CDA606FC
-Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=wgong@codeaurora.org
-From:   Wen Gong <wgong@codeaurora.org>
-To:     ath10k@lists.infradead.org
-Cc:     linux-wireless@vger.kernel.org
-Subject: [PATCH] ath10k: add mic bytes for pmf management packet
-Date:   Mon, 17 Jun 2019 15:37:59 +0800
-Message-Id: <1560757079-19266-1-git-send-email-wgong@codeaurora.org>
-X-Mailer: git-send-email 1.9.1
+        id S1727020AbfFQHhH (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 17 Jun 2019 03:37:07 -0400
+Received: from mga14.intel.com ([192.55.52.115]:55174 "EHLO mga14.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726189AbfFQHhG (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 17 Jun 2019 03:37:06 -0400
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+  by fmsmga103.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 17 Jun 2019 00:37:06 -0700
+X-ExtLoop1: 1
+Received: from jnikula-mobl3.fi.intel.com (HELO localhost) ([10.237.66.150])
+  by fmsmga001.fm.intel.com with ESMTP; 17 Jun 2019 00:36:57 -0700
+From:   Jani Nikula <jani.nikula@linux.intel.com>
+To:     Alastair D'Silva <alastair@au1.ibm.com>, alastair@d-silva.org
+Cc:     Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
+        Rodrigo Vivi <rodrigo.vivi@intel.com>,
+        David Airlie <airlied@linux.ie>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        Dan Carpenter <dan.carpenter@oracle.com>,
+        Karsten Keil <isdn@linux-pingi.de>,
+        Jassi Brar <jassisinghbrar@gmail.com>,
+        Tom Lendacky <thomas.lendacky@amd.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jose Abreu <Jose.Abreu@synopsys.com>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        Stanislaw Gruszka <sgruszka@redhat.com>,
+        Benson Leung <bleung@chromium.org>,
+        Enric Balletbo i Serra <enric.balletbo@collabora.com>,
+        "James E.J. Bottomley" <jejb@linux.ibm.com>,
+        "Martin K. Petersen" <martin.petersen@oracle.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Alexander Viro <viro@zeniv.linux.org.uk>,
+        Petr Mladek <pmladek@suse.com>,
+        Sergey Senozhatsky <sergey.senozhatsky@gmail.com>,
+        Steven Rostedt <rostedt@goodmis.org>,
+        David Laight <David.Laight@ACULAB.COM>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        intel-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
+        linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
+        ath10k@lists.infradead.org, linux-wireless@vger.kernel.org,
+        linux-scsi@vger.kernel.org, linux-fbdev@vger.kernel.org,
+        devel@driverdev.osuosl.org, linux-fsdevel@vger.kernel.org
+Subject: Re: [PATCH v3 4/7] lib/hexdump.c: Replace ascii bool in hex_dump_to_buffer with flags
+In-Reply-To: <20190617020430.8708-5-alastair@au1.ibm.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+References: <20190617020430.8708-1-alastair@au1.ibm.com> <20190617020430.8708-5-alastair@au1.ibm.com>
+Date:   Mon, 17 Jun 2019 10:39:53 +0300
+Message-ID: <87imt4vewm.fsf@intel.com>
+MIME-Version: 1.0
+Content-Type: text/plain
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-For PMF case, the action,deauth,disassoc management need to encrypt
-by hardware, it need to reserve 8 bytes for encryption, otherwise
-the packet will be sent out with error format, then PMF case will
-fail.
+On Mon, 17 Jun 2019, "Alastair D'Silva" <alastair@au1.ibm.com> wrote:
+> From: Alastair D'Silva <alastair@d-silva.org>
+>
+> In order to support additional features in hex_dump_to_buffer, replace
+> the ascii bool parameter with flags.
+>
+> Signed-off-by: Alastair D'Silva <alastair@d-silva.org>
+> ---
+>  drivers/gpu/drm/i915/intel_engine_cs.c            |  2 +-
+>  drivers/isdn/hardware/mISDN/mISDNisar.c           |  6 ++++--
+>  drivers/mailbox/mailbox-test.c                    |  2 +-
+>  drivers/net/ethernet/amd/xgbe/xgbe-drv.c          |  2 +-
+>  drivers/net/ethernet/synopsys/dwc-xlgmac-common.c |  2 +-
+>  drivers/net/wireless/ath/ath10k/debug.c           |  3 ++-
+>  drivers/net/wireless/intel/iwlegacy/3945-mac.c    |  2 +-
+>  drivers/platform/chrome/wilco_ec/debugfs.c        |  2 +-
+>  drivers/scsi/scsi_logging.c                       |  8 +++-----
+>  drivers/staging/fbtft/fbtft-core.c                |  2 +-
+>  fs/seq_file.c                                     |  3 ++-
+>  include/linux/printk.h                            |  8 ++++----
+>  lib/hexdump.c                                     | 15 ++++++++-------
+>  lib/test_hexdump.c                                |  5 +++--
+>  14 files changed, 33 insertions(+), 29 deletions(-)
+>
+> diff --git a/drivers/gpu/drm/i915/intel_engine_cs.c b/drivers/gpu/drm/i915/intel_engine_cs.c
+> index eea9bec04f1b..5df5fffdb848 100644
+> --- a/drivers/gpu/drm/i915/intel_engine_cs.c
+> +++ b/drivers/gpu/drm/i915/intel_engine_cs.c
+> @@ -1340,7 +1340,7 @@ static void hexdump(struct drm_printer *m, const void *buf, size_t len)
+>  		WARN_ON_ONCE(hex_dump_to_buffer(buf + pos, len - pos,
+>  						rowsize, sizeof(u32),
+>  						line, sizeof(line),
+> -						false) >= sizeof(line));
+> +						0) >= sizeof(line));
+>  		drm_printf(m, "[%04zx] %s\n", pos, line);
+>  
+>  		prev = buf + pos;
 
-After add the 8 bytes, it will pass the PMF case.
+On i915,
 
-Tested with QCA6174 SDIO with firmware
-WLAN.RMH.4.4.1-00005-QCARMSWP-1.
+Acked-by: Jani Nikula <jani.nikula@intel.com>
 
-Signed-off-by: Wen Gong <wgong@codeaurora.org>
----
- drivers/net/wireless/ath/ath10k/htt_tx.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
 
-diff --git a/drivers/net/wireless/ath/ath10k/htt_tx.c b/drivers/net/wireless/ath/ath10k/htt_tx.c
-index d8e9cc0..7bef9d9 100644
---- a/drivers/net/wireless/ath/ath10k/htt_tx.c
-+++ b/drivers/net/wireless/ath/ath10k/htt_tx.c
-@@ -1236,6 +1236,7 @@ static int ath10k_htt_tx_hl(struct ath10k_htt *htt, enum ath10k_hw_txrx_mode txm
- 	struct ath10k *ar = htt->ar;
- 	int res, data_len;
- 	struct htt_cmd_hdr *cmd_hdr;
-+	struct ieee80211_hdr *hdr = (struct ieee80211_hdr *)msdu->data;
- 	struct htt_data_tx_desc *tx_desc;
- 	struct ath10k_skb_cb *skb_cb = ATH10K_SKB_CB(msdu);
- 	struct sk_buff *tmp_skb;
-@@ -1245,6 +1246,13 @@ static int ath10k_htt_tx_hl(struct ath10k_htt *htt, enum ath10k_hw_txrx_mode txm
- 	u8 flags0 = 0;
- 	u16 flags1 = 0;
- 
-+	if ((ieee80211_is_action(hdr->frame_control) ||
-+	     ieee80211_is_deauth(hdr->frame_control) ||
-+	     ieee80211_is_disassoc(hdr->frame_control)) &&
-+	     ieee80211_has_protected(hdr->frame_control)) {
-+		skb_put(msdu, IEEE80211_CCMP_MIC_LEN);
-+	}
-+
- 	data_len = msdu->len;
- 
- 	switch (txmode) {
 -- 
-1.9.1
-
+Jani Nikula, Intel Open Source Graphics Center
