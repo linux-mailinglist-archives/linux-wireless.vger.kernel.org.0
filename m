@@ -2,111 +2,69 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id AA21F483CA
-	for <lists+linux-wireless@lfdr.de>; Mon, 17 Jun 2019 15:22:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D796A48584
+	for <lists+linux-wireless@lfdr.de>; Mon, 17 Jun 2019 16:34:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727547AbfFQNVt (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 17 Jun 2019 09:21:49 -0400
-Received: from smtp118.ord1c.emailsrvr.com ([108.166.43.118]:37324 "EHLO
-        smtp118.ord1c.emailsrvr.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1727523AbfFQNVs (ORCPT
+        id S1726362AbfFQOdu convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 17 Jun 2019 10:33:50 -0400
+Received: from coyote.holtmann.net ([212.227.132.17]:59044 "EHLO
+        mail.holtmann.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726005AbfFQOdu (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 17 Jun 2019 09:21:48 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=mev.co.uk;
-        s=20190130-41we5z8j; t=1560777347;
-        bh=ZvJvYkjr7iE1RIXRXDlijzKzJL0BitvNBM9T5FqQAmw=;
-        h=Subject:To:From:Date:From;
-        b=Nl+Gx2+KTHlZUrgrlD4OPdHaDIh8UJfTuRA5MZVnySfiilIiWgnddpiJk4/aln5DA
-         OAo8bcON3aHKJNRIUHN2qprmbAq2BRvH2IUzshdVkvRvYeZuB2iOeftPYIjVWn6ziI
-         KuJnFj51kem220yEC5D7kahxijPjmtFu66j0THaY=
-X-Auth-ID: abbotti@mev.co.uk
-Received: by smtp7.relay.ord1c.emailsrvr.com (Authenticated sender: abbotti-AT-mev.co.uk) with ESMTPSA id D9002A01B2;
-        Mon, 17 Jun 2019 09:15:44 -0400 (EDT)
-X-Sender-Id: abbotti@mev.co.uk
-Received: from [10.0.0.62] (remote.quintadena.com [81.133.34.160])
-        (using TLSv1.2 with cipher AES128-SHA)
-        by 0.0.0.0:465 (trex/5.7.12);
-        Mon, 17 Jun 2019 09:15:47 -0400
-Subject: Re: [PATCH 12/16] staging/comedi: mark as broken
-To:     Christoph Hellwig <hch@lst.de>,
-        Greg KH <gregkh@linuxfoundation.org>
-Cc:     Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-        Maxime Ripard <maxime.ripard@bootlin.com>,
-        Sean Paul <sean@poorly.run>, David Airlie <airlied@linux.ie>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        Jani Nikula <jani.nikula@linux.intel.com>,
-        Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
-        Rodrigo Vivi <rodrigo.vivi@intel.com>,
-        H Hartley Sweeten <hsweeten@visionengravers.com>,
-        devel@driverdev.osuosl.org, linux-s390@vger.kernel.org,
-        Intel Linux Wireless <linuxwifi@intel.com>,
-        linux-rdma@vger.kernel.org, netdev@vger.kernel.org,
-        intel-gfx@lists.freedesktop.org, linux-wireless@vger.kernel.org,
-        linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        linux-mm@kvack.org, iommu@lists.linux-foundation.org,
-        "moderated list:ARM PORT" <linux-arm-kernel@lists.infradead.org>,
-        linux-media@vger.kernel.org
-References: <20190614134726.3827-1-hch@lst.de>
- <20190614134726.3827-13-hch@lst.de> <20190614140239.GA7234@kroah.com>
- <20190614144857.GA9088@lst.de> <20190614153032.GD18049@kroah.com>
- <20190614153428.GA10008@lst.de>
-From:   Ian Abbott <abbotti@mev.co.uk>
-Organization: MEV Ltd.
-Message-ID: <60c6af3d-d8e4-5745-8d2b-9791a2f4ff56@mev.co.uk>
-Date:   Mon, 17 Jun 2019 14:15:43 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.7.0
-MIME-Version: 1.0
-In-Reply-To: <20190614153428.GA10008@lst.de>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-GB
-Content-Transfer-Encoding: 7bit
+        Mon, 17 Jun 2019 10:33:50 -0400
+Received: from marcel-macpro.fritz.box (p4FEFC3D2.dip0.t-ipconnect.de [79.239.195.210])
+        by mail.holtmann.org (Postfix) with ESMTPSA id A72B3CEE16;
+        Mon, 17 Jun 2019 16:42:15 +0200 (CEST)
+Content-Type: text/plain;
+        charset=us-ascii
+Mime-Version: 1.0 (Mac OS X Mail 12.4 \(3445.104.11\))
+Subject: Re: wpa_supplicant 2.8 fails in brcmf_cfg80211_set_pmk
+From:   Marcel Holtmann <marcel@holtmann.org>
+In-Reply-To: <605ea0a8-3303-b810-6223-18ccc7eb7af4@cypress.com>
+Date:   Mon, 17 Jun 2019 16:33:48 +0200
+Cc:     Stefan Wahren <wahrenst@gmx.net>,
+        Stanley Hsu <Stanley.Hsu@cypress.com>,
+        Arend van Spriel <arend.vanspriel@broadcom.com>,
+        Franky Lin <franky.lin@broadcom.com>,
+        Hante Meuleman <hante.meuleman@broadcom.com>,
+        Wright Feng <Wright.Feng@cypress.com>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        "brcm80211-dev-list.pdl@broadcom.com" 
+        <brcm80211-dev-list.pdl@broadcom.com>,
+        brcm80211-dev-list <brcm80211-dev-list@cypress.com>
+Content-Transfer-Encoding: 8BIT
+Message-Id: <2AF2E0A7-23F0-4FFE-A658-4906FF546199@holtmann.org>
+References: <06f7bda7-eeaf-536b-a583-7c9bc5f681f5@gmx.net>
+ <9da02861-9151-9700-2c09-b312d74155fa@gmx.net>
+ <605ea0a8-3303-b810-6223-18ccc7eb7af4@cypress.com>
+To:     Chi-Hsien Lin <Chi-Hsien.Lin@cypress.com>
+X-Mailer: Apple Mail (2.3445.104.11)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 14/06/2019 16:34, Christoph Hellwig wrote:
-> On Fri, Jun 14, 2019 at 05:30:32PM +0200, Greg KH wrote:
->> On Fri, Jun 14, 2019 at 04:48:57PM +0200, Christoph Hellwig wrote:
->>> On Fri, Jun 14, 2019 at 04:02:39PM +0200, Greg KH wrote:
->>>> Perhaps a hint as to how we can fix this up?  This is the first time
->>>> I've heard of the comedi code not handling dma properly.
->>>
->>> It can be fixed by:
->>>
->>>   a) never calling virt_to_page (or vmalloc_to_page for that matter)
->>>      on dma allocation
->>>   b) never remapping dma allocation with conflicting cache modes
->>>      (no remapping should be doable after a) anyway).
->>
->> Ok, fair enough, have any pointers of drivers/core code that does this
->> correctly?  I can put it on my todo list, but might take a week or so...
+Hi Chi-hsien,
+
+>>> i was able to reproduce an (maybe older issue) with 4-way handshake
+>>> offloading for 802.1X in the brcmfmac driver. My setup consists of
+>>> Raspberry Pi 3 B (current linux-next, arm64/defconfig) on STA side and a
+>>> Raspberry Pi 3 A+ (Linux 4.19) on AP side.
+>> 
+>> Looks like Raspberry Pi isn't the only affected platform [3], [4].
+>> 
+>> [3] - https://bugzilla.redhat.com/show_bug.cgi?id=1665608
+>> [4] - https://bugzilla.kernel.org/show_bug.cgi?id=202521
 > 
-> Just about everyone else.  They just need to remove the vmap and
-> either do one large allocation, or live with the fact that they need
-> helpers to access multiple array elements instead of one net vmap,
-> which most of the users already seem to do anyway, with just a few
-> using the vmap (which might explain why we didn't see blowups yet).
+> Stefan,
+> 
+> Could you please try the attached patch for your wpa_supplicant? We'll 
+> upstream if it works for you.
 
-Avoiding the vmap in comedi should be do-able as it already has other 
-means to get at the buffer pages.
+I hope that someone is also providing a kernel patch to fix the issue. Hacking around a kernel issue in userspace is not enough. Fix the root cause in the kernel.
 
-When comedi makes the buffer from DMA coherent memory, it currently 
-allocates it as a series of page-sized chunks.  That cannot be mmap'ed 
-in one go with dma_mmap_coherent(), so I see the following solutions.
+Regards
 
-1. Change the buffer allocation to allocate a single chunk of DMA 
-coherent memory and use dma_mmap_coherent() to mmap it.
+Marcel
 
-2. Call dma_mmap_coherent() in a loop, adjusting vma->vm_start and 
-vma->vm_end for each iteration (vma->vm_pgoff will be 0), and restoring 
-the vma->vm_start and vma->vm_end at the end.
-
-I'm not sure if 2 is a legal option.
-
--- 
--=( Ian Abbott <abbotti@mev.co.uk> || Web: www.mev.co.uk )=-
--=( MEV Ltd. is a company registered in England & Wales. )=-
--=( Registered number: 02862268.  Registered address:    )=-
--=( 15 West Park Road, Bramhall, STOCKPORT, SK7 3JZ, UK. )=-
