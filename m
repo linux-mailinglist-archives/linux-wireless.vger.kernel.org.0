@@ -2,108 +2,115 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 7761E47B89
-	for <lists+linux-wireless@lfdr.de>; Mon, 17 Jun 2019 09:44:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 98BA347BB2
+	for <lists+linux-wireless@lfdr.de>; Mon, 17 Jun 2019 09:54:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726285AbfFQHoY (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 17 Jun 2019 03:44:24 -0400
-Received: from smtp.codeaurora.org ([198.145.29.96]:34880 "EHLO
-        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725826AbfFQHoX (ORCPT
+        id S1727138AbfFQHx7 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 17 Jun 2019 03:53:59 -0400
+Received: from mail-ua1-f65.google.com ([209.85.222.65]:33594 "EHLO
+        mail-ua1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726106AbfFQHx7 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 17 Jun 2019 03:44:23 -0400
-Received: by smtp.codeaurora.org (Postfix, from userid 1000)
-        id E3E6460A44; Mon, 17 Jun 2019 07:44:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1560757462;
-        bh=Aenf+RXfbj5RyVkcFJ9IyGNg4Qewwd+uSbm54mHar40=;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=aPPH25yIRrzE1LFahKN8Lh5dxfRHYl+Y7UyF9Qm6o92zBPiSrNw6zj1DBg32PDrfa
-         +bpio/2cwWakTG2A/aQpsZwRGKI8ZTVJb5lH7KUJvtNiskh4UTpOxNdJlP/g1KbtSB
-         BToLNB+1clr0ByeaN2sdcGys3VY92ZSpMA0QkU+4=
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        pdx-caf-mail.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.7 required=2.0 tests=ALL_TRUSTED,BAYES_00,
-        DKIM_INVALID,DKIM_SIGNED,SPF_NONE autolearn=no autolearn_force=no
-        version=3.4.0
-Received: from x230.qca.qualcomm.com (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        (Authenticated sender: kvalo@smtp.codeaurora.org)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 2A50A602DD;
-        Mon, 17 Jun 2019 07:44:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1560757462;
-        bh=Aenf+RXfbj5RyVkcFJ9IyGNg4Qewwd+uSbm54mHar40=;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=aPPH25yIRrzE1LFahKN8Lh5dxfRHYl+Y7UyF9Qm6o92zBPiSrNw6zj1DBg32PDrfa
-         +bpio/2cwWakTG2A/aQpsZwRGKI8ZTVJb5lH7KUJvtNiskh4UTpOxNdJlP/g1KbtSB
-         BToLNB+1clr0ByeaN2sdcGys3VY92ZSpMA0QkU+4=
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 2A50A602DD
-Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
-From:   Kalle Valo <kvalo@codeaurora.org>
-To:     Nick Desaulniers <ndesaulniers@google.com>
-Cc:     Nathan Huckleberry <nhuck@google.com>, eliad@wizery.com,
-        arik@wizery.com, "David S. Miller" <davem@davemloft.net>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        LKML <linux-kernel@vger.kernel.org>,
-        clang-built-linux <clang-built-linux@googlegroups.com>
-Subject: Re: [PATCH] wl18xx: Fix Wunused-const-variable
-References: <20190614171713.89262-1-nhuck@google.com>
-        <CAKwvOd=jFYn=7NGPD8UDx3_g30qD+40bCjzmWJJSzmb6pNUusQ@mail.gmail.com>
-Date:   Mon, 17 Jun 2019 10:44:18 +0300
-In-Reply-To: <CAKwvOd=jFYn=7NGPD8UDx3_g30qD+40bCjzmWJJSzmb6pNUusQ@mail.gmail.com>
-        (Nick Desaulniers's message of "Fri, 14 Jun 2019 13:54:16 -0700")
-Message-ID: <87h88ofygd.fsf@codeaurora.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
+        Mon, 17 Jun 2019 03:53:59 -0400
+Received: by mail-ua1-f65.google.com with SMTP id f20so3154321ual.0
+        for <linux-wireless@vger.kernel.org>; Mon, 17 Jun 2019 00:53:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=tRW1fNYqfwgQBy9THQpXCwuo5cDKvcErh5obSg7YYNc=;
+        b=rF1z+kGx4xXL8zfFmisXiiKRC1ok9357niHWA7JwibX0ET3Sg2Vx/C91G3nrLc+Xhe
+         BPK1VcVetMEFD5keUYeTb5W3hxqOdM34b/M9bruL5im6NuFkKRqVC7jsMPkebP2tAn6Y
+         D94jWFD4CUzmB3wQv0vDlpQdduzhIvtbUwbiHXA/jfeOFu2cvoIcibGdp+E+Bd3gGBoy
+         3gl7atT4pvqbvXUtPRwvJqQds1zAPHerPuoQw/wouC1cnIz0xBuv7d33qJEKP6bN2kwZ
+         CNzBAvYinLErfw6BiZX1TKiSPZVm6+weN+Ve92dW+5Ee4stiJZG0x7ywBtwPHFq7QAAV
+         g3Kw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=tRW1fNYqfwgQBy9THQpXCwuo5cDKvcErh5obSg7YYNc=;
+        b=P31WWL73PIuK0XgogdIvKkL2ICy05PwaMYD7nz9V9Dg19l30owaVQTuzkrbVeEzIHQ
+         F+OGMFWlDbKkdx31z1JaFWp5Jqy18Ltvr6eFbMOJGl1aHWHWNCd138V8I+dea7Cqc9Mz
+         dWLDJDqqMbx/CNpFzbDvZFz2+KB4l64ugF47/LhjwL36i4ZtYi7YySSC5D7rPkPHJbkC
+         MN5kTnOePLvI3iuLV1Zk/jp+kNPO2nbrPlM5R2LxtZcriqwSy+p6rRCei9uVIYVrwxqh
+         2+lk/5LSwp5QGSIHqZ/avEp2I904++q05YwWqbhN93KhWWbW28QieENheL9M5vdrG48w
+         pT0A==
+X-Gm-Message-State: APjAAAXntcr0sHyu12Y49X262p7tSWQcAU+18F5FRuDAUSNcwgkiKq5/
+        U3uG7BNZaAB1cpv5S1nHIIkUFoUIgfRZ3b0rJIcx2A==
+X-Google-Smtp-Source: APXvYqyhLV0eZUsbwyc8+v3TnW8XR69RoxoH9782ZqeCtf+IvVa1gMZ7SgjScvGxko8mmZpldj50C+TaD9ZWqmsljgk=
+X-Received: by 2002:a9f:31a2:: with SMTP id v31mr6656078uad.15.1560758038323;
+ Mon, 17 Jun 2019 00:53:58 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain
+References: <20190613234153.59309-1-dianders@chromium.org> <20190613234153.59309-3-dianders@chromium.org>
+ <CAPDyKFrgXGf_9=H7G40fiUQj=da5WWRys_oim2azgL4FEOeUVA@mail.gmail.com> <CAD=FV=UA9i1eEi3Mx0WF-DnCnr4O4-MfOxa=axZOJtXzxbV7Tw@mail.gmail.com>
+In-Reply-To: <CAD=FV=UA9i1eEi3Mx0WF-DnCnr4O4-MfOxa=axZOJtXzxbV7Tw@mail.gmail.com>
+From:   Ulf Hansson <ulf.hansson@linaro.org>
+Date:   Mon, 17 Jun 2019 09:53:20 +0200
+Message-ID: <CAPDyKFqNUJospyV05ZC7Y894QB6a9LQ8cjdT+zrD9EQvm_OWRg@mail.gmail.com>
+Subject: Re: [PATCH v4 2/5] mmc: core: API to temporarily disable retuning for
+ SDIO CRC errors
+To:     Doug Anderson <dianders@chromium.org>
+Cc:     Kalle Valo <kvalo@codeaurora.org>,
+        Adrian Hunter <adrian.hunter@intel.com>,
+        Arend van Spriel <arend.vanspriel@broadcom.com>,
+        brcm80211-dev-list.pdl@broadcom.com,
+        "open list:ARM/Rockchip SoC..." <linux-rockchip@lists.infradead.org>,
+        Double Lo <double.lo@cypress.com>,
+        Brian Norris <briannorris@chromium.org>,
+        linux-wireless <linux-wireless@vger.kernel.org>,
+        Naveen Gupta <naveen.gupta@cypress.com>,
+        Madhan Mohan R <madhanmohan.r@cypress.com>,
+        Matthias Kaehlcke <mka@chromium.org>,
+        Wright Feng <wright.feng@cypress.com>,
+        Chi-Hsien Lin <chi-hsien.lin@cypress.com>,
+        netdev <netdev@vger.kernel.org>,
+        brcm80211-dev-list <brcm80211-dev-list@cypress.com>,
+        Jiong Wu <lohengrin1024@gmail.com>,
+        Ritesh Harjani <riteshh@codeaurora.org>,
+        Allison Randal <allison@lohutok.net>,
+        "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Shawn Lin <shawn.lin@rock-chips.com>,
+        Wolfram Sang <wsa+renesas@sang-engineering.com>,
+        Avri Altman <avri.altman@wdc.com>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Nick Desaulniers <ndesaulniers@google.com> writes:
+[...]
 
-> On Fri, Jun 14, 2019 at 10:17 AM 'Nathan Huckleberry' via Clang Built
-> Linux <clang-built-linux@googlegroups.com> wrote:
->>
->> Clang produces the following warning
->>
->> drivers/net/wireless/ti/wl18xx/main.c:1850:43: warning: unused variable
->> 'wl18xx_iface_ap_cl_limits' [-Wunused-const-variable] static const struct
->> ieee80211_iface_limit wl18xx_iface_ap_cl_limits[] = { ^
->> drivers/net/wireless/ti/wl18xx/main.c:1869:43: warning: unused variable
->> 'wl18xx_iface_ap_go_limits' [-Wunused-const-variable] static const struct
->> ieee80211_iface_limit wl18xx_iface_ap_go_limits[] = { ^
->>
->> The commit that added these variables never used them. Removing them.
+> > > --- a/include/linux/mmc/sdio_func.h
+> > > +++ b/include/linux/mmc/sdio_func.h
+> > > @@ -167,4 +167,7 @@ extern void sdio_f0_writeb(struct sdio_func *func, unsigned char b,
+> > >  extern mmc_pm_flag_t sdio_get_host_pm_caps(struct sdio_func *func);
+> > >  extern int sdio_set_host_pm_flags(struct sdio_func *func, mmc_pm_flag_t flags);
+> > >
+> > > +extern void sdio_retune_crc_disable(struct sdio_func *func);
+> > > +extern void sdio_retune_crc_enable(struct sdio_func *func);
+> > > +
+> > >  #endif /* LINUX_MMC_SDIO_FUNC_H */
+> > > --
+> > > 2.22.0.rc2.383.gf4fbbf30c2-goog
+> > >
+> >
+> > Besides the minor comments, this looks good to me.
 >
-> Previous thread, for context:
-> https://groups.google.com/forum/#!topic/clang-built-linux/1Lu1GT9ic94
+> Thank you for the reviews!
 >
-> Looking at drivers/net/wireless/ti/wl18xx/main.c, there 4 globally
-> declared `struct ieee80211_iface_limit` but as your patch notes, only
-> 2 are used.  The thing is, their uses are in a `struct
-> ieee80211_iface_limit []`.
->
-> Looking at
-> $ git blame drivers/net/wireless/ti/wl18xx/main.c -L 1850
-> points to
-> commit 7845af35e0de ("wlcore: add p2p device support")
-> Adding Eliad and Arik to the thread; it's not clear to me what the
-> these variables were supposed to do, but seeing as the code in
-> question was already dead, this is no functional change from a user's
-> perspective.  With that in mind:
-> Reviewed-by: Nick Desaulniers <ndesaulniers@google.com>
->
-> So I'd at least add the tag.
-> Fixes: 7845af35e0de ("wlcore: add p2p device support")
+> I'll plan to send a v5 on my Monday with the fixes assuming no new
+> heated discussion starts up.  If it's less work for you, I'm also
+> happy if you just want to make the trivial fixes yourself when
+> applying.
 
-I can't see any functional changes when applying this patch so I don't
-think a fixes line is needed, it's just cleanup.
+It really doesn't matter to me, feel free to pick the option you
+prefer. At this point I am just awaiting acks for the broadcom patces
+and some clarity of what stable releases we should target for
+non-tagged patches.
 
--- 
-Kalle Valo
+Kind regards
+Uffe
