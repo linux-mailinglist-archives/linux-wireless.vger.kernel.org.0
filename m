@@ -2,91 +2,111 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A6ABB480B9
-	for <lists+linux-wireless@lfdr.de>; Mon, 17 Jun 2019 13:32:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AA21F483CA
+	for <lists+linux-wireless@lfdr.de>; Mon, 17 Jun 2019 15:22:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727927AbfFQLcT (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 17 Jun 2019 07:32:19 -0400
-Received: from mail-ot1-f66.google.com ([209.85.210.66]:42421 "EHLO
-        mail-ot1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725681AbfFQLcT (ORCPT
+        id S1727547AbfFQNVt (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 17 Jun 2019 09:21:49 -0400
+Received: from smtp118.ord1c.emailsrvr.com ([108.166.43.118]:37324 "EHLO
+        smtp118.ord1c.emailsrvr.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1727523AbfFQNVs (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 17 Jun 2019 07:32:19 -0400
-Received: by mail-ot1-f66.google.com with SMTP id l15so8903232otn.9
-        for <linux-wireless@vger.kernel.org>; Mon, 17 Jun 2019 04:32:18 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
-         :cc;
-        bh=bFeLNRz90DozmUEBqcuHoNO0gJ8aYft6A7ssbyU+2Ns=;
-        b=crErvUYy+5U2jXXUkAPg2JiPmtCnGo5XO+8bgyT3vDmcxQrwB995MHArXO05jKc0M6
-         LXnPthe9U3aN05IJkucpZoyMHpYFLo+Y2DbTojcUYYzrlmFTl45adhbst+iOodk15DXX
-         bZ9PPlMaU7MNBFUctmZ7qcn67jm5rRHGcqaD4sHdvf9BgYqyzuBjxuba8H8/t0Qqlh0i
-         l0AHUnAHOU9XUyOb/52pDo3+dZKNl814pTvtPJYQdVkU/EK/1NG/16QB5ROxAtN1LFcR
-         /j8A4GVtCEvPsF6jjU+V/vqTRiVoyx54wPprqJKETn3xYdbMcD46PmSeKRMZiIcBpbps
-         NowA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:in-reply-to:references:from:date
-         :message-id:subject:to:cc;
-        bh=bFeLNRz90DozmUEBqcuHoNO0gJ8aYft6A7ssbyU+2Ns=;
-        b=uOqZybKQ5V1MUmKWoIdEAmZKGb5zmvz70X4IO3e8/31kD/ha7iuHE/8xlVrxya8JLE
-         1tkklUKCVUGl3KcgG3t/dcMcIjFhoxWP82euVauSSdDnkmOzld74pEtONC7Im7uSwTsp
-         LN2kmbcTxURFiqZFIp3PRIQeEHgU/kcofamkBavAccZ+AzrALotuYCSnZqV0qcoPbk0I
-         79q2kmanyrRsSZiOLphoIvfVccN0DGw2EC/FziyylqEkfG+HJSDAfbN6O+htA6pSxRIg
-         kID01bVePdxXALchn/g8r2WaaPuQ56TkNsgW3ckuaXh/VK/jMu1YTy4dphMqSExIEgl+
-         TeLg==
-X-Gm-Message-State: APjAAAVRQno3d8Hu92g/siUgmMz7JXiRhu1Pe0XsZtR8Nd+tiOO3q0fo
-        wMDm+XFRhsr4DntLnXHakkavrYLn/ZSTZ01M3Hg=
-X-Google-Smtp-Source: APXvYqzHJPlN6vcmLC4BhL9wSpZF6995J/G8/LQZXHvZLNccR5hVqHikEHUSWp7S1IBLn+rIvRp0pbUlAM1Egog4Jvk=
-X-Received: by 2002:a05:6830:1681:: with SMTP id k1mr35982840otr.256.1560771138563;
- Mon, 17 Jun 2019 04:32:18 -0700 (PDT)
+        Mon, 17 Jun 2019 09:21:48 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=mev.co.uk;
+        s=20190130-41we5z8j; t=1560777347;
+        bh=ZvJvYkjr7iE1RIXRXDlijzKzJL0BitvNBM9T5FqQAmw=;
+        h=Subject:To:From:Date:From;
+        b=Nl+Gx2+KTHlZUrgrlD4OPdHaDIh8UJfTuRA5MZVnySfiilIiWgnddpiJk4/aln5DA
+         OAo8bcON3aHKJNRIUHN2qprmbAq2BRvH2IUzshdVkvRvYeZuB2iOeftPYIjVWn6ziI
+         KuJnFj51kem220yEC5D7kahxijPjmtFu66j0THaY=
+X-Auth-ID: abbotti@mev.co.uk
+Received: by smtp7.relay.ord1c.emailsrvr.com (Authenticated sender: abbotti-AT-mev.co.uk) with ESMTPSA id D9002A01B2;
+        Mon, 17 Jun 2019 09:15:44 -0400 (EDT)
+X-Sender-Id: abbotti@mev.co.uk
+Received: from [10.0.0.62] (remote.quintadena.com [81.133.34.160])
+        (using TLSv1.2 with cipher AES128-SHA)
+        by 0.0.0.0:465 (trex/5.7.12);
+        Mon, 17 Jun 2019 09:15:47 -0400
+Subject: Re: [PATCH 12/16] staging/comedi: mark as broken
+To:     Christoph Hellwig <hch@lst.de>,
+        Greg KH <gregkh@linuxfoundation.org>
+Cc:     Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+        Maxime Ripard <maxime.ripard@bootlin.com>,
+        Sean Paul <sean@poorly.run>, David Airlie <airlied@linux.ie>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        Jani Nikula <jani.nikula@linux.intel.com>,
+        Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
+        Rodrigo Vivi <rodrigo.vivi@intel.com>,
+        H Hartley Sweeten <hsweeten@visionengravers.com>,
+        devel@driverdev.osuosl.org, linux-s390@vger.kernel.org,
+        Intel Linux Wireless <linuxwifi@intel.com>,
+        linux-rdma@vger.kernel.org, netdev@vger.kernel.org,
+        intel-gfx@lists.freedesktop.org, linux-wireless@vger.kernel.org,
+        linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        linux-mm@kvack.org, iommu@lists.linux-foundation.org,
+        "moderated list:ARM PORT" <linux-arm-kernel@lists.infradead.org>,
+        linux-media@vger.kernel.org
+References: <20190614134726.3827-1-hch@lst.de>
+ <20190614134726.3827-13-hch@lst.de> <20190614140239.GA7234@kroah.com>
+ <20190614144857.GA9088@lst.de> <20190614153032.GD18049@kroah.com>
+ <20190614153428.GA10008@lst.de>
+From:   Ian Abbott <abbotti@mev.co.uk>
+Organization: MEV Ltd.
+Message-ID: <60c6af3d-d8e4-5745-8d2b-9791a2f4ff56@mev.co.uk>
+Date:   Mon, 17 Jun 2019 14:15:43 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.7.0
 MIME-Version: 1.0
-Received: by 2002:a05:6830:2015:0:0:0:0 with HTTP; Mon, 17 Jun 2019 04:32:17
- -0700 (PDT)
-In-Reply-To: <20190617093658.46591254@mir>
-References: <1557307533-5795-1-git-send-email-mpubbise@codeaurora.org>
- <fd3addc01fc3f5362dba5771ee82659cf01c195b.camel@sipsolutions.net>
- <c8484254-f4f7-9955-e3f8-8a423cc6c325@codeaurora.org> <CAKR_QV+dVx+LK1HyCo6CQZQ7ZX_u6ON0hEH5adNiJTB+XaP3WA@mail.gmail.com>
- <dc9039be42df8d241b14d4f673f3c472dc113991.camel@sipsolutions.net>
- <20190617070747.562b9388@mir> <e13d86030df7a5222ee144d85bbeec400ed8fa07.camel@sipsolutions.net>
- <20190617093658.46591254@mir>
-From:   Tom Psyborg <pozega.tomislav@gmail.com>
-Date:   Mon, 17 Jun 2019 13:32:17 +0200
-Message-ID: <CAKR_QVJ9EkhcG893SjVMgDb5S-W2=jas5JG+VQyLDx-R5MMK5w@mail.gmail.com>
-Subject: Re: [PATCH v3] {nl,mac}80211: allow 4addr AP operation on crypto
- controlled devices
-To:     Stefan Lippers-Hollmann <s.l-h@gmx.de>
-Cc:     Johannes Berg <johannes@sipsolutions.net>,
-        Manikanta Pubbisetty <mpubbise@codeaurora.org>,
-        linux-wireless@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <20190614153428.GA10008@lst.de>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-GB
+Content-Transfer-Encoding: 7bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi
+On 14/06/2019 16:34, Christoph Hellwig wrote:
+> On Fri, Jun 14, 2019 at 05:30:32PM +0200, Greg KH wrote:
+>> On Fri, Jun 14, 2019 at 04:48:57PM +0200, Christoph Hellwig wrote:
+>>> On Fri, Jun 14, 2019 at 04:02:39PM +0200, Greg KH wrote:
+>>>> Perhaps a hint as to how we can fix this up?  This is the first time
+>>>> I've heard of the comedi code not handling dma properly.
+>>>
+>>> It can be fixed by:
+>>>
+>>>   a) never calling virt_to_page (or vmalloc_to_page for that matter)
+>>>      on dma allocation
+>>>   b) never remapping dma allocation with conflicting cache modes
+>>>      (no remapping should be doable after a) anyway).
+>>
+>> Ok, fair enough, have any pointers of drivers/core code that does this
+>> correctly?  I can put it on my todo list, but might take a week or so...
+> 
+> Just about everyone else.  They just need to remove the vmap and
+> either do one large allocation, or live with the fact that they need
+> helpers to access multiple array elements instead of one net vmap,
+> which most of the users already seem to do anyway, with just a few
+> using the vmap (which might explain why we didn't see blowups yet).
 
-Checked out r10011 from openwrt git on May, 15; built images and
-flashed devices; tried to set up WDS (AP) + WDS (Client); got this in
-logs: https://forum.openwrt.org/t/ath10k-wds-support-missing/30346/15?u=psyborg
+Avoiding the vmap in comedi should be do-able as it already has other 
+means to get at the buffer pages.
 
-Saw this patch in my inbox and checked openwrt sources, to find out
-there was v1 used:
-https://git.openwrt.org/?p=openwrt/openwrt.git;a=blob;f=package/kernel/mac80211/patches/subsys/390-nl-mac-80211-allow-4addr-AP-operation-on-crypto-cont.patch
+When comedi makes the buffer from DMA coherent memory, it currently 
+allocates it as a series of page-sized chunks.  That cannot be mmap'ed 
+in one go with dma_mmap_coherent(), so I see the following solutions.
 
-Reverted v1 of the patch and patched manually to v3 (double checked),
-did not help.
+1. Change the buffer allocation to allocate a single chunk of DMA 
+coherent memory and use dma_mmap_coherent() to mmap it.
 
-Found patch that fixes problem and applied;
-https://github.com/openwrt/openwrt/pull/2048
-Now I got this in logs:
-https://forum.openwrt.org/t/wds-client-wont-stay-connected-prev-auth-not-valid-using-recent-snapshot-builds/38194/20?u=psyborg
+2. Call dma_mmap_coherent() in a loop, adjusting vma->vm_start and 
+vma->vm_end for each iteration (vma->vm_pgoff will be 0), and restoring 
+the vma->vm_start and vma->vm_end at the end.
 
-Reverted again v3 of this patch to v1, and the connection worked as expected.
+I'm not sure if 2 is a legal option.
 
-v4.19.32 is current in openwrt master, and testing against ath9k
-devices may not reveal exact issue. notice in one of my posts on
-forums that i was able to bridge it with archer c7 running tp-link fw
-without any of these patches
+-- 
+-=( Ian Abbott <abbotti@mev.co.uk> || Web: www.mev.co.uk )=-
+-=( MEV Ltd. is a company registered in England & Wales. )=-
+-=( Registered number: 02862268.  Registered address:    )=-
+-=( 15 West Park Road, Bramhall, STOCKPORT, SK7 3JZ, UK. )=-
