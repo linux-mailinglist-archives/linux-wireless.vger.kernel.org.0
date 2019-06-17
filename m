@@ -2,114 +2,115 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E837D47D25
-	for <lists+linux-wireless@lfdr.de>; Mon, 17 Jun 2019 10:32:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0095747D31
+	for <lists+linux-wireless@lfdr.de>; Mon, 17 Jun 2019 10:34:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726432AbfFQIc1 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 17 Jun 2019 04:32:27 -0400
-Received: from mail-io1-f66.google.com ([209.85.166.66]:36855 "EHLO
-        mail-io1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725827AbfFQIc1 (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 17 Jun 2019 04:32:27 -0400
-Received: by mail-io1-f66.google.com with SMTP id h6so19415644ioh.3
-        for <linux-wireless@vger.kernel.org>; Mon, 17 Jun 2019 01:32:26 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=e/UVFvSTOnQx2MdEwCsdbLMftAMFG5W38DFDRZnlaqE=;
-        b=SUP0HB8CO812sk5oBxHZBrx0VmZ/7Tn8LPjsNe48JSOup+I9iNPzIepwpMxWQwOr8O
-         KCDs4lKIm1EfJGd/e7NiKdRBd40qx2t0L8zAXk8Axh8jMohrGjO/7WmH0DyZbrv3yPcg
-         ukGi6X2f6pJES1kiGjYUkc5VUfC8KxWn1Uh+eO9mWdXHT8KMx7OZKGZsl0ee0gWlMoxH
-         xWLXjbPrRS55FFj7io0SM+hkIMfcctPC6L8oozNOzt/Hl/kZ7S9ZHAN4UXChXsyRexoL
-         +2UA84C2ri0PpIj3SPhQkDxO9i0TOl4Q6HbwDq6pbMhMZNVJkuf3rntsQsYYRiDZklN2
-         2hCA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=e/UVFvSTOnQx2MdEwCsdbLMftAMFG5W38DFDRZnlaqE=;
-        b=uPa5+ue/XCiA5eP8iQwg9B3TBPdNN5AXJe6+SzZpYeHNakDBgazRRDn9Il30QttQjO
-         wnaidDzPUZDH1rGm78KGukg6NNOpNncYDKyYrOVgwA/8F/rkcdlOcL2nlLN6V1NNVyOv
-         9cvqOEY9i2K2o7vq94CtCwmwzFxfr2IrdEjjsuXJu7xcO5BTdIrk/7fIM7CZCWuA8oa2
-         SSp5rU6iIOJs0nJfp/zXn7ni3Q/rRqcRb/u7EraSD8NUdLFnbLqcc5SBWQ2HX3hu9iKp
-         x5p3pCw+zItx4JqIch6GsWV6eqHTI47bCQ36JVzBrdaFeX5cI47HuKEoDD0abhfvKwEb
-         7d8w==
-X-Gm-Message-State: APjAAAW/Bl2fPBW2IYIcSwlfJ7AjMEjFLnXYuVSoGz0aJKS5QsSP3e8N
-        9m0jFw+zqnjt0vpalPHrr/7RHvdyF4On6xC7PNV2UMpJxBo=
-X-Google-Smtp-Source: APXvYqyCvSdGF/kKkdQvExm0EaKRVOaiq6eSYb+tcdvLqnTy4SD4UKTQokJrBkDaNyi2JnJNn/7Nxkqwv5SAu6szY4k=
-X-Received: by 2002:a5e:820a:: with SMTP id l10mr15338296iom.283.1560760346379;
- Mon, 17 Jun 2019 01:32:26 -0700 (PDT)
-MIME-Version: 1.0
-References: <20190614093603.22771-1-ard.biesheuvel@linaro.org>
- <20190616071206.GB698@sol.localdomain> <CAKv+Gu97xkz5qxycyjqmukFhWAD6p=eYbTqoPWt-ZNbBFDbNAw@mail.gmail.com>
- <20190616194322.GC923@sol.localdomain>
-In-Reply-To: <20190616194322.GC923@sol.localdomain>
-From:   Ard Biesheuvel <ard.biesheuvel@linaro.org>
-Date:   Mon, 17 Jun 2019 10:32:14 +0200
-Message-ID: <CAKv+Gu8qgDgONkt0_2vpu3FacPbbFFMc=4tPrtnxqXt9gNexOw@mail.gmail.com>
-Subject: Re: [PATCH] wireless: airo: switch to skcipher interface
-To:     Eric Biggers <ebiggers@kernel.org>
-Cc:     "<linux-wireless@vger.kernel.org>" <linux-wireless@vger.kernel.org>,
+        id S1727646AbfFQIeg (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 17 Jun 2019 04:34:36 -0400
+Received: from mga12.intel.com ([192.55.52.136]:45021 "EHLO mga12.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725837AbfFQIeg (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 17 Jun 2019 04:34:36 -0400
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from fmsmga008.fm.intel.com ([10.253.24.58])
+  by fmsmga106.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 17 Jun 2019 01:34:35 -0700
+X-ExtLoop1: 1
+Received: from ahunter-desktop.fi.intel.com (HELO [10.237.72.198]) ([10.237.72.198])
+  by fmsmga008.fm.intel.com with ESMTP; 17 Jun 2019 01:34:31 -0700
+Subject: Re: [PATCH v4 3/5] brcmfmac: sdio: Disable auto-tuning around
+ commands expected to fail
+To:     Douglas Anderson <dianders@chromium.org>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
         Kalle Valo <kvalo@codeaurora.org>,
-        "open list:HARDWARE RANDOM NUMBER GENERATOR CORE" 
-        <linux-crypto@vger.kernel.org>, linux@rainbow-software.org,
-        Herbert Xu <herbert@gondor.apana.org.au>
-Content-Type: text/plain; charset="UTF-8"
+        Arend van Spriel <arend.vanspriel@broadcom.com>
+Cc:     brcm80211-dev-list.pdl@broadcom.com,
+        linux-rockchip@lists.infradead.org,
+        Double Lo <double.lo@cypress.com>, briannorris@chromium.org,
+        linux-wireless@vger.kernel.org,
+        Naveen Gupta <naveen.gupta@cypress.com>,
+        Madhan Mohan R <madhanmohan.r@cypress.com>, mka@chromium.org,
+        Wright Feng <wright.feng@cypress.com>,
+        Chi-Hsien Lin <chi-hsien.lin@cypress.com>,
+        netdev@vger.kernel.org, brcm80211-dev-list@cypress.com,
+        Hans de Goede <hdegoede@redhat.com>,
+        Franky Lin <franky.lin@broadcom.com>,
+        linux-kernel@vger.kernel.org,
+        Hante Meuleman <hante.meuleman@broadcom.com>,
+        YueHaibing <yuehaibing@huawei.com>,
+        "David S. Miller" <davem@davemloft.net>
+References: <20190613234153.59309-1-dianders@chromium.org>
+ <20190613234153.59309-4-dianders@chromium.org>
+From:   Adrian Hunter <adrian.hunter@intel.com>
+Organization: Intel Finland Oy, Registered Address: PL 281, 00181 Helsinki,
+ Business Identity Code: 0357606 - 4, Domiciled in Helsinki
+Message-ID: <36770536-eb30-59ba-3f4e-b3640fc27408@intel.com>
+Date:   Mon, 17 Jun 2019 11:33:14 +0300
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.7.0
+MIME-Version: 1.0
+In-Reply-To: <20190613234153.59309-4-dianders@chromium.org>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Sun, 16 Jun 2019 at 21:43, Eric Biggers <ebiggers@kernel.org> wrote:
->
-> On Sun, Jun 16, 2019 at 09:03:58PM +0200, Ard Biesheuvel wrote:
-> > >
-> > > Otherwise this patch looks correct to me.
-> > >
-> > > The actual crypto in this driver, on the other hand, looks very outdated and
-> > > broken.  Apparently it's implementing some Cisco proprietary extension to WEP
-> > > that uses a universal hashing based MAC, where the hash key is generated from
-> > > AES-CTR.  But the MAC is only 32 bits, and the universal hash (MMH) is
-> > > implemented incorrectly: there's an off-by-one error in emmh32_final() in the
-> > > code that is supposed to be an optimized version of 'sum % ((1ULL << 32) + 15)'.
-> > >
-> >
-> > I stared at that code for a bit, and I don't see the problem.
-> >
->
-> I'm fairly certain that the line:
->
->         if (utmp > 0x10000000fLL)
->
-> is supposed to be:
->
->         if (utmp >= 0x10000000fLL)
->
+On 14/06/19 2:41 AM, Douglas Anderson wrote:
+> There are certain cases, notably when transitioning between sleep and
+> active state, when Broadcom SDIO WiFi cards will produce errors on the
+> SDIO bus.  This is evident from the source code where you can see that
+> we try commands in a loop until we either get success or we've tried
+> too many times.  The comment in the code reinforces this by saying
+> "just one write attempt may fail"
+> 
+> Unfortunately these failures sometimes end up causing an "-EILSEQ"
+> back to the core which triggers a retuning of the SDIO card and that
+> blocks all traffic to the card until it's done.
+> 
+> Let's disable retuning around the commands we expect might fail.
+> 
+> Fixes: bd11e8bd03ca ("mmc: core: Flag re-tuning is needed on CRC errors")
+> Signed-off-by: Douglas Anderson <dianders@chromium.org>
 
-Ah yes, I see what you mean. 0x10000000f % 0x10000000f == 0 not 15
-(after truncation). So yes, that is definitely a bug.
+Acked-by: Adrian Hunter <adrian.hunter@intel.com>
 
-> Since it's doing mod 0x10000000f.  It's supposed to be an optimized
-> implementation of 'val = (u32)(context->accum % 0x10000000f)' where 0x10000000f
-> is the prime number 2^32 + 15.  It's meant to be the MMH algorithm: Section 3.2
-> of https://link.springer.com/content/pdf/10.1007/BFb0052345.pdf.  But there are
-> values of 'accum' where it gives the wrong result, e.g. 14137323879880455377.
->
-> Possibly this is a bug in the Cisco MIC protocol itself so can't be fixed.
->
+> ---
+> 
+> Changes in v4:
+> - Adjust to API rename (Adrian, Ulf).
+> 
+> Changes in v3:
+> - Expect errors for all of brcmf_sdio_kso_control() (Adrian).
+> 
+> Changes in v2: None
+> 
+>  drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c | 4 ++++
+>  1 file changed, 4 insertions(+)
+> 
+> diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c
+> index 4a750838d8cd..ee76593259a7 100644
+> --- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c
+> +++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c
+> @@ -667,6 +667,8 @@ brcmf_sdio_kso_control(struct brcmf_sdio *bus, bool on)
+>  
+>  	brcmf_dbg(TRACE, "Enter: on=%d\n", on);
+>  
+> +	sdio_retune_crc_disable(bus->sdiodev->func1);
+> +
+>  	wr_val = (on << SBSDIO_FUNC1_SLEEPCSR_KSO_SHIFT);
+>  	/* 1st KSO write goes to AOS wake up core if device is asleep  */
+>  	brcmf_sdiod_writeb(bus->sdiodev, SBSDIO_FUNC1_SLEEPCSR, wr_val, &err);
+> @@ -727,6 +729,8 @@ brcmf_sdio_kso_control(struct brcmf_sdio *bus, bool on)
+>  	if (try_cnt > MAX_KSO_ATTEMPTS)
+>  		brcmf_err("max tries: rd_val=0x%x err=%d\n", rd_val, err);
+>  
+> +	sdio_retune_crc_enable(bus->sdiodev->func1);
+> +
+>  	return err;
+>  }
+>  
+> 
 
-Highly unlikely. But also highly irrelevant :-)
-
-> > > Do we know whether anyone is actually using this, or is this just another old
-> > > driver that's sitting around unused?
-> > >
-> >
-> > Excellent question. I take it this is pre-802.11b hardware, and so
-> > even the OpenWRT people are unlikely to still be using this.
->
-
-I'd be fine with dropping this driver. I am just trying to get rid of
-(ab)use of the crypto cipher interface, so either we change it or we
-drop it.
