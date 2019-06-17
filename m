@@ -2,85 +2,141 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 74BFC48644
-	for <lists+linux-wireless@lfdr.de>; Mon, 17 Jun 2019 16:58:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AEA0348838
+	for <lists+linux-wireless@lfdr.de>; Mon, 17 Jun 2019 18:04:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727639AbfFQO5j (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 17 Jun 2019 10:57:39 -0400
-Received: from smtp.codeaurora.org ([198.145.29.96]:57358 "EHLO
-        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726215AbfFQO5j (ORCPT
+        id S1726974AbfFQQDr (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 17 Jun 2019 12:03:47 -0400
+Received: from mail2.candelatech.com ([208.74.158.173]:49560 "EHLO
+        mail3.candelatech.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726961AbfFQQDr (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 17 Jun 2019 10:57:39 -0400
-Received: by smtp.codeaurora.org (Postfix, from userid 1000)
-        id 71B78619ED; Mon, 17 Jun 2019 14:57:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1560783458;
-        bh=4onSF4OQiL7OoUDuLJCDfUq7FXpM98SZ2CdgO0mJlSg=;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=Ic98rx1jipgFE6NQ8TLvYymmaOwX2dyL87jUUDwBO937OZVA5BcmT4aijaifVpyCf
-         QscsWAptTZtHLnVn6tvn746NGUzaOetv3VVndoBGO/kc9V3srVKqKk95QkcjbuvY3+
-         ZlwC0Bt7EOSrd/AMqvdnhrG4Nflo/O6DsguFjHLI=
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        pdx-caf-mail.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.7 required=2.0 tests=ALL_TRUSTED,BAYES_00,
-        DKIM_INVALID,DKIM_SIGNED,SPF_NONE autolearn=no autolearn_force=no
-        version=3.4.0
-Received: from purkki.adurom.net (purkki.adurom.net [80.68.90.206])
-        (using TLSv1.2 with cipher DHE-RSA-AES128-SHA (128/128 bits))
+        Mon, 17 Jun 2019 12:03:47 -0400
+Received: from [192.168.100.195] (50-251-239-81-static.hfc.comcastbusiness.net [50.251.239.81])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        (Authenticated sender: kvalo@smtp.codeaurora.org)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id C9FFF6118F;
-        Mon, 17 Jun 2019 14:57:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1560783457;
-        bh=4onSF4OQiL7OoUDuLJCDfUq7FXpM98SZ2CdgO0mJlSg=;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=GXTApqQxwbYx5kOJO617Mm2iEJwg+G6iLl63eS1Csb+ZenbqMSD6fD2jx/IqKIpbn
-         /dRb374PdzkfqlXx7D159R4IVxFyxO/Ukh4r2hSBgu2f4llXPf421K57jsmtOQGLuX
-         uSXigMsd5Jh1UzT6FjBwBqKwdWqR2vuj2vu5rvy8=
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org C9FFF6118F
-Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
-From:   Kalle Valo <kvalo@codeaurora.org>
-To:     Johannes Berg <johannes@sipsolutions.net>
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        kbuild test robot <lkp@intel.com>, kbuild-all@01.org,
-        linux-wireless@vger.kernel.org
-Subject: Re: [mac80211-next:master 17/20] drivers/net/wireless/intel/iwlwifi/dvm/rs.c:3317:3: error: 'const struct rate_control_ops' has no member named 'remove_sta_debugfs'; did you mean 'add_sta_debugfs'?
-References: <201906142122.HSTAYprn%lkp@intel.com>
-        <20190614143359.GA11550@kroah.com>
-        <330312ef061715d2beba89d0337bfe1a6698f36e.camel@sipsolutions.net>
-Date:   Mon, 17 Jun 2019 17:57:33 +0300
-In-Reply-To: <330312ef061715d2beba89d0337bfe1a6698f36e.camel@sipsolutions.net>
-        (Johannes Berg's message of "Fri, 14 Jun 2019 16:58:39 +0200")
-Message-ID: <87muigtg2q.fsf@purkki.adurom.net>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/23.4 (gnu/linux)
+        by mail3.candelatech.com (Postfix) with ESMTPSA id 934D3137560;
+        Mon, 17 Jun 2019 09:03:41 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail3.candelatech.com 934D3137560
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=candelatech.com;
+        s=default; t=1560787426;
+        bh=qihpQ4YKC1KRJjLDZybHBWXT8408PGMnM4qg5Rm7KFA=;
+        h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
+        b=rfDc/qpVAlPnKwIZc1ZWo9TY/Op2f2us3q7+pIKREi7w3andOvWefCRLNTTtEhjaE
+         0pGlm+pVSEiUTIPVZ/28S3z0fSWrrXYw0GeXCi6NwdHMuSiId7UlyBtZprJgT01Kw0
+         kcv5oUkw4ucKhfTLrCbRh7nFbH1WrRGohXI77Z1c=
+Subject: Re: [PATCH] ath10k: add mic bytes for pmf management packet
+To:     Wen Gong <wgong@codeaurora.org>, ath10k@lists.infradead.org
+Cc:     linux-wireless@vger.kernel.org
+References: <1560757079-19266-1-git-send-email-wgong@codeaurora.org>
+From:   Ben Greear <greearb@candelatech.com>
+Organization: Candela Technologies
+Message-ID: <136d04d4-671b-8dde-2abd-63070b07bd26@candelatech.com>
+Date:   Mon, 17 Jun 2019 09:03:41 -0700
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.4.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+In-Reply-To: <1560757079-19266-1-git-send-email-wgong@codeaurora.org>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Johannes Berg <johannes@sipsolutions.net> writes:
+On 6/17/19 12:37 AM, Wen Gong wrote:
+> For PMF case, the action,deauth,disassoc management need to encrypt
+> by hardware, it need to reserve 8 bytes for encryption, otherwise
+> the packet will be sent out with error format, then PMF case will
+> fail.
+> 
+> After add the 8 bytes, it will pass the PMF case.
+> 
+> Tested with QCA6174 SDIO with firmware
+> WLAN.RMH.4.4.1-00005-QCARMSWP-1.
+> 
+> Signed-off-by: Wen Gong <wgong@codeaurora.org>
+> ---
+>   drivers/net/wireless/ath/ath10k/htt_tx.c | 8 ++++++++
+>   1 file changed, 8 insertions(+)
+> 
+> diff --git a/drivers/net/wireless/ath/ath10k/htt_tx.c b/drivers/net/wireless/ath/ath10k/htt_tx.c
+> index d8e9cc0..7bef9d9 100644
+> --- a/drivers/net/wireless/ath/ath10k/htt_tx.c
+> +++ b/drivers/net/wireless/ath/ath10k/htt_tx.c
+> @@ -1236,6 +1236,7 @@ static int ath10k_htt_tx_hl(struct ath10k_htt *htt, enum ath10k_hw_txrx_mode txm
+>   	struct ath10k *ar = htt->ar;
+>   	int res, data_len;
+>   	struct htt_cmd_hdr *cmd_hdr;
+> +	struct ieee80211_hdr *hdr = (struct ieee80211_hdr *)msdu->data;
+>   	struct htt_data_tx_desc *tx_desc;
+>   	struct ath10k_skb_cb *skb_cb = ATH10K_SKB_CB(msdu);
+>   	struct sk_buff *tmp_skb;
+> @@ -1245,6 +1246,13 @@ static int ath10k_htt_tx_hl(struct ath10k_htt *htt, enum ath10k_hw_txrx_mode txm
+>   	u8 flags0 = 0;
+>   	u16 flags1 = 0;
+>   
+> +	if ((ieee80211_is_action(hdr->frame_control) ||
+> +	     ieee80211_is_deauth(hdr->frame_control) ||
+> +	     ieee80211_is_disassoc(hdr->frame_control)) &&
+> +	     ieee80211_has_protected(hdr->frame_control)) {
+> +		skb_put(msdu, IEEE80211_CCMP_MIC_LEN);
+> +	}
 
-> On Fri, 2019-06-14 at 16:33 +0200, Greg Kroah-Hartman wrote:
->
->> Did you apply my "[PATCH 3/5] iwlwifi: dvm: no need to check return
->> value of debugfs_create function" patch also to this tree?  The 5th
->> patch in the series depended on it :(
->
-> Yeah, my bad, sorry about that. I was not paying attention to the "5/5"
-> in patchwork, and the other patches got assigned to other maintainers so
-> I didn't see them there.
->
-> I've dropped the patch for now, until that's all sorted out. Or maybe
-> Kalle will just take them all together.
+I was looking at mac80211 code recently, and it seems some action
+frames are NOT supposed to be protected.  I added my own helper
+method to my local ath10k.  Maybe you want to use this?
 
-Maybe it's easier that you just wait for other patches to trickle down
-your tree?
+
+/* Copied from ieee80211_is_robust_mgmt_frame, but disable the check for has_protected
+  * since we do tx hw crypt, and it won't actually be encrypted even when this flag is
+  * set.
+  */
+bool ieee80211_is_robust_mgmt_frame_tx(struct ieee80211_hdr *hdr)
+{
+         if (ieee80211_is_disassoc(hdr->frame_control) ||
+             ieee80211_is_deauth(hdr->frame_control))
+                 return true;
+
+         if (ieee80211_is_action(hdr->frame_control)) {
+                 u8 *category;
+
+                 /*
+                  * Action frames, excluding Public Action frames, are Robust
+                  * Management Frames. However, if we are looking at a Protected
+                  * frame, skip the check since the data may be encrypted and
+                  * the frame has already been found to be a Robust Management
+                  * Frame (by the other end).
+                  */
+		/*
+		if (ieee80211_has_protected(hdr->frame_control))
+                         return true;
+		*/
+                 category = ((u8 *) hdr) + 24;
+                 return *category != WLAN_CATEGORY_PUBLIC &&
+                         *category != WLAN_CATEGORY_HT &&
+                         *category != WLAN_CATEGORY_WNM_UNPROTECTED &&
+                         *category != WLAN_CATEGORY_SELF_PROTECTED &&
+                         *category != WLAN_CATEGORY_UNPROT_DMG &&
+                         *category != WLAN_CATEGORY_VHT &&
+                         *category != WLAN_CATEGORY_VENDOR_SPECIFIC;
+         }
+
+         return false;
+}
+
+Thanks,
+Ben
+
+> +
+>   	data_len = msdu->len;
+>   
+>   	switch (txmode) {
+> 
+
 
 -- 
-Kalle Valo
+Ben Greear <greearb@candelatech.com>
+Candela Technologies Inc  http://www.candelatech.com
+
