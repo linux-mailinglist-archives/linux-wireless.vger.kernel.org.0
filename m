@@ -2,132 +2,101 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D47B649C00
-	for <lists+linux-wireless@lfdr.de>; Tue, 18 Jun 2019 10:27:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 938D349D6F
+	for <lists+linux-wireless@lfdr.de>; Tue, 18 Jun 2019 11:34:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728454AbfFRI1b (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 18 Jun 2019 04:27:31 -0400
-Received: from mail-wr1-f65.google.com ([209.85.221.65]:46193 "EHLO
-        mail-wr1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726091AbfFRI1a (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 18 Jun 2019 04:27:30 -0400
-Received: by mail-wr1-f65.google.com with SMTP id n4so12868437wrw.13
-        for <linux-wireless@vger.kernel.org>; Tue, 18 Jun 2019 01:27:29 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=0pByTnhI9EtjD8279pBGlW0CoWOpybCQlzKqH9Rz3Qw=;
-        b=iL6uwFTD34zhx7OU8sbMEZuz7EAQRaMIqt4XQB7/eVHx6yO/qKRZ7hajGRPM/nCgOI
-         aPV6y/WQuHpvroxgIbItlIZEtTxgoIn+amMvXbVZ0nf+OGi7MjzyECbbKk6HKXzpPcKS
-         1Wmrl8qupb/CTQK9S2zzUA98KjVBHTJfjfvlg=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=0pByTnhI9EtjD8279pBGlW0CoWOpybCQlzKqH9Rz3Qw=;
-        b=frLDSzbyzHtRftyyN1vKMRfszKwLdJx0UdB6umnuquEmUF7Igc4PgpK4q8C3Oe3dG3
-         z2CCLVXYQ2jf/wKyqEJHCZXGgoDEE63fvRC0OUoTu3LqlIcQXuv6B8LqdO+yG2ClmbpL
-         dVmiuhuClrBp5fDFU/+zotELDVbG9wVaU656fRCATwJzTPTXPn9Bes2zRqkH9gTY1WUp
-         gPPtBR2gN++FxfaHgoIXT+vBb7DXZCBZv7gePg790mvLM9njPk5JEn0+UbnhSpq+fiDu
-         zGgQlN1zYv5qeXG7iIEFB2CwI+sw0b6cEf8yCsa7CPUzIwp1KmDuKSSpOt8d0SBcpGu7
-         RI4A==
-X-Gm-Message-State: APjAAAUouKHAJbl5X1+BTLGROEb7MpfWSEXQN7C/J+nVtBW23vzepnKh
-        qDwBtx48RvbdVgTi5xyUzC88Pg==
-X-Google-Smtp-Source: APXvYqwtjQeJCyyssxLDdia1qH1lA7DoA9KZUqgksXNlJSXaWHx0Xlz5MfGxpXZ+KG5Ed5EPBcs5vg==
-X-Received: by 2002:adf:dcc2:: with SMTP id x2mr40004898wrm.55.1560846448649;
-        Tue, 18 Jun 2019 01:27:28 -0700 (PDT)
-Received: from [10.176.68.244] ([192.19.248.250])
-        by smtp.gmail.com with ESMTPSA id k125sm2894514wmf.41.2019.06.18.01.27.27
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Tue, 18 Jun 2019 01:27:27 -0700 (PDT)
-Subject: Re: wpa_supplicant 2.8 fails in brcmf_cfg80211_set_pmk
-To:     Chi-Hsien Lin <Chi-Hsien.Lin@cypress.com>,
-        Marcel Holtmann <marcel@holtmann.org>
-Cc:     Stefan Wahren <wahrenst@gmx.net>,
-        Stanley Hsu <Stanley.Hsu@cypress.com>,
-        Franky Lin <franky.lin@broadcom.com>,
-        Hante Meuleman <hante.meuleman@broadcom.com>,
-        Wright Feng <Wright.Feng@cypress.com>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "brcm80211-dev-list.pdl@broadcom.com" 
-        <brcm80211-dev-list.pdl@broadcom.com>,
-        brcm80211-dev-list <brcm80211-dev-list@cypress.com>,
-        Jouni Malinen <j@w1.fi>
-References: <06f7bda7-eeaf-536b-a583-7c9bc5f681f5@gmx.net>
- <9da02861-9151-9700-2c09-b312d74155fa@gmx.net>
- <605ea0a8-3303-b810-6223-18ccc7eb7af4@cypress.com>
- <2AF2E0A7-23F0-4FFE-A658-4906FF546199@holtmann.org>
- <d6bfe313-3aa7-82bb-dfac-25e6261dbf63@cypress.com>
-From:   Arend Van Spriel <arend.vanspriel@broadcom.com>
-Message-ID: <d0263c6f-97d0-6571-32e9-778392eafe69@broadcom.com>
-Date:   Tue, 18 Jun 2019 10:27:26 +0200
-User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:60.0) Gecko/20100101
- Thunderbird/60.7.1
+        id S1729444AbfFRJel (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 18 Jun 2019 05:34:41 -0400
+Received: from mx1.redhat.com ([209.132.183.28]:43892 "EHLO mx1.redhat.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1729220AbfFRJel (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 18 Jun 2019 05:34:41 -0400
+Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.phx2.redhat.com [10.5.11.11])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mx1.redhat.com (Postfix) with ESMTPS id 30CC6223864;
+        Tue, 18 Jun 2019 09:34:36 +0000 (UTC)
+Received: from localhost (unknown [10.43.2.57])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id 9674D605CE;
+        Tue, 18 Jun 2019 09:34:33 +0000 (UTC)
+Date:   Tue, 18 Jun 2019 11:34:31 +0200
+From:   Stanislaw Gruszka <sgruszka@redhat.com>
+To:     Soeren Moch <smoch@web.de>
+Cc:     Helmut Schaa <helmut.schaa@googlemail.com>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH] rt2x00: fix rx queue hang
+Message-ID: <20190618093431.GA2577@redhat.com>
+References: <20190617094656.3952-1-smoch@web.de>
 MIME-Version: 1.0
-In-Reply-To: <d6bfe313-3aa7-82bb-dfac-25e6261dbf63@cypress.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20190617094656.3952-1-smoch@web.de>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.11
+X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16 (mx1.redhat.com [10.5.110.39]); Tue, 18 Jun 2019 09:34:41 +0000 (UTC)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-+ Jouni
+Hi
 
-On 6/18/2019 7:33 AM, Chi-Hsien Lin wrote:
-> 
-> 
-> On 06/17/2019 10:33, Marcel Holtmann wrote:
->> Hi Chi-hsien,
->>
->>>>> i was able to reproduce an (maybe older issue) with 4-way handshake
->>>>> offloading for 802.1X in the brcmfmac driver. My setup consists of
->>>>> Raspberry Pi 3 B (current linux-next, arm64/defconfig) on STA side and a
->>>>> Raspberry Pi 3 A+ (Linux 4.19) on AP side.
->>>>
->>>> Looks like Raspberry Pi isn't the only affected platform [3], [4].
->>>>
->>>> [3] - https://bugzilla.redhat.com/show_bug.cgi?id=1665608
->>>> [4] - https://bugzilla.kernel.org/show_bug.cgi?id=202521
->>>
->>> Stefan,
->>>
->>> Could you please try the attached patch for your wpa_supplicant? We'll
->>> upstream if it works for you.
->>
->> I hope that someone is also providing a kernel patch to fix the issue. Hacking around a kernel issue in userspace is not enough. Fix the root cause in the kernel.
-> 
-> Marcel,
-> 
-> This is a kernel warning for invalid application PMK set actions, so the
-> fix is to only set PMK to wifi driver when 4-way is offloaded. I think
-> Arend added the WARN_ON() intentionally to catch application misuse of
-  > PMK setting.
-> 
-> You may also remove the warnings with the attached patch, but let's see
-> what Arend says first.
-> 
-> 
-> Arend,
-> 
-> Any comment?
+On Mon, Jun 17, 2019 at 11:46:56AM +0200, Soeren Moch wrote:
+> Since commit ed194d136769 ("usb: core: remove local_irq_save() around
+>  ->complete() handler") the handlers rt2x00usb_interrupt_rxdone() and
+> rt2x00usb_interrupt_txdone() are not running with interrupts disabled
+> anymore. So these handlers are not guaranteed to run completely before
+> workqueue processing starts. So only mark entries ready for workqueue
+> processing after proper accounting in the dma done queue.
 
-Hi Chi-Hsien, Marcel
+It was always the case on SMP machines that rt2x00usb_interrupt_{tx/rx}done
+can run concurrently with rt2x00_work_{rx,tx}done, so I do not
+understand how removing local_irq_save() around complete handler broke
+things.
 
- From the kernel side I do not see an issue. In order to use 802.1X 
-offload the NL80211_ATTR_WANT_1X_4WAY_HS flag must be set in 
-NL80211_CMD_CONNECT. Otherwise, NL80211_CMD_SET_PMK is not accepted. The 
-only improvement would be to document this more clearly in the "WPA/WPA2 
-EAPOL handshake offload" DOC section in nl80211.h.
+Have you reverted commit ed194d136769 and the revert does solve the problem ?
 
-As for the wpa_supplicant behavior it seemed a good idea to reuse the 
-req_key_mgmt_offload parameter at the time, but it seems to bite each 
-other. Maybe it is better to have a separate flag like 
-'req_handshake_offload'. Jouni, any thoughts on this?
+Between 4.19 and 4.20 we have some quite big changes in rt2x00 driver:
 
-Regards,
-Arend
+0240564430c0 rt2800: flush and txstatus rework for rt2800mmio
+adf26a356f13 rt2x00: use different txstatus timeouts when flushing
+5022efb50f62 rt2x00: do not check for txstatus timeout every time on tasklet
+0b0d556e0ebb rt2800mmio: use txdone/txstatus routines from lib
+5c656c71b1bf rt2800: move usb specific txdone/txstatus routines to rt2800lib
+
+so I'm a bit afraid that one of those changes is real cause of
+the issue not ed194d136769 .
+
+> Note that rt2x00usb_work_rxdone() processes all available entries, not
+> only such for which queue_work() was called.
+> 
+> This fixes a regression on a RT5370 based wifi stick in AP mode, which
+> suddenly stopped data transmission after some period of heavy load. Also
+> stopping the hanging hostapd resulted in the error message "ieee80211
+> phy0: rt2x00queue_flush_queue: Warning - Queue 14 failed to flush".
+> Other operation modes are probably affected as well, this just was
+> the used testcase.
+
+Do you know what actually make the traffic stop,
+TX queue hung or RX queue hung?
+
+> diff --git a/drivers/net/wireless/ralink/rt2x00/rt2x00dev.c b/drivers/net/wireless/ralink/rt2x00/rt2x00dev.c
+> index 1b08b01db27b..9c102a501ee6 100644
+> --- a/drivers/net/wireless/ralink/rt2x00/rt2x00dev.c
+> +++ b/drivers/net/wireless/ralink/rt2x00/rt2x00dev.c
+> @@ -263,9 +263,9 @@ EXPORT_SYMBOL_GPL(rt2x00lib_dmastart);
+> 
+>  void rt2x00lib_dmadone(struct queue_entry *entry)
+>  {
+> -	set_bit(ENTRY_DATA_STATUS_PENDING, &entry->flags);
+>  	clear_bit(ENTRY_OWNER_DEVICE_DATA, &entry->flags);
+>  	rt2x00queue_index_inc(entry, Q_INDEX_DMA_DONE);
+> +	set_bit(ENTRY_DATA_STATUS_PENDING, &entry->flags);
+
+Unfortunately I do not understand how this suppose to fix the problem,
+could you elaborate more about this change?
+
+Stanislaw
