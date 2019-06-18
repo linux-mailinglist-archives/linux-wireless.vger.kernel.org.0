@@ -2,141 +2,105 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 1EDCE4A032
-	for <lists+linux-wireless@lfdr.de>; Tue, 18 Jun 2019 14:05:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D91D74A041
+	for <lists+linux-wireless@lfdr.de>; Tue, 18 Jun 2019 14:08:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726007AbfFRMFZ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 18 Jun 2019 08:05:25 -0400
-Received: from mail-lj1-f195.google.com ([209.85.208.195]:34690 "EHLO
-        mail-lj1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725913AbfFRMFY (ORCPT
+        id S1726037AbfFRMIb (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 18 Jun 2019 08:08:31 -0400
+Received: from smtp.codeaurora.org ([198.145.29.96]:48824 "EHLO
+        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725913AbfFRMIb (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 18 Jun 2019 08:05:24 -0400
-Received: by mail-lj1-f195.google.com with SMTP id p17so12870334ljg.1
-        for <linux-wireless@vger.kernel.org>; Tue, 18 Jun 2019 05:05:23 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=from:to:cc:subject:date:message-id;
-        bh=Bg8QqDQoZIq/5wmDEJaOxBNPAWkAsd1tFZ5D6LNidQw=;
-        b=qr2S0sjS3RepdjF6+LNucEQ3iBw2UY5MT5ExudDZ46nwwFLC/H/Ii11UDx/nXGoNrn
-         VDJI+lrkLjfWCL57AXv11MyrxiyACQIpA6S7tzjDBHIYowtcxwbdv7J+QTMVGOf8ey8B
-         HGI9JoMqtX4x9kGSEVTSfdqlw6gnM01bhfCzO4lXAu+Mh8tdr78T0S5ZX4uvYZG/8UNT
-         t8JJZbXDtpULS5us5eyZ031XoqIdxi6oj0ZTtZL3CVWon2e6x+mYj2hTUTVGoQ8KDrIV
-         wDjIlAm9KycrMKXdeF+gMkbScOg4LHoSwlrH3wXuFX0+PEdAXp/UTbKRuLe8CYcdCtTa
-         qspQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id;
-        bh=Bg8QqDQoZIq/5wmDEJaOxBNPAWkAsd1tFZ5D6LNidQw=;
-        b=InHozg3vImQ7YFBj3ZF4Z5CDpe9BlYkKrDJ6ih6y0X6BAIR+kzc0TCNoz7VdVRRRYP
-         +9EN0De52TPdk4PE1Qf/WlDDmrxxWbmnYfwc+FsjASjbbQsirjjsu7wqNKCCIJt6SNUt
-         fUIsJv8UwcKXVxSqZ0FZNOYdNzw11OeezV9dczTHhubScIYoa+hywWNOQ/X0s3f/+nrH
-         cjUiIEYf/jBL/n6Q/L/3FGCFbsRtBYUnAr0twR48xMX0TxQn6zquhz5cQPjV/mfaDi3S
-         7YB2OgYiai7TUcSog20l8PTesI6pabZqqA4qnns1AHm0D+Y2KJrL7Rv9xdgprzpB2d/t
-         NMgA==
-X-Gm-Message-State: APjAAAVTq++kSNQ4F8kGfe0pk6OobiJz+EZoiyldAkaNw7+OTv9o6bLW
-        OcPRDzgwp8pOV8Oo0nagUCpEIg==
-X-Google-Smtp-Source: APXvYqwAJpLDxl74LqLKNXFGb626+sV0+gyjztdfmoze+z1tsfu4A8ry8bv7JaM4GJBlfeJLDKfMDQ==
-X-Received: by 2002:a2e:8945:: with SMTP id b5mr22437486ljk.93.1560859522947;
-        Tue, 18 Jun 2019 05:05:22 -0700 (PDT)
-Received: from localhost.localdomain (h-158-174-22-210.NA.cust.bahnhof.se. [158.174.22.210])
-        by smtp.gmail.com with ESMTPSA id r11sm2849691ljh.90.2019.06.18.05.05.20
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Tue, 18 Jun 2019 05:05:21 -0700 (PDT)
-From:   Ulf Hansson <ulf.hansson@linaro.org>
-To:     linux-mmc@vger.kernel.org, Ulf Hansson <ulf.hansson@linaro.org>,
-        Douglas Anderson <dianders@chromium.org>
-Cc:     Adrian Hunter <adrian.hunter@intel.com>,
-        Brian Norris <briannorris@chromium.org>,
-        Shawn Lin <shawn.lin@rock-chips.com>,
-        Guenter Roeck <groeck@chromium.org>,
-        Heiko Stuebner <heiko@sntech.de>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        linux-wireless@vger.kernel.org, stable@vger.kernel.org
-Subject: [PATCH v2] mmc: core: Prevent processing SDIO IRQs when the card is suspended
-Date:   Tue, 18 Jun 2019 14:05:17 +0200
-Message-Id: <20190618120517.23123-1-ulf.hansson@linaro.org>
-X-Mailer: git-send-email 2.17.1
+        Tue, 18 Jun 2019 08:08:31 -0400
+Received: by smtp.codeaurora.org (Postfix, from userid 1000)
+        id B1050607DE; Tue, 18 Jun 2019 12:08:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
+        s=default; t=1560859710;
+        bh=qR34Iivj/ilni2WGW0zWLdv96kQrOxL9WUb1agw8MHY=;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+        b=GEXuqc4eqMLqs83uNip1uvLcXRrWiFdxVehv8SZxcGX+UseaQ/iaO9lVPVoSaLQcy
+         e3NQds3g7sqnyZDSBqimx1vT+PsthHP0n+XE2pK+SNHWCx5QLTOUCgTFoeIP0iWF3d
+         h/O2JCEk2QgWFs8ZQuWcjFSTUip+XJI1qxa0X188=
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        pdx-caf-mail.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.7 required=2.0 tests=ALL_TRUSTED,BAYES_00,
+        DKIM_INVALID,DKIM_SIGNED,SPF_NONE autolearn=no autolearn_force=no
+        version=3.4.0
+Received: from purkki.adurom.net (purkki.adurom.net [80.68.90.206])
+        (using TLSv1.2 with cipher DHE-RSA-AES128-SHA (128/128 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo@smtp.codeaurora.org)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 16B0E60A63;
+        Tue, 18 Jun 2019 12:08:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
+        s=default; t=1560859709;
+        bh=qR34Iivj/ilni2WGW0zWLdv96kQrOxL9WUb1agw8MHY=;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+        b=AXBMNFlxS7tFkdVDC9Z7Pr7LaHuTlOrqYay473hjw25ImxjpY2GfoZD2CSN6ybXGb
+         FqdKhTbFIViAOXrLlT4lt0sUxwJlVKiOA8hHMezxOfkBZd/PeiiHW82BFVkgaU4hLE
+         QgtCz6AI4czQLavBi8hALDFH53N9eCnqkUOJ+ZJI=
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 16B0E60A63
+Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
+From:   Kalle Valo <kvalo@codeaurora.org>
+To:     Lorenzo Bianconi <lorenzo@kernel.org>
+Cc:     nbd@nbd.name, lorenzo.bianconi@redhat.com,
+        linux-wireless@vger.kernel.org
+Subject: Re: [PATCH] mt76: fix sparse warnings: warning: dubious: x & !y
+References: <d8a003eda05150fb21842d7755fe8081b86cf6df.1560851052.git.lorenzo@kernel.org>
+Date:   Tue, 18 Jun 2019 15:08:26 +0300
+In-Reply-To: <d8a003eda05150fb21842d7755fe8081b86cf6df.1560851052.git.lorenzo@kernel.org>
+        (Lorenzo Bianconi's message of "Tue, 18 Jun 2019 12:02:10 +0200")
+Message-ID: <87imt3t7t1.fsf@purkki.adurom.net>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/23.4 (gnu/linux)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Processing of SDIO IRQs must obviously be prevented while the card is
-system suspended, otherwise we may end up trying to communicate with an
-uninitialized SDIO card.
+Lorenzo Bianconi <lorenzo@kernel.org> writes:
 
-Reports throughout the years shows that this is not only a theoretical
-problem, but a real issue. So, let's finally fix this problem, by keeping
-track of the state for the card and bail out before processing the SDIO
-IRQ, in case the card is suspended.
+> Fix following sparse warnings in mt7603/mac.c and mt76x02_mac.c
+>
+> drivers/net/wireless/mediatek/mt76/mt76x02_mac.c:113:17: warning: dubious: x & !y
+> drivers/net/wireless/mediatek/mt76/mt76x02_mac.c:145:16: warning: dubious: x & !y
+> drivers/net/wireless/mediatek/mt76/mt7603/mac.c:730:9: warning: dubious: x & !y
+> drivers/net/wireless/mediatek/mt76/mt7603/mac.c:790:15: warning: dubious: x & !y
+>
+> Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+> ---
+>  drivers/net/wireless/mediatek/mt76/mt7603/mac.c  | 6 ++++--
+>  drivers/net/wireless/mediatek/mt76/mt76x02_mac.c | 7 +++++--
+>  2 files changed, 9 insertions(+), 4 deletions(-)
+>
+> diff --git a/drivers/net/wireless/mediatek/mt76/mt7603/mac.c b/drivers/net/wireless/mediatek/mt76/mt7603/mac.c
+> index ab5141701997..62e0a7f4716a 100644
+> --- a/drivers/net/wireless/mediatek/mt76/mt7603/mac.c
+> +++ b/drivers/net/wireless/mediatek/mt76/mt7603/mac.c
+> @@ -709,6 +709,7 @@ int mt7603_wtbl_set_key(struct mt7603_dev *dev, int wcid,
+>  {
+>  	enum mt7603_cipher_type cipher;
+>  	u32 addr = mt7603_wtbl3_addr(wcid);
+> +	bool key_set = !!key;
+>  	u8 key_data[32];
+>  	int key_len = sizeof(key_data);
+>  
+> @@ -727,7 +728,7 @@ int mt7603_wtbl_set_key(struct mt7603_dev *dev, int wcid,
+>  	mt76_rmw_field(dev, addr + 2 * 4, MT_WTBL1_W2_KEY_TYPE, cipher);
+>  	if (key)
+>  		mt76_rmw_field(dev, addr, MT_WTBL1_W0_KEY_IDX, key->keyidx);
+> -	mt76_rmw_field(dev, addr, MT_WTBL1_W0_RX_KEY_VALID, !!key);
+> +	mt76_rmw_field(dev, addr, MT_WTBL1_W0_RX_KEY_VALID, key_set);
 
-Cc: stable@vger.kernel.org
-Reported-by: Douglas Anderson <dianders@chromium.org>
-Tested-by: Douglas Anderson <dianders@chromium.org>
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
----
+I'm not seeing you really _fixing_ anything here, you are just working
+around a sparse warning by adding an extra variable. I'm having a hard
+time to see the benefit from that, it's just an unnecessary variable.
 
-Changes in v2:
-	- Respect error code in mmc_sdio_suspend(), pointed out by Doug.
+FWIW I had similar warnings in ath11k, I decided to ignore those. But
+anyone has suggestions how to solve it better, please do let me know.
 
----
- drivers/mmc/core/sdio.c     | 13 ++++++++++++-
- drivers/mmc/core/sdio_irq.c |  4 ++++
- 2 files changed, 16 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/mmc/core/sdio.c b/drivers/mmc/core/sdio.c
-index d1aa1c7577bb..712a7742765e 100644
---- a/drivers/mmc/core/sdio.c
-+++ b/drivers/mmc/core/sdio.c
-@@ -937,6 +937,10 @@ static int mmc_sdio_pre_suspend(struct mmc_host *host)
-  */
- static int mmc_sdio_suspend(struct mmc_host *host)
- {
-+	/* Prevent processing of SDIO IRQs in suspended state. */
-+	mmc_card_set_suspended(host->card);
-+	cancel_delayed_work_sync(&host->sdio_irq_work);
-+
- 	mmc_claim_host(host);
- 
- 	if (mmc_card_keep_power(host) && mmc_card_wake_sdio_irq(host))
-@@ -985,13 +989,20 @@ static int mmc_sdio_resume(struct mmc_host *host)
- 		err = sdio_enable_4bit_bus(host->card);
- 	}
- 
--	if (!err && host->sdio_irqs) {
-+	if (err)
-+		goto out;
-+
-+	/* Allow SDIO IRQs to be processed again. */
-+	mmc_card_clr_suspended(host->card);
-+
-+	if (host->sdio_irqs) {
- 		if (!(host->caps2 & MMC_CAP2_SDIO_IRQ_NOTHREAD))
- 			wake_up_process(host->sdio_irq_thread);
- 		else if (host->caps & MMC_CAP_SDIO_IRQ)
- 			host->ops->enable_sdio_irq(host, 1);
- 	}
- 
-+out:
- 	mmc_release_host(host);
- 
- 	host->pm_flags &= ~MMC_PM_KEEP_POWER;
-diff --git a/drivers/mmc/core/sdio_irq.c b/drivers/mmc/core/sdio_irq.c
-index 931e6226c0b3..9f54a259a1b3 100644
---- a/drivers/mmc/core/sdio_irq.c
-+++ b/drivers/mmc/core/sdio_irq.c
-@@ -34,6 +34,10 @@ static int process_sdio_pending_irqs(struct mmc_host *host)
- 	unsigned char pending;
- 	struct sdio_func *func;
- 
-+	/* Don't process SDIO IRQs if the card is suspended. */
-+	if (mmc_card_suspended(card))
-+		return 0;
-+
- 	/*
- 	 * Optimization, if there is only 1 function interrupt registered
- 	 * and we know an IRQ was signaled then call irq handler directly.
 -- 
-2.17.1
-
+Kalle Valo
