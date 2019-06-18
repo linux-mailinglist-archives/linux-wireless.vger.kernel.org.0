@@ -2,101 +2,121 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 938D349D6F
-	for <lists+linux-wireless@lfdr.de>; Tue, 18 Jun 2019 11:34:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0A99049DE9
+	for <lists+linux-wireless@lfdr.de>; Tue, 18 Jun 2019 12:02:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729444AbfFRJel (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 18 Jun 2019 05:34:41 -0400
-Received: from mx1.redhat.com ([209.132.183.28]:43892 "EHLO mx1.redhat.com"
+        id S1728927AbfFRKCT (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 18 Jun 2019 06:02:19 -0400
+Received: from mail.kernel.org ([198.145.29.99]:46750 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1729220AbfFRJel (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 18 Jun 2019 05:34:41 -0400
-Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.phx2.redhat.com [10.5.11.11])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        id S1726023AbfFRKCT (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 18 Jun 2019 06:02:19 -0400
+Received: from localhost.localdomain (unknown [151.66.61.123])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mx1.redhat.com (Postfix) with ESMTPS id 30CC6223864;
-        Tue, 18 Jun 2019 09:34:36 +0000 (UTC)
-Received: from localhost (unknown [10.43.2.57])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 9674D605CE;
-        Tue, 18 Jun 2019 09:34:33 +0000 (UTC)
-Date:   Tue, 18 Jun 2019 11:34:31 +0200
-From:   Stanislaw Gruszka <sgruszka@redhat.com>
-To:     Soeren Moch <smoch@web.de>
-Cc:     Helmut Schaa <helmut.schaa@googlemail.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH] rt2x00: fix rx queue hang
-Message-ID: <20190618093431.GA2577@redhat.com>
-References: <20190617094656.3952-1-smoch@web.de>
+        by mail.kernel.org (Postfix) with ESMTPSA id F195D206BA;
+        Tue, 18 Jun 2019 10:02:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1560852138;
+        bh=FPyTcelLm0uegh8To+m6f7YmXqxje0dKC/ZmKDMla1M=;
+        h=From:To:Cc:Subject:Date:From;
+        b=ga3jLJBqSV5jxVcjlWt1vHUvnRzPilORcjzewYrwovn1yLEcpEc5fAo6oJP3dihCI
+         GTfoyJWKvzsB6nyDUXSEh2wpo2bPnZKOWTd+4d9UhlHEkYGzgRnQo/5KszbSzQXl8j
+         yN0M4dixRWiV07rhS6fnUpD7wJgPUiVbcsbO71KU=
+From:   Lorenzo Bianconi <lorenzo@kernel.org>
+To:     nbd@nbd.name
+Cc:     lorenzo.bianconi@redhat.com, linux-wireless@vger.kernel.org
+Subject: [PATCH] mt76: fix sparse warnings: warning: dubious: x & !y
+Date:   Tue, 18 Jun 2019 12:02:10 +0200
+Message-Id: <d8a003eda05150fb21842d7755fe8081b86cf6df.1560851052.git.lorenzo@kernel.org>
+X-Mailer: git-send-email 2.21.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20190617094656.3952-1-smoch@web.de>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.11
-X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16 (mx1.redhat.com [10.5.110.39]); Tue, 18 Jun 2019 09:34:41 +0000 (UTC)
+Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi
+Fix following sparse warnings in mt7603/mac.c and mt76x02_mac.c
 
-On Mon, Jun 17, 2019 at 11:46:56AM +0200, Soeren Moch wrote:
-> Since commit ed194d136769 ("usb: core: remove local_irq_save() around
->  ->complete() handler") the handlers rt2x00usb_interrupt_rxdone() and
-> rt2x00usb_interrupt_txdone() are not running with interrupts disabled
-> anymore. So these handlers are not guaranteed to run completely before
-> workqueue processing starts. So only mark entries ready for workqueue
-> processing after proper accounting in the dma done queue.
+drivers/net/wireless/mediatek/mt76/mt76x02_mac.c:113:17: warning: dubious: x & !y
+drivers/net/wireless/mediatek/mt76/mt76x02_mac.c:145:16: warning: dubious: x & !y
+drivers/net/wireless/mediatek/mt76/mt7603/mac.c:730:9: warning: dubious: x & !y
+drivers/net/wireless/mediatek/mt76/mt7603/mac.c:790:15: warning: dubious: x & !y
 
-It was always the case on SMP machines that rt2x00usb_interrupt_{tx/rx}done
-can run concurrently with rt2x00_work_{rx,tx}done, so I do not
-understand how removing local_irq_save() around complete handler broke
-things.
+Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+---
+ drivers/net/wireless/mediatek/mt76/mt7603/mac.c  | 6 ++++--
+ drivers/net/wireless/mediatek/mt76/mt76x02_mac.c | 7 +++++--
+ 2 files changed, 9 insertions(+), 4 deletions(-)
 
-Have you reverted commit ed194d136769 and the revert does solve the problem ?
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7603/mac.c b/drivers/net/wireless/mediatek/mt76/mt7603/mac.c
+index ab5141701997..62e0a7f4716a 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7603/mac.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7603/mac.c
+@@ -709,6 +709,7 @@ int mt7603_wtbl_set_key(struct mt7603_dev *dev, int wcid,
+ {
+ 	enum mt7603_cipher_type cipher;
+ 	u32 addr = mt7603_wtbl3_addr(wcid);
++	bool key_set = !!key;
+ 	u8 key_data[32];
+ 	int key_len = sizeof(key_data);
+ 
+@@ -727,7 +728,7 @@ int mt7603_wtbl_set_key(struct mt7603_dev *dev, int wcid,
+ 	mt76_rmw_field(dev, addr + 2 * 4, MT_WTBL1_W2_KEY_TYPE, cipher);
+ 	if (key)
+ 		mt76_rmw_field(dev, addr, MT_WTBL1_W0_KEY_IDX, key->keyidx);
+-	mt76_rmw_field(dev, addr, MT_WTBL1_W0_RX_KEY_VALID, !!key);
++	mt76_rmw_field(dev, addr, MT_WTBL1_W0_RX_KEY_VALID, key_set);
+ 
+ 	return 0;
+ }
+@@ -745,6 +746,7 @@ mt7603_mac_write_txwi(struct mt7603_dev *dev, __le32 *txwi,
+ 	struct ieee80211_vif *vif = info->control.vif;
+ 	struct mt76_queue *q = dev->mt76.q_tx[qid].q;
+ 	struct mt7603_vif *mvif;
++	bool key_set = !!key;
+ 	int wlan_idx;
+ 	int hdr_len = ieee80211_get_hdrlen_from_skb(skb);
+ 	int tx_count = 8;
+@@ -787,7 +789,7 @@ mt7603_mac_write_txwi(struct mt7603_dev *dev, __le32 *txwi,
+ 	      FIELD_PREP(MT_TXD1_HDR_FORMAT, MT_HDR_FORMAT_802_11) |
+ 	      FIELD_PREP(MT_TXD1_HDR_INFO, hdr_len / 2) |
+ 	      FIELD_PREP(MT_TXD1_WLAN_IDX, wlan_idx) |
+-	      FIELD_PREP(MT_TXD1_PROTECTED, !!key);
++	      FIELD_PREP(MT_TXD1_PROTECTED, key_set);
+ 	txwi[1] = cpu_to_le32(val);
+ 
+ 	if (info->flags & IEEE80211_TX_CTL_NO_ACK)
+diff --git a/drivers/net/wireless/mediatek/mt76/mt76x02_mac.c b/drivers/net/wireless/mediatek/mt76/mt76x02_mac.c
+index 97621dbfd114..b3a35911deb1 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt76x02_mac.c
++++ b/drivers/net/wireless/mediatek/mt76/mt76x02_mac.c
+@@ -110,8 +110,10 @@ int mt76x02_mac_wcid_set_key(struct mt76x02_dev *dev, u8 idx,
+ 
+ 	memset(iv_data, 0, sizeof(iv_data));
+ 	if (key) {
++		bool pw_key = !!(key->flags & IEEE80211_KEY_FLAG_PAIRWISE);
++
+ 		mt76_rmw_field(dev, MT_WCID_ATTR(idx), MT_WCID_ATTR_PAIRWISE,
+-			       !!(key->flags & IEEE80211_KEY_FLAG_PAIRWISE));
++			       pw_key);
+ 
+ 		pn = atomic64_read(&key->tx_pn);
+ 
+@@ -139,10 +141,11 @@ void mt76x02_mac_wcid_setup(struct mt76x02_dev *dev, u8 idx,
+ 			    u8 vif_idx, u8 *mac)
+ {
+ 	struct mt76_wcid_addr addr = {};
++	bool ext_id = !!(vif_idx & 8);
+ 	u32 attr;
+ 
+ 	attr = FIELD_PREP(MT_WCID_ATTR_BSS_IDX, vif_idx & 7) |
+-	       FIELD_PREP(MT_WCID_ATTR_BSS_IDX_EXT, !!(vif_idx & 8));
++	       FIELD_PREP(MT_WCID_ATTR_BSS_IDX_EXT, ext_id);
+ 
+ 	mt76_wr(dev, MT_WCID_ATTR(idx), attr);
+ 
+-- 
+2.21.0
 
-Between 4.19 and 4.20 we have some quite big changes in rt2x00 driver:
-
-0240564430c0 rt2800: flush and txstatus rework for rt2800mmio
-adf26a356f13 rt2x00: use different txstatus timeouts when flushing
-5022efb50f62 rt2x00: do not check for txstatus timeout every time on tasklet
-0b0d556e0ebb rt2800mmio: use txdone/txstatus routines from lib
-5c656c71b1bf rt2800: move usb specific txdone/txstatus routines to rt2800lib
-
-so I'm a bit afraid that one of those changes is real cause of
-the issue not ed194d136769 .
-
-> Note that rt2x00usb_work_rxdone() processes all available entries, not
-> only such for which queue_work() was called.
-> 
-> This fixes a regression on a RT5370 based wifi stick in AP mode, which
-> suddenly stopped data transmission after some period of heavy load. Also
-> stopping the hanging hostapd resulted in the error message "ieee80211
-> phy0: rt2x00queue_flush_queue: Warning - Queue 14 failed to flush".
-> Other operation modes are probably affected as well, this just was
-> the used testcase.
-
-Do you know what actually make the traffic stop,
-TX queue hung or RX queue hung?
-
-> diff --git a/drivers/net/wireless/ralink/rt2x00/rt2x00dev.c b/drivers/net/wireless/ralink/rt2x00/rt2x00dev.c
-> index 1b08b01db27b..9c102a501ee6 100644
-> --- a/drivers/net/wireless/ralink/rt2x00/rt2x00dev.c
-> +++ b/drivers/net/wireless/ralink/rt2x00/rt2x00dev.c
-> @@ -263,9 +263,9 @@ EXPORT_SYMBOL_GPL(rt2x00lib_dmastart);
-> 
->  void rt2x00lib_dmadone(struct queue_entry *entry)
->  {
-> -	set_bit(ENTRY_DATA_STATUS_PENDING, &entry->flags);
->  	clear_bit(ENTRY_OWNER_DEVICE_DATA, &entry->flags);
->  	rt2x00queue_index_inc(entry, Q_INDEX_DMA_DONE);
-> +	set_bit(ENTRY_DATA_STATUS_PENDING, &entry->flags);
-
-Unfortunately I do not understand how this suppose to fix the problem,
-could you elaborate more about this change?
-
-Stanislaw
