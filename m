@@ -2,133 +2,132 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 9505C49A61
-	for <lists+linux-wireless@lfdr.de>; Tue, 18 Jun 2019 09:21:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D47B649C00
+	for <lists+linux-wireless@lfdr.de>; Tue, 18 Jun 2019 10:27:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726238AbfFRHVj (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 18 Jun 2019 03:21:39 -0400
-Received: from alexa-out-tai-02.qualcomm.com ([103.229.16.227]:52347 "EHLO
-        alexa-out-tai-02.qualcomm.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726007AbfFRHVj (ORCPT
+        id S1728454AbfFRI1b (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 18 Jun 2019 04:27:31 -0400
+Received: from mail-wr1-f65.google.com ([209.85.221.65]:46193 "EHLO
+        mail-wr1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726091AbfFRI1a (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 18 Jun 2019 03:21:39 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
-  d=qti.qualcomm.com; i=@qti.qualcomm.com; q=dns/txt;
-  s=qcdkim; t=1560842498; x=1592378498;
-  h=from:to:cc:date:message-id:references:in-reply-to:
-   content-transfer-encoding:mime-version:subject;
-  bh=BlWFhpuDlHD10LLxGZW5VKlsCNyfl9WDFOPkhExkpTk=;
-  b=kVU8JRbI3m+x/Zn3W0VJO8hACbzoAMtrTyupIz5LTLfdg/z6t2U364E0
-   Ctbn7v6NORaonhBYj7uTeAYYtB3WEc3vbLStq6MWJG0LPTaZfafo19qdX
-   RV5I/dBMIh5SHe6eiyrCAaJa17vps+8RrvPduTdU5/LCxDzriEMsBG74S
-   E=;
-Subject: RE: [PATCH] ath10k: add mic bytes for pmf management packet
-Thread-Topic: [PATCH] ath10k: add mic bytes for pmf management packet
-Received: from ironmsg02-tai.qualcomm.com ([10.249.140.7])
-  by alexa-out-tai-02.qualcomm.com with ESMTP; 18 Jun 2019 15:21:37 +0800
-X-IronPort-AV: E=McAfee;i="6000,8403,9291"; a="32210948"
-Received: from aptaiexm02b.ap.qualcomm.com ([10.249.150.12])
-  by ironmsg02-tai.qualcomm.com with ESMTP/TLS/AES256-SHA; 18 Jun 2019 15:21:32 +0800
-Received: from aptaiexm02f.ap.qualcomm.com (10.249.150.16) by
- aptaiexm02b.ap.qualcomm.com (10.249.150.12) with Microsoft SMTP Server (TLS)
- id 15.0.1473.3; Tue, 18 Jun 2019 15:21:30 +0800
-Received: from aptaiexm02f.ap.qualcomm.com ([fe80::4152:1436:e436:faa1]) by
- aptaiexm02f.ap.qualcomm.com ([fe80::4152:1436:e436:faa1%19]) with mapi id
- 15.00.1395.000; Tue, 18 Jun 2019 15:21:30 +0800
-From:   Wen Gong <wgong@qti.qualcomm.com>
-To:     Ben Greear <greearb@candelatech.com>,
-        Wen Gong <wgong@codeaurora.org>,
-        "ath10k@lists.infradead.org" <ath10k@lists.infradead.org>
-CC:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-Thread-Index: AQHVJSZMyCLP3ilNoE660R+W056916ahAcmw
-Date:   Tue, 18 Jun 2019 07:21:30 +0000
-Message-ID: <9403fef58374427fa76fb32ee64ee333@aptaiexm02f.ap.qualcomm.com>
-References: <1560757079-19266-1-git-send-email-wgong@codeaurora.org>
- <136d04d4-671b-8dde-2abd-63070b07bd26@candelatech.com>
-In-Reply-To: <136d04d4-671b-8dde-2abd-63070b07bd26@candelatech.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-ms-exchange-transport-fromentityheader: Hosted
-x-originating-ip: [10.249.136.10]
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+        Tue, 18 Jun 2019 04:27:30 -0400
+Received: by mail-wr1-f65.google.com with SMTP id n4so12868437wrw.13
+        for <linux-wireless@vger.kernel.org>; Tue, 18 Jun 2019 01:27:29 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=broadcom.com; s=google;
+        h=subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=0pByTnhI9EtjD8279pBGlW0CoWOpybCQlzKqH9Rz3Qw=;
+        b=iL6uwFTD34zhx7OU8sbMEZuz7EAQRaMIqt4XQB7/eVHx6yO/qKRZ7hajGRPM/nCgOI
+         aPV6y/WQuHpvroxgIbItlIZEtTxgoIn+amMvXbVZ0nf+OGi7MjzyECbbKk6HKXzpPcKS
+         1Wmrl8qupb/CTQK9S2zzUA98KjVBHTJfjfvlg=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=0pByTnhI9EtjD8279pBGlW0CoWOpybCQlzKqH9Rz3Qw=;
+        b=frLDSzbyzHtRftyyN1vKMRfszKwLdJx0UdB6umnuquEmUF7Igc4PgpK4q8C3Oe3dG3
+         z2CCLVXYQ2jf/wKyqEJHCZXGgoDEE63fvRC0OUoTu3LqlIcQXuv6B8LqdO+yG2ClmbpL
+         dVmiuhuClrBp5fDFU/+zotELDVbG9wVaU656fRCATwJzTPTXPn9Bes2zRqkH9gTY1WUp
+         gPPtBR2gN++FxfaHgoIXT+vBb7DXZCBZv7gePg790mvLM9njPk5JEn0+UbnhSpq+fiDu
+         zGgQlN1zYv5qeXG7iIEFB2CwI+sw0b6cEf8yCsa7CPUzIwp1KmDuKSSpOt8d0SBcpGu7
+         RI4A==
+X-Gm-Message-State: APjAAAUouKHAJbl5X1+BTLGROEb7MpfWSEXQN7C/J+nVtBW23vzepnKh
+        qDwBtx48RvbdVgTi5xyUzC88Pg==
+X-Google-Smtp-Source: APXvYqwtjQeJCyyssxLDdia1qH1lA7DoA9KZUqgksXNlJSXaWHx0Xlz5MfGxpXZ+KG5Ed5EPBcs5vg==
+X-Received: by 2002:adf:dcc2:: with SMTP id x2mr40004898wrm.55.1560846448649;
+        Tue, 18 Jun 2019 01:27:28 -0700 (PDT)
+Received: from [10.176.68.244] ([192.19.248.250])
+        by smtp.gmail.com with ESMTPSA id k125sm2894514wmf.41.2019.06.18.01.27.27
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Tue, 18 Jun 2019 01:27:27 -0700 (PDT)
+Subject: Re: wpa_supplicant 2.8 fails in brcmf_cfg80211_set_pmk
+To:     Chi-Hsien Lin <Chi-Hsien.Lin@cypress.com>,
+        Marcel Holtmann <marcel@holtmann.org>
+Cc:     Stefan Wahren <wahrenst@gmx.net>,
+        Stanley Hsu <Stanley.Hsu@cypress.com>,
+        Franky Lin <franky.lin@broadcom.com>,
+        Hante Meuleman <hante.meuleman@broadcom.com>,
+        Wright Feng <Wright.Feng@cypress.com>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        "brcm80211-dev-list.pdl@broadcom.com" 
+        <brcm80211-dev-list.pdl@broadcom.com>,
+        brcm80211-dev-list <brcm80211-dev-list@cypress.com>,
+        Jouni Malinen <j@w1.fi>
+References: <06f7bda7-eeaf-536b-a583-7c9bc5f681f5@gmx.net>
+ <9da02861-9151-9700-2c09-b312d74155fa@gmx.net>
+ <605ea0a8-3303-b810-6223-18ccc7eb7af4@cypress.com>
+ <2AF2E0A7-23F0-4FFE-A658-4906FF546199@holtmann.org>
+ <d6bfe313-3aa7-82bb-dfac-25e6261dbf63@cypress.com>
+From:   Arend Van Spriel <arend.vanspriel@broadcom.com>
+Message-ID: <d0263c6f-97d0-6571-32e9-778392eafe69@broadcom.com>
+Date:   Tue, 18 Jun 2019 10:27:26 +0200
+User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:60.0) Gecko/20100101
+ Thunderbird/60.7.1
 MIME-Version: 1.0
+In-Reply-To: <d6bfe313-3aa7-82bb-dfac-25e6261dbf63@cypress.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-> -----Original Message-----
-> From: ath10k <ath10k-bounces@lists.infradead.org> On Behalf Of Ben
-> Greear
-> Sent: Tuesday, June 18, 2019 12:04 AM
-> To: Wen Gong <wgong@codeaurora.org>; ath10k@lists.infradead.org
-> Cc: linux-wireless@vger.kernel.org
-> Subject: [EXT] Re: [PATCH] ath10k: add mic bytes for pmf management
-> packet
->=20
-> I was looking at mac80211 code recently, and it seems some action
-> frames are NOT supposed to be protected.  I added my own helper
-> method to my local ath10k.  Maybe you want to use this?
->=20
->=20
-> /* Copied from ieee80211_is_robust_mgmt_frame, but disable the check for
-> has_protected
->   * since we do tx hw crypt, and it won't actually be encrypted even when=
- this
-> flag is
->   * set.
->   */
-> bool ieee80211_is_robust_mgmt_frame_tx(struct ieee80211_hdr *hdr)
-> {
->          if (ieee80211_is_disassoc(hdr->frame_control) ||
->              ieee80211_is_deauth(hdr->frame_control))
->                  return true;
->=20
->          if (ieee80211_is_action(hdr->frame_control)) {
->                  u8 *category;
->=20
->                  /*
->                   * Action frames, excluding Public Action frames, are Ro=
-bust
->                   * Management Frames. However, if we are looking at a Pr=
-otected
->                   * frame, skip the check since the data may be encrypted=
- and
->                   * the frame has already been found to be a Robust Manag=
-ement
->                   * Frame (by the other end).
->                   */
-> 		/*
-> 		if (ieee80211_has_protected(hdr->frame_control))
->                          return true;
-> 		*/
->                  category =3D ((u8 *) hdr) + 24;
->                  return *category !=3D WLAN_CATEGORY_PUBLIC &&
->                          *category !=3D WLAN_CATEGORY_HT &&
->                          *category !=3D WLAN_CATEGORY_WNM_UNPROTECTED &&
->                          *category !=3D WLAN_CATEGORY_SELF_PROTECTED &&
->                          *category !=3D WLAN_CATEGORY_UNPROT_DMG &&
->                          *category !=3D WLAN_CATEGORY_VHT &&
->                          *category !=3D WLAN_CATEGORY_VENDOR_SPECIFIC;
->          }
->=20
->          return false;
-> }
->=20
-> Thanks,
-> Ben
->=20
-> > +
-> >   	data_len =3D msdu->len;
-> >
-> >   	switch (txmode) {
-> >
->=20
->=20
-Thanks Ben,
++ Jouni
 
-seems the ieee80211_is_robust_mgmt_frame_tx is not=20
-match my change.
+On 6/18/2019 7:33 AM, Chi-Hsien Lin wrote:
+> 
+> 
+> On 06/17/2019 10:33, Marcel Holtmann wrote:
+>> Hi Chi-hsien,
+>>
+>>>>> i was able to reproduce an (maybe older issue) with 4-way handshake
+>>>>> offloading for 802.1X in the brcmfmac driver. My setup consists of
+>>>>> Raspberry Pi 3 B (current linux-next, arm64/defconfig) on STA side and a
+>>>>> Raspberry Pi 3 A+ (Linux 4.19) on AP side.
+>>>>
+>>>> Looks like Raspberry Pi isn't the only affected platform [3], [4].
+>>>>
+>>>> [3] - https://bugzilla.redhat.com/show_bug.cgi?id=1665608
+>>>> [4] - https://bugzilla.kernel.org/show_bug.cgi?id=202521
+>>>
+>>> Stefan,
+>>>
+>>> Could you please try the attached patch for your wpa_supplicant? We'll
+>>> upstream if it works for you.
+>>
+>> I hope that someone is also providing a kernel patch to fix the issue. Hacking around a kernel issue in userspace is not enough. Fix the root cause in the kernel.
+> 
+> Marcel,
+> 
+> This is a kernel warning for invalid application PMK set actions, so the
+> fix is to only set PMK to wifi driver when 4-way is offloaded. I think
+> Arend added the WARN_ON() intentionally to catch application misuse of
+  > PMK setting.
+> 
+> You may also remove the warnings with the attached patch, but let's see
+> what Arend says first.
+> 
+> 
+> Arend,
+> 
+> Any comment?
+
+Hi Chi-Hsien, Marcel
+
+ From the kernel side I do not see an issue. In order to use 802.1X 
+offload the NL80211_ATTR_WANT_1X_4WAY_HS flag must be set in 
+NL80211_CMD_CONNECT. Otherwise, NL80211_CMD_SET_PMK is not accepted. The 
+only improvement would be to document this more clearly in the "WPA/WPA2 
+EAPOL handshake offload" DOC section in nl80211.h.
+
+As for the wpa_supplicant behavior it seemed a good idea to reuse the 
+req_key_mgmt_offload parameter at the time, but it seems to bite each 
+other. Maybe it is better to have a separate flag like 
+'req_handshake_offload'. Jouni, any thoughts on this?
+
+Regards,
+Arend
