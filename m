@@ -2,48 +2,48 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id F3A1F4A586
-	for <lists+linux-wireless@lfdr.de>; Tue, 18 Jun 2019 17:35:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 90F154A588
+	for <lists+linux-wireless@lfdr.de>; Tue, 18 Jun 2019 17:35:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729701AbfFRPfK (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 18 Jun 2019 11:35:10 -0400
-Received: from mail-lj1-f194.google.com ([209.85.208.194]:35256 "EHLO
-        mail-lj1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729659AbfFRPfJ (ORCPT
+        id S1729751AbfFRPfL (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 18 Jun 2019 11:35:11 -0400
+Received: from mail-lj1-f195.google.com ([209.85.208.195]:38208 "EHLO
+        mail-lj1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729647AbfFRPfK (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 18 Jun 2019 11:35:09 -0400
-Received: by mail-lj1-f194.google.com with SMTP id x25so27653ljh.2
-        for <linux-wireless@vger.kernel.org>; Tue, 18 Jun 2019 08:35:08 -0700 (PDT)
+        Tue, 18 Jun 2019 11:35:10 -0400
+Received: by mail-lj1-f195.google.com with SMTP id r9so7582ljg.5
+        for <linux-wireless@vger.kernel.org>; Tue, 18 Jun 2019 08:35:09 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=esuXjtqW4uUKLJzIZfGaOG3mfIeuD1RYtSgNoLM7wQI=;
-        b=tbu1o1Zd9clAqV903WpQWYeICZSQRtZDs4H7OVK9VyaTFqToYWJlF/kdv1qtyf+gTm
-         HLfE13sD46FlxWNViy5vu/o1sQwXqVlA4tcHSu7qJ3v78Sw0NMDTlBP+q6870RGOqhGR
-         Q5hMDdhjWXBX5T1ShnsUPaouX+8VWG2kzJwQepTbaPEMw7mubSy2SkjLuyA4bYYTlF+B
-         A2ThCYTnSd8MqrYRlnJewRkh6ABvjOfdzZVtaqCa2ejuZ0Tss52HfLky1AhjaX9YQzJY
-         GHyZZJXNckhFYDA0//onqdJnF1zar0IDTBnCQaIYuPZzRAvTDcG1jmqFlVUMpFZ63IUN
-         5IBw==
+        bh=TrltWt+RtwnpkQQYwVLsi9uq9P2cQCYA5NaB1ic9l5s=;
+        b=NJtQhNNg78seUtT1XUqdcun+UMhElbfhoNIrmqOJPrg/y7Ye3phqcqBR+aZ98PY7ym
+         zUS1Vbkl7gJo+0odr3yJ5u8RTMX6IrzSFKnETVm9+PgQwUE27CphCmVDe6yrgYsFAe+A
+         vUp+Xg+bcEVLGDGlBNWf6iJoXoKGOvCDpSqPsgD/pvHpgLSzQiptjF3BsGaopi4BMqp+
+         XFjo3sJS4EJsFBOZwpsS36awBA+3QlazSpplPuyNVvJiLweDSIgfVFA1ryUwTPf7mA7O
+         HRVjx/ouXbr276JXXyh6bEZedldNFLG48LVgbS6Ogn5U+GFfUUTNBtwEZLpg9XIZ3GJz
+         sqrg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references;
-        bh=esuXjtqW4uUKLJzIZfGaOG3mfIeuD1RYtSgNoLM7wQI=;
-        b=NG9FeDXpuxPZiMalxBRT3fNmj+v0ONGyerjktTel1wl1szzp6E7L87qpLsTcq8zAgW
-         vjTGcl10x7eQlkXgjoRk+xSGc3BMEmeYGAPqLMa2+2A1kDSdBDDJJMofji8WdUYodlfs
-         CHRg+93w4u6zVCQK/huWuVlcaEch8pNJbRvGyP0Xxn+GwwzJL87c7PhyEi9ncnYXhkel
-         YR8CuxFbIis+xm64zwAwisEd3Ai0PL+eKZHweyO3l1gazBoFCrXBqKEiBtfN91Woixy/
-         VQPhrcPjBnUOV8byeAjnuM54sn+2qTN3QiXpvYAe+7t9BmpV6Jywm8jiQCIhsqy3T14C
-         TAjQ==
-X-Gm-Message-State: APjAAAWGJpljYEyDxWdMV4hdEUDGbFlwfVVifQE7JjXKMWf+2pWu5OYO
-        WBhRsDm2qbO20lhI3nvxP2jaZw==
-X-Google-Smtp-Source: APXvYqzWCTCYLUP+kCD+dCmIrRcVn73QgqU3WoKH776UKBay5LzF5cbfo9Q30OOIi8UtbKbirsyevQ==
-X-Received: by 2002:a2e:9dd7:: with SMTP id x23mr155663ljj.160.1560872107526;
-        Tue, 18 Jun 2019 08:35:07 -0700 (PDT)
+        bh=TrltWt+RtwnpkQQYwVLsi9uq9P2cQCYA5NaB1ic9l5s=;
+        b=tsdtCVN9Or6pmgLmFH6Lq6EHYNsbHLqlny3+OfrRcTXjnlg6cxIRDPYrLroxt/5Z2V
+         H+vuQ2EjNQ9I5jMlrIaUAILyrt4i+bjOm6JVxfj57JWdtUkpVYTFCg9wG12ncMrBPAGw
+         qe4eeurk6Q7PHpAjwg0jgSpNWtHv9xl6TaI4gLrO0gJp/7FTqwT9CjMReBdfg/NR0ost
+         CiDia3tLJQe9qZgfTKsH3na7Rva7jQW/2Cwyvo2Z7Nc+citCQY6ltKaZAn8dFm+T3uxU
+         Cv1n7SkU1FV3lNFrzSBdfOmlKhAHxBWkLTqtSnTH7kCHkSUt5IFFwKOf94tB2+HbuZ38
+         6nPg==
+X-Gm-Message-State: APjAAAU0uxzd1hQkxIiso+ByMTb+g49F8OAqgD5ojYe2xQn5Ddsj7SEY
+        VuxC1Ctq0nhMuCx0CtaieRQgtw==
+X-Google-Smtp-Source: APXvYqxung57/e+YH3aN47rF4dI9dtCp6RtpYgXnvVsMJBceOG9OE7z7rJ0srhWqzysCxn/FVJaEtQ==
+X-Received: by 2002:a2e:9685:: with SMTP id q5mr14919419lji.227.1560872108802;
+        Tue, 18 Jun 2019 08:35:08 -0700 (PDT)
 Received: from localhost.localdomain (h-158-174-22-210.NA.cust.bahnhof.se. [158.174.22.210])
-        by smtp.gmail.com with ESMTPSA id d15sm2203121lfq.76.2019.06.18.08.35.06
+        by smtp.gmail.com with ESMTPSA id d15sm2203121lfq.76.2019.06.18.08.35.07
         (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Tue, 18 Jun 2019 08:35:07 -0700 (PDT)
+        Tue, 18 Jun 2019 08:35:08 -0700 (PDT)
 From:   Ulf Hansson <ulf.hansson@linaro.org>
 To:     linux-mmc@vger.kernel.org, Ulf Hansson <ulf.hansson@linaro.org>,
         Adrian Hunter <adrian.hunter@intel.com>,
@@ -55,9 +55,9 @@ Cc:     Brian Norris <briannorris@chromium.org>,
         Kalle Valo <kvalo@codeaurora.org>,
         Arend Van Spriel <arend.vanspriel@broadcom.com>,
         linux-wireless@vger.kernel.org
-Subject: [PATCH 6/7] mmc: sdio: Drop unused in-parameter to mmc_sdio_reinit_card()
-Date:   Tue, 18 Jun 2019 17:34:47 +0200
-Message-Id: <20190618153448.27145-7-ulf.hansson@linaro.org>
+Subject: [PATCH 7/7] mmc: sdio: Drop unused in-parameter from mmc_sdio_init_card()
+Date:   Tue, 18 Jun 2019 17:34:48 +0200
+Message-Id: <20190618153448.27145-8-ulf.hansson@linaro.org>
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <20190618153448.27145-1-ulf.hansson@linaro.org>
 References: <20190618153448.27145-1-ulf.hansson@linaro.org>
@@ -66,85 +66,87 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-The "powered_resume" in-parameter to mmc_sdio_reinit_card() has now become
+The "powered_resume" in-parameter to mmc_sdio_init_card() has now become
 redundant as all callers set it to 0. Therefore let's just drop it.
 
 Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 ---
- drivers/mmc/core/sdio.c | 18 ++++++------------
- 1 file changed, 6 insertions(+), 12 deletions(-)
+ drivers/mmc/core/sdio.c | 20 +++++++++-----------
+ 1 file changed, 9 insertions(+), 11 deletions(-)
 
 diff --git a/drivers/mmc/core/sdio.c b/drivers/mmc/core/sdio.c
-index 945416c53b56..0bf603670f61 100644
+index 0bf603670f61..8dd8fc32ecca 100644
 --- a/drivers/mmc/core/sdio.c
 +++ b/drivers/mmc/core/sdio.c
-@@ -816,7 +816,7 @@ static int mmc_sdio_init_card(struct mmc_host *host, u32 ocr,
- 	return err;
- }
- 
--static int mmc_sdio_reinit_card(struct mmc_host *host, bool powered_resume)
-+static int mmc_sdio_reinit_card(struct mmc_host *host)
+@@ -559,7 +559,7 @@ static void mmc_sdio_resend_if_cond(struct mmc_host *host,
+  * we're trying to reinitialise.
+  */
+ static int mmc_sdio_init_card(struct mmc_host *host, u32 ocr,
+-			      struct mmc_card *oldcard, int powered_resume)
++			      struct mmc_card *oldcard)
  {
- 	int ret;
+ 	struct mmc_card *card;
+ 	int err;
+@@ -582,11 +582,9 @@ static int mmc_sdio_init_card(struct mmc_host *host, u32 ocr,
+ 	/*
+ 	 * Inform the card of the voltage
+ 	 */
+-	if (!powered_resume) {
+-		err = mmc_send_io_op_cond(host, ocr, &rocr);
+-		if (err)
+-			goto err;
+-	}
++	err = mmc_send_io_op_cond(host, ocr, &rocr);
++	if (err)
++		goto err;
  
-@@ -845,8 +845,7 @@ static int mmc_sdio_reinit_card(struct mmc_host *host, bool powered_resume)
+ 	/*
+ 	 * For SPI, enable CRC as appropriate.
+@@ -645,7 +643,7 @@ static int mmc_sdio_init_card(struct mmc_host *host, u32 ocr,
+ 	 * try to init uhs card. sdio_read_cccr will take over this task
+ 	 * to make sure which speed mode should work.
+ 	 */
+-	if (!powered_resume && (rocr & ocr & R4_18V_PRESENT)) {
++	if (rocr & ocr & R4_18V_PRESENT) {
+ 		err = mmc_set_uhs_voltage(host, ocr_card);
+ 		if (err == -EAGAIN) {
+ 			mmc_sdio_resend_if_cond(host, card);
+@@ -659,7 +657,7 @@ static int mmc_sdio_init_card(struct mmc_host *host, u32 ocr,
+ 	/*
+ 	 * For native busses:  set card RCA and quit open drain mode.
+ 	 */
+-	if (!powered_resume && !mmc_host_is_spi(host)) {
++	if (!mmc_host_is_spi(host)) {
+ 		err = mmc_send_relative_addr(host, &card->rca);
+ 		if (err)
+ 			goto remove;
+@@ -687,7 +685,7 @@ static int mmc_sdio_init_card(struct mmc_host *host, u32 ocr,
+ 	/*
+ 	 * Select card, as all following commands rely on that.
+ 	 */
+-	if (!powered_resume && !mmc_host_is_spi(host)) {
++	if (!mmc_host_is_spi(host)) {
+ 		err = mmc_select_card(card);
+ 		if (err)
+ 			goto remove;
+@@ -845,7 +843,7 @@ static int mmc_sdio_reinit_card(struct mmc_host *host)
  	if (ret)
  		return ret;
  
--	return mmc_sdio_init_card(host, host->card->ocr, host->card,
--				  powered_resume);
-+	return mmc_sdio_init_card(host, host->card->ocr, host->card, 0);
+-	return mmc_sdio_init_card(host, host->card->ocr, host->card, 0);
++	return mmc_sdio_init_card(host, host->card->ocr, host->card);
  }
  
  /*
-@@ -1000,7 +999,7 @@ static int mmc_sdio_resume(struct mmc_host *host)
- 			pm_runtime_set_active(&host->card->dev);
- 			pm_runtime_enable(&host->card->dev);
- 		}
--		err = mmc_sdio_reinit_card(host, 0);
-+		err = mmc_sdio_reinit_card(host);
- 	} else if (mmc_card_wake_sdio_irq(host)) {
- 		/* We may have switched to 1-bit mode during suspend */
- 		err = sdio_enable_4bit_bus(host->card);
-@@ -1026,11 +1025,6 @@ static int mmc_sdio_resume(struct mmc_host *host)
- 	return err;
- }
+@@ -1113,7 +1111,7 @@ int mmc_attach_sdio(struct mmc_host *host)
+ 	/*
+ 	 * Detect and init the card.
+ 	 */
+-	err = mmc_sdio_init_card(host, rocr, NULL, 0);
++	err = mmc_sdio_init_card(host, rocr, NULL);
+ 	if (err)
+ 		goto err;
  
--static int mmc_sdio_power_restore(struct mmc_host *host)
--{
--	return mmc_sdio_reinit_card(host, 0);
--}
--
- static int mmc_sdio_runtime_suspend(struct mmc_host *host)
- {
- 	/* No references to the card, cut the power to it. */
-@@ -1048,7 +1042,7 @@ static int mmc_sdio_runtime_resume(struct mmc_host *host)
- 	/* Restore power and re-initialize. */
- 	mmc_claim_host(host);
- 	mmc_power_up(host, host->card->ocr);
--	ret = mmc_sdio_power_restore(host);
-+	ret = mmc_sdio_reinit_card(host);
- 	mmc_release_host(host);
- 
- 	return ret;
-@@ -1057,7 +1051,7 @@ static int mmc_sdio_runtime_resume(struct mmc_host *host)
- static int mmc_sdio_hw_reset(struct mmc_host *host)
- {
- 	mmc_power_cycle(host, host->card->ocr);
--	return mmc_sdio_power_restore(host);
-+	return mmc_sdio_reinit_card(host);
- }
- 
- static int mmc_sdio_sw_reset(struct mmc_host *host)
-@@ -1069,7 +1063,7 @@ static int mmc_sdio_sw_reset(struct mmc_host *host)
- 	mmc_set_initial_state(host);
- 	mmc_set_initial_signal_voltage(host);
- 
--	return mmc_sdio_reinit_card(host, 0);
-+	return mmc_sdio_reinit_card(host);
- }
- 
- static const struct mmc_bus_ops mmc_sdio_ops = {
 -- 
 2.17.1
 
