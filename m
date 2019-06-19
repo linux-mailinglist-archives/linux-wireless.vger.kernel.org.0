@@ -2,97 +2,78 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 5C2EB4BE45
-	for <lists+linux-wireless@lfdr.de>; Wed, 19 Jun 2019 18:31:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 19ADC4BFF6
+	for <lists+linux-wireless@lfdr.de>; Wed, 19 Jun 2019 19:42:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729973AbfFSQbe (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 19 Jun 2019 12:31:34 -0400
-Received: from smtprelay0234.hostedemail.com ([216.40.44.234]:46325 "EHLO
-        smtprelay.hostedemail.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1725899AbfFSQbe (ORCPT
+        id S1730061AbfFSRmJ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 19 Jun 2019 13:42:09 -0400
+Received: from paleale.coelho.fi ([176.9.41.70]:54510 "EHLO
+        farmhouse.coelho.fi" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
+        with ESMTP id S1726380AbfFSRmJ (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 19 Jun 2019 12:31:34 -0400
-Received: from filter.hostedemail.com (clb03-v110.bra.tucows.net [216.40.38.60])
-        by smtprelay05.hostedemail.com (Postfix) with ESMTP id D3FFA1801A0B4;
-        Wed, 19 Jun 2019 16:31:31 +0000 (UTC)
-X-Session-Marker: 6A6F6540706572636865732E636F6D
-X-Spam-Summary: 
-X-HE-Tag: cakes27_80e37c98d9d58
-X-Filterd-Recvd-Size: 3106
-Received: from XPS-9350 (cpe-23-242-196-136.socal.res.rr.com [23.242.196.136])
-        (Authenticated sender: joe@perches.com)
-        by omf09.hostedemail.com (Postfix) with ESMTPA;
-        Wed, 19 Jun 2019 16:31:25 +0000 (UTC)
-Message-ID: <9a000734375c0801fc16b71f4be1235f9b857772.camel@perches.com>
-Subject: Re: [PATCH v3 0/7] Hexdump Enhancements
-From:   Joe Perches <joe@perches.com>
-To:     Alastair D'Silva <alastair@au1.ibm.com>, alastair@d-silva.org
-Cc:     Jani Nikula <jani.nikula@linux.intel.com>,
-        Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
-        Rodrigo Vivi <rodrigo.vivi@intel.com>,
-        David Airlie <airlied@linux.ie>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        Dan Carpenter <dan.carpenter@oracle.com>,
-        Karsten Keil <isdn@linux-pingi.de>,
-        Jassi Brar <jassisinghbrar@gmail.com>,
-        Tom Lendacky <thomas.lendacky@amd.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jose Abreu <Jose.Abreu@synopsys.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        Stanislaw Gruszka <sgruszka@redhat.com>,
-        Benson Leung <bleung@chromium.org>,
-        Enric Balletbo i Serra <enric.balletbo@collabora.com>,
-        "James E.J. Bottomley" <jejb@linux.ibm.com>,
-        "Martin K. Petersen" <martin.petersen@oracle.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Alexander Viro <viro@zeniv.linux.org.uk>,
-        Petr Mladek <pmladek@suse.com>,
-        Sergey Senozhatsky <sergey.senozhatsky@gmail.com>,
-        Steven Rostedt <rostedt@goodmis.org>,
-        David Laight <David.Laight@ACULAB.COM>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        intel-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
-        linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
-        ath10k@lists.infradead.org, linux-wireless@vger.kernel.org,
-        linux-scsi@vger.kernel.org, linux-fbdev@vger.kernel.org,
-        devel@driverdev.osuosl.org, linux-fsdevel@vger.kernel.org
-Date:   Wed, 19 Jun 2019 09:31:24 -0700
-In-Reply-To: <20190617020430.8708-1-alastair@au1.ibm.com>
-References: <20190617020430.8708-1-alastair@au1.ibm.com>
-Content-Type: text/plain; charset="ISO-8859-1"
-User-Agent: Evolution 3.30.5-0ubuntu0.18.10.1 
+        Wed, 19 Jun 2019 13:42:09 -0400
+Received: from 91-156-6-193.elisa-laajakaista.fi ([91.156.6.193] helo=redipa.ger.corp.intel.com)
+        by farmhouse.coelho.fi with esmtpsa (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <luca@coelho.fi>)
+        id 1hdeb1-0002zq-5G; Wed, 19 Jun 2019 20:42:07 +0300
+From:   Luca Coelho <luca@coelho.fi>
+To:     kvalo@codeaurora.org
+Cc:     linux-wireless@vger.kernel.org,
+        Luca Coelho <luciano.coelho@intel.com>
+Subject: [PATCH 0/6] iwlwifi: fixes intended for 5.2 2019-06-19
+Date:   Wed, 19 Jun 2019 20:41:53 +0300
+Message-Id: <20190619174159.13927-1-luca@coelho.fi>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Mon, 2019-06-17 at 12:04 +1000, Alastair D'Silva wrote:
-> From: Alastair D'Silva <alastair@d-silva.org>
-> 
-> Apologies for the large CC list, it's a heads up for those responsible
-> for subsystems where a prototype change in generic code causes a change
-> in those subsystems.
-> 
-> This series enhances hexdump.
+From: Luca Coelho <luciano.coelho@intel.com>
 
-Still not a fan of these patches.
+Hi,
 
-> These improve the readability of the dumped data in certain situations
-> (eg. wide terminals are available, many lines of empty bytes exist, etc).
+This is the third patchset with fixes for v5.2.
 
-Changing hexdump's last argument from bool to int is odd.
+The changes are:
 
-Perhaps a new function should be added instead of changing
-the existing hexdump.
+* A bunch of RF-kill fixes by Emmanuel;
+* A fix for AP mode, also related to RF-kill, by Johannes.
 
-> The default behaviour of hexdump is unchanged, however, the prototype
-> for hex_dump_to_buffer() has changed, and print_hex_dump() has been
-> renamed to print_hex_dump_ext(), with a wrapper replacing it for
-> compatibility with existing code, which would have been too invasive to
-> change.
-> 
-> Hexdump selftests have be run & confirmed passed.
+As usual, I'm pushing this to a pending branch, for kbuild bot.  And
+as we agreed, I'll delegate these patches to you in patchwork for you
+to apply them directly.
 
+Please review.
+
+Cheers,
+Luca.
+
+
+Emmanuel Grumbach (5):
+  iwlwifi: pcie: fix ALIVE interrupt handling for gen2 devices w/o MSI-X
+  iwlwifi: fix RF-Kill interrupt while FW load for gen2 devices
+  iwlwifi: pcie: don't service an interrupt that was masked
+  iwlwifi: don't WARN when calling iwl_get_shared_mem_conf with RF-Kill
+  iwlwifi: mvm: clear rfkill_safe_init_done when we start the firmware
+
+Johannes Berg (1):
+  iwlwifi: mvm: delay GTK setting in FW in AP mode
+
+ drivers/net/wireless/intel/iwlwifi/fw/smem.c  | 12 +++-
+ drivers/net/wireless/intel/iwlwifi/mvm/fw.c   |  8 ++-
+ .../net/wireless/intel/iwlwifi/mvm/mac80211.c | 53 ++++++++++++++-
+ drivers/net/wireless/intel/iwlwifi/mvm/mvm.h  |  3 +
+ .../intel/iwlwifi/pcie/ctxt-info-gen3.c       |  2 +-
+ .../wireless/intel/iwlwifi/pcie/ctxt-info.c   |  2 +-
+ .../wireless/intel/iwlwifi/pcie/internal.h    | 27 ++++++++
+ drivers/net/wireless/intel/iwlwifi/pcie/rx.c  | 66 ++++++++++++-------
+ .../wireless/intel/iwlwifi/pcie/trans-gen2.c  |  9 +++
+ 9 files changed, 149 insertions(+), 33 deletions(-)
+
+-- 
+2.20.1
 
