@@ -2,114 +2,126 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id BFC714C3C0
-	for <lists+linux-wireless@lfdr.de>; Thu, 20 Jun 2019 00:36:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CAFF74C406
+	for <lists+linux-wireless@lfdr.de>; Thu, 20 Jun 2019 01:16:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730089AbfFSWgj (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 19 Jun 2019 18:36:39 -0400
-Received: from mail-io1-f68.google.com ([209.85.166.68]:46295 "EHLO
-        mail-io1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726251AbfFSWgi (ORCPT
+        id S1730671AbfFSXQa (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 19 Jun 2019 19:16:30 -0400
+Received: from ushosting.nmnhosting.com ([66.55.73.32]:42028 "EHLO
+        ushosting.nmnhosting.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726251AbfFSXQ3 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 19 Jun 2019 18:36:38 -0400
-Received: by mail-io1-f68.google.com with SMTP id i10so2155656iol.13
-        for <linux-wireless@vger.kernel.org>; Wed, 19 Jun 2019 15:36:38 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=QURT5SwuveJ6XJjyoUTtNUT5nKXxo/BA0vNI7NeFVBY=;
-        b=iOyNl1DkoGZ/Pyw7siCkLnlQ4qXazjEwCadT1dE1bjtYvPQ+Zi+VKEqAQGiwJZg59k
-         0NMy36GFhRjoPpdw5y5rqT/pww6fLlGHEbgbi35NzmNNvOMH9XosaYbRXMLxbvQd4YZJ
-         e+8WbV7TX6xvfQbkncPVsRp2wsoYwpmYjDfnDSL4+y9/k87/AN5MNYQd/OKqE5wwuF28
-         PcDJyWHa84BqyClEJFV6rwaX63zobLOS4ezPfCEAkzBty+PPmPJRWHW0ThrtBz2UvM3h
-         hvJMXw4tilKZA4Do7swyjlvZsOlMjYgbEsOFGUAjV3p1V1mVWehL0tE6T0qVKFLHo2kk
-         HnbA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=QURT5SwuveJ6XJjyoUTtNUT5nKXxo/BA0vNI7NeFVBY=;
-        b=OirSMAwKpagNCqDUAJmRwCICmDdyD0XsZhOosorT+8foHGR2WnWAzTQWDVFiubK4+5
-         Cq3uGydx81iqf6hy6ANSKNRFGTzRVBC6N/ldiDyfV8U47WQUjbAujuDm3QeVyEa6HfbU
-         CwLtgnNIdxmcJz0V9sKJm0ZM5zAALRVlSmitiM1TFRxJ7cpqPLHI4N94axfd9PJs5VWX
-         VTo4f4b+7odqd7BCjh0aCiBDxgHheUbrTb7OiRn2UJvLH9zzRwaPn0CFT8mC0PHnXrHQ
-         Ts77d9AuJDODta/k0gyZI5o9FAxPtsjACptP7FB+umVbkJDe5UCjeANffKfCsTsJugEi
-         MxXQ==
-X-Gm-Message-State: APjAAAU8eFGiwfZQICC1+M36i+XFR2yQZ6wRlmpYNU51678RQbOld3s6
-        toGq0K8+75ARZAZR4aJ/u8c=
-X-Google-Smtp-Source: APXvYqz0sCr05+TQy2VLoU5M+QTOaf/TAU7oaZ00P5BosDaiZy6tJTzv8mBqqAZRaEl2EDa0xiOQ3w==
-X-Received: by 2002:a6b:6505:: with SMTP id z5mr6681897iob.295.1560983797696;
-        Wed, 19 Jun 2019 15:36:37 -0700 (PDT)
-Received: from new-host-2.home.home ([2605:a601:808:1001:37ba:4f0a:192f:f945])
-        by smtp.gmail.com with ESMTPSA id y20sm15928646ion.77.2019.06.19.15.36.36
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Wed, 19 Jun 2019 15:36:37 -0700 (PDT)
-From:   Denis Kenzior <denkenz@gmail.com>
-To:     Johannes Berg <johannes@sipsolutions.net>
-Cc:     linux-wireless@vger.kernel.org, Denis Kenzior <denkenz@gmail.com>
-Subject: [PATCH 3/3] nl80211: Include wiphy address setup in NEW_WIPHY
-Date:   Wed, 19 Jun 2019 17:36:06 -0500
-Message-Id: <20190619223606.4575-3-denkenz@gmail.com>
-X-Mailer: git-send-email 2.21.0
-In-Reply-To: <20190619223606.4575-1-denkenz@gmail.com>
-References: <20190619223606.4575-1-denkenz@gmail.com>
+        Wed, 19 Jun 2019 19:16:29 -0400
+Received: from mail2.nmnhosting.com (unknown [202.169.106.97])
+        by ushosting.nmnhosting.com (Postfix) with ESMTPS id 5F37E2DC005B;
+        Wed, 19 Jun 2019 19:16:28 -0400 (EDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=d-silva.org;
+        s=201810a; t=1560986188;
+        bh=P+nFrCYIAy9nbAT3inDjyh5Nu1AGlpkuYDjYYSTo8SU=;
+        h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
+        b=UMKHysbwL4zdfy50KqutmgBEIg3sB7A1AG+8ItwZQtNEjbw3/kefwvZoa3HJ/qPue
+         FtHy3iQpmn+NaSFA3Mu2gOfCMETJuOCnHShThOrTrRi0524godGZCgjbLwEXdIrujV
+         xDt+bXPG551xLU30DowKCzCX4sh2ZLCYlpwKny3nSfu6TdTO04XxEEAerz4PtGaObB
+         mK5WkSsuK3ES4PAPxgZb+pSYtoFroMpH18T3PLybvLGSjfjyn/CtIMs+blM8XYmdPJ
+         TvkZW6Ca8pzYT9RsBfJRAJWjf4qfNG6J0j+xJvEaD7SP/MIMGo1VZ5d/zw4b3FdeYt
+         JetXAd65Zd6yavahdde3VtkKoryPECl8+glQZ+N2eRG9ycQ1RafCdpTqdv72F0hGkL
+         4apz6zp0SeF0J1KA9qT4u68PJKa7dlMEnKXEomd5VE+2hLj+H2XT6HltLJdB5+pK9G
+         cMe1+bLK+ayAWxIXuyZ1/r/oJ5pzAFraInvomTVKBkCfLFy8CdlSIihUmPfej/4psJ
+         72/lVeYRJl+IifxxJ9hEA9A+QWlY8W986ROsAQ5xOTxmaRzXMnnZRdFLVPZt5axFGD
+         EQ+IOd3b5ZUWjk3U7T3wAvcchJQaqLNw/Njxg2yMVkYsKSYnAMuX4DYn+A7LJX3oLF
+         sv3nSS3HZsRxp6mS1j36fWkI=
+Received: from adsilva.ozlabs.ibm.com (static-82-10.transact.net.au [122.99.82.10] (may be forged))
+        (authenticated bits=0)
+        by mail2.nmnhosting.com (8.15.2/8.15.2) with ESMTPSA id x5JNFxcT078663
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NO);
+        Thu, 20 Jun 2019 09:16:14 +1000 (AEST)
+        (envelope-from alastair@d-silva.org)
+Message-ID: <c68cb819257f251cbb66f8998a95c31cebe2d72e.camel@d-silva.org>
+Subject: Re: [PATCH v3 0/7] Hexdump Enhancements
+From:   "Alastair D'Silva" <alastair@d-silva.org>
+To:     Joe Perches <joe@perches.com>
+Cc:     Jani Nikula <jani.nikula@linux.intel.com>,
+        Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
+        Rodrigo Vivi <rodrigo.vivi@intel.com>,
+        David Airlie <airlied@linux.ie>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        Dan Carpenter <dan.carpenter@oracle.com>,
+        Karsten Keil <isdn@linux-pingi.de>,
+        Jassi Brar <jassisinghbrar@gmail.com>,
+        Tom Lendacky <thomas.lendacky@amd.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jose Abreu <Jose.Abreu@synopsys.com>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        Stanislaw Gruszka <sgruszka@redhat.com>,
+        Benson Leung <bleung@chromium.org>,
+        Enric Balletbo i Serra <enric.balletbo@collabora.com>,
+        "James E.J. Bottomley" <jejb@linux.ibm.com>,
+        "Martin K. Petersen" <martin.petersen@oracle.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Alexander Viro <viro@zeniv.linux.org.uk>,
+        Petr Mladek <pmladek@suse.com>,
+        Sergey Senozhatsky <sergey.senozhatsky@gmail.com>,
+        Steven Rostedt <rostedt@goodmis.org>,
+        David Laight <David.Laight@ACULAB.COM>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        intel-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
+        linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
+        ath10k@lists.infradead.org, linux-wireless@vger.kernel.org,
+        linux-scsi@vger.kernel.org, linux-fbdev@vger.kernel.org,
+        devel@driverdev.osuosl.org, linux-fsdevel@vger.kernel.org
+Date:   Thu, 20 Jun 2019 09:15:58 +1000
+In-Reply-To: <9a000734375c0801fc16b71f4be1235f9b857772.camel@perches.com>
+References: <20190617020430.8708-1-alastair@au1.ibm.com>
+         <9a000734375c0801fc16b71f4be1235f9b857772.camel@perches.com>
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.32.2 (3.32.2-1.fc30) 
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
+X-Greylist: Sender succeeded SMTP AUTH, not delayed by milter-greylist-4.6.2 (mail2.nmnhosting.com [10.0.1.20]); Thu, 20 Jun 2019 09:16:24 +1000 (AEST)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Include wiphy address setup in wiphy dumps and new wiphy events.  The
-wiphy permanent address is exposed as ATTR_MAC.  If addr_mask is setup,
-then it is included as ATTR_MAC_MASK attribute.  If multiple addresses
-are available, then their are exposed in a nested ATTR_MAC_ADDRS array.
+On Wed, 2019-06-19 at 09:31 -0700, Joe Perches wrote:
+> On Mon, 2019-06-17 at 12:04 +1000, Alastair D'Silva wrote:
+> > From: Alastair D'Silva <alastair@d-silva.org>
+> > 
+> > Apologies for the large CC list, it's a heads up for those
+> > responsible
+> > for subsystems where a prototype change in generic code causes a
+> > change
+> > in those subsystems.
+> > 
+> > This series enhances hexdump.
+> 
+> Still not a fan of these patches.
 
-This information is already exposed via sysfs, but it makes sense to
-include it in the wiphy dump as well.
+I'm afraid there's not too much action I can take on that, I'm happy to
+address specific issues though.
 
-Signed-off-by: Denis Kenzior <denkenz@gmail.com>
----
- net/wireless/nl80211.c | 25 +++++++++++++++++++++++++
- 1 file changed, 25 insertions(+)
+> 
+> > These improve the readability of the dumped data in certain
+> > situations
+> > (eg. wide terminals are available, many lines of empty bytes exist,
+> > etc).
+> 
+> Changing hexdump's last argument from bool to int is odd.
+> 
 
-diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
-index 26bab9560c0f..65f3d47d9b63 100644
---- a/net/wireless/nl80211.c
-+++ b/net/wireless/nl80211.c
-@@ -1852,6 +1852,31 @@ static int nl80211_send_wiphy(struct cfg80211_registered_device *rdev,
- 
- 	switch (state->split_start) {
- 	case 0:
-+		if (nla_put(msg, NL80211_ATTR_MAC, ETH_ALEN,
-+			    rdev->wiphy.perm_addr))
-+			goto nla_put_failure;
-+
-+		if (!is_zero_ether_addr(rdev->wiphy.addr_mask) &&
-+		    nla_put(msg, NL80211_ATTR_MAC_MASK, ETH_ALEN,
-+			    rdev->wiphy.addr_mask))
-+			goto nla_put_failure;
-+
-+		if (rdev->wiphy.n_addresses > 1) {
-+			void *attr;
-+
-+			attr = nla_nest_start_noflag(msg,
-+						     NL80211_ATTR_MAC_ADDRS);
-+			if (!attr)
-+				goto nla_put_failure;
-+
-+			for (i = 0; i < rdev->wiphy.n_addresses; i++)
-+				if (nla_put(msg, i + 1, ETH_ALEN,
-+					    rdev->wiphy.addresses[i].addr))
-+					goto nla_put_failure;
-+
-+			nla_nest_end(msg, attr);
-+		}
-+
- 		if (nla_put_u8(msg, NL80211_ATTR_WIPHY_RETRY_SHORT,
- 			       rdev->wiphy.retry_short) ||
- 		    nla_put_u8(msg, NL80211_ATTR_WIPHY_RETRY_LONG,
+Think of it as replacing a single boolean with many booleans.
+
+> Perhaps a new function should be added instead of changing
+> the existing hexdump.
+> 
+
+There's only a handful of consumers, I don't think there is a value-add 
+in creating more wrappers vs updating the existing callers.
+
 -- 
-2.21.0
+Alastair D'Silva           mob: 0423 762 819
+skype: alastair_dsilva    
+Twitter: @EvilDeece
+blog: http://alastair.d-silva.org
+
 
