@@ -2,179 +2,93 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 94CE54D093
-	for <lists+linux-wireless@lfdr.de>; Thu, 20 Jun 2019 16:41:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4E0B54D373
+	for <lists+linux-wireless@lfdr.de>; Thu, 20 Jun 2019 18:16:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726654AbfFTOlF (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 20 Jun 2019 10:41:05 -0400
-Received: from mail-wr1-f65.google.com ([209.85.221.65]:34191 "EHLO
-        mail-wr1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726551AbfFTOlF (ORCPT
+        id S1732024AbfFTQQh (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 20 Jun 2019 12:16:37 -0400
+Received: from mail-io1-f65.google.com ([209.85.166.65]:33766 "EHLO
+        mail-io1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726661AbfFTQQg (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 20 Jun 2019 10:41:05 -0400
-Received: by mail-wr1-f65.google.com with SMTP id k11so3335737wrl.1
-        for <linux-wireless@vger.kernel.org>; Thu, 20 Jun 2019 07:41:03 -0700 (PDT)
+        Thu, 20 Jun 2019 12:16:36 -0400
+Received: by mail-io1-f65.google.com with SMTP id u13so190242iop.0
+        for <linux-wireless@vger.kernel.org>; Thu, 20 Jun 2019 09:16:36 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=xy5kKhD/htJC9HG/Wek7QbNgYYO8vtcDYitOXxocI5w=;
-        b=hleyQN4k6a901eEiyt+/cQ8/bu4hNYDEAwibP/lb0mI9+eF+oYBg7ym0RVc6rhuBrf
-         Rlt2iUpzlDotAfc9mLq8NTBNRFpgo3A/84xx01CqGCXx6qlQCrT48O1ELff5tUdeQXUz
-         MMMAUB1caWM1/BzzEnwcDmTORJZZ5jShW0Sw1kSFwTZdV+x9WCKfp/hBBRhwk1OGdTf1
-         ClaQPCBQZys1NANl8LeBWsx8A2FNrJC3/SFZVVNhdUWqEbwINM15SuiEH0oRx4UT49J5
-         2X++VJQoZauAlQBqpIEyZ+y6MxsqfRx6X9TZyrtM1HVU+u9JulPk2Jt/bZ/do4moSQvg
-         Yj+g==
+        h=subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=Ql2IMEwYVC1mbSwBK+TDG36+seYz+amfXr8hmAfrbDg=;
+        b=sDjX143jf/EzMalTF4GCAXVjCc1maI8c5vbJis3UGOIScM9nGMYmAJUDoHtUAycPTt
+         V0jTBzuRg606TANqaiijXSOiokd3vjBBHQ1kDncvUPEDW63uyx6YC/YlquaEyKDVGvDm
+         nZHI33o31jMVrFcrsW8SW58iVMa0bWytZL95RsOOLwL4KRSdf9JZg3ZLMr+YyzJDiEv1
+         WEctdQc2PbcyXEIjud5Xbl5FeejrjMulc7Mu801prAZZH94tM/0n5q39IgQ9UECb1T6J
+         Wn9ocN3abUjvwNDO2aO7JOfQEPAubUdD87hirhrlatV4qHskvawKc9Vl9faMxX4MYs8F
+         VolA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=xy5kKhD/htJC9HG/Wek7QbNgYYO8vtcDYitOXxocI5w=;
-        b=r+kcd1vybn7g1Viz7MJE/lGiG4In0mWIVpHgXmpm/V8Y1gpKcNSVbW6Gn9RwPx73HM
-         PfbadELWK0Uk+3ZJBb6ldMMymiNUopNQD9sbGpgbT45tm1CE3f57qFFpRXxPxkxXw5PW
-         K+I//eEbk9jrcECLNE3cyybIUI3SZVFZ/sK1yThv6fS/DMUiz9xGTCGZ+uCADLmaK+Ge
-         F3OwYxB50yOZ3uP0Hy0GSEziyGOIsb7qOXbLvuZown0LIppJcxLI5O6UPOhDKsuhUwxx
-         AIq7ozTIKedBJ6rcoDmbVM03j1nH4O86n31/Gz9XJjFFMNrVUI/VY7zSKjHYAgWhOfC7
-         WyfA==
-X-Gm-Message-State: APjAAAWPb7LaKXr6/ZFOD4uT0E5cvNpypgZ38imnrAWGnq/ThMZbgrI6
-        JEN2ccdn7a/zfruj36DeZHSqJxd5
-X-Google-Smtp-Source: APXvYqwLwH2nTg1H1R9IEGPJl1ocUDQMjBFtKKleq3JegrHIDoiYy/oUr3fP9zJ8zD6ua4i8qXAsxQ==
-X-Received: by 2002:a5d:5286:: with SMTP id c6mr79569990wrv.118.1561041662361;
-        Thu, 20 Jun 2019 07:41:02 -0700 (PDT)
-Received: from debian64.daheim (pD9E29A96.dip0.t-ipconnect.de. [217.226.154.150])
-        by smtp.gmail.com with ESMTPSA id y44sm23498103wrd.13.2019.06.20.07.41.01
-        (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
-        Thu, 20 Jun 2019 07:41:01 -0700 (PDT)
-Received: from localhost.daheim ([127.0.0.1] helo=debian64.localnet)
-        by debian64.daheim with esmtp (Exim 4.92)
-        (envelope-from <chunkeey@gmail.com>)
-        id 1hdyFJ-000307-2u; Thu, 20 Jun 2019 16:41:01 +0200
-From:   Christian Lamparter <chunkeey@gmail.com>
-To:     Kalle Valo <kvalo@codeaurora.org>
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=Ql2IMEwYVC1mbSwBK+TDG36+seYz+amfXr8hmAfrbDg=;
+        b=F/EYTOUlW7LEJ0JH3yQtaE+rzWE8vRD49cuesUnlnBGx2xwzOjCVe9pLbB10U/I43n
+         XAje6pAbTN2x371cTx3ye6Y3zwGjJDEzcKnud26Mpmx/+GxfHKmLYxQFPJxFRq23RrXP
+         p0eJqvXiaUO/tLLb+8/vfr1slrvc27jr2suX2VUJF0UnWivxZe37xeWDV6PNlLnI2A64
+         TARk/x4xmaLaPinpPqLuEOY9Kjaw7UlZ/OyUj25J6FCsa0YnDvEXQidgHObtP9trRFZq
+         MFGiQ3QGB3z3Z+y40TUcqisH9m3LmR77wuaXuYs2CzrAds6mlNjT0wBf28WjS6d9yYZb
+         /w9g==
+X-Gm-Message-State: APjAAAXyVNa8IR4Zkdv3tCcxD1tez8xI0x4QMwomc3pTcBRMGC10PMFr
+        kP7crGtvbAnzkZB0BEHmhk60MsvN
+X-Google-Smtp-Source: APXvYqwIab44esu6B5m2NH3wV/DaaHbqEBi5G5hqRckBDbmgS0uOrD9hlPU7bWyA2BfgOwZiKTh64A==
+X-Received: by 2002:a05:6638:2a9:: with SMTP id d9mr99791834jaq.94.1561047396183;
+        Thu, 20 Jun 2019 09:16:36 -0700 (PDT)
+Received: from new-host-2.home ([2605:a601:808:1001:37ba:4f0a:192f:f945])
+        by smtp.googlemail.com with ESMTPSA id i3sm283476ion.9.2019.06.20.09.16.35
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Thu, 20 Jun 2019 09:16:35 -0700 (PDT)
+Subject: Re: [PATCH 3/3] nl80211: Include wiphy address setup in NEW_WIPHY
+To:     Johannes Berg <johannes@sipsolutions.net>
 Cc:     linux-wireless@vger.kernel.org
-Subject: Re: [PATCH] carl9170: fix enum compare splat
-Date:   Thu, 20 Jun 2019 16:41:00 +0200
-Message-ID: <4392478.8kWN0Ehzps@debian64>
-In-Reply-To: <87a7ef9jp2.fsf@kamboji.qca.qualcomm.com>
-References: <20190608144947.744-1-chunkeey@gmail.com> <1601416.I41mb68Wgz@debian64> <87a7ef9jp2.fsf@kamboji.qca.qualcomm.com>
+References: <20190619223606.4575-1-denkenz@gmail.com>
+ <20190619223606.4575-3-denkenz@gmail.com>
+ <ec1ca95a5789f9001e89e603633b20316d687721.camel@sipsolutions.net>
+From:   Denis Kenzior <denkenz@gmail.com>
+Message-ID: <7da9b924-78c7-ba72-fecc-a11700a34ff4@gmail.com>
+Date:   Thu, 20 Jun 2019 11:16:33 -0500
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
+ Thunderbird/52.3.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <ec1ca95a5789f9001e89e603633b20316d687721.camel@sipsolutions.net>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Tuesday, June 18, 2019 2:11:53 PM CEST Kalle Valo wrote:
-> Christian Lamparter <chunkeey@gmail.com> writes:
-> > On Monday, June 10, 2019 9:06:30 AM CEST Kalle Valo wrote:
-> >> Christian Lamparter <chunkeey@gmail.com> writes:
-> >>=20
-> >> > This patch fixes a noisy warning triggered by -Wenum-compare
-> >> >
-> >> > |main.c:1390:31: warning: comparison between =E2=80=98enum nl80211_a=
-c=E2=80=99
-> >> > |	and =E2=80=98enum ar9170_txq=E2=80=99 [-Wenum-compare]
-> >> > |  BUILD_BUG_ON(NL80211_NUM_ACS > __AR9170_NUM_TXQ);
-> >> > |                               ^
-> >> > | [...]
-> >> >
-> >> > This is a little bit unfortunate, since the number of queues
-> >> > (hence NL80211_NUM_ACS) is a constant based on the IEEE 802.11
-> >> > (much like IEEE80211_NUM_ACS) and __AR9170_NUM_TXQ is more or
-> >> > less defined by the AR9170 hardware.
-> >>=20
-> >> Is the warning enabled by default? TBH I'm not seeing how useful this
-> >> warning is for kernel development.
-> >
-> > It is included in the "-Wall" (which is coming from "KBUILD_CFLAGS"=20
-> > in the main Makefile).
-> >
-> > I tried debian's gcc starting from 4.6 to the lastest 8.3. They all
-> > complain about it in various degrees.
-> >
-> > https://gcc.gnu.org/onlinedocs/gcc-4.6.0/gcc/Warning-Options.html#Warni=
-ng-Options
->=20
-> Ok, odd that I haven't noticed this warning. Maybe I have been just
-> blind.
+Hi Johannes,
 
-Sorry. No, I messed up there. I made a patch back in the day during the spe=
-ctre
-mac80211 patches that I kept in my tree for the driver. But I now remember =
-that
-I never published those because of that exact "warning".
-These lines are coming from there.
-=20
-> >> > --- a/drivers/net/wireless/ath/carl9170/main.c
-> >> > +++ b/drivers/net/wireless/ath/carl9170/main.c
-> >> > @@ -1387,7 +1387,7 @@ static int carl9170_op_conf_tx(struct ieee8021=
-1_hw *hw,
-> >> >  	int ret;
-> >> > =20
-> >> >  	BUILD_BUG_ON(ARRAY_SIZE(ar9170_qmap) !=3D __AR9170_NUM_TXQ);
-> >> > -	BUILD_BUG_ON(NL80211_NUM_ACS > __AR9170_NUM_TXQ);
-> >> > +	BUILD_BUG_ON((size_t)NL80211_NUM_ACS > (size_t)__AR9170_NUM_TXQ);
-> >>=20
-> >> IMHO this just makes the code worse. Does it make sense to workaround
-> >> (stupid) compiler warnings like this?
-> >
-> > True. What's worse: This isn't really code. The BUILD_BUG_ON Macro is t=
-here
-> > to guard but it's getting compiled away. I could also just drop it.
->=20
-> Either way is fine for me. If the GCC (by default) emits a warning for
-> this we need to silence that warning, so in that respect I guess we
-> should apply this. Unless better solutions come up, of course :)
-Note: I dropped this patch from patchwork. So, there's nothing that
-needs to be done now ;)
+On 06/20/2019 01:58 AM, Johannes Berg wrote:
+> Didn't really review all of this yet, but
+> 
+>   	switch (state->split_start) {
+>>   	case 0:
+>> +		if (nla_put(msg, NL80211_ATTR_MAC, ETH_ALEN,
+>> +			    rdev->wiphy.perm_addr))
+>> +			goto nla_put_failure;
+> 
+> We generally can't add anything to any of the cases before the split was
+> allowed, for compatibility with old userspace.
 
-Well, except OT: Would you mind adding the QCA4019 boardfiles that
-have accumulated over the past six-ish months?
+Can you educate me here? Is it because the non-split dump messages would 
+grow too large?  But then non-dumps aren't split, so I still don't get 
+how anyone can be broken by this (that isn't already broken in the first 
+place).
 
-<https://www.mail-archive.com/ath10k@lists.infradead.org/msg09966.html>
+Anyhow, What is the cut off point?  It didn't seem worthwhile to send 
+yet-another-message for ~60 bytes of data, but if you want me to add it 
+as a separate message, no problem.
 
-That list already had:
-ath10k-firmware: QCA4019 hw1.0: Add ASUS Lyra specific BDFs
-ath10k-firmware: QCA4019 hw1.0: Add Linksys EA6350v3
-ath10k-firmware: QCA4019 hw1.0: Add Qxwlan E2600AC specific BDFs
-ath10k-firmware: QCA4019 hw1.0: Update OpenMesh A62 specific BDFs
-ath10k-firmware: QCA9888 hw2.0: Update OpenMesh A62 specific BDFs
-ath10k-firmware: QCA4019 hw1.0: Update OpenMesh A42 specific BDFs
-ath10k-firmware: QCA4019 hw1.0: Add ALFA Network AP120C-AC specific BDF
-ath10k-firmware: QCA4019 hw1.0: Add AVM FRITZ!Box 7530 specific BDFs
-ath10k-firmware: QCA4019 hw1.0: Update Linksys EA6350v3 specific BDFs
-
-and now there's even more:
-
-+ ath10k-firmware: QCA4019 hw1.0: Add Qxwlan E2600AC specific BDFs
- (Watch out, there are multiple versions! The first ones are dodgy
- with a bad crc)=20
- This should be the right "one"
- <https://www.mail-archive.com/ath10k@lists.infradead.org/msg10007.html>
-
-+ ath10k-firmware: QCA4019 hw1.0: Add AVM FRITZ!Repeater 3000 specific BDFs
- <https://www.mail-archive.com/ath10k@lists.infradead.org/msg10101.html>
-
-+ ath10k-firmware: IPQ4018 hw1.0: Add EnGenius ENS620EXT specific BDFs
-<http://lists.infradead.org/pipermail/ath10k/2019-March/013034.html>
-
-+ ath10k-firmware: QCA9984 hw1.0: Update Netgear Orbi Pro SRK60 specific BD=
-=46s
-  ath10k-firmware: QCA4019 hw1.0: Update Netgear Orbi Pro SRK60 specific BD=
-=46s
-
-  One for QCA9984 and one for two QCA4019
-<https://www.mail-archive.com/ath10k@lists.infradead.org/msg10170.html>
-<https://www.mail-archive.com/ath10k@lists.infradead.org/msg10171.html>
-
-+ ath10k-firmware: IPQ4019 hw1.0: Add BDF for Linksys EA8300 [1/2]
-  ath10k-firmware: QCA9888 hw1.0: Add BDF for Linksys EA8300 [2/2]
-
-<http://lists.infradead.org/pipermail/ath10k/2019-May/013403.html>
-<http://lists.infradead.org/pipermail/ath10k/2019-May/013404.html>
-
-Cheers,
-Christian
-
-
+Regards,
+-Denis
