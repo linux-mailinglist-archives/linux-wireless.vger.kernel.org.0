@@ -2,117 +2,121 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 790D64DD34
-	for <lists+linux-wireless@lfdr.de>; Fri, 21 Jun 2019 00:07:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D6A2F4DDE6
+	for <lists+linux-wireless@lfdr.de>; Fri, 21 Jun 2019 01:51:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726180AbfFTWH6 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 20 Jun 2019 18:07:58 -0400
-Received: from mail-io1-f67.google.com ([209.85.166.67]:44240 "EHLO
-        mail-io1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726135AbfFTWH5 (ORCPT
+        id S1726059AbfFTXvi (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 20 Jun 2019 19:51:38 -0400
+Received: from mail-io1-f65.google.com ([209.85.166.65]:35202 "EHLO
+        mail-io1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725905AbfFTXvh (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 20 Jun 2019 18:07:57 -0400
-Received: by mail-io1-f67.google.com with SMTP id s7so744936iob.11
-        for <linux-wireless@vger.kernel.org>; Thu, 20 Jun 2019 15:07:56 -0700 (PDT)
+        Thu, 20 Jun 2019 19:51:37 -0400
+Received: by mail-io1-f65.google.com with SMTP id m24so1620584ioo.2
+        for <linux-wireless@vger.kernel.org>; Thu, 20 Jun 2019 16:51:37 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=pTzrIKlmMz0JAf7xTm4NDSAUGunPnC3ZOeRthyVaNQ4=;
-        b=paK8AO4jT5U2wXKktiTahw2Ok5nSVYpw7K8Pp/ey9he45SxA7uTVxjrAKiHG9awYGZ
-         voEP3Hov8YJ4UztdKpW4/5P4zveizSW6xrx9ZcGKFRe/gbQ//pm+KjC+I/PJ2imOaS/q
-         /HnHRZFPIkR67yhT6ZfwEjx6in/E3G+65wSOLc4DvgVlNQiIIilh+sxGvtqpLMxqt9v1
-         1Jb8flVK74PjsWFHnWIts4a5/NuPvW+D4+cU2bScOHhyiv5Qr8IHm29HdLXd8/xyYch1
-         Sm7tUedPmOl1BIfscm+mBGKemw9VX3ns+Sg7RjUxCcwu5ea3OMt0m3TBaULcgx2sf860
-         Bmnw==
+        h=subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=WmIdzO++g1/wCok0wbpqBrilttEkSuaSVkaCP7OhK+o=;
+        b=AYDPlcId15yG9cpMKfjE9PBjux50w9CJkTjGoeRvkxqDWf4cQ8JQnG7lfuq2NITy8B
+         7pAfrtIDdmBH35K1/ghEWeUVedkjvGA9KWNX6AJTgopV9yVdTJOpekSFVj6x6R2doxwp
+         TTh5b7xFo2i7iHeQ7/W58CnDBPGnQnug96AGXF07kIqjvcZATG2GZtIYrO55xuGvQk6N
+         n8TntNFwmU+5Zm3ddW8piPvjM75V+sM1nwT0hUl/JhfYuQnJYwFkI8uBuwERM9Odpfvf
+         RaWdb5Qwy/jFeMtmVF3mQqtd5o0PCB4QbLJzz3jXa17zwxJkNTX7UfR+Vq/o8QvVKa3O
+         K1aA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=pTzrIKlmMz0JAf7xTm4NDSAUGunPnC3ZOeRthyVaNQ4=;
-        b=uQeeu/+TRvU60RAXWNdUSA/1XBmrsg6jLDtycxd5ovvQ5d0Qjiv03xzQozEIwixIwL
-         v7VfyM9goLo3Cls5ZTNSoRj9cM6frO65UGc5z+BlJUFEzykb9EkcFXeaMrBeJTF4tLOM
-         QZUQZ6nlIzT/ZwRdVmfOko59Zn7BxakeOdMQsTq1B9wxQdDv+e+QeG3E/RMpyx7zKMLR
-         m0AOLpzmPJTDrYsmTNFT+11f0LmEHRD9CRMc+3xE0IFmVUfk4ooRV9vCHF72/tE2/Gnq
-         ioL0DeTRl9xc6rWMM7R1WucU7CbmYzuTKj1IICo06JRoSQxAJ+QHW9MFUfXL8xatVRsI
-         Z24A==
-X-Gm-Message-State: APjAAAVY8xL1RqZEw8nSD1pTlJcXfvZLcWHGybxbogiaMkp+463oA8gi
-        HYg7BR8TCadxHpkuupa8Crw=
-X-Google-Smtp-Source: APXvYqye1qAsiJvyYvC+piSMk23WjeNyMIJ5tz2CHhF/6VDW5B7dLb+9H2uC0Q4wt2iS9pbiQJkGQw==
-X-Received: by 2002:a02:7b27:: with SMTP id q39mr18858171jac.0.1561068476231;
-        Thu, 20 Jun 2019 15:07:56 -0700 (PDT)
-Received: from new-host-2.home.home ([2605:a601:808:1001:37ba:4f0a:192f:f945])
-        by smtp.gmail.com with ESMTPSA id e84sm1691921iof.39.2019.06.20.15.07.55
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=WmIdzO++g1/wCok0wbpqBrilttEkSuaSVkaCP7OhK+o=;
+        b=fyzhf6Yy20kOTrl5cBgf4CTl+m2nrqPenX70n3DRo99OptL6233WKG5AdgqCYdOdlk
+         E9j6raevPW9FXGgo8klNJlkCG/sY2b1QdPmfY+662yxn1g41Gfx3YsThfg9MfAFivi0o
+         3PazlzDW7nPAlA8kkEdF+BFVtRv3gMvVq2+sCd/u4U+GB475QQoxEFhsyn18+FdLPIXt
+         X8T9NyU65OQTs0xMNBwzE1IDWztys9xmECMZ/oJHXKGgoZghtCnsQMASVFCM18CFs+hW
+         hTF81D53TEOpTI70yY6gYs2YTXLkQQkRqOkd+AFHeRPsW0H/KrmDUy0zvx1AoFikTiAV
+         i08A==
+X-Gm-Message-State: APjAAAVCT7Fb9hHWPt5XqM+dRId545ep1/SD8TmgxwH6v1U4pnHA5Oe/
+        +bqBO6ewqi6La+7GozQ+KKn3mvII
+X-Google-Smtp-Source: APXvYqybfQefO3IkCkQNOm9aQAQTewf3m+3NHVF88WyqdTL2mcfFKBwEuOA8EI1bCXGL5F6Vt0PaQQ==
+X-Received: by 2002:a5d:948f:: with SMTP id v15mr95679532ioj.93.1561074697097;
+        Thu, 20 Jun 2019 16:51:37 -0700 (PDT)
+Received: from new-host-2.home ([2605:a601:808:1001:37ba:4f0a:192f:f945])
+        by smtp.googlemail.com with ESMTPSA id a8sm1301049ioh.29.2019.06.20.16.51.36
         (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Thu, 20 Jun 2019 15:07:55 -0700 (PDT)
-From:   Denis Kenzior <denkenz@gmail.com>
+        Thu, 20 Jun 2019 16:51:36 -0700 (PDT)
+Subject: Re: [PATCH 3/3] nl80211: Include wiphy address setup in NEW_WIPHY
 To:     Johannes Berg <johannes@sipsolutions.net>
-Cc:     linux-wireless@vger.kernel.org, Denis Kenzior <denkenz@gmail.com>
-Subject: [PATCH v2 3/3] nl80211: Include wiphy address setup in NEW_WIPHY
-Date:   Thu, 20 Jun 2019 17:07:49 -0500
-Message-Id: <20190620220749.10071-3-denkenz@gmail.com>
-X-Mailer: git-send-email 2.21.0
-In-Reply-To: <20190620220749.10071-1-denkenz@gmail.com>
-References: <20190620220749.10071-1-denkenz@gmail.com>
+Cc:     linux-wireless@vger.kernel.org
+References: <20190619223606.4575-1-denkenz@gmail.com>
+ <20190619223606.4575-3-denkenz@gmail.com>
+ <ec1ca95a5789f9001e89e603633b20316d687721.camel@sipsolutions.net>
+ <7da9b924-78c7-ba72-fecc-a11700a34ff4@gmail.com>
+ <44923833f1068e360b1f9534a9bbd37be41e4833.camel@sipsolutions.net>
+ <427f488f-98f5-f888-f079-e2bbbb6eedf3@gmail.com>
+ <144f36779085498bdc1b2f7ac0d0c267d431f51d.camel@sipsolutions.net>
+ <cc4f1755ee5f27c72cbac344988bcb91a1a835f3.camel@sipsolutions.net>
+From:   Denis Kenzior <denkenz@gmail.com>
+Message-ID: <0b16aff6-7bd8-338f-2e52-f1011a914d2f@gmail.com>
+Date:   Thu, 20 Jun 2019 18:51:36 -0500
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
+ Thunderbird/52.3.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+In-Reply-To: <cc4f1755ee5f27c72cbac344988bcb91a1a835f3.camel@sipsolutions.net>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Include wiphy address setup in wiphy dumps and new wiphy events.  The
-wiphy permanent address is exposed as ATTR_MAC.  If addr_mask is setup,
-then it is included as ATTR_MAC_MASK attribute.  If multiple addresses
-are available, then their are exposed in a nested ATTR_MAC_ADDRS array.
+Hi Johannes,
 
-This information is already exposed via sysfs, but it makes sense to
-include it in the wiphy dump as well.
+On 06/20/2019 03:21 PM, Johannes Berg wrote:
+> On Thu, 2019-06-20 at 22:09 +0200, Johannes Berg wrote:
+>>
+>> Sure, but you don't really need to know *everything* about the events
+>> right there ... you can already filter which ones you care about
+>> (perhaps you know you never want to bind hwsim ones for example) and
+>> then request data on those that you do need.
+> 
+> Btw, you can send a filter down when you do request the data, so you
+> only get the data for the new wiphy you actually just discovered.
 
-Signed-off-by: Denis Kenzior <denkenz@gmail.com>
----
- net/wireless/nl80211.c | 25 +++++++++++++++++++++++++
- 1 file changed, 25 insertions(+)
+Yes, I know that.  I did help fix this ~3 years ago in commit 
+b7fb44dacae04.  Nobody was using that prior, which really leads me to 
+wonder what other userspace tools are doing for hotplug and how broken 
+they are...
 
- Changes in v2:
-  - Move from case 0 to 9
+> 
+> So realistically, vs. your suggestion of sending all of the data in
+> multiple events, that just adds 2 messages (the request and the data you
+> already had), which isn't nearly as bad as you paint it.
 
-diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
-index 26bab9560c0f..f4b3e6f1dfbf 100644
---- a/net/wireless/nl80211.c
-+++ b/net/wireless/nl80211.c
-@@ -2166,6 +2166,31 @@ static int nl80211_send_wiphy(struct cfg80211_registered_device *rdev,
- 			    rdev->wiphy.vht_capa_mod_mask))
- 			goto nla_put_failure;
- 
-+		if (nla_put(msg, NL80211_ATTR_MAC, ETH_ALEN,
-+			    rdev->wiphy.perm_addr))
-+			goto nla_put_failure;
-+
-+		if (!is_zero_ether_addr(rdev->wiphy.addr_mask) &&
-+		    nla_put(msg, NL80211_ATTR_MAC_MASK, ETH_ALEN,
-+			    rdev->wiphy.addr_mask))
-+			goto nla_put_failure;
-+
-+		if (rdev->wiphy.n_addresses > 1) {
-+			void *attr;
-+
-+			attr = nla_nest_start_noflag(msg,
-+						     NL80211_ATTR_MAC_ADDRS);
-+			if (!attr)
-+				goto nla_put_failure;
-+
-+			for (i = 0; i < rdev->wiphy.n_addresses; i++)
-+				if (nla_put(msg, i + 1, ETH_ALEN,
-+					    rdev->wiphy.addresses[i].addr))
-+					goto nla_put_failure;
-+
-+			nla_nest_end(msg, attr);
-+		}
-+
- 		state->split_start++;
- 		break;
- 	case 10:
--- 
-2.21.0
+I never 'painted' the message overhead as 'bad'.  The performance 
+overhead of this ping-pong is probably irrelevant in the grand scheme of 
+things.  But I find the approach inelegant.
 
+But really I'm more worried about race conditions that userspace has to 
+deal with.  We already have the weird case of ATTR_GENERATION (which 
+nobody actually uses btw).  And then we also need to dump both the 
+wiphys and the interfaces separately, cross-reference them while dealing 
+with the possibility of a wiphy or interface going away or being added 
+at any point.   Then there's the fact that some drivers always add a 
+default netdev, others that (possibly) don't and the possibility that 
+the system was left in a weird state.
+
+So from that standpoint it is far better to have the kernel generate 
+atomic change events with all the info present than having userspace 
+re-poll it when stuff might have changed in the meantime.
+
+Going back to your 2 message point.  What about  sending the 'NEW_WIPHY' 
+event with the info in labels 0-8.  And then another event type with the 
+'rest' of the info.  And perhaps another feature bit to tell userspace 
+to expect multiple events.  That would still end up being 2 messages and 
+still be more efficient than the ping-pong you suggest.
+
+Regards,
+-Denis
