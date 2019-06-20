@@ -2,134 +2,91 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 155E34DB4E
-	for <lists+linux-wireless@lfdr.de>; Thu, 20 Jun 2019 22:35:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4DC0A4DD32
+	for <lists+linux-wireless@lfdr.de>; Fri, 21 Jun 2019 00:07:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726129AbfFTUfy (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 20 Jun 2019 16:35:54 -0400
-Received: from mail-io1-f66.google.com ([209.85.166.66]:41522 "EHLO
-        mail-io1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725913AbfFTUfy (ORCPT
+        id S1726115AbfFTWH4 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 20 Jun 2019 18:07:56 -0400
+Received: from mail-io1-f68.google.com ([209.85.166.68]:44236 "EHLO
+        mail-io1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725906AbfFTWHz (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 20 Jun 2019 16:35:54 -0400
-Received: by mail-io1-f66.google.com with SMTP id w25so1727298ioc.8
-        for <linux-wireless@vger.kernel.org>; Thu, 20 Jun 2019 13:35:53 -0700 (PDT)
+        Thu, 20 Jun 2019 18:07:55 -0400
+Received: by mail-io1-f68.google.com with SMTP id s7so744814iob.11
+        for <linux-wireless@vger.kernel.org>; Thu, 20 Jun 2019 15:07:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=kanIEJbwlbihL3llobnlf73jqpRLgg9EFXzGM7pz0tY=;
-        b=laWJRjqnTWhXEJxPebHgDa4vF7pW0LXA/u8wVBH/TpB+sRr3WRbY33CHqbrhAWlt0k
-         RRKFtWHziJ8HyvPuU5zSdg777aZMeFkK3mAKLVmsETqbvGdIFcgllrBaGXU94pCr7Ywd
-         DrKRRF4nLwlvftpHKj4MphFvDk1K/lFg0N4jCfU6eW28ML1Ennoujq0v1qxroAAu5m9K
-         DxVqN41twh2GrGasYml6aTWKqaRHOm41X55LqK3D5PYIF/qVq6J5ZthEHdvRPATXqjqw
-         r201W/WzPm1VqeSa6gVWjCIeOV/96El4Ed/B+ECsmeBk2igDqvqy1YNbJib8vlSu+XK5
-         wytw==
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=uBaTHL1n99aWQykM3vZn3tUPSZBa+eBLGOQu3ENxmnQ=;
+        b=posaOAQ2vkbmQv5q52Tphku4VUyQeShnzzvkMoM01wIMpFm9Jz22NMn4CjrUOZFvbl
+         P+ctIwdugMR+RnIXg68yO4lIM6QaQQEzXy3DtQc+4AD3+X0vJuJ2bW/FwpjZ6PdIj9Vn
+         oyPOx0gMMQveYXPDZsDmkVn/7n8eBqLh5HmekbIWKwVxKWHms2IaPHof2qFwb5o26QCG
+         OkFAcP9ESaAYgolFWv1O1HxuIRAkdAXdfi3oAUowmcrOl10rOeqn4OAYT3lXCJHizdKf
+         WckEJx/tlJgoAOZC8Tdhx4o0EkCqcB6nDRHwUicozSZcHXbecvjSreBPymliPVHAG1ZQ
+         TYKw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
          :content-transfer-encoding;
-        bh=kanIEJbwlbihL3llobnlf73jqpRLgg9EFXzGM7pz0tY=;
-        b=d5GYxgufMoEkYYJiRN0SKWTQ08jdSDOyRE6d/pwY5rHgw9HZWsJOSxxeng4mGNoPoz
-         JSJukqp3hLAFqNY6wvO4hezUUTUWXU96LPBVik1+QutwuGp1soN/MnjP9dyB7Iwv2oTB
-         J36ZP7ifYc3RDJJ6S/Su/bGUBeUVMQ4tRwIKsPv+Wba+aBoGfHjODtUWIpGDzZYH5Oz0
-         FteLPAMlqvUaAWsoUez7hYxW6/caAVcu6l2d/8oI/QH7OHQe7q3Kd92AGJtICj6K3ekE
-         LNxQ/XgZm+PQsKnbyRSjrA4lLSFoXW8JksUgUFMinDCTqHKuvoctsad6CfYelxqIsux0
-         UZTA==
-X-Gm-Message-State: APjAAAXvQpBS8gEdAz+S14USI9VHyDVW1JTE1z+Q1uJHNhJuf/NrZB09
-        r9zpJb7DEFW8qNJjhHiNiIktPZ5/
-X-Google-Smtp-Source: APXvYqzsl0DKrqJu/WT66bE04bE1tZz/fL7ma8Le93nA+otXvXcx/e/OKpZAlUPtwrryRNe+uJs//A==
-X-Received: by 2002:a6b:8bd1:: with SMTP id n200mr82520916iod.134.1561062953270;
-        Thu, 20 Jun 2019 13:35:53 -0700 (PDT)
-Received: from new-host-2.home ([2605:a601:808:1001:37ba:4f0a:192f:f945])
-        by smtp.googlemail.com with ESMTPSA id s6sm566826ioo.31.2019.06.20.13.35.52
+        bh=uBaTHL1n99aWQykM3vZn3tUPSZBa+eBLGOQu3ENxmnQ=;
+        b=E2WxdOJUQVo+HOQXVuwFHT+Xd2l8asgtsKTrrtWJD3wJ1sdBPMJdWjLY+KV6GobaQ1
+         vVkIcZpP2+v8ewekB1u3t5J+oF32tAZiFu+nIlmlVZiVnDN/VLcC8g/V6/1A+Mwrvhx8
+         bkcZDyZ4DKKzZbEHukHPmBRNG69gEqtTriRhPsQenoXuSCmPEI9th64Ito1BYLowuy6J
+         2cfV1352p6ZayivC94p9T6+mn+b5eNvWkqxIayPNyiHOaRyPyXTqq7AtvMNrBIT39aW1
+         /SBUtBwydxtpaGnjPP27bZ5TLlO+tQYexjr5pnuEtGqd1WhBa26vT+rBCGNyKZHklkmJ
+         olHw==
+X-Gm-Message-State: APjAAAWA5nFcOpqm/0HljaJsrUs9TaIYjJsWLEOHJDdQVXjwW6VnQ4gm
+        2y57o0KN3YaYYvZlnS8VOjc=
+X-Google-Smtp-Source: APXvYqyGOxOJ672UND4rkxX01Ofa3ZB/45OW8r/Mt2sjqkwOmJszkuhcM2eKL74a/FugqQ0AVWif+Q==
+X-Received: by 2002:a6b:c80a:: with SMTP id y10mr18074586iof.170.1561068474992;
+        Thu, 20 Jun 2019 15:07:54 -0700 (PDT)
+Received: from new-host-2.home.home ([2605:a601:808:1001:37ba:4f0a:192f:f945])
+        by smtp.gmail.com with ESMTPSA id e84sm1691921iof.39.2019.06.20.15.07.53
         (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Thu, 20 Jun 2019 13:35:52 -0700 (PDT)
-Subject: Re: [PATCH 3/3] nl80211: Include wiphy address setup in NEW_WIPHY
-To:     Johannes Berg <johannes@sipsolutions.net>
-Cc:     linux-wireless@vger.kernel.org
-References: <20190619223606.4575-1-denkenz@gmail.com>
- <20190619223606.4575-3-denkenz@gmail.com>
- <ec1ca95a5789f9001e89e603633b20316d687721.camel@sipsolutions.net>
- <7da9b924-78c7-ba72-fecc-a11700a34ff4@gmail.com>
- <44923833f1068e360b1f9534a9bbd37be41e4833.camel@sipsolutions.net>
- <427f488f-98f5-f888-f079-e2bbbb6eedf3@gmail.com>
- <144f36779085498bdc1b2f7ac0d0c267d431f51d.camel@sipsolutions.net>
+        Thu, 20 Jun 2019 15:07:54 -0700 (PDT)
 From:   Denis Kenzior <denkenz@gmail.com>
-Message-ID: <4e2407af-ef56-d1dc-93a8-b2cf558a5460@gmail.com>
-Date:   Thu, 20 Jun 2019 15:35:51 -0500
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
- Thunderbird/52.3.0
+To:     Johannes Berg <johannes@sipsolutions.net>
+Cc:     linux-wireless@vger.kernel.org, Denis Kenzior <denkenz@gmail.com>
+Subject: [PATCH v2 1/3] nl80211: Update uapi for CMD_FRAME_WAIT_CANCEL
+Date:   Thu, 20 Jun 2019 17:07:47 -0500
+Message-Id: <20190620220749.10071-1-denkenz@gmail.com>
+X-Mailer: git-send-email 2.21.0
 MIME-Version: 1.0
-In-Reply-To: <144f36779085498bdc1b2f7ac0d0c267d431f51d.camel@sipsolutions.net>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi Johannes,
+Commit 1c38c7f22068 ("nl80211: send event when CMD_FRAME duration
+expires") added the possibility of NL80211_CMD_FRAME_WAIT_CANCEL
+being sent whenever the off-channel wait time associated with a
+CMD_FRAME completes.  Document this in the uapi/linux/nl80211.h file.
 
-On 06/20/2019 03:09 PM, Johannes Berg wrote:
-> On Thu, 2019-06-20 at 15:05 -0500, Denis Kenzior wrote:
->>
->> Ugh.  So, if I understand this correctly, NEW_WIPHY events that are
->> generated when a new wiphy is plugged would only send the old 'legacy'
->> info and any info we add in cases 9+ would be 'lost' and the application
->> is forced into re-dumping the phy.
-> 
-> Yes.
-> 
->> This is pretty much counter to what we want.
-> 
-> Well, you want the info, shouldn't matter how you get it?
-> 
+Signed-off-by: Denis Kenzior <denkenz@gmail.com>
+---
+ include/uapi/linux/nl80211.h | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-Well, it kind of does.  You're asking userspace to introduce extra 
-complexity, extra round trips, extra stuff to go wrong just because the 
-kernel API has painted itself into a corner.
+ Changes in v2:
+  - update commit formatting
 
->> If you want to keep your sanity in userspace, you need proper 'object
->> appeared' / 'object disappeared' events from the kernel.
-> 
-> Sure, but you don't really need to know *everything* about the events
-> right there ... you can already filter which ones you care about
-> (perhaps you know you never want to bind hwsim ones for example) and
-> then request data on those that you do need.
+diff --git a/include/uapi/linux/nl80211.h b/include/uapi/linux/nl80211.h
+index 8fc3a43cac75..0d9aad98c983 100644
+--- a/include/uapi/linux/nl80211.h
++++ b/include/uapi/linux/nl80211.h
+@@ -657,7 +657,9 @@
+  *	is used during CSA period.
+  * @NL80211_CMD_FRAME_WAIT_CANCEL: When an off-channel TX was requested, this
+  *	command may be used with the corresponding cookie to cancel the wait
+- *	time if it is known that it is no longer necessary.
++ *	time if it is known that it is no longer necessary.  This command is
++ *	also sent as an event whenever the driver has completed the off-channel
++ *	wait time.
+  * @NL80211_CMD_ACTION: Alias for @NL80211_CMD_FRAME for backward compatibility.
+  * @NL80211_CMD_FRAME_TX_STATUS: Report TX status of a management frame
+  *	transmitted with %NL80211_CMD_FRAME. %NL80211_ATTR_COOKIE identifies
+-- 
+2.21.0
 
-Sure, but it would be nice to have all the info available if we do not 
-want to filter it...
-
-> 
->> And those
->> events should have all or nearly all info to not bother the kernel going
->> forward.
-> 
-> That's what you wish for, but ...
-
-Well, it is a pretty basic requirement for any event driven API, no?
-
-> 
->>    It sounds like nl80211 API has run into the extend-ability
->> wall, no?
-> 
-> I don't really see it that way.
-> 
->> Any suggestions on how to resolve this?  Should NEW_WIPHY events also do
->> the whole split_dump semantic and generate 15+ or whatever messages?
-> 
-> No, that'd be awful, and anyway you'd have to send a new command because
-> otherwise old applications might be completely confused (not that I know
-> of any other than "iw event" that would event listen to this, but who
-> knows)
-
-Well, given that we're the only ones that seem to care about this right 
-now, I don't see sending a new command as much of a big deal.  I welcome 
-other ideas, but having the kernel send us an event, then us turning 
-around and requesting the *same* info is just silly.
-
-Regards,
--Denis
