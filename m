@@ -2,164 +2,149 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id BBA404CC15
-	for <lists+linux-wireless@lfdr.de>; Thu, 20 Jun 2019 12:39:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 456B84CC35
+	for <lists+linux-wireless@lfdr.de>; Thu, 20 Jun 2019 12:47:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730815AbfFTKjw (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 20 Jun 2019 06:39:52 -0400
-Received: from mail.kernel.org ([198.145.29.99]:57728 "EHLO mail.kernel.org"
+        id S1726951AbfFTKru (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 20 Jun 2019 06:47:50 -0400
+Received: from mga04.intel.com ([192.55.52.120]:63311 "EHLO mga04.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726222AbfFTKjw (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 20 Jun 2019 06:39:52 -0400
-Received: from localhost.localdomain (unknown [151.66.61.123])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 1DBD02070B;
-        Thu, 20 Jun 2019 10:39:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1561027191;
-        bh=kqdsx5+f7xavL6Lvu+NfBKaj5BoWOPhdoJeN1gteEXg=;
-        h=From:To:Cc:Subject:Date:From;
-        b=gSmpjrw4CF7ze+HKH5clcFkcZhvLNqtwV3fNMj52DhELJQPzyG2CjlWfN+x+jnFki
-         6clxtXOFKskBIp2neley2/3ym4BwJ+mnDSoeCH7CjxBqdU0hpolQhlLK5D9KvvUiw2
-         O0b51QXthnn1yGrGEBDeF0+m3DLkrmAzOix7K0Hs=
-From:   Lorenzo Bianconi <lorenzo@kernel.org>
-To:     nbd@nbd.name
-Cc:     lorenzo.bianconi@redhat.com, linux-wireless@vger.kernel.org,
-        sgruszka@redhat.com
-Subject: [PATCH v4] mt76: mt76u: reduce rx memory footprint
-Date:   Thu, 20 Jun 2019 12:39:36 +0200
-Message-Id: <736fff59b805cf2f25a9dcd687f0d172b79331eb.1561026861.git.lorenzo@kernel.org>
-X-Mailer: git-send-email 2.21.0
+        id S1726211AbfFTKru (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 20 Jun 2019 06:47:50 -0400
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+  by fmsmga104.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 20 Jun 2019 03:47:49 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.63,396,1557212400"; 
+   d="scan'208";a="181838324"
+Received: from jnikula-mobl3.fi.intel.com (HELO localhost) ([10.237.66.150])
+  by fmsmga001.fm.intel.com with ESMTP; 20 Jun 2019 03:47:41 -0700
+From:   Jani Nikula <jani.nikula@linux.intel.com>
+To:     Joe Perches <joe@perches.com>,
+        Alastair D'Silva <alastair@d-silva.org>
+Cc:     Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
+        Rodrigo Vivi <rodrigo.vivi@intel.com>,
+        David Airlie <airlied@linux.ie>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        Dan Carpenter <dan.carpenter@oracle.com>,
+        Karsten Keil <isdn@linux-pingi.de>,
+        Jassi Brar <jassisinghbrar@gmail.com>,
+        Tom Lendacky <thomas.lendacky@amd.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jose Abreu <Jose.Abreu@synopsys.com>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        Stanislaw Gruszka <sgruszka@redhat.com>,
+        Benson Leung <bleung@chromium.org>,
+        Enric Balletbo i Serra <enric.balletbo@collabora.com>,
+        "James E.J. Bottomley" <jejb@linux.ibm.com>,
+        "Martin K. Petersen" <martin.petersen@oracle.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Alexander Viro <viro@zeniv.linux.org.uk>,
+        Petr Mladek <pmladek@suse.com>,
+        Sergey Senozhatsky <sergey.senozhatsky@gmail.com>,
+        Steven Rostedt <rostedt@goodmis.org>,
+        David Laight <David.Laight@ACULAB.COM>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        intel-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
+        linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
+        ath10k@lists.infradead.org, linux-wireless@vger.kernel.org,
+        linux-scsi@vger.kernel.org, linux-fbdev@vger.kernel.org,
+        devel@driverdev.osuosl.org, linux-fsdevel@vger.kernel.org
+Subject: Re: [PATCH v3 0/7] Hexdump Enhancements
+In-Reply-To: <fcf57339aea60fb1744cea2a2593656c728c4ec4.camel@perches.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+References: <20190617020430.8708-1-alastair@au1.ibm.com> <9a000734375c0801fc16b71f4be1235f9b857772.camel@perches.com> <c68cb819257f251cbb66f8998a95c31cebe2d72e.camel@d-silva.org> <d8316be322f33ea67640ff83f2248fe433078407.camel@perches.com> <9456ca2a4ae827635bb6d864e5095a9e51f2ac45.camel@d-silva.org> <fcf57339aea60fb1744cea2a2593656c728c4ec4.camel@perches.com>
+Date:   Thu, 20 Jun 2019 13:50:33 +0300
+Message-ID: <87sgs4sf7q.fsf@intel.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Reduce rx memory footprint allocating just one SG buffer since for the
-moment we support just 3839B as maximal size of an A-MSDU.
-Introduce different SG_MAX_SIZE definitions for TX and RX sides.
-Moreover set q->buf_size to PAGE_SIZE even for SG case.
+On Wed, 19 Jun 2019, Joe Perches <joe@perches.com> wrote:
+> On Thu, 2019-06-20 at 11:14 +1000, Alastair D'Silva wrote:
+>> On Wed, 2019-06-19 at 17:35 -0700, Joe Perches wrote:
+>> > On Thu, 2019-06-20 at 09:15 +1000, Alastair D'Silva wrote:
+>> > > On Wed, 2019-06-19 at 09:31 -0700, Joe Perches wrote:
+>> > > > On Mon, 2019-06-17 at 12:04 +1000, Alastair D'Silva wrote:
+>> > > > > From: Alastair D'Silva <alastair@d-silva.org>
+>> > > > > 
+>> > > > > Apologies for the large CC list, it's a heads up for those
+>> > > > > responsible
+>> > > > > for subsystems where a prototype change in generic code causes
+>> > > > > a
+>> > > > > change
+>> > > > > in those subsystems.
+>> > > > > 
+>> > > > > This series enhances hexdump.
+>> > > > 
+>> > > > Still not a fan of these patches.
+>> > > 
+>> > > I'm afraid there's not too much action I can take on that, I'm
+>> > > happy to
+>> > > address specific issues though.
+>> > > 
+>> > > > > These improve the readability of the dumped data in certain
+>> > > > > situations
+>> > > > > (eg. wide terminals are available, many lines of empty bytes
+>> > > > > exist,
+>> > > > > etc).
+>> > 
+>> > I think it's generally overkill for the desired uses.
+>> 
+>> I understand where you're coming from, however, these patches make it a
+>> lot easier to work with large chucks of binary data. I think it makes
+>> more sense to have these patches upstream, even though committed code
+>> may not necessarily have all the features enabled, as it means that
+>> devs won't have to apply out-of-tree patches during development to make
+>> larger dumps manageable.
+>> 
+>> > > > Changing hexdump's last argument from bool to int is odd.
+>> > > > 
+>> > > 
+>> > > Think of it as replacing a single boolean with many booleans.
+>> > 
+>> > I understand it.  It's odd.
+>> > 
+>> > I would rather not have a mixture of true, false, and apparently
+>> > random collections of bitfields like 0xd or 0b1011 or their
+>> > equivalent or'd defines.
+>> > 
+>> 
+>> Where's the mixture? What would you propose instead?
+>
+> create a hex_dump_to_buffer_ext with a new argument
+> and a new static inline for the old hex_dump_to_buffer
+> without modifying the argument list that calls
+> hex_dump_to_buffer with whatever added argument content
+> you need.
+>
+> Something like:
+>
+> static inline
+> int hex_dump_to_buffer(const void *buf, size_t len, int rowsize,
+> 		       int groupsize, char *linebuf, size_t linebuflen,
+> 		       bool ascii)
+> {
+> 	return hex_dump_to_buffer_ext(buf, len, rowsize, groupsize,
+> 				      linebuf, linebuflen, ascii, 0);
+> }
+>
+> and remove EXPORT_SYMBOL(hex_dump_to_buffer)
 
-Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
----
-Changes since v3:
-- drop patch 2/3: mt76u: introduce mt76u_ep data structure
-- do not align usb buffer size to usb max endpoint length
----
- drivers/net/wireless/mediatek/mt76/mt76.h      |  3 ++-
- .../net/wireless/mediatek/mt76/mt76x0/usb.c    |  2 +-
- .../wireless/mediatek/mt76/mt76x2/usb_init.c   |  2 +-
- drivers/net/wireless/mediatek/mt76/usb.c       | 18 +++++++++++-------
- 4 files changed, 15 insertions(+), 10 deletions(-)
+If you decide to do something like this, I'd actually suggest you drop
+the bool ascii parameter from hex_dump_to_buffer() altogether, and
+replace the callers that do require ascii with
+hex_dump_to_buffer_ext(..., HEXDUMP_ASCII). Even if that also requires
+touching all callers.
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76.h b/drivers/net/wireless/mediatek/mt76/mt76.h
-index 23a5ebefac3a..eee83c369a64 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt76.h
-@@ -384,7 +384,8 @@ enum mt76u_out_ep {
- 	__MT_EP_OUT_MAX,
- };
- 
--#define MT_SG_MAX_SIZE		8
-+#define MT_TX_SG_MAX_SIZE	8
-+#define MT_RX_SG_MAX_SIZE	1
- #define MT_NUM_TX_ENTRIES	256
- #define MT_NUM_RX_ENTRIES	128
- #define MCU_RESP_URB_SIZE	1024
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76x0/usb.c b/drivers/net/wireless/mediatek/mt76/mt76x0/usb.c
-index 7c38ec4418db..5b9701ce6f37 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76x0/usb.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt76x0/usb.c
-@@ -191,7 +191,7 @@ static int mt76x0u_register_device(struct mt76x02_dev *dev)
- 
- 	/* check hw sg support in order to enable AMSDU */
- 	if (dev->mt76.usb.sg_en)
--		hw->max_tx_fragments = MT_SG_MAX_SIZE;
-+		hw->max_tx_fragments = MT_TX_SG_MAX_SIZE;
- 	else
- 		hw->max_tx_fragments = 1;
- 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76x2/usb_init.c b/drivers/net/wireless/mediatek/mt76/mt76x2/usb_init.c
-index f2c57d5b87f9..94f52f98019b 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76x2/usb_init.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt76x2/usb_init.c
-@@ -225,7 +225,7 @@ int mt76x2u_register_device(struct mt76x02_dev *dev)
- 
- 	/* check hw sg support in order to enable AMSDU */
- 	if (dev->mt76.usb.sg_en)
--		hw->max_tx_fragments = MT_SG_MAX_SIZE;
-+		hw->max_tx_fragments = MT_TX_SG_MAX_SIZE;
- 	else
- 		hw->max_tx_fragments = 1;
- 
-diff --git a/drivers/net/wireless/mediatek/mt76/usb.c b/drivers/net/wireless/mediatek/mt76/usb.c
-index dd90427b2d67..ecc1aa59f5c1 100644
---- a/drivers/net/wireless/mediatek/mt76/usb.c
-+++ b/drivers/net/wireless/mediatek/mt76/usb.c
-@@ -333,12 +333,13 @@ mt76u_refill_rx(struct mt76_dev *dev, struct urb *urb, int nsgs, gfp_t gfp)
- }
- 
- static int
--mt76u_urb_alloc(struct mt76_dev *dev, struct mt76_queue_entry *e)
-+mt76u_urb_alloc(struct mt76_dev *dev, struct mt76_queue_entry *e,
-+		int sg_max_size)
- {
- 	unsigned int size = sizeof(struct urb);
- 
- 	if (dev->usb.sg_en)
--		size += MT_SG_MAX_SIZE * sizeof(struct scatterlist);
-+		size += sg_max_size * sizeof(struct scatterlist);
- 
- 	e->urb = kzalloc(size, GFP_KERNEL);
- 	if (!e->urb)
-@@ -357,11 +358,12 @@ mt76u_rx_urb_alloc(struct mt76_dev *dev, struct mt76_queue_entry *e)
- {
- 	int err;
- 
--	err = mt76u_urb_alloc(dev, e);
-+	err = mt76u_urb_alloc(dev, e, MT_RX_SG_MAX_SIZE);
- 	if (err)
- 		return err;
- 
--	return mt76u_refill_rx(dev, e->urb, MT_SG_MAX_SIZE, GFP_KERNEL);
-+	return mt76u_refill_rx(dev, e->urb, MT_RX_SG_MAX_SIZE,
-+			       GFP_KERNEL);
- }
- 
- static void mt76u_urb_free(struct urb *urb)
-@@ -605,8 +607,9 @@ static int mt76u_alloc_rx(struct mt76_dev *dev)
- 	if (!q->entry)
- 		return -ENOMEM;
- 
--	q->buf_size = dev->usb.sg_en ? MT_RX_BUF_SIZE : PAGE_SIZE;
- 	q->ndesc = MT_NUM_RX_ENTRIES;
-+	q->buf_size = PAGE_SIZE;
-+
- 	for (i = 0; i < q->ndesc; i++) {
- 		err = mt76u_rx_urb_alloc(dev, &q->entry[i]);
- 		if (err < 0)
-@@ -763,7 +766,7 @@ mt76u_tx_setup_buffers(struct mt76_dev *dev, struct sk_buff *skb,
- 		urb->transfer_buffer = skb->data;
- 		return 0;
- 	} else {
--		sg_init_table(urb->sg, MT_SG_MAX_SIZE);
-+		sg_init_table(urb->sg, MT_TX_SG_MAX_SIZE);
- 		urb->num_sgs = skb_to_sgvec(skb, urb->sg, 0, skb->len);
- 		if (urb->num_sgs == 0)
- 			return -ENOMEM;
-@@ -857,7 +860,8 @@ static int mt76u_alloc_tx(struct mt76_dev *dev)
- 
- 		q->ndesc = MT_NUM_TX_ENTRIES;
- 		for (j = 0; j < q->ndesc; j++) {
--			err = mt76u_urb_alloc(dev, &q->entry[j]);
-+			err = mt76u_urb_alloc(dev, &q->entry[j],
-+					      MT_TX_SG_MAX_SIZE);
- 			if (err < 0)
- 				return err;
- 		}
+But no strong opinions, really.
+
+BR,
+Jani.
+
 -- 
-2.21.0
-
+Jani Nikula, Intel Open Source Graphics Center
