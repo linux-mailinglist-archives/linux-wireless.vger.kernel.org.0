@@ -2,75 +2,132 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 611444C8A7
-	for <lists+linux-wireless@lfdr.de>; Thu, 20 Jun 2019 09:50:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D3D874C8A8
+	for <lists+linux-wireless@lfdr.de>; Thu, 20 Jun 2019 09:51:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726124AbfFTHuY (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 20 Jun 2019 03:50:24 -0400
-Received: from smtp.codeaurora.org ([198.145.29.96]:60534 "EHLO
-        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725953AbfFTHuY (ORCPT
+        id S1726122AbfFTHve (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 20 Jun 2019 03:51:34 -0400
+Received: from paleale.coelho.fi ([176.9.41.70]:54556 "EHLO
+        farmhouse.coelho.fi" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
+        with ESMTP id S1725912AbfFTHve (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 20 Jun 2019 03:50:24 -0400
-Received: by smtp.codeaurora.org (Postfix, from userid 1000)
-        id 748D76087F; Thu, 20 Jun 2019 07:50:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1561017023;
-        bh=IEVhErU8ZXfs+BmJmEQeSmps4wX2Kyp3PRoRO86Lc8o=;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=Vr10K66ZwRd2HqAZ/a6cYur3TZH0DvdIDYBwrXZTrdctjfJmnS1dsC/lZDtWF9Usc
-         P2ZjOinA3hoFAE0DMEbluaYaJQYgpWH/xVMNVnocwzsIWz//0gMiBX9leQLPUOXuD2
-         nEJV0H38PvTrnaexBWT8j8agV2eg3mRPhyMQvwxg=
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        pdx-caf-mail.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.7 required=2.0 tests=ALL_TRUSTED,BAYES_00,
-        DKIM_INVALID,DKIM_SIGNED,SPF_NONE autolearn=no autolearn_force=no
-        version=3.4.0
-Received: from purkki.adurom.net (purkki.adurom.net [80.68.90.206])
-        (using TLSv1.2 with cipher DHE-RSA-AES128-SHA (128/128 bits))
-        (No client certificate requested)
-        (Authenticated sender: kvalo@smtp.codeaurora.org)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 7905E602A9;
-        Thu, 20 Jun 2019 07:50:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1561017023;
-        bh=IEVhErU8ZXfs+BmJmEQeSmps4wX2Kyp3PRoRO86Lc8o=;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=Vr10K66ZwRd2HqAZ/a6cYur3TZH0DvdIDYBwrXZTrdctjfJmnS1dsC/lZDtWF9Usc
-         P2ZjOinA3hoFAE0DMEbluaYaJQYgpWH/xVMNVnocwzsIWz//0gMiBX9leQLPUOXuD2
-         nEJV0H38PvTrnaexBWT8j8agV2eg3mRPhyMQvwxg=
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 7905E602A9
-Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
-From:   Kalle Valo <kvalo@codeaurora.org>
-To:     Denis Kenzior <denkenz@gmail.com>
-Cc:     Johannes Berg <johannes@sipsolutions.net>,
-        linux-wireless@vger.kernel.org
-Subject: Re: [PATCH 1/3] nl80211: Update uapi for CMD_FRAME_WAIT_CANCEL
-References: <20190619223606.4575-1-denkenz@gmail.com>
-Date:   Thu, 20 Jun 2019 10:50:20 +0300
-In-Reply-To: <20190619223606.4575-1-denkenz@gmail.com> (Denis Kenzior's
-        message of "Wed, 19 Jun 2019 17:36:04 -0500")
-Message-ID: <87a7ecu24j.fsf@purkki.adurom.net>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/23.4 (gnu/linux)
+        Thu, 20 Jun 2019 03:51:34 -0400
+Received: from 91-156-6-193.elisa-laajakaista.fi ([91.156.6.193] helo=redipa)
+        by farmhouse.coelho.fi with esmtpsa (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <luca@coelho.fi>)
+        id 1hdrr0-0003Im-8G; Thu, 20 Jun 2019 10:51:30 +0300
+Message-ID: <86eada55d771732ac0477a008d3c5f0a61570952.camel@coelho.fi>
+Subject: pull request: iwlwifi firmware updates 2019-06-20
+From:   Luca Coelho <luca@coelho.fi>
+To:     "linux-firmware@kernel.org" <linux-firmware@kernel.org>
+Cc:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        linuxwifi <linuxwifi@intel.com>,
+        "kyle@infradead.org" <kyle@infradead.org>,
+        "jwboyer@kernel.org" <jwboyer@kernel.org>,
+        "ben@decadent.org.uk" <ben@decadent.org.uk>
+Date:   Thu, 20 Jun 2019 10:51:28 +0300
+Content-Type: multipart/signed; micalg="pgp-sha512";
+        protocol="application/pgp-signature"; boundary="=-eu0l8m9rPSvhrEhAT86Y"
+User-Agent: Evolution 3.30.5-1.1 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Denis Kenzior <denkenz@gmail.com> writes:
 
-> 1c38c7f2 added the possibility of NL80211_CMD_FRAME_WAIT_CANCEL
-> being sent whenever the off-channel wait time associated with a
-> CMD_FRAME completes.  Document this in the uapi/linux/nl80211.h file.
+--=-eu0l8m9rPSvhrEhAT86Y
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-The preferred format for referencing commits is:
+Hi,
 
-Commit 1c38c7f22068 ("nl80211: send event when CMD_FRAME duration
-expires") added...
+This contains some updated firmwares for the 9000 and 22000 series of
+devices, and new firmwares for new integrated 22000 series devices.
 
--- 
-Kalle Valo
+Please pull or let me know if there are any issues.
+
+--
+Cheers,
+Luca.
+
+
+The following changes since commit acb56f2fae3235195bc99ecb7d09742fb4b65e63=
+:
+
+  cavium: Add firmware for CNN55XX crypto driver. (2019-06-18 09:12:52 -040=
+0)
+
+are available in the Git repository at:
+
+  git://git.kernel.org/pub/scm/linux/kernel/git/iwlwifi/linux-firmware.git =
+tags/iwlwifi-fw-2019-06-20
+
+for you to fetch changes up to 90e6845190c2f32bb631f40a9d6c929eb504a82f:
+
+  iwlwifi: add new firmwares for integrated 22000 series (2019-06-20 10:41:=
+13 +0300)
+
+----------------------------------------------------------------
+iwlwifi firmware updates
+
+* Update version 46 FWs for 9260 and 9000;
+* Add version 48 FWs for 22000 series;
+* Add version 48 FWs for new integrated 22000 series;
+
+----------------------------------------------------------------
+Emmanuel Grumbach (1):
+      iwlwifi: udpate -36 firmware for 8000 series
+
+Luca Coelho (4):
+      iwlwifi: update Core45 FWs for 22260, 9000 and 9260
+      iwlwifi: update FWs for 9000 series to Core45-96
+      iwlwifi: update FW for 22000 to Core45-96
+      iwlwifi: add new firmwares for integrated 22000 series
+
+ WHENCE                            |  29 +++++++++++++++++++++++++----
+ iwlwifi-8000C-36.ucode            | Bin 2486572 -> 2400700 bytes
+ iwlwifi-8265-36.ucode             | Bin 2498044 -> 2414296 bytes
+ iwlwifi-9000-pu-b0-jf-b0-46.ucode | Bin 1448644 -> 1460788 bytes
+ iwlwifi-9260-th-b0-jf-b0-46.ucode | Bin 1456088 -> 1462324 bytes
+ iwlwifi-Qu-b0-hr-b0-48.ucode      | Bin 0 -> 1106208 bytes
+ iwlwifi-Qu-b0-jf-b0-48.ucode      | Bin 0 -> 1053156 bytes
+ iwlwifi-Qu-c0-hr-b0-48.ucode      | Bin 0 -> 1106228 bytes
+ iwlwifi-Qu-c0-jf-b0-48.ucode      | Bin 0 -> 1053176 bytes
+ iwlwifi-QuZ-a0-hr-b0-48.ucode     | Bin 0 -> 1105648 bytes
+ iwlwifi-QuZ-a0-jf-b0-48.ucode     | Bin 0 -> 1052968 bytes
+ iwlwifi-cc-a0-48.ucode            | Bin 0 -> 1096684 bytes
+ 12 files changed, 25 insertions(+), 4 deletions(-)
+ create mode 100644 iwlwifi-Qu-b0-hr-b0-48.ucode
+ create mode 100644 iwlwifi-Qu-b0-jf-b0-48.ucode
+ create mode 100644 iwlwifi-Qu-c0-hr-b0-48.ucode
+ create mode 100644 iwlwifi-Qu-c0-jf-b0-48.ucode
+ create mode 100644 iwlwifi-QuZ-a0-hr-b0-48.ucode
+ create mode 100644 iwlwifi-QuZ-a0-jf-b0-48.ucode
+ create mode 100644 iwlwifi-cc-a0-48.ucode
+
+--=-eu0l8m9rPSvhrEhAT86Y
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: This is a digitally signed message part
+Content-Transfer-Encoding: 7bit
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCgAdFiEEF3LNfgb2BPWm68smoUecoho8xfoFAl0LOwAACgkQoUecoho8
+xfqfchAAh1Dz0pMLWVRgUC5d/U7BAmqRnLCwfoPKxhI/YUEy/dbVIINXIAHJTUB2
+EOvN/2yYHakTVoDxjDKPY63y2AOAgb0ZlL5pVoZalCumA+tL+WuRQLLUTciHqC5H
+4XFt09N7Fs+73mLAsG2G+PA0uZGGX9c9Qp85ozakQeHquBl9yDHGE3H2rtHcR/jK
+qJkXEJLGnEk2ijIKenyznzpP5hyBArEzv1p1ZKjDykHkZFQCeCMa47DxG4JxNhOx
+h8Mybzb2Yh7j1/PeBV6CkeRRPjzDiy264Zv+olsjQCiiwYfhbqrpDYqAA4pvsJKF
+Em008LaeXjAc0gP3Kos24lPNy/3ro5T5WdwibIFRxbhUVpqJiGEUTCHh6PHMtvF/
+9O+dnsuSnEV4F6zSNZ9Qtg9km5X1RHBOZT1cHukNffz//m8jwqZZwR5Y9hJyDKlA
+HP+q1f+I6PLMCTRWchiUGDOVRmjK8ESdXtc1QiylnVlq00M+Wzo1dCZcC3GNiZ14
+7DJAlEEPWx0aYJwTy1Igx4cT5CZg5hHo49RU4ihPYPCipDzPwkySQpxdlB6Q3/KH
+zC46pCc/NJ7YTYcCGWYbvHp//5YIwvLmQZhU/wTKlrwpsggm7xNIYvz0QhU/HpYI
+x6uAJZu96Uqiu1SjPWnkUpI2uSZU7X9cxyIRjrfUZkrN+7BjiBY=
+=CXvT
+-----END PGP SIGNATURE-----
+
+--=-eu0l8m9rPSvhrEhAT86Y--
+
