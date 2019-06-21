@@ -2,208 +2,212 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 112C84EFDB
-	for <lists+linux-wireless@lfdr.de>; Fri, 21 Jun 2019 22:09:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6447D4F004
+	for <lists+linux-wireless@lfdr.de>; Fri, 21 Jun 2019 22:32:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726018AbfFUUJK (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 21 Jun 2019 16:09:10 -0400
-Received: from mail-io1-f65.google.com ([209.85.166.65]:42876 "EHLO
-        mail-io1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725985AbfFUUJK (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 21 Jun 2019 16:09:10 -0400
-Received: by mail-io1-f65.google.com with SMTP id u19so1425492ior.9
-        for <linux-wireless@vger.kernel.org>; Fri, 21 Jun 2019 13:09:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=subject:to:references:cc:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=I3a1zYVDU9hnHup8D4JtIQa7HEnjICPhlL9KrMse2XU=;
-        b=LOttf7fKilXogCHi/jZFnMkxUYlVGnyRRnLMJ6miMhTSspNue9qXxKPu8O/SNRuMR3
-         yR1lkov5n6QEjuCIO+AoSKFiBG8VcF75ZvH+H+6XKkEcL4fr0NNGPjx4qJuxCeRdJzHI
-         AdRMT3lIPky9A81xxFsvR504iVoaKax3W6fFhS8c52mcvSo+0mk9GFt8gfsLFk7WHprG
-         cWUXUH3ePXbk3fQHmT3Fn7Q01KS8VxnYd4+JU1/ua5KcWIP4OVKqvg6794e32IsiZcl+
-         09AXproj4oOKcXb1woyfv13vNwpXHoITksLH+ROiJaTfs+vv5qswrEZaFmxqSFWromkn
-         C6Kg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:references:cc:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=I3a1zYVDU9hnHup8D4JtIQa7HEnjICPhlL9KrMse2XU=;
-        b=nc3drECrDzNEMnJcRq/McgKjlAe1p7CYlWsb5LfzStvSqLc60TnX516ZVUeqG16GSf
-         OLXdMKEHU70+65xBU1/OGhNAxK+q6JH8Aan/VLjBLz+AfwNxamnw6PeXDXcJP7SgOaVJ
-         ladWz2k21pCjHaeakP+TrwAYobiv0N9FrKD9/x17RJwAApoee/S2UV7KopFOgi2EqLYN
-         SVoVLnRa6EYBWRizQMUIpRc4s4jidC/bNKm9avvAvCAbu6kNkSPMUVNqciT7j2PLj3UI
-         F2SsR0HwdrPgt9q+VhNol7BCyKjrHPWWmsrh+opC4Iz0mBc3613INankEURgKQQ8tnBe
-         vz1g==
-X-Gm-Message-State: APjAAAXU5QKtBk8McFd5h71CsAe1KDjSRJcrPJvLYfc72GZ4JaqizCWh
-        y2EMdaGFNYX1x382VSEAkr8=
-X-Google-Smtp-Source: APXvYqyhCA2Vue1zaNRcBCsa4qb2XyClZeCQ8+1/Q8X5M7nGW5rVQ+TRUrqsOBnEh0zlCCeRmBYJPA==
-X-Received: by 2002:a5d:8447:: with SMTP id w7mr6280100ior.197.1561147749528;
-        Fri, 21 Jun 2019 13:09:09 -0700 (PDT)
-Received: from new-host-2.home ([2605:a601:808:1001:37ba:4f0a:192f:f945])
-        by smtp.googlemail.com with ESMTPSA id t22sm3146929ioc.75.2019.06.21.13.09.08
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Fri, 21 Jun 2019 13:09:08 -0700 (PDT)
-Subject: Re: iwlwifi/brcmfmac public action frames crash (RESENDING)
-To:     linux-wireless@vger.kernel.org,
-        Johannes Berg <johannes@sipsolutions.net>
-References: <45805272aaf8b872a90cf0c364164b5fc1b20272.camel@linux.intel.com>
-Cc:     Arend Van Spriel <arend.vanspriel@broadcom.com>
-From:   Denis Kenzior <denkenz@gmail.com>
-Message-ID: <07c7b5fc-bc1c-d49f-1c1e-d0b67899e755@gmail.com>
-Date:   Fri, 21 Jun 2019 15:09:05 -0500
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
- Thunderbird/52.3.0
+        id S1726017AbfFUUbi (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 21 Jun 2019 16:31:38 -0400
+Received: from mail.kernel.org ([198.145.29.99]:57694 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726010AbfFUUbi (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 21 Jun 2019 16:31:38 -0400
+Received: from localhost.localdomain (unknown [151.66.61.123])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 1430A2084E;
+        Fri, 21 Jun 2019 20:31:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1561149097;
+        bh=z94vrFBcpPSifmkHDGP7VDF1zhRerZqttstdv7wwKFQ=;
+        h=From:To:Cc:Subject:Date:From;
+        b=PkiAgWntYlCjv3E+MWq+X2WbdW/nVPucjqAzy4pycc/+oT0q73H7W0D51SeqcTAVC
+         ZRJkcoyFJ4t9Sr6Kisx0kRmPRuNBrDLGCWC5J9edHGUt1YPpzy5bCvUiJ2+L+kDB3z
+         AkSbJ3Q7OpHIT0nK8wDtlJzxKZykdDBqlBR0T6WE=
+From:   Lorenzo Bianconi <lorenzo@kernel.org>
+To:     nbd@nbd.name
+Cc:     lorenzo.bianconi@redhat.com, linux-wireless@vger.kernel.org
+Subject: [PATCH] mt76: move nl80211_dfs_regions in mt76_dev data structure
+Date:   Fri, 21 Jun 2019 22:31:28 +0200
+Message-Id: <2af31635c9e669812d495d9471b7ebd9d871d5a7.1561148802.git.lorenzo@kernel.org>
+X-Mailer: git-send-email 2.21.0
 MIME-Version: 1.0
-In-Reply-To: <45805272aaf8b872a90cf0c364164b5fc1b20272.camel@linux.intel.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Ping, is anyone looking into these crashes?
+Move dfs region field in mt76_dev data structure since it is
+used by all drivers. This is a preliminary patch to add DFS support to
+mt7615 driver
 
-On 06/13/2019 11:45 AM, James Prestwood wrote:
-> Sorry if this comes in twice, I sent it ~12 hours ago but never saw it
-> hit the list, nor in the archives so I am resending it.
-> 
-> Hi,
-> 
-> Both iwlwifi/brcmfmac seem to be unable to send public action frames to
-> an unassociated AP. I am attempting to do a GAS ANQP request with a
-> public action frame (via CMD_FRAME). Immediately after CMD_FRAME any of
-> the following happens depending on the card:
-> 
-> Intel 7260 (iwlwifi) - System lockup freeze (must hard reboot)
-> Intel 3160 (iwlwifi) - CMD_FRAME returns -EINVAL
-> BCM43602 (brcmfmac) - Kernel crash (below)
-> AR9462 (ath9k) - works
-> Random USB adapter (rt2800usb) - works
-> 
-> iwlwifi (on 7260) completely locks the system, where the only way to
-> recover is hard reboot. I have reproduced this on two separate systems,
-> both with a 7260. I *have* seen it not lock the system once although
-> lately it seems to happen every time. The 3160 did not cause a hang
-> with my limited testing, though it did not accept CMD_FRAME which is
-> likely why it never hung.
-> 
-> Not sure how I can get any more info about the iwlwifi problem as the
-> system is completely hung, but if there is a way I'll be happy to do
-> that.
-> 
-> Here is the brcmfmac crash:
-> 
-> [19735.643941] BUG: unable to handle kernel NULL pointer dereference at
-> 0000000000000000
-> [19735.643965] PGD 80000001874aa067 P4D 80000001874aa067 PUD 2735fe067
-> PMD 0
-> [19735.643984] Oops: 0000 [#1] SMP PTI
-> [19735.643993] CPU: 7 PID: 5051 Comm: iwd Tainted: G        W
-> I       4.19.0-rc2-custom #27
-> [19735.644002] Hardware name: System manufacturer System Product
-> Name/SABERTOOTH X58, BIOS 1402    08/09/2012
-> [19735.644027] RIP: 0010:brcmf_p2p_send_action_frame+0x23a/0x850
-> [brcmfmac]
-> [19735.644037] Code: 41 c7 86 e0 00 00 00 00 00 00 00 f0 41 80 66 20 bf
-> f0 41 80 66 20 7f 49 8b 46 48 b9 24 07 00 00 48 89 da 48 c7 c6 3d 00 8f
-> c0 <48> 8b 38 e8 3e d7 ff ff 85 c0 41 89 c5 0f 85 c4 00 00 00 8b 03 49
-> [19735.644051] RSP: 0018:ffffa879c8477a00 EFLAGS: 00010246
-> [19735.644059] RAX: 0000000000000000 RBX: ffff954a2e059000 RCX:
-> 0000000000000724
-> [19735.644067] RDX: ffff954a2e059000 RSI: ffffffffc08f003d RDI:
-> 0000000000000002
-> [19735.644075] RBP: ffffa879c8477a50 R08: 000000000000001c R09:
-> 0000000000000999
-> [19735.644083] R10: ffff954b157a2f00 R11: ffffffffc0720000 R12:
-> ffff954c32f26021
-> [19735.644091] R13: ffff954a2e059000 R14: ffff954c32f26000 R15:
-> 00000000ffffffff
-> [19735.644099] FS:  00007f8d5aa30740(0000) GS:ffff954c369c0000(0000)
-> knlGS:0000000000000000
-> [19735.644108] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-> [19735.644115] CR2: 0000000000000000 CR3: 00000001845c8000 CR4:
-> 00000000000006e0
-> [19735.644123] Call Trace:
-> [19735.644133]  ? _cond_resched+0x19/0x40
-> [19735.644153]  brcmf_cfg80211_mgmt_tx+0x170/0x2f0 [brcmfmac]
-> [19735.644192]  cfg80211_mlme_mgmt_tx+0x115/0x2f0 [cfg80211]
-> [19735.644219]  nl80211_tx_mgmt+0x24d/0x3d0 [cfg80211]
-> [19735.644228]  genl_family_rcv_msg+0x1fe/0x3f0
-> [19735.644237]  ? nlmon_xmit+0x2c/0x30
-> [19735.644246]  ? dev_hard_start_xmit+0xa8/0x210
-> [19735.644254]  genl_rcv_msg+0x4c/0x90
-> [19735.644261]  ? genl_family_rcv_msg+0x3f0/0x3f0
-> [19735.644268]  netlink_rcv_skb+0x54/0x130
-> [19735.644275]  genl_rcv+0x28/0x40
-> [19735.644281]  netlink_unicast+0x1ab/0x250
-> [19735.644288]  netlink_sendmsg+0x2d1/0x3d0
-> [19735.644297]  sock_sendmsg+0x3e/0x50
-> [19735.644304]  __sys_sendto+0x13f/0x180
-> [19735.644313]  ? do_epoll_wait+0xb0/0xc0
-> [19735.644321]  __x64_sys_sendto+0x28/0x30
-> [19735.644329]  do_syscall_64+0x5a/0x120
-> [19735.644336]  entry_SYSCALL_64_after_hwframe+0x44/0xa9
-> [19735.644344] RIP: 0033:0x7f8d5a352c4d
-> [19735.644350] Code: ff ff ff ff eb b6 0f 1f 80 00 00 00 00 48 8d 05 c1
-> dc 2c 00 41 89 ca 8b 00 85 c0 75 20 45 31 c9 45 31 c0 b8 2c 00 00 00 0f
-> 05 <48> 3d 00 f0 ff ff 77 6b f3 c3 66 0f 1f 84 00 00 00 00 00 41 56 41
-> [19735.644365] RSP: 002b:00007ffc9a618048 EFLAGS: 00000246 ORIG_RAX:
-> 000000000000002c
-> [19735.644374] RAX: ffffffffffffffda RBX: 00000000007077d0 RCX:
-> 00007f8d5a352c4d
-> [19735.644382] RDX: 0000000000000068 RSI: 000000000072bc40 RDI:
-> 0000000000000004
-> [19735.644390] RBP: 0000000000733510 R08: 0000000000000000 R09:
-> 0000000000000000
-> [19735.644397] R10: 0000000000000000 R11: 0000000000000246 R12:
-> 00007ffc9a618094
-> [19735.644405] R13: 00007ffc9a61809c R14: 0000000000000000 R15:
-> 0000000000000000
-> [19735.644414] Modules linked in: ccm algif_aead snd_hda_codec_realtek
-> snd_hda_codec_generic snd_hda_codec_hdmi binfmt_misc arc4 nouveau
-> gpio_ich ath9k mxm_wmi ath9k_common video rt2800usb intel_powerclamp
-> snd_hda_intel ath9k_hw rt2x00usb iwlmvm rt2800lib snd_hda_codec
-> rt2x00lib ath snd_seq_midi snd_seq_midi_event coretemp ttm mac80211
-> snd_hda_core brcmfmac snd_hwdep snd_rawmidi iwlwifi intel_cstate
-> drm_kms_helper brcmutil snd_seq drm snd_pcm input_leds serio_raw
-> lpc_ich cfg80211 snd_seq_device i2c_algo_bit snd_timer fb_sys_fops
-> syscopyarea sysfillrect snd sysimgblt i5500_temp wmi asus_atk0110
-> soundcore mac_hid i7core_edac sch_fq_codel kvm_intel kvm vfio_pci
-> vfio_virqfd irqbypass vfio_iommu_type1 vfio pci_stub parport_pc ppdev
-> lp parport ip_tables x_tables autofs4 pata_acpi hid_generic usbhid hid
-> firewire_ohci
-> [19735.644521]  realtek psmouse firewire_core crc_itu_t r8169 i2c_i801
-> ahci libahci
-> [19735.644538] CR2: 0000000000000000
-> [19735.653612] ---[ end trace 30dbecd734da3b73 ]---
-> [19735.653641] RIP: 0010:brcmf_p2p_send_action_frame+0x23a/0x850
-> [brcmfmac]
-> [19735.653651] Code: 41 c7 86 e0 00 00 00 00 00 00 00 f0 41 80 66 20 bf
-> f0 41 80 66 20 7f 49 8b 46 48 b9 24 07 00 00 48 89 da 48 c7 c6 3d 00 8f
-> c0 <48> 8b 38 e8 3e d7 ff ff 85 c0 41 89 c5 0f 85 c4 00 00 00 8b 03 49
-> [19735.653659] RSP: 0018:ffffa879c8477a00 EFLAGS: 00010246
-> [19735.653672] RAX: 0000000000000000 RBX: ffff954a2e059000 RCX:
-> 0000000000000724
-> [19735.653680] RDX: ffff954a2e059000 RSI: ffffffffc08f003d RDI:
-> 0000000000000002
-> [19735.653688] RBP: ffffa879c8477a50 R08: 000000000000001c R09:
-> 0000000000000999
-> [19735.653697] R10: ffff954b157a2f00 R11: ffffffffc0720000 R12:
-> ffff954c32f26021
-> [19735.653705] R13: ffff954a2e059000 R14: ffff954c32f26000 R15:
-> 00000000ffffffff
-> [19735.653714] FS:  00007f8d5aa30740(0000) GS:ffff954c369c0000(0000)
-> knlGS:0000000000000000
-> [19735.653725] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-> [19735.653731] CR2: 0000000000000000 CR3: 00000001845c8000 CR4:
-> 00000000000006e0
-> 
-> Thanks,
-> James
-> 
+Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+---
+ drivers/net/wireless/mediatek/mt76/mt76.h        |  2 ++
+ .../net/wireless/mediatek/mt76/mt7603/debugfs.c  |  2 +-
+ drivers/net/wireless/mediatek/mt76/mt7603/init.c |  4 ++--
+ .../net/wireless/mediatek/mt76/mt7603/mt7603.h   |  2 --
+ .../net/wireless/mediatek/mt76/mt76x02_debugfs.c |  2 +-
+ drivers/net/wireless/mediatek/mt76/mt76x02_dfs.c | 16 ++++++++--------
+ drivers/net/wireless/mediatek/mt76/mt76x02_dfs.h |  2 --
+ 7 files changed, 14 insertions(+), 16 deletions(-)
+
+diff --git a/drivers/net/wireless/mediatek/mt76/mt76.h b/drivers/net/wireless/mediatek/mt76/mt76.h
+index 9110a895604a..2c107817610c 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt76.h
++++ b/drivers/net/wireless/mediatek/mt76/mt76.h
+@@ -486,6 +486,8 @@ struct mt76_dev {
+ 	int txpower_conf;
+ 	int txpower_cur;
+ 
++	enum nl80211_dfs_regions region;
++
+ 	u32 debugfs_reg;
+ 
+ 	struct led_classdev led_cdev;
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7603/debugfs.c b/drivers/net/wireless/mediatek/mt76/mt7603/debugfs.c
+index 9c0bea489e1f..a1bc3103cbe9 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7603/debugfs.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7603/debugfs.c
+@@ -49,7 +49,7 @@ mt7603_edcca_set(void *data, u64 val)
+ 
+ 	dev->ed_monitor_enabled = !!val;
+ 	dev->ed_monitor = dev->ed_monitor_enabled &&
+-			  dev->region == NL80211_DFS_ETSI;
++			  dev->mt76.region == NL80211_DFS_ETSI;
+ 	mt7603_init_edcca(dev);
+ 
+ 	mutex_unlock(&dev->mt76.mutex);
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7603/init.c b/drivers/net/wireless/mediatek/mt76/mt7603/init.c
+index bce51997ff3b..75e3da452585 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7603/init.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7603/init.c
+@@ -437,9 +437,9 @@ mt7603_regd_notifier(struct wiphy *wiphy,
+ 	struct ieee80211_hw *hw = wiphy_to_ieee80211_hw(wiphy);
+ 	struct mt7603_dev *dev = hw->priv;
+ 
+-	dev->region = request->dfs_region;
++	dev->mt76.region = request->dfs_region;
+ 	dev->ed_monitor = dev->ed_monitor_enabled &&
+-			  dev->region == NL80211_DFS_ETSI;
++			  dev->mt76.region == NL80211_DFS_ETSI;
+ }
+ 
+ static int
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7603/mt7603.h b/drivers/net/wireless/mediatek/mt76/mt7603/mt7603.h
+index 944dc9a11a15..eb5c4880342b 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7603/mt7603.h
++++ b/drivers/net/wireless/mediatek/mt76/mt7603/mt7603.h
+@@ -118,8 +118,6 @@ struct mt7603_dev {
+ 
+ 	u8 mcu_running;
+ 
+-	enum nl80211_dfs_regions region;
+-
+ 	u8 ed_monitor_enabled;
+ 	u8 ed_monitor;
+ 	s8 ed_trigger;
+diff --git a/drivers/net/wireless/mediatek/mt76/mt76x02_debugfs.c b/drivers/net/wireless/mediatek/mt76/mt76x02_debugfs.c
+index ffdba5ffc22d..1b1e424ccbb2 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt76x02_debugfs.c
++++ b/drivers/net/wireless/mediatek/mt76/mt76x02_debugfs.c
+@@ -120,7 +120,7 @@ static int
+ mt76_edcca_set(void *data, u64 val)
+ {
+ 	struct mt76x02_dev *dev = data;
+-	enum nl80211_dfs_regions region = dev->dfs_pd.region;
++	enum nl80211_dfs_regions region = dev->mt76.region;
+ 
+ 	mutex_lock(&dev->mt76.mutex);
+ 
+diff --git a/drivers/net/wireless/mediatek/mt76/mt76x02_dfs.c b/drivers/net/wireless/mediatek/mt76/mt76x02_dfs.c
+index 84b845647881..50e9b310e496 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt76x02_dfs.c
++++ b/drivers/net/wireless/mediatek/mt76/mt76x02_dfs.c
+@@ -283,7 +283,7 @@ static bool mt76x02_dfs_check_hw_pulse(struct mt76x02_dev *dev,
+ 	if (!pulse->period || !pulse->w1)
+ 		return false;
+ 
+-	switch (dev->dfs_pd.region) {
++	switch (dev->mt76.region) {
+ 	case NL80211_DFS_FCC:
+ 		if (pulse->engine > 3)
+ 			break;
+@@ -457,7 +457,7 @@ static int mt76x02_dfs_create_sequence(struct mt76x02_dev *dev,
+ 		with_sum = event->width + cur_event->width;
+ 
+ 		sw_params = &dfs_pd->sw_dpd_params;
+-		switch (dev->dfs_pd.region) {
++		switch (dev->mt76.region) {
+ 		case NL80211_DFS_FCC:
+ 		case NL80211_DFS_JP:
+ 			if (with_sum < 600)
+@@ -685,7 +685,7 @@ static void mt76x02_dfs_init_sw_detector(struct mt76x02_dev *dev)
+ {
+ 	struct mt76x02_dfs_pattern_detector *dfs_pd = &dev->dfs_pd;
+ 
+-	switch (dev->dfs_pd.region) {
++	switch (dev->mt76.region) {
+ 	case NL80211_DFS_FCC:
+ 		dfs_pd->sw_dpd_params.max_pri = MT_DFS_FCC_MAX_PRI;
+ 		dfs_pd->sw_dpd_params.min_pri = MT_DFS_FCC_MIN_PRI;
+@@ -725,7 +725,7 @@ static void mt76x02_dfs_set_bbp_params(struct mt76x02_dev *dev)
+ 		break;
+ 	}
+ 
+-	switch (dev->dfs_pd.region) {
++	switch (dev->mt76.region) {
+ 	case NL80211_DFS_FCC:
+ 		radar_specs = &fcc_radar_specs[shift];
+ 		break;
+@@ -836,7 +836,7 @@ void mt76x02_dfs_init_params(struct mt76x02_dev *dev)
+ 	struct cfg80211_chan_def *chandef = &dev->mt76.chandef;
+ 
+ 	if ((chandef->chan->flags & IEEE80211_CHAN_RADAR) &&
+-	    dev->dfs_pd.region != NL80211_DFS_UNSET) {
++	    dev->mt76.region != NL80211_DFS_UNSET) {
+ 		mt76x02_dfs_init_sw_detector(dev);
+ 		mt76x02_dfs_set_bbp_params(dev);
+ 		/* enable debug mode */
+@@ -869,7 +869,7 @@ void mt76x02_dfs_init_detector(struct mt76x02_dev *dev)
+ 
+ 	INIT_LIST_HEAD(&dfs_pd->sequences);
+ 	INIT_LIST_HEAD(&dfs_pd->seq_pool);
+-	dfs_pd->region = NL80211_DFS_UNSET;
++	dev->mt76.region = NL80211_DFS_UNSET;
+ 	dfs_pd->last_sw_check = jiffies;
+ 	tasklet_init(&dfs_pd->dfs_tasklet, mt76x02_dfs_tasklet,
+ 		     (unsigned long)dev);
+@@ -882,14 +882,14 @@ mt76x02_dfs_set_domain(struct mt76x02_dev *dev,
+ 	struct mt76x02_dfs_pattern_detector *dfs_pd = &dev->dfs_pd;
+ 
+ 	mutex_lock(&dev->mt76.mutex);
+-	if (dfs_pd->region != region) {
++	if (dev->mt76.region != region) {
+ 		tasklet_disable(&dfs_pd->dfs_tasklet);
+ 
+ 		dev->ed_monitor = dev->ed_monitor_enabled &&
+ 				  region == NL80211_DFS_ETSI;
+ 		mt76x02_edcca_init(dev);
+ 
+-		dfs_pd->region = region;
++		dev->mt76.region = region;
+ 		mt76x02_dfs_init_params(dev);
+ 		tasklet_enable(&dfs_pd->dfs_tasklet);
+ 	}
+diff --git a/drivers/net/wireless/mediatek/mt76/mt76x02_dfs.h b/drivers/net/wireless/mediatek/mt76/mt76x02_dfs.h
+index 70b394e17340..0408613b45a4 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt76x02_dfs.h
++++ b/drivers/net/wireless/mediatek/mt76/mt76x02_dfs.h
+@@ -118,8 +118,6 @@ struct mt76x02_dfs_seq_stats {
+ };
+ 
+ struct mt76x02_dfs_pattern_detector {
+-	enum nl80211_dfs_regions region;
+-
+ 	u8 chirp_pulse_cnt;
+ 	u32 chirp_pulse_ts;
+ 
+-- 
+2.21.0
 
