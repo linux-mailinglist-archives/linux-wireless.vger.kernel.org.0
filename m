@@ -2,93 +2,83 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 6FDEE4FADE
-	for <lists+linux-wireless@lfdr.de>; Sun, 23 Jun 2019 11:08:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6B8804FBAB
+	for <lists+linux-wireless@lfdr.de>; Sun, 23 Jun 2019 14:55:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726393AbfFWJIo (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 23 Jun 2019 05:08:44 -0400
-Received: from mail-ot1-f52.google.com ([209.85.210.52]:38812 "EHLO
-        mail-ot1-f52.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726050AbfFWJIo (ORCPT
+        id S1726536AbfFWMzJ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 23 Jun 2019 08:55:09 -0400
+Received: from smtp.codeaurora.org ([198.145.29.96]:54026 "EHLO
+        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726086AbfFWMzJ (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 23 Jun 2019 05:08:44 -0400
-Received: by mail-ot1-f52.google.com with SMTP id d17so10581884oth.5
-        for <linux-wireless@vger.kernel.org>; Sun, 23 Jun 2019 02:08:43 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=oPc3n13Pbv1lPi85LZDE1q7wCfwy+SyzvdQdT7/lojs=;
-        b=D+QCili1iqU35eNLq6eQfwwSwz57pujcmufRwbPDwXy7sgBKx6foIxuJe2V5Ea8Rem
-         olEBykDwymRJqFrprnRPMuw35hdCpLdkuhaNoAlG25+rjYmzgXcYE8udC1o7J0N1qd5y
-         fMj6z95gQCOKVxD04vhMFlr+KaPOkQltRmBZ4974kcyd+tOF3fmtCsckXrcZsOFDiIMx
-         tyDDKYup2iuj/6VpMskZNWb6ZeUGnNywUWneKuopdp8rLFmPcryjnOXTqdZwcPBzxyhi
-         iymXwnpB9G1ADvZCs5wxq7m09M3j9ndYaJN6VzeCAv3ssxOm2wO+b2quXwVB7RDL8k/K
-         5SJQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=oPc3n13Pbv1lPi85LZDE1q7wCfwy+SyzvdQdT7/lojs=;
-        b=YaoPmHzF7NUEgPS3k/1AN+1BGgdj8ClZepHis4i4zZQYmwk2GhwYbyZmuzP3ruXGw1
-         nooRN31/C3O+sDRnKVFcxXQCOkIJziVM74ll7fAcXINk/N6caFtiUS8Fuu6uOfWlLw7y
-         d3qs582hgIhzQmWn1YNXzo5Ke0Krd1xWKjFesUNF6r1hGc4hYf1HUvgUZ/EOEvQu81JF
-         HjenbvsKcB3aQpFRI4w8oiU8auig2zUd6qLyn+T4oyD9zFV+PvUtGx6W27zYa3MJOCvw
-         h0bm9SPfdzcCa/1GvbnJWVyA932cl4oY0yUOwSNgk+j+m8n+ARg+GpnjLUeLwp93J+Wz
-         D9yw==
-X-Gm-Message-State: APjAAAVY4B6rxrugTMRaH3E1a+zUVGfgGo45ek4J8xEW68zLBM1AyNxD
-        mnN8KLBGKvEWreWPsYPw8eDsvQ4zBKstTIvaBf8=
-X-Google-Smtp-Source: APXvYqyj5Ptvjud6WKwWxUOsnEbhEpLx9ImOUoCIFhaRqrqhy5NmyiInOTsB+ADPpHCJMYxdsE659KIl1mNk4T1us2Q=
-X-Received: by 2002:a9d:61d8:: with SMTP id h24mr46637369otk.53.1561280923327;
- Sun, 23 Jun 2019 02:08:43 -0700 (PDT)
+        Sun, 23 Jun 2019 08:55:09 -0400
+Received: by smtp.codeaurora.org (Postfix, from userid 1000)
+        id 0E9A96034D; Sun, 23 Jun 2019 12:55:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
+        s=default; t=1561294508;
+        bh=u0EIOp8zhTBzJo+bCMYXWKPKbXih72ix3aaCZFqFdaI=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=VU2XVMK0Cn/AaFZsbTJZ+EpLbVg2t84O+JKjnB7E2n2syhqqSuUxt0eIQfGVHt7/i
+         /uLxD6l20pelBQHxtXrEPalwGVbOo43pnXXP/myuIpChOeCQ5Q8l28xv9q6cxo2rYk
+         CtuUOxx6uE3oQBITE/9gxKBmKIdKTqxoSJw0buyA=
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        pdx-caf-mail.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.7 required=2.0 tests=ALL_TRUSTED,BAYES_00,
+        DKIM_INVALID,DKIM_SIGNED autolearn=no autolearn_force=no version=3.4.0
+Received: from mail.codeaurora.org (localhost.localdomain [127.0.0.1])
+        by smtp.codeaurora.org (Postfix) with ESMTP id 0B65A6034D;
+        Sun, 23 Jun 2019 12:55:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
+        s=default; t=1561294507;
+        bh=u0EIOp8zhTBzJo+bCMYXWKPKbXih72ix3aaCZFqFdaI=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=Ymd9RnnKKUBk/vwFpHNXUZPzMh1zbfzSoHOiFdEXdUIl29EE1RSik33vSwFN2xad0
+         7e8ONbH7ScOV9A+InyKfAyAf8P24jf+UwIHmtPsmnDy8ScBELnhQADKeSPGT4lsUNc
+         J+epOYY6bBZP4OQOJ2DgS49fxRwlto2ncqJydQsc=
 MIME-Version: 1.0
-References: <2455026.F8Aexx8IWb@zadesk> <2696773.yqXG4m880n@zadesk>
- <CANUX_P3jUBREM=cwLHs8LE+ZbUVKGZNsBWGGepbS-mcHq0w9ow@mail.gmail.com>
- <2021645.iB4347jUHV@zadesk> <CAPuHQ=Ffq_Gw_KbyjpzR07MWz=+LxmGVEP2-Tn5zDxrUEuxrZQ@mail.gmail.com>
-In-Reply-To: <CAPuHQ=Ffq_Gw_KbyjpzR07MWz=+LxmGVEP2-Tn5zDxrUEuxrZQ@mail.gmail.com>
-From:   b.K.il.h.u+tigbuh@gmail.com
-Date:   Sun, 23 Jun 2019 11:08:32 +0200
-Message-ID: <CAPuHQ=GLgDFQZDhGv34S4yhOXTQL7AkKOywSqqtyPD8Lv6cCPw@mail.gmail.com>
-Subject: Re: iwlwifi module crash
-To:     Balakrishnan Balasubramanian <linux-wireless-list@balki.me>
-Cc:     Emmanuel Grumbach <egrumbach@gmail.com>,
-        linux-wireless <linux-wireless@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=US-ASCII;
+ format=flowed
+Content-Transfer-Encoding: 7bit
+Date:   Sun, 23 Jun 2019 15:55:06 +0300
+From:   merez@codeaurora.org
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc:     Kalle Valo <kvalo@codeaurora.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        linux-wireless@vger.kernel.org, wil6210@qti.qualcomm.com,
+        linux-wireless-owner@vger.kernel.org
+Subject: Re: [PATCH] wireless: wil6210: no need to check return value of
+ debugfs_create functions
+In-Reply-To: <20190611191024.GA17227@kroah.com>
+References: <20190611191024.GA17227@kroah.com>
+Message-ID: <00b9544a2d0a03930635e144ecbff9c2@codeaurora.org>
+X-Sender: merez@codeaurora.org
+User-Agent: Roundcube Webmail/1.2.5
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-devices/ is probably just a symlink. Try to find it manually:
-find /sys -iname remove
-lspci
+On 2019-06-11 22:10, Greg Kroah-Hartman wrote:
+> When calling debugfs functions, there is no need to ever check the
+> return value.  The function can work or not, but the code logic should
+> never do something different based on this.
+> 
+> Cc: Maya Erez <merez@codeaurora.org>
+> Cc: Kalle Valo <kvalo@codeaurora.org>
+> Cc: "David S. Miller" <davem@davemloft.net>
+> Cc: linux-wireless@vger.kernel.org
+> Cc: wil6210@qti.qualcomm.com
+> Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> ---
+>  drivers/net/wireless/ath/wil6210/debugfs.c | 80 ++++++----------------
+>  1 file changed, 22 insertions(+), 58 deletions(-)
+> 
 
-The interesting thing is that my iwlwifi card started to do the same
-thing just recently (some weeks ago). However, I do suspend a lot and
-it only happens after resuming, but not after every resume (maybe
-5-10%). It always came back after restarting except on one day when it
-needed three restarts, so maybe mine would be more about needing to
-reseat the card.
+Reviewed-by: Maya Erez <merez@codeaurora.org>
 
-> On Fri, Jun 14, 2019 at 4:54 AM Balakrishnan Balasubramanian <linux-wireless-list@balki.me> wrote:
->>
->> The issue occured again today. I tried to restart the module
->>
->> > echo 1 > /sys/module/iwlwifi/devices/0000\:02\:00.0/remove
->>
->> There is no folder 'devices'
->>
->> zadesk% ls /sys/module/iwlwifi
->> coresize  drivers  holders  initsize  initstate  notes  parameters  refcnt
->> sections  srcversion  taint  uevent
->>
->> > echo 1 > /sys/bus/pci/rescan
->>
->> Attached the error when trying to rescan.
->>
->> Thanks,
->> Bala
->>
->>
->>
->>
+-- 
+Maya Erez
+Qualcomm Israel, Inc. on behalf of Qualcomm Innovation Center, Inc.
+The Qualcomm Innovation Center, Inc. is a member of Code Aurora Forum, a 
+Linux Foundation Collaborative Project
