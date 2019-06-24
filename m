@@ -2,93 +2,106 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 6DBB151B22
-	for <lists+linux-wireless@lfdr.de>; Mon, 24 Jun 2019 21:04:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3E6E051C6B
+	for <lists+linux-wireless@lfdr.de>; Mon, 24 Jun 2019 22:33:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729905AbfFXTEt (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 24 Jun 2019 15:04:49 -0400
-Received: from mail-ed1-f42.google.com ([209.85.208.42]:40000 "EHLO
-        mail-ed1-f42.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729865AbfFXTEt (ORCPT
+        id S1727715AbfFXUdL (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 24 Jun 2019 16:33:11 -0400
+Received: from mail-ua1-f66.google.com ([209.85.222.66]:37206 "EHLO
+        mail-ua1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727181AbfFXUdL (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 24 Jun 2019 15:04:49 -0400
-Received: by mail-ed1-f42.google.com with SMTP id k8so23259092eds.7
-        for <linux-wireless@vger.kernel.org>; Mon, 24 Jun 2019 12:04:47 -0700 (PDT)
+        Mon, 24 Jun 2019 16:33:11 -0400
+Received: by mail-ua1-f66.google.com with SMTP id z13so6180478uaa.4
+        for <linux-wireless@vger.kernel.org>; Mon, 24 Jun 2019 13:33:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=hTlxyZfOIT8V5suXoVmF0uxe1pORI6gHXwBgsFNXY2E=;
-        b=FReORTY3FicfVsQnO8DT5qVNr/U2qRpeJ29xsNIXs9vxw30saCyYTBP2xUAL7Dj6c9
-         45FHDrhrOJjT2m2Zi5pOfm639hK6hj5J2+5nw0KV2r7HVbLtmB9TXqWSXAjvO+npdfQV
-         O05M/jkD48ccqCuxijOS60kz5mJeUwaxJfiiE=
+        d=googlemail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=GU09tCSRmUULdd0C6u87fcmXQzQ5ozzb/dwDLZWm6Kk=;
+        b=cS5s25U1Yl4Phf2cBvwfqTkvqBIKfvqvBBqyDuj7vomVCTPNPoMKwZ18OWJk8knlZU
+         HU+XVsUVwB45F2sSrHdn4/u1dxhP7Zwf0LRjdRYZe4g45oNffCr1x1zv1m029nMdciVS
+         zty+DRRLSIAiDgv08xX3Bx8zf/rkUcBHS4NE/YCcgID5+ipAQFXF/EVVDUhYXW1eAFzZ
+         v4YQY4BXM0RTlzPBV7bZ26JeQTuAqHc/1eQwk7IPq3a1cII60pChvvyICPPRygsO4Dhj
+         mjZQMz6Gwl4XznRzhfT6yKfgB7ht/Td2yuaXeRc9ef/lA8bH5MJn3IiWY0ay91wAnwPI
+         ucMQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=hTlxyZfOIT8V5suXoVmF0uxe1pORI6gHXwBgsFNXY2E=;
-        b=BaKn5dr94HSqKIsrlWsb6HDZzgdWQeUa7mXYYAY5J72qlnWJaTpIOxY01M2pBoZwEV
-         4u7R2m2dH37J1bCHA4+ALGR2K1uXqj2n9FgsdCcRcdmHXecQzhJzkb7td6cDrOjAqykp
-         NuPhpMPtgr/BdwPk7TY7A4CankdwLblaRw8PQ2OI27In7yUCJcKII8dihbmAox1iuPl6
-         oNTh8yLHkKQeUdHW8sLjSGFfukV5lUsz2IrUL7Vex0MoZ0VTEr48ZaVYXA9di/AZN2e8
-         cBEvkEW7k7VZHTmMeRxCOzMLwhdiY7BIe+5XQb85X3GhvE5ywJDCXl8p2rfR+39zYTF4
-         8p2w==
-X-Gm-Message-State: APjAAAWooUBS3zXd3BVUGy8DjwUB36HuzR+BMSs5A8wAFIfLoStKHnVY
-        ayDsYr0MJvGCLcFiOoB963Kq9w==
-X-Google-Smtp-Source: APXvYqwXQ7+qzf7+/SYoa326HrTt0mRi8Z5/iK5jAl5AniwSb8cwf/Rg6EYEUZBVOYZfqeHf2xJMbQ==
-X-Received: by 2002:a17:906:40c:: with SMTP id d12mr73447883eja.29.1561403087196;
-        Mon, 24 Jun 2019 12:04:47 -0700 (PDT)
-Received: from [192.168.178.129] (f140230.upc-f.chello.nl. [80.56.140.230])
-        by smtp.gmail.com with ESMTPSA id e10sm2011846ejx.89.2019.06.24.12.04.46
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Mon, 24 Jun 2019 12:04:46 -0700 (PDT)
-Subject: Re: [RESEND] brcmfmac support for BCM4359 sdio on arm64 ??
-To:     Christian Hewitt <christianshewitt@gmail.com>
-Cc:     linux-wireless@vger.kernel.org,
-        brcm80211-dev-list.pdl@broadcom.com,
-        brcm80211-dev-list@cypress.com, Wright.Feng@cypress.com,
-        Neil Armstrong <narmstrong@baylibre.com>,
-        Christoph Muellner <christoph.muellner@theobroma-systems.com>
-References: <F5C2858A-498E-4AD3-859D-FA9D14BF6B37@gmail.com>
- <37d2964d-1c2b-51bd-ac98-2cc171aa0c9c@broadcom.com>
- <30516339-BAD7-40F4-980B-D30CDF504A08@gmail.com>
-From:   Arend Van Spriel <arend.vanspriel@broadcom.com>
-Message-ID: <db1e6182-d8fe-a68a-e769-b6460c68fab0@broadcom.com>
-Date:   Mon, 24 Jun 2019 21:04:45 +0200
-User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:60.0) Gecko/20100101
- Thunderbird/60.7.2
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=GU09tCSRmUULdd0C6u87fcmXQzQ5ozzb/dwDLZWm6Kk=;
+        b=nxeHroMVlsQDV1B3mRldxGsw/4SwmWJFzvaCaFKnjQEjVs78R5FcHF9XIG/iq8WVpp
+         K6jDowd3itutFXgNc2+r1C7hBrGGmP5q0gGvPc9+D8TuD3BR9r6LBOI/2CFY0C/dnZt3
+         hC7/hHVLoTPSVrwLiOW3QTNK7uugmmh/mgGVCS2AU2+Jf0KGuVA5kKg0Ntbl2qwKWXbK
+         W28y2IaiOpqODB+xZzdTywpeGHs8J6/gGKPNmMzcW2cESKaKp28ZE3KBg3ol9zK+qDAB
+         nhvEufknRqYb/W968fDHgU2HydaDTsEAt8Cs8f7mV2EBf7XSOCi1PAQoxA56HZmiwhLz
+         XAKw==
+X-Gm-Message-State: APjAAAXH91U7/KmQCHiM5wsP6g/U5j6ThsfBGxe4igkmoMJJCJo4A3fi
+        7EDrOpP2/MJc2eV1Nh7aeMEkWjNz9vXqD9sL1t0z89qvfQY=
+X-Google-Smtp-Source: APXvYqwUu+EMrPQxJMau8qRhTCUyzSE7aR8VExZz42xGtDxYp8uZGK4jtkQusG8GDkQifByfkEGeSGFq7ccbg9iZReI=
+X-Received: by 2002:ab0:7006:: with SMTP id k6mr61776365ual.42.1561408389983;
+ Mon, 24 Jun 2019 13:33:09 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <30516339-BAD7-40F4-980B-D30CDF504A08@gmail.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+References: <20190620130148.1674-1-yegorslists@googlemail.com>
+ <90ccc515bb26b212b537fc1b0287afaa0f86fdf8.camel@sipsolutions.net>
+ <CAGm1_ksic4xcVdaPAObwwNdaQ19E3ZiK97SkmVmp8kz6H2KpOw@mail.gmail.com> <693753473768100f07de573dd74bf4033618aed8.camel@sipsolutions.net>
+In-Reply-To: <693753473768100f07de573dd74bf4033618aed8.camel@sipsolutions.net>
+From:   Yegor Yefremov <yegorslists@googlemail.com>
+Date:   Mon, 24 Jun 2019 22:32:57 +0200
+Message-ID: <CAGm1_kvK3eWnZk7eDOoqoAiedReJLunKfb4tvhqXU-hriO3itg@mail.gmail.com>
+Subject: Re: [PATCH] Add SPDX identifiers
+To:     Johannes Berg <johannes@sipsolutions.net>
+Cc:     linux-wireless@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi Christian,
+On Mon, Jun 24, 2019 at 12:36 PM Johannes Berg
+<johannes@sipsolutions.net> wrote:
+>
+>
+> > > You haven't included any documentation that says what the SPDX
+> > > identifier, and specifically the "ISC" tag means in the context of the
+> > > project, and it's not even the same license text as on spdx.org.
+> >
+> > What about such definition?
+> >
+> > SPDX short-form identifiers provide information about licenses that
+> > apply to the source file.
+>
+> It just bothers me that this isn't self-contained - you always have to
+> go to spdx.org to really figure out what it means.
+>
+> > As for the exact license I wasn't sure myself. Buildroot identifies it
+> > as ISC [1]. How do you define its license in SPDX terms?
+>
+> Not sure. Maybe you cannot?
+>
+> spdx.org says "ISC" is the license that says:
+>
+> [...] THE SOFTWARE IS PROVIDED "AS IS" AND ISC DISCLAIMS [...]
+>
+> while the license here says:
+>
+> [...] THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS [...]
+>
+> (and the same in one other place)
+>
+>
+> This might just be an oversight on spdx.org, since the license with "THE
+> AUTHOR" *is* typically referred to as "ISC" (e.g.
+> https://opensource.org/licenses/ISC), but it still means it's not
+> actually identical?
+>
+> Maybe spdx.org should switch, but then it changing the license text ...
+> what if anyone refers to it already?
+>
+> It's all not very obvious to me.
+>
+> The kernel side-stepped it and said "let's make it all self-contained",
+> which seems saner to me.
 
-Here it is. Hopefully unmangled this time.
-
-Regards,
-Arend
----
-diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/bcmsdh.c 
-b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/bcmsdh.c
-index ec129864cc9c..7be8064c6dc7 100644
---- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/bcmsdh.c
-+++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/bcmsdh.c
-@@ -785,7 +785,8 @@ void brcmf_sdiod_sgtable_alloc(struct brcmf_sdio_dev 
-*sdiodev)
-                       sdiodev->settings->bus.sdio.txglomsz);
-         nents += (nents >> 4) + 1;
-
--       WARN_ON(nents > sdiodev->max_segment_count);
-+       WARN(nents > sdiodev->max_segment_count, "max_seg_cnt=%u, 
-host_max_seg=%u, nents=%u\n",
-+                sdiodev->max_segment_count, host->max_segs, nents);
-
-         brcmf_dbg(TRACE, "nents=%d\n", nents);
-         err = sg_alloc_table(&sdiodev->sgtable, nents, GFP_KERNEL);
+I have asked SPDX and this is their answer:
+https://lists.spdx.org/g/Spdx-legal/message/2631
