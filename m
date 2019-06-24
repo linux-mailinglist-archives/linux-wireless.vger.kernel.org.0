@@ -2,181 +2,82 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 7D9CF50A29
-	for <lists+linux-wireless@lfdr.de>; Mon, 24 Jun 2019 13:51:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CABA350BBE
+	for <lists+linux-wireless@lfdr.de>; Mon, 24 Jun 2019 15:19:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729839AbfFXLvm (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 24 Jun 2019 07:51:42 -0400
-Received: from mail-pf1-f196.google.com ([209.85.210.196]:34792 "EHLO
-        mail-pf1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728085AbfFXLvl (ORCPT
+        id S1730714AbfFXNTz (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 24 Jun 2019 09:19:55 -0400
+Received: from smtp.codeaurora.org ([198.145.29.96]:34050 "EHLO
+        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729644AbfFXNTy (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 24 Jun 2019 07:51:41 -0400
-Received: by mail-pf1-f196.google.com with SMTP id c85so7382806pfc.1
-        for <linux-wireless@vger.kernel.org>; Mon, 24 Jun 2019 04:51:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=MktjD5JI8plrPxYgdY28dSdky16sGE3yFJlzutMBX0Y=;
-        b=E42AtJYYKS3gX+CavKLFlDYVVNCoSjuykLZUIN+uEWysOmPvEjowAsUCoL+p4bxDLD
-         CHrahBaSZ/AaA1XqTklaYxmNdWwMTuqFhUEj3ACVySVr6cSwog2yQK7SJYe9SJf+1fsu
-         Jxg5XidlAQWXCtiklfCS+OOJ1RsXwjtQbu8IAX5dtex3bFVNMHklYhUWj3x0K3TIwpv7
-         HKzvKlb0UyYUk6dO+GP0wKxTbQ6mWivHViXlIhnXA1+Bye+t0Pe7wiPpiviOP4TFKtF+
-         5ep5I5d21sivYG84h7gout7eJagMVCFuQ5RU2JOUJgT/iicMTHgAKyAYWUnWJcbS4xSb
-         SGOg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=MktjD5JI8plrPxYgdY28dSdky16sGE3yFJlzutMBX0Y=;
-        b=Xyh5H8Pw9MrYzSdiwcLH3Vt2/iSq3hf+FOiYnOkBCuQE2MioX26dSbVbZT1TysYiyR
-         vJ3Hsg85j3i4Ws0Q12TPZH/PXmbgmbn/oS5y0uZsmvGccW8IypPlTAk+GEoV8C1JSosU
-         ll05lMXZ5ydvZjmaICs1B6XtUfnlCV1XnTnvUcS7CBY/GHYL27C9TTHxYesqn6gjELvE
-         R8weXYEnfJjQRt/j/lFO/imdY8abdbYaQOBslezjPLF7ypq7pvVPtjbrv3iGJD8hHQ/F
-         lSZ+cv7x82pobNauahx8wQUzfBTTBP85Pppq5yiyg+uKKudlZw6cyoSQFU1bfzD7ddY2
-         RLBQ==
-X-Gm-Message-State: APjAAAUmTeamc3g93hKRas0N21aZjiLTq4W87bcOsNuIMeXp8UWQd+B+
-        WqLRhEJHMmMFk6rs/6kPW9VCujEONNVrI0aspaA6wQ==
-X-Google-Smtp-Source: APXvYqz5xbtBgSv9XKplkSawe6nghKkaroCsUJSXThEB/hnFaWvNPzkCZMYZkuMEAbHjzcChr/ODQWoaTLNZKz32Dw4=
-X-Received: by 2002:a17:90a:a116:: with SMTP id s22mr24124967pjp.47.1561377100565;
- Mon, 24 Jun 2019 04:51:40 -0700 (PDT)
+        Mon, 24 Jun 2019 09:19:54 -0400
+Received: by smtp.codeaurora.org (Postfix, from userid 1000)
+        id 06E7860CED; Mon, 24 Jun 2019 13:19:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
+        s=default; t=1561382393;
+        bh=7CiXJb+hnJN28jGPrcuyzq7dXaep2XAJltvqrZeZ8Ck=;
+        h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
+        b=Zl42+7T6tV2KF/mBOWKZBFN9ereXzZLP52rYtlSQg1ioftAMHp3qk+ci6rgmENzLQ
+         pdql8x5xrIh7a+fjG7UGiruR77sw0SPlnUMCzZ01NMX0xqBFwVCsS5Cci4XITqc8gI
+         X1QwM5GrMZV43eLjBJrrwg8WcWUmZq1JCQdQb7OE=
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        pdx-caf-mail.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-0.8 required=2.0 tests=ALL_TRUSTED,BAYES_00,
+        DKIM_INVALID,DKIM_SIGNED,MISSING_DATE,MISSING_MID,SPF_NONE autolearn=no
+        autolearn_force=no version=3.4.0
+Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo@smtp.codeaurora.org)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id AC69F60CEC;
+        Mon, 24 Jun 2019 13:19:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
+        s=default; t=1561382391;
+        bh=7CiXJb+hnJN28jGPrcuyzq7dXaep2XAJltvqrZeZ8Ck=;
+        h=Subject:From:In-Reply-To:References:To:Cc:From;
+        b=DDqLVdUSrgPLM4FfelSMostQu6Jck9ardoaX5vsx5XuUNe9K1Iwe+eBQ+7F1olEo6
+         KtsUizqUKH1/a0Af+lyWusq3WzrQeUxzJFBCfGD/GcOnB6fKMvE07BNgxW1tJ1Q2pl
+         OGoo05oqzQxepJ+F843XUJ7S2A2Me/SOk/MRaP8I=
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org AC69F60CEC
+Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-References: <Pine.LNX.4.44L0.1906201544001.1346-100000@iolanthe.rowland.org> <3232861.cjm3rXpEJU@debian64>
-In-Reply-To: <3232861.cjm3rXpEJU@debian64>
-From:   Andrey Konovalov <andreyknvl@google.com>
-Date:   Mon, 24 Jun 2019 13:51:29 +0200
-Message-ID: <CAAeHK+zhcgmBQT=rdHaCMu7XWPz4o1gwzCJQEXiTEW9_iUUauA@mail.gmail.com>
-Subject: Re: KASAN: slab-out-of-bounds Read in p54u_load_firmware_cb
-To:     Christian Lamparter <chunkeey@gmail.com>
-Cc:     Alan Stern <stern@rowland.harvard.edu>,
-        syzbot <syzbot+6d237e74cdc13f036473@syzkaller.appspotmail.com>,
-        Christian Lamparter <chunkeey@googlemail.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        Kernel development list <linux-kernel@vger.kernel.org>,
-        USB list <linux-usb@vger.kernel.org>,
-        linux-wireless@vger.kernel.org, netdev <netdev@vger.kernel.org>,
-        syzkaller-bugs <syzkaller-bugs@googlegroups.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH 1/3] iwlwifi: add new cards for 22000 and fix struct name
+From:   Kalle Valo <kvalo@codeaurora.org>
+In-Reply-To: <20190614084852.386-2-luca@coelho.fi>
+References: <20190614084852.386-2-luca@coelho.fi>
+To:     Luca Coelho <luca@coelho.fi>
+Cc:     linux-wireless@vger.kernel.org,
+        Ihab Zhaika <ihab.zhaika@intel.com>,
+        Luca Coelho <luciano.coelho@intel.com>
+User-Agent: pwcli/0.0.0-git (https://github.com/kvalo/pwcli/) Python/2.7.12
+Message-Id: <20190624131953.06E7860CED@smtp.codeaurora.org>
+Date:   Mon, 24 Jun 2019 13:19:52 +0000 (UTC)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Thu, Jun 20, 2019 at 9:56 PM Christian Lamparter <chunkeey@gmail.com> wrote:
->
-> On Thursday, June 20, 2019 9:46:32 PM CEST Alan Stern wrote:
-> > On Wed, 19 Jun 2019, syzbot wrote:
-> >
-> > > syzbot has found a reproducer for the following crash on:
-> > >
-> > > HEAD commit:    9939f56e usb-fuzzer: main usb gadget fuzzer driver
-> > > git tree:       https://github.com/google/kasan.git usb-fuzzer
-> > > console output: https://syzkaller.appspot.com/x/log.txt?x=135e29faa00000
-> > > kernel config:  https://syzkaller.appspot.com/x/.config?x=df134eda130bb43a
-> > > dashboard link: https://syzkaller.appspot.com/bug?extid=6d237e74cdc13f036473
-> > > compiler:       gcc (GCC) 9.0.0 20181231 (experimental)
-> > > syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=175d946ea00000
-> > >
-> > > IMPORTANT: if you fix the bug, please add the following tag to the commit:
-> > > Reported-by: syzbot+6d237e74cdc13f036473@syzkaller.appspotmail.com
-> > >
-> > > usb 3-1: Direct firmware load for isl3887usb failed with error -2
-> > > usb 3-1: Firmware not found.
-> > > ==================================================================
-> > > BUG: KASAN: slab-out-of-bounds in p54u_load_firmware_cb.cold+0x97/0x13d
-> > > drivers/net/wireless/intersil/p54/p54usb.c:936
-> > > Read of size 8 at addr ffff8881c9cf7588 by task kworker/1:5/2759
-> > >
-> > > CPU: 1 PID: 2759 Comm: kworker/1:5 Not tainted 5.2.0-rc5+ #11
-> > > Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS
-> > > Google 01/01/2011
-> > > Workqueue: events request_firmware_work_func
-> > > Call Trace:
-> > >   __dump_stack lib/dump_stack.c:77 [inline]
-> > >   dump_stack+0xca/0x13e lib/dump_stack.c:113
-> > >   print_address_description+0x67/0x231 mm/kasan/report.c:188
-> > >   __kasan_report.cold+0x1a/0x32 mm/kasan/report.c:317
-> > >   kasan_report+0xe/0x20 mm/kasan/common.c:614
-> > >   p54u_load_firmware_cb.cold+0x97/0x13d
-> > > drivers/net/wireless/intersil/p54/p54usb.c:936
-> > >   request_firmware_work_func+0x126/0x242
-> > > drivers/base/firmware_loader/main.c:785
-> > >   process_one_work+0x905/0x1570 kernel/workqueue.c:2269
-> > >   worker_thread+0x96/0xe20 kernel/workqueue.c:2415
-> > >   kthread+0x30b/0x410 kernel/kthread.c:255
-> > >   ret_from_fork+0x24/0x30 arch/x86/entry/entry_64.S:352
-> > >
-> > > Allocated by task 1612:
-> > >   save_stack+0x1b/0x80 mm/kasan/common.c:71
-> > >   set_track mm/kasan/common.c:79 [inline]
-> > >   __kasan_kmalloc mm/kasan/common.c:489 [inline]
-> > >   __kasan_kmalloc.constprop.0+0xbf/0xd0 mm/kasan/common.c:462
-> > >   kmalloc include/linux/slab.h:547 [inline]
-> > >   syslog_print kernel/printk/printk.c:1346 [inline]
-> > >   do_syslog kernel/printk/printk.c:1519 [inline]
-> > >   do_syslog+0x4f4/0x12e0 kernel/printk/printk.c:1493
-> > >   kmsg_read+0x8a/0xb0 fs/proc/kmsg.c:40
-> > >   proc_reg_read+0x1c1/0x280 fs/proc/inode.c:221
-> > >   __vfs_read+0x76/0x100 fs/read_write.c:425
-> > >   vfs_read+0x18e/0x3d0 fs/read_write.c:461
-> > >   ksys_read+0x127/0x250 fs/read_write.c:587
-> > >   do_syscall_64+0xb7/0x560 arch/x86/entry/common.c:301
-> > >   entry_SYSCALL_64_after_hwframe+0x49/0xbe
-> > >
-> > > Freed by task 1612:
-> > >   save_stack+0x1b/0x80 mm/kasan/common.c:71
-> > >   set_track mm/kasan/common.c:79 [inline]
-> > >   __kasan_slab_free+0x130/0x180 mm/kasan/common.c:451
-> > >   slab_free_hook mm/slub.c:1421 [inline]
-> > >   slab_free_freelist_hook mm/slub.c:1448 [inline]
-> > >   slab_free mm/slub.c:2994 [inline]
-> > >   kfree+0xd7/0x280 mm/slub.c:3949
-> > >   syslog_print kernel/printk/printk.c:1405 [inline]
-> > >   do_syslog kernel/printk/printk.c:1519 [inline]
-> > >   do_syslog+0xff3/0x12e0 kernel/printk/printk.c:1493
-> > >   kmsg_read+0x8a/0xb0 fs/proc/kmsg.c:40
-> > >   proc_reg_read+0x1c1/0x280 fs/proc/inode.c:221
-> > >   __vfs_read+0x76/0x100 fs/read_write.c:425
-> > >   vfs_read+0x18e/0x3d0 fs/read_write.c:461
-> > >   ksys_read+0x127/0x250 fs/read_write.c:587
-> > >   do_syscall_64+0xb7/0x560 arch/x86/entry/common.c:301
-> > >   entry_SYSCALL_64_after_hwframe+0x49/0xbe
-> > >
-> > > The buggy address belongs to the object at ffff8881c9cf7180
-> > >   which belongs to the cache kmalloc-1k of size 1024
-> > > The buggy address is located 8 bytes to the right of
-> > >   1024-byte region [ffff8881c9cf7180, ffff8881c9cf7580)
-> > > The buggy address belongs to the page:
-> > > page:ffffea0007273d00 refcount:1 mapcount:0 mapping:ffff8881dac02a00
-> > > index:0x0 compound_mapcount: 0
-> > > flags: 0x200000000010200(slab|head)
-> > > raw: 0200000000010200 dead000000000100 dead000000000200 ffff8881dac02a00
-> > > raw: 0000000000000000 00000000000e000e 00000001ffffffff 0000000000000000
-> > > page dumped because: kasan: bad access detected
-> > >
-> > > Memory state around the buggy address:
-> > >   ffff8881c9cf7480: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
-> > >   ffff8881c9cf7500: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
-> > > > ffff8881c9cf7580: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
-> > >                        ^
-> > >   ffff8881c9cf7600: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
-> > >   ffff8881c9cf7680: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
-> > > ==================================================================
-> >
-> > Isn't this the same as syzkaller bug 200d4bb11b23d929335f ?  Doesn't
-> > the same patch fix it?
-> >
-> I think Kalle hasn't applied it yet? It's still sitting on the patchwork queue:
-> <https://patchwork.kernel.org/patch/10951527/>
+Luca Coelho <luca@coelho.fi> wrote:
 
-Yes, until this patch is in the tree that is being tested (which is
-based on the usb-linus branch; I update it every few weeks), syzbot
-considers this bug as open.
+> From: Ihab Zhaika <ihab.zhaika@intel.com>
+> 
+> add few PCI ID'S for 22000 and fix the wrong name for one
+> of the structs
+> 
+> Signed-off-by: Ihab Zhaika <ihab.zhaika@intel.com>
+> Signed-off-by: Luca Coelho <luciano.coelho@intel.com>
 
->
-> Regards,
-> Christian
->
->
+Patch applied to wireless-drivers.git, thanks.
+
+d151b0a2efa1 iwlwifi: add new cards for 22000 and fix struct name
+
+-- 
+https://patchwork.kernel.org/patch/10994725/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+
