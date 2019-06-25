@@ -2,25 +2,25 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 7A70D52291
-	for <lists+linux-wireless@lfdr.de>; Tue, 25 Jun 2019 07:08:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C0BC152292
+	for <lists+linux-wireless@lfdr.de>; Tue, 25 Jun 2019 07:09:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726896AbfFYFIf (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 25 Jun 2019 01:08:35 -0400
-Received: from smtp.codeaurora.org ([198.145.29.96]:41140 "EHLO
+        id S1727165AbfFYFJa (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 25 Jun 2019 01:09:30 -0400
+Received: from smtp.codeaurora.org ([198.145.29.96]:42366 "EHLO
         smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725916AbfFYFIf (ORCPT
+        with ESMTP id S1725916AbfFYFJa (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 25 Jun 2019 01:08:35 -0400
+        Tue, 25 Jun 2019 01:09:30 -0400
 Received: by smtp.codeaurora.org (Postfix, from userid 1000)
-        id 55F3160117; Tue, 25 Jun 2019 05:08:34 +0000 (UTC)
+        id 7CF0760117; Tue, 25 Jun 2019 05:09:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1561439314;
-        bh=Etw/gzrvxnAmkHMqOUnEH9bAj7d2LTwoXEaqXn/6fiI=;
+        s=default; t=1561439369;
+        bh=Pka2jAN8vSAjTwJ2G/4rfb0Lb8Ws3IBMHseNlBa7qn8=;
         h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-        b=Th9zCbu/hRTPOK4A1qzS7CNacwXS9wy+7AorOPFz3K353brv78BETC+/nko+azbG5
-         17rx5QfDxzSSnaXk364aJBfXMFIMb0B5uJidQGnf0TJn0ZUkU8y3lmRpmN1A6Auh/X
-         hjoXZowGeVrjlTRYTByWteYLld3gnAJQzjFvrPu8=
+        b=J5LwtY9u7X4y0tZNwaQgy9Qs20OKdSXugWu65+oCSsd4z8P4v0LmpNbmy5f2rroHh
+         UWPBPofO59bQ4OJt4SI5FwABkg29ZZ10JdFDr9PWCbQ4Qal8yw2qjhdHZCO1c4Dq8r
+         o1tHkFwERjB7KlvxBzbHKYPzThdTpSlBw2iEIlHw=
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         pdx-caf-mail.web.codeaurora.org
 X-Spam-Level: 
@@ -31,67 +31,60 @@ Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
         (Authenticated sender: kvalo@smtp.codeaurora.org)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 12FDF60117;
-        Tue, 25 Jun 2019 05:08:31 +0000 (UTC)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 83B13601E7;
+        Tue, 25 Jun 2019 05:09:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1561439313;
-        bh=Etw/gzrvxnAmkHMqOUnEH9bAj7d2LTwoXEaqXn/6fiI=;
+        s=default; t=1561439369;
+        bh=Pka2jAN8vSAjTwJ2G/4rfb0Lb8Ws3IBMHseNlBa7qn8=;
         h=Subject:From:In-Reply-To:References:To:Cc:From;
-        b=I+eaKgkiLn1L+7D47P/Kqysb5BSL6vP/xod/Z6EPT219sT/+HGWlCAXPbt3HEajkC
-         jf/5tE6lMcIWncPAkjTBcOo7HzaaU/lzE5zs3rP38bl5pPBfCdHykGqE0Lxb8o1zu2
-         ciZiPWDaZLC2ZRwBewHp7SWHAkdhcxtCZ76BNyq0=
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 12FDF60117
+        b=GQakgPE3uycAM7DYP74kcPp23Mwt4V86liu+dMM7/dz9FeVKEUJTtC9Qff3cqq5ul
+         ssssdPnkjAjetwUhoGiBR4/9dOfOaVa8MdzvixJ1I5w62qua6jIbV2JbOotyq7/Oqq
+         YlPSJAwE28TwwJEfTRbahnNFSrVxruUQpS/j7T3o=
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 83B13601E7
 Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
 Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH 1/5] iwlegacy: 3945: no need to check return value of
- debugfs_create functions
+Subject: Re: [PATCH v2 01/11] rtw88: add fast xmit support
 From:   Kalle Valo <kvalo@codeaurora.org>
-In-Reply-To: <20190612142658.12792-1-gregkh@linuxfoundation.org>
-References: <20190612142658.12792-1-gregkh@linuxfoundation.org>
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     Johannes Berg <johannes.berg@intel.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Stanislaw Gruszka <sgruszka@redhat.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org
+In-Reply-To: <1560497055-17197-2-git-send-email-yhchuang@realtek.com>
+References: <1560497055-17197-2-git-send-email-yhchuang@realtek.com>
+To:     <yhchuang@realtek.com>
+Cc:     <linux-wireless@vger.kernel.org>
 User-Agent: pwcli/0.0.0-git (https://github.com/kvalo/pwcli/) Python/2.7.12
-Message-Id: <20190625050834.55F3160117@smtp.codeaurora.org>
-Date:   Tue, 25 Jun 2019 05:08:34 +0000 (UTC)
+Message-Id: <20190625050929.7CF0760117@smtp.codeaurora.org>
+Date:   Tue, 25 Jun 2019 05:09:29 +0000 (UTC)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Greg Kroah-Hartman <gregkh@linuxfoundation.org> wrote:
+<yhchuang@realtek.com> wrote:
 
-> When calling debugfs functions, there is no need to ever check the
-> return value.  This driver was saving the debugfs file away to be
-> removed at a later time.  However, the 80211 core would delete the whole
-> directory that the debugfs files are created in, after it asks the
-> driver to do the deletion, so just rely on the 80211 core to do all of
-> the cleanup for us, making us not need to keep a pointer to the dentries
-> around at all.
+> From: Yan-Hsuan Chuang <yhchuang@realtek.com>
 > 
-> This cleans up the structure of the driver data a bit and makes the code
-> a tiny bit smaller.
+> With dynamic power save support, rtw88 is able to support fast tx
+> path, claim it to mac80211.
 > 
-> Cc: Stanislaw Gruszka <sgruszka@redhat.com>
-> Cc: Kalle Valo <kvalo@codeaurora.org>
-> Cc: "David S. Miller" <davem@davemloft.net>
-> Cc: linux-wireless@vger.kernel.org
-> Cc: netdev@vger.kernel.org
-> Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> Signed-off-by: Yan-Hsuan Chuang <yhchuang@realtek.com>
 
-2 patches applied to wireless-drivers-next.git, thanks.
+11 patches applied to wireless-drivers-next.git, thanks.
 
-f503c7695343 iwlegacy: 3945: no need to check return value of debugfs_create functions
-ffb92649f4d9 iwlegacy: 4965: no need to check return value of debugfs_create functions
+e6fec313fa3f rtw88: add fast xmit support
+44cc4c63a877 rtw88: add support for random mac scan
+6fabdc4a34d0 rtw88: add beacon function setting
+818d46e7715e rtw88: 8822c: add rf write protection when switching channel
+f859e71f9615 rtw88: 8822c: update channel and bandwidth BB setting
+e027446667b5 rtw88: 8822c: disable rx clock gating before counter reset
+e1cc056c92f9 rtw88: 8822c: use more accurate ofdm fa counting
+d41673b941f2 rtw88: power on again if it was already on
+a11cddd42b67 rtw88: restore DACK results to save time
+e9c87a3b744b rtw88: rsvd page should go though management queue
+4a36de3996c7 rtw88: fix typo rtw_writ16_set
 
 -- 
-https://patchwork.kernel.org/patch/10990125/
+https://patchwork.kernel.org/patch/10994533/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
