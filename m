@@ -2,84 +2,108 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id BE4D85229C
-	for <lists+linux-wireless@lfdr.de>; Tue, 25 Jun 2019 07:12:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 402FD522B9
+	for <lists+linux-wireless@lfdr.de>; Tue, 25 Jun 2019 07:18:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727156AbfFYFMp (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 25 Jun 2019 01:12:45 -0400
-Received: from smtp.codeaurora.org ([198.145.29.96]:46838 "EHLO
-        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726930AbfFYFMo (ORCPT
+        id S1728019AbfFYFRv (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 25 Jun 2019 01:17:51 -0400
+Received: from smtprelay0192.hostedemail.com ([216.40.44.192]:53847 "EHLO
+        smtprelay.hostedemail.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1726422AbfFYFRu (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 25 Jun 2019 01:12:44 -0400
-Received: by smtp.codeaurora.org (Postfix, from userid 1000)
-        id B57B360867; Tue, 25 Jun 2019 05:12:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1561439563;
-        bh=r/tGvEZOJPHra4fP7IYj1O8+ibu5+G1t5YDkSHhrbiE=;
-        h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-        b=lIsoDU9bfJLKdey/L+2Id3mTz5iJU932xdTpQQCg9kV+dGGPiD8vbd8AVlxdxdhsm
-         i2KUGhWbS021E4AxB7clH+zjKCXHn4PjwV18uypLQJ5hqv3CSBgd97xweJhKBdv5L2
-         sLNkxZKWzSshNDmaLBuicE+0rRAqHwZBBBl0x3lw=
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        pdx-caf-mail.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-0.8 required=2.0 tests=ALL_TRUSTED,BAYES_00,
-        DKIM_INVALID,DKIM_SIGNED,MISSING_DATE,MISSING_MID,SPF_NONE autolearn=no
-        autolearn_force=no version=3.4.0
-Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        (Authenticated sender: kvalo@smtp.codeaurora.org)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 42CD76029B;
-        Tue, 25 Jun 2019 05:12:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1561439563;
-        bh=r/tGvEZOJPHra4fP7IYj1O8+ibu5+G1t5YDkSHhrbiE=;
-        h=Subject:From:In-Reply-To:References:To:Cc:From;
-        b=ePqKsHMhoXUIkggq8OWM4f0NlPvPJrzTEw/To4Jo0eWgw8ObeiE0+5uA9ViaHAs9p
-         XtNcc44BBaLKOkR7lpzg34AhS5P8J8r7cRdczeoET8pFs6k+N2uvuBTIhgunmCTR3o
-         veMXAP1HGwz27L2GuRIwbVWHpT6MOVVj2twyt9Ro=
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 42CD76029B
-Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
-Content-Type: text/plain; charset="utf-8"
+        Tue, 25 Jun 2019 01:17:50 -0400
+Received: from filter.hostedemail.com (clb03-v110.bra.tucows.net [216.40.38.60])
+        by smtprelay03.hostedemail.com (Postfix) with ESMTP id 9E83B837F24C;
+        Tue, 25 Jun 2019 05:17:48 +0000 (UTC)
+X-Session-Marker: 6A6F6540706572636865732E636F6D
+X-Spam-Summary: 
+X-HE-Tag: spade50_7d8321185044f
+X-Filterd-Recvd-Size: 3418
+Received: from XPS-9350 (cpe-23-242-196-136.socal.res.rr.com [23.242.196.136])
+        (Authenticated sender: joe@perches.com)
+        by omf16.hostedemail.com (Postfix) with ESMTPA;
+        Tue, 25 Jun 2019 05:17:42 +0000 (UTC)
+Message-ID: <45177fdaff2bf2a2538e34dab175488d2ba9a46c.camel@perches.com>
+Subject: Re: [PATCH v4 4/7] lib/hexdump.c: Replace ascii bool in
+ hex_dump_to_buffer with flags
+From:   Joe Perches <joe@perches.com>
+To:     Alastair D'Silva <alastair@d-silva.org>
+Cc:     Jani Nikula <jani.nikula@linux.intel.com>,
+        Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
+        Rodrigo Vivi <rodrigo.vivi@intel.com>,
+        David Airlie <airlied@linux.ie>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        Dan Carpenter <dan.carpenter@oracle.com>,
+        Karsten Keil <isdn@linux-pingi.de>,
+        Jassi Brar <jassisinghbrar@gmail.com>,
+        Tom Lendacky <thomas.lendacky@amd.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jose Abreu <Jose.Abreu@synopsys.com>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        Stanislaw Gruszka <sgruszka@redhat.com>,
+        Benson Leung <bleung@chromium.org>,
+        Enric Balletbo i Serra <enric.balletbo@collabora.com>,
+        "James E.J. Bottomley" <jejb@linux.ibm.com>,
+        "Martin K. Petersen" <martin.petersen@oracle.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Alexander Viro <viro@zeniv.linux.org.uk>,
+        Petr Mladek <pmladek@suse.com>,
+        Sergey Senozhatsky <sergey.senozhatsky@gmail.com>,
+        Steven Rostedt <rostedt@goodmis.org>,
+        David Laight <David.Laight@ACULAB.COM>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        intel-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
+        linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
+        ath10k@lists.infradead.org, linux-wireless@vger.kernel.org,
+        linux-scsi@vger.kernel.org, linux-fbdev@vger.kernel.org,
+        devel@driverdev.osuosl.org, linux-fsdevel@vger.kernel.org
+Date:   Mon, 24 Jun 2019 22:17:40 -0700
+In-Reply-To: <746098160c4ff6527d573d2af23c403b6d4e5b80.camel@d-silva.org>
+References: <20190625031726.12173-1-alastair@au1.ibm.com>
+         <20190625031726.12173-5-alastair@au1.ibm.com>
+         <3340b520a57e00a483eae170be97316c8d18c22c.camel@perches.com>
+         <746098160c4ff6527d573d2af23c403b6d4e5b80.camel@d-silva.org>
+Content-Type: text/plain; charset="ISO-8859-1"
+User-Agent: Evolution 3.30.5-0ubuntu0.18.10.1 
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH v2] airo: switch to skcipher interface
-From:   Kalle Valo <kvalo@codeaurora.org>
-In-Reply-To: <20190617084338.24918-1-ard.biesheuvel@linaro.org>
-References: <20190617084338.24918-1-ard.biesheuvel@linaro.org>
-To:     Ard Biesheuvel <ard.biesheuvel@linaro.org>
-Cc:     linux-wireless@vger.kernel.org, linux-crypto@vger.kernel.org,
-        herbert@gondor.apana.org.au, ebiggers@kernel.org,
-        johannes@sipsolutions.net, linux@rainbow-software.org,
-        Ard Biesheuvel <ard.biesheuvel@linaro.org>
-User-Agent: pwcli/0.0.0-git (https://github.com/kvalo/pwcli/) Python/2.7.12
-Message-Id: <20190625051243.B57B360867@smtp.codeaurora.org>
-Date:   Tue, 25 Jun 2019 05:12:43 +0000 (UTC)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Ard Biesheuvel <ard.biesheuvel@linaro.org> wrote:
+On Tue, 2019-06-25 at 15:06 +1000, Alastair D'Silva wrote:
+> On Mon, 2019-06-24 at 22:01 -0700, Joe Perches wrote:
+> > On Tue, 2019-06-25 at 13:17 +1000, Alastair D'Silva wrote:
+> > > From: Alastair D'Silva <alastair@d-silva.org>
+> > > 
+> > > In order to support additional features, rename hex_dump_to_buffer
+> > > to
+> > > hex_dump_to_buffer_ext, and replace the ascii bool parameter with
+> > > flags.
+> > []
+> > > diff --git a/drivers/gpu/drm/i915/intel_engine_cs.c
+> > > b/drivers/gpu/drm/i915/intel_engine_cs.c
+> > []
+> > > @@ -1338,9 +1338,8 @@ static void hexdump(struct drm_printer *m,
+> > > const void *buf, size_t len)
+> > >  		}
+> > >  
+> > >  		WARN_ON_ONCE(hex_dump_to_buffer(buf + pos, len - pos,
+> > > -						rowsize, sizeof(u32),
+> > > -						line, sizeof(line),
+> > > -						false) >=
+> > > sizeof(line));
+> > > +						rowsize, sizeof(u32),
+> > > line,
+> > > +						sizeof(line)) >=
+> > > sizeof(line));
+> > 
+> > Huh?  Why do this?
+[]
+> The change actions Jani's suggestion:
+> https://lkml.org/lkml/2019/6/20/343
 
-> The AIRO driver applies a ctr(aes) on a buffer of considerable size
-> (2400 bytes), and instead of invoking the crypto API to handle this
-> in its entirety, it open codes the counter manipulation and invokes
-> the AES block cipher directly.
-> 
-> Let's fix this, by switching to the sync skcipher API instead.
-> 
-> Signed-off-by: Ard Biesheuvel <ard.biesheuvel@linaro.org>
+I think you need to read this change again.
 
-Patch applied to wireless-drivers-next.git, thanks.
-
-e5db0ad7563c airo: switch to skcipher interface
-
--- 
-https://patchwork.kernel.org/patch/10998553/
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
