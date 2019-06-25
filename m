@@ -2,29 +2,29 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id BDF6152877
-	for <lists+linux-wireless@lfdr.de>; Tue, 25 Jun 2019 11:45:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 29B0D5287A
+	for <lists+linux-wireless@lfdr.de>; Tue, 25 Jun 2019 11:46:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727876AbfFYJpX (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 25 Jun 2019 05:45:23 -0400
-Received: from paleale.coelho.fi ([176.9.41.70]:54658 "EHLO
+        id S1728308AbfFYJqA (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 25 Jun 2019 05:46:00 -0400
+Received: from paleale.coelho.fi ([176.9.41.70]:54670 "EHLO
         farmhouse.coelho.fi" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1727729AbfFYJpX (ORCPT
+        with ESMTP id S1727729AbfFYJqA (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 25 Jun 2019 05:45:23 -0400
+        Tue, 25 Jun 2019 05:46:00 -0400
 Received: from 91-156-6-193.elisa-laajakaista.fi ([91.156.6.193] helo=redipa.ger.corp.intel.com)
         by farmhouse.coelho.fi with esmtpsa (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
         (Exim 4.92)
         (envelope-from <luca@coelho.fi>)
-        id 1hfi0c-0007Nv-Lo; Tue, 25 Jun 2019 12:45:02 +0300
+        id 1hfi0d-0007Nv-5C; Tue, 25 Jun 2019 12:45:03 +0300
 From:   Luca Coelho <luca@coelho.fi>
 To:     kvalo@codeaurora.org
 Cc:     linux-wireless@vger.kernel.org,
-        Shahar S Matityahu <shahar.s.matityahu@intel.com>,
+        Mordechay Goodstein <mordechay.goodstein@intel.com>,
         Luca Coelho <luciano.coelho@intel.com>
-Subject: [PATCH 10/12] iwlwifi: dbg_ini: implement dump info collection
-Date:   Tue, 25 Jun 2019 12:44:50 +0300
-Message-Id: <20190625094452.19034-11-luca@coelho.fi>
+Subject: [PATCH 11/12] iwlwifi: mvm: remove multiple debugfs entries
+Date:   Tue, 25 Jun 2019 12:44:51 +0300
+Message-Id: <20190625094452.19034-12-luca@coelho.fi>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20190625094452.19034-1-luca@coelho.fi>
 References: <20190625094452.19034-1-luca@coelho.fi>
@@ -35,260 +35,112 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Shahar S Matityahu <shahar.s.matityahu@intel.com>
+From: Mordechay Goodstein <mordechay.goodstein@intel.com>
 
-The info struct contains data about the FW, HW, RF and the debug
-configuration.
+Now that we have per station control over amsdu size no need for
+multiple entries, especially that the old one is misleading due to not
+setting it for all protocols as a limit.
 
-Signed-off-by: Shahar S Matityahu <shahar.s.matityahu@intel.com>
+Signed-off-by: Mordechay Goodstein <mordechay.goodstein@intel.com>
 Signed-off-by: Luca Coelho <luciano.coelho@intel.com>
 ---
- drivers/net/wireless/intel/iwlwifi/fw/dbg.c   | 67 +++++++++++++++++++
- drivers/net/wireless/intel/iwlwifi/fw/dbg.h   | 18 +++++
- .../wireless/intel/iwlwifi/fw/error-dump.h    | 62 +++++++++++++++++
- .../net/wireless/intel/iwlwifi/fw/runtime.h   |  9 +++
- drivers/net/wireless/intel/iwlwifi/mvm/fw.c   |  2 +
- 5 files changed, 158 insertions(+)
+ .../net/wireless/intel/iwlwifi/mvm/debugfs.c  | 20 -------------------
+ drivers/net/wireless/intel/iwlwifi/mvm/mvm.h  |  1 -
+ drivers/net/wireless/intel/iwlwifi/mvm/tx.c   |  9 +--------
+ 3 files changed, 1 insertion(+), 29 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/fw/dbg.c b/drivers/net/wireless/intel/iwlwifi/fw/dbg.c
-index 806eb9847f72..0c366009389e 100644
---- a/drivers/net/wireless/intel/iwlwifi/fw/dbg.c
-+++ b/drivers/net/wireless/intel/iwlwifi/fw/dbg.c
-@@ -1723,6 +1723,65 @@ iwl_dump_ini_mem(struct iwl_fw_runtime *fwrt,
- 	*data = iwl_fw_error_next_data(*data);
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/debugfs.c b/drivers/net/wireless/intel/iwlwifi/mvm/debugfs.c
+index fb2fd89270ed..8260da314721 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/debugfs.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/debugfs.c
+@@ -1396,24 +1396,6 @@ static ssize_t iwl_dbgfs_fw_dbg_collect_write(struct iwl_mvm *mvm,
+ 	return count;
  }
  
-+static void iwl_dump_ini_info(struct iwl_fw_runtime *fwrt,
-+			      struct iwl_fw_ini_trigger *trigger,
-+			      struct iwl_fw_error_dump_data **data)
-+{
-+	struct iwl_fw_ini_dump_info *dump = (void *)(*data)->data;
-+	u32 reg_ids_size = le32_to_cpu(trigger->num_regions) * sizeof(__le32);
-+
-+	(*data)->type = cpu_to_le32(IWL_INI_DUMP_INFO_TYPE);
-+	(*data)->len = cpu_to_le32(sizeof(*dump) + reg_ids_size);
-+
-+	dump->version = cpu_to_le32(IWL_INI_DUMP_VER);
-+	dump->trigger_id = trigger->trigger_id;
-+	dump->is_external_cfg = cpu_to_le32(fwrt->trans->external_ini_loaded);
-+
-+	dump->ver_type = cpu_to_le32(fwrt->dump.fw_ver.type);
-+	dump->ver_subtype = cpu_to_le32(fwrt->dump.fw_ver.subtype);
-+
-+	dump->hw_step = cpu_to_le32(CSR_HW_REV_STEP(fwrt->trans->hw_rev));
-+	dump->hw_type = cpu_to_le32(CSR_HW_REV_TYPE(fwrt->trans->hw_rev));
-+
-+	dump->rf_id_flavor =
-+		cpu_to_le32(CSR_HW_RFID_FLAVOR(fwrt->trans->hw_rf_id));
-+	dump->rf_id_dash = cpu_to_le32(CSR_HW_RFID_DASH(fwrt->trans->hw_rf_id));
-+	dump->rf_id_step = cpu_to_le32(CSR_HW_RFID_STEP(fwrt->trans->hw_rf_id));
-+	dump->rf_id_type = cpu_to_le32(CSR_HW_RFID_TYPE(fwrt->trans->hw_rf_id));
-+
-+	dump->lmac_major = cpu_to_le32(fwrt->dump.fw_ver.lmac_major);
-+	dump->lmac_minor = cpu_to_le32(fwrt->dump.fw_ver.lmac_minor);
-+	dump->umac_major = cpu_to_le32(fwrt->dump.fw_ver.umac_major);
-+	dump->umac_minor = cpu_to_le32(fwrt->dump.fw_ver.umac_minor);
-+
-+	dump->build_tag_len = cpu_to_le32(sizeof(dump->build_tag));
-+	memcpy(dump->build_tag, fwrt->fw->human_readable,
-+	       sizeof(dump->build_tag));
-+
-+	dump->img_name_len = cpu_to_le32(sizeof(dump->img_name));
-+	memcpy(dump->img_name, fwrt->dump.img_name, sizeof(dump->img_name));
-+
-+	dump->internal_dbg_cfg_name_len =
-+		cpu_to_le32(sizeof(dump->internal_dbg_cfg_name));
-+	memcpy(dump->internal_dbg_cfg_name, fwrt->dump.internal_dbg_cfg_name,
-+	       sizeof(dump->internal_dbg_cfg_name));
-+
-+	dump->external_dbg_cfg_name_len =
-+		cpu_to_le32(sizeof(dump->external_dbg_cfg_name));
-+
-+	/* dump info size is allocated in iwl_fw_ini_get_trigger_len.
-+	 * The driver allocates (sizeof(*dump) + reg_ids_size) so it is safe to
-+	 * use reg_ids_size
-+	 */
-+	memcpy(dump->external_dbg_cfg_name, fwrt->dump.external_dbg_cfg_name,
-+	       sizeof(dump->external_dbg_cfg_name));
-+
-+	dump->regions_num = trigger->num_regions;
-+	memcpy(dump->region_ids, trigger->data, reg_ids_size);
-+
-+	*data = iwl_fw_error_next_data(*data);
-+}
-+
- static int iwl_fw_ini_get_trigger_len(struct iwl_fw_runtime *fwrt,
- 				      struct iwl_fw_ini_trigger *trigger)
- {
-@@ -1800,6 +1859,12 @@ static int iwl_fw_ini_get_trigger_len(struct iwl_fw_runtime *fwrt,
- 			break;
- 		}
- 	}
-+
-+	/* add dump info size */
-+	if (ret_size)
-+		ret_size += hdr_len + sizeof(struct iwl_fw_ini_dump_info) +
-+			(le32_to_cpu(trigger->num_regions) * sizeof(__le32));
-+
- 	return ret_size;
- }
+-static ssize_t iwl_dbgfs_max_amsdu_len_write(struct iwl_mvm *mvm,
+-					     char *buf, size_t count,
+-					     loff_t *ppos)
+-{
+-	unsigned int max_amsdu_len;
+-	int ret;
+-
+-	ret = kstrtouint(buf, 0, &max_amsdu_len);
+-	if (ret)
+-		return ret;
+-
+-	if (max_amsdu_len > IEEE80211_MAX_MPDU_LEN_VHT_11454)
+-		return -EINVAL;
+-	mvm->max_amsdu_len = max_amsdu_len;
+-
+-	return count;
+-}
+-
+ #define ADD_TEXT(...) pos += scnprintf(buf + pos, bufsz - pos, __VA_ARGS__)
+ #ifdef CONFIG_IWLWIFI_BCAST_FILTERING
+ static ssize_t iwl_dbgfs_bcast_filters_read(struct file *file,
+@@ -1966,7 +1948,6 @@ MVM_DEBUGFS_READ_WRITE_FILE_OPS(scan_ant_rxchain, 8);
+ MVM_DEBUGFS_READ_WRITE_FILE_OPS(d0i3_refs, 8);
+ MVM_DEBUGFS_READ_WRITE_FILE_OPS(fw_dbg_conf, 8);
+ MVM_DEBUGFS_WRITE_FILE_OPS(fw_dbg_collect, 64);
+-MVM_DEBUGFS_WRITE_FILE_OPS(max_amsdu_len, 8);
+ MVM_DEBUGFS_WRITE_FILE_OPS(indirection_tbl,
+ 			   (IWL_RSS_INDIRECTION_TABLE_SIZE * 2));
+ MVM_DEBUGFS_WRITE_FILE_OPS(inject_packet, 512);
+@@ -2169,7 +2150,6 @@ void iwl_mvm_dbgfs_register(struct iwl_mvm *mvm, struct dentry *dbgfs_dir)
+ 	MVM_DEBUGFS_ADD_FILE(d0i3_refs, mvm->debugfs_dir, 0600);
+ 	MVM_DEBUGFS_ADD_FILE(fw_dbg_conf, mvm->debugfs_dir, 0600);
+ 	MVM_DEBUGFS_ADD_FILE(fw_dbg_collect, mvm->debugfs_dir, 0200);
+-	MVM_DEBUGFS_ADD_FILE(max_amsdu_len, mvm->debugfs_dir, 0200);
+ 	MVM_DEBUGFS_ADD_FILE(send_echo_cmd, mvm->debugfs_dir, 0200);
+ 	MVM_DEBUGFS_ADD_FILE(indirection_tbl, mvm->debugfs_dir, 0200);
+ 	MVM_DEBUGFS_ADD_FILE(inject_packet, mvm->debugfs_dir, 0200);
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mvm.h b/drivers/net/wireless/intel/iwlwifi/mvm/mvm.h
+index 8dc2a9850bc5..0c938fe4cbe7 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/mvm.h
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/mvm.h
+@@ -1109,7 +1109,6 @@ struct iwl_mvm {
+ 	u8 ps_disabled; /* u8 instead of bool to ease debugfs_create_* usage */
+ 	/* Indicate if 32Khz external clock is valid */
+ 	u32 ext_clock_valid;
+-	unsigned int max_amsdu_len; /* used for debugfs only */
  
-@@ -1809,6 +1874,8 @@ static void iwl_fw_ini_dump_trigger(struct iwl_fw_runtime *fwrt,
- {
- 	int i, num = le32_to_cpu(trigger->num_regions);
+ 	struct ieee80211_vif __rcu *csa_vif;
+ 	struct ieee80211_vif __rcu *csa_tx_blocked_vif;
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/tx.c b/drivers/net/wireless/intel/iwlwifi/mvm/tx.c
+index ad4760307726..16f7458e2e81 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/tx.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/tx.c
+@@ -893,18 +893,15 @@ static int iwl_mvm_tx_tso(struct iwl_mvm *mvm, struct sk_buff *skb,
+ 	unsigned int mss = skb_shinfo(skb)->gso_size;
+ 	unsigned int num_subframes, tcp_payload_len, subf_len, max_amsdu_len;
+ 	u16 snap_ip_tcp, pad;
+-	unsigned int dbg_max_amsdu_len;
+ 	netdev_features_t netdev_flags = NETIF_F_CSUM_MASK | NETIF_F_SG;
+ 	u8 tid;
  
-+	iwl_dump_ini_info(fwrt, trigger, data);
-+
- 	for (i = 0; i < num; i++) {
- 		u32 reg_id = le32_to_cpu(trigger->data[i]);
- 		struct iwl_fw_ini_region_cfg *reg;
-diff --git a/drivers/net/wireless/intel/iwlwifi/fw/dbg.h b/drivers/net/wireless/intel/iwlwifi/fw/dbg.h
-index 37d5171213c2..d009c0aa95d7 100644
---- a/drivers/net/wireless/intel/iwlwifi/fw/dbg.h
-+++ b/drivers/net/wireless/intel/iwlwifi/fw/dbg.h
-@@ -73,6 +73,7 @@
- #include "error-dump.h"
- #include "api/commands.h"
- #include "api/dbg-tlv.h"
-+#include "api/alive.h"
+ 	snap_ip_tcp = 8 + skb_transport_header(skb) - skb_network_header(skb) +
+ 		tcp_hdrlen(skb);
  
- /**
-  * struct iwl_fw_dump_desc - describes the dump
-@@ -477,4 +478,21 @@ static inline void iwl_fw_error_collect(struct iwl_fw_runtime *fwrt)
- }
+-	dbg_max_amsdu_len = READ_ONCE(mvm->max_amsdu_len);
+-
+ 	if (!mvmsta->max_amsdu_len ||
+ 	    !ieee80211_is_data_qos(hdr->frame_control) ||
+-	    (!mvmsta->amsdu_enabled && !dbg_max_amsdu_len))
++	    !mvmsta->amsdu_enabled)
+ 		return iwl_mvm_tx_tso_segment(skb, 1, netdev_flags, mpdus_skb);
  
- void iwl_fw_dbg_periodic_trig_handler(struct timer_list *t);
-+
-+static inline void iwl_fwrt_update_fw_versions(struct iwl_fw_runtime *fwrt,
-+					       struct iwl_lmac_alive *lmac,
-+					       struct iwl_umac_alive *umac)
-+{
-+	if (lmac) {
-+		fwrt->dump.fw_ver.type = lmac->ver_type;
-+		fwrt->dump.fw_ver.subtype = lmac->ver_subtype;
-+		fwrt->dump.fw_ver.lmac_major = le32_to_cpu(lmac->ucode_major);
-+		fwrt->dump.fw_ver.lmac_minor = le32_to_cpu(lmac->ucode_minor);
-+	}
-+
-+	if (umac) {
-+		fwrt->dump.fw_ver.umac_major = le32_to_cpu(umac->umac_major);
-+		fwrt->dump.fw_ver.umac_minor = le32_to_cpu(umac->umac_minor);
-+	}
-+}
- #endif  /* __iwl_fw_dbg_h__ */
-diff --git a/drivers/net/wireless/intel/iwlwifi/fw/error-dump.h b/drivers/net/wireless/intel/iwlwifi/fw/error-dump.h
-index 50c5840644d0..00a45ea85b69 100644
---- a/drivers/net/wireless/intel/iwlwifi/fw/error-dump.h
-+++ b/drivers/net/wireless/intel/iwlwifi/fw/error-dump.h
-@@ -284,6 +284,9 @@ struct iwl_fw_error_dump_mem {
-  */
- #define IWL_INI_DUMP_VER 1
+ 	/*
+@@ -936,10 +933,6 @@ static int iwl_mvm_tx_tso(struct iwl_mvm *mvm, struct sk_buff *skb,
  
-+/* Use bit 31 as dump info type to avoid colliding with region types */
-+#define IWL_INI_DUMP_INFO_TYPE BIT(31)
-+
- /**
-  * struct iwl_fw_ini_fifo_hdr - fifo range header
-  * @fifo_num: the fifo number. In case of umac rx fifo, set BIT(31) to
-@@ -354,6 +357,65 @@ struct iwl_fw_ini_error_dump_register {
- 	__le32 data;
- } __packed;
+ 	max_amsdu_len = iwl_mvm_max_amsdu_size(mvm, sta, tid);
  
-+/* struct iwl_fw_ini_dump_info - ini dump information
-+ * @version: dump version
-+ * @trigger_id: trigger id that caused the dump collection
-+ * @trigger_reason: not supported yet
-+ * @is_external_cfg: 1 if an external debug configuration was loaded
-+ *	and 0 otherwise
-+ * @ver_type: FW version type
-+ * @ver_subtype: FW version subype
-+ * @hw_step: HW step
-+ * @hw_type: HW type
-+ * @rf_id_flavor: HW RF id flavor
-+ * @rf_id_dash: HW RF id dash
-+ * @rf_id_step: HW RF id step
-+ * @rf_id_type: HW RF id type
-+ * @lmac_major: lmac major version
-+ * @lmac_minor: lmac minor version
-+ * @umac_major: umac major version
-+ * @umac_minor: umac minor version
-+ * @build_tag_len: length of the build tag
-+ * @build_tag: build tag string
-+ * @img_name_len: length of the FW image name
-+ * @img_name: FW image name
-+ * @internal_dbg_cfg_name_len: length of the internal debug configuration name
-+ * @internal_dbg_cfg_name: internal debug configuration name
-+ * @external_dbg_cfg_name_len: length of the external debug configuration name
-+ * @external_dbg_cfg_name: external debug configuration name
-+ * @regions_num: number of region ids
-+ * @region_ids: region ids the trigger configured to collect
-+ */
-+struct iwl_fw_ini_dump_info {
-+	__le32 version;
-+	__le32 trigger_id;
-+	__le32 trigger_reason;
-+	__le32 is_external_cfg;
-+	__le32 ver_type;
-+	__le32 ver_subtype;
-+	__le32 hw_step;
-+	__le32 hw_type;
-+	__le32 rf_id_flavor;
-+	__le32 rf_id_dash;
-+	__le32 rf_id_step;
-+	__le32 rf_id_type;
-+	__le32 lmac_major;
-+	__le32 lmac_minor;
-+	__le32 umac_major;
-+	__le32 umac_minor;
-+	__le32 build_tag_len;
-+	u8 build_tag[FW_VER_HUMAN_READABLE_SZ];
-+	__le32 img_name_len;
-+	u8 img_name[IWL_FW_INI_MAX_IMG_NAME_LEN];
-+	__le32 internal_dbg_cfg_name_len;
-+	u8 internal_dbg_cfg_name[IWL_FW_INI_MAX_DBG_CFG_NAME_LEN];
-+	__le32 external_dbg_cfg_name_len;
-+	u8 external_dbg_cfg_name[IWL_FW_INI_MAX_DBG_CFG_NAME_LEN];
-+	__le32 regions_num;
-+	__le32 region_ids[];
-+
-+} __packed;
-+
- /**
-  * struct iwl_fw_error_dump_rb - content of an Receive Buffer
-  * @index: the index of the Receive Buffer in the Rx queue
-diff --git a/drivers/net/wireless/intel/iwlwifi/fw/runtime.h b/drivers/net/wireless/intel/iwlwifi/fw/runtime.h
-index 07196a9fa5db..406ef73992c1 100644
---- a/drivers/net/wireless/intel/iwlwifi/fw/runtime.h
-+++ b/drivers/net/wireless/intel/iwlwifi/fw/runtime.h
-@@ -150,6 +150,15 @@ struct iwl_fw_runtime {
- 		u8 img_name[IWL_FW_INI_MAX_IMG_NAME_LEN];
- 		u8 internal_dbg_cfg_name[IWL_FW_INI_MAX_DBG_CFG_NAME_LEN];
- 		u8 external_dbg_cfg_name[IWL_FW_INI_MAX_DBG_CFG_NAME_LEN];
-+
-+		struct {
-+			u8 type;
-+			u8 subtype;
-+			u32 lmac_major;
-+			u32 lmac_minor;
-+			u32 umac_major;
-+			u32 umac_minor;
-+		} fw_ver;
- 	} dump;
- #ifdef CONFIG_IWLWIFI_DEBUGFS
- 	struct {
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/fw.c b/drivers/net/wireless/intel/iwlwifi/mvm/fw.c
-index ab68b5d53ec9..78dc37bf4fa7 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/fw.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/fw.c
-@@ -276,6 +276,8 @@ static bool iwl_alive_fn(struct iwl_notif_wait_data *notif_wait,
- 		     le32_to_cpu(umac->umac_major),
- 		     le32_to_cpu(umac->umac_minor));
- 
-+	iwl_fwrt_update_fw_versions(&mvm->fwrt, lmac1, umac);
-+
- 	return true;
- }
- 
+-	if (unlikely(dbg_max_amsdu_len))
+-		max_amsdu_len = min_t(unsigned int, max_amsdu_len,
+-				      dbg_max_amsdu_len);
+-
+ 	/*
+ 	 * Limit A-MSDU in A-MPDU to 4095 bytes when VHT is not
+ 	 * supported. This is a spec requirement (IEEE 802.11-2015
 -- 
 2.20.1
 
