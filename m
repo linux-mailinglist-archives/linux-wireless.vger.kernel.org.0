@@ -2,110 +2,328 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 8CE32522E3
-	for <lists+linux-wireless@lfdr.de>; Tue, 25 Jun 2019 07:37:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C518452329
+	for <lists+linux-wireless@lfdr.de>; Tue, 25 Jun 2019 07:52:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728303AbfFYFhN (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 25 Jun 2019 01:37:13 -0400
-Received: from smtprelay0098.hostedemail.com ([216.40.44.98]:37100 "EHLO
-        smtprelay.hostedemail.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1727064AbfFYFhN (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 25 Jun 2019 01:37:13 -0400
-Received: from filter.hostedemail.com (clb03-v110.bra.tucows.net [216.40.38.60])
-        by smtprelay04.hostedemail.com (Postfix) with ESMTP id B7673180A814F;
-        Tue, 25 Jun 2019 05:37:10 +0000 (UTC)
-X-Session-Marker: 6A6F6540706572636865732E636F6D
-X-Spam-Summary: 
-X-HE-Tag: toy89_3b5152c3463e
-X-Filterd-Recvd-Size: 3596
-Received: from XPS-9350.home (cpe-23-242-196-136.socal.res.rr.com [23.242.196.136])
-        (Authenticated sender: joe@perches.com)
-        by omf13.hostedemail.com (Postfix) with ESMTPA;
-        Tue, 25 Jun 2019 05:37:05 +0000 (UTC)
-Message-ID: <c364c36338d385eba60c523828ad8995c792ae4d.camel@perches.com>
-Subject: Re: [PATCH v4 5/7] lib/hexdump.c: Allow multiple groups to be
- separated by lines '|'
-From:   Joe Perches <joe@perches.com>
-To:     Alastair D'Silva <alastair@au1.ibm.com>, alastair@d-silva.org
-Cc:     Jani Nikula <jani.nikula@linux.intel.com>,
-        Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
-        Rodrigo Vivi <rodrigo.vivi@intel.com>,
-        David Airlie <airlied@linux.ie>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        Dan Carpenter <dan.carpenter@oracle.com>,
-        Karsten Keil <isdn@linux-pingi.de>,
-        Jassi Brar <jassisinghbrar@gmail.com>,
-        Tom Lendacky <thomas.lendacky@amd.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jose Abreu <Jose.Abreu@synopsys.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        Stanislaw Gruszka <sgruszka@redhat.com>,
-        Benson Leung <bleung@chromium.org>,
-        Enric Balletbo i Serra <enric.balletbo@collabora.com>,
-        "James E.J. Bottomley" <jejb@linux.ibm.com>,
-        "Martin K. Petersen" <martin.petersen@oracle.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Alexander Viro <viro@zeniv.linux.org.uk>,
-        Petr Mladek <pmladek@suse.com>,
-        Sergey Senozhatsky <sergey.senozhatsky@gmail.com>,
-        Steven Rostedt <rostedt@goodmis.org>,
-        David Laight <David.Laight@ACULAB.COM>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        intel-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
-        linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
-        ath10k@lists.infradead.org, linux-wireless@vger.kernel.org,
-        linux-scsi@vger.kernel.org, linux-fbdev@vger.kernel.org,
-        devel@driverdev.osuosl.org, linux-fsdevel@vger.kernel.org
-Date:   Mon, 24 Jun 2019 22:37:03 -0700
-In-Reply-To: <20190625031726.12173-6-alastair@au1.ibm.com>
-References: <20190625031726.12173-1-alastair@au1.ibm.com>
-         <20190625031726.12173-6-alastair@au1.ibm.com>
-Content-Type: text/plain; charset="ISO-8859-1"
-User-Agent: Evolution 3.30.5-0ubuntu0.18.10.1 
+        id S1728847AbfFYFwB (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 25 Jun 2019 01:52:01 -0400
+Received: from mail.kernel.org ([198.145.29.99]:56142 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727648AbfFYFwB (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 25 Jun 2019 01:52:01 -0400
+Received: from sol.localdomain (c-24-5-143-220.hsd1.ca.comcast.net [24.5.143.220])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id DD9D620659;
+        Tue, 25 Jun 2019 05:51:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1561441920;
+        bh=zErfKkE0dDe6QPtP0QyHLUcT9ZshvVhRZjjZyN2wz2Y=;
+        h=Date:From:To:Cc:Subject:From;
+        b=0B7ngWSRJXWueNfl9+HEpVXsnBiiSlpMzd9OZAPrwPsFISRpJCOQrBMbiegQjFk5v
+         7av0muD9CL0u7/F4ZEr6N+V4JSCJL00pJVu8EVDZ2RRjkCw49Ddgzh2x+LVtJV+dHo
+         upR1Qhn8YGmC/xxecPoMRj6Okr41oRQbhXMJeEoE=
+Date:   Mon, 24 Jun 2019 22:51:58 -0700
+From:   Eric Biggers <ebiggers@kernel.org>
+To:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        Johannes Berg <johannes@sipsolutions.net>,
+        "David S. Miller" <davem@davemloft.net>
+Cc:     linux-kernel@vger.kernel.org, syzkaller-bugs@googlegroups.com
+Subject: Reminder: 12 open syzbot bugs in "net/wireless" subsystem
+Message-ID: <20190625055158.GF17703@sol.localdomain>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.12.1 (2019-06-15)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Tue, 2019-06-25 at 13:17 +1000, Alastair D'Silva wrote:
-> From: Alastair D'Silva <alastair@d-silva.org>
-> 
-> With the wider display format, it can become hard to identify how many
-> bytes into the line you are looking at.
-> 
-> The patch adds new flags to hex_dump_to_buffer() and print_hex_dump() to
-> print vertical lines to separate every N groups of bytes.
-> 
-> eg.
-> buf:00000000: 454d414e 43415053|4e495f45 00584544  NAMESPAC|E_INDEX.
-> buf:00000010: 00000000 00000002|00000000 00000000  ........|........
-> 
-> Signed-off-by: Alastair D'Silva <alastair@d-silva.org>
-> ---
->  include/linux/printk.h |  3 +++
->  lib/hexdump.c          | 59 ++++++++++++++++++++++++++++++++++++------
->  2 files changed, 54 insertions(+), 8 deletions(-)
-> 
-> diff --git a/include/linux/printk.h b/include/linux/printk.h
-[]
-> @@ -485,6 +485,9 @@ enum {
->  
->  #define HEXDUMP_ASCII			BIT(0)
->  #define HEXDUMP_SUPPRESS_REPEATED	BIT(1)
-> +#define HEXDUMP_2_GRP_LINES		BIT(2)
-> +#define HEXDUMP_4_GRP_LINES		BIT(3)
-> +#define HEXDUMP_8_GRP_LINES		BIT(4)
+[This email was generated by a script.  Let me know if you have any suggestions
+to make it better.]
 
-These aren't really bits as only one value should be set
-as 8 overrides 4 and 4 overrides 2.
+Of the currently open syzbot reports against the upstream kernel, I've manually
+marked 12 of them as possibly being bugs in the "net/wireless" subsystem.  I've
+listed these reports below, sorted by an algorithm that tries to list first the
+reports most likely to be still valid, important, and actionable.
 
-I would also expect this to be a value of 2 in your above
-example, rather than 8.  It's described as groups not bytes.
+Of these 12 bugs, 10 were seen in mainline in the last week.
 
-The example is showing a what would normally be a space ' '
-separator as a vertical bar '|' every 2nd grouping.
+If you believe a bug is no longer valid, please close the syzbot report by
+sending a '#syz fix', '#syz dup', or '#syz invalid' command in reply to the
+original thread, as explained at https://goo.gl/tpsmEJ#status
 
+If you believe I misattributed a bug to the "net/wireless" subsystem, please let
+me know, and if possible forward the report to the correct people or mailing
+list.
+
+Here are the bugs:
+
+--------------------------------------------------------------------------------
+Title:              general protection fault in ath6kl_usb_alloc_urb_from_pipe
+Last occurred:      0 days ago
+Reported:           73 days ago
+Branches:           Mainline (with usb-fuzzer patches)
+Dashboard link:     https://syzkaller.appspot.com/bug?id=cd8b9cfe50a0bf36ee19eda2d7e2e06843dfbeaf
+Original thread:    https://lkml.kernel.org/lkml/0000000000008e825105865615e3@google.com/T/#u
+
+This bug has a C reproducer.
+
+No one has replied to the original thread for this bug yet.
+
+This looks like a bug in a net/wireless USB driver.
+
+If you fix this bug, please add the following tag to the commit:
+    Reported-by: syzbot+ead4037ec793e025e66f@syzkaller.appspotmail.com
+
+If you send any email or patch for this bug, please consider replying to the
+original thread.  For the git send-email command to use, or tips on how to reply
+if the thread isn't in your mailbox, see the "Reply instructions" at
+https://lkml.kernel.org/r/0000000000008e825105865615e3@google.com
+
+--------------------------------------------------------------------------------
+Title:              INFO: trying to register non-static key in rtl_c2hcmd_launcher
+Last occurred:      0 days ago
+Reported:           73 days ago
+Branches:           Mainline (with usb-fuzzer patches)
+Dashboard link:     https://syzkaller.appspot.com/bug?id=9c910719e185e47dad63741d473518b365286eb7
+Original thread:    https://lkml.kernel.org/lkml/000000000000727264058653d9a7@google.com/T/#u
+
+This bug has a C reproducer.
+
+The original thread for this bug has received 1 reply, 27 days ago.
+
+This looks like a bug in a net/wireless USB driver.
+
+If you fix this bug, please add the following tag to the commit:
+    Reported-by: syzbot+1fcc5ef45175fc774231@syzkaller.appspotmail.com
+
+If you send any email or patch for this bug, please consider replying to the
+original thread.  For the git send-email command to use, or tips on how to reply
+if the thread isn't in your mailbox, see the "Reply instructions" at
+https://lkml.kernel.org/r/000000000000727264058653d9a7@google.com
+
+--------------------------------------------------------------------------------
+Title:              WARNING: ODEBUG bug in rsi_probe
+Last occurred:      0 days ago
+Reported:           71 days ago
+Branches:           Mainline (with usb-fuzzer patches)
+Dashboard link:     https://syzkaller.appspot.com/bug?id=3b35267abf182bd98ba95c0943bc0f957e021101
+Original thread:    https://lkml.kernel.org/lkml/00000000000024bbd7058682eda1@google.com/T/#u
+
+This bug has a C reproducer.
+
+No one has replied to the original thread for this bug yet.
+
+This looks like a bug in a net/wireless USB driver.
+
+If you fix this bug, please add the following tag to the commit:
+    Reported-by: syzbot+1d1597a5aa3679c65b9f@syzkaller.appspotmail.com
+
+If you send any email or patch for this bug, please consider replying to the
+original thread.  For the git send-email command to use, or tips on how to reply
+if the thread isn't in your mailbox, see the "Reply instructions" at
+https://lkml.kernel.org/r/00000000000024bbd7058682eda1@google.com
+
+--------------------------------------------------------------------------------
+Title:              INFO: trying to register non-static key in del_timer_sync (2)
+Last occurred:      0 days ago
+Reported:           73 days ago
+Branches:           Mainline (with usb-fuzzer patches)
+Dashboard link:     https://syzkaller.appspot.com/bug?id=26525f643f454dd7be0078423e3cdb0d57744959
+Original thread:    https://lkml.kernel.org/lkml/000000000000927a7b0586561537@google.com/T/#u
+
+This bug has a C reproducer.
+
+The original thread for this bug has received 5 replies; the last was 12 days
+ago.
+
+This looks like a bug in a net/wireless USB driver.
+
+If you fix this bug, please add the following tag to the commit:
+    Reported-by: syzbot+dc4127f950da51639216@syzkaller.appspotmail.com
+
+If you send any email or patch for this bug, please reply to the original
+thread, which had activity only 12 days ago.  For the git send-email command to
+use, or tips on how to reply if the thread isn't in your mailbox, see the "Reply
+instructions" at https://lkml.kernel.org/r/000000000000927a7b0586561537@google.com
+
+--------------------------------------------------------------------------------
+Title:              WARNING in zd_mac_clear
+Last occurred:      0 days ago
+Reported:           73 days ago
+Branches:           Mainline (with usb-fuzzer patches)
+Dashboard link:     https://syzkaller.appspot.com/bug?id=46e5ae5074764b5f0eed428a8c4989d9efbe9146
+Original thread:    https://lkml.kernel.org/lkml/00000000000075a7a6058653d977@google.com/T/#u
+
+This bug has a C reproducer.
+
+No one has replied to the original thread for this bug yet.
+
+This looks like a bug in a net/wireless USB driver.
+
+If you fix this bug, please add the following tag to the commit:
+    Reported-by: syzbot+74c65761783d66a9c97c@syzkaller.appspotmail.com
+
+If you send any email or patch for this bug, please consider replying to the
+original thread.  For the git send-email command to use, or tips on how to reply
+if the thread isn't in your mailbox, see the "Reply instructions" at
+https://lkml.kernel.org/r/00000000000075a7a6058653d977@google.com
+
+--------------------------------------------------------------------------------
+Title:              WARNING: ath10k USB support is incomplete, don't expect anything to work!
+Last occurred:      0 days ago
+Reported:           46 days ago
+Branches:           Mainline (with usb-fuzzer patches)
+Dashboard link:     https://syzkaller.appspot.com/bug?id=8b74d6028d19ea25be1d3ee73502dc90833859d8
+Original thread:    https://lkml.kernel.org/lkml/000000000000a3ca70058872de7c@google.com/T/#u
+
+This bug has a C reproducer.
+
+The original thread for this bug has received 1 reply, 46 days ago.
+
+This looks like a bug in a net/wireless USB driver.
+
+If you fix this bug, please add the following tag to the commit:
+    Reported-by: syzbot+c1b25598aa60dcd47e78@syzkaller.appspotmail.com
+
+If you send any email or patch for this bug, please consider replying to the
+original thread.  For the git send-email command to use, or tips on how to reply
+if the thread isn't in your mailbox, see the "Reply instructions" at
+https://lkml.kernel.org/r/000000000000a3ca70058872de7c@google.com
+
+--------------------------------------------------------------------------------
+Title:              KASAN: invalid-free in rsi_91x_deinit
+Last occurred:      5 days ago
+Reported:           62 days ago
+Branches:           Mainline (with usb-fuzzer patches)
+Dashboard link:     https://syzkaller.appspot.com/bug?id=426fbebc1eac728afa08e52b1bcf8171c9413e29
+Original thread:    https://lkml.kernel.org/lkml/0000000000005ae4cd058731d407@google.com/T/#u
+
+This bug has a C reproducer.
+
+No one has replied to the original thread for this bug yet.
+
+This looks like a bug in a net/wireless USB driver.
+
+If you fix this bug, please add the following tag to the commit:
+    Reported-by: syzbot+7c72edfb407b2bd866ce@syzkaller.appspotmail.com
+
+If you send any email or patch for this bug, please consider replying to the
+original thread.  For the git send-email command to use, or tips on how to reply
+if the thread isn't in your mailbox, see the "Reply instructions" at
+https://lkml.kernel.org/r/0000000000005ae4cd058731d407@google.com
+
+--------------------------------------------------------------------------------
+Title:              KASAN: slab-out-of-bounds Read in p54u_load_firmware_cb
+Last occurred:      5 days ago
+Reported:           49 days ago
+Branches:           Mainline (with usb-fuzzer patches)
+Dashboard link:     https://syzkaller.appspot.com/bug?id=a7d7aec13ac4d6981c15814acb900348d340dd70
+Original thread:    https://lkml.kernel.org/lkml/00000000000001de810588363aaf@google.com/T/#u
+
+This bug has a syzkaller reproducer only.
+
+The original thread for this bug has received 4 replies; the last was 9 hours
+ago.
+
+This looks like a bug in a net/wireless USB driver.
+
+If you fix this bug, please add the following tag to the commit:
+    Reported-by: syzbot+6d237e74cdc13f036473@syzkaller.appspotmail.com
+
+If you send any email or patch for this bug, please reply to the original
+thread, which had activity only 9 hours ago.  For the git send-email command to
+use, or tips on how to reply if the thread isn't in your mailbox, see the "Reply
+instructions" at https://lkml.kernel.org/r/00000000000001de810588363aaf@google.com
+
+--------------------------------------------------------------------------------
+Title:              WARNING in submit_rx_urb/usb_submit_urb
+Last occurred:      1 day ago
+Reported:           26 days ago
+Branches:           Mainline (with usb-fuzzer patches)
+Dashboard link:     https://syzkaller.appspot.com/bug?id=97fff2c33c48264fba4d185f5f0f0961bdcd2ae2
+Original thread:    https://lkml.kernel.org/lkml/0000000000004da71e058a06318b@google.com/T/#u
+
+This bug has a C reproducer.
+
+The original thread for this bug has received 1 reply, 26 days ago.
+
+This looks like a bug in a net/wireless USB driver.
+
+If you fix this bug, please add the following tag to the commit:
+    Reported-by: syzbot+c2a1fa67c02faa0de723@syzkaller.appspotmail.com
+
+If you send any email or patch for this bug, please consider replying to the
+original thread.  For the git send-email command to use, or tips on how to reply
+if the thread isn't in your mailbox, see the "Reply instructions" at
+https://lkml.kernel.org/r/0000000000004da71e058a06318b@google.com
+
+--------------------------------------------------------------------------------
+Title:              WARNING in ar5523_submit_rx_cmd/usb_submit_urb
+Last occurred:      2 days ago
+Reported:           21 days ago
+Branches:           Mainline (with usb-fuzzer patches)
+Dashboard link:     https://syzkaller.appspot.com/bug?id=d4cdc65d1db112b294b568e0cff47bca7cd3edbd
+Original thread:    https://lkml.kernel.org/lkml/000000000000f4900f058a69d6c5@google.com/T/#u
+
+This bug has a C reproducer.
+
+The original thread for this bug has received 1 reply, 21 days ago.
+
+This looks like a bug in a net/wireless USB driver.
+
+If you fix this bug, please add the following tag to the commit:
+    Reported-by: syzbot+6101b0c732dea13ea55b@syzkaller.appspotmail.com
+
+If you send any email or patch for this bug, please consider replying to the
+original thread.  For the git send-email command to use, or tips on how to reply
+if the thread isn't in your mailbox, see the "Reply instructions" at
+https://lkml.kernel.org/r/000000000000f4900f058a69d6c5@google.com
+
+--------------------------------------------------------------------------------
+Title:              KMSAN: uninit-value in rt2500usb_bbp_read
+Last occurred:      13 days ago
+Reported:           18 days ago
+Branches:           Mainline (with KMSAN patches)
+Dashboard link:     https://syzkaller.appspot.com/bug?id=f35d123de7d393019c1ed4d4e60dc66596ed62cd
+Original thread:    https://lkml.kernel.org/lkml/000000000000cf6a70058aa48695@google.com/T/#u
+
+This bug has a C reproducer.
+
+The original thread for this bug has received 1 reply, 18 days ago.
+
+This looks like a bug in a net/wireless USB driver.
+
+If you fix this bug, please add the following tag to the commit:
+    Reported-by: syzbot+a106a5b084a6890d2607@syzkaller.appspotmail.com
+
+If you send any email or patch for this bug, please consider replying to the
+original thread.  For the git send-email command to use, or tips on how to reply
+if the thread isn't in your mailbox, see the "Reply instructions" at
+https://lkml.kernel.org/r/000000000000cf6a70058aa48695@google.com
+
+--------------------------------------------------------------------------------
+Title:              KASAN: use-after-free Read in p54u_load_firmware_cb
+Last occurred:      11 days ago
+Reported:           49 days ago
+Branches:           Mainline (with usb-fuzzer patches)
+Dashboard link:     https://syzkaller.appspot.com/bug?id=082c09653e43e33a6a56f8c57cf051eeacae9d5f
+Original thread:    https://lkml.kernel.org/lkml/000000000000050c5f0588363ad6@google.com/T/#u
+
+This bug has a syzkaller reproducer only.
+
+The original thread for this bug has received 13 replies; the last was 27 days
+ago.
+
+This looks like a bug in a net/wireless USB driver.
+
+If you fix this bug, please add the following tag to the commit:
+    Reported-by: syzbot+200d4bb11b23d929335f@syzkaller.appspotmail.com
+
+If you send any email or patch for this bug, please consider replying to the
+original thread.  For the git send-email command to use, or tips on how to reply
+if the thread isn't in your mailbox, see the "Reply instructions" at
+https://lkml.kernel.org/r/000000000000050c5f0588363ad6@google.com
 
