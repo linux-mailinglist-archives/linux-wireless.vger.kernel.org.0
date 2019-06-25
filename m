@@ -2,84 +2,96 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 0E61F5228D
-	for <lists+linux-wireless@lfdr.de>; Tue, 25 Jun 2019 07:07:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7A70D52291
+	for <lists+linux-wireless@lfdr.de>; Tue, 25 Jun 2019 07:08:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726738AbfFYFHh (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 25 Jun 2019 01:07:37 -0400
-Received: from smtp.codeaurora.org ([198.145.29.96]:39940 "EHLO
+        id S1726896AbfFYFIf (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 25 Jun 2019 01:08:35 -0400
+Received: from smtp.codeaurora.org ([198.145.29.96]:41140 "EHLO
         smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725916AbfFYFHg (ORCPT
+        with ESMTP id S1725916AbfFYFIf (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 25 Jun 2019 01:07:36 -0400
+        Tue, 25 Jun 2019 01:08:35 -0400
 Received: by smtp.codeaurora.org (Postfix, from userid 1000)
-        id CACC16085C; Tue, 25 Jun 2019 05:07:35 +0000 (UTC)
+        id 55F3160117; Tue, 25 Jun 2019 05:08:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1561439255;
-        bh=Egj3t8C7HouFx+6HG4W2JU32zdWh1NGPFjK0kmlPsBk=;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=Dw5MGcUUQLmVL2SqVcOd6oc64F6cQ7uVFEIgRmk0vB30iCm4gHIJmtMf6Kh8D0XHx
-         ZmdLp7A0aNSnpU8wUbevb6zBGN+nVc0R+Vol3wHxmaSElW/MlKHiD8RcBFnx1igbnC
-         kR+UcdRoXg5VLQ6+07DqJ4Y/ghP0xiupLh8MPZA8=
+        s=default; t=1561439314;
+        bh=Etw/gzrvxnAmkHMqOUnEH9bAj7d2LTwoXEaqXn/6fiI=;
+        h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
+        b=Th9zCbu/hRTPOK4A1qzS7CNacwXS9wy+7AorOPFz3K353brv78BETC+/nko+azbG5
+         17rx5QfDxzSSnaXk364aJBfXMFIMb0B5uJidQGnf0TJn0ZUkU8y3lmRpmN1A6Auh/X
+         hjoXZowGeVrjlTRYTByWteYLld3gnAJQzjFvrPu8=
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         pdx-caf-mail.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-2.7 required=2.0 tests=ALL_TRUSTED,BAYES_00,
-        DKIM_INVALID,DKIM_SIGNED,SPF_NONE autolearn=no autolearn_force=no
-        version=3.4.0
+X-Spam-Status: No, score=-0.8 required=2.0 tests=ALL_TRUSTED,BAYES_00,
+        DKIM_INVALID,DKIM_SIGNED,MISSING_DATE,MISSING_MID,SPF_NONE autolearn=no
+        autolearn_force=no version=3.4.0
 Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
         (Authenticated sender: kvalo@smtp.codeaurora.org)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 482DB601E7;
-        Tue, 25 Jun 2019 05:07:34 +0000 (UTC)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 12FDF60117;
+        Tue, 25 Jun 2019 05:08:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1561439255;
-        bh=Egj3t8C7HouFx+6HG4W2JU32zdWh1NGPFjK0kmlPsBk=;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=Dw5MGcUUQLmVL2SqVcOd6oc64F6cQ7uVFEIgRmk0vB30iCm4gHIJmtMf6Kh8D0XHx
-         ZmdLp7A0aNSnpU8wUbevb6zBGN+nVc0R+Vol3wHxmaSElW/MlKHiD8RcBFnx1igbnC
-         kR+UcdRoXg5VLQ6+07DqJ4Y/ghP0xiupLh8MPZA8=
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 482DB601E7
+        s=default; t=1561439313;
+        bh=Etw/gzrvxnAmkHMqOUnEH9bAj7d2LTwoXEaqXn/6fiI=;
+        h=Subject:From:In-Reply-To:References:To:Cc:From;
+        b=I+eaKgkiLn1L+7D47P/Kqysb5BSL6vP/xod/Z6EPT219sT/+HGWlCAXPbt3HEajkC
+         jf/5tE6lMcIWncPAkjTBcOo7HzaaU/lzE5zs3rP38bl5pPBfCdHykGqE0Lxb8o1zu2
+         ciZiPWDaZLC2ZRwBewHp7SWHAkdhcxtCZ76BNyq0=
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 12FDF60117
 Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
 Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
-From:   Kalle Valo <kvalo@codeaurora.org>
-To:     Michael =?utf-8?Q?B=C3=BCsch?= <m@bues.ch>
-Cc:     H Buus <ubuntu@hbuus.com>,
-        Larry Finger <Larry.Finger@lwfinger.net>,
-        linux-wireless <linux-wireless@vger.kernel.org>
-Subject: Re: [PATCH] ssb/gpio: Remove unnecessary WARN_ON from driver_gpio
-References: <946c86bf-7e90-a981-b9fc-757adb98adfa@hbuus.com>
-        <20190610204927.2de21c9a@wiggum>
-Date:   Tue, 25 Jun 2019 08:07:31 +0300
-In-Reply-To: <20190610204927.2de21c9a@wiggum> ("Michael \=\?utf-8\?Q\?B\=C3\=BCs\?\=
- \=\?utf-8\?Q\?ch\=22's\?\= message of
-        "Mon, 10 Jun 2019 20:49:27 +0200")
-Message-ID: <87v9wus164.fsf@kamboji.qca.qualcomm.com>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH 1/5] iwlegacy: 3945: no need to check return value of
+ debugfs_create functions
+From:   Kalle Valo <kvalo@codeaurora.org>
+In-Reply-To: <20190612142658.12792-1-gregkh@linuxfoundation.org>
+References: <20190612142658.12792-1-gregkh@linuxfoundation.org>
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc:     Johannes Berg <johannes.berg@intel.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Stanislaw Gruszka <sgruszka@redhat.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org
+User-Agent: pwcli/0.0.0-git (https://github.com/kvalo/pwcli/) Python/2.7.12
+Message-Id: <20190625050834.55F3160117@smtp.codeaurora.org>
+Date:   Tue, 25 Jun 2019 05:08:34 +0000 (UTC)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Michael B=C3=BCsch <m@bues.ch> writes:
+Greg Kroah-Hartman <gregkh@linuxfoundation.org> wrote:
 
-> The WARN_ON triggers on older BCM4401-B0 100Base-TX ethernet controllers.
-> The warning serves no purpose. So let's just remove it.
->
-> Reported-by: H Buus <ubuntu@hbuus.com>
-> Signed-off-by: Michael B=C3=BCsch <m@bues.ch>
+> When calling debugfs functions, there is no need to ever check the
+> return value.  This driver was saving the debugfs file away to be
+> removed at a later time.  However, the 80211 core would delete the whole
+> directory that the debugfs files are created in, after it asks the
+> driver to do the deletion, so just rely on the 80211 core to do all of
+> the cleanup for us, making us not need to keep a pointer to the dentries
+> around at all.
+> 
+> This cleans up the structure of the driver data a bit and makes the code
+> a tiny bit smaller.
+> 
+> Cc: Stanislaw Gruszka <sgruszka@redhat.com>
+> Cc: Kalle Valo <kvalo@codeaurora.org>
+> Cc: "David S. Miller" <davem@davemloft.net>
+> Cc: linux-wireless@vger.kernel.org
+> Cc: netdev@vger.kernel.org
+> Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
-For some reason patchwork (or pwcli script) didn't like this patch so
-manually applied to wireless-drivers-next:
+2 patches applied to wireless-drivers-next.git, thanks.
 
-e73e43246da6 ssb/gpio: Remove unnecessary WARN_ON from driver_gpio
+f503c7695343 iwlegacy: 3945: no need to check return value of debugfs_create functions
+ffb92649f4d9 iwlegacy: 4965: no need to check return value of debugfs_create functions
 
-I have a faint recollection that I had a similar problem with another
-patch from Michael, did we ever conclude what was the issue?
+-- 
+https://patchwork.kernel.org/patch/10990125/
 
---=20
-Kalle Valo
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+
