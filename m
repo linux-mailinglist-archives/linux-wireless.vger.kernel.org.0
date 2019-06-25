@@ -2,300 +2,377 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 5192354CF0
-	for <lists+linux-wireless@lfdr.de>; Tue, 25 Jun 2019 12:58:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8689D54D13
+	for <lists+linux-wireless@lfdr.de>; Tue, 25 Jun 2019 13:01:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732313AbfFYK6Y (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 25 Jun 2019 06:58:24 -0400
-Received: from nbd.name ([46.4.11.11]:33526 "EHLO nbd.name"
+        id S1729481AbfFYLBb (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 25 Jun 2019 07:01:31 -0400
+Received: from nbd.name ([46.4.11.11]:33642 "EHLO nbd.name"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1732304AbfFYK6X (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 25 Jun 2019 06:58:23 -0400
+        id S1729421AbfFYLBb (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 25 Jun 2019 07:01:31 -0400
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name;
-         s=20160729; h=References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
-        Sender:Reply-To:MIME-Version:Content-Type:Content-Transfer-Encoding:
-        Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-        Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+         s=20160729; h=Message-Id:Date:Subject:To:From:Sender:Reply-To:Cc:
+        MIME-Version:Content-Type:Content-Transfer-Encoding:Content-ID:
+        Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+        :Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
         List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=FveMuWL4rddGi6yiUCJ6TMnsDEDt1egrV4pO1Llzwe8=; b=Uc7lO5TLboQ6RCe6+Vsc4xS604
-        K4XxZHATnDa55HxW0FkXdK8p9upcuiiggb6DE9f1/uvbs3nsyU1Ag1xndfhTYS6Qj2uK8Ow0yOknd
-        p62uqumtsIwxCYc53FdrA9BRYxJylufqfQlO+hVhZtxZFAmWMDsLhlKmD1/znXPfeLV0=;
+        bh=+PMzwbpgEmsKInsOUNP98123UzcrZ7d4jQoQ4Zz/D2A=; b=VBsTb0qrY5Mdeb7H5Hr15mUB4a
+        1TiXfmWtcMVM+oJRtgwXmzrND6tI9GfnOQ3y0NLKOirHB+tBXfV6ckKpD4XYFtAkQbhSj/8aDWxrq
+        uU1MhlJI518U886ps8r8xC8CyvcWvcBXwKRhVmyDye/Uzn99ZoH1zpvW8oZFk1ytIZn4=;
 Received: from p5b2063ee.dip0.t-ipconnect.de ([91.32.99.238] helo=maeck-3.local)
         by ds12 with esmtpsa (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
         (Exim 4.89)
         (envelope-from <nbd@nbd.name>)
-        id 1hfj9a-0004e8-Bf; Tue, 25 Jun 2019 12:58:22 +0200
+        id 1hfjCb-0004oG-Co
+        for linux-wireless@vger.kernel.org; Tue, 25 Jun 2019 13:01:29 +0200
 Received: by maeck-3.local (Postfix, from userid 501)
-        id D0F7F5F99E81; Tue, 25 Jun 2019 12:58:21 +0200 (CEST)
+        id E1F7A5F9A1A1; Tue, 25 Jun 2019 13:01:23 +0200 (CEST)
 From:   Felix Fietkau <nbd@nbd.name>
 To:     linux-wireless@vger.kernel.org
-Cc:     lorenzo@kernel.org
-Subject: [PATCH v3 3/4] mt76: mt76x02: fix tx status reporting issues
-Date:   Tue, 25 Jun 2019 12:58:21 +0200
-Message-Id: <20190625105821.12674-1-nbd@nbd.name>
+Subject: [PATCH 1/2] mt76: mt7603: rework and fix tx status reporting
+Date:   Tue, 25 Jun 2019 13:01:22 +0200
+Message-Id: <20190625110123.12979-1-nbd@nbd.name>
 X-Mailer: git-send-email 2.17.0
-In-Reply-To: <20190612143833.51959-1-nbd@nbd.name>
-References: <20190612143833.51959-1-nbd@nbd.name>
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-When the hardware falls back to lower rates for a transmit attempt, only the
-first status report will show the number of retries correctly. The frames
-that follow will report the correct final rate, but number of retries set to 0.
-This can cause the rate control module to vastly underestimate the number of
-retransmissions per rate.
+Tx status reporting on mt7603 has a number of issues:
 
-To fix this, we need to keep track of the initial requested tx rate per packet
-and pass it to the status information.
-For frames with tx status requested, this is simple: use the rate configured
-in info->control.rates[0] as reference.
-For no-skb tx status information, we have to encode the requested tx rate in
-the packet id (and make it possible to distinguish it from real packet ids).
+- the hardware can alter the first rate index, but it is not reported to
+  the driver
+- probing is very imprecise, because it alters the per-client rate set,
+  but only considers info->status.rates for rate selection of a single probe
+  packet
+- short/long GI selection has limitations, which are not accurately reported
+  to mac80211
+- if rates are changed while packets are in flight, tx status reports for
+  the old rate set might be processed based on the new selection
 
-To do that, reduce the packet id field size by one bit, and use that bit to
-indicate packet id vs rate.
+This led to very suboptimal rate selection with minstrel_ht.
 
-This change also improves reporting by filling the status rate array with
-rates from first rate to final rate, taking the same steps as the hardware
-fallback table. This matters in corner cases like MCS8 on HT, where the
-fallback target is MCS0, not MCS7.
+This patch completely reworks tx status reporting to get rid of these
+limitations:
+
+- Store the previous and current rate set in the driver + the TSF value
+  at the time of the switch.
+- Use the tx status TSF value to determine which rate set needs to be used
+  as reference.
+- Report only short or long GI rates for a single status event, not a mix.
+- The hardware reports the last used rate index. Use it along with the
+  retry count to figure out what rate was used for the first attempt.
+- Use the same retry count value for all rate slots to make this calculation
+  work.
+- Derive the probe rate from the current rateset instead of the skb cb
+- Do not wait for a status report for the probe frame before removing the
+  probe rate from the rate table. Do it immediately after it was referenced
+  in a tx status report.
+- Use the first half of the first rate retry budget for the probe rate
+  in order to avoid using too many retries on that rate
+
+With this patch, throughput under bad link conditions is improved
+significantly, and there is a lot less rate fluctuation going on.
 
 Signed-off-by: Felix Fietkau <nbd@nbd.name>
 ---
-v3: fix endian issue
-v2: fix reporting of non-probing frames with tx status requested
+ .../net/wireless/mediatek/mt76/mt7603/init.c  |   5 +-
+ .../net/wireless/mediatek/mt76/mt7603/mac.c   | 127 +++++++++++++-----
+ .../wireless/mediatek/mt76/mt7603/mt7603.h    |  11 +-
+ .../net/wireless/mediatek/mt76/mt7603/regs.h  |   6 +
+ 4 files changed, 108 insertions(+), 41 deletions(-)
 
- drivers/net/wireless/mediatek/mt76/mt76.h     |  11 +-
- .../net/wireless/mediatek/mt76/mt76x02_mac.c  | 102 +++++++++++++++---
- .../net/wireless/mediatek/mt76/mt76x02_txrx.c |   8 +-
- .../wireless/mediatek/mt76/mt76x02_usb_core.c |   8 +-
- 4 files changed, 109 insertions(+), 20 deletions(-)
-
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76.h b/drivers/net/wireless/mediatek/mt76/mt76.h
-index fc4169c83e76..907bec9d5e4c 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt76.h
-@@ -258,10 +258,11 @@ struct mt76_rx_tid {
- #define MT_TX_CB_TXS_DONE		BIT(1)
- #define MT_TX_CB_TXS_FAILED		BIT(2)
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7603/init.c b/drivers/net/wireless/mediatek/mt76/mt7603/init.c
+index bce51997ff3b..d666e26afe90 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7603/init.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7603/init.c
+@@ -229,9 +229,8 @@ mt7603_mac_init(struct mt7603_dev *dev)
  
--#define MT_PACKET_ID_MASK		GENMASK(7, 0)
-+#define MT_PACKET_ID_MASK		GENMASK(6, 0)
- #define MT_PACKET_ID_NO_ACK		0
- #define MT_PACKET_ID_NO_SKB		1
- #define MT_PACKET_ID_FIRST		2
-+#define MT_PACKET_ID_HAS_RATE		BIT(7)
- 
- #define MT_TX_STATUS_SKB_TIMEOUT	HZ
- 
-@@ -689,6 +690,14 @@ static inline void mt76_insert_hdr_pad(struct sk_buff *skb)
- 	skb->data[len + 1] = 0;
- }
- 
-+static inline bool mt76_is_skb_pktid(u8 pktid)
-+{
-+	if (pktid & MT_PACKET_ID_HAS_RATE)
-+		return false;
-+
-+	return pktid >= MT_PACKET_ID_FIRST;
-+}
-+
- void mt76_rx(struct mt76_dev *dev, enum mt76_rxq_id q, struct sk_buff *skb);
- void mt76_tx(struct mt76_dev *dev, struct ieee80211_sta *sta,
- 	     struct mt76_wcid *wcid, struct sk_buff *skb);
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76x02_mac.c b/drivers/net/wireless/mediatek/mt76/mt76x02_mac.c
-index ee4a86971be7..82bafb5ac326 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76x02_mac.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt76x02_mac.c
-@@ -420,30 +420,92 @@ void mt76x02_mac_write_txwi(struct mt76x02_dev *dev, struct mt76x02_txwi *txwi,
- EXPORT_SYMBOL_GPL(mt76x02_mac_write_txwi);
- 
- static void
--mt76x02_mac_fill_tx_status(struct mt76x02_dev *dev,
-+mt76x02_tx_rate_fallback(struct ieee80211_tx_rate *rates, int idx, int phy)
-+{
-+	u8 mcs, nss;
-+
-+	if (!idx)
-+		return;
-+
-+	rates += idx - 1;
-+	rates[1] = rates[0];
-+	switch (phy) {
-+	case MT_PHY_TYPE_VHT:
-+		mcs = ieee80211_rate_get_vht_mcs(rates);
-+		nss = ieee80211_rate_get_vht_nss(rates);
-+
-+		if (mcs == 0)
-+			nss = max_t(int, nss - 1, 1);
-+		else
-+			mcs--;
-+
-+		ieee80211_rate_set_vht(rates + 1, mcs, nss);
-+		break;
-+	case MT_PHY_TYPE_HT_GF:
-+	case MT_PHY_TYPE_HT:
-+		/* MCS 8 falls back to MCS 0 */
-+		if (rates[0].idx == 8) {
-+		    rates[1].idx = 0;
-+		    break;
-+		}
-+		/* fall through */
-+	default:
-+		rates[1].idx = max_t(int, rates[0].idx - 1, 0);
-+		break;
-+	}
-+}
-+
-+static void
-+mt76x02_mac_fill_tx_status(struct mt76x02_dev *dev, struct mt76x02_sta *msta,
- 			   struct ieee80211_tx_info *info,
- 			   struct mt76x02_tx_status *st, int n_frames)
+ 	mt76_wr(dev, MT_AGG_ARUCR, FIELD_PREP(MT_AGG_ARxCR_LIMIT(0), 7));
+ 	mt76_wr(dev, MT_AGG_ARDCR,
+-		FIELD_PREP(MT_AGG_ARxCR_LIMIT(0), 0) |
+-		FIELD_PREP(MT_AGG_ARxCR_LIMIT(1),
+-			   max_t(int, 0, MT7603_RATE_RETRY - 2)) |
++		FIELD_PREP(MT_AGG_ARxCR_LIMIT(0), MT7603_RATE_RETRY - 1) |
++		FIELD_PREP(MT_AGG_ARxCR_LIMIT(1), MT7603_RATE_RETRY - 1) |
+ 		FIELD_PREP(MT_AGG_ARxCR_LIMIT(2), MT7603_RATE_RETRY - 1) |
+ 		FIELD_PREP(MT_AGG_ARxCR_LIMIT(3), MT7603_RATE_RETRY - 1) |
+ 		FIELD_PREP(MT_AGG_ARxCR_LIMIT(4), MT7603_RATE_RETRY - 1) |
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7603/mac.c b/drivers/net/wireless/mediatek/mt76/mt7603/mac.c
+index 6629dd64cc22..e2ad5c769072 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7603/mac.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7603/mac.c
+@@ -591,6 +591,7 @@ void mt7603_wtbl_set_rates(struct mt7603_dev *dev, struct mt7603_sta *sta,
+ 			   struct ieee80211_tx_rate *probe_rate,
+ 			   struct ieee80211_tx_rate *rates)
  {
- 	struct ieee80211_tx_rate *rate = info->status.rates;
--	int cur_idx, last_rate;
-+	struct ieee80211_tx_rate last_rate;
-+	u16 first_rate;
-+	int retry = st->retry;
-+	int phy;
- 	int i;
++	struct ieee80211_tx_rate *ref;
+ 	int wcid = sta->wcid.idx;
+ 	u32 addr = mt7603_wtbl2_addr(wcid);
+ 	bool stbc = false;
+@@ -599,7 +600,8 @@ void mt7603_wtbl_set_rates(struct mt7603_dev *dev, struct mt7603_sta *sta,
+ 	u16 val[4];
+ 	u16 probe_val;
+ 	u32 w9 = mt76_rr(dev, addr + 9 * 4);
+-	int i;
++	bool rateset;
++	int i, k;
  
- 	if (!n_frames)
+ 	if (!mt76_poll(dev, MT_WTBL_UPDATE, MT_WTBL_UPDATE_BUSY, 0, 5000))
  		return;
+@@ -607,6 +609,41 @@ void mt7603_wtbl_set_rates(struct mt7603_dev *dev, struct mt7603_sta *sta,
+ 	for (i = n_rates; i < 4; i++)
+ 		rates[i] = rates[n_rates - 1];
  
--	last_rate = min_t(int, st->retry, IEEE80211_TX_MAX_RATES - 1);
--	mt76x02_mac_process_tx_rate(&rate[last_rate], st->rate,
-+	phy = FIELD_GET(MT_RXWI_RATE_PHY, st->rate);
-+
-+	if (st->pktid & MT_PACKET_ID_HAS_RATE) {
-+		first_rate = st->rate & ~MT_RXWI_RATE_INDEX;
-+		first_rate |= st->pktid & MT_RXWI_RATE_INDEX;
-+
-+		mt76x02_mac_process_tx_rate(&rate[0], first_rate,
-+					    dev->mt76.chandef.chan->band);
-+	} else if (rate[0].idx < 0) {
-+		if (!msta)
-+			return;
-+
-+		mt76x02_mac_process_tx_rate(&rate[0], msta->wcid.tx_info,
-+					    dev->mt76.chandef.chan->band);
++	rateset = !(sta->rate_set_tsf & BIT(0));
++	memcpy(sta->rateset[rateset].rates, rates,
++	       sizeof(sta->rateset[rateset].rates));
++	if (probe_rate) {
++		sta->rateset[rateset].probe_rate = *probe_rate;
++		ref = &sta->rateset[rateset].probe_rate;
++	} else {
++		sta->rateset[rateset].probe_rate.idx = -1;
++		ref = &sta->rateset[rateset].rates[0];
 +	}
 +
-+	mt76x02_mac_process_tx_rate(&last_rate, st->rate,
- 				    dev->mt76.chandef.chan->band);
--	if (last_rate < IEEE80211_TX_MAX_RATES - 1)
--		rate[last_rate + 1].idx = -1;
--
--	cur_idx = rate[last_rate].idx + last_rate;
--	for (i = 0; i <= last_rate; i++) {
--		rate[i].flags = rate[last_rate].flags;
--		rate[i].idx = max_t(int, 0, cur_idx - i);
--		rate[i].count = 1;
++	rates = sta->rateset[rateset].rates;
++	for (i = 0; i < ARRAY_SIZE(sta->rateset[rateset].rates); i++) {
++		/*
++		 * We don't support switching between short and long GI
++		 * within the rate set. For accurate tx status reporting, we
++		 * need to make sure that flags match.
++		 * For improved performance, avoid duplicate entries by
++		 * decrementing the MCS index if necessary
++		 */
++		if ((ref->flags ^ rates[i].flags) & IEEE80211_TX_RC_SHORT_GI)
++			rates[i].flags ^= IEEE80211_TX_RC_SHORT_GI;
 +
-+	for (i = 0; i < ARRAY_SIZE(info->status.rates); i++) {
-+		retry--;
-+		if (i + 1 == ARRAY_SIZE(info->status.rates)) {
-+			info->status.rates[i] = last_rate;
-+			info->status.rates[i].count = max_t(int, retry, 1);
-+			break;
++		for (k = 0; k < i; k++) {
++			if (rates[i].idx != rates[k].idx)
++				continue;
++			if ((rates[i].flags ^ rates[k].flags) &
++			    IEEE80211_TX_RC_40_MHZ_WIDTH)
++				continue;
++
++			rates[i].idx--;
 +		}
 +
-+		mt76x02_tx_rate_fallback(info->status.rates, i, phy);
-+		if (info->status.rates[i].idx == last_rate.idx)
-+			break;
 +	}
 +
-+	if (i + 1 < ARRAY_SIZE(info->status.rates)) {
-+		info->status.rates[i + 1].idx = -1;
-+		info->status.rates[i + 1].count = 0;
- 	}
--	rate[last_rate].count = st->retry + 1 - last_rate;
+ 	w9 &= MT_WTBL2_W9_SHORT_GI_20 | MT_WTBL2_W9_SHORT_GI_40 |
+ 	      MT_WTBL2_W9_SHORT_GI_80;
  
- 	info->status.ampdu_len = n_frames;
- 	info->status.ampdu_ack_len = st->success ? n_frames : 0;
-@@ -489,13 +551,19 @@ void mt76x02_send_tx_status(struct mt76x02_dev *dev,
- 	mt76_tx_status_lock(mdev, &list);
+@@ -650,19 +687,22 @@ void mt7603_wtbl_set_rates(struct mt7603_dev *dev, struct mt7603_sta *sta,
+ 	mt76_wr(dev, MT_WTBL_RIUCR1,
+ 		FIELD_PREP(MT_WTBL_RIUCR1_RATE0, probe_val) |
+ 		FIELD_PREP(MT_WTBL_RIUCR1_RATE1, val[0]) |
+-		FIELD_PREP(MT_WTBL_RIUCR1_RATE2_LO, val[0]));
++		FIELD_PREP(MT_WTBL_RIUCR1_RATE2_LO, val[1]));
  
- 	if (wcid) {
--		if (stat->pktid >= MT_PACKET_ID_FIRST)
-+		if (mt76_is_skb_pktid(stat->pktid))
- 			status.skb = mt76_tx_status_skb_get(mdev, wcid,
- 							    stat->pktid, &list);
- 		if (status.skb)
- 			status.info = IEEE80211_SKB_CB(status.skb);
- 	}
+ 	mt76_wr(dev, MT_WTBL_RIUCR2,
+-		FIELD_PREP(MT_WTBL_RIUCR2_RATE2_HI, val[0] >> 8) |
++		FIELD_PREP(MT_WTBL_RIUCR2_RATE2_HI, val[1] >> 8) |
+ 		FIELD_PREP(MT_WTBL_RIUCR2_RATE3, val[1]) |
+-		FIELD_PREP(MT_WTBL_RIUCR2_RATE4, val[1]) |
++		FIELD_PREP(MT_WTBL_RIUCR2_RATE4, val[2]) |
+ 		FIELD_PREP(MT_WTBL_RIUCR2_RATE5_LO, val[2]));
  
-+	if (!status.skb && !(stat->pktid & MT_PACKET_ID_HAS_RATE)) {
-+		mt76_tx_status_unlock(mdev, &list);
-+		rcu_read_unlock();
-+		return;
-+	}
+ 	mt76_wr(dev, MT_WTBL_RIUCR3,
+ 		FIELD_PREP(MT_WTBL_RIUCR3_RATE5_HI, val[2] >> 4) |
+-		FIELD_PREP(MT_WTBL_RIUCR3_RATE6, val[2]) |
++		FIELD_PREP(MT_WTBL_RIUCR3_RATE6, val[3]) |
+ 		FIELD_PREP(MT_WTBL_RIUCR3_RATE7, val[3]));
+ 
++	mt76_set(dev, MT_LPON_T0CR, MT_LPON_T0CR_MODE); /* TSF read */
++	sta->rate_set_tsf = (mt76_rr(dev, MT_LPON_UTTR0) & ~BIT(0)) | rateset;
 +
- 	if (msta && stat->aggr && !status.skb) {
- 		u32 stat_val, stat_cache;
+ 	mt76_wr(dev, MT_WTBL_UPDATE,
+ 		FIELD_PREP(MT_WTBL_UPDATE_WLAN_IDX, wcid) |
+ 		MT_WTBL_UPDATE_RATE_UPDATE |
+@@ -889,9 +929,9 @@ int mt7603_tx_prepare_skb(struct mt76_dev *mdev, void *txwi_ptr,
  
-@@ -512,14 +580,14 @@ void mt76x02_send_tx_status(struct mt76x02_dev *dev,
- 			return;
+ 	if (info->flags & IEEE80211_TX_CTL_RATE_CTRL_PROBE) {
+ 		spin_lock_bh(&dev->mt76.lock);
+-		msta->rate_probe = true;
+ 		mt7603_wtbl_set_rates(dev, msta, &info->control.rates[0],
+ 				      msta->rates);
++		msta->rate_probe = true;
+ 		spin_unlock_bh(&dev->mt76.lock);
+ 	}
+ 
+@@ -906,9 +946,12 @@ mt7603_fill_txs(struct mt7603_dev *dev, struct mt7603_sta *sta,
+ 		struct ieee80211_tx_info *info, __le32 *txs_data)
+ {
+ 	struct ieee80211_supported_band *sband;
+-	int final_idx = 0;
++	struct mt7603_rate_set *rs;
++	int first_idx = 0, last_idx;
++	u32 rate_set_tsf;
+ 	u32 final_rate;
+ 	u32 final_rate_flags;
++	bool rs_idx;
+ 	bool ack_timeout;
+ 	bool fixed_rate;
+ 	bool probe;
+@@ -925,6 +968,7 @@ mt7603_fill_txs(struct mt7603_dev *dev, struct mt7603_sta *sta,
+ 	txs = le32_to_cpu(txs_data[4]);
+ 	ampdu = !fixed_rate && (txs & MT_TXS4_AMPDU);
+ 	count = FIELD_GET(MT_TXS4_TX_COUNT, txs);
++	last_idx = FIELD_GET(MT_TXS4_LAST_TX_RATE, txs);
+ 
+ 	txs = le32_to_cpu(txs_data[0]);
+ 	final_rate = FIELD_GET(MT_TXS0_TX_RATE, txs);
+@@ -946,38 +990,57 @@ mt7603_fill_txs(struct mt7603_dev *dev, struct mt7603_sta *sta,
+ 	if (ampdu || (info->flags & IEEE80211_TX_CTL_AMPDU))
+ 		info->flags |= IEEE80211_TX_STAT_AMPDU | IEEE80211_TX_CTL_AMPDU;
+ 
++	first_idx = max_t(int, 0, last_idx - (count + 1) / MT7603_RATE_RETRY);
++
+ 	if (fixed_rate && !probe) {
+ 		info->status.rates[0].count = count;
++		i = 0;
+ 		goto out;
+ 	}
+ 
+-	for (i = 0, idx = 0; i < ARRAY_SIZE(info->status.rates); i++) {
+-		int cur_count = min_t(int, count, 2 * MT7603_RATE_RETRY);
++	rate_set_tsf = ACCESS_ONCE(sta->rate_set_tsf);
++	rs_idx = !((u32)(FIELD_GET(MT_TXS1_F0_TIMESTAMP, le32_to_cpu(txs_data[1])) -
++			 rate_set_tsf) < 1000000);
++	rs_idx ^= rate_set_tsf & BIT(0);
++	rs = &sta->rateset[rs_idx];
+ 
+-		if (!i && probe) {
+-			cur_count = 1;
+-		} else {
+-			info->status.rates[i] = sta->rates[idx];
+-			idx++;
+-		}
++	if (!first_idx && rs->probe_rate.idx >= 0) {
++		info->status.rates[0] = rs->probe_rate;
+ 
+-		if (i && info->status.rates[i].idx < 0) {
+-			info->status.rates[i - 1].count += count;
+-			break;
++		spin_lock_bh(&dev->mt76.lock);
++		if (sta->rate_probe) {
++			mt7603_wtbl_set_rates(dev, sta, NULL,
++					      sta->rates);
++			sta->rate_probe = false;
  		}
++		spin_unlock_bh(&dev->mt76.lock);
++	} else
++		info->status.rates[0] = rs->rates[first_idx / 2];
++	info->status.rates[0].count = 0;
  
--		mt76x02_mac_fill_tx_status(dev, status.info, &msta->status,
--					   msta->n_frames);
-+		mt76x02_mac_fill_tx_status(dev, msta, status.info,
-+					   &msta->status, msta->n_frames);
+-		if (!count) {
+-			info->status.rates[i].idx = -1;
+-			break;
+-		}
++	for (i = 0, idx = first_idx; count && idx <= last_idx; idx++) {
++		struct ieee80211_tx_rate *cur_rate;
++		int cur_count;
  
- 		msta->status = *stat;
- 		msta->n_frames = 1;
- 		*update = 0;
- 	} else {
--		mt76x02_mac_fill_tx_status(dev, status.info, stat, 1);
-+		mt76x02_mac_fill_tx_status(dev, msta, status.info, stat, 1);
- 		*update = 1;
+-		info->status.rates[i].count = cur_count;
+-		final_idx = i;
++		cur_rate = &rs->rates[idx / 2];
++		cur_count = min_t(int, MT7603_RATE_RETRY, count);
+ 		count -= cur_count;
++
++		if (idx && (cur_rate->idx != info->status.rates[i].idx ||
++			    cur_rate->flags != info->status.rates[i].flags)) {
++			i++;
++			if (i == ARRAY_SIZE(info->status.rates))
++				break;
++
++			info->status.rates[i] = *cur_rate;
++			info->status.rates[i].count = 0;
++		}
++
++		info->status.rates[i].count += cur_count;
  	}
  
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76x02_txrx.c b/drivers/net/wireless/mediatek/mt76/mt76x02_txrx.c
-index cf7abd9b7d2e..7a1164a07ee7 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76x02_txrx.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt76x02_txrx.c
-@@ -164,9 +164,15 @@ int mt76x02_tx_prepare_skb(struct mt76_dev *mdev, void *txwi_ptr,
- 	mt76x02_mac_write_txwi(dev, txwi, tx_info->skb, wcid, sta, len);
+ out:
+-	final_rate_flags = info->status.rates[final_idx].flags;
++	final_rate_flags = info->status.rates[i].flags;
  
- 	pid = mt76_tx_status_skb_add(mdev, wcid, tx_info->skb);
+ 	switch (FIELD_GET(MT_TX_RATE_MODE, final_rate)) {
+ 	case MT_PHY_TYPE_CCK:
+@@ -1004,8 +1067,8 @@ mt7603_fill_txs(struct mt7603_dev *dev, struct mt7603_sta *sta,
+ 		return false;
+ 	}
+ 
+-	info->status.rates[final_idx].idx = final_rate;
+-	info->status.rates[final_idx].flags = final_rate_flags;
++	info->status.rates[i].idx = final_rate;
++	info->status.rates[i].flags = final_rate_flags;
+ 
+ 	return true;
+ }
+@@ -1026,16 +1089,6 @@ mt7603_mac_add_txs_skb(struct mt7603_dev *dev, struct mt7603_sta *sta, int pid,
+ 	if (skb) {
+ 		struct ieee80211_tx_info *info = IEEE80211_SKB_CB(skb);
+ 
+-		if (info->flags & IEEE80211_TX_CTL_RATE_CTRL_PROBE) {
+-			spin_lock_bh(&dev->mt76.lock);
+-			if (sta->rate_probe) {
+-				mt7603_wtbl_set_rates(dev, sta, NULL,
+-						      sta->rates);
+-				sta->rate_probe = false;
+-			}
+-			spin_unlock_bh(&dev->mt76.lock);
+-		}
+-
+ 		if (!mt7603_fill_txs(dev, sta, info, txs_data)) {
+ 			ieee80211_tx_info_clear_status(info);
+ 			info->status.rates[0].idx = -1;
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7603/mt7603.h b/drivers/net/wireless/mediatek/mt76/mt7603/mt7603.h
+index 944dc9a11a15..60f8269daae7 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7603/mt7603.h
++++ b/drivers/net/wireless/mediatek/mt76/mt7603/mt7603.h
+@@ -51,6 +51,11 @@ enum mt7603_bw {
+ 	MT_BW_80,
+ };
+ 
++struct mt7603_rate_set {
++	struct ieee80211_tx_rate probe_rate;
++	struct ieee80211_tx_rate rates[4];
++};
 +
-+	/* encode packet rate for no-skb packet id to fix up status reporting */
-+	if (pid == MT_PACKET_ID_NO_SKB)
-+		pid = MT_PACKET_ID_HAS_RATE |
-+		      (le16_to_cpu(txwi->rate) & MT_RXWI_RATE_INDEX);
+ struct mt7603_sta {
+ 	struct mt76_wcid wcid; /* must be first */
+ 
+@@ -58,7 +63,11 @@ struct mt7603_sta {
+ 
+ 	struct sk_buff_head psq;
+ 
+-	struct ieee80211_tx_rate rates[8];
++	struct ieee80211_tx_rate rates[4];
 +
- 	txwi->pktid = pid;
- 
--	if (pid >= MT_PACKET_ID_FIRST)
-+	if (mt76_is_skb_pktid(pid))
- 		qsel = MT_QSEL_MGMT;
- 
- 	tx_info->info = FIELD_PREP(MT_TXD_INFO_QSEL, qsel) |
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76x02_usb_core.c b/drivers/net/wireless/mediatek/mt76/mt76x02_usb_core.c
-index 6b89f7eab26c..47386ca713cc 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76x02_usb_core.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt76x02_usb_core.c
-@@ -89,9 +89,15 @@ int mt76x02u_tx_prepare_skb(struct mt76_dev *mdev, void *data,
- 	skb_push(tx_info->skb, sizeof(*txwi));
- 
- 	pid = mt76_tx_status_skb_add(mdev, wcid, tx_info->skb);
++	struct mt7603_rate_set rateset[2];
++	u32 rate_set_tsf;
 +
-+	/* encode packet rate for no-skb packet id to fix up status reporting */
-+	if (pid == MT_PACKET_ID_NO_SKB)
-+		pid = MT_PACKET_ID_HAS_RATE |
-+		      (le16_to_cpu(txwi->rate) & MT_RXWI_RATE_INDEX);
-+
- 	txwi->pktid = pid;
+ 	u8 rate_count;
+ 	u8 n_rates;
  
--	if (pid >= MT_PACKET_ID_FIRST || ep == MT_EP_OUT_HCCA)
-+	if (mt76_is_skb_pktid(pid) || ep == MT_EP_OUT_HCCA)
- 		qsel = MT_QSEL_MGMT;
- 	else
- 		qsel = MT_QSEL_EDCA;
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7603/regs.h b/drivers/net/wireless/mediatek/mt76/mt7603/regs.h
+index 9d257d5c309d..eb9eefe8e125 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7603/regs.h
++++ b/drivers/net/wireless/mediatek/mt76/mt7603/regs.h
+@@ -480,6 +480,12 @@ enum {
+ #define MT_LPON_BASE			0x24000
+ #define MT_LPON(n)			(MT_LPON_BASE + (n))
+ 
++#define MT_LPON_T0CR			MT_LPON(0x010)
++#define MT_LPON_T0CR_MODE		GENMASK(1, 0)
++
++#define MT_LPON_UTTR0			MT_LPON(0x018)
++#define MT_LPON_UTTR1			MT_LPON(0x01c)
++
+ #define MT_LPON_BTEIR			MT_LPON(0x020)
+ #define MT_LPON_BTEIR_MBSS_MODE		GENMASK(31, 29)
+ 
 -- 
 2.17.0
 
