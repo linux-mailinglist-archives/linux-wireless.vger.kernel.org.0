@@ -2,218 +2,95 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 4D3BA55288
-	for <lists+linux-wireless@lfdr.de>; Tue, 25 Jun 2019 16:52:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 67547555D4
+	for <lists+linux-wireless@lfdr.de>; Tue, 25 Jun 2019 19:26:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730758AbfFYOwb (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 25 Jun 2019 10:52:31 -0400
-Received: from smtp.codeaurora.org ([198.145.29.96]:46758 "EHLO
-        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730529AbfFYOwb (ORCPT
+        id S1728874AbfFYR0l (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 25 Jun 2019 13:26:41 -0400
+Received: from mail-lj1-f194.google.com ([209.85.208.194]:38876 "EHLO
+        mail-lj1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726576AbfFYR0l (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 25 Jun 2019 10:52:31 -0400
-Received: by smtp.codeaurora.org (Postfix, from userid 1000)
-        id B399E602F8; Tue, 25 Jun 2019 14:52:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1561474349;
-        bh=q7FXiTJ7x3yscVLiqv7jrqv+PnKOgoWcGZTbA55x5EI=;
-        h=From:To:Subject:Date:From;
-        b=FaWxr6LP3ddk/yprx+dcQXVAeIJ3ZUQTZ5zg0b0uw4ad+wtbGdiQx1HH9SePNnUEo
-         hQNptAFmrCtxkVQFMqrSo7KjuOzTb+ZRsoYK9viPvY4xgW3sw8mZ9RygHHUIgt554d
-         Po2P9dIqMJnKmxYoco51Mxy1PW9YATnzQGN2QiiA=
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        pdx-caf-mail.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.7 required=2.0 tests=ALL_TRUSTED,BAYES_00,
-        DKIM_INVALID,DKIM_SIGNED,SPF_NONE autolearn=no autolearn_force=no
-        version=3.4.0
-Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-SHA256 (128/128 bits))
-        (No client certificate requested)
-        (Authenticated sender: kvalo@smtp.codeaurora.org)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 61FEE60256
-        for <linux-wireless@vger.kernel.org>; Tue, 25 Jun 2019 14:52:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1561474349;
-        bh=q7FXiTJ7x3yscVLiqv7jrqv+PnKOgoWcGZTbA55x5EI=;
-        h=From:To:Subject:Date:From;
-        b=FaWxr6LP3ddk/yprx+dcQXVAeIJ3ZUQTZ5zg0b0uw4ad+wtbGdiQx1HH9SePNnUEo
-         hQNptAFmrCtxkVQFMqrSo7KjuOzTb+ZRsoYK9viPvY4xgW3sw8mZ9RygHHUIgt554d
-         Po2P9dIqMJnKmxYoco51Mxy1PW9YATnzQGN2QiiA=
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 61FEE60256
-Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
-From:   Kalle Valo <kvalo@codeaurora.org>
-To:     linux-wireless@vger.kernel.org
-Subject: [PATCH] ath: fix SPDX tags
-Date:   Tue, 25 Jun 2019 17:52:25 +0300
-Message-Id: <1561474345-1439-1-git-send-email-kvalo@codeaurora.org>
-X-Mailer: git-send-email 2.7.4
+        Tue, 25 Jun 2019 13:26:41 -0400
+Received: by mail-lj1-f194.google.com with SMTP id r9so17069599ljg.5
+        for <linux-wireless@vger.kernel.org>; Tue, 25 Jun 2019 10:26:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=6gq84utB8K04TkFkVIjVVbqj+RReCP6QFmHdu5HDrdE=;
+        b=naD61bgrphwvsuQeh7I3S2TOG7WlFTu05G05sniZdPLkEFxpVLI4QzWmwpfPA9CiN2
+         ATfzx5rBs7HjKcRc1YDoStMPiGwTbE/QZWGQPVuWefMqhX47HS5O9BFNQFOGzfMmdXPX
+         IVJXBGv0G6J/Vm5nvfJK/lyKs9vJ4Qmi6I9GU=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=6gq84utB8K04TkFkVIjVVbqj+RReCP6QFmHdu5HDrdE=;
+        b=Fm/USSgJV0ILeTNNGp+u6m67bv7y4Atd4fo3R5luYHwM7rqvqhSopbxuI/dVbhe3Es
+         0r+r63sIjmu4LeX5DlW4VNrXK/i74FicsUQ2tqbQ87RVI29GZG5JoCBkBBYRZQjNM9+o
+         8pkVb9ygM4btdPT0d53c6bpGNh+mSpZZ6Ogg3fS3gvD4UigZyM/9WsasOVRwceDKsJF8
+         fhbV55O7YKDTpRIgjyPdf6Qk4FL3fuodmmAxyGVy/EG12yEwb1g0ztBLtWhkWl+B+yZ5
+         AqzZmMgk4XuoisKJnUxOXCkQchFQxxYJwxFesn956wUp9BT+6baZM34lHAhqrDaG/Knz
+         9SxQ==
+X-Gm-Message-State: APjAAAXcPup+ygKT3fOzsiwZOh3exQLmYl4beHmVEl8EbrvKfXwp+1Q7
+        PA7Jxjvb191o9gnljcOhW4D3t+kanzs=
+X-Google-Smtp-Source: APXvYqzkhYBNzgSNvfBMsTl9gydbQib6IZyjloqRfJzquDzIazGUVTLkeeYELxZVbW3z1g8Soquzug==
+X-Received: by 2002:a2e:981:: with SMTP id 123mr53971235ljj.66.1561483598986;
+        Tue, 25 Jun 2019 10:26:38 -0700 (PDT)
+Received: from mail-lf1-f47.google.com (mail-lf1-f47.google.com. [209.85.167.47])
+        by smtp.gmail.com with ESMTPSA id u13sm2028090lfi.4.2019.06.25.10.26.37
+        for <linux-wireless@vger.kernel.org>
+        (version=TLS1_3 cipher=AEAD-AES128-GCM-SHA256 bits=128/128);
+        Tue, 25 Jun 2019 10:26:38 -0700 (PDT)
+Received: by mail-lf1-f47.google.com with SMTP id z15so13185775lfh.13
+        for <linux-wireless@vger.kernel.org>; Tue, 25 Jun 2019 10:26:37 -0700 (PDT)
+X-Received: by 2002:a19:5515:: with SMTP id n21mr22825839lfe.26.1561483597150;
+ Tue, 25 Jun 2019 10:26:37 -0700 (PDT)
+MIME-Version: 1.0
+References: <20190604205323.200361-2-briannorris@chromium.org> <20190625044525.846A8607DE@smtp.codeaurora.org>
+In-Reply-To: <20190625044525.846A8607DE@smtp.codeaurora.org>
+From:   Brian Norris <briannorris@chromium.org>
+Date:   Tue, 25 Jun 2019 10:26:25 -0700
+X-Gmail-Original-Message-ID: <CA+ASDXP2xY_7BXk6L25FVFf1yyhnXOZygYwreGYGVY7aK0TVkg@mail.gmail.com>
+Message-ID: <CA+ASDXP2xY_7BXk6L25FVFf1yyhnXOZygYwreGYGVY7aK0TVkg@mail.gmail.com>
+Subject: Re: [PATCH 1/2] mwifiex: dispatch/rotate from reorder table atomically
+To:     Kalle Valo <kvalo@codeaurora.org>
+Cc:     Ganapathi Bhat <gbhat@marvell.com>,
+        Nishant Sarmukadam <nishants@marvell.com>,
+        Amitkumar Karwar <amitkarwar@gmail.com>,
+        Xinming Hu <huxinming820@gmail.com>,
+        Linux Kernel <linux-kernel@vger.kernel.org>,
+        linux-wireless <linux-wireless@vger.kernel.org>,
+        Doug Anderson <dianders@chromium.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Commit ec8f24b7faaf ("treewide: Add SPDX license identifier -
-Makefile/Kconfig") marked various Makefiles and Kconfig files within ath
-directories as GPL-2.0. But these modules and drivers are actually ISC:
+On Mon, Jun 24, 2019 at 9:45 PM Kalle Valo <kvalo@codeaurora.org> wrote:
+> New warning:
+>
+> drivers/net/wireless/marvell/mwifiex/wmm.c: In function 'mwifiex_wmm_process_tx':
+> drivers/net/wireless/marvell/mwifiex/wmm.c:1438:4: warning: 'flags' may be used uninitialized in this function [-Wmaybe-uninitialized]
+>     mwifiex_11n_aggregate_pkt(priv, ptr, ptr_index, flags);
+>     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+> drivers/net/wireless/marvell/mwifiex/wmm.c:1406:16: note: 'flags' was declared here
+>   unsigned long flags;
+>                 ^~~~~
 
-* ath
-* ar5523
-* ath10k
-* ath5k
-* ath6kl
-* ath9k
-* wcn36xx
-* wil6210
+Yikes! Not sure how I missed that, as I *thought* I had -Werror
+enabled. Maybe things got lost a bit in the shuffles from GCC to Clang
+for building our kernels internally.
 
-Fix SPDX tags accordingly.
+Anyway, "used" is a bit generous here, since these are just useless
+function arguments (never *actually* used now). I should remove these
+args entirely.
 
-Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
----
- drivers/net/wireless/ath/Kconfig          | 2 +-
- drivers/net/wireless/ath/Makefile         | 2 +-
- drivers/net/wireless/ath/ar5523/Kconfig   | 2 +-
- drivers/net/wireless/ath/ar5523/Makefile  | 2 +-
- drivers/net/wireless/ath/ath10k/Kconfig   | 2 +-
- drivers/net/wireless/ath/ath5k/Kconfig    | 2 +-
- drivers/net/wireless/ath/ath5k/Makefile   | 2 +-
- drivers/net/wireless/ath/ath6kl/Kconfig   | 2 +-
- drivers/net/wireless/ath/ath9k/Kconfig    | 2 +-
- drivers/net/wireless/ath/ath9k/Makefile   | 2 +-
- drivers/net/wireless/ath/wcn36xx/Kconfig  | 2 +-
- drivers/net/wireless/ath/wcn36xx/Makefile | 2 +-
- drivers/net/wireless/ath/wil6210/Makefile | 2 +-
- 13 files changed, 13 insertions(+), 13 deletions(-)
+> 2 patches set to Changes Requested.
 
-diff --git a/drivers/net/wireless/ath/Kconfig b/drivers/net/wireless/ath/Kconfig
-index af2049e99188..d98d6ac90f3d 100644
---- a/drivers/net/wireless/ath/Kconfig
-+++ b/drivers/net/wireless/ath/Kconfig
-@@ -1,4 +1,4 @@
--# SPDX-License-Identifier: GPL-2.0-only
-+# SPDX-License-Identifier: ISC
- config ATH_COMMON
- 	tristate
- 
-diff --git a/drivers/net/wireless/ath/Makefile b/drivers/net/wireless/ath/Makefile
-index e4e460b5498e..ee2b2431e5a3 100644
---- a/drivers/net/wireless/ath/Makefile
-+++ b/drivers/net/wireless/ath/Makefile
-@@ -1,4 +1,4 @@
--# SPDX-License-Identifier: GPL-2.0
-+# SPDX-License-Identifier: ISC
- obj-$(CONFIG_ATH5K)		+= ath5k/
- obj-$(CONFIG_ATH9K_HW)		+= ath9k/
- obj-$(CONFIG_CARL9170)		+= carl9170/
-diff --git a/drivers/net/wireless/ath/ar5523/Kconfig b/drivers/net/wireless/ath/ar5523/Kconfig
-index 75fc66983da5..41d3c9a48b08 100644
---- a/drivers/net/wireless/ath/ar5523/Kconfig
-+++ b/drivers/net/wireless/ath/ar5523/Kconfig
-@@ -1,4 +1,4 @@
--# SPDX-License-Identifier: GPL-2.0-only
-+# SPDX-License-Identifier: ISC
- config AR5523
-        tristate "Atheros AR5523 wireless driver support"
-        depends on MAC80211 && USB
-diff --git a/drivers/net/wireless/ath/ar5523/Makefile b/drivers/net/wireless/ath/ar5523/Makefile
-index 84fc88aa109e..34efa5772096 100644
---- a/drivers/net/wireless/ath/ar5523/Makefile
-+++ b/drivers/net/wireless/ath/ar5523/Makefile
-@@ -1,2 +1,2 @@
--# SPDX-License-Identifier: GPL-2.0-only
-+# SPDX-License-Identifier: ISC
- obj-$(CONFIG_AR5523)   := ar5523.o
-diff --git a/drivers/net/wireless/ath/ath10k/Kconfig b/drivers/net/wireless/ath/ath10k/Kconfig
-index 3522f251fa7f..6b3ff02a373d 100644
---- a/drivers/net/wireless/ath/ath10k/Kconfig
-+++ b/drivers/net/wireless/ath/ath10k/Kconfig
-@@ -1,4 +1,4 @@
--# SPDX-License-Identifier: GPL-2.0-only
-+# SPDX-License-Identifier: ISC
- config ATH10K
- 	tristate "Atheros 802.11ac wireless cards support"
- 	depends on MAC80211 && HAS_DMA
-diff --git a/drivers/net/wireless/ath/ath5k/Kconfig b/drivers/net/wireless/ath/ath5k/Kconfig
-index c587146795f6..802f8f87773a 100644
---- a/drivers/net/wireless/ath/ath5k/Kconfig
-+++ b/drivers/net/wireless/ath/ath5k/Kconfig
-@@ -1,4 +1,4 @@
--# SPDX-License-Identifier: GPL-2.0-only
-+# SPDX-License-Identifier: ISC
- config ATH5K
- 	tristate "Atheros 5xxx wireless cards support"
- 	depends on (PCI || ATH25) && MAC80211
-diff --git a/drivers/net/wireless/ath/ath5k/Makefile b/drivers/net/wireless/ath/ath5k/Makefile
-index a8724eee21f8..78f318d49af5 100644
---- a/drivers/net/wireless/ath/ath5k/Makefile
-+++ b/drivers/net/wireless/ath/ath5k/Makefile
-@@ -1,4 +1,4 @@
--# SPDX-License-Identifier: GPL-2.0
-+# SPDX-License-Identifier: ISC
- ath5k-y				+= caps.o
- ath5k-y				+= initvals.o
- ath5k-y				+= eeprom.o
-diff --git a/drivers/net/wireless/ath/ath6kl/Kconfig b/drivers/net/wireless/ath/ath6kl/Kconfig
-index 2b27a87e74f5..dcf8ca0dcc52 100644
---- a/drivers/net/wireless/ath/ath6kl/Kconfig
-+++ b/drivers/net/wireless/ath/ath6kl/Kconfig
-@@ -1,4 +1,4 @@
--# SPDX-License-Identifier: GPL-2.0-only
-+# SPDX-License-Identifier: ISC
- config ATH6KL
- 	tristate "Atheros mobile chipsets support"
- 	depends on CFG80211
-diff --git a/drivers/net/wireless/ath/ath9k/Kconfig b/drivers/net/wireless/ath/ath9k/Kconfig
-index a1ef8769983a..5601cfd6a293 100644
---- a/drivers/net/wireless/ath/ath9k/Kconfig
-+++ b/drivers/net/wireless/ath/ath9k/Kconfig
-@@ -1,4 +1,4 @@
--# SPDX-License-Identifier: GPL-2.0-only
-+# SPDX-License-Identifier: ISC
- config ATH9K_HW
- 	tristate
- config ATH9K_COMMON
-diff --git a/drivers/net/wireless/ath/ath9k/Makefile b/drivers/net/wireless/ath/ath9k/Makefile
-index f71b2ad8275c..15af0a836925 100644
---- a/drivers/net/wireless/ath/ath9k/Makefile
-+++ b/drivers/net/wireless/ath/ath9k/Makefile
-@@ -1,4 +1,4 @@
--# SPDX-License-Identifier: GPL-2.0
-+# SPDX-License-Identifier: ISC
- ath9k-y +=	beacon.o \
- 		gpio.o \
- 		init.o \
-diff --git a/drivers/net/wireless/ath/wcn36xx/Kconfig b/drivers/net/wireless/ath/wcn36xx/Kconfig
-index 4ab2d59ff2ca..a4b153470a2c 100644
---- a/drivers/net/wireless/ath/wcn36xx/Kconfig
-+++ b/drivers/net/wireless/ath/wcn36xx/Kconfig
-@@ -1,4 +1,4 @@
--# SPDX-License-Identifier: GPL-2.0-only
-+# SPDX-License-Identifier: ISC
- config WCN36XX
- 	tristate "Qualcomm Atheros WCN3660/3680 support"
- 	depends on MAC80211 && HAS_DMA
-diff --git a/drivers/net/wireless/ath/wcn36xx/Makefile b/drivers/net/wireless/ath/wcn36xx/Makefile
-index 582049f65735..27413703ad69 100644
---- a/drivers/net/wireless/ath/wcn36xx/Makefile
-+++ b/drivers/net/wireless/ath/wcn36xx/Makefile
-@@ -1,4 +1,4 @@
--# SPDX-License-Identifier: GPL-2.0
-+# SPDX-License-Identifier: ISC
- obj-$(CONFIG_WCN36XX) := wcn36xx.o
- wcn36xx-y +=   main.o \
-                dxe.o \
-diff --git a/drivers/net/wireless/ath/wil6210/Makefile b/drivers/net/wireless/ath/wil6210/Makefile
-index d3d61ae459e2..53a0d995ddb0 100644
---- a/drivers/net/wireless/ath/wil6210/Makefile
-+++ b/drivers/net/wireless/ath/wil6210/Makefile
-@@ -1,4 +1,4 @@
--# SPDX-License-Identifier: GPL-2.0
-+# SPDX-License-Identifier: ISC
- obj-$(CONFIG_WIL6210) += wil6210.o
- 
- wil6210-y := main.o
--- 
-2.7.4
+Will send a v2.
 
+Thanks,
+Brian
