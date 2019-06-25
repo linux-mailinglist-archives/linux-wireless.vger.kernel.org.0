@@ -2,95 +2,139 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 67547555D4
-	for <lists+linux-wireless@lfdr.de>; Tue, 25 Jun 2019 19:26:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 39DB75561D
+	for <lists+linux-wireless@lfdr.de>; Tue, 25 Jun 2019 19:41:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728874AbfFYR0l (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 25 Jun 2019 13:26:41 -0400
-Received: from mail-lj1-f194.google.com ([209.85.208.194]:38876 "EHLO
-        mail-lj1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726576AbfFYR0l (ORCPT
+        id S1732236AbfFYRk5 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 25 Jun 2019 13:40:57 -0400
+Received: from mail-pf1-f195.google.com ([209.85.210.195]:34807 "EHLO
+        mail-pf1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726521AbfFYRk5 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 25 Jun 2019 13:26:41 -0400
-Received: by mail-lj1-f194.google.com with SMTP id r9so17069599ljg.5
-        for <linux-wireless@vger.kernel.org>; Tue, 25 Jun 2019 10:26:40 -0700 (PDT)
+        Tue, 25 Jun 2019 13:40:57 -0400
+Received: by mail-pf1-f195.google.com with SMTP id c85so9855931pfc.1
+        for <linux-wireless@vger.kernel.org>; Tue, 25 Jun 2019 10:40:57 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=chromium.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=6gq84utB8K04TkFkVIjVVbqj+RReCP6QFmHdu5HDrdE=;
-        b=naD61bgrphwvsuQeh7I3S2TOG7WlFTu05G05sniZdPLkEFxpVLI4QzWmwpfPA9CiN2
-         ATfzx5rBs7HjKcRc1YDoStMPiGwTbE/QZWGQPVuWefMqhX47HS5O9BFNQFOGzfMmdXPX
-         IVJXBGv0G6J/Vm5nvfJK/lyKs9vJ4Qmi6I9GU=
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=ux77FZ9CHBjOrnDI3EGePYwTHmJ+z3DID4gfNoVBXXI=;
+        b=B2tUetSMchtGW/+SGYLyVgEoxEsQnGMalqfzkjRhSWLa2CAkg9rIOWI2GrJouCvBmJ
+         8SSoFbzPRXkulByCc5u2YTkbxzk3N/RPcIhBo+OM3Jz9vXdGLPi+TvGlOLoAMx10+WlV
+         P/0Y1ECcoF74A7rb/2nxql5xDRiDJ7zW4eJ5k=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=6gq84utB8K04TkFkVIjVVbqj+RReCP6QFmHdu5HDrdE=;
-        b=Fm/USSgJV0ILeTNNGp+u6m67bv7y4Atd4fo3R5luYHwM7rqvqhSopbxuI/dVbhe3Es
-         0r+r63sIjmu4LeX5DlW4VNrXK/i74FicsUQ2tqbQ87RVI29GZG5JoCBkBBYRZQjNM9+o
-         8pkVb9ygM4btdPT0d53c6bpGNh+mSpZZ6Ogg3fS3gvD4UigZyM/9WsasOVRwceDKsJF8
-         fhbV55O7YKDTpRIgjyPdf6Qk4FL3fuodmmAxyGVy/EG12yEwb1g0ztBLtWhkWl+B+yZ5
-         AqzZmMgk4XuoisKJnUxOXCkQchFQxxYJwxFesn956wUp9BT+6baZM34lHAhqrDaG/Knz
-         9SxQ==
-X-Gm-Message-State: APjAAAXcPup+ygKT3fOzsiwZOh3exQLmYl4beHmVEl8EbrvKfXwp+1Q7
-        PA7Jxjvb191o9gnljcOhW4D3t+kanzs=
-X-Google-Smtp-Source: APXvYqzkhYBNzgSNvfBMsTl9gydbQib6IZyjloqRfJzquDzIazGUVTLkeeYELxZVbW3z1g8Soquzug==
-X-Received: by 2002:a2e:981:: with SMTP id 123mr53971235ljj.66.1561483598986;
-        Tue, 25 Jun 2019 10:26:38 -0700 (PDT)
-Received: from mail-lf1-f47.google.com (mail-lf1-f47.google.com. [209.85.167.47])
-        by smtp.gmail.com with ESMTPSA id u13sm2028090lfi.4.2019.06.25.10.26.37
-        for <linux-wireless@vger.kernel.org>
-        (version=TLS1_3 cipher=AEAD-AES128-GCM-SHA256 bits=128/128);
-        Tue, 25 Jun 2019 10:26:38 -0700 (PDT)
-Received: by mail-lf1-f47.google.com with SMTP id z15so13185775lfh.13
-        for <linux-wireless@vger.kernel.org>; Tue, 25 Jun 2019 10:26:37 -0700 (PDT)
-X-Received: by 2002:a19:5515:: with SMTP id n21mr22825839lfe.26.1561483597150;
- Tue, 25 Jun 2019 10:26:37 -0700 (PDT)
-MIME-Version: 1.0
-References: <20190604205323.200361-2-briannorris@chromium.org> <20190625044525.846A8607DE@smtp.codeaurora.org>
-In-Reply-To: <20190625044525.846A8607DE@smtp.codeaurora.org>
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=ux77FZ9CHBjOrnDI3EGePYwTHmJ+z3DID4gfNoVBXXI=;
+        b=pfJCznvBIcqGyvxCYCB14Aa3u1nkRTrttsU7OEU6pRT7nHh+RDA0KaeyLRm/EHosi4
+         BZEZTUIdUrGe0sCjAcMeGbZC6cOU7SpqaUoXTMlbz/ogZCT49Pep3O7+UsWr+bU8g7Hh
+         nMlkw02VpQS7X+93lU2gi+G47KZIHwwnOKS3t0UX6KdsMl8FsIKb0S6kATVs2AvqD08P
+         kuxfsdM9UYoChVfflWmDx111iHWIm1p0Sx999jhLYxO3ltBNZ8g8zhLIO6KlaoK0eouU
+         w10OKIDy2izYXqL0JzhDC2xjPjHoV87Cn5ksxGeuDZnC3utvjB8W3YJ7Yh61rRCQLplD
+         jH3g==
+X-Gm-Message-State: APjAAAUjgYIMjj4bT1FP0/41C8vVKx3lk7a2F4AikAde3qbllLFoa511
+        De/UWYliD8gUCfwCQcXK8GbfSQ==
+X-Google-Smtp-Source: APXvYqzNDPcrCGfOG+yL1j11DnH5kFJPaIn1I4HvlZNFyLHQ4xt+OBlk/zX50Hgr1Nyc9Lq0MQAuSw==
+X-Received: by 2002:a63:d60c:: with SMTP id q12mr39461181pgg.176.1561484456705;
+        Tue, 25 Jun 2019 10:40:56 -0700 (PDT)
+Received: from smtp.gmail.com ([2620:15c:202:1:534:b7c0:a63c:460c])
+        by smtp.gmail.com with ESMTPSA id 85sm20872129pfv.130.2019.06.25.10.40.54
+        (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
+        Tue, 25 Jun 2019 10:40:55 -0700 (PDT)
 From:   Brian Norris <briannorris@chromium.org>
-Date:   Tue, 25 Jun 2019 10:26:25 -0700
-X-Gmail-Original-Message-ID: <CA+ASDXP2xY_7BXk6L25FVFf1yyhnXOZygYwreGYGVY7aK0TVkg@mail.gmail.com>
-Message-ID: <CA+ASDXP2xY_7BXk6L25FVFf1yyhnXOZygYwreGYGVY7aK0TVkg@mail.gmail.com>
-Subject: Re: [PATCH 1/2] mwifiex: dispatch/rotate from reorder table atomically
-To:     Kalle Valo <kvalo@codeaurora.org>
-Cc:     Ganapathi Bhat <gbhat@marvell.com>,
+To:     Ganapathi Bhat <gbhat@marvell.com>,
         Nishant Sarmukadam <nishants@marvell.com>,
         Amitkumar Karwar <amitkarwar@gmail.com>,
-        Xinming Hu <huxinming820@gmail.com>,
-        Linux Kernel <linux-kernel@vger.kernel.org>,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        Doug Anderson <dianders@chromium.org>
-Content-Type: text/plain; charset="UTF-8"
+        Xinming Hu <huxinming820@gmail.com>
+Cc:     <linux-kernel@vger.kernel.org>, linux-wireless@vger.kernel.org,
+        Brian Norris <briannorris@chromium.org>
+Subject: [PATCH v2 0/2] mwifiex: spinlock usage improvements
+Date:   Tue, 25 Jun 2019 10:40:43 -0700
+Message-Id: <20190625174045.125223-1-briannorris@chromium.org>
+X-Mailer: git-send-email 2.22.0.410.gd8fdbe21b5-goog
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Mon, Jun 24, 2019 at 9:45 PM Kalle Valo <kvalo@codeaurora.org> wrote:
-> New warning:
->
-> drivers/net/wireless/marvell/mwifiex/wmm.c: In function 'mwifiex_wmm_process_tx':
-> drivers/net/wireless/marvell/mwifiex/wmm.c:1438:4: warning: 'flags' may be used uninitialized in this function [-Wmaybe-uninitialized]
->     mwifiex_11n_aggregate_pkt(priv, ptr, ptr_index, flags);
->     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-> drivers/net/wireless/marvell/mwifiex/wmm.c:1406:16: note: 'flags' was declared here
->   unsigned long flags;
->                 ^~~~~
+This series follows up on some notes from this thread:
 
-Yikes! Not sure how I missed that, as I *thought* I had -Werror
-enabled. Maybe things got lost a bit in the shuffles from GCC to Clang
-for building our kernels internally.
+  http://lkml.kernel.org/linux-wireless/20181130175957.167031-1-briannorris@chromium.org
+  Subject: [4.20 PATCH] Revert "mwifiex: restructure rx_reorder_tbl_lock usage"
 
-Anyway, "used" is a bit generous here, since these are just useless
-function arguments (never *actually* used now). I should remove these
-args entirely.
+where Ganapathi suggested I send out my work.
 
-> 2 patches set to Changes Requested.
+In particular, patch 1 is a step toward helping apply Ganapathi's
+original "mwifiex: restructure rx_reorder_tbl_lock usage" solution
+without regression, by logically separating the two operations (and
+therefore, the locking patterns) involved in that deadlock. It doesn't
+re-apply that change, nor does it 100% unblock such a solution, but at
+least it's a step in the right direction, as I understand it.
 
-Will send a v2.
+Patch 2 is a change I noticed should be possible along the way. There
+are a number of reasons we probably shouldn't be disabling hardirqs when
+it's not necessary, but one funny side effect: bugs noticed in the above
+"revert" patch would no longer happen. This is because
+mwifiex_recv_packet() bases softirq decisions on in_interrupt() (see
+description in include/linux/preempt.h), so it will automatically skip
+softirq processing if we have BH disabled, but not if we only have hard
+IRQs disabled. In other words, if we have such an incorrect nesting bug
+in the future (this time with BH disabled), we will now skip softirq
+processing and therefore sidestep this sort of bug. [1]
 
-Thanks,
+[Related note: softirq masking is weird:
+https://lwn.net/Articles/779738/]
+
+It's also possible we can improve system responsiveness and
+debuggability by keeping (hard) IRQs enabled more often, although I
+didn't measure any particular effect here, and most of these contexts
+should be rather quick.
+
+I've done a variety of performance and stress tests for this series, on
+both 8897/SDIO and 8997/PCIe, and I haven't seen any decrease in
+performance or stability. Or, any change in performance appears to be
+within the range of "noise".
+
+Regards,
 Brian
+
+[1] Side note: the usage of 'in_interrupt()' in mwifiex_recv_packet() is
+probably not really a good idea. But it does have a helpful side effect
+for this particular sort of bug.
+
+Changelog:
+
+v2:
+ * fix warnings about using uninitialized "flags" variables
+
+
+Brian Norris (2):
+  mwifiex: dispatch/rotate from reorder table atomically
+  mwifiex: don't disable hardirqs; just softirqs
+
+ drivers/net/wireless/marvell/mwifiex/11n.c    |  53 +++-----
+ drivers/net/wireless/marvell/mwifiex/11n.h    |   5 +-
+ .../net/wireless/marvell/mwifiex/11n_aggr.c   |  26 ++--
+ .../net/wireless/marvell/mwifiex/11n_aggr.h   |   2 +-
+ .../wireless/marvell/mwifiex/11n_rxreorder.c  | 125 ++++++++----------
+ .../net/wireless/marvell/mwifiex/cfg80211.c   |  35 +++--
+ drivers/net/wireless/marvell/mwifiex/cmdevt.c |  76 +++++------
+ drivers/net/wireless/marvell/mwifiex/init.c   |  32 ++---
+ drivers/net/wireless/marvell/mwifiex/main.c   |  29 ++--
+ drivers/net/wireless/marvell/mwifiex/scan.c   |  58 ++++----
+ .../wireless/marvell/mwifiex/sta_cmdresp.c    |   5 +-
+ .../net/wireless/marvell/mwifiex/sta_event.c  |  10 +-
+ drivers/net/wireless/marvell/mwifiex/tdls.c   |  68 ++++------
+ drivers/net/wireless/marvell/mwifiex/txrx.c   |   5 +-
+ .../net/wireless/marvell/mwifiex/uap_txrx.c   |  10 +-
+ drivers/net/wireless/marvell/mwifiex/usb.c    |  10 +-
+ drivers/net/wireless/marvell/mwifiex/util.c   |  15 +--
+ drivers/net/wireless/marvell/mwifiex/wmm.c    | 109 ++++++---------
+ 18 files changed, 278 insertions(+), 395 deletions(-)
+
+-- 
+2.22.0.410.gd8fdbe21b5-goog
+
