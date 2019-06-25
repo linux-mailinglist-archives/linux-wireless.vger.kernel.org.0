@@ -2,134 +2,126 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id DB7E152983
-	for <lists+linux-wireless@lfdr.de>; Tue, 25 Jun 2019 12:30:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 35A2254CAF
+	for <lists+linux-wireless@lfdr.de>; Tue, 25 Jun 2019 12:50:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732011AbfFYK3u (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 25 Jun 2019 06:29:50 -0400
-Received: from bombadil.infradead.org ([198.137.202.133]:49418 "EHLO
-        bombadil.infradead.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1731939AbfFYK3t (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 25 Jun 2019 06:29:49 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=bombadil.20170209; h=Content-Transfer-Encoding:
-        MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender
-        :Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From
-        :Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
-        List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=89G6EnwERirS4pDlPNUguptOr/aOmuUOxBTr3VXKKtI=; b=EYAj5n9Onzxz1XWV3DkgWAEsti
-        mDpDQPPYiczl1tyYrHvdfWc/Y4kWdwSyqrQT/RJQkf8d8R/AQH3y2i9/e6Cu/9yvaBv9dquWTHb3D
-        bJhW3gA7ZT2uR3QnNGqKK/Tu6u8ePt84doINubL+ydG58jP87rb13seIQPKE1/SKTgl0VFGT7LhfJ
-        eMDjhH++IhhTS4h3BLAsTRQIJpREN3rO3NQ0lsZu+d1tt+/rMqLXJV1jNNUiMoJmYMGzyZdiEWgNZ
-        TTTydT0pg7vZfddzox44QpDBJ3XeSJplhzvneQpcXeTGrKvJpyHBuXSkDJwEcxVQG+FqnTjwBQG2d
-        ABfUns2g==;
-Received: from clnet-p19-102.ikbnet.co.at ([83.175.77.102] helo=localhost)
-        by bombadil.infradead.org with esmtpsa (Exim 4.92 #3 (Red Hat Linux))
-        id 1hfihs-0005Xp-VP; Tue, 25 Jun 2019 10:29:45 +0000
-From:   Christoph Hellwig <hch@lst.de>
-To:     Larry Finger <Larry.Finger@lwfinger.net>,
-        Kalle Valo <kvalo@codeaurora.org>
-Cc:     b43-dev@lists.infradead.org, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH 4/4] b43: simplify engine type / DMA mask selection
-Date:   Tue, 25 Jun 2019 12:29:32 +0200
-Message-Id: <20190625102932.32257-5-hch@lst.de>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20190625102932.32257-1-hch@lst.de>
-References: <20190625102932.32257-1-hch@lst.de>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
+        id S1729236AbfFYKuX (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 25 Jun 2019 06:50:23 -0400
+Received: from nbd.name ([46.4.11.11]:33080 "EHLO nbd.name"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726521AbfFYKuX (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 25 Jun 2019 06:50:23 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name;
+         s=20160729; h=Message-Id:Date:Subject:To:From:Sender:Reply-To:Cc:
+        MIME-Version:Content-Type:Content-Transfer-Encoding:Content-ID:
+        Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+        :Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
+        List-Subscribe:List-Post:List-Owner:List-Archive;
+        bh=8RNOO/giFYx3mlfoogf3GPvT5yekgIVUaP2L3LuYI7o=; b=L12HfXdAenXe/vc00EoMn1L3JA
+        4V2eYTYrSWyJyFdq95a7d0ocukaSva5L+XAU2VcVXqhYRleBgjfWbuo6z0amtITE3EJCM0mIxLWKt
+        QP38CjI83ZPzJ+meSGqR5oGVWiwK0peH8tZ0E1HOKv7Jh591AKXTVilqRGYTN2HLVWaA=;
+Received: from p5b2063ee.dip0.t-ipconnect.de ([91.32.99.238] helo=maeck-3.local)
+        by ds12 with esmtpsa (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.89)
+        (envelope-from <nbd@nbd.name>)
+        id 1hfj1p-00040n-KI
+        for linux-wireless@vger.kernel.org; Tue, 25 Jun 2019 12:50:21 +0200
+Received: by maeck-3.local (Postfix, from userid 501)
+        id 06D535F99443; Tue, 25 Jun 2019 12:50:20 +0200 (CEST)
+From:   Felix Fietkau <nbd@nbd.name>
+To:     linux-wireless@vger.kernel.org
+Subject: [PATCH] mt76: mt76x0: fix RF frontend initialization for external PA
+Date:   Tue, 25 Jun 2019 12:50:20 +0200
+Message-Id: <20190625105020.8947-1-nbd@nbd.name>
+X-Mailer: git-send-email 2.17.0
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Return the engine type from the function looking at the registers, and
-just derive the DMA mask from that in the one place we care.
+When loading EEPROM data from flash, the RF frontend settings need to be
+initialized from flash data. Without this, the chip loads the wrong values
+from its internal eFuse ROM.
 
-Signed-off-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
 ---
- drivers/net/wireless/broadcom/b43/dma.c | 28 ++++++-------------------
- 1 file changed, 6 insertions(+), 22 deletions(-)
+ drivers/net/wireless/mediatek/mt76/mt76x0/phy.c     | 13 +++++++------
+ drivers/net/wireless/mediatek/mt76/mt76x02_eeprom.h |  1 +
+ drivers/net/wireless/mediatek/mt76/mt76x02_regs.h   |  3 +++
+ 3 files changed, 11 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/net/wireless/broadcom/b43/dma.c b/drivers/net/wireless/broadcom/b43/dma.c
-index 1d5ace4d3372..e8958edb9094 100644
---- a/drivers/net/wireless/broadcom/b43/dma.c
-+++ b/drivers/net/wireless/broadcom/b43/dma.c
-@@ -810,7 +810,7 @@ static void free_all_descbuffers(struct b43_dmaring *ring)
- 	}
- }
- 
--static u64 supported_dma_mask(struct b43_wldev *dev)
-+static enum b43_dmatype b43_engine_type(struct b43_wldev *dev)
+diff --git a/drivers/net/wireless/mediatek/mt76/mt76x0/phy.c b/drivers/net/wireless/mediatek/mt76/mt76x0/phy.c
+index 1fd22eb841c3..610819b49bfc 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt76x0/phy.c
++++ b/drivers/net/wireless/mediatek/mt76/mt76x0/phy.c
+@@ -430,15 +430,15 @@ mt76x0_phy_set_chan_bbp_params(struct mt76x02_dev *dev, u16 rf_bw_band)
+ static void mt76x0_phy_ant_select(struct mt76x02_dev *dev)
  {
- 	u32 tmp;
- 	u16 mmio_base;
-@@ -820,14 +820,14 @@ static u64 supported_dma_mask(struct b43_wldev *dev)
- 	case B43_BUS_BCMA:
- 		tmp = bcma_aread32(dev->dev->bdev, BCMA_IOST);
- 		if (tmp & BCMA_IOST_DMA64)
--			return DMA_BIT_MASK(64);
-+			return B43_DMA_64BIT;
- 		break;
- #endif
- #ifdef CONFIG_B43_SSB
- 	case B43_BUS_SSB:
- 		tmp = ssb_read32(dev->dev->sdev, SSB_TMSHIGH);
- 		if (tmp & SSB_TMSHIGH_DMA64)
--			return DMA_BIT_MASK(64);
-+			return B43_DMA_64BIT;
- 		break;
- #endif
+ 	u16 ee_ant = mt76x02_eeprom_get(dev, MT_EE_ANTENNA);
++	u16 ee_cfg1 = mt76x02_eeprom_get(dev, MT_EE_CFG1_INIT);
+ 	u16 nic_conf2 = mt76x02_eeprom_get(dev, MT_EE_NIC_CONF_2);
+-	u32 wlan, coex3, cmb;
++	u32 wlan, coex3;
+ 	bool ant_div;
+ 
+ 	wlan = mt76_rr(dev, MT_WLAN_FUN_CTRL);
+-	cmb = mt76_rr(dev, MT_CMB_CTRL);
+ 	coex3 = mt76_rr(dev, MT_COEXCFG3);
+ 
+-	cmb   &= ~(BIT(14) | BIT(12));
++	ee_ant &= ~(BIT(14) | BIT(12));
+ 	wlan  &= ~(BIT(6) | BIT(5));
+ 	coex3 &= ~GENMASK(5, 2);
+ 
+@@ -447,7 +447,7 @@ static void mt76x0_phy_ant_select(struct mt76x02_dev *dev)
+ 		ant_div = !(nic_conf2 & MT_EE_NIC_CONF_2_ANT_OPT) &&
+ 			  (nic_conf2 & MT_EE_NIC_CONF_2_ANT_DIV);
+ 		if (ant_div)
+-			cmb |= BIT(12);
++			ee_ant |= BIT(12);
+ 		else
+ 			coex3 |= BIT(4);
+ 		coex3 |= BIT(3);
+@@ -464,10 +464,11 @@ static void mt76x0_phy_ant_select(struct mt76x02_dev *dev)
  	}
-@@ -836,20 +836,7 @@ static u64 supported_dma_mask(struct b43_wldev *dev)
- 	b43_write32(dev, mmio_base + B43_DMA32_TXCTL, B43_DMA32_TXADDREXT_MASK);
- 	tmp = b43_read32(dev, mmio_base + B43_DMA32_TXCTL);
- 	if (tmp & B43_DMA32_TXADDREXT_MASK)
--		return DMA_BIT_MASK(32);
--
--	return DMA_BIT_MASK(30);
--}
--
--static enum b43_dmatype dma_mask_to_engine_type(u64 dmamask)
--{
--	if (dmamask == DMA_BIT_MASK(30))
--		return B43_DMA_30BIT;
--	if (dmamask == DMA_BIT_MASK(32))
- 		return B43_DMA_32BIT;
--	if (dmamask == DMA_BIT_MASK(64))
--		return B43_DMA_64BIT;
--	B43_WARN_ON(1);
- 	return B43_DMA_30BIT;
+ 
+ 	if (is_mt7630(dev))
+-		cmb |= BIT(14) | BIT(11);
++		ee_ant |= BIT(14) | BIT(11);
+ 
+ 	mt76_wr(dev, MT_WLAN_FUN_CTRL, wlan);
+-	mt76_wr(dev, MT_CMB_CTRL, cmb);
++	mt76_rmw(dev, MT_CMB_CTRL, GENMASK(15, 0), ee_ant);
++	mt76_rmw(dev, MT_CSR_EE_CFG1, GENMASK(15, 0), ee_cfg1);
+ 	mt76_clear(dev, MT_COEXCFG0, BIT(2));
+ 	mt76_wr(dev, MT_COEXCFG3, coex3);
  }
+diff --git a/drivers/net/wireless/mediatek/mt76/mt76x02_eeprom.h b/drivers/net/wireless/mediatek/mt76/mt76x02_eeprom.h
+index e3442bc4e0a4..0ba536de3d6e 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt76x02_eeprom.h
++++ b/drivers/net/wireless/mediatek/mt76/mt76x02_eeprom.h
+@@ -26,6 +26,7 @@ enum mt76x02_eeprom_field {
+ 	MT_EE_MAC_ADDR =			0x004,
+ 	MT_EE_PCI_ID =				0x00A,
+ 	MT_EE_ANTENNA =				0x022,
++	MT_EE_CFG1_INIT =			0x024,
+ 	MT_EE_NIC_CONF_0 =			0x034,
+ 	MT_EE_NIC_CONF_1 =			0x036,
+ 	MT_EE_COUNTRY_REGION_5GHZ =		0x038,
+diff --git a/drivers/net/wireless/mediatek/mt76/mt76x02_regs.h b/drivers/net/wireless/mediatek/mt76/mt76x02_regs.h
+index 2ce05b543dff..ea7833964ec0 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt76x02_regs.h
++++ b/drivers/net/wireless/mediatek/mt76/mt76x02_regs.h
+@@ -66,6 +66,9 @@
+ #define MT_WLAN_FUN_CTRL_GPIO_OUT	GENMASK(23, 16) /* MT76x0 */
+ #define MT_WLAN_FUN_CTRL_GPIO_OUT_EN	GENMASK(31, 24) /* MT76x0 */
  
-@@ -1078,13 +1065,10 @@ static bool b43_dma_translation_in_low_word(struct b43_wldev *dev,
- int b43_dma_init(struct b43_wldev *dev)
- {
- 	struct b43_dma *dma = &dev->dma;
-+	enum b43_dmatype type = b43_engine_type(dev);
- 	int err;
--	u64 dmamask;
--	enum b43_dmatype type;
- 
--	dmamask = supported_dma_mask(dev);
--	type = dma_mask_to_engine_type(dmamask);
--	err = dma_set_mask_and_coherent(dev->dev->dma_dev, dmamask);
-+	err = dma_set_mask_and_coherent(dev->dev->dma_dev, DMA_BIT_MASK(type));
- 	if (err) {
- 		b43err(dev->wl, "The machine/kernel does not support "
- 		       "the required %u-bit DMA mask\n", type);
-@@ -1793,7 +1777,7 @@ void b43_dma_direct_fifo_rx(struct b43_wldev *dev,
- 	enum b43_dmatype type;
- 	u16 mmio_base;
- 
--	type = dma_mask_to_engine_type(supported_dma_mask(dev));
-+	type = b43_engine_type(dev);
- 
- 	mmio_base = b43_dmacontroller_base(type, engine_index);
- 	direct_fifo_rx(dev, type, mmio_base, enable);
++/* MT76x0 */
++#define MT_CSR_EE_CFG1			0x0104
++
+ #define MT_XO_CTRL0			0x0100
+ #define MT_XO_CTRL1			0x0104
+ #define MT_XO_CTRL2			0x0108
 -- 
-2.20.1
+2.17.0
 
