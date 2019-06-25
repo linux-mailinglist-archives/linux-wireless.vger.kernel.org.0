@@ -2,25 +2,25 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 8DE6552254
-	for <lists+linux-wireless@lfdr.de>; Tue, 25 Jun 2019 06:53:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CA16752255
+	for <lists+linux-wireless@lfdr.de>; Tue, 25 Jun 2019 06:54:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727094AbfFYExP (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 25 Jun 2019 00:53:15 -0400
-Received: from smtp.codeaurora.org ([198.145.29.96]:55502 "EHLO
+        id S1727403AbfFYEyG (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 25 Jun 2019 00:54:06 -0400
+Received: from smtp.codeaurora.org ([198.145.29.96]:55668 "EHLO
         smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726781AbfFYExP (ORCPT
+        with ESMTP id S1727390AbfFYEyF (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 25 Jun 2019 00:53:15 -0400
+        Tue, 25 Jun 2019 00:54:05 -0400
 Received: by smtp.codeaurora.org (Postfix, from userid 1000)
-        id 5747960867; Tue, 25 Jun 2019 04:53:14 +0000 (UTC)
+        id 9D1636085C; Tue, 25 Jun 2019 04:54:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1561438394;
-        bh=0PTm5aueCleXr3/4IPxcFUoSNh6YuLWUu+js7/+jTuo=;
+        s=default; t=1561438444;
+        bh=E95aPL1oEyduFBGj775X0IOe4443KPsMPWc6Qsm7UY8=;
         h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-        b=lEI1dLVV5amFS/Y/IJouk/tt4O7DePXPbSeIBOr9TqRZpSUCzDvab4rmpnBy4T5b0
-         IOLXtt+cK4aV80/PckOi1DQo+XvQS2wwy1K4TCT+aazXr4zbOl+JUNeRuwmQqTz6xy
-         CDUctqZ62Wp5LbvQaxjLB3fBDh4WP6cOupSzPKwY=
+        b=JsuMI3Ak6uOjn6s4V2sIMM5q1X5C5CuSxiPafJ314vLliTlm3LLLJeMYjawWHrZEO
+         1X86ZXW4yzFRdluLtobuk5Q93gEeNNFQiio1SRY+O2hUV1ZGxHHy2iRTChPf0EnFkm
+         6H+nT3XNTXdPTM4TF7Eh++06s62u06AWeMAw/jhc=
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         pdx-caf-mail.web.codeaurora.org
 X-Spam-Level: 
@@ -31,61 +31,107 @@ Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
         (Authenticated sender: kvalo@smtp.codeaurora.org)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id ECAEA6070D;
-        Tue, 25 Jun 2019 04:53:11 +0000 (UTC)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id A5C6C606DC;
+        Tue, 25 Jun 2019 04:54:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1561438393;
-        bh=0PTm5aueCleXr3/4IPxcFUoSNh6YuLWUu+js7/+jTuo=;
+        s=default; t=1561438443;
+        bh=E95aPL1oEyduFBGj775X0IOe4443KPsMPWc6Qsm7UY8=;
         h=Subject:From:In-Reply-To:References:To:Cc:From;
-        b=eyBuRVJNO9GWfnLXo5WrtNFrK2GXZE7GsX0nhCqAVZYHX/s17lGhVsWZf3fhArQtp
-         u79JxcnmZt8raszudab99oUtKtSAKYkEXJ2DrktEW7DMFdRYjxu6m7R+m07MIoFy1w
-         uBHK4OTO8xSckFfzPqe8JIaA9/MXsZGFKCWrs3bI=
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org ECAEA6070D
+        b=SDLkYXvbHCOW0LDN+wTQ6egDkIH3NKXHgJJDpNvUQ0xKYNo+1+ZAcgJ39m7jFHVZv
+         AinMhyJpVSar1pUyHKcJCynUIl15PkCQ9EnHBlL/Akss9dIUXPzHVmGq1qQkYNwXRp
+         gvSVWe73ZqGsGrNZaXP/3TRMVppAt8Ll+HSLzkds=
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org A5C6C606DC
 Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
 Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH] mwifiex: ignore processing invalid command response
+Subject: Re: [PATCH] rtlwifi: rtl8192cu: fix error handle when usb probe failed
 From:   Kalle Valo <kvalo@codeaurora.org>
-In-Reply-To: <1561126484-7735-1-git-send-email-gbhat@marvell.com>
-References: <1561126484-7735-1-git-send-email-gbhat@marvell.com>
-To:     Ganapathi Bhat <gbhat@marvell.com>
-Cc:     <linux-wireless@vger.kernel.org>,
-        Brian Norris <briannorris@chromium.org>,
-        Cathy Luo <cluo@marvell.com>,
-        Zhiyuan Yang <yangzy@marvell.com>,
-        James Cao <jcao@marvell.com>,
-        "Rakesh Parmar" <rakeshp@marvell.com>,
-        Swati Kushwaha <swatiuma@marvell.com>,
-        Ganapathi Bhat <gbhat@marvell.com>
+In-Reply-To: <20190529065730.25951-1-pkshih@realtek.com>
+References: <20190529065730.25951-1-pkshih@realtek.com>
+To:     <pkshih@realtek.com>
+Cc:     <linux-wireless@vger.kernel.org>, <andreyknvl@google.com>,
+        <Larry.Finger@lwfinger.net>
 User-Agent: pwcli/0.0.0-git (https://github.com/kvalo/pwcli/) Python/2.7.12
-Message-Id: <20190625045314.5747960867@smtp.codeaurora.org>
-Date:   Tue, 25 Jun 2019 04:53:14 +0000 (UTC)
+Message-Id: <20190625045404.9D1636085C@smtp.codeaurora.org>
+Date:   Tue, 25 Jun 2019 04:54:04 +0000 (UTC)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Ganapathi Bhat <gbhat@marvell.com> wrote:
+<pkshih@realtek.com> wrote:
 
-> From: Swati Kushwaha <swatiuma@marvell.com>
+> From: Ping-Ke Shih <pkshih@realtek.com>
 > 
-> Firmware can send invalid command response, the processing of
-> which can attempt to modify unexpected context and cause issues.
-> To fix this, driver should check that the command response ID is
-> same as the one it downloaded, and ignore processing of invalid
-> response.
+> rtl_usb_probe() must do error handle rtl_deinit_core() only if
+> rtl_init_core() is done, otherwise goto error_out2.
 > 
-> Signed-off-by: Swati Kushwaha <swatiuma@marvell.com>
-> Signed-off-by: Ganapathi Bhat <gbhat@marvell.com>
+> | usb 1-1: New USB device strings: Mfr=0, Product=0, SerialNumber=0
+> | rtl_usb: reg 0xf0, usbctrl_vendorreq TimeOut! status:0xffffffb9 value=0x0
+> | rtl8192cu: Chip version 0x10
+> | rtl_usb: reg 0xa, usbctrl_vendorreq TimeOut! status:0xffffffb9 value=0x0
+> | rtl_usb: Too few input end points found
+> | INFO: trying to register non-static key.
+> | the code is fine but needs lockdep annotation.
+> | turning off the locking correctness validator.
+> | CPU: 0 PID: 12 Comm: kworker/0:1 Not tainted 5.1.0-rc4-319354-g9a33b36 #3
+> | Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS
+> | Google 01/01/2011
+> | Workqueue: usb_hub_wq hub_event
+> | Call Trace:
+> |   __dump_stack lib/dump_stack.c:77 [inline]
+> |   dump_stack+0xe8/0x16e lib/dump_stack.c:113
+> |   assign_lock_key kernel/locking/lockdep.c:786 [inline]
+> |   register_lock_class+0x11b8/0x1250 kernel/locking/lockdep.c:1095
+> |   __lock_acquire+0xfb/0x37c0 kernel/locking/lockdep.c:3582
+> |   lock_acquire+0x10d/0x2f0 kernel/locking/lockdep.c:4211
+> |   __raw_spin_lock_irqsave include/linux/spinlock_api_smp.h:110 [inline]
+> |   _raw_spin_lock_irqsave+0x44/0x60 kernel/locking/spinlock.c:152
+> |   rtl_c2hcmd_launcher+0xd1/0x390
+> | drivers/net/wireless/realtek/rtlwifi/base.c:2344
+> |   rtl_deinit_core+0x25/0x2d0 drivers/net/wireless/realtek/rtlwifi/base.c:574
+> |   rtl_usb_probe.cold+0x861/0xa70
+> | drivers/net/wireless/realtek/rtlwifi/usb.c:1093
+> |   usb_probe_interface+0x31d/0x820 drivers/usb/core/driver.c:361
+> |   really_probe+0x2da/0xb10 drivers/base/dd.c:509
+> |   driver_probe_device+0x21d/0x350 drivers/base/dd.c:671
+> |   __device_attach_driver+0x1d8/0x290 drivers/base/dd.c:778
+> |   bus_for_each_drv+0x163/0x1e0 drivers/base/bus.c:454
+> |   __device_attach+0x223/0x3a0 drivers/base/dd.c:844
+> |   bus_probe_device+0x1f1/0x2a0 drivers/base/bus.c:514
+> |   device_add+0xad2/0x16e0 drivers/base/core.c:2106
+> |   usb_set_configuration+0xdf7/0x1740 drivers/usb/core/message.c:2021
+> |   generic_probe+0xa2/0xda drivers/usb/core/generic.c:210
+> |   usb_probe_device+0xc0/0x150 drivers/usb/core/driver.c:266
+> |   really_probe+0x2da/0xb10 drivers/base/dd.c:509
+> |   driver_probe_device+0x21d/0x350 drivers/base/dd.c:671
+> |   __device_attach_driver+0x1d8/0x290 drivers/base/dd.c:778
+> |   bus_for_each_drv+0x163/0x1e0 drivers/base/bus.c:454
+> |   __device_attach+0x223/0x3a0 drivers/base/dd.c:844
+> |   bus_probe_device+0x1f1/0x2a0 drivers/base/bus.c:514
+> |   device_add+0xad2/0x16e0 drivers/base/core.c:2106
+> |   usb_new_device.cold+0x537/0xccf drivers/usb/core/hub.c:2534
+> |   hub_port_connect drivers/usb/core/hub.c:5089 [inline]
+> |   hub_port_connect_change drivers/usb/core/hub.c:5204 [inline]
+> |   port_event drivers/usb/core/hub.c:5350 [inline]
+> |   hub_event+0x138e/0x3b00 drivers/usb/core/hub.c:5432
+> |   process_one_work+0x90f/0x1580 kernel/workqueue.c:2269
+> |   worker_thread+0x9b/0xe20 kernel/workqueue.c:2415
+> |   kthread+0x313/0x420 kernel/kthread.c:253
+> |   ret_from_fork+0x3a/0x50 arch/x86/entry/entry_64.S:352
+> 
+> Reported-by: syzbot+1fcc5ef45175fc774231@syzkaller.appspotmail.com
+> Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+> Acked-by: Larry Finger <Larry.Finger@lwfinger.net>
 
 Patch applied to wireless-drivers-next.git, thanks.
 
-74f202aaae0a mwifiex: ignore processing invalid command response
+6c0ed66f1a5b rtlwifi: rtl8192cu: fix error handle when usb probe failed
 
 -- 
-https://patchwork.kernel.org/patch/11010163/
+https://patchwork.kernel.org/patch/10966133/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
