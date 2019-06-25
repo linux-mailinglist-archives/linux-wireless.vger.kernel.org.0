@@ -2,137 +2,181 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B0A3652879
-	for <lists+linux-wireless@lfdr.de>; Tue, 25 Jun 2019 11:45:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BE46A528C8
+	for <lists+linux-wireless@lfdr.de>; Tue, 25 Jun 2019 11:58:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727978AbfFYJpm (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 25 Jun 2019 05:45:42 -0400
-Received: from paleale.coelho.fi ([176.9.41.70]:54664 "EHLO
-        farmhouse.coelho.fi" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1727729AbfFYJpl (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 25 Jun 2019 05:45:41 -0400
-Received: from 91-156-6-193.elisa-laajakaista.fi ([91.156.6.193] helo=redipa.ger.corp.intel.com)
-        by farmhouse.coelho.fi with esmtpsa (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <luca@coelho.fi>)
-        id 1hfi0d-0007Nv-Ks; Tue, 25 Jun 2019 12:45:03 +0300
-From:   Luca Coelho <luca@coelho.fi>
-To:     kvalo@codeaurora.org
-Cc:     linux-wireless@vger.kernel.org,
-        Shahar S Matityahu <shahar.s.matityahu@intel.com>,
-        Luca Coelho <luciano.coelho@intel.com>
-Subject: [PATCH 12/12] iwlwifi: fw api: support adwell HB default APs number api
-Date:   Tue, 25 Jun 2019 12:44:52 +0300
-Message-Id: <20190625094452.19034-13-luca@coelho.fi>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20190625094452.19034-1-luca@coelho.fi>
-References: <20190625094452.19034-1-luca@coelho.fi>
+        id S1728961AbfFYJ6A (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 25 Jun 2019 05:58:00 -0400
+Received: from mx1.redhat.com ([209.132.183.28]:55162 "EHLO mx1.redhat.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726421AbfFYJ6A (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 25 Jun 2019 05:58:00 -0400
+Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.phx2.redhat.com [10.5.11.22])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mx1.redhat.com (Postfix) with ESMTPS id A59747E424;
+        Tue, 25 Jun 2019 09:57:47 +0000 (UTC)
+Received: from localhost (unknown [10.43.2.74])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id C60F810013D9;
+        Tue, 25 Jun 2019 09:57:43 +0000 (UTC)
+Date:   Tue, 25 Jun 2019 11:57:37 +0200
+From:   Stanislaw Gruszka <sgruszka@redhat.com>
+To:     Soeren Moch <smoch@web.de>
+Cc:     Helmut Schaa <helmut.schaa@googlemail.com>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH] rt2x00: fix rx queue hang
+Message-ID: <20190625095734.GA2886@redhat.com>
+References: <20190617094656.3952-1-smoch@web.de>
+ <20190618093431.GA2577@redhat.com>
+ <b6899d78-447c-3cb3-4bec-e4050660ccaa@web.de>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <b6899d78-447c-3cb3-4bec-e4050660ccaa@web.de>
+User-Agent: Mutt/1.5.20 (2009-12-10)
+X-Scanned-By: MIMEDefang 2.84 on 10.5.11.22
+X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16 (mx1.redhat.com [10.5.110.27]); Tue, 25 Jun 2019 09:57:59 +0000 (UTC)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Shahar S Matityahu <shahar.s.matityahu@intel.com>
+Hello
 
-Support adaptive dwell high band default number of APs new api.
+On Fri, Jun 21, 2019 at 01:30:01PM +0200, Soeren Moch wrote:
+> On 18.06.19 11:34, Stanislaw Gruszka wrote:
+> > Hi
+> >
+> > On Mon, Jun 17, 2019 at 11:46:56AM +0200, Soeren Moch wrote:
+> >> Since commit ed194d136769 ("usb: core: remove local_irq_save() around
+> >>  ->complete() handler") the handlers rt2x00usb_interrupt_rxdone() and
+> >> rt2x00usb_interrupt_txdone() are not running with interrupts disabled
+> >> anymore. So these handlers are not guaranteed to run completely before
+> >> workqueue processing starts. So only mark entries ready for workqueue
+> >> processing after proper accounting in the dma done queue.
+> > It was always the case on SMP machines that rt2x00usb_interrupt_{tx/rx}done
+> > can run concurrently with rt2x00_work_{rx,tx}done, so I do not
+> > understand how removing local_irq_save() around complete handler broke
+> > things.
+> I think because completion handlers can be interrupted now and scheduled
+> away
+> in the middle of processing.
+> > Have you reverted commit ed194d136769 and the revert does solve the problem ?
+> Yes, I already sent a patch for this, see [1]. But this was not considered
+> an acceptablesolution. Especially RT folks do not like code running with
+> interrupts disabled,particularly when trying to acquire spinlocks then.
+> 
+> [1] https://lkml.org/lkml/2019/5/31/863
+> > Between 4.19 and 4.20 we have some quite big changes in rt2x00 driver:
+> >
+> > 0240564430c0 rt2800: flush and txstatus rework for rt2800mmio
+> > adf26a356f13 rt2x00: use different txstatus timeouts when flushing
+> > 5022efb50f62 rt2x00: do not check for txstatus timeout every time on tasklet
+> > 0b0d556e0ebb rt2800mmio: use txdone/txstatus routines from lib
+> > 5c656c71b1bf rt2800: move usb specific txdone/txstatus routines to rt2800lib
+> >
+> > so I'm a bit afraid that one of those changes is real cause of
+> > the issue not ed194d136769 .
+> I tested 4.20 and 5.1 and see the exact same behavior. Reverting this
+> usb core patchsolves the problem.
+> 4.19.x (before this usb core patch) is running fine.
+> >> Note that rt2x00usb_work_rxdone() processes all available entries, not
+> >> only such for which queue_work() was called.
+> >>
+> >> This fixes a regression on a RT5370 based wifi stick in AP mode, which
+> >> suddenly stopped data transmission after some period of heavy load. Also
+> >> stopping the hanging hostapd resulted in the error message "ieee80211
+> >> phy0: rt2x00queue_flush_queue: Warning - Queue 14 failed to flush".
+> >> Other operation modes are probably affected as well, this just was
+> >> the used testcase.
+> > Do you know what actually make the traffic stop,
+> > TX queue hung or RX queue hung?
+> I think RX queue hang, as stated in the patch title. "Queue 14" means QID_RX
+> (rt2x00queue.h, enum data_queue_qid).
+> I also tried to re-add local_irq_save() in only one of the handlers. Adding
+> this tort2x00usb_interrupt_rxdone() alone solved the issue, while doing so
+> for tx alonedid not.
+> 
+> Note that this doesn't mean there is no problem for tx, that's maybe
+> just more
+> difficult to trigger.
+> >> diff --git a/drivers/net/wireless/ralink/rt2x00/rt2x00dev.c b/drivers/net/wireless/ralink/rt2x00/rt2x00dev.c
+> >> index 1b08b01db27b..9c102a501ee6 100644
+> >> --- a/drivers/net/wireless/ralink/rt2x00/rt2x00dev.c
+> >> +++ b/drivers/net/wireless/ralink/rt2x00/rt2x00dev.c
+> >> @@ -263,9 +263,9 @@ EXPORT_SYMBOL_GPL(rt2x00lib_dmastart);
+> >>
+> >>  void rt2x00lib_dmadone(struct queue_entry *entry)
+> >>  {
+> >> -	set_bit(ENTRY_DATA_STATUS_PENDING, &entry->flags);
+> >>  	clear_bit(ENTRY_OWNER_DEVICE_DATA, &entry->flags);
+> >>  	rt2x00queue_index_inc(entry, Q_INDEX_DMA_DONE);
+> >> +	set_bit(ENTRY_DATA_STATUS_PENDING, &entry->flags);
+> > Unfortunately I do not understand how this suppose to fix the problem,
+> > could you elaborate more about this change?
+> >
+> Re-adding local_irq_save() around thisrt2x00lib_dmadone()solved
+> the issue. So I also tried to reverse the order of these calls.
+> It seems totally plausible to me, that the correct sequence is to
+> first clear the device assignment, then to set the status to dma_done,
+> then to trigger the workqueue processing for this entry. When the handler
+> is scheduled away in the middle of this sequence, now there is no
+> strange state where the entry can be processed by the workqueue while
+> not declared dma_done for it.
+> With this changed sequence there is no need anymore to disable interrupts
+> for solving the hang issue.
 
-Signed-off-by: Shahar S Matityahu <shahar.s.matityahu@intel.com>
-Signed-off-by: Luca Coelho <luciano.coelho@intel.com>
----
- drivers/net/wireless/intel/iwlwifi/fw/api/scan.h | 15 +++++++++++++++
- drivers/net/wireless/intel/iwlwifi/fw/file.h     |  1 +
- drivers/net/wireless/intel/iwlwifi/mvm/mvm.h     |  6 ++++++
- drivers/net/wireless/intel/iwlwifi/mvm/scan.c    | 12 +++++++++---
- 4 files changed, 31 insertions(+), 3 deletions(-)
+Thanks very much for explanations. However I still do not fully
+understand the issue. Q_INDEX_DMA_DONE index is only checked on TX
+processing (on RX we use only Q_INDEX_DONE and Q_INDEX) and
+ENTRY_OWNER_DEVICE_DATA is already cleared before rt2x00lib_dmadone()
+in rt2x00usb_interrupt_rxdone() .
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/fw/api/scan.h b/drivers/net/wireless/intel/iwlwifi/fw/api/scan.h
-index 1a67a2a439ab..c4960f045415 100644
---- a/drivers/net/wireless/intel/iwlwifi/fw/api/scan.h
-+++ b/drivers/net/wireless/intel/iwlwifi/fw/api/scan.h
-@@ -750,6 +750,21 @@ struct iwl_scan_req_umac {
- 			struct iwl_scan_umac_chan_param channel;
- 			u8 data[];
- 		} v8; /* SCAN_REQUEST_CMD_UMAC_API_S_VER_8 */
-+		struct {
-+			u8 active_dwell[SCAN_TWO_LMACS];
-+			u8 adwell_default_hb_n_aps;
-+			u8 adwell_default_lb_n_aps;
-+			u8 adwell_default_n_aps_social;
-+			u8 general_flags2;
-+			__le16 adwell_max_budget;
-+			__le32 max_out_time[SCAN_TWO_LMACS];
-+			__le32 suspend_time[SCAN_TWO_LMACS];
-+			__le32 scan_priority;
-+			u8 passive_dwell[SCAN_TWO_LMACS];
-+			u8 num_of_fragments[SCAN_TWO_LMACS];
-+			struct iwl_scan_umac_chan_param channel;
-+			u8 data[];
-+		} v9; /* SCAN_REQUEST_CMD_UMAC_API_S_VER_9 */
- 	};
- } __packed;
- 
-diff --git a/drivers/net/wireless/intel/iwlwifi/fw/file.h b/drivers/net/wireless/intel/iwlwifi/fw/file.h
-index 71438c40a637..7b65a94ba7dd 100644
---- a/drivers/net/wireless/intel/iwlwifi/fw/file.h
-+++ b/drivers/net/wireless/intel/iwlwifi/fw/file.h
-@@ -319,6 +319,7 @@ enum iwl_ucode_tlv_api {
- 	IWL_UCODE_TLV_API_MBSSID_HE		= (__force iwl_ucode_tlv_api_t)52,
- 	IWL_UCODE_TLV_API_WOWLAN_TCP_SYN_WAKE	= (__force iwl_ucode_tlv_api_t)53,
- 	IWL_UCODE_TLV_API_FTM_RTT_ACCURACY      = (__force iwl_ucode_tlv_api_t)54,
-+	IWL_UCODE_TLV_API_ADWELL_HB_DEF_N_AP	= (__force iwl_ucode_tlv_api_t)57,
- 
- 	NUM_IWL_UCODE_TLV_API
- #ifdef __CHECKER__
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mvm.h b/drivers/net/wireless/intel/iwlwifi/mvm/mvm.h
-index 0c938fe4cbe7..e3614f59d274 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/mvm.h
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/mvm.h
-@@ -1308,6 +1308,12 @@ static inline bool iwl_mvm_is_adaptive_dwell_v2_supported(struct iwl_mvm *mvm)
- 			  IWL_UCODE_TLV_API_ADAPTIVE_DWELL_V2);
- }
- 
-+static inline bool iwl_mvm_is_adwell_hb_ap_num_supported(struct iwl_mvm *mvm)
-+{
-+	return fw_has_api(&mvm->fw->ucode_capa,
-+			  IWL_UCODE_TLV_API_ADWELL_HB_DEF_N_AP);
-+}
-+
- static inline bool iwl_mvm_is_oce_supported(struct iwl_mvm *mvm)
- {
- 	/* OCE should never be enabled for LMAC scan FWs */
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/scan.c b/drivers/net/wireless/intel/iwlwifi/mvm/scan.c
-index d9ddf9ff6428..c284e6975b1b 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/scan.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/scan.c
-@@ -83,8 +83,10 @@
- #define IWL_SCAN_ADWELL_MAX_BUDGET_FULL_SCAN 300
- /* adaptive dwell max budget time [TU] for directed scan */
- #define IWL_SCAN_ADWELL_MAX_BUDGET_DIRECTED_SCAN 100
--/* adaptive dwell default APs number */
--#define IWL_SCAN_ADWELL_DEFAULT_N_APS 2
-+/* adaptive dwell default high band APs number */
-+#define IWL_SCAN_ADWELL_DEFAULT_HB_N_APS 8
-+/* adaptive dwell default low band APs number */
-+#define IWL_SCAN_ADWELL_DEFAULT_LB_N_APS 2
- /* adaptive dwell default APs number in social channels (1, 6, 11) */
- #define IWL_SCAN_ADWELL_DEFAULT_N_APS_SOCIAL 10
- 
-@@ -1288,7 +1290,11 @@ static void iwl_mvm_scan_umac_dwell(struct iwl_mvm *mvm,
- 		cmd->v7.adwell_default_n_aps_social =
- 			IWL_SCAN_ADWELL_DEFAULT_N_APS_SOCIAL;
- 		cmd->v7.adwell_default_n_aps =
--			IWL_SCAN_ADWELL_DEFAULT_N_APS;
-+			IWL_SCAN_ADWELL_DEFAULT_LB_N_APS;
-+
-+		if (iwl_mvm_is_adwell_hb_ap_num_supported(mvm))
-+			cmd->v9.adwell_default_hb_n_aps =
-+				IWL_SCAN_ADWELL_DEFAULT_HB_N_APS;
- 
- 		/* if custom max budget was configured with debugfs */
- 		if (IWL_MVM_ADWELL_MAX_BUDGET)
--- 
-2.20.1
+So I'm not sure how changing the order solve the problem. Looks
+for me that the issue is triggered by some rt2x00lib_dmadone()
+call done on error path (not in rt2x00usb_interrupt_rxdone())
+and it race with this check:
 
+        if (test_and_set_bit(ENTRY_OWNER_DEVICE_DATA, &entry->flags) ||
+            test_bit(ENTRY_DATA_STATUS_PENDING, &entry->flags))
+                return false;
+
+in rt2x00usb_kick_rx_entry() - we return instead of submit urb.
+
+I'm somewhat reluctant to change the order, because TX processing
+might relay on it (we first mark we wait for TX status and
+then mark entry is no longer owned by hardware). However on RX
+side ENTRY_DATA_STATUS_PENDING bit make no sense as we do not
+wait for status. We should remove ENTRY_DATA_STATUS_PENDING on
+RX side and perhaps this also will solve issue you observe.
+Could you please check below patch, if it fixes the problem as well?
+
+Stanislaw
+
+diff --git a/drivers/net/wireless/ralink/rt2x00/rt2x00usb.c b/drivers/net/wireless/ralink/rt2x00/rt2x00usb.c
+index b6c1344..731e633 100644
+--- a/drivers/net/wireless/ralink/rt2x00/rt2x00usb.c
++++ b/drivers/net/wireless/ralink/rt2x00/rt2x00usb.c
+@@ -360,8 +360,7 @@ static void rt2x00usb_work_rxdone(struct work_struct *work)
+ 	while (!rt2x00queue_empty(rt2x00dev->rx)) {
+ 		entry = rt2x00queue_get_entry(rt2x00dev->rx, Q_INDEX_DONE);
+ 
+-		if (test_bit(ENTRY_OWNER_DEVICE_DATA, &entry->flags) ||
+-		    !test_bit(ENTRY_DATA_STATUS_PENDING, &entry->flags))
++		if (test_bit(ENTRY_OWNER_DEVICE_DATA, &entry->flags))
+ 			break;
+ 
+ 		/*
+@@ -413,8 +412,7 @@ static bool rt2x00usb_kick_rx_entry(struct queue_entry *entry, void *data)
+ 	struct queue_entry_priv_usb *entry_priv = entry->priv_data;
+ 	int status;
+ 
+-	if (test_and_set_bit(ENTRY_OWNER_DEVICE_DATA, &entry->flags) ||
+-	    test_bit(ENTRY_DATA_STATUS_PENDING, &entry->flags))
++	if (test_and_set_bit(ENTRY_OWNER_DEVICE_DATA, &entry->flags))
+ 		return false;
+ 
+ 	rt2x00lib_dmastart(entry);
