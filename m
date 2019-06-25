@@ -2,62 +2,54 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 1BF2E523CF
-	for <lists+linux-wireless@lfdr.de>; Tue, 25 Jun 2019 08:57:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 109CB524F8
+	for <lists+linux-wireless@lfdr.de>; Tue, 25 Jun 2019 09:38:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729600AbfFYG5G (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 25 Jun 2019 02:57:06 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:40778 "EHLO
-        Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728595AbfFYG5G (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 25 Jun 2019 02:57:06 -0400
-Received: from p5b06daab.dip0.t-ipconnect.de ([91.6.218.171] helo=nanos)
-        by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
-        (Exim 4.80)
-        (envelope-from <tglx@linutronix.de>)
-        id 1hffNv-0006bS-C5; Tue, 25 Jun 2019 08:56:55 +0200
-Date:   Tue, 25 Jun 2019 08:56:54 +0200 (CEST)
-From:   Thomas Gleixner <tglx@linutronix.de>
-To:     Stephen Rothwell <sfr@canb.auug.org.au>
-cc:     Kalle Valo <kvalo@codeaurora.org>, Ingo Molnar <mingo@elte.hu>,
-        "H. Peter Anvin" <hpa@zytor.com>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Wireless <linux-wireless@vger.kernel.org>,
-        Linux Next Mailing List <linux-next@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Christian Lamparter <chunkeey@gmail.com>,
-        "Jason A. Donenfeld" <Jason@zx2c4.com>
-Subject: Re: linux-next: build failure after merge of the tip tree
-In-Reply-To: <20190625163608.1aa15ad3@canb.auug.org.au>
-Message-ID: <alpine.DEB.2.21.1906250856050.32342@nanos.tec.linutronix.de>
-References: <20190625160432.533aa140@canb.auug.org.au> <8736jyfaje.fsf@codeaurora.org> <20190625163608.1aa15ad3@canb.auug.org.au>
-User-Agent: Alpine 2.21 (DEB 202 2017-01-01)
+        id S1728544AbfFYHil (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 25 Jun 2019 03:38:41 -0400
+Received: from muru.com ([72.249.23.125]:53482 "EHLO muru.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1728380AbfFYHik (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 25 Jun 2019 03:38:40 -0400
+Received: from atomide.com (localhost [127.0.0.1])
+        by muru.com (Postfix) with ESMTPS id B7C0180C8;
+        Tue, 25 Jun 2019 07:39:02 +0000 (UTC)
+Date:   Tue, 25 Jun 2019 00:38:37 -0700
+From:   Tony Lindgren <tony@atomide.com>
+To:     Johannes Berg <johannes.berg@intel.com>
+Cc:     Kalle Valo <kvalo@codeaurora.org>,
+        Eyal Reizer <eyalreizer@gmail.com>,
+        linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-omap@vger.kernel.org
+Subject: nl80211 wlcore regression in next
+Message-ID: <20190625073837.GG5447@atomide.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-X-Linutronix-Spam-Score: -1.0
-X-Linutronix-Spam-Level: -
-X-Linutronix-Spam-Status: No , -1.0 points, 5.0 required,  ALL_TRUSTED=-1,SHORTCIRCUIT=-0.0001
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.11.4 (2019-03-13)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Tue, 25 Jun 2019, Stephen Rothwell wrote:
+Hi,
 
-> Hi Kalle,
-> 
-> On Tue, 25 Jun 2019 09:23:33 +0300 Kalle Valo <kvalo@codeaurora.org> wrote:
-> >
-> > Thanks for the report. Any suggestions how to handle this? Or do we let
-> > Linus take care of this?
-> 
-> Just let Linus take care of it ... mention it in the pull request ... I
-> guess DaveM needs to know, right?
+Looks like at least drivers/net/wireless/ti wlcore driver has stopped
+working in Linux next with commit 901bb9891855 ("nl80211: require and
+validate vendor command policy"). Reverting the commit above makes it
+work again.
 
-Ah. I didn't realize that this is a new commit in Kalle's tree. So yes
-that's the right thing to do.
+It fails with the warning below, any ideas what goes wrong?
 
-Thanks,
+Regards,
 
-	tglx
+Tony
+
+8< ----------------
+WARNING: CPU: 0 PID: 21 at net/wireless/core.c:868 wiphy_register+0x85c/0xbd4 [cfg80211]
+...
+[<bf05f570>] (wiphy_register [cfg80211]) from [<bf121e08>] (ieee80211_register_hw+0x4e4/0xcd8 [mac80211])
+[<bf121e08>] (ieee80211_register_hw [mac80211]) from [<bf33135c>] (wlcore_nvs_cb+0x758/0xabc [wlcore])
+[<bf33135c>] (wlcore_nvs_cb [wlcore]) from [<c05c3770>] (request_firmware_work_func+0x50/0x8c)
+[<c05c3770>] (request_firmware_work_func) from [<c0154bb8>] (process_one_work+0x20c/0x504)
+...
