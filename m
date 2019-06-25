@@ -2,67 +2,124 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 03E44525D8
-	for <lists+linux-wireless@lfdr.de>; Tue, 25 Jun 2019 10:03:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 845A952618
+	for <lists+linux-wireless@lfdr.de>; Tue, 25 Jun 2019 10:08:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727446AbfFYIDE (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 25 Jun 2019 04:03:04 -0400
-Received: from s3.sipsolutions.net ([144.76.43.62]:53578 "EHLO
+        id S1728940AbfFYII4 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 25 Jun 2019 04:08:56 -0400
+Received: from s3.sipsolutions.net ([144.76.43.62]:53696 "EHLO
         sipsolutions.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726419AbfFYIDE (ORCPT
+        with ESMTP id S1727692AbfFYII4 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 25 Jun 2019 04:03:04 -0400
+        Tue, 25 Jun 2019 04:08:56 -0400
 Received: by sipsolutions.net with esmtpsa (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
         (Exim 4.92)
         (envelope-from <johannes@sipsolutions.net>)
-        id 1hfgPs-0003fI-0C; Tue, 25 Jun 2019 10:03:00 +0200
-Message-ID: <7f74087fef1e554e0aeb82a6cec4113727487928.camel@sipsolutions.net>
-Subject: Re: nl80211 wlcore regression in next
+        id 1hfgVa-0003nN-AC; Tue, 25 Jun 2019 10:08:54 +0200
 From:   Johannes Berg <johannes@sipsolutions.net>
-To:     Tony Lindgren <tony@atomide.com>
-Cc:     Kalle Valo <kvalo@codeaurora.org>,
-        Eyal Reizer <eyalreizer@gmail.com>,
-        linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-omap@vger.kernel.org
-Date:   Tue, 25 Jun 2019 10:02:59 +0200
-In-Reply-To: <20190625080019.GH5447@atomide.com>
-References: <20190625073837.GG5447@atomide.com>
-         <2570f4087d6e3356df34635a0380ec8ce06c9159.camel@sipsolutions.net>
-         <20190625080019.GH5447@atomide.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Mailer: Evolution 3.28.5 (3.28.5-3.fc28) 
-Mime-Version: 1.0
-Content-Transfer-Encoding: 7bit
+To:     linux-wireless@vger.kernel.org
+Cc:     Johannes Berg <johannes.berg@intel.com>
+Subject: [PATCH] wireless: fix netlink vendor commands
+Date:   Tue, 25 Jun 2019 10:08:45 +0200
+Message-Id: <20190625080845.19014-1-johannes@sipsolutions.net>
+X-Mailer: git-send-email 2.17.2
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Tue, 2019-06-25 at 01:00 -0700, Tony Lindgren wrote:
-> Hi,
-> 
-> * Johannes Berg <johannes@sipsolutions.net> [190625 07:47]:
-> > On Tue, 2019-06-25 at 00:38 -0700, Tony Lindgren wrote:
-> > > Hi,
-> > > 
-> > > Looks like at least drivers/net/wireless/ti wlcore driver has stopped
-> > > working in Linux next with commit 901bb9891855 ("nl80211: require and
-> > > validate vendor command policy"). Reverting the commit above makes it
-> > > work again.
-> > > 
-> > > It fails with the warning below, any ideas what goes wrong?
-> > 
-> > Oops. For some reason, I neglected to check the vendor command usage
-> > beyond hwsim.
-> > 
-> > The patch below should work?
-> 
-> Yeah thanks that fixes the issue for me:
-> 
-> Tested-by: Tony Lindgren <tony@atomide.com>
+From: Johannes Berg <johannes.berg@intel.com>
 
-Thanks, I'll drop that into my tree and hopefully will remember to send
-it on soon.
+In my previous commit to validate a policy I neglected to
+actually add one to the few drivers using vendor commands,
+fix that now.
 
-johannes
+Reported-by: Tony Lindgren <tony@atomide.com>
+Tested-by: Tony Lindgren <tony@atomide.com>
+Fixes: 901bb9891855 ("nl80211: require and validate vendor command policy")
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+---
+ drivers/net/wireless/ath/wil6210/cfg80211.c               | 4 ++++
+ drivers/net/wireless/broadcom/brcm80211/brcmfmac/vendor.c | 1 +
+ drivers/net/wireless/ti/wlcore/vendor_cmd.c               | 3 +++
+ 3 files changed, 8 insertions(+)
+
+diff --git a/drivers/net/wireless/ath/wil6210/cfg80211.c b/drivers/net/wireless/ath/wil6210/cfg80211.c
+index 804955d24b30..37ac95940c22 100644
+--- a/drivers/net/wireless/ath/wil6210/cfg80211.c
++++ b/drivers/net/wireless/ath/wil6210/cfg80211.c
+@@ -177,6 +177,7 @@ static const struct wiphy_vendor_command wil_nl80211_vendor_commands[] = {
+ 		.info.subcmd = QCA_NL80211_VENDOR_SUBCMD_DMG_RF_GET_SECTOR_CFG,
+ 		.flags = WIPHY_VENDOR_CMD_NEED_WDEV |
+ 			 WIPHY_VENDOR_CMD_NEED_RUNNING,
++		.policy = wil_rf_sector_policy,
+ 		.doit = wil_rf_sector_get_cfg
+ 	},
+ 	{
+@@ -184,6 +185,7 @@ static const struct wiphy_vendor_command wil_nl80211_vendor_commands[] = {
+ 		.info.subcmd = QCA_NL80211_VENDOR_SUBCMD_DMG_RF_SET_SECTOR_CFG,
+ 		.flags = WIPHY_VENDOR_CMD_NEED_WDEV |
+ 			 WIPHY_VENDOR_CMD_NEED_RUNNING,
++		.policy = wil_rf_sector_policy,
+ 		.doit = wil_rf_sector_set_cfg
+ 	},
+ 	{
+@@ -192,6 +194,7 @@ static const struct wiphy_vendor_command wil_nl80211_vendor_commands[] = {
+ 			QCA_NL80211_VENDOR_SUBCMD_DMG_RF_GET_SELECTED_SECTOR,
+ 		.flags = WIPHY_VENDOR_CMD_NEED_WDEV |
+ 			 WIPHY_VENDOR_CMD_NEED_RUNNING,
++		.policy = wil_rf_sector_policy,
+ 		.doit = wil_rf_sector_get_selected
+ 	},
+ 	{
+@@ -200,6 +203,7 @@ static const struct wiphy_vendor_command wil_nl80211_vendor_commands[] = {
+ 			QCA_NL80211_VENDOR_SUBCMD_DMG_RF_SET_SELECTED_SECTOR,
+ 		.flags = WIPHY_VENDOR_CMD_NEED_WDEV |
+ 			 WIPHY_VENDOR_CMD_NEED_RUNNING,
++		.policy = wil_rf_sector_policy,
+ 		.doit = wil_rf_sector_set_selected
+ 	},
+ };
+diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/vendor.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/vendor.c
+index d493021f6031..30ebadc5e5bb 100644
+--- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/vendor.c
++++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/vendor.c
+@@ -123,6 +123,7 @@ const struct wiphy_vendor_command brcmf_vendor_cmds[] = {
+ 		},
+ 		.flags = WIPHY_VENDOR_CMD_NEED_WDEV |
+ 			 WIPHY_VENDOR_CMD_NEED_NETDEV,
++		.policy = VENDOR_CMD_RAW_DATA,
+ 		.doit = brcmf_cfg80211_vndr_cmds_dcmd_handler
+ 	},
+ };
+diff --git a/drivers/net/wireless/ti/wlcore/vendor_cmd.c b/drivers/net/wireless/ti/wlcore/vendor_cmd.c
+index 5cf0b32c413b..e1bd344c4ebc 100644
+--- a/drivers/net/wireless/ti/wlcore/vendor_cmd.c
++++ b/drivers/net/wireless/ti/wlcore/vendor_cmd.c
+@@ -163,6 +163,7 @@ static const struct wiphy_vendor_command wlcore_vendor_commands[] = {
+ 		.flags = WIPHY_VENDOR_CMD_NEED_NETDEV |
+ 			 WIPHY_VENDOR_CMD_NEED_RUNNING,
+ 		.doit = wlcore_vendor_cmd_smart_config_start,
++		.policy = wlcore_vendor_attr_policy,
+ 	},
+ 	{
+ 		.info = {
+@@ -172,6 +173,7 @@ static const struct wiphy_vendor_command wlcore_vendor_commands[] = {
+ 		.flags = WIPHY_VENDOR_CMD_NEED_NETDEV |
+ 			 WIPHY_VENDOR_CMD_NEED_RUNNING,
+ 		.doit = wlcore_vendor_cmd_smart_config_stop,
++		.policy = wlcore_vendor_attr_policy,
+ 	},
+ 	{
+ 		.info = {
+@@ -181,6 +183,7 @@ static const struct wiphy_vendor_command wlcore_vendor_commands[] = {
+ 		.flags = WIPHY_VENDOR_CMD_NEED_NETDEV |
+ 			 WIPHY_VENDOR_CMD_NEED_RUNNING,
+ 		.doit = wlcore_vendor_cmd_smart_config_set_group_key,
++		.policy = wlcore_vendor_attr_policy,
+ 	},
+ };
+ 
+-- 
+2.17.2
 
