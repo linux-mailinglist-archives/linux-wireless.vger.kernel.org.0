@@ -2,76 +2,97 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 8C65F565DA
-	for <lists+linux-wireless@lfdr.de>; Wed, 26 Jun 2019 11:46:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3AD0D5664F
+	for <lists+linux-wireless@lfdr.de>; Wed, 26 Jun 2019 12:11:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726077AbfFZJqo (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 26 Jun 2019 05:46:44 -0400
-Received: from mailgw02.mediatek.com ([210.61.82.184]:51931 "EHLO
-        mailgw02.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1725379AbfFZJqo (ORCPT
+        id S1726734AbfFZKL5 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 26 Jun 2019 06:11:57 -0400
+Received: from userp2120.oracle.com ([156.151.31.85]:46754 "EHLO
+        userp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726487AbfFZKL4 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 26 Jun 2019 05:46:44 -0400
-X-UUID: 2945cb3f5e0b44f4a9b32e27d89fac6d-20190626
-X-UUID: 2945cb3f5e0b44f4a9b32e27d89fac6d-20190626
-Received: from mtkcas09.mediatek.inc [(172.21.101.178)] by mailgw02.mediatek.com
-        (envelope-from <ryder.lee@mediatek.com>)
-        (mhqrelay.mediatek.com ESMTP with TLS)
-        with ESMTP id 1401304215; Wed, 26 Jun 2019 17:46:36 +0800
-Received: from mtkcas07.mediatek.inc (172.21.101.84) by
- mtkmbs08n2.mediatek.inc (172.21.101.56) with Microsoft SMTP Server (TLS) id
- 15.0.1395.4; Wed, 26 Jun 2019 17:46:34 +0800
-Received: from [172.21.77.33] (172.21.77.33) by mtkcas07.mediatek.inc
- (172.21.101.73) with Microsoft SMTP Server id 15.0.1395.4 via Frontend
- Transport; Wed, 26 Jun 2019 17:46:34 +0800
-Message-ID: <1561542394.32588.0.camel@mtkswgap22>
-Subject: Re: [RFC 0/5] add hw dfs pattern detector support to mt7615 driver
-From:   Ryder Lee <ryder.lee@mediatek.com>
-To:     Lorenzo Bianconi <lorenzo@kernel.org>
-CC:     <nbd@nbd.name>, <lorenzo.bianconi@redhat.com>,
-        <linux-wireless@vger.kernel.org>, <royluo@google.com>,
-        <yf.luo@mediatek.com>
-Date:   Wed, 26 Jun 2019 17:46:34 +0800
-In-Reply-To: <cover.1561499275.git.lorenzo@kernel.org>
-References: <cover.1561499275.git.lorenzo@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-X-Mailer: Evolution 3.2.3-0ubuntu6 
-Content-Transfer-Encoding: 7bit
+        Wed, 26 Jun 2019 06:11:56 -0400
+Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
+        by userp2120.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x5QA8X51079437;
+        Wed, 26 Jun 2019 10:11:39 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
+ : subject : message-id : mime-version : content-type; s=corp-2018-07-02;
+ bh=0rjPnFf/3usKiUcf+Z1GXvs1dO9my6qw/hTowI4egCU=;
+ b=Cp54Xyno+NH+L2Nhd2qmKhk3hX5L1vYWl2kM53ciZYxx/9JXp88t7U5Jy3P1cs3L/TpR
+ efKPP3hcXLPrki5bRkol5IlEGbWv+jJAl/U1M565aRvUTVDlIpK4VT7KA4jcVOnwVp2k
+ snMKFGrEso5I+gwqqtGV1I2NBRZYmklZgmfKlgNkNywBWSaNStwFKM0jXPJG+oaMrjCU
+ KhFnqr+/1gOAlZMbZTaDlCzhRODoKhoeWWruEHWttk3hztjDheD2GfcqNpIYCdhOa9rU
+ dZb0ezIgLT4bzvHdmL//2SIf1/jNoCGoK4Lb9i46XL3iULcHuQl/+VKFtJzxDzvEfjrU KQ== 
+Received: from aserp3030.oracle.com (aserp3030.oracle.com [141.146.126.71])
+        by userp2120.oracle.com with ESMTP id 2t9cyqhbf1-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Wed, 26 Jun 2019 10:11:39 +0000
+Received: from pps.filterd (aserp3030.oracle.com [127.0.0.1])
+        by aserp3030.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x5QA9WR3171338;
+        Wed, 26 Jun 2019 10:09:39 GMT
+Received: from userv0122.oracle.com (userv0122.oracle.com [156.151.31.75])
+        by aserp3030.oracle.com with ESMTP id 2t9accm7vj-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Wed, 26 Jun 2019 10:09:38 +0000
+Received: from abhmp0010.oracle.com (abhmp0010.oracle.com [141.146.116.16])
+        by userv0122.oracle.com (8.14.4/8.14.4) with ESMTP id x5QA9XVK032710;
+        Wed, 26 Jun 2019 10:09:33 GMT
+Received: from mwanda (/41.57.98.10)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Wed, 26 Jun 2019 03:09:33 -0700
+Date:   Wed, 26 Jun 2019 13:09:26 +0300
+From:   Dan Carpenter <dan.carpenter@oracle.com>
+To:     Kalle Valo <kvalo@codeaurora.org>,
+        Philip Rakity <prakity@yahoo.com>
+Cc:     Allison Randal <allison@lohutok.net>,
+        Lubomir Rintel <lkundrak@v3.sk>,
+        libertas-dev@lists.infradead.org, linux-wireless@vger.kernel.org,
+        kernel-janitors@vger.kernel.org
+Subject: [PATCH] libertas: Fix a double free in if_spi_c2h_data()
+Message-ID: <20190626100926.GD3242@mwanda>
 MIME-Version: 1.0
-X-TM-SNTS-SMTP: 8923B52383B668B249EA3BE4C2D3B233A8F2ED6BEF5C92591938F82E0FB844032000:8
-X-MTK:  N
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Mailer: git-send-email haha only kidding
+User-Agent: Mutt/1.10.1 (2018-07-13)
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9299 signatures=668687
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=2 malwarescore=0
+ phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=999
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.0.1-1810050000 definitions=main-1906260122
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9299 signatures=668687
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
+ suspectscore=2 phishscore=0 bulkscore=0 spamscore=0 clxscore=1011
+ lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=999 adultscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1810050000
+ definitions=main-1906260122
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Wed, 2019-06-26 at 00:01 +0200, Lorenzo Bianconi wrote:
-> Introduce radar pattern detection support to mt7615 driver. Please note I have
-> tested this series just through the radar pattern test knob added to debugfs
-> and not through I real radar signal generator.
-> CSA is currently missing (I am currently working on it).
-> This series is based on 'mt76: move nl80211_dfs_regions in mt76_dev data
-> structure' https://patchwork.kernel.org/patch/11010723/
-> 
-> Lorenzo Bianconi (5):
->   mt76: mt7615: introduce mt7615_regd_notifier
->   mt76: mt7615: add hw dfs pattern detector support
->   mt76: mt7615: do not perform txcalibration before cac is complited
->   mt76: mt7615: unlock dfs bands
->   mt76: mt7615: add radar pattern test knob to debugfs
-> 
->  .../wireless/mediatek/mt76/mt7615/Makefile    |   3 +-
->  .../wireless/mediatek/mt76/mt7615/debugfs.c   |  38 ++++++
->  .../net/wireless/mediatek/mt76/mt7615/dma.c   |   2 +-
->  .../net/wireless/mediatek/mt76/mt7615/init.c  |  43 +++++--
->  .../net/wireless/mediatek/mt76/mt7615/mac.c   |  88 +++++++++++++
->  .../net/wireless/mediatek/mt76/mt7615/main.c  |   6 +
->  .../net/wireless/mediatek/mt76/mt7615/mcu.c   | 121 ++++++++++++++++--
->  .../net/wireless/mediatek/mt76/mt7615/mcu.h   |  23 ++++
->  .../wireless/mediatek/mt76/mt7615/mt7615.h    |  55 ++++++++
->  9 files changed, 356 insertions(+), 23 deletions(-)
->  create mode 100644 drivers/net/wireless/mediatek/mt76/mt7615/debugfs.c
-> 
-For the series
-Acked-by: Ryder Lee <ryder.lee@mediatek.com>
+The lbs_process_rxed_packet() frees the skb.  It didn't originally, but
+we fixed it in commit f54930f36311 ("libertas: don't leak skb on receive
+error").
+
+Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+---
+ drivers/net/wireless/marvell/libertas/if_spi.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/net/wireless/marvell/libertas/if_spi.c b/drivers/net/wireless/marvell/libertas/if_spi.c
+index 27067e79e83f..e38f02d1f2e4 100644
+--- a/drivers/net/wireless/marvell/libertas/if_spi.c
++++ b/drivers/net/wireless/marvell/libertas/if_spi.c
+@@ -772,7 +772,7 @@ static int if_spi_c2h_data(struct if_spi_card *card)
+ 	/* pass the SKB to libertas */
+ 	err = lbs_process_rxed_packet(card->priv, skb);
+ 	if (err)
+-		goto free_skb;
++		goto out;  /* lbs_process_rxed_packet() frees skb */
+ 
+ 	/* success */
+ 	goto out;
+-- 
+2.20.1
 
