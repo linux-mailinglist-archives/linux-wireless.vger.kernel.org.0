@@ -2,104 +2,82 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 7E51556A2A
-	for <lists+linux-wireless@lfdr.de>; Wed, 26 Jun 2019 15:16:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 23D9356A5D
+	for <lists+linux-wireless@lfdr.de>; Wed, 26 Jun 2019 15:26:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727660AbfFZNQm (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 26 Jun 2019 09:16:42 -0400
-Received: from mx1.redhat.com ([209.132.183.28]:54916 "EHLO mx1.redhat.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726948AbfFZNQm (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 26 Jun 2019 09:16:42 -0400
-Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.phx2.redhat.com [10.5.11.15])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mx1.redhat.com (Postfix) with ESMTPS id D1D7F31628F4;
-        Wed, 26 Jun 2019 13:16:25 +0000 (UTC)
-Received: from ovpn-112-45.rdu2.redhat.com (ovpn-112-45.rdu2.redhat.com [10.10.112.45])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id A3FD55D71C;
-        Wed, 26 Jun 2019 13:16:23 +0000 (UTC)
-Message-ID: <be491ab35ba46111a1c90cc12b6d5ff6ea3f57e8.camel@redhat.com>
-Subject: Re: [PATCH] libertas: Fix a double free in if_spi_c2h_data()
-From:   Dan Williams <dcbw@redhat.com>
-To:     Dan Carpenter <dan.carpenter@oracle.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        Philip Rakity <prakity@yahoo.com>
-Cc:     Lubomir Rintel <lkundrak@v3.sk>, kernel-janitors@vger.kernel.org,
-        linux-wireless@vger.kernel.org,
+        id S1726628AbfFZN03 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 26 Jun 2019 09:26:29 -0400
+Received: from userp2120.oracle.com ([156.151.31.85]:52968 "EHLO
+        userp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726157AbfFZN03 (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Wed, 26 Jun 2019 09:26:29 -0400
+Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
+        by userp2120.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x5QDOI5i040624;
+        Wed, 26 Jun 2019 13:25:57 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
+ : subject : message-id : references : mime-version : content-type :
+ in-reply-to; s=corp-2018-07-02;
+ bh=Jc6Kfrqo1obGKGX3hptI4aB5JIAaOzHxGxab76hqajY=;
+ b=LrUnKJ1MjOtfc/B1JoNi+K6yg7FYvyTYxDiBN5Y644tafzbpJeUoz/5ikBTb2eyTqDwI
+ 5iSXrYGFZ6LhH35+9v3IUc+DT4xTWeTHgp6dZK7aQ8uV9OfWljf/q3Vz97ND6rOSWulv
+ BaPCVEbu4BSvdUYM91GbNQfBGywSeuK1WC8+VlDEXs9hYg4Wt0HTQhSEufC4M+AQwZch
+ YXfwNSq30U2BXkSByfQm9/ZEeR4uuu/xY2Sj+f37p8DZuVpSPHcTJfnLx85Xs3fyLNj1
+ FrgJ8kIadtNbCGJ3SqiP4VUUrpNI8te1tOwy4XOQyWQH7yJ6qYk8290nOvIjOAVPhqT2 zQ== 
+Received: from userp3020.oracle.com (userp3020.oracle.com [156.151.31.79])
+        by userp2120.oracle.com with ESMTP id 2t9cyqj8n4-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Wed, 26 Jun 2019 13:25:56 +0000
+Received: from pps.filterd (userp3020.oracle.com [127.0.0.1])
+        by userp3020.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x5QDNRmo136851;
+        Wed, 26 Jun 2019 13:23:56 GMT
+Received: from userv0121.oracle.com (userv0121.oracle.com [156.151.31.72])
+        by userp3020.oracle.com with ESMTP id 2tat7cttk2-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Wed, 26 Jun 2019 13:23:56 +0000
+Received: from abhmp0022.oracle.com (abhmp0022.oracle.com [141.146.116.28])
+        by userv0121.oracle.com (8.14.4/8.13.8) with ESMTP id x5QDNmTr019550;
+        Wed, 26 Jun 2019 13:23:49 GMT
+Received: from kadam (/41.57.98.10)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Wed, 26 Jun 2019 06:23:48 -0700
+Date:   Wed, 26 Jun 2019 16:23:40 +0300
+From:   Dan Carpenter <dan.carpenter@oracle.com>
+To:     Dan Williams <dcbw@redhat.com>
+Cc:     Kalle Valo <kvalo@codeaurora.org>,
+        Philip Rakity <prakity@yahoo.com>,
+        Lubomir Rintel <lkundrak@v3.sk>,
+        kernel-janitors@vger.kernel.org, linux-wireless@vger.kernel.org,
         Allison Randal <allison@lohutok.net>,
         libertas-dev@lists.infradead.org
-Date:   Wed, 26 Jun 2019 08:16:22 -0500
-In-Reply-To: <20190626100926.GD3242@mwanda>
+Subject: Re: [PATCH] libertas: Fix a double free in if_spi_c2h_data()
+Message-ID: <20190626132340.GE28859@kadam>
 References: <20190626100926.GD3242@mwanda>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.30.5 (3.30.5-1.fc29) 
+ <be491ab35ba46111a1c90cc12b6d5ff6ea3f57e8.camel@redhat.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.15
-X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16 (mx1.redhat.com [10.5.110.41]); Wed, 26 Jun 2019 13:16:42 +0000 (UTC)
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <be491ab35ba46111a1c90cc12b6d5ff6ea3f57e8.camel@redhat.com>
+User-Agent: Mutt/1.9.4 (2018-02-28)
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9299 signatures=668687
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 malwarescore=0
+ phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=563
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.0.1-1810050000 definitions=main-1906260160
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9299 signatures=668687
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
+ suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1011
+ lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=615 adultscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1810050000
+ definitions=main-1906260160
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Wed, 2019-06-26 at 13:09 +0300, Dan Carpenter wrote:
-> The lbs_process_rxed_packet() frees the skb.  It didn't originally,
-> but
-> we fixed it in commit f54930f36311 ("libertas: don't leak skb on
-> receive
-> error").
-> 
-> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
-> ---
->  drivers/net/wireless/marvell/libertas/if_spi.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/net/wireless/marvell/libertas/if_spi.c
-> b/drivers/net/wireless/marvell/libertas/if_spi.c
-> index 27067e79e83f..e38f02d1f2e4 100644
-> --- a/drivers/net/wireless/marvell/libertas/if_spi.c
-> +++ b/drivers/net/wireless/marvell/libertas/if_spi.c
-> @@ -772,7 +772,7 @@ static int if_spi_c2h_data(struct if_spi_card
-> *card)
->  	/* pass the SKB to libertas */
->  	err = lbs_process_rxed_packet(card->priv, skb);
->  	if (err)
-> -		goto free_skb;
-> +		goto out;  /* lbs_process_rxed_packet() frees skb */
->  
->  	/* success */
->  	goto out;
+Yeah.  That looks nicer.  Could you send it as a proper patch and give
+me Reported-by credit?
 
-It can be further simplified (not compile tested yet):
-
-diff --git a/drivers/net/wireless/marvell/libertas/if_spi.c b/drivers/net/wireless/marvell/libertas/if_spi.c
-index 27067e79e83fe..072da89c4986f 100644
---- a/drivers/net/wireless/marvell/libertas/if_spi.c
-+++ b/drivers/net/wireless/marvell/libertas/if_spi.c
-@@ -766,19 +766,15 @@ static int if_spi_c2h_data(struct if_spi_card *card)
- 
- 	/* Read the data from the WLAN module into our skb... */
- 	err = spu_read(card, IF_SPI_DATA_RDWRPORT_REG, data, ALIGN(len, 4));
--	if (err)
--		goto free_skb;
-+	if (err) {
-+		dev_kfree_skb(skb);
-+		goto out
-+	}
- 
- 	/* pass the SKB to libertas */
- 	err = lbs_process_rxed_packet(card->priv, skb);
--	if (err)
--		goto free_skb;
-+	/* lbs_process_rxed_packet() consumes the skb */
- 
--	/* success */
--	goto out;
--
--free_skb:
--	dev_kfree_skb(skb);
- out:
- 	if (err)
- 		netdev_err(priv->dev, "%s: err=%d\n", __func__, err);
+regards,
+dan carpenter
 
