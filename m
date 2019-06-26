@@ -2,299 +2,150 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id ACC1456A71
-	for <lists+linux-wireless@lfdr.de>; Wed, 26 Jun 2019 15:29:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 267CB56BB8
+	for <lists+linux-wireless@lfdr.de>; Wed, 26 Jun 2019 16:17:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727397AbfFZN2x (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 26 Jun 2019 09:28:53 -0400
-Received: from mout.web.de ([212.227.15.4]:55609 "EHLO mout.web.de"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726104AbfFZN2x (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 26 Jun 2019 09:28:53 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
-        s=dbaedf251592; t=1561555690;
-        bh=F2mf4IWIAL0/3qhafAlKcvmEvzPzkPnJ2u8U6qSNHPI=;
-        h=X-UI-Sender-Class:Subject:To:Cc:References:From:Date:In-Reply-To;
-        b=W2MWf+HElzo8Gw17pB3BBhUrfYI3rKwQlGpqntESlHyRlDM9rDJK2NVRQdNik+Lzu
-         1tAY+YbwP+x3gZdGWPWOv48Nm6TgkgAVeCtmx+f512MUnD8u1McyueTLDrPuUbAuIr
-         MYzuBScq3N/9GxRgsJsJSqIiwGv5ocRKIBXnzVmE=
-X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
-Received: from [192.168.43.108] ([89.15.239.56]) by smtp.web.de (mrweb001
- [213.165.67.108]) with ESMTPSA (Nemesis) id 0LgHau-1iKulR3G6O-00nfjy; Wed, 26
- Jun 2019 15:28:10 +0200
-Subject: Re: [PATCH] rt2x00: fix rx queue hang
-To:     Stanislaw Gruszka <sgruszka@redhat.com>
-Cc:     Helmut Schaa <helmut.schaa@googlemail.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, stable@vger.kernel.org
-References: <20190617094656.3952-1-smoch@web.de>
- <20190618093431.GA2577@redhat.com>
- <b6899d78-447c-3cb3-4bec-e4050660ccaa@web.de>
- <20190625095734.GA2886@redhat.com>
-From:   Soeren Moch <smoch@web.de>
-Openpgp: preference=signencrypt
-Autocrypt: addr=smoch@web.de; prefer-encrypt=mutual; keydata=
- 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
-Message-ID: <8d7da251-8218-ff4b-2cf3-8ed69c97275e@web.de>
-Date:   Wed, 26 Jun 2019 15:28:00 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.7.1
+        id S1728001AbfFZORr (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 26 Jun 2019 10:17:47 -0400
+Received: from smtp.codeaurora.org ([198.145.29.96]:40672 "EHLO
+        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725958AbfFZORr (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Wed, 26 Jun 2019 10:17:47 -0400
+Received: by smtp.codeaurora.org (Postfix, from userid 1000)
+        id 9F0FA60E5D; Wed, 26 Jun 2019 14:17:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
+        s=default; t=1561558665;
+        bh=zAeObv87GMP12NToeipB2vCY+x5lGwzIQdd4Ta53uwc=;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+        b=LvXnSaHQ2Pp3gw/INmFtFN/2+HzahQ/VkcqAaV0kqFtpaTWE4n7/6+OqaE/2X3H+w
+         NmztRhtkmNvoNvA3GCu1XNRnefcateejmSA01W57EzCNVZil4wtKOjTTwu4hRFNOeV
+         0PQa0i9zN3UxpGEdwrBESRkQpr5O7QRHWPE3Wnqg=
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        pdx-caf-mail.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.7 required=2.0 tests=ALL_TRUSTED,BAYES_00,
+        DKIM_INVALID,DKIM_SIGNED,SPF_NONE autolearn=no autolearn_force=no
+        version=3.4.0
+Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo@smtp.codeaurora.org)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id DF90F60E5D;
+        Wed, 26 Jun 2019 14:17:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
+        s=default; t=1561558663;
+        bh=zAeObv87GMP12NToeipB2vCY+x5lGwzIQdd4Ta53uwc=;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+        b=EwxHwI7ik+3eUKQcOdkR3Rf+iL2og8Bh6mRb0WbKEn2uW65lkPyTtPDTpJVVQ1Hh0
+         lzbczBB7/aAhuw3zvovIk33+7j+oxqKStuuukEX3tXfIt7zV3BglwpJDtFW0QXPwpz
+         k1xXIRENZXw/QikA9Uy5iedNv4FQcotRf7hDY80Q=
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org DF90F60E5D
+Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
+From:   Kalle Valo <kvalo@codeaurora.org>
+To:     Christian Lamparter <chunkeey@gmail.com>
+Cc:     linux-wireless@vger.kernel.org
+Subject: Re: [PATCH] carl9170: fix enum compare splat
+References: <20190608144947.744-1-chunkeey@gmail.com>
+        <1601416.I41mb68Wgz@debian64>
+        <87a7ef9jp2.fsf@kamboji.qca.qualcomm.com>
+        <4392478.8kWN0Ehzps@debian64>
+Date:   Wed, 26 Jun 2019 17:17:39 +0300
+In-Reply-To: <4392478.8kWN0Ehzps@debian64> (Christian Lamparter's message of
+        "Thu, 20 Jun 2019 16:41:00 +0200")
+Message-ID: <87o92kmnwc.fsf@kamboji.qca.qualcomm.com>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
 MIME-Version: 1.0
-In-Reply-To: <20190625095734.GA2886@redhat.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Content-Language: en-GB
-X-Provags-ID: V03:K1:9lq9T0E+qR/a4zTgRmDqRW1EiAV+h/mVCAeqaKHI97g5VloFyFa
- fgsjxrQMPJXrKsx6Vvsc6roQtn10TqmUNjokV20UyvxM5UB7dpCqHEwSQvYCizkr7BBQleD
- ZGrAd2JP4FNXyIcpC1e1JKAgkEwP8oM1lou65Aipu0OZYD2K3SVaS198CIodaJaxQsz5x0m
- Y7jZl1OBbEz72n15Sv1SA==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:/lmK+sOy14k=:dN92dasNqwGl5pXQXtUKSn
- TT0zFyiZj3c94y0Rz3ryB8Y/LanjBt4103/3B6mLBDWXgq6auYseLXlEQpOFsvj7vTZh6qJbo
- gXhbXi0ykP95kC5OWnN+r5sVRJzVIaAVXW1gLlmdMog6H2V0eb8gugWr7aj/bxRWimlD3gDQ6
- saw6LLI89Xnl+1aJ6rqLzTM+wXhjbIg02qu3hvpcsNGQg/1XZAw3lHH1jDTSBQ2Jj9tIz95k/
- zvSdUthRew+drPLJBpRSa68iey8F9oxjv4lLQsrliK0kmPhUv/EjdzMF9kXf5f6z/vVehpaZD
- bdc7LvAWB97oGORI+d9+RilwMtqfGxf4EZ5IEb61eW0lgDAb3K51Vs+pHFbbLP+3wG5mGj5I1
- bg1lyYwvD6usrZ42Qddc+oCMKE3MapvDFzdsHEQX+8DqELOq0oAQpR43vgRu36RgP89BljqQj
- uegyYoO5yTvhLG2JheWuPRPmQTCcQ0r/f1bkhwRDABq8Eqh6c5pFZZH8VlZP+ColDKeogF4UU
- 8VelBhNcD2YQMFGInaC/puBReUKUqa947yxhveTKxwq1auyy1eZy22wkxK04JwiXb+8D16v37
- qVwbalDuDF2IoTJ+wUtWaFRP97KLMMPltYNucUXTeY3AdGfCfnHrU904dSQBn/5qnqrvdoejY
- 1BdMSW72eeVPPUwgU9KsAf5KuW/rum5+CzyM0pSxb4Uaawqu74MY2bNfShKNbwbn6vp1KiYMy
- DPM8RViWTFp1yGiXlZBcSC9Qi+e1FXfyuuCK8oAWn3oyu1OrGb+rEhRXEXdCbsWFQ7p4paL8i
- LezV+n6QS0XcUxAE1S0gfCi7zXDLU9KbHNue9dcrOrXfdhwdF3z0otcCAQKTFFPlwRcpdFlWW
- Tm4desXYAXD+Gi/jk9QnC60JrLvn1EtSNJulfPODWQi7qgd1asIV/Df6TSNY1LE6aRadsrLDa
- 0L/8M4ST2vI7Iht85L819xMAFhCU9EAE=
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 25.06.19 11:57, Stanislaw Gruszka wrote:
-> Hello
+Christian Lamparter <chunkeey@gmail.com> writes:
+
+> On Tuesday, June 18, 2019 2:11:53 PM CEST Kalle Valo wrote:
+>> Christian Lamparter <chunkeey@gmail.com> writes:
+>> > On Monday, June 10, 2019 9:06:30 AM CEST Kalle Valo wrote:
+>> >> Christian Lamparter <chunkeey@gmail.com> writes:
+>> >>=20
+>> >> > This patch fixes a noisy warning triggered by -Wenum-compare
+>> >> >
+>> >> > |main.c:1390:31: warning: comparison between =E2=80=98enum nl80211_=
+ac=E2=80=99
+>> >> > |	and =E2=80=98enum ar9170_txq=E2=80=99 [-Wenum-compare]
+>> >> > |  BUILD_BUG_ON(NL80211_NUM_ACS > __AR9170_NUM_TXQ);
+>> >> > |                               ^
+>> >> > | [...]
+>> >> >
+>> >> > This is a little bit unfortunate, since the number of queues
+>> >> > (hence NL80211_NUM_ACS) is a constant based on the IEEE 802.11
+>> >> > (much like IEEE80211_NUM_ACS) and __AR9170_NUM_TXQ is more or
+>> >> > less defined by the AR9170 hardware.
+>> >>=20
+>> >> Is the warning enabled by default? TBH I'm not seeing how useful this
+>> >> warning is for kernel development.
+>> >
+>> > It is included in the "-Wall" (which is coming from "KBUILD_CFLAGS"=20
+>> > in the main Makefile).
+>> >
+>> > I tried debian's gcc starting from 4.6 to the lastest 8.3. They all
+>> > complain about it in various degrees.
+>> >
+>> > https://gcc.gnu.org/onlinedocs/gcc-4.6.0/gcc/Warning-Options.html#Warn=
+ing-Options
+>>=20
+>> Ok, odd that I haven't noticed this warning. Maybe I have been just
+>> blind.
 >
-> On Fri, Jun 21, 2019 at 01:30:01PM +0200, Soeren Moch wrote:
->> On 18.06.19 11:34, Stanislaw Gruszka wrote:
->>> Hi
->>>
->>> On Mon, Jun 17, 2019 at 11:46:56AM +0200, Soeren Moch wrote:
->>>> Since commit ed194d136769 ("usb: core: remove local_irq_save() aroun=
-d
->>>>  ->complete() handler") the handlers rt2x00usb_interrupt_rxdone() an=
-d
->>>> rt2x00usb_interrupt_txdone() are not running with interrupts disable=
-d
->>>> anymore. So these handlers are not guaranteed to run completely befo=
-re
->>>> workqueue processing starts. So only mark entries ready for workqueu=
-e
->>>> processing after proper accounting in the dma done queue.
->>> It was always the case on SMP machines that rt2x00usb_interrupt_{tx/r=
-x}done
->>> can run concurrently with rt2x00_work_{rx,tx}done, so I do not
->>> understand how removing local_irq_save() around complete handler brok=
-e
->>> things.
->> I think because completion handlers can be interrupted now and schedul=
-ed
->> away
->> in the middle of processing.
->>> Have you reverted commit ed194d136769 and the revert does solve the p=
-roblem ?
->> Yes, I already sent a patch for this, see [1]. But this was not consid=
-ered
->> an acceptablesolution. Especially RT folks do not like code running wi=
-th
->> interrupts disabled,particularly when trying to acquire spinlocks then=
-=2E
->>
->> [1] https://lkml.org/lkml/2019/5/31/863
->>> Between 4.19 and 4.20 we have some quite big changes in rt2x00 driver=
-:
->>>
->>> 0240564430c0 rt2800: flush and txstatus rework for rt2800mmio
->>> adf26a356f13 rt2x00: use different txstatus timeouts when flushing
->>> 5022efb50f62 rt2x00: do not check for txstatus timeout every time on =
-tasklet
->>> 0b0d556e0ebb rt2800mmio: use txdone/txstatus routines from lib
->>> 5c656c71b1bf rt2800: move usb specific txdone/txstatus routines to rt=
-2800lib
->>>
->>> so I'm a bit afraid that one of those changes is real cause of
->>> the issue not ed194d136769 .
->> I tested 4.20 and 5.1 and see the exact same behavior. Reverting this
->> usb core patchsolves the problem.
->> 4.19.x (before this usb core patch) is running fine.
->>>> Note that rt2x00usb_work_rxdone() processes all available entries, n=
-ot
->>>> only such for which queue_work() was called.
->>>>
->>>> This fixes a regression on a RT5370 based wifi stick in AP mode, whi=
-ch
->>>> suddenly stopped data transmission after some period of heavy load. =
-Also
->>>> stopping the hanging hostapd resulted in the error message "ieee8021=
-1
->>>> phy0: rt2x00queue_flush_queue: Warning - Queue 14 failed to flush".
->>>> Other operation modes are probably affected as well, this just was
->>>> the used testcase.
->>> Do you know what actually make the traffic stop,
->>> TX queue hung or RX queue hung?
->> I think RX queue hang, as stated in the patch title. "Queue 14" means =
-QID_RX
->> (rt2x00queue.h, enum data_queue_qid).
->> I also tried to re-add local_irq_save() in only one of the handlers. A=
-dding
->> this tort2x00usb_interrupt_rxdone() alone solved the issue, while doin=
-g so
->> for tx alonedid not.
->>
->> Note that this doesn't mean there is no problem for tx, that's maybe
->> just more
->> difficult to trigger.
->>>> diff --git a/drivers/net/wireless/ralink/rt2x00/rt2x00dev.c b/driver=
-s/net/wireless/ralink/rt2x00/rt2x00dev.c
->>>> index 1b08b01db27b..9c102a501ee6 100644
->>>> --- a/drivers/net/wireless/ralink/rt2x00/rt2x00dev.c
->>>> +++ b/drivers/net/wireless/ralink/rt2x00/rt2x00dev.c
->>>> @@ -263,9 +263,9 @@ EXPORT_SYMBOL_GPL(rt2x00lib_dmastart);
->>>>
->>>>  void rt2x00lib_dmadone(struct queue_entry *entry)
->>>>  {
->>>> -	set_bit(ENTRY_DATA_STATUS_PENDING, &entry->flags);
->>>>  	clear_bit(ENTRY_OWNER_DEVICE_DATA, &entry->flags);
->>>>  	rt2x00queue_index_inc(entry, Q_INDEX_DMA_DONE);
->>>> +	set_bit(ENTRY_DATA_STATUS_PENDING, &entry->flags);
->>> Unfortunately I do not understand how this suppose to fix the problem=
-,
->>> could you elaborate more about this change?
->>>
->> Re-adding local_irq_save() around thisrt2x00lib_dmadone()solved
->> the issue. So I also tried to reverse the order of these calls.
->> It seems totally plausible to me, that the correct sequence is to
->> first clear the device assignment, then to set the status to dma_done,=
-
->> then to trigger the workqueue processing for this entry. When the hand=
-ler
->> is scheduled away in the middle of this sequence, now there is no
->> strange state where the entry can be processed by the workqueue while
->> not declared dma_done for it.
->> With this changed sequence there is no need anymore to disable interru=
-pts
->> for solving the hang issue.
-> Thanks very much for explanations. However I still do not fully
-> understand the issue. Q_INDEX_DMA_DONE index is only checked on TX
-> processing (on RX we use only Q_INDEX_DONE and Q_INDEX) and
-> ENTRY_OWNER_DEVICE_DATA is already cleared before rt2x00lib_dmadone()
-> in rt2x00usb_interrupt_rxdone() .
+> Sorry. No, I messed up there. I made a patch back in the day during the s=
+pectre
+> mac80211 patches that I kept in my tree for the driver. But I now remembe=
+r that
+> I never published those because of that exact "warning".
+> These lines are coming from there.
+>=20=20
+>> >> > --- a/drivers/net/wireless/ath/carl9170/main.c
+>> >> > +++ b/drivers/net/wireless/ath/carl9170/main.c
+>> >> > @@ -1387,7 +1387,7 @@ static int carl9170_op_conf_tx(struct ieee802=
+11_hw *hw,
+>> >> >  	int ret;
+>> >> >=20=20
+>> >> >  	BUILD_BUG_ON(ARRAY_SIZE(ar9170_qmap) !=3D __AR9170_NUM_TXQ);
+>> >> > -	BUILD_BUG_ON(NL80211_NUM_ACS > __AR9170_NUM_TXQ);
+>> >> > +	BUILD_BUG_ON((size_t)NL80211_NUM_ACS > (size_t)__AR9170_NUM_TXQ);
+>> >>=20
+>> >> IMHO this just makes the code worse. Does it make sense to workaround
+>> >> (stupid) compiler warnings like this?
+>> >
+>> > True. What's worse: This isn't really code. The BUILD_BUG_ON Macro is =
+there
+>> > to guard but it's getting compiled away. I could also just drop it.
+>>=20
+>> Either way is fine for me. If the GCC (by default) emits a warning for
+>> this we need to silence that warning, so in that respect I guess we
+>> should apply this. Unless better solutions come up, of course :)
 >
-> So I'm not sure how changing the order solve the problem. Looks
-> for me that the issue is triggered by some rt2x00lib_dmadone()
-> call done on error path (not in rt2x00usb_interrupt_rxdone())
-> and it race with this check:
->
->         if (test_and_set_bit(ENTRY_OWNER_DEVICE_DATA, &entry->flags) ||=
+> Note: I dropped this patch from patchwork. So, there's nothing that
+> needs to be done now ;)
 
->             test_bit(ENTRY_DATA_STATUS_PENDING, &entry->flags))
->                 return false;
->
-> in rt2x00usb_kick_rx_entry() - we return instead of submit urb.
-Hi Stanislaw,
+Thanks, except I would prefer that I drop the patch myself :) In
+numerous cases I have been wondering there a patch has disappeared and
+only after a while I realise the submitter deleted the patch altogether
+(which also destroys the conversation from patchwork etc). IMHO that's
+really bad UX in patchwork, I should file a bug report about that.
 
-the good news is: your patch below also solves the issue for me. But
-removing the ENTRY_DATA_STATUS_PENDING check in
-rt2x00usb_kick_rx_entry() alone does not help, while removing this check
-in rt2x00usb_work_rxdone() alone does the trick.
+So in general it's enough to say "Kalle, please drop the patch" and I'll
+do the rest.
 
-So the real race seems to be that the flags set in the completion
-handler are not yet visible on the cpu core running the workqueue. And
-because the worker is not rescheduled when aborted, the entry can just
-wait forever.
-Do you think this could make sense?
-> I'm somewhat reluctant to change the order, because TX processing
-> might relay on it (we first mark we wait for TX status and
-> then mark entry is no longer owned by hardware).
-OK, maybe it's just good luck that changing the order solves the rx
-problem. Or can memory barriers associated with the spinlock in
-rt2x00lib_dmadone() be responsible for that?
-(I'm testing on a armv7 system, Cortex-A9 quadcore.)
+> Well, except OT: Would you mind adding the QCA4019 boardfiles that
+> have accumulated over the past six-ish months?
 
-While looking at it, why we double-clear ENTRY_OWNER_DEVICE_DATA in
-rt2x00usb_interrupt_rxdone() directly and in rt2x00lib_dmadone() again,
-while not doing the same for tx? Would it make more sense to possibly
-set ENTRY_DATA_IO_FAILED before clearing ENTRY_OWNER_DEVICE_DATA in
-rt2x00usb_interrupt_rxdone() as for tx?
->  However on RX
-> side ENTRY_DATA_STATUS_PENDING bit make no sense as we do not
-> wait for status. We should remove ENTRY_DATA_STATUS_PENDING on
-> RX side and perhaps this also will solve issue you observe.
-I agree that removing the unnecessary checks is a good idea in any case.
-> Could you please check below patch, if it fixes the problem as well?
-At least I could not trigger the problem within transferring 10GB of
-data. But maybe the probability for triggering this bug is just lower
-because ENTRY_OWNER_DEVICE_DATA is cleared some time before
-ENTRY_DATA_STATUS_PENDING is set?
+Yeah, those are in my queue. But I'll first want to implement a script
+so that I don't need to manually add all of them and I just haven't
+found the time for that.
 
-Soeren
->
-> Stanislaw
->
-> diff --git a/drivers/net/wireless/ralink/rt2x00/rt2x00usb.c b/drivers/n=
-et/wireless/ralink/rt2x00/rt2x00usb.c
-> index b6c1344..731e633 100644
-> --- a/drivers/net/wireless/ralink/rt2x00/rt2x00usb.c
-> +++ b/drivers/net/wireless/ralink/rt2x00/rt2x00usb.c
-> @@ -360,8 +360,7 @@ static void rt2x00usb_work_rxdone(struct work_struc=
-t *work)
->  	while (!rt2x00queue_empty(rt2x00dev->rx)) {
->  		entry =3D rt2x00queue_get_entry(rt2x00dev->rx, Q_INDEX_DONE);
-> =20
-> -		if (test_bit(ENTRY_OWNER_DEVICE_DATA, &entry->flags) ||
-> -		    !test_bit(ENTRY_DATA_STATUS_PENDING, &entry->flags))
-> +		if (test_bit(ENTRY_OWNER_DEVICE_DATA, &entry->flags))
->  			break;
-> =20
->  		/*
-> @@ -413,8 +412,7 @@ static bool rt2x00usb_kick_rx_entry(struct queue_en=
-try *entry, void *data)
->  	struct queue_entry_priv_usb *entry_priv =3D entry->priv_data;
->  	int status;
-> =20
-> -	if (test_and_set_bit(ENTRY_OWNER_DEVICE_DATA, &entry->flags) ||
-> -	    test_bit(ENTRY_DATA_STATUS_PENDING, &entry->flags))
-> +	if (test_and_set_bit(ENTRY_OWNER_DEVICE_DATA, &entry->flags))
->  		return false;
-> =20
->  	rt2x00lib_dmastart(entry);
-
-
+--=20
+Kalle Valo
