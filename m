@@ -2,35 +2,37 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 17656575B0
-	for <lists+linux-wireless@lfdr.de>; Thu, 27 Jun 2019 02:32:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 04F4F57897
+	for <lists+linux-wireless@lfdr.de>; Thu, 27 Jun 2019 02:54:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727204AbfF0Abd (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 26 Jun 2019 20:31:33 -0400
-Received: from mail.kernel.org ([198.145.29.99]:34942 "EHLO mail.kernel.org"
+        id S1727280AbfF0Abt (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 26 Jun 2019 20:31:49 -0400
+Received: from mail.kernel.org ([198.145.29.99]:35300 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727193AbfF0Abc (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 26 Jun 2019 20:31:32 -0400
+        id S1727222AbfF0Abr (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Wed, 26 Jun 2019 20:31:47 -0400
 Received: from sasha-vm.mshome.net (unknown [107.242.116.147])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id B27472083B;
-        Thu, 27 Jun 2019 00:31:29 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 8C9E22083B;
+        Thu, 27 Jun 2019 00:31:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1561595491;
-        bh=A/CiTEaKaFg9geB0AFMGKZY8viea7aMND4JaS85g9tE=;
+        s=default; t=1561595506;
+        bh=DMqbglHczQUbFpxbS6oqWVek22jHR8khubzyZS+CpQU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=JYMKFgaeoUKfBFaYLk5vkZOfatTqcDLTRsmtsXFQ+u4cdga0udz7dPQEXkq23k1NE
-         s2groKKIAmwLuePEYKuNQ+64L3VLLDd/Jc5RYQdpZj7d1dibIFeKkTgxbUbNLr+ju6
-         phUrcwK4OXbnRvuNUTPKtFs3O9J5OU0/Dt5j6vz4=
+        b=IFs8Sylb8+G50sbOzxMZ2QJ6NN7YtEK2EOroZ1eGdGG7CYVYxJ7oZ9k+3cHjR001j
+         XQb888dLIfezhxExGuwKq8q1x5cjcg3OvFTxOaVXFGtj+X5uii5G2MUOdBeEDZJMAd
+         m92Z9sQ5pAF77Twk280FUqcr0ja8VTJqsZn1PXD8=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Takashi Iwai <tiwai@suse.de>, Kalle Valo <kvalo@codeaurora.org>,
+Cc:     Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
+        Luca Coelho <luciano.coelho@intel.com>,
+        Kalle Valo <kvalo@codeaurora.org>,
         Sasha Levin <sashal@kernel.org>,
         linux-wireless@vger.kernel.org, netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.1 23/95] mwifiex: Abort at too short BSS descriptor element
-Date:   Wed, 26 Jun 2019 20:29:08 -0400
-Message-Id: <20190627003021.19867-23-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.1 25/95] iwlwifi: fix load in rfkill flow for unified firmware
+Date:   Wed, 26 Jun 2019 20:29:10 -0400
+Message-Id: <20190627003021.19867-25-sashal@kernel.org>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20190627003021.19867-1-sashal@kernel.org>
 References: <20190627003021.19867-1-sashal@kernel.org>
@@ -43,89 +45,201 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Takashi Iwai <tiwai@suse.de>
+From: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
 
-[ Upstream commit 685c9b7750bfacd6fc1db50d86579980593b7869 ]
+[ Upstream commit b3500b472c880b5abe90ffd5c4a25aa736f906ad ]
 
-Currently mwifiex_update_bss_desc_with_ie() implicitly assumes that
-the source descriptor entries contain the enough size for each type
-and performs copying without checking the source size.  This may lead
-to read over boundary.
+When we have a single image (same firmware image for INIT and
+OPERATIONAL), we couldn't load the driver and register to the
+stack if we had hardware RF-Kill asserted.
 
-Fix this by putting the source size check in appropriate places.
+Fix this. This required a few changes:
 
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+1) Run the firmware as part of the INIT phase even if its
+   ucode_type is not IWL_UCODE_INIT.
+2) Send the commands that are sent to the unified image in
+   INIT flow even in RF-Kill.
+3) Don't ask the transport to stop the hardware upon RF-Kill
+   interrupt if the RF-Kill is asserted.
+4) Allow the RF-Kill interrupt to take us out of L1A so that
+   the RF-Kill interrupt will be received by the host (to
+   enable the radio).
+
+Signed-off-by: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
+Signed-off-by: Luca Coelho <luciano.coelho@intel.com>
 Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/marvell/mwifiex/scan.c | 15 +++++++++++++++
- 1 file changed, 15 insertions(+)
+ drivers/net/wireless/intel/iwlwifi/mvm/fw.c   | 23 ++++++++++++++-----
+ .../net/wireless/intel/iwlwifi/mvm/mac80211.c |  2 +-
+ drivers/net/wireless/intel/iwlwifi/mvm/mvm.h  |  2 +-
+ drivers/net/wireless/intel/iwlwifi/mvm/ops.c  | 17 ++++++++++----
+ .../wireless/intel/iwlwifi/pcie/internal.h    |  2 +-
+ 5 files changed, 33 insertions(+), 13 deletions(-)
 
-diff --git a/drivers/net/wireless/marvell/mwifiex/scan.c b/drivers/net/wireless/marvell/mwifiex/scan.c
-index 64ab6fe78c0d..c269a0de9413 100644
---- a/drivers/net/wireless/marvell/mwifiex/scan.c
-+++ b/drivers/net/wireless/marvell/mwifiex/scan.c
-@@ -1269,6 +1269,8 @@ int mwifiex_update_bss_desc_with_ie(struct mwifiex_adapter *adapter,
- 			break;
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/fw.c b/drivers/net/wireless/intel/iwlwifi/mvm/fw.c
+index ab68b5d53ec9..153717587aeb 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/fw.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/fw.c
+@@ -311,6 +311,8 @@ static int iwl_mvm_load_ucode_wait_alive(struct iwl_mvm *mvm,
+ 	int ret;
+ 	enum iwl_ucode_type old_type = mvm->fwrt.cur_fw_img;
+ 	static const u16 alive_cmd[] = { MVM_ALIVE };
++	bool run_in_rfkill =
++		ucode_type == IWL_UCODE_INIT || iwl_mvm_has_unified_ucode(mvm);
  
- 		case WLAN_EID_FH_PARAMS:
-+			if (element_len + 2 < sizeof(*fh_param_set))
-+				return -EINVAL;
- 			fh_param_set =
- 				(struct ieee_types_fh_param_set *) current_ptr;
- 			memcpy(&bss_entry->phy_param_set.fh_param_set,
-@@ -1277,6 +1279,8 @@ int mwifiex_update_bss_desc_with_ie(struct mwifiex_adapter *adapter,
- 			break;
+ 	if (ucode_type == IWL_UCODE_REGULAR &&
+ 	    iwl_fw_dbg_conf_usniffer(mvm->fw, FW_DBG_START_FROM_ALIVE) &&
+@@ -328,7 +330,12 @@ static int iwl_mvm_load_ucode_wait_alive(struct iwl_mvm *mvm,
+ 				   alive_cmd, ARRAY_SIZE(alive_cmd),
+ 				   iwl_alive_fn, &alive_data);
  
- 		case WLAN_EID_DS_PARAMS:
-+			if (element_len + 2 < sizeof(*ds_param_set))
-+				return -EINVAL;
- 			ds_param_set =
- 				(struct ieee_types_ds_param_set *) current_ptr;
+-	ret = iwl_trans_start_fw(mvm->trans, fw, ucode_type == IWL_UCODE_INIT);
++	/*
++	 * We want to load the INIT firmware even in RFKILL
++	 * For the unified firmware case, the ucode_type is not
++	 * INIT, but we still need to run it.
++	 */
++	ret = iwl_trans_start_fw(mvm->trans, fw, run_in_rfkill);
+ 	if (ret) {
+ 		iwl_fw_set_current_image(&mvm->fwrt, old_type);
+ 		iwl_remove_notification(&mvm->notif_wait, &alive_wait);
+@@ -433,7 +440,8 @@ static int iwl_run_unified_mvm_ucode(struct iwl_mvm *mvm, bool read_nvm)
+ 	 * commands
+ 	 */
+ 	ret = iwl_mvm_send_cmd_pdu(mvm, WIDE_ID(SYSTEM_GROUP,
+-						INIT_EXTENDED_CFG_CMD), 0,
++						INIT_EXTENDED_CFG_CMD),
++				   CMD_SEND_IN_RFKILL,
+ 				   sizeof(init_cfg), &init_cfg);
+ 	if (ret) {
+ 		IWL_ERR(mvm, "Failed to run init config command: %d\n",
+@@ -457,7 +465,8 @@ static int iwl_run_unified_mvm_ucode(struct iwl_mvm *mvm, bool read_nvm)
+ 	}
  
-@@ -1288,6 +1292,8 @@ int mwifiex_update_bss_desc_with_ie(struct mwifiex_adapter *adapter,
- 			break;
+ 	ret = iwl_mvm_send_cmd_pdu(mvm, WIDE_ID(REGULATORY_AND_NVM_GROUP,
+-						NVM_ACCESS_COMPLETE), 0,
++						NVM_ACCESS_COMPLETE),
++				   CMD_SEND_IN_RFKILL,
+ 				   sizeof(nvm_complete), &nvm_complete);
+ 	if (ret) {
+ 		IWL_ERR(mvm, "Failed to run complete NVM access: %d\n",
+@@ -482,6 +491,8 @@ static int iwl_run_unified_mvm_ucode(struct iwl_mvm *mvm, bool read_nvm)
+ 		}
+ 	}
  
- 		case WLAN_EID_CF_PARAMS:
-+			if (element_len + 2 < sizeof(*cf_param_set))
-+				return -EINVAL;
- 			cf_param_set =
- 				(struct ieee_types_cf_param_set *) current_ptr;
- 			memcpy(&bss_entry->ss_param_set.cf_param_set,
-@@ -1296,6 +1302,8 @@ int mwifiex_update_bss_desc_with_ie(struct mwifiex_adapter *adapter,
- 			break;
- 
- 		case WLAN_EID_IBSS_PARAMS:
-+			if (element_len + 2 < sizeof(*ibss_param_set))
-+				return -EINVAL;
- 			ibss_param_set =
- 				(struct ieee_types_ibss_param_set *)
- 				current_ptr;
-@@ -1305,10 +1313,14 @@ int mwifiex_update_bss_desc_with_ie(struct mwifiex_adapter *adapter,
- 			break;
- 
- 		case WLAN_EID_ERP_INFO:
-+			if (!element_len)
-+				return -EINVAL;
- 			bss_entry->erp_flags = *(current_ptr + 2);
- 			break;
- 
- 		case WLAN_EID_PWR_CONSTRAINT:
-+			if (!element_len)
-+				return -EINVAL;
- 			bss_entry->local_constraint = *(current_ptr + 2);
- 			bss_entry->sensed_11h = true;
- 			break;
-@@ -1349,6 +1361,9 @@ int mwifiex_update_bss_desc_with_ie(struct mwifiex_adapter *adapter,
- 			break;
- 
- 		case WLAN_EID_VENDOR_SPECIFIC:
-+			if (element_len + 2 < sizeof(vendor_ie->vend_hdr))
-+				return -EINVAL;
++	mvm->rfkill_safe_init_done = true;
 +
- 			vendor_ie = (struct ieee_types_vendor_specific *)
- 					current_ptr;
+ 	return 0;
  
+ error:
+@@ -526,7 +537,7 @@ int iwl_run_init_mvm_ucode(struct iwl_mvm *mvm, bool read_nvm)
+ 
+ 	lockdep_assert_held(&mvm->mutex);
+ 
+-	if (WARN_ON_ONCE(mvm->calibrating))
++	if (WARN_ON_ONCE(mvm->rfkill_safe_init_done))
+ 		return 0;
+ 
+ 	iwl_init_notification_wait(&mvm->notif_wait,
+@@ -576,7 +587,7 @@ int iwl_run_init_mvm_ucode(struct iwl_mvm *mvm, bool read_nvm)
+ 		goto remove_notif;
+ 	}
+ 
+-	mvm->calibrating = true;
++	mvm->rfkill_safe_init_done = true;
+ 
+ 	/* Send TX valid antennas before triggering calibrations */
+ 	ret = iwl_send_tx_ant_cfg(mvm, iwl_mvm_get_valid_tx_ant(mvm));
+@@ -612,7 +623,7 @@ int iwl_run_init_mvm_ucode(struct iwl_mvm *mvm, bool read_nvm)
+ remove_notif:
+ 	iwl_remove_notification(&mvm->notif_wait, &calib_wait);
+ out:
+-	mvm->calibrating = false;
++	mvm->rfkill_safe_init_done = false;
+ 	if (iwlmvm_mod_params.init_dbg && !mvm->nvm_data) {
+ 		/* we want to debug INIT and we have no NVM - fake */
+ 		mvm->nvm_data = kzalloc(sizeof(struct iwl_nvm_data) +
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c b/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
+index 6a3b11dd2edf..4ddf620c267d 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
+@@ -1211,7 +1211,7 @@ static void iwl_mvm_restart_cleanup(struct iwl_mvm *mvm)
+ 
+ 	mvm->scan_status = 0;
+ 	mvm->ps_disabled = false;
+-	mvm->calibrating = false;
++	mvm->rfkill_safe_init_done = false;
+ 
+ 	/* just in case one was running */
+ 	iwl_mvm_cleanup_roc_te(mvm);
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mvm.h b/drivers/net/wireless/intel/iwlwifi/mvm/mvm.h
+index a50dc53df086..b698d55ace1b 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/mvm.h
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/mvm.h
+@@ -877,7 +877,7 @@ struct iwl_mvm {
+ 	struct iwl_mvm_vif *bf_allowed_vif;
+ 
+ 	bool hw_registered;
+-	bool calibrating;
++	bool rfkill_safe_init_done;
+ 	bool support_umac_log;
+ 
+ 	u32 ampdu_ref;
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/ops.c b/drivers/net/wireless/intel/iwlwifi/mvm/ops.c
+index 13681b03c10e..20115770e75a 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/ops.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/ops.c
+@@ -1222,7 +1222,8 @@ void iwl_mvm_set_hw_ctkill_state(struct iwl_mvm *mvm, bool state)
+ static bool iwl_mvm_set_hw_rfkill_state(struct iwl_op_mode *op_mode, bool state)
+ {
+ 	struct iwl_mvm *mvm = IWL_OP_MODE_GET_MVM(op_mode);
+-	bool calibrating = READ_ONCE(mvm->calibrating);
++	bool rfkill_safe_init_done = READ_ONCE(mvm->rfkill_safe_init_done);
++	bool unified = iwl_mvm_has_unified_ucode(mvm);
+ 
+ 	if (state)
+ 		set_bit(IWL_MVM_STATUS_HW_RFKILL, &mvm->status);
+@@ -1231,15 +1232,23 @@ static bool iwl_mvm_set_hw_rfkill_state(struct iwl_op_mode *op_mode, bool state)
+ 
+ 	iwl_mvm_set_rfkill_state(mvm);
+ 
+-	/* iwl_run_init_mvm_ucode is waiting for results, abort it */
+-	if (calibrating)
++	 /* iwl_run_init_mvm_ucode is waiting for results, abort it. */
++	if (rfkill_safe_init_done)
+ 		iwl_abort_notification_waits(&mvm->notif_wait);
+ 
++	/*
++	 * Don't ask the transport to stop the firmware. We'll do it
++	 * after cfg80211 takes us down.
++	 */
++	if (unified)
++		return false;
++
+ 	/*
+ 	 * Stop the device if we run OPERATIONAL firmware or if we are in the
+ 	 * middle of the calibrations.
+ 	 */
+-	return state && (mvm->fwrt.cur_fw_img != IWL_UCODE_INIT || calibrating);
++	return state && (mvm->fwrt.cur_fw_img != IWL_UCODE_INIT ||
++			 rfkill_safe_init_done);
+ }
+ 
+ static void iwl_mvm_free_skb(struct iwl_op_mode *op_mode, struct sk_buff *skb)
+diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/internal.h b/drivers/net/wireless/intel/iwlwifi/pcie/internal.h
+index 59213164f35e..2afce5c41322 100644
+--- a/drivers/net/wireless/intel/iwlwifi/pcie/internal.h
++++ b/drivers/net/wireless/intel/iwlwifi/pcie/internal.h
+@@ -948,7 +948,7 @@ static inline void iwl_enable_rfkill_int(struct iwl_trans *trans)
+ 					   MSIX_HW_INT_CAUSES_REG_RF_KILL);
+ 	}
+ 
+-	if (trans->cfg->device_family == IWL_DEVICE_FAMILY_9000) {
++	if (trans->cfg->device_family >= IWL_DEVICE_FAMILY_9000) {
+ 		/*
+ 		 * On 9000-series devices this bit isn't enabled by default, so
+ 		 * when we power down the device we need set the bit to allow it
 -- 
 2.20.1
 
