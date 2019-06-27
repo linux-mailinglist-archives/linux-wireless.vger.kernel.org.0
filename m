@@ -2,91 +2,96 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 827835884C
-	for <lists+linux-wireless@lfdr.de>; Thu, 27 Jun 2019 19:27:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1C0635891C
+	for <lists+linux-wireless@lfdr.de>; Thu, 27 Jun 2019 19:46:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726498AbfF0R1m (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 27 Jun 2019 13:27:42 -0400
-Received: from smtp.codeaurora.org ([198.145.29.96]:35738 "EHLO
-        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726405AbfF0R1m (ORCPT
+        id S1726689AbfF0Rph (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 27 Jun 2019 13:45:37 -0400
+Received: from mail-pl1-f193.google.com ([209.85.214.193]:46980 "EHLO
+        mail-pl1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727338AbfF0Rpg (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 27 Jun 2019 13:27:42 -0400
-Received: by smtp.codeaurora.org (Postfix, from userid 1000)
-        id 21EE260A05; Thu, 27 Jun 2019 17:27:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1561656461;
-        bh=VRk9qBciVUNq6SNdf+gpzwb0SXyzLl2g2xB29SM7dG4=;
-        h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-        b=K+grF9Um4X4adiBgVcMy5V8cudv1GnsFzD0aiDqAFjmI+rv0g8w/4/d6mvDlgJf70
-         tcPobkS7LqdkRmcAj7QkB+VXvaCBgeMC1KLb710y+V1uUFADa8zkZ1D+hKtLICbFnd
-         zePX2RF6D0ouTW2ogBFSdOuCuuhN/fEDbSvi8jkQ=
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        pdx-caf-mail.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-0.8 required=2.0 tests=ALL_TRUSTED,BAYES_00,
-        DKIM_INVALID,DKIM_SIGNED,MISSING_DATE,MISSING_MID,SPF_NONE autolearn=no
-        autolearn_force=no version=3.4.0
-Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        (Authenticated sender: kvalo@smtp.codeaurora.org)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 053E46016D;
-        Thu, 27 Jun 2019 17:27:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1561656460;
-        bh=VRk9qBciVUNq6SNdf+gpzwb0SXyzLl2g2xB29SM7dG4=;
-        h=Subject:From:In-Reply-To:References:To:Cc:From;
-        b=O62Bhd6QfWbg/FjjzkjOR7W9HqMUHPdKW8+yVkzLohTY1/sMd2fHANLFXxEA6BZah
-         JM9o6ZVlQX6VkJhvZHSABMpdKc+/jyn8Q7eG3bCQxdk+FHd9jiZ6AnUZMblWQTLVFH
-         SsWnVBiGm7w0/PtmX7CpKCvRySIxokAB46CQDzIU=
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 053E46016D
-Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH 01/11] rtw88: resolve order of tx power setting routines
-From:   Kalle Valo <kvalo@codeaurora.org>
-In-Reply-To: <1559116487-5244-2-git-send-email-yhchuang@realtek.com>
-References: <1559116487-5244-2-git-send-email-yhchuang@realtek.com>
-To:     <yhchuang@realtek.com>
-Cc:     <linux-wireless@vger.kernel.org>
-User-Agent: pwcli/0.0.0-git (https://github.com/kvalo/pwcli/) Python/2.7.12
-Message-Id: <20190627172741.21EE260A05@smtp.codeaurora.org>
-Date:   Thu, 27 Jun 2019 17:27:41 +0000 (UTC)
+        Thu, 27 Jun 2019 13:45:36 -0400
+Received: by mail-pl1-f193.google.com with SMTP id e5so1661158pls.13;
+        Thu, 27 Jun 2019 10:45:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id;
+        bh=YcrOIML8x2OsusC75WoEHjxhMdfGqgM3ZNHf/dMTePc=;
+        b=jf7n5fH2A5HNpS8PTM3S811DsWred9JfeFur4PDK5+BudkEiGv0uONGRk5LPBKX5G1
+         igwiiPl5vGHIZPuIqoEe5l0Qs+cin2RFFIMudj7GJPW0mPr66sKSrbwTUKz249EJoPSn
+         8Hs7tWuLze0yhunJHSGizmLFFeiJw1o1IfQxO04RFUiW4KlfMkSZlJD6Z6L4W7C9ei4U
+         X1li4zYSgq37mTn1irKNa1ka/hTFpj0qgHUsNHsiM9uMWD1hSSpiGrnJ9rOHWYQwnOeh
+         B1pYgzlYTDmPbk2zt7ht/oTG6uJ34b/ldweUXOBJXiIDRBLwMqAA0fdEwR8lwPbU8Q7o
+         /IZQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=YcrOIML8x2OsusC75WoEHjxhMdfGqgM3ZNHf/dMTePc=;
+        b=pk1oU4DNJxScnN9bfqKfiPypsK1CFN4daa0K4N5CVizhGtXnNaiwqDrq3f4E1DYiJh
+         Ll61wgyuRzIYGOuKP7Ef2evnUPTPdZn69/F9+nqFIUoBsPxU0EMOMK1G+WdfQsoG1ai/
+         GHk3msa/X+75yoSccD/88EwcVWw+QR0kAqnjFHizLnMvcdvOtPsP/4onCfH3laYija4x
+         VszOu9g/NFZDFS8/iBH7aSazWaDQADVDqa0e5kWOjky307NzgS7Sj/2Te9rRt1IyxrNF
+         bHppZXZwWa03x5gWbxSCXeimaA3+j1t+1z1tJyfDiSAQ85QeBA0kzAM7oZz13WytwdSz
+         ZYtA==
+X-Gm-Message-State: APjAAAXXqHgWHffws9dxtVcnYPdbxanNaU4zhPxhAJPtl1i/GEVuvNHC
+        p4AEn9Ks72Ui2F5ae9E4Src=
+X-Google-Smtp-Source: APXvYqzbE72vwOnzbiDPERLuny3jJnLY2gpyWJh7MxzsMwmFnRrKeXVhleKt5228V1zkdGf43LmBdw==
+X-Received: by 2002:a17:902:110b:: with SMTP id d11mr6279856pla.213.1561657535820;
+        Thu, 27 Jun 2019 10:45:35 -0700 (PDT)
+Received: from hfq-skylake.ipads-lab.se.sjtu.edu.cn ([202.120.40.82])
+        by smtp.googlemail.com with ESMTPSA id t7sm4641393pjq.15.2019.06.27.10.45.33
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Thu, 27 Jun 2019 10:45:35 -0700 (PDT)
+From:   Fuqian Huang <huangfq.daxian@gmail.com>
+Cc:     Fuqian Huang <huangfq.daxian@gmail.com>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        ath10k@lists.infradead.org, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH 78/87] wireless: ath10k: remove memset after dma_alloc_coherent
+Date:   Fri, 28 Jun 2019 01:45:27 +0800
+Message-Id: <20190627174527.5987-1-huangfq.daxian@gmail.com>
+X-Mailer: git-send-email 2.11.0
+To:     unlisted-recipients:; (no To-header on input)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-<yhchuang@realtek.com> wrote:
+In commit af7ddd8a627c
+("Merge tag 'dma-mapping-4.21' of git://git.infradead.org/users/hch/dma-mapping"),
+dma_alloc_coherent has already zeroed the memory.
+So memset is not needed.
 
-> From: Yan-Hsuan Chuang <yhchuang@realtek.com>
-> 
-> Some functions that should be static are unnecessarily exposed, remove
-> their declaration in header file phy.h.
-> 
-> After resolving their declaration order, they can be declared as static.
-> So this commit changes nothing except the order and marking them static.
-> 
-> Signed-off-by: Yan-Hsuan Chuang <yhchuang@realtek.com>
+Signed-off-by: Fuqian Huang <huangfq.daxian@gmail.com>
+---
+ drivers/net/wireless/ath/ath10k/ce.c | 5 -----
+ 1 file changed, 5 deletions(-)
 
-10 patches applied to wireless-drivers-next.git, thanks.
-
-fa6dfe6bff24 rtw88: resolve order of tx power setting routines
-226746fd1201 rtw88: do not use (void *) as argument
-43712199e05b rtw88: unify prefixes for tx power setting routine
-522801493e7b rtw88: remove unused variable
-764038160aea rtw88: fix incorrect tx power limit at 5G
-adf3c676d1d2 rtw88: choose the lowest as world-wide power limit
-93f68a865f11 rtw88: correct power limit selection
-191c4257ba19 rtw88: update tx power limit table to RF v20
-0d350f0a91f2 rtw88: remove all RTW_MAX_POWER_INDEX macro
-b741422218ef rtw88: refine flow to get tx power index
-
+diff --git a/drivers/net/wireless/ath/ath10k/ce.c b/drivers/net/wireless/ath/ath10k/ce.c
+index eca87f7c5b6c..294fbc1e89ab 100644
+--- a/drivers/net/wireless/ath/ath10k/ce.c
++++ b/drivers/net/wireless/ath/ath10k/ce.c
+@@ -1704,9 +1704,6 @@ ath10k_ce_alloc_dest_ring_64(struct ath10k *ar, unsigned int ce_id,
+ 	/* Correctly initialize memory to 0 to prevent garbage
+ 	 * data crashing system when download firmware
+ 	 */
+-	memset(dest_ring->base_addr_owner_space_unaligned, 0,
+-	       nentries * sizeof(struct ce_desc_64) + CE_DESC_RING_ALIGN);
+-
+ 	dest_ring->base_addr_owner_space =
+ 			PTR_ALIGN(dest_ring->base_addr_owner_space_unaligned,
+ 				  CE_DESC_RING_ALIGN);
+@@ -2019,8 +2016,6 @@ void ath10k_ce_alloc_rri(struct ath10k *ar)
+ 		value |= ar->hw_ce_regs->upd->mask;
+ 		ath10k_ce_write32(ar, ce_base_addr + ctrl1_regs, value);
+ 	}
+-
+-	memset(ce->vaddr_rri, 0, CE_COUNT * sizeof(u32));
+ }
+ EXPORT_SYMBOL(ath10k_ce_alloc_rri);
+ 
 -- 
-https://patchwork.kernel.org/patch/10966415/
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+2.11.0
 
