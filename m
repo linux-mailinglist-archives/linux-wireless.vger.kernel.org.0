@@ -2,35 +2,57 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 5A9C357F99
-	for <lists+linux-wireless@lfdr.de>; Thu, 27 Jun 2019 11:50:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 203DC57FB4
+	for <lists+linux-wireless@lfdr.de>; Thu, 27 Jun 2019 11:53:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726445AbfF0Jui (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 27 Jun 2019 05:50:38 -0400
-Received: from mail.kernel.org ([198.145.29.99]:60084 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726292AbfF0Jui (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 27 Jun 2019 05:50:38 -0400
-Received: from localhost.localdomain.com (nat-pool-mxp-t.redhat.com [149.6.153.186])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id E62B32080C;
-        Thu, 27 Jun 2019 09:50:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1561629037;
-        bh=pG+Y2CSCbQ1asnLFdqbuV3K/dZ26IiUcrmzVTT0cHEw=;
-        h=From:To:Cc:Subject:Date:From;
-        b=t8nz2O+VyRISh8Ih7MPA1UcqMZq3erwd7pHWpfsJiKOnPC6f/t/27pONJqd9fWHul
-         jsJ2I6HNKB9dsHPffQnvdyEm037snrxLLqf9S6j1KpEx/q4Q0K9WA5Az2ZN6sF7fYZ
-         V78n00znt9HyS1ySz/HTHrwBuZIjFtUmBQPOOskQ=
-From:   Lorenzo Bianconi <lorenzo@kernel.org>
-To:     nbd@nbd.name
-Cc:     lorenzo.bianconi@redhat.com, linux-wireless@vger.kernel.org,
-        ryder.lee@mediatek.com, royluo@google.com
-Subject: [PATCH] mt76: mt7615: fix sparse warnings: warning: cast from restricted __le16
-Date:   Thu, 27 Jun 2019 11:50:25 +0200
-Message-Id: <218b80be3fd83986f657deda1e9a1d122624436d.1561628486.git.lorenzo@kernel.org>
-X-Mailer: git-send-email 2.21.0
+        id S1726422AbfF0JxA (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 27 Jun 2019 05:53:00 -0400
+Received: from mail-pg1-f195.google.com ([209.85.215.195]:42730 "EHLO
+        mail-pg1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726314AbfF0Jw7 (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 27 Jun 2019 05:52:59 -0400
+Received: by mail-pg1-f195.google.com with SMTP id k13so769552pgq.9
+        for <linux-wireless@vger.kernel.org>; Thu, 27 Jun 2019 02:52:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=endlessm-com.20150623.gappssmtp.com; s=20150623;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=eSti7nNxGlkHMPeNaufOPNsxXSw1/a1T6eOCbwJcR44=;
+        b=G0wG3LIGXYb5Tu8AeTGsf4L7a2ukWIRgwZj5WGdhvin5vS27CtwZi3qWiBt6DAntMZ
+         lRL1+R4wZpmnsf2s0i9xMo6bDECRfX5BrWTKcUQxSZsS/Sx8MTlQ5jKzYKSIL631srt0
+         piCtmwxW1Cajnz/tTWW8MgTwe8yqORSV/3YnC4px811/hmnPbyl4c4WLHYaHQ+SUsz7g
+         nI0ZPd7gaJQnuwxcGieVjUKrGogHyOWu1HDhDI8q8iJ5kSCx36x9GKtubm04qvtkKk0/
+         Wqt80KKS3s4GEdgSsNuYhyzO+pnSjgjiLJrsD34JCUoP+nTpeUCdC9RpVfGboENcS5Ej
+         hCaw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=eSti7nNxGlkHMPeNaufOPNsxXSw1/a1T6eOCbwJcR44=;
+        b=ZJU1kWJjf4jaD7/G1ZKQ4nJQoSK69dvG2BbPDu2gB6rR3IjbSKj3KAU9/Qq6VgrTbp
+         fb0ew2VfgvC/uw5BDtNBXg6TQrIjwpdh9XOM5S0fppo3eEh7f7SkbeO10PY+CGAI5NzI
+         GKeIjpUloAViAxPZavPhSzQ1u1nNmmFn/dp1t7jzLjhFnDEPmaAQ66kVx9dmKtPxttC5
+         RqlEwULBFRNNcUzcTjPAyXrOMWtQvGntGnjctPos6Zj++yHzRmdlLZncucTrjrflxmjq
+         5xhBRwNcC60VOLXUiPTCloLFWFsS02xdpvDNDaPLZsIgETvP94VoQBWLyFbZxF1p4pfI
+         x6fA==
+X-Gm-Message-State: APjAAAWpx1/Um38HqmPWOeRZFNiRgWpEALVdVnWwt20ZaS6hT0kd7lWP
+        O2ZS+ziO138IbHD1+7PRlIdHQg==
+X-Google-Smtp-Source: APXvYqwThA5c5tolZNtd9PZAt1ZfD9D1vZXSf7f0FwowKXSR7Ra1Wy8QnbI+BmVviA4UB9KjXHwqtA==
+X-Received: by 2002:a65:4387:: with SMTP id m7mr2883842pgp.287.1561629179022;
+        Thu, 27 Jun 2019 02:52:59 -0700 (PDT)
+Received: from localhost.localdomain (220-133-8-232.HINET-IP.hinet.net. [220.133.8.232])
+        by smtp.gmail.com with ESMTPSA id p15sm15635118pjf.27.2019.06.27.02.52.56
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
+        Thu, 27 Jun 2019 02:52:58 -0700 (PDT)
+From:   Chris Chiu <chiu@endlessm.com>
+To:     jes.sorensen@gmail.com, kvalo@codeaurora.org, davem@davemloft.net
+Cc:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux@endlessm.com
+Subject: [PATCH] rtl8xxxu: Fix wifi low signal strength issue of RTL8723BU
+Date:   Thu, 27 Jun 2019 17:52:47 +0800
+Message-Id: <20190627095247.8792-1-chiu@endlessm.com>
+X-Mailer: git-send-email 2.20.1 (Apple Git-117)
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
@@ -38,38 +60,71 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Do not convert {tx,rx}_mcs_map to little-endian since it is already done
-by mac80211. This patch fix the following sparse warning:
+The WiFi tx power of RTL8723BU is extremely low after booting. So
+the WiFi scan gives very limited AP list and it always fails to
+connect to the selected AP. This module only supports 1x1 antenna
+and the antenna is switched to bluetooth due to some incorrect
+register settings.
 
-drivers/net/wireless/mediatek/mt76/mt7615/mcu.c:1497:25: sparse:
-warning: cast from restricted __le16
-drivers/net/wireless/mediatek/mt76/mt7615/mcu.c:1499:25: sparse:
-warning: cast from restricted __le16
+This commit hand over the antenna control to PTA, the wifi signal
+will be back to normal and the bluetooth scan can also work at the
+same time. However, the btcoexist still needs to be handled under
+different circumstances. If there's a BT connection established,
+the wifi still fails to connect until disconneting the BT.
 
-Fixes: 04b8e65922f6 ("mt76: add mac80211 driver for MT7615 PCIe-based chipsets")
-Fixes: 3ca0a6f6e9df ("mt7615: mcu: use standard signature for mt7615_mcu_msg_send")
-Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+Signed-off-by: Chris Chiu <chiu@endlessm.com>
 ---
- drivers/net/wireless/mediatek/mt76/mt7615/mcu.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8723b.c | 9 ++++++---
+ drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c  | 3 ++-
+ 2 files changed, 8 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c
-index bf23e796bc06..beee25e69053 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c
-@@ -1493,10 +1493,8 @@ int mt7615_mcu_set_ht_cap(struct mt7615_dev *dev, struct ieee80211_vif *vif,
- 		sta_vht->tag = cpu_to_le16(STA_REC_VHT);
- 		sta_vht->len = cpu_to_le16(sizeof(*sta_vht));
- 		sta_vht->vht_cap = cpu_to_le32(sta->vht_cap.cap);
--		sta_vht->vht_rx_mcs_map =
--			cpu_to_le16(sta->vht_cap.vht_mcs.rx_mcs_map);
--		sta_vht->vht_tx_mcs_map =
--			cpu_to_le16(sta->vht_cap.vht_mcs.tx_mcs_map);
-+		sta_vht->vht_rx_mcs_map = sta->vht_cap.vht_mcs.rx_mcs_map;
-+		sta_vht->vht_tx_mcs_map = sta->vht_cap.vht_mcs.tx_mcs_map;
- 	}
+diff --git a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8723b.c b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8723b.c
+index 3adb1d3d47ac..6c3c70d93ac1 100644
+--- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8723b.c
++++ b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8723b.c
+@@ -1525,7 +1525,7 @@ static void rtl8723b_enable_rf(struct rtl8xxxu_priv *priv)
+ 	/*
+ 	 * WLAN action by PTA
+ 	 */
+-	rtl8xxxu_write8(priv, REG_WLAN_ACT_CONTROL_8723B, 0x04);
++	rtl8xxxu_write8(priv, REG_WLAN_ACT_CONTROL_8723B, 0x0c);
  
- 	ret = __mt76_mcu_send_msg(&dev->mt76, MCU_EXT_CMD_STA_REC_UPDATE,
+ 	/*
+ 	 * BT select S0/S1 controlled by WiFi
+@@ -1568,9 +1568,12 @@ static void rtl8723b_enable_rf(struct rtl8xxxu_priv *priv)
+ 	rtl8xxxu_gen2_h2c_cmd(priv, &h2c, sizeof(h2c.ant_sel_rsv));
+ 
+ 	/*
+-	 * 0x280, 0x00, 0x200, 0x80 - not clear
++	 * Different settings per different antenna position.
++	 * Antenna switch to BT: 0x280, 0x00 (inverse)
++	 * Antenna switch to WiFi: 0x0, 0x280 (inverse)
++	 * Antenna controlled by PTA: 0x200, 0x80 (inverse)
+ 	 */
+-	rtl8xxxu_write32(priv, REG_S0S1_PATH_SWITCH, 0x00);
++	rtl8xxxu_write32(priv, REG_S0S1_PATH_SWITCH, 0x80);
+ 
+ 	/*
+ 	 * Software control, antenna at WiFi side
+diff --git a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
+index 8136e268b4e6..87b2179a769e 100644
+--- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
++++ b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
+@@ -3891,12 +3891,13 @@ static int rtl8xxxu_init_device(struct ieee80211_hw *hw)
+ 
+ 	/* Check if MAC is already powered on */
+ 	val8 = rtl8xxxu_read8(priv, REG_CR);
++	val16 = rtl8xxxu_read16(priv, REG_SYS_CLKR);
+ 
+ 	/*
+ 	 * Fix 92DU-VC S3 hang with the reason is that secondary mac is not
+ 	 * initialized. First MAC returns 0xea, second MAC returns 0x00
+ 	 */
+-	if (val8 == 0xea)
++	if (val8 == 0xea || !(val16 & BIT(11)))
+ 		macpower = false;
+ 	else
+ 		macpower = true;
 -- 
-2.21.0
+2.11.0
 
