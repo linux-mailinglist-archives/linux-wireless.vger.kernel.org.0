@@ -2,40 +2,39 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 47C1557768
-	for <lists+linux-wireless@lfdr.de>; Thu, 27 Jun 2019 02:48:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 57F4D57798
+	for <lists+linux-wireless@lfdr.de>; Thu, 27 Jun 2019 02:48:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728832AbfF0Ai2 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 26 Jun 2019 20:38:28 -0400
-Received: from mail.kernel.org ([198.145.29.99]:42772 "EHLO mail.kernel.org"
+        id S1729139AbfF0Ajp (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 26 Jun 2019 20:39:45 -0400
+Received: from mail.kernel.org ([198.145.29.99]:43854 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728820AbfF0Ai1 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 26 Jun 2019 20:38:27 -0400
+        id S1727094AbfF0Ajo (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Wed, 26 Jun 2019 20:39:44 -0400
 Received: from sasha-vm.mshome.net (unknown [107.242.116.147])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 39D0A214AF;
-        Thu, 27 Jun 2019 00:38:23 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 9E9D021871;
+        Thu, 27 Jun 2019 00:39:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1561595906;
-        bh=VePPAgNzl9cvWFPU4jZ/vJZ4UpG5DZzQSb54AbU1/6c=;
+        s=default; t=1561595983;
+        bh=3OaXKLiXqQlvn/3+PnvOcZzVt7wjg7gk3kdkybfciEY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=XgMqiA847AfkaMMweOVAUXoJ3MgJrZ1HOoB8ByRtBvU4Dt94aRRders4lOojpfGg3
-         POI5dq84uZfIou5FmnfPWrDr7Um97c4aCU+lx6vnD8hCEiQ+jDZFyfxzgj3IrJM64d
-         XKgDh8cVabbUet7vzXEleQUpuZ3PI+r9tYuzsCO4=
+        b=G+2hSs+o3OYP5oOFKFvHPvsTP9nL6qpUAm6XoxOuhUPTR+WJdLoVSrPegy91eSLEA
+         v1GoQuSUjszhmccFswUOMVXB24DASiwTUtD0FiO1URzfd/JpBRTZKHHkhVCTTn2Kyn
+         rrZRUb4FipMgSyoMGavJGdu4KOheWpAnQRr2Iyr0=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Naftali Goldstein <naftali.goldstein@intel.com>,
-        Luca Coelho <luciano.coelho@intel.com>,
+Cc:     Thomas Pedersen <thomas@eero.com>,
         Johannes Berg <johannes.berg@intel.com>,
         Sasha Levin <sashal@kernel.org>,
         linux-wireless@vger.kernel.org, netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.19 41/60] mac80211: do not start any work during reconfigure flow
-Date:   Wed, 26 Jun 2019 20:35:56 -0400
-Message-Id: <20190627003616.20767-41-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.14 05/35] mac80211: mesh: fix RCU warning
+Date:   Wed, 26 Jun 2019 20:38:53 -0400
+Message-Id: <20190627003925.21330-5-sashal@kernel.org>
 X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20190627003616.20767-1-sashal@kernel.org>
-References: <20190627003616.20767-1-sashal@kernel.org>
+In-Reply-To: <20190627003925.21330-1-sashal@kernel.org>
+References: <20190627003925.21330-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -45,58 +44,62 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Naftali Goldstein <naftali.goldstein@intel.com>
+From: Thomas Pedersen <thomas@eero.com>
 
-[ Upstream commit f8891461a277ec0afc493fd30cd975a38048a038 ]
+[ Upstream commit 551842446ed695641a00782cd118cbb064a416a1 ]
 
-It is not a good idea to try to perform any work (e.g. send an auth
-frame) during reconfigure flow.
+ifmsh->csa is an RCU-protected pointer. The writer context
+in ieee80211_mesh_finish_csa() is already mutually
+exclusive with wdev->sdata.mtx, but the RCU checker did
+not know this. Use rcu_dereference_protected() to avoid a
+warning.
 
-Prevent this from happening, and at the end of the reconfigure flow
-requeue all the works.
+fixes the following warning:
 
-Signed-off-by: Naftali Goldstein <naftali.goldstein@intel.com>
-Signed-off-by: Luca Coelho <luciano.coelho@intel.com>
+[   12.519089] =============================
+[   12.520042] WARNING: suspicious RCU usage
+[   12.520652] 5.1.0-rc7-wt+ #16 Tainted: G        W
+[   12.521409] -----------------------------
+[   12.521972] net/mac80211/mesh.c:1223 suspicious rcu_dereference_check() usage!
+[   12.522928] other info that might help us debug this:
+[   12.523984] rcu_scheduler_active = 2, debug_locks = 1
+[   12.524855] 5 locks held by kworker/u8:2/152:
+[   12.525438]  #0: 00000000057be08c ((wq_completion)phy0){+.+.}, at: process_one_work+0x1a2/0x620
+[   12.526607]  #1: 0000000059c6b07a ((work_completion)(&sdata->csa_finalize_work)){+.+.}, at: process_one_work+0x1a2/0x620
+[   12.528001]  #2: 00000000f184ba7d (&wdev->mtx){+.+.}, at: ieee80211_csa_finalize_work+0x2f/0x90
+[   12.529116]  #3: 00000000831a1f54 (&local->mtx){+.+.}, at: ieee80211_csa_finalize_work+0x47/0x90
+[   12.530233]  #4: 00000000fd06f988 (&local->chanctx_mtx){+.+.}, at: ieee80211_csa_finalize_work+0x51/0x90
+
+Signed-off-by: Thomas Pedersen <thomas@eero.com>
 Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mac80211/ieee80211_i.h | 7 +++++++
- net/mac80211/util.c        | 4 ++++
- 2 files changed, 11 insertions(+)
+ net/mac80211/mesh.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/net/mac80211/ieee80211_i.h b/net/mac80211/ieee80211_i.h
-index 6ea64cadad00..ae9cce2d41da 100644
---- a/net/mac80211/ieee80211_i.h
-+++ b/net/mac80211/ieee80211_i.h
-@@ -1998,6 +1998,13 @@ void __ieee80211_flush_queues(struct ieee80211_local *local,
+diff --git a/net/mac80211/mesh.c b/net/mac80211/mesh.c
+index 96e57d7c2872..aca054539f4a 100644
+--- a/net/mac80211/mesh.c
++++ b/net/mac80211/mesh.c
+@@ -1209,7 +1209,8 @@ int ieee80211_mesh_finish_csa(struct ieee80211_sub_if_data *sdata)
+ 	ifmsh->chsw_ttl = 0;
  
- static inline bool ieee80211_can_run_worker(struct ieee80211_local *local)
- {
-+	/*
-+	 * It's unsafe to try to do any work during reconfigure flow.
-+	 * When the flow ends the work will be requeued.
-+	 */
-+	if (local->in_reconfig)
-+		return false;
-+
- 	/*
- 	 * If quiescing is set, we are racing with __ieee80211_suspend.
- 	 * __ieee80211_suspend flushes the workers after setting quiescing,
-diff --git a/net/mac80211/util.c b/net/mac80211/util.c
-index 3deaa01ebee4..f60e033f68c9 100644
---- a/net/mac80211/util.c
-+++ b/net/mac80211/util.c
-@@ -2224,6 +2224,10 @@ int ieee80211_reconfig(struct ieee80211_local *local)
- 		mutex_lock(&local->mtx);
- 		ieee80211_start_next_roc(local);
- 		mutex_unlock(&local->mtx);
-+
-+		/* Requeue all works */
-+		list_for_each_entry(sdata, &local->interfaces, list)
-+			ieee80211_queue_work(&local->hw, &sdata->work);
- 	}
+ 	/* Remove the CSA and MCSP elements from the beacon */
+-	tmp_csa_settings = rcu_dereference(ifmsh->csa);
++	tmp_csa_settings = rcu_dereference_protected(ifmsh->csa,
++					    lockdep_is_held(&sdata->wdev.mtx));
+ 	RCU_INIT_POINTER(ifmsh->csa, NULL);
+ 	if (tmp_csa_settings)
+ 		kfree_rcu(tmp_csa_settings, rcu_head);
+@@ -1231,6 +1232,8 @@ int ieee80211_mesh_csa_beacon(struct ieee80211_sub_if_data *sdata,
+ 	struct mesh_csa_settings *tmp_csa_settings;
+ 	int ret = 0;
  
- 	ieee80211_wake_queues_by_reason(hw, IEEE80211_MAX_QUEUE_MAP,
++	lockdep_assert_held(&sdata->wdev.mtx);
++
+ 	tmp_csa_settings = kmalloc(sizeof(*tmp_csa_settings),
+ 				   GFP_ATOMIC);
+ 	if (!tmp_csa_settings)
 -- 
 2.20.1
 
