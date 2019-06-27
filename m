@@ -2,130 +2,92 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id F047A57718
-	for <lists+linux-wireless@lfdr.de>; Thu, 27 Jun 2019 02:45:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E2116579F1
+	for <lists+linux-wireless@lfdr.de>; Thu, 27 Jun 2019 05:25:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729819AbfF0Am6 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 26 Jun 2019 20:42:58 -0400
-Received: from mail.kernel.org ([198.145.29.99]:46756 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1729814AbfF0Am5 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 26 Jun 2019 20:42:57 -0400
-Received: from sasha-vm.mshome.net (unknown [107.242.116.147])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 2EADD21882;
-        Thu, 27 Jun 2019 00:42:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1561596176;
-        bh=5vj/vQzY5Cpq+1NpykmWv1HFdz9sPeRMPWazo0IuP+E=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=pJtBa6EWH0M2vNbf95i0Mr1UV0dSkGLv6GG4KsHYft7fgzGBW1iCpa4qhE2i/NbmG
-         24kwiHPp4KKpKqw+EZJRwhUDNtJDgiHkFRxmHcAs1OFc4+IMPTW6+5Fn5rEgmKLXKn
-         7Zgj3hBtpAvZ7wc/d6hKv8z6mRFxmReuKMZjTl5s=
-From:   Sasha Levin <sashal@kernel.org>
-To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Takashi Iwai <tiwai@suse.de>, Kalle Valo <kvalo@codeaurora.org>,
-        Sasha Levin <sashal@kernel.org>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.4 05/12] mwifiex: Abort at too short BSS descriptor element
-Date:   Wed, 26 Jun 2019 20:42:27 -0400
-Message-Id: <20190627004236.21909-5-sashal@kernel.org>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20190627004236.21909-1-sashal@kernel.org>
-References: <20190627004236.21909-1-sashal@kernel.org>
+        id S1726905AbfF0DZo (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 26 Jun 2019 23:25:44 -0400
+Received: from mail-ot1-f67.google.com ([209.85.210.67]:36082 "EHLO
+        mail-ot1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726658AbfF0DZh (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Wed, 26 Jun 2019 23:25:37 -0400
+Received: by mail-ot1-f67.google.com with SMTP id r6so788040oti.3;
+        Wed, 26 Jun 2019 20:25:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id:in-reply-to:references
+         :mime-version:content-transfer-encoding;
+        bh=hc7mop8BgLXIBrsAE7S1CcsKtIxDEdShT9TGYrFuBVM=;
+        b=kDgKIYFvpCDd06zbFNhGDKpCEVgTWTHJedUq3olGtuZiBWkkL/5WYAk83Z5x0qurfn
+         ZoYhXj7MnMeA5n4IXjc4NT8TSzahy7sjeb/mSm9jMSgtFdiz6bEo7SUfnVJ7joymz6wr
+         axNSjCZB9zGaUh6CV1BwRDiMduet4in0XO+l+088UM4cN8pRdP4AlYl++CDSM0Wr4AfA
+         ++QB73ZAeYCfNiOaphzN5/9UGI3pq46goPKSWmwieRXbsk7mj4tNvnEMBvfazH1N85nh
+         etWSYB14oxkRmyvGx/nBhe7DgmUn8zMw19do81yz/KU/VIUWO6SXSn3p/WZA7dtA9MZU
+         rSpA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+         :references:mime-version:content-transfer-encoding;
+        bh=hc7mop8BgLXIBrsAE7S1CcsKtIxDEdShT9TGYrFuBVM=;
+        b=JYFgic/iocn1F21P7OPYNxT81LTcvX/erm0ZCLn1c0DyTvmB8qjWG9m6MVZfULU+eF
+         Yf/0pYJfvYoKEG0fzIdQ/Lw0o4NLhmj1q71YFZo6ApOkbhZX7o3tXd2YRIFp2bdq0W7x
+         1JYsb1aSsDAc9bbzIpFfESvprZHPEkJH5ZCNxZrpMp6FeU0cIWfLsrNyTPQYlwyT/g3T
+         oxMNzS6MDKnxa0Ycb5eTHnzu+ek+Srt1EgDPCF59ldaFpmgRCzYDHeMp7G6XJIG9oSqM
+         8fKBC15T9jgVrcDwEj1jH9blyXSPCF4xe0EGBa+tTz5yhRIgNRJagShhmRRquFa66q4A
+         qDuw==
+X-Gm-Message-State: APjAAAW1mddOUfq8xFYTSJbSJqortGT6ae5KKR/PlOeCTQjpmsCCKYv5
+        AfIzBvqaOTFaPiWST9f9Fss=
+X-Google-Smtp-Source: APXvYqyUkf1iuH/PhqzkOu7tkOamu6aAFWoqbQOhA5ot8fzzL2lRFkE9lDvw+U7oYWHLZ27WZXj8Qw==
+X-Received: by 2002:a9d:5e11:: with SMTP id d17mr1529107oti.50.1561605936459;
+        Wed, 26 Jun 2019 20:25:36 -0700 (PDT)
+Received: from rYz3n.attlocal.net ([2600:1700:210:3790::48])
+        by smtp.googlemail.com with ESMTPSA id y184sm417647oie.33.2019.06.26.20.25.35
+        (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
+        Wed, 26 Jun 2019 20:25:36 -0700 (PDT)
+From:   Jiunn Chang <c0d1n61at3@gmail.com>
+To:     skhan@linuxfoundation.org
+Cc:     linux-kernel-mentees@lists.linuxfoundation.org,
+        linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
+        johannes@sipsolutions.net
+Subject: [Linux-kernel-mentees][PATCH v2] nl80211: Fix undefined behavior in bit shift
+Date:   Wed, 26 Jun 2019 22:25:32 -0500
+Message-Id: <20190627032532.18374-4-c0d1n61at3@gmail.com>
+X-Mailer: git-send-email 2.22.0
+In-Reply-To: <20190627010137.5612-4-c0d1n61at3@gmail.com>
+References: <20190627010137.5612-4-c0d1n61at3@gmail.com>
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
 Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Takashi Iwai <tiwai@suse.de>
+Shifting signed 32-bit value by 31 bits is undefined.  Changing most
+significant bit to unsigned.
 
-[ Upstream commit 685c9b7750bfacd6fc1db50d86579980593b7869 ]
+Changes included in v2:
+  - use subsystem specific subject lines
+  - CC required mailing lists
 
-Currently mwifiex_update_bss_desc_with_ie() implicitly assumes that
-the source descriptor entries contain the enough size for each type
-and performs copying without checking the source size.  This may lead
-to read over boundary.
-
-Fix this by putting the source size check in appropriate places.
-
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Jiunn Chang <c0d1n61at3@gmail.com>
 ---
- drivers/net/wireless/mwifiex/scan.c | 15 +++++++++++++++
- 1 file changed, 15 insertions(+)
+ include/uapi/linux/nl80211.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/mwifiex/scan.c b/drivers/net/wireless/mwifiex/scan.c
-index 6f789899c888..b755f72d85d5 100644
---- a/drivers/net/wireless/mwifiex/scan.c
-+++ b/drivers/net/wireless/mwifiex/scan.c
-@@ -1241,6 +1241,8 @@ int mwifiex_update_bss_desc_with_ie(struct mwifiex_adapter *adapter,
- 			break;
+diff --git a/include/uapi/linux/nl80211.h b/include/uapi/linux/nl80211.h
+index 6f09d1500960..fa7ebbc6ff27 100644
+--- a/include/uapi/linux/nl80211.h
++++ b/include/uapi/linux/nl80211.h
+@@ -5314,7 +5314,7 @@ enum nl80211_feature_flags {
+ 	NL80211_FEATURE_TDLS_CHANNEL_SWITCH		= 1 << 28,
+ 	NL80211_FEATURE_SCAN_RANDOM_MAC_ADDR		= 1 << 29,
+ 	NL80211_FEATURE_SCHED_SCAN_RANDOM_MAC_ADDR	= 1 << 30,
+-	NL80211_FEATURE_ND_RANDOM_MAC_ADDR		= 1 << 31,
++	NL80211_FEATURE_ND_RANDOM_MAC_ADDR		= 1U << 31,
+ };
  
- 		case WLAN_EID_FH_PARAMS:
-+			if (element_len + 2 < sizeof(*fh_param_set))
-+				return -EINVAL;
- 			fh_param_set =
- 				(struct ieee_types_fh_param_set *) current_ptr;
- 			memcpy(&bss_entry->phy_param_set.fh_param_set,
-@@ -1249,6 +1251,8 @@ int mwifiex_update_bss_desc_with_ie(struct mwifiex_adapter *adapter,
- 			break;
- 
- 		case WLAN_EID_DS_PARAMS:
-+			if (element_len + 2 < sizeof(*ds_param_set))
-+				return -EINVAL;
- 			ds_param_set =
- 				(struct ieee_types_ds_param_set *) current_ptr;
- 
-@@ -1260,6 +1264,8 @@ int mwifiex_update_bss_desc_with_ie(struct mwifiex_adapter *adapter,
- 			break;
- 
- 		case WLAN_EID_CF_PARAMS:
-+			if (element_len + 2 < sizeof(*cf_param_set))
-+				return -EINVAL;
- 			cf_param_set =
- 				(struct ieee_types_cf_param_set *) current_ptr;
- 			memcpy(&bss_entry->ss_param_set.cf_param_set,
-@@ -1268,6 +1274,8 @@ int mwifiex_update_bss_desc_with_ie(struct mwifiex_adapter *adapter,
- 			break;
- 
- 		case WLAN_EID_IBSS_PARAMS:
-+			if (element_len + 2 < sizeof(*ibss_param_set))
-+				return -EINVAL;
- 			ibss_param_set =
- 				(struct ieee_types_ibss_param_set *)
- 				current_ptr;
-@@ -1277,10 +1285,14 @@ int mwifiex_update_bss_desc_with_ie(struct mwifiex_adapter *adapter,
- 			break;
- 
- 		case WLAN_EID_ERP_INFO:
-+			if (!element_len)
-+				return -EINVAL;
- 			bss_entry->erp_flags = *(current_ptr + 2);
- 			break;
- 
- 		case WLAN_EID_PWR_CONSTRAINT:
-+			if (!element_len)
-+				return -EINVAL;
- 			bss_entry->local_constraint = *(current_ptr + 2);
- 			bss_entry->sensed_11h = true;
- 			break;
-@@ -1320,6 +1332,9 @@ int mwifiex_update_bss_desc_with_ie(struct mwifiex_adapter *adapter,
- 			break;
- 
- 		case WLAN_EID_VENDOR_SPECIFIC:
-+			if (element_len + 2 < sizeof(vendor_ie->vend_hdr))
-+				return -EINVAL;
-+
- 			vendor_ie = (struct ieee_types_vendor_specific *)
- 					current_ptr;
- 
+ /**
 -- 
-2.20.1
+2.22.0
 
