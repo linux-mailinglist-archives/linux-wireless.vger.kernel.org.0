@@ -2,67 +2,84 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 7C3D0584DA
-	for <lists+linux-wireless@lfdr.de>; Thu, 27 Jun 2019 16:49:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8AFAC58796
+	for <lists+linux-wireless@lfdr.de>; Thu, 27 Jun 2019 18:49:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726829AbfF0Otz (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 27 Jun 2019 10:49:55 -0400
-Received: from mail.kernel.org ([198.145.29.99]:49620 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726431AbfF0Otz (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 27 Jun 2019 10:49:55 -0400
-Received: from localhost.localdomain.com (nat-pool-mxp-t.redhat.com [149.6.153.186])
+        id S1726441AbfF0Qtv (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 27 Jun 2019 12:49:51 -0400
+Received: from smtp.codeaurora.org ([198.145.29.96]:42380 "EHLO
+        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726426AbfF0Qtv (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 27 Jun 2019 12:49:51 -0400
+Received: by smtp.codeaurora.org (Postfix, from userid 1000)
+        id 0EE176038E; Thu, 27 Jun 2019 16:49:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
+        s=default; t=1561654190;
+        bh=8JZkDFu2jtzrh0ldksJ2xJXeoAvy1jIExffeCyNuRTk=;
+        h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
+        b=NWXC7MKj7KX6AsKC2tc417ca6gaJrqpfVjXUJfNX34YnVUYG+bD/4XjfPF6ECsG/a
+         GBRRAk2hLLBYiP96UbWq/cvgup1dikrK8g3l1MEHypmAea6HED9ybXqC7K5cYiuupt
+         6F5QAPoj9ELNjSnTCVEERHB41RhhrIm5AdJXyjO8=
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        pdx-caf-mail.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-0.8 required=2.0 tests=ALL_TRUSTED,BAYES_00,
+        DKIM_INVALID,DKIM_SIGNED,MISSING_DATE,MISSING_MID,SPF_NONE autolearn=no
+        autolearn_force=no version=3.4.0
+Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id A3FD320644;
-        Thu, 27 Jun 2019 14:49:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1561646994;
-        bh=12Z6MhPmXV/NZ6/y8pPTcSxuFN6lBpbyxl0ojiwKQR0=;
-        h=From:To:Cc:Subject:Date:From;
-        b=Dp6ODelksRF/Gzz+X81tfqqdfqMkkcTJUHNjltfvjVnLlC6UbwPspmRWAgCaOPZm/
-         HfAuf9REyYXAGrSbg9e4/DkNwD/741MdRDJ80gFy/lYpLQdtEY7SSvdJ11yf7VH+hq
-         e1118xzebJPY9EUEdzNQyVRetzkd42iUn+Q8DYnc=
-From:   Lorenzo Bianconi <lorenzo@kernel.org>
-To:     nbd@nbd.name
-Cc:     lorenzo.bianconi@redhat.com, linux-wireless@vger.kernel.org,
-        ryder.lee@mediatek.com, royluo@google.com
-Subject: [PATCH] mt76: mt7615: fix sparse warnings: warning: restricted __le16 degrades to integer
-Date:   Thu, 27 Jun 2019 16:49:44 +0200
-Message-Id: <fcfc54a6c129d513cce029fa8f2a5a01fab89091.1561644460.git.lorenzo@kernel.org>
-X-Mailer: git-send-email 2.21.0
+        (Authenticated sender: kvalo@smtp.codeaurora.org)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 9A29E60159;
+        Thu, 27 Jun 2019 16:49:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
+        s=default; t=1561654189;
+        bh=8JZkDFu2jtzrh0ldksJ2xJXeoAvy1jIExffeCyNuRTk=;
+        h=Subject:From:In-Reply-To:References:To:Cc:From;
+        b=nzVqLoff9jhWb78toT0f9jQ8Adnzo2z5C/KKL09GMAH9H98orrq+2Nya/M7gH5Unb
+         EFAYxeZl18kJSr+YO+Wp+VQ5dcuqKPhk0HAhkEB60J4zRFsv0toL1eyL0xIK6R/2Hw
+         KAcmG0RglE9f12XfuiR5gCLOs4uIPbmgdLKseck0=
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 9A29E60159
+Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH v4 wireless-drivers] mt76: usb: fix rx A-MSDU support
+From:   Kalle Valo <kvalo@codeaurora.org>
+In-Reply-To: <7d93cba766b5a0220c86fa900f9d29048d67e02c.1560607085.git.lorenzo@kernel.org>
+References: <7d93cba766b5a0220c86fa900f9d29048d67e02c.1560607085.git.lorenzo@kernel.org>
+To:     Lorenzo Bianconi <lorenzo@kernel.org>
+Cc:     nbd@nbd.name, lorenzo.bianconi@redhat.com,
+        linux-wireless@vger.kernel.org, sgruszka@redhat.com
+User-Agent: pwcli/0.0.0-git (https://github.com/kvalo/pwcli/) Python/2.7.12
+Message-Id: <20190627164950.0EE176038E@smtp.codeaurora.org>
+Date:   Thu, 27 Jun 2019 16:49:50 +0000 (UTC)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Fix the following sparse warning in __mt7615_mcu_msg_send:
-drivers/net/wireless/mediatek/mt76/mt7615/mcu.c:78:15: sparse: warning:
-restricted __le16 degrades to integer
-drivers/net/wireless/mediatek/mt76/mt7615/mcu.c:78:15: sparse: warning:
-cast from restricted __le16
+Lorenzo Bianconi <lorenzo@kernel.org> wrote:
 
-Fixes: 04b8e65922f6 ("mt76: add mac80211 driver for MT7615 PCIe-based chipsets")
-Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
----
- drivers/net/wireless/mediatek/mt76/mt7615/mcu.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+> Commit f8f527b16db5 ("mt76: usb: use EP max packet aligned buffer sizes
+> for rx") breaks A-MSDU support. When A-MSDU is enable the device can
+> receive frames up to q->buf_size but they will be discarded in
+> mt76u_process_rx_entry since there is no enough room for
+> skb_shared_info. Fix the issue reallocating the skb and copying in the
+> linear area the first 128B of the received frames and in the frag_list
+> the remaining part
+> 
+> Fixes: f8f527b16db5 ("mt76: usb: use EP max packet aligned buffer sizes for rx")
+> Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c
-index beee25e69053..cc6da5145d12 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c
-@@ -75,7 +75,7 @@ static int __mt7615_mcu_msg_send(struct mt7615_dev *dev, struct sk_buff *skb,
- 
- 	txd = mcu_txd->txd;
- 
--	val = FIELD_PREP(MT_TXD0_TX_BYTES, cpu_to_le16(skb->len)) |
-+	val = FIELD_PREP(MT_TXD0_TX_BYTES, skb->len) |
- 	      FIELD_PREP(MT_TXD0_P_IDX, MT_TX_PORT_IDX_MCU) |
- 	      FIELD_PREP(MT_TXD0_Q_IDX, q_idx);
- 	txd[0] = cpu_to_le32(val);
+Patch applied to wireless-drivers.git, thanks.
+
+2a92b08b1855 mt76: usb: fix rx A-MSDU support
+
 -- 
-2.21.0
+https://patchwork.kernel.org/patch/10997119/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
