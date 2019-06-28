@@ -2,90 +2,129 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 906F459502
-	for <lists+linux-wireless@lfdr.de>; Fri, 28 Jun 2019 09:31:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DCD8D59744
+	for <lists+linux-wireless@lfdr.de>; Fri, 28 Jun 2019 11:20:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726633AbfF1Hbr (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 28 Jun 2019 03:31:47 -0400
-Received: from smtp.codeaurora.org ([198.145.29.96]:45634 "EHLO
-        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726408AbfF1Hbr (ORCPT
+        id S1726664AbfF1JUV (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 28 Jun 2019 05:20:21 -0400
+Received: from paleale.coelho.fi ([176.9.41.70]:54678 "EHLO
+        farmhouse.coelho.fi" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
+        with ESMTP id S1726385AbfF1JUV (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 28 Jun 2019 03:31:47 -0400
-Received: by smtp.codeaurora.org (Postfix, from userid 1000)
-        id 8188660ACA; Fri, 28 Jun 2019 07:31:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1561707106;
-        bh=+9xyXiRYLpw9BcxZ6J8Eald2gfGG5pwOx3yOKjDlG2c=;
-        h=From:To:Cc:Subject:Date:From;
-        b=l0Ue87SaEui7QLMfCTfLA5CNBX0mNTbAPq3sR3rfS0bjTZ8xXehZcN80WyQUEmt1H
-         eE1/HQeYdz9qAvoKkELGeqUoZ0S3cr7lazezr1Vs9RCn2ypwnJQ1XDPyD4uehwYzWF
-         IfLScK690AwQxsbwraGjtVZONVQ/LHiE9E9T/FBs=
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        pdx-caf-mail.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.7 required=2.0 tests=ALL_TRUSTED,BAYES_00,
-        DKIM_INVALID,DKIM_SIGNED,SPF_NONE autolearn=no autolearn_force=no
-        version=3.4.0
-Received: from bpothuno-linux.qualcomm.com (blr-c-bdr-fw-01_globalnat_allzones-outside.qualcomm.com [103.229.19.19])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-SHA256 (128/128 bits))
-        (No client certificate requested)
-        (Authenticated sender: bpothuno@codeaurora.org)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 8D64160A97;
-        Fri, 28 Jun 2019 07:31:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1561707106;
-        bh=+9xyXiRYLpw9BcxZ6J8Eald2gfGG5pwOx3yOKjDlG2c=;
-        h=From:To:Cc:Subject:Date:From;
-        b=l0Ue87SaEui7QLMfCTfLA5CNBX0mNTbAPq3sR3rfS0bjTZ8xXehZcN80WyQUEmt1H
-         eE1/HQeYdz9qAvoKkELGeqUoZ0S3cr7lazezr1Vs9RCn2ypwnJQ1XDPyD4uehwYzWF
-         IfLScK690AwQxsbwraGjtVZONVQ/LHiE9E9T/FBs=
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 8D64160A97
-Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=bpothuno@codeaurora.org
-From:   Balaji Pothunoori <bpothuno@codeaurora.org>
-To:     ath10k@lists.infradead.org
+        Fri, 28 Jun 2019 05:20:21 -0400
+Received: from 91-156-6-193.elisa-laajakaista.fi ([91.156.6.193] helo=redipa.ger.corp.intel.com)
+        by farmhouse.coelho.fi with esmtpsa (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <luca@coelho.fi>)
+        id 1hgn3L-0001ny-CI; Fri, 28 Jun 2019 12:20:19 +0300
+From:   Luca Coelho <luca@coelho.fi>
+To:     kvalo@codeaurora.org
 Cc:     linux-wireless@vger.kernel.org,
-        Abhishek Ambure <aambure@codeaurora.org>,
-        Balaji Pothunoori <bpothuno@codeaurora.org>
-Subject: [PATCH] ath10k: check data ack rssi enabled/disabled in htt rx event
-Date:   Fri, 28 Jun 2019 13:01:24 +0530
-Message-Id: <1561707084-10021-1-git-send-email-bpothuno@codeaurora.org>
-X-Mailer: git-send-email 2.7.4
+        Luca Coelho <luciano.coelho@intel.com>
+Subject: [PATCH 00/20] iwlwifi: updates intended for v5.3 2019-06-28
+Date:   Fri, 28 Jun 2019 12:19:48 +0300
+Message-Id: <20190628092008.11049-1-luca@coelho.fi>
+X-Mailer: git-send-email 2.20.1
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Abhishek Ambure <aambure@codeaurora.org>
+From: Luca Coelho <luciano.coelho@intel.com>
 
-For all data packets trasmmited, host gets htt tx completion event.
+Hi,
 
-QCA9984 firmware gives data ack rssi values to host through
-htt event of data tx completion. Data ack rssi values are valid
-if A0 bit is set in HTT rx message.
+Here's the second set of patches intended for v5.3.  It's the usual
+development, new features, cleanups and bugfixes.
 
-Tested HW: QCA9984
-Tested FW: 10.4-3.9.0.2-00044
+The changes are:
 
-Signed-off-by: Abhishek Ambure <aambure@codeaurora.org>
-Signed-off-by: Balaji Pothunoori <bpothuno@codeaurora.org>
----
- drivers/net/wireless/ath/ath10k/hw.c | 1 +
- 1 file changed, 1 insertion(+)
+* Special SAR implementation for South Korea;
+* Fixes in the module init error paths;
+* Debugging infra work continues;
+* A few clean-ups;
+* Other small fixes and improvements;
 
-diff --git a/drivers/net/wireless/ath/ath10k/hw.c b/drivers/net/wireless/ath/ath10k/hw.c
-index ad082b7..303f17d 100644
---- a/drivers/net/wireless/ath/ath10k/hw.c
-+++ b/drivers/net/wireless/ath/ath10k/hw.c
-@@ -1145,6 +1145,7 @@ static bool ath10k_qca99x0_rx_desc_msdu_limit_error(struct htt_rx_desc *rxd)
- const struct ath10k_hw_ops qca99x0_ops = {
- 	.rx_desc_get_l3_pad_bytes = ath10k_qca99x0_rx_desc_get_l3_pad_bytes,
- 	.rx_desc_get_msdu_limit_error = ath10k_qca99x0_rx_desc_msdu_limit_error,
-+	.is_rssi_enable = ath10k_htt_tx_rssi_enable,
- };
- 
- const struct ath10k_hw_ops qca6174_ops = {
+As usual, I'm pushing this to a pending branch, for kbuild bot, and
+will send a pull-request later.
+
+Please review.
+
+Cheers,
+Luca.
+
+
+Andrei Otcheretianski (1):
+  iwlwifi: mvm: Drop large non sta frames
+
+Dan Carpenter (1):
+  iwlwifi: remove some unnecessary NULL checks
+
+Emmanuel Grumbach (2):
+  iwlwifi: support FSEQ TLV even when FMAC is not compiled
+  iwlwifi: mvm: make the usage of TWT configurable
+
+Gustavo A. R. Silva (2):
+  iwlwifi: lib: Use struct_size() helper
+  iwlwifi: d3: Use struct_size() helper
+
+Haim Dreyfuss (2):
+  iwlwifi: Add support for SAR South Korea limitation
+  iwlwifi: mvm: Add log information about SAR status
+
+Johannes Berg (1):
+  iwlwifi: fix module init error paths
+
+Luca Coelho (2):
+  iwlwifi: pcie: increase the size of PCI dumps
+  iwlwifi: mvm: remove MAC_FILTER_IN_11AX for AP mode
+
+Naftali Goldstein (1):
+  iwlwifi: mvm: correctly fill the ac array in the iwl_mac_ctx_cmd
+
+Shahar S Matityahu (7):
+  iwlwifi: dbg: fix debug monitor stop and restart delays
+  iwlwifi: dbg_ini: enforce apply point early on buffer allocation tlv
+  iwlwifi: dbg_ini: remove redundant checking of ini mode
+  iwlwifi: dbg: move trans debug fields to a separate struct
+  iwlwifi: dbg_ini: fix debug monitor stop and restart in ini mode
+  iwlwifi: dbg: don't stop dbg recording before entering D3 from 9000
+    devices
+  iwlwifi: dbg: debug recording stop and restart command remove
+
+Shaul Triebitz (1):
+  iwlwifi: mvm: convert to FW AC when configuring MU EDCA
+
+ drivers/net/wireless/intel/iwlwifi/dvm/lib.c  |   3 +-
+ drivers/net/wireless/intel/iwlwifi/fw/acpi.c  |  28 +--
+ drivers/net/wireless/intel/iwlwifi/fw/acpi.h  |   5 +-
+ .../net/wireless/intel/iwlwifi/fw/api/power.h |  12 ++
+ drivers/net/wireless/intel/iwlwifi/fw/dbg.c   | 100 ++++++-----
+ drivers/net/wireless/intel/iwlwifi/fw/dbg.h   |  93 +++++-----
+ drivers/net/wireless/intel/iwlwifi/fw/file.h  |   3 +
+ .../net/wireless/intel/iwlwifi/iwl-dbg-tlv.c  |  32 ++--
+ drivers/net/wireless/intel/iwlwifi/iwl-drv.c  |  34 +++-
+ .../net/wireless/intel/iwlwifi/iwl-trans.h    |  75 ++++----
+ .../wireless/intel/iwlwifi/mvm/constants.h    |   1 +
+ drivers/net/wireless/intel/iwlwifi/mvm/d3.c   |  14 +-
+ drivers/net/wireless/intel/iwlwifi/mvm/fw.c   |  62 +++++--
+ .../net/wireless/intel/iwlwifi/mvm/mac-ctxt.c |  16 +-
+ .../net/wireless/intel/iwlwifi/mvm/mac80211.c |  11 +-
+ drivers/net/wireless/intel/iwlwifi/mvm/mvm.h  |   2 +
+ drivers/net/wireless/intel/iwlwifi/mvm/nvm.c  |   9 +
+ drivers/net/wireless/intel/iwlwifi/mvm/ops.c  |  10 +-
+ .../net/wireless/intel/iwlwifi/mvm/rs-fw.c    |  23 ++-
+ drivers/net/wireless/intel/iwlwifi/mvm/tx.c   |   3 +
+ .../net/wireless/intel/iwlwifi/mvm/utils.c    |  20 ++-
+ .../intel/iwlwifi/pcie/ctxt-info-gen3.c       |   8 +-
+ .../wireless/intel/iwlwifi/pcie/internal.h    |   2 +-
+ drivers/net/wireless/intel/iwlwifi/pcie/rx.c  |   2 +-
+ .../wireless/intel/iwlwifi/pcie/trans-gen2.c  |   2 +-
+ .../net/wireless/intel/iwlwifi/pcie/trans.c   | 166 +++++++++---------
+ 26 files changed, 433 insertions(+), 303 deletions(-)
+
 -- 
-2.7.4
+2.20.1
 
