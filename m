@@ -2,30 +2,33 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 377DE59C74
-	for <lists+linux-wireless@lfdr.de>; Fri, 28 Jun 2019 15:04:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5B0D759C75
+	for <lists+linux-wireless@lfdr.de>; Fri, 28 Jun 2019 15:04:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726747AbfF1NEC (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 28 Jun 2019 09:04:02 -0400
-Received: from s3.sipsolutions.net ([144.76.43.62]:50234 "EHLO
+        id S1726912AbfF1NEM (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 28 Jun 2019 09:04:12 -0400
+Received: from s3.sipsolutions.net ([144.76.43.62]:50244 "EHLO
         sipsolutions.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726558AbfF1NEB (ORCPT
+        with ESMTP id S1726828AbfF1NEM (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 28 Jun 2019 09:04:01 -0400
+        Fri, 28 Jun 2019 09:04:12 -0400
 Received: by sipsolutions.net with esmtpsa (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
         (Exim 4.92)
         (envelope-from <johannes@sipsolutions.net>)
-        id 1hgqXn-0001Ld-VO; Fri, 28 Jun 2019 15:04:00 +0200
-Message-ID: <e293e8e7b38ba504eec40f396d21d3271c780a85.camel@sipsolutions.net>
-Subject: Re: [RFC V2 5/8] cfg80211: add 6GHz in code handling array with
- NUM_NL80211_BANDS entries
+        id 1hgqXx-0001ML-7T; Fri, 28 Jun 2019 15:04:09 +0200
+Message-ID: <48a43287e65e1d24082dea2cc32ca14998acb8d1.camel@sipsolutions.net>
+Subject: Re: [RFC 0/8] nl80211: add 6GHz band support
 From:   Johannes Berg <johannes@sipsolutions.net>
-To:     Arend van Spriel <arend.vanspriel@broadcom.com>
-Cc:     linux-wireless@vger.kernel.org
-Date:   Fri, 28 Jun 2019 15:03:58 +0200
-In-Reply-To: <1561461027-10793-6-git-send-email-arend.vanspriel@broadcom.com>
-References: <1561461027-10793-1-git-send-email-arend.vanspriel@broadcom.com>
-         <1561461027-10793-6-git-send-email-arend.vanspriel@broadcom.com>
+To:     Arend Van Spriel <arend.vanspriel@broadcom.com>
+Cc:     linux-wireless@vger.kernel.org, Jouni Malinen <j@w1.fi>,
+        Tova Mussai <tova.mussai@intel.com>
+Date:   Fri, 28 Jun 2019 15:04:06 +0200
+In-Reply-To: <9ba78df6-18a3-5c1c-6c57-3fa71531b460@broadcom.com> (sfid-20190527_224659_799325_3B1770C5)
+References: <1558353645-18119-1-git-send-email-arend.vanspriel@broadcom.com>
+         <df53f969297fea1f3c8101cd2c1571a957985d2a.camel@sipsolutions.net>
+         <16aeb2310e8.2764.9b12b7fc0a3841636cfb5e919b41b954@broadcom.com>
+         <9ba78df6-18a3-5c1c-6c57-3fa71531b460@broadcom.com>
+         (sfid-20190527_224659_799325_3B1770C5)
 Content-Type: text/plain; charset="UTF-8"
 X-Mailer: Evolution 3.28.5 (3.28.5-3.fc28) 
 Mime-Version: 1.0
@@ -35,24 +38,25 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Tue, 2019-06-25 at 13:10 +0200, Arend van Spriel wrote:
-> 
-> +++ b/net/wireless/trace.h
-> @@ -2446,10 +2446,11 @@
->  		       sizeof(int) * NUM_NL80211_BANDS);
->  	),
->  	TP_printk(WIPHY_PR_FMT ", " NETDEV_PR_FMT ", "
-> -		  "mcast_rates [2.4GHz=0x%x, 5.2GHz=0x%x, 60GHz=0x%x]",
-> +		  "mcast_rates [2.4GHz=0x%x, 5.2GHz=0x%x, 6GHz=0x%x, 60GHz=0x%x]",
->  		  WIPHY_PR_ARG, NETDEV_PR_ARG,
->  		  __entry->mcast_rate[NL80211_BAND_2GHZ],
->  		  __entry->mcast_rate[NL80211_BAND_5GHZ],
-> +		  __entry->mcast_rate[NL80211_BAND_6GHZ],
->  		  __entry->mcast_rate[NL80211_BAND_60GHZ])
->  );
+Hi Arend, all,
 
-This doesn't really - you just pointed out that legacy rates aren't
-permitted, and so this bitmap doesn't make sense for 6 GHz?
+Sorry. No, my thoughts aren't really more concrete, but Tova is starting
+to work on this now.
+
+> This came up in discussion with my colleagues today and I would say from 
+> mac80211 perspective there is more to it than just scanning. In short 
+> the 6GHz band is for HE-only operation so for example only HE rates may 
+> be used. As the bitrates are in ieee80211_supported_band having a 
+> separate 6GHz band seems to have a (slight?) advantage.
+
+Hmm, that's a good point too, I hadn't really looked _too_ much at 6GHz
+stuff.
+
+Jouni, what do you think?
+
+Perhaps we should just have both. I mean, we can treat this as a
+separate band, and still have code to handle operating classes properly,
+right?
 
 johannes
 
