@@ -2,49 +2,86 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id DCF105A163
-	for <lists+linux-wireless@lfdr.de>; Fri, 28 Jun 2019 18:50:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 03FAF5A4EA
+	for <lists+linux-wireless@lfdr.de>; Fri, 28 Jun 2019 21:11:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726872AbfF1QuU (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 28 Jun 2019 12:50:20 -0400
-Received: from shards.monkeyblade.net ([23.128.96.9]:47614 "EHLO
-        shards.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726605AbfF1QuT (ORCPT
+        id S1726883AbfF1TLk (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 28 Jun 2019 15:11:40 -0400
+Received: from smtp.codeaurora.org ([198.145.29.96]:38704 "EHLO
+        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726565AbfF1TLk (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 28 Jun 2019 12:50:19 -0400
-Received: from localhost (unknown [IPv6:2601:601:9f80:35cd::d71])
-        (using TLSv1 with cipher AES256-SHA (256/256 bits))
-        (Client did not present a certificate)
-        (Authenticated sender: davem-davemloft)
-        by shards.monkeyblade.net (Postfix) with ESMTPSA id 4B02014E03EE0;
-        Fri, 28 Jun 2019 09:50:19 -0700 (PDT)
-Date:   Fri, 28 Jun 2019 09:50:18 -0700 (PDT)
-Message-Id: <20190628.095018.1799362439103852675.davem@davemloft.net>
-To:     johannes@sipsolutions.net
-Cc:     netdev@vger.kernel.org, linux-wireless@vger.kernel.org
-Subject: Re: pull-request: mac80211 2019-06-28
-From:   David Miller <davem@davemloft.net>
-In-Reply-To: <20190628144444.25092-1-johannes@sipsolutions.net>
-References: <20190628144444.25092-1-johannes@sipsolutions.net>
-X-Mailer: Mew version 6.8 on Emacs 26.1
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
+        Fri, 28 Jun 2019 15:11:40 -0400
+Received: by smtp.codeaurora.org (Postfix, from userid 1000)
+        id 35958608BA; Fri, 28 Jun 2019 19:11:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
+        s=default; t=1561749099;
+        bh=ddt8Rhhf568xP/qGFkl2nTNQ1Jq4FVEQ6cpM76H63AQ=;
+        h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
+        b=Z0m7q+OirlXfY9yZB9p3g0IuHFY/sK7tVHHkCxoDGE6M1i6E3E/R3OAzMTNDeFfOP
+         taNJ6FFZsJcRtyUUJb+IFQWyemiQAKWkT1VaTn2SLhyvwt3rjhscjLlHAM0sONt4CB
+         yJ/HgTA7MqHOywjq9+ivZ+RcovIJPVu+OeiJil5s=
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        pdx-caf-mail.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-0.8 required=2.0 tests=ALL_TRUSTED,BAYES_00,
+        DKIM_INVALID,DKIM_SIGNED,MISSING_DATE,MISSING_MID,SPF_NONE autolearn=no
+        autolearn_force=no version=3.4.0
+Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo@smtp.codeaurora.org)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id C21F0604BE;
+        Fri, 28 Jun 2019 19:11:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
+        s=default; t=1561749098;
+        bh=ddt8Rhhf568xP/qGFkl2nTNQ1Jq4FVEQ6cpM76H63AQ=;
+        h=Subject:From:In-Reply-To:References:To:Cc:From;
+        b=BmlWLChMo7PPNPArfzwZ/CXAYBvIx/8hezYAXqFDTb+WNiM9XRHDjfdbwQJ/rliyb
+         Xs+gCHdNdJEfndx/qpDDS6q3N7UHjwm5589rpHArsYsg3jhcZco4kVjEeEAj0UfAAd
+         n72mCuZOSWoJBRGn0JCFUF8LXgtmiBvl95eQjvW8=
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org C21F0604BE
+Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-X-Greylist: Sender succeeded SMTP AUTH, not delayed by milter-greylist-4.5.12 (shards.monkeyblade.net [149.20.54.216]); Fri, 28 Jun 2019 09:50:19 -0700 (PDT)
+Subject: Re: [PATCH] ath10k: Fix memory leak in qmi
+From:   Kalle Valo <kvalo@codeaurora.org>
+In-Reply-To: <1561472748-28467-1-git-send-email-dundi@codeaurora.org>
+References: <1561472748-28467-1-git-send-email-dundi@codeaurora.org>
+To:     Dundi Raviteja <dundi@codeaurora.org>
+Cc:     ath10k@lists.infradead.org, linux-wireless@vger.kernel.org,
+        Dundi Raviteja <dundi@codeaurora.org>
+User-Agent: pwcli/0.0.0-git (https://github.com/kvalo/pwcli/) Python/2.7.12
+Message-Id: <20190628191139.35958608BA@smtp.codeaurora.org>
+Date:   Fri, 28 Jun 2019 19:11:39 +0000 (UTC)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Johannes Berg <johannes@sipsolutions.net>
-Date: Fri, 28 Jun 2019 16:44:43 +0200
+Dundi Raviteja <dundi@codeaurora.org> wrote:
 
-> Just a single patch still for the current RC cycle, I debated
-> whether to send a pull request at all or just ask you to apply
-> the patch, but did it this way now.
+> Currently the memory allocated for qmi handle is
+> not being freed during de-init which leads to memory leak.
 > 
-> Please pull and let me know if there's any problem.
+> Free the allocated qmi memory in qmi deinit
+> to avoid memory leak.
+> 
+> Tested HW: WCN3990
+> Tested FW: WLAN.HL.3.1-01040-QCAHLSWMTPLZ-1
+> 
+> Fixes: fda6fee0001e ("ath10k: add QMI message handshake for wcn3990 client")
+> Signed-off-by: Dundi Raviteja <dundi@codeaurora.org>
+> Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
 
-Either way works for me :)
+Patch applied to ath-next branch of ath.git, thanks.
 
-Pulled, thanks.
+c709df58832c ath10k: Fix memory leak in qmi
+
+-- 
+https://patchwork.kernel.org/patch/11015647/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+
