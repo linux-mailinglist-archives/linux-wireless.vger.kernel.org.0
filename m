@@ -2,29 +2,29 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id EC4E959751
-	for <lists+linux-wireless@lfdr.de>; Fri, 28 Jun 2019 11:20:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DA88759754
+	for <lists+linux-wireless@lfdr.de>; Fri, 28 Jun 2019 11:20:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726837AbfF1JUl (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 28 Jun 2019 05:20:41 -0400
-Received: from paleale.coelho.fi ([176.9.41.70]:54764 "EHLO
+        id S1726859AbfF1JUw (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 28 Jun 2019 05:20:52 -0400
+Received: from paleale.coelho.fi ([176.9.41.70]:54782 "EHLO
         farmhouse.coelho.fi" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1726667AbfF1JUl (ORCPT
+        with ESMTP id S1726506AbfF1JUw (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 28 Jun 2019 05:20:41 -0400
+        Fri, 28 Jun 2019 05:20:52 -0400
 Received: from 91-156-6-193.elisa-laajakaista.fi ([91.156.6.193] helo=redipa.ger.corp.intel.com)
         by farmhouse.coelho.fi with esmtpsa (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
         (Exim 4.92)
         (envelope-from <luca@coelho.fi>)
-        id 1hgn3S-0001ny-W1; Fri, 28 Jun 2019 12:20:27 +0300
+        id 1hgn3T-0001ny-GV; Fri, 28 Jun 2019 12:20:27 +0300
 From:   Luca Coelho <luca@coelho.fi>
 To:     kvalo@codeaurora.org
 Cc:     linux-wireless@vger.kernel.org,
         Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
         Luca Coelho <luciano.coelho@intel.com>
-Subject: [PATCH 15/20] iwlwifi: support FSEQ TLV even when FMAC is not compiled
-Date:   Fri, 28 Jun 2019 12:20:03 +0300
-Message-Id: <20190628092008.11049-16-luca@coelho.fi>
+Subject: [PATCH 16/20] iwlwifi: mvm: make the usage of TWT configurable
+Date:   Fri, 28 Jun 2019 12:20:04 +0300
+Message-Id: <20190628092008.11049-17-luca@coelho.fi>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20190628092008.11049-1-luca@coelho.fi>
 References: <20190628092008.11049-1-luca@coelho.fi>
@@ -37,37 +37,40 @@ X-Mailing-List: linux-wireless@vger.kernel.org
 
 From: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
 
-FSEQ TLV should be parsed and read even when FMAC is not compiled.
+TWT is still very new and we expect issues. Make its usage
+configurable and disable it by default.
 
 Signed-off-by: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
 Signed-off-by: Luca Coelho <luciano.coelho@intel.com>
 ---
- drivers/net/wireless/intel/iwlwifi/iwl-drv.c | 12 ++++++++++++
- 1 file changed, 12 insertions(+)
+ drivers/net/wireless/intel/iwlwifi/mvm/constants.h | 1 +
+ drivers/net/wireless/intel/iwlwifi/mvm/mac-ctxt.c  | 2 +-
+ 2 files changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/iwl-drv.c b/drivers/net/wireless/intel/iwlwifi/iwl-drv.c
-index 63da2c781d12..b35fee492786 100644
---- a/drivers/net/wireless/intel/iwlwifi/iwl-drv.c
-+++ b/drivers/net/wireless/intel/iwlwifi/iwl-drv.c
-@@ -1105,6 +1105,18 @@ static int iwl_parse_tlv_firmware(struct iwl_drv *drv,
- 				le32_to_cpu(recov_info->buf_size);
- 			}
- 			break;
-+		case IWL_UCODE_TLV_FW_FSEQ_VERSION: {
-+			struct {
-+				u8 version[32];
-+				u8 sha1[20];
-+			} *fseq_ver = (void *)tlv_data;
-+
-+			if (tlv_len != sizeof(*fseq_ver))
-+				goto invalid_tlv_len;
-+			IWL_INFO(drv, "TLV_FW_FSEQ_VERSION: %s\n",
-+				 fseq_ver->version);
-+			}
-+			break;
- 		case IWL_UCODE_TLV_UMAC_DEBUG_ADDRS: {
- 			struct iwl_umac_debug_addrs *dbg_ptrs =
- 				(void *)tlv_data;
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/constants.h b/drivers/net/wireless/intel/iwlwifi/mvm/constants.h
+index dff14f1ec55f..915b172da57a 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/constants.h
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/constants.h
+@@ -152,5 +152,6 @@
+ #define IWL_MVM_FTM_INITIATOR_ALGO		IWL_TOF_ALGO_TYPE_MAX_LIKE
+ #define IWL_MVM_FTM_INITIATOR_DYNACK		true
+ #define IWL_MVM_D3_DEBUG			false
++#define IWL_MVM_USE_TWT				false
+ 
+ #endif /* __MVM_CONSTANTS_H */
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mac-ctxt.c b/drivers/net/wireless/intel/iwlwifi/mvm/mac-ctxt.c
+index 699a887612b9..cea1948ac7a4 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/mac-ctxt.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/mac-ctxt.c
+@@ -679,7 +679,7 @@ static int iwl_mvm_mac_ctxt_cmd_sta(struct iwl_mvm *mvm,
+ 
+ 	if (vif->bss_conf.he_support && !iwlwifi_mod_params.disable_11ax) {
+ 		cmd.filter_flags |= cpu_to_le32(MAC_FILTER_IN_11AX);
+-		if (vif->bss_conf.twt_requester)
++		if (vif->bss_conf.twt_requester && IWL_MVM_USE_TWT)
+ 			ctxt_sta->data_policy |= cpu_to_le32(TWT_SUPPORTED);
+ 	}
+ 
 -- 
 2.20.1
 
