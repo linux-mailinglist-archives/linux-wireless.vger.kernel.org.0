@@ -2,29 +2,29 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id BA2065974B
+	by mail.lfdr.de (Postfix) with ESMTP id 41BB15974A
 	for <lists+linux-wireless@lfdr.de>; Fri, 28 Jun 2019 11:20:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726795AbfF1JU0 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        id S1726803AbfF1JU0 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
         Fri, 28 Jun 2019 05:20:26 -0400
-Received: from paleale.coelho.fi ([176.9.41.70]:54720 "EHLO
+Received: from paleale.coelho.fi ([176.9.41.70]:54734 "EHLO
         farmhouse.coelho.fi" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1726738AbfF1JUZ (ORCPT
+        with ESMTP id S1726774AbfF1JUZ (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
         Fri, 28 Jun 2019 05:20:25 -0400
 Received: from 91-156-6-193.elisa-laajakaista.fi ([91.156.6.193] helo=redipa.ger.corp.intel.com)
         by farmhouse.coelho.fi with esmtpsa (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
         (Exim 4.92)
         (envelope-from <luca@coelho.fi>)
-        id 1hgn3P-0001ny-Ed; Fri, 28 Jun 2019 12:20:23 +0300
+        id 1hgn3P-0001ny-UG; Fri, 28 Jun 2019 12:20:24 +0300
 From:   Luca Coelho <luca@coelho.fi>
 To:     kvalo@codeaurora.org
 Cc:     linux-wireless@vger.kernel.org,
-        Haim Dreyfuss <haim.dreyfuss@intel.com>,
+        Andrei Otcheretianski <andrei.otcheretianski@intel.com>,
         Luca Coelho <luciano.coelho@intel.com>
-Subject: [PATCH 08/20] iwlwifi: mvm: Add log information about SAR status
-Date:   Fri, 28 Jun 2019 12:19:56 +0300
-Message-Id: <20190628092008.11049-9-luca@coelho.fi>
+Subject: [PATCH 09/20] iwlwifi: mvm: Drop large non sta frames
+Date:   Fri, 28 Jun 2019 12:19:57 +0300
+Message-Id: <20190628092008.11049-10-luca@coelho.fi>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20190628092008.11049-1-luca@coelho.fi>
 References: <20190628092008.11049-1-luca@coelho.fi>
@@ -35,58 +35,36 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Haim Dreyfuss <haim.dreyfuss@intel.com>
+From: Andrei Otcheretianski <andrei.otcheretianski@intel.com>
 
-Inform users when SAR status is changing.
+In some buggy scenarios we could possible attempt to transmit frames larger
+than maximum MSDU size. Since our devices don't know how to handle this,
+it may result in asserts, hangs etc.
+This can happen, for example, when we receive a large multicast frame
+and try to transmit it back to the air in AP mode.
+Since in a legal scenario this should never happen, drop such frames and
+warn about it.
 
-Signed-off-by: Haim Dreyfuss <haim.dreyfuss@intel.com>
+Signed-off-by: Andrei Otcheretianski <andrei.otcheretianski@intel.com>
 Signed-off-by: Luca Coelho <luciano.coelho@intel.com>
 ---
- drivers/net/wireless/intel/iwlwifi/mvm/fw.c  | 3 +++
- drivers/net/wireless/intel/iwlwifi/mvm/nvm.c | 9 +++++++++
- 2 files changed, 12 insertions(+)
+ drivers/net/wireless/intel/iwlwifi/mvm/tx.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/fw.c b/drivers/net/wireless/intel/iwlwifi/mvm/fw.c
-index b27be2e3eca2..41a98cf01d0e 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/fw.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/fw.c
-@@ -850,6 +850,9 @@ int iwl_mvm_sar_select_profile(struct iwl_mvm *mvm, int prof_a, int prof_b)
- 			return -ENOENT;
- 		}
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/tx.c b/drivers/net/wireless/intel/iwlwifi/mvm/tx.c
+index 16f7458e2e81..a3e5d88f1c07 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/tx.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/tx.c
+@@ -726,6 +726,9 @@ int iwl_mvm_tx_skb_non_sta(struct iwl_mvm *mvm, struct sk_buff *skb)
  
-+		IWL_DEBUG_INFO(mvm,
-+			       "SAR EWRD: chain %d profile index %d\n",
-+			       i, profs[i]);
- 		IWL_DEBUG_RADIO(mvm, "  Chain[%d]:\n", i);
- 		for (j = 0; j < ACPI_SAR_NUM_SUB_BANDS; j++) {
- 			idx = (i * ACPI_SAR_NUM_SUB_BANDS) + j;
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/nvm.c b/drivers/net/wireless/intel/iwlwifi/mvm/nvm.c
-index 7bdbd010ae6b..719f793b3487 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/nvm.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/nvm.c
-@@ -620,6 +620,7 @@ void iwl_mvm_rx_chub_update_mcc(struct iwl_mvm *mvm,
- 	enum iwl_mcc_source src;
- 	char mcc[3];
- 	struct ieee80211_regdomain *regd;
-+	u32 wgds_tbl_idx;
+ 	memcpy(&info, skb->cb, sizeof(info));
  
- 	lockdep_assert_held(&mvm->mutex);
- 
-@@ -643,6 +644,14 @@ void iwl_mvm_rx_chub_update_mcc(struct iwl_mvm *mvm,
- 	if (IS_ERR_OR_NULL(regd))
- 		return;
- 
-+	wgds_tbl_idx = iwl_mvm_get_sar_geo_profile(mvm);
-+	if (wgds_tbl_idx < 0)
-+		IWL_DEBUG_INFO(mvm, "SAR WGDS is disabled (%d)\n",
-+			       wgds_tbl_idx);
-+	else
-+		IWL_DEBUG_INFO(mvm, "SAR WGDS: geo profile %d is configured\n",
-+			       wgds_tbl_idx);
++	if (WARN_ON_ONCE(skb->len > IEEE80211_MAX_DATA_LEN + hdrlen))
++		return -1;
 +
- 	regulatory_set_wiphy_regd(mvm->hw->wiphy, regd);
- 	kfree(regd);
- }
+ 	if (WARN_ON_ONCE(info.flags & IEEE80211_TX_CTL_AMPDU))
+ 		return -1;
+ 
 -- 
 2.20.1
 
