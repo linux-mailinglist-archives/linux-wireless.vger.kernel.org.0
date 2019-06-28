@@ -2,28 +2,29 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 3A7D259752
-	for <lists+linux-wireless@lfdr.de>; Fri, 28 Jun 2019 11:20:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 33AE559750
+	for <lists+linux-wireless@lfdr.de>; Fri, 28 Jun 2019 11:20:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726542AbfF1JUo (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 28 Jun 2019 05:20:44 -0400
-Received: from paleale.coelho.fi ([176.9.41.70]:54770 "EHLO
+        id S1726833AbfF1JUh (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 28 Jun 2019 05:20:37 -0400
+Received: from paleale.coelho.fi ([176.9.41.70]:54758 "EHLO
         farmhouse.coelho.fi" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1726506AbfF1JUo (ORCPT
+        with ESMTP id S1726667AbfF1JUh (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 28 Jun 2019 05:20:44 -0400
+        Fri, 28 Jun 2019 05:20:37 -0400
 Received: from 91-156-6-193.elisa-laajakaista.fi ([91.156.6.193] helo=redipa.ger.corp.intel.com)
         by farmhouse.coelho.fi with esmtpsa (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
         (Exim 4.92)
         (envelope-from <luca@coelho.fi>)
-        id 1hgn3Q-0001ny-Cu; Fri, 28 Jun 2019 12:20:24 +0300
+        id 1hgn3Q-0001ny-SZ; Fri, 28 Jun 2019 12:20:25 +0300
 From:   Luca Coelho <luca@coelho.fi>
 To:     kvalo@codeaurora.org
 Cc:     linux-wireless@vger.kernel.org,
+        Shahar S Matityahu <shahar.s.matityahu@intel.com>,
         Luca Coelho <luciano.coelho@intel.com>
-Subject: [PATCH 10/20] iwlwifi: pcie: increase the size of PCI dumps
-Date:   Fri, 28 Jun 2019 12:19:58 +0300
-Message-Id: <20190628092008.11049-11-luca@coelho.fi>
+Subject: [PATCH 11/20] iwlwifi: dbg: fix debug monitor stop and restart delays
+Date:   Fri, 28 Jun 2019 12:19:59 +0300
+Message-Id: <20190628092008.11049-12-luca@coelho.fi>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20190628092008.11049-1-luca@coelho.fi>
 References: <20190628092008.11049-1-luca@coelho.fi>
@@ -34,75 +35,64 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Luca Coelho <luciano.coelho@intel.com>
+From: Shahar S Matityahu <shahar.s.matityahu@intel.com>
 
-Currently we dump only the first 64 bytes of the PCI config space,
-which leaves out some important things, such as the base address
-registers.
+The driver should delay only in recording stop flow between writing to
+DBGC_IN_SAMPLE register and DBGC_OUT_CTRL register. Any other delay is
+not needed.
 
-Increase it to 352 for the PCI device and to 524 for the rootport to
-make sure we include everything we need.
+Change the following:
+1. Remove any unnecessary delays in the flow
+2. Increase the delay in the stop recording flow since 100 micro is
+   not enough
+3. Use usleep_range instead of delay since the driver is allowed to
+   sleep in this flow.
 
+Signed-off-by: Shahar S Matityahu <shahar.s.matityahu@intel.com>
+Fixes: 5cfe79c8d92a ("iwlwifi: fw: stop and start debugging using host command")
 Signed-off-by: Luca Coelho <luciano.coelho@intel.com>
 ---
- .../net/wireless/intel/iwlwifi/pcie/trans.c   | 22 ++++++++++++-------
- 1 file changed, 14 insertions(+), 8 deletions(-)
+ drivers/net/wireless/intel/iwlwifi/fw/dbg.c | 2 --
+ drivers/net/wireless/intel/iwlwifi/fw/dbg.h | 6 ++++--
+ 2 files changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/trans.c b/drivers/net/wireless/intel/iwlwifi/pcie/trans.c
-index ca486a7af602..6f5f7e9a894f 100644
---- a/drivers/net/wireless/intel/iwlwifi/pcie/trans.c
-+++ b/drivers/net/wireless/intel/iwlwifi/pcie/trans.c
-@@ -90,8 +90,10 @@
+diff --git a/drivers/net/wireless/intel/iwlwifi/fw/dbg.c b/drivers/net/wireless/intel/iwlwifi/fw/dbg.c
+index 0c366009389e..21df3e3a28e7 100644
+--- a/drivers/net/wireless/intel/iwlwifi/fw/dbg.c
++++ b/drivers/net/wireless/intel/iwlwifi/fw/dbg.c
+@@ -2386,8 +2386,6 @@ static void iwl_fw_dbg_collect_sync(struct iwl_fw_runtime *fwrt, u8 wk_idx)
+ 	/* start recording again if the firmware is not crashed */
+ 	if (!test_bit(STATUS_FW_ERROR, &fwrt->trans->status) &&
+ 	    fwrt->fw->dbg.dest_tlv) {
+-		/* wait before we collect the data till the DBGC stop */
+-		udelay(500);
+ 		iwl_fw_dbg_restart_recording(fwrt, &params);
+ 	}
  
- void iwl_trans_pcie_dump_regs(struct iwl_trans *trans)
- {
--#define PCI_DUMP_SIZE	64
--#define PREFIX_LEN	32
-+#define PCI_DUMP_SIZE		352
-+#define PCI_MEM_DUMP_SIZE	64
-+#define PCI_PARENT_DUMP_SIZE	524
-+#define PREFIX_LEN		32
- 	struct iwl_trans_pcie *trans_pcie = IWL_TRANS_GET_PCIE_TRANS(trans);
- 	struct pci_dev *pdev = trans_pcie->pci_dev;
- 	u32 i, pos, alloc_size, *ptr, *buf;
-@@ -102,11 +104,15 @@ void iwl_trans_pcie_dump_regs(struct iwl_trans *trans)
+diff --git a/drivers/net/wireless/intel/iwlwifi/fw/dbg.h b/drivers/net/wireless/intel/iwlwifi/fw/dbg.h
+index d009c0aa95d7..cff96d2a7e4c 100644
+--- a/drivers/net/wireless/intel/iwlwifi/fw/dbg.h
++++ b/drivers/net/wireless/intel/iwlwifi/fw/dbg.h
+@@ -295,7 +295,10 @@ _iwl_fw_dbg_stop_recording(struct iwl_trans *trans,
+ 	}
  
- 	/* Should be a multiple of 4 */
- 	BUILD_BUG_ON(PCI_DUMP_SIZE > 4096 || PCI_DUMP_SIZE & 0x3);
-+	BUILD_BUG_ON(PCI_MEM_DUMP_SIZE > 4096 || PCI_MEM_DUMP_SIZE & 0x3);
-+	BUILD_BUG_ON(PCI_PARENT_DUMP_SIZE > 4096 || PCI_PARENT_DUMP_SIZE & 0x3);
-+
- 	/* Alloc a max size buffer */
--	if (PCI_ERR_ROOT_ERR_SRC +  4 > PCI_DUMP_SIZE)
--		alloc_size = PCI_ERR_ROOT_ERR_SRC +  4 + PREFIX_LEN;
--	else
--		alloc_size = PCI_DUMP_SIZE + PREFIX_LEN;
-+	alloc_size = PCI_ERR_ROOT_ERR_SRC +  4 + PREFIX_LEN;
-+	alloc_size = max_t(u32, alloc_size, PCI_DUMP_SIZE + PREFIX_LEN);
-+	alloc_size = max_t(u32, alloc_size, PCI_MEM_DUMP_SIZE + PREFIX_LEN);
-+	alloc_size = max_t(u32, alloc_size, PCI_PARENT_DUMP_SIZE + PREFIX_LEN);
-+
- 	buf = kmalloc(alloc_size, GFP_ATOMIC);
- 	if (!buf)
- 		return;
-@@ -123,7 +129,7 @@ void iwl_trans_pcie_dump_regs(struct iwl_trans *trans)
- 	print_hex_dump(KERN_ERR, prefix, DUMP_PREFIX_OFFSET, 32, 4, buf, i, 0);
- 
- 	IWL_ERR(trans, "iwlwifi device memory mapped registers:\n");
--	for (i = 0, ptr = buf; i < PCI_DUMP_SIZE; i += 4, ptr++)
-+	for (i = 0, ptr = buf; i < PCI_MEM_DUMP_SIZE; i += 4, ptr++)
- 		*ptr = iwl_read32(trans, i);
- 	print_hex_dump(KERN_ERR, prefix, DUMP_PREFIX_OFFSET, 32, 4, buf, i, 0);
- 
-@@ -146,7 +152,7 @@ void iwl_trans_pcie_dump_regs(struct iwl_trans *trans)
- 
- 	IWL_ERR(trans, "iwlwifi parent port (%s) config registers:\n",
- 		pci_name(pdev));
--	for (i = 0, ptr = buf; i < PCI_DUMP_SIZE; i += 4, ptr++)
-+	for (i = 0, ptr = buf; i < PCI_PARENT_DUMP_SIZE; i += 4, ptr++)
- 		if (pci_read_config_dword(pdev, i, ptr))
- 			goto err_read;
- 	print_hex_dump(KERN_ERR, prefix, DUMP_PREFIX_OFFSET, 32, 4, buf, i, 0);
+ 	iwl_write_umac_prph(trans, DBGC_IN_SAMPLE, 0);
+-	udelay(100);
++	/* wait for the DBGC to finish writing the internal buffer to DRAM to
++	 * avoid halting the HW while writing
++	 */
++	usleep_range(700, 1000);
+ 	iwl_write_umac_prph(trans, DBGC_OUT_CTRL, 0);
+ #ifdef CONFIG_IWLWIFI_DEBUGFS
+ 	trans->dbg_rec_on = false;
+@@ -325,7 +328,6 @@ _iwl_fw_dbg_restart_recording(struct iwl_trans *trans,
+ 		iwl_set_bits_prph(trans, MON_BUFF_SAMPLE_CTL, 0x1);
+ 	} else {
+ 		iwl_write_umac_prph(trans, DBGC_IN_SAMPLE, params->in_sample);
+-		udelay(100);
+ 		iwl_write_umac_prph(trans, DBGC_OUT_CTRL, params->out_ctrl);
+ 	}
+ }
 -- 
 2.20.1
 
