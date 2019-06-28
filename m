@@ -2,34 +2,33 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 3BAC459D60
-	for <lists+linux-wireless@lfdr.de>; Fri, 28 Jun 2019 15:57:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8E32659D67
+	for <lists+linux-wireless@lfdr.de>; Fri, 28 Jun 2019 15:58:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726720AbfF1N5L (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 28 Jun 2019 09:57:11 -0400
-Received: from s3.sipsolutions.net ([144.76.43.62]:51384 "EHLO
+        id S1726686AbfF1N6y (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 28 Jun 2019 09:58:54 -0400
+Received: from s3.sipsolutions.net ([144.76.43.62]:51414 "EHLO
         sipsolutions.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726707AbfF1N5L (ORCPT
+        with ESMTP id S1726616AbfF1N6y (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 28 Jun 2019 09:57:11 -0400
+        Fri, 28 Jun 2019 09:58:54 -0400
 Received: by sipsolutions.net with esmtpsa (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
         (Exim 4.92)
         (envelope-from <johannes@sipsolutions.net>)
-        id 1hgrNE-0002pi-MB; Fri, 28 Jun 2019 15:57:08 +0200
-Message-ID: <8b8c44c3ecb8626d9bb5a8f786b1d2b7488df86b.camel@sipsolutions.net>
-Subject: Re: [Linux-kernel-mentees][PATCH v2] nl80211: Fix undefined
- behavior in bit shift
+        id 1hgrOu-0002sU-Ra; Fri, 28 Jun 2019 15:58:52 +0200
+Message-ID: <d47994158f5460104f36999f5f1c6251885af102.camel@sipsolutions.net>
+Subject: Re: [PATCH] Add SPDX identifiers
 From:   Johannes Berg <johannes@sipsolutions.net>
-To:     Shuah Khan <skhan@linuxfoundation.org>,
-        Jiunn Chang <c0d1n61at3@gmail.com>
-Cc:     linux-kernel-mentees@lists.linuxfoundation.org,
-        linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org
-Date:   Fri, 28 Jun 2019 15:57:05 +0200
-In-Reply-To: <c20a0a94-ab50-bb85-7c78-e02a465c5a40@linuxfoundation.org> (sfid-20190627_053427_689527_6C7A1CBE)
-References: <20190627010137.5612-4-c0d1n61at3@gmail.com>
-         <20190627032532.18374-4-c0d1n61at3@gmail.com>
-         <c20a0a94-ab50-bb85-7c78-e02a465c5a40@linuxfoundation.org>
-         (sfid-20190627_053427_689527_6C7A1CBE)
+To:     Yegor Yefremov <yegorslists@googlemail.com>
+Cc:     linux-wireless@vger.kernel.org
+Date:   Fri, 28 Jun 2019 15:58:51 +0200
+In-Reply-To: <CAGm1_kvK3eWnZk7eDOoqoAiedReJLunKfb4tvhqXU-hriO3itg@mail.gmail.com> (sfid-20190624_223311_656296_713D6C6F)
+References: <20190620130148.1674-1-yegorslists@googlemail.com>
+         <90ccc515bb26b212b537fc1b0287afaa0f86fdf8.camel@sipsolutions.net>
+         <CAGm1_ksic4xcVdaPAObwwNdaQ19E3ZiK97SkmVmp8kz6H2KpOw@mail.gmail.com>
+         <693753473768100f07de573dd74bf4033618aed8.camel@sipsolutions.net>
+         <CAGm1_kvK3eWnZk7eDOoqoAiedReJLunKfb4tvhqXU-hriO3itg@mail.gmail.com>
+         (sfid-20190624_223311_656296_713D6C6F)
 Content-Type: text/plain; charset="UTF-8"
 X-Mailer: Evolution 3.28.5 (3.28.5-3.fc28) 
 Mime-Version: 1.0
@@ -39,23 +38,12 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Wed, 2019-06-26 at 21:34 -0600, Shuah Khan wrote:
-> On 6/26/19 9:25 PM, Jiunn Chang wrote:
-> > Shifting signed 32-bit value by 31 bits is undefined.  Changing most
-> > significant bit to unsigned.
-> > 
-> > Changes included in v2:
-> >    - use subsystem specific subject lines
-> >    - CC required mailing lists
-> > 
-> > Signed-off-by: Jiunn Chang <c0d1n61at3@gmail.com>
-> > ---
+On Mon, 2019-06-24 at 22:32 +0200, Yegor Yefremov wrote:
 > 
-> Move version change lines here. They don't belong in the commit log.
+> I have asked SPDX and this is their answer:
+> https://lists.spdx.org/g/Spdx-legal/message/2631
 
-FWIW, in many cases people (maintainers) now *do* want them in the
-commit log. Here, they're just editorial, so agree, but if real
-technical changes were made due to reviews, they can indeed be useful.
+Alright, thanks. I guess I can apply that then.
 
 johannes
 
