@@ -2,34 +2,34 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 888FA5AA36
-	for <lists+linux-wireless@lfdr.de>; Sat, 29 Jun 2019 12:36:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 257645AA37
+	for <lists+linux-wireless@lfdr.de>; Sat, 29 Jun 2019 12:36:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727007AbfF2Kgi (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 29 Jun 2019 06:36:38 -0400
-Received: from mail.kernel.org ([198.145.29.99]:42952 "EHLO mail.kernel.org"
+        id S1727017AbfF2Kgl (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 29 Jun 2019 06:36:41 -0400
+Received: from mail.kernel.org ([198.145.29.99]:42976 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726839AbfF2Kgi (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 29 Jun 2019 06:36:38 -0400
+        id S1726839AbfF2Kgl (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Sat, 29 Jun 2019 06:36:41 -0400
 Received: from lore-desk-wlan.lan (unknown [151.66.61.123])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 209EE214DA;
-        Sat, 29 Jun 2019 10:36:35 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 766CA2086D;
+        Sat, 29 Jun 2019 10:36:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1561804597;
-        bh=npV0496InKvDC3LfpGfQu5VGz3s3CO5FzRXf4057iLw=;
+        s=default; t=1561804599;
+        bh=udCZMiqUS9eCiH/FEC5z8u4jd052mXt3FMnP06YPKsU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=noe3jhopTV0O/6mnhvOwt0LaL8CSbF1jv3jUtX4/MiL53/mtzafUENOHrMq6uOS2f
-         gPp4zd4vWF3NX0JvsDsrLghplB4xmAednMAsIlYxqchza73KY/rv+MgnUlWXj48Q2l
-         BBTSKvjftI6hbLUi8MefiAj1TZ6+sEqj04e63juU=
+        b=vuQmhCXJkZto0TdfEqy796FplfZ3PvX2mZVpBqaEM5jvEMyHPPyRbfxeF1LbQ5iMW
+         /+9dGHkC+gJCOWvkOTCY9y3KZV3vcokM0hnoGYEsEhkulSCl/NFsXE6jk/oJAHbUWr
+         PI+NldEHjDrP1yXWMTTFeS7Xxif+h1o+9VqNlF+I=
 From:   Lorenzo Bianconi <lorenzo@kernel.org>
 To:     nbd@nbd.name
 Cc:     lorenzo.bianconi@redhat.com, linux-wireless@vger.kernel.org,
         ryder.lee@mediatek.com, royluo@google.com, yf.luo@mediatek.com
-Subject: [PATCH 5/6] mt76: mt7615: add csa support
-Date:   Sat, 29 Jun 2019 12:36:10 +0200
-Message-Id: <4773858ec37daac2064a0a6ca6be63ea42896a2c.1561804422.git.lorenzo@kernel.org>
+Subject: [PATCH 6/6] mt76: mt7615: add radar pattern test knob to debugfs
+Date:   Sat, 29 Jun 2019 12:36:11 +0200
+Message-Id: <0e4bcdda11b73ee7af17732dc847a4d6b06724c7.1561804422.git.lorenzo@kernel.org>
 X-Mailer: git-send-email 2.21.0
 In-Reply-To: <cover.1561804422.git.lorenzo@kernel.org>
 References: <cover.1561804422.git.lorenzo@kernel.org>
@@ -40,139 +40,186 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Add Channel Switch Announcement support to mt7615 driver updating beacon
-template with CSA IE received from mac80211
+Introduce mt7615_mcu_rdd_send_pattern routine to trigger a radar pattern
+detection. Moreover move debugfs related routines in a dedicated source
+file.
 
 Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
 ---
- .../net/wireless/mediatek/mt76/mt7615/init.c  |  1 +
- .../net/wireless/mediatek/mt76/mt7615/main.c  | 13 ++++++++++
- .../net/wireless/mediatek/mt76/mt7615/mcu.c   | 26 +++++++++++++++----
+ .../wireless/mediatek/mt76/mt7615/Makefile    |  3 +-
+ .../wireless/mediatek/mt76/mt7615/debugfs.c   | 38 +++++++++++++++++++
+ .../net/wireless/mediatek/mt76/mt7615/init.c  | 13 -------
+ .../net/wireless/mediatek/mt76/mt7615/mcu.c   | 31 +++++++++++++++
  .../net/wireless/mediatek/mt76/mt7615/mcu.h   |  1 +
- 4 files changed, 36 insertions(+), 5 deletions(-)
+ .../wireless/mediatek/mt76/mt7615/mt7615.h    |  9 +++++
+ 6 files changed, 81 insertions(+), 14 deletions(-)
+ create mode 100644 drivers/net/wireless/mediatek/mt76/mt7615/debugfs.c
 
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/Makefile b/drivers/net/wireless/mediatek/mt76/mt7615/Makefile
+index 6397552f6ee3..5aaac69849d6 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7615/Makefile
++++ b/drivers/net/wireless/mediatek/mt76/mt7615/Makefile
+@@ -2,4 +2,5 @@
+ 
+ obj-$(CONFIG_MT7615E) += mt7615e.o
+ 
+-mt7615e-y := pci.o init.o dma.o eeprom.o main.o mcu.o mac.o
++mt7615e-y := pci.o init.o dma.o eeprom.o main.o mcu.o mac.o \
++	     debugfs.o
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/debugfs.c b/drivers/net/wireless/mediatek/mt76/mt7615/debugfs.c
+new file mode 100644
+index 000000000000..ed605fcc99f9
+--- /dev/null
++++ b/drivers/net/wireless/mediatek/mt76/mt7615/debugfs.c
+@@ -0,0 +1,38 @@
++/* SPDX-License-Identifier: ISC */
++
++#include "mt7615.h"
++
++static int
++mt7615_radar_pattern_set(void *data, u64 val)
++{
++	struct mt7615_dev *dev = data;
++
++	return mt7615_mcu_rdd_send_pattern(dev);
++}
++
++DEFINE_DEBUGFS_ATTRIBUTE(fops_radar_pattern, NULL,
++			 mt7615_radar_pattern_set, "%lld\n");
++
++int mt7615_init_debugfs(struct mt7615_dev *dev)
++{
++	struct dentry *dir;
++
++	dir = mt76_register_debugfs(&dev->mt76);
++	if (!dir)
++		return -ENOMEM;
++
++	debugfs_create_u32("dfs_hw_pattern", 0400, dir, &dev->hw_pattern);
++	/* test pattern knobs */
++	debugfs_create_u8("pattern_len", 0600, dir,
++			  &dev->radar_pattern.n_pulses);
++	debugfs_create_u32("pulse_period", 0600, dir,
++			   &dev->radar_pattern.period);
++	debugfs_create_u16("pulse_width", 0600, dir,
++			   &dev->radar_pattern.width);
++	debugfs_create_u16("pulse_power", 0600, dir,
++			   &dev->radar_pattern.power);
++	debugfs_create_file("radar_trigger", 0200, dir, dev,
++			    &fops_radar_pattern);
++
++	return 0;
++}
 diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/init.c b/drivers/net/wireless/mediatek/mt76/mt7615/init.c
-index 6d336d82cafe..dbeffe5866aa 100644
+index dbeffe5866aa..3d814e9a31ef 100644
 --- a/drivers/net/wireless/mediatek/mt76/mt7615/init.c
 +++ b/drivers/net/wireless/mediatek/mt76/mt7615/init.c
-@@ -263,6 +263,7 @@ int mt7615_register_device(struct mt7615_dev *dev)
- 	wiphy->iface_combinations = if_comb;
- 	wiphy->n_iface_combinations = ARRAY_SIZE(if_comb);
- 	wiphy->reg_notifier = mt7615_regd_notifier;
-+	wiphy->flags |= WIPHY_FLAG_HAS_CHANNEL_SWITCH;
- 
- 	ieee80211_hw_set(hw, SUPPORTS_REORDERING_BUFFER);
- 	ieee80211_hw_set(hw, TX_STATUS_NO_AMPDU_LEN);
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/main.c b/drivers/net/wireless/mediatek/mt76/mt7615/main.c
-index cf9be4944cf7..1ee6dda579a8 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7615/main.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7615/main.c
-@@ -305,6 +305,18 @@ static void mt7615_bss_info_changed(struct ieee80211_hw *hw,
- 	mutex_unlock(&dev->mt76.mutex);
- }
- 
-+static void
-+mt7615_channel_switch_beacon(struct ieee80211_hw *hw,
-+			     struct ieee80211_vif *vif,
-+			     struct cfg80211_chan_def *chandef)
-+{
-+	struct mt7615_dev *dev = hw->priv;
-+
-+	mutex_lock(&dev->mt76.mutex);
-+	mt7615_mcu_set_bcn(dev, vif, true);
-+	mutex_unlock(&dev->mt76.mutex);
-+}
-+
- int mt7615_sta_add(struct mt76_dev *mdev, struct ieee80211_vif *vif,
- 		   struct ieee80211_sta *sta)
- {
-@@ -496,4 +508,5 @@ const struct ieee80211_ops mt7615_ops = {
- 	.sw_scan_complete = mt7615_sw_scan_complete,
- 	.release_buffered_frames = mt76_release_buffered_frames,
- 	.get_txpower = mt76_get_txpower,
-+	.channel_switch_beacon = mt7615_channel_switch_beacon,
+@@ -161,19 +161,6 @@ static const struct ieee80211_iface_combination if_comb[] = {
+ 	}
  };
+ 
+-static int mt7615_init_debugfs(struct mt7615_dev *dev)
+-{
+-	struct dentry *dir;
+-
+-	dir = mt76_register_debugfs(&dev->mt76);
+-	if (!dir)
+-		return -ENOMEM;
+-
+-	debugfs_create_u32("dfs_hw_pattern", 0400, dir, &dev->hw_pattern);
+-
+-	return 0;
+-}
+-
+ static void
+ mt7615_init_txpower(struct mt7615_dev *dev,
+ 		    struct ieee80211_supported_band *sband)
 diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c
-index 397ae4f95db8..951849e4dd09 100644
+index 951849e4dd09..06d146198e33 100644
 --- a/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c
 +++ b/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c
-@@ -159,6 +159,13 @@ mt7615_mcu_msg_send(struct mt76_dev *mdev, int cmd, const void *data,
- 	return ret;
+@@ -1294,6 +1294,37 @@ int mt7615_mcu_rdd_cmd(struct mt7615_dev *dev,
+ 				   &req, sizeof(req), true);
  }
  
-+static void
-+mt7615_mcu_csa_finish(void *priv, u8 *mac, struct ieee80211_vif *vif)
++int mt7615_mcu_rdd_send_pattern(struct mt7615_dev *dev)
 +{
-+	if (vif->csa_active)
-+		ieee80211_csa_finish(vif);
++	struct {
++		u8 pulse_num;
++		u8 rsv[3];
++		struct {
++			u32 start_time;
++			u16 width;
++			s16 power;
++		} pattern[32];
++	} req = {
++		.pulse_num = dev->radar_pattern.n_pulses,
++	};
++	u32 start_time = ktime_to_ms(ktime_get_boottime());
++	int i;
++
++	if (dev->radar_pattern.n_pulses > ARRAY_SIZE(req.pattern))
++		return -EINVAL;
++
++	/* TODO: add some noise here */
++	for (i = 0; i < dev->radar_pattern.n_pulses; i++) {
++		req.pattern[i].width = dev->radar_pattern.width;
++		req.pattern[i].power = dev->radar_pattern.power;
++		req.pattern[i].start_time = start_time +
++					    i * dev->radar_pattern.period;
++	}
++
++	return __mt76_mcu_send_msg(&dev->mt76, MCU_EXT_CMD_SET_RDD_PATTERN,
++				   &req, sizeof(req), false);
 +}
 +
- static void
- mt7615_mcu_rx_ext_event(struct mt7615_dev *dev, struct sk_buff *skb)
+ int mt7615_mcu_set_channel(struct mt7615_dev *dev)
  {
-@@ -169,6 +176,11 @@ mt7615_mcu_rx_ext_event(struct mt7615_dev *dev, struct sk_buff *skb)
- 		ieee80211_radar_detected(dev->mt76.hw);
- 		dev->hw_pattern++;
- 		break;
-+	case MCU_EXT_EVENT_CSA_NOTIFY:
-+		ieee80211_iterate_active_interfaces_atomic(dev->mt76.hw,
-+				IEEE80211_IFACE_ITER_RESUME_ALL,
-+				mt7615_mcu_csa_finish, dev);
-+		break;
- 	default:
- 		break;
- 	}
-@@ -1143,6 +1155,7 @@ int mt7615_mcu_set_bcn(struct mt7615_dev *dev, struct ieee80211_vif *vif,
- {
- 	struct mt7615_vif *mvif = (struct mt7615_vif *)vif->drv_priv;
- 	struct mt76_wcid *wcid = &dev->mt76.global_wcid;
-+	struct ieee80211_mutable_offsets offs;
- 	struct req {
- 		u8 omac_idx;
- 		u8 enable;
-@@ -1163,13 +1176,10 @@ int mt7615_mcu_set_bcn(struct mt7615_dev *dev, struct ieee80211_vif *vif,
- 		.enable = en,
- 		.wlan_idx = wcid->idx,
- 		.band_idx = mvif->band_idx,
--		/* pky_type: 0 for bcn, 1 for tim */
--		.pkt_type = 0,
- 	};
- 	struct sk_buff *skb;
--	u16 tim_off;
- 
--	skb = ieee80211_beacon_get_tim(mt76_hw(dev), vif, &tim_off, NULL);
-+	skb = ieee80211_beacon_get_template(mt76_hw(dev), vif, &offs);
- 	if (!skb)
- 		return -EINVAL;
- 
-@@ -1183,8 +1193,14 @@ int mt7615_mcu_set_bcn(struct mt7615_dev *dev, struct ieee80211_vif *vif,
- 			      0, NULL);
- 	memcpy(req.pkt + MT_TXD_SIZE, skb->data, skb->len);
- 	req.pkt_len = cpu_to_le16(MT_TXD_SIZE + skb->len);
--	req.tim_ie_pos = cpu_to_le16(MT_TXD_SIZE + tim_off);
-+	req.tim_ie_pos = cpu_to_le16(MT_TXD_SIZE + offs.tim_offset);
-+	if (offs.csa_counter_offs[0]) {
-+		u16 csa_offs;
- 
-+		csa_offs = MT_TXD_SIZE + offs.csa_counter_offs[0] - 4;
-+		req.csa_ie_pos = cpu_to_le16(csa_offs);
-+		req.csa_cnt = skb->data[offs.csa_counter_offs[0]];
-+	}
- 	dev_kfree_skb(skb);
- 
- 	return __mt76_mcu_send_msg(&dev->mt76, MCU_EXT_CMD_BCN_OFFLOAD,
+ 	struct cfg80211_chan_def *chandef = &dev->mt76.chandef;
 diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/mcu.h b/drivers/net/wireless/mediatek/mt76/mt7615/mcu.h
-index 5fe492189f56..73ce9fe8bfed 100644
+index 73ce9fe8bfed..17d22bfb1722 100644
 --- a/drivers/net/wireless/mediatek/mt76/mt7615/mcu.h
 +++ b/drivers/net/wireless/mediatek/mt76/mt7615/mcu.h
-@@ -42,6 +42,7 @@ enum {
- 	MCU_EXT_EVENT_THERMAL_PROTECT = 0x22,
- 	MCU_EXT_EVENT_ASSERT_DUMP = 0x23,
- 	MCU_EXT_EVENT_RDD_REPORT = 0x3a,
-+	MCU_EXT_EVENT_CSA_NOTIFY = 0x4f,
+@@ -104,6 +104,7 @@ enum {
+ 	MCU_EXT_CMD_MAC_INIT_CTRL = 0x46,
+ 	MCU_EXT_CMD_BCN_OFFLOAD = 0x49,
+ 	MCU_EXT_CMD_SET_RX_PATH = 0x4e,
++	MCU_EXT_CMD_SET_RDD_PATTERN = 0x7d,
  };
  
- struct mt7615_mcu_rxd {
+ enum {
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/mt7615.h b/drivers/net/wireless/mediatek/mt76/mt7615/mt7615.h
+index d113fa30115e..3713db874ef4 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7615/mt7615.h
++++ b/drivers/net/wireless/mediatek/mt76/mt7615/mt7615.h
+@@ -68,6 +68,12 @@ struct mt7615_dev {
+ 	u32 vif_mask;
+ 	u32 omac_mask;
+ 
++	struct {
++		u8 n_pulses;
++		u32 period;
++		u16 width;
++		s16 power;
++	} radar_pattern;
+ 	u32 hw_pattern;
+ 	int dfs_state;
+ 
+@@ -177,6 +183,7 @@ int mt7615_mcu_rdd_cmd(struct mt7615_dev *dev,
+ 		       u8 rx_sel, u8 val);
+ int mt7615_dfs_start_radar_detector(struct mt7615_dev *dev);
+ int mt7615_dfs_stop_radar_detector(struct mt7615_dev *dev);
++int mt7615_mcu_rdd_send_pattern(struct mt7615_dev *dev);
+ 
+ static inline void mt7615_dfs_check_channel(struct mt7615_dev *dev)
+ {
+@@ -240,4 +247,6 @@ void mt7615_txp_skb_unmap(struct mt76_dev *dev,
+ int mt76_dfs_start_rdd(struct mt7615_dev *dev, bool force);
+ int mt7615_dfs_init_radar_detector(struct mt7615_dev *dev);
+ 
++int mt7615_init_debugfs(struct mt7615_dev *dev);
++
+ #endif
 -- 
 2.21.0
 
