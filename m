@@ -2,88 +2,79 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D9D555AC24
-	for <lists+linux-wireless@lfdr.de>; Sat, 29 Jun 2019 17:20:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 08C145ADA1
+	for <lists+linux-wireless@lfdr.de>; Sun, 30 Jun 2019 00:18:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726836AbfF2PUQ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 29 Jun 2019 11:20:16 -0400
-Received: from mailgw01.mediatek.com ([210.61.82.183]:27710 "EHLO
-        mailgw01.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1726819AbfF2PUQ (ORCPT
+        id S1726935AbfF2WSr (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 29 Jun 2019 18:18:47 -0400
+Received: from 8.mo4.mail-out.ovh.net ([188.165.33.112]:58330 "EHLO
+        8.mo4.mail-out.ovh.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726923AbfF2WSq (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 29 Jun 2019 11:20:16 -0400
-X-UUID: 0276ae1d7325446182df794f0847c346-20190629
-X-UUID: 0276ae1d7325446182df794f0847c346-20190629
-Received: from mtkcas06.mediatek.inc [(172.21.101.30)] by mailgw01.mediatek.com
-        (envelope-from <ryder.lee@mediatek.com>)
-        (mhqrelay.mediatek.com ESMTP with TLS)
-        with ESMTP id 1857504110; Sat, 29 Jun 2019 23:20:05 +0800
-Received: from mtkcas07.mediatek.inc (172.21.101.84) by
- mtkmbs08n2.mediatek.inc (172.21.101.56) with Microsoft SMTP Server (TLS) id
- 15.0.1395.4; Sat, 29 Jun 2019 23:20:03 +0800
-Received: from [172.21.77.33] (172.21.77.33) by mtkcas07.mediatek.inc
- (172.21.101.73) with Microsoft SMTP Server id 15.0.1395.4 via Frontend
- Transport; Sat, 29 Jun 2019 23:20:03 +0800
-Message-ID: <1561821603.28134.0.camel@mtkswgap22>
-Subject: Re: [PATCH 0/6] add hw dfs pattern detector support to mt7615 driver
-From:   Ryder Lee <ryder.lee@mediatek.com>
-To:     Lorenzo Bianconi <lorenzo.bianconi@redhat.com>
-CC:     Felix Fietkau <nbd@nbd.name>,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        Roy Luo <royluo@google.com>, YF Luo <yf.luo@mediatek.com>,
-        Lorenzo Bianconi <lorenzo@kernel.org>
-Date:   Sat, 29 Jun 2019 23:20:03 +0800
-In-Reply-To: <CAJ0CqmUqv+uWcDkPnDAmjM2j=9fUZ0F4on4SH5LoQ4zPGmPuNw@mail.gmail.com>
-References: <cover.1561804422.git.lorenzo@kernel.org>
-         <CAJ0CqmUqv+uWcDkPnDAmjM2j=9fUZ0F4on4SH5LoQ4zPGmPuNw@mail.gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Mailer: Evolution 3.2.3-0ubuntu6 
-Content-Transfer-Encoding: 7bit
+        Sat, 29 Jun 2019 18:18:46 -0400
+Received: from player157.ha.ovh.net (unknown [10.109.146.175])
+        by mo4.mail-out.ovh.net (Postfix) with ESMTP id 93D9D1F92DC
+        for <linux-wireless@vger.kernel.org>; Sat, 29 Jun 2019 21:50:38 +0200 (CEST)
+Received: from awhome.eu (p579AA414.dip0.t-ipconnect.de [87.154.164.20])
+        (Authenticated sender: postmaster@awhome.eu)
+        by player157.ha.ovh.net (Postfix) with ESMTPSA id 3D8017539FA6;
+        Sat, 29 Jun 2019 19:50:37 +0000 (UTC)
+From:   Alexander Wetzel <alexander@wetzel-home.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=wetzel-home.de;
+        s=wetzel-home; t=1561837836;
+        bh=mT0vpkafSPtm0BZNNzGt353XGzdRLYh8ynihsR4R3R4=;
+        h=From:To:Cc:Subject:Date;
+        b=E7PQj7FPygvJ6sZ62ZjjNbHnvh0O5R9julm8pQTyGvSZVBBLlZSMALQBg3s5T1CAz
+         tYim7u2YyxdZLuVSZHedRmC7gyqcZnX6dh/LvAIHaRD1Acq+v/C63Vmxm/gwQCbtds
+         NkFTlQ8+ujX2eFTNB2oolk3gY19KC4+zgP831ms8=
+To:     johannes@sipsolutions.net
+Cc:     linux-wireless@vger.kernel.org,
+        Alexander Wetzel <alexander@wetzel-home.de>
+Subject: [PATCH 1/4] mac80211_hwsim: Extended Key ID API update
+Date:   Sat, 29 Jun 2019 21:50:12 +0200
+Message-Id: <20190629195015.19680-1-alexander@wetzel-home.de>
+X-Mailer: git-send-email 2.22.0
 MIME-Version: 1.0
-X-TM-SNTS-SMTP: 7E5AA41A2FD52F434A1429F5D0062ECB28319E0CFA40222A8F6C55D77452995D2000:8
-X-MTK:  N
+Content-Transfer-Encoding: 8bit
+X-Ovh-Tracer-Id: 13911056303217056967
+X-VR-SPAMSTATE: OK
+X-VR-SPAMSCORE: 0
+X-VR-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgeduvddrvddvgddugeegucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuqfggjfdpvefjgfevmfevgfenuceurghilhhouhhtmecuhedttdenuc
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Sat, 2019-06-29 at 12:48 +0200, Lorenzo Bianconi wrote:
-> >
-> > Introduce radar pattern detection support to mt7615 driver.
-> > Add Channel Switch Announcement support updating beacon template with
-> > CSA IE received from mac80211.
-> > Please note I have tested this series just through the radar pattern test
-> > knob added to debugfs and not through I real radar signal generator.
-> >
-> 
-> Changes since RFC:
-> - added Channel Switch Announcement support
-> 
-> > Lorenzo Bianconi (6):
-> >   mt76: mt7615: introduce mt7615_regd_notifier
-> >   mt76: mt7615: add hw dfs pattern detector support
-> >   mt76: mt7615: do not perform txcalibration before cac is complited
-> >   mt76: mt7615: unlock dfs bands
-> >   mt76: mt7615: add csa support
-> >   mt76: mt7615: add radar pattern test knob to debugfs
-> >
-> >  .../wireless/mediatek/mt76/mt7615/Makefile    |   3 +-
-> >  .../wireless/mediatek/mt76/mt7615/debugfs.c   |  38 +++++
-> >  .../net/wireless/mediatek/mt76/mt7615/dma.c   |   2 +-
-> >  .../net/wireless/mediatek/mt76/mt7615/init.c  |  44 ++++--
-> >  .../net/wireless/mediatek/mt76/mt7615/mac.c   |  88 +++++++++++
-> >  .../net/wireless/mediatek/mt76/mt7615/main.c  |  19 +++
-> >  .../net/wireless/mediatek/mt76/mt7615/mcu.c   | 147 ++++++++++++++++--
-> >  .../net/wireless/mediatek/mt76/mt7615/mcu.h   |  24 +++
-> >  .../wireless/mediatek/mt76/mt7615/mt7615.h    |  55 +++++++
-> >  9 files changed, 392 insertions(+), 28 deletions(-)
-> >  create mode 100644 drivers/net/wireless/mediatek/mt76/mt7615/debugfs.c
-> >
-> > --
-> > 2.21.0
+Prepare hwsim Extended Key ID support for a mac80211 API change.
 
+The mac80211 flag IEEE80211_HW_EXT_KEY_ID_NATIVE is being replaced by
+NL80211_EXT_FEATURE_EXT_KEY_ID which only must be set by drivers when
+they support HW crypto.
 
-Acked-by: Ryder Lee <ryder.lee@mediatek.com> for the series.
-> >
+This reverts commit cfe7007a9b4cea9c4a0f7d4192c776c62f31869e.
 
+Signed-off-by: Alexander Wetzel <alexander@wetzel-home.de>
+---
+ drivers/net/wireless/mac80211_hwsim.c | 6 ------
+ 1 file changed, 6 deletions(-)
+
+diff --git a/drivers/net/wireless/mac80211_hwsim.c b/drivers/net/wireless/mac80211_hwsim.c
+index d396a33bbc9c..26cbb5b5d7cd 100644
+--- a/drivers/net/wireless/mac80211_hwsim.c
++++ b/drivers/net/wireless/mac80211_hwsim.c
+@@ -2805,12 +2805,6 @@ static int mac80211_hwsim_new_radio(struct genl_info *info,
+ 	ieee80211_hw_set(hw, SIGNAL_DBM);
+ 	ieee80211_hw_set(hw, SUPPORTS_PS);
+ 	ieee80211_hw_set(hw, TDLS_WIDER_BW);
+-
+-	/* We only have SW crypto and only implement the A-MPDU API
+-	 * (but don't really build A-MPDUs) so can have extended key
+-	 * support
+-	 */
+-	ieee80211_hw_set(hw, EXT_KEY_ID_NATIVE);
+ 	if (rctbl)
+ 		ieee80211_hw_set(hw, SUPPORTS_RC_TABLE);
+ 	ieee80211_hw_set(hw, SUPPORTS_MULTI_BSSID);
+-- 
+2.22.0
 
