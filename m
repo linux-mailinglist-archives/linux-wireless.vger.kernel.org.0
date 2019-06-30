@@ -2,129 +2,106 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id BF52E5B220
-	for <lists+linux-wireless@lfdr.de>; Sun, 30 Jun 2019 23:44:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9B6475B22C
+	for <lists+linux-wireless@lfdr.de>; Sun, 30 Jun 2019 23:56:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727084AbfF3Vom (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 30 Jun 2019 17:44:42 -0400
-Received: from ozlabs.org ([203.11.71.1]:47709 "EHLO ozlabs.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726741AbfF3Vol (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 30 Jun 2019 17:44:41 -0400
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
-        (No client certificate requested)
-        by mail.ozlabs.org (Postfix) with ESMTPSA id 45cPD55D9Yz9s4V;
-        Mon,  1 Jul 2019 07:44:37 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=canb.auug.org.au;
-        s=201702; t=1561931079;
-        bh=5Q7PsZRSQEvQQaFy/v+Dm9WDxsEWB/XXM10hRf9ZO9A=;
-        h=Date:From:To:Cc:Subject:From;
-        b=d8w8R9Le5o1hJByNNR8AzpVcNEnXHo2ApQKwPBOJQ8AGraPj5l4SkNbEMXBJB53io
-         t1W+XOMvq++Iq0lhwFWMGPfinoNWuvbTbOUNzVoTgzfpGPjlUcsXM/AiFPrTWOsxcQ
-         ThLjhuB0L9vcCqGAphxq26wP9pLVtB4Wef5VJBN/jG1Fiv1rY8PKdP7Nuqrzp/pNsZ
-         XAKm2INCKZuWUlA4m2Bt6/6V/C/c4CZTZcPASO/vBFhwBQnIkacAalOrQFlOyfVau1
-         QE/h7T76j2z2N80EIYW2j965hjH/XZcL/kzj4lLwWEK4+PtTzTImQocA04tQHdjOY/
-         17Q31spsKaldA==
-Date:   Mon, 1 Jul 2019 07:44:37 +1000
-From:   Stephen Rothwell <sfr@canb.auug.org.au>
-To:     Kalle Valo <kvalo@codeaurora.org>,
-        Wireless <linux-wireless@vger.kernel.org>
-Cc:     Linux Next Mailing List <linux-next@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Lorenzo Bianconi <lorenzo@kernel.org>,
-        Felix Fietkau <nbd@nbd.name>,
-        Ryder Lee <ryder.lee@mediatek.com>
-Subject: linux-next: Fixes tag needs some work in the wireless-drivers-next
- tree
-Message-ID: <20190701074437.6455d067@canb.auug.org.au>
+        id S1727077AbfF3V4q (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 30 Jun 2019 17:56:46 -0400
+Received: from mail-qt1-f194.google.com ([209.85.160.194]:36047 "EHLO
+        mail-qt1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726040AbfF3V4q (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Sun, 30 Jun 2019 17:56:46 -0400
+Received: by mail-qt1-f194.google.com with SMTP id p15so12652574qtl.3
+        for <linux-wireless@vger.kernel.org>; Sun, 30 Jun 2019 14:56:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=txuRTylzO9HtqJ05wnC3L8NyCMNOBefcP6c96hmVIc0=;
+        b=iYDuBFwlgSIM4o8Gs9dF5EPe3xx4UD2AEDnpMMyKHpjvhniiKH/kGgoa+dmX9wWHyT
+         k1tTYSjB+/a1bz3Ujl8RzAZUEUn7kPkC6HZrzSjvmGgnYLVc5/La12JiVUttkRiVQSLl
+         8RYahrVREc94zRvBWwKWc7DCUzNS0EjYhrHTFStLDXoIMqh7Zw7WGe7s54GvtG9QjbPw
+         vPiX5pGYjQUrLofd9FnyTGSHzoajk+SXvfpzDWt3HeMjdVNpFl+nqtpus/JSVvgumVzB
+         ARjvc+RQZyaJNZ1XU4UYmQgv/GGUSfKopZEo16QIbbrZp/OL1mP9ETpKXsYTm/QlxtBR
+         IBfA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=txuRTylzO9HtqJ05wnC3L8NyCMNOBefcP6c96hmVIc0=;
+        b=tqrydy6g5Yoqvi0TgQqIiYBkIVimPEw1vjzpyZSzILPwpeav6NyFtEMPcASAQh/g+F
+         Tj9Tbh1hMG6UdGADEVXTX3kHzklhCK8U2q817ydxDsKKVnYrj+IASYwGCR6h0ZqQZLPC
+         dAK/p1EORr1yOKv61Z+dTAXRFcBqdG37GLiqMQTcpscFSN2zxgS1AxRFXRGzIlEpDdkt
+         E8+8TLBzBcZMmkbSkfgEAlbCD61dSPExbz2fnRja2rQK3XilQjiL79cp6/mzL6DtLci3
+         NKA1ykgUFCwQvxw22vdMlxgYRivWO2wgzVFZJTD6XLjye0JUEdMbaqGgxiE8Mus2Sjn5
+         ZXLQ==
+X-Gm-Message-State: APjAAAWoBqYmmbV8ybUH5WkhLF23vzbESttqrkkoq4fky8s4oDWP7/qW
+        JCzB2mEE1zargUks7tzFIcjrF4OoSjQa/jQoTjlmZ4gt
+X-Google-Smtp-Source: APXvYqw5wJGM/H8BAlmYh96dCgrPIfku2q8wBOD+t1J39JQcB1e7ZuYKlzUxxMmdo1dQmgqvKZp5Dmn0KGZxNXpi3sw=
+X-Received: by 2002:ac8:34c6:: with SMTP id x6mr17786931qtb.353.1561931805131;
+ Sun, 30 Jun 2019 14:56:45 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
- boundary="Sig_/Zs_iQ_.WqrJ9LRAGgobfKNH"; protocol="application/pgp-signature"
+References: <CAOw_LSHsioZ2TP1FeZT3L6gHeeV72e2aKW0bGkAzcJRgVzE43Q@mail.gmail.com>
+In-Reply-To: <CAOw_LSHsioZ2TP1FeZT3L6gHeeV72e2aKW0bGkAzcJRgVzE43Q@mail.gmail.com>
+From:   Daniel Lenski <dlenski@gmail.com>
+Date:   Sun, 30 Jun 2019 14:56:09 -0700
+Message-ID: <CAOw_LSF5kBQCECi+1waXNMvuo+eT68fr9SO52JMuVrLtq8_CLg@mail.gmail.com>
+Subject: Fwd: rtl8723au: WiFi scanning stops working shortly after driver loads?
+To:     linux-wireless@vger.kernel.org
+Cc:     Jes Sorensen <Jes.Sorensen@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
---Sig_/Zs_iQ_.WqrJ9LRAGgobfKNH
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: quoted-printable
+Hi,
+I recently started to use an older laptop with RTL8723AU
+WiFi/Bluetooth again for the first time in a couple years.
 
-Hi all,
+I've noticed a strange behavior of this device/driver (rtl8xxxu with
+4.4.0 kernel): the ability to do a WiFi scan *while associated with an
+access point* somehow disappears ~30 seconds after the driver is
+loaded.
 
-In commit
+That is, right after loading the module and connecting to a WiFi
+network, I can successfully do `iwlist wlan0 scan`; but after a short
+period of time, the scan stops returning any results other than for
+the AP that I'm already connected to. Disconnecting from the AP
+"resets" this behavior, but once I reconnect to a network, my ability
+to scan disappears again shortly thereafter.
 
-  d923cf6bc38a ("mt76: mt7615: fix sparse warnings: warning: cast from rest=
-ricted __le16")
+Steps to reproduce:
 
-Fixes tag
+    # rmmod rtl8xxxu
+    # modprobe rtl8xxxu debug=99
+    # while true; do sudo iwlist wlan0 scan | grep ESSID | wc -l ; sleep 2; done
+    13
+    13
+    13
+    13
+    1     # only my current AP
+    1
+    ...
 
-  Fixes: 3ca0a6f6e9df ("mt7615: mcu: use standard signature for mt7615_mcu_=
-msg_send")
+Is this a known issue with the hardware, or with the driver? Any
+advice on how to debug it? I've looked through the debug messages, and
+found nothing that seems to indicate a state change around the time
+that the scan stops working.
 
-has these problem(s):
+Thanks,
+Dan
 
-  - Target SHA1 does not exist
+ps: I'm using the "standard" rtl8723aufw_B_NoBT.bin firmware
+(https://git.kernel.org/pub/scm/linux/kernel/git/firmware/linux-firmware.git/tree/rtlwifi/rtl8723aufw_B_NoBT.bin)
+and have loaded *only* the WiFi driver, *not* the Bluetooth driver.
 
-Did you mean
-
-Fixes: 516c3e380533 ("mt7615: mcu: use standard signature for mt7615_mcu_ms=
-g_send")
-
-In commit
-
-  eda96044de27 ("mt76: mt7615: fix sparse warnings: incorrect type in assig=
-nment (different base types)")
-
-Fixes tag
-
-  Fixes: 7339fbc0caa5 ("mt7615: mcu: do not use function pointers whenever =
-possible")
-
-has these problem(s):
-
-  - Target SHA1 does not exist
-
-Did you mean
-
-Fixes: 1ca8089a55ee ("mt7615: mcu: do not use function pointers whenever po=
-ssible")
-
-In commit
-
-  1a09d9e0e5f0 ("mt76: mt7615: fix incorrect settings in mesh mode")
-
-Fixes tag
-
-  Fixes: f072c7ba2150 ("mt76: mt7615: enable support for mesh")
-
-has these problem(s):
-
-  - Target SHA1 does not exist
-
-Did you mean
-
-Fixes: f4ec7fdf7f83 ("mt76: mt7615: enable support for mesh")
-
---=20
-Cheers,
-Stephen Rothwell
-
---Sig_/Zs_iQ_.WqrJ9LRAGgobfKNH
-Content-Type: application/pgp-signature
-Content-Description: OpenPGP digital signature
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAEBCAAdFiEENIC96giZ81tWdLgKAVBC80lX0GwFAl0ZLUUACgkQAVBC80lX
-0GwvtAgAlAobMtWuJTwN5NzDbTTbGYPoAzk1MQiiBtHZZQxCHvuN0NLZP66EKzfB
-HI6WW/5ePlYtivml4L4XU8hO+j5q5VAFhwP+SFYetu2IF5zByAjDb4j3Xhbq40Ua
-6cAtiae3j1L6deVUgzQzc4+YLhTOhX4U38kKKkVr04BYth7oJvsCEHLuT4psHraR
-WfkhxH6BsydaPzow4i62cekeCj7I62wmlMdbA3IvyWmE30KfhqOucVvixUTaQTzn
-WqPrq4qw9isrHqHsnCTuBYxIx5O/OXaFNYhi6FdMZmZ7FT6uBaVH+RTTbWy58D2x
-HPRZ/fHF+ugY8WFDjVXZWRKLc7sNXw==
-=PpeC
------END PGP SIGNATURE-----
-
---Sig_/Zs_iQ_.WqrJ9LRAGgobfKNH--
+[ 3110.201258] usb 1-1.4: Vendor: Realtek
+[ 3110.201267] usb 1-1.4: Product: 802.11n WLAN Adapter
+[ 3110.201274] usb 1-1.4: RTL8723AU rev B (TSMC) 1T1R, TX queues 2,
+WiFi=1, BT=1, GPS=0, HI PA=0
+[ 3110.201279] usb 1-1.4: RTL8723AU MAC: 20:16:d8:ce:5e:29
+[ 3110.201284] usb 1-1.4: rtl8xxxu: Loading firmware
+rtlwifi/rtl8723aufw_B_NoBT.bin
+[ 3110.201355] usb 1-1.4: Firmware revision 31.0 (signature 0x2302)
