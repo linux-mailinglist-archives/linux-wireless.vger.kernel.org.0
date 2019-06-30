@@ -2,97 +2,94 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 99BAF5AD53
-	for <lists+linux-wireless@lfdr.de>; Sat, 29 Jun 2019 22:09:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 80C225AF90
+	for <lists+linux-wireless@lfdr.de>; Sun, 30 Jun 2019 11:28:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726963AbfF2UJr (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 29 Jun 2019 16:09:47 -0400
-Received: from 2.mo69.mail-out.ovh.net ([178.33.251.80]:48009 "EHLO
-        2.mo69.mail-out.ovh.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726906AbfF2UJr (ORCPT
+        id S1726519AbfF3J2O (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 30 Jun 2019 05:28:14 -0400
+Received: from smtp.codeaurora.org ([198.145.29.96]:60374 "EHLO
+        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726482AbfF3J2O (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 29 Jun 2019 16:09:47 -0400
-X-Greylist: delayed 1142 seconds by postgrey-1.27 at vger.kernel.org; Sat, 29 Jun 2019 16:09:46 EDT
-Received: from player755.ha.ovh.net (unknown [10.109.146.132])
-        by mo69.mail-out.ovh.net (Postfix) with ESMTP id 0B1125EA56
-        for <linux-wireless@vger.kernel.org>; Sat, 29 Jun 2019 21:50:50 +0200 (CEST)
-Received: from awhome.eu (p579AA414.dip0.t-ipconnect.de [87.154.164.20])
-        (Authenticated sender: postmaster@awhome.eu)
-        by player755.ha.ovh.net (Postfix) with ESMTPSA id B104B77B80A1;
-        Sat, 29 Jun 2019 19:50:48 +0000 (UTC)
-From:   Alexander Wetzel <alexander@wetzel-home.de>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=wetzel-home.de;
-        s=wetzel-home; t=1561837847;
-        bh=6jjhbtpztc+bLEnBQyExs4hD1cne98KDodnayP8hfSo=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References;
-        b=Zf5JlY3fTpFrQ52DcDstNNeluWLyl3cYW7rWZphV13cruPlPKZndrmumaVgz/smPC
-         uoZK25M4q6NMkU/GS1nAZ+traX9zmjLHCRCcooo17uiy2SFQQeRELw7Wg+T54wHsal
-         4TSPrkZnF/1OYMIvNVRzJmHcHzN4NRd3IWGSVKy8=
-To:     johannes@sipsolutions.net
-Cc:     linux-wireless@vger.kernel.org,
-        Alexander Wetzel <alexander@wetzel-home.de>,
-        Luca Coelho <luca@coelho.fi>
-Subject: [PATCH 4/4] iwlwifi: Enable Extended Key ID for mvm and dvm
-Date:   Sat, 29 Jun 2019 21:50:15 +0200
-Message-Id: <20190629195015.19680-4-alexander@wetzel-home.de>
-X-Mailer: git-send-email 2.22.0
-In-Reply-To: <20190629195015.19680-1-alexander@wetzel-home.de>
-References: <20190629195015.19680-1-alexander@wetzel-home.de>
+        Sun, 30 Jun 2019 05:28:14 -0400
+Received: by smtp.codeaurora.org (Postfix, from userid 1000)
+        id 4648460909; Sun, 30 Jun 2019 09:28:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
+        s=default; t=1561886893;
+        bh=i83WbKPbI6fYDCv6HOMDpfnHCHhTrF+4+58GEz9LnHM=;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+        b=ATpsHOEJiVJhuoYx77A5qFSSj61aJfhnnaM1gwZhU0JKjm1XZUgy8LIFKwUM9zCFp
+         sNFjCw6Gn33NcePi++PuYoKkdYjnwxAHbtP4D2DjENR8n5m7ROve49zx0xk2DsGnpL
+         2uwtdwQdnmjoy8VAkbN8Xlewav6ie0SB/B3nCGwA=
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        pdx-caf-mail.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.7 required=2.0 tests=ALL_TRUSTED,BAYES_00,
+        DKIM_INVALID,DKIM_SIGNED,SPF_NONE autolearn=no autolearn_force=no
+        version=3.4.0
+Received: from purkki.adurom.net (purkki.adurom.net [80.68.90.206])
+        (using TLSv1.2 with cipher DHE-RSA-AES128-SHA (128/128 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo@smtp.codeaurora.org)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 8032860300;
+        Sun, 30 Jun 2019 09:28:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
+        s=default; t=1561886892;
+        bh=i83WbKPbI6fYDCv6HOMDpfnHCHhTrF+4+58GEz9LnHM=;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+        b=loTRneZMuWXstGqSJrZCq+1JQA1igd0vUzqKbeCSuXNm8jLm82B/g/DrDfhcqXcYQ
+         VwJul4pqJ+d6G332Wbq4rUiG1ErBHaKTyfE0mRbtRgpgnby5YPo0CT3iZtWIbR5hqu
+         vunsmqgcTSD1sfYceXKjpfNsf843jPA5OoOdAQ4Y=
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 8032860300
+Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
+From:   Kalle Valo <kvalo@codeaurora.org>
+To:     Lorenzo Bianconi <lorenzo@kernel.org>
+Cc:     nbd@nbd.name, lorenzo.bianconi@redhat.com,
+        linux-wireless@vger.kernel.org, ryder.lee@mediatek.com,
+        royluo@google.com, yf.luo@mediatek.com
+Subject: Re: [PATCH 4/6] mt76: mt7615: unlock dfs bands
+References: <cover.1561804422.git.lorenzo@kernel.org>
+        <33184e0b78983fe7c79fa70c5fbb21042aafa4f5.1561804422.git.lorenzo@kernel.org>
+Date:   Sun, 30 Jun 2019 12:28:08 +0300
+In-Reply-To: <33184e0b78983fe7c79fa70c5fbb21042aafa4f5.1561804422.git.lorenzo@kernel.org>
+        (Lorenzo Bianconi's message of "Sat, 29 Jun 2019 12:36:09 +0200")
+Message-ID: <87muhzs9qv.fsf@purkki.adurom.net>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/23.4 (gnu/linux)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Ovh-Tracer-Id: 13914433999912901884
-X-VR-SPAMSTATE: OK
-X-VR-SPAMSCORE: -100
-X-VR-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgeduvddrvddvgddugeegucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuqfggjfdpvefjgfevmfevgfenuceurghilhhouhhtmecuhedttdenucesvcftvggtihhpihgvnhhtshculddquddttddm
+Content-Type: text/plain; charset=us-ascii
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-All iwlwifi cards are able to handle multiple keyids per STA and are
-therefore fully compatible with the Extended Key ID implementation
-provided by mac80211.
+Lorenzo Bianconi <lorenzo@kernel.org> writes:
 
-Allow Extended Key ID to be used for all mvm and dvm cards.
+> Unlock dfs channels since now mt7615 driver supports radar detection
+>
+> Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+> ---
+>  drivers/net/wireless/mediatek/mt76/mt7615/init.c | 6 ++++++
+>  1 file changed, 6 insertions(+)
+>
+> diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/init.c b/drivers/net/wireless/mediatek/mt76/mt7615/init.c
+> index 5dc4cced5789..6d336d82cafe 100644
+> --- a/drivers/net/wireless/mediatek/mt76/mt7615/init.c
+> +++ b/drivers/net/wireless/mediatek/mt76/mt7615/init.c
+> @@ -152,6 +152,12 @@ static const struct ieee80211_iface_combination if_comb[] = {
+>  		.max_interfaces = 4,
+>  		.num_different_channels = 1,
+>  		.beacon_int_infra_match = true,
+> +		.radar_detect_widths = BIT(NL80211_CHAN_WIDTH_20_NOHT) |
+> +				       BIT(NL80211_CHAN_WIDTH_20) |
+> +				       BIT(NL80211_CHAN_WIDTH_40) |
+> +				       BIT(NL80211_CHAN_WIDTH_80) |
+> +				       BIT(NL80211_CHAN_WIDTH_160) |
+> +				       BIT(NL80211_CHAN_WIDTH_80P80),
 
-Signed-off-by: Alexander Wetzel <alexander@wetzel-home.de>
----
+Isn't it questionable to enable these without any testing on real
+hardware? Getting DFS to work correctly is hard so I'm very suspicious
+about this.
 
-This is basically the v2 patch of https://patchwork.kernel.org/patch/10931879/
-which Luca still has in his review queue. It just uses the new proposed
-simplified Extended Key ID API from this patch series instead.
-
-Merging (parts) of this series will of course break the older patch
-still queued to Luca, so this may need some coordination.
-
- drivers/net/wireless/intel/iwlwifi/dvm/mac80211.c | 1 +
- drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c | 1 +
- 2 files changed, 2 insertions(+)
-
-diff --git a/drivers/net/wireless/intel/iwlwifi/dvm/mac80211.c b/drivers/net/wireless/intel/iwlwifi/dvm/mac80211.c
-index 6c170636110a..ac88c19f4f18 100644
---- a/drivers/net/wireless/intel/iwlwifi/dvm/mac80211.c
-+++ b/drivers/net/wireless/intel/iwlwifi/dvm/mac80211.c
-@@ -200,6 +200,7 @@ int iwlagn_mac_setup_register(struct iwl_priv *priv,
- 	iwl_leds_init(priv);
- 
- 	wiphy_ext_feature_set(hw->wiphy, NL80211_EXT_FEATURE_CQM_RSSI_LIST);
-+	wiphy_ext_feature_set(hw->wiphy, NL80211_EXT_FEATURE_EXT_KEY_ID);
- 
- 	ret = ieee80211_register_hw(priv->hw);
- 	if (ret) {
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c b/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
-index fdbabca0280e..c752fe6970e3 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
-@@ -599,6 +599,7 @@ int iwl_mvm_mac_setup_register(struct iwl_mvm *mvm)
- 
- 	hw->wiphy->flags |= WIPHY_FLAG_IBSS_RSN;
- 	wiphy_ext_feature_set(hw->wiphy, NL80211_EXT_FEATURE_VHT_IBSS);
-+	wiphy_ext_feature_set(hw->wiphy, NL80211_EXT_FEATURE_EXT_KEY_ID);
- 	hw->wiphy->features |= NL80211_FEATURE_HT_IBSS;
- 
- 	hw->wiphy->regulatory_flags |= REGULATORY_ENABLE_RELAX_NO_IR;
 -- 
-2.22.0
-
+Kalle Valo
