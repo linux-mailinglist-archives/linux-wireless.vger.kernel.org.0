@@ -2,121 +2,138 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id AADCB5B873
-	for <lists+linux-wireless@lfdr.de>; Mon,  1 Jul 2019 11:57:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 578355B91E
+	for <lists+linux-wireless@lfdr.de>; Mon,  1 Jul 2019 12:35:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727840AbfGAJ5F (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 1 Jul 2019 05:57:05 -0400
-Received: from mailgw01.mediatek.com ([210.61.82.183]:41127 "EHLO
-        mailgw01.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1727477AbfGAJ5F (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 1 Jul 2019 05:57:05 -0400
-X-UUID: f9cce9ae1a2e45219bad5b6a03308529-20190701
-X-UUID: f9cce9ae1a2e45219bad5b6a03308529-20190701
-Received: from mtkcas06.mediatek.inc [(172.21.101.30)] by mailgw01.mediatek.com
-        (envelope-from <ryder.lee@mediatek.com>)
-        (mhqrelay.mediatek.com ESMTP with TLS)
-        with ESMTP id 1222009649; Mon, 01 Jul 2019 17:57:03 +0800
-Received: from mtkcas09.mediatek.inc (172.21.101.178) by
- mtkmbs08n2.mediatek.inc (172.21.101.56) with Microsoft SMTP Server (TLS) id
- 15.0.1395.4; Mon, 1 Jul 2019 17:57:01 +0800
-Received: from [172.21.77.33] (172.21.77.33) by mtkcas09.mediatek.inc
- (172.21.101.73) with Microsoft SMTP Server id 15.0.1395.4 via Frontend
- Transport; Mon, 1 Jul 2019 17:57:01 +0800
-Message-ID: <1561975021.3950.9.camel@mtkswgap22>
-Subject: Re: [PATCH 4/6] mt76: mt7615: unlock dfs bands
-From:   Ryder Lee <ryder.lee@mediatek.com>
-To:     Kalle Valo <kvalo@codeaurora.org>
-CC:     Lorenzo Bianconi <lorenzo.bianconi@redhat.com>,
-        Lorenzo Bianconi <lorenzo@kernel.org>,
+        id S1728972AbfGAKf1 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 1 Jul 2019 06:35:27 -0400
+Received: from mail.kernel.org ([198.145.29.99]:37428 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726076AbfGAKf0 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 1 Jul 2019 06:35:26 -0400
+Received: from localhost.localdomain (nat-pool-mxp-t.redhat.com [149.6.153.186])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id E10802133D;
+        Mon,  1 Jul 2019 10:35:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1561977325;
+        bh=V0LT2bsF6NCPapQiJPdfvX5x9+VQzHzTina2qNBBtvk=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=kd6kxeWbo7bWTGtE/KWVuLHMHhSlUX1ZoID+s7xevGIGmTLGmpPh1y3CL4y5e1CIK
+         uTvttF4xQC6on2EaLsB+1l3nGY94aNUzGaduQo03BvcpvNShOojN4hne7g3FObr/+4
+         eM8y/Mfq+J3amwB4bKm/Lks09jwKmtOhShxICxEY=
+Date:   Mon, 1 Jul 2019 12:35:20 +0200
+From:   Lorenzo Bianconi <lorenzo@kernel.org>
+To:     Stephen Rothwell <sfr@canb.auug.org.au>
+Cc:     Kalle Valo <kvalo@codeaurora.org>,
+        Wireless <linux-wireless@vger.kernel.org>,
+        Linux Next Mailing List <linux-next@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
         Felix Fietkau <nbd@nbd.name>,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        Roy Luo <royluo@google.com>, YF Luo <yf.luo@mediatek.com>,
-        <linux-mediatek@lists.infradead.org>
-Date:   Mon, 1 Jul 2019 17:57:01 +0800
-In-Reply-To: <87tvc69odh.fsf@kamboji.qca.qualcomm.com>
-References: <cover.1561804422.git.lorenzo@kernel.org>
-         <33184e0b78983fe7c79fa70c5fbb21042aafa4f5.1561804422.git.lorenzo@kernel.org>
-         <87muhzs9qv.fsf@purkki.adurom.net>
-         <CAJ0CqmU6TLhFa4ZJxWHBzvpx+5g5E4-WkSPECx47F9d3T=5YjQ@mail.gmail.com>
-         <87tvc69odh.fsf@kamboji.qca.qualcomm.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Mailer: Evolution 3.2.3-0ubuntu6 
-Content-Transfer-Encoding: 7bit
+        Ryder Lee <ryder.lee@mediatek.com>
+Subject: Re: linux-next: Fixes tag needs some work in the
+ wireless-drivers-next tree
+Message-ID: <20190701103520.GB5110@localhost.localdomain>
+References: <20190701074437.6455d067@canb.auug.org.au>
 MIME-Version: 1.0
-X-TM-SNTS-SMTP: B8E13F6ECB07971D9ECC9794EB8A4BCC29604420E225EDAC327276D592B976E52000:8
-X-MTK:  N
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="H1spWtNR+x+ondvy"
+Content-Disposition: inline
+In-Reply-To: <20190701074437.6455d067@canb.auug.org.au>
+User-Agent: Mutt/1.12.0 (2019-05-25)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Mon, 2019-07-01 at 10:59 +0300, Kalle Valo wrote:
-> Lorenzo Bianconi <lorenzo.bianconi@redhat.com> writes:
-> 
-> >>
-> >> Lorenzo Bianconi <lorenzo@kernel.org> writes:
-> >>
-> >> > Unlock dfs channels since now mt7615 driver supports radar detection
-> >> >
-> >> > Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
-> >> > ---
-> >> >  drivers/net/wireless/mediatek/mt76/mt7615/init.c | 6 ++++++
-> >> >  1 file changed, 6 insertions(+)
-> >> >
-> >> > diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/init.c b/drivers/net/wireless/mediatek/mt76/mt7615/init.c
-> >> > index 5dc4cced5789..6d336d82cafe 100644
-> >> > --- a/drivers/net/wireless/mediatek/mt76/mt7615/init.c
-> >> > +++ b/drivers/net/wireless/mediatek/mt76/mt7615/init.c
-> >> > @@ -152,6 +152,12 @@ static const struct ieee80211_iface_combination if_comb[] = {
-> >> >               .max_interfaces = 4,
-> >> >               .num_different_channels = 1,
-> >> >               .beacon_int_infra_match = true,
-> >> > +             .radar_detect_widths = BIT(NL80211_CHAN_WIDTH_20_NOHT) |
-> >> > +                                    BIT(NL80211_CHAN_WIDTH_20) |
-> >> > +                                    BIT(NL80211_CHAN_WIDTH_40) |
-> >> > +                                    BIT(NL80211_CHAN_WIDTH_80) |
-> >> > +                                    BIT(NL80211_CHAN_WIDTH_160) |
-> >> > +                                    BIT(NL80211_CHAN_WIDTH_80P80),
-> >>
-> >> Isn't it questionable to enable these without any testing on real
-> >> hardware? Getting DFS to work correctly is hard so I'm very suspicious
-> >> about this.
-> >>
-> >> --
-> >> Kalle Valo
-> >
-> > Hi Kalle,
-> >
-> > unfortunately at the moment I am not able to run any tests with a real
-> > signal generator so I just ported the code from vendor sdk.
-> > I am pretty confident it works since the radar pattern detection is
-> > done in fw/hw so I guess it has been already tested in the vendor sdk
-> 
-> DFS is really tricky to get it working right, so I'm not easily
-> convinced :)
-> 
-> > but we can postpone this patch and apply just the rest of the series
-> > until we have some test results.
-> 
-> Yeah, I think it would be best to drop this patch so that DFS is not
-> enabled by default and apply this patch only after positive test
-> results.
-> 
 
-That's why I suggested Lorenzo to add this one - "[6/6] mt76: mt7615:
-add radar pattern test knob to debugfs"
+--H1spWtNR+x+ondvy
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-We can feed radar pattern through debugfs to test if a pattern is
-detected as radar pattern or not and verify the fw radar detection
-algorithm.
+> Hi all,
+>=20
+> In commit
+>=20
+>   d923cf6bc38a ("mt76: mt7615: fix sparse warnings: warning: cast from re=
+stricted __le16")
+>=20
+> Fixes tag
+>=20
+>   Fixes: 3ca0a6f6e9df ("mt7615: mcu: use standard signature for mt7615_mc=
+u_msg_send")
+>=20
+> has these problem(s):
+>=20
+>   - Target SHA1 does not exist
+>=20
+> Did you mean
+>=20
+> Fixes: 516c3e380533 ("mt7615: mcu: use standard signature for mt7615_mcu_=
+msg_send")
+>=20
+> In commit
+>=20
+>   eda96044de27 ("mt76: mt7615: fix sparse warnings: incorrect type in ass=
+ignment (different base types)")
+>=20
+> Fixes tag
+>=20
+>   Fixes: 7339fbc0caa5 ("mt7615: mcu: do not use function pointers wheneve=
+r possible")
+>=20
+> has these problem(s):
+>=20
+>   - Target SHA1 does not exist
+>=20
+> Did you mean
+>=20
+> Fixes: 1ca8089a55ee ("mt7615: mcu: do not use function pointers whenever =
+possible")
+>=20
+> In commit
+>=20
+>   1a09d9e0e5f0 ("mt76: mt7615: fix incorrect settings in mesh mode")
+>=20
+> Fixes tag
+>=20
+>   Fixes: f072c7ba2150 ("mt76: mt7615: enable support for mesh")
+>=20
+> has these problem(s):
+>=20
+>   - Target SHA1 does not exist
+>=20
+> Did you mean
+>=20
+> Fixes: f4ec7fdf7f83 ("mt76: mt7615: enable support for mesh")
 
-In this format:
-RadarPulsePattern="3680128-2-245;3683878-2-245;3687628-2-245;3691378-2-245;3695128-2-245;3698878-2-245;3702628-2-245;3706378-2-245;3710128-2-245;3713878-2-245"
+Hi Stephen,
 
-As for testing it on 'real hardware' I need to take some other time to
-borrow equipment.
+I used the hashes from my local git tree that are different from upstream o=
+nes,
+sorry for the inconvenience. I will pay more attention next time.
 
-Ryder
+Regards,
+Lorenzo
 
+>=20
+> --=20
+> Cheers,
+> Stephen Rothwell
+
+
+
+--H1spWtNR+x+ondvy
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYIAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCXRnh5QAKCRA6cBh0uS2t
+rITmAQD9Ee/x3lqKcg1MbMdEffphH2TFisORObcLKQITWW451wD/VvouzaOGhBOW
+8LsBL+OGGVwXQIinFxx0xNIA4LQVvwM=
+=H4R7
+-----END PGP SIGNATURE-----
+
+--H1spWtNR+x+ondvy--
