@@ -2,50 +2,48 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D74A35BE4C
-	for <lists+linux-wireless@lfdr.de>; Mon,  1 Jul 2019 16:29:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E718A5BE4F
+	for <lists+linux-wireless@lfdr.de>; Mon,  1 Jul 2019 16:31:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728457AbfGAO3o (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 1 Jul 2019 10:29:44 -0400
-Received: from forward102p.mail.yandex.net ([77.88.28.102]:57072 "EHLO
-        forward102p.mail.yandex.net" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1728336AbfGAO3o (ORCPT
+        id S1728456AbfGAOb3 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 1 Jul 2019 10:31:29 -0400
+Received: from forward103p.mail.yandex.net ([77.88.28.106]:51355 "EHLO
+        forward103p.mail.yandex.net" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1728145AbfGAOb3 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 1 Jul 2019 10:29:44 -0400
-X-Greylist: delayed 372 seconds by postgrey-1.27 at vger.kernel.org; Mon, 01 Jul 2019 10:29:11 EDT
-Received: from mxback8g.mail.yandex.net (mxback8g.mail.yandex.net [IPv6:2a02:6b8:0:1472:2741:0:8b7:169])
-        by forward102p.mail.yandex.net (Yandex) with ESMTP id D80871D402F5;
-        Mon,  1 Jul 2019 17:22:57 +0300 (MSK)
+        Mon, 1 Jul 2019 10:31:29 -0400
+Received: from mxback15j.mail.yandex.net (mxback15j.mail.yandex.net [IPv6:2a02:6b8:0:1619::91])
+        by forward103p.mail.yandex.net (Yandex) with ESMTP id E6BD918C1A88
+        for <linux-wireless@vger.kernel.org>; Mon,  1 Jul 2019 17:25:16 +0300 (MSK)
 Received: from localhost (localhost [::1])
-        by mxback8g.mail.yandex.net (nwsmtp/Yandex) with ESMTP id N9VUIdhVKF-MvMaalLD;
-        Mon, 01 Jul 2019 17:22:57 +0300
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex.ru; s=mail; t=1561990977;
-        bh=IdR/UYgyb1mWU4IuM5oofwd4Z33kOTtmw2pDxYmtdfU=;
-        h=Date:Message-Id:Cc:Subject:In-Reply-To:To:From;
-        b=daYGiJ+aoywZlfzNVCGE1+AjnktNT/2mCycPJP8Iurl71G8stvISUvleDj8NE8xuK
-         M/pVgKRs1Q72s1KdWQr3Xt2K4/P/N+rIGpHP6Vg951b/3KH1/kwvdG5Jh2Q7sI6sry
-         mjj3TOdeKhtCjavGPL26ho9E8hhergAKkviC6MF0=
-Authentication-Results: mxback8g.mail.yandex.net; dkim=pass header.i=@yandex.ru
-Received: by myt3-2475c4d2af83.qloud-c.yandex.net with HTTP;
-        Mon, 01 Jul 2019 17:22:57 +0300
+        by mxback15j.mail.yandex.net (nwsmtp/Yandex) with ESMTP id 9iZcZRwsZY-PGXeTCQM;
+        Mon, 01 Jul 2019 17:25:16 +0300
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex.ru; s=mail; t=1561991116;
+        bh=NB/BOguvNX7ooNndfK6KzBaaTQsKk52GNVxwYlxXcvk=;
+        h=Message-Id:Date:Subject:In-Reply-To:To:From;
+        b=w51ay5aiiD+xhxiz9Lkq12tWAeELU6e9QMFzQ0oOlB3DgISn/e36jd3xwhTkW3lu4
+         LFaQ05tHm5LrctnA3v9LKcABXswuVYi+gOaiJFFPxS3p/BRwhwIVHPM0oHkenSmGhm
+         4fVRSW9RBQPy2P8IuUP/sBke/YNn3vwZTF4HPoww=
+Authentication-Results: mxback15j.mail.yandex.net; dkim=pass header.i=@yandex.ru
+Received: by myt2-dc4bba9bb23c.qloud-c.yandex.net with HTTP;
+        Mon, 01 Jul 2019 17:25:16 +0300
 From:   Andrej Surkov <surae@yandex.ru>
-To:     jes.sorensen@gmail.com
-Cc:     linux-wireless@vger.kernel.org
-In-Reply-To: <25968941561990324@myt3-2475c4d2af83.qloud-c.yandex.net>
-Subject: Fwd: rtl8xxxu do not see/connect any wifi network until suspend/resume
+To:     linux-wireless@vger.kernel.org
+In-Reply-To: <26092471561990977@myt3-2475c4d2af83.qloud-c.yandex.net>
+Subject: rtl8xxxu do not see/connect any wifi network until suspend/resume
 MIME-Version: 1.0
 X-Mailer: Yamail [ http://yandex.ru ] 5.0
-Date:   Mon, 01 Jul 2019 19:22:57 +0500
-Message-Id: <26092471561990977@myt3-2475c4d2af83.qloud-c.yandex.net>
+Date:   Mon, 01 Jul 2019 19:25:16 +0500
+Message-Id: <42140711561991116@myt2-dc4bba9bb23c.qloud-c.yandex.net>
 Content-Type: multipart/mixed;
-        boundary="----==--bound.2609248.myt3-2475c4d2af83.qloud-c.yandex.net"
+        boundary="----==--bound.4214072.myt2-dc4bba9bb23c.qloud-c.yandex.net"
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
 
-------==--bound.2609248.myt3-2475c4d2af83.qloud-c.yandex.net
+------==--bound.4214072.myt2-dc4bba9bb23c.qloud-c.yandex.net
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain; charset=utf-8
 
@@ -55,9 +53,9 @@ Do you aware of rtl8xxxu do not work until suspend/resume issue?
 
 On my laptop, see below for details, after reboot wifi-menu tool shows one single wifi network found and can't connect to it, but after 'sudo systemctl suspend' and resume by keystroke wifi-menu and connections work well.
 
-Here is more details https://github.com/lwfinger/rtl8723bu/issues/114 from another user.
-Another user (in russian) 
-https://4pda.ru/forum/index.php?showtopic=845227&view=findpost&p=79037760.
+Here is more details https : //github.com/lwfinger/rtl8723bu/issues/114 from another user.
+Another user (in russian)
+https : //4pda.ru/forum/index.php?showtopic=845227&view=findpost&p=79037760.
 
 I'll provide remote access to this laptop if you need.
 
@@ -66,15 +64,15 @@ Andrej Surkov
 
 laptop Prestigio Smartbook 133s
 
-Archlinux with latest updates: 
+Archlinux with latest updates:
 $ uname -a
 Linux smart 5.1.14-arch1-1-ARCH #1 SMP PREEMPT Sat Jun 22 16:28:48 UTC 2019 x86_64 GNU/Linux
 
 $ lsusb
 Bus 002 Device 001: ID 1d6b:0003 Linux Foundation 3.0 root hub
-Bus 001 Device 005: ID 058f:5608 Alcor Micro Corp. 
-Bus 001 Device 004: ID 0bda:b720 Realtek Semiconductor Corp. 
-Bus 001 Device 003: ID 0bda:0129 Realtek Semiconductor Corp. RTS5129 Card Reader Controller 
+Bus 001 Device 005: ID 058f:5608 Alcor Micro Corp.
+Bus 001 Device 004: ID 0bda:b720 Realtek Semiconductor Corp.
+Bus 001 Device 003: ID 0bda:0129 Realtek Semiconductor Corp. RTS5129 Card Reader Controller
 Bus 001 Device 001: ID 1d6b:0002 Linux Foundation 2.0 root hub
 
 $ lsmod | grep rtl
@@ -183,7 +181,7 @@ depends:        mac80211
 retpoline:      Y
 intree:         Y
 name:           rtl8xxxu
-vermagic:       5.1.14-arch1-1-ARCH SMP preempt mod_unload 
+vermagic:       5.1.14-arch1-1-ARCH SMP preempt mod_unload
 sig_id:         PKCS#7
 signer:         Build time autogenerated kernel key
 sig_key:        53:41:AE:BE:0F:B9:C1:34:B0:5A:DB:2C:E6:59:43:D2:37:96:40:D0
@@ -221,7 +219,7 @@ parm:           dma_agg_timeout:Set DMA aggregation timeout (range 1-127) 
 parm:           dma_agg_pages:Set DMA aggregation pages (range 1-127, 0 to disable) (int)
 
 dmesg attached
-------==--bound.2609248.myt3-2475c4d2af83.qloud-c.yandex.net
+------==--bound.4214072.myt2-dc4bba9bb23c.qloud-c.yandex.net
 Content-Disposition: attachment;
 	filename="presigio133s.dmesg"
 Content-Transfer-Encoding: base64
@@ -1731,4 +1729,4 @@ KDMxNjggPiAzMTMxKSwgbG93ZXJpbmcga2VybmVsLnBlcmZfZXZlbnRfbWF4X3NhbXBsZV9yYXRl
 IHRvIDYzMDAwClsyMTM2NC45OTIzNzhdIGF1ZGl0OiB0eXBlPTEwMDYgYXVkaXQoMTU2MTk4OTc0
 Mi4wNDk6NTUpOiBwaWQ9MTI5OCB1aWQ9MCBvbGQtYXVpZD00Mjk0OTY3Mjk1IGF1aWQ9MTAwMCB0
 dHk9KG5vbmUpIG9sZC1zZXM9NDI5NDk2NzI5NSBzZXM9NCByZXM9MQo=
-------==--bound.2609248.myt3-2475c4d2af83.qloud-c.yandex.net--
+------==--bound.4214072.myt2-dc4bba9bb23c.qloud-c.yandex.net--
