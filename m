@@ -2,77 +2,136 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 4DFE55B3E6
-	for <lists+linux-wireless@lfdr.de>; Mon,  1 Jul 2019 07:25:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BDB1F5B3CC
+	for <lists+linux-wireless@lfdr.de>; Mon,  1 Jul 2019 07:09:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727242AbfGAFZt convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 1 Jul 2019 01:25:49 -0400
-Received: from smtp1.qwestoffice.com ([64.26.60.190]:58524 "EHLO
-        smtp1.qwestoffice.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725747AbfGAFZt (ORCPT
+        id S1726920AbfGAFJV (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 1 Jul 2019 01:09:21 -0400
+Received: from mail-qk1-f194.google.com ([209.85.222.194]:40615 "EHLO
+        mail-qk1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726600AbfGAFJV (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 1 Jul 2019 01:25:49 -0400
-X-Greylist: delayed 15662 seconds by postgrey-1.27 at vger.kernel.org; Mon, 01 Jul 2019 01:25:48 EDT
-Received: from smtpauth04a.mfg.siteprotect.com ([64.26.60.160] helo=smtpauth01.mfg.siteprotect.com)
-        by semfq02.mfg.siteprotect.com with esmtps (TLSv1.2:ECDHE-RSA-AES256-GCM-SHA384:256)
-        (Exim 4.89)
-        (envelope-from <pastoraltland@qwestoffice.net>)
-        id 1hhkkB-0005JH-N0; Sun, 30 Jun 2019 21:04:33 -0400
-Received: from favour.homerouter.cpe (unknown [169.159.88.122])
-        (Authenticated sender: eagle147@qwestoffice.net)
-        by smtpauth01.mfg.siteprotect.com (Postfix) with ESMTPSA id 45cTfF6mX5z8XlRWh;
-        Sun, 30 Jun 2019 21:04:04 -0400 (EDT)
-Content-Type: text/plain; charset="utf-8"
+        Mon, 1 Jul 2019 01:09:21 -0400
+Received: by mail-qk1-f194.google.com with SMTP id c70so10013752qkg.7
+        for <linux-wireless@vger.kernel.org>; Sun, 30 Jun 2019 22:09:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=endlessm-com.20150623.gappssmtp.com; s=20150623;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=M0+3rkTOxrBQnGgZwbRK/n9QcJ7Vj4bYLlp4CkN2fVs=;
+        b=TVF/0x0ySR+gK3cDJBD7zack+c+4yrlXDC6HXULmlnKE0AUu9lB5G/+Zm48nzlSf9f
+         SO/QedbVeeX4tDOiuPuO8Pcnjk5f3ne8M27we0Q9YpcHhzO9xJqQfR+RxLkTSxQtrkGc
+         GO3hV64lu8bv1jWmbpGrMJeUjiOJbcqbm5ymh5lAR2zDYQ6oT29V9xhCrFyLmAaWQNUy
+         VzmmgkRrgTMTlIS1ENbH/rSTU5Tww/nI5QxACSrMnYCPuAgAkDnCsnmgVlF+hljggEcy
+         qzS6ycwoCaVLdU2kCz5krIaIyB/L1VfpvXEboUANpye+MJD40uzzB5ta6F/A40ZrFrkq
+         kKdA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=M0+3rkTOxrBQnGgZwbRK/n9QcJ7Vj4bYLlp4CkN2fVs=;
+        b=DsUNbs6TJSQCdkE1eIOMCKDHy43QM0xC9QWPhx2xZcjy1kipHutiopLgjLvLlirKe6
+         k8ni8AYwDTOvH1waEYe9WzpLCcF05PnyDeRwOMv4z9gO83r9qh8SLwP+E0gVTAqrRBji
+         81yA88XY4n8tyEMpTUpyUpNhmwtbonc/k6oYVDdu984J4Cvx3NJZtejE1gBhQDrsOouw
+         bX2aktLChP7dOfPZqU+P7avWdIjqEHHA1/aMWB+pwsHNrglzQwKHayncaFBN74F3SkW8
+         tIOhlpwMRxhVTQ85Mk/JiVy05XHu558FtqxZhLaXMn9280sjv41bgTW3ZcPDx7ttY1e0
+         2mRQ==
+X-Gm-Message-State: APjAAAXs5Su11XJ3gzKODjGHSnHn5dfxVl9VEvJJyDHJEZ0uDDoYSEvX
+        8StylHZ/cn/TgRMhicZzIicYcrox6opHwy4+oPIX3w==
+X-Google-Smtp-Source: APXvYqxPXXMq+e6c2PMdwsMsZqvK6M7xzZTMcrRA5OHdGdm9CcEfDbc4yuhWL3bNvMjKuXVRF0G9orXxlMe58EWt/SY=
+X-Received: by 2002:a37:a484:: with SMTP id n126mr17603801qke.366.1561957759898;
+ Sun, 30 Jun 2019 22:09:19 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8BIT
-Content-Description: Mail message body
-Subject: Contract for your services
-To:     Recipients <pastoraltland@qwestoffice.net>
-From:   "Ryo Tomiche" <pastoraltland@qwestoffice.net>
-Date:   Sun, 30 Jun 2019 19:03:35 -0600
-Reply-To: sales.0015012@gmail.com
-Authentication-Results: mfg.siteprotect.com; auth=pass smtp.auth=eagle147@qwestoffice.net smtp.mailfrom=<pastoraltland@qwestoffice.net>
-Message-ID: <E1hhkkB-0005JH-N0@semfq02.mfg.siteprotect.com>
-X-Originating-IP: 64.26.60.160
-X-portal.siteprotect.com-Domain: qwest.outbound
-X-portal.siteprotect.com-Username: 64.26.60.160
-Authentication-Results: mfg.siteprotect.com; auth=pass smtp.auth=64.26.60.160@qwest.outbound
-X-portal.siteprotect.com-Outgoing-Class: unsure
-X-portal.siteprotect.com-Outgoing-Evidence: Combined (0.86)
-X-Recommended-Action: accept
-X-Filter-ID: Mvzo4OR0dZXEDF/gcnlw0Ud2CCyxmm2KHETL0VYw/ASpSDasLI4SayDByyq9LIhVkjx8yiNdjOuz
- WahFrQY/g0TNWdUk1Ol2OGx3IfrIJKyP9eGNFz9TW9u+Jt8z2T3K4XczJTsb6RLMMYZOHzn2sfPq
- Ey+kBlNMhCB5C1MCg8jaa0BK+j0xWTkQ2aImpHdqbuYvrbPjqL6kLV2g5or74JW5etSaBP/L+0cX
- tE2aapYxBdOAsxdkbUJPAOs/137I/QIdEaYfdKuwPdjfkBIDIKnHFrTo5AclZ2wdku8zvpgnz2rH
- b6QNwWMGYUiyhLiess+FBm27tbiypUzHm/4caBx00HbdiudjYNeWolZ0Dmh+yHu4F0MHJdNNelVZ
- e2kXpMGqGwCz0gUBOkmNZCL0iJp9sD0RSS+aWKBuaHyvESqODscpgMUqRzZJ5Nk06ghXoPUevYl9
- bzkTvYoWxt4G4PI9DKirjQSbCp/L9muyAZWtvBxNdWKLMgeqj/lvPDB5DQcsOC/N6zlm9kW0T62/
- KuRIzcHRsQ8p+lMSlKmg+iiMGWR5FqhTPubBVacoPlL20oLJHKkkbnNFF+16cUM0jjQoQDKlhN+a
- XTvU5fQvLuaUntM4VjB2GLIGSw+i8N4vsIrKPSnMyzYmXQmUrkQhocG4GpIL74/26HPr1QhmfUxs
- 17xmV8k2ng/xjN532gvrtO+8H9orm+PdQgoh0NVQFi6cC0xzwXcjAOxmEHWTDmuvOOu15ByrJRCb
- RoexNI7g0Dt1ZX+43Y0lLW8ZjaI8ZUt0N0cfH96USjjBGp/gyj49TK57Xku0P+xpJjda8t2f4/Sp
- L7zBlCuptUSbl513FgLHADHCs3Urt8vqFWDBKhxVr8eP+Wmp/y/AB2KysgGDNcjzPk6MDgG052jb
- VAGKNlHuAq4k7PqG9M5idz7joR5h9fIogdNInbXmdTA5i/nFxoYihLvbD7yB1FU2fJpI0U3/7kNo
- 6wuj/PrCqkR9G4ZFoAFScqc09DLQCUMs8S9uryi2i8l28NL0p/MRqonVD/fYnqiXIStimRJx+UEk
- MGRzjCfq0VbA5hixQhb78h3LWvib1jvilNSW9SHaszy+01Jsspk+EIXwMzmCA/zvgpBnk4YeBqpf
- zNaw4alomZBM5YE5enyccp7RH4WQio3uGeeRmrXjUYkRjuaKFbq1dAHYChUOUAGX0o8lFHxd4Qh3
- IK/1NH5THMtlYvyHAYGOGnnCniM+hIFBd6naSZZ3Yn4Gbi7isHXDUSFo+slwSxFU7nepPPOsltTK
- eIC3cnT8GuQejFUVN/1efw0bMLV3QB1Sx1MCF1yLmL/PqZXM+f3vqtC2VMYQVO+b8f1xSLkjTMJa
- dLYQh1JGCCRf7RFw6JV26BPK9B5s/HoILgYc7B5aa+zJSLkbxQRefHi7/XEuETMraXKM8296TjXk
- mIYAdI/4W97hAXSGYU4vxkTkQiWekvhTEUzFlM0SjhxW+xGStMQzN6sl9Br1QBgqyARXyn6amJjV
- M2aOLvwF0kp3GxPzUsCrA+iV0lSs90znX69q0E8fJCZve8EtP32uPlh71CeUgB9Dryx9+I7DJYkm
- kAgg46Yu3c5e+oVHWIYJQrfztY9yd98YR5OJT9d7o4V7wrNVCkgAzSYUM3KPkN+OKQsEY8QDFlkl
- pUchNy11CxFXYthTDDW6yTiZI+oEW10FB4E/C/PvzjHYCQSK9VmaXnAeRikRxdQNur6zZHgZxyi6
- PMPJIdqoKvM6FUI6mqHq5Y8Ee227Q6+4XkAGsj64ssfFMS+4ayUpOtEhdxekWDmK9g==
-X-Report-Abuse-To: spam@semfq03.mfg.siteprotect.com
+References: <20190627095247.8792-1-chiu@endlessm.com>
+In-Reply-To: <20190627095247.8792-1-chiu@endlessm.com>
+From:   Chris Chiu <chiu@endlessm.com>
+Date:   Mon, 1 Jul 2019 13:09:09 +0800
+Message-ID: <CAB4CAwcAfApWuwr_GDqSwN5w3tDOzR9p9ddck6JYrB+OAvWK8g@mail.gmail.com>
+Subject: Re: [PATCH] rtl8xxxu: Fix wifi low signal strength issue of RTL8723BU
+To:     Jes Sorensen <jes.sorensen@gmail.com>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        David Miller <davem@davemloft.net>
+Cc:     linux-wireless <linux-wireless@vger.kernel.org>,
+        netdev <netdev@vger.kernel.org>,
+        Linux Kernel <linux-kernel@vger.kernel.org>,
+        Linux Upstreaming Team <linux@endlessm.com>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-We’d like to contract your services for a period of 12 months. Please advise if you are open to new opportunities.
+On Thu, Jun 27, 2019 at 5:52 PM Chris Chiu <chiu@endlessm.com> wrote:
+>
+> The WiFi tx power of RTL8723BU is extremely low after booting. So
+> the WiFi scan gives very limited AP list and it always fails to
+> connect to the selected AP. This module only supports 1x1 antenna
+> and the antenna is switched to bluetooth due to some incorrect
+> register settings.
+>
+> This commit hand over the antenna control to PTA, the wifi signal
+> will be back to normal and the bluetooth scan can also work at the
+> same time. However, the btcoexist still needs to be handled under
+> different circumstances. If there's a BT connection established,
+> the wifi still fails to connect until disconneting the BT.
+>
+> Signed-off-by: Chris Chiu <chiu@endlessm.com>
+> ---
+>  drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8723b.c | 9 ++++++---
+>  drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c  | 3 ++-
+>  2 files changed, 8 insertions(+), 4 deletions(-)
+>
+> diff --git a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8723b.c b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8723b.c
+> index 3adb1d3d47ac..6c3c70d93ac1 100644
+> --- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8723b.c
+> +++ b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8723b.c
+> @@ -1525,7 +1525,7 @@ static void rtl8723b_enable_rf(struct rtl8xxxu_priv *priv)
+>         /*
+>          * WLAN action by PTA
+>          */
+> -       rtl8xxxu_write8(priv, REG_WLAN_ACT_CONTROL_8723B, 0x04);
+> +       rtl8xxxu_write8(priv, REG_WLAN_ACT_CONTROL_8723B, 0x0c);
+>
+>         /*
+>          * BT select S0/S1 controlled by WiFi
+> @@ -1568,9 +1568,12 @@ static void rtl8723b_enable_rf(struct rtl8xxxu_priv *priv)
+>         rtl8xxxu_gen2_h2c_cmd(priv, &h2c, sizeof(h2c.ant_sel_rsv));
+>
+>         /*
+> -        * 0x280, 0x00, 0x200, 0x80 - not clear
+> +        * Different settings per different antenna position.
+> +        * Antenna switch to BT: 0x280, 0x00 (inverse)
+> +        * Antenna switch to WiFi: 0x0, 0x280 (inverse)
+> +        * Antenna controlled by PTA: 0x200, 0x80 (inverse)
+>          */
+> -       rtl8xxxu_write32(priv, REG_S0S1_PATH_SWITCH, 0x00);
+> +       rtl8xxxu_write32(priv, REG_S0S1_PATH_SWITCH, 0x80);
+>
+>         /*
+>          * Software control, antenna at WiFi side
+> diff --git a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
+> index 8136e268b4e6..87b2179a769e 100644
+> --- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
+> +++ b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
+> @@ -3891,12 +3891,13 @@ static int rtl8xxxu_init_device(struct ieee80211_hw *hw)
+>
+>         /* Check if MAC is already powered on */
+>         val8 = rtl8xxxu_read8(priv, REG_CR);
+> +       val16 = rtl8xxxu_read16(priv, REG_SYS_CLKR);
+>
+>         /*
+>          * Fix 92DU-VC S3 hang with the reason is that secondary mac is not
+>          * initialized. First MAC returns 0xea, second MAC returns 0x00
+>          */
+> -       if (val8 == 0xea)
+> +       if (val8 == 0xea || !(val16 & BIT(11)))
+>                 macpower = false;
+>         else
+>                 macpower = true;
+> --
+> 2.11.0
+>
 
-Regards,
+Gentle ping. Cheers.
 
-Ryo Tomiche
+Chris
