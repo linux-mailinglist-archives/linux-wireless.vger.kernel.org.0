@@ -2,108 +2,94 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 7AD435BE60
-	for <lists+linux-wireless@lfdr.de>; Mon,  1 Jul 2019 16:34:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DD2735BFE5
+	for <lists+linux-wireless@lfdr.de>; Mon,  1 Jul 2019 17:33:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729707AbfGAOeP (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 1 Jul 2019 10:34:15 -0400
-Received: from out1-smtp.messagingengine.com ([66.111.4.25]:38021 "EHLO
-        out1-smtp.messagingengine.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1727064AbfGAOeP (ORCPT
+        id S1728052AbfGAPdZ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 1 Jul 2019 11:33:25 -0400
+Received: from mail-ot1-f68.google.com ([209.85.210.68]:44488 "EHLO
+        mail-ot1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727379AbfGAPdZ (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 1 Jul 2019 10:34:15 -0400
-Received: from compute3.internal (compute3.nyi.internal [10.202.2.43])
-        by mailout.nyi.internal (Postfix) with ESMTP id AA39621FC1;
-        Mon,  1 Jul 2019 10:34:13 -0400 (EDT)
-Received: from mailfrontend2 ([10.202.2.163])
-  by compute3.internal (MEProxy); Mon, 01 Jul 2019 10:34:13 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dead10ck.com; h=
-        message-id:subject:from:to:date:in-reply-to:references
-        :content-type:mime-version:content-transfer-encoding; s=fm3; bh=
-        W71MN8JnqffLQ5MZmuiO5lF4wUj46V9qQyxbK4q2Jm8=; b=aD9v0GWC3W5rGJ0N
-        hZrs6CE3D3Ghop3TDwsx6S8MFMwVgqcGbPF08Al22+9pR8bxmDSxyKd14CsjHcJS
-        nwIg9371XXXuyIHqRlKvxnEzXnXjW6leYkcLTAFanR+AaZ90BFlDJFDOjkqaRl02
-        p8nbK2DnK/Jniogy5uEaXQ2LXcOFCZu5AefuI26xL5rLBR1kNkuvJ6mRTBau6WnA
-        B7JEL0Nvm0cILzSis5bSsvbLsrUrvMFvItWi+7Rs54vrHoY0Ch4vLDYAsLMdseE4
-        H3p1aLcudIo+nqtnLz9+PpIi4ekznW0iod8hAtf67D7EtFI0TI3BxwIkJVb1aOK8
-        x08QHQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-        messagingengine.com; h=content-transfer-encoding:content-type
-        :date:from:in-reply-to:message-id:mime-version:references
-        :subject:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender
-        :x-sasl-enc; s=fm3; bh=W71MN8JnqffLQ5MZmuiO5lF4wUj46V9qQyxbK4q2J
-        m8=; b=MWat1hzZ8ewg4/ly7nL+MXVdJHBrDNAwPUp5CclsqLGYbSPXYLRgcQICR
-        VfFcLK0d/0wJY9bZACcJFwhUvBCxc3/Nc7xQcZ11QmGqV8qqHCHupKCAXVuZyLbF
-        bsrktldB4daL9BSpEWULhM0rXEpdaZXZ7XnfPaXXgzve5O6wB476zeXbKB9n3Fmq
-        DxfwfkqmyfHP8jacxnRTRLolN4emXqz0P1gAfScE2vRBWDhHOK7lZwrcVfGfLBD4
-        U7P5PmbAIgmG7/jfBvOg5r1hY8abdt7jiFAaDtTS6bJAnDptfZHcVHU09uX/hB0t
-        eNxsOtuhkSHa56O42pEyjzrFDFSKA==
-X-ME-Sender: <xms:5RkaXeg9zFJyhL7d9fKp2jec9rAX-rQvX5B-6xAeakVDu8XPikKSXQ>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeduvddrvdeigdejkecutefuodetggdotefrodftvf
-    curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
-    uegrihhlohhuthemuceftddtnecunecujfgurhepkffuhffvffgjfhgtfggggfesthejre
-    dttderjeenucfhrhhomhepufhkhihlvghrucfjrgifthhhohhrnhgvuceoshhkhihlvghr
-    seguvggrugdutdgtkhdrtghomheqnecukfhppedujedurdeikedrvdeggedrheejnecurf
-    grrhgrmhepmhgrihhlfhhrohhmpehskhihlhgvrhesuggvrgguuddttghkrdgtohhmnecu
-    vehluhhsthgvrhfuihiivgeptd
-X-ME-Proxy: <xmx:5RkaXU5Pe4SgI3dTU7x5NY8mkn58j_AR93gUg0sylnp5esnz9VX2IQ>
-    <xmx:5RkaXRRvMQo00SfWTo1q8IoZXKdwcIay2H8yDcj_bQ_6X8Duq27OOA>
-    <xmx:5RkaXRXIXdeb3tEH260c58h3it14WZSPq-SC2hPHfoqygeSzHNPFDw>
-    <xmx:5RkaXSmDSuf2P6dLd62S_tXTMWsr0MDUpw7p-PKcIU8fOscZci3nBg>
-Received: from fedora-x1-dead10ck (unknown [171.68.244.57])
-        by mail.messagingengine.com (Postfix) with ESMTPA id 9E362380087;
-        Mon,  1 Jul 2019 10:34:12 -0400 (EDT)
-Message-ID: <7cc8efb985c2e770a328919e1b99d93f30d7295a.camel@dead10ck.com>
-Subject: Re: iwl_mvm_add_new_dqa_stream_wk BUG in lib/list_debug.c:56
-From:   Skyler Hawthorne <skyler@dead10ck.com>
-To:     Marc Haber <mh+netdev@zugschlus.de>, linux-kernel@vger.kernel.org,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org
-Date:   Mon, 01 Jul 2019 07:34:11 -0700
-In-Reply-To: <20190625130317.GB31363@torres.zugschlus.de>
-References: <20190530081257.GA26133@torres.zugschlus.de>
-         <20190602134842.GC3249@torres.zugschlus.de>
-         <20190625130317.GB31363@torres.zugschlus.de>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.32.3 (3.32.3-1.fc30) 
+        Mon, 1 Jul 2019 11:33:25 -0400
+Received: by mail-ot1-f68.google.com with SMTP id b7so13875498otl.11
+        for <linux-wireless@vger.kernel.org>; Mon, 01 Jul 2019 08:33:25 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=7u5Zeng5hhsrOZK5JXXLz7stBL+xe6u894p81RQmrSY=;
+        b=h11ylGlhD7lGjRjFNDr+SWG/uGAZryR/XR32cipxkPiDOkbbls4qmMm0UCLVnAxsl/
+         3+FLwXgSruGKjR7GnGR9D1jKbvc1Z/1XNdARJ2zdzYzO7EEDOj7ifNBwWQ4trdgUp4jh
+         NO6VZdfkfMCQYM8lvKl/nERSJtqaO2FMgjaqi2uNGw/1W555p7wtvwchw2yhvqyH6an2
+         3b9P4PcMjuKg+pifdsMjTOKgeM9POIdG2KeObc2KdFHMvA895KiDaBy++mPC5VVq8Atc
+         /uqsgChh/1j5tdBuo+SIZSbEXzT59BCjNS55jIwD2YJMA3kf18wpL/Q73OFiI+GCciGu
+         /GnA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=7u5Zeng5hhsrOZK5JXXLz7stBL+xe6u894p81RQmrSY=;
+        b=m6m6s0ykOfj7UaKyTkpizL9W7kAVQzKGd7NDyEqBNQ5Q7wUiujM4sTmU4ztZM7fzqQ
+         JdVuMAKU+RUdKtkP6OJgQ2H5EVvQcQdwKTFa3kw4DwZh3fU/2egQUppRZnpw/yAGj7jz
+         BEqeHrllKYgWyWp3xXfYmglOug9jPQfma3LwFiyPpM5P0wKV8DUvClAiLmFn+sw5duiz
+         pV2FmyWiEZ0qY53vULVAspHNovzv3J5UAmZqC3ZlNcpQeOGN10v9xpevImIFQypSs61q
+         JnfsW3CtGQ4OtEduFhD6FQ24BPCmFUWlF6qkk4k1u/L+VwPJVOXddshon0gPDaZNJ4gh
+         0uRw==
+X-Gm-Message-State: APjAAAVoHcTWHZVgVa/ezF344FgbHQGPBbMnW7vpK46ub7eXjOME6xDc
+        4KuG4w0QbX87s2QMGpIi+aU=
+X-Google-Smtp-Source: APXvYqycrI5cWufWhVf0jNT73xyP+ao+UMORl9B3n8504wfvd1ycWWzEpstCcY4peWI9yZzKbWuvEQ==
+X-Received: by 2002:a9d:17e6:: with SMTP id j93mr20712230otj.275.1561995204775;
+        Mon, 01 Jul 2019 08:33:24 -0700 (PDT)
+Received: from new-host-2.home (cpe-70-114-247-242.austin.res.rr.com. [70.114.247.242])
+        by smtp.gmail.com with ESMTPSA id y4sm4136786otj.56.2019.07.01.08.33.23
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Mon, 01 Jul 2019 08:33:24 -0700 (PDT)
+From:   Denis Kenzior <denkenz@gmail.com>
+To:     Johannes Berg <johannes@sipsolutions.net>
+Cc:     linux-wireless@vger.kernel.org, Denis Kenzior <denkenz@gmail.com>
+Subject: [PATCH v3 1/3] nl80211: Update uapi for CMD_FRAME_WAIT_CANCEL
+Date:   Mon,  1 Jul 2019 10:33:15 -0500
+Message-Id: <20190701153317.27170-1-denkenz@gmail.com>
+X-Mailer: git-send-email 2.21.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hello, I'm also still experiencing this issue on 5.1.15. It's making it
-very difficult to use my work laptop in my office, since it has many
-access points and frequently has to reauthenticate. I hit this bug 1-3
-times per day, and the only way to fix it is a hard shutdown. Has there
-been any effort to identify and/or fix the cause?
+Commit 1c38c7f22068 ("nl80211: send event when CMD_FRAME duration
+expires") added the possibility of NL80211_CMD_FRAME_WAIT_CANCEL
+being sent whenever the off-channel wait time associated with a
+CMD_FRAME completes.  Document this in the uapi/linux/nl80211.h file.
 
+Signed-off-by: Denis Kenzior <denkenz@gmail.com>
+---
+ include/uapi/linux/nl80211.h | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
+
+ Changes in v3:
+  -  None
+
+ Changes in v2:
+  - update commit formatting
+
+diff --git a/include/uapi/linux/nl80211.h b/include/uapi/linux/nl80211.h
+index 8fc3a43cac75..0d9aad98c983 100644
+--- a/include/uapi/linux/nl80211.h
++++ b/include/uapi/linux/nl80211.h
+@@ -657,7 +657,9 @@
+  *	is used during CSA period.
+  * @NL80211_CMD_FRAME_WAIT_CANCEL: When an off-channel TX was requested, this
+  *	command may be used with the corresponding cookie to cancel the wait
+- *	time if it is known that it is no longer necessary.
++ *	time if it is known that it is no longer necessary.  This command is
++ *	also sent as an event whenever the driver has completed the off-channel
++ *	wait time.
+  * @NL80211_CMD_ACTION: Alias for @NL80211_CMD_FRAME for backward compatibility.
+  * @NL80211_CMD_FRAME_TX_STATUS: Report TX status of a management frame
+  *	transmitted with %NL80211_CMD_FRAME. %NL80211_ATTR_COOKIE identifies
 -- 
-Skyler
-
-On Tue, 2019-06-25 at 15:03 +0200, Marc Haber wrote:
-> On Sun, Jun 02, 2019 at 03:48:42PM +0200, Marc Haber wrote:
-> > On Thu, May 30, 2019 at 10:12:57AM +0200, Marc Haber wrote:
-> > > on my primary notebook, a Lenovo X260, with an Intel Wireless
-> > > 8260
-> > > (8086:24f3), running Debian unstable, I have started to see
-> > > network
-> > > hangs since upgrading to kernel 5.1. In this situation, I cannot
-> > > restart Network-Manager (the call just hangs), I can log out of
-> > > X, but
-> > > the system does not cleanly shut down and I need to Magic SysRq
-> > > myself
-> > > out of the running system. This happens about once every two
-> > > days.
-> > 
-> > The issue is also present in 5.1.5 and 5.1.6.
-> 
-> Almost a month later, 5.1.15 still crashes about twice a day on my
-> Notebook. The error message seems pretty clear to me, how can I go on
-> from there and may be identify a line number outside of a library?
-> 
-> Greetings
-> Marc
-> 
-> 
+2.21.0
 
