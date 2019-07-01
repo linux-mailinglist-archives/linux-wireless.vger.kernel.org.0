@@ -2,35 +2,35 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 5DA595BC54
-	for <lists+linux-wireless@lfdr.de>; Mon,  1 Jul 2019 15:04:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B4EF85BC55
+	for <lists+linux-wireless@lfdr.de>; Mon,  1 Jul 2019 15:04:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728102AbfGANEv (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 1 Jul 2019 09:04:51 -0400
-Received: from mail.kernel.org ([198.145.29.99]:55126 "EHLO mail.kernel.org"
+        id S1728148AbfGANEx (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 1 Jul 2019 09:04:53 -0400
+Received: from mail.kernel.org ([198.145.29.99]:55156 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726329AbfGANEv (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 1 Jul 2019 09:04:51 -0400
+        id S1726329AbfGANEx (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 1 Jul 2019 09:04:53 -0400
 Received: from lore-desk-wlan.lan (unknown [151.66.13.64])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id C3BC42173C;
-        Mon,  1 Jul 2019 13:04:48 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 45D85214AE;
+        Mon,  1 Jul 2019 13:04:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1561986290;
-        bh=fcJ+mqXnXmzWFxB/r6FAvbq99QrEX+8pRHLTzQ2RBUU=;
+        s=default; t=1561986292;
+        bh=bms4cfIjtHfQJGtL4rdF+eucyqlz+sI24l5WbrPAiWI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=hIkUxQNnhz7xxMfP8/bnkSM8LLtidCaoDXiHjyCPTEhKCmDQB/QrjTiJ6yefCHMvh
-         AOIBYIES3xUSIl8Mf4rQGPrITD3qm9oLLOSD3RrTXOTRa5y5zep1cHC8YTtqghRIyx
-         YHmnIkih7Pd+He2D5ZePB/unGHsS6GUf2frmrKdA=
+        b=yTL63+PYqzhNgpd1T0HVm8xgZd3tinwIqmD+1F1nOChhIFoNMGmkN2Mf+Jb3iN1CK
+         su1RDy3HRBjhbjyIBM6jVieLZTeHaFFABI+FJ9yLk+VOxoaAeLSmnPuf5tUVEhkIjo
+         +qEo06RzFCQm0cEYT2PiPwTdRjMVeS6EC/rQ+Sog=
 From:   Lorenzo Bianconi <lorenzo@kernel.org>
 To:     nbd@nbd.name
 Cc:     lorenzo.bianconi@redhat.com, s.gottschall@newmedia-net.de,
         linux-wireless@vger.kernel.org, ryder.lee@mediatek.com,
         royluo@google.com
-Subject: [PATCH 1/2] mt76: mt7615: fall back to sw encryption for unsupported ciphers
-Date:   Mon,  1 Jul 2019 15:04:39 +0200
-Message-Id: <ad2dc0f14b8defe0e81ab269b698a669f6a8eac1.1561985981.git.lorenzo@kernel.org>
+Subject: [PATCH 2/2] mt76: mt7615: add BIP_CMAC_128 cipher support
+Date:   Mon,  1 Jul 2019 15:04:40 +0200
+Message-Id: <9a82f28d2ff3139baa5dd3cfcbd9ce75eb8a8cf7.1561985981.git.lorenzo@kernel.org>
 X-Mailer: git-send-email 2.21.0
 In-Reply-To: <cover.1561985981.git.lorenzo@kernel.org>
 References: <cover.1561985981.git.lorenzo@kernel.org>
@@ -41,57 +41,94 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Fix following warning falling back to sw encryption for unsupported
-ciphers
+Enable hw support for BIP_CMAC_128 cipher
 
-WARNING: CPU: 2 PID: 1495 at backports-4.19.32-1/net/mac80211/key.c:1023
-mt76_wcid_key_setup+0x68/0xbc [mt76]
-CPU: 2 PID: 1495 Comm: hostapd Not tainted 4.14.131 #0
-Stack : 00000000 8f0f8bc0 00000000 8007ccec 805f0000 8058ec18 00000000 00000000
-	80559788 8dca79bc 8fefb10c 805c89c7 805545c8 00000001 8dca7960 53261662
-	00000000 00000000 80640000 00004668 00000000 000000e9 00000007 00000000
-	00000000 805d0000 00072537 00000000 80000000 00000000 805f0000 8f1e70d0
-	8e8fa098 000003ff 805c0000 8f0f8bc0 00000001 802d4340 00000008 80630008
-[<800108d0>] show_stack+0x58/0x100
-[<8049214c>] dump_stack+0x9c/0xe0
-[<80033998>] __warn+0xe0/0x138
-[<80033a80>] warn_slowpath_null+0x1c/0x2c
-[<8e8fa098>] mt76_wcid_key_setup+0x68/0xbc [mt76]
-[<8e889930>] mt7615_eeprom_init+0x7c0/0xe14 [mt7615e]
-
-Suggested-by: Sebastian Gottschall <s.gottschall@newmedia-net.de>
 Signed-off-by: Ryder Lee <ryder.lee@mediatek.com>
 Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
 ---
- drivers/net/wireless/mediatek/mt76/mt7615/main.c | 15 +++++++++++++++
- 1 file changed, 15 insertions(+)
+ drivers/net/wireless/mediatek/mt76/mac80211.c    | 5 +++--
+ drivers/net/wireless/mediatek/mt76/mt7615/mac.c  | 9 +++++++--
+ drivers/net/wireless/mediatek/mt76/mt7615/main.c | 1 +
+ drivers/net/wireless/mediatek/mt76/mt7615/mcu.c  | 3 +++
+ 4 files changed, 14 insertions(+), 4 deletions(-)
 
+diff --git a/drivers/net/wireless/mediatek/mt76/mac80211.c b/drivers/net/wireless/mediatek/mt76/mac80211.c
+index ec9efb79985f..f1cc18c22252 100644
+--- a/drivers/net/wireless/mediatek/mt76/mac80211.c
++++ b/drivers/net/wireless/mediatek/mt76/mac80211.c
+@@ -487,9 +487,10 @@ void mt76_wcid_key_setup(struct mt76_dev *dev, struct mt76_wcid *wcid,
+ 	if (!key)
+ 		return;
+ 
+-	if (key->cipher == WLAN_CIPHER_SUITE_CCMP)
+-		wcid->rx_check_pn = true;
++	if (key->cipher != WLAN_CIPHER_SUITE_CCMP)
++		return;
+ 
++	wcid->rx_check_pn = true;
+ 	for (i = 0; i < IEEE80211_NUM_TIDS; i++) {
+ 		ieee80211_get_key_rx_seq(key, i, &seq);
+ 		memcpy(wcid->rx_key_pn[i], seq.ccmp.pn, sizeof(seq.ccmp.pn));
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/mac.c b/drivers/net/wireless/mediatek/mt76/mt7615/mac.c
+index 08cc3f46b011..e75167f25a5d 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7615/mac.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7615/mac.c
+@@ -309,6 +309,7 @@ int mt7615_mac_write_txwi(struct mt7615_dev *dev, __le32 *txwi,
+ 	struct ieee80211_tx_info *info = IEEE80211_SKB_CB(skb);
+ 	struct ieee80211_tx_rate *rate = &info->control.rates[0];
+ 	struct ieee80211_hdr *hdr = (struct ieee80211_hdr *)skb->data;
++	bool multicast = is_multicast_ether_addr(hdr->addr1);
+ 	struct ieee80211_vif *vif = info->control.vif;
+ 	int tx_count = 8;
+ 	u8 fc_type, fc_stype, p_fmt, q_idx, omac_idx = 0;
+@@ -360,8 +361,12 @@ int mt7615_mac_write_txwi(struct mt7615_dev *dev, __le32 *txwi,
+ 
+ 	val = FIELD_PREP(MT_TXD2_FRAME_TYPE, fc_type) |
+ 	      FIELD_PREP(MT_TXD2_SUB_TYPE, fc_stype) |
+-	      FIELD_PREP(MT_TXD2_MULTICAST,
+-			 is_multicast_ether_addr(hdr->addr1));
++	      FIELD_PREP(MT_TXD2_MULTICAST, multicast);
++	if (key)
++		val |= FIELD_PREP(MT_TXD2_BIP,
++				  multicast &&
++				  ieee80211_is_robust_mgmt_frame(skb) &&
++				  key->cipher == WLAN_CIPHER_SUITE_AES_CMAC);
+ 	txwi[2] = cpu_to_le32(val);
+ 
+ 	if (!(info->flags & IEEE80211_TX_CTL_AMPDU))
 diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/main.c b/drivers/net/wireless/mediatek/mt76/mt7615/main.c
-index 1ee6dda579a8..8fefcfba83b1 100644
+index 8fefcfba83b1..ceda05135211 100644
 --- a/drivers/net/wireless/mediatek/mt76/mt7615/main.c
 +++ b/drivers/net/wireless/mediatek/mt76/mt7615/main.c
-@@ -178,6 +178,21 @@ static int mt7615_set_key(struct ieee80211_hw *hw, enum set_key_cmd cmd,
- 	    !(key->flags & IEEE80211_KEY_FLAG_PAIRWISE))
+@@ -188,6 +188,7 @@ static int mt7615_set_key(struct ieee80211_hw *hw, enum set_key_cmd cmd,
+ 	case WLAN_CIPHER_SUITE_GCMP:
+ 	case WLAN_CIPHER_SUITE_GCMP_256:
+ 	case WLAN_CIPHER_SUITE_SMS4:
++	case WLAN_CIPHER_SUITE_AES_CMAC:
+ 		break;
+ 	default:
  		return -EOPNOTSUPP;
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c
+index 06d146198e33..e28af003d118 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c
+@@ -908,6 +908,8 @@ mt7615_get_key_info(struct ieee80211_key_conf *key, u8 *key_data)
+ 		return MT_CIPHER_GCMP_256;
+ 	case WLAN_CIPHER_SUITE_SMS4:
+ 		return MT_CIPHER_WAPI;
++	case WLAN_CIPHER_SUITE_AES_CMAC:
++		return MT_CIPHER_BIP_CMAC_128;
+ 	default:
+ 		return MT_CIPHER_NONE;
+ 	}
+@@ -940,6 +942,7 @@ int mt7615_mcu_set_wtbl_key(struct mt7615_dev *dev, int wcid,
+ 		if (cipher == MT_CIPHER_NONE)
+ 			return -EOPNOTSUPP;
  
-+	/* fall back to sw encryption for unsupported ciphers */
-+	switch (key->cipher) {
-+	case WLAN_CIPHER_SUITE_WEP40:
-+	case WLAN_CIPHER_SUITE_WEP104:
-+	case WLAN_CIPHER_SUITE_TKIP:
-+	case WLAN_CIPHER_SUITE_CCMP:
-+	case WLAN_CIPHER_SUITE_CCMP_256:
-+	case WLAN_CIPHER_SUITE_GCMP:
-+	case WLAN_CIPHER_SUITE_GCMP_256:
-+	case WLAN_CIPHER_SUITE_SMS4:
-+		break;
-+	default:
-+		return -EOPNOTSUPP;
-+	}
-+
- 	if (cmd == SET_KEY) {
- 		key->hw_key_idx = wcid->idx;
- 		wcid->hw_key_idx = idx;
++		req.key.ikv = (cipher == MT_CIPHER_BIP_CMAC_128);
+ 		req.key.rkv = 1;
+ 		req.key.cipher_id = cipher;
+ 		req.key.key_id = key->keyidx;
 -- 
 2.21.0
 
