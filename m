@@ -2,139 +2,141 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 17DD45B95F
-	for <lists+linux-wireless@lfdr.de>; Mon,  1 Jul 2019 12:50:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DDD9E5B986
+	for <lists+linux-wireless@lfdr.de>; Mon,  1 Jul 2019 12:54:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727784AbfGAKuB (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 1 Jul 2019 06:50:01 -0400
-Received: from smtp.codeaurora.org ([198.145.29.96]:39988 "EHLO
-        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727124AbfGAKuB (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 1 Jul 2019 06:50:01 -0400
-Received: by smtp.codeaurora.org (Postfix, from userid 1000)
-        id 0C75161634; Mon,  1 Jul 2019 10:49:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1561978201;
-        bh=aQJl/9MUObNguNsjIkQXsv9cLEnSfYWzIb12gAP3T5M=;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=itaQMXmpHsScL3e981PUj6zNlLr/rVMCL10zIRLDz1S2aqLptIvPpK65RyYdDyFan
-         HLEdr/+xOGzo3cT+UhdjBQFViJ6hz4yiF7eKg0r0ZR/piAt4zdcX6/PecC8gw+ginp
-         Fw1OROvLvHylWfvVDfIVJ2YS5VMOC2482OAH0u7U=
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        pdx-caf-mail.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.7 required=2.0 tests=ALL_TRUSTED,BAYES_00,
-        DKIM_INVALID,DKIM_SIGNED,SPF_NONE autolearn=no autolearn_force=no
-        version=3.4.0
-Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        (Authenticated sender: kvalo@smtp.codeaurora.org)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 7EB7F615E8;
-        Mon,  1 Jul 2019 10:49:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1561978197;
-        bh=aQJl/9MUObNguNsjIkQXsv9cLEnSfYWzIb12gAP3T5M=;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=dWhrbNuFqZ+SwoFXL/jDlLXtEGYvtICwZ62254IsuMpbgvlkHpEimyCJffE4QQFGP
-         UvEPgp1Vfn3qVajcSo6UvaBPPiq1t7VeJtuN+csvmacPAXJsbyKZjY2Lzn/k7AklIY
-         K470syMV5Uo8zNWx4UpmeuEWolNdT2fso0nQHp6k=
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 7EB7F615E8
-Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
-From:   Kalle Valo <kvalo@codeaurora.org>
-To:     Ryder Lee <ryder.lee@mediatek.com>
-Cc:     Lorenzo Bianconi <lorenzo.bianconi@redhat.com>,
-        Lorenzo Bianconi <lorenzo@kernel.org>,
-        Felix Fietkau <nbd@nbd.name>,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        Roy Luo <royluo@google.com>, YF Luo <yf.luo@mediatek.com>,
-        <linux-mediatek@lists.infradead.org>
-Subject: Re: [PATCH 4/6] mt76: mt7615: unlock dfs bands
-References: <cover.1561804422.git.lorenzo@kernel.org>
-        <33184e0b78983fe7c79fa70c5fbb21042aafa4f5.1561804422.git.lorenzo@kernel.org>
-        <87muhzs9qv.fsf@purkki.adurom.net>
-        <CAJ0CqmU6TLhFa4ZJxWHBzvpx+5g5E4-WkSPECx47F9d3T=5YjQ@mail.gmail.com>
-        <87tvc69odh.fsf@kamboji.qca.qualcomm.com>
-        <1561975021.3950.9.camel@mtkswgap22>
-Date:   Mon, 01 Jul 2019 13:49:52 +0300
-In-Reply-To: <1561975021.3950.9.camel@mtkswgap22> (Ryder Lee's message of
-        "Mon, 1 Jul 2019 17:57:01 +0800")
-Message-ID: <87pnmu9ghb.fsf@kamboji.qca.qualcomm.com>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
-MIME-Version: 1.0
-Content-Type: text/plain
+        id S1728017AbfGAKyM (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 1 Jul 2019 06:54:12 -0400
+Received: from mout.web.de ([212.227.17.12]:54309 "EHLO mout.web.de"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727748AbfGAKyM (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 1 Jul 2019 06:54:12 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
+        s=dbaedf251592; t=1561978413;
+        bh=9QwErlRZh+JV5gna2Uztd7nQg7/e3OjouvCwXsnc3aA=;
+        h=X-UI-Sender-Class:From:To:Cc:Subject:Date;
+        b=UxO7E9rgJEdJxnEEoMyOc9JjomVwWoHDlFFYA9TW6ARbg/23fD7PNnD02/FCqswJc
+         ++k+H/R7ChBMrI7+MbXsUUMOpDSam0oaZQ8hy4OIeycujlDrYSaJNKIaw12tDFWgv1
+         wrLvPJ9PkEpcae7P4BE2acJiwFMEZdCYNsQr+mMQ=
+X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
+Received: from platinum.localdomain ([77.13.129.177]) by smtp.web.de (mrweb102
+ [213.165.67.124]) with ESMTPSA (Nemesis) id 0MhUbO-1hvb4g3iBG-00MdMP; Mon, 01
+ Jul 2019 12:53:33 +0200
+From:   Soeren Moch <smoch@web.de>
+To:     Stanislaw Gruszka <sgruszka@redhat.com>
+Cc:     Soeren Moch <smoch@web.de>, stable@vger.kernel.org,
+        Helmut Schaa <helmut.schaa@googlemail.com>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: [PATCH v2 1/2] rt2x00usb: fix rx queue hang
+Date:   Mon,  1 Jul 2019 12:53:13 +0200
+Message-Id: <20190701105314.9707-1-smoch@web.de>
+X-Mailer: git-send-email 2.17.1
+X-Provags-ID: V03:K1:viXei3FjGw3mDh1/8pWh2EeoS3tIgkTWKIkpwYPI9ffckp7S9gA
+ qf72dLxuNvDkJIRmNRO2VZi6NgCAa/ZZcKQgBahvRdJJgrDVcHUo1y30He9O2bwLMbSToev
+ YJ3Qs1pMjE3BbyCu6S+knwGwb5q2BP+rs6WBdmfStHZ/5guSCrkUOKtqnSHiYnDQuncAwFX
+ kZ4zq4ch7nObcxAfaqrFg==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:yn3Fskms/pk=:K+xu3zWN3SlAshSCo3qqJx
+ M2iTczv+w8lZxC0iziu2Kmyt+SMIvHLLLedRm9M4ikRv3xuGT7vdj5ZBzORow6KZXTAsZirl6
+ Fo3asvNvJxT7dvD15qM8XqYisvu/P1ezCEpWd+7cXVneduawxrzP8Dgwm4CZFKIxjsmjdpk2r
+ aO/3W/f0qZPa6C5HgNilSWFvibLJmYIOf6KUSg0tl2udsaeIcEh2Zk8rEgknKq2FF2JUGbmMG
+ yQgMGiSQ1IAI0TUPXEd885H91SWHdIkmpPXFxeyKW/1IpEfdQi5FC54UNA0+QvrhA4kcbFXN6
+ NB1tqGCXm1sqv+mlkM3U8ixG7raQKiWdFGhQlToqlFxae6qa8b0XfWVU9QpxNxBJOWcBbWbRf
+ RHw0s4UZzGl1Pnl5OiwOQdXMRj2vAv1EOCW3/BAnWoN41HmSPVh/Y7R7GeyqE5max7Dmulu86
+ X22feKNnOMXDiIl41om/OhKxxl1YYzAkgeUTALF7oD6dNdSFGKQs7Hyfum2Mtu0R3Km96vSkv
+ 7bZRQUyj/7AQY4UCmHsbRoBVz3DuLqmPhXbJSzzW598RaMwpE9BrJjKC0RZ7OY4mKGkMfGycj
+ xGY7RX20puu19mem60gb6zFD1bmOelrdIApA6IzEwE0nCOwzSd/m+ap9p5lEPv26UymIctpup
+ EHlrYPF3kXmG719jG4tKrpsloLmIHuKuYHsJ21bOz/w16je/xxQSUphhYZzyiZVFnZZOpRfwr
+ xDr1o/iW5qmpXS+YVPJ7BdVNOVKdEmd5FN5pnPnIDesMa5lzXbyTM7pt26xa0gAAM0E6U9JPi
+ hrrl9hInSnetourhPW6jlpF1vEI0eRFEAfV2uARARH4f7hSAUxwFdnY1zhQ00gXDnRK/9C04i
+ zajxlrm8aEpKvNStZTvhWA+PJHqgWgNXppQPuvoywM3yDey2QJJlB5K8quOKL/59w+aBnINHN
+ W0lMbTtcnXotD5STkqYq899ZnlbfQHyrVzLt6PD/AByktOe2uKebFKW6dlZWkvSxzybGU6Ww/
+ gxlcJkED6OviZCHN3O+pu9my8TGRC2AtlPyaOWTywhR1skckcL4ScpiEHSws530fJg==
+Content-Transfer-Encoding: quoted-printable
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Ryder Lee <ryder.lee@mediatek.com> writes:
+Since commit ed194d136769 ("usb: core: remove local_irq_save() around
+ ->complete() handler") the handler rt2x00usb_interrupt_rxdone() is
+not running with interrupts disabled anymore. So this completion handler
+is not guaranteed to run completely before workqueue processing starts
+for the same queue entry.
+Be sure to set all other flags in the entry correctly before marking
+this entry ready for workqueue processing. This way we cannot miss error
+conditions that need to be signalled from the completion handler to the
+worker thread.
+Note that rt2x00usb_work_rxdone() processes all available entries, not
+only such for which queue_work() was called.
 
-> On Mon, 2019-07-01 at 10:59 +0300, Kalle Valo wrote:
->> Lorenzo Bianconi <lorenzo.bianconi@redhat.com> writes:
->> 
->> >>
->> >> Lorenzo Bianconi <lorenzo@kernel.org> writes:
->> >>
->> >> > Unlock dfs channels since now mt7615 driver supports radar detection
->> >> >
->> >> > Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
->> >> > ---
->> >> >  drivers/net/wireless/mediatek/mt76/mt7615/init.c | 6 ++++++
->> >> >  1 file changed, 6 insertions(+)
->> >> >
->> >> > diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/init.c b/drivers/net/wireless/mediatek/mt76/mt7615/init.c
->> >> > index 5dc4cced5789..6d336d82cafe 100644
->> >> > --- a/drivers/net/wireless/mediatek/mt76/mt7615/init.c
->> >> > +++ b/drivers/net/wireless/mediatek/mt76/mt7615/init.c
->> >> > @@ -152,6 +152,12 @@ static const struct ieee80211_iface_combination if_comb[] = {
->> >> >               .max_interfaces = 4,
->> >> >               .num_different_channels = 1,
->> >> >               .beacon_int_infra_match = true,
->> >> > +             .radar_detect_widths = BIT(NL80211_CHAN_WIDTH_20_NOHT) |
->> >> > +                                    BIT(NL80211_CHAN_WIDTH_20) |
->> >> > +                                    BIT(NL80211_CHAN_WIDTH_40) |
->> >> > +                                    BIT(NL80211_CHAN_WIDTH_80) |
->> >> > +                                    BIT(NL80211_CHAN_WIDTH_160) |
->> >> > +                                    BIT(NL80211_CHAN_WIDTH_80P80),
->> >>
->> >> Isn't it questionable to enable these without any testing on real
->> >> hardware? Getting DFS to work correctly is hard so I'm very suspicious
->> >> about this.
->> >>
->> >> --
->> >> Kalle Valo
->> >
->> > Hi Kalle,
->> >
->> > unfortunately at the moment I am not able to run any tests with a real
->> > signal generator so I just ported the code from vendor sdk.
->> > I am pretty confident it works since the radar pattern detection is
->> > done in fw/hw so I guess it has been already tested in the vendor sdk
->> 
->> DFS is really tricky to get it working right, so I'm not easily
->> convinced :)
->> 
->> > but we can postpone this patch and apply just the rest of the series
->> > until we have some test results.
->> 
->> Yeah, I think it would be best to drop this patch so that DFS is not
->> enabled by default and apply this patch only after positive test
->> results.
->> 
->
-> That's why I suggested Lorenzo to add this one - "[6/6] mt76: mt7615:
-> add radar pattern test knob to debugfs"
->
-> We can feed radar pattern through debugfs to test if a pattern is
-> detected as radar pattern or not and verify the fw radar detection
-> algorithm.
+This patch is similar to what commit df71c9cfceea ("rt2x00: fix order
+of entry flags modification") did for TX processing.
 
-Sure, that's nice for testing but does not guarantee that it works with
-real hardware as well. I take regulatory rules very seriously and that's
-why I'm extra careful here.
+This fixes a regression on a RT5370 based wifi stick in AP mode, which
+suddenly stopped data transmission after some period of heavy load. Also
+stopping the hanging hostapd resulted in the error message "ieee80211
+phy0: rt2x00queue_flush_queue: Warning - Queue 14 failed to flush".
+Other operation modes are probably affected as well, this just was
+the used testcase.
 
--- 
-Kalle Valo
+Fixes: ed194d136769 ("usb: core: remove local_irq_save() around ->complete=
+() handler")
+Cc: stable@vger.kernel.org # 4.20+
+Signed-off-by: Soeren Moch <smoch@web.de>
+=2D--
+Changes in v2:
+ complete rework
+
+Cc: Stanislaw Gruszka <sgruszka@redhat.com>
+Cc: Helmut Schaa <helmut.schaa@googlemail.com>
+Cc: Kalle Valo <kvalo@codeaurora.org>
+Cc: "David S. Miller" <davem@davemloft.net>
+Cc: linux-wireless@vger.kernel.org
+Cc: netdev@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org
+=2D--
+ drivers/net/wireless/ralink/rt2x00/rt2x00usb.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
+
+diff --git a/drivers/net/wireless/ralink/rt2x00/rt2x00usb.c b/drivers/net/=
+wireless/ralink/rt2x00/rt2x00usb.c
+index 67b81c7221c4..7e3a621b9c0d 100644
+=2D-- a/drivers/net/wireless/ralink/rt2x00/rt2x00usb.c
++++ b/drivers/net/wireless/ralink/rt2x00/rt2x00usb.c
+@@ -372,14 +372,9 @@ static void rt2x00usb_interrupt_rxdone(struct urb *ur=
+b)
+ 	struct queue_entry *entry =3D (struct queue_entry *)urb->context;
+ 	struct rt2x00_dev *rt2x00dev =3D entry->queue->rt2x00dev;
+
+-	if (!test_and_clear_bit(ENTRY_OWNER_DEVICE_DATA, &entry->flags))
++	if (!test_bit(ENTRY_OWNER_DEVICE_DATA, &entry->flags))
+ 		return;
+
+-	/*
+-	 * Report the frame as DMA done
+-	 */
+-	rt2x00lib_dmadone(entry);
+-
+ 	/*
+ 	 * Check if the received data is simply too small
+ 	 * to be actually valid, or if the urb is signaling
+@@ -388,6 +383,11 @@ static void rt2x00usb_interrupt_rxdone(struct urb *ur=
+b)
+ 	if (urb->actual_length < entry->queue->desc_size || urb->status)
+ 		set_bit(ENTRY_DATA_IO_FAILED, &entry->flags);
+
++	/*
++	 * Report the frame as DMA done
++	 */
++	rt2x00lib_dmadone(entry);
++
+ 	/*
+ 	 * Schedule the delayed work for reading the RX status
+ 	 * from the device.
+=2D-
+2.17.1
+
