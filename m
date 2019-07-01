@@ -2,165 +2,60 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 9E42F5B6D6
-	for <lists+linux-wireless@lfdr.de>; Mon,  1 Jul 2019 10:28:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7219B5B720
+	for <lists+linux-wireless@lfdr.de>; Mon,  1 Jul 2019 10:48:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728122AbfGAI2J (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 1 Jul 2019 04:28:09 -0400
-Received: from mail-qt1-f196.google.com ([209.85.160.196]:45257 "EHLO
-        mail-qt1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728116AbfGAI2I (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 1 Jul 2019 04:28:08 -0400
-Received: by mail-qt1-f196.google.com with SMTP id j19so13708945qtr.12
-        for <linux-wireless@vger.kernel.org>; Mon, 01 Jul 2019 01:28:07 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=endlessm-com.20150623.gappssmtp.com; s=20150623;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=QasTTaprmLYP8lu+OAIAZ4qDWXTMLVjKiiW3eSvYcPg=;
-        b=DElwOE2FVy8WGouInPBiLUdX//ZPDkOt68rwSbXsDRXYvjYCDDwuSl9qtiBJsOMo3u
-         BnaD5RHWgFidR4gNfrTI8pbPKRUPKE/VkHqVuUybCONlNhmNrcPD02Bg1aSVy07qQAiG
-         GeK/a425RkCz+UaDwTzANbF6XxooFBQfoti8ZY8QD6BTglcBxv0Zw/40genT/VOYp/dP
-         XQ8xeLoUQeYCxNcNSrRSpWnPL6iuc88I5qg8xu22qM/pMh5f+7h+M4bBTFOeSU0H0AZX
-         N2AjJdGg/iZLXL1c5ePvTo8T04aSB17EBDPd7/z5YMhvdOxV6FCb+2IG1fsUVwGIWdiW
-         IIaA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=QasTTaprmLYP8lu+OAIAZ4qDWXTMLVjKiiW3eSvYcPg=;
-        b=UVbXLH2HdbZxQGrmM0ut1v5doj9U8BAe83Cxq/3epi2YrPmhplU/LOy5pioeYhQ0uX
-         rVWMWP8LlWzUGB29nrHcBTEku9sbd/4eH+qBIFWN1ypytPaG6E4m9x+8/C+hYVw+VBUR
-         s03dS2wu/42qyCj45ECxqhsix1MOK5K6Tcyqdg6ChVlNLP4l+oeGMreU2pDtPPezxs9i
-         ggDf/6LiSfKaVZOYQ8L8uI7R3wCpHQx0qtEL8tn9iFIjrJ8zHtIOvLsP5nTeJnV1NJD4
-         upLZmHewMLsWyj5+kCZjgEiCzfjoyMDeYGbx5YYyeYYaD9DRalYiwE7is1+qBG+iaKA+
-         UaeQ==
-X-Gm-Message-State: APjAAAXTvmqqPfJOZl0aMuI9EcqCKykpLpBvnPUQsy90G22F22Dzh4zt
-        PsIlipNBvBayDoWIIa/SJrUvuBBrDZcLcycZBMmPkg==
-X-Google-Smtp-Source: APXvYqzVHPWiWEbrcd2gL7Cn7r79vE5x4Z5GHfD3ruh9NhVQD6G+qgPXkeuauOxShyujHZfTdjwHnpMYUVZe7DLcBaE=
-X-Received: by 2002:aed:36c5:: with SMTP id f63mr19693568qtb.239.1561969687300;
- Mon, 01 Jul 2019 01:28:07 -0700 (PDT)
+        id S1728050AbfGAIsh (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 1 Jul 2019 04:48:37 -0400
+Received: from verein.lst.de ([213.95.11.211]:59641 "EHLO verein.lst.de"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726442AbfGAIsh (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 1 Jul 2019 04:48:37 -0400
+Received: by verein.lst.de (Postfix, from userid 2407)
+        id AC3E268B20; Mon,  1 Jul 2019 10:48:33 +0200 (CEST)
+Date:   Mon, 1 Jul 2019 10:48:33 +0200
+From:   Christoph Hellwig <hch@lst.de>
+To:     Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+        Maxime Ripard <maxime.ripard@bootlin.com>,
+        Sean Paul <sean@poorly.run>, David Airlie <airlied@linux.ie>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        Jani Nikula <jani.nikula@linux.intel.com>,
+        Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
+        Rodrigo Vivi <rodrigo.vivi@intel.com>,
+        Ian Abbott <abbotti@mev.co.uk>,
+        H Hartley Sweeten <hsweeten@visionengravers.com>
+Cc:     devel@driverdev.osuosl.org, linux-s390@vger.kernel.org,
+        Intel Linux Wireless <linuxwifi@intel.com>,
+        linux-rdma@vger.kernel.org, netdev@vger.kernel.org,
+        intel-gfx@lists.freedesktop.org, linux-wireless@vger.kernel.org,
+        linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        linux-mm@kvack.org, iommu@lists.linux-foundation.org,
+        "moderated list:ARM PORT" <linux-arm-kernel@lists.infradead.org>,
+        linux-media@vger.kernel.org
+Subject: Re: use exact allocation for dma coherent memory
+Message-ID: <20190701084833.GA22927@lst.de>
+References: <20190614134726.3827-1-hch@lst.de>
 MIME-Version: 1.0
-References: <20190627095247.8792-1-chiu@endlessm.com>
-In-Reply-To: <20190627095247.8792-1-chiu@endlessm.com>
-From:   Daniel Drake <drake@endlessm.com>
-Date:   Mon, 1 Jul 2019 16:27:56 +0800
-Message-ID: <CAD8Lp44R0a1=fVi=fGv69w1ppdcaFV01opkdkhaX-eJ=K=tYeA@mail.gmail.com>
-Subject: Re: [PATCH] rtl8xxxu: Fix wifi low signal strength issue of RTL8723BU
-To:     Chris Chiu <chiu@endlessm.com>
-Cc:     Jes Sorensen <jes.sorensen@gmail.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        David Miller <davem@davemloft.net>,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        netdev <netdev@vger.kernel.org>,
-        Linux Kernel <linux-kernel@vger.kernel.org>,
-        Linux Upstreaming Team <linux@endlessm.com>,
-        Larry Finger <Larry.Finger@lwfinger.net>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20190614134726.3827-1-hch@lst.de>
+User-Agent: Mutt/1.5.17 (2007-11-01)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi Chris,
+On Fri, Jun 14, 2019 at 03:47:10PM +0200, Christoph Hellwig wrote:
+> Switching to a slightly cleaned up alloc_pages_exact is pretty easy,
+> but it turns out that because we didn't filter valid gfp_t flags
+> on the DMA allocator, a bunch of drivers were passing __GFP_COMP
+> to it, which is rather bogus in too many ways to explain.  Arm has
+> been filtering it for a while, but this series instead tries to fix
+> the drivers and warn when __GFP_COMP is passed, which makes it much
+> larger than just adding the functionality.
 
-On Thu, Jun 27, 2019 at 5:53 PM Chris Chiu <chiu@endlessm.com> wrote:
-> The WiFi tx power of RTL8723BU is extremely low after booting. So
-> the WiFi scan gives very limited AP list and it always fails to
-> connect to the selected AP. This module only supports 1x1 antenna
-> and the antenna is switched to bluetooth due to some incorrect
-> register settings.
->
-> This commit hand over the antenna control to PTA, the wifi signal
-> will be back to normal and the bluetooth scan can also work at the
-> same time. However, the btcoexist still needs to be handled under
-> different circumstances. If there's a BT connection established,
-> the wifi still fails to connect until disconneting the BT.
->
-> Signed-off-by: Chris Chiu <chiu@endlessm.com>
+Dear driver maintainers,
 
-Really nice work finding this!
-
-I know that after this change, you plan to bring over the btcoexist
-code from the vendor driver (or at least the minimum required code)
-for a more complete fix, but I'm curious how you found these magic
-register values and how they compare to the values used by the vendor
-driver with btcoexist?
-
-What's PTA? A type of firmware-implemented btcoexist that works for
-scanning but doesn't work when a BT connection is actually
-established?
-
-> diff --git a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8723b.c b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8723b.c
-> index 3adb1d3d47ac..6c3c70d93ac1 100644
-> --- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8723b.c
-> +++ b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8723b.c
-> @@ -1525,7 +1525,7 @@ static void rtl8723b_enable_rf(struct rtl8xxxu_priv *priv)
->         /*
->          * WLAN action by PTA
->          */
-> -       rtl8xxxu_write8(priv, REG_WLAN_ACT_CONTROL_8723B, 0x04);
-> +       rtl8xxxu_write8(priv, REG_WLAN_ACT_CONTROL_8723B, 0x0c);
-
-The comment above this still says "WLAN action by PTA" and the vendor
-driver has:
-        //set wlan_act control by PTA
-        pBtCoexist->fBtcWrite1Byte(pBtCoexist, 0x76e, 0x4);
-
-but then also:
-            //set wlan_act control by PTA
-            pBtCoexist->fBtcWrite1Byte(pBtCoexist, 0x76e, 0xc);
-
-So this change seems to be at least consistent with ambiguity of the
-vendor driver, do you have any understanding of the extra bit that is
-now set here?
-
-It's not easy to follow the code flow of the vendor driver to see what
-actually happens, have you checked that, does it end up using the 0xc
-value?
-
-> -        * 0x280, 0x00, 0x200, 0x80 - not clear
-> +        * Different settings per different antenna position.
-> +        * Antenna switch to BT: 0x280, 0x00 (inverse)
-> +        * Antenna switch to WiFi: 0x0, 0x280 (inverse)
-> +        * Antenna controlled by PTA: 0x200, 0x80 (inverse)
->          */
-> -       rtl8xxxu_write32(priv, REG_S0S1_PATH_SWITCH, 0x00);
-> +       rtl8xxxu_write32(priv, REG_S0S1_PATH_SWITCH, 0x80);
-
-I don't quite follow the comment here. Why are there 2 values listed
-for each possibility, what do you mean by inverse? You say the
-register settings were incorrect, but the previous value was 0x00
-which you now document as "antenna switch to wifi" which sounds like
-it was already correct?
-
-Which value does the vendor driver use?
-
->         /*
->          * Software control, antenna at WiFi side
-> diff --git a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
-> index 8136e268b4e6..87b2179a769e 100644
-> --- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
-> +++ b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
-> @@ -3891,12 +3891,13 @@ static int rtl8xxxu_init_device(struct ieee80211_hw *hw)
->
->         /* Check if MAC is already powered on */
->         val8 = rtl8xxxu_read8(priv, REG_CR);
-> +       val16 = rtl8xxxu_read16(priv, REG_SYS_CLKR);
->
->         /*
->          * Fix 92DU-VC S3 hang with the reason is that secondary mac is not
->          * initialized. First MAC returns 0xea, second MAC returns 0x00
->          */
-> -       if (val8 == 0xea)
-> +       if (val8 == 0xea || !(val16 & BIT(11)))
->                 macpower = false;
->         else
->                 macpower = true;
-
-At a glance I can't see which code this corresponds to in the vendor
-driver, can you point that out?
-
-Thanks
-Daniel
+can you look over the patches touching your drivers, please?  I'd
+like to get as much as possible of the driver patches into this
+merge window, so that it can you through your maintainer trees.
