@@ -2,76 +2,90 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 5E2075C2C9
-	for <lists+linux-wireless@lfdr.de>; Mon,  1 Jul 2019 20:20:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D47CF5C506
+	for <lists+linux-wireless@lfdr.de>; Mon,  1 Jul 2019 23:33:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727263AbfGASUX (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 1 Jul 2019 14:20:23 -0400
-Received: from nbd.name ([46.4.11.11]:44392 "EHLO nbd.name"
+        id S1727002AbfGAVdR (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 1 Jul 2019 17:33:17 -0400
+Received: from bilbo.ozlabs.org ([203.11.71.1]:59671 "EHLO ozlabs.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727255AbfGASUX (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 1 Jul 2019 14:20:23 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name;
-         s=20160729; h=Message-Id:Date:Subject:To:From:Sender:Reply-To:Cc:
-        MIME-Version:Content-Type:Content-Transfer-Encoding:Content-ID:
-        Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-        :Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
-        List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=9X3e2qSfmHu3g2gCoZyH9lge8kBO0ioGTySFUJ3JZV4=; b=kDh20Xkh2oQDK61Ldx2F3lwQ2t
-        LyQ+Zu0zkw5GVEJOAUtfVfwKd41sBXwv2Q4hidJtijYV7NLxUiMJXTE+3Njd4ncUcTvCtW2wGLUEW
-        0DC47JMzBVORazucSdlpr2iieRt/OTBtwKCDcMYVAhKnGRsQnxWcNK7GnDs6V9pGfKC8=;
-Received: from p54ae9425.dip0.t-ipconnect.de ([84.174.148.37] helo=maeck-3.local)
-        by ds12 with esmtpsa (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.89)
-        (envelope-from <nbd@nbd.name>)
-        id 1hi0ub-0007zy-T8
-        for linux-wireless@vger.kernel.org; Mon, 01 Jul 2019 20:20:21 +0200
-Received: by maeck-3.local (Postfix, from userid 501)
-        id 2003360F54D4; Mon,  1 Jul 2019 20:20:20 +0200 (CEST)
-From:   Felix Fietkau <nbd@nbd.name>
-To:     linux-wireless@vger.kernel.org
-Subject: [PATCH] mt76: mt7615: clean up FWDL TXQ during/after firmware upload
-Date:   Mon,  1 Jul 2019 20:20:20 +0200
-Message-Id: <20190701182020.6144-1-nbd@nbd.name>
-X-Mailer: git-send-email 2.17.0
+        id S1726586AbfGAVdR (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 1 Jul 2019 17:33:17 -0400
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+        (No client certificate requested)
+        by mail.ozlabs.org (Postfix) with ESMTPSA id 45d0wV0qB6z9s8m;
+        Tue,  2 Jul 2019 07:33:13 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=canb.auug.org.au;
+        s=201702; t=1562016794;
+        bh=2Hj7vKCK5VJUw//FnwjqKlrsQfYRnMAyUvxcTDPMICM=;
+        h=Date:From:To:Cc:Subject:From;
+        b=KEhrJWQPR9DHU/zh5QTIZLTeJazn2ks09IWHYECeQSPtJ18zfqDU25SapAIkP9l5z
+         t/x2V4s+Z1lZYFHa0j2xTMrx/9HLZwYUZSRzgbTFpz+3KOevFsdWlFpXB+o6B8NPjX
+         4/E8+Lkfl4KY35zF1zM5+hvMGmisiYIpSKJl/4VEhAiOWIBBr21z00CTdJ4kuRJsYt
+         O2EM4Y2P2HhKVpjSBlSAjrfhSIJHT8mSIvnfwpEk7iFh6zg35OTrgWMRUXqRo1f9Kn
+         1AgCBOii0IEd3mKVUKb+FF/BDQuSS1788Dw2aXByQxIJXMlp7GHH8LVor/8DhOSFcG
+         vz+UViDpYjlJg==
+Date:   Tue, 2 Jul 2019 07:33:06 +1000
+From:   Stephen Rothwell <sfr@canb.auug.org.au>
+To:     Kalle Valo <kvalo@codeaurora.org>,
+        Wireless <linux-wireless@vger.kernel.org>
+Cc:     Linux Next Mailing List <linux-next@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Dundi Raviteja <dundi@codeaurora.org>
+Subject: linux-next: Fixes tag needs some work in the wireless-drivers-next
+ tree
+Message-ID: <20190702073306.3bd439ab@canb.auug.org.au>
+MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ boundary="Sig_/wLuOVOKTF0HYp0zZKauyHrx"; protocol="application/pgp-signature"
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Since we don't clean that tx queue from the tx tasklet, we need to do it
-after the firmware upload is done. This patch also adds a cleanup step during
-the upload, to help reclaim memory faster.
+--Sig_/wLuOVOKTF0HYp0zZKauyHrx
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: quoted-printable
 
-Fixes unprocessed queued frames eating up memory  long after the firmware
-upload has already completed
+Hi all,
 
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
----
- drivers/net/wireless/mediatek/mt76/mt7615/mcu.c | 3 +++
- 1 file changed, 3 insertions(+)
+In commit
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c
-index 06d146198e33..de371bd2e0b9 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c
-@@ -248,6 +248,7 @@ static int mt7615_mcu_send_firmware(struct mt7615_dev *dev, const void *data,
- 
- 		data += cur_len;
- 		len -= cur_len;
-+		mt76_queue_tx_cleanup(dev, MT_TXQ_FWDL, false);
- 	}
- 
- 	return ret;
-@@ -525,6 +526,8 @@ static int mt7615_load_firmware(struct mt7615_dev *dev)
- 		return -EIO;
- 	}
- 
-+	mt76_queue_tx_cleanup(dev, MT_TXQ_FWDL, false);
-+
- 	dev_dbg(dev->mt76.dev, "Firmware init done\n");
- 
- 	return 0;
--- 
-2.17.0
+  c709df58832c ("ath10k: Fix memory leak in qmi")
 
+Fixes tag
+
+  Fixes: fda6fee0001e ("ath10k: add QMI message handshake for wcn3990 clien=
+t")
+
+has these problem(s):
+
+  - Target SHA1 does not exist
+
+Did you mean
+
+Fixes: ba94c753ccb4 ("ath10k: add QMI message handshake for wcn3990 client")
+
+--=20
+Cheers,
+Stephen Rothwell
+
+--Sig_/wLuOVOKTF0HYp0zZKauyHrx
+Content-Type: application/pgp-signature
+Content-Description: OpenPGP digital signature
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCAAdFiEENIC96giZ81tWdLgKAVBC80lX0GwFAl0afBIACgkQAVBC80lX
+0GxElQgAnv/zBAAvzc/VYVnJVODY5e078yQnunyevK54QBSVNYpsNcVkmsrgOZwJ
+4VTPSMiK7j6/xIcXP8mqfPvHq2gh3025XvD+7Le7J7p1JAUrEWWeXSigVJf8o1jA
+Qr1ztZzBcB98CHDyHanCxlWkngkJ4WzjZEZ5SZ6aAjsxk+4UGK7f6vJWh9rcgYGH
+D26n0DCjh5zzW3rzeKJKlZAfRQx6wcw8haGsC18rlOWUFZTSQuxZFsqC7bKBo9lM
+x9exupOHNMsQ7e0fNkgj2O38rsa3LzSq7zQVPTRlxOosxqkiCCYoj0A3VnS7mgDf
+dik68rts8oDRqEF9TzfaTlLOwA4J4w==
+=aM/W
+-----END PGP SIGNATURE-----
+
+--Sig_/wLuOVOKTF0HYp0zZKauyHrx--
