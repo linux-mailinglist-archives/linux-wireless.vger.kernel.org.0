@@ -2,89 +2,121 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 676CB5B634
-	for <lists+linux-wireless@lfdr.de>; Mon,  1 Jul 2019 09:57:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6964C5B637
+	for <lists+linux-wireless@lfdr.de>; Mon,  1 Jul 2019 09:59:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727455AbfGAH5h (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 1 Jul 2019 03:57:37 -0400
-Received: from mail-qk1-f195.google.com ([209.85.222.195]:39732 "EHLO
-        mail-qk1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727349AbfGAH5h (ORCPT
+        id S1727176AbfGAH7h (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 1 Jul 2019 03:59:37 -0400
+Received: from smtp.codeaurora.org ([198.145.29.96]:37240 "EHLO
+        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726036AbfGAH7h (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 1 Jul 2019 03:57:37 -0400
-Received: by mail-qk1-f195.google.com with SMTP id i125so10256492qkd.6
-        for <linux-wireless@vger.kernel.org>; Mon, 01 Jul 2019 00:57:36 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=endlessm-com.20150623.gappssmtp.com; s=20150623;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=mtyfCDkCjq5RHAVYhMnNoIQKBSXSMCI67JdQ5H2fFB4=;
-        b=CMfvCiQ9YcwZMzl4gxArCw2oFzR+5VwPbG22HvLIBEuInytw5vIVm3X8wYi+SLPMqf
-         ShzzQOvX3lx4nDaIXJXgZZyzdvFqMcBoLGxeMrzy2SO48kTtUJeWHbZS0rHeWMWuYKYU
-         ZElTKLFd6vSjn93nyBlLvaWF8mgOyX3DoT1GF6/CwKdg5a0A1s7neYlcm47XEUKmdqET
-         AUKk1MA6xlA+kQplohG8lWA+u7uDzG3RpZ5sm7LCv5CjjP1wNyDFNpJGKwIYsGxClHXS
-         o9kSagK/mZ17fupgVAwYkWbPaz3/+UHmAbC6POxg3z2lC0AxI5oCNWJbdf4zGN3fH8cb
-         GrTg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=mtyfCDkCjq5RHAVYhMnNoIQKBSXSMCI67JdQ5H2fFB4=;
-        b=A1Hc1nF2h1CuBPouzatztnYiN6/dM0fYrtUFtrLeX0nvE9L4Bg6UM4OR2WA1WZ5Dpj
-         KJt89m/1p5SuE6jbvarsTirErWQktBH8Edc6Kfetm7WCecbhTyRncSTrNi/uOuX3ow+k
-         Y8CTowG360xsbh1TU0QIqP+MkEYUJIwwvp1c1WWd+k5D80x0dgl7vKI2JtPaIxjY2jpd
-         l/lavFKKn75Ha7rPQUxGlvxX0KcnVTeCqwME5MUj0R+v/N3MV4+pBkOTrzdSDWCSm8TQ
-         H3L+IuNRSDZdDMzggU/L7zDsVp8Qxln+67h3tlf3og7ix/LD9haCZslY/AkT4DUsx8rp
-         aRWw==
-X-Gm-Message-State: APjAAAWENphBiwGOuAPday/81hBAbhVXZTh07zsS3EGOTNIBQzksfJEm
-        Ljq9c72lIQHqqDMj2KETEDoXh0+tbalj+Fc4VxiouQ==
-X-Google-Smtp-Source: APXvYqxC/e7W+DgJp9+vritpFFPsVD69EJBRr3ZtHuge17WlBjm2xWd+OHXCNSjuto3JiVwTQToBG8Zo+1zk586Z/Us=
-X-Received: by 2002:ae9:e306:: with SMTP id v6mr19147089qkf.145.1561967856075;
- Mon, 01 Jul 2019 00:57:36 -0700 (PDT)
-MIME-Version: 1.0
-References: <20190617065600.40405-1-chiu@endlessm.com>
-In-Reply-To: <20190617065600.40405-1-chiu@endlessm.com>
-From:   Daniel Drake <drake@endlessm.com>
-Date:   Mon, 1 Jul 2019 15:57:25 +0800
-Message-ID: <CAD8Lp46vNbaDkC4sYaw6GijMtHiK41EcS0Wjwp61MdyfcwcqgQ@mail.gmail.com>
-Subject: Re: [RFC PATCH v5] rtl8xxxu: Improve TX performance of RTL8723BU on
- rtl8xxxu driver
-To:     Chris Chiu <chiu@endlessm.com>
-Cc:     Jes Sorensen <jes.sorensen@gmail.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        David Miller <davem@davemloft.net>,
+        Mon, 1 Jul 2019 03:59:37 -0400
+Received: by smtp.codeaurora.org (Postfix, from userid 1000)
+        id 990596081E; Mon,  1 Jul 2019 07:59:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
+        s=default; t=1561967976;
+        bh=b11qQbhk0zaXcTzfE7iWgOyP9U+ErvxrmUu8LjwJsvY=;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+        b=OtiMZckQUPJnaqKj2dSVHdXy9gHWDyOztey+QLDJyQjnBd7LkPCNwdCVwShF+YhrL
+         Fnd4U3C5zsaM9tRf1All4UkKbODkDbfKIiak9xKqkcFWvXijLfBMNYWA1Rxzki8jsb
+         fE1gla0KGhAci/BmFDN3fWafH+5lTmoBcy6caOug=
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        pdx-caf-mail.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.7 required=2.0 tests=ALL_TRUSTED,BAYES_00,
+        DKIM_INVALID,DKIM_SIGNED,SPF_NONE autolearn=no autolearn_force=no
+        version=3.4.0
+Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo@smtp.codeaurora.org)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id D25AF602F8;
+        Mon,  1 Jul 2019 07:59:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
+        s=default; t=1561967974;
+        bh=b11qQbhk0zaXcTzfE7iWgOyP9U+ErvxrmUu8LjwJsvY=;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+        b=khq+4Dv/VdIZ/9ZdxLhqWclU4K0qdaYEERPyIU3nbP37saTrq3O9XY1FeXsoIjiZX
+         W8ZZJF1km49Nl7lEx0bsD/bFRMcwEsa2UqeNT7CFdFIfgXa2yIid/7/Pylex2jfrY/
+         ZvuE3Ff78sVsme1vFNVXtBmS3tZVTZRm+EoOmAg4=
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org D25AF602F8
+Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
+From:   Kalle Valo <kvalo@codeaurora.org>
+To:     Lorenzo Bianconi <lorenzo.bianconi@redhat.com>
+Cc:     Lorenzo Bianconi <lorenzo@kernel.org>,
+        Felix Fietkau <nbd@nbd.name>,
         linux-wireless <linux-wireless@vger.kernel.org>,
-        netdev <netdev@vger.kernel.org>,
-        Linux Kernel <linux-kernel@vger.kernel.org>,
-        Linux Upstreaming Team <linux@endlessm.com>
-Content-Type: text/plain; charset="UTF-8"
+        Ryder Lee <ryder.lee@mediatek.com>,
+        Roy Luo <royluo@google.com>, YF Luo <yf.luo@mediatek.com>
+Subject: Re: [PATCH 4/6] mt76: mt7615: unlock dfs bands
+References: <cover.1561804422.git.lorenzo@kernel.org>
+        <33184e0b78983fe7c79fa70c5fbb21042aafa4f5.1561804422.git.lorenzo@kernel.org>
+        <87muhzs9qv.fsf@purkki.adurom.net>
+        <CAJ0CqmU6TLhFa4ZJxWHBzvpx+5g5E4-WkSPECx47F9d3T=5YjQ@mail.gmail.com>
+Date:   Mon, 01 Jul 2019 10:59:22 +0300
+In-Reply-To: <CAJ0CqmU6TLhFa4ZJxWHBzvpx+5g5E4-WkSPECx47F9d3T=5YjQ@mail.gmail.com>
+        (Lorenzo Bianconi's message of "Sun, 30 Jun 2019 13:25:56 +0200")
+Message-ID: <87tvc69odh.fsf@kamboji.qca.qualcomm.com>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
+MIME-Version: 1.0
+Content-Type: text/plain
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Mon, Jun 17, 2019 at 2:56 PM Chris Chiu <chiu@endlessm.com> wrote:
-> With this commit, the tx rate of each data and qos data packet will
-> be 39Mbps (MCS4) with the 0xF00000 as the tx rate mask. The 20th bit
-> to 23th bit means MCS4 to MCS7. It means that the firmware still picks
-> the lowest rate from the rate mask and explains why the tx rate of
-> data and qos data is always lowest 1Mbps because the default rate mask
-> passed is always 0xFFFFFFF ranges from the basic CCK rate, OFDM rate,
-> and MCS rate. However, with Realtek's driver, the tx rate observed from
-> wireshark under the same condition is almost 65Mbps or 72Mbps
-suggestion: add:
-, indicating that rtl8xxxu could still be further improved.
+Lorenzo Bianconi <lorenzo.bianconi@redhat.com> writes:
 
-Then remove this paragraph, I think we're in agreement of the approach here:
-> I believe the firmware of RTL8723BU may need fix. And I think we
-> can still bring in the dm_watchdog as rtlwifi to improve from the
-> driver side. Please leave precious comments for my commits and
-> suggest what I can do better. Or suggest if there's any better idea
-> to fix this. Thanks.
+>>
+>> Lorenzo Bianconi <lorenzo@kernel.org> writes:
+>>
+>> > Unlock dfs channels since now mt7615 driver supports radar detection
+>> >
+>> > Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+>> > ---
+>> >  drivers/net/wireless/mediatek/mt76/mt7615/init.c | 6 ++++++
+>> >  1 file changed, 6 insertions(+)
+>> >
+>> > diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/init.c b/drivers/net/wireless/mediatek/mt76/mt7615/init.c
+>> > index 5dc4cced5789..6d336d82cafe 100644
+>> > --- a/drivers/net/wireless/mediatek/mt76/mt7615/init.c
+>> > +++ b/drivers/net/wireless/mediatek/mt76/mt7615/init.c
+>> > @@ -152,6 +152,12 @@ static const struct ieee80211_iface_combination if_comb[] = {
+>> >               .max_interfaces = 4,
+>> >               .num_different_channels = 1,
+>> >               .beacon_int_infra_match = true,
+>> > +             .radar_detect_widths = BIT(NL80211_CHAN_WIDTH_20_NOHT) |
+>> > +                                    BIT(NL80211_CHAN_WIDTH_20) |
+>> > +                                    BIT(NL80211_CHAN_WIDTH_40) |
+>> > +                                    BIT(NL80211_CHAN_WIDTH_80) |
+>> > +                                    BIT(NL80211_CHAN_WIDTH_160) |
+>> > +                                    BIT(NL80211_CHAN_WIDTH_80P80),
+>>
+>> Isn't it questionable to enable these without any testing on real
+>> hardware? Getting DFS to work correctly is hard so I'm very suspicious
+>> about this.
+>>
+>> --
+>> Kalle Valo
+>
+> Hi Kalle,
+>
+> unfortunately at the moment I am not able to run any tests with a real
+> signal generator so I just ported the code from vendor sdk.
+> I am pretty confident it works since the radar pattern detection is
+> done in fw/hw so I guess it has been already tested in the vendor sdk
 
-> Signed-off-by: Chris Chiu <chiu@endlessm.com>
-Reviewed-by: Daniel Drake <drake@endlessm.com>
+DFS is really tricky to get it working right, so I'm not easily
+convinced :)
 
-> +        * is supported and no iface_combinations are providec.
+> but we can postpone this patch and apply just the rest of the series
+> until we have some test results.
 
-typo: provided
+Yeah, I think it would be best to drop this patch so that DFS is not
+enabled by default and apply this patch only after positive test
+results.
+
+-- 
+Kalle Valo
