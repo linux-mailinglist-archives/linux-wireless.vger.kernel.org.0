@@ -2,55 +2,82 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A34245BA57
-	for <lists+linux-wireless@lfdr.de>; Mon,  1 Jul 2019 13:07:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D35B75BAA4
+	for <lists+linux-wireless@lfdr.de>; Mon,  1 Jul 2019 13:27:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728262AbfGALHw (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 1 Jul 2019 07:07:52 -0400
-Received: from mx1.redhat.com ([209.132.183.28]:38972 "EHLO mx1.redhat.com"
+        id S1727979AbfGAL1h (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 1 Jul 2019 07:27:37 -0400
+Received: from nbd.name ([46.4.11.11]:40242 "EHLO nbd.name"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727645AbfGALHw (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 1 Jul 2019 07:07:52 -0400
-Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.phx2.redhat.com [10.5.11.16])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mx1.redhat.com (Postfix) with ESMTPS id 872BD2F8BDF;
-        Mon,  1 Jul 2019 11:07:52 +0000 (UTC)
-Received: from localhost (ovpn-204-140.brq.redhat.com [10.40.204.140])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 2B93078540;
-        Mon,  1 Jul 2019 11:07:52 +0000 (UTC)
-Date:   Mon, 1 Jul 2019 13:07:51 +0200
-From:   Stanislaw Gruszka <sgruszka@redhat.com>
-To:     Soeren Moch <smoch@web.de>
-Cc:     Helmut Schaa <helmut.schaa@googlemail.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 2/2] rt2x00usb: remove unnecessary rx flag checks
-Message-ID: <20190701110750.GB13992@redhat.com>
-References: <20190701105314.9707-1-smoch@web.de>
- <20190701105314.9707-2-smoch@web.de>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20190701105314.9707-2-smoch@web.de>
-User-Agent: Mutt/1.11.3 (2019-02-01)
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.16
-X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16 (mx1.redhat.com [10.5.110.38]); Mon, 01 Jul 2019 11:07:52 +0000 (UTC)
+        id S1726652AbfGAL1h (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 1 Jul 2019 07:27:37 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name;
+         s=20160729; h=Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:
+        MIME-Version:Content-Type:Content-Transfer-Encoding:Content-ID:
+        Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+        :Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
+        List-Subscribe:List-Post:List-Owner:List-Archive;
+        bh=8xeQ8Ouu97Qg8BegnrjEEygtfPvTpW6Qo6/jKRbo+sM=; b=LVfpJzyovRUV1R30IH63mbqg0u
+        65d/MuBzKcsiMYJl6PQ73a3Hyteg+afEV9mv2aN1gSfPdlE+1nnv6UaCYtvyCM2bM15eRuASdCs5s
+        vHdwdlITFs+Unu/69ww9wGwzZ2uOEPoCdTe37pJ4jJQJUVS7VQYzAKRERlXP28TANUVA=;
+Received: from p54ae9425.dip0.t-ipconnect.de ([84.174.148.37] helo=maeck-3.local)
+        by ds12 with esmtpsa (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.89)
+        (envelope-from <nbd@nbd.name>)
+        id 1hhuT9-00044o-Uu; Mon, 01 Jul 2019 13:27:36 +0200
+Received: by maeck-3.local (Postfix, from userid 501)
+        id 3D91260D3CE5; Mon,  1 Jul 2019 13:27:34 +0200 (CEST)
+From:   Felix Fietkau <nbd@nbd.name>
+To:     linux-wireless@vger.kernel.org
+Cc:     stable@vger.kernel.org
+Subject: [PATCH] mt76: round up length on mt76_wr_copy
+Date:   Mon,  1 Jul 2019 13:27:34 +0200
+Message-Id: <20190701112734.86552-1-nbd@nbd.name>
+X-Mailer: git-send-email 2.17.0
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Mon, Jul 01, 2019 at 12:53:14PM +0200, Soeren Moch wrote:
-> In contrast to the TX path, there is no need to separately read the transfer
-> status from the device after receiving RX data. Consequently, there is no
-> real STATUS_PENDING RX processing queue entry state.
-> Remove the unnecessary ENTRY_DATA_STATUS_PENDING flag checks from the RX path.
-> Also remove the misleading comment about reading RX status from device.
-> 
-> Suggested-by: Stanislaw Gruszka <sgruszka@redhat.com>
-> Signed-off-by: Soeren Moch <smoch@web.de>
+When beacon length is not a multiple of 4, the beacon could be sent with
+the last 1-3 bytes corrupted. The skb data is guaranteed to have enough
+room for reading beyond the end, because it is always followed by
+skb_shared_info, so rounding up is safe.
+All other callers of mt76_wr_copy have multiple-of-4 length already.
 
-Acked-by: Stanislaw Gruszka <sgruszka@redhat.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
+---
+ drivers/net/wireless/mediatek/mt76/mmio.c | 2 +-
+ drivers/net/wireless/mediatek/mt76/usb.c  | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/net/wireless/mediatek/mt76/mmio.c b/drivers/net/wireless/mediatek/mt76/mmio.c
+index 38368d19aa6f..83c96a47914f 100644
+--- a/drivers/net/wireless/mediatek/mt76/mmio.c
++++ b/drivers/net/wireless/mediatek/mt76/mmio.c
+@@ -43,7 +43,7 @@ static u32 mt76_mmio_rmw(struct mt76_dev *dev, u32 offset, u32 mask, u32 val)
+ static void mt76_mmio_copy(struct mt76_dev *dev, u32 offset, const void *data,
+ 			   int len)
+ {
+-	__iowrite32_copy(dev->mmio.regs + offset, data, len >> 2);
++	__iowrite32_copy(dev->mmio.regs + offset, data, DIV_ROUND_UP(len, 4));
+ }
+ 
+ static int mt76_mmio_wr_rp(struct mt76_dev *dev, u32 base,
+diff --git a/drivers/net/wireless/mediatek/mt76/usb.c b/drivers/net/wireless/mediatek/mt76/usb.c
+index 61b27f3ec6e4..87ecbe290f99 100644
+--- a/drivers/net/wireless/mediatek/mt76/usb.c
++++ b/drivers/net/wireless/mediatek/mt76/usb.c
+@@ -164,7 +164,7 @@ static void mt76u_copy(struct mt76_dev *dev, u32 offset,
+ 	int i, ret;
+ 
+ 	mutex_lock(&usb->usb_ctrl_mtx);
+-	for (i = 0; i < (len / 4); i++) {
++	for (i = 0; i < DIV_ROUND_UP(len, 4); i++) {
+ 		put_unaligned_le32(val[i], usb->data);
+ 		ret = __mt76u_vendor_request(dev, MT_VEND_MULTI_WRITE,
+ 					     USB_DIR_OUT | USB_TYPE_VENDOR,
+-- 
+2.17.0
+
