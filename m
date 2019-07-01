@@ -2,106 +2,77 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 9B6475B22C
-	for <lists+linux-wireless@lfdr.de>; Sun, 30 Jun 2019 23:56:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4DFE55B3E6
+	for <lists+linux-wireless@lfdr.de>; Mon,  1 Jul 2019 07:25:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727077AbfF3V4q (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 30 Jun 2019 17:56:46 -0400
-Received: from mail-qt1-f194.google.com ([209.85.160.194]:36047 "EHLO
-        mail-qt1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726040AbfF3V4q (ORCPT
+        id S1727242AbfGAFZt convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 1 Jul 2019 01:25:49 -0400
+Received: from smtp1.qwestoffice.com ([64.26.60.190]:58524 "EHLO
+        smtp1.qwestoffice.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725747AbfGAFZt (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 30 Jun 2019 17:56:46 -0400
-Received: by mail-qt1-f194.google.com with SMTP id p15so12652574qtl.3
-        for <linux-wireless@vger.kernel.org>; Sun, 30 Jun 2019 14:56:45 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=txuRTylzO9HtqJ05wnC3L8NyCMNOBefcP6c96hmVIc0=;
-        b=iYDuBFwlgSIM4o8Gs9dF5EPe3xx4UD2AEDnpMMyKHpjvhniiKH/kGgoa+dmX9wWHyT
-         k1tTYSjB+/a1bz3Ujl8RzAZUEUn7kPkC6HZrzSjvmGgnYLVc5/La12JiVUttkRiVQSLl
-         8RYahrVREc94zRvBWwKWc7DCUzNS0EjYhrHTFStLDXoIMqh7Zw7WGe7s54GvtG9QjbPw
-         vPiX5pGYjQUrLofd9FnyTGSHzoajk+SXvfpzDWt3HeMjdVNpFl+nqtpus/JSVvgumVzB
-         ARjvc+RQZyaJNZ1XU4UYmQgv/GGUSfKopZEo16QIbbrZp/OL1mP9ETpKXsYTm/QlxtBR
-         IBfA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=txuRTylzO9HtqJ05wnC3L8NyCMNOBefcP6c96hmVIc0=;
-        b=tqrydy6g5Yoqvi0TgQqIiYBkIVimPEw1vjzpyZSzILPwpeav6NyFtEMPcASAQh/g+F
-         Tj9Tbh1hMG6UdGADEVXTX3kHzklhCK8U2q817ydxDsKKVnYrj+IASYwGCR6h0ZqQZLPC
-         dAK/p1EORr1yOKv61Z+dTAXRFcBqdG37GLiqMQTcpscFSN2zxgS1AxRFXRGzIlEpDdkt
-         E8+8TLBzBcZMmkbSkfgEAlbCD61dSPExbz2fnRja2rQK3XilQjiL79cp6/mzL6DtLci3
-         NKA1ykgUFCwQvxw22vdMlxgYRivWO2wgzVFZJTD6XLjye0JUEdMbaqGgxiE8Mus2Sjn5
-         ZXLQ==
-X-Gm-Message-State: APjAAAWoBqYmmbV8ybUH5WkhLF23vzbESttqrkkoq4fky8s4oDWP7/qW
-        JCzB2mEE1zargUks7tzFIcjrF4OoSjQa/jQoTjlmZ4gt
-X-Google-Smtp-Source: APXvYqw5wJGM/H8BAlmYh96dCgrPIfku2q8wBOD+t1J39JQcB1e7ZuYKlzUxxMmdo1dQmgqvKZp5Dmn0KGZxNXpi3sw=
-X-Received: by 2002:ac8:34c6:: with SMTP id x6mr17786931qtb.353.1561931805131;
- Sun, 30 Jun 2019 14:56:45 -0700 (PDT)
+        Mon, 1 Jul 2019 01:25:49 -0400
+X-Greylist: delayed 15662 seconds by postgrey-1.27 at vger.kernel.org; Mon, 01 Jul 2019 01:25:48 EDT
+Received: from smtpauth04a.mfg.siteprotect.com ([64.26.60.160] helo=smtpauth01.mfg.siteprotect.com)
+        by semfq02.mfg.siteprotect.com with esmtps (TLSv1.2:ECDHE-RSA-AES256-GCM-SHA384:256)
+        (Exim 4.89)
+        (envelope-from <pastoraltland@qwestoffice.net>)
+        id 1hhkkB-0005JH-N0; Sun, 30 Jun 2019 21:04:33 -0400
+Received: from favour.homerouter.cpe (unknown [169.159.88.122])
+        (Authenticated sender: eagle147@qwestoffice.net)
+        by smtpauth01.mfg.siteprotect.com (Postfix) with ESMTPSA id 45cTfF6mX5z8XlRWh;
+        Sun, 30 Jun 2019 21:04:04 -0400 (EDT)
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-References: <CAOw_LSHsioZ2TP1FeZT3L6gHeeV72e2aKW0bGkAzcJRgVzE43Q@mail.gmail.com>
-In-Reply-To: <CAOw_LSHsioZ2TP1FeZT3L6gHeeV72e2aKW0bGkAzcJRgVzE43Q@mail.gmail.com>
-From:   Daniel Lenski <dlenski@gmail.com>
-Date:   Sun, 30 Jun 2019 14:56:09 -0700
-Message-ID: <CAOw_LSF5kBQCECi+1waXNMvuo+eT68fr9SO52JMuVrLtq8_CLg@mail.gmail.com>
-Subject: Fwd: rtl8723au: WiFi scanning stops working shortly after driver loads?
-To:     linux-wireless@vger.kernel.org
-Cc:     Jes Sorensen <Jes.Sorensen@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8BIT
+Content-Description: Mail message body
+Subject: Contract for your services
+To:     Recipients <pastoraltland@qwestoffice.net>
+From:   "Ryo Tomiche" <pastoraltland@qwestoffice.net>
+Date:   Sun, 30 Jun 2019 19:03:35 -0600
+Reply-To: sales.0015012@gmail.com
+Authentication-Results: mfg.siteprotect.com; auth=pass smtp.auth=eagle147@qwestoffice.net smtp.mailfrom=<pastoraltland@qwestoffice.net>
+Message-ID: <E1hhkkB-0005JH-N0@semfq02.mfg.siteprotect.com>
+X-Originating-IP: 64.26.60.160
+X-portal.siteprotect.com-Domain: qwest.outbound
+X-portal.siteprotect.com-Username: 64.26.60.160
+Authentication-Results: mfg.siteprotect.com; auth=pass smtp.auth=64.26.60.160@qwest.outbound
+X-portal.siteprotect.com-Outgoing-Class: unsure
+X-portal.siteprotect.com-Outgoing-Evidence: Combined (0.86)
+X-Recommended-Action: accept
+X-Filter-ID: Mvzo4OR0dZXEDF/gcnlw0Ud2CCyxmm2KHETL0VYw/ASpSDasLI4SayDByyq9LIhVkjx8yiNdjOuz
+ WahFrQY/g0TNWdUk1Ol2OGx3IfrIJKyP9eGNFz9TW9u+Jt8z2T3K4XczJTsb6RLMMYZOHzn2sfPq
+ Ey+kBlNMhCB5C1MCg8jaa0BK+j0xWTkQ2aImpHdqbuYvrbPjqL6kLV2g5or74JW5etSaBP/L+0cX
+ tE2aapYxBdOAsxdkbUJPAOs/137I/QIdEaYfdKuwPdjfkBIDIKnHFrTo5AclZ2wdku8zvpgnz2rH
+ b6QNwWMGYUiyhLiess+FBm27tbiypUzHm/4caBx00HbdiudjYNeWolZ0Dmh+yHu4F0MHJdNNelVZ
+ e2kXpMGqGwCz0gUBOkmNZCL0iJp9sD0RSS+aWKBuaHyvESqODscpgMUqRzZJ5Nk06ghXoPUevYl9
+ bzkTvYoWxt4G4PI9DKirjQSbCp/L9muyAZWtvBxNdWKLMgeqj/lvPDB5DQcsOC/N6zlm9kW0T62/
+ KuRIzcHRsQ8p+lMSlKmg+iiMGWR5FqhTPubBVacoPlL20oLJHKkkbnNFF+16cUM0jjQoQDKlhN+a
+ XTvU5fQvLuaUntM4VjB2GLIGSw+i8N4vsIrKPSnMyzYmXQmUrkQhocG4GpIL74/26HPr1QhmfUxs
+ 17xmV8k2ng/xjN532gvrtO+8H9orm+PdQgoh0NVQFi6cC0xzwXcjAOxmEHWTDmuvOOu15ByrJRCb
+ RoexNI7g0Dt1ZX+43Y0lLW8ZjaI8ZUt0N0cfH96USjjBGp/gyj49TK57Xku0P+xpJjda8t2f4/Sp
+ L7zBlCuptUSbl513FgLHADHCs3Urt8vqFWDBKhxVr8eP+Wmp/y/AB2KysgGDNcjzPk6MDgG052jb
+ VAGKNlHuAq4k7PqG9M5idz7joR5h9fIogdNInbXmdTA5i/nFxoYihLvbD7yB1FU2fJpI0U3/7kNo
+ 6wuj/PrCqkR9G4ZFoAFScqc09DLQCUMs8S9uryi2i8l28NL0p/MRqonVD/fYnqiXIStimRJx+UEk
+ MGRzjCfq0VbA5hixQhb78h3LWvib1jvilNSW9SHaszy+01Jsspk+EIXwMzmCA/zvgpBnk4YeBqpf
+ zNaw4alomZBM5YE5enyccp7RH4WQio3uGeeRmrXjUYkRjuaKFbq1dAHYChUOUAGX0o8lFHxd4Qh3
+ IK/1NH5THMtlYvyHAYGOGnnCniM+hIFBd6naSZZ3Yn4Gbi7isHXDUSFo+slwSxFU7nepPPOsltTK
+ eIC3cnT8GuQejFUVN/1efw0bMLV3QB1Sx1MCF1yLmL/PqZXM+f3vqtC2VMYQVO+b8f1xSLkjTMJa
+ dLYQh1JGCCRf7RFw6JV26BPK9B5s/HoILgYc7B5aa+zJSLkbxQRefHi7/XEuETMraXKM8296TjXk
+ mIYAdI/4W97hAXSGYU4vxkTkQiWekvhTEUzFlM0SjhxW+xGStMQzN6sl9Br1QBgqyARXyn6amJjV
+ M2aOLvwF0kp3GxPzUsCrA+iV0lSs90znX69q0E8fJCZve8EtP32uPlh71CeUgB9Dryx9+I7DJYkm
+ kAgg46Yu3c5e+oVHWIYJQrfztY9yd98YR5OJT9d7o4V7wrNVCkgAzSYUM3KPkN+OKQsEY8QDFlkl
+ pUchNy11CxFXYthTDDW6yTiZI+oEW10FB4E/C/PvzjHYCQSK9VmaXnAeRikRxdQNur6zZHgZxyi6
+ PMPJIdqoKvM6FUI6mqHq5Y8Ee227Q6+4XkAGsj64ssfFMS+4ayUpOtEhdxekWDmK9g==
+X-Report-Abuse-To: spam@semfq03.mfg.siteprotect.com
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi,
-I recently started to use an older laptop with RTL8723AU
-WiFi/Bluetooth again for the first time in a couple years.
+We’d like to contract your services for a period of 12 months. Please advise if you are open to new opportunities.
 
-I've noticed a strange behavior of this device/driver (rtl8xxxu with
-4.4.0 kernel): the ability to do a WiFi scan *while associated with an
-access point* somehow disappears ~30 seconds after the driver is
-loaded.
+Regards,
 
-That is, right after loading the module and connecting to a WiFi
-network, I can successfully do `iwlist wlan0 scan`; but after a short
-period of time, the scan stops returning any results other than for
-the AP that I'm already connected to. Disconnecting from the AP
-"resets" this behavior, but once I reconnect to a network, my ability
-to scan disappears again shortly thereafter.
-
-Steps to reproduce:
-
-    # rmmod rtl8xxxu
-    # modprobe rtl8xxxu debug=99
-    # while true; do sudo iwlist wlan0 scan | grep ESSID | wc -l ; sleep 2; done
-    13
-    13
-    13
-    13
-    1     # only my current AP
-    1
-    ...
-
-Is this a known issue with the hardware, or with the driver? Any
-advice on how to debug it? I've looked through the debug messages, and
-found nothing that seems to indicate a state change around the time
-that the scan stops working.
-
-Thanks,
-Dan
-
-ps: I'm using the "standard" rtl8723aufw_B_NoBT.bin firmware
-(https://git.kernel.org/pub/scm/linux/kernel/git/firmware/linux-firmware.git/tree/rtlwifi/rtl8723aufw_B_NoBT.bin)
-and have loaded *only* the WiFi driver, *not* the Bluetooth driver.
-
-[ 3110.201258] usb 1-1.4: Vendor: Realtek
-[ 3110.201267] usb 1-1.4: Product: 802.11n WLAN Adapter
-[ 3110.201274] usb 1-1.4: RTL8723AU rev B (TSMC) 1T1R, TX queues 2,
-WiFi=1, BT=1, GPS=0, HI PA=0
-[ 3110.201279] usb 1-1.4: RTL8723AU MAC: 20:16:d8:ce:5e:29
-[ 3110.201284] usb 1-1.4: rtl8xxxu: Loading firmware
-rtlwifi/rtl8723aufw_B_NoBT.bin
-[ 3110.201355] usb 1-1.4: Firmware revision 31.0 (signature 0x2302)
+Ryo Tomiche
