@@ -2,189 +2,121 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id CC1D05CF28
-	for <lists+linux-wireless@lfdr.de>; Tue,  2 Jul 2019 14:11:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C3F385CF4B
+	for <lists+linux-wireless@lfdr.de>; Tue,  2 Jul 2019 14:20:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725972AbfGBMLU (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 2 Jul 2019 08:11:20 -0400
-Received: from mx0b-00183b01.pphosted.com ([67.231.157.42]:51774 "EHLO
-        mx0a-00183b01.pphosted.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1725835AbfGBMLU (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 2 Jul 2019 08:11:20 -0400
-X-Greylist: delayed 1069 seconds by postgrey-1.27 at vger.kernel.org; Tue, 02 Jul 2019 08:11:19 EDT
-Received: from pps.filterd (m0059811.ppops.net [127.0.0.1])
-        by mx0b-00183b01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id x62BorZl004030;
-        Tue, 2 Jul 2019 05:51:47 -0600
-Received: from nam03-co1-obe.outbound.protection.outlook.com (mail-co1nam03lp2052.outbound.protection.outlook.com [104.47.40.52])
-        by mx0b-00183b01.pphosted.com with ESMTP id 2tfykegv0u-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-SHA384 bits=256 verify=NOT);
-        Tue, 02 Jul 2019 05:51:46 -0600
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quantenna.com;
- s=selector2;
+        id S1726455AbfGBMUh (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 2 Jul 2019 08:20:37 -0400
+Received: from mail-eopbgr80083.outbound.protection.outlook.com ([40.107.8.83]:48527
+        "EHLO EUR04-VI1-obe.outbound.protection.outlook.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1725922AbfGBMUh (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 2 Jul 2019 08:20:37 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=Celeno.onmicrosoft.com; s=selector1-Celeno-onmicrosoft-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=bgl4VQ7jWJt5raYhF5PvaJ5HJXnmOwYZCHlM+s/d++Y=;
- b=hoEknoaX71Ucy8AY/K5C2A97hDVDGnwmYLwh3sLgsynpDZnxJReFI5+kEbX3H8B3SAXHzGzsSx38hNEAQpflG06aS9uEe+Ga/4GlCMm/XVTtCfWQGZU3VGgBCKYsdMgkVzLpbUiXlOOaa5aQ8ZsZetTlQfdJQxjaCcEFcJfGdZg=
-Received: from DM6PR05MB6635.namprd05.prod.outlook.com (20.179.53.78) by
- DM6PR05MB4747.namprd05.prod.outlook.com (20.176.109.224) with Microsoft SMTP
+ bh=zLSXvYZahQjMY7LrcfbGFWL6hqb2cl1DjuRhGvx7i7o=;
+ b=X7AKBf0PeiPa9e7AoDZaX316VmecjkYiE6DomnoXaokxIRyloyAzEK0PG5WbNmM+Z6rccwmyuCNR1hnK2V8a1QgurBwSp177aOx2bEjTZSrGJcQgPP8q9tSemHC+M4BKJTeKkTQ9mfbBvwCXH4Ci9UxBLnISXl92ceFb65RO0Zw=
+Received: from AM5P192MB0226.EURP192.PROD.OUTLOOK.COM (10.175.12.18) by
+ AM5P192MB0019.EURP192.PROD.OUTLOOK.COM (10.175.12.143) with Microsoft SMTP
  Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.2052.9; Tue, 2 Jul 2019 11:51:42 +0000
-Received: from DM6PR05MB6635.namprd05.prod.outlook.com
- ([fe80::1133:5bc5:28f5:9c0d]) by DM6PR05MB6635.namprd05.prod.outlook.com
- ([fe80::1133:5bc5:28f5:9c0d%3]) with mapi id 15.20.2052.010; Tue, 2 Jul 2019
- 11:51:42 +0000
-Received: from SN6PR05MB4928.namprd05.prod.outlook.com (52.135.117.74) by
- SN6PR05MB4925.namprd05.prod.outlook.com (52.135.117.31) with Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.2052.15; Tue, 2 Jul 2019 11:50:11 +0000
-Received: from SN6PR05MB4928.namprd05.prod.outlook.com
- ([fe80::13f:5819:79e7:ea8f]) by SN6PR05MB4928.namprd05.prod.outlook.com
- ([fe80::13f:5819:79e7:ea8f%5]) with mapi id 15.20.2052.010; Tue, 2 Jul 2019
- 11:50:11 +0000
-From:   Sergey Matyukevich <sergey.matyukevich.os@quantenna.com>
-To:     Johannes Berg <johannes@sipsolutions.net>
+ 15.20.2032.20; Tue, 2 Jul 2019 12:20:33 +0000
+Received: from AM5P192MB0226.EURP192.PROD.OUTLOOK.COM
+ ([fe80::1c8f:5675:fd1:115e]) by AM5P192MB0226.EURP192.PROD.OUTLOOK.COM
+ ([fe80::1c8f:5675:fd1:115e%5]) with mapi id 15.20.2032.019; Tue, 2 Jul 2019
+ 12:20:33 +0000
+From:   Shay Bar <Shay.Bar@celeno.com>
+To:     "johannes@sipsolutions.net" <johannes@sipsolutions.net>
 CC:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        Igor Mitsyanko <igor.mitsyanko.os@quantenna.com>,
-        Mikhail Karpenko <mkarpenko@quantenna.com>
-Subject: Re: [RFC PATCH] cfg80211: fix duplicated scan entries after channel
- switch
-Thread-Topic: [RFC PATCH] cfg80211: fix duplicated scan entries after channel
- switch
-Thread-Index: AQHVIdor2pKU2TPLDEKkmFBmH5mjfqaxOswAgAYaFAA=
-Date:   Tue, 2 Jul 2019 11:50:11 +0000
-Message-ID: <20190702115005.ulcfohbi4mkwpt2c@bars>
-References: <20190613112128.834-1-sergey.matyukevich.os@quantenna.com>
- <7c8b3493cd2c48beae5a12e23964c8d3ca181d04.camel@sipsolutions.net>
-In-Reply-To: <7c8b3493cd2c48beae5a12e23964c8d3ca181d04.camel@sipsolutions.net>
+        Shay Bar <Shay.Bar@celeno.com>
+Subject: [PATCH] mac80211: HE STA disassoc due to QOS NULL not sent
+Thread-Topic: [PATCH] mac80211: HE STA disassoc due to QOS NULL not sent
+Thread-Index: AQHVMNCLxLg8c2okeUGX0Ct02IaO/g==
+Date:   Tue, 2 Jul 2019 12:20:33 +0000
+Message-ID: <20190702122010.11174-1-shay.bar@celeno.com>
 Accept-Language: en-US
 Content-Language: en-US
 X-MS-Has-Attach: 
 X-MS-TNEF-Correlator: 
-x-clientproxiedby: BYAPR06CA0008.namprd06.prod.outlook.com
- (2603:10b6:a03:d4::21) To SN6PR05MB4928.namprd05.prod.outlook.com
- (2603:10b6:805:9d::10)
+x-originating-ip: [46.116.2.211]
+x-clientproxiedby: LNXP123CA0006.GBRP123.PROD.OUTLOOK.COM
+ (2603:10a6:600:d2::18) To AM5P192MB0226.EURP192.PROD.OUTLOOK.COM
+ (2603:10a6:203:80::18)
+authentication-results: spf=none (sender IP is )
+ smtp.mailfrom=Shay.Bar@celeno.com; 
 x-ms-exchange-messagesentrepresentingtype: 1
-x-originating-ip: [195.182.157.78]
+x-mailer: git-send-email 2.22.0
 x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: 8457ee54-a1c9-4126-0996-08d6fee36ffe
-x-microsoft-antispam: BCL:0;PCL:0;RULEID:(2390118)(7020095)(4652040)(8989299)(4534185)(4627221)(201703031133081)(201702281549075)(8990200)(5600148)(711020)(4605104)(1401327)(2017052603328)(7193020);SRVR:SN6PR05MB4925;
-x-ms-traffictypediagnostic: SN6PR05MB4925:|DM6PR05MB4747:
-x-microsoft-antispam-prvs: <SN6PR05MB49259A9BAB342DEB45B00020A3F80@SN6PR05MB4925.namprd05.prod.outlook.com>
-x-moderation-data: 7/2/2019 11:51:40 AM
-x-ms-oob-tlc-oobclassifiers: OLM:10000;
+x-ms-office365-filtering-correlation-id: 0c645f46-c90d-4f2c-1a03-08d6fee7ae0d
+x-microsoft-antispam: BCL:0;PCL:0;RULEID:(2390118)(7020095)(4652040)(8989299)(4534185)(4627221)(201703031133081)(201702281549075)(8990200)(5600148)(711020)(4605104)(1401327)(2017052603328)(7193020);SRVR:AM5P192MB0019;
+x-ms-traffictypediagnostic: AM5P192MB0019:
+x-microsoft-antispam-prvs: <AM5P192MB0019FE92EC346A3E6891612CE7F80@AM5P192MB0019.EURP192.PROD.OUTLOOK.COM>
+x-ms-oob-tlc-oobclassifiers: OLM:923;
 x-forefront-prvs: 008663486A
-x-forefront-antispam-report: SFV:NSPM;SFS:(10009020)(7916004)(376002)(346002)(39850400004)(396003)(136003)(366004)(189003)(199004)(8676002)(229853002)(6116002)(3846002)(25786009)(6512007)(8936002)(6486002)(66066001)(9686003)(4326008)(14454004)(5660300002)(186003)(54906003)(33716001)(66946007)(66446008)(6916009)(73956011)(6436002)(66556008)(64756008)(66476007)(68736007)(6246003)(316002)(99286004)(256004)(86362001)(52116002)(107886003)(53936002)(76176011)(1076003)(446003)(11346002)(14444005)(305945005)(26005)(478600001)(436003)(81156014)(81166006)(71200400001)(71190400001)(476003)(486006)(2906002)(7736002)(6506007)(386003)(102836004);DIR:OUT;SFP:1101;SCL:1;SRVR:DM6PR05MB4747;H:DM6PR05MB6635.namprd05.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;MX:1;A:1;
-received-spf: None (protection.outlook.com: quantenna.com does not designate
+x-forefront-antispam-report: SFV:NSPM;SFS:(10009020)(136003)(346002)(366004)(376002)(39850400004)(396003)(26234003)(189003)(199004)(26244003)(53936002)(26005)(486006)(14454004)(2616005)(66946007)(1730700003)(186003)(476003)(73956011)(14444005)(256004)(386003)(6506007)(68736007)(52116002)(81166006)(8676002)(66446008)(72206003)(66066001)(81156014)(66556008)(2906002)(478600001)(25786009)(5640700003)(64756008)(6512007)(6436002)(4326008)(6486002)(66476007)(71200400001)(99286004)(86362001)(44832011)(7736002)(71190400001)(2501003)(6116002)(2351001)(3846002)(5660300002)(305945005)(36756003)(107886003)(316002)(8936002)(6916009)(102836004)(54906003)(50226002)(1076003);DIR:OUT;SFP:1101;SCL:1;SRVR:AM5P192MB0019;H:AM5P192MB0226.EURP192.PROD.OUTLOOK.COM;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;MX:1;A:1;
+received-spf: None (protection.outlook.com: celeno.com does not designate
  permitted sender hosts)
 x-ms-exchange-senderadcheck: 1
-x-microsoft-antispam-message-info: 7SzuajNibhq+SZoY7km7tnlPrivpgvgSRej6t6kDt5/lS68ZVTM4ajjyUw5c1Zxt16WrL6LuAsYdogawV57x0HdoOnUDtr13u5ZAWmSx7CM9eSUTVUofZvHmQYs9tJmpIwbFXZ23VPoCAQPl1qzlO1Rzv+Zk43xTgEyt0kTXbh2UTuXIXhqeRFtOGT3ipNh7j2jkVCLTrArCD5JRYIDlm6AQCFJ1Ii64W6njd7i3VrhWaO3I93rD5/LOfdNilmFa7XZC4Le3QdDJVDtz1Sy8ANoqlZPATYFBqcPyeq7ZydOHU1qXdm10C2PR8kNLuOsNWuRPTVFq1/RmiggpwR1zStjvNsm1PKnMckwidJA9waXub47+YAK1mmcxUqk+EyvIrCp+XmBkM+ikR32rwk9jVjbjfZNc/wbsYwnWXEPN9nA=
-Content-Type: text/plain; charset="us-ascii"
-Content-ID: <7794D03EC0D0C742935C5CAE1D549307@namprd05.prod.outlook.com>
+x-microsoft-antispam-message-info: aRKA7kkS/X5rp2Q8E5GJUA82BhrJOtGKkbDUjn/d26iDJXnYdffTKyhWd9ZbHqQ1ZqpKHSS6XGBaKzIkEQVFJ+JnRWoAOR3y/MgGiAvNuqwKbVIHrLaNMoAcX5gSxwU7dmg0yQ7dLsJa+ssPl3nG89XuDmpGndZ0IlHKgUBimVvyfeH95W+/lNoz7vkX98FDwHQ+sM0eIttvL+NWjNU2lNdM8vRtloufxrWV73M9wzoBNSognS8aNsuGx/kICKahHQXtQ4c0u0RGTxgDC6vICPxiVjdQ1gLBxKm6PRScAO11n+S63/YmrRdg6ts1nE99bofV4fzF5k1CPRDLPBPvz7L3xo6IBNx2LwsEkpKWvl//8RhORQPMNEja6xtesNH6EP2CGqWp8WHjvNZreJ1inXjJ0EQcFt/cUHJAyAc5Cvs=
+Content-Type: text/plain; charset="iso-8859-1"
 Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-X-OriginatorOrg: quantenna.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 8457ee54-a1c9-4126-0996-08d6fee36ffe
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: a355dbce-62b4-4789-9446-c1d5582180ff
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: SPO_Arbitration_0b5d01ae-5fea-45aa-b314-5cf59dfd2dd5@quantenna.onmicrosoft.com
-X-MS-Exchange-CrossTenant-originalarrivaltime: 02 Jul 2019 11:51:42.8648
+X-OriginatorOrg: celeno.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 0c645f46-c90d-4f2c-1a03-08d6fee7ae0d
+X-MS-Exchange-CrossTenant-originalarrivaltime: 02 Jul 2019 12:20:33.4481
  (UTC)
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM6PR05MB4747
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:,, definitions=2019-07-02_06:,,
- signatures=0
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
- suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1011
- lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=999 adultscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1810050000
- definitions=main-1907020136
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: f313103b-4c9f-4fd3-b5cf-b97f91c4afa8
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: Shay.Bar@celeno.com
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM5P192MB0019
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-...
+In case of HE AP-STA link, ieee80211_send_nullfunc() will not send the QOS =
+NULL packet to check if AP is still associated.
+In this case, probe_send_count will be non zero and ieee80211_sta_work() wi=
+ll later disassociate the AP.
+(although it didn't really send a test QOS NULL packet).
+Fix is to decrement probe_send_count and not call ieee80211_send_nullfunc()=
+ in case of HE link.
 
-> > To summarize, if BSS channel needs to be updated, then bss_tree should
-> > be rebuilt in order to put updated BSS entry into a proper location.
->=20
-> Good catch!
->=20
-> > This commit suggests the following straightforward solution:
-> > - if new entry has been already created for BSS after channel switch,
-> >   then remove it completely
->=20
-> Shouldn't we prefer the new entry?
->=20
-> OTOH, the old entry will likely have a "hold", so it doesn't get removed
-> while we're connected ... and the driver etc. might be referencing it.
-> So I guess the old entry should be updated with info from the newer one?
->=20
-> > Finally, next scan operation will find BSS entry in expected location
-> > in rb_tree. So all the IEs, including HT/VHT operation IEs,
-> > will be properly updated.
->=20
-> Right. Although if it was there before, then it already has been updated
-> in a sense... But I guess it's a corner case to even get there?
->=20
-> > 1. Tested using iwlwifi and qtnfmac drivers, looks good
->=20
-> Great.
->=20
-> > 2. Alternative approach: remove old BSS entry and keep new a one
-> > This approach may have certain benefits for mac80211 drivers.
-> > For instance, in this case HT/VHT operation IEs are going to be
-> > valid from the start, no need to wait for the next scan.
->=20
-> > However the following procedure for replacing current_bss, protected
-> > by wdev->mtx and rdev->bss_lock locks, seems to be insufficient:
-> >=20
-> >   bss_ref_get(rdev, new);
-> >   cfg80211_hold_bss(new);
-> >   wdev->current_bss =3D new;
-> >=20
-> >   cfg80211_unhold_bss(old);
-> >   bss_ref_put(rdev, old);
-> >   __cfg80211_unlink_bss(rdev, old);
-> >=20
-> > When testing this alternative approach using iwlwifi driver,
-> > occasional general protection fault crashes have been observed
-> > on ieee80211_rx_mgmt_beacon/ieee80211_bss_info_update code paths.
-> > So far I haven't yet root caused them.
->=20
-> At the very least you'd also have to update ifmgd->associated in
-> mac80211, and that's basically not really possible? Well, I guess we
-> could change the channel switch API to return the new one or something.
->=20
-> I guess the better thing would be to go update the old entry with the
-> new one's data, before killing the new one.
->=20
-> Not sure it's worth the extra complexity though.
+Signed-off-by: Shay Bar <shay.bar@celeno.com>
+---
+ net/mac80211/mlme.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-Hello Johannes,
+diff --git a/net/mac80211/mlme.c b/net/mac80211/mlme.c
+index 379d2ab6d327..bc5ed2dbe69b 100644
+--- a/net/mac80211/mlme.c
++++ b/net/mac80211/mlme.c
+@@ -2511,7 +2511,10 @@ static void ieee80211_mgd_probe_ap_send(struct ieee8=
+0211_sub_if_data *sdata)
 
-Thanks for review! Summarizing your comments, here are the options
-and some of their highlights:
+ if (ieee80211_hw_check(&sdata->local->hw, REPORTS_TX_ACK_STATUS)) {
+ ifmgd->nullfunc_failed =3D false;
+-ieee80211_send_nullfunc(sdata->local, sdata, false);
++if (!(ifmgd->flags & IEEE80211_STA_DISABLE_HE))
++ifmgd->probe_send_count--;
++else
++ieee80211_send_nullfunc(sdata->local, sdata, false);
+ } else {
+ int ssid_len;
 
-1. replace old entry with the new entry
-   - no easy way to update ifmgd->associated w/o rework of mac80211 csa
+--
+2.22.0
 
-2. keep old entry, remove new entry
-   - this is what suggested RFC patch does
-   - works, but update of current_bss entry after csa may be delayed
+________________________________
+The information transmitted is intended only for the person or entity to wh=
+ich it is addressed and may contain confidential and/or privileged material=
+. Any retransmission, dissemination, copying or other use of, or taking of =
+any action in reliance upon this information is prohibited. If you received=
+ this in error, please contact the sender and delete the material from any =
+computer. Nothing contained herein shall be deemed as a representation, war=
+ranty or a commitment by Celeno. No warranties are expressed or implied, in=
+cluding, but not limited to, any implied warranties of non-infringement, me=
+rchantability and fitness for a particular purpose.
+________________________________
 
-3. keep old entry, update it using data from new entry, then remove new ent=
-ry
-   - this looks like a better approach
-
-Unless I am missing something, the last option can be implemented on top of
-the current RFC patch w/o extra complexity. The required bss entry update i=
-s
-what cfg80211_bss_update function does when bss in question already exists.
-So it should be possible to reuse that code.
-
-I will post RFC patch v2 after more testing for both mac80211 and
-fullmac cases.
-
-Regards,
-Sergey
