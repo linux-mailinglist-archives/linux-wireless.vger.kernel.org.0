@@ -2,76 +2,73 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 6CD645D1B6
-	for <lists+linux-wireless@lfdr.de>; Tue,  2 Jul 2019 16:25:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id ED8015D1E8
+	for <lists+linux-wireless@lfdr.de>; Tue,  2 Jul 2019 16:40:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727164AbfGBOZk (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 2 Jul 2019 10:25:40 -0400
-Received: from sitav-80046.hsr.ch ([152.96.80.46]:39158 "EHLO
-        mail.strongswan.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726779AbfGBOZk (ORCPT
+        id S1727029AbfGBOkb (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 2 Jul 2019 10:40:31 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:53878 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725940AbfGBOkb (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 2 Jul 2019 10:25:40 -0400
-X-Greylist: delayed 323 seconds by postgrey-1.27 at vger.kernel.org; Tue, 02 Jul 2019 10:25:39 EDT
-Received: from book.wlp.is (unknown [185.12.128.225])
-        by mail.strongswan.org (Postfix) with ESMTPSA id 294FD40186;
-        Tue,  2 Jul 2019 16:20:15 +0200 (CEST)
-From:   Martin Willi <martin@strongswan.org>
-To:     Seth Forshee <seth.forshee@canonical.com>
-Cc:     wireless-regdb@lists.infradead.org, linux-wireless@vger.kernel.org,
-        Henrik Laxhuber <henrik@laxhuber.com>
-Subject: [PATCH] wireless-regdb: Fix overlapping ranges for Switzerland and Liechtenstein
-Date:   Tue,  2 Jul 2019 16:19:44 +0200
-Message-Id: <20190702141944.25902-1-martin@strongswan.org>
-X-Mailer: git-send-email 2.17.1
+        Tue, 2 Jul 2019 10:40:31 -0400
+Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
+        by youngberry.canonical.com with esmtpsa (TLS1.0:RSA_AES_256_CBC_SHA1:32)
+        (Exim 4.76)
+        (envelope-from <colin.king@canonical.com>)
+        id 1hiJxK-0004Hn-VT; Tue, 02 Jul 2019 14:40:27 +0000
+From:   Colin King <colin.king@canonical.com>
+To:     Maya Erez <merez@codeaurora.org>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        "David S . Miller" <davem@davemloft.net>,
+        linux-wireless@vger.kernel.org, wil6210@qti.qualcomm.com,
+        netdev@vger.kernel.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH][next] wil6210: fix wil_cid_valid with negative cid values
+Date:   Tue,  2 Jul 2019 15:40:26 +0100
+Message-Id: <20190702144026.13013-1-colin.king@canonical.com>
+X-Mailer: git-send-email 2.20.1
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-The commit referenced below changes the 5GHz frequency range 5250-5330
-to 5150-5330, making that range overlapping with the existing range
-5170-5250. This imposes DFS limitations and a reduced maximum power
-level for the range 5170-5250.
+From: Colin Ian King <colin.king@canonical.com>
 
-The change of the frequency range seems not intentional. Instead the
-commit should have changed the 5170-5250 range to 5150-5250, and the
-5250-5330 range to 5250-5350 (see [1]).
+There are several occasions where a negative cid value is passed
+into wil_cid_valid and this is converted into a u8 causing the
+range check of cid >= 0 to always succeed.  Fix this by making
+the cid argument an int to handle any -ve error value of cid.
 
-[1] https://www.ofcomnet.ch/api/rir/1010/05
+An example of this behaviour is in wil_cfg80211_dump_station,
+where cid is assigned -ENOENT if the call to wil_find_cid_by_idx
+fails, and this -ve value is passed to wil_cid_valid.  I believe
+that the conversion of -ENOENT to the u8 value 254 which is
+greater than wil->max_assoc_sta causes wil_find_cid_by_idx to
+currently work fine, but I think is by luck and not the
+intended behaviour.
 
-Fixes: 957a7cff72a3 ("wireless-regdb: update regulatory rules for Switzerland (CH), and Liechtenstein (LI) on 5GHz")
-Signed-off-by: Martin Willi <martin@strongswan.org>
+Signed-off-by: Colin Ian King <colin.king@canonical.com>
 ---
- db.txt | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/net/wireless/ath/wil6210/wil6210.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/db.txt b/db.txt
-index d47ab94c3aa5..37393e6a793e 100644
---- a/db.txt
-+++ b/db.txt
-@@ -271,8 +271,8 @@ country CF: DFS-FCC
- # transmitter power control is in use: 5250-5330@23db, 5490-5710@30db
- country CH: DFS-ETSI
- 	(2402 - 2482 @ 40), (20)
--	(5170 - 5250 @ 80), (23), NO-OUTDOOR, AUTO-BW, wmmrule=ETSI
--	(5150 - 5330 @ 80), (20), NO-OUTDOOR, DFS, AUTO-BW, wmmrule=ETSI
-+	(5150 - 5250 @ 80), (23), NO-OUTDOOR, AUTO-BW, wmmrule=ETSI
-+	(5250 - 5350 @ 80), (20), NO-OUTDOOR, DFS, AUTO-BW, wmmrule=ETSI
- 	(5490 - 5710 @ 160), (27), DFS, wmmrule=ETSI
- 	# 60 GHz band channels 1-4, ref: Etsi En 302 567
- 	(57000 - 66000 @ 2160), (40)
-@@ -747,8 +747,8 @@ country LC: DFS-ETSI
- # transmitter power control is in use: 5250-5330@23db, 5490-5710@30db
- country LI: DFS-ETSI
- 	(2402 - 2482 @ 40), (20)
--	(5170 - 5250 @ 80), (23), NO-OUTDOOR, AUTO-BW, wmmrule=ETSI
--	(5150 - 5330 @ 80), (20), NO-OUTDOOR, DFS, AUTO-BW, wmmrule=ETSI
-+	(5150 - 5250 @ 80), (23), NO-OUTDOOR, AUTO-BW, wmmrule=ETSI
-+	(5250 - 5350 @ 80), (20), NO-OUTDOOR, DFS, AUTO-BW, wmmrule=ETSI
- 	(5490 - 5710 @ 160), (27), DFS, wmmrule=ETSI
- 	# 60 GHz band channels 1-4, ref: Etsi En 302 567
- 	(57000 - 66000 @ 2160), (40)
+diff --git a/drivers/net/wireless/ath/wil6210/wil6210.h b/drivers/net/wireless/ath/wil6210/wil6210.h
+index 6f456b311a39..25a1adcb38eb 100644
+--- a/drivers/net/wireless/ath/wil6210/wil6210.h
++++ b/drivers/net/wireless/ath/wil6210/wil6210.h
+@@ -1144,7 +1144,7 @@ static inline void wil_c(struct wil6210_priv *wil, u32 reg, u32 val)
+ /**
+  * wil_cid_valid - check cid is valid
+  */
+-static inline bool wil_cid_valid(struct wil6210_priv *wil, u8 cid)
++static inline bool wil_cid_valid(struct wil6210_priv *wil, int cid)
+ {
+ 	return (cid >= 0 && cid < wil->max_assoc_sta);
+ }
 -- 
-2.17.1
+2.20.1
 
