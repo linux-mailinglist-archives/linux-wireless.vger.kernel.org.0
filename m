@@ -2,93 +2,83 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 58DB75D25E
-	for <lists+linux-wireless@lfdr.de>; Tue,  2 Jul 2019 17:06:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 688545D25F
+	for <lists+linux-wireless@lfdr.de>; Tue,  2 Jul 2019 17:06:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725922AbfGBPGN (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 2 Jul 2019 11:06:13 -0400
-Received: from mx1.redhat.com ([209.132.183.28]:60660 "EHLO mx1.redhat.com"
+        id S1726103AbfGBPGP (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 2 Jul 2019 11:06:15 -0400
+Received: from mx1.redhat.com ([209.132.183.28]:38674 "EHLO mx1.redhat.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725767AbfGBPGN (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 2 Jul 2019 11:06:13 -0400
-Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.phx2.redhat.com [10.5.11.16])
+        id S1725996AbfGBPGO (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 2 Jul 2019 11:06:14 -0400
+Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.phx2.redhat.com [10.5.11.13])
         (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
         (No client certificate requested)
-        by mx1.redhat.com (Postfix) with ESMTPS id 484303082EF1;
-        Tue,  2 Jul 2019 15:06:13 +0000 (UTC)
+        by mx1.redhat.com (Postfix) with ESMTPS id AED982F8BCC;
+        Tue,  2 Jul 2019 15:06:14 +0000 (UTC)
 Received: from localhost (unknown [10.43.2.9])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id E419F1750A;
-        Tue,  2 Jul 2019 15:06:11 +0000 (UTC)
+        by smtp.corp.redhat.com (Postfix) with ESMTP id 54F77608BA;
+        Tue,  2 Jul 2019 15:06:14 +0000 (UTC)
 From:   Stanislaw Gruszka <sgruszka@redhat.com>
 To:     linux-wireless@vger.kernel.org
 Cc:     Felix Fietkau <nbd@nbd.name>,
         Lorenzo Bianconi <lorenzo.bianconi@redhat.com>,
         Stanislaw Gruszka <sgruszka@redhat.com>
-Subject: [PATCH 2/3] mt76: usb: remove unneeded {put,get}_unaligned
-Date:   Tue,  2 Jul 2019 17:06:00 +0200
-Message-Id: <1562079961-15527-3-git-send-email-sgruszka@redhat.com>
+Subject: [PATCH 3/3] mt76: usb: use full intermediate buffer in mt76u_copy
+Date:   Tue,  2 Jul 2019 17:06:01 +0200
+Message-Id: <1562079961-15527-4-git-send-email-sgruszka@redhat.com>
 In-Reply-To: <1562079961-15527-1-git-send-email-sgruszka@redhat.com>
 References: <1562079961-15527-1-git-send-email-sgruszka@redhat.com>
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.16
-X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16 (mx1.redhat.com [10.5.110.46]); Tue, 02 Jul 2019 15:06:13 +0000 (UTC)
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.13
+X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16 (mx1.redhat.com [10.5.110.38]); Tue, 02 Jul 2019 15:06:14 +0000 (UTC)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Compiler give us guaranties on variables alignment, so use
-an variable as buffer when read/write registers and remove
-unneeded {put,get}_unaligned.
+Instead of use several 4 bytes usb requests, use full 32 bytes buffer
+to copy data to device. With the change we use less requests and copy
+exact data size to the device regardless size is multiple of 4 or not.
 
 Signed-off-by: Stanislaw Gruszka <sgruszka@redhat.com>
 ---
- drivers/net/wireless/mediatek/mt76/mt76.h | 5 ++++-
- drivers/net/wireless/mediatek/mt76/usb.c  | 8 ++++----
- 2 files changed, 8 insertions(+), 5 deletions(-)
+ drivers/net/wireless/mediatek/mt76/usb.c | 19 ++++++++++++-------
+ 1 file changed, 12 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76.h b/drivers/net/wireless/mediatek/mt76/mt76.h
-index 56bf93a8988e..094e6e543542 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt76.h
-@@ -389,7 +389,10 @@ enum mt76u_out_ep {
- #define MCU_RESP_URB_SIZE	1024
- struct mt76_usb {
- 	struct mutex usb_ctrl_mtx;
--	u8 data[32];
-+	union {
-+		u8 data[32];
-+		__le32 reg_val;
-+	};
- 
- 	struct tasklet_struct rx_tasklet;
- 	struct delayed_work stat_work;
 diff --git a/drivers/net/wireless/mediatek/mt76/usb.c b/drivers/net/wireless/mediatek/mt76/usb.c
-index db90ec6b8775..a61bb8171557 100644
+index a61bb8171557..7c564cc68c7c 100644
 --- a/drivers/net/wireless/mediatek/mt76/usb.c
 +++ b/drivers/net/wireless/mediatek/mt76/usb.c
-@@ -95,9 +95,9 @@ static u32 __mt76u_rr(struct mt76_dev *dev, u32 addr)
+@@ -160,19 +160,24 @@ static void mt76u_copy(struct mt76_dev *dev, u32 offset,
+ 		       const void *data, int len)
+ {
+ 	struct mt76_usb *usb = &dev->usb;
+-	const u32 *val = data;
+-	int i, ret;
++	int ret, req_len;
  
- 	ret = __mt76u_vendor_request(dev, req,
- 				     USB_DIR_IN | USB_TYPE_VENDOR,
--				     0, offset, usb->data, sizeof(__le32));
-+				     0, offset, &usb->reg_val, sizeof(__le32));
- 	if (ret == sizeof(__le32))
--		data = get_unaligned_le32(usb->data);
-+		data = le32_to_cpu(usb->reg_val);
- 	trace_usb_reg_rr(dev, addr, data);
- 
- 	return data;
-@@ -131,10 +131,10 @@ static void __mt76u_wr(struct mt76_dev *dev, u32 addr, u32 val)
- 	}
- 	offset = addr & ~MT_VEND_TYPE_MASK;
- 
--	put_unaligned_le32(val, usb->data);
-+	usb->reg_val = cpu_to_le32(val);
- 	__mt76u_vendor_request(dev, req,
- 			       USB_DIR_OUT | USB_TYPE_VENDOR, 0,
--			       offset, usb->data, sizeof(__le32));
-+			       offset, &usb->reg_val, sizeof(__le32));
- 	trace_usb_reg_wr(dev, addr, val);
+ 	mutex_lock(&usb->usb_ctrl_mtx);
+-	for (i = 0; i < DIV_ROUND_UP(len, 4); i++) {
+-		put_unaligned(val[i], usb->data);
++	do {
++		req_len = min_t(int, len, sizeof(usb->data));
++
++		memcpy(usb->data, data, req_len);
++
+ 		ret = __mt76u_vendor_request(dev, MT_VEND_MULTI_WRITE,
+ 					     USB_DIR_OUT | USB_TYPE_VENDOR,
+-					     0, offset + i * 4, usb->data,
+-					     sizeof(u32));
++					     0, offset, usb->data, req_len);
+ 		if (ret < 0)
+ 			break;
+-	}
++
++		data += req_len;
++		offset += req_len;
++		len -= req_len;
++	} while (len > 0);
+ 	mutex_unlock(&usb->usb_ctrl_mtx);
  }
  
 -- 
