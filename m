@@ -2,111 +2,121 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 627955CCFB
-	for <lists+linux-wireless@lfdr.de>; Tue,  2 Jul 2019 11:51:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 486555CDDE
+	for <lists+linux-wireless@lfdr.de>; Tue,  2 Jul 2019 12:50:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727239AbfGBJv4 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 2 Jul 2019 05:51:56 -0400
-Received: from mail-wm1-f66.google.com ([209.85.128.66]:53930 "EHLO
-        mail-wm1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727089AbfGBJvu (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 2 Jul 2019 05:51:50 -0400
-Received: by mail-wm1-f66.google.com with SMTP id x15so210989wmj.3
-        for <linux-wireless@vger.kernel.org>; Tue, 02 Jul 2019 02:51:49 -0700 (PDT)
+        id S1726291AbfGBKum (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 2 Jul 2019 06:50:42 -0400
+Received: from mail-eopbgr00069.outbound.protection.outlook.com ([40.107.0.69]:28199
+        "EHLO EUR02-AM5-obe.outbound.protection.outlook.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1725767AbfGBKum (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 2 Jul 2019 06:50:42 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=ZbbPe/OgCkiI4UCDPbrGqbpRXXo3jc53/IKcexuq+WY=;
-        b=azgcgMuiRaVzBsgq1sukrVxzQ8OQuO+/ImiTQZlIiE7yGz03+rGbwf/y+jlTa8EVf5
-         U5BPvszqu9eAKAv0ehLi3h1SuJNp0vPwtFnYTKvaQ++xEClDFTHjrCEC2Yj+9hhdbWY/
-         GwyYqY4lC+isc3OF9NDiW3EhrcB+/X0mWegpk=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=ZbbPe/OgCkiI4UCDPbrGqbpRXXo3jc53/IKcexuq+WY=;
-        b=A7cSWjbto9zDIImq7abUEUCab3rvXmuRkl8PPChyBUgeZR2ndgxOr8+VoWfYjWCgFa
-         iXMZ7uHaYFXhBRm9wt9wcB+EgFKsz6mnfEpFll7JNq0OLLCQyYxh5i77Fxdc5j6edMSp
-         Jz45TLYHvYpy3SXWE1gGgyMcLSssy6qua0bZpGqp8UcPkgIqa9mrWlLJVsvcCqqBbOSY
-         J9acJce8WgNKo4RV+A91C29yfHY4vCCNr4xh1Iee3jZEQ61CeR4+na48LwDzxVP3z4EX
-         FnEiHrNpoEp32JuiwOZ/rti8vXuw8hhyN0TwZ0TZaTWOcwlEd0Jnqfu4owT+YihQbj7M
-         m7ew==
-X-Gm-Message-State: APjAAAWAsUB06t51RRViGIqwtR2jt20ectAxEE1Y8jehfe2RqFDHQlzk
-        OwBspQKgar0FXSUp15vx22Mp+g==
-X-Google-Smtp-Source: APXvYqxfIT/N6efY+/XizNeh8qrIpeIdC2hZSqzcbMa/pkJ8u1aYFYMrVYqI5zI2V3ar9yLnF7yjWg==
-X-Received: by 2002:a1c:7d4e:: with SMTP id y75mr2855969wmc.169.1562061108255;
-        Tue, 02 Jul 2019 02:51:48 -0700 (PDT)
-Received: from [10.176.68.244] ([192.19.248.250])
-        by smtp.gmail.com with ESMTPSA id g25sm1479624wmk.39.2019.07.02.02.51.46
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Tue, 02 Jul 2019 02:51:47 -0700 (PDT)
-Subject: Re: [PATCH] brcmfmac: Replace two seq_printf() calls in
- brcmf_feat_fwcap_debugfs_read()
-To:     Markus Elfring <Markus.Elfring@web.de>, netdev@vger.kernel.org,
-        linux-wireless@vger.kernel.org, brcm80211-dev-list@cypress.com,
-        brcm80211-dev-list.pdl@broadcom.com,
-        Chi-Hsien Lin <chi-hsien.lin@cypress.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Franky Lin <franky.lin@broadcom.com>,
-        Hante Meuleman <hante.meuleman@broadcom.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        Pieter-Paul Giesberts <pieter-paul.giesberts@broadcom.com>,
-        =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <rafal@milecki.pl>,
-        Wright Feng <wright.feng@cypress.com>
-Cc:     LKML <linux-kernel@vger.kernel.org>,
-        kernel-janitors@vger.kernel.org
-References: <7d96085a-76e8-c290-698a-e1473d3f4be7@web.de>
-From:   Arend Van Spriel <arend.vanspriel@broadcom.com>
-Message-ID: <893cc567-0126-3ab9-92c5-de430fb066fc@broadcom.com>
-Date:   Tue, 2 Jul 2019 11:51:45 +0200
-User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:60.0) Gecko/20100101
- Thunderbird/60.7.2
-MIME-Version: 1.0
-In-Reply-To: <7d96085a-76e8-c290-698a-e1473d3f4be7@web.de>
-Content-Type: text/plain; charset=utf-8; format=flowed
+ d=Celeno.onmicrosoft.com; s=selector1-Celeno-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=CojBUKtK1unQS4RkXjZhy878rfWmZWxR8iW38beJxcc=;
+ b=kSRHe0RPUjmtkjDt0x3RdvKsnEZUtIC8FtszQ5Z3KuiqjP0tW6mZbAh7o55TOtDyGFFFAWNwBd42bso9/CoGBHvdAY5TPfnY6YyFDXQZvR0JW8toHQesi/ROGrIeb6/kCNP2AVm2jWmamtJgrS3aMQiCYTtu8NOm9OiCubLtWNI=
+Received: from AM5P192MB0226.EURP192.PROD.OUTLOOK.COM (10.175.12.18) by
+ AM5P192MB0097.EURP192.PROD.OUTLOOK.COM (10.175.12.142) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.2032.20; Tue, 2 Jul 2019 10:50:38 +0000
+Received: from AM5P192MB0226.EURP192.PROD.OUTLOOK.COM
+ ([fe80::1c8f:5675:fd1:115e]) by AM5P192MB0226.EURP192.PROD.OUTLOOK.COM
+ ([fe80::1c8f:5675:fd1:115e%5]) with mapi id 15.20.2032.019; Tue, 2 Jul 2019
+ 10:50:38 +0000
+From:   Shay Bar <Shay.Bar@celeno.com>
+To:     "johannes@sipsolutions.net" <johannes@sipsolutions.net>
+CC:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        Shay Bar <Shay.Bar@celeno.com>
+Subject: [PATCH] HE: STA disassociate AP due to QOS NULL not sent
+Thread-Topic: [PATCH] HE: STA disassociate AP due to QOS NULL not sent
+Thread-Index: AQHVMMP8XOtVfDdhmEGBpfvj7auHPw==
+Date:   Tue, 2 Jul 2019 10:50:38 +0000
+Message-ID: <20190702105019.10633-1-shay.bar@celeno.com>
+Accept-Language: en-US
 Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [46.116.2.211]
+x-clientproxiedby: LO2P265CA0479.GBRP265.PROD.OUTLOOK.COM
+ (2603:10a6:600:a2::35) To AM5P192MB0226.EURP192.PROD.OUTLOOK.COM
+ (2603:10a6:203:80::18)
+authentication-results: spf=none (sender IP is )
+ smtp.mailfrom=Shay.Bar@celeno.com; 
+x-ms-exchange-messagesentrepresentingtype: 1
+x-mailer: git-send-email 2.22.0
+x-ms-publictraffictype: Email
+x-ms-office365-filtering-correlation-id: 24618a5b-116b-42bc-9879-08d6fedb1e5b
+x-microsoft-antispam: BCL:0;PCL:0;RULEID:(2390118)(7020095)(4652040)(8989299)(4534185)(4627221)(201703031133081)(201702281549075)(8990200)(5600148)(711020)(4605104)(1401327)(2017052603328)(7193020);SRVR:AM5P192MB0097;
+x-ms-traffictypediagnostic: AM5P192MB0097:
+x-microsoft-antispam-prvs: <AM5P192MB0097784D100680A7147B2499E7F80@AM5P192MB0097.EURP192.PROD.OUTLOOK.COM>
+x-ms-oob-tlc-oobclassifiers: OLM:923;
+x-forefront-prvs: 008663486A
+x-forefront-antispam-report: SFV:NSPM;SFS:(10009020)(346002)(136003)(366004)(376002)(396003)(39850400004)(189003)(199004)(26234003)(26244003)(36756003)(5660300002)(64756008)(66556008)(66476007)(66946007)(66446008)(66066001)(73956011)(107886003)(3846002)(6116002)(14444005)(1076003)(256004)(71200400001)(71190400001)(7736002)(6916009)(72206003)(6512007)(305945005)(478600001)(5640700003)(53936002)(6486002)(2501003)(6506007)(102836004)(68736007)(52116002)(99286004)(26005)(14454004)(86362001)(54906003)(186003)(386003)(4326008)(476003)(486006)(6436002)(44832011)(81166006)(81156014)(1730700003)(8676002)(2616005)(316002)(8936002)(2906002)(2351001)(25786009)(50226002);DIR:OUT;SFP:1101;SCL:1;SRVR:AM5P192MB0097;H:AM5P192MB0226.EURP192.PROD.OUTLOOK.COM;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;MX:1;A:1;
+received-spf: None (protection.outlook.com: celeno.com does not designate
+ permitted sender hosts)
+x-ms-exchange-senderadcheck: 1
+x-microsoft-antispam-message-info: agV24fKFnVeixGLJq1nA+HVga2LuXbBZzgWiC+UwgvZSm4HZ1JDMdTmAmo/cE0QUofc1NnlpeF2hVIq+Nz2i83C5ecUVpkqwC02tYl5jjbVGW15yFdlnlt8HnYKBz0a2uV1mSlN9sz6CniiNtIfdy8pHwfCuWvrFmXThBKVmF2Moc+EHONrPv5kJLDyzsnrDWm/af5XtmveVJW4c0H6VAtYt7HjJcYmoyJ2yNw/oC71xMSgJdM0epE3ZIODTfq32xUnBAoFgpr6AAXbxU1ihm+S8mvqU3hsqlo4PWbVuIaoKiDTAEF33BK+RllgrIs/t9/SZrC/4W/FvLpJUO7BW91l2jXiP3u/KQvgNVFe6fWY+5PyRqn+/56e6/xobFP602I5m/eB16oat6EyqSnA2Gh5bTvCCQzJiYWzx6pcc/GI=
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+X-OriginatorOrg: celeno.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 24618a5b-116b-42bc-9879-08d6fedb1e5b
+X-MS-Exchange-CrossTenant-originalarrivaltime: 02 Jul 2019 10:50:38.7121
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: f313103b-4c9f-4fd3-b5cf-b97f91c4afa8
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: Shay.Bar@celeno.com
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM5P192MB0097
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 7/2/2019 11:50 AM, Markus Elfring wrote:
-> From: Markus Elfring <elfring@users.sourceforge.net>
-> Date: Tue, 2 Jul 2019 11:31:07 +0200
-> 
-> A line break and a single string should be put into a sequence.
-> Thus use the corresponding output functions.
-> 
-> This issue was detected by using the Coccinelle software.
+In case of HE AP-STA link, ieee80211_send_nullfunc() will not send the QOS =
+NULL packet to check if AP is still associated.
+In this case, probe_send_count will be non zero and ieee80211_sta_work() wi=
+ll later disassociate the AP (although it didn't really send a test QOS NUL=
+L packet).
+Fix is to decrement probe_send_count and not call ieee80211_send_nullfunc()=
+ in case of HE link.
 
-pot-ato, po-tato
+Signed-off-by: Shay Bar <shay.bar@celeno.com>
+---
+ net/mac80211/mlme.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-> Signed-off-by: Markus Elfring <elfring@users.sourceforge.net>
-> ---
->   drivers/net/wireless/broadcom/brcm80211/brcmfmac/feature.c | 4 ++--
->   1 file changed, 2 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/feature.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/feature.c
-> index 73aff4e4039d..ec0e80296e43 100644
-> --- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/feature.c
-> +++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/feature.c
-> @@ -225,10 +225,10 @@ static int brcmf_feat_fwcap_debugfs_read(struct seq_file *seq, void *data)
->   	}
-> 
->   	/* Usually there is a space at the end of capabilities string */
-> -	seq_printf(seq, "%s", caps);
-> +	seq_puts(seq, caps);
->   	/* So make sure we don't print two line breaks */
->   	if (tmp > caps && *(tmp - 1) != '\n')
-> -		seq_printf(seq, "\n");
-> +		seq_putc(seq, '\n');
-> 
->   	return 0;
->   }
-> --
-> 2.22.0
-> 
+diff --git a/net/mac80211/mlme.c b/net/mac80211/mlme.c
+index 379d2ab6d327..bc5ed2dbe69b 100644
+--- a/net/mac80211/mlme.c
++++ b/net/mac80211/mlme.c
+@@ -2511,7 +2511,10 @@ static void ieee80211_mgd_probe_ap_send(struct ieee8=
+0211_sub_if_data *sdata)
+
+ if (ieee80211_hw_check(&sdata->local->hw, REPORTS_TX_ACK_STATUS)) {
+ ifmgd->nullfunc_failed =3D false;
+-ieee80211_send_nullfunc(sdata->local, sdata, false);
++if (!(ifmgd->flags & IEEE80211_STA_DISABLE_HE))
++ifmgd->probe_send_count--;
++else
++ieee80211_send_nullfunc(sdata->local, sdata, false);
+ } else {
+ int ssid_len;
+
+--
+2.22.0
+
+________________________________
+The information transmitted is intended only for the person or entity to wh=
+ich it is addressed and may contain confidential and/or privileged material=
+. Any retransmission, dissemination, copying or other use of, or taking of =
+any action in reliance upon this information is prohibited. If you received=
+ this in error, please contact the sender and delete the material from any =
+computer. Nothing contained herein shall be deemed as a representation, war=
+ranty or a commitment by Celeno. No warranties are expressed or implied, in=
+cluding, but not limited to, any implied warranties of non-infringement, me=
+rchantability and fitness for a particular purpose.
+________________________________
+
