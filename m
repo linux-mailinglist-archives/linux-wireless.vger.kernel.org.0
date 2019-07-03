@@ -2,155 +2,84 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A58065DCD8
-	for <lists+linux-wireless@lfdr.de>; Wed,  3 Jul 2019 05:25:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 46F0C5DD21
+	for <lists+linux-wireless@lfdr.de>; Wed,  3 Jul 2019 05:57:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727127AbfGCDZY (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 2 Jul 2019 23:25:24 -0400
-Received: from mail-qk1-f194.google.com ([209.85.222.194]:47063 "EHLO
-        mail-qk1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727049AbfGCDZY (ORCPT
+        id S1727116AbfGCD5S (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 2 Jul 2019 23:57:18 -0400
+Received: from smtp.codeaurora.org ([198.145.29.96]:38302 "EHLO
+        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727025AbfGCD5R (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 2 Jul 2019 23:25:24 -0400
-Received: by mail-qk1-f194.google.com with SMTP id r4so740729qkm.13
-        for <linux-wireless@vger.kernel.org>; Tue, 02 Jul 2019 20:25:23 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=endlessm-com.20150623.gappssmtp.com; s=20150623;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=iJsosknFSMZqJio20riiWMLc4/tQoWtv3tru77r3tTA=;
-        b=FWM+RRyxyzu8W+QS8juDSU5bmX9P7C113BNP6FOv/ShOeGz6jH+oLijFv2qHlcoPEh
-         0uNnlRJPD1HICYWFfgrkBqgyYiaM0ix34Ed85bYE0ETi5Yf2OTtCLWmEN1JmfBorDCQ+
-         gBYsx2cunyHNgXf3CW6nFykqWWDUi6C2kW1U5TGMBstmHC7ZRWlZ7PqYE+wA8msyn80X
-         V6Nd5jEbWYKcLEXnJBZDauBhGXspHCC0kqENicar5+vH/qujt4GlNCbqt0hcNcFULxfJ
-         9cx/W6zcBkFBTc++dqD7TNGKdJEpbYFzRMcHlD5SfBiJ+ppNRXivhbbt9baIpLioc7V/
-         ZCYw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=iJsosknFSMZqJio20riiWMLc4/tQoWtv3tru77r3tTA=;
-        b=GDwR9FJ1am+C/48T0d1+eX1ixG98U3hLSZvdvb0fd++8IdF2vvB7nfhU3u2Ix8k+Qz
-         T5cYV8Ak1l3GUPH9OLFqMIdEvLKdEbqhkwY7azaCnbf6m/pDcGmD+elTSho2VhFbvcc0
-         egEfCQDqWOcj19MzZrVXLqA/ObrUrK2bHq/6mJug1p7RpkBaL9GS9F5V1u3fkQDvGQ3w
-         S/OQejgLvuduQp0js8WPM+l1+jJucMhxeuNANlfFVh+U1TbLHLkYEQqiFo8U3ep9AE7L
-         4TXkmdBiz+whMwYYuOrQeKRemX/G6JaCDvir0Zk3ND1DUV8xciULMEZK+irh/aiB5Voj
-         3sLw==
-X-Gm-Message-State: APjAAAUU7EnJXUcVdVl4txN1f5EBnDMyPnzxwwPxP/hQlYsy+XHB+om5
-        bAuL/ZFAl25j19U3/Aicl3rfLPXyNZ/g4TDlYuyF2g==
-X-Google-Smtp-Source: APXvYqynhs3N20tz4EeRWUTKfzSM1e2Oi0HEF0ofk6gfdWiN2oBM1EZrbIrCFhjo8NMaXAJ/1/KyFHIpwqWU6t0nOQc=
-X-Received: by 2002:a37:9e4b:: with SMTP id h72mr28861404qke.297.1562124322973;
- Tue, 02 Jul 2019 20:25:22 -0700 (PDT)
+        Tue, 2 Jul 2019 23:57:17 -0400
+Received: by smtp.codeaurora.org (Postfix, from userid 1000)
+        id 55BBA6038E; Wed,  3 Jul 2019 03:57:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
+        s=default; t=1562126237;
+        bh=Aq4cCJDxYrULJtxL5b8KPbo01q6oair5ivvgUrHGj6Y=;
+        h=From:To:Cc:Subject:Date:From;
+        b=a18CdN/RaEcu548QrtYRLupKrQAp2ZRPD+2Ht2MuLkNTeAYVz3i8DlToH0menNywH
+         dprrU6XyNbkWRIRuiOMcT4JLrtq+UgLVWUcOwT2O1sDCecYhFLx0RD5+hYvK6VUbmj
+         r906kT8IdA9KO48nWcaYRP2l4lXLAe97H6cgn0JM=
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        pdx-caf-mail.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.7 required=2.0 tests=ALL_TRUSTED,BAYES_00,
+        DKIM_INVALID,DKIM_SIGNED,SPF_NONE autolearn=no autolearn_force=no
+        version=3.4.0
+Received: from govinds-linux.qualcomm.com (blr-c-bdr-fw-01_globalnat_allzones-outside.qualcomm.com [103.229.19.19])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-SHA256 (128/128 bits))
+        (No client certificate requested)
+        (Authenticated sender: govinds@smtp.codeaurora.org)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 337DF6038E;
+        Wed,  3 Jul 2019 03:57:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
+        s=default; t=1562126236;
+        bh=Aq4cCJDxYrULJtxL5b8KPbo01q6oair5ivvgUrHGj6Y=;
+        h=From:To:Cc:Subject:Date:From;
+        b=n6JWO34Mw4XbxIkJ5pVYQLK0Kb9XAhSRICWo/9GRxn8NWvJHLkgpuaUnUHUylBQBS
+         hEhydJy1vV7e281f9BHERULra8pGFSIPprxkrfrBkcGuQEShSkBbIb4T+/SKs7fFta
+         YtAP734tO2DRzgqOopGQpt34xYQhrIwklYGIhu8o=
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 337DF6038E
+Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=govinds@codeaurora.org
+From:   Govind Singh <govinds@codeaurora.org>
+To:     ath10k@lists.infradead.org
+Cc:     linux-wireless@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+        devicetree@vger.kernel.org, Govind Singh <govinds@codeaurora.org>
+Subject: [PATCH 0/3] Move voltage regulator config to driver private data
+Date:   Wed,  3 Jul 2019 09:27:08 +0530
+Message-Id: <20190703035711.25592-1-govinds@codeaurora.org>
+X-Mailer: git-send-email 2.21.0
 MIME-Version: 1.0
-References: <20190627095247.8792-1-chiu@endlessm.com> <31f59db2-0e04-447b-48f8-66ea53ebfa7d@gmail.com>
-In-Reply-To: <31f59db2-0e04-447b-48f8-66ea53ebfa7d@gmail.com>
-From:   Chris Chiu <chiu@endlessm.com>
-Date:   Wed, 3 Jul 2019 11:25:11 +0800
-Message-ID: <CAB4CAwcEdcg91Bgb+JoCdk_zQKsWT-K+cb07-5mrrx+__X2RMA@mail.gmail.com>
-Subject: Re: [PATCH] rtl8xxxu: Fix wifi low signal strength issue of RTL8723BU
-To:     Jes Sorensen <jes.sorensen@gmail.com>
-Cc:     Kalle Valo <kvalo@codeaurora.org>,
-        David Miller <davem@davemloft.net>,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        netdev <netdev@vger.kernel.org>,
-        Linux Kernel <linux-kernel@vger.kernel.org>,
-        Linux Upstreaming Team <linux@endlessm.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Tue, Jul 2, 2019 at 8:44 PM Jes Sorensen <jes.sorensen@gmail.com> wrote:
->
-> On 6/27/19 5:52 AM, Chris Chiu wrote:
-> > The WiFi tx power of RTL8723BU is extremely low after booting. So
-> > the WiFi scan gives very limited AP list and it always fails to
-> > connect to the selected AP. This module only supports 1x1 antenna
-> > and the antenna is switched to bluetooth due to some incorrect
-> > register settings.
-> >
-> > This commit hand over the antenna control to PTA, the wifi signal
-> > will be back to normal and the bluetooth scan can also work at the
-> > same time. However, the btcoexist still needs to be handled under
-> > different circumstances. If there's a BT connection established,
-> > the wifi still fails to connect until disconneting the BT.
-> >
-> > Signed-off-by: Chris Chiu <chiu@endlessm.com>
-> > ---
-> >  drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8723b.c | 9 ++++++---
-> >  drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c  | 3 ++-
-> >  2 files changed, 8 insertions(+), 4 deletions(-)
-> >
-> > diff --git a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8723b.c b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8723b.c
-> > index 3adb1d3d47ac..6c3c70d93ac1 100644
-> > --- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8723b.c
-> > +++ b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8723b.c
-> > @@ -1525,7 +1525,7 @@ static void rtl8723b_enable_rf(struct rtl8xxxu_priv *priv)
-> >       /*
-> >        * WLAN action by PTA
-> >        */
-> > -     rtl8xxxu_write8(priv, REG_WLAN_ACT_CONTROL_8723B, 0x04);
-> > +     rtl8xxxu_write8(priv, REG_WLAN_ACT_CONTROL_8723B, 0x0c);
-> >
-> >       /*
-> >        * BT select S0/S1 controlled by WiFi
-> > @@ -1568,9 +1568,12 @@ static void rtl8723b_enable_rf(struct rtl8xxxu_priv *priv)
-> >       rtl8xxxu_gen2_h2c_cmd(priv, &h2c, sizeof(h2c.ant_sel_rsv));
-> >
-> >       /*
-> > -      * 0x280, 0x00, 0x200, 0x80 - not clear
-> > +      * Different settings per different antenna position.
-> > +      * Antenna switch to BT: 0x280, 0x00 (inverse)
-> > +      * Antenna switch to WiFi: 0x0, 0x280 (inverse)
-> > +      * Antenna controlled by PTA: 0x200, 0x80 (inverse)
-> >        */
-> > -     rtl8xxxu_write32(priv, REG_S0S1_PATH_SWITCH, 0x00);
-> > +     rtl8xxxu_write32(priv, REG_S0S1_PATH_SWITCH, 0x80);
-> >
-> >       /*
-> >        * Software control, antenna at WiFi side
-> > diff --git a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
-> > index 8136e268b4e6..87b2179a769e 100644
-> > --- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
-> > +++ b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
-> > @@ -3891,12 +3891,13 @@ static int rtl8xxxu_init_device(struct ieee80211_hw *hw)
-> >
-> >       /* Check if MAC is already powered on */
-> >       val8 = rtl8xxxu_read8(priv, REG_CR);
-> > +     val16 = rtl8xxxu_read16(priv, REG_SYS_CLKR);
-> >
-> >       /*
-> >        * Fix 92DU-VC S3 hang with the reason is that secondary mac is not
-> >        * initialized. First MAC returns 0xea, second MAC returns 0x00
-> >        */
-> > -     if (val8 == 0xea)
-> > +     if (val8 == 0xea || !(val16 & BIT(11)))
-> >               macpower = false;
-> >       else
-> >               macpower = true;
->
-> This part I would like to ask you take a good look at the other chips to
-> make sure you don't break support for 8192cu, 8723au, 8188eu with this.
->
-> Cheers,
-> Jes
+WCN3990 voltage regulator config is varying b/w different MSM platforms ex: SDM845/
+QCS404. In order to have scalable config, move regulator config to driver
+private data.
 
-I checked the vendor code of 8192cu and 8188eu, they don't have this part
-of code to check the REG_CR before power on sequence. I can only find
-similar code in rtl8723be.
-if (tmp_u1b != 0 && tmp_u1b !=0xea)
-    rtlhal->mac_func_enable = true;
+Tested HW: WCN3990(SDM845/QCS404)
+Tested FW: WLAN.HL.3.1-01040-QCAHLSWMTPLZ-1
 
-By definition, the BIT(11) of REG_SYS_CLKR in rtl8xxxu_regs.h is
-SYS_CLK_MAC_CLK_ENABLE. It seems to make sense to check this value
-for macpower no matter what chip it is. I think I can make it more
-self-expressive
-as down below.
+Govind Singh (3):
+  dt: bindings: update compatible dt properties for WCN3990 wifi node
+  ath10k: Move regulator config to driver private data
+  arm64: dts: qcom: qcs404: Modify wifi dt node for SDM845/QCS404
+    devices
 
- if (val8 == 0xea || !(val16 & SYS_CLK_MAC_CLK_ENABLE))
+ .../bindings/net/wireless/qcom,ath10k.txt     |  2 +
+ arch/arm64/boot/dts/qcom/qcs404-evb.dtsi      |  3 ++
+ arch/arm64/boot/dts/qcom/qcs404.dtsi          |  2 +-
+ arch/arm64/boot/dts/qcom/sdm845.dtsi          |  2 +-
+ drivers/net/wireless/ath/ath10k/snoc.c        | 38 +++++++++++++++----
+ drivers/net/wireless/ath/ath10k/snoc.h        | 23 ++++++-----
+ 6 files changed, 51 insertions(+), 19 deletions(-)
 
-And per the comment, this code is for 92DU-VC S3 hang problem and I think an
-OR check for SYS_CLK_MAC_CLK_ENABLE is still safe for this.
+-- 
+The Qualcomm Innovation Center, Inc. is a member of the Code Aurora Forum,
+a Linux Foundation Collaborative Project
 
-Chris
