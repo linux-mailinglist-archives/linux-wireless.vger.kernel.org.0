@@ -2,152 +2,80 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 3AEC65E51D
-	for <lists+linux-wireless@lfdr.de>; Wed,  3 Jul 2019 15:16:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D7AA85E537
+	for <lists+linux-wireless@lfdr.de>; Wed,  3 Jul 2019 15:19:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726768AbfGCNQZ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 3 Jul 2019 09:16:25 -0400
-Received: from mail-pl1-f194.google.com ([209.85.214.194]:39778 "EHLO
-        mail-pl1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726430AbfGCNQZ (ORCPT
+        id S1727016AbfGCNS5 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 3 Jul 2019 09:18:57 -0400
+Received: from mail-wm1-f68.google.com ([209.85.128.68]:53939 "EHLO
+        mail-wm1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726928AbfGCNS4 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 3 Jul 2019 09:16:25 -0400
-Received: by mail-pl1-f194.google.com with SMTP id b7so1246870pls.6;
-        Wed, 03 Jul 2019 06:16:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id;
-        bh=GiFv2EA+bBdV592muv3lufPOSc1KsSYLwomVffCNWDo=;
-        b=YJAvuaA9j9vqhIcsZeIdgHU0kxJGnc9W4CurWahS8IewKSCaYAF01Rs/JX7Jy64o8M
-         +2t2fteMA6ib8irWsZRdxL3MYCXdHKqt26fxXbOHczC2aHfcCWy7T6bKJwNS+jAFjNpN
-         OZS4tKVSy+xsoLREtTKLe/HP5adxQFQs6u0wt1M/Rvbj467xjQQkv8/eWLp+iOzNmHx8
-         tR4ecCGXd/TUB9Hi8zpOVYtpzw81NNmIec4FoeKNcSYTvlqFGNQM5/D92rsAT7idFSkM
-         JSUxUdcvoKHD3LpV5iZEjHBvI0eb6RFFSr1JSG4UGlXTk2ibk245qjhPkCK7+q6E7u3K
-         Mopg==
+        Wed, 3 Jul 2019 09:18:56 -0400
+Received: by mail-wm1-f68.google.com with SMTP id x15so2186582wmj.3
+        for <linux-wireless@vger.kernel.org>; Wed, 03 Jul 2019 06:18:55 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id;
-        bh=GiFv2EA+bBdV592muv3lufPOSc1KsSYLwomVffCNWDo=;
-        b=lBreKHL6Jn/FND86pti3vuZsuB13ICJuf317O5sb3y2Yt/seybOx9vfPsFf+wtwyje
-         ZvKQU7PDvNxbpTSXcTmWdzeJoqbPfhtRrHI3pRBGABjPUs+rjElcy9Ko0koP8tz2OCGz
-         X+OgELmeDvDUuuleLYQ4KUeNwIqwJfCaV0gTmCCyJ5m/5KSCuhfYlxChPpi36/P4Sj/M
-         7HSRfR9Z35Q1hO+WnPP+9nVq1K5Kw13aWHr9P4L/5g/wTAqOk2bH9Q/bRa57Bm/mGDYG
-         yaKFns+m/6XZVHoBDm4tuCu30TwJYukezeSQgulcp44U3VBsKGzD7PeSyPXzW19P3ohZ
-         uSPA==
-X-Gm-Message-State: APjAAAXE3Mcc7ntPkjbDr0Cynknkwa29b132aM9EVKPQJylB6cvXtRl6
-        BTs+Noztv98s7dRusNww/0g=
-X-Google-Smtp-Source: APXvYqy44KrwCUfsUtsWCLFQ65LRCdYqiAGqWDrtRUHuMDm3r2/A2G7x9DQS0LHIEE9oIcYZsuAVVQ==
-X-Received: by 2002:a17:902:42a5:: with SMTP id h34mr43844472pld.16.1562159785038;
-        Wed, 03 Jul 2019 06:16:25 -0700 (PDT)
-Received: from hfq-skylake.ipads-lab.se.sjtu.edu.cn ([202.120.40.82])
-        by smtp.googlemail.com with ESMTPSA id h14sm2057859pgn.51.2019.07.03.06.16.21
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Wed, 03 Jul 2019 06:16:24 -0700 (PDT)
-From:   Fuqian Huang <huangfq.daxian@gmail.com>
-Cc:     Kalle Valo <kvalo@codeaurora.org>,
-        "David S . Miller" <davem@davemloft.net>,
-        Solomon Peachy <pizza@shaftnet.org>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        Fuqian Huang <huangfq.daxian@gmail.com>
-Subject: [PATCH 16/30] net/wireless: Use kmemdup rather than duplicating its implementation
-Date:   Wed,  3 Jul 2019 21:16:14 +0800
-Message-Id: <20190703131614.25408-1-huangfq.daxian@gmail.com>
-X-Mailer: git-send-email 2.11.0
-To:     unlisted-recipients:; (no To-header on input)
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=xYT4AbowFoo+snaCfFGOcn2Rzt3cparYz6IVKM/T9eI=;
+        b=Y9vfwDISfBcXDLuaIBiVUyrP+9uP7SSgnj5y6vhijvJcmAbTzOCmLBTNuz5ZVZLK1D
+         JUYsuwr3N9pcAgwH8I3KziDf7Wp6NCg/nVNBer1JWBoEXiUCWVisOm23sjdFB2U5d0Ax
+         nzfL8PAXs7uxKNvHoV2eIklva1ccaE9S2apKm1IM4v12jWNk9P8QvXUX6v8vtKCnkP0/
+         OyCxomCyml7G3o1mIBesYBNhPDgV0AKof1LM5z05EWzdbnPocQIhElMlLeKS1pVWdGqv
+         V61eyG/jbze4mF7+arxUDyoKPl43SiwOWvd7fAdk2VRyKYBk/SPusRuG1c2gnTd7XsMo
+         mTZQ==
+X-Gm-Message-State: APjAAAV7cjaJ1bhnQhp3EqefzjxG+T0VHQWRkXn8NIYwS5JmJXMzS1dr
+        R1vTO2VNbYQSG0eYi1lKLCcR7ghN
+X-Google-Smtp-Source: APXvYqxHf+VlXKvazJl+7BWPDuXz4gRV2TjVwxVWkOGIMPicq07n9Hu4/nTxoBSK0csfeWNpbjjOTQ==
+X-Received: by 2002:a1c:c70f:: with SMTP id x15mr7749576wmf.59.1562159934680;
+        Wed, 03 Jul 2019 06:18:54 -0700 (PDT)
+Received: from localhost.localdomain (46-116-2-211.bb.netvision.net.il. [46.116.2.211])
+        by smtp.gmail.com with ESMTPSA id h17sm2197307wrq.79.2019.07.03.06.18.53
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
+        Wed, 03 Jul 2019 06:18:54 -0700 (PDT)
+From:   Shay Bar <shay.bar@celeno.com>
+To:     johannes@sipsolutions.net
+Cc:     linux-wireless@vger.kernel.org, shay.bar@celeno.com
+Subject: [PATCH] mac80211: HE STA disassoc due to QOS NULL not sent
+Date:   Wed,  3 Jul 2019 16:18:48 +0300
+Message-Id: <20190703131848.22879-1-shay.bar@celeno.com>
+X-Mailer: git-send-email 2.22.0
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-kmemdup is introduced to duplicate a region of memory in a neat way.
-Rather than kmalloc/kzalloc + memset, which the programmer needs to
-write the size twice (sometimes lead to mistakes), kmemdup improves
-readability, leads to smaller code and also reduce the chances of mistakes.
-Suggestion to use kmemdup rather than using kmalloc/kzalloc + memset.
+In case of HE AP-STA link, ieee80211_send_nullfunc() will not send the QOS NULL packet to check if AP is still associated.
+In this case, probe_send_count will be non zero and ieee80211_sta_work() will later disassociate the AP.
+(although it didn't really send a test QOS NULL packet).
+Fix is to decrement probe_send_count and not call ieee80211_send_nullfunc() in case of HE link.
 
-Signed-off-by: Fuqian Huang <huangfq.daxian@gmail.com>
+Signed-off-by: Shay Bar <shay.bar@celeno.com>
 ---
- drivers/net/wireless/ath/ath6kl/wmi.c  | 6 ++----
- drivers/net/wireless/st/cw1200/queue.c | 3 +--
- drivers/net/wireless/ti/wlcore/main.c  | 3 +--
- 3 files changed, 4 insertions(+), 8 deletions(-)
+Hope I solved all the SMTP server problems and patch is better now :)
 
-diff --git a/drivers/net/wireless/ath/ath6kl/wmi.c b/drivers/net/wireless/ath/ath6kl/wmi.c
-index 68854c45d0a4..7452a0f587fe 100644
---- a/drivers/net/wireless/ath/ath6kl/wmi.c
-+++ b/drivers/net/wireless/ath/ath6kl/wmi.c
-@@ -3643,7 +3643,7 @@ static int ath6kl_wmi_send_action_cmd(struct wmi *wmi, u8 if_idx, u32 id,
- 	if (wait)
- 		return -EINVAL; /* Offload for wait not supported */
+ net/mac80211/mlme.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
+
+diff --git a/net/mac80211/mlme.c b/net/mac80211/mlme.c
+index 379d2ab6d327..bc5ed2dbe69b 100644
+--- a/net/mac80211/mlme.c
++++ b/net/mac80211/mlme.c
+@@ -2511,7 +2511,10 @@ static void ieee80211_mgd_probe_ap_send(struct ieee80211_sub_if_data *sdata)
  
--	buf = kmalloc(data_len, GFP_KERNEL);
-+	buf = kmemdup(data, data_len, GFP_KERNEL);
- 	if (!buf)
- 		return -ENOMEM;
+ 	if (ieee80211_hw_check(&sdata->local->hw, REPORTS_TX_ACK_STATUS)) {
+ 		ifmgd->nullfunc_failed = false;
+-		ieee80211_send_nullfunc(sdata->local, sdata, false);
++		if (!(ifmgd->flags & IEEE80211_STA_DISABLE_HE))
++			ifmgd->probe_send_count--;
++		else
++			ieee80211_send_nullfunc(sdata->local, sdata, false);
+ 	} else {
+ 		int ssid_len;
  
-@@ -3654,7 +3654,6 @@ static int ath6kl_wmi_send_action_cmd(struct wmi *wmi, u8 if_idx, u32 id,
- 	}
- 
- 	kfree(wmi->last_mgmt_tx_frame);
--	memcpy(buf, data, data_len);
- 	wmi->last_mgmt_tx_frame = buf;
- 	wmi->last_mgmt_tx_frame_len = data_len;
- 
-@@ -3682,7 +3681,7 @@ static int __ath6kl_wmi_send_mgmt_cmd(struct wmi *wmi, u8 if_idx, u32 id,
- 	if (wait)
- 		return -EINVAL; /* Offload for wait not supported */
- 
--	buf = kmalloc(data_len, GFP_KERNEL);
-+	buf = kmemdup(data, data_len, GFP_KERNEL);
- 	if (!buf)
- 		return -ENOMEM;
- 
-@@ -3693,7 +3692,6 @@ static int __ath6kl_wmi_send_mgmt_cmd(struct wmi *wmi, u8 if_idx, u32 id,
- 	}
- 
- 	kfree(wmi->last_mgmt_tx_frame);
--	memcpy(buf, data, data_len);
- 	wmi->last_mgmt_tx_frame = buf;
- 	wmi->last_mgmt_tx_frame_len = data_len;
- 
-diff --git a/drivers/net/wireless/st/cw1200/queue.c b/drivers/net/wireless/st/cw1200/queue.c
-index 14133eedb3b6..12952b1c29df 100644
---- a/drivers/net/wireless/st/cw1200/queue.c
-+++ b/drivers/net/wireless/st/cw1200/queue.c
-@@ -79,10 +79,9 @@ static void cw1200_queue_register_post_gc(struct list_head *gc_list,
- 					  struct cw1200_queue_item *item)
- {
- 	struct cw1200_queue_item *gc_item;
--	gc_item = kmalloc(sizeof(struct cw1200_queue_item),
-+	gc_item = kmemdup(item, sizeof(struct cw1200_queue_item),
- 			GFP_ATOMIC);
- 	BUG_ON(!gc_item);
--	memcpy(gc_item, item, sizeof(struct cw1200_queue_item));
- 	list_add_tail(&gc_item->head, gc_list);
- }
- 
-diff --git a/drivers/net/wireless/ti/wlcore/main.c b/drivers/net/wireless/ti/wlcore/main.c
-index c9a485ecee7b..297207856494 100644
---- a/drivers/net/wireless/ti/wlcore/main.c
-+++ b/drivers/net/wireless/ti/wlcore/main.c
-@@ -1434,7 +1434,7 @@ int wl1271_rx_filter_alloc_field(struct wl12xx_rx_filter *filter,
- 
- 	field = &filter->fields[filter->num_fields];
- 
--	field->pattern = kzalloc(len, GFP_KERNEL);
-+	field->pattern = kmemdup(pattern, len, GFP_KERNEL);
- 	if (!field->pattern) {
- 		wl1271_warning("Failed to allocate RX filter pattern");
- 		return -ENOMEM;
-@@ -1445,7 +1445,6 @@ int wl1271_rx_filter_alloc_field(struct wl12xx_rx_filter *filter,
- 	field->offset = cpu_to_le16(offset);
- 	field->flags = flags;
- 	field->len = len;
--	memcpy(field->pattern, pattern, len);
- 
- 	return 0;
- }
 -- 
-2.11.0
+2.22.0
 
