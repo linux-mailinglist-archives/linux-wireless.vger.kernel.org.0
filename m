@@ -2,79 +2,64 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 249075F701
-	for <lists+linux-wireless@lfdr.de>; Thu,  4 Jul 2019 13:07:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3A20B5FB3C
+	for <lists+linux-wireless@lfdr.de>; Thu,  4 Jul 2019 17:53:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727585AbfGDLHC (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 4 Jul 2019 07:07:02 -0400
-Received: from mx1.redhat.com ([209.132.183.28]:49446 "EHLO mx1.redhat.com"
+        id S1727889AbfGDPx0 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 4 Jul 2019 11:53:26 -0400
+Received: from nbd.name ([46.4.11.11]:38244 "EHLO nbd.name"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727436AbfGDLHC (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 4 Jul 2019 07:07:02 -0400
-Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.phx2.redhat.com [10.5.11.16])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mx1.redhat.com (Postfix) with ESMTPS id A98703E2B7;
-        Thu,  4 Jul 2019 11:06:58 +0000 (UTC)
-Received: from localhost (ovpn-204-157.brq.redhat.com [10.40.204.157])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 2310E4DA30;
-        Thu,  4 Jul 2019 11:06:57 +0000 (UTC)
-From:   Stanislaw Gruszka <sgruszka@redhat.com>
+        id S1727816AbfGDPx0 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 4 Jul 2019 11:53:26 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name;
+         s=20160729; h=Message-Id:Date:Subject:To:From:Sender:Reply-To:Cc:
+        MIME-Version:Content-Type:Content-Transfer-Encoding:Content-ID:
+        Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+        :Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
+        List-Subscribe:List-Post:List-Owner:List-Archive;
+        bh=rjOF04iQtrtjBhHMy+qUMjQnUpCvJqiej7WWXrul57k=; b=P5KkJTNlzXJIGxiq5a88LzMj5b
+        CMfHf3FmscXllC6rkLdA6RFJPyNsnGBQ7Afr0cIybTTm3oFKX15cT9n/NuGroWzIZ5V0u61YAc9IW
+        dvEGu+iVhMsyw/0J6BO5zFFkOqi2oTp0E+ouqfX+QTsorjFO+6nFenNhEM8OFieCHdTc=;
+Received: from p54ae9425.dip0.t-ipconnect.de ([84.174.148.37] helo=maeck-3.local)
+        by ds12 with esmtpsa (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.89)
+        (envelope-from <nbd@nbd.name>)
+        id 1hj432-0004qW-Uk
+        for linux-wireless@vger.kernel.org; Thu, 04 Jul 2019 17:53:25 +0200
+Received: by maeck-3.local (Postfix, from userid 501)
+        id 6165F6165C13; Thu,  4 Jul 2019 17:53:24 +0200 (CEST)
+From:   Felix Fietkau <nbd@nbd.name>
 To:     linux-wireless@vger.kernel.org
-Cc:     =?UTF-8?q?Tomislav=20Po=C5=BEega?= <pozega.tomislav@gmail.com>,
-        Daniel Golle <daniel@makrotopia.org>,
-        Felix Fietkau <nbd@nbd.name>, Mathias Kresin <dev@kresin.me>
-Subject: [RFC/RFT] rt2x00: do not set IEEE80211_TX_STAT_AMPDU_NO_BACK on tx status
-Date:   Thu,  4 Jul 2019 13:06:52 +0200
-Message-Id: <20190704110652.3955-1-sgruszka@redhat.com>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.16
-X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16 (mx1.redhat.com [10.5.110.30]); Thu, 04 Jul 2019 11:07:02 +0000 (UTC)
+Subject: [PATCH 1/4] mt76: mt7603: enable hardware rate up/down selection
+Date:   Thu,  4 Jul 2019 17:53:21 +0200
+Message-Id: <20190704155324.56693-1-nbd@nbd.name>
+X-Mailer: git-send-email 2.17.0
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-According to documentation IEEE80211_TX_STAT_AMPDU_NO_BACK is suppose
-to be used when we do not recive BA (BlockAck). However on rt2x00 we
-use it when remote station fail to decode one or more subframes within
-AMPDU (some bits are not set in BlockAck bitmap). Setting the flag result
-in sent of BAR (BlockAck Request) frame and this might result of abuse
-of BA session, since remote station can sent BA with incorrect 
-sequence numbers after receiving BAR. This problem is visible especially
-when connecting two rt2800 devices.
+Improves performance by switching away from bad rates faster
 
-Previously I observed some performance benefits when using the flag
-when connecting with iwlwifi devices. But currently possibly due
-to reacent changes in rt2x00 removing the flag has no effect on
-those test cases.
-
-So remove the IEEE80211_TX_STAT_AMPDU_NO_BACK.
-
-Perhaps we should send BAR exlicitly on BA session start/stop
-and when remote STA went to PowerSave mode (for AP) like mt76 does.
-But I do not understand for what this is needed.
-
-Signed-off-by: Stanislaw Gruszka <sgruszka@redhat.com>
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
 ---
- drivers/net/wireless/ralink/rt2x00/rt2x00dev.c | 3 ---
- 1 file changed, 3 deletions(-)
+ drivers/net/wireless/mediatek/mt76/mt7603/init.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/drivers/net/wireless/ralink/rt2x00/rt2x00dev.c b/drivers/net/wireless/ralink/rt2x00/rt2x00dev.c
-index a6c374c483c2..c547bec044a8 100644
---- a/drivers/net/wireless/ralink/rt2x00/rt2x00dev.c
-+++ b/drivers/net/wireless/ralink/rt2x00/rt2x00dev.c
-@@ -371,9 +371,6 @@ static void rt2x00lib_fill_tx_status(struct rt2x00_dev *rt2x00dev,
- 				  IEEE80211_TX_CTL_AMPDU;
- 		tx_info->status.ampdu_len = 1;
- 		tx_info->status.ampdu_ack_len = success ? 1 : 0;
--
--		if (!success)
--			tx_info->flags |= IEEE80211_TX_STAT_AMPDU_NO_BACK;
- 	}
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7603/init.c b/drivers/net/wireless/mediatek/mt76/mt7603/init.c
+index 38834c7d0891..568e57e1d69c 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7603/init.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7603/init.c
+@@ -248,8 +248,7 @@ mt7603_mac_init(struct mt7603_dev *dev)
+ 		FIELD_PREP(MT_AGG_ARxCR_LIMIT(7), MT7603_RATE_RETRY - 1));
  
- 	if (rate_flags & IEEE80211_TX_RC_USE_RTS_CTS) {
+ 	mt76_wr(dev, MT_AGG_ARCR,
+-		(MT_AGG_ARCR_INIT_RATE1 |
+-		 FIELD_PREP(MT_AGG_ARCR_RTS_RATE_THR, 2) |
++		(FIELD_PREP(MT_AGG_ARCR_RTS_RATE_THR, 2) |
+ 		 MT_AGG_ARCR_RATE_DOWN_RATIO_EN |
+ 		 FIELD_PREP(MT_AGG_ARCR_RATE_DOWN_RATIO, 1) |
+ 		 FIELD_PREP(MT_AGG_ARCR_RATE_UP_EXTRA_TH, 4)));
 -- 
-2.20.1
+2.17.0
 
