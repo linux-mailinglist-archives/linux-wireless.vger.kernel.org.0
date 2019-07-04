@@ -2,145 +2,98 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C222A5FC08
-	for <lists+linux-wireless@lfdr.de>; Thu,  4 Jul 2019 18:43:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 097C05FD04
+	for <lists+linux-wireless@lfdr.de>; Thu,  4 Jul 2019 20:34:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726957AbfGDQnX (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 4 Jul 2019 12:43:23 -0400
-Received: from mail-qt1-f194.google.com ([209.85.160.194]:41894 "EHLO
-        mail-qt1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725887AbfGDQnX (ORCPT
+        id S1727122AbfGDSef (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 4 Jul 2019 14:34:35 -0400
+Received: from mail-oi1-f193.google.com ([209.85.167.193]:45689 "EHLO
+        mail-oi1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726038AbfGDSef (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 4 Jul 2019 12:43:23 -0400
-Received: by mail-qt1-f194.google.com with SMTP id d17so7154056qtj.8;
-        Thu, 04 Jul 2019 09:43:22 -0700 (PDT)
+        Thu, 4 Jul 2019 14:34:35 -0400
+Received: by mail-oi1-f193.google.com with SMTP id m206so5484699oib.12;
+        Thu, 04 Jul 2019 11:34:34 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=from:subject:to:cc:references:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=IS/wJFcvJJc/obs4u52ESPK6iZNHDaKuJQrwIU9Br5M=;
-        b=Ex6kfypx3IqkZHIv1Ib6WARx4LDKQYudillIowR7AmhNuQNU9Aj0W8SszQ4nwNcEHC
-         sDxVtU0reCVq3UOMNrS15qW1r55uYNZZ0WFpttUkG3CUQGxWOgtrMuF51KVR6JlXkbnu
-         ftlBimI3h5vnm/A79jHjAWhpadB5AvxDBR/gPcnjuaEbqHnmn5nv6wuRv+Lzs6d7pcyp
-         Y6vSsAyY2qYdEB/mYWESl76qxz1bLpn6rRuqLq5LrD6OVJsbNTCjxfOmczeCPEStbliW
-         tZ1YDaJwAcNdDgZCayBZiM3CHFV1Tj+tBGbWoKq0HBYLWIHNyCxXcsE8yONlGOlrDKHW
-         m6sw==
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=fwqlPWLgtWbam3S8PbEk2DL4IkYoPJjyq8Eby5PvYJs=;
+        b=koAL6oSvGwR8rO0HfCPdKDRa7eF6Kb7VQRlYLZnMUXFD1qEKJmLQREJVGrb/3GN5DF
+         Wr9RCs68zdQN6/UteMzhYEBV1F+qKF48gORJPlqqSZ+A+YS++U7R2T6pKHmrx7ZyCy46
+         AyKqpsRWL3B6zYiwxRHMyTc6PEJq1KrQtiDbzcJvubVXP8LQzn01bYk+Mjat0my+C8Vl
+         Q/Du1iaCJPiMsulRD+K09oqdZNF86E3eSVc/NFaDyThrzTOsXtgUoCRVsrkq/z1vdmKh
+         DclroLpyvSCbbN28DD5f62lDziuxYwsTtWsv8iB7kQTKQ4GHsNQnaKT7R+KzaX/KDmEZ
+         fSbQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:subject:to:cc:references:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=IS/wJFcvJJc/obs4u52ESPK6iZNHDaKuJQrwIU9Br5M=;
-        b=C+3g45VmGh3XcBLy/FkJFqb9HgsY6p4if46z/XoDhB/HSUJj7t+ewYgthy33WhI1g0
-         WGG/K5bhC33zdCnoI23UcIyFZ/hY/Ig5U16ETR65FtyrrMvRzHMo3IUYzXTMkLrDEY0+
-         YMpCdtYRZdu4Kd1p0/E/snyddprDwuuZ9q0Ff0H7zMLXIrGxSGpY9WfYNgyJOVHcsLWA
-         SKraYZu4KdL0JECh+UM6gMNW5C1vwHLGfar0oPOdeMJBv9dCI1gjop+w7Ky6IK3St8p0
-         fYPnWuYXR0cfUMvzhxMQxDZwPmzE/uhddsP2UtSNgUQJDK13PvsmUzO+g2rNhxxc4CA8
-         yNSg==
-X-Gm-Message-State: APjAAAVUEceRoouX1z+3sDqVJQHWBASta8hvBrRuyoOLkU+ZYRZ1HkER
-        9k7G45vvoeiSGvt+ssSw7Ps=
-X-Google-Smtp-Source: APXvYqz4tSpAKSrmRROymk/C8WtPEk8CZ8fOFGr+Wac4NjN8D1fkinwqhPQJl8pmcq2aFUmDiSZi2Q==
-X-Received: by 2002:ac8:689a:: with SMTP id m26mr36117104qtq.192.1562258601813;
-        Thu, 04 Jul 2019 09:43:21 -0700 (PDT)
-Received: from ?IPv6:2620:10d:c0a8:11c1::109b? ([2620:10d:c091:480::f2b4])
-        by smtp.gmail.com with ESMTPSA id l6sm2591529qkf.83.2019.07.04.09.43.20
-        (version=TLS1_3 cipher=AEAD-AES128-GCM-SHA256 bits=128/128);
-        Thu, 04 Jul 2019 09:43:20 -0700 (PDT)
-From:   Jes Sorensen <jes.sorensen@gmail.com>
-X-Google-Original-From: Jes Sorensen <Jes.Sorensen@gmail.com>
-Subject: Re: [PATCH v2] rtl8xxxu: Fix wifi low signal strength issue of
- RTL8723BU
-To:     Chris Chiu <chiu@endlessm.com>, kvalo@codeaurora.org,
-        davem@davemloft.net
-Cc:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux@endlessm.com
-References: <20190704105528.74028-1-chiu@endlessm.com>
-Message-ID: <8f1454ca-4610-03d0-82c4-06174083d463@gmail.com>
-Date:   Thu, 4 Jul 2019 12:43:18 -0400
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.7.2
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=fwqlPWLgtWbam3S8PbEk2DL4IkYoPJjyq8Eby5PvYJs=;
+        b=JI4BDP8vceoA/tybjKDlEGO8dZr/fc+pS3BLcg5QJiFPREoBFHp3f1ohzV21twbKwE
+         o97hhDdca11po6S+hCupce5+i4YRkffiyp7Gb8FUXPJ5Fl9t54udnvZHId8jvSQFzcve
+         g2VOKt7sec/PlzjO6x+mvZM68+4VarDAKhVaHWA5LgKUBXzQ8w5XviQYB8nAMGmhrhj1
+         ZSnXLjyXXkgrZ/z6iacjCdL7JOd+v8JBcU3SiVr2E86jzsAxnbEkHOgjtC6ASn6rERm1
+         wgcgvWk4rlB8c9SYtvT7Q0PavRdYR6Yx1HbyMSVIp5bSthIIoVmksgsQ2wjy5DOLy8Zd
+         +ORQ==
+X-Gm-Message-State: APjAAAXIQQEVlI2f77o5fyXkCQT46/pXCnzOtvDrvyRiOtQKK6Ur6aVD
+        Hzwq4c10Ohu3t8OAU4tO6oQdyoMSgeA=
+X-Google-Smtp-Source: APXvYqzhe2miRwma3M2OJqqQShuQRsy1E1uZjK0GrouEWgWluPmRhMcGqh9HlMj6OOB5nv5PmVuCYg==
+X-Received: by 2002:aca:3809:: with SMTP id f9mr533032oia.119.1562265274455;
+        Thu, 04 Jul 2019 11:34:34 -0700 (PDT)
+Received: from rYz3n ([2600:1700:210:3790::48])
+        by smtp.gmail.com with ESMTPSA id 103sm2029850otu.33.2019.07.04.11.34.33
+        (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
+        Thu, 04 Jul 2019 11:34:34 -0700 (PDT)
+Date:   Thu, 4 Jul 2019 13:34:33 -0500
+From:   Jiunn Chang <c0d1n61at3@gmail.com>
+To:     Johannes Berg <johannes@sipsolutions.net>
+Cc:     Shuah Khan <skhan@linuxfoundation.org>,
+        linux-kernel-mentees@lists.linuxfoundation.org,
+        linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [Linux-kernel-mentees][PATCH v2] nl80211: Fix undefined behavior
+ in bit shift
+Message-ID: <20190704183432.av37fjd5s3zcho6m@rYz3n>
+References: <20190627010137.5612-4-c0d1n61at3@gmail.com>
+ <20190627032532.18374-4-c0d1n61at3@gmail.com>
+ <c20a0a94-ab50-bb85-7c78-e02a465c5a40@linuxfoundation.org>
+ <8b8c44c3ecb8626d9bb5a8f786b1d2b7488df86b.camel@sipsolutions.net>
 MIME-Version: 1.0
-In-Reply-To: <20190704105528.74028-1-chiu@endlessm.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <8b8c44c3ecb8626d9bb5a8f786b1d2b7488df86b.camel@sipsolutions.net>
+User-Agent: NeoMutt/20180716
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 7/4/19 6:55 AM, Chris Chiu wrote:
-> The WiFi tx power of RTL8723BU is extremely low after booting. So
-> the WiFi scan gives very limited AP list and it always fails to
-> connect to the selected AP. This module only supports 1x1 antenna
-> and the antenna is switched to bluetooth due to some incorrect
-> register settings.
+On Fri, Jun 28, 2019 at 03:57:05PM +0200, Johannes Berg wrote:
+> On Wed, 2019-06-26 at 21:34 -0600, Shuah Khan wrote:
+> > On 6/26/19 9:25 PM, Jiunn Chang wrote:
+> > > Shifting signed 32-bit value by 31 bits is undefined.  Changing most
+> > > significant bit to unsigned.
+> > > 
+> > > Changes included in v2:
+> > >    - use subsystem specific subject lines
+> > >    - CC required mailing lists
+> > > 
+> > > Signed-off-by: Jiunn Chang <c0d1n61at3@gmail.com>
+> > > ---
+> > 
+> > Move version change lines here. They don't belong in the commit log.
 > 
-> Compare with the vendor driver https://github.com/lwfinger/rtl8723bu,
-> we realized that the 8723bu's enable_rf() does the same thing as
-> rtw_btcoex_HAL_Initialize() in vendor driver. And it by default
-> sets the antenna path to BTC_ANT_PATH_BT which we verified it's
-> the cause of the wifi weak tx power. The vendor driver will set
-> the antenna path to BTC_ANT_PATH_PTA in the consequent btcoexist
-> mechanism, by the function halbtc8723b1ant_PsTdma.
+> FWIW, in many cases people (maintainers) now *do* want them in the
+> commit log. Here, they're just editorial, so agree, but if real
+> technical changes were made due to reviews, they can indeed be useful.
 > 
-> This commit hand over the antenna control to PTA(Packet Traffic
-> Arbitration), which compares the weight of bluetooth/wifi traffic
-> then determine whether to continue current wifi traffic or not.
-> After PTA take control, The wifi signal will be back to normal and
-> the bluetooth scan can also work at the same time. However, the
-> btcoexist still needs to be handled under different circumstances.
-> If there's a BT connection established, the wifi still fails to
-> connect until BT disconnected.
+> johannes
 > 
-> Signed-off-by: Chris Chiu <chiu@endlessm.com>
-> ---
-> 
-> 
-> Note:
->  v2:
->   - Replace BIT(11) with the descriptive definition
->   - Meaningful comment for the REG_S0S1_PATH_SWITCH setting
-> 
-> 
->  drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8723b.c | 11 ++++++++---
->  drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c  |  3 ++-
->  2 files changed, 10 insertions(+), 4 deletions(-)
-> 
-> diff --git a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8723b.c b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8723b.c
-> index 3adb1d3d47ac..ceffe05bd65b 100644
-> --- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8723b.c
-> +++ b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8723b.c
-> @@ -1525,7 +1525,7 @@ static void rtl8723b_enable_rf(struct rtl8xxxu_priv *priv)
->  	/*
->  	 * WLAN action by PTA
->  	 */
-> -	rtl8xxxu_write8(priv, REG_WLAN_ACT_CONTROL_8723B, 0x04);
-> +	rtl8xxxu_write8(priv, REG_WLAN_ACT_CONTROL_8723B, 0x0c);
->  
->  	/*
->  	 * BT select S0/S1 controlled by WiFi
-> @@ -1568,9 +1568,14 @@ static void rtl8723b_enable_rf(struct rtl8xxxu_priv *priv)
->  	rtl8xxxu_gen2_h2c_cmd(priv, &h2c, sizeof(h2c.ant_sel_rsv));
->  
->  	/*
-> -	 * 0x280, 0x00, 0x200, 0x80 - not clear
-> +	 * Different settings per different antenna position.
-> +	 *      Antenna Position:   | Normal   Inverse
-> +	 * --------------------------------------------------
-> +	 * Antenna switch to BT:    |  0x280,   0x00
-> +	 * Antenna switch to WiFi:  |  0x0,     0x280
-> +	 * Antenna switch to PTA:   |  0x200,   0x80
->  	 */
-> -	rtl8xxxu_write32(priv, REG_S0S1_PATH_SWITCH, 0x00);
-> +	rtl8xxxu_write32(priv, REG_S0S1_PATH_SWITCH, 0x80);
 
-Per the documentation, shouldn't this be set to 0x200 then rather than 0x80?
+Hello Johannes,
 
-We may need to put in place some code to detect whether we have normal
-or inverse configuration of the dongle otherwise?
+Would you like me to send v3 with the change log in the patch description?
 
-I really appreciate you're digging into this!
+THX,
 
-Cheers,
-Jes
+Jiunn
