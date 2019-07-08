@@ -2,184 +2,176 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 4346261B91
-	for <lists+linux-wireless@lfdr.de>; Mon,  8 Jul 2019 10:08:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0773761BC6
+	for <lists+linux-wireless@lfdr.de>; Mon,  8 Jul 2019 10:37:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727862AbfGHIIC (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 8 Jul 2019 04:08:02 -0400
-Received: from mail-vk1-f195.google.com ([209.85.221.195]:44997 "EHLO
-        mail-vk1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727458AbfGHIIB (ORCPT
+        id S1729454AbfGHIg6 convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 8 Jul 2019 04:36:58 -0400
+Received: from eu-smtp-delivery-151.mimecast.com ([207.82.80.151]:38254 "EHLO
+        eu-smtp-delivery-151.mimecast.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1729445AbfGHIg6 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 8 Jul 2019 04:08:01 -0400
-Received: by mail-vk1-f195.google.com with SMTP id w186so2295512vkd.11
-        for <linux-wireless@vger.kernel.org>; Mon, 08 Jul 2019 01:08:00 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=endlessm-com.20150623.gappssmtp.com; s=20150623;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc:content-transfer-encoding;
-        bh=ZOR8clYW+rncXTX2zDaB/JyvqUChf4gA7xNaU/YBSOg=;
-        b=HjwQkZGofNQdyJdhdsVJlTLKDMPO0orD/dj2rtP84s0BLxKprbw2Q0dPlIchoaQk1Q
-         G58ky89Ofz0eHD4HVvHRwHNfU9isBY0fIdt3WYIJC3EbFjKwqFFqBa7gqM5w4PUQpZ61
-         oPcCg1OYdgDCOhMgzIBHKZxAgWyNtsYps3kRElLlJb/aUAEV2h1RuR8baolPBQ8XUv7+
-         IZlQ7xdB401Vlqa39KXXlpK63Sa21h5vdTbM8X4/Td9P3eC3oGy/cnHM59B0rP5KX8my
-         CjR7J0rOwlm2GG2eurjO6bedWoMrLyvIEr3Jxm1dBPknhkUI9blYTV10DefQZajdhoA8
-         s+Yw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=ZOR8clYW+rncXTX2zDaB/JyvqUChf4gA7xNaU/YBSOg=;
-        b=iri6kh3jvjJkrIbfJEMMDQ/1BoMTp4u7vLHFmk8Z9Pcl8HB909uVLZL8gVJ7x7N2cH
-         zB0GJRfNKz6pLLMTFPUG67v/MFkKvwERbG3rAjdJtq/S8uioIRIObbXtQ/9AMKbYDn5u
-         DFlATbCDtNLy6F6EtqPm/1jCiCcso9wuHO1fcfL67AOgIu+zSTWXaamvMKO57/kQDxHm
-         st83bZxhYq0oaSHTinqDKWu41rK21xZbERkTyvbHueAmUAoZ/7+DHEWNgeL0cRdwBxNT
-         zqyrx8SKvR+dQ5mEMnPLI8ktsEcZ1y8dhKHgzEyvQPE3pmJ8HGkIkTuw23hZb7qP6ooA
-         CDpg==
-X-Gm-Message-State: APjAAAXzQiMdvPS1QV4ZjTTlgtb8Rl8yIKR2ey24cSDMewPX+RLWGBDv
-        lERdPiG+2WZtLF6a2dX6gJ0/kmncI4vNlLhsc6G4nAPYs/E=
-X-Google-Smtp-Source: APXvYqxvi+ZGKZk70HDy/wcOVHFF+mkZN0c9aifSzp8ZeR05ajx0gubx1sPnRzwxwHIKL4hXvHNHgKeeEsePgZx9XtI=
-X-Received: by 2002:a1f:acc5:: with SMTP id v188mr4725232vke.16.1562573279892;
- Mon, 08 Jul 2019 01:07:59 -0700 (PDT)
-MIME-Version: 1.0
-References: <20190708063252.4756-1-jian-hong@endlessm.com> <F7CD281DE3E379468C6D07993EA72F84D1861A6D@RTITMBSVM04.realtek.com.tw>
-In-Reply-To: <F7CD281DE3E379468C6D07993EA72F84D1861A6D@RTITMBSVM04.realtek.com.tw>
-From:   Jian-Hong Pan <jian-hong@endlessm.com>
-Date:   Mon, 8 Jul 2019 16:07:23 +0800
-Message-ID: <CAPpJ_eebQtL0y_j98J2T7m9g77A61SVtvD8qnNN42bV0dm4MLA@mail.gmail.com>
-Subject: Re: [PATCH] rtw88/pci: Rearrange the memory usage for skb in RX ISR
-To:     Tony Chuang <yhchuang@realtek.com>
-Cc:     Kalle Valo <kvalo@codeaurora.org>,
-        "David S . Miller" <davem@davemloft.net>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        Mon, 8 Jul 2019 04:36:58 -0400
+Received: from AcuMS.aculab.com (156.67.243.126 [156.67.243.126]) (Using
+ TLS) by relay.mimecast.com with ESMTP id
+ uk-mta-58-GxZAHFndPNeufvGAW7tiGg-1; Mon, 08 Jul 2019 09:36:53 +0100
+Received: from AcuMS.Aculab.com (fd9f:af1c:a25b:0:43c:695e:880f:8750) by
+ AcuMS.aculab.com (fd9f:af1c:a25b:0:43c:695e:880f:8750) with Microsoft SMTP
+ Server (TLS) id 15.0.1347.2; Mon, 8 Jul 2019 09:36:52 +0100
+Received: from AcuMS.Aculab.com ([fe80::43c:695e:880f:8750]) by
+ AcuMS.aculab.com ([fe80::43c:695e:880f:8750%12]) with mapi id 15.00.1347.000;
+ Mon, 8 Jul 2019 09:36:52 +0100
+From:   David Laight <David.Laight@ACULAB.COM>
+To:     'Jian-Hong Pan' <jian-hong@endlessm.com>,
+        Yan-Hsuan Chuang <yhchuang@realtek.com>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        "David S . Miller" <davem@davemloft.net>
+CC:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
         "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
         "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
         "linux@endlessm.com" <linux@endlessm.com>,
         Daniel Drake <drake@endlessm.com>,
         "stable@vger.kernel.org" <stable@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Subject: RE: [PATCH] rtw88/pci: Rearrange the memory usage for skb in RX ISR
+Thread-Topic: [PATCH] rtw88/pci: Rearrange the memory usage for skb in RX ISR
+Thread-Index: AQHVNVeEF2VH1aWcW0SX/aCCs+qgc6bAY9qw
+Date:   Mon, 8 Jul 2019 08:36:52 +0000
+Message-ID: <e95fe2b6d5664aa4b256cdad1707f09f@AcuMS.aculab.com>
+References: <20190708063252.4756-1-jian-hong@endlessm.com>
+In-Reply-To: <20190708063252.4756-1-jian-hong@endlessm.com>
+Accept-Language: en-GB, en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-ms-exchange-transport-fromentityheader: Hosted
+x-originating-ip: [10.202.205.107]
+MIME-Version: 1.0
+X-MC-Unique: GxZAHFndPNeufvGAW7tiGg-1
+X-Mimecast-Spam-Score: 0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8BIT
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Tony Chuang <yhchuang@realtek.com> =E6=96=BC 2019=E5=B9=B47=E6=9C=888=E6=97=
-=A5 =E9=80=B1=E4=B8=80 =E4=B8=8B=E5=8D=883:23=E5=AF=AB=E9=81=93=EF=BC=9A
->
-> > Subject: [PATCH] rtw88/pci: Rearrange the memory usage for skb in RX IS=
-R
->
-> nit, "rtw88: pci:" would be better.
+From: Jian-Hong Pan
+> Sent: 08 July 2019 07:33
+> To: Yan-Hsuan Chuang; Kalle Valo; David S . Miller
+> 
+> Testing with RTL8822BE hardware, when available memory is low, we
+> frequently see a kernel panic and system freeze.
+> 
+> First, rtw_pci_rx_isr encounters a memory allocation failure (trimmed):
+> 
+> rx routine starvation
+> WARNING: CPU: 7 PID: 9871 at drivers/net/wireless/realtek/rtw88/pci.c:822
+> rtw_pci_rx_isr.constprop.25+0x35a/0x370 [rtwpci]
+> [ 2356.580313] RIP: 0010:rtw_pci_rx_isr.constprop.25+0x35a/0x370 [rtwpci]
+> 
+> Then we see a variety of different error conditions and kernel panics,
+> such as this one (trimmed):
+> 
+> rtw_pci 0000:02:00.0: pci bus timeout, check dma status
+> skbuff: skb_over_panic: text:00000000091b6e66 len:415 put:415 head:00000000d2880c6f
+> data:000000007a02b1ea tail:0x1df end:0xc0 dev:<NULL>
+> ------------[ cut here ]------------
+> kernel BUG at net/core/skbuff.c:105!
+> invalid opcode: 0000 [#1] SMP NOPTI
+> RIP: 0010:skb_panic+0x43/0x45
+> 
+> When skb allocation fails and the "rx routine starvation" is hit, the
+> function returns immediately without updating the RX ring. At this
+> point, the RX ring may continue referencing an old skb which was already
+> handed off to ieee80211_rx_irqsafe(). When it comes to be used again,
+> bad things happen.
+> 
+> This patch allocates a new skb first in RX ISR. If we don't have memory
+> available, we discard the current frame, allowing the existing skb to be
+> reused in the ring. Otherwise, we simplify the code flow and just hand
+> over the RX-populated skb over to mac80211.
+> 
+> In addition, to fixing the kernel crash, the RX routine should now
+> generally behave better under low memory conditions.
 
-Ok.
+Under low memory conditions it may be preferable to limit the amount
+of memory assigned to the receive ring.
 
-> >
-> > When skb allocation fails and the "rx routine starvation" is hit, the
-> > function returns immediately without updating the RX ring. At this
-> > point, the RX ring may continue referencing an old skb which was alread=
-y
-> > handed off to ieee80211_rx_irqsafe(). When it comes to be used again,
-> > bad things happen.
-> >
-> > This patch allocates a new skb first in RX ISR. If we don't have memory
-> > available, we discard the current frame, allowing the existing skb to b=
-e
-> > reused in the ring. Otherwise, we simplify the code flow and just hand
-> > over the RX-populated skb over to mac80211.
-> >
-> > In addition, to fixing the kernel crash, the RX routine should now
-> > generally behave better under low memory conditions.
-> >
-> > Buglink: https://bugzilla.kernel.org/show_bug.cgi?id=3D204053
-> > Signed-off-by: Jian-Hong Pan <jian-hong@endlessm.com>
-> > Reviewed-by: Daniel Drake <drake@endlessm.com>
-> > Cc: <stable@vger.kernel.org>
-> > ---
-> >  drivers/net/wireless/realtek/rtw88/pci.c | 28 +++++++++++-------------
-> >  1 file changed, 13 insertions(+), 15 deletions(-)
-> >
-> > diff --git a/drivers/net/wireless/realtek/rtw88/pci.c
-> > b/drivers/net/wireless/realtek/rtw88/pci.c
-> > index cfe05ba7280d..1bfc99ae6b84 100644
-> > --- a/drivers/net/wireless/realtek/rtw88/pci.c
-> > +++ b/drivers/net/wireless/realtek/rtw88/pci.c
-> > @@ -786,6 +786,15 @@ static void rtw_pci_rx_isr(struct rtw_dev *rtwdev,
-> > struct rtw_pci *rtwpci,
-> >               rx_desc =3D skb->data;
-> >               chip->ops->query_rx_desc(rtwdev, rx_desc, &pkt_stat, &rx_=
-status);
-> >
-> > +             /* discard current skb if the new skb cannot be allocated=
- as a
-> > +              * new one in rx ring later
-> > +              * */
->
-> nit, comment indentation.
+I also thought it was preferable (DM may correct me here) to do the
+skb allocates from the 'bh' of the driver rather than from the hardware
+interrupt.
 
-Thanks.  I will fix this.
+It is also almost certainly preferable (especially on IOMMU systems)
+to copy small frames into a new skb (of the right size) and then
+reuse the skb (with its dma-mapped buffer) for a later frame.
 
-> > +             new =3D dev_alloc_skb(RTK_PCI_RX_BUF_SIZE);
-> > +             if (WARN(!new, "rx routine starvation\n")) {
-> > +                     new =3D skb;
-> > +                     goto next_rp;
-> > +             }
-> > +
-> >               /* offset from rx_desc to payload */
-> >               pkt_offset =3D pkt_desc_sz + pkt_stat.drv_info_sz +
-> >                            pkt_stat.shift;
-> > @@ -803,25 +812,14 @@ static void rtw_pci_rx_isr(struct rtw_dev *rtwdev=
-,
-> > struct rtw_pci *rtwpci,
-> >                       skb_put(skb, pkt_stat.pkt_len);
-> >                       skb_reserve(skb, pkt_offset);
-> >
-> > -                     /* alloc a smaller skb to mac80211 */
-> > -                     new =3D dev_alloc_skb(pkt_stat.pkt_len);
-> > -                     if (!new) {
-> > -                             new =3D skb;
-> > -                     } else {
-> > -                             skb_put_data(new, skb->data, skb->len);
-> > -                             dev_kfree_skb_any(skb);
-> > -                     }
->
-> I am not sure if it's fine to deliver every huge SKB to mac80211.
-> Because it will then be delivered to TCP/IP stack.
-> Hence I think either it should be tested to know if the performance
-> would be impacted or find out a more efficient way to send
-> smaller SKB to mac80211 stack.
+Allocating a new skb before ay px processing just seems wrong...
 
-I remember network stack only processes the skb with(in) pointers
-(skb->data) and the skb->len for data part.  It also checks real
-buffer boundary (head and end) of the skb to prevent memory overflow.
-Therefore, I think using the original skb is the most efficient way.
+	David
 
-If I misunderstand something, please point out.
-
-
-
-> >                       /* TODO: merge into rx.c */
-> >                       rtw_rx_stats(rtwdev, pkt_stat.vif, skb);
-> > -                     memcpy(new->cb, &rx_status, sizeof(rx_status));
-> > -                     ieee80211_rx_irqsafe(rtwdev->hw, new);
-> > +                     memcpy(skb->cb, &rx_status, sizeof(rx_status));
-> > +                     ieee80211_rx_irqsafe(rtwdev->hw, skb);
-> >               }
-> >
-> > -             /* skb delivered to mac80211, alloc a new one in rx ring =
-*/
-> > -             new =3D dev_alloc_skb(RTK_PCI_RX_BUF_SIZE);
-> > -             if (WARN(!new, "rx routine starvation\n"))
-> > -                     return;
-> > -
-> > +next_rp:
-> > +             /* skb delivered to mac80211, attach the new one into rx =
-ring */
-> >               ring->buf[cur_rp] =3D new;
-> >               rtw_pci_reset_rx_desc(rtwdev, new, ring, cur_rp, buf_desc=
-_sz);
-> >
->
+> Buglink: https://bugzilla.kernel.org/show_bug.cgi?id=204053
+> Signed-off-by: Jian-Hong Pan <jian-hong@endlessm.com>
+> Reviewed-by: Daniel Drake <drake@endlessm.com>
+> Cc: <stable@vger.kernel.org>
+> ---
+>  drivers/net/wireless/realtek/rtw88/pci.c | 28 +++++++++++-------------
+>  1 file changed, 13 insertions(+), 15 deletions(-)
+> 
+> diff --git a/drivers/net/wireless/realtek/rtw88/pci.c b/drivers/net/wireless/realtek/rtw88/pci.c
+> index cfe05ba7280d..1bfc99ae6b84 100644
+> --- a/drivers/net/wireless/realtek/rtw88/pci.c
+> +++ b/drivers/net/wireless/realtek/rtw88/pci.c
+> @@ -786,6 +786,15 @@ static void rtw_pci_rx_isr(struct rtw_dev *rtwdev, struct rtw_pci *rtwpci,
+>  		rx_desc = skb->data;
+>  		chip->ops->query_rx_desc(rtwdev, rx_desc, &pkt_stat, &rx_status);
+> 
+> +		/* discard current skb if the new skb cannot be allocated as a
+> +		 * new one in rx ring later
+> +		 * */
+> +		new = dev_alloc_skb(RTK_PCI_RX_BUF_SIZE);
+> +		if (WARN(!new, "rx routine starvation\n")) {
+> +			new = skb;
+> +			goto next_rp;
+> +		}
+> +
+>  		/* offset from rx_desc to payload */
+>  		pkt_offset = pkt_desc_sz + pkt_stat.drv_info_sz +
+>  			     pkt_stat.shift;
+> @@ -803,25 +812,14 @@ static void rtw_pci_rx_isr(struct rtw_dev *rtwdev, struct rtw_pci *rtwpci,
+>  			skb_put(skb, pkt_stat.pkt_len);
+>  			skb_reserve(skb, pkt_offset);
+> 
+> -			/* alloc a smaller skb to mac80211 */
+> -			new = dev_alloc_skb(pkt_stat.pkt_len);
+> -			if (!new) {
+> -				new = skb;
+> -			} else {
+> -				skb_put_data(new, skb->data, skb->len);
+> -				dev_kfree_skb_any(skb);
+> -			}
+>  			/* TODO: merge into rx.c */
+>  			rtw_rx_stats(rtwdev, pkt_stat.vif, skb);
+> -			memcpy(new->cb, &rx_status, sizeof(rx_status));
+> -			ieee80211_rx_irqsafe(rtwdev->hw, new);
+> +			memcpy(skb->cb, &rx_status, sizeof(rx_status));
+> +			ieee80211_rx_irqsafe(rtwdev->hw, skb);
+>  		}
+> 
+> -		/* skb delivered to mac80211, alloc a new one in rx ring */
+> -		new = dev_alloc_skb(RTK_PCI_RX_BUF_SIZE);
+> -		if (WARN(!new, "rx routine starvation\n"))
+> -			return;
+> -
+> +next_rp:
+> +		/* skb delivered to mac80211, attach the new one into rx ring */
+>  		ring->buf[cur_rp] = new;
+>  		rtw_pci_reset_rx_desc(rtwdev, new, ring, cur_rp, buf_desc_sz);
+> 
 > --
->
-> Yan-Hsuan
+> 2.22.0
+
+-
+Registered Address Lakeside, Bramley Road, Mount Farm, Milton Keynes, MK1 1PT, UK
+Registration No: 1397386 (Wales)
+
