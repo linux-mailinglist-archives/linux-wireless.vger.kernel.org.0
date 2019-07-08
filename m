@@ -2,74 +2,92 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 4645F625DE
-	for <lists+linux-wireless@lfdr.de>; Mon,  8 Jul 2019 18:12:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CCE73627D6
+	for <lists+linux-wireless@lfdr.de>; Mon,  8 Jul 2019 20:01:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731144AbfGHQMI (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 8 Jul 2019 12:12:08 -0400
-Received: from mail-qt1-f193.google.com ([209.85.160.193]:35663 "EHLO
-        mail-qt1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728082AbfGHQMH (ORCPT
+        id S1730868AbfGHSBJ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 8 Jul 2019 14:01:09 -0400
+Received: from mail-ot1-f68.google.com ([209.85.210.68]:46522 "EHLO
+        mail-ot1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729052AbfGHSBJ (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 8 Jul 2019 12:12:07 -0400
-Received: by mail-qt1-f193.google.com with SMTP id d23so18610964qto.2
-        for <linux-wireless@vger.kernel.org>; Mon, 08 Jul 2019 09:12:07 -0700 (PDT)
+        Mon, 8 Jul 2019 14:01:09 -0400
+Received: by mail-ot1-f68.google.com with SMTP id z23so17086339ote.13;
+        Mon, 08 Jul 2019 11:01:09 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=gqQPTZj67Z/vL1jzkfjagnYLAUokfZrdMtILfzjGEN8=;
-        b=L4BFPawawgni4jkCAyFXkuA08eTXQ2VNFH+eTpJJ9jsDWwsGbKLnlwx51rvBxl9gMc
-         aP7yUtP4Elq0rFDoaKKbPR0j2+geMM21bSUbfvsYF65pMiQoEMdcB0+s0C7786uePfQT
-         GkKzlMC6WsfjPhi4n6t2jemIqiZZFs+Z+k+hcs7v28XF/AUnZ30y3Zz4XmFOKkUwrvZc
-         u9eETYyIps9yFa8YnaWH0Ck3WjPOajcC8R/bLfedPyqbC+4ZgdxtQU77pzplRiIsUq/y
-         OAiYovdpPD3vm+9x15rT3zUaAGZ9lPo3HkNRFL7ePEB+2Jgph5AQ2OYGVm1i7vPgOaw9
-         CXIg==
+        h=sender:subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=JMLSGXlT3iSJpmRh2GfhH2MTdPzvNG/RLBCIaq7q1DE=;
+        b=NhkzIgYsc+jkVgoi0AEKjTLWDp+VadO9nPKXg2stTXuCL5wne3ibdTnsCCoNlzYecT
+         EISOiMD2fCqGI6QyjXvVkJ+BRtsSx2RW6uh2C/pvy5TPfIxII7Ng3wENwYJPnCFCI6tf
+         C0NJBed6hhRtVOn22MySx/ZZY4U/AZef11ywmDZ5ePGxk4vAFWx/UlXJbfWJx8kTPGvH
+         Qj9l8M0JetjAL+fcnEQT6NhU3RCGwI+MKJqEXo603rvT4jUisT1rnxjn8at1P7QdJu/Q
+         +1oCZqiZH7yDdJK6PTdI+8qQbItEABdlrShXfNPaMmxcrI84ew/w6owmZAUEGCxtb/e3
+         wsVg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=gqQPTZj67Z/vL1jzkfjagnYLAUokfZrdMtILfzjGEN8=;
-        b=PW7JiTRsv6OwYsD1Qp3599JzO9L8cOM9jJN8lEUK6TvdhuxLS6W4c1po/gk16J55kF
-         aFbRvUe5zTRCnlFfLYkwLWmD6zY1J/WKyfKgpl/ykugOhN32UEXdQ1ld7DDdt21VubYc
-         BwePlbUVom09KrWFuCbFwyJaxThnRWmJIHd1oOQwE8dNIzFNTneHkhQbzHUdGTvdMNqL
-         h+rsmidTSxHqLF75pWfRPZVfCc4ig7RGwybiu8u223z5PbB78QZTqdFgNZx7akGY1qhF
-         qTvAbCJTdgHDWvkHQqKF+hOGjvUq3xssa7oc4g3FX1168I4vnICY2Ld1UJhm0YtAT7bv
-         zoTQ==
-X-Gm-Message-State: APjAAAU9XxnacXOG2ox6GwmQKVPE2BDoe0xTC7AuTI0UrFg72HzcanNA
-        9Wi0JmpaC5G0KlIIZxJyN8V/iCTON1kST+35VPk=
-X-Google-Smtp-Source: APXvYqwSKgNhlbXzMeC8XYsh2I3ePDHdU7Su1GTJStdYfWOOVxWD2asGlvl5ZxU8e2dEzY995bSH556d97kQdsow7m0=
-X-Received: by 2002:a0c:9608:: with SMTP id 8mr15225794qvx.98.1562602326863;
- Mon, 08 Jul 2019 09:12:06 -0700 (PDT)
+        h=x-gm-message-state:sender:subject:to:cc:references:from:message-id
+         :date:user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=JMLSGXlT3iSJpmRh2GfhH2MTdPzvNG/RLBCIaq7q1DE=;
+        b=V/3UealP2QuBuDLAvoSvj/BfSkzyqfowfzEDhJx4pWT/vmhI1VnxizdiwU7ize2f3b
+         xd5rUrrluuxSC4S26p0fDKEgUGOctAfy6jP+C2JdPjf2wim2OvejTNjJsAwJLKXfSNiQ
+         J+hG+7yTRfKI/NP5h303+unxHyZMpgz9mGuB7qwEPZYQM+Icb1XOu7kzQkYXt/QZxlG4
+         I892Tjx9xSNSurcrfrYd9kzauqqzitQ/UByoHlwvJS288bNvsOfUPvLVLh+YOZeRXGF9
+         HkWhXhyxRYrkq6ykFAiImBATvqH2oRPpW6ZzvsN53GJBazJiV1gnyfu+1zgmcQ8ThYtN
+         RWkA==
+X-Gm-Message-State: APjAAAW/uERfS1EWhPRuQGp5MgZT/8qrJmq6kbnwZa49IiJfdj7iFgHZ
+        f3JDSv0caEDbrOH86aki158220kK
+X-Google-Smtp-Source: APXvYqz3Y0Vo9g1LDItsxpblqPdB8IwklWfZ2sznAXdTgLFhHNqdDhyzwRq3ICdJzzXTxdqlIdOMUA==
+X-Received: by 2002:a9d:6b89:: with SMTP id b9mr1579766otq.322.1562608868717;
+        Mon, 08 Jul 2019 11:01:08 -0700 (PDT)
+Received: from [192.168.1.112] (cpe-24-31-245-230.kc.res.rr.com. [24.31.245.230])
+        by smtp.gmail.com with ESMTPSA id f17sm127906otl.25.2019.07.08.11.01.07
+        (version=TLS1_3 cipher=AEAD-AES128-GCM-SHA256 bits=128/128);
+        Mon, 08 Jul 2019 11:01:07 -0700 (PDT)
+Subject: Re: [PATCH] rtw88/pci: Rearrange the memory usage for skb in RX ISR
+To:     Jian-Hong Pan <jian-hong@endlessm.com>,
+        Yan-Hsuan Chuang <yhchuang@realtek.com>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        "David S . Miller" <davem@davemloft.net>
+Cc:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux@endlessm.com,
+        Daniel Drake <drake@endlessm.com>, stable@vger.kernel.org
+References: <20190708063252.4756-1-jian-hong@endlessm.com>
+From:   Larry Finger <Larry.Finger@lwfinger.net>
+Message-ID: <212a37b0-583b-1062-64fd-f0fb0d4f982f@lwfinger.net>
+Date:   Mon, 8 Jul 2019 13:01:06 -0500
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.7.2
 MIME-Version: 1.0
-Received: by 2002:ac8:586:0:0:0:0:0 with HTTP; Mon, 8 Jul 2019 09:12:06 -0700 (PDT)
-Reply-To: omaja@consultant.com
-From:   "Ph.D.  Dr Hussein Omar" <officerabiou@gmail.com>
-Date:   Mon, 8 Jul 2019 18:12:06 +0200
-Message-ID: <CAPCm8wJUezdopiKDBgwEAfdEVmfb7COWW5myQy4ttTGDayL70g@mail.gmail.com>
-Subject: Attention Sir/ Madam.
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <20190708063252.4756-1-jian-hong@endlessm.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
--- 
-Attention:Sir/Madam,
+On 7/8/19 1:32 AM, Jian-Hong Pan wrote:
+> diff --git a/drivers/net/wireless/realtek/rtw88/pci.c b/drivers/net/wireless/realtek/rtw88/pci.c
+> index cfe05ba7280d..1bfc99ae6b84 100644
+> --- a/drivers/net/wireless/realtek/rtw88/pci.c
+> +++ b/drivers/net/wireless/realtek/rtw88/pci.c
+> @@ -786,6 +786,15 @@ static void rtw_pci_rx_isr(struct rtw_dev *rtwdev, struct rtw_pci *rtwpci,
+>   		rx_desc = skb->data;
+>   		chip->ops->query_rx_desc(rtwdev, rx_desc, &pkt_stat, &rx_status);
+>   
+> +		/* discard current skb if the new skb cannot be allocated as a
+> +		 * new one in rx ring later
+> +		 * */
+> +		new = dev_alloc_skb(RTK_PCI_RX_BUF_SIZE);
+> +		if (WARN(!new, "rx routine starvation\n")) {
+> +			new = skb;
+> +			goto next_rp;
 
-I am an agent for Dubai Lenders and stock investors,we offer you usd
-210 million dollars on compound gain free trading with UAE,QATAR/SAUDI
-Oil and Gas Companies.Please note that all terms and conditions will
-be noted in our contract agreement. Reply as soon as possible with
-your details e:g Telephone numbers and address.
+This should probably be a WARN_ONCE() rather than WARN(), otherwise the logs 
+will be flooded once this condition triggers.
 
-Take note; the business will be strictly via bank to bank transaction.
-Please reply as soon as possible, if you are competent to handle huge
-investment Portfolio.
-
-I wait your urgent respond.
-
-Thanks for your co-operation
-
-Ph.D.  Dr Hussein Omar
-Email:omaja@consultant.com
+Larry
