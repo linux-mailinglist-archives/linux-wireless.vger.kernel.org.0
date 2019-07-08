@@ -2,86 +2,171 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 1983861D27
-	for <lists+linux-wireless@lfdr.de>; Mon,  8 Jul 2019 12:41:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7EBA961D46
+	for <lists+linux-wireless@lfdr.de>; Mon,  8 Jul 2019 12:54:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728968AbfGHKlW (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 8 Jul 2019 06:41:22 -0400
-Received: from mail.kernel.org ([198.145.29.99]:49918 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725836AbfGHKlV (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 8 Jul 2019 06:41:21 -0400
-Received: from localhost (83-86-89-107.cable.dynamic.v4.ziggo.nl [83.86.89.107])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 88DF12053B;
-        Mon,  8 Jul 2019 10:41:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1562582480;
-        bh=eDH3pC2pdqy2o7mwwWeHKRcJ5Id0sidmF+JzgAje81M=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=FkxjZm4/Egog8b/JKQevoIihMFpGRZ08JcU4nzZoN2aj8lqwdsL5Nda2KH2Q92pIy
-         afccnXpPvm8d3mSZ6GzTWaTJYAp9/I+AXsFDTILoCxatoBo5U3u+oM2O10A5Kb1a9D
-         /BKYQDjReMbFD4NwO1VpUjLpkD6T0D4sj5vZ+PVs=
-Date:   Mon, 8 Jul 2019 12:41:18 +0200
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     Arend Van Spriel <arend.vanspriel@broadcom.com>
-Cc:     =?utf-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        Thomas Gleixner <tglx@linutronix.de>, alan@lxorguk.ukuu.org.uk
-Subject: Re: [PATCH 3/7] brcmsmac: switch source files to using SPDX license
- identifier
-Message-ID: <20190708104118.GA10261@kroah.com>
-References: <1558008251-13692-1-git-send-email-arend.vanspriel@broadcom.com>
- <1558008251-13692-4-git-send-email-arend.vanspriel@broadcom.com>
- <20190516173113.GA540@kroah.com>
- <a5d32b2f-a99b-a248-1acd-9de532732e30@broadcom.com>
- <20190516200131.GA15814@kroah.com>
- <eeebea29-4237-6e49-7578-8d3b1ad7df85@broadcom.com>
- <CACna6rxuSFWN8eib7FpJiVQqLwdD5GOTaAFr7msJa01rBSTLKA@mail.gmail.com>
- <34aa04e4-9ddd-b6aa-721f-a20398f7740d@broadcom.com>
+        id S1730221AbfGHKyc (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 8 Jul 2019 06:54:32 -0400
+Received: from mail-vs1-f67.google.com ([209.85.217.67]:33444 "EHLO
+        mail-vs1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725836AbfGHKyc (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 8 Jul 2019 06:54:32 -0400
+Received: by mail-vs1-f67.google.com with SMTP id m8so7888922vsj.0
+        for <linux-wireless@vger.kernel.org>; Mon, 08 Jul 2019 03:54:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=KyazCFmiETcHPerWNWUTvx/r+dCVSWwZ0Vi19gfw7Sc=;
+        b=qZvpD2zHVwn6PaqQ10JpxZWZuQTM/93vh7IhhOoJRYwzU0qRFgx9zbKzYZnYN1dWFV
+         s5UeS7Wmr/Q3MhsDEuN8bHhzpHKKDnFoXPaW0FZIaQfUyM54BzJRamfxU4xmOCKh0iUu
+         jL4ep9iGPtxpx4V8Bv51txa/kCM/TTcKg+KjU7YdtvmKUB4uc44BfKZ7cLt+rJ01vfSk
+         eW1+APOloO4bbWMTeIoNRdZtofnDOdthx06aZ25vOueZnE4yLKalJQsyoOdE/KaGKzGw
+         Jn988/m8UjLu1lujciutB8r/+w76IaNn0n9qRsA6SjiGJtf23NZpBM9EB0gQgMAms9oQ
+         0wbQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=KyazCFmiETcHPerWNWUTvx/r+dCVSWwZ0Vi19gfw7Sc=;
+        b=U4cRUK/ssBRvGJqKTNN0GSSISANjhcOU3cGO3AhJKAEuub0hLAGBEY00Q26YDAZ1rj
+         rdl3aAphHeA6/Zy0vywEwg8FUQ9/BDhXyca8+qbgt09p++AYUkZpuS4QESPVk5rGx6AU
+         JjbCqAWBvLOpu2BzjBzqO+GmDb5rQLmFak2Tk+dSPAe+aL01/sBr/uN81n/F3d31CeMY
+         rCdZcJc7HsnkIwsOFnLWBCZSz/B7fnAA1JdLEpemKkuxd3HcaNEm/AI+zIYZsWms4P1k
+         H62pixzGqzZuODo8eIEMx7U8GAaemVg6yEcNYIRPM3O3TJ0hx3JTSsi8ntg8X9OMWpKD
+         D3Rw==
+X-Gm-Message-State: APjAAAWfoC27zRRac+jN12tzK2PncJJvt3deInwl2On9GzLyc0kbLqnF
+        NuNuFLe8MiLqdZSNCT+JwVrLdUYeKCbqww6zwprUPg==
+X-Google-Smtp-Source: APXvYqxXke3jonSsgDa/t8fMIraRgV8rH40j0h0c3P/E9HD9A4kO1rFrKZ6A6C+Na9T39v/pP5C1bcAk5pmymu0fz1o=
+X-Received: by 2002:a67:7a90:: with SMTP id v138mr9578415vsc.200.1562583270843;
+ Mon, 08 Jul 2019 03:54:30 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <34aa04e4-9ddd-b6aa-721f-a20398f7740d@broadcom.com>
-User-Agent: Mutt/1.12.1 (2019-06-15)
+References: <20190618153448.27145-1-ulf.hansson@linaro.org>
+ <20190618153448.27145-5-ulf.hansson@linaro.org> <CAD=FV=X7P2F1k_zwHc0mbtfk55-rucTz_GoDH=PL6zWqKYcpuw@mail.gmail.com>
+In-Reply-To: <CAD=FV=X7P2F1k_zwHc0mbtfk55-rucTz_GoDH=PL6zWqKYcpuw@mail.gmail.com>
+From:   Ulf Hansson <ulf.hansson@linaro.org>
+Date:   Mon, 8 Jul 2019 12:53:54 +0200
+Message-ID: <CAPDyKFoHzCmobCtyy-j+-4xjW0Bt1_vA5-s4vHLVN78jXJ4X-w@mail.gmail.com>
+Subject: Re: [PATCH 4/7] mmc: sdio: Drop powered-on re-init at runtime resume
+ and HW reset
+To:     Doug Anderson <dianders@chromium.org>
+Cc:     Linux MMC List <linux-mmc@vger.kernel.org>,
+        Adrian Hunter <adrian.hunter@intel.com>,
+        Brian Norris <briannorris@chromium.org>,
+        Shawn Lin <shawn.lin@rock-chips.com>,
+        Guenter Roeck <groeck@chromium.org>,
+        Heiko Stuebner <heiko@sntech.de>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        Arend Van Spriel <arend.vanspriel@broadcom.com>,
+        linux-wireless <linux-wireless@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Mon, Jul 08, 2019 at 12:07:43PM +0200, Arend Van Spriel wrote:
-> + Alan
-> 
-> On 5/17/2019 8:07 PM, Rafał Miłecki wrote:
-> > > > > Another option could be MIT license which is in the preferred folder.
-> > > > > Will have to consult our legal department about it though.
-> > > > Hey, if your legal department is going to get asked this, why not just
-> > > > switch it to GPLv2?  That would make everything much simpler.
-> > > Hah. Because I already know the answer to that.;-)
-> > It's not that obvious to me, sorry. Does your legal department require
-> > something more permissive than GPLv2? Is that worth asking them about
-> > dual-licensing? Something like
-> > GPL-2.0 OR MIT
-> > ? That assures driver is compatible with Linux, no matter what's the
-> > current lawyers interpretation of MIT vs. GPL 2.0. I believe Alan Cox
-> > once told/suggested that dual-licensing is safer for legal reasons.
-> 
-> Hi Alan,
-> 
-> Rafał mentioned your name a while ago when I was struggling with the SPDX
-> identifiers. The drivers sources I want to modify for this originally had a
-> license text in the header that matches ISC. However,
-> one of the files did not have that and it was marked in bulk to GPLv2. So
-> now the question is whether I can change it to ISC like the rest or should I
-> make it dual like Rafał suggested.
-> 
-> Can you elaborate the pros and cons of dual license?
+On Thu, 4 Jul 2019 at 02:02, Doug Anderson <dianders@chromium.org> wrote:
+>
+> Hi,
+>
+> On Tue, Jun 18, 2019 at 8:35 AM Ulf Hansson <ulf.hansson@linaro.org> wrote:
+> >
+> > To use the so called powered-on re-initialization of an SDIO card, the
+> > power to the card must obviously have stayed on. If not, the initialization
+> > will simply fail.
+> >
+> > In the runtime suspend case, the card is always powered off. Hence, let's
+> > drop the support for powered-on re-initialization during runtime resume, as
+> > it doesn't make sense.
+> >
+> > Moreover, during a HW reset, the point is to cut the power to the card and
+> > then do fresh re-initialization. Therefore drop the support for powered-on
+> > re-initialization during HW reset.
+> >
+> > Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+> > ---
+> >  drivers/mmc/core/sdio.c | 8 +-------
+> >  1 file changed, 1 insertion(+), 7 deletions(-)
+>
+> This has been on my list of things to test for a while but I never
+> quite got to it...
+>
+> ...and then, today, I spent time bisecting why the "reset"
+> functionality of miwfiex is broken on my 4.19 kernel [1].  AKA, this
+> is broken:
+>
+> cd /sys/kernel/debug/mwifiex/mlan0
+> echo 1 > reset
+>
+> I finally bisected the problem and tracked it down to commit
+> ca8971ca5753 ("mmc: dw_mmc: Prevent runtime PM suspend when SDIO IRQs
+> are enabled"), which embarrassingly has my Tested-by on it.  I guess I
+> never tested the Marvell reset call.  :-/
+>
+> I dug a little and found that when the Marvell code did its reset we
+> ended up getting a call to dw_mci_enable_sdio_irq(enb=0) and never saw
+> a dw_mci_enable_sdio_irq(enb=1) after.  I tracked it down further and
+> found that specifically it was the call to mmc_signal_sdio_irq() in
+> mmc_sdio_power_restore() that was making the call.  The call stack
+> shown for the "enb=0" call:
+>
+> [<c071a290>] (dw_mci_enable_sdio_irq) from [<c070a960>]
+> (mmc_sdio_power_restore+0x98/0xc0)
+> [<c070a960>] (mmc_sdio_power_restore) from [<c070a9b4>]
+> (mmc_sdio_reset+0x2c/0x30)
+> [<c070a9b4>] (mmc_signal_sdio_irq) from [<c06ff160>] (mmc_hw_reset+0xbc/0x138)
+> [<c06ff160>] (mmc_hw_reset) from [<bf1bbad8>]
+> (mwifiex_sdio_work+0x5d4/0x678 [mwifiex_sdio])
+> [<bf1bbad8>] (mwifiex_sdio_work [mwifiex_sdio]) from [<c0247cd0>]
+> (process_one_work+0x290/0x4b4)
+>
+> I picked your patch here (which gets rid of the call to
+> mmc_signal_sdio_irq()) and magically the problem went away because
+> there is no more call to mmc_signal_sdio_irq().
+>
+> I personally don't have lots of history about the whole
+> "powered_resume" code path.  I checked and mmc_card_keep_power() was 0
+> in my test case of getting called from hw_reset, so the rest of this
+> patch doesn't affect me at all.  This surprised me a little since I
+> saw "MMC_PM_KEEP_POWER" being set in mwifiex but then I realized that
+> it was only set for the duration of suspend and then cleared by the
+> core.  ;-)
+>
+> I will also say that I don't have any test case or knowledge of how
+> SDIO runtime suspend/resume is supposed to work since on dw_mmc SDIO
+> cards are currently not allowed to runtime suspend anyway.  ;-)
+>
+>
+> So I guess the result of all that long-winded reply is that for on
+> rk3288-veyron-jerry:
+>
+> Fixes: ca8971ca5753 ("mmc: dw_mmc: Prevent runtime PM suspend when
+> SDIO IRQs are enabled")
+> Tested-by: Douglas Anderson <dianders@chromium.org>
 
-You need to talk to your lawyers about that.  Please ask this of them.
+Thanks a lot for testing and for your detailed feedback. I have
+amended the patch by adding your tags above.
 
-thanks,
+Moreover, we seems to need this for stable as well, but I am leaving
+that to be managed as a separate task. We may even consider the hole
+series for stable, but that requires more testing first.
 
-greg k-h
+>
+>
+> One last note is that, though Marvell WiFi works after a reset after
+> this commit, Marvell Bluetooth (on the same SDIO module) doesn't.  I
+> guess next week it'll be another bisect...
+
+Is the Bluetooth connected to the same SDIO interface, thus the
+Bluetooth driver is an SDIO func driver?
+
+>
+> [1] https://crbug.com/981113
+>
+>
+>
+> -Doug
+
+Kind regards
+Uffe
