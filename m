@@ -2,32 +2,30 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 0773761BC6
-	for <lists+linux-wireless@lfdr.de>; Mon,  8 Jul 2019 10:37:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 135B861C0C
+	for <lists+linux-wireless@lfdr.de>; Mon,  8 Jul 2019 11:00:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729454AbfGHIg6 convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 8 Jul 2019 04:36:58 -0400
-Received: from eu-smtp-delivery-151.mimecast.com ([207.82.80.151]:38254 "EHLO
-        eu-smtp-delivery-151.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1729445AbfGHIg6 (ORCPT
+        id S1729151AbfGHJA2 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 8 Jul 2019 05:00:28 -0400
+Received: from rtits2.realtek.com ([211.75.126.72]:43973 "EHLO
+        rtits2.realtek.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727352AbfGHJA2 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 8 Jul 2019 04:36:58 -0400
-Received: from AcuMS.aculab.com (156.67.243.126 [156.67.243.126]) (Using
- TLS) by relay.mimecast.com with ESMTP id
- uk-mta-58-GxZAHFndPNeufvGAW7tiGg-1; Mon, 08 Jul 2019 09:36:53 +0100
-Received: from AcuMS.Aculab.com (fd9f:af1c:a25b:0:43c:695e:880f:8750) by
- AcuMS.aculab.com (fd9f:af1c:a25b:0:43c:695e:880f:8750) with Microsoft SMTP
- Server (TLS) id 15.0.1347.2; Mon, 8 Jul 2019 09:36:52 +0100
-Received: from AcuMS.Aculab.com ([fe80::43c:695e:880f:8750]) by
- AcuMS.aculab.com ([fe80::43c:695e:880f:8750%12]) with mapi id 15.00.1347.000;
- Mon, 8 Jul 2019 09:36:52 +0100
-From:   David Laight <David.Laight@ACULAB.COM>
-To:     'Jian-Hong Pan' <jian-hong@endlessm.com>,
-        Yan-Hsuan Chuang <yhchuang@realtek.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        "David S . Miller" <davem@davemloft.net>
-CC:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        Mon, 8 Jul 2019 05:00:28 -0400
+Authenticated-By: 
+X-SpamFilter-By: BOX Solutions SpamTrap 5.62 with qID x6890GB1027880, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (RTITCASV01.realtek.com.tw[172.21.6.18])
+        by rtits2.realtek.com.tw (8.15.2/2.57/5.78) with ESMTPS id x6890GB1027880
+        (version=TLSv1 cipher=DHE-RSA-AES256-SHA bits=256 verify=NOT);
+        Mon, 8 Jul 2019 17:00:16 +0800
+Received: from RTITMBSVM04.realtek.com.tw ([fe80::e404:880:2ef1:1aa1]) by
+ RTITCASV01.realtek.com.tw ([::1]) with mapi id 14.03.0439.000; Mon, 8 Jul
+ 2019 17:00:15 +0800
+From:   Tony Chuang <yhchuang@realtek.com>
+To:     Jian-Hong Pan <jian-hong@endlessm.com>
+CC:     Kalle Valo <kvalo@codeaurora.org>,
+        "David S . Miller" <davem@davemloft.net>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
         "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
         "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
         "linux@endlessm.com" <linux@endlessm.com>,
@@ -35,143 +33,54 @@ CC:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
         "stable@vger.kernel.org" <stable@vger.kernel.org>
 Subject: RE: [PATCH] rtw88/pci: Rearrange the memory usage for skb in RX ISR
 Thread-Topic: [PATCH] rtw88/pci: Rearrange the memory usage for skb in RX ISR
-Thread-Index: AQHVNVeEF2VH1aWcW0SX/aCCs+qgc6bAY9qw
-Date:   Mon, 8 Jul 2019 08:36:52 +0000
-Message-ID: <e95fe2b6d5664aa4b256cdad1707f09f@AcuMS.aculab.com>
+Thread-Index: AQHVNVeEOhZgR6M53kuE5XrXitIVDqbAR+xA//+PoICAAIn6kA==
+Date:   Mon, 8 Jul 2019 09:00:15 +0000
+Message-ID: <F7CD281DE3E379468C6D07993EA72F84D1861B71@RTITMBSVM04.realtek.com.tw>
 References: <20190708063252.4756-1-jian-hong@endlessm.com>
-In-Reply-To: <20190708063252.4756-1-jian-hong@endlessm.com>
-Accept-Language: en-GB, en-US
-Content-Language: en-US
+ <F7CD281DE3E379468C6D07993EA72F84D1861A6D@RTITMBSVM04.realtek.com.tw>
+ <CAPpJ_eebQtL0y_j98J2T7m9g77A61SVtvD8qnNN42bV0dm4MLA@mail.gmail.com>
+In-Reply-To: <CAPpJ_eebQtL0y_j98J2T7m9g77A61SVtvD8qnNN42bV0dm4MLA@mail.gmail.com>
+Accept-Language: zh-TW, en-US
+Content-Language: zh-TW
 X-MS-Has-Attach: 
 X-MS-TNEF-Correlator: 
-x-ms-exchange-transport-fromentityheader: Hosted
-x-originating-ip: [10.202.205.107]
+x-originating-ip: [172.21.68.183]
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-X-MC-Unique: GxZAHFndPNeufvGAW7tiGg-1
-X-Mimecast-Spam-Score: 0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8BIT
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Jian-Hong Pan
-> Sent: 08 July 2019 07:33
-> To: Yan-Hsuan Chuang; Kalle Valo; David S . Miller
-> 
-> Testing with RTL8822BE hardware, when available memory is low, we
-> frequently see a kernel panic and system freeze.
-> 
-> First, rtw_pci_rx_isr encounters a memory allocation failure (trimmed):
-> 
-> rx routine starvation
-> WARNING: CPU: 7 PID: 9871 at drivers/net/wireless/realtek/rtw88/pci.c:822
-> rtw_pci_rx_isr.constprop.25+0x35a/0x370 [rtwpci]
-> [ 2356.580313] RIP: 0010:rtw_pci_rx_isr.constprop.25+0x35a/0x370 [rtwpci]
-> 
-> Then we see a variety of different error conditions and kernel panics,
-> such as this one (trimmed):
-> 
-> rtw_pci 0000:02:00.0: pci bus timeout, check dma status
-> skbuff: skb_over_panic: text:00000000091b6e66 len:415 put:415 head:00000000d2880c6f
-> data:000000007a02b1ea tail:0x1df end:0xc0 dev:<NULL>
-> ------------[ cut here ]------------
-> kernel BUG at net/core/skbuff.c:105!
-> invalid opcode: 0000 [#1] SMP NOPTI
-> RIP: 0010:skb_panic+0x43/0x45
-> 
-> When skb allocation fails and the "rx routine starvation" is hit, the
-> function returns immediately without updating the RX ring. At this
-> point, the RX ring may continue referencing an old skb which was already
-> handed off to ieee80211_rx_irqsafe(). When it comes to be used again,
-> bad things happen.
-> 
-> This patch allocates a new skb first in RX ISR. If we don't have memory
-> available, we discard the current frame, allowing the existing skb to be
-> reused in the ring. Otherwise, we simplify the code flow and just hand
-> over the RX-populated skb over to mac80211.
-> 
-> In addition, to fixing the kernel crash, the RX routine should now
-> generally behave better under low memory conditions.
-
-Under low memory conditions it may be preferable to limit the amount
-of memory assigned to the receive ring.
-
-I also thought it was preferable (DM may correct me here) to do the
-skb allocates from the 'bh' of the driver rather than from the hardware
-interrupt.
-
-It is also almost certainly preferable (especially on IOMMU systems)
-to copy small frames into a new skb (of the right size) and then
-reuse the skb (with its dma-mapped buffer) for a later frame.
-
-Allocating a new skb before ay px processing just seems wrong...
-
-	David
-
-> Buglink: https://bugzilla.kernel.org/show_bug.cgi?id=204053
-> Signed-off-by: Jian-Hong Pan <jian-hong@endlessm.com>
-> Reviewed-by: Daniel Drake <drake@endlessm.com>
-> Cc: <stable@vger.kernel.org>
-> ---
->  drivers/net/wireless/realtek/rtw88/pci.c | 28 +++++++++++-------------
->  1 file changed, 13 insertions(+), 15 deletions(-)
-> 
-> diff --git a/drivers/net/wireless/realtek/rtw88/pci.c b/drivers/net/wireless/realtek/rtw88/pci.c
-> index cfe05ba7280d..1bfc99ae6b84 100644
-> --- a/drivers/net/wireless/realtek/rtw88/pci.c
-> +++ b/drivers/net/wireless/realtek/rtw88/pci.c
-> @@ -786,6 +786,15 @@ static void rtw_pci_rx_isr(struct rtw_dev *rtwdev, struct rtw_pci *rtwpci,
->  		rx_desc = skb->data;
->  		chip->ops->query_rx_desc(rtwdev, rx_desc, &pkt_stat, &rx_status);
-> 
-> +		/* discard current skb if the new skb cannot be allocated as a
-> +		 * new one in rx ring later
-> +		 * */
-> +		new = dev_alloc_skb(RTK_PCI_RX_BUF_SIZE);
-> +		if (WARN(!new, "rx routine starvation\n")) {
-> +			new = skb;
-> +			goto next_rp;
-> +		}
-> +
->  		/* offset from rx_desc to payload */
->  		pkt_offset = pkt_desc_sz + pkt_stat.drv_info_sz +
->  			     pkt_stat.shift;
-> @@ -803,25 +812,14 @@ static void rtw_pci_rx_isr(struct rtw_dev *rtwdev, struct rtw_pci *rtwpci,
->  			skb_put(skb, pkt_stat.pkt_len);
->  			skb_reserve(skb, pkt_offset);
-> 
-> -			/* alloc a smaller skb to mac80211 */
-> -			new = dev_alloc_skb(pkt_stat.pkt_len);
-> -			if (!new) {
-> -				new = skb;
-> -			} else {
-> -				skb_put_data(new, skb->data, skb->len);
-> -				dev_kfree_skb_any(skb);
-> -			}
->  			/* TODO: merge into rx.c */
->  			rtw_rx_stats(rtwdev, pkt_stat.vif, skb);
-> -			memcpy(new->cb, &rx_status, sizeof(rx_status));
-> -			ieee80211_rx_irqsafe(rtwdev->hw, new);
-> +			memcpy(skb->cb, &rx_status, sizeof(rx_status));
-> +			ieee80211_rx_irqsafe(rtwdev->hw, skb);
->  		}
-> 
-> -		/* skb delivered to mac80211, alloc a new one in rx ring */
-> -		new = dev_alloc_skb(RTK_PCI_RX_BUF_SIZE);
-> -		if (WARN(!new, "rx routine starvation\n"))
-> -			return;
-> -
-> +next_rp:
-> +		/* skb delivered to mac80211, attach the new one into rx ring */
->  		ring->buf[cur_rp] = new;
->  		rtw_pci_reset_rx_desc(rtwdev, new, ring, cur_rp, buf_desc_sz);
-> 
-> --
-> 2.22.0
-
--
-Registered Address Lakeside, Bramley Road, Mount Farm, Milton Keynes, MK1 1PT, UK
-Registration No: 1397386 (Wales)
-
+PiA+ID4gQEAgLTgwMywyNSArODEyLDE0IEBAIHN0YXRpYyB2b2lkIHJ0d19wY2lfcnhfaXNyKHN0
+cnVjdCBydHdfZGV2DQo+ICpydHdkZXYsDQo+ID4gPiBzdHJ1Y3QgcnR3X3BjaSAqcnR3cGNpLA0K
+PiA+ID4gICAgICAgICAgICAgICAgICAgICAgIHNrYl9wdXQoc2tiLCBwa3Rfc3RhdC5wa3RfbGVu
+KTsNCj4gPiA+ICAgICAgICAgICAgICAgICAgICAgICBza2JfcmVzZXJ2ZShza2IsIHBrdF9vZmZz
+ZXQpOw0KPiA+ID4NCj4gPiA+IC0gICAgICAgICAgICAgICAgICAgICAvKiBhbGxvYyBhIHNtYWxs
+ZXIgc2tiIHRvIG1hYzgwMjExICovDQo+ID4gPiAtICAgICAgICAgICAgICAgICAgICAgbmV3ID0g
+ZGV2X2FsbG9jX3NrYihwa3Rfc3RhdC5wa3RfbGVuKTsNCj4gPiA+IC0gICAgICAgICAgICAgICAg
+ICAgICBpZiAoIW5ldykgew0KPiA+ID4gLSAgICAgICAgICAgICAgICAgICAgICAgICAgICAgbmV3
+ID0gc2tiOw0KPiA+ID4gLSAgICAgICAgICAgICAgICAgICAgIH0gZWxzZSB7DQo+ID4gPiAtICAg
+ICAgICAgICAgICAgICAgICAgICAgICAgICBza2JfcHV0X2RhdGEobmV3LCBza2ItPmRhdGEsDQo+
+IHNrYi0+bGVuKTsNCj4gPiA+IC0gICAgICAgICAgICAgICAgICAgICAgICAgICAgIGRldl9rZnJl
+ZV9za2JfYW55KHNrYik7DQo+ID4gPiAtICAgICAgICAgICAgICAgICAgICAgfQ0KPiA+DQo+ID4g
+SSBhbSBub3Qgc3VyZSBpZiBpdCdzIGZpbmUgdG8gZGVsaXZlciBldmVyeSBodWdlIFNLQiB0byBt
+YWM4MDIxMS4NCj4gPiBCZWNhdXNlIGl0IHdpbGwgdGhlbiBiZSBkZWxpdmVyZWQgdG8gVENQL0lQ
+IHN0YWNrLg0KPiA+IEhlbmNlIEkgdGhpbmsgZWl0aGVyIGl0IHNob3VsZCBiZSB0ZXN0ZWQgdG8g
+a25vdyBpZiB0aGUgcGVyZm9ybWFuY2UNCj4gPiB3b3VsZCBiZSBpbXBhY3RlZCBvciBmaW5kIG91
+dCBhIG1vcmUgZWZmaWNpZW50IHdheSB0byBzZW5kDQo+ID4gc21hbGxlciBTS0IgdG8gbWFjODAy
+MTEgc3RhY2suDQo+IA0KPiBJIHJlbWVtYmVyIG5ldHdvcmsgc3RhY2sgb25seSBwcm9jZXNzZXMg
+dGhlIHNrYiB3aXRoKGluKSBwb2ludGVycw0KPiAoc2tiLT5kYXRhKSBhbmQgdGhlIHNrYi0+bGVu
+IGZvciBkYXRhIHBhcnQuICBJdCBhbHNvIGNoZWNrcyByZWFsDQo+IGJ1ZmZlciBib3VuZGFyeSAo
+aGVhZCBhbmQgZW5kKSBvZiB0aGUgc2tiIHRvIHByZXZlbnQgbWVtb3J5IG92ZXJmbG93Lg0KPiBU
+aGVyZWZvcmUsIEkgdGhpbmsgdXNpbmcgdGhlIG9yaWdpbmFsIHNrYiBpcyB0aGUgbW9zdCBlZmZp
+Y2llbnQgd2F5Lg0KPiANCj4gSWYgSSBtaXN1bmRlcnN0YW5kIHNvbWV0aGluZywgcGxlYXNlIHBv
+aW50IG91dC4NCj4gDQoNCkl0IG1lYW5zIGlmIHdlIHN0aWxsIHVzZSBhIGh1Z2UgU0tCICh+OEsp
+IGZvciBldmVyeSBSWCBwYWNrZXQgKH4xLjVLKS4NClRoZXJlIGlzIGFib3V0IDYuNUsgbm90IHVz
+ZWQuIEFuZCBldmVuIG1vcmUgaWYgd2UgcGluZyB3aXRoIGxhcmdlIHBhY2tldA0Kc2l6ZSAiZWcu
+ICQgcGluZyAtcyA2NTUzNiIsIEkgYW0gbm90IHN1cmUgaWYgdGhvc2UgaHVnZSBTS0JzIHdpbGwg
+ZWF0IGFsbCBvZg0KdGhlIFNLQiBtZW0gcG9vbCwgYW5kIHRoZW4gcGluZyBmYWlscy4NCg0KQlRX
+LCB0aGUgb3JpZ2luYWwgZGVzaWduIG9mIFJUS19QQ0lfUlhfQlVGX1NJWkUgdG8gYmUgKDgxOTIg
+KyAyNCkgaXMgdG8NCnJlY2VpdmUgQU1TRFUgcGFja2V0IGluIG9uZSBTS0IuDQooQ291bGQgcHJv
+YmFibHkgZW5sYXJnZSBpdCB0byBSWCBWSFQgQU1TRFUgfjExSykNCg0KWWFuLUhzdWFuDQo=
