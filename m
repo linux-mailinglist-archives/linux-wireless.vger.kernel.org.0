@@ -2,171 +2,99 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 7EBA961D46
-	for <lists+linux-wireless@lfdr.de>; Mon,  8 Jul 2019 12:54:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 780AA61ECC
+	for <lists+linux-wireless@lfdr.de>; Mon,  8 Jul 2019 14:51:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730221AbfGHKyc (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 8 Jul 2019 06:54:32 -0400
-Received: from mail-vs1-f67.google.com ([209.85.217.67]:33444 "EHLO
-        mail-vs1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725836AbfGHKyc (ORCPT
+        id S1731012AbfGHMvF (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 8 Jul 2019 08:51:05 -0400
+Received: from mout.kundenserver.de ([212.227.17.13]:41495 "EHLO
+        mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729022AbfGHMvF (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 8 Jul 2019 06:54:32 -0400
-Received: by mail-vs1-f67.google.com with SMTP id m8so7888922vsj.0
-        for <linux-wireless@vger.kernel.org>; Mon, 08 Jul 2019 03:54:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=KyazCFmiETcHPerWNWUTvx/r+dCVSWwZ0Vi19gfw7Sc=;
-        b=qZvpD2zHVwn6PaqQ10JpxZWZuQTM/93vh7IhhOoJRYwzU0qRFgx9zbKzYZnYN1dWFV
-         s5UeS7Wmr/Q3MhsDEuN8bHhzpHKKDnFoXPaW0FZIaQfUyM54BzJRamfxU4xmOCKh0iUu
-         jL4ep9iGPtxpx4V8Bv51txa/kCM/TTcKg+KjU7YdtvmKUB4uc44BfKZ7cLt+rJ01vfSk
-         eW1+APOloO4bbWMTeIoNRdZtofnDOdthx06aZ25vOueZnE4yLKalJQsyoOdE/KaGKzGw
-         Jn988/m8UjLu1lujciutB8r/+w76IaNn0n9qRsA6SjiGJtf23NZpBM9EB0gQgMAms9oQ
-         0wbQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=KyazCFmiETcHPerWNWUTvx/r+dCVSWwZ0Vi19gfw7Sc=;
-        b=U4cRUK/ssBRvGJqKTNN0GSSISANjhcOU3cGO3AhJKAEuub0hLAGBEY00Q26YDAZ1rj
-         rdl3aAphHeA6/Zy0vywEwg8FUQ9/BDhXyca8+qbgt09p++AYUkZpuS4QESPVk5rGx6AU
-         JjbCqAWBvLOpu2BzjBzqO+GmDb5rQLmFak2Tk+dSPAe+aL01/sBr/uN81n/F3d31CeMY
-         rCdZcJc7HsnkIwsOFnLWBCZSz/B7fnAA1JdLEpemKkuxd3HcaNEm/AI+zIYZsWms4P1k
-         H62pixzGqzZuODo8eIEMx7U8GAaemVg6yEcNYIRPM3O3TJ0hx3JTSsi8ntg8X9OMWpKD
-         D3Rw==
-X-Gm-Message-State: APjAAAWfoC27zRRac+jN12tzK2PncJJvt3deInwl2On9GzLyc0kbLqnF
-        NuNuFLe8MiLqdZSNCT+JwVrLdUYeKCbqww6zwprUPg==
-X-Google-Smtp-Source: APXvYqxXke3jonSsgDa/t8fMIraRgV8rH40j0h0c3P/E9HD9A4kO1rFrKZ6A6C+Na9T39v/pP5C1bcAk5pmymu0fz1o=
-X-Received: by 2002:a67:7a90:: with SMTP id v138mr9578415vsc.200.1562583270843;
- Mon, 08 Jul 2019 03:54:30 -0700 (PDT)
-MIME-Version: 1.0
-References: <20190618153448.27145-1-ulf.hansson@linaro.org>
- <20190618153448.27145-5-ulf.hansson@linaro.org> <CAD=FV=X7P2F1k_zwHc0mbtfk55-rucTz_GoDH=PL6zWqKYcpuw@mail.gmail.com>
-In-Reply-To: <CAD=FV=X7P2F1k_zwHc0mbtfk55-rucTz_GoDH=PL6zWqKYcpuw@mail.gmail.com>
-From:   Ulf Hansson <ulf.hansson@linaro.org>
-Date:   Mon, 8 Jul 2019 12:53:54 +0200
-Message-ID: <CAPDyKFoHzCmobCtyy-j+-4xjW0Bt1_vA5-s4vHLVN78jXJ4X-w@mail.gmail.com>
-Subject: Re: [PATCH 4/7] mmc: sdio: Drop powered-on re-init at runtime resume
- and HW reset
-To:     Doug Anderson <dianders@chromium.org>
-Cc:     Linux MMC List <linux-mmc@vger.kernel.org>,
-        Adrian Hunter <adrian.hunter@intel.com>,
+        Mon, 8 Jul 2019 08:51:05 -0400
+Received: from threadripper.lan ([149.172.19.189]) by mrelayeu.kundenserver.de
+ (mreue107 [212.227.15.145]) with ESMTPA (Nemesis) id
+ 1M3UIe-1hjv8o3PBC-000YS6; Mon, 08 Jul 2019 14:50:52 +0200
+From:   Arnd Bergmann <arnd@arndb.de>
+To:     Kalle Valo <kvalo@codeaurora.org>
+Cc:     Arnd Bergmann <arnd@arndb.de>,
+        Miaoqing Pan <miaoqing@codeaurora.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Rakesh Pillai <pillair@codeaurora.org>,
         Brian Norris <briannorris@chromium.org>,
-        Shawn Lin <shawn.lin@rock-chips.com>,
-        Guenter Roeck <groeck@chromium.org>,
-        Heiko Stuebner <heiko@sntech.de>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        Arend Van Spriel <arend.vanspriel@broadcom.com>,
-        linux-wireless <linux-wireless@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+        Balaji Pothunoori <bpothuno@codeaurora.org>,
+        Wen Gong <wgong@codeaurora.org>,
+        Pradeep kumar Chitrapu <pradeepc@codeaurora.org>,
+        Sriram R <srirrama@codeaurora.org>, ath10k@lists.infradead.org,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, clang-built-linux@googlegroups.com
+Subject: [PATCH] ath10k: work around uninitialized vht_pfr variable
+Date:   Mon,  8 Jul 2019 14:50:06 +0200
+Message-Id: <20190708125050.3689133-1-arnd@arndb.de>
+X-Mailer: git-send-email 2.20.0
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Provags-ID: V03:K1:0ZEH7BLXky2hsEkFHE941e4QDy+Q0DeLq46hitjd9gIhiQjjcX3
+ +rAvYpf6ObAijkvutVOtvfqk9eYOtLienzGiIpbTDGnsqZCSITBIvrTu4jxz+YdUu9QRHv3
+ QxLpMOZsqLWoMbZNFdcxIW5SWLT43shXwIKV5kDoF+g5+atQdjJ2NFU8SP3cT2qvXakgjww
+ UX0MmUnxTukQk/l0l/CAQ==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:3Ejh7jG9+JE=:u6LjctvG2zwbsJ6T/k0FHq
+ dgqfAC28oMIrAdI3ri95sJPS96jeTdpTsFSyNNrt79K6b7RXwdm+hovOFSNbRPvheL0RpUFUr
+ j33VnbNkyz58HRB+debVGYYWUqw/JneG8hlo5nRkC6g0ckC5rYr/7ktSnqJobABl9N4vywlX7
+ WPFNf6J2MZxb2LYhIe0/MJU4gacUZwBgHQ6kW9d7KTlOARuEAPgoGkGTdXQemvGlmEs0VvDXL
+ luJHOTs2LjvmZ/gkHlLLTLEY5Az7G+BGPlYV7rcQMSxo+0Uy+Gv61HjOnH3CqmLcLdZPu8g/t
+ 13EK9BIyqmBZzHDXg/eLkt5mGLnF79mG0PnsM12rdaFZGwv1jv28lPeshJnX7myAhWbnXCXed
+ 6beGwDbuM1XZijsv6AkwOvMFGDoYm+5s2j52yBEkuQAeaX3gpTF55v84GlktgJba9jnAdovC1
+ cEssA0JM4U0bIW9oFZfiKkTollfb1O4ZME96c8eUJ6p6F0fMu95ciNyExKgWuDiGSDlS406+K
+ FiLLyENPaGPB1+EB0f4ma33zXTdn9guc0/w8GBiFS2OOmSwxUEKvfxiLVFd73Dk/b3PnQg38V
+ N5dBlWtqXW+VT3xvWgmL1Lr5ZxuEqzZ0yIF/vjUq0j61xk0qqlHJhld0w5bcrJAXH2+w0XLeC
+ PRGctYgwnh6YOqY2YZse3yQvX4Zx0i8eeAyEJBtbhKrhJgUkWpnsRbt4XSXH5ZB+IJKITvJnC
+ ftlKEzqC3l2XxINHW4aGdJRHqZSfRuy37pFKrg==
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Thu, 4 Jul 2019 at 02:02, Doug Anderson <dianders@chromium.org> wrote:
->
-> Hi,
->
-> On Tue, Jun 18, 2019 at 8:35 AM Ulf Hansson <ulf.hansson@linaro.org> wrote:
-> >
-> > To use the so called powered-on re-initialization of an SDIO card, the
-> > power to the card must obviously have stayed on. If not, the initialization
-> > will simply fail.
-> >
-> > In the runtime suspend case, the card is always powered off. Hence, let's
-> > drop the support for powered-on re-initialization during runtime resume, as
-> > it doesn't make sense.
-> >
-> > Moreover, during a HW reset, the point is to cut the power to the card and
-> > then do fresh re-initialization. Therefore drop the support for powered-on
-> > re-initialization during HW reset.
-> >
-> > Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
-> > ---
-> >  drivers/mmc/core/sdio.c | 8 +-------
-> >  1 file changed, 1 insertion(+), 7 deletions(-)
->
-> This has been on my list of things to test for a while but I never
-> quite got to it...
->
-> ...and then, today, I spent time bisecting why the "reset"
-> functionality of miwfiex is broken on my 4.19 kernel [1].  AKA, this
-> is broken:
->
-> cd /sys/kernel/debug/mwifiex/mlan0
-> echo 1 > reset
->
-> I finally bisected the problem and tracked it down to commit
-> ca8971ca5753 ("mmc: dw_mmc: Prevent runtime PM suspend when SDIO IRQs
-> are enabled"), which embarrassingly has my Tested-by on it.  I guess I
-> never tested the Marvell reset call.  :-/
->
-> I dug a little and found that when the Marvell code did its reset we
-> ended up getting a call to dw_mci_enable_sdio_irq(enb=0) and never saw
-> a dw_mci_enable_sdio_irq(enb=1) after.  I tracked it down further and
-> found that specifically it was the call to mmc_signal_sdio_irq() in
-> mmc_sdio_power_restore() that was making the call.  The call stack
-> shown for the "enb=0" call:
->
-> [<c071a290>] (dw_mci_enable_sdio_irq) from [<c070a960>]
-> (mmc_sdio_power_restore+0x98/0xc0)
-> [<c070a960>] (mmc_sdio_power_restore) from [<c070a9b4>]
-> (mmc_sdio_reset+0x2c/0x30)
-> [<c070a9b4>] (mmc_signal_sdio_irq) from [<c06ff160>] (mmc_hw_reset+0xbc/0x138)
-> [<c06ff160>] (mmc_hw_reset) from [<bf1bbad8>]
-> (mwifiex_sdio_work+0x5d4/0x678 [mwifiex_sdio])
-> [<bf1bbad8>] (mwifiex_sdio_work [mwifiex_sdio]) from [<c0247cd0>]
-> (process_one_work+0x290/0x4b4)
->
-> I picked your patch here (which gets rid of the call to
-> mmc_signal_sdio_irq()) and magically the problem went away because
-> there is no more call to mmc_signal_sdio_irq().
->
-> I personally don't have lots of history about the whole
-> "powered_resume" code path.  I checked and mmc_card_keep_power() was 0
-> in my test case of getting called from hw_reset, so the rest of this
-> patch doesn't affect me at all.  This surprised me a little since I
-> saw "MMC_PM_KEEP_POWER" being set in mwifiex but then I realized that
-> it was only set for the duration of suspend and then cleared by the
-> core.  ;-)
->
-> I will also say that I don't have any test case or knowledge of how
-> SDIO runtime suspend/resume is supposed to work since on dw_mmc SDIO
-> cards are currently not allowed to runtime suspend anyway.  ;-)
->
->
-> So I guess the result of all that long-winded reply is that for on
-> rk3288-veyron-jerry:
->
-> Fixes: ca8971ca5753 ("mmc: dw_mmc: Prevent runtime PM suspend when
-> SDIO IRQs are enabled")
-> Tested-by: Douglas Anderson <dianders@chromium.org>
+As clang points out, the vht_pfr is assigned to a struct member
+without being initialized in one case:
 
-Thanks a lot for testing and for your detailed feedback. I have
-amended the patch by adding your tags above.
+drivers/net/wireless/ath/ath10k/mac.c:7528:7: error: variable 'vht_pfr' is used uninitialized whenever 'if' condition
+      is false [-Werror,-Wsometimes-uninitialized]
+                if (!ath10k_mac_can_set_bitrate_mask(ar, band, mask,
+                    ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+drivers/net/wireless/ath/ath10k/mac.c:7551:20: note: uninitialized use occurs here
+                arvif->vht_pfr = vht_pfr;
+                                 ^~~~~~~
+drivers/net/wireless/ath/ath10k/mac.c:7528:3: note: remove the 'if' if its condition is always true
+                if (!ath10k_mac_can_set_bitrate_mask(ar, band, mask,
+                ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+drivers/net/wireless/ath/ath10k/mac.c:7483:12: note: initialize the variable 'vht_pfr' to silence this warning
+        u8 vht_pfr;
 
-Moreover, we seems to need this for stable as well, but I am leaving
-that to be managed as a separate task. We may even consider the hole
-series for stable, but that requires more testing first.
+Add an explicit but probably incorrect initialization here.
+I suspect we want a better fix here, but chose this approach to
+illustrate the issue.
 
->
->
-> One last note is that, though Marvell WiFi works after a reset after
-> this commit, Marvell Bluetooth (on the same SDIO module) doesn't.  I
-> guess next week it'll be another bisect...
+Fixes: 8b97b055dc9d ("ath10k: fix failure to set multiple fixed rate")
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+---
+ drivers/net/wireless/ath/ath10k/mac.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-Is the Bluetooth connected to the same SDIO interface, thus the
-Bluetooth driver is an SDIO func driver?
+diff --git a/drivers/net/wireless/ath/ath10k/mac.c b/drivers/net/wireless/ath/ath10k/mac.c
+index e43a566eef77..0606416dc971 100644
+--- a/drivers/net/wireless/ath/ath10k/mac.c
++++ b/drivers/net/wireless/ath/ath10k/mac.c
+@@ -7541,6 +7541,8 @@ static int ath10k_mac_op_set_bitrate_mask(struct ieee80211_hw *hw,
+ 								&vht_nss,
+ 								true);
+ 			update_bitrate_mask = false;
++		} else {
++			vht_pfr = 0;
+ 		}
+ 
+ 		mutex_lock(&ar->conf_mutex);
+-- 
+2.20.0
 
->
-> [1] https://crbug.com/981113
->
->
->
-> -Doug
-
-Kind regards
-Uffe
