@@ -2,59 +2,60 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 500DD63D42
-	for <lists+linux-wireless@lfdr.de>; Tue,  9 Jul 2019 23:25:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 63FA663D44
+	for <lists+linux-wireless@lfdr.de>; Tue,  9 Jul 2019 23:26:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727384AbfGIVZ5 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 9 Jul 2019 17:25:57 -0400
-Received: from mail-io1-f67.google.com ([209.85.166.67]:40209 "EHLO
-        mail-io1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727030AbfGIVZ5 (ORCPT
+        id S1727030AbfGIV0U (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 9 Jul 2019 17:26:20 -0400
+Received: from mail-io1-f68.google.com ([209.85.166.68]:40283 "EHLO
+        mail-io1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726428AbfGIV0T (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 9 Jul 2019 17:25:57 -0400
-Received: by mail-io1-f67.google.com with SMTP id h6so120971iom.7
-        for <linux-wireless@vger.kernel.org>; Tue, 09 Jul 2019 14:25:56 -0700 (PDT)
+        Tue, 9 Jul 2019 17:26:19 -0400
+Received: by mail-io1-f68.google.com with SMTP id h6so122973iom.7
+        for <linux-wireless@vger.kernel.org>; Tue, 09 Jul 2019 14:26:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=chromium.org; s=google;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=9UIgOQNmfvUJtDiPoIjrW8Kpce1CO869FkZz13pccs8=;
-        b=RN/5m5rkbsEOrFNg8rvYWPhdjVYevh1ect0wihamuv5Vk4dpFwAihGpNLRFP+2w9lM
-         eEiuNREadfbuccshh/ZnURaZqybWzRpX9hGhBUWPEL22qgRHgNQRBXQLlk8kQJsDY5Nd
-         J4Jy0vxYgKyDv4fMWb2kkj8S1YbivRmdmQn18=
+        bh=qZp2EA1uWuI2cCMBWCElkOzxAGzZZIpu6+eVMhVKNTo=;
+        b=Wb0mr0smeI2S+YK0huBgJ4nHSzTmixun8WgmZZQeqIBbAmwdyQSNJL0D6EhbTD3TXi
+         VNWEPT3tRWEpJPoT3V7ELnYpFadkamKkd7ZdfIvyXaw0M4T3RehL7yHyx4CTRX9UGKqh
+         3CRWQJTOzH93oGmzTySTboEDszbvS874tRDuk=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=9UIgOQNmfvUJtDiPoIjrW8Kpce1CO869FkZz13pccs8=;
-        b=WHkH8QELaVGEUngX8qXWeSXwAgnJ7ugrvm+7ElOk166xwTkKcAb7Z3RSXGzQ1G3lxX
-         uvwFowYZEC/jZn7kwNlQnAIlyVtrvcysM21eMbVFUpoycaOhiskt679VGDfLalw5KdXR
-         F1IsXZg7UHMmiHg20yM6T7Bu6iOB+SmhAhO/umkYJP7n/Ucwfs775QgPP2ULVpJmm7QZ
-         JHR1sF3Wt+hq+KcQ/E9txQeksfMNXc/P1Sg+hRHrhw7ypM/+DM64Bf/jX/hAEHVmhJed
-         FiTG/GAmysPTz5fUS84rTE7FYCzUVPpP7oc1KV/V1il/0Q2QjhWxVc1aRWA2sti8k/Tx
-         EH4Q==
-X-Gm-Message-State: APjAAAXb3hFDcjvl5DmSozBASUtrCyBCYAqOLBxq3rQBwuCwK5/bzLxS
-        2EMimIgX/n4EEjFhlARKetOQjFTo5js=
-X-Google-Smtp-Source: APXvYqzOVSUzDb4P+Pkpsf8ESrLSi38pyxOyWm/Fn3NeLzmVJEpTLnY4FpXGzqkk5gIrIDwgx6v/Gw==
-X-Received: by 2002:a6b:6209:: with SMTP id f9mr1585902iog.236.1562707556317;
-        Tue, 09 Jul 2019 14:25:56 -0700 (PDT)
-Received: from mail-io1-f41.google.com (mail-io1-f41.google.com. [209.85.166.41])
-        by smtp.gmail.com with ESMTPSA id t14sm20334419ioi.60.2019.07.09.14.25.54
+        bh=qZp2EA1uWuI2cCMBWCElkOzxAGzZZIpu6+eVMhVKNTo=;
+        b=XCVNbF6m3UC1mFmUAmYSK/QbJ+rLuv6G41BQgfqUaSyFjNqlfb1OO+m7UvHji0JDQO
+         W3UnXcEHG6Lak6oS0mONzZ99HoH8I7RWPrPnKhT5EwGybgq6YRaXNw3PPzx+B+QskdJU
+         o4nMQAaTSduL5PVz13V5T5x6LpQYNcJDJm6d7MNHGrADqQNt8D3hEVdOpLPc/IuVd4d+
+         VtjR71knzgTAEO2sAfHmi1u21OYqeZNdG2rBoXFezI2lvJQRk6r0a+ksJ5P+MlAlDtHK
+         pM9xPabuhV5NPqEiI8e+OF9lsOeBDiPoNuVyJLN3veOTmacoRi+kNaBZIIXvG+scfYA6
+         Me4w==
+X-Gm-Message-State: APjAAAWI9DhwQrPBJhljJsJ2AV976ghF//HMl+e39Ap93pyuo8KUV6Rt
+        tHBFeWpyQ5NFaW+/C8RO5Dgmx8Apw7E=
+X-Google-Smtp-Source: APXvYqysan00g/WRSBKIDTh6TRfZCFYl2regldRCM1//O27hHaHO6M/K47EQX4FOtUPI6RlFCmaB/Q==
+X-Received: by 2002:a02:914c:: with SMTP id b12mr31501815jag.105.1562707578639;
+        Tue, 09 Jul 2019 14:26:18 -0700 (PDT)
+Received: from mail-io1-f50.google.com (mail-io1-f50.google.com. [209.85.166.50])
+        by smtp.gmail.com with ESMTPSA id p63sm23078166iof.45.2019.07.09.14.26.17
         for <linux-wireless@vger.kernel.org>
         (version=TLS1_3 cipher=AEAD-AES128-GCM-SHA256 bits=128/128);
-        Tue, 09 Jul 2019 14:25:55 -0700 (PDT)
-Received: by mail-io1-f41.google.com with SMTP id s7so77153iob.11
-        for <linux-wireless@vger.kernel.org>; Tue, 09 Jul 2019 14:25:54 -0700 (PDT)
-X-Received: by 2002:a5e:c241:: with SMTP id w1mr1702247iop.58.1562707554420;
- Tue, 09 Jul 2019 14:25:54 -0700 (PDT)
+        Tue, 09 Jul 2019 14:26:18 -0700 (PDT)
+Received: by mail-io1-f50.google.com with SMTP id s7so79205iob.11
+        for <linux-wireless@vger.kernel.org>; Tue, 09 Jul 2019 14:26:17 -0700 (PDT)
+X-Received: by 2002:a5e:8f08:: with SMTP id c8mr2520003iok.52.1562707577690;
+ Tue, 09 Jul 2019 14:26:17 -0700 (PDT)
 MIME-Version: 1.0
-References: <20190618153448.27145-1-ulf.hansson@linaro.org> <20190618153448.27145-3-ulf.hansson@linaro.org>
-In-Reply-To: <20190618153448.27145-3-ulf.hansson@linaro.org>
+References: <20190618153448.27145-1-ulf.hansson@linaro.org> <20190618153448.27145-6-ulf.hansson@linaro.org>
+In-Reply-To: <20190618153448.27145-6-ulf.hansson@linaro.org>
 From:   Doug Anderson <dianders@chromium.org>
-Date:   Tue, 9 Jul 2019 14:25:43 -0700
-X-Gmail-Original-Message-ID: <CAD=FV=UjXT0UG=JZtvNL4EtHofcuC_HhTe4grWBNJ8+8jVFhYg@mail.gmail.com>
-Message-ID: <CAD=FV=UjXT0UG=JZtvNL4EtHofcuC_HhTe4grWBNJ8+8jVFhYg@mail.gmail.com>
-Subject: Re: [PATCH 2/7] mmc: sdio: Drop mmc_claim|release_host() in mmc_sdio_power_restore()
+Date:   Tue, 9 Jul 2019 14:26:06 -0700
+X-Gmail-Original-Message-ID: <CAD=FV=Uss6B2nHPz_pQJFCXm2G=f_rpfqK6xVG1SCDHYb12jmw@mail.gmail.com>
+Message-ID: <CAD=FV=Uss6B2nHPz_pQJFCXm2G=f_rpfqK6xVG1SCDHYb12jmw@mail.gmail.com>
+Subject: Re: [PATCH 5/7] mmc: sdio: Don't re-initialize powered-on removable
+ SDIO cards at resume
 To:     Ulf Hansson <ulf.hansson@linaro.org>
 Cc:     Linux MMC List <linux-mmc@vger.kernel.org>,
         Adrian Hunter <adrian.hunter@intel.com>,
@@ -75,34 +76,33 @@ Hi,
 
 On Tue, Jun 18, 2019 at 8:35 AM Ulf Hansson <ulf.hansson@linaro.org> wrote:
 >
-> The function mmc_sdio_power_restore() is called either from
-> mmc_sdio_runtime_resume() or from mmc_sdio_hw_reset(). Both callers either
-> claims/releases the host or require its callers to do so. Therefore let's
-> drop the redundant calls to mmc_claim|release_host() in
-> mmc_sdio_power_restore().
+> It looks like the original idea behind always doing a re-initialization of
+> a removable SDIO card during system resume in mmc_sdio_resume(), is to try
+> to play safe to detect whether the card has been removed.
+>
+> However, this seems like a really a bad idea as it will most likely screw
+> things up, especially when the card is expected to remain powered on during
+> system suspend by the SDIO func driver.
+>
+> Let's fix this, simply by trusting that the detect work checks if the card
+> is alive and inserted, which is being scheduled at the PM_POST_SUSPEND
+> notification anyway.
 >
 > Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 > ---
->  drivers/mmc/core/sdio.c | 4 ----
->  1 file changed, 4 deletions(-)
+>  drivers/mmc/core/sdio.c | 14 +++++++-------
+>  1 file changed, 7 insertions(+), 7 deletions(-)
 
-Without being an expert, I looked through the code and as far as I can
-tell this is fine.  Specifically:
-
-* I agree there are two calls and mmc_sdio_runtime_resume() clearly claims.
-
-* The only call to mmc_sdio_hw_reset() looks to be mmc_hw_reset();
-looking through calls to mmc_hw_reset() I see the claims.  It's super
-obvious in the 3 cases in "drivers/net" and I decided that I didn't
-need to look at block.c because that shouldn't be a codepath that
-affects SDIO.
-
-Thus:
-
-Reviewed-by: Douglas Anderson <dianders@chromium.org>
-
-
-I also don't see this patch causing any problems on the rk3288-veyron
-boards I tested it on.  Thus:
+I'm not sure if it's even worth mentioning since the device I tested
+was rk3288-veyron (both WiFi variants) and we have a non-removable,
+powered-in-suspend, wakeup-disabled card.  That means it isn't
+affected at all by your change.  ...but I suppose I can at least
+confirm that your change didn't break me if that's worth anything.
+:-P
 
 Tested-by: Douglas Anderson <dianders@chromium.org>
+
+I would also say that, though I don't have any history here, your
+patch seems reasonable to me.  So you can add a:
+
+Reviewed-by: Douglas Anderson <dianders@chromium.org>
