@@ -2,177 +2,112 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2C86F64075
-	for <lists+linux-wireless@lfdr.de>; Wed, 10 Jul 2019 07:12:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6AFEB640EC
+	for <lists+linux-wireless@lfdr.de>; Wed, 10 Jul 2019 08:10:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726128AbfGJFMX (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 10 Jul 2019 01:12:23 -0400
-Received: from rtits2.realtek.com ([211.75.126.72]:37680 "EHLO
-        rtits2.realtek.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725912AbfGJFMW (ORCPT
+        id S1726135AbfGJGKG (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 10 Jul 2019 02:10:06 -0400
+Received: from mail-qt1-f195.google.com ([209.85.160.195]:33969 "EHLO
+        mail-qt1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725839AbfGJGKF (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 10 Jul 2019 01:12:22 -0400
-Authenticated-By: 
-X-SpamFilter-By: BOX Solutions SpamTrap 5.62 with qID x6A5CIgL031500, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (RTITCAS11.realtek.com.tw[172.21.6.12])
-        by rtits2.realtek.com.tw (8.15.2/2.57/5.78) with ESMTPS id x6A5CIgL031500
-        (version=TLSv1 cipher=DHE-RSA-AES256-SHA bits=256 verify=NOT);
-        Wed, 10 Jul 2019 13:12:18 +0800
-Received: from RTITMBSVM04.realtek.com.tw ([fe80::e404:880:2ef1:1aa1]) by
- RTITCAS11.realtek.com.tw ([fe80::7c6d:ced5:c4ff:8297%15]) with mapi id
- 14.03.0439.000; Wed, 10 Jul 2019 13:12:18 +0800
-From:   Tony Chuang <yhchuang@realtek.com>
-To:     =?utf-8?B?SsOhbiBWZXNlbMO9?= <jano.vesely@gmail.com>,
-        linux-wireless <linux-wireless@vger.kernel.org>
-Subject: RE: [5.2 regression] rtwpci + amd iommu
-Thread-Topic: [5.2 regression] rtwpci + amd iommu
-Thread-Index: AQHVNtlcBK8IVcYvvki98SxMJ8exDabDS4iw
-Date:   Wed, 10 Jul 2019 05:12:17 +0000
-Message-ID: <F7CD281DE3E379468C6D07993EA72F84D1864503@RTITMBSVM04.realtek.com.tw>
-References: <CA+K+NcRWLeE3-vah=urveMVxcgXYO0yFHYD=WNeuX_TdZ9+8-A@mail.gmail.com>
-In-Reply-To: <CA+K+NcRWLeE3-vah=urveMVxcgXYO0yFHYD=WNeuX_TdZ9+8-A@mail.gmail.com>
-Accept-Language: zh-TW, en-US
-Content-Language: zh-TW
-X-MS-Has-Attach: yes
-X-MS-TNEF-Correlator: 
-x-originating-ip: [172.21.68.183]
-Content-Type: multipart/mixed;
-        boundary="_002_F7CD281DE3E379468C6D07993EA72F84D1864503RTITMBSVM04real_"
+        Wed, 10 Jul 2019 02:10:05 -0400
+Received: by mail-qt1-f195.google.com with SMTP id k10so1254628qtq.1
+        for <linux-wireless@vger.kernel.org>; Tue, 09 Jul 2019 23:10:05 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=Kgh0eNzFgIe5eaGiUDxMKa3pFZFr3SED3dNfTsGvaUI=;
+        b=EiwBNTiVnAfs8J4Fg825K6u1OWTQl44dsaJ8dvAxEPhMEr7DdoHVSoA18H1TACkXia
+         6KEMvV2UYkj283ZBHS33j0B41nRyuZc6NlTyVwPzqPaLkchtmvBPKgimD4A4CNf4ljU4
+         6g0WGYgiWRbzM5yi8E2Aa/aa5EORLckO+7LNKyEd/niD76NHFnn7G9Ba5iFgRtaZGohz
+         gtwkzLmJYmiYhhOY5CIDJcbbsBNe34JRzFVlwq7yYxesJ5kvxGojse4mk0Xsyt5gdDp+
+         8hv9vUQN9k1CYxvTr76wAEycqSrRXslOIrAp+xD3KKqJF+frOUD5DKMnTxc18sQ06Tjt
+         MW2A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=Kgh0eNzFgIe5eaGiUDxMKa3pFZFr3SED3dNfTsGvaUI=;
+        b=VHVtxIPJFP8x3/SokPdtrGk1EoefBKdoi5L2ZQCeabgQs5okPjP00/gq1UJVaKK1RA
+         VBCRShNfvo2UWf5tXL/ewQkBDveHRmli0SyIf6y6qHsz6lQKl4F6fgyg10ftHDXPc54s
+         z5Hrc6hRhydJ/5TUjRoKpEB5ZP56CarLU7++LE3UcIsjP5LAywEq0jw/O43aQU77VUSS
+         RCREHNV+jBV+TjL4PKdn/JkCa7BU5ThTMcEbBAYTI6jSJ85hEittZ9BwG78Igf8kn35F
+         FAJeLnCbBUEuTT1eY7wNOOTd2MWMOKwgc22nEi52lv4B6a+UxBjyHbRBCAEGfWW6d6Ub
+         pVwg==
+X-Gm-Message-State: APjAAAVpIBHnGLJndB2plwaFAXkpg8rugUD3u0xBr/2C0KT88j+WYXrJ
+        hAL7y7loJYUZs85RCn8fTDayaFRW4JtxUvc/+a8=
+X-Google-Smtp-Source: APXvYqxhNrzJhmOPJYoXktGsnd98m9uDV0i/my+7jaQfqrXBUVuSWomCaGSdQcOCDXVwqTEBjJYEo3muf7F4nm24+UA=
+X-Received: by 2002:ac8:7654:: with SMTP id i20mr18589841qtr.67.1562739004452;
+ Tue, 09 Jul 2019 23:10:04 -0700 (PDT)
 MIME-Version: 1.0
+References: <CA+K+NcRWLeE3-vah=urveMVxcgXYO0yFHYD=WNeuX_TdZ9+8-A@mail.gmail.com>
+ <F7CD281DE3E379468C6D07993EA72F84D1864503@RTITMBSVM04.realtek.com.tw>
+In-Reply-To: <F7CD281DE3E379468C6D07993EA72F84D1864503@RTITMBSVM04.realtek.com.tw>
+From:   =?UTF-8?B?SsOhbiBWZXNlbMO9?= <jano.vesely@gmail.com>
+Date:   Wed, 10 Jul 2019 02:09:53 -0400
+Message-ID: <CA+K+NcTsxsZ9LGbmSZ55xL-CTxruKta81WbCJXCWQCiMNNz4Qg@mail.gmail.com>
+Subject: Re: [5.2 regression] rtwpci + amd iommu
+To:     Tony Chuang <yhchuang@realtek.com>
+Cc:     linux-wireless <linux-wireless@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
---_002_F7CD281DE3E379468C6D07993EA72F84D1864503RTITMBSVM04real_
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Hi,
 
-PiBIaSwNCj4gDQo+IGFmdGVyIHVwZGF0aW5nIHRvIDUuMiB0aGUgd2ktZmkgZHJpdmVyIHN0b3Bw
-ZWQgd29ya2luZyB3aGVuIHRoZSBpb21tdQ0KPiBpcyBlbmFibGVkLg0KPiBJdCBmYWlscyB0byBs
-aXN0IHRoZSBhdmFpbGFibGUgd2ktZmkgbmV0d29ya3Mgb3IgY29ubmVjdCB0byBhIGtub3duIG9u
-ZS4NCj4gYm9vdGluZyB3aXRoIGFtZF9pb21tdT1vZmYgd29ya3MgYXJvdW5kIHRoZSBwcm9ibGVt
-Lg0KPiBUaGUgc3RhZ2luZyB2ZXJzaW9uIGluIDUuMSBhbmQgb2xkZXIgd29ya2VkIE9LIHdpdGgg
-dGhlIGlvbW11IGVuYWJsZWQNCj4gDQo+IFRoZSBkZXZpY2UgaXM6DQo+IDA0OjAwLjAgTmV0d29y
-ayBjb250cm9sbGVyOiBSZWFsdGVrIFNlbWljb25kdWN0b3IgQ28uLCBMdGQuIFJUTDg4MjJCRQ0K
-PiA4MDIuMTFhL2IvZy9uL2FjIFdpRmkgYWRhcHRlcg0KPiANCj4gSSBkbyBzZWUgYW4gSU9NTVUg
-ZXJyb3IgaW4gZG1lc2csIGJ1dCB0aGUgb3JpZ2luYXRpbmcgZGV2aWNlIGRvZXMgbm90DQo+IG1h
-dGNoIHRoZSBuaWNzIHBjaSBsb2NhdGlvbjoNCj4gSnVsIDA4IDE1OjAzOjE0IGhvc3Qga2VybmVs
-OiBydHdfcGNpIDAwMDA6MDQ6MDAuMDogc3RhcnQgdmlmDQo+IHh4Onh4Onh4Onh4Onh4Onh4IG9u
-IHBvcnQgMA0KPiBKdWwgMDggMTU6MDM6MTQgaG9zdCBrZXJuZWw6IGlvbW11IGl2aGQwOiBBTUQt
-Vmk6IEV2ZW50IGxvZ2dlZA0KPiBbSU5WQUxJRF9ERVZJQ0VfUkVRVUVTVCBkZXZpY2U9MDA6MDAu
-MSBwYXNpZD0weDAwMDAwDQo+IGFkZHJlc3M9MHhmZmZmZmZmZGY4MTQwMjAwIGZsYWdzPTB4MGEw
-MF0NCj4gSnVsIDA4IDE1OjAzOjE0IGhvc3Qga2VybmVsOiBydHdfcGNpIDAwMDA6MDQ6MDAuMDog
-c3RvcCB2aWYNCj4geHg6eHg6eHg6eHg6eHg6eHggb24gcG9ydCAwDQo+IEp1bCAwOCAxNTowMzox
-NCBob3N0IE5ldHdvcmtNYW5hZ2VyWzc5MF06IDxpbmZvPiAgWzE1NjI2MTI1OTQuODk5Ml0NCj4g
-ZGV2aWNlICh3bHA0czApOiBzZXQtaHctYWRkcjogc2V0IE1BQyBhZGRyZXNzIHRvIHl5Onl5Onl5
-Onl5Onl5Onl5DQo+IChzY2FubmluZykNCj4gSnVsIDA4IDE1OjAzOjE1IGhvc3Qga2VybmVsOiBy
-dHdfcGNpIDAwMDA6MDQ6MDAuMDogc3RhcnQgdmlmDQo+IHl5Onl5Onl5Onl5Onl5Onl5IG9uIHBv
-cnQgMA0KPiANCj4gbGV0IG1lIGtub3cgaWYgSSBzaG91bGQgcHJvdmlkZSBhbnkgZnVydGhlciBp
-bmZvLg0KPiB0aGFua3MsDQo+IEphbg0KPiANCg0KDQpIaSwNCg0KSSBhbSBub3Qgc3VyZSBpZiBl
-bmFibGluZyBNU0kgaW50ZXJydXB0IGlzIGdvaW5nIHRvIGhlbHAuDQpZb3UgY2FuIHRyeSB0aGUg
-cGF0Y2ggYXR0YWNoZWQsIGlmIGl0IHdvcmtzLCBJIHdpbGwgc2VuZCBpdCB0byB1cHN0cmVhbS4N
-ClRoYW5rcw0KDQpZYW4tSHN1YW4NCg==
+thanks for a prompt reply.
+the patch applies with minor changes (the LPS mod param message and -2
+lines offsets), but it works.
+The system now lists available wi-fi networks and connects to known
+networks all while the iommu is enabled.
 
---_002_F7CD281DE3E379468C6D07993EA72F84D1864503RTITMBSVM04real_
-Content-Type: application/octet-stream;
-	name="0001-rtw88-pci-add-MSI-interrupt-support.patch"
-Content-Description: 0001-rtw88-pci-add-MSI-interrupt-support.patch
-Content-Disposition: attachment;
-	filename="0001-rtw88-pci-add-MSI-interrupt-support.patch"; size=5082;
-	creation-date="Wed, 10 Jul 2019 05:11:54 GMT";
-	modification-date="Wed, 10 Jul 2019 05:11:12 GMT"
-Content-Transfer-Encoding: base64
+feel free to add my tested-by,
+regards,
+Jan
 
-RnJvbSA1NzBkNmVkODU4NTg1NWE4YzZhZWUyMGU2ZDMxOTgyOWViZWY2YmM3IE1vbiBTZXAgMTcg
-MDA6MDA6MDAgMjAwMQpGcm9tOiBZdS1ZZW4gVGluZyA8c3RldmVudGluZ0ByZWFsdGVrLmNvbT4K
-RGF0ZTogV2VkLCAyOSBNYXkgMjAxOSAxNjozMToyNyArMDgwMApTdWJqZWN0OiBbUEFUQ0hdIHJ0
-dzg4OiBwY2k6IGFkZCBNU0kgaW50ZXJydXB0IHN1cHBvcnQKClRoZSBNU0kgaW50ZXJydXB0IHNo
-b3VsZCBiZSBlbmFibGVkIG9uIGNlcnRhaW4gcGxhdGZvcm0uCkFkZCB0aGUgbW9kdWxlIHBhcmFt
-ZXRlciBkaXNhYmxlX21zaSB0byBmb3JjZSBkaXNhYmxlIHRoZSBNU0kgaW50ZXJydXB0CgpTaWdu
-ZWQtb2ZmLWJ5OiBZdS1ZZW4gVGluZyA8c3RldmVudGluZ0ByZWFsdGVrLmNvbT4KU2lnbmVkLW9m
-Zi1ieTogWWFuLUhzdWFuIENodWFuZyA8eWhjaHVhbmdAcmVhbHRlay5jb20+Ci0tLQogZHJpdmVy
-cy9uZXQvd2lyZWxlc3MvcmVhbHRlay9ydHc4OC9tYWluLmMgfCAgNSArKysrCiBkcml2ZXJzL25l
-dC93aXJlbGVzcy9yZWFsdGVrL3J0dzg4L21haW4uaCB8ICAxICsKIGRyaXZlcnMvbmV0L3dpcmVs
-ZXNzL3JlYWx0ZWsvcnR3ODgvcGNpLmMgIHwgNDcgKysrKysrKysrKysrKysrKysrKysrKysrKysr
-KystLQogZHJpdmVycy9uZXQvd2lyZWxlc3MvcmVhbHRlay9ydHc4OC9wY2kuaCAgfCAgMSArCiA0
-IGZpbGVzIGNoYW5nZWQsIDUxIGluc2VydGlvbnMoKyksIDMgZGVsZXRpb25zKC0pCgpkaWZmIC0t
-Z2l0IGEvZHJpdmVycy9uZXQvd2lyZWxlc3MvcmVhbHRlay9ydHc4OC9tYWluLmMgYi9kcml2ZXJz
-L25ldC93aXJlbGVzcy9yZWFsdGVrL3J0dzg4L21haW4uYwppbmRleCBiOGUwNTE5Li5kODZlMDVl
-IDEwMDY0NAotLS0gYS9kcml2ZXJzL25ldC93aXJlbGVzcy9yZWFsdGVrL3J0dzg4L21haW4uYwor
-KysgYi9kcml2ZXJzL25ldC93aXJlbGVzcy9yZWFsdGVrL3J0dzg4L21haW4uYwpAQCAtMTUsMTMg
-KzE1LDE4IEBACiAKIHN0YXRpYyBib29sIHJ0d19md19zdXBwb3J0X2xwczsKIHVuc2lnbmVkIGlu
-dCBydHdfZGVidWdfbWFzazsKK2Jvb2wgcnR3X2Rpc2FibGVfbXNpOworCiBFWFBPUlRfU1lNQk9M
-KHJ0d19kZWJ1Z19tYXNrKTsKK0VYUE9SVF9TWU1CT0wocnR3X2Rpc2FibGVfbXNpKTsKIAogbW9k
-dWxlX3BhcmFtX25hbWVkKHN1cHBvcnRfbHBzLCBydHdfZndfc3VwcG9ydF9scHMsIGJvb2wsIDA2
-NDQpOwogbW9kdWxlX3BhcmFtX25hbWVkKGRlYnVnX21hc2ssIHJ0d19kZWJ1Z19tYXNrLCB1aW50
-LCAwNjQ0KTsKK21vZHVsZV9wYXJhbV9uYW1lZChkaXNhYmxlX21zaSwgcnR3X2Rpc2FibGVfbXNp
-LCBib29sLCAwNjQ0KTsKIAogTU9EVUxFX1BBUk1fREVTQyhzdXBwb3J0X2xwcywgIlNldCBZIHRv
-IGVuYWJsZSBMZWlzdXJlIFBvd2VyIFNhdmUgc3VwcG9ydCwgdG8gdHVybiByYWRpbyBvZmYgYmV0
-d2VlbiBiZWFjb25zIik7CiBNT0RVTEVfUEFSTV9ERVNDKGRlYnVnX21hc2ssICJEZWJ1Z2dpbmcg
-bWFzayIpOworTU9EVUxFX1BBUk1fREVTQyhkaXNhYmxlX21zaSwgIlNldCBZIHRvIGRpc2FibGUg
-TVNJIGludGVycnVwdCBzdXBwb3J0Iik7CiAKIHN0YXRpYyBzdHJ1Y3QgaWVlZTgwMjExX2NoYW5u
-ZWwgcnR3X2NoYW5uZWx0YWJsZV8yZ1tdID0gewogCXsuY2VudGVyX2ZyZXEgPSAyNDEyLCAuaHdf
-dmFsdWUgPSAxLH0sCmRpZmYgLS1naXQgYS9kcml2ZXJzL25ldC93aXJlbGVzcy9yZWFsdGVrL3J0
-dzg4L21haW4uaCBiL2RyaXZlcnMvbmV0L3dpcmVsZXNzL3JlYWx0ZWsvcnR3ODgvbWFpbi5oCmlu
-ZGV4IDkyNzMwNTA3Li5jYTYwM2JhIDEwMDY0NAotLS0gYS9kcml2ZXJzL25ldC93aXJlbGVzcy9y
-ZWFsdGVrL3J0dzg4L21haW4uaAorKysgYi9kcml2ZXJzL25ldC93aXJlbGVzcy9yZWFsdGVrL3J0
-dzg4L21haW4uaApAQCAtMjgsNiArMjgsNyBAQAogI2RlZmluZSBIV19GRUFUVVJFX0xFTgkJCTEz
-CiAKIGV4dGVybiB1bnNpZ25lZCBpbnQgcnR3X2RlYnVnX21hc2s7CitleHRlcm4gYm9vbCBydHdf
-ZGlzYWJsZV9tc2k7CiBleHRlcm4gY29uc3Qgc3RydWN0IGllZWU4MDIxMV9vcHMgcnR3X29wczsK
-IGV4dGVybiBzdHJ1Y3QgcnR3X2NoaXBfaW5mbyBydHc4ODIyYl9od19zcGVjOwogZXh0ZXJuIHN0
-cnVjdCBydHdfY2hpcF9pbmZvIHJ0dzg4MjJjX2h3X3NwZWM7CmRpZmYgLS1naXQgYS9kcml2ZXJz
-L25ldC93aXJlbGVzcy9yZWFsdGVrL3J0dzg4L3BjaS5jIGIvZHJpdmVycy9uZXQvd2lyZWxlc3Mv
-cmVhbHRlay9ydHc4OC9wY2kuYwppbmRleCAzNTM4NzFjLi44MTdiNGFiIDEwMDY0NAotLS0gYS9k
-cml2ZXJzL25ldC93aXJlbGVzcy9yZWFsdGVrL3J0dzg4L3BjaS5jCisrKyBiL2RyaXZlcnMvbmV0
-L3dpcmVsZXNzL3JlYWx0ZWsvcnR3ODgvcGNpLmMKQEAgLTg2MSw2ICs4NjEsNyBAQCBzdGF0aWMg
-aXJxcmV0dXJuX3QgcnR3X3BjaV9pbnRlcnJ1cHRfaGFuZGxlcihpbnQgaXJxLCB2b2lkICpkZXYp
-CiAJaWYgKCFydHdwY2ktPmlycV9lbmFibGVkKQogCQlnb3RvIG91dDsKIAorCXJ0d19wY2lfZGlz
-YWJsZV9pbnRlcnJ1cHQocnR3ZGV2LCBydHdwY2kpOwogCXJ0d19wY2lfaXJxX3JlY29nbml6ZWQo
-cnR3ZGV2LCBydHdwY2ksIGlycV9zdGF0dXMpOwogCiAJaWYgKGlycV9zdGF0dXNbMF0gJiBJTVJf
-TUdOVERPSykKQEAgLTg4MCw2ICs4ODEsOCBAQCBzdGF0aWMgaXJxcmV0dXJuX3QgcnR3X3BjaV9p
-bnRlcnJ1cHRfaGFuZGxlcihpbnQgaXJxLCB2b2lkICpkZXYpCiAJaWYgKGlycV9zdGF0dXNbMF0g
-JiBJTVJfUk9LKQogCQlydHdfcGNpX3J4X2lzcihydHdkZXYsIHJ0d3BjaSwgUlRXX1JYX1FVRVVF
-X01QRFUpOwogCisJcnR3X3BjaV9lbmFibGVfaW50ZXJydXB0KHJ0d2RldiwgcnR3cGNpKTsKKwog
-b3V0OgogCXNwaW5fdW5sb2NrKCZydHdwY2ktPmlycV9sb2NrKTsKIApAQCAtMTA5MCw2ICsxMDkz
-LDQ1IEBAIHN0YXRpYyBzdHJ1Y3QgcnR3X2hjaV9vcHMgcnR3X3BjaV9vcHMgPSB7CiAJLndyaXRl
-X2RhdGFfaDJjID0gcnR3X3BjaV93cml0ZV9kYXRhX2gyYywKIH07CiAKK3N0YXRpYyBpbnQgcnR3
-X3BjaV9yZXF1ZXN0X2lycShzdHJ1Y3QgcnR3X2RldiAqcnR3ZGV2LCBzdHJ1Y3QgcGNpX2RldiAq
-cGRldikKK3sKKwlzdHJ1Y3QgcnR3X3BjaSAqcnR3cGNpID0gKHN0cnVjdCBydHdfcGNpICopcnR3
-ZGV2LT5wcml2OworCWludCByZXQ7CisKKwlpZiAoIXJ0d19kaXNhYmxlX21zaSkgeworCQlyZXQg
-PSBwY2lfZW5hYmxlX21zaShwZGV2KTsKKwkJaWYgKHJldCkgeworCQkJcnR3X3dhcm4ocnR3ZGV2
-LCAiZmFpbGVkIHRvIGVuYWJsZSBtc2ksIHVzaW5nIGxlZ2FjeSBpcnFcbiIpOworCQl9IGVsc2Ug
-eworCQkJcnR3X3dhcm4ocnR3ZGV2LCAicGNpIG1zaSBlbmFibGVkXG4iKTsKKwkJCXJ0d3BjaS0+
-bXNpX2VuYWJsZWQgPSB0cnVlOworCQl9CisJfQorCisJcmV0ID0gcmVxdWVzdF9pcnEocGRldi0+
-aXJxLCAmcnR3X3BjaV9pbnRlcnJ1cHRfaGFuZGxlciwgSVJRRl9TSEFSRUQsCisJCQkgIEtCVUlM
-RF9NT0ROQU1FLCBydHdkZXYpOworCWlmIChyZXQpIHsKKwkJcnR3X2VycihydHdkZXYsICJmYWls
-ZWQgdG8gcmVxdWVzdCBpcnFcbiIpOworCQlpZiAocnR3cGNpLT5tc2lfZW5hYmxlZCkgeworCQkJ
-cGNpX2Rpc2FibGVfbXNpKHBkZXYpOworCQkJcnR3cGNpLT5tc2lfZW5hYmxlZCA9IGZhbHNlOwor
-CQl9CisJfQorCisJcmV0dXJuIHJldDsKK30KKworc3RhdGljIHZvaWQgcnR3X3BjaV9mcmVlX2ly
-cShzdHJ1Y3QgcnR3X2RldiAqcnR3ZGV2LCBzdHJ1Y3QgcGNpX2RldiAqcGRldikKK3sKKwlzdHJ1
-Y3QgcnR3X3BjaSAqcnR3cGNpID0gKHN0cnVjdCBydHdfcGNpICopcnR3ZGV2LT5wcml2OworCisJ
-ZnJlZV9pcnEocGRldi0+aXJxLCBydHdkZXYpOworCWlmIChydHdwY2ktPm1zaV9lbmFibGVkKSB7
-CisJCXBjaV9kaXNhYmxlX21zaShwZGV2KTsKKwkJcnR3cGNpLT5tc2lfZW5hYmxlZCA9IGZhbHNl
-OworCX0KK30KKwogc3RhdGljIGludCBydHdfcGNpX3Byb2JlKHN0cnVjdCBwY2lfZGV2ICpwZGV2
-LAogCQkJIGNvbnN0IHN0cnVjdCBwY2lfZGV2aWNlX2lkICppZCkKIHsKQEAgLTExNDQsOCArMTE4
-Niw3IEBAIHN0YXRpYyBpbnQgcnR3X3BjaV9wcm9iZShzdHJ1Y3QgcGNpX2RldiAqcGRldiwKIAkJ
-Z290byBlcnJfZGVzdHJveV9wY2k7CiAJfQogCi0JcmV0ID0gcmVxdWVzdF9pcnEocGRldi0+aXJx
-LCAmcnR3X3BjaV9pbnRlcnJ1cHRfaGFuZGxlciwKLQkJCSAgSVJRRl9TSEFSRUQsIEtCVUlMRF9N
-T0ROQU1FLCBydHdkZXYpOworCXJldCA9IHJ0d19wY2lfcmVxdWVzdF9pcnEocnR3ZGV2LCBwZGV2
-KTsKIAlpZiAocmV0KSB7CiAJCWllZWU4MDIxMV91bnJlZ2lzdGVyX2h3KGh3KTsKIAkJZ290byBl
-cnJfZGVzdHJveV9wY2k7CkBAIC0xMTg0LDcgKzEyMjUsNyBAQCBzdGF0aWMgdm9pZCBydHdfcGNp
-X3JlbW92ZShzdHJ1Y3QgcGNpX2RldiAqcGRldikKIAlydHdfcGNpX2Rpc2FibGVfaW50ZXJydXB0
-KHJ0d2RldiwgcnR3cGNpKTsKIAlydHdfcGNpX2Rlc3Ryb3kocnR3ZGV2LCBwZGV2KTsKIAlydHdf
-cGNpX2RlY2xhaW0ocnR3ZGV2LCBwZGV2KTsKLQlmcmVlX2lycShydHdwY2ktPnBkZXYtPmlycSwg
-cnR3ZGV2KTsKKwlydHdfcGNpX2ZyZWVfaXJxKHJ0d2RldiwgcGRldik7CiAJcnR3X2NvcmVfZGVp
-bml0KHJ0d2Rldik7CiAJaWVlZTgwMjExX2ZyZWVfaHcoaHcpOwogfQpkaWZmIC0tZ2l0IGEvZHJp
-dmVycy9uZXQvd2lyZWxlc3MvcmVhbHRlay9ydHc4OC9wY2kuaCBiL2RyaXZlcnMvbmV0L3dpcmVs
-ZXNzL3JlYWx0ZWsvcnR3ODgvcGNpLmgKaW5kZXggODc4MjRhNC4uYThlMzY5YyAxMDA2NDQKLS0t
-IGEvZHJpdmVycy9uZXQvd2lyZWxlc3MvcmVhbHRlay9ydHc4OC9wY2kuaAorKysgYi9kcml2ZXJz
-L25ldC93aXJlbGVzcy9yZWFsdGVrL3J0dzg4L3BjaS5oCkBAIC0xODYsNiArMTg2LDcgQEAgc3Ry
-dWN0IHJ0d19wY2kgewogCXNwaW5sb2NrX3QgaXJxX2xvY2s7CiAJdTMyIGlycV9tYXNrWzRdOwog
-CWJvb2wgaXJxX2VuYWJsZWQ7CisJYm9vbCBtc2lfZW5hYmxlZDsKIAogCXUxNiByeF90YWc7CiAJ
-c3RydWN0IHJ0d19wY2lfdHhfcmluZyB0eF9yaW5nc1tSVEtfTUFYX1RYX1FVRVVFX05VTV07Ci0t
-IAoyLjcuNAoK
-
---_002_F7CD281DE3E379468C6D07993EA72F84D1864503RTITMBSVM04real_--
+On Wed, Jul 10, 2019 at 1:12 AM Tony Chuang <yhchuang@realtek.com> wrote:
+>
+> > Hi,
+> >
+> > after updating to 5.2 the wi-fi driver stopped working when the iommu
+> > is enabled.
+> > It fails to list the available wi-fi networks or connect to a known one.
+> > booting with amd_iommu=off works around the problem.
+> > The staging version in 5.1 and older worked OK with the iommu enabled
+> >
+> > The device is:
+> > 04:00.0 Network controller: Realtek Semiconductor Co., Ltd. RTL8822BE
+> > 802.11a/b/g/n/ac WiFi adapter
+> >
+> > I do see an IOMMU error in dmesg, but the originating device does not
+> > match the nics pci location:
+> > Jul 08 15:03:14 host kernel: rtw_pci 0000:04:00.0: start vif
+> > xx:xx:xx:xx:xx:xx on port 0
+> > Jul 08 15:03:14 host kernel: iommu ivhd0: AMD-Vi: Event logged
+> > [INVALID_DEVICE_REQUEST device=00:00.1 pasid=0x00000
+> > address=0xfffffffdf8140200 flags=0x0a00]
+> > Jul 08 15:03:14 host kernel: rtw_pci 0000:04:00.0: stop vif
+> > xx:xx:xx:xx:xx:xx on port 0
+> > Jul 08 15:03:14 host NetworkManager[790]: <info>  [1562612594.8992]
+> > device (wlp4s0): set-hw-addr: set MAC address to yy:yy:yy:yy:yy:yy
+> > (scanning)
+> > Jul 08 15:03:15 host kernel: rtw_pci 0000:04:00.0: start vif
+> > yy:yy:yy:yy:yy:yy on port 0
+> >
+> > let me know if I should provide any further info.
+> > thanks,
+> > Jan
+> >
+>
+>
+> Hi,
+>
+> I am not sure if enabling MSI interrupt is going to help.
+> You can try the patch attached, if it works, I will send it to upstream.
+> Thanks
+>
+> Yan-Hsuan
