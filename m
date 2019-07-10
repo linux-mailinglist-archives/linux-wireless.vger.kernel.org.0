@@ -2,86 +2,177 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 86B1F64061
-	for <lists+linux-wireless@lfdr.de>; Wed, 10 Jul 2019 07:07:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2C86F64075
+	for <lists+linux-wireless@lfdr.de>; Wed, 10 Jul 2019 07:12:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726100AbfGJFHo convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 10 Jul 2019 01:07:44 -0400
-Received: from rtits2.realtek.com ([211.75.126.72]:37513 "EHLO
+        id S1726128AbfGJFMX (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 10 Jul 2019 01:12:23 -0400
+Received: from rtits2.realtek.com ([211.75.126.72]:37680 "EHLO
         rtits2.realtek.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726033AbfGJFHo (ORCPT
+        with ESMTP id S1725912AbfGJFMW (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 10 Jul 2019 01:07:44 -0400
+        Wed, 10 Jul 2019 01:12:22 -0400
 Authenticated-By: 
-X-SpamFilter-By: BOX Solutions SpamTrap 5.62 with qID x6A57QYq030900, This message is accepted by code: ctloc85258
+X-SpamFilter-By: BOX Solutions SpamTrap 5.62 with qID x6A5CIgL031500, This message is accepted by code: ctloc85258
 Received: from mail.realtek.com (RTITCAS11.realtek.com.tw[172.21.6.12])
-        by rtits2.realtek.com.tw (8.15.2/2.57/5.78) with ESMTPS id x6A57QYq030900
+        by rtits2.realtek.com.tw (8.15.2/2.57/5.78) with ESMTPS id x6A5CIgL031500
         (version=TLSv1 cipher=DHE-RSA-AES256-SHA bits=256 verify=NOT);
-        Wed, 10 Jul 2019 13:07:27 +0800
+        Wed, 10 Jul 2019 13:12:18 +0800
 Received: from RTITMBSVM04.realtek.com.tw ([fe80::e404:880:2ef1:1aa1]) by
  RTITCAS11.realtek.com.tw ([fe80::7c6d:ced5:c4ff:8297%15]) with mapi id
- 14.03.0439.000; Wed, 10 Jul 2019 13:07:26 +0800
+ 14.03.0439.000; Wed, 10 Jul 2019 13:12:18 +0800
 From:   Tony Chuang <yhchuang@realtek.com>
-To:     Joe Perches <joe@perches.com>,
-        Andrew Morton <akpm@linux-foundation.org>
-CC:     Kalle Valo <kvalo@codeaurora.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        Andy Huang <tehuang@realtek.com>
-Subject: RE: [PATCH 09/12] rtw88: Fix misuse of GENMASK macro
-Thread-Topic: [PATCH 09/12] rtw88: Fix misuse of GENMASK macro
-Thread-Index: AQHVNt0EKBOEadT3XU2T7xXrxoiWeabDTLwA
-Date:   Wed, 10 Jul 2019 05:07:26 +0000
-Message-ID: <F7CD281DE3E379468C6D07993EA72F84D18644DC@RTITMBSVM04.realtek.com.tw>
-References: <cover.1562734889.git.joe@perches.com>
- <0de52d891d7925b02f4f0fe2c750d076e55434d9.1562734889.git.joe@perches.com>
-In-Reply-To: <0de52d891d7925b02f4f0fe2c750d076e55434d9.1562734889.git.joe@perches.com>
+To:     =?utf-8?B?SsOhbiBWZXNlbMO9?= <jano.vesely@gmail.com>,
+        linux-wireless <linux-wireless@vger.kernel.org>
+Subject: RE: [5.2 regression] rtwpci + amd iommu
+Thread-Topic: [5.2 regression] rtwpci + amd iommu
+Thread-Index: AQHVNtlcBK8IVcYvvki98SxMJ8exDabDS4iw
+Date:   Wed, 10 Jul 2019 05:12:17 +0000
+Message-ID: <F7CD281DE3E379468C6D07993EA72F84D1864503@RTITMBSVM04.realtek.com.tw>
+References: <CA+K+NcRWLeE3-vah=urveMVxcgXYO0yFHYD=WNeuX_TdZ9+8-A@mail.gmail.com>
+In-Reply-To: <CA+K+NcRWLeE3-vah=urveMVxcgXYO0yFHYD=WNeuX_TdZ9+8-A@mail.gmail.com>
 Accept-Language: zh-TW, en-US
 Content-Language: zh-TW
-X-MS-Has-Attach: 
+X-MS-Has-Attach: yes
 X-MS-TNEF-Correlator: 
 x-originating-ip: [172.21.68.183]
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 8BIT
+Content-Type: multipart/mixed;
+        boundary="_002_F7CD281DE3E379468C6D07993EA72F84D1864503RTITMBSVM04real_"
 MIME-Version: 1.0
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-> Subject: [PATCH 09/12] rtw88: Fix misuse of GENMASK macro
-> 
-> Arguments are supposed to be ordered high then low.
-> 
-> Signed-off-by: Joe Perches <joe@perches.com>
-> ---
->  drivers/net/wireless/realtek/rtw88/rtw8822b.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/net/wireless/realtek/rtw88/rtw8822b.c
-> b/drivers/net/wireless/realtek/rtw88/rtw8822b.c
-> index 1172f6c0605b..d61d534396c7 100644
-> --- a/drivers/net/wireless/realtek/rtw88/rtw8822b.c
-> +++ b/drivers/net/wireless/realtek/rtw88/rtw8822b.c
-> @@ -997,7 +997,7 @@ static void rtw8822b_do_iqk(struct rtw_dev *rtwdev)
->  	rtw_write_rf(rtwdev, RF_PATH_A, RF_DTXLOK, RFREG_MASK, 0x0);
-> 
->  	reload = !!rtw_read32_mask(rtwdev, REG_IQKFAILMSK, BIT(16));
-> -	iqk_fail_mask = rtw_read32_mask(rtwdev, REG_IQKFAILMSK,
-> GENMASK(0, 7));
-> +	iqk_fail_mask = rtw_read32_mask(rtwdev, REG_IQKFAILMSK,
-> GENMASK(7, 0));
->  	rtw_dbg(rtwdev, RTW_DBG_PHY,
->  		"iqk counter=%d reload=%d do_iqk_cnt=%d
-> n_iqk_fail(mask)=0x%02x\n",
->  		counter, reload, ++do_iqk_cnt, iqk_fail_mask);
-> --
+--_002_F7CD281DE3E379468C6D07993EA72F84D1864503RTITMBSVM04real_
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 
-That's correct. Thanks.
+PiBIaSwNCj4gDQo+IGFmdGVyIHVwZGF0aW5nIHRvIDUuMiB0aGUgd2ktZmkgZHJpdmVyIHN0b3Bw
+ZWQgd29ya2luZyB3aGVuIHRoZSBpb21tdQ0KPiBpcyBlbmFibGVkLg0KPiBJdCBmYWlscyB0byBs
+aXN0IHRoZSBhdmFpbGFibGUgd2ktZmkgbmV0d29ya3Mgb3IgY29ubmVjdCB0byBhIGtub3duIG9u
+ZS4NCj4gYm9vdGluZyB3aXRoIGFtZF9pb21tdT1vZmYgd29ya3MgYXJvdW5kIHRoZSBwcm9ibGVt
+Lg0KPiBUaGUgc3RhZ2luZyB2ZXJzaW9uIGluIDUuMSBhbmQgb2xkZXIgd29ya2VkIE9LIHdpdGgg
+dGhlIGlvbW11IGVuYWJsZWQNCj4gDQo+IFRoZSBkZXZpY2UgaXM6DQo+IDA0OjAwLjAgTmV0d29y
+ayBjb250cm9sbGVyOiBSZWFsdGVrIFNlbWljb25kdWN0b3IgQ28uLCBMdGQuIFJUTDg4MjJCRQ0K
+PiA4MDIuMTFhL2IvZy9uL2FjIFdpRmkgYWRhcHRlcg0KPiANCj4gSSBkbyBzZWUgYW4gSU9NTVUg
+ZXJyb3IgaW4gZG1lc2csIGJ1dCB0aGUgb3JpZ2luYXRpbmcgZGV2aWNlIGRvZXMgbm90DQo+IG1h
+dGNoIHRoZSBuaWNzIHBjaSBsb2NhdGlvbjoNCj4gSnVsIDA4IDE1OjAzOjE0IGhvc3Qga2VybmVs
+OiBydHdfcGNpIDAwMDA6MDQ6MDAuMDogc3RhcnQgdmlmDQo+IHh4Onh4Onh4Onh4Onh4Onh4IG9u
+IHBvcnQgMA0KPiBKdWwgMDggMTU6MDM6MTQgaG9zdCBrZXJuZWw6IGlvbW11IGl2aGQwOiBBTUQt
+Vmk6IEV2ZW50IGxvZ2dlZA0KPiBbSU5WQUxJRF9ERVZJQ0VfUkVRVUVTVCBkZXZpY2U9MDA6MDAu
+MSBwYXNpZD0weDAwMDAwDQo+IGFkZHJlc3M9MHhmZmZmZmZmZGY4MTQwMjAwIGZsYWdzPTB4MGEw
+MF0NCj4gSnVsIDA4IDE1OjAzOjE0IGhvc3Qga2VybmVsOiBydHdfcGNpIDAwMDA6MDQ6MDAuMDog
+c3RvcCB2aWYNCj4geHg6eHg6eHg6eHg6eHg6eHggb24gcG9ydCAwDQo+IEp1bCAwOCAxNTowMzox
+NCBob3N0IE5ldHdvcmtNYW5hZ2VyWzc5MF06IDxpbmZvPiAgWzE1NjI2MTI1OTQuODk5Ml0NCj4g
+ZGV2aWNlICh3bHA0czApOiBzZXQtaHctYWRkcjogc2V0IE1BQyBhZGRyZXNzIHRvIHl5Onl5Onl5
+Onl5Onl5Onl5DQo+IChzY2FubmluZykNCj4gSnVsIDA4IDE1OjAzOjE1IGhvc3Qga2VybmVsOiBy
+dHdfcGNpIDAwMDA6MDQ6MDAuMDogc3RhcnQgdmlmDQo+IHl5Onl5Onl5Onl5Onl5Onl5IG9uIHBv
+cnQgMA0KPiANCj4gbGV0IG1lIGtub3cgaWYgSSBzaG91bGQgcHJvdmlkZSBhbnkgZnVydGhlciBp
+bmZvLg0KPiB0aGFua3MsDQo+IEphbg0KPiANCg0KDQpIaSwNCg0KSSBhbSBub3Qgc3VyZSBpZiBl
+bmFibGluZyBNU0kgaW50ZXJydXB0IGlzIGdvaW5nIHRvIGhlbHAuDQpZb3UgY2FuIHRyeSB0aGUg
+cGF0Y2ggYXR0YWNoZWQsIGlmIGl0IHdvcmtzLCBJIHdpbGwgc2VuZCBpdCB0byB1cHN0cmVhbS4N
+ClRoYW5rcw0KDQpZYW4tSHN1YW4NCg==
 
-Acked-by: Yan-Hsuan Chuang <yhchuang@realtek.com>
+--_002_F7CD281DE3E379468C6D07993EA72F84D1864503RTITMBSVM04real_
+Content-Type: application/octet-stream;
+	name="0001-rtw88-pci-add-MSI-interrupt-support.patch"
+Content-Description: 0001-rtw88-pci-add-MSI-interrupt-support.patch
+Content-Disposition: attachment;
+	filename="0001-rtw88-pci-add-MSI-interrupt-support.patch"; size=5082;
+	creation-date="Wed, 10 Jul 2019 05:11:54 GMT";
+	modification-date="Wed, 10 Jul 2019 05:11:12 GMT"
+Content-Transfer-Encoding: base64
 
-Yan-Hsuan
+RnJvbSA1NzBkNmVkODU4NTg1NWE4YzZhZWUyMGU2ZDMxOTgyOWViZWY2YmM3IE1vbiBTZXAgMTcg
+MDA6MDA6MDAgMjAwMQpGcm9tOiBZdS1ZZW4gVGluZyA8c3RldmVudGluZ0ByZWFsdGVrLmNvbT4K
+RGF0ZTogV2VkLCAyOSBNYXkgMjAxOSAxNjozMToyNyArMDgwMApTdWJqZWN0OiBbUEFUQ0hdIHJ0
+dzg4OiBwY2k6IGFkZCBNU0kgaW50ZXJydXB0IHN1cHBvcnQKClRoZSBNU0kgaW50ZXJydXB0IHNo
+b3VsZCBiZSBlbmFibGVkIG9uIGNlcnRhaW4gcGxhdGZvcm0uCkFkZCB0aGUgbW9kdWxlIHBhcmFt
+ZXRlciBkaXNhYmxlX21zaSB0byBmb3JjZSBkaXNhYmxlIHRoZSBNU0kgaW50ZXJydXB0CgpTaWdu
+ZWQtb2ZmLWJ5OiBZdS1ZZW4gVGluZyA8c3RldmVudGluZ0ByZWFsdGVrLmNvbT4KU2lnbmVkLW9m
+Zi1ieTogWWFuLUhzdWFuIENodWFuZyA8eWhjaHVhbmdAcmVhbHRlay5jb20+Ci0tLQogZHJpdmVy
+cy9uZXQvd2lyZWxlc3MvcmVhbHRlay9ydHc4OC9tYWluLmMgfCAgNSArKysrCiBkcml2ZXJzL25l
+dC93aXJlbGVzcy9yZWFsdGVrL3J0dzg4L21haW4uaCB8ICAxICsKIGRyaXZlcnMvbmV0L3dpcmVs
+ZXNzL3JlYWx0ZWsvcnR3ODgvcGNpLmMgIHwgNDcgKysrKysrKysrKysrKysrKysrKysrKysrKysr
+KystLQogZHJpdmVycy9uZXQvd2lyZWxlc3MvcmVhbHRlay9ydHc4OC9wY2kuaCAgfCAgMSArCiA0
+IGZpbGVzIGNoYW5nZWQsIDUxIGluc2VydGlvbnMoKyksIDMgZGVsZXRpb25zKC0pCgpkaWZmIC0t
+Z2l0IGEvZHJpdmVycy9uZXQvd2lyZWxlc3MvcmVhbHRlay9ydHc4OC9tYWluLmMgYi9kcml2ZXJz
+L25ldC93aXJlbGVzcy9yZWFsdGVrL3J0dzg4L21haW4uYwppbmRleCBiOGUwNTE5Li5kODZlMDVl
+IDEwMDY0NAotLS0gYS9kcml2ZXJzL25ldC93aXJlbGVzcy9yZWFsdGVrL3J0dzg4L21haW4uYwor
+KysgYi9kcml2ZXJzL25ldC93aXJlbGVzcy9yZWFsdGVrL3J0dzg4L21haW4uYwpAQCAtMTUsMTMg
+KzE1LDE4IEBACiAKIHN0YXRpYyBib29sIHJ0d19md19zdXBwb3J0X2xwczsKIHVuc2lnbmVkIGlu
+dCBydHdfZGVidWdfbWFzazsKK2Jvb2wgcnR3X2Rpc2FibGVfbXNpOworCiBFWFBPUlRfU1lNQk9M
+KHJ0d19kZWJ1Z19tYXNrKTsKK0VYUE9SVF9TWU1CT0wocnR3X2Rpc2FibGVfbXNpKTsKIAogbW9k
+dWxlX3BhcmFtX25hbWVkKHN1cHBvcnRfbHBzLCBydHdfZndfc3VwcG9ydF9scHMsIGJvb2wsIDA2
+NDQpOwogbW9kdWxlX3BhcmFtX25hbWVkKGRlYnVnX21hc2ssIHJ0d19kZWJ1Z19tYXNrLCB1aW50
+LCAwNjQ0KTsKK21vZHVsZV9wYXJhbV9uYW1lZChkaXNhYmxlX21zaSwgcnR3X2Rpc2FibGVfbXNp
+LCBib29sLCAwNjQ0KTsKIAogTU9EVUxFX1BBUk1fREVTQyhzdXBwb3J0X2xwcywgIlNldCBZIHRv
+IGVuYWJsZSBMZWlzdXJlIFBvd2VyIFNhdmUgc3VwcG9ydCwgdG8gdHVybiByYWRpbyBvZmYgYmV0
+d2VlbiBiZWFjb25zIik7CiBNT0RVTEVfUEFSTV9ERVNDKGRlYnVnX21hc2ssICJEZWJ1Z2dpbmcg
+bWFzayIpOworTU9EVUxFX1BBUk1fREVTQyhkaXNhYmxlX21zaSwgIlNldCBZIHRvIGRpc2FibGUg
+TVNJIGludGVycnVwdCBzdXBwb3J0Iik7CiAKIHN0YXRpYyBzdHJ1Y3QgaWVlZTgwMjExX2NoYW5u
+ZWwgcnR3X2NoYW5uZWx0YWJsZV8yZ1tdID0gewogCXsuY2VudGVyX2ZyZXEgPSAyNDEyLCAuaHdf
+dmFsdWUgPSAxLH0sCmRpZmYgLS1naXQgYS9kcml2ZXJzL25ldC93aXJlbGVzcy9yZWFsdGVrL3J0
+dzg4L21haW4uaCBiL2RyaXZlcnMvbmV0L3dpcmVsZXNzL3JlYWx0ZWsvcnR3ODgvbWFpbi5oCmlu
+ZGV4IDkyNzMwNTA3Li5jYTYwM2JhIDEwMDY0NAotLS0gYS9kcml2ZXJzL25ldC93aXJlbGVzcy9y
+ZWFsdGVrL3J0dzg4L21haW4uaAorKysgYi9kcml2ZXJzL25ldC93aXJlbGVzcy9yZWFsdGVrL3J0
+dzg4L21haW4uaApAQCAtMjgsNiArMjgsNyBAQAogI2RlZmluZSBIV19GRUFUVVJFX0xFTgkJCTEz
+CiAKIGV4dGVybiB1bnNpZ25lZCBpbnQgcnR3X2RlYnVnX21hc2s7CitleHRlcm4gYm9vbCBydHdf
+ZGlzYWJsZV9tc2k7CiBleHRlcm4gY29uc3Qgc3RydWN0IGllZWU4MDIxMV9vcHMgcnR3X29wczsK
+IGV4dGVybiBzdHJ1Y3QgcnR3X2NoaXBfaW5mbyBydHc4ODIyYl9od19zcGVjOwogZXh0ZXJuIHN0
+cnVjdCBydHdfY2hpcF9pbmZvIHJ0dzg4MjJjX2h3X3NwZWM7CmRpZmYgLS1naXQgYS9kcml2ZXJz
+L25ldC93aXJlbGVzcy9yZWFsdGVrL3J0dzg4L3BjaS5jIGIvZHJpdmVycy9uZXQvd2lyZWxlc3Mv
+cmVhbHRlay9ydHc4OC9wY2kuYwppbmRleCAzNTM4NzFjLi44MTdiNGFiIDEwMDY0NAotLS0gYS9k
+cml2ZXJzL25ldC93aXJlbGVzcy9yZWFsdGVrL3J0dzg4L3BjaS5jCisrKyBiL2RyaXZlcnMvbmV0
+L3dpcmVsZXNzL3JlYWx0ZWsvcnR3ODgvcGNpLmMKQEAgLTg2MSw2ICs4NjEsNyBAQCBzdGF0aWMg
+aXJxcmV0dXJuX3QgcnR3X3BjaV9pbnRlcnJ1cHRfaGFuZGxlcihpbnQgaXJxLCB2b2lkICpkZXYp
+CiAJaWYgKCFydHdwY2ktPmlycV9lbmFibGVkKQogCQlnb3RvIG91dDsKIAorCXJ0d19wY2lfZGlz
+YWJsZV9pbnRlcnJ1cHQocnR3ZGV2LCBydHdwY2kpOwogCXJ0d19wY2lfaXJxX3JlY29nbml6ZWQo
+cnR3ZGV2LCBydHdwY2ksIGlycV9zdGF0dXMpOwogCiAJaWYgKGlycV9zdGF0dXNbMF0gJiBJTVJf
+TUdOVERPSykKQEAgLTg4MCw2ICs4ODEsOCBAQCBzdGF0aWMgaXJxcmV0dXJuX3QgcnR3X3BjaV9p
+bnRlcnJ1cHRfaGFuZGxlcihpbnQgaXJxLCB2b2lkICpkZXYpCiAJaWYgKGlycV9zdGF0dXNbMF0g
+JiBJTVJfUk9LKQogCQlydHdfcGNpX3J4X2lzcihydHdkZXYsIHJ0d3BjaSwgUlRXX1JYX1FVRVVF
+X01QRFUpOwogCisJcnR3X3BjaV9lbmFibGVfaW50ZXJydXB0KHJ0d2RldiwgcnR3cGNpKTsKKwog
+b3V0OgogCXNwaW5fdW5sb2NrKCZydHdwY2ktPmlycV9sb2NrKTsKIApAQCAtMTA5MCw2ICsxMDkz
+LDQ1IEBAIHN0YXRpYyBzdHJ1Y3QgcnR3X2hjaV9vcHMgcnR3X3BjaV9vcHMgPSB7CiAJLndyaXRl
+X2RhdGFfaDJjID0gcnR3X3BjaV93cml0ZV9kYXRhX2gyYywKIH07CiAKK3N0YXRpYyBpbnQgcnR3
+X3BjaV9yZXF1ZXN0X2lycShzdHJ1Y3QgcnR3X2RldiAqcnR3ZGV2LCBzdHJ1Y3QgcGNpX2RldiAq
+cGRldikKK3sKKwlzdHJ1Y3QgcnR3X3BjaSAqcnR3cGNpID0gKHN0cnVjdCBydHdfcGNpICopcnR3
+ZGV2LT5wcml2OworCWludCByZXQ7CisKKwlpZiAoIXJ0d19kaXNhYmxlX21zaSkgeworCQlyZXQg
+PSBwY2lfZW5hYmxlX21zaShwZGV2KTsKKwkJaWYgKHJldCkgeworCQkJcnR3X3dhcm4ocnR3ZGV2
+LCAiZmFpbGVkIHRvIGVuYWJsZSBtc2ksIHVzaW5nIGxlZ2FjeSBpcnFcbiIpOworCQl9IGVsc2Ug
+eworCQkJcnR3X3dhcm4ocnR3ZGV2LCAicGNpIG1zaSBlbmFibGVkXG4iKTsKKwkJCXJ0d3BjaS0+
+bXNpX2VuYWJsZWQgPSB0cnVlOworCQl9CisJfQorCisJcmV0ID0gcmVxdWVzdF9pcnEocGRldi0+
+aXJxLCAmcnR3X3BjaV9pbnRlcnJ1cHRfaGFuZGxlciwgSVJRRl9TSEFSRUQsCisJCQkgIEtCVUlM
+RF9NT0ROQU1FLCBydHdkZXYpOworCWlmIChyZXQpIHsKKwkJcnR3X2VycihydHdkZXYsICJmYWls
+ZWQgdG8gcmVxdWVzdCBpcnFcbiIpOworCQlpZiAocnR3cGNpLT5tc2lfZW5hYmxlZCkgeworCQkJ
+cGNpX2Rpc2FibGVfbXNpKHBkZXYpOworCQkJcnR3cGNpLT5tc2lfZW5hYmxlZCA9IGZhbHNlOwor
+CQl9CisJfQorCisJcmV0dXJuIHJldDsKK30KKworc3RhdGljIHZvaWQgcnR3X3BjaV9mcmVlX2ly
+cShzdHJ1Y3QgcnR3X2RldiAqcnR3ZGV2LCBzdHJ1Y3QgcGNpX2RldiAqcGRldikKK3sKKwlzdHJ1
+Y3QgcnR3X3BjaSAqcnR3cGNpID0gKHN0cnVjdCBydHdfcGNpICopcnR3ZGV2LT5wcml2OworCisJ
+ZnJlZV9pcnEocGRldi0+aXJxLCBydHdkZXYpOworCWlmIChydHdwY2ktPm1zaV9lbmFibGVkKSB7
+CisJCXBjaV9kaXNhYmxlX21zaShwZGV2KTsKKwkJcnR3cGNpLT5tc2lfZW5hYmxlZCA9IGZhbHNl
+OworCX0KK30KKwogc3RhdGljIGludCBydHdfcGNpX3Byb2JlKHN0cnVjdCBwY2lfZGV2ICpwZGV2
+LAogCQkJIGNvbnN0IHN0cnVjdCBwY2lfZGV2aWNlX2lkICppZCkKIHsKQEAgLTExNDQsOCArMTE4
+Niw3IEBAIHN0YXRpYyBpbnQgcnR3X3BjaV9wcm9iZShzdHJ1Y3QgcGNpX2RldiAqcGRldiwKIAkJ
+Z290byBlcnJfZGVzdHJveV9wY2k7CiAJfQogCi0JcmV0ID0gcmVxdWVzdF9pcnEocGRldi0+aXJx
+LCAmcnR3X3BjaV9pbnRlcnJ1cHRfaGFuZGxlciwKLQkJCSAgSVJRRl9TSEFSRUQsIEtCVUlMRF9N
+T0ROQU1FLCBydHdkZXYpOworCXJldCA9IHJ0d19wY2lfcmVxdWVzdF9pcnEocnR3ZGV2LCBwZGV2
+KTsKIAlpZiAocmV0KSB7CiAJCWllZWU4MDIxMV91bnJlZ2lzdGVyX2h3KGh3KTsKIAkJZ290byBl
+cnJfZGVzdHJveV9wY2k7CkBAIC0xMTg0LDcgKzEyMjUsNyBAQCBzdGF0aWMgdm9pZCBydHdfcGNp
+X3JlbW92ZShzdHJ1Y3QgcGNpX2RldiAqcGRldikKIAlydHdfcGNpX2Rpc2FibGVfaW50ZXJydXB0
+KHJ0d2RldiwgcnR3cGNpKTsKIAlydHdfcGNpX2Rlc3Ryb3kocnR3ZGV2LCBwZGV2KTsKIAlydHdf
+cGNpX2RlY2xhaW0ocnR3ZGV2LCBwZGV2KTsKLQlmcmVlX2lycShydHdwY2ktPnBkZXYtPmlycSwg
+cnR3ZGV2KTsKKwlydHdfcGNpX2ZyZWVfaXJxKHJ0d2RldiwgcGRldik7CiAJcnR3X2NvcmVfZGVp
+bml0KHJ0d2Rldik7CiAJaWVlZTgwMjExX2ZyZWVfaHcoaHcpOwogfQpkaWZmIC0tZ2l0IGEvZHJp
+dmVycy9uZXQvd2lyZWxlc3MvcmVhbHRlay9ydHc4OC9wY2kuaCBiL2RyaXZlcnMvbmV0L3dpcmVs
+ZXNzL3JlYWx0ZWsvcnR3ODgvcGNpLmgKaW5kZXggODc4MjRhNC4uYThlMzY5YyAxMDA2NDQKLS0t
+IGEvZHJpdmVycy9uZXQvd2lyZWxlc3MvcmVhbHRlay9ydHc4OC9wY2kuaAorKysgYi9kcml2ZXJz
+L25ldC93aXJlbGVzcy9yZWFsdGVrL3J0dzg4L3BjaS5oCkBAIC0xODYsNiArMTg2LDcgQEAgc3Ry
+dWN0IHJ0d19wY2kgewogCXNwaW5sb2NrX3QgaXJxX2xvY2s7CiAJdTMyIGlycV9tYXNrWzRdOwog
+CWJvb2wgaXJxX2VuYWJsZWQ7CisJYm9vbCBtc2lfZW5hYmxlZDsKIAogCXUxNiByeF90YWc7CiAJ
+c3RydWN0IHJ0d19wY2lfdHhfcmluZyB0eF9yaW5nc1tSVEtfTUFYX1RYX1FVRVVFX05VTV07Ci0t
+IAoyLjcuNAoK
+
+--_002_F7CD281DE3E379468C6D07993EA72F84D1864503RTITMBSVM04real_--
