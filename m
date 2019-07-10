@@ -2,83 +2,86 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 67DFE64022
-	for <lists+linux-wireless@lfdr.de>; Wed, 10 Jul 2019 06:38:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5446B64053
+	for <lists+linux-wireless@lfdr.de>; Wed, 10 Jul 2019 07:05:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726015AbfGJEio (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 10 Jul 2019 00:38:44 -0400
-Received: from mail-qt1-f172.google.com ([209.85.160.172]:46664 "EHLO
-        mail-qt1-f172.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725791AbfGJEio (ORCPT
+        id S1726079AbfGJFEf (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 10 Jul 2019 01:04:35 -0400
+Received: from smtprelay0012.hostedemail.com ([216.40.44.12]:43575 "EHLO
+        smtprelay.hostedemail.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1725791AbfGJFEf (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 10 Jul 2019 00:38:44 -0400
-Received: by mail-qt1-f172.google.com with SMTP id h21so1013364qtn.13
-        for <linux-wireless@vger.kernel.org>; Tue, 09 Jul 2019 21:38:43 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:from:date:message-id:subject:to:cc;
-        bh=+YAq0tX5cHYmhfL+qW+NNxA1y8Kq//o38Nx++NN4DN4=;
-        b=OeZwZGDFv4ZGPLbNy6Lyh92eHDa+6qpWT0scrgB7YmFWVEtI+khB9krJ2zDqz5zZ7z
-         Tpq6PEmMOWTtyGGnPCpqEbrxyXcMvJtMLAQGJz2UrMgx4yHZO1IvZgxi6mfLgrLWp/bD
-         iVHoKP5LsVblp0D8toH8Bhjmu0cVaMm8DAdCATY6WyJL2vU2G6zAN4wItGmIG3d/MsY+
-         t132hBAL6SfR2+WjuKfwJHqrSk1T7//bo5rRwRWInQxBHXeaR12pBN2SXyO+CfcrULqb
-         zhKFKv5KdeU7r6Qe9/0FJRFYL/Kf+kGjUcvOtenZ5dzUxOae0WOt6diCr3datH6jyFLf
-         y5vA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:from:date:message-id:subject:to:cc;
-        bh=+YAq0tX5cHYmhfL+qW+NNxA1y8Kq//o38Nx++NN4DN4=;
-        b=W4a7QqNysUq6xs7Dg3XvdC1GJxq0VWLg7xIvmdlvekvAVDnCs+xqpkgFCaaMU3QqFw
-         Nt+YmQntdb8xPBqz3KBsD9Sr+IiDKFFrfBuO4UGit7ZOHEtqLCsB+YS9dDmDXpqtXQFv
-         aSu9e6Rh8INLkKjdQrtcKqx3JcqbZj0wd4bkQykENIyn//+FW0W+B9qnIGeFQBL6gNIf
-         HTi62/Exr3qbleyKtwqxBAGg5dm9OvkghpSYTSq3dfOKiQCjxH0H6jYqOrBDjRwSSpkD
-         nlDuJ7Gk09kWNl7plR6Ty8S7ShICNeVN+2HssSs7FhSI6PS447IQrXobdfWqfdwtJFyV
-         h5eQ==
-X-Gm-Message-State: APjAAAXbPXOpmxpEnpWsOYx89eSHQdqgGXuZCo1wepqUDJA68N5WYirw
-        g0luKmWTsYfTJ4hde3pSqwcTH579QbJtOvRvK7LXoA==
-X-Google-Smtp-Source: APXvYqxI+wkG063ZoUVFxshhvSF0vuAdLiyPuy0DQXSjdrOoX+l111cTUoQ0dehVTGWa6E/p9+vxiqjuWD0J/WUGZ8c=
-X-Received: by 2002:a0c:fad2:: with SMTP id p18mr18499443qvo.154.1562733523172;
- Tue, 09 Jul 2019 21:38:43 -0700 (PDT)
-MIME-Version: 1.0
-From:   =?UTF-8?B?SsOhbiBWZXNlbMO9?= <jano.vesely@gmail.com>
-Date:   Wed, 10 Jul 2019 00:38:32 -0400
-Message-ID: <CA+K+NcRWLeE3-vah=urveMVxcgXYO0yFHYD=WNeuX_TdZ9+8-A@mail.gmail.com>
-Subject: [5.2 regression] rtwpci + amd iommu
-To:     linux-wireless <linux-wireless@vger.kernel.org>
-Cc:     yhchuang@realtek.com
-Content-Type: text/plain; charset="UTF-8"
+        Wed, 10 Jul 2019 01:04:35 -0400
+Received: from filter.hostedemail.com (clb03-v110.bra.tucows.net [216.40.38.60])
+        by smtprelay07.hostedemail.com (Postfix) with ESMTP id 2D69B181D3403;
+        Wed, 10 Jul 2019 05:04:33 +0000 (UTC)
+X-Session-Marker: 6A6F6540706572636865732E636F6D
+X-Spam-Summary: 2,0,0,,d41d8cd98f00b204,joe@perches.com,:::::::::::::::::::::::::::::::::::::::,RULES_HIT:41:355:379:541:973:982:988:989:1260:1345:1437:1534:1541:1711:1730:1747:1777:1792:1801:2198:2199:2393:2559:2562:2731:3138:3139:3140:3141:3142:3352:3865:3866:3867:3868:4250:4605:5007:6261:6737:10004:10848:11026:11658:11914:12043:12048:12297:12679:12895:13069:13161:13229:13311:13357:14096:14181:14384:14394:14581:14721:21080:21220:21451:21627:30054,0,RBL:23.242.196.136:@perches.com:.lbl8.mailshell.net-62.8.0.180 64.201.201.201,CacheIP:none,Bayesian:0.5,0.5,0.5,Netcheck:none,DomainCache:0,MSF:not bulk,SPF:fn,MSBL:0,DNSBL:neutral,Custom_rules:0:0:0,LFtime:26,LUA_SUMMARY:none
+X-HE-Tag: help91_a3a1c1ec484c
+X-Filterd-Recvd-Size: 2833
+Received: from joe-laptop.perches.com (cpe-23-242-196-136.socal.res.rr.com [23.242.196.136])
+        (Authenticated sender: joe@perches.com)
+        by omf06.hostedemail.com (Postfix) with ESMTPA;
+        Wed, 10 Jul 2019 05:04:30 +0000 (UTC)
+From:   Joe Perches <joe@perches.com>
+To:     Andrew Morton <akpm@linux-foundation.org>,
+        Patrick Venture <venture@google.com>,
+        Nancy Yuen <yuenn@google.com>,
+        Benjamin Fair <benjaminfair@google.com>,
+        Andrew Jeffery <andrew@aj.id.au>, openbmc@lists.ozlabs.org,
+        linux-kernel@vger.kernel.org, linux-aspeed@lists.ozlabs.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-amlogic@lists.infradead.org, netdev@vger.kernel.org,
+        linux-mediatek@lists.infradead.org,
+        linux-stm32@st-md-mailman.stormreply.com,
+        linux-wireless@vger.kernel.org, linux-media@vger.kernel.org
+Cc:     dri-devel@lists.freedesktop.org, linux-iio@vger.kernel.org,
+        linux-mmc@vger.kernel.org, devel@driverdev.osuosl.org,
+        alsa-devel@alsa-project.org
+Subject: [PATCH 00/12] treewide: Fix GENMASK misuses
+Date:   Tue,  9 Jul 2019 22:04:13 -0700
+Message-Id: <cover.1562734889.git.joe@perches.com>
+X-Mailer: git-send-email 2.15.0
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi,
+These GENMASK uses are inverted argument order and the
+actual masks produced are incorrect.  Fix them.
 
-after updating to 5.2 the wi-fi driver stopped working when the iommu
-is enabled.
-It fails to list the available wi-fi networks or connect to a known one.
-booting with amd_iommu=off works around the problem.
-The staging version in 5.1 and older worked OK with the iommu enabled
+Add checkpatch tests to help avoid more misuses too.
 
-The device is:
-04:00.0 Network controller: Realtek Semiconductor Co., Ltd. RTL8822BE
-802.11a/b/g/n/ac WiFi adapter
+Joe Perches (12):
+  checkpatch: Add GENMASK tests
+  clocksource/drivers/npcm: Fix misuse of GENMASK macro
+  drm: aspeed_gfx: Fix misuse of GENMASK macro
+  iio: adc: max9611: Fix misuse of GENMASK macro
+  irqchip/gic-v3-its: Fix misuse of GENMASK macro
+  mmc: meson-mx-sdio: Fix misuse of GENMASK macro
+  net: ethernet: mediatek: Fix misuses of GENMASK macro
+  net: stmmac: Fix misuses of GENMASK macro
+  rtw88: Fix misuse of GENMASK macro
+  phy: amlogic: G12A: Fix misuse of GENMASK macro
+  staging: media: cedrus: Fix misuse of GENMASK macro
+  ASoC: wcd9335: Fix misuse of GENMASK macro
 
-I do see an IOMMU error in dmesg, but the originating device does not
-match the nics pci location:
-Jul 08 15:03:14 host kernel: rtw_pci 0000:04:00.0: start vif
-xx:xx:xx:xx:xx:xx on port 0
-Jul 08 15:03:14 host kernel: iommu ivhd0: AMD-Vi: Event logged
-[INVALID_DEVICE_REQUEST device=00:00.1 pasid=0x00000
-address=0xfffffffdf8140200 flags=0x0a00]
-Jul 08 15:03:14 host kernel: rtw_pci 0000:04:00.0: stop vif
-xx:xx:xx:xx:xx:xx on port 0
-Jul 08 15:03:14 host NetworkManager[790]: <info>  [1562612594.8992]
-device (wlp4s0): set-hw-addr: set MAC address to yy:yy:yy:yy:yy:yy
-(scanning)
-Jul 08 15:03:15 host kernel: rtw_pci 0000:04:00.0: start vif
-yy:yy:yy:yy:yy:yy on port 0
+ drivers/clocksource/timer-npcm7xx.c               |  2 +-
+ drivers/gpu/drm/aspeed/aspeed_gfx.h               |  2 +-
+ drivers/iio/adc/max9611.c                         |  2 +-
+ drivers/irqchip/irq-gic-v3-its.c                  |  2 +-
+ drivers/mmc/host/meson-mx-sdio.c                  |  2 +-
+ drivers/net/ethernet/mediatek/mtk_eth_soc.h       |  2 +-
+ drivers/net/ethernet/mediatek/mtk_sgmii.c         |  2 +-
+ drivers/net/ethernet/stmicro/stmmac/descs.h       |  2 +-
+ drivers/net/ethernet/stmicro/stmmac/dwmac-sun8i.c |  4 ++--
+ drivers/net/wireless/realtek/rtw88/rtw8822b.c     |  2 +-
+ drivers/phy/amlogic/phy-meson-g12a-usb2.c         |  2 +-
+ drivers/staging/media/sunxi/cedrus/cedrus_regs.h  |  2 +-
+ scripts/checkpatch.pl                             | 15 +++++++++++++++
+ sound/soc/codecs/wcd-clsh-v2.c                    |  2 +-
+ 14 files changed, 29 insertions(+), 14 deletions(-)
 
-let me know if I should provide any further info.
-thanks,
-Jan
+-- 
+2.15.0
+
