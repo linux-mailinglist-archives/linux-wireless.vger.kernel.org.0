@@ -2,77 +2,83 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 5D5816534A
-	for <lists+linux-wireless@lfdr.de>; Thu, 11 Jul 2019 10:46:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AE76265375
+	for <lists+linux-wireless@lfdr.de>; Thu, 11 Jul 2019 11:05:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728088AbfGKIqj (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 11 Jul 2019 04:46:39 -0400
-Received: from rnd-relay.smtp.broadcom.com ([192.19.229.170]:41224 "EHLO
+        id S1728167AbfGKJFW (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 11 Jul 2019 05:05:22 -0400
+Received: from rnd-relay.smtp.broadcom.com ([192.19.229.170]:59742 "EHLO
         rnd-relay.smtp.broadcom.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1728028AbfGKIqj (ORCPT
+        by vger.kernel.org with ESMTP id S1725963AbfGKJFW (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 11 Jul 2019 04:46:39 -0400
+        Thu, 11 Jul 2019 05:05:22 -0400
 Received: from mail-irv-17.broadcom.com (mail-irv-17.lvn.broadcom.net [10.75.224.233])
-        by rnd-relay.smtp.broadcom.com (Postfix) with ESMTP id 67A9030C04B;
-        Thu, 11 Jul 2019 01:46:38 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.10.3 rnd-relay.smtp.broadcom.com 67A9030C04B
+        by rnd-relay.smtp.broadcom.com (Postfix) with ESMTP id 25D6130C002;
+        Thu, 11 Jul 2019 02:05:21 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.10.3 rnd-relay.smtp.broadcom.com 25D6130C002
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=broadcom.com;
-        s=dkimrelay; t=1562834798;
-        bh=VMOoCMRf3w8TlT+wpeyhL0UDeXsWKaU7XDiG0Te/6yM=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=hsiZGvQqo9rc1lIWsFopFGgdXQ/S2HCi59EbvTP4UW2JSwPS+mIxiQDFSnZyTsAL1
-         EgHbD1M4bZCkpUB0jc2YFk3SOSjG4OYX8lfQHMaCv7FAbVuHD6sXTe3vlOznt7zoog
-         PD+0vH/CEBwDWgJOeF/NoVPcaX6hXqyIpFJ8LKNI=
+        s=dkimrelay; t=1562835921;
+        bh=g/LMgTPx7L1+ZSVVf/Oczyafq1NFh+aHznOCzuuukKI=;
+        h=From:To:Cc:Subject:Date:From;
+        b=DuWF8zM4IIHXvDvsbHhl6BybBzpHA+B7YLV1NLiHUVon4OblNrajkhu4waQlhLKQe
+         +mD2saXtpvCejWLq+lqYPevJL2HevUkSDS4yt5y0exJ6nmu1ZeVUmg8MWD4rw5gBVz
+         eqpsk+EOBNsIkUhHgJ/qThf0syOHIAFyqe2jjR80=
 Received: from bld-bun-01.bun.broadcom.com (bld-bun-01.bun.broadcom.com [10.176.128.83])
-        by mail-irv-17.broadcom.com (Postfix) with ESMTP id 9C66660CB1;
-        Thu, 11 Jul 2019 01:46:38 -0700 (PDT)
+        by mail-irv-17.broadcom.com (Postfix) with ESMTP id 1FD5760D22;
+        Thu, 11 Jul 2019 02:05:21 -0700 (PDT)
 Received: by bld-bun-01.bun.broadcom.com (Postfix, from userid 25152)
-        id 143BCB02A3D; Thu, 11 Jul 2019 10:46:35 +0200 (CEST)
+        id BAAC7B03087; Thu, 11 Jul 2019 11:05:19 +0200 (CEST)
 From:   Arend van Spriel <arend.vanspriel@broadcom.com>
 To:     Kalle Valo <kvalo@codeaurora.org>
 Cc:     linux-wireless@vger.kernel.org,
         Arend van Spriel <arend.vanspriel@broadcom.com>
-Subject: [PATCH 3/3] brcmfmac: allow 160MHz in custom regulatory rules
-Date:   Thu, 11 Jul 2019 10:45:32 +0200
-Message-Id: <1562834732-31508-4-git-send-email-arend.vanspriel@broadcom.com>
+Subject: [PATCH 0/7] brcmfmac: rework probe/attach sequence
+Date:   Thu, 11 Jul 2019 11:05:05 +0200
+Message-Id: <1562835912-1404-1-git-send-email-arend.vanspriel@broadcom.com>
 X-Mailer: git-send-email 1.9.1
-In-Reply-To: <1562834732-31508-1-git-send-email-arend.vanspriel@broadcom.com>
-References: <1562834732-31508-1-git-send-email-arend.vanspriel@broadcom.com>
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-The driver has custom regulatory rules which had maximum bandwidth
-for 5GHz channels set to 80MHz. As a consequence the driver can
-not use 160MHz in AP mode even when the device supports it. So
-relax the rules allowing 160MHz. After wiphy_register() the channel
-flags are updated according what the device actually supports.
+The brcmfmac driver spews some error message upon unloading and Stefan
+Wahren was wondering whether it could be cleaned up. Related to this
+was a recent fix for NULL pointer deref. That fix introduced a construct
+that added to the itch to rework the probe sequence. So this series
+reverts commit 5cdb0ef6144f ("brcmfmac: fix NULL pointer derefence during
+USB disconnect").
 
-Reviewed-by: Hante Meuleman <hante.meuleman@broadcom.com>
-Reviewed-by: Pieter-Paul Giesberts <pieter-paul.giesberts@broadcom.com>
-Reviewed-by: Franky Lin <franky.lin@broadcom.com>
-Signed-off-by: Arend van Spriel <arend.vanspriel@broadcom.com>
----
- drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+The changes in this series are:
+ * reorder brcmf_detach() code.
+ * avoid firmware interaction when bus is down.
+ * remove strlcpy() before issueing firmware version iovar.
 
-diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
-index 3f72dc1..b692689 100644
---- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
-+++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
-@@ -189,9 +189,9 @@ static bool check_vif_up(struct brcmf_cfg80211_vif *vif)
- 		 */
- 		REG_RULE(2484-10, 2484+10, 20, 6, 20, 0),
- 		/* IEEE 802.11a, channel 36..64 */
--		REG_RULE(5150-10, 5350+10, 80, 6, 20, 0),
-+		REG_RULE(5150-10, 5350+10, 160, 6, 20, 0),
- 		/* IEEE 802.11a, channel 100..165 */
--		REG_RULE(5470-10, 5850+10, 80, 6, 20, 0), }
-+		REG_RULE(5470-10, 5850+10, 160, 6, 20, 0), }
- };
- 
- /* Note: brcmf_cipher_suites is an array of int defining which cipher suites
--- 
+This series applies to the master branch of the wireless-drivers-next
+repository.
+
+Arend van Spriel (7):
+  Revert "brcmfmac: fix NULL pointer derefence during USB disconnect"
+  brcmfmac: change the order of things in brcmf_detach()
+  brcmfmac: avoid firmware command in brcmf_netdev_open() when bus is
+    down
+  brcmfmac: clear events in brcmf_fweh_detach() will always fail
+  brcmfmac: avoid firmware commands when bus is down
+  brcmfmac: simply remove flowring if bus is down
+  brcmfmac: remove unnecessary strlcpy() upon obtaining "ver" iovar
+
+ .../wireless/broadcom/brcm80211/brcmfmac/bcdc.c    | 11 ++------
+ .../wireless/broadcom/brcm80211/brcmfmac/bcdc.h    |  6 ++---
+ .../broadcom/brcm80211/brcmfmac/cfg80211.c         | 23 +++++++++--------
+ .../wireless/broadcom/brcm80211/brcmfmac/common.c  |  1 -
+ .../wireless/broadcom/brcm80211/brcmfmac/core.c    | 30 +++++++++++-----------
+ .../wireless/broadcom/brcm80211/brcmfmac/fweh.c    |  9 -------
+ .../broadcom/brcm80211/brcmfmac/fwsignal.c         | 16 +++---------
+ .../broadcom/brcm80211/brcmfmac/fwsignal.h         |  3 +--
+ .../wireless/broadcom/brcm80211/brcmfmac/msgbuf.c  |  7 +++++
+ .../wireless/broadcom/brcm80211/brcmfmac/proto.c   | 10 ++------
+ .../wireless/broadcom/brcm80211/brcmfmac/proto.h   |  3 +--
+ 11 files changed, 47 insertions(+), 72 deletions(-)
+
+--
 1.9.1
 
