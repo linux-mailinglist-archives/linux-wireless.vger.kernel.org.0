@@ -2,98 +2,66 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 12A28666E8
-	for <lists+linux-wireless@lfdr.de>; Fri, 12 Jul 2019 08:20:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2F4F2666E5
+	for <lists+linux-wireless@lfdr.de>; Fri, 12 Jul 2019 08:20:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726061AbfGLGUs (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 12 Jul 2019 02:20:48 -0400
-Received: from nbd.name ([46.4.11.11]:33144 "EHLO nbd.name"
+        id S1726055AbfGLGUr (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 12 Jul 2019 02:20:47 -0400
+Received: from nbd.name ([46.4.11.11]:33146 "EHLO nbd.name"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725562AbfGLGUr (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        id S1726033AbfGLGUr (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
         Fri, 12 Jul 2019 02:20:47 -0400
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name;
-         s=20160729; h=Message-Id:Date:Subject:To:From:Sender:Reply-To:Cc:
-        MIME-Version:Content-Type:Content-Transfer-Encoding:Content-ID:
+         s=20160729; h=References:In-Reply-To:Message-Id:Date:Subject:To:From:Sender:
+        Reply-To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:Content-ID:
         Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-        :Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
-        List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=RZg4Y/n6fMQcyzT3pUOphV3aEhZTEHpnRQe5q0QKWCs=; b=gB/sGO/KQudpG1Gflp4e6oBTRV
-        xgGHe5OSjNUVuYTwghakriT+opwUbKLhVZtHXU7R4mYi+ouztZbcThCTQ6BZJxEsLmFO3kHwIKZhU
-        ir5wspzpAMfiSEkthZYsf7phJ/rJ94Vi1Xxd84zjguLJI0J/xLzQc59bcXqdk82NIxBo=;
+        :Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+        List-Post:List-Owner:List-Archive;
+        bh=Sbz8z6SEObGtGR3GqBk5quoR9BE3oDwNEqamX6j0zMs=; b=uhfEkCB3fVC6CouR2tVLqh//pt
+        NLGKlv2JAdOxRiatxFSxf5XRC8psbqjQqIkB0AdANb1nupy6ZWuNzH52ORIOY7vTYw9bVn9JzAlz8
+        7sxjGPovCozwtGQsoUXgEDUDrinN5MJUT5Q+FDS5GIY4lcWy07jXAQOJVcqsXgtTcoe4=;
 Received: from p54ae9abd.dip0.t-ipconnect.de ([84.174.154.189] helo=maeck-3.local)
         by ds12 with esmtpsa (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
         (Exim 4.89)
         (envelope-from <nbd@nbd.name>)
-        id 1hlovG-0003rb-Av
+        id 1hlovG-0003rc-BC
         for linux-wireless@vger.kernel.org; Fri, 12 Jul 2019 08:20:46 +0200
 Received: by maeck-3.local (Postfix, from userid 501)
-        id A161E61C52AB; Fri, 12 Jul 2019 08:20:45 +0200 (CEST)
+        id A1AEF61C52AC; Fri, 12 Jul 2019 08:20:45 +0200 (CEST)
 From:   Felix Fietkau <nbd@nbd.name>
 To:     linux-wireless@vger.kernel.org
-Subject: [PATCH 1/4] mt76: mt7615: fix using VHT STBC rates
-Date:   Fri, 12 Jul 2019 08:20:42 +0200
-Message-Id: <20190712062045.85109-1-nbd@nbd.name>
+Subject: [PATCH 2/4] mt76: mt7615: fix PS buffering of action frames
+Date:   Fri, 12 Jul 2019 08:20:43 +0200
+Message-Id: <20190712062045.85109-2-nbd@nbd.name>
 X-Mailer: git-send-email 2.17.0
+In-Reply-To: <20190712062045.85109-1-nbd@nbd.name>
+References: <20190712062045.85109-1-nbd@nbd.name>
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-The hardware expects MT_TX_RATE_NSS to be filled with the number of
-space/time streams. For non-STBC rates, this is equal to nss.
-For 1-stream STBC, this needs to be set to 2.
-This is relevant for VHT rates only, on HT, the value is derived from MCS
-internally.
+Bufferable management frames need to be put in the data queue, otherwise
+they will not be buffered when the receiver is asleep.
 
 Signed-off-by: Felix Fietkau <nbd@nbd.name>
 ---
- .../net/wireless/mediatek/mt76/mt7615/mac.c    | 18 ++++++++++++------
- 1 file changed, 12 insertions(+), 6 deletions(-)
+ drivers/net/wireless/mediatek/mt76/mt7615/mac.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/mac.c b/drivers/net/wireless/mediatek/mt76/mt7615/mac.c
-index 5bfb4594b8ee..6c21b2df69c4 100644
+index 6c21b2df69c4..fc98dabed594 100644
 --- a/drivers/net/wireless/mediatek/mt76/mt7615/mac.c
 +++ b/drivers/net/wireless/mediatek/mt76/mt7615/mac.c
-@@ -254,7 +254,7 @@ mt7615_mac_tx_rate_val(struct mt7615_dev *dev,
- 		       bool stbc, u8 *bw)
- {
- 	u8 phy, nss, rate_idx;
--	u16 rateval;
-+	u16 rateval = 0;
+@@ -334,7 +334,7 @@ int mt7615_mac_write_txwi(struct mt7615_dev *dev, __le32 *txwi,
+ 	fc_type = (le16_to_cpu(fc) & IEEE80211_FCTL_FTYPE) >> 2;
+ 	fc_stype = (le16_to_cpu(fc) & IEEE80211_FCTL_STYPE) >> 4;
  
- 	*bw = 0;
- 
-@@ -292,12 +292,14 @@ mt7615_mac_tx_rate_val(struct mt7615_dev *dev,
- 		rate_idx = val & 0xff;
- 	}
- 
--	rateval = (FIELD_PREP(MT_TX_RATE_IDX, rate_idx) |
--		   FIELD_PREP(MT_TX_RATE_MODE, phy) |
--		   FIELD_PREP(MT_TX_RATE_NSS, nss - 1));
--
--	if (stbc && nss == 1)
-+	if (stbc && nss == 1) {
-+		nss++;
- 		rateval |= MT_TX_RATE_STBC;
-+	}
-+
-+	rateval |= (FIELD_PREP(MT_TX_RATE_IDX, rate_idx) |
-+		    FIELD_PREP(MT_TX_RATE_MODE, phy) |
-+		    FIELD_PREP(MT_TX_RATE_NSS, nss - 1));
- 
- 	return rateval;
- }
-@@ -771,6 +773,10 @@ static bool mt7615_fill_txs(struct mt7615_dev *dev, struct mt7615_sta *sta,
- 		break;
- 	case MT_PHY_TYPE_VHT:
- 		final_nss = FIELD_GET(MT_TX_RATE_NSS, final_rate);
-+
-+		if ((final_rate & MT_TX_RATE_STBC) && final_nss)
-+			final_nss--;
-+
- 		final_rate_flags |= IEEE80211_TX_RC_VHT_MCS;
- 		final_rate = (final_rate & MT_TX_RATE_IDX) | (final_nss << 4);
- 		break;
+-	if (ieee80211_is_data(fc)) {
++	if (ieee80211_is_data(fc) || ieee80211_is_bufferable_mmpdu(fc)) {
+ 		q_idx = skb_get_queue_mapping(skb);
+ 		p_fmt = MT_TX_TYPE_CT;
+ 	} else if (ieee80211_is_beacon(fc)) {
 -- 
 2.17.0
 
