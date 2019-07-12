@@ -2,64 +2,84 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 9B2A266A33
-	for <lists+linux-wireless@lfdr.de>; Fri, 12 Jul 2019 11:42:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3D45466A85
+	for <lists+linux-wireless@lfdr.de>; Fri, 12 Jul 2019 11:57:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726466AbfGLJmy (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 12 Jul 2019 05:42:54 -0400
-Received: from s3.sipsolutions.net ([144.76.43.62]:55818 "EHLO
-        sipsolutions.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726025AbfGLJmx (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 12 Jul 2019 05:42:53 -0400
-Received: by sipsolutions.net with esmtpsa (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <johannes@sipsolutions.net>)
-        id 1hls4p-00079u-VK; Fri, 12 Jul 2019 11:42:52 +0200
-Message-ID: <9a1d7a6651d3bf6c4a43c5bc8659df690c009328.camel@sipsolutions.net>
-Subject: Re: [PATCH v3 0/3] mac80211/ath11k: HE mesh support
-From:   Johannes Berg <johannes@sipsolutions.net>
-To:     Sven Eckelmann <sven@narfation.org>
-Cc:     linux-wireless@vger.kernel.org, ath11k@lists.infradead.org,
-        hostap@lists.infradead.org
-Date:   Fri, 12 Jul 2019 11:42:51 +0200
-In-Reply-To: <2019422.XptUlqRJNA@bentobox>
-References: <20190612193510.29489-1-sven@narfation.org>
-         <1610842.TRhm9evnVP@bentobox>
-         <06c7c1a2c8d0f955cb107475d17587c156fb19de.camel@sipsolutions.net>
-         <2019422.XptUlqRJNA@bentobox>
+        id S1726057AbfGLJ5N (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 12 Jul 2019 05:57:13 -0400
+Received: from mga17.intel.com ([192.55.52.151]:23447 "EHLO mga17.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725294AbfGLJ5N (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 12 Jul 2019 05:57:13 -0400
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from fmsmga004.fm.intel.com ([10.253.24.48])
+  by fmsmga107.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 12 Jul 2019 02:57:13 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.63,482,1557212400"; 
+   d="scan'208";a="189792493"
+Received: from epronina-mobl.ccr.corp.intel.com ([10.252.5.80])
+  by fmsmga004.fm.intel.com with ESMTP; 12 Jul 2019 02:57:11 -0700
+Message-ID: <ea73cd31cc634a1aec9fce8c5629c609f30d7d26.camel@intel.com>
+Subject: Re: iwl_mvm_add_new_dqa_stream_wk BUG in lib/list_debug.c:56
+From:   Luciano Coelho <luciano.coelho@intel.com>
+To:     Marc Haber <mh+netdev@zugschlus.de>, Yussuf Khalil <dev@pp3345.net>
+Cc:     linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
+        netdev@vger.kernel.org, Johannes Berg <johannes.berg@intel.com>,
+        Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
+        Intel Linux Wireless <linuxwifi@intel.com>
+Date:   Fri, 12 Jul 2019 12:57:10 +0300
+In-Reply-To: <20190607204421.GK31088@torres.zugschlus.de>
+References: <20190530081257.GA26133@torres.zugschlus.de>
+         <20190602134842.GC3249@torres.zugschlus.de>
+         <29401822-d7e9-430b-d284-706bf68acb8a@pp3345.net>
+         <20190607204421.GK31088@torres.zugschlus.de>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 Content-Type: text/plain; charset="UTF-8"
-X-Mailer: Evolution 3.28.5 (3.28.5-3.fc28) 
-Mime-Version: 1.0
+User-Agent: Evolution 3.30.5-1.1 
+MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Fri, 2019-07-12 at 11:36 +0200, Sven Eckelmann wrote:
+On Fri, 2019-06-07 at 22:44 +0200, Marc Haber wrote:
+> On Fri, Jun 07, 2019 at 10:20:56PM +0200, Yussuf Khalil wrote:
+> > CC'ing iwlwifi maintainers to get some attention for this issue.
+> > 
+> > I am experiencing the very same bug on a ThinkPad T480s running 5.1.6 with
+> > Fedora 30. A friend is seeing it on his X1 Carbon 6th Gen, too. Both have an
+> > "Intel Corporation Wireless 8265 / 8275" card according to lspci.
 > 
-> There is already a workaround for that in the hostap testcases:
+> I have an older 04:00.0 Network controller [0280]: Intel Corporation
+> Wireless 8260 [8086:24f3] (rev 3a) on a Thinkpad X260.
 > 
->     if all_cap_one:
->         # It looks like tshark parser was broken at some point for
->         # wlan.mesh.config.cap which is now (tshark 2.6.3) pointing to incorrect
->         # field (same as wlan.mesh.config.ps_protocol). This used to work with
->         # tshark 2.2.6.
->         #
->         # For now, assume the capability field ends up being the last octet of
->         # the frame.
-
-> But maybe you already spotted the problem - it requires that mesh 
-> configuration element is the last element. Which is not the case here - 
-> similar to 5GHz tests (where you have most likely a VHT cap/oper element 
-> after the meshconf_ie).
+> > Notably, in all cases I've observed it occurred right after roaming from one
+> > AP to another (though I can't guarantee this isn't a coincidence).
 > 
-> I hope that this makes more sense now.
+> I also have multiple Access Points broadcasting the same SSID in my
+> house, and yes, I experience those issues often when I move from one
+> part of the hose to another. I have, however, also experienced it in a
+> hotel when I was using the mobile hotspot offered by my mobile, so that
+> was clearly not a roaming situation.
 
-Ah, yes, it does. So I guess we need to update/fix that workaround. And
-I guess newer tshark (which you used) is fixed again, if I understand
-correctly?
+Hi,
 
-johannes
+Sorry this got under the radar for a while.  Yesterday someone created
+a bugzilla entry with the same error:
+
+https://bugzilla.kernel.org/show_bug.cgi?id=204141
+
+I'm going to file an internal bug report and then have someone look
+further into it.
+
+Any additional comments/reproductions/etc. please use that bugzilla
+entry.
+
+Thanks for reporting!
+
+--
+Cheers,
+Luca.
 
