@@ -2,88 +2,73 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 212DE66AB9
-	for <lists+linux-wireless@lfdr.de>; Fri, 12 Jul 2019 12:08:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 45CE266AD9
+	for <lists+linux-wireless@lfdr.de>; Fri, 12 Jul 2019 12:25:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726128AbfGLKI6 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 12 Jul 2019 06:08:58 -0400
-Received: from mail1.bemta23.messagelabs.com ([67.219.246.3]:36140 "EHLO
-        mail1.bemta23.messagelabs.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726002AbfGLKI6 (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 12 Jul 2019 06:08:58 -0400
-Received: from [67.219.246.101] (using TLSv1.2 with cipher DHE-RSA-AES256-GCM-SHA384 (256 bits))
-        by server-3.bemta.az-b.us-east-1.aws.symcld.net id DB/E5-10895-83C582D5; Fri, 12 Jul 2019 10:08:56 +0000
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFjrPIsWRWlGSWpSXmKPExsXi5LtOQNciRiP
-  W4Mx2QYtHl44xW7xZcYfdgclj85J6j8+b5AKYolgz85LyKxJYM76dusBWMJu94ueuHsYGxi1s
-  XYxcHEICqxklWva3QTlrGCWOn/3ADOFsAHJOtrB0MXJysAnoSPx+9IgdxBYRUJD4NekjG4jNL
-  KAi8WTyLrC4sECQxK2Fy8BsFgFVia9TF4D18gpYS/z70cAMYksIyEv8XLGJHSIuKHFy5hMWiD
-  nyEs1bZzND2BISB1+8ALOFBJQlJh15zQjRqyBxeMlv5gmM/LOQtM9C0j4LSfsCRuZVjGZJRZn
-  pGSW5iZk5uoYGBrqGhka6hrqGZpZ6iVW6SXqlxbqpicUluoZ6ieXFesWVuck5KXp5qSWbGIFh
-  m1LAuHIH49+Zb/QOMUpyMCmJ8k7mU48V4kvKT6nMSCzOiC8qzUktPsQow8GhJMH7NEojVkiwK
-  DU9tSItMwcYQzBpCQ4eJRFenWigNG9xQWJucWY6ROoUoy7H2u1LFjELseTl56VKifP6ghQJgB
-  RllObBjYDF8yVGWSlhXkYGBgYhnoLUotzMElT5V4ziHIxKwrxGIFN4MvNK4Da9AjqCCegIVT8
-  1kCNKEhFSUg1MTUtmis058Edsp0gf7z3uA6bCU9mTGyqSQs8k3b+wKWlTGtvVzuki7183rX06
-  N7Mo2dXK6IFOSCfvnjielq4TPHyyov877be+ZuWefXrRPPbcvc4R2V1f5H+Y7XRMvVvDxblu2
-  sZtU7f/fzH1Udwvh0mKP0Jm+vWpiV2fMfnhta36/HL3jV4FZRrVebw8d5hjh0F2782OGcZJR8
-  4vnbVXVSBJ5UPaxebvjrfvdqrv/FgndpqFoenDrOUrRR4avHuRHndfyKvBYr/FWpdY/8SnAvH
-  z0iwz1IoeV9uteOp1+NZW+UTJsKYpook5jyf1F6xWl/j1Lzq0J3nLvVAeVbW8KPmvHyRMVm//
-  Jf1eZIuSEktxRqKhFnNRcSIAW3QlUGIDAAA=
-X-Env-Sender: Isaac.Hermida@digi.com
-X-Msg-Ref: server-3.tower-385.messagelabs.com!1562926135!1490048!1
-X-Originating-IP: [66.77.174.16]
-X-SYMC-ESS-Client-Auth: outbound-route-from=pass
-X-StarScan-Received: 
-X-StarScan-Version: 9.43.9; banners=-,-,-
-X-VirusChecked: Checked
-Received: (qmail 24681 invoked from network); 12 Jul 2019 10:08:56 -0000
-Received: from owa.digi.com (HELO MCL-VMS-XCH01.digi.com) (66.77.174.16)
-  by server-3.tower-385.messagelabs.com with ECDHE-RSA-AES256-SHA384 encrypted SMTP; 12 Jul 2019 10:08:56 -0000
-Received: from MTK-SMS-XCH04.digi.com (10.10.8.198) by MCL-VMS-XCH01.digi.com
- (10.5.8.49) with Microsoft SMTP Server (TLS) id 14.3.439.0; Fri, 12 Jul 2019
- 05:08:55 -0500
-Received: from DOR-SMS-XCH01.digi.com (10.49.8.99) by MTK-SMS-XCH04.digi.com
- (10.10.8.198) with Microsoft SMTP Server (TLS) id 14.3.439.0; Fri, 12 Jul
- 2019 05:08:55 -0500
-Received: from log-cln-ihermida.digi.com (10.101.2.100) by
- dor-sms-xch01.digi.com (10.49.8.99) with Microsoft SMTP Server (TLS) id
- 14.3.439.0; Fri, 12 Jul 2019 12:08:53 +0200
-From:   Isaac Hermida <isaac.hermida@digi.com>
-To:     <ath10k@lists.infradead.org>
-CC:     <linux-wireless@vger.kernel.org>
-Subject: [PATCH][master/pending] ath10k: assign new interfaces type to parent type
-Date:   Fri, 12 Jul 2019 12:08:46 +0200
-Message-ID: <20190712100846.11158-1-isaac.hermida@digi.com>
-X-Mailer: git-send-email 2.21.0
+        id S1726096AbfGLKZN (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 12 Jul 2019 06:25:13 -0400
+Received: from mx1.redhat.com ([209.132.183.28]:36730 "EHLO mx1.redhat.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726050AbfGLKZM (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 12 Jul 2019 06:25:12 -0400
+Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.phx2.redhat.com [10.5.11.22])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mx1.redhat.com (Postfix) with ESMTPS id 5EFBC81F10;
+        Fri, 12 Jul 2019 10:25:12 +0000 (UTC)
+Received: from localhost (ovpn-204-58.brq.redhat.com [10.40.204.58])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id 9AB281001B2B;
+        Fri, 12 Jul 2019 10:25:11 +0000 (UTC)
+Date:   Fri, 12 Jul 2019 12:25:10 +0200
+From:   Stanislaw Gruszka <sgruszka@redhat.com>
+To:     linux-wireless@vger.kernel.org
+Cc:     Tomislav =?utf-8?Q?Po=C5=BEega?= <pozega.tomislav@gmail.com>,
+        Daniel Golle <daniel@makrotopia.org>,
+        Felix Fietkau <nbd@nbd.name>, Mathias Kresin <dev@kresin.me>
+Subject: Re: [RFC/RFT] rt2x00: do not set IEEE80211_TX_STAT_AMPDU_NO_BACK on
+ tx status
+Message-ID: <20190712102510.GA17258@redhat.com>
+References: <20190704110652.3955-1-sgruszka@redhat.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7BIT
-Content-Type:   text/plain; charset=US-ASCII
-X-Originating-IP: [10.101.2.100]
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20190704110652.3955-1-sgruszka@redhat.com>
+User-Agent: Mutt/1.11.3 (2019-02-01)
+X-Scanned-By: MIMEDefang 2.84 on 10.5.11.22
+X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16 (mx1.redhat.com [10.5.110.25]); Fri, 12 Jul 2019 10:25:12 +0000 (UTC)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-This is needed to have the AP mode working for SDIO.
-Tested with lastest master/pending code on a QCA6564 chip with firmware
-firmware-sdio-6.bin_WLAN.RMH.4.4.1-00011-QCARMSWP-2
+On Thu, Jul 04, 2019 at 01:06:52PM +0200, Stanislaw Gruszka wrote:
+> According to documentation IEEE80211_TX_STAT_AMPDU_NO_BACK is suppose
+> to be used when we do not recive BA (BlockAck). However on rt2x00 we
+> use it when remote station fail to decode one or more subframes within
+> AMPDU (some bits are not set in BlockAck bitmap). Setting the flag result
+> in sent of BAR (BlockAck Request) frame and this might result of abuse
+> of BA session, since remote station can sent BA with incorrect 
+> sequence numbers after receiving BAR. This problem is visible especially
+> when connecting two rt2800 devices.
+> 
+> Previously I observed some performance benefits when using the flag
+> when connecting with iwlwifi devices. But currently possibly due
+> to reacent changes in rt2x00 removing the flag has no effect on
+> those test cases.
+> 
+> So remove the IEEE80211_TX_STAT_AMPDU_NO_BACK.
+> 
+> Perhaps we should send BAR exlicitly on BA session start/stop
+> and when remote STA went to PowerSave mode (for AP) like mt76 does.
+> But I do not understand for what this is needed.
 
-Signed-off-by: Isaac Hermida <isaac.hermida@digi.com>
----
- drivers/net/wireless/ath/ath10k/mac.c | 3 +++
- 1 file changed, 3 insertions(+)
+This commit 
 
-diff --git a/drivers/net/wireless/ath/ath10k/mac.c b/drivers/net/wireless/ath/ath10k/mac.c
-index e43a566eef77..2c4f8da98b24 100644
---- a/drivers/net/wireless/ath/ath10k/mac.c
-+++ b/drivers/net/wireless/ath/ath10k/mac.c
-@@ -5150,6 +5150,9 @@ static int ath10k_add_interface(struct ieee80211_hw *hw,
- 	arvif->ar = ar;
- 	arvif->vif = vif;
- 
-+	// assign type of the new interface to the parent type (SDIO, PCI, etc)
-+	ar->dev_type = arvif->ar->bus_param.dev_type;
-+
- 	INIT_LIST_HEAD(&arvif->list);
- 	INIT_WORK(&arvif->ap_csa_work, ath10k_mac_vif_ap_csa_work);
- 	INIT_DELAYED_WORK(&arvif->connection_loss_work,
+https://github.com/openwrt/mt76/commit/3e447e7797d64dbf4dc1dd5553d08be0d8150d7e
+
+explained that sending BAR on stop aggregation is workaround for
+buggy clients. I can implement that on rt2x00. But I will skip
+sending BAR on remote station PS wakeup, since we do not implement
+all PS related code in rt2x00.  
+
+Stanislaw 
