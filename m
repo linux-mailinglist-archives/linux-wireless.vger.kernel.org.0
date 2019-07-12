@@ -2,172 +2,163 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 259A566B22
-	for <lists+linux-wireless@lfdr.de>; Fri, 12 Jul 2019 12:54:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3F08466B42
+	for <lists+linux-wireless@lfdr.de>; Fri, 12 Jul 2019 12:59:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726224AbfGLKyd (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 12 Jul 2019 06:54:33 -0400
-Received: from mx0b-00183b01.pphosted.com ([67.231.157.42]:31424 "EHLO
-        mx0a-00183b01.pphosted.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1726050AbfGLKyc (ORCPT
+        id S1726155AbfGLK7H (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 12 Jul 2019 06:59:07 -0400
+Received: from esa3.microchip.iphmx.com ([68.232.153.233]:10341 "EHLO
+        esa3.microchip.iphmx.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726050AbfGLK7G (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 12 Jul 2019 06:54:32 -0400
-Received: from pps.filterd (m0059811.ppops.net [127.0.0.1])
-        by mx0b-00183b01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id x6CAoNiG019426;
-        Fri, 12 Jul 2019 04:52:47 -0600
-Received: from nam02-cy1-obe.outbound.protection.outlook.com (mail-cys01nam02lp2054.outbound.protection.outlook.com [104.47.37.54])
-        by mx0b-00183b01.pphosted.com with ESMTP id 2tpjpvrv5v-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-SHA384 bits=256 verify=NOT);
-        Fri, 12 Jul 2019 04:52:47 -0600
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=dPOMHndhg9uQ6l0JkcsqVtcs8el/ZNO/hsyUkQcaJOBFEZuO7Cq2YzWmd7LuFL06LQCOw/i1LkGTIJpGac+hVXAfOlgj8Ck73NWwzHp2KPqxrKaLeg7Mcg5LYEKbUtFVvKQV7qRMwPRVPU+Ie2xQtBSp1syRd0mbBwUJEtZtnTqXl1xeqOyXz9P9b6VvhbWANKs0D7bDbViaO/5Dhfmvq6dqUKUtYGhIm6JP52irNH3UUKP0N3jhEY9RjvBDGVnj8JsVpKdDLsW3xtMrsDHqzGYb1XJCzWyKBMIlqcgOECx/J86YqX5g7/5R4MSszRASVLIc5HRRuCTYDXdS7HaaNQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
+        Fri, 12 Jul 2019 06:59:06 -0400
+Received-SPF: Pass (esa3.microchip.iphmx.com: domain of
+  Ajay.Kathat@microchip.com designates 198.175.253.82 as
+  permitted sender) identity=mailfrom;
+  client-ip=198.175.253.82; receiver=esa3.microchip.iphmx.com;
+  envelope-from="Ajay.Kathat@microchip.com";
+  x-sender="Ajay.Kathat@microchip.com"; x-conformance=spf_only;
+  x-record-type="v=spf1"; x-record-text="v=spf1 mx
+  a:ushub1.microchip.com a:smtpout.microchip.com
+  a:mx1.microchip.iphmx.com a:mx2.microchip.iphmx.com
+  include:servers.mcsv.net include:mktomail.com
+  include:spf.protection.outlook.com ~all"
+Received-SPF: None (esa3.microchip.iphmx.com: no sender
+  authenticity information available from domain of
+  postmaster@email.microchip.com) identity=helo;
+  client-ip=198.175.253.82; receiver=esa3.microchip.iphmx.com;
+  envelope-from="Ajay.Kathat@microchip.com";
+  x-sender="postmaster@email.microchip.com";
+  x-conformance=spf_only
+Authentication-Results: esa3.microchip.iphmx.com; spf=Pass smtp.mailfrom=Ajay.Kathat@microchip.com; spf=None smtp.helo=postmaster@email.microchip.com; dkim=pass (signature verified) header.i=@microchiptechnology.onmicrosoft.com; dmarc=pass (p=none dis=none) d=microchip.com
+IronPort-SDR: ZwE7WDJhBxvAflIS9SEuk4Dv8qEw9dSzVVj9L/9N6mcD8eNcXqao/CG7MHCubxPiiqNsIjujID
+ JzBYfg5Wy4XRp2ihJsncsaW4VNYckYhjbG3dKp2f1PYwiQDZDv44omCwpFGpSC8Z3hZNEuG/0E
+ UOOZlYXp0p8cTY6rRXxtCOcNX4v8DWHmgg+Sn+92osnRuVp5Fn2hj3NndOolKSUvcMzhAywUZK
+ JpxaV6x93se4Ap+mxDuCOB7kG7WFbHlMRzA3juZvMxsj6KjxRCu+ALxpE2tnWP/JDzOyYuCLnk
+ c30=
+X-IronPort-AV: E=Sophos;i="5.63,482,1557212400"; 
+   d="scan'208";a="41069167"
+Received: from smtpout.microchip.com (HELO email.microchip.com) ([198.175.253.82])
+  by esa3.microchip.iphmx.com with ESMTP/TLS/AES256-SHA256; 12 Jul 2019 03:59:05 -0700
+Received: from chn-vm-ex03.mchp-main.com (10.10.87.152) by
+ chn-vm-ex02.mchp-main.com (10.10.87.72) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.1713.5; Fri, 12 Jul 2019 03:58:55 -0700
+Received: from NAM05-DM3-obe.outbound.protection.outlook.com (10.10.215.89) by
+ email.microchip.com (10.10.87.152) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.1713.5
+ via Frontend Transport; Fri, 12 Jul 2019 03:58:56 -0700
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=microchiptechnology.onmicrosoft.com;
+ s=selector1-microchiptechnology-onmicrosoft-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=uqr09wf//Z/aSPHOU3UehOh/U9z7OE4UzAkuQXPs2MQ=;
- b=HDCcOwVabdlXbiobApyp3C1vbT+CaVcDgIhEaE8HF5dvDITWJp7Q/CSLOyI7We2k/2qg4Z5pUOUroY6T0HIKx9ZF3MCwL4DIa0cydyCSTahSCfOhXh5/HJRL9tI/jIY4R7ZkmCD2VbjLCUULcZOVs01KNYUITAOy55H6GlgCTG6SYGcQtQL5VNmTUcyAYcmOuhKarKde0Wycm/51N7SHcqAHwBlKRtw5d4m5VOdRiZEqnfMP3JsJNzmCIrr/QRQTrNNQAWV9F3rmFW2bDy+Efl9ZFMbDt7GhnWvbLhIouB7XhU+KW23nJf7V6Nx1OqLB7702lX7kj3kP9t1I+ktyUA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1;spf=pass
- smtp.mailfrom=quantenna.com;dmarc=pass action=none
- header.from=quantenna.com;dkim=pass header.d=quantenna.com;arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quantenna.com;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=uqr09wf//Z/aSPHOU3UehOh/U9z7OE4UzAkuQXPs2MQ=;
- b=RbgWMPIxr7v5QfIWWNniFzS7GNCfz0E7pBewaYHnDK6NwhAbMk1L0WTUJJjwd7t3XsdXVZYfG0X3N4+5UZkcGWTcYac1trzpc8fRD0OaAW+cLNL2KlMnCaFTgkeAScZsmqNg4Xo4yDQH/gTJDxXbwjPaIMABf0HFPpBV04nd5P8=
-Received: from BL0PR05MB4818.namprd05.prod.outlook.com (52.132.15.24) by
- BL0PR05MB5346.namprd05.prod.outlook.com (10.167.233.97) with Microsoft SMTP
+ bh=QpTZRcChYdkGe9+EGF5TYs4CZbBjWbenkObkFB8Zh0Y=;
+ b=rdqlyQbVNTEsngz/IbSMqxeH28XtYJMJCaXbMzWmMAgQGnskAvMKlTKqdcwdlHHgjzg61SR7FFU4z8XgfCS7Csyw5ev9kvZSYK3qGv8yJkL23jwTLYhBZQ1UcU/7kKsF1fNPkf2Or0wWA8oRNXUepBbPQUQviZ0vdXXgD+5Wyhk=
+Received: from BN6PR11MB3985.namprd11.prod.outlook.com (10.255.129.78) by
+ BN6PR11MB1380.namprd11.prod.outlook.com (10.173.26.18) with Microsoft SMTP
  Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.2073.10; Fri, 12 Jul 2019 10:52:45 +0000
-Received: from BL0PR05MB4818.namprd05.prod.outlook.com
- ([fe80::f05d:c598:a805:bd37]) by BL0PR05MB4818.namprd05.prod.outlook.com
- ([fe80::f05d:c598:a805:bd37%6]) with mapi id 15.20.2073.008; Fri, 12 Jul 2019
- 10:52:45 +0000
-Received: from SN6PR05MB4928.namprd05.prod.outlook.com (52.135.117.74) by
- SN6PR05MB5871.namprd05.prod.outlook.com (20.177.255.225) with Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.2094.7; Fri, 12 Jul 2019 10:52:19 +0000
-Received: from SN6PR05MB4928.namprd05.prod.outlook.com
- ([fe80::13f:5819:79e7:ea8f]) by SN6PR05MB4928.namprd05.prod.outlook.com
- ([fe80::13f:5819:79e7:ea8f%5]) with mapi id 15.20.2073.012; Fri, 12 Jul 2019
- 10:52:18 +0000
-From:   Sergey Matyukevich <sergey.matyukevich.os@quantenna.com>
-To:     Johannes Berg <johannes@sipsolutions.net>
-CC:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        Igor Mitsyanko <igor.mitsyanko.os@quantenna.com>,
-        Mikhail Karpenko <mkarpenko@quantenna.com>
-Subject: Re: [RFC PATCH v3 0/2] cfg80211: fix duplicated scan entries after
- channel switch
-Thread-Topic: [RFC PATCH v3 0/2] cfg80211: fix duplicated scan entries after
- channel switch
-Thread-Index: AQHVN0YTcguWGm31CkW9q/08y0KK9qbGtPyAgAA2vwD//9FRgIAAFCGA
-Date:   Fri, 12 Jul 2019 10:52:18 +0000
-Message-ID: <20190712105212.clf77zne6i4gh5ti@bars>
-References: <20190710173651.15770-1-sergey.matyukevich.os@quantenna.com>
- <1c371a5921200a11da459b591df121bbcb0f967d.camel@sipsolutions.net>
- <20190712092716.ywnkns473s5rtoku@bars>
- <43055be7b2d7ff0f8dbadd19443fc73f30f93bb6.camel@sipsolutions.net>
-In-Reply-To: <43055be7b2d7ff0f8dbadd19443fc73f30f93bb6.camel@sipsolutions.net>
+ 15.20.2052.18; Fri, 12 Jul 2019 10:58:53 +0000
+Received: from BN6PR11MB3985.namprd11.prod.outlook.com
+ ([fe80::54db:507:e9da:5086]) by BN6PR11MB3985.namprd11.prod.outlook.com
+ ([fe80::54db:507:e9da:5086%6]) with mapi id 15.20.2073.012; Fri, 12 Jul 2019
+ 10:58:53 +0000
+From:   <Ajay.Kathat@microchip.com>
+To:     <johannes@sipsolutions.net>, <linux-wireless@vger.kernel.org>
+CC:     <gregkh@linuxfoundation.org>, <kvalo@codeaurora.org>,
+        <Adham.Abozaeid@microchip.com>, <Venkateswara.Kaja@microchip.com>,
+        <Nicolas.Ferre@microchip.com>, <Claudiu.Beznea@microchip.com>
+Subject: Re: [PATCH v2 05/16] wilc1000: add wilc_wlan_cfg.c
+Thread-Topic: [PATCH v2 05/16] wilc1000: add wilc_wlan_cfg.c
+Thread-Index: AQHVOFVbjOwWdHElO0GO3dM32GKxnqbGlxQAgAA5lIA=
+Date:   Fri, 12 Jul 2019 10:58:52 +0000
+Message-ID: <c1b7691a-7504-938c-acb0-1d4f47c1bc75@microchip.com>
+References: <1562896697-8002-1-git-send-email-ajay.kathat@microchip.com>
+ <1562896697-8002-6-git-send-email-ajay.kathat@microchip.com>
+ <86bc79ccd379497d56bade79ec8f717603110ef7.camel@sipsolutions.net>
+In-Reply-To: <86bc79ccd379497d56bade79ec8f717603110ef7.camel@sipsolutions.net>
 Accept-Language: en-US
 Content-Language: en-US
 X-MS-Has-Attach: 
 X-MS-TNEF-Correlator: 
-x-clientproxiedby: BYAPR02CA0063.namprd02.prod.outlook.com
- (2603:10b6:a03:54::40) To SN6PR05MB4928.namprd05.prod.outlook.com
- (2603:10b6:805:9d::10)
+x-clientproxiedby: MAXPR01CA0086.INDPRD01.PROD.OUTLOOK.COM
+ (2603:1096:a00:49::28) To BN6PR11MB3985.namprd11.prod.outlook.com
+ (2603:10b6:405:7b::14)
 x-ms-exchange-messagesentrepresentingtype: 1
-x-originating-ip: [195.182.157.78]
+x-originating-ip: [223.237.224.94]
 x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: 280d7133-3798-44c8-013e-08d706b7027c
-x-microsoft-antispam: BCL:0;PCL:0;RULEID:(2390118)(7020095)(4652040)(8989299)(4534185)(4627221)(201703031133081)(201702281549075)(8990200)(5600148)(711020)(4605104)(1401327)(2017052603328)(7193020);SRVR:SN6PR05MB5871;
-x-ms-traffictypediagnostic: SN6PR05MB5871:|BL0PR05MB5346:
-x-microsoft-antispam-prvs: <SN6PR05MB58715D0A25612133B2228552A3F20@SN6PR05MB5871.namprd05.prod.outlook.com>
-x-moderation-data: 7/12/2019 10:52:42 AM
-x-ms-oob-tlc-oobclassifiers: OLM:10000;
+x-ms-office365-filtering-correlation-id: fa3d1af6-85fd-4a17-cb79-08d706b7ed62
+x-microsoft-antispam: BCL:0;PCL:0;RULEID:(2390118)(7020095)(4652040)(8989299)(4534185)(4627221)(201703031133081)(201702281549075)(8990200)(5600148)(711020)(4605104)(1401327)(2017052603328)(7193020);SRVR:BN6PR11MB1380;
+x-ms-traffictypediagnostic: BN6PR11MB1380:
+x-microsoft-antispam-prvs: <BN6PR11MB1380970A4491A20EF07301D7E3F20@BN6PR11MB1380.namprd11.prod.outlook.com>
+x-ms-oob-tlc-oobclassifiers: OLM:8273;
 x-forefront-prvs: 00963989E5
-x-forefront-antispam-report: SFV:NSPM;SFS:(10009020)(7916004)(39850400004)(346002)(376002)(396003)(366004)(136003)(199004)(189003)(6506007)(66066001)(8936002)(107886003)(486006)(8676002)(66446008)(64756008)(26005)(66476007)(66556008)(102836004)(5024004)(52116002)(86362001)(256004)(5660300002)(386003)(478600001)(6246003)(54906003)(6512007)(9686003)(33716001)(316002)(14444005)(14454004)(81166006)(81156014)(66946007)(3846002)(4326008)(6116002)(25786009)(436003)(6486002)(71200400001)(71190400001)(305945005)(99286004)(446003)(1076003)(11346002)(6916009)(186003)(53936002)(6436002)(7736002)(2906002)(229853002)(68736007)(76176011)(476003);DIR:OUT;SFP:1101;SCL:1;SRVR:BL0PR05MB5346;H:BL0PR05MB4818.namprd05.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;A:1;MX:1;
-received-spf: None (protection.outlook.com: quantenna.com does not designate
+x-forefront-antispam-report: SFV:NSPM;SFS:(10009020)(346002)(39860400002)(396003)(376002)(366004)(136003)(199004)(189003)(36756003)(305945005)(86362001)(316002)(8936002)(256004)(53546011)(386003)(102836004)(31696002)(7736002)(5660300002)(2616005)(476003)(11346002)(81166006)(14444005)(52116002)(81156014)(486006)(6506007)(446003)(8676002)(110136005)(66946007)(66066001)(14454004)(54906003)(66476007)(66446008)(66556008)(64756008)(71190400001)(68736007)(6116002)(3846002)(71200400001)(6246003)(25786009)(31686004)(478600001)(4326008)(2501003)(2906002)(99286004)(186003)(26005)(76176011)(229853002)(53936002)(6436002)(6486002)(107886003)(6512007);DIR:OUT;SFP:1101;SCL:1;SRVR:BN6PR11MB1380;H:BN6PR11MB3985.namprd11.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;A:1;MX:1;
+received-spf: None (protection.outlook.com: microchip.com does not designate
  permitted sender hosts)
 x-ms-exchange-senderadcheck: 1
-x-microsoft-antispam-message-info: 5E0mkHh0CYiPYb8n3apGn9d9BlTBcg4dnZ4VABJSQYidsqpLIeKo/d0CaLQJzcS8EuDj/XDb6rkX5aI5Q1J3FAz69ivb1Fu59fQiBNV1D1ZOD4oDBrcA2ueVLp8rlBpfvAp8lybDPJ5QOaaTCoS9L9ZLq9P5yeV65gA1FHJggSbswTadv0mZAk+P9vqjkIsCdLTfrIPjJc9LwVMr1HcKSOmpDEB42wbBrT2VRll9e//RoLI19YZPm1dqnt1MqzqFhUgCqkvhEE0nd+5Nd2ssYid1oHhH/6Awfs8dY5xR2UjhnODSWlzo6BAJn1ynKOkwvsrs0WXCT1Bf8xBMr5wmbaxR6tFo6O00qvJ7XIrJ8DKpF8FPAZ2H4cwlp7i3m1EsZNO7bOTcq3Lnba1dRdpT4COsJ+hDGQNZCz2pLSCeRh8=
-Content-Type: text/plain; charset="us-ascii"
-Content-ID: <F49F0C6880A5A34A9954B5E3D05AB865@namprd05.prod.outlook.com>
-Content-Transfer-Encoding: quoted-printable
+x-microsoft-antispam-message-info: 36Bm96eTgONYHiarRfOeyamHOvJX/6l90CXgzglyg1huRmut0a4/AA6K2OE5EAdlIk168XvtPqvvk5T855ErWC3np+tE5Dez2Kn2VnHMXEZzsVAfP0yROf2QLZiGhc2OhnuxMj6p3GVewqHCtG7aQ56UGAib+rZzbyn7IZJsywP3eU8JsMrBYbgqkhLPq8H2jw2FKV9KQ2yD47vcypQ2JGCxBEYS0inw4Tuby0sUqZvSO2+LwYg+8gPELRDTJznl/nBqpCknupppgsz8WEMjbLl+zQT4YbO8v2Ru833kb3Nmi7Eb0bN+Aj3Xr2CA2R1slWeGmCHWpKLbe1Dnv3aTsTl2iGb44n+3ldBGJN22ILKCBgifBQw1SVTMwOxDC8yh/6J1KI/Xu9U3SX2USYMc4g950qCwyR8v+ZZEn/prmMQ=
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <8E550B8395FA9149B906C1C3F9E93AD4@namprd11.prod.outlook.com>
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-X-OriginatorOrg: quantenna.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 280d7133-3798-44c8-013e-08d706b7027c
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: a355dbce-62b4-4789-9446-c1d5582180ff
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: SPO_Arbitration_d7bcd9ec-3c5b-4d3a-8f46-243797972e50@quantenna.onmicrosoft.com
-X-MS-Exchange-CrossTenant-originalarrivaltime: 12 Jul 2019 10:52:45.0112
+X-MS-Exchange-CrossTenant-Network-Message-Id: fa3d1af6-85fd-4a17-cb79-08d706b7ed62
+X-MS-Exchange-CrossTenant-originalarrivaltime: 12 Jul 2019 10:58:53.0059
  (UTC)
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BL0PR05MB5346
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:,, definitions=2019-07-12_03:,,
- signatures=0
-X-Proofpoint-Spam-Reason: safe
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 3f4057f3-b418-4d4e-ba84-d55b4e897d88
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: ajay.kathat@microchip.com
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BN6PR11MB1380
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-> > > [External Email]: This email arrived from an external source - Please=
- exercise caution when opening any attachments or clicking on links.
->=20
-> Heh, you have a not so fun email system that rewrites mails ...
-
-:(
-=20
-> > > > Suggested approach to handle non-transmitting BSS entries is simpli=
-fied in the
-> > > > following sense. If new entries have been already created after cha=
-nnel switch,
-> > > > only transmitting bss will be updated using IEs of new entry for th=
-e same
-> > > > transmitting bss. Non-transmitting bss entries will be updated as s=
-oon as
-> > > > new mgmt frames are received. Updating non-transmitting bss entries=
- seems
-> > > > too expensive: nested nontrans_list traversing is needed since we c=
-an not
-> > > > rely on the same order of old and new non-transmitting entries.
-> > >=20
-> > > That sounds like a reasonable trade-off. I do wonder though what happ=
-ens
-> > > if we're connected to a non-transmitting BSS?
-> >=20
-> > Well, here I rely upon the assumption that CSA IEs of non-transmitting =
-BSS
-> > are handled correctly by mac80211 or any FullMAC firmware. And if we ar=
-e
-> > connected to non-transmitting BSS rather than transmitting one, the
-> > following code in the beginning of new cfg80211_update_assoc_bss_entry
-> > function is supposed to care about this use-case:
->=20
-> Right, it will be updated on RX. But then if we chanswitch, we would
-> probably (mac80211 using a pointer to the non-transmitting BSS) update
-> only one of the nontransmitting BSSes?
->=20
-> Just saying that maybe we need to be careful there - or your wording
-> might be incorrect. We might end up updating a *nontransmitting* BSS,
-> and then its transmitting/other non-tx ones only later?
-
-Hmmm... I am not sure we are on the same page here. Could you please
-clarify your concerns here ?
-
-The normal (non multi-BSSID) BSS usecase seem to be clear: keep old and
-remove new (if any), since it is not easy to update ifmgd->associated.
-
-Now let me take another look at the usecase when STA is connected to
-a transmitting or non-transmitting BSS of a multi-BSS AP. At the moment
-suggested code does the following. If STA is connected to the non-transmitt=
-ing
-BSS, then we switch to its transmitting BSS, instead of working with
-current_bss directly.
-
-So we look for the new entry (with new channel) of the transmitting BSS.
-If it exists, then we remove it and _all_ of its non-transmitting BSSs.
-Finally, we update channel and location in rb-tree of the existing (old)
-transmitting BSS as well as _all_ of its non-transmitting entries.
-
-Regards,
-Sergey
+SGkgSm9oYW5uZXMsDQoNClRoYW5rcyBhIGxvdCBmb3IgYWdhaW4gcmV2aWV3aW5nIG91ciBkcml2
+ZXIuDQoNCk9uIDcvMTIvMjAxOSAxOjAxIFBNLCBKb2hhbm5lcyBCZXJnIHdyb3RlOg0KPiBPbiBG
+cmksIDIwMTktMDctMTIgYXQgMDE6NTggKzAwMDAsIEFqYXkuS2F0aGF0QG1pY3JvY2hpcC5jb20g
+d3JvdGU6DQo+Pg0KPj4gKwlidWZbMF0gPSAodTgpaWQ7DQo+PiArCWJ1ZlsxXSA9ICh1OCkoaWQg
+Pj4gOCk7DQo+PiArCWJ1ZlsyXSA9IDI7DQo+PiArCWJ1ZlszXSA9IDA7DQo+PiArCWJ1Zls0XSA9
+ICh1OCl2YWwxNjsNCj4+ICsJYnVmWzVdID0gKHU4KSh2YWwxNiA+PiA4KTsNCj4gDQo+IFRoZXJl
+IGFyZSBoZWxwZXJzIGZvciB0aGF0LCBwdXRfbGUxNl91bmFsaWduZWQoKSBvciBzbz8NCj4gDQoN
+ClRoYW5rcyBmb3IgcG9pbnRpbmcgb3V0IGFuZCBJIHdpbGwgbW9kaWZ5IHRoZSBzYW1lLg0KDQo+
+PiArCQkJCWlmICh3LT5pZCA9PSB3aWQpIHsNCj4+ICsJCQkJCXctPnZhbCA9IGdldF91bmFsaWdu
+ZWRfbGUzMigmaW5mb1s0XSk7DQo+IA0KPiBZb3UgdXNlIHRoZSBvcHBvc2l0ZSBvbmUgaGVyZSA6
+LSkNCj4gDQoNCkFzIEkgc2VlLCB0aGUgZGF0YSByZWNlaXZlZCBmcm9tIHRoZSBmaXJtd2FyZSBp
+biAqbGUqIGZvcm1hdCwgd2hpY2ggaXMNCnBhcnNlZCBpbiB3aWxjX3dsYW5fcGFyc2VfcmVzcG9u
+c2VfZnJhbWUoKS4gU28gdG8gZXh0cmFjdCB2YWx1ZSBpbg0KY29ycmVjdCBieXRlb3JkZXIgd2Ug
+c2hvdWxkIHVzZSBnZXRfdW5hbGlnbmVkX2xlMzIoKS4gcmlnaHQ/DQoNCj4+ICsJLyoNCj4+ICsJ
+ICogVGhlIHZhbGlkIHR5cGVzIG9mIHJlc3BvbnNlIG1lc3NhZ2VzIGFyZQ0KPj4gKwkgKiAnUicg
+KFJlc3BvbnNlKSwNCj4+ICsJICogJ0knIChJbmZvcm1hdGlvbiksIGFuZA0KPj4gKwkgKiAnTicg
+KE5ldHdvcmsgSW5mb3JtYXRpb24pDQo+PiArCSAqLw0KPj4gKw0KPj4gKwlzd2l0Y2ggKG1zZ190
+eXBlKSB7DQo+IFsuLi5dDQo+IA0KPj4gKwljYXNlICdTJzoNCj4gDQo+IEhtbS4gOi0pDQo+IA0K
+DQpZZXMsIHRoZSBjb21tZW50cyBoYXMgbm90IGNhcHR1cmUgYWJvdXQgJ1MnIG1lc3NhZ2UgdHlw
+ZS4gJ1MnIHR5cGUgaXMNCnVzZWQgdG8gbm90aWZ5IHNjYW4gY29tcGxldGVkIGZyb20gZmlybXdh
+cmUgdG8gaG9zdC4NCg0KPj4gKwl3bC0+Y2ZnLnN0cl92YWxzID0gc3RyX3ZhbHM7DQo+PiArCS8q
+IHN0b3JlIHRoZSBzdHJpbmcgY2ZnIHBhcmFtZXRlcnMgKi8NCj4+ICsJd2wtPmNmZy5zW2ldLmlk
+ID0gV0lEX0ZJUk1XQVJFX1ZFUlNJT047DQo+PiArCXdsLT5jZmcuc1tpXS5zdHIgPSBzdHJfdmFs
+cy0+ZmlybXdhcmVfdmVyc2lvbjsNCj4+ICsJaSsrOw0KPj4gKwl3bC0+Y2ZnLnNbaV0uaWQgPSBX
+SURfTUFDX0FERFI7DQo+PiArCXdsLT5jZmcuc1tpXS5zdHIgPSBzdHJfdmFscy0+bWFjX2FkZHJl
+c3M7DQo+PiArCWkrKzsNCj4+ICsJd2wtPmNmZy5zW2ldLmlkID0gV0lEX0FTU09DX1JFU19JTkZP
+Ow0KPj4gKwl3bC0+Y2ZnLnNbaV0uc3RyID0gc3RyX3ZhbHMtPmFzc29jX3JzcDsNCj4+ICsJaSsr
+Ow0KPj4gKwl3bC0+Y2ZnLnNbaV0uaWQgPSBXSURfTklMOw0KPj4gKwl3bC0+Y2ZnLnNbaV0uc3Ry
+ID0gTlVMTDsNCj4gDQo+IEkgcmVhbGx5IGRvbid0IHVuZGVyc3RhbmQgdGhpcyBzdHlsZS4gV2h5
+IG5vdCBnaXZlIGl0IGEgcHJvcGVyIHN0cnVjdA0KPiBhbmQganVzdCBzYXkNCj4gPiAJd2wtPmNm
+Zy5hc3NvY19yc3AgPSBzdHJfdmFscy0+YXNzb2NfcnNwOw0KDQpBY3R1YWxseSwgV0lE4oCZcyBh
+cmUgdXNlZCB0byBzZW5kIHRoZSBjb25maWd1cmF0aW9uIGRhdGEgZnJvbSBob3N0IHRvDQpmaXJt
+d2FyZS4gSXRzIGdlbmVyaWMgYXBwcm9hY2ggdG8gbWFuYWdlIHRoZSBkaWZmZXJlbnQgc2l6ZSBv
+ZiB3aWQuDQpUaGUgZGlmZmVyZW50IFdJROKAmXMgYXJlIGNhdGVnb3JpemVkIGJhc2VkIG9uIHRo
+ZWlyIGRhdGEgc2l6ZS4NCkluc3RlYWQgb2YgbWFuYWdpbmcgZGlmZmVyZW50IHZhcmlhYmxlcyBm
+b3IgZWFjaCBXSUQncyBpdHMga2VwdCB1bmRlcg0KdGhlIHNpbmdsZSBhcnJheS4gVGhlc2UgZW50
+cmllcyBhcmUgbWFuYWdlZCBsaWtlICdpZCcgYW5kICd2YWx1ZScuDQoNCnN0cnVjdCB3aWxjX2Nm
+ZyB7DQpzdHJ1Y3Qgd2lsY19jZmdfYnl0ZSAqYjsNCnN0cnVjdCB3aWxjX2NmZ19od29yZCAqaHc7
+DQpzdHJ1Y3Qgd2lsY19jZmdfd29yZCAqdzsNCnN0cnVjdCB3aWxjX2NmZ19zdHIgKnM7DQpzdHJ1
+Y3Qgd2lsY19jZmdfc3RyX3ZhbHMgKnN0cl92YWxzOw0KfTsNCg0KVGhlIDEtYnl0ZSBkYXRhIGFy
+ZSBtYW5hZ2VkIGluIOKAmGLigJkgYXJyYXksICAyLWJ5dGUgaW4g4oCYaHfigJkgYXJyYXkgYW5k
+IHNvDQpvbi4gU28gd2hlbmV2ZXIgdGhlIFdJRCBpcyBzZXQvZ2V0IGJ5IGhvc3QsIHRoZSBjb3Jy
+ZXNwb25kaW5nIHZhbHVlIGFsc28NCmdldCB1cGRhdGVkIGluIHRoaXMgYXJyYXkgd2hpY2ggY2Fu
+IGJlIGFjY2VzcyBsYXRlci4gVGhlIHJlc3BvbnNlIGZyb20NCmZpcm13YXJlIGFsc28gY29udGFp
+bnMgdGhlIFdJRCBpZCB3aGljaCBpcyB1c2VkIHRvIHVkcGF0ZSB0aGUNCmNvcnJlc3BvbmRpbmcg
+dmFsdWUuIFRoaXMgY2F0ZWdvcml6YXRpb24gaGVscHMgaW4gc2VhcmNoIGFuZCB1cGRhdGUgdGhl
+DQpleGFjdCBXSUQgdmFsdWUgKndpbGNfY2ZnKiBzdHJ1Y3QuDQoNCg0KUmVnYXJkDQpBamF5DQoN
+Cj4gPiBldGM/DQo+IA0KPiBqb2hhbm5lcw0KPiANCg==
