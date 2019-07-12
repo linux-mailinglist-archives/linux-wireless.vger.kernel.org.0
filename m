@@ -2,100 +2,101 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id BC8F76754E
-	for <lists+linux-wireless@lfdr.de>; Fri, 12 Jul 2019 21:15:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4C6FE675AB
+	for <lists+linux-wireless@lfdr.de>; Fri, 12 Jul 2019 22:06:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727362AbfGLTPo (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 12 Jul 2019 15:15:44 -0400
-Received: from mail-pf1-f196.google.com ([209.85.210.196]:40825 "EHLO
-        mail-pf1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727141AbfGLTPo (ORCPT
+        id S1727474AbfGLUGY (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 12 Jul 2019 16:06:24 -0400
+Received: from s3.sipsolutions.net ([144.76.43.62]:37488 "EHLO
+        sipsolutions.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727118AbfGLUGY (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 12 Jul 2019 15:15:44 -0400
-Received: by mail-pf1-f196.google.com with SMTP id p184so4706310pfp.7;
-        Fri, 12 Jul 2019 12:15:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=date:from:to:subject:message-id:mime-version:content-disposition
-         :user-agent;
-        bh=oXYsDtz7/0DubJTDGGvFVnh+Lg24n8uWzauVA7FWOTQ=;
-        b=Nr7am8SxXXYpG5t0e+1t+Av/Yh6G80yJqo/ksdWDOvMe3qqHa6cJoGyVzD5kTgSzFK
-         EbacLSDUPdziFExsgVl7789UjRU3jmdIMp+rfJnmcfDPWBrubbVcGbpcumtJYSa3L5gh
-         HkOt41cRAFHWciYXEPDgg5QiW17ByJrq2OFQjWfMNwNz6M75CMQ4nm4u1cKp8DRvDgbf
-         MI7dFcmeLuE3pOARp57eWs93iYXlX+KupflRTesY6DS+yrPMWwMByAVm5sMftSxl89Fv
-         d6z1LVc+EZHjNr9+FHaIt36QV65OzSF298ZySScn3iDUN4bVvaCfH60TeeRzjun8vFMB
-         eJIQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:subject:message-id:mime-version
-         :content-disposition:user-agent;
-        bh=oXYsDtz7/0DubJTDGGvFVnh+Lg24n8uWzauVA7FWOTQ=;
-        b=t6VMgTZPBpYEuceAgG02Ag1H2Ks6hrQEeJa/vmz3aM428CUSlDx4xVN3wgHtHGSeee
-         vGPeJNFBr0uaeWjZVtyUrIp41alkh8wEALaEdKmAvNEZIz3CY/wArR+rjBuu6H+8ImAv
-         k7N5T5ufG5C37oR9WFPa5PK0UQ0WkY8itArmBoC6zK+NBNSm+6GVXGNV66L6bvojGtNv
-         LIGmRhgMw54ZNaeOYkVkotf7zfKDuFf4e8CmoV09y5/YHN3YyFbPNNfaP2KQonRxL3+f
-         JQ9VrgyEX5QpugVs96iPHgUlLs92siqbaVR59EmzS4jt0+0NnhXyxsnHWYGZg74yovyM
-         3cjA==
-X-Gm-Message-State: APjAAAU6dGts91Uv07BsyuNrxw0/NipDP64STsAxWGkmbSXafpJOuyiQ
-        oJc1a4OR0hRb4OXV9gCStGg=
-X-Google-Smtp-Source: APXvYqxj66wwvzMcXiXJCH8ccqM4G3d2MZ/6yh7ZJDckx9t13ZbV/TUTv0MDFeKCE1Yk71acBv5l2Q==
-X-Received: by 2002:a17:90a:23a4:: with SMTP id g33mr14339109pje.115.1562958943763;
-        Fri, 12 Jul 2019 12:15:43 -0700 (PDT)
-Received: from hari-Inspiron-1545 ([183.83.86.126])
-        by smtp.gmail.com with ESMTPSA id l44sm8835523pje.29.2019.07.12.12.15.39
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Fri, 12 Jul 2019 12:15:42 -0700 (PDT)
-Date:   Sat, 13 Jul 2019 00:45:35 +0530
-From:   Hariprasad Kelam <hariprasad.kelam@gmail.com>
-To:     Ping-Ke Shih <pkshih@realtek.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        YueHaibing <yuehaibing@huawei.com>,
-        Hariprasad Kelam <hariprasad.kelam@gmail.com>,
-        Larry Finger <Larry.Finger@lwfinger.net>,
-        Nathan Chancellor <natechancellor@gmail.com>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: [PATCH] rtlwifi: btcoex: fix issue possible condition with no effect
- (if == else)
-Message-ID: <20190712191535.GA4215@hari-Inspiron-1545>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.5.24 (2015-08-30)
+        Fri, 12 Jul 2019 16:06:24 -0400
+Received: by sipsolutions.net with esmtpsa (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <johannes@sipsolutions.net>)
+        id 1hm1oC-0004IG-F5; Fri, 12 Jul 2019 22:06:20 +0200
+Message-ID: <a4c6be4ba7cf8594d05af78a7e4dfa1310d0c3b9.camel@sipsolutions.net>
+Subject: Re: [RFC 0/8] nl80211: add 6GHz band support
+From:   Johannes Berg <johannes@sipsolutions.net>
+To:     Igor Mitsyanko <igor.mitsyanko.os@quantenna.com>,
+        Arend Van Spriel <arend.vanspriel@broadcom.com>
+Cc:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        Jouni Malinen <j@w1.fi>, Tova Mussai <tova.mussai@intel.com>
+Date:   Fri, 12 Jul 2019 22:06:16 +0200
+In-Reply-To: <4ea863a3-656e-0c7a-57f0-b7cf88614233@quantenna.com>
+References: <1558353645-18119-1-git-send-email-arend.vanspriel@broadcom.com>
+         <df53f969297fea1f3c8101cd2c1571a957985d2a.camel@sipsolutions.net>
+         <16aeb2310e8.2764.9b12b7fc0a3841636cfb5e919b41b954@broadcom.com>
+         <9ba78df6-18a3-5c1c-6c57-3fa71531b460@broadcom.com>
+         <48a43287e65e1d24082dea2cc32ca14998acb8d1.camel@sipsolutions.net>
+         <8ca6ef2e-b41b-da40-b29a-77666d440495@broadcom.com>
+         <a6e317539fbd53ad5e2fd62ce3544260a3f74e77.camel@sipsolutions.net>
+         <d22d5159-60d3-5926-5b3f-bdc3ff07af82@broadcom.com>
+         <4ea863a3-656e-0c7a-57f0-b7cf88614233@quantenna.com>
+Content-Type: text/plain; charset="UTF-8"
+X-Mailer: Evolution 3.28.5 (3.28.5-3.fc28) 
+Mime-Version: 1.0
+Content-Transfer-Encoding: 7bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-fix below issue reported by coccicheck
-drivers/net/wireless/realtek/rtlwifi/btcoexist/halbtcoutsrc.c:514:1-3:
-WARNING: possible condition with no effect (if == else)
+On Fri, 2019-07-12 at 15:16 +0000, Igor Mitsyanko wrote:
+> On 7/12/19 1:40 PM, Arend Van Spriel wrote:
+> > 
+> > 
+> > The inclusion of the "HE extended capabilities" element is determined by 
+> > the dot116GOptionImplemented option. (band[6G] != NULL) provides that 
+> > condition although there are other ways to solve that I guess :-p
+> > Come to think of it. Does mac80211 need that. Guess IEs are provided by 
+> > user-space, right?
+> 
+> Maybe not for transmission, but we probably will need to parse peer's 
+> IEs at least to properly fill SCAN information and properly report 
+> peer's capabilities.
 
-Signed-off-by: Hariprasad Kelam <hariprasad.kelam@gmail.com>
----
- drivers/net/wireless/realtek/rtlwifi/btcoexist/halbtcoutsrc.c | 8 +-------
- 1 file changed, 1 insertion(+), 7 deletions(-)
+Probe requests may also be transmitted there though 6 GHz scanning is
+sufficiently complicated this might not happen; as well as association
+request which definitely this is relevant to.
 
-diff --git a/drivers/net/wireless/realtek/rtlwifi/btcoexist/halbtcoutsrc.c b/drivers/net/wireless/realtek/rtlwifi/btcoexist/halbtcoutsrc.c
-index 152242a..191dafd0 100644
---- a/drivers/net/wireless/realtek/rtlwifi/btcoexist/halbtcoutsrc.c
-+++ b/drivers/net/wireless/realtek/rtlwifi/btcoexist/halbtcoutsrc.c
-@@ -509,13 +509,7 @@ static u32 halbtc_get_wifi_link_status(struct btc_coexist *btcoexist)
- 
- static s32 halbtc_get_wifi_rssi(struct rtl_priv *rtlpriv)
- {
--	int undec_sm_pwdb = 0;
--
--	if (rtlpriv->mac80211.link_state >= MAC80211_LINKED)
--		undec_sm_pwdb = rtlpriv->dm.undec_sm_pwdb;
--	else /* associated entry pwdb */
--		undec_sm_pwdb = rtlpriv->dm.undec_sm_pwdb;
--	return undec_sm_pwdb;
-+	return rtlpriv->dm.undec_sm_pwdb;
- }
- 
- static bool halbtc_get(void *void_btcoexist, u8 get_type, void *out_buf)
--- 
-2.7.4
+> > > However, from a feature advertisement point of view, we might very well
+> > > consider 6 GHz to be a separate nl80211 band, in particular if there
+> > > *are* indeed differences around what rates are permitted? Which is
+> > > really the only place where we care. Or maybe, thinking about this more,
+> > > if there could be devices that have different capabilities in 6 GHz than
+> > > in 5 GHz, in the sense of HT/VHT/HE capabilities?
+> > 
+> > Regarding rates the answer seem to be in clause 26.17.2.1 as well:
+> > 
+> > """
+> > A STA shall not transmit an HT PPDU in the 6 GHz band. A STA shall not 
+> > transmit a VHT PPDU in the
+> > 6 GHz band. A STA shall not transmit a DSSS, HR/DSSS, or ERP-OFDM PPDU 
+> > in the 6 GHz band.
+> > """
+> > 
+> > I may be wrong but that seems to say only HE rates are allowed.
+> 
+> Unless I'm wrong myself, this leaves us with 5GHz OFDMA PHY (802.11a). 
+> Further in 26.17.2.1 spec states the following regarding beacons:
+> "the Beacon frames may be sent in non-HT duplicate PPDUs."
+
+OFDMA is HE :-)
+
+802.11a is OFDM (Clause 17, at least in 802.11-2016), but I think you're
+otherwise right.
+
+> I think we do need a new value in band enum, it seems natural because:
+> - it has different capabilities
+> - it has different rates
+> maintaining this information in any other way seems will be much more 
+> cumbersome.
+
+I'm starting to agree here despite having initially thought it wasn't
+necessary, and so I'll review Arend's patches again with an eye towards
+actually merging them.
+
+johannes
 
