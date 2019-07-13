@@ -2,33 +2,34 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 495CB67AC3
-	for <lists+linux-wireless@lfdr.de>; Sat, 13 Jul 2019 17:04:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E440067AD0
+	for <lists+linux-wireless@lfdr.de>; Sat, 13 Jul 2019 17:09:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727938AbfGMPEA (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 13 Jul 2019 11:04:00 -0400
-Received: from mail.kernel.org ([198.145.29.99]:50458 "EHLO mail.kernel.org"
+        id S1727706AbfGMPJO (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 13 Jul 2019 11:09:14 -0400
+Received: from mail.kernel.org ([198.145.29.99]:51580 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727626AbfGMPEA (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 13 Jul 2019 11:04:00 -0400
+        id S1727626AbfGMPJO (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Sat, 13 Jul 2019 11:09:14 -0400
 Received: from lore-desk-wlan.lan (unknown [151.66.36.246])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 30B3F20850;
-        Sat, 13 Jul 2019 15:03:59 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 0D84A20838;
+        Sat, 13 Jul 2019 15:09:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1563030240;
-        bh=Jak/d+IRqVxcglo3a01YV2Bw6lP+PMzRagdjYo8qPDE=;
+        s=default; t=1563030554;
+        bh=XPMcPcxf3tThd4FQ1oVJGtSKG5FcMYHjBae+SAnjD14=;
         h=From:To:Cc:Subject:Date:From;
-        b=ENiZiYKMY/k78Wjd5PMVj5d7PzHqsDhUVFv8LHdgHilWCwoovNSFLD/e/9TtKi0Fz
-         xZdtYGmIiVFvbYNpY0vnXCZIiQKfhI3hOaiW0WaUzRjQpK26TzHbJ08rG1ElmtuC9p
-         HoZGKhk7OOOBYppEHeCEOOXpARxKvfhv8f5Jt1ek=
+        b=cCkYH/p5KvK2zmHO21ZantZzdhqB6Z0EHqlfjYtZkRouLJz3s186S0fAhWLBYjU4R
+         dCiK3sl0RzRzXfoMWRmdS5irubdj9J7l9QIDn4BwriXDoRZ1wfiKPgyZUBIBQVY+gv
+         uS+RDZhWWPcanMq/WeIwYzbkcGeSlKqgsW1NPwvA=
 From:   Lorenzo Bianconi <lorenzo@kernel.org>
-To:     johannes@sipsolutions.net
-Cc:     linux-wireless@vger.kernel.org, nbd@nbd.name
-Subject: [PATCH] mac80211: add IEEE80211_KEY_FLAG_PUT_MMIE_SPACE to ieee80211_key_flags
-Date:   Sat, 13 Jul 2019 17:03:51 +0200
-Message-Id: <1dd6dd782121d0b9cc32dec6a01db474e568ffb2.1563030033.git.lorenzo@kernel.org>
+To:     nbd@nbd.name
+Cc:     lorenzo.bianconi@redhat.com, ryder.lee@mediatek.com,
+        royluo@google.com, linux-wireless@vger.kernel.org
+Subject: [PATCH 0/7] mt7615: add BIP_CMAC_128 hw support
+Date:   Sat, 13 Jul 2019 17:09:00 +0200
+Message-Id: <cover.1563029769.git.lorenzo@kernel.org>
 X-Mailer: git-send-email 2.21.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -37,65 +38,38 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Add IEEE80211_KEY_FLAG_PUT_MMIE_SPACE flag to ieee80211_key_flags in order
-to allow the driver to notify mac80211 to allocate mmie space for AES_CMAC
-hw cipher. Moreover mac80211 will set MMIE pn while MIC will be computed
-in hw.
-This is a preliminary patch to add BIP_CMAC_128 hw support to mt7615
-driver
+Introduce mt7615_mac_wtbl_set_key routine to configure wtbl key parameter
+directly from host cpu.
+Introduce mt76_mmio_read_copy routine and related function pointer
+Enable hw support for BIP_CMAC_128 cipher
+The series has been tested using aircrack-ng deauthentication attack
+Please note this series is based on:
+'mac80211: add IEEE80211_KEY_FLAG_PUT_MMIE_SPACE to ieee80211_key_flags'
+https://patchwork.kernel.org/patch/11043031/
 
-Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
----
- include/net/mac80211.h | 4 ++++
- net/mac80211/wpa.c     | 6 +++++-
- 2 files changed, 9 insertions(+), 1 deletion(-)
+Lorenzo Bianconi (7):
+  mt76: mt7615: move mt7615_mac_get_key_info in mac.c
+  mt76: mt7615: add mt7615_mac_wtbl_addr routine
+  mt76: mt7615: introduce mt7615_mac_wtbl_set_key routine
+  mt76: mt7615: remove wtbl_sec_key definition
+  mt76: mt7615: add set_key_cmd and mt76_wcid to mt7615_mac_wtbl_set_key
+    signature
+  mt76: intorduce mt76_mmio_read_copy routine
+  mt76: mt7615: add BIP_CMAC_128 cipher support
 
-diff --git a/include/net/mac80211.h b/include/net/mac80211.h
-index d26da013f7c0..204e5537def6 100644
---- a/include/net/mac80211.h
-+++ b/include/net/mac80211.h
-@@ -1702,6 +1702,9 @@ struct wireless_dev *ieee80211_vif_to_wdev(struct ieee80211_vif *vif);
-  *	a TKIP key if it only requires MIC space. Do not set together with
-  *	@IEEE80211_KEY_FLAG_GENERATE_MMIC on the same key.
-  * @IEEE80211_KEY_FLAG_NO_AUTO_TX: Key needs explicit Tx activation.
-+ * @IEEE80211_KEY_FLAG_PUT_MMIE_SPACE: This flag should be set by the driver
-+ *	for a AES_CMAC key if it only requires MMIE space. Moreover mac80211
-+ *	will compute PN MMIE
-  */
- enum ieee80211_key_flags {
- 	IEEE80211_KEY_FLAG_GENERATE_IV_MGMT	= BIT(0),
-@@ -1714,6 +1717,7 @@ enum ieee80211_key_flags {
- 	IEEE80211_KEY_FLAG_RESERVE_TAILROOM	= BIT(7),
- 	IEEE80211_KEY_FLAG_PUT_MIC_SPACE	= BIT(8),
- 	IEEE80211_KEY_FLAG_NO_AUTO_TX		= BIT(9),
-+	IEEE80211_KEY_FLAG_PUT_MMIE_SPACE	= BIT(10),
- };
- 
- /**
-diff --git a/net/mac80211/wpa.c b/net/mac80211/wpa.c
-index a51c7909366e..969597ddbb76 100644
---- a/net/mac80211/wpa.c
-+++ b/net/mac80211/wpa.c
-@@ -946,7 +946,8 @@ ieee80211_crypto_aes_cmac_encrypt(struct ieee80211_tx_data *tx)
- 
- 	info = IEEE80211_SKB_CB(skb);
- 
--	if (info->control.hw_key)
-+	if (info->control.hw_key &&
-+	    !(key->conf.flags & IEEE80211_KEY_FLAG_PUT_MMIE_SPACE))
- 		return TX_CONTINUE;
- 
- 	if (WARN_ON(skb_tailroom(skb) < sizeof(*mmie)))
-@@ -962,6 +963,9 @@ ieee80211_crypto_aes_cmac_encrypt(struct ieee80211_tx_data *tx)
- 
- 	bip_ipn_set64(mmie->sequence_number, pn64);
- 
-+	if (info->control.hw_key)
-+		return TX_CONTINUE;
-+
- 	bip_aad(skb, aad);
- 
- 	/*
+ drivers/net/wireless/mediatek/mt76/mac80211.c |   5 +-
+ drivers/net/wireless/mediatek/mt76/mmio.c     |  13 +-
+ drivers/net/wireless/mediatek/mt76/mt76.h     |  13 +-
+ .../net/wireless/mediatek/mt76/mt7615/mac.c   | 190 +++++++++++++++++-
+ .../net/wireless/mediatek/mt76/mt7615/mac.h   |  15 ++
+ .../net/wireless/mediatek/mt76/mt7615/main.c  |  15 +-
+ .../net/wireless/mediatek/mt76/mt7615/mcu.c   |  72 -------
+ .../net/wireless/mediatek/mt76/mt7615/mcu.h   |  29 ---
+ .../wireless/mediatek/mt76/mt7615/mt7615.h    |   6 +-
+ .../net/wireless/mediatek/mt76/mt7615/regs.h  |  10 +
+ drivers/net/wireless/mediatek/mt76/usb.c      |   2 +-
+ 11 files changed, 242 insertions(+), 128 deletions(-)
+
 -- 
 2.21.0
 
