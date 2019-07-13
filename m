@@ -2,181 +2,79 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 5F5C1677CF
-	for <lists+linux-wireless@lfdr.de>; Sat, 13 Jul 2019 05:41:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6CC5D67A33
+	for <lists+linux-wireless@lfdr.de>; Sat, 13 Jul 2019 15:03:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727559AbfGMDlL (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 12 Jul 2019 23:41:11 -0400
-Received: from mail-yb1-f195.google.com ([209.85.219.195]:36314 "EHLO
-        mail-yb1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727466AbfGMDlL (ORCPT
+        id S1727582AbfGMNC7 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 13 Jul 2019 09:02:59 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:35532 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726474AbfGMNC7 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 12 Jul 2019 23:41:11 -0400
-Received: by mail-yb1-f195.google.com with SMTP id d9so185256ybf.3
-        for <linux-wireless@vger.kernel.org>; Fri, 12 Jul 2019 20:41:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:from:date:message-id:subject:to:cc
-         :content-transfer-encoding;
-        bh=Z3tRjW5QzxnhoQQL59mW+eBt8U9De8yi2iApVSZh/e8=;
-        b=UG8ISaNeLQrXy17kTVqytJRND0Tidaqt3bWsMmRiUtXbyijmpCUXYaUzXWfF/Ldg9b
-         yJYZYp7PclyQZENNSH3DYmC1wncKvrUOp4ZAlEAVRmS7yn/w4Wd2yKP7rcdeFPgswe89
-         HXTyOgAH03cQodVFQovkz7Buhj1Do+Hwst1yCNfXFt2ffgyAzq4ESmAVmywPoJMajsWh
-         +t/RMLVnLPcciWE57KJ0fwQQTztvfbTRdwAiaYNSjd7xBCB7D/qEZgQ0yXG60TdVWT22
-         Ft6CDYF6SEKN0Z1DMoTiAGwcuKfZLOw4BLrFgP2JFK0EPHIO+anayar/2AhmL1MtdlwU
-         iClg==
+        Sat, 13 Jul 2019 09:02:59 -0400
+Received: from mail-io1-f72.google.com ([209.85.166.72])
+        by youngberry.canonical.com with esmtps (TLS1.0:RSA_AES_128_CBC_SHA1:16)
+        (Exim 4.76)
+        (envelope-from <seth.forshee@canonical.com>)
+        id 1hmHg2-0005rZ-BU
+        for linux-wireless@vger.kernel.org; Sat, 13 Jul 2019 13:02:58 +0000
+Received: by mail-io1-f72.google.com with SMTP id f22so14160574ioh.22
+        for <linux-wireless@vger.kernel.org>; Sat, 13 Jul 2019 06:02:58 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:from:date:message-id:subject:to:cc
-         :content-transfer-encoding;
-        bh=Z3tRjW5QzxnhoQQL59mW+eBt8U9De8yi2iApVSZh/e8=;
-        b=uYNlWFwm4D1VOFzK/NFgOObDSMIWRubJvfngU2AA8hs/3aa3YoLRn5eo/PWNX15Hjh
-         jDx0c3eFGoZH9YwsTJG703E8JDqzMaVNnhtbSfRtWogbuwZeCP6/HRIfsQ0zvwJQ6gyb
-         yAMnjExU4L0j0VqN8tMRmt7F55PmdNhF16sQpZvFpUb+AUiCNMbSGDijuowvYFJ6j0S9
-         /1vfVLQMYNxpfKY782Xa5JEj6LSlBLWgnNVHfpNUB9wnFW5+FZVgvMv9coKApa/n0dKP
-         h1lRopA9260uqyTFFOlDBV+UASDldMY4WTgj9nIpYjJy07jQ2zf8bgxZ+357u1Ub/wuO
-         Gzsg==
-X-Gm-Message-State: APjAAAUlRd0vWu2bLBzpM1wrPAIlK0OvKZTKVTGXc/dziI6Fo5NJOda2
-        OwbaM5wGjnJkUQGellH+4V/kMaIkNbn5NdFIDvq22ZU=
-X-Google-Smtp-Source: APXvYqy/NxMLHc8Xy5m27tRNUkEJfGSwMgIg8Ua1SF7UlWmiXs/jvtoP3FIxX+A3U0xp0PWZDjGsHN1Gl+1dm7pwSYc=
-X-Received: by 2002:a25:bccc:: with SMTP id l12mr102778ybm.217.1562989269927;
- Fri, 12 Jul 2019 20:41:09 -0700 (PDT)
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=tU+x96g/vSnmBezVc42bke8XpBT4hQ9LXRrDqA+3cKo=;
+        b=hvYHH70iQz+BWj26boS67kEzIzAf5JsH7E6LkDCpav5iY7hqiexuQA7W2neF84NUbK
+         VJmxc8wiZIEAzYSx5eXOlB/psjFDh6o5+uM7GSw6TYE4N7kzvT+5lRgw6QRifRtyGd3z
+         IiXKSVRvEW+ZRHxPLYdXGdREjSqPdY0fDOSCldXDuFIEw6KvE6XaHRV882wSl/FvNyA2
+         fvtnPvOq7/8BuFYM/1wlof2XwaE+l1Z1PzIIMtSFRwXKYra2HO9SwZ8gwapewQQJ33Fh
+         jCH0/8SfyYqberu9KKO9Gc1fA5mgvfTe8Z0lODMxbEOPKL/NfX9OfrXfSNtGAQC2HLJ2
+         T7aQ==
+X-Gm-Message-State: APjAAAUT2KikTj3LnJ6HpHnjyZEGdeZWpwc787W4yrVIfAs69TuTE7sg
+        /TGLasGj23jH6NUcKcta8c9Hdr83WQjV+Q5+EtWhQ+WDsfhWiKbgvno9hmsZ7+bhwLFekCBdlqO
+        DgRDu3aj18ydzv8ggWmICCXiSx4bWfhcRoICFXkDMHION
+X-Received: by 2002:a6b:b593:: with SMTP id e141mr16507042iof.203.1563022977154;
+        Sat, 13 Jul 2019 06:02:57 -0700 (PDT)
+X-Google-Smtp-Source: APXvYqzHCgYszZmuGCwFtb1rkY96An+yyT/F0SDQ35OOmYipkwRrbn8MV/liQzRWB6TBFht7nv7lAw==
+X-Received: by 2002:a6b:b593:: with SMTP id e141mr16507012iof.203.1563022976823;
+        Sat, 13 Jul 2019 06:02:56 -0700 (PDT)
+Received: from localhost ([2605:a601:ac2:fb20:31dd:dc66:96d:f1eb])
+        by smtp.gmail.com with ESMTPSA id k2sm8556113iom.50.2019.07.13.06.02.54
+        (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
+        Sat, 13 Jul 2019 06:02:55 -0700 (PDT)
+Date:   Sat, 13 Jul 2019 08:02:53 -0500
+From:   Seth Forshee <seth.forshee@canonical.com>
+To:     Martin Willi <martin@strongswan.org>
+Cc:     wireless-regdb@lists.infradead.org, linux-wireless@vger.kernel.org,
+        Henrik Laxhuber <henrik@laxhuber.com>
+Subject: Re: [PATCH] wireless-regdb: Fix overlapping ranges for Switzerland
+ and Liechtenstein
+Message-ID: <20190713130253.GH5418@ubuntu-xps13>
+References: <20190702141944.25902-1-martin@strongswan.org>
 MIME-Version: 1.0
-From:   Turritopsis Dohrnii Teo En Ming <tdteoenming@gmail.com>
-Date:   Sat, 13 Jul 2019 11:40:56 +0800
-Message-ID: <CANnei0G5L+g68oXO=zSzZ=v6jUWS4p+K9H-B0XHbb40sar05Xw@mail.gmail.com>
-Subject: Facts in the Singapore Political Context
-To:     linux-wireless@vger.kernel.org
-Cc:     Turritopsis Dohrnii Teo En Ming <tdteoenming@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20190702141944.25902-1-martin@strongswan.org>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Subject/Topic: Facts in the Singapore Political Context
+On Tue, Jul 02, 2019 at 04:19:44PM +0200, Martin Willi wrote:
+> The commit referenced below changes the 5GHz frequency range 5250-5330
+> to 5150-5330, making that range overlapping with the existing range
+> 5170-5250. This imposes DFS limitations and a reduced maximum power
+> level for the range 5170-5250.
+> 
+> The change of the frequency range seems not intentional. Instead the
+> commit should have changed the 5170-5250 range to 5150-5250, and the
+> 5250-5330 range to 5250-5350 (see [1]).
+> 
+> [1] https://www.ofcomnet.ch/api/rir/1010/05
+> 
+> Fixes: 957a7cff72a3 ("wireless-regdb: update regulatory rules for Switzerland (CH), and Liechtenstein (LI) on 5GHz")
+> Signed-off-by: Martin Willi <martin@strongswan.org>
 
-13 JULY 2019 Saturday Singapore Time
-
-Article: Why Singapore voters are asking for Santas Claus as their
-ideal politician to challenge the ruling party
-Online Platform: The Online Citizen (TOC)
-Author: Terry Xu (Singaporean, Chief Editor of The Online Citizen)
-Date Published: 25 June 2019
-URL: https://www.theonlinecitizen.com/2019/06/25/why-singapore-voters-are-a=
-sking-for-a-santas-claus-as-their-ideal-politician-to-challenge-the-ruling-=
-party/
-
-Excerpts from the above news article:
-
-"...we should set out the following facts in the Singapore political contex=
-t.
-
-- Majority of Singaporeans will not fork out money to support
-political causes or parties for change (even if it is a change that
-they desire)
-
-- Most if not all Singapore businesses are beholden to the Government
-Linked Companies and those associated with it such as NTUC.
-
-- Singapore was ranked fourth on Economist=E2=80=99s crony-capitalism index=
- in 2016.
-
-- Most Singaporeans will not stick their neck out for anyone penalised
-by the system. Forget what you know about the solidarity of citizens
-in Hong Kong, Taiwan or any other democratic country.
-
-(Notes: Mr. Turritopsis Dohrnii Teo En Ming is a 41-year old
-Singaporean Targeted Individual (TI) living in Singapore. After
-graduating from the National University of Singapore (NUS) 13 years
-ago in the year 2007, Mr. Teo En Ming did not have any stable job for
-the past 13 years. His employment history is extremely sparse for the
-past 13 years. In fact, he is not allowed to work for the past 13
-years due to political pressure. In what subtle ways? He keeps getting
-fired or is forced to resign for the past 13 years due to political
-pressure. Many times he has to accept a job way under his
-specialization (university degree and computer networking diploma).
-His total Central Provident Fund (CPF) (CPF is a compulsory government
-"pension fund" which cannot be withdrawn) savings of SGD$56,969 (as at
-27 Jun 2019) shows that he is extremely under-employed and
-under-achieved for the past 13 years as compared to his
-contemporaries. He has no career progression for the past 13 years,
-leading to stagnation or should I even say regression. He is always
-forced to accept an entry level/fresh university graduate salary of
-SGD$2800 (for IT professionals) or way lower (for mediocre jobs) for
-the past 13 years. His longest held job is only 12 months (1 year) in
-a small IT company in Singapore from Nov 2017 to Nov 2018. Compared to
-his contemporaries, Mr. Teo En Ming has the lowest Socio-Economic
-Status (SES) in Singapore and the poorest, even though he has a
-Bacheor's degree in Mechanical Engineering (with honors) from NUS, a
-diploma in Mechatronics Engineering (with Merit) from Singapore
-Polytechnic, and another diploma in Computer Networking (based on
-Cisco CCNA curriculum) from Singapore Polytechnic. What an irony! He
-lives in a HDB One-Room Rental Flat meant for the extremely poor in
-Singapore and he does not have any residential property, not even the
-most basic HDB 3-room flat. He has no car and not even a bicycle.
-Maybe he will also face difficulties buying toy cars as well. He has
-no credit cards at all for the past 13 years. Compared to other
-Singaporeans, he travels out of Singapore extremely infrequently due
-to a limited purse. Mr. Teo En Ming is an under-privileged
-Singaporean. He is a third class citizen in his own country. Maybe he
-is worse than third class. 1000th class??)
-
-- Most Singaporeans are grateful to the People=E2=80=99s Action Party for
-monetary handouts especially during election year even though the
-handouts are financed through the government and not the party.
-
-So what this essentially means =E2=80=93 should the complaints of the avera=
-ge
-voters be valid =E2=80=93 that an ideal political party or politician befor=
-e
-considering its political ideology, should:
-
-- be able to self fund the party=E2=80=99s activities between elections
-because Singaporeans will not donate to political parties and neither
-will businesses because Prime Minister Office will be told who are the
-supporters."
-
-"Even the esteemed Dr Tan Cheng Bock will find it hard to please their
-standards as a running-candidate in the General Election for his party
-does not have the same war chest and the support from the business
-community as what his former political party has."
-
-"Most Singaporeans will not stick their neck out for anyone penalised
-by the system. Forget what you know about the solidarity of citizens
-in Hong Kong, Taiwan or any other democratic country."
-
-The following photos illustrate the stark contrast between a protest
-in Hong Kong and a protest in Singapore.
-
-[1] http://i67.tinypic.com/2lc63cw.png
-
-[2] https://i.imgur.com/nfOGSVT.png
-
-[3] https://i.postimg.cc/bJYLqn7p/HK-protest-vs-SG-protest.png
-
-
------BEGIN EMAIL SIGNATURE-----
-
-The Gospel for all Targeted Individuals (TIs):
-
-[The New York Times] Microwave Weapons Are Prime Suspect in Ills of
-U.S. Embassy Workers
-
-Link: https://www.nytimes.com/2018/09/01/science/sonic-attack-cuba-microwav=
-e.html
-
-***************************************************************************=
-*****************
-
-Singaporean Mr. Turritopsis Dohrnii Teo En Ming's Academic
-Qualifications as at 14 Feb 2019
-
-[1] https://tdtemcerts.wordpress.com/
-
-[2] https://tdtemcerts.blogspot.sg/
-
-[3] https://www.scribd.com/user/270125049/Teo-En-Ming
-
------END EMAIL SIGNATURE-----
+Applied, thanks!
