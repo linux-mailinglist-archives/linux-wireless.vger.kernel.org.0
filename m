@@ -2,89 +2,63 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E6CF667E6C
-	for <lists+linux-wireless@lfdr.de>; Sun, 14 Jul 2019 11:57:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B78F767FE9
+	for <lists+linux-wireless@lfdr.de>; Sun, 14 Jul 2019 17:44:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728106AbfGNJ4y (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 14 Jul 2019 05:56:54 -0400
-Received: from mail.kernel.org ([198.145.29.99]:39704 "EHLO mail.kernel.org"
+        id S1728218AbfGNPoe (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 14 Jul 2019 11:44:34 -0400
+Received: from nbd.name ([46.4.11.11]:59370 "EHLO nbd.name"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726799AbfGNJ4x (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 14 Jul 2019 05:56:53 -0400
-Received: from lore-desk-wlan (unknown [151.66.36.246])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 065292064A;
-        Sun, 14 Jul 2019 09:56:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1563098213;
-        bh=PAxZQ3SN1e3X2UG12rpAKhAMaZKoC8inZ1h4yaZd/6w=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=LbjGr4ChdZVOAT3S476M2cZa7yP9R1C4ln7Dkc/iMTT06SAK5jzB+WfvUp37/hv6R
-         4jwcMQMdo5dzJD37Lsy8ko6TCLCVP8RECz6YD/RTDKE6gEOx4+aoVCG+lf1ETsiBYh
-         8Iba0Z9XIf60qu5kzBwo0t+ppDIcyxpcGvrJeC+0=
-Date:   Sun, 14 Jul 2019 11:56:48 +0200
-From:   Lorenzo Bianconi <lorenzo@kernel.org>
-To:     Johannes Berg <johannes@sipsolutions.net>
-Cc:     linux-wireless@vger.kernel.org, nbd@nbd.name,
-        lorenzo.bianconi@redhat.com
-Subject: Re: [PATCH] mac80211: add IEEE80211_KEY_FLAG_PUT_MMIE_SPACE to
- ieee80211_key_flags
-Message-ID: <20190714095648.GA30218@lore-desk-wlan>
-References: <1dd6dd782121d0b9cc32dec6a01db474e568ffb2.1563030033.git.lorenzo@kernel.org>
- <0112d5d6a0c83dbb800811b414ca1d5b3266e9dd.camel@sipsolutions.net>
+        id S1726799AbfGNPoe (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Sun, 14 Jul 2019 11:44:34 -0400
+Received: from p5dcfb359.dip0.t-ipconnect.de ([93.207.179.89] helo=bertha.fritz.box)
+        by ds12 with esmtpa (Exim 4.89)
+        (envelope-from <john@phrozen.org>)
+        id 1hmgfv-0007cJ-KA; Sun, 14 Jul 2019 17:44:32 +0200
+From:   John Crispin <john@phrozen.org>
+To:     Johannes Berg <johannes@sipsolutions.net>,
+        Kalle Valo <kvalo@codeaurora.org>
+Cc:     linux-wireless@vger.kernel.org, ath11k@lists.infradead.org,
+        John Crispin <john@phrozen.org>
+Subject: [PATCH 0/6] mac80211: add HE TX rate reporting to radiotap
+Date:   Sun, 14 Jul 2019 17:44:13 +0200
+Message-Id: <20190714154419.11854-1-john@phrozen.org>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="9jxsPFA5p3P2qPhR"
-Content-Disposition: inline
-In-Reply-To: <0112d5d6a0c83dbb800811b414ca1d5b3266e9dd.camel@sipsolutions.net>
-User-Agent: Mutt/1.12.0 (2019-05-25)
+Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+Right now struct ieee80211_tx_rate cannot hold HE rates. Lets extend
+struct ieee80211_tx_status instead and use ieee80211_tx_status_ext()
+to propagate the information to the subsystem.
 
---9jxsPFA5p3P2qPhR
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+John Crispin (6):
+  mac80211: add xmit rate to struct ieee80211_tx_status
+  mac80211: propagate struct ieee80211_tx_status into
+    ieee80211_tx_monitor()
+  mac80211: add struct ieee80211_tx_status support to
+    ieee80211_add_tx_radiotap_header
+  ath11k: drop tx_info from ath11k_sta
+  ath11k: add HE rate accounting to driver
+  ath11k: switch to using ieee80211_tx_status_ext()
 
-> On Sat, 2019-07-13 at 17:03 +0200, Lorenzo Bianconi wrote:
-> > Add IEEE80211_KEY_FLAG_PUT_MMIE_SPACE flag to ieee80211_key_flags in or=
-der
-> > to allow the driver to notify mac80211 to allocate mmie space for AES_C=
-MAC
-> > hw cipher. Moreover mac80211 will set MMIE pn while MIC will be computed
-> > in hw.
->=20
-> Hmm. It probably should be called something like GENERATE_MMIE in line
-> with GENERATE_IV_MGMT etc.?
->=20
-> Purely adding the *space* wouldn't really be all that useful, we're not
-> really going to apply our tailroom request to this since it's a
-> (relatively rare) mgmt. frame, so ...
+ drivers/net/wireless/ath/ath11k/core.h        |   3 +-
+ drivers/net/wireless/ath/ath11k/debugfs_sta.c |   7 +
+ drivers/net/wireless/ath/ath11k/dp.h          |   9 +
+ drivers/net/wireless/ath/ath11k/dp_rx.c       |  82 ++++----
+ drivers/net/wireless/ath/ath11k/dp_tx.c       |  20 +-
+ drivers/net/wireless/ath/ath11k/hal_rx.c      |  13 +-
+ drivers/net/wireless/ath/ath11k/hal_rx.h      |  30 +++
+ drivers/net/wireless/ath/ath11k/rx_desc.h     |   8 +
+ include/net/mac80211.h                        |   2 +
+ net/mac80211/ieee80211_i.h                    |   3 +-
+ net/mac80211/status.c                         | 180 ++++++++++++++++--
+ net/mac80211/tx.c                             |   3 +-
+ 12 files changed, 291 insertions(+), 69 deletions(-)
 
-Hi Johannes,
+-- 
+2.20.1
 
-ack, I will post v2 fixing it.
-
-Regards,
-Lorenzo
-
->=20
-> johannes
->=20
-
---9jxsPFA5p3P2qPhR
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYIAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCXSr8XAAKCRA6cBh0uS2t
-rIzqAQDRs/YiVUlxJ3u0Sll8IRGkO3jAb8QSWm6eUochpG2V1wEAwo45pKTKK8rW
-OvoQ4oYoEY8OeR/vCM6oVzkf3sukGAE=
-=jKf4
------END PGP SIGNATURE-----
-
---9jxsPFA5p3P2qPhR--
