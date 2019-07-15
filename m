@@ -2,67 +2,248 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B5B18687DD
-	for <lists+linux-wireless@lfdr.de>; Mon, 15 Jul 2019 13:05:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C79226895A
+	for <lists+linux-wireless@lfdr.de>; Mon, 15 Jul 2019 14:47:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729980AbfGOLFl (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 15 Jul 2019 07:05:41 -0400
-Received: from mail-pl1-f195.google.com ([209.85.214.195]:38395 "EHLO
-        mail-pl1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729871AbfGOLFl (ORCPT
+        id S1730497AbfGOMp1 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 15 Jul 2019 08:45:27 -0400
+Received: from smtp.codeaurora.org ([198.145.29.96]:49508 "EHLO
+        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1730465AbfGOMp0 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 15 Jul 2019 07:05:41 -0400
-Received: by mail-pl1-f195.google.com with SMTP id az7so8115685plb.5
-        for <linux-wireless@vger.kernel.org>; Mon, 15 Jul 2019 04:05:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:from:date:message-id:subject:to;
-        bh=at1U0zLzNGQlxAxn9clrRSHSPpGB2zlKGmciYViXmzQ=;
-        b=HGS8/iMuetgVtqjxe/M9HccA1zlygCGly7/jeXcDSWx8Saz/Z5MgMrIp2cgdSWY29g
-         K8CFbAm4PHBe01rQAePn9e3nA4kqcb3EqL74HD62Ua3YaotA/UCz2IbHrhvOMRk8dtlu
-         E/P+JDWCY8cDx1Q+nB9qO/puoCtuHmwzZ+Kn5k3VmiMMhYgXHImwVLabvl/cUzW9SSnM
-         pMi2vWUH1YfvVMsB+vDI3TRq9xEa+CJXBTyHDIVMNAuyaQinM1nhnoY99FJ0noODVeBS
-         kt7oqk6LHOEUCN/hpffdtrQYs9cgmVU2Ep++Eq4w/1uVw5NS2iN3IBdpHtsfPH1AHgM/
-         2cAQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:from:date:message-id:subject:to;
-        bh=at1U0zLzNGQlxAxn9clrRSHSPpGB2zlKGmciYViXmzQ=;
-        b=RMS+aEE2+Gru0DtH2J8rj9s1t7KuAyWesteqLqW8WzfO4MO+m6lQqOQT/7ZcAfqjoK
-         9ufxlwMs8ZAXza41tV2m31iZwV3iG0FYtLxwIEAsGiv1ubUUlOtRhwmgkP6LAmiHM8Y7
-         tsuRQUhsSch9sRGza8azFp3Vi3tIWx1WqjvZhSkHGn/h4pW8hBOsgsKB/xJiMyY4wwN1
-         dctbbuQy88zncxfJ2Wlr78cNrRFystXmfOlnydeOKTyPHsG2fYOl/3BIYUCbEfxNP0yd
-         o5Vl4lQd04kYNgiTSneYeJW/eDmFvKbYFBM66jLw8SVYjDmWZmaHJx8O2V7NWw9KenSB
-         DXWg==
-X-Gm-Message-State: APjAAAUhB7ARygF2JOU4HcelWDGDhIFMxNQlnA9T70EDKEQSedSe+qnP
-        cvFU/py9618Tyo0hYngKSCA8c1HbY77KpHSq6n0=
-X-Google-Smtp-Source: APXvYqwOiXbe+a9fRpbpLXTvNPVwsPT1oZ68shKAePpc9r68uLJsEQQtdPnaiZAs6t/7uXs9XbugJ0+3MvDIhFf7bT8=
-X-Received: by 2002:a17:902:82c4:: with SMTP id u4mr27727554plz.196.1563188740213;
- Mon, 15 Jul 2019 04:05:40 -0700 (PDT)
+        Mon, 15 Jul 2019 08:45:26 -0400
+Received: by smtp.codeaurora.org (Postfix, from userid 1000)
+        id 2AF0461778; Mon, 15 Jul 2019 12:45:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
+        s=default; t=1563194725;
+        bh=5ro4ix6SMvDbRoJMYAJMd+MA316+8J9xrgqnxiKcxPw=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=BW11/0HHAEhXs5+g8vBxPvsKsMHA0XPLpoDj+WF+YxBjLsian4sw7IFcBgsmD1nBk
+         3g2y7EnVVzINp5HfTK97/obYPH0+C0ipBYMEpRwOwjCJwB5udj0fxRD45p+rdCKcSG
+         x3RbPp4eiev+5/CfDkpCl5RxhUEVx9vq4fLjNQkU=
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        pdx-caf-mail.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.7 required=2.0 tests=ALL_TRUSTED,BAYES_00,
+        DKIM_INVALID,DKIM_SIGNED autolearn=no autolearn_force=no version=3.4.0
+Received: from mail.codeaurora.org (localhost.localdomain [127.0.0.1])
+        by smtp.codeaurora.org (Postfix) with ESMTP id ED6D860769;
+        Mon, 15 Jul 2019 12:45:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
+        s=default; t=1563194724;
+        bh=5ro4ix6SMvDbRoJMYAJMd+MA316+8J9xrgqnxiKcxPw=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=ZrsCrvJ4A15w7ZRVO+oWITNF55pWWjtd4BZAOdSCZjvTBZ9hP+M+FKgSx+DbgO8iQ
+         Iec2N5OMrwMwXgyyaVbERqCyrrzGZ3aAt/FOH9BmF8SVS8wmdfr5NXQ/ELURxU7p7S
+         /0YESPTlM8qB3THBhfclLo4UAVLDNIn9J5n560NU=
 MIME-Version: 1.0
-Received: by 2002:a17:90a:b78d:0:0:0:0 with HTTP; Mon, 15 Jul 2019 04:05:39
- -0700 (PDT)
-From:   Donald Douglas <ddouglasng@gmail.com>
-Date:   Mon, 15 Jul 2019 04:05:39 -0700
-Message-ID: <CALVR28HVqJxvCvm-YQ-YA+u8OLbgMVNk_HuoUMbqH-o67LhU3A@mail.gmail.com>
-Subject: Kindly Respond
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=US-ASCII;
+ format=flowed
+Content-Transfer-Encoding: 7bit
+Date:   Mon, 15 Jul 2019 15:45:23 +0300
+From:   Alexei Lazar <ailizaro@codeaurora.org>
+To:     Johannes Berg <johannes@sipsolutions.net>
+Cc:     linux-wireless@vger.kernel.org, wil6210@qti.qualcomm.com
+Subject: Re: [PATCH v4 1/2] nl80211: Add support for EDMG channels
+In-Reply-To: <957f8c53224ff6479015519de39a49a6d127bff7.camel@sipsolutions.net>
+References: <1562508727-17082-1-git-send-email-ailizaro@codeaurora.org>
+ <1562508727-17082-2-git-send-email-ailizaro@codeaurora.org>
+ <957f8c53224ff6479015519de39a49a6d127bff7.camel@sipsolutions.net>
+Message-ID: <dcb4f42a00a827ed0b614b9cff5827f7@codeaurora.org>
+X-Sender: ailizaro@codeaurora.org
+User-Agent: Roundcube Webmail/1.2.5
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hello,
-I am Barr Fredrick Mbogo a business consultant i have a lucrative
-business to discuss with you from the Eastern part of Africa Uganda to
-be precise aimed at agreed percentage upon your acceptance of my hand
-in business and friendship. Kindly respond to me if you are interested
-to partner with me for an update. Very important.
+On 2019-07-12 11:35, Johannes Berg wrote:
+> On Sun, 2019-07-07 at 17:12 +0300, Alexei Avshalom Lazar wrote:
+>> 
+>>  /**
+>> + * struct ieee80211_edmg - EDMG configuration
+>> + *
+>> + * This structure describes most essential parameters needed
+>> + * to describe 802.11ay EDMG configuration
+>> + *
+>> + * @channels: bitmap that indicates the 2.16 GHz channel(s)
+>> + *	that are allowed to be used for transmissions.
+>> + *	Bit 0 indicates channel 1, bit 1 indicates channel 2, etc.
+>> + *	Set to 0 indicate EDMG not supported.
+>> + * @bw_config: Channel BW Configuration subfield encodes
+>> + *	the allowed channel bandwidth configurations
+>> + */
+>> +struct ieee80211_edmg {
+>> +	u8 channels;
+>> +	u8 bw_config;
+>> +};
+> 
+> So I think the enum here like I just said might be good. I don't know
+> what to really the values in it, but having something that says "yes
+> this is just a magic number from the spec" would be nice...
 
-Yours Sincerely,
-Donald Douglas,
-For,
-Barr Frederick Mbogo
-Legal Consultant.
-Reply to: barrfredmbogo@consultant.com
+You are right, enum make more sense than hardcoded values, in addition
+the description will help with the better understanding of the values.
+
+> 
+> Maybe also call it "struct ieee80211_edmg_chan" or something? Not sure,
+> it's sort of covering both chan and cfg, so probably what you have is
+> better.
+> 
+>> @@ -350,6 +369,7 @@ struct ieee80211_supported_band {
+>>  	int n_bitrates;
+>>  	struct ieee80211_sta_ht_cap ht_cap;
+>>  	struct ieee80211_sta_vht_cap vht_cap;
+>> +	struct ieee80211_edmg edmg_cap;
+> 
+> Yeah, I think if you have edmg_cap as the variable name, your naming is
+> better :)
+> 
+>> + * @edmg: define the EDMG channels.
+>> + *	This may specify multiple channels and bonding options for the 
+>> driver
+>> + *	to choose from, based on BSS configuration.
+> 
+> Here actually I don't understand how you'd specify *multiple* bonding
+> options? The bw_config is an enum, right?
+> 
+> Or maybe this case should actually *not* be the same struct, but a
+> different struct with a *bitmap* of the enum values?
+> 
+> But then it'd need a u16 anyway since the enum values go higher, up to
+> 16 according to your code below:
+
+In EDMG userspace can request connect with a configuration
+(channels) that represents more than 1 option, as an outcome of AP
+operating EDMG channels.
+For example: Let's say userspace sees in the scan result that the AP
+operating on CB3 (ChannelBonding X 3):
+channels = 0x7 (channels 1,2,3)
+bw_config = 6 (allow CB1, CB2 or CB3)
+primary = 2
+userspace then sends connection request with the same values
+(assuming STA support this configuration).
+The AP will decide the connection details, it can decide to operate
+on CB2 (channels 1+2 or channels 2+3) or CB3 (channels 1+2+3).
+
+Other option for this same scan result, but when the STA supports up to
+CB2 (doesn't support CB3), userspace sends different connection request:
+channels = 0x7 (channels 1,2,3)
+bw_config = 5 (allow CB1 or CB2)
+Again we have more than one option for connection but limited for 
+bonding
+up to 2 channels.
+
+The general idea here is that the AP can choose what is the optimal
+connection configuration for each STA, if 2 STA's able to connect on
+CB2:
+channels = 0x7 (channels 1,2,3)
+bw_config = 5 (support CB1 or CB2)
+The AP can choose to connect to one STA on CB2 channels 1+2 and to the
+second STA with CB2 channels 2+3.
+
+> 
+>> +#define NL80211_EDMG_BW_CONFIG_MIN	4
+>> +#define NL80211_EDMG_BW_CONFIG_MAX	15
+> 
+>> +static bool cfg80211_valid_60g_freq(u32 freq)
+>> +{
+>> +	return (freq >= 58320 && freq <= 70200);
+> 
+> nit: no need for the parentheses
+
+Done.
+
+> 
+>> +static bool cfg80211_edmg_chandef_valid(const struct 
+>> cfg80211_chan_def *chandef)
+>> +{
+>> +	int max_contiguous = 0;
+>> +	int num_of_enabled = 0;
+>> +	int contiguous = 0;
+>> +	int i;
+>> +
+>> +	if (!chandef->edmg.channels && !chandef->edmg.bw_config)
+>> +		return true;
+>> +
+>> +	if ((!chandef->edmg.channels && chandef->edmg.bw_config) ||
+>> +	    (chandef->edmg.channels && !chandef->edmg.bw_config) ||
+>> +	    !cfg80211_valid_60g_freq(chandef->chan->center_freq))
+>> +		return false;
+> 
+> That's a bit hard to read, maybe pull out the valid_60g_freq into a
+> separate if statement?
+> 
+> And after the "!channels && !bw_config" part, you don't actually need
+> the whole condition that way, you just need
+> 
+> 	if (!channels || !bw_config)
+> 		return false;
+> 
+> since both cannot be unset at this point.
+
+Done.
+
+> 
+>> @@ -112,7 +206,7 @@ bool cfg80211_chandef_valid(const struct 
+>> cfg80211_chan_def *chandef)
+>>  		return false;
+>>  	}
+>> 
+>> -	return true;
+>> +	return cfg80211_edmg_chandef_valid(chandef);
+> 
+> 
+> I *think* I might prefer the "could this be an EDMG channel" condition
+> to be outside, i.e.
+> 
+> 	if ((chandef->edmg.channels || chandef->edmg.bw_config) &&
+> 	    !cfg80211_edmg_chandef_valid(chandef))
+> 		return false;
+> 
+> 	return true;
+> 
+> 
+> That's clearly equivalent to what you have now, but I think it's easier
+> to understand that we only enter the "edmg_chandef_valid()" when it
+> looks like an EDMG channel and we thus need to validate it.
+
+Agree, done.
+
+> 
+> I'd even go as far as saying that we should have an inline for it in
+> cfg80211.h:
+> 
+> static inline bool cfg80211_chandef_is_edmg(...)
+> {
+> 	return chandef->edmg.channels || chandef->edmg.bw_config;
+> }
+> 
+> and we use that in the code I wrote above, as well as other places that
+> want to ask this question.
+
+Done.
+
+> 
+> 
+>> +	[NL80211_ATTR_WIPHY_EDMG_CHANNELS] = { .type = NLA_U8 },
+> 
+> Since you say there are only 6 channels, this probably also has a lower
+> bound of 1 (need to set at least one bit) and an upper bound of 63 (all
+> lower 6 bits set)?
+
+Actually the upper bound is 60, the Spec define that cannot be more than
+4 bits "ON"
+Updated the policy.
+
+> 
+> In any case, thanks for your work on this, and especially for your
+> patience with me reviewing.
+> 
+> johannes
+
+-- 
+Alexei Lazar
+Qualcomm Israel, on behalf of Qualcomm Innovation Center, Inc.
+The Qualcomm Innovation Center, Inc. is a member of Code Aurora Forum a
+Linux Foundation Collaborative Project
