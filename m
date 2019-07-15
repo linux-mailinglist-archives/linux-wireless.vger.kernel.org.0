@@ -2,25 +2,25 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D2DCE685B7
-	for <lists+linux-wireless@lfdr.de>; Mon, 15 Jul 2019 10:49:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0A964685F8
+	for <lists+linux-wireless@lfdr.de>; Mon, 15 Jul 2019 11:07:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729366AbfGOItA (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 15 Jul 2019 04:49:00 -0400
-Received: from smtp.codeaurora.org ([198.145.29.96]:51108 "EHLO
+        id S1729502AbfGOJHG (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 15 Jul 2019 05:07:06 -0400
+Received: from smtp.codeaurora.org ([198.145.29.96]:59826 "EHLO
         smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729245AbfGOIs7 (ORCPT
+        with ESMTP id S1729245AbfGOJHG (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 15 Jul 2019 04:48:59 -0400
+        Mon, 15 Jul 2019 05:07:06 -0400
 Received: by smtp.codeaurora.org (Postfix, from userid 1000)
-        id B144460F3C; Mon, 15 Jul 2019 08:48:58 +0000 (UTC)
+        id 9FA0460F3A; Mon, 15 Jul 2019 09:07:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1563180538;
-        bh=d7xrxXALrd9BNvgNlJglyBGbGqVhhDzSP34RGwbKv5A=;
+        s=default; t=1563181625;
+        bh=qeUJ6yQ41HgaxDpxnwOg7cqQHROMxVkkhftKtI6wZ0E=;
         h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=H3IuQ/2ViEExOHGMu68nOUzqqX1GviZeVC/wOEoSDYxi+QXfGHlQ0QQ4hrpVPN0q+
-         S7R6IYCerWTlYTKO3PXg5Wqxcp0bAklITa0dtFFpmFVEAbSBF3erTo/ZTmrgyX6kgK
-         biHTogVojFjn23YP6Ar3cRI8HuqvYafvFEuxVjcM=
+        b=P4ZdemaBHDoHGA5gjZVTRSYHptmo9IpqizDzo3MSBJXoMl3d5Z7qk4lvCXBCM+oiH
+         AWOYACqgo9ksNApDJhJXTgvgSaRJZ4baD+BSx4CbqlR1DPYtEsLcuC3CXCIHIQ7d0r
+         0lwvUgyuVKnm8Xp6m6J+9hTMm5gJ4KhBo00+vON0=
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         pdx-caf-mail.web.codeaurora.org
 X-Spam-Level: 
@@ -31,31 +31,38 @@ Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
         (Authenticated sender: kvalo@smtp.codeaurora.org)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 2D70A60DB6;
-        Mon, 15 Jul 2019 08:48:55 +0000 (UTC)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 907DD608A5;
+        Mon, 15 Jul 2019 09:07:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1563180538;
-        bh=d7xrxXALrd9BNvgNlJglyBGbGqVhhDzSP34RGwbKv5A=;
+        s=default; t=1563181625;
+        bh=qeUJ6yQ41HgaxDpxnwOg7cqQHROMxVkkhftKtI6wZ0E=;
         h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=H3IuQ/2ViEExOHGMu68nOUzqqX1GviZeVC/wOEoSDYxi+QXfGHlQ0QQ4hrpVPN0q+
-         S7R6IYCerWTlYTKO3PXg5Wqxcp0bAklITa0dtFFpmFVEAbSBF3erTo/ZTmrgyX6kgK
-         biHTogVojFjn23YP6Ar3cRI8HuqvYafvFEuxVjcM=
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 2D70A60DB6
+        b=P4ZdemaBHDoHGA5gjZVTRSYHptmo9IpqizDzo3MSBJXoMl3d5Z7qk4lvCXBCM+oiH
+         AWOYACqgo9ksNApDJhJXTgvgSaRJZ4baD+BSx4CbqlR1DPYtEsLcuC3CXCIHIQ7d0r
+         0lwvUgyuVKnm8Xp6m6J+9hTMm5gJ4KhBo00+vON0=
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 907DD608A5
 Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
 Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
 From:   Kalle Valo <kvalo@codeaurora.org>
-To:     Soeren Moch <smoch@web.de>
-Cc:     Stanislaw Gruszka <sgruszka@redhat.com>, stable@vger.kernel.org,
-        Helmut Schaa <helmut.schaa@googlemail.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 1/2] rt2x00usb: fix rx queue hang
-References: <20190701105314.9707-1-smoch@web.de>
-Date:   Mon, 15 Jul 2019 11:48:52 +0300
-In-Reply-To: <20190701105314.9707-1-smoch@web.de> (Soeren Moch's message of
-        "Mon, 1 Jul 2019 12:53:13 +0200")
-Message-ID: <874l3nadjf.fsf@kamboji.qca.qualcomm.com>
+To:     Fuqian Huang <huangfq.daxian@gmail.com>
+Cc:     "David S . Miller" <davem@davemloft.net>,
+        Arend van Spriel <arend.vanspriel@broadcom.com>,
+        Franky Lin <franky.lin@broadcom.com>,
+        Hante Meuleman <hante.meuleman@broadcom.com>,
+        Chi-Hsien Lin <chi-hsien.lin@cypress.com>,
+        Wright Feng <wright.feng@cypress.com>,
+        Igor Mitsyanko <imitsyanko@quantenna.com>,
+        Avinash Patil <avinashp@quantenna.com>,
+        Sergey Matyukevich <smatyukevich@quantenna.com>,
+        ath10k@lists.infradead.org, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+        brcm80211-dev-list.pdl@broadcom.com, brcm80211-dev-list@cypress.com
+Subject: Re: [PATCH v3 20/24] wireless: Remove call to memset after dma_alloc_coherent
+References: <20190715031941.7120-1-huangfq.daxian@gmail.com>
+Date:   Mon, 15 Jul 2019 12:06:59 +0300
+In-Reply-To: <20190715031941.7120-1-huangfq.daxian@gmail.com> (Fuqian Huang's
+        message of "Mon, 15 Jul 2019 11:19:41 +0800")
+Message-ID: <87zhlf8y4s.fsf@kamboji.qca.qualcomm.com>
 User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
 MIME-Version: 1.0
 Content-Type: text/plain
@@ -64,35 +71,26 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Soeren Moch <smoch@web.de> writes:
+Fuqian Huang <huangfq.daxian@gmail.com> writes:
 
-> Since commit ed194d136769 ("usb: core: remove local_irq_save() around
->  ->complete() handler") the handler rt2x00usb_interrupt_rxdone() is
-> not running with interrupts disabled anymore. So this completion handler
-> is not guaranteed to run completely before workqueue processing starts
-> for the same queue entry.
-> Be sure to set all other flags in the entry correctly before marking
-> this entry ready for workqueue processing. This way we cannot miss error
-> conditions that need to be signalled from the completion handler to the
-> worker thread.
-> Note that rt2x00usb_work_rxdone() processes all available entries, not
-> only such for which queue_work() was called.
+> In commit 518a2f1925c3
+> ("dma-mapping: zero memory returned from dma_alloc_*"),
+> dma_alloc_coherent has already zeroed the memory.
+> So memset is not needed.
 >
-> This patch is similar to what commit df71c9cfceea ("rt2x00: fix order
-> of entry flags modification") did for TX processing.
+> Signed-off-by: Fuqian Huang <huangfq.daxian@gmail.com>
+> ---
+> Changes in v3:
+>   - Use actual commit rather than the merge commit in the commit message
 >
-> This fixes a regression on a RT5370 based wifi stick in AP mode, which
-> suddenly stopped data transmission after some period of heavy load. Also
-> stopping the hanging hostapd resulted in the error message "ieee80211
-> phy0: rt2x00queue_flush_queue: Warning - Queue 14 failed to flush".
-> Other operation modes are probably affected as well, this just was
-> the used testcase.
->
-> Fixes: ed194d136769 ("usb: core: remove local_irq_save() around ->complete() handler")
-> Cc: stable@vger.kernel.org # 4.20+
-> Signed-off-by: Soeren Moch <smoch@web.de>
+>  drivers/net/wireless/ath/ath10k/ce.c                     | 5 -----
+>  drivers/net/wireless/broadcom/brcm80211/brcmfmac/pcie.c  | 2 --
+>  drivers/net/wireless/quantenna/qtnfmac/pcie/pearl_pcie.c | 2 --
+>  drivers/net/wireless/quantenna/qtnfmac/pcie/topaz_pcie.c | 2 --
+>  4 files changed, 11 deletions(-)
 
-I'll queue this for v5.3.
+Via which tree is this supposed to go? Can I take this to
+wireless-drivers-next?
 
 -- 
 Kalle Valo
