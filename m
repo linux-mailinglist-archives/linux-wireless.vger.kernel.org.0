@@ -2,95 +2,67 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 945DD6869B
-	for <lists+linux-wireless@lfdr.de>; Mon, 15 Jul 2019 11:47:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B5B18687DD
+	for <lists+linux-wireless@lfdr.de>; Mon, 15 Jul 2019 13:05:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729574AbfGOJru (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 15 Jul 2019 05:47:50 -0400
-Received: from smtp.codeaurora.org ([198.145.29.96]:42626 "EHLO
-        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729257AbfGOJru (ORCPT
+        id S1729980AbfGOLFl (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 15 Jul 2019 07:05:41 -0400
+Received: from mail-pl1-f195.google.com ([209.85.214.195]:38395 "EHLO
+        mail-pl1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729871AbfGOLFl (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 15 Jul 2019 05:47:50 -0400
-Received: by smtp.codeaurora.org (Postfix, from userid 1000)
-        id 3DA1660F3B; Mon, 15 Jul 2019 09:47:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1563184069;
-        bh=MvzJ9SUPxAPfny0L4MoJT7DHs6A2WXr8xqGCGGeevVA=;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=TRKTs/JW0jUZSwsyfWU4wz4tm1yTgaKuGEb0KF+qT2q5I+tkpmtYG5RcFc8VDqlTd
-         LzotL9FMsgEtBbOByVSwz5TLKoOCs8KQJZtAqNJ47goGc3i3DHDZcdxCSAkyS/MwC/
-         J5C5HZsq3ub7zhmw+tOepSByjt15fiJrzRDwvhXQ=
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        pdx-caf-mail.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.7 required=2.0 tests=ALL_TRUSTED,BAYES_00,
-        DKIM_INVALID,DKIM_SIGNED,SPF_NONE autolearn=no autolearn_force=no
-        version=3.4.0
-Received: from x230.qca.qualcomm.com (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        (Authenticated sender: kvalo@smtp.codeaurora.org)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id A49FA60E59;
-        Mon, 15 Jul 2019 09:47:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1563184068;
-        bh=MvzJ9SUPxAPfny0L4MoJT7DHs6A2WXr8xqGCGGeevVA=;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=U6/vs6JjvEi6BQ86qCSPjcFJShWPeL3mdNJx1tD1bCARPugDFqW5dZdBOOOVqo1l2
-         0VqpB4LZoCHUhG4EnPZaVpHZf771LMPT5YeVxSlU2/4Pt3eVFrEzNxuCV6FFWjewqk
-         koiiH8oJ5nkBEowSZ0Y8dXIM+9z68kzWAZehMT9U=
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org A49FA60E59
-Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
-From:   Kalle Valo <kvalo@codeaurora.org>
-To:     Luca Coelho <luca@coelho.fi>
-Cc:     linux-wireless@vger.kernel.org,
-        Luca Coelho <luciano.coelho@intel.com>
-Subject: Re: [PATCH 0/2] iwlwifi: fixes intended for 5.3 2019-07-08
-References: <20190708155534.18241-1-luca@coelho.fi>
-Date:   Mon, 15 Jul 2019 12:47:45 +0300
-In-Reply-To: <20190708155534.18241-1-luca@coelho.fi> (Luca Coelho's message of
-        "Mon, 8 Jul 2019 18:55:32 +0300")
-Message-ID: <87r26rpr26.fsf@codeaurora.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
+        Mon, 15 Jul 2019 07:05:41 -0400
+Received: by mail-pl1-f195.google.com with SMTP id az7so8115685plb.5
+        for <linux-wireless@vger.kernel.org>; Mon, 15 Jul 2019 04:05:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:from:date:message-id:subject:to;
+        bh=at1U0zLzNGQlxAxn9clrRSHSPpGB2zlKGmciYViXmzQ=;
+        b=HGS8/iMuetgVtqjxe/M9HccA1zlygCGly7/jeXcDSWx8Saz/Z5MgMrIp2cgdSWY29g
+         K8CFbAm4PHBe01rQAePn9e3nA4kqcb3EqL74HD62Ua3YaotA/UCz2IbHrhvOMRk8dtlu
+         E/P+JDWCY8cDx1Q+nB9qO/puoCtuHmwzZ+Kn5k3VmiMMhYgXHImwVLabvl/cUzW9SSnM
+         pMi2vWUH1YfvVMsB+vDI3TRq9xEa+CJXBTyHDIVMNAuyaQinM1nhnoY99FJ0noODVeBS
+         kt7oqk6LHOEUCN/hpffdtrQYs9cgmVU2Ep++Eq4w/1uVw5NS2iN3IBdpHtsfPH1AHgM/
+         2cAQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:from:date:message-id:subject:to;
+        bh=at1U0zLzNGQlxAxn9clrRSHSPpGB2zlKGmciYViXmzQ=;
+        b=RMS+aEE2+Gru0DtH2J8rj9s1t7KuAyWesteqLqW8WzfO4MO+m6lQqOQT/7ZcAfqjoK
+         9ufxlwMs8ZAXza41tV2m31iZwV3iG0FYtLxwIEAsGiv1ubUUlOtRhwmgkP6LAmiHM8Y7
+         tsuRQUhsSch9sRGza8azFp3Vi3tIWx1WqjvZhSkHGn/h4pW8hBOsgsKB/xJiMyY4wwN1
+         dctbbuQy88zncxfJ2Wlr78cNrRFystXmfOlnydeOKTyPHsG2fYOl/3BIYUCbEfxNP0yd
+         o5Vl4lQd04kYNgiTSneYeJW/eDmFvKbYFBM66jLw8SVYjDmWZmaHJx8O2V7NWw9KenSB
+         DXWg==
+X-Gm-Message-State: APjAAAUhB7ARygF2JOU4HcelWDGDhIFMxNQlnA9T70EDKEQSedSe+qnP
+        cvFU/py9618Tyo0hYngKSCA8c1HbY77KpHSq6n0=
+X-Google-Smtp-Source: APXvYqwOiXbe+a9fRpbpLXTvNPVwsPT1oZ68shKAePpc9r68uLJsEQQtdPnaiZAs6t/7uXs9XbugJ0+3MvDIhFf7bT8=
+X-Received: by 2002:a17:902:82c4:: with SMTP id u4mr27727554plz.196.1563188740213;
+ Mon, 15 Jul 2019 04:05:40 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain
+Received: by 2002:a17:90a:b78d:0:0:0:0 with HTTP; Mon, 15 Jul 2019 04:05:39
+ -0700 (PDT)
+From:   Donald Douglas <ddouglasng@gmail.com>
+Date:   Mon, 15 Jul 2019 04:05:39 -0700
+Message-ID: <CALVR28HVqJxvCvm-YQ-YA+u8OLbgMVNk_HuoUMbqH-o67LhU3A@mail.gmail.com>
+Subject: Kindly Respond
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Luca Coelho <luca@coelho.fi> writes:
+Hello,
+I am Barr Fredrick Mbogo a business consultant i have a lucrative
+business to discuss with you from the Eastern part of Africa Uganda to
+be precise aimed at agreed percentage upon your acceptance of my hand
+in business and friendship. Kindly respond to me if you are interested
+to partner with me for an update. Very important.
 
-> This is the first patchset with fixes for v5.3.
->
-> The changes are:
->
-> * A few new PCI IDs for 9000 and 22000 series;
-> * Support for C-step 22000 devices;
->
-> As usual, I'm pushing this to a pending branch, for kbuild bot.  And
-> as we agreed, I'll delegate these patches to you in patchwork for you
-> to apply them directly.
-
-Great, thanks.
-
-> There's no hurry with this, I know we're still in the merge window, I
-> just wanted to send them out for people who have these devices and are
-> having problems. It's your call: either send them during the merge
-> window, if you send a new pull-req; or take it when the merge window
-> closes, for v5.3-rc1.
-
-There seems to few other fixes for v5.3 so I'll try to send a pull
-request by end of this week, time permitting of course.
-
-> Note: all this area will probably have some conflicts when merging
-> with -next, because I've been sending new PCI IDs and such things for
-> fixes, while some other changes are being made for -next.  Let me know
-> if you need any help merging, when time comes.
-
-Ok, I'll keep on eye on those.
-
--- 
-Kalle Valo
+Yours Sincerely,
+Donald Douglas,
+For,
+Barr Frederick Mbogo
+Legal Consultant.
+Reply to: barrfredmbogo@consultant.com
