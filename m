@@ -2,103 +2,85 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id AD02368A9A
-	for <lists+linux-wireless@lfdr.de>; Mon, 15 Jul 2019 15:33:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B659E68B12
+	for <lists+linux-wireless@lfdr.de>; Mon, 15 Jul 2019 15:39:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730268AbfGONd1 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 15 Jul 2019 09:33:27 -0400
-Received: from mout.web.de ([212.227.15.14]:34615 "EHLO mout.web.de"
+        id S1730911AbfGONiV (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 15 Jul 2019 09:38:21 -0400
+Received: from mail.kernel.org ([198.145.29.99]:38034 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1730224AbfGONd0 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 15 Jul 2019 09:33:26 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
-        s=dbaedf251592; t=1563197593;
-        bh=NnJ/McBC1xY+rwzKCrlqJKC2Om2QgKLKoSPz2k86HZs=;
-        h=X-UI-Sender-Class:Subject:To:Cc:References:From:Date:In-Reply-To;
-        b=lDJpYRQKu5cnV6RPREucuIc2C+kjFqX+K/O7AUztCw1LIETvORDnda7OuCBA53W1/
-         fIZEwItysUbuafGbil2oGWZqhmOYyIfgWHMD1w3bzTh1l7+4rH9gw5qnS0qkTxSqzr
-         4QnZy/VjwM9ekhTelGt/gYpopGw88xEHvO/jTisI=
-X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
-Received: from [192.168.58.28] ([62.227.175.184]) by smtp.web.de (mrweb004
- [213.165.67.108]) with ESMTPSA (Nemesis) id 0Lvf5Q-1iW6qK3s9E-017SQx; Mon, 15
- Jul 2019 15:33:13 +0200
-Subject: Re: [PATCH v2 1/2] rt2x00usb: fix rx queue hang
-To:     Kalle Valo <kvalo@codeaurora.org>
-Cc:     Stanislaw Gruszka <sgruszka@redhat.com>, stable@vger.kernel.org,
-        Helmut Schaa <helmut.schaa@googlemail.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-References: <20190701105314.9707-1-smoch@web.de>
- <874l3nadjf.fsf@kamboji.qca.qualcomm.com>
-From:   Soeren Moch <smoch@web.de>
-Message-ID: <dd1caa78-182e-b0ce-c90c-9670f8455389@web.de>
-Date:   Mon, 15 Jul 2019 15:33:11 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.7.2
+        id S1730586AbfGONiU (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 15 Jul 2019 09:38:20 -0400
+Received: from sasha-vm.mshome.net (unknown [73.61.17.35])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 64A802080A;
+        Mon, 15 Jul 2019 13:38:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1563197899;
+        bh=jtIGX7QQt3juwRiIEJhbVV6v+rMt/kTvO0hy90dvnaE=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=Bl24HgK38Ae3GRF4bXgQiEodIsJX7Ie77knSuNpZEobvMS/dF96vsSsi7K1T1G4ww
+         RWE6uK80d48R/oK/w9tEzbSRF0gHFsn91kzOdwAqRFbRP//nkRcIJYlnyVbIQF6cg/
+         diAtYJ7UzCEx1gny2y5RHK8nPfOVl3RXVpX2Bkag=
+From:   Sasha Levin <sashal@kernel.org>
+To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Cc:     Alagu Sankar <alagusankar@silex-india.com>,
+        Wen Gong <wgong@codeaurora.org>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        Sasha Levin <sashal@kernel.org>, ath10k@lists.infradead.org,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.1 002/219] ath10k: htt: don't use txdone_fifo with SDIO
+Date:   Mon, 15 Jul 2019 09:34:34 -0400
+Message-Id: <20190715133811.2441-2-sashal@kernel.org>
+X-Mailer: git-send-email 2.20.1
+In-Reply-To: <20190715133811.2441-1-sashal@kernel.org>
+References: <20190715133811.2441-1-sashal@kernel.org>
 MIME-Version: 1.0
-In-Reply-To: <874l3nadjf.fsf@kamboji.qca.qualcomm.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 7bit
-Content-Language: en-US
-X-Provags-ID: V03:K1:djE4WeLVs9SwBsKtd/iffOLzKtax0CXU3ew0/RjUPxtGqz5u7ox
- ADBvZQTsFuUUtFrSk57QUyzDEY/v+2aWt5NmmVAlnALwq42qsVbjjuCD2cN+MTSAbfgfdm9
- gEad7au1pRtSGxj6SaNYNEXbbSZfq7H5jp4qLTgeUN/aJy1Q9HnPRcuNyIeyGXMpRq8Uuqh
- Sg6JOso+O3hgaKDkXgZkw==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:88IpjVHAKF4=:FAfP5y9ry6qRspW+01MVoY
- uTosMf6N4OodFVYQ/q+FFT31SDaWWH6OUBlHd5sG+hevUXouT6lfeH3iHPpfpoNbC4Op8CYzL
- /8SeazaalhETrwEzm+VmhlGxkrQbyybKgOL4PHdnlfOY2mOyZ9/3dhmsalUeccxUEoHkjFlzh
- B6LI8BTuocvgX0cn5XEHwol2d+pYbD+u5ICQjMvVfBdAN8LC1ihXaAQcNWdSu1EE2cMJ/WyLq
- SM1A53iiXVZsvbPHTQ7Jv406P3xsj4NDJrScAJIvHdUSIT7fPcCv1reK4S89LdL1kNnNW7wQ0
- FO+N0O6j9nD4eFHUAaBPc5FM78v590lAU7zmPyY1rzMzX6hmzLHmUy/bUI7XuvexKwa8c8XgW
- FvEM6b22G+uk9REz69S/N4hWASCYoaeFWEApTOBs1UhDniQyc17IWKGtHNUpqj6y/zD++YOrA
- vJmgILErvu+jSU8HaTcMmsP7cevw4TYiIf1FtCqolK1+wnBk/vkhZNh3kFFfnWe5Q3iFm3RRI
- fK2HWF/Fvb/r7LCV0FWEDZ8kq1+Deb+tY4Z2PF2KP5KuFBlfi9feKwvp3V3DGRe+ib1g6B2sr
- ClJYUFIG8wsTg9z87TcwoPhXH+whPHUs1UbbC6vwF0FoXg1SIqfERBruUJXvrl1UJLOcLqdqx
- IcArd6Qe0t89t4mBKmfxbRiWY6l5eIatU/wPrWAAYT0FhTqPyUEdorF8i2dTUdonQQpnZuuKK
- 8aCz/BDnfSWxcLYLVsDeJ+sCd7I8mM/TuckEbb/PjOXVAkoWLR1Nc40Q63sNloIkADl+/wZkA
- eYapr6XgtCdb4SGEg0G8UvH5qmlR1isUqlfLLr08nWu4y87Nx/F4SYpzR1Ci/tWdmlQ9LyF9/
- GdOhn/p//SCorO7Ykv5QWbymVmcZ0uW5qi/0fmdy9jcUIUZdWaMJ0YFX6+KYUrLc7Pry/rXS5
- cFiZlAPgaqLg6F5Qdch04z7jSYiZrrrWxFqRk5sUrIGJtkvNW8EuaKvABiOE4Vmbn8AfkmLQB
- llXXKDxW6ex9nQzD7qGmVXcGe19MAInvB+ez4fTmiEVuUzWpSDzecjNn4z1S7LnvA4MKHNR4n
- O+2GCnFLaFpztQ=
+X-stable: review
+X-Patchwork-Hint: Ignore
+Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+From: Alagu Sankar <alagusankar@silex-india.com>
 
+[ Upstream commit e2a6b711282a371c5153239e0468a48254f17ca6 ]
 
-On 15.07.19 10:48, Kalle Valo wrote:
-> Soeren Moch <smoch@web.de> writes:
->
->> Since commit ed194d136769 ("usb: core: remove local_irq_save() around
->>  ->complete() handler") the handler rt2x00usb_interrupt_rxdone() is
->> not running with interrupts disabled anymore. So this completion handler
->> is not guaranteed to run completely before workqueue processing starts
->> for the same queue entry.
->> Be sure to set all other flags in the entry correctly before marking
->> this entry ready for workqueue processing. This way we cannot miss error
->> conditions that need to be signalled from the completion handler to the
->> worker thread.
->> Note that rt2x00usb_work_rxdone() processes all available entries, not
->> only such for which queue_work() was called.
->>
->> This patch is similar to what commit df71c9cfceea ("rt2x00: fix order
->> of entry flags modification") did for TX processing.
->>
->> This fixes a regression on a RT5370 based wifi stick in AP mode, which
->> suddenly stopped data transmission after some period of heavy load. Also
->> stopping the hanging hostapd resulted in the error message "ieee80211
->> phy0: rt2x00queue_flush_queue: Warning - Queue 14 failed to flush".
->> Other operation modes are probably affected as well, this just was
->> the used testcase.
->>
->> Fixes: ed194d136769 ("usb: core: remove local_irq_save() around ->complete() handler")
->> Cc: stable@vger.kernel.org # 4.20+
->> Signed-off-by: Soeren Moch <smoch@web.de>
-> I'll queue this for v5.3.
->
-OK, thanks,
-Soeren
+HTT High Latency (ATH10K_DEV_TYPE_HL) does not use txdone_fifo at all, we don't
+even initialise it by skipping ath10k_htt_tx_alloc_buf() in
+ath10k_htt_tx_start(). Because of this using QCA6174 SDIO
+ath10k_htt_rx_tx_compl_ind() will crash when it accesses unitialised
+txdone_fifo. So skip txdone_fifo when using High Latency mode.
+
+Tested with QCA6174 SDIO with firmware WLAN.RMH.4.4.1-00007-QCARMSWP-1.
+
+Co-developed-by: Wen Gong <wgong@codeaurora.org>
+Signed-off-by: Alagu Sankar <alagusankar@silex-india.com>
+Signed-off-by: Wen Gong <wgong@codeaurora.org>
+Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ drivers/net/wireless/ath/ath10k/htt_rx.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/net/wireless/ath/ath10k/htt_rx.c b/drivers/net/wireless/ath/ath10k/htt_rx.c
+index 1acc622d2183..f22840bbc389 100644
+--- a/drivers/net/wireless/ath/ath10k/htt_rx.c
++++ b/drivers/net/wireless/ath/ath10k/htt_rx.c
+@@ -2277,7 +2277,9 @@ static void ath10k_htt_rx_tx_compl_ind(struct ath10k *ar,
+ 		 *  Note that with only one concurrent reader and one concurrent
+ 		 *  writer, you don't need extra locking to use these macro.
+ 		 */
+-		if (!kfifo_put(&htt->txdone_fifo, tx_done)) {
++		if (ar->bus_param.dev_type == ATH10K_DEV_TYPE_HL) {
++			ath10k_txrx_tx_unref(htt, &tx_done);
++		} else if (!kfifo_put(&htt->txdone_fifo, tx_done)) {
+ 			ath10k_warn(ar, "txdone fifo overrun, msdu_id %d status %d\n",
+ 				    tx_done.msdu_id, tx_done.status);
+ 			ath10k_txrx_tx_unref(htt, &tx_done);
+-- 
+2.20.1
+
