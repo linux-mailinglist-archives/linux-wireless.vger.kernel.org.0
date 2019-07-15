@@ -2,39 +2,41 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 5111469412
-	for <lists+linux-wireless@lfdr.de>; Mon, 15 Jul 2019 16:49:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9066669516
+	for <lists+linux-wireless@lfdr.de>; Mon, 15 Jul 2019 16:55:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2404317AbfGOOsT (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 15 Jul 2019 10:48:19 -0400
-Received: from mail.kernel.org ([198.145.29.99]:45244 "EHLO mail.kernel.org"
+        id S2390716AbfGOOzo (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 15 Jul 2019 10:55:44 -0400
+Received: from mail.kernel.org ([198.145.29.99]:57260 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2392349AbfGOOsS (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 15 Jul 2019 10:48:18 -0400
+        id S1731566AbfGOOYL (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 15 Jul 2019 10:24:11 -0400
 Received: from sasha-vm.mshome.net (unknown [73.61.17.35])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id A72D421530;
-        Mon, 15 Jul 2019 14:48:14 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 6142E217F4;
+        Mon, 15 Jul 2019 14:24:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1563202097;
-        bh=AIvEOgnBDmNF8t2w25HLrGM2PtBBamUOeiWkgLGSjcg=;
+        s=default; t=1563200650;
+        bh=ljjfcC5wq4RNJfSh5r/tp0HFdF8ZZPl3HrfpeUJxU58=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=frKymJ7Jq0MeSXVnyhv/llKGVen37cLp8zOVncpjXtWUC7sf19B4IDMdtvoRH4B5r
-         qJ/JPNbfkV99VbV6xTeZdZhjuy5JqEtA2x2B//+8spoOZd+3CV4KNZxBm8Pq3Mc4uN
-         gNSPxFegwx1B9SuoZWu2jKLuGJ3hhx7Lz5c92iXk=
+        b=h3xifsKKd4Q6p508IxkBxH/i7dcQjv5gJ6EK5b9+DTz4kUl+nh7xkTXFGbDiQZTwx
+         ObTsKgKTVJsWoM4uKmdsTC9cEg243QjnNQXm8Jcb0V+/kDIG0+aMtn16TyMbUQUsyo
+         Ny9TkePx7uxpYhonHwCrz30zpDsvyfoRsBJfNY9U=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Miaoqing Pan <miaoqing@codeaurora.org>,
+Cc:     Ping-Ke Shih <pkshih@realtek.com>,
+        syzbot+1fcc5ef45175fc774231@syzkaller.appspotmail.com,
+        Larry Finger <Larry.Finger@lwfinger.net>,
         Kalle Valo <kvalo@codeaurora.org>,
-        Sasha Levin <sashal@kernel.org>, ath10k@lists.infradead.org,
+        Sasha Levin <sashal@kernel.org>,
         linux-wireless@vger.kernel.org, netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.4 44/53] ath10k: fix PCIE device wake up failed
-Date:   Mon, 15 Jul 2019 10:45:26 -0400
-Message-Id: <20190715144535.11636-44-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.19 103/158] rtlwifi: rtl8192cu: fix error handle when usb probe failed
+Date:   Mon, 15 Jul 2019 10:17:14 -0400
+Message-Id: <20190715141809.8445-103-sashal@kernel.org>
 X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20190715144535.11636-1-sashal@kernel.org>
-References: <20190715144535.11636-1-sashal@kernel.org>
+In-Reply-To: <20190715141809.8445-1-sashal@kernel.org>
+References: <20190715141809.8445-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -44,49 +46,104 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Miaoqing Pan <miaoqing@codeaurora.org>
+From: Ping-Ke Shih <pkshih@realtek.com>
 
-[ Upstream commit 011d4111c8c602ea829fa4917af1818eb0500a90 ]
+[ Upstream commit 6c0ed66f1a5b84e2a812c7c2d6571a5621bf3396 ]
 
-Observed PCIE device wake up failed after ~120 iterations of
-soft-reboot test. The error message is
-"ath10k_pci 0000:01:00.0: failed to wake up device : -110"
+rtl_usb_probe() must do error handle rtl_deinit_core() only if
+rtl_init_core() is done, otherwise goto error_out2.
 
-The call trace as below:
-ath10k_pci_probe -> ath10k_pci_force_wake -> ath10k_pci_wake_wait ->
-ath10k_pci_is_awake
+| usb 1-1: New USB device strings: Mfr=0, Product=0, SerialNumber=0
+| rtl_usb: reg 0xf0, usbctrl_vendorreq TimeOut! status:0xffffffb9 value=0x0
+| rtl8192cu: Chip version 0x10
+| rtl_usb: reg 0xa, usbctrl_vendorreq TimeOut! status:0xffffffb9 value=0x0
+| rtl_usb: Too few input end points found
+| INFO: trying to register non-static key.
+| the code is fine but needs lockdep annotation.
+| turning off the locking correctness validator.
+| CPU: 0 PID: 12 Comm: kworker/0:1 Not tainted 5.1.0-rc4-319354-g9a33b36 #3
+| Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS
+| Google 01/01/2011
+| Workqueue: usb_hub_wq hub_event
+| Call Trace:
+|   __dump_stack lib/dump_stack.c:77 [inline]
+|   dump_stack+0xe8/0x16e lib/dump_stack.c:113
+|   assign_lock_key kernel/locking/lockdep.c:786 [inline]
+|   register_lock_class+0x11b8/0x1250 kernel/locking/lockdep.c:1095
+|   __lock_acquire+0xfb/0x37c0 kernel/locking/lockdep.c:3582
+|   lock_acquire+0x10d/0x2f0 kernel/locking/lockdep.c:4211
+|   __raw_spin_lock_irqsave include/linux/spinlock_api_smp.h:110 [inline]
+|   _raw_spin_lock_irqsave+0x44/0x60 kernel/locking/spinlock.c:152
+|   rtl_c2hcmd_launcher+0xd1/0x390
+| drivers/net/wireless/realtek/rtlwifi/base.c:2344
+|   rtl_deinit_core+0x25/0x2d0 drivers/net/wireless/realtek/rtlwifi/base.c:574
+|   rtl_usb_probe.cold+0x861/0xa70
+| drivers/net/wireless/realtek/rtlwifi/usb.c:1093
+|   usb_probe_interface+0x31d/0x820 drivers/usb/core/driver.c:361
+|   really_probe+0x2da/0xb10 drivers/base/dd.c:509
+|   driver_probe_device+0x21d/0x350 drivers/base/dd.c:671
+|   __device_attach_driver+0x1d8/0x290 drivers/base/dd.c:778
+|   bus_for_each_drv+0x163/0x1e0 drivers/base/bus.c:454
+|   __device_attach+0x223/0x3a0 drivers/base/dd.c:844
+|   bus_probe_device+0x1f1/0x2a0 drivers/base/bus.c:514
+|   device_add+0xad2/0x16e0 drivers/base/core.c:2106
+|   usb_set_configuration+0xdf7/0x1740 drivers/usb/core/message.c:2021
+|   generic_probe+0xa2/0xda drivers/usb/core/generic.c:210
+|   usb_probe_device+0xc0/0x150 drivers/usb/core/driver.c:266
+|   really_probe+0x2da/0xb10 drivers/base/dd.c:509
+|   driver_probe_device+0x21d/0x350 drivers/base/dd.c:671
+|   __device_attach_driver+0x1d8/0x290 drivers/base/dd.c:778
+|   bus_for_each_drv+0x163/0x1e0 drivers/base/bus.c:454
+|   __device_attach+0x223/0x3a0 drivers/base/dd.c:844
+|   bus_probe_device+0x1f1/0x2a0 drivers/base/bus.c:514
+|   device_add+0xad2/0x16e0 drivers/base/core.c:2106
+|   usb_new_device.cold+0x537/0xccf drivers/usb/core/hub.c:2534
+|   hub_port_connect drivers/usb/core/hub.c:5089 [inline]
+|   hub_port_connect_change drivers/usb/core/hub.c:5204 [inline]
+|   port_event drivers/usb/core/hub.c:5350 [inline]
+|   hub_event+0x138e/0x3b00 drivers/usb/core/hub.c:5432
+|   process_one_work+0x90f/0x1580 kernel/workqueue.c:2269
+|   worker_thread+0x9b/0xe20 kernel/workqueue.c:2415
+|   kthread+0x313/0x420 kernel/kthread.c:253
+|   ret_from_fork+0x3a/0x50 arch/x86/entry/entry_64.S:352
 
-Once trigger the device to wake up, we will continuously check the RTC
-state until it returns RTC_STATE_V_ON or timeout.
-
-But for QCA99x0 chips, we use wrong value for RTC_STATE_V_ON.
-Occasionally, we get 0x7 on the fist read, we thought as a failure
-case, but actually is the right value, also verified with the spec.
-So fix the issue by changing RTC_STATE_V_ON from 0x5 to 0x7, passed
-~2000 iterations.
-
-Tested HW: QCA9984
-
-Signed-off-by: Miaoqing Pan <miaoqing@codeaurora.org>
+Reported-by: syzbot+1fcc5ef45175fc774231@syzkaller.appspotmail.com
+Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+Acked-by: Larry Finger <Larry.Finger@lwfinger.net>
 Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath10k/hw.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/wireless/realtek/rtlwifi/usb.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath10k/hw.c b/drivers/net/wireless/ath/ath10k/hw.c
-index 7b84d08a5154..12d6549e45a1 100644
---- a/drivers/net/wireless/ath/ath10k/hw.c
-+++ b/drivers/net/wireless/ath/ath10k/hw.c
-@@ -128,7 +128,7 @@ const struct ath10k_hw_values qca6174_values = {
- };
+diff --git a/drivers/net/wireless/realtek/rtlwifi/usb.c b/drivers/net/wireless/realtek/rtlwifi/usb.c
+index 2ac5004d7a40..5adb939afee8 100644
+--- a/drivers/net/wireless/realtek/rtlwifi/usb.c
++++ b/drivers/net/wireless/realtek/rtlwifi/usb.c
+@@ -1081,13 +1081,13 @@ int rtl_usb_probe(struct usb_interface *intf,
+ 	rtlpriv->cfg->ops->read_eeprom_info(hw);
+ 	err = _rtl_usb_init(hw);
+ 	if (err)
+-		goto error_out;
++		goto error_out2;
+ 	rtl_usb_init_sw(hw);
+ 	/* Init mac80211 sw */
+ 	err = rtl_init_core(hw);
+ 	if (err) {
+ 		pr_err("Can't allocate sw for mac80211\n");
+-		goto error_out;
++		goto error_out2;
+ 	}
+ 	if (rtlpriv->cfg->ops->init_sw_vars(hw)) {
+ 		pr_err("Can't init_sw_vars\n");
+@@ -1108,6 +1108,7 @@ int rtl_usb_probe(struct usb_interface *intf,
  
- const struct ath10k_hw_values qca99x0_values = {
--	.rtc_state_val_on		= 5,
-+	.rtc_state_val_on		= 7,
- 	.ce_count			= 12,
- 	.msi_assign_ce_max		= 12,
- 	.num_target_ce_config_wlan	= 10,
+ error_out:
+ 	rtl_deinit_core(hw);
++error_out2:
+ 	_rtl_usb_io_handler_release(hw);
+ 	usb_put_dev(udev);
+ 	complete(&rtlpriv->firmware_loading_complete);
 -- 
 2.20.1
 
