@@ -2,130 +2,151 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id EDEB968231
-	for <lists+linux-wireless@lfdr.de>; Mon, 15 Jul 2019 04:25:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D465A682A5
+	for <lists+linux-wireless@lfdr.de>; Mon, 15 Jul 2019 05:20:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727006AbfGOCYP convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 14 Jul 2019 22:24:15 -0400
-Received: from rtits2.realtek.com ([211.75.126.72]:37916 "EHLO
-        rtits2.realtek.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725987AbfGOCYP (ORCPT
+        id S1729123AbfGODTv (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 14 Jul 2019 23:19:51 -0400
+Received: from mail-pl1-f196.google.com ([209.85.214.196]:43007 "EHLO
+        mail-pl1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729088AbfGODTu (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 14 Jul 2019 22:24:15 -0400
-Authenticated-By: 
-X-SpamFilter-By: BOX Solutions SpamTrap 5.62 with qID x6F2OBP2012615, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (RTITCASV02.realtek.com.tw[172.21.6.19])
-        by rtits2.realtek.com.tw (8.15.2/2.57/5.78) with ESMTPS id x6F2OBP2012615
-        (version=TLSv1 cipher=DHE-RSA-AES256-SHA bits=256 verify=NOT);
-        Mon, 15 Jul 2019 10:24:11 +0800
-Received: from RTITMBSVM04.realtek.com.tw ([fe80::e404:880:2ef1:1aa1]) by
- RTITCASV02.realtek.com.tw ([::1]) with mapi id 14.03.0439.000; Mon, 15 Jul
- 2019 10:24:10 +0800
-From:   Tony Chuang <yhchuang@realtek.com>
-To:     Brian Norris <briannorris@chromium.org>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-Subject: RE: [PATCH] rtw88: make functions static
-Thread-Topic: [PATCH] rtw88: make functions static
-Thread-Index: AQHVORrTo8iomYKVBEG4St2hzEydHqbK9bcw
-Date:   Mon, 15 Jul 2019 02:24:09 +0000
-Message-ID: <F7CD281DE3E379468C6D07993EA72F84D1867CEE@RTITMBSVM04.realtek.com.tw>
-References: <20190713013215.215008-1-briannorris@chromium.org>
-In-Reply-To: <20190713013215.215008-1-briannorris@chromium.org>
-Accept-Language: zh-TW, en-US
-Content-Language: zh-TW
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [172.21.68.183]
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 8BIT
-MIME-Version: 1.0
+        Sun, 14 Jul 2019 23:19:50 -0400
+Received: by mail-pl1-f196.google.com with SMTP id ay6so7547370plb.9;
+        Sun, 14 Jul 2019 20:19:50 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id;
+        bh=+B0jx+4muj+M4b7c2kQfV0uSbE8FiTxBXwM9XgPCIac=;
+        b=rUrV/W2cFJNaa8vePeI9kEWvofvtQd3wBD4YW63KnfV+rcI+vl/TeWgDn1ZWBbJF+d
+         4PhGeWEFU9VVCds7ZsnsSapiOLg8VcaUaz2PBh9LPeEOu3GXL+cnPGQ406XBCMZ1nvqm
+         9jfFFnT0DMHGLUz1+sz+FOYuvQ19Nfwvpr822BFWOzV5thNTCtV/hf2qW+3//T6uwDIk
+         cyEDHmxDdFtBrIgVGR4P7jiVcksY5TCWKSd2pyYTj0lNNQMyfveZ508iYGk8ICDqmP6Q
+         M7690uJe75Qu3fgoe3g2UZefqxultpC2Pncsj/IwKbWZ1ED4qPc2sIwvzbw+TCEF8x9L
+         vtJg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=+B0jx+4muj+M4b7c2kQfV0uSbE8FiTxBXwM9XgPCIac=;
+        b=V5IQ2fhJFjap+UxAWrmgmSZI8hkILL8SlSj92Os9dNHQwA75JKwQ9KKAqMwDZ5b+jx
+         cqcrNzxMR0IQRbldov1MitbLyEtDmhKmLAipEWpBUiyYGyXuKWQ2EL3o06LulPNGFRPi
+         yOaqZw9s0xm2VtPiUdb70Y4r4U4vkQ1XadIlIkOZ4tPPg/ZmUKD+ApuqhbzWJJCcrjhH
+         E2CuKECCz/43K/qAX7XY74eaPCnW0fucZYwr5ZXAtN8cp7YN+8fdxZ113cZfni57wYS/
+         6dhlUBv3DdaE2C0I5nfB4echMD+DX0ZuGFCjfF09y2ZvI5TGew/oWUmF9xaj4jU+XAn2
+         45og==
+X-Gm-Message-State: APjAAAWxt9VQXF7Bd6BoVEKuOtSMLF9BGSVPXW5SAEq/eK3HAN1ukuLU
+        wlOtaz0QJoB1N5kjjmH2hbI=
+X-Google-Smtp-Source: APXvYqwQR7EYn7nM9TgFm/nKnIR49M8lFOUn+x0miZZg3gxoz/XgR4qWm5y30xqPSsvlAzLYNlmvmQ==
+X-Received: by 2002:a17:902:a612:: with SMTP id u18mr25087040plq.181.1563160789988;
+        Sun, 14 Jul 2019 20:19:49 -0700 (PDT)
+Received: from hfq-skylake.ipads-lab.se.sjtu.edu.cn ([202.120.40.82])
+        by smtp.googlemail.com with ESMTPSA id 2sm21006045pgm.39.2019.07.14.20.19.45
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Sun, 14 Jul 2019 20:19:49 -0700 (PDT)
+From:   Fuqian Huang <huangfq.daxian@gmail.com>
+Cc:     Kalle Valo <kvalo@codeaurora.org>,
+        "David S . Miller" <davem@davemloft.net>,
+        Arend van Spriel <arend.vanspriel@broadcom.com>,
+        Franky Lin <franky.lin@broadcom.com>,
+        Hante Meuleman <hante.meuleman@broadcom.com>,
+        Chi-Hsien Lin <chi-hsien.lin@cypress.com>,
+        Wright Feng <wright.feng@cypress.com>,
+        Igor Mitsyanko <imitsyanko@quantenna.com>,
+        Avinash Patil <avinashp@quantenna.com>,
+        Sergey Matyukevich <smatyukevich@quantenna.com>,
+        ath10k@lists.infradead.org, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+        brcm80211-dev-list.pdl@broadcom.com,
+        brcm80211-dev-list@cypress.com,
+        Fuqian Huang <huangfq.daxian@gmail.com>
+Subject: [PATCH v3 20/24] wireless: Remove call to memset after dma_alloc_coherent
+Date:   Mon, 15 Jul 2019 11:19:41 +0800
+Message-Id: <20190715031941.7120-1-huangfq.daxian@gmail.com>
+X-Mailer: git-send-email 2.11.0
+To:     unlisted-recipients:; (no To-header on input)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-> Subject: [PATCH] rtw88: make functions static
-> 
-> They're only used in phy.c.
-> 
-> Signed-off-by: Brian Norris <briannorris@chromium.org>
-> ---
->  drivers/net/wireless/realtek/rtw88/phy.c | 13 ++++++++++---
->  drivers/net/wireless/realtek/rtw88/phy.h | 13 -------------
->  2 files changed, 10 insertions(+), 16 deletions(-)
-> 
-> diff --git a/drivers/net/wireless/realtek/rtw88/phy.c
-> b/drivers/net/wireless/realtek/rtw88/phy.c
-> index 4ec8dcf17361..4bb36eba7080 100644
-> --- a/drivers/net/wireless/realtek/rtw88/phy.c
-> +++ b/drivers/net/wireless/realtek/rtw88/phy.c
-> @@ -140,7 +140,7 @@ void rtw_phy_init(struct rtw_dev *rtwdev)
->  	dm_info->igi_history[0] = rtw_read32_mask(rtwdev, addr, mask);
->  }
-> 
-> -void rtw_phy_dig_write(struct rtw_dev *rtwdev, u8 igi)
-> +static void rtw_phy_dig_write(struct rtw_dev *rtwdev, u8 igi)
->  {
->  	struct rtw_chip_info *chip = rtwdev->chip;
->  	struct rtw_hal *hal = &rtwdev->hal;
-> @@ -1603,8 +1603,15 @@ static s8 rtw_phy_get_tx_power_limit(struct
-> rtw_dev *rtwdev, u8 band,
->  	return (s8)rtwdev->chip->max_power_index;
->  }
-> 
-> -void rtw_get_tx_power_params(struct rtw_dev *rtwdev, u8 path, u8 rate,
-> u8 bw,
-> -			     u8 ch, u8 regd, struct rtw_power_params *pwr_param)
-> +struct rtw_power_params {
-> +	u8 pwr_base;
-> +	s8 pwr_offset;
-> +	s8 pwr_limit;
-> +};
-> +
-> +static void rtw_get_tx_power_params(struct rtw_dev *rtwdev, u8 path, u8
-> rate,
-> +				    u8 bw, u8 ch, u8 regd,
-> +				    struct rtw_power_params *pwr_param)
->  {
->  	struct rtw_hal *hal = &rtwdev->hal;
->  	struct rtw_txpwr_idx *pwr_idx;
-> diff --git a/drivers/net/wireless/realtek/rtw88/phy.h
-> b/drivers/net/wireless/realtek/rtw88/phy.h
-> index 7c8eb732b13c..0f90ea24c6d7 100644
-> --- a/drivers/net/wireless/realtek/rtw88/phy.h
-> +++ b/drivers/net/wireless/realtek/rtw88/phy.h
-> @@ -103,19 +103,6 @@ static inline int rtw_check_supported_rfe(struct
-> rtw_dev *rtwdev)
->  	return 0;
->  }
-> 
-> -void rtw_phy_dig_write(struct rtw_dev *rtwdev, u8 igi);
-> -
-> -struct rtw_power_params {
-> -	u8 pwr_base;
-> -	s8 pwr_offset;
-> -	s8 pwr_limit;
-> -};
-> -
-> -void
-> -rtw_get_tx_power_params(struct rtw_dev *rtwdev, u8 path,
-> -			u8 rate, u8 bw, u8 ch, u8 regd,
-> -			struct rtw_power_params *pwr_param);
-> -
->  #define	MASKBYTE0		0xff
->  #define	MASKBYTE1		0xff00
->  #define	MASKBYTE2		0xff0000
-> --
+In commit 518a2f1925c3
+("dma-mapping: zero memory returned from dma_alloc_*"),
+dma_alloc_coherent has already zeroed the memory.
+So memset is not needed.
 
+Signed-off-by: Fuqian Huang <huangfq.daxian@gmail.com>
+---
+Changes in v3:
+  - Use actual commit rather than the merge commit in the commit message
 
-I am sorry I have to NACK it.
+ drivers/net/wireless/ath/ath10k/ce.c                     | 5 -----
+ drivers/net/wireless/broadcom/brcm80211/brcmfmac/pcie.c  | 2 --
+ drivers/net/wireless/quantenna/qtnfmac/pcie/pearl_pcie.c | 2 --
+ drivers/net/wireless/quantenna/qtnfmac/pcie/topaz_pcie.c | 2 --
+ 4 files changed, 11 deletions(-)
 
-Nothing wrong about this patch. Because in the last patch set I sent has
-11 patches, but one of them is not applied by Kalle.
-And I am going to resend it, which will use rtw_get_tx_power_params
-in debug.c
-
-Thanks,
-Yan-Hsuan
+diff --git a/drivers/net/wireless/ath/ath10k/ce.c b/drivers/net/wireless/ath/ath10k/ce.c
+index eca87f7c5b6c..294fbc1e89ab 100644
+--- a/drivers/net/wireless/ath/ath10k/ce.c
++++ b/drivers/net/wireless/ath/ath10k/ce.c
+@@ -1704,9 +1704,6 @@ ath10k_ce_alloc_dest_ring_64(struct ath10k *ar, unsigned int ce_id,
+ 	/* Correctly initialize memory to 0 to prevent garbage
+ 	 * data crashing system when download firmware
+ 	 */
+-	memset(dest_ring->base_addr_owner_space_unaligned, 0,
+-	       nentries * sizeof(struct ce_desc_64) + CE_DESC_RING_ALIGN);
+-
+ 	dest_ring->base_addr_owner_space =
+ 			PTR_ALIGN(dest_ring->base_addr_owner_space_unaligned,
+ 				  CE_DESC_RING_ALIGN);
+@@ -2019,8 +2016,6 @@ void ath10k_ce_alloc_rri(struct ath10k *ar)
+ 		value |= ar->hw_ce_regs->upd->mask;
+ 		ath10k_ce_write32(ar, ce_base_addr + ctrl1_regs, value);
+ 	}
+-
+-	memset(ce->vaddr_rri, 0, CE_COUNT * sizeof(u32));
+ }
+ EXPORT_SYMBOL(ath10k_ce_alloc_rri);
+ 
+diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/pcie.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/pcie.c
+index 4ea5401c4d6b..5f0437a3fd82 100644
+--- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/pcie.c
++++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/pcie.c
+@@ -1023,8 +1023,6 @@ brcmf_pcie_init_dmabuffer_for_device(struct brcmf_pciedev_info *devinfo,
+ 			       address & 0xffffffff);
+ 	brcmf_pcie_write_tcm32(devinfo, tcm_dma_phys_addr + 4, address >> 32);
+ 
+-	memset(ring, 0, size);
+-
+ 	return (ring);
+ }
+ 
+diff --git a/drivers/net/wireless/quantenna/qtnfmac/pcie/pearl_pcie.c b/drivers/net/wireless/quantenna/qtnfmac/pcie/pearl_pcie.c
+index 3aa3714d4dfd..5ec1c9bc1612 100644
+--- a/drivers/net/wireless/quantenna/qtnfmac/pcie/pearl_pcie.c
++++ b/drivers/net/wireless/quantenna/qtnfmac/pcie/pearl_pcie.c
+@@ -244,8 +244,6 @@ static int pearl_alloc_bd_table(struct qtnf_pcie_pearl_state *ps)
+ 
+ 	/* tx bd */
+ 
+-	memset(vaddr, 0, len);
+-
+ 	ps->bd_table_vaddr = vaddr;
+ 	ps->bd_table_paddr = paddr;
+ 	ps->bd_table_len = len;
+diff --git a/drivers/net/wireless/quantenna/qtnfmac/pcie/topaz_pcie.c b/drivers/net/wireless/quantenna/qtnfmac/pcie/topaz_pcie.c
+index 9a4380ed7f1b..1f91088e3dff 100644
+--- a/drivers/net/wireless/quantenna/qtnfmac/pcie/topaz_pcie.c
++++ b/drivers/net/wireless/quantenna/qtnfmac/pcie/topaz_pcie.c
+@@ -199,8 +199,6 @@ static int topaz_alloc_bd_table(struct qtnf_pcie_topaz_state *ts,
+ 	if (!vaddr)
+ 		return -ENOMEM;
+ 
+-	memset(vaddr, 0, len);
+-
+ 	/* tx bd */
+ 
+ 	ts->tx_bd_vbase = vaddr;
+-- 
+2.11.0
 
