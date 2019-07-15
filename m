@@ -2,38 +2,36 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 7BB6B6970C
-	for <lists+linux-wireless@lfdr.de>; Mon, 15 Jul 2019 17:08:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A369A696F8
+	for <lists+linux-wireless@lfdr.de>; Mon, 15 Jul 2019 17:08:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1733083AbfGON6K (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 15 Jul 2019 09:58:10 -0400
-Received: from mail.kernel.org ([198.145.29.99]:37252 "EHLO mail.kernel.org"
+        id S1732509AbfGOOAF (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 15 Jul 2019 10:00:05 -0400
+Received: from mail.kernel.org ([198.145.29.99]:40960 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1731422AbfGON6J (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 15 Jul 2019 09:58:09 -0400
+        id S1733302AbfGON7z (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 15 Jul 2019 09:59:55 -0400
 Received: from sasha-vm.mshome.net (unknown [73.61.17.35])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 9931C212F5;
-        Mon, 15 Jul 2019 13:58:06 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id A44FC20C01;
+        Mon, 15 Jul 2019 13:59:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1563199088;
-        bh=97Q3CfjQC/RAT6mrkOvfJELQhlqT+olkTSGEkR8ZWk0=;
+        s=default; t=1563199194;
+        bh=jfDF6V7sa3nAxjig1AZWLSaeAPzexvArYSwSba5R5Gg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=y7PT3UMCDnkt2xiK7SqLkmKwGGcSk+NifPMb/cjBSqyViBNB7iAMDIuphz3cT792N
-         nfBcG1dDaUl+Qe+5YeXWehlLbafaFu2MZpURQRf6YCPeyoyvH6uIXgHjQe7B9zAk8p
-         JI4haIY18o6AAwAV9dJtTgM5RoVfnVlx/vpxTP3k=
+        b=Ntscr2COhhBGy5yK1ppI0nHdGSlPwUCgukIvnBrnFywkEvIq5fr2Q4k35bEbhtoJh
+         AWFoPBjJVwiN91RlcrL8tN7boctk2KRMxAcao8eNtoxmTXkOCRPdBLcBC8iHjl+2WQ
+         3/BMBc69vtzc1incqLU/9wg3p3byfYYbNnDHP7Po=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Ahmad Masri <amasri@codeaurora.org>,
-        Maya Erez <merez@codeaurora.org>,
-        Kalle Valo <kvalo@codeaurora.org>,
+Cc:     Shahar S Matityahu <shahar.s.matityahu@intel.com>,
+        Luca Coelho <luciano.coelho@intel.com>,
         Sasha Levin <sashal@kernel.org>,
-        linux-wireless@vger.kernel.org, wil6210@qti.qualcomm.com,
-        netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.2 187/249] wil6210: drop old event after wmi_call timeout
-Date:   Mon, 15 Jul 2019 09:45:52 -0400
-Message-Id: <20190715134655.4076-187-sashal@kernel.org>
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.2 211/249] iwlwifi: dbg: fix debug monitor stop and restart delays
+Date:   Mon, 15 Jul 2019 09:46:16 -0400
+Message-Id: <20190715134655.4076-211-sashal@kernel.org>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20190715134655.4076-1-sashal@kernel.org>
 References: <20190715134655.4076-1-sashal@kernel.org>
@@ -46,56 +44,67 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Ahmad Masri <amasri@codeaurora.org>
+From: Shahar S Matityahu <shahar.s.matityahu@intel.com>
 
-[ Upstream commit 1a276003111c0404f6bfeffe924c5a21f482428b ]
+[ Upstream commit fc838c775f35e272e5cc7ef43853f0b55babbe37 ]
 
-This change fixes a rare race condition of handling WMI events after
-wmi_call expires.
+The driver should delay only in recording stop flow between writing to
+DBGC_IN_SAMPLE register and DBGC_OUT_CTRL register. Any other delay is
+not needed.
 
-wmi_recv_cmd immediately handles an event when reply_buf is defined and
-a wmi_call is waiting for the event.
-However, in case the wmi_call has already timed-out, there will be no
-waiting/running wmi_call and the event will be queued in WMI queue and
-will be handled later in wmi_event_handle.
-Meanwhile, a new similar wmi_call for the same command and event may
-be issued. In this case, when handling the queued event we got WARN_ON
-printed.
+Change the following:
+1. Remove any unnecessary delays in the flow
+2. Increase the delay in the stop recording flow since 100 micro is
+   not enough
+3. Use usleep_range instead of delay since the driver is allowed to
+   sleep in this flow.
 
-Fixing this case as a valid timeout and drop the unexpected event.
-
-Signed-off-by: Ahmad Masri <amasri@codeaurora.org>
-Signed-off-by: Maya Erez <merez@codeaurora.org>
-Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
+Signed-off-by: Shahar S Matityahu <shahar.s.matityahu@intel.com>
+Fixes: 5cfe79c8d92a ("iwlwifi: fw: stop and start debugging using host command")
+Signed-off-by: Luca Coelho <luciano.coelho@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/wil6210/wmi.c | 13 ++++++++++++-
- 1 file changed, 12 insertions(+), 1 deletion(-)
+ drivers/net/wireless/intel/iwlwifi/fw/dbg.c | 2 --
+ drivers/net/wireless/intel/iwlwifi/fw/dbg.h | 6 ++++--
+ 2 files changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/wil6210/wmi.c b/drivers/net/wireless/ath/wil6210/wmi.c
-index d89cd41e78ac..89a75ff29410 100644
---- a/drivers/net/wireless/ath/wil6210/wmi.c
-+++ b/drivers/net/wireless/ath/wil6210/wmi.c
-@@ -3220,7 +3220,18 @@ static void wmi_event_handle(struct wil6210_priv *wil,
- 		/* check if someone waits for this event */
- 		if (wil->reply_id && wil->reply_id == id &&
- 		    wil->reply_mid == mid) {
--			WARN_ON(wil->reply_buf);
-+			if (wil->reply_buf) {
-+				/* event received while wmi_call is waiting
-+				 * with a buffer. Such event should be handled
-+				 * in wmi_recv_cmd function. Handling the event
-+				 * here means a previous wmi_call was timeout.
-+				 * Drop the event and do not handle it.
-+				 */
-+				wil_err(wil,
-+					"Old event (%d, %s) while wmi_call is waiting. Drop it and Continue waiting\n",
-+					id, eventid2name(id));
-+				return;
-+			}
+diff --git a/drivers/net/wireless/intel/iwlwifi/fw/dbg.c b/drivers/net/wireless/intel/iwlwifi/fw/dbg.c
+index 33d7bc5500db..c875e173771c 100644
+--- a/drivers/net/wireless/intel/iwlwifi/fw/dbg.c
++++ b/drivers/net/wireless/intel/iwlwifi/fw/dbg.c
+@@ -2303,8 +2303,6 @@ void iwl_fw_dbg_collect_sync(struct iwl_fw_runtime *fwrt)
+ 	/* start recording again if the firmware is not crashed */
+ 	if (!test_bit(STATUS_FW_ERROR, &fwrt->trans->status) &&
+ 	    fwrt->fw->dbg.dest_tlv) {
+-		/* wait before we collect the data till the DBGC stop */
+-		udelay(500);
+ 		iwl_fw_dbg_restart_recording(fwrt, &params);
+ 	}
+ }
+diff --git a/drivers/net/wireless/intel/iwlwifi/fw/dbg.h b/drivers/net/wireless/intel/iwlwifi/fw/dbg.h
+index fd0ad220e961..c5c015a66106 100644
+--- a/drivers/net/wireless/intel/iwlwifi/fw/dbg.h
++++ b/drivers/net/wireless/intel/iwlwifi/fw/dbg.h
+@@ -294,7 +294,10 @@ _iwl_fw_dbg_stop_recording(struct iwl_trans *trans,
+ 	}
  
- 			wmi_evt_call_handler(vif, id, evt_data,
- 					     len - sizeof(*wmi));
+ 	iwl_write_umac_prph(trans, DBGC_IN_SAMPLE, 0);
+-	udelay(100);
++	/* wait for the DBGC to finish writing the internal buffer to DRAM to
++	 * avoid halting the HW while writing
++	 */
++	usleep_range(700, 1000);
+ 	iwl_write_umac_prph(trans, DBGC_OUT_CTRL, 0);
+ #ifdef CONFIG_IWLWIFI_DEBUGFS
+ 	trans->dbg_rec_on = false;
+@@ -324,7 +327,6 @@ _iwl_fw_dbg_restart_recording(struct iwl_trans *trans,
+ 		iwl_set_bits_prph(trans, MON_BUFF_SAMPLE_CTL, 0x1);
+ 	} else {
+ 		iwl_write_umac_prph(trans, DBGC_IN_SAMPLE, params->in_sample);
+-		udelay(100);
+ 		iwl_write_umac_prph(trans, DBGC_OUT_CTRL, params->out_ctrl);
+ 	}
+ }
 -- 
 2.20.1
 
