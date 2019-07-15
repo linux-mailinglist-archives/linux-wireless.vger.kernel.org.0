@@ -2,41 +2,39 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id EA686690FB
-	for <lists+linux-wireless@lfdr.de>; Mon, 15 Jul 2019 16:26:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5D7D369163
+	for <lists+linux-wireless@lfdr.de>; Mon, 15 Jul 2019 16:28:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2391355AbfGOOZt (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 15 Jul 2019 10:25:49 -0400
-Received: from mail.kernel.org ([198.145.29.99]:32968 "EHLO mail.kernel.org"
+        id S2391010AbfGOO2q (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 15 Jul 2019 10:28:46 -0400
+Received: from mail.kernel.org ([198.145.29.99]:39206 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2390741AbfGOOZq (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 15 Jul 2019 10:25:46 -0400
+        id S2390947AbfGOO2p (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 15 Jul 2019 10:28:45 -0400
 Received: from sasha-vm.mshome.net (unknown [73.61.17.35])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 0AD9E20896;
-        Mon, 15 Jul 2019 14:25:40 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 5E157206B8;
+        Mon, 15 Jul 2019 14:28:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1563200745;
-        bh=EAkPPELj4UMwGLtL3BtoJAdx1Nv63T7u3Q2Cqw1vBm4=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=psLQa/YbpJ/tZST7JtFqGipy3N1x5eySNiUKWAHvK0avuTAIUKtWnR03TP4LoHdPf
-         fSWJH0dyg7Adm+5K4HSE+2Cds1u/Eek3yNQ4hbRmzJYPU+1KLJzA7f6ONGk6V4VplY
-         je6iVZL31ZQ6WHL/J646POs/bLpOs/dm/tTGuxxE=
+        s=default; t=1563200925;
+        bh=wzLVTzreBmGjVCvdu0F0pm6PPsPL70KILvJxHa/KgnM=;
+        h=From:To:Cc:Subject:Date:From;
+        b=P5mqGAkDgitzCGvm2sQM0aTevz7NbsVVgY1Ahd63af84HO5rc2nESo1DxNLN5KPge
+         O0KjYQ3iedcuKYR37jvW82A0DWxuB2laFSdv3quQbuBPR+b6PyhG7SGVsx6vXFGLzN
+         bxBtaVrZCQvKEi4GxwiTCYbpO5rA5OqyHzzWlQbo=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Ahmad Masri <amasri@codeaurora.org>,
+Cc:     "Gustavo A. R. Silva" <gustavo@embeddedor.com>,
         Maya Erez <merez@codeaurora.org>,
         Kalle Valo <kvalo@codeaurora.org>,
         Sasha Levin <sashal@kernel.org>,
         linux-wireless@vger.kernel.org, wil6210@qti.qualcomm.com,
         netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.19 121/158] wil6210: drop old event after wmi_call timeout
-Date:   Mon, 15 Jul 2019 10:17:32 -0400
-Message-Id: <20190715141809.8445-121-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.14 001/105] wil6210: fix potential out-of-bounds read
+Date:   Mon, 15 Jul 2019 10:26:55 -0400
+Message-Id: <20190715142839.9896-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20190715141809.8445-1-sashal@kernel.org>
-References: <20190715141809.8445-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -46,56 +44,52 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Ahmad Masri <amasri@codeaurora.org>
+From: "Gustavo A. R. Silva" <gustavo@embeddedor.com>
 
-[ Upstream commit 1a276003111c0404f6bfeffe924c5a21f482428b ]
+[ Upstream commit bfabdd6997323adbedccb13a3fed1967fb8cf8f5 ]
 
-This change fixes a rare race condition of handling WMI events after
-wmi_call expires.
+Notice that *rc* can evaluate to up to 5, include/linux/netdevice.h:
 
-wmi_recv_cmd immediately handles an event when reply_buf is defined and
-a wmi_call is waiting for the event.
-However, in case the wmi_call has already timed-out, there will be no
-waiting/running wmi_call and the event will be queued in WMI queue and
-will be handled later in wmi_event_handle.
-Meanwhile, a new similar wmi_call for the same command and event may
-be issued. In this case, when handling the queued event we got WARN_ON
-printed.
+enum gro_result {
+        GRO_MERGED,
+        GRO_MERGED_FREE,
+        GRO_HELD,
+        GRO_NORMAL,
+        GRO_DROP,
+        GRO_CONSUMED,
+};
+typedef enum gro_result gro_result_t;
 
-Fixing this case as a valid timeout and drop the unexpected event.
+In case *rc* evaluates to 5, we end up having an out-of-bounds read
+at drivers/net/wireless/ath/wil6210/txrx.c:821:
 
-Signed-off-by: Ahmad Masri <amasri@codeaurora.org>
-Signed-off-by: Maya Erez <merez@codeaurora.org>
+	wil_dbg_txrx(wil, "Rx complete %d bytes => %s\n",
+		     len, gro_res_str[rc]);
+
+Fix this by adding element "GRO_CONSUMED" to array gro_res_str.
+
+Addresses-Coverity-ID: 1444666 ("Out-of-bounds read")
+Fixes: 194b482b5055 ("wil6210: Debug print GRO Rx result")
+Signed-off-by: Gustavo A. R. Silva <gustavo@embeddedor.com>
+Reviewed-by: Maya Erez <merez@codeaurora.org>
 Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/wil6210/wmi.c | 13 ++++++++++++-
- 1 file changed, 12 insertions(+), 1 deletion(-)
+ drivers/net/wireless/ath/wil6210/txrx.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/wireless/ath/wil6210/wmi.c b/drivers/net/wireless/ath/wil6210/wmi.c
-index 6e3b3031f29b..2010f771478d 100644
---- a/drivers/net/wireless/ath/wil6210/wmi.c
-+++ b/drivers/net/wireless/ath/wil6210/wmi.c
-@@ -2816,7 +2816,18 @@ static void wmi_event_handle(struct wil6210_priv *wil,
- 		/* check if someone waits for this event */
- 		if (wil->reply_id && wil->reply_id == id &&
- 		    wil->reply_mid == mid) {
--			WARN_ON(wil->reply_buf);
-+			if (wil->reply_buf) {
-+				/* event received while wmi_call is waiting
-+				 * with a buffer. Such event should be handled
-+				 * in wmi_recv_cmd function. Handling the event
-+				 * here means a previous wmi_call was timeout.
-+				 * Drop the event and do not handle it.
-+				 */
-+				wil_err(wil,
-+					"Old event (%d, %s) while wmi_call is waiting. Drop it and Continue waiting\n",
-+					id, eventid2name(id));
-+				return;
-+			}
+diff --git a/drivers/net/wireless/ath/wil6210/txrx.c b/drivers/net/wireless/ath/wil6210/txrx.c
+index 389c718cd257..16750056b8b5 100644
+--- a/drivers/net/wireless/ath/wil6210/txrx.c
++++ b/drivers/net/wireless/ath/wil6210/txrx.c
+@@ -732,6 +732,7 @@ void wil_netif_rx_any(struct sk_buff *skb, struct net_device *ndev)
+ 		[GRO_HELD]		= "GRO_HELD",
+ 		[GRO_NORMAL]		= "GRO_NORMAL",
+ 		[GRO_DROP]		= "GRO_DROP",
++		[GRO_CONSUMED]		= "GRO_CONSUMED",
+ 	};
  
- 			wmi_evt_call_handler(vif, id, evt_data,
- 					     len - sizeof(*wmi));
+ 	if (ndev->features & NETIF_F_RXHASH)
 -- 
 2.20.1
 
