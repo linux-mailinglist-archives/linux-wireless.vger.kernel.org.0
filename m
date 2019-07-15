@@ -2,104 +2,102 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 8DC6769A3A
-	for <lists+linux-wireless@lfdr.de>; Mon, 15 Jul 2019 19:53:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6438769EB6
+	for <lists+linux-wireless@lfdr.de>; Tue, 16 Jul 2019 00:09:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731844AbfGORxW (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 15 Jul 2019 13:53:22 -0400
-Received: from smtp.codeaurora.org ([198.145.29.96]:39402 "EHLO
-        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729941AbfGORxW (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 15 Jul 2019 13:53:22 -0400
-Received: by smtp.codeaurora.org (Postfix, from userid 1000)
-        id CE23960DAB; Mon, 15 Jul 2019 17:53:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1563213200;
-        bh=k3ChXNGFsdifjWHghdc8vll8SaEiy7GjD6ulRqw0jUI=;
-        h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-        b=LFxO1yF75FS88d5JZ3LUAa0SmYA2pEpKmFPCJrgCLmworScqTo8JW+wc64doREbdv
-         oDWunoFpjRAH6aE+YWyLkT78+6pDlWYrEyP00af0PGtTphGXhNDK6BqoBsW2Gqi5Ub
-         P+pvw0N4ztcpUMLCoeTJKhkzLKuuAv9RQ8ffn9Fg=
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        pdx-caf-mail.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-0.8 required=2.0 tests=ALL_TRUSTED,BAYES_00,
-        DKIM_INVALID,DKIM_SIGNED,MISSING_DATE,MISSING_MID,SPF_NONE autolearn=no
-        autolearn_force=no version=3.4.0
-Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
+        id S1730984AbfGOWJf (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 15 Jul 2019 18:09:35 -0400
+Received: from mail.kernel.org ([198.145.29.99]:34838 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727862AbfGOWJe (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 15 Jul 2019 18:09:34 -0400
+Received: from localhost.localdomain (unknown [151.66.36.246])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        (Authenticated sender: kvalo@smtp.codeaurora.org)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 2DA126021C;
-        Mon, 15 Jul 2019 17:53:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1563213200;
-        bh=k3ChXNGFsdifjWHghdc8vll8SaEiy7GjD6ulRqw0jUI=;
-        h=Subject:From:In-Reply-To:References:To:Cc:From;
-        b=cDwpdQkDT5wTNPfSYWupIoTmE1U4CZ2+pArU4+dPINW+6BDPBL5Jee68BnoWy8OSX
-         42eDWNAbZGj/IiKj1aRiHpnRPhyY0kUpT32+DtvMPiRAUpFh8QxlASn1zatL8UiT+N
-         VYtXYcLnkllOaLFhNFW+HKo+FojFrVEBfa6FLDCk=
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 2DA126021C
-Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
-Content-Type: text/plain; charset="utf-8"
+        by mail.kernel.org (Postfix) with ESMTPSA id 145832145D;
+        Mon, 15 Jul 2019 22:09:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1563228573;
+        bh=DcE4+64A4nHxapEGOKJKDEj369HjauWVXPc0Zli6qqE=;
+        h=From:To:Cc:Subject:Date:From;
+        b=Xxd73u3sdSKtl1i5aufg+I9jK7cwQZl369kLdHCSJ9iBTlNtB7phQKSjBHpPj9bOK
+         F11Yy5+4qK/M94KgT3R1MZr9VaLYQL3QvUdgu2XziQq5NngZ4SZpOs8Wbott5LqQbS
+         VKQ6RyjwHoimhPEeTDx7J/AKLWTZbYcL5HmwC06M=
+From:   Lorenzo Bianconi <lorenzo@kernel.org>
+To:     johannes@sipsolutions.net
+Cc:     linux-wireless@vger.kernel.org, nbd@nbd.name
+Subject: [PATCH v2] mac80211: add IEEE80211_KEY_FLAG_GENERATE_MMIE to ieee80211_key_flags
+Date:   Tue, 16 Jul 2019 00:09:19 +0200
+Message-Id: <dfe275f9aa0f1cc6b33085f9efd5d8447f68ad13.1563228405.git.lorenzo@kernel.org>
+X-Mailer: git-send-email 2.21.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH v2 1/2] rt2x00usb: fix rx queue hang
-From:   Kalle Valo <kvalo@codeaurora.org>
-In-Reply-To: <20190701105314.9707-1-smoch@web.de>
-References: <20190701105314.9707-1-smoch@web.de>
-To:     Soeren Moch <smoch@web.de>
-Cc:     Stanislaw Gruszka <sgruszka@redhat.com>,
-        Soeren Moch <smoch@web.de>, stable@vger.kernel.org,
-        Helmut Schaa <helmut.schaa@googlemail.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-User-Agent: pwcli/0.0.0-git (https://github.com/kvalo/pwcli/) Python/2.7.12
-Message-Id: <20190715175320.CE23960DAB@smtp.codeaurora.org>
-Date:   Mon, 15 Jul 2019 17:53:20 +0000 (UTC)
+Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Soeren Moch <smoch@web.de> wrote:
+Add IEEE80211_KEY_FLAG_GENERATE_MMIE flag to ieee80211_key_flags in order
+to allow the driver to notify mac80211 to generate MMIE and that it
+requires sequence number generation only.
+This is a preliminary patch to add BIP_CMAC_128 hw support to mt7615
+driver
 
-> Since commit ed194d136769 ("usb: core: remove local_irq_save() around
->  ->complete() handler") the handler rt2x00usb_interrupt_rxdone() is
-> not running with interrupts disabled anymore. So this completion handler
-> is not guaranteed to run completely before workqueue processing starts
-> for the same queue entry.
-> Be sure to set all other flags in the entry correctly before marking
-> this entry ready for workqueue processing. This way we cannot miss error
-> conditions that need to be signalled from the completion handler to the
-> worker thread.
-> Note that rt2x00usb_work_rxdone() processes all available entries, not
-> only such for which queue_work() was called.
-> 
-> This patch is similar to what commit df71c9cfceea ("rt2x00: fix order
-> of entry flags modification") did for TX processing.
-> 
-> This fixes a regression on a RT5370 based wifi stick in AP mode, which
-> suddenly stopped data transmission after some period of heavy load. Also
-> stopping the hanging hostapd resulted in the error message "ieee80211
-> phy0: rt2x00queue_flush_queue: Warning - Queue 14 failed to flush".
-> Other operation modes are probably affected as well, this just was
-> the used testcase.
-> 
-> Fixes: ed194d136769 ("usb: core: remove local_irq_save() around ->complete() handler")
-> Cc: stable@vger.kernel.org # 4.20+
-> Signed-off-by: Soeren Moch <smoch@web.de>
-> Acked-by: Stanislaw Gruszka <sgruszka@redhat.com>
+Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+---
+Changes since v1:
+- rename IEEE80211_KEY_FLAG_PUT_MMIE_SPACE in IEEE80211_KEY_FLAG_GENERATE_MMIE
+---
+ include/net/mac80211.h | 4 ++++
+ net/mac80211/wpa.c     | 6 +++++-
+ 2 files changed, 9 insertions(+), 1 deletion(-)
 
-Patch applied to wireless-drivers.git, thanks.
-
-41a531ffa4c5 rt2x00usb: fix rx queue hang
-
+diff --git a/include/net/mac80211.h b/include/net/mac80211.h
+index d26da013f7c0..a655de2c65dd 100644
+--- a/include/net/mac80211.h
++++ b/include/net/mac80211.h
+@@ -1702,6 +1702,9 @@ struct wireless_dev *ieee80211_vif_to_wdev(struct ieee80211_vif *vif);
+  *	a TKIP key if it only requires MIC space. Do not set together with
+  *	@IEEE80211_KEY_FLAG_GENERATE_MMIC on the same key.
+  * @IEEE80211_KEY_FLAG_NO_AUTO_TX: Key needs explicit Tx activation.
++ * @IEEE80211_KEY_FLAG_GENERATE_MMIE: This flag should be set by the driver
++ *	for a AES_CMAC key to indicate that it requires sequence number
++ *	generation only
+  */
+ enum ieee80211_key_flags {
+ 	IEEE80211_KEY_FLAG_GENERATE_IV_MGMT	= BIT(0),
+@@ -1714,6 +1717,7 @@ enum ieee80211_key_flags {
+ 	IEEE80211_KEY_FLAG_RESERVE_TAILROOM	= BIT(7),
+ 	IEEE80211_KEY_FLAG_PUT_MIC_SPACE	= BIT(8),
+ 	IEEE80211_KEY_FLAG_NO_AUTO_TX		= BIT(9),
++	IEEE80211_KEY_FLAG_GENERATE_MMIE	= BIT(10),
+ };
+ 
+ /**
+diff --git a/net/mac80211/wpa.c b/net/mac80211/wpa.c
+index a51c7909366e..f5845af9a449 100644
+--- a/net/mac80211/wpa.c
++++ b/net/mac80211/wpa.c
+@@ -946,7 +946,8 @@ ieee80211_crypto_aes_cmac_encrypt(struct ieee80211_tx_data *tx)
+ 
+ 	info = IEEE80211_SKB_CB(skb);
+ 
+-	if (info->control.hw_key)
++	if (info->control.hw_key &&
++	    !(key->conf.flags & IEEE80211_KEY_FLAG_GENERATE_MMIE))
+ 		return TX_CONTINUE;
+ 
+ 	if (WARN_ON(skb_tailroom(skb) < sizeof(*mmie)))
+@@ -962,6 +963,9 @@ ieee80211_crypto_aes_cmac_encrypt(struct ieee80211_tx_data *tx)
+ 
+ 	bip_ipn_set64(mmie->sequence_number, pn64);
+ 
++	if (info->control.hw_key)
++		return TX_CONTINUE;
++
+ 	bip_aad(skb, aad);
+ 
+ 	/*
 -- 
-https://patchwork.kernel.org/patch/11025561/
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+2.21.0
 
