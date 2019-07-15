@@ -2,38 +2,35 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 0688B69754
-	for <lists+linux-wireless@lfdr.de>; Mon, 15 Jul 2019 17:10:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B78FD69758
+	for <lists+linux-wireless@lfdr.de>; Mon, 15 Jul 2019 17:10:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732336AbfGON4n (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 15 Jul 2019 09:56:43 -0400
-Received: from mail.kernel.org ([198.145.29.99]:60776 "EHLO mail.kernel.org"
+        id S1732809AbfGON4q (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 15 Jul 2019 09:56:46 -0400
+Received: from mail.kernel.org ([198.145.29.99]:33660 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1732313AbfGON4N (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 15 Jul 2019 09:56:13 -0400
+        id S1732520AbfGON4p (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 15 Jul 2019 09:56:45 -0400
 Received: from sasha-vm.mshome.net (unknown [73.61.17.35])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 3D16420C01;
-        Mon, 15 Jul 2019 13:56:10 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 46E2A2083D;
+        Mon, 15 Jul 2019 13:56:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1563198972;
-        bh=A/XpATUw5mCYjSAZ+Cg8opTeNa6c0gK1Fk1eGEFeR5Y=;
+        s=default; t=1563199004;
+        bh=YeaAHpT7HlBkV5mb6xcTap6lrvSzk4T8ON4F1E76+Wc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Z5fqqcP1VnSYsLMhTp393nIH9CPipiQTOHP7PjW4uNMorrqIvj69kbhhoQjKgCsuL
-         bnZqT08sSNwhBfOqBxXkRIGHraLVraJauOLW1PudkTNoNTPUC7Ee8Euw/aws6j5aaS
-         W2m4jXmwWAyiLgtGK5WU2xLi0MBAbcPIjDhiG5mw=
+        b=K7EQ5Ig5BQDM07C2NpmeA9aH0lSpwKmgC1Y2iFWQrl/yoe0zWMO3yXluqqsfvt44P
+         N4N+TMPHf2BqWU0KrhuoeoYZEEfQzzKhT58OP5mJk8SlB7ZL6tSvgOhO+UEs1YSeix
+         1LvnzUi/QhLaVx0q5btwX/h7epKqGMVV+Ta5LwCk=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Ping-Ke Shih <pkshih@realtek.com>,
-        syzbot+1fcc5ef45175fc774231@syzkaller.appspotmail.com,
-        Larry Finger <Larry.Finger@lwfinger.net>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        Sasha Levin <sashal@kernel.org>,
+Cc:     Lorenzo Bianconi <lorenzo@kernel.org>,
+        Felix Fietkau <nbd@nbd.name>, Sasha Levin <sashal@kernel.org>,
         linux-wireless@vger.kernel.org, netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.2 157/249] rtlwifi: rtl8192cu: fix error handle when usb probe failed
-Date:   Mon, 15 Jul 2019 09:45:22 -0400
-Message-Id: <20190715134655.4076-157-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.2 162/249] mt76: mt7615: do not process rx packets if the device is not initialized
+Date:   Mon, 15 Jul 2019 09:45:27 -0400
+Message-Id: <20190715134655.4076-162-sashal@kernel.org>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20190715134655.4076-1-sashal@kernel.org>
 References: <20190715134655.4076-1-sashal@kernel.org>
@@ -46,104 +43,77 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Ping-Ke Shih <pkshih@realtek.com>
+From: Lorenzo Bianconi <lorenzo@kernel.org>
 
-[ Upstream commit 6c0ed66f1a5b84e2a812c7c2d6571a5621bf3396 ]
+[ Upstream commit 2dcb79cde6129d948a237ef7b48a73a0c82f1e01 ]
 
-rtl_usb_probe() must do error handle rtl_deinit_core() only if
-rtl_init_core() is done, otherwise goto error_out2.
+Fix following crash that occurs when the driver is processing rx packets
+while the device is not initialized yet
 
-| usb 1-1: New USB device strings: Mfr=0, Product=0, SerialNumber=0
-| rtl_usb: reg 0xf0, usbctrl_vendorreq TimeOut! status:0xffffffb9 value=0x0
-| rtl8192cu: Chip version 0x10
-| rtl_usb: reg 0xa, usbctrl_vendorreq TimeOut! status:0xffffffb9 value=0x0
-| rtl_usb: Too few input end points found
-| INFO: trying to register non-static key.
-| the code is fine but needs lockdep annotation.
-| turning off the locking correctness validator.
-| CPU: 0 PID: 12 Comm: kworker/0:1 Not tainted 5.1.0-rc4-319354-g9a33b36 #3
-| Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS
-| Google 01/01/2011
-| Workqueue: usb_hub_wq hub_event
-| Call Trace:
-|   __dump_stack lib/dump_stack.c:77 [inline]
-|   dump_stack+0xe8/0x16e lib/dump_stack.c:113
-|   assign_lock_key kernel/locking/lockdep.c:786 [inline]
-|   register_lock_class+0x11b8/0x1250 kernel/locking/lockdep.c:1095
-|   __lock_acquire+0xfb/0x37c0 kernel/locking/lockdep.c:3582
-|   lock_acquire+0x10d/0x2f0 kernel/locking/lockdep.c:4211
-|   __raw_spin_lock_irqsave include/linux/spinlock_api_smp.h:110 [inline]
-|   _raw_spin_lock_irqsave+0x44/0x60 kernel/locking/spinlock.c:152
-|   rtl_c2hcmd_launcher+0xd1/0x390
-| drivers/net/wireless/realtek/rtlwifi/base.c:2344
-|   rtl_deinit_core+0x25/0x2d0 drivers/net/wireless/realtek/rtlwifi/base.c:574
-|   rtl_usb_probe.cold+0x861/0xa70
-| drivers/net/wireless/realtek/rtlwifi/usb.c:1093
-|   usb_probe_interface+0x31d/0x820 drivers/usb/core/driver.c:361
-|   really_probe+0x2da/0xb10 drivers/base/dd.c:509
-|   driver_probe_device+0x21d/0x350 drivers/base/dd.c:671
-|   __device_attach_driver+0x1d8/0x290 drivers/base/dd.c:778
-|   bus_for_each_drv+0x163/0x1e0 drivers/base/bus.c:454
-|   __device_attach+0x223/0x3a0 drivers/base/dd.c:844
-|   bus_probe_device+0x1f1/0x2a0 drivers/base/bus.c:514
-|   device_add+0xad2/0x16e0 drivers/base/core.c:2106
-|   usb_set_configuration+0xdf7/0x1740 drivers/usb/core/message.c:2021
-|   generic_probe+0xa2/0xda drivers/usb/core/generic.c:210
-|   usb_probe_device+0xc0/0x150 drivers/usb/core/driver.c:266
-|   really_probe+0x2da/0xb10 drivers/base/dd.c:509
-|   driver_probe_device+0x21d/0x350 drivers/base/dd.c:671
-|   __device_attach_driver+0x1d8/0x290 drivers/base/dd.c:778
-|   bus_for_each_drv+0x163/0x1e0 drivers/base/bus.c:454
-|   __device_attach+0x223/0x3a0 drivers/base/dd.c:844
-|   bus_probe_device+0x1f1/0x2a0 drivers/base/bus.c:514
-|   device_add+0xad2/0x16e0 drivers/base/core.c:2106
-|   usb_new_device.cold+0x537/0xccf drivers/usb/core/hub.c:2534
-|   hub_port_connect drivers/usb/core/hub.c:5089 [inline]
-|   hub_port_connect_change drivers/usb/core/hub.c:5204 [inline]
-|   port_event drivers/usb/core/hub.c:5350 [inline]
-|   hub_event+0x138e/0x3b00 drivers/usb/core/hub.c:5432
-|   process_one_work+0x90f/0x1580 kernel/workqueue.c:2269
-|   worker_thread+0x9b/0xe20 kernel/workqueue.c:2415
-|   kthread+0x313/0x420 kernel/kthread.c:253
-|   ret_from_fork+0x3a/0x50 arch/x86/entry/entry_64.S:352
+$ rmmod mt7615e
+[   67.210261] mt7615e 0000:01:00.0: Message -239 (seq 2) timeout
+$ modprobe mt7615e
+[   72.406937] bus=0x1, slot = 0x0, irq=0x16
+[   72.436590] CPU 0 Unable to handle kernel paging request at virtual address 00000004, epc == 8eec4240, ra == 8eec41e0
+[   72.450291] mt7615e 0000:01:00.0: Firmware is not ready for download
+[   72.457724] Oops[#1]:
+[   72.470494] mt7615e: probe of 0000:01:00.0 failed with error -5
+[   72.474829] CPU: 0 PID: 0 Comm: swapper/0 Not tainted 4.14.114 #0
+[   72.498702] task: 805769e0 task.stack: 80564000
+[   72.507709] $ 0   : 00000000 00000001 00000000 00000001
+[   72.518106] $ 4   : 8f704dbc 00000000 00000000 8f7046c0
+[   72.528500] $ 8   : 00000024 8045e98c 81210008 11000000
+[   72.538895] $12   : 8fc09f60 00000008 00000019 00000033
+[   72.549289] $16   : 8f704d80 e00000ff 8f0c7800 3c182406
+[   72.559684] $20   : 00000006 8ee615a0 4e000108 00000000
+[   72.570078] $24   : 0000004c 8000cf94
+[   72.580474] $28   : 80564000 8fc09e38 00000001 8eec41e0
+[   72.590869] Hi    : 00000001
+[   72.596582] Lo    : 00000000
+[   72.602319] epc   : 8eec4240 mt7615_mac_fill_rx+0xac/0x494 [mt7615e]
+[   72.614953] ra    : 8eec41e0 mt7615_mac_fill_rx+0x4c/0x494 [mt7615e]
+[   72.627580] Status: 11008403 KERNEL EXL IE
+[   72.635899] Cause : 40800008 (ExcCode 02)
+[   72.643860] BadVA : 00000004
+[   72.649573] PrId  : 0001992f (MIPS 1004Kc)
+[   72.657704] Modules linked in: mt7615e pppoe ppp_async pppox ppp_generic nf_conntrack_ipv6 mt76x2e mt76x2_common mt76x02_lib mt7603e mt76 mac80211 iptable_nat ipt_REJECT ipt_MASQUERADE cfg80211 xt_time xt_tcpudp xt_state xt_nat xt_mu]
+[   72.792717] Process swapper/0 (pid: 0, threadinfo=80564000, task=805769e0, tls=00000000)
+[   72.808799] Stack : 8f0c7800 00000800 8f0c7800 8032b874 00000000 40000000 8f704d80 8ee615a0
+[   72.825428]         8dc88010 00000001 8ee615e0 8eec09b0 8dc88010 8032b914 8f3aee80 80567d20
+[   72.842055]         00000000 8ee615e0 40000000 8f0c7800 00000108 8eec9944 00000000 00000000
+[   72.858682]         80508f10 80510000 00000001 80567d20 8ee615a0 00000000 00000000 8ee61c00
+[   72.875308]         8ee61c40 00000040 80610000 80580000 00000000 8ee615dc 8ee61a68 00000001
+[   72.891936]         ...
+[   72.896793] Call Trace:
+[   72.901649] [<8eec4240>] mt7615_mac_fill_rx+0xac/0x494 [mt7615e]
+[   72.913602] [<8eec09b0>] mt7615_queue_rx_skb+0xe4/0x12c [mt7615e]
+[   72.925734] [<8eec9944>] mt76_dma_cleanup+0x390/0x42c [mt76]
+[   72.936988] Code: ae020018  8ea20004  24030001 <94420004> a602002a  8ea20004  90420000  14430003  a2020034
+[   72.956390]
+[   72.959676] ---[ end trace f176967739edb19f ]---
 
-Reported-by: syzbot+1fcc5ef45175fc774231@syzkaller.appspotmail.com
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
-Acked-by: Larry Finger <Larry.Finger@lwfinger.net>
-Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
+Fixes: 04b8e65922f6 ("mt76: add mac80211 driver for MT7615 PCIe-based chipsets")
+Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/realtek/rtlwifi/usb.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/net/wireless/mediatek/mt76/mt7615/mac.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/net/wireless/realtek/rtlwifi/usb.c b/drivers/net/wireless/realtek/rtlwifi/usb.c
-index e24fda5e9087..34d68dbf4b4c 100644
---- a/drivers/net/wireless/realtek/rtlwifi/usb.c
-+++ b/drivers/net/wireless/realtek/rtlwifi/usb.c
-@@ -1064,13 +1064,13 @@ int rtl_usb_probe(struct usb_interface *intf,
- 	rtlpriv->cfg->ops->read_eeprom_info(hw);
- 	err = _rtl_usb_init(hw);
- 	if (err)
--		goto error_out;
-+		goto error_out2;
- 	rtl_usb_init_sw(hw);
- 	/* Init mac80211 sw */
- 	err = rtl_init_core(hw);
- 	if (err) {
- 		pr_err("Can't allocate sw for mac80211\n");
--		goto error_out;
-+		goto error_out2;
- 	}
- 	if (rtlpriv->cfg->ops->init_sw_vars(hw)) {
- 		pr_err("Can't init_sw_vars\n");
-@@ -1091,6 +1091,7 @@ int rtl_usb_probe(struct usb_interface *intf,
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/mac.c b/drivers/net/wireless/mediatek/mt76/mt7615/mac.c
+index b8f48d10f27a..a27bc6791aa7 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7615/mac.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7615/mac.c
+@@ -96,6 +96,9 @@ int mt7615_mac_fill_rx(struct mt7615_dev *dev, struct sk_buff *skb)
+ 	bool unicast, remove_pad, insert_ccmp_hdr = false;
+ 	int i, idx;
  
- error_out:
- 	rtl_deinit_core(hw);
-+error_out2:
- 	_rtl_usb_io_handler_release(hw);
- 	usb_put_dev(udev);
- 	complete(&rtlpriv->firmware_loading_complete);
++	if (!test_bit(MT76_STATE_RUNNING, &dev->mt76.state))
++		return -EINVAL;
++
+ 	memset(status, 0, sizeof(*status));
+ 
+ 	unicast = (rxd1 & MT_RXD1_NORMAL_ADDR_TYPE) == MT_RXD1_NORMAL_U2M;
 -- 
 2.20.1
 
