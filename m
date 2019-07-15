@@ -2,36 +2,35 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 09F2C69263
-	for <lists+linux-wireless@lfdr.de>; Mon, 15 Jul 2019 16:37:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2278969279
+	for <lists+linux-wireless@lfdr.de>; Mon, 15 Jul 2019 16:37:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2404064AbfGOOdX (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 15 Jul 2019 10:33:23 -0400
-Received: from mail.kernel.org ([198.145.29.99]:49334 "EHLO mail.kernel.org"
+        id S2392009AbfGOOeV (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 15 Jul 2019 10:34:21 -0400
+Received: from mail.kernel.org ([198.145.29.99]:51258 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2391941AbfGOOdW (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 15 Jul 2019 10:33:22 -0400
+        id S2391815AbfGOOeS (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 15 Jul 2019 10:34:18 -0400
 Received: from sasha-vm.mshome.net (unknown [73.61.17.35])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 042C320C01;
-        Mon, 15 Jul 2019 14:33:18 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 03FC9204FD;
+        Mon, 15 Jul 2019 14:34:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1563201201;
-        bh=jjEVs5KqU9OpXXP/Pb29F89W5465fLthxALJSS97XaE=;
+        s=default; t=1563201258;
+        bh=g6FeDpZMbvqQEdTPMB47Po8DSAzxTD5qheByBCtU7LE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=U+uXI34KGAfEI6iZFanqYRqIrg4WAJUZ5u48yGA7NKasmuK8MQk2OJhNCStLuQbkS
-         j4rXo5NXJEwiu1doIqu9hIwCcAhpVss+/LiJ8KKfDT7xtoDA9OLA+QrOW/O+IgIqsp
-         bEI6M20EHW1uY+epTDXQ4faawGbWQV2vMH20UyNw=
+        b=zwIaSa69CwnhGgInY+Ncp5zU+c37/TD6N6EQWTKbRWoFgH0uuZ441fJz5WeOjVX86
+         S6wwdetQ3m7ObPoLXMz7YcS8O0LSy6iDhIpZpNmaMAjctMQDLSZ6i2UixhOGQdC+lX
+         PDPMyMY30aF+D2+doDGdzbebOB32tE0bqSjYoViw=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Miaoqing Pan <miaoqing@codeaurora.org>,
-        Kalle Valo <kvalo@codeaurora.org>,
+Cc:     Wen Gong <wgong@codeaurora.org>, Kalle Valo <kvalo@codeaurora.org>,
         Sasha Levin <sashal@kernel.org>, ath10k@lists.infradead.org,
         linux-wireless@vger.kernel.org, netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.14 077/105] ath10k: fix PCIE device wake up failed
-Date:   Mon, 15 Jul 2019 10:28:11 -0400
-Message-Id: <20190715142839.9896-77-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.14 091/105] ath10k: destroy sdio workqueue while remove sdio module
+Date:   Mon, 15 Jul 2019 10:28:25 -0400
+Message-Id: <20190715142839.9896-91-sashal@kernel.org>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20190715142839.9896-1-sashal@kernel.org>
 References: <20190715142839.9896-1-sashal@kernel.org>
@@ -44,49 +43,38 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Miaoqing Pan <miaoqing@codeaurora.org>
+From: Wen Gong <wgong@codeaurora.org>
 
-[ Upstream commit 011d4111c8c602ea829fa4917af1818eb0500a90 ]
+[ Upstream commit 3ed39f8e747a7aafeec07bb244f2c3a1bdca5730 ]
 
-Observed PCIE device wake up failed after ~120 iterations of
-soft-reboot test. The error message is
-"ath10k_pci 0000:01:00.0: failed to wake up device : -110"
+The workqueue need to flush and destory while remove sdio module,
+otherwise it will have thread which is not destory after remove
+sdio modules.
 
-The call trace as below:
-ath10k_pci_probe -> ath10k_pci_force_wake -> ath10k_pci_wake_wait ->
-ath10k_pci_is_awake
+Tested with QCA6174 SDIO with firmware
+WLAN.RMH.4.4.1-00007-QCARMSWP-1.
 
-Once trigger the device to wake up, we will continuously check the RTC
-state until it returns RTC_STATE_V_ON or timeout.
-
-But for QCA99x0 chips, we use wrong value for RTC_STATE_V_ON.
-Occasionally, we get 0x7 on the fist read, we thought as a failure
-case, but actually is the right value, also verified with the spec.
-So fix the issue by changing RTC_STATE_V_ON from 0x5 to 0x7, passed
-~2000 iterations.
-
-Tested HW: QCA9984
-
-Signed-off-by: Miaoqing Pan <miaoqing@codeaurora.org>
+Signed-off-by: Wen Gong <wgong@codeaurora.org>
 Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath10k/hw.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/wireless/ath/ath10k/sdio.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/net/wireless/ath/ath10k/hw.c b/drivers/net/wireless/ath/ath10k/hw.c
-index a860691d635d..e96534cd3d8b 100644
---- a/drivers/net/wireless/ath/ath10k/hw.c
-+++ b/drivers/net/wireless/ath/ath10k/hw.c
-@@ -168,7 +168,7 @@ const struct ath10k_hw_values qca6174_values = {
- };
+diff --git a/drivers/net/wireless/ath/ath10k/sdio.c b/drivers/net/wireless/ath/ath10k/sdio.c
+index c6440d28ab48..0a1248ebccf5 100644
+--- a/drivers/net/wireless/ath/ath10k/sdio.c
++++ b/drivers/net/wireless/ath/ath10k/sdio.c
+@@ -2076,6 +2076,9 @@ static void ath10k_sdio_remove(struct sdio_func *func)
+ 	cancel_work_sync(&ar_sdio->wr_async_work);
+ 	ath10k_core_unregister(ar);
+ 	ath10k_core_destroy(ar);
++
++	flush_workqueue(ar_sdio->workqueue);
++	destroy_workqueue(ar_sdio->workqueue);
+ }
  
- const struct ath10k_hw_values qca99x0_values = {
--	.rtc_state_val_on		= 5,
-+	.rtc_state_val_on		= 7,
- 	.ce_count			= 12,
- 	.msi_assign_ce_max		= 12,
- 	.num_target_ce_config_wlan	= 10,
+ static const struct sdio_device_id ath10k_sdio_devices[] = {
 -- 
 2.20.1
 
