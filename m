@@ -2,36 +2,36 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 9B41769269
-	for <lists+linux-wireless@lfdr.de>; Mon, 15 Jul 2019 16:37:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9BE40692E0
+	for <lists+linux-wireless@lfdr.de>; Mon, 15 Jul 2019 16:40:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2391691AbfGOOgl (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 15 Jul 2019 10:36:41 -0400
-Received: from mail.kernel.org ([198.145.29.99]:57142 "EHLO mail.kernel.org"
+        id S1731651AbfGOOj7 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 15 Jul 2019 10:39:59 -0400
+Received: from mail.kernel.org ([198.145.29.99]:40388 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1731009AbfGOOgk (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 15 Jul 2019 10:36:40 -0400
+        id S2404380AbfGOOj4 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 15 Jul 2019 10:39:56 -0400
 Received: from sasha-vm.mshome.net (unknown [73.61.17.35])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 63CC5217F4;
-        Mon, 15 Jul 2019 14:36:36 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 2F83F20651;
+        Mon, 15 Jul 2019 14:39:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1563201398;
-        bh=beHTjXsL/eeCAz8xqPVYdlotPscWgSGZHtgkUJWc+7Y=;
+        s=default; t=1563201595;
+        bh=tqYXzggaZCYqSDxOFy2Z41apl909aSGo/qWDyVDlzfo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=qaoDgQMPCnOAJf7Nmbo/Fana+QKxR/TA5Oo1glqcbW2yApa8IXrfMk4q/aRzap7xD
-         Feybdzxs9nKnvLKugUiXt77575OlFK5GQEy1zG1CNjDJsynRP0NnfA0IytpCqrZsYC
-         ZFwZg2+rGTahJpfEhvrIaJhTPR+jEreTntJCyqTw=
+        b=OZZ/fU13Qi7eRHw0uymjD3/B4gRs8cvXFwDZSQIx9FuMxcLt/YHIF+5N9B4WSTmv0
+         1j+uoifmzBH8b8AIHC8lGuwyDHriMYqjO/cycnGwn+DH2tVn/gsKokswYdvp46ShIL
+         qIvzCsuaEMHq9di0RkA5/u4GcwQuSBeW17Wu8Qvc=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Tim Schumacher <timschumi@gmx.de>,
+Cc:     Lorenzo Bianconi <lorenzo@kernel.org>,
         Kalle Valo <kvalo@codeaurora.org>,
         Sasha Levin <sashal@kernel.org>,
         linux-wireless@vger.kernel.org, netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.9 02/73] ath9k: Check for errors when reading SREV register
-Date:   Mon, 15 Jul 2019 10:35:18 -0400
-Message-Id: <20190715143629.10893-2-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.9 51/73] mt7601u: do not schedule rx_tasklet when the device has been disconnected
+Date:   Mon, 15 Jul 2019 10:36:07 -0400
+Message-Id: <20190715143629.10893-51-sashal@kernel.org>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20190715143629.10893-1-sashal@kernel.org>
 References: <20190715143629.10893-1-sashal@kernel.org>
@@ -44,121 +44,113 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Tim Schumacher <timschumi@gmx.de>
+From: Lorenzo Bianconi <lorenzo@kernel.org>
 
-[ Upstream commit 2f90c7e5d09437a4d8d5546feaae9f1cf48cfbe1 ]
+[ Upstream commit 4079e8ccabc3b6d1b503f2376123cb515d14921f ]
 
-Right now, if an error is encountered during the SREV register
-read (i.e. an EIO in ath9k_regread()), that error code gets
-passed all the way to __ath9k_hw_init(), where it is visible
-during the "Chip rev not supported" message.
+Do not schedule rx_tasklet when the usb dongle is disconnected.
+Moreover do not grub rx_lock in mt7601u_kill_rx since usb_poison_urb
+can run concurrently with urb completion and we can unlink urbs from rx
+ring in any order.
+This patch fixes the common kernel warning reported when
+the device is removed.
 
-    ath9k_htc 1-1.4:1.0: ath9k_htc: HTC initialized with 33 credits
-    ath: phy2: Mac Chip Rev 0x0f.3 is not supported by this driver
-    ath: phy2: Unable to initialize hardware; initialization status: -95
-    ath: phy2: Unable to initialize hardware; initialization status: -95
-    ath9k_htc: Failed to initialize the device
+[   24.921354] usb 3-14: USB disconnect, device number 7
+[   24.921593] ------------[ cut here ]------------
+[   24.921594] RX urb mismatch
+[   24.921675] WARNING: CPU: 4 PID: 163 at drivers/net/wireless/mediatek/mt7601u/dma.c:200 mt7601u_complete_rx+0xcb/0xd0 [mt7601u]
+[   24.921769] CPU: 4 PID: 163 Comm: kworker/4:2 Tainted: G           OE     4.19.31-041931-generic #201903231635
+[   24.921770] Hardware name: To Be Filled By O.E.M. To Be Filled By O.E.M./Z97 Extreme4, BIOS P1.30 05/23/2014
+[   24.921782] Workqueue: usb_hub_wq hub_event
+[   24.921797] RIP: 0010:mt7601u_complete_rx+0xcb/0xd0 [mt7601u]
+[   24.921800] RSP: 0018:ffff9bd9cfd03d08 EFLAGS: 00010086
+[   24.921802] RAX: 0000000000000000 RBX: ffff9bd9bf043540 RCX: 0000000000000006
+[   24.921803] RDX: 0000000000000007 RSI: 0000000000000096 RDI: ffff9bd9cfd16420
+[   24.921804] RBP: ffff9bd9cfd03d28 R08: 0000000000000002 R09: 00000000000003a8
+[   24.921805] R10: 0000002f485fca34 R11: 0000000000000000 R12: ffff9bd9bf043c1c
+[   24.921806] R13: ffff9bd9c62fa3c0 R14: 0000000000000082 R15: 0000000000000000
+[   24.921807] FS:  0000000000000000(0000) GS:ffff9bd9cfd00000(0000) knlGS:0000000000000000
+[   24.921808] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[   24.921808] CR2: 00007fb2648b0000 CR3: 0000000142c0a004 CR4: 00000000001606e0
+[   24.921809] Call Trace:
+[   24.921812]  <IRQ>
+[   24.921819]  __usb_hcd_giveback_urb+0x8b/0x140
+[   24.921821]  usb_hcd_giveback_urb+0xca/0xe0
+[   24.921828]  xhci_giveback_urb_in_irq.isra.42+0x82/0xf0
+[   24.921834]  handle_cmd_completion+0xe02/0x10d0
+[   24.921837]  xhci_irq+0x274/0x4a0
+[   24.921838]  xhci_msi_irq+0x11/0x20
+[   24.921851]  __handle_irq_event_percpu+0x44/0x190
+[   24.921856]  handle_irq_event_percpu+0x32/0x80
+[   24.921861]  handle_irq_event+0x3b/0x5a
+[   24.921867]  handle_edge_irq+0x80/0x190
+[   24.921874]  handle_irq+0x20/0x30
+[   24.921889]  do_IRQ+0x4e/0xe0
+[   24.921891]  common_interrupt+0xf/0xf
+[   24.921892]  </IRQ>
+[   24.921900] RIP: 0010:usb_hcd_flush_endpoint+0x78/0x180
+[   24.921354] usb 3-14: USB disconnect, device number 7
 
-Check for -EIO explicitly in ath9k_hw_read_revisions() and return
-a boolean based on the success of the operation. Check for that in
-__ath9k_hw_init() and abort with a more debugging-friendly message
-if reading the revisions wasn't successful.
-
-    ath9k_htc 1-1.4:1.0: ath9k_htc: HTC initialized with 33 credits
-    ath: phy2: Failed to read SREV register
-    ath: phy2: Could not read hardware revision
-    ath: phy2: Unable to initialize hardware; initialization status: -95
-    ath: phy2: Unable to initialize hardware; initialization status: -95
-    ath9k_htc: Failed to initialize the device
-
-This helps when debugging by directly showing the first point of
-failure and it could prevent possible errors if a 0x0f.3 revision
-is ever supported.
-
-Signed-off-by: Tim Schumacher <timschumi@gmx.de>
+Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
 Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath9k/hw.c | 32 +++++++++++++++++++++--------
- 1 file changed, 23 insertions(+), 9 deletions(-)
+ drivers/net/wireless/mediatek/mt7601u/dma.c | 33 +++++++++++----------
+ 1 file changed, 18 insertions(+), 15 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath9k/hw.c b/drivers/net/wireless/ath/ath9k/hw.c
-index 951bac2caf12..e7fca78cdd96 100644
---- a/drivers/net/wireless/ath/ath9k/hw.c
-+++ b/drivers/net/wireless/ath/ath9k/hw.c
-@@ -250,8 +250,9 @@ void ath9k_hw_get_channel_centers(struct ath_hw *ah,
- /* Chip Revisions */
- /******************/
+diff --git a/drivers/net/wireless/mediatek/mt7601u/dma.c b/drivers/net/wireless/mediatek/mt7601u/dma.c
+index a8bc064bc14f..838ad9a4be51 100644
+--- a/drivers/net/wireless/mediatek/mt7601u/dma.c
++++ b/drivers/net/wireless/mediatek/mt7601u/dma.c
+@@ -193,10 +193,23 @@ static void mt7601u_complete_rx(struct urb *urb)
+ 	struct mt7601u_rx_queue *q = &dev->rx_q;
+ 	unsigned long flags;
  
--static void ath9k_hw_read_revisions(struct ath_hw *ah)
-+static bool ath9k_hw_read_revisions(struct ath_hw *ah)
- {
-+	u32 srev;
- 	u32 val;
- 
- 	if (ah->get_mac_revision)
-@@ -267,25 +268,33 @@ static void ath9k_hw_read_revisions(struct ath_hw *ah)
- 			val = REG_READ(ah, AR_SREV);
- 			ah->hw_version.macRev = MS(val, AR_SREV_REVISION2);
- 		}
--		return;
-+		return true;
- 	case AR9300_DEVID_AR9340:
- 		ah->hw_version.macVersion = AR_SREV_VERSION_9340;
--		return;
-+		return true;
- 	case AR9300_DEVID_QCA955X:
- 		ah->hw_version.macVersion = AR_SREV_VERSION_9550;
--		return;
-+		return true;
- 	case AR9300_DEVID_AR953X:
- 		ah->hw_version.macVersion = AR_SREV_VERSION_9531;
--		return;
-+		return true;
- 	case AR9300_DEVID_QCA956X:
- 		ah->hw_version.macVersion = AR_SREV_VERSION_9561;
--		return;
-+		return true;
- 	}
- 
--	val = REG_READ(ah, AR_SREV) & AR_SREV_ID;
-+	srev = REG_READ(ah, AR_SREV);
-+
-+	if (srev == -EIO) {
-+		ath_err(ath9k_hw_common(ah),
-+			"Failed to read SREV register");
-+		return false;
+-	spin_lock_irqsave(&dev->rx_lock, flags);
++	/* do no schedule rx tasklet if urb has been unlinked
++	 * or the device has been removed
++	 */
++	switch (urb->status) {
++	case -ECONNRESET:
++	case -ESHUTDOWN:
++	case -ENOENT:
++		return;
++	default:
++		dev_err_ratelimited(dev->dev, "rx urb failed: %d\n",
++				    urb->status);
++		/* fall through */
++	case 0:
++		break;
 +	}
-+
-+	val = srev & AR_SREV_ID;
  
- 	if (val == 0xFF) {
--		val = REG_READ(ah, AR_SREV);
-+		val = srev;
- 		ah->hw_version.macVersion =
- 			(val & AR_SREV_VERSION2) >> AR_SREV_TYPE2_S;
- 		ah->hw_version.macRev = MS(val, AR_SREV_REVISION2);
-@@ -304,6 +313,8 @@ static void ath9k_hw_read_revisions(struct ath_hw *ah)
- 		if (ah->hw_version.macVersion == AR_SREV_VERSION_5416_PCIE)
- 			ah->is_pciexpress = true;
- 	}
-+
-+	return true;
+-	if (mt7601u_urb_has_error(urb))
+-		dev_err(dev->dev, "Error: RX urb failed:%d\n", urb->status);
++	spin_lock_irqsave(&dev->rx_lock, flags);
+ 	if (WARN_ONCE(q->e[q->end].urb != urb, "RX urb mismatch"))
+ 		goto out;
+ 
+@@ -363,19 +376,9 @@ int mt7601u_dma_enqueue_tx(struct mt7601u_dev *dev, struct sk_buff *skb,
+ static void mt7601u_kill_rx(struct mt7601u_dev *dev)
+ {
+ 	int i;
+-	unsigned long flags;
+ 
+-	spin_lock_irqsave(&dev->rx_lock, flags);
+-
+-	for (i = 0; i < dev->rx_q.entries; i++) {
+-		int next = dev->rx_q.end;
+-
+-		spin_unlock_irqrestore(&dev->rx_lock, flags);
+-		usb_poison_urb(dev->rx_q.e[next].urb);
+-		spin_lock_irqsave(&dev->rx_lock, flags);
+-	}
+-
+-	spin_unlock_irqrestore(&dev->rx_lock, flags);
++	for (i = 0; i < dev->rx_q.entries; i++)
++		usb_poison_urb(dev->rx_q.e[i].urb);
  }
  
- /************************************/
-@@ -557,7 +568,10 @@ static int __ath9k_hw_init(struct ath_hw *ah)
- 	struct ath_common *common = ath9k_hw_common(ah);
- 	int r = 0;
- 
--	ath9k_hw_read_revisions(ah);
-+	if (!ath9k_hw_read_revisions(ah)) {
-+		ath_err(common, "Could not read hardware revisions");
-+		return -EOPNOTSUPP;
-+	}
- 
- 	switch (ah->hw_version.macVersion) {
- 	case AR_SREV_VERSION_5416_PCI:
+ static int mt7601u_submit_rx_buf(struct mt7601u_dev *dev,
 -- 
 2.20.1
 
