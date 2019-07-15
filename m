@@ -2,39 +2,39 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A434B69503
-	for <lists+linux-wireless@lfdr.de>; Mon, 15 Jul 2019 16:55:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A424E694DB
+	for <lists+linux-wireless@lfdr.de>; Mon, 15 Jul 2019 16:54:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2390832AbfGOO0p (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 15 Jul 2019 10:26:45 -0400
-Received: from mail.kernel.org ([198.145.29.99]:35154 "EHLO mail.kernel.org"
+        id S2390945AbfGOO2w (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 15 Jul 2019 10:28:52 -0400
+Received: from mail.kernel.org ([198.145.29.99]:39296 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2390462AbfGOO0p (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 15 Jul 2019 10:26:45 -0400
+        id S2390220AbfGOO2t (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 15 Jul 2019 10:28:49 -0400
 Received: from sasha-vm.mshome.net (unknown [73.61.17.35])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 11BC621842;
-        Mon, 15 Jul 2019 14:26:42 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 1190420868;
+        Mon, 15 Jul 2019 14:28:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1563200804;
-        bh=zYV7CxvtS3NWj05ijEC7m/2+ntlXcyOu+ePKTd6O2c8=;
+        s=default; t=1563200929;
+        bh=8MFIeyxHNO4CRPVVo0iFOLtHIhxgcEGt+NoS7XE7A2k=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=mBe4BIDZ/hyvRnEbDbFy6uUiD4kUsLMdVV6PK3nBTLO2JZL9e9ZW53hyXn5MvOTZ2
-         FwsxcxFxIBc2akQDBFz7bg9/9V1GHz75+WFCYzZt6IURTAhg0CgsI2lD8KQsvvXThR
-         obsEMoiB/A3zvu6rW6xPS5aaWnxN5ZvdU/h4L5zU=
+        b=MCE2tF6qomxwX9HwQtgDA0cT2ZYYE9KO9nYrV7BN/17qgkG4PGzQOs3Ru1dm45obk
+         gpbqacXNBX31Q1UJRPHNwAlL212FyOsJdqtbNjVggVHwBWnIklirc+FVACXoS/5p6l
+         GmjeS+DGW0uxb+tOboWxOsMMv8LmVTlwv2mxHxSU=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Andrei Otcheretianski <andrei.otcheretianski@intel.com>,
-        Luca Coelho <luciano.coelho@intel.com>,
-        Sasha Levin <sashal@kernel.org>,
+Cc:     Surabhi Vishnoi <svishnoi@codeaurora.org>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        Sasha Levin <sashal@kernel.org>, ath10k@lists.infradead.org,
         linux-wireless@vger.kernel.org, netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.19 134/158] iwlwifi: mvm: Drop large non sta frames
-Date:   Mon, 15 Jul 2019 10:17:45 -0400
-Message-Id: <20190715141809.8445-134-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.14 002/105] ath10k: Do not send probe response template for mesh
+Date:   Mon, 15 Jul 2019 10:26:56 -0400
+Message-Id: <20190715142839.9896-2-sashal@kernel.org>
 X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20190715141809.8445-1-sashal@kernel.org>
-References: <20190715141809.8445-1-sashal@kernel.org>
+In-Reply-To: <20190715142839.9896-1-sashal@kernel.org>
+References: <20190715142839.9896-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -44,39 +44,43 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Andrei Otcheretianski <andrei.otcheretianski@intel.com>
+From: Surabhi Vishnoi <svishnoi@codeaurora.org>
 
-[ Upstream commit ac70499ee97231a418dc1a4d6c9dc102e8f64631 ]
+[ Upstream commit 97354f2c432788e3163134df6bb144f4b6289d87 ]
 
-In some buggy scenarios we could possible attempt to transmit frames larger
-than maximum MSDU size. Since our devices don't know how to handle this,
-it may result in asserts, hangs etc.
-This can happen, for example, when we receive a large multicast frame
-and try to transmit it back to the air in AP mode.
-Since in a legal scenario this should never happen, drop such frames and
-warn about it.
+Currently mac80211 do not support probe response template for
+mesh point. When WMI_SERVICE_BEACON_OFFLOAD is enabled, host
+driver tries to configure probe response template for mesh, but
+it fails because the interface type is not NL80211_IFTYPE_AP but
+NL80211_IFTYPE_MESH_POINT.
 
-Signed-off-by: Andrei Otcheretianski <andrei.otcheretianski@intel.com>
-Signed-off-by: Luca Coelho <luciano.coelho@intel.com>
+To avoid this failure, skip sending probe response template to
+firmware for mesh point.
+
+Tested HW: WCN3990/QCA6174/QCA9984
+
+Signed-off-by: Surabhi Vishnoi <svishnoi@codeaurora.org>
+Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/intel/iwlwifi/mvm/tx.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/net/wireless/ath/ath10k/mac.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/tx.c b/drivers/net/wireless/intel/iwlwifi/mvm/tx.c
-index 2d21f0a1fa00..ffae299c3492 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/tx.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/tx.c
-@@ -641,6 +641,9 @@ int iwl_mvm_tx_skb_non_sta(struct iwl_mvm *mvm, struct sk_buff *skb)
+diff --git a/drivers/net/wireless/ath/ath10k/mac.c b/drivers/net/wireless/ath/ath10k/mac.c
+index cdcfb175ad9b..58a3c42c4aed 100644
+--- a/drivers/net/wireless/ath/ath10k/mac.c
++++ b/drivers/net/wireless/ath/ath10k/mac.c
+@@ -1611,6 +1611,10 @@ static int ath10k_mac_setup_prb_tmpl(struct ath10k_vif *arvif)
+ 	if (arvif->vdev_type != WMI_VDEV_TYPE_AP)
+ 		return 0;
  
- 	memcpy(&info, skb->cb, sizeof(info));
- 
-+	if (WARN_ON_ONCE(skb->len > IEEE80211_MAX_DATA_LEN + hdrlen))
-+		return -1;
++	 /* For mesh, probe response and beacon share the same template */
++	if (ieee80211_vif_is_mesh(vif))
++		return 0;
 +
- 	if (WARN_ON_ONCE(info.flags & IEEE80211_TX_CTL_AMPDU))
- 		return -1;
- 
+ 	prb = ieee80211_proberesp_get(hw, vif);
+ 	if (!prb) {
+ 		ath10k_warn(ar, "failed to get probe resp template from mac80211\n");
 -- 
 2.20.1
 
