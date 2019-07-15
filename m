@@ -2,84 +2,83 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E397A69994
-	for <lists+linux-wireless@lfdr.de>; Mon, 15 Jul 2019 19:11:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0ED7469A21
+	for <lists+linux-wireless@lfdr.de>; Mon, 15 Jul 2019 19:48:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731356AbfGORLt (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 15 Jul 2019 13:11:49 -0400
-Received: from mail-lj1-f195.google.com ([209.85.208.195]:42259 "EHLO
-        mail-lj1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730782AbfGORLs (ORCPT
+        id S1731720AbfGORse (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 15 Jul 2019 13:48:34 -0400
+Received: from smtp.codeaurora.org ([198.145.29.96]:36604 "EHLO
+        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1730854AbfGORse (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 15 Jul 2019 13:11:48 -0400
-Received: by mail-lj1-f195.google.com with SMTP id t28so17030143lje.9
-        for <linux-wireless@vger.kernel.org>; Mon, 15 Jul 2019 10:11:47 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=uBujI1LKsX+AicedaFrnsmqG4PdfJMOQIXaxCHAk4rY=;
-        b=fD8XCw8k14IG7/yHaD+7mShpN5sKbB7DZx3cF5z8gOZlO6SjOe+uT2FL9cQMzzMRLP
-         EuvXLscSX10HBL36Eu3myWNqmswQPNMoWaQKyd+DDcssimLJ46siZRUSwZhNxnZ93/j3
-         NWcMN6jC2tKHUi6NVcO4c2bxuH9Nb7Q895XbY=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=uBujI1LKsX+AicedaFrnsmqG4PdfJMOQIXaxCHAk4rY=;
-        b=WWZ9b6kc8WmGdgcsQHeRXHjziHCf+xm7gA2IcChBZvSTQkuphYgfbhW5qN76KWTRWl
-         k4nCrkBoMPivb0sxeLZAEL+q0BQ+T+Y64MSYYMxP7dqHjBI9kTbBQYbX50RFwjLCX0LL
-         9JwB4W/XTp35dwkYiV2sYMMJf/oNUY56DNvQMml2Yx4OP2ULQNB5S1PQ+iG2A3E8++SQ
-         JKxKfyLemK1KB7Lg4D5cNza984W7kF5Tp9aU6lJ90UbJvvhz0HYd+HtsXUdQcZBNBE12
-         ANdT/e3bQmDqtRgWfZ2ZXtkdxZwsGEd2ArugQAnE6ZniXtpxqTXHJu4bH523P25b52CH
-         1tMw==
-X-Gm-Message-State: APjAAAV/ydLl92Nnar2NJPTgzTOwOn1lUjozwtDgW3iBdZOVOQ8AGx3A
-        oJj1Gies7wlps8rHnMNsRbOECOnrc0A=
-X-Google-Smtp-Source: APXvYqygsdJpUK3gVVc9Msm7Q7bEAB5JZ5P2Pq4e7BDXwevxnWDOdZaM5WSIGL5wgI2oefCqayJQNw==
-X-Received: by 2002:a2e:9cd1:: with SMTP id g17mr15076849ljj.234.1563210706651;
-        Mon, 15 Jul 2019 10:11:46 -0700 (PDT)
-Received: from mail-lj1-f171.google.com (mail-lj1-f171.google.com. [209.85.208.171])
-        by smtp.gmail.com with ESMTPSA id h78sm3250921ljf.88.2019.07.15.10.11.45
-        for <linux-wireless@vger.kernel.org>
-        (version=TLS1_3 cipher=AEAD-AES128-GCM-SHA256 bits=128/128);
-        Mon, 15 Jul 2019 10:11:45 -0700 (PDT)
-Received: by mail-lj1-f171.google.com with SMTP id v18so17030476ljh.6
-        for <linux-wireless@vger.kernel.org>; Mon, 15 Jul 2019 10:11:45 -0700 (PDT)
-X-Received: by 2002:a2e:b0e6:: with SMTP id h6mr14180325ljl.18.1563210704749;
- Mon, 15 Jul 2019 10:11:44 -0700 (PDT)
+        Mon, 15 Jul 2019 13:48:34 -0400
+Received: by smtp.codeaurora.org (Postfix, from userid 1000)
+        id 74F1360F38; Mon, 15 Jul 2019 17:48:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
+        s=default; t=1563212913;
+        bh=ebMlBJPIGkZjoy4+LA3jCPs11ejsMA/w+UdmaiFwChc=;
+        h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
+        b=Gj+7dOwa0MEg30f9eo+5MLPeyrJEWq+9szVsJzEFT6scv2t73h1CrYhd0m3HDwrG+
+         LzpmWiQJS2iMVKLWJJIos1y7GV+QJkPUOTu/Yl9x6tAdzGOIaW4LqgnLJt21PnKSbN
+         w4umWNIBtWadFeG30H42stoWOlfj0pef/PQPjGoU=
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        pdx-caf-mail.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-0.8 required=2.0 tests=ALL_TRUSTED,BAYES_00,
+        DKIM_INVALID,DKIM_SIGNED,MISSING_DATE,MISSING_MID,SPF_NONE autolearn=no
+        autolearn_force=no version=3.4.0
+Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo@smtp.codeaurora.org)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 81F6160A44;
+        Mon, 15 Jul 2019 17:48:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
+        s=default; t=1563212912;
+        bh=ebMlBJPIGkZjoy4+LA3jCPs11ejsMA/w+UdmaiFwChc=;
+        h=Subject:From:In-Reply-To:References:To:Cc:From;
+        b=RgZ65/RtUVe8Tjrw8fRSkA8yBQblbgvKKwKUmm4WaxbKdDk3gt2IqiLgt75Vgo1uv
+         T9muJYHTLUz0Xqh2rr+DZCu2qC0kHMUkCUaZ+6biWwczQfDQGRW6+Lbv+saGsTamL4
+         xLWwv1trerWPHSVe9caHajWk7kJkAKTwJNGBtMPM=
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 81F6160A44
+Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-References: <20190713013215.215008-1-briannorris@chromium.org> <F7CD281DE3E379468C6D07993EA72F84D1867CEE@RTITMBSVM04.realtek.com.tw>
-In-Reply-To: <F7CD281DE3E379468C6D07993EA72F84D1867CEE@RTITMBSVM04.realtek.com.tw>
-From:   Brian Norris <briannorris@chromium.org>
-Date:   Mon, 15 Jul 2019 10:11:32 -0700
-X-Gmail-Original-Message-ID: <CA+ASDXN6UPMR8bSyuzHxt-HDiFcV=dH3ikdyKKftn-dyFUJuaw@mail.gmail.com>
-Message-ID: <CA+ASDXN6UPMR8bSyuzHxt-HDiFcV=dH3ikdyKKftn-dyFUJuaw@mail.gmail.com>
-Subject: Re: [PATCH] rtw88: make functions static
-To:     Tony Chuang <yhchuang@realtek.com>
-Cc:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH 1/2] iwlwifi: add new cards for 9000 and 20000 series
+From:   Kalle Valo <kvalo@codeaurora.org>
+In-Reply-To: <20190708155534.18241-2-luca@coelho.fi>
+References: <20190708155534.18241-2-luca@coelho.fi>
+To:     Luca Coelho <luca@coelho.fi>
+Cc:     linux-wireless@vger.kernel.org,
+        Ihab Zhaika <ihab.zhaika@intel.com>, stable@vger.kernel.org,
+        Luca Coelho <luciano.coelho@intel.com>
+User-Agent: pwcli/0.0.0-git (https://github.com/kvalo/pwcli/) Python/2.7.12
+Message-Id: <20190715174833.74F1360F38@smtp.codeaurora.org>
+Date:   Mon, 15 Jul 2019 17:48:33 +0000 (UTC)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Sun, Jul 14, 2019 at 7:24 PM Tony Chuang <yhchuang@realtek.com> wrote:
-> I am sorry I have to NACK it.
->
-> Nothing wrong about this patch. Because in the last patch set I sent has
-> 11 patches, but one of them is not applied by Kalle.
-> And I am going to resend it, which will use rtw_get_tx_power_params
-> in debug.c
+Luca Coelho <luca@coelho.fi> wrote:
 
-I suppose that's fine with me. I've marked it as Rejected in Patchwork.
+> From: Ihab Zhaika <ihab.zhaika@intel.com>
+> 
+> add two new PCI ID's for 9000 and 20000 series
+> 
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Ihab Zhaika <ihab.zhaika@intel.com>
+> Signed-off-by: Luca Coelho <luciano.coelho@intel.com>
 
-(Normally, I would say: it's your fault for leaving these things
-unused. But it was in the middle of the series, where you were aiming
-to start using it by the end.)
+2 patches applied to wireless-drivers.git, thanks.
 
-It would still be nice to see the promised v2:
+ffcb60a54f24 iwlwifi: add new cards for 9000 and 20000 series
+a7d544d63120 iwlwifi: pcie: add support for qu c-step devices
 
-https://patchwork.kernel.org/patch/10966403/
+-- 
+https://patchwork.kernel.org/patch/11035359/
 
-Regards,
-Brian
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+
