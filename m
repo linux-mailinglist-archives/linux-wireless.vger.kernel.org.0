@@ -2,36 +2,36 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A24FE69737
-	for <lists+linux-wireless@lfdr.de>; Mon, 15 Jul 2019 17:09:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E17116970F
+	for <lists+linux-wireless@lfdr.de>; Mon, 15 Jul 2019 17:08:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732916AbfGON4x (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 15 Jul 2019 09:56:53 -0400
-Received: from mail.kernel.org ([198.145.29.99]:33776 "EHLO mail.kernel.org"
+        id S1733074AbfGON6J (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 15 Jul 2019 09:58:09 -0400
+Received: from mail.kernel.org ([198.145.29.99]:37192 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1732907AbfGON4w (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 15 Jul 2019 09:56:52 -0400
+        id S1732131AbfGON6G (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 15 Jul 2019 09:58:06 -0400
 Received: from sasha-vm.mshome.net (unknown [73.61.17.35])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 361BE21537;
-        Mon, 15 Jul 2019 13:56:49 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 10C5A20651;
+        Mon, 15 Jul 2019 13:58:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1563199011;
-        bh=1vuppLEe4c9McwgEoTdwhfd5u9V66r5gDa7g32TfWCE=;
+        s=default; t=1563199085;
+        bh=oiFz2NTIZMbWcBgnnWQwMU4e1+RSkgJOnzytLtRJPzo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=vv8AZDLC9q0TetpVLxvqPvQDbGHdrQPcevi7rAuXd+hxt8H6CWWHqlt6sX0Hwsjjb
-         uiAizeHOvZ7C2z2+TuwylQ3RXn38i3oTImXugfWuW0Vrx7+kfW5F1pnPazKpkibwAX
-         VkYvECmZRZ7u3pcKGx0aV6gzm9q4SWFMfIQX7vHI=
+        b=GUPYduky1gIJ6EYhtmr0z9MfLm1Z6rYEnDwKIUQAFoLp/cM4JDrJWvzwa+yQ0FNiK
+         +O6t5CuAFS+S2Ju423n8fc/pDORgNoyHSMR30EauUcETNCsk+N2BPyXGHPD6F8iEq9
+         P+1Askpewg8NcoOK9c9QtFHXrQZcadI5BmEYST+M=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Miaoqing Pan <miaoqing@codeaurora.org>,
+Cc:     Zefir Kurtisi <zefir.kurtisi@neratec.com>,
         Kalle Valo <kvalo@codeaurora.org>,
-        Sasha Levin <sashal@kernel.org>, ath10k@lists.infradead.org,
+        Sasha Levin <sashal@kernel.org>,
         linux-wireless@vger.kernel.org, netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.2 165/249] ath10k: fix PCIE device wake up failed
-Date:   Mon, 15 Jul 2019 09:45:30 -0400
-Message-Id: <20190715134655.4076-165-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.2 186/249] ath9k: correctly handle short radar pulses
+Date:   Mon, 15 Jul 2019 09:45:51 -0400
+Message-Id: <20190715134655.4076-186-sashal@kernel.org>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20190715134655.4076-1-sashal@kernel.org>
 References: <20190715134655.4076-1-sashal@kernel.org>
@@ -44,49 +44,58 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Miaoqing Pan <miaoqing@codeaurora.org>
+From: Zefir Kurtisi <zefir.kurtisi@neratec.com>
 
-[ Upstream commit 011d4111c8c602ea829fa4917af1818eb0500a90 ]
+[ Upstream commit df5c4150501ee7e86383be88f6490d970adcf157 ]
 
-Observed PCIE device wake up failed after ~120 iterations of
-soft-reboot test. The error message is
-"ath10k_pci 0000:01:00.0: failed to wake up device : -110"
+In commit 3c0efb745a17 ("ath9k: discard undersized packets")
+the lower bound of RX packets was set to 10 (min ACK size) to
+filter those that would otherwise be treated as invalid at
+mac80211.
 
-The call trace as below:
-ath10k_pci_probe -> ath10k_pci_force_wake -> ath10k_pci_wake_wait ->
-ath10k_pci_is_awake
+Alas, short radar pulses are reported as PHY_ERROR frames
+with length set to 3. Therefore their detection stopped
+working after that commit.
 
-Once trigger the device to wake up, we will continuously check the RTC
-state until it returns RTC_STATE_V_ON or timeout.
+NOTE: ath9k drivers built thereafter will not pass DFS
+certification.
 
-But for QCA99x0 chips, we use wrong value for RTC_STATE_V_ON.
-Occasionally, we get 0x7 on the fist read, we thought as a failure
-case, but actually is the right value, also verified with the spec.
-So fix the issue by changing RTC_STATE_V_ON from 0x5 to 0x7, passed
-~2000 iterations.
+This extends the criteria for short packets to explicitly
+handle PHY_ERROR frames.
 
-Tested HW: QCA9984
-
-Signed-off-by: Miaoqing Pan <miaoqing@codeaurora.org>
+Fixes: 3c0efb745a17 ("ath9k: discard undersized packets")
+Signed-off-by: Zefir Kurtisi <zefir.kurtisi@neratec.com>
 Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath10k/hw.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/wireless/ath/ath9k/recv.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/ath/ath10k/hw.c b/drivers/net/wireless/ath/ath10k/hw.c
-index ad082b7d7643..b242085c3c16 100644
---- a/drivers/net/wireless/ath/ath10k/hw.c
-+++ b/drivers/net/wireless/ath/ath10k/hw.c
-@@ -158,7 +158,7 @@ const struct ath10k_hw_values qca6174_values = {
- };
+diff --git a/drivers/net/wireless/ath/ath9k/recv.c b/drivers/net/wireless/ath/ath9k/recv.c
+index 4e97f7f3b2a3..06e660858766 100644
+--- a/drivers/net/wireless/ath/ath9k/recv.c
++++ b/drivers/net/wireless/ath/ath9k/recv.c
+@@ -815,6 +815,7 @@ static int ath9k_rx_skb_preprocess(struct ath_softc *sc,
+ 	struct ath_common *common = ath9k_hw_common(ah);
+ 	struct ieee80211_hdr *hdr;
+ 	bool discard_current = sc->rx.discard_next;
++	bool is_phyerr;
  
- const struct ath10k_hw_values qca99x0_values = {
--	.rtc_state_val_on		= 5,
-+	.rtc_state_val_on		= 7,
- 	.ce_count			= 12,
- 	.msi_assign_ce_max		= 12,
- 	.num_target_ce_config_wlan	= 10,
+ 	/*
+ 	 * Discard corrupt descriptors which are marked in
+@@ -827,8 +828,11 @@ static int ath9k_rx_skb_preprocess(struct ath_softc *sc,
+ 
+ 	/*
+ 	 * Discard zero-length packets and packets smaller than an ACK
++	 * which are not PHY_ERROR (short radar pulses have a length of 3)
+ 	 */
+-	if (rx_stats->rs_datalen < 10) {
++	is_phyerr = rx_stats->rs_status & ATH9K_RXERR_PHY;
++	if (!rx_stats->rs_datalen ||
++	    (rx_stats->rs_datalen < 10 && !is_phyerr)) {
+ 		RX_STAT_INC(sc, rx_len_err);
+ 		goto corrupt;
+ 	}
 -- 
 2.20.1
 
