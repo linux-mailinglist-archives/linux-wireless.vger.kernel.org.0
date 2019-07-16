@@ -2,125 +2,110 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 591186B0B6
-	for <lists+linux-wireless@lfdr.de>; Tue, 16 Jul 2019 23:01:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 19B6C6B0E4
+	for <lists+linux-wireless@lfdr.de>; Tue, 16 Jul 2019 23:15:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2388536AbfGPVBy (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 16 Jul 2019 17:01:54 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:37183 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1731214AbfGPVBy (ORCPT
+        id S2388092AbfGPVPJ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 16 Jul 2019 17:15:09 -0400
+Received: from paleale.coelho.fi ([176.9.41.70]:59204 "EHLO
+        farmhouse.coelho.fi" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
+        with ESMTP id S1728781AbfGPVPJ (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 16 Jul 2019 17:01:54 -0400
-Received: from mail-io1-f70.google.com ([209.85.166.70])
-        by youngberry.canonical.com with esmtps (TLS1.0:RSA_AES_128_CBC_SHA1:16)
-        (Exim 4.76)
-        (envelope-from <seth.forshee@canonical.com>)
-        id 1hnUa8-0002Af-LC
-        for linux-wireless@vger.kernel.org; Tue, 16 Jul 2019 21:01:52 +0000
-Received: by mail-io1-f70.google.com with SMTP id n8so24660555ioo.21
-        for <linux-wireless@vger.kernel.org>; Tue, 16 Jul 2019 14:01:52 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:content-transfer-encoding
-         :in-reply-to:user-agent;
-        bh=KJll5Axh0kMoPVnX1zKO5pruzpdr1ISgW101aliA2ww=;
-        b=NS6fLaJfW8llna/RtLa6SlVCgqQ3bZzyqDNY7BeK0kk9cb3zhFnJAfq0psndiG4fhW
-         GNgEln6ycTGcGKqaYRZ0VOCyxYtu948x4tYK4GKGT0szT2xSbsngo8tWueb1ufxfhOuY
-         R6wygak0r5Crxn6wnoMk5mSw+2Wz9O3hMa3iqgRIagKlvzRlxqDvF8N4sUexpod1Ka4w
-         Eh6QxJ4Wky9fGjvMdMSyyJ0VFLRKTLg3UxdtiGC3jtWWZFa8Rnq855/Y0awmP7CaEyHb
-         5lDy1gXskakcN9o5wDfwZuSECtJnW92z7yQ+TBhr6e9j53lC/dmPqkmNo6iB/fO5XQlB
-         FDwg==
-X-Gm-Message-State: APjAAAVQkMiNt58pQVcfFc92rCigzJV+HDekn/xkUYWbnoK0Ql+iUwe8
-        eFTJBIoExs6VZajDOpUHHCfJAR+MmBGDg8cVksj8lmTrHzNTqfJUiqFmQzkrwsXnIVKc5Ln05lu
-        JAS9Tmg8kZM3S4eo8vpHCbNdLjuRkJslJq3xln9R+TMJQ
-X-Received: by 2002:a5e:9308:: with SMTP id k8mr32529462iom.143.1563310911482;
-        Tue, 16 Jul 2019 14:01:51 -0700 (PDT)
-X-Google-Smtp-Source: APXvYqxO79KuFJweS4Ji2htkmm8hZqkhJreOHg4eOEUUtk5/1d6JREj5jjCEArAua1rz0BMx04c0bg==
-X-Received: by 2002:a5e:9308:: with SMTP id k8mr32529424iom.143.1563310911153;
-        Tue, 16 Jul 2019 14:01:51 -0700 (PDT)
-Received: from localhost ([2605:a601:ac2:fb20:31dd:dc66:96d:f1eb])
-        by smtp.gmail.com with ESMTPSA id h18sm17494436iob.80.2019.07.16.14.01.49
-        (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
-        Tue, 16 Jul 2019 14:01:49 -0700 (PDT)
-Date:   Tue, 16 Jul 2019 16:01:48 -0500
-From:   Seth Forshee <seth.forshee@canonical.com>
-To:     gb@inrete.it
-Cc:     linux-wireless@vger.kernel.org, wireless-regdb@lists.infradead.org
-Subject: Re: [wireless-regdb] Update to wireless-regdb about Italy
-Message-ID: <20190716210148.GQ5418@ubuntu-xps13>
-References: <20190702141944.25902-1-martin@strongswan.org>
- <20190713130253.GH5418@ubuntu-xps13>
- <8c7c0973-b1c9-0032-1819-e868855b896f@inrete.it>
+        Tue, 16 Jul 2019 17:15:09 -0400
+Received: from 91-156-6-193.elisa-laajakaista.fi ([91.156.6.193] helo=redipa)
+        by farmhouse.coelho.fi with esmtpsa (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <luca@coelho.fi>)
+        id 1hnUmi-0000Yc-7k; Wed, 17 Jul 2019 00:14:54 +0300
+Message-ID: <da053a97d771eff0ad8db37e644108ed2fad25a3.camel@coelho.fi>
+From:   Luca Coelho <luca@coelho.fi>
+To:     Nick Desaulniers <ndesaulniers@google.com>,
+        Joe Perches <joe@perches.com>,
+        Kalle Valo <kvalo@codeaurora.org>
+Cc:     Arnd Bergmann <arnd@arndb.de>,
+        Nathan Chancellor <natechancellor@gmail.com>,
+        Johannes Berg <johannes.berg@intel.com>,
+        Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
+        Intel Linux Wireless <linuxwifi@intel.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Shahar S Matityahu <shahar.s.matityahu@intel.com>,
+        Sara Sharon <sara.sharon@intel.com>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        LKML <linux-kernel@vger.kernel.org>,
+        clang-built-linux <clang-built-linux@googlegroups.com>
+Date:   Wed, 17 Jul 2019 00:14:49 +0300
+In-Reply-To: <CAKwvOdkD_r2YBqRDy-uTGMG1YeRF8KokxjikR0XLkXLsdJca0g@mail.gmail.com>
+References: <20190712001708.170259-1-ndesaulniers@google.com>
+         <b219cf41933b2f965572af515cf9d3119293bfba.camel@perches.com>
+         <CAKwvOdkD_r2YBqRDy-uTGMG1YeRF8KokxjikR0XLkXLsdJca0g@mail.gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.30.5-1.1 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <8c7c0973-b1c9-0032-1819-e868855b896f@inrete.it>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Transfer-Encoding: 7bit
+X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on farmhouse.coelho.fi
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.9 required=5.0 tests=ALL_TRUSTED,BAYES_00,
+        TVD_RCVD_IP,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.2
+Subject: Re: [PATCH -next] iwlwifi: dbg: work around clang bug by marking
+ debug strings static
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Sat, Jul 13, 2019 at 07:10:37PM +0200, gb@inrete.it wrote:
-> Hi
+On Tue, 2019-07-16 at 10:28 -0700, Nick Desaulniers wrote:
+> On Thu, Jul 11, 2019 at 7:15 PM Joe Perches <joe@perches.com> wrote:
+> > On Thu, 2019-07-11 at 17:17 -0700, Nick Desaulniers wrote:
+> > > Commit r353569 in prerelease Clang-9 is producing a linkage failure:
+> > > 
+> > > ld: drivers/net/wireless/intel/iwlwifi/fw/dbg.o:
+> > > in function `_iwl_fw_dbg_apply_point':
+> > > dbg.c:(.text+0x827a): undefined reference to `__compiletime_assert_2387'
+> > > 
+> > > when the following configs are enabled:
+> > > - CONFIG_IWLWIFI
+> > > - CONFIG_IWLMVM
+> > > - CONFIG_KASAN
+> > > 
+> > > Work around the issue for now by marking the debug strings as `static`,
+> > > which they probably should be any ways.
+> > > 
+> > > Link: https://bugs.llvm.org/show_bug.cgi?id=42580
+> > > Link: https://github.com/ClangBuiltLinux/linux/issues/580
+> > > Reported-by: Arnd Bergmann <arnd@arndb.de>
+> > > Reported-by: Nathan Chancellor <natechancellor@gmail.com>
+> > > Signed-off-by: Nick Desaulniers <ndesaulniers@google.com>
+> > > ---
+> > >  drivers/net/wireless/intel/iwlwifi/fw/dbg.c | 4 ++--
+> > >  1 file changed, 2 insertions(+), 2 deletions(-)
+> > > 
+> > > diff --git a/drivers/net/wireless/intel/iwlwifi/fw/dbg.c b/drivers/net/wireless/intel/iwlwifi/fw/dbg.c
+> > > index e411ac98290d..f8c90ea4e9b4 100644
+> > > --- a/drivers/net/wireless/intel/iwlwifi/fw/dbg.c
+> > > +++ b/drivers/net/wireless/intel/iwlwifi/fw/dbg.c
+> > > @@ -2438,7 +2438,7 @@ static void iwl_fw_dbg_info_apply(struct iwl_fw_runtime *fwrt,
+> > >  {
+> > >       u32 img_name_len = le32_to_cpu(dbg_info->img_name_len);
+> > >       u32 dbg_cfg_name_len = le32_to_cpu(dbg_info->dbg_cfg_name_len);
+> > > -     const char err_str[] =
+> > > +     static const char err_str[] =
+> > >               "WRT: ext=%d. Invalid %s name length %d, expected %d\n";
+> > 
+> > Better still would be to use the format string directly
+> > in both locations instead of trying to deduplicate it
+> > via storing it into a separate pointer.
+> > 
+> > Let the compiler/linker consolidate the format.
+> > It's smaller object code, allows format/argument verification,
+> > and is simpler for humans to understand.
 > 
-> I'm Italian and I work in Italy, I realize that nowadays the regdb entry for
-> Italy is as follows:
-> 
-> country IT: DFS-ETSI
->     (2402 - 2482 @ 40), (20)
->     (5170 - 5250 @ 80), (20), AUTO-BW, wmmrule=ETSI
->     (5250 - 5330 @ 80), (20), DFS, AUTO-BW, wmmrule=ETSI
->     (5490 - 5710 @ 160), (27), DFS, wmmrule=ETSI
->     # 60 GHz band channels 1-4, ref: Etsi En 302 567
->     (57000 - 66000 @ 2160), (40)
-> 
-> And it misses the lines:
-> 
->     # Short Range Devices (SRD) (ETSI EN 300 440)
->     (5725 - 5875 @ 80), (25 mW)
-> 
-> Common to may European Countries.
-> 
-> I dug a bit in the current Italian regulation that is online on the website
-> of the
-> Ministry of Economic Development: https://www.mise.gov.it/index.php/en/
-> 
-> In the section about the "National Plan of Frequencies" (only in Italian) at
-> the URL:
-> 
-> https://www.mise.gov.it/index.php/it/comunicazioni/radio/pnrf-piano-nazionale-di-ripartizione-delle-frequenze
-> 
-> 
-> Two PDF files are linked:
-> 
-> --Tabelle di attribuzione Tabella B (27,50 MHz – 10.000 MHz) (pdf)
-> https://www.mise.gov.it/images/stories/documenti/Tabella_B_2750_MHz-10000_Mhz.pdf
-> 
-> Which at page 28 allows the use for ISM according to the general European
-> legislation: 2006/771/CE ERC/REC 70-03
-> 
-> --Note (esplicative, di carattere tecnico e con attribuzioni in deroga al
-> piano) (pdf)
-> https://www.mise.gov.it/images/stories/documenti/NOTE-pnrf.pdf
-> Which at page 334, in the paragraph 3.2.3 states in a explicit way the
-> permit to operate the in the band 5.725 ÷ 5.875 MHz,
-> with SRD and max power at 25 mW.
-> 
-> According to this regulation there's no reason not to have the:
->  (5725 - 5875 @ 80), (25 mW)
-> Inserted for Italy in the regdb
-> 
-> Who can do it ?
+> Whichever Kalle prefers, I just want my CI green again.
 
-The page/section numbers you gave for the second document don't
-correspond to what I'm seeing, but it does look like you are right that
-the entry can be added to the regdb. Anyone can send patches for the
-regdb, so if you know how to do that please feel free to do so.
-Otherwise let me know and I can prepare a patch.
+We already changed this in a later internal patch, which will reach the
+mainline (-next) soon.  So let's skip this for now.
 
-Thanks,
-Seth
+--
+Cheers,
+Luca.
+
