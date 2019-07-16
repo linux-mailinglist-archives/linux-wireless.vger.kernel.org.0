@@ -2,183 +2,125 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 59AA16ADA1
-	for <lists+linux-wireless@lfdr.de>; Tue, 16 Jul 2019 19:28:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 591186B0B6
+	for <lists+linux-wireless@lfdr.de>; Tue, 16 Jul 2019 23:01:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2387773AbfGPR2w (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 16 Jul 2019 13:28:52 -0400
-Received: from mail-pg1-f195.google.com ([209.85.215.195]:39170 "EHLO
-        mail-pg1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728575AbfGPR2v (ORCPT
+        id S2388536AbfGPVBy (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 16 Jul 2019 17:01:54 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:37183 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1731214AbfGPVBy (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 16 Jul 2019 13:28:51 -0400
-Received: by mail-pg1-f195.google.com with SMTP id u17so9775118pgi.6
-        for <linux-wireless@vger.kernel.org>; Tue, 16 Jul 2019 10:28:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=FdipyjVpCY6f56Xd4OimbS+PX/++xiAeJwdsr6JXrj4=;
-        b=h1+V62UQ9GlP5V7C0IVqWNdDBKsnlQlECKOfmge8wZcQCKZdqLaxGAP+GFTdv6GM43
-         rsyjKA7SqGqU56sdSzRhGCyQ9fEcpRAkOuZoc/fykRCryb/mK1IJFA6rYJu74nY6zCXP
-         plvbFxEctwJ92ks0XB0cx3o3ptKwXdPR56Xp2M9jEdbyBmQvREnzRwijT5bcJQK8ciS0
-         CHmrSsEx2FL+yOvxYn8aj8xeJzpN/yDZlr/uPRH9K1OnIT57lKWkYZZLe5JLY+tHpxoF
-         vPlE1PtJIoTbnhydJ88RkCm1pYqsKye8E1Ee6wJUbVNzG7CCcGHdGc3tWJTq9mhurxUV
-         nPuw==
+        Tue, 16 Jul 2019 17:01:54 -0400
+Received: from mail-io1-f70.google.com ([209.85.166.70])
+        by youngberry.canonical.com with esmtps (TLS1.0:RSA_AES_128_CBC_SHA1:16)
+        (Exim 4.76)
+        (envelope-from <seth.forshee@canonical.com>)
+        id 1hnUa8-0002Af-LC
+        for linux-wireless@vger.kernel.org; Tue, 16 Jul 2019 21:01:52 +0000
+Received: by mail-io1-f70.google.com with SMTP id n8so24660555ioo.21
+        for <linux-wireless@vger.kernel.org>; Tue, 16 Jul 2019 14:01:52 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=FdipyjVpCY6f56Xd4OimbS+PX/++xiAeJwdsr6JXrj4=;
-        b=K/6AkXjvfmpeinkmN4xEZX0DhHWPQL9xozTxYjorGsTShYVXmMnsZW4etDzrgy1GVm
-         jL7EMmx10xruB5vi4Xt7qlrb7cGfY8vHei8KakpKB95FMSJJ61sWfNbdS9BS0ykIV9l9
-         dcOVMLhtMg6ViH6C5hbys2qz2tOy3cXGlq2/MQ1fhU5iJHimTWwIQEIn+hhyEtZFMh7Z
-         YidvpV7waymMX2geqUdPkYxi3123T/BeXOWHfYUPJcjLKuyB3+9GgCM7IqB+GxKoGYhu
-         qDyNt0wJrGjEmBfRLwoieXSPyrvTrL9n+42CFDxfMIs3ZuuwC+SG3FEVM0/JhMzQH8Iv
-         Atuw==
-X-Gm-Message-State: APjAAAX0X3QjEqc9jAepgvUKoLZ+Qppxx+Oiy0V5rMBFr6NFLfor+Mxb
-        8rjUt5P5bgrMCLh2RpPLm8GXPx+BvcYGhy3N011FMw==
-X-Google-Smtp-Source: APXvYqxRntwkNQJL/5FuY0S5lwsDvHNyTqDiq6hab1isYlxCWGc+m+UWftjkrghbfqa2HIoXg2UjyyrTCTM77O102is=
-X-Received: by 2002:a65:5687:: with SMTP id v7mr36183069pgs.263.1563298130577;
- Tue, 16 Jul 2019 10:28:50 -0700 (PDT)
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:content-transfer-encoding
+         :in-reply-to:user-agent;
+        bh=KJll5Axh0kMoPVnX1zKO5pruzpdr1ISgW101aliA2ww=;
+        b=NS6fLaJfW8llna/RtLa6SlVCgqQ3bZzyqDNY7BeK0kk9cb3zhFnJAfq0psndiG4fhW
+         GNgEln6ycTGcGKqaYRZ0VOCyxYtu948x4tYK4GKGT0szT2xSbsngo8tWueb1ufxfhOuY
+         R6wygak0r5Crxn6wnoMk5mSw+2Wz9O3hMa3iqgRIagKlvzRlxqDvF8N4sUexpod1Ka4w
+         Eh6QxJ4Wky9fGjvMdMSyyJ0VFLRKTLg3UxdtiGC3jtWWZFa8Rnq855/Y0awmP7CaEyHb
+         5lDy1gXskakcN9o5wDfwZuSECtJnW92z7yQ+TBhr6e9j53lC/dmPqkmNo6iB/fO5XQlB
+         FDwg==
+X-Gm-Message-State: APjAAAVQkMiNt58pQVcfFc92rCigzJV+HDekn/xkUYWbnoK0Ql+iUwe8
+        eFTJBIoExs6VZajDOpUHHCfJAR+MmBGDg8cVksj8lmTrHzNTqfJUiqFmQzkrwsXnIVKc5Ln05lu
+        JAS9Tmg8kZM3S4eo8vpHCbNdLjuRkJslJq3xln9R+TMJQ
+X-Received: by 2002:a5e:9308:: with SMTP id k8mr32529462iom.143.1563310911482;
+        Tue, 16 Jul 2019 14:01:51 -0700 (PDT)
+X-Google-Smtp-Source: APXvYqxO79KuFJweS4Ji2htkmm8hZqkhJreOHg4eOEUUtk5/1d6JREj5jjCEArAua1rz0BMx04c0bg==
+X-Received: by 2002:a5e:9308:: with SMTP id k8mr32529424iom.143.1563310911153;
+        Tue, 16 Jul 2019 14:01:51 -0700 (PDT)
+Received: from localhost ([2605:a601:ac2:fb20:31dd:dc66:96d:f1eb])
+        by smtp.gmail.com with ESMTPSA id h18sm17494436iob.80.2019.07.16.14.01.49
+        (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
+        Tue, 16 Jul 2019 14:01:49 -0700 (PDT)
+Date:   Tue, 16 Jul 2019 16:01:48 -0500
+From:   Seth Forshee <seth.forshee@canonical.com>
+To:     gb@inrete.it
+Cc:     linux-wireless@vger.kernel.org, wireless-regdb@lists.infradead.org
+Subject: Re: [wireless-regdb] Update to wireless-regdb about Italy
+Message-ID: <20190716210148.GQ5418@ubuntu-xps13>
+References: <20190702141944.25902-1-martin@strongswan.org>
+ <20190713130253.GH5418@ubuntu-xps13>
+ <8c7c0973-b1c9-0032-1819-e868855b896f@inrete.it>
 MIME-Version: 1.0
-References: <20190712001708.170259-1-ndesaulniers@google.com> <b219cf41933b2f965572af515cf9d3119293bfba.camel@perches.com>
-In-Reply-To: <b219cf41933b2f965572af515cf9d3119293bfba.camel@perches.com>
-From:   Nick Desaulniers <ndesaulniers@google.com>
-Date:   Tue, 16 Jul 2019 10:28:39 -0700
-Message-ID: <CAKwvOdkD_r2YBqRDy-uTGMG1YeRF8KokxjikR0XLkXLsdJca0g@mail.gmail.com>
-Subject: Re: [PATCH -next] iwlwifi: dbg: work around clang bug by marking
- debug strings static
-To:     Joe Perches <joe@perches.com>, Kalle Valo <kvalo@codeaurora.org>
-Cc:     Arnd Bergmann <arnd@arndb.de>,
-        Nathan Chancellor <natechancellor@gmail.com>,
-        Johannes Berg <johannes.berg@intel.com>,
-        Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
-        Luca Coelho <luciano.coelho@intel.com>,
-        Intel Linux Wireless <linuxwifi@intel.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Shahar S Matityahu <shahar.s.matityahu@intel.com>,
-        Sara Sharon <sara.sharon@intel.com>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        LKML <linux-kernel@vger.kernel.org>,
-        clang-built-linux <clang-built-linux@googlegroups.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <8c7c0973-b1c9-0032-1819-e868855b896f@inrete.it>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Thu, Jul 11, 2019 at 7:15 PM Joe Perches <joe@perches.com> wrote:
->
-> On Thu, 2019-07-11 at 17:17 -0700, Nick Desaulniers wrote:
-> > Commit r353569 in prerelease Clang-9 is producing a linkage failure:
-> >
-> > ld: drivers/net/wireless/intel/iwlwifi/fw/dbg.o:
-> > in function `_iwl_fw_dbg_apply_point':
-> > dbg.c:(.text+0x827a): undefined reference to `__compiletime_assert_2387'
-> >
-> > when the following configs are enabled:
-> > - CONFIG_IWLWIFI
-> > - CONFIG_IWLMVM
-> > - CONFIG_KASAN
-> >
-> > Work around the issue for now by marking the debug strings as `static`,
-> > which they probably should be any ways.
-> >
-> > Link: https://bugs.llvm.org/show_bug.cgi?id=42580
-> > Link: https://github.com/ClangBuiltLinux/linux/issues/580
-> > Reported-by: Arnd Bergmann <arnd@arndb.de>
-> > Reported-by: Nathan Chancellor <natechancellor@gmail.com>
-> > Signed-off-by: Nick Desaulniers <ndesaulniers@google.com>
-> > ---
-> >  drivers/net/wireless/intel/iwlwifi/fw/dbg.c | 4 ++--
-> >  1 file changed, 2 insertions(+), 2 deletions(-)
-> >
-> > diff --git a/drivers/net/wireless/intel/iwlwifi/fw/dbg.c b/drivers/net/wireless/intel/iwlwifi/fw/dbg.c
-> > index e411ac98290d..f8c90ea4e9b4 100644
-> > --- a/drivers/net/wireless/intel/iwlwifi/fw/dbg.c
-> > +++ b/drivers/net/wireless/intel/iwlwifi/fw/dbg.c
-> > @@ -2438,7 +2438,7 @@ static void iwl_fw_dbg_info_apply(struct iwl_fw_runtime *fwrt,
-> >  {
-> >       u32 img_name_len = le32_to_cpu(dbg_info->img_name_len);
-> >       u32 dbg_cfg_name_len = le32_to_cpu(dbg_info->dbg_cfg_name_len);
-> > -     const char err_str[] =
-> > +     static const char err_str[] =
-> >               "WRT: ext=%d. Invalid %s name length %d, expected %d\n";
->
-> Better still would be to use the format string directly
-> in both locations instead of trying to deduplicate it
-> via storing it into a separate pointer.
->
-> Let the compiler/linker consolidate the format.
-> It's smaller object code, allows format/argument verification,
-> and is simpler for humans to understand.
+On Sat, Jul 13, 2019 at 07:10:37PM +0200, gb@inrete.it wrote:
+> Hi
+> 
+> I'm Italian and I work in Italy, I realize that nowadays the regdb entry for
+> Italy is as follows:
+> 
+> country IT: DFS-ETSI
+>     (2402 - 2482 @ 40), (20)
+>     (5170 - 5250 @ 80), (20), AUTO-BW, wmmrule=ETSI
+>     (5250 - 5330 @ 80), (20), DFS, AUTO-BW, wmmrule=ETSI
+>     (5490 - 5710 @ 160), (27), DFS, wmmrule=ETSI
+>     # 60 GHz band channels 1-4, ref: Etsi En 302 567
+>     (57000 - 66000 @ 2160), (40)
+> 
+> And it misses the lines:
+> 
+>     # Short Range Devices (SRD) (ETSI EN 300 440)
+>     (5725 - 5875 @ 80), (25 mW)
+> 
+> Common to may European Countries.
+> 
+> I dug a bit in the current Italian regulation that is online on the website
+> of the
+> Ministry of Economic Development: https://www.mise.gov.it/index.php/en/
+> 
+> In the section about the "National Plan of Frequencies" (only in Italian) at
+> the URL:
+> 
+> https://www.mise.gov.it/index.php/it/comunicazioni/radio/pnrf-piano-nazionale-di-ripartizione-delle-frequenze
+> 
+> 
+> Two PDF files are linked:
+> 
+> --Tabelle di attribuzione Tabella B (27,50 MHz – 10.000 MHz) (pdf)
+> https://www.mise.gov.it/images/stories/documenti/Tabella_B_2750_MHz-10000_Mhz.pdf
+> 
+> Which at page 28 allows the use for ISM according to the general European
+> legislation: 2006/771/CE ERC/REC 70-03
+> 
+> --Note (esplicative, di carattere tecnico e con attribuzioni in deroga al
+> piano) (pdf)
+> https://www.mise.gov.it/images/stories/documenti/NOTE-pnrf.pdf
+> Which at page 334, in the paragraph 3.2.3 states in a explicit way the
+> permit to operate the in the band 5.725 ÷ 5.875 MHz,
+> with SRD and max power at 25 mW.
+> 
+> According to this regulation there's no reason not to have the:
+>  (5725 - 5875 @ 80), (25 mW)
+> Inserted for Italy in the regdb
+> 
+> Who can do it ?
 
-Whichever Kalle prefers, I just want my CI green again.
+The page/section numbers you gave for the second document don't
+correspond to what I'm seeing, but it does look like you are right that
+the entry can be added to the regdb. Anyone can send patches for the
+regdb, so if you know how to do that please feel free to do so.
+Otherwise let me know and I can prepare a patch.
 
->
-> ---
-> diff --git a/drivers/net/wireless/intel/iwlwifi/fw/dbg.c b/drivers/net/wireless/intel/iwlwifi/fw/dbg.c
-> index e411ac98290d..25e6712932b8 100644
-> --- a/drivers/net/wireless/intel/iwlwifi/fw/dbg.c
-> +++ b/drivers/net/wireless/intel/iwlwifi/fw/dbg.c
-> @@ -2438,17 +2438,17 @@ static void iwl_fw_dbg_info_apply(struct iwl_fw_runtime *fwrt,
->  {
->         u32 img_name_len = le32_to_cpu(dbg_info->img_name_len);
->         u32 dbg_cfg_name_len = le32_to_cpu(dbg_info->dbg_cfg_name_len);
-> -       const char err_str[] =
-> -               "WRT: ext=%d. Invalid %s name length %d, expected %d\n";
->
->         if (img_name_len != IWL_FW_INI_MAX_IMG_NAME_LEN) {
-> -               IWL_WARN(fwrt, err_str, ext, "image", img_name_len,
-> +               IWL_WARN(fwrt, "WRT: ext=%d. Invalid %s name length %d, expected %d\n",
-> +                        ext, "image", img_name_len,
->                          IWL_FW_INI_MAX_IMG_NAME_LEN);
->                 return;
->         }
->
->         if (dbg_cfg_name_len != IWL_FW_INI_MAX_DBG_CFG_NAME_LEN) {
-> -               IWL_WARN(fwrt, err_str, ext, "debug cfg", dbg_cfg_name_len,
-> +               IWL_WARN(fwrt, "WRT: ext=%d. Invalid %s name length %d, expected %d\n",
-> +                        ext, "debug cfg", dbg_cfg_name_len,
->                          IWL_FW_INI_MAX_DBG_CFG_NAME_LEN);
->                 return;
->         }
-> @@ -2775,8 +2775,6 @@ static void _iwl_fw_dbg_apply_point(struct iwl_fw_runtime *fwrt,
->                 struct iwl_ucode_tlv *tlv = iter;
->                 void *ini_tlv = (void *)tlv->data;
->                 u32 type = le32_to_cpu(tlv->type);
-> -               const char invalid_ap_str[] =
-> -                       "WRT: ext=%d. Invalid apply point %d for %s\n";
->
->                 switch (type) {
->                 case IWL_UCODE_TLV_TYPE_DEBUG_INFO:
-> @@ -2786,8 +2784,8 @@ static void _iwl_fw_dbg_apply_point(struct iwl_fw_runtime *fwrt,
->                         struct iwl_fw_ini_allocation_data *buf_alloc = ini_tlv;
->
->                         if (pnt != IWL_FW_INI_APPLY_EARLY) {
-> -                               IWL_ERR(fwrt, invalid_ap_str, ext, pnt,
-> -                                       "buffer allocation");
-> +                               IWL_ERR(fwrt, "WRT: ext=%d. Invalid apply point %d for %s\n",
-> +                                       ext, pnt, "buffer allocation");
->                                 goto next;
->                         }
->
-> @@ -2797,8 +2795,8 @@ static void _iwl_fw_dbg_apply_point(struct iwl_fw_runtime *fwrt,
->                 }
->                 case IWL_UCODE_TLV_TYPE_HCMD:
->                         if (pnt < IWL_FW_INI_APPLY_AFTER_ALIVE) {
-> -                               IWL_ERR(fwrt, invalid_ap_str, ext, pnt,
-> -                                       "host command");
-> +                               IWL_ERR(fwrt, "WRT: ext=%d. Invalid apply point %d for %s\n",
-> +                                       ext, pnt, "host command");
->                                 goto next;
->                         }
->                         iwl_fw_dbg_send_hcmd(fwrt, tlv, ext);
->
->
-
-
--- 
 Thanks,
-~Nick Desaulniers
+Seth
