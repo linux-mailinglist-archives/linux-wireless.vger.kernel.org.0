@@ -2,34 +2,34 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 7DD5A6BAFD
-	for <lists+linux-wireless@lfdr.de>; Wed, 17 Jul 2019 13:05:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D4E2C6BC55
+	for <lists+linux-wireless@lfdr.de>; Wed, 17 Jul 2019 14:30:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726900AbfGQLFx (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 17 Jul 2019 07:05:53 -0400
-Received: from bombadil.infradead.org ([198.137.202.133]:47264 "EHLO
+        id S1727112AbfGQM2j (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 17 Jul 2019 08:28:39 -0400
+Received: from bombadil.infradead.org ([198.137.202.133]:54018 "EHLO
         bombadil.infradead.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726831AbfGQLFx (ORCPT
+        with ESMTP id S1727090AbfGQM2i (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 17 Jul 2019 07:05:53 -0400
+        Wed, 17 Jul 2019 08:28:38 -0400
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
         d=infradead.org; s=bombadil.20170209; h=Sender:Content-Transfer-Encoding:
         MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
         Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
         Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
         List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=7MgQc3DMNiIcSsO//GdBQJ987uwioYo7RuW2t4OMOuk=; b=U8TOE7A2nKJPPuWuAy5AlL6aTg
-        c+Kh2EOTwOtgTyaYHxsbasQrd/c7s5Qnlru2MZin3PUOhM7BtWlhKW3CvaY1RGvSD1oTr4m8xz/sE
-        jkYo+mg+MkzafsULpq+IH4ahU4tPHt0AoxQp7EDesOckS9I6LOROSZNS0aI6dgCABtk6T5m51mEFt
-        VN7LPWcr5IVL8ZBQ9szxa5e58az41+9pSjrc2xzYjVsMgDgac/RTHEdSF1RGAWuCA3RALdGQBFlGu
-        xyzwMV3DOZTrOohzo4cKF/WfQTg1AJBvPilTXkC0mDRF8845+6rjSJQt6rC9S2FqoDRxu8IK1MWGY
-        eMRcitbA==;
+        bh=a1f4A6Onw2TGLoQVYrLa3Wksuml1J+AJk0g2E7frTGU=; b=BGj84pr1MWDarfYujDXWI47uk7
+        umdBeTBQr7+/GlhkgSwfJWMJBvuABPl7XXXaUU80Wy9lsOvqm6rvNmsBteRSksJkMiWc0CXJCoUjB
+        W75WEyao7t0g1G8avAE9zxh//woydMC5QimCj16jiEKalYPrpk7tBRIq0vZkyDlBsptx+Ywj+XdFl
+        XC3hpObUYuaSUnNCC8Crw5Fxt/71SDQLZU1Zjb78E+sYAxHJLElCTMjKIEo+rsQOZL8T9w8ElpjG4
+        RLGtkmoXFTJ/c3sBKoY1K95EwdIeVid72B0cYfzWPUrAkFDc6NHebkn2uOdGYQRT+zTvNP2NQ29yv
+        6MqxkErQ==;
 Received: from [191.33.154.161] (helo=bombadil.infradead.org)
         by bombadil.infradead.org with esmtpsa (Exim 4.92 #3 (Red Hat Linux))
-        id 1hnhke-00054P-OB; Wed, 17 Jul 2019 11:05:37 +0000
+        id 1hnj2n-0006fj-5U; Wed, 17 Jul 2019 12:28:25 +0000
 Received: from mchehab by bombadil.infradead.org with local (Exim 4.92)
         (envelope-from <mchehab@bombadil.infradead.org>)
-        id 1hnhkc-00039q-R5; Wed, 17 Jul 2019 08:05:34 -0300
+        id 1hnj2k-00052e-3l; Wed, 17 Jul 2019 09:28:22 -0300
 From:   Mauro Carvalho Chehab <mchehab+samsung@kernel.org>
 To:     gregkh@linuxfoundation.org
 Cc:     Mauro Carvalho Chehab <mchehab+samsung@kernel.org>,
@@ -41,14 +41,15 @@ Cc:     Mauro Carvalho Chehab <mchehab+samsung@kernel.org>,
         Boris Ostrovsky <boris.ostrovsky@oracle.com>,
         Juergen Gross <jgross@suse.com>,
         Stefano Stabellini <sstabellini@kernel.org>,
+        Jonathan Corbet <corbet@lwn.net>,
         linux-wireless@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        xen-devel@lists.xenproject.org
-Subject: [PATCH v3 14/20] docs: ABI: stable: make files ReST compatible
-Date:   Wed, 17 Jul 2019 08:05:27 -0300
-Message-Id: <c24d70e49d20b15c6cf5d1d6e538728bfcfa89cb.1563360659.git.mchehab+samsung@kernel.org>
+        xen-devel@lists.xenproject.org, linux-doc@vger.kernel.org
+Subject: [PATCH v4 12/15] docs: ABI: stable: make files ReST compatible
+Date:   Wed, 17 Jul 2019 09:28:16 -0300
+Message-Id: <1c1ce4b491edf2137c47059bf23f0e76b8cca21b.1563365880.git.mchehab+samsung@kernel.org>
 X-Mailer: git-send-email 2.21.0
-In-Reply-To: <cover.1563360659.git.mchehab+samsung@kernel.org>
-References: <cover.1563360659.git.mchehab+samsung@kernel.org>
+In-Reply-To: <cover.1563365880.git.mchehab+samsung@kernel.org>
+References: <cover.1563365880.git.mchehab+samsung@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
@@ -80,7 +81,8 @@ Signed-off-by: Mauro Carvalho Chehab <mchehab+samsung@kernel.org>
  .../ABI/stable/sysfs-firmware-opal-elog       |  2 +
  Documentation/ABI/stable/sysfs-hypervisor-xen |  3 +
  Documentation/ABI/stable/vdso                 |  5 +-
- 16 files changed, 178 insertions(+), 100 deletions(-)
+ Documentation/admin-guide/abi-stable.rst      |  1 +
+ 17 files changed, 179 insertions(+), 100 deletions(-)
 
 diff --git a/Documentation/ABI/stable/firewire-cdev b/Documentation/ABI/stable/firewire-cdev
 index f72ed653878a..c9e8ff026154 100644
@@ -963,6 +965,15 @@ index 55406ec8a35a..73ed1240a5c0 100644
   The maintainers of the other vDSO-using architectures should confirm
 - that it is correct for their architecture.)
 + that it is correct for their architecture.
+diff --git a/Documentation/admin-guide/abi-stable.rst b/Documentation/admin-guide/abi-stable.rst
+index 7495d7a35048..70490736e0d3 100644
+--- a/Documentation/admin-guide/abi-stable.rst
++++ b/Documentation/admin-guide/abi-stable.rst
+@@ -11,3 +11,4 @@ Most interfaces (like syscalls) are expected to never change and always
+ be available.
+ 
+ .. kernel-abi:: $srctree/Documentation/ABI/stable
++   :rst:
 -- 
 2.21.0
 
