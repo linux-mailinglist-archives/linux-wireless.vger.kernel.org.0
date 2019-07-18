@@ -2,107 +2,79 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A540C6C4BF
-	for <lists+linux-wireless@lfdr.de>; Thu, 18 Jul 2019 03:57:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5A7586C508
+	for <lists+linux-wireless@lfdr.de>; Thu, 18 Jul 2019 04:47:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728079AbfGRB5X (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 17 Jul 2019 21:57:23 -0400
-Received: from mail-pf1-f196.google.com ([209.85.210.196]:46090 "EHLO
-        mail-pf1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727541AbfGRB5X (ORCPT
+        id S1728087AbfGRCrj (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 17 Jul 2019 22:47:39 -0400
+Received: from rtits2.realtek.com ([211.75.126.72]:45094 "EHLO
+        rtits2.realtek.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727804AbfGRCri (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 17 Jul 2019 21:57:23 -0400
-Received: by mail-pf1-f196.google.com with SMTP id c73so11777082pfb.13
-        for <linux-wireless@vger.kernel.org>; Wed, 17 Jul 2019 18:57:22 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=tVMzX+vsHuStuXaelci6e/V6r4higaqJwBgjES1yZJs=;
-        b=SDNHXyVkkAwhxSkPK65qPTWbMNM4TndzBwUOUkakAZWE/jJViKmTdArw3r09OyDsnq
-         pDgWMW7kepF4PbbHeA11o/mf8u0jZ4RdqEyYhKXb+zZMF2wWtVaG04JJsug5rXp7pYzE
-         iZ8QGoow3wEM/OqI1FJgYCGtzLfxbjDvfBEcM=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=tVMzX+vsHuStuXaelci6e/V6r4higaqJwBgjES1yZJs=;
-        b=it3nCOhr/mhi2N/mJ3F4E5HwKozhYxOQ2+xjv6EarHBFyv76aOdjJiyRhiRLXbnBl9
-         Mm/yZQJbBvffdATf3b0Lthxi3aOFG5/dz8/buf+bNM26I8STYyDwMqTU+wko8klFLt0j
-         2YDaQBTGxH0fhLgQTt/dJjprsJsi5EnJNZE6zNcwcF3pVZJkEHkrImddp0gIvj6yjwmS
-         fnvgPpia4zELY0g1ulAh+2t/l5P7gnIuyiBwH1CKAkFQAAkwkVKSuxSWLDsau9lDX6mU
-         Xu2/JGoBrv9PO/TUH/hDDgLUmn1CQWPf9m0EAseV02wqzHzU6tZOdH5jRVINFBWf+ig0
-         EUJg==
-X-Gm-Message-State: APjAAAU2IVatkVXFf8wArzNHMaCT097fzrashzjWjdfcXimouNOO8Qcm
-        lh5xvp5d4DqTK3bN6SSlIvfPsQ==
-X-Google-Smtp-Source: APXvYqwc7UJEgdpZQiNBgmlKXN2kufpgxys9Fp1+ejJCyREocHIkqInPZ/SFoloPxpn1Z+ccN0FcNw==
-X-Received: by 2002:a17:90a:cf8f:: with SMTP id i15mr46150975pju.110.1563415042447;
-        Wed, 17 Jul 2019 18:57:22 -0700 (PDT)
-Received: from smtp.gmail.com ([2620:15c:202:1:534:b7c0:a63c:460c])
-        by smtp.gmail.com with ESMTPSA id n17sm27568488pfq.182.2019.07.17.18.57.20
-        (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
-        Wed, 17 Jul 2019 18:57:21 -0700 (PDT)
-From:   Brian Norris <briannorris@chromium.org>
-To:     Johannes Berg <johannes@sipsolutions.net>
-Cc:     <linux-kernel@vger.kernel.org>, linux-wireless@vger.kernel.org,
-        Stanislaw Gruszka <sgruszka@redhat.com>,
-        Yan-Hsuan Chuang <yhchuang@realtek.com>,
-        Brian Norris <briannorris@chromium.org>
-Subject: [PATCH] mac80211: don't warn about CW params when not using them
-Date:   Wed, 17 Jul 2019 18:57:12 -0700
-Message-Id: <20190718015712.197499-1-briannorris@chromium.org>
-X-Mailer: git-send-email 2.22.0.510.g264f2c817a-goog
+        Wed, 17 Jul 2019 22:47:38 -0400
+Authenticated-By: 
+X-SpamFilter-By: BOX Solutions SpamTrap 5.62 with qID x6I2jKju025492, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (RTITCASV02.realtek.com.tw[172.21.6.19])
+        by rtits2.realtek.com.tw (8.15.2/2.57/5.78) with ESMTPS id x6I2jKju025492
+        (version=TLSv1 cipher=DHE-RSA-AES256-SHA bits=256 verify=NOT);
+        Thu, 18 Jul 2019 10:45:20 +0800
+Received: from RTITMBSVM04.realtek.com.tw ([fe80::e404:880:2ef1:1aa1]) by
+ RTITCASV02.realtek.com.tw ([::1]) with mapi id 14.03.0439.000; Thu, 18 Jul
+ 2019 10:45:19 +0800
+From:   Pkshih <pkshih@realtek.com>
+To:     "Larry.Finger@lwfinger.net" <Larry.Finger@lwfinger.net>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "yuehaibing@huawei.com" <yuehaibing@huawei.com>,
+        "kvalo@codeaurora.org" <kvalo@codeaurora.org>,
+        "natechancellor@gmail.com" <natechancellor@gmail.com>,
+        "hariprasad.kelam@gmail.com" <hariprasad.kelam@gmail.com>,
+        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+        "davem@davemloft.net" <davem@davemloft.net>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+Subject: Re: [PATCH] rtlwifi: btcoex: fix issue possible condition with no effect (if == else)
+Thread-Topic: [PATCH] rtlwifi: btcoex: fix issue possible condition with no
+ effect (if == else)
+Thread-Index: AQHVOOY1W6hVhmptY0OYy+EIYozmE6bPLcOA
+Date:   Thu, 18 Jul 2019 02:45:19 +0000
+Message-ID: <1563417919.4276.0.camel@realtek.com>
+References: <20190712191535.GA4215@hari-Inspiron-1545>
+In-Reply-To: <20190712191535.GA4215@hari-Inspiron-1545>
+Accept-Language: en-US, zh-TW
+Content-Language: zh-TW
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [172.21.69.114]
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <8A9B338587918D4EA57C625C3531B5C5@realtek.com>
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-ieee80211_set_wmm_default() normally sets up the initial CW min/max for
-each queue, except that it skips doing this if the driver doesn't
-support ->conf_tx. We still end up calling drv_conf_tx() in some cases
-(e.g., ieee80211_reconfig()), which also still won't do anything
-useful...except it complains here about the invalid CW parameters.
-
-Let's just skip the WARN if we weren't going to do anything useful with
-the parameters.
-
-Signed-off-by: Brian Norris <briannorris@chromium.org>
----
-Noticed because rtw88 does not currently implement .conf_tx()
-
-I think there are several ways to slice this one. I picked one fix,
-which may not be the best one.
-
- net/mac80211/driver-ops.c | 13 +++++++++----
- 1 file changed, 9 insertions(+), 4 deletions(-)
-
-diff --git a/net/mac80211/driver-ops.c b/net/mac80211/driver-ops.c
-index acd4afb4944b..c9a8a2433e8a 100644
---- a/net/mac80211/driver-ops.c
-+++ b/net/mac80211/driver-ops.c
-@@ -187,11 +187,16 @@ int drv_conf_tx(struct ieee80211_local *local,
- 	if (!check_sdata_in_driver(sdata))
- 		return -EIO;
- 
--	if (WARN_ONCE(params->cw_min == 0 ||
--		      params->cw_min > params->cw_max,
--		      "%s: invalid CW_min/CW_max: %d/%d\n",
--		      sdata->name, params->cw_min, params->cw_max))
-+	if (params->cw_min == 0 || params->cw_min > params->cw_max) {
-+		/*
-+		 * If we can't configure hardware anyway, don't warn. We may
-+		 * never have initialized the CW parameters.
-+		 */
-+		WARN_ONCE(local->ops->conf_tx,
-+			  "%s: invalid CW_min/CW_max: %d/%d\n",
-+			  sdata->name, params->cw_min, params->cw_max);
- 		return -EINVAL;
-+	}
- 
- 	trace_drv_conf_tx(local, sdata, ac, params);
- 	if (local->ops->conf_tx)
--- 
-2.22.0.510.g264f2c817a-goog
-
+T24gRnJpLCAyMDE5LTA3LTEyIGF0IDE5OjE1ICswMDAwLCBIYXJpcHJhc2FkIEtlbGFtIHdyb3Rl
+Og0KPiBmaXggYmVsb3cgaXNzdWUgcmVwb3J0ZWQgYnkgY29jY2ljaGVjaw0KPiBkcml2ZXJzL25l
+dC93aXJlbGVzcy9yZWFsdGVrL3J0bHdpZmkvYnRjb2V4aXN0L2hhbGJ0Y291dHNyYy5jOjUxNDox
+LTM6DQo+IFdBUk5JTkc6IHBvc3NpYmxlIGNvbmRpdGlvbiB3aXRoIG5vIGVmZmVjdCAoaWYgPT0g
+ZWxzZSkNCj4gDQo+IFNpZ25lZC1vZmYtYnk6IEhhcmlwcmFzYWQgS2VsYW0gPGhhcmlwcmFzYWQu
+a2VsYW1AZ21haWwuY29tPg0KPiAtLS0NCj4gwqBkcml2ZXJzL25ldC93aXJlbGVzcy9yZWFsdGVr
+L3J0bHdpZmkvYnRjb2V4aXN0L2hhbGJ0Y291dHNyYy5jIHwgOCArLS0tLS0tLQ0KPiDCoDEgZmls
+ZSBjaGFuZ2VkLCAxIGluc2VydGlvbigrKSwgNyBkZWxldGlvbnMoLSkNCj4gDQo+IGRpZmYgLS1n
+aXQgYS9kcml2ZXJzL25ldC93aXJlbGVzcy9yZWFsdGVrL3J0bHdpZmkvYnRjb2V4aXN0L2hhbGJ0
+Y291dHNyYy5jDQo+IGIvZHJpdmVycy9uZXQvd2lyZWxlc3MvcmVhbHRlay9ydGx3aWZpL2J0Y29l
+eGlzdC9oYWxidGNvdXRzcmMuYw0KPiBpbmRleCAxNTIyNDJhLi4xOTFkYWZkMCAxMDA2NDQNCj4g
+LS0tIGEvZHJpdmVycy9uZXQvd2lyZWxlc3MvcmVhbHRlay9ydGx3aWZpL2J0Y29leGlzdC9oYWxi
+dGNvdXRzcmMuYw0KPiArKysgYi9kcml2ZXJzL25ldC93aXJlbGVzcy9yZWFsdGVrL3J0bHdpZmkv
+YnRjb2V4aXN0L2hhbGJ0Y291dHNyYy5jDQo+IEBAIC01MDksMTMgKzUwOSw3IEBAIHN0YXRpYyB1
+MzIgaGFsYnRjX2dldF93aWZpX2xpbmtfc3RhdHVzKHN0cnVjdCBidGNfY29leGlzdA0KPiAqYnRj
+b2V4aXN0KQ0KPiDCoA0KPiDCoHN0YXRpYyBzMzIgaGFsYnRjX2dldF93aWZpX3Jzc2koc3RydWN0
+IHJ0bF9wcml2ICpydGxwcml2KQ0KPiDCoHsNCj4gLQlpbnQgdW5kZWNfc21fcHdkYiA9IDA7DQo+
+IC0NCj4gLQlpZiAocnRscHJpdi0+bWFjODAyMTEubGlua19zdGF0ZSA+PSBNQUM4MDIxMV9MSU5L
+RUQpDQo+IC0JCXVuZGVjX3NtX3B3ZGIgPSBydGxwcml2LT5kbS51bmRlY19zbV9wd2RiOw0KPiAt
+CWVsc2UgLyogYXNzb2NpYXRlZCBlbnRyeSBwd2RiICovDQo+IC0JCXVuZGVjX3NtX3B3ZGIgPSBy
+dGxwcml2LT5kbS51bmRlY19zbV9wd2RiOw0KPiAtCXJldHVybiB1bmRlY19zbV9wd2RiOw0KPiAr
+CXJldHVybiBydGxwcml2LT5kbS51bmRlY19zbV9wd2RiOw0KPiDCoH0NCj4gwqANCj4gwqBzdGF0
+aWMgYm9vbCBoYWxidGNfZ2V0KHZvaWQgKnZvaWRfYnRjb2V4aXN0LCB1OCBnZXRfdHlwZSwgdm9p
+ZCAqb3V0X2J1ZikNCg0KSXQgbG9va3MgZ29vZCB0byBtZS4gVGhhbmsgeW91Lg0KDQpBY2tlZC1i
+eTogUGluZy1LZSBTaGloIDxwa3NoaWhAcmVhbHRlay5jb20+DQoNCg0K
