@@ -2,117 +2,100 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 59A8E6CB5B
-	for <lists+linux-wireless@lfdr.de>; Thu, 18 Jul 2019 11:01:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 064BC6CCE2
+	for <lists+linux-wireless@lfdr.de>; Thu, 18 Jul 2019 12:38:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726454AbfGRJAS (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 18 Jul 2019 05:00:18 -0400
-Received: from nbd.name ([46.4.11.11]:36044 "EHLO nbd.name"
+        id S1726665AbfGRKiP (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 18 Jul 2019 06:38:15 -0400
+Received: from mx1.redhat.com ([209.132.183.28]:52680 "EHLO mx1.redhat.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726383AbfGRJAS (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 18 Jul 2019 05:00:18 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name;
-         s=20160729; h=Message-Id:Date:Subject:To:From:Sender:Reply-To:Cc:
-        MIME-Version:Content-Type:Content-Transfer-Encoding:Content-ID:
-        Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-        :Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
-        List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=i19wCCIEB6zWpPD7x1ZyJASWqwoz2UvHp25FT5g7JZk=; b=WkOlnDLkdYMDQYCIAue4X5wA/4
-        3ycZDvlnEV6gbJjlZ1flS3I/xh1IVDkFp1ZM+ed1qbD6otrGBqoGGGC6JkvJEU1UgzWFtVPTAfA/I
-        kEdCLxdANNPKOmPQrDHUDQnd6gq0xs9EknbaaRzgYLYEB+3gfGVBR2ihJH9J3qZDWe8w=;
-Received: from p54ae9abd.dip0.t-ipconnect.de ([84.174.154.189] helo=maeck.local)
-        by ds12 with esmtpsa (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.89)
-        (envelope-from <nbd@nbd.name>)
-        id 1ho2Gv-000446-EA
-        for linux-wireless@vger.kernel.org; Thu, 18 Jul 2019 11:00:17 +0200
-Received: by maeck.local (Postfix, from userid 501)
-        id B2890624FD56; Thu, 18 Jul 2019 11:00:16 +0200 (CEST)
-From:   Felix Fietkau <nbd@nbd.name>
+        id S1726423AbfGRKiP (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 18 Jul 2019 06:38:15 -0400
+Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.phx2.redhat.com [10.5.11.11])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mx1.redhat.com (Postfix) with ESMTPS id 61F4A3084295;
+        Thu, 18 Jul 2019 10:38:15 +0000 (UTC)
+Received: from localhost (unknown [10.43.2.114])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id BB5D36012C;
+        Thu, 18 Jul 2019 10:38:12 +0000 (UTC)
+From:   Stanislaw Gruszka <sgruszka@redhat.com>
 To:     linux-wireless@vger.kernel.org
-Subject: [PATCH] mt76: mt7615: add missing register initialization
-Date:   Thu, 18 Jul 2019 11:00:16 +0200
-Message-Id: <20190718090016.34634-1-nbd@nbd.name>
-X-Mailer: git-send-email 2.17.0
+Cc:     Felix Fietkau <nbd@nbd.name>,
+        Lorenzo Bianconi <lorenzo.bianconi@redhat.com>
+Subject: [PATCH 5.3] mt76: mt76x0u: do not reset radio on resume
+Date:   Thu, 18 Jul 2019 12:38:10 +0200
+Message-Id: <1563446290-2813-1-git-send-email-sgruszka@redhat.com>
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.11
+X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16 (mx1.redhat.com [10.5.110.40]); Thu, 18 Jul 2019 10:38:15 +0000 (UTC)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-- initialize CCA signal source
-- initialize clock for band 1 (7615D)
-- initialize BAR rate
+On some machines mt76x0u firmware can hung during resume,
+what result on messages like below:
 
-Reviewed-by: Ryder Lee <ryder.lee@mediatek.com>
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
+[  475.480062] mt76x0 1-8:1.0: Error: MCU response pre-completed!
+[  475.990066] mt76x0 1-8:1.0: Error: send MCU cmd failed:-110
+[  475.990075] mt76x0 1-8:1.0: Error: MCU response pre-completed!
+[  476.500003] mt76x0 1-8:1.0: Error: send MCU cmd failed:-110
+[  476.500012] mt76x0 1-8:1.0: Error: MCU response pre-completed!
+[  477.010046] mt76x0 1-8:1.0: Error: send MCU cmd failed:-110
+[  477.010055] mt76x0 1-8:1.0: Error: MCU response pre-completed!
+[  477.529997] mt76x0 1-8:1.0: Error: send MCU cmd failed:-110
+[  477.530006] mt76x0 1-8:1.0: Error: MCU response pre-completed!
+[  477.824907] mt76x0 1-8:1.0: Error: send MCU cmd failed:-71
+[  477.824916] mt76x0 1-8:1.0: Error: MCU response pre-completed!
+[  477.825029] usb 1-8: USB disconnect, device number 6
+
+and possible whole system freeze.
+
+This can be avoided, if we do not perform mt76x0_chip_onoff() reset.
+
+Cc: stable@vger.kernel.org
+Fixes: 134b2d0d1fcf ("mt76x0: init files")
+Signed-off-by: Stanislaw Gruszka <sgruszka@redhat.com>
 ---
- .../net/wireless/mediatek/mt76/mt7615/init.c  | 22 +++++++++++++++----
- .../net/wireless/mediatek/mt76/mt7615/regs.h  | 13 +++++++++++
- 2 files changed, 31 insertions(+), 4 deletions(-)
+ drivers/net/wireless/mediatek/mt76/mt76x0/usb.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/init.c b/drivers/net/wireless/mediatek/mt76/mt7615/init.c
-index 280db9445d94..be144e13fe4c 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7615/init.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7615/init.c
-@@ -20,10 +20,24 @@ static void mt7615_phy_init(struct mt7615_dev *dev)
+diff --git a/drivers/net/wireless/mediatek/mt76/mt76x0/usb.c b/drivers/net/wireless/mediatek/mt76/mt76x0/usb.c
+index 627ed1fc7b15..645f4d15fb61 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt76x0/usb.c
++++ b/drivers/net/wireless/mediatek/mt76/mt76x0/usb.c
+@@ -136,11 +136,11 @@ static int mt76x0u_start(struct ieee80211_hw *hw)
+ 	.release_buffered_frames = mt76_release_buffered_frames,
+ };
  
- static void mt7615_mac_init(struct mt7615_dev *dev)
+-static int mt76x0u_init_hardware(struct mt76x02_dev *dev)
++static int mt76x0u_init_hardware(struct mt76x02_dev *dev, bool reset)
  {
--	/* enable band 0 clk */
--	mt76_rmw(dev, MT_CFG_CCR,
--		 MT_CFG_CCR_MAC_D0_1X_GC_EN | MT_CFG_CCR_MAC_D0_2X_GC_EN,
--		 MT_CFG_CCR_MAC_D0_1X_GC_EN | MT_CFG_CCR_MAC_D0_2X_GC_EN);
-+	u32 val;
-+
-+	/* enable band 0/1 clk */
-+	mt76_set(dev, MT_CFG_CCR,
-+		 MT_CFG_CCR_MAC_D0_1X_GC_EN | MT_CFG_CCR_MAC_D0_2X_GC_EN |
-+		 MT_CFG_CCR_MAC_D1_1X_GC_EN | MT_CFG_CCR_MAC_D1_2X_GC_EN);
-+
-+	val = mt76_rmw(dev, MT_TMAC_TRCR0,
-+		       MT_TMAC_TRCR_CCA_SEL | MT_TMAC_TRCR_SEC_CCA_SEL,
-+		       FIELD_PREP(MT_TMAC_TRCR_CCA_SEL, 2) |
-+		       FIELD_PREP(MT_TMAC_TRCR_SEC_CCA_SEL, 0));
-+	mt76_wr(dev, MT_TMAC_TRCR1, val);
-+
-+	val = MT_AGG_ACR_PKT_TIME_EN | MT_AGG_ACR_NO_BA_AR_RULE |
-+	      FIELD_PREP(MT_AGG_ACR_CFEND_RATE, 0x49) | /* 24M */
-+	      FIELD_PREP(MT_AGG_ACR_BAR_RATE, 0x4b); /* 6M */
-+	mt76_wr(dev, MT_AGG_ACR0, val);
-+	mt76_wr(dev, MT_AGG_ACR1, val);
+ 	int err;
  
- 	mt76_rmw_field(dev, MT_TMAC_CTCR0,
- 		       MT_TMAC_CTCR0_INS_DDLMT_REFTIME, 0x3f);
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/regs.h b/drivers/net/wireless/mediatek/mt76/mt7615/regs.h
-index f2cd858730c3..c1353deb2b7c 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7615/regs.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt7615/regs.h
-@@ -97,12 +97,25 @@
- 					MT_AGG_ARxCR_LIMIT_SHIFT(_n), \
- 					MT_AGG_ARxCR_LIMIT_SHIFT(_n))
+-	mt76x0_chip_onoff(dev, true, true);
++	mt76x0_chip_onoff(dev, true, reset);
  
-+#define MT_AGG_ACR0			MT_WF_AGG(0x070)
-+#define MT_AGG_ACR1			MT_WF_AGG(0x170)
-+#define MT_AGG_ACR_NO_BA_RULE		BIT(0)
-+#define MT_AGG_ACR_NO_BA_AR_RULE	BIT(1)
-+#define MT_AGG_ACR_PKT_TIME_EN		BIT(2)
-+#define MT_AGG_ACR_CFEND_RATE		GENMASK(15, 4)
-+#define MT_AGG_ACR_BAR_RATE		GENMASK(31, 20)
-+
- #define MT_AGG_SCR			MT_WF_AGG(0x0fc)
- #define MT_AGG_SCR_NLNAV_MID_PTEC_DIS	BIT(3)
+ 	if (!mt76x02_wait_for_mac(&dev->mt76))
+ 		return -ETIMEDOUT;
+@@ -173,7 +173,7 @@ static int mt76x0u_register_device(struct mt76x02_dev *dev)
+ 	if (err < 0)
+ 		goto out_err;
  
- #define MT_WF_TMAC_BASE			0x21000
- #define MT_WF_TMAC(ofs)			(MT_WF_TMAC_BASE + (ofs))
+-	err = mt76x0u_init_hardware(dev);
++	err = mt76x0u_init_hardware(dev, true);
+ 	if (err < 0)
+ 		goto out_err;
  
-+#define MT_TMAC_TRCR0			MT_WF_TMAC(0x09c)
-+#define MT_TMAC_TRCR1			MT_WF_TMAC(0x070)
-+#define MT_TMAC_TRCR_CCA_SEL		GENMASK(31, 30)
-+#define MT_TMAC_TRCR_SEC_CCA_SEL	GENMASK(29, 28)
-+
- #define MT_TMAC_CTCR0			MT_WF_TMAC(0x0f4)
- #define MT_TMAC_CTCR0_INS_DDLMT_REFTIME	GENMASK(5, 0)
- #define MT_TMAC_CTCR0_INS_DDLMT_DENSITY	GENMASK(15, 12)
+@@ -309,7 +309,7 @@ static int __maybe_unused mt76x0_resume(struct usb_interface *usb_intf)
+ 	if (ret < 0)
+ 		goto err;
+ 
+-	ret = mt76x0u_init_hardware(dev);
++	ret = mt76x0u_init_hardware(dev, false);
+ 	if (ret)
+ 		goto err;
+ 
 -- 
-2.17.0
+1.9.3
 
