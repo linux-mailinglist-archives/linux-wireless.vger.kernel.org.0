@@ -2,113 +2,117 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 379796CAE2
-	for <lists+linux-wireless@lfdr.de>; Thu, 18 Jul 2019 10:24:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 59A8E6CB5B
+	for <lists+linux-wireless@lfdr.de>; Thu, 18 Jul 2019 11:01:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726485AbfGRIYa (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 18 Jul 2019 04:24:30 -0400
-Received: from mail-wm1-f68.google.com ([209.85.128.68]:54407 "EHLO
-        mail-wm1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726000AbfGRIY3 (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 18 Jul 2019 04:24:29 -0400
-Received: by mail-wm1-f68.google.com with SMTP id p74so24625147wme.4
-        for <linux-wireless@vger.kernel.org>; Thu, 18 Jul 2019 01:24:28 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=wjHtC+TlIWovKf+RU690uNWUF5V05S0kXS1oQp90ZOk=;
-        b=XKBJQIMFXMwmg5VJRNQBMdwtusgd5YOpeOeup9u5mHk1LQhotjVRlVXqRExhSUX1aH
-         YsBHq6fFH5E5VsVtIX4np7UfYk8DpVew2+0AsySXEz2NqWQAMKWqABWVo83cF/BXJ7Pf
-         BmvqYOndEoJDErteZQGqe9mkFbo70twSR+igQ=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=wjHtC+TlIWovKf+RU690uNWUF5V05S0kXS1oQp90ZOk=;
-        b=m9fzVphZ4/OJbsptozOavyJEXRbDj+HSU5XOAKMRTWQ1Z3An7ECciv1awMYUNhfpQ/
-         ZyzIVuBGO2jhMpmldhrtX9ZRur9yuh87Lb3tepX3RoiVfcY1vOoEOHGtSZAcOaydjpBQ
-         RyvMCJPYUomaAdyYrPGEp3VaS7hMAoIZQjzFPUGOrDEL8T3+5UPYXxSkv37q+aPAePTP
-         mcJSqr80Bef48qlzPw0V7bHqzHVz0NGRjr+RunHYZscc9PEzgxN+hmaoPrQkQNkhxfq/
-         qhTj+sfaROMmmEs0nsqvrCtpM9GYgwkm1TTq3C6PSFNV084b7GyWUFtdLFY7IIbQGB3B
-         8eHw==
-X-Gm-Message-State: APjAAAXA94o1DVC2UKrZ3izuCM0oMZ6DD0XmzmLe25AglAvQvzxkvhE/
-        ufVr5XBdZxLBxgPAzO4oPwB5mHXZEsNGPg4AkSFIcn34nAeK7AXNLjAzhOS21bYNsGeCGJblmwT
-        A7gTV5XsQEl3N85D5OLxs0Gu24Q9gHzRBUiLugysh4Yl3rwtHRFPt4r8FfTKztmWDGK9iXB2aGW
-        HP3qw5KtLLHlm78g==
-X-Google-Smtp-Source: APXvYqz/M4q2H+rlW4CjNSv/mdAnyhYTIgQEYmibAQgUdt6CSWoWYlXBwfjtnHJq9Qabc30gp7kMQg==
-X-Received: by 2002:a05:600c:2189:: with SMTP id e9mr38885237wme.56.1563438267068;
-        Thu, 18 Jul 2019 01:24:27 -0700 (PDT)
-Received: from [10.230.33.15] ([192.19.248.250])
-        by smtp.gmail.com with ESMTPSA id y6sm30478690wmd.16.2019.07.18.01.24.25
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Thu, 18 Jul 2019 01:24:26 -0700 (PDT)
-Subject: Re: [PATCH v3 2/3] nl80211: Limit certain commands to interface owner
-To:     Denis Kenzior <denkenz@gmail.com>,
-        Johannes Berg <johannes@sipsolutions.net>
-Cc:     linux-wireless@vger.kernel.org
-References: <20190701153317.27170-1-denkenz@gmail.com>
- <20190701153317.27170-2-denkenz@gmail.com>
-From:   Arend Van Spriel <arend.vanspriel@broadcom.com>
-Message-ID: <d75d6f90-1691-57fa-ddb2-ece84f5d262f@broadcom.com>
-Date:   Thu, 18 Jul 2019 10:24:24 +0200
-User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:60.0) Gecko/20100101
- Thunderbird/60.8.0
-MIME-Version: 1.0
-In-Reply-To: <20190701153317.27170-2-denkenz@gmail.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+        id S1726454AbfGRJAS (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 18 Jul 2019 05:00:18 -0400
+Received: from nbd.name ([46.4.11.11]:36044 "EHLO nbd.name"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726383AbfGRJAS (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 18 Jul 2019 05:00:18 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name;
+         s=20160729; h=Message-Id:Date:Subject:To:From:Sender:Reply-To:Cc:
+        MIME-Version:Content-Type:Content-Transfer-Encoding:Content-ID:
+        Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+        :Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
+        List-Subscribe:List-Post:List-Owner:List-Archive;
+        bh=i19wCCIEB6zWpPD7x1ZyJASWqwoz2UvHp25FT5g7JZk=; b=WkOlnDLkdYMDQYCIAue4X5wA/4
+        3ycZDvlnEV6gbJjlZ1flS3I/xh1IVDkFp1ZM+ed1qbD6otrGBqoGGGC6JkvJEU1UgzWFtVPTAfA/I
+        kEdCLxdANNPKOmPQrDHUDQnd6gq0xs9EknbaaRzgYLYEB+3gfGVBR2ihJH9J3qZDWe8w=;
+Received: from p54ae9abd.dip0.t-ipconnect.de ([84.174.154.189] helo=maeck.local)
+        by ds12 with esmtpsa (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.89)
+        (envelope-from <nbd@nbd.name>)
+        id 1ho2Gv-000446-EA
+        for linux-wireless@vger.kernel.org; Thu, 18 Jul 2019 11:00:17 +0200
+Received: by maeck.local (Postfix, from userid 501)
+        id B2890624FD56; Thu, 18 Jul 2019 11:00:16 +0200 (CEST)
+From:   Felix Fietkau <nbd@nbd.name>
+To:     linux-wireless@vger.kernel.org
+Subject: [PATCH] mt76: mt7615: add missing register initialization
+Date:   Thu, 18 Jul 2019 11:00:16 +0200
+Message-Id: <20190718090016.34634-1-nbd@nbd.name>
+X-Mailer: git-send-email 2.17.0
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 7/1/2019 5:33 PM, Denis Kenzior wrote:
-> If the wdev object has been created (via NEW_INTERFACE) with
-> SOCKET_OWNER attribute set, then limit certain commands only to the
-> process that created that wdev.
-> 
-> This can be used to make sure no other process on the system interferes
-> by sending unwanted scans, action frames or any other funny business.
-> 
-> This patch introduces a new internal flag, and checks that flag in the
-> pre_doit hook.
-> 
-> Signed-off-by: Denis Kenzior <denkenz@gmail.com>
-> ---
->   net/wireless/nl80211.c | 80 ++++++++++++++++++++++++++++++++----------
->   1 file changed, 61 insertions(+), 19 deletions(-)
-> 
-> Changes in v3:
->    - Fix minor locking mistake reported by kernel test robot
-> 
-> Changes in v2:
->    - None
-> 
-> diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
-> index ff760ba83449..ebf5eab1f9b2 100644
-> --- a/net/wireless/nl80211.c
-> +++ b/net/wireless/nl80211.c
+- initialize CCA signal source
+- initialize clock for band 1 (7615D)
+- initialize BAR rate
 
-[snip]
+Reviewed-by: Ryder Lee <ryder.lee@mediatek.com>
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
+---
+ .../net/wireless/mediatek/mt76/mt7615/init.c  | 22 +++++++++++++++----
+ .../net/wireless/mediatek/mt76/mt7615/regs.h  | 13 +++++++++++
+ 2 files changed, 31 insertions(+), 4 deletions(-)
 
->   
-> -	return 0;
-> +	ret = 0;
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/init.c b/drivers/net/wireless/mediatek/mt76/mt7615/init.c
+index 280db9445d94..be144e13fe4c 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7615/init.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7615/init.c
+@@ -20,10 +20,24 @@ static void mt7615_phy_init(struct mt7615_dev *dev)
+ 
+ static void mt7615_mac_init(struct mt7615_dev *dev)
+ {
+-	/* enable band 0 clk */
+-	mt76_rmw(dev, MT_CFG_CCR,
+-		 MT_CFG_CCR_MAC_D0_1X_GC_EN | MT_CFG_CCR_MAC_D0_2X_GC_EN,
+-		 MT_CFG_CCR_MAC_D0_1X_GC_EN | MT_CFG_CCR_MAC_D0_2X_GC_EN);
++	u32 val;
++
++	/* enable band 0/1 clk */
++	mt76_set(dev, MT_CFG_CCR,
++		 MT_CFG_CCR_MAC_D0_1X_GC_EN | MT_CFG_CCR_MAC_D0_2X_GC_EN |
++		 MT_CFG_CCR_MAC_D1_1X_GC_EN | MT_CFG_CCR_MAC_D1_2X_GC_EN);
++
++	val = mt76_rmw(dev, MT_TMAC_TRCR0,
++		       MT_TMAC_TRCR_CCA_SEL | MT_TMAC_TRCR_SEC_CCA_SEL,
++		       FIELD_PREP(MT_TMAC_TRCR_CCA_SEL, 2) |
++		       FIELD_PREP(MT_TMAC_TRCR_SEC_CCA_SEL, 0));
++	mt76_wr(dev, MT_TMAC_TRCR1, val);
++
++	val = MT_AGG_ACR_PKT_TIME_EN | MT_AGG_ACR_NO_BA_AR_RULE |
++	      FIELD_PREP(MT_AGG_ACR_CFEND_RATE, 0x49) | /* 24M */
++	      FIELD_PREP(MT_AGG_ACR_BAR_RATE, 0x4b); /* 6M */
++	mt76_wr(dev, MT_AGG_ACR0, val);
++	mt76_wr(dev, MT_AGG_ACR1, val);
+ 
+ 	mt76_rmw_field(dev, MT_TMAC_CTCR0,
+ 		       MT_TMAC_CTCR0_INS_DDLMT_REFTIME, 0x3f);
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/regs.h b/drivers/net/wireless/mediatek/mt76/mt7615/regs.h
+index f2cd858730c3..c1353deb2b7c 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7615/regs.h
++++ b/drivers/net/wireless/mediatek/mt76/mt7615/regs.h
+@@ -97,12 +97,25 @@
+ 					MT_AGG_ARxCR_LIMIT_SHIFT(_n), \
+ 					MT_AGG_ARxCR_LIMIT_SHIFT(_n))
+ 
++#define MT_AGG_ACR0			MT_WF_AGG(0x070)
++#define MT_AGG_ACR1			MT_WF_AGG(0x170)
++#define MT_AGG_ACR_NO_BA_RULE		BIT(0)
++#define MT_AGG_ACR_NO_BA_AR_RULE	BIT(1)
++#define MT_AGG_ACR_PKT_TIME_EN		BIT(2)
++#define MT_AGG_ACR_CFEND_RATE		GENMASK(15, 4)
++#define MT_AGG_ACR_BAR_RATE		GENMASK(31, 20)
++
+ #define MT_AGG_SCR			MT_WF_AGG(0x0fc)
+ #define MT_AGG_SCR_NLNAV_MID_PTEC_DIS	BIT(3)
+ 
+ #define MT_WF_TMAC_BASE			0x21000
+ #define MT_WF_TMAC(ofs)			(MT_WF_TMAC_BASE + (ofs))
+ 
++#define MT_TMAC_TRCR0			MT_WF_TMAC(0x09c)
++#define MT_TMAC_TRCR1			MT_WF_TMAC(0x070)
++#define MT_TMAC_TRCR_CCA_SEL		GENMASK(31, 30)
++#define MT_TMAC_TRCR_SEC_CCA_SEL	GENMASK(29, 28)
++
+ #define MT_TMAC_CTCR0			MT_WF_TMAC(0x0f4)
+ #define MT_TMAC_CTCR0_INS_DDLMT_REFTIME	GENMASK(5, 0)
+ #define MT_TMAC_CTCR0_INS_DDLMT_DENSITY	GENMASK(15, 12)
+-- 
+2.17.0
 
-I suggest to keep the return 0 here for success path and only do the 
-below for failure case (and obviously dropping '&& ret < 0'). Maybe 
-rename label 'done' to 'fail' as well.
-
-> +done:
-> +	if (rtnl && ret < 0)
-> +		rtnl_unlock();
-> +
-> +	return ret;
->   }
-
-Regards,
-Arend
