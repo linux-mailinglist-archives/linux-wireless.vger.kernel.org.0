@@ -2,82 +2,64 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 9651F6D5CB
-	for <lists+linux-wireless@lfdr.de>; Thu, 18 Jul 2019 22:31:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EA3AA6D6E0
+	for <lists+linux-wireless@lfdr.de>; Fri, 19 Jul 2019 00:44:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2403843AbfGRUbA (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 18 Jul 2019 16:31:00 -0400
-Received: from mail-lj1-f195.google.com ([209.85.208.195]:43282 "EHLO
-        mail-lj1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727972AbfGRUbA (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 18 Jul 2019 16:31:00 -0400
-Received: by mail-lj1-f195.google.com with SMTP id y17so4063675ljk.10;
-        Thu, 18 Jul 2019 13:30:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id;
-        bh=5uFK7MqKRb+oFVKD89Io/malOAroV84oVCRoYwQTVLs=;
-        b=ByuNj8jVyAGVVYdET8ktdlDqRCowxA9phMWJ7m0Sg/hw15WKOcetKCoYWFrQQJQRKo
-         LtEcfREetsclcT4WkgGXcEBP0H8PXdH/UinOi0mrnbXCaG1uU7JZ/TSnEnww/R4X/mTz
-         oY9MWuFdVzOuJB5eaML5omcF2fQwGzk4Q2mCo4iQ+VdUEQ8P4ArKNmYpxQn4VQnZcBIm
-         tZibUPoWhfIJRuQA9XBnVICH4JPqmb7LBSilxOxr8Kol1LQFKxRHzVLNBPcYd0GBe9qK
-         UJK5HYVWYrK9uQ2rjRIQICntWRhJ/+09hxemcPaQHi7E/J8jQ2HvL+W709oR5yYvVCaO
-         1FkQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id;
-        bh=5uFK7MqKRb+oFVKD89Io/malOAroV84oVCRoYwQTVLs=;
-        b=Wd/ttAEyMjnAWJmG6cpWJ5G0iiigr1Dp59imj/LLlHB/+T6lDyJeDmoe+mvsApnNZf
-         up5B7z0ITJFd5ElYDH9CCbsIdooeDg4AFGu3Eiixcxv3GAXOlYOBS6Mb7kd2oFGsgecB
-         QlQvOkzM6tPNyba0jVreclm4TwnCF6dmxjDiYGivoxTopmj0ET7vOfnDyxAFprREMO9V
-         lXnKKyQqt8tSgRZdR5BVmUzfbUPIrSmO1nS8W2Ggt5qmdMWGCjXj0Cr65ohBYh4YL0NL
-         11K0/2Bx68R/lywTNoH/90+lgVYJSomS2arS02Zx/ngPzlz+R3yfKJNOjcqUflI0by4C
-         HFTA==
-X-Gm-Message-State: APjAAAX23c6cw6DfX54srxA1ajs+a+btBb05ze+0QbCSkw7nupvqFXJH
-        lcdOyCHuBNop1jOcyd2NAys=
-X-Google-Smtp-Source: APXvYqzYOuKKYg4wEuoB/Wrmt94ndQPSqKVzWpoKOkFOelXaVESsDwy8xn8HcjyigaNiphMBNBSVag==
-X-Received: by 2002:a2e:9a13:: with SMTP id o19mr26037315lji.102.1563481858169;
-        Thu, 18 Jul 2019 13:30:58 -0700 (PDT)
-Received: from ul001888.eu.tieto.com ([91.90.160.140])
-        by smtp.gmail.com with ESMTPSA id d16sm5229387ljc.96.2019.07.18.13.30.56
-        (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
-        Thu, 18 Jul 2019 13:30:57 -0700 (PDT)
-From:   Vasyl Gomonovych <gomonovych@gmail.com>
-To:     kvalo@codeaurora.org, davem@davemloft.net,
-        ath10k@lists.infradead.org, linux-wireless@vger.kernel.org
-Cc:     Vasyl Gomonovych <gomonovych@gmail.com>, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: [PATCH] ath10k: Use ARRAY_SIZE
-Date:   Thu, 18 Jul 2019 22:30:32 +0200
-Message-Id: <20190718203032.15528-1-gomonovych@gmail.com>
-X-Mailer: git-send-email 2.17.1
+        id S2403842AbfGRWo2 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 18 Jul 2019 18:44:28 -0400
+Received: from mail.kernel.org ([198.145.29.99]:41348 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1728014AbfGRWo2 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 18 Jul 2019 18:44:28 -0400
+Received: from lore-desk-wlan.lan (unknown [151.66.36.246])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id D948C208C0;
+        Thu, 18 Jul 2019 22:44:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1563489868;
+        bh=2UzlhbC3jlkpYE56/7IFK2brm2TUyqF+TuYc+RQGjl4=;
+        h=From:To:Cc:Subject:Date:From;
+        b=CHqdHZJmFH8A9WSJBrmPj5Pqe64F6xjuJcP0wAoQYg7vKSwHaqQq+0JE86gKudEIZ
+         KPQuvDSmAGWW3FvAZevAkSJ37R5vt+ypfd2rJ7HLF8kKaOzyOLXfEK4E98B9uzPbKw
+         JSJlhOXD3V/JlFAeUsvVZFPmsijk9/fOZwcovxPs=
+From:   Lorenzo Bianconi <lorenzo@kernel.org>
+To:     nbd@nbd.name
+Cc:     lorenzo.bianconi@redhat.com, ryder.lee@mediatek.com,
+        royluo@google.com, linux-wireless@vger.kernel.org
+Subject: [PATCH] mt76: mt7615: fix MT7615_WATCHDOG_TIME definition
+Date:   Fri, 19 Jul 2019 00:44:16 +0200
+Message-Id: <43d02dc2fc35b281fb576369bd9355f77785ccd9.1563489704.git.lorenzo@kernel.org>
+X-Mailer: git-send-email 2.21.0
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-fix coccinelle warning, use ARRAY_SIZE
+Express watchdog timeout in jiffies since it is used directly in
+ieee80211_queue_delayed_work
 
-Signed-off-by: Vasyl Gomonovych <gomonovych@gmail.com>
+Fixes: 04b8e65922f6 ("mt76: add mac80211 driver for MT7615 PCIe-based chipsets")
+Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
 ---
- drivers/net/wireless/ath/ath10k/snoc.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/net/wireless/mediatek/mt76/mt7615/mt7615.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/ath/ath10k/snoc.c b/drivers/net/wireless/ath/ath10k/snoc.c
-index b491361e6ed4..49fc04412e9b 100644
---- a/drivers/net/wireless/ath/ath10k/snoc.c
-+++ b/drivers/net/wireless/ath/ath10k/snoc.c
-@@ -976,8 +976,7 @@ static int ath10k_snoc_wlan_enable(struct ath10k *ar,
- 				  sizeof(struct ath10k_svc_pipe_cfg);
- 	cfg.ce_svc_cfg = (struct ath10k_svc_pipe_cfg *)
- 		&target_service_to_ce_map_wlan;
--	cfg.num_shadow_reg_cfg = sizeof(target_shadow_reg_cfg_map) /
--					sizeof(struct ath10k_shadow_reg_cfg);
-+	cfg.num_shadow_reg_cfg = ARRAY_SIZE(target_shadow_reg_cfg_map);
- 	cfg.shadow_reg_cfg = (struct ath10k_shadow_reg_cfg *)
- 		&target_shadow_reg_cfg_map;
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/mt7615.h b/drivers/net/wireless/mediatek/mt76/mt7615/mt7615.h
+index 9d2286be0700..a014f7b17825 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7615/mt7615.h
++++ b/drivers/net/wireless/mediatek/mt76/mt7615/mt7615.h
+@@ -15,7 +15,7 @@
+ #define MT7615_WTBL_STA			(MT7615_WTBL_RESERVED - \
+ 					 MT7615_MAX_INTERFACES)
  
+-#define MT7615_WATCHDOG_TIME		100 /* ms */
++#define MT7615_WATCHDOG_TIME		(HZ / 10)
+ #define MT7615_RATE_RETRY		2
+ 
+ #define MT7615_TX_RING_SIZE		1024
 -- 
-2.17.1
+2.21.0
 
