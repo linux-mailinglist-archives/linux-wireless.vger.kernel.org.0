@@ -2,77 +2,107 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 7661E6C18F
-	for <lists+linux-wireless@lfdr.de>; Wed, 17 Jul 2019 21:37:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A540C6C4BF
+	for <lists+linux-wireless@lfdr.de>; Thu, 18 Jul 2019 03:57:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728475AbfGQTfj (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 17 Jul 2019 15:35:39 -0400
-Received: from mail-pf1-f180.google.com ([209.85.210.180]:45687 "EHLO
-        mail-pf1-f180.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725873AbfGQTfj (ORCPT
+        id S1728079AbfGRB5X (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 17 Jul 2019 21:57:23 -0400
+Received: from mail-pf1-f196.google.com ([209.85.210.196]:46090 "EHLO
+        mail-pf1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727541AbfGRB5X (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 17 Jul 2019 15:35:39 -0400
-Received: by mail-pf1-f180.google.com with SMTP id r1so11321965pfq.12
-        for <linux-wireless@vger.kernel.org>; Wed, 17 Jul 2019 12:35:38 -0700 (PDT)
+        Wed, 17 Jul 2019 21:57:23 -0400
+Received: by mail-pf1-f196.google.com with SMTP id c73so11777082pfb.13
+        for <linux-wireless@vger.kernel.org>; Wed, 17 Jul 2019 18:57:22 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=date:from:to:subject:mime-version:message-id
+        d=chromium.org; s=google;
+        h=from:to:cc:subject:date:message-id:mime-version
          :content-transfer-encoding;
-        bh=1QT9kN4bsH9rk5w9LTPpsn3BYIOXjoxSSNLc4rUIQPI=;
-        b=NXJW/zEFfftcckuXnd4iHpYfDhZTNXHaPo1VsbA6JFEJWRhE2jHYLumdxd2UNajlAi
-         ZS+LbBWaz2kdBePO1w9ciVQKU46CX2cpCq9R0UXnoGD4c0JTWNqpcVTBB1nUS+SOKHiV
-         ijhngDDV170q944+dS86d+q5+XEUMfbEz2ESU26RfLSJaSf/qO2kyFWf1yJoC3C6N0cT
-         p1DagezRgu0AIDlQtUNzHaQb2vF3dE0W8neajPciYE1c9ZSm3KCzVMe6ZyB9IkVJo7rT
-         X8NzrOcujoaDX9J3HnE+0EaIcUgJKnE+0ifvKmeIwYqsx93HwznuQr9dbmPqv1wO0PS0
-         R+pA==
+        bh=tVMzX+vsHuStuXaelci6e/V6r4higaqJwBgjES1yZJs=;
+        b=SDNHXyVkkAwhxSkPK65qPTWbMNM4TndzBwUOUkakAZWE/jJViKmTdArw3r09OyDsnq
+         pDgWMW7kepF4PbbHeA11o/mf8u0jZ4RdqEyYhKXb+zZMF2wWtVaG04JJsug5rXp7pYzE
+         iZ8QGoow3wEM/OqI1FJgYCGtzLfxbjDvfBEcM=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:subject:mime-version:message-id
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
          :content-transfer-encoding;
-        bh=1QT9kN4bsH9rk5w9LTPpsn3BYIOXjoxSSNLc4rUIQPI=;
-        b=omnXQgTgB8zm8SMseNjdJKRiBF89ZGKP+0xrLyopJ90TpuuRNo2DUoQdcRg5i9hPbs
-         cvypJF5PHiUy32LZBHMP2eDwHYCWWywRM6OP2BneWw2UHvGtvRYUaosyjjBQTqJ1aYrI
-         mNhF6MMyf9NdavapdqVBosd47kbXQsaroKF9Tn4urQnhjTjIaiFyOk1eBlFwJVXDCRaK
-         1MNozWBoHzziUE9Q5dB2s/DHHt9fUENG2GAfs5BbTT19DodjQx1KIoFXNfXsMG0T4Rbb
-         fQyaVA1l3HoF+oFSV3RW+8Kw6PZ1AERFrbTulPcyfbWbkgJKN4pqrlHKHLpDKxAKLkw9
-         dGog==
-X-Gm-Message-State: APjAAAWtA4QM0uJCUUo7NPbAfJcZTIv4iOojrdwjCoXivUKKH5dSxXoj
-        JN7W/i4YZLdl4zKILwDqBbGalMXSMHI=
-X-Google-Smtp-Source: APXvYqzK0IMGDRzEIvVZl18yfAwEpNvRUmUQW5NcaNTmcjcsfWxuirglfOQN1drZYRjZ2Q3MPj8mww==
-X-Received: by 2002:a65:6904:: with SMTP id s4mr38672491pgq.33.1563392137713;
-        Wed, 17 Jul 2019 12:35:37 -0700 (PDT)
-Received: from ZERO ([43.245.198.158])
-        by smtp.gmail.com with ESMTPSA id u134sm23488552pfc.19.2019.07.17.12.35.35
-        for <linux-wireless@vger.kernel.org>
-        (version=TLS1_2 cipher=AES128-GCM-SHA256 bits=128/128);
-        Wed, 17 Jul 2019 12:35:37 -0700 (PDT)
-Date:   Thu, 18 Jul 2019 03:35:37 +0800
-From:   "mysecrct@gmail.com" <mysecrct@gmail.com>
-To:     linux-wireless <linux-wireless@vger.kernel.org>
-Subject: RTL8191Su don't switch monitor!
-X-Priority: 3
-X-GUID: CBB1BECF-070B-425D-B9BB-B1AB6FCB038C
-X-Has-Attach: no
-X-Mailer: Foxmail 7.2.11.303[cn]
-Mime-Version: 1.0
-Message-ID: <2019071803353417290810@gmail.com>
-Content-Type: text/plain;
-        charset="utf-8"
-Content-Transfer-Encoding: base64
+        bh=tVMzX+vsHuStuXaelci6e/V6r4higaqJwBgjES1yZJs=;
+        b=it3nCOhr/mhi2N/mJ3F4E5HwKozhYxOQ2+xjv6EarHBFyv76aOdjJiyRhiRLXbnBl9
+         Mm/yZQJbBvffdATf3b0Lthxi3aOFG5/dz8/buf+bNM26I8STYyDwMqTU+wko8klFLt0j
+         2YDaQBTGxH0fhLgQTt/dJjprsJsi5EnJNZE6zNcwcF3pVZJkEHkrImddp0gIvj6yjwmS
+         fnvgPpia4zELY0g1ulAh+2t/l5P7gnIuyiBwH1CKAkFQAAkwkVKSuxSWLDsau9lDX6mU
+         Xu2/JGoBrv9PO/TUH/hDDgLUmn1CQWPf9m0EAseV02wqzHzU6tZOdH5jRVINFBWf+ig0
+         EUJg==
+X-Gm-Message-State: APjAAAU2IVatkVXFf8wArzNHMaCT097fzrashzjWjdfcXimouNOO8Qcm
+        lh5xvp5d4DqTK3bN6SSlIvfPsQ==
+X-Google-Smtp-Source: APXvYqwc7UJEgdpZQiNBgmlKXN2kufpgxys9Fp1+ejJCyREocHIkqInPZ/SFoloPxpn1Z+ccN0FcNw==
+X-Received: by 2002:a17:90a:cf8f:: with SMTP id i15mr46150975pju.110.1563415042447;
+        Wed, 17 Jul 2019 18:57:22 -0700 (PDT)
+Received: from smtp.gmail.com ([2620:15c:202:1:534:b7c0:a63c:460c])
+        by smtp.gmail.com with ESMTPSA id n17sm27568488pfq.182.2019.07.17.18.57.20
+        (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
+        Wed, 17 Jul 2019 18:57:21 -0700 (PDT)
+From:   Brian Norris <briannorris@chromium.org>
+To:     Johannes Berg <johannes@sipsolutions.net>
+Cc:     <linux-kernel@vger.kernel.org>, linux-wireless@vger.kernel.org,
+        Stanislaw Gruszka <sgruszka@redhat.com>,
+        Yan-Hsuan Chuang <yhchuang@realtek.com>,
+        Brian Norris <briannorris@chromium.org>
+Subject: [PATCH] mac80211: don't warn about CW params when not using them
+Date:   Wed, 17 Jul 2019 18:57:12 -0700
+Message-Id: <20190718015712.197499-1-briannorris@chromium.org>
+X-Mailer: git-send-email 2.22.0.510.g264f2c817a-goog
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-wqAgwqAgRGVhciAhCgoKCsKgIMKgwqDCoCDCoCBSVEw4MTkxU3Ugd29ya2VkIG9uIEFyY2hMaW51
-eCwgbGludXggNS4yLjAKCgoKwqAgwqDCoMKgIMKgwqBOb3JtYWwgdXNlIG9mIGNvbm5lY3Rpbmcg
-d2lmaSBpcyBubyBwcm9ibGVtLiBCdXQgSSB3YW50IHRvIHN3aXRjaCBpdCB0byBwcm9taXNjdW91
-cyBtb2RlLCBjYW4ndCBzd2l0Y2guCkkgd2FudCB0byBhc2sgaWYgdGhlcmUgd2lsbCBiZSBhbiB1
-cGRhdGUgdG8gc29sdmUgdGhpcyBwcm9ibGVtPwoKCsKgIMKgIMKgIMKgwqBNeSBFbmdsaXNoIGlz
-IG5vdCBnb29kLCBzbyBwbGVhc2UgYmUgc29ycnkgZm9yIHRoZSBpbXBvbGl0ZW5lc3MuCsKgIMKg
-IMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKg
-IMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgwqAKCgrCoCDCoCDC
-oCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDC
-oCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDC
-oCDCoCDCoCDCoCDCoCDCoFRoYW5rIHlvdSE=
+ieee80211_set_wmm_default() normally sets up the initial CW min/max for
+each queue, except that it skips doing this if the driver doesn't
+support ->conf_tx. We still end up calling drv_conf_tx() in some cases
+(e.g., ieee80211_reconfig()), which also still won't do anything
+useful...except it complains here about the invalid CW parameters.
+
+Let's just skip the WARN if we weren't going to do anything useful with
+the parameters.
+
+Signed-off-by: Brian Norris <briannorris@chromium.org>
+---
+Noticed because rtw88 does not currently implement .conf_tx()
+
+I think there are several ways to slice this one. I picked one fix,
+which may not be the best one.
+
+ net/mac80211/driver-ops.c | 13 +++++++++----
+ 1 file changed, 9 insertions(+), 4 deletions(-)
+
+diff --git a/net/mac80211/driver-ops.c b/net/mac80211/driver-ops.c
+index acd4afb4944b..c9a8a2433e8a 100644
+--- a/net/mac80211/driver-ops.c
++++ b/net/mac80211/driver-ops.c
+@@ -187,11 +187,16 @@ int drv_conf_tx(struct ieee80211_local *local,
+ 	if (!check_sdata_in_driver(sdata))
+ 		return -EIO;
+ 
+-	if (WARN_ONCE(params->cw_min == 0 ||
+-		      params->cw_min > params->cw_max,
+-		      "%s: invalid CW_min/CW_max: %d/%d\n",
+-		      sdata->name, params->cw_min, params->cw_max))
++	if (params->cw_min == 0 || params->cw_min > params->cw_max) {
++		/*
++		 * If we can't configure hardware anyway, don't warn. We may
++		 * never have initialized the CW parameters.
++		 */
++		WARN_ONCE(local->ops->conf_tx,
++			  "%s: invalid CW_min/CW_max: %d/%d\n",
++			  sdata->name, params->cw_min, params->cw_max);
+ 		return -EINVAL;
++	}
+ 
+ 	trace_drv_conf_tx(local, sdata, ac, params);
+ 	if (local->ops->conf_tx)
+-- 
+2.22.0.510.g264f2c817a-goog
 
