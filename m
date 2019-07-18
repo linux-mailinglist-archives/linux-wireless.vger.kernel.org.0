@@ -2,83 +2,116 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E32F46D157
-	for <lists+linux-wireless@lfdr.de>; Thu, 18 Jul 2019 17:49:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 11C306D173
+	for <lists+linux-wireless@lfdr.de>; Thu, 18 Jul 2019 17:58:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727970AbfGRPsh (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 18 Jul 2019 11:48:37 -0400
-Received: from mail-lf1-f66.google.com ([209.85.167.66]:40571 "EHLO
-        mail-lf1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726649AbfGRPsh (ORCPT
+        id S1727985AbfGRP6G (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 18 Jul 2019 11:58:06 -0400
+Received: from mail-ot1-f65.google.com ([209.85.210.65]:43332 "EHLO
+        mail-ot1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726040AbfGRP6G (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 18 Jul 2019 11:48:37 -0400
-Received: by mail-lf1-f66.google.com with SMTP id b17so19578738lff.7
-        for <linux-wireless@vger.kernel.org>; Thu, 18 Jul 2019 08:48:35 -0700 (PDT)
+        Thu, 18 Jul 2019 11:58:06 -0400
+Received: by mail-ot1-f65.google.com with SMTP id j11so5329379otp.10
+        for <linux-wireless@vger.kernel.org>; Thu, 18 Jul 2019 08:58:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=H848abaLyIwWER/gEmAO68AwOfA/THbvpS8nBllhwXw=;
-        b=jv0LYAjJ3cQrNJJG4dHU14YIsAdM97SXPVhpRIr4VVu8+9iERlESrVNBKs76k6FuI4
-         5MgODQxyPDbLZqr0MrLNAQSevRvEeeGHp9UlobVgpfitV+wo4l8HV8TOibYKszCq8sy5
-         tp1Rbhe/dxF1BUOEUmPucLb6xWPa9oRC8faBk=
+        d=gmail.com; s=20161025;
+        h=sender:subject:to:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=F00cTmFGt6n8/m4oYjVaV99suoKg+VkUVS+004D9gSU=;
+        b=tBody5fhw0F+rAkYnSGoCyqIUeDaF9VnFN3DK9nWV0nscDekQuu597JrtZiuBPiRGF
+         dPC1KJQu8zMHYzx2NEyfT09aCG1CckrbESICvSsSwzNXrIR22xqlcTFWnPC5YE3KKnmh
+         OkglDw7HkAoWdMkMQtHvjmwvacA2h+9Ra/3ol7bKB89AY1maLwbRmo4cMPRYKHPzQryC
+         w1BuUoeiX2pAMW3ClgtzcQ138KOlNduDMw817I3pyiIuZilq5iqXnaPq/f3OiaBxygUi
+         msRMPNjxygSx17ZStGGoRm5MVAr7PgmshRl/l1IEESpPCjQoobtXqAptlFlM1uBiYRtf
+         iPbw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=H848abaLyIwWER/gEmAO68AwOfA/THbvpS8nBllhwXw=;
-        b=mRA4keViXaV0+9xq4yRXwG5pThX524U4SYtAyereuJv83e/emGqqrXFSjxANxtUYfC
-         HvlVooW/xNYgnKknDjzKVGfqsHVyPWbCYHHPg0FTLpVsb+vnndHhzM8S4Vtf3UAdnyKP
-         x0FkF/JAAGftJRd9anqJ142glcsOcUIeivBJftgei0aCj2ZIJHOdyVET7NxR8eEN6uEO
-         Esfb3/inaW9EW+VdaQwvSu8k0Zt9Sr0LlGJ0MQNhcZFgaYjuHrRzAl6DaroOAFeHb7lM
-         JHazAZxqk6J3ifN9YDohbVW8aqZkPBSBlZJb2AJZPaCxrTqgBXqZYSsSwCOYwZxdwrE2
-         0tUg==
-X-Gm-Message-State: APjAAAWkJTcTQeK/kyemNF3MACh0aMHEJvOeXVh5pd9Yoir5ecdV8PZl
-        Qdz1ZEE/cTQnRfY2ETORJENYvicBguQ=
-X-Google-Smtp-Source: APXvYqzPE0xlWA8rymF/ZH6DSz+KiDmds1JoV9g7S07IDmurF9hpcps06VBio0F4r4SFEGwstfSmxg==
-X-Received: by 2002:a19:6602:: with SMTP id a2mr20720956lfc.25.1563464914691;
-        Thu, 18 Jul 2019 08:48:34 -0700 (PDT)
-Received: from mail-lf1-f42.google.com (mail-lf1-f42.google.com. [209.85.167.42])
-        by smtp.gmail.com with ESMTPSA id s7sm5157942lje.95.2019.07.18.08.48.33
-        for <linux-wireless@vger.kernel.org>
+        h=x-gm-message-state:sender:subject:to:references:from:message-id
+         :date:user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=F00cTmFGt6n8/m4oYjVaV99suoKg+VkUVS+004D9gSU=;
+        b=HAtsFd/8ZihfUatxIamLMDApwzVYtJWb0JHHrBCWhspcEcYABhuLSoYF0GIQuxE4cI
+         gxQknNO8DksdAyb75ZNmNRUeiQdevE9SNDrx8jRO1AGsiS2JdRwVO7+KrnTMCJNNSi2k
+         pgrfwmoJspXJL9m7kJHp76F3Kw0Lj9XCs/0GHd1fP/YWHnUkr3Nvew+/Qg5ZcytTyD0y
+         gK8D+cvfgE3vOcOtgZGkG2d+FRxvIzoxzZhqNZlxIXrR3s904/JF/Cd32kx+5Y5mriEP
+         KacJAO9ki+fPPgsGkND5oID09d/dMvO7miB2DzJM02F81b+EaUnNedGacnbJzjz0/sMt
+         oc3Q==
+X-Gm-Message-State: APjAAAXEdMvV0wZ5hgSGOrp3cXi8qSCzDmfVT7SeYyvXsva09TDw20ON
+        VgiI7IW7OynStmXO7Rxi1tsSCmgc
+X-Google-Smtp-Source: APXvYqyH8R4j2W93IWNEv+Rrl47Wruhammct8BdZR7DiKinyr6wlrRKHpsaz3vXsFr9YLdWN3Dq0Rw==
+X-Received: by 2002:a9d:7b4d:: with SMTP id f13mr21947270oto.164.1563465484935;
+        Thu, 18 Jul 2019 08:58:04 -0700 (PDT)
+Received: from [192.168.1.112] (cpe-24-31-245-230.kc.res.rr.com. [24.31.245.230])
+        by smtp.gmail.com with ESMTPSA id c64sm10731062otb.79.2019.07.18.08.58.04
         (version=TLS1_3 cipher=AEAD-AES128-GCM-SHA256 bits=128/128);
-        Thu, 18 Jul 2019 08:48:33 -0700 (PDT)
-Received: by mail-lf1-f42.google.com with SMTP id r15so2577116lfm.11
-        for <linux-wireless@vger.kernel.org>; Thu, 18 Jul 2019 08:48:33 -0700 (PDT)
-X-Received: by 2002:a19:6519:: with SMTP id z25mr21132151lfb.42.1563464913226;
- Thu, 18 Jul 2019 08:48:33 -0700 (PDT)
+        Thu, 18 Jul 2019 08:58:04 -0700 (PDT)
+Subject: Re: RTL8188ETV chip, r8188eu module and power management
+To:     Anton Sviridenko <anton@picapica.im>,
+        linux-wireless@vger.kernel.org
+References: <20190717060609.GA21298@picapica.im>
+From:   Larry Finger <Larry.Finger@lwfinger.net>
+Message-ID: <f0680746-0a0a-b33e-b4ef-246b08949d99@lwfinger.net>
+Date:   Thu, 18 Jul 2019 10:58:03 -0500
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.7.2
 MIME-Version: 1.0
-References: <20190718015712.197499-1-briannorris@chromium.org> <20190718074522.GA13713@redhat.com>
-In-Reply-To: <20190718074522.GA13713@redhat.com>
-From:   Brian Norris <briannorris@chromium.org>
-Date:   Thu, 18 Jul 2019 08:48:21 -0700
-X-Gmail-Original-Message-ID: <CA+ASDXM+tN_=RbgWjfajSp9aDq0vJrbLcaYsf5+69R3b-4Y=VQ@mail.gmail.com>
-Message-ID: <CA+ASDXM+tN_=RbgWjfajSp9aDq0vJrbLcaYsf5+69R3b-4Y=VQ@mail.gmail.com>
-Subject: Re: [PATCH] mac80211: don't warn about CW params when not using them
-To:     Stanislaw Gruszka <sgruszka@redhat.com>
-Cc:     Johannes Berg <johannes@sipsolutions.net>,
-        Linux Kernel <linux-kernel@vger.kernel.org>,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        Yan-Hsuan Chuang <yhchuang@realtek.com>
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <20190717060609.GA21298@picapica.im>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Thu, Jul 18, 2019 at 12:45 AM Stanislaw Gruszka <sgruszka@redhat.com> wrote:
-> Fix looks fine for me. However I think rtw88 should implement
-> drv_conf_tx() because parameters can be different on different
-> network setups and maybe more important WMM/AC parameters become
-> quite recently part of ETSI regulatory.
+On 7/17/19 1:06 AM, Anton Sviridenko wrote:
+> 
+> Hello
+> 
+> we are using FN-8112MET PCB module having RTL8188ETV chip on it.
+> Device is running customized Linux version based on Linux 4.19 release.
+> Driver module "r8188eu" is not modified, taken from vanilla sources as
+> is.
+> Wi-Fi connection is used occasionally, and rest of the time it is
+> preferable to have minimal power consumption.
+> 
+> Such situation is observed:
+> 
+> 1) Linux kernel is started, driver module is not loaded
+> 2) module "r8188eu" is loaded manually with parameters "rtw_power_mgnt=2
+> rtw_enusbss=1"
+> 3) device starts consuming more current (+20mA)
+> 3) after the module is unloaded, current consumption remains at the same
+> level
+> 
+> We still have to double-check this, but looks like driver module does
+> not leave the device in the same state on module unload.
+> 
+> Few questions:
+> 1) Is "r8188eu" driver from the mainline kernel the best possible option
+> available for this chip?
+> 
+> 2) Where can I look for some documentation about kernel module
+> parameters related to power management and their meanings?
+> Source code is not very descriptive, and I was not able to google
+> anything better, looks like this chip specifications are not available in
+> public.
+> 
+> 3) Is there some option to completely poweroff this chip using software
+> and then bring it back when needed?
 
-Ack. I just figured we should stay consistent with the WARNINGs (and
-we both noticed this one on earlier patch reviews). I don't know about
-you, but for me, the whole wireless stack is so full of WARNINGs that
-my crash reporter system separately classifies net/wireless and
-drivers/net/wireless/ from the rest of the kernel when categorizing
-automated problem reports. (And...most developers then ignore them.)
+1. No. There is a newer driver for the RTL8188EU chips at 
+http://github.com/lwfinger/rtl8188eu.git. The v5.2.2.4 branch has what I think 
+is the best.
 
-But I digress ;)
+2. The source code is the only documentation available.
 
-Brian
+3. The page at 
+https://unix.stackexchange.com/questions/165447/turning-off-power-to-usb-port-or-turn-off-power-to-entire-usb-subsystem 
+has some info on disabling USB hubs that support per-port power switching.
+
+Larry
+
+
+
