@@ -2,64 +2,113 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B84AA6CA2F
-	for <lists+linux-wireless@lfdr.de>; Thu, 18 Jul 2019 09:45:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 379796CAE2
+	for <lists+linux-wireless@lfdr.de>; Thu, 18 Jul 2019 10:24:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726485AbfGRHpZ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 18 Jul 2019 03:45:25 -0400
-Received: from mx1.redhat.com ([209.132.183.28]:37852 "EHLO mx1.redhat.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726386AbfGRHpZ (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 18 Jul 2019 03:45:25 -0400
-Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.phx2.redhat.com [10.5.11.14])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mx1.redhat.com (Postfix) with ESMTPS id A906CC057E3C;
-        Thu, 18 Jul 2019 07:45:24 +0000 (UTC)
-Received: from localhost (unknown [10.40.205.9])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id F0DAC5D9CC;
-        Thu, 18 Jul 2019 07:45:23 +0000 (UTC)
-Date:   Thu, 18 Jul 2019 09:45:23 +0200
-From:   Stanislaw Gruszka <sgruszka@redhat.com>
-To:     Brian Norris <briannorris@chromium.org>
-Cc:     Johannes Berg <johannes@sipsolutions.net>,
-        linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org,
-        Yan-Hsuan Chuang <yhchuang@realtek.com>
-Subject: Re: [PATCH] mac80211: don't warn about CW params when not using them
-Message-ID: <20190718074522.GA13713@redhat.com>
-References: <20190718015712.197499-1-briannorris@chromium.org>
+        id S1726485AbfGRIYa (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 18 Jul 2019 04:24:30 -0400
+Received: from mail-wm1-f68.google.com ([209.85.128.68]:54407 "EHLO
+        mail-wm1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726000AbfGRIY3 (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 18 Jul 2019 04:24:29 -0400
+Received: by mail-wm1-f68.google.com with SMTP id p74so24625147wme.4
+        for <linux-wireless@vger.kernel.org>; Thu, 18 Jul 2019 01:24:28 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=broadcom.com; s=google;
+        h=subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=wjHtC+TlIWovKf+RU690uNWUF5V05S0kXS1oQp90ZOk=;
+        b=XKBJQIMFXMwmg5VJRNQBMdwtusgd5YOpeOeup9u5mHk1LQhotjVRlVXqRExhSUX1aH
+         YsBHq6fFH5E5VsVtIX4np7UfYk8DpVew2+0AsySXEz2NqWQAMKWqABWVo83cF/BXJ7Pf
+         BmvqYOndEoJDErteZQGqe9mkFbo70twSR+igQ=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=wjHtC+TlIWovKf+RU690uNWUF5V05S0kXS1oQp90ZOk=;
+        b=m9fzVphZ4/OJbsptozOavyJEXRbDj+HSU5XOAKMRTWQ1Z3An7ECciv1awMYUNhfpQ/
+         ZyzIVuBGO2jhMpmldhrtX9ZRur9yuh87Lb3tepX3RoiVfcY1vOoEOHGtSZAcOaydjpBQ
+         RyvMCJPYUomaAdyYrPGEp3VaS7hMAoIZQjzFPUGOrDEL8T3+5UPYXxSkv37q+aPAePTP
+         mcJSqr80Bef48qlzPw0V7bHqzHVz0NGRjr+RunHYZscc9PEzgxN+hmaoPrQkQNkhxfq/
+         qhTj+sfaROMmmEs0nsqvrCtpM9GYgwkm1TTq3C6PSFNV084b7GyWUFtdLFY7IIbQGB3B
+         8eHw==
+X-Gm-Message-State: APjAAAXA94o1DVC2UKrZ3izuCM0oMZ6DD0XmzmLe25AglAvQvzxkvhE/
+        ufVr5XBdZxLBxgPAzO4oPwB5mHXZEsNGPg4AkSFIcn34nAeK7AXNLjAzhOS21bYNsGeCGJblmwT
+        A7gTV5XsQEl3N85D5OLxs0Gu24Q9gHzRBUiLugysh4Yl3rwtHRFPt4r8FfTKztmWDGK9iXB2aGW
+        HP3qw5KtLLHlm78g==
+X-Google-Smtp-Source: APXvYqz/M4q2H+rlW4CjNSv/mdAnyhYTIgQEYmibAQgUdt6CSWoWYlXBwfjtnHJq9Qabc30gp7kMQg==
+X-Received: by 2002:a05:600c:2189:: with SMTP id e9mr38885237wme.56.1563438267068;
+        Thu, 18 Jul 2019 01:24:27 -0700 (PDT)
+Received: from [10.230.33.15] ([192.19.248.250])
+        by smtp.gmail.com with ESMTPSA id y6sm30478690wmd.16.2019.07.18.01.24.25
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Thu, 18 Jul 2019 01:24:26 -0700 (PDT)
+Subject: Re: [PATCH v3 2/3] nl80211: Limit certain commands to interface owner
+To:     Denis Kenzior <denkenz@gmail.com>,
+        Johannes Berg <johannes@sipsolutions.net>
+Cc:     linux-wireless@vger.kernel.org
+References: <20190701153317.27170-1-denkenz@gmail.com>
+ <20190701153317.27170-2-denkenz@gmail.com>
+From:   Arend Van Spriel <arend.vanspriel@broadcom.com>
+Message-ID: <d75d6f90-1691-57fa-ddb2-ece84f5d262f@broadcom.com>
+Date:   Thu, 18 Jul 2019 10:24:24 +0200
+User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:60.0) Gecko/20100101
+ Thunderbird/60.8.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20190718015712.197499-1-briannorris@chromium.org>
-User-Agent: Mutt/1.11.3 (2019-02-01)
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.14
-X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16 (mx1.redhat.com [10.5.110.31]); Thu, 18 Jul 2019 07:45:25 +0000 (UTC)
+In-Reply-To: <20190701153317.27170-2-denkenz@gmail.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Wed, Jul 17, 2019 at 06:57:12PM -0700, Brian Norris wrote:
-> ieee80211_set_wmm_default() normally sets up the initial CW min/max for
-> each queue, except that it skips doing this if the driver doesn't
-> support ->conf_tx. We still end up calling drv_conf_tx() in some cases
-> (e.g., ieee80211_reconfig()), which also still won't do anything
-> useful...except it complains here about the invalid CW parameters.
+On 7/1/2019 5:33 PM, Denis Kenzior wrote:
+> If the wdev object has been created (via NEW_INTERFACE) with
+> SOCKET_OWNER attribute set, then limit certain commands only to the
+> process that created that wdev.
 > 
-> Let's just skip the WARN if we weren't going to do anything useful with
-> the parameters.
+> This can be used to make sure no other process on the system interferes
+> by sending unwanted scans, action frames or any other funny business.
 > 
-> Signed-off-by: Brian Norris <briannorris@chromium.org>
+> This patch introduces a new internal flag, and checks that flag in the
+> pre_doit hook.
+> 
+> Signed-off-by: Denis Kenzior <denkenz@gmail.com>
 > ---
-> Noticed because rtw88 does not currently implement .conf_tx()
+>   net/wireless/nl80211.c | 80 ++++++++++++++++++++++++++++++++----------
+>   1 file changed, 61 insertions(+), 19 deletions(-)
 > 
-> I think there are several ways to slice this one. I picked one fix,
-> which may not be the best one.
+> Changes in v3:
+>    - Fix minor locking mistake reported by kernel test robot
+> 
+> Changes in v2:
+>    - None
+> 
+> diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
+> index ff760ba83449..ebf5eab1f9b2 100644
+> --- a/net/wireless/nl80211.c
+> +++ b/net/wireless/nl80211.c
 
-Fix looks fine for me. However I think rtw88 should implement
-drv_conf_tx() because parameters can be different on different
-network setups and maybe more important WMM/AC parameters become
-quite recently part of ETSI regulatory.
+[snip]
 
-Stanislaw 
+>   
+> -	return 0;
+> +	ret = 0;
+
+I suggest to keep the return 0 here for success path and only do the 
+below for failure case (and obviously dropping '&& ret < 0'). Maybe 
+rename label 'done' to 'fail' as well.
+
+> +done:
+> +	if (rtnl && ret < 0)
+> +		rtnl_unlock();
+> +
+> +	return ret;
+>   }
+
+Regards,
+Arend
