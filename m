@@ -2,139 +2,210 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 0203A6E1AA
-	for <lists+linux-wireless@lfdr.de>; Fri, 19 Jul 2019 09:27:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 525076E234
+	for <lists+linux-wireless@lfdr.de>; Fri, 19 Jul 2019 10:03:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726297AbfGSH1X (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 19 Jul 2019 03:27:23 -0400
-Received: from mailgw02.mediatek.com ([210.61.82.184]:4147 "EHLO
-        mailgw02.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1726036AbfGSH1X (ORCPT
+        id S1726271AbfGSIDy (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 19 Jul 2019 04:03:54 -0400
+Received: from mail1.bemta24.messagelabs.com ([67.219.250.5]:35188 "EHLO
+        mail1.bemta24.messagelabs.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726076AbfGSIDy (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 19 Jul 2019 03:27:23 -0400
-X-UUID: a69de542ced147f3a1a4b1ceb27efe2f-20190719
-X-UUID: a69de542ced147f3a1a4b1ceb27efe2f-20190719
-Received: from mtkcas06.mediatek.inc [(172.21.101.30)] by mailgw02.mediatek.com
-        (envelope-from <ryder.lee@mediatek.com>)
-        (mhqrelay.mediatek.com ESMTP with TLS)
-        with ESMTP id 160776184; Fri, 19 Jul 2019 15:27:18 +0800
-Received: from MTKCAS06.mediatek.inc (172.21.101.30) by
- mtkmbs08n2.mediatek.inc (172.21.101.56) with Microsoft SMTP Server (TLS) id
- 15.0.1395.4; Fri, 19 Jul 2019 15:27:14 +0800
-Received: from [172.21.77.33] (172.21.77.33) by MTKCAS06.mediatek.inc
- (172.21.101.73) with Microsoft SMTP Server id 15.0.1395.4 via Frontend
- Transport; Fri, 19 Jul 2019 15:27:14 +0800
-Message-ID: <1563521234.8090.4.camel@mtkswgap22>
-Subject: Re: [PATCH 2/3] mt76: mt7615: add 4 WMM sets support
-From:   Ryder Lee <ryder.lee@mediatek.com>
-To:     Roy Luo <royluo@google.com>
-CC:     Felix Fietkau <nbd@nbd.name>,
-        Lorenzo Bianconi <lorenzo.bianconi@redhat.com>,
-        YF Luo <yf.luo@mediatek.com>,
-        Yiwei Chung <yiwei.chung@mediatek.com>,
-        Sean Wang <sean.wang@mediatek.com>,
-        <linux-wireless@vger.kernel.org>,
-        <linux-mediatek@lists.infradead.org>,
-        <linux-kernel@vger.kernel.org>
-Date:   Fri, 19 Jul 2019 15:27:14 +0800
-In-Reply-To: <CA+zupgwyz2hdVRmnGr+4vzeEfvTfxYkLmu6jD_jFNjrPAdbvCQ@mail.gmail.com>
-References: <50d28c9b0f9e7d6b277d36fc93f55142d7535259.1563518381.git.ryder.lee@mediatek.com>
-         <1dc3cbc32729be40d0e1f2ef831377f2cddf3df3.1563518381.git.ryder.lee@mediatek.com>
-         <CA+zupgwyz2hdVRmnGr+4vzeEfvTfxYkLmu6jD_jFNjrPAdbvCQ@mail.gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Mailer: Evolution 3.2.3-0ubuntu6 
-Content-Transfer-Encoding: 7bit
+        Fri, 19 Jul 2019 04:03:54 -0400
+Received: from [67.219.250.101] (using TLSv1.2 with cipher DHE-RSA-AES256-GCM-SHA384 (256 bits))
+        by server-5.bemta.az-a.us-west-2.aws.symcld.net id A1/9D-14470-769713D5; Fri, 19 Jul 2019 08:03:51 +0000
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFlrCKsWRWlGSWpSXmKPExsXi5LtOQDet0jD
+  WYNMFfYs3K+6wOzB6fN4kF8AYxZqZl5RfkcCacfXMNMaCO8EVPbsvsDUwXgjqYuTiEBJYxShx
+  7lM/E4Szl1HizNdNzF2MnBxsAvoSN9/cYgexRQRcJaZu3AwWFxbQkrj2YCYbRFxf4tbcLVC2n
+  sSZybvBbBYBVYnuI1vBenkF1CXOv5wHFmcUEJP4fmoNE4jNLCAucevJfDBbQkBAYsme88wQtq
+  jEy8f/WLsYOThEBcIlVneYQ4QVJI5OWscGEmYW0JRYv0sfYoq5xLZFjewQtqLElO6HUFsFJU7
+  OfMICYgsJKEucfr+dcQKjyCwki2chTJqFZNIsJJNmIZm0gJF1FaNFUlFmekZJbmJmjq6hgYGu
+  oaGRrqGxoa6RsYVeYpVuol5psW55anGJrpFeYnmxXnFlbnJOil5easkmRmAkpRQ0v9vBuG3WG
+  71DjJIcTEqivPNfG8QK8SXlp1RmJBZnxBeV5qQWH2KU4eBQkuBlqTCMFRIsSk1PrUjLzAFGNU
+  xagoNHSYRXAyTNW1yQmFucmQ6ROsVoyTHh5dxFzBxn/80DkkfmLl3ELMSSl5+XKiXOu68cqEE
+  ApCGjNA9uHCzxXGKUlRLmZWRgYBDiKUgtys0sQZV/xSjOwagkzKsGMoUnM68EbusroIOYgA6a
+  YqkHclBJIkJKqoFpUf+/YxWq6z/XKRzSKf1lMn/fspSKkByHsn7v1+kyWxLszygI8B0/aiVlu
+  vfwpqOxXwIWOljGxCa2p9WcirzR7bTAb2+Y07pfr+4JMx4wbp9q+aGpUGjOyyvbhdv6TEo/6p
+  k+imR43JVZpbh539mZ51859b06wtS4SMU58eFj5qzVkYY6fQnMEwQnPo9Yd/7ri9+/Dmtppaf
+  XiwrLe7UGNEwv4r12aWnFA8VVa1Znamkrb2vbtt2nZcPh8r5jRsLVdt0Gf1/l75gddPv6feZz
+  +skXPZ3z5KzyzvPXcP/a9LVc8oxCkcTO1d9c7UvfyHZEONvZTGEVPCR7t2ztpw9HH6nV/M1S3
+  /DTmq1gY60SS3FGoqEWc1FxIgACYsgOtwMAAA==
+X-Env-Sender: Isaac.Hermida@digi.com
+X-Msg-Ref: server-15.tower-325.messagelabs.com!1563523429!87846!1
+X-Originating-IP: [66.77.174.16]
+X-SYMC-ESS-Client-Auth: outbound-route-from=pass
+X-StarScan-Received: 
+X-StarScan-Version: 9.43.9; banners=-,-,-
+X-VirusChecked: Checked
+Received: (qmail 14973 invoked from network); 19 Jul 2019 08:03:50 -0000
+Received: from owa.digi.com (HELO MCL-VMS-XCH01.digi.com) (66.77.174.16)
+  by server-15.tower-325.messagelabs.com with ECDHE-RSA-AES256-SHA384 encrypted SMTP; 19 Jul 2019 08:03:50 -0000
+Received: from DOR-VMS-XCH01.digi.com (10.49.8.98) by MCL-VMS-XCH01.digi.com
+ (10.5.8.49) with Microsoft SMTP Server (TLS) id 14.3.439.0; Fri, 19 Jul 2019
+ 03:03:49 -0500
+Received: from DOR-SMS-XCH01.digi.com ([fe80::894b:3bdc:74ae:6efc]) by
+ DOR-VMS-XCH01.digi.com ([fe80::c47f:be41:1dc7:5ab8%11]) with mapi id
+ 14.03.0439.000; Fri, 19 Jul 2019 10:03:47 +0200
+From:   "Hermida, Isaac" <Isaac.Hermida@digi.com>
+To:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+Subject: ath10k with EEPROM regdomain 0x60
+Thread-Topic: ath10k with EEPROM regdomain 0x60
+Thread-Index: AQHVPgh9GOWMtT8ZVk2B1PcZdYCVmg==
+Date:   Fri, 19 Jul 2019 08:03:45 +0000
+Message-ID: <5D317961.9070104@digi.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+user-agent: Mozilla/5.0 (X11; Linux x86_64; rv:38.0) Gecko/20100101
+ Thunderbird/38.4.0
+x-originating-ip: [10.101.2.100]
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <6F2E60A5D181A14FAA766E7DB62CCA65@digi.com>
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-X-TM-SNTS-SMTP: D61FDE6DCE5E490ED94D7E171FF4DB4510347F1D7F8F881410629479B1536F882000:8
-X-MTK:  N
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Fri, 2019-07-19 at 15:05 +0800, Roy Luo wrote:
-> 
-> 
-> 
-> On Fri, Jul 19, 2019 at 2:55 PM Ryder Lee <ryder.lee@mediatek.com>
-> wrote:
-> 
->         MT7615 hardware supoorts 4 WMM sets, so this patch adds them
->         accordingly.
->         Also remove incorrect queue mapping in .conf_tx
->         
->         Signed-off-by: Ryder Lee <ryder.lee@mediatek.com>
->         ---
->          drivers/net/wireless/mediatek/mt76/mt7615/mac.c  |  5 +++--
->          drivers/net/wireless/mediatek/mt76/mt7615/main.c | 16
->         ++++++----------
->          .../net/wireless/mediatek/mt76/mt7615/mt7615.h   |  1 +
->          3 files changed, 10 insertions(+), 12 deletions(-)
->         
->         diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/mac.c
->         b/drivers/net/wireless/mediatek/mt76/mt7615/mac.c
->         index 8f9a2bb68ded..d85b3904f33a 100644
->         --- a/drivers/net/wireless/mediatek/mt76/mt7615/mac.c
->         +++ b/drivers/net/wireless/mediatek/mt76/mt7615/mac.c
->         @@ -314,7 +314,7 @@ int mt7615_mac_write_txwi(struct
->         mt7615_dev *dev, __le32 *txwi,
->                 struct ieee80211_hdr *hdr = (struct ieee80211_hdr
->         *)skb->data;
->                 struct ieee80211_vif *vif = info->control.vif;
->                 int tx_count = 8;
->         -       u8 fc_type, fc_stype, p_fmt, q_idx, omac_idx = 0;
->         +       u8 fc_type, fc_stype, p_fmt, q_idx, omac_idx = 0,
->         wmm_idx = 0;
->                 __le16 fc = hdr->frame_control;
->                 u16 seqno = 0;
->                 u32 val;
->         @@ -323,6 +323,7 @@ int mt7615_mac_write_txwi(struct
->         mt7615_dev *dev, __le32 *txwi,
->                         struct mt7615_vif *mvif = (struct mt7615_vif
->         *)vif->drv_priv;
->         
->                         omac_idx = mvif->omac_idx;
->         +               wmm_idx = mvif->wmm_idx;
->                 }
->         
->                 if (sta) {
->         @@ -335,7 +336,7 @@ int mt7615_mac_write_txwi(struct
->         mt7615_dev *dev, __le32 *txwi,
->                 fc_stype = (le16_to_cpu(fc) & IEEE80211_FCTL_STYPE) >>
->         4;
->         
->                 if (ieee80211_is_data(fc) ||
->         ieee80211_is_bufferable_mmpdu(fc)) {
->         -               q_idx = skb_get_queue_mapping(skb);
->         +               q_idx = skb_get_queue_mapping(skb) + wmm_idx *
->         MT7615_MAX_WMM_SETS;
->                         p_fmt = MT_TX_TYPE_CT;
->                 } else if (ieee80211_is_beacon(fc)) {
->                         q_idx = MT_LMAC_BCN0;
->         diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/main.c
->         b/drivers/net/wireless/mediatek/mt76/mt7615/main.c
->         index 2c702b31d55f..ea48dcdb65c0 100644
->         --- a/drivers/net/wireless/mediatek/mt76/mt7615/main.c
->         +++ b/drivers/net/wireless/mediatek/mt76/mt7615/main.c
->         @@ -85,9 +85,9 @@ static int mt7615_add_interface(struct
->         ieee80211_hw *hw,
->                 }
->                 mvif->omac_idx = idx;
->         
->         -       /* TODO: DBDC support. Use band 0 and wmm 0 for now */
->         +       /* TODO: DBDC support. Use band 0 for now */
->                 mvif->band_idx = 0;
->         -       mvif->wmm_idx = 0;
->         +       mvif->wmm_idx = mvif->idx % MT7615_MAX_WMM_SETS;
->         
-> 
-> 
-> IIUC, vifs with the same wmm_idx will share the same WMM HW, thus the
-> same WMM parameter.
-> Shouldn't we assign wmm_idx based on that?
-
-I think that's what I did here. vif0 <-> wmm0, vif1 <->wmm1 ...
-
-> 
-> 
-
+SGksDQoNCkkgaGF2ZSBhIHByb2JsZW0gd2l0aCB0aGUgYXRoMTBrIGRyaXZlciB3aGVuIHVzaW5n
+IGEgYm9hcmQgZGF0YSB3aXRoIHRoZSANCldvcmxkIFdpZGUgcmVnZG9tYWluLg0KVGhlIHByb2Js
+ZW0gSSBzZWUgaXMgdGhhdCB0aGUgY291bnRyeSBjb2RlIGlzIG5vdCByZWZsZWN0ZWQgaW4gdGhl
+IEZXLg0KDQpXaGVuIEkgbG9hZCB0aGUgZHJpdmVyIHdpdGggdGhlIHJlZ2RvbWFpbiBpbiB0aGUg
+RUVQUk9NIHRvIDB4NjAsIHRoZSANCnJlZ3VsYXRvcnkgZG9tYWluIG9mIHRoZSBzeXN0ZW0gaXMg
+c2V0IHRvIDAwICh0aGlzIGlzIGNvcnJlY3QpDQoNCiMgZHJpdmVyIGxvYWQgcmVsZXZhbnQgbWVz
+c2FnZXMNClsgICAzMC42MDkyNDNdIGF0aDEwa19wY2kgMDAwMDowMTowMC4wOiBodHQtdmVyIDMu
+NTMgd21pLW9wIDQgaHR0LW9wIDMgDQpjYWwgb3RwIG1heC1zdGEgMzIgcmF3IDAgaHdjcnlwdG8g
+MQ0KWyAgIDMwLjY4ODYwOF0gYXRoOiBFRVBST00gcmVnZG9tYWluOiAweDYwDQpbICAgMzAuNjg4
+NjE2XSBhdGg6IEVFUFJPTSBpbmRpY2F0ZXMgd2Ugc2hvdWxkIGV4cGVjdCBhIGRpcmVjdCByZWdw
+YWlyIG1hcA0KWyAgIDMwLjY4ODYyOV0gYXRoOiBDb3VudHJ5IGFscGhhMiBiZWluZyB1c2VkOiAw
+MA0KWyAgIDMwLjY5MjY4OF0gYXRoOiBSZWdwYWlyIHVzZWQ6IDB4NjANCg0KIyBpZmNvbmZpZyB3
+bGFuMCB1cA0KWyAgIDM1Ljc5MzgwNF0gYXRoMTBrX3BjaSAwMDAwOjAxOjAwLjA6IFVua25vd24g
+ZXZlbnRpZDogMw0KWyAgIDM1LjgxOTI4OF0gYXRoMTBrX3BjaSAwMDAwOjAxOjAwLjA6IFVua25v
+d24gZXZlbnRpZDogMTE4ODA5DQpbICAgMzUuODIyMjM0XSBhdGgxMGtfcGNpIDAwMDA6MDE6MDAu
+MDogVW5rbm93biBldmVudGlkOiA5MDExOA0KWyAgIDM1Ljg0NTc5OF0gSVB2NjogQUREUkNPTkYo
+TkVUREVWX1VQKTogd2xhbjA6IGxpbmsgaXMgbm90IHJlYWR5DQoNCiMgaXcgcmVnIGdldA0KZ2xv
+YmFsDQpjb3VudHJ5IDAwOiBERlMtVU5TRVQNCiAgICAgICAgICgyNDAyIC0gMjQ3MiBAIDQwKSwg
+KE4vQSwgMjApLCAoTi9BKQ0KICAgICAgICAgKDI0NTcgLSAyNDgyIEAgMjApLCAoTi9BLCAyMCks
+IChOL0EpLCBBVVRPLUJXLCBOTy1JUg0KICAgICAgICAgKDI0NzQgLSAyNDk0IEAgMjApLCAoTi9B
+LCAyMCksIChOL0EpLCBOTy1PRkRNLCBOTy1JUg0KICAgICAgICAgKDUxNzAgLSA1MjUwIEAgODAp
+LCAoTi9BLCAyMCksIChOL0EpLCBBVVRPLUJXLCBOTy1JUg0KICAgICAgICAgKDUyNTAgLSA1MzMw
+IEAgODApLCAoTi9BLCAyMCksICgwIG1zKSwgREZTLCBBVVRPLUJXLCBOTy1JUg0KICAgICAgICAg
+KDU0OTAgLSA1NzMwIEAgMTYwKSwgKE4vQSwgMjApLCAoMCBtcyksIERGUywgTk8tSVINCiAgICAg
+ICAgICg1NzM1IC0gNTgzNSBAIDgwKSwgKE4vQSwgMjApLCAoTi9BKSwgTk8tSVINCiAgICAgICAg
+ICg1NzI0MCAtIDYzNzIwIEAgMjE2MCksIChOL0EsIDApLCAoTi9BKQ0KDQoNCkp1c3QgYXQgdGhp
+cyBwb2ludCwgY2hlY2tpbmcgdGhlIGF2YWlsYWJsZSBjaGFubmVscywgaXQgc2hvd3MgdGhhdCAN
+CmNoYW5uZWxzIDQwIGFuZCA0NCBjYW4gYmUgdXNlZCAoZmlyc3QgdGhpbmcgd3JvbmcpDQoNCiMg
+aXcgbGlzdCB8IGdyZXAgLUUgIiBNSHogIiB8IGdyZXAgLUV2ICJkaXNhYmxlZHxyYWRhciINCiAg
+ICAgICAgICAgICAgICAgICAgICAgICAqIDI0MTIgTUh6IFsxXSAoMjAuMCBkQm0pDQogICAgICAg
+ICAgICAgICAgICAgICAgICAgKiAyNDE3IE1IeiBbMl0gKDIwLjAgZEJtKQ0KICAgICAgICAgICAg
+ICAgICAgICAgICAgICogMjQyMiBNSHogWzNdICgyMC4wIGRCbSkNCiAgICAgICAgICAgICAgICAg
+ICAgICAgICAqIDI0MjcgTUh6IFs0XSAoMjAuMCBkQm0pDQogICAgICAgICAgICAgICAgICAgICAg
+ICAgKiAyNDMyIE1IeiBbNV0gKDIwLjAgZEJtKQ0KICAgICAgICAgICAgICAgICAgICAgICAgICog
+MjQzNyBNSHogWzZdICgyMC4wIGRCbSkNCiAgICAgICAgICAgICAgICAgICAgICAgICAqIDI0NDIg
+TUh6IFs3XSAoMjAuMCBkQm0pDQogICAgICAgICAgICAgICAgICAgICAgICAgKiAyNDQ3IE1IeiBb
+OF0gKDIwLjAgZEJtKQ0KICAgICAgICAgICAgICAgICAgICAgICAgICogMjQ1MiBNSHogWzldICgy
+MC4wIGRCbSkNCiAgICAgICAgICAgICAgICAgICAgICAgICAqIDI0NTcgTUh6IFsxMF0gKDIwLjAg
+ZEJtKQ0KICAgICAgICAgICAgICAgICAgICAgICAgICogMjQ2MiBNSHogWzExXSAoMjAuMCBkQm0p
+DQogICAgICAgICAgICAgICAgICAgICAgICAgKiAyNDY3IE1IeiBbMTJdICgyMC4wIGRCbSkgKG5v
+IElSKQ0KICAgICAgICAgICAgICAgICAgICAgICAgICogMjQ3MiBNSHogWzEzXSAoMjAuMCBkQm0p
+IChubyBJUikNCiAgICAgICAgICAgICAgICAgICAgICAgICAqIDI0ODQgTUh6IFsxNF0gKDIwLjAg
+ZEJtKSAobm8gSVIpDQogICAgICAgICAgICAgICAgICAgICAgICAgKiA1MTgwIE1IeiBbMzZdICgz
+MC4wIGRCbSkgKG5vIElSKQ0KICAgICAgICAgICAgICAgICAgICAgICAgICogNTIwMCBNSHogWzQw
+XSAoMzAuMCBkQm0pDQogICAgICAgICAgICAgICAgICAgICAgICAgKiA1MjIwIE1IeiBbNDRdICgz
+MC4wIGRCbSkNCiAgICAgICAgICAgICAgICAgICAgICAgICAqIDUyNDAgTUh6IFs0OF0gKDMwLjAg
+ZEJtKSAobm8gSVIpDQogICAgICAgICAgICAgICAgICAgICAgICAgKiA1NzIwIE1IeiBbMTQ0XSAo
+MzAuMCBkQm0pIChubyBJUikNCiAgICAgICAgICAgICAgICAgICAgICAgICAqIDU3NDUgTUh6IFsx
+NDldICgzMC4wIGRCbSkgKG5vIElSKQ0KICAgICAgICAgICAgICAgICAgICAgICAgICogNTc2NSBN
+SHogWzE1M10gKDMwLjAgZEJtKSAobm8gSVIpDQogICAgICAgICAgICAgICAgICAgICAgICAgKiA1
+Nzg1IE1IeiBbMTU3XSAoMzAuMCBkQm0pIChubyBJUikNCiAgICAgICAgICAgICAgICAgICAgICAg
+ICAqIDU4MDUgTUh6IFsxNjFdICgzMC4wIGRCbSkgKG5vIElSKQ0KICAgICAgICAgICAgICAgICAg
+ICAgICAgICogNTgyNSBNSHogWzE2NV0gKDMwLjAgZEJtKSAobm8gSVIpDQogICAgICAgICAgICAg
+ICAgICAgICAgICAgKiA1ODQ1IE1IeiBbMTY5XSAoMzAuMCBkQm0pIChubyBJUikNCg0KDQpBcGFy
+dCBvZiB0aGF0LCBpZiBJIHNldCBhIGNvdW50cnkgbWFudWFsbHksIHRoZSBzeXN0ZW0gaXMgcmVj
+b25maWd1cmVkIA0KdG8gdGhhdCBkb21haW4gYW5kIEkgc2VlIHRoZSBuZXh0IG1lc3NhZ2VzLg0K
+DQojIGl3IHJlZyBzZXQgREUNClsgIDE2My41NzE4MDZdIGF0aDogRUVQUk9NIHJlZ2RvbWFpbjog
+MHg4MTE0DQpbICAxNjMuNTc2MjgzXSBhdGg6IEVFUFJPTSBpbmRpY2F0ZXMgd2Ugc2hvdWxkIGV4
+cGVjdCBhIGNvdW50cnkgY29kZQ0KWyAgMTYzLjU3NjI4N10gYXRoOiBkb2luZyBFRVBST00gY291
+bnRyeS0+cmVnZG1uIG1hcCBzZWFyY2gNClsgIDE2My41NzYyOTBdIGF0aDogY291bnRyeSBtYXBz
+IHRvIHJlZ2RtbiBjb2RlOiAweDM3DQpbICAxNjMuNTc2MjkzXSBhdGg6IENvdW50cnkgYWxwaGEy
+IGJlaW5nIHVzZWQ6IERFDQpbICAxNjMuNTc2Mjk2XSBhdGg6IFJlZ3BhaXIgdXNlZDogMHgzNw0K
+WyAgMTYzLjU3NjMwMV0gYXRoOiByZWdkb21haW4gMHg4MTE0IGR5bmFtaWNhbGx5IHVwZGF0ZWQg
+YnkgdXNlcg0KDQoNCkFuZCB0aGlzIGlzIGhvdyB0aGUgcmVndWxhdG9yeSBpcyBzZXQuDQoNCiMg
+aXcgcmVnIGdldA0KZ2xvYmFsDQpjb3VudHJ5IERFOiBERlMtRVRTSQ0KICAgICAgICAgKDI0MDAg
+LSAyNDgzIEAgNDApLCAoTi9BLCAyMCksIChOL0EpDQogICAgICAgICAoNTE1MCAtIDUyNTAgQCA4
+MCksIChOL0EsIDIzKSwgKE4vQSksIE5PLU9VVERPT1IsIEFVVE8tQlcNCiAgICAgICAgICg1MjUw
+IC0gNTM1MCBAIDgwKSwgKE4vQSwgMjApLCAoMCBtcyksIE5PLU9VVERPT1IsIERGUywgQVVUTy1C
+Vw0KICAgICAgICAgKDU0NzAgLSA1NzI1IEAgMTYwKSwgKE4vQSwgMjYpLCAoMCBtcyksIERGUw0K
+ICAgICAgICAgKDU3MjUgLSA1ODc1IEAgODApLCAoTi9BLCAxMyksIChOL0EpDQogICAgICAgICAo
+NTcwMDAgLSA2NjAwMCBAIDIxNjApLCAoTi9BLCA0MCksIChOL0EpDQoNCg0KQW5kIGNoZWNraW5n
+IGFnYWluLCB0aGUgY2hhbm5lbHMgYXJlIGluY29ycmVjdCAoc2VlIHRoZSBOTy1JUiksIHNvIEkg
+Y2FuIA0Kbm90IHVzZSB0aG9zZSBjaGFubmVscyAoSSB3YW50IHRvIHVzZSB0aGVtIGFzIGFjY2Vz
+cyBwb2ludCkNCg0KIyBpdyBsaXN0IHwgZ3JlcCAtRSAiIE1IeiAiIHwgZ3JlcCAtRXYgImRpc2Fi
+bGVkfHJhZGFyIg0KICAgICAgICAgICAgICAgICAgICAgICAgICogMjQxMiBNSHogWzFdICgyMC4w
+IGRCbSkNCiAgICAgICAgICAgICAgICAgICAgICAgICAqIDI0MTcgTUh6IFsyXSAoMjAuMCBkQm0p
+DQogICAgICAgICAgICAgICAgICAgICAgICAgKiAyNDIyIE1IeiBbM10gKDIwLjAgZEJtKQ0KICAg
+ICAgICAgICAgICAgICAgICAgICAgICogMjQyNyBNSHogWzRdICgyMC4wIGRCbSkNCiAgICAgICAg
+ICAgICAgICAgICAgICAgICAqIDI0MzIgTUh6IFs1XSAoMjAuMCBkQm0pDQogICAgICAgICAgICAg
+ICAgICAgICAgICAgKiAyNDM3IE1IeiBbNl0gKDIwLjAgZEJtKQ0KICAgICAgICAgICAgICAgICAg
+ICAgICAgICogMjQ0MiBNSHogWzddICgyMC4wIGRCbSkNCiAgICAgICAgICAgICAgICAgICAgICAg
+ICAqIDI0NDcgTUh6IFs4XSAoMjAuMCBkQm0pDQogICAgICAgICAgICAgICAgICAgICAgICAgKiAy
+NDUyIE1IeiBbOV0gKDIwLjAgZEJtKQ0KICAgICAgICAgICAgICAgICAgICAgICAgICogMjQ1NyBN
+SHogWzEwXSAoMjAuMCBkQm0pDQogICAgICAgICAgICAgICAgICAgICAgICAgKiAyNDYyIE1IeiBb
+MTFdICgyMC4wIGRCbSkNCiAgICAgICAgICAgICAgICAgICAgICAgICAqIDI0NjcgTUh6IFsxMl0g
+KDIwLjAgZEJtKSAobm8gSVIpDQogICAgICAgICAgICAgICAgICAgICAgICAgKiAyNDcyIE1IeiBb
+MTNdICgyMC4wIGRCbSkgKG5vIElSKQ0KICAgICAgICAgICAgICAgICAgICAgICAgICogNTE4MCBN
+SHogWzM2XSAoMjMuMCBkQm0pIChubyBJUikNCiAgICAgICAgICAgICAgICAgICAgICAgICAqIDUy
+MDAgTUh6IFs0MF0gKDIzLjAgZEJtKQ0KICAgICAgICAgICAgICAgICAgICAgICAgICogNTIyMCBN
+SHogWzQ0XSAoMjMuMCBkQm0pDQogICAgICAgICAgICAgICAgICAgICAgICAgKiA1MjQwIE1IeiBb
+NDhdICgyMy4wIGRCbSkgKG5vIElSKQ0KICAgICAgICAgICAgICAgICAgICAgICAgICogNTc0NSBN
+SHogWzE0OV0gKDEzLjAgZEJtKSAobm8gSVIpDQogICAgICAgICAgICAgICAgICAgICAgICAgKiA1
+NzY1IE1IeiBbMTUzXSAoMTMuMCBkQm0pIChubyBJUikNCiAgICAgICAgICAgICAgICAgICAgICAg
+ICAqIDU3ODUgTUh6IFsxNTddICgxMy4wIGRCbSkgKG5vIElSKQ0KICAgICAgICAgICAgICAgICAg
+ICAgICAgICogNTgwNSBNSHogWzE2MV0gKDEzLjAgZEJtKSAobm8gSVIpDQogICAgICAgICAgICAg
+ICAgICAgICAgICAgKiA1ODI1IE1IeiBbMTY1XSAoMTMuMCBkQm0pIChubyBJUikNCiAgICAgICAg
+ICAgICAgICAgICAgICAgICAqIDU4NDUgTUh6IFsxNjldICgxMy4wIGRCbSkgKG5vIElSKQ0KDQoN
+Ck9uIHRoZSBvdGhlciBoYW5kLCBpZiBJIHVzZSBhIGZpeGVkIGNvdW50cnksIGV2ZXJ5dGhpbmcg
+d29ya3MgZmluZS4NCg0KDQpbICAgMjIuODIwMzM2XSBhdGg6IEVFUFJPTSByZWdkb21haW46IDB4
+ODM0OA0KWyAgIDIyLjgyMDM0M10gYXRoOiBFRVBST00gaW5kaWNhdGVzIHdlIHNob3VsZCBleHBl
+Y3QgYSBjb3VudHJ5IGNvZGUNClsgICAyMi44MjAzNDldIGF0aDogZG9pbmcgRUVQUk9NIGNvdW50
+cnktPnJlZ2RtbiBtYXAgc2VhcmNoDQpbICAgMjIuODIwMzUzXSBhdGg6IGNvdW50cnkgbWFwcyB0
+byByZWdkbW4gY29kZTogMHgzYQ0KWyAgIDIyLjgyMDM1N10gYXRoOiBDb3VudHJ5IGFscGhhMiBi
+ZWluZyB1c2VkOiBVUw0KWyAgIDIyLjgyMDM2MF0gYXRoOiBSZWdwYWlyIHVzZWQ6IDB4M2ENCg0K
+DQojIGl3IHJlZyBnZXQNCmdsb2JhbA0KY291bnRyeSBVUzogREZTLUZDQw0KICAgICAgICAgKDI0
+MDIgLSAyNDcyIEAgNDApLCAoTi9BLCAzMCksIChOL0EpDQogICAgICAgICAoNTE3MCAtIDUyNTAg
+QCA4MCksIChOL0EsIDIzKSwgKE4vQSksIEFVVE8tQlcNCiAgICAgICAgICg1MjUwIC0gNTMzMCBA
+IDgwKSwgKE4vQSwgMjMpLCAoMCBtcyksIERGUywgQVVUTy1CVw0KICAgICAgICAgKDU0OTAgLSA1
+NzMwIEAgMTYwKSwgKE4vQSwgMjMpLCAoMCBtcyksIERGUw0KICAgICAgICAgKDU3MzUgLSA1ODM1
+IEAgODApLCAoTi9BLCAzMCksIChOL0EpDQogICAgICAgICAoNTcyNDAgLSA2MzcyMCBAIDIxNjAp
+LCAoTi9BLCA0MCksIChOL0EpDQoNCnBoeSMwDQpjb3VudHJ5IFVTOiBERlMtRkNDDQogICAgICAg
+ICAoMjQwMiAtIDI0NzIgQCA0MCksIChOL0EsIDMwKSwgKE4vQSkNCiAgICAgICAgICg1MTcwIC0g
+NTI1MCBAIDgwKSwgKE4vQSwgMjMpLCAoTi9BKSwgQVVUTy1CVw0KICAgICAgICAgKDUyNTAgLSA1
+MzMwIEAgODApLCAoTi9BLCAyMyksICgwIG1zKSwgREZTLCBBVVRPLUJXDQogICAgICAgICAoNTQ5
+MCAtIDU3MzAgQCAxNjApLCAoTi9BLCAyMyksICgwIG1zKSwgREZTDQogICAgICAgICAoNTczNSAt
+IDU4MzUgQCA4MCksIChOL0EsIDMwKSwgKE4vQSkNCiAgICAgICAgICg1NzI0MCAtIDYzNzIwIEAg
+MjE2MCksIChOL0EsIDQwKSwgKE4vQSkNCg0KDQoNCiMgIGl3IGxpc3QgfCBncmVwIC1FICIgTUh6
+ICIgfCBncmVwIC1FdiAiZGlzYWJsZWR8cmFkYXIiDQogICAgICAgICAgICAgICAgICAgICAgICAg
+KiAyNDEyIE1IeiBbMV0gKDMwLjAgZEJtKQ0KICAgICAgICAgICAgICAgICAgICAgICAgICogMjQx
+NyBNSHogWzJdICgzMC4wIGRCbSkNCiAgICAgICAgICAgICAgICAgICAgICAgICAqIDI0MjIgTUh6
+IFszXSAoMzAuMCBkQm0pDQogICAgICAgICAgICAgICAgICAgICAgICAgKiAyNDI3IE1IeiBbNF0g
+KDMwLjAgZEJtKQ0KICAgICAgICAgICAgICAgICAgICAgICAgICogMjQzMiBNSHogWzVdICgzMC4w
+IGRCbSkNCiAgICAgICAgICAgICAgICAgICAgICAgICAqIDI0MzcgTUh6IFs2XSAoMzAuMCBkQm0p
+DQogICAgICAgICAgICAgICAgICAgICAgICAgKiAyNDQyIE1IeiBbN10gKDMwLjAgZEJtKQ0KICAg
+ICAgICAgICAgICAgICAgICAgICAgICogMjQ0NyBNSHogWzhdICgzMC4wIGRCbSkNCiAgICAgICAg
+ICAgICAgICAgICAgICAgICAqIDI0NTIgTUh6IFs5XSAoMzAuMCBkQm0pDQogICAgICAgICAgICAg
+ICAgICAgICAgICAgKiAyNDU3IE1IeiBbMTBdICgzMC4wIGRCbSkNCiAgICAgICAgICAgICAgICAg
+ICAgICAgICAqIDI0NjIgTUh6IFsxMV0gKDMwLjAgZEJtKQ0KICAgICAgICAgICAgICAgICAgICAg
+ICAgICogNTE4MCBNSHogWzM2XSAoMjMuMCBkQm0pDQogICAgICAgICAgICAgICAgICAgICAgICAg
+KiA1MjAwIE1IeiBbNDBdICgyMy4wIGRCbSkNCiAgICAgICAgICAgICAgICAgICAgICAgICAqIDUy
+MjAgTUh6IFs0NF0gKDIzLjAgZEJtKQ0KICAgICAgICAgICAgICAgICAgICAgICAgICogNTI0MCBN
+SHogWzQ4XSAoMjMuMCBkQm0pDQogICAgICAgICAgICAgICAgICAgICAgICAgKiA1NzQ1IE1IeiBb
+MTQ5XSAoMzAuMCBkQm0pDQogICAgICAgICAgICAgICAgICAgICAgICAgKiA1NzY1IE1IeiBbMTUz
+XSAoMzAuMCBkQm0pDQogICAgICAgICAgICAgICAgICAgICAgICAgKiA1Nzg1IE1IeiBbMTU3XSAo
+MzAuMCBkQm0pDQogICAgICAgICAgICAgICAgICAgICAgICAgKiA1ODA1IE1IeiBbMTYxXSAoMzAu
+MCBkQm0pDQogICAgICAgICAgICAgICAgICAgICAgICAgKiA1ODI1IE1IeiBbMTY1XSAoMzAuMCBk
+Qm0pDQoNCg0KSXMgdGhpcyBhIGJ1Zz8gYW55IGZpeCBvbiB0aGF0Pw0KQWxzbyBub3RpY2UsIHRo
+YXQgZm9yIHRoZSBXb3JsZCBXaWRlIGNhc2UsIHRoZXJlIGlzIG5vdCBwaHkjMCwgb25seSBhIA0K
+Z2xvYmFsIGVudHJ5LCBqdXN0IGluIGNhc2UgaXQgY2FuIGdpdmUgbW9yZSBsaWdodCBvbiB0aGUg
+cHJvYmxlbQ==
