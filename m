@@ -2,137 +2,131 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 48A8A6E583
-	for <lists+linux-wireless@lfdr.de>; Fri, 19 Jul 2019 14:17:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2DDC06E716
+	for <lists+linux-wireless@lfdr.de>; Fri, 19 Jul 2019 16:02:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727470AbfGSMRp (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 19 Jul 2019 08:17:45 -0400
-Received: from mail-pl1-f195.google.com ([209.85.214.195]:44721 "EHLO
-        mail-pl1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726077AbfGSMRp (ORCPT
+        id S1728636AbfGSOBs (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 19 Jul 2019 10:01:48 -0400
+Received: from aserp2120.oracle.com ([141.146.126.78]:37576 "EHLO
+        aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726239AbfGSOBs (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 19 Jul 2019 08:17:45 -0400
-Received: by mail-pl1-f195.google.com with SMTP id t14so15524281plr.11;
-        Fri, 19 Jul 2019 05:17:45 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=VdW91kGbtMx1/wFOgVLAAmhmR53/Mmovc2B4qKSLVoM=;
-        b=tPV17GxCfw5GOn9Z0SM0asoH6tv9DsX2Mclc+LSSVLakBXKMFML2Nz1RqCm69dXf+4
-         MdNq5/hych7y5E5zSSQn3QbuoCIZJ+yFtf6KM6jbGBLY8qxp7sk9isvGd4mS7j0ecQ3q
-         RShEFu0wZ2yyQkTD2bmGjPnelmS9Cz4K8GIYnjzmYbtfhtej4sZ+ELlk9/v+QNtspy+i
-         k1/ffZR6ZiJD4stuV0bDxMIzzDhgYDg1BAynZHpK1M9YTvsLNswDyxb6MfP5ZG2E2JU8
-         U/2nswAdXaMprd/cETjMj26I3jnB+dOuO9mjr172uRQeZ+F4Nwob4C5fhUO+k8/AsA67
-         hfmA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=VdW91kGbtMx1/wFOgVLAAmhmR53/Mmovc2B4qKSLVoM=;
-        b=DnTdnsviBuH+g7gNv109I6zSUMb1OFhXzHJ8G75Bm0c4q++c1vkKea/5LfgbNd/3G6
-         rU5LEB5ra6kMbkw3IJaDRDjy4AQhTDNeV1aAyfRHgLm0X/dKdGADCRpTfwljrEP2dsu0
-         vOlO9MsxgTPT6NhCiEcUT8CpK2XVii28zPO5eW23fbKXyfxnuSA0JEPfszR9iV44uVlx
-         01AQ/UitCp4BxAnaYdWjOhqGSIDs3CKOSiGAn8vmACx1dCW5GT9uYn3U7wnir9mkt7Me
-         B5ZZdB1t7Zad2b9NpvR5QM8a3jb9yQqr9BhMCYrIHQrdYSHnZY0eZAuagSxve2abzUJk
-         PZCg==
-X-Gm-Message-State: APjAAAWhHkXqJ5Dr/Csw+Cfqp2NqXyMpk2lggAehiA91gWkZhGN08UnR
-        /sasFi6BiXPi2wz3661EUT0=
-X-Google-Smtp-Source: APXvYqwN+QPUUYQwwFwo9H5EL3ZGPZ+sUtXsif9yiR1QJxdwfi6TZS0sbm/Job3/qEJ0qpOejVDGeQ==
-X-Received: by 2002:a17:902:4501:: with SMTP id m1mr56949207pld.111.1563538665054;
-        Fri, 19 Jul 2019 05:17:45 -0700 (PDT)
-Received: from suzukaze.ipads-lab.se.sjtu.edu.cn ([89.31.126.54])
-        by smtp.gmail.com with ESMTPSA id z2sm27019181pgg.58.2019.07.19.05.17.42
-        (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
-        Fri, 19 Jul 2019 05:17:44 -0700 (PDT)
-From:   Chuhong Yuan <hslester96@gmail.com>
-Cc:     Adham Abozaeid <adham.abozaeid@microchip.com>,
-        Ajay Singh <ajay.kathat@microchip.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        linux-wireless@vger.kernel.org, devel@driverdev.osuosl.org,
-        linux-kernel@vger.kernel.org, Chuhong Yuan <hslester96@gmail.com>
-Subject: [PATCH v2] staging: wilc1000: Merge memcpy + le32_to_cpus to get_unaligned_le32
-Date:   Fri, 19 Jul 2019 20:16:07 +0800
-Message-Id: <20190719121605.22640-1-hslester96@gmail.com>
-X-Mailer: git-send-email 2.20.1
+        Fri, 19 Jul 2019 10:01:48 -0400
+Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
+        by aserp2120.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x6JDn8n3038121;
+        Fri, 19 Jul 2019 14:01:42 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
+ : subject : message-id : references : mime-version : content-type :
+ content-transfer-encoding : in-reply-to; s=corp-2018-07-02;
+ bh=X6wMOR1hKPNrM0QQ+tB1C00yfQWcVs6T/NvRGy8Eo0w=;
+ b=4boiRN5EskaJGCZJZwbA5uooIUSUUYV0YaFnXGMZULf6c7WkT3yDfe6rFKqghS7OijA9
+ hJs3ENN8rCoFFjArc6DQSVIGYYPTnOAod6otGZF0Yifu2m0Ax5E7xxFf4cVmQuY6V+9f
+ 6T3o8KH+FfcpNzQ7xKwkvWNwhlJuq57xfPx91TRYpHx/9xL/YOxluszGLh7n+AOv6t74
+ uG9Ae8Er1cWeTuH4QMRWi1/GmentqGJYi1WvjmDCLpGwKSh+39zsG7nB3xtOi7xyEweN
+ hmsEjLYcLLzrGx0p6z+ZEu810DCpKJAHPJxp86spUx3eQySaag4uY4aeHszSSCTb6eQP hA== 
+Received: from userp3020.oracle.com (userp3020.oracle.com [156.151.31.79])
+        by aserp2120.oracle.com with ESMTP id 2tq78q6vq0-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Fri, 19 Jul 2019 14:01:42 +0000
+Received: from pps.filterd (userp3020.oracle.com [127.0.0.1])
+        by userp3020.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x6JDmHrb189259;
+        Fri, 19 Jul 2019 14:01:41 GMT
+Received: from aserv0121.oracle.com (aserv0121.oracle.com [141.146.126.235])
+        by userp3020.oracle.com with ESMTP id 2tsmcdm420-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Fri, 19 Jul 2019 14:01:41 +0000
+Received: from abhmp0015.oracle.com (abhmp0015.oracle.com [141.146.116.21])
+        by aserv0121.oracle.com (8.14.4/8.13.8) with ESMTP id x6JE1eFI008791;
+        Fri, 19 Jul 2019 14:01:40 GMT
+Received: from kadam (/41.57.98.10)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Fri, 19 Jul 2019 14:01:39 +0000
+Date:   Fri, 19 Jul 2019 17:01:33 +0300
+From:   Dan Carpenter <dan.carpenter@oracle.com>
+To:     Ajay.Kathat@microchip.com
+Cc:     hslester96@gmail.com, devel@driverdev.osuosl.org,
+        gregkh@linuxfoundation.org, linux-wireless@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Adham.Abozaeid@microchip.com
+Subject: Re: [PATCH] staging: wilc1000: Merge memcpy + le32_to_cpus to
+ get_unaligned_le32
+Message-ID: <20190719140133.GH3111@kadam>
+References: <20190719081005.4598-1-hslester96@gmail.com>
+ <8c14743d-efe1-3e3a-0419-bde22f848751@microchip.com>
+ <CANhBUQ3knUV44GiaB-xZMD8F6y8dcZQdznSmpk3E9ZKoakkBRQ@mail.gmail.com>
+ <82dc6d2e-5f62-b2c7-296a-38f781628ec5@microchip.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-To:     unlisted-recipients:; (no To-header on input)
+In-Reply-To: <82dc6d2e-5f62-b2c7-296a-38f781628ec5@microchip.com>
+User-Agent: Mutt/1.9.4 (2018-02-28)
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9322 signatures=668688
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=1 malwarescore=0
+ phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=999
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.0.1-1810050000 definitions=main-1907190158
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9322 signatures=668688
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
+ suspectscore=1 phishscore=0 bulkscore=0 spamscore=0 clxscore=1011
+ lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=999 adultscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1810050000
+ definitions=main-1907190158
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Merge the combo use of memcpy and le32_to_cpus.
-Use get_unaligned_le32 instead.
-This simplifies the code.
+On Fri, Jul 19, 2019 at 12:05:07PM +0000, Ajay.Kathat@microchip.com wrote:
+> 
+> On 7/19/2019 5:16 PM, Chuhong Yuan wrote:
+> > 
+> > <Ajay.Kathat@microchip.com> 于2019年7月19日周五 下午7:34写道：
+> >>
+> >> On 7/19/2019 1:40 PM, Chuhong Yuan wrote:
+> >>>
+> >>> Merge the combo use of memcpy and le32_to_cpus.
+> >>> Use get_unaligned_le32 instead.
+> >>> This simplifies the code.
+> >>>
+> >>> Signed-off-by: Chuhong Yuan <hslester96@gmail.com>
+> >>> ---
+> >>>  drivers/staging/wilc1000/wilc_wfi_cfgoperations.c | 3 +--
+> >>>  1 file changed, 1 insertion(+), 2 deletions(-)
+> >>>
+> >>> diff --git a/drivers/staging/wilc1000/wilc_wfi_cfgoperations.c b/drivers/staging/wilc1000/wilc_wfi_cfgoperations.c
+> >>> index d72fdd333050..12fb4add05ec 100644
+> >>> --- a/drivers/staging/wilc1000/wilc_wfi_cfgoperations.c
+> >>> +++ b/drivers/staging/wilc1000/wilc_wfi_cfgoperations.c
+> >>> @@ -1038,8 +1038,7 @@ void wilc_wfi_p2p_rx(struct wilc_vif *vif, u8 *buff, u32 size)
+> >>>       s32 freq;
+> >>>       __le16 fc;
+> >>>
+> >>> -     memcpy(&header, (buff - HOST_HDR_OFFSET), HOST_HDR_OFFSET);
+> >>> -     le32_to_cpus(&header);
+> >>> +     header = get_unaligned_le32(buff - HOST_HDR_OFFSET);
+> >>>       pkt_offset = GET_PKT_OFFSET(header);
+> >>>
+> >>>       if (pkt_offset & IS_MANAGMEMENT_CALLBACK) {
+> >>>
+> >>
+> >> Thanks for sending the patches.
+> >>
+> >> The code change looks okay to me. Just a minor comment, avoid the use of
+> >> same subject line for different patches.
+> > 
+> > These two patches are in the same subsystem and solve the same problem.
+> > I splitted them into two patches by mistake since I did not notice the problems
+> > in the second patch when I sent the first one.
+> > Should I merge the two patches and resend?
+> > 
+> 
+> Yes, please go ahead, merge the patches and send the updated version.
+> 
 
-Signed-off-by: Chuhong Yuan <hslester96@gmail.com>
----
-Changes in v2:
- - Merge the two patches with the same
-   subject line.
+This is wrong advice.  Don't merge the patches because they are for
+different drivers.  The original subjects are fine because the
+subsystems are different so that's okay.
 
- drivers/staging/wilc1000/wilc_mon.c               | 3 +--
- drivers/staging/wilc1000/wilc_wfi_cfgoperations.c | 3 +--
- drivers/staging/wilc1000/wilc_wlan.c              | 9 +++------
- 3 files changed, 5 insertions(+), 10 deletions(-)
-
-diff --git a/drivers/staging/wilc1000/wilc_mon.c b/drivers/staging/wilc1000/wilc_mon.c
-index 7d7933d40924..d6f14f69ad64 100644
---- a/drivers/staging/wilc1000/wilc_mon.c
-+++ b/drivers/staging/wilc1000/wilc_mon.c
-@@ -35,8 +35,7 @@ void wilc_wfi_monitor_rx(struct net_device *mon_dev, u8 *buff, u32 size)
- 		return;
- 
- 	/* Get WILC header */
--	memcpy(&header, (buff - HOST_HDR_OFFSET), HOST_HDR_OFFSET);
--	le32_to_cpus(&header);
-+	header = get_unaligned_le32(buff - HOST_HDR_OFFSET);
- 	/*
- 	 * The packet offset field contain info about what type of management
- 	 * the frame we are dealing with and ack status
-diff --git a/drivers/staging/wilc1000/wilc_wfi_cfgoperations.c b/drivers/staging/wilc1000/wilc_wfi_cfgoperations.c
-index d72fdd333050..12fb4add05ec 100644
---- a/drivers/staging/wilc1000/wilc_wfi_cfgoperations.c
-+++ b/drivers/staging/wilc1000/wilc_wfi_cfgoperations.c
-@@ -1038,8 +1038,7 @@ void wilc_wfi_p2p_rx(struct wilc_vif *vif, u8 *buff, u32 size)
- 	s32 freq;
- 	__le16 fc;
- 
--	memcpy(&header, (buff - HOST_HDR_OFFSET), HOST_HDR_OFFSET);
--	le32_to_cpus(&header);
-+	header = get_unaligned_le32(buff - HOST_HDR_OFFSET);
- 	pkt_offset = GET_PKT_OFFSET(header);
- 
- 	if (pkt_offset & IS_MANAGMEMENT_CALLBACK) {
-diff --git a/drivers/staging/wilc1000/wilc_wlan.c b/drivers/staging/wilc1000/wilc_wlan.c
-index d46876edcfeb..7d438ae90c3e 100644
---- a/drivers/staging/wilc1000/wilc_wlan.c
-+++ b/drivers/staging/wilc1000/wilc_wlan.c
-@@ -703,8 +703,7 @@ static void wilc_wlan_handle_rx_buff(struct wilc *wilc, u8 *buffer, int size)
- 
- 	do {
- 		buff_ptr = buffer + offset;
--		memcpy(&header, buff_ptr, 4);
--		le32_to_cpus(&header);
-+		header = get_unaligned_le32(buff_ptr);
- 
- 		is_cfg_packet = (header >> 31) & 0x1;
- 		pkt_offset = (header >> 22) & 0x1ff;
-@@ -874,10 +873,8 @@ int wilc_wlan_firmware_download(struct wilc *wilc, const u8 *buffer,
- 
- 	offset = 0;
- 	do {
--		memcpy(&addr, &buffer[offset], 4);
--		memcpy(&size, &buffer[offset + 4], 4);
--		le32_to_cpus(&addr);
--		le32_to_cpus(&size);
-+		addr = get_unaligned_le32(&buffer[offset]);
-+		size = get_unaligned_le32(&buffer[offset + 4]);
- 		acquire_bus(wilc, WILC_BUS_ACQUIRE_ONLY);
- 		offset += 8;
- 		while (((int)size) && (offset < buffer_size)) {
--- 
-2.20.1
+regards,
+dan carpenter
 
