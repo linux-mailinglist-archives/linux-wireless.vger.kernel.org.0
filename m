@@ -2,27 +2,28 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id AF2DA6EF08
+	by mail.lfdr.de (Postfix) with ESMTP id 3B62D6EF07
 	for <lists+linux-wireless@lfdr.de>; Sat, 20 Jul 2019 12:26:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727856AbfGTK0D (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        id S1727859AbfGTK0D (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
         Sat, 20 Jul 2019 06:26:03 -0400
-Received: from paleale.coelho.fi ([176.9.41.70]:59440 "EHLO
+Received: from paleale.coelho.fi ([176.9.41.70]:59438 "EHLO
         farmhouse.coelho.fi" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1727852AbfGTK0C (ORCPT
+        with ESMTP id S1727830AbfGTK0C (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
         Sat, 20 Jul 2019 06:26:02 -0400
 Received: from 91-156-6-193.elisa-laajakaista.fi ([91.156.6.193] helo=redipa.ger.corp.intel.com)
         by farmhouse.coelho.fi with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
         (Exim 4.92)
         (envelope-from <luca@coelho.fi>)
-        id 1homYu-0000Hj-EK; Sat, 20 Jul 2019 13:25:59 +0300
+        id 1homYy-0000Hj-3r; Sat, 20 Jul 2019 13:26:01 +0300
 From:   Luca Coelho <luca@coelho.fi>
 To:     kvalo@codeaurora.org
 Cc:     linux-wireless@vger.kernel.org,
-        Luca Coelho <luciano.coelho@intel.com>, stable@vger.kernel.org
-Date:   Sat, 20 Jul 2019 13:25:30 +0300
-Message-Id: <20190720102545.5952-2-luca@coelho.fi>
+        Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
+        Luca Coelho <luciano.coelho@intel.com>
+Date:   Sat, 20 Jul 2019 13:25:31 +0300
+Message-Id: <20190720102545.5952-3-luca@coelho.fi>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20190720102545.5952-1-luca@coelho.fi>
 References: <20190720102545.5952-1-luca@coelho.fi>
@@ -33,76 +34,55 @@ X-Spam-Level:
 X-Spam-Status: No, score=-2.9 required=5.0 tests=ALL_TRUSTED,BAYES_00,
         TVD_RCVD_IP,URIBL_BLOCKED autolearn=ham autolearn_force=no
         version=3.4.2
-Subject: [PATCH 01/16] iwlwifi: mvm: don't send GEO_TX_POWER_LIMIT on version < 41
+Subject: [PATCH 02/16] iwlwifi: mvm: prepare the ground for more RSS notifications
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Luca Coelho <luciano.coelho@intel.com>
+From: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
 
-Firmware versions before 41 don't support the GEO_TX_POWER_LIMIT
-command, and sending it to the firmware will cause a firmware crash.
-We allow this via debugfs, so we need to return an error value in case
-it's not supported.
+We will need a new type of synchronization message going
+through all the RSS queues. Prepare the ground for this.
 
-This had already been fixed during init, when we send the command if
-the ACPI WGDS table is present.  Fix it also for the other,
-userspace-triggered case.
-
-Cc: stable@vger.kernel.org
+Signed-off-by: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
 Signed-off-by: Luca Coelho <luciano.coelho@intel.com>
 ---
- drivers/net/wireless/intel/iwlwifi/mvm/fw.c | 22 ++++++++++++++-------
- 1 file changed, 15 insertions(+), 7 deletions(-)
+ drivers/net/wireless/intel/iwlwifi/mvm/sta.c | 2 +-
+ drivers/net/wireless/intel/iwlwifi/mvm/sta.h | 6 ++++--
+ 2 files changed, 5 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/fw.c b/drivers/net/wireless/intel/iwlwifi/mvm/fw.c
-index 1d608e9e9101..a837cf40afde 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/fw.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/fw.c
-@@ -880,6 +880,17 @@ int iwl_mvm_sar_select_profile(struct iwl_mvm *mvm, int prof_a, int prof_b)
- 	return iwl_mvm_send_cmd_pdu(mvm, REDUCE_TX_POWER_CMD, 0, len, &cmd);
- }
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/sta.c b/drivers/net/wireless/intel/iwlwifi/mvm/sta.c
+index ac9bc65c4d15..23fd3108adb9 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/sta.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/sta.c
+@@ -2427,7 +2427,7 @@ int iwl_mvm_rm_mcast_sta(struct iwl_mvm *mvm, struct ieee80211_vif *vif)
  
-+static bool iwl_mvm_sar_geo_support(struct iwl_mvm *mvm)
-+{
-+	/*
-+	 * The GEO_TX_POWER_LIMIT command is not supported on earlier
-+	 * firmware versions.  Unfortunately, we don't have a TLV API
-+	 * flag to rely on, so rely on the major version which is in
-+	 * the first byte of ucode_ver.
-+	 */
-+	return IWL_UCODE_SERIAL(mvm->fw->ucode_ver) >= 41;
-+}
-+
- int iwl_mvm_get_sar_geo_profile(struct iwl_mvm *mvm)
+ static void iwl_mvm_sync_rxq_del_ba(struct iwl_mvm *mvm, u8 baid)
  {
- 	struct iwl_geo_tx_power_profiles_resp *resp;
-@@ -909,6 +920,9 @@ int iwl_mvm_get_sar_geo_profile(struct iwl_mvm *mvm)
- 		.data = { data },
- 	};
+-	struct iwl_mvm_delba_notif notif = {
++	struct iwl_mvm_rss_sync_notif notif = {
+ 		.metadata.type = IWL_MVM_RXQ_NOTIF_DEL_BA,
+ 		.metadata.sync = 1,
+ 		.delba.baid = baid,
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/sta.h b/drivers/net/wireless/intel/iwlwifi/mvm/sta.h
+index 84139fc38c34..79d655b3fce0 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/sta.h
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/sta.h
+@@ -343,9 +343,11 @@ struct iwl_mvm_delba_data {
+ 	u32 baid;
+ } __packed;
  
-+	if (!iwl_mvm_sar_geo_support(mvm))
-+		return -EOPNOTSUPP;
-+
- 	ret = iwl_mvm_send_cmd(mvm, &cmd);
- 	if (ret) {
- 		IWL_ERR(mvm, "Failed to get geographic profile info %d\n", ret);
-@@ -934,13 +948,7 @@ static int iwl_mvm_sar_geo_init(struct iwl_mvm *mvm)
- 	int ret, i, j;
- 	u16 cmd_wide_id =  WIDE_ID(PHY_OPS_GROUP, GEO_TX_POWER_LIMIT);
+-struct iwl_mvm_delba_notif {
++struct iwl_mvm_rss_sync_notif {
+ 	struct iwl_mvm_internal_rxq_notif metadata;
+-	struct iwl_mvm_delba_data delba;
++	union {
++		struct iwl_mvm_delba_data delba;
++	};
+ } __packed;
  
--	/*
--	 * This command is not supported on earlier firmware versions.
--	 * Unfortunately, we don't have a TLV API flag to rely on, so
--	 * rely on the major version which is in the first byte of
--	 * ucode_ver.
--	 */
--	if (IWL_UCODE_SERIAL(mvm->fw->ucode_ver) < 41)
-+	if (!iwl_mvm_sar_geo_support(mvm))
- 		return 0;
- 
- 	ret = iwl_mvm_sar_get_wgds_table(mvm);
+ /**
 -- 
 2.20.1
 
