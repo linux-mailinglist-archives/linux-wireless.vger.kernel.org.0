@@ -2,76 +2,118 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 8CBA16EF14
-	for <lists+linux-wireless@lfdr.de>; Sat, 20 Jul 2019 12:27:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E2FE06F042
+	for <lists+linux-wireless@lfdr.de>; Sat, 20 Jul 2019 19:47:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727903AbfGTK12 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 20 Jul 2019 06:27:28 -0400
-Received: from paleale.coelho.fi ([176.9.41.70]:59576 "EHLO
-        farmhouse.coelho.fi" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1727851AbfGTK11 (ORCPT
+        id S1726766AbfGTRqz (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 20 Jul 2019 13:46:55 -0400
+Received: from mail-pl1-f193.google.com ([209.85.214.193]:42195 "EHLO
+        mail-pl1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726200AbfGTRqy (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 20 Jul 2019 06:27:27 -0400
-Received: from 91-156-6-193.elisa-laajakaista.fi ([91.156.6.193] helo=redipa.ger.corp.intel.com)
-        by farmhouse.coelho.fi with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-        (Exim 4.92)
-        (envelope-from <luca@coelho.fi>)
-        id 1homZS-0000Hj-S9; Sat, 20 Jul 2019 13:26:32 +0300
-From:   Luca Coelho <luca@coelho.fi>
-To:     kvalo@codeaurora.org
-Cc:     linux-wireless@vger.kernel.org,
-        Luca Coelho <luciano.coelho@intel.com>
-Date:   Sat, 20 Jul 2019 13:25:45 +0300
-Message-Id: <20190720102545.5952-17-luca@coelho.fi>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20190720102545.5952-1-luca@coelho.fi>
-References: <20190720102545.5952-1-luca@coelho.fi>
+        Sat, 20 Jul 2019 13:46:54 -0400
+Received: by mail-pl1-f193.google.com with SMTP id ay6so17164093plb.9;
+        Sat, 20 Jul 2019 10:46:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=date:from:to:subject:message-id:mime-version:content-disposition
+         :user-agent;
+        bh=L2J81KFMB9+2i2dCr/hG5bzUaIW4OMdMzoZ/0Z/JXXY=;
+        b=Km81yo78w+rlAwT/gwFYfbv28Jgs5BCE1MgsQFEdhlhCgQmjldFaKcy3u0HTBYiloX
+         L8XYW/LnaW6ORsZjO8+44qrXVhFzdUCUkEV8eURKJ+SkqB0At6u+qSYVIBIwiXjpTM/x
+         7gmIG7cv4tJFKGtaNpt1pbUjJsWKyfSX04XSoIMkikNZ7T4JXBDCPK5lP7tR6KgYGew9
+         X2ynm2oIHwy3DHRFm78hJguuTFf+gae7qCd2Iwx4GwZQb3lVfmvgExXMNB9Qz8KkCBgW
+         /aqS1YpNQwnrsMTPeWPnYC+ymVRJtmHwMME+8W+cIYYvsvRg4aiq+MCJa1SC2V0Ng/By
+         V0ng==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:subject:message-id:mime-version
+         :content-disposition:user-agent;
+        bh=L2J81KFMB9+2i2dCr/hG5bzUaIW4OMdMzoZ/0Z/JXXY=;
+        b=otzGIJpzqIu0XDfNr0siqTNPXlKSN1j9qofRdRDoAKVjxosqKqXFJ+Ni9uMVqG7H/x
+         SU3JP9tf5CKBI/ttjN/hBpmBFgSk5G9jYsfCc0lzMsOsJg7Lf9O+ByTGaWf9P6f3MEhf
+         NA7HpfTNViy4SBzxJp+9a6qHpjo64gnxFc8p4Ns1bOtll8UVA6pmJgNQwBA1kopzWQxu
+         DTZZhmoptwOHMFQLkee+GC5hUWZnq09o3YG1Imrt6CgLnSiSVBJGbC62G/NVnjzISRUs
+         prgmibjWu8q7vyM4+ck3rMxbfkab2YAM91+u6I6Eo38m/SvhX+M9XpzsFLGPj4VdQ68P
+         aRaQ==
+X-Gm-Message-State: APjAAAURb5M1oEYKTNxDvzMVsJMbERywJGx0lWByVisXNN1ciqiYNQQh
+        N/JU3y71qFQsTkSjfr11A5A=
+X-Google-Smtp-Source: APXvYqxlbLhnEFRhjszPBPUjtGhEt/AVHw3r7MRkvZSxpV9s5/OYqIpRYH0BMPO001+CgtH0WTAmNQ==
+X-Received: by 2002:a17:902:1e6:: with SMTP id b93mr63580645plb.295.1563644814133;
+        Sat, 20 Jul 2019 10:46:54 -0700 (PDT)
+Received: from hari-Inspiron-1545 ([183.83.86.126])
+        by smtp.gmail.com with ESMTPSA id q69sm49590614pjb.0.2019.07.20.10.46.51
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Sat, 20 Jul 2019 10:46:53 -0700 (PDT)
+Date:   Sat, 20 Jul 2019 23:16:47 +0530
+From:   Hariprasad Kelam <hariprasad.kelam@gmail.com>
+To:     Kalle Valo <kvalo@codeaurora.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: [PATCH] rat_cs: Remove duplicate code
+Message-ID: <20190720174613.GA31062@hari-Inspiron-1545>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on farmhouse.coelho.fi
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.9 required=5.0 tests=ALL_TRUSTED,BAYES_00,
-        TVD_RCVD_IP,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.2
-Subject: [PATCH 16/16] iwlwifi: mvm: fix version check for GEO_TX_POWER_LIMIT support
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.5.24 (2015-08-30)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Luca Coelho <luciano.coelho@intel.com>
+Code is same if translate is true/false in case invalid packet is
+received.So remove else part.
 
-We erroneously added a check for FW API version 41 before sending
-GEO_TX_POWER_LIMIT, but this was already implemented in version 38.
-Additionally, it was cherry-picked to older versions, namely 17, 26
-and 29, so check for those as well.
+Issue identified with coccicheck
 
-Signed-off-by: Luca Coelho <luciano.coelho@intel.com>
+Signed-off-by: Hariprasad Kelam <hariprasad.kelam@gmail.com>
 ---
- drivers/net/wireless/intel/iwlwifi/mvm/fw.c | 9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+ drivers/net/wireless/ray_cs.c | 29 ++++++++---------------------
+ 1 file changed, 8 insertions(+), 21 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/fw.c b/drivers/net/wireless/intel/iwlwifi/mvm/fw.c
-index a837cf40afde..00c89bcfdf6a 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/fw.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/fw.c
-@@ -886,9 +886,14 @@ static bool iwl_mvm_sar_geo_support(struct iwl_mvm *mvm)
- 	 * The GEO_TX_POWER_LIMIT command is not supported on earlier
- 	 * firmware versions.  Unfortunately, we don't have a TLV API
- 	 * flag to rely on, so rely on the major version which is in
--	 * the first byte of ucode_ver.
-+	 * the first byte of ucode_ver.  This was implemented
-+	 * initially on version 38 and then backported to 36, 29 and
-+	 * 17.
- 	 */
--	return IWL_UCODE_SERIAL(mvm->fw->ucode_ver) >= 41;
-+	return IWL_UCODE_SERIAL(mvm->fw->ucode_ver) >= 38 ||
-+	       IWL_UCODE_SERIAL(mvm->fw->ucode_ver) == 36 ||
-+	       IWL_UCODE_SERIAL(mvm->fw->ucode_ver) == 29 ||
-+	       IWL_UCODE_SERIAL(mvm->fw->ucode_ver) == 17;
- }
+diff --git a/drivers/net/wireless/ray_cs.c b/drivers/net/wireless/ray_cs.c
+index cf37268..a51bbe7 100644
+--- a/drivers/net/wireless/ray_cs.c
++++ b/drivers/net/wireless/ray_cs.c
+@@ -2108,29 +2108,16 @@ static void rx_data(struct net_device *dev, struct rcs __iomem *prcs,
+ #endif
  
- int iwl_mvm_get_sar_geo_profile(struct iwl_mvm *mvm)
+ 	if (!sniffer) {
+-		if (translate) {
+ /* TBD length needs fixing for translated header */
+-			if (rx_len < (ETH_HLEN + RX_MAC_HEADER_LENGTH) ||
+-			    rx_len >
+-			    (dev->mtu + RX_MAC_HEADER_LENGTH + ETH_HLEN +
+-			     FCS_LEN)) {
+-				pr_debug(
+-				      "ray_cs invalid packet length %d received\n",
+-				      rx_len);
+-				return;
+-			}
+-		} else { /* encapsulated ethernet */
+-
+-			if (rx_len < (ETH_HLEN + RX_MAC_HEADER_LENGTH) ||
+-			    rx_len >
+-			    (dev->mtu + RX_MAC_HEADER_LENGTH + ETH_HLEN +
+-			     FCS_LEN)) {
+-				pr_debug(
+-				      "ray_cs invalid packet length %d received\n",
+-				      rx_len);
+-				return;
++		if (rx_len < (ETH_HLEN + RX_MAC_HEADER_LENGTH) ||
++		    rx_len >
++		    (dev->mtu + RX_MAC_HEADER_LENGTH + ETH_HLEN +
++		     FCS_LEN)) {
++			pr_debug(
++			      "ray_cs invalid packet length %d received\n",
++			      rx_len);
++			return;
+ 			}
+-		}
+ 	}
+ 	pr_debug("ray_cs rx_data packet\n");
+ 	/* If fragmented packet, verify sizes of fragments add up */
 -- 
-2.20.1
+2.7.4
 
