@@ -2,122 +2,112 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id EC85B6EE5F
-	for <lists+linux-wireless@lfdr.de>; Sat, 20 Jul 2019 10:03:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5C4EF6EF05
+	for <lists+linux-wireless@lfdr.de>; Sat, 20 Jul 2019 12:26:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726863AbfGTIDz (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 20 Jul 2019 04:03:55 -0400
-Received: from paleale.coelho.fi ([176.9.41.70]:59394 "EHLO
+        id S1727843AbfGTK0A (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 20 Jul 2019 06:26:00 -0400
+Received: from paleale.coelho.fi ([176.9.41.70]:59426 "EHLO
         farmhouse.coelho.fi" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1726861AbfGTIDy (ORCPT
+        with ESMTP id S1727830AbfGTK0A (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 20 Jul 2019 04:03:54 -0400
-Received: from 91-156-6-193.elisa-laajakaista.fi ([91.156.6.193] helo=redipa)
-        by farmhouse.coelho.fi with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+        Sat, 20 Jul 2019 06:26:00 -0400
+Received: from 91-156-6-193.elisa-laajakaista.fi ([91.156.6.193] helo=redipa.ger.corp.intel.com)
+        by farmhouse.coelho.fi with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
         (Exim 4.92)
         (envelope-from <luca@coelho.fi>)
-        id 1hokLL-0000En-PL; Sat, 20 Jul 2019 11:03:50 +0300
-Message-ID: <b8246cb77dfc2d1344cd194682001a11a01dbf3a.camel@coelho.fi>
+        id 1homYr-0000Hj-HZ; Sat, 20 Jul 2019 13:25:56 +0300
 From:   Luca Coelho <luca@coelho.fi>
-To:     "linux-firmware@kernel.org" <linux-firmware@kernel.org>
-Cc:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        linuxwifi <linuxwifi@intel.com>,
-        "kyle@infradead.org" <kyle@infradead.org>,
-        "jwboyer@kernel.org" <jwboyer@kernel.org>,
-        "ben@decadent.org.uk" <ben@decadent.org.uk>, dor.shaish@intel.com
-Date:   Sat, 20 Jul 2019 11:03:45 +0300
-Content-Type: multipart/signed; micalg="pgp-sha512";
-        protocol="application/pgp-signature"; boundary="=-vh3spvWTBucW87onefQO"
-User-Agent: Evolution 3.30.5-1.1 
+To:     kvalo@codeaurora.org
+Cc:     linux-wireless@vger.kernel.org,
+        Luca Coelho <luciano.coelho@intel.com>
+Date:   Sat, 20 Jul 2019 13:25:29 +0300
+Message-Id: <20190720102545.5952-1-luca@coelho.fi>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on farmhouse.coelho.fi
 X-Spam-Level: 
 X-Spam-Status: No, score=-2.9 required=5.0 tests=ALL_TRUSTED,BAYES_00,
         TVD_RCVD_IP,URIBL_BLOCKED autolearn=ham autolearn_force=no
         version=3.4.2
-Subject: pull request: iwlwifi firmware updates 2019-07-20
+Subject: [PATCH 00/16] iwlwifi: fixes intended for 5.3 2019-07-20
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+From: Luca Coelho <luciano.coelho@intel.com>
 
---=-vh3spvWTBucW87onefQO
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+This is the second patchset with fixes for v5.3.
 
-Hi,
+The changes are:
 
-This contains some updated firmwares for all our currently maintained
-FW binaries.
+* Fix for an NSSN syncronization issue;
+* Some fixes in rate-scaling;
+* Fix for an "unknown command" bug with some FW versions;
+* A couple of debug infrastructure fixes;
+* One locking fix with GTK;
+* Small fix for an error path (the error was ignored due to a type
+  issue);
 
-Please pull or let me know if there are any issues.
+As usual, I'm pushing this to a pending branch, for kbuild bot.  I can
+send you a pull-request for this or I can assign them to you so you
+can apply them directly to wireless-drivers.  Let me know what you
+prefer.
 
---
+
 Cheers,
 Luca.
 
 
-The following changes since commit bf13a71b18af229b4c900b321ef1f8443028ded8=
-:
+Colin Ian King (1):
+  iwlwifi: mvm: fix comparison of u32 variable with less than zero
 
-  Merge branch 'guc_v33' of git://anongit.freedesktop.org/drm/drm-firmware =
-(2019-07-17 09:05:52 -0400)
+Emmanuel Grumbach (5):
+  iwlwifi: mvm: prepare the ground for more RSS notifications
+  iwlwifi: mvm: add a new RSS sync notification for NSSN sync
+  iwlwiif: mvm: refactor iwl_mvm_notify_rx_queue
+  iwlwifi: mvm: add a loose synchronization of the NSSN across Rx queues
+  iwlwifi: mvm: fix frame drop from the reordering buffer
 
-are available in the Git repository at:
+Gregory Greenman (4):
+  iwlwifi: mvm: add a wrapper around rs_tx_status to handle locks
+  iwlwifi: mvm: send LQ command always ASYNC
+  iwlwifi: mvm: replace RS mutex with a spin_lock
+  iwlwifi: mvm: fix possible out-of-bounds read when accessing lq_info
 
-  git://git.kernel.org/pub/scm/linux/kernel/git/iwlwifi/linux-firmware.git =
-tags/iwlwifi-fw-2019-07-20
+Ihab Zhaika (1):
+  iwlwifi: add 3 new IDs for the 9000 series (iwl9260_2ac_160_cfg)
 
-for you to fetch changes up to cd6cb7bc50aa77d531c4417ffe1237510b71c73e:
+Johannes Berg (1):
+  iwlwifi: fix locking in delayed GTK setting
 
-  iwlwifi: update -48 FWs for Qu and cc (2019-07-20 10:58:24 +0300)
-
-----------------------------------------------------------------
-iwlwifi: update a bunch of FW binaries
-
-----------------------------------------------------------------
 Luca Coelho (2):
-      iwlwifi: update FWs for 3168, 7265D, 9000, 9260, 8000, 8265 and cc
-      iwlwifi: update -48 FWs for Qu and cc
+  iwlwifi: mvm: don't send GEO_TX_POWER_LIMIT on version < 41
+  iwlwifi: mvm: fix version check for GEO_TX_POWER_LIMIT support
 
- iwlwifi-3168-29.ucode             | Bin 1036276 -> 1036300 bytes
- iwlwifi-7265D-29.ucode            | Bin 1036432 -> 1036668 bytes
- iwlwifi-8000C-36.ucode            | Bin 2400700 -> 2401356 bytes
- iwlwifi-8265-36.ucode             | Bin 2414296 -> 2414592 bytes
- iwlwifi-9000-pu-b0-jf-b0-46.ucode | Bin 1460788 -> 1467952 bytes
- iwlwifi-9260-th-b0-jf-b0-46.ucode | Bin 1462324 -> 1469012 bytes
- iwlwifi-Qu-b0-hr-b0-48.ucode      | Bin 1106208 -> 1106204 bytes
- iwlwifi-Qu-b0-jf-b0-48.ucode      | Bin 1053156 -> 1052772 bytes
- iwlwifi-Qu-c0-hr-b0-48.ucode      | Bin 1106228 -> 1106224 bytes
- iwlwifi-Qu-c0-jf-b0-48.ucode      | Bin 1053176 -> 1052792 bytes
- iwlwifi-QuZ-a0-hr-b0-48.ucode     | Bin 1105648 -> 1105644 bytes
- iwlwifi-QuZ-a0-jf-b0-48.ucode     | Bin 1052968 -> 1052584 bytes
- iwlwifi-cc-a0-46.ucode            | Bin 1044072 -> 1044452 bytes
- iwlwifi-cc-a0-48.ucode            | Bin 1096684 -> 1096680 bytes
- 14 files changed, 0 insertions(+), 0 deletions(-)
+Shahar S Matityahu (2):
+  iwlwifi: dbg_ini: move iwl_dbg_tlv_load_bin out of debug override
+    ifdef
+  iwlwifi: dbg_ini: move iwl_dbg_tlv_free outside of debugfs ifdef
 
---=-vh3spvWTBucW87onefQO
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: This is a digitally signed message part
-Content-Transfer-Encoding: 7bit
+ .../net/wireless/intel/iwlwifi/fw/api/rx.h    |   3 +-
+ drivers/net/wireless/intel/iwlwifi/iwl-drv.c  |   4 +-
+ drivers/net/wireless/intel/iwlwifi/mvm/fw.c   |  27 +-
+ .../net/wireless/intel/iwlwifi/mvm/mac80211.c |  44 +-
+ drivers/net/wireless/intel/iwlwifi/mvm/mvm.h  |   8 +-
+ drivers/net/wireless/intel/iwlwifi/mvm/nvm.c  |   2 +-
+ drivers/net/wireless/intel/iwlwifi/mvm/ops.c  |   4 +-
+ drivers/net/wireless/intel/iwlwifi/mvm/rs.c   | 559 +++++++++---------
+ drivers/net/wireless/intel/iwlwifi/mvm/rs.h   |   6 +-
+ drivers/net/wireless/intel/iwlwifi/mvm/rxmq.c | 185 ++++--
+ drivers/net/wireless/intel/iwlwifi/mvm/sta.c  |  10 +-
+ drivers/net/wireless/intel/iwlwifi/mvm/sta.h  |  13 +-
+ .../net/wireless/intel/iwlwifi/mvm/utils.c    |   4 +-
+ drivers/net/wireless/intel/iwlwifi/pcie/drv.c |   3 +
+ 14 files changed, 496 insertions(+), 376 deletions(-)
 
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCgAdFiEEF3LNfgb2BPWm68smoUecoho8xfoFAl0yyuEACgkQoUecoho8
-xfrt0BAAgGlnmVT/OAGKZz3FLI45stmjqwCoR2nPbY9OJbhPYPrG0pob953SwC+o
-wmbf6W+6jatY7rGEjn3hknAec7ISNRFFPzqwqkWtb6nkqBIxqMyfUReP8n2UPMki
-GQ0kqeI99AFIvJUT4+SO67LUxrJQT9m+bTrSEl/bgn4S/hrxGPLoIXDeB5horqXM
-mimGybyP69A89X+O86hC2lCbYU5NY10KhoT6aVQQU7/PB6bo58cZPQyHEYK1jLty
-wS/hvrsoEHt7j5SfseTM5x1KbkSijSsoTMXcWCW44rKzhGQ1zIMa57rqy49/rwI/
-gGElvLUcj4Rpc6I3zWzm56PuRe0vGO0VB5ixPvLrHHXJVlkKcoqdciXMWS1nvrdp
-1sq2hsffezASNfaXNeKEXuZ4l7tyG7McDt+JpC7bhSSZmHGF1lM9X2fKltOl19za
-wzOeZwjwoD8p79dD5d6jIaibZDMEgoLXCTGHH+5kq5M2FSwF03TqvHkPv5h7w0lW
-lHm5eNv/3pG7eJVIynQMytVt510z9m3i79CkF/IIb5JVLVidR17apM6AqUyxMfkm
-Y/J+Ji3B33PqxMkZJralp+HSZkFvFMD9362NXKp/Mre4eSr/UzI9bT03wiG5HUdm
-r5VYjU0TQ1uRMJT5WkQ6+Q9p3/3o48qV13zF92OjyBlqmAR5r0U=
-=Ppt7
------END PGP SIGNATURE-----
-
---=-vh3spvWTBucW87onefQO--
+-- 
+2.20.1
 
