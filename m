@@ -2,170 +2,122 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 4941F6ECC4
-	for <lists+linux-wireless@lfdr.de>; Sat, 20 Jul 2019 01:36:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EC85B6EE5F
+	for <lists+linux-wireless@lfdr.de>; Sat, 20 Jul 2019 10:03:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732983AbfGSXgN (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 19 Jul 2019 19:36:13 -0400
-Received: from mail-pg1-f196.google.com ([209.85.215.196]:33912 "EHLO
-        mail-pg1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1732422AbfGSXgM (ORCPT
+        id S1726863AbfGTIDz (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 20 Jul 2019 04:03:55 -0400
+Received: from paleale.coelho.fi ([176.9.41.70]:59394 "EHLO
+        farmhouse.coelho.fi" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
+        with ESMTP id S1726861AbfGTIDy (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 19 Jul 2019 19:36:12 -0400
-Received: by mail-pg1-f196.google.com with SMTP id n9so8873126pgc.1
-        for <linux-wireless@vger.kernel.org>; Fri, 19 Jul 2019 16:36:11 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=adPQzI1v5diG916E3ftdRP7KVUpoq7ni2PbSErONVno=;
-        b=G3cOINU5IIalyfSzoeJGzYHjbbTayjz7uKTmRzNWMjmloTNLmboShFlXotMdaNFDe8
-         LAdBksnVHUYSUdjAjmD3cROKn41n3SKUCER9oghvqyO+rKroqQj7uNodSK+RT3bUNB1S
-         DXoVHjQtNrBXRF4FRkraXhiN3WesLyTqJ7RQQ=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=adPQzI1v5diG916E3ftdRP7KVUpoq7ni2PbSErONVno=;
-        b=jEB6Nq7EXgHHxcwlnqRLEV4oLzUdQqy1PCPt0Ci1p5OsiKaAkIigyGebwdnoyB7Uzj
-         /nlNM2pNs+ArjwxRGApTdJ/tKcgGCFaEPUPwBm5Moo+ssX0DNnNaX5vYjjEOsm3+tRkn
-         Ly8ZEr8DYPZAfWYUaxFobqLV2EPMGOYJnAtEGb0OQdVZeBQxUWhhixA/c1q/ovIKr8eA
-         qNxmL/hOMpssjF9ywbeuoSaNKX1z6K2G8945Zkpg81LQ7hMMj/KU5RDP4MLkN/Ax4F7g
-         51mm3x98CF1kVAe2YiaujfsVEfnyISP0ioToI3+YWboFUkzvO/MQdJQ/ZclBuAk+aJQn
-         He5w==
-X-Gm-Message-State: APjAAAXEYXmMFXvLx88hAorDPmEiDTyWYpGLlmRKslDl2Kz8b738dbjV
-        10+S3dKs564ksIDHCYITxVAj7g==
-X-Google-Smtp-Source: APXvYqxbqPCgcMawQkjn4LpCVpIZIiiIhPeZYJ2X7r56FNvFvPhSCu3KoIIFPtYjLuP6gyd08GrXzQ==
-X-Received: by 2002:a63:e54f:: with SMTP id z15mr56615815pgj.4.1563579371281;
-        Fri, 19 Jul 2019 16:36:11 -0700 (PDT)
-Received: from google.com ([2620:15c:202:1:534:b7c0:a63c:460c])
-        by smtp.gmail.com with ESMTPSA id a21sm38313759pfi.27.2019.07.19.16.36.08
-        (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
-        Fri, 19 Jul 2019 16:36:09 -0700 (PDT)
-Date:   Fri, 19 Jul 2019 16:36:06 -0700
-From:   Brian Norris <briannorris@chromium.org>
-To:     Douglas Anderson <dianders@chromium.org>
-Cc:     Ulf Hansson <ulf.hansson@linaro.org>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        Adrian Hunter <adrian.hunter@intel.com>,
-        Ganapathi Bhat <gbhat@marvell.com>,
-        linux-wireless@vger.kernel.org,
-        Amitkumar Karwar <amitkarwar@gmail.com>,
-        linux-rockchip@lists.infradead.org,
-        Wolfram Sang <wsa+renesas@sang-engineering.com>,
-        Nishant Sarmukadam <nishants@marvell.com>,
-        netdev@vger.kernel.org, Avri Altman <avri.altman@wdc.com>,
-        linux-mmc@vger.kernel.org, davem@davemloft.net,
-        Xinming Hu <huxinming820@gmail.com>,
-        linux-kernel@vger.kernel.org, Andreas Fenkart <afenkart@gmail.com>
-Subject: Re: [PATCH 2/2] mwifiex: Make use of the new sdio_trigger_replug()
- API to reset
-Message-ID: <20190719233605.GA66171@google.com>
-References: <20190716164209.62320-1-dianders@chromium.org>
- <20190716164209.62320-3-dianders@chromium.org>
+        Sat, 20 Jul 2019 04:03:54 -0400
+Received: from 91-156-6-193.elisa-laajakaista.fi ([91.156.6.193] helo=redipa)
+        by farmhouse.coelho.fi with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+        (Exim 4.92)
+        (envelope-from <luca@coelho.fi>)
+        id 1hokLL-0000En-PL; Sat, 20 Jul 2019 11:03:50 +0300
+Message-ID: <b8246cb77dfc2d1344cd194682001a11a01dbf3a.camel@coelho.fi>
+From:   Luca Coelho <luca@coelho.fi>
+To:     "linux-firmware@kernel.org" <linux-firmware@kernel.org>
+Cc:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        linuxwifi <linuxwifi@intel.com>,
+        "kyle@infradead.org" <kyle@infradead.org>,
+        "jwboyer@kernel.org" <jwboyer@kernel.org>,
+        "ben@decadent.org.uk" <ben@decadent.org.uk>, dor.shaish@intel.com
+Date:   Sat, 20 Jul 2019 11:03:45 +0300
+Content-Type: multipart/signed; micalg="pgp-sha512";
+        protocol="application/pgp-signature"; boundary="=-vh3spvWTBucW87onefQO"
+User-Agent: Evolution 3.30.5-1.1 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20190716164209.62320-3-dianders@chromium.org>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on farmhouse.coelho.fi
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.9 required=5.0 tests=ALL_TRUSTED,BAYES_00,
+        TVD_RCVD_IP,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.2
+Subject: pull request: iwlwifi firmware updates 2019-07-20
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi Doug,
 
-On Tue, Jul 16, 2019 at 09:42:09AM -0700, Doug Anderson wrote:
-> As described in the patch ("mmc: core: Add sdio_trigger_replug()
-> API"), the current mwifiex_sdio_card_reset() is broken in the cases
-> where we're running Bluetooth on a second SDIO func on the same card
-> as WiFi.  The problem goes away if we just use the
-> sdio_trigger_replug() API call.
+--=-vh3spvWTBucW87onefQO
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-I'm unfortunately not a good evaluator of SDIO/MMC stuff, so I'll mostly
-leave that to others and assume that the "replug" description is pretty
-much all I need to know.
+Hi,
 
-> NOTE: Even though with this new solution there is less of a reason to
-> do our work from a workqueue (the unplug / plug mechanism we're using
-> is possible for a human to perform at any time so the stack is
-> supposed to handle it without it needing to be called from a special
-> context), we still need a workqueue because the Marvell reset function
-> could called from a context where sleeping is invalid and thus we
-> can't claim the host.  One example is Marvell's wakeup_timer_fn().
-> 
-> Signed-off-by: Douglas Anderson <dianders@chromium.org>
-> ---
-> 
->  drivers/net/wireless/marvell/mwifiex/sdio.c | 14 +++-----------
->  1 file changed, 3 insertions(+), 11 deletions(-)
-> 
-> diff --git a/drivers/net/wireless/marvell/mwifiex/sdio.c b/drivers/net/wireless/marvell/mwifiex/sdio.c
-> index 24c041dad9f6..f77ad2615f08 100644
-> --- a/drivers/net/wireless/marvell/mwifiex/sdio.c
-> +++ b/drivers/net/wireless/marvell/mwifiex/sdio.c
-> @@ -2218,14 +2218,6 @@ static void mwifiex_sdio_card_reset_work(struct mwifiex_adapter *adapter)
->  {
->  	struct sdio_mmc_card *card = adapter->card;
->  	struct sdio_func *func = card->func;
-> -	int ret;
-> -
-> -	mwifiex_shutdown_sw(adapter);
+This contains some updated firmwares for all our currently maintained
+FW binaries.
 
-I'm very mildly unhappy to see this driver diverge from the PCIe one
-again, but the only way it makes sense to do things the same is if there
-is such thing as a "function level reset" for SDIO (i.e., doesn't also
-kill the Bluetooth function). But it appears we don't really have such a
-thing.
+Please pull or let me know if there are any issues.
 
-> -
-> -	/* power cycle the adapter */
-> -	sdio_claim_host(func);
-> -	mmc_hw_reset(func->card->host);
-> -	sdio_release_host(func);
->  
->  	/* Previous save_adapter won't be valid after this. We will cancel
+--
+Cheers,
+Luca.
 
-^^^ FTR, the "save_adapter" note was already obsolete as of
 
-  cc75c577806a mwifiex: get rid of global save_adapter and sdio_work
+The following changes since commit bf13a71b18af229b4c900b321ef1f8443028ded8=
+:
 
-but the clear_bit() calls were (before this patch) still useful for
-other reasons.
+  Merge branch 'guc_v33' of git://anongit.freedesktop.org/drm/drm-firmware =
+(2019-07-17 09:05:52 -0400)
 
->  	 * pending work requests.
-> @@ -2233,9 +2225,9 @@ static void mwifiex_sdio_card_reset_work(struct mwifiex_adapter *adapter)
->  	clear_bit(MWIFIEX_IFACE_WORK_DEVICE_DUMP, &card->work_flags);
->  	clear_bit(MWIFIEX_IFACE_WORK_CARD_RESET, &card->work_flags);
+are available in the Git repository at:
 
-But now, I don't think you need these clear_bit() calls any more --
-you're totally destroying the card and its workqueue on remove(). (And
-anyway, MWIFIEX_IFACE_WORK_CARD_RESET was just cleared by your caller.)
+  git://git.kernel.org/pub/scm/linux/kernel/git/iwlwifi/linux-firmware.git =
+tags/iwlwifi-fw-2019-07-20
 
->  
-> -	ret = mwifiex_reinit_sw(adapter);
-> -	if (ret)
-> -		dev_err(&func->dev, "reinit failed: %d\n", ret);
-> +	sdio_claim_host(func);
-> +	sdio_trigger_replug(func);
-> +	sdio_release_host(func);
+for you to fetch changes up to cd6cb7bc50aa77d531c4417ffe1237510b71c73e:
 
-And...we're approximately back to where we were 4 years ago :)
+  iwlwifi: update -48 FWs for Qu and cc (2019-07-20 10:58:24 +0300)
 
-commit b4336a282db86b298b70563f8ed51782b36b772c
-Author: Andreas Fenkart <afenkart@gmail.com>
-Date:   Thu Jul 16 18:50:01 2015 +0200
+----------------------------------------------------------------
+iwlwifi: update a bunch of FW binaries
 
-    mwifiex: sdio: reset adapter using mmc_hw_reset
+----------------------------------------------------------------
+Luca Coelho (2):
+      iwlwifi: update FWs for 3168, 7265D, 9000, 9260, 8000, 8265 and cc
+      iwlwifi: update -48 FWs for Qu and cc
 
-Anyway, assuming the "function reset" thing isn't workable, and you drop
-the clear_bit() stuff, I think this is fine:
+ iwlwifi-3168-29.ucode             | Bin 1036276 -> 1036300 bytes
+ iwlwifi-7265D-29.ucode            | Bin 1036432 -> 1036668 bytes
+ iwlwifi-8000C-36.ucode            | Bin 2400700 -> 2401356 bytes
+ iwlwifi-8265-36.ucode             | Bin 2414296 -> 2414592 bytes
+ iwlwifi-9000-pu-b0-jf-b0-46.ucode | Bin 1460788 -> 1467952 bytes
+ iwlwifi-9260-th-b0-jf-b0-46.ucode | Bin 1462324 -> 1469012 bytes
+ iwlwifi-Qu-b0-hr-b0-48.ucode      | Bin 1106208 -> 1106204 bytes
+ iwlwifi-Qu-b0-jf-b0-48.ucode      | Bin 1053156 -> 1052772 bytes
+ iwlwifi-Qu-c0-hr-b0-48.ucode      | Bin 1106228 -> 1106224 bytes
+ iwlwifi-Qu-c0-jf-b0-48.ucode      | Bin 1053176 -> 1052792 bytes
+ iwlwifi-QuZ-a0-hr-b0-48.ucode     | Bin 1105648 -> 1105644 bytes
+ iwlwifi-QuZ-a0-jf-b0-48.ucode     | Bin 1052968 -> 1052584 bytes
+ iwlwifi-cc-a0-46.ucode            | Bin 1044072 -> 1044452 bytes
+ iwlwifi-cc-a0-48.ucode            | Bin 1096684 -> 1096680 bytes
+ 14 files changed, 0 insertions(+), 0 deletions(-)
 
-Reviewed-by: Brian Norris <briannorris@chromium.org>
+--=-vh3spvWTBucW87onefQO
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: This is a digitally signed message part
+Content-Transfer-Encoding: 7bit
 
->  }
->  
->  /* This function read/write firmware */
-> -- 
-> 2.22.0.510.g264f2c817a-goog
-> 
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCgAdFiEEF3LNfgb2BPWm68smoUecoho8xfoFAl0yyuEACgkQoUecoho8
+xfrt0BAAgGlnmVT/OAGKZz3FLI45stmjqwCoR2nPbY9OJbhPYPrG0pob953SwC+o
+wmbf6W+6jatY7rGEjn3hknAec7ISNRFFPzqwqkWtb6nkqBIxqMyfUReP8n2UPMki
+GQ0kqeI99AFIvJUT4+SO67LUxrJQT9m+bTrSEl/bgn4S/hrxGPLoIXDeB5horqXM
+mimGybyP69A89X+O86hC2lCbYU5NY10KhoT6aVQQU7/PB6bo58cZPQyHEYK1jLty
+wS/hvrsoEHt7j5SfseTM5x1KbkSijSsoTMXcWCW44rKzhGQ1zIMa57rqy49/rwI/
+gGElvLUcj4Rpc6I3zWzm56PuRe0vGO0VB5ixPvLrHHXJVlkKcoqdciXMWS1nvrdp
+1sq2hsffezASNfaXNeKEXuZ4l7tyG7McDt+JpC7bhSSZmHGF1lM9X2fKltOl19za
+wzOeZwjwoD8p79dD5d6jIaibZDMEgoLXCTGHH+5kq5M2FSwF03TqvHkPv5h7w0lW
+lHm5eNv/3pG7eJVIynQMytVt510z9m3i79CkF/IIb5JVLVidR17apM6AqUyxMfkm
+Y/J+Ji3B33PqxMkZJralp+HSZkFvFMD9362NXKp/Mre4eSr/UzI9bT03wiG5HUdm
+r5VYjU0TQ1uRMJT5WkQ6+Q9p3/3o48qV13zF92OjyBlqmAR5r0U=
+=Ppt7
+-----END PGP SIGNATURE-----
+
+--=-vh3spvWTBucW87onefQO--
+
