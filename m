@@ -2,28 +2,28 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2DD916F8E4
-	for <lists+linux-wireless@lfdr.de>; Mon, 22 Jul 2019 07:31:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9C4D76F8E9
+	for <lists+linux-wireless@lfdr.de>; Mon, 22 Jul 2019 07:31:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726839AbfGVFbq (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 22 Jul 2019 01:31:46 -0400
-Received: from mailgw01.mediatek.com ([210.61.82.183]:16282 "EHLO
-        mailgw01.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1725773AbfGVFbq (ORCPT
+        id S1727387AbfGVFbt (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 22 Jul 2019 01:31:49 -0400
+Received: from mailgw02.mediatek.com ([210.61.82.184]:28240 "EHLO
+        mailgw02.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
+        with ESMTP id S1726818AbfGVFbt (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 22 Jul 2019 01:31:46 -0400
-X-UUID: 8790669de8a5464a85a2e4cf534bab16-20190722
-X-UUID: 8790669de8a5464a85a2e4cf534bab16-20190722
-Received: from mtkexhb02.mediatek.inc [(172.21.101.103)] by mailgw01.mediatek.com
+        Mon, 22 Jul 2019 01:31:49 -0400
+X-UUID: cf0af2f359b6419a8b23341453bff560-20190722
+X-UUID: cf0af2f359b6419a8b23341453bff560-20190722
+Received: from mtkcas08.mediatek.inc [(172.21.101.126)] by mailgw02.mediatek.com
         (envelope-from <ryder.lee@mediatek.com>)
         (mhqrelay.mediatek.com ESMTP with TLS)
-        with ESMTP id 91142533; Mon, 22 Jul 2019 13:31:20 +0800
+        with ESMTP id 805264576; Mon, 22 Jul 2019 13:31:19 +0800
 Received: from mtkcas08.mediatek.inc (172.21.101.126) by
- mtkmbs08n1.mediatek.inc (172.21.101.55) with Microsoft SMTP Server (TLS) id
- 15.0.1395.4; Mon, 22 Jul 2019 13:31:17 +0800
+ mtkmbs07n2.mediatek.inc (172.21.101.141) with Microsoft SMTP Server (TLS) id
+ 15.0.1395.4; Mon, 22 Jul 2019 13:31:18 +0800
 Received: from mtksdccf07.mediatek.inc (172.21.84.99) by mtkcas08.mediatek.inc
  (172.21.101.73) with Microsoft SMTP Server id 15.0.1395.4 via Frontend
- Transport; Mon, 22 Jul 2019 13:31:17 +0800
+ Transport; Mon, 22 Jul 2019 13:31:18 +0800
 From:   Ryder Lee <ryder.lee@mediatek.com>
 To:     Felix Fietkau <nbd@nbd.name>,
         Lorenzo Bianconi <lorenzo.bianconi@redhat.com>
@@ -32,10 +32,10 @@ CC:     Roy Luo <royluo@google.com>, YF Luo <yf.luo@mediatek.com>,
         Sean Wang <sean.wang@mediatek.com>,
         <linux-wireless@vger.kernel.org>,
         <linux-mediatek@lists.infradead.org>,
-        "Ryder Lee" <ryder.lee@mediatek.com>
-Subject: [PATCH 1/5] mt76: Add paragraphs to describe the config symbols fully
-Date:   Mon, 22 Jul 2019 13:31:11 +0800
-Message-ID: <ae5dedf629c67985226dc63fb5ac08488957cc59.1563772403.git.ryder.lee@mediatek.com>
+        Ryder Lee <ryder.lee@mediatek.com>
+Subject: [PATCH 2/5] mt76: mt7603: fix some checkpatch warnings
+Date:   Mon, 22 Jul 2019 13:31:12 +0800
+Message-ID: <0c8b217c817d7f4029b60276736c3111bc01665c.1563772403.git.ryder.lee@mediatek.com>
 X-Mailer: git-send-email 2.18.0
 In-Reply-To: <cover.1563772403.git.ryder.lee@mediatek.com>
 References: <cover.1563772403.git.ryder.lee@mediatek.com>
@@ -47,104 +47,200 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Update the help text to fix checkpatch.pl warning:
-
-WARNING: please write a paragraph that describes the config symbol fully
+This fixes the following checkpatch.pl warning:
+WARNING: Improper SPDX comment style
+CHECK: No space is necessary after a cast
 
 Signed-off-by: Ryder Lee <ryder.lee@mediatek.com>
 ---
- drivers/net/wireless/mediatek/mt76/mt7603/Kconfig |  6 ++++--
- drivers/net/wireless/mediatek/mt76/mt7615/Kconfig |  7 ++++++-
- drivers/net/wireless/mediatek/mt76/mt76x0/Kconfig | 12 ++++++++++--
- drivers/net/wireless/mediatek/mt76/mt76x2/Kconfig | 14 +++++++++++---
- 4 files changed, 31 insertions(+), 8 deletions(-)
+ drivers/net/wireless/mediatek/mt76/mt7603/beacon.c  | 2 +-
+ drivers/net/wireless/mediatek/mt76/mt7603/core.c    | 2 +-
+ drivers/net/wireless/mediatek/mt76/mt7603/debugfs.c | 2 +-
+ drivers/net/wireless/mediatek/mt76/mt7603/dma.c     | 7 ++++---
+ drivers/net/wireless/mediatek/mt76/mt7603/eeprom.c  | 2 +-
+ drivers/net/wireless/mediatek/mt76/mt7603/init.c    | 3 +--
+ drivers/net/wireless/mediatek/mt76/mt7603/mac.c     | 6 +++---
+ drivers/net/wireless/mediatek/mt76/mt7603/main.c    | 7 ++++---
+ drivers/net/wireless/mediatek/mt76/mt7603/mcu.c     | 2 +-
+ drivers/net/wireless/mediatek/mt76/mt7603/pci.c     | 2 +-
+ drivers/net/wireless/mediatek/mt76/mt7603/soc.c     | 2 +-
+ 11 files changed, 19 insertions(+), 18 deletions(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7603/Kconfig b/drivers/net/wireless/mediatek/mt76/mt7603/Kconfig
-index e108bf881ca8..69cc74bce060 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7603/Kconfig
-+++ b/drivers/net/wireless/mediatek/mt76/mt7603/Kconfig
-@@ -5,6 +5,8 @@ config MT7603E
- 	depends on MAC80211
- 	depends on PCI
- 	help
--	  This adds support for MT7603E wireless PCIe devices and the WLAN core on
--	  MT7628/MT7688 SoC devices
-+	  This adds support for MT7603E wireless PCIe devices and the WLAN core
-+	  on MT7628/MT7688 SoC devices. This family supports 2x2 IEEE 802.11n
-+	  300Mbps PHY rate
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7603/beacon.c b/drivers/net/wireless/mediatek/mt76/mt7603/beacon.c
+index 58e68fbdbf75..7a41cdf1c4ae 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7603/beacon.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7603/beacon.c
+@@ -1,4 +1,4 @@
+-/* SPDX-License-Identifier: ISC */
++// SPDX-License-Identifier: ISC
  
-+	  To compile this driver as a module, choose M here.
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/Kconfig b/drivers/net/wireless/mediatek/mt76/mt7615/Kconfig
-index 2ed47b309b6e..dfc110b4bcb6 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7615/Kconfig
-+++ b/drivers/net/wireless/mediatek/mt76/mt7615/Kconfig
-@@ -5,4 +5,9 @@ config MT7615E
- 	depends on MAC80211
- 	depends on PCI
- 	help
--	  This adds support for MT7615-based wireless PCIe devices.
-+	  This adds support for MT7615-based wireless PCIe devices, which
-+	  support concurrent dual-band operation at 5GHz and 2.4GHz band,
-+	  4x4:4SS IEEE 802.11ac 1733Mbps PHY rate, wave2 MU-MIMO up to 4
-+	  users/group and 160MHz channels.
-+
-+	  To compile this driver as a module, choose M here.
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76x0/Kconfig b/drivers/net/wireless/mediatek/mt76/mt76x0/Kconfig
-index 209d8abc49d5..fb8fe98512ea 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76x0/Kconfig
-+++ b/drivers/net/wireless/mediatek/mt76/mt76x0/Kconfig
-@@ -10,7 +10,11 @@ config MT76x0U
- 	depends on MAC80211
- 	depends on USB
- 	help
--	  This adds support for MT7610U-based wireless USB dongles.
-+	  This adds support for MT7610U-based wireless USB 2.0 dongles,
-+	  which complie with IEEE 802.11ac standards and support 1x1
-+	  433Mbps PHY rate.
-+
-+	  To compile this driver as a module, choose M here.
+ #include "mt7603.h"
  
- config MT76x0E
- 	tristate "MediaTek MT76x0E (PCIe) support"
-@@ -18,4 +22,8 @@ config MT76x0E
- 	depends on MAC80211
- 	depends on PCI
- 	help
--	  This adds support for MT7610/MT7630-based wireless PCIe devices.
-+	  This adds support for MT7610/MT7630-based wireless PCIe devices,
-+	  which complie with IEEE 802.11ac standards and support 1x1
-+	  433Mbps PHY rate.
-+
-+	  To compile this driver as a module, choose M here.
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76x2/Kconfig b/drivers/net/wireless/mediatek/mt76/mt76x2/Kconfig
-index 1f69908f8373..c4fe52d8c88b 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76x2/Kconfig
-+++ b/drivers/net/wireless/mediatek/mt76/mt76x2/Kconfig
-@@ -8,8 +8,12 @@ config MT76x2E
- 	select MT76x2_COMMON
- 	depends on MAC80211
- 	depends on PCI
--	---help---
--	  This adds support for MT7612/MT7602/MT7662-based wireless PCIe devices.
-+	help
-+	  This adds support for MT7612/MT7602/MT7662-based wireless PCIe
-+	  devices, which complie with IEEE 802.11ac standards and support
-+	  2SS to 866Mbit/s PHY rate.
-+
-+	  To compile this driver as a module, choose M here.
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7603/core.c b/drivers/net/wireless/mediatek/mt76/mt7603/core.c
+index e7ee58e3379c..e5af4f3389cc 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7603/core.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7603/core.c
+@@ -1,4 +1,4 @@
+-/* SPDX-License-Identifier: ISC */
++// SPDX-License-Identifier: ISC
  
- config MT76x2U
- 	tristate "MediaTek MT76x2U (USB) support"
-@@ -18,4 +22,8 @@ config MT76x2U
- 	depends on MAC80211
- 	depends on USB
- 	help
--	  This adds support for MT7612U-based wireless USB dongles.
-+	  This adds support for MT7612U-based wireless USB 3.0 dongles,
-+	  which complie with IEEE 802.11ac standards and support 2SS
-+	  to 866Mbit/s PHY rate.
-+
-+	  To compile this driver as a module, choose M here.
+ #include "mt7603.h"
+ 
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7603/debugfs.c b/drivers/net/wireless/mediatek/mt76/mt7603/debugfs.c
+index a1bc3103cbe9..5942fe76c6e9 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7603/debugfs.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7603/debugfs.c
+@@ -1,4 +1,4 @@
+-/* SPDX-License-Identifier: ISC */
++// SPDX-License-Identifier: ISC
+ 
+ #include "mt7603.h"
+ 
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7603/dma.c b/drivers/net/wireless/mediatek/mt76/mt7603/dma.c
+index 58dc511f93c5..79dc3b97dfe8 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7603/dma.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7603/dma.c
+@@ -1,4 +1,4 @@
+-/* SPDX-License-Identifier: ISC */
++// SPDX-License-Identifier: ISC
+ 
+ #include "mt7603.h"
+ #include "mac.h"
+@@ -63,7 +63,7 @@ mt7603_rx_loopback_skb(struct mt7603_dev *dev, struct sk_buff *skb)
+ 	txd[0] = cpu_to_le32(val);
+ 
+ 	sta = container_of(priv, struct ieee80211_sta, drv_priv);
+-	hdr = (struct ieee80211_hdr *) &skb->data[MT_TXD_SIZE];
++	hdr = (struct ieee80211_hdr *)&skb->data[MT_TXD_SIZE];
+ 	tid = *ieee80211_get_qos_ctl(hdr) & IEEE80211_QOS_CTL_TID_MASK;
+ 	ieee80211_sta_set_buffered(sta, tid, true);
+ 
+@@ -181,7 +181,8 @@ int mt7603_dma_init(struct mt7603_dev *dev)
+ 	init_waitqueue_head(&dev->mt76.mmio.mcu.wait);
+ 	skb_queue_head_init(&dev->mt76.mmio.mcu.res_q);
+ 
+-	tasklet_init(&dev->mt76.tx_tasklet, mt7603_tx_tasklet, (unsigned long)dev);
++	tasklet_init(&dev->mt76.tx_tasklet, mt7603_tx_tasklet,
++		     (unsigned long)dev);
+ 
+ 	mt76_clear(dev, MT_WPDMA_GLO_CFG,
+ 		   MT_WPDMA_GLO_CFG_TX_DMA_EN |
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7603/eeprom.c b/drivers/net/wireless/mediatek/mt76/mt7603/eeprom.c
+index 8c120e4461b0..2b6a4d8a8dc7 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7603/eeprom.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7603/eeprom.c
+@@ -1,4 +1,4 @@
+-/* SPDX-License-Identifier: ISC */
++// SPDX-License-Identifier: ISC
+ 
+ #include "mt7603.h"
+ #include "eeprom.h"
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7603/init.c b/drivers/net/wireless/mediatek/mt76/mt7603/init.c
+index 568e57e1d69c..ad2ccdbe7258 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7603/init.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7603/init.c
+@@ -1,4 +1,4 @@
+-/* SPDX-License-Identifier: ISC */
++// SPDX-License-Identifier: ISC
+ 
+ #include <linux/etherdevice.h>
+ #include "mt7603.h"
+@@ -506,7 +506,6 @@ mt7603_init_txpower(struct mt7603_dev *dev,
+ 	}
+ }
+ 
+-
+ int mt7603_register_device(struct mt7603_dev *dev)
+ {
+ 	struct mt76_bus_ops *bus_ops;
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7603/mac.c b/drivers/net/wireless/mediatek/mt76/mt7603/mac.c
+index 81fb4276e742..a532676a1175 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7603/mac.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7603/mac.c
+@@ -1,4 +1,4 @@
+-/* SPDX-License-Identifier: ISC */
++// SPDX-License-Identifier: ISC
+ 
+ #include <linux/etherdevice.h>
+ #include <linux/timekeeping.h>
+@@ -644,7 +644,6 @@ void mt7603_wtbl_set_rates(struct mt7603_dev *dev, struct mt7603_sta *sta,
+ 
+ 			rates[i].idx--;
+ 		}
+-
+ 	}
+ 
+ 	w9 &= MT_WTBL2_W9_SHORT_GI_20 | MT_WTBL2_W9_SHORT_GI_40 |
+@@ -1017,8 +1016,9 @@ mt7603_fill_txs(struct mt7603_dev *dev, struct mt7603_sta *sta,
+ 			sta->rate_probe = false;
+ 		}
+ 		spin_unlock_bh(&dev->mt76.lock);
+-	} else
++	} else {
+ 		info->status.rates[0] = rs->rates[first_idx / 2];
++	}
+ 	info->status.rates[0].count = 0;
+ 
+ 	for (i = 0, idx = first_idx; count && idx <= last_idx; idx++) {
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7603/main.c b/drivers/net/wireless/mediatek/mt76/mt7603/main.c
+index d70f42dac923..34dd05a36de9 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7603/main.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7603/main.c
+@@ -1,4 +1,4 @@
+-/* SPDX-License-Identifier: ISC */
++// SPDX-License-Identifier: ISC
+ 
+ #include <linux/etherdevice.h>
+ #include <linux/platform_device.h>
+@@ -399,7 +399,7 @@ mt7603_ps_set_more_data(struct sk_buff *skb)
+ {
+ 	struct ieee80211_hdr *hdr;
+ 
+-	hdr = (struct ieee80211_hdr *) &skb->data[MT_TXD_SIZE];
++	hdr = (struct ieee80211_hdr *)&skb->data[MT_TXD_SIZE];
+ 	hdr->frame_control |= cpu_to_le16(IEEE80211_FCTL_MOREDATA);
+ }
+ 
+@@ -647,7 +647,8 @@ mt7603_set_coverage_class(struct ieee80211_hw *hw, s16 coverage_class)
+ 	mt7603_mac_set_timing(dev);
+ }
+ 
+-static void mt7603_tx(struct ieee80211_hw *hw, struct ieee80211_tx_control *control,
++static void mt7603_tx(struct ieee80211_hw *hw,
++		      struct ieee80211_tx_control *control,
+ 		      struct sk_buff *skb)
+ {
+ 	struct ieee80211_tx_info *info = IEEE80211_SKB_CB(skb);
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7603/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7603/mcu.c
+index 343ddc5543c2..02b2bd60d04d 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7603/mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7603/mcu.c
+@@ -1,4 +1,4 @@
+-/* SPDX-License-Identifier: ISC */
++// SPDX-License-Identifier: ISC
+ 
+ #include <linux/firmware.h>
+ #include "mt7603.h"
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7603/pci.c b/drivers/net/wireless/mediatek/mt76/mt7603/pci.c
+index 4acdbf5d8968..2f2f337e2201 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7603/pci.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7603/pci.c
+@@ -1,4 +1,4 @@
+-/* SPDX-License-Identifier: ISC */
++// SPDX-License-Identifier: ISC
+ 
+ #include <linux/kernel.h>
+ #include <linux/module.h>
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7603/soc.c b/drivers/net/wireless/mediatek/mt76/mt7603/soc.c
+index b920be1f5718..b7138485844a 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7603/soc.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7603/soc.c
+@@ -1,4 +1,4 @@
+-/* SPDX-License-Identifier: ISC */
++// SPDX-License-Identifier: ISC
+ 
+ #include <linux/kernel.h>
+ #include <linux/module.h>
 -- 
 2.18.0
 
