@@ -2,104 +2,109 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 7584A6F575
-	for <lists+linux-wireless@lfdr.de>; Sun, 21 Jul 2019 21:53:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 33A716F8E8
+	for <lists+linux-wireless@lfdr.de>; Mon, 22 Jul 2019 07:31:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726457AbfGUTw4 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 21 Jul 2019 15:52:56 -0400
-Received: from mail-lj1-f196.google.com ([209.85.208.196]:43212 "EHLO
-        mail-lj1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726441AbfGUTw4 (ORCPT
+        id S1727313AbfGVFbt (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 22 Jul 2019 01:31:49 -0400
+Received: from mailgw02.mediatek.com ([210.61.82.184]:57949 "EHLO
+        mailgw02.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
+        with ESMTP id S1726828AbfGVFbs (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 21 Jul 2019 15:52:56 -0400
-Received: by mail-lj1-f196.google.com with SMTP id y17so10854673ljk.10
-        for <linux-wireless@vger.kernel.org>; Sun, 21 Jul 2019 12:52:54 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=vrUJZU7YyFOWbwdcPp0bR8k4tpBTyHyLQUSZesyY2eQ=;
-        b=gYfUa6pBUkaJrqml0XS0p3BWjLAGot/gxNktLaf5C32NPkOn680yEOinjPgyjDkK/7
-         FMBiXwik7I5vRUrrtjGXp9KgH+5wI711y5GN3JQDwn0D84CQy16xlSaN3b9vglWkRgx4
-         rBMvaggvV6406DTBmquTgyHzN10BE2A64mIagT1ZFYwXnpBmdfJythZ/ZjN0Pgk4SPoD
-         6vg5MddzbeRcwUl/4h7NwAKOWOTEHeOxVFtGu/PIFyi8/Xw/hOE/IINSAnf4ZUDUElSF
-         ESQoXKaXGn0FkQ/KLaYCYD19SlNimiXSgQZsKM+67ydWNE3APFCzxwkP71GfL0+zVnGE
-         il5w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=vrUJZU7YyFOWbwdcPp0bR8k4tpBTyHyLQUSZesyY2eQ=;
-        b=SR/t/QpCVuWn6I03qVzS9tCwiiiEWwvxeSN/IawUazC2SPIVFOzFYeIjN3G/3wHejH
-         +JfhWkx+ZGGG2CdH2+9rflxJr8S1jRnxu4z1ymVDATtkhizPBkMSDmYT6I8V0OAry8Gj
-         EmmeEg3uBoMOG5nKx2R6R2ZMymLBEKbAwOVsPSG92duQE5sB8unIsUo3RH1v+be02hhl
-         vhhZYXXD9NxCieEF4HUqFi+ath8aVrd7QgDUc7IWawCzn3iMaqGVyDdN+gv5DPr9Erh2
-         RHwat25NXZxUibDNIKNul4vb04sO8m+RGOYPzkLTvw+Oxo0OW/Ax01/JKYqA35Bh3rOe
-         EYWA==
-X-Gm-Message-State: APjAAAU/zhRZZLvdpfZnxaa19EeahJqHg7DnArZwIt37yRmfjqtn+o1g
-        5jGfh1e2Pv9uexJmNtL5Xu0=
-X-Google-Smtp-Source: APXvYqwdnj+UfUXF1WVcfVKFfTr1/F8OdRt6taU4WdfUoSG8qwyfPUe7ep/Rnqo7ood2qoVF1Jrt1g==
-X-Received: by 2002:a2e:3602:: with SMTP id d2mr34799309lja.112.1563738774118;
-        Sun, 21 Jul 2019 12:52:54 -0700 (PDT)
-Received: from localhost.localdomain (ip-194-187-74-233.konfederacka.maverick.com.pl. [194.187.74.233])
-        by smtp.gmail.com with ESMTPSA id b192sm5677595lfg.75.2019.07.21.12.52.52
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Sun, 21 Jul 2019 12:52:53 -0700 (PDT)
-From:   =?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <zajec5@gmail.com>
-To:     Kalle Valo <kvalo@codeaurora.org>
-Cc:     Arend van Spriel <arend.vanspriel@broadcom.com>,
-        Franky Lin <franky.lin@broadcom.com>,
-        Hante Meuleman <hante.meuleman@broadcom.com>,
-        Chi-Hsien Lin <chi-hsien.lin@cypress.com>,
-        Wright Feng <wright.feng@cypress.com>,
-        Winnie Chang <winnie.chang@cypress.com>,
-        linux-wireless@vger.kernel.org,
-        brcm80211-dev-list.pdl@broadcom.com,
-        brcm80211-dev-list@cypress.com,
-        =?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <rafal@milecki.pl>
-Subject: [PATCH] brcmfmac: don't net_ratelimit() CONSOLE messages on firmware crash
-Date:   Sun, 21 Jul 2019 21:52:17 +0200
-Message-Id: <20190721195217.26838-1-zajec5@gmail.com>
-X-Mailer: git-send-email 2.21.0
+        Mon, 22 Jul 2019 01:31:48 -0400
+X-UUID: 464717b4aab84c9bbaa077f2461d53e3-20190722
+X-UUID: 464717b4aab84c9bbaa077f2461d53e3-20190722
+Received: from mtkcas09.mediatek.inc [(172.21.101.178)] by mailgw02.mediatek.com
+        (envelope-from <ryder.lee@mediatek.com>)
+        (mhqrelay.mediatek.com ESMTP with TLS)
+        with ESMTP id 1494925954; Mon, 22 Jul 2019 13:31:25 +0800
+Received: from mtkcas08.mediatek.inc (172.21.101.126) by
+ mtkmbs08n2.mediatek.inc (172.21.101.56) with Microsoft SMTP Server (TLS) id
+ 15.0.1395.4; Mon, 22 Jul 2019 13:31:16 +0800
+Received: from mtksdccf07.mediatek.inc (172.21.84.99) by mtkcas08.mediatek.inc
+ (172.21.101.73) with Microsoft SMTP Server id 15.0.1395.4 via Frontend
+ Transport; Mon, 22 Jul 2019 13:31:16 +0800
+From:   Ryder Lee <ryder.lee@mediatek.com>
+To:     Felix Fietkau <nbd@nbd.name>,
+        Lorenzo Bianconi <lorenzo.bianconi@redhat.com>
+CC:     Roy Luo <royluo@google.com>, YF Luo <yf.luo@mediatek.com>,
+        Yiwei Chung <yiwei.chung@mediatek.com>,
+        Sean Wang <sean.wang@mediatek.com>,
+        <linux-wireless@vger.kernel.org>,
+        <linux-mediatek@lists.infradead.org>,
+        Ryder Lee <ryder.lee@mediatek.com>
+Subject: [PATCH 0/5] fix many checkpatch.pl warnings
+Date:   Mon, 22 Jul 2019 13:31:10 +0800
+Message-ID: <cover.1563772403.git.ryder.lee@mediatek.com>
+X-Mailer: git-send-email 2.18.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-TM-SNTS-SMTP: D88AAD105EC9225DD30B2F9F5271DCFFB9D4DF55DF588392D29FB6F86391F2712000:8
+X-MTK:  N
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Rafał Miłecki <rafal@milecki.pl>
+This gathers many subsets to fix checkpatch.pl warnings.
+I still keep some warnings there due to readability.
+(The most of them are - networking block comments or 80 characters limit)
 
-Firmware crash is a pretty rare event and can't happen too frequently as
-it has to be followed by a hardware reinitialization and config reload.
-It should be safe to don't use net_ratelimit() when it happens.
+Ryder Lee (5):
+  mt76: Add paragraphs to describe the config symbols fully
+  mt76: mt7603: fix some checkpatch warnings
+  mt76: mt7615: fix some checkpatch warnings
+  mt76: mt76x02: fix some checkpatch warnings
+  mt76: fix some checkpatch warnings
 
-For reporting & debugging purposes it's important to provide a complete
-log as the last lines are actually the most important. This change
-modifies brcmfmac to print all messages in an unlimited way in that
-specific case. With this change there should be finally a backtrace of
-firmware finally visible after a crash.
+ drivers/net/wireless/mediatek/mt76/agg-rx.c   | 21 +++++----
+ drivers/net/wireless/mediatek/mt76/dma.c      |  2 +-
+ drivers/net/wireless/mediatek/mt76/mac80211.c | 30 ++++++------
+ drivers/net/wireless/mediatek/mt76/mt76.h     | 46 +++++++++----------
+ .../net/wireless/mediatek/mt76/mt7603/Kconfig |  6 ++-
+ .../wireless/mediatek/mt76/mt7603/beacon.c    |  2 +-
+ .../net/wireless/mediatek/mt76/mt7603/core.c  |  2 +-
+ .../wireless/mediatek/mt76/mt7603/debugfs.c   |  2 +-
+ .../net/wireless/mediatek/mt76/mt7603/dma.c   |  7 +--
+ .../wireless/mediatek/mt76/mt7603/eeprom.c    |  2 +-
+ .../net/wireless/mediatek/mt76/mt7603/init.c  |  3 +-
+ .../net/wireless/mediatek/mt76/mt7603/mac.c   |  6 +--
+ .../net/wireless/mediatek/mt76/mt7603/main.c  |  7 +--
+ .../net/wireless/mediatek/mt76/mt7603/mcu.c   |  2 +-
+ .../net/wireless/mediatek/mt76/mt7603/pci.c   |  2 +-
+ .../net/wireless/mediatek/mt76/mt7603/soc.c   |  2 +-
+ .../net/wireless/mediatek/mt76/mt7615/Kconfig |  7 ++-
+ .../wireless/mediatek/mt76/mt7615/debugfs.c   |  2 +-
+ .../net/wireless/mediatek/mt76/mt7615/mac.c   |  5 +-
+ .../net/wireless/mediatek/mt76/mt7615/mcu.c   |  2 -
+ .../net/wireless/mediatek/mt76/mt76x0/Kconfig | 12 ++++-
+ .../wireless/mediatek/mt76/mt76x0/mt76x0.h    |  2 +-
+ .../net/wireless/mediatek/mt76/mt76x0/phy.c   | 23 ++++++----
+ .../net/wireless/mediatek/mt76/mt76x0/phy.h   | 10 ++--
+ .../net/wireless/mediatek/mt76/mt76x0/usb.c   |  6 +--
+ drivers/net/wireless/mediatek/mt76/mt76x02.h  | 25 +++++-----
+ .../wireless/mediatek/mt76/mt76x02_beacon.c   |  4 +-
+ .../net/wireless/mediatek/mt76/mt76x02_mac.c  | 16 +++----
+ .../net/wireless/mediatek/mt76/mt76x02_mcu.c  | 13 +++---
+ .../net/wireless/mediatek/mt76/mt76x02_mmio.c | 11 +++--
+ .../net/wireless/mediatek/mt76/mt76x02_phy.c  |  3 +-
+ .../net/wireless/mediatek/mt76/mt76x02_regs.h | 28 +++++------
+ .../wireless/mediatek/mt76/mt76x02_trace.h    |  3 +-
+ .../wireless/mediatek/mt76/mt76x02_usb_core.c |  2 +-
+ .../net/wireless/mediatek/mt76/mt76x02_util.c | 20 ++++----
+ .../net/wireless/mediatek/mt76/mt76x2/Kconfig | 14 ++++--
+ .../wireless/mediatek/mt76/mt76x2/eeprom.c    | 10 ++--
+ .../net/wireless/mediatek/mt76/mt76x2/mcu.h   |  3 +-
+ .../wireless/mediatek/mt76/mt76x2/pci_init.c  |  1 -
+ .../wireless/mediatek/mt76/mt76x2/pci_mcu.c   |  4 +-
+ .../net/wireless/mediatek/mt76/mt76x2/phy.c   |  3 +-
+ drivers/net/wireless/mediatek/mt76/trace.h    |  9 ++--
+ drivers/net/wireless/mediatek/mt76/tx.c       | 18 ++++----
+ drivers/net/wireless/mediatek/mt76/usb.c      | 31 +++++++------
+ .../net/wireless/mediatek/mt76/usb_trace.h    | 11 +++--
+ drivers/net/wireless/mediatek/mt76/util.h     |  4 +-
+ 46 files changed, 242 insertions(+), 202 deletions(-)
 
-Signed-off-by: Rafał Miłecki <rafal@milecki.pl>
----
- drivers/net/wireless/broadcom/brcm80211/brcmfmac/pcie.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/pcie.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/pcie.c
-index e488b1aaaee2..7ac945369762 100644
---- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/pcie.c
-+++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/pcie.c
-@@ -794,7 +794,8 @@ static void brcmf_pcie_bus_console_read(struct brcmf_pciedev_info *devinfo,
- 		if (ch == '\n') {
- 			console->log_str[console->log_idx] = 0;
- 			if (error)
--				brcmf_err(bus, "CONSOLE: %s", console->log_str);
-+				__brcmf_err(bus, __func__, "CONSOLE: %s",
-+					    console->log_str);
- 			else
- 				pr_debug("CONSOLE: %s", console->log_str);
- 			console->log_idx = 0;
 -- 
-2.21.0
+2.18.0
 
