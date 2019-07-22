@@ -2,50 +2,47 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 99B776FE4F
-	for <lists+linux-wireless@lfdr.de>; Mon, 22 Jul 2019 13:07:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6451F6FE63
+	for <lists+linux-wireless@lfdr.de>; Mon, 22 Jul 2019 13:08:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729823AbfGVLH6 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 22 Jul 2019 07:07:58 -0400
-Received: from bombadil.infradead.org ([198.137.202.133]:35484 "EHLO
+        id S1729854AbfGVLID (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 22 Jul 2019 07:08:03 -0400
+Received: from bombadil.infradead.org ([198.137.202.133]:35678 "EHLO
         bombadil.infradead.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729809AbfGVLH5 (ORCPT
+        with ESMTP id S1729847AbfGVLIC (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 22 Jul 2019 07:07:57 -0400
+        Mon, 22 Jul 2019 07:08:02 -0400
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
         d=infradead.org; s=bombadil.20170209; h=Sender:Content-Transfer-Encoding:
-        MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
-        Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-        Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Id:
-        List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-         bh=lneEfxOE4rGo4770frPc8ixz4JwEUuF8R33p9n9HqsE=; b=FYTmZlQ1S1WsMMjfehz/LAhIc
-        zK4lkgLW5H2zGFph5WsaxCjFc5OzWfFeHpuqxPcxmvu80XvfP7g23ZOr5ViRNLNfIhHA0toxkcNxf
-        UZsQecGtOAdZxZaKJGHF/j3H8ocAVZ4f+qZagJ8przvrnwVPCw7U90LREeH2km7xFUZWRbLVmxEoT
-        BRPhu/QNfdyKbYGMLM7P7KADSdWUdQckUqUM1DNycLDXDi6XeBVKC+f8madjmCVVYYgL1V5qDOMxE
-        BSRuZ5IJKt8ME7agY4AlcbuCdZj4P7DlOcfmrp3pn+dur0kfJnFIPAWbH2lfxCXf2SrMlrdGu8/e5
-        ZNoBUj9Kw==;
+        MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
+        Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
+        Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
+        List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+        bh=yVmEQXIfb3diaCuw9NilkrqXhDl+7j5UDll83rF5cL4=; b=mkPMm++9Y2zO68jJznkqKnS9rC
+        FmJbGhzKfVhi7y9RntImyTg+WDwTl4/T6ttc918YH868PEv8rhwo1mEKpgPhhw3kInkE4J15CC7pj
+        7vV+p9G5m5KV3QPfwtuG8j7TileWHSNUfqjeTRi4mXp83/4akn5gNjf5SfSDZUaIGwsQA+9Xpuiq3
+        R2YBG4rpuvNWag+BqyE/9vP3R9ahHx37w/9u0kj34BXSgmbh5MRacWP+M3GbtxqoImA0WoEHhNrEm
+        wsiNJOOSr38K9yFXFM1ZUe0m1tqj/FaN3RE/pSt+8wvQwlWM70e34Y4/UeIoONyLen4wEtP7jQKBy
+        OIA5lcsA==;
 Received: from 177.157.124.3.dynamic.adsl.gvt.net.br ([177.157.124.3] helo=bombadil.infradead.org)
         by bombadil.infradead.org with esmtpsa (Exim 4.92 #3 (Red Hat Linux))
-        id 1hpWAe-00024v-Gv; Mon, 22 Jul 2019 11:07:56 +0000
+        id 1hpWAh-000259-FK; Mon, 22 Jul 2019 11:07:59 +0000
 Received: from mchehab by bombadil.infradead.org with local (Exim 4.92)
         (envelope-from <mchehab@bombadil.infradead.org>)
-        id 1hpWAZ-00040T-Vm; Mon, 22 Jul 2019 08:07:51 -0300
+        id 1hpWAa-000420-H3; Mon, 22 Jul 2019 08:07:52 -0300
 From:   Mauro Carvalho Chehab <mchehab+samsung@kernel.org>
 Cc:     Mauro Carvalho Chehab <mchehab+samsung@kernel.org>,
-        linux-spi@vger.kernel.org, dmaengine@vger.kernel.org,
-        netdev@vger.kernel.org, linux-wimax@intel.com,
-        devel@driverdev.osuosl.org, linux-i2c@vger.kernel.org,
-        linux-parisc@vger.kernel.org, devel@lists.orangefs.org,
-        linux-cifs@vger.kernel.org, rcu@vger.kernel.org,
-        linux-iio@vger.kernel.org, openrisc@lists.librecores.org,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Jonathan Corbet <corbet@lwn.net>, linux-doc@vger.kernel.org,
-        alsa-devel@alsa-project.org, linux-wireless@vger.kernel.org,
-        linux-rtc@vger.kernel.org, linux-mips@vger.kernel.org
-Subject: [PATCH 00/22] ReST conversion of text files without .txt extension
-Date:   Mon, 22 Jul 2019 08:07:27 -0300
-Message-Id: <cover.1563792333.git.mchehab+samsung@kernel.org>
+        "David S. Miller" <davem@davemloft.net>,
+        Jonathan Corbet <corbet@lwn.net>,
+        Johannes Berg <johannes@sipsolutions.net>,
+        netdev@vger.kernel.org, linux-doc@vger.kernel.org,
+        linux-wireless@vger.kernel.org
+Subject: [PATCH 20/22] docs: net: convert two README files to ReST format
+Date:   Mon, 22 Jul 2019 08:07:47 -0300
+Message-Id: <129f4fb2b209af7cc6e64fcb2f0a366021829c16.1563792334.git.mchehab+samsung@kernel.org>
 X-Mailer: git-send-email 2.21.0
+In-Reply-To: <cover.1563792333.git.mchehab+samsung@kernel.org>
+References: <cover.1563792333.git.mchehab+samsung@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 To:     unlisted-recipients:; (no To-header on input)
@@ -54,383 +51,258 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-This series converts the text files under Documentation with doesn't end
-neither .txt or .rst and are not part of ABI or features[1].
+There are two README files there with doesn't have a .txt
+extension nor are at ReST format.
 
-This series is at:
-	https://git.linuxtv.org/mchehab/experimental.git/log/?h=rst_for_5_4_v2.1
+In order to help with the docs conversion to ReST, rename those
+and manually convert them to ReST format.
 
-And comes after the pending patches I had for v5.13 (some not applied
-yet):
-	https://git.linuxtv.org/mchehab/experimental.git/log/?h=pending_docs_after_5.13-rc1
+As there are lot more to be done for networking to be part of
+the documentation body, for now mark those two files with
+:orphan:, in order to supress a build warning.
 
-[1] I submitted already a series to handle ABI and features.
-There are some files besides the ones there with, IMHO, it
-doesn't make sense to convert.
-
-So, I wrote a small ugly script to track the files waiting to be
-converted:
-
-  #!/bin/bash
-
-  find Documentation/ -name '*.txt'|grep -vE '(features/|devicetree/|sphinx/|output/|dax-hv-api.txt|draft-ietf-cipso-ipsecurity-01.txt|translations)'
-  for i in $(find Documentation/ -type f|grep -v translations/|grep -v output/|grep -v devicetree|grep -v -E "\.(rst|txt|py|pyc|pl|dot|conf|svg|sh|awk|gif|S|inf|c|csv|css|vim|exceptions|modes)$"|grep -v ABI/ |grep -v Documentation/EDID/hex|grep -v dontdiff|grep -v Kconfig|grep -v Makefile|grep -v Module.symvers|grep -vE '\b(CodingStyle|SubmittingPatches|target-export-device|hotplug-script|wusb-cbaf)\b'|grep -v -E '(LICENSE|COPY|gitignore|Makefile|AUTHORS|TODO|CHANGES|CREDITS|ChangeLog)'|grep -v Documentation/virtual/kvm/devices/README); do echo $i; done
-
-After this patch series, the script reports 358 files missing conversion, all ending with .txt.
-
-From those, ~40 files are already at ReST format - the ones at Documentation/*.txt - except
-for a couple of files there.
-
-So, there's around 320 files left to be converted after this series,
-with gives me hope that we may finally finish the conversion this
-year. Let's see.
-
-Mauro Carvalho Chehab (22):
-  docs: convert markdown documents to ReST
-  docs: i2c: convert to ReST and add to driver-api bookset
-  docs: w1: convert to ReST and add to the kAPI group of docs
-  docs: spi: convert to ReST and add it to the kABI bookset
-  docs: ipmb: place it at driver-api and convert to ReST
-  docs: packing: move it to core-api book and adjust markups
-  docs: admin-guide: add auxdisplay files to it after conversion to ReST
-  docs: README.buddha: convert to ReST and add to m68k book
-  docs: parisc: convert to ReST and add to documentation body
-  docs: openrisc: convert to ReST and add to documentation body
-  docs: isdn: convert to ReST and add to kAPI bookset
-  docs: fs: cifs: convert to ReST and add to admin-guide book
-  docs: fs: convert docs without extension to ReST
-  docs: fs: convert porting to ReST
-  docs: index.rst: don't use genindex for pdf output
-  docs: wimax: convert to ReST and add to admin-guide
-  docs: mips: add to the documentation body as ReST
-  docs: hwmon: pxe1610: convert to ReST format and add to the index
-  docs: nios2: add it to the main Documentation body
-  docs: net: convert two README files to ReST format
-  docs: rcu: convert some articles from html to ReST
-  docs: ABI: remove extension from sysfs-class-mic.txt
-
- Documentation/ABI/stable/sysfs-bus-w1         |    2 +-
- .../ABI/stable/sysfs-driver-w1_ds28e04        |    4 +-
- .../ABI/stable/sysfs-driver-w1_ds28ea00       |    2 +-
- .../{sysfs-class-mic.txt => sysfs-class-mic}  |    0
- .../Data-Structures/Data-Structures.html      | 1391 -------
- .../Data-Structures/Data-Structures.rst       | 1163 ++++++
- .../Expedited-Grace-Periods.html              |  668 ----
- .../Expedited-Grace-Periods.rst               |  521 +++
- .../Memory-Ordering/Tree-RCU-Diagram.html     |    9 -
- .../Tree-RCU-Memory-Ordering.html             |  704 ----
- .../Tree-RCU-Memory-Ordering.rst              |  625 ++++
- .../RCU/Design/Requirements/Requirements.html | 3330 -----------------
- .../RCU/Design/Requirements/Requirements.rst  | 2662 +++++++++++++
- Documentation/RCU/index.rst                   |    5 +
- Documentation/RCU/whatisRCU.txt               |    4 +-
- .../admin-guide/auxdisplay/cfag12864b.rst     |   98 +
- .../admin-guide/auxdisplay/index.rst          |   16 +
- .../admin-guide/auxdisplay/ks0108.rst         |   50 +
- .../AUTHORS => admin-guide/cifs/authors.rst}  |   64 +-
- .../CHANGES => admin-guide/cifs/changes.rst}  |    4 +
- Documentation/admin-guide/cifs/index.rst      |   21 +
- .../cifs/introduction.rst}                    |    8 +
- .../cifs/TODO => admin-guide/cifs/todo.rst}   |   87 +-
- .../README => admin-guide/cifs/usage.rst}     |  560 +--
- .../cifs/winucase_convert.pl                  |    0
- Documentation/admin-guide/index.rst           |    3 +
- .../wimax/i2400m.rst}                         |  145 +-
- Documentation/admin-guide/wimax/index.rst     |   19 +
- .../wimax/wimax.rst}                          |   36 +-
- Documentation/auxdisplay/cfag12864b           |  105 -
- Documentation/auxdisplay/ks0108               |   55 -
- Documentation/core-api/index.rst              |    3 +-
- .../{packing.txt => core-api/packing.rst}     |   81 +-
- .../devicetree/bindings/i2c/i2c-mux-gpmux.txt |    2 +-
- Documentation/devicetree/writing-schema.md    |  130 -
- Documentation/devicetree/writing-schema.rst   |  153 +
- Documentation/driver-api/dmaengine/index.rst  |    2 +-
- Documentation/driver-api/index.rst            |    1 +
- Documentation/driver-api/ipmb.rst             |    2 +-
- Documentation/driver-api/soundwire/index.rst  |    2 +-
- ...irectory-locking => directory-locking.rst} |   40 +-
- Documentation/filesystems/index.rst           |    4 +
- .../filesystems/{Locking => locking.rst}      |  257 +-
- .../nfs/{Exporting => exporting.rst}          |   31 +-
- Documentation/filesystems/porting             |  686 ----
- Documentation/filesystems/porting.rst         |  852 +++++
- ...entication.md => ubifs-authentication.rst} |   70 +-
- Documentation/filesystems/vfs.rst             |    2 +-
- Documentation/hwmon/adm1021.rst               |    2 +-
- Documentation/hwmon/adm1275.rst               |    2 +-
- Documentation/hwmon/hih6130.rst               |    2 +-
- Documentation/hwmon/ibm-cffps.rst             |    2 +-
- Documentation/hwmon/index.rst                 |    1 +
- Documentation/hwmon/lm25066.rst               |    2 +-
- Documentation/hwmon/max16064.rst              |    2 +-
- Documentation/hwmon/max16065.rst              |    2 +-
- Documentation/hwmon/max20751.rst              |    2 +-
- Documentation/hwmon/max34440.rst              |    2 +-
- Documentation/hwmon/max6650.rst               |    2 +-
- Documentation/hwmon/max8688.rst               |    2 +-
- Documentation/hwmon/menf21bmc.rst             |    2 +-
- Documentation/hwmon/pcf8591.rst               |    2 +-
- Documentation/hwmon/{pxe1610 => pxe1610.rst}  |   33 +-
- Documentation/hwmon/sht3x.rst                 |    2 +-
- Documentation/hwmon/shtc1.rst                 |    2 +-
- Documentation/hwmon/tmp103.rst                |    2 +-
- Documentation/hwmon/tps40422.rst              |    2 +-
- Documentation/hwmon/ucd9000.rst               |    2 +-
- Documentation/hwmon/ucd9200.rst               |    2 +-
- Documentation/hwmon/via686a.rst               |    2 +-
- Documentation/hwmon/zl6100.rst                |    2 +-
- .../busses/{i2c-ali1535 => i2c-ali1535.rst}   |   13 +-
- .../busses/{i2c-ali1563 => i2c-ali1563.rst}   |    3 +
- .../busses/{i2c-ali15x3 => i2c-ali15x3.rst}   |   64 +-
- Documentation/i2c/busses/i2c-amd-mp2          |   23 -
- Documentation/i2c/busses/i2c-amd-mp2.rst      |   25 +
- .../i2c/busses/{i2c-amd756 => i2c-amd756.rst} |    8 +-
- .../busses/{i2c-amd8111 => i2c-amd8111.rst}   |   14 +-
- .../{i2c-diolan-u2c => i2c-diolan-u2c.rst}    |    3 +
- .../i2c/busses/{i2c-i801 => i2c-i801.rst}     |   33 +-
- .../i2c/busses/{i2c-ismt => i2c-ismt.rst}     |   20 +-
- .../busses/{i2c-mlxcpld => i2c-mlxcpld.rst}   |    6 +
- .../busses/{i2c-nforce2 => i2c-nforce2.rst}   |   33 +-
- .../{i2c-nvidia-gpu => i2c-nvidia-gpu.rst}    |    6 +-
- .../i2c/busses/{i2c-ocores => i2c-ocores.rst} |   22 +-
- Documentation/i2c/busses/i2c-parport          |  178 -
- ...2c-parport-light => i2c-parport-light.rst} |    8 +-
- Documentation/i2c/busses/i2c-parport.rst      |  190 +
- .../busses/{i2c-pca-isa => i2c-pca-isa.rst}   |    9 +-
- .../i2c/busses/{i2c-piix4 => i2c-piix4.rst}   |   18 +-
- .../busses/{i2c-sis5595 => i2c-sis5595.rst}   |   19 +-
- Documentation/i2c/busses/i2c-sis630           |   58 -
- Documentation/i2c/busses/i2c-sis630.rst       |   63 +
- .../i2c/busses/{i2c-sis96x => i2c-sis96x.rst} |   31 +-
- .../busses/{i2c-taos-evm => i2c-taos-evm.rst} |    8 +-
- .../i2c/busses/{i2c-via => i2c-via.rst}       |   28 +-
- .../i2c/busses/{i2c-viapro => i2c-viapro.rst} |   12 +-
- Documentation/i2c/busses/index.rst            |   33 +
- .../i2c/busses/{scx200_acb => scx200_acb.rst} |    9 +-
- .../i2c/{dev-interface => dev-interface.rst}  |   94 +-
- ...-considerations => dma-considerations.rst} |    0
- .../i2c/{fault-codes => fault-codes.rst}      |    5 +-
- .../i2c/{functionality => functionality.rst}  |   22 +-
- ...ult-injection => gpio-fault-injection.rst} |   12 +-
- .../i2c/{i2c-protocol => i2c-protocol.rst}    |   28 +-
- Documentation/i2c/{i2c-stub => i2c-stub.rst}  |   20 +-
- .../i2c/{i2c-topology => i2c-topology.rst}    |   68 +-
- Documentation/i2c/index.rst                   |   37 +
- ...ting-devices => instantiating-devices.rst} |   45 +-
- .../muxes/{i2c-mux-gpio => i2c-mux-gpio.rst}  |   26 +-
- ...e-parameters => old-module-parameters.rst} |   27 +-
- ...eprom-backend => slave-eeprom-backend.rst} |    4 +-
- .../{slave-interface => slave-interface.rst}  |   33 +-
- .../{smbus-protocol => smbus-protocol.rst}    |   86 +-
- Documentation/i2c/{summary => summary.rst}    |    6 +-
- ...en-bit-addresses => ten-bit-addresses.rst} |    5 +
- ...pgrading-clients => upgrading-clients.rst} |  204 +-
- .../{writing-clients => writing-clients.rst}  |   94 +-
- Documentation/index.rst                       |    8 +
- .../isdn/{README.avmb1 => avmb1.rst}          |  231 +-
- Documentation/isdn/{CREDITS => credits.rst}   |    7 +-
- .../isdn/{README.gigaset => gigaset.rst}      |  290 +-
- .../isdn/{README.hysdn => hysdn.rst}          |  125 +-
- Documentation/isdn/index.rst                  |   24 +
- .../{INTERFACE.CAPI => interface_capi.rst}    |  182 +-
- .../isdn/{README.mISDN => m_isdn.rst}         |    5 +-
- .../m68k/{README.buddha => buddha-driver.rst} |   95 +-
- Documentation/m68k/index.rst                  |    1 +
- .../{AU1xxx_IDE.README => au1xxx_ide.rst}     |   89 +-
- Documentation/mips/index.rst                  |   17 +
- .../networking/caif/{README => caif.rst}      |   88 +-
- .../networking/device_drivers/index.rst       |    2 +-
- Documentation/networking/index.rst            |    2 +-
- .../{README => mac80211_hwsim.rst}            |   28 +-
- Documentation/nios2/{README => nios2.rst}     |    1 +
- Documentation/openrisc/index.rst              |   18 +
- .../openrisc/{README => openrisc_port.rst}    |   25 +-
- Documentation/openrisc/{TODO => todo.rst}     |    9 +-
- .../parisc/{debugging => debugging.rst}       |    7 +
- Documentation/parisc/index.rst                |   18 +
- .../parisc/{registers => registers.rst}       |   59 +-
- Documentation/sound/index.rst                 |    2 +-
- .../spi/{butterfly => butterfly.rst}          |   44 +-
- Documentation/spi/index.rst                   |   22 +
- Documentation/spi/{pxa2xx => pxa2xx.rst}      |   95 +-
- .../spi/{spi-lm70llp => spi-lm70llp.rst}      |   17 +-
- .../spi/{spi-sc18is602 => spi-sc18is602.rst}  |    5 +-
- .../spi/{spi-summary => spi-summary.rst}      |  105 +-
- Documentation/spi/{spidev => spidev.rst}      |   30 +-
- Documentation/w1/index.rst                    |   21 +
- .../w1/masters/{ds2482 => ds2482.rst}         |   16 +-
- .../w1/masters/{ds2490 => ds2490.rst}         |    6 +-
- Documentation/w1/masters/index.rst            |   14 +
- Documentation/w1/masters/mxc-w1               |   12 -
- Documentation/w1/masters/mxc-w1.rst           |   17 +
- .../w1/masters/{omap-hdq => omap-hdq.rst}     |   12 +-
- .../w1/masters/{w1-gpio => w1-gpio.rst}       |   21 +-
- Documentation/w1/slaves/index.rst             |   16 +
- .../w1/slaves/{w1_ds2406 => w1_ds2406.rst}    |    4 +-
- .../w1/slaves/{w1_ds2413 => w1_ds2413.rst}    |    9 +
- Documentation/w1/slaves/w1_ds2423             |   47 -
- Documentation/w1/slaves/w1_ds2423.rst         |   54 +
- .../w1/slaves/{w1_ds2438 => w1_ds2438.rst}    |   10 +-
- .../w1/slaves/{w1_ds28e04 => w1_ds28e04.rst}  |    5 +
- .../w1/slaves/{w1_ds28e17 => w1_ds28e17.rst}  |   16 +-
- .../w1/slaves/{w1_therm => w1_therm.rst}      |   11 +-
- .../w1/{w1.generic => w1-generic.rst}         |   88 +-
- .../w1/{w1.netlink => w1-netlink.rst}         |   89 +-
- MAINTAINERS                                   |   60 +-
- drivers/auxdisplay/Kconfig                    |    2 +-
- drivers/hwmon/atxp1.c                         |    2 +-
- drivers/hwmon/smm665.c                        |    2 +-
- drivers/i2c/Kconfig                           |    4 +-
- drivers/i2c/busses/Kconfig                    |    2 +-
- drivers/i2c/busses/i2c-i801.c                 |    2 +-
- drivers/i2c/busses/i2c-taos-evm.c             |    2 +-
- drivers/i2c/i2c-core-base.c                   |    4 +-
- drivers/iio/dummy/iio_simple_dummy.c          |    4 +-
- drivers/rtc/rtc-ds1374.c                      |    2 +-
- drivers/spi/Kconfig                           |    2 +-
- drivers/spi/spi-butterfly.c                   |    2 +-
- drivers/spi/spi-lm70llp.c                     |    2 +-
- drivers/staging/isdn/hysdn/Kconfig            |    2 +-
- fs/cifs/export.c                              |    2 +-
- fs/exportfs/expfs.c                           |    2 +-
- fs/isofs/export.c                             |    2 +-
- fs/orangefs/file.c                            |    2 +-
- fs/orangefs/orangefs-kernel.h                 |    2 +-
- include/linux/dcache.h                        |    2 +-
- include/linux/exportfs.h                      |    2 +-
- include/linux/i2c.h                           |    2 +-
- include/linux/platform_data/sc18is602.h       |    2 +-
- 192 files changed, 9538 insertions(+), 9201 deletions(-)
- rename Documentation/ABI/testing/{sysfs-class-mic.txt => sysfs-class-mic} (100%)
- delete mode 100644 Documentation/RCU/Design/Data-Structures/Data-Structures.html
- create mode 100644 Documentation/RCU/Design/Data-Structures/Data-Structures.rst
- delete mode 100644 Documentation/RCU/Design/Expedited-Grace-Periods/Expedited-Grace-Periods.html
- create mode 100644 Documentation/RCU/Design/Expedited-Grace-Periods/Expedited-Grace-Periods.rst
- delete mode 100644 Documentation/RCU/Design/Memory-Ordering/Tree-RCU-Diagram.html
- delete mode 100644 Documentation/RCU/Design/Memory-Ordering/Tree-RCU-Memory-Ordering.html
- create mode 100644 Documentation/RCU/Design/Memory-Ordering/Tree-RCU-Memory-Ordering.rst
- delete mode 100644 Documentation/RCU/Design/Requirements/Requirements.html
- create mode 100644 Documentation/RCU/Design/Requirements/Requirements.rst
- create mode 100644 Documentation/admin-guide/auxdisplay/cfag12864b.rst
- create mode 100644 Documentation/admin-guide/auxdisplay/index.rst
- create mode 100644 Documentation/admin-guide/auxdisplay/ks0108.rst
- rename Documentation/{filesystems/cifs/AUTHORS => admin-guide/cifs/authors.rst} (60%)
- rename Documentation/{filesystems/cifs/CHANGES => admin-guide/cifs/changes.rst} (91%)
- create mode 100644 Documentation/admin-guide/cifs/index.rst
- rename Documentation/{filesystems/cifs/cifs.txt => admin-guide/cifs/introduction.rst} (98%)
- rename Documentation/{filesystems/cifs/TODO => admin-guide/cifs/todo.rst} (58%)
- rename Documentation/{filesystems/cifs/README => admin-guide/cifs/usage.rst} (72%)
- rename Documentation/{filesystems => admin-guide}/cifs/winucase_convert.pl (100%)
- rename Documentation/{wimax/README.i2400m => admin-guide/wimax/i2400m.rst} (69%)
- create mode 100644 Documentation/admin-guide/wimax/index.rst
- rename Documentation/{wimax/README.wimax => admin-guide/wimax/wimax.rst} (74%)
- delete mode 100644 Documentation/auxdisplay/cfag12864b
- delete mode 100644 Documentation/auxdisplay/ks0108
- rename Documentation/{packing.txt => core-api/packing.rst} (61%)
- delete mode 100644 Documentation/devicetree/writing-schema.md
- create mode 100644 Documentation/devicetree/writing-schema.rst
- rename Documentation/filesystems/{directory-locking => directory-locking.rst} (86%)
- rename Documentation/filesystems/{Locking => locking.rst} (79%)
- rename Documentation/filesystems/nfs/{Exporting => exporting.rst} (91%)
- delete mode 100644 Documentation/filesystems/porting
- create mode 100644 Documentation/filesystems/porting.rst
- rename Documentation/filesystems/{ubifs-authentication.md => ubifs-authentication.rst} (95%)
- rename Documentation/hwmon/{pxe1610 => pxe1610.rst} (82%)
- rename Documentation/i2c/busses/{i2c-ali1535 => i2c-ali1535.rst} (82%)
- rename Documentation/i2c/busses/{i2c-ali1563 => i2c-ali1563.rst} (93%)
- rename Documentation/i2c/busses/{i2c-ali15x3 => i2c-ali15x3.rst} (72%)
- delete mode 100644 Documentation/i2c/busses/i2c-amd-mp2
- create mode 100644 Documentation/i2c/busses/i2c-amd-mp2.rst
- rename Documentation/i2c/busses/{i2c-amd756 => i2c-amd756.rst} (79%)
- rename Documentation/i2c/busses/{i2c-amd8111 => i2c-amd8111.rst} (66%)
- rename Documentation/i2c/busses/{i2c-diolan-u2c => i2c-diolan-u2c.rst} (91%)
- rename Documentation/i2c/busses/{i2c-i801 => i2c-i801.rst} (89%)
- rename Documentation/i2c/busses/{i2c-ismt => i2c-ismt.rst} (81%)
- rename Documentation/i2c/busses/{i2c-mlxcpld => i2c-mlxcpld.rst} (88%)
- rename Documentation/i2c/busses/{i2c-nforce2 => i2c-nforce2.rst} (58%)
- rename Documentation/i2c/busses/{i2c-nvidia-gpu => i2c-nvidia-gpu.rst} (63%)
- rename Documentation/i2c/busses/{i2c-ocores => i2c-ocores.rst} (82%)
- delete mode 100644 Documentation/i2c/busses/i2c-parport
- rename Documentation/i2c/busses/{i2c-parport-light => i2c-parport-light.rst} (91%)
- create mode 100644 Documentation/i2c/busses/i2c-parport.rst
- rename Documentation/i2c/busses/{i2c-pca-isa => i2c-pca-isa.rst} (72%)
- rename Documentation/i2c/busses/{i2c-piix4 => i2c-piix4.rst} (92%)
- rename Documentation/i2c/busses/{i2c-sis5595 => i2c-sis5595.rst} (74%)
- delete mode 100644 Documentation/i2c/busses/i2c-sis630
- create mode 100644 Documentation/i2c/busses/i2c-sis630.rst
- rename Documentation/i2c/busses/{i2c-sis96x => i2c-sis96x.rst} (74%)
- rename Documentation/i2c/busses/{i2c-taos-evm => i2c-taos-evm.rst} (91%)
- rename Documentation/i2c/busses/{i2c-via => i2c-via.rst} (54%)
- rename Documentation/i2c/busses/{i2c-viapro => i2c-viapro.rst} (87%)
- create mode 100644 Documentation/i2c/busses/index.rst
- rename Documentation/i2c/busses/{scx200_acb => scx200_acb.rst} (86%)
- rename Documentation/i2c/{dev-interface => dev-interface.rst} (71%)
- rename Documentation/i2c/{DMA-considerations => dma-considerations.rst} (100%)
- rename Documentation/i2c/{fault-codes => fault-codes.rst} (98%)
- rename Documentation/i2c/{functionality => functionality.rst} (91%)
- rename Documentation/i2c/{gpio-fault-injection => gpio-fault-injection.rst} (97%)
- rename Documentation/i2c/{i2c-protocol => i2c-protocol.rst} (83%)
- rename Documentation/i2c/{i2c-stub => i2c-stub.rst} (93%)
- rename Documentation/i2c/{i2c-topology => i2c-topology.rst} (89%)
- create mode 100644 Documentation/i2c/index.rst
- rename Documentation/i2c/{instantiating-devices => instantiating-devices.rst} (93%)
- rename Documentation/i2c/muxes/{i2c-mux-gpio => i2c-mux-gpio.rst} (85%)
- rename Documentation/i2c/{old-module-parameters => old-module-parameters.rst} (75%)
- rename Documentation/i2c/{slave-eeprom-backend => slave-eeprom-backend.rst} (90%)
- rename Documentation/i2c/{slave-interface => slave-interface.rst} (94%)
- rename Documentation/i2c/{smbus-protocol => smbus-protocol.rst} (82%)
- rename Documentation/i2c/{summary => summary.rst} (96%)
- rename Documentation/i2c/{ten-bit-addresses => ten-bit-addresses.rst} (95%)
- rename Documentation/i2c/{upgrading-clients => upgrading-clients.rst} (54%)
- rename Documentation/i2c/{writing-clients => writing-clients.rst} (91%)
- rename Documentation/isdn/{README.avmb1 => avmb1.rst} (50%)
- rename Documentation/isdn/{CREDITS => credits.rst} (96%)
- rename Documentation/isdn/{README.gigaset => gigaset.rst} (74%)
- rename Documentation/isdn/{README.hysdn => hysdn.rst} (80%)
- create mode 100644 Documentation/isdn/index.rst
- rename Documentation/isdn/{INTERFACE.CAPI => interface_capi.rst} (75%)
- rename Documentation/isdn/{README.mISDN => m_isdn.rst} (89%)
- rename Documentation/m68k/{README.buddha => buddha-driver.rst} (73%)
- rename Documentation/mips/{AU1xxx_IDE.README => au1xxx_ide.rst} (67%)
- create mode 100644 Documentation/mips/index.rst
+Signed-off-by: Mauro Carvalho Chehab <mchehab+samsung@kernel.org>
+---
+ .../networking/caif/{README => caif.rst}      | 88 +++++++++++++------
+ .../{README => mac80211_hwsim.rst}            | 28 ++++--
+ MAINTAINERS                                   |  2 +-
+ 3 files changed, 81 insertions(+), 37 deletions(-)
  rename Documentation/networking/caif/{README => caif.rst} (70%)
  rename Documentation/networking/mac80211_hwsim/{README => mac80211_hwsim.rst} (81%)
- rename Documentation/nios2/{README => nios2.rst} (96%)
- create mode 100644 Documentation/openrisc/index.rst
- rename Documentation/openrisc/{README => openrisc_port.rst} (80%)
- rename Documentation/openrisc/{TODO => todo.rst} (78%)
- rename Documentation/parisc/{debugging => debugging.rst} (94%)
- create mode 100644 Documentation/parisc/index.rst
- rename Documentation/parisc/{registers => registers.rst} (70%)
- rename Documentation/spi/{butterfly => butterfly.rst} (71%)
- create mode 100644 Documentation/spi/index.rst
- rename Documentation/spi/{pxa2xx => pxa2xx.rst} (83%)
- rename Documentation/spi/{spi-lm70llp => spi-lm70llp.rst} (88%)
- rename Documentation/spi/{spi-sc18is602 => spi-sc18is602.rst} (92%)
- rename Documentation/spi/{spi-summary => spi-summary.rst} (93%)
- rename Documentation/spi/{spidev => spidev.rst} (90%)
- create mode 100644 Documentation/w1/index.rst
- rename Documentation/w1/masters/{ds2482 => ds2482.rst} (71%)
- rename Documentation/w1/masters/{ds2490 => ds2490.rst} (98%)
- create mode 100644 Documentation/w1/masters/index.rst
- delete mode 100644 Documentation/w1/masters/mxc-w1
- create mode 100644 Documentation/w1/masters/mxc-w1.rst
- rename Documentation/w1/masters/{omap-hdq => omap-hdq.rst} (90%)
- rename Documentation/w1/masters/{w1-gpio => w1-gpio.rst} (75%)
- create mode 100644 Documentation/w1/slaves/index.rst
- rename Documentation/w1/slaves/{w1_ds2406 => w1_ds2406.rst} (96%)
- rename Documentation/w1/slaves/{w1_ds2413 => w1_ds2413.rst} (81%)
- delete mode 100644 Documentation/w1/slaves/w1_ds2423
- create mode 100644 Documentation/w1/slaves/w1_ds2423.rst
- rename Documentation/w1/slaves/{w1_ds2438 => w1_ds2438.rst} (93%)
- rename Documentation/w1/slaves/{w1_ds28e04 => w1_ds28e04.rst} (93%)
- rename Documentation/w1/slaves/{w1_ds28e17 => w1_ds28e17.rst} (88%)
- rename Documentation/w1/slaves/{w1_therm => w1_therm.rst} (95%)
- rename Documentation/w1/{w1.generic => w1-generic.rst} (59%)
- rename Documentation/w1/{w1.netlink => w1-netlink.rst} (77%)
 
+diff --git a/Documentation/networking/caif/README b/Documentation/networking/caif/caif.rst
+similarity index 70%
+rename from Documentation/networking/caif/README
+rename to Documentation/networking/caif/caif.rst
+index 757ccfaa1385..07afc8063d4d 100644
+--- a/Documentation/networking/caif/README
++++ b/Documentation/networking/caif/caif.rst
+@@ -1,18 +1,31 @@
+-Copyright (C) ST-Ericsson AB 2010
+-Author: Sjur Brendeland/ sjur.brandeland@stericsson.com
+-License terms: GNU General Public License (GPL) version 2
+----------------------------------------------------------
++:orphan:
+ 
+-=== Start ===
+-If you have compiled CAIF for modules do:
++.. SPDX-License-Identifier: GPL-2.0
++.. include:: <isonum.txt>
+ 
+-$modprobe crc_ccitt
+-$modprobe caif
+-$modprobe caif_socket
+-$modprobe chnl_net
+ 
++================
++Using Linux CAIF
++================
+ 
+-=== Preparing the setup with a STE modem ===
++
++:Copyright: |copy| ST-Ericsson AB 2010
++
++:Author: Sjur Brendeland/ sjur.brandeland@stericsson.com
++
++Start
++=====
++
++If you have compiled CAIF for modules do::
++
++    $modprobe crc_ccitt
++    $modprobe caif
++    $modprobe caif_socket
++    $modprobe chnl_net
++
++
++Preparing the setup with a STE modem
++====================================
+ 
+ If you are working on integration of CAIF you should make sure
+ that the kernel is built with module support.
+@@ -32,24 +45,30 @@ module parameter "ser_use_stx".
+ Normally Frame Checksum is always used on UART, but this is also provided as a
+ module parameter "ser_use_fcs".
+ 
+-$ modprobe caif_serial ser_ttyname=/dev/ttyS0 ser_use_stx=yes
+-$ ifconfig caif_ttyS0 up
++::
+ 
+-PLEASE NOTE: 	There is a limitation in Android shell.
++    $ modprobe caif_serial ser_ttyname=/dev/ttyS0 ser_use_stx=yes
++    $ ifconfig caif_ttyS0 up
++
++PLEASE NOTE:
++		There is a limitation in Android shell.
+ 		It only accepts one argument to insmod/modprobe!
+ 
+-=== Trouble shooting ===
++Trouble shooting
++================
+ 
+ There are debugfs parameters provided for serial communication.
+ /sys/kernel/debug/caif_serial/<tty-name>/
+ 
+ * ser_state:   Prints the bit-mask status where
++
+   - 0x02 means SENDING, this is a transient state.
+   - 0x10 means FLOW_OFF_SENT, i.e. the previous frame has not been sent
+-	and is blocking further send operation. Flow OFF has been propagated
+-	to all CAIF Channels using this TTY.
++    and is blocking further send operation. Flow OFF has been propagated
++    to all CAIF Channels using this TTY.
+ 
+ * tty_status: Prints the bit-mask tty status information
++
+   - 0x01 - tty->warned is on.
+   - 0x02 - tty->low_latency is on.
+   - 0x04 - tty->packed is on.
+@@ -58,13 +77,17 @@ There are debugfs parameters provided for serial communication.
+   - 0x20 - tty->stopped is on.
+ 
+ * last_tx_msg: Binary blob Prints the last transmitted frame.
+-	This can be printed with
++
++  This can be printed with::
++
+ 	$od --format=x1 /sys/kernel/debug/caif_serial/<tty>/last_rx_msg.
+-	The first two tx messages sent look like this. Note: The initial
+-	byte 02 is start of frame extension (STX) used for re-syncing
+-	upon errors.
+ 
+-  - Enumeration:
++  The first two tx messages sent look like this. Note: The initial
++  byte 02 is start of frame extension (STX) used for re-syncing
++  upon errors.
++
++  - Enumeration::
++
+         0000000  02 05 00 00 03 01 d2 02
+                  |  |     |  |  |  |
+                  STX(1)   |  |  |  |
+@@ -73,7 +96,9 @@ There are debugfs parameters provided for serial communication.
+                              Command:Enumeration(1)
+                                 Link-ID(1)
+                                     Checksum(2)
+-  - Channel Setup:
++
++  - Channel Setup::
++
+         0000000  02 07 00 00 00 21 a1 00 48 df
+                  |  |     |  |  |  |  |  |
+                  STX(1)   |  |  |  |  |  |
+@@ -86,13 +111,18 @@ There are debugfs parameters provided for serial communication.
+ 					  Checksum(2)
+ 
+ * last_rx_msg: Prints the last transmitted frame.
+-	The RX messages for LinkSetup look almost identical but they have the
+-	bit 0x20 set in the command bit, and Channel Setup has added one byte
+-	before Checksum containing Channel ID.
+-	NOTE: Several CAIF Messages might be concatenated. The maximum debug
++
++  The RX messages for LinkSetup look almost identical but they have the
++  bit 0x20 set in the command bit, and Channel Setup has added one byte
++  before Checksum containing Channel ID.
++
++  NOTE:
++	Several CAIF Messages might be concatenated. The maximum debug
+ 	buffer size is 128 bytes.
+ 
+-== Error Scenarios:
++Error Scenarios
++===============
++
+ - last_tx_msg contains channel setup message and last_rx_msg is empty ->
+   The host seems to be able to send over the UART, at least the CAIF ldisc get
+   notified that sending is completed.
+@@ -103,7 +133,9 @@ There are debugfs parameters provided for serial communication.
+ 
+ - if /sys/kernel/debug/caif_serial/<tty>/tty_status is non-zero there
+   might be problems transmitting over UART.
++
+   E.g. host and modem wiring is not correct you will typically see
+   tty_status = 0x10 (hw_stopped) and ser_state = 0x10 (FLOW_OFF_SENT).
++
+   You will probably see the enumeration message in last_tx_message
+   and empty last_rx_message.
+diff --git a/Documentation/networking/mac80211_hwsim/README b/Documentation/networking/mac80211_hwsim/mac80211_hwsim.rst
+similarity index 81%
+rename from Documentation/networking/mac80211_hwsim/README
+rename to Documentation/networking/mac80211_hwsim/mac80211_hwsim.rst
+index 3566a725d19c..d2266ce5534e 100644
+--- a/Documentation/networking/mac80211_hwsim/README
++++ b/Documentation/networking/mac80211_hwsim/mac80211_hwsim.rst
+@@ -1,5 +1,13 @@
++:orphan:
++
++.. SPDX-License-Identifier: GPL-2.0
++.. include:: <isonum.txt>
++
++===================================================================
+ mac80211_hwsim - software simulator of 802.11 radio(s) for mac80211
+-Copyright (c) 2008, Jouni Malinen <j@w1.fi>
++===================================================================
++
++:Copyright: |copy| 2008, Jouni Malinen <j@w1.fi>
+ 
+ This program is free software; you can redistribute it and/or modify
+ it under the terms of the GNU General Public License version 2 as
+@@ -7,6 +15,7 @@ published by the Free Software Foundation.
+ 
+ 
+ Introduction
++============
+ 
+ mac80211_hwsim is a Linux kernel module that can be used to simulate
+ arbitrary number of IEEE 802.11 radios for mac80211. It can be used to
+@@ -43,6 +52,7 @@ regardless of channel.
+ 
+ 
+ Simple example
++==============
+ 
+ This example shows how to use mac80211_hwsim to simulate two radios:
+ one to act as an access point and the other as a station that
+@@ -50,17 +60,19 @@ associates with the AP. hostapd and wpa_supplicant are used to take
+ care of WPA2-PSK authentication. In addition, hostapd is also
+ processing access point side of association.
+ 
++::
+ 
+-# Build mac80211_hwsim as part of kernel configuration
+ 
+-# Load the module
+-modprobe mac80211_hwsim
++    # Build mac80211_hwsim as part of kernel configuration
+ 
+-# Run hostapd (AP) for wlan0
+-hostapd hostapd.conf
++    # Load the module
++    modprobe mac80211_hwsim
+ 
+-# Run wpa_supplicant (station) for wlan1
+-wpa_supplicant -Dnl80211 -iwlan1 -c wpa_supplicant.conf
++    # Run hostapd (AP) for wlan0
++    hostapd hostapd.conf
++
++    # Run wpa_supplicant (station) for wlan1
++    wpa_supplicant -Dnl80211 -iwlan1 -c wpa_supplicant.conf
+ 
+ 
+ More test cases are available in hostap.git:
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 665c3c1e939b..634d229fbfff 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -9568,7 +9568,7 @@ F:	Documentation/networking/mac80211-injection.txt
+ F:	include/net/mac80211.h
+ F:	net/mac80211/
+ F:	drivers/net/wireless/mac80211_hwsim.[ch]
+-F:	Documentation/networking/mac80211_hwsim/README
++F:	Documentation/networking/mac80211_hwsim/mac80211_hwsim.rst
+ 
+ MAILBOX API
+ M:	Jassi Brar <jassisinghbrar@gmail.com>
 -- 
 2.21.0
-
 
