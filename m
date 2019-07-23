@@ -2,77 +2,93 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A4C71712A8
-	for <lists+linux-wireless@lfdr.de>; Tue, 23 Jul 2019 09:18:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CFFEA713E4
+	for <lists+linux-wireless@lfdr.de>; Tue, 23 Jul 2019 10:24:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2388277AbfGWHSc (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 23 Jul 2019 03:18:32 -0400
-Received: from mx1.redhat.com ([209.132.183.28]:44606 "EHLO mx1.redhat.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2388275AbfGWHSc (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 23 Jul 2019 03:18:32 -0400
-Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.phx2.redhat.com [10.5.11.11])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mx1.redhat.com (Postfix) with ESMTPS id 09E9830B1ACE;
-        Tue, 23 Jul 2019 07:18:32 +0000 (UTC)
-Received: from localhost (unknown [10.43.2.114])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 996C56013A;
-        Tue, 23 Jul 2019 07:18:31 +0000 (UTC)
-Date:   Tue, 23 Jul 2019 09:18:07 +0200
-From:   Stanislaw Gruszka <sgruszka@redhat.com>
-To:     Johannes Stezenbach <js@sig21.net>
-Cc:     Lorenzo Bianconi <lorenzo@kernel.org>,
-        Felix Fietkau <nbd@nbd.name>, linux-wireless@vger.kernel.org
-Subject: Re: mt76x0u blocks resume from suspend
-Message-ID: <20190723071806.GA2892@redhat.com>
-References: <20190722164020.GA5850@sig21.net>
+        id S1733079AbfGWIXq (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 23 Jul 2019 04:23:46 -0400
+Received: from mail-wm1-f66.google.com ([209.85.128.66]:52428 "EHLO
+        mail-wm1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729099AbfGWIXq (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 23 Jul 2019 04:23:46 -0400
+Received: by mail-wm1-f66.google.com with SMTP id s3so37584274wms.2
+        for <linux-wireless@vger.kernel.org>; Tue, 23 Jul 2019 01:23:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=broadcom.com; s=google;
+        h=subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=a4DF0GGLGa42vxnbCp3MZUMncfGn6JGgj64QxsG3fH8=;
+        b=GOlN6jHjUREj2FyKMBUy58kwhTa203TIie0RU9qpMJlxEKuspgfDCrcnGpdLec7PwV
+         xtFmN0Q8DEV3K83DFmUrBdgMAFJ3QSzZkjitadmJ3KAZcLbjlMgX4QXlV1yVqxt9SRq5
+         nc1pPHJKVuz7hbq1l7E/5jL9GO6QGjf34QlR0=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=a4DF0GGLGa42vxnbCp3MZUMncfGn6JGgj64QxsG3fH8=;
+        b=USTdpZ89Hy/f8Vj0G69zkrlRU2CK5xB2jFmUFDZh/OZgxR1bbIZxP0gW/kcqD41vvt
+         PTmW0C4h9gUpN8qEJVxNi1xe+pp2CRfOR9p2mPelOFs0pFZVyV0z11Xh7l9vmzaq8FE2
+         jAxVEOwo8RklvWjjcqUX76loMn+c5sUShiRUYtS4xiqKIoG2uNJ/kgI4ZGwOTIxQRGkp
+         pmyHOntl4dxlx9svJCd/dSdK+zRPtpYE7hq5spk+OTe6mMCg93sKyY6VdRDXO1oJMmVY
+         Vna1VXnKPSGQ/6qYXM18RakpJGtjhJkKRY+bPF9rE8T5G5fjM0kXC4tweZiK1NzMrN3P
+         TGrA==
+X-Gm-Message-State: APjAAAWLsyTsQDEENrlM8+dIQb5g9jkqTrgXgimlCNiAb8o6OzYMK3sH
+        0ReS5WQeSXSD9c1/f4eSBX9HGw==
+X-Google-Smtp-Source: APXvYqwCpfRq4V/Q5ggplYgNbrhlsfpnTVmLuGTYbY9s3GJSjzV+yCw906U7AG6x9oJn6DXgCZ7uhA==
+X-Received: by 2002:a1c:9e4d:: with SMTP id h74mr71234270wme.9.1563870224082;
+        Tue, 23 Jul 2019 01:23:44 -0700 (PDT)
+Received: from [10.230.33.15] ([192.19.248.250])
+        by smtp.gmail.com with ESMTPSA id h14sm40591763wrs.66.2019.07.23.01.23.42
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Tue, 23 Jul 2019 01:23:43 -0700 (PDT)
+Subject: Re: [PATCH] brcmfmac: don't net_ratelimit() CONSOLE messages on
+ firmware crash
+To:     =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>,
+        Kalle Valo <kvalo@codeaurora.org>
+Cc:     Franky Lin <franky.lin@broadcom.com>,
+        Hante Meuleman <hante.meuleman@broadcom.com>,
+        Chi-Hsien Lin <chi-hsien.lin@cypress.com>,
+        Wright Feng <wright.feng@cypress.com>,
+        Winnie Chang <winnie.chang@cypress.com>,
+        linux-wireless@vger.kernel.org,
+        brcm80211-dev-list.pdl@broadcom.com,
+        brcm80211-dev-list@cypress.com,
+        =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <rafal@milecki.pl>
+References: <20190721195217.26838-1-zajec5@gmail.com>
+From:   Arend Van Spriel <arend.vanspriel@broadcom.com>
+Message-ID: <652dd333-482c-a467-11a6-a9a57b88b05e@broadcom.com>
+Date:   Tue, 23 Jul 2019 10:23:41 +0200
+User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:60.0) Gecko/20100101
+ Thunderbird/60.8.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20190722164020.GA5850@sig21.net>
-User-Agent: Mutt/1.5.20 (2009-12-10)
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.11
-X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16 (mx1.redhat.com [10.5.110.41]); Tue, 23 Jul 2019 07:18:32 +0000 (UTC)
+In-Reply-To: <20190721195217.26838-1-zajec5@gmail.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi
 
-On Mon, Jul 22, 2019 at 06:40:20PM +0200, Johannes Stezenbach wrote:
-> I met failure to resume from suspend to RAM with v5.1.19
-> and TP-Link Archer T2UH connected to my PC (Asus P8H77-V).
-> I tried about a dozen times while trying to figure out the reason,
-> the issue happened every time.
-> Eventually I connected a serial console and captured this:
+
+On 7/21/2019 9:52 PM, Rafał Miłecki wrote:
+> From: Rafał Miłecki <rafal@milecki.pl>
 > 
-> [   87.803576][ T4640] mt76x0u 2-1.6:1.0: vendor request req:06 off:ac80 failed:-110
-> [   91.030328][ T4640] mt76x0u 2-1.6:1.0: vendor request req:07 off:b000 failed:-110
-> [   94.256950][ T4640] mt76x0u 2-1.6:1.0: vendor request req:06 off:b000 failed:-110
-> [   97.483579][ T4640] mt76x0u 2-1.6:1.0: vendor request req:06 off:aca0 failed:-110
-> (repeats)
-> [  107.492106][    C0] Call Trace:
-> [  107.495293][    C0]  ? __schedule+0x381/0xa30
-> [  107.499706][    C0]  schedule+0x36/0x90
-> [  107.503575][    C0]  schedule_timeout+0x1e8/0x4c0
-> [  107.508310][    C0]  ? collect_expired_timers+0xb0/0xb0
-> [  107.513593][    C0]  wait_for_common+0x15f/0x190
-> [  107.518249][    C0]  ? wake_up_q+0x80/0x80
-> [  107.522412][    C0]  usb_start_wait_urb+0x82/0x160
-> [  107.527222][    C0]  ? wait_for_common+0x38/0x190
-> [  107.531961][    C0]  usb_control_msg+0xdc/0x140
-> [  107.536542][    C0]  __mt76u_vendor_request+0xc4/0x100 [mt76_usb]
-> [  107.542687][    C0]  mt76u_copy+0x8b/0xb0 [mt76_usb]
-> [  107.547721][    C0]  mt76x02_mac_shared_key_setup+0xdf/0x130 [mt76x02_lib]
-<snip>
-> The whole machine is hanging at this point. without serial console
-> my only choice was to press the reset button.  At least mt76x0u should
-> bail out with an error and not block the resume completely.
-> Unplugging the hardware also didn't cause it to bail.
+> Firmware crash is a pretty rare event and can't happen too frequently as
+> it has to be followed by a hardware reinitialization and config reload.
+> It should be safe to don't use net_ratelimit() when it happens.
+> 
+> For reporting & debugging purposes it's important to provide a complete
+> log as the last lines are actually the most important. This change
+> modifies brcmfmac to print all messages in an unlimited way in that
+> specific case. With this change there should be finally a backtrace of
+> firmware finally visible after a crash.
 
-I recently sent fix for that
-https://lore.kernel.org/linux-wireless/1563446290-2813-1-git-send-email-sgruszka@redhat.com/raw
-
-Stanislaw 
+Acked-by: Arend van Spriel <arend.vanspriel@broadcom.com>
+> Signed-off-by: Rafał Miłecki <rafal@milecki.pl>
+> ---
+>   drivers/net/wireless/broadcom/brcm80211/brcmfmac/pcie.c | 3 ++-
+>   1 file changed, 2 insertions(+), 1 deletion(-)
