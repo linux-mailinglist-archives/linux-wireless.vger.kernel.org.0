@@ -2,26 +2,26 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id CAE9A71A8E
-	for <lists+linux-wireless@lfdr.de>; Tue, 23 Jul 2019 16:38:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 93AD371A90
+	for <lists+linux-wireless@lfdr.de>; Tue, 23 Jul 2019 16:38:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2390629AbfGWOiM (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        id S2390642AbfGWOiM (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
         Tue, 23 Jul 2019 10:38:12 -0400
-Received: from s3.sipsolutions.net ([144.76.43.62]:56510 "EHLO
+Received: from s3.sipsolutions.net ([144.76.43.62]:56506 "EHLO
         sipsolutions.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730546AbfGWOiL (ORCPT
+        with ESMTP id S1730299AbfGWOiL (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
         Tue, 23 Jul 2019 10:38:11 -0400
 Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
         (Exim 4.92)
         (envelope-from <johannes@sipsolutions.net>)
-        id 1hpvvd-0007sr-UF; Tue, 23 Jul 2019 16:38:10 +0200
+        id 1hpvve-0007sr-5B; Tue, 23 Jul 2019 16:38:10 +0200
 From:   Johannes Berg <johannes@sipsolutions.net>
 To:     linux-wireless@vger.kernel.org
 Cc:     Emmanuel Grumbach <emmanuel.grumbach@intel.com>
-Subject: [PATCH 1/3] iwlwifi: don't unmap as page memory that was mapped as single
-Date:   Tue, 23 Jul 2019 16:38:01 +0200
-Message-Id: <20190723143803.8698-2-johannes@sipsolutions.net>
+Subject: [PATCH 2/3] iwlwifi: mvm: fix an out-of-bound access
+Date:   Tue, 23 Jul 2019 16:38:02 +0200
+Message-Id: <20190723143803.8698-3-johannes@sipsolutions.net>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20190723143803.8698-1-johannes@sipsolutions.net>
 References: <20190723143803.8698-1-johannes@sipsolutions.net>
@@ -34,34 +34,35 @@ X-Mailing-List: linux-wireless@vger.kernel.org
 
 From: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
 
-In order to remember how to unmap a memory (as single or
-as page), we maintain a bit per Transmit Buffer (TBs) in
-the meta data (structure iwl_cmd_meta).
-We maintain a bitmap: 1 bit per TB.
-If the TB is set, we will free the memory as a page.
-This bitmap was never cleared. Fix this.
+The index for the elements of the ACPI object we dereference
+was static. This means that if we called the function twice
+we wouldn't start from 3 again, but rather from the latest
+index we reached in the previous call.
+This was dutifully reported by KASAN.
+
+Fix this.
 
 Cc: stable@vger.kernel.org
-Fixes: 3cd1980b0cdf ("iwlwifi: pcie: introduce new tfd and tb formats")
+Fixes: 6996490501ed ("iwlwifi: mvm: add support for EWRD (Dynamic SAR) ACPI table")
 Signed-off-by: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
 Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 ---
- drivers/net/wireless/intel/iwlwifi/pcie/tx.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/net/wireless/intel/iwlwifi/mvm/fw.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/tx.c b/drivers/net/wireless/intel/iwlwifi/pcie/tx.c
-index fa4245d0d4a8..2f0ba7ef53b8 100644
---- a/drivers/net/wireless/intel/iwlwifi/pcie/tx.c
-+++ b/drivers/net/wireless/intel/iwlwifi/pcie/tx.c
-@@ -435,6 +435,8 @@ static void iwl_pcie_tfd_unmap(struct iwl_trans *trans,
- 					 DMA_TO_DEVICE);
- 	}
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/fw.c b/drivers/net/wireless/intel/iwlwifi/mvm/fw.c
+index 00c89bcfdf6a..5de54d1559dd 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/fw.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/fw.c
+@@ -755,7 +755,7 @@ static int iwl_mvm_sar_get_ewrd_table(struct iwl_mvm *mvm)
  
-+	meta->tbs = 0;
-+
- 	if (trans->cfg->use_tfh) {
- 		struct iwl_tfh_tfd *tfd_fh = (void *)tfd;
+ 	for (i = 0; i < n_profiles; i++) {
+ 		/* the tables start at element 3 */
+-		static int pos = 3;
++		int pos = 3;
  
+ 		/* The EWRD profiles officially go from 2 to 4, but we
+ 		 * save them in sar_profiles[1-3] (because we don't
 -- 
 2.20.1
 
