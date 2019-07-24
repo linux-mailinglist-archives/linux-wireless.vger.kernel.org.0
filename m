@@ -2,74 +2,101 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 40B1972774
-	for <lists+linux-wireless@lfdr.de>; Wed, 24 Jul 2019 07:42:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D6289727C8
+	for <lists+linux-wireless@lfdr.de>; Wed, 24 Jul 2019 08:05:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726148AbfGXFms (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 24 Jul 2019 01:42:48 -0400
-Received: from smtp.codeaurora.org ([198.145.29.96]:35404 "EHLO
-        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725917AbfGXFms (ORCPT
+        id S1726339AbfGXGFC (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 24 Jul 2019 02:05:02 -0400
+Received: from rtits2.realtek.com ([211.75.126.72]:49311 "EHLO
+        rtits2.realtek.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725990AbfGXGFC (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 24 Jul 2019 01:42:48 -0400
-Received: by smtp.codeaurora.org (Postfix, from userid 1000)
-        id 30C2B60FEE; Wed, 24 Jul 2019 05:42:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1563946967;
-        bh=PYmMgHLnn+uS7jujuUNMhQgsfBPjg7Apw2qRKsODwtw=;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=S6tdKK/HAbePn7PBt6q3TLMXoswhLLKUnN//11XPgPJOZ4CL7e8jnvJSf4xk1qnAh
-         RGJ9HK1xekEvolSBrIXQe3zFk28oDkYEDff5NdPpUd2B/6ryl56I/Gdu85FPeGAtob
-         LGoQdCRT8/SVdayf0QPy14/8L84KMn6lK+SJziCw=
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        pdx-caf-mail.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.7 required=2.0 tests=ALL_TRUSTED,BAYES_00,
-        DKIM_INVALID,DKIM_SIGNED,SPF_NONE autolearn=no autolearn_force=no
-        version=3.4.0
-Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        (Authenticated sender: kvalo@smtp.codeaurora.org)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 2A850601B4;
-        Wed, 24 Jul 2019 05:42:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1563946965;
-        bh=PYmMgHLnn+uS7jujuUNMhQgsfBPjg7Apw2qRKsODwtw=;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=Ujzks8hqcut3npyNE+zk6Ir34P/fblLHXvBzASjtwSIfl4bFHzH4Dk/YUsZpmEUkM
-         RiUeL67mlVfrRnC9HrQ3cKXulAXdZE6LfZHOvHroGo8YqlSS+9h85J7mFyLIw23uLP
-         L+VIKQAx8HqkBLvRMPb1ZP8OjwflzakJ35aoE8J4=
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 2A850601B4
-Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
-From:   Kalle Valo <kvalo@codeaurora.org>
-To:     maowenan <maowenan@huawei.com>
-Cc:     <amitkarwar@gmail.com>, <nishants@marvell.com>,
-        <gbhat@marvell.com>, <huxinming820@gmail.com>,
-        <linux-wireless@vger.kernel.org>, <kernel-janitors@vger.kernel.org>
-Subject: Re: [net-next] mwifiex: use eth_broadcast_addr() to assign broadcast address
-References: <20190710072524.65953-1-maowenan@huawei.com>
-        <609fa4ae-7210-7758-c8ff-1b06492356e1@huawei.com>
-Date:   Wed, 24 Jul 2019 08:42:42 +0300
-In-Reply-To: <609fa4ae-7210-7758-c8ff-1b06492356e1@huawei.com>
-        (maowenan@huawei.com's message of "Wed, 24 Jul 2019 09:32:13 +0800")
-Message-ID: <878sso0yzx.fsf@kamboji.qca.qualcomm.com>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
+        Wed, 24 Jul 2019 02:05:02 -0400
+Authenticated-By: 
+X-SpamFilter-By: BOX Solutions SpamTrap 5.62 with qID x6O64o4O011105, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (RTITCASV01.realtek.com.tw[172.21.6.18])
+        by rtits2.realtek.com.tw (8.15.2/2.57/5.78) with ESMTPS id x6O64o4O011105
+        (version=TLSv1 cipher=DHE-RSA-AES256-SHA bits=256 verify=NOT);
+        Wed, 24 Jul 2019 14:04:50 +0800
+Received: from localhost.localdomain (172.21.68.126) by
+ RTITCASV01.realtek.com.tw (172.21.6.18) with Microsoft SMTP Server id
+ 14.3.439.0; Wed, 24 Jul 2019 14:04:50 +0800
+From:   <yhchuang@realtek.com>
+To:     <kvalo@codeaurora.org>
+CC:     <linux-wireless@vger.kernel.org>, <sgruszka@redhat.com>,
+        <briannorris@chromium.org>
+Subject: [PATCH 0/5] rtw88: add support for BT co-existence mechanism
+Date:   Wed, 24 Jul 2019 14:04:28 +0800
+Message-ID: <1563948273-17910-1-git-send-email-yhchuang@realtek.com>
+X-Mailer: git-send-email 2.7.4
 MIME-Version: 1.0
 Content-Type: text/plain
+X-Originating-IP: [172.21.68.126]
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-maowenan <maowenan@huawei.com> writes:
+From: Yan-Hsuan Chuang <yhchuang@realtek.com>
 
-> gentle ping...
+This patch set mainly adds a BT co-existence mechanism, which
+helps WiFi device to work with BT device concurrently without
+interfering each other. For Realtek's WiFi/BT combo devices,
+the co-existence mechanism is on the WiFi side.
 
-I don't apply patches during the merge window, so you just have to wait
-untill I'll open wireless-drivers-next. And this for
-wireless-drivers-next, not net-next.
+The first two patches "rtw88: switch specified efuse bank" and
+"rtw88: check efuse for BT FT S1" aim to check if the device
+is able to run with WiFi + BT, because some of the earlier
+devices manufactured are in development for testing. These
+device hence did not program the efuse for BT. Without being
+programed, some of the hardware parameters are incorrect.
+
+The rest of the patches add BTcoex support. BTcoex needs to
+wake up events that is waiting for some C2H reported in IRQ
+context, so these C2H skbs do not required to be queued into
+workqueues to be processed. What we need to do is to simply
+wake it uin IRQ context.
+
+And actually C2H workqueue context should be protected by
+rtwdev->mutex lock to perform some hardware operations
+against mac80211 callbacks.
+
+The final patch contains the most of the BTcoex logic.
+It is not that complicated, just to gather information and
+make decision on WiFi driver side. What makes the code so
+much is that the mechanism needs to take care of a lot of
+WiFi/BT combinations. Such as if WiFi is at 2G or is having
+a lot of traffic or is connecting to AP. And BT has many
+profiles such as A2DP/HID/PAN or it is slave or not.
+
+
+
+
+Yan-Hsuan Chuang (5):
+  rtw88: switch specified efuse bank
+  rtw88: check efuse for BT FT S1
+  rtw88: allow c2h operation in irq context
+  rtw88: enclose c2h cmd handle with mutex
+  rtw88: add BT co-existence support
+
+ drivers/net/wireless/realtek/rtw88/Makefile   |    1 +
+ drivers/net/wireless/realtek/rtw88/coex.c     | 2462 +++++++++++++++++++++++++
+ drivers/net/wireless/realtek/rtw88/coex.h     |  363 ++++
+ drivers/net/wireless/realtek/rtw88/efuse.c    |   30 +-
+ drivers/net/wireless/realtek/rtw88/fw.c       |  135 +-
+ drivers/net/wireless/realtek/rtw88/fw.h       |   73 +
+ drivers/net/wireless/realtek/rtw88/mac80211.c |   19 +
+ drivers/net/wireless/realtek/rtw88/main.c     |   45 +-
+ drivers/net/wireless/realtek/rtw88/main.h     |  233 +++
+ drivers/net/wireless/realtek/rtw88/pci.c      |    6 +-
+ drivers/net/wireless/realtek/rtw88/ps.c       |    9 +
+ drivers/net/wireless/realtek/rtw88/reg.h      |   62 +
+ drivers/net/wireless/realtek/rtw88/rtw8822b.c |  460 ++++-
+ drivers/net/wireless/realtek/rtw88/rtw8822c.c |  355 +++-
+ 14 files changed, 4216 insertions(+), 37 deletions(-)
+ create mode 100644 drivers/net/wireless/realtek/rtw88/coex.c
+ create mode 100644 drivers/net/wireless/realtek/rtw88/coex.h
 
 -- 
-Kalle Valo
+2.7.4
+
