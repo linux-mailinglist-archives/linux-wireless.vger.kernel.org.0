@@ -2,71 +2,82 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A7B7772559
-	for <lists+linux-wireless@lfdr.de>; Wed, 24 Jul 2019 05:24:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 53F317276E
+	for <lists+linux-wireless@lfdr.de>; Wed, 24 Jul 2019 07:40:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726556AbfGXDWt (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 23 Jul 2019 23:22:49 -0400
-Received: from mailgw01.mediatek.com ([210.61.82.183]:6817 "EHLO
-        mailgw01.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1725837AbfGXDWt (ORCPT
+        id S1726184AbfGXFjy (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 24 Jul 2019 01:39:54 -0400
+Received: from smtp.codeaurora.org ([198.145.29.96]:34300 "EHLO
+        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725882AbfGXFjx (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 23 Jul 2019 23:22:49 -0400
-X-UUID: bc3b6758d3ff4755bc36f76e05f40f0e-20190724
-X-UUID: bc3b6758d3ff4755bc36f76e05f40f0e-20190724
-Received: from mtkcas08.mediatek.inc [(172.21.101.126)] by mailgw01.mediatek.com
-        (envelope-from <ryder.lee@mediatek.com>)
-        (mhqrelay.mediatek.com ESMTP with TLS)
-        with ESMTP id 347499950; Wed, 24 Jul 2019 11:22:43 +0800
-Received: from MTKCAS06.mediatek.inc (172.21.101.30) by
- mtkmbs07n1.mediatek.inc (172.21.101.16) with Microsoft SMTP Server (TLS) id
- 15.0.1395.4; Wed, 24 Jul 2019 11:22:42 +0800
-Received: from [172.21.77.33] (172.21.77.33) by MTKCAS06.mediatek.inc
- (172.21.101.73) with Microsoft SMTP Server id 15.0.1395.4 via Frontend
- Transport; Wed, 24 Jul 2019 11:22:42 +0800
-Message-ID: <1563938562.9134.1.camel@mtkswgap22>
-Subject: Re: [PATCH 0/5] fix many checkpatch.pl warnings
-From:   Ryder Lee <ryder.lee@mediatek.com>
-To:     Kalle Valo <kvalo@codeaurora.org>
-CC:     Sean Wang <sean.wang@mediatek.com>, YF Luo <yf.luo@mediatek.com>,
-        <linux-wireless@vger.kernel.org>,
-        Yiwei Chung <yiwei.chung@mediatek.com>,
-        <linux-mediatek@lists.infradead.org>, Roy Luo <royluo@google.com>,
-        "Lorenzo Bianconi" <lorenzo.bianconi@redhat.com>,
-        Felix Fietkau <nbd@nbd.name>
-Date:   Wed, 24 Jul 2019 11:22:42 +0800
-In-Reply-To: <8736ixrvhb.fsf@purkki.adurom.net>
-References: <cover.1563772403.git.ryder.lee@mediatek.com>
-         <8736ixrvhb.fsf@purkki.adurom.net>
-Content-Type: text/plain; charset="UTF-8"
-X-Mailer: Evolution 3.2.3-0ubuntu6 
-Content-Transfer-Encoding: 7bit
+        Wed, 24 Jul 2019 01:39:53 -0400
+Received: by smtp.codeaurora.org (Postfix, from userid 1000)
+        id 5C0C160CED; Wed, 24 Jul 2019 05:39:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
+        s=default; t=1563946793;
+        bh=MMhai2COm8cnkYrv/dvMLvXqAKcjY56ENAXvop82H7U=;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+        b=nb4y6vBnz9vkLD+pOIry/36Icm3pzibY3vWq8Hw/MKQk82eZN5Xu6Okz/p+xD/O/y
+         ptqssP+qM/GHEx2FfIlUYfZ691DgfRilOS8wG7jEGNl++sl3BwFuKqoiVbclW4Z5Fw
+         5JADz9BIvRZB2Z5DxpSR28lazd8EYRCy8omMlSmw=
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        pdx-caf-mail.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.7 required=2.0 tests=ALL_TRUSTED,BAYES_00,
+        DKIM_INVALID,DKIM_SIGNED,SPF_NONE autolearn=no autolearn_force=no
+        version=3.4.0
+Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo@smtp.codeaurora.org)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id D2C8760CED;
+        Wed, 24 Jul 2019 05:39:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
+        s=default; t=1563946792;
+        bh=MMhai2COm8cnkYrv/dvMLvXqAKcjY56ENAXvop82H7U=;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+        b=D4xHNZx0wfHaVp+2Zls4zbfCKV0fk4Pci1I4X0elSeXXAysqDci8QeoH8tvJsPoCn
+         mRLFfiOzGaCcEshfsMkjJN1XN0KolGQb7SAuADNhT5iPtkHzpShOCeIimSYsxOnUgu
+         gXinv+XQvHWvapDGY0gjfSm7yP3ERjLIBR0LVE5Y=
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org D2C8760CED
+Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
+From:   Kalle Valo <kvalo@codeaurora.org>
+To:     Navid Emamdoost <navid.emamdoost@gmail.com>
+Cc:     emamd001@umn.edu, kjlu@umn.edu, smccaman@umn.edu,
+        secalert@redhat.com, Jakub Kicinski <kubakici@wp.pl>,
+        "David S. Miller" <davem@davemloft.net>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-mediatek@lists.infradead.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] mt76_init_sband_2g: null check the allocation
+References: <20190723221954.9233-1-navid.emamdoost@gmail.com>
+Date:   Wed, 24 Jul 2019 08:39:46 +0300
+In-Reply-To: <20190723221954.9233-1-navid.emamdoost@gmail.com> (Navid
+        Emamdoost's message of "Tue, 23 Jul 2019 17:19:54 -0500")
+Message-ID: <87d0i00z4t.fsf@kamboji.qca.qualcomm.com>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
 MIME-Version: 1.0
-X-MTK:  N
+Content-Type: text/plain
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Tue, 2019-07-23 at 11:44 +0300, Kalle Valo wrote:
-> Ryder Lee <ryder.lee@mediatek.com> writes:
-> 
-> > This gathers many subsets to fix checkpatch.pl warnings.
-> 
-> Thanks, this is much better now.
-> 
-> > I still keep some warnings there due to readability.
-> > (The most of them are - networking block comments or 80 characters limit)
-> 
-> I do the same in ath10k. BTW, here's my simple script which I use to
-> filter unwanted checkpatch warnings etc:
-> 
-> https://github.com/qca/qca-swiss-army-knife/blob/master/tools/scripts/ath10k/ath10k-check
-> 
+Navid Emamdoost <navid.emamdoost@gmail.com> writes:
 
-It's really useful!
+> devm_kzalloc may fail and return NULL. So the null check is needed.
+>
+> Signed-off-by: Navid Emamdoost <navid.emamdoost@gmail.com>
+> ---
+>  drivers/net/wireless/mediatek/mt7601u/init.c | 3 +++
+>  1 file changed, 3 insertions(+)
 
-Thanks
-Ryder
+The prefix in the title should be "mt7601u:".
 
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches#commit_title_is_wrong
 
+-- 
+Kalle Valo
