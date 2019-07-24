@@ -2,105 +2,56 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 828307340A
-	for <lists+linux-wireless@lfdr.de>; Wed, 24 Jul 2019 18:38:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 765FB734D0
+	for <lists+linux-wireless@lfdr.de>; Wed, 24 Jul 2019 19:15:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2387422AbfGXQiR (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 24 Jul 2019 12:38:17 -0400
-Received: from dvalin.narfation.org ([213.160.73.56]:39246 "EHLO
-        dvalin.narfation.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2387410AbfGXQiR (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 24 Jul 2019 12:38:17 -0400
-Received: from bentobox.localnet (p200300C5970DABFC00000000000002FB.dip0.t-ipconnect.de [IPv6:2003:c5:970d:abfc::2fb])
-        by dvalin.narfation.org (Postfix) with ESMTPSA id A1EEF1FFA1;
-        Wed, 24 Jul 2019 16:38:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=narfation.org;
-        s=20121; t=1563986295;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=nrtR3zf6XlJdiY2loA3XjkqTCuwJwhG6HlltiTrKh+I=;
-        b=otncQYfVsE60TA/jFMGsA/ihBBxrOgLhncP4YKm6ZSfKymUrtolNuwu7JEcr2MrG0tObfr
-        1H1RnxkpN3ThU49vZ6Sd5HntMoa1nBHUCJLVrh4/MVARosIA9hbreDoMsFmoSXXdZ3wH2M
-        Tbc1Q8TPccoWZ1Z6fjDnialBdKYisf4=
-From:   Sven Eckelmann <sven@narfation.org>
-To:     ath11k@lists.infradead.org
-Cc:     linux-wireless@vger.kernel.org
-Subject: Re: [PATCH v5 0/4] mac80211/ath11k: HE mesh support
-Date:   Wed, 24 Jul 2019 18:38:13 +0200
-Message-ID: <4232659.0svU1X7Big@bentobox>
-In-Reply-To: <20190724163359.3507-1-sven@narfation.org>
-References: <20190724163359.3507-1-sven@narfation.org>
+        id S1726490AbfGXRP1 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 24 Jul 2019 13:15:27 -0400
+Received: from mx4.wp.pl ([212.77.101.12]:60124 "EHLO mx4.wp.pl"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727238AbfGXRP1 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Wed, 24 Jul 2019 13:15:27 -0400
+Received: (wp-smtpd smtp.wp.pl 7512 invoked from network); 24 Jul 2019 19:15:23 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wp.pl; s=1024a;
+          t=1563988524; bh=gEkDwIuDO2Mlt47g7fHTqzHcSxdtZTDr5XQG+4+AvdU=;
+          h=From:To:Cc:Subject;
+          b=ntAPjIlLwGvOxgC2v+xm/bV3mQvMUDMExK5e9IszAZdswFVOM1CMFo9sCJ1pKqGLF
+           kpQZCuccigvIcEx+x1AdexCezOy9xB+tz6O3Y7xqR2h9mmc1Ypn5frAT1xfDiD+D4g
+           91q1Fzzc/O8xKBgRvC2r2763CVpjRIG6Mu7bIfb0=
+Received: from 014.152-60-66-biz-static.surewest.net (HELO cakuba.netronome.com) (kubakici@wp.pl@[66.60.152.14])
+          (envelope-sender <kubakici@wp.pl>)
+          by smtp.wp.pl (WP-SMTPD) with ECDHE-RSA-AES256-GCM-SHA384 encrypted SMTP
+          for <navid.emamdoost@gmail.com>; 24 Jul 2019 19:15:23 +0200
+Date:   Wed, 24 Jul 2019 10:15:14 -0700
+From:   Jakub Kicinski <kubakici@wp.pl>
+To:     Navid Emamdoost <navid.emamdoost@gmail.com>
+Cc:     emamd001@umn.edu, kjlu@umn.edu, smccaman@umn.edu,
+        secalert@redhat.com, Kalle Valo <kvalo@codeaurora.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-mediatek@lists.infradead.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] mt76_init_sband_2g: null check the allocation
+Message-ID: <20190724101514.29efc10a@cakuba.netronome.com>
+In-Reply-To: <20190723221954.9233-1-navid.emamdoost@gmail.com>
+References: <20190723221954.9233-1-navid.emamdoost@gmail.com>
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="nextPart2088208.6srCk4DusC"; micalg="pgp-sha512"; protocol="application/pgp-signature"
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=narfation.org;
-        s=20121; t=1563986295;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=nrtR3zf6XlJdiY2loA3XjkqTCuwJwhG6HlltiTrKh+I=;
-        b=RZMBKB62/iyACpN0kje7d1Ape9XmNHeVz+QXIdsAzdnKHV1se7ml2lPpKyRCVxrlMDMJIa
-        uE7bmVX0BYSXt7QycUEkKHO3U8ELIw18b+9O08qqV8r5T3d8TRtbIbMw9xaO4RDVzCK+Y1
-        qN18MyIbREzTKYlT/x8sknFG/ZpVFHk=
-ARC-Seal: i=1; s=20121; d=narfation.org; t=1563986295; a=rsa-sha256;
-        cv=none;
-        b=DWxMLrwqjD+e3BpHmvE+2xuWs9tj7EbwdM7bF6lmyMw+MDiZG2ml7YEv0fuAiyo05OD4aw
-        4TOc6VcyFZcgyJU0hdMgg0g5/cNGHlX0JaifPU35lNTZ2+Rrb4zBumm7a+hVfK/ie5zkJh
-        2HkQbYSn2rEU8vKr/obGzuZtXoOaGTE=
-ARC-Authentication-Results: i=1;
-        dvalin.narfation.org;
-        auth=pass smtp.auth=sven smtp.mailfrom=sven@narfation.org
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-WP-MailID: 3fa229c2b67e2a6425aaa1fc737c8941
+X-WP-AV: skaner antywirusowy Poczty Wirtualnej Polski
+X-WP-SPAM: NO 000000A [EYOU]                               
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
---nextPart2088208.6srCk4DusC
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="us-ascii"
-
-On Wednesday, 24 July 2019 18:33:55 CEST Sven Eckelmann wrote:
-> Hi,
+On Tue, 23 Jul 2019 17:19:54 -0500, Navid Emamdoost wrote:
+> devm_kzalloc may fail and return NULL. So the null check is needed.
 > 
-> Some features of 802.11ax without central organizing (AP) STA can also be
-> used in mesh mode. The main goal is to get HE mesh working with ath11k.
-> For persons without ath11k compatible hw, hwsim can be used in the as basis
-> for further development of these features.
-> 
-> * v5
+> Signed-off-by: Navid Emamdoost <navid.emamdoost@gmail.com>
 
-Sorry forgot to change the version to v5 for the first two patches. They have 
-to generated from two different trees (one with the ath11k sources and one 
-with the mac80211 stuff). And this is the reason why the ath11k ones have the 
-correct version number included.
+Acked-by: Jakub Kicinski <kubakici@wp.pl>
 
-Kind regards,
-	Sven
-
---nextPart2088208.6srCk4DusC
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: This is a digitally signed message part.
-Content-Transfer-Encoding: 7Bit
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCgAdFiEEF10rh2Elc9zjMuACXYcKB8Eme0YFAl04iXUACgkQXYcKB8Em
-e0YnsRAAlUdOZollmJx5aXK8//P6My4H4wWCd4J6vTt5656HEFXblwZY+Y6MaNaV
-ZuJqksxO6VHrAjopVbMO9MOO8dRVm72XU9s/1slu1Z+nVvau5cKNTW1r21OV+2r2
-aj5q9ESj8QoZKYskGJujKeJM5iFnqoDhq7OUV69mmGwHBGDuK0VAh+4Dopk/Q3dx
-L++yw/UeFZrQLImbPy+dV5SEOaN+u0GrsSjPwCN159/JUWRXjZxrssLIABmWZGgL
-O3y0BjgXikrT/hLf1bk6H/8S5nweEi4hEjOxbkyqiJSkWa8BF9ygI/ryXw5rTsVu
-kU6T6V4mU6L9FxZfbWoKEYji3RvjwBn/t+vFWsBkIUcvXfCa8fkzd9z8fX+Uimrr
-MgkCj8DFhRggPV8KMJQuNaUkjSMO2KbDX3hSPrr82KnLX0tG3JyWVXanYfM3HGKJ
-KOEI3TWUqxbtpRy8JNNACJ++TYof6+vk5taRIeRWGrAutyGEyzBcbQO2+qri7xEL
-0wj/cPWdQNcBVtRhtIx/OQG0M+q0CwuX8X+KU4SZma/SbY3a4EmMHOU+Wv9QTP1M
-0MpfY+KCB/dOVfjojxP3p+qGGnMq7xxkCtJh/lUEFD2zd58qj9NIjufOzMHxGsPR
-zDHORNi8FRqWFbm3rDqLO47dpo/EwDOHRuFxJJ4INu23/YMlKtQ=
-=fHBH
------END PGP SIGNATURE-----
-
---nextPart2088208.6srCk4DusC--
-
-
-
+Thanks!
