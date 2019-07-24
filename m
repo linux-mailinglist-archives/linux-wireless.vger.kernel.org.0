@@ -2,57 +2,84 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E79B07302D
-	for <lists+linux-wireless@lfdr.de>; Wed, 24 Jul 2019 15:46:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C0A6B73139
+	for <lists+linux-wireless@lfdr.de>; Wed, 24 Jul 2019 16:10:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727207AbfGXNqu (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 24 Jul 2019 09:46:50 -0400
-Received: from s3.sipsolutions.net ([144.76.43.62]:54140 "EHLO
-        sipsolutions.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726769AbfGXNqt (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 24 Jul 2019 09:46:49 -0400
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <johannes@sipsolutions.net>)
-        id 1hqHbT-0006r8-Te; Wed, 24 Jul 2019 15:46:47 +0200
-Message-ID: <9ce1c5ae216a3eee207a39e2c052b415454066a2.camel@sipsolutions.net>
-Subject: Re: [RFC V2 0/8] nl80211: add 6GHz band support
-From:   Johannes Berg <johannes@sipsolutions.net>
-To:     Arend Van Spriel <arend.vanspriel@broadcom.com>
-Cc:     linux-wireless@vger.kernel.org
-Date:   Wed, 24 Jul 2019 15:46:45 +0200
-In-Reply-To: <16c243667a8.279b.9b12b7fc0a3841636cfb5e919b41b954@broadcom.com> (sfid-20190724_154045_005700_42DE9EB6)
-References: <1561461027-10793-1-git-send-email-arend.vanspriel@broadcom.com>
-         <fbacce3dd78c2154ee21c4f26f76a18a18349f45.camel@sipsolutions.net>
-         <16c243667a8.279b.9b12b7fc0a3841636cfb5e919b41b954@broadcom.com>
-         (sfid-20190724_154045_005700_42DE9EB6)
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.30.5 (3.30.5-1.fc29) 
+        id S1727235AbfGXOKj (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 24 Jul 2019 10:10:39 -0400
+Received: from szxga06-in.huawei.com ([45.249.212.32]:56612 "EHLO huawei.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1726287AbfGXOKj (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Wed, 24 Jul 2019 10:10:39 -0400
+Received: from DGGEMS404-HUB.china.huawei.com (unknown [172.30.72.58])
+        by Forcepoint Email with ESMTP id EF2187C835ACB6CCCB09;
+        Wed, 24 Jul 2019 22:10:31 +0800 (CST)
+Received: from localhost (10.133.213.239) by DGGEMS404-HUB.china.huawei.com
+ (10.3.19.204) with Microsoft SMTP Server id 14.3.439.0; Wed, 24 Jul 2019
+ 22:10:23 +0800
+From:   YueHaibing <yuehaibing@huawei.com>
+To:     <pkshih@realtek.com>, <kvalo@codeaurora.org>
+CC:     <linux-kernel@vger.kernel.org>, <netdev@vger.kernel.org>,
+        <linux-wireless@vger.kernel.org>, <davem@davemloft.net>,
+        YueHaibing <yuehaibing@huawei.com>
+Subject: [PATCH] rtlwifi: remove unneeded function _rtl_dump_channel_map()
+Date:   Wed, 24 Jul 2019 22:10:20 +0800
+Message-ID: <20190724141020.58800-1-yuehaibing@huawei.com>
+X-Mailer: git-send-email 2.10.2.windows.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain
+X-Originating-IP: [10.133.213.239]
+X-CFilter-Loop: Reflected
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Wed, 2019-07-24 at 15:40 +0200, Arend Van Spriel wrote:
-> 
-> > > The only place I could find an
-> > > issue with this is in cfg80211_wext_freq(). Not sure how to deal with
-> > > that so it is not part of this series.
-> > 
-> > Just finally break wext and say if you want to use 6 GHz you need to use
-> > nl80211? :)
-> 
-> Probably is true for he support as well. Not sure. Have not been using wext 
-> for the last decade ;-)
+Now _rtl_dump_channel_map() does not do any actual
+thing using the channel. So remove it.
 
-Me neither, our official releases don't even support it.
+Signed-off-by: YueHaibing <yuehaibing@huawei.com>
+---
+ drivers/net/wireless/realtek/rtlwifi/regd.c | 18 ------------------
+ 1 file changed, 18 deletions(-)
 
-Btw, there's a compiler warning introduced by the first patch, I think
-the fix is trivial though to add the 6GHZ in one place in mac80211
-already.
+diff --git a/drivers/net/wireless/realtek/rtlwifi/regd.c b/drivers/net/wireless/realtek/rtlwifi/regd.c
+index 6ccb5b9..c10432c 100644
+--- a/drivers/net/wireless/realtek/rtlwifi/regd.c
++++ b/drivers/net/wireless/realtek/rtlwifi/regd.c
+@@ -276,22 +276,6 @@ static void _rtl_reg_apply_world_flags(struct wiphy *wiphy,
+ 	return;
+ }
+ 
+-static void _rtl_dump_channel_map(struct wiphy *wiphy)
+-{
+-	enum nl80211_band band;
+-	struct ieee80211_supported_band *sband;
+-	struct ieee80211_channel *ch;
+-	unsigned int i;
+-
+-	for (band = 0; band < NUM_NL80211_BANDS; band++) {
+-		if (!wiphy->bands[band])
+-			continue;
+-		sband = wiphy->bands[band];
+-		for (i = 0; i < sband->n_channels; i++)
+-			ch = &sband->channels[i];
+-	}
+-}
+-
+ static int _rtl_reg_notifier_apply(struct wiphy *wiphy,
+ 				   struct regulatory_request *request,
+ 				   struct rtl_regulatory *reg)
+@@ -309,8 +293,6 @@ static int _rtl_reg_notifier_apply(struct wiphy *wiphy,
+ 		break;
+ 	}
+ 
+-	_rtl_dump_channel_map(wiphy);
+-
+ 	return 0;
+ }
+ 
+-- 
+2.7.4
 
-johannes
 
