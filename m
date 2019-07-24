@@ -2,118 +2,105 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 8A255733FB
-	for <lists+linux-wireless@lfdr.de>; Wed, 24 Jul 2019 18:34:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 828307340A
+	for <lists+linux-wireless@lfdr.de>; Wed, 24 Jul 2019 18:38:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2387464AbfGXQeZ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 24 Jul 2019 12:34:25 -0400
-Received: from dvalin.narfation.org ([213.160.73.56]:39158 "EHLO
+        id S2387422AbfGXQiR (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 24 Jul 2019 12:38:17 -0400
+Received: from dvalin.narfation.org ([213.160.73.56]:39246 "EHLO
         dvalin.narfation.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2387420AbfGXQeY (ORCPT
+        with ESMTP id S2387410AbfGXQiR (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 24 Jul 2019 12:34:24 -0400
-Received: from sven-desktop.home.narfation.org (p200300C5970DABFC00000000000002FB.dip0.t-ipconnect.de [IPv6:2003:c5:970d:abfc::2fb])
-        by dvalin.narfation.org (Postfix) with ESMTPSA id D32982030E;
-        Wed, 24 Jul 2019 16:34:21 +0000 (UTC)
+        Wed, 24 Jul 2019 12:38:17 -0400
+Received: from bentobox.localnet (p200300C5970DABFC00000000000002FB.dip0.t-ipconnect.de [IPv6:2003:c5:970d:abfc::2fb])
+        by dvalin.narfation.org (Postfix) with ESMTPSA id A1EEF1FFA1;
+        Wed, 24 Jul 2019 16:38:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=narfation.org;
-        s=20121; t=1563986061;
+        s=20121; t=1563986295;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:
-         content-transfer-encoding:content-transfer-encoding:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
          in-reply-to:in-reply-to:references:references;
-        bh=Vz/5vCtiAvHspi/nhz3fkXP7PHD0sCJGMqDl7QlKZQs=;
-        b=m6CGRJ6oY+HTKIU6UTZi19tQZE1iGESe3tVq3ToxwaCnH6axor/KNg4F61P/KzWaFNJJNB
-        ZSpYTvq+yEiVOf2a+FaHdndIZPj8XVKckQq+B/F9hAuf3z0p86tLggrnnU8ad+dtThlOi+
-        AX8CO8zL3FV0F84547dsmaadBRnKtwQ=
+        bh=nrtR3zf6XlJdiY2loA3XjkqTCuwJwhG6HlltiTrKh+I=;
+        b=otncQYfVsE60TA/jFMGsA/ihBBxrOgLhncP4YKm6ZSfKymUrtolNuwu7JEcr2MrG0tObfr
+        1H1RnxkpN3ThU49vZ6Sd5HntMoa1nBHUCJLVrh4/MVARosIA9hbreDoMsFmoSXXdZ3wH2M
+        Tbc1Q8TPccoWZ1Z6fjDnialBdKYisf4=
 From:   Sven Eckelmann <sven@narfation.org>
-To:     linux-wireless@vger.kernel.org
-Cc:     ath11k@lists.infradead.org, Sven Eckelmann <seckelmann@datto.com>
-Subject: [PATCH v5 4/4] ath11k: Disable SU support in meshpoint mode
-Date:   Wed, 24 Jul 2019 18:33:59 +0200
-Message-Id: <20190724163359.3507-5-sven@narfation.org>
-X-Mailer: git-send-email 2.20.1
+To:     ath11k@lists.infradead.org
+Cc:     linux-wireless@vger.kernel.org
+Subject: Re: [PATCH v5 0/4] mac80211/ath11k: HE mesh support
+Date:   Wed, 24 Jul 2019 18:38:13 +0200
+Message-ID: <4232659.0svU1X7Big@bentobox>
 In-Reply-To: <20190724163359.3507-1-sven@narfation.org>
 References: <20190724163359.3507-1-sven@narfation.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/signed; boundary="nextPart2088208.6srCk4DusC"; micalg="pgp-sha512"; protocol="application/pgp-signature"
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=narfation.org;
-        s=20121; t=1563986061;
+        s=20121; t=1563986295;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:
-         content-transfer-encoding:content-transfer-encoding:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
          in-reply-to:in-reply-to:references:references;
-        bh=Vz/5vCtiAvHspi/nhz3fkXP7PHD0sCJGMqDl7QlKZQs=;
-        b=owgORkZZPL/Nzt5oYfX6yoZ2m4RjR3Hg0vcFRBPwPuPGdOqYCmWEcYNrvqnS/TXudZg2FW
-        cgd59ZQ+2Oq1xO/ztb6V9yY9A66blifhCMtNd2VJcc3OPZgxlbDrNgh9e8Px99cXJbjduk
-        Xsr59+y+sNCbraPw7zoeKPGyCdIZg8U=
-ARC-Seal: i=1; s=20121; d=narfation.org; t=1563986061; a=rsa-sha256;
+        bh=nrtR3zf6XlJdiY2loA3XjkqTCuwJwhG6HlltiTrKh+I=;
+        b=RZMBKB62/iyACpN0kje7d1Ape9XmNHeVz+QXIdsAzdnKHV1se7ml2lPpKyRCVxrlMDMJIa
+        uE7bmVX0BYSXt7QycUEkKHO3U8ELIw18b+9O08qqV8r5T3d8TRtbIbMw9xaO4RDVzCK+Y1
+        qN18MyIbREzTKYlT/x8sknFG/ZpVFHk=
+ARC-Seal: i=1; s=20121; d=narfation.org; t=1563986295; a=rsa-sha256;
         cv=none;
-        b=XCmQeqUuWJco1yCfGQXgR9G0YdPmauJNW8oaKUl3zQxms9T2kgrDbVITolSSLJoXMw7G3v
-        v3q7x0lRwwbUf69Rck9vF4uuHtQKQYshacVSaOSeAbMyWhhVDbPCvVL9HjoUCKaTDlcJbY
-        ma9U1R5Qfzg0C6YaeHN8JHlH4vUvXlI=
+        b=DWxMLrwqjD+e3BpHmvE+2xuWs9tj7EbwdM7bF6lmyMw+MDiZG2ml7YEv0fuAiyo05OD4aw
+        4TOc6VcyFZcgyJU0hdMgg0g5/cNGHlX0JaifPU35lNTZ2+Rrb4zBumm7a+hVfK/ie5zkJh
+        2HkQbYSn2rEU8vKr/obGzuZtXoOaGTE=
 ARC-Authentication-Results: i=1;
-        ORIGINATING;
+        dvalin.narfation.org;
         auth=pass smtp.auth=sven smtp.mailfrom=sven@narfation.org
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Sven Eckelmann <seckelmann@datto.com>
+--nextPart2088208.6srCk4DusC
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="us-ascii"
 
-The firmware WLAN.HK.2.1.0.1-00629-QCAHKSWPL_SILICONZ-1 often stops sending
-data on 5GHz when SU support is advertised. A simple throughput benchmark
-will end up at only a couple hundred kilobytes per second (when finishing
-at all).
+On Wednesday, 24 July 2019 18:33:55 CEST Sven Eckelmann wrote:
+> Hi,
+> 
+> Some features of 802.11ax without central organizing (AP) STA can also be
+> used in mesh mode. The main goal is to get HE mesh working with ath11k.
+> For persons without ath11k compatible hw, hwsim can be used in the as basis
+> for further development of these features.
+> 
+> * v5
 
-Disabling SU related flags works around this problem and allowed a maximum
-throughput of ~450 MBit/s in a simple test setup with an HK01 over air.
+Sorry forgot to change the version to v5 for the first two patches. They have 
+to generated from two different trees (one with the ath11k sources and one 
+with the mac80211 stuff). And this is the reason why the ath11k ones have the 
+correct version number included.
 
-Signed-off-by: Sven Eckelmann <seckelmann@datto.com>
----
- drivers/net/wireless/ath/ath11k/mac.c | 15 ++++++++++++---
- 1 file changed, 12 insertions(+), 3 deletions(-)
+Kind regards,
+	Sven
 
-diff --git a/drivers/net/wireless/ath/ath11k/mac.c b/drivers/net/wireless/ath/ath11k/mac.c
-index 4317608ff822..29964185b0a1 100644
---- a/drivers/net/wireless/ath/ath11k/mac.c
-+++ b/drivers/net/wireless/ath/ath11k/mac.c
-@@ -3290,16 +3290,24 @@ ath11k_mac_filter_he_cap_mesh(struct ieee80211_he_cap_elem *he_cap_elem)
- 
- 	m = IEEE80211_HE_PHY_CAP3_RX_HE_MU_PPDU_FROM_NON_AP_STA |
- 	    IEEE80211_HE_PHY_CAP3_DCM_MAX_CONST_TX_MASK |
--	    IEEE80211_HE_PHY_CAP3_DCM_MAX_CONST_RX_MASK;
-+	    IEEE80211_HE_PHY_CAP3_DCM_MAX_CONST_RX_MASK |
-+	    IEEE80211_HE_PHY_CAP3_SU_BEAMFORMER;
- 	he_cap_elem->phy_cap_info[3] &= ~m;
- 
--	m = IEEE80211_HE_PHY_CAP4_MU_BEAMFORMER;
-+	m = IEEE80211_HE_PHY_CAP4_SU_BEAMFORMEE |
-+	    IEEE80211_HE_PHY_CAP4_MU_BEAMFORMER |
-+	    IEEE80211_HE_PHY_CAP4_BEAMFORMEE_MAX_STS_UNDER_80MHZ_MASK |
-+	    IEEE80211_HE_PHY_CAP4_BEAMFORMEE_MAX_STS_ABOVE_80MHZ_MASK;
- 	he_cap_elem->phy_cap_info[4] &= ~m;
- 
--	m = IEEE80211_HE_PHY_CAP5_NG16_MU_FEEDBACK;
-+	m = IEEE80211_HE_PHY_CAP5_BEAMFORMEE_NUM_SND_DIM_UNDER_80MHZ_MASK |
-+	    IEEE80211_HE_PHY_CAP5_BEAMFORMEE_NUM_SND_DIM_ABOVE_80MHZ_MASK |
-+	    IEEE80211_HE_PHY_CAP5_NG16_SU_FEEDBACK |
-+	    IEEE80211_HE_PHY_CAP5_NG16_MU_FEEDBACK;
- 	he_cap_elem->phy_cap_info[5] &= ~m;
- 
- 	m = IEEE80211_HE_PHY_CAP6_CODEBOOK_SIZE_75_MU |
-+	    IEEE80211_HE_PHY_CAP6_TRIG_SU_BEAMFORMER_FB |
- 	    IEEE80211_HE_PHY_CAP6_TRIG_MU_BEAMFORMER_FB |
- 	    IEEE80211_HE_PHY_CAP6_TRIG_CQI_FB |
- 	    IEEE80211_HE_PHY_CAP6_PARTIAL_BANDWIDTH_DL_MUMIMO;
-@@ -3307,6 +3315,7 @@ ath11k_mac_filter_he_cap_mesh(struct ieee80211_he_cap_elem *he_cap_elem)
- 
- 	m = IEEE80211_HE_PHY_CAP7_SRP_BASED_SR |
- 	    IEEE80211_HE_PHY_CAP7_POWER_BOOST_FACTOR_AR |
-+	    IEEE80211_HE_PHY_CAP7_HE_SU_MU_PPDU_4XLTF_AND_08_US_GI |
- 	    IEEE80211_HE_PHY_CAP7_STBC_TX_ABOVE_80MHZ |
- 	    IEEE80211_HE_PHY_CAP7_STBC_RX_ABOVE_80MHZ;
- 	he_cap_elem->phy_cap_info[7] &= ~m;
--- 
-2.20.1
+--nextPart2088208.6srCk4DusC
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: This is a digitally signed message part.
+Content-Transfer-Encoding: 7Bit
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCgAdFiEEF10rh2Elc9zjMuACXYcKB8Eme0YFAl04iXUACgkQXYcKB8Em
+e0YnsRAAlUdOZollmJx5aXK8//P6My4H4wWCd4J6vTt5656HEFXblwZY+Y6MaNaV
+ZuJqksxO6VHrAjopVbMO9MOO8dRVm72XU9s/1slu1Z+nVvau5cKNTW1r21OV+2r2
+aj5q9ESj8QoZKYskGJujKeJM5iFnqoDhq7OUV69mmGwHBGDuK0VAh+4Dopk/Q3dx
+L++yw/UeFZrQLImbPy+dV5SEOaN+u0GrsSjPwCN159/JUWRXjZxrssLIABmWZGgL
+O3y0BjgXikrT/hLf1bk6H/8S5nweEi4hEjOxbkyqiJSkWa8BF9ygI/ryXw5rTsVu
+kU6T6V4mU6L9FxZfbWoKEYji3RvjwBn/t+vFWsBkIUcvXfCa8fkzd9z8fX+Uimrr
+MgkCj8DFhRggPV8KMJQuNaUkjSMO2KbDX3hSPrr82KnLX0tG3JyWVXanYfM3HGKJ
+KOEI3TWUqxbtpRy8JNNACJ++TYof6+vk5taRIeRWGrAutyGEyzBcbQO2+qri7xEL
+0wj/cPWdQNcBVtRhtIx/OQG0M+q0CwuX8X+KU4SZma/SbY3a4EmMHOU+Wv9QTP1M
+0MpfY+KCB/dOVfjojxP3p+qGGnMq7xxkCtJh/lUEFD2zd58qj9NIjufOzMHxGsPR
+zDHORNi8FRqWFbm3rDqLO47dpo/EwDOHRuFxJJ4INu23/YMlKtQ=
+=fHBH
+-----END PGP SIGNATURE-----
+
+--nextPart2088208.6srCk4DusC--
+
+
 
