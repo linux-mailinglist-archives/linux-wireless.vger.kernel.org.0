@@ -2,118 +2,74 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 5141972C6C
-	for <lists+linux-wireless@lfdr.de>; Wed, 24 Jul 2019 12:37:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7E86772CCB
+	for <lists+linux-wireless@lfdr.de>; Wed, 24 Jul 2019 13:03:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726681AbfGXKh6 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 24 Jul 2019 06:37:58 -0400
-Received: from mail-pf1-f193.google.com ([209.85.210.193]:36036 "EHLO
-        mail-pf1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726070AbfGXKh6 (ORCPT
+        id S1726622AbfGXLDv (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 24 Jul 2019 07:03:51 -0400
+Received: from smtprelay0228.hostedemail.com ([216.40.44.228]:52747 "EHLO
+        smtprelay.hostedemail.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1726070AbfGXLDv (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 24 Jul 2019 06:37:58 -0400
-Received: by mail-pf1-f193.google.com with SMTP id r7so20747398pfl.3
-        for <linux-wireless@vger.kernel.org>; Wed, 24 Jul 2019 03:37:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id;
-        bh=QU1tJuVkhMSN47kAB/pTnlFwuoQ05qC+w6HgDQJKhBA=;
-        b=nNTn/C/CWnIHmS2sqyuKO3fkrhF82+N96gXC9KgEuKKOKgf4vspJfFDRO2rjSBnoCQ
-         2lc8I+HW+14VpcUn3dhD89idM8UBlhWvmVpvawtybMKx5KlX7UdRHHHV+ZSnK6PPUYq0
-         pdL7s5TOlme+RtxWfw7RNZpN3H3kttZ1uprQkaEdWpXANj5NAFrcZ5Xj/HH+nzIoEhd7
-         PY/0M9KdfbbGHuUwzQiylxKRzCrz4e3mBzHRakLc5aE6c+igeliY1F52v/xyNnOmLetS
-         /9tkhSzfb1mdMGITTqMTLUNhdCdsQPCvhikQDsRL2477JLLP7C11juqyMv+GL6xXdP7+
-         qweQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id;
-        bh=QU1tJuVkhMSN47kAB/pTnlFwuoQ05qC+w6HgDQJKhBA=;
-        b=MDNitHaZtxKwAIxF2fvSdZTQb0pILoka6PFa0PqZDdpDfn3qscCnFuczk5GA2F/G1+
-         EflTpSdi+0UUQWEzRhv5XtsJ44/V9wPaIK69jRdKCJS6xCkgOns9N77SbqyfqLRzfAKc
-         aGbut9eo8E+f+7bTuV2skZOaupFd1Lo8Azk33Ls8Qzyqd+cuBikYe80T4z6lCCz/GCRZ
-         AoWXl0Wp40HybtTZBs9jwE3zXeBOTn33YPEclCj+8wwzdtlUC+2XE1d5BANVzxVdqW+R
-         0seGPHDvW/u52tRRewO24+EBF/kdxkRz8xSzbBsa9VomEfPDDjbAcL37gJ+jEzPH+Ufb
-         oxtw==
-X-Gm-Message-State: APjAAAXL/LgMS9HF9R2mrzfFLCNH+L020AnkLyOISd5M9mOtk3BIcq0z
-        BS0QVeP6b5ByF9cPR+2uezBQcb2SJeieaQ==
-X-Google-Smtp-Source: APXvYqzGICfUkd0BuIynXsxHlNTDsMRS04CjJmPcVva3sqTQsGATV33SB/8eMkC+AopJN1fo4O1C3w==
-X-Received: by 2002:a63:1:: with SMTP id 1mr16391504pga.162.1563964677446;
-        Wed, 24 Jul 2019 03:37:57 -0700 (PDT)
-Received: from cpu508.localdomain ([183.82.100.30])
-        by smtp.gmail.com with ESMTPSA id l6sm45639818pga.72.2019.07.24.03.37.54
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Wed, 24 Jul 2019 03:37:56 -0700 (PDT)
-From:   ganapathirajukondraju@gmail.com
-To:     Kalle Valo <kvalo@codeaurora.org>
-Cc:     linux-wireless@vger.kernel.org,
-        Rishikesh Basu <rishikesh.basu@redpinesignals.com>,
-        ganapathi.kondraju@redpinesignals.com,
-        krishna.pedda@redpinesignals.com, narasimha.a@redpinesignals.com,
-        Ganapathi Kondraju <ganapathirajukondraju@gmail.com>
-Subject: [PATCH] rsi: fix for sdio interface setup in 9116
-Date:   Wed, 24 Jul 2019 16:07:21 +0530
-Message-Id: <1563964641-9413-1-git-send-email-ganapathirajukondraju@gmail.com>
-X-Mailer: git-send-email 2.5.5
+        Wed, 24 Jul 2019 07:03:51 -0400
+Received: from filter.hostedemail.com (clb03-v110.bra.tucows.net [216.40.38.60])
+        by smtprelay05.hostedemail.com (Postfix) with ESMTP id A888718037D48;
+        Wed, 24 Jul 2019 11:03:49 +0000 (UTC)
+X-Session-Marker: 6A6F6540706572636865732E636F6D
+X-Spam-Summary: 2,0,0,,d41d8cd98f00b204,joe@perches.com,:::::::::::::::::::,RULES_HIT:41:355:379:599:973:988:989:1260:1277:1311:1313:1314:1345:1359:1437:1515:1516:1518:1534:1540:1593:1594:1711:1730:1747:1777:1792:2194:2198:2199:2200:2393:2559:2562:2828:2898:3138:3139:3140:3141:3142:3352:3622:3865:4225:4321:5007:6119:8603:10004:10400:10848:11026:11232:11657:11658:11914:12043:12297:12438:12681:12740:12760:12895:13069:13311:13357:13439:14659:14721:21080:21451:21627:30046:30054:30070:30091,0,RBL:23.242.196.136:@perches.com:.lbl8.mailshell.net-62.8.0.180 64.201.201.201,CacheIP:none,Bayesian:0.5,0.5,0.5,Netcheck:none,DomainCache:0,MSF:not bulk,SPF:fn,MSBL:0,DNSBL:neutral,Custom_rules:0:0:0,LFtime:28,LUA_SUMMARY:none
+X-HE-Tag: tax54_21268d0501225
+X-Filterd-Recvd-Size: 2072
+Received: from XPS-9350.home (cpe-23-242-196-136.socal.res.rr.com [23.242.196.136])
+        (Authenticated sender: joe@perches.com)
+        by omf14.hostedemail.com (Postfix) with ESMTPA;
+        Wed, 24 Jul 2019 11:03:47 +0000 (UTC)
+Message-ID: <54692f19e845a74650c1d24cbe7b79c5dad7b061.camel@perches.com>
+Subject: Re: [PATCH v1 5/6] mt76: fix some checkpatch warnings
+From:   Joe Perches <joe@perches.com>
+To:     Ryder Lee <ryder.lee@mediatek.com>, Felix Fietkau <nbd@nbd.name>,
+        Lorenzo Bianconi <lorenzo.bianconi@redhat.com>
+Cc:     Roy Luo <royluo@google.com>, YF Luo <yf.luo@mediatek.com>,
+        Yiwei Chung <yiwei.chung@mediatek.com>,
+        Sean Wang <sean.wang@mediatek.com>,
+        linux-wireless@vger.kernel.org, linux-mediatek@lists.infradead.org,
+        linux-kernel@vger.kernel.org
+Date:   Wed, 24 Jul 2019 04:03:46 -0700
+In-Reply-To: <0afa87cc70b34ee17d6c2247dfc8dac92c36852f.1563944758.git.ryder.lee@mediatek.com>
+References: <cover.1563944758.git.ryder.lee@mediatek.com>
+         <0afa87cc70b34ee17d6c2247dfc8dac92c36852f.1563944758.git.ryder.lee@mediatek.com>
+Content-Type: text/plain; charset="ISO-8859-1"
+User-Agent: Evolution 3.30.5-0ubuntu0.18.10.1 
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Ganapathi Kondraju <ganapathirajukondraju@gmail.com>
+On Wed, 2019-07-24 at 16:58 +0800, Ryder Lee wrote:
+> This fixes the following checkpatch warnings:
+[]
+> diff --git a/drivers/net/wireless/mediatek/mt76/agg-rx.c b/drivers/net/wireless/mediatek/mt76/agg-rx.c
+[]
+> @@ -74,15 +75,14 @@ mt76_rx_aggr_check_release(struct mt76_rx_tid *tid, struct sk_buff_head *frames)
+>  	for (idx = (tid->head + 1) % tid->size;
+>  	     idx != start && nframes;
+>  	     idx = (idx + 1) % tid->size) {
+> -
+>  		skb = tid->reorder_buf[idx];
+>  		if (!skb)
+>  			continue;
+>  
+>  		nframes--;
+> -		status = (struct mt76_rx_status *) skb->cb;
+> +		status = (struct mt76_rx_status *)skb->cb;
+>  		if (!time_after(jiffies, status->reorder_time +
+> -					 REORDER_TIMEOUT))
+> +				REORDER_TIMEOUT))
 
-Issue: RS-9116 Card is not responding after firmware got loaded.
+trivia/bikeshedding:  perhaps better slightly differently:
 
-Root cause: After firmware got loaded, we need to reset the program
-counter and few device specific registers. Those registers were not
-resetted properly.
+ 		if (!time_after(jiffies,
+				status->reorder_time + REORDER_TIMEOUT))
 
-Fix: Properly resetting those registers.
-
-Signed-off-by: Ganapathi Kondraju <ganapathirajukondraju@gmail.com>
----
- drivers/net/wireless/rsi/rsi_91x_sdio.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
-
-diff --git a/drivers/net/wireless/rsi/rsi_91x_sdio.c b/drivers/net/wireless/rsi/rsi_91x_sdio.c
-index b42cd50..1ab2bd2 100644
---- a/drivers/net/wireless/rsi/rsi_91x_sdio.c
-+++ b/drivers/net/wireless/rsi/rsi_91x_sdio.c
-@@ -944,7 +944,7 @@ static int rsi_sdio_ta_reset(struct rsi_hw *adapter)
- 	put_unaligned_le32(TA_HOLD_THREAD_VALUE, data);
- 	addr = TA_HOLD_THREAD_REG | RSI_SD_REQUEST_MASTER;
- 	status = rsi_sdio_write_register_multiple(adapter, addr,
--						  (u8 *)&data,
-+						  (u8 *)data,
- 						  RSI_9116_REG_SIZE);
- 	if (status < 0) {
- 		rsi_dbg(ERR_ZONE, "Unable to hold TA threads\n");
-@@ -954,7 +954,7 @@ static int rsi_sdio_ta_reset(struct rsi_hw *adapter)
- 	put_unaligned_le32(TA_SOFT_RST_CLR, data);
- 	addr = TA_SOFT_RESET_REG | RSI_SD_REQUEST_MASTER;
- 	status = rsi_sdio_write_register_multiple(adapter, addr,
--						  (u8 *)&data,
-+						  (u8 *)data,
- 						  RSI_9116_REG_SIZE);
- 	if (status < 0) {
- 		rsi_dbg(ERR_ZONE, "Unable to get TA out of reset\n");
-@@ -964,7 +964,7 @@ static int rsi_sdio_ta_reset(struct rsi_hw *adapter)
- 	put_unaligned_le32(TA_PC_ZERO, data);
- 	addr = TA_TH0_PC_REG | RSI_SD_REQUEST_MASTER;
- 	status = rsi_sdio_write_register_multiple(adapter, addr,
--						  (u8 *)&data,
-+						  (u8 *)data,
- 						  RSI_9116_REG_SIZE);
- 	if (status < 0) {
- 		rsi_dbg(ERR_ZONE, "Unable to Reset TA PC value\n");
-@@ -975,7 +975,7 @@ static int rsi_sdio_ta_reset(struct rsi_hw *adapter)
- 	put_unaligned_le32(TA_RELEASE_THREAD_VALUE, data);
- 	addr = TA_RELEASE_THREAD_REG | RSI_SD_REQUEST_MASTER;
- 	status = rsi_sdio_write_register_multiple(adapter, addr,
--						  (u8 *)&data,
-+						  (u8 *)data,
- 						  RSI_9116_REG_SIZE);
- 	if (status < 0) {
- 		rsi_dbg(ERR_ZONE, "Unable to release TA threads\n");
--- 
-2.5.5
 
