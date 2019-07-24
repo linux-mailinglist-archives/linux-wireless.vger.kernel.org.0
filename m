@@ -2,57 +2,57 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A98FC7354B
-	for <lists+linux-wireless@lfdr.de>; Wed, 24 Jul 2019 19:24:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 33F38736C7
+	for <lists+linux-wireless@lfdr.de>; Wed, 24 Jul 2019 20:43:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726673AbfGXRYG (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 24 Jul 2019 13:24:06 -0400
-Received: from mx4.wp.pl ([212.77.101.11]:7822 "EHLO mx4.wp.pl"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727541AbfGXRQq (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 24 Jul 2019 13:16:46 -0400
-Received: (wp-smtpd smtp.wp.pl 30481 invoked from network); 24 Jul 2019 19:16:43 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wp.pl; s=1024a;
-          t=1563988604; bh=z41DzGtUFzaWWcpQAVjI+8rAtK/VXbLYrGHn+dMjo3I=;
-          h=From:To:Cc:Subject;
-          b=YeeC3awkT/FVcvjk+fURFqdyv0r3NGECJaqSruBjt2MEMxHyXyddFZaA64nkaxrka
-           0lLpbm0O7VZrCjgigBSnZ19v6fCSXRbOMwIZThg3hxH5pulTydVwW1xI4EtrctTXRp
-           wUor382uyQhCqpSoEE8V8sOX195Tb9e+kJQh7ApQ=
-Received: from 014.152-60-66-biz-static.surewest.net (HELO cakuba.netronome.com) (kubakici@wp.pl@[66.60.152.14])
-          (envelope-sender <kubakici@wp.pl>)
-          by smtp.wp.pl (WP-SMTPD) with ECDHE-RSA-AES256-GCM-SHA384 encrypted SMTP
-          for <navid.emamdoost@gmail.com>; 24 Jul 2019 19:16:43 +0200
-Date:   Wed, 24 Jul 2019 10:16:36 -0700
-From:   Jakub Kicinski <kubakici@wp.pl>
-To:     Navid Emamdoost <navid.emamdoost@gmail.com>
-Cc:     kvalo@codeaurora.org, emamd001@umn.edu, kjlu@umn.edu,
-        smccaman@umn.edu, secalert@redhat.com,
-        "David S. Miller" <davem@davemloft.net>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        linux-mediatek@lists.infradead.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] mt7601u: null check the allocation
-Message-ID: <20190724101636.4699c30a@cakuba.netronome.com>
-In-Reply-To: <20190724141736.29994-1-navid.emamdoost@gmail.com>
-References: <87d0i00z4t.fsf@kamboji.qca.qualcomm.com>
-        <20190724141736.29994-1-navid.emamdoost@gmail.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+        id S1727646AbfGXSmz (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 24 Jul 2019 14:42:55 -0400
+Received: from shards.monkeyblade.net ([23.128.96.9]:49790 "EHLO
+        shards.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726001AbfGXSmz (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Wed, 24 Jul 2019 14:42:55 -0400
+Received: from localhost (unknown [IPv6:2601:601:9f80:35cd::d71])
+        (using TLSv1 with cipher AES256-SHA (256/256 bits))
+        (Client did not present a certificate)
+        (Authenticated sender: davem-davemloft)
+        by shards.monkeyblade.net (Postfix) with ESMTPSA id 56B3615409B9E;
+        Wed, 24 Jul 2019 11:42:53 -0700 (PDT)
+Date:   Wed, 24 Jul 2019 11:42:52 -0700 (PDT)
+Message-Id: <20190724.114252.458305207498876259.davem@davemloft.net>
+To:     kvalo@codeaurora.org
+Cc:     hslester96@gmail.com, mlindner@marvell.com,
+        stephen@networkplumber.org, jirislaby@gmail.com,
+        mickflemm@gmail.com, mcgrof@kernel.org, sgruszka@redhat.com,
+        ath9k-devel@qca.qualcomm.com, merez@codeaurora.org,
+        johannes.berg@intel.com, emmanuel.grumbach@intel.com,
+        luciano.coelho@intel.com, amitkarwar@gmail.com,
+        nishants@marvell.com, gbhat@marvell.com, huxinming820@gmail.com,
+        imitsyanko@quantenna.com, avinashp@quantenna.com,
+        smatyukevich@quantenna.com, pkshih@realtek.com,
+        linuxwifi@intel.com, linux-net-drivers@solarflare.com,
+        ecree@solarflare.com, mhabets@solarflare.com,
+        netdev@vger.kernel.org, wil6210@qti.qualcomm.com,
+        linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net-next 00/10] Use dev_get_drvdata where possible
+From:   David Miller <davem@davemloft.net>
+In-Reply-To: <87zhl3zlu1.fsf@kamboji.qca.qualcomm.com>
+References: <20190724112524.13042-1-hslester96@gmail.com>
+        <87zhl3zlu1.fsf@kamboji.qca.qualcomm.com>
+X-Mailer: Mew version 6.8 on Emacs 26.1
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
-X-WP-MailID: fe13a5d9e194338bda75b16965620f67
-X-WP-AV: skaner antywirusowy Poczty Wirtualnej Polski
-X-WP-SPAM: NO 000000A [QTPk]                               
+X-Greylist: Sender succeeded SMTP AUTH, not delayed by milter-greylist-4.5.12 (shards.monkeyblade.net [149.20.54.216]); Wed, 24 Jul 2019 11:42:54 -0700 (PDT)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Wed, 24 Jul 2019 09:17:36 -0500, Navid Emamdoost wrote:
-> devm_kzalloc may fail and return NULL. So the null check is needed.
-> 
-> Signed-off-by: Navid Emamdoost <navid.emamdoost@gmail.com>
+From: Kalle Valo <kvalo@codeaurora.org>
+Date: Wed, 24 Jul 2019 14:57:42 +0300
 
-Ah, I replied to the wrong one..
+> Do note that wireless patches go to wireless-drivers-next, not net-next.
+> But I assume Dave will ignore patches 5-10 and I can take them.
 
-Acked-by: Jakub Kicinski <kubakici@wp.pl>
+Yes, that is what I plan to do.
