@@ -2,56 +2,57 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 765FB734D0
-	for <lists+linux-wireless@lfdr.de>; Wed, 24 Jul 2019 19:15:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A98FC7354B
+	for <lists+linux-wireless@lfdr.de>; Wed, 24 Jul 2019 19:24:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726490AbfGXRP1 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 24 Jul 2019 13:15:27 -0400
-Received: from mx4.wp.pl ([212.77.101.12]:60124 "EHLO mx4.wp.pl"
+        id S1726673AbfGXRYG (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 24 Jul 2019 13:24:06 -0400
+Received: from mx4.wp.pl ([212.77.101.11]:7822 "EHLO mx4.wp.pl"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727238AbfGXRP1 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 24 Jul 2019 13:15:27 -0400
-Received: (wp-smtpd smtp.wp.pl 7512 invoked from network); 24 Jul 2019 19:15:23 +0200
+        id S1727541AbfGXRQq (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Wed, 24 Jul 2019 13:16:46 -0400
+Received: (wp-smtpd smtp.wp.pl 30481 invoked from network); 24 Jul 2019 19:16:43 +0200
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wp.pl; s=1024a;
-          t=1563988524; bh=gEkDwIuDO2Mlt47g7fHTqzHcSxdtZTDr5XQG+4+AvdU=;
+          t=1563988604; bh=z41DzGtUFzaWWcpQAVjI+8rAtK/VXbLYrGHn+dMjo3I=;
           h=From:To:Cc:Subject;
-          b=ntAPjIlLwGvOxgC2v+xm/bV3mQvMUDMExK5e9IszAZdswFVOM1CMFo9sCJ1pKqGLF
-           kpQZCuccigvIcEx+x1AdexCezOy9xB+tz6O3Y7xqR2h9mmc1Ypn5frAT1xfDiD+D4g
-           91q1Fzzc/O8xKBgRvC2r2763CVpjRIG6Mu7bIfb0=
+          b=YeeC3awkT/FVcvjk+fURFqdyv0r3NGECJaqSruBjt2MEMxHyXyddFZaA64nkaxrka
+           0lLpbm0O7VZrCjgigBSnZ19v6fCSXRbOMwIZThg3hxH5pulTydVwW1xI4EtrctTXRp
+           wUor382uyQhCqpSoEE8V8sOX195Tb9e+kJQh7ApQ=
 Received: from 014.152-60-66-biz-static.surewest.net (HELO cakuba.netronome.com) (kubakici@wp.pl@[66.60.152.14])
           (envelope-sender <kubakici@wp.pl>)
           by smtp.wp.pl (WP-SMTPD) with ECDHE-RSA-AES256-GCM-SHA384 encrypted SMTP
-          for <navid.emamdoost@gmail.com>; 24 Jul 2019 19:15:23 +0200
-Date:   Wed, 24 Jul 2019 10:15:14 -0700
+          for <navid.emamdoost@gmail.com>; 24 Jul 2019 19:16:43 +0200
+Date:   Wed, 24 Jul 2019 10:16:36 -0700
 From:   Jakub Kicinski <kubakici@wp.pl>
 To:     Navid Emamdoost <navid.emamdoost@gmail.com>
-Cc:     emamd001@umn.edu, kjlu@umn.edu, smccaman@umn.edu,
-        secalert@redhat.com, Kalle Valo <kvalo@codeaurora.org>,
+Cc:     kvalo@codeaurora.org, emamd001@umn.edu, kjlu@umn.edu,
+        smccaman@umn.edu, secalert@redhat.com,
         "David S. Miller" <davem@davemloft.net>,
         Matthias Brugger <matthias.bgg@gmail.com>,
         linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
         linux-arm-kernel@lists.infradead.org,
         linux-mediatek@lists.infradead.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] mt76_init_sband_2g: null check the allocation
-Message-ID: <20190724101514.29efc10a@cakuba.netronome.com>
-In-Reply-To: <20190723221954.9233-1-navid.emamdoost@gmail.com>
-References: <20190723221954.9233-1-navid.emamdoost@gmail.com>
+Subject: Re: [PATCH] mt7601u: null check the allocation
+Message-ID: <20190724101636.4699c30a@cakuba.netronome.com>
+In-Reply-To: <20190724141736.29994-1-navid.emamdoost@gmail.com>
+References: <87d0i00z4t.fsf@kamboji.qca.qualcomm.com>
+        <20190724141736.29994-1-navid.emamdoost@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-WP-MailID: 3fa229c2b67e2a6425aaa1fc737c8941
+X-WP-MailID: fe13a5d9e194338bda75b16965620f67
 X-WP-AV: skaner antywirusowy Poczty Wirtualnej Polski
-X-WP-SPAM: NO 000000A [EYOU]                               
+X-WP-SPAM: NO 000000A [QTPk]                               
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Tue, 23 Jul 2019 17:19:54 -0500, Navid Emamdoost wrote:
+On Wed, 24 Jul 2019 09:17:36 -0500, Navid Emamdoost wrote:
 > devm_kzalloc may fail and return NULL. So the null check is needed.
 > 
 > Signed-off-by: Navid Emamdoost <navid.emamdoost@gmail.com>
 
-Acked-by: Jakub Kicinski <kubakici@wp.pl>
+Ah, I replied to the wrong one..
 
-Thanks!
+Acked-by: Jakub Kicinski <kubakici@wp.pl>
