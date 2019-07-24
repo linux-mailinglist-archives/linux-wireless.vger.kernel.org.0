@@ -2,88 +2,75 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 218417223F
-	for <lists+linux-wireless@lfdr.de>; Wed, 24 Jul 2019 00:20:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5EB61723BB
+	for <lists+linux-wireless@lfdr.de>; Wed, 24 Jul 2019 03:32:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728655AbfGWWUH (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 23 Jul 2019 18:20:07 -0400
-Received: from mail-io1-f68.google.com ([209.85.166.68]:37705 "EHLO
-        mail-io1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727821AbfGWWUG (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 23 Jul 2019 18:20:06 -0400
-Received: by mail-io1-f68.google.com with SMTP id q22so85260524iog.4;
-        Tue, 23 Jul 2019 15:20:06 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id;
-        bh=pl9nO+hunkGocGh4P+3+7RACb7n3AOCHKdRk3PRyj78=;
-        b=jClr9tGO0M2uPdTqgL+wilDjNYPCY1lHULxJyU4k5vGRMTiCplHDR9talFGARjm7fM
-         WaQzedbOLIChWY2xd0aavGY1YIl0rc4yFY1QjuAdhFpLnHbnquNpQhnyWdCtpD/yh0wj
-         mic0mlosfXm6fh2jHggFADTo3xWjod0o0w9F7sh+It2QAgSNWfwcfcRKhDg4DFqN94+h
-         ji0X4ENlzZZuWoW70qUl9zRrs75DGINQ0bLoXjHq010Tx1Ahq71E4+ryf93RiyEK95rp
-         YvkGkm2a3vss0Nk42AMTYFrs7VsYkuxBS7APMVVSARpeApcEDLQ/NmTZMcXqTLfb6OxH
-         OCfA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id;
-        bh=pl9nO+hunkGocGh4P+3+7RACb7n3AOCHKdRk3PRyj78=;
-        b=cZSQ1ymJOy2X/xkGh0cvvKuov+L6j5K/GMoQjbV8MCDhB4kHd6sxqexUaU8uK+mmVe
-         XlenphHDTpDqh5pMWhdDwsTWWoywYlIDjTmaR1HRt7y/mreLelPNlGTqGjvU7ONFR7eJ
-         Rl8cK46GpH5vCUGZ7lAfXH526Im3U9R77rUgvwkrrTDFAn3k3vYk7Je7x5aD6LnC+P7n
-         lN3vW18UQflGGrVR/HMZfGF+0Za/5On2FfbckbB7KmqTYMLRskuiYn9Y4jnXG04/ucJl
-         BmolN/r+K72FLAB6fNVsBX71w58neOfQ0LSR2vS3x60taSEAoHikqcYdJ3b6sW/GgJ9w
-         +jRw==
-X-Gm-Message-State: APjAAAUqo0mM0+S1z9lxxmMgQFoDviDNkl1XNMAAu0IdAFbMcmtvK5Xv
-        xubjzGcDZnkaNZsiWUZE7ow=
-X-Google-Smtp-Source: APXvYqzWffs9myy9EKo6r23AJN8vEydCexjw2y+Jif/lnPMEBM5O8yaoI59b8eVQgRLAxQMFdQQJNQ==
-X-Received: by 2002:a5e:c241:: with SMTP id w1mr68853307iop.58.1563920405893;
-        Tue, 23 Jul 2019 15:20:05 -0700 (PDT)
-Received: from cs-dulles.cs.umn.edu (cs-dulles.cs.umn.edu. [128.101.35.54])
-        by smtp.googlemail.com with ESMTPSA id x22sm33378952iob.84.2019.07.23.15.20.04
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Tue, 23 Jul 2019 15:20:05 -0700 (PDT)
-From:   Navid Emamdoost <navid.emamdoost@gmail.com>
-Cc:     emamd001@umn.edu, kjlu@umn.edu, smccaman@umn.edu,
-        secalert@redhat.com, Navid Emamdoost <navid.emamdoost@gmail.com>,
-        Jakub Kicinski <kubakici@wp.pl>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        linux-mediatek@lists.infradead.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] mt76_init_sband_2g: null check the allocation
-Date:   Tue, 23 Jul 2019 17:19:54 -0500
-Message-Id: <20190723221954.9233-1-navid.emamdoost@gmail.com>
-X-Mailer: git-send-email 2.17.1
-To:     unlisted-recipients:; (no To-header on input)
+        id S1728098AbfGXBc3 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 23 Jul 2019 21:32:29 -0400
+Received: from szxga05-in.huawei.com ([45.249.212.191]:2743 "EHLO huawei.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1725837AbfGXBc2 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 23 Jul 2019 21:32:28 -0400
+Received: from DGGEMS411-HUB.china.huawei.com (unknown [172.30.72.59])
+        by Forcepoint Email with ESMTP id BFCB5AEEA5EBA150532A;
+        Wed, 24 Jul 2019 09:32:26 +0800 (CST)
+Received: from [127.0.0.1] (10.177.96.96) by DGGEMS411-HUB.china.huawei.com
+ (10.3.19.211) with Microsoft SMTP Server id 14.3.439.0; Wed, 24 Jul 2019
+ 09:32:24 +0800
+Subject: Re: [net-next] mwifiex: use eth_broadcast_addr() to assign broadcast
+ address
+To:     <amitkarwar@gmail.com>, <nishants@marvell.com>,
+        <gbhat@marvell.com>, <huxinming820@gmail.com>,
+        <kvalo@codeaurora.org>
+References: <20190710072524.65953-1-maowenan@huawei.com>
+CC:     <linux-wireless@vger.kernel.org>, <kernel-janitors@vger.kernel.org>
+From:   maowenan <maowenan@huawei.com>
+Message-ID: <609fa4ae-7210-7758-c8ff-1b06492356e1@huawei.com>
+Date:   Wed, 24 Jul 2019 09:32:13 +0800
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:45.0) Gecko/20100101
+ Thunderbird/45.2.0
+MIME-Version: 1.0
+In-Reply-To: <20190710072524.65953-1-maowenan@huawei.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.177.96.96]
+X-CFilter-Loop: Reflected
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-devm_kzalloc may fail and return NULL. So the null check is needed.
+gentle ping...
 
-Signed-off-by: Navid Emamdoost <navid.emamdoost@gmail.com>
----
- drivers/net/wireless/mediatek/mt7601u/init.c | 3 +++
- 1 file changed, 3 insertions(+)
-
-diff --git a/drivers/net/wireless/mediatek/mt7601u/init.c b/drivers/net/wireless/mediatek/mt7601u/init.c
-index 9bfac9f1d47f..cada48800928 100644
---- a/drivers/net/wireless/mediatek/mt7601u/init.c
-+++ b/drivers/net/wireless/mediatek/mt7601u/init.c
-@@ -557,6 +557,9 @@ mt76_init_sband_2g(struct mt7601u_dev *dev)
- {
- 	dev->sband_2g = devm_kzalloc(dev->dev, sizeof(*dev->sband_2g),
- 				     GFP_KERNEL);
-+	if (!dev->sband_2g)
-+		return -ENOMEM;
-+
- 	dev->hw->wiphy->bands[NL80211_BAND_2GHZ] = dev->sband_2g;
- 
- 	WARN_ON(dev->ee->reg.start - 1 + dev->ee->reg.num >
--- 
-2.17.1
+On 2019/7/10 15:25, Mao Wenan wrote:
+> This patch is to use eth_broadcast_addr() to assign broadcast address
+> insetad of memcpy().
+> 
+> Signed-off-by: Mao Wenan <maowenan@huawei.com>
+> ---
+>  drivers/net/wireless/marvell/mwifiex/tdls.c | 3 +--
+>  1 file changed, 1 insertion(+), 2 deletions(-)
+> 
+> diff --git a/drivers/net/wireless/marvell/mwifiex/tdls.c b/drivers/net/wireless/marvell/mwifiex/tdls.c
+> index 18e654d..0931304 100644
+> --- a/drivers/net/wireless/marvell/mwifiex/tdls.c
+> +++ b/drivers/net/wireless/marvell/mwifiex/tdls.c
+> @@ -731,7 +731,6 @@ mwifiex_construct_tdls_action_frame(struct mwifiex_private *priv,
+>  				    u16 status_code, struct sk_buff *skb)
+>  {
+>  	struct ieee80211_mgmt *mgmt;
+> -	u8 bc_addr[] = {0xff, 0xff, 0xff, 0xff, 0xff, 0xff};
+>  	int ret;
+>  	u16 capab;
+>  	struct ieee80211_ht_cap *ht_cap;
+> @@ -765,7 +764,7 @@ mwifiex_construct_tdls_action_frame(struct mwifiex_private *priv,
+>  		memmove(pos + ETH_ALEN, &mgmt->u.action.category,
+>  			sizeof(mgmt->u.action.u.tdls_discover_resp));
+>  		/* init address 4 */
+> -		memcpy(pos, bc_addr, ETH_ALEN);
+> +		eth_broadcast_addr(pos);
+>  
+>  		ret = mwifiex_tdls_append_rates_ie(priv, skb);
+>  		if (ret) {
+> 
 
