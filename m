@@ -2,25 +2,25 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id BDB8472E33
-	for <lists+linux-wireless@lfdr.de>; Wed, 24 Jul 2019 13:51:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3A61872E34
+	for <lists+linux-wireless@lfdr.de>; Wed, 24 Jul 2019 13:52:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2387397AbfGXLvw (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 24 Jul 2019 07:51:52 -0400
-Received: from smtp.codeaurora.org ([198.145.29.96]:52724 "EHLO
+        id S2387408AbfGXLwZ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 24 Jul 2019 07:52:25 -0400
+Received: from smtp.codeaurora.org ([198.145.29.96]:52930 "EHLO
         smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2387393AbfGXLvw (ORCPT
+        with ESMTP id S2387393AbfGXLwZ (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 24 Jul 2019 07:51:52 -0400
+        Wed, 24 Jul 2019 07:52:25 -0400
 Received: by smtp.codeaurora.org (Postfix, from userid 1000)
-        id 729A860392; Wed, 24 Jul 2019 11:51:51 +0000 (UTC)
+        id 47B8660314; Wed, 24 Jul 2019 11:52:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1563969111;
-        bh=uILEHRLuMnYtuEUPKP9oIKHHEQmakUzKiQ1w+eTcupc=;
+        s=default; t=1563969144;
+        bh=WDx4mY1JbCdStvR1Qpmf5KLxJIUu43b7WByPChbxOPQ=;
         h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-        b=PRBMQ7XMsgmxqKGP9A8oowZ6G5SuU4IykOqtoiddoMN0acdwp0WIyV965hrJ/GMGC
-         Bwi7DsCOIOsXMyqem2SMdxAP48LXufxrV35vl+XwHMiYkSh5nKypaQZjK4Rm5HFcln
-         oiWxpF+4fVyNfUPdQAcQX8aJG2ct8dcsrzzxS1qQ=
+        b=jBV2RKh7YPHKs87QSf0OkpEQvtOY1D+9N0mxCZYIWZnZ99PQT6Ju4NMWGdpn9QfKP
+         2PuN0p8bToTMPoWLU0+KoHMzWNE9V4X5hXlWt+oaYmTrwG++zmDw1bd8OcACGEjrMk
+         8Dg7QJLa5aJ1llHQkgp2G5QsCoxR0ESPGnW6fHEs=
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         pdx-caf-mail.web.codeaurora.org
 X-Spam-Level: 
@@ -31,56 +31,48 @@ Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
         (Authenticated sender: kvalo@smtp.codeaurora.org)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 49AA260258;
-        Wed, 24 Jul 2019 11:51:50 +0000 (UTC)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id C311D60214;
+        Wed, 24 Jul 2019 11:52:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1563969111;
-        bh=uILEHRLuMnYtuEUPKP9oIKHHEQmakUzKiQ1w+eTcupc=;
+        s=default; t=1563969143;
+        bh=WDx4mY1JbCdStvR1Qpmf5KLxJIUu43b7WByPChbxOPQ=;
         h=Subject:From:In-Reply-To:References:To:Cc:From;
-        b=mizgaAp9SR8eTJk9ObCbFRS1GXfHxR6eLLBFZSVglarf6S4UeE4XU2KXxT06hbY8S
-         m1GiyxwMH9CWpkZ0dZO9dmJb8uP4Mw2wvmJCcS75mNuglxdGtTPoy6DXs0XkFA7Hrh
-         Vmx+rKQY4SQnFa+VjOMp4Gwoc8LgzsYaUc+QtRWQ=
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 49AA260258
+        b=TEKxSPcbRLMSwOrYxBaJZ7llbhIii5bWbPLt3nwS4Njv7i2o+I2LoQXSvl5FYOoY7
+         r2UMptXK2lfZrH3y7FAQaSg/qXUcnJaQdf1RdRtwt7GJFaPHkp5ElgWmQ4f9aJzMgE
+         wxoTmAclXW4oo5MYMZSzcA5v+h9PLEVSL38Z6l8c=
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org C311D60214
 Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
 Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH 1/7] Revert "brcmfmac: fix NULL pointer derefence during
- USB disconnect"
+Subject: Re: [PATCH] mt7601u: use params->ssn value directly
 From:   Kalle Valo <kvalo@codeaurora.org>
-In-Reply-To: <1562835912-1404-2-git-send-email-arend.vanspriel@broadcom.com>
-References: <1562835912-1404-2-git-send-email-arend.vanspriel@broadcom.com>
-To:     Arend van Spriel <arend.vanspriel@broadcom.com>
-Cc:     linux-wireless@vger.kernel.org,
-        Arend van Spriel <arend.vanspriel@broadcom.com>
+In-Reply-To: <20190712120949.GA21396@redhat.com>
+References: <20190712120949.GA21396@redhat.com>
+To:     Stanislaw Gruszka <sgruszka@redhat.com>
+Cc:     linux-wireless@vger.kernel.org, Jakub Kicinski <kubakici@wp.pl>
 User-Agent: pwcli/0.0.0-git (https://github.com/kvalo/pwcli/) Python/2.7.12
-Message-Id: <20190724115151.729A860392@smtp.codeaurora.org>
-Date:   Wed, 24 Jul 2019 11:51:51 +0000 (UTC)
+Message-Id: <20190724115224.47B8660314@smtp.codeaurora.org>
+Date:   Wed, 24 Jul 2019 11:52:24 +0000 (UTC)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Arend van Spriel <arend.vanspriel@broadcom.com> wrote:
+Stanislaw Gruszka <sgruszka@redhat.com> wrote:
 
-> This reverts commit 5cdb0ef6144f47440850553579aa923c20a63f23. Subsequent
-> changes make rework the driver code fixing the issue differently.
+> There is no point to use pointer to params->ssn.
 > 
-> Signed-off-by: Arend van Spriel <arend.vanspriel@broadcom.com>
+> Signed-off-by: Stanislaw Gruszka <sgruszka@redhat.com>
+> Acked-by: Jakub Kicinski <kubakici@wp.pl>
 
-7 patches applied to wireless-drivers-next.git, thanks.
+Patch applied to wireless-drivers-next.git, thanks.
 
-a84a60ccdd65 Revert "brcmfmac: fix NULL pointer derefence during USB disconnect"
-14fcfd1cc0c0 brcmfmac: change the order of things in brcmf_detach()
-c613085b7494 brcmfmac: avoid firmware command in brcmf_netdev_open() when bus is down
-c33330ac06fe brcmfmac: clear events in brcmf_fweh_detach() will always fail
-1ac11ae949dd brcmfmac: avoid firmware commands when bus is down
-e0bfb9601d48 brcmfmac: simply remove flowring if bus is down
-4b11c915f00c brcmfmac: remove unnecessary strlcpy() upon obtaining "ver" iovar
+f0248ec49bde mt7601u: use params->ssn value directly
 
 -- 
-https://patchwork.kernel.org/patch/11039459/
+https://patchwork.kernel.org/patch/11042213/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
