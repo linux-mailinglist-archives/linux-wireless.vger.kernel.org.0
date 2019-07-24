@@ -2,86 +2,122 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id DB0FD72D58
-	for <lists+linux-wireless@lfdr.de>; Wed, 24 Jul 2019 13:23:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6B5B672D67
+	for <lists+linux-wireless@lfdr.de>; Wed, 24 Jul 2019 13:26:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727083AbfGXLXF (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 24 Jul 2019 07:23:05 -0400
-Received: from smtp.codeaurora.org ([198.145.29.96]:34848 "EHLO
-        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726087AbfGXLXF (ORCPT
+        id S1727349AbfGXL0C (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 24 Jul 2019 07:26:02 -0400
+Received: from mail-pg1-f180.google.com ([209.85.215.180]:35732 "EHLO
+        mail-pg1-f180.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726300AbfGXL0C (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 24 Jul 2019 07:23:05 -0400
-Received: by smtp.codeaurora.org (Postfix, from userid 1000)
-        id 7DDF960909; Wed, 24 Jul 2019 11:23:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1563967384;
-        bh=7xvzidbz6f6PnQwcm5w5sgSgmFxlWi2HS9D/bvmliDo=;
-        h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-        b=jUEHjMqb9FoZlOvhOz5PGhCIdz1HAHaJZhX14MvsRxB4EL499pqVaPuZMNfHimw4/
-         detqbf5L4j3nacF/639QsvHwNiM9xgJHlXoYah96ZlXFskq+petB2A2emWVcrjvPFM
-         2yz798/KKuhJM+/PKVtVcbV96n+zOcTkDNbNmv7M=
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        pdx-caf-mail.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-0.8 required=2.0 tests=ALL_TRUSTED,BAYES_00,
-        DKIM_INVALID,DKIM_SIGNED,MISSING_DATE,MISSING_MID,SPF_NONE autolearn=no
-        autolearn_force=no version=3.4.0
-Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        (Authenticated sender: kvalo@smtp.codeaurora.org)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id F1FDC60734;
-        Wed, 24 Jul 2019 11:22:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1563967383;
-        bh=7xvzidbz6f6PnQwcm5w5sgSgmFxlWi2HS9D/bvmliDo=;
-        h=Subject:From:In-Reply-To:References:To:Cc:From;
-        b=C+earYBORtatRP+1I/m2VclvOY/79qXhX46bC3sX2yV7eQSoontpGVrAC3PbLUAXs
-         G0b0CMVDjtaC1ztt1R7UiC/dwDXEMK8+BtekOxr4uxYEWzCYxXhvZhK2XB9embQ4jZ
-         uhO63Pa35PIFvwHP6Yfb7OmZvsb7Xo+owR6vmq2Y=
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org F1FDC60734
-Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
-Content-Type: text/plain; charset="utf-8"
+        Wed, 24 Jul 2019 07:26:02 -0400
+Received: by mail-pg1-f180.google.com with SMTP id s1so14777739pgr.2;
+        Wed, 24 Jul 2019 04:26:02 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=UBvzwYXKLD0KHI1zY1uVWe8TykAO+CwaOeNfqT2YYZc=;
+        b=kFJc2XNyi6Z1sFBtVh7MVdzJ9zPWXszdTeMH6mI+jCoag4U6vdbrOo1gJQMLFpB4uO
+         sbLrNIdBejUeH6GDxmd1I70ZdvryrmrV5D+8jqx2pP2RMarhE8ucQ4m/fQEz3nK29RXW
+         wa3IqqjiLRIzKJgZD0vUd4PlDfxUJBaMyiVMhQhDLT2zSq68RmYpDvdTX8NhDX8UBxhO
+         Uqu1g+M4rE/f84Qmg/c1/OvnKc7dRJKOQNf5lFh2w/jPqPLVZBFBXn7aUA5Cq+cJqSkQ
+         5VKD/dcTQPQxgpPuUrLun3C8KCl001FKBpOKiUsaz2SfDAfqB8++NfL4yGvwfGICBh/V
+         KkjQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=UBvzwYXKLD0KHI1zY1uVWe8TykAO+CwaOeNfqT2YYZc=;
+        b=dL6OOiNE2QDXzdbtfx4rQvVa3B7rhEgbMMhR1b84wnuoL596Sk5heTGhozj1s+FIub
+         Zv91HLvzEo8M78RG4GKWqZS5oEHMNa8WqUiITUG27KGG6EltSjjW9s1BJtpUVBYX6PjB
+         N4aNmxUs7PaxO8i6GbW1Qf2SqhjtFaFuMAL5WPNTVWKmXgeRmdxYpT4Edq7ud83EQlSw
+         XzDxF26N/L8k1pbUgBkLc80YqW5RkaNClLLLXSv3CKnz2g4Otza2RrXNg7CXFPau5S1n
+         ZUNckElqvtczXjazG7L+rsx+nfJPYmMr0T3n0MLvzUYZEBfhvVEGi78zyE9Jmkht1M3p
+         vnVg==
+X-Gm-Message-State: APjAAAVLL1YHiFxjy2a70JlkgS5KuRHtcRlw8MLl2+WdHdu42jsbnKdS
+        U+UTivyQQj+p22lubtl/D2Q=
+X-Google-Smtp-Source: APXvYqyKjyDme9E80qasrfULjENVRc+RFwY9pj0J15zzuMNrNlpCbscblS1CnsJgIKkpCTlmOcWR+w==
+X-Received: by 2002:a65:62d7:: with SMTP id m23mr81066508pgv.358.1563967561743;
+        Wed, 24 Jul 2019 04:26:01 -0700 (PDT)
+Received: from suzukaze.ipads-lab.se.sjtu.edu.cn ([89.31.126.54])
+        by smtp.gmail.com with ESMTPSA id w18sm58008680pfj.37.2019.07.24.04.25.54
+        (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
+        Wed, 24 Jul 2019 04:26:00 -0700 (PDT)
+From:   Chuhong Yuan <hslester96@gmail.com>
+Cc:     Mirko Lindner <mlindner@marvell.com>,
+        Stephen Hemminger <stephen@networkplumber.org>,
+        Jiri Slaby <jirislaby@gmail.com>,
+        Nick Kossifidis <mickflemm@gmail.com>,
+        Luis Chamberlain <mcgrof@kernel.org>,
+        Stanislaw Gruszka <sgruszka@redhat.com>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        QCA ath9k Development <ath9k-devel@qca.qualcomm.com>,
+        Maya Erez <merez@codeaurora.org>,
+        Johannes Berg <johannes.berg@intel.com>,
+        Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
+        Luca Coelho <luciano.coelho@intel.com>,
+        Amitkumar Karwar <amitkarwar@gmail.com>,
+        Nishant Sarmukadam <nishants@marvell.com>,
+        Ganapathi Bhat <gbhat@marvell.com>,
+        Xinming Hu <huxinming820@gmail.com>,
+        Igor Mitsyanko <imitsyanko@quantenna.com>,
+        Avinash Patil <avinashp@quantenna.com>,
+        Sergey Matyukevich <smatyukevich@quantenna.com>,
+        Ping-Ke Shih <pkshih@realtek.com>,
+        Intel Linux Wireless <linuxwifi@intel.com>,
+        "David S . Miller" <davem@davemloft.net>,
+        Solarflare linux maintainers <linux-net-drivers@solarflare.com>,
+        Edward Cree <ecree@solarflare.com>,
+        Martin Habets <mhabets@solarflare.com>, netdev@vger.kernel.org,
+        wil6210@qti.qualcomm.com, linux-wireless@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Chuhong Yuan <hslester96@gmail.com>
+Subject: [PATCH net-next 00/10] Use dev_get_drvdata where possible
+Date:   Wed, 24 Jul 2019 19:25:24 +0800
+Message-Id: <20190724112524.13042-1-hslester96@gmail.com>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Subject: Re: [RFC PATCH] rtw88: use txpwr_lmt_cfg_pair struct, not arrays
-From:   Kalle Valo <kvalo@codeaurora.org>
-In-Reply-To: <20190713013232.215138-1-briannorris@chromium.org>
-References: <20190713013232.215138-1-briannorris@chromium.org>
-To:     Brian Norris <briannorris@chromium.org>
-Cc:     <linux-wireless@vger.kernel.org>,
-        Yan-Hsuan Chuang <yhchuang@realtek.com>,
-        Brian Norris <briannorris@chromium.org>
-User-Agent: pwcli/0.0.0-git (https://github.com/kvalo/pwcli/) Python/2.7.12
-Message-Id: <20190724112304.7DDF960909@smtp.codeaurora.org>
-Date:   Wed, 24 Jul 2019 11:23:04 +0000 (UTC)
+Content-Transfer-Encoding: 8bit
+To:     unlisted-recipients:; (no To-header on input)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Brian Norris <briannorris@chromium.org> wrote:
+These patches use dev_get_drvdata instead of
+using to_pci_dev + pci_get_drvdata to make
+code simpler.
 
-> We're just trusting that these tables are of the right dimensions, when
-> we could do better by just using the struct directly. Let's expose the
-> struct txpwr_lmt_cfg_pair instead.
-> 
-> The table changes were made by using some Vim macros, so that should
-> help prevent any translation mistakes along the way.
-> 
-> Remaining work: get the 'void *data' out of the generic struct
-> rtw_table; all of these tables really deserve to be their own data
-> structure, with proper type fields.
-> 
-> Signed-off-by: Brian Norris <briannorris@chromium.org>
+Chuhong Yuan (10):
+  net: marvell: Use dev_get_drvdata where possible
+  forcedeth: Use dev_get_drvdata where possible
+  sfc: Use dev_get_drvdata where possible
+  sfc-falcon: Use dev_get_drvdata where possible
+  ath: Use dev_get_drvdata where possible
+  iwlegacy: Use dev_get_drvdata where possible
+  iwlwifi: Use dev_get_drvdata where possible
+  mwifiex: pcie: Use dev_get_drvdata
+  qtnfmac_pcie: Use dev_get_drvdata
+  rtlwifi: rtl_pci: Use dev_get_drvdata
 
-To me this looks like a clear improvement and I'm inclined to apply it. Tony,
-what do you think?
+ drivers/net/ethernet/marvell/skge.c                |  6 ++----
+ drivers/net/ethernet/marvell/sky2.c                |  3 +--
+ drivers/net/ethernet/nvidia/forcedeth.c            |  3 +--
+ drivers/net/ethernet/sfc/ef10.c                    |  4 ++--
+ drivers/net/ethernet/sfc/efx.c                     | 10 +++++-----
+ drivers/net/ethernet/sfc/falcon/efx.c              |  6 +++---
+ drivers/net/ethernet/sfc/falcon/falcon_boards.c    |  4 ++--
+ drivers/net/wireless/ath/ath5k/pci.c               |  3 +--
+ drivers/net/wireless/ath/ath9k/pci.c               |  5 ++---
+ drivers/net/wireless/ath/wil6210/pcie_bus.c        |  6 ++----
+ drivers/net/wireless/intel/iwlegacy/common.c       |  3 +--
+ drivers/net/wireless/intel/iwlwifi/pcie/drv.c      | 12 ++++--------
+ drivers/net/wireless/marvell/mwifiex/pcie.c        |  8 ++------
+ drivers/net/wireless/quantenna/qtnfmac/pcie/pcie.c |  4 ++--
+ drivers/net/wireless/realtek/rtlwifi/pci.c         |  6 ++----
+ 15 files changed, 32 insertions(+), 51 deletions(-)
 
 -- 
-https://patchwork.kernel.org/patch/11042813/
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+2.20.1
 
