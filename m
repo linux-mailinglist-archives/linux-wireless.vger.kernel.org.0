@@ -2,99 +2,109 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 8F73772D8A
-	for <lists+linux-wireless@lfdr.de>; Wed, 24 Jul 2019 13:28:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4C98172DB5
+	for <lists+linux-wireless@lfdr.de>; Wed, 24 Jul 2019 13:35:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727760AbfGXL2I (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 24 Jul 2019 07:28:08 -0400
-Received: from mail-pf1-f196.google.com ([209.85.210.196]:37417 "EHLO
-        mail-pf1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727378AbfGXL2I (ORCPT
+        id S1727405AbfGXLfK (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 24 Jul 2019 07:35:10 -0400
+Received: from smtp.codeaurora.org ([198.145.29.96]:40870 "EHLO
+        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727128AbfGXLfK (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 24 Jul 2019 07:28:08 -0400
-Received: by mail-pf1-f196.google.com with SMTP id 19so20807699pfa.4;
-        Wed, 24 Jul 2019 04:28:07 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=lPJODdHXNUOCzN4xKheoilyC8acYqYcYpJHRoZ1WYTE=;
-        b=Fu4nqhcYDzCc4ntaKb7ylasjdocx9Eikc8FaHxArxaS6uDPqCuh0EK2dtQE/solJ18
-         gHBjVEBwBhyF93uBI2c8ePdVZyBMIDhosx2JlikkAUWUUliM+tALQ45lZaXeluBMMkNH
-         iyIjEKS2SC7V9BTbIUtUlTvknLk70VBWxUi0K64JapboigZ5Sd2gO7cnai4ozu/V5JHN
-         GLH72jKqthjH2jBTHL28YcJEhFc/A6XTRJ8mAijVaf/ZJgdmbT9ncnK8k4puUhpVk4zI
-         6dokJZRsqmHgbyCbWNbv6rW2KZ3jY3nnlcrLVPIGK//+6DrK2LNPjBjFMQwuwtD2tUiY
-         ywWw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=lPJODdHXNUOCzN4xKheoilyC8acYqYcYpJHRoZ1WYTE=;
-        b=WMel2vub18xNkOTGA75I3Ic/xNbzU9hn7JUNUiads+IL4UfI/LKBMJb6EtKZa79RK+
-         h5y4Yk6UyrghZF588eeP7XHmjvl3bP3kaF7vmvPKk90Y6CO6D9yg0OkZOLYXN9iIDqp6
-         eBy+VVmKQ676JaMIKcMRCQOIAwnaiT02Qnsaffwo59n+uYAy1KyJalWQLOH0dfoFjNdJ
-         ZQ4qgupPuZA670Lwv+ilmsi2JYjooyGuT7Nhko91Yz4M9Lo53Ddtx9097e0dRtkJRBef
-         YwGwaGb2TTndTTFutLIEVUguZqC6jZH419AV/Wf38nOp/8SpvyQyqqaWOJ0Uy3GuyUTf
-         bHKA==
-X-Gm-Message-State: APjAAAVMos1gaQ9J/mHSzpy4UDJbTIzQjbPEYr9pqKieG/h90+HpxvIF
-        ZAuQJFqBzZJAUJy8A8u3sZ0=
-X-Google-Smtp-Source: APXvYqwjl6M6gzKYKVaYmJV0bxSI+Rd5/9Ly6OfIsh//DBqkDgM+0ehH9CSiJf3Or7y+qJZk8KikTg==
-X-Received: by 2002:a62:8f91:: with SMTP id n139mr11098810pfd.48.1563967687615;
-        Wed, 24 Jul 2019 04:28:07 -0700 (PDT)
-Received: from suzukaze.ipads-lab.se.sjtu.edu.cn ([89.31.126.54])
-        by smtp.gmail.com with ESMTPSA id e13sm58185441pff.45.2019.07.24.04.28.04
-        (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
-        Wed, 24 Jul 2019 04:28:07 -0700 (PDT)
-From:   Chuhong Yuan <hslester96@gmail.com>
-Cc:     Ping-Ke Shih <pkshih@realtek.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        "David S . Miller" <davem@davemloft.net>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Chuhong Yuan <hslester96@gmail.com>
-Subject: [PATCH net-next 10/10] rtlwifi: rtl_pci: Use dev_get_drvdata
-Date:   Wed, 24 Jul 2019 19:28:02 +0800
-Message-Id: <20190724112802.13620-1-hslester96@gmail.com>
-X-Mailer: git-send-email 2.20.1
+        Wed, 24 Jul 2019 07:35:10 -0400
+Received: by smtp.codeaurora.org (Postfix, from userid 1000)
+        id CD35360388; Wed, 24 Jul 2019 11:35:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
+        s=default; t=1563968108;
+        bh=PKsdsPRKMo4ZtbQ7Rcm2MFURdgVd1dXIYdcVeyVHotc=;
+        h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
+        b=bC3UndZkqc+u4v2XFJ7YL3IwOYqPiMYHKgQuOP7R4kPBEdcHeBfN52OYvnz7Bm2fs
+         0QEMG/P0HnIYso6zY8V/DQf0kxxBE3YO4j2IIlK4Id0+HRXsdpHHgTCDBaXDtiti9r
+         WXGP0+znOw5nW9r73fqoDL2yQmaxADDcyO0aKvTU=
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        pdx-caf-mail.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-0.8 required=2.0 tests=ALL_TRUSTED,BAYES_00,
+        DKIM_INVALID,DKIM_SIGNED,MISSING_DATE,MISSING_MID,SPF_NONE autolearn=no
+        autolearn_force=no version=3.4.0
+Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo@smtp.codeaurora.org)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 2C2D060388;
+        Wed, 24 Jul 2019 11:35:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
+        s=default; t=1563968107;
+        bh=PKsdsPRKMo4ZtbQ7Rcm2MFURdgVd1dXIYdcVeyVHotc=;
+        h=Subject:From:In-Reply-To:References:To:Cc:From;
+        b=VW56ttPu5ecy3DbKzYVN2m9H6Ds5rU81iJ5LRsA0SbMIR3Zu4oiMBXzoieih/B3HA
+         b8jFymaNIe9Rb76bymHkxaEjfDiK0rVqzshUWmn07Rh+V6+BzSeYQrDXU2AZm4bjJU
+         XETW08GgbpfVwI8pJ9rjTsAMQisVs1zWmkqA7epg=
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 2C2D060388
+Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-To:     unlisted-recipients:; (no To-header on input)
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH v2 2/2] mwifiex: Make use of the new sdio_trigger_replug()
+ API to reset
+From:   Kalle Valo <kvalo@codeaurora.org>
+In-Reply-To: <20190722193939.125578-3-dianders@chromium.org>
+References: <20190722193939.125578-3-dianders@chromium.org>
+To:     Douglas Anderson <dianders@chromium.org>
+Cc:     Ulf Hansson <ulf.hansson@linaro.org>,
+        Adrian Hunter <adrian.hunter@intel.com>,
+        Ganapathi Bhat <gbhat@marvell.com>,
+        linux-wireless@vger.kernel.org,
+        Andreas Fenkart <afenkart@gmail.com>,
+        Brian Norris <briannorris@chromium.org>,
+        Amitkumar Karwar <amitkarwar@gmail.com>,
+        linux-rockchip@lists.infradead.org,
+        Wolfram Sang <wsa+renesas@sang-engineering.com>,
+        Nishant Sarmukadam <nishants@marvell.com>,
+        netdev@vger.kernel.org, Avri Altman <avri.altman@wdc.com>,
+        linux-mmc@vger.kernel.org, davem@davemloft.net,
+        Xinming Hu <huxinming820@gmail.com>,
+        Douglas Anderson <dianders@chromium.org>,
+        linux-kernel@vger.kernel.org
+User-Agent: pwcli/0.0.0-git (https://github.com/kvalo/pwcli/) Python/2.7.12
+Message-Id: <20190724113508.CD35360388@smtp.codeaurora.org>
+Date:   Wed, 24 Jul 2019 11:35:08 +0000 (UTC)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Instead of using to_pci_dev + pci_get_drvdata,
-use dev_get_drvdata to make code simpler.
+Douglas Anderson <dianders@chromium.org> wrote:
 
-Signed-off-by: Chuhong Yuan <hslester96@gmail.com>
----
- drivers/net/wireless/realtek/rtlwifi/pci.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+> As described in the patch ("mmc: core: Add sdio_trigger_replug()
+> API"), the current mwifiex_sdio_card_reset() is broken in the cases
+> where we're running Bluetooth on a second SDIO func on the same card
+> as WiFi.  The problem goes away if we just use the
+> sdio_trigger_replug() API call.
+> 
+> NOTE: Even though with this new solution there is less of a reason to
+> do our work from a workqueue (the unplug / plug mechanism we're using
+> is possible for a human to perform at any time so the stack is
+> supposed to handle it without it needing to be called from a special
+> context), we still need a workqueue because the Marvell reset function
+> could called from a context where sleeping is invalid and thus we
+> can't claim the host.  One example is Marvell's wakeup_timer_fn().
+> 
+> Cc: Andreas Fenkart <afenkart@gmail.com>
+> Cc: Brian Norris <briannorris@chromium.org>
+> Fixes: b4336a282db8 ("mwifiex: sdio: reset adapter using mmc_hw_reset")
+> Signed-off-by: Douglas Anderson <dianders@chromium.org>
+> Reviewed-by: Brian Norris <briannorris@chromium.org>
 
-diff --git a/drivers/net/wireless/realtek/rtlwifi/pci.c b/drivers/net/wireless/realtek/rtlwifi/pci.c
-index 4055e0ab75ba..7d96fe5f1a44 100644
---- a/drivers/net/wireless/realtek/rtlwifi/pci.c
-+++ b/drivers/net/wireless/realtek/rtlwifi/pci.c
-@@ -2409,8 +2409,7 @@ EXPORT_SYMBOL(rtl_pci_disconnect);
-  ****************************************/
- int rtl_pci_suspend(struct device *dev)
- {
--	struct pci_dev *pdev = to_pci_dev(dev);
--	struct ieee80211_hw *hw = pci_get_drvdata(pdev);
-+	struct ieee80211_hw *hw = dev_get_drvdata(dev);
- 	struct rtl_priv *rtlpriv = rtl_priv(hw);
- 
- 	rtlpriv->cfg->ops->hw_suspend(hw);
-@@ -2422,8 +2421,7 @@ EXPORT_SYMBOL(rtl_pci_suspend);
- 
- int rtl_pci_resume(struct device *dev)
- {
--	struct pci_dev *pdev = to_pci_dev(dev);
--	struct ieee80211_hw *hw = pci_get_drvdata(pdev);
-+	struct ieee80211_hw *hw = dev_get_drvdata(dev);
- 	struct rtl_priv *rtlpriv = rtl_priv(hw);
- 
- 	rtlpriv->cfg->ops->hw_resume(hw);
+I assume this is going via some other tree so I'm dropping this from my
+queue. If I should apply this please resend once the dependency is in
+wireless-drivers-next.
+
+Patch set to Not Applicable.
+
 -- 
-2.20.1
+https://patchwork.kernel.org/patch/11053351/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
