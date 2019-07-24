@@ -2,117 +2,89 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 5604E73E1E
-	for <lists+linux-wireless@lfdr.de>; Wed, 24 Jul 2019 22:22:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 95BE574263
+	for <lists+linux-wireless@lfdr.de>; Thu, 25 Jul 2019 01:55:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2391328AbfGXUWi (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 24 Jul 2019 16:22:38 -0400
-Received: from mail-io1-f66.google.com ([209.85.166.66]:45992 "EHLO
-        mail-io1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2390815AbfGXUWh (ORCPT
+        id S2388894AbfGXXzk (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 24 Jul 2019 19:55:40 -0400
+Received: from mail-lf1-f68.google.com ([209.85.167.68]:38629 "EHLO
+        mail-lf1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2388437AbfGXXzk (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 24 Jul 2019 16:22:37 -0400
-Received: by mail-io1-f66.google.com with SMTP id g20so92342299ioc.12
-        for <linux-wireless@vger.kernel.org>; Wed, 24 Jul 2019 13:22:36 -0700 (PDT)
+        Wed, 24 Jul 2019 19:55:40 -0400
+Received: by mail-lf1-f68.google.com with SMTP id h28so33121420lfj.5
+        for <linux-wireless@vger.kernel.org>; Wed, 24 Jul 2019 16:55:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=chromium.org; s=google;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=W7b98j1DYhcpfb7OdCLFp27JFdB3a34V6jagTpBUbfA=;
-        b=emPr0+o12gzDRDVdDGCZkDSc1awT8Sv7j4Y3PHnjX6+BEM8Ev916Ml6Ya5Ixn59rnj
-         bYHRVD4vJpGgnK8uA8ZfT2527Pza1HUFVITP04fOwvVSTVtDbOhp0XyRD+J1U8RCZ7+q
-         cQkjHaLlnu1CLlhPM31Ij364/ILIXnU5UveYQ=
+        bh=9Wfk8aesSMyq3EkvW+x9kZOwpatIbXz/F4YcugXGab8=;
+        b=IPxmEQrpl/0qpoqC7qmeMap6Fvz9YIN4VbKKC1BPYScJFeIL/U8QfqtmRyAwNAmD+g
+         XrIR7V0uvThOd4W6Ok9nCAZjyUFbXQuWExw4MP6WZl5uAXIc52l3nlCqCiqHkq7hytJk
+         /ilWkqayZ/K5vMKJrw+fu3F0KBJvFu8q5s29A=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=W7b98j1DYhcpfb7OdCLFp27JFdB3a34V6jagTpBUbfA=;
-        b=Gx1q1HT6h8FrB0KUc8C/9iBRbwLg2jsONsSiB5NdVoY/fwIBZGtmUHCs5tFnoMiq9E
-         WEeHPhiAS5AGqG01erqatgpFLWGo4ZPedC8vsytWQ/6G1QyFr/2oNiYq9ysO3KFn42bV
-         yDtcJJHgGQ53MkBKv0/cRW3umv4QEMGQ3tf3GMeRBVUTDhc8k33fOOdzB5TIthD2WvdD
-         8TQPVN+Qf7xJ5yhCyBNhrqfhEfozOxBgpbFxTc+umv5srj6zWU8I+KOLpjaMit1ZlROE
-         MDWRSaO++0XByhV0eAptf19bssEFscHqRsirUoR0hvWIECg+Z4o0/W50mwbO56ZJLWh3
-         XSig==
-X-Gm-Message-State: APjAAAWcZJTis+MuSn9A/Ct8qmZKHD7BfYiO2Zl8Lbz4GzMKvh6iQbPe
-        wgyvLZTnul4hcJIhk9Nj4hHD9owCLYk=
-X-Google-Smtp-Source: APXvYqyGOa9rY/7GFMBmJ2C20MjRX4avKay4XQCGiE1p98KUI726X/Ey3zs6VN/swEleXvrw5wffeQ==
-X-Received: by 2002:a6b:7606:: with SMTP id g6mr23710188iom.288.1563999755964;
-        Wed, 24 Jul 2019 13:22:35 -0700 (PDT)
-Received: from mail-io1-f46.google.com (mail-io1-f46.google.com. [209.85.166.46])
-        by smtp.gmail.com with ESMTPSA id z19sm58366418ioh.12.2019.07.24.13.22.34
+        bh=9Wfk8aesSMyq3EkvW+x9kZOwpatIbXz/F4YcugXGab8=;
+        b=K5a+W4JmhAwfMD17z9TmF8G8AfArM/SSZvSsVAHumcKS4IZL0uTvpHGjz5mgbs/bUM
+         P/67u45FB/gx7pYeF7FA5k7W2bPaxnK47yIFOR+CkRM+nTQqptWiJ/VMB/cv0NDRlgKo
+         jj6RFXgtIKvhgmGPXbFYqLz/ylRXnxb+ptdTAYZG2SAc9qi5agot5zVyuzssPR0xebQ9
+         TLNCG1I3QNUnklBDsmIaY1suzr1xfOZo+jIljfSKbAY7FDFET8E4uynrHMvXErIcU0t6
+         wuuGAt6rLPWf+udQ7DL4wFjznvkPRvEO2NXTK+S2OXsazPHWCy0Cehnfu1TblvGKZw6S
+         HZLA==
+X-Gm-Message-State: APjAAAWipDFXVzldmsQ+1Qmb3ds9O/0H7rtE1ehV26YVpIjDbsKnrUdc
+        +SrvwPLQc37OuCj69hcLU4Zf1gLeKEs=
+X-Google-Smtp-Source: APXvYqyDiw3tBvvgozyfJ/wwn3z32gVUKCQABsx95JuFu5ETOqaoOLFUrWcsaP/dRrlJXL2WUSMoOQ==
+X-Received: by 2002:a19:7509:: with SMTP id y9mr39567890lfe.117.1564012537929;
+        Wed, 24 Jul 2019 16:55:37 -0700 (PDT)
+Received: from mail-lj1-f171.google.com (mail-lj1-f171.google.com. [209.85.208.171])
+        by smtp.gmail.com with ESMTPSA id o17sm8837440ljg.71.2019.07.24.16.55.36
         for <linux-wireless@vger.kernel.org>
         (version=TLS1_3 cipher=AEAD-AES128-GCM-SHA256 bits=128/128);
-        Wed, 24 Jul 2019 13:22:35 -0700 (PDT)
-Received: by mail-io1-f46.google.com with SMTP id i10so92298289iol.13
-        for <linux-wireless@vger.kernel.org>; Wed, 24 Jul 2019 13:22:34 -0700 (PDT)
-X-Received: by 2002:a5d:8ccc:: with SMTP id k12mr78564964iot.141.1563999754524;
- Wed, 24 Jul 2019 13:22:34 -0700 (PDT)
+        Wed, 24 Jul 2019 16:55:36 -0700 (PDT)
+Received: by mail-lj1-f171.google.com with SMTP id k18so46160045ljc.11
+        for <linux-wireless@vger.kernel.org>; Wed, 24 Jul 2019 16:55:36 -0700 (PDT)
+X-Received: by 2002:a2e:824f:: with SMTP id j15mr45258506ljh.117.1564012536432;
+ Wed, 24 Jul 2019 16:55:36 -0700 (PDT)
 MIME-Version: 1.0
-References: <20190722193939.125578-3-dianders@chromium.org> <20190724113508.47A356021C@smtp.codeaurora.org>
-In-Reply-To: <20190724113508.47A356021C@smtp.codeaurora.org>
-From:   Doug Anderson <dianders@chromium.org>
-Date:   Wed, 24 Jul 2019 13:22:22 -0700
-X-Gmail-Original-Message-ID: <CAD=FV=WAsrBV9PzUz1qPzQru+AkOYZ5hsaWdhNYRTNqUfDeOmQ@mail.gmail.com>
-Message-ID: <CAD=FV=WAsrBV9PzUz1qPzQru+AkOYZ5hsaWdhNYRTNqUfDeOmQ@mail.gmail.com>
-Subject: Re: [PATCH v2 2/2] mwifiex: Make use of the new sdio_trigger_replug()
- API to reset
-To:     Kalle Valo <kvalo@codeaurora.org>,
-        Ulf Hansson <ulf.hansson@linaro.org>
-Cc:     Adrian Hunter <adrian.hunter@intel.com>,
-        Ganapathi Bhat <gbhat@marvell.com>,
+References: <20190703081049.28831-1-luca@coelho.fi> <1d7609a45e38725d57c2f78b5e437b83b7e49197.camel@coelho.fi>
+ <87d0irqr2l.fsf@codeaurora.org>
+In-Reply-To: <87d0irqr2l.fsf@codeaurora.org>
+From:   Brian Norris <briannorris@chromium.org>
+Date:   Wed, 24 Jul 2019 16:55:25 -0700
+X-Gmail-Original-Message-ID: <CA+ASDXPjLW+Zrf-uruCLMFGGDaJd=xYWt4tb=T_0HKP=ZnHbTQ@mail.gmail.com>
+Message-ID: <CA+ASDXPjLW+Zrf-uruCLMFGGDaJd=xYWt4tb=T_0HKP=ZnHbTQ@mail.gmail.com>
+Subject: Re: [PATCH for v5.2] iwlwifi: mvm: disable TX-AMSDU on older NICs
+To:     Kalle Valo <kvalo@codeaurora.org>
+Cc:     Luca Coelho <luca@coelho.fi>,
+        "David S. Miller" <davem@davemloft.net>,
         linux-wireless <linux-wireless@vger.kernel.org>,
-        Andreas Fenkart <afenkart@gmail.com>,
-        Brian Norris <briannorris@chromium.org>,
-        Amitkumar Karwar <amitkarwar@gmail.com>,
-        "open list:ARM/Rockchip SoC..." <linux-rockchip@lists.infradead.org>,
-        Wolfram Sang <wsa+renesas@sang-engineering.com>,
-        Nishant Sarmukadam <nishants@marvell.com>,
-        netdev <netdev@vger.kernel.org>,
-        Avri Altman <avri.altman@wdc.com>,
-        Linux MMC List <linux-mmc@vger.kernel.org>,
-        David Miller <davem@davemloft.net>,
-        Xinming Hu <huxinming820@gmail.com>,
-        LKML <linux-kernel@vger.kernel.org>
+        "Grumbach, Emmanuel" <emmanuel.grumbach@intel.com>,
+        johannes.hirte@datenkhaos.de, steven@uplinklabs.net,
+        Johannes Berg <johannes.berg@intel.com>
 Content-Type: text/plain; charset="UTF-8"
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi,
-
-On Wed, Jul 24, 2019 at 4:35 AM Kalle Valo <kvalo@codeaurora.org> wrote:
->
-> Douglas Anderson <dianders@chromium.org> wrote:
->
-> > As described in the patch ("mmc: core: Add sdio_trigger_replug()
-> > API"), the current mwifiex_sdio_card_reset() is broken in the cases
-> > where we're running Bluetooth on a second SDIO func on the same card
-> > as WiFi.  The problem goes away if we just use the
-> > sdio_trigger_replug() API call.
+On Wed, Jul 3, 2019 at 4:46 AM Kalle Valo <kvalo@codeaurora.org> wrote:
+> Luca Coelho <luca@coelho.fi> writes:
+> > Hi Dave,
 > >
-> > NOTE: Even though with this new solution there is less of a reason to
-> > do our work from a workqueue (the unplug / plug mechanism we're using
-> > is possible for a human to perform at any time so the stack is
-> > supposed to handle it without it needing to be called from a special
-> > context), we still need a workqueue because the Marvell reset function
-> > could called from a context where sleeping is invalid and thus we
-> > can't claim the host.  One example is Marvell's wakeup_timer_fn().
+> > This is an important fix for a bug that has been reported by several
+> > users in bugzilla (and elsewhere).  It fixes FW crashes that disrupt
+> > throughput and connectivity in general in very popular devices (Intel's
+> > WiFi 7000 and 8000 series).
 > >
-> > Cc: Andreas Fenkart <afenkart@gmail.com>
-> > Cc: Brian Norris <briannorris@chromium.org>
-> > Fixes: b4336a282db8 ("mwifiex: sdio: reset adapter using mmc_hw_reset")
-> > Signed-off-by: Douglas Anderson <dianders@chromium.org>
-> > Reviewed-by: Brian Norris <briannorris@chromium.org>
+> > I know it's a bit late for v5.2, but if possible, it would be great to
+> > take this.  Kalle is on vacation, so we agreed that I would send it
+> > directly to you.
 >
-> I assume this is going via some other tree so I'm dropping this from my
-> queue. If I should apply this please resend once the dependency is in
-> wireless-drivers-next.
->
-> Patch set to Not Applicable.
+> Acked-by: Kalle Valo <kvalo@codeaurora.org>
 
-Thanks.  For now I'll assume that Ulf will pick it up if/when he is
-happy with patch #1 in this series.  Would you be willing to provide
-your Ack on this patch to make it clear to Ulf you're OK with that?
+5.2 has come and gone, and I believe Kalle has awoken from vacation.
+Can we get this for 5.3?
 
--Doug
+Brian
