@@ -2,85 +2,67 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 9E41674334
-	for <lists+linux-wireless@lfdr.de>; Thu, 25 Jul 2019 04:21:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 06DE374347
+	for <lists+linux-wireless@lfdr.de>; Thu, 25 Jul 2019 04:26:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728688AbfGYCVU (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 24 Jul 2019 22:21:20 -0400
-Received: from alexa-out-tai-01.qualcomm.com ([103.229.16.226]:26185 "EHLO
-        alexa-out-tai-01.qualcomm.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726238AbfGYCVU (ORCPT
+        id S2389128AbfGYC0y (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 24 Jul 2019 22:26:54 -0400
+Received: from rtits2.realtek.com ([211.75.126.72]:57944 "EHLO
+        rtits2.realtek.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2389085AbfGYC0y (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 24 Jul 2019 22:21:20 -0400
-X-Greylist: delayed 365 seconds by postgrey-1.27 at vger.kernel.org; Wed, 24 Jul 2019 22:21:18 EDT
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
-  d=qti.qualcomm.com; i=@qti.qualcomm.com; q=dns/txt;
-  s=qcdkim; t=1564021279; x=1595557279;
-  h=from:to:cc:date:message-id:references:in-reply-to:
-   content-transfer-encoding:mime-version:subject;
-  bh=D8GTquOjv5a2dHq/HN3CvemJphUb20rQDDhnsXNJseo=;
-  b=yhK5SrrY0n/aog72v6pQ4mhORGKv9z4TJsFsR9Bhctq3O1qcTont5bss
-   0JvtOm+wy9gQAThOhp2XyjQafYLqwcGYNqT6ayYgOp5XtPZykEEiXAaN/
-   kAi5a9BQZdo5nBNAseBQp3vVRwBVIKfIU3rfrCDthJJxOLAGrl3YIG54r
-   w=;
-Subject: RE: [PATCH] ath10k: add mic bytes for pmf management packet
-Thread-Topic: [PATCH] ath10k: add mic bytes for pmf management packet
-Received: from ironmsg02-tai.qualcomm.com ([10.249.140.7])
-  by alexa-out-tai-01.qualcomm.com with ESMTP; 25 Jul 2019 10:15:11 +0800
-X-IronPort-AV: E=McAfee;i="6000,8403,9328"; a="35329799"
-Received: from aptaiexm02a.ap.qualcomm.com ([10.249.150.11])
-  by ironmsg02-tai.qualcomm.com with ESMTP/TLS/AES256-SHA; 25 Jul 2019 10:15:05 +0800
-Received: from aptaiexm02f.ap.qualcomm.com (10.249.150.16) by
- aptaiexm02a.ap.qualcomm.com (10.249.150.11) with Microsoft SMTP Server (TLS)
- id 15.0.1473.3; Thu, 25 Jul 2019 10:15:04 +0800
-Received: from aptaiexm02f.ap.qualcomm.com ([fe80::4152:1436:e436:faa1]) by
- aptaiexm02f.ap.qualcomm.com ([fe80::4152:1436:e436:faa1%19]) with mapi id
- 15.00.1473.003; Thu, 25 Jul 2019 10:15:04 +0800
-From:   Wen Gong <wgong@qti.qualcomm.com>
-To:     "kvalo@codeaurora.org" <kvalo@codeaurora.org>
-CC:     Ben Greear <greearb@candelatech.com>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "ath10k@lists.infradead.org" <ath10k@lists.infradead.org>,
-        Wen Gong <wgong@codeaurora.org>
-Thread-Index: AQHVJSZMyCLP3ilNoE660R+W056916ahAcmwgDjlpJmAAOuawA==
-Date:   Thu, 25 Jul 2019 02:15:03 +0000
-Message-ID: <5d573271132e40f99326019d3d94827b@aptaiexm02f.ap.qualcomm.com>
-References: <1560757079-19266-1-git-send-email-wgong@codeaurora.org>
- <136d04d4-671b-8dde-2abd-63070b07bd26@candelatech.com>
- <9403fef58374427fa76fb32ee64ee333@aptaiexm02f.ap.qualcomm.com>
- <87v9vrzl8d.fsf@kamboji.qca.qualcomm.com>
-In-Reply-To: <87v9vrzl8d.fsf@kamboji.qca.qualcomm.com>
-Accept-Language: en-US
-Content-Language: en-US
+        Wed, 24 Jul 2019 22:26:54 -0400
+Authenticated-By: 
+X-SpamFilter-By: BOX Solutions SpamTrap 5.62 with qID x6P2QkOr002456, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (RTITCAS12.realtek.com.tw[172.21.6.16])
+        by rtits2.realtek.com.tw (8.15.2/2.57/5.78) with ESMTPS id x6P2QkOr002456
+        (version=TLSv1 cipher=DHE-RSA-AES256-SHA bits=256 verify=NOT);
+        Thu, 25 Jul 2019 10:26:47 +0800
+Received: from RTITMBSVM04.realtek.com.tw ([fe80::e404:880:2ef1:1aa1]) by
+ RTITCAS12.realtek.com.tw ([::1]) with mapi id 14.03.0439.000; Thu, 25 Jul
+ 2019 10:26:46 +0800
+From:   Tony Chuang <yhchuang@realtek.com>
+To:     Kalle Valo <kvalo@codeaurora.org>,
+        Brian Norris <briannorris@chromium.org>
+CC:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        "Brian Norris" <briannorris@chromium.org>
+Subject: RE: [RFC PATCH] rtw88: use txpwr_lmt_cfg_pair struct, not arrays
+Thread-Topic: [RFC PATCH] rtw88: use txpwr_lmt_cfg_pair struct, not arrays
+Thread-Index: AQHVORrdzwsI0XBcs027K+5Cn7dZRqbZK/8AgAGBnXA=
+Date:   Thu, 25 Jul 2019 02:26:45 +0000
+Message-ID: <F7CD281DE3E379468C6D07993EA72F84D187DDAE@RTITMBSVM04.realtek.com.tw>
+References: <20190713013232.215138-1-briannorris@chromium.org>
+ <20190724112304.7DDF960909@smtp.codeaurora.org>
+In-Reply-To: <20190724112304.7DDF960909@smtp.codeaurora.org>
+Accept-Language: zh-TW, en-US
+Content-Language: zh-TW
 X-MS-Has-Attach: 
 X-MS-TNEF-Correlator: 
-x-ms-exchange-transport-fromentityheader: Hosted
-x-originating-ip: [10.249.136.10]
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+x-originating-ip: [172.21.68.183]
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-> From: ath10k <ath10k-bounces@lists.infradead.org> On Behalf Of Kalle Valo
-> Sent: Wednesday, July 24, 2019 8:11 PM
-> To: Wen Gong <wgong@qti.qualcomm.com>
-> Cc: Ben Greear <greearb@candelatech.com>; linux-wireless@vger.kernel.org;
-> ath10k@lists.infradead.org; Wen Gong <wgong@codeaurora.org>
-> Subject: [EXT] Re: [PATCH] ath10k: add mic bytes for pmf management
-> packet
-> > seems the ieee80211_is_robust_mgmt_frame_tx is not
-> > match my change.
->=20
-> So what's the conclusion, can I take this patch?
->=20
-Yes, you can take this patch.
-> --
-> Kalle Valo
->=20
-> _______________________________________________
-> ath10k mailing list
-> ath10k@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/ath10k
+PiBCcmlhbiBOb3JyaXMgPGJyaWFubm9ycmlzQGNocm9taXVtLm9yZz4gd3JvdGU6DQo+IA0KPiA+
+IFdlJ3JlIGp1c3QgdHJ1c3RpbmcgdGhhdCB0aGVzZSB0YWJsZXMgYXJlIG9mIHRoZSByaWdodCBk
+aW1lbnNpb25zLCB3aGVuDQo+ID4gd2UgY291bGQgZG8gYmV0dGVyIGJ5IGp1c3QgdXNpbmcgdGhl
+IHN0cnVjdCBkaXJlY3RseS4gTGV0J3MgZXhwb3NlIHRoZQ0KPiA+IHN0cnVjdCB0eHB3cl9sbXRf
+Y2ZnX3BhaXIgaW5zdGVhZC4NCj4gPg0KPiA+IFRoZSB0YWJsZSBjaGFuZ2VzIHdlcmUgbWFkZSBi
+eSB1c2luZyBzb21lIFZpbSBtYWNyb3MsIHNvIHRoYXQgc2hvdWxkDQo+ID4gaGVscCBwcmV2ZW50
+IGFueSB0cmFuc2xhdGlvbiBtaXN0YWtlcyBhbG9uZyB0aGUgd2F5Lg0KPiA+DQo+ID4gUmVtYWlu
+aW5nIHdvcms6IGdldCB0aGUgJ3ZvaWQgKmRhdGEnIG91dCBvZiB0aGUgZ2VuZXJpYyBzdHJ1Y3QN
+Cj4gPiBydHdfdGFibGU7IGFsbCBvZiB0aGVzZSB0YWJsZXMgcmVhbGx5IGRlc2VydmUgdG8gYmUg
+dGhlaXIgb3duIGRhdGENCj4gPiBzdHJ1Y3R1cmUsIHdpdGggcHJvcGVyIHR5cGUgZmllbGRzLg0K
+PiA+DQo+ID4gU2lnbmVkLW9mZi1ieTogQnJpYW4gTm9ycmlzIDxicmlhbm5vcnJpc0BjaHJvbWl1
+bS5vcmc+DQo+IA0KPiBUbyBtZSB0aGlzIGxvb2tzIGxpa2UgYSBjbGVhciBpbXByb3ZlbWVudCBh
+bmQgSSdtIGluY2xpbmVkIHRvIGFwcGx5IGl0LiBUb255LA0KPiB3aGF0IGRvIHlvdSB0aGluaz8N
+Cg0KSSB0aGluayBpdCBpbmRlZWQgaXMgYmV0dGVyIHRvIHVzZSBzdHJ1Y3QgaW5zdGVhZCBvZiBh
+cnJheXMgdG8gYWNjZXNzIHRoZSB0YWJsZS4NCkJ1dCB3aGF0IEkgYW0gdHJ5aW5nIHRvIGRvIGlz
+IHRvIGZpZ3VyZSBhIHdheSB0byB3cml0ZSBhIHByb3BlciBzdHJ1Y3QgZm9yDQpyYWRpb19bYWJd
+IHRhYmxlcy4gU2luY2UgdGhlIHBhcnNpbmcgbG9naWMgaXMgbW9yZSBjb21wbGljYXRlZCB0aGFu
+IG90aGVycy4NCg0KT25jZSBJIGZpbmlzaGVkIHRoZW0sIEkgd2lsbCBzZW5kIGEgcGF0Y2ggdG8g
+Y2hhbmdlIHRoZSB0YWJsZXMuDQoNCllhbi1Ic3Vhbg0K
