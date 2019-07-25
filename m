@@ -2,175 +2,80 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 50F5C74F6E
-	for <lists+linux-wireless@lfdr.de>; Thu, 25 Jul 2019 15:29:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 856187561F
+	for <lists+linux-wireless@lfdr.de>; Thu, 25 Jul 2019 19:48:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728876AbfGYN2t (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 25 Jul 2019 09:28:49 -0400
-Received: from mail-vs1-f67.google.com ([209.85.217.67]:40101 "EHLO
-        mail-vs1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726519AbfGYN2t (ORCPT
+        id S2403895AbfGYRsB (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 25 Jul 2019 13:48:01 -0400
+Received: from mail-pg1-f194.google.com ([209.85.215.194]:40606 "EHLO
+        mail-pg1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2403862AbfGYRsA (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 25 Jul 2019 09:28:49 -0400
-Received: by mail-vs1-f67.google.com with SMTP id a186so32069334vsd.7
-        for <linux-wireless@vger.kernel.org>; Thu, 25 Jul 2019 06:28:48 -0700 (PDT)
+        Thu, 25 Jul 2019 13:48:00 -0400
+Received: by mail-pg1-f194.google.com with SMTP id w10so23409420pgj.7
+        for <linux-wireless@vger.kernel.org>; Thu, 25 Jul 2019 10:47:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=vXKNB/T35UEJpgjy5bQMa/g2p0OKD2QzsqlMlAa6XPw=;
-        b=f/uQQYPHA8g4EJYLPYLuJ1y5iqC+JXr+y3ZExBNQFRTKMBE0ptdYkfXtsOwg8bWulp
-         zZ8vUXVHZTtT4veYqE6FY3J9yFjAWOKah4KLs0giuYjbw9oX80NdYOLQLeEpMoPXSM6F
-         LNu9DnmAgcDf2vlgWEuiZiTg9pVoHA9Kkn6k5l9MtGEZO/630B/DkxncJQpZvT08FtmE
-         ifzxx8MnhDevDnFLTEhcuytmqcQSWHjXXKaWyxOrUa4+IMAdtbxkxnY+4AzTBJuCCibf
-         ZN5FXJyrsuZFnYPkovS2Im/Jo42DNXFxP9f+RaIyJMosOPS+ykDNufilHeZ0jIjlcLVL
-         uwmA==
+        h=from:to:cc:subject:date:message-id;
+        bh=uPyttyuukrOTyss4ATYWgEvUft5R0VGROoogq8e3TtU=;
+        b=uqJZ9lPiDh6lDJrwTHr7pHrkZYYsxkLlZrhZHZlGYYNuBIeM69qOefpd858bUSgUTS
+         EZvvkiGFLtRo1xyovAUomFKaMXUM5X1Z6D6CQWYvEFFpVjdBPLK28jbBMgXG357oVrIL
+         lh6nYvSs9bi8UlYPOURqLRRSXQ9+GcbAtIJmki61DrhoWtOttOkUPRC2DNGPSF+l/kw3
+         vrYwxuOfRBxagbSyfDxzK8L5uMp/CBMxgwJxP06wil9LJH1ay0wbZP5PlYs/BpL3fsBW
+         BLO32TDOn6+aFMRLSjoqOD66ponaqQ91dLs0hQ7ORps2bW4PInGOREH4t7IpVOC292NS
+         41mQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=vXKNB/T35UEJpgjy5bQMa/g2p0OKD2QzsqlMlAa6XPw=;
-        b=CfHUUzSU1TFQTIEY55njqLTqPn3jOhixtHRiHCwmYk4oOCITiheUPcwdW7653wip+l
-         Q3OJiV54qZdUMLNMgUD3LIJEcutZ1AVxB8oCTQiMJq/lFeONeU5nJpdfGsVuZs/+a0Md
-         B+v1NFy6odVLtyp0c3Z2VgQYb64jCbzu7aNuRzXpEXtheU2twiCKx/Yshii9vuLbqx67
-         Z8ZbLggFjIqjhwgWvvHiuo8UwBOJ4dHVsJW699Yyai9LKx1EV3ZD73dEdSTLQiBvBJd0
-         pXis1c1H4Zo6tDMuRsu09Hs6lL/PyOt9cvfFw3gEV5DNaIvzCjDi0wJZzfyZrGyxzgSu
-         CLSg==
-X-Gm-Message-State: APjAAAV3cdr1IVxESOEb8L2R3/1CAtkkhj/S3FBI80U7KJIA+Ydavapo
-        K2ii8Xfj05q0GraV1R/d9NWXxZzK2WBVE4KszB1L8g==
-X-Google-Smtp-Source: APXvYqxQVUGQaO08z8JvqC/8hjWZk0eU15RGOsp4tEzLJQFfOVWtNAiPhhBmEDA9IIpQqprtF6qepXrstTHdGFfN0SU=
-X-Received: by 2002:a67:61c7:: with SMTP id v190mr4507235vsb.165.1564061327635;
- Thu, 25 Jul 2019 06:28:47 -0700 (PDT)
-MIME-Version: 1.0
-References: <20190722193939.125578-1-dianders@chromium.org>
-In-Reply-To: <20190722193939.125578-1-dianders@chromium.org>
-From:   Ulf Hansson <ulf.hansson@linaro.org>
-Date:   Thu, 25 Jul 2019 15:28:11 +0200
-Message-ID: <CAPDyKFoND5Kaam72zxO4wChO0z_1XL2KWX6oNjVcMUGA7G8RFg@mail.gmail.com>
-Subject: Re: [PATCH v2 0/2] mmc: core: Fix Marvell WiFi reset by adding SDIO
- API to replug card
-To:     Douglas Anderson <dianders@chromium.org>
-Cc:     Kalle Valo <kvalo@codeaurora.org>,
-        Adrian Hunter <adrian.hunter@intel.com>,
-        Ganapathi Bhat <gbhat@marvell.com>,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        Andreas Fenkart <afenkart@gmail.com>,
-        Brian Norris <briannorris@chromium.org>,
-        Amitkumar Karwar <amitkarwar@gmail.com>,
-        "open list:ARM/Rockchip SoC..." <linux-rockchip@lists.infradead.org>,
-        Wolfram Sang <wsa+renesas@sang-engineering.com>,
-        Nishant Sarmukadam <nishants@marvell.com>,
-        netdev <netdev@vger.kernel.org>,
-        Avri Altman <avri.altman@wdc.com>,
-        "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Xinming Hu <huxinming820@gmail.com>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Kate Stewart <kstewart@linuxfoundation.org>
-Content-Type: text/plain; charset="UTF-8"
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=uPyttyuukrOTyss4ATYWgEvUft5R0VGROoogq8e3TtU=;
+        b=jOz1bw8u/Nu+M7J2XUMv5AdYSGw0X47K8SqUIdzMJ3viMMI474Li2SWhbz1zM1XJ9A
+         r/TN96knDELtAiXFT6aGV0oWxM2PaH3ByE3cat1VcspQJ3AXPeKwKnwjgoOd5hbqEfrc
+         waHyOMWof9Y/G07/UMPbYp+ph9mS0+Re3PuEHvHnJpjhx8ysmHcPCnjWaV3EXM1gmm6Q
+         ZX4WqUjNTLzFsEP5/6eWDxzAcU+AUyPGF9XwTQYv1EsjSll5mW0YJGiXSr2bXL+Q62UD
+         Otsfs4dXdcIBwJuvCMnpZBV6I872hvvEfIm+zG2n3nUTUFH0vxJLqMWrS8lVTtdgty7c
+         S3yg==
+X-Gm-Message-State: APjAAAUWNeeQchjv5XS7YHrLlRJl2PPHEDpOmAezLXBjGuo4eL0C7gLV
+        A0tYe9+MTOyRD+NisABEi+L1vA==
+X-Google-Smtp-Source: APXvYqxWJJdh2WpxR05u7uTV6jiYAW/aFCKSvCbDb97bOitI1MMffmACT2/OqB9WOLNoqFmGmLAUkw==
+X-Received: by 2002:a17:90a:ca0f:: with SMTP id x15mr48139512pjt.82.1564076879249;
+        Thu, 25 Jul 2019 10:47:59 -0700 (PDT)
+Received: from localhost.localdomain (104-188-17-28.lightspeed.sndgca.sbcglobal.net. [104.188.17.28])
+        by smtp.gmail.com with ESMTPSA id r2sm68103389pfl.67.2019.07.25.10.47.58
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Thu, 25 Jul 2019 10:47:58 -0700 (PDT)
+From:   Bjorn Andersson <bjorn.andersson@linaro.org>
+To:     Kalle Valo <kvalo@codeaurora.org>,
+        Govind Singh <govinds@codeaurora.org>
+Cc:     "David S. Miller" <davem@davemloft.net>,
+        ath10k@lists.infradead.org, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-arm-msm@vger.kernel.org
+Subject: [PATCH 0/3] ath10k: Clean up regulator and clock handling
+Date:   Thu, 25 Jul 2019 10:47:52 -0700
+Message-Id: <20190725174755.23432-1-bjorn.andersson@linaro.org>
+X-Mailer: git-send-email 2.18.0
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Mon, 22 Jul 2019 at 21:41, Douglas Anderson <dianders@chromium.org> wrote:
->
-> As talked about in the thread at:
->
-> http://lkml.kernel.org/r/CAD=FV=X7P2F1k_zwHc0mbtfk55-rucTz_GoDH=PL6zWqKYcpuw@mail.gmail.com
->
-> ...when the Marvell WiFi card tries to reset itself it kills
-> Bluetooth.  It was observed that we could re-init the card properly by
-> unbinding / rebinding the host controller.  It was also observed that
-> in the downstream Chrome OS codebase the solution used was
-> mmc_remove_host() / mmc_add_host(), which is similar to the solution
-> in this series.
->
-> So far I've only done testing of this series using the reset test
-> source that can be simulated via sysfs.  Specifically I ran this test:
->
-> for i in $(seq 1000); do
->   echo "LOOP $i --------"
->   echo 1 > /sys/kernel/debug/mwifiex/mlan0/reset
->
->   while true; do
->     if ! ping -w15 -c1 "${GW}" >/dev/null 2>&1; then
->       fail=$(( fail + 1 ))
->       echo "Fail WiFi ${fail}"
->       if [[ ${fail} == 3 ]]; then
->         exit 1
->       fi
->     else
->       fail=0
->       break
->     fi
->   done
->
->   hciconfig hci0 down
->   sleep 1
->   if ! hciconfig hci0 up; then
->     echo "Fail BT"
->     exit 1
->   fi
-> done
->
-> I ran this several times and got several hundred iterations each
-> before a failure.  When I saw failures:
->
-> * Once I saw a "Fail BT"; manually resetting the card again fixed it.
->   I didn't give it time to see if it would have detected this
->   automatically.
-> * Once I saw the ping fail because (for some reason) my device only
->   got an IPv6 address from my router and the IPv4 ping failed.  I
->   changed my script to use 'ping6' to see if that would help.
-> * Once I saw the ping fail because the higher level network stack
->   ("shill" in my case) seemed to crash.  A few minutes later the
->   system recovered itself automatically.  https://crbug.com/984593 if
->   you want more details.
-> * Sometimes while I was testing I saw "Fail WiFi 1" indicating a
->   transitory failure.  Usually this was an association failure, but in
->   one case I saw the device do "Firmware wakeup failed" after I
->   triggered the reset.  This caused the driver to trigger a re-reset
->   of itself which eventually recovered things.  This was good because
->   it was an actual test of the normal reset flow (not the one
->   triggered via sysfs).
->
-> Changes in v2:
-> - s/routnine/routine (Brian Norris, Matthias Kaehlcke).
-> - s/contining/containing (Matthias Kaehlcke).
-> - Add Matthias Reviewed-by tag.
-> - Removed clear_bit() calls and old comment (Brian Norris).
-> - Explicit CC of Andreas Fenkart.
-> - Explicit CC of Brian Norris.
-> - Add "Fixes" pointing at the commit Brian talked about.
-> - Add Brian's Reviewed-by tag.
->
-> Douglas Anderson (2):
->   mmc: core: Add sdio_trigger_replug() API
->   mwifiex: Make use of the new sdio_trigger_replug() API to reset
->
->  drivers/mmc/core/core.c                     | 28 +++++++++++++++++++--
->  drivers/mmc/core/sdio_io.c                  | 20 +++++++++++++++
->  drivers/net/wireless/marvell/mwifiex/sdio.c | 16 +-----------
->  include/linux/mmc/host.h                    | 15 ++++++++++-
->  include/linux/mmc/sdio_func.h               |  2 ++
->  5 files changed, 63 insertions(+), 18 deletions(-)
->
+The first patch in this series removes the regulator_set_voltage() of a fixed
+voltate, as fixed regulator constraints should be specified on a board level
+and on certain boards - such as the Lenovo Yoga C630 - the voltage specified
+for the 3.3V regulator is outside the given range.
 
-Doug, thanks for sending this!
+The following two patches cleans up regulator and clock usage by using the bulk
+API provided by the two frameworks.
 
-As you know, I have been working on additional changes for SDIO
-suspend/resume (still WIP and not ready for sharing) and this series
-is related.
+Bjorn Andersson (3):
+  ath10k: snoc: skip regulator operations
+  ath10k: Use standard regulator bulk API in snoc
+  ath10k: Use standard bulk clock API in snoc
 
-The thing is, that even during system suspend/resume, synchronizations
-are needed between the different layers (mmc host, mmc core and
-sdio-funcs), which is common to the problem you want to solve.
+ drivers/net/wireless/ath/ath10k/snoc.c | 324 ++++---------------------
+ drivers/net/wireless/ath/ath10k/snoc.h |  26 +-
+ 2 files changed, 48 insertions(+), 302 deletions(-)
 
-That said, I need to scratch my head a bit more before I can provide
-you some feedback on $subject series. Moreover, it's vacation period
-at my side so things are moving a bit slower. Please be patient.
+-- 
+2.18.0
 
-Kind regards
-Uffe
