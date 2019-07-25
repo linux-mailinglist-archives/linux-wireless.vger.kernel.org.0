@@ -2,69 +2,93 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 8861C7498D
-	for <lists+linux-wireless@lfdr.de>; Thu, 25 Jul 2019 11:04:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8CB61749C0
+	for <lists+linux-wireless@lfdr.de>; Thu, 25 Jul 2019 11:21:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2389307AbfGYJE6 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 25 Jul 2019 05:04:58 -0400
-Received: from mail-wm1-f67.google.com ([209.85.128.67]:37861 "EHLO
-        mail-wm1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2388104AbfGYJE5 (ORCPT
+        id S2390377AbfGYJVN convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 25 Jul 2019 05:21:13 -0400
+Received: from eu-smtp-delivery-151.mimecast.com ([146.101.78.151]:45139 "EHLO
+        eu-smtp-delivery-151.mimecast.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S2389529AbfGYJVM (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 25 Jul 2019 05:04:57 -0400
-Received: by mail-wm1-f67.google.com with SMTP id f17so43980831wme.2
-        for <linux-wireless@vger.kernel.org>; Thu, 25 Jul 2019 02:04:56 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to
-         :content-transfer-encoding;
-        bh=22OmDu+kDs1NQe2O9QSNx1tMYqIBMd9Q0PxV1hGyBeo=;
-        b=sIWb6PXbc+gfkid2M73evVy5VvXkv6dh7UNG/PdQwtSynMnnEJd0VxUd5hWJruY0eb
-         oifgl987VcklbrYTGrJ6Mv8BWzHYn2eMst+i/cMa4sXINhs0KPQjEsJ7Nyr6JUS7W6oE
-         eBYoWc0rWZNzmA+YfPSImjGT4SASCssgj4lYQu+wJb0TGvCMP0kkBTqJ6uRbWPGLa0R6
-         bW6o9KZTmg5ZtQr9oBLzBsOqRPdw/F4and+7ig5nJIQYaj3Sy+20a6ht0R7QLsn1lZ2f
-         SqakXcTgnINr7BKhWYAn7Oy0tnV0BlJ+I1cfkqFs7Adq/xM/vYQvtBmFDod/fZbJKKO8
-         LbHg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to:content-transfer-encoding;
-        bh=22OmDu+kDs1NQe2O9QSNx1tMYqIBMd9Q0PxV1hGyBeo=;
-        b=fqqQKCd2J6+rJjagWlz7NciJR0wHKNPHzCbGXVkM7xhkbsjoMGZv4w1QEiFeWxN0IP
-         X9lC8HCDpFkdEAPGczAm/HW/x1TCOqsoGE/UUNUTZWSs8mQTX38A0qqcPuPBX14bAjPG
-         Z5LSfCGwcFxi7ct196IcSOaD5+cDKNBvNkB7Co2W2t78Mje3EzUYh9kB4vHGlq8kvBA3
-         p5S79FJtv7UlPvHN8QWv+fD7W8h8xhVXKXoxArU2VmWN0P8VBCrWPq+57/wuH0kqOHJT
-         TiQUyXaQSjOrUOEpY3ONLrQnH9SZ6vXsSbd25+ApIotvnqGwgt/FEVyjY/pQ6CjC8fpN
-         SahQ==
-X-Gm-Message-State: APjAAAUeb0lbr77LOCV/UUPXmAE2kJl1gFrkqCSe4uPgUvpD+gfoDKkD
-        25RQGMRJQIux+pjw9+2rzypaAotXomwVRZdIE2E=
-X-Google-Smtp-Source: APXvYqxR/8jkj3wkyNl5qHbR+KRsjgY06uzriZj1Aqx9Gc3fXzQXzuTlgEjAFg28qCYuFzh85OVPErdvNekRsCUdcoI=
-X-Received: by 2002:a7b:c5c3:: with SMTP id n3mr70914879wmk.101.1564045495655;
- Thu, 25 Jul 2019 02:04:55 -0700 (PDT)
+        Thu, 25 Jul 2019 05:21:12 -0400
+Received: from AcuMS.aculab.com (156.67.243.126 [156.67.243.126]) (Using
+ TLS) by relay.mimecast.com with ESMTP id
+ uk-mta-235-scnLaRCdNWKuzfuwzi4QFQ-1; Thu, 25 Jul 2019 10:21:09 +0100
+Received: from AcuMS.Aculab.com (fd9f:af1c:a25b::d117) by AcuMS.aculab.com
+ (fd9f:af1c:a25b::d117) with Microsoft SMTP Server (TLS) id 15.0.1347.2; Thu,
+ 25 Jul 2019 10:21:08 +0100
+Received: from AcuMS.Aculab.com ([fe80::43c:695e:880f:8750]) by
+ AcuMS.aculab.com ([fe80::43c:695e:880f:8750%12]) with mapi id 15.00.1347.000;
+ Thu, 25 Jul 2019 10:21:08 +0100
+From:   David Laight <David.Laight@ACULAB.COM>
+To:     'Jian-Hong Pan' <jian-hong@endlessm.com>,
+        Yan-Hsuan Chuang <yhchuang@realtek.com>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        "David S . Miller" <davem@davemloft.net>
+CC:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "linux@endlessm.com" <linux@endlessm.com>,
+        "stable@vger.kernel.org" <stable@vger.kernel.org>
+Subject: RE: [PATCH] rtw88: pci: Use general byte arrays as the elements of RX
+ ring
+Thread-Topic: [PATCH] rtw88: pci: Use general byte arrays as the elements of
+ RX ring
+Thread-Index: AQHVQsDFH4BG56wpwU66J+Fzxhx3XabbDGOQ
+Date:   Thu, 25 Jul 2019 09:21:08 +0000
+Message-ID: <06d713fff7434dfb9ccab32c2e2112e2@AcuMS.aculab.com>
+References: <20190725080925.6575-1-jian-hong@endlessm.com>
+In-Reply-To: <20190725080925.6575-1-jian-hong@endlessm.com>
+Accept-Language: en-GB, en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-ms-exchange-transport-fromentityheader: Hosted
+x-originating-ip: [10.202.205.107]
 MIME-Version: 1.0
-Received: by 2002:a1c:2382:0:0:0:0:0 with HTTP; Thu, 25 Jul 2019 02:04:54
- -0700 (PDT)
-Reply-To: linelink008@gmail.com
-From:   AZIM HASHIM PREMJI <linelink006@gmail.com>
-Date:   Thu, 25 Jul 2019 02:04:54 -0700
-Message-ID: <CAG4TvbQeA8tL3cwH9tgAPDqhbaSwScM1JszJVz6XzqPa=NSZCA@mail.gmail.com>
-Subject: =?UTF-8?Q?HERZLICHEN_GL=C3=9CCKWUNSCH_=E2=82=AC_1=2C000=2E000=2C00_wurde_an_Si?=
-        =?UTF-8?Q?e_gespendet?=
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-MC-Unique: scnLaRCdNWKuzfuwzi4QFQ-1
+X-Mimecast-Spam-Score: 0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8BIT
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Ich bin Azim Hashim Premji, ein indischer Wirtschaftsmagnat, Investor
-und Philanthrop.
-Ich bin der Vorsitzende von Wipro Limited. Ich habe 25 Prozent meines
-pers=C3=B6nlichen Verm=C3=B6gens verschenkt
-f=C3=BCr die Wohlfahrt. Und ich habe zugesagt, den Rest von 25% dieses Jahr
-2019 an zu vergeben
-Privatpersonen .. Ich habe mich entschieden, Ihnen =E2=82=AC1.000.000,00 zu
-spenden. Wenn du bist
-Interesse an meiner Spende, kontaktieren Sie mich f=C3=BCr weitere Informat=
-ionen.
+From: Jian-Hong Pan
+> Sent: 25 July 2019 09:09
+> Each skb as the element in RX ring was expected with sized buffer 8216
+> (RTK_PCI_RX_BUF_SIZE) bytes. However, the skb buffer's true size is
+> 16640 bytes for alignment after allocated, x86_64 for example. And, the
+> difference will be enlarged 512 times (RTK_MAX_RX_DESC_NUM).
+> To prevent that much wasted memory, this patch follows David's
+> suggestion [1] and uses general buffer arrays, instead of skbs as the
+> elements in RX ring.
+...
+>  	for (i = 0; i < len; i++) {
+> -		skb = dev_alloc_skb(buf_sz);
+> -		if (!skb) {
+> +		buf = devm_kzalloc(rtwdev->dev, buf_sz, GFP_ATOMIC);
+
+You should do this allocation somewhere than can sleep.
+So you don't need GFP_ATOMIC, making the allocate (and dma map)
+much less likely to fail.
+If they do fail using a smaller ring might be better than failing
+completely.
+
+I suspect that buf_sz gets rounded up somewhat.
+Also you almost certainly want 'buf' to be cache-line aligned.
+I don't think devm_kzalloc() guarantees that at all.
+
+While allocating all 512 buffers in one block (just over 4MB)
+is probably not a good idea, you may need to allocated (and dma map)
+then in groups.
+
+	David
+
+-
+Registered Address Lakeside, Bramley Road, Mount Farm, Milton Keynes, MK1 1PT, UK
+Registration No: 1397386 (Wales)
+
