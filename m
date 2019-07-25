@@ -2,25 +2,25 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 80ED17469B
-	for <lists+linux-wireless@lfdr.de>; Thu, 25 Jul 2019 07:55:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 74431746A7
+	for <lists+linux-wireless@lfdr.de>; Thu, 25 Jul 2019 07:56:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725819AbfGYFzK (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 25 Jul 2019 01:55:10 -0400
-Received: from smtp.codeaurora.org ([198.145.29.96]:37232 "EHLO
+        id S1727208AbfGYF4o (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 25 Jul 2019 01:56:44 -0400
+Received: from smtp.codeaurora.org ([198.145.29.96]:37618 "EHLO
         smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725774AbfGYFzK (ORCPT
+        with ESMTP id S1725800AbfGYF4n (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 25 Jul 2019 01:55:10 -0400
+        Thu, 25 Jul 2019 01:56:43 -0400
 Received: by smtp.codeaurora.org (Postfix, from userid 1000)
-        id 12971601C3; Thu, 25 Jul 2019 05:55:08 +0000 (UTC)
+        id 4C67C6055D; Thu, 25 Jul 2019 05:56:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1564034109;
-        bh=dcWibguJX8D7tDXGfD1l0OlXEYMWmZ8Gxr3nT63OX1c=;
+        s=default; t=1564034202;
+        bh=obQivilrrq99bI/JADOtPPw40Tam6JqkCOlcQ4u07Pg=;
         h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=Jj8qzfKOs6M403BjwsVtczNEV4YcAvoED6hOiamQpQnsp4dLsRuU/ueDFWb71O+ss
-         XO08OOTyUAVuynvSgNFE2c4bx35iFpHRH1dca1pfm8P7wnhRrj21Ub2Ba9ebkvSHNR
-         emlMfDhW47osd0VNQ5EnoepcFFF9E/vr+LmLaDXc=
+        b=bMsF962d6/5hRs8CNVfvOuFh4McgKgeaYjwiNj3rwaaPtAP6v1KZ5KaO+5ayPT7X8
+         Dk0u0GVbi2sdzFC5siDwnBU1Ll2HS92frYguPRwP1uvbB0SUBU8gLoQwBwEQ/gApbq
+         43BEiRsKf6jOkmD6Y6EjXSwyN/8B3a+P3AvXqgpA=
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         pdx-caf-mail.web.codeaurora.org
 X-Spam-Level: 
@@ -31,35 +31,45 @@ Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
         (Authenticated sender: kvalo@smtp.codeaurora.org)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 5889D601C3;
-        Thu, 25 Jul 2019 05:55:06 +0000 (UTC)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 80BD960213;
+        Thu, 25 Jul 2019 05:56:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1564034108;
-        bh=dcWibguJX8D7tDXGfD1l0OlXEYMWmZ8Gxr3nT63OX1c=;
+        s=default; t=1564034201;
+        bh=obQivilrrq99bI/JADOtPPw40Tam6JqkCOlcQ4u07Pg=;
         h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=Vnz4Zsl7WHGu1WDU9EgKHBH1cCNSjoU6iIKeGi5v5rvr1Rq+r4x6hqYJcBN2C7DTj
-         75MghvN7NCG5obHoUpMA/CJGK41GFmwRSW2K2yMILKzo1F6uojlVOJOauAdNstncl3
-         7+T53dHWxEzTFHUw/WC/fc3PKFh8UGQBrgdLfKmA=
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 5889D601C3
+        b=fk8JO0d1n7CFnbxsgD6H9t57uVvCqUoYRCA9TuaG0rfqi+Tvb2UVr3h4dHScgkhSY
+         EQ6SzMH0UOjrdbwzJYMIgy6mDuQfDqre9tdHdaNcPknctiD6v44h7ISBXfHbXfxEoq
+         tpwl1W30EdWY0/KUbJAxnaMqr9tlLD3iht+TUTO0=
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 80BD960213
 Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
 Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
 From:   Kalle Valo <kvalo@codeaurora.org>
-To:     Brian Norris <briannorris@chromium.org>
-Cc:     Luca Coelho <luca@coelho.fi>,
-        "David S. Miller" <davem@davemloft.net>,
+To:     Doug Anderson <dianders@chromium.org>
+Cc:     Ulf Hansson <ulf.hansson@linaro.org>,
+        Adrian Hunter <adrian.hunter@intel.com>,
+        Ganapathi Bhat <gbhat@marvell.com>,
         linux-wireless <linux-wireless@vger.kernel.org>,
-        "Grumbach\, Emmanuel" <emmanuel.grumbach@intel.com>,
-        johannes.hirte@datenkhaos.de, steven@uplinklabs.net,
-        Johannes Berg <johannes.berg@intel.com>
-Subject: Re: [PATCH for v5.2] iwlwifi: mvm: disable TX-AMSDU on older NICs
-References: <20190703081049.28831-1-luca@coelho.fi>
-        <1d7609a45e38725d57c2f78b5e437b83b7e49197.camel@coelho.fi>
-        <87d0irqr2l.fsf@codeaurora.org>
-        <CA+ASDXPjLW+Zrf-uruCLMFGGDaJd=xYWt4tb=T_0HKP=ZnHbTQ@mail.gmail.com>
-Date:   Thu, 25 Jul 2019 08:55:03 +0300
-In-Reply-To: <CA+ASDXPjLW+Zrf-uruCLMFGGDaJd=xYWt4tb=T_0HKP=ZnHbTQ@mail.gmail.com>
-        (Brian Norris's message of "Wed, 24 Jul 2019 16:55:25 -0700")
-Message-ID: <87muh2zmiw.fsf@kamboji.qca.qualcomm.com>
+        Andreas Fenkart <afenkart@gmail.com>,
+        Brian Norris <briannorris@chromium.org>,
+        Amitkumar Karwar <amitkarwar@gmail.com>,
+        "open list\:ARM\/Rockchip SoC..." 
+        <linux-rockchip@lists.infradead.org>,
+        Wolfram Sang <wsa+renesas@sang-engineering.com>,
+        Nishant Sarmukadam <nishants@marvell.com>,
+        netdev <netdev@vger.kernel.org>,
+        Avri Altman <avri.altman@wdc.com>,
+        Linux MMC List <linux-mmc@vger.kernel.org>,
+        David Miller <davem@davemloft.net>,
+        Xinming Hu <huxinming820@gmail.com>,
+        LKML <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v2 2/2] mwifiex: Make use of the new sdio_trigger_replug() API to reset
+References: <20190722193939.125578-3-dianders@chromium.org>
+        <20190724113508.47A356021C@smtp.codeaurora.org>
+        <CAD=FV=WAsrBV9PzUz1qPzQru+AkOYZ5hsaWdhNYRTNqUfDeOmQ@mail.gmail.com>
+Date:   Thu, 25 Jul 2019 08:56:35 +0300
+In-Reply-To: <CAD=FV=WAsrBV9PzUz1qPzQru+AkOYZ5hsaWdhNYRTNqUfDeOmQ@mail.gmail.com>
+        (Doug Anderson's message of "Wed, 24 Jul 2019 13:22:22 -0700")
+Message-ID: <87imrqzmgc.fsf@kamboji.qca.qualcomm.com>
 User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
 MIME-Version: 1.0
 Content-Type: text/plain
@@ -68,34 +78,47 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Brian Norris <briannorris@chromium.org> writes:
+Doug Anderson <dianders@chromium.org> writes:
 
-> On Wed, Jul 3, 2019 at 4:46 AM Kalle Valo <kvalo@codeaurora.org> wrote:
->> Luca Coelho <luca@coelho.fi> writes:
->> > Hi Dave,
->> >
->> > This is an important fix for a bug that has been reported by several
->> > users in bugzilla (and elsewhere).  It fixes FW crashes that disrupt
->> > throughput and connectivity in general in very popular devices (Intel's
->> > WiFi 7000 and 8000 series).
->> >
->> > I know it's a bit late for v5.2, but if possible, it would be great to
->> > take this.  Kalle is on vacation, so we agreed that I would send it
->> > directly to you.
->>
->> Acked-by: Kalle Valo <kvalo@codeaurora.org>
+> Hi,
 >
-> 5.2 has come and gone, and I believe Kalle has awoken from vacation.
+> On Wed, Jul 24, 2019 at 4:35 AM Kalle Valo <kvalo@codeaurora.org> wrote:
+>>
+>> Douglas Anderson <dianders@chromium.org> wrote:
+>>
+>> > As described in the patch ("mmc: core: Add sdio_trigger_replug()
+>> > API"), the current mwifiex_sdio_card_reset() is broken in the cases
+>> > where we're running Bluetooth on a second SDIO func on the same card
+>> > as WiFi.  The problem goes away if we just use the
+>> > sdio_trigger_replug() API call.
+>> >
+>> > NOTE: Even though with this new solution there is less of a reason to
+>> > do our work from a workqueue (the unplug / plug mechanism we're using
+>> > is possible for a human to perform at any time so the stack is
+>> > supposed to handle it without it needing to be called from a special
+>> > context), we still need a workqueue because the Marvell reset function
+>> > could called from a context where sleeping is invalid and thus we
+>> > can't claim the host.  One example is Marvell's wakeup_timer_fn().
+>> >
+>> > Cc: Andreas Fenkart <afenkart@gmail.com>
+>> > Cc: Brian Norris <briannorris@chromium.org>
+>> > Fixes: b4336a282db8 ("mwifiex: sdio: reset adapter using mmc_hw_reset")
+>> > Signed-off-by: Douglas Anderson <dianders@chromium.org>
+>> > Reviewed-by: Brian Norris <briannorris@chromium.org>
+>>
+>> I assume this is going via some other tree so I'm dropping this from my
+>> queue. If I should apply this please resend once the dependency is in
+>> wireless-drivers-next.
+>>
+>> Patch set to Not Applicable.
+>
+> Thanks.  For now I'll assume that Ulf will pick it up if/when he is
+> happy with patch #1 in this series.  Would you be willing to provide
+> your Ack on this patch to make it clear to Ulf you're OK with that?
 
-Yeah, I have sort of crawled out of my cave ;)
+Sure, I was planning to do that already in my previous email but forgot.
 
-> Can we get this for 5.3?
-
-Ah, this slipped through the cracks. Thanks for pointing it out. I now
-took this patch from Luca and assigned to myself in patchwork and I'll
-queue this for v5.3.
-
-https://patchwork.kernel.org/patch/11029027/
+Acked-by: Kalle Valo <kvalo@codeaurora.org>
 
 -- 
 Kalle Valo
