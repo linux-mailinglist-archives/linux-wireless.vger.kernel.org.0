@@ -2,89 +2,110 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 95BE574263
-	for <lists+linux-wireless@lfdr.de>; Thu, 25 Jul 2019 01:55:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A6400742EB
+	for <lists+linux-wireless@lfdr.de>; Thu, 25 Jul 2019 03:40:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2388894AbfGXXzk (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 24 Jul 2019 19:55:40 -0400
-Received: from mail-lf1-f68.google.com ([209.85.167.68]:38629 "EHLO
-        mail-lf1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2388437AbfGXXzk (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 24 Jul 2019 19:55:40 -0400
-Received: by mail-lf1-f68.google.com with SMTP id h28so33121420lfj.5
-        for <linux-wireless@vger.kernel.org>; Wed, 24 Jul 2019 16:55:38 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=9Wfk8aesSMyq3EkvW+x9kZOwpatIbXz/F4YcugXGab8=;
-        b=IPxmEQrpl/0qpoqC7qmeMap6Fvz9YIN4VbKKC1BPYScJFeIL/U8QfqtmRyAwNAmD+g
-         XrIR7V0uvThOd4W6Ok9nCAZjyUFbXQuWExw4MP6WZl5uAXIc52l3nlCqCiqHkq7hytJk
-         /ilWkqayZ/K5vMKJrw+fu3F0KBJvFu8q5s29A=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=9Wfk8aesSMyq3EkvW+x9kZOwpatIbXz/F4YcugXGab8=;
-        b=K5a+W4JmhAwfMD17z9TmF8G8AfArM/SSZvSsVAHumcKS4IZL0uTvpHGjz5mgbs/bUM
-         P/67u45FB/gx7pYeF7FA5k7W2bPaxnK47yIFOR+CkRM+nTQqptWiJ/VMB/cv0NDRlgKo
-         jj6RFXgtIKvhgmGPXbFYqLz/ylRXnxb+ptdTAYZG2SAc9qi5agot5zVyuzssPR0xebQ9
-         TLNCG1I3QNUnklBDsmIaY1suzr1xfOZo+jIljfSKbAY7FDFET8E4uynrHMvXErIcU0t6
-         wuuGAt6rLPWf+udQ7DL4wFjznvkPRvEO2NXTK+S2OXsazPHWCy0Cehnfu1TblvGKZw6S
-         HZLA==
-X-Gm-Message-State: APjAAAWipDFXVzldmsQ+1Qmb3ds9O/0H7rtE1ehV26YVpIjDbsKnrUdc
-        +SrvwPLQc37OuCj69hcLU4Zf1gLeKEs=
-X-Google-Smtp-Source: APXvYqyDiw3tBvvgozyfJ/wwn3z32gVUKCQABsx95JuFu5ETOqaoOLFUrWcsaP/dRrlJXL2WUSMoOQ==
-X-Received: by 2002:a19:7509:: with SMTP id y9mr39567890lfe.117.1564012537929;
-        Wed, 24 Jul 2019 16:55:37 -0700 (PDT)
-Received: from mail-lj1-f171.google.com (mail-lj1-f171.google.com. [209.85.208.171])
-        by smtp.gmail.com with ESMTPSA id o17sm8837440ljg.71.2019.07.24.16.55.36
-        for <linux-wireless@vger.kernel.org>
-        (version=TLS1_3 cipher=AEAD-AES128-GCM-SHA256 bits=128/128);
-        Wed, 24 Jul 2019 16:55:36 -0700 (PDT)
-Received: by mail-lj1-f171.google.com with SMTP id k18so46160045ljc.11
-        for <linux-wireless@vger.kernel.org>; Wed, 24 Jul 2019 16:55:36 -0700 (PDT)
-X-Received: by 2002:a2e:824f:: with SMTP id j15mr45258506ljh.117.1564012536432;
- Wed, 24 Jul 2019 16:55:36 -0700 (PDT)
-MIME-Version: 1.0
-References: <20190703081049.28831-1-luca@coelho.fi> <1d7609a45e38725d57c2f78b5e437b83b7e49197.camel@coelho.fi>
- <87d0irqr2l.fsf@codeaurora.org>
-In-Reply-To: <87d0irqr2l.fsf@codeaurora.org>
-From:   Brian Norris <briannorris@chromium.org>
-Date:   Wed, 24 Jul 2019 16:55:25 -0700
-X-Gmail-Original-Message-ID: <CA+ASDXPjLW+Zrf-uruCLMFGGDaJd=xYWt4tb=T_0HKP=ZnHbTQ@mail.gmail.com>
-Message-ID: <CA+ASDXPjLW+Zrf-uruCLMFGGDaJd=xYWt4tb=T_0HKP=ZnHbTQ@mail.gmail.com>
-Subject: Re: [PATCH for v5.2] iwlwifi: mvm: disable TX-AMSDU on older NICs
-To:     Kalle Valo <kvalo@codeaurora.org>
-Cc:     Luca Coelho <luca@coelho.fi>,
-        "David S. Miller" <davem@davemloft.net>,
+        id S2387860AbfGYBkl (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 24 Jul 2019 21:40:41 -0400
+Received: from szxga07-in.huawei.com ([45.249.212.35]:35876 "EHLO huawei.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1726808AbfGYBkl (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Wed, 24 Jul 2019 21:40:41 -0400
+Received: from DGGEMS405-HUB.china.huawei.com (unknown [172.30.72.58])
+        by Forcepoint Email with ESMTP id 8A9CB1451149D3AC8C95;
+        Thu, 25 Jul 2019 09:40:38 +0800 (CST)
+Received: from [127.0.0.1] (10.133.213.239) by DGGEMS405-HUB.china.huawei.com
+ (10.3.19.205) with Microsoft SMTP Server id 14.3.439.0; Thu, 25 Jul 2019
+ 09:40:30 +0800
+Subject: Re: [PATCH] carl9170: remove set but not used variable 'udev'
+To:     Christian Lamparter <chunkeey@gmail.com>
+References: <20190724015411.66525-1-yuehaibing@huawei.com>
+ <CAAd0S9BvTfRyUVkQzcczyNkU_oeU5hNdK3KVQzLsU21b4JGNTQ@mail.gmail.com>
+CC:     Kalle Valo <kvalo@codeaurora.org>,
         linux-wireless <linux-wireless@vger.kernel.org>,
-        "Grumbach, Emmanuel" <emmanuel.grumbach@intel.com>,
-        johannes.hirte@datenkhaos.de, steven@uplinklabs.net,
-        Johannes Berg <johannes.berg@intel.com>
-Content-Type: text/plain; charset="UTF-8"
+        Netdev <netdev@vger.kernel.org>,
+        <kernel-janitors@vger.kernel.org>,
+        linux-kernel <linux-kernel@vger.kernel.org>,
+        Hulk Robot <hulkci@huawei.com>
+From:   Yuehaibing <yuehaibing@huawei.com>
+Message-ID: <1cfbfe67-e931-029b-1836-a6b796283c2c@huawei.com>
+Date:   Thu, 25 Jul 2019 09:40:29 +0800
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:45.0) Gecko/20100101
+ Thunderbird/45.2.0
+MIME-Version: 1.0
+In-Reply-To: <CAAd0S9BvTfRyUVkQzcczyNkU_oeU5hNdK3KVQzLsU21b4JGNTQ@mail.gmail.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-Originating-IP: [10.133.213.239]
+X-CFilter-Loop: Reflected
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Wed, Jul 3, 2019 at 4:46 AM Kalle Valo <kvalo@codeaurora.org> wrote:
-> Luca Coelho <luca@coelho.fi> writes:
-> > Hi Dave,
-> >
-> > This is an important fix for a bug that has been reported by several
-> > users in bugzilla (and elsewhere).  It fixes FW crashes that disrupt
-> > throughput and connectivity in general in very popular devices (Intel's
-> > WiFi 7000 and 8000 series).
-> >
-> > I know it's a bit late for v5.2, but if possible, it would be great to
-> > take this.  Kalle is on vacation, so we agreed that I would send it
-> > directly to you.
->
-> Acked-by: Kalle Valo <kvalo@codeaurora.org>
+On 2019/7/25 3:42, Christian Lamparter wrote:
+> On Wed, Jul 24, 2019 at 3:48 AM YueHaibing <yuehaibing@huawei.com> wrote:
+>>
+>> Fixes gcc '-Wunused-but-set-variable' warning:
+>>
+>> drivers/net/wireless/ath/carl9170/usb.c: In function 'carl9170_usb_disconnect':
+>> drivers/net/wireless/ath/carl9170/usb.c:1110:21: warning:
+>>  variable 'udev' set but not used [-Wunused-but-set-variable]
+>>
+>> It is not used, so can be removed.
+>>
+>> Reported-by: Hulk Robot <hulkci@huawei.com>
+>> Signed-off-by: YueHaibing <yuehaibing@huawei.com>
+>> ---
+> Isn't this the same patch you sent earlier:
+> 
+> https://patchwork.kernel.org/patch/11027909/
+> 
+>>From what I can tell, it's the same but with an extra [-next], I
+> remember that I've acked that one
+> but your patch now does not have it? Is this an oversight, because I'm
+> the maintainer for this
+> driver. So, in my opinion at least the "ack" should have some value
+> and shouldn't be "ignored".
+> 
+> Look, from what I know, Kalle is not ignoring you, It's just that
+> carl9170 is no longer top priority.
+> So please be patient. As long as its queued in the patchwork it will
+> get considered.
 
-5.2 has come and gone, and I believe Kalle has awoken from vacation.
-Can we get this for 5.3?
+Thank you for reminder. I forget the previous patch，and our CI robot
+report it again, So I do it again, sorry for confusion.
 
-Brian
+Just pls drop this and use previous one.
+
+> 
+> Cheers,
+> Christian
+> 
+>>  drivers/net/wireless/ath/carl9170/usb.c | 2 --
+>>  1 file changed, 2 deletions(-)
+>>
+>> diff --git a/drivers/net/wireless/ath/carl9170/usb.c b/drivers/net/wireless/ath/carl9170/usb.c
+>> index 99f1897a775d..486957a04bd1 100644
+>> --- a/drivers/net/wireless/ath/carl9170/usb.c
+>> +++ b/drivers/net/wireless/ath/carl9170/usb.c
+>> @@ -1107,12 +1107,10 @@ static int carl9170_usb_probe(struct usb_interface *intf,
+>>  static void carl9170_usb_disconnect(struct usb_interface *intf)
+>>  {
+>>         struct ar9170 *ar = usb_get_intfdata(intf);
+>> -       struct usb_device *udev;
+>>
+>>         if (WARN_ON(!ar))
+>>                 return;
+>>
+>> -       udev = ar->udev;
+>>         wait_for_completion(&ar->fw_load_wait);
+>>
+>>         if (IS_INITIALIZED(ar)) {
+>>
+>>
+>>
+> 
+> .
+> 
+
