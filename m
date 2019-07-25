@@ -2,128 +2,105 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id BE7CA749E7
-	for <lists+linux-wireless@lfdr.de>; Thu, 25 Jul 2019 11:32:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 595C374C36
+	for <lists+linux-wireless@lfdr.de>; Thu, 25 Jul 2019 12:52:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2387901AbfGYJc5 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 25 Jul 2019 05:32:57 -0400
-Received: from s3.sipsolutions.net ([144.76.43.62]:48258 "EHLO
-        sipsolutions.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727328AbfGYJc5 (ORCPT
+        id S1728996AbfGYKwn (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 25 Jul 2019 06:52:43 -0400
+Received: from mail-pf1-f195.google.com ([209.85.210.195]:39897 "EHLO
+        mail-pf1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728726AbfGYKwm (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 25 Jul 2019 05:32:57 -0400
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <johannes@sipsolutions.net>)
-        id 1hqa7L-0001aN-6Q; Thu, 25 Jul 2019 11:32:55 +0200
-From:   Johannes Berg <johannes@sipsolutions.net>
+        Thu, 25 Jul 2019 06:52:42 -0400
+Received: by mail-pf1-f195.google.com with SMTP id f17so18571443pfn.6
+        for <linux-wireless@vger.kernel.org>; Thu, 25 Jul 2019 03:52:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id;
+        bh=oVgsCC3RiMGe7tuxXcUxMfUIA90785iH1rwNHlmoQXA=;
+        b=RsSLnp6nFquwCMocdU6z//Ph35z5I/90G7FnIPxTN2T5qlJnqh4e/v6soMkoGR/xsM
+         yJ2C+V+v2NPEC52DDtF9bGs8WaofvreO6V0Z+BX8plQbjl45fD5+0kFmc2AEBZf6L1PY
+         RsTEKuzwyfedBIuClDjmoRF6989y+Ubm4ZQi/kBZZytsecj9pMTdmmtuTWtKEW+TY1dB
+         3XspJacnivN1MEagv8nFHLM6mUr8JDvys22ijz5Un3kzo2jTbn31PTTQK1J8AogH9Si3
+         bVh14In8//BxK4ZuzbCyyL6B39z92YvDTlm4hleLCZwHFgF5/1vtOPziXFNX6skEISUt
+         ydWQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=oVgsCC3RiMGe7tuxXcUxMfUIA90785iH1rwNHlmoQXA=;
+        b=Sa8lKXRxEq7rn04JRYLMewZuFKXmq0cLhZNVk0xIGlpjcS9R4jbo7Usv6W+Wep4/r1
+         JzkDiGOAbeD/CfyNwovuFXL8RPmmcL+7GcwKfn19XfW6Q2YbROnvZ6b+4Zj9zpLkHbzU
+         TEtvg9zYJ5bnk1mUg06KO+PTX00JaS9aSE/lLcRiuHBrikk2FNAEnMvtXXInBRQ34QAD
+         hslFvmHeaKina3jPiiVIgTpZdhq2IOUIFFUVUMcVyf8hia4RXiWHvCEgtDAVQ+4yFhaZ
+         /opSSQbmMPgWfSNiiD63NIHlktbAgYnHUD2jBsrnai3VNmCKz79u0qdHzJR+O3cteaUn
+         K1/w==
+X-Gm-Message-State: APjAAAVezUOr25FGDin/ekIHFrFLgiYdiEJJmd2U2VMa7446L/HgcVeM
+        L8+NvUhMGHdLlADyp6I7EIE=
+X-Google-Smtp-Source: APXvYqx4UWSdme9tiI3AzytSahCZRWQukrJJH/H6Z5w8r8y/d1tVcl+YicKuIvogxFG9nwHRPt5r9A==
+X-Received: by 2002:a63:2784:: with SMTP id n126mr82906273pgn.92.1564051961637;
+        Thu, 25 Jul 2019 03:52:41 -0700 (PDT)
+Received: from cpu508.localdomain ([183.82.100.30])
+        by smtp.gmail.com with ESMTPSA id f12sm44213015pgo.85.2019.07.25.03.52.37
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Thu, 25 Jul 2019 03:52:41 -0700 (PDT)
+From:   Ganapathi Kondraju <ganapathirajukondraju@gmail.com>
 To:     Kalle Valo <kvalo@codeaurora.org>
-Cc:     linux-wireless@vger.kernel.org
-Subject: pull-request: iwlwifi-fixes 2019-07-25
-Date:   Thu, 25 Jul 2019 11:32:47 +0200
-Message-Id: <20190725093249.16587-1-johannes@sipsolutions.net>
-X-Mailer: git-send-email 2.20.1
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Cc:     linux-wireless@vger.kernel.org, rishikesh.basu@redpinesignals.com,
+        krishna.pedda@redpinesignals.com, narasimha.a@redpinesignals.com,
+        srinivas.chappidi@redpinesignals.com,
+        Ganapathi Kondraju <ganapathirajukondraju@gmail.com>
+Subject: [PATCH] rsi: fix for sdio reset card issue
+Date:   Thu, 25 Jul 2019 16:21:50 +0530
+Message-Id: <1564051910-20136-1-git-send-email-ganapathirajukondraju@gmail.com>
+X-Mailer: git-send-email 2.5.5
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi Kalle,
+Issue: While removing and inserting the driver module, observed driver
+loading is not successful.
 
-So, I hope I finally have this figured out :-) I'm just replacing
-Luca and using my usual workflow like with Dave, so ...
+Root cause: Card is not resetted completely without issuing cmd5.
 
-Anyway, LOTS of fixes accumulated, so I guess this is bigger than
-usual, but a lot of these have been around for a long time and are
-quite important, as many people are running into them.
+Fix: Issued cmd5 properly.
 
-Please pull and let me know if there's any problem.
+Signed-off-by: Ganapathi Kondraju <ganapathirajukondraju@gmail.com>
+---
+ drivers/net/wireless/rsi/rsi_91x_sdio.c | 17 +++++++----------
+ 1 file changed, 7 insertions(+), 10 deletions(-)
 
-Thanks,
-johannes
-
-
-
-The following changes since commit 5f9e832c137075045d15cd6899ab0505cfb2ca4b:
-
-  Linus 5.3-rc1 (2019-07-21 14:05:38 -0700)
-
-are available in the Git repository at:
-
-  git://git.kernel.org/pub/scm/linux/kernel/git/iwlwifi/iwlwifi-fixes.git tags/iwlwifi-fixes-for-kvalo-2019-07-25
-
-for you to fetch changes up to 2f0d5845da92517cbbef39bde712b3a7d04da1fe:
-
-  iwlwifi: mvm: fix a use-after-free bug in iwl_mvm_tx_tso_segment (2019-07-23 16:50:25 +0200)
-
-----------------------------------------------------------------
-We have a lot of fixes, most of them are also applicable to stable.
-Notably:
- * fix use-after-free issues
- * fix DMA mapping API usage errors
- * fix frame drop occurring due to reorder buffer handling in
-   RSS in certain conditions
- * fix rate scale locking issues
- * disable TX A-MSDU on older NICs as it causes problems and was
-   never supposed to be supported
- * new PCI IDs
- * GEO_TX_POWER_LIMIT API issue that many people were hitting
-
-----------------------------------------------------------------
-Colin Ian King (1):
-      iwlwifi: mvm: fix comparison of u32 variable with less than zero
-
-Emmanuel Grumbach (8):
-      iwlwifi: mvm: prepare the ground for more RSS notifications
-      iwlwifi: mvm: add a new RSS sync notification for NSSN sync
-      iwlwiif: mvm: refactor iwl_mvm_notify_rx_queue
-      iwlwifi: mvm: add a loose synchronization of the NSSN across Rx queues
-      iwlwifi: mvm: fix frame drop from the reordering buffer
-      iwlwifi: don't unmap as page memory that was mapped as single
-      iwlwifi: mvm: fix an out-of-bound access
-      iwlwifi: mvm: fix a use-after-free bug in iwl_mvm_tx_tso_segment
-
-Gregory Greenman (4):
-      iwlwifi: mvm: add a wrapper around rs_tx_status to handle locks
-      iwlwifi: mvm: send LQ command always ASYNC
-      iwlwifi: mvm: replace RS mutex with a spin_lock
-      iwlwifi: mvm: fix possible out-of-bounds read when accessing lq_info
-
-Ihab Zhaika (1):
-      iwlwifi: add 3 new IDs for the 9000 series (iwl9260_2ac_160_cfg)
-
-Johannes Berg (2):
-      iwlwifi: mvm: disable TX-AMSDU on older NICs
-      iwlwifi: fix locking in delayed GTK setting
-
-Luca Coelho (2):
-      iwlwifi: mvm: don't send GEO_TX_POWER_LIMIT on version < 41
-      iwlwifi: mvm: fix version check for GEO_TX_POWER_LIMIT support
-
-Mordechay Goodstein (1):
-      iwlwifi: mvm: avoid races in rate init and rate perform
-
-Shahar S Matityahu (2):
-      iwlwifi: dbg_ini: move iwl_dbg_tlv_load_bin out of debug override ifdef
-      iwlwifi: dbg_ini: move iwl_dbg_tlv_free outside of debugfs ifdef
-
- drivers/net/wireless/intel/iwlwifi/fw/api/rx.h    |   3 +-
- drivers/net/wireless/intel/iwlwifi/iwl-drv.c      |   4 +-
- drivers/net/wireless/intel/iwlwifi/mvm/fw.c       |  29 +-
- drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c |  58 ++-
- drivers/net/wireless/intel/iwlwifi/mvm/mvm.h      |   8 +-
- drivers/net/wireless/intel/iwlwifi/mvm/nvm.c      |   2 +-
- drivers/net/wireless/intel/iwlwifi/mvm/ops.c      |   4 +-
- drivers/net/wireless/intel/iwlwifi/mvm/rs.c       | 539 ++++++++++++----------
- drivers/net/wireless/intel/iwlwifi/mvm/rs.h       |   3 +-
- drivers/net/wireless/intel/iwlwifi/mvm/rxmq.c     | 185 ++++++--
- drivers/net/wireless/intel/iwlwifi/mvm/sta.c      |   6 +-
- drivers/net/wireless/intel/iwlwifi/mvm/sta.h      |  12 +-
- drivers/net/wireless/intel/iwlwifi/mvm/tx.c       |   3 +-
- drivers/net/wireless/intel/iwlwifi/mvm/utils.c    |   4 +-
- drivers/net/wireless/intel/iwlwifi/pcie/drv.c     |   3 +
- drivers/net/wireless/intel/iwlwifi/pcie/tx.c      |   2 +
- 16 files changed, 523 insertions(+), 342 deletions(-)
+diff --git a/drivers/net/wireless/rsi/rsi_91x_sdio.c b/drivers/net/wireless/rsi/rsi_91x_sdio.c
+index b42cd50..b3c7724 100644
+--- a/drivers/net/wireless/rsi/rsi_91x_sdio.c
++++ b/drivers/net/wireless/rsi/rsi_91x_sdio.c
+@@ -230,19 +230,16 @@ static void rsi_reset_card(struct sdio_func *pfunction)
+ 		rsi_dbg(ERR_ZONE, "%s: CMD0 failed : %d\n", __func__, err);
+ 
+ 	/* Issue CMD5, arg = 0 */
+-	if (!host->ocr_avail) {
+-		err = rsi_issue_sdiocommand(pfunction,	SD_IO_SEND_OP_COND, 0,
+-					    (MMC_RSP_R4 | MMC_CMD_BCR), &resp);
+-		if (err)
+-			rsi_dbg(ERR_ZONE, "%s: CMD5 failed : %d\n",
+-				__func__, err);
+-
+-		host->ocr_avail = resp;
+-	}
++	err = rsi_issue_sdiocommand(pfunction,	SD_IO_SEND_OP_COND, 0,
++				    (MMC_RSP_R4 | MMC_CMD_BCR), &resp);
++	if (err)
++		rsi_dbg(ERR_ZONE, "%s: CMD5 failed : %d\n",
++			__func__, err);
++	card->ocr = resp;
+ 	/* Issue CMD5, arg = ocr. Wait till card is ready  */
+ 	for (i = 0; i < 100; i++) {
+ 		err = rsi_issue_sdiocommand(pfunction, SD_IO_SEND_OP_COND,
+-					    host->ocr_avail,
++					    card->ocr,
+ 					    (MMC_RSP_R4 | MMC_CMD_BCR), &resp);
+ 		if (err) {
+ 			rsi_dbg(ERR_ZONE, "%s: CMD5 failed : %d\n",
+-- 
+2.5.5
 
