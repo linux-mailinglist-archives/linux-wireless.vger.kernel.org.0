@@ -2,85 +2,69 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 1FEFF74972
-	for <lists+linux-wireless@lfdr.de>; Thu, 25 Jul 2019 10:55:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8861C7498D
+	for <lists+linux-wireless@lfdr.de>; Thu, 25 Jul 2019 11:04:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2389945AbfGYIzh convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 25 Jul 2019 04:55:37 -0400
-Received: from rtits2.realtek.com ([211.75.126.72]:50978 "EHLO
-        rtits2.realtek.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2389932AbfGYIzh (ORCPT
+        id S2389307AbfGYJE6 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 25 Jul 2019 05:04:58 -0400
+Received: from mail-wm1-f67.google.com ([209.85.128.67]:37861 "EHLO
+        mail-wm1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2388104AbfGYJE5 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 25 Jul 2019 04:55:37 -0400
-Authenticated-By: 
-X-SpamFilter-By: BOX Solutions SpamTrap 5.62 with qID x6P8tUqA029958, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (RTITCAS12.realtek.com.tw[172.21.6.16])
-        by rtits2.realtek.com.tw (8.15.2/2.57/5.78) with ESMTPS id x6P8tUqA029958
-        (version=TLSv1 cipher=DHE-RSA-AES256-SHA bits=256 verify=NOT);
-        Thu, 25 Jul 2019 16:55:30 +0800
-Received: from RTITMBSVM04.realtek.com.tw ([fe80::e404:880:2ef1:1aa1]) by
- RTITCAS12.realtek.com.tw ([::1]) with mapi id 14.03.0439.000; Thu, 25 Jul
- 2019 16:55:29 +0800
-From:   Tony Chuang <yhchuang@realtek.com>
-To:     Kalle Valo <kvalo@codeaurora.org>
-CC:     Brian Norris <briannorris@chromium.org>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-Subject: RE: [RFC PATCH] rtw88: use txpwr_lmt_cfg_pair struct, not arrays
-Thread-Topic: [RFC PATCH] rtw88: use txpwr_lmt_cfg_pair struct, not arrays
-Thread-Index: AQHVQq4lzwsI0XBcs027K+5Cn7dZRqbbB6ZA
-Date:   Thu, 25 Jul 2019 08:55:29 +0000
-Message-ID: <F7CD281DE3E379468C6D07993EA72F84D187E16E@RTITMBSVM04.realtek.com.tw>
-References: <20190713013232.215138-1-briannorris@chromium.org>
-        <20190724112304.7DDF960909@smtp.codeaurora.org>
-        <F7CD281DE3E379468C6D07993EA72F84D187DDAE@RTITMBSVM04.realtek.com.tw>
- <87ef2ezmb7.fsf@kamboji.qca.qualcomm.com>
-In-Reply-To: <87ef2ezmb7.fsf@kamboji.qca.qualcomm.com>
-Accept-Language: zh-TW, en-US
-Content-Language: zh-TW
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [172.21.68.183]
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 8BIT
+        Thu, 25 Jul 2019 05:04:57 -0400
+Received: by mail-wm1-f67.google.com with SMTP id f17so43980831wme.2
+        for <linux-wireless@vger.kernel.org>; Thu, 25 Jul 2019 02:04:56 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:reply-to:from:date:message-id:subject:to
+         :content-transfer-encoding;
+        bh=22OmDu+kDs1NQe2O9QSNx1tMYqIBMd9Q0PxV1hGyBeo=;
+        b=sIWb6PXbc+gfkid2M73evVy5VvXkv6dh7UNG/PdQwtSynMnnEJd0VxUd5hWJruY0eb
+         oifgl987VcklbrYTGrJ6Mv8BWzHYn2eMst+i/cMa4sXINhs0KPQjEsJ7Nyr6JUS7W6oE
+         eBYoWc0rWZNzmA+YfPSImjGT4SASCssgj4lYQu+wJb0TGvCMP0kkBTqJ6uRbWPGLa0R6
+         bW6o9KZTmg5ZtQr9oBLzBsOqRPdw/F4and+7ig5nJIQYaj3Sy+20a6ht0R7QLsn1lZ2f
+         SqakXcTgnINr7BKhWYAn7Oy0tnV0BlJ+I1cfkqFs7Adq/xM/vYQvtBmFDod/fZbJKKO8
+         LbHg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to:content-transfer-encoding;
+        bh=22OmDu+kDs1NQe2O9QSNx1tMYqIBMd9Q0PxV1hGyBeo=;
+        b=fqqQKCd2J6+rJjagWlz7NciJR0wHKNPHzCbGXVkM7xhkbsjoMGZv4w1QEiFeWxN0IP
+         X9lC8HCDpFkdEAPGczAm/HW/x1TCOqsoGE/UUNUTZWSs8mQTX38A0qqcPuPBX14bAjPG
+         Z5LSfCGwcFxi7ct196IcSOaD5+cDKNBvNkB7Co2W2t78Mje3EzUYh9kB4vHGlq8kvBA3
+         p5S79FJtv7UlPvHN8QWv+fD7W8h8xhVXKXoxArU2VmWN0P8VBCrWPq+57/wuH0kqOHJT
+         TiQUyXaQSjOrUOEpY3ONLrQnH9SZ6vXsSbd25+ApIotvnqGwgt/FEVyjY/pQ6CjC8fpN
+         SahQ==
+X-Gm-Message-State: APjAAAUeb0lbr77LOCV/UUPXmAE2kJl1gFrkqCSe4uPgUvpD+gfoDKkD
+        25RQGMRJQIux+pjw9+2rzypaAotXomwVRZdIE2E=
+X-Google-Smtp-Source: APXvYqxR/8jkj3wkyNl5qHbR+KRsjgY06uzriZj1Aqx9Gc3fXzQXzuTlgEjAFg28qCYuFzh85OVPErdvNekRsCUdcoI=
+X-Received: by 2002:a7b:c5c3:: with SMTP id n3mr70914879wmk.101.1564045495655;
+ Thu, 25 Jul 2019 02:04:55 -0700 (PDT)
 MIME-Version: 1.0
+Received: by 2002:a1c:2382:0:0:0:0:0 with HTTP; Thu, 25 Jul 2019 02:04:54
+ -0700 (PDT)
+Reply-To: linelink008@gmail.com
+From:   AZIM HASHIM PREMJI <linelink006@gmail.com>
+Date:   Thu, 25 Jul 2019 02:04:54 -0700
+Message-ID: <CAG4TvbQeA8tL3cwH9tgAPDqhbaSwScM1JszJVz6XzqPa=NSZCA@mail.gmail.com>
+Subject: =?UTF-8?Q?HERZLICHEN_GL=C3=9CCKWUNSCH_=E2=82=AC_1=2C000=2E000=2C00_wurde_an_Si?=
+        =?UTF-8?Q?e_gespendet?=
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-> Tony Chuang <yhchuang@realtek.com> writes:
-> 
-> >> Brian Norris <briannorris@chromium.org> wrote:
-> >>
-> >> > We're just trusting that these tables are of the right dimensions, when
-> >> > we could do better by just using the struct directly. Let's expose the
-> >> > struct txpwr_lmt_cfg_pair instead.
-> >> >
-> >> > The table changes were made by using some Vim macros, so that should
-> >> > help prevent any translation mistakes along the way.
-> >> >
-> >> > Remaining work: get the 'void *data' out of the generic struct
-> >> > rtw_table; all of these tables really deserve to be their own data
-> >> > structure, with proper type fields.
-> >> >
-> >> > Signed-off-by: Brian Norris <briannorris@chromium.org>
-> >>
-> >> To me this looks like a clear improvement and I'm inclined to apply it. Tony,
-> >> what do you think?
-> >
-> > I think it indeed is better to use struct instead of arrays to access the table.
-> > But what I am trying to do is to figure a way to write a proper struct for
-> > radio_[ab] tables. Since the parsing logic is more complicated than others.
-> >
-> > Once I finished them, I will send a patch to change the tables.
-> 
-> Are you saying that your patch will also clean up these txpwr tables and
-> I should drop this patch? Or can I apply this?
-> 
-
-You can apply this. And I can take care of the rest of them. :)
-Thanks.
-
-Tony
-
+Ich bin Azim Hashim Premji, ein indischer Wirtschaftsmagnat, Investor
+und Philanthrop.
+Ich bin der Vorsitzende von Wipro Limited. Ich habe 25 Prozent meines
+pers=C3=B6nlichen Verm=C3=B6gens verschenkt
+f=C3=BCr die Wohlfahrt. Und ich habe zugesagt, den Rest von 25% dieses Jahr
+2019 an zu vergeben
+Privatpersonen .. Ich habe mich entschieden, Ihnen =E2=82=AC1.000.000,00 zu
+spenden. Wenn du bist
+Interesse an meiner Spende, kontaktieren Sie mich f=C3=BCr weitere Informat=
+ionen.
