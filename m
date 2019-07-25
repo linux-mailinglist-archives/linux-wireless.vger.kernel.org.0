@@ -2,32 +2,32 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 73E2A7437A
-	for <lists+linux-wireless@lfdr.de>; Thu, 25 Jul 2019 04:54:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 291E97437B
+	for <lists+linux-wireless@lfdr.de>; Thu, 25 Jul 2019 04:54:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2389440AbfGYCye (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 24 Jul 2019 22:54:34 -0400
-Received: from rtits2.realtek.com ([211.75.126.72]:60788 "EHLO
+        id S2389443AbfGYCyf (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 24 Jul 2019 22:54:35 -0400
+Received: from rtits2.realtek.com ([211.75.126.72]:60789 "EHLO
         rtits2.realtek.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2389431AbfGYCyd (ORCPT
+        with ESMTP id S2387562AbfGYCye (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 24 Jul 2019 22:54:33 -0400
+        Wed, 24 Jul 2019 22:54:34 -0400
 Authenticated-By: 
-X-SpamFilter-By: BOX Solutions SpamTrap 5.62 with qID x6P2sOaU010428, This message is accepted by code: ctloc85258
+X-SpamFilter-By: BOX Solutions SpamTrap 5.62 with qID x6P2sOZu010432, This message is accepted by code: ctloc85258
 Received: from mail.realtek.com (RTITCASV01.realtek.com.tw[172.21.6.18])
-        by rtits2.realtek.com.tw (8.15.2/2.57/5.78) with ESMTPS id x6P2sOaU010428
+        by rtits2.realtek.com.tw (8.15.2/2.57/5.78) with ESMTPS id x6P2sOZu010432
         (version=TLSv1 cipher=DHE-RSA-AES256-SHA bits=256 verify=NOT);
-        Thu, 25 Jul 2019 10:54:24 +0800
+        Thu, 25 Jul 2019 10:54:25 +0800
 Received: from localhost.localdomain (172.21.68.126) by
  RTITCASV01.realtek.com.tw (172.21.6.18) with Microsoft SMTP Server id
- 14.3.439.0; Thu, 25 Jul 2019 10:54:23 +0800
+ 14.3.439.0; Thu, 25 Jul 2019 10:54:24 +0800
 From:   <yhchuang@realtek.com>
 To:     <kvalo@codeaurora.org>
 CC:     <linux-wireless@vger.kernel.org>, <sgruszka@redhat.com>,
         <briannorris@chromium.org>
-Subject: [PATCH v2 2/5] rtw88: check efuse for BT FT S1
-Date:   Thu, 25 Jul 2019 10:53:28 +0800
-Message-ID: <1564023211-3138-3-git-send-email-yhchuang@realtek.com>
+Subject: [PATCH v2 3/5] rtw88: allow c2h operation in irq context
+Date:   Thu, 25 Jul 2019 10:53:29 +0800
+Message-ID: <1564023211-3138-4-git-send-email-yhchuang@realtek.com>
 X-Mailer: git-send-email 2.7.4
 In-Reply-To: <1564023211-3138-1-git-send-email-yhchuang@realtek.com>
 References: <1564023211-3138-1-git-send-email-yhchuang@realtek.com>
@@ -41,69 +41,103 @@ X-Mailing-List: linux-wireless@vger.kernel.org
 
 From: Yan-Hsuan Chuang <yhchuang@realtek.com>
 
-Some modules might not have full programed efuse.
-Driver should check the BT FT S1 type to know that
-if BT has been programed. If BT is not programed,
-throw a warning to notify that this module is not
-capable of working with WiFi + BT concurrently.
+Some of the c2h operations are small and can be done
+under interrupt context. For the rest that requires
+more operations or can go sleep, enqueue onto c2h queue.
 
 Signed-off-by: Yan-Hsuan Chuang <yhchuang@realtek.com>
 ---
 v1 -> v2
-    no change
+    rebase onto the latest wireless-drivers-next
+    fixed conflicts in pci.c
 
- drivers/net/wireless/realtek/rtw88/efuse.c | 24 ++++++++++++++++++++++++
- 1 file changed, 24 insertions(+)
+ drivers/net/wireless/realtek/rtw88/fw.c  | 27 ++++++++++++++++++++++++---
+ drivers/net/wireless/realtek/rtw88/fw.h  |  2 ++
+ drivers/net/wireless/realtek/rtw88/pci.c |  6 ++----
+ 3 files changed, 28 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/net/wireless/realtek/rtw88/efuse.c b/drivers/net/wireless/realtek/rtw88/efuse.c
-index 66e56f3..82aa26a 100644
---- a/drivers/net/wireless/realtek/rtw88/efuse.c
-+++ b/drivers/net/wireless/realtek/rtw88/efuse.c
-@@ -8,6 +8,11 @@
- #include "debug.h"
+diff --git a/drivers/net/wireless/realtek/rtw88/fw.c b/drivers/net/wireless/realtek/rtw88/fw.c
+index 62847797..3c4dcb7 100644
+--- a/drivers/net/wireless/realtek/rtw88/fw.c
++++ b/drivers/net/wireless/realtek/rtw88/fw.c
+@@ -36,9 +36,6 @@ void rtw_fw_c2h_cmd_handle(struct rtw_dev *rtwdev, struct sk_buff *skb)
+ 	c2h = (struct rtw_c2h_cmd *)(skb->data + pkt_offset);
+ 	len = skb->len - pkt_offset - 2;
  
- #define RTW_EFUSE_BANK_WIFI		0x0
-+#define RTW_EFUSE_BANK_BT		0x1
-+
-+#define EFUSE_BT_S1_ADDR		0x4a
-+#define EFUSE_BT_S1_TYPE1		0xff
-+#define EFUSE_BT_S1_TYPE2		0x00
- 
- static void switch_efuse_bank(struct rtw_dev *rtwdev, u8 efuse_bank)
- {
-@@ -89,6 +94,7 @@ static int rtw_dump_physical_efuse_map(struct rtw_dev *rtwdev, u8 *map)
- 	u32 efuse_ctl;
- 	u32 addr;
- 	u32 cnt;
-+	u8 ft_ver;
- 
- 	switch_efuse_bank(rtwdev, RTW_EFUSE_BANK_WIFI);
- 
-@@ -113,6 +119,24 @@ static int rtw_dump_physical_efuse_map(struct rtw_dev *rtwdev, u8 *map)
- 		*(map + addr) = (u8)(efuse_ctl & BIT_MASK_EF_DATA);
+-	rtw_dbg(rtwdev, RTW_DBG_FW, "recv C2H, id=0x%02x, seq=0x%02x, len=%d\n",
+-		c2h->id, c2h->seq, len);
+-
+ 	switch (c2h->id) {
+ 	case C2H_HALMAC:
+ 		rtw_fw_c2h_cmd_handle_ext(rtwdev, skb);
+@@ -48,6 +45,30 @@ void rtw_fw_c2h_cmd_handle(struct rtw_dev *rtwdev, struct sk_buff *skb)
  	}
- 
-+	/* verify BT FT S1 efuse type */
-+	switch_efuse_bank(rtwdev, RTW_EFUSE_BANK_BT);
-+
-+	efuse_ctl = rtw_read32(rtwdev, REG_EFUSE_CTRL);
-+	efuse_ctl &= ~(BIT_MASK_EF_DATA | BITS_EF_ADDR);
-+	efuse_ctl |= (EFUSE_BT_S1_ADDR & BIT_MASK_EF_ADDR) << BIT_SHIFT_EF_ADDR;
-+	rtw_write32(rtwdev, REG_EFUSE_CTRL, efuse_ctl & (~BIT_EF_FLAG));
-+
-+	if (!check_hw_ready(rtwdev, REG_EFUSE_CTRL, BIT_EF_FLAG, 0x1)) {
-+		rtw_err(rtwdev, "failed to read BT efuse\n");
-+		return -EBUSY;
-+	}
-+
-+	efuse_ctl = rtw_read32(rtwdev, REG_EFUSE_CTRL);
-+	ft_ver = (u8)(efuse_ctl & BIT_MASK_EF_DATA);
-+	if (ft_ver == EFUSE_BT_S1_TYPE1 || ft_ver == EFUSE_BT_S1_TYPE2)
-+		rtw_warn(rtwdev, "BT S1 not calibrated, not recommended to verify BT for this module\n");
-+
- 	return 0;
  }
  
++void rtw_fw_c2h_cmd_rx_irqsafe(struct rtw_dev *rtwdev, u32 pkt_offset,
++			       struct sk_buff *skb)
++{
++	struct rtw_c2h_cmd *c2h;
++	u8 len;
++
++	c2h = (struct rtw_c2h_cmd *)(skb->data + pkt_offset);
++	len = skb->len - pkt_offset - 2;
++	*((u32 *)skb->cb) = pkt_offset;
++
++	rtw_dbg(rtwdev, RTW_DBG_FW, "recv C2H, id=0x%02x, seq=0x%02x, len=%d\n",
++		c2h->id, c2h->seq, len);
++
++	switch (c2h->id) {
++	default:
++		/* pass offset for further operation */
++		*((u32 *)skb->cb) = pkt_offset;
++		skb_queue_tail(&rtwdev->c2h_queue, skb);
++		ieee80211_queue_work(rtwdev->hw, &rtwdev->c2h_work);
++		break;
++	}
++}
++EXPORT_SYMBOL(rtw_fw_c2h_cmd_rx_irqsafe);
++
+ static void rtw_fw_send_h2c_command(struct rtw_dev *rtwdev,
+ 				    u8 *h2c)
+ {
+diff --git a/drivers/net/wireless/realtek/rtw88/fw.h b/drivers/net/wireless/realtek/rtw88/fw.h
+index 7034663..67f6cf7 100644
+--- a/drivers/net/wireless/realtek/rtw88/fw.h
++++ b/drivers/net/wireless/realtek/rtw88/fw.h
+@@ -200,6 +200,8 @@ static inline struct rtw_c2h_cmd *get_c2h_from_skb(struct sk_buff *skb)
+ 	return (struct rtw_c2h_cmd *)(skb->data + pkt_offset);
+ }
+ 
++void rtw_fw_c2h_cmd_rx_irqsafe(struct rtw_dev *rtwdev, u32 pkt_offset,
++			       struct sk_buff *skb);
+ void rtw_fw_c2h_cmd_handle(struct rtw_dev *rtwdev, struct sk_buff *skb);
+ void rtw_fw_send_general_info(struct rtw_dev *rtwdev);
+ void rtw_fw_send_phydm_info(struct rtw_dev *rtwdev);
+diff --git a/drivers/net/wireless/realtek/rtw88/pci.c b/drivers/net/wireless/realtek/rtw88/pci.c
+index 23dd06a..4776195 100644
+--- a/drivers/net/wireless/realtek/rtw88/pci.c
++++ b/drivers/net/wireless/realtek/rtw88/pci.c
+@@ -8,6 +8,7 @@
+ #include "pci.h"
+ #include "tx.h"
+ #include "rx.h"
++#include "fw.h"
+ #include "debug.h"
+ 
+ static u32 rtw_pci_tx_queue_idx_addr[] = {
+@@ -822,10 +823,7 @@ static void rtw_pci_rx_isr(struct rtw_dev *rtwdev, struct rtw_pci *rtwpci,
+ 		skb_put_data(new, skb->data, new_len);
+ 
+ 		if (pkt_stat.is_c2h) {
+-			 /* pass rx_desc & offset for further operation */
+-			*((u32 *)new->cb) = pkt_offset;
+-			skb_queue_tail(&rtwdev->c2h_queue, new);
+-			ieee80211_queue_work(rtwdev->hw, &rtwdev->c2h_work);
++			rtw_fw_c2h_cmd_rx_irqsafe(rtwdev, pkt_offset, new);
+ 		} else {
+ 			/* remove rx_desc */
+ 			skb_pull(new, pkt_offset);
 -- 
 2.7.4
 
