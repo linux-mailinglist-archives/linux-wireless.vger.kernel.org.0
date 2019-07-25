@@ -2,105 +2,175 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 595C374C36
-	for <lists+linux-wireless@lfdr.de>; Thu, 25 Jul 2019 12:52:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 50F5C74F6E
+	for <lists+linux-wireless@lfdr.de>; Thu, 25 Jul 2019 15:29:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728996AbfGYKwn (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 25 Jul 2019 06:52:43 -0400
-Received: from mail-pf1-f195.google.com ([209.85.210.195]:39897 "EHLO
-        mail-pf1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728726AbfGYKwm (ORCPT
+        id S1728876AbfGYN2t (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 25 Jul 2019 09:28:49 -0400
+Received: from mail-vs1-f67.google.com ([209.85.217.67]:40101 "EHLO
+        mail-vs1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726519AbfGYN2t (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 25 Jul 2019 06:52:42 -0400
-Received: by mail-pf1-f195.google.com with SMTP id f17so18571443pfn.6
-        for <linux-wireless@vger.kernel.org>; Thu, 25 Jul 2019 03:52:42 -0700 (PDT)
+        Thu, 25 Jul 2019 09:28:49 -0400
+Received: by mail-vs1-f67.google.com with SMTP id a186so32069334vsd.7
+        for <linux-wireless@vger.kernel.org>; Thu, 25 Jul 2019 06:28:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id;
-        bh=oVgsCC3RiMGe7tuxXcUxMfUIA90785iH1rwNHlmoQXA=;
-        b=RsSLnp6nFquwCMocdU6z//Ph35z5I/90G7FnIPxTN2T5qlJnqh4e/v6soMkoGR/xsM
-         yJ2C+V+v2NPEC52DDtF9bGs8WaofvreO6V0Z+BX8plQbjl45fD5+0kFmc2AEBZf6L1PY
-         RsTEKuzwyfedBIuClDjmoRF6989y+Ubm4ZQi/kBZZytsecj9pMTdmmtuTWtKEW+TY1dB
-         3XspJacnivN1MEagv8nFHLM6mUr8JDvys22ijz5Un3kzo2jTbn31PTTQK1J8AogH9Si3
-         bVh14In8//BxK4ZuzbCyyL6B39z92YvDTlm4hleLCZwHFgF5/1vtOPziXFNX6skEISUt
-         ydWQ==
+        d=linaro.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=vXKNB/T35UEJpgjy5bQMa/g2p0OKD2QzsqlMlAa6XPw=;
+        b=f/uQQYPHA8g4EJYLPYLuJ1y5iqC+JXr+y3ZExBNQFRTKMBE0ptdYkfXtsOwg8bWulp
+         zZ8vUXVHZTtT4veYqE6FY3J9yFjAWOKah4KLs0giuYjbw9oX80NdYOLQLeEpMoPXSM6F
+         LNu9DnmAgcDf2vlgWEuiZiTg9pVoHA9Kkn6k5l9MtGEZO/630B/DkxncJQpZvT08FtmE
+         ifzxx8MnhDevDnFLTEhcuytmqcQSWHjXXKaWyxOrUa4+IMAdtbxkxnY+4AzTBJuCCibf
+         ZN5FXJyrsuZFnYPkovS2Im/Jo42DNXFxP9f+RaIyJMosOPS+ykDNufilHeZ0jIjlcLVL
+         uwmA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id;
-        bh=oVgsCC3RiMGe7tuxXcUxMfUIA90785iH1rwNHlmoQXA=;
-        b=Sa8lKXRxEq7rn04JRYLMewZuFKXmq0cLhZNVk0xIGlpjcS9R4jbo7Usv6W+Wep4/r1
-         JzkDiGOAbeD/CfyNwovuFXL8RPmmcL+7GcwKfn19XfW6Q2YbROnvZ6b+4Zj9zpLkHbzU
-         TEtvg9zYJ5bnk1mUg06KO+PTX00JaS9aSE/lLcRiuHBrikk2FNAEnMvtXXInBRQ34QAD
-         hslFvmHeaKina3jPiiVIgTpZdhq2IOUIFFUVUMcVyf8hia4RXiWHvCEgtDAVQ+4yFhaZ
-         /opSSQbmMPgWfSNiiD63NIHlktbAgYnHUD2jBsrnai3VNmCKz79u0qdHzJR+O3cteaUn
-         K1/w==
-X-Gm-Message-State: APjAAAVezUOr25FGDin/ekIHFrFLgiYdiEJJmd2U2VMa7446L/HgcVeM
-        L8+NvUhMGHdLlADyp6I7EIE=
-X-Google-Smtp-Source: APXvYqx4UWSdme9tiI3AzytSahCZRWQukrJJH/H6Z5w8r8y/d1tVcl+YicKuIvogxFG9nwHRPt5r9A==
-X-Received: by 2002:a63:2784:: with SMTP id n126mr82906273pgn.92.1564051961637;
-        Thu, 25 Jul 2019 03:52:41 -0700 (PDT)
-Received: from cpu508.localdomain ([183.82.100.30])
-        by smtp.gmail.com with ESMTPSA id f12sm44213015pgo.85.2019.07.25.03.52.37
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Thu, 25 Jul 2019 03:52:41 -0700 (PDT)
-From:   Ganapathi Kondraju <ganapathirajukondraju@gmail.com>
-To:     Kalle Valo <kvalo@codeaurora.org>
-Cc:     linux-wireless@vger.kernel.org, rishikesh.basu@redpinesignals.com,
-        krishna.pedda@redpinesignals.com, narasimha.a@redpinesignals.com,
-        srinivas.chappidi@redpinesignals.com,
-        Ganapathi Kondraju <ganapathirajukondraju@gmail.com>
-Subject: [PATCH] rsi: fix for sdio reset card issue
-Date:   Thu, 25 Jul 2019 16:21:50 +0530
-Message-Id: <1564051910-20136-1-git-send-email-ganapathirajukondraju@gmail.com>
-X-Mailer: git-send-email 2.5.5
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=vXKNB/T35UEJpgjy5bQMa/g2p0OKD2QzsqlMlAa6XPw=;
+        b=CfHUUzSU1TFQTIEY55njqLTqPn3jOhixtHRiHCwmYk4oOCITiheUPcwdW7653wip+l
+         Q3OJiV54qZdUMLNMgUD3LIJEcutZ1AVxB8oCTQiMJq/lFeONeU5nJpdfGsVuZs/+a0Md
+         B+v1NFy6odVLtyp0c3Z2VgQYb64jCbzu7aNuRzXpEXtheU2twiCKx/Yshii9vuLbqx67
+         Z8ZbLggFjIqjhwgWvvHiuo8UwBOJ4dHVsJW699Yyai9LKx1EV3ZD73dEdSTLQiBvBJd0
+         pXis1c1H4Zo6tDMuRsu09Hs6lL/PyOt9cvfFw3gEV5DNaIvzCjDi0wJZzfyZrGyxzgSu
+         CLSg==
+X-Gm-Message-State: APjAAAV3cdr1IVxESOEb8L2R3/1CAtkkhj/S3FBI80U7KJIA+Ydavapo
+        K2ii8Xfj05q0GraV1R/d9NWXxZzK2WBVE4KszB1L8g==
+X-Google-Smtp-Source: APXvYqxQVUGQaO08z8JvqC/8hjWZk0eU15RGOsp4tEzLJQFfOVWtNAiPhhBmEDA9IIpQqprtF6qepXrstTHdGFfN0SU=
+X-Received: by 2002:a67:61c7:: with SMTP id v190mr4507235vsb.165.1564061327635;
+ Thu, 25 Jul 2019 06:28:47 -0700 (PDT)
+MIME-Version: 1.0
+References: <20190722193939.125578-1-dianders@chromium.org>
+In-Reply-To: <20190722193939.125578-1-dianders@chromium.org>
+From:   Ulf Hansson <ulf.hansson@linaro.org>
+Date:   Thu, 25 Jul 2019 15:28:11 +0200
+Message-ID: <CAPDyKFoND5Kaam72zxO4wChO0z_1XL2KWX6oNjVcMUGA7G8RFg@mail.gmail.com>
+Subject: Re: [PATCH v2 0/2] mmc: core: Fix Marvell WiFi reset by adding SDIO
+ API to replug card
+To:     Douglas Anderson <dianders@chromium.org>
+Cc:     Kalle Valo <kvalo@codeaurora.org>,
+        Adrian Hunter <adrian.hunter@intel.com>,
+        Ganapathi Bhat <gbhat@marvell.com>,
+        linux-wireless <linux-wireless@vger.kernel.org>,
+        Andreas Fenkart <afenkart@gmail.com>,
+        Brian Norris <briannorris@chromium.org>,
+        Amitkumar Karwar <amitkarwar@gmail.com>,
+        "open list:ARM/Rockchip SoC..." <linux-rockchip@lists.infradead.org>,
+        Wolfram Sang <wsa+renesas@sang-engineering.com>,
+        Nishant Sarmukadam <nishants@marvell.com>,
+        netdev <netdev@vger.kernel.org>,
+        Avri Altman <avri.altman@wdc.com>,
+        "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Xinming Hu <huxinming820@gmail.com>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Kate Stewart <kstewart@linuxfoundation.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Issue: While removing and inserting the driver module, observed driver
-loading is not successful.
+On Mon, 22 Jul 2019 at 21:41, Douglas Anderson <dianders@chromium.org> wrote:
+>
+> As talked about in the thread at:
+>
+> http://lkml.kernel.org/r/CAD=FV=X7P2F1k_zwHc0mbtfk55-rucTz_GoDH=PL6zWqKYcpuw@mail.gmail.com
+>
+> ...when the Marvell WiFi card tries to reset itself it kills
+> Bluetooth.  It was observed that we could re-init the card properly by
+> unbinding / rebinding the host controller.  It was also observed that
+> in the downstream Chrome OS codebase the solution used was
+> mmc_remove_host() / mmc_add_host(), which is similar to the solution
+> in this series.
+>
+> So far I've only done testing of this series using the reset test
+> source that can be simulated via sysfs.  Specifically I ran this test:
+>
+> for i in $(seq 1000); do
+>   echo "LOOP $i --------"
+>   echo 1 > /sys/kernel/debug/mwifiex/mlan0/reset
+>
+>   while true; do
+>     if ! ping -w15 -c1 "${GW}" >/dev/null 2>&1; then
+>       fail=$(( fail + 1 ))
+>       echo "Fail WiFi ${fail}"
+>       if [[ ${fail} == 3 ]]; then
+>         exit 1
+>       fi
+>     else
+>       fail=0
+>       break
+>     fi
+>   done
+>
+>   hciconfig hci0 down
+>   sleep 1
+>   if ! hciconfig hci0 up; then
+>     echo "Fail BT"
+>     exit 1
+>   fi
+> done
+>
+> I ran this several times and got several hundred iterations each
+> before a failure.  When I saw failures:
+>
+> * Once I saw a "Fail BT"; manually resetting the card again fixed it.
+>   I didn't give it time to see if it would have detected this
+>   automatically.
+> * Once I saw the ping fail because (for some reason) my device only
+>   got an IPv6 address from my router and the IPv4 ping failed.  I
+>   changed my script to use 'ping6' to see if that would help.
+> * Once I saw the ping fail because the higher level network stack
+>   ("shill" in my case) seemed to crash.  A few minutes later the
+>   system recovered itself automatically.  https://crbug.com/984593 if
+>   you want more details.
+> * Sometimes while I was testing I saw "Fail WiFi 1" indicating a
+>   transitory failure.  Usually this was an association failure, but in
+>   one case I saw the device do "Firmware wakeup failed" after I
+>   triggered the reset.  This caused the driver to trigger a re-reset
+>   of itself which eventually recovered things.  This was good because
+>   it was an actual test of the normal reset flow (not the one
+>   triggered via sysfs).
+>
+> Changes in v2:
+> - s/routnine/routine (Brian Norris, Matthias Kaehlcke).
+> - s/contining/containing (Matthias Kaehlcke).
+> - Add Matthias Reviewed-by tag.
+> - Removed clear_bit() calls and old comment (Brian Norris).
+> - Explicit CC of Andreas Fenkart.
+> - Explicit CC of Brian Norris.
+> - Add "Fixes" pointing at the commit Brian talked about.
+> - Add Brian's Reviewed-by tag.
+>
+> Douglas Anderson (2):
+>   mmc: core: Add sdio_trigger_replug() API
+>   mwifiex: Make use of the new sdio_trigger_replug() API to reset
+>
+>  drivers/mmc/core/core.c                     | 28 +++++++++++++++++++--
+>  drivers/mmc/core/sdio_io.c                  | 20 +++++++++++++++
+>  drivers/net/wireless/marvell/mwifiex/sdio.c | 16 +-----------
+>  include/linux/mmc/host.h                    | 15 ++++++++++-
+>  include/linux/mmc/sdio_func.h               |  2 ++
+>  5 files changed, 63 insertions(+), 18 deletions(-)
+>
 
-Root cause: Card is not resetted completely without issuing cmd5.
+Doug, thanks for sending this!
 
-Fix: Issued cmd5 properly.
+As you know, I have been working on additional changes for SDIO
+suspend/resume (still WIP and not ready for sharing) and this series
+is related.
 
-Signed-off-by: Ganapathi Kondraju <ganapathirajukondraju@gmail.com>
----
- drivers/net/wireless/rsi/rsi_91x_sdio.c | 17 +++++++----------
- 1 file changed, 7 insertions(+), 10 deletions(-)
+The thing is, that even during system suspend/resume, synchronizations
+are needed between the different layers (mmc host, mmc core and
+sdio-funcs), which is common to the problem you want to solve.
 
-diff --git a/drivers/net/wireless/rsi/rsi_91x_sdio.c b/drivers/net/wireless/rsi/rsi_91x_sdio.c
-index b42cd50..b3c7724 100644
---- a/drivers/net/wireless/rsi/rsi_91x_sdio.c
-+++ b/drivers/net/wireless/rsi/rsi_91x_sdio.c
-@@ -230,19 +230,16 @@ static void rsi_reset_card(struct sdio_func *pfunction)
- 		rsi_dbg(ERR_ZONE, "%s: CMD0 failed : %d\n", __func__, err);
- 
- 	/* Issue CMD5, arg = 0 */
--	if (!host->ocr_avail) {
--		err = rsi_issue_sdiocommand(pfunction,	SD_IO_SEND_OP_COND, 0,
--					    (MMC_RSP_R4 | MMC_CMD_BCR), &resp);
--		if (err)
--			rsi_dbg(ERR_ZONE, "%s: CMD5 failed : %d\n",
--				__func__, err);
--
--		host->ocr_avail = resp;
--	}
-+	err = rsi_issue_sdiocommand(pfunction,	SD_IO_SEND_OP_COND, 0,
-+				    (MMC_RSP_R4 | MMC_CMD_BCR), &resp);
-+	if (err)
-+		rsi_dbg(ERR_ZONE, "%s: CMD5 failed : %d\n",
-+			__func__, err);
-+	card->ocr = resp;
- 	/* Issue CMD5, arg = ocr. Wait till card is ready  */
- 	for (i = 0; i < 100; i++) {
- 		err = rsi_issue_sdiocommand(pfunction, SD_IO_SEND_OP_COND,
--					    host->ocr_avail,
-+					    card->ocr,
- 					    (MMC_RSP_R4 | MMC_CMD_BCR), &resp);
- 		if (err) {
- 			rsi_dbg(ERR_ZONE, "%s: CMD5 failed : %d\n",
--- 
-2.5.5
+That said, I need to scratch my head a bit more before I can provide
+you some feedback on $subject series. Moreover, it's vacation period
+at my side so things are moving a bit slower. Please be patient.
 
+Kind regards
+Uffe
