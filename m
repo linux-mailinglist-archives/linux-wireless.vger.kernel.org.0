@@ -2,33 +2,31 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C55B976B47
-	for <lists+linux-wireless@lfdr.de>; Fri, 26 Jul 2019 16:16:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 27AFF76B5B
+	for <lists+linux-wireless@lfdr.de>; Fri, 26 Jul 2019 16:19:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727866AbfGZOP7 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 26 Jul 2019 10:15:59 -0400
-Received: from szxga05-in.huawei.com ([45.249.212.191]:2780 "EHLO huawei.com"
+        id S1727724AbfGZOS4 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 26 Jul 2019 10:18:56 -0400
+Received: from szxga04-in.huawei.com ([45.249.212.190]:3177 "EHLO huawei.com"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1727119AbfGZOP7 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 26 Jul 2019 10:15:59 -0400
-Received: from DGGEMS409-HUB.china.huawei.com (unknown [172.30.72.59])
-        by Forcepoint Email with ESMTP id 9E5277926D7979379D45;
-        Fri, 26 Jul 2019 22:15:54 +0800 (CST)
-Received: from localhost (10.133.213.239) by DGGEMS409-HUB.china.huawei.com
- (10.3.19.209) with Microsoft SMTP Server id 14.3.439.0; Fri, 26 Jul 2019
- 22:15:47 +0800
+        id S1727358AbfGZOSz (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 26 Jul 2019 10:18:55 -0400
+Received: from DGGEMS411-HUB.china.huawei.com (unknown [172.30.72.60])
+        by Forcepoint Email with ESMTP id 35595DFA7654B79619AF;
+        Fri, 26 Jul 2019 22:18:50 +0800 (CST)
+Received: from localhost (10.133.213.239) by DGGEMS411-HUB.china.huawei.com
+ (10.3.19.211) with Microsoft SMTP Server id 14.3.439.0; Fri, 26 Jul 2019
+ 22:18:43 +0800
 From:   YueHaibing <yuehaibing@huawei.com>
-To:     <kvalo@codeaurora.org>, <arend.vanspriel@broadcom.com>,
-        <franky.lin@broadcom.com>, <hante.meuleman@broadcom.com>,
-        <chi-hsien.lin@cypress.com>, <wright.feng@cypress.com>
+To:     <johannes.berg@intel.com>, <emmanuel.grumbach@intel.com>,
+        <luciano.coelho@intel.com>, <linuxwifi@intel.com>,
+        <kvalo@codeaurora.org>, <sara.sharon@intel.com>
 CC:     <linux-kernel@vger.kernel.org>, <netdev@vger.kernel.org>,
         <linux-wireless@vger.kernel.org>,
-        <brcm80211-dev-list.pdl@broadcom.com>,
-        <brcm80211-dev-list@cypress.com>,
         YueHaibing <yuehaibing@huawei.com>
-Subject: [PATCH] brcmsmac: remove three set but not used variables
-Date:   Fri, 26 Jul 2019 22:15:35 +0800
-Message-ID: <20190726141535.33212-1-yuehaibing@huawei.com>
+Subject: [PATCH] iwlwifi: mvm: fix old-style declaration
+Date:   Fri, 26 Jul 2019 22:18:38 +0800
+Message-ID: <20190726141838.19424-1-yuehaibing@huawei.com>
 X-Mailer: git-send-email 2.10.2.windows.1
 MIME-Version: 1.0
 Content-Type: text/plain
@@ -39,58 +37,41 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Fixes gcc '-Wunused-but-set-variable' warning:
+There expect the 'static' keyword to come first in a
+declaration, and we get a warning for this with "make W=1":
 
-drivers/net/wireless/broadcom/brcm80211/brcmsmac/main.c: In function 'brcms_c_set_gmode':
-drivers/net/wireless/broadcom/brcm80211/brcmsmac/main.c:5257:7: warning: variable 'preamble_restrict' set but not used [-Wunused-but-set-variable]
-drivers/net/wireless/broadcom/brcm80211/brcmsmac/main.c:5256:6: warning: variable 'preamble' set but not used [-Wunused-but-set-variable]
-drivers/net/wireless/broadcom/brcm80211/brcmsmac/main.c:5251:7: warning: variable 'shortslot_restrict' set but not used [-Wunused-but-set-variable]
-
-They are never used so can be removed.
+drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c:427:1: warning:
+ 'static' is not at beginning of declaration [-Wold-style-declaration]
+drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c:434:1: warning:
+ 'static' is not at beginning of declaration [-Wold-style-declaration]
 
 Reported-by: Hulk Robot <hulkci@huawei.com>
 Signed-off-by: YueHaibing <yuehaibing@huawei.com>
 ---
- drivers/net/wireless/broadcom/brcm80211/brcmsmac/main.c | 13 -------------
- 1 file changed, 13 deletions(-)
+ drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmsmac/main.c b/drivers/net/wireless/broadcom/brcm80211/brcmsmac/main.c
-index 7d4e8f5..080e829 100644
---- a/drivers/net/wireless/broadcom/brcm80211/brcmsmac/main.c
-+++ b/drivers/net/wireless/broadcom/brcm80211/brcmsmac/main.c
-@@ -5248,15 +5248,7 @@ int brcms_c_set_gmode(struct brcms_c_info *wlc, u8 gmode, bool config)
- 	/* Default to 54g Auto */
- 	/* Advertise and use shortslot (-1/0/1 Auto/Off/On) */
- 	s8 shortslot = BRCMS_SHORTSLOT_AUTO;
--	bool shortslot_restrict = false; /* Restrict association to stations
--					  * that support shortslot
--					  */
- 	bool ofdm_basic = false;	/* Make 6, 12, and 24 basic rates */
--	/* Advertise and use short preambles (-1/0/1 Auto/Off/On) */
--	int preamble = BRCMS_PLCP_LONG;
--	bool preamble_restrict = false;	/* Restrict association to stations
--					 * that support short preambles
--					 */
- 	struct brcms_band *band;
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c b/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
+index 55cd49c..6ed0c49 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
+@@ -424,14 +424,14 @@ int iwl_mvm_init_fw_regd(struct iwl_mvm *mvm)
+ 	return ret;
+ }
  
- 	/* if N-support is enabled, allow Gmode set as long as requested
-@@ -5297,16 +5289,11 @@ int brcms_c_set_gmode(struct brcms_c_info *wlc, u8 gmode, bool config)
+-const static u8 he_if_types_ext_capa_sta[] = {
++static const u8 he_if_types_ext_capa_sta[] = {
+ 	 [0] = WLAN_EXT_CAPA1_EXT_CHANNEL_SWITCHING,
+ 	 [2] = WLAN_EXT_CAPA3_MULTI_BSSID_SUPPORT,
+ 	 [7] = WLAN_EXT_CAPA8_OPMODE_NOTIF,
+ 	 [9] = WLAN_EXT_CAPA10_TWT_REQUESTER_SUPPORT,
+ };
  
- 	case GMODE_ONLY:
- 		ofdm_basic = true;
--		preamble = BRCMS_PLCP_SHORT;
--		preamble_restrict = true;
- 		break;
- 
- 	case GMODE_PERFORMANCE:
- 		shortslot = BRCMS_SHORTSLOT_ON;
--		shortslot_restrict = true;
- 		ofdm_basic = true;
--		preamble = BRCMS_PLCP_SHORT;
--		preamble_restrict = true;
- 		break;
- 
- 	default:
+-const static struct wiphy_iftype_ext_capab he_iftypes_ext_capa[] = {
++static const struct wiphy_iftype_ext_capab he_iftypes_ext_capa[] = {
+ 	{
+ 		.iftype = NL80211_IFTYPE_STATION,
+ 		.extended_capabilities = he_if_types_ext_capa_sta,
 -- 
 2.7.4
 
