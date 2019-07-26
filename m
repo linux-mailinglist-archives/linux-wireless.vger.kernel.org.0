@@ -2,86 +2,77 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 63C2076B78
-	for <lists+linux-wireless@lfdr.de>; Fri, 26 Jul 2019 16:23:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D195A76F0F
+	for <lists+linux-wireless@lfdr.de>; Fri, 26 Jul 2019 18:29:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727545AbfGZOXI (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 26 Jul 2019 10:23:08 -0400
-Received: from mail-ed1-f66.google.com ([209.85.208.66]:45419 "EHLO
-        mail-ed1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725869AbfGZOXI (ORCPT
+        id S1728852AbfGZQ3a (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 26 Jul 2019 12:29:30 -0400
+Received: from mail-lj1-f196.google.com ([209.85.208.196]:43022 "EHLO
+        mail-lj1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728826AbfGZQ33 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 26 Jul 2019 10:23:08 -0400
-Received: by mail-ed1-f66.google.com with SMTP id x19so47523394eda.12
-        for <linux-wireless@vger.kernel.org>; Fri, 26 Jul 2019 07:23:07 -0700 (PDT)
+        Fri, 26 Jul 2019 12:29:29 -0400
+Received: by mail-lj1-f196.google.com with SMTP id y17so27479458ljk.10;
+        Fri, 26 Jul 2019 09:29:28 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
+         :cc;
+        bh=+CW43oDjjf97uXnO1yFBC+kyjGo7bEowuJ7murd1juw=;
+        b=etENTVA7DjvU2AiUuoCuuykKkMYl2+TSQPOT5X3qJ2eZJFHwPPg0VsEjVW85mww7Vo
+         8dweWbEnm97EKHJbmAQyycY83tIVmIr0uF2b+bZ4SgIPfeygo9kYob5bayq+fMf0MN18
+         u7ZTEVCKjZqtWYRhM5yH7hMftMbRB6JSJ+BRLgic48AlReU1gHBV2OsRoaea77ad41PE
+         hQYBMynd8gncuWog2CXD09tp6FhhWDsOpCK7ILsUcTt684Bzasil8XiGIosjpGPSyqFJ
+         0uNfzXDT8PERLi0DHPN1eiLJVYUczXEAWKqt3EKJ4WmO1PKPVqeVLmn7S8qObocWoBjB
+         JJMg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:in-reply-to:references:date
-         :message-id:mime-version;
-        bh=4tlpTADdY2fSxbXVBrVqoDJcw+VkjOYmmKX60sK+wlM=;
-        b=KZuiMxVvu63gEskXS3jVd9ZUMB5LyFQuNV0IiTEN16rpvhTQWiStTHEIv9DamzmJ7W
-         /Jw9GMmQhN+1LzXMvID3Y7uIFJIbNkEWi1Tp0NW6dIIg16i/xFfSl9ZE80cFcz3VL8K+
-         gHszDPCDo2VaUm/xeCv0Db6vbs7X3RWIhVVqMPkgTxWFI54knuHfxeOxbxUtq84tefE3
-         Bi4pVzDXLFduLcCfFqaY/ER/1MXqCHowQrcQveC+m8MNboRb5aa+aKZN4xglGSpOmym7
-         GW/MBk6+6ju1atyPV9AP6Da1x43/H7Ei4ZzpGyez8HseX2uKnjK7lLZnmOOq/Jds128G
-         9bzQ==
-X-Gm-Message-State: APjAAAVj9yOaGkhVzZjWnKATZeFdL1F/ty4VMW1PWwJQpJuUlAyncqrp
-        6TwBVSCDxlltcuV6x+Dlc2TrzMRRzn0=
-X-Google-Smtp-Source: APXvYqzZQaPbH8vp59RwX7yJdsGdpkV2yMt2qvDfhJ+2PXjF+A0XoMWgJUg4zLygFYg+8/KiRBWGbA==
-X-Received: by 2002:a17:906:2557:: with SMTP id j23mr72164151ejb.228.1564150986404;
-        Fri, 26 Jul 2019 07:23:06 -0700 (PDT)
-Received: from alrua-x1.borgediget.toke.dk ([2a00:7660:6da:443::2])
-        by smtp.gmail.com with ESMTPSA id t2sm14370497eda.95.2019.07.26.07.23.05
-        (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
-        Fri, 26 Jul 2019 07:23:05 -0700 (PDT)
-Received: by alrua-x1.borgediget.toke.dk (Postfix, from userid 1000)
-        id 900991800C5; Fri, 26 Jul 2019 16:23:04 +0200 (CEST)
-From:   Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>
-To:     Johannes Berg <johannes@sipsolutions.net>,
-        Karthikeyan Periyasamy <periyasa@codeaurora.org>
-Cc:     linux-wireless@vger.kernel.org
-Subject: Re: [PATCH] mac80211: reject zero MAC address in add station
-In-Reply-To: <218afd33eda4410472c2a99624f81908cf535cb4.camel@sipsolutions.net>
-References: <1563959770-21570-1-git-send-email-periyasa@codeaurora.org> <0cc7d0c578b60730e77ecd03e2df240dd1b393a0.camel@sipsolutions.net> <fd6e7a7e0746b861bbbd660bf54cc675@codeaurora.org> <218afd33eda4410472c2a99624f81908cf535cb4.camel@sipsolutions.net>
-X-Clacks-Overhead: GNU Terry Pratchett
-Date:   Fri, 26 Jul 2019 16:23:04 +0200
-Message-ID: <87imroyiwn.fsf@toke.dk>
+        h=x-gm-message-state:mime-version:in-reply-to:references:from:date
+         :message-id:subject:to:cc;
+        bh=+CW43oDjjf97uXnO1yFBC+kyjGo7bEowuJ7murd1juw=;
+        b=TQ910LPL/i8H/qYSAkk3A/63uNBZnINnGozZge/w/+hm/90rJPC1+J/9lzr1lIttBh
+         opzZolmvFbiYv2FpWRymai/mG+VJwPiPv9l99WkwLEHq7znSLx0b/Wkn7kp35XPD7NcD
+         c0eXN16SScPf5jzLAS2Lc6uZNNPhqIqIu3DuU1Ywi0N9PervHkN/pgnC0A+nbrD0k5Jh
+         DwWai+w0s/F/oyqM1Yhrr1u4fbcXnN1UihKY22WbryQyGn0NA0BoHbesNAsKvhKmB+Zb
+         /V9V/u61z8m4XPlYRjh9b5B5C29c4Bo1JlP+h/hLAgEFoDOq5Ol4OTQuOo/4CP83rLEe
+         ZEkw==
+X-Gm-Message-State: APjAAAXLXXhLCUvohe4iTCmLSR9UrywJfE4F5AZfvmU/3lltqaOk60kX
+        qtEJ4HGuWk7r5TlpzToSJMuyYfWlEHZ9bU3JLT8=
+X-Google-Smtp-Source: APXvYqyduOFi8NImu0AzMAEfao7/6RCtL069JVxtRYJcG7ZxY2sDnpNyZhwel7yXqUTnvDofI8d+F0LuvM32vbsAM7s=
+X-Received: by 2002:a2e:5b5b:: with SMTP id p88mr14059332ljb.192.1564158567371;
+ Fri, 26 Jul 2019 09:29:27 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain
+Received: by 2002:a2e:94c:0:0:0:0:0 with HTTP; Fri, 26 Jul 2019 09:29:26 -0700 (PDT)
+In-Reply-To: <20190726100614.6924-1-colin.king@canonical.com>
+References: <20190726100614.6924-1-colin.king@canonical.com>
+From:   Stanislav Yakovlev <stas.yakovlev@gmail.com>
+Date:   Fri, 26 Jul 2019 20:29:26 +0400
+Message-ID: <CA++WF2PS_3X-fs7nKuxipizXE3QAPYXbYk=AV9waxDEc9JVJNg@mail.gmail.com>
+Subject: Re: [PATCH] ipw2x00: remove redundant assignment to err
+To:     Colin King <colin.king@canonical.com>
+Cc:     Kalle Valo <kvalo@codeaurora.org>,
+        "David S . Miller" <davem@davemloft.net>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Johannes Berg <johannes@sipsolutions.net> writes:
-
-> On Fri, 2019-07-26 at 19:36 +0530, Karthikeyan Periyasamy wrote:
->> > > Don't allow using a zero MAC address as the station
->> > > MAC address. so validated the MAC address using
->> > > is_valid_ether_addr.
->> > 
->> > Theoretically, all zeroes might have been a valid address at some 
->> > point.
->> > I see no reason not to reject it, but I'd like to know why you ended up
->> > with this now??
->> > 
->> 
->> Its a Wireless fuzz testing tool (codenomicon) which sends out different 
->> types of frames to the AP. It actually tampers legitimate wireless 
->> frames (Probe, Auth, Assoc, Data etc..) and will send to the AP. I 
->> thought allowing a zero MAC address station is not a valid. so validated 
->> the given MAC address. Just for curious, which case all zero address is 
->> a valid MAC.
+On 26/07/2019, Colin King <colin.king@canonical.com> wrote:
+> From: Colin Ian King <colin.king@canonical.com>
 >
-> Well, it isn't really, but the OUI 00:00:00 *is* in fact assigned (or
-> was), and theoretically the vendor could assign it to a device.
+> Variable err is initialized to a value that is never read and it
+> is re-assigned later.  The initialization is redundant and can
+> be removed.
+>
+> Addresses-Coverity: ("Unused value")
+> Signed-off-by: Colin Ian King <colin.king@canonical.com>
+> ---
+>  drivers/net/wireless/intel/ipw2x00/ipw2100.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 
-Heh, now that we allow routing the 0.0.0.0/8 subnet, this means that the
-following could be a perfectly sensible thing to do:
+Looks fine, thanks!
 
-'ip neigh add 0.0.0.1/8 lladdr 00:00:00:00:00:01 dev wlan0'
-
-One bit per address per network layer ought to be enough for everyone,
-right? ;)
-
--Toke
+Stanislav.
