@@ -2,117 +2,208 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 3CE6677A0B
-	for <lists+linux-wireless@lfdr.de>; Sat, 27 Jul 2019 17:18:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 36A5C77A47
+	for <lists+linux-wireless@lfdr.de>; Sat, 27 Jul 2019 17:33:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728907AbfG0PSP (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 27 Jul 2019 11:18:15 -0400
-Received: from mout.gmx.net ([212.227.15.19]:34399 "EHLO mout.gmx.net"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728856AbfG0PSO (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 27 Jul 2019 11:18:14 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
-        s=badeba3b8450; t=1564240671;
-        bh=UnTf2WwFWUPTip8DTEyqCu6JihIVuoeasLZZ4G2fHro=;
-        h=X-UI-Sender-Class:Subject:To:Cc:References:From:Date:In-Reply-To;
-        b=FUTImWDxBVn4cYuQj65tKQvuhmTXTX1FWp7Ho41foa3rfhq9/75jNfFqH3b8zzX2M
-         aRpaXBhcWkMvcix/KK/3zHLibfLUu+CqESfD6AKSfMq04PdyW43bhbwaWhoMEma2AI
-         u66Drm7cjNqM8JaeLrk+Wj7DiexS6+KDvyg+1OEY=
-X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
-Received: from [192.168.1.162] ([37.4.249.127]) by mail.gmx.com (mrgmx003
- [212.227.17.190]) with ESMTPSA (Nemesis) id 0Lt1eU-1iXlVU3gp0-012btl; Sat, 27
- Jul 2019 17:17:50 +0200
-Subject: brcmfmac: Probing regression in Linux 5.3-rc1
-To:     Nicolas Saenz Julienne <nsaenzjulienne@suse.de>,
-        Chen-Yu Tsai <wens@kernel.org>
-Cc:     linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
-        Arend van Spriel <arend.vanspriel@broadcom.com>,
-        Franky Lin <franky.lin@broadcom.com>,
-        Hante Meuleman <hante.meuleman@broadcom.com>,
-        Chi-Hsien Lin <chi-hsien.lin@cypress.com>,
-        Wright Feng <wright.feng@cypress.com>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        brcm80211-dev-list <brcm80211-dev-list@cypress.com>,
-        Johannes Berg <johannes.berg@intel.com>
-References: <1563774880-8061-1-git-send-email-wahrenst@gmx.net>
- <96113adb5fcab9c2f4bb5fa82b84ff5f9c07fd07.camel@suse.de>
- <bc650090-db86-ccac-01dc-23f08ad7b19b@gmx.net>
- <20190723093442.GA27239@lst.de>
- <04c5eaa03f3a124dbbce6186e11e19acc4539cc8.camel@suse.de>
- <b15509d6-bc2e-3d06-0eea-943e6e456d62@gmx.net>
- <5f9b11f54c66fd0487837f7e58af3adf7f86635f.camel@suse.de>
- <CAGb2v66-o23CW5iH9Bn1aELymPSiKrA43eJd2q6EZ7iubcogaw@mail.gmail.com>
- <ab7af8537ebcbc7a7bdf04d2c06152ba6821b333.camel@suse.de>
-From:   Stefan Wahren <wahrenst@gmx.net>
-Message-ID: <3daef629-8baf-3c5c-16a4-73d67604d1e5@gmx.net>
-Date:   Sat, 27 Jul 2019 17:17:49 +0200
+        id S1729043AbfG0Pdm (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 27 Jul 2019 11:33:42 -0400
+Received: from mail-lj1-f193.google.com ([209.85.208.193]:39363 "EHLO
+        mail-lj1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729038AbfG0Pdl (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Sat, 27 Jul 2019 11:33:41 -0400
+Received: by mail-lj1-f193.google.com with SMTP id v18so54253199ljh.6
+        for <linux-wireless@vger.kernel.org>; Sat, 27 Jul 2019 08:33:39 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=49oLJJ+AruMxZza+E1It4S74V16tuu7g2iHchlBB91s=;
+        b=hR9wzCfIH/UXxMDdaeSmQ9ZxFcJEYY/lQguDeP8mMD4FiREn6aEYIlMzLEWEjYsVks
+         +2lymw5hvFyzL0ZuSqt0rXqy1QYgP7mAyqQ1WHSilvYDR33pPsfq+bT0Piilzu5kTa+b
+         xFrgHVU5DMwePNYjYJs9q8CuxRGMrnUnzY++tDkGErLg+E6kKBGPt7EQtxjkSdQxkv6P
+         8BtlHpBaWj5QWfsgHhR+GCFgAiLmOatVjXyvVQSlxxyE+ZNwjBICE/peAGJFL6L+Yi99
+         4aNsI8vFMcYH25+g/m0Xtbdyyb095s7ZNUP5uZcnOUQ148xjd6Z5r8SzGTO9atlRazEc
+         CwNA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=49oLJJ+AruMxZza+E1It4S74V16tuu7g2iHchlBB91s=;
+        b=CbpdM5ag4B0HIeTI/YpPCmjCuunYU3OYbUYuvAh3GcUVv71x1OsJt46i0c9523ytBK
+         Wr9hTb28N6EVWJ7dho/l0jTRCH2VIbzIWw/kQTi+H4hTDYI0JboOq1TvXY2Xsoqo/Yr1
+         qCLqXTZxxQbvu+/5/Xp1InYpX/F9l698e88/vhbitgVGusnmfV3z07y53i163IDqUvA/
+         6w/f9xEGxTJE4c4qTWbJtuNYktzuQanqroOMh0D027fbWn+P5ttznUdA7bCc5SbD9rdv
+         4Mbn/+Avm4nBg/Pe9JSj0I4pbL0LwQal5dJxUGsIhO5Tj//TmyeITz90aqdOCWQ+wyVI
+         j2bA==
+X-Gm-Message-State: APjAAAXsJN47OC1Od2g+clHzn31T1AvaK1s4xnmu947pv3dGhfUPQV5i
+        645xpBHrz1tPbC045/fwtj0=
+X-Google-Smtp-Source: APXvYqyiGEtxDeMU70XO2PYSsGQrs/d3FM37W5+VMUmHep55ym/SsgQYyvjUhdrw0V/HGAHhLOSphw==
+X-Received: by 2002:a2e:b0ea:: with SMTP id h10mr8029179ljl.50.1564241618812;
+        Sat, 27 Jul 2019 08:33:38 -0700 (PDT)
+Received: from [192.168.100.6] ([109.252.54.73])
+        by smtp.googlemail.com with ESMTPSA id t25sm9314235lfg.7.2019.07.27.08.33.37
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Sat, 27 Jul 2019 08:33:38 -0700 (PDT)
+Subject: Re: [PATCH] cfg80211: use parallel_ops for genl
+To:     Johannes Berg <johannes@sipsolutions.net>,
+        linux-wireless@vger.kernel.org
+Cc:     Johannes Berg <johannes.berg@intel.com>
+References: <20190726191621.5031-1-johannes@sipsolutions.net>
+From:   Denis Kenzior <denkenz@gmail.com>
+Message-ID: <fe8ef214-5d02-da36-2680-6df3c683c154@gmail.com>
+Date:   Thu, 25 Jul 2019 19:16:40 -0500
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.8.0
+ Thunderbird/60.7.2
 MIME-Version: 1.0
-In-Reply-To: <ab7af8537ebcbc7a7bdf04d2c06152ba6821b333.camel@suse.de>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 7bit
+In-Reply-To: <20190726191621.5031-1-johannes@sipsolutions.net>
+Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Language: en-US
-X-Provags-ID: V03:K1:KANL+UEVbofPDLfDVCGu1V30zI2qDAM0iw0Z1FDGqjjPngV1UUT
- yiy8oknCnY+2eHMJb97Ogzq2+K0UCiWo6iId+5cn5Supx9iqEYh4aJi1M/bmTapPm+aBLWQ
- uyvz5qnU3QaQ/gicroj7LnydewPVk2mPvWU7qKCVCvk8vFBFihZBIL4i5Slfw92xTXYOdBY
- h5S9257vTgGn40WG17PUw==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:7SCg7cWCkcc=:04Y4D9LfCPYexEs7oyCPux
- M434UYx1AtBsxASACN69S1CZf7hcyBGOlsXz1Q7+KlA1GZ24OjQewEXTjPpQdEM3JkQw1RuTw
- 5OYtRsd4Dh4uUHUH22mUuJlkNosy1F2/IH5NQi+FJUpUdBGrNykmL08kjLxdGYZhLd9YRQJsQ
- q0zdRJS71Sm6j/xYTYOQMq6ABp6ZUDgOEQawlVUd2VZHOlZLvfP3pV/rq0kIuJ7a7DCm0eCWv
- 9qWD6GLmqQ6v0rkLtRzayG9tU7CzYUtAPfOi/5xLmxxtvRTUsU5WaJ1n5w7O5VzMbeZ3V9uAK
- plvV2qsK6m+de8xzvuV+972oBpCFdPr3MVT+yPmhmv/LOTvr/2ZAUlAk3yklbdp5A//RGaBer
- 9oO6QExfefHm/a2tV0QG17q62mkEq6xvrqrP7Ya0ZKMu6iivatBY73hMj7kGFwvf1MEbk/4Ul
- TVH/o3YaQCn0mfQoNRR+5pFutgVsaBkaR6+//SU5RzGIEWQ9IO59+dWoqxcp1yWrx9xlFyYC2
- hK3y6NnzkqL0uha0geticuHNDDroJnilhTIY8pRxaS/4dY3C3zjV+NAIPOPXWTFh3PO5+7qex
- GeWV6nbKxPONLt4u9+BJtWQcA2ot70/gtebNgHvh7L9h5RKrlyZMyEyi7b7r9QDEGaQsS8oVU
- ec1uptwvCLEDUUwCHsfoNhNea6n66QvEGodwAqLsFuKOu3gE/kLa5PaqqclXkHGlnCdcQaT9L
- FvQe8RvMOiCOGyu8oI2U7MWalfNzAQFWjG8s3gIrmwZ1OAqCbUOUAmP97isuF10EwPG/AbUHE
- O1uzZBdKS0VX233rko1VrekA+hqo6Lp6PKYNq46TIDU9p14pSZkeeEgrJGoije8CvvfGJQ/xz
- 3RHqTJvVUoiMrkscHL8DKw2z6kQxgYD8tjCSmEGXpjwM+ASXo056lEXsTYisiZC/TSLRcfNoj
- OGRDaqIBB3JcFgYD2a85h6OzLusl/Sy9kV3QRAIWsxyC2vU/soh+xV7lQxbxZt2zDTeZir4z+
- VL/dtjH8IYW0yj9GG4z5TolO2chPcGlq7KcF3MQdkozw38OOPcjBOWIijLZYR32IoEK8BjgWx
- m4lQXwxazLXxSo=
+Content-Transfer-Encoding: 7bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi,
+Hi Johannes,
 
-Am 24.07.19 um 10:37 schrieb Nicolas Saenz Julienne:
->>>> Does it fix the wifi issue too?
->>> Well it works as long as I revert this: 901bb98918 ("nl80211: require and
->>> validate vendor command policy"). Which has nothing to do with DMA anyways.
->>>
->>> Was this the issue you where seeing?
->>>
->>> [    4.969679] WARNING: CPU: 2 PID: 21 at net/wireless/core.c:868
->>> wiphy_register+0x8e8/0xbdc [cfg80211]
->>> [...]
->>> [    4.969974] ieee80211 phy0: brcmf_cfg80211_attach: Could not register
->>> wiphy device (-22)
->> We're seeing this on different platforms (allwinner / rockchip / amlogic)
->> with Broadcom WiFi chips. So it's unlikely to be related with anything in
->> this series.
->>
->> I believe a fix for this has already been queued up:
->>
->>
-> https://git.kernel.org/pub/scm/linux/kernel/git/jberg/mac80211.git/commit/?id=91046d6364afde646734c7ead1f649d253c386e9
->
-> Thanks for pointing it out, it fixes the issue alright.
->
-i cannot confirm. I still need to revert Johannes' commit "nl80211:
-require and validate vendor command policy" to get brcmfmac probing on
-Raspberry Pi 3B+ and 4B.
+On 7/26/19 2:16 PM, Johannes Berg wrote:
+> From: Johannes Berg <johannes.berg@intel.com>
+> 
+> Over time, we really need to get rid of all of our global locking.
+> One of the things needed is to use parallel_ops. This isn't really
+> the most important (RTNL is much more important) but OTOH we just
+> keep adding uses of genl_family_attrbuf() now. Use .parallel_ops to
+> disallow this.
+> 
+> Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+> ---
+>   net/wireless/nl80211.c | 112 +++++++++++++++++++++++++++++------------
+>   1 file changed, 81 insertions(+), 31 deletions(-)
+> 
+> diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
+> index 10b57aa10227..59aefcd7ccb6 100644
+> --- a/net/wireless/nl80211.c
+> +++ b/net/wireless/nl80211.c
+> @@ -749,19 +749,29 @@ int nl80211_prepare_wdev_dump(struct netlink_callback *cb,
+>   	int err;
+>   
+>   	if (!cb->args[0]) {
+> +		struct nlattr **attrbuf;
+> +
+> +		attrbuf = kcalloc(NUM_NL80211_ATTR, sizeof(*attrbuf),
+> +				  GFP_KERNEL);
+> +		if (!attrbuf)
+> +			return -ENOMEM;
+> +
+>   		err = nlmsg_parse_deprecated(cb->nlh,
+>   					     GENL_HDRLEN + nl80211_fam.hdrsize,
+> -					     genl_family_attrbuf(&nl80211_fam),
+> -					     nl80211_fam.maxattr,
+> +					     attrbuf, nl80211_fam.maxattr,
+>   					     nl80211_policy, NULL);
+> -		if (err)
+> +		if (err) {
+> +			kfree(attrbuf);
+>   			return err;
+> +		}
+>   
+> -		*wdev = __cfg80211_wdev_from_attrs(
+> -					sock_net(cb->skb->sk),
+> -					genl_family_attrbuf(&nl80211_fam));
+> -		if (IS_ERR(*wdev))
+> +		*wdev = __cfg80211_wdev_from_attrs(sock_net(cb->skb->sk),
+> +						   attrbuf);
+> +		kfree(attrbuf);
+> +		if (IS_ERR(*wdev)) {
+> +			kfree(attrbuf);
 
-The commit "nl80211: fix VENDOR_CMD_RAW_DATA" didn't fix the probing
-issue (see warning above).
+Hmm, you just freed attrbuf above?
 
-Regards
-Stefan
+>   			return PTR_ERR(*wdev);
+> +		}
+>   		*rdev = wiphy_to_rdev((*wdev)->wiphy);
+>   		/* 0 is the first index - add 1 to parse only once */
+>   		cb->args[0] = (*rdev)->wiphy_idx + 1;
 
+<snip>
 
+> @@ -12846,24 +12880,32 @@ static int nl80211_prepare_vendor_dump(struct sk_buff *skb,
+>   		return 0;
+>   	}
+>   
+> +	attrbuf = kcalloc(NUM_NL80211_ATTR, sizeof(*attrbuf), GFP_KERNEL);
+> +	if (!attrbuf)
+> +		return -ENOMEM;
+> +
+>   	err = nlmsg_parse_deprecated(cb->nlh,
+>   				     GENL_HDRLEN + nl80211_fam.hdrsize,
+>   				     attrbuf, nl80211_fam.maxattr,
+>   				     nl80211_policy, NULL);
+>   	if (err)
+> -		return err;
+> +		goto out;
+>   
+>   	if (!attrbuf[NL80211_ATTR_VENDOR_ID] ||
+> -	    !attrbuf[NL80211_ATTR_VENDOR_SUBCMD])
+> -		return -EINVAL;
+> +	    !attrbuf[NL80211_ATTR_VENDOR_SUBCMD]) {
+> +		err = -EINVAL;
+> +		goto out;
+> +	}
+
+Might be nicer to just set err = -EINVAL before the if instead of using 
+{} here
+
+>   
+>   	*wdev = __cfg80211_wdev_from_attrs(sock_net(skb->sk), attrbuf);
+>   	if (IS_ERR(*wdev))
+>   		*wdev = NULL;
+>   
+>   	*rdev = __cfg80211_rdev_from_attrs(sock_net(skb->sk), attrbuf);
+> -	if (IS_ERR(*rdev))
+> -		return PTR_ERR(*rdev);
+> +	if (IS_ERR(*rdev)) {
+> +		err = PTR_ERR(*rdev);
+> +		goto out;
+> +	}
+>   
+>   	vid = nla_get_u32(attrbuf[NL80211_ATTR_VENDOR_ID]);
+>   	subcmd = nla_get_u32(attrbuf[NL80211_ATTR_VENDOR_SUBCMD]);
+> @@ -12876,15 +12918,19 @@ static int nl80211_prepare_vendor_dump(struct sk_buff *skb,
+>   		if (vcmd->info.vendor_id != vid || vcmd->info.subcmd != subcmd)
+>   			continue;
+>   
+> -		if (!vcmd->dumpit)
+> -			return -EOPNOTSUPP;
+> +		if (!vcmd->dumpit) {
+> +			err = -EOPNOTSUPP;
+> +			goto out;
+> +		}
+
+Same thing here, setting err = -EOPNOTSUPP before the for...
+
+>   
+>   		vcmd_idx = i;
+>   		break;
+>   	}
+>   
+> -	if (vcmd_idx < 0)
+> -		return -EOPNOTSUPP;
+> +	if (vcmd_idx < 0) {
+> +		err = -EOPNOTSUPP;
+> +		goto out;
+> +	}
+>   
+>   	if (attrbuf[NL80211_ATTR_VENDOR_DATA]) {
+>   		data = nla_data(attrbuf[NL80211_ATTR_VENDOR_DATA]);
+
+<snip>
+
+Otherwise LGTM.
+
+Feel free to add: Reviewed-by: Denis Kenzior <denkenz@gmail.com>
+
+Regards,
+-Denis
