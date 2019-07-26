@@ -2,104 +2,97 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 3A3317647D
-	for <lists+linux-wireless@lfdr.de>; Fri, 26 Jul 2019 13:29:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 85FED764AF
+	for <lists+linux-wireless@lfdr.de>; Fri, 26 Jul 2019 13:36:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726215AbfGZL3Z (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 26 Jul 2019 07:29:25 -0400
-Received: from mail.kernel.org ([198.145.29.99]:41218 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725953AbfGZL3Z (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 26 Jul 2019 07:29:25 -0400
-Received: from mail-qt1-f169.google.com (mail-qt1-f169.google.com [209.85.160.169])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 584D6229F3
-        for <linux-wireless@vger.kernel.org>; Fri, 26 Jul 2019 11:29:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1564140564;
-        bh=z8l2D5aAB05N2YPjF7KzXhofQD0PYOa896GbzRFkPl0=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=R3cW1E7qm0mwVzDJSCmzFflghs+JCzjtp2Q2dA8VijsoWPPmI9tfUWnbu0Ein/gDV
-         cp/nFguVo0oKZs91m2DbR2n415Iwisgj71hm4KCqvcX8eEQyNk80XsvSGjWFjy6iwQ
-         GkJTVErmkF/jrCyWF7GKDKJRpth8lCy4Z2aO4CjA=
-Received: by mail-qt1-f169.google.com with SMTP id d23so52246976qto.2
-        for <linux-wireless@vger.kernel.org>; Fri, 26 Jul 2019 04:29:24 -0700 (PDT)
-X-Gm-Message-State: APjAAAUIxcmWFC31xoh4Z8ZcrN8FR4f+EdpkJNioJ+r14ItFU/alkRIy
-        yCdZuOomIZcHyohpZqpvZ39lMa4dQMiikgpW2MI=
-X-Google-Smtp-Source: APXvYqwDzO8JFQAnH2i6oZsLhTR757JyxUITsWr2pvDF0zepDxcTDvi4aJnCbPYjZR0wKF4ny3aFfoO3d6TsyJrT7tE=
-X-Received: by 2002:ac8:1410:: with SMTP id k16mr64116002qtj.335.1564140563518;
- Fri, 26 Jul 2019 04:29:23 -0700 (PDT)
-MIME-Version: 1.0
-References: <b8246cb77dfc2d1344cd194682001a11a01dbf3a.camel@coelho.fi>
-In-Reply-To: <b8246cb77dfc2d1344cd194682001a11a01dbf3a.camel@coelho.fi>
-From:   Josh Boyer <jwboyer@kernel.org>
-Date:   Fri, 26 Jul 2019 07:29:11 -0400
-X-Gmail-Original-Message-ID: <CA+5PVA5oFEehqOzV=4oUqWeDf1JbKgjUUUrUFuxfQ8rkzNbSjQ@mail.gmail.com>
-Message-ID: <CA+5PVA5oFEehqOzV=4oUqWeDf1JbKgjUUUrUFuxfQ8rkzNbSjQ@mail.gmail.com>
-Subject: Re: pull request: iwlwifi firmware updates 2019-07-20
-To:     Luca Coelho <luca@coelho.fi>
-Cc:     "linux-firmware@kernel.org" <linux-firmware@kernel.org>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        linuxwifi <linuxwifi@intel.com>,
-        "kyle@infradead.org" <kyle@infradead.org>,
-        "ben@decadent.org.uk" <ben@decadent.org.uk>, dor.shaish@intel.com
+        id S1726000AbfGZLgM (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 26 Jul 2019 07:36:12 -0400
+Received: from s3.sipsolutions.net ([144.76.43.62]:47646 "EHLO
+        sipsolutions.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725903AbfGZLgM (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 26 Jul 2019 07:36:12 -0400
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <johannes@sipsolutions.net>)
+        id 1hqyWA-0001yR-KQ; Fri, 26 Jul 2019 13:36:10 +0200
+Message-ID: <90a9bd90fb2d906d6f61d56c1e36b3e6bb0388b8.camel@sipsolutions.net>
+Subject: Re: [PATCH V3 2/2] mac80211: add support for the ADDBA extension
+ element
+From:   Johannes Berg <johannes@sipsolutions.net>
+To:     John Crispin <john@phrozen.org>
+Cc:     linux-wireless@vger.kernel.org,
+        Shashidhar Lakkavalli <slakkavalli@datto.com>
+Date:   Fri, 26 Jul 2019 13:36:08 +0200
+In-Reply-To: <20190713163642.18491-3-john@phrozen.org>
+References: <20190713163642.18491-1-john@phrozen.org>
+         <20190713163642.18491-3-john@phrozen.org>
 Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.30.5 (3.30.5-1.fc29) 
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Sat, Jul 20, 2019 at 4:03 AM Luca Coelho <luca@coelho.fi> wrote:
->
-> Hi,
->
-> This contains some updated firmwares for all our currently maintained
-> FW binaries.
->
-> Please pull or let me know if there are any issues.
->
-> --
-> Cheers,
-> Luca.
->
->
-> The following changes since commit bf13a71b18af229b4c900b321ef1f8443028ded8:
->
->   Merge branch 'guc_v33' of git://anongit.freedesktop.org/drm/drm-firmware (2019-07-17 09:05:52 -0400)
->
-> are available in the Git repository at:
->
->   git://git.kernel.org/pub/scm/linux/kernel/git/iwlwifi/linux-firmware.git tags/iwlwifi-fw-2019-07-20
->
-> for you to fetch changes up to cd6cb7bc50aa77d531c4417ffe1237510b71c73e:
->
->   iwlwifi: update -48 FWs for Qu and cc (2019-07-20 10:58:24 +0300)
->
-> ----------------------------------------------------------------
-> iwlwifi: update a bunch of FW binaries
->
-> ----------------------------------------------------------------
-> Luca Coelho (2):
->       iwlwifi: update FWs for 3168, 7265D, 9000, 9260, 8000, 8265 and cc
->       iwlwifi: update -48 FWs for Qu and cc
->
->  iwlwifi-3168-29.ucode             | Bin 1036276 -> 1036300 bytes
->  iwlwifi-7265D-29.ucode            | Bin 1036432 -> 1036668 bytes
->  iwlwifi-8000C-36.ucode            | Bin 2400700 -> 2401356 bytes
->  iwlwifi-8265-36.ucode             | Bin 2414296 -> 2414592 bytes
->  iwlwifi-9000-pu-b0-jf-b0-46.ucode | Bin 1460788 -> 1467952 bytes
->  iwlwifi-9260-th-b0-jf-b0-46.ucode | Bin 1462324 -> 1469012 bytes
->  iwlwifi-Qu-b0-hr-b0-48.ucode      | Bin 1106208 -> 1106204 bytes
->  iwlwifi-Qu-b0-jf-b0-48.ucode      | Bin 1053156 -> 1052772 bytes
->  iwlwifi-Qu-c0-hr-b0-48.ucode      | Bin 1106228 -> 1106224 bytes
->  iwlwifi-Qu-c0-jf-b0-48.ucode      | Bin 1053176 -> 1052792 bytes
->  iwlwifi-QuZ-a0-hr-b0-48.ucode     | Bin 1105648 -> 1105644 bytes
->  iwlwifi-QuZ-a0-jf-b0-48.ucode     | Bin 1052968 -> 1052584 bytes
->  iwlwifi-cc-a0-46.ucode            | Bin 1044072 -> 1044452 bytes
->  iwlwifi-cc-a0-48.ucode            | Bin 1096684 -> 1096680 bytes
->  14 files changed, 0 insertions(+), 0 deletions(-)
+Hi,
 
-Pulled and pushed out.
+Apologies for the late review.
 
-josh
+I've applied patch 1, but not this one yet:
+
+>  #define IEEE80211_HE_MAC_CAP0_DYNAMIC_FRAG_LEVEL_2		0x10
+>  #define IEEE80211_HE_MAC_CAP0_DYNAMIC_FRAG_LEVEL_3		0x18
+>  #define IEEE80211_HE_MAC_CAP0_DYNAMIC_FRAG_MASK			0x18
+> +#define IEEE80211_HE_MAC_CAP0_DYNAMIC_FRAG_SHIFT		3
+
+this will not be needed,
+ 
+> -static void ieee80211_send_addba_resp(struct ieee80211_sub_if_data *sdata, u8 *da, u16 tid,
+> +static void ieee80211_add_addbaext(struct ieee80211_sub_if_data *sdata,
+> +				   struct sk_buff *skb,
+> +				   const struct ieee80211_addba_ext_ie *req)
+> +{
+> +	struct ieee80211_supported_band *sband;
+> +	struct ieee80211_addba_ext_ie *resp;
+> +	const struct ieee80211_sta_he_cap *he_cap;
+> +	u8 frag_level, cap_frag_level;
+> +	u8 *pos;
+> +
+> +	sband = ieee80211_get_sband(sdata);
+> +	he_cap = ieee80211_get_he_iftype_cap(sband, sdata->vif.type);
+> +	if (!he_cap)
+> +		return;
+> +
+> +	pos = skb_put_zero(skb, 2 + sizeof(struct ieee80211_addba_ext_ie));
+> +	*pos++ = WLAN_EID_ADDBA_EXT;
+> +	*pos++ = sizeof(struct ieee80211_addba_ext_ie);
+> +	resp = (struct ieee80211_addba_ext_ie *)pos;
+> +	resp->data = req->data & IEEE80211_ADDBA_EXT_NO_FRAG;
+> +
+> +	frag_level = (req->data & IEEE80211_ADDBA_EXT_FRAG_LEVEL_MASK) >>
+> +		     IEEE80211_ADDBA_EXT_FRAG_LEVEL_SHIFT;
+> +	cap_frag_level = (he_cap->he_cap_elem.mac_cap_info[0] &
+> +			  IEEE80211_HE_MAC_CAP0_DYNAMIC_FRAG_MASK) >>
+> +			 IEEE80211_HE_MAC_CAP0_DYNAMIC_FRAG_SHIFT;
+
+if you use u32_get_bits() from bitfield.h here for these two
+assignments, which is nicer anyway.
+
+> +	if (frag_level > cap_frag_level)
+> +		frag_level = cap_frag_level;
+> +	resp->data |= (frag_level << IEEE80211_ADDBA_EXT_FRAG_LEVEL_SHIFT) &
+> +		      IEEE80211_ADDBA_EXT_FRAG_LEVEL_MASK;
+
+and probably that could also be u8_encode_bits()?
+
+> -	skb = dev_alloc_skb(sizeof(*mgmt) + local->hw.extra_tx_headroom);
+> +	skb = dev_alloc_skb(sizeof(*mgmt) +
+> +		    (addbaext ? 2 + sizeof(struct ieee80211_addba_ext_ie) : 0) +
+> +		    local->hw.extra_tx_headroom);
+
+not much point in the if (ternary operator) for ... 3 bytes? :-)
+
+johannes
+
