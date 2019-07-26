@@ -2,120 +2,64 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B0891762B2
-	for <lists+linux-wireless@lfdr.de>; Fri, 26 Jul 2019 11:50:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C7ADA7631C
+	for <lists+linux-wireless@lfdr.de>; Fri, 26 Jul 2019 12:06:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726329AbfGZJlg (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 26 Jul 2019 05:41:36 -0400
-Received: from mail-vs1-f68.google.com ([209.85.217.68]:41010 "EHLO
-        mail-vs1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726108AbfGZJlg (ORCPT
+        id S1726173AbfGZKGT (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 26 Jul 2019 06:06:19 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:42843 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725953AbfGZKGT (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 26 Jul 2019 05:41:36 -0400
-Received: by mail-vs1-f68.google.com with SMTP id 2so35642915vso.8
-        for <linux-wireless@vger.kernel.org>; Fri, 26 Jul 2019 02:41:35 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=endlessm-com.20150623.gappssmtp.com; s=20150623;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc:content-transfer-encoding;
-        bh=zQAETFiPc0aFNIxeDXyiIDZA2xGxTwhcJMiDlxf4BIg=;
-        b=gF9HjbvMjl5SVhv7yb2XcM5f/0R83Nt0MPGcMkb3JbW0PVLg8hJ1aDN8/yxAzHRJe8
-         h9bXjl+UIP7KZVZAq1hlOgwASM6/xlIuz5VAvWQ9gqSBIcvHOSWWHldRinLfZcpxh5Rr
-         VrSzo56C0bQjWOrBiGcfS6/jjvR+Xnuj4oVSbD6ay+tKRmwQUR9Zq63KTw704nCRuR3M
-         UpFbHnUlHD8pWZl/Wa2KTRmcV6gw6k48UOvAfQhYPVD3wnFnjv7obhES0C5gXSDvYFjU
-         DQh0biEXrF3tyOZ+TJv1zPmIv/gUnZ5njhjYC/kyqTZEJp9caVQKRvrG7Vxf9uhQEWPk
-         fzbQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=zQAETFiPc0aFNIxeDXyiIDZA2xGxTwhcJMiDlxf4BIg=;
-        b=a5dw4JC7kWA1Yv03kt16YW0b9SijYZsiJHjFUQ5FN+kug8Fjgm7QdVU8qpfEmSuO5+
-         yULwZ/ZqQHSCuJ3CXCAIvNzKZD1IeBG62gr6YiLtp+uaWi4Ip1GOzrAn1twq4Xsm6eyC
-         RFMoR0vzhaeTRppLsHq4knRGSHCveKhgkobjFAKUpxMC71os+mc7oai4+rJyCNgX6Nh4
-         SmStvYbaZt2cfs+cDN1UYLEVipqwxc8zqax/8RMKz4kbbIkkl9uAKxkusR3zT/CZhgMz
-         VoqYQuH7jy41RKi/oK4GyQ/LmMapM28S6Gd45AaelkHjBy3EATpDEk+q81x+29SVimLd
-         0fiA==
-X-Gm-Message-State: APjAAAV47GY86h5L4XfO2kqLHg8yhJEG1j+9K2ODr0EVQngyfXUTbL4B
-        zIKbMUVLUvUNB4/fnqgJp3EvplTNyJuGuNRRFcMN6Q==
-X-Google-Smtp-Source: APXvYqxvp/2LfFvQ/EjoQDSHcBttZZk1A87AFf9gl9KRUa+fnZYFT1MDihIpFExEm6iD5Y9Rq6s1yOnrhkOaXjfB/uI=
-X-Received: by 2002:a67:d990:: with SMTP id u16mr59869159vsj.95.1564134094915;
- Fri, 26 Jul 2019 02:41:34 -0700 (PDT)
-MIME-Version: 1.0
-References: <20190725080925.6575-1-jian-hong@endlessm.com> <06d713fff7434dfb9ccab32c2e2112e2@AcuMS.aculab.com>
- <CAPpJ_ecAAw=1X=7+MOw-VVH0ZKBr6rcRub6JnEqgNbZ6Hxt=ag@mail.gmail.com> <c2cdffd30923459e8773379fc2927e1d@AcuMS.aculab.com>
-In-Reply-To: <c2cdffd30923459e8773379fc2927e1d@AcuMS.aculab.com>
-From:   Jian-Hong Pan <jian-hong@endlessm.com>
-Date:   Fri, 26 Jul 2019 17:40:58 +0800
-Message-ID: <CAPpJ_eey7+KCMFj2YVQD8ziWR_xf-==k9MYb49-32Z5E6vTdHA@mail.gmail.com>
-Subject: Re: [PATCH] rtw88: pci: Use general byte arrays as the elements of RX ring
-To:     David Laight <David.Laight@aculab.com>
-Cc:     Yan-Hsuan Chuang <yhchuang@realtek.com>,
+        Fri, 26 Jul 2019 06:06:19 -0400
+Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
+        by youngberry.canonical.com with esmtpsa (TLS1.0:RSA_AES_256_CBC_SHA1:32)
+        (Exim 4.76)
+        (envelope-from <colin.king@canonical.com>)
+        id 1hqx79-0000EG-8x; Fri, 26 Jul 2019 10:06:15 +0000
+From:   Colin King <colin.king@canonical.com>
+To:     Stanislav Yakovlev <stas.yakovlev@gmail.com>,
         Kalle Valo <kvalo@codeaurora.org>,
         "David S . Miller" <davem@davemloft.net>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux@endlessm.com" <linux@endlessm.com>,
-        "stable@vger.kernel.org" <stable@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH] ipw2x00: remove redundant assignment to err
+Date:   Fri, 26 Jul 2019 11:06:14 +0100
+Message-Id: <20190726100614.6924-1-colin.king@canonical.com>
+X-Mailer: git-send-email 2.20.1
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-David Laight <David.Laight@aculab.com> =E6=96=BC 2019=E5=B9=B47=E6=9C=8826=
-=E6=97=A5 =E9=80=B1=E4=BA=94 =E4=B8=8B=E5=8D=885:23=E5=AF=AB=E9=81=93=EF=BC=
-=9A
->
-> From: Jian-Hong Pan
-> > Sent: 26 July 2019 07:18
-> ...
-> > > While allocating all 512 buffers in one block (just over 4MB)
-> > > is probably not a good idea, you may need to allocated (and dma map)
-> > > then in groups.
-> >
-> > Thanks for reviewing.  But got questions here to double confirm the ide=
-a.
-> > According to original code, it allocates 512 skbs for RX ring and dma
-> > mapping one by one.  So, the new code allocates memory buffer 512
-> > times to get 512 buffer arrays.  Will the 512 buffers arrays be in one
-> > block?  Do you mean aggregate the buffers as a scatterlist and use
-> > dma_map_sg?
->
-> If you malloc a buffer of size (8192+32) the allocator will either
-> round it up to a whole number of (often 4k) pages or to a power of
-> 2 of pages - so either 12k of 16k.
-> I think the Linux allocator does the latter.
-> Some of the allocators also 'steal' a bit from the front of the buffer
-> for 'red tape'.
->
-> OTOH malloc the space 15 buffers and the allocator will round the
-> 15*(8192 + 32) up to 32*4k - and you waste under 8k across all the
-> buffers.
->
-> You then dma_map the large buffer and split into the actual rx buffers.
-> Repeat until you've filled the entire ring.
-> The only complication is remembering the base address (and size) for
-> the dma_unmap and free.
-> Although there is plenty of padding to extend the buffer structure
-> significantly without using more memory.
-> Allocate in 15's and you (probably) have 512 bytes per buffer.
-> Allocate in 31's and you have 256 bytes.
->
-> The problem is that larger allocates are more likely to fail
-> (especially if the system has been running for some time).
-> So you almost certainly want to be able to fall back to smaller
-> allocates even though they use more memory.
->
-> I also wonder if you actually need 512 8k rx buffers to cover
-> interrupt latency?
-> I've not done any measurements for 20 years!
+From: Colin Ian King <colin.king@canonical.com>
 
-Thanks for the explanation.
-I am not sure the combination of 512 8k RX buffers.  Maybe Realtek
-folks can give us some idea.
-Tony Chuang any comment?
+Variable err is initialized to a value that is never read and it
+is re-assigned later.  The initialization is redundant and can
+be removed.
 
-Jian-Hong Pan
+Addresses-Coverity: ("Unused value")
+Signed-off-by: Colin Ian King <colin.king@canonical.com>
+---
+ drivers/net/wireless/intel/ipw2x00/ipw2100.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/net/wireless/intel/ipw2x00/ipw2100.c b/drivers/net/wireless/intel/ipw2x00/ipw2100.c
+index 75c0c29d81f0..8dfbaff2d1fe 100644
+--- a/drivers/net/wireless/intel/ipw2x00/ipw2100.c
++++ b/drivers/net/wireless/intel/ipw2x00/ipw2100.c
+@@ -4413,7 +4413,7 @@ static void ipw2100_kill_works(struct ipw2100_priv *priv)
+ 
+ static int ipw2100_tx_allocate(struct ipw2100_priv *priv)
+ {
+-	int i, j, err = -EINVAL;
++	int i, j, err;
+ 	void *v;
+ 	dma_addr_t p;
+ 
+-- 
+2.20.1
+
