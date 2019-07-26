@@ -2,101 +2,88 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 8BD4576F45
-	for <lists+linux-wireless@lfdr.de>; Fri, 26 Jul 2019 18:45:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8AB86770FC
+	for <lists+linux-wireless@lfdr.de>; Fri, 26 Jul 2019 20:09:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728943AbfGZQpb (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 26 Jul 2019 12:45:31 -0400
-Received: from mail-qt1-f195.google.com ([209.85.160.195]:46309 "EHLO
-        mail-qt1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728958AbfGZQpa (ORCPT
+        id S1729142AbfGZSJE (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 26 Jul 2019 14:09:04 -0400
+Received: from mail-lf1-f47.google.com ([209.85.167.47]:35295 "EHLO
+        mail-lf1-f47.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725899AbfGZSJE (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 26 Jul 2019 12:45:30 -0400
-Received: by mail-qt1-f195.google.com with SMTP id h21so53161760qtn.13
-        for <linux-wireless@vger.kernel.org>; Fri, 26 Jul 2019 09:45:30 -0700 (PDT)
+        Fri, 26 Jul 2019 14:09:04 -0400
+Received: by mail-lf1-f47.google.com with SMTP id p197so37641451lfa.2
+        for <linux-wireless@vger.kernel.org>; Fri, 26 Jul 2019 11:09:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=qaOWGs23G49TWwws7WjjdoCv06+sXW9upizbWmsREGM=;
-        b=MBKJbuMrs9FSTsgDbpfMEC2iM+Mgo/gNYAa3SM3aaQ8NIBY6v4rD+MmM6UONYqYX8y
-         fV6WIXzbBAtiC04TwawPu+avmWl7u6cCkPHfj7xZ7EBr3sjoSW9pLTlEWMwG4I9nEBuB
-         kbcCDp0IYhpUBF9aQOgKEjOHuISU6K21Q/KE9/ocl8zP/tfnDZYWpUKHH4fwMyEo1IVp
-         Ex0vqVhpapA0o+umQN6+Mh/SRg/Ff8VCFCxkyc6aHlXs2QQ89RTq1BaWvSq3RxCyQgBl
-         QnyScmmox2OYfEA5SrYaInW8kG1ozHCMQxHZWV3Vz8yXtGI4WanKuJwTW8cQPAjXIO9j
-         pUVw==
+        d=chromium.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc:content-transfer-encoding;
+        bh=Lo01V+SNW5wwzoAMH9rJf+YJszDrP9Hf0Zya+ZOXPpQ=;
+        b=S9ADumrJQOCDrGD6o+MbFt7BJO8+9ZgYbn3Q0aAYkS3KgB32ZoqIw1Q8EbtL7r0WPy
+         3YauhgOB+h2lTP9RLG73c7YEtOxqbwTg/C0r6m6BHxG92LXpaRcpBZMnJxHKBQQurV/v
+         /KbOrjDv/TQxgEnU2Bm/qX7Ffz6x5Dd+4WfxY=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=qaOWGs23G49TWwws7WjjdoCv06+sXW9upizbWmsREGM=;
-        b=gCqcRLUqzb4eWwj8jHxnfVU8LHEvxAKhfv0tWw2YsmOfpJk7wheXR8At13i35nO44r
-         DArHzK8wyLQmXUwZQc5/JG4lnxWVhU9VBBW3bquPDFpDAADIw3stFdQgTDlD4QwpVBBC
-         07PQW89c+kafiKIr000K8rddbY88PadlKrurD1skqqwrnIwv+1MWlawrP+c9XqJaG2pr
-         nDH/Hly6mDg6occSDfbXz1AqdY4zB5VxQS3UL0K5P4krP28wBuj9W4QmTads5EJ6ddvW
-         4FxieAZdX2wAHxy9LHlBGjLhVv9tFRXX0Js4Ppy4u8Wdv5aRsAURhG63kYkleLUG5SHY
-         5P3A==
-X-Gm-Message-State: APjAAAX3UWM8T6i6Ia2Y5DkeHIHiQUP6yFB7gBR37SKPw9NA+CmqaUBd
-        eLf5gYKjK9EI6RQ/1pIa+C9jk1/qwEnshwhtEco=
-X-Google-Smtp-Source: APXvYqyRqfPcz7rcgMGQO0a1Xg8BgrG0FA5d73BKM93l8ujPyfPbiSSGVebQirNV9WxwZB6CZnlKxYXOzdXOIou0f1E=
-X-Received: by 2002:ac8:4252:: with SMTP id r18mr6404984qtm.357.1564159527359;
- Fri, 26 Jul 2019 09:45:27 -0700 (PDT)
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc:content-transfer-encoding;
+        bh=Lo01V+SNW5wwzoAMH9rJf+YJszDrP9Hf0Zya+ZOXPpQ=;
+        b=OZ87/c/poF4ZrJX2gz3ZC1cm4B2mUtYkhucwnKv3qOH+xmYlmDYS59iliuj7g1meaZ
+         YO6XKiUo8GmgaN9zmG73VxL1l23RkCrhajma2KxfkH781G4rqQ4S8M7LpW50MQ5sE1Of
+         k5YsI+MEOqKo38+KkLiXVpjoinK77aSzaV9gFZFExWAjHdcXAhwIZ9FBLgT2GgGLsj29
+         /lR8kOoYj5ZiOShTP0zV4GfMdaTopztldTVeDCk0T2u7BMJLW/bnqqjcQ86i+/25dZ2x
+         +Y8TjhGzZwylicBntRZsgCt2NQS/Zilm13RZbDDiokOU30aVP0KUch6w2mo5R4jxzzqI
+         6PIA==
+X-Gm-Message-State: APjAAAWIVjgM3vOfzX1jkZq178s0PKdvy3xOo3Jy6m/Y100z8XpzVYx4
+        /RCOEh7SVyOlhgyyNm5l7+xBfR2ogz8=
+X-Google-Smtp-Source: APXvYqxG9LUmfD7czwWxqE+b1Lq9YUT492BhZ4eUR9HE381iReIPIhqWlyaLE9x3HSUZPsnIJjV+DQ==
+X-Received: by 2002:ac2:5e82:: with SMTP id b2mr1604811lfq.3.1564164541870;
+        Fri, 26 Jul 2019 11:09:01 -0700 (PDT)
+Received: from mail-lj1-f178.google.com (mail-lj1-f178.google.com. [209.85.208.178])
+        by smtp.gmail.com with ESMTPSA id n1sm8584916lfk.19.2019.07.26.11.09.00
+        for <linux-wireless@vger.kernel.org>
+        (version=TLS1_3 cipher=AEAD-AES128-GCM-SHA256 bits=128/128);
+        Fri, 26 Jul 2019 11:09:00 -0700 (PDT)
+Received: by mail-lj1-f178.google.com with SMTP id z28so52412355ljn.4
+        for <linux-wireless@vger.kernel.org>; Fri, 26 Jul 2019 11:09:00 -0700 (PDT)
+X-Received: by 2002:a2e:9758:: with SMTP id f24mr50743056ljj.58.1564164540330;
+ Fri, 26 Jul 2019 11:09:00 -0700 (PDT)
 MIME-Version: 1.0
-Received: by 2002:aed:3544:0:0:0:0:0 with HTTP; Fri, 26 Jul 2019 09:45:26
- -0700 (PDT)
-Reply-To: dhl.benin2019@outlook.com
-From:   "DR, MOHAMMED BUHARI, PRESIDENT OF NIGERIA" 
-        <westernunion.benin982@gmail.com>
-Date:   Fri, 26 Jul 2019 17:45:26 +0100
-Message-ID: <CAP=nHBKv0J2KVfmfnQs7YrrDs_VuL_F5x-ghM0J6qN3=fYF1qA@mail.gmail.com>
-Subject: Attn Dear Atm Card beneficiary. GOOD NEWS,Shipment number:
- 4Z69536197319960 Content Packages: ATM Visa Card, amount of $18.5Million
-To:     undisclosed-recipients:;
+References: <CA+K+NcRWLeE3-vah=urveMVxcgXYO0yFHYD=WNeuX_TdZ9+8-A@mail.gmail.com>
+ <F7CD281DE3E379468C6D07993EA72F84D1864503@RTITMBSVM04.realtek.com.tw> <CA+K+NcTsxsZ9LGbmSZ55xL-CTxruKta81WbCJXCWQCiMNNz4Qg@mail.gmail.com>
+In-Reply-To: <CA+K+NcTsxsZ9LGbmSZ55xL-CTxruKta81WbCJXCWQCiMNNz4Qg@mail.gmail.com>
+From:   Brian Norris <briannorris@chromium.org>
+Date:   Fri, 26 Jul 2019 11:08:48 -0700
+X-Gmail-Original-Message-ID: <CA+ASDXPcnbiZmZLbRS0VXbof5ED+iqtySD+tr+pTszv6Jru4bg@mail.gmail.com>
+Message-ID: <CA+ASDXPcnbiZmZLbRS0VXbof5ED+iqtySD+tr+pTszv6Jru4bg@mail.gmail.com>
+Subject: Re: [5.2 regression] rtwpci + amd iommu
+To:     Tony Chuang <yhchuang@realtek.com>
+Cc:     linux-wireless <linux-wireless@vger.kernel.org>,
+        =?UTF-8?B?SsOhbiBWZXNlbMO9?= <jano.vesely@gmail.com>
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Attn Dear Atm Card beneficiary.
+Hi Tony,
 
-GOOD NEWS,
-This is to inform you that i have paid the delivery fees for your ATM
-Master Card
-I paid it because our bank director stated that before, they
-So contact Dr. William Roberts, Director DHL Courier
-Company Benin to receive your delivery ATM Visa Card amount of $18.5m US Dollars
-It is shipment was registered to your addres.
-Contact the office now to know when they will delivery arrive to your country
+Can you please submit that patch upstream soon?
 
-Email id: dhl.benin2019@outlook.com
-Tel/mobile, +229 99652699
-Contact the office now to know when they will delivery arrive to your
-country today
-Shipment Details
------------------------------------------------------
-Shipment number: 4Z69536197319960
-Content Packages: ATM Visa Card amount of $18.5Million
-Scheduled Delivery
-Remember I have paid the insurance and Security Keeping fees for you
-But the only money you are required to send to this company is $125.00
-been your accurate ATM Visa Card clearance Fee before they will effect
-the delivery to you.
-Send the required delivery fee $125.00 only to the DHL Office on this
-information
-Payment is to be made via Western Union or Money Gram transfer for
-security purposes.
+Thanks,
+Brian
 
-Receive's Name---------------------Alan Ude
-Country-------------------------------------Benin
-City-----------------------------------Cotonou
-Quest-------------------------------Honest
-Answer----------------------------------Trust
-Amount---------------------------$125.00 only
-Let me know once you send the fee today okay.
+On Tue, Jul 9, 2019 at 11:10 PM J=C3=A1n Vesel=C3=BD <jano.vesely@gmail.com=
+> wrote:
+...
+> feel free to add my tested-by,
+...
 
-Blessing upon, blessing upon, blessing upon blessing upon,God has
-chosen you for testimony time,
-I wait for your urgent reply
-
-Sincerely
-DR, MOHAMMED BUHARI, PRESIDENT OF NIGERIA
+> On Wed, Jul 10, 2019 at 1:12 AM Tony Chuang <yhchuang@realtek.com> wrote:
+...
+> > I am not sure if enabling MSI interrupt is going to help.
+> > You can try the patch attached, if it works, I will send it to upstream=
+.
+> > Thanks
+> >
+> > Yan-Hsuan
