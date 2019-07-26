@@ -2,97 +2,95 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 4BECB75FF1
-	for <lists+linux-wireless@lfdr.de>; Fri, 26 Jul 2019 09:36:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 806E4761CA
+	for <lists+linux-wireless@lfdr.de>; Fri, 26 Jul 2019 11:23:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726138AbfGZHgX (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 26 Jul 2019 03:36:23 -0400
-Received: from s3.sipsolutions.net ([144.76.43.62]:44440 "EHLO
-        sipsolutions.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725869AbfGZHgX (ORCPT
+        id S1726439AbfGZJXk (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 26 Jul 2019 05:23:40 -0400
+Received: from eu-smtp-delivery-151.mimecast.com ([146.101.78.151]:50455 "EHLO
+        eu-smtp-delivery-151.mimecast.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1725928AbfGZJXj (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 26 Jul 2019 03:36:23 -0400
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <johannes@sipsolutions.net>)
-        id 1hqum4-0006vt-Sg; Fri, 26 Jul 2019 09:36:20 +0200
-Message-ID: <2efa83ab8120e29d1eb1be8295d59568b4eacc9a.camel@sipsolutions.net>
-Subject: Re: [RFC PATCH v3 0/2] cfg80211: fix duplicated scan entries after
- channel switch
-From:   Johannes Berg <johannes@sipsolutions.net>
-To:     Sergey Matyukevich <sergey.matyukevich.os@quantenna.com>
-Cc:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        Igor Mitsyanko <igor.mitsyanko.os@quantenna.com>,
-        Mikhail Karpenko <mkarpenko@quantenna.com>
-Date:   Fri, 26 Jul 2019 09:36:19 +0200
-In-Reply-To: <20190712105212.clf77zne6i4gh5ti@bars>
-References: <20190710173651.15770-1-sergey.matyukevich.os@quantenna.com>
-         <1c371a5921200a11da459b591df121bbcb0f967d.camel@sipsolutions.net>
-         <20190712092716.ywnkns473s5rtoku@bars>
-         <43055be7b2d7ff0f8dbadd19443fc73f30f93bb6.camel@sipsolutions.net>
-         <20190712105212.clf77zne6i4gh5ti@bars>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.30.5 (3.30.5-1.fc29) 
+        Fri, 26 Jul 2019 05:23:39 -0400
+Received: from AcuMS.aculab.com (156.67.243.126 [156.67.243.126]) (Using
+ TLS) by relay.mimecast.com with ESMTP id
+ uk-mta-213-_IbTtnJhNCekhz4rwLltKA-1; Fri, 26 Jul 2019 10:23:36 +0100
+Received: from AcuMS.Aculab.com (fd9f:af1c:a25b:0:43c:695e:880f:8750) by
+ AcuMS.aculab.com (fd9f:af1c:a25b:0:43c:695e:880f:8750) with Microsoft SMTP
+ Server (TLS) id 15.0.1347.2; Fri, 26 Jul 2019 10:23:35 +0100
+Received: from AcuMS.Aculab.com ([fe80::43c:695e:880f:8750]) by
+ AcuMS.aculab.com ([fe80::43c:695e:880f:8750%12]) with mapi id 15.00.1347.000;
+ Fri, 26 Jul 2019 10:23:35 +0100
+From:   David Laight <David.Laight@ACULAB.COM>
+To:     'Jian-Hong Pan' <jian-hong@endlessm.com>
+CC:     Yan-Hsuan Chuang <yhchuang@realtek.com>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        "David S . Miller" <davem@davemloft.net>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "linux@endlessm.com" <linux@endlessm.com>,
+        "stable@vger.kernel.org" <stable@vger.kernel.org>
+Subject: RE: [PATCH] rtw88: pci: Use general byte arrays as the elements of RX
+ ring
+Thread-Topic: [PATCH] rtw88: pci: Use general byte arrays as the elements of
+ RX ring
+Thread-Index: AQHVQsDFH4BG56wpwU66J+Fzxhx3XabbDGOQgAFRNgCAADuAcA==
+Date:   Fri, 26 Jul 2019 09:23:35 +0000
+Message-ID: <c2cdffd30923459e8773379fc2927e1d@AcuMS.aculab.com>
+References: <20190725080925.6575-1-jian-hong@endlessm.com>
+ <06d713fff7434dfb9ccab32c2e2112e2@AcuMS.aculab.com>
+ <CAPpJ_ecAAw=1X=7+MOw-VVH0ZKBr6rcRub6JnEqgNbZ6Hxt=ag@mail.gmail.com>
+In-Reply-To: <CAPpJ_ecAAw=1X=7+MOw-VVH0ZKBr6rcRub6JnEqgNbZ6Hxt=ag@mail.gmail.com>
+Accept-Language: en-GB, en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-ms-exchange-transport-fromentityheader: Hosted
+x-originating-ip: [10.202.205.107]
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+X-MC-Unique: _IbTtnJhNCekhz4rwLltKA-1
+X-Mimecast-Spam-Score: 0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: base64
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi Sergey,
-
-Sorry for dropping the ball on this thread.
-
-> > Right, it will be updated on RX. But then if we chanswitch, we would
-> > probably (mac80211 using a pointer to the non-transmitting BSS) update
-> > only one of the nontransmitting BSSes?
-> > 
-> > Just saying that maybe we need to be careful there - or your wording
-> > might be incorrect. We might end up updating a *nontransmitting* BSS,
-> > and then its transmitting/other non-tx ones only later?
-> 
-> Hmmm... I am not sure we are on the same page here. Could you please
-> clarify your concerns here ?
-
-I'm trying to say we might have this:
-
-cfg80211
- * transmitting BSS 0
-   - nontx BSS 1
-   - nontx BSS 2
-   - nontx BSS 3
-mac80211
- * ifmgd->associated (and cfg80211's wdev->current_bss?) = nontx BSS 2
-
-
-Now, things like the channel information etc. will always be identical
-between the 4 BSSes, by definition.
-
-However, if you chanswitch and mac80211 just lets cfg80211 know about
-the current_bss, then you may end up in a situation where the channel
-information is no longer the same, which is very surprising.
-
-
-> The normal (non multi-BSSID) BSS usecase seem to be clear: keep old and
-> remove new (if any), since it is not easy to update ifmgd->associated.
-
-Right.
-
-> Now let me take another look at the usecase when STA is connected to
-> a transmitting or non-transmitting BSS of a multi-BSS AP. At the moment
-> suggested code does the following. If STA is connected to the non-transmitting
-> BSS, then we switch to its transmitting BSS, instead of working with
-> current_bss directly.
-
-We switch? Where? Maybe I missed that.
-
-> So we look for the new entry (with new channel) of the transmitting BSS.
-> If it exists, then we remove it and _all_ of its non-transmitting BSSs.
-> Finally, we update channel and location in rb-tree of the existing (old)
-> transmitting BSS as well as _all_ of its non-transmitting entries.
-
-That would indeed address the scenario I was thinking of ...
-
-johannes
+RnJvbTogSmlhbi1Ib25nIFBhbiANCj4gU2VudDogMjYgSnVseSAyMDE5IDA3OjE4DQouLi4NCj4g
+PiBXaGlsZSBhbGxvY2F0aW5nIGFsbCA1MTIgYnVmZmVycyBpbiBvbmUgYmxvY2sgKGp1c3Qgb3Zl
+ciA0TUIpDQo+ID4gaXMgcHJvYmFibHkgbm90IGEgZ29vZCBpZGVhLCB5b3UgbWF5IG5lZWQgdG8g
+YWxsb2NhdGVkIChhbmQgZG1hIG1hcCkNCj4gPiB0aGVuIGluIGdyb3Vwcy4NCj4gDQo+IFRoYW5r
+cyBmb3IgcmV2aWV3aW5nLiAgQnV0IGdvdCBxdWVzdGlvbnMgaGVyZSB0byBkb3VibGUgY29uZmly
+bSB0aGUgaWRlYS4NCj4gQWNjb3JkaW5nIHRvIG9yaWdpbmFsIGNvZGUsIGl0IGFsbG9jYXRlcyA1
+MTIgc2ticyBmb3IgUlggcmluZyBhbmQgZG1hDQo+IG1hcHBpbmcgb25lIGJ5IG9uZS4gIFNvLCB0
+aGUgbmV3IGNvZGUgYWxsb2NhdGVzIG1lbW9yeSBidWZmZXIgNTEyDQo+IHRpbWVzIHRvIGdldCA1
+MTIgYnVmZmVyIGFycmF5cy4gIFdpbGwgdGhlIDUxMiBidWZmZXJzIGFycmF5cyBiZSBpbiBvbmUN
+Cj4gYmxvY2s/ICBEbyB5b3UgbWVhbiBhZ2dyZWdhdGUgdGhlIGJ1ZmZlcnMgYXMgYSBzY2F0dGVy
+bGlzdCBhbmQgdXNlDQo+IGRtYV9tYXBfc2c/DQoNCklmIHlvdSBtYWxsb2MgYSBidWZmZXIgb2Yg
+c2l6ZSAoODE5MiszMikgdGhlIGFsbG9jYXRvciB3aWxsIGVpdGhlcg0Kcm91bmQgaXQgdXAgdG8g
+YSB3aG9sZSBudW1iZXIgb2YgKG9mdGVuIDRrKSBwYWdlcyBvciB0byBhIHBvd2VyIG9mDQoyIG9m
+IHBhZ2VzIC0gc28gZWl0aGVyIDEyayBvZiAxNmsuDQpJIHRoaW5rIHRoZSBMaW51eCBhbGxvY2F0
+b3IgZG9lcyB0aGUgbGF0dGVyLg0KU29tZSBvZiB0aGUgYWxsb2NhdG9ycyBhbHNvICdzdGVhbCcg
+YSBiaXQgZnJvbSB0aGUgZnJvbnQgb2YgdGhlIGJ1ZmZlcg0KZm9yICdyZWQgdGFwZScuDQoNCk9U
+T0ggbWFsbG9jIHRoZSBzcGFjZSAxNSBidWZmZXJzIGFuZCB0aGUgYWxsb2NhdG9yIHdpbGwgcm91
+bmQgdGhlDQoxNSooODE5MiArIDMyKSB1cCB0byAzMio0ayAtIGFuZCB5b3Ugd2FzdGUgdW5kZXIg
+OGsgYWNyb3NzIGFsbCB0aGUNCmJ1ZmZlcnMuDQoNCllvdSB0aGVuIGRtYV9tYXAgdGhlIGxhcmdl
+IGJ1ZmZlciBhbmQgc3BsaXQgaW50byB0aGUgYWN0dWFsIHJ4IGJ1ZmZlcnMuDQpSZXBlYXQgdW50
+aWwgeW91J3ZlIGZpbGxlZCB0aGUgZW50aXJlIHJpbmcuDQpUaGUgb25seSBjb21wbGljYXRpb24g
+aXMgcmVtZW1iZXJpbmcgdGhlIGJhc2UgYWRkcmVzcyAoYW5kIHNpemUpIGZvcg0KdGhlIGRtYV91
+bm1hcCBhbmQgZnJlZS4NCkFsdGhvdWdoIHRoZXJlIGlzIHBsZW50eSBvZiBwYWRkaW5nIHRvIGV4
+dGVuZCB0aGUgYnVmZmVyIHN0cnVjdHVyZQ0Kc2lnbmlmaWNhbnRseSB3aXRob3V0IHVzaW5nIG1v
+cmUgbWVtb3J5Lg0KQWxsb2NhdGUgaW4gMTUncyBhbmQgeW91IChwcm9iYWJseSkgaGF2ZSA1MTIg
+Ynl0ZXMgcGVyIGJ1ZmZlci4NCkFsbG9jYXRlIGluIDMxJ3MgYW5kIHlvdSBoYXZlIDI1NiBieXRl
+cy4NCg0KVGhlIHByb2JsZW0gaXMgdGhhdCBsYXJnZXIgYWxsb2NhdGVzIGFyZSBtb3JlIGxpa2Vs
+eSB0byBmYWlsDQooZXNwZWNpYWxseSBpZiB0aGUgc3lzdGVtIGhhcyBiZWVuIHJ1bm5pbmcgZm9y
+IHNvbWUgdGltZSkuDQpTbyB5b3UgYWxtb3N0IGNlcnRhaW5seSB3YW50IHRvIGJlIGFibGUgdG8g
+ZmFsbCBiYWNrIHRvIHNtYWxsZXINCmFsbG9jYXRlcyBldmVuIHRob3VnaCB0aGV5IHVzZSBtb3Jl
+IG1lbW9yeS4NCg0KSSBhbHNvIHdvbmRlciBpZiB5b3UgYWN0dWFsbHkgbmVlZCA1MTIgOGsgcngg
+YnVmZmVycyB0byBjb3Zlcg0KaW50ZXJydXB0IGxhdGVuY3k/DQpJJ3ZlIG5vdCBkb25lIGFueSBt
+ZWFzdXJlbWVudHMgZm9yIDIwIHllYXJzIQ0KDQoJRGF2aWQNCg0KLQ0KUmVnaXN0ZXJlZCBBZGRy
+ZXNzIExha2VzaWRlLCBCcmFtbGV5IFJvYWQsIE1vdW50IEZhcm0sIE1pbHRvbiBLZXluZXMsIE1L
+MSAxUFQsIFVLDQpSZWdpc3RyYXRpb24gTm86IDEzOTczODYgKFdhbGVzKQ0K
 
