@@ -2,64 +2,96 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 41DC276B0E
-	for <lists+linux-wireless@lfdr.de>; Fri, 26 Jul 2019 16:07:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C55B976B47
+	for <lists+linux-wireless@lfdr.de>; Fri, 26 Jul 2019 16:16:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727193AbfGZOHl (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 26 Jul 2019 10:07:41 -0400
-Received: from s3.sipsolutions.net ([144.76.43.62]:49628 "EHLO
-        sipsolutions.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726364AbfGZOHl (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 26 Jul 2019 10:07:41 -0400
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <johannes@sipsolutions.net>)
-        id 1hr0sl-0004Pa-Fy; Fri, 26 Jul 2019 16:07:39 +0200
-Message-ID: <218afd33eda4410472c2a99624f81908cf535cb4.camel@sipsolutions.net>
-Subject: Re: [PATCH] mac80211: reject zero MAC address in add station
-From:   Johannes Berg <johannes@sipsolutions.net>
-To:     Karthikeyan Periyasamy <periyasa@codeaurora.org>
-Cc:     linux-wireless@vger.kernel.org
-Date:   Fri, 26 Jul 2019 16:07:38 +0200
-In-Reply-To: <fd6e7a7e0746b861bbbd660bf54cc675@codeaurora.org>
-References: <1563959770-21570-1-git-send-email-periyasa@codeaurora.org>
-         <0cc7d0c578b60730e77ecd03e2df240dd1b393a0.camel@sipsolutions.net>
-         <fd6e7a7e0746b861bbbd660bf54cc675@codeaurora.org>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.30.5 (3.30.5-1.fc29) 
+        id S1727866AbfGZOP7 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 26 Jul 2019 10:15:59 -0400
+Received: from szxga05-in.huawei.com ([45.249.212.191]:2780 "EHLO huawei.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1727119AbfGZOP7 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 26 Jul 2019 10:15:59 -0400
+Received: from DGGEMS409-HUB.china.huawei.com (unknown [172.30.72.59])
+        by Forcepoint Email with ESMTP id 9E5277926D7979379D45;
+        Fri, 26 Jul 2019 22:15:54 +0800 (CST)
+Received: from localhost (10.133.213.239) by DGGEMS409-HUB.china.huawei.com
+ (10.3.19.209) with Microsoft SMTP Server id 14.3.439.0; Fri, 26 Jul 2019
+ 22:15:47 +0800
+From:   YueHaibing <yuehaibing@huawei.com>
+To:     <kvalo@codeaurora.org>, <arend.vanspriel@broadcom.com>,
+        <franky.lin@broadcom.com>, <hante.meuleman@broadcom.com>,
+        <chi-hsien.lin@cypress.com>, <wright.feng@cypress.com>
+CC:     <linux-kernel@vger.kernel.org>, <netdev@vger.kernel.org>,
+        <linux-wireless@vger.kernel.org>,
+        <brcm80211-dev-list.pdl@broadcom.com>,
+        <brcm80211-dev-list@cypress.com>,
+        YueHaibing <yuehaibing@huawei.com>
+Subject: [PATCH] brcmsmac: remove three set but not used variables
+Date:   Fri, 26 Jul 2019 22:15:35 +0800
+Message-ID: <20190726141535.33212-1-yuehaibing@huawei.com>
+X-Mailer: git-send-email 2.10.2.windows.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain
+X-Originating-IP: [10.133.213.239]
+X-CFilter-Loop: Reflected
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Fri, 2019-07-26 at 19:36 +0530, Karthikeyan Periyasamy wrote:
-> > > Don't allow using a zero MAC address as the station
-> > > MAC address. so validated the MAC address using
-> > > is_valid_ether_addr.
-> > 
-> > Theoretically, all zeroes might have been a valid address at some 
-> > point.
-> > I see no reason not to reject it, but I'd like to know why you ended up
-> > with this now??
-> > 
-> 
-> Its a Wireless fuzz testing tool (codenomicon) which sends out different 
-> types of frames to the AP. It actually tampers legitimate wireless 
-> frames (Probe, Auth, Assoc, Data etc..) and will send to the AP. I 
-> thought allowing a zero MAC address station is not a valid. so validated 
-> the given MAC address. Just for curious, which case all zero address is 
-> a valid MAC.
+Fixes gcc '-Wunused-but-set-variable' warning:
 
-Well, it isn't really, but the OUI 00:00:00 *is* in fact assigned (or
-was), and theoretically the vendor could assign it to a device.
+drivers/net/wireless/broadcom/brcm80211/brcmsmac/main.c: In function 'brcms_c_set_gmode':
+drivers/net/wireless/broadcom/brcm80211/brcmsmac/main.c:5257:7: warning: variable 'preamble_restrict' set but not used [-Wunused-but-set-variable]
+drivers/net/wireless/broadcom/brcm80211/brcmsmac/main.c:5256:6: warning: variable 'preamble' set but not used [-Wunused-but-set-variable]
+drivers/net/wireless/broadcom/brcm80211/brcmsmac/main.c:5251:7: warning: variable 'shortslot_restrict' set but not used [-Wunused-but-set-variable]
 
-We do assume basically everywhere that it's invalid though.
+They are never used so can be removed.
 
-Was just wondering how you came across this really, I guess I'll add a
-bit of text to the commit log and merge it.
+Reported-by: Hulk Robot <hulkci@huawei.com>
+Signed-off-by: YueHaibing <yuehaibing@huawei.com>
+---
+ drivers/net/wireless/broadcom/brcm80211/brcmsmac/main.c | 13 -------------
+ 1 file changed, 13 deletions(-)
 
-johannes
+diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmsmac/main.c b/drivers/net/wireless/broadcom/brcm80211/brcmsmac/main.c
+index 7d4e8f5..080e829 100644
+--- a/drivers/net/wireless/broadcom/brcm80211/brcmsmac/main.c
++++ b/drivers/net/wireless/broadcom/brcm80211/brcmsmac/main.c
+@@ -5248,15 +5248,7 @@ int brcms_c_set_gmode(struct brcms_c_info *wlc, u8 gmode, bool config)
+ 	/* Default to 54g Auto */
+ 	/* Advertise and use shortslot (-1/0/1 Auto/Off/On) */
+ 	s8 shortslot = BRCMS_SHORTSLOT_AUTO;
+-	bool shortslot_restrict = false; /* Restrict association to stations
+-					  * that support shortslot
+-					  */
+ 	bool ofdm_basic = false;	/* Make 6, 12, and 24 basic rates */
+-	/* Advertise and use short preambles (-1/0/1 Auto/Off/On) */
+-	int preamble = BRCMS_PLCP_LONG;
+-	bool preamble_restrict = false;	/* Restrict association to stations
+-					 * that support short preambles
+-					 */
+ 	struct brcms_band *band;
+ 
+ 	/* if N-support is enabled, allow Gmode set as long as requested
+@@ -5297,16 +5289,11 @@ int brcms_c_set_gmode(struct brcms_c_info *wlc, u8 gmode, bool config)
+ 
+ 	case GMODE_ONLY:
+ 		ofdm_basic = true;
+-		preamble = BRCMS_PLCP_SHORT;
+-		preamble_restrict = true;
+ 		break;
+ 
+ 	case GMODE_PERFORMANCE:
+ 		shortslot = BRCMS_SHORTSLOT_ON;
+-		shortslot_restrict = true;
+ 		ofdm_basic = true;
+-		preamble = BRCMS_PLCP_SHORT;
+-		preamble_restrict = true;
+ 		break;
+ 
+ 	default:
+-- 
+2.7.4
+
 
