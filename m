@@ -2,84 +2,50 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 814E2766D5
-	for <lists+linux-wireless@lfdr.de>; Fri, 26 Jul 2019 15:05:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 177F47676A
+	for <lists+linux-wireless@lfdr.de>; Fri, 26 Jul 2019 15:26:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726844AbfGZNFq (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 26 Jul 2019 09:05:46 -0400
-Received: from bombadil.infradead.org ([198.137.202.133]:54662 "EHLO
-        bombadil.infradead.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726086AbfGZNFp (ORCPT
+        id S1726863AbfGZN0f (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 26 Jul 2019 09:26:35 -0400
+Received: from s3.sipsolutions.net ([144.76.43.62]:49074 "EHLO
+        sipsolutions.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726604AbfGZN0f (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 26 Jul 2019 09:05:45 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=bombadil.20170209; h=Content-Transfer-Encoding:
-        Content-Type:MIME-Version:References:In-Reply-To:Message-ID:Subject:Cc:To:
-        From:Date:Sender:Reply-To:Content-ID:Content-Description:Resent-Date:
-        Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-        List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-         bh=v25fSyTOpn+HLVJ1/RYUYjo/p2HKkKXuypllJV6JuFU=; b=FGTl2rF5Ekw99U5eWA0qO4ViY
-        ezxgPoNckrfd02rKeR5DfhI5n58vJTcEz7aQ3diHZkRmGndI5Rrlekc33Ay4TibbLOwpG1XKCSloG
-        82pJRxtCcnQvPslNG7xO/8DHeER9qlTWSUhlaF/iNE0YUnkdxnIGvBgg9Brpdp4iVK9JkJjbm0TvY
-        TcCvfrG3NaxcqzRwVsiX1+l5U3fjf1yQEEnGnZRs2iZazrP26MkKBj4gTVChmnzy3Hz3krFh/Kx2g
-        S6dj3Qi5GKN2Rfpl0jR+wq9OXeL8jT6dpW75i/Mr7cpWYS51GnMWuFS7A6xMmFALsHG7f3ly85U0p
-        sDY3Ty9HA==;
-Received: from [179.95.31.157] (helo=coco.lan)
-        by bombadil.infradead.org with esmtpsa (Exim 4.92 #3 (Red Hat Linux))
-        id 1hqzun-0004Yn-F9; Fri, 26 Jul 2019 13:05:42 +0000
-Date:   Fri, 26 Jul 2019 10:05:33 -0300
-From:   Mauro Carvalho Chehab <mchehab+samsung@kernel.org>
-To:     Jonathan Corbet <corbet@lwn.net>
-Cc:     linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-pm@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-samsung-soc@vger.kernel.org, linux-pci@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org, linux-scsi@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-i2c@vger.kernel.org,
-        linux-hwmon@vger.kernel.org, linux-spi@vger.kernel.org,
-        linux-iio@vger.kernel.org, linux-rtc@vger.kernel.org,
-        netdev@vger.kernel.org, linux-parisc@vger.kernel.org,
-        openrisc@lists.librecores.org, devel@driverdev.osuosl.org,
-        linux-cifs@vger.kernel.org, samba-technical@lists.samba.org,
-        devel@lists.orangefs.org, dmaengine@vger.kernel.org,
-        alsa-devel@alsa-project.org, linux-mips@vger.kernel.org,
-        linux-wireless@vger.kernel.org, rcu@vger.kernel.org
-Subject: Re: [PATCH v2 00/26] ReST conversion of text files without .txt
- extension
-Message-ID: <20190726100521.5d379300@coco.lan>
-In-Reply-To: <cover.1564145354.git.mchehab+samsung@kernel.org>
-References: <cover.1564145354.git.mchehab+samsung@kernel.org>
-X-Mailer: Claws Mail 3.17.3 (GTK+ 2.24.32; x86_64-redhat-linux-gnu)
+        Fri, 26 Jul 2019 09:26:35 -0400
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <johannes@sipsolutions.net>)
+        id 1hr0Ez-0003mV-Kb; Fri, 26 Jul 2019 15:26:33 +0200
+Message-ID: <f2e16d10ce3eb3ff08c97c27424b824b8e012553.camel@sipsolutions.net>
+Subject: Re: [PATCH 2/2] mac80211_hwsim: Register support for HE meshpoint
+From:   Johannes Berg <johannes@sipsolutions.net>
+To:     Sven Eckelmann <sven@narfation.org>, linux-wireless@vger.kernel.org
+Cc:     ath11k@lists.infradead.org, Sven Eckelmann <seckelmann@datto.com>
+Date:   Fri, 26 Jul 2019 15:26:32 +0200
+In-Reply-To: <20190724163359.3507-3-sven@narfation.org> (sfid-20190724_183423_401572_761C0A47)
+References: <20190724163359.3507-1-sven@narfation.org>
+         <20190724163359.3507-3-sven@narfation.org>
+         (sfid-20190724_183423_401572_761C0A47)
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.30.5 (3.30.5-1.fc29) 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Em Fri, 26 Jul 2019 09:51:10 -0300
-Mauro Carvalho Chehab <mchehab+samsung@kernel.org> escreveu:
+On Wed, 2019-07-24 at 18:33 +0200, Sven Eckelmann wrote:
+> From: Sven Eckelmann <seckelmann@datto.com>
+> 
+> Some features of 802.11ax without central organizing (AP) STA can also be
+> used in mesh mode. hwsim can be used to assist initial development of these
+> features without having access to HW.
+> 
+> Signed-off-by: Sven Eckelmann <seckelmann@datto.com>
 
-> This series converts the text files under Documentation with doesn't end
-> neither .txt or .rst and are not part of ABI or features.
-> 
-> This series is at:
-> 	https://git.linuxtv.org/mchehab/experimental.git/log/?h=rst_for_5_4_v3
-> 
-> And it is based on yesterday's upstream tree.
-> 
-> After this series, we have ~320 files left to be converted to ReST.
-> 
-> v2:
->   - Added 3 files submitted for v5.3 that weren't merged yet;
->   - markdown patch broken into two, per Rob's request;
->   - rebased on the top of upstream master branch
-> 
-> Mauro Carvalho Chehab (26):
+Even with the tshark workaround in place, this breaks 68 mesh-related
+tests in hwsim tests. Jouni says only 3 use tshark ...
 
->   docs: ABI: remove extension from sysfs-class-mic.txt
+johannes
 
-    ^ In time: this one was already merged.
-
-Thanks,
-Mauro
