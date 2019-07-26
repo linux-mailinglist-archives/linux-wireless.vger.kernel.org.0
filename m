@@ -2,31 +2,37 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 85CA8764D9
-	for <lists+linux-wireless@lfdr.de>; Fri, 26 Jul 2019 13:49:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 963857650F
+	for <lists+linux-wireless@lfdr.de>; Fri, 26 Jul 2019 14:02:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726643AbfGZLtB (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 26 Jul 2019 07:49:01 -0400
-Received: from s3.sipsolutions.net ([144.76.43.62]:47848 "EHLO
+        id S1726282AbfGZMCR (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 26 Jul 2019 08:02:17 -0400
+Received: from s3.sipsolutions.net ([144.76.43.62]:47982 "EHLO
         sipsolutions.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726329AbfGZLtB (ORCPT
+        with ESMTP id S1726026AbfGZMCQ (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 26 Jul 2019 07:49:01 -0400
+        Fri, 26 Jul 2019 08:02:16 -0400
 Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
         (Exim 4.92)
         (envelope-from <johannes@sipsolutions.net>)
-        id 1hqyiZ-0002CG-S9; Fri, 26 Jul 2019 13:48:59 +0200
-Message-ID: <046b22fb9c4784351c36e29d0a3b8a1e0097d264.camel@sipsolutions.net>
-Subject: Re: [PATCH V3 2/2] mac80211: allow setting spatial reuse parameters
- from bss_conf
+        id 1hqyvP-0002Nq-1Q; Fri, 26 Jul 2019 14:02:15 +0200
+Message-ID: <9e95c120de95c9f5f64ea8e589f036a1d338ad96.camel@sipsolutions.net>
+Subject: Re: [RFC PATCH v3 0/2] cfg80211: fix duplicated scan entries after
+ channel switch
 From:   Johannes Berg <johannes@sipsolutions.net>
-To:     John Crispin <john@phrozen.org>
-Cc:     linux-wireless@vger.kernel.org,
-        Shashidhar Lakkavalli <slakkavalli@datto.com>
-Date:   Fri, 26 Jul 2019 13:48:57 +0200
-In-Reply-To: <20190618061915.7102-3-john@phrozen.org>
-References: <20190618061915.7102-1-john@phrozen.org>
-         <20190618061915.7102-3-john@phrozen.org>
+To:     Sergey Matyukevich <sergey.matyukevich.os@quantenna.com>
+Cc:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        Igor Mitsyanko <igor.mitsyanko.os@quantenna.com>,
+        Mikhail Karpenko <mkarpenko@quantenna.com>
+Date:   Fri, 26 Jul 2019 14:02:10 +0200
+In-Reply-To: <20190726101150.lykay6apgzvsb4ov@bars>
+References: <20190710173651.15770-1-sergey.matyukevich.os@quantenna.com>
+         <1c371a5921200a11da459b591df121bbcb0f967d.camel@sipsolutions.net>
+         <20190712092716.ywnkns473s5rtoku@bars>
+         <43055be7b2d7ff0f8dbadd19443fc73f30f93bb6.camel@sipsolutions.net>
+         <20190712105212.clf77zne6i4gh5ti@bars>
+         <2efa83ab8120e29d1eb1be8295d59568b4eacc9a.camel@sipsolutions.net>
+         <20190726101150.lykay6apgzvsb4ov@bars>
 Content-Type: text/plain; charset="UTF-8"
 User-Agent: Evolution 3.30.5 (3.30.5-1.fc29) 
 MIME-Version: 1.0
@@ -36,89 +42,36 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Tue, 2019-06-18 at 08:19 +0200, John Crispin wrote:
-> Store the OBSS PD parameters inside bss_conf when bringing up an AP and/or
-> when a station connects to an AP. This allows the driver to configure the
-> HW accordingly.
+Hi Sergey,
+
+> Yes, this is the use-case that I tried to address in the last revision
+> of the patch.
+
+OK! I didn't see it here and I guess I didn't look at the latest version
+yet, or I missed it.
+
+> If you take a look at the top of new cfg80211_update_assoc_bss_entry
+> function:
 > 
-> Signed-off-by: Shashidhar Lakkavalli <slakkavalli@datto.com>
-> Signed-off-by: John Crispin <john@phrozen.org>
-> ---
->  include/net/cfg80211.h       | 15 +++++++++++++
->  include/net/mac80211.h       |  4 ++++
->  include/uapi/linux/nl80211.h | 27 ++++++++++++++++++++++
->  net/mac80211/cfg.c           |  5 ++++-
->  net/mac80211/he.c            | 24 ++++++++++++++++++++
->  net/mac80211/ieee80211_i.h   |  3 +++
->  net/mac80211/mlme.c          |  1 +
->  net/wireless/nl80211.c       | 43 ++++++++++++++++++++++++++++++++++++
->  8 files changed, 121 insertions(+), 1 deletion(-)
+> +       /* use transmitting bss */
+> +       if (cbss->pub.transmitted_bss)
+> +               cbss = container_of(cbss->pub.transmitted_bss,
+> +                                   struct cfg80211_internal_bss,
+> +                                   pub);
 
-Not sure if I missed this before, but in any case please split between
-cfg80211 and mac80211 for all but the most trivial patches.
+Right, makes sense!
 
-> +/**
-> + * enum nl80211_he_spr - spatial reuse attributes
+> Actually one of the major concerns is the lack of testing for the 'multi-BSSID'
+> scenario. I verified the 'normal' scenario using both mac80211 (iwlwifi) and
+> FullMAC (qtnfmac) cards. But at the moment I don't have any mac80211 card
+> supporting multi-BSSID.
 
-bad copy/paste? :)
+You might be able to do that with hwsim? There are multi-bssid test
+cases in the hostap repository, and CSA test cases as well, so I guess
+it'd be possible to come up with a combined one.
 
-> + * @__NL80211_HE_OBSS_PD_ATTR_INVALID: Invalid
-> + *
-> + * @NL80211_ATTR_HE_OBSS_PD_MIN_OFFSET: the OBSS PD minimum tx power offset.
-> + * @NL80211_ATTR_HE_OBSS_PD_MAX_OFFSET: the OBSS PD maximum tx power offset.
-> + *
-> + * @__NL80211_HE_OBSS_PD_ATTR_LAST: Internal
-> + * @NL80211_HE_OBSS_PD_ATTR_MAX: highest spiatl reuse attribute.
-
-typo & wrong anyway, OBSS PD not SPR
-
-> + */
-
-Those prefixes are a bit confusing - IMHO they should all be
-NL80211_HE_OBSS_PD_ATTR_*, NL80211_ATTR_* is mostly (except for a few
-historical bugs) the top-level attributes.
-
-
-> +enum nl80211_he_spr_attributes {
-
-here also
-
-> +	memcpy(&sdata->vif.bss_conf.he_obss_pd, &params->he_obss_pd,
-> +	       sizeof(struct ieee80211_he_obss_pd));
-
-just use struct assignment
-
-	blabla.he_obss_pd = params->he_obss_pd;
-
-
-> +	[NL80211_ATTR_HE_OBSS_PD] = { .type = NLA_NESTED },
-
-please use NLA_POLICY_NESTED() (requires putting the below policy above
-this point)
- 
-> +static const struct nla_policy
-> +			he_spr_policy[NL80211_HE_OBSS_PD_ATTR_MAX + 1] = {
-
-I guess I'd lose all the tabs here but don't really care that much.
-
-> +	[NL80211_ATTR_HE_OBSS_PD_MIN_OFFSET] = { .type = NLA_U32 },
-> +	[NL80211_ATTR_HE_OBSS_PD_MAX_OFFSET] = { .type = NLA_U32 },
-
-That can't be right, they go into u8 eventually, no? Use NLA_U8 or maybe
-even NLA_POLICY_RANGE().
-
-Also in the struct ieee80211_he_obss_pd you have u32 for no real reason?
-
-In the element in the frame you only used a single u8.
-
-> +	if (!tb[NL80211_ATTR_HE_OBSS_PD_MIN_OFFSET] ||
-> +	    !tb[NL80211_ATTR_HE_OBSS_PD_MAX_OFFSET])
-> +		return -EINVAL;
-
-> +	if (he_obss_pd->min_offset >= he_obss_pd->max_offset)
-> +		return -EINVAL;
-
-Maybe add some extack error messages for this.
+I'm not *too* worried about this though - we're still all testing and
+developing this.
 
 johannes
 
