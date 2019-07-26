@@ -2,59 +2,76 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 3D9C17678E
-	for <lists+linux-wireless@lfdr.de>; Fri, 26 Jul 2019 15:32:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D457776B0A
+	for <lists+linux-wireless@lfdr.de>; Fri, 26 Jul 2019 16:06:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726803AbfGZNcy (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 26 Jul 2019 09:32:54 -0400
-Received: from s3.sipsolutions.net ([144.76.43.62]:49182 "EHLO
-        sipsolutions.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726287AbfGZNcx (ORCPT
+        id S1727119AbfGZOG0 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 26 Jul 2019 10:06:26 -0400
+Received: from smtp.codeaurora.org ([198.145.29.96]:56078 "EHLO
+        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726364AbfGZOG0 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 26 Jul 2019 09:32:53 -0400
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <johannes@sipsolutions.net>)
-        id 1hr0L6-0003tZ-7I; Fri, 26 Jul 2019 15:32:52 +0200
-Message-ID: <eaaff61b1e35c43ee64f728c97a02bfcd15c295a.camel@sipsolutions.net>
-Subject: Re: [PATCH 2/2] mac80211_hwsim: Register support for HE meshpoint
-From:   Johannes Berg <johannes@sipsolutions.net>
-To:     Sven Eckelmann <sven@narfation.org>
-Cc:     linux-wireless@vger.kernel.org, ath11k@lists.infradead.org,
-        Sven Eckelmann <seckelmann@datto.com>
-Date:   Fri, 26 Jul 2019 15:32:50 +0200
-In-Reply-To: <3082836.hUm4yBdaKs@sven-edge>
-References: <20190724163359.3507-1-sven@narfation.org>
-         <20190724163359.3507-3-sven@narfation.org>
-         <f2e16d10ce3eb3ff08c97c27424b824b8e012553.camel@sipsolutions.net>
-         <3082836.hUm4yBdaKs@sven-edge>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.30.5 (3.30.5-1.fc29) 
+        Fri, 26 Jul 2019 10:06:26 -0400
+Received: by smtp.codeaurora.org (Postfix, from userid 1000)
+        id 7CB5161A6F; Fri, 26 Jul 2019 14:06:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
+        s=default; t=1564149984;
+        bh=19BZEf1DFED5lHi5DYyxFy5UVVSdaZ88gNljF/twtns=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=ke0XfmlxCihDXuZM5FceJudxO2ODzlQnUQD4guZlwIGHCz1Cl3HjSM/OrRUyer5he
+         f+7IZDmFnBeX7XYcth0scRM3Y36VUoeJtGVN0mTHvAWbNnYpE79GViAgIJE8A4LIcB
+         Rpe2bLODLD1/vTUGZgBK0yRCV72s9OQi+4Niklx8=
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        pdx-caf-mail.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.7 required=2.0 tests=ALL_TRUSTED,BAYES_00,
+        DKIM_INVALID,DKIM_SIGNED autolearn=no autolearn_force=no version=3.4.0
+Received: from mail.codeaurora.org (localhost.localdomain [127.0.0.1])
+        by smtp.codeaurora.org (Postfix) with ESMTP id 2766561A5A;
+        Fri, 26 Jul 2019 14:06:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
+        s=default; t=1564149982;
+        bh=19BZEf1DFED5lHi5DYyxFy5UVVSdaZ88gNljF/twtns=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=GkUfkY2frMBlQ751zK9RvVQICbQ8HUUJh9TgjIa3+6PzIcc+1BNg7tMKysEJqYA6v
+         PfkL71obdjaSBfbrdUcjR+gEu7Wc+WW+j5KhzBlBg7EQXHu0S20YlnurU8iYbncEQA
+         tOsBblpsJMX4QsjhDap7ibloZsAY1BAaUXUOQyrg=
 MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII;
+ format=flowed
 Content-Transfer-Encoding: 7bit
+Date:   Fri, 26 Jul 2019 19:36:21 +0530
+From:   Karthikeyan Periyasamy <periyasa@codeaurora.org>
+To:     Johannes Berg <johannes@sipsolutions.net>
+Cc:     linux-wireless@vger.kernel.org
+Subject: Re: [PATCH] mac80211: reject zero MAC address in add station
+In-Reply-To: <0cc7d0c578b60730e77ecd03e2df240dd1b393a0.camel@sipsolutions.net>
+References: <1563959770-21570-1-git-send-email-periyasa@codeaurora.org>
+ <0cc7d0c578b60730e77ecd03e2df240dd1b393a0.camel@sipsolutions.net>
+Message-ID: <fd6e7a7e0746b861bbbd660bf54cc675@codeaurora.org>
+X-Sender: periyasa@codeaurora.org
+User-Agent: Roundcube Webmail/1.2.5
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Fri, 2019-07-26 at 15:31 +0200, Sven Eckelmann wrote:
-
-> As I already wrote:
+>> Don't allow using a zero MAC address as the station
+>> MAC address. so validated the MAC address using
+>> is_valid_ether_addr.
 > 
-> > The first three things looks like wpa_supplicant problems. Seems to be 
-> > caused by the way HE forces VHT to be enabled and now the tests fail 
-> > which try to disable VHT. There was already a patch [0] for that but it
-> > wasn't considered a good solution.
-> > But beside these three things there are various other problems in 
-> > > wpa_supplicant regarding HE with pending patches. So I've used 
-> > wpa_supplicant 91b6eba7732354ed3dfe0aa9715dc4c0746e3336 with two 
-> > additional patches [1,2] and increased the VM memory to 1024 MB. Also 
-> > wireshark (tshark to be more precise) had to be updated to 
-> > v3.1.0rc0-1192-gf64990438c
+> Theoretically, all zeroes might have been a valid address at some 
+> point.
+> I see no reason not to reject it, but I'd like to know why you ended up
+> with this now??
+> 
 
-Ok, dunno. But I don't really want to break everything in the hwsim
-tests, even if the kernel patch may be correct ... so I guess I'll wait
-until you resubmit after some fixes go into wpa_s?
+Its a Wireless fuzz testing tool (codenomicon) which sends out different 
+types of frames to the AP. It actually tampers legitimate wireless 
+frames (Probe, Auth, Assoc, Data etc..) and will send to the AP. I 
+thought allowing a zero MAC address station is not a valid. so validated 
+the given MAC address. Just for curious, which case all zero address is 
+a valid MAC.
 
-johannes
-
+Thanks,
+Karthikeyan
