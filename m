@@ -2,206 +2,117 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 7115777931
-	for <lists+linux-wireless@lfdr.de>; Sat, 27 Jul 2019 16:21:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3CE6677A0B
+	for <lists+linux-wireless@lfdr.de>; Sat, 27 Jul 2019 17:18:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2387688AbfG0OVd (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 27 Jul 2019 10:21:33 -0400
-Received: from mail-pf1-f194.google.com ([209.85.210.194]:44695 "EHLO
-        mail-pf1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727589AbfG0OVd (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 27 Jul 2019 10:21:33 -0400
-Received: by mail-pf1-f194.google.com with SMTP id t16so25815363pfe.11;
-        Sat, 27 Jul 2019 07:21:32 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id;
-        bh=y63nlDdoReiitfVEZgVBo7xRRyCxoDD8AEYgo5/VomM=;
-        b=T+UzIYi/1THcC8I6GGTQVftBbmYmneEqyzoZFaOOV0bsgkD4/yotJY+aT39yhYMbKU
-         hP7XuGXa26yH/rd2Nj/oFrTDYEcp5JUuY3kmmuDDU7fPuMGddkQghGbGlfTO+H8pKvVB
-         pSe3h0PTMAUsbiz2LBWk2Z19ayzMznrnydOiG1Hn9M1yV6yTmgyr6pygeBUIKivIxRkK
-         AslNgkHOQWvuyAhddym0LYgEWCybK94ah26A3c+j6bFoy1BFojsB3uQ/zIoW1PPLaFzG
-         iRc8ls7OCAbEHg78NFqB9lL8kFZRs8DzukHcVHBv38OGkga6Mp045UeW3iThwjfRKg8C
-         KTCg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id;
-        bh=y63nlDdoReiitfVEZgVBo7xRRyCxoDD8AEYgo5/VomM=;
-        b=gN+7gHPGpGXMgQIf2fTdVCCcQGyIYxFDwD1LgnM3Z6HSzmNp7Ty4C9fsV25Co/EifC
-         /vcsQXY+K3cTSNQDtunfZEhcteRZk64oTogBH93bfyIUX+pKyd4/d6LIPSE/BobsIpLy
-         F17XCo0vs1NpiH65BQgHUFYgXbucZcdrpYVHGkYLntXzm6GW6FfCcaNkmqT0aNSARQHJ
-         +ZUdgWvTvzu4m5uIetTc/EMNnQ11bFd1dO7PMbl9wxHe1UR2If/rpPxQkp7LR4azXGpX
-         uYeQPaptwQzF+fRUGYNqApt0hGi1vH5iK9lFgn5SIObeRuytR9ODNU/fNcU+KvCgaTWf
-         vDRA==
-X-Gm-Message-State: APjAAAUnertKEz0DK3+KUTjeUIURivcKM0sHPfg18wzHzSQtsk57ygpB
-        RSqX0jfz0ETgmkqxsBrCWCY=
-X-Google-Smtp-Source: APXvYqwImUJ0RccHZPsxX4PaZHY9X78k754oNQpfDLf2SEuy6uSlyklXeLtGbLK7+kjMFAkrLZ0G0A==
-X-Received: by 2002:a65:5cca:: with SMTP id b10mr98493196pgt.365.1564237291919;
-        Sat, 27 Jul 2019 07:21:31 -0700 (PDT)
-Received: from localhost.localdomain (36-238-206-183.dynamic-ip.hinet.net. [36.238.206.183])
-        by smtp.googlemail.com with ESMTPSA id c8sm63671109pjq.2.2019.07.27.07.21.26
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Sat, 27 Jul 2019 07:21:31 -0700 (PDT)
-From:   Pei Hsuan Hung <afcidk@gmail.com>
-Cc:     afcidk@gmail.com, trivial@kernel.org,
-        Russell Currey <ruscur@russell.cc>,
-        Sam Bobroff <sbobroff@linux.ibm.com>,
-        "Oliver O'Halloran" <oohall@gmail.com>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Paul Mackerras <paulus@samba.org>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Jeremy Kerr <jk@ozlabs.org>, Arnd Bergmann <arnd@arndb.de>,
-        MyungJoo Ham <myungjoo.ham@samsung.com>,
-        Chanwoo Choi <cw00.choi@samsung.com>,
-        Liviu Dudau <liviu.dudau@arm.com>,
-        Brian Starkey <brian.starkey@arm.com>,
-        David Airlie <airlied@linux.ie>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        Ping-Ke Shih <pkshih@realtek.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        James Smart <james.smart@broadcom.com>,
-        Dick Kennedy <dick.kennedy@broadcom.com>,
-        "James E.J. Bottomley" <jejb@linux.ibm.com>,
-        "Martin K. Petersen" <martin.petersen@oracle.com>,
-        Alexander Viro <viro@zeniv.linux.org.uk>,
-        Larry Finger <Larry.Finger@lwfinger.net>,
-        linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
-        dri-devel@lists.freedesktop.org, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org, linux-scsi@vger.kernel.org,
-        linux-fsdevel@vger.kernel.org
-Subject: [PATCH] Fix typo reigster to register
-Date:   Sat, 27 Jul 2019 22:21:09 +0800
-Message-Id: <20190727142111.20039-1-afcidk@gmail.com>
-X-Mailer: git-send-email 2.17.1
-To:     unlisted-recipients:; (no To-header on input)
+        id S1728907AbfG0PSP (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 27 Jul 2019 11:18:15 -0400
+Received: from mout.gmx.net ([212.227.15.19]:34399 "EHLO mout.gmx.net"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1728856AbfG0PSO (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Sat, 27 Jul 2019 11:18:14 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
+        s=badeba3b8450; t=1564240671;
+        bh=UnTf2WwFWUPTip8DTEyqCu6JihIVuoeasLZZ4G2fHro=;
+        h=X-UI-Sender-Class:Subject:To:Cc:References:From:Date:In-Reply-To;
+        b=FUTImWDxBVn4cYuQj65tKQvuhmTXTX1FWp7Ho41foa3rfhq9/75jNfFqH3b8zzX2M
+         aRpaXBhcWkMvcix/KK/3zHLibfLUu+CqESfD6AKSfMq04PdyW43bhbwaWhoMEma2AI
+         u66Drm7cjNqM8JaeLrk+Wj7DiexS6+KDvyg+1OEY=
+X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
+Received: from [192.168.1.162] ([37.4.249.127]) by mail.gmx.com (mrgmx003
+ [212.227.17.190]) with ESMTPSA (Nemesis) id 0Lt1eU-1iXlVU3gp0-012btl; Sat, 27
+ Jul 2019 17:17:50 +0200
+Subject: brcmfmac: Probing regression in Linux 5.3-rc1
+To:     Nicolas Saenz Julienne <nsaenzjulienne@suse.de>,
+        Chen-Yu Tsai <wens@kernel.org>
+Cc:     linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
+        Arend van Spriel <arend.vanspriel@broadcom.com>,
+        Franky Lin <franky.lin@broadcom.com>,
+        Hante Meuleman <hante.meuleman@broadcom.com>,
+        Chi-Hsien Lin <chi-hsien.lin@cypress.com>,
+        Wright Feng <wright.feng@cypress.com>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        brcm80211-dev-list <brcm80211-dev-list@cypress.com>,
+        Johannes Berg <johannes.berg@intel.com>
+References: <1563774880-8061-1-git-send-email-wahrenst@gmx.net>
+ <96113adb5fcab9c2f4bb5fa82b84ff5f9c07fd07.camel@suse.de>
+ <bc650090-db86-ccac-01dc-23f08ad7b19b@gmx.net>
+ <20190723093442.GA27239@lst.de>
+ <04c5eaa03f3a124dbbce6186e11e19acc4539cc8.camel@suse.de>
+ <b15509d6-bc2e-3d06-0eea-943e6e456d62@gmx.net>
+ <5f9b11f54c66fd0487837f7e58af3adf7f86635f.camel@suse.de>
+ <CAGb2v66-o23CW5iH9Bn1aELymPSiKrA43eJd2q6EZ7iubcogaw@mail.gmail.com>
+ <ab7af8537ebcbc7a7bdf04d2c06152ba6821b333.camel@suse.de>
+From:   Stefan Wahren <wahrenst@gmx.net>
+Message-ID: <3daef629-8baf-3c5c-16a4-73d67604d1e5@gmx.net>
+Date:   Sat, 27 Jul 2019 17:17:49 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.8.0
+MIME-Version: 1.0
+In-Reply-To: <ab7af8537ebcbc7a7bdf04d2c06152ba6821b333.camel@suse.de>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 7bit
+Content-Language: en-US
+X-Provags-ID: V03:K1:KANL+UEVbofPDLfDVCGu1V30zI2qDAM0iw0Z1FDGqjjPngV1UUT
+ yiy8oknCnY+2eHMJb97Ogzq2+K0UCiWo6iId+5cn5Supx9iqEYh4aJi1M/bmTapPm+aBLWQ
+ uyvz5qnU3QaQ/gicroj7LnydewPVk2mPvWU7qKCVCvk8vFBFihZBIL4i5Slfw92xTXYOdBY
+ h5S9257vTgGn40WG17PUw==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:7SCg7cWCkcc=:04Y4D9LfCPYexEs7oyCPux
+ M434UYx1AtBsxASACN69S1CZf7hcyBGOlsXz1Q7+KlA1GZ24OjQewEXTjPpQdEM3JkQw1RuTw
+ 5OYtRsd4Dh4uUHUH22mUuJlkNosy1F2/IH5NQi+FJUpUdBGrNykmL08kjLxdGYZhLd9YRQJsQ
+ q0zdRJS71Sm6j/xYTYOQMq6ABp6ZUDgOEQawlVUd2VZHOlZLvfP3pV/rq0kIuJ7a7DCm0eCWv
+ 9qWD6GLmqQ6v0rkLtRzayG9tU7CzYUtAPfOi/5xLmxxtvRTUsU5WaJ1n5w7O5VzMbeZ3V9uAK
+ plvV2qsK6m+de8xzvuV+972oBpCFdPr3MVT+yPmhmv/LOTvr/2ZAUlAk3yklbdp5A//RGaBer
+ 9oO6QExfefHm/a2tV0QG17q62mkEq6xvrqrP7Ya0ZKMu6iivatBY73hMj7kGFwvf1MEbk/4Ul
+ TVH/o3YaQCn0mfQoNRR+5pFutgVsaBkaR6+//SU5RzGIEWQ9IO59+dWoqxcp1yWrx9xlFyYC2
+ hK3y6NnzkqL0uha0geticuHNDDroJnilhTIY8pRxaS/4dY3C3zjV+NAIPOPXWTFh3PO5+7qex
+ GeWV6nbKxPONLt4u9+BJtWQcA2ot70/gtebNgHvh7L9h5RKrlyZMyEyi7b7r9QDEGaQsS8oVU
+ ec1uptwvCLEDUUwCHsfoNhNea6n66QvEGodwAqLsFuKOu3gE/kLa5PaqqclXkHGlnCdcQaT9L
+ FvQe8RvMOiCOGyu8oI2U7MWalfNzAQFWjG8s3gIrmwZ1OAqCbUOUAmP97isuF10EwPG/AbUHE
+ O1uzZBdKS0VX233rko1VrekA+hqo6Lp6PKYNq46TIDU9p14pSZkeeEgrJGoije8CvvfGJQ/xz
+ 3RHqTJvVUoiMrkscHL8DKw2z6kQxgYD8tjCSmEGXpjwM+ASXo056lEXsTYisiZC/TSLRcfNoj
+ OGRDaqIBB3JcFgYD2a85h6OzLusl/Sy9kV3QRAIWsxyC2vU/soh+xV7lQxbxZt2zDTeZir4z+
+ VL/dtjH8IYW0yj9GG4z5TolO2chPcGlq7KcF3MQdkozw38OOPcjBOWIijLZYR32IoEK8BjgWx
+ m4lQXwxazLXxSo=
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Signed-off-by: Pei Hsuan Hung <afcidk@gmail.com>
-Cc: trivial@kernel.org
----
- arch/powerpc/kernel/eeh.c                           | 2 +-
- arch/powerpc/platforms/cell/spufs/switch.c          | 4 ++--
- drivers/extcon/extcon-rt8973a.c                     | 2 +-
- drivers/gpu/drm/arm/malidp_regs.h                   | 2 +-
- drivers/net/wireless/realtek/rtlwifi/rtl8192se/fw.h | 2 +-
- drivers/scsi/lpfc/lpfc_hbadisc.c                    | 4 ++--
- fs/userfaultfd.c                                    | 2 +-
- 7 files changed, 9 insertions(+), 9 deletions(-)
+Hi,
 
-diff --git a/arch/powerpc/kernel/eeh.c b/arch/powerpc/kernel/eeh.c
-index c0e4b73191f3..d75c9c24ec4d 100644
---- a/arch/powerpc/kernel/eeh.c
-+++ b/arch/powerpc/kernel/eeh.c
-@@ -1030,7 +1030,7 @@ int __init eeh_ops_register(struct eeh_ops *ops)
- }
- 
- /**
-- * eeh_ops_unregister - Unreigster platform dependent EEH operations
-+ * eeh_ops_unregister - Unregister platform dependent EEH operations
-  * @name: name of EEH platform operations
-  *
-  * Unregister the platform dependent EEH operation callback
-diff --git a/arch/powerpc/platforms/cell/spufs/switch.c b/arch/powerpc/platforms/cell/spufs/switch.c
-index 5c3f5d088c3b..9548a086937b 100644
---- a/arch/powerpc/platforms/cell/spufs/switch.c
-+++ b/arch/powerpc/platforms/cell/spufs/switch.c
-@@ -574,7 +574,7 @@ static inline void save_mfc_rag(struct spu_state *csa, struct spu *spu)
- {
- 	/* Save, Step 38:
- 	 *     Save RA_GROUP_ID register and the
--	 *     RA_ENABLE reigster in the CSA.
-+	 *     RA_ENABLE register in the CSA.
- 	 */
- 	csa->priv1.resource_allocation_groupID_RW =
- 		spu_resource_allocation_groupID_get(spu);
-@@ -1227,7 +1227,7 @@ static inline void restore_mfc_rag(struct spu_state *csa, struct spu *spu)
- {
- 	/* Restore, Step 29:
- 	 *     Restore RA_GROUP_ID register and the
--	 *     RA_ENABLE reigster from the CSA.
-+	 *     RA_ENABLE register from the CSA.
- 	 */
- 	spu_resource_allocation_groupID_set(spu,
- 			csa->priv1.resource_allocation_groupID_RW);
-diff --git a/drivers/extcon/extcon-rt8973a.c b/drivers/extcon/extcon-rt8973a.c
-index 40c07f4d656e..e75c03792398 100644
---- a/drivers/extcon/extcon-rt8973a.c
-+++ b/drivers/extcon/extcon-rt8973a.c
-@@ -270,7 +270,7 @@ static int rt8973a_muic_get_cable_type(struct rt8973a_muic_info *info)
- 	}
- 	cable_type = adc & RT8973A_REG_ADC_MASK;
- 
--	/* Read Device 1 reigster to identify correct cable type */
-+	/* Read Device 1 register to identify correct cable type */
- 	ret = regmap_read(info->regmap, RT8973A_REG_DEV1, &dev1);
- 	if (ret) {
- 		dev_err(info->dev, "failed to read DEV1 register\n");
-diff --git a/drivers/gpu/drm/arm/malidp_regs.h b/drivers/gpu/drm/arm/malidp_regs.h
-index 993031542fa1..0d81b34a4212 100644
---- a/drivers/gpu/drm/arm/malidp_regs.h
-+++ b/drivers/gpu/drm/arm/malidp_regs.h
-@@ -145,7 +145,7 @@
- #define     MALIDP_SE_COEFFTAB_DATA_MASK	0x3fff
- #define     MALIDP_SE_SET_COEFFTAB_DATA(x) \
- 		((x) & MALIDP_SE_COEFFTAB_DATA_MASK)
--/* Enhance coeffents reigster offset */
-+/* Enhance coeffents register offset */
- #define MALIDP_SE_IMAGE_ENH			0x3C
- /* ENH_LIMITS offset 0x0 */
- #define     MALIDP_SE_ENH_LOW_LEVEL		24
-diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8192se/fw.h b/drivers/net/wireless/realtek/rtlwifi/rtl8192se/fw.h
-index 99c6f7eefd85..d03c8f12a15c 100644
---- a/drivers/net/wireless/realtek/rtlwifi/rtl8192se/fw.h
-+++ b/drivers/net/wireless/realtek/rtlwifi/rtl8192se/fw.h
-@@ -58,7 +58,7 @@ struct fw_priv {
- 	/* 0x81: PCI-AP, 01:PCIe, 02: 92S-U,
- 	 * 0x82: USB-AP, 0x12: 72S-U, 03:SDIO */
- 	u8 hci_sel;
--	/* the same value as reigster value  */
-+	/* the same value as register value  */
- 	u8 chip_version;
- 	/* customer  ID low byte */
- 	u8 customer_id_0;
-diff --git a/drivers/scsi/lpfc/lpfc_hbadisc.c b/drivers/scsi/lpfc/lpfc_hbadisc.c
-index 28ecaa7fc715..9e116bd79836 100644
---- a/drivers/scsi/lpfc/lpfc_hbadisc.c
-+++ b/drivers/scsi/lpfc/lpfc_hbadisc.c
-@@ -6551,7 +6551,7 @@ lpfc_sli4_unregister_fcf(struct lpfc_hba *phba)
-  * lpfc_unregister_fcf_rescan - Unregister currently registered fcf and rescan
-  * @phba: Pointer to hba context object.
-  *
-- * This function unregisters the currently reigstered FCF. This function
-+ * This function unregisters the currently registered FCF. This function
-  * also tries to find another FCF for discovery by rescan the HBA FCF table.
-  */
- void
-@@ -6609,7 +6609,7 @@ lpfc_unregister_fcf_rescan(struct lpfc_hba *phba)
-  * lpfc_unregister_fcf - Unregister the currently registered fcf record
-  * @phba: Pointer to hba context object.
-  *
-- * This function just unregisters the currently reigstered FCF. It does not
-+ * This function just unregisters the currently registered FCF. It does not
-  * try to find another FCF for discovery.
-  */
- void
-diff --git a/fs/userfaultfd.c b/fs/userfaultfd.c
-index ccbdbd62f0d8..612dc1240f90 100644
---- a/fs/userfaultfd.c
-+++ b/fs/userfaultfd.c
-@@ -267,7 +267,7 @@ static inline bool userfaultfd_huge_must_wait(struct userfaultfd_ctx *ctx,
- #endif /* CONFIG_HUGETLB_PAGE */
- 
- /*
-- * Verify the pagetables are still not ok after having reigstered into
-+ * Verify the pagetables are still not ok after having registered into
-  * the fault_pending_wqh to avoid userland having to UFFDIO_WAKE any
-  * userfault that has already been resolved, if userfaultfd_read and
-  * UFFDIO_COPY|ZEROPAGE are being run simultaneously on two different
--- 
-2.17.1
+Am 24.07.19 um 10:37 schrieb Nicolas Saenz Julienne:
+>>>> Does it fix the wifi issue too?
+>>> Well it works as long as I revert this: 901bb98918 ("nl80211: require and
+>>> validate vendor command policy"). Which has nothing to do with DMA anyways.
+>>>
+>>> Was this the issue you where seeing?
+>>>
+>>> [    4.969679] WARNING: CPU: 2 PID: 21 at net/wireless/core.c:868
+>>> wiphy_register+0x8e8/0xbdc [cfg80211]
+>>> [...]
+>>> [    4.969974] ieee80211 phy0: brcmf_cfg80211_attach: Could not register
+>>> wiphy device (-22)
+>> We're seeing this on different platforms (allwinner / rockchip / amlogic)
+>> with Broadcom WiFi chips. So it's unlikely to be related with anything in
+>> this series.
+>>
+>> I believe a fix for this has already been queued up:
+>>
+>>
+> https://git.kernel.org/pub/scm/linux/kernel/git/jberg/mac80211.git/commit/?id=91046d6364afde646734c7ead1f649d253c386e9
+>
+> Thanks for pointing it out, it fixes the issue alright.
+>
+i cannot confirm. I still need to revert Johannes' commit "nl80211:
+require and validate vendor command policy" to get brcmfmac probing on
+Raspberry Pi 3B+ and 4B.
+
+The commit "nl80211: fix VENDOR_CMD_RAW_DATA" didn't fix the probing
+issue (see warning above).
+
+Regards
+Stefan
+
 
