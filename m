@@ -2,99 +2,102 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C129678F9A
-	for <lists+linux-wireless@lfdr.de>; Mon, 29 Jul 2019 17:41:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0DF2879036
+	for <lists+linux-wireless@lfdr.de>; Mon, 29 Jul 2019 18:02:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2387946AbfG2Plh (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 29 Jul 2019 11:41:37 -0400
-Received: from mail-lf1-f66.google.com ([209.85.167.66]:38600 "EHLO
-        mail-lf1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2387467AbfG2Plh (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 29 Jul 2019 11:41:37 -0400
-Received: by mail-lf1-f66.google.com with SMTP id h28so42349362lfj.5
-        for <linux-wireless@vger.kernel.org>; Mon, 29 Jul 2019 08:41:35 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=subject:to:references:from:message-id:date:user-agent:mime-version
-         :in-reply-to:content-language:content-transfer-encoding;
-        bh=xV8S5dvH5X/iyMsitX1Lh7DBtL7ErfNc/D2854bEdkQ=;
-        b=Vc/JBXKViMKy0zLHNPoq09elmCVFk6pcc1TOlA39i5qQ0ibFPNw4mtbvPiUXqh9aav
-         n80TklzV1EbwCN+AdgynmOK/1LDt8BBK4zc6mjAwvdmGEENi66Dpiz/tT7sBs/MkP5Xa
-         aLWf4Iwogp27Xsjg9ZjBpCLcdYE8HsSnggd2pn/aNxD6C08QKDp5ZDTHaBQWUEzxSr09
-         yqqzZCdcsmgJ2Ma+KkEGTkafE7aHUK+aEUweDC55m9NF2xEYmutkuW2v9qf52LmX05nU
-         kxWMB53JQd8zvRqizDZ8wvvMW2guCciPEJ9vk7Vu512PcysQo1lTdLgKn4933PDbqRNt
-         In3g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=xV8S5dvH5X/iyMsitX1Lh7DBtL7ErfNc/D2854bEdkQ=;
-        b=nfLtoo+eCNNJikDVmxPZuc9UiC+6C5BcwH31vN35oeudMvzhGE/VtYR5vLJvLP7gVO
-         /wPAatEIiruHikjLGe54fR5JV3SlM3lWAj6kVNfmABv9Gzt/OkXSbpepn7nrwjXDg14b
-         50OenCPrxU0Xmv84N9YzlcVs4fj3YDY05Q5NTOv2kBGdJhT+Ghs2F/fEb3QvsxQKjsCN
-         ga1RDYzU0StbZxRUTIuSDyCc4/pu4QjE8Hi83Mh+S4gq1IP3gDoNAqfdnz96fzgpTj61
-         x+pIlxH1zux1eCM4wCboUmilvALPVDONTTp6bEgP+8eqQ7cF/CCR9aGzw5TuS4FsD36T
-         QgBw==
-X-Gm-Message-State: APjAAAWEsUtMV05UK9CEt4mtesSL3+j2F74AOO/9mfnpKrFkzMClfLhv
-        k0KRaGgf8bmXvsr65gmj+G26Zcw3
-X-Google-Smtp-Source: APXvYqwGBF56ATWqCV8aGE2SfJlNlACeHmA8THIHxp6PhBpObiOW082024cyDUGLhpwkr2sweoUmRA==
-X-Received: by 2002:ac2:5225:: with SMTP id i5mr6156166lfl.157.1564414542446;
-        Mon, 29 Jul 2019 08:35:42 -0700 (PDT)
-Received: from [192.168.100.6] ([109.252.54.73])
-        by smtp.googlemail.com with ESMTPSA id i9sm10823571lfl.10.2019.07.29.08.35.41
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Mon, 29 Jul 2019 08:35:41 -0700 (PDT)
-Subject: Re: [PATCH v4 2/3] nl80211: Limit certain commands to interface owner
-To:     johannes@sipsolutions.net, linux-wireless@vger.kernel.org
-References: <20190722113312.14031-1-denkenz@gmail.com>
- <20190722113312.14031-2-denkenz@gmail.com>
-From:   Denis Kenzior <denkenz@gmail.com>
-Message-ID: <443c450b-31f8-f059-e4c9-83eee00bfce2@gmail.com>
-Date:   Mon, 29 Jul 2019 10:22:02 -0500
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.8.0
-MIME-Version: 1.0
-In-Reply-To: <20190722113312.14031-2-denkenz@gmail.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+        id S1728837AbfG2QBt (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 29 Jul 2019 12:01:49 -0400
+Received: from mx2.suse.de ([195.135.220.15]:43852 "EHLO mx1.suse.de"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1726714AbfG2QBr (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 29 Jul 2019 12:01:47 -0400
+X-Virus-Scanned: by amavisd-new at test-mx.suse.de
+Received: from relay2.suse.de (unknown [195.135.220.254])
+        by mx1.suse.de (Postfix) with ESMTP id 232D9B020;
+        Mon, 29 Jul 2019 16:01:46 +0000 (UTC)
+Date:   Mon, 29 Jul 2019 18:01:45 +0200
+Message-ID: <s5hv9vkx21i.wl-tiwai@suse.de>
+From:   Takashi Iwai <tiwai@suse.de>
+To:     Kalle Valo <kvalo@codeaurora.org>
+Cc:     Brian Norris <briannorris@chromium.org>,
+        Ganapathi Bhat <gbhat@marvell.com>,
+        Nishant Sarmukadam <nishants@marvell.com>,
+        Amitkumar Karwar <amitkarwar@gmail.com>,
+        Xinming Hu <huxinming820@gmail.com>,
+        <linux-kernel@vger.kernel.org>, linux-wireless@vger.kernel.org,
+        Guenter Roeck <linux@roeck-us.net>, stable@vger.kernel.org
+Subject: Re: [PATCH 5.3] mwifiex: fix 802.11n/WPA detection
+In-Reply-To: <20190724194634.205718-1-briannorris@chromium.org>
+References: <20190724194634.205718-1-briannorris@chromium.org>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI/1.14.6 (Maruoka)
+ FLIM/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL/10.8 Emacs/25.3
+ (x86_64-suse-linux-gnu) MULE/6.0 (HANACHIRUSATO)
+MIME-Version: 1.0 (generated by SEMI 1.14.6 - "Maruoka")
+Content-Type: text/plain; charset=US-ASCII
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi Johannes,
+On Wed, 24 Jul 2019 21:46:34 +0200,
+Brian Norris wrote:
+> 
+> Commit 63d7ef36103d ("mwifiex: Don't abort on small, spec-compliant
+> vendor IEs") adjusted the ieee_types_vendor_header struct, which
+> inadvertently messed up the offsets used in
+> mwifiex_is_wpa_oui_present(). Add that offset back in, mirroring
+> mwifiex_is_rsn_oui_present().
+> 
+> As it stands, commit 63d7ef36103d breaks compatibility with WPA (not
+> WPA2) 802.11n networks, since we hit the "info: Disable 11n if AES is
+> not supported by AP" case in mwifiex_is_network_compatible().
+> 
+> Fixes: 63d7ef36103d ("mwifiex: Don't abort on small, spec-compliant vendor IEs")
+> Cc: <stable@vger.kernel.org>
+> Signed-off-by: Brian Norris <briannorris@chromium.org>
 
-On 7/22/19 6:33 AM, Denis Kenzior wrote:
-> If the wdev object has been created (via NEW_INTERFACE) with
-> SOCKET_OWNER attribute set, then limit certain commands only to the
-> process that created that wdev.
-> 
-> This can be used to make sure no other process on the system interferes
-> by sending unwanted scans, action frames or any other funny business.
-> 
-> This patch introduces a new internal flag, and checks that flag in the
-> pre_doit hook.
-> 
-> Signed-off-by: Denis Kenzior <denkenz@gmail.com>
+This isn't seen in linux-next yet.  Still pending review?
+
+In anyway,
+  Reviewed-by: Takashi Iwai <tiwai@suse.de>
+
+
+Thanks!
+
+Takashi
+
+
 > ---
->   net/wireless/nl80211.c | 78 ++++++++++++++++++++++++++++++++----------
->   1 file changed, 60 insertions(+), 18 deletions(-)
+>  drivers/net/wireless/marvell/mwifiex/main.h | 1 +
+>  drivers/net/wireless/marvell/mwifiex/scan.c | 3 ++-
+>  2 files changed, 3 insertions(+), 1 deletion(-)
 > 
-> Changes in v4:
->    -  Minor restructuring suggested by Arend
+> diff --git a/drivers/net/wireless/marvell/mwifiex/main.h b/drivers/net/wireless/marvell/mwifiex/main.h
+> index 3e442c7f7882..095837fba300 100644
+> --- a/drivers/net/wireless/marvell/mwifiex/main.h
+> +++ b/drivers/net/wireless/marvell/mwifiex/main.h
+> @@ -124,6 +124,7 @@ enum {
+>  
+>  #define MWIFIEX_MAX_TOTAL_SCAN_TIME	(MWIFIEX_TIMER_10S - MWIFIEX_TIMER_1S)
+>  
+> +#define WPA_GTK_OUI_OFFSET				2
+>  #define RSN_GTK_OUI_OFFSET				2
+>  
+>  #define MWIFIEX_OUI_NOT_PRESENT			0
+> diff --git a/drivers/net/wireless/marvell/mwifiex/scan.c b/drivers/net/wireless/marvell/mwifiex/scan.c
+> index 0d6d41727037..21dda385f6c6 100644
+> --- a/drivers/net/wireless/marvell/mwifiex/scan.c
+> +++ b/drivers/net/wireless/marvell/mwifiex/scan.c
+> @@ -181,7 +181,8 @@ mwifiex_is_wpa_oui_present(struct mwifiex_bssdescriptor *bss_desc, u32 cipher)
+>  	u8 ret = MWIFIEX_OUI_NOT_PRESENT;
+>  
+>  	if (has_vendor_hdr(bss_desc->bcn_wpa_ie, WLAN_EID_VENDOR_SPECIFIC)) {
+> -		iebody = (struct ie_body *) bss_desc->bcn_wpa_ie->data;
+> +		iebody = (struct ie_body *)((u8 *)bss_desc->bcn_wpa_ie->data +
+> +					    WPA_GTK_OUI_OFFSET);
+>  		oui = &mwifiex_wpa_oui[cipher][0];
+>  		ret = mwifiex_search_oui_in_ie(iebody, oui);
+>  		if (ret)
+> -- 
+> 2.22.0.657.g960e92d24f-goog
 > 
-> Changes in v3:
->    -  Fix minor locking mistake reported by kernel test robot
-> 
-> Changes in v2:
->    -  None
-
-I noticed that the other patches in this series got applied.  Was this 
-one left out on purpose?
-
-Regards,
--Denis
-
