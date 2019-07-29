@@ -2,64 +2,208 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id F30C278816
-	for <lists+linux-wireless@lfdr.de>; Mon, 29 Jul 2019 11:13:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1843378896
+	for <lists+linux-wireless@lfdr.de>; Mon, 29 Jul 2019 11:38:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727304AbfG2JN4 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 29 Jul 2019 05:13:56 -0400
-Received: from mail-lj1-f176.google.com ([209.85.208.176]:41243 "EHLO
-        mail-lj1-f176.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726694AbfG2JN4 (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 29 Jul 2019 05:13:56 -0400
-Received: by mail-lj1-f176.google.com with SMTP id d24so57833659ljg.8
-        for <linux-wireless@vger.kernel.org>; Mon, 29 Jul 2019 02:13:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=agilox-net.20150623.gappssmtp.com; s=20150623;
-        h=mime-version:from:date:message-id:subject:to;
-        bh=bZ9hp09xAqzb78yPOPj7pHQCKSpsksu8YkSbYDHfW4A=;
-        b=i0OZylYiONW03Q8FTODNOlMFdximDnSBtm3IVvABVmN3QgAQvCyNelhT7DNaEthLC3
-         rrf5PvRdd/9nzLqnQ7DL8GqiVNcC7p9oyYPd3wURQ3hnRUhijZQa7AIspoZC27t8mAQ8
-         uGTaSDvgCAZMZa8csImLkDr7txPvIztAek/B+GQfT6mISACnhSntO46RwJ/Eq4w+/odj
-         nLao1wZtXNDCf7xVsYM/Tk3OO+LZARqnAnwO7Ttus5RDQWszy7DSUOSHK8SZspjc+YFK
-         Y9qS6NkqRZsmZu57yIEOixSei3XSyS2tx/Hv8KGudwtI+1Rw/r9t+UwgFby2KOhApw7R
-         /LkA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:from:date:message-id:subject:to;
-        bh=bZ9hp09xAqzb78yPOPj7pHQCKSpsksu8YkSbYDHfW4A=;
-        b=SzZGNR+4kpsZFr+Uy+0wPWThyFWoQkKVofH8AVzHW0sVRz20y2LTNISWsHxQJy+vI7
-         h2AWBnaeEs1NY0DoZZfneN0CXXaoG/D9RglpDzr8+rGv9xNNWyxGjM7WLDi3lpNvpDyg
-         EqSDN89JfRfrrXglC+exnORR3sSUs9UNpF9t50CxVUVSm6I4zZ7QGfkp+BmWMkmhIb3o
-         yiVG1QOd0NQ2DJX6ntHOObxAZqWru9y3kBO30nU41WYPHWmbJUdJEcEZTLkXp9h1RRAX
-         E8Chc16bQ71PqPdrAr+zzldo8zPExR2r2AlciZkxYD3EROLJswEVmoVlT/KRG4Y+gTTj
-         AGyQ==
-X-Gm-Message-State: APjAAAW+kkPo66YIAELNSXs4czUZjSUxNBWA19RFu5BazCM7Dsad+gEl
-        U8xqiwz8r6FlrHsTUDcCKJMyMegPC/UAyQu7+QBTeMhjKcw=
-X-Google-Smtp-Source: APXvYqyT5DNekMvPulGSO9yaAEdeCcFrKSA/s9G8BngNUJPK5+49S8qkYyu4q5vN+yTUZoPRyvBkoGx9A79aUfpO48c=
-X-Received: by 2002:a2e:b009:: with SMTP id y9mr46260194ljk.152.1564391633806;
- Mon, 29 Jul 2019 02:13:53 -0700 (PDT)
+        id S1728040AbfG2JiF (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 29 Jul 2019 05:38:05 -0400
+Received: from foss.arm.com ([217.140.110.172]:40724 "EHLO foss.arm.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727911AbfG2JiF (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 29 Jul 2019 05:38:05 -0400
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 86135344;
+        Mon, 29 Jul 2019 02:38:04 -0700 (PDT)
+Received: from e110455-lin.cambridge.arm.com (usa-sjc-imap-foss1.foss.arm.com [10.121.207.14])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 468AE3F694;
+        Mon, 29 Jul 2019 02:38:04 -0700 (PDT)
+Received: by e110455-lin.cambridge.arm.com (Postfix, from userid 1000)
+        id C804368240B; Mon, 29 Jul 2019 10:38:02 +0100 (BST)
+Date:   Mon, 29 Jul 2019 10:38:02 +0100
+From:   Liviu Dudau <liviu.dudau@arm.com>
+To:     Pei Hsuan Hung <afcidk@gmail.com>
+Cc:     trivial@kernel.org, Russell Currey <ruscur@russell.cc>,
+        Sam Bobroff <sbobroff@linux.ibm.com>,
+        Oliver O'Halloran <oohall@gmail.com>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Paul Mackerras <paulus@samba.org>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Jeremy Kerr <jk@ozlabs.org>, Arnd Bergmann <arnd@arndb.de>,
+        MyungJoo Ham <myungjoo.ham@samsung.com>,
+        Chanwoo Choi <cw00.choi@samsung.com>,
+        Brian Starkey <brian.starkey@arm.com>,
+        David Airlie <airlied@linux.ie>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        Ping-Ke Shih <pkshih@realtek.com>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        James Smart <james.smart@broadcom.com>,
+        Dick Kennedy <dick.kennedy@broadcom.com>,
+        "James E.J. Bottomley" <jejb@linux.ibm.com>,
+        "Martin K. Petersen" <martin.petersen@oracle.com>,
+        Alexander Viro <viro@zeniv.linux.org.uk>,
+        Larry Finger <Larry.Finger@lwfinger.net>,
+        linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
+        dri-devel@lists.freedesktop.org, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org, linux-scsi@vger.kernel.org,
+        linux-fsdevel@vger.kernel.org
+Subject: Re: [PATCH] Fix typo reigster to register
+Message-ID: <20190729093802.y33mfklarh23yngl@e110455-lin.cambridge.arm.com>
+References: <20190727142111.20039-1-afcidk@gmail.com>
 MIME-Version: 1.0
-From:   Lukas Redlinger <lukas.redlinger@agilox.net>
-Date:   Mon, 29 Jul 2019 11:13:37 +0200
-Message-ID: <CAN5HydqLuX=gg-j6kn_nzTTvxgKxdYaB3ZviVH_+ZD694pHJoQ@mail.gmail.com>
-Subject: ath10k: Fix channel info parsing for non tlv target
-To:     linux-wireless@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20190727142111.20039-1-afcidk@gmail.com>
+User-Agent: NeoMutt/20180716
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-My x86_64 system with Arch Linux 5.2.2 and a Compex WLE600VX card is
-filling the log with "ath10k_pci 0000:01:00.0: failed to parse chan
-info event: -71".
+Hi Pei,
 
-WiFi in general works, but wavemon is struggling as some packets seem
-to be incomplete.
-This seems to be the fix: https://patchwork.kernel.org/patch/10844513/
+On Sat, Jul 27, 2019 at 10:21:09PM +0800, Pei Hsuan Hung wrote:
+> Signed-off-by: Pei Hsuan Hung <afcidk@gmail.com>
+> Cc: trivial@kernel.org
+> ---
+>  arch/powerpc/kernel/eeh.c                           | 2 +-
+>  arch/powerpc/platforms/cell/spufs/switch.c          | 4 ++--
+>  drivers/extcon/extcon-rt8973a.c                     | 2 +-
+>  drivers/gpu/drm/arm/malidp_regs.h                   | 2 +-
+>  drivers/net/wireless/realtek/rtlwifi/rtl8192se/fw.h | 2 +-
+>  drivers/scsi/lpfc/lpfc_hbadisc.c                    | 4 ++--
+>  fs/userfaultfd.c                                    | 2 +-
+>  7 files changed, 9 insertions(+), 9 deletions(-)
+> 
+> diff --git a/arch/powerpc/kernel/eeh.c b/arch/powerpc/kernel/eeh.c
+> index c0e4b73191f3..d75c9c24ec4d 100644
+> --- a/arch/powerpc/kernel/eeh.c
+> +++ b/arch/powerpc/kernel/eeh.c
+> @@ -1030,7 +1030,7 @@ int __init eeh_ops_register(struct eeh_ops *ops)
+>  }
+>  
+>  /**
+> - * eeh_ops_unregister - Unreigster platform dependent EEH operations
+> + * eeh_ops_unregister - Unregister platform dependent EEH operations
+>   * @name: name of EEH platform operations
+>   *
+>   * Unregister the platform dependent EEH operation callback
+> diff --git a/arch/powerpc/platforms/cell/spufs/switch.c b/arch/powerpc/platforms/cell/spufs/switch.c
+> index 5c3f5d088c3b..9548a086937b 100644
+> --- a/arch/powerpc/platforms/cell/spufs/switch.c
+> +++ b/arch/powerpc/platforms/cell/spufs/switch.c
+> @@ -574,7 +574,7 @@ static inline void save_mfc_rag(struct spu_state *csa, struct spu *spu)
+>  {
+>  	/* Save, Step 38:
+>  	 *     Save RA_GROUP_ID register and the
+> -	 *     RA_ENABLE reigster in the CSA.
+> +	 *     RA_ENABLE register in the CSA.
+>  	 */
+>  	csa->priv1.resource_allocation_groupID_RW =
+>  		spu_resource_allocation_groupID_get(spu);
+> @@ -1227,7 +1227,7 @@ static inline void restore_mfc_rag(struct spu_state *csa, struct spu *spu)
+>  {
+>  	/* Restore, Step 29:
+>  	 *     Restore RA_GROUP_ID register and the
+> -	 *     RA_ENABLE reigster from the CSA.
+> +	 *     RA_ENABLE register from the CSA.
+>  	 */
+>  	spu_resource_allocation_groupID_set(spu,
+>  			csa->priv1.resource_allocation_groupID_RW);
+> diff --git a/drivers/extcon/extcon-rt8973a.c b/drivers/extcon/extcon-rt8973a.c
+> index 40c07f4d656e..e75c03792398 100644
+> --- a/drivers/extcon/extcon-rt8973a.c
+> +++ b/drivers/extcon/extcon-rt8973a.c
+> @@ -270,7 +270,7 @@ static int rt8973a_muic_get_cable_type(struct rt8973a_muic_info *info)
+>  	}
+>  	cable_type = adc & RT8973A_REG_ADC_MASK;
+>  
+> -	/* Read Device 1 reigster to identify correct cable type */
+> +	/* Read Device 1 register to identify correct cable type */
+>  	ret = regmap_read(info->regmap, RT8973A_REG_DEV1, &dev1);
+>  	if (ret) {
+>  		dev_err(info->dev, "failed to read DEV1 register\n");
+> diff --git a/drivers/gpu/drm/arm/malidp_regs.h b/drivers/gpu/drm/arm/malidp_regs.h
+> index 993031542fa1..0d81b34a4212 100644
+> --- a/drivers/gpu/drm/arm/malidp_regs.h
+> +++ b/drivers/gpu/drm/arm/malidp_regs.h
+> @@ -145,7 +145,7 @@
+>  #define     MALIDP_SE_COEFFTAB_DATA_MASK	0x3fff
+>  #define     MALIDP_SE_SET_COEFFTAB_DATA(x) \
+>  		((x) & MALIDP_SE_COEFFTAB_DATA_MASK)
+> -/* Enhance coeffents reigster offset */
+> +/* Enhance coeffents register offset */
 
-How/when will i get mainline? Can I speed up the process somehow?
+Unless this patch was generated by a script I think it is worth correcting the
+other spelling mistake on that line as well: coefficients rather than coeffents.
 
-Thanks,
-Lukas
+With that: Acked-by: Liviu Dudau <liviu.dudau@arm.com>
+
+Best regards,
+Liviu
+
+>  #define MALIDP_SE_IMAGE_ENH			0x3C
+>  /* ENH_LIMITS offset 0x0 */
+>  #define     MALIDP_SE_ENH_LOW_LEVEL		24
+> diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8192se/fw.h b/drivers/net/wireless/realtek/rtlwifi/rtl8192se/fw.h
+> index 99c6f7eefd85..d03c8f12a15c 100644
+> --- a/drivers/net/wireless/realtek/rtlwifi/rtl8192se/fw.h
+> +++ b/drivers/net/wireless/realtek/rtlwifi/rtl8192se/fw.h
+> @@ -58,7 +58,7 @@ struct fw_priv {
+>  	/* 0x81: PCI-AP, 01:PCIe, 02: 92S-U,
+>  	 * 0x82: USB-AP, 0x12: 72S-U, 03:SDIO */
+>  	u8 hci_sel;
+> -	/* the same value as reigster value  */
+> +	/* the same value as register value  */
+>  	u8 chip_version;
+>  	/* customer  ID low byte */
+>  	u8 customer_id_0;
+> diff --git a/drivers/scsi/lpfc/lpfc_hbadisc.c b/drivers/scsi/lpfc/lpfc_hbadisc.c
+> index 28ecaa7fc715..9e116bd79836 100644
+> --- a/drivers/scsi/lpfc/lpfc_hbadisc.c
+> +++ b/drivers/scsi/lpfc/lpfc_hbadisc.c
+> @@ -6551,7 +6551,7 @@ lpfc_sli4_unregister_fcf(struct lpfc_hba *phba)
+>   * lpfc_unregister_fcf_rescan - Unregister currently registered fcf and rescan
+>   * @phba: Pointer to hba context object.
+>   *
+> - * This function unregisters the currently reigstered FCF. This function
+> + * This function unregisters the currently registered FCF. This function
+>   * also tries to find another FCF for discovery by rescan the HBA FCF table.
+>   */
+>  void
+> @@ -6609,7 +6609,7 @@ lpfc_unregister_fcf_rescan(struct lpfc_hba *phba)
+>   * lpfc_unregister_fcf - Unregister the currently registered fcf record
+>   * @phba: Pointer to hba context object.
+>   *
+> - * This function just unregisters the currently reigstered FCF. It does not
+> + * This function just unregisters the currently registered FCF. It does not
+>   * try to find another FCF for discovery.
+>   */
+>  void
+> diff --git a/fs/userfaultfd.c b/fs/userfaultfd.c
+> index ccbdbd62f0d8..612dc1240f90 100644
+> --- a/fs/userfaultfd.c
+> +++ b/fs/userfaultfd.c
+> @@ -267,7 +267,7 @@ static inline bool userfaultfd_huge_must_wait(struct userfaultfd_ctx *ctx,
+>  #endif /* CONFIG_HUGETLB_PAGE */
+>  
+>  /*
+> - * Verify the pagetables are still not ok after having reigstered into
+> + * Verify the pagetables are still not ok after having registered into
+>   * the fault_pending_wqh to avoid userland having to UFFDIO_WAKE any
+>   * userfault that has already been resolved, if userfaultfd_read and
+>   * UFFDIO_COPY|ZEROPAGE are being run simultaneously on two different
+> -- 
+> 2.17.1
+> 
+
+-- 
+====================
+| I would like to |
+| fix the world,  |
+| but they're not |
+| giving me the   |
+ \ source code!  /
+  ---------------
+    ¯\_(ツ)_/¯
