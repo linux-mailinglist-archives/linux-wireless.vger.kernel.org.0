@@ -2,155 +2,297 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 3949B78D5B
-	for <lists+linux-wireless@lfdr.de>; Mon, 29 Jul 2019 16:02:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8AD6878E07
+	for <lists+linux-wireless@lfdr.de>; Mon, 29 Jul 2019 16:31:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726674AbfG2OCr (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 29 Jul 2019 10:02:47 -0400
-Received: from mail-wr1-f66.google.com ([209.85.221.66]:32780 "EHLO
-        mail-wr1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726281AbfG2OCr (ORCPT
+        id S1727859AbfG2ObS (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 29 Jul 2019 10:31:18 -0400
+Received: from s3.sipsolutions.net ([144.76.43.62]:34670 "EHLO
+        sipsolutions.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726473AbfG2ObS (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 29 Jul 2019 10:02:47 -0400
-Received: by mail-wr1-f66.google.com with SMTP id n9so62097241wru.0
-        for <linux-wireless@vger.kernel.org>; Mon, 29 Jul 2019 07:02:45 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=pCeySVcd9irdcsuxwJvRRn19Bi/KYheGgWZi+MxW/qQ=;
-        b=nwFeWkJ/fPCG/x8NxWqTxxekGVQXCiioYf7ZZcSa5wE73x6rW/dAwSyDQv9LWPxKP/
-         hS1X37VV7LVLs6NChhZFd/mHJ8lzLqZgypUpFc/JGOSXgl3YRBk2tvAWuXlVGRZIT7KB
-         rveyJ7oJjli2YpcLThHHTOupVwGS+1Qa3ihlH5VcQtbaeilROMkTuI6ARn9ZjXNnHNwV
-         NfAphAkJca8rjre0se0Twas047IuFArUslfbUClDx/i7FmMR1YhukoQbqP5gVbYYu+KO
-         9bAXy+d0y7SgKTSKuBUisT+rbhhdQpiOIk3NwDnXjhaUoJCTWbp/VzIXpzRRjSf48RVb
-         StKg==
-X-Gm-Message-State: APjAAAXUfIso8FSdpuw9+1KCS/Ob2XFVQp3BVCL+HZRy8P78107UKcMD
-        3MdCz323TTQoxF2Zk8IZStlApg==
-X-Google-Smtp-Source: APXvYqyHByAgKo39HAGbtHxDJUje1yxvr2wrTn93fD3tBwAHHpBy0YNXhwdHZ6XwAQ0ObZdsWNKCZQ==
-X-Received: by 2002:adf:e8c2:: with SMTP id k2mr30522188wrn.198.1564408964838;
-        Mon, 29 Jul 2019 07:02:44 -0700 (PDT)
-Received: from localhost.localdomain (nat-pool-mxp-t.redhat.com. [149.6.153.186])
-        by smtp.gmail.com with ESMTPSA id x20sm140771044wrg.10.2019.07.29.07.02.43
-        (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
-        Mon, 29 Jul 2019 07:02:43 -0700 (PDT)
-Date:   Mon, 29 Jul 2019 16:02:41 +0200
-From:   Lorenzo Bianconi <lorenzo.bianconi@redhat.com>
-To:     Stanislaw Gruszka <sgruszka@redhat.com>
-Cc:     linux-wireless@vger.kernel.org, Felix Fietkau <nbd@nbd.name>,
-        Ryder Lee <ryder.lee@mediatek.com>, Roy Luo <royluo@google.com>
-Subject: Re: [RFC] mt76: fix tx hung regression on MT7630E
-Message-ID: <20190729140241.GC4030@localhost.localdomain>
-References: <1564143056-14610-1-git-send-email-sgruszka@redhat.com>
- <20190729125351.GA3086@redhat.com>
+        Mon, 29 Jul 2019 10:31:18 -0400
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <johannes@sipsolutions.net>)
+        id 1hs6gF-0005jU-1j; Mon, 29 Jul 2019 16:31:15 +0200
+From:   Johannes Berg <johannes@sipsolutions.net>
+To:     linux-wireless@vger.kernel.org
+Cc:     Johannes Berg <johannes.berg@intel.com>
+Subject: [PATCH v2] cfg80211: use parallel_ops for genl
+Date:   Mon, 29 Jul 2019 16:31:09 +0200
+Message-Id: <20190729143109.18683-1-johannes@sipsolutions.net>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="PuGuTyElPB9bOcsM"
-Content-Disposition: inline
-In-Reply-To: <20190729125351.GA3086@redhat.com>
-User-Agent: Mutt/1.12.0 (2019-05-25)
+Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+From: Johannes Berg <johannes.berg@intel.com>
 
---PuGuTyElPB9bOcsM
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Over time, we really need to get rid of all of our global locking.
+One of the things needed is to use parallel_ops. This isn't really
+the most important (RTNL is much more important) but OTOH we just
+keep adding uses of genl_family_attrbuf() now. Use .parallel_ops to
+disallow this.
 
-> On Fri, Jul 26, 2019 at 02:10:56PM +0200, Stanislaw Gruszka wrote:
-> > Since 41634aa8d6db ("mt76: only schedule txqs from the tx tasklet")
-> > I can observe firmware hangs on MT7630E on station mode: tx stop
-> > functioning after minor activity (rx keep working) and on module
-> > unload device fail to stop with messages:
-> >=20
-> > [ 5446.141413] mt76x0e 0000:06:00.0: TX DMA did not stop
-> > [ 5449.176764] mt76x0e 0000:06:00.0: TX DMA did not stop
-> >=20
-> > Loading module again results in failure to associate with AP.
-> > Only machine power off / power on cycle can make device work again.
-> >=20
-> > I have no idea why the commit caused F/W hangs. Most likely some proper
-> > fix is needed of changing registers programming (or assuring proper ord=
-er
-> > of actions), but so far I can not came up with any better fix than
-> > a partial revert of 41634aa8d6db.
->=20
-> The difference is that with 41634aa8d6db we can run mt76x02_poll_tx()
-> and mt76x02_tx_tasklet() in parallel on 2 different CPUs. Without
-> the commit, since tasklet is not scheduled from mt76_wake_tx_queue(),
-> it does not happen.
->=20
-> I'm not quite sure why, but MT7630E does not like when we poll tx status
-> on 2 cpus at once. Change like below:
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Link: https://lore.kernel.org/r/20190726191621.5031-1-johannes@sipsolutions.net
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+---
+ net/wireless/nl80211.c | 108 +++++++++++++++++++++++++++++------------
+ 1 file changed, 78 insertions(+), 30 deletions(-)
 
-Hi Stanislaw,
+diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
+index a8d4b2b6b3ec..b45d0108d2cc 100644
+--- a/net/wireless/nl80211.c
++++ b/net/wireless/nl80211.c
+@@ -749,17 +749,25 @@ int nl80211_prepare_wdev_dump(struct netlink_callback *cb,
+ 	int err;
+ 
+ 	if (!cb->args[0]) {
++		struct nlattr **attrbuf;
++
++		attrbuf = kcalloc(NUM_NL80211_ATTR, sizeof(*attrbuf),
++				  GFP_KERNEL);
++		if (!attrbuf)
++			return -ENOMEM;
++
+ 		err = nlmsg_parse_deprecated(cb->nlh,
+ 					     GENL_HDRLEN + nl80211_fam.hdrsize,
+-					     genl_family_attrbuf(&nl80211_fam),
+-					     nl80211_fam.maxattr,
++					     attrbuf, nl80211_fam.maxattr,
+ 					     nl80211_policy, NULL);
+-		if (err)
++		if (err) {
++			kfree(attrbuf);
+ 			return err;
++		}
+ 
+-		*wdev = __cfg80211_wdev_from_attrs(
+-					sock_net(cb->skb->sk),
+-					genl_family_attrbuf(&nl80211_fam));
++		*wdev = __cfg80211_wdev_from_attrs(sock_net(cb->skb->sk),
++						   attrbuf);
++		kfree(attrbuf);
+ 		if (IS_ERR(*wdev))
+ 			return PTR_ERR(*wdev);
+ 		*rdev = wiphy_to_rdev((*wdev)->wiphy);
+@@ -2390,14 +2398,21 @@ static int nl80211_dump_wiphy_parse(struct sk_buff *skb,
+ 				    struct netlink_callback *cb,
+ 				    struct nl80211_dump_wiphy_state *state)
+ {
+-	struct nlattr **tb = genl_family_attrbuf(&nl80211_fam);
+-	int ret = nlmsg_parse_deprecated(cb->nlh,
+-					 GENL_HDRLEN + nl80211_fam.hdrsize,
+-					 tb, nl80211_fam.maxattr,
+-					 nl80211_policy, NULL);
++	struct nlattr **tb = kcalloc(NUM_NL80211_ATTR, sizeof(*tb), GFP_KERNEL);
++	int ret;
++
++	if (!tb)
++		return -ENOMEM;
++
++	ret = nlmsg_parse_deprecated(cb->nlh,
++				     GENL_HDRLEN + nl80211_fam.hdrsize,
++				     tb, nl80211_fam.maxattr,
++				     nl80211_policy, NULL);
+ 	/* ignore parse errors for backward compatibility */
+-	if (ret)
+-		return 0;
++	if (ret) {
++		ret = 0;
++		goto out;
++	}
+ 
+ 	state->split = tb[NL80211_ATTR_SPLIT_WIPHY_DUMP];
+ 	if (tb[NL80211_ATTR_WIPHY])
+@@ -2410,8 +2425,10 @@ static int nl80211_dump_wiphy_parse(struct sk_buff *skb,
+ 		int ifidx = nla_get_u32(tb[NL80211_ATTR_IFINDEX]);
+ 
+ 		netdev = __dev_get_by_index(sock_net(skb->sk), ifidx);
+-		if (!netdev)
+-			return -ENODEV;
++		if (!netdev) {
++			ret = -ENODEV;
++			goto out;
++		}
+ 		if (netdev->ieee80211_ptr) {
+ 			rdev = wiphy_to_rdev(
+ 				netdev->ieee80211_ptr->wiphy);
+@@ -2419,7 +2436,10 @@ static int nl80211_dump_wiphy_parse(struct sk_buff *skb,
+ 		}
+ 	}
+ 
+-	return 0;
++	ret = 0;
++out:
++	kfree(tb);
++	return ret;
+ }
+ 
+ static int nl80211_dump_wiphy(struct sk_buff *skb, struct netlink_callback *cb)
+@@ -8724,7 +8744,7 @@ static int nl80211_send_survey(struct sk_buff *msg, u32 portid, u32 seq,
+ 
+ static int nl80211_dump_survey(struct sk_buff *skb, struct netlink_callback *cb)
+ {
+-	struct nlattr **attrbuf = genl_family_attrbuf(&nl80211_fam);
++	struct nlattr **attrbuf;
+ 	struct survey_info survey;
+ 	struct cfg80211_registered_device *rdev;
+ 	struct wireless_dev *wdev;
+@@ -8732,6 +8752,10 @@ static int nl80211_dump_survey(struct sk_buff *skb, struct netlink_callback *cb)
+ 	int res;
+ 	bool radio_stats;
+ 
++	attrbuf = kcalloc(NUM_NL80211_ATTR, sizeof(*attrbuf), GFP_KERNEL);
++	if (!attrbuf)
++		return -ENOMEM;
++
+ 	rtnl_lock();
+ 	res = nl80211_prepare_wdev_dump(cb, &rdev, &wdev);
+ 	if (res)
+@@ -8776,6 +8800,7 @@ static int nl80211_dump_survey(struct sk_buff *skb, struct netlink_callback *cb)
+ 	cb->args[2] = survey_idx;
+ 	res = skb->len;
+  out_err:
++	kfree(attrbuf);
+ 	rtnl_unlock();
+ 	return res;
+ }
+@@ -9635,6 +9660,7 @@ static int nl80211_testmode_dump(struct sk_buff *skb,
+ 				 struct netlink_callback *cb)
+ {
+ 	struct cfg80211_registered_device *rdev;
++	struct nlattr **attrbuf = NULL;
+ 	int err;
+ 	long phy_idx;
+ 	void *data = NULL;
+@@ -9655,7 +9681,12 @@ static int nl80211_testmode_dump(struct sk_buff *skb,
+ 			goto out_err;
+ 		}
+ 	} else {
+-		struct nlattr **attrbuf = genl_family_attrbuf(&nl80211_fam);
++		attrbuf = kcalloc(NUM_NL80211_ATTR, sizeof(*attrbuf),
++				  GFP_KERNEL);
++		if (!attrbuf) {
++			err = -ENOMEM;
++			goto out_err;
++		}
+ 
+ 		err = nlmsg_parse_deprecated(cb->nlh,
+ 					     GENL_HDRLEN + nl80211_fam.hdrsize,
+@@ -9722,6 +9753,7 @@ static int nl80211_testmode_dump(struct sk_buff *skb,
+ 	/* see above */
+ 	cb->args[0] = phy_idx + 1;
+  out_err:
++	kfree(attrbuf);
+ 	rtnl_unlock();
+ 	return err;
+ }
+@@ -12815,7 +12847,7 @@ static int nl80211_prepare_vendor_dump(struct sk_buff *skb,
+ 				       struct cfg80211_registered_device **rdev,
+ 				       struct wireless_dev **wdev)
+ {
+-	struct nlattr **attrbuf = genl_family_attrbuf(&nl80211_fam);
++	struct nlattr **attrbuf;
+ 	u32 vid, subcmd;
+ 	unsigned int i;
+ 	int vcmd_idx = -1;
+@@ -12846,24 +12878,32 @@ static int nl80211_prepare_vendor_dump(struct sk_buff *skb,
+ 		return 0;
+ 	}
+ 
++	attrbuf = kcalloc(NUM_NL80211_ATTR, sizeof(*attrbuf), GFP_KERNEL);
++	if (!attrbuf)
++		return -ENOMEM;
++
+ 	err = nlmsg_parse_deprecated(cb->nlh,
+ 				     GENL_HDRLEN + nl80211_fam.hdrsize,
+ 				     attrbuf, nl80211_fam.maxattr,
+ 				     nl80211_policy, NULL);
+ 	if (err)
+-		return err;
++		goto out;
+ 
+ 	if (!attrbuf[NL80211_ATTR_VENDOR_ID] ||
+-	    !attrbuf[NL80211_ATTR_VENDOR_SUBCMD])
+-		return -EINVAL;
++	    !attrbuf[NL80211_ATTR_VENDOR_SUBCMD]) {
++		err = -EINVAL;
++		goto out;
++	}
+ 
+ 	*wdev = __cfg80211_wdev_from_attrs(sock_net(skb->sk), attrbuf);
+ 	if (IS_ERR(*wdev))
+ 		*wdev = NULL;
+ 
+ 	*rdev = __cfg80211_rdev_from_attrs(sock_net(skb->sk), attrbuf);
+-	if (IS_ERR(*rdev))
+-		return PTR_ERR(*rdev);
++	if (IS_ERR(*rdev)) {
++		err = PTR_ERR(*rdev);
++		goto out;
++	}
+ 
+ 	vid = nla_get_u32(attrbuf[NL80211_ATTR_VENDOR_ID]);
+ 	subcmd = nla_get_u32(attrbuf[NL80211_ATTR_VENDOR_SUBCMD]);
+@@ -12876,15 +12916,19 @@ static int nl80211_prepare_vendor_dump(struct sk_buff *skb,
+ 		if (vcmd->info.vendor_id != vid || vcmd->info.subcmd != subcmd)
+ 			continue;
+ 
+-		if (!vcmd->dumpit)
+-			return -EOPNOTSUPP;
++		if (!vcmd->dumpit) {
++			err = -EOPNOTSUPP;
++			goto out;
++		}
+ 
+ 		vcmd_idx = i;
+ 		break;
+ 	}
+ 
+-	if (vcmd_idx < 0)
+-		return -EOPNOTSUPP;
++	if (vcmd_idx < 0) {
++		err = -EOPNOTSUPP;
++		goto out;
++	}
+ 
+ 	if (attrbuf[NL80211_ATTR_VENDOR_DATA]) {
+ 		data = nla_data(attrbuf[NL80211_ATTR_VENDOR_DATA]);
+@@ -12895,7 +12939,7 @@ static int nl80211_prepare_vendor_dump(struct sk_buff *skb,
+ 				attrbuf[NL80211_ATTR_VENDOR_DATA],
+ 				cb->extack);
+ 		if (err)
+-			return err;
++			goto out;
+ 	}
+ 
+ 	/* 0 is the first index - add 1 to parse only once */
+@@ -12907,7 +12951,10 @@ static int nl80211_prepare_vendor_dump(struct sk_buff *skb,
+ 	cb->args[4] = data_len;
+ 
+ 	/* keep rtnl locked in successful case */
+-	return 0;
++	err = 0;
++out:
++	kfree(attrbuf);
++	return err;
+ }
+ 
+ static int nl80211_vendor_cmd_dump(struct sk_buff *skb,
+@@ -14585,6 +14632,7 @@ static struct genl_family nl80211_fam __ro_after_init = {
+ 	.n_ops = ARRAY_SIZE(nl80211_ops),
+ 	.mcgrps = nl80211_mcgrps,
+ 	.n_mcgrps = ARRAY_SIZE(nl80211_mcgrps),
++	.parallel_ops = true,
+ };
+ 
+ /* notification functions */
+-- 
+2.20.1
 
-have you tried to look at the commit: 6fe533378795f87
-("mt76: mt76x02: remove irqsave/restore in locking for tx status fifo")?
-Could it be a race between a registermap update and a stats load? (we are u=
-sing a
-different lock now)
-
->=20
-> diff --git a/drivers/net/wireless/mediatek/mt76/mt76x02_mmio.c b/drivers/=
-net/wireless/mediatek/mt76/mt76x02_mmio.c
-> index 467b28379870..622251faa415 100644
-> --- a/drivers/net/wireless/mediatek/mt76/mt76x02_mmio.c
-> +++ b/drivers/net/wireless/mediatek/mt76/mt76x02_mmio.c
-> @@ -170,7 +170,7 @@ static int mt76x02_poll_tx(struct napi_struct *napi, =
-int budget)
->  					       mt76.tx_napi);
->  	int i;
-> =20
-> -	mt76x02_mac_poll_tx_status(dev, false);
-> +	mt76x02_mac_poll_tx_status(dev, true);
-
-I am not sure if we really need mt76x02_mac_poll_tx_status() here since we =
-run
-it in mt76x02_tx_complete_skb() and in mt76x02_tx_tasklet(). Anyway the only
-difference doing so is we do not run mt76x02_send_tx_status().
-
-Regards,
-Lorenzo
-
-> =20
->  	for (i =3D MT_TXQ_MCU; i >=3D 0; i--)
->  		mt76_queue_tx_cleanup(dev, i, false);
->=20
-> is sufficient to avoid the hangs.
->=20
-> > diff --git a/drivers/net/wireless/mediatek/mt76/tx.c b/drivers/net/wire=
-less/mediatek/mt76/tx.c
-> > index 5397827668b9..fefe0ee52584 100644
-> > --- a/drivers/net/wireless/mediatek/mt76/tx.c
-> > +++ b/drivers/net/wireless/mediatek/mt76/tx.c
-> > @@ -598,7 +598,7 @@ void mt76_wake_tx_queue(struct ieee80211_hw *hw, st=
-ruct ieee80211_txq *txq)
-> >  	if (!test_bit(MT76_STATE_RUNNING, &dev->state))
-> >  		return;
-> > =20
-> > -	tasklet_schedule(&dev->tx_tasklet);
-> > +	mt76_txq_schedule(dev, txq->ac);
->=20
-> However I'm not sure if change to tasklet_schedule() is indeed correct,
-> since on tasklet we schedule all queues, hence queues that could
-> possibly be still blocked? And on mt76_wake_tx_queue() we schedule only
-> one queue.
->=20
-> Stanislaw
-
---PuGuTyElPB9bOcsM
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYIAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCXT78fgAKCRA6cBh0uS2t
-rFc2AP9LE1jf3WlAsOcYg5jJ1Tb7ZAz9858mGF9nLeFEeBNEpgD9Fdwb4l2JA1Tw
-nhaNEKVMI8sGax2iNc1Jaz4GtqOjRws=
-=FAOY
------END PGP SIGNATURE-----
-
---PuGuTyElPB9bOcsM--
