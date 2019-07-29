@@ -2,88 +2,89 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 9D8AA78F1F
-	for <lists+linux-wireless@lfdr.de>; Mon, 29 Jul 2019 17:24:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CB40F78F68
+	for <lists+linux-wireless@lfdr.de>; Mon, 29 Jul 2019 17:34:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2387970AbfG2PYi (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 29 Jul 2019 11:24:38 -0400
-Received: from mout.kundenserver.de ([212.227.17.13]:52433 "EHLO
-        mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2387693AbfG2PYi (ORCPT
+        id S2388016AbfG2Pee (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 29 Jul 2019 11:34:34 -0400
+Received: from mail-lf1-f65.google.com ([209.85.167.65]:36138 "EHLO
+        mail-lf1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2387897AbfG2Pee (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 29 Jul 2019 11:24:38 -0400
-Received: from orion.localdomain ([77.4.29.213]) by mrelayeu.kundenserver.de
- (mreue108 [212.227.15.183]) with ESMTPSA (Nemesis) id
- 1MKKhF-1i5eBx0MWt-00Lnd4; Mon, 29 Jul 2019 17:24:34 +0200
-From:   "Enrico Weigelt, metux IT consult" <info@metux.net>
-To:     linux-kernel@vger.kernel.org
-Cc:     amitkarwar@gmail.com, siva8118@gmail.com, kvalo@codeaurora.org,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org
-Subject: [PATCH] drivers: net: wireless: rsi: return explicit error values
-Date:   Mon, 29 Jul 2019 17:24:32 +0200
-Message-Id: <1564413872-10720-1-git-send-email-info@metux.net>
-X-Mailer: git-send-email 1.9.1
-X-Provags-ID: V03:K1:ksVHMps503+LcqYL67PSCCKtCJFaPbytVqqBbTkepts7c9sg6Jr
- FSBjEO9XnujHOF+0IOR3PLdTvQLM1S/FDtYxvh+jS1ljbsyUHKJEnOCuC80uSTkD/Mn6oDp
- TTfFQadmLc6OQ/AUx2JHcPSLpovSY+csUzVHLwOw7lcW25fYgzYIO2Tf3KSKhBPMeTmylPR
- 8nyJx0p1f/ZkA+irHDWbw==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:AmsVlK1Vod8=:ecBNmD13mZxnUDmtu8Mxlb
- dG3t2s+KCPddyIAVbG4Z1Pl3/QBWLdnIbviBejI8dnVXeBd3WF5CCuyAMI8wq28O+tk7CDnxx
- T/SLiqAs59yqw9uUoD4Km7Khg3lFsdMZzl90Kr4T56jHJCmBRrQCOh8JO5Obha5BnZ84nnE5C
- lFsJjBgDuO/JB3/yZwRMZ+/U+M392JpYL0ss82J378hjnkd0eRdFu+1QakOAjjO5YwqqfXKMp
- d/i3FmQ9jxlxn7N4C0uPunHuMny89paYbrIr8nrn0kM5RX+ECW8kRJ+r5UiQb3EzOCFXsgtKK
- vfWqVD5zCzhKmdu5iqFTDqPisDK2BPbkgaHUZrb7MVkjose5lQ/uCplCqkinBLJQ0WLoP+fL2
- FfAVkrwvdfEAL9i4glS+n11t4lDyP7iuW9iiYIHGc/1Z5zyp/WMJ1sBnYpHYc16kM6KEZ52ay
- bnOx6IAC2qQddI2fbxX0B8TvBCti0ZINVWaroXgowikCjgcIz1JbFG2W8HEMSpbTQlrTI7I7p
- 9qac/U5tRoNI+hppFB6/DHvZDpBrYFQp99BvTDgmm55h8G+/ceiZq5pCXaH7ZuuZUIdaH+NGT
- 7n0fiA1Of0cVrWq7Gw3zXbdZ+rnZlPu5tFVFejw+hfvIIwLMno60xNzqlokjxA1baTUHDUlfT
- 5rKB+9kU+g9XLnYkbEtXVz6Wg8XJlBWHjTTG6cfmRyOHcaRBJ04w5miECOecXuI8SBcLkFpyv
- ERtPExwhoXjW9Xo4mAvyLV2nvD9UVdiv9LjSwA==
+        Mon, 29 Jul 2019 11:34:34 -0400
+Received: by mail-lf1-f65.google.com with SMTP id q26so42409373lfc.3
+        for <linux-wireless@vger.kernel.org>; Mon, 29 Jul 2019 08:34:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=FDH1Jn4jahVA3bmYai1a0Gq5r60csCKj2cmxSzZi4PE=;
+        b=nAoNeFh4YftXHMw/wWM7kHkczProVHQSiJ5PvJ0nN8/bRse4Fjog4P+deDoM2fnVX4
+         Wjh3GwuJPHO1qVl6OWM3n2OQRn26ISLGbILUWNoP4o7DlQEQWMuMiY19UtWbwbeE/Tfk
+         jU3gxmsQxh8TA+tYwCHLc/2dSag3d7IU0lDrYfBel0Gs5F8elRJzcbIORleGudRRV1iU
+         KnjZC/BXRjYVvluvd1bi4CimsW5wYPyuZydOg4v9duaySxjQLsypkZ+VbhrkcaUB4Rjr
+         oYgwBLpedKhykj/3dm/ZUHbVCSOBFAinyJAOkR3bbZ7wKEIJLePC9prFcVx6NEM8qoXW
+         ZDSw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=FDH1Jn4jahVA3bmYai1a0Gq5r60csCKj2cmxSzZi4PE=;
+        b=f40tNtzRqRQ+XeTEtN/VoaFpX10koR6qEc6FWGmzRpuMWZ0jwhRDC/Pk5ubOKDD4hP
+         O0m3xQ5inooVNt9aZD9bSWW4jyWKea/GkKoaYSs5xeQlJOTwlh4pc4nWR6Dq/NbYl0Df
+         J2tovJGqfuKxYheBE7Ws/K0qO5jOmymKnlCOmuBUxH1R8JGeyW/WOnNNDlBqAIZLJzXd
+         GjgximmWhBFbt/mafItbzqbwrFksYhiXz8D14MHlLiiZs7zmYUXUgNgq7PZP0rKur8e9
+         2UUMcXXle8KUCSYFq+ChHkm8FZ4JESlMDZqftgAcfwjjsJ4WIcXo61ahuixnMOrUH0Bq
+         I0Iw==
+X-Gm-Message-State: APjAAAX4onGoT5fFDHS80sODJeew+diBrHABrK/1/EC4cxK2K2MIG17g
+        ClRjVvXJHSTrv84PmtptypE=
+X-Google-Smtp-Source: APXvYqyIXNNwb1FlJSnRxpYnQ0z9b8aybCTj0e73zIRBlib5rXUvEwKinMoYUywOm/LxR8f1x3OQPA==
+X-Received: by 2002:ac2:4c37:: with SMTP id u23mr37790257lfq.119.1564414471972;
+        Mon, 29 Jul 2019 08:34:31 -0700 (PDT)
+Received: from [192.168.100.6] ([109.252.54.73])
+        by smtp.googlemail.com with ESMTPSA id a18sm12965934ljf.35.2019.07.29.08.34.30
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Mon, 29 Jul 2019 08:34:31 -0700 (PDT)
+Subject: Re: [PATCH v2] cfg80211: use parallel_ops for genl
+To:     Johannes Berg <johannes@sipsolutions.net>,
+        linux-wireless@vger.kernel.org
+Cc:     Johannes Berg <johannes.berg@intel.com>
+References: <20190729143109.18683-1-johannes@sipsolutions.net>
+From:   Denis Kenzior <denkenz@gmail.com>
+Message-ID: <fd715fcb-0fa4-6b92-94cb-9c8b7064939e@gmail.com>
+Date:   Mon, 29 Jul 2019 10:20:52 -0500
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.8.0
+MIME-Version: 1.0
+In-Reply-To: <20190729143109.18683-1-johannes@sipsolutions.net>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Enrico Weigelt <info@metux.net>
+On 7/29/19 9:31 AM, Johannes Berg wrote:
+> From: Johannes Berg <johannes.berg@intel.com>
+> 
+> Over time, we really need to get rid of all of our global locking.
+> One of the things needed is to use parallel_ops. This isn't really
+> the most important (RTNL is much more important) but OTOH we just
+> keep adding uses of genl_family_attrbuf() now. Use .parallel_ops to
+> disallow this.
+> 
+> Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+> Link: https://lore.kernel.org/r/20190726191621.5031-1-johannes@sipsolutions.net
+> Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+> ---
+>   net/wireless/nl80211.c | 108 +++++++++++++++++++++++++++++------------
+>   1 file changed, 78 insertions(+), 30 deletions(-)
+> 
 
-Explicitly return constants instead of variable (and rely on
-it to be explicitly initialized), if the value is supposed
-to be fixed anyways. Align it with the rest of the driver,
-which does it the same way.
+Reviewed-By: Denis Kenzior <denkenz@gmail.com>
 
-Signed-off-by: Enrico Weigelt <info@metux.net>
----
- drivers/net/wireless/rsi/rsi_91x_sdio.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
-
-diff --git a/drivers/net/wireless/rsi/rsi_91x_sdio.c b/drivers/net/wireless/rsi/rsi_91x_sdio.c
-index b42cd50..2a3577d 100644
---- a/drivers/net/wireless/rsi/rsi_91x_sdio.c
-+++ b/drivers/net/wireless/rsi/rsi_91x_sdio.c
-@@ -844,11 +844,11 @@ static int rsi_init_sdio_interface(struct rsi_hw *adapter,
- 				   struct sdio_func *pfunction)
- {
- 	struct rsi_91x_sdiodev *rsi_91x_dev;
--	int status = -ENOMEM;
-+	int status;
- 
- 	rsi_91x_dev = kzalloc(sizeof(*rsi_91x_dev), GFP_KERNEL);
- 	if (!rsi_91x_dev)
--		return status;
-+		return -ENOMEM;
- 
- 	adapter->rsi_dev = rsi_91x_dev;
- 
-@@ -890,7 +890,7 @@ static int rsi_init_sdio_interface(struct rsi_hw *adapter,
- #ifdef CONFIG_RSI_DEBUGFS
- 	adapter->num_debugfs_entries = MAX_DEBUGFS_ENTRIES;
- #endif
--	return status;
-+	return 0;
- fail:
- 	sdio_disable_func(pfunction);
- 	sdio_release_host(pfunction);
--- 
-1.9.1
+Regards,
+-Denis
 
