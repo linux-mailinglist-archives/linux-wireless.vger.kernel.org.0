@@ -2,74 +2,94 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B96BE782B5
-	for <lists+linux-wireless@lfdr.de>; Mon, 29 Jul 2019 02:09:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 18C137838D
+	for <lists+linux-wireless@lfdr.de>; Mon, 29 Jul 2019 05:03:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726443AbfG2AJQ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 28 Jul 2019 20:09:16 -0400
-Received: from mail-ua1-f67.google.com ([209.85.222.67]:36023 "EHLO
-        mail-ua1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726251AbfG2AJQ (ORCPT
+        id S1726425AbfG2DDN (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 28 Jul 2019 23:03:13 -0400
+Received: from mail-pg1-f195.google.com ([209.85.215.195]:46989 "EHLO
+        mail-pg1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726150AbfG2DDN (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 28 Jul 2019 20:09:16 -0400
-Received: by mail-ua1-f67.google.com with SMTP id v20so23321077uao.3
-        for <linux-wireless@vger.kernel.org>; Sun, 28 Jul 2019 17:09:15 -0700 (PDT)
+        Sun, 28 Jul 2019 23:03:13 -0400
+Received: by mail-pg1-f195.google.com with SMTP id k189so8406761pgk.13;
+        Sun, 28 Jul 2019 20:03:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=BrTkYGT/CoRQ7U7g4N9efxmX5N2ln4oVBYUSCIHtobA=;
-        b=PzymwHY3qDkbMYZTzeizBDQJ/hsIX7j69RDepqsMXPQxcKyEj1tX6WLafAen0xqNEk
-         m7xYz73dxPLdjIGEMnlk9dvWlf2xsYMLzXLSNYL42fyVyjOaSyXvuLHHbwnwzrXQ8m0T
-         N5DWdehMOzzODuRzFtDqmrzwCAUjrxJuBGzMl7H0KnzolHIPSU1JmAa2MFGhEZNBDt1C
-         BaFv3VPF3+4vv6hAHKjwdUzhrdlyXxi61X8GeiJ6weS2SgPzAqRmz+nTDJ3gU5w4Muj+
-         JAZS2an9pDMQ5N8bZStygPcocXRArQRK37vBlgUNW45j1XoCqefHT9/bw1tY70nS+DYr
-         5LRw==
+        h=from:to:cc:subject:date:message-id;
+        bh=vhdyHKbr6BRELOCiWIx8QFrf2iWsG4qCQT0zVGLttDQ=;
+        b=fYkbKVYbMf7WylANOPWUxOmxhD0YEN3Arb+f4/5LmCJvzWI/K7DodlBOlT/0Dv97xB
+         hXR41NQfxhGHng8dn5Wi7pv5WiWYA9ZnpivmMzmBCBcZFs5dalWXv08FTCRV/NHF+zQl
+         4ttOfg6yC8yU7jbOF5XFNpAG+klbqalXmZC4Fb0DQlaepm6hWzrhQpDTt7SxJzS1j8Wy
+         Rt5dgMjxwjQkRMoX8/Iu/I4EdkJ0Do8pp1PMwNPoMy95fvz7oB2E+ZkEq7deZw5a/YyN
+         5XM3okKO7MCXLRC4r5dzsQU7z28G6i/DbBi4BjAuETipwPfylJ3bMPLg5mI4l44V3KIZ
+         wcGg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=BrTkYGT/CoRQ7U7g4N9efxmX5N2ln4oVBYUSCIHtobA=;
-        b=KypQ56KNvRToeJxL3IIyTQxhRvcKN2HIDqtJXKk26EDayZVVccAbnUj9fySg1mi4q6
-         2x4eHh8WgsriJ2yQ826FSl3ch8L6BUxTUBhGL+vsRVwLL/FXkOKBoer+res7qU0ATDoJ
-         +f0Cr2QqFdc5yYrs4U0xyR4M3CpanmYv66d1qE/VG+wWJpk0IyW4pWnSgbWVdP8/LLpb
-         pJGgOuI8q1+0g9OhvUh+TWFwKa/6jYFhI3A+5ZwcfYlfiR3FnJo8x4F8LAy7XqmmaT4N
-         KaAhmjwGD3I/ujtnfmPT30cnF6SgqVpTRAnZ2YqkNXD6Ufhx3T6iZvNNTe6HHDJm1atr
-         ogsg==
-X-Gm-Message-State: APjAAAVPaiO2knbq7fLU2O6J+iHabmXBDLsV67xtlzHwOnkjZIRxAHPy
-        t066jGVr8I8syduyVs7UK72fFTw/oo1hmEJVh08=
-X-Google-Smtp-Source: APXvYqyQvU3nsRdp4KEx+KWyp06PGtLh01BESTkI+50LyOAOlXbUhqVAT1MB0W7GHzUIUritb0JwkIBKTBcyyCvhaMA=
-X-Received: by 2002:ab0:290a:: with SMTP id v10mr38508402uap.74.1564358955371;
- Sun, 28 Jul 2019 17:09:15 -0700 (PDT)
-MIME-Version: 1.0
-Received: by 2002:a67:80c8:0:0:0:0:0 with HTTP; Sun, 28 Jul 2019 17:09:15
- -0700 (PDT)
-Reply-To: williamrobert416@gmail.com
-From:   "Mr. Robert William" <officialuse87@gmail.com>
-Date:   Mon, 29 Jul 2019 01:09:15 +0100
-Message-ID: <CAD00q08NQAJowEQ68nB7MBvuketXYjvPMQqMNEAf9uicn-qqFw@mail.gmail.com>
-Subject: Its Urgent
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=vhdyHKbr6BRELOCiWIx8QFrf2iWsG4qCQT0zVGLttDQ=;
+        b=dXKauXZqnFuaPIqlHXmzDLchO5WM0Eau77ftTevClwOZ32o/swJO1Ii4FE8xFt+EW4
+         +LXgZafWYN3hwcE23IKRqy3jKFO1ovZCXscdUbYNlGK0h12Jo2/NfbTI8GnJwch1pGte
+         liQFHBefRj33Oku5h7m3NZWlcE5AqVynYJ5KMOTL9Co0vD3Nod7AFS2BgAllR3DJAUOo
+         0lXJmYnixhncgiGV3rqkSVnxf1ihxzLu7us0UOthcECmaDV03cJlv2Z/BZHSqCFGyE8B
+         d5xa4ceY2wEiHlPXdiq7n0SS8nUMSm2BRKRan/742Xphacz3dxh6gewtW9kxXw6MOlY1
+         aeWA==
+X-Gm-Message-State: APjAAAUWIisMkMNLcOaoTOWO4R7yWLi3UYtYv8vqGt5xpbbqQEATwuBL
+        x5TzCLTbSHPLdrfkDNzyJmg=
+X-Google-Smtp-Source: APXvYqy24B8Gn7MJsm4X2EXqziW8iKygHbrckYkajJkAi6vD9kLgfy2gVbVm/575Xf9i/1X6dbULzQ==
+X-Received: by 2002:a05:6a00:4c:: with SMTP id i12mr34459331pfk.134.1564369392804;
+        Sun, 28 Jul 2019 20:03:12 -0700 (PDT)
+Received: from oslab.tsinghua.edu.cn ([2402:f000:4:72:808::3ca])
+        by smtp.gmail.com with ESMTPSA id h14sm74535781pfq.22.2019.07.28.20.03.10
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Sun, 28 Jul 2019 20:03:12 -0700 (PDT)
+From:   Jia-Ju Bai <baijiaju1990@gmail.com>
+To:     kvalo@codeaurora.org, davem@davemloft.net
+Cc:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Jia-Ju Bai <baijiaju1990@gmail.com>
+Subject: [PATCH] ath6kl: Fix a possible null-pointer dereference in ath6kl_htc_mbox_create()
+Date:   Mon, 29 Jul 2019 11:03:05 +0800
+Message-Id: <20190729030305.18410-1-baijiaju1990@gmail.com>
+X-Mailer: git-send-email 2.17.0
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+In ath6kl_htc_mbox_create(), when kzalloc() on line 2855 fails,
+target->dev is assigned to NULL, and ath6kl_htc_mbox_cleanup(target) is
+called on line 2885.
+
+In ath6kl_htc_mbox_cleanup(), target->dev is used on line 2895:
+    ath6kl_hif_cleanup_scatter(target->dev->ar);
+
+Thus, a null-pointer dereference may occur.
+
+To fix this bug, kfree(target) is called and NULL is returned when
+kzalloc() on line 2855 fails.
+
+This bug is found by a static analysis tool STCheck written by us.
+
+Signed-off-by: Jia-Ju Bai <baijiaju1990@gmail.com>
+---
+ drivers/net/wireless/ath/ath6kl/htc_mbox.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/net/wireless/ath/ath6kl/htc_mbox.c b/drivers/net/wireless/ath/ath6kl/htc_mbox.c
+index 65c31da43c47..998947ef63b6 100644
+--- a/drivers/net/wireless/ath/ath6kl/htc_mbox.c
++++ b/drivers/net/wireless/ath/ath6kl/htc_mbox.c
+@@ -2855,8 +2855,8 @@ static void *ath6kl_htc_mbox_create(struct ath6kl *ar)
+ 	target->dev = kzalloc(sizeof(*target->dev), GFP_KERNEL);
+ 	if (!target->dev) {
+ 		ath6kl_err("unable to allocate memory\n");
+-		status = -ENOMEM;
+-		goto err_htc_cleanup;
++		kfree(target);
++		return NULL;
+ 	}
+ 
+ 	spin_lock_init(&target->htc_lock);
 -- 
-Hello,
+2.17.0
 
-I am Eng. Robert William, a retired Marine Engineer residing in
-Trinidad & Tobago.
-Unfortunately i am admitted to the hospital for a cancer (Sickness)
-over a year now,my doctor reported that i have only few months to pass
-away. Please i need your consent to invest my money (USD$1.8 Million)
-in any business of your
-
-choice in your country before i die, i have no other relatives not
-even children because i lost my family in a fire disaster in 2005.
-Please i need your urgent and
-
-kind response to enable me send you more information on how to contact
-my bank as my next of kin to process the fund into your bank account.
-
-Mr Robert William
