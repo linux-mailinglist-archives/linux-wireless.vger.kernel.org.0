@@ -2,107 +2,96 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 1001D78707
-	for <lists+linux-wireless@lfdr.de>; Mon, 29 Jul 2019 10:12:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B81DD78748
+	for <lists+linux-wireless@lfdr.de>; Mon, 29 Jul 2019 10:23:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726820AbfG2IMQ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 29 Jul 2019 04:12:16 -0400
-Received: from mx1.redhat.com ([209.132.183.28]:59094 "EHLO mx1.redhat.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725988AbfG2IMQ (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 29 Jul 2019 04:12:16 -0400
-Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.phx2.redhat.com [10.5.11.13])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mx1.redhat.com (Postfix) with ESMTPS id BDFD830862BE;
-        Mon, 29 Jul 2019 08:12:15 +0000 (UTC)
-Received: from localhost (unknown [10.43.2.114])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 0624560A9D;
-        Mon, 29 Jul 2019 08:12:13 +0000 (UTC)
-Date:   Mon, 29 Jul 2019 10:12:11 +0200
-From:   Stanislaw Gruszka <sgruszka@redhat.com>
-To:     yhchuang@realtek.com
-Cc:     kvalo@codeaurora.org, linux-wireless@vger.kernel.org,
-        briannorris@chromium.org
-Subject: Re: [PATCH v2 5/5] rtw88: add BT co-existence support
-Message-ID: <20190729081211.GB2066@redhat.com>
-References: <1564023211-3138-1-git-send-email-yhchuang@realtek.com>
- <1564023211-3138-6-git-send-email-yhchuang@realtek.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1564023211-3138-6-git-send-email-yhchuang@realtek.com>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.13
-X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16 (mx1.redhat.com [10.5.110.49]); Mon, 29 Jul 2019 08:12:15 +0000 (UTC)
+        id S1726939AbfG2IXj (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 29 Jul 2019 04:23:39 -0400
+Received: from mail-pl1-f194.google.com ([209.85.214.194]:46253 "EHLO
+        mail-pl1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726305AbfG2IXj (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 29 Jul 2019 04:23:39 -0400
+Received: by mail-pl1-f194.google.com with SMTP id c2so27185012plz.13;
+        Mon, 29 Jul 2019 01:23:39 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id;
+        bh=px4UPlf0dAssmmR/aVHt6FhvemexiyDz/1qhQq2NUko=;
+        b=ONbOeXSmBYXhAmPzT9WtjuC9mlCj/p1+djw0YyAE2aYD4rh1JfRiBZ4PC1G86lbcTU
+         lGY9O270uWbF+5G11ST2jnjdxYFNR1ndEhglFejjFTxEipn6CaYEhmyLGwwfgkP5HPup
+         oazngm8PlyM3KuwTXYhf2hWfHezsIhgRqM7HgqVRm+t2aKsOCNgqnCNrw8KHPJPXOzhF
+         LCx885R0hZmk55jpRmzQE69ENjT4o9p1HL3jkA59VB4PMKVl80Em59LpCuxdpMVZqb8K
+         +CezBpo4j3cdStmCqHbf4aqiz4HqKygnXNntizZCqgamf6o0XUCsJ/WQH9hJ0KV4novq
+         mRlg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=px4UPlf0dAssmmR/aVHt6FhvemexiyDz/1qhQq2NUko=;
+        b=SrqzU7Ojx+ID+Qmwk5hDo/QkNpGkHN7F5oH22HV4JudKGGYi3EUMyjJs20xrdNNNUc
+         QVbt6v/cDhis2Cg5ESkhiX3v0mzzh26CUSdgLx1/WlI43ojg0WkULpn3JmiiGLS0d4DL
+         bmeq+6pBbVw0wl/Eza0l/OhnZbRc6T/HSwmmWjjsGMiG3or90jZ5kQ/XcOx++sOzIXuy
+         Z8XHgYE+gMXfUMi9OfEOO6WfvyCRcaWD25wi7TE1ps+eRwaXh3/pVju5bMeGHqC89KMr
+         vBxKyXog1mcLjrr2Wd/krDJlKMtVNNlNXLXpLngZ5Ys0qoafu+UYtZQTSX31/qoYSZsx
+         ioKg==
+X-Gm-Message-State: APjAAAW0sRNznw525r7TkdW4mZMicRFzvWSZf4kKxqdldAlrVCJo/zRe
+        VAPk80LsSTpH4WvG+2+5sR8=
+X-Google-Smtp-Source: APXvYqwKLTOEqmF07kbxWKw/jeRR659gFxXIBuV+9xCSArtaGiaB8k3HB0lu4Cq2asUQVU6/c6Ibvw==
+X-Received: by 2002:a17:902:4501:: with SMTP id m1mr109309896pld.111.1564388618785;
+        Mon, 29 Jul 2019 01:23:38 -0700 (PDT)
+Received: from oslab.tsinghua.edu.cn ([2402:f000:4:72:808::3ca])
+        by smtp.gmail.com with ESMTPSA id c70sm5905731pfb.36.2019.07.29.01.23.36
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Mon, 29 Jul 2019 01:23:38 -0700 (PDT)
+From:   Jia-Ju Bai <baijiaju1990@gmail.com>
+To:     johannes@sipsolutions.net, kvalo@codeaurora.org,
+        davem@davemloft.net
+Cc:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Jia-Ju Bai <baijiaju1990@gmail.com>
+Subject: [PATCH] mac80211_hwsim: Fix possible null-pointer dereferences in hwsim_dump_radio_nl()
+Date:   Mon, 29 Jul 2019 16:23:32 +0800
+Message-Id: <20190729082332.28895-1-baijiaju1990@gmail.com>
+X-Mailer: git-send-email 2.17.0
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Thu, Jul 25, 2019 at 10:53:31AM +0800, yhchuang@realtek.com wrote:
-> +static struct sk_buff *rtw_coex_info_request(struct rtw_dev *rtwdev,
-> +					     struct rtw_coex_info_req *req)
-> +{
-> +	struct rtw_coex *coex = &rtwdev->coex;
-> +	struct sk_buff *skb_resp = NULL;
-> +
-> +	mutex_lock(&coex->mutex);
-> +
-> +	rtw_fw_query_bt_mp_info(rtwdev, req);
-> +
-> +	if (!wait_event_timeout(coex->wait, !skb_queue_empty(&coex->queue),
-> +				COEX_REQUEST_TIMEOUT)) {
-> +		rtw_err(rtwdev, "coex request time out\n");
-> +		goto out;
-> +	}
-> +
-> +	skb_resp = skb_dequeue(&coex->queue);
-> +	if (!skb_resp) {
-> +		rtw_err(rtwdev, "failed to get coex info response\n");
-> +		goto out;
-> +	}
-> +
-> +out:
-> +	mutex_unlock(&coex->mutex);
-> +	return skb_resp;
-> +}
-> +
-> +static bool rtw_coex_get_bt_scan_type(struct rtw_dev *rtwdev, u8 *scan_type)
-> +{
-> +	struct rtw_coex_info_req req = {0};
-> +	struct sk_buff *skb;
-> +	u8 *payload;
-> +	bool ret = false;
-> +
-> +	req.op_code = BT_MP_INFO_OP_SCAN_TYPE;
-> +	skb = rtw_coex_info_request(rtwdev, &req);
-> +	if (!skb)
-> +		goto out;
-> +
-> +	payload = get_payload_from_coex_resp(skb);
-> +	*scan_type = GET_COEX_RESP_BT_SCAN_TYPE(payload);
-> +	ret = true;
-> +
-> +out:
-> +	return ret;
-> +}
-> +
-> +static bool rtw_coex_set_lna_constrain_level(struct rtw_dev *rtwdev,
-> +					     u8 lna_constrain_level)
-> +{
-> +	struct rtw_coex_info_req req = {0};
-> +	struct sk_buff *skb;
-> +	bool ret = false;
-> +
-> +	req.op_code = BT_MP_INFO_OP_LNA_CONSTRAINT;
-> +	req.para1 = lna_constrain_level;
-> +	skb = rtw_coex_info_request(rtwdev, &req);
-> +	if (!skb)
-> +		goto out;
+In hwsim_dump_radio_nl(), when genlmsg_put() on line 3617 fails, hdr is 
+assigned to NULL. Then hdr is used on lines 3622 and 3623:
+    genl_dump_check_consistent(cb, hdr);
+    genlmsg_end(skb, hdr);
 
-Those coex response skb buffers are allocated in rtw_pci_rx_isr(),
-but I do not see where they are freed (seems we do not process
-them in c2h_work which does dev_kfree_skb()).
+Thus, possible null-pointer dereferences may occur.
 
-Stanislaw
+To fix these bugs, hdr is used here when it is not NULL.
+
+This bug is found by a static analysis tool STCheck written by us.
+
+Signed-off-by: Jia-Ju Bai <baijiaju1990@gmail.com>
+---
+ drivers/net/wireless/mac80211_hwsim.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
+
+diff --git a/drivers/net/wireless/mac80211_hwsim.c b/drivers/net/wireless/mac80211_hwsim.c
+index 519b4ee88c5c..61a8b6429e09 100644
+--- a/drivers/net/wireless/mac80211_hwsim.c
++++ b/drivers/net/wireless/mac80211_hwsim.c
+@@ -3617,10 +3617,11 @@ static int hwsim_dump_radio_nl(struct sk_buff *skb,
+ 		hdr = genlmsg_put(skb, NETLINK_CB(cb->skb).portid,
+ 				  cb->nlh->nlmsg_seq, &hwsim_genl_family,
+ 				  NLM_F_MULTI, HWSIM_CMD_GET_RADIO);
+-		if (!hdr)
++		if (hdr) {
++			genl_dump_check_consistent(cb, hdr);
++			genlmsg_end(skb, hdr);
++		} else
+ 			res = -EMSGSIZE;
+-		genl_dump_check_consistent(cb, hdr);
+-		genlmsg_end(skb, hdr);
+ 	}
+ 
+ done:
+-- 
+2.17.0
+
