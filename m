@@ -2,66 +2,106 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 03E2179360
-	for <lists+linux-wireless@lfdr.de>; Mon, 29 Jul 2019 20:49:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2C91579380
+	for <lists+linux-wireless@lfdr.de>; Mon, 29 Jul 2019 21:01:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727442AbfG2StQ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 29 Jul 2019 14:49:16 -0400
-Received: from mail-io1-f43.google.com ([209.85.166.43]:34022 "EHLO
-        mail-io1-f43.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725894AbfG2StP (ORCPT
+        id S1728546AbfG2TBT (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 29 Jul 2019 15:01:19 -0400
+Received: from mail-lf1-f68.google.com ([209.85.167.68]:33660 "EHLO
+        mail-lf1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726680AbfG2TBT (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 29 Jul 2019 14:49:15 -0400
-Received: by mail-io1-f43.google.com with SMTP id k8so122401665iot.1
-        for <linux-wireless@vger.kernel.org>; Mon, 29 Jul 2019 11:49:15 -0700 (PDT)
+        Mon, 29 Jul 2019 15:01:19 -0400
+Received: by mail-lf1-f68.google.com with SMTP id x3so42921738lfc.0
+        for <linux-wireless@vger.kernel.org>; Mon, 29 Jul 2019 12:01:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=mime-version:from:date:message-id:subject:to:cc;
-        bh=FwK2CyynpfZkbhNrQZK9aJMHq1DPjlfQMQyVQUJ8xqE=;
-        b=u8YRLHj8HQdgf//SnVj11E9hSN4m6T/wlJHtbaAO1BkLsXPJC0dGsMym4BIzcoo7ke
-         tRFaVDx6iymEi3L6M36UQLek7UX3MOkdH2/odJ2knv23Z+jYTBhqxSN6pkWfbZO7VhvO
-         owQxY4kq/8WoKbgUViCfqarehxG2YXc/txw3hoEMPZ+5IRt5KStjscu+fVFhzcv/kkGi
-         dc/uuuMQb2wGUmblIs0E5ELlb1HVacWWPpe2ESg151ikOJxXzw5cd2teN/qGAqH0C8ae
-         uH/i5gK6cHcjtF5jQoTioqxmD9Jm27KSZbH2niSQR4Y2IILG1oYNHcvQCYQBP8XUrPOb
-         7++w==
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=f7vDMG/9SCpPW3zmkoq8GdvzJ3cq2Be8bwboqnhnU9g=;
+        b=jCmb8f427PV3qj1uWfaSJXL5rAFWcKQemXCsb+vy3UPYc9C3eqBBCGwjDKuuZmL6ix
+         Vb1dMN3EVn9qKSFzGOz7wq8b/fVTAwl3kBrBV2R6kdgxyLy7GnHilLnIFFy4pMKSQqC7
+         KKxfvgTeqVWyUNSZpgCHJaexajWg+HrxO+xvL2c7c2VE3nnV5UyDZMCoBi8FfZF/V6Lm
+         cEaL09A03fwBHzEpS7RX3YgFo0/LcMazoddlz8oHxnMhnjPcRYUTIWfuSt57oWadK6LY
+         p8+8vcbmlD25w38E6X/eFPsY6uGS0ZXX68mVycATH/djkQve1Sjeq6s7b6TVYYgpcmrZ
+         kYrQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:from:date:message-id:subject:to:cc;
-        bh=FwK2CyynpfZkbhNrQZK9aJMHq1DPjlfQMQyVQUJ8xqE=;
-        b=Awym7q5uzDk/W5hYczg/Gz5AAZwddEQkb0VKbLvRaMvFvci/032RqADhhWqMwfozm5
-         yOGKEBYB17rRM+CVc9AqNcJCEdBshZ+MmGOeZHatVabN6Lvm4SNYCZPICefpSPQ+ZjQI
-         GCjFDqRyUWWI9/ts0rLwWYzlTDBhGVhASAdztXvrb8NOkkvukSqkFrZPjsLBh8uKRtl6
-         6t0t3+fVKtlbmURhgvvSKxpVSgdEmJaBYVcmb2XMkUIidkA7CMTT8SfVGFZHLe9POb9c
-         m2XKat9AqH8zOfMnv8IhpMJle+2SasnT22tIv2wVyXq81qcEpuP1DxFZVmMTFQZOp+5y
-         b6wA==
-X-Gm-Message-State: APjAAAUPRd5J6LOXwGro8nrfFx8upEa8SIX1SKvjOBBhj0ZpSpVOa8JW
-        3ORILZiCoLY45nzhVw/0nNciKOfTmQTMV2jrMdmd4IdC
-X-Google-Smtp-Source: APXvYqwktdtn4V0wVLUAJEPghYfMLCoj8BOXsbg5IFxQiViNPircgGy7As6aTUmLN1ZrWLpYKNFShfO/pGkbMKTn/ks=
-X-Received: by 2002:a6b:f90f:: with SMTP id j15mr96206351iog.43.1564426154664;
- Mon, 29 Jul 2019 11:49:14 -0700 (PDT)
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=f7vDMG/9SCpPW3zmkoq8GdvzJ3cq2Be8bwboqnhnU9g=;
+        b=Glm91/C+8nOja34adO9eutWLa/ivtixS84va9/KBvpSaS6biNaJ/nz+kHOMXatQEkR
+         q5ZkCuxiuOIvnG+rtkhv3vL9CVeyQ4a40CvQkL4gAaWlBKhcJIXPN/Yci9YuknuLVpDp
+         mHNEIShRChjfdowqHbNEuUY3CP3Foru/3yv80FHnPXQWT45E0GZekRxemPy4kA2FJQ1F
+         Kucm2JTSnb+DjvjJkcGJEB4aLCDGglsp0PiUE3ROrPn3y4IDWUpNnp5RWDvMWyOQythO
+         X4m18O6UH5y+JQHRSM9v1Z2srNCJCFDoKpyhPVYf97h9EXB4xS4V9DEYIqSHZ9wVTnkt
+         8DnA==
+X-Gm-Message-State: APjAAAVynbQ6fpKExpd0Gmp+DHghKkKS+O80ED18nqa1jUnLFcAnKsv0
+        emEoldTAPbkOBSQG357Sy5I=
+X-Google-Smtp-Source: APXvYqzi6PTPDCGo9UbHeihDxg2gPfPmiVoZZ5d9cMcE9SO1bnrgayV3eHEWVGHj4lExc+RlIsU5sg==
+X-Received: by 2002:a19:4a50:: with SMTP id x77mr8380672lfa.91.1564426877453;
+        Mon, 29 Jul 2019 12:01:17 -0700 (PDT)
+Received: from localhost.localdomain ([2001:470:dc6e:0:c4ca:724:d773:277d])
+        by smtp.gmail.com with ESMTPSA id q22sm13151367lje.75.2019.07.29.12.01.16
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
+        Mon, 29 Jul 2019 12:01:16 -0700 (PDT)
+From:   Dmitry Tunin <hanipouspilot@gmail.com>
+To:     Seth Forshee <seth.forshee@canonical.com>
+Cc:     wireless-regdb@lists.infradead.org,
+        linux-wireless <linux-wireless@vger.kernel.org>,
+        Dmitry Tunin <hanipouspilot@gmail.com>
+Subject: [PATCH v2] wireless-regdb: update regulatory rules for Russia (RU) on 5GHz
+Date:   Mon, 29 Jul 2019 22:01:09 +0300
+Message-Id: <1564426869-25218-1-git-send-email-hanipouspilot@gmail.com>
+X-Mailer: git-send-email 2.7.4
 MIME-Version: 1.0
-From:   Peter Robinson <pbrobinson@gmail.com>
-Date:   Mon, 29 Jul 2019 19:49:03 +0100
-Message-ID: <CALeDE9Mwtm8fVMm6Ce99aju=UqPPSaZWQR+zZtJodENZ6_m+_Q@mail.gmail.com>
-Subject: Regression with the latest iwlwifi 9260 and Canon Point firmware
-To:     luciano.coelho@intel.com
-Cc:     linux-wireless@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=y
+Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi Luca,
+Russian entry is incorrect. According to the last regulations document of Feb 29, 2016,
+160 MHz channels and 802.11ad are allowed.
 
-Similar to the issues seen in the thread on [1] thje 9260 we're seeing
-the same reports in Fedora on both versions of the firmware [2], on
-both the 9260 series but also the Cannon Point-LP CNVi wifi devices as
-well. There's more details and dmesg output in that bug report.
+http://rfs-rf.ru/upload/medialibrary/c1a/prilozhenie-1-k-resheniyu-gkrch-_-16_36_03.pdf
 
-Do you have an update on the issue?
+Note that there was never a DFS requirement in Russia, but always was
+NO-OUTDOOR on 5GHz.
+Maximum power is 200mW that is ~23dBm on all 5GHz channels.
+Also Russia has never been regulated by ETSI.
 
-Peter
+Signed-off-by: Dmitry Tunin <hanipouspilot@gmail.com>
+---
+ db.txt | 14 ++++++--------
+ 1 file changed, 6 insertions(+), 8 deletions(-)
 
-[1] https://www.spinics.net/lists/linux-wireless/msg188200.html
-[2] https://bugzilla.redhat.com/show_bug.cgi?id=1733369
+diff --git a/db.txt b/db.txt
+index 37393e6..068fb5a 100644
+--- a/db.txt
++++ b/db.txt
+@@ -1097,14 +1097,12 @@ country RS: DFS-ETSI
+ 	# 60 GHz band channels 1-4, ref: Etsi En 302 567
+ 	(57000 - 66000 @ 2160), (40)
+ 
+-country RU: DFS-ETSI
+-	(2402 - 2482 @ 40), (20)
+-	(5170 - 5250 @ 80), (20), AUTO-BW
+-	(5250 - 5330 @ 80), (20), DFS, AUTO-BW
+-	(5650 - 5730 @ 80), (30), DFS
+-	(5735 - 5835 @ 80), (30)
+-	# 60 GHz band channels 1-4, ref: Changes to NLA 124_Order №129_22042015.pdf
+-	(57000 - 66000 @ 2160), (40)
++country RU:
++(2402 - 2482 @ 40), (20)
++(5170 - 5350 @ 160), (23), NO-OUTDOOR
++(5650 - 5850 @ 160), (23), NO-OUTDOOR
++# 60 GHz band channels 1-4, ref: Changes to NLA 124_Order №129_22042015.pdf
++(57000 - 66000 @ 2160), (40), NO-OUTDOOR
+ 
+ country RW: DFS-FCC
+ 	(2402 - 2482 @ 40), (20)
+-- 
+2.7.4
+
