@@ -2,74 +2,65 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E4A1A7AA83
-	for <lists+linux-wireless@lfdr.de>; Tue, 30 Jul 2019 16:04:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 924DA7AB17
+	for <lists+linux-wireless@lfdr.de>; Tue, 30 Jul 2019 16:32:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729106AbfG3OEj (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 30 Jul 2019 10:04:39 -0400
-Received: from mx2.suse.de ([195.135.220.15]:50774 "EHLO mx1.suse.de"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1728255AbfG3OEj (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 30 Jul 2019 10:04:39 -0400
-X-Virus-Scanned: by amavisd-new at test-mx.suse.de
-Received: from relay2.suse.de (unknown [195.135.220.254])
-        by mx1.suse.de (Postfix) with ESMTP id E3328ADCB;
-        Tue, 30 Jul 2019 14:04:37 +0000 (UTC)
-Date:   Tue, 30 Jul 2019 16:04:36 +0200
-From:   Jean Delvare <jdelvare@suse.de>
-To:     Johannes Berg <johannes@sipsolutions.net>
-Cc:     linux-wireless@vger.kernel.org,
-        Peter Lebbing <peter@digitalbrains.com>,
-        Felix Fietkau <nbd@nbd.name>,
-        Toke =?UTF-8?B?SMO4aWxhbmQtSsO4cmdlbnNlbg==?= <toke@redhat.com>,
-        Johannes Berg <johannes.berg@intel.com>
-Subject: Re: [PATCH] Revert "mac80211: set NETIF_F_LLTX when using
- intermediate tx queues"
-Message-ID: <20190730160436.78b72b50@endymion>
-In-Reply-To: <20190730125412.1446-1-johannes@sipsolutions.net>
-References: <20190730125412.1446-1-johannes@sipsolutions.net>
-Organization: SUSE Linux
-X-Mailer: Claws Mail 3.17.3 (GTK+ 2.24.32; x86_64-suse-linux-gnu)
+        id S1731433AbfG3OcJ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 30 Jul 2019 10:32:09 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:40348 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728527AbfG3OcJ (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 30 Jul 2019 10:32:09 -0400
+Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
+        by youngberry.canonical.com with esmtpsa (TLS1.0:RSA_AES_256_CBC_SHA1:32)
+        (Exim 4.76)
+        (envelope-from <colin.king@canonical.com>)
+        id 1hsTAc-0005LT-6L; Tue, 30 Jul 2019 14:32:06 +0000
+From:   Colin King <colin.king@canonical.com>
+To:     John Crispin <john@phrozen.org>,
+        Johannes Berg <johannes@sipsolutions.net>,
+        "David S . Miller" <davem@davemloft.net>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH][net-next] mac80211: add missing null return check from call to ieee80211_get_sband
+Date:   Tue, 30 Jul 2019 15:32:05 +0100
+Message-Id: <20190730143205.14261-1-colin.king@canonical.com>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Tue, 30 Jul 2019 14:54:11 +0200, Johannes Berg wrote:
-> From: Johannes Berg <johannes.berg@intel.com>
-> 
-> Revert this for now, it has been reported multiple times that it
-> completely breaks connectivity on various devices.
-> 
-> Cc: stable@vger.kernel.org
-> Fixes: 8dbb000ee73b ("mac80211: set NETIF_F_LLTX when using intermediate tx queues")
-> Reported-by: Jean Delvare <jdelvare@suse.de>
-> Reported-by: Peter Lebbing <peter@digitalbrains.com>
-> Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-> ---
->  net/mac80211/iface.c | 1 -
->  1 file changed, 1 deletion(-)
-> 
-> diff --git a/net/mac80211/iface.c b/net/mac80211/iface.c
-> index 06aac0aaae64..8dc6580e1787 100644
-> --- a/net/mac80211/iface.c
-> +++ b/net/mac80211/iface.c
-> @@ -1222,7 +1222,6 @@ static void ieee80211_if_setup(struct net_device *dev)
->  static void ieee80211_if_setup_no_queue(struct net_device *dev)
->  {
->  	ieee80211_if_setup(dev);
-> -	dev->features |= NETIF_F_LLTX;
->  	dev->priv_flags |= IFF_NO_QUEUE;
->  }
->  
+From: Colin Ian King <colin.king@canonical.com>
 
-Thanks Johannes.
+The return from ieee80211_get_sband can potentially be a null pointer, so
+it seems prudent to add a null check to avoid a null pointer dereference
+on sband.
 
-Tested-by: Jean Delvare <jdelvare@suse.de>
+Addresses-Coverity: ("Dereference null return")
+Fixes: 2ab45876756f ("mac80211: add support for the ADDBA extension element")
+Signed-off-by: Colin Ian King <colin.king@canonical.com>
+---
+ net/mac80211/agg-rx.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
+diff --git a/net/mac80211/agg-rx.c b/net/mac80211/agg-rx.c
+index 0e1bb43973b8..4d1c335e06e5 100644
+--- a/net/mac80211/agg-rx.c
++++ b/net/mac80211/agg-rx.c
+@@ -189,6 +189,8 @@ static void ieee80211_add_addbaext(struct ieee80211_sub_if_data *sdata,
+ 	u8 *pos;
+ 
+ 	sband = ieee80211_get_sband(sdata);
++	if (!sband)
++		return;
+ 	he_cap = ieee80211_get_he_iftype_cap(sband, sdata->vif.type);
+ 	if (!he_cap)
+ 		return;
 -- 
-Jean Delvare
-SUSE L3 Support
+2.20.1
+
