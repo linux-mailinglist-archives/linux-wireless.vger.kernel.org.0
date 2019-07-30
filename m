@@ -2,124 +2,67 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 7F71A7AF57
-	for <lists+linux-wireless@lfdr.de>; Tue, 30 Jul 2019 19:12:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 948127B05A
+	for <lists+linux-wireless@lfdr.de>; Tue, 30 Jul 2019 19:41:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727202AbfG3RMW (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 30 Jul 2019 13:12:22 -0400
-Received: from s3.sipsolutions.net ([144.76.43.62]:36876 "EHLO
-        sipsolutions.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725947AbfG3RMV (ORCPT
+        id S1731431AbfG3Rlg (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 30 Jul 2019 13:41:36 -0400
+Received: from shards.monkeyblade.net ([23.128.96.9]:52644 "EHLO
+        shards.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726432AbfG3Rlg (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 30 Jul 2019 13:12:21 -0400
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <johannes@sipsolutions.net>)
-        id 1hsVff-0002v5-5q; Tue, 30 Jul 2019 19:12:19 +0200
-From:   Johannes Berg <johannes@sipsolutions.net>
-To:     Kalle Valo <kvalo@codeaurora.org>
-Cc:     linux-wireless@vger.kernel.org
-Subject: pull-request: iwlwifi-fixes 2019-07-30
-Date:   Tue, 30 Jul 2019 19:12:09 +0200
-Message-Id: <20190730171210.16570-1-johannes@sipsolutions.net>
-X-Mailer: git-send-email 2.20.1
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+        Tue, 30 Jul 2019 13:41:36 -0400
+Received: from localhost (unknown [IPv6:2601:601:9f80:35cd::d71])
+        (using TLSv1 with cipher AES256-SHA (256/256 bits))
+        (Client did not present a certificate)
+        (Authenticated sender: davem-davemloft)
+        by shards.monkeyblade.net (Postfix) with ESMTPSA id A73501265A210;
+        Tue, 30 Jul 2019 10:41:35 -0700 (PDT)
+Date:   Tue, 30 Jul 2019 10:41:35 -0700 (PDT)
+Message-Id: <20190730.104135.1391040196178361165.davem@davemloft.net>
+To:     netdev@vger.kernel.org, daniel@iogearbox.net
+CC:     linux-wireless@vger.kernel.org, netfilter-devel@vger.kernel.org,
+        bpf@vger.kernel.org, linux-kernel@vger.kernel.org, lwn@lwn.net
+Subject: [FINAL REMINDER!!] LPC 2019 Networking Track CFP
+From:   David Miller <davem@davemloft.net>
+X-Mailer: Mew version 6.8 on Emacs 26.1
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+X-Greylist: Sender succeeded SMTP AUTH, not delayed by milter-greylist-4.5.12 (shards.monkeyblade.net [149.20.54.216]); Tue, 30 Jul 2019 10:41:35 -0700 (PDT)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi Kalle,
 
-Resending, with all sign-offs again ... sorry, that's because Luca
-handled the previous part and then I just added stuff.
+The deadline is this Friday, please get your proposals in as soon as
+possible and do not procrastinate.  The deadline absolutely cannot be
+extended.
 
-Please pull and let me know if there's any problem.
+This is a call for proposals for the 3 day networking track at the
+Linux Plumbers Conference in Lisbon, which will be happening on
+September 9th-11th, 2019.
 
-Thanks,
-johannes
+We are seeking talks of 40 minutes in length (including Q & A),
+optionally accompanied by papers of 2 to 10 pages in length.  The
+papers, while not required, are very strongly encouraged by the
+committee.  The submitters intention to provide a paper will be taken
+into consideration as a criteria when deciding which proposals to
+accept.
 
+Any kind of advanced networking-related topic will be considered.
 
+Please submit your proposals on the LPC website at:
 
-The following changes since commit 5f9e832c137075045d15cd6899ab0505cfb2ca4b:
+	https://www.linuxplumbersconf.org/event/4/abstracts/#submit-abstract
 
-  Linus 5.3-rc1 (2019-07-21 14:05:38 -0700)
+And be sure to select "Networking Summit Track" in the Track pulldown
+menu.
 
-are available in the Git repository at:
+Proposals must be submitted by August 2nd, and submitters will be
+notified of acceptance by August 9th.
 
-  git://git.kernel.org/pub/scm/linux/kernel/git/iwlwifi/iwlwifi-fixes.git tags/iwlwifi-fixes-for-kvalo-2019-07-30
+Final slides and papers (as PDF) are due on September 2nd.
 
-for you to fetch changes up to 71b256f8f7a5c09810d2c3ed6165629c2cc0a652:
-
-  iwlwifi: mvm: fix a use-after-free bug in iwl_mvm_tx_tso_segment (2019-07-30 18:34:32 +0200)
-
-----------------------------------------------------------------
-We have a lot of fixes, most of them are also applicable to stable.
-Notably:
- * fix use-after-free issues
- * fix DMA mapping API usage errors
- * fix frame drop occurring due to reorder buffer handling in
-   RSS in certain conditions
- * fix rate scale locking issues
- * disable TX A-MSDU on older NICs as it causes problems and was
-   never supposed to be supported
- * new PCI IDs
- * GEO_TX_POWER_LIMIT API issue that many people were hitting
-
-----------------------------------------------------------------
-Colin Ian King (1):
-      iwlwifi: mvm: fix comparison of u32 variable with less than zero
-
-Emmanuel Grumbach (8):
-      iwlwifi: mvm: prepare the ground for more RSS notifications
-      iwlwifi: mvm: add a new RSS sync notification for NSSN sync
-      iwlwiif: mvm: refactor iwl_mvm_notify_rx_queue
-      iwlwifi: mvm: add a loose synchronization of the NSSN across Rx queues
-      iwlwifi: mvm: fix frame drop from the reordering buffer
-      iwlwifi: don't unmap as page memory that was mapped as single
-      iwlwifi: mvm: fix an out-of-bound access
-      iwlwifi: mvm: fix a use-after-free bug in iwl_mvm_tx_tso_segment
-
-Gregory Greenman (4):
-      iwlwifi: mvm: add a wrapper around rs_tx_status to handle locks
-      iwlwifi: mvm: send LQ command always ASYNC
-      iwlwifi: mvm: replace RS mutex with a spin_lock
-      iwlwifi: mvm: fix possible out-of-bounds read when accessing lq_info
-
-Ihab Zhaika (1):
-      iwlwifi: add 3 new IDs for the 9000 series (iwl9260_2ac_160_cfg)
-
-Johannes Berg (2):
-      iwlwifi: mvm: disable TX-AMSDU on older NICs
-      iwlwifi: fix locking in delayed GTK setting
-
-Luca Coelho (2):
-      iwlwifi: mvm: don't send GEO_TX_POWER_LIMIT on version < 41
-      iwlwifi: mvm: fix version check for GEO_TX_POWER_LIMIT support
-
-Mordechay Goodstein (1):
-      iwlwifi: mvm: avoid races in rate init and rate perform
-
-Shahar S Matityahu (2):
-      iwlwifi: dbg_ini: move iwl_dbg_tlv_load_bin out of debug override ifdef
-      iwlwifi: dbg_ini: move iwl_dbg_tlv_free outside of debugfs ifdef
-
- drivers/net/wireless/intel/iwlwifi/fw/api/rx.h    |   3 +-
- drivers/net/wireless/intel/iwlwifi/iwl-drv.c      |   4 +-
- drivers/net/wireless/intel/iwlwifi/mvm/fw.c       |  29 +-
- drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c |  58 ++-
- drivers/net/wireless/intel/iwlwifi/mvm/mvm.h      |   8 +-
- drivers/net/wireless/intel/iwlwifi/mvm/nvm.c      |   2 +-
- drivers/net/wireless/intel/iwlwifi/mvm/ops.c      |   4 +-
- drivers/net/wireless/intel/iwlwifi/mvm/rs.c       | 539 ++++++++++++----------
- drivers/net/wireless/intel/iwlwifi/mvm/rs.h       |   3 +-
- drivers/net/wireless/intel/iwlwifi/mvm/rxmq.c     | 185 ++++++--
- drivers/net/wireless/intel/iwlwifi/mvm/sta.c      |   6 +-
- drivers/net/wireless/intel/iwlwifi/mvm/sta.h      |  12 +-
- drivers/net/wireless/intel/iwlwifi/mvm/tx.c       |   3 +-
- drivers/net/wireless/intel/iwlwifi/mvm/utils.c    |   4 +-
- drivers/net/wireless/intel/iwlwifi/pcie/drv.c     |   3 +
- drivers/net/wireless/intel/iwlwifi/pcie/tx.c      |   2 +
- 16 files changed, 523 insertions(+), 342 deletions(-)
-
+Looking forward to seeing you all in Lisbon in September!
