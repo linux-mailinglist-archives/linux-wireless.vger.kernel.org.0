@@ -2,165 +2,117 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 4D47F7AE1C
-	for <lists+linux-wireless@lfdr.de>; Tue, 30 Jul 2019 18:38:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 85B767AED3
+	for <lists+linux-wireless@lfdr.de>; Tue, 30 Jul 2019 19:00:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730412AbfG3QhP (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 30 Jul 2019 12:37:15 -0400
-Received: from nbd.name ([46.4.11.11]:51046 "EHLO nbd.name"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1730380AbfG3QhO (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 30 Jul 2019 12:37:14 -0400
-Received: from pd95fd7d7.dip0.t-ipconnect.de ([217.95.215.215] helo=bertha.fritz.box)
-        by ds12 with esmtpa (Exim 4.89)
-        (envelope-from <john@phrozen.org>)
-        id 1hsV7f-0002JK-Gz; Tue, 30 Jul 2019 18:37:11 +0200
-From:   John Crispin <john@phrozen.org>
-To:     Johannes Berg <johannes@sipsolutions.net>
-Cc:     linux-wireless@vger.kernel.org, John Crispin <john@phrozen.org>
-Subject: [PATCH V3 2/2] mac80211: allow setting spatial reuse parameters from bss_conf
-Date:   Tue, 30 Jul 2019 18:37:01 +0200
-Message-Id: <20190730163701.18836-3-john@phrozen.org>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20190730163701.18836-1-john@phrozen.org>
-References: <20190730163701.18836-1-john@phrozen.org>
+        id S1727236AbfG3Q76 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 30 Jul 2019 12:59:58 -0400
+Received: from mail-io1-f66.google.com ([209.85.166.66]:40595 "EHLO
+        mail-io1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725934AbfG3Q75 (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 30 Jul 2019 12:59:57 -0400
+Received: by mail-io1-f66.google.com with SMTP id h6so4563325iom.7
+        for <linux-wireless@vger.kernel.org>; Tue, 30 Jul 2019 09:59:57 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=thfSVMX6+HwxM/ty44YHwCabreMvWV/+Gb4a/AYAosM=;
+        b=QDZk/EFUsh6U0OHs8YqCvTgja17nbMT2Y0sFIVcZgyTwIhEIGARc0EvYjU0bNaUDDw
+         DhykaLBu959pAPwvEWt43vHt5h7OAeSRBBZov+gZsctSFuksXsHKukwZRmShoDWKA+8I
+         wItHBj4PVtGEm32bkk7ccUJxqF53Ib3OaAdy0=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=thfSVMX6+HwxM/ty44YHwCabreMvWV/+Gb4a/AYAosM=;
+        b=MyVyUl2s1IpSDsWza50jWyIOK23TJ33BuNU3J2UNbGhJ2q7BneCQQ8Lm5gvA5WWqzC
+         1waLFVjXPUas5ZOIbof7oAo5PDbIzFenJOzLVYHoqsdHXdZ44+eKlhJ8ylJPLzG8UXLL
+         I09MNfQEDSRsT95297v/FdFjk/sAz8fIosgaFRcglqkgfxu1gQ0ItU+PFEHoX5pStVDO
+         x4bM7gIXE4+gcHYYBf0NK7wa1VuCW6b4d/QBWpT3HOrwJmuXG/AHzeZzqw0vQVXGaikF
+         92GtCe66qHTXc3cJF57TxJDxSw9L492D5ueDN6OxPnqW4s3Y5yOjjv20Dj+Zt99L/hkF
+         6P3Q==
+X-Gm-Message-State: APjAAAUMzbMp1PK+uqIV7PiFTm6JmWZkzDbrxZ6wb0MY/7d5MgehhaYu
+        A05PsUOcXY5v03WvGaWudx9GC2LSZww=
+X-Google-Smtp-Source: APXvYqxduRmuyKmgwklxWHyRdGCYtyX0w56RX24hevjE1+eG7ikC9W+ji1thB+XGlBcs3Q9sdtU1fw==
+X-Received: by 2002:a05:6638:627:: with SMTP id h7mr90992883jar.33.1564505996932;
+        Tue, 30 Jul 2019 09:59:56 -0700 (PDT)
+Received: from mail-io1-f54.google.com (mail-io1-f54.google.com. [209.85.166.54])
+        by smtp.gmail.com with ESMTPSA id e22sm49744692iob.66.2019.07.30.09.59.55
+        for <linux-wireless@vger.kernel.org>
+        (version=TLS1_3 cipher=AEAD-AES128-GCM-SHA256 bits=128/128);
+        Tue, 30 Jul 2019 09:59:55 -0700 (PDT)
+Received: by mail-io1-f54.google.com with SMTP id e20so99340948iob.9
+        for <linux-wireless@vger.kernel.org>; Tue, 30 Jul 2019 09:59:55 -0700 (PDT)
+X-Received: by 2002:a02:5b05:: with SMTP id g5mr116310299jab.114.1564505994931;
+ Tue, 30 Jul 2019 09:59:54 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20190722193939.125578-1-dianders@chromium.org> <CALtMJEB871Redpzx1u6G5GVEXz-kAP=vT6Wt98=X=xm4SEMeAQ@mail.gmail.com>
+In-Reply-To: <CALtMJEB871Redpzx1u6G5GVEXz-kAP=vT6Wt98=X=xm4SEMeAQ@mail.gmail.com>
+From:   Doug Anderson <dianders@chromium.org>
+Date:   Tue, 30 Jul 2019 09:59:42 -0700
+X-Gmail-Original-Message-ID: <CAD=FV=VfabHB=ALxvAZ_grg_V6Nkv1UkhHjHjp-_Fs=Bx94WAA@mail.gmail.com>
+Message-ID: <CAD=FV=VfabHB=ALxvAZ_grg_V6Nkv1UkhHjHjp-_Fs=Bx94WAA@mail.gmail.com>
+Subject: Re: [PATCH v2 0/2] mmc: core: Fix Marvell WiFi reset by adding SDIO
+ API to replug card
+To:     Andreas Fenkart <afenkart@gmail.com>
+Cc:     Ulf Hansson <ulf.hansson@linaro.org>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        Adrian Hunter <adrian.hunter@intel.com>,
+        Ganapathi Bhat <gbhat@marvell.com>,
+        linux-wireless <linux-wireless@vger.kernel.org>,
+        Brian Norris <briannorris@chromium.org>,
+        Amitkumar Karwar <amitkarwar@gmail.com>,
+        "open list:ARM/Rockchip SoC..." <linux-rockchip@lists.infradead.org>,
+        Wolfram Sang <wsa+renesas@sang-engineering.com>,
+        Nishant Sarmukadam <nishants@marvell.com>,
+        netdev <netdev@vger.kernel.org>,
+        Avri Altman <avri.altman@wdc.com>,
+        linux-mmc <linux-mmc@vger.kernel.org>,
+        David Miller <davem@davemloft.net>,
+        Xinming Hu <huxinming820@gmail.com>,
+        LKML <linux-kernel@vger.kernel.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Kate Stewart <kstewart@linuxfoundation.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Store the OBSS PD parameters inside bss_conf when bringing up an AP and/or
-when a station connects to an AP. This allows the driver to configure the
-HW accordingly.
+Hi,
 
-Signed-off-by: John Crispin <john@phrozen.org>
----
- include/net/mac80211.h     |  4 ++++
- net/mac80211/cfg.c         |  5 ++++-
- net/mac80211/he.c          | 24 ++++++++++++++++++++++++
- net/mac80211/ieee80211_i.h |  3 +++
- net/mac80211/mlme.c        |  1 +
- 5 files changed, 36 insertions(+), 1 deletion(-)
+On Tue, Jul 30, 2019 at 1:47 AM Andreas Fenkart <afenkart@gmail.com> wrote:
+>
+> > * Sometimes while I was testing I saw "Fail WiFi 1" indicating a
+> >   transitory failure.  Usually this was an association failure, but in
+> >   one case I saw the device do "Firmware wakeup failed" after I
+> >   triggered the reset.  This caused the driver to trigger a re-reset
+> >   of itself which eventually recovered things.  This was good because
+> >   it was an actual test of the normal reset flow (not the one
+> >   triggered via sysfs).
+>
+> This error triggers something. I remember that when I was working on
+> suspend-to-ram feature, we had problems to wake up the firmware
+> reliable. I found this patch in one of my old 3.13 tree
+>
+>     the missing bit -- ugly hack to force cmd52 before cmd53.
 
-diff --git a/include/net/mac80211.h b/include/net/mac80211.h
-index 4370c58465db..ce77eac27e13 100644
---- a/include/net/mac80211.h
-+++ b/include/net/mac80211.h
-@@ -315,6 +315,7 @@ struct ieee80211_vif_chanctx_switch {
-  * @BSS_CHANGED_FTM_RESPONDER: fime timing reasurement request responder
-  *	functionality changed for this BSS (AP mode).
-  * @BSS_CHANGED_TWT: TWT status changed
-+ * @BSS_CHANGED_HE_OBSS_PD: OBSS Packet Detection status changed.
-  *
-  */
- enum ieee80211_bss_change {
-@@ -346,6 +347,7 @@ enum ieee80211_bss_change {
- 	BSS_CHANGED_MCAST_RATE		= 1<<25,
- 	BSS_CHANGED_FTM_RESPONDER	= 1<<26,
- 	BSS_CHANGED_TWT			= 1<<27,
-+	BSS_CHANGED_HE_OBSS_PD		= 1<<28,
- 
- 	/* when adding here, make sure to change ieee80211_reconfig */
- };
-@@ -601,6 +603,7 @@ struct ieee80211_ftm_responder_params {
-  * @profile_periodicity: the least number of beacon frames need to be received
-  *	in order to discover all the nontransmitted BSSIDs in the set.
-  * @he_operation: HE operation information of the AP we are connected to
-+ * @he_obss_pd: OBSS Packet Detection parameters.
-  */
- struct ieee80211_bss_conf {
- 	const u8 *bssid;
-@@ -663,6 +666,7 @@ struct ieee80211_bss_conf {
- 	bool ema_ap;
- 	u8 profile_periodicity;
- 	struct ieee80211_he_operation he_operation;
-+	struct ieee80211_he_obss_pd he_obss_pd;
- };
- 
- /**
-diff --git a/net/mac80211/cfg.c b/net/mac80211/cfg.c
-index 5be377b048c7..9f7ab8eb7199 100644
---- a/net/mac80211/cfg.c
-+++ b/net/mac80211/cfg.c
-@@ -980,7 +980,8 @@ static int ieee80211_start_ap(struct wiphy *wiphy, struct net_device *dev,
- 		      BSS_CHANGED_SSID |
- 		      BSS_CHANGED_P2P_PS |
- 		      BSS_CHANGED_TXPOWER |
--		      BSS_CHANGED_TWT;
-+		      BSS_CHANGED_TWT |
-+		      BSS_CHANGED_HE_OBSS_PD;
- 	int err;
- 	int prev_beacon_int;
- 
-@@ -1051,6 +1052,8 @@ static int ieee80211_start_ap(struct wiphy *wiphy, struct net_device *dev,
- 	sdata->vif.bss_conf.enable_beacon = true;
- 	sdata->vif.bss_conf.allow_p2p_go_ps = sdata->vif.p2p;
- 	sdata->vif.bss_conf.twt_responder = params->twt_responder;
-+	memcpy(&sdata->vif.bss_conf.he_obss_pd, &params->he_obss_pd,
-+	       sizeof(struct ieee80211_he_obss_pd));
- 
- 	sdata->vif.bss_conf.ssid_len = params->ssid_len;
- 	if (params->ssid_len)
-diff --git a/net/mac80211/he.c b/net/mac80211/he.c
-index f910f730ad0d..a02abfc424aa 100644
---- a/net/mac80211/he.c
-+++ b/net/mac80211/he.c
-@@ -65,3 +65,27 @@ ieee80211_he_op_ie_to_bss_conf(struct ieee80211_vif *vif,
- 
- 	vif->bss_conf.he_operation = *he_op_ie_elem;
- }
-+
-+void
-+ieee80211_he_spr_ie_to_bss_conf(struct ieee80211_vif *vif,
-+				const struct ieee80211_he_spr *he_spr_ie_elem)
-+{
-+	struct ieee80211_he_obss_pd *he_obss_pd =
-+					&vif->bss_conf.he_obss_pd;
-+	const u8 *data = he_spr_ie_elem->optional;
-+
-+	memset(he_obss_pd, 0, sizeof(*he_obss_pd));
-+
-+	if (!he_spr_ie_elem)
-+		return;
-+
-+	if (he_spr_ie_elem->he_sr_control &
-+	    IEEE80211_HE_SPR_NON_SRG_OFFSET_PRESENT)
-+		data++;
-+	if (he_spr_ie_elem->he_sr_control &
-+	    IEEE80211_HE_SPR_SRG_INFORMATION_PRESENT) {
-+		he_obss_pd->max_offset = *data++;
-+		he_obss_pd->min_offset = *data++;
-+		he_obss_pd->enable = true;
-+	}
-+}
-diff --git a/net/mac80211/ieee80211_i.h b/net/mac80211/ieee80211_i.h
-index eaa0423eaaf9..ff7995642e86 100644
---- a/net/mac80211/ieee80211_i.h
-+++ b/net/mac80211/ieee80211_i.h
-@@ -1878,6 +1878,9 @@ ieee80211_he_cap_ie_to_sta_he_cap(struct ieee80211_sub_if_data *sdata,
- 				  struct ieee80211_supported_band *sband,
- 				  const u8 *he_cap_ie, u8 he_cap_len,
- 				  struct sta_info *sta);
-+void
-+ieee80211_he_spr_ie_to_bss_conf(struct ieee80211_vif *vif,
-+				const struct ieee80211_he_spr *he_spr_ie_elem);
- 
- void
- ieee80211_he_op_ie_to_bss_conf(struct ieee80211_vif *vif,
-diff --git a/net/mac80211/mlme.c b/net/mac80211/mlme.c
-index 2b8a7428973d..225633d9e2d4 100644
---- a/net/mac80211/mlme.c
-+++ b/net/mac80211/mlme.c
-@@ -3382,6 +3382,7 @@ static bool ieee80211_assoc_success(struct ieee80211_sub_if_data *sdata,
- 			bss_conf->uora_ocw_range = elems.uora_element[0];
- 
- 		ieee80211_he_op_ie_to_bss_conf(&sdata->vif, elems.he_operation);
-+		ieee80211_he_spr_ie_to_bss_conf(&sdata->vif, elems.he_spr);
- 		/* TODO: OPEN: what happens if BSS color disable is set? */
- 	}
- 
--- 
-2.20.1
+Thanks for the reference!  At the moment I'm not terribly worried
+about this particular failure case (compared to other failure modes)
+because it's rare and it self-heals.
 
+...my best guess, though, is that the problem isn't exactly the same.
+The "Firmware wakeup failed" is a pretty generic error message, kind
+of like "something went wrong" and not all instances of this message
+will have the same root cause.
+
+I actually dealt with a few suspend/resume issues around mwifiex
+recently though.  If you ever uprev, you might be interested in:
+
+b82d6c1f8f82 mwifiex: Make resume actually do something useful again
+on SDIO cards
+83293386bc95 mmc: core: Prevent processing SDIO IRQs when the card is suspended
+
+-Doug
