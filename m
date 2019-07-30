@@ -2,206 +2,52 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 00EA579ED4
-	for <lists+linux-wireless@lfdr.de>; Tue, 30 Jul 2019 04:44:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BF37979EE2
+	for <lists+linux-wireless@lfdr.de>; Tue, 30 Jul 2019 04:46:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731421AbfG3CoC (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 29 Jul 2019 22:44:02 -0400
-Received: from mail-pl1-f193.google.com ([209.85.214.193]:42885 "EHLO
-        mail-pl1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730921AbfG3CoC (ORCPT
+        id S1731464AbfG3CqW (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 29 Jul 2019 22:46:22 -0400
+Received: from rtits2.realtek.com ([211.75.126.72]:52954 "EHLO
+        rtits2.realtek.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1731462AbfG3CqW (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 29 Jul 2019 22:44:02 -0400
-Received: by mail-pl1-f193.google.com with SMTP id ay6so28299715plb.9;
-        Mon, 29 Jul 2019 19:44:01 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=Lic9FsBbFIhilgJH9jdHsI1bCHTQauGCm3mQSU4XvTM=;
-        b=VmG+Y5P5Dh2me3MuRE5xoeE8+31ZRDRtvUDuryelSgr1QOdkF5UR4sfAhfawGrnF4o
-         5z+N42GmX4JOKqZ419NY+2NeE03748lWU8fiklu8RZ45CTP6kfm07+wnuBPZD0l/m5eZ
-         sj/oDPdL0HQ6u9F5Hg+63dtbGim4BW6TYSL7dMhLzzjxpFh+aeB4uJjvYW9ZLnsBn1Cy
-         S4n5cNVSOCaep4vWkFG9oDjODxzzuZwA+Rwztr0UpO+gASp2OxeVjMX2U1or+lSZLknx
-         AtwaNIAqMlMZm2/n9t8nvsT0txtyJvMaBHXwN6XKLSfsykgh1nxG6imehh5Pjy7OYhtV
-         6rtg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references;
-        bh=Lic9FsBbFIhilgJH9jdHsI1bCHTQauGCm3mQSU4XvTM=;
-        b=MGCGuaf42flvV47oOQOprayfWaepHmMAz5AdtuIVy5/R/CBOl8p04A/aDV2M9c/3sN
-         sdgUyzNqIrkkUvVBM/obK/CEbvnVVg7VDH52JjoSZmCI7bSUGDn0ZARt/DpcCUP8iGIX
-         HTu+93xzhZ1/aYP11LKtHSEXXYz1ksYvgPVlNP6nj71/BqJ9RftLMOAYMRfJygSqyC3K
-         SRQV3LhGXsN/3474I0n1kBm0itbnj0XVWy34fKENhkh64dqjmdVrEBMn2nIB6n0d9HiV
-         ICdNS0ktwpiIt8CIhtcmBpHYKHAbC0p/7pdAwTgbQuEa+uUVO1FrcjcoRpBFDP4Hn6uP
-         ZKGQ==
-X-Gm-Message-State: APjAAAVCzmiabYYOl2MGCIYGXcTNA9KZwZhV4zzwd+Y7ZjjfLl2KqsZI
-        6tXTR12NMRq5tINPLqrNIz4=
-X-Google-Smtp-Source: APXvYqzNN+4+CjaPSeMWQ2/PLSQRyBZtcEjOJ6XJ3AsKOmbbAHM9cei4O5VqaExHC48K6xXqNKYu5w==
-X-Received: by 2002:a17:902:1107:: with SMTP id d7mr11773332pla.184.1564454641476;
-        Mon, 29 Jul 2019 19:44:01 -0700 (PDT)
-Received: from localhost.localdomain (220-128-162-163.HINET-IP.hinet.net. [220.128.162.163])
-        by smtp.googlemail.com with ESMTPSA id v185sm70944442pfb.14.2019.07.29.19.43.55
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Mon, 29 Jul 2019 19:44:01 -0700 (PDT)
-From:   Pei-Hsuan Hung <afcidk@gmail.com>
-Cc:     Pei-Hsuan Hung <afcidk@gmail.com>, trivial@kernel.org,
-        Russell Currey <ruscur@russell.cc>,
-        Sam Bobroff <sbobroff@linux.ibm.com>,
-        "Oliver O'Halloran" <oohall@gmail.com>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Paul Mackerras <paulus@samba.org>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Jeremy Kerr <jk@ozlabs.org>, Arnd Bergmann <arnd@arndb.de>,
-        MyungJoo Ham <myungjoo.ham@samsung.com>,
-        Chanwoo Choi <cw00.choi@samsung.com>,
-        Liviu Dudau <liviu.dudau@arm.com>,
-        Brian Starkey <brian.starkey@arm.com>,
-        David Airlie <airlied@linux.ie>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        Ping-Ke Shih <pkshih@realtek.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        James Smart <james.smart@broadcom.com>,
-        Dick Kennedy <dick.kennedy@broadcom.com>,
-        "James E.J. Bottomley" <jejb@linux.ibm.com>,
-        "Martin K. Petersen" <martin.petersen@oracle.com>,
-        Alexander Viro <viro@zeniv.linux.org.uk>,
-        Larry Finger <Larry.Finger@lwfinger.net>,
-        linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
-        dri-devel@lists.freedesktop.org, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org, linux-scsi@vger.kernel.org,
-        linux-fsdevel@vger.kernel.org
-Subject: [PATCH v2] Fix typo reigster to register
-Date:   Tue, 30 Jul 2019 10:42:32 +0800
-Message-Id: <20190730024235.26273-1-afcidk@gmail.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <liviu.dudau@arm.com>
-References: <liviu.dudau@arm.com>
-To:     unlisted-recipients:; (no To-header on input)
+        Mon, 29 Jul 2019 22:46:22 -0400
+Authenticated-By: 
+X-SpamFilter-By: BOX Solutions SpamTrap 5.62 with qID x6U2kG4d005634, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (RTITCASV01.realtek.com.tw[172.21.6.18])
+        by rtits2.realtek.com.tw (8.15.2/2.57/5.78) with ESMTPS id x6U2kG4d005634
+        (version=TLSv1 cipher=DHE-RSA-AES256-SHA bits=256 verify=NOT);
+        Tue, 30 Jul 2019 10:46:17 +0800
+Received: from RTITMBSVM04.realtek.com.tw ([fe80::e404:880:2ef1:1aa1]) by
+ RTITCASV01.realtek.com.tw ([::1]) with mapi id 14.03.0439.000; Tue, 30 Jul
+ 2019 10:46:16 +0800
+From:   Tony Chuang <yhchuang@realtek.com>
+To:     Brian Norris <briannorris@chromium.org>
+CC:     linux-wireless <linux-wireless@vger.kernel.org>,
+        =?utf-8?B?SsOhbiBWZXNlbMO9?= <jano.vesely@gmail.com>
+Subject: RE: [5.2 regression] rtwpci + amd iommu
+Thread-Topic: [5.2 regression] rtwpci + amd iommu
+Thread-Index: AQHVNtlcBK8IVcYvvki98SxMJ8exDabDS4iw//+M1oCAGe4qAIAFzZNw
+Date:   Tue, 30 Jul 2019 02:46:15 +0000
+Message-ID: <F7CD281DE3E379468C6D07993EA72F84D1881BEB@RTITMBSVM04.realtek.com.tw>
+References: <CA+K+NcRWLeE3-vah=urveMVxcgXYO0yFHYD=WNeuX_TdZ9+8-A@mail.gmail.com>
+ <F7CD281DE3E379468C6D07993EA72F84D1864503@RTITMBSVM04.realtek.com.tw>
+ <CA+K+NcTsxsZ9LGbmSZ55xL-CTxruKta81WbCJXCWQCiMNNz4Qg@mail.gmail.com>
+ <CA+ASDXPcnbiZmZLbRS0VXbof5ED+iqtySD+tr+pTszv6Jru4bg@mail.gmail.com>
+In-Reply-To: <CA+ASDXPcnbiZmZLbRS0VXbof5ED+iqtySD+tr+pTszv6Jru4bg@mail.gmail.com>
+Accept-Language: zh-TW, en-US
+Content-Language: zh-TW
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [172.21.68.183]
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+MIME-Version: 1.0
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Signed-off-by: Pei-Hsuan Hung <afcidk@gmail.com>
-Acked-by: Liviu Dudau <liviu.dudau@arm.com>
-Cc: trivial@kernel.org
----
-Hi Liviu, thanks for your reply.
-This patch is generated by a script so at first I didn't notice there is
-also a typo in the word coefficient. I've fixed the typo in this
-version.
-
- arch/powerpc/kernel/eeh.c                           | 2 +-
- arch/powerpc/platforms/cell/spufs/switch.c          | 4 ++--
- drivers/extcon/extcon-rt8973a.c                     | 2 +-
- drivers/gpu/drm/arm/malidp_regs.h                   | 2 +-
- drivers/net/wireless/realtek/rtlwifi/rtl8192se/fw.h | 2 +-
- drivers/scsi/lpfc/lpfc_hbadisc.c                    | 2 +-
- fs/userfaultfd.c                                    | 2 +-
- 7 files changed, 8 insertions(+), 8 deletions(-)
-
-diff --git a/arch/powerpc/kernel/eeh.c b/arch/powerpc/kernel/eeh.c
-index c0e4b73191f3..d75c9c24ec4d 100644
---- a/arch/powerpc/kernel/eeh.c
-+++ b/arch/powerpc/kernel/eeh.c
-@@ -1030,7 +1030,7 @@ int __init eeh_ops_register(struct eeh_ops *ops)
- }
- 
- /**
-- * eeh_ops_unregister - Unreigster platform dependent EEH operations
-+ * eeh_ops_unregister - Unregister platform dependent EEH operations
-  * @name: name of EEH platform operations
-  *
-  * Unregister the platform dependent EEH operation callback
-diff --git a/arch/powerpc/platforms/cell/spufs/switch.c b/arch/powerpc/platforms/cell/spufs/switch.c
-index 5c3f5d088c3b..9548a086937b 100644
---- a/arch/powerpc/platforms/cell/spufs/switch.c
-+++ b/arch/powerpc/platforms/cell/spufs/switch.c
-@@ -574,7 +574,7 @@ static inline void save_mfc_rag(struct spu_state *csa, struct spu *spu)
- {
- 	/* Save, Step 38:
- 	 *     Save RA_GROUP_ID register and the
--	 *     RA_ENABLE reigster in the CSA.
-+	 *     RA_ENABLE register in the CSA.
- 	 */
- 	csa->priv1.resource_allocation_groupID_RW =
- 		spu_resource_allocation_groupID_get(spu);
-@@ -1227,7 +1227,7 @@ static inline void restore_mfc_rag(struct spu_state *csa, struct spu *spu)
- {
- 	/* Restore, Step 29:
- 	 *     Restore RA_GROUP_ID register and the
--	 *     RA_ENABLE reigster from the CSA.
-+	 *     RA_ENABLE register from the CSA.
- 	 */
- 	spu_resource_allocation_groupID_set(spu,
- 			csa->priv1.resource_allocation_groupID_RW);
-diff --git a/drivers/extcon/extcon-rt8973a.c b/drivers/extcon/extcon-rt8973a.c
-index 40c07f4d656e..e75c03792398 100644
---- a/drivers/extcon/extcon-rt8973a.c
-+++ b/drivers/extcon/extcon-rt8973a.c
-@@ -270,7 +270,7 @@ static int rt8973a_muic_get_cable_type(struct rt8973a_muic_info *info)
- 	}
- 	cable_type = adc & RT8973A_REG_ADC_MASK;
- 
--	/* Read Device 1 reigster to identify correct cable type */
-+	/* Read Device 1 register to identify correct cable type */
- 	ret = regmap_read(info->regmap, RT8973A_REG_DEV1, &dev1);
- 	if (ret) {
- 		dev_err(info->dev, "failed to read DEV1 register\n");
-diff --git a/drivers/gpu/drm/arm/malidp_regs.h b/drivers/gpu/drm/arm/malidp_regs.h
-index 993031542fa1..9b4f95d8ccec 100644
---- a/drivers/gpu/drm/arm/malidp_regs.h
-+++ b/drivers/gpu/drm/arm/malidp_regs.h
-@@ -145,7 +145,7 @@
- #define     MALIDP_SE_COEFFTAB_DATA_MASK	0x3fff
- #define     MALIDP_SE_SET_COEFFTAB_DATA(x) \
- 		((x) & MALIDP_SE_COEFFTAB_DATA_MASK)
--/* Enhance coeffents reigster offset */
-+/* Enhance coefficients register offset */
- #define MALIDP_SE_IMAGE_ENH			0x3C
- /* ENH_LIMITS offset 0x0 */
- #define     MALIDP_SE_ENH_LOW_LEVEL		24
-diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8192se/fw.h b/drivers/net/wireless/realtek/rtlwifi/rtl8192se/fw.h
-index 99c6f7eefd85..d03c8f12a15c 100644
---- a/drivers/net/wireless/realtek/rtlwifi/rtl8192se/fw.h
-+++ b/drivers/net/wireless/realtek/rtlwifi/rtl8192se/fw.h
-@@ -58,7 +58,7 @@ struct fw_priv {
- 	/* 0x81: PCI-AP, 01:PCIe, 02: 92S-U,
- 	 * 0x82: USB-AP, 0x12: 72S-U, 03:SDIO */
- 	u8 hci_sel;
--	/* the same value as reigster value  */
-+	/* the same value as register value  */
- 	u8 chip_version;
- 	/* customer  ID low byte */
- 	u8 customer_id_0;
-diff --git a/drivers/scsi/lpfc/lpfc_hbadisc.c b/drivers/scsi/lpfc/lpfc_hbadisc.c
-index 28ecaa7fc715..42b125602d72 100644
---- a/drivers/scsi/lpfc/lpfc_hbadisc.c
-+++ b/drivers/scsi/lpfc/lpfc_hbadisc.c
-@@ -6551,7 +6551,7 @@ lpfc_sli4_unregister_fcf(struct lpfc_hba *phba)
-  * lpfc_unregister_fcf_rescan - Unregister currently registered fcf and rescan
-  * @phba: Pointer to hba context object.
-  *
-- * This function unregisters the currently reigstered FCF. This function
-+ * This function unregisters the currently registered FCF. This function
-  * also tries to find another FCF for discovery by rescan the HBA FCF table.
-  */
- void
-diff --git a/fs/userfaultfd.c b/fs/userfaultfd.c
-index ccbdbd62f0d8..612dc1240f90 100644
---- a/fs/userfaultfd.c
-+++ b/fs/userfaultfd.c
-@@ -267,7 +267,7 @@ static inline bool userfaultfd_huge_must_wait(struct userfaultfd_ctx *ctx,
- #endif /* CONFIG_HUGETLB_PAGE */
- 
- /*
-- * Verify the pagetables are still not ok after having reigstered into
-+ * Verify the pagetables are still not ok after having registered into
-  * the fault_pending_wqh to avoid userland having to UFFDIO_WAKE any
-  * userfault that has already been resolved, if userfaultfd_read and
-  * UFFDIO_COPY|ZEROPAGE are being run simultaneously on two different
--- 
-2.17.1
-
+DQo+IEhpIFRvbnksDQo+IA0KPiBDYW4geW91IHBsZWFzZSBzdWJtaXQgdGhhdCBwYXRjaCB1cHN0
+cmVhbSBzb29uPw0KPiANCj4gVGhhbmtzLA0KPiBCcmlhbg0KPiANCg0KU3VyZSEgSSBjYW4gc3Vi
+bWl0IGl0IHRvZGF5Lg0KDQpZYW4tSHN1YW4NCg==
