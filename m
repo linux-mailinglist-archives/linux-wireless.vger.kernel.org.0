@@ -2,57 +2,100 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 6AED87A155
-	for <lists+linux-wireless@lfdr.de>; Tue, 30 Jul 2019 08:34:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 095517A2D0
+	for <lists+linux-wireless@lfdr.de>; Tue, 30 Jul 2019 10:08:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727352AbfG3Geb (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 30 Jul 2019 02:34:31 -0400
-Received: from mx1.redhat.com ([209.132.183.28]:33012 "EHLO mx1.redhat.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726490AbfG3Geb (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 30 Jul 2019 02:34:31 -0400
-Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.phx2.redhat.com [10.5.11.14])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        id S1730863AbfG3IIn (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 30 Jul 2019 04:08:43 -0400
+Received: from smtp.codeaurora.org ([198.145.29.96]:54480 "EHLO
+        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1730839AbfG3IIn (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 30 Jul 2019 04:08:43 -0400
+Received: by smtp.codeaurora.org (Postfix, from userid 1000)
+        id D6EDC6037C; Tue, 30 Jul 2019 08:08:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
+        s=default; t=1564474122;
+        bh=+sMHcpS1ulUUbOmL1Z9dNBUBD3g23n1MFcbcZj3a+ko=;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+        b=bXFfgyHSjL0PRBtecGd20UWGA4l8n1uGluyo/dEkV1t2J75intbKIxtYx1SF4SqDl
+         udg1tD2b/zKAVaV3kS58KSkDQCeE8h/onM3dpTe8s8b4G8W5NJqcC2MUg0s8QLId3Q
+         HX5yKOmj71IafmJ2HitJYY84tT3i96fLV3SFnia4=
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        pdx-caf-mail.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.7 required=2.0 tests=ALL_TRUSTED,BAYES_00,
+        DKIM_INVALID,DKIM_SIGNED,SPF_NONE autolearn=no autolearn_force=no
+        version=3.4.0
+Received: from x230.qca.qualcomm.com (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mx1.redhat.com (Postfix) with ESMTPS id 5EBBA307D90D;
-        Tue, 30 Jul 2019 06:34:31 +0000 (UTC)
-Received: from localhost (unknown [10.43.2.114])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 064EF5D9C5;
-        Tue, 30 Jul 2019 06:34:30 +0000 (UTC)
-Date:   Tue, 30 Jul 2019 08:34:04 +0200
-From:   Stanislaw Gruszka <sgruszka@redhat.com>
-To:     Tony Chuang <yhchuang@realtek.com>
-Cc:     "kvalo@codeaurora.org" <kvalo@codeaurora.org>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "briannorris@chromium.org" <briannorris@chromium.org>
-Subject: Re: [PATCH v2 5/5] rtw88: add BT co-existence support
-Message-ID: <20190730063403.GA3174@redhat.com>
-References: <1564023211-3138-1-git-send-email-yhchuang@realtek.com>
- <1564023211-3138-6-git-send-email-yhchuang@realtek.com>
- <20190729081211.GB2066@redhat.com>
- <F7CD281DE3E379468C6D07993EA72F84D1881C82@RTITMBSVM04.realtek.com.tw>
+        (Authenticated sender: kvalo@smtp.codeaurora.org)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 92C256037C;
+        Tue, 30 Jul 2019 08:08:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
+        s=default; t=1564474122;
+        bh=+sMHcpS1ulUUbOmL1Z9dNBUBD3g23n1MFcbcZj3a+ko=;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+        b=bXFfgyHSjL0PRBtecGd20UWGA4l8n1uGluyo/dEkV1t2J75intbKIxtYx1SF4SqDl
+         udg1tD2b/zKAVaV3kS58KSkDQCeE8h/onM3dpTe8s8b4G8W5NJqcC2MUg0s8QLId3Q
+         HX5yKOmj71IafmJ2HitJYY84tT3i96fLV3SFnia4=
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 92C256037C
+Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
+From:   Kalle Valo <kvalo@codeaurora.org>
+To:     Brian Norris <briannorris@chromium.org>
+Cc:     Takashi Iwai <tiwai@suse.de>, Ganapathi Bhat <gbhat@marvell.com>,
+        Nishant Sarmukadam <nishants@marvell.com>,
+        Amitkumar Karwar <amitkarwar@gmail.com>,
+        Xinming Hu <huxinming820@gmail.com>,
+        Linux Kernel <linux-kernel@vger.kernel.org>,
+        linux-wireless <linux-wireless@vger.kernel.org>,
+        Guenter Roeck <linux@roeck-us.net>,
+        stable <stable@vger.kernel.org>,
+        Johannes Berg <johannes@sipsolutions.net>
+Subject: Re: [PATCH 5.3] mwifiex: fix 802.11n/WPA detection
+References: <20190724194634.205718-1-briannorris@chromium.org>
+        <s5hv9vkx21i.wl-tiwai@suse.de>
+        <CA+ASDXMEFew2Sg5G1ofKq-0gfOTFEOhZNjfyNJMRzRjv7ZFgXw@mail.gmail.com>
+Date:   Tue, 30 Jul 2019 11:08:37 +0300
+In-Reply-To: <CA+ASDXMEFew2Sg5G1ofKq-0gfOTFEOhZNjfyNJMRzRjv7ZFgXw@mail.gmail.com>
+        (Brian Norris's message of "Mon, 29 Jul 2019 12:45:26 -0700")
+Message-ID: <87y30glzay.fsf@codeaurora.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <F7CD281DE3E379468C6D07993EA72F84D1881C82@RTITMBSVM04.realtek.com.tw>
-User-Agent: Mutt/1.5.20 (2009-12-10)
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.14
-X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16 (mx1.redhat.com [10.5.110.48]); Tue, 30 Jul 2019 06:34:31 +0000 (UTC)
+Content-Type: text/plain
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Tue, Jul 30, 2019 at 03:13:35AM +0000, Tony Chuang wrote:
-> > Those coex response skb buffers are allocated in rtw_pci_rx_isr(),
-> > but I do not see where they are freed (seems we do not process
-> > them in c2h_work which does dev_kfree_skb()).
-> 
-> You're right, that SKB leaked. Should free them after responded.
-> I will send v2 to fix it :)
+Brian Norris <briannorris@chromium.org> writes:
 
-FWIW maybe would be better to process coex commands entairly in
-c2h_work ? Not sure if that would work or really would be better,
-just an idea you can consider :-) 
+> On Mon, Jul 29, 2019 at 9:01 AM Takashi Iwai <tiwai@suse.de> wrote:
+>> This isn't seen in linux-next yet.
+>
+> Apparently not.
+>
+>> Still pending review?
+>
+> I guess? Probably mostly pending maintainer attention.
 
-Stanislaw
+Correct, I was offline for few days.
+
+> Also, Johannes already had noticed (and privately messaged me): this
+> patch took a while to show up on the linux-wireless Patchwork
+> instance. So the first review (from Guenter Roeck) and my extra reply
+> noting the -stable regression didn't make it to Patchwork:
+>
+> https://patchwork.kernel.org/patch/11057585/
+>
+>> In anyway,
+>>   Reviewed-by: Takashi Iwai <tiwai@suse.de>
+>
+> Thanks. Hopefully Kalle can pick it up.
+
+I expect to apply this today.
+
+-- 
+Kalle Valo
