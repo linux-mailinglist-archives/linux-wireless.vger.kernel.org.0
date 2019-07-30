@@ -2,91 +2,168 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C93AD7A524
-	for <lists+linux-wireless@lfdr.de>; Tue, 30 Jul 2019 11:48:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0176C7A74F
+	for <lists+linux-wireless@lfdr.de>; Tue, 30 Jul 2019 13:50:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732083AbfG3Jsp convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 30 Jul 2019 05:48:45 -0400
-Received: from eu-smtp-delivery-151.mimecast.com ([207.82.80.151]:20485 "EHLO
-        eu-smtp-delivery-151.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1730243AbfG3Jsp (ORCPT
+        id S1730949AbfG3Lu0 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 30 Jul 2019 07:50:26 -0400
+Received: from rtits2.realtek.com ([211.75.126.72]:54832 "EHLO
+        rtits2.realtek.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729095AbfG3LuZ (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 30 Jul 2019 05:48:45 -0400
-Received: from AcuMS.aculab.com (156.67.243.126 [156.67.243.126]) (Using
- TLS) by relay.mimecast.com with ESMTP id
- uk-mta-174-SV6Xl8A9OrKA0tVNQBwUCg-1; Tue, 30 Jul 2019 10:48:38 +0100
-Received: from AcuMS.Aculab.com (fd9f:af1c:a25b::d117) by AcuMS.aculab.com
- (fd9f:af1c:a25b::d117) with Microsoft SMTP Server (TLS) id 15.0.1347.2; Tue,
- 30 Jul 2019 10:48:38 +0100
-Received: from AcuMS.Aculab.com ([fe80::43c:695e:880f:8750]) by
- AcuMS.aculab.com ([fe80::43c:695e:880f:8750%12]) with mapi id 15.00.1347.000;
- Tue, 30 Jul 2019 10:48:38 +0100
-From:   David Laight <David.Laight@ACULAB.COM>
-To:     'Stanislaw Gruszka' <sgruszka@redhat.com>,
-        Jian-Hong Pan <jian-hong@endlessm.com>
-CC:     Yan-Hsuan Chuang <yhchuang@realtek.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        "David S . Miller" <davem@davemloft.net>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux@endlessm.com" <linux@endlessm.com>,
-        "stable@vger.kernel.org" <stable@vger.kernel.org>
-Subject: RE: [PATCH] rtw88: pci: Use general byte arrays as the elements of RX
- ring
-Thread-Topic: [PATCH] rtw88: pci: Use general byte arrays as the elements of
- RX ring
-Thread-Index: AQHVRro3Kaj7ufhACkSCuQV9Pmu/hqbi59sQ
-Date:   Tue, 30 Jul 2019 09:48:38 +0000
-Message-ID: <962a8a8e735946d6b3944b7d0e228309@AcuMS.aculab.com>
-References: <20190725080925.6575-1-jian-hong@endlessm.com>
- <20190730093533.GC3174@redhat.com>
-In-Reply-To: <20190730093533.GC3174@redhat.com>
-Accept-Language: en-GB, en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-ms-exchange-transport-fromentityheader: Hosted
-x-originating-ip: [10.202.205.107]
+        Tue, 30 Jul 2019 07:50:25 -0400
+Authenticated-By: 
+X-SpamFilter-By: BOX Solutions SpamTrap 5.62 with qID x6UBoHDL017248, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (RTITCASV01.realtek.com.tw[172.21.6.18])
+        by rtits2.realtek.com.tw (8.15.2/2.57/5.78) with ESMTPS id x6UBoHDL017248
+        (version=TLSv1 cipher=DHE-RSA-AES256-SHA bits=256 verify=NOT);
+        Tue, 30 Jul 2019 19:50:17 +0800
+Received: from localhost.localdomain (172.21.68.126) by
+ RTITCASV01.realtek.com.tw (172.21.6.18) with Microsoft SMTP Server id
+ 14.3.439.0; Tue, 30 Jul 2019 19:50:16 +0800
+From:   <yhchuang@realtek.com>
+To:     <kvalo@codeaurora.org>
+CC:     <linux-wireless@vger.kernel.org>, <jano.vesely@gmail.com>,
+        <briannorris@chromium.org>
+Subject: [PATCH] rtw88: pci: enable MSI interrupt
+Date:   Tue, 30 Jul 2019 19:50:14 +0800
+Message-ID: <1564487414-9615-1-git-send-email-yhchuang@realtek.com>
+X-Mailer: git-send-email 2.7.4
 MIME-Version: 1.0
-X-MC-Unique: SV6Xl8A9OrKA0tVNQBwUCg-1
-X-Mimecast-Spam-Score: 0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8BIT
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-Originating-IP: [172.21.68.126]
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Stanislaw Gruszka
-> Sent: 30 July 2019 10:36
-...
-> > +		len = pkt_stat.pkt_len + pkt_offset;
-> > +		skb = dev_alloc_skb(len);
-> > +		if (WARN_ONCE(!skb, "rx routine starvation\n"))
-> >  			goto next_rp;
-> >
-> >  		/* put the DMA data including rx_desc from phy to new skb */
-> > -		skb_put_data(new, skb->data, new_len);
-> > +		skb_put_data(skb, rx_desc, len);
-> 
-> Coping big packets it quite inefficient. What drivers usually do is
-> copy only for small packets and for big ones allocate new rx buf
-> (drop packet alloc if fail) and pas old buf to network stack via
-> skb_add_rx_frag(). See iwlmvm as example.
+From: Yu-Yen Ting <steventing@realtek.com>
 
-If you have to do iommu setup/teardown then the breakeven point
-for (not) copying may be surprisingly large.
-You do need to do the measurements on a range of hardware.
-Coping is also likely to affect the L1 cache - unless you can
-copy quickly without polluting the cache.
+MSI interrupt should be enabled on certain platform.
 
-It is all 'swings and roundabouts'.
+Add a module parameter disable_msi to disable MSI interrupt,
+driver will then use legacy interrupt instead.
+And the interrupt mode is not able to change at run-time, so
+the module parameter is read only.
 
-	David
+Tested-by: Ján Veselý <jano.vesely@gmail.com>
+Signed-off-by: Yu-Yen Ting <steventing@realtek.com>
+Signed-off-by: Yan-Hsuan Chuang <yhchuang@realtek.com>
+---
+ drivers/net/wireless/realtek/rtw88/pci.c | 51 ++++++++++++++++++++++++++++++--
+ drivers/net/wireless/realtek/rtw88/pci.h |  1 +
+ 2 files changed, 49 insertions(+), 3 deletions(-)
 
--
-Registered Address Lakeside, Bramley Road, Mount Farm, Milton Keynes, MK1 1PT, UK
-Registration No: 1397386 (Wales)
+diff --git a/drivers/net/wireless/realtek/rtw88/pci.c b/drivers/net/wireless/realtek/rtw88/pci.c
+index 23dd06a..25410f6 100644
+--- a/drivers/net/wireless/realtek/rtw88/pci.c
++++ b/drivers/net/wireless/realtek/rtw88/pci.c
+@@ -10,6 +10,10 @@
+ #include "rx.h"
+ #include "debug.h"
+ 
++static bool rtw_disable_msi;
++module_param_named(disable_msi, rtw_disable_msi, bool, 0444);
++MODULE_PARM_DESC(disable_msi, "Set Y to disable MSI interrupt support");
++
+ static u32 rtw_pci_tx_queue_idx_addr[] = {
+ 	[RTW_TX_QUEUE_BK]	= RTK_PCI_TXBD_IDX_BKQ,
+ 	[RTW_TX_QUEUE_BE]	= RTK_PCI_TXBD_IDX_BEQ,
+@@ -874,6 +878,7 @@ static irqreturn_t rtw_pci_interrupt_handler(int irq, void *dev)
+ 	if (!rtwpci->irq_enabled)
+ 		goto out;
+ 
++	rtw_pci_disable_interrupt(rtwdev, rtwpci);
+ 	rtw_pci_irq_recognized(rtwdev, rtwpci, irq_status);
+ 
+ 	if (irq_status[0] & IMR_MGNTDOK)
+@@ -893,6 +898,8 @@ static irqreturn_t rtw_pci_interrupt_handler(int irq, void *dev)
+ 	if (irq_status[0] & IMR_ROK)
+ 		rtw_pci_rx_isr(rtwdev, rtwpci, RTW_RX_QUEUE_MPDU);
+ 
++	rtw_pci_enable_interrupt(rtwdev, rtwpci);
++
+ out:
+ 	spin_unlock(&rtwpci->irq_lock);
+ 
+@@ -1103,6 +1110,45 @@ static struct rtw_hci_ops rtw_pci_ops = {
+ 	.write_data_h2c = rtw_pci_write_data_h2c,
+ };
+ 
++static int rtw_pci_request_irq(struct rtw_dev *rtwdev, struct pci_dev *pdev)
++{
++	struct rtw_pci *rtwpci = (struct rtw_pci *)rtwdev->priv;
++	int ret;
++
++	if (!rtw_disable_msi) {
++		ret = pci_enable_msi(pdev);
++		if (ret) {
++			rtw_warn(rtwdev, "failed to enable msi, using legacy irq\n");
++		} else {
++			rtw_warn(rtwdev, "pci msi enabled\n");
++			rtwpci->msi_enabled = true;
++		}
++	}
++
++	ret = request_irq(pdev->irq, &rtw_pci_interrupt_handler, IRQF_SHARED,
++			  KBUILD_MODNAME, rtwdev);
++	if (ret) {
++		rtw_err(rtwdev, "failed to request irq\n");
++		if (rtwpci->msi_enabled) {
++			pci_disable_msi(pdev);
++			rtwpci->msi_enabled = false;
++		}
++	}
++
++	return ret;
++}
++
++static void rtw_pci_free_irq(struct rtw_dev *rtwdev, struct pci_dev *pdev)
++{
++	struct rtw_pci *rtwpci = (struct rtw_pci *)rtwdev->priv;
++
++	free_irq(pdev->irq, rtwdev);
++	if (rtwpci->msi_enabled) {
++		pci_disable_msi(pdev);
++		rtwpci->msi_enabled = false;
++	}
++}
++
+ static int rtw_pci_probe(struct pci_dev *pdev,
+ 			 const struct pci_device_id *id)
+ {
+@@ -1157,8 +1203,7 @@ static int rtw_pci_probe(struct pci_dev *pdev,
+ 		goto err_destroy_pci;
+ 	}
+ 
+-	ret = request_irq(pdev->irq, &rtw_pci_interrupt_handler,
+-			  IRQF_SHARED, KBUILD_MODNAME, rtwdev);
++	ret = rtw_pci_request_irq(rtwdev, pdev);
+ 	if (ret) {
+ 		ieee80211_unregister_hw(hw);
+ 		goto err_destroy_pci;
+@@ -1197,7 +1242,7 @@ static void rtw_pci_remove(struct pci_dev *pdev)
+ 	rtw_pci_disable_interrupt(rtwdev, rtwpci);
+ 	rtw_pci_destroy(rtwdev, pdev);
+ 	rtw_pci_declaim(rtwdev, pdev);
+-	free_irq(rtwpci->pdev->irq, rtwdev);
++	rtw_pci_free_irq(rtwdev, pdev);
+ 	rtw_core_deinit(rtwdev);
+ 	ieee80211_free_hw(hw);
+ }
+diff --git a/drivers/net/wireless/realtek/rtw88/pci.h b/drivers/net/wireless/realtek/rtw88/pci.h
+index 87824a4..a8e369c 100644
+--- a/drivers/net/wireless/realtek/rtw88/pci.h
++++ b/drivers/net/wireless/realtek/rtw88/pci.h
+@@ -186,6 +186,7 @@ struct rtw_pci {
+ 	spinlock_t irq_lock;
+ 	u32 irq_mask[4];
+ 	bool irq_enabled;
++	bool msi_enabled;
+ 
+ 	u16 rx_tag;
+ 	struct rtw_pci_tx_ring tx_rings[RTK_MAX_TX_QUEUE_NUM];
+-- 
+2.7.4
 
