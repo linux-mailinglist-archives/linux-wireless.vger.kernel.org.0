@@ -2,136 +2,86 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 0EE517B41C
-	for <lists+linux-wireless@lfdr.de>; Tue, 30 Jul 2019 22:15:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 35A287B733
+	for <lists+linux-wireless@lfdr.de>; Wed, 31 Jul 2019 02:33:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727986AbfG3UPF (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 30 Jul 2019 16:15:05 -0400
-Received: from mail-ot1-f67.google.com ([209.85.210.67]:44941 "EHLO
-        mail-ot1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727964AbfG3UPF (ORCPT
+        id S1726169AbfGaAdO (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 30 Jul 2019 20:33:14 -0400
+Received: from mail-oi1-f195.google.com ([209.85.167.195]:33010 "EHLO
+        mail-oi1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725947AbfGaAdO (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 30 Jul 2019 16:15:05 -0400
-Received: by mail-ot1-f67.google.com with SMTP id b7so17508430otl.11
-        for <linux-wireless@vger.kernel.org>; Tue, 30 Jul 2019 13:15:05 -0700 (PDT)
+        Tue, 30 Jul 2019 20:33:14 -0400
+Received: by mail-oi1-f195.google.com with SMTP id u15so49397442oiv.0
+        for <linux-wireless@vger.kernel.org>; Tue, 30 Jul 2019 17:33:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=intel-com.20150623.gappssmtp.com; s=20150623;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=5RzApq6XFoztBnIqNk8vSnTrtbUfODyGJJfunMohfoM=;
-        b=Zwx0RQpMg/Mqj/9z5S89A3ZEJVMpYC9h+xxOXAaZcuU5PCAM8m9Gqaz//RnKDBGDqW
-         9liyDLB1BwWzU+ZNcxIkUlAhEM4dwaxEWMetA5zngGXxvLUm9KzmX8yqMCHjIc+8qA1I
-         4Kz3jT1Z/FAcCfiuMTNuiLT9z2kiwc9S0x8YZz6OVlR8h69bqZIY4y5U2CziwyfAHt6S
-         8CcPZTmDK53Mwk0qwS3iX6X/MjsfAEfTAQNYo9qJOCNeLP9BFCn9fMgZ4bp/B5yi3zOB
-         uh6pK4X9QLjcA5W2PzdnflMG8qYA3C40MW87vpeyNAEv23qLtzsWi1Ofnp3dkIf+XH59
-         Buzg==
+        d=gmail.com; s=20161025;
+        h=sender:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=UsJ5mAr/RC3iU+xZHmxNrQOOFxp57Xf1yINmm/KfYnE=;
+        b=g8mu937NzZxCQPOFFTSZRDH8H3COdpu77G7+ck55atfn/VrqJnga0do+/enrJxMjKe
+         Qu4RcCPy2Sx4efvHBGeUTQbn6z3HF/wOt9py4bBeR6xr6JyhUtG3VSASz6WLp7H31FVh
+         ZfV4p41fchoOjRbGTXSGKvAouSasSQeq9B0at3HJH90Wm5+8jsUmENu6lLpYl0QJBywS
+         UCjne5lZecggug3QGx0lPvTJMoSTvnLsazBN+mkgHK8EGCvhsDSBdZwg8CJDD1k1g68v
+         T+m1d/NeuMRWhTkenml5JVpJCC0kBXouvsTKR4O1MlP42nRHy96Bo0QDUHXfHoiT5MQ3
+         pEGQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=5RzApq6XFoztBnIqNk8vSnTrtbUfODyGJJfunMohfoM=;
-        b=arMfKqef1WuRMnEqzUABvoBWDbmsE2ZtKl0/N/Qx8LGm8ZlGv//pxc9xVROWYI5GJH
-         7vr9j6QXMaIJIs8+qWy9KgE+zli1VD+jXCSi41SStVsDDBcp4/XlAYSkOeN6EBtE6FO8
-         vYOV2xslKOXiqSUJR/MvLlSIHdWYljuW+Ez4GFXrrmax33n+cj4T27lAgV9RxJg0MCMr
-         MTKOA5lZtTsmvgzckPQvEENEiNFuuOElvh0VUJxkcsV6FYAAMcIWnQOu4xEJ5W6bPzSz
-         J8cPMIjZQSnQWS5pf3p2pyopmNYDz2GeLLVGXmAGiiTI/b2JvVoOeoCL3qHyoPUigzwv
-         yUXw==
-X-Gm-Message-State: APjAAAUOPI4ofHAXK9bL79LujjdAWKgXcMayiKPfQDlGFSMP2AJB0af2
-        17Kq1+r8NYKaarZ5OHCdsxGrPZ2CJdHhRuGvwD89wA==
-X-Google-Smtp-Source: APXvYqw9ObVuL9+XuGR4o0J2QBLrDkVcN3aYitNJvsGPbv5ZPcYvxRI6eCPCNx+pUD4yOvd0Fq+ICTQ9s+BKXhNpUpI=
-X-Received: by 2002:a9d:7248:: with SMTP id a8mr23671169otk.363.1564517704838;
- Tue, 30 Jul 2019 13:15:04 -0700 (PDT)
+        h=x-gm-message-state:sender:from:to:cc:subject:date:message-id
+         :mime-version:content-transfer-encoding;
+        bh=UsJ5mAr/RC3iU+xZHmxNrQOOFxp57Xf1yINmm/KfYnE=;
+        b=dJaHA5qt/rttkhUndd7j973gwdIDVtuDSBJt8mmo93VMswZ7fNP3gbRvY4J8kaRxTc
+         eVfkJashSfMf53ifO2ibc0WqaLf/RXIvE+HWZv4uiLJf0zgh9gjVLq3vVfaZun+p6Nwj
+         nq0nHIfOwU0H+tokmiw5R6Ft4C+lahL9ODdbuZboiT2crV29ceSVfpqo8qioK+fAZymh
+         qJ/xeoZgMJZH/Hs4nYjVsF8L+VPxpcWNysL4/bv0NIaS9wQIBhiZphz9Sl3JdlOYOSiq
+         HknaSahb2hohnuGPsFswYl7mb00yslzhev8x8CHaPSglx/LhfDxHrbxJ/9ufFQhQQpCZ
+         pV8A==
+X-Gm-Message-State: APjAAAXlbLDWj0pixbhcjrLr2Z5VOvsOILH1VuYbfmuYs3WHD1ULPX1Z
+        qRVHA/fozrp8wYaM+fbf9zo=
+X-Google-Smtp-Source: APXvYqwv/YzJZ4Auz1J8Ax+wcET8KdkKdmuxWbBCLkOYCN5tPnfB9vwY7RhzDHmVvhBT34rUpnQfVQ==
+X-Received: by 2002:aca:b208:: with SMTP id b8mr37182935oif.98.1564533193774;
+        Tue, 30 Jul 2019 17:33:13 -0700 (PDT)
+Received: from localhost.localdomain (cpe-24-31-245-230.kc.res.rr.com. [24.31.245.230])
+        by smtp.gmail.com with ESMTPSA id t11sm22156016otq.13.2019.07.30.17.33.12
+        (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
+        Tue, 30 Jul 2019 17:33:12 -0700 (PDT)
+From:   Larry Finger <Larry.Finger@lwfinger.net>
+To:     kvalo@codeaurora.org
+Cc:     linux-wireless@vger.kernel.org, pkshih@realtek.com,
+        Larry Finger <Larry.Finger@lwfinger.net>
+Subject: [PATCH 0/5] rtlwifi: rtl8188ee: Replace local TX and RX bit manipulation macros
+Date:   Tue, 30 Jul 2019 19:32:59 -0500
+Message-Id: <20190731003304.14377-1-Larry.Finger@lwfinger.net>
+X-Mailer: git-send-email 2.22.0
 MIME-Version: 1.0
-References: <20190730192552.4014288-1-arnd@arndb.de> <20190730195819.901457-1-arnd@arndb.de>
-In-Reply-To: <20190730195819.901457-1-arnd@arndb.de>
-From:   Dan Williams <dan.j.williams@intel.com>
-Date:   Tue, 30 Jul 2019 13:14:52 -0700
-Message-ID: <CAPcyv4i_nHzV155RcgnAQ189aq2Lfd2g8pA1D5NbZqo9E_u+Dw@mail.gmail.com>
-Subject: Re: [PATCH v5 13/29] compat_ioctl: move more drivers to compat_ptr_ioctl
-To:     Arnd Bergmann <arnd@arndb.de>
-Cc:     Alexander Viro <viro@zeniv.linux.org.uk>,
-        linux-iio@vger.kernel.org, Daniel Vetter <daniel.vetter@ffwll.ch>,
-        linux-pci@vger.kernel.org, linux-nvme@lists.infradead.org,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        sparclinux@vger.kernel.org,
-        Mauro Carvalho Chehab <mchehab+samsung@kernel.org>,
-        linux-scsi <linux-scsi@vger.kernel.org>,
-        linux-nvdimm <linux-nvdimm@lists.01.org>,
-        linux-rdma <linux-rdma@vger.kernel.org>, qat-linux@intel.com,
-        amd-gfx list <amd-gfx@lists.freedesktop.org>,
-        Jason Gunthorpe <jgg@mellanox.com>,
-        linux-input@vger.kernel.org, Darren Hart <dvhart@infradead.org>,
-        "Linux-media@vger.kernel.org" <linux-media@vger.kernel.org>,
-        linux-remoteproc@vger.kernel.org,
-        "moderated list:DMA BUFFER SHARING FRAMEWORK" 
-        <linaro-mm-sig@lists.linaro.org>,
-        Maling list - DRI developers 
-        <dri-devel@lists.freedesktop.org>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        David Sterba <dsterba@suse.com>,
-        platform-driver-x86@vger.kernel.org,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        USB list <linux-usb@vger.kernel.org>,
-        Linux Wireless List <linux-wireless@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        tee-dev@lists.linaro.org,
-        linux-crypto <linux-crypto@vger.kernel.org>,
-        Netdev <netdev@vger.kernel.org>,
-        linux-fsdevel <linux-fsdevel@vger.kernel.org>,
-        linux-btrfs@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Tue, Jul 30, 2019 at 12:59 PM Arnd Bergmann <arnd@arndb.de> wrote:
->
-> The .ioctl and .compat_ioctl file operations have the same prototype so
-> they can both point to the same function, which works great almost all
-> the time when all the commands are compatible.
->
-> One exception is the s390 architecture, where a compat pointer is only
-> 31 bit wide, and converting it into a 64-bit pointer requires calling
-> compat_ptr(). Most drivers here will never run in s390, but since we now
-> have a generic helper for it, it's easy enough to use it consistently.
->
-> I double-checked all these drivers to ensure that all ioctl arguments
-> are used as pointers or are ignored, but are not interpreted as integer
-> values.
->
-> Acked-by: Jason Gunthorpe <jgg@mellanox.com>
-> Acked-by: Daniel Vetter <daniel.vetter@ffwll.ch>
-> Acked-by: Mauro Carvalho Chehab <mchehab+samsung@kernel.org>
-> Acked-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-> Acked-by: David Sterba <dsterba@suse.com>
-> Acked-by: Darren Hart (VMware) <dvhart@infradead.org>
-> Acked-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> Acked-by: Bjorn Andersson <bjorn.andersson@linaro.org>
-> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-> ---
->  drivers/nvdimm/bus.c                        | 4 ++--
-[..]
-> diff --git a/drivers/nvdimm/bus.c b/drivers/nvdimm/bus.c
-> index 798c5c4aea9c..6ca142d833ab 100644
-> --- a/drivers/nvdimm/bus.c
-> +++ b/drivers/nvdimm/bus.c
-> @@ -1229,7 +1229,7 @@ static const struct file_operations nvdimm_bus_fops = {
->         .owner = THIS_MODULE,
->         .open = nd_open,
->         .unlocked_ioctl = bus_ioctl,
-> -       .compat_ioctl = bus_ioctl,
-> +       .compat_ioctl = compat_ptr_ioctl,
->         .llseek = noop_llseek,
->  };
->
-> @@ -1237,7 +1237,7 @@ static const struct file_operations nvdimm_fops = {
->         .owner = THIS_MODULE,
->         .open = nd_open,
->         .unlocked_ioctl = dimm_ioctl,
-> -       .compat_ioctl = dimm_ioctl,
-> +       .compat_ioctl = compat_ptr_ioctl,
->         .llseek = noop_llseek,
->  };
+These patches are part of a series intended to replace the bit-manipulation
+macros used to set and read the various descriptors with a set of inline
+routines.
 
-Acked-by: Dan Williams <dan.j.williams@intel.com>
+The final patch removes a local configuration variable.
+
+Signed-off-by: Larry Finger <Larry.Finger@lwfinger.net>
+
+
+Larry Finger (5):
+  rtlwifi: rtl8i188ee: Remove unused GET_XXX and SET_XXX descriptor
+    macros
+  rtlwifi: rtl88188ee: Replace local bit manipulation macros
+  rtlwifi: rtl8188ee: Convert macros that set descriptor
+  rtlwifi: rtl8188ee: Convert inline routines to little-endian words
+  rtlwifi: rtl8188ee: Remove local configuration variable
+
+ .../wireless/realtek/rtlwifi/rtl8188ee/dm.c   |    7 +-
+ .../wireless/realtek/rtlwifi/rtl8188ee/trx.c  |  257 ++--
+ .../wireless/realtek/rtlwifi/rtl8188ee/trx.h  | 1046 +++++++++--------
+ 3 files changed, 673 insertions(+), 637 deletions(-)
+
+-- 
+2.22.0
+
