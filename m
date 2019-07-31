@@ -2,114 +2,76 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 03E9A7B737
-	for <lists+linux-wireless@lfdr.de>; Wed, 31 Jul 2019 02:33:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 05E287BB69
+	for <lists+linux-wireless@lfdr.de>; Wed, 31 Jul 2019 10:20:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726432AbfGaAdT (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 30 Jul 2019 20:33:19 -0400
-Received: from mail-ot1-f68.google.com ([209.85.210.68]:34238 "EHLO
-        mail-ot1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726253AbfGaAdS (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 30 Jul 2019 20:33:18 -0400
-Received: by mail-ot1-f68.google.com with SMTP id n5so68381247otk.1
-        for <linux-wireless@vger.kernel.org>; Tue, 30 Jul 2019 17:33:18 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=sender:from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=Zl/XIPtA8PCHSdRUvmWg2RJfRMVKA10rT4L5zhVQ3Z0=;
-        b=QqxcjIPwLYxmHIX09RaIhiO+ayskkd/WMmrpQtHUI1ZXFTYySLzjWuVDMu+9ZHOFAo
-         r2I+G8lzPDBirB7wBpZoG+a03FNpHwgt+gEI2XMQpWXgBoFYduQqZXKwRqZQgN8eIiev
-         47MAM/M4W1bS1WT7g6Hg9wiL0+dp50T+ETw2ShJwaD0MX+mJzkeZ5NgR3S+1Vgpc00sR
-         PIbML0iAfkBriQaWgGm/dWNCLTLS8jWzOI9AMPfyN2bKWrknw2AsiuPYj6zfstQPQdtR
-         lpE1J9V0MtnGIZQ235ZaHuepMMIIEMLa5OFG3zlZcUE5zKNN6cDATuxhHpMajraLXRd9
-         M5ng==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:sender:from:to:cc:subject:date:message-id
-         :in-reply-to:references:mime-version:content-transfer-encoding;
-        bh=Zl/XIPtA8PCHSdRUvmWg2RJfRMVKA10rT4L5zhVQ3Z0=;
-        b=pCRT2DtQj57246DXnW0nodtlMDLtKFUhekEmw5DtthyxIxm5ToB1X5F9naz2rHj+xn
-         9EeviZLIgAFRSON0ZBCfzNQEAbGYYEuMK1K9QuQOAShJCBEA99EjkBOuPInzFBkv9jhb
-         WRnINlwC+yMKdKTXzsgLvf7LnyOvDBXP5tEJ68XlUIxLO2mCBRu2EHHBzH2pQ21H1s/k
-         XcyCs+ru2QPb5y/KCNcxYQK9eHB/4ExhqEk5Au/qzB+XOba1VwY4Pc381df/uoWEy2vG
-         Pn6SNBOJeRESj+j3HcKe1KPI9xCdNhoNnNwZeX9oZfZ/AntGoUdRpwKXKDkFr+MtqoIr
-         W/Hw==
-X-Gm-Message-State: APjAAAVgPiGwIg1FTW9g2QTwY1nuzqhp0zaTQlAZFbxggE2EU9/eaf+T
-        MeSIU0JOXN6PBDc4+XFagAw=
-X-Google-Smtp-Source: APXvYqysLlPx9oXjXQIdJ7+vqnoZ6xhy7PMCWbeAqD3nsffA6mIpFx8nLe6/CXN5xgB7sSgecFtNXg==
-X-Received: by 2002:a05:6830:1aeb:: with SMTP id c11mr22590907otd.230.1564533197813;
-        Tue, 30 Jul 2019 17:33:17 -0700 (PDT)
-Received: from localhost.localdomain (cpe-24-31-245-230.kc.res.rr.com. [24.31.245.230])
-        by smtp.gmail.com with ESMTPSA id t11sm22156016otq.13.2019.07.30.17.33.17
-        (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
-        Tue, 30 Jul 2019 17:33:17 -0700 (PDT)
-From:   Larry Finger <Larry.Finger@lwfinger.net>
-To:     kvalo@codeaurora.org
-Cc:     linux-wireless@vger.kernel.org, pkshih@realtek.com,
-        Larry Finger <Larry.Finger@lwfinger.net>
-Subject: [PATCH 5/5] rtlwifi: rtl8188ee: Remove local configuration variable
-Date:   Tue, 30 Jul 2019 19:33:04 -0500
-Message-Id: <20190731003304.14377-6-Larry.Finger@lwfinger.net>
-X-Mailer: git-send-email 2.22.0
-In-Reply-To: <20190731003304.14377-1-Larry.Finger@lwfinger.net>
-References: <20190731003304.14377-1-Larry.Finger@lwfinger.net>
+        id S1727201AbfGaIUF (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 31 Jul 2019 04:20:05 -0400
+Received: from mx1.redhat.com ([209.132.183.28]:35508 "EHLO mx1.redhat.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726096AbfGaIUF (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Wed, 31 Jul 2019 04:20:05 -0400
+Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.phx2.redhat.com [10.5.11.13])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mx1.redhat.com (Postfix) with ESMTPS id DE61D308FBB1;
+        Wed, 31 Jul 2019 08:20:04 +0000 (UTC)
+Received: from localhost (unknown [10.40.205.113])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id 4E8CA60605;
+        Wed, 31 Jul 2019 08:19:59 +0000 (UTC)
+Date:   Wed, 31 Jul 2019 10:19:58 +0200
+From:   Stanislaw Gruszka <sgruszka@redhat.com>
+To:     Lorenzo Bianconi <lorenzo.bianconi@redhat.com>
+Cc:     linux-wireless@vger.kernel.org, Felix Fietkau <nbd@nbd.name>,
+        Ryder Lee <ryder.lee@mediatek.com>, Roy Luo <royluo@google.com>
+Subject: Re: [RFC] mt76: fix tx hung regression on MT7630E
+Message-ID: <20190731081957.GA4096@redhat.com>
+References: <1564143056-14610-1-git-send-email-sgruszka@redhat.com>
+ <20190729125351.GA3086@redhat.com>
+ <20190729140241.GC4030@localhost.localdomain>
+ <20190730135450.GA2361@redhat.com>
+ <20190730145531.GA3813@localhost.localdomain>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20190730145531.GA3813@localhost.localdomain>
+User-Agent: Mutt/1.11.3 (2019-02-01)
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.13
+X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16 (mx1.redhat.com [10.5.110.43]); Wed, 31 Jul 2019 08:20:05 +0000 (UTC)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-The configuration variable IS_LITTLE_ENDIAN is replaced by the standard
-__LITTLE_ENDIAN. In addition, an unused struct is removed.
+On Tue, Jul 30, 2019 at 04:55:31PM +0200, Lorenzo Bianconi wrote:
+> > > > diff --git a/drivers/net/wireless/mediatek/mt76/mt76x02_mmio.c b/drivers/net/wireless/mediatek/mt76/mt76x02_mmio.c
+> > > > index 467b28379870..622251faa415 100644
+> > > > --- a/drivers/net/wireless/mediatek/mt76/mt76x02_mmio.c
+> > > > +++ b/drivers/net/wireless/mediatek/mt76/mt76x02_mmio.c
+> > > > @@ -170,7 +170,7 @@ static int mt76x02_poll_tx(struct napi_struct *napi, int budget)
+> > > >  					       mt76.tx_napi);
+> > > >  	int i;
+> > > >  
+> > > > -	mt76x02_mac_poll_tx_status(dev, false);
+> > > > +	mt76x02_mac_poll_tx_status(dev, true);
+> > > 
+> > > I am not sure if we really need mt76x02_mac_poll_tx_status() here since we run
+> > > it in mt76x02_tx_complete_skb() and in mt76x02_tx_tasklet(). Anyway the only
+> > > difference doing so is we do not run mt76x02_send_tx_status().
+> > 
+> > I thought this is the problem, but it was my mistake during testing.
+> > I tested the above change together with mt76_txq_schedule(dev, txq->ac)
+> > change and get wrong impression it fixes the issue. But above change
+> > alone does not help.
+> > 
+> > I tried to add some locking to avoid parallel execution of mt76x02_poll_tx()
+> > and mt76x02_tx_tasklet(), but it didn't help either. So far only patch
+> > originally posted here make the problem gone.
+> 
+> so, in order to be on the same page, if you comment out mt76x02_mac_poll_tx_status()
+> in mt76x02_poll_tx() the issue will still occur. The only to 'fix' it is to run
+> mt76_txq_schedule_all() in mt76x02_poll_tx(), right?
 
-Signed-off-by: Larry Finger <Larry.Finger@lwfinger.net>
----
- .../net/wireless/realtek/rtlwifi/rtl8188ee/trx.h   | 14 ++------------
- 1 file changed, 2 insertions(+), 12 deletions(-)
+Yes.
 
-diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8188ee/trx.h b/drivers/net/wireless/realtek/rtlwifi/rtl8188ee/trx.h
-index 4e3682ded89e..bd862732d6ae 100644
---- a/drivers/net/wireless/realtek/rtlwifi/rtl8188ee/trx.h
-+++ b/drivers/net/wireless/realtek/rtlwifi/rtl8188ee/trx.h
-@@ -560,17 +560,7 @@ static inline void clear_pci_tx_desc_content(__le32 *__pdesc, int _size)
- 	 rxmcs == DESC92C_RATE5_5M ||\
- 	 rxmcs == DESC92C_RATE11M)
- 
--#define IS_LITTLE_ENDIAN	1
--
--struct phy_rx_agc_info_t {
--	#if IS_LITTLE_ENDIAN
--		u8	gain:7, trsw:1;
--	#else
--		u8	trsw:1, gain:7;
--	#endif
--};
- struct phy_status_rpt {
--	struct phy_rx_agc_info_t path_agc[2];
- 	u8	ch_corr[2];
- 	u8	cck_sig_qual_ofdm_pwdb_all;
- 	u8	cck_agc_rpt_ofdm_cfosho_a;
-@@ -587,7 +577,7 @@ struct phy_status_rpt {
- 	u8	stream_target_csi[2];
- 	u8	sig_evm;
- 	u8	rsvd_3;
--#if IS_LITTLE_ENDIAN
-+#if defined(__LITTLE_ENDIAN)
- 	u8	antsel_rx_keep_2:1;	/*ex_intf_flg:1;*/
- 	u8	sgi_en:1;
- 	u8	rxsc:2;
-@@ -595,7 +585,7 @@ struct phy_status_rpt {
- 	u8	r_ant_train_en:1;
- 	u8	ant_sel_b:1;
- 	u8	ant_sel:1;
--#else	/* _BIG_ENDIAN_	*/
-+#else	/* __BIG_ENDIAN	*/
- 	u8	ant_sel:1;
- 	u8	ant_sel_b:1;
- 	u8	r_ant_train_en:1;
--- 
-2.22.0
-
+Stanislaw
