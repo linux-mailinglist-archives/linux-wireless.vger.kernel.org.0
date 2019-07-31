@@ -2,100 +2,118 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 155147BF8B
-	for <lists+linux-wireless@lfdr.de>; Wed, 31 Jul 2019 13:31:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id ADA5C7C048
+	for <lists+linux-wireless@lfdr.de>; Wed, 31 Jul 2019 13:42:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2387611AbfGaLaJ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 31 Jul 2019 07:30:09 -0400
-Received: from lb3-smtp-cloud9.xs4all.net ([194.109.24.30]:43157 "EHLO
-        lb3-smtp-cloud9.xs4all.net" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S2387594AbfGaLaH (ORCPT
+        id S1727221AbfGaLmb (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 31 Jul 2019 07:42:31 -0400
+Received: from smtp.codeaurora.org ([198.145.29.96]:53270 "EHLO
+        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725935AbfGaLmb (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 31 Jul 2019 07:30:07 -0400
-Received: from mail.digitalbrains.com ([IPv6:2001:980:a370::3])
-        by smtp-cloud9.xs4all.net with ESMTPA
-        id smnyhu0ZsAffAsmnzhmcQS; Wed, 31 Jul 2019 13:30:04 +0200
-Received: from terrence.tun.lwd.digitalbrains.com ([2001:980:a370:7000::2])
-        by mail.digitalbrains.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        (Exim 4.89)
-        (envelope-from <peter@digitalbrains.com>)
-        id 1hsmny-0001uF-N3; Wed, 31 Jul 2019 13:30:02 +0200
-Subject: Re: [PATCH] Revert "mac80211: set NETIF_F_LLTX when using
- intermediate tx queues"
-To:     Johannes Berg <johannes@sipsolutions.net>
-Cc:     linux-wireless@vger.kernel.org
-References: <20190730125412.1446-1-johannes@sipsolutions.net>
-From:   Peter Lebbing <peter@digitalbrains.com>
-Openpgp: id=8FA94E79AD6AB56EE38CE5CBAC46EFE6DE500B3E;
- url=http://digitalbrains.com/2012/openpgp-key-peter
-Autocrypt: addr=peter@digitalbrains.com; prefer-encrypt=mutual; keydata=
- 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
- ovReS4NvZuFE5d8jncr9YXuf
-X-Clacks-Overhead:  GNU Terry Pratchett
-Message-ID: <be1572b6-1cf6-6bd1-74cd-3b86b76b5d62@digitalbrains.com>
-Date:   Wed, 31 Jul 2019 13:29:57 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.8.0
+        Wed, 31 Jul 2019 07:42:31 -0400
+Received: by smtp.codeaurora.org (Postfix, from userid 1000)
+        id F3FAF60907; Wed, 31 Jul 2019 11:42:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
+        s=default; t=1564573350;
+        bh=ogVQDO12SawzTxJX9ZUztmWfkhG5Pw/7rGll6TPcbxU=;
+        h=From:To:Cc:Subject:Date:From;
+        b=jbcghzzFOM409qoWLV/fN0AFNeuQ1HjH4QDGfspYo4QGSnuHNd92OwCU2I6BbRr4G
+         /iL7NSvKMiLn2X7/uL2NH26mXCFRKHejA0b8Csuzh0I+kFJjcLF/iGxMQRNQv/P1Mn
+         pDhx6MzviXM5B9XskgEtX6V/Zw1nvoNkeqttqcCk=
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        pdx-caf-mail.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.7 required=2.0 tests=ALL_TRUSTED,BAYES_00,
+        DKIM_INVALID,DKIM_SIGNED,SPF_NONE autolearn=no autolearn_force=no
+        version=3.4.0
+Received: from govinds-linux.qualcomm.com (blr-c-bdr-fw-01_globalnat_allzones-outside.qualcomm.com [103.229.19.19])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-SHA256 (128/128 bits))
+        (No client certificate requested)
+        (Authenticated sender: govinds@smtp.codeaurora.org)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 4E3B0605A5;
+        Wed, 31 Jul 2019 11:42:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
+        s=default; t=1564573349;
+        bh=ogVQDO12SawzTxJX9ZUztmWfkhG5Pw/7rGll6TPcbxU=;
+        h=From:To:Cc:Subject:Date:From;
+        b=KhAA48/01mr4c+gQqQdVn+YrJpPss95Xoun8kftMlWkQJNkVudRYI2qyN8WD5tWR7
+         6inIKxsJ33+Z/zR0crzbxb9apA5FtYavURvXaIjatL7MaJ2murZ3n/vxOO8myKY4Cx
+         8BTxRVOKMjyKIwXG8Q6676d+y7ixrQs3JTpclzpk=
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 4E3B0605A5
+Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=govinds@codeaurora.org
+From:   Govind Singh <govinds@codeaurora.org>
+To:     ath10k@lists.infradead.org
+Cc:     linux-wireless@vger.kernel.org,
+        Govind Singh <govinds@codeaurora.org>
+Subject: [PATCH] ath10k: revalidate the msa region coming from firmware
+Date:   Wed, 31 Jul 2019 17:12:20 +0530
+Message-Id: <20190731114220.22830-1-govinds@codeaurora.org>
+X-Mailer: git-send-email 2.21.0
 MIME-Version: 1.0
-In-Reply-To: <20190730125412.1446-1-johannes@sipsolutions.net>
-Content-Type: text/plain; charset=utf-8
-Content-Language: nl-NL
-Content-Transfer-Encoding: 7bit
-X-CMAE-Envelope: MS4wfIkhv2crGzCjByYh7VkKrs8/wMXq/GXrAiZT8krlal79IYok0WwDDc4XhgTcTc0QQdC+EfitD7BQ0MRi/Wmt9+YA9y4HWoJwp4WHv4LPa8io3bdNZTCy
- cNnxtgIoyqKUdt+p13bD73mkXCyLZYiycCYayvSzSBSSrTYTXDObwBn+Cy3GHjQj4XCyKMogO3ZTGU4sg0Ss9QMXCaSoxhRqfuJ9+/o+B62BJ5SQhfeyQryM
- 5JJFWeELARtQgYdCC1Jcgw==
+Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 30/07/2019 14:54, Johannes Berg wrote:
-> Revert this for now, it has been reported multiple times that it
-> completely breaks connectivity on various devices.
+driver sends QMI_WLFW_MSA_INFO_REQ_V01 QMI request to firmware
+and in response expects range of addresses and size to be mapped.
+Add condition to check whether addresses in response falls
+under valid range otherwise return failure.
 
-That was quick! Thank you!
+Testing: Tested on WCN3990 HW
+Tested FW: WLAN.HL.3.1-01040-QCAHLSWMTPLZ-1
 
-Peter.
+Signed-off-by: Govind Singh <govinds@codeaurora.org>
+---
+ drivers/net/wireless/ath/ath10k/qmi.c | 15 +++++++++++++++
+ 1 file changed, 15 insertions(+)
 
+diff --git a/drivers/net/wireless/ath/ath10k/qmi.c b/drivers/net/wireless/ath/ath10k/qmi.c
+index 2e678780df5d..3457509a003f 100644
+--- a/drivers/net/wireless/ath/ath10k/qmi.c
++++ b/drivers/net/wireless/ath/ath10k/qmi.c
+@@ -111,6 +111,7 @@ static int ath10k_qmi_msa_mem_info_send_sync_msg(struct ath10k_qmi *qmi)
+ 	struct wlfw_msa_info_resp_msg_v01 resp = {};
+ 	struct wlfw_msa_info_req_msg_v01 req = {};
+ 	struct ath10k *ar = qmi->ar;
++	phys_addr_t max_mapped_addr;
+ 	struct qmi_txn txn;
+ 	int ret;
+ 	int i;
+@@ -150,8 +151,20 @@ static int ath10k_qmi_msa_mem_info_send_sync_msg(struct ath10k_qmi *qmi)
+ 		goto out;
+ 	}
+ 
++	max_mapped_addr = qmi->msa_pa + qmi->msa_mem_size;
+ 	qmi->nr_mem_region = resp.mem_region_info_len;
+ 	for (i = 0; i < resp.mem_region_info_len; i++) {
++		if (resp.mem_region_info[i].size > qmi->msa_mem_size ||
++		    resp.mem_region_info[i].region_addr > max_mapped_addr ||
++		    resp.mem_region_info[i].region_addr < qmi->msa_pa ||
++		    resp.mem_region_info[i].size +
++		    resp.mem_region_info[i].region_addr > max_mapped_addr) {
++			ath10k_err(ar, "received out of range memory region address 0x%llx with size 0x%x, aborting\n",
++				   resp.mem_region_info[i].region_addr,
++				   resp.mem_region_info[i].size);
++			ret = -EINVAL;
++			goto fail_unwind;
++		}
+ 		qmi->mem_region[i].addr = resp.mem_region_info[i].region_addr;
+ 		qmi->mem_region[i].size = resp.mem_region_info[i].size;
+ 		qmi->mem_region[i].secure = resp.mem_region_info[i].secure_flag;
+@@ -165,6 +178,8 @@ static int ath10k_qmi_msa_mem_info_send_sync_msg(struct ath10k_qmi *qmi)
+ 	ath10k_dbg(ar, ATH10K_DBG_QMI, "qmi msa mem info request completed\n");
+ 	return 0;
+ 
++fail_unwind:
++	memset(&qmi->mem_region[0], 0, sizeof(qmi->mem_region[0]) * i);
+ out:
+ 	return ret;
+ }
 -- 
-I use the GNU Privacy Guard (GnuPG) in combination with Enigmail.
-You can send me encrypted mail if you want some privacy.
-My key is available at <http://digitalbrains.com/2012/openpgp-key-peter>
+The Qualcomm Innovation Center, Inc. is a member of the Code Aurora Forum,
+a Linux Foundation Collaborative Project
+
