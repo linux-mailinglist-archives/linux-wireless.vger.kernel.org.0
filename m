@@ -2,27 +2,27 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 651B07DC61
-	for <lists+linux-wireless@lfdr.de>; Thu,  1 Aug 2019 15:16:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 320D57DC62
+	for <lists+linux-wireless@lfdr.de>; Thu,  1 Aug 2019 15:16:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728476AbfHANQY (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 1 Aug 2019 09:16:24 -0400
-Received: from alexa-out-ams-02.qualcomm.com ([185.23.61.163]:9929 "EHLO
+        id S1728705AbfHANQ1 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 1 Aug 2019 09:16:27 -0400
+Received: from alexa-out-ams-02.qualcomm.com ([185.23.61.163]:9930 "EHLO
         alexa-out-ams-02.qualcomm.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1728791AbfHANQY (ORCPT
+        by vger.kernel.org with ESMTP id S1729583AbfHANQ0 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 1 Aug 2019 09:16:24 -0400
+        Thu, 1 Aug 2019 09:16:26 -0400
 Received: from ironmsg03-ams.qualcomm.com ([10.251.56.4])
   by alexa-out-ams-02.qualcomm.com with ESMTP; 01 Aug 2019 15:16:20 +0200
 Received: from unknown (HELO wigig-1329.mea.qualcomm.com) ([10.4.89.235])
-  by ironmsg03-ams.qualcomm.com with ESMTP; 01 Aug 2019 15:16:17 +0200
+  by ironmsg03-ams.qualcomm.com with ESMTP; 01 Aug 2019 15:16:19 +0200
 From:   Alexei Avshalom Lazar <ailizaro@codeaurora.org>
 To:     Johannes Berg <johannes@sipsolutions.net>
 Cc:     Alexei Avshalom Lazar <ailizaro@codeaurora.org>,
         linux-wireless@vger.kernel.org, wil6210@qti.qualcomm.com
-Subject: [PATCH v6 1/2] nl80211: Add support for EDMG channels
-Date:   Thu,  1 Aug 2019 16:16:13 +0300
-Message-Id: <1564665374-2856-2-git-send-email-ailizaro@codeaurora.org>
+Subject: [PATCH v6 2/2] wil6210: Add EDMG channel support
+Date:   Thu,  1 Aug 2019 16:16:14 +0300
+Message-Id: <1564665374-2856-3-git-send-email-ailizaro@codeaurora.org>
 X-Mailer: git-send-email 2.7.4
 In-Reply-To: <1564665374-2856-1-git-send-email-ailizaro@codeaurora.org>
 References: <1564665374-2856-1-git-send-email-ailizaro@codeaurora.org>
@@ -31,664 +31,508 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-802.11ay specification defines Enhanced Directional Multi-Gigabit
-(EDMG) STA and AP which allow channel bonding of 2 channels and more.
-
-Introduce new NL attributes that are needed for enabling and
-configuring EDMG support.
-
-Two new attributes are used by kernel to publish driver's EDMG
-capabilities to the userspace:
-NL80211_BAND_ATTR_EDMG_CHANNELS - bitmap field that indicates the 2.16
-GHz channel(s) that are supported by the driver.
-When this attribute is not set it means driver does not support EDMG.
-NL80211_BAND_ATTR_EDMG_BW_CONFIG - represent the channel bandwidth
-configurations supported by the driver.
-
-Additional two new attributes are used by the userspace for connect
-command and for AP configuration:
-NL80211_ATTR_WIPHY_EDMG_CHANNELS
-NL80211_ATTR_WIPHY_EDMG_BW_CONFIG
-
-New rate info flag - RATE_INFO_FLAGS_EDMG, can be reported from driver
-and used for bitrate calculation that will take into account EDMG
-according to the 802.11ay specification.
+Add support for Enhanced Directional Multi-Gigabit (EDMG) channels 9-11.
+wil6210 reports it's EDMG capabilities (that are also based on FW
+capability) to cfg80211 by filling
+wiphy->bands[NL80211_BAND_60GHZ]->edmg_cap.
+wil6210 handles edmg.channels and edmg.bw_config requested in connect
+and start_ap operations.
 ---
- drivers/net/wireless/ath/wil6210/cfg80211.c |   2 +-
- include/net/cfg80211.h                      |  86 ++++++++++++++-
- include/uapi/linux/nl80211.h                |  24 +++++
- net/mac80211/mlme.c                         |   2 +-
- net/mac80211/status.c                       |   2 +-
- net/wireless/chan.c                         | 159 ++++++++++++++++++++++++++++
- net/wireless/nl80211.c                      |  37 +++++++
- net/wireless/util.c                         |  42 +++++++-
- 8 files changed, 346 insertions(+), 8 deletions(-)
+ drivers/net/wireless/ath/wil6210/cfg80211.c  | 205 +++++++++++++++++++++++++--
+ drivers/net/wireless/ath/wil6210/txrx_edma.c |   2 +
+ drivers/net/wireless/ath/wil6210/txrx_edma.h |   6 +
+ drivers/net/wireless/ath/wil6210/wil6210.h   |   8 +-
+ drivers/net/wireless/ath/wil6210/wmi.c       |   5 +-
+ drivers/net/wireless/ath/wil6210/wmi.h       |  26 +++-
+ 6 files changed, 239 insertions(+), 13 deletions(-)
 
 diff --git a/drivers/net/wireless/ath/wil6210/cfg80211.c b/drivers/net/wireless/ath/wil6210/cfg80211.c
-index 2fb4258..2414f57 100644
+index 2414f57..5b2fdad 100644
 --- a/drivers/net/wireless/ath/wil6210/cfg80211.c
 +++ b/drivers/net/wireless/ath/wil6210/cfg80211.c
-@@ -351,7 +351,7 @@ int wil_cid_fill_sinfo(struct wil6210_vif *vif, int cid,
+@@ -25,6 +25,22 @@
+ 
+ #define WIL_MAX_ROC_DURATION_MS 5000
+ 
++#define WIL_EDMG_CHANNEL_9_SUBCHANNELS	(BIT(0) | BIT(1))
++#define WIL_EDMG_CHANNEL_10_SUBCHANNELS	(BIT(1) | BIT(2))
++#define WIL_EDMG_CHANNEL_11_SUBCHANNELS	(BIT(2) | BIT(3))
++
++/* WIL_EDMG_BW_CONFIGURATION define the allowed channel bandwidth
++ * configurations as defined by IEEE 802.11 section 9.4.2.251, Table 13.
++ * The value 5 allowing CB1 and CB2 of adjacent channels.
++ */
++#define WIL_EDMG_BW_CONFIGURATION 5
++
++/* WIL_EDMG_CHANNELS is a bitmap that indicates the 2.16 GHz channel(s) that
++ * are allowed to be used for EDMG transmissions in the BSS as defined by
++ * IEEE 802.11 section 9.4.2.251.
++ */
++#define WIL_EDMG_CHANNELS (BIT(0) | BIT(1) | BIT(2) | BIT(3))
++
+ bool disable_ap_sme;
+ module_param(disable_ap_sme, bool, 0444);
+ MODULE_PARM_DESC(disable_ap_sme, " let user space handle AP mode SME");
+@@ -51,6 +67,39 @@ static struct ieee80211_channel wil_60ghz_channels[] = {
+ 	CHAN60G(4, 0),
+ };
+ 
++/* Rx channel bonding mode */
++enum wil_rx_cb_mode {
++	WIL_RX_CB_MODE_DMG,
++	WIL_RX_CB_MODE_EDMG,
++	WIL_RX_CB_MODE_WIDE,
++};
++
++static int wil_rx_cb_mode_to_n_bonded(u8 cb_mode)
++{
++	switch (cb_mode) {
++	case WIL_RX_CB_MODE_DMG:
++	case WIL_RX_CB_MODE_EDMG:
++		return 1;
++	case WIL_RX_CB_MODE_WIDE:
++		return 2;
++	default:
++		return 1;
++	}
++}
++
++static int wil_tx_cb_mode_to_n_bonded(u8 cb_mode)
++{
++	switch (cb_mode) {
++	case WMI_TX_MODE_DMG:
++	case WMI_TX_MODE_EDMG_CB1:
++		return 1;
++	case WMI_TX_MODE_EDMG_CB2:
++		return 2;
++	default:
++		return 1;
++	}
++}
++
+ static void
+ wil_memdup_ie(u8 **pdst, size_t *pdst_len, const u8 *src, size_t src_len)
+ {
+@@ -82,6 +131,12 @@ void update_supported_bands(struct wil6210_priv *wil)
+ 
+ 	wiphy->bands[NL80211_BAND_60GHZ]->n_channels =
+ 						wil_num_supported_channels(wil);
++
++	if (test_bit(WMI_FW_CAPABILITY_CHANNEL_BONDING, wil->fw_capabilities))
++		wiphy->bands[NL80211_BAND_60GHZ]->edmg_cap.channels =
++							WIL_EDMG_CHANNELS;
++		wiphy->bands[NL80211_BAND_60GHZ]->edmg_cap.bw_config =
++						      WIL_EDMG_BW_CONFIGURATION;
+ }
+ 
+ /* Vendor id to be used in vendor specific command and events
+@@ -300,6 +355,86 @@ int wil_iftype_nl2wmi(enum nl80211_iftype type)
+ 	return -EOPNOTSUPP;
+ }
+ 
++int wil_spec2wmi_ch(u8 spec_ch, u8 *wmi_ch)
++{
++	switch (spec_ch) {
++	case 1:
++		*wmi_ch = WMI_CHANNEL_1;
++		break;
++	case 2:
++		*wmi_ch = WMI_CHANNEL_2;
++		break;
++	case 3:
++		*wmi_ch = WMI_CHANNEL_3;
++		break;
++	case 4:
++		*wmi_ch = WMI_CHANNEL_4;
++		break;
++	case 5:
++		*wmi_ch = WMI_CHANNEL_5;
++		break;
++	case 6:
++		*wmi_ch = WMI_CHANNEL_6;
++		break;
++	case 9:
++		*wmi_ch = WMI_CHANNEL_9;
++		break;
++	case 10:
++		*wmi_ch = WMI_CHANNEL_10;
++		break;
++	case 11:
++		*wmi_ch = WMI_CHANNEL_11;
++		break;
++	case 12:
++		*wmi_ch = WMI_CHANNEL_12;
++		break;
++	default:
++		return -EINVAL;
++	}
++
++	return 0;
++}
++
++int wil_wmi2spec_ch(u8 wmi_ch, u8 *spec_ch)
++{
++	switch (wmi_ch) {
++	case WMI_CHANNEL_1:
++		*spec_ch = 1;
++		break;
++	case WMI_CHANNEL_2:
++		*spec_ch = 2;
++		break;
++	case WMI_CHANNEL_3:
++		*spec_ch = 3;
++		break;
++	case WMI_CHANNEL_4:
++		*spec_ch = 4;
++		break;
++	case WMI_CHANNEL_5:
++		*spec_ch = 5;
++		break;
++	case WMI_CHANNEL_6:
++		*spec_ch = 6;
++		break;
++	case WMI_CHANNEL_9:
++		*spec_ch = 9;
++		break;
++	case WMI_CHANNEL_10:
++		*spec_ch = 10;
++		break;
++	case WMI_CHANNEL_11:
++		*spec_ch = 11;
++		break;
++	case WMI_CHANNEL_12:
++		*spec_ch = 12;
++		break;
++	default:
++		return -EINVAL;
++	}
++
++	return 0;
++}
++
+ int wil_cid_fill_sinfo(struct wil6210_vif *vif, int cid,
+ 		       struct station_info *sinfo)
+ {
+@@ -314,6 +449,7 @@ int wil_cid_fill_sinfo(struct wil6210_vif *vif, int cid,
+ 	} __packed reply;
+ 	struct wil_net_stats *stats = &wil->sta[cid].stats;
+ 	int rc;
++	u8 txflag = RATE_INFO_FLAGS_DMG;
+ 
+ 	memset(&reply, 0, sizeof(reply));
+ 
+@@ -327,7 +463,8 @@ int wil_cid_fill_sinfo(struct wil6210_vif *vif, int cid,
+ 		    "  MCS %d TSF 0x%016llx\n"
+ 		    "  BF status 0x%08x RSSI %d SQI %d%%\n"
+ 		    "  Tx Tpt %d goodput %d Rx goodput %d\n"
+-		    "  Sectors(rx:tx) my %d:%d peer %d:%d\n""}\n",
++		    "  Sectors(rx:tx) my %d:%d peer %d:%d\n"
++		    "  Tx mode %d}\n",
+ 		    cid, vif->mid, le16_to_cpu(reply.evt.bf_mcs),
+ 		    le64_to_cpu(reply.evt.tsf), reply.evt.status,
+ 		    reply.evt.rssi,
+@@ -338,7 +475,8 @@ int wil_cid_fill_sinfo(struct wil6210_vif *vif, int cid,
+ 		    le16_to_cpu(reply.evt.my_rx_sector),
+ 		    le16_to_cpu(reply.evt.my_tx_sector),
+ 		    le16_to_cpu(reply.evt.other_rx_sector),
+-		    le16_to_cpu(reply.evt.other_tx_sector));
++		    le16_to_cpu(reply.evt.other_tx_sector),
++		    reply.evt.tx_mode);
+ 
+ 	sinfo->generation = wil->sinfo_gen;
+ 
+@@ -351,9 +489,16 @@ int wil_cid_fill_sinfo(struct wil6210_vif *vif, int cid,
  			BIT_ULL(NL80211_STA_INFO_RX_DROP_MISC) |
  			BIT_ULL(NL80211_STA_INFO_TX_FAILED);
  
--	sinfo->txrate.flags = RATE_INFO_FLAGS_60G;
-+	sinfo->txrate.flags = RATE_INFO_FLAGS_DMG;
+-	sinfo->txrate.flags = RATE_INFO_FLAGS_DMG;
++	if (wil->use_enhanced_dma_hw && reply.evt.tx_mode != WMI_TX_MODE_DMG)
++		txflag = RATE_INFO_FLAGS_EDMG;
++
++	sinfo->txrate.flags = txflag;
  	sinfo->txrate.mcs = le16_to_cpu(reply.evt.bf_mcs);
  	sinfo->rxrate.mcs = stats->last_mcs_rx;
++	sinfo->txrate.n_bonded_ch =
++				  wil_tx_cb_mode_to_n_bonded(reply.evt.tx_mode);
++	sinfo->rxrate.n_bonded_ch =
++			     wil_rx_cb_mode_to_n_bonded(stats->last_cb_mode_rx);
  	sinfo->rx_bytes = stats->rx_bytes;
-diff --git a/include/net/cfg80211.h b/include/net/cfg80211.h
-index 26e2ad2..616dfcd 100644
---- a/include/net/cfg80211.h
-+++ b/include/net/cfg80211.h
-@@ -318,6 +318,60 @@ struct ieee80211_sband_iftype_data {
- };
- 
- /**
-+ * enum ieee80211_edmg_bw_config - allowed channel bandwidth configurations
-+ *
-+ * @IEEE80211_EDMG_BW_CONFIG_4: 2.16GHz
-+ * @IEEE80211_EDMG_BW_CONFIG_5: 2.16GHz and 4.32GHz
-+ * @IEEE80211_EDMG_BW_CONFIG_6: 2.16GHz, 4.32GHz and 6.48GHz
-+ * @IEEE80211_EDMG_BW_CONFIG_7: 2.16GHz, 4.32GHz, 6.48GHz and 8.64GHz
-+ * @IEEE80211_EDMG_BW_CONFIG_8: 2.16GHz and 2.16GHz + 2.16GHz
-+ * @IEEE80211_EDMG_BW_CONFIG_9: 2.16GHz, 4.32GHz and 2.16GHz + 2.16GHz
-+ * @IEEE80211_EDMG_BW_CONFIG_10: 2.16GHz, 4.32GHz, 6.48GHz and 2.16GHz+2.16GHz
-+ * @IEEE80211_EDMG_BW_CONFIG_11: 2.16GHz, 4.32GHz, 6.48GHz, 8.64GHz and
-+ *	2.16GHz+2.16GHz
-+ * @IEEE80211_EDMG_BW_CONFIG_12: 2.16GHz, 2.16GHz + 2.16GHz and
-+ *	4.32GHz + 4.32GHz
-+ * @IEEE80211_EDMG_BW_CONFIG_13: 2.16GHz, 4.32GHz, 2.16GHz + 2.16GHz and
-+ *	4.32GHz + 4.32GHz
-+ * @IEEE80211_EDMG_BW_CONFIG_14: 2.16GHz, 4.32GHz, 6.48GHz, 2.16GHz + 2.16GHz
-+ *	and 4.32GHz + 4.32GHz
-+ * @IEEE80211_EDMG_BW_CONFIG_15: 2.16GHz, 4.32GHz, 6.48GHz, 8.64GHz,
-+ *	2.16GHz + 2.16GHz and 4.32GHz + 4.32GHz
-+ */
-+enum ieee80211_edmg_bw_config {
-+	IEEE80211_EDMG_BW_CONFIG_4	= 4,
-+	IEEE80211_EDMG_BW_CONFIG_5	= 5,
-+	IEEE80211_EDMG_BW_CONFIG_6	= 6,
-+	IEEE80211_EDMG_BW_CONFIG_7	= 7,
-+	IEEE80211_EDMG_BW_CONFIG_8	= 8,
-+	IEEE80211_EDMG_BW_CONFIG_9	= 9,
-+	IEEE80211_EDMG_BW_CONFIG_10	= 10,
-+	IEEE80211_EDMG_BW_CONFIG_11	= 11,
-+	IEEE80211_EDMG_BW_CONFIG_12	= 12,
-+	IEEE80211_EDMG_BW_CONFIG_13	= 13,
-+	IEEE80211_EDMG_BW_CONFIG_14	= 14,
-+	IEEE80211_EDMG_BW_CONFIG_15	= 15,
-+};
-+
-+/**
-+ * struct ieee80211_edmg - EDMG configuration
-+ *
-+ * This structure describes most essential parameters needed
-+ * to describe 802.11ay EDMG configuration
-+ *
-+ * @channels: bitmap that indicates the 2.16 GHz channel(s)
-+ *	that are allowed to be used for transmissions.
-+ *	Bit 0 indicates channel 1, bit 1 indicates channel 2, etc.
-+ *	Set to 0 indicate EDMG not supported.
-+ * @bw_config: Channel BW Configuration subfield encodes
-+ *	the allowed channel bandwidth configurations
-+ */
-+struct ieee80211_edmg {
-+	u8 channels;
-+	enum ieee80211_edmg_bw_config bw_config;
-+};
-+
-+/**
-  * struct ieee80211_supported_band - frequency band definition
-  *
-  * This structure describes a frequency band a wiphy
-@@ -333,6 +387,7 @@ struct ieee80211_sband_iftype_data {
-  * @n_bitrates: Number of bitrates in @bitrates
-  * @ht_cap: HT capabilities in this band
-  * @vht_cap: VHT capabilities in this band
-+ * @edmg_cap: EDMG capabilities in this band
-  * @n_iftype_data: number of iftype data entries
-  * @iftype_data: interface type data entries.  Note that the bits in
-  *	@types_mask inside this structure cannot overlap (i.e. only
-@@ -347,6 +402,7 @@ struct ieee80211_supported_band {
- 	int n_bitrates;
- 	struct ieee80211_sta_ht_cap ht_cap;
- 	struct ieee80211_sta_vht_cap vht_cap;
-+	struct ieee80211_edmg edmg_cap;
- 	u16 n_iftype_data;
- 	const struct ieee80211_sband_iftype_data *iftype_data;
- };
-@@ -514,12 +570,17 @@ struct key_params {
-  * @center_freq1: center frequency of first segment
-  * @center_freq2: center frequency of second segment
-  *	(only with 80+80 MHz)
-+ * @edmg: define the EDMG channels configuration.
-+ *	If edmg is requested (i.e. the .channels member is non-zero),
-+ *	chan will define the primary channel and all other
-+ *	parameters are ignored.
-  */
- struct cfg80211_chan_def {
- 	struct ieee80211_channel *chan;
- 	enum nl80211_chan_width width;
- 	u32 center_freq1;
- 	u32 center_freq2;
-+	struct ieee80211_edmg edmg;
- };
- 
- /**
-@@ -578,6 +639,19 @@ cfg80211_chandef_identical(const struct cfg80211_chan_def *chandef1,
+ 	sinfo->rx_packets = stats->rx_packets;
+ 	sinfo->rx_dropped_misc = stats->rx_dropped;
+@@ -1022,6 +1167,33 @@ static int wil_ft_connect(struct wiphy *wiphy,
+ 	return rc;
  }
  
- /**
-+ * cfg80211_chandef_is_edmg - check if chandef represents an EDMG channel
-+ *
-+ * @chandef: the channel definition
-+ *
-+ * Return: %true if EDMG defined, %false otherwise.
-+ */
-+static inline bool
-+cfg80211_chandef_is_edmg(const struct cfg80211_chan_def *chandef)
++static int wil_get_wmi_edmg_channel(struct wil6210_priv *wil, u8 edmg_bw_config,
++				    u8 edmg_channels, u8 *wmi_ch)
 +{
-+	return chandef->edmg.channels || chandef->edmg.bw_config;
-+}
-+
-+/**
-  * cfg80211_chandef_compatible - check if two channel definitions are compatible
-  * @chandef1: first channel definition
-  * @chandef2: second channel definition
-@@ -1162,15 +1236,17 @@ int cfg80211_check_station_change(struct wiphy *wiphy,
-  * @RATE_INFO_FLAGS_MCS: mcs field filled with HT MCS
-  * @RATE_INFO_FLAGS_VHT_MCS: mcs field filled with VHT MCS
-  * @RATE_INFO_FLAGS_SHORT_GI: 400ns guard interval
-- * @RATE_INFO_FLAGS_60G: 60GHz MCS
-+ * @RATE_INFO_FLAGS_DMG: 60GHz MCS
-  * @RATE_INFO_FLAGS_HE_MCS: HE MCS information
-+ * @RATE_INFO_FLAGS_EDMG: 60GHz MCS in EDMG mode
-  */
- enum rate_info_flags {
- 	RATE_INFO_FLAGS_MCS			= BIT(0),
- 	RATE_INFO_FLAGS_VHT_MCS			= BIT(1),
- 	RATE_INFO_FLAGS_SHORT_GI		= BIT(2),
--	RATE_INFO_FLAGS_60G			= BIT(3),
-+	RATE_INFO_FLAGS_DMG			= BIT(3),
- 	RATE_INFO_FLAGS_HE_MCS			= BIT(4),
-+	RATE_INFO_FLAGS_EDMG			= BIT(5),
- };
- 
- /**
-@@ -1210,6 +1286,7 @@ enum rate_info_bw {
-  * @he_dcm: HE DCM value
-  * @he_ru_alloc: HE RU allocation (from &enum nl80211_he_ru_alloc,
-  *	only valid if bw is %RATE_INFO_BW_HE_RU)
-+ * @n_bonded_ch: In case of EDMG the number of bonded channels (1-4)
-  */
- struct rate_info {
- 	u8 flags;
-@@ -1220,6 +1297,7 @@ struct rate_info {
- 	u8 he_gi;
- 	u8 he_dcm;
- 	u8 he_ru_alloc;
-+	u8 n_bonded_ch;
- };
- 
- /**
-@@ -2421,6 +2499,9 @@ struct cfg80211_bss_selection {
-  * @fils_erp_rrk_len: Length of @fils_erp_rrk in octets.
-  * @want_1x: indicates user-space supports and wants to use 802.1X driver
-  *	offload of 4-way handshake.
-+ * @edmg: define the EDMG channels.
-+ *	This may specify multiple channels and bonding options for the driver
-+ *	to choose from, based on BSS configuration.
-  */
- struct cfg80211_connect_params {
- 	struct ieee80211_channel *channel;
-@@ -2454,6 +2535,7 @@ struct cfg80211_connect_params {
- 	const u8 *fils_erp_rrk;
- 	size_t fils_erp_rrk_len;
- 	bool want_1x;
-+	struct ieee80211_edmg edmg;
- };
- 
- /**
-diff --git a/include/uapi/linux/nl80211.h b/include/uapi/linux/nl80211.h
-index c45587c..cfe8dfe 100644
---- a/include/uapi/linux/nl80211.h
-+++ b/include/uapi/linux/nl80211.h
-@@ -52,6 +52,11 @@
- #define NL80211_MULTICAST_GROUP_NAN		"nan"
- #define NL80211_MULTICAST_GROUP_TESTMODE	"testmode"
- 
-+#define NL80211_EDMG_BW_CONFIG_MIN	4
-+#define NL80211_EDMG_BW_CONFIG_MAX	15
-+#define NL80211_EDMG_CHANNELS_MIN	1
-+#define NL80211_EDMG_CHANNELS_MAX	0x3c /* 0b00111100 */
-+
- /**
-  * DOC: Station handling
-  *
-@@ -2358,6 +2363,13 @@ enum nl80211_commands {
-  *
-  * @NL80211_ATTR_TWT_RESPONDER: Enable target wait time responder support.
-  *
-+ * @NL80211_ATTR_WIPHY_EDMG_CHANNELS: bitmap that indicates the 2.16 GHz
-+ *	channel(s) that are allowed to be used for EDMG transmissions.
-+ *	Defined by IEEE P802.11ay/D4.0 section 9.4.2.251.
-+ * @NL80211_ATTR_WIPHY_EDMG_BW_CONFIG: Channel BW Configuration subfield encodes
-+ *	the allowed channel bandwidth configurations.
-+ *	Defined by IEEE P802.11ay/D4.0 section 9.4.2.251, Table 13.
-+ *
-  * @NUM_NL80211_ATTR: total number of nl80211_attrs available
-  * @NL80211_ATTR_MAX: highest attribute number currently defined
-  * @__NL80211_ATTR_AFTER_LAST: internal use
-@@ -2815,6 +2827,9 @@ enum nl80211_attrs {
- 
- 	NL80211_ATTR_TWT_RESPONDER,
- 
-+	NL80211_ATTR_WIPHY_EDMG_CHANNELS,
-+	NL80211_ATTR_WIPHY_EDMG_BW_CONFIG,
-+
- 	/* add attributes here, update the policy in nl80211.c */
- 
- 	__NL80211_ATTR_AFTER_LAST,
-@@ -3423,6 +3438,12 @@ enum nl80211_band_iftype_attr {
-  * @NL80211_BAND_ATTR_VHT_CAPA: VHT capabilities, as in the HT information IE
-  * @NL80211_BAND_ATTR_IFTYPE_DATA: nested array attribute, with each entry using
-  *	attributes from &enum nl80211_band_iftype_attr
-+ * @NL80211_BAND_ATTR_EDMG_CHANNELS: bitmap that indicates the 2.16 GHz
-+ *	channel(s) that are allowed to be used for EDMG transmissions.
-+ *	Defined by IEEE P802.11ay/D4.0 section 9.4.2.251.
-+ * @NL80211_BAND_ATTR_EDMG_BW_CONFIG: Channel BW Configuration subfield encodes
-+ *	the allowed channel bandwidth configurations.
-+ *	Defined by IEEE P802.11ay/D4.0 section 9.4.2.251, Table 13.
-  * @NL80211_BAND_ATTR_MAX: highest band attribute currently defined
-  * @__NL80211_BAND_ATTR_AFTER_LAST: internal use
-  */
-@@ -3440,6 +3461,9 @@ enum nl80211_band_attr {
- 	NL80211_BAND_ATTR_VHT_CAPA,
- 	NL80211_BAND_ATTR_IFTYPE_DATA,
- 
-+	NL80211_BAND_ATTR_EDMG_CHANNELS,
-+	NL80211_BAND_ATTR_EDMG_BW_CONFIG,
-+
- 	/* keep last */
- 	__NL80211_BAND_ATTR_AFTER_LAST,
- 	NL80211_BAND_ATTR_MAX = __NL80211_BAND_ATTR_AFTER_LAST - 1
-diff --git a/net/mac80211/mlme.c b/net/mac80211/mlme.c
-index a99ad032..54e847a 100644
---- a/net/mac80211/mlme.c
-+++ b/net/mac80211/mlme.c
-@@ -158,10 +158,10 @@ ieee80211_determine_chantype(struct ieee80211_sub_if_data *sdata,
- 	memcpy(&sta_ht_cap, &sband->ht_cap, sizeof(sta_ht_cap));
- 	ieee80211_apply_htcap_overrides(sdata, &sta_ht_cap);
- 
-+	memset(chandef, 0, sizeof(struct cfg80211_chan_def));
- 	chandef->chan = channel;
- 	chandef->width = NL80211_CHAN_WIDTH_20_NOHT;
- 	chandef->center_freq1 = channel->center_freq;
--	chandef->center_freq2 = 0;
- 
- 	if (!ht_oper || !sta_ht_cap.ht_supported) {
- 		ret = IEEE80211_STA_DISABLE_HT | IEEE80211_STA_DISABLE_VHT;
-diff --git a/net/mac80211/status.c b/net/mac80211/status.c
-index f03aa89..87099e1 100644
---- a/net/mac80211/status.c
-+++ b/net/mac80211/status.c
-@@ -323,7 +323,7 @@ ieee80211_add_tx_radiotap_header(struct ieee80211_local *local,
- 
- 	if (status && status->rate && !(status->rate->flags &
- 					(RATE_INFO_FLAGS_MCS |
--					 RATE_INFO_FLAGS_60G |
-+					 RATE_INFO_FLAGS_DMG |
- 					 RATE_INFO_FLAGS_VHT_MCS |
- 					 RATE_INFO_FLAGS_HE_MCS)))
- 		legacy_rate = status->rate->legacy;
-diff --git a/net/wireless/chan.c b/net/wireless/chan.c
-index 7dc1bbd..d823e5f 100644
---- a/net/wireless/chan.c
-+++ b/net/wireless/chan.c
-@@ -14,6 +14,11 @@
- #include "core.h"
- #include "rdev-ops.h"
- 
-+static bool cfg80211_valid_60g_freq(u32 freq)
-+{
-+	return freq >= 58320 && freq <= 70200;
-+}
-+
- void cfg80211_chandef_create(struct cfg80211_chan_def *chandef,
- 			     struct ieee80211_channel *chan,
- 			     enum nl80211_channel_type chan_type)
-@@ -23,6 +28,8 @@ void cfg80211_chandef_create(struct cfg80211_chan_def *chandef,
- 
- 	chandef->chan = chan;
- 	chandef->center_freq2 = 0;
-+	chandef->edmg.bw_config = 0;
-+	chandef->edmg.channels = 0;
- 
- 	switch (chan_type) {
- 	case NL80211_CHAN_NO_HT:
-@@ -47,6 +54,91 @@ void cfg80211_chandef_create(struct cfg80211_chan_def *chandef,
- }
- EXPORT_SYMBOL(cfg80211_chandef_create);
- 
-+static bool cfg80211_edmg_chandef_valid(const struct cfg80211_chan_def *chandef)
-+{
-+	int max_contiguous = 0;
-+	int num_of_enabled = 0;
-+	int contiguous = 0;
-+	int i;
-+
-+	if (!chandef->edmg.channels || !chandef->edmg.bw_config)
-+		return false;
-+
-+	if (!cfg80211_valid_60g_freq(chandef->chan->center_freq))
-+		return false;
-+
-+	for (i = 0; i < 6; i++) {
-+		if (chandef->edmg.channels & BIT(i)) {
-+			contiguous++;
-+			num_of_enabled++;
-+		} else {
-+			contiguous = 0;
-+		}
-+
-+		max_contiguous = max(contiguous, max_contiguous);
-+	}
-+	/* basic verification of edmg configuration according to
-+	 * IEEE P802.11ay/D4.0 section 9.4.2.251
-+	 */
-+	/* check bw_config against contiguous edmg channels */
-+	switch (chandef->edmg.bw_config) {
-+	case IEEE80211_EDMG_BW_CONFIG_4:
-+	case IEEE80211_EDMG_BW_CONFIG_8:
-+	case IEEE80211_EDMG_BW_CONFIG_12:
-+		if (max_contiguous < 1)
-+			return false;
-+		break;
-+	case IEEE80211_EDMG_BW_CONFIG_5:
-+	case IEEE80211_EDMG_BW_CONFIG_9:
-+	case IEEE80211_EDMG_BW_CONFIG_13:
-+		if (max_contiguous < 2)
-+			return false;
-+		break;
-+	case IEEE80211_EDMG_BW_CONFIG_6:
-+	case IEEE80211_EDMG_BW_CONFIG_10:
-+	case IEEE80211_EDMG_BW_CONFIG_14:
-+		if (max_contiguous < 3)
-+			return false;
-+		break;
-+	case IEEE80211_EDMG_BW_CONFIG_7:
-+	case IEEE80211_EDMG_BW_CONFIG_11:
-+	case IEEE80211_EDMG_BW_CONFIG_15:
-+		if (max_contiguous < 4)
-+			return false;
-+		break;
-+
-+	default:
-+		return false;
-+	}
-+
-+	/* check bw_config against aggregated (non contiguous) edmg channels */
-+	switch (chandef->edmg.bw_config) {
-+	case IEEE80211_EDMG_BW_CONFIG_4:
-+	case IEEE80211_EDMG_BW_CONFIG_5:
-+	case IEEE80211_EDMG_BW_CONFIG_6:
-+	case IEEE80211_EDMG_BW_CONFIG_7:
-+		break;
-+	case IEEE80211_EDMG_BW_CONFIG_8:
-+	case IEEE80211_EDMG_BW_CONFIG_9:
-+	case IEEE80211_EDMG_BW_CONFIG_10:
-+	case IEEE80211_EDMG_BW_CONFIG_11:
-+		if (num_of_enabled < 2)
-+			return false;
-+		break;
-+	case IEEE80211_EDMG_BW_CONFIG_12:
-+	case IEEE80211_EDMG_BW_CONFIG_13:
-+	case IEEE80211_EDMG_BW_CONFIG_14:
-+	case IEEE80211_EDMG_BW_CONFIG_15:
-+		if (num_of_enabled < 4 || max_contiguous < 2)
-+			return false;
-+		break;
-+	default:
-+		return false;
-+	}
-+
-+	return true;
-+}
-+
- bool cfg80211_chandef_valid(const struct cfg80211_chan_def *chandef)
- {
- 	u32 control_freq;
-@@ -112,6 +204,10 @@ bool cfg80211_chandef_valid(const struct cfg80211_chan_def *chandef)
- 		return false;
- 	}
- 
-+	if (cfg80211_chandef_is_edmg(chandef) &&
-+	    !cfg80211_edmg_chandef_valid(chandef))
-+		return false;
-+
- 	return true;
- }
- EXPORT_SYMBOL(cfg80211_chandef_valid);
-@@ -721,12 +817,66 @@ static bool cfg80211_secondary_chans_ok(struct wiphy *wiphy,
- 	return true;
- }
- 
-+/* check if the operating channels are valid and supported */
-+static bool cfg80211_edmg_usable(struct wiphy *wiphy, u8 edmg_channels,
-+				 enum ieee80211_edmg_bw_config edmg_bw_config,
-+				 int primary_channel,
-+				 struct ieee80211_edmg *edmg_cap)
-+{
-+	struct ieee80211_channel *chan;
-+	int i, freq;
-+	int channels_counter = 0;
-+
-+	if (!edmg_channels && !edmg_bw_config)
-+		return true;
-+
-+	if ((!edmg_channels && edmg_bw_config) ||
-+	    (edmg_channels && !edmg_bw_config))
-+		return false;
-+
-+	if (!(edmg_channels & BIT(primary_channel - 1)))
-+		return false;
-+
-+	/* 60GHz channels 1..6 */
-+	for (i = 0; i < 6; i++) {
-+		if (!(edmg_channels & BIT(i)))
-+			continue;
-+
-+		if (!(edmg_cap->channels & BIT(i)))
-+			return false;
-+
-+		channels_counter++;
-+
-+		freq = ieee80211_channel_to_frequency(i + 1,
-+						      NL80211_BAND_60GHZ);
-+		chan = ieee80211_get_channel(wiphy, freq);
-+		if (!chan || chan->flags & IEEE80211_CHAN_DISABLED)
-+			return false;
-+	}
-+
-+	/* IEEE802.11 allows max 4 channels */
-+	if (channels_counter > 4)
-+		return false;
-+
-+	/* check bw_config is a subset of what driver supports
-+	 * (see IEEE P802.11ay/D4.0 section 9.4.2.251, Table 13)
-+	 */
-+	if ((edmg_bw_config % 4) > (edmg_cap->bw_config % 4))
-+		return false;
-+
-+	if (edmg_bw_config > edmg_cap->bw_config)
-+		return false;
-+
-+	return true;
-+}
-+
- bool cfg80211_chandef_usable(struct wiphy *wiphy,
- 			     const struct cfg80211_chan_def *chandef,
- 			     u32 prohibited_flags)
- {
- 	struct ieee80211_sta_ht_cap *ht_cap;
- 	struct ieee80211_sta_vht_cap *vht_cap;
-+	struct ieee80211_edmg *edmg_cap;
- 	u32 width, control_freq, cap;
- 
- 	if (WARN_ON(!cfg80211_chandef_valid(chandef)))
-@@ -734,6 +884,15 @@ bool cfg80211_chandef_usable(struct wiphy *wiphy,
- 
- 	ht_cap = &wiphy->bands[chandef->chan->band]->ht_cap;
- 	vht_cap = &wiphy->bands[chandef->chan->band]->vht_cap;
-+	edmg_cap = &wiphy->bands[chandef->chan->band]->edmg_cap;
-+
-+	if (edmg_cap->channels &&
-+	    !cfg80211_edmg_usable(wiphy,
-+				  chandef->edmg.channels,
-+				  chandef->edmg.bw_config,
-+				  chandef->chan->hw_value,
-+				  edmg_cap))
-+		return false;
- 
- 	control_freq = chandef->chan->center_freq;
- 
-diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
-index 65f85fd..11888fa 100644
---- a/net/wireless/nl80211.c
-+++ b/net/wireless/nl80211.c
-@@ -289,6 +289,13 @@ const struct nla_policy nl80211_policy[NUM_NL80211_ATTR] = {
- 
- 	[NL80211_ATTR_WIPHY_FREQ] = { .type = NLA_U32 },
- 	[NL80211_ATTR_WIPHY_CHANNEL_TYPE] = { .type = NLA_U32 },
-+	[NL80211_ATTR_WIPHY_EDMG_CHANNELS] = NLA_POLICY_RANGE(NLA_U8,
-+						NL80211_EDMG_CHANNELS_MIN,
-+						NL80211_EDMG_CHANNELS_MAX),
-+	[NL80211_ATTR_WIPHY_EDMG_BW_CONFIG] = NLA_POLICY_RANGE(NLA_U8,
-+						NL80211_EDMG_BW_CONFIG_MIN,
-+						NL80211_EDMG_BW_CONFIG_MAX),
-+
- 	[NL80211_ATTR_CHANNEL_WIDTH] = { .type = NLA_U32 },
- 	[NL80211_ATTR_CENTER_FREQ1] = { .type = NLA_U32 },
- 	[NL80211_ATTR_CENTER_FREQ2] = { .type = NLA_U32 },
-@@ -1555,6 +1562,15 @@ static int nl80211_send_band_rateinfo(struct sk_buff *msg,
- 		nla_nest_end(msg, nl_iftype_data);
- 	}
- 
-+	/* add EDMG info */
-+	if (sband->edmg_cap.channels &&
-+	    (nla_put_u8(msg, NL80211_BAND_ATTR_EDMG_CHANNELS,
-+		       sband->edmg_cap.channels) ||
-+	    nla_put_u8(msg, NL80211_BAND_ATTR_EDMG_BW_CONFIG,
-+		       sband->edmg_cap.bw_config)))
-+
-+		return -ENOBUFS;
-+
- 	/* add bitrates */
- 	nl_rates = nla_nest_start_noflag(msg, NL80211_BAND_ATTR_RATES);
- 	if (!nl_rates)
-@@ -2646,6 +2662,18 @@ int nl80211_parse_chandef(struct cfg80211_registered_device *rdev,
- 				nla_get_u32(attrs[NL80211_ATTR_CENTER_FREQ2]);
- 	}
- 
-+	if (info->attrs[NL80211_ATTR_WIPHY_EDMG_CHANNELS]) {
-+		chandef->edmg.channels =
-+		      nla_get_u8(info->attrs[NL80211_ATTR_WIPHY_EDMG_CHANNELS]);
-+
-+		if (info->attrs[NL80211_ATTR_WIPHY_EDMG_BW_CONFIG])
-+			chandef->edmg.bw_config =
-+		     nla_get_u8(info->attrs[NL80211_ATTR_WIPHY_EDMG_BW_CONFIG]);
-+	} else {
-+		chandef->edmg.bw_config = 0;
-+		chandef->edmg.channels = 0;
-+	}
-+
- 	if (!cfg80211_chandef_valid(chandef)) {
- 		NL_SET_ERR_MSG(extack, "invalid channel definition");
- 		return -EINVAL;
-@@ -9814,6 +9842,15 @@ static int nl80211_connect(struct sk_buff *skb, struct genl_info *info)
- 			return -EINVAL;
- 	}
- 
-+	if (info->attrs[NL80211_ATTR_WIPHY_EDMG_CHANNELS]) {
-+		connect.edmg.channels =
-+		      nla_get_u8(info->attrs[NL80211_ATTR_WIPHY_EDMG_CHANNELS]);
-+
-+		if (info->attrs[NL80211_ATTR_WIPHY_EDMG_BW_CONFIG])
-+			connect.edmg.bw_config =
-+		     nla_get_u8(info->attrs[NL80211_ATTR_WIPHY_EDMG_BW_CONFIG]);
-+	}
-+
- 	if (connect.privacy && info->attrs[NL80211_ATTR_KEYS]) {
- 		connkeys = nl80211_parse_connkeys(rdev, info, NULL);
- 		if (IS_ERR(connkeys))
-diff --git a/net/wireless/util.c b/net/wireless/util.c
-index d0e35b7..01b52ef 100644
---- a/net/wireless/util.c
-+++ b/net/wireless/util.c
-@@ -1034,7 +1034,7 @@ static u32 cfg80211_calculate_bitrate_ht(struct rate_info *rate)
- 	return (bitrate + 50000) / 100000;
- }
- 
--static u32 cfg80211_calculate_bitrate_60g(struct rate_info *rate)
-+static u32 cfg80211_calculate_bitrate_dmg(struct rate_info *rate)
- {
- 	static const u32 __mcs2bitrate[] = {
- 		/* control PHY */
-@@ -1081,6 +1081,40 @@ static u32 cfg80211_calculate_bitrate_60g(struct rate_info *rate)
- 	return __mcs2bitrate[rate->mcs];
- }
- 
-+static u32 cfg80211_calculate_bitrate_edmg(struct rate_info *rate)
-+{
-+	static const u32 __mcs2bitrate[] = {
-+		/* control PHY */
-+		[0] =   275,
-+		/* SC PHY */
-+		[1] =  3850,
-+		[2] =  7700,
-+		[3] =  9625,
-+		[4] = 11550,
-+		[5] = 12512, /* 1251.25 mbps */
-+		[6] = 13475,
-+		[7] = 15400,
-+		[8] = 19250,
-+		[9] = 23100,
-+		[10] = 25025,
-+		[11] = 26950,
-+		[12] = 30800,
-+		[13] = 38500,
-+		[14] = 46200,
-+		[15] = 50050,
-+		[16] = 53900,
-+		[17] = 57750,
-+		[18] = 69300,
-+		[19] = 75075,
-+		[20] = 80850,
-+	};
-+
-+	if (WARN_ON_ONCE(rate->mcs >= ARRAY_SIZE(__mcs2bitrate)))
++	if (!edmg_bw_config) {
++		*wmi_ch = 0;
 +		return 0;
-+
-+	return __mcs2bitrate[rate->mcs] * rate->n_bonded_ch;
++	} else if (edmg_bw_config == WIL_EDMG_BW_CONFIGURATION) {
++		/* convert from edmg channel bitmap into edmg channel number */
++		switch (edmg_channels) {
++		case WIL_EDMG_CHANNEL_9_SUBCHANNELS:
++			return wil_spec2wmi_ch(9, wmi_ch);
++		case WIL_EDMG_CHANNEL_10_SUBCHANNELS:
++			return wil_spec2wmi_ch(10, wmi_ch);
++		case WIL_EDMG_CHANNEL_11_SUBCHANNELS:
++			return wil_spec2wmi_ch(11, wmi_ch);
++		default:
++			wil_err(wil, "Unsupported edmg channel bitmap 0x%x\n",
++				edmg_channels);
++			return -EINVAL;
++		}
++	} else {
++		wil_err(wil, "Unsupported EDMG BW configuration %d\n",
++			edmg_bw_config);
++		return -EINVAL;
++	}
 +}
 +
- static u32 cfg80211_calculate_bitrate_vht(struct rate_info *rate)
+ static int wil_cfg80211_connect(struct wiphy *wiphy,
+ 				struct net_device *ndev,
+ 				struct cfg80211_connect_params *sme)
+@@ -1167,6 +1339,11 @@ static int wil_cfg80211_connect(struct wiphy *wiphy,
+ 	memcpy(conn.ssid, ssid_eid+2, conn.ssid_len);
+ 	conn.channel = ch - 1;
+ 
++	rc = wil_get_wmi_edmg_channel(wil, sme->edmg.bw_config,
++				      sme->edmg.channels, &conn.edmg_channel);
++	if (rc < 0)
++		return rc;
++
+ 	ether_addr_copy(conn.bssid, bss->bssid);
+ 	ether_addr_copy(conn.dst_mac, bss->bssid);
+ 
+@@ -1728,7 +1905,7 @@ static int _wil_cfg80211_set_ies(struct wil6210_vif *vif,
+ static int _wil_cfg80211_start_ap(struct wiphy *wiphy,
+ 				  struct net_device *ndev,
+ 				  const u8 *ssid, size_t ssid_len, u32 privacy,
+-				  int bi, u8 chan,
++				  int bi, u8 chan, u8 wmi_edmg_channel,
+ 				  struct cfg80211_beacon_data *bcon,
+ 				  u8 hidden_ssid, u32 pbss)
  {
- 	static const u32 base[4][10] = {
-@@ -1253,8 +1287,10 @@ u32 cfg80211_calculate_bitrate(struct rate_info *rate)
+@@ -1791,6 +1968,7 @@ static int _wil_cfg80211_start_ap(struct wiphy *wiphy,
+ 
+ 	vif->privacy = privacy;
+ 	vif->channel = chan;
++	vif->wmi_edmg_channel = wmi_edmg_channel;
+ 	vif->hidden_ssid = hidden_ssid;
+ 	vif->pbss = pbss;
+ 	vif->bi = bi;
+@@ -1801,7 +1979,8 @@ static int _wil_cfg80211_start_ap(struct wiphy *wiphy,
+ 	if (!wil_has_other_active_ifaces(wil, ndev, false, true))
+ 		wil6210_bus_request(wil, WIL_MAX_BUS_REQUEST_KBPS);
+ 
+-	rc = wmi_pcp_start(vif, bi, wmi_nettype, chan, hidden_ssid, is_go);
++	rc = wmi_pcp_start(vif, bi, wmi_nettype, chan, wmi_edmg_channel,
++			   hidden_ssid, is_go);
+ 	if (rc)
+ 		goto err_pcp_start;
+ 
+@@ -1853,7 +2032,8 @@ void wil_cfg80211_ap_recovery(struct wil6210_priv *wil)
+ 		rc = _wil_cfg80211_start_ap(wiphy, ndev,
+ 					    vif->ssid, vif->ssid_len,
+ 					    vif->privacy, vif->bi,
+-					    vif->channel, &bcon,
++					    vif->channel,
++					    vif->wmi_edmg_channel, &bcon,
+ 					    vif->hidden_ssid, vif->pbss);
+ 		if (rc) {
+ 			wil_err(wil, "vif %d recovery failed (%d)\n", i, rc);
+@@ -1903,7 +2083,8 @@ static int wil_cfg80211_change_beacon(struct wiphy *wiphy,
+ 		rc = _wil_cfg80211_start_ap(wiphy, ndev, vif->ssid,
+ 					    vif->ssid_len, privacy,
+ 					    wdev->beacon_interval,
+-					    vif->channel, bcon,
++					    vif->channel,
++					    vif->wmi_edmg_channel, bcon,
+ 					    vif->hidden_ssid,
+ 					    vif->pbss);
+ 	} else {
+@@ -1922,10 +2103,17 @@ static int wil_cfg80211_start_ap(struct wiphy *wiphy,
+ 	struct ieee80211_channel *channel = info->chandef.chan;
+ 	struct cfg80211_beacon_data *bcon = &info->beacon;
+ 	struct cfg80211_crypto_settings *crypto = &info->crypto;
++	u8 wmi_edmg_channel;
+ 	u8 hidden_ssid;
+ 
+ 	wil_dbg_misc(wil, "start_ap\n");
+ 
++	rc = wil_get_wmi_edmg_channel(wil, info->chandef.edmg.bw_config,
++				      info->chandef.edmg.channels,
++				      &wmi_edmg_channel);
++	if (rc < 0)
++		return rc;
++
+ 	if (!channel) {
+ 		wil_err(wil, "AP: No channel???\n");
+ 		return -EINVAL;
+@@ -1965,7 +2153,8 @@ static int wil_cfg80211_start_ap(struct wiphy *wiphy,
+ 	rc = _wil_cfg80211_start_ap(wiphy, ndev,
+ 				    info->ssid, info->ssid_len, info->privacy,
+ 				    info->beacon_interval, channel->hw_value,
+-				    bcon, hidden_ssid, info->pbss);
++				    wmi_edmg_channel, bcon, hidden_ssid,
++				    info->pbss);
+ 
+ 	return rc;
+ }
+diff --git a/drivers/net/wireless/ath/wil6210/txrx_edma.c b/drivers/net/wireless/ath/wil6210/txrx_edma.c
+index 71b7ad4..7df2cb9 100644
+--- a/drivers/net/wireless/ath/wil6210/txrx_edma.c
++++ b/drivers/net/wireless/ath/wil6210/txrx_edma.c
+@@ -1025,6 +1025,8 @@ static struct sk_buff *wil_sring_reap_rx_edma(struct wil6210_priv *wil,
+ 			stats->rx_per_mcs[stats->last_mcs_rx]++;
+ 	}
+ 
++	stats->last_cb_mode_rx  = wil_rx_status_get_cb_mode(msg);
++
+ 	if (!wil->use_rx_hw_reordering && !wil->use_compressed_rx_status &&
+ 	    wil_check_bar(wil, msg, cid, skb, stats) == -EAGAIN) {
+ 		kfree_skb(skb);
+diff --git a/drivers/net/wireless/ath/wil6210/txrx_edma.h b/drivers/net/wireless/ath/wil6210/txrx_edma.h
+index e9e6ea9..724d223 100644
+--- a/drivers/net/wireless/ath/wil6210/txrx_edma.h
++++ b/drivers/net/wireless/ath/wil6210/txrx_edma.h
+@@ -366,6 +366,12 @@ static inline u8 wil_rx_status_get_mcs(void *msg)
+ 			    16, 21);
+ }
+ 
++static inline u8 wil_rx_status_get_cb_mode(void *msg)
++{
++	return WIL_GET_BITS(((struct wil_rx_status_compressed *)msg)->d1,
++			    22, 23);
++}
++
+ static inline u16 wil_rx_status_get_flow_id(void *msg)
  {
- 	if (rate->flags & RATE_INFO_FLAGS_MCS)
- 		return cfg80211_calculate_bitrate_ht(rate);
--	if (rate->flags & RATE_INFO_FLAGS_60G)
--		return cfg80211_calculate_bitrate_60g(rate);
-+	if (rate->flags & RATE_INFO_FLAGS_DMG)
-+		return cfg80211_calculate_bitrate_dmg(rate);
-+	if (rate->flags & RATE_INFO_FLAGS_EDMG)
-+		return cfg80211_calculate_bitrate_edmg(rate);
- 	if (rate->flags & RATE_INFO_FLAGS_VHT_MCS)
- 		return cfg80211_calculate_bitrate_vht(rate);
- 	if (rate->flags & RATE_INFO_FLAGS_HE_MCS)
+ 	return WIL_GET_BITS(((struct wil_rx_status_compressed *)msg)->d0,
+diff --git a/drivers/net/wireless/ath/wil6210/wil6210.h b/drivers/net/wireless/ath/wil6210/wil6210.h
+index 6f456b3..d8c78a0 100644
+--- a/drivers/net/wireless/ath/wil6210/wil6210.h
++++ b/drivers/net/wireless/ath/wil6210/wil6210.h
+@@ -590,6 +590,7 @@ struct wil_net_stats {
+ 	unsigned long	rx_amsdu_error; /* eDMA specific */
+ 	unsigned long	rx_csum_err;
+ 	u16 last_mcs_rx;
++	u8 last_cb_mode_rx;
+ 	u64 rx_per_mcs[WIL_MCS_MAX + 1];
+ 	u32 ft_roams; /* relevant in STA mode */
+ };
+@@ -850,6 +851,7 @@ struct wil6210_vif {
+ 	DECLARE_BITMAP(status, wil_vif_status_last);
+ 	u32 privacy; /* secure connection? */
+ 	u16 channel; /* relevant in AP mode */
++	u8 wmi_edmg_channel; /* relevant in AP mode */
+ 	u8 hidden_ssid; /* relevant in AP mode */
+ 	u32 ap_isolate; /* no intra-BSS communication */
+ 	bool pbss;
+@@ -1335,7 +1337,7 @@ void wil_p2p_wdev_free(struct wil6210_priv *wil);
+ 
+ int wmi_set_mac_address(struct wil6210_priv *wil, void *addr);
+ int wmi_pcp_start(struct wil6210_vif *vif, int bi, u8 wmi_nettype, u8 chan,
+-		  u8 hidden_ssid, u8 is_go);
++		  u8 edmg_chan, u8 hidden_ssid, u8 is_go);
+ int wmi_pcp_stop(struct wil6210_vif *vif);
+ int wmi_led_cfg(struct wil6210_priv *wil, bool enable);
+ int wmi_abort_scan(struct wil6210_vif *vif);
+@@ -1412,6 +1414,10 @@ int wmi_mgmt_tx_ext(struct wil6210_vif *vif, const u8 *buf, size_t len,
+ 		    u8 channel, u16 duration_ms);
+ int wmi_rbufcap_cfg(struct wil6210_priv *wil, bool enable, u16 threshold);
+ 
++int wil_wmi2spec_ch(u8 wmi_ch, u8 *spec_ch);
++int wil_spec2wmi_ch(u8 spec_ch, u8 *wmi_ch);
++void wil_update_supported_bands(struct wil6210_priv *wil);
++
+ int reverse_memcmp(const void *cs, const void *ct, size_t count);
+ 
+ /* WMI for enhanced DMA */
+diff --git a/drivers/net/wireless/ath/wil6210/wmi.c b/drivers/net/wireless/ath/wil6210/wmi.c
+index 475b1a2..5760d14 100644
+--- a/drivers/net/wireless/ath/wil6210/wmi.c
++++ b/drivers/net/wireless/ath/wil6210/wmi.c
+@@ -2163,8 +2163,8 @@ int wmi_rbufcap_cfg(struct wil6210_priv *wil, bool enable, u16 threshold)
+ 	return rc;
+ }
+ 
+-int wmi_pcp_start(struct wil6210_vif *vif,
+-		  int bi, u8 wmi_nettype, u8 chan, u8 hidden_ssid, u8 is_go)
++int wmi_pcp_start(struct wil6210_vif *vif, int bi, u8 wmi_nettype,
++		  u8 chan, u8 wmi_edmg_chan, u8 hidden_ssid, u8 is_go)
+ {
+ 	struct wil6210_priv *wil = vif_to_wil(vif);
+ 	int rc;
+@@ -2174,6 +2174,7 @@ int wmi_pcp_start(struct wil6210_vif *vif,
+ 		.network_type = wmi_nettype,
+ 		.disable_sec_offload = 1,
+ 		.channel = chan - 1,
++		.edmg_channel = wmi_edmg_chan,
+ 		.pcp_max_assoc_sta = wil->max_assoc_sta,
+ 		.hidden_ssid = hidden_ssid,
+ 		.is_go = is_go,
+diff --git a/drivers/net/wireless/ath/wil6210/wmi.h b/drivers/net/wireless/ath/wil6210/wmi.h
+index 3e37229..d75022b 100644
+--- a/drivers/net/wireless/ath/wil6210/wmi.h
++++ b/drivers/net/wireless/ath/wil6210/wmi.h
+@@ -97,6 +97,7 @@ enum wmi_fw_capability {
+ 	WMI_FW_CAPABILITY_SET_SILENT_RSSI_TABLE		= 13,
+ 	WMI_FW_CAPABILITY_LO_POWER_CALIB_FROM_OTP	= 14,
+ 	WMI_FW_CAPABILITY_PNO				= 15,
++	WMI_FW_CAPABILITY_CHANNEL_BONDING		= 17,
+ 	WMI_FW_CAPABILITY_REF_CLOCK_CONTROL		= 18,
+ 	WMI_FW_CAPABILITY_AP_SME_OFFLOAD_NONE		= 19,
+ 	WMI_FW_CAPABILITY_MULTI_VIFS			= 20,
+@@ -361,6 +362,19 @@ enum wmi_connect_ctrl_flag_bits {
+ 
+ #define WMI_MAX_SSID_LEN	(32)
+ 
++enum wmi_channel {
++	WMI_CHANNEL_1	= 0x00,
++	WMI_CHANNEL_2	= 0x01,
++	WMI_CHANNEL_3	= 0x02,
++	WMI_CHANNEL_4	= 0x03,
++	WMI_CHANNEL_5	= 0x04,
++	WMI_CHANNEL_6	= 0x05,
++	WMI_CHANNEL_9	= 0x06,
++	WMI_CHANNEL_10	= 0x07,
++	WMI_CHANNEL_11	= 0x08,
++	WMI_CHANNEL_12	= 0x09,
++};
++
+ /* WMI_CONNECT_CMDID */
+ struct wmi_connect_cmd {
+ 	u8 network_type;
+@@ -372,8 +386,12 @@ struct wmi_connect_cmd {
+ 	u8 group_crypto_len;
+ 	u8 ssid_len;
+ 	u8 ssid[WMI_MAX_SSID_LEN];
++	/* enum wmi_channel WMI_CHANNEL_1..WMI_CHANNEL_6; for EDMG this is
++	 * the primary channel number
++	 */
+ 	u8 channel;
+-	u8 reserved0;
++	/* enum wmi_channel WMI_CHANNEL_9..WMI_CHANNEL_12 */
++	u8 edmg_channel;
+ 	u8 bssid[WMI_MAC_LEN];
+ 	__le32 ctrl_flags;
+ 	u8 dst_mac[WMI_MAC_LEN];
+@@ -2312,8 +2330,12 @@ struct wmi_notify_req_done_event {
+ 
+ /* WMI_CONNECT_EVENTID */
+ struct wmi_connect_event {
++	/* enum wmi_channel WMI_CHANNEL_1..WMI_CHANNEL_6; for EDMG this is
++	 * the primary channel number
++	 */
+ 	u8 channel;
+-	u8 reserved0;
++	/* enum wmi_channel WMI_CHANNEL_9..WMI_CHANNEL_12 */
++	u8 edmg_channel;
+ 	u8 bssid[WMI_MAC_LEN];
+ 	__le16 listen_interval;
+ 	__le16 beacon_interval;
 -- 
 2.7.4
 
