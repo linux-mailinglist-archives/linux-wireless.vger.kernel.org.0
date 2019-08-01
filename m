@@ -2,59 +2,210 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 7A5F37D619
-	for <lists+linux-wireless@lfdr.de>; Thu,  1 Aug 2019 09:12:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 745467D625
+	for <lists+linux-wireless@lfdr.de>; Thu,  1 Aug 2019 09:15:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729398AbfHAHL6 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 1 Aug 2019 03:11:58 -0400
-Received: from s3.sipsolutions.net ([144.76.43.62]:54098 "EHLO
-        sipsolutions.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725790AbfHAHL6 (ORCPT
+        id S1729984AbfHAHPE (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 1 Aug 2019 03:15:04 -0400
+Received: from mail-lj1-f194.google.com ([209.85.208.194]:42604 "EHLO
+        mail-lj1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729616AbfHAHPE (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 1 Aug 2019 03:11:58 -0400
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <johannes@sipsolutions.net>)
-        id 1ht5FW-0007nT-U7; Thu, 01 Aug 2019 09:11:43 +0200
-Message-ID: <3a2b6d4f9356d54ab8e83fbf25ba9c5f50181f0d.camel@sipsolutions.net>
-Subject: Re: [PATCH -next] iwlwifi: dbg: work around clang bug by marking
- debug strings static
-From:   Johannes Berg <johannes@sipsolutions.net>
-To:     Michael Ellerman <mpe@ellerman.id.au>,
-        Nick Desaulniers <ndesaulniers@google.com>,
-        kvalo@codeaurora.org, Luca Coelho <luciano.coelho@intel.com>
-Cc:     Arnd Bergmann <arnd@arndb.de>,
-        Nathan Chancellor <natechancellor@gmail.com>,
-        Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
-        Intel Linux Wireless <linuxwifi@intel.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Shahar S Matityahu <shahar.s.matityahu@intel.com>,
-        Sara Sharon <sara.sharon@intel.com>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, clang-built-linux@googlegroups.com
-Date:   Thu, 01 Aug 2019 09:11:40 +0200
-In-Reply-To: <874l31r88y.fsf@concordia.ellerman.id.au> (sfid-20190801_032117_118545_20A85892)
-References: <20190712001708.170259-1-ndesaulniers@google.com>
-         <874l31r88y.fsf@concordia.ellerman.id.au>
-         (sfid-20190801_032117_118545_20A85892)
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.30.5 (3.30.5-1.fc29) 
+        Thu, 1 Aug 2019 03:15:04 -0400
+Received: by mail-lj1-f194.google.com with SMTP id t28so68285743lje.9
+        for <linux-wireless@vger.kernel.org>; Thu, 01 Aug 2019 00:15:02 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=q5NZfQcrHRsgd4S+A/I1BDBO9sFtAVV4WjYhQ60yjRY=;
+        b=mOVIjjkBV0C216mYCAwqtd3vnkVxyHa0jUahKJpmJN1AMJo3Taagj2KiDYZNO/Bp0N
+         691ZFQH9XPpzCpv1kHVgDVKN9xe4/d/TX+lz2qEff4IxtQrl2kz8Fae42cWzs6Q0vt3Z
+         i/YW3Ec9I4zgeOHQBDgCH0OImYpuSBRKbLfFctA6mpZ3a+GjmzXpZQOytsKhVLKfAgEB
+         u7vZiS5nzj/cwC0vxGiZ7ybUSqMXv9YZ8+OaDhKXNn+A6RfWyw1w8mCDgzTcmV5T+1Sa
+         AY03HWQ0q0gFieqtIEFVw+/l38kMAtM4ha7MCjW+IcldUMbrZbZ/Ps29A9jgih6GZNhA
+         3m3w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=q5NZfQcrHRsgd4S+A/I1BDBO9sFtAVV4WjYhQ60yjRY=;
+        b=LECmNeAV9pAqFQOJIqdDIMWjQyfnlGkIFTgdU22LXs6/FYFp8Qzdwhy4jYUhU8khLN
+         +vSfpXawUuRmjl9XdB1ObfYRYxcam3nLEtnIG4SFtNrzo/7/y884GuyjsliYetehD+4+
+         7NtILjJIPMoFrOb0JV3L1VoPty7c+Ei3fM+ZtSXZ8n6TRmc9Hh5gJTIiK5tFg+s/Y58h
+         2VkyY9vARZgpxZfCXlnN/lhN/Zsv8qKl40hXEQ2RgDk0QlzazIukrs4MaJLku1yys8pn
+         k0FXM3NAUmQphQ9ZCacdNc9vviGgPOVZ/Qfjdc1vBZEisybnTBxCpvbh4OmhMWPSBAEs
+         0qJA==
+X-Gm-Message-State: APjAAAW0x7xNM2r1sQV63Xq+PMmr1FE7/fQkT/bvviGsbubo87IfqsOM
+        wy5adIIhJXKZmr9O+3cVMtI=
+X-Google-Smtp-Source: APXvYqyK7QmvIo/FQOfOGvhfShtaH2GeLacubSwTF9/1P8KRQdohCH7BwA9F5PorJKA3v75mlVVzog==
+X-Received: by 2002:a2e:3a05:: with SMTP id h5mr52360589lja.114.1564643701705;
+        Thu, 01 Aug 2019 00:15:01 -0700 (PDT)
+Received: from localhost.localdomain ([109.252.54.73])
+        by smtp.gmail.com with ESMTPSA id 63sm14654577ljs.84.2019.08.01.00.15.00
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Thu, 01 Aug 2019 00:15:01 -0700 (PDT)
+From:   Denis Kenzior <denkenz@gmail.com>
+To:     johannes@sipsolutions.net, linux-wireless@vger.kernel.org
+Cc:     Denis Kenzior <denkenz@gmail.com>
+Subject: [RFCv1 1/2] nl80211: Support >4096 byte NEW_WIPHY event nlmsg
+Date:   Thu,  1 Aug 2019 02:14:54 -0500
+Message-Id: <20190801071455.4974-1-denkenz@gmail.com>
+X-Mailer: git-send-email 2.21.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+For historical reasons, NEW_WIPHY messages generated by dumps or
+GET_WIPHY commands were limited to 4096 bytes due to userspace tools
+using limited buffers.  Once the sizes NEW_WIPHY messages exceeded these
+sizes, split dumps were introduced.  All any non-legacy data was added
+only to messages using split-dumps (including filtered dumps).
 
-> Luca, you said this was already fixed in your internal tree, and the fix
-> would appear soon in next, but I don't see anything in linux-next?
+When unsolicited NEW_WIPHY events were introduced they inherited the
+4096 byte limitation.  These messages thus do not contain any non-legacy
+wiphy dump data.  This means that userspace still needs to re-dump the
+information from the kernel after receiving such NEW_WIPHY event since
+some of the information is missing.  Thus it is desirable to relax such
+restrictions for these messages and include the non-legacy data in these
+events.
 
-Luca is still on vacation, but I just sent out a version of the patch we
-had applied internally.
+It should be safe to assume that any users of these new unsolicited
+NEW_WIPHY events are non-legacy clients, which can use a
+larger receive buffer for netlink messages.  Since older, legacy clients
+did not utilize NEW_WIPHY events (they did not exist), it is assumed
+that even if the client receives such a message (even if truncated), no
+harm would result and backwards-compatibility would be kept.
+---
+ net/wireless/nl80211.c | 49 ++++++++++++++++++++++++++++++++++--------
+ 1 file changed, 40 insertions(+), 9 deletions(-)
 
-Also turns out it wasn't actually _fixed_, just _moved_, so those
-internal patches wouldn't have helped anyway.
-
-johannes
+diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
+index 1a107f29016b..6774072e836f 100644
+--- a/net/wireless/nl80211.c
++++ b/net/wireless/nl80211.c
+@@ -1839,6 +1839,7 @@ struct nl80211_dump_wiphy_state {
+ 	long start;
+ 	long split_start, band_start, chan_start, capa_start;
+ 	bool split;
++	bool large_message;
+ };
+ 
+ static int nl80211_send_wiphy(struct cfg80211_registered_device *rdev,
+@@ -2168,12 +2169,23 @@ static int nl80211_send_wiphy(struct cfg80211_registered_device *rdev,
+ 		 * helps ensure that newly added capabilities don't break
+ 		 * older tools by overrunning their buffers.
+ 		 *
++		 * For unsolicited NEW_WIPHY notifications, it is assumed
++		 * that the client can handle larger messages.  Unsolicited
++		 * NEW_WIPHY notifications were added relatively recently
++		 * and it is not expected that older tools with limited
++		 * buffers would utilize these messages anyway.  E.g. even
++		 * if the message is truncated, it would not have been
++		 * used regardless.
++		 *
+ 		 * We still increment split_start so that in the split
+ 		 * case we'll continue with more data in the next round,
+-		 * but break unconditionally so unsplit data stops here.
++		 * but break unless large_messages are requested, so
++		 * legacy unsplit data stops here.
+ 		 */
+ 		state->split_start++;
+-		break;
++		if (state->split || !state->large_message)
++			break;
++		/* Fall through */
+ 	case 9:
+ 		if (rdev->wiphy.extended_capabilities &&
+ 		    (nla_put(msg, NL80211_ATTR_EXT_CAPA,
+@@ -2215,7 +2227,9 @@ static int nl80211_send_wiphy(struct cfg80211_registered_device *rdev,
+ 		}
+ 
+ 		state->split_start++;
+-		break;
++		if (state->split)
++			break;
++		/* Fall through */
+ 	case 10:
+ 		if (nl80211_send_coalesce(msg, rdev))
+ 			goto nla_put_failure;
+@@ -2231,7 +2245,9 @@ static int nl80211_send_wiphy(struct cfg80211_registered_device *rdev,
+ 			goto nla_put_failure;
+ 
+ 		state->split_start++;
+-		break;
++		if (state->split)
++			break;
++		/* Fall through */
+ 	case 11:
+ 		if (rdev->wiphy.n_vendor_commands) {
+ 			const struct nl80211_vendor_cmd_info *info;
+@@ -2267,7 +2283,9 @@ static int nl80211_send_wiphy(struct cfg80211_registered_device *rdev,
+ 			nla_nest_end(msg, nested);
+ 		}
+ 		state->split_start++;
+-		break;
++		if (state->split)
++			break;
++		/* Fall through */
+ 	case 12:
+ 		if (rdev->wiphy.flags & WIPHY_FLAG_HAS_CHANNEL_SWITCH &&
+ 		    nla_put_u8(msg, NL80211_ATTR_MAX_CSA_COUNTERS,
+@@ -2309,7 +2327,9 @@ static int nl80211_send_wiphy(struct cfg80211_registered_device *rdev,
+ 		}
+ 
+ 		state->split_start++;
+-		break;
++		if (state->split)
++			break;
++		/* Fall through */
+ 	case 13:
+ 		if (rdev->wiphy.num_iftype_ext_capab &&
+ 		    rdev->wiphy.iftype_ext_capab) {
+@@ -2377,13 +2397,17 @@ static int nl80211_send_wiphy(struct cfg80211_registered_device *rdev,
+ 		}
+ 
+ 		state->split_start++;
+-		break;
++		if (state->split)
++			break;
++		/* Fall through */
+ 	case 14:
+ 		if (nl80211_send_pmsr_capa(rdev, msg))
+ 			goto nla_put_failure;
+ 
+ 		state->split_start++;
+-		break;
++		if (state->split)
++			break;
++		/* Fall through */
+ 	case 15:
+ 		if (rdev->wiphy.akm_suites &&
+ 		    nla_put(msg, NL80211_ATTR_AKM_SUITES,
+@@ -14687,12 +14711,19 @@ void nl80211_notify_wiphy(struct cfg80211_registered_device *rdev,
+ 			  enum nl80211_commands cmd)
+ {
+ 	struct sk_buff *msg;
++	size_t alloc_size;
+ 	struct nl80211_dump_wiphy_state state = {};
+ 
+ 	WARN_ON(cmd != NL80211_CMD_NEW_WIPHY &&
+ 		cmd != NL80211_CMD_DEL_WIPHY);
+ 
+-	msg = nlmsg_new(NLMSG_DEFAULT_SIZE, GFP_KERNEL);
++	if (cmd == NL80211_CMD_NEW_WIPHY) {
++		state.large_message = true;
++		alloc_size = 8192UL;
++	} else
++		alloc_size = NLMSG_DEFAULT_SIZE;
++
++	msg = nlmsg_new(alloc_size, GFP_KERNEL);
+ 	if (!msg)
+ 		return;
+ 
+-- 
+2.21.0
 
