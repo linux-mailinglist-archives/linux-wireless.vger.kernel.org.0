@@ -2,86 +2,74 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 9B0437DC5E
-	for <lists+linux-wireless@lfdr.de>; Thu,  1 Aug 2019 15:15:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0F31C7DC60
+	for <lists+linux-wireless@lfdr.de>; Thu,  1 Aug 2019 15:16:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728550AbfHANPi (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 1 Aug 2019 09:15:38 -0400
-Received: from smtp.codeaurora.org ([198.145.29.96]:52920 "EHLO
-        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727737AbfHANPh (ORCPT
+        id S1729432AbfHANQW (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 1 Aug 2019 09:16:22 -0400
+Received: from alexa-out-ams-02.qualcomm.com ([185.23.61.163]:9929 "EHLO
+        alexa-out-ams-02.qualcomm.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1728476AbfHANQV (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 1 Aug 2019 09:15:37 -0400
-Received: by smtp.codeaurora.org (Postfix, from userid 1000)
-        id 35BA8609F3; Thu,  1 Aug 2019 13:15:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1564665336;
-        bh=hDR6+ij39p/VmWQYFzPGuYR1eh98EZGRedpmv94ji+E=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=MJyqRcw86SEQtHNWkaITBNwO+j3qzqvzUdxVAeknava5yNTrP87t2ggGdFLmrUA45
-         FHUZeVSKXRvJu8jjYNhXjzth87IQkvB1TPmvc/a01ikvNQWIyoxSoeFyylkvyC39Le
-         vlLh90sCsgsDGbo3nqvYl3YrXkpFDTsJ9JgH47+E=
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        pdx-caf-mail.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.7 required=2.0 tests=ALL_TRUSTED,BAYES_00,
-        DKIM_INVALID,DKIM_SIGNED autolearn=no autolearn_force=no version=3.4.0
-Received: from mail.codeaurora.org (localhost.localdomain [127.0.0.1])
-        by smtp.codeaurora.org (Postfix) with ESMTP id D5947608A5;
-        Thu,  1 Aug 2019 13:15:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1564665335;
-        bh=hDR6+ij39p/VmWQYFzPGuYR1eh98EZGRedpmv94ji+E=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=QiCHBWBLfVJ/EaEkQOhhxvwP3p279ORSFdvjUXo2YY8dVteugdyLHE3xbp0uKDHVU
-         fy4IJtUTHWSFpy9G/CAqeqnHqLXl5PwmHus32heQeCIeNJVzE0h5ZPA0qIantr51g0
-         3rG1sn4HYfEU4J900KjqnNbNvTSJomSLbH89CvSQ=
-MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII;
- format=flowed
-Content-Transfer-Encoding: 7bit
-Date:   Thu, 01 Aug 2019 16:15:35 +0300
-From:   Alexei Lazar <ailizaro@codeaurora.org>
+        Thu, 1 Aug 2019 09:16:21 -0400
+Received: from ironmsg03-ams.qualcomm.com ([10.251.56.4])
+  by alexa-out-ams-02.qualcomm.com with ESMTP; 01 Aug 2019 15:16:20 +0200
+Received: from unknown (HELO wigig-1329.mea.qualcomm.com) ([10.4.89.235])
+  by ironmsg03-ams.qualcomm.com with ESMTP; 01 Aug 2019 15:16:16 +0200
+From:   Alexei Avshalom Lazar <ailizaro@codeaurora.org>
 To:     Johannes Berg <johannes@sipsolutions.net>
-Cc:     linux-wireless@vger.kernel.org, wil6210@qti.qualcomm.com
-Subject: Re: [PATCH v5 1/2] nl80211: Add support for EDMG channels
-In-Reply-To: <4deeee0289e706d5e594d00d987c233fb8fb25b5.camel@sipsolutions.net>
-References: <1563194767-4817-1-git-send-email-ailizaro@codeaurora.org>
- <1563194767-4817-2-git-send-email-ailizaro@codeaurora.org>
- <4deeee0289e706d5e594d00d987c233fb8fb25b5.camel@sipsolutions.net>
-Message-ID: <8a445e39175f1aaf7cc3eaa6c4474619@codeaurora.org>
-X-Sender: ailizaro@codeaurora.org
-User-Agent: Roundcube Webmail/1.2.5
+Cc:     Alexei Avshalom Lazar <ailizaro@codeaurora.org>,
+        linux-wireless@vger.kernel.org, wil6210@qti.qualcomm.com
+Subject: [PATCH v6 0/2] Add support for new channels on 60GHz band
+Date:   Thu,  1 Aug 2019 16:16:12 +0300
+Message-Id: <1564665374-2856-1-git-send-email-ailizaro@codeaurora.org>
+X-Mailer: git-send-email 2.7.4
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 2019-07-26 16:29, Johannes Berg wrote:
-> Hi Alexei,
-> 
-> I'm not exactly sure why, but this breaks practically all connectivity
-> on 2.4 and 5 GHz channels (at least in hwsim tests).
-> 
-> Please check and resubmit.
+The following set of patches add support for new channels on
+60GHz band and EDMG channels:
+Changelog:
+V6:
+- update commit message
+- initialize chandef variable
+V5:
+- Addressed to comments from the community
+- Added enum for bw_config
+- Updated nla_policy to NLA_POLICY_RANGE()
+V4:
+- Addressed to comments from the community
+- Updated comments and variable name
+V3:
+- Addressed to comments from the community
+- Added 60G check for verifying some EDMG cases are relevant
+- Used the ieee80211_sta_edmg_cap struct as the edmg channel configuration
+- Updated nla_policy to NLA_POLICY_RANGE()
+V2
+- Addressed to comments from the community
+- Align to latest Spec release
 
-Sorry for this issue, we have run hwsim test through wpa_supplicant and
-catch small issue that caused the tests to fail - fix raised.
-Can you please share with us how you run the hwsim, you also used the
-wpa_supplicant unit tests or some other tool?
+Alexei Avshalom Lazar (2):
+  nl80211: Add support for EDMG channels
+  wil6210: Add EDMG channel support
 
-> 
-> It'd also be good to reformat the commit log a bit, maybe adding
-> paragraphs, it's a bit of a "wall of text".
-
-Done.
-
-> 
-> Thanks,
-> johannes
+ drivers/net/wireless/ath/wil6210/cfg80211.c  | 205 +++++++++++++++++++++++++--
+ drivers/net/wireless/ath/wil6210/txrx_edma.c |   2 +
+ drivers/net/wireless/ath/wil6210/txrx_edma.h |   6 +
+ drivers/net/wireless/ath/wil6210/wil6210.h   |   8 +-
+ drivers/net/wireless/ath/wil6210/wmi.c       |   5 +-
+ drivers/net/wireless/ath/wil6210/wmi.h       |  26 +++-
+ include/net/cfg80211.h                       |  86 ++++++++++-
+ include/uapi/linux/nl80211.h                 |  24 ++++
+ net/mac80211/mlme.c                          |   2 +-
+ net/mac80211/status.c                        |   2 +-
+ net/wireless/chan.c                          | 159 +++++++++++++++++++++
+ net/wireless/nl80211.c                       |  37 +++++
+ net/wireless/util.c                          |  42 +++++-
+ 13 files changed, 584 insertions(+), 20 deletions(-)
 
 -- 
-Alexei Lazar
-Qualcomm Israel, on behalf of Qualcomm Innovation Center, Inc.
-The Qualcomm Innovation Center, Inc. is a member of Code Aurora Forum a
-Linux Foundation Collaborative Project
+2.7.4
+
