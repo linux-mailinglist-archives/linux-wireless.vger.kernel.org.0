@@ -2,56 +2,58 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 745467D625
-	for <lists+linux-wireless@lfdr.de>; Thu,  1 Aug 2019 09:15:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 13D477D626
+	for <lists+linux-wireless@lfdr.de>; Thu,  1 Aug 2019 09:15:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729984AbfHAHPE (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 1 Aug 2019 03:15:04 -0400
-Received: from mail-lj1-f194.google.com ([209.85.208.194]:42604 "EHLO
+        id S1730547AbfHAHPF (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 1 Aug 2019 03:15:05 -0400
+Received: from mail-lj1-f194.google.com ([209.85.208.194]:43272 "EHLO
         mail-lj1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729616AbfHAHPE (ORCPT
+        with ESMTP id S1725283AbfHAHPE (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
         Thu, 1 Aug 2019 03:15:04 -0400
-Received: by mail-lj1-f194.google.com with SMTP id t28so68285743lje.9
-        for <linux-wireless@vger.kernel.org>; Thu, 01 Aug 2019 00:15:02 -0700 (PDT)
+Received: by mail-lj1-f194.google.com with SMTP id y17so43729748ljk.10
+        for <linux-wireless@vger.kernel.org>; Thu, 01 Aug 2019 00:15:03 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=q5NZfQcrHRsgd4S+A/I1BDBO9sFtAVV4WjYhQ60yjRY=;
-        b=mOVIjjkBV0C216mYCAwqtd3vnkVxyHa0jUahKJpmJN1AMJo3Taagj2KiDYZNO/Bp0N
-         691ZFQH9XPpzCpv1kHVgDVKN9xe4/d/TX+lz2qEff4IxtQrl2kz8Fae42cWzs6Q0vt3Z
-         i/YW3Ec9I4zgeOHQBDgCH0OImYpuSBRKbLfFctA6mpZ3a+GjmzXpZQOytsKhVLKfAgEB
-         u7vZiS5nzj/cwC0vxGiZ7ybUSqMXv9YZ8+OaDhKXNn+A6RfWyw1w8mCDgzTcmV5T+1Sa
-         AY03HWQ0q0gFieqtIEFVw+/l38kMAtM4ha7MCjW+IcldUMbrZbZ/Ps29A9jgih6GZNhA
-         3m3w==
+        h=from:to:cc:subject:date:message-id:in-reply-to:references
+         :mime-version:content-transfer-encoding;
+        bh=XqjNTMdCoxg7mqOMzCamjYwRdrBEdNTjPXYyp8Ir2GI=;
+        b=OORIw4EpWMna92eRsKeGffoxXQBJ2NFun/gqf6YoseaLgJHqUF95kz6sr/5PJ5d/EZ
+         x9hwNhYc76Y0kfSftLKetkDSGKirlzUfVAo5c/Y10kHv0/7jHuGlb+uE8UUVXAkKatIi
+         FYN8JvgYdGKyy/cn62LfKX6GsqffgI0AwdxH1/8rUPRmLKXyGjkJyknxCwrks6zJDWqG
+         xGTRfe/5aFTwO9VskmbdKft/tdm5/QNy+Badm6VjxDbNuzNZ1wB7OXYQJweCo/WjfSZk
+         dLj36xVLVYWqMsqHMMcbh+Jm4Os6g1Q6MKzPZ/xrEQ5qsZgD2YPPwgzR3pJPtUPNMMqr
+         WXIw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=q5NZfQcrHRsgd4S+A/I1BDBO9sFtAVV4WjYhQ60yjRY=;
-        b=LECmNeAV9pAqFQOJIqdDIMWjQyfnlGkIFTgdU22LXs6/FYFp8Qzdwhy4jYUhU8khLN
-         +vSfpXawUuRmjl9XdB1ObfYRYxcam3nLEtnIG4SFtNrzo/7/y884GuyjsliYetehD+4+
-         7NtILjJIPMoFrOb0JV3L1VoPty7c+Ei3fM+ZtSXZ8n6TRmc9Hh5gJTIiK5tFg+s/Y58h
-         2VkyY9vARZgpxZfCXlnN/lhN/Zsv8qKl40hXEQ2RgDk0QlzazIukrs4MaJLku1yys8pn
-         k0FXM3NAUmQphQ9ZCacdNc9vviGgPOVZ/Qfjdc1vBZEisybnTBxCpvbh4OmhMWPSBAEs
-         0qJA==
-X-Gm-Message-State: APjAAAW0x7xNM2r1sQV63Xq+PMmr1FE7/fQkT/bvviGsbubo87IfqsOM
-        wy5adIIhJXKZmr9O+3cVMtI=
-X-Google-Smtp-Source: APXvYqyK7QmvIo/FQOfOGvhfShtaH2GeLacubSwTF9/1P8KRQdohCH7BwA9F5PorJKA3v75mlVVzog==
-X-Received: by 2002:a2e:3a05:: with SMTP id h5mr52360589lja.114.1564643701705;
-        Thu, 01 Aug 2019 00:15:01 -0700 (PDT)
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+         :references:mime-version:content-transfer-encoding;
+        bh=XqjNTMdCoxg7mqOMzCamjYwRdrBEdNTjPXYyp8Ir2GI=;
+        b=P4JBsipzVsmjFZQZUycb0ZdMZ40A8ZcrDh608/BuGKwyBpMLnSxmeU5mtCVRZq43b/
+         1bga6+ke6RL4QPlmDdE4YmvQhzMawyb/z4azKbISurI1hZ4MBJk7/2QSAq9vxSx1iKQS
+         9YWMXaxwPu70M17XDQYCcmiuy35kZUTkzLRA/bTs1yWodd7ytdCsfVU0IfZTZh1TTM3x
+         tAa3RSHilfc5zI67zZK1dbHqrr0Q/sl0OvmdNQWKV+k031J91gQ1ub7LxY+4RWhJHNHZ
+         TFvdGBmrzxumXMFZv3yF5ax/GovqdWQiQ7JaROdp9iPDf24ra9C5oAm5ybRO4iwxRWYa
+         Tjdg==
+X-Gm-Message-State: APjAAAVKeHLxAcQP8Wq07zfL6nXu3ZCr3SaGTlpVcbxK57fRso4NfKHn
+        Alm0+nyHICVxSGPD1PH/tIc=
+X-Google-Smtp-Source: APXvYqyDb8+aPKTKfHRTO3GsA7Jey8wi9mTCLCYl/7DHglzteyhjqyF9N8D5nOE9hYfFvFnDCkAfBQ==
+X-Received: by 2002:a2e:9192:: with SMTP id f18mr36879499ljg.52.1564643702975;
+        Thu, 01 Aug 2019 00:15:02 -0700 (PDT)
 Received: from localhost.localdomain ([109.252.54.73])
-        by smtp.gmail.com with ESMTPSA id 63sm14654577ljs.84.2019.08.01.00.15.00
+        by smtp.gmail.com with ESMTPSA id 63sm14654577ljs.84.2019.08.01.00.15.01
         (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Thu, 01 Aug 2019 00:15:01 -0700 (PDT)
+        Thu, 01 Aug 2019 00:15:02 -0700 (PDT)
 From:   Denis Kenzior <denkenz@gmail.com>
 To:     johannes@sipsolutions.net, linux-wireless@vger.kernel.org
 Cc:     Denis Kenzior <denkenz@gmail.com>
-Subject: [RFCv1 1/2] nl80211: Support >4096 byte NEW_WIPHY event nlmsg
-Date:   Thu,  1 Aug 2019 02:14:54 -0500
-Message-Id: <20190801071455.4974-1-denkenz@gmail.com>
+Subject: [RFCv1 2/2] nl80211: Don't split-dump for clients with large buffers
+Date:   Thu,  1 Aug 2019 02:14:55 -0500
+Message-Id: <20190801071455.4974-2-denkenz@gmail.com>
 X-Mailer: git-send-email 2.21.0
+In-Reply-To: <20190801071455.4974-1-denkenz@gmail.com>
+References: <20190801071455.4974-1-denkenz@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
@@ -59,153 +61,45 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-For historical reasons, NEW_WIPHY messages generated by dumps or
-GET_WIPHY commands were limited to 4096 bytes due to userspace tools
-using limited buffers.  Once the sizes NEW_WIPHY messages exceeded these
-sizes, split dumps were introduced.  All any non-legacy data was added
-only to messages using split-dumps (including filtered dumps).
-
-When unsolicited NEW_WIPHY events were introduced they inherited the
-4096 byte limitation.  These messages thus do not contain any non-legacy
-wiphy dump data.  This means that userspace still needs to re-dump the
-information from the kernel after receiving such NEW_WIPHY event since
-some of the information is missing.  Thus it is desirable to relax such
-restrictions for these messages and include the non-legacy data in these
-events.
-
-It should be safe to assume that any users of these new unsolicited
-NEW_WIPHY events are non-legacy clients, which can use a
-larger receive buffer for netlink messages.  Since older, legacy clients
-did not utilize NEW_WIPHY events (they did not exist), it is assumed
-that even if the client receives such a message (even if truncated), no
-harm would result and backwards-compatibility would be kept.
 ---
- net/wireless/nl80211.c | 49 ++++++++++++++++++++++++++++++++++--------
- 1 file changed, 40 insertions(+), 9 deletions(-)
+ net/wireless/nl80211.c | 17 +++++++++++++++++
+ 1 file changed, 17 insertions(+)
 
 diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
-index 1a107f29016b..6774072e836f 100644
+index 6774072e836f..e1707cfd9076 100644
 --- a/net/wireless/nl80211.c
 +++ b/net/wireless/nl80211.c
-@@ -1839,6 +1839,7 @@ struct nl80211_dump_wiphy_state {
- 	long start;
- 	long split_start, band_start, chan_start, capa_start;
- 	bool split;
-+	bool large_message;
- };
- 
- static int nl80211_send_wiphy(struct cfg80211_registered_device *rdev,
-@@ -2168,12 +2169,23 @@ static int nl80211_send_wiphy(struct cfg80211_registered_device *rdev,
- 		 * helps ensure that newly added capabilities don't break
- 		 * older tools by overrunning their buffers.
- 		 *
-+		 * For unsolicited NEW_WIPHY notifications, it is assumed
-+		 * that the client can handle larger messages.  Unsolicited
-+		 * NEW_WIPHY notifications were added relatively recently
-+		 * and it is not expected that older tools with limited
-+		 * buffers would utilize these messages anyway.  E.g. even
-+		 * if the message is truncated, it would not have been
-+		 * used regardless.
-+		 *
- 		 * We still increment split_start so that in the split
- 		 * case we'll continue with more data in the next round,
--		 * but break unconditionally so unsplit data stops here.
-+		 * but break unless large_messages are requested, so
-+		 * legacy unsplit data stops here.
- 		 */
- 		state->split_start++;
--		break;
-+		if (state->split || !state->large_message)
-+			break;
-+		/* Fall through */
- 	case 9:
- 		if (rdev->wiphy.extended_capabilities &&
- 		    (nla_put(msg, NL80211_ATTR_EXT_CAPA,
-@@ -2215,7 +2227,9 @@ static int nl80211_send_wiphy(struct cfg80211_registered_device *rdev,
+@@ -2496,6 +2496,22 @@ static int nl80211_dump_wiphy(struct sk_buff *skb, struct netlink_callback *cb)
+ 			rtnl_unlock();
+ 			return ret;
  		}
- 
- 		state->split_start++;
--		break;
-+		if (state->split)
-+			break;
-+		/* Fall through */
- 	case 10:
- 		if (nl80211_send_coalesce(msg, rdev))
- 			goto nla_put_failure;
-@@ -2231,7 +2245,9 @@ static int nl80211_send_wiphy(struct cfg80211_registered_device *rdev,
- 			goto nla_put_failure;
- 
- 		state->split_start++;
--		break;
-+		if (state->split)
-+			break;
-+		/* Fall through */
- 	case 11:
- 		if (rdev->wiphy.n_vendor_commands) {
- 			const struct nl80211_vendor_cmd_info *info;
-@@ -2267,7 +2283,9 @@ static int nl80211_send_wiphy(struct cfg80211_registered_device *rdev,
- 			nla_nest_end(msg, nested);
- 		}
- 		state->split_start++;
--		break;
-+		if (state->split)
-+			break;
-+		/* Fall through */
- 	case 12:
- 		if (rdev->wiphy.flags & WIPHY_FLAG_HAS_CHANNEL_SWITCH &&
- 		    nla_put_u8(msg, NL80211_ATTR_MAX_CSA_COUNTERS,
-@@ -2309,7 +2327,9 @@ static int nl80211_send_wiphy(struct cfg80211_registered_device *rdev,
- 		}
- 
- 		state->split_start++;
--		break;
-+		if (state->split)
-+			break;
-+		/* Fall through */
- 	case 13:
- 		if (rdev->wiphy.num_iftype_ext_capab &&
- 		    rdev->wiphy.iftype_ext_capab) {
-@@ -2377,13 +2397,17 @@ static int nl80211_send_wiphy(struct cfg80211_registered_device *rdev,
- 		}
- 
- 		state->split_start++;
--		break;
-+		if (state->split)
-+			break;
-+		/* Fall through */
- 	case 14:
- 		if (nl80211_send_pmsr_capa(rdev, msg))
- 			goto nla_put_failure;
- 
- 		state->split_start++;
--		break;
-+		if (state->split)
-+			break;
-+		/* Fall through */
- 	case 15:
- 		if (rdev->wiphy.akm_suites &&
- 		    nla_put(msg, NL80211_ATTR_AKM_SUITES,
-@@ -14687,12 +14711,19 @@ void nl80211_notify_wiphy(struct cfg80211_registered_device *rdev,
- 			  enum nl80211_commands cmd)
- {
- 	struct sk_buff *msg;
-+	size_t alloc_size;
- 	struct nl80211_dump_wiphy_state state = {};
- 
- 	WARN_ON(cmd != NL80211_CMD_NEW_WIPHY &&
- 		cmd != NL80211_CMD_DEL_WIPHY);
- 
--	msg = nlmsg_new(NLMSG_DEFAULT_SIZE, GFP_KERNEL);
-+	if (cmd == NL80211_CMD_NEW_WIPHY) {
-+		state.large_message = true;
-+		alloc_size = 8192UL;
-+	} else
-+		alloc_size = NLMSG_DEFAULT_SIZE;
 +
-+	msg = nlmsg_new(alloc_size, GFP_KERNEL);
- 	if (!msg)
- 		return;
++		/*
++		 * auto-detect support for large buffer sizes: af_netlink
++		 * will allocate skbufs larger than 4096 in cases where
++		 * it detects that the client receive buffer (given to
++		 * recvmsg) is bigger.  In such cases we can assume that
++		 * performing split dumps is wasteful since the client
++		 * can likely safely consume the entire un-split wiphy
++		 * message in one go without the extra message header
++		 * overhead.
++		 */
++		if (skb_tailroom(skb) > 4096) {
++			state->large_message = true;
++			state->split = false;
++		}
++
+ 		cb->args[0] = (long)state;
+ 	}
  
+@@ -2529,6 +2545,7 @@ static int nl80211_dump_wiphy(struct sk_buff *skb, struct netlink_callback *cb)
+ 				 * We can then retry with the larger buffer.
+ 				 */
+ 				if ((ret == -ENOBUFS || ret == -EMSGSIZE) &&
++				    !state->large_message &&
+ 				    !skb->len && !state->split &&
+ 				    cb->min_dump_alloc < 4096) {
+ 					cb->min_dump_alloc = 4096;
 -- 
 2.21.0
 
