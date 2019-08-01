@@ -2,91 +2,69 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 080FD7DFD4
-	for <lists+linux-wireless@lfdr.de>; Thu,  1 Aug 2019 18:11:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1EFDF7E061
+	for <lists+linux-wireless@lfdr.de>; Thu,  1 Aug 2019 18:42:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732796AbfHAQLi (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 1 Aug 2019 12:11:38 -0400
-Received: from mail-wm1-f66.google.com ([209.85.128.66]:53586 "EHLO
-        mail-wm1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1732794AbfHAQLi (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 1 Aug 2019 12:11:38 -0400
-Received: by mail-wm1-f66.google.com with SMTP id x15so65231773wmj.3
-        for <linux-wireless@vger.kernel.org>; Thu, 01 Aug 2019 09:11:36 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=944owNyPBjUV61hnMTGIdIThoKkj0Nuu4CFUCls7YwA=;
-        b=OGzVsPWoBJ/Juaqyc0oTHidNSkl1aOhijQCeKW5e71Z8yKxMwg7t84Y3+fj3HkLS4G
-         5lJWavkva644cRvML2Oduh5iIYVxw1waMIJMFghsykBHfUgL9nXJQuprbKcoSWMRDohy
-         wlH6pghkD0yPaxz2vNFRV6ZVuGMF3IayOS/7wp/tEMBVsCgpibZgq/tik2B+mlVNfkM9
-         WIODolf0Oic1fgW4VmDlnlpliVeRWcNjrG9FFaIyMICtdN7RR0KINOg4CCkwJCOZso/B
-         Ql2BgRZ21L1q3Q68vaq8xHJhTxr+I2SmUfNYPJ8guB82Bb+Mnz7tZv0z33qUtjS2vgz0
-         UYIQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=944owNyPBjUV61hnMTGIdIThoKkj0Nuu4CFUCls7YwA=;
-        b=LjX8E6ZbAXopXixZSzvbssks1+TS/ndKVfSAx2suJ572fy+DAd97hGap5RTZOJlZIu
-         Xk5w36GradR3b6X8PJyrsAraUmEl//8NrERj+KuxkMK8yrXtZGE0Cpy25LkZTmb13MVV
-         tyXtpvsuTxP04jQU+0x+A+ecGnVtQ/CWN8lwBa8wq7E5fr/LMq0cDcSGA4j+h8BrunBc
-         bx+L+iPJuW3YN2c8BqefGG0nlkAolFPT58ScNjFUcT4f/bsNeoMpSZ8zKj99LLA5n7JN
-         mP4eQawMs3QsKXyUvzezrOj3DthTkZLS9liKSczIwdisHhkiWmhRJInH9ufziksoW4wY
-         r2cQ==
-X-Gm-Message-State: APjAAAUjf+t9e0ZVyaFryV+QnIPiGuJSvEOByJLu67ihvet70MtscWKN
-        qNyejU2zh3ZbF9/gXdEwlcM=
-X-Google-Smtp-Source: APXvYqyDydw4/u7t8psF+yEt6XWKPtV0P7Wl3Hgu55ES11j1NhkK+/mUzSYt6+3P7AuAjLj7oUagnQ==
-X-Received: by 2002:a05:600c:230c:: with SMTP id 12mr19672716wmo.151.1564675895980;
-        Thu, 01 Aug 2019 09:11:35 -0700 (PDT)
-Received: from archlinux-threadripper ([2a01:4f8:222:2f1b::2])
-        by smtp.gmail.com with ESMTPSA id o4sm55501402wmh.35.2019.08.01.09.11.35
-        (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
-        Thu, 01 Aug 2019 09:11:35 -0700 (PDT)
-Date:   Thu, 1 Aug 2019 09:11:33 -0700
-From:   Nathan Chancellor <natechancellor@gmail.com>
-To:     Johannes Berg <johannes@sipsolutions.net>
-Cc:     linux-wireless@vger.kernel.org, Mauro Rossi <issor.oruam@gmail.com>
-Subject: Re: [PATCH] iwlwifi: dbg_ini: fix compile time assert build errors
-Message-ID: <20190801161133.GA48349@archlinux-threadripper>
-References: <20190801070436.6588-1-johannes@sipsolutions.net>
+        id S1730088AbfHAQl6 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 1 Aug 2019 12:41:58 -0400
+Received: from mail.kernel.org ([198.145.29.99]:37230 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1729082AbfHAQl6 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 1 Aug 2019 12:41:58 -0400
+Received: from localhost (83-86-89-107.cable.dynamic.v4.ziggo.nl [83.86.89.107])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 705DE20838;
+        Thu,  1 Aug 2019 16:41:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1564677717;
+        bh=eknL7DZfqIIEbpkvgdNMFNcQaCK/jHKsF7wcP4BIOds=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=UAIqnerPahMJKZjbSHzoUVBG2mp4T4FpNqDN0ezjnGErWygQo8dPbjCRcAXKM4liH
+         60YSE+Kn2cL5A9wHGQ/DVP8nGycaujtGZ5NUWTSC0mgYUhrJ5i3ZMRXROjvXtuAbKF
+         Gn001hEEfhrKfO4B31HxECK2GO0IS2otXEQGDAhs=
+Date:   Thu, 1 Aug 2019 18:41:55 +0200
+From:   Greg KH <gregkh@linuxfoundation.org>
+To:     Adham.Abozaeid@microchip.com
+Cc:     linux-wireless@vger.kernel.org, devel@driverdev.osuosl.org,
+        johannes@sipsolutions.net, Ajay.Kathat@microchip.com
+Subject: Re: [PATCH] staging: wilc1000: merge drv_handle and operation_mode
+ wids
+Message-ID: <20190801164155.GA14688@kroah.com>
+References: <20190731205245.6590-1-adham.abozaeid@microchip.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20190801070436.6588-1-johannes@sipsolutions.net>
+In-Reply-To: <20190731205245.6590-1-adham.abozaeid@microchip.com>
 User-Agent: Mutt/1.12.1 (2019-06-15)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Thu, Aug 01, 2019 at 09:04:34AM +0200, Johannes Berg wrote:
-> From: Mauro Rossi <issor.oruam@gmail.com>
+On Wed, Jul 31, 2019 at 08:58:19PM +0000, Adham.Abozaeid@microchip.com wrote:
+> From: Adham Abozaeid <adham.abozaeid@microchip.com>
 > 
-> This patch fixes and preserves existing code style, and readability,
-> for IWL_ERR() and IWL_WARN() macros invocations recently added in dbg.c
+> wilc_set_wfi_drv_handler and wilc_set_operation_mode sends the same
+> parameters to the FW, so it's better to combine them together.
 > 
-> Fixes the following build errors with Android build system:
+> Kept wilc_set_wfi_drv_handler implementation since it sends all the
+> required parameters, and renamed it to wilc_set_operation_mode to be
+> more descriptive.
 > 
-> /home/utente/pie-x86_kernel/kernel/drivers/net/wireless/intel/iwlwifi/fw/dbg.c: In function '_iwl_fw_dbg_apply_point':
-> /home/utente/pie-x86_kernel/kernel/drivers/net/wireless/intel/iwlwifi/fw/dbg.c:2445:3:
-> error: call to '__compiletime_assert_2446' declared with attribute error: BUILD_BUG_ON failed: err_str[sizeof(err_str) - 2] != '\n'
-> /home/utente/pie-x86_kernel/kernel/drivers/net/wireless/intel/iwlwifi/fw/dbg.c:2451:3:
-> error: call to '__compiletime_assert_2452' declared with attribute error: BUILD_BUG_ON failed: err_str[sizeof(err_str) - 2] != '\n'
-> ...
-> /home/utente/pie-x86_kernel/kernel/drivers/net/wireless/intel/iwlwifi/fw/dbg.c:2789:5:
-> error: call to '__compiletime_assert_2790' declared with attribute error: BUILD_BUG_ON failed: invalid_ap_str[sizeof(invalid_ap_str) - 2] != '\n'
-> /home/utente/pie-x86_kernel/kernel/drivers/net/wireless/intel/iwlwifi/fw/dbg.c:2800:5:
-> error: call to '__compiletime_assert_2801' declared with attribute error: BUILD_BUG_ON failed: invalid_ap_str[sizeof(invalid_ap_str) - 2] != '\n'
-> 
-> Fixes: 427ab6385cf3 ("iwlwifi: dbg_ini: enforce apply point early on buffer allocation tlv")
-> Fixes: 57d88b116175 ("iwlwifi: dbg_ini: support debug info TLV")
-> Signed-off-by: Mauro Rossi <issor.oruam@gmail.com>
-> Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+> Signed-off-by: Adham Abozaeid <adham.abozaeid@microchip.com>
+> ---
+>  drivers/staging/wilc1000/wilc_hif.c           | 29 ++-----------------
+>  drivers/staging/wilc1000/wilc_hif.h           |  5 ++--
+>  drivers/staging/wilc1000/wilc_netdev.c        |  6 ++--
+>  .../staging/wilc1000/wilc_wfi_cfgoperations.c | 24 +++++++--------
+>  drivers/staging/wilc1000/wilc_wlan_if.h       |  3 +-
+>  5 files changed, 20 insertions(+), 47 deletions(-)
 
-I can confirm that this works fine.
+This patch causes the following build error:
+drivers/staging/wilc1000/wilc_hif.c: In function wilc_deinit:
+drivers/staging/wilc1000/wilc_hif.c:1610:2: error: implicit declaration of function wilc_set_wfi_drv_handler [-Werror=implicit-function-declaration]
+ 1610 |  wilc_set_wfi_drv_handler(vif, 0, 0, 0);
+      |  ^~~~~~~~~~~~~~~~~~~~~~~~
 
-Reviewed-by: Nathan Chancellor <natechancellor@gmail.com>
-Tested-by: Nathan Chancellor <natechancellor@gmail.com>
+Always test build your patches...
