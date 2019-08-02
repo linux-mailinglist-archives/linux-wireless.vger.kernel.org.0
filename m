@@ -2,39 +2,39 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 76A717F98D
-	for <lists+linux-wireless@lfdr.de>; Fri,  2 Aug 2019 15:30:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D43167F950
+	for <lists+linux-wireless@lfdr.de>; Fri,  2 Aug 2019 15:27:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2394454AbfHBN0B (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 2 Aug 2019 09:26:01 -0400
-Received: from mail.kernel.org ([198.145.29.99]:36690 "EHLO mail.kernel.org"
+        id S2389610AbfHBN0s (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 2 Aug 2019 09:26:48 -0400
+Received: from mail.kernel.org ([198.145.29.99]:37558 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2391467AbfHBN0B (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 2 Aug 2019 09:26:01 -0400
+        id S2391370AbfHBN0q (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 2 Aug 2019 09:26:46 -0400
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 6ECC62182B;
-        Fri,  2 Aug 2019 13:25:59 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 9FA29217D6;
+        Fri,  2 Aug 2019 13:26:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1564752360;
-        bh=ajceEfQ3nTMUXf+1ofcZsI0qRG3vNYfFwmJrC3HXbpw=;
+        s=default; t=1564752405;
+        bh=hWwEHFuevGp1O7an+MVFFfzJVMbNQ41keR2NXr10SIc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=HZQT+wl9gY03iwDIHFr1a6lMc/WS8bd4NYpEOj1/+H6J4OHExUxdEL2mu0PiNIcPb
-         JVAEVLUTUvQlrxLgerZaCBsQNrGSR+syUHP91/IusCQFk++c4LasmWZEykZXB7ArTv
-         VahAZrN0Dp/PFfWou28YZq6gawLAkTyIgHgWMzBA=
+        b=c+QoTHzTbh5++AE5jbpS11QysDfenol8cqkBR0DhgAlcDR9ZveA/6Vgd4OL/yerOj
+         IVr04VnHAw6BjCyrnyaSz09zh52OAqJQ7JjWVpGpXDBrpKxtXvVVyUcyREdzHUN3fM
+         AjUVpnSuABsGnzyuMtSO6iJkwAAE785PzztW9mDM=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     Brian Norris <briannorris@chromium.org>,
         Johannes Berg <johannes.berg@intel.com>,
         Sasha Levin <sashal@kernel.org>,
         linux-wireless@vger.kernel.org, netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.9 03/22] mac80211: don't warn about CW params when not using them
-Date:   Fri,  2 Aug 2019 09:25:27 -0400
-Message-Id: <20190802132547.14517-3-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.4 03/17] mac80211: don't warn about CW params when not using them
+Date:   Fri,  2 Aug 2019 09:26:20 -0400
+Message-Id: <20190802132635.14885-3-sashal@kernel.org>
 X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20190802132547.14517-1-sashal@kernel.org>
-References: <20190802132547.14517-1-sashal@kernel.org>
+In-Reply-To: <20190802132635.14885-1-sashal@kernel.org>
+References: <20190802132635.14885-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -66,7 +66,7 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 9 insertions(+), 4 deletions(-)
 
 diff --git a/net/mac80211/driver-ops.c b/net/mac80211/driver-ops.c
-index bb886e7db47f1..f783d1377d9a8 100644
+index c258f1041d330..df2e4e3112177 100644
 --- a/net/mac80211/driver-ops.c
 +++ b/net/mac80211/driver-ops.c
 @@ -169,11 +169,16 @@ int drv_conf_tx(struct ieee80211_local *local,
