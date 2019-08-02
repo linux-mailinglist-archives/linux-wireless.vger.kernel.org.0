@@ -2,94 +2,105 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C6A147F9CD
-	for <lists+linux-wireless@lfdr.de>; Fri,  2 Aug 2019 15:30:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 711EA7FC53
+	for <lists+linux-wireless@lfdr.de>; Fri,  2 Aug 2019 16:36:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2394217AbfHBNYn (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 2 Aug 2019 09:24:43 -0400
-Received: from mail.kernel.org ([198.145.29.99]:35436 "EHLO mail.kernel.org"
+        id S2392317AbfHBOge (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 2 Aug 2019 10:36:34 -0400
+Received: from mail.kernel.org ([198.145.29.99]:45296 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2394214AbfHBNYm (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 2 Aug 2019 09:24:42 -0400
-Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        id S1729971AbfHBOge (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 2 Aug 2019 10:36:34 -0400
+Received: from localhost.localdomain.com (unknown [151.66.59.187])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 50C1820880;
-        Fri,  2 Aug 2019 13:24:40 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 3E4F5204EC;
+        Fri,  2 Aug 2019 14:36:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1564752281;
-        bh=ajceEfQ3nTMUXf+1ofcZsI0qRG3vNYfFwmJrC3HXbpw=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Eta5nSThW+llCyXZYSE+5JuuRUFvmY/Fc0NxH8sJThp815GmDkWJ8LVKNjYOdL9UX
-         EgaVt5Yw795iMZDD8vbWDqv/krqug8LDrFqOOAExoykBrA4XGjy+QS4h0Rcv77ur0n
-         fVvERZ5KvH4wl6iCv+WBkZhrFxD5rQovtWeM+fHQ=
-From:   Sasha Levin <sashal@kernel.org>
-To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Brian Norris <briannorris@chromium.org>,
-        Johannes Berg <johannes.berg@intel.com>,
-        Sasha Levin <sashal@kernel.org>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.14 07/30] mac80211: don't warn about CW params when not using them
-Date:   Fri,  2 Aug 2019 09:23:59 -0400
-Message-Id: <20190802132422.13963-7-sashal@kernel.org>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20190802132422.13963-1-sashal@kernel.org>
-References: <20190802132422.13963-1-sashal@kernel.org>
+        s=default; t=1564756593;
+        bh=UKeMuLm5a8VetpuMKRmf8eCa5s3iwEpOb70hLTJ7BTU=;
+        h=From:To:Cc:Subject:Date:From;
+        b=IaX8hhOcY1KWc+MvmpgQRj+7BVcBBGsIRztKyw0CJOJy4ZHE+o3u81icWyVvgWiZ+
+         08jwjIiX6VIzz3oRHu5ZEjTDLz0NiL5B7MgaCwb8oqAUY2F6Nwy1oRz4IFWovRzgrC
+         +gJqCixrdc0VVygGORG9a5UboEpgwH0P7NjJ1ES0=
+From:   Lorenzo Bianconi <lorenzo@kernel.org>
+To:     nbd@nbd.name
+Cc:     lorenzo.bianconi@redhat.com, linux-wireless@vger.kernel.org,
+        sgruszka@redhat.com
+Subject: [PATCH] mt76: mt76x02u: enable multi-vif support
+Date:   Fri,  2 Aug 2019 16:36:20 +0200
+Message-Id: <3edec94719a37a58576d530bba05dc629dfef2e0.1564750297.git.lorenzo@kernel.org>
+X-Mailer: git-send-email 2.21.0
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
 Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Brian Norris <briannorris@chromium.org>
+Enable multi-interface support for mt76x02u driver. For the moment
+allow max two concurrent interfaces in order to preserve enough room
+for ps traffic since we are using beacon slots for it.
+I have successfully tested the following configuration:
+- AP + STA
+- AP0 + AP1
 
-[ Upstream commit d2b3fe42bc629c2d4002f652b3abdfb2e72991c7 ]
-
-ieee80211_set_wmm_default() normally sets up the initial CW min/max for
-each queue, except that it skips doing this if the driver doesn't
-support ->conf_tx. We still end up calling drv_conf_tx() in some cases
-(e.g., ieee80211_reconfig()), which also still won't do anything
-useful...except it complains here about the invalid CW parameters.
-
-Let's just skip the WARN if we weren't going to do anything useful with
-the parameters.
-
-Signed-off-by: Brian Norris <briannorris@chromium.org>
-Link: https://lore.kernel.org/r/20190718015712.197499-1-briannorris@chromium.org
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
 ---
- net/mac80211/driver-ops.c | 13 +++++++++----
- 1 file changed, 9 insertions(+), 4 deletions(-)
+ .../net/wireless/mediatek/mt76/mt76x02_util.c | 26 +++++++++++++++++++
+ 1 file changed, 26 insertions(+)
 
-diff --git a/net/mac80211/driver-ops.c b/net/mac80211/driver-ops.c
-index bb886e7db47f1..f783d1377d9a8 100644
---- a/net/mac80211/driver-ops.c
-+++ b/net/mac80211/driver-ops.c
-@@ -169,11 +169,16 @@ int drv_conf_tx(struct ieee80211_local *local,
- 	if (!check_sdata_in_driver(sdata))
- 		return -EIO;
+diff --git a/drivers/net/wireless/mediatek/mt76/mt76x02_util.c b/drivers/net/wireless/mediatek/mt76/mt76x02_util.c
+index fa45ed280ab1..476f0157a370 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt76x02_util.c
++++ b/drivers/net/wireless/mediatek/mt76/mt76x02_util.c
+@@ -61,6 +61,20 @@ static const struct ieee80211_iface_limit mt76x02_if_limits[] = {
+ 	 },
+ };
  
--	if (WARN_ONCE(params->cw_min == 0 ||
--		      params->cw_min > params->cw_max,
--		      "%s: invalid CW_min/CW_max: %d/%d\n",
--		      sdata->name, params->cw_min, params->cw_max))
-+	if (params->cw_min == 0 || params->cw_min > params->cw_max) {
-+		/*
-+		 * If we can't configure hardware anyway, don't warn. We may
-+		 * never have initialized the CW parameters.
-+		 */
-+		WARN_ONCE(local->ops->conf_tx,
-+			  "%s: invalid CW_min/CW_max: %d/%d\n",
-+			  sdata->name, params->cw_min, params->cw_max);
- 		return -EINVAL;
++static const struct ieee80211_iface_limit mt76x02u_if_limits[] = {
++	{
++		.max = 1,
++		.types = BIT(NL80211_IFTYPE_ADHOC)
++	}, {
++		.max = 2,
++		.types = BIT(NL80211_IFTYPE_STATION) |
++#ifdef CONFIG_MAC80211_MESH
++			 BIT(NL80211_IFTYPE_MESH_POINT) |
++#endif
++			 BIT(NL80211_IFTYPE_AP)
++	},
++};
++
+ static const struct ieee80211_iface_combination mt76x02_if_comb[] = {
+ 	{
+ 		.limits = mt76x02_if_limits,
+@@ -75,6 +89,16 @@ static const struct ieee80211_iface_combination mt76x02_if_comb[] = {
+ 	}
+ };
+ 
++static const struct ieee80211_iface_combination mt76x02u_if_comb[] = {
++	{
++		.limits = mt76x02u_if_limits,
++		.n_limits = ARRAY_SIZE(mt76x02u_if_limits),
++		.max_interfaces = 2,
++		.num_different_channels = 1,
++		.beacon_int_infra_match = true,
 +	}
++};
++
+ static void
+ mt76x02_led_set_config(struct mt76_dev *mdev, u8 delay_on,
+ 		       u8 delay_off)
+@@ -151,6 +175,8 @@ void mt76x02_init_device(struct mt76x02_dev *dev)
+ 	if (mt76_is_usb(dev)) {
+ 		hw->extra_tx_headroom += sizeof(struct mt76x02_txwi) +
+ 					 MT_DMA_HDR_LEN;
++		wiphy->iface_combinations = mt76x02u_if_comb;
++		wiphy->n_iface_combinations = ARRAY_SIZE(mt76x02u_if_comb);
+ 	} else {
+ 		INIT_DELAYED_WORK(&dev->wdt_work, mt76x02_wdt_work);
  
- 	trace_drv_conf_tx(local, sdata, ac, params);
- 	if (local->ops->conf_tx)
 -- 
-2.20.1
+2.21.0
 
