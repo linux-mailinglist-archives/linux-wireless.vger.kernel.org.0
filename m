@@ -2,69 +2,116 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C35DD7F604
-	for <lists+linux-wireless@lfdr.de>; Fri,  2 Aug 2019 13:31:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 908FD7F647
+	for <lists+linux-wireless@lfdr.de>; Fri,  2 Aug 2019 13:58:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2392379AbfHBLb2 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 2 Aug 2019 07:31:28 -0400
-Received: from rnd-relay.smtp.broadcom.com ([192.19.229.170]:49824 "EHLO
-        rnd-relay.smtp.broadcom.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1732737AbfHBLbY (ORCPT
+        id S2392479AbfHBL6p (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 2 Aug 2019 07:58:45 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:39385 "EHLO
+        Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725985AbfHBL6p (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 2 Aug 2019 07:31:24 -0400
-Received: from mail-irv-17.broadcom.com (mail-irv-17.lvn.broadcom.net [10.75.224.233])
-        by rnd-relay.smtp.broadcom.com (Postfix) with ESMTP id A6A4430C03C;
-        Fri,  2 Aug 2019 04:31:22 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.10.3 rnd-relay.smtp.broadcom.com A6A4430C03C
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=broadcom.com;
-        s=dkimrelay; t=1564745482;
-        bh=gaOlaNzDs92SPfiE5cFW9fbJpfQKUwXR9yLVoXOFWoE=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=J0m1k7yQWSHyPEOe3TRNb3Qx3ZMxrYX+8gvb1YNWkf2M7J7+/89mCqYfdmdISoAAG
-         4ZKNyHWe2FGwN8Nptck0wGFULjNuKu3nnD18kFcHhaO4JW8GTfePIQYAtn8JLMMEvU
-         XwpruagdSKsMfPnkfHiP2/pe+pPcniW+vrhjsERk=
-Received: from bld-bun-01.bun.broadcom.com (bld-bun-01.bun.broadcom.com [10.176.128.83])
-        by mail-irv-17.broadcom.com (Postfix) with ESMTP id CDA2B60985;
-        Fri,  2 Aug 2019 04:31:22 -0700 (PDT)
-Received: by bld-bun-01.bun.broadcom.com (Postfix, from userid 25152)
-        id 4EEB5B02E32; Fri,  2 Aug 2019 13:31:20 +0200 (CEST)
-From:   Arend van Spriel <arend.vanspriel@broadcom.com>
-To:     Johannes Berg <johannes@sipsolutions.net>
-Cc:     linux-wireless@vger.kernel.org,
-        Arend van Spriel <arend.vanspriel@broadcom.com>
-Subject: [PATCH V3 8/8] cfg80211: apply same mandatory rate flags for 5GHz and 6GHz
-Date:   Fri,  2 Aug 2019 13:31:05 +0200
-Message-Id: <1564745465-21234-9-git-send-email-arend.vanspriel@broadcom.com>
-X-Mailer: git-send-email 1.9.1
-In-Reply-To: <1564745465-21234-1-git-send-email-arend.vanspriel@broadcom.com>
-References: <1564745465-21234-1-git-send-email-arend.vanspriel@broadcom.com>
+        Fri, 2 Aug 2019 07:58:45 -0400
+Received: from [5.158.153.52] (helo=nanos.tec.linutronix.de)
+        by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
+        (Exim 4.80)
+        (envelope-from <tglx@linutronix.de>)
+        id 1htWCm-0005a2-Oa; Fri, 02 Aug 2019 13:58:40 +0200
+Date:   Fri, 2 Aug 2019 13:58:40 +0200 (CEST)
+From:   Thomas Gleixner <tglx@linutronix.de>
+To:     linux-wireless@vger.kernel.org
+cc:     Kalle Valo <kvalo@codeaurora.org>,
+        Larry Finger <Larry.Finger@lwfinger.net>,
+        b43-dev@lists.infradead.org
+Subject: [PATCH V2] b43legacy: Remove pointless cond_resched() wrapper
+Message-ID: <alpine.DEB.2.21.1908021353190.3924@nanos.tec.linutronix.de>
+User-Agent: Alpine 2.21 (DEB 202 2017-01-01)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-For the new 6GHz band the same rules apply for mandatory rates so
-add it to set_mandatory_flags_band() function.
+cond_resched() can be used unconditionally. If CONFIG_PREEMPT is set, it
+becomes a NOP scheduler wise.
 
-Reviewed-by: Pieter-Paul Giesberts <pieter-paul.giesberts@broadcom.com>
-Reviewed-by: Leon Zegers <leon.zegers@broadcom.com>
-Signed-off-by: Arend van Spriel <arend.vanspriel@broadcom.com>
+Also the B43_BUG_ON() in that wrapper is a homebrewn variant of
+__might_sleep() which is part of cond_resched() already.
+
+Remove the cruft and invoke cond_resched() directly.
+
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Reviewed-by: Larry Finger <Larry.Finger@lwfinger.net>
+Tested-by: Larry Finger <Larry.Finger@lwfinger.net>
 ---
- net/wireless/util.c | 1 +
- 1 file changed, 1 insertion(+)
+V2: Resend to wireless. Picked up Larry's tags
+---
+ drivers/net/wireless/broadcom/b43legacy/phy.c |   21 +++++----------------
+ 1 file changed, 5 insertions(+), 16 deletions(-)
 
-diff --git a/net/wireless/util.c b/net/wireless/util.c
-index 4462837..f0558e7 100644
---- a/net/wireless/util.c
-+++ b/net/wireless/util.c
-@@ -156,6 +156,7 @@ static void set_mandatory_flags_band(struct ieee80211_supported_band *sband)
+--- a/drivers/net/wireless/broadcom/b43legacy/phy.c
++++ b/drivers/net/wireless/broadcom/b43legacy/phy.c
+@@ -69,17 +69,6 @@ static const s8 b43legacy_tssi2dbm_g_tab
  
- 	switch (sband->band) {
- 	case NL80211_BAND_5GHZ:
-+	case NL80211_BAND_6GHZ:
- 		want = 3;
- 		for (i = 0; i < sband->n_bitrates; i++) {
- 			if (sband->bitrates[i].bitrate == 60 ||
--- 
-1.9.1
-
+ static void b43legacy_phy_initg(struct b43legacy_wldev *dev);
+ 
+-
+-static inline
+-void b43legacy_voluntary_preempt(void)
+-{
+-	B43legacy_BUG_ON(!(!in_atomic() && !in_irq() &&
+-			  !in_interrupt() && !irqs_disabled()));
+-#ifndef CONFIG_PREEMPT
+-	cond_resched();
+-#endif /* CONFIG_PREEMPT */
+-}
+-
+ /* Lock the PHY registers against concurrent access from the microcode.
+  * This lock is nonrecursive. */
+ void b43legacy_phy_lock(struct b43legacy_wldev *dev)
+@@ -1124,7 +1113,7 @@ static u16 b43legacy_phy_lo_b_r15_loop(s
+ 		ret += b43legacy_phy_read(dev, 0x002C);
+ 	}
+ 	local_irq_restore(flags);
+-	b43legacy_voluntary_preempt();
++	cond_resched();
+ 
+ 	return ret;
+ }
+@@ -1253,7 +1242,7 @@ u16 b43legacy_phy_lo_g_deviation_subval(
+ 	}
+ 	ret = b43legacy_phy_read(dev, 0x002D);
+ 	local_irq_restore(flags);
+-	b43legacy_voluntary_preempt();
++	cond_resched();
+ 
+ 	return ret;
+ }
+@@ -1591,7 +1580,7 @@ void b43legacy_phy_lo_g_measure(struct b
+ 			b43legacy_radio_write16(dev, 0x43, i);
+ 			b43legacy_radio_write16(dev, 0x52, phy->txctl2);
+ 			udelay(10);
+-			b43legacy_voluntary_preempt();
++			cond_resched();
+ 
+ 			b43legacy_phy_set_baseband_attenuation(dev, j * 2);
+ 
+@@ -1642,7 +1631,7 @@ void b43legacy_phy_lo_g_measure(struct b
+ 					      phy->txctl2
+ 					      | (3/*txctl1*/ << 4));
+ 			udelay(10);
+-			b43legacy_voluntary_preempt();
++			cond_resched();
+ 
+ 			b43legacy_phy_set_baseband_attenuation(dev, j * 2);
+ 
+@@ -1665,7 +1654,7 @@ void b43legacy_phy_lo_g_measure(struct b
+ 		b43legacy_phy_write(dev, 0x0812, (r27 << 8) | 0xA2);
+ 		udelay(2);
+ 		b43legacy_phy_write(dev, 0x0812, (r27 << 8) | 0xA3);
+-		b43legacy_voluntary_preempt();
++		cond_resched();
+ 	} else
+ 		b43legacy_phy_write(dev, 0x0015, r27 | 0xEFA0);
+ 	b43legacy_phy_lo_adjust(dev, is_initializing);
