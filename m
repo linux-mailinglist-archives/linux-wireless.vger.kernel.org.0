@@ -2,101 +2,136 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 34B67803E9
-	for <lists+linux-wireless@lfdr.de>; Sat,  3 Aug 2019 04:11:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4F3E98078D
+	for <lists+linux-wireless@lfdr.de>; Sat,  3 Aug 2019 19:53:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2392940AbfHCCIy (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 2 Aug 2019 22:08:54 -0400
-Received: from smtp.codeaurora.org ([198.145.29.96]:56228 "EHLO
-        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2392893AbfHCCIy (ORCPT
+        id S1728430AbfHCRxk (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 3 Aug 2019 13:53:40 -0400
+Received: from 18.mo4.mail-out.ovh.net ([188.165.54.143]:38008 "EHLO
+        18.mo4.mail-out.ovh.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728389AbfHCRxk (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 2 Aug 2019 22:08:54 -0400
-Received: by smtp.codeaurora.org (Postfix, from userid 1000)
-        id 446C8601D4; Sat,  3 Aug 2019 02:08:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1564798133;
-        bh=8eCdE5CLse5AxBS9/5Vd4hVuuYRfYTGAjFku21C9NXc=;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=JpGJ6BH6+pVnl6ht9Gt/7ZI7SZfd4O8Pi35PUmDoBNXiByzgLioWh90P9vcUkVsCf
-         bjCmSQv9WR0yGNT0C9Dh1Vx1gLbsFHUg/DzrgS6gNDygg40F4UzvYmJb0LyvyCThdN
-         /ZEY85HXEbRwrOHPPzpAbaqjYgSW5kkKe2k4aDrs=
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        pdx-caf-mail.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.7 required=2.0 tests=ALL_TRUSTED,BAYES_00,
-        DKIM_INVALID,DKIM_SIGNED,SPF_NONE autolearn=no autolearn_force=no
-        version=3.4.0
-Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        (Authenticated sender: kvalo@smtp.codeaurora.org)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 0ED096037C;
-        Sat,  3 Aug 2019 02:08:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1564798132;
-        bh=8eCdE5CLse5AxBS9/5Vd4hVuuYRfYTGAjFku21C9NXc=;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=d9AzQNld1G0C2ZZahJN7h8RjjSG5nq10wxS2hoXDTxngoDfW7Kpe6jG4GxmRLqc2l
-         EiLjz0fF1gOSVlwgTAS2yZoe9yaxHXvJNDSyhja4/eX/+8VW4RFMPMMEQSOZdbxChF
-         4HMmoZH1NGWM+VrFPVSzTgQMV6ZhX/RpuENaaGRg=
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 0ED096037C
-Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
-From:   Kalle Valo <kvalo@codeaurora.org>
-To:     Brian Norris <briannorris@chromium.org>
-Cc:     Amitkumar Karwar <amitkarwar@gmail.com>,
-        Nishant Sarmukadam <nishants@marvell.com>,
-        Ganapathi Bhat <gbhat@marvell.com>,
-        Xinming Hu <huxinming820@gmail.com>,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        Linux Kernel <linux-kernel@vger.kernel.org>,
-        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        Jeffy Chen <jeffy.chen@rock-chips.com>,
-        Doug Anderson <dianders@chromium.org>,
-        Matthias Kaehlcke <mka@chromium.org>
-Subject: Re: [RFC PATCH] Revert "mwifiex: fix system hang problem after resume"
-References: <20170331202136.100342-1-briannorris@chromium.org>
-        <20190803010641.GA22848@google.com>
-        <875znfhv2b.fsf@kamboji.qca.qualcomm.com>
-        <CA+ASDXPCxDQAFPcPu5N6aY9mRDRF2FmsSTWAdgvSNDa2uPsRtQ@mail.gmail.com>
-Date:   Sat, 03 Aug 2019 05:08:47 +0300
-In-Reply-To: <CA+ASDXPCxDQAFPcPu5N6aY9mRDRF2FmsSTWAdgvSNDa2uPsRtQ@mail.gmail.com>
-        (Brian Norris's message of "Fri, 2 Aug 2019 19:02:52 -0700")
-Message-ID: <871ry3hufk.fsf@kamboji.qca.qualcomm.com>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
+        Sat, 3 Aug 2019 13:53:40 -0400
+X-Greylist: delayed 6598 seconds by postgrey-1.27 at vger.kernel.org; Sat, 03 Aug 2019 13:53:37 EDT
+Received: from player774.ha.ovh.net (unknown [10.108.54.72])
+        by mo4.mail-out.ovh.net (Postfix) with ESMTP id DA0871FF0C2
+        for <linux-wireless@vger.kernel.org>; Sat,  3 Aug 2019 17:24:26 +0200 (CEST)
+Received: from awhome.eu (p4FF919A6.dip0.t-ipconnect.de [79.249.25.166])
+        (Authenticated sender: postmaster@awhome.eu)
+        by player774.ha.ovh.net (Postfix) with ESMTPSA id 789B48937F49;
+        Sat,  3 Aug 2019 15:24:25 +0000 (UTC)
+From:   Alexander Wetzel <alexander@wetzel-home.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=wetzel-home.de;
+        s=wetzel-home; t=1564845863;
+        bh=KqUS3Y5w2JocdzoHqGhEyCwH/crxcwWUxbIk3pE7sPw=;
+        h=From:To:Cc:Subject:Date;
+        b=KKKQr0fnbQYRkbuIf4gegyk+jZnop6ijUzG+BYCaYtUUVcQu3tHLiiFC6x/EIKzlb
+         4FibR5hY77DL0PrazslHO5zZw+VLXazgxw/WEBjpDnrQK4sDdq6s0IhOX+owsoaodn
+         2dOZo2wrmVQlJzAPlHbt2Sin8Bw07N9ioj9+MuEE=
+To:     johannes@sipsolutions.net
+Cc:     linux-wireless@vger.kernel.org,
+        Alexander Wetzel <alexander@wetzel-home.de>
+Subject: [PATCH] cfg80211: Fix Extended Key ID key install checks
+Date:   Sat,  3 Aug 2019 17:23:18 +0200
+Message-Id: <20190803152318.5497-1-alexander@wetzel-home.de>
+X-Mailer: git-send-email 2.22.0
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Transfer-Encoding: 8bit
+X-Ovh-Tracer-Id: 12045440157173095623
+X-VR-SPAMSTATE: OK
+X-VR-SPAMSCORE: 0
+X-VR-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgeduvddruddtuddgkeejucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuqfggjfdpvefjgfevmfevgfenuceurghilhhouhhtmecuhedttdenuc
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Brian Norris <briannorris@chromium.org> writes:
+Fix two shortcomings of the Extended Key ID API:
 
->> Changing the patchwork state to RFC means that it's dropped and out of
->> my radar. Also, if I see "RFC" in the subject I assume that's a patch
->> which I should not apply by default.
->
-> Ack. Well, there were some "RFCs" I sent recently that you *did*
-> apply, so I didn't really know what happens normally.
+ 1) Allow the userspace to install pairwise keys using keyid 1 without
+    NL80211_KEY_NO_TX set. This allows the userspace to install and
+    activate pairwise keys with keyid 1 in the same way as for keyid 0,
+    simplifying the API usage for e.g. FILS and FT key installs.
 
-True, I have sometimes applied RFC patches in case they look good enough
-and I do not want them to get lost (and this is a good example of RFC
-patches getting lost). But by default I drop RFC patches after a quick
-glance.
+ 2) IEEE 802.11 - 2016 restricts Extended Key ID usage to CCMP/GCMP
+    ciphers in IEEE 802.11 - 2016 "9.4.2.25.4 RSN capabilities".
+    Enforce that when installing a key.
 
->> > On Fri, Mar 31, 2017 at 01:21:36PM -0700, Brian Norris wrote:
-> ...
->> > FWIW, I got an Acked-by from Amit when he was still at Marvell. And
->> > another Reviewed-by from Dmitry. This still applies. Should I resend?
->> > (I'll do that if I don't hear a response within a few days.)
->>
->> This patch is from 2017 so better to resend, and without RFC markings.
->
-> Yep, will do.
+Fixes: 6cdd3979a2bd ("nl80211/cfg80211: Extended Key ID support")
+Signed-off-by: Alexander Wetzel <alexander@wetzel-home.de>
+---
 
-Thanks.
+This patch ended up redesigning the Extended Key ID key install checks
+from scratch...
 
+While working on wpa_supplicant/hostapd Extended Key ID support it
+turned out that it's still useful to be able to install and activate a
+pairwise key for Tx in one step. So instead of forcing the userspace to
+always install and then activate a key I would prefer to fix the API and
+relax the checks with this patch.
+Down side of that is, that we have to get the fix also into 5.2 and 5.3.
+All kernels without the fix will potentially not work correctly with the
+upcoming userspace when using FT (fast roaming) or FILS with an Extended
+Key ID capable AP. (Anyone using the existing API will not notice the
+difference, but I'm next to sure it's only used by my experimental hostapd
+patches so far.)
+
+So ideally we get this patch back ported to all kernels which also have
+6cdd3979a2bd ("nl80211/cfg80211: Extended Key ID support")
+
+Another issue I tripped over while getting the hostapd patches into
+shape is, that our mac80211 TKIP SW crypto implementation drops unicast
+packets on receive when they are using keyid 1.
+Since a standard compliant implementation of Extended Key ID must not
+use TKIP enforcing that rule at key install seems to be preferable
+to handle that within mac80211.
+
+ net/wireless/util.c | 22 +++++++++++++---------
+ 1 file changed, 13 insertions(+), 9 deletions(-)
+
+diff --git a/net/wireless/util.c b/net/wireless/util.c
+index d0e35b7b9e35..962ca7fc1ab7 100644
+--- a/net/wireless/util.c
++++ b/net/wireless/util.c
+@@ -233,25 +233,29 @@ int cfg80211_validate_key_settings(struct cfg80211_registered_device *rdev,
+ 
+ 	switch (params->cipher) {
+ 	case WLAN_CIPHER_SUITE_TKIP:
++		/* Extended Key ID can only be used with CCMP/GCMP ciphers */
++		if (pairwise && key_idx)
++			return -EINVAL;
++		/* fall through */
+ 	case WLAN_CIPHER_SUITE_CCMP:
+ 	case WLAN_CIPHER_SUITE_CCMP_256:
+ 	case WLAN_CIPHER_SUITE_GCMP:
+ 	case WLAN_CIPHER_SUITE_GCMP_256:
+-		/* IEEE802.11-2016 allows only 0 and - when using Extended Key
+-		 * ID - 1 as index for pairwise keys.
++		/* IEEE802.11-2016 allows only 0 and - when supporting
++		 * Extended Key ID - 1 as index for pairwise keys.
+ 		 * @NL80211_KEY_NO_TX is only allowed for pairwise keys when
+ 		 * the driver supports Extended Key ID.
+ 		 * @NL80211_KEY_SET_TX can't be set when installing and
+ 		 * validating a key.
+ 		 */
+-		if (params->mode == NL80211_KEY_NO_TX) {
+-			if (!wiphy_ext_feature_isset(&rdev->wiphy,
+-						     NL80211_EXT_FEATURE_EXT_KEY_ID))
+-				return -EINVAL;
+-			else if (!pairwise || key_idx < 0 || key_idx > 1)
++		if ((params->mode == NL80211_KEY_NO_TX && !pairwise) ||
++		    params->mode == NL80211_KEY_SET_TX)
++			return -EINVAL;
++		if (wiphy_ext_feature_isset(&rdev->wiphy,
++					    NL80211_EXT_FEATURE_EXT_KEY_ID)) {
++			if (pairwise && (key_idx < 0 || key_idx > 1))
+ 				return -EINVAL;
+-		} else if ((pairwise && key_idx) ||
+-			   params->mode == NL80211_KEY_SET_TX) {
++		} else if (pairwise && key_idx) {
+ 			return -EINVAL;
+ 		}
+ 		break;
 -- 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+2.22.0
+
