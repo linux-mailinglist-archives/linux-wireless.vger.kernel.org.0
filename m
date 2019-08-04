@@ -2,127 +2,91 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 35BE9808B9
-	for <lists+linux-wireless@lfdr.de>; Sun,  4 Aug 2019 02:31:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 69F6480CEE
+	for <lists+linux-wireless@lfdr.de>; Mon,  5 Aug 2019 00:25:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729380AbfHDAbJ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 3 Aug 2019 20:31:09 -0400
-Received: from mail-io1-f68.google.com ([209.85.166.68]:39783 "EHLO
-        mail-io1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728032AbfHDAbI (ORCPT
+        id S1726763AbfHDWZa (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 4 Aug 2019 18:25:30 -0400
+Received: from mail-oi1-f195.google.com ([209.85.167.195]:35613 "EHLO
+        mail-oi1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726738AbfHDWZ3 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 3 Aug 2019 20:31:08 -0400
-Received: by mail-io1-f68.google.com with SMTP id f4so160277572ioh.6;
-        Sat, 03 Aug 2019 17:31:08 -0700 (PDT)
+        Sun, 4 Aug 2019 18:25:29 -0400
+Received: by mail-oi1-f195.google.com with SMTP id a127so60658821oii.2
+        for <linux-wireless@vger.kernel.org>; Sun, 04 Aug 2019 15:25:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=mRZqAf00TpYOcC6bW+lbGU9YVHInZQbHpXUrVaIGSGA=;
-        b=mE/gEiH7NhTRmWW7ly2DdFH/VIcQpG/K8k4kGRAuVrjdjWq9QYBkrhThwHk9C5luCt
-         WFt0wfieUiwXrr7IBreIXNgZGMZ2OBhfKJDdglZFvEMDLGNoLhQJo8fCbxK1aKSw0L9i
-         TcxEQHKXNvL+sLHTjG9QhHEs78lu34r11on9cKitCI+dQ7jh+eIOxghkFiuUf3XqmUDd
-         nPti0umEif0fDgK5FxhmYC2TApQOk33FWzW4mBGcKheaXsLFti78/ayb1MCr40pl73j0
-         k5xfmRE7/4X8ltd7AjDv1Y1iFyw0SCzMCzTfiRh/z9rnA37uFxSn1KhFKulSBli3KHku
-         yrhQ==
+        d=google.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=C1RJzfD21FcNmExKA2F6wfZ/f2LfI7+zplQTnTQ8R2w=;
+        b=XCU9/Ww2kMfbTco37ahw6FDpiTto0qjILMIRm5YW67eKmvlcEADPdGDNt9n65UpWb+
+         KCgHxn9mQPwjwiujYmSMWjB1XgjXGr8F2b4cPA1UPyVPQ3bpiSEa1EbBVwDmswSJyuy8
+         85mm7f7qqWw5FpLOffTemwKKxveiAcIMUeUSmLFD3uiTAeyi2nWWXzRUZJL1rm5yke+w
+         8cSTwYk9dYQZU8paFuaUsxqOkHvce+M/ycospsr4Vi7CCJQDHY04YtxsyS4+JsLj1OA4
+         R9zr9mNfkPY2TAoLno4fMxnVrwlKDP8simNIoQpV01y0QZQzaIYpmLhMKyJFbffIDt0R
+         MDgg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=mRZqAf00TpYOcC6bW+lbGU9YVHInZQbHpXUrVaIGSGA=;
-        b=fTO9PSNEQAH8KTptXLO/o5LLC5PJ/7JbyQAE/YXMAQhb0FJrU/p9g7lvF2hdV4zLst
-         7rJ+uhLOQr5rb44R2+OeWVVVS6wbN6LG21R1RxWUxjw7zk+Fm3Vfpe9chikg6njp485I
-         XMboK8k7TWsXSkgRe0BW2hZknZbZGDwYwZOLmhJzWqi0Rx4dc0clPQN1ko5rQsdzUqGT
-         qxl8uMzLP0aVQKE3Fq0gDsnzSuj8fCMlaBvG084sJqSuUnKuOfIHvrzu+oxSun0+LOlq
-         UFTJxhISMBvP4D3u9wM9FP5bB/3u3VxKS7OOM0ttIjIXyX8V1NGVxJUwxgunGaqzhPoE
-         zWsQ==
-X-Gm-Message-State: APjAAAXb/E7BxwWLRG6+DU0aHJWgMCwduh7QsRCCBk7en0egcS4E0H6z
-        bcYL+HTF8X6v8ycE8NNaeUs=
-X-Google-Smtp-Source: APXvYqyIUI7fSNQp8L6VocRfRHB4oSQN81MaPNSESXmH+6nxzWBATVq9Gk86g1g8CJNtBZIb6Xsg/g==
-X-Received: by 2002:a02:22c6:: with SMTP id o189mr54760745jao.35.1564878667834;
-        Sat, 03 Aug 2019 17:31:07 -0700 (PDT)
-Received: from peng.science.purdue.edu (cos-128-210-107-27.science.purdue.edu. [128.210.107.27])
-        by smtp.googlemail.com with ESMTPSA id s10sm171146661iod.46.2019.08.03.17.31.07
-        (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
-        Sat, 03 Aug 2019 17:31:07 -0700 (PDT)
-From:   Hui Peng <benquike@gmail.com>
-To:     kvalo@codeaurora.org, davem@davemloft.net
-Cc:     Hui Peng <benquike@gmail.com>,
-        Mathias Payer <mathias.payer@nebelwelt.net>,
-        ath10k@lists.infradead.org, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH 2/2] Fix a NULL-ptr-deref bug in ath10k_usb_alloc_urb_from_pipe
-Date:   Sat,  3 Aug 2019 20:31:01 -0400
-Message-Id: <20190804003101.11541-1-benquike@gmail.com>
-X-Mailer: git-send-email 2.22.0
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=C1RJzfD21FcNmExKA2F6wfZ/f2LfI7+zplQTnTQ8R2w=;
+        b=Rv7QfLHWigU5a9NKhxQJ3FYYQQ0O4nGgzLqJ8EWzCdCTKvbOhpZZ9oestRyehZbucd
+         yw8rfJAA0fEvhZ0RXxN6jz2LYcY2TVQJplrgBvOTEUyLgnmfqW7P0WE2caMo6Wc1PS99
+         NHJUQz9Q+8XNC2QSh7amTrl3DcOUak6N7/8SR29DT8i89DLAw7z9InoDDo2X8ozgSx5v
+         tDU1V8HUC/i/0x+SuSihubdKVRXN6IJ03wZ8qqVC7akt47R5euxtKi2TCyb2qw0BOuzH
+         AeaZdvEAuFLxFRLVU/iuxFIbo6SNTqmAhEZ2GknJhIO/Iscw9kFcCoANlkKesx751Z4a
+         E6LQ==
+X-Gm-Message-State: APjAAAX9wDtowoR83TuFbiDkQMnQB3j9nkSdcd+IFZhG/pSeN0u7ac9w
+        0dScb5+fDtsKB57aSciVoNXjacYNSR8XqTJ8UKeZ4A==
+X-Google-Smtp-Source: APXvYqwYa9pqTns9ZUFNGH+p3Njs7Q8EQhBAMelAJrWfwbG8QH5hXMDMDsQMG+tdrxZEkgrpgNW7JU+vzM8CJvpWjJM=
+X-Received: by 2002:aca:fd04:: with SMTP id b4mr8824624oii.53.1564957528486;
+ Sun, 04 Aug 2019 15:25:28 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <CA+ASDXMVAP4CsE=vaomOn5mu_uAM0jc3jvWGzaVPFFif4kTX+Q@mail.gmail.com>
+ <2d274e00c3e15e9786ccc865215d9853a5ab30f0.camel@sipsolutions.net>
+ <3282a26ab610c1590742c0d50632c35ae4bb82c8.camel@sipsolutions.net>
+ <CA+ASDXMNu2Jv1nFCWMtg6bcks-XKv1fTGr6j2f0TdgtAhkQK3w@mail.gmail.com>
+ <d4715a263661f442e1d610c63981a256fcba82e6.camel@sipsolutions.net> <7179602b12fbcdad6e3c8d71150e647b32b9425b.camel@sipsolutions.net>
+In-Reply-To: <7179602b12fbcdad6e3c8d71150e647b32b9425b.camel@sipsolutions.net>
+From:   Kirtika Ruchandani <kirtika@google.com>
+Date:   Sun, 4 Aug 2019 15:25:15 -0700
+Message-ID: <CAOXD1ieAXJnHqHCsVKWt+cyBkttnpgS8dKMCixbyW0hvRyB2Vg@mail.gmail.com>
+Subject: Re: iw release cadence?
+To:     Johannes Berg <johannes@sipsolutions.net>
+Cc:     Brian Norris <briannorris@chromium.org>,
+        linux-wireless@vger.kernel.org, npoojary@chromium.org
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-The `ar_usb` field of `ath10k_usb_pipe_usb_pipe` objects
-are initialized to point to the containing `ath10k_usb` object
-according to endpoint descriptors read from the device side, as shown
-below in `ath10k_usb_setup_pipe_resources`:
+On Fri, Feb 1, 2019 at 2:23 PM Johannes Berg <johannes@sipsolutions.net> wrote:
+>
+> On Fri, 2019-02-01 at 23:18 +0100, Johannes Berg wrote:
+> > On Fri, 2019-02-01 at 14:17 -0800, Brian Norris wrote:
+> > > On Fri, Feb 1, 2019 at 2:09 PM Johannes Berg <johannes@sipsolutions.net> wrote:
+> > > > On Fri, 2019-02-01 at 22:54 +0100, Johannes Berg wrote:
+> > > > >
+> > > > > I'll just tag one now :-)
+> > > >
+> > > > Done. I updated a few things and pulled in our FTM support code too, now
+> > > > that all the nl80211.h api is upstream.
+> > >
+> > > Awesome, thanks! Presumably a tarball is on its way?
+> >
+> > Need to figure out how to use kup again ...
+>
+> Ok I think I figured it out, but it takes a little while to sync and be
+> visible on the public frontend.
+>
 
-for (i = 0; i < iface_desc->desc.bNumEndpoints; ++i) {
-        endpoint = &iface_desc->endpoint[i].desc;
+One more 'I can haz release plz' nag.
+Support for 11ax MCS rates and HE stuff came after 5.0.1, and
+preferably we should take that with an upstream uprev not local
+patches applied on top of 5.0.1?
+https://git.kernel.org/pub/scm/linux/kernel/git/jberg/iw.git/log/
+Thanks in advance!
 
-        // get the address from endpoint descriptor
-        pipe_num = ath10k_usb_get_logical_pipe_num(ar_usb,
-                                                endpoint->bEndpointAddress,
-                                                &urbcount);
-        ......
-        // select the pipe object
-        pipe = &ar_usb->pipes[pipe_num];
-
-        // initialize the ar_usb field
-        pipe->ar_usb = ar_usb;
-}
-
-The driver assumes that the addresses reported in endpoint
-descriptors from device side  to be complete. If a device is
-malicious and does not report complete addresses, it may trigger
-NULL-ptr-deref `ath10k_usb_alloc_urb_from_pipe` and
-`ath10k_usb_free_urb_to_pipe`.
-
-This patch fixes the bug by preventing potential NULL-ptr-deref.
-
-Signed-off-by: Hui Peng <benquike@gmail.com>
-Reported-by: Hui Peng <benquike@gmail.com>
-Reported-by: Mathias Payer <mathias.payer@nebelwelt.net>
----
- drivers/net/wireless/ath/ath10k/usb.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
-
-diff --git a/drivers/net/wireless/ath/ath10k/usb.c b/drivers/net/wireless/ath/ath10k/usb.c
-index e1420f67f776..14d86627b47f 100644
---- a/drivers/net/wireless/ath/ath10k/usb.c
-+++ b/drivers/net/wireless/ath/ath10k/usb.c
-@@ -38,6 +38,10 @@ ath10k_usb_alloc_urb_from_pipe(struct ath10k_usb_pipe *pipe)
- 	struct ath10k_urb_context *urb_context = NULL;
- 	unsigned long flags;
- 
-+	/* bail if this pipe is not initialized */
-+	if (!pipe->ar_usb)
-+		return NULL;
-+
- 	spin_lock_irqsave(&pipe->ar_usb->cs_lock, flags);
- 	if (!list_empty(&pipe->urb_list_head)) {
- 		urb_context = list_first_entry(&pipe->urb_list_head,
-@@ -55,6 +59,10 @@ static void ath10k_usb_free_urb_to_pipe(struct ath10k_usb_pipe *pipe,
- {
- 	unsigned long flags;
- 
-+	/* bail if this pipe is not initialized */
-+	if (!pipe->ar_usb)
-+		return NULL;
-+
- 	spin_lock_irqsave(&pipe->ar_usb->cs_lock, flags);
- 
- 	pipe->urb_cnt++;
--- 
-2.22.0
-
+> johannes
+>
