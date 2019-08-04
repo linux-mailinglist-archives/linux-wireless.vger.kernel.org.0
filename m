@@ -2,136 +2,127 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 4F3E98078D
-	for <lists+linux-wireless@lfdr.de>; Sat,  3 Aug 2019 19:53:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6D7AC808B5
+	for <lists+linux-wireless@lfdr.de>; Sun,  4 Aug 2019 02:29:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728430AbfHCRxk (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 3 Aug 2019 13:53:40 -0400
-Received: from 18.mo4.mail-out.ovh.net ([188.165.54.143]:38008 "EHLO
-        18.mo4.mail-out.ovh.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728389AbfHCRxk (ORCPT
+        id S1729361AbfHDA3j (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 3 Aug 2019 20:29:39 -0400
+Received: from mail-io1-f66.google.com ([209.85.166.66]:36226 "EHLO
+        mail-io1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728032AbfHDA3j (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 3 Aug 2019 13:53:40 -0400
-X-Greylist: delayed 6598 seconds by postgrey-1.27 at vger.kernel.org; Sat, 03 Aug 2019 13:53:37 EDT
-Received: from player774.ha.ovh.net (unknown [10.108.54.72])
-        by mo4.mail-out.ovh.net (Postfix) with ESMTP id DA0871FF0C2
-        for <linux-wireless@vger.kernel.org>; Sat,  3 Aug 2019 17:24:26 +0200 (CEST)
-Received: from awhome.eu (p4FF919A6.dip0.t-ipconnect.de [79.249.25.166])
-        (Authenticated sender: postmaster@awhome.eu)
-        by player774.ha.ovh.net (Postfix) with ESMTPSA id 789B48937F49;
-        Sat,  3 Aug 2019 15:24:25 +0000 (UTC)
-From:   Alexander Wetzel <alexander@wetzel-home.de>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=wetzel-home.de;
-        s=wetzel-home; t=1564845863;
-        bh=KqUS3Y5w2JocdzoHqGhEyCwH/crxcwWUxbIk3pE7sPw=;
-        h=From:To:Cc:Subject:Date;
-        b=KKKQr0fnbQYRkbuIf4gegyk+jZnop6ijUzG+BYCaYtUUVcQu3tHLiiFC6x/EIKzlb
-         4FibR5hY77DL0PrazslHO5zZw+VLXazgxw/WEBjpDnrQK4sDdq6s0IhOX+owsoaodn
-         2dOZo2wrmVQlJzAPlHbt2Sin8Bw07N9ioj9+MuEE=
-To:     johannes@sipsolutions.net
-Cc:     linux-wireless@vger.kernel.org,
-        Alexander Wetzel <alexander@wetzel-home.de>
-Subject: [PATCH] cfg80211: Fix Extended Key ID key install checks
-Date:   Sat,  3 Aug 2019 17:23:18 +0200
-Message-Id: <20190803152318.5497-1-alexander@wetzel-home.de>
+        Sat, 3 Aug 2019 20:29:39 -0400
+Received: by mail-io1-f66.google.com with SMTP id o9so56623374iom.3;
+        Sat, 03 Aug 2019 17:29:39 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=86PJYgdBlM7UjsOQwJrxL+Im2FqipIlVfKPrHonN8B4=;
+        b=O9USVhXRPTgtHHxYTLyQh1xeJrbeTxvqjrbi6pXgUmN5k7Id8Dfanw6Qp6iEdOPgs+
+         85m3i2/kihoowrmcg0Wh+ci6Op8xgDrP5MbGJz4ic+3aJWlnKphgRiHmE7yUgNmDNsJk
+         L/bnPqzoHrzUgVfb965bweaS8BFjwjRgrf2KIf1PEheZs4iVo96jwx0xjaQC49b1/4EI
+         LRh4jJXem4PlfUy/YIMfmh65L1xDVhRELJIpXDBpIli8gHvYyDztIq9xVCA8I80SkZoY
+         Hmk8bgHSZ8U8nBKRCdQXnn83kgYye9sl2zhsWqqKKsHFk9vdd1BO43KZ7EVSn9rdXzY0
+         B5lA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=86PJYgdBlM7UjsOQwJrxL+Im2FqipIlVfKPrHonN8B4=;
+        b=gYOq55YfI/1nGC16FYIg97YzOeZIyKNUDai/jiXqKDIXPtbiCoL4QuVYQYcuQ8HgTD
+         7KBh/wJvLgl5vIwyioYmOiYjcwDVRYN3NSca56jaJ8U+aNNmrvUE49M1xZyX7GL5TsT0
+         8qYmZ4gbEMWQPeyr39yu1fHaQ1AY1uJBNVVCt+ZAHVCxCDWC5jNksp7E1sNdcLQJnppu
+         emaqf/zB2aqovOsfSmpu903jMy5jCUWbUtXhJ2qHHNEmr2c6sOiIrMEFCVbPXVrA8MIT
+         glGR3KzSos3kEh1clnsvTLTdRLTnZsoipITv5a/iJi8FlX6zuNPToxlCyMNxYb8gfYlF
+         ZMnA==
+X-Gm-Message-State: APjAAAUkXusPtojwqJC6v+HKxtZNXvApVEXsVmXlKgckMEKkMsPt0cHO
+        9dbSP+UgFl4JF8bNcWWYj3E=
+X-Google-Smtp-Source: APXvYqw2OfxFgZMs4JjOK2/xGih0hENBHjaUw8oj/P06uwCMqq4IYpVyQhHWorFxKL00rtTzMhR42Q==
+X-Received: by 2002:a02:b812:: with SMTP id o18mr35093577jam.64.1564878578620;
+        Sat, 03 Aug 2019 17:29:38 -0700 (PDT)
+Received: from peng.science.purdue.edu (cos-128-210-107-27.science.purdue.edu. [128.210.107.27])
+        by smtp.googlemail.com with ESMTPSA id s10sm171136252iod.46.2019.08.03.17.29.37
+        (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
+        Sat, 03 Aug 2019 17:29:38 -0700 (PDT)
+From:   Hui Peng <benquike@gmail.com>
+To:     kvalo@codeaurora.org, davem@davemloft.net
+Cc:     Hui Peng <benquike@gmail.com>,
+        Mathias Payer <mathias.payer@nebelwelt.net>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: [PATCH 1/2] Fix a NULL-ptr-deref bug in ath6kl_usb_alloc_urb_from_pipe
+Date:   Sat,  3 Aug 2019 20:29:04 -0400
+Message-Id: <20190804002905.11292-1-benquike@gmail.com>
 X-Mailer: git-send-email 2.22.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Ovh-Tracer-Id: 12045440157173095623
-X-VR-SPAMSTATE: OK
-X-VR-SPAMSCORE: 0
-X-VR-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgeduvddruddtuddgkeejucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuqfggjfdpvefjgfevmfevgfenuceurghilhhouhhtmecuhedttdenuc
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Fix two shortcomings of the Extended Key ID API:
+The `ar_usb` field of `ath6kl_usb_pipe_usb_pipe` objects
+are initialized to point to the containing `ath6kl_usb` object
+according to endpoint descriptors read from the device side, as shown
+below in `ath6kl_usb_setup_pipe_resources`:
 
- 1) Allow the userspace to install pairwise keys using keyid 1 without
-    NL80211_KEY_NO_TX set. This allows the userspace to install and
-    activate pairwise keys with keyid 1 in the same way as for keyid 0,
-    simplifying the API usage for e.g. FILS and FT key installs.
+for (i = 0; i < iface_desc->desc.bNumEndpoints; ++i) {
+	endpoint = &iface_desc->endpoint[i].desc;
 
- 2) IEEE 802.11 - 2016 restricts Extended Key ID usage to CCMP/GCMP
-    ciphers in IEEE 802.11 - 2016 "9.4.2.25.4 RSN capabilities".
-    Enforce that when installing a key.
+	// get the address from endpoint descriptor
+	pipe_num = ath6kl_usb_get_logical_pipe_num(ar_usb,
+						endpoint->bEndpointAddress,
+						&urbcount);
+	......
+	// select the pipe object
+	pipe = &ar_usb->pipes[pipe_num];
 
-Fixes: 6cdd3979a2bd ("nl80211/cfg80211: Extended Key ID support")
-Signed-off-by: Alexander Wetzel <alexander@wetzel-home.de>
+	// initialize the ar_usb field
+	pipe->ar_usb = ar_usb;
+}
+
+The driver assumes that the addresses reported in endpoint
+descriptors from device side  to be complete. If a device is
+malicious and does not report complete addresses, it may trigger
+NULL-ptr-deref `ath6kl_usb_alloc_urb_from_pipe` and
+`ath6kl_usb_free_urb_to_pipe`.
+
+This patch fixes the bug by preventing potential NULL-ptr-deref.
+
+Signed-off-by: Hui Peng <benquike@gmail.com>
+Reported-by: Hui Peng <benquike@gmail.com>
+Reported-by: Mathias Payer <mathias.payer@nebelwelt.net>
 ---
+ drivers/net/wireless/ath/ath6kl/usb.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-This patch ended up redesigning the Extended Key ID key install checks
-from scratch...
-
-While working on wpa_supplicant/hostapd Extended Key ID support it
-turned out that it's still useful to be able to install and activate a
-pairwise key for Tx in one step. So instead of forcing the userspace to
-always install and then activate a key I would prefer to fix the API and
-relax the checks with this patch.
-Down side of that is, that we have to get the fix also into 5.2 and 5.3.
-All kernels without the fix will potentially not work correctly with the
-upcoming userspace when using FT (fast roaming) or FILS with an Extended
-Key ID capable AP. (Anyone using the existing API will not notice the
-difference, but I'm next to sure it's only used by my experimental hostapd
-patches so far.)
-
-So ideally we get this patch back ported to all kernels which also have
-6cdd3979a2bd ("nl80211/cfg80211: Extended Key ID support")
-
-Another issue I tripped over while getting the hostapd patches into
-shape is, that our mac80211 TKIP SW crypto implementation drops unicast
-packets on receive when they are using keyid 1.
-Since a standard compliant implementation of Extended Key ID must not
-use TKIP enforcing that rule at key install seems to be preferable
-to handle that within mac80211.
-
- net/wireless/util.c | 22 +++++++++++++---------
- 1 file changed, 13 insertions(+), 9 deletions(-)
-
-diff --git a/net/wireless/util.c b/net/wireless/util.c
-index d0e35b7b9e35..962ca7fc1ab7 100644
---- a/net/wireless/util.c
-+++ b/net/wireless/util.c
-@@ -233,25 +233,29 @@ int cfg80211_validate_key_settings(struct cfg80211_registered_device *rdev,
+diff --git a/drivers/net/wireless/ath/ath6kl/usb.c b/drivers/net/wireless/ath/ath6kl/usb.c
+index 4defb7a0330f..53b66e9434c9 100644
+--- a/drivers/net/wireless/ath/ath6kl/usb.c
++++ b/drivers/net/wireless/ath/ath6kl/usb.c
+@@ -132,6 +132,10 @@ ath6kl_usb_alloc_urb_from_pipe(struct ath6kl_usb_pipe *pipe)
+ 	struct ath6kl_urb_context *urb_context = NULL;
+ 	unsigned long flags;
  
- 	switch (params->cipher) {
- 	case WLAN_CIPHER_SUITE_TKIP:
-+		/* Extended Key ID can only be used with CCMP/GCMP ciphers */
-+		if (pairwise && key_idx)
-+			return -EINVAL;
-+		/* fall through */
- 	case WLAN_CIPHER_SUITE_CCMP:
- 	case WLAN_CIPHER_SUITE_CCMP_256:
- 	case WLAN_CIPHER_SUITE_GCMP:
- 	case WLAN_CIPHER_SUITE_GCMP_256:
--		/* IEEE802.11-2016 allows only 0 and - when using Extended Key
--		 * ID - 1 as index for pairwise keys.
-+		/* IEEE802.11-2016 allows only 0 and - when supporting
-+		 * Extended Key ID - 1 as index for pairwise keys.
- 		 * @NL80211_KEY_NO_TX is only allowed for pairwise keys when
- 		 * the driver supports Extended Key ID.
- 		 * @NL80211_KEY_SET_TX can't be set when installing and
- 		 * validating a key.
- 		 */
--		if (params->mode == NL80211_KEY_NO_TX) {
--			if (!wiphy_ext_feature_isset(&rdev->wiphy,
--						     NL80211_EXT_FEATURE_EXT_KEY_ID))
--				return -EINVAL;
--			else if (!pairwise || key_idx < 0 || key_idx > 1)
-+		if ((params->mode == NL80211_KEY_NO_TX && !pairwise) ||
-+		    params->mode == NL80211_KEY_SET_TX)
-+			return -EINVAL;
-+		if (wiphy_ext_feature_isset(&rdev->wiphy,
-+					    NL80211_EXT_FEATURE_EXT_KEY_ID)) {
-+			if (pairwise && (key_idx < 0 || key_idx > 1))
- 				return -EINVAL;
--		} else if ((pairwise && key_idx) ||
--			   params->mode == NL80211_KEY_SET_TX) {
-+		} else if (pairwise && key_idx) {
- 			return -EINVAL;
- 		}
- 		break;
++	/* bail if this pipe is not initialized */
++	if (!pipe->ar_usb)
++		return NULL;
++
+ 	spin_lock_irqsave(&pipe->ar_usb->cs_lock, flags);
+ 	if (!list_empty(&pipe->urb_list_head)) {
+ 		urb_context =
+@@ -150,6 +154,10 @@ static void ath6kl_usb_free_urb_to_pipe(struct ath6kl_usb_pipe *pipe,
+ {
+ 	unsigned long flags;
+ 
++	/* bail if this pipe is not initialized */
++	if (!pipe->ar_usb)
++		return;
++
+ 	spin_lock_irqsave(&pipe->ar_usb->cs_lock, flags);
+ 	pipe->urb_cnt++;
+ 
 -- 
 2.22.0
 
