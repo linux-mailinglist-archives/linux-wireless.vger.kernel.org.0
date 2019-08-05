@@ -2,97 +2,144 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 589F481FFB
-	for <lists+linux-wireless@lfdr.de>; Mon,  5 Aug 2019 17:20:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2247782156
+	for <lists+linux-wireless@lfdr.de>; Mon,  5 Aug 2019 18:10:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728801AbfHEPUR (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 5 Aug 2019 11:20:17 -0400
-Received: from smtp.codeaurora.org ([198.145.29.96]:48450 "EHLO
-        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728468AbfHEPUR (ORCPT
+        id S1728934AbfHEQKL (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 5 Aug 2019 12:10:11 -0400
+Received: from 9.mo177.mail-out.ovh.net ([46.105.72.238]:37193 "EHLO
+        9.mo177.mail-out.ovh.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728826AbfHEQKK (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 5 Aug 2019 11:20:17 -0400
-Received: by smtp.codeaurora.org (Postfix, from userid 1000)
-        id 0758960867; Mon,  5 Aug 2019 15:20:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1565018417;
-        bh=lldT1gyYdxII/34jzklE70pyJkb4FyBeBVJS9Wu3oXM=;
-        h=From:To:Cc:References:In-Reply-To:Subject:Date:From;
-        b=PJvf0Ha1CUHXkrJ3m6o+2GJWCL4Fk3K/CA6wao2YymasKV/Oe2cxTpGDLOvIUDqZc
-         nOwzFHCc8654RUOszeuTsWUt0XsWQ2YgS7Xyw3yWh6pSp3evivhco0yP+RGS31N2iC
-         XAV1+vaqj606A07wJURb0tBomhKiStJT3uLYJMb8=
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        pdx-caf-mail.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.7 required=2.0 tests=ALL_TRUSTED,BAYES_00,
-        DKIM_INVALID,DKIM_SIGNED,SPF_NONE autolearn=no autolearn_force=no
-        version=3.4.0
-Received: from DLANSKY (unknown [185.23.60.4])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        (Authenticated sender: dlansky@smtp.codeaurora.org)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 42E0F6074F;
-        Mon,  5 Aug 2019 15:20:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1565018416;
-        bh=lldT1gyYdxII/34jzklE70pyJkb4FyBeBVJS9Wu3oXM=;
-        h=From:To:Cc:References:In-Reply-To:Subject:Date:From;
-        b=pAKnIoIy0WUByNmJ1Dbo8KCqOyBO5yCjKbWIhdT4kINGlQ58iMRSaGpGPcxif8TSS
-         4EDpQntdyyGIxhyTnYIBr1OVpSKB4j8ignJn8ntV6tE420K1Ws3x83AxktaBJ8YjeE
-         XQD3po59VmyLR9pPLDmeFaDYw3+mWw+eiT0ooyFw=
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 42E0F6074F
-Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=dlansky@codeaurora.org
-From:   "Dedy Lansky" <dlansky@codeaurora.org>
-To:     "'Johannes Berg'" <johannes@sipsolutions.net>,
-        <linux-wireless@vger.kernel.org>
-Cc:     "'Florian Westphal'" <fw@strlen.de>,
-        "'Johannes Berg'" <johannes.berg@intel.com>
-References: <20190731220848.1045-1-johannes@sipsolutions.net>
-In-Reply-To: <20190731220848.1045-1-johannes@sipsolutions.net>
-Subject: RE: [EXT] [RFC/RFT] cfg80211: decouple us from the RTNL
-Date:   Mon, 5 Aug 2019 18:20:05 +0300
-Message-ID: <000701d54ba1$48ea2520$dabe6f60$@codeaurora.org>
+        Mon, 5 Aug 2019 12:10:10 -0400
+X-Greylist: delayed 10790 seconds by postgrey-1.27 at vger.kernel.org; Mon, 05 Aug 2019 12:10:10 EDT
+Received: from player692.ha.ovh.net (unknown [10.108.35.223])
+        by mo177.mail-out.ovh.net (Postfix) with ESMTP id DA3D6106B69
+        for <linux-wireless@vger.kernel.org>; Mon,  5 Aug 2019 14:34:06 +0200 (CEST)
+Received: from awhome.eu (p4FF919A6.dip0.t-ipconnect.de [79.249.25.166])
+        (Authenticated sender: postmaster@awhome.eu)
+        by player692.ha.ovh.net (Postfix) with ESMTPSA id 6C6658800C66;
+        Mon,  5 Aug 2019 12:34:05 +0000 (UTC)
+From:   Alexander Wetzel <alexander@wetzel-home.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=wetzel-home.de;
+        s=wetzel-home; t=1565008444;
+        bh=GuaEZkHdngvst1wNsTBEawaiBcwNHCBwHUawf2KI8b0=;
+        h=From:To:Cc:Subject:Date;
+        b=tLIT7lF5Hf3egpWRL2coXNZQS5gmPBr4Ptm94dmtAfU/Qd3NvziHW4VY4lYD6Uzx6
+         wwh60vo0f+1Q7LuSPQqwheHXjUSlpieqfvkhijLV3gsNNye6TxZD7d+qkbbU8Zhttl
+         ptMmAmZvXOQEFMg+2ga13ImQDRX+oyITFrODZcSk=
+To:     johannes@sipsolutions.net
+Cc:     linux-wireless@vger.kernel.org,
+        Alexander Wetzel <alexander@wetzel-home.de>
+Subject: [PATCH v2] cfg80211: Fix Extended Key ID key install checks
+Date:   Mon,  5 Aug 2019 14:34:00 +0200
+Message-Id: <20190805123400.51567-1-alexander@wetzel-home.de>
+X-Mailer: git-send-email 2.22.0
 MIME-Version: 1.0
-Content-Type: text/plain;
-        charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-X-Mailer: Microsoft Outlook 16.0
-Thread-Index: AQHVR+ylOs684nZaW0qVBxuZT8k/Z6bq3BwA
-Content-Language: en-us
+Content-Transfer-Encoding: 8bit
+X-Ovh-Tracer-Id: 2467409648627358919
+X-VR-SPAMSTATE: OK
+X-VR-SPAMSCORE: 0
+X-VR-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgeduvddruddtjedghedvucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuqfggjfdpvefjgfevmfevgfenuceurghilhhouhhtmecuhedttdenuc
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+Fix two shortcomings in the Extended Key ID API:
 
-From: linux-wireless-owner@vger.kernel.org
-<linux-wireless-owner@vger.kernel.org> On Behalf Of Johannes Berg
-Sent: Thursday, August 1, 2019 1:09 AM
+ 1) Allow the userspace to install pairwise keys using keyid 1 without
+    NL80211_KEY_NO_TX set. This allows the userspace to install and
+    activate pairwise keys with keyid 1 in the same way as for keyid 0,
+    simplifying the API usage for e.g. FILS and FT key installs.
 
-> Fix that by re-adding a mutex to each wiphy/rdev as we had at
-> some point, so we have locking for the wireless_dev lists and
-> all the other things in there, and also so that drivers still
-> don't have to worry too much about it (they still won't get
-> parallel calls for a single device).
+ 2) IEEE 802.11 - 2016 restricts Extended Key ID usage to CCMP/GCMP
+    ciphers in IEEE 802.11 - 2016 "9.4.2.25.4 RSN capabilities".
+    Enforce that when installing a key.
 
-Sounds good.
+Fixes: 6cdd3979a2bd ("nl80211/cfg80211: Extended Key ID support")
+Signed-off-by: Alexander Wetzel <alexander@wetzel-home.de>
+---
 
-> Then, we can restrict the RTNL to a few cases where we add or
-> remove interfaces and really need the added protection. Some
-> of the global list management still also uses the RTNL, since
-> we need to have it anyway for netdev management.
+Changes compared to v1:
+Refuse any Extended Key ID actions for TKIP keys. V1 still allowed them
+for keyid 0.
 
-> TODO:
->  - use wiphy_lock()/wiphy_unlock() in all drivers as the code
->    changed in mac80211 does
+Remarks from v1 still apply and are unchanged:
 
-I guess this change breaks existing drivers because some drivers assume RTNL
-is locked when their cfg callbacks are executed. Is that correct?
+This patch ended up redesigning the Extended Key ID key install checks
+from scratch...
 
-Would there be any simple rules for drivers when to use each one of the
-locking API: rtnl vs wiphy vs wdev ?
+While working on wpa_supplicant/hostapd Extended Key ID support it
+turned out that it's still useful to be able to install and activate a
+pairwise key for Tx in one step. So instead of forcing the userspace to
+always install and then activate a key I would prefer to fix the API and
+relax the checks with this patch.
+Down side of that is, that we have to get the fix also into 5.2 and 5.3.
+All kernels without the fix will potentially not work correctly with the
+upcoming userspace when using FT (fast roaming) or FILS with an Extended
+Key ID capable AP. (Anyone using the existing API will not notice the
+difference, but I'm next to sure it's only used by my experimental hostapd
+patches so far.)
 
-Thanks,
- Dedy.
+So ideally we get this patch back ported to all kernels which also have
+6cdd3979a2bd ("nl80211/cfg80211: Extended Key ID support")
+
+Another issue I tripped over while getting the hostapd patches into
+shape is, that our mac80211 TKIP SW crypto implementation drops unicast
+packets on receive when they are using keyid 1.
+Since a standard compliant implementation of Extended Key ID must not
+use TKIP enforcing that rule at key install seems to be preferable
+to handle that within mac80211.
+
+
+ net/wireless/util.c | 23 ++++++++++++++---------
+ 1 file changed, 14 insertions(+), 9 deletions(-)
+
+diff --git a/net/wireless/util.c b/net/wireless/util.c
+index d0e35b7b9e35..e74837824cea 100644
+--- a/net/wireless/util.c
++++ b/net/wireless/util.c
+@@ -233,25 +233,30 @@ int cfg80211_validate_key_settings(struct cfg80211_registered_device *rdev,
+ 
+ 	switch (params->cipher) {
+ 	case WLAN_CIPHER_SUITE_TKIP:
++		/* Extended Key ID can only be used with CCMP/GCMP ciphers */
++		if ((pairwise && key_idx) ||
++		    params->mode != NL80211_KEY_RX_TX)
++			return -EINVAL;
++		break;
+ 	case WLAN_CIPHER_SUITE_CCMP:
+ 	case WLAN_CIPHER_SUITE_CCMP_256:
+ 	case WLAN_CIPHER_SUITE_GCMP:
+ 	case WLAN_CIPHER_SUITE_GCMP_256:
+-		/* IEEE802.11-2016 allows only 0 and - when using Extended Key
+-		 * ID - 1 as index for pairwise keys.
++		/* IEEE802.11-2016 allows only 0 and - when supporting
++		 * Extended Key ID - 1 as index for pairwise keys.
+ 		 * @NL80211_KEY_NO_TX is only allowed for pairwise keys when
+ 		 * the driver supports Extended Key ID.
+ 		 * @NL80211_KEY_SET_TX can't be set when installing and
+ 		 * validating a key.
+ 		 */
+-		if (params->mode == NL80211_KEY_NO_TX) {
+-			if (!wiphy_ext_feature_isset(&rdev->wiphy,
+-						     NL80211_EXT_FEATURE_EXT_KEY_ID))
+-				return -EINVAL;
+-			else if (!pairwise || key_idx < 0 || key_idx > 1)
++		if ((params->mode == NL80211_KEY_NO_TX && !pairwise) ||
++		    params->mode == NL80211_KEY_SET_TX)
++			return -EINVAL;
++		if (wiphy_ext_feature_isset(&rdev->wiphy,
++					    NL80211_EXT_FEATURE_EXT_KEY_ID)) {
++			if (pairwise && (key_idx < 0 || key_idx > 1))
+ 				return -EINVAL;
+-		} else if ((pairwise && key_idx) ||
+-			   params->mode == NL80211_KEY_SET_TX) {
++		} else if (pairwise && key_idx) {
+ 			return -EINVAL;
+ 		}
+ 		break;
+-- 
+2.22.0
 
