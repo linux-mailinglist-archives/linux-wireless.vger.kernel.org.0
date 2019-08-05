@@ -2,95 +2,88 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B53B3815C8
-	for <lists+linux-wireless@lfdr.de>; Mon,  5 Aug 2019 11:45:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 09F7F815DE
+	for <lists+linux-wireless@lfdr.de>; Mon,  5 Aug 2019 11:48:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727349AbfHEJp0 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 5 Aug 2019 05:45:26 -0400
-Received: from paleale.coelho.fi ([176.9.41.70]:34072 "EHLO
+        id S1728111AbfHEJst (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 5 Aug 2019 05:48:49 -0400
+Received: from paleale.coelho.fi ([176.9.41.70]:34084 "EHLO
         farmhouse.coelho.fi" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1726454AbfHEJp0 (ORCPT
+        with ESMTP id S1727259AbfHEJst (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 5 Aug 2019 05:45:26 -0400
+        Mon, 5 Aug 2019 05:48:49 -0400
 Received: from [91.156.6.193] (helo=redipa)
         by farmhouse.coelho.fi with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
         (Exim 4.92)
         (envelope-from <luca@coelho.fi>)
-        id 1huZYQ-0003TU-GL; Mon, 05 Aug 2019 12:45:23 +0300
-Message-ID: <f6d6c216e20d5179964b0d5afb92affe3318d639.camel@coelho.fi>
+        id 1huZbg-0003Tn-A1; Mon, 05 Aug 2019 12:48:44 +0300
+Message-ID: <38635c1b10018859457787ecff4f92a3ceec34a4.camel@coelho.fi>
 From:   Luca Coelho <luca@coelho.fi>
-To:     Sasha Levin <sashal@kernel.org>, kvalo@codeaurora.org
-Cc:     linux-wireless@vger.kernel.org, stable@vger.kernel.org
-Date:   Mon, 05 Aug 2019 12:45:20 +0300
-In-Reply-To: <20190720122332.E229E2186A@mail.kernel.org>
-References: <20190720102545.5952-2-luca@coelho.fi>
-         <20190720122332.E229E2186A@mail.kernel.org>
+To:     Takashi Iwai <tiwai@suse.de>
+Cc:     dor.shaish@intel.com, Josh Boyer <jwboyer@kernel.org>,
+        Johannes Berg <johannes.berg@intel.com>,
+        Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
+        linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org
+Date:   Mon, 05 Aug 2019 12:48:43 +0300
+In-Reply-To: <s5hmuh7xrqy.wl-tiwai@suse.de>
+References: <s5hr26m9gvc.wl-tiwai@suse.de>
+         <280dad08ba9864755c3c45ed3ce26d602fe18a49.camel@intel.com>
+         <s5ho91pzyml.wl-tiwai@suse.de> <s5hwogcxwt4.wl-tiwai@suse.de>
+         <b225d043d8581e0fec68cb63f7433161868293f3.camel@coelho.fi>
+         <s5hmuh7xrqy.wl-tiwai@suse.de>
 Content-Type: text/plain; charset="UTF-8"
 User-Agent: Evolution 3.30.5-1.1 
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on farmhouse.coelho.fi
 X-Spam-Level: 
-X-Spam-Status: No, score=-2.9 required=5.0 tests=ALL_TRUSTED,BAYES_00
-        autolearn=ham autolearn_force=no version=3.4.2
-Subject: Re: [PATCH 01/16] iwlwifi: mvm: don't send GEO_TX_POWER_LIMIT on
- version < 41
+X-Spam-Status: No, score=-2.9 required=5.0 tests=ALL_TRUSTED,BAYES_00,
+        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.2
+Subject: Re: Regression with the latest iwlwifi-9260-*-46.ucode
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Sat, 2019-07-20 at 12:23 +0000, Sasha Levin wrote:
-> Hi,
+On Sun, 2019-07-21 at 18:43 +0200, Takashi Iwai wrote:
+> On Sat, 20 Jul 2019 22:49:33 +0200,
+> Luca Coelho wrote:
+> > On Sat, 2019-07-20 at 22:42 +0200, Takashi Iwai wrote:
+> > > On Fri, 19 Jul 2019 20:07:46 +0200,
+> > > Takashi Iwai wrote:
+> > > > On Fri, 19 Jul 2019 18:36:53 +0200,
+> > > > Luciano Coelho wrote:
+> > > > > Adding Dor.
+> > > > > 
+> > > > > Hi Takashi,
+> > > > > 
+> > > > > Do you have full logs of the crash? We can't see much from the log
+> > > > > snippet pasted in the bug report.
+> > > > 
+> > > > OK, I'll ask reporters.  If you have a SUSE/openSUSE bugzilla account,
+> > > > feel free to join there.
+> > > 
+> > > FYI, the dmesg's have been uploaded to the same bugzilla entry:
+> > >   https://bugzilla.opensuse.org/show_bug.cgi?id=1142128
+> > > 
+> > 
+> > Thanks!
+> > 
+> > BTW, I pushed new firmwares to our firmware tree in git.kernel.org
+> > today.  This is the patch:
+> > 
+> > https://git.kernel.org/pub/scm/linux/kernel/git/iwlwifi/linux-firmware.git/commit/?id=b5f09bb4f816abace0227d0f4e749859364cef6b
+> > 
+> > It would be great if you can try it out and let us know whether the problem is gone or not.
 > 
-> [This is an automated email]
+> I created a test package and asked for testing.
+> The test result seems negative, showing the same error,
+> unfortunately.
 > 
-> This commit has been processed because it contains a -stable tag.
-> The stable tag indicates that it's relevant for the following trees: all
-> 
-> The bot has tested the following trees: v5.2.1, v5.1.18, v4.19.59, v4.14.133, v4.9.185, v4.4.185.
-> 
-> v5.2.1: Build OK!
-> v5.1.18: Build OK!
-> v4.19.59: Build OK!
-> v4.14.133: Build OK!
-> v4.9.185: Failed to apply! Possible dependencies:
->     1f3706508395 ("iwlwifi: mvm: support unification of INIT and RT images")
->     42ce76d615e7 ("iwlwifi: mvm: spin off SAR profile selection function")
->     6996490501ed ("iwlwifi: mvm: add support for EWRD (Dynamic SAR) ACPI table")
->     7fe90e0e3d60 ("iwlwifi: mvm: refactor geo init")
->     a6bff3cb19b7 ("iwlwifi: mvm: add GEO_TX_POWER_LIMIT cmd for geographic tx power table")
->     c386dacb4ed6 ("iwlwifi: mvm: refactor SAR init to prepare for dynamic SAR")
-> 
-> v4.4.185: Failed to apply! Possible dependencies:
->     13555e8ba2f4 ("iwlwifi: mvm: add 9000-series RX API")
->     1a616dd2f171 ("iwlwifi: dump prph registers in a common place for all transports")
->     2f89a5d7d377 ("iwlwifi: mvm: move fw-dbg code to separate file")
->     321c2104f2f1 ("iwlwifi: mvm: Support setting continuous recording debug mode")
->     39bdb17ebb5b ("iwlwifi: update host command messages to new format")
->     42ce76d615e7 ("iwlwifi: mvm: spin off SAR profile selection function")
->     43413a975d06 ("iwlwifi: mvm: support rss queues configuration command")
->     4707fde5cdef ("iwlwifi: mvm: use build-time assertion for fw trigger ID")
->     6c4fbcbc1c95 ("iwlwifi: add support for 12K Receive Buffers")
->     854d773e4ab5 ("iwlwifi: mvm: improve RSS configuration")
->     92fe83430b89 ("iwlwifi: uninline iwl_trans_send_cmd")
->     9e7dce286595 ("iwlwifi: mvm: allow to limit the A-MSDU from debugfs")
->     da2830acf15a ("iwlwifi: mvm: read SAR BIOS table from ACPI")
->     dcbb4746286a ("iwlwifi: trans: support a callback for ASYNC commands")
->     dd4d3161d0f2 ("iwlwifi: mvm: fix RSS key sizing")
-> 
-> 
-> NOTE: The patch will not be queued to stable trees until it is upstream.
-> 
-> How should we proceed with this patch?
+> The dmesg was uploaded on the bugzilla entry.
 
-Hi Sasha,
-
-In this specific case, the patch does not have to be applied on 4.9 and
-4.4.  What is the right way to handle these cases? Should I simply
-ignore them, so they won't go into those kernels by default or do you
-want me to follow up somehow and let you know that those kernels can be
-ignore?
+Thanks Takashi! We will look into them as soon as possible (sorry for
+the late reply, I just came back from vacations).
 
 --
 Cheers,
