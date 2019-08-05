@@ -2,111 +2,111 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 3685E823C5
-	for <lists+linux-wireless@lfdr.de>; Mon,  5 Aug 2019 19:15:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AF6E98241B
+	for <lists+linux-wireless@lfdr.de>; Mon,  5 Aug 2019 19:39:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729630AbfHERPX (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 5 Aug 2019 13:15:23 -0400
-Received: from mail-pg1-f195.google.com ([209.85.215.195]:38556 "EHLO
-        mail-pg1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728800AbfHERPW (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 5 Aug 2019 13:15:22 -0400
-Received: by mail-pg1-f195.google.com with SMTP id z14so2841150pga.5
-        for <linux-wireless@vger.kernel.org>; Mon, 05 Aug 2019 10:15:22 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=17BppcXqZfxbPGr9PRMTPoV/LLkPLLP+SKK7CO3M9eM=;
-        b=CMvFpVuQrHcaD8wENeZs7xRQPCZW9zxoDeK0XmBywbFJS4h/1BZRVhVx1DnZeFcxN4
-         Sj49NMeaQHcsgtWvP8uJ3WzN/jDeTbHvbxdCghM+J7HFtImo+guQKbo9PK5w7nSWwb4L
-         wjcuVDRB/z/Er1Pc0kkrN7ZQQlOmGB/H2uljA=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=17BppcXqZfxbPGr9PRMTPoV/LLkPLLP+SKK7CO3M9eM=;
-        b=aSHs1Lj3JFf7a2bavHmIM9PJa+Dgs6Uyl+kdLkdP/Fk7qPDIaGYnCQv3/gPiUvYqK4
-         VMBFReU9DOV1C/tuzGRzpG6Jaau7opxBpvAeoMVHJk/gGVL6oI8g8fcGH2xo4w/79Lsg
-         ZLv6yS9TpVVgUSwYj6FxKfG7IHid02Gvb7BaKNRviZIEVO3QgKvSEfqxUa2H7Viftvc6
-         P/RC2ZBpKICzojr0KAeEv6zRW3kFiM1mxz4JlkD379aFxqCz02rMTniMKO6TX81WeEFr
-         Dz66P/zp0s42osycNgXAFT54iJjYlrevEDC0OlLXzn6iBocv4YNznC6NMa77RchAmAlM
-         Hp2Q==
-X-Gm-Message-State: APjAAAVOYXyWP8ybB82nf55Ol4TK/CeSgWj1WKGe2WUN+KPnrSd4+bsX
-        zt7jPQXOTCDuGHgmnyu5Nqv6YQ==
-X-Google-Smtp-Source: APXvYqzxv7M6IR4in1vhGB8Q4n4XPFhXuk+D/n/xjxagMGtxkbwhP5GVaL+d6zafns1iu9roD/5eJw==
-X-Received: by 2002:a63:ed55:: with SMTP id m21mr15707852pgk.343.1565025322316;
-        Mon, 05 Aug 2019 10:15:22 -0700 (PDT)
-Received: from smtp.gmail.com ([2620:15c:202:1:534:b7c0:a63c:460c])
-        by smtp.gmail.com with ESMTPSA id f20sm99610723pgg.56.2019.08.05.10.15.20
-        (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
-        Mon, 05 Aug 2019 10:15:20 -0700 (PDT)
-From:   Brian Norris <briannorris@chromium.org>
-To:     Amitkumar Karwar <amitkarwar@gmail.com>,
-        Nishant Sarmukadam <nishants@marvell.com>,
-        Ganapathi Bhat <gbhat@marvell.com>,
-        Xinming Hu <huxinming820@gmail.com>
-Cc:     linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        Doug Anderson <dianders@chromium.org>,
-        Matthias Kaehlcke <mka@chromium.org>,
-        Brian Norris <briannorris@chromium.org>,
-        Amitkumar Karwar <akarwar@marvell.com>
-Subject: [PATCH] Revert "mwifiex: fix system hang problem after resume"
-Date:   Mon,  5 Aug 2019 10:15:04 -0700
-Message-Id: <20190805171504.48122-1-briannorris@chromium.org>
-X-Mailer: git-send-email 2.22.0.770.g0f2c4a37fd-goog
+        id S1728837AbfHERjJ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 5 Aug 2019 13:39:09 -0400
+Received: from mx1.redhat.com ([209.132.183.28]:51470 "EHLO mx1.redhat.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726779AbfHERjI (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 5 Aug 2019 13:39:08 -0400
+Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.phx2.redhat.com [10.5.11.14])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mx1.redhat.com (Postfix) with ESMTPS id 74DB8C056807;
+        Mon,  5 Aug 2019 17:39:06 +0000 (UTC)
+Received: from rt4.app.eng.rdu2.redhat.com (rt4.app.eng.rdu2.redhat.com [10.10.161.56])
+        by smtp.corp.redhat.com (Postfix) with ESMTPS id D7C3E5DA60;
+        Mon,  5 Aug 2019 17:39:01 +0000 (UTC)
+Received: from rt4.app.eng.rdu2.redhat.com (localhost [127.0.0.1])
+        by rt4.app.eng.rdu2.redhat.com (8.14.4/8.14.4) with ESMTP id x75Hd0BJ023399;
+        Mon, 5 Aug 2019 13:39:00 -0400
+Received: (from apache@localhost)
+        by rt4.app.eng.rdu2.redhat.com (8.14.4/8.14.4/Submit) id x75Hcnwa023396;
+        Mon, 5 Aug 2019 13:38:49 -0400
+From:   Red Hat Product Security <secalert@redhat.com>
+X-PGP-Public-Key: https://www.redhat.com/security/650d5882.txt
+Subject: [engineering.redhat.com #494100] Question on submitting patch for a security bug
+Reply-To: secalert@redhat.com
+In-Reply-To: <CAJ7L_Gp2HJoFOVxTgakCJw3LMuiPY0+60-giOtw3OwRD6zyNTQ@mail.gmail.com>
+References: <RT-Ticket-494100@engineering.redhat.com>
+ <CAJ7L_Gp2HJoFOVxTgakCJw3LMuiPY0+60-giOtw3OwRD6zyNTQ@mail.gmail.com>
+Message-ID: <rt-4.0.13-23214-1565026728-1358.494100-5-0@engineering.redhat.com>
+X-RT-Loop-Prevention: engineering.redhat.com
+RT-Ticket: engineering.redhat.com #494100
+Managed-BY: RT 4.0.13 (http://www.bestpractical.com/rt/)
+RT-Originator: pjp@redhat.com
+To:     b.zolnierkie@samsung.com, bob.liu@oracle.com,
+        chuck.lever@oracle.com, davem@davemloft.net, emamd001@umn.edu,
+        gregkh@linuxfoundation.org, kubakici@wp.pl, kvalo@codeaurora.org,
+        navid.emamdoost@gmail.com, sam@ravnborg.org
+CC:     airlied@linux.ie, alexandre.belloni@bootlin.com,
+        alexandre.torgue@st.com, allison@lohutok.net,
+        andriy.shevchenko@linux.intel.com, anna.schumaker@netapp.com,
+        axboe@kernel.dk, bfields@fieldses.org, colin.king@canonical.com,
+        daniel@ffwll.ch, devel@driverdev.osuosl.org,
+        dri-devel@lists.freedesktop.org, joabreu@synopsys.com,
+        johnfwhitmore@gmail.com, josef@toxicpanda.com, jslaby@suse.com,
+        kjlu@umn.edu, kstewart@linuxfoundation.org,
+        linux-arm-kernel@lists.infradead.org, linux-block@vger.kernel.org,
+        linux-ide@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-mediatek@lists.infradead.org, linux-nfs@vger.kernel.org,
+        linux-serial@vger.kernel.org,
+        linux-stm32@st-md-mailman.stormreply.com,
+        linux-wireless@vger.kernel.org, matthias.bgg@gmail.com,
+        matthias@redhat.com, mcoquelin.stm32@gmail.com,
+        nbd@other.debian.org, netdev@vger.kernel.org,
+        nishkadg.linux@gmail.com, peppe.cavallaro@st.com, smccaman@umn.edu,
+        tglx@linutronix.de, thierry.reding@gmail.com,
+        trond.myklebust@hammerspace.com, unglinuxdriver@microchip.com,
+        vishal@chelsio.com, vkoul@kernel.org
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+X-RT-Original-Encoding: utf-8
+Date:   Mon, 5 Aug 2019 13:38:48 -0400
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.14
+X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16 (mx1.redhat.com [10.5.110.32]); Mon, 05 Aug 2019 17:39:08 +0000 (UTC)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-This reverts commit 437322ea2a36d112e20aa7282c869bf924b3a836.
+Hello Navid,
 
-This above-mentioned "fix" does not actually do anything to prevent a
-race condition. It simply papers over it so that the issue doesn't
-appear.
+On Thu, 18 Jul 2019 01:30:20 GMT, emamd001@umn.edu wrote:
+> I've found a null dereference bug in the Linux kernel source code. I was
+> wondering should I cc the patch to you as well (along with the
+> maintainers)?
 
-If this is a real problem, it should be explained better than the above
-commit does, and an alternative, non-racy solution should be found.
+No. Please do not cc <secalert@redhat.com> on the upstream kernel patches.
+It is meant for reporting security issues only.
 
-For further reason to revert this: there's no reason we can't try
-resetting the card when it's *actually* stuck in host-sleep mode. So
-instead, this is unnecessarily creating scenarios where we can't recover
-Wifi (and in fact, I'm fielding reports of Chromebooks that can't
-recover after the aforementioned commit).
+Going through the patches here
 
-Note that this was proposed in 2017 and Ack'ed then, but due to my
-marking as RFC, it never went anywhere:
+1. Issues in ../staging/ drivers are not considered for CVE, they are not to be
+used
+in production environment.
 
-https://patchwork.kernel.org/patch/9657277/
-[RFC] Revert "mwifiex: fix system hang problem after resume"
+2. Many of the patches listed fix NULL pointer dereference when memory
+allocation
+fails and returns NULL.
 
-Cc: Amitkumar Karwar <akarwar@marvell.com>
-Signed-off-by: Brian Norris <briannorris@chromium.org>
-Reviewed-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Acked-by: Amitkumar Karwar <amitkarwar@gmail.com>
-Tested-by: Matthias Kaehlcke <mka@chromium.org>
+3. Do you happen to have reproducers for these issues? Could an unprivileged
+user trigger them?
+
+> Also, I was wondering what are the steps to get CVE for the bug (this is
+> the first time I am reporting a bug)?
+
+Generally CVE is assigned after confirming that a given issue really is a
+security issue. And it may
+have impact ranging from information leakage, DoS to privilege escalation or
+maybe arbitrary code
+execution. Every NULL pointer dereference is not security issue.
+
+
+Hope it helps. Thank you.
 ---
- drivers/net/wireless/marvell/mwifiex/init.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/net/wireless/marvell/mwifiex/init.c b/drivers/net/wireless/marvell/mwifiex/init.c
-index 6c0e52eb8794..1aa93e7e9835 100644
---- a/drivers/net/wireless/marvell/mwifiex/init.c
-+++ b/drivers/net/wireless/marvell/mwifiex/init.c
-@@ -59,7 +59,7 @@ static void wakeup_timer_fn(struct timer_list *t)
- 	adapter->hw_status = MWIFIEX_HW_STATUS_RESET;
- 	mwifiex_cancel_all_pending_cmd(adapter);
- 
--	if (adapter->if_ops.card_reset && !adapter->hs_activated)
-+	if (adapter->if_ops.card_reset)
- 		adapter->if_ops.card_reset(adapter);
- }
- 
--- 
-2.22.0.770.g0f2c4a37fd-goog
+Prasad J Pandit / Red Hat Product Security Team
 
