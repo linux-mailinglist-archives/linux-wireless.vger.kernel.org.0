@@ -2,144 +2,111 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2247782156
-	for <lists+linux-wireless@lfdr.de>; Mon,  5 Aug 2019 18:10:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3685E823C5
+	for <lists+linux-wireless@lfdr.de>; Mon,  5 Aug 2019 19:15:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728934AbfHEQKL (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 5 Aug 2019 12:10:11 -0400
-Received: from 9.mo177.mail-out.ovh.net ([46.105.72.238]:37193 "EHLO
-        9.mo177.mail-out.ovh.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728826AbfHEQKK (ORCPT
+        id S1729630AbfHERPX (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 5 Aug 2019 13:15:23 -0400
+Received: from mail-pg1-f195.google.com ([209.85.215.195]:38556 "EHLO
+        mail-pg1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728800AbfHERPW (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 5 Aug 2019 12:10:10 -0400
-X-Greylist: delayed 10790 seconds by postgrey-1.27 at vger.kernel.org; Mon, 05 Aug 2019 12:10:10 EDT
-Received: from player692.ha.ovh.net (unknown [10.108.35.223])
-        by mo177.mail-out.ovh.net (Postfix) with ESMTP id DA3D6106B69
-        for <linux-wireless@vger.kernel.org>; Mon,  5 Aug 2019 14:34:06 +0200 (CEST)
-Received: from awhome.eu (p4FF919A6.dip0.t-ipconnect.de [79.249.25.166])
-        (Authenticated sender: postmaster@awhome.eu)
-        by player692.ha.ovh.net (Postfix) with ESMTPSA id 6C6658800C66;
-        Mon,  5 Aug 2019 12:34:05 +0000 (UTC)
-From:   Alexander Wetzel <alexander@wetzel-home.de>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=wetzel-home.de;
-        s=wetzel-home; t=1565008444;
-        bh=GuaEZkHdngvst1wNsTBEawaiBcwNHCBwHUawf2KI8b0=;
-        h=From:To:Cc:Subject:Date;
-        b=tLIT7lF5Hf3egpWRL2coXNZQS5gmPBr4Ptm94dmtAfU/Qd3NvziHW4VY4lYD6Uzx6
-         wwh60vo0f+1Q7LuSPQqwheHXjUSlpieqfvkhijLV3gsNNye6TxZD7d+qkbbU8Zhttl
-         ptMmAmZvXOQEFMg+2ga13ImQDRX+oyITFrODZcSk=
-To:     johannes@sipsolutions.net
-Cc:     linux-wireless@vger.kernel.org,
-        Alexander Wetzel <alexander@wetzel-home.de>
-Subject: [PATCH v2] cfg80211: Fix Extended Key ID key install checks
-Date:   Mon,  5 Aug 2019 14:34:00 +0200
-Message-Id: <20190805123400.51567-1-alexander@wetzel-home.de>
-X-Mailer: git-send-email 2.22.0
+        Mon, 5 Aug 2019 13:15:22 -0400
+Received: by mail-pg1-f195.google.com with SMTP id z14so2841150pga.5
+        for <linux-wireless@vger.kernel.org>; Mon, 05 Aug 2019 10:15:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=17BppcXqZfxbPGr9PRMTPoV/LLkPLLP+SKK7CO3M9eM=;
+        b=CMvFpVuQrHcaD8wENeZs7xRQPCZW9zxoDeK0XmBywbFJS4h/1BZRVhVx1DnZeFcxN4
+         Sj49NMeaQHcsgtWvP8uJ3WzN/jDeTbHvbxdCghM+J7HFtImo+guQKbo9PK5w7nSWwb4L
+         wjcuVDRB/z/Er1Pc0kkrN7ZQQlOmGB/H2uljA=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=17BppcXqZfxbPGr9PRMTPoV/LLkPLLP+SKK7CO3M9eM=;
+        b=aSHs1Lj3JFf7a2bavHmIM9PJa+Dgs6Uyl+kdLkdP/Fk7qPDIaGYnCQv3/gPiUvYqK4
+         VMBFReU9DOV1C/tuzGRzpG6Jaau7opxBpvAeoMVHJk/gGVL6oI8g8fcGH2xo4w/79Lsg
+         ZLv6yS9TpVVgUSwYj6FxKfG7IHid02Gvb7BaKNRviZIEVO3QgKvSEfqxUa2H7Viftvc6
+         P/RC2ZBpKICzojr0KAeEv6zRW3kFiM1mxz4JlkD379aFxqCz02rMTniMKO6TX81WeEFr
+         Dz66P/zp0s42osycNgXAFT54iJjYlrevEDC0OlLXzn6iBocv4YNznC6NMa77RchAmAlM
+         Hp2Q==
+X-Gm-Message-State: APjAAAVOYXyWP8ybB82nf55Ol4TK/CeSgWj1WKGe2WUN+KPnrSd4+bsX
+        zt7jPQXOTCDuGHgmnyu5Nqv6YQ==
+X-Google-Smtp-Source: APXvYqzxv7M6IR4in1vhGB8Q4n4XPFhXuk+D/n/xjxagMGtxkbwhP5GVaL+d6zafns1iu9roD/5eJw==
+X-Received: by 2002:a63:ed55:: with SMTP id m21mr15707852pgk.343.1565025322316;
+        Mon, 05 Aug 2019 10:15:22 -0700 (PDT)
+Received: from smtp.gmail.com ([2620:15c:202:1:534:b7c0:a63c:460c])
+        by smtp.gmail.com with ESMTPSA id f20sm99610723pgg.56.2019.08.05.10.15.20
+        (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
+        Mon, 05 Aug 2019 10:15:20 -0700 (PDT)
+From:   Brian Norris <briannorris@chromium.org>
+To:     Amitkumar Karwar <amitkarwar@gmail.com>,
+        Nishant Sarmukadam <nishants@marvell.com>,
+        Ganapathi Bhat <gbhat@marvell.com>,
+        Xinming Hu <huxinming820@gmail.com>
+Cc:     linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+        Doug Anderson <dianders@chromium.org>,
+        Matthias Kaehlcke <mka@chromium.org>,
+        Brian Norris <briannorris@chromium.org>,
+        Amitkumar Karwar <akarwar@marvell.com>
+Subject: [PATCH] Revert "mwifiex: fix system hang problem after resume"
+Date:   Mon,  5 Aug 2019 10:15:04 -0700
+Message-Id: <20190805171504.48122-1-briannorris@chromium.org>
+X-Mailer: git-send-email 2.22.0.770.g0f2c4a37fd-goog
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Ovh-Tracer-Id: 2467409648627358919
-X-VR-SPAMSTATE: OK
-X-VR-SPAMSCORE: 0
-X-VR-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgeduvddruddtjedghedvucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuqfggjfdpvefjgfevmfevgfenuceurghilhhouhhtmecuhedttdenuc
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Fix two shortcomings in the Extended Key ID API:
+This reverts commit 437322ea2a36d112e20aa7282c869bf924b3a836.
 
- 1) Allow the userspace to install pairwise keys using keyid 1 without
-    NL80211_KEY_NO_TX set. This allows the userspace to install and
-    activate pairwise keys with keyid 1 in the same way as for keyid 0,
-    simplifying the API usage for e.g. FILS and FT key installs.
+This above-mentioned "fix" does not actually do anything to prevent a
+race condition. It simply papers over it so that the issue doesn't
+appear.
 
- 2) IEEE 802.11 - 2016 restricts Extended Key ID usage to CCMP/GCMP
-    ciphers in IEEE 802.11 - 2016 "9.4.2.25.4 RSN capabilities".
-    Enforce that when installing a key.
+If this is a real problem, it should be explained better than the above
+commit does, and an alternative, non-racy solution should be found.
 
-Fixes: 6cdd3979a2bd ("nl80211/cfg80211: Extended Key ID support")
-Signed-off-by: Alexander Wetzel <alexander@wetzel-home.de>
+For further reason to revert this: there's no reason we can't try
+resetting the card when it's *actually* stuck in host-sleep mode. So
+instead, this is unnecessarily creating scenarios where we can't recover
+Wifi (and in fact, I'm fielding reports of Chromebooks that can't
+recover after the aforementioned commit).
+
+Note that this was proposed in 2017 and Ack'ed then, but due to my
+marking as RFC, it never went anywhere:
+
+https://patchwork.kernel.org/patch/9657277/
+[RFC] Revert "mwifiex: fix system hang problem after resume"
+
+Cc: Amitkumar Karwar <akarwar@marvell.com>
+Signed-off-by: Brian Norris <briannorris@chromium.org>
+Reviewed-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Acked-by: Amitkumar Karwar <amitkarwar@gmail.com>
+Tested-by: Matthias Kaehlcke <mka@chromium.org>
 ---
+ drivers/net/wireless/marvell/mwifiex/init.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Changes compared to v1:
-Refuse any Extended Key ID actions for TKIP keys. V1 still allowed them
-for keyid 0.
-
-Remarks from v1 still apply and are unchanged:
-
-This patch ended up redesigning the Extended Key ID key install checks
-from scratch...
-
-While working on wpa_supplicant/hostapd Extended Key ID support it
-turned out that it's still useful to be able to install and activate a
-pairwise key for Tx in one step. So instead of forcing the userspace to
-always install and then activate a key I would prefer to fix the API and
-relax the checks with this patch.
-Down side of that is, that we have to get the fix also into 5.2 and 5.3.
-All kernels without the fix will potentially not work correctly with the
-upcoming userspace when using FT (fast roaming) or FILS with an Extended
-Key ID capable AP. (Anyone using the existing API will not notice the
-difference, but I'm next to sure it's only used by my experimental hostapd
-patches so far.)
-
-So ideally we get this patch back ported to all kernels which also have
-6cdd3979a2bd ("nl80211/cfg80211: Extended Key ID support")
-
-Another issue I tripped over while getting the hostapd patches into
-shape is, that our mac80211 TKIP SW crypto implementation drops unicast
-packets on receive when they are using keyid 1.
-Since a standard compliant implementation of Extended Key ID must not
-use TKIP enforcing that rule at key install seems to be preferable
-to handle that within mac80211.
-
-
- net/wireless/util.c | 23 ++++++++++++++---------
- 1 file changed, 14 insertions(+), 9 deletions(-)
-
-diff --git a/net/wireless/util.c b/net/wireless/util.c
-index d0e35b7b9e35..e74837824cea 100644
---- a/net/wireless/util.c
-+++ b/net/wireless/util.c
-@@ -233,25 +233,30 @@ int cfg80211_validate_key_settings(struct cfg80211_registered_device *rdev,
+diff --git a/drivers/net/wireless/marvell/mwifiex/init.c b/drivers/net/wireless/marvell/mwifiex/init.c
+index 6c0e52eb8794..1aa93e7e9835 100644
+--- a/drivers/net/wireless/marvell/mwifiex/init.c
++++ b/drivers/net/wireless/marvell/mwifiex/init.c
+@@ -59,7 +59,7 @@ static void wakeup_timer_fn(struct timer_list *t)
+ 	adapter->hw_status = MWIFIEX_HW_STATUS_RESET;
+ 	mwifiex_cancel_all_pending_cmd(adapter);
  
- 	switch (params->cipher) {
- 	case WLAN_CIPHER_SUITE_TKIP:
-+		/* Extended Key ID can only be used with CCMP/GCMP ciphers */
-+		if ((pairwise && key_idx) ||
-+		    params->mode != NL80211_KEY_RX_TX)
-+			return -EINVAL;
-+		break;
- 	case WLAN_CIPHER_SUITE_CCMP:
- 	case WLAN_CIPHER_SUITE_CCMP_256:
- 	case WLAN_CIPHER_SUITE_GCMP:
- 	case WLAN_CIPHER_SUITE_GCMP_256:
--		/* IEEE802.11-2016 allows only 0 and - when using Extended Key
--		 * ID - 1 as index for pairwise keys.
-+		/* IEEE802.11-2016 allows only 0 and - when supporting
-+		 * Extended Key ID - 1 as index for pairwise keys.
- 		 * @NL80211_KEY_NO_TX is only allowed for pairwise keys when
- 		 * the driver supports Extended Key ID.
- 		 * @NL80211_KEY_SET_TX can't be set when installing and
- 		 * validating a key.
- 		 */
--		if (params->mode == NL80211_KEY_NO_TX) {
--			if (!wiphy_ext_feature_isset(&rdev->wiphy,
--						     NL80211_EXT_FEATURE_EXT_KEY_ID))
--				return -EINVAL;
--			else if (!pairwise || key_idx < 0 || key_idx > 1)
-+		if ((params->mode == NL80211_KEY_NO_TX && !pairwise) ||
-+		    params->mode == NL80211_KEY_SET_TX)
-+			return -EINVAL;
-+		if (wiphy_ext_feature_isset(&rdev->wiphy,
-+					    NL80211_EXT_FEATURE_EXT_KEY_ID)) {
-+			if (pairwise && (key_idx < 0 || key_idx > 1))
- 				return -EINVAL;
--		} else if ((pairwise && key_idx) ||
--			   params->mode == NL80211_KEY_SET_TX) {
-+		} else if (pairwise && key_idx) {
- 			return -EINVAL;
- 		}
- 		break;
+-	if (adapter->if_ops.card_reset && !adapter->hs_activated)
++	if (adapter->if_ops.card_reset)
+ 		adapter->if_ops.card_reset(adapter);
+ }
+ 
 -- 
-2.22.0
+2.22.0.770.g0f2c4a37fd-goog
 
