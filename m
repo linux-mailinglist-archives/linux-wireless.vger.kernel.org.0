@@ -2,528 +2,886 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 0963081B88
-	for <lists+linux-wireless@lfdr.de>; Mon,  5 Aug 2019 15:15:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 232B081FC2
+	for <lists+linux-wireless@lfdr.de>; Mon,  5 Aug 2019 17:06:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729647AbfHENPL (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 5 Aug 2019 09:15:11 -0400
-Received: from mail-pf1-f195.google.com ([209.85.210.195]:46943 "EHLO
-        mail-pf1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729462AbfHENPK (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 5 Aug 2019 09:15:10 -0400
-Received: by mail-pf1-f195.google.com with SMTP id c3so16501447pfa.13
-        for <linux-wireless@vger.kernel.org>; Mon, 05 Aug 2019 06:15:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=endlessm-com.20150623.gappssmtp.com; s=20150623;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=p5qhTefHSfcPW6LZkLOassMR80qR3qUPV4zV5SuIy7Q=;
-        b=XWQV01JlmTF0wE11S7gaoq2bYymkJ1QHWm9PrCEtRIk57rPBaMcmtKPBp92UIyRHn7
-         2iUFUQt/gdATk1KqWSK4aW+jXoFaxHQX6I6LHhGG3VjD4Sb7Pltill6JUsZb3MoglbDc
-         AnFB4IKEyuEWILrBSMAKP6G52hZk4aunfbgExMaW9gH3YG1I5FrWQVZ1viwUfLziWy/Q
-         pCivkSDGZCxCnUvQQwYLmvqyAyEqg1sxMuzWPP6QfJ5ZNOa/Gvf8z1St20TxoEmZga82
-         oaotZRV2j5YYJccJEUT86ZcjeLoob+TOlEl6+xlz/fOT9nNbICC2vX/4mHbytsVbQl0X
-         Er1A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=p5qhTefHSfcPW6LZkLOassMR80qR3qUPV4zV5SuIy7Q=;
-        b=qppAr8OSiYpsiJ/GYcCsqEaXUpbe37lBeZ4iAsqzyYvBLLu2OxN1U2pFlhDP5+9eZv
-         wm5/jkaV7GZ1ErxRTrM8q2ox1msxyGBk4dIsArf8bkAmq/DhdLyggSh/jB+IH63HP1FU
-         qUA4hpVXsqJX/7HnK6+zRr0K30Iu65lmjXF4Lam14plUsLoYcHclycbygIBp23dD4v+0
-         ivW3WYS6pmJSTcmLYUozJvfYG6ssTdVKe2695ZQTKL/NDZkfpm+3wMdOhiaAPhdgIULJ
-         Tt1fTD8hhhZWzzqIbzvyRek3FDFOVcBAT4uvV0BDGuWPKPbaF5JFIoXS079txl3O2eBK
-         3xIg==
-X-Gm-Message-State: APjAAAUcunMTyfERZ1sXsZYsfx1TyGPTW7W1eeKky7Q18mAM2AmgLMsN
-        ytB11P5ICqVNi63T8IFt3JuIBA==
-X-Google-Smtp-Source: APXvYqz1w4ShDyOLgtUKKemV68PYEQ2AyYt4OwivJJDKGIOcfEew5Jm6SG8dEWd15VP/YHqINw98HA==
-X-Received: by 2002:a17:90a:5887:: with SMTP id j7mr17881553pji.136.1565010909296;
-        Mon, 05 Aug 2019 06:15:09 -0700 (PDT)
-Received: from endless.endlessm-sf.com (122-116-44-246.HINET-IP.hinet.net. [122.116.44.246])
-        by smtp.gmail.com with ESMTPSA id 135sm91829078pfb.137.2019.08.05.06.15.06
-        (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
-        Mon, 05 Aug 2019 06:15:08 -0700 (PDT)
-From:   Chris Chiu <chiu@endlessm.com>
-To:     Jes.Sorensen@gmail.com, kvalo@codeaurora.org, davem@davemloft.net
-Cc:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux@endlessm.com,
-        Chris Chiu <chiu@endlessm.com>,
-        Daniel Drake <drake@endlessm.com>
-Subject: [RFC PATCH v7] rtl8xxxu: Improve TX performance of RTL8723BU on rtl8xxxu driver
-Date:   Mon,  5 Aug 2019 21:14:52 +0800
-Message-Id: <20190805131452.13257-1-chiu@endlessm.com>
-X-Mailer: git-send-email 2.20.1
+        id S1729259AbfHEPGO (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 5 Aug 2019 11:06:14 -0400
+Received: from bsmtp8.bon.at ([213.33.87.20]:31338 "EHLO bsmtp8.bon.at"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1729199AbfHEPGO (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 5 Aug 2019 11:06:14 -0400
+X-Greylist: delayed 2809 seconds by postgrey-1.27 at vger.kernel.org; Mon, 05 Aug 2019 11:06:06 EDT
+Received: from bsmtp7.bon.at (unknown [192.168.181.107])
+        by bsmtp8.bon.at (Postfix) with ESMTPS id 462Kdf0RMfz5trg
+        for <linux-wireless@vger.kernel.org>; Mon,  5 Aug 2019 16:19:18 +0200 (CEST)
+Received: from [10.1.14.125] (vpn.streamunlimited.com [91.114.0.140])
+        by bsmtp7.bon.at (Postfix) with ESMTPSA id 462Kdc6bcZz5tlF;
+        Mon,  5 Aug 2019 16:19:16 +0200 (CEST)
+To:     seth.forshee@canonical.com
+Cc:     linux-wireless@vger.kernel.org, wireless-regdb@lists.infradead.org
+From:   Emil Petersky <emil.petersky@streamunlimited.com>
+Subject: [PATCH] wireless-regdb: Fix ranges of EU countries as they are
+ harmonized since 2014...
+Openpgp: preference=signencrypt
+Message-ID: <bf327181-521b-e1ce-c5c8-81b828fc65b6@streamunlimited.com>
+Date:   Mon, 5 Aug 2019 16:19:16 +0200
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:60.0) Gecko/20100101
+ Thunderbird/60.8.0
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: 8bit
+Content-Language: en-US
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-We have 3 laptops which connect the wifi by the same RTL8723BU.
-The PCI VID/PID of the wifi chip is 10EC:B720 which is supported.
-They have the same problem with the in-kernel rtl8xxxu driver, the
-iperf (as a client to an ethernet-connected server) gets ~1Mbps.
-Nevertheless, the signal strength is reported as around -40dBm,
-which is quite good. From the wireshark capture, the tx rate for each
-data and qos data packet is only 1Mbps. Compare to the Realtek driver
-at https://github.com/lwfinger/rtl8723bu, the same iperf test gets
-~12Mbps or better. The signal strength is reported similarly around
--40dBm. That's why we want to improve.
+This patch unites entries for EU countries, as they have been harmonized
+latest by July 2014...
+EU decision 2005/513/EC:
+https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:02005D0513-20070213
+EU decision 2006/771/EC:
+https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:02008D0432-20080611
 
-After reading the source code of the rtl8xxxu driver and Realtek's, the
-major difference is that Realtek's driver has a watchdog which will keep
-monitoring the signal quality and updating the rate mask just like the
-rtl8xxxu_gen2_update_rate_mask() does if signal quality changes.
-And this kind of watchdog also exists in rtlwifi driver of some specific
-chips, ex rtl8192ee, rtl8188ee, rtl8723ae, rtl8821ae...etc. They have
-the same member function named dm_watchdog and will invoke the
-corresponding dm_refresh_rate_adaptive_mask to adjust the tx rate
-mask.
+Signed-off-by: Emil Petersky <emil.petersky@streamunlimited.com>
 
-With this commit, the tx rate of each data and qos data packet will
-be 39Mbps (MCS4) with the 0xF00000 as the tx rate mask. The 20th bit
-to 23th bit means MCS4 to MCS7. It means that the firmware still picks
-the lowest rate from the rate mask and explains why the tx rate of
-data and qos data is always lowest 1Mbps because the default rate mask
-passed is always 0xFFFFFFF ranges from the basic CCK rate, OFDM rate,
-and MCS rate. However, with Realtek's driver, the tx rate observed from
-wireshark under the same condition is almost 65Mbps or 72Mbps, which
-indicating that rtl8xxxu could still be further improved.
-
-Signed-off-by: Chris Chiu <chiu@endlessm.com>
-Reviewed-by: Daniel Drake <drake@endlessm.com>
 ---
-
-
-Notes:
-  v2:
-   - Fix errors and warnings complained by checkpatch.pl
-   - Replace data structure rate_adaptive by 2 member variables
-   - Make rtl8xxxu_wireless_mode non-static
-   - Runs refresh_rate_mask() only in station mode
-  v3:
-   - Remove ugly rtl8xxxu_watchdog data structure
-   - Make sure only one vif exists
-  v4:
-   - Move cancel_delayed_work from rtl8xxxu_disconnect to rtl8xxxu_stop
-   - Clear priv->vif in rtl8xxxu_remove_interface
-   - Add rateid as the function argument of update_rate_mask
-   - Rephrase the comment for priv->vif more explicit.
-  v5:
-   - Make refresh_rate_mask() generic for all sub-drivers.
-   - Add definitions for SNR related to help determine rssi_level
-  v6: 
-   - Fix typo of the comment for priv->vif
-  v7:
-   - Fix reported bug of watchdog stop 
-   - refer to the RxPWDBAll in vendor driver for SNR calculation
-
-
- .../net/wireless/realtek/rtl8xxxu/rtl8xxxu.h  |  55 ++++-
- .../wireless/realtek/rtl8xxxu/rtl8xxxu_core.c | 229 +++++++++++++++++-
- 2 files changed, 277 insertions(+), 7 deletions(-)
-
-diff --git a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu.h b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu.h
-index ade057d868f7..582c2a346cec 100644
---- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu.h
-+++ b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu.h
-@@ -1187,6 +1187,48 @@ struct rtl8723bu_c2h {
+diff --git a/db.txt b/db.txt
+index 37393e6..907b424 100755
+--- a/db.txt
++++ b/db.txt
+@@ -87,12 +87,20 @@ country AS: DFS-FCC
+ 	(5490 - 5730 @ 160), (24), DFS
+ 	(5735 - 5835 @ 80), (30)
  
- struct rtl8xxxu_fileops;
++# AT as part of EU/CEPT accepted decisions 2005/513/EC (5GHz RLAN, EN 301 893) 
++# and 2006/771/EC (amended by 2008/432/EC, Short-Range Devices, EN 300 440)
++#  EU decision 2005/513/EC: https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:02005D0513-20070213
++#  EU decision 2006/771/EC: https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:02008D0432-20080611
++# AT: https://www.rtr.at/en/tk/Spektrum5GHz/1997_bmvit-info-052010en.pdf
++# AT: acceptance https://www.ris.bka.gv.at/Dokumente/BgblAuth/BGBLA_2014_II_63/BGBLA_2014_II_63.pdfsig
+ country AT: DFS-ETSI
+-	(2402 - 2482 @ 40), (20)
+-	(5170 - 5250 @ 80), (20), AUTO-BW, wmmrule=ETSI
+-	(5250 - 5330 @ 80), (20), DFS, AUTO-BW, wmmrule=ETSI
+-	(5490 - 5710 @ 160), (27), DFS, wmmrule=ETSI
+-	# 60 GHz band channels 1-4, ref: Etsi En 302 567
++	(2400 - 2483.5 @ 40), (100 mW)
++	(5150 - 5250 @ 80), (200 mW), NO-OUTDOOR, AUTO-BW, wmmrule=ETSI
++	(5250 - 5350 @ 80), (100 mW), NO-OUTDOOR, DFS, AUTO-BW, wmmrule=ETSI
++	(5470 - 5725 @ 160), (500 mW), DFS, wmmrule=ETSI
++	# short range devices (ETSI EN 300 440-1)
++	(5725 - 5875 @ 80), (25 mW)
++	# 60 GHz band channels 1-4 (ETSI EN 302 567)
+ 	(57000 - 66000 @ 2160), (40)
  
-+/*mlme related.*/
-+enum wireless_mode {
-+	WIRELESS_MODE_UNKNOWN = 0,
-+	/* Sub-Element */
-+	WIRELESS_MODE_B = BIT(0),
-+	WIRELESS_MODE_G = BIT(1),
-+	WIRELESS_MODE_A = BIT(2),
-+	WIRELESS_MODE_N_24G = BIT(3),
-+	WIRELESS_MODE_N_5G = BIT(4),
-+	WIRELESS_AUTO = BIT(5),
-+	WIRELESS_MODE_AC = BIT(6),
-+	WIRELESS_MODE_MAX = 0x7F,
-+};
-+
-+/* from rtlwifi/wifi.h */
-+enum ratr_table_mode_new {
-+	RATEID_IDX_BGN_40M_2SS = 0,
-+	RATEID_IDX_BGN_40M_1SS = 1,
-+	RATEID_IDX_BGN_20M_2SS_BN = 2,
-+	RATEID_IDX_BGN_20M_1SS_BN = 3,
-+	RATEID_IDX_GN_N2SS = 4,
-+	RATEID_IDX_GN_N1SS = 5,
-+	RATEID_IDX_BG = 6,
-+	RATEID_IDX_G = 7,
-+	RATEID_IDX_B = 8,
-+	RATEID_IDX_VHT_2SS = 9,
-+	RATEID_IDX_VHT_1SS = 10,
-+	RATEID_IDX_MIX1 = 11,
-+	RATEID_IDX_MIX2 = 12,
-+	RATEID_IDX_VHT_3SS = 13,
-+	RATEID_IDX_BGN_3SS = 14,
-+};
-+
-+#define RTL8XXXU_RATR_STA_INIT 0
-+#define RTL8XXXU_RATR_STA_HIGH 1
-+#define RTL8XXXU_RATR_STA_MID  2
-+#define RTL8XXXU_RATR_STA_LOW  3
-+
-+#define RTL8XXXU_NOISE_FLOOR_MIN	-100
-+#define RTL8XXXU_SNR_THRESH_HIGH	50
-+#define RTL8XXXU_SNR_THRESH_LOW	20
-+
- struct rtl8xxxu_priv {
- 	struct ieee80211_hw *hw;
- 	struct usb_device *udev;
-@@ -1291,6 +1333,13 @@ struct rtl8xxxu_priv {
- 	u8 pi_enabled:1;
- 	u8 no_pape:1;
- 	u8 int_buf[USB_INTR_CONTENT_LENGTH];
-+	u8 rssi_level;
-+	/*
-+	 * Only one virtual interface permitted because only STA mode
-+	 * is supported and no iface_combinations are provided.
-+	 */
-+	struct ieee80211_vif *vif;
-+	struct delayed_work ra_watchdog;
- };
+ # Source:
+@@ -139,12 +147,22 @@ country BD: DFS-JP
+ 	(2402 - 2482 @ 40), (20)
+ 	(5735 - 5835 @ 80), (30)
  
- struct rtl8xxxu_rx_urb {
-@@ -1326,7 +1375,7 @@ struct rtl8xxxu_fileops {
- 	void (*set_tx_power) (struct rtl8xxxu_priv *priv, int channel,
- 			      bool ht40);
- 	void (*update_rate_mask) (struct rtl8xxxu_priv *priv,
--				  u32 ramask, int sgi);
-+				  u32 ramask, u8 rateid, int sgi);
- 	void (*report_connect) (struct rtl8xxxu_priv *priv,
- 				u8 macid, bool connect);
- 	void (*fill_txdesc) (struct ieee80211_hw *hw, struct ieee80211_hdr *hdr,
-@@ -1411,9 +1460,9 @@ void rtl8xxxu_gen2_config_channel(struct ieee80211_hw *hw);
- void rtl8xxxu_gen1_usb_quirks(struct rtl8xxxu_priv *priv);
- void rtl8xxxu_gen2_usb_quirks(struct rtl8xxxu_priv *priv);
- void rtl8xxxu_update_rate_mask(struct rtl8xxxu_priv *priv,
--			       u32 ramask, int sgi);
-+			       u32 ramask, u8 rateid, int sgi);
- void rtl8xxxu_gen2_update_rate_mask(struct rtl8xxxu_priv *priv,
--				    u32 ramask, int sgi);
-+				    u32 ramask, u8 rateid, int sgi);
- void rtl8xxxu_gen1_report_connect(struct rtl8xxxu_priv *priv,
- 				  u8 macid, bool connect);
- void rtl8xxxu_gen2_report_connect(struct rtl8xxxu_priv *priv,
-diff --git a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
-index c6c41fb962ff..a6f358b9e447 100644
---- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
-+++ b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
-@@ -4304,7 +4304,8 @@ static void rtl8xxxu_sw_scan_complete(struct ieee80211_hw *hw,
- 	rtl8xxxu_write8(priv, REG_BEACON_CTRL, val8);
- }
++# BE as part of EU/CEPT accepted decisions 2005/513/EC (5GHz RLAN, EN 301 893) 
++# and 2006/771/EC (amended by 2008/432/EC, Short-Range Devices, EN 300 440)
++#  EU decision 2005/513/EC: https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:02005D0513-20070213
++#  EU decision 2006/771/EC: https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:02008D0432-20080611
++# BE: https://www.ibpt.be/public/files/en/21760/B03-01_2.1_EN.pdf
++# BE: https://www.ibpt.be/public/files/en/21761/B03-02_2.1_EN.pdf
++# BE: https://www.ibpt.be/public/files/en/21762/B03-03_2.1_EN.pdf
++# BE: https://www.ibpt.be/public/files/en/22165/B01-28_3.1_EN.pdf
+ country BE: DFS-ETSI
+-	(2402 - 2482 @ 40), (20)
+-	(5170 - 5250 @ 80), (20), AUTO-BW, wmmrule=ETSI
+-	(5250 - 5330 @ 80), (20), DFS, AUTO-BW, wmmrule=ETSI
+-	(5490 - 5710 @ 160), (27), DFS, wmmrule=ETSI
+-	# 60 GHz band channels 1-4, ref: Etsi En 302 567
++	(2400 - 2483.5 @ 40), (100 mW)
++	(5150 - 5250 @ 80), (200 mW), NO-OUTDOOR, AUTO-BW, wmmrule=ETSI
++	(5250 - 5350 @ 80), (100 mW), NO-OUTDOOR, DFS, AUTO-BW, wmmrule=ETSI
++	(5470 - 5725 @ 160), (500 mW), DFS, wmmrule=ETSI
++	# short range devices (ETSI EN 300 440-1)
++	(5725 - 5875 @ 80), (25 mW)
++	# 60 GHz band channels 1-4 (ETSI EN 302 567)
+ 	(57000 - 66000 @ 2160), (40)
  
--void rtl8xxxu_update_rate_mask(struct rtl8xxxu_priv *priv, u32 ramask, int sgi)
-+void rtl8xxxu_update_rate_mask(struct rtl8xxxu_priv *priv,
-+			       u32 ramask, u8 rateid, int sgi)
- {
- 	struct h2c_cmd h2c;
+ country BF: DFS-FCC
+@@ -167,23 +185,30 @@ country BF: DFS-FCC
+ #
+ # Note: The transmit power limits in the 5250-5350 MHz and 5470-5725 MHz bands
+ # can be raised by 3 dBm if TPC is enabled. Refer to BDS EN 301 893 for details.
++#
++# BG as part of EU/CEPT accepted decisions 2005/513/EC (5GHz RLAN, EN 301 893) 
++# and 2006/771/EC (amended by 2008/432/EC, Short-Range Devices, EN 300 440)
++#  EU decision 2005/513/EC: https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:02005D0513-20070213
++#  EU decision 2006/771/EC: https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:02008D0432-20080611
++# BG: https://crc.bg/files/_en/Electronic_Communications_Revised_EN1.pdf
++# BG: acceptance of 2006/771/EC https://crc.bg/files/Pravila_06_12_2018.pdf
++
+ country BG: DFS-ETSI
+ 	# Wideband data transmission systems (WDTS) in the 2.4GHz ISM band, ref:
+ 	# I.22 of the List, BDS EN 300 328
+-	(2402 - 2482 @ 40), (20)
++	(2400 - 2483.5 @ 40), (100 mW)
+ 	# 5 GHz Radio Local Area Networks (RLANs), ref:
+ 	# II.H01 of the List, BDS EN 301 893
+-	(5170 - 5250 @ 80), (23), AUTO-BW, wmmrule=ETSI
+-	(5250 - 5330 @ 80), (20), DFS, AUTO-BW, wmmrule=ETSI
++	(5150 - 5250 @ 80), (200 mW), NO-OUTDOOR, AUTO-BW, wmmrule=ETSI
++	(5250 - 5350 @ 80), (100 mW), NO-OUTDOOR, DFS, AUTO-BW, wmmrule=ETSI
+ 	# II.H01 of the List, I.54 from the List, BDS EN 301 893
+-	(5490 - 5710 @ 160), (27), DFS, wmmrule=ETSI
+-	# Short range devices (SRDs) in the 5725-5875 MHz frequency range, ref:
++	(5470 - 5725 @ 160), (500 mW), DFS, wmmrule=ETSI
++	# short range devices (ETSI EN 300 440-1)
+ 	# I.43 of the List, BDS EN 300 440-2, BDS EN 300 440-1
+-	(5725 - 5875 @ 80), (14)
+-	# 60 GHz Multiple-Gigabit RLAN Systems, ref:
++	(5725 - 5875 @ 80), (25 mW)
++	# 60 GHz band channels 1-4 (ETSI EN 302 567)
+ 	# II.H03 of the List, BDS EN 302 567-2
+-	(57000 - 66000 @ 2160), (40), NO-OUTDOOR
+-
++	(57000 - 66000 @ 2160), (40)
+ country BH: DFS-JP
+ 	(2402 - 2482 @ 40), (20)
+ 	(5170 - 5250 @ 20), (20)
+@@ -265,16 +290,23 @@ country CF: DFS-FCC
+ 	(5490 - 5730 @ 40), (24), DFS
+ 	(5735 - 5835 @ 40), (30)
  
-@@ -4324,7 +4325,7 @@ void rtl8xxxu_update_rate_mask(struct rtl8xxxu_priv *priv, u32 ramask, int sgi)
- }
+-# Source:
+-# https://www.ofcomnet.ch/#/fatTable
+-# Note that the maximum transmitter power can be doubled for 5250-5710MHz if
+-# transmitter power control is in use: 5250-5330@23db, 5490-5710@30db
++# CH as part of CEPT accepted decisions 2005/513/EC (5GHz RLAN, EN 301 893) 
++# and 2006/771/EC (amended by 2008/432/EC, Short-Range Devices, EN 300 440)
++#  EU decision 2005/513/EC: https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:02005D0513-20070213
++#  EU decision 2006/771/EC: https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:02008D0432-20080611
++# CH: https://www.ofcomnet.ch/api/rir/1010/05
++# CH: https://www.ofcomnet.ch/api/rir/1010/04
++# CH: https://www.ofcomnet.ch/api/rir/1008/12
++# CH: https://www.ofcomnet.ch/#/fatTable
+ country CH: DFS-ETSI
+-	(2402 - 2482 @ 40), (20)
+-	(5150 - 5250 @ 80), (23), NO-OUTDOOR, AUTO-BW, wmmrule=ETSI
+-	(5250 - 5350 @ 80), (20), NO-OUTDOOR, DFS, AUTO-BW, wmmrule=ETSI
+-	(5490 - 5710 @ 160), (27), DFS, wmmrule=ETSI
+-	# 60 GHz band channels 1-4, ref: Etsi En 302 567
++	(2400 - 2483.5 @ 40), (100 mW)
++	(5150 - 5250 @ 80), (200 mW), NO-OUTDOOR, AUTO-BW, wmmrule=ETSI
++	(5250 - 5350 @ 80), (100 mW), NO-OUTDOOR, DFS, AUTO-BW, wmmrule=ETSI
++	(5470 - 5725 @ 160), (500 mW), DFS, wmmrule=ETSI
++	# short range devices (ETSI EN 300 440-1)
++	(5725 - 5875 @ 80), (25 mW)
++	# 60 GHz band channels 1-4 (ETSI EN 302 567)
+ 	(57000 - 66000 @ 2160), (40)
  
- void rtl8xxxu_gen2_update_rate_mask(struct rtl8xxxu_priv *priv,
--				    u32 ramask, int sgi)
-+				    u32 ramask, u8 rateid, int sgi)
- {
- 	struct h2c_cmd h2c;
- 	u8 bw = 0;
-@@ -4338,7 +4339,7 @@ void rtl8xxxu_gen2_update_rate_mask(struct rtl8xxxu_priv *priv,
- 	h2c.b_macid_cfg.ramask3 = (ramask >> 24) & 0xff;
+ country CI: DFS-FCC
+@@ -329,26 +361,43 @@ country CX: DFS-FCC
+ 	(5490 - 5730 @ 160), (24), DFS
+ 	(5735 - 5835 @ 80), (30)
  
- 	h2c.ramask.arg = 0x80;
--	h2c.b_macid_cfg.data1 = 0;
-+	h2c.b_macid_cfg.data1 = rateid;
- 	if (sgi)
- 		h2c.b_macid_cfg.data1 |= BIT(7);
++# CY as part of EU/CEPT accepted decisions 2005/513/EC (5GHz RLAN, EN 301 893) 
++# and 2006/771/EC (amended by 2008/432/EC, Short-Range Devices, EN 300 440)
++#  EU decision 2005/513/EC: https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:02005D0513-20070213
++#  EU decision 2006/771/EC: https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:02008D0432-20080611
++# CY: http://www.mcw.gov.cy/mcw/dec/dec.nsf/all/292484CFC7013DD4C2256EBA0023D447/$file/Sxedio%20Radiosyxnothtwn%20ths%20Dhmokratias-3-8-2018-E2.2(English%20Unified%20Unofficial).pdf?openelement
+ country CY: DFS-ETSI
+-	(2402 - 2482 @ 40), (20)
+-	(5170 - 5250 @ 80), (20), AUTO-BW, wmmrule=ETSI
+-	(5250 - 5330 @ 80), (20), DFS, AUTO-BW, wmmrule=ETSI
+-	(5490 - 5710 @ 160), (27), DFS, wmmrule=ETSI
+-	# 60 GHz band channels 1-4, ref: Etsi En 302 567
++	(2400 - 2483.5 @ 40), (100 mW)
++	(5150 - 5250 @ 80), (200 mW), NO-OUTDOOR, AUTO-BW, wmmrule=ETSI
++	(5250 - 5350 @ 80), (100 mW), NO-OUTDOOR, DFS, AUTO-BW, wmmrule=ETSI
++	(5470 - 5725 @ 160), (500 mW), DFS, wmmrule=ETSI
++	# short range devices (ETSI EN 300 440-1)
++	(5725 - 5875 @ 80), (25 mW)
++	# 60 GHz band channels 1-4 (ETSI EN 302 567)
+ 	(57000 - 66000 @ 2160), (40)
  
-@@ -4478,6 +4479,40 @@ static void rtl8xxxu_set_basic_rates(struct rtl8xxxu_priv *priv, u32 rate_cfg)
- 	rtl8xxxu_write8(priv, REG_INIRTS_RATE_SEL, rate_idx);
- }
+-# Data from http://www.ctu.eu/164/download/VOR/VOR-12-08-2005-34.pdf
+-# and http://www.ctu.eu/164/download/VOR/VOR-12-05-2007-6-AN.pdf
+-# Power at 5250 - 5350 MHz and 5470 - 5725 MHz can be doubled if TPC is
+-# implemented.
++# CZ as part of EU/CEPT accepted decisions 2005/513/EC (5GHz RLAN, EN 301 893) 
++# and 2006/771/EC (amended by 2008/432/EC, Short-Range Devices, EN 300 440)
++#  EU decision 2005/513/EC: https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:02005D0513-20070213
++#  EU decision 2006/771/EC: https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:02008D0432-20080611
++# CZ: https://www.ctu.cz/cs/download/vseobecna-opravneni/archiv/vo-r_12-06_2010-09.pdf
++# CZ: https://www.ctu.cz/sites/default/files/obsah/ctu/vseobecne-opravneni-c.vo-r/10/12.2017-10/obrazky/vo-r10-122017-10.pdf
+ country CZ: DFS-ETSI
+ 	(2400 - 2483.5 @ 40), (100 mW)
+ 	(5150 - 5250 @ 80), (200 mW), NO-OUTDOOR, AUTO-BW, wmmrule=ETSI
+ 	(5250 - 5350 @ 80), (100 mW), NO-OUTDOOR, DFS, AUTO-BW, wmmrule=ETSI
+ 	(5470 - 5725 @ 160), (500 mW), DFS, wmmrule=ETSI
+-	# 60 GHz band channels 1-4, ref: Etsi En 302 567
++	# short range devices (ETSI EN 300 440-1)
++	(5725 - 5875 @ 80), (25 mW)
++	# 60 GHz band channels 1-4 (ETSI EN 302 567)
+ 	(57000 - 66000 @ 2160), (40)
  
-+static u16
-+rtl8xxxu_wireless_mode(struct ieee80211_hw *hw, struct ieee80211_sta *sta)
-+{
-+	u16 network_type = WIRELESS_MODE_UNKNOWN;
-+	u32 rate_mask;
-+
-+	rate_mask = (sta->supp_rates[0] & 0xfff) |
-+		    (sta->ht_cap.mcs.rx_mask[0] << 12) |
-+		    (sta->ht_cap.mcs.rx_mask[0] << 20);
-+
-+	if (hw->conf.chandef.chan->band == NL80211_BAND_5GHZ) {
-+		if (sta->vht_cap.vht_supported)
-+			network_type = WIRELESS_MODE_AC;
-+		else if (sta->ht_cap.ht_supported)
-+			network_type = WIRELESS_MODE_N_5G;
-+
-+		network_type |= WIRELESS_MODE_A;
-+	} else {
-+		if (sta->vht_cap.vht_supported)
-+			network_type = WIRELESS_MODE_AC;
-+		else if (sta->ht_cap.ht_supported)
-+			network_type = WIRELESS_MODE_N_24G;
-+
-+		if (sta->supp_rates[0] <= 0xf)
-+			network_type |= WIRELESS_MODE_B;
-+		else if (sta->supp_rates[0] & 0xf)
-+			network_type |= (WIRELESS_MODE_B | WIRELESS_MODE_G);
-+		else
-+			network_type |= WIRELESS_MODE_G;
-+	}
-+
-+	return network_type;
-+}
-+
- static void
- rtl8xxxu_bss_info_changed(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
- 			  struct ieee80211_bss_conf *bss_conf, u32 changed)
-@@ -4520,7 +4555,10 @@ rtl8xxxu_bss_info_changed(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
- 				sgi = 1;
- 			rcu_read_unlock();
++# DE as part of EU/CEPT accepted decisions 2005/513/EC (5GHz RLAN, EN 301 893) 
++# and 2006/771/EC (amended by 2008/432/EC, Short-Range Devices, EN 300 440)
++#  EU decision 2005/513/EC: https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:02005D0513-20070213
++#  EU decision 2006/771/EC: https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:02008D0432-20080611
++#
+ # Allocation for the 2.4 GHz band (Vfg 10 / 2013, Allgemeinzuteilung von
+ # Frequenzen für die Nutzung in lokalen Netzwerken; Wireless Local Area
+ # Networks (WLAN-Funkanwendungen).
+@@ -368,7 +417,6 @@ country CZ: DFS-ETSI
+ # Bereich 57 GHz - 66 GHz für Funkanwendungen für weitbandige
+ # Datenübertragungssysteme; „Multiple Gigabit WAS/RLAN Systems (MGWS)“).
+ # https://www.bundesnetzagentur.de/SharedDocs/Downloads/DE/Sachgebiete/Telekommunikation/Unternehmen_Institutionen/Frequenzen/Allgemeinzuteilungen/2011_08_MGWS_pdf.pdf
+-
+ country DE: DFS-ETSI
+ 	(2400 - 2483.5 @ 40), (100 mW)
+ 	(5150 - 5250 @ 80), (200 mW), NO-OUTDOOR, AUTO-BW, wmmrule=ETSI
+@@ -379,16 +427,22 @@ country DE: DFS-ETSI
+ 	# 60 GHz band channels 1-4 (ETSI EN 302 567)
+ 	(57000 - 66000 @ 2160), (40)
  
--			priv->fops->update_rate_mask(priv, ramask, sgi);
-+			priv->vif = vif;
-+			priv->rssi_level = RTL8XXXU_RATR_STA_INIT;
-+
-+			priv->fops->update_rate_mask(priv, ramask, 0, sgi);
+-# Sources:
++# DK as part of EU/CEPT accepted decisions 2005/513/EC (5GHz RLAN, EN 301 893) 
++# and 2006/771/EC (amended by 2008/432/EC, Short-Range Devices, EN 300 440)
++#  EU decision 2005/513/EC: https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:02005D0513-20070213
++#  EU decision 2006/771/EC: https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:02008D0432-20080611
++# DK: https://ens.dk/sites/ens.dk/files/Tele/frekvensplan_0.pdf
+ # 5GHz: https://erhvervsstyrelsen.dk/sites/default/files/007_interface-datanet_5-6_ghz.pdf.pdf
+ # 60GHz: https://erhvervsstyrelsen.dk/sites/default/files/radiograenseflader-63.pdf
+ country DK: DFS-ETSI
+-	(2400 - 2483.5 @ 40), (20)
+-	(5150 - 5250 @ 80), (23), AUTO-BW, wmmrule=ETSI
+-	(5250 - 5350 @ 80), (20), DFS, AUTO-BW, wmmrule=ETSI
+-	(5470 - 5725 @ 160), (27), DFS, wmmrule=ETSI
++	(2400 - 2483.5 @ 40), (100 mW)
++	(5150 - 5250 @ 80), (200 mW), NO-OUTDOOR, AUTO-BW, wmmrule=ETSI
++	(5250 - 5350 @ 80), (100 mW), NO-OUTDOOR, DFS, AUTO-BW, wmmrule=ETSI
++	(5470 - 5725 @ 160), (500 mW), DFS, wmmrule=ETSI
++	# short range devices (ETSI EN 300 440-1)
++	(5725 - 5875 @ 80), (25 mW)
+ 	# 60 GHz band channels 1-4 (ETSI EN 302 567)
+-	(57000 - 66000 @ 2160), (40), NO-OUTDOOR
++	(57000 - 66000 @ 2160), (40)
  
- 			rtl8xxxu_write8(priv, REG_BCN_MAX_ERR, 0xff);
+ # Source:
+ # http://www.ntrcdom.org/index.php?option=com_content&view=category&layout=blog&id=10&Itemid=55
+@@ -417,12 +471,20 @@ country EC: DFS-FCC
+ 	(5490 - 5730 @ 20), (24), DFS
+ 	(5735 - 5835 @ 20), (30)
  
-@@ -5464,6 +5502,10 @@ static int rtl8xxxu_add_interface(struct ieee80211_hw *hw,
++# EE as part of EU/CEPT accepted decisions 2005/513/EC (5GHz RLAN, EN 301 893) 
++# and 2006/771/EC (amended by 2008/432/EC, Short-Range Devices, EN 300 440)
++#  EU decision 2005/513/EC: https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:02005D0513-20070213
++#  EU decision 2006/771/EC: https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:02008D0432-20080611
++# EE: https://www.ttja.ee/et/ettevottele-organisatsioonile/sideteenused/raadioseadmed/wifi-seade
++# EE: https://www.itu.int/ITU-D/study_groups/SGP_1998-2002/JGRES09/pdf/estonia.pdf
+ country EE: DFS-ETSI
+-	(2402 - 2482 @ 40), (20)
+-	(5170 - 5250 @ 80), (20), AUTO-BW, wmmrule=ETSI
+-	(5250 - 5330 @ 80), (20), DFS, AUTO-BW, wmmrule=ETSI
+-	(5490 - 5710 @ 160), (27), DFS, wmmrule=ETSI
+-	# 60 GHz band channels 1-4, ref: Etsi En 302 567
++	(2400 - 2483.5 @ 40), (100 mW)
++	(5150 - 5250 @ 80), (200 mW), NO-OUTDOOR, AUTO-BW, wmmrule=ETSI
++	(5250 - 5350 @ 80), (100 mW), NO-OUTDOOR, DFS, AUTO-BW, wmmrule=ETSI
++	(5470 - 5725 @ 160), (500 mW), DFS, wmmrule=ETSI
++	# short range devices (ETSI EN 300 440-1)
++	(5725 - 5875 @ 80), (25 mW)
++	# 60 GHz band channels 1-4 (ETSI EN 302 567)
+ 	(57000 - 66000 @ 2160), (40)
  
- 	switch (vif->type) {
- 	case NL80211_IFTYPE_STATION:
-+		if (!priv->vif)
-+			priv->vif = vif;
-+		else
-+			return -EOPNOTSUPP;
- 		rtl8xxxu_stop_tx_beacon(priv);
+ country EG: DFS-ETSI
+@@ -430,17 +492,19 @@ country EG: DFS-ETSI
+ 	(5170 - 5250 @ 40), (20)
+ 	(5250 - 5330 @ 40), (20), DFS
  
- 		val8 = rtl8xxxu_read8(priv, REG_BEACON_CTRL);
-@@ -5487,6 +5529,9 @@ static void rtl8xxxu_remove_interface(struct ieee80211_hw *hw,
- 	struct rtl8xxxu_priv *priv = hw->priv;
+-# Source:
+-# Cuadro nacional de atribución de frecuencias (CNAF)
+-# https://avancedigital.gob.es/espectro/Paginas/cnaf.aspx
++# ES as part of EU/CEPT accepted decisions 2005/513/EC (5GHz RLAN, EN 301 893) 
++# and 2006/771/EC (amended by 2008/432/EC, Short-Range Devices, EN 300 440)
++#  EU decision 2005/513/EC: https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:02005D0513-20070213
++#  EU decision 2006/771/EC: https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:02008D0432-20080611
++# ES: https://avancedigital.gob.es/espectro/Paginas/cnaf.aspx
+ country ES: DFS-ETSI
+ 	(2400 - 2483.5 @ 40), (100 mW)
+ 	(5150 - 5250 @ 80), (200 mW), NO-OUTDOOR, AUTO-BW, wmmrule=ETSI
+ 	(5250 - 5350 @ 80), (100 mW), NO-OUTDOOR, DFS, AUTO-BW, wmmrule=ETSI
+ 	(5470 - 5725 @ 160), (500 mW), DFS, wmmrule=ETSI
+-	# Short Range Devices (SRD) (ETSI EN 300 440)
++	# short range devices (ETSI EN 300 440-1)
+ 	(5725 - 5875 @ 80), (25 mW)
+-	# 60 GHz band channels 1-4, ref: Etsi En 302 567
++	# 60 GHz band channels 1-4 (ETSI EN 302 567)
+ 	(57000 - 66000 @ 2160), (40)
  
- 	dev_dbg(&priv->udev->dev, "%s\n", __func__);
-+
-+	if (priv->vif)
-+		priv->vif = NULL;
- }
+ country ET: DFS-ETSI
+@@ -449,14 +513,18 @@ country ET: DFS-ETSI
+ 	(5250 - 5330 @ 80), (20), DFS, AUTO-BW
+ 	(5490 - 5710 @ 160), (27), DFS
  
- static int rtl8xxxu_config(struct ieee80211_hw *hw, u32 changed)
-@@ -5772,6 +5817,177 @@ rtl8xxxu_ampdu_action(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
- 	return 0;
- }
++# FI as part of EU/CEPT accepted decisions 2005/513/EC (5GHz RLAN, EN 301 893) 
++# and 2006/771/EC (amended by 2008/432/EC, Short-Range Devices, EN 300 440)
++#  EU decision 2005/513/EC: https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:02005D0513-20070213
++#  EU decision 2006/771/EC: https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:02008D0432-20080611
+ country FI: DFS-ETSI
+-	(2400 - 2483.5 @ 40), (20)
+-	(5150 - 5250 @ 80), (23), NO-OUTDOOR, AUTO-BW, wmmrule=ETSI
+-	(5250 - 5350 @ 80), (20), NO-OUTDOOR, DFS, AUTO-BW, wmmrule=ETSI
+-	(5470 - 5725 @ 160), (27), DFS, wmmrule=ETSI
++	(2400 - 2483.5 @ 40), (100 mW)
++	(5150 - 5250 @ 80), (200 mW), NO-OUTDOOR, AUTO-BW, wmmrule=ETSI
++	(5250 - 5350 @ 80), (100 mW), NO-OUTDOOR, DFS, AUTO-BW, wmmrule=ETSI
++	(5470 - 5725 @ 160), (500 mW), DFS, wmmrule=ETSI
+ 	# short range devices (ETSI EN 300 440-1)
+ 	(5725 - 5875 @ 80), (25 mW)
+-	# 60 GHz band channels 1-4, ref: Etsi En 302 567
++	# 60 GHz band channels 1-4 (ETSI EN 302 567)
+ 	(57000 - 66000 @ 2160), (40)
  
-+static u8 rtl8xxxu_signal_to_snr(int signal)
-+{
-+	if (signal < RTL8XXXU_NOISE_FLOOR_MIN)
-+		signal = RTL8XXXU_NOISE_FLOOR_MIN;
-+	else if (signal > 0)
-+		signal = 0;
-+	return (u8)(signal - RTL8XXXU_NOISE_FLOOR_MIN);
-+}
-+
-+static void rtl8xxxu_refresh_rate_mask(struct rtl8xxxu_priv *priv,
-+				       int signal, struct ieee80211_sta *sta)
-+{
-+	struct ieee80211_hw *hw = priv->hw;
-+	u16 wireless_mode;
-+	u8 rssi_level, ratr_idx;
-+	u8 txbw_40mhz;
-+	u8 snr, snr_thresh_high, snr_thresh_low;
-+	u8 go_up_gap = 5;
-+
-+	rssi_level = priv->rssi_level;
-+	snr = rtl8xxxu_signal_to_snr(signal);
-+	snr_thresh_high = RTL8XXXU_SNR_THRESH_HIGH;
-+	snr_thresh_low = RTL8XXXU_SNR_THRESH_LOW;
-+	txbw_40mhz = (hw->conf.chandef.width == NL80211_CHAN_WIDTH_40) ? 1 : 0;
-+
-+	switch (rssi_level) {
-+	case RTL8XXXU_RATR_STA_MID:
-+		snr_thresh_high += go_up_gap;
-+		break;
-+	case RTL8XXXU_RATR_STA_LOW:
-+		snr_thresh_high += go_up_gap;
-+		snr_thresh_low += go_up_gap;
-+		break;
-+	default:
-+		break;
-+	}
-+
-+	if (snr > snr_thresh_high)
-+		rssi_level = RTL8XXXU_RATR_STA_HIGH;
-+	else if (snr > snr_thresh_low)
-+		rssi_level = RTL8XXXU_RATR_STA_MID;
-+	else
-+		rssi_level = RTL8XXXU_RATR_STA_LOW;
-+
-+	if (rssi_level != priv->rssi_level) {
-+		int sgi = 0;
-+		u32 rate_bitmap = 0;
-+
-+		rcu_read_lock();
-+		rate_bitmap = (sta->supp_rates[0] & 0xfff) |
-+				(sta->ht_cap.mcs.rx_mask[0] << 12) |
-+				(sta->ht_cap.mcs.rx_mask[1] << 20);
-+		if (sta->ht_cap.cap &
-+		    (IEEE80211_HT_CAP_SGI_40 | IEEE80211_HT_CAP_SGI_20))
-+			sgi = 1;
-+		rcu_read_unlock();
-+
-+		wireless_mode = rtl8xxxu_wireless_mode(hw, sta);
-+		switch (wireless_mode) {
-+		case WIRELESS_MODE_B:
-+			ratr_idx = RATEID_IDX_B;
-+			if (rate_bitmap & 0x0000000c)
-+				rate_bitmap &= 0x0000000d;
-+			else
-+				rate_bitmap &= 0x0000000f;
-+			break;
-+		case WIRELESS_MODE_A:
-+		case WIRELESS_MODE_G:
-+			ratr_idx = RATEID_IDX_G;
-+			if (rssi_level == RTL8XXXU_RATR_STA_HIGH)
-+				rate_bitmap &= 0x00000f00;
-+			else
-+				rate_bitmap &= 0x00000ff0;
-+			break;
-+		case (WIRELESS_MODE_B | WIRELESS_MODE_G):
-+			ratr_idx = RATEID_IDX_BG;
-+			if (rssi_level == RTL8XXXU_RATR_STA_HIGH)
-+				rate_bitmap &= 0x00000f00;
-+			else if (rssi_level == RTL8XXXU_RATR_STA_MID)
-+				rate_bitmap &= 0x00000ff0;
-+			else
-+				rate_bitmap &= 0x00000ff5;
-+			break;
-+		case WIRELESS_MODE_N_24G:
-+		case WIRELESS_MODE_N_5G:
-+		case (WIRELESS_MODE_G | WIRELESS_MODE_N_24G):
-+		case (WIRELESS_MODE_A | WIRELESS_MODE_N_5G):
-+			if (priv->tx_paths == 2 && priv->rx_paths == 2)
-+				ratr_idx = RATEID_IDX_GN_N2SS;
-+			else
-+				ratr_idx = RATEID_IDX_GN_N1SS;
-+		case (WIRELESS_MODE_B | WIRELESS_MODE_G | WIRELESS_MODE_N_24G):
-+		case (WIRELESS_MODE_B | WIRELESS_MODE_N_24G):
-+			if (txbw_40mhz) {
-+				if (priv->tx_paths == 2 && priv->rx_paths == 2)
-+					ratr_idx = RATEID_IDX_BGN_40M_2SS;
-+				else
-+					ratr_idx = RATEID_IDX_BGN_40M_1SS;
-+			} else {
-+				if (priv->tx_paths == 2 && priv->rx_paths == 2)
-+					ratr_idx = RATEID_IDX_BGN_20M_2SS_BN;
-+				else
-+					ratr_idx = RATEID_IDX_BGN_20M_1SS_BN;
-+			}
-+
-+			if (priv->tx_paths == 2 && priv->rx_paths == 2) {
-+				if (rssi_level == RTL8XXXU_RATR_STA_HIGH) {
-+					rate_bitmap &= 0x0f8f0000;
-+				} else if (rssi_level == RTL8XXXU_RATR_STA_MID) {
-+					rate_bitmap &= 0x0f8ff000;
-+				} else {
-+					if (txbw_40mhz)
-+						rate_bitmap &= 0x0f8ff015;
-+					else
-+						rate_bitmap &= 0x0f8ff005;
-+				}
-+			} else {
-+				if (rssi_level == RTL8XXXU_RATR_STA_HIGH) {
-+					rate_bitmap &= 0x000f0000;
-+				} else if (rssi_level == RTL8XXXU_RATR_STA_MID) {
-+					rate_bitmap &= 0x000ff000;
-+				} else {
-+					if (txbw_40mhz)
-+						rate_bitmap &= 0x000ff015;
-+					else
-+						rate_bitmap &= 0x000ff005;
-+				}
-+			}
-+			break;
-+		default:
-+			ratr_idx = RATEID_IDX_BGN_40M_2SS;
-+			rate_bitmap &= 0x0fffffff;
-+			break;
-+		}
-+
-+		priv->rssi_level = rssi_level;
-+		priv->fops->update_rate_mask(priv, rate_bitmap, ratr_idx, sgi);
-+	}
-+}
-+
-+static void rtl8xxxu_watchdog_callback(struct work_struct *work)
-+{
-+	struct ieee80211_vif *vif;
-+	struct rtl8xxxu_priv *priv;
-+
-+	priv = container_of(work, struct rtl8xxxu_priv, ra_watchdog.work);
-+	vif = priv->vif;
-+
-+	if (vif && vif->type == NL80211_IFTYPE_STATION) {
-+		int signal;
-+		struct ieee80211_sta *sta;
-+
-+		rcu_read_lock();
-+		sta = ieee80211_find_sta(vif, vif->bss_conf.bssid);
-+		if (!sta) {
-+			struct device *dev = &priv->udev->dev;
-+
-+			dev_info(dev, "%s: no sta found\n", __func__);
-+			rcu_read_unlock();
-+			goto out;
-+		}
-+		rcu_read_unlock();
-+
-+		signal = ieee80211_ave_rssi(vif);
-+		rtl8xxxu_refresh_rate_mask(priv, signal, sta);
-+	}
-+
-+out:
-+	schedule_delayed_work(&priv->ra_watchdog, 2 * HZ);
-+}
-+
- static int rtl8xxxu_start(struct ieee80211_hw *hw)
- {
- 	struct rtl8xxxu_priv *priv = hw->priv;
-@@ -5828,6 +6044,8 @@ static int rtl8xxxu_start(struct ieee80211_hw *hw)
+ country FM: DFS-FCC
+@@ -466,22 +534,34 @@ country FM: DFS-FCC
+ 	(5490 - 5730 @ 160), (24), DFS
+ 	(5735 - 5835 @ 80), (30)
  
- 		ret = rtl8xxxu_submit_rx_urb(priv, rx_urb);
- 	}
-+
-+	schedule_delayed_work(&priv->ra_watchdog, 2 * HZ);
- exit:
- 	/*
- 	 * Accept all data and mgmt frames
-@@ -5879,6 +6097,8 @@ static void rtl8xxxu_stop(struct ieee80211_hw *hw)
- 	if (priv->usb_interrupts)
- 		rtl8xxxu_write32(priv, REG_USB_HIMR, 0);
++# FR as part of EU/CEPT accepted decisions 2005/513/EC (5GHz RLAN, EN 301 893) 
++# and 2006/771/EC (amended by 2008/432/EC, Short-Range Devices, EN 300 440)
++#  EU decision 2005/513/EC: https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:02005D0513-20070213
++#  EU decision 2006/771/EC: https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:02008D0432-20080611
+ country FR: DFS-ETSI
+-	(2402 - 2482 @ 40), (20)
+-	(5150 - 5250 @ 80), (23), NO-OUTDOOR, AUTO-BW, wmmrule=ETSI
+-	(5250 - 5350 @ 80), (20), NO-OUTDOOR, DFS, AUTO-BW, wmmrule=ETSI
+-	(5470 - 5725 @ 160), (27), DFS, wmmrule=ETSI
+-        # short range devices (ETSI EN 300 440)
++	(2400 - 2483.5 @ 40), (100 mW)
++	(5150 - 5250 @ 80), (200 mW), NO-OUTDOOR, AUTO-BW, wmmrule=ETSI
++	(5250 - 5350 @ 80), (100 mW), NO-OUTDOOR, DFS, AUTO-BW, wmmrule=ETSI
++	(5470 - 5725 @ 160), (500 mW), DFS, wmmrule=ETSI
++	# short range devices (ETSI EN 300 440-1)
+ 	(5725 - 5875 @ 80), (25 mW)
+-	# 60 GHz band channels 1-4, ref: Etsi En 302 567
++	# 60 GHz band channels 1-4 (ETSI EN 302 567)
+ 	(57000 - 66000 @ 2160), (40)
  
-+	cancel_delayed_work_sync(&priv->ra_watchdog);
-+
- 	rtl8xxxu_free_rx_resources(priv);
- 	rtl8xxxu_free_tx_resources(priv);
- }
-@@ -6051,6 +6271,7 @@ static int rtl8xxxu_probe(struct usb_interface *interface,
- 	INIT_LIST_HEAD(&priv->rx_urb_pending_list);
- 	spin_lock_init(&priv->rx_urb_lock);
- 	INIT_WORK(&priv->rx_urb_wq, rtl8xxxu_rx_urb_work);
-+	INIT_DELAYED_WORK(&priv->ra_watchdog, rtl8xxxu_watchdog_callback);
++# GB as part of EU/CEPT accepted decisions 2005/513/EC (5GHz RLAN, EN 301 893) 
++# and 2006/771/EC (amended by 2008/432/EC, Short-Range Devices, EN 300 440)
++#  EU decision 2005/513/EC: https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:02005D0513-20070213
++#  EU decision 2006/771/EC: https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:02008D0432-20080611
++# GB: https://www.ofcom.org.uk/__data/assets/pdf_file/0019/136009/Ofcom-Information-Sheet-5-GHz-RLANs.pdf
++# GB: https://www.ofcom.org.uk/__data/assets/pdf_file/0028/84970/ir-2030.pdf
+ country GB: DFS-ETSI
+-	(2402 - 2482 @ 40), (20)
+-	(5170 - 5250 @ 80), (20), AUTO-BW, wmmrule=ETSI
+-	(5250 - 5330 @ 80), (20), DFS, AUTO-BW, wmmrule=ETSI
+-	(5490 - 5710 @ 160), (27), DFS, wmmrule=ETSI
+-	# 60 GHz band channels 1-4, ref: Etsi En 302 567
++	(2400 - 2483.5 @ 40), (100 mW)
++	(5150 - 5250 @ 80), (200 mW), NO-OUTDOOR, AUTO-BW, wmmrule=ETSI
++	(5250 - 5350 @ 80), (100 mW), NO-OUTDOOR, DFS, AUTO-BW, wmmrule=ETSI
++	(5470 - 5725 @ 160), (500 mW), DFS, wmmrule=ETSI
++	# short range devices (ETSI EN 300 440-1)
++	(5725 - 5875 @ 80), (25 mW)
++	# 60 GHz band channels 1-4 (ETSI EN 302 567)
+ 	(57000 - 66000 @ 2160), (40)
  
- 	usb_set_intfdata(interface, hw);
+ country GD: DFS-FCC
+@@ -523,12 +603,20 @@ country GP: DFS-ETSI
+ 	(5250 - 5330 @ 80), (20), DFS, AUTO-BW, wmmrule=ETSI
+ 	(5490 - 5710 @ 160), (27), DFS, wmmrule=ETSI
  
--- 
-2.20.1
++# GR as part of EU/CEPT accepted decisions 2005/513/EC (5GHz RLAN, EN 301 893) 
++# and 2006/771/EC (amended by 2008/432/EC, Short-Range Devices, EN 300 440)
++#  EU decision 2005/513/EC: https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:02005D0513-20070213
++#  EU decision 2006/771/EC: https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:02008D0432-20080611
++# GR: https://www.eett.gr/opencms/export/sites/default/EETT_EN/Electronic_Communications/Radio_Communications/TelecommunicationEquipment/Radio_equipment_interface_requirement_2012.pdf
++# GR: https://www.eett.gr/opencms/export/sites/default/EETT_EN/Electronic_Communications/Radio_Communications/TelecommunicationEquipment/Radio_equipment_interface_requirement_107.pdf
+ country GR: DFS-ETSI
+-	(2402 - 2482 @ 40), (20)
+-	(5170 - 5250 @ 80), (20), AUTO-BW, wmmrule=ETSI
+-	(5250 - 5330 @ 80), (20), DFS, AUTO-BW, wmmrule=ETSI
+-	(5490 - 5710 @ 160), (27), DFS, wmmrule=ETSI
+-	# 60 GHz band channels 1-4, ref: Etsi En 302 567
++	(2400 - 2483.5 @ 40), (100 mW)
++	(5150 - 5250 @ 80), (200 mW), NO-OUTDOOR, AUTO-BW, wmmrule=ETSI
++	(5250 - 5350 @ 80), (100 mW), NO-OUTDOOR, DFS, AUTO-BW, wmmrule=ETSI
++	(5470 - 5725 @ 160), (500 mW), DFS, wmmrule=ETSI
++	# short range devices (ETSI EN 300 440-1)
++	(5725 - 5875 @ 80), (25 mW)
++	# 60 GHz band channels 1-4 (ETSI EN 302 567)
+ 	(57000 - 66000 @ 2160), (40)
+ 
+ country GT: DFS-FCC
+@@ -563,11 +651,18 @@ country HN: DFS-FCC
+ 	(5735 - 5835 @ 80), (30)
+ 
+ country HR: DFS-ETSI
+-	(2400 - 2483.5 @ 40), (20)
+-	(5150 - 5250 @ 80), (23), NO-OUTDOOR, AUTO-BW, wmmrule=ETSI
+-	(5250 - 5350 @ 80), (20), NO-OUTDOOR, DFS, AUTO-BW, wmmrule=ETSI
+-	(5470 - 5725 @ 160), (27), DFS, wmmrule=ETSI
+-	# 60 GHz band channels 1-4, ref: Etsi En 302 567
++# HR as part of EU/CEPT accepted decisions 2005/513/EC (5GHz RLAN, EN 301 893) 
++# and 2006/771/EC (amended by 2008/432/EC, Short-Range Devices, EN 300 440)
++#  EU decision 2005/513/EC: https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:02005D0513-20070213
++#  EU decision 2006/771/EC: https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:02008D0432-20080611
++# HR: http://tablice.hakom.hr:8080/vis?lang=en
++	(2400 - 2483.5 @ 40), (100 mW)
++	(5150 - 5250 @ 80), (200 mW), NO-OUTDOOR, AUTO-BW, wmmrule=ETSI
++	(5250 - 5350 @ 80), (100 mW), NO-OUTDOOR, DFS, AUTO-BW, wmmrule=ETSI
++	(5470 - 5725 @ 160), (500 mW), DFS, wmmrule=ETSI
++	# short range devices (ETSI EN 300 440-1)
++	(5725 - 5875 @ 80), (25 mW)
++	# 60 GHz band channels 1-4 (ETSI EN 302 567)
+ 	(57000 - 66000 @ 2160), (40)
+ 
+ country HT: DFS-FCC
+@@ -577,37 +672,42 @@ country HT: DFS-FCC
+ 	(5490 - 5730 @ 160), (24), DFS
+ 	(5735 - 5835 @ 80), (30)
+ 
+-# http://stir.nmhh.hu/?oldal=dokumentumGeneralo&root_rendeletelem_id=3&hatalyos=1
+-# http://english.nmhh.hu/cikk/297/Eljarasi_tajekoztato_a_24_GHzes_es_az_5_GHzes_savban_mukodo_berendezesek_engedelyezeserol
+-# http://nmhh.hu/dokumentum/319/kis_hatotavolsagu_eszkozok_srdk.pdf
++# HU as part of EU/CEPT accepted decisions 2005/513/EC (5GHz RLAN, EN 301 893) 
++# and 2006/771/EC (amended by 2008/432/EC, Short-Range Devices, EN 300 440)
++#  EU decision 2005/513/EC: https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:02005D0513-20070213
++#  EU decision 2006/771/EC: https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:02008D0432-20080611
++# HU: http://stir.nmhh.hu/?oldal=dokumentumGeneralo&root_rendeletelem_id=3&hatalyos=1
++# HU: http://english.nmhh.hu/cikk/297/Eljarasi_tajekoztato_a_24_GHzes_es_az_5_GHzes_savban_mukodo_berendezesek_engedelyezeserol
++# HU: http://nmhh.hu/dokumentum/319/kis_hatotavolsagu_eszkozok_srdk.pdf
+ country HU: DFS-ETSI
+-	# ref: 2006/771/EK, (EU) 2017/1483, MSZ EN 300 328
+-	# additionally: 100mW @ 10MHz channels, 50mW @ 5MHz (max. 10mW/MHz)
+-	(2400 - 2483.5 @ 40), (20)
+-	# ref: 2005/513/EK
+-	# note: TPC not needed @ 5150-5250
+-	(5150 - 5250 @ 80), (23), NO-OUTDOOR, AUTO-BW, wmmrule=ETSI
+-	# note: max would be +3dB with TPC @ 5250-5725
+-	(5250 - 5350 @ 80), (20), NO-OUTDOOR, DFS, AUTO-BW, wmmrule=ETSI
+-	(5470 - 5725 @ 160), (27), DFS, wmmrule=ETSI
+-	# "Short Range Devices (SRD)"
+-	# ref: 2006/771/EK, (EU) 2017/1483, MSZ EN 300 440, MSZ EN 302 064
++	(2400 - 2483.5 @ 40), (100 mW)
++	(5150 - 5250 @ 80), (200 mW), NO-OUTDOOR, AUTO-BW, wmmrule=ETSI
++	(5250 - 5350 @ 80), (100 mW), NO-OUTDOOR, DFS, AUTO-BW, wmmrule=ETSI
++	(5470 - 5725 @ 160), (500 mW), DFS, wmmrule=ETSI
++	# short range devices (ETSI EN 300 440-1)
+ 	(5725 - 5875 @ 80), (25 mW)
+-	# 60 GHz band channels 1-4, "Fixed outdoor installation not allowed"
+-	# ref: 2006/771/EK, (EU) 2017/1483, MSZ EN 302 567
+-	(57000 - 66000 @ 2160), (40), NO-OUTDOOR
++	# 60 GHz band channels 1-4 (ETSI EN 302 567)
++	(57000 - 66000 @ 2160), (40)
+ 
+ country ID: DFS-JP
+ 	# ref: http://www.postel.go.id/content/ID/regulasi/standardisasi/kepdir/bwa%205,8%20ghz.pdf
+ 	(2402 - 2482 @ 20), (20)
+ 	(5735 - 5815 @ 20), (23)
+ 
++# IE as part of EU/CEPT accepted decisions 2005/513/EC (5GHz RLAN, EN 301 893) 
++# and 2006/771/EC (amended by 2008/432/EC, Short-Range Devices, EN 300 440)
++#  EU decision 2005/513/EC: https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:02005D0513-20070213
++#  EU decision 2006/771/EC: https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:02008D0432-20080611
++# IE: https://www.comreg.ie/publication-download/interface-requirements-for-radio-services-in-ireland
++# IE: https://www.comreg.ie/publication-download/permitted-short-range-devices-ireland
+ country IE: DFS-ETSI
+-	(2402 - 2482 @ 40), (20)
+-	(5170 - 5250 @ 80), (20), AUTO-BW, wmmrule=ETSI
+-	(5250 - 5330 @ 80), (20), DFS, AUTO-BW, wmmrule=ETSI
+-	(5490 - 5710 @ 160), (27), DFS, wmmrule=ETSI
+-	# 60 GHz band channels 1-4, ref: Etsi En 302 567
++	(2400 - 2483.5 @ 40), (100 mW)
++	(5150 - 5250 @ 80), (200 mW), NO-OUTDOOR, AUTO-BW, wmmrule=ETSI
++	(5250 - 5350 @ 80), (100 mW), NO-OUTDOOR, DFS, AUTO-BW, wmmrule=ETSI
++	(5470 - 5725 @ 160), (500 mW), DFS, wmmrule=ETSI
++	# short range devices (ETSI EN 300 440-1)
++	(5725 - 5875 @ 80), (25 mW)
++	# 60 GHz band channels 1-4 (ETSI EN 302 567)
+ 	(57000 - 66000 @ 2160), (40)
+ 
+ country IL: DFS-ETSI
+@@ -626,20 +726,33 @@ country IR: DFS-JP
+ 	(2402 - 2482 @ 40), (20)
+ 	(5735 - 5835 @ 80), (30)
+ 
++# IS as part of CEPT accepted decisions 2005/513/EC (5GHz RLAN, EN 301 893) 
++# and 2006/771/EC (amended by 2008/432/EC, Short-Range Devices, EN 300 440)
++#  EU decision 2005/513/EC: https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:02005D0513-20070213
++#  EU decision 2006/771/EC: https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:02008D0432-20080611
++# IS: https://www.pfs.is/library/Skrar/Tidnir-og-taekni/MHZ_21022019.pdf
+ country IS: DFS-ETSI
+-	(2402 - 2482 @ 40), (20)
+-	(5170 - 5250 @ 80), (20), AUTO-BW, wmmrule=ETSI
+-	(5250 - 5330 @ 80), (20), DFS, AUTO-BW, wmmrule=ETSI
+-	(5490 - 5710 @ 160), (27), DFS, wmmrule=ETSI
+-	# 60 GHz band channels 1-4, ref: Etsi En 302 567
++	(2400 - 2483.5 @ 40), (100 mW)
++	(5150 - 5250 @ 80), (200 mW), NO-OUTDOOR, AUTO-BW, wmmrule=ETSI
++	(5250 - 5350 @ 80), (100 mW), NO-OUTDOOR, DFS, AUTO-BW, wmmrule=ETSI
++	(5470 - 5725 @ 160), (500 mW), DFS, wmmrule=ETSI
++	# short range devices (ETSI EN 300 440-1)
++	(5725 - 5875 @ 80), (25 mW)
++	# 60 GHz band channels 1-4 (ETSI EN 302 567)
+ 	(57000 - 66000 @ 2160), (40)
+ 
++# IT as part of EU/CEPT accepted decisions 2005/513/EC (5GHz RLAN, EN 301 893) 
++# and 2006/771/EC (amended by 2008/432/EC, Short-Range Devices, EN 300 440)
++#  EU decision 2005/513/EC: https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:02005D0513-20070213
++#  EU decision 2006/771/EC: https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:02008D0432-20080611
+ country IT: DFS-ETSI
+-	(2402 - 2482 @ 40), (20)
+-	(5170 - 5250 @ 80), (20), AUTO-BW, wmmrule=ETSI
+-	(5250 - 5330 @ 80), (20), DFS, AUTO-BW, wmmrule=ETSI
+-	(5490 - 5710 @ 160), (27), DFS, wmmrule=ETSI
+-	# 60 GHz band channels 1-4, ref: Etsi En 302 567
++	(2400 - 2483.5 @ 40), (100 mW)
++	(5150 - 5250 @ 80), (200 mW), NO-OUTDOOR, AUTO-BW, wmmrule=ETSI
++	(5250 - 5350 @ 80), (100 mW), NO-OUTDOOR, DFS, AUTO-BW, wmmrule=ETSI
++	(5470 - 5725 @ 160), (500 mW), DFS, wmmrule=ETSI
++	# short range devices (ETSI EN 300 440-1)
++	(5725 - 5875 @ 80), (25 mW)
++	# 60 GHz band channels 1-4 (ETSI EN 302 567)
+ 	(57000 - 66000 @ 2160), (40)
+ 
+ country JM: DFS-FCC
+@@ -741,16 +854,22 @@ country LC: DFS-ETSI
+ 	(5490 - 5710 @ 160), (30), DFS
+ 	(5735 - 5815 @ 80), (30)
+ 
+-# Source:
+-# https://www.ofcomnet.ch/#/fatTable
+-# Note that the maximum transmitter power can be doubled for 5250-5710MHz if
+-# transmitter power control is in use: 5250-5330@23db, 5490-5710@30db
++# LI as part of CEPT accepted decisions 2005/513/EC (5GHz RLAN, EN 301 893) 
++# and 2006/771/EC (amended by 2008/432/EC, Short-Range Devices, EN 300 440)
++#  EU decision 2005/513/EC: https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:02005D0513-20070213
++#  EU decision 2006/771/EC: https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:02008D0432-20080611
++# LI: https://www.ofcomnet.ch/api/rir/1010/05
++# LI: https://www.ofcomnet.ch/api/rir/1010/04
++# LI: https://www.ofcomnet.ch/api/rir/1008/12
++# LI: https://www.ofcomnet.ch/#/fatTable
+ country LI: DFS-ETSI
+-	(2402 - 2482 @ 40), (20)
+-	(5150 - 5250 @ 80), (23), NO-OUTDOOR, AUTO-BW, wmmrule=ETSI
+-	(5250 - 5350 @ 80), (20), NO-OUTDOOR, DFS, AUTO-BW, wmmrule=ETSI
+-	(5490 - 5710 @ 160), (27), DFS, wmmrule=ETSI
+-	# 60 GHz band channels 1-4, ref: Etsi En 302 567
++	(2400 - 2483.5 @ 40), (100 mW)
++	(5150 - 5250 @ 80), (200 mW), NO-OUTDOOR, AUTO-BW, wmmrule=ETSI
++	(5250 - 5350 @ 80), (100 mW), NO-OUTDOOR, DFS, AUTO-BW, wmmrule=ETSI
++	(5470 - 5725 @ 160), (500 mW), DFS, wmmrule=ETSI
++	# short range devices (ETSI EN 300 440-1)
++	(5725 - 5875 @ 80), (25 mW)
++	# 60 GHz band channels 1-4 (ETSI EN 302 567)
+ 	(57000 - 66000 @ 2160), (40)
+ 
+ country LK: DFS-FCC
+@@ -768,28 +887,50 @@ country LS: DFS-ETSI
+ 	(5250 - 5330 @ 80), (20), DFS, AUTO-BW
+ 	(5490 - 5710 @ 160), (27), DFS
+ 
++# LT as part of EU/CEPT accepted decisions 2005/513/EC (5GHz RLAN, EN 301 893) 
++# and 2006/771/EC (amended by 2008/432/EC, Short-Range Devices, EN 300 440)
++#  EU decision 2005/513/EC: https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:02005D0513-20070213
++#  EU decision 2006/771/EC: https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:02008D0432-20080611
++# LT: https://www.rrt.lt/en/radio-spectrum/frequency-management/ or direct link:
++# LT: https://www.e-tar.lt/portal/lt/legalAct/6e718fd037a011e69101aaab2992cbcd/dGRioCBBHb
+ country LT: DFS-ETSI
+-	(2402 - 2482 @ 40), (20)
+-	(5170 - 5250 @ 80), (20), AUTO-BW, wmmrule=ETSI
+-	(5250 - 5330 @ 80), (20), DFS, AUTO-BW, wmmrule=ETSI
+-	(5490 - 5710 @ 160), (27), DFS, wmmrule=ETSI
+-	# 60 GHz band channels 1-4, ref: Etsi En 302 567
++	(2400 - 2483.5 @ 40), (100 mW)
++	(5150 - 5250 @ 80), (200 mW), NO-OUTDOOR, AUTO-BW, wmmrule=ETSI
++	(5250 - 5350 @ 80), (100 mW), NO-OUTDOOR, DFS, AUTO-BW, wmmrule=ETSI
++	(5470 - 5725 @ 160), (500 mW), DFS, wmmrule=ETSI
++	# short range devices (ETSI EN 300 440-1)
++	(5725 - 5875 @ 80), (25 mW)
++	# 60 GHz band channels 1-4 (ETSI EN 302 567)
+ 	(57000 - 66000 @ 2160), (40)
+ 
++# LU as part of EU/CEPT accepted decisions 2005/513/EC (5GHz RLAN, EN 301 893) 
++# and 2006/771/EC (amended by 2008/432/EC, Short-Range Devices, EN 300 440)
++#  EU decision 2005/513/EC: https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:02005D0513-20070213
++#  EU decision 2006/771/EC: https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:02008D0432-20080611
++# LU: https://assets.ilr.lu/frequences/Documents/ILRLU-1723895916-183.pdf#search=en%20300%20440
+ country LU: DFS-ETSI
+-	(2402 - 2482 @ 40), (20)
+-	(5170 - 5250 @ 80), (20), AUTO-BW, wmmrule=ETSI
+-	(5250 - 5330 @ 80), (20), DFS, AUTO-BW, wmmrule=ETSI
+-	(5490 - 5710 @ 160), (27), DFS, wmmrule=ETSI
+-	# 60 GHz band channels 1-4, ref: Etsi En 302 567
++	(2400 - 2483.5 @ 40), (100 mW)
++	(5150 - 5250 @ 80), (200 mW), NO-OUTDOOR, AUTO-BW, wmmrule=ETSI
++	(5250 - 5350 @ 80), (100 mW), NO-OUTDOOR, DFS, AUTO-BW, wmmrule=ETSI
++	(5470 - 5725 @ 160), (500 mW), DFS, wmmrule=ETSI
++	# short range devices (ETSI EN 300 440-1)
++	(5725 - 5875 @ 80), (25 mW)
++	# 60 GHz band channels 1-4 (ETSI EN 302 567)
+ 	(57000 - 66000 @ 2160), (40)
+-
++	
++# LV as part of EU/CEPT accepted decisions 2005/513/EC (5GHz RLAN, EN 301 893) 
++# and 2006/771/EC (amended by 2008/432/EC, Short-Range Devices, EN 300 440)
++#  EU decision 2005/513/EC: https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:02005D0513-20070213
++#  EU decision 2006/771/EC: https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:02008D0432-20080611
++# LV: http://likumi.lv/doc.php?id=198903
+ country LV: DFS-ETSI
+-	(2402 - 2482 @ 40), (20)
+-	(5170 - 5250 @ 80), (20), AUTO-BW, wmmrule=ETSI
+-	(5250 - 5330 @ 80), (20), DFS, AUTO-BW, wmmrule=ETSI
+-	(5490 - 5710 @ 160), (27), DFS, wmmrule=ETSI
+-	# 60 GHz band channels 1-4, ref: Etsi En 302 567
++	(2400 - 2483.5 @ 40), (100 mW)
++	(5150 - 5250 @ 80), (200 mW), NO-OUTDOOR, AUTO-BW, wmmrule=ETSI
++	(5250 - 5350 @ 80), (100 mW), NO-OUTDOOR, DFS, AUTO-BW, wmmrule=ETSI
++	(5470 - 5725 @ 160), (500 mW), DFS, wmmrule=ETSI
++	# short range devices (ETSI EN 300 440-1)
++	(5725 - 5875 @ 80), (25 mW)
++	# 60 GHz band channels 1-4 (ETSI EN 302 567)
+ 	(57000 - 66000 @ 2160), (40)
+ 
+ country MA: DFS-ETSI
+@@ -875,12 +1016,19 @@ country MR: DFS-ETSI
+ 	(5250 - 5330 @ 80), (20), DFS, AUTO-BW
+ 	(5490 - 5710 @ 160), (27), DFS
+ 
++# MT as part of EU/CEPT accepted decisions 2005/513/EC (5GHz RLAN, EN 301 893) 
++# and 2006/771/EC (amended by 2008/432/EC, Short-Range Devices, EN 300 440)
++#  EU decision 2005/513/EC: https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:02005D0513-20070213
++#  EU decision 2006/771/EC: https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:02008D0432-20080611
++# MT: https://www.mca.org.mt/sites/default/files/NFP_edition%206-1.pdf
+ country MT: DFS-ETSI
+-	(2402 - 2482 @ 40), (20)
+-	(5170 - 5250 @ 80), (20), AUTO-BW, wmmrule=ETSI
+-	(5250 - 5330 @ 80), (20), DFS, AUTO-BW, wmmrule=ETSI
+-	(5490 - 5710 @ 160), (27), DFS, wmmrule=ETSI
+-	# 60 GHz band channels 1-4, ref: Etsi En 302 567
++	(2400 - 2483.5 @ 40), (100 mW)
++	(5150 - 5250 @ 80), (200 mW), NO-OUTDOOR, AUTO-BW, wmmrule=ETSI
++	(5250 - 5350 @ 80), (100 mW), NO-OUTDOOR, DFS, AUTO-BW, wmmrule=ETSI
++	(5470 - 5725 @ 160), (500 mW), DFS, wmmrule=ETSI
++	# short range devices (ETSI EN 300 440-1)
++	(5725 - 5875 @ 80), (25 mW)
++	# 60 GHz band channels 1-4 (ETSI EN 302 567)
+ 	(57000 - 66000 @ 2160), (40)
+ 
+ country MU: DFS-FCC
+@@ -930,34 +1078,36 @@ country NI: DFS-FCC
+ 	(5490 - 5730 @ 160), (24), DFS
+ 	(5735 - 5835 @ 80), (30)
+ 
+-# Regulation on the use of frequency space without a license and
+-# without notification 2015
+-#
+-# http://wetten.overheid.nl/BWBR0036378/2015-03-05
+-
++# NL as part of EU/CEPT accepted decisions 2005/513/EC (5GHz RLAN, EN 301 893) 
++# and 2006/771/EC (amended by 2008/432/EC, Short-Range Devices, EN 300 440)
++#  EU decision 2005/513/EC: https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:02005D0513-20070213
++#  EU decision 2006/771/EC: https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:02008D0432-20080611
++# NL: http://wetten.overheid.nl/BWBR0036378/2015-03-05
+ country NL: DFS-ETSI
+-	(2402 - 2482 @ 40), (20)
+-	(5170 - 5250 @ 80), (20), NO-OUTDOOR, AUTO-BW, wmmrule=ETSI
+-	(5250 - 5330 @ 80), (20), NO-OUTDOOR, DFS, AUTO-BW, wmmrule=ETSI
+-	(5490 - 5710 @ 160), (27), DFS, wmmrule=ETSI
++	(2400 - 2483.5 @ 40), (100 mW)
++	(5150 - 5250 @ 80), (200 mW), NO-OUTDOOR, AUTO-BW, wmmrule=ETSI
++	(5250 - 5350 @ 80), (100 mW), NO-OUTDOOR, DFS, AUTO-BW, wmmrule=ETSI
++	(5470 - 5725 @ 160), (500 mW), DFS, wmmrule=ETSI
+ 	# short range devices (ETSI EN 300 440-1)
+ 	(5725 - 5875 @ 80), (25 mW)
+-	# 60 GHz band channels 1-4, ref: Etsi En 302 567
++	# 60 GHz band channels 1-4 (ETSI EN 302 567)
+ 	(57000 - 66000 @ 2160), (40)
+ 
+-# Data from http://www.lovdata.no/dokument/SF/forskrift/2012-01-19-77
+-# Power at 5250 - 5350 MHz, 5470 - 5725 MHz and 5815 – 5850 MHz can
+-# be doubled if TPC is implemented.
+-# Up to 2W (or 4W with TPC) is allowed in the 5725 – 5795 MHz band
+-# which has been merged with 5470 - 5725 MHz to allow wide channels
++# NO as part of CEPT accepted decisions 2005/513/EC (5GHz RLAN, EN 301 893) 
++# and 2006/771/EC (amended by 2008/432/EC, Short-Range Devices, EN 300 440)
++#  EU decision 2005/513/EC: https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:02005D0513-20070213
++#  EU decision 2006/771/EC: https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:02008D0432-20080611
++# NO: https://eng.nkom.no/technical/temporary-licenses/mobile-videolink/wireless-cameras-mobile-video-links/_attachment/9947
++# NO: http://www.lovdata.no/dokument/SF/forskrift/2012-01-19-77
++# In addition to EU NO can use 5725–5795 MHz and 5815–5850 bands with limit of 4 W EIRP (with DFS and TPC)
+ country NO: DFS-ETSI
+ 	(2400 - 2483.5 @ 40), (100 mW)
+-	(5150 - 5250 @ 80), (200 mW), AUTO-BW, wmmrule=ETSI
+-	(5250 - 5350 @ 80), (100 mW), DFS, AUTO-BW, wmmrule=ETSI
+-	(5470 - 5795 @ 160), (500 mW), DFS, wmmrule=ETSI
+-	(5815 - 5850 @ 35), (2000 mW), DFS
+-	(17100 - 17300 @ 200), (100 mW)
+-	# 60 GHz band channels 1-4, ref: Etsi En 302 567
++	(5150 - 5250 @ 80), (200 mW), NO-OUTDOOR, AUTO-BW, wmmrule=ETSI
++	(5250 - 5350 @ 80), (100 mW), NO-OUTDOOR, DFS, AUTO-BW, wmmrule=ETSI
++	(5470 - 5725 @ 160), (500 mW), DFS, wmmrule=ETSI
++	# short range devices (ETSI EN 300 440-1)
++	(5725 - 5875 @ 80), (25 mW)
++	# 60 GHz band channels 1-4 (ETSI EN 302 567)
+ 	(57000 - 66000 @ 2160), (40)
+ 
+ country NP: DFS-JP
+@@ -1020,12 +1170,18 @@ country PK: DFS-JP
+ 	(2402 - 2482 @ 40), (20)
+ 	(5735 - 5835 @ 80), (30)
+ 
++# PL as part of EU/CEPT accepted decisions 2005/513/EC (5GHz RLAN, EN 301 893) 
++# and 2006/771/EC (amended by 2008/432/EC, Short-Range Devices, EN 300 440)
++#  EU decision 2005/513/EC: https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:02005D0513-20070213
++#  EU decision 2006/771/EC: https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:02008D0432-20080611
+ country PL: DFS-ETSI
+-	(2402 - 2482 @ 40), (20)
+-	(5170 - 5250 @ 80), (20), AUTO-BW, wmmrule=ETSI
+-	(5250 - 5330 @ 80), (20), DFS, AUTO-BW, wmmrule=ETSI
+-	(5490 - 5710 @ 160), (27), DFS, wmmrule=ETSI
+-	# 60 GHz band channels 1-4, ref: Etsi En 302 567
++	(2400 - 2483.5 @ 40), (100 mW)
++	(5150 - 5250 @ 80), (200 mW), NO-OUTDOOR, AUTO-BW, wmmrule=ETSI
++	(5250 - 5350 @ 80), (100 mW), NO-OUTDOOR, DFS, AUTO-BW, wmmrule=ETSI
++	(5470 - 5725 @ 160), (500 mW), DFS, wmmrule=ETSI
++	# short range devices (ETSI EN 300 440-1)
++	(5725 - 5875 @ 80), (25 mW)
++	# 60 GHz band channels 1-4 (ETSI EN 302 567)
+ 	(57000 - 66000 @ 2160), (40)
+ 
+ country PM: DFS-ETSI
+@@ -1041,14 +1197,19 @@ country PR: DFS-FCC
+ 	(5490 - 5730 @ 160), (24), DFS
+ 	(5735 - 5835 @ 80), (30)
+ 
++# PT as part of EU/CEPT accepted decisions 2005/513/EC (5GHz RLAN, EN 301 893) 
++# and 2006/771/EC (amended by 2008/432/EC, Short-Range Devices, EN 300 440)
++#  EU decision 2005/513/EC: https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:02005D0513-20070213
++#  EU decision 2006/771/EC: https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:02008D0432-20080611
++# PT: https://www.anacom.pt/render.jsp?categoryId=336334
+ country PT: DFS-ETSI
+-	(2402 - 2482 @ 40), (20)
+-	(5170 - 5250 @ 80), (20), AUTO-BW, wmmrule=ETSI
+-	(5250 - 5330 @ 80), (20), DFS, AUTO-BW, wmmrule=ETSI
+-	(5490 - 5710 @ 160), (27), DFS, wmmrule=ETSI
++	(2400 - 2483.5 @ 40), (100 mW)
++	(5150 - 5250 @ 80), (200 mW), NO-OUTDOOR, AUTO-BW, wmmrule=ETSI
++	(5250 - 5350 @ 80), (100 mW), NO-OUTDOOR, DFS, AUTO-BW, wmmrule=ETSI
++	(5470 - 5725 @ 160), (500 mW), DFS, wmmrule=ETSI
+ 	# short range devices (ETSI EN 300 440-1)
+ 	(5725 - 5875 @ 80), (25 mW)
+-	# 60 GHz band channels 1-4, ref: Etsi En 302 567
++	# 60 GHz band channels 1-4 (ETSI EN 302 567)
+ 	(57000 - 66000 @ 2160), (40)
+ 
+ country PW: DFS-FCC
+@@ -1079,15 +1240,21 @@ country RE: DFS-ETSI
+ 	(5250 - 5330 @ 80), (20), DFS, AUTO-BW, wmmrule=ETSI
+ 	(5490 - 5710 @ 160), (27), DFS, wmmrule=ETSI
+ 
++# RO as part of EU/CEPT accepted decisions 2005/513/EC (5GHz RLAN, EN 301 893) 
++# and 2006/771/EC (amended by 2008/432/EC, Short-Range Devices, EN 300 440)
++#  EU decision 2005/513/EC: https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:02005D0513-20070213
++#  EU decision 2006/771/EC: https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:02008D0432-20080611
++# RO: http://www.ancom.org.ro/en/uploads/links_files/ordin_262_2006.pdf
+ country RO: DFS-ETSI
+-	(2402 - 2482 @ 40), (20)
+-	(5170 - 5250 @ 80), (20), AUTO-BW, wmmrule=ETSI
+-	(5250 - 5330 @ 80), (20), DFS, AUTO-BW, wmmrule=ETSI
+-	(5490 - 5710 @ 160), (27), DFS, wmmrule=ETSI
+-	# 60 GHz band channels 1-4, ref: Etsi En 302 567
++	(2400 - 2483.5 @ 40), (100 mW)
++	(5150 - 5250 @ 80), (200 mW), NO-OUTDOOR, AUTO-BW, wmmrule=ETSI
++	(5250 - 5350 @ 80), (100 mW), NO-OUTDOOR, DFS, AUTO-BW, wmmrule=ETSI
++	(5470 - 5725 @ 160), (500 mW), DFS, wmmrule=ETSI
++	# short range devices (ETSI EN 300 440-1)
++	(5725 - 5875 @ 80), (25 mW)
++	# 60 GHz band channels 1-4 (ETSI EN 302 567)
+ 	(57000 - 66000 @ 2160), (40)
+ 
+-
+ # Source:
+ # http://www.ratel.rs/upload/documents/Plan_namene/Plan_namene-sl_glasnik.pdf
+ country RS: DFS-ETSI
+@@ -1119,18 +1286,20 @@ country SA: DFS-ETSI
+ 	(5250 - 5330 @ 80), (20), DFS, AUTO-BW
+ 	(5490 - 5710 @ 160), (27), DFS
+ 
+-# Source:
+-# https://pts.se/globalassets/startpage/dokument/legala-dokument/foreskrifter/radio/beslutade_ptsfs-2018-3-undantagsforeskrifter.pdf
++# SE as part of EU/CEPT accepted decisions 2005/513/EC (5GHz RLAN, EN 301 893) 
++# and 2006/771/EC (amended by 2008/432/EC, Short-Range Devices, EN 300 440)
++#  EU decision 2005/513/EC: https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:02005D0513-20070213
++#  EU decision 2006/771/EC: https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:02008D0432-20080611
++# SE: https://pts.se/globalassets/startpage/dokument/legala-dokument/foreskrifter/radio/beslutade_ptsfs-2018-3-undantagsforeskrifter.pdf
+ country SE: DFS-ETSI
+-	(2400 - 2483.5 @ 40), (20)
+-	(5150 - 5250 @ 80), (23), NO-OUTDOOR, AUTO-BW, wmmrule=ETSI
+-	# note: max would be +3dB with TPC @ 5250-5725
+-	(5250 - 5350 @ 80), (20), NO-OUTDOOR, DFS, AUTO-BW, wmmrule=ETSI
+-	(5470 - 5725 @ 160), (27), DFS, wmmrule=ETSI
+-	# short range devices (ETSI EN 300 440)
++	(2400 - 2483.5 @ 40), (100 mW)
++	(5150 - 5250 @ 80), (200 mW), NO-OUTDOOR, AUTO-BW, wmmrule=ETSI
++	(5250 - 5350 @ 80), (100 mW), NO-OUTDOOR, DFS, AUTO-BW, wmmrule=ETSI
++	(5470 - 5725 @ 160), (500 mW), DFS, wmmrule=ETSI
++	# short range devices (ETSI EN 300 440-1)
+ 	(5725 - 5875 @ 80), (25 mW)
+-	# 60 GHz band channels 1-4, ref: Etsi En 302 567
+-	(57000 - 66000 @ 2160), (40), NO-OUTDOOR
++	# 60 GHz band channels 1-4 (ETSI EN 302 567)
++	(57000 - 66000 @ 2160), (40)
+ 
+ # Source
+ # https://www.imda.gov.sg/~/media/imda/files/regulation%20licensing%20and%20consultations/ict%20standards/telecommunication%20standards/radio-comms/imdatssrd.pdf?la=en
+@@ -1144,20 +1313,36 @@ country SG: DFS-FCC
+ 	# (5470 - 5725 @ 160), (30), DFS
+ 	(5725 - 5850 @ 80), (30)
+ 
++# SI as part of EU/CEPT accepted decisions 2005/513/EC (5GHz RLAN, EN 301 893) 
++# and 2006/771/EC (amended by 2008/432/EC, Short-Range Devices, EN 300 440)
++#  EU decision 2005/513/EC: https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:02005D0513-20070213
++#  EU decision 2006/771/EC: https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:02008D0432-20080611
++# SI: https://www.akos-rs.si/bwa
+ country SI: DFS-ETSI
+-	(2402 - 2482 @ 40), (20)
+-	(5170 - 5250 @ 80), (20), AUTO-BW, wmmrule=ETSI
+-	(5250 - 5330 @ 80), (20), DFS, AUTO-BW, wmmrule=ETSI
+-	(5490 - 5710 @ 160), (27), DFS, wmmrule=ETSI
+-	# 60 GHz band channels 1-4, ref: Etsi En 302 567
++	(2400 - 2483.5 @ 40), (100 mW)
++	(5150 - 5250 @ 80), (200 mW), NO-OUTDOOR, AUTO-BW, wmmrule=ETSI
++	(5250 - 5350 @ 80), (100 mW), NO-OUTDOOR, DFS, AUTO-BW, wmmrule=ETSI
++	(5470 - 5725 @ 160), (500 mW), DFS, wmmrule=ETSI
++	# short range devices (ETSI EN 300 440-1)
++	(5725 - 5875 @ 80), (25 mW)
++	# 60 GHz band channels 1-4 (ETSI EN 302 567)
+ 	(57000 - 66000 @ 2160), (40)
+ 
++# SK as part of EU/CEPT accepted decisions 2005/513/EC (5GHz RLAN, EN 301 893) 
++# and 2006/771/EC (amended by 2008/432/EC, Short-Range Devices, EN 300 440)
++#  EU decision 2005/513/EC: https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:02005D0513-20070213
++#  EU decision 2006/771/EC: https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:02008D0432-20080611
++# SK: https://www.teleoff.gov.sk/data/files/25911.pdf
++# SK: https://www.teleoff.gov.sk/data/files/41072.pdf
++# SK: https://www.teleoff.gov.sk/data/files/49125_vpr-01_2018-rusi-vpr-10_2014a21_2012-nespecifik-srd_021018.pdf
+ country SK: DFS-ETSI
+-	(2402 - 2482 @ 40), (20)
+-	(5170 - 5250 @ 80), (20), AUTO-BW, wmmrule=ETSI
+-	(5250 - 5330 @ 80), (20), DFS, AUTO-BW, wmmrule=ETSI
+-	(5490 - 5710 @ 160), (27), DFS, wmmrule=ETSI
+-	# 60 GHz band channels 1-4, ref: Etsi En 302 567
++	(2400 - 2483.5 @ 40), (100 mW)
++	(5150 - 5250 @ 80), (200 mW), NO-OUTDOOR, AUTO-BW, wmmrule=ETSI
++	(5250 - 5350 @ 80), (100 mW), NO-OUTDOOR, DFS, AUTO-BW, wmmrule=ETSI
++	(5470 - 5725 @ 160), (500 mW), DFS, wmmrule=ETSI
++	# short range devices (ETSI EN 300 440-1)
++	(5725 - 5875 @ 80), (25 mW)
++	# 60 GHz band channels 1-4 (ETSI EN 302 567)
+ 	(57000 - 66000 @ 2160), (40)
+ 
+ # Source:
 
