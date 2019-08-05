@@ -2,113 +2,95 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 68CE881688
-	for <lists+linux-wireless@lfdr.de>; Mon,  5 Aug 2019 12:10:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6AD4C816E4
+	for <lists+linux-wireless@lfdr.de>; Mon,  5 Aug 2019 12:21:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728056AbfHEKKn (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 5 Aug 2019 06:10:43 -0400
-Received: from paleale.coelho.fi ([176.9.41.70]:34114 "EHLO
-        farmhouse.coelho.fi" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1727158AbfHEKKn (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 5 Aug 2019 06:10:43 -0400
-Received: from [91.156.6.193] (helo=redipa)
-        by farmhouse.coelho.fi with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-        (Exim 4.92)
-        (envelope-from <luca@coelho.fi>)
-        id 1huZwt-0003V4-E5; Mon, 05 Aug 2019 13:10:39 +0300
-Message-ID: <99462e51eda721d5d85d9ea9e2c28da62f8b54f5.camel@coelho.fi>
-From:   Luca Coelho <luca@coelho.fi>
-To:     Takashi Iwai <tiwai@suse.de>
-Cc:     dor.shaish@intel.com, Josh Boyer <jwboyer@kernel.org>,
-        Johannes Berg <johannes.berg@intel.com>,
-        Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
-        linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org
-Date:   Mon, 05 Aug 2019 13:10:38 +0300
-In-Reply-To: <s5hsgqgnczv.wl-tiwai@suse.de>
-References: <s5hr26m9gvc.wl-tiwai@suse.de>
-         <280dad08ba9864755c3c45ed3ce26d602fe18a49.camel@intel.com>
-         <s5ho91pzyml.wl-tiwai@suse.de> <s5hwogcxwt4.wl-tiwai@suse.de>
-         <b225d043d8581e0fec68cb63f7433161868293f3.camel@coelho.fi>
-         <s5hmuh7xrqy.wl-tiwai@suse.de>
-         <38635c1b10018859457787ecff4f92a3ceec34a4.camel@coelho.fi>
-         <ef32cea91614b9708a474e223f3fbbb85a95501d.camel@coelho.fi>
-         <s5hsgqgnczv.wl-tiwai@suse.de>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.30.5-1.1 
+        id S1727989AbfHEKVX (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 5 Aug 2019 06:21:23 -0400
+Received: from mx1.redhat.com ([209.132.183.28]:57976 "EHLO mx1.redhat.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727158AbfHEKVX (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 5 Aug 2019 06:21:23 -0400
+Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.phx2.redhat.com [10.5.11.22])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mx1.redhat.com (Postfix) with ESMTPS id 2601B4E92A;
+        Mon,  5 Aug 2019 10:21:23 +0000 (UTC)
+Received: from localhost (ovpn-204-27.brq.redhat.com [10.40.204.27])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id 924871000321;
+        Mon,  5 Aug 2019 10:21:22 +0000 (UTC)
+Date:   Mon, 5 Aug 2019 12:21:21 +0200
+From:   Stanislaw Gruszka <sgruszka@redhat.com>
+To:     Sid Hayn <sidhayn@gmail.com>
+Cc:     helmut.schaa@googlemail.com,
+        linux-wireless <linux-wireless@vger.kernel.org>
+Subject: Re: rt2x00usb warning while channel hopping
+Message-ID: <20190805102120.GC17889@redhat.com>
+References: <CAM0KTbCuryuOTV1LdsEF4LkBHV4cPGpLe9nwA68CVCoDQ-6fkA@mail.gmail.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on farmhouse.coelho.fi
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.9 required=5.0 tests=ALL_TRUSTED,BAYES_00,
-        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.2
-Subject: Re: Regression with the latest iwlwifi-9260-*-46.ucode
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAM0KTbCuryuOTV1LdsEF4LkBHV4cPGpLe9nwA68CVCoDQ-6fkA@mail.gmail.com>
+User-Agent: Mutt/1.11.3 (2019-02-01)
+X-Scanned-By: MIMEDefang 2.84 on 10.5.11.22
+X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16 (mx1.redhat.com [10.5.110.38]); Mon, 05 Aug 2019 10:21:23 +0000 (UTC)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Mon, 2019-08-05 at 12:05 +0200, Takashi Iwai wrote:
-> On Mon, 05 Aug 2019 11:53:33 +0200,
-> Luca Coelho wrote:
-> > On Mon, 2019-08-05 at 12:48 +0300, Luca Coelho wrote:
-> > > On Sun, 2019-07-21 at 18:43 +0200, Takashi Iwai wrote:
-> > > > On Sat, 20 Jul 2019 22:49:33 +0200,
-> > > > Luca Coelho wrote:
-> > > > > On Sat, 2019-07-20 at 22:42 +0200, Takashi Iwai wrote:
-> > > > > > On Fri, 19 Jul 2019 20:07:46 +0200,
-> > > > > > Takashi Iwai wrote:
-> > > > > > > On Fri, 19 Jul 2019 18:36:53 +0200,
-> > > > > > > Luciano Coelho wrote:
-> > > > > > > > Adding Dor.
-> > > > > > > > 
-> > > > > > > > Hi Takashi,
-> > > > > > > > 
-> > > > > > > > Do you have full logs of the crash? We can't see much from the log
-> > > > > > > > snippet pasted in the bug report.
-> > > > > > > 
-> > > > > > > OK, I'll ask reporters.  If you have a SUSE/openSUSE bugzilla account,
-> > > > > > > feel free to join there.
-> > > > > > 
-> > > > > > FYI, the dmesg's have been uploaded to the same bugzilla entry:
-> > > > > >   https://bugzilla.opensuse.org/show_bug.cgi?id=1142128
-> > > > > > 
-> > > > > 
-> > > > > Thanks!
-> > > > > 
-> > > > > BTW, I pushed new firmwares to our firmware tree in git.kernel.org
-> > > > > today.  This is the patch:
-> > > > > 
-> > > > > https://git.kernel.org/pub/scm/linux/kernel/git/iwlwifi/linux-firmware.git/commit/?id=b5f09bb4f816abace0227d0f4e749859364cef6b
-> > > > > 
-> > > > > It would be great if you can try it out and let us know whether the problem is gone or not.
-> > > > 
-> > > > I created a test package and asked for testing.
-> > > > The test result seems negative, showing the same error,
-> > > > unfortunately.
-> > > > 
-> > > > The dmesg was uploaded on the bugzilla entry.
-> > > 
-> > > Thanks Takashi! We will look into them as soon as possible (sorry for
-> > > the late reply, I just came back from vacations).
-> > 
-> > Actually, I just noticed that your bugzilla is closed as "RESOLVED
-> > FIXED".  Is this still an issue?
+On Thu, Aug 01, 2019 at 12:43:26PM -0400, Sid Hayn wrote:
+> While testing wireless-testing kernel for some other fixes, I
+> encountered this warning.  I have a few different chipsets and drivers
+> all channel hopping in monitor mode on the test box, but I get this
+> warning from rt2x00 over and over again (lots).  I am testing two
+> patches from johill on top of wireless testing, I don't believe they
+> are causing this, but I'll include them for completeness.
 > 
-> It's "closed" because our package contains the revert.
-> 
-> > This seems like a mismatch between the WiFi and BT firmwares... And
-> > most likely the same issue as this:
-> > 
-> > https://bugzilla.kernel.org/show_bug.cgi?id=202163
-> 
-> OK, so we need the update of the whole linux-firmware.
-> I'll refresh the package and ask for testing.
+> https://patchwork.kernel.org/patch/11063915/
+> https://patchwork.kernel.org/patch/11069625/
 
-I'm not sure the new BT firmware is in linux-firmware yet, since I
-don't handle BT stuff.  I hope it is.
+The way to find out is drop those patches and see if the warning
+is still there. But it still can be rt2x00 problem that is only
+triggered with those patches, so let's try to debug. 
+   
+> I'm happy to test anything required, although I will be traveling next
+> week which may cause delays.
+<snip>
 
---
-Cheers,
-Luca.
+> [  170.055276] ------------[ cut here ]------------
+> [  170.055305] WARNING: CPU: 3 PID: 5777 at
+> rt2x00lib_config.cold.0+0xc/0x2a [rt2x00lib]
 
+This seems to be warning at rt2x00ht_center_channel() in:
+
+        for (i = 0; i < spec->num_channels; i++)
+                if (spec->channels[i].channel == center_channel)
+                        return i;
+
+        WARN_ON(1);
+        return conf->chandef.chan->hw_value;
+
+So looks like we set channel that is not specified in rt2800 channels
+table. Not sure at the moment if mac80211 provide wrong channel spec or
+rt2x00 do something wrong. Please apply below patch and provide prints.
+
+Stanislaw
+
+diff --git a/drivers/net/wireless/ralink/rt2x00/rt2x00config.c b/drivers/net/wireless/ralink/rt2x00/rt2x00config.c
+index 0ee1813e8453..5f6dadef9f7c 100644
+--- a/drivers/net/wireless/ralink/rt2x00/rt2x00config.c
++++ b/drivers/net/wireless/ralink/rt2x00/rt2x00config.c
+@@ -185,7 +185,11 @@ static u16 rt2x00ht_center_channel(struct rt2x00_dev *rt2x00dev,
+ 		if (spec->channels[i].channel == center_channel)
+ 			return i;
+ 
+-	WARN_ON(1);
++	WARN_ONCE(1, "hw_value %d channel %d center_channel %d\n",
++		  conf->chandef.chan->hw_value,
++		  spec->channels[conf->chandef.chan->hw_value].channel,
++		  center_channel);
++
+ 	return conf->chandef.chan->hw_value;
+ }
+ 
