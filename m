@@ -2,25 +2,25 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id BB5E783172
-	for <lists+linux-wireless@lfdr.de>; Tue,  6 Aug 2019 14:36:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6FD2983178
+	for <lists+linux-wireless@lfdr.de>; Tue,  6 Aug 2019 14:36:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730905AbfHFMfv (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 6 Aug 2019 08:35:51 -0400
-Received: from smtp.codeaurora.org ([198.145.29.96]:59340 "EHLO
+        id S1728797AbfHFMgU (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 6 Aug 2019 08:36:20 -0400
+Received: from smtp.codeaurora.org ([198.145.29.96]:60238 "EHLO
         smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726711AbfHFMfv (ORCPT
+        with ESMTP id S1726711AbfHFMgU (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 6 Aug 2019 08:35:51 -0400
+        Tue, 6 Aug 2019 08:36:20 -0400
 Received: by smtp.codeaurora.org (Postfix, from userid 1000)
-        id EA78E6090E; Tue,  6 Aug 2019 12:35:49 +0000 (UTC)
+        id 30B4260EA5; Tue,  6 Aug 2019 12:36:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1565094950;
-        bh=NZDwtrQI4U0ABkUADvCTivKQDmwAGr82qO/iVNbsfxM=;
+        s=default; t=1565094979;
+        bh=bj8qWGpk0Sk8b4h8M0Ne5LXuOnmgHgbZr/8RgDNfuP8=;
         h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-        b=PYsiIF5t9J5zaxrAV+TgXRtor9lk2/uVbTugLiXURIR3iAigZkSRPNOQ0Xhxrj1yF
-         QK+BurzZ84xHDconNI4B3+NF898m/7IC/6/SXem27fgg2Bqbtx0BdB8mVpJ37EZwyQ
-         TAm/qCFkaqTLGh6YnZUMqzOdhkriTFlNmR2ljxxY=
+        b=n/NFR8e6uXdTOcxgC4FYIIvCgEMowGv40S/7M0PSyT6SAGCDRg5MGpGmHuGvm5vBh
+         ib6wt+geuP1GBMibxUhUmrV5qC+dfT6HiJmaCnT/f3C/tfGhfeXiF7MzTSqOK1zVx6
+         OFcFpbc7JEHrWCTHa2aPrw/8e1HnVod+towgJzWI=
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         pdx-caf-mail.web.codeaurora.org
 X-Spam-Level: 
@@ -31,55 +31,54 @@ Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
         (Authenticated sender: kvalo@smtp.codeaurora.org)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id DB2B56090E;
-        Tue,  6 Aug 2019 12:35:44 +0000 (UTC)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id B25CB608BA;
+        Tue,  6 Aug 2019 12:36:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1565094948;
-        bh=NZDwtrQI4U0ABkUADvCTivKQDmwAGr82qO/iVNbsfxM=;
+        s=default; t=1565094976;
+        bh=bj8qWGpk0Sk8b4h8M0Ne5LXuOnmgHgbZr/8RgDNfuP8=;
         h=Subject:From:In-Reply-To:References:To:Cc:From;
-        b=XIRSpFrtyrkt1YScYWkoXYydse7nqZ+gBnOvX7Id2f9juOLnmFeFr/tzH1PURrJyQ
-         p3Clla8U6EAAeFOq8YK1N/HjS6iejAMQJM2Nz1wFOufmZ+YJMHJHZWSPKXRcCwx5iD
-         PUU5EDFETNy8UexZBeActnB04Gkl3dH1BbfnbWT0=
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org DB2B56090E
+        b=Dg5fiiKl+2LFh3I+pWjL092hV7TngoKzborRoN74EW4KRcpbs+nwMTI6RVw1whISe
+         sPqJUsINYQRPWt+aFM0DPXndUOosh3IOcu4Fslc/8GUp6RGiElz9h/0mTAg33nr+qA
+         eo5CGPUblez1eRYjIdhjMH6gQwrd835cZBPv1BHU=
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org B25CB608BA
 Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
 Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH] mt7601u: null check the allocation
+Subject: Re: [PATCH v3] libertas: Fix a double free in if_spi_c2h_data()
 From:   Kalle Valo <kvalo@codeaurora.org>
-In-Reply-To: <20190724141736.29994-1-navid.emamdoost@gmail.com>
-References: <20190724141736.29994-1-navid.emamdoost@gmail.com>
-To:     Navid Emamdoost <navid.emamdoost@gmail.com>
-Cc:     emamd001@umn.edu, kjlu@umn.edu, smccaman@umn.edu,
-        secalert@redhat.com, Navid Emamdoost <navid.emamdoost@gmail.com>,
-        Jakub Kicinski <kubakici@wp.pl>,
-        "David S. Miller" <davem@davemloft.net>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        linux-mediatek@lists.infradead.org, linux-kernel@vger.kernel.org
+In-Reply-To: <9153261627a0f84b996e023f1349a2bc06dd03ee.camel@redhat.com>
+References: <9153261627a0f84b996e023f1349a2bc06dd03ee.camel@redhat.com>
+To:     Dan Williams <dcbw@redhat.com>
+Cc:     Philip Rakity <prakity@yahoo.com>,
+        libertas-dev@lists.infradead.org, kernel-janitors@vger.kernel.org,
+        linux-wireless@vger.kernel.org, Lubomir Rintel <lkundrak@v3.sk>,
+        Dan Carpenter <dan.carpenter@oracle.com>,
+        Allison Randal <allison@lohutok.net>
 User-Agent: pwcli/0.0.0-git (https://github.com/kvalo/pwcli/) Python/2.7.12
-Message-Id: <20190806123549.EA78E6090E@smtp.codeaurora.org>
-Date:   Tue,  6 Aug 2019 12:35:49 +0000 (UTC)
+Message-Id: <20190806123619.30B4260EA5@smtp.codeaurora.org>
+Date:   Tue,  6 Aug 2019 12:36:18 +0000 (UTC)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Navid Emamdoost <navid.emamdoost@gmail.com> wrote:
+Dan Williams <dcbw@redhat.com> wrote:
 
-> devm_kzalloc may fail and return NULL. So the null check is needed.
+> The lbs_process_rxed_packet() frees the skb.  It didn't originally, but
+> we fixed it in commit f54930f36311 ("libertas: don't leak skb on receive
+> error").
 > 
-> Signed-off-by: Navid Emamdoost <navid.emamdoost@gmail.com>
-> Acked-by: Jakub Kicinski <kubakici@wp.pl>
+> Reported-by: Dan Carpenter <dan.carpenter@oracle.com>
+> Signed-off-by: Dan Williams <dcbw@redhat.com>
 
 Patch applied to wireless-drivers-next.git, thanks.
 
-b95c732234fa mt7601u: null check the allocation
+3915a252ce71 libertas: Fix a double free in if_spi_c2h_data()
 
 -- 
-https://patchwork.kernel.org/patch/11057013/
+https://patchwork.kernel.org/patch/11057049/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
