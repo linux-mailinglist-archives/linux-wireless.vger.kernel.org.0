@@ -2,82 +2,140 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B1BAC833FE
-	for <lists+linux-wireless@lfdr.de>; Tue,  6 Aug 2019 16:32:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BED8A837EB
+	for <lists+linux-wireless@lfdr.de>; Tue,  6 Aug 2019 19:31:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732955AbfHFOby (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 6 Aug 2019 10:31:54 -0400
-Received: from mail-oi1-f194.google.com ([209.85.167.194]:45243 "EHLO
-        mail-oi1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728756AbfHFOby (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 6 Aug 2019 10:31:54 -0400
-Received: by mail-oi1-f194.google.com with SMTP id m206so66880322oib.12;
-        Tue, 06 Aug 2019 07:31:53 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:from:date:message-id:subject:to;
-        bh=mRsJuqvbI6SyoD25uf83ShcXx0a/DNaI7q9ymEAEVyc=;
-        b=eU6JjZPN1qTreBUTPlh7utNRgqNJcNAfmsqAMjcaVswhhVuAN6s/UGkd+x5kwUoD9h
-         UlbiZXKMyloARs+IKU5gcXgSiICSh2w3SB3LALeyOWlha27iqcqvxxyujOhkOTsqJa83
-         DBj1be/Qd/EP4lj51ZqZ+OC/lAfT1URgVGIsNXGsntOyd1kbVQ9AyRR9jiXWHKIn7DYv
-         UaIqX/MuXROM+O1qRCcVgMh+ULM2Ffx+rGUNBL5kNcucBOTu8XORiOHd/A+k+YosfAQ0
-         vtBoGn81r2iB34cYZ6MpF34C9Ul+JlXqYmSsqzqq6QUHCR1qEf5UpRtI52225CVpq7N8
-         OjiA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:from:date:message-id:subject:to;
-        bh=mRsJuqvbI6SyoD25uf83ShcXx0a/DNaI7q9ymEAEVyc=;
-        b=H3X/F79nnMfB7PY+Mg/m2oUzmq+/+H9GkjLpDyoBWS5S4FRYpzM8nWaEZAvNtkqlhe
-         SPDaMqqQMnP+Z7jxtb+ISLYlJxb0wbX5pozk6H2zhrO8JGg+FYXhb3JNA7GH3ATZM441
-         7agOSVy/WZ4uZuITgvkeJM/voGKjYUQCiz32aSP/hnl4cXTiNc4mLB+EiKY36hgwQhfq
-         JdyWSUeDMMGhNz8ra3no/gQHjAWs5AEJjfj8c3W4EKjKPQD57Kit6XtbHiE6bm6xmrFR
-         SO/UY0hkasgqdZcjgE2rDVwoDfZcvE9ftRlVxvlWj/15LWHp9K4vfvs0oUo0ECdFvKi0
-         AbXQ==
-X-Gm-Message-State: APjAAAWltDbi7VTjj09A9Tvt7pMQGRMxhPiqC8eccjwD7l4+I0QZnN9a
-        1ODZXLEXq726/rc5rq9G/JTOPJGPuYxANdVqBxJJ9t4=
-X-Google-Smtp-Source: APXvYqzfN5wxo8W3llD9Sh1nlweb/1gOpvvOG7t5gCQ4mAbIK8hvP+7dFRao/uXZoKHdgajaZrhWCLZhA99OmSMBg40=
-X-Received: by 2002:aca:dd04:: with SMTP id u4mr1154017oig.152.1565101912904;
- Tue, 06 Aug 2019 07:31:52 -0700 (PDT)
+        id S1733290AbfHFRb6 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 6 Aug 2019 13:31:58 -0400
+Received: from mail.kernel.org ([198.145.29.99]:47390 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1729161AbfHFRb6 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 6 Aug 2019 13:31:58 -0400
+Received: from localhost.localdomain.com (nat-pool-mxp-t.redhat.com [149.6.153.186])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 10C612075B;
+        Tue,  6 Aug 2019 17:31:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1565112717;
+        bh=RFl7BwbGSelHZuQOwMHkogVA4T5PxeiR4dsG1OCaaKk=;
+        h=From:To:Cc:Subject:Date:From;
+        b=kQfy9pMT8zO5CANKZ6g0fAcdmpN8IigVs2OAhDE+nPZOfY9moJCtbK9+Q4f2Ghds+
+         7hn5yW+mBQmV1LUfcw9cKdQnRzyy498P/3LbgnOOiaSrHxNGx0nFyiGvvHJ9KgNXFw
+         MUDjFyA6OlfWNE0O4xk9gdO+NFvpOnvh2bM0VXxc=
+From:   Lorenzo Bianconi <lorenzo@kernel.org>
+To:     nbd@nbd.name
+Cc:     lorenzo.bianconi@redhat.com, linux-wireless@vger.kernel.org,
+        ryder.lee@mediatek.com, royluo@google.com
+Subject: [PATCH] mt76: move mt76_tx_tasklet in mt76 module
+Date:   Tue,  6 Aug 2019 19:31:42 +0200
+Message-Id: <527fdc4e453cbc1408500625c0080d9c59d9e1dd.1565112514.git.lorenzo@kernel.org>
+X-Mailer: git-send-email 2.21.0
 MIME-Version: 1.0
-From:   =?UTF-8?B?6rOg7KSA?= <gojun077@gmail.com>
-Date:   Tue, 6 Aug 2019 23:31:41 +0900
-Message-ID: <CAH040W7fdd-ND4-QG3DwGpFAPTMGB4zzuXYohMdfoSejV6XE_Q@mail.gmail.com>
-Subject: Realtek r8822be wireless card fails to work with new rtw88 kernel module
-To:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hello,
+Move mt76{15,03}_tx_tasklet in mt76 module since it is shared between
+mt7615 and mt7603 drivers
 
-I recently reported a bug to Ubuntu regarding a regression in wireless
-driver support for the Realtek r8822be wireless chipset. The issue
-link on launchpad is:
+Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+---
+ drivers/net/wireless/mediatek/mt76/mt76.h       |  1 +
+ drivers/net/wireless/mediatek/mt76/mt7603/dma.c | 11 ++---------
+ drivers/net/wireless/mediatek/mt76/mt7615/dma.c |  9 +--------
+ drivers/net/wireless/mediatek/mt76/tx.c         |  8 ++++++++
+ 4 files changed, 12 insertions(+), 17 deletions(-)
 
-https://bugs.launchpad.net/bugs/1838133
+diff --git a/drivers/net/wireless/mediatek/mt76/mt76.h b/drivers/net/wireless/mediatek/mt76/mt76.h
+index c755b5ad5e2a..dd9fbb1f79a9 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt76.h
++++ b/drivers/net/wireless/mediatek/mt76/mt76.h
+@@ -722,6 +722,7 @@ void mt76_stop_tx_queues(struct mt76_dev *dev, struct ieee80211_sta *sta,
+ 			 bool send_bar);
+ void mt76_txq_schedule(struct mt76_dev *dev, enum mt76_txq_id qid);
+ void mt76_txq_schedule_all(struct mt76_dev *dev);
++void mt76_tx_tasklet(unsigned long data);
+ void mt76_release_buffered_frames(struct ieee80211_hw *hw,
+ 				  struct ieee80211_sta *sta,
+ 				  u16 tids, int nframes,
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7603/dma.c b/drivers/net/wireless/mediatek/mt76/mt7603/dma.c
+index 58dc511f93c5..d13cf1ca1671 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7603/dma.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7603/dma.c
+@@ -135,14 +135,6 @@ mt7603_init_rx_queue(struct mt7603_dev *dev, struct mt76_queue *q,
+ 	return 0;
+ }
+ 
+-static void
+-mt7603_tx_tasklet(unsigned long data)
+-{
+-	struct mt7603_dev *dev = (struct mt7603_dev *)data;
+-
+-	mt76_txq_schedule_all(&dev->mt76);
+-}
+-
+ static int mt7603_poll_tx(struct napi_struct *napi, int budget)
+ {
+ 	struct mt7603_dev *dev;
+@@ -181,7 +173,8 @@ int mt7603_dma_init(struct mt7603_dev *dev)
+ 	init_waitqueue_head(&dev->mt76.mmio.mcu.wait);
+ 	skb_queue_head_init(&dev->mt76.mmio.mcu.res_q);
+ 
+-	tasklet_init(&dev->mt76.tx_tasklet, mt7603_tx_tasklet, (unsigned long)dev);
++	tasklet_init(&dev->mt76.tx_tasklet, mt76_tx_tasklet,
++		     (unsigned long)dev);
+ 
+ 	mt76_clear(dev, MT_WPDMA_GLO_CFG,
+ 		   MT_WPDMA_GLO_CFG_TX_DMA_EN |
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/dma.c b/drivers/net/wireless/mediatek/mt76/mt7615/dma.c
+index 3fe24d92d4fa..2321128b2a69 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7615/dma.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7615/dma.c
+@@ -90,13 +90,6 @@ void mt7615_queue_rx_skb(struct mt76_dev *mdev, enum mt76_rxq_id q,
+ 	}
+ }
+ 
+-static void mt7615_tx_tasklet(unsigned long data)
+-{
+-	struct mt7615_dev *dev = (struct mt7615_dev *)data;
+-
+-	mt76_txq_schedule_all(&dev->mt76);
+-}
+-
+ static int mt7615_poll_tx(struct napi_struct *napi, int budget)
+ {
+ 	static const u8 queue_map[] = {
+@@ -128,7 +121,7 @@ int mt7615_dma_init(struct mt7615_dev *dev)
+ 
+ 	mt76_dma_attach(&dev->mt76);
+ 
+-	tasklet_init(&dev->mt76.tx_tasklet, mt7615_tx_tasklet,
++	tasklet_init(&dev->mt76.tx_tasklet, mt76_tx_tasklet,
+ 		     (unsigned long)dev);
+ 
+ 	mt76_wr(dev, MT_WPDMA_GLO_CFG,
+diff --git a/drivers/net/wireless/mediatek/mt76/tx.c b/drivers/net/wireless/mediatek/mt76/tx.c
+index 5397827668b9..05ec1f4665e3 100644
+--- a/drivers/net/wireless/mediatek/mt76/tx.c
++++ b/drivers/net/wireless/mediatek/mt76/tx.c
+@@ -568,6 +568,14 @@ void mt76_txq_schedule_all(struct mt76_dev *dev)
+ }
+ EXPORT_SYMBOL_GPL(mt76_txq_schedule_all);
+ 
++void mt76_tx_tasklet(unsigned long data)
++{
++	struct mt76_dev *dev = (struct mt76_dev *)data;
++
++	mt76_txq_schedule_all(dev);
++}
++EXPORT_SYMBOL_GPL(mt76_tx_tasklet);
++
+ void mt76_stop_tx_queues(struct mt76_dev *dev, struct ieee80211_sta *sta,
+ 			 bool send_bar)
+ {
+-- 
+2.21.0
 
-After Canonical developers triaged the bug they determined that the
-problem lies upstream, and instructed me to send mails to the relevant
-kernel module maintainers at Realtek and to the general kernel.org
-mailing list.
-
-I built kernel 5.3.0-rc1+ with the latest realtek drivers from
-wireless-drivers-next but my Realtek r8822be doesn't work with
-rtw88/rtwpci kernel modules.
-
-Please let me know if there is any additional information I can
-provide that would help in debugging this issue.
-
-Best regards,
-Jun
-
-
-Link to GPG Public Key:
-https://keybase.io/gojun077#show-public
-
-Backup link:
-https://keys.openpgp.org/vks/v1/by-fingerprint/79F173A93EB3623D32F86309A56930CF7235138D
