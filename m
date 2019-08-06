@@ -2,25 +2,25 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 7913A83161
-	for <lists+linux-wireless@lfdr.de>; Tue,  6 Aug 2019 14:33:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A706083165
+	for <lists+linux-wireless@lfdr.de>; Tue,  6 Aug 2019 14:34:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728582AbfHFMdi (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 6 Aug 2019 08:33:38 -0400
-Received: from smtp.codeaurora.org ([198.145.29.96]:57284 "EHLO
+        id S1728102AbfHFMeU (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 6 Aug 2019 08:34:20 -0400
+Received: from smtp.codeaurora.org ([198.145.29.96]:57524 "EHLO
         smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726711AbfHFMdi (ORCPT
+        with ESMTP id S1726373AbfHFMeT (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 6 Aug 2019 08:33:38 -0400
+        Tue, 6 Aug 2019 08:34:19 -0400
 Received: by smtp.codeaurora.org (Postfix, from userid 1000)
-        id D6CDE60D35; Tue,  6 Aug 2019 12:33:37 +0000 (UTC)
+        id C73566074F; Tue,  6 Aug 2019 12:34:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1565094817;
-        bh=fKIaZhTX3joWN/20xXLvuH91VOTbWFA4x6ESaQPvtRA=;
+        s=default; t=1565094858;
+        bh=QsaLFNEdiPZF/qEZPEqWyzvCOr9IQNtzwO8avKhniBI=;
         h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-        b=cDvCRRSJXsQErmB+bo/5zkrkRgwfNFyj6EZ5OfNkJ6RLCThzHa1ajQBdCh2TEA1Qw
-         rR/b+qS2Chkaie2QJC24MzKE64y1ntMixgqA37KgYdvtqUhPr2hSi4XqYWyb/zL3Yf
-         l9Ekjop02PDOgYQ6EbdpTbbOOZdBJeF0Gr8oekdI=
+        b=o8jDBbLtRw0fq7AsK0azoyjXhijlgh63gFsrMxMMePSTuDmYXXOXznfS+/Rg1iNMB
+         j9t64s7AuK3iwaxjA7md7kjUKHGXUrTi/jMuFD4L38AlZldzbblqkW8pgFaIQCCPBs
+         nvmgXnftIs3g5QQVggtOPUBUyMOarc1XaCvJgAEs=
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         pdx-caf-mail.web.codeaurora.org
 X-Spam-Level: 
@@ -31,59 +31,59 @@ Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
         (Authenticated sender: kvalo@smtp.codeaurora.org)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id E6AB260ADE;
-        Tue,  6 Aug 2019 12:33:35 +0000 (UTC)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id A066D6019D;
+        Tue,  6 Aug 2019 12:34:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1565094817;
-        bh=fKIaZhTX3joWN/20xXLvuH91VOTbWFA4x6ESaQPvtRA=;
+        s=default; t=1565094858;
+        bh=QsaLFNEdiPZF/qEZPEqWyzvCOr9IQNtzwO8avKhniBI=;
         h=Subject:From:In-Reply-To:References:To:Cc:From;
-        b=IXFSK5Su5Qt/AtSQWId3QOaKQgDYrS3ISKzOXQxG8Ku/3cUoRK1cWYood4r6oN7Et
-         mwyzT9TailZNq4N3J/ECgcxBAdaA0SkbbCDDoVKwzVB/VM7/2nJR7ZDoWB9pSN5IlX
-         nFJwYBDvODZ6BLg1ndqvD99JpTZEveZfzzmQqjiw=
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org E6AB260ADE
+        b=Og22Blc46ZZCt0SVnSe9eglwgCTlx59VVLCi0qAkrDpyiIzuHNfW3LEkS4pHH1wQJ
+         w7ERv3L0a0rM+1DOl9FXI3ntahJjf3jNhLgicw8t4vzyAC3Mxmvgr/RkRh7m+seVqF
+         yQz7QOW9D7xAjTbdnX0xl+Tzk8JGK3F1pQidd4FM=
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org A066D6019D
 Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
 Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH] rsi: fix for sdio interface setup in 9116
+Subject: Re: [PATCH net-next 06/10] iwlegacy: Use dev_get_drvdata where
+ possible
 From:   Kalle Valo <kvalo@codeaurora.org>
-In-Reply-To: <1563964641-9413-1-git-send-email-ganapathirajukondraju@gmail.com>
-References: <1563964641-9413-1-git-send-email-ganapathirajukondraju@gmail.com>
-To:     ganapathirajukondraju@gmail.com
-Cc:     linux-wireless@vger.kernel.org,
-        Rishikesh Basu <rishikesh.basu@redpinesignals.com>,
-        ganapathi.kondraju@redpinesignals.com,
-        krishna.pedda@redpinesignals.com, narasimha.a@redpinesignals.com,
-        Ganapathi Kondraju <ganapathirajukondraju@gmail.com>
+In-Reply-To: <20190724112730.13403-1-hslester96@gmail.com>
+References: <20190724112730.13403-1-hslester96@gmail.com>
+To:     Chuhong Yuan <hslester96@gmail.com>
+Cc:     unlisted-recipients:; (no To-header on input)
+        Stanislaw Gruszka <sgruszka@redhat.com>,
+        "David S . Miller" <davem@davemloft.net>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Chuhong Yuan <hslester96@gmail.com>
+Illegal-Object: Syntax error in Cc: address found on vger.kernel.org:
+        Cc:     unlisted-recipients:; (no To-header on input)Stanislaw Gruszka <sgruszka@redhat.com>
+                                                                     ^-missing end of address
 User-Agent: pwcli/0.0.0-git (https://github.com/kvalo/pwcli/) Python/2.7.12
-Message-Id: <20190806123337.D6CDE60D35@smtp.codeaurora.org>
-Date:   Tue,  6 Aug 2019 12:33:37 +0000 (UTC)
+Message-Id: <20190806123418.C73566074F@smtp.codeaurora.org>
+Date:   Tue,  6 Aug 2019 12:34:18 +0000 (UTC)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-ganapathirajukondraju@gmail.com wrote:
+Chuhong Yuan <hslester96@gmail.com> wrote:
 
-> From: Ganapathi Kondraju <ganapathirajukondraju@gmail.com>
+> Instead of using to_pci_dev + pci_get_drvdata,
+> use dev_get_drvdata to make code simpler.
 > 
-> Issue: RS-9116 Card is not responding after firmware got loaded.
-> 
-> Root cause: After firmware got loaded, we need to reset the program
-> counter and few device specific registers. Those registers were not
-> resetted properly.
-> 
-> Fix: Properly resetting those registers.
-> 
-> Signed-off-by: Ganapathi Kondraju <ganapathirajukondraju@gmail.com>
+> Signed-off-by: Chuhong Yuan <hslester96@gmail.com>
 
-Patch applied to wireless-drivers-next.git, thanks.
+4 patches applied to wireless-drivers-next.git, thanks.
 
-8f9af6309b84 rsi: fix for sdio interface setup in 9116
+a40c28700d98 iwlegacy: Use dev_get_drvdata where possible
+ffa4d78cbc26 mwifiex: pcie: Use dev_get_drvdata
+1f5f5ea72fc9 qtnfmac_pcie: Use dev_get_drvdata
+e7338e031985 rtlwifi: rtl_pci: Use dev_get_drvdata
 
 -- 
-https://patchwork.kernel.org/patch/11056571/
+https://patchwork.kernel.org/patch/11056621/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
