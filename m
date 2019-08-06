@@ -2,86 +2,84 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 248778319C
-	for <lists+linux-wireless@lfdr.de>; Tue,  6 Aug 2019 14:44:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E4463831BC
+	for <lists+linux-wireless@lfdr.de>; Tue,  6 Aug 2019 14:47:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731026AbfHFMoK (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 6 Aug 2019 08:44:10 -0400
-Received: from smtp.codeaurora.org ([198.145.29.96]:36210 "EHLO
-        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726036AbfHFMoJ (ORCPT
+        id S1728156AbfHFMrN (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 6 Aug 2019 08:47:13 -0400
+Received: from userp2120.oracle.com ([156.151.31.85]:56400 "EHLO
+        userp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726036AbfHFMrN (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 6 Aug 2019 08:44:09 -0400
-Received: by smtp.codeaurora.org (Postfix, from userid 1000)
-        id C8A496038E; Tue,  6 Aug 2019 12:44:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1565095448;
-        bh=HAu7TsW0Iie3+5DrXvxcWN8iTVu6QAEL2sslX8UhT5k=;
-        h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-        b=lo8RqwlQE5Xi0nIj0VPa0UZ39EZ7qOVHWA4qL+17ZIPV1oi0tasFEzwjKhAVr9W7P
-         AG9dsCg3IgIHL6rHGAwfXvdeb5zl01aSrEQIT0FP/jh0M3UGMn4efvjXoqdAfpAYQt
-         JCUurAAd7ArIuFYWypYT2GzIaNQ6d73JrmziUF1c=
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        pdx-caf-mail.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-0.8 required=2.0 tests=ALL_TRUSTED,BAYES_00,
-        DKIM_INVALID,DKIM_SIGNED,MISSING_DATE,MISSING_MID,SPF_NONE autolearn=no
-        autolearn_force=no version=3.4.0
-Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        (Authenticated sender: kvalo@smtp.codeaurora.org)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 3EDB960867;
-        Tue,  6 Aug 2019 12:44:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1565095448;
-        bh=HAu7TsW0Iie3+5DrXvxcWN8iTVu6QAEL2sslX8UhT5k=;
-        h=Subject:From:In-Reply-To:References:To:Cc:From;
-        b=RGc2qDdndYOY+tJhAqFvfznPJbOUNFNJLTIZtdJTACWHYqLt5heBo8w2IDXYmogtZ
-         ibyCZrRLFye6jgs4SmRc+JJANJa3UFjI9WHDYJSvrSydrjfrXc5nEqubhN3V0Z4dZB
-         XP1L/YwCUcHLqvAzcfurviqNbZP4JdTD1rZ9eHFs=
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 3EDB960867
-Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
-Content-Type: text/plain; charset="utf-8"
+        Tue, 6 Aug 2019 08:47:13 -0400
+Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
+        by userp2120.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x76CiuQD047597;
+        Tue, 6 Aug 2019 12:47:06 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
+ : subject : message-id : references : mime-version : content-type :
+ in-reply-to; s=corp-2018-07-02;
+ bh=NyO5dApascZ8/D8TXj1/JFR+0z2joZ19q2Ozs60B9p4=;
+ b=tLISpKFR8T3qNpKNwLD81PwfIr3ka+1hm6TXr5gwIuDohjgBNG+OG2K04IA6AhMKUCeD
+ CwZMeV+8gsqiuqxFPsbYZKEfvtf4jI+KRX7Xx4MUA3KDoLWtcfFoJmO+dcRz267pdyPK
+ RAPS+I+nurFJqq/zAxAu8PcH4mDpG7aKwS8oMsk+UKdiM16zbNirNhOTdpEp4xPbB6Wb
+ CEwgfCuNhnoxMFGPr4HkOy5g2eTvdgPuVQ5LKpYslHJYGkaiA+ANxCtlyXHNbwLyFyIU
+ VxVI03TLTSPetDk/40aNYazpbIxAL2yhG3TKXGFv0lzcgO2ODcGjwYKv3Am90Uy1C3sz aw== 
+Received: from aserp3030.oracle.com (aserp3030.oracle.com [141.146.126.71])
+        by userp2120.oracle.com with ESMTP id 2u52wr5va8-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Tue, 06 Aug 2019 12:47:06 +0000
+Received: from pps.filterd (aserp3030.oracle.com [127.0.0.1])
+        by aserp3030.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x76Ch9sn177267;
+        Tue, 6 Aug 2019 12:47:05 GMT
+Received: from userv0121.oracle.com (userv0121.oracle.com [156.151.31.72])
+        by aserp3030.oracle.com with ESMTP id 2u75bvfg5v-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Tue, 06 Aug 2019 12:47:05 +0000
+Received: from abhmp0022.oracle.com (abhmp0022.oracle.com [141.146.116.28])
+        by userv0121.oracle.com (8.14.4/8.13.8) with ESMTP id x76Cl35I000348;
+        Tue, 6 Aug 2019 12:47:03 GMT
+Received: from kadam (/41.57.98.10)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Tue, 06 Aug 2019 05:47:02 -0700
+Date:   Tue, 6 Aug 2019 15:46:56 +0300
+From:   Dan Carpenter <dan.carpenter@oracle.com>
+To:     Adham.Abozaeid@microchip.com
+Cc:     linux-wireless@vger.kernel.org, devel@driverdev.osuosl.org,
+        gregkh@linuxfoundation.org, johannes@sipsolutions.net,
+        Ajay.Kathat@microchip.com
+Subject: Re: [PATCH 3/6] staging: wilc1000: remove unused members
+Message-ID: <20190806124656.GH1974@kadam>
+References: <20190725213125.2810-1-adham.abozaeid@microchip.com>
+ <20190725213125.2810-4-adham.abozaeid@microchip.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH V2] b43legacy: Remove pointless cond_resched() wrapper
-From:   Kalle Valo <kvalo@codeaurora.org>
-In-Reply-To: <alpine.DEB.2.21.1908021353190.3924@nanos.tec.linutronix.de>
-References: <alpine.DEB.2.21.1908021353190.3924@nanos.tec.linutronix.de>
-To:     Thomas Gleixner <tglx@linutronix.de>
-Cc:     linux-wireless@vger.kernel.org,
-        Larry Finger <Larry.Finger@lwfinger.net>,
-        b43-dev@lists.infradead.org
-User-Agent: pwcli/0.0.0-git (https://github.com/kvalo/pwcli/) Python/2.7.12
-Message-Id: <20190806124408.C8A496038E@smtp.codeaurora.org>
-Date:   Tue,  6 Aug 2019 12:44:08 +0000 (UTC)
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20190725213125.2810-4-adham.abozaeid@microchip.com>
+User-Agent: Mutt/1.9.4 (2018-02-28)
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9340 signatures=668685
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=1 malwarescore=0
+ phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=780
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.0.1-1906280000 definitions=main-1908060127
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9340 signatures=668685
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
+ suspectscore=1 phishscore=0 bulkscore=0 spamscore=0 clxscore=1011
+ lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=848 adultscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1906280000
+ definitions=main-1908060127
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Thomas Gleixner <tglx@linutronix.de> wrote:
-
-> cond_resched() can be used unconditionally. If CONFIG_PREEMPT is set, it
-> becomes a NOP scheduler wise.
+On Thu, Jul 25, 2019 at 09:31:34PM +0000, Adham.Abozaeid@microchip.com wrote:
+> From: Adham Abozaeid <adham.abozaeid@microchip.com>
 > 
-> Also the B43_BUG_ON() in that wrapper is a homebrewn variant of
-> __might_sleep() which is part of cond_resched() already.
+> remove obtaining_ip from struct wilc_vif
 > 
-> Remove the cruft and invoke cond_resched() directly.
-> 
-> Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-> Reviewed-by: Larry Finger <Larry.Finger@lwfinger.net>
-> Tested-by: Larry Finger <Larry.Finger@lwfinger.net>
 
-Patch applied to wireless-drivers-next.git, thanks.
+How is this "unused"?  It looks like it is used to me.
 
-6004cf298a41 b43legacy: Remove pointless cond_resched() wrapper
-
--- 
-https://patchwork.kernel.org/patch/11073225/
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+regards,
+dan carpenter
 
