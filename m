@@ -2,84 +2,135 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E4463831BC
-	for <lists+linux-wireless@lfdr.de>; Tue,  6 Aug 2019 14:47:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C582183215
+	for <lists+linux-wireless@lfdr.de>; Tue,  6 Aug 2019 15:04:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728156AbfHFMrN (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 6 Aug 2019 08:47:13 -0400
-Received: from userp2120.oracle.com ([156.151.31.85]:56400 "EHLO
-        userp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726036AbfHFMrN (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 6 Aug 2019 08:47:13 -0400
-Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
-        by userp2120.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x76CiuQD047597;
-        Tue, 6 Aug 2019 12:47:06 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
- : subject : message-id : references : mime-version : content-type :
- in-reply-to; s=corp-2018-07-02;
- bh=NyO5dApascZ8/D8TXj1/JFR+0z2joZ19q2Ozs60B9p4=;
- b=tLISpKFR8T3qNpKNwLD81PwfIr3ka+1hm6TXr5gwIuDohjgBNG+OG2K04IA6AhMKUCeD
- CwZMeV+8gsqiuqxFPsbYZKEfvtf4jI+KRX7Xx4MUA3KDoLWtcfFoJmO+dcRz267pdyPK
- RAPS+I+nurFJqq/zAxAu8PcH4mDpG7aKwS8oMsk+UKdiM16zbNirNhOTdpEp4xPbB6Wb
- CEwgfCuNhnoxMFGPr4HkOy5g2eTvdgPuVQ5LKpYslHJYGkaiA+ANxCtlyXHNbwLyFyIU
- VxVI03TLTSPetDk/40aNYazpbIxAL2yhG3TKXGFv0lzcgO2ODcGjwYKv3Am90Uy1C3sz aw== 
-Received: from aserp3030.oracle.com (aserp3030.oracle.com [141.146.126.71])
-        by userp2120.oracle.com with ESMTP id 2u52wr5va8-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Tue, 06 Aug 2019 12:47:06 +0000
-Received: from pps.filterd (aserp3030.oracle.com [127.0.0.1])
-        by aserp3030.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x76Ch9sn177267;
-        Tue, 6 Aug 2019 12:47:05 GMT
-Received: from userv0121.oracle.com (userv0121.oracle.com [156.151.31.72])
-        by aserp3030.oracle.com with ESMTP id 2u75bvfg5v-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Tue, 06 Aug 2019 12:47:05 +0000
-Received: from abhmp0022.oracle.com (abhmp0022.oracle.com [141.146.116.28])
-        by userv0121.oracle.com (8.14.4/8.13.8) with ESMTP id x76Cl35I000348;
-        Tue, 6 Aug 2019 12:47:03 GMT
-Received: from kadam (/41.57.98.10)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Tue, 06 Aug 2019 05:47:02 -0700
-Date:   Tue, 6 Aug 2019 15:46:56 +0300
-From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     Adham.Abozaeid@microchip.com
-Cc:     linux-wireless@vger.kernel.org, devel@driverdev.osuosl.org,
-        gregkh@linuxfoundation.org, johannes@sipsolutions.net,
-        Ajay.Kathat@microchip.com
-Subject: Re: [PATCH 3/6] staging: wilc1000: remove unused members
-Message-ID: <20190806124656.GH1974@kadam>
-References: <20190725213125.2810-1-adham.abozaeid@microchip.com>
- <20190725213125.2810-4-adham.abozaeid@microchip.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20190725213125.2810-4-adham.abozaeid@microchip.com>
-User-Agent: Mutt/1.9.4 (2018-02-28)
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9340 signatures=668685
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=1 malwarescore=0
- phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=780
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.0.1-1906280000 definitions=main-1908060127
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9340 signatures=668685
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
- suspectscore=1 phishscore=0 bulkscore=0 spamscore=0 clxscore=1011
- lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=848 adultscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1906280000
- definitions=main-1908060127
+        id S1729554AbfHFNEN (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 6 Aug 2019 09:04:13 -0400
+Received: from mx2.suse.de ([195.135.220.15]:57316 "EHLO mx1.suse.de"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1726092AbfHFNEN (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 6 Aug 2019 09:04:13 -0400
+X-Virus-Scanned: by amavisd-new at test-mx.suse.de
+Received: from relay2.suse.de (unknown [195.135.220.254])
+        by mx1.suse.de (Postfix) with ESMTP id 05F04B061;
+        Tue,  6 Aug 2019 13:04:10 +0000 (UTC)
+Date:   Tue, 06 Aug 2019 15:04:10 +0200
+Message-ID: <s5ho912momt.wl-tiwai@suse.de>
+From:   Takashi Iwai <tiwai@suse.de>
+To:     Luca Coelho <luca@coelho.fi>
+Cc:     dor.shaish@intel.com, Josh Boyer <jwboyer@kernel.org>,
+        Johannes Berg <johannes.berg@intel.com>,
+        Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
+        linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: Regression with the latest iwlwifi-9260-*-46.ucode
+In-Reply-To: <a394850acbe0f05d6428ce466ecac1cfaefadd59.camel@coelho.fi>
+References: <s5hr26m9gvc.wl-tiwai@suse.de>
+        <280dad08ba9864755c3c45ed3ce26d602fe18a49.camel@intel.com>
+        <s5ho91pzyml.wl-tiwai@suse.de>
+        <s5hwogcxwt4.wl-tiwai@suse.de>
+        <b225d043d8581e0fec68cb63f7433161868293f3.camel@coelho.fi>
+        <s5hmuh7xrqy.wl-tiwai@suse.de>
+        <38635c1b10018859457787ecff4f92a3ceec34a4.camel@coelho.fi>
+        <ef32cea91614b9708a474e223f3fbbb85a95501d.camel@coelho.fi>
+        <s5hsgqgnczv.wl-tiwai@suse.de>
+        <99462e51eda721d5d85d9ea9e2c28da62f8b54f5.camel@coelho.fi>
+        <a394850acbe0f05d6428ce466ecac1cfaefadd59.camel@coelho.fi>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI/1.14.6 (Maruoka)
+ FLIM/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL/10.8 Emacs/25.3
+ (x86_64-suse-linux-gnu) MULE/6.0 (HANACHIRUSATO)
+MIME-Version: 1.0 (generated by SEMI 1.14.6 - "Maruoka")
+Content-Type: text/plain; charset=US-ASCII
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Thu, Jul 25, 2019 at 09:31:34PM +0000, Adham.Abozaeid@microchip.com wrote:
-> From: Adham Abozaeid <adham.abozaeid@microchip.com>
+On Mon, 05 Aug 2019 14:03:55 +0200,
+Luca Coelho wrote:
 > 
-> remove obtaining_ip from struct wilc_vif
+> On Mon, 2019-08-05 at 13:10 +0300, Luca Coelho wrote:
+> > On Mon, 2019-08-05 at 12:05 +0200, Takashi Iwai wrote:
+> > > On Mon, 05 Aug 2019 11:53:33 +0200,
+> > > Luca Coelho wrote:
+> > > > On Mon, 2019-08-05 at 12:48 +0300, Luca Coelho wrote:
+> > > > > On Sun, 2019-07-21 at 18:43 +0200, Takashi Iwai wrote:
+> > > > > > On Sat, 20 Jul 2019 22:49:33 +0200,
+> > > > > > Luca Coelho wrote:
+> > > > > > > On Sat, 2019-07-20 at 22:42 +0200, Takashi Iwai wrote:
+> > > > > > > > On Fri, 19 Jul 2019 20:07:46 +0200,
+> > > > > > > > Takashi Iwai wrote:
+> > > > > > > > > On Fri, 19 Jul 2019 18:36:53 +0200,
+> > > > > > > > > Luciano Coelho wrote:
+> > > > > > > > > > Adding Dor.
+> > > > > > > > > > 
+> > > > > > > > > > Hi Takashi,
+> > > > > > > > > > 
+> > > > > > > > > > Do you have full logs of the crash? We can't see much from the log
+> > > > > > > > > > snippet pasted in the bug report.
+> > > > > > > > > 
+> > > > > > > > > OK, I'll ask reporters.  If you have a SUSE/openSUSE bugzilla account,
+> > > > > > > > > feel free to join there.
+> > > > > > > > 
+> > > > > > > > FYI, the dmesg's have been uploaded to the same bugzilla entry:
+> > > > > > > >   https://bugzilla.opensuse.org/show_bug.cgi?id=1142128
+> > > > > > > > 
+> > > > > > > 
+> > > > > > > Thanks!
+> > > > > > > 
+> > > > > > > BTW, I pushed new firmwares to our firmware tree in git.kernel.org
+> > > > > > > today.  This is the patch:
+> > > > > > > 
+> > > > > > > https://git.kernel.org/pub/scm/linux/kernel/git/iwlwifi/linux-firmware.git/commit/?id=b5f09bb4f816abace0227d0f4e749859364cef6b
+> > > > > > > 
+> > > > > > > It would be great if you can try it out and let us know whether the problem is gone or not.
+> > > > > > 
+> > > > > > I created a test package and asked for testing.
+> > > > > > The test result seems negative, showing the same error,
+> > > > > > unfortunately.
+> > > > > > 
+> > > > > > The dmesg was uploaded on the bugzilla entry.
+> > > > > 
+> > > > > Thanks Takashi! We will look into them as soon as possible (sorry for
+> > > > > the late reply, I just came back from vacations).
+> > > > 
+> > > > Actually, I just noticed that your bugzilla is closed as "RESOLVED
+> > > > FIXED".  Is this still an issue?
+> > > 
+> > > It's "closed" because our package contains the revert.
+> > > 
+> > > > This seems like a mismatch between the WiFi and BT firmwares... And
+> > > > most likely the same issue as this:
+> > > > 
+> > > > https://bugzilla.kernel.org/show_bug.cgi?id=202163
+> > > 
+> > > OK, so we need the update of the whole linux-firmware.
+> > > I'll refresh the package and ask for testing.
+> > 
+> > I'm not sure the new BT firmware is in linux-firmware yet, since I
+> > don't handle BT stuff.  I hope it is.
 > 
+> I just double-checked this and got confirmation that the latest BT
+> firmware in linux-firmware.git is compatible with the latest WiFi
+> firmware there as well.
+> 
+> The only caveat is that the machine needs to be cold-booted for it to
+> work....
+> 
+> But we are taking steps to make sure this will not happen next time
+> (i.e. for future hardware), by syncing our BT and WiFi firmware
+> releases.
 
-How is this "unused"?  It looks like it is used to me.
+Now we got a feedback from the latest linux-firmware (20190726) and
+surprising the result was negative.  The dmesg after the cold boot is
+found at:
+  https://bugzilla.suse.com/show_bug.cgi?id=1142128#c26
 
-regards,
-dan carpenter
+The kernel is 5.2.3, so it should be new enough.
 
+If anything else needed (or something missing), let us know.
+
+
+thanks,
+
+Takashi
