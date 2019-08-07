@@ -2,88 +2,101 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 4125483D65
-	for <lists+linux-wireless@lfdr.de>; Wed,  7 Aug 2019 00:38:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9492383E58
+	for <lists+linux-wireless@lfdr.de>; Wed,  7 Aug 2019 02:30:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727088AbfHFWhy (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 6 Aug 2019 18:37:54 -0400
-Received: from mail-pg1-f196.google.com ([209.85.215.196]:45540 "EHLO
-        mail-pg1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726788AbfHFWhy (ORCPT
+        id S1728430AbfHGAaV (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 6 Aug 2019 20:30:21 -0400
+Received: from mail-lj1-f194.google.com ([209.85.208.194]:45996 "EHLO
+        mail-lj1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728376AbfHGAaV (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 6 Aug 2019 18:37:54 -0400
-Received: by mail-pg1-f196.google.com with SMTP id o13so42323721pgp.12
-        for <linux-wireless@vger.kernel.org>; Tue, 06 Aug 2019 15:37:54 -0700 (PDT)
+        Tue, 6 Aug 2019 20:30:21 -0400
+Received: by mail-lj1-f194.google.com with SMTP id m23so83701902lje.12
+        for <linux-wireless@vger.kernel.org>; Tue, 06 Aug 2019 17:30:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20161025;
+        d=chromium.org; s=google;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=LEBBY/3cfwZghFgvlOug6xWmEiQbNBJw16Nwo29xdMQ=;
-        b=nUtwo04zLd++8NyzceuLQ9K5rPwE4gGu6zIueWfxrfY8nWZCU0kg8fQvqSFMpsQRmQ
-         q7cQajIFapzT5PtsAXv84Yv+Q12PzvzGuVoYNJWSFn96ZYk2oRAsDx+7oGDdJYlh3SZU
-         vncE2/U/+9+bNNhRMisdX5pDtCV9VfdL0WYC5zLnlI6prNunbLw/IrOFuGnKRtahj9lh
-         62SsKbFCi5z7wX8KlFYIrjROzRjkI0cIqn57m5YEjel1LUPAcwyaNSTu8jQ/l5zkC5sg
-         lHJPlajutsLX9KzuzHnkRgPs2kLJgM+a33EbyoUhJ1a20Vn8ymqfJSIUmBwGORIJp+tX
-         hqyg==
+         :cc:content-transfer-encoding;
+        bh=04KeAaCHcaHA13etq10kb5eqtxQxSQGGJ3drhfuep0U=;
+        b=fqRhCbgmWE11EYy3WIsEPjq48dq2jzTQOhZT7z7UW8KW//nC8dYqObDWTiTfCLO1kp
+         kxxcmjUAd/qgJ4YzxnhotT/4QmTXeMCRqlRUH6vvg2rdYn3xcQosK24cTLIVKz6qhULf
+         VJVsUbuWu0FTrMtZ86g1CyNgtVWby+VNSNh5A=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=LEBBY/3cfwZghFgvlOug6xWmEiQbNBJw16Nwo29xdMQ=;
-        b=rzDiZtXmn1lmha5kxLma6F/5hCDSwbYb/stcGt272/pFNaYPQqqJZUJenWZiElQMqE
-         yzWCH43QIQBnUkob0ImS1WngrJoxPwYTxDqlZJu7kq0wOwEbg9TEY0x4eFATqLnic7E1
-         HFSVK56XfV8GzSstwWmxyidld/05W2d3/gRptNPmAi2kftyqxfGbb8VKfl1FDNsAXfdY
-         59nLe3OMssPdgtISizbUKckSM6WgZyVqwOmncAAP6UKOoN2+/uelEJIdeOekewR9zifL
-         Eg8GZCPvoVMLDcEZh10nUa2UPHESyLHXgN0UfSu+mThLjF3/tpxxG/MOzNp78Xd6bQR5
-         wDQg==
-X-Gm-Message-State: APjAAAVjgRNgyKbScb2ljn2hdfMydxUwLBlZx4t7CJ1AR6eQWtQskeiV
-        qFLUQIddx8hgjmWGvefgHivmX7Cj7yfZH35yudP4Ig==
-X-Google-Smtp-Source: APXvYqzHiPqnRDL7C3Le9GukRZozDeYh1OFO1GZlcr1HO0BBbZWWYTJ2zvJ4ZVm7JnRYmZj9LOpIn0Rx4wE6vjyUBB8=
-X-Received: by 2002:a17:90a:bf02:: with SMTP id c2mr5430397pjs.73.1565131073425;
- Tue, 06 Aug 2019 15:37:53 -0700 (PDT)
+         :message-id:subject:to:cc:content-transfer-encoding;
+        bh=04KeAaCHcaHA13etq10kb5eqtxQxSQGGJ3drhfuep0U=;
+        b=F3GjU4Kjk6WK7er+WCBTZFgd/vxVLS9/LJNCQXMB89hX0tvPw4N/OtrH4fBfXPF3FO
+         83U6BpB40zKEeuIre7tHqLzL3a12iQD/CfDx3l2JvMhxIT4rmHATk30c61yvP8e1aVM5
+         OuFzqhOoEWDbTt/oQxZ5Jex9R76+ubyKuzR5X0bv9gb+NJRFZupka7nuSZtWhFLStmrP
+         Fx3vBAI3C0+s32LmlPY7MIHKZzh5eHWs37faYXJcF8F34pkFYhnoYBayIN6Ddiuh90nT
+         qNySv5SL+Nbq7rWrxQcTIcyPW+2gnCizhWlkjO6iPvCzZSSeLecs24qEo45leLWoOVz5
+         bdLQ==
+X-Gm-Message-State: APjAAAUcFUaKLaryvGIWKhkaTSm9qBGne1EcyDxgVDlN4hGwwiU3ZE3H
+        8d1VqAEpSmawV9bir21qtF9zzc4P5zI=
+X-Google-Smtp-Source: APXvYqy5EWZQPI60VCH4PtnMCCY5hpnrIoBA4N+HD4fVbLvD0hapXxk2cXR7A84otT7GeXK5t2IheQ==
+X-Received: by 2002:a2e:8559:: with SMTP id u25mr3161106ljj.224.1565137818656;
+        Tue, 06 Aug 2019 17:30:18 -0700 (PDT)
+Received: from mail-lf1-f46.google.com (mail-lf1-f46.google.com. [209.85.167.46])
+        by smtp.gmail.com with ESMTPSA id q21sm2969290lfo.18.2019.08.06.17.30.17
+        for <linux-wireless@vger.kernel.org>
+        (version=TLS1_3 cipher=AEAD-AES128-GCM-SHA256 bits=128/128);
+        Tue, 06 Aug 2019 17:30:17 -0700 (PDT)
+Received: by mail-lf1-f46.google.com with SMTP id s19so62648922lfb.9
+        for <linux-wireless@vger.kernel.org>; Tue, 06 Aug 2019 17:30:17 -0700 (PDT)
+X-Received: by 2002:a19:ed11:: with SMTP id y17mr4205590lfy.141.1565137817348;
+ Tue, 06 Aug 2019 17:30:17 -0700 (PDT)
 MIME-Version: 1.0
-References: <20190712001708.170259-1-ndesaulniers@google.com>
- <874l31r88y.fsf@concordia.ellerman.id.au> <3a2b6d4f9356d54ab8e83fbf25ba9c5f50181f0d.camel@sipsolutions.net>
-In-Reply-To: <3a2b6d4f9356d54ab8e83fbf25ba9c5f50181f0d.camel@sipsolutions.net>
-From:   Nick Desaulniers <ndesaulniers@google.com>
-Date:   Tue, 6 Aug 2019 15:37:42 -0700
-Message-ID: <CAKwvOdmBeB1BezsGh=cK=U9m8goKzZnngDRzNM7B1voZfh8yWg@mail.gmail.com>
-Subject: Re: [PATCH -next] iwlwifi: dbg: work around clang bug by marking
- debug strings static
-To:     Johannes Berg <johannes@sipsolutions.net>
-Cc:     Michael Ellerman <mpe@ellerman.id.au>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        Luca Coelho <luciano.coelho@intel.com>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Nathan Chancellor <natechancellor@gmail.com>,
-        Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
-        Intel Linux Wireless <linuxwifi@intel.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Shahar S Matityahu <shahar.s.matityahu@intel.com>,
-        Sara Sharon <sara.sharon@intel.com>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        LKML <linux-kernel@vger.kernel.org>,
-        clang-built-linux <clang-built-linux@googlegroups.com>
+References: <CAH040W7fdd-ND4-QG3DwGpFAPTMGB4zzuXYohMdfoSejV6XE_Q@mail.gmail.com>
+In-Reply-To: <CAH040W7fdd-ND4-QG3DwGpFAPTMGB4zzuXYohMdfoSejV6XE_Q@mail.gmail.com>
+From:   Brian Norris <briannorris@chromium.org>
+Date:   Tue, 6 Aug 2019 17:30:06 -0700
+X-Gmail-Original-Message-ID: <CA+ASDXM6Jz7YY9XUj6QKv5VJCED-BnQ5K1UZHNApB9p6qTWtgg@mail.gmail.com>
+Message-ID: <CA+ASDXM6Jz7YY9XUj6QKv5VJCED-BnQ5K1UZHNApB9p6qTWtgg@mail.gmail.com>
+Subject: Re: Realtek r8822be wireless card fails to work with new rtw88 kernel module
+To:     =?UTF-8?B?6rOg7KSA?= <gojun077@gmail.com>
+Cc:     linux-wireless <linux-wireless@vger.kernel.org>,
+        "<netdev@vger.kernel.org>" <netdev@vger.kernel.org>,
+        Linux Kernel <linux-kernel@vger.kernel.org>,
+        Tony Chuang <yhchuang@realtek.com>
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Thu, Aug 1, 2019 at 12:11 AM Johannes Berg <johannes@sipsolutions.net> wrote:
->
->
-> > Luca, you said this was already fixed in your internal tree, and the fix
-> > would appear soon in next, but I don't see anything in linux-next?
->
-> Luca is still on vacation, but I just sent out a version of the patch we
-> had applied internally.
->
-> Also turns out it wasn't actually _fixed_, just _moved_, so those
-> internal patches wouldn't have helped anyway.
++ yhchuang
 
-Thanks for the report. Do you have a link?
-I'll rebase my patch then.
--- 
-Thanks,
-~Nick Desaulniers
+On Tue, Aug 6, 2019 at 7:32 AM =EA=B3=A0=EC=A4=80 <gojun077@gmail.com> wrot=
+e:
+>
+> Hello,
+>
+> I recently reported a bug to Ubuntu regarding a regression in wireless
+> driver support for the Realtek r8822be wireless chipset. The issue
+> link on launchpad is:
+>
+> https://bugs.launchpad.net/bugs/1838133
+>
+> After Canonical developers triaged the bug they determined that the
+> problem lies upstream, and instructed me to send mails to the relevant
+> kernel module maintainers at Realtek and to the general kernel.org
+> mailing list.
+>
+> I built kernel 5.3.0-rc1+ with the latest realtek drivers from
+> wireless-drivers-next but my Realtek r8822be doesn't work with
+> rtw88/rtwpci kernel modules.
+>
+> Please let me know if there is any additional information I can
+> provide that would help in debugging this issue.
+
+Any chance this would help you?
+
+https://patchwork.kernel.org/patch/11065631/
+
+Somebody else was complaining about 8822be regressions that were fixed
+with that.
+
+Brian
