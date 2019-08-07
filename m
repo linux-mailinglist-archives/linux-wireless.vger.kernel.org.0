@@ -2,101 +2,75 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 9492383E58
-	for <lists+linux-wireless@lfdr.de>; Wed,  7 Aug 2019 02:30:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 52B928427F
+	for <lists+linux-wireless@lfdr.de>; Wed,  7 Aug 2019 04:33:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728430AbfHGAaV (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 6 Aug 2019 20:30:21 -0400
-Received: from mail-lj1-f194.google.com ([209.85.208.194]:45996 "EHLO
-        mail-lj1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728376AbfHGAaV (ORCPT
+        id S1729238AbfHGCdg (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 6 Aug 2019 22:33:36 -0400
+Received: from rtits2.realtek.com ([211.75.126.72]:41763 "EHLO
+        rtits2.realtek.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727653AbfHGCdg (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 6 Aug 2019 20:30:21 -0400
-Received: by mail-lj1-f194.google.com with SMTP id m23so83701902lje.12
-        for <linux-wireless@vger.kernel.org>; Tue, 06 Aug 2019 17:30:19 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc:content-transfer-encoding;
-        bh=04KeAaCHcaHA13etq10kb5eqtxQxSQGGJ3drhfuep0U=;
-        b=fqRhCbgmWE11EYy3WIsEPjq48dq2jzTQOhZT7z7UW8KW//nC8dYqObDWTiTfCLO1kp
-         kxxcmjUAd/qgJ4YzxnhotT/4QmTXeMCRqlRUH6vvg2rdYn3xcQosK24cTLIVKz6qhULf
-         VJVsUbuWu0FTrMtZ86g1CyNgtVWby+VNSNh5A=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=04KeAaCHcaHA13etq10kb5eqtxQxSQGGJ3drhfuep0U=;
-        b=F3GjU4Kjk6WK7er+WCBTZFgd/vxVLS9/LJNCQXMB89hX0tvPw4N/OtrH4fBfXPF3FO
-         83U6BpB40zKEeuIre7tHqLzL3a12iQD/CfDx3l2JvMhxIT4rmHATk30c61yvP8e1aVM5
-         OuFzqhOoEWDbTt/oQxZ5Jex9R76+ubyKuzR5X0bv9gb+NJRFZupka7nuSZtWhFLStmrP
-         Fx3vBAI3C0+s32LmlPY7MIHKZzh5eHWs37faYXJcF8F34pkFYhnoYBayIN6Ddiuh90nT
-         qNySv5SL+Nbq7rWrxQcTIcyPW+2gnCizhWlkjO6iPvCzZSSeLecs24qEo45leLWoOVz5
-         bdLQ==
-X-Gm-Message-State: APjAAAUcFUaKLaryvGIWKhkaTSm9qBGne1EcyDxgVDlN4hGwwiU3ZE3H
-        8d1VqAEpSmawV9bir21qtF9zzc4P5zI=
-X-Google-Smtp-Source: APXvYqy5EWZQPI60VCH4PtnMCCY5hpnrIoBA4N+HD4fVbLvD0hapXxk2cXR7A84otT7GeXK5t2IheQ==
-X-Received: by 2002:a2e:8559:: with SMTP id u25mr3161106ljj.224.1565137818656;
-        Tue, 06 Aug 2019 17:30:18 -0700 (PDT)
-Received: from mail-lf1-f46.google.com (mail-lf1-f46.google.com. [209.85.167.46])
-        by smtp.gmail.com with ESMTPSA id q21sm2969290lfo.18.2019.08.06.17.30.17
-        for <linux-wireless@vger.kernel.org>
-        (version=TLS1_3 cipher=AEAD-AES128-GCM-SHA256 bits=128/128);
-        Tue, 06 Aug 2019 17:30:17 -0700 (PDT)
-Received: by mail-lf1-f46.google.com with SMTP id s19so62648922lfb.9
-        for <linux-wireless@vger.kernel.org>; Tue, 06 Aug 2019 17:30:17 -0700 (PDT)
-X-Received: by 2002:a19:ed11:: with SMTP id y17mr4205590lfy.141.1565137817348;
- Tue, 06 Aug 2019 17:30:17 -0700 (PDT)
-MIME-Version: 1.0
-References: <CAH040W7fdd-ND4-QG3DwGpFAPTMGB4zzuXYohMdfoSejV6XE_Q@mail.gmail.com>
-In-Reply-To: <CAH040W7fdd-ND4-QG3DwGpFAPTMGB4zzuXYohMdfoSejV6XE_Q@mail.gmail.com>
-From:   Brian Norris <briannorris@chromium.org>
-Date:   Tue, 6 Aug 2019 17:30:06 -0700
-X-Gmail-Original-Message-ID: <CA+ASDXM6Jz7YY9XUj6QKv5VJCED-BnQ5K1UZHNApB9p6qTWtgg@mail.gmail.com>
-Message-ID: <CA+ASDXM6Jz7YY9XUj6QKv5VJCED-BnQ5K1UZHNApB9p6qTWtgg@mail.gmail.com>
-Subject: Re: Realtek r8822be wireless card fails to work with new rtw88 kernel module
-To:     =?UTF-8?B?6rOg7KSA?= <gojun077@gmail.com>
-Cc:     linux-wireless <linux-wireless@vger.kernel.org>,
+        Tue, 6 Aug 2019 22:33:36 -0400
+Authenticated-By: 
+X-SpamFilter-By: BOX Solutions SpamTrap 5.62 with qID x772XQA2021696, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (RTITCAS12.realtek.com.tw[172.21.6.16])
+        by rtits2.realtek.com.tw (8.15.2/2.57/5.78) with ESMTPS id x772XQA2021696
+        (version=TLSv1 cipher=DHE-RSA-AES256-SHA bits=256 verify=NOT);
+        Wed, 7 Aug 2019 10:33:26 +0800
+Received: from RTITMBSVM04.realtek.com.tw ([fe80::e404:880:2ef1:1aa1]) by
+ RTITCAS12.realtek.com.tw ([::1]) with mapi id 14.03.0439.000; Wed, 7 Aug 2019
+ 10:33:26 +0800
+From:   Tony Chuang <yhchuang@realtek.com>
+To:     Brian Norris <briannorris@chromium.org>,
+        =?utf-8?B?6rOg7KSA?= <gojun077@gmail.com>
+CC:     linux-wireless <linux-wireless@vger.kernel.org>,
         "<netdev@vger.kernel.org>" <netdev@vger.kernel.org>,
-        Linux Kernel <linux-kernel@vger.kernel.org>,
-        Tony Chuang <yhchuang@realtek.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+        Linux Kernel <linux-kernel@vger.kernel.org>
+Subject: RE: Realtek r8822be wireless card fails to work with new rtw88 kernel module
+Thread-Topic: Realtek r8822be wireless card fails to work with new rtw88
+ kernel module
+Thread-Index: AQHVTGO9JaOOz1AO2EeBgyY27UJlXKbuT6EAgACnGPA=
+Date:   Wed, 7 Aug 2019 02:33:25 +0000
+Message-ID: <F7CD281DE3E379468C6D07993EA72F84D1889B04@RTITMBSVM04.realtek.com.tw>
+References: <CAH040W7fdd-ND4-QG3DwGpFAPTMGB4zzuXYohMdfoSejV6XE_Q@mail.gmail.com>
+ <CA+ASDXM6Jz7YY9XUj6QKv5VJCED-BnQ5K1UZHNApB9p6qTWtgg@mail.gmail.com>
+In-Reply-To: <CA+ASDXM6Jz7YY9XUj6QKv5VJCED-BnQ5K1UZHNApB9p6qTWtgg@mail.gmail.com>
+Accept-Language: zh-TW, en-US
+Content-Language: zh-TW
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [172.21.68.183]
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+MIME-Version: 1.0
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-+ yhchuang
-
-On Tue, Aug 6, 2019 at 7:32 AM =EA=B3=A0=EC=A4=80 <gojun077@gmail.com> wrot=
-e:
->
-> Hello,
->
-> I recently reported a bug to Ubuntu regarding a regression in wireless
-> driver support for the Realtek r8822be wireless chipset. The issue
-> link on launchpad is:
->
-> https://bugs.launchpad.net/bugs/1838133
->
-> After Canonical developers triaged the bug they determined that the
-> problem lies upstream, and instructed me to send mails to the relevant
-> kernel module maintainers at Realtek and to the general kernel.org
-> mailing list.
->
-> I built kernel 5.3.0-rc1+ with the latest realtek drivers from
-> wireless-drivers-next but my Realtek r8822be doesn't work with
-> rtw88/rtwpci kernel modules.
->
-> Please let me know if there is any additional information I can
-> provide that would help in debugging this issue.
-
-Any chance this would help you?
-
-https://patchwork.kernel.org/patch/11065631/
-
-Somebody else was complaining about 8822be regressions that were fixed
-with that.
-
-Brian
+PiArIHloY2h1YW5nDQo+IA0KPiBPbiBUdWUsIEF1ZyA2LCAyMDE5IGF0IDc6MzIgQU0g6rOg7KSA
+IDxnb2p1bjA3N0BnbWFpbC5jb20+IHdyb3RlOg0KPiA+DQo+ID4gSGVsbG8sDQo+ID4NCj4gPiBJ
+IHJlY2VudGx5IHJlcG9ydGVkIGEgYnVnIHRvIFVidW50dSByZWdhcmRpbmcgYSByZWdyZXNzaW9u
+IGluIHdpcmVsZXNzDQo+ID4gZHJpdmVyIHN1cHBvcnQgZm9yIHRoZSBSZWFsdGVrIHI4ODIyYmUg
+d2lyZWxlc3MgY2hpcHNldC4gVGhlIGlzc3VlDQo+ID4gbGluayBvbiBsYXVuY2hwYWQgaXM6DQo+
+ID4NCj4gPiBodHRwczovL2J1Z3MubGF1bmNocGFkLm5ldC9idWdzLzE4MzgxMzMNCj4gPg0KPiA+
+IEFmdGVyIENhbm9uaWNhbCBkZXZlbG9wZXJzIHRyaWFnZWQgdGhlIGJ1ZyB0aGV5IGRldGVybWlu
+ZWQgdGhhdCB0aGUNCj4gPiBwcm9ibGVtIGxpZXMgdXBzdHJlYW0sIGFuZCBpbnN0cnVjdGVkIG1l
+IHRvIHNlbmQgbWFpbHMgdG8gdGhlIHJlbGV2YW50DQo+ID4ga2VybmVsIG1vZHVsZSBtYWludGFp
+bmVycyBhdCBSZWFsdGVrIGFuZCB0byB0aGUgZ2VuZXJhbCBrZXJuZWwub3JnDQo+ID4gbWFpbGlu
+ZyBsaXN0Lg0KPiA+DQo+ID4gSSBidWlsdCBrZXJuZWwgNS4zLjAtcmMxKyB3aXRoIHRoZSBsYXRl
+c3QgcmVhbHRlayBkcml2ZXJzIGZyb20NCj4gPiB3aXJlbGVzcy1kcml2ZXJzLW5leHQgYnV0IG15
+IFJlYWx0ZWsgcjg4MjJiZSBkb2Vzbid0IHdvcmsgd2l0aA0KPiA+IHJ0dzg4L3J0d3BjaSBrZXJu
+ZWwgbW9kdWxlcy4NCj4gPg0KPiA+IFBsZWFzZSBsZXQgbWUga25vdyBpZiB0aGVyZSBpcyBhbnkg
+YWRkaXRpb25hbCBpbmZvcm1hdGlvbiBJIGNhbg0KPiA+IHByb3ZpZGUgdGhhdCB3b3VsZCBoZWxw
+IGluIGRlYnVnZ2luZyB0aGlzIGlzc3VlLg0KPiANCj4gQW55IGNoYW5jZSB0aGlzIHdvdWxkIGhl
+bHAgeW91Pw0KPiANCj4gaHR0cHM6Ly9wYXRjaHdvcmsua2VybmVsLm9yZy9wYXRjaC8xMTA2NTYz
+MS8NCj4gDQo+IFNvbWVib2R5IGVsc2Ugd2FzIGNvbXBsYWluaW5nIGFib3V0IDg4MjJiZSByZWdy
+ZXNzaW9ucyB0aGF0IHdlcmUgZml4ZWQNCj4gd2l0aCB0aGF0Lg0KPiANCg0KSSBob3BlIGl0IGNv
+dWxkIGZpeCBpdC4NCg0KQW5kIGFzICJyODgyMmJlIiB3YXMgZHJvcHBlZCwgaXQgaXMgcHJlZmVy
+cmVkIHRvIHVzZSAicnR3ODgiIGluc3RlYWQuDQpJIGhhdmUgcmVjZWl2ZWQgdHdvIGtpbmRzIG9m
+IGZhaWx1cmVzIHRoYXQgY2F1c2UgZHJpdmVyIHN0b3Agd29ya2luZy4NCk9uZSBpcyB0aGUgTVNJ
+IGludGVycnVwdCBzaG91bGQgYmUgZW5hYmxlZCBvbiBjZXJ0YWluIHBsYXRmb3Jtcy4NCkFub3Ro
+ZXIgaXMgdGhlIFJGRSB0eXBlIG9mIHRoZSBjYXJkLCBjb3VsZCB5b3Ugc2VuZCBtb3JlIGRtZXNn
+IHRvIG1lPw0KDQpZYW4tSHN1YW4NCg0KDQo=
