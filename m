@@ -2,86 +2,83 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 38514843A3
-	for <lists+linux-wireless@lfdr.de>; Wed,  7 Aug 2019 07:24:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9CEEA84514
+	for <lists+linux-wireless@lfdr.de>; Wed,  7 Aug 2019 08:58:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726182AbfHGFYM (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 7 Aug 2019 01:24:12 -0400
-Received: from mga04.intel.com ([192.55.52.120]:14267 "EHLO mga04.intel.com"
+        id S1727180AbfHGG54 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 7 Aug 2019 02:57:56 -0400
+Received: from nbd.name ([46.4.11.11]:59552 "EHLO nbd.name"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725834AbfHGFYM (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 7 Aug 2019 01:24:12 -0400
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from orsmga003.jf.intel.com ([10.7.209.27])
-  by fmsmga104.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 06 Aug 2019 22:24:11 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.64,356,1559545200"; 
-   d="scan'208";a="176853760"
-Received: from kerdanow-mobl.ger.corp.intel.com ([10.252.3.167])
-  by orsmga003.jf.intel.com with ESMTP; 06 Aug 2019 22:24:07 -0700
-Message-ID: <a32af5800af19779eb5be8d7b2552de18bfac194.camel@intel.com>
-Subject: Re: [PATCH -next] iwlwifi: dbg: work around clang bug by marking
- debug strings static
-From:   Luciano Coelho <luciano.coelho@intel.com>
-To:     Nathan Chancellor <natechancellor@gmail.com>,
-        Nick Desaulniers <ndesaulniers@google.com>
-Cc:     Johannes Berg <johannes@sipsolutions.net>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
-        Intel Linux Wireless <linuxwifi@intel.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Shahar S Matityahu <shahar.s.matityahu@intel.com>,
-        Sara Sharon <sara.sharon@intel.com>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        LKML <linux-kernel@vger.kernel.org>,
-        clang-built-linux <clang-built-linux@googlegroups.com>
-Date:   Wed, 07 Aug 2019 08:24:06 +0300
-In-Reply-To: <20190807051516.GA117639@archlinux-threadripper>
-References: <20190712001708.170259-1-ndesaulniers@google.com>
-         <874l31r88y.fsf@concordia.ellerman.id.au>
-         <3a2b6d4f9356d54ab8e83fbf25ba9c5f50181f0d.camel@sipsolutions.net>
-         <CAKwvOdmBeB1BezsGh=cK=U9m8goKzZnngDRzNM7B1voZfh8yWg@mail.gmail.com>
-         <20190807051516.GA117639@archlinux-threadripper>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.30.5-1.1 
+        id S1727001AbfHGG5z (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Wed, 7 Aug 2019 02:57:55 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name;
+         s=20160729; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:
+        MIME-Version:Date:Message-ID:From:References:Cc:To:Subject:Sender:Reply-To:
+        Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+        Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+        List-Subscribe:List-Post:List-Owner:List-Archive;
+        bh=C0WbIGzN7QMIchpce1loyLDyh7y1tlawxQLyNOhSCK0=; b=qCPIAesMMtjDSR9JyhCvt4p4us
+        grylcXqTyBN/nsiwNfMlim6zPQgLPB/d2HGrP/fajzW4j7RK+n2BqxgNzjfcwOQsGVG8HClJI00W9
+        lHcXpuInjz17050jMukEPWJsV+XKzxd0LyGRD+dZ4Pn/tYHmxeQkQGkIBZi9N/YP1YDo=;
+Received: from p54ae9719.dip0.t-ipconnect.de ([84.174.151.25] helo=nf.local)
+        by ds12 with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        (Exim 4.89)
+        (envelope-from <nbd@nbd.name>)
+        id 1hvFtP-0001G6-EE; Wed, 07 Aug 2019 08:57:51 +0200
+Subject: Re: [PATCH] mt76: move mt76_tx_tasklet in mt76 module
+To:     Lorenzo Bianconi <lorenzo@kernel.org>
+Cc:     lorenzo.bianconi@redhat.com, linux-wireless@vger.kernel.org,
+        ryder.lee@mediatek.com, royluo@google.com
+References: <527fdc4e453cbc1408500625c0080d9c59d9e1dd.1565112514.git.lorenzo@kernel.org>
+From:   Felix Fietkau <nbd@nbd.name>
+Openpgp: preference=signencrypt
+Autocrypt: addr=nbd@nbd.name; prefer-encrypt=mutual; keydata=
+ mQGiBEah5CcRBADIY7pu4LIv3jBlyQ/2u87iIZGe6f0f8pyB4UjzfJNXhJb8JylYYRzIOSxh
+ ExKsdLCnJqsG1PY1mqTtoG8sONpwsHr2oJ4itjcGHfn5NJSUGTbtbbxLro13tHkGFCoCr4Z5
+ Pv+XRgiANSpYlIigiMbOkide6wbggQK32tC20QxUIwCg4k6dtV/4kwEeiOUfErq00TVqIiEE
+ AKcUi4taOuh/PQWx/Ujjl/P1LfJXqLKRPa8PwD4j2yjoc9l+7LptSxJThL9KSu6gtXQjcoR2
+ vCK0OeYJhgO4kYMI78h1TSaxmtImEAnjFPYJYVsxrhay92jisYc7z5R/76AaELfF6RCjjGeP
+ wdalulG+erWju710Bif7E1yjYVWeA/9Wd1lsOmx6uwwYgNqoFtcAunDaMKi9xVQW18FsUusM
+ TdRvTZLBpoUAy+MajAL+R73TwLq3LnKpIcCwftyQXK5pEDKq57OhxJVv1Q8XkA9Dn1SBOjNB
+ l25vJDFAT9ntp9THeDD2fv15yk4EKpWhu4H00/YX8KkhFsrtUs69+vZQwbQcRmVsaXggRmll
+ dGthdSA8bmJkQG5iZC5uYW1lPohgBBMRAgAgBQJGoeQnAhsjBgsJCAcDAgQVAggDBBYCAwEC
+ HgECF4AACgkQ130UHQKnbvXsvgCgjsAIIOsY7xZ8VcSm7NABpi91yTMAniMMmH7FRenEAYMa
+ VrwYTIThkTlQuQINBEah5FQQCACMIep/hTzgPZ9HbCTKm9xN4bZX0JjrqjFem1Nxf3MBM5vN
+ CYGBn8F4sGIzPmLhl4xFeq3k5irVg/YvxSDbQN6NJv8o+tP6zsMeWX2JjtV0P4aDIN1pK2/w
+ VxcicArw0VYdv2ZCarccFBgH2a6GjswqlCqVM3gNIMI8ikzenKcso8YErGGiKYeMEZLwHaxE
+ Y7mTPuOTrWL8uWWRL5mVjhZEVvDez6em/OYvzBwbkhImrryF29e3Po2cfY2n7EKjjr3/141K
+ DHBBdgXlPNfDwROnA5ugjjEBjwkwBQqPpDA7AYPvpHh5vLbZnVGu5CwG7NAsrb2isRmjYoqk
+ wu++3117AAMFB/9S0Sj7qFFQcD4laADVsabTpNNpaV4wAgVTRHKV/kC9luItzwDnUcsZUPdQ
+ f3MueRJ3jIHU0UmRBG3uQftqbZJj3ikhnfvyLmkCNe+/hXhPu9sGvXyi2D4vszICvc1KL4RD
+ aLSrOsROx22eZ26KqcW4ny7+va2FnvjsZgI8h4sDmaLzKczVRIiLITiMpLFEU/VoSv0m1F4B
+ FtRgoiyjFzigWG0MsTdAN6FJzGh4mWWGIlE7o5JraNhnTd+yTUIPtw3ym6l8P+gbvfoZida0
+ TspgwBWLnXQvP5EDvlZnNaKa/3oBes6z0QdaSOwZCRA3QSLHBwtgUsrT6RxRSweLrcabiEkE
+ GBECAAkFAkah5FQCGwwACgkQ130UHQKnbvW2GgCfTKx80VvCR/PvsUlrvdOLsIgeRGAAn1ee
+ RjMaxwtSdaCKMw3j33ZbsWS4
+Message-ID: <e83840e9-06cf-bab9-ed3e-954e3f03c083@nbd.name>
+Date:   Wed, 7 Aug 2019 08:57:50 +0200
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.14; rv:60.0)
+ Gecko/20100101 Thunderbird/60.8.0
 MIME-Version: 1.0
+In-Reply-To: <527fdc4e453cbc1408500625c0080d9c59d9e1dd.1565112514.git.lorenzo@kernel.org>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
 Content-Transfer-Encoding: 7bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Tue, 2019-08-06 at 22:15 -0700, Nathan Chancellor wrote:
-> On Tue, Aug 06, 2019 at 03:37:42PM -0700, Nick Desaulniers wrote:
-> > On Thu, Aug 1, 2019 at 12:11 AM Johannes Berg <johannes@sipsolutions.net> wrote:
-> > > 
-> > > > Luca, you said this was already fixed in your internal tree, and the fix
-> > > > would appear soon in next, but I don't see anything in linux-next?
-> > > 
-> > > Luca is still on vacation, but I just sent out a version of the patch we
-> > > had applied internally.
-> > > 
-> > > Also turns out it wasn't actually _fixed_, just _moved_, so those
-> > > internal patches wouldn't have helped anyway.
-> > 
-> > Thanks for the report. Do you have a link?
-> > I'll rebase my patch then.
-> > -- 
-> > Thanks,
-> > ~Nick Desaulniers
+On 2019-08-06 19:31, Lorenzo Bianconi wrote:
+> Move mt76{15,03}_tx_tasklet in mt76 module since it is shared between
+> mt7615 and mt7603 drivers
 > 
-> Just for everyone else (since I commented on our issue tracker), this is
-> now fixed in Linus's tree as of commit  1f6607250331 ("iwlwifi: dbg_ini:
-> fix compile time assert build errors").
+> Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+I think it would be nice to get rid of the EXPORT_SYMBOL_GPL for
+mt76_tx_tasklet by moving the tasklet_init call to mt76_alloc_device().
 
-Yes, thanks Nathan! I was just digging for this patch to reply to you,
-I'm still catching up with what happened during my vacations.
+That way, dev->mt76.tx_tasklet will be set to mt76_tx_tasklet by
+default, but automatically overwritten for drivers that have custom
+implementations (76x02 / usb).
 
---
-Cheers,
-Luca.
-
+- Felix
