@@ -2,110 +2,162 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B767F860D1
-	for <lists+linux-wireless@lfdr.de>; Thu,  8 Aug 2019 13:26:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B430A86452
+	for <lists+linux-wireless@lfdr.de>; Thu,  8 Aug 2019 16:27:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729410AbfHHL0B (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 8 Aug 2019 07:26:01 -0400
-Received: from aserp2120.oracle.com ([141.146.126.78]:48610 "EHLO
-        aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728289AbfHHL0B (ORCPT
+        id S2389684AbfHHO1J (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 8 Aug 2019 10:27:09 -0400
+Received: from mail-ot1-f67.google.com ([209.85.210.67]:38113 "EHLO
+        mail-ot1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2387769AbfHHO1J (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 8 Aug 2019 07:26:01 -0400
-Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
-        by aserp2120.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x78BDdmn090787;
-        Thu, 8 Aug 2019 11:25:57 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
- : subject : message-id : mime-version : content-type; s=corp-2019-08-05;
- bh=3Lsk/V9qul0wY9Uf7ZUNUVa+w3fwbn2eUiZj6cS5F18=;
- b=cxfPdmiI4idPFVpqqiIQc2sKbLA9BXCmRSLRBjzrbzNHE922GCTS1yiZUjzRDcIZHYZ5
- L4fnv0AD52rin251pTw8CYxERo4BW1C1eEbnOA55OGW0ft+LIkN8BwbSEgAmlFZCPdhL
- /m1uwVu1FBEsoPjhSDNquBgTfqKHBgw6MKXC9AVIRUfSe3gsMx6XshJ2NfZ+WqLoWKrW
- 2FAsPuCPSheDkhA/YEnR/ttZN1CjmXYbn+yjZWaSrzuxyAomUf5OzcXAaDIhdeq+1hWJ
- 9UXgLSa3Iw65GxpNmxYvKaP+IBLhFKERgznZBKo+z+V7xcouHn9KHeff/6/aVFwoC0pM /w== 
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
- : subject : message-id : mime-version : content-type; s=corp-2018-07-02;
- bh=3Lsk/V9qul0wY9Uf7ZUNUVa+w3fwbn2eUiZj6cS5F18=;
- b=c5s98OLZX6zdBh8XYppPq9AibpcjGMxjIL0OvHfq/nvUMfHpxmEts+FdiA1alAGVDApB
- 26GPOjfTkGUOTaN1wBUsfLmcknIex2+CtmRnBVlG+TjKeZhgSK8+EEsDwO3d1h4imAVs
- gTwqgRxsQ+p93t6WIURmZdaUZBd63RBZF2iRreOA8J1bskymHTNWhp2VsO7bYzPtl8ba
- PSOzMMc7dBGs/+oxBI1a+Be5hd/jH78U4ZpKnK1CoI+yYK8ZwRWro76PwCungG24pYEk
- 3KHGMdT7P+EtYMxzW7ET8t6G3NSas9ZLaTvoyBfiXZ2MHPmv+fCPp97ZENToXE+oboHm 0Q== 
-Received: from aserp3030.oracle.com (aserp3030.oracle.com [141.146.126.71])
-        by aserp2120.oracle.com with ESMTP id 2u8has8khj-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Thu, 08 Aug 2019 11:25:57 +0000
-Received: from pps.filterd (aserp3030.oracle.com [127.0.0.1])
-        by aserp3030.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x78BDrQ4126976;
-        Thu, 8 Aug 2019 11:25:57 GMT
-Received: from aserv0121.oracle.com (aserv0121.oracle.com [141.146.126.235])
-        by aserp3030.oracle.com with ESMTP id 2u75bxhhp1-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Thu, 08 Aug 2019 11:25:56 +0000
-Received: from abhmp0007.oracle.com (abhmp0007.oracle.com [141.146.116.13])
-        by aserv0121.oracle.com (8.14.4/8.13.8) with ESMTP id x78BPuup000518;
-        Thu, 8 Aug 2019 11:25:56 GMT
-Received: from mwanda (/41.57.98.10)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Thu, 08 Aug 2019 04:25:55 -0700
-Date:   Thu, 8 Aug 2019 14:25:50 +0300
-From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     john@phrozen.org
-Cc:     linux-wireless@vger.kernel.org
-Subject: [bug report] mac80211: allow setting spatial reuse parameters from
- bss_conf
-Message-ID: <20190808112550.GA15648@mwanda>
+        Thu, 8 Aug 2019 10:27:09 -0400
+Received: by mail-ot1-f67.google.com with SMTP id d17so119430132oth.5;
+        Thu, 08 Aug 2019 07:27:08 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc:content-transfer-encoding;
+        bh=kfupe5BCBY7jnSL0f7BIF2NQvyUM9IcPYdq/C0xPwjo=;
+        b=eBsLf4ymJd4TN1TmmVtWpS+ZvLVOln2SBpbkeYigaEHwcMXuaQS7D2/LjueqTfbWJR
+         uWoLzYhviUsYYdPGq0kl5qd0B29UvdUgSxXehrB8HTSCE1XXN5vMabO4qNVsJAOIx6YC
+         2/dvgD0CXyXpnV/ZTxm8prArw2a/H673BzmsI1odR9EnWnnI+kLBm4C+2X/rzaTl4fdT
+         3g+tod2Jcs8Vg2u8K+ZHR0vHDjc8X80Fx8fM1GUHPmWMhdP3MZziOSdRED9LCM5DxJ/b
+         qCHRQ2hqg7A687ZVzLS1JPWGYuTtMPU7IcI0Dp4wjCalaySQFsR9yYCxqgR9mlDSmJNw
+         oecw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc:content-transfer-encoding;
+        bh=kfupe5BCBY7jnSL0f7BIF2NQvyUM9IcPYdq/C0xPwjo=;
+        b=jvgNY3CmzBwn+SMAGj5/tPuAsi1mP+/QQBzLvomC2iA4w3/LWcu910rc9aRTAMtIxk
+         gwFEbcDS3khsxVM9PgPZ1/JhNxWrO0QYSLzCw22s+pnY5bePEZ0ZmBaFIl9OC7vNfU6K
+         bR5ej2P5NDa2cQKeGVEyFydl36obJlCU7lWdjJl1qvYUGIjT2SBUEvzxz1TCukC6wpNK
+         PJSsgnV/ay3IBXPMlUNnsyqnnDj+tLtYbZBVstzYvP20oDQNPLwqZtGqUWwAjCUGo0No
+         s/JxAo4WzYv+WNRexiBqAmobQM3p4k6eteMH16UXEuaVpalA5hykCGW7McHVPP5RBp1X
+         ZfJw==
+X-Gm-Message-State: APjAAAW1/IJyfJ3ocpoXiLxxrWqhf5+oKA/2Bj6ASSjlYJLQrafHGPln
+        paAqr9S31e4F85mUmMuLgsfZ/8NrOz/d4p7bgw==
+X-Google-Smtp-Source: APXvYqyP1vcNnOqVtrNubvfjYGUmAcMf8O4IxgdBNXI6d0ODggbbZLLe1p7Z2PNdNyzA/kns9Rz4xd6na7idgKhgl2g=
+X-Received: by 2002:a9d:27e2:: with SMTP id c89mr13553083otb.302.1565274428280;
+ Thu, 08 Aug 2019 07:27:08 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.10.1 (2018-07-13)
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9342 signatures=668685
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=1 malwarescore=0
- phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=938
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.0.1-1906280000 definitions=main-1908080122
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9342 signatures=668685
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
- suspectscore=1 phishscore=0 bulkscore=0 spamscore=0 clxscore=1011
- lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=994 adultscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1906280000
- definitions=main-1908080122
+References: <CAH040W7fdd-ND4-QG3DwGpFAPTMGB4zzuXYohMdfoSejV6XE_Q@mail.gmail.com>
+ <CA+ASDXM6Jz7YY9XUj6QKv5VJCED-BnQ5K1UZHNApB9p6qTWtgg@mail.gmail.com> <F7CD281DE3E379468C6D07993EA72F84D1889B04@RTITMBSVM04.realtek.com.tw>
+In-Reply-To: <F7CD281DE3E379468C6D07993EA72F84D1889B04@RTITMBSVM04.realtek.com.tw>
+From:   =?UTF-8?B?6rOg7KSA?= <gojun077@gmail.com>
+Date:   Thu, 8 Aug 2019 23:26:57 +0900
+Message-ID: <CAH040W7x92Bb_zOh=g+B+j7sUnsUFh_O2+SXwqcymyjbyNHuXg@mail.gmail.com>
+Subject: Re: Realtek r8822be wireless card fails to work with new rtw88 kernel module
+To:     Tony Chuang <yhchuang@realtek.com>
+Cc:     Brian Norris <briannorris@chromium.org>,
+        linux-wireless <linux-wireless@vger.kernel.org>,
+        "<netdev@vger.kernel.org>" <netdev@vger.kernel.org>,
+        Linux Kernel <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hello John Crispin,
+Hello,
 
-This is a semi-automatic email about new static checker warnings.
+Thanks for sharing the patch, Brian. I am seeing some progress when
+building 5.3.0-rc1+ with
+the wireless-drivers-next patch for the rtw88 kernel module. Before
+the patch, my realtek r8822be
+was not recognized at all.
 
-The patch 1ced169cc1c2: "mac80211: allow setting spatial reuse
-parameters from bss_conf" from Jul 30, 2019, leads to the following
-Smatch complaint:
+After the patch, Realtek ethernet as well as wireless card r8822be are
+recognized and I can see
+a list of wireless access points. But for some reason, ping to my
+local gateway servers (both
+Ethernet and wireless) fail. Running tcpdump on my wireless and
+ethernet interfaces shows
+that ARP requests are showing up, but dns resolution doesn't work. I
+can associate with a
+wireless access point with wpa_supplicant and my ethernet port is
+getting a DHCP lease from
+my dhcp server, however.
 
-    net/mac80211/he.c:79 ieee80211_he_spr_ie_to_bss_conf()
-    warn: variable dereferenced before check 'he_spr_ie_elem' (see line 75)
+And for YH~
+Here is a dropbox link to debug info containing the output of dmesg,
+lsmod, and journalctl -b0 zipped
+up into a tarball:
 
-net/mac80211/he.c
-    69  void
-    70  ieee80211_he_spr_ie_to_bss_conf(struct ieee80211_vif *vif,
-    71                                  const struct ieee80211_he_spr *he_spr_ie_elem)
-    72  {
-    73          struct ieee80211_he_obss_pd *he_obss_pd =
-    74						&vif->bss_conf.he_obss_pd;
-    75		const u8 *data = he_spr_ie_elem->optional;
-                                 ^^^^^^^^^^^^^^^^^^^^^^^^
-Dereference.
+https://www.dropbox.com/s/pl85ob09y6q2qky/debug_5.3.0-rc1%2B_with_rtw88_pat=
+ch.tar.gz?dl=3D0
 
-    76	
-    77		memset(he_obss_pd, 0, sizeof(*he_obss_pd));
-    78	
-    79		if (!he_spr_ie_elem)
-                    ^^^^^^^^^^^^^^^
-Checked too late.
+Thanks for your help!
+Jun
 
-    80			return;
-    81	
 
-regards,
-dan carpenter
+Link to GPG Public Key:
+https://keybase.io/gojun077#show-public
+
+
+Backup link:
+https://keys.openpgp.org/vks/v1/by-fingerprint/79F173A93EB3623D32F86309A569=
+30CF7235138D
+
+
+Link to GPG Public Key:
+
+https://keybase.io/gojun077#show-public
+
+
+Backup link:
+
+https://keys.openpgp.org/vks/v1/by-fingerprint/79F173A93EB3623D32F86309A569=
+30CF7235138D
+
+
+
+On Wed, Aug 7, 2019 at 11:33 AM Tony Chuang <yhchuang@realtek.com> wrote:
+>
+> > + yhchuang
+> >
+> > On Tue, Aug 6, 2019 at 7:32 AM =EA=B3=A0=EC=A4=80 <gojun077@gmail.com> =
+wrote:
+> > >
+> > > Hello,
+> > >
+> > > I recently reported a bug to Ubuntu regarding a regression in wireles=
+s
+> > > driver support for the Realtek r8822be wireless chipset. The issue
+> > > link on launchpad is:
+> > >
+> > > https://bugs.launchpad.net/bugs/1838133
+> > >
+> > > After Canonical developers triaged the bug they determined that the
+> > > problem lies upstream, and instructed me to send mails to the relevan=
+t
+> > > kernel module maintainers at Realtek and to the general kernel.org
+> > > mailing list.
+> > >
+> > > I built kernel 5.3.0-rc1+ with the latest realtek drivers from
+> > > wireless-drivers-next but my Realtek r8822be doesn't work with
+> > > rtw88/rtwpci kernel modules.
+> > >
+> > > Please let me know if there is any additional information I can
+> > > provide that would help in debugging this issue.
+> >
+> > Any chance this would help you?
+> >
+> > https://patchwork.kernel.org/patch/11065631/
+> >
+> > Somebody else was complaining about 8822be regressions that were fixed
+> > with that.
+> >
+>
+> I hope it could fix it.
+>
+> And as "r8822be" was dropped, it is preferred to use "rtw88" instead.
+> I have received two kinds of failures that cause driver stop working.
+> One is the MSI interrupt should be enabled on certain platforms.
+> Another is the RFE type of the card, could you send more dmesg to me?
+>
+> Yan-Hsuan
+>
+>
