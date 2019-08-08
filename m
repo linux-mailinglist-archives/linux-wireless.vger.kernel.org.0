@@ -2,162 +2,111 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B430A86452
-	for <lists+linux-wireless@lfdr.de>; Thu,  8 Aug 2019 16:27:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4120E8677B
+	for <lists+linux-wireless@lfdr.de>; Thu,  8 Aug 2019 18:51:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2389684AbfHHO1J (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 8 Aug 2019 10:27:09 -0400
-Received: from mail-ot1-f67.google.com ([209.85.210.67]:38113 "EHLO
-        mail-ot1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2387769AbfHHO1J (ORCPT
+        id S1732698AbfHHQvk (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 8 Aug 2019 12:51:40 -0400
+Received: from mail-lj1-f195.google.com ([209.85.208.195]:44879 "EHLO
+        mail-lj1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728289AbfHHQvj (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 8 Aug 2019 10:27:09 -0400
-Received: by mail-ot1-f67.google.com with SMTP id d17so119430132oth.5;
-        Thu, 08 Aug 2019 07:27:08 -0700 (PDT)
+        Thu, 8 Aug 2019 12:51:39 -0400
+Received: by mail-lj1-f195.google.com with SMTP id k18so89504651ljc.11
+        for <linux-wireless@vger.kernel.org>; Thu, 08 Aug 2019 09:51:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
+        d=chromium.org; s=google;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc:content-transfer-encoding;
-        bh=kfupe5BCBY7jnSL0f7BIF2NQvyUM9IcPYdq/C0xPwjo=;
-        b=eBsLf4ymJd4TN1TmmVtWpS+ZvLVOln2SBpbkeYigaEHwcMXuaQS7D2/LjueqTfbWJR
-         uWoLzYhviUsYYdPGq0kl5qd0B29UvdUgSxXehrB8HTSCE1XXN5vMabO4qNVsJAOIx6YC
-         2/dvgD0CXyXpnV/ZTxm8prArw2a/H673BzmsI1odR9EnWnnI+kLBm4C+2X/rzaTl4fdT
-         3g+tod2Jcs8Vg2u8K+ZHR0vHDjc8X80Fx8fM1GUHPmWMhdP3MZziOSdRED9LCM5DxJ/b
-         qCHRQ2hqg7A687ZVzLS1JPWGYuTtMPU7IcI0Dp4wjCalaySQFsR9yYCxqgR9mlDSmJNw
-         oecw==
+         :cc;
+        bh=OiEWeL7H3W20lQN3jRYA1ldQhDggwawkb8Q2+D0yaUI=;
+        b=EUWWiVf+MsHbZ6Hf37fv1XnXfeYn3mNoGzh8HLoysZH0qyHlba10ZDlx1QyUIv8Tcm
+         UcDwO7QEHXzTutURw9n6274auOYkurtRradEZlT7eQ1mGxaqPDZ4XNvI5oqYmSQPGmgb
+         vvR8SNRb3+Sm0Iz1xX5Ne0HmQ2xfH1ph+YT44=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=kfupe5BCBY7jnSL0f7BIF2NQvyUM9IcPYdq/C0xPwjo=;
-        b=jvgNY3CmzBwn+SMAGj5/tPuAsi1mP+/QQBzLvomC2iA4w3/LWcu910rc9aRTAMtIxk
-         gwFEbcDS3khsxVM9PgPZ1/JhNxWrO0QYSLzCw22s+pnY5bePEZ0ZmBaFIl9OC7vNfU6K
-         bR5ej2P5NDa2cQKeGVEyFydl36obJlCU7lWdjJl1qvYUGIjT2SBUEvzxz1TCukC6wpNK
-         PJSsgnV/ay3IBXPMlUNnsyqnnDj+tLtYbZBVstzYvP20oDQNPLwqZtGqUWwAjCUGo0No
-         s/JxAo4WzYv+WNRexiBqAmobQM3p4k6eteMH16UXEuaVpalA5hykCGW7McHVPP5RBp1X
-         ZfJw==
-X-Gm-Message-State: APjAAAW1/IJyfJ3ocpoXiLxxrWqhf5+oKA/2Bj6ASSjlYJLQrafHGPln
-        paAqr9S31e4F85mUmMuLgsfZ/8NrOz/d4p7bgw==
-X-Google-Smtp-Source: APXvYqyP1vcNnOqVtrNubvfjYGUmAcMf8O4IxgdBNXI6d0ODggbbZLLe1p7Z2PNdNyzA/kns9Rz4xd6na7idgKhgl2g=
-X-Received: by 2002:a9d:27e2:: with SMTP id c89mr13553083otb.302.1565274428280;
- Thu, 08 Aug 2019 07:27:08 -0700 (PDT)
+         :message-id:subject:to:cc;
+        bh=OiEWeL7H3W20lQN3jRYA1ldQhDggwawkb8Q2+D0yaUI=;
+        b=h5p8fJ9w2Y1OJtypmpp2vjWjvyDGlQI5suuhwtk8uivYe1ASnhfuJ6E5gnNnjPcTZl
+         VNY3RZR/XAbJe1YParzBpJtY0yaVOg/biBZXIpBb6AqmdkL3mSnhujhvyRziV42RSKbT
+         p/ff8SjZq6WaFyKku6HksJkz89eFybo7FYY1GzcYh/wJLS0fAXviFoi9HIJM+IcrqkE0
+         jV5fRLuDrPRP2a8a5Jz+Hfrk8XvI6IcuPoR9z7k7i89+l2QR9yq5vxJKvMwv6wn9dVF1
+         aF6pO+C10errr7ESaeRupF5/mSpLD+ucjcPfe3LAQkfLNtz0j7TZnP8XIWALYG9zZWHz
+         jdgg==
+X-Gm-Message-State: APjAAAVI/9jsbAQqF9IDVwLUkZWcJePI9rARAupNn4MAUliQX/9wkkI/
+        YtV4okubjpsWVX9w4uvwAw4m50usOVU=
+X-Google-Smtp-Source: APXvYqy21Vpwi7ezeN8E12d/PqnwbL75W6i5u/BKdMTwdXRWUfYw9Cq4evCyXRXZKnIULhgtokqxdQ==
+X-Received: by 2002:a2e:85d4:: with SMTP id h20mr8964540ljj.142.1565283097641;
+        Thu, 08 Aug 2019 09:51:37 -0700 (PDT)
+Received: from mail-lf1-f54.google.com (mail-lf1-f54.google.com. [209.85.167.54])
+        by smtp.gmail.com with ESMTPSA id d3sm17015229lfb.92.2019.08.08.09.51.36
+        for <linux-wireless@vger.kernel.org>
+        (version=TLS1_3 cipher=AEAD-AES128-GCM-SHA256 bits=128/128);
+        Thu, 08 Aug 2019 09:51:36 -0700 (PDT)
+Received: by mail-lf1-f54.google.com with SMTP id x3so13592245lfn.6
+        for <linux-wireless@vger.kernel.org>; Thu, 08 Aug 2019 09:51:36 -0700 (PDT)
+X-Received: by 2002:ac2:5ec3:: with SMTP id d3mr9834070lfq.44.1565283096004;
+ Thu, 08 Aug 2019 09:51:36 -0700 (PDT)
 MIME-Version: 1.0
-References: <CAH040W7fdd-ND4-QG3DwGpFAPTMGB4zzuXYohMdfoSejV6XE_Q@mail.gmail.com>
- <CA+ASDXM6Jz7YY9XUj6QKv5VJCED-BnQ5K1UZHNApB9p6qTWtgg@mail.gmail.com> <F7CD281DE3E379468C6D07993EA72F84D1889B04@RTITMBSVM04.realtek.com.tw>
-In-Reply-To: <F7CD281DE3E379468C6D07993EA72F84D1889B04@RTITMBSVM04.realtek.com.tw>
-From:   =?UTF-8?B?6rOg7KSA?= <gojun077@gmail.com>
-Date:   Thu, 8 Aug 2019 23:26:57 +0900
-Message-ID: <CAH040W7x92Bb_zOh=g+B+j7sUnsUFh_O2+SXwqcymyjbyNHuXg@mail.gmail.com>
-Subject: Re: Realtek r8822be wireless card fails to work with new rtw88 kernel module
+References: <1564487414-9615-1-git-send-email-yhchuang@realtek.com>
+ <20190730195703.GA224792@google.com> <F7CD281DE3E379468C6D07993EA72F84D18855BB@RTITMBSVM04.realtek.com.tw>
+In-Reply-To: <F7CD281DE3E379468C6D07993EA72F84D18855BB@RTITMBSVM04.realtek.com.tw>
+From:   Brian Norris <briannorris@chromium.org>
+Date:   Thu, 8 Aug 2019 09:51:24 -0700
+X-Gmail-Original-Message-ID: <CA+ASDXPFVHaXM_5VtWNeTW8mPSZi6EX9JYoJRn4RTygA6iKQpg@mail.gmail.com>
+Message-ID: <CA+ASDXPFVHaXM_5VtWNeTW8mPSZi6EX9JYoJRn4RTygA6iKQpg@mail.gmail.com>
+Subject: Re: [PATCH] rtw88: pci: enable MSI interrupt
 To:     Tony Chuang <yhchuang@realtek.com>
-Cc:     Brian Norris <briannorris@chromium.org>,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        "<netdev@vger.kernel.org>" <netdev@vger.kernel.org>,
-        Linux Kernel <linux-kernel@vger.kernel.org>
+Cc:     "kvalo@codeaurora.org" <kvalo@codeaurora.org>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        "jano.vesely@gmail.com" <jano.vesely@gmail.com>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hello,
-
-Thanks for sharing the patch, Brian. I am seeing some progress when
-building 5.3.0-rc1+ with
-the wireless-drivers-next patch for the rtw88 kernel module. Before
-the patch, my realtek r8822be
-was not recognized at all.
-
-After the patch, Realtek ethernet as well as wireless card r8822be are
-recognized and I can see
-a list of wireless access points. But for some reason, ping to my
-local gateway servers (both
-Ethernet and wireless) fail. Running tcpdump on my wireless and
-ethernet interfaces shows
-that ARP requests are showing up, but dns resolution doesn't work. I
-can associate with a
-wireless access point with wpa_supplicant and my ethernet port is
-getting a DHCP lease from
-my dhcp server, however.
-
-And for YH~
-Here is a dropbox link to debug info containing the output of dmesg,
-lsmod, and journalctl -b0 zipped
-up into a tarball:
-
-https://www.dropbox.com/s/pl85ob09y6q2qky/debug_5.3.0-rc1%2B_with_rtw88_pat=
-ch.tar.gz?dl=3D0
-
-Thanks for your help!
-Jun
-
-
-Link to GPG Public Key:
-https://keybase.io/gojun077#show-public
-
-
-Backup link:
-https://keys.openpgp.org/vks/v1/by-fingerprint/79F173A93EB3623D32F86309A569=
-30CF7235138D
-
-
-Link to GPG Public Key:
-
-https://keybase.io/gojun077#show-public
-
-
-Backup link:
-
-https://keys.openpgp.org/vks/v1/by-fingerprint/79F173A93EB3623D32F86309A569=
-30CF7235138D
-
-
-
-On Wed, Aug 7, 2019 at 11:33 AM Tony Chuang <yhchuang@realtek.com> wrote:
->
-> > + yhchuang
+On Thu, Aug 1, 2019 at 2:21 AM Tony Chuang <yhchuang@realtek.com> wrote:
+> > Subject: Re: [PATCH] rtw88: pci: enable MSI interrupt
+> > On Tue, Jul 30, 2019 at 07:50:14PM +0800, yhchuang@realtek.com wrote:
+> > > --- a/drivers/net/wireless/realtek/rtw88/pci.c
+> > > +++ b/drivers/net/wireless/realtek/rtw88/pci.c
+> > > @@ -874,6 +878,7 @@ static irqreturn_t rtw_pci_interrupt_handler(int irq,
+> > void *dev)
+> > >     if (!rtwpci->irq_enabled)
+> > >             goto out;
+> > >
+> > > +   rtw_pci_disable_interrupt(rtwdev, rtwpci);
 > >
-> > On Tue, Aug 6, 2019 at 7:32 AM =EA=B3=A0=EC=A4=80 <gojun077@gmail.com> =
-wrote:
-> > >
-> > > Hello,
-> > >
-> > > I recently reported a bug to Ubuntu regarding a regression in wireles=
-s
-> > > driver support for the Realtek r8822be wireless chipset. The issue
-> > > link on launchpad is:
-> > >
-> > > https://bugs.launchpad.net/bugs/1838133
-> > >
-> > > After Canonical developers triaged the bug they determined that the
-> > > problem lies upstream, and instructed me to send mails to the relevan=
-t
-> > > kernel module maintainers at Realtek and to the general kernel.org
-> > > mailing list.
-> > >
-> > > I built kernel 5.3.0-rc1+ with the latest realtek drivers from
-> > > wireless-drivers-next but my Realtek r8822be doesn't work with
-> > > rtw88/rtwpci kernel modules.
-> > >
-> > > Please let me know if there is any additional information I can
-> > > provide that would help in debugging this issue.
+> > Why exactly do you have to mask interrupts during the ISR? Is there a
+> > race in rtw_pci_irq_recognized() or something?
+>
+>
+> I think there is a race between SW and HW, if we do not stop the
+> IRQ first, write 1 clear will make the interrupt to be lost.
+
+This doesn't need to slow down this patch (I think v2 is fine), but I
+still don't quite understand. Before this addition, the sequence is:
+(a) read out your IRQ status
+(b) ack the un-masked IRQs you see
+(c) operate on those IRQs
+
+Even if a new IRQ comes in the middle of (b), shouldn't it be
+sufficient to move on to (c), where you're still prepared to handle
+that IRQ?
+
+Or if the IRQ comes after (b), you won't ACK it, and you should
+immediately get a new IRQ after you return?
+
+I guess that's assuming that these registers are Write 1 to Clear. But
+if so, that means rtw_pci_irq_recognized() is effectively atomic, no?
+
+Also, somewhat unrelated: but why do you unmask HIMR1, when you're not
+actually handling any of its IRQ bits?
+
+Brian
+
 > >
-> > Any chance this would help you?
-> >
-> > https://patchwork.kernel.org/patch/11065631/
-> >
-> > Somebody else was complaining about 8822be regressions that were fixed
-> > with that.
-> >
->
-> I hope it could fix it.
->
-> And as "r8822be" was dropped, it is preferred to use "rtw88" instead.
-> I have received two kinds of failures that cause driver stop working.
-> One is the MSI interrupt should be enabled on certain platforms.
-> Another is the RFE type of the card, could you send more dmesg to me?
->
-> Yan-Hsuan
->
->
+> > >     rtw_pci_irq_recognized(rtwdev, rtwpci, irq_status);
+> > >
+> > >     if (irq_status[0] & IMR_MGNTDOK)
