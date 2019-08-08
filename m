@@ -2,56 +2,50 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2CCF086AF9
-	for <lists+linux-wireless@lfdr.de>; Thu,  8 Aug 2019 21:58:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8C1B386BD5
+	for <lists+linux-wireless@lfdr.de>; Thu,  8 Aug 2019 22:46:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2390261AbfHHT6O (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 8 Aug 2019 15:58:14 -0400
-Received: from mail-pf1-f170.google.com ([209.85.210.170]:35408 "EHLO
-        mail-pf1-f170.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729925AbfHHT6O (ORCPT
+        id S2390281AbfHHUqM (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 8 Aug 2019 16:46:12 -0400
+Received: from mail-ot1-f43.google.com ([209.85.210.43]:40764 "EHLO
+        mail-ot1-f43.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729780AbfHHUqM (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 8 Aug 2019 15:58:14 -0400
-Received: by mail-pf1-f170.google.com with SMTP id u14so44706714pfn.2
-        for <linux-wireless@vger.kernel.org>; Thu, 08 Aug 2019 12:58:14 -0700 (PDT)
+        Thu, 8 Aug 2019 16:46:12 -0400
+Received: by mail-ot1-f43.google.com with SMTP id l15so66884325oth.7
+        for <linux-wireless@vger.kernel.org>; Thu, 08 Aug 2019 13:46:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :content-transfer-encoding;
-        bh=dm5zx5TLTIy9C+xLEJSP6nCb7Vxzhj9HfOZyoQg34tw=;
-        b=H7/QBOsZU/ZM67oGOenanIrFcHzWmMbSSUI5pcls/uNnuYJHJYnenu5LG0dTOEO3aP
-         wyXCN1MgZ9G65KJyHQ5L84IX6WkLFTfQCHD5lPe2LigpMUsB4HfhXrqQVwVbC856zYsf
-         LHZWbh8hBO9fgNRb+56asT03OzhJTS+b77V8S8+/UqTkK/QQgdaoYmDTMM1NZXoSKdUJ
-         N3TrtNokt/446KQlQUGo6l9UHGTNbqxXqHoXeGN0b7Jsd8fPfhQnk4tpIA32lSFUOhxd
-         +6zO7m9Bsbom9hOL2Un6VSMSY4/ndLYJ427i6I0Q8BV11uknMnHqoaJyVreGtbdqXbD/
-         V/gA==
+        h=mime-version:from:date:message-id:subject:to;
+        bh=pFPMDnppBgftqs+ZWbDh3lXOqVM8OHhT8P3g9JOD6D0=;
+        b=cKNqE1U0+rddru/0fdQwy6G9/ANg6JswzFO1QlfO8GXLPs/hYSDpSHYf9fnQjQKmF7
+         L5EWbwBYrpOTLIJ5Pfyefdgx8zj7P1xZPZ7lYevrob3DEnQ02g1pyyxNZ7ceRcAGczO/
+         7TQQAfvnbsbDxEKd89wcWjNefouLWmm2NDCiEdwQPU+7ptlbRxM1Oic2Cdy1V5UUhg9S
+         471u1dYYi417Ia3XOOZWcBUjJya1sk1V1gnQWC17U7Cj7XatUyb0H1MyKkrYhYpxfQRb
+         jnYuV5VVbuzjTFaGg2LVhRCiQe7NpP5/b7IY266DNuIEwJGrnp5NvXGOmbbUjlJhQx98
+         q4FA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:content-transfer-encoding;
-        bh=dm5zx5TLTIy9C+xLEJSP6nCb7Vxzhj9HfOZyoQg34tw=;
-        b=nWVI+xwKvWarENhuaE/6R9Gc7Dcc8fpVpHLw/hVHo9XMdskOLE5RxG5cS8indaF3JI
-         PSLHjgjfH2pv3P60VrbIU071K57gtdrGSX+XXuXnTIoNMVodyWi6QITuqbGuTuZZwlsZ
-         TwoX+Q0eB/uKDYcW1c62YaUCgi9Jb2ACMfEDoZdaGYj0wj3Iz6iOdIodWgjMDAWKRAfh
-         Du8McCQDZBqHNP7ThzXb4Mq8q97XhHmF+QJybV/uCDGysX5S80QyxrAnvJJZXFkAT+7n
-         LpRYDWxKf4FH7wQyVRN5Vtj2CyMf/iCxgmwl70aCkSwnimykVm0TQYUPu4D6nB2wZpez
-         6ArA==
-X-Gm-Message-State: APjAAAXe8n+QO5iaEIstQkZ5gY6z6ABg3HkDWoLpyIwq88FBPQN9DwHQ
-        WLln3bwX0sICczMkreko6x136wSOwwThfwQhCGz4lqr4pj0=
-X-Google-Smtp-Source: APXvYqw6JQH0BPlLeCI0DSVSeETSbVLTDZ2Kk70hA+ngUzi2R4VCgUfH/cvxUwG9lwMZ3rVcx42CPgGZJMlYD6YhEBI=
-X-Received: by 2002:a62:483:: with SMTP id 125mr17773104pfe.245.1565294293475;
- Thu, 08 Aug 2019 12:58:13 -0700 (PDT)
+        h=x-gm-message-state:mime-version:from:date:message-id:subject:to;
+        bh=pFPMDnppBgftqs+ZWbDh3lXOqVM8OHhT8P3g9JOD6D0=;
+        b=iudWIr39oHGFuE4e+XmY76jO3va6LkVsXfZN3gG+L1j58NBEyapdCo1gaZ0mrok3F9
+         6uAs84UU5f1JlICnUDBA3j09Y16hI9l/fqCBFVsvuFkdkyaNuQrLbtLtT7/H+1wEbFBO
+         8dR1k9qTgp6PpEgefn8C5eRryXUZEPScc53ou0V+o1ssX5ONr492NPWQjxFth9Oqk12l
+         ZWr1kojJMEwZ3uBA71IDjrUmBDIz6+ewZ19Vt+OYP6qIkEQmkv8cDYPs6gQlJYGug4L6
+         LWjR+iSFolCBmNZlOwKcchOtNLp5HhklqgE0H92Y9aHr0Q6t/UFKY4qF4i4uSZ228nqB
+         xJ4A==
+X-Gm-Message-State: APjAAAUZU7QH/eU7e+kx5lyiDNwlb5k+8597Y5ydF95vd2lEMazHWR73
+        6+2ESw93qAsHd/jxe7eZ8NnnztFxXXJgw6bDmJiiGx9YIDA=
+X-Google-Smtp-Source: APXvYqweqike5FyG185jN1FMmwGNRae+0w6Bf2I5cJcJAROym1mWyd7OzUNLwmnfRa9Htaf+qHnCwvcxtC7fepNMniY=
+X-Received: by 2002:a6b:cd86:: with SMTP id d128mr17072987iog.234.1565297171342;
+ Thu, 08 Aug 2019 13:46:11 -0700 (PDT)
 MIME-Version: 1.0
-References: <CAG6aBkWDyGDtWX7X0t-FjynkYxpdhpZsAv4Ysw3dKf+iEu+mig@mail.gmail.com>
- CAG6aBkWDyGDtWX7X0t-FjynkYxpdhpZsAv4Ysw3dKf+iEu+mig@mail.gmail.com <5d4c34ea.1c69fb81.a7a36.5f7f.GMR@mx.google.com>
-In-Reply-To: <5d4c34ea.1c69fb81.a7a36.5f7f.GMR@mx.google.com>
-From:   Nigel Sollars <nsollars@gmail.com>
-Date:   Thu, 8 Aug 2019 15:58:03 -0400
-Message-ID: <CAG6aBkXG50t-KgkLPpkGjcF313hJiic6k1sqOVDCbWN3zPAsGg@mail.gmail.com>
-Subject: Fwd: Delivery Status Notification (Failure)
+From:   Roberto Riggio <roberto.riggio@gmail.com>
+Date:   Thu, 8 Aug 2019 22:46:00 +0200
+Message-ID: <CAKkT90bAG96tSWnPjB+OJ2xxACY8+mPpA4jB4xhNZNv1ZZCZKg@mail.gmail.com>
+Subject: MTU setting for frame injection with ath9k driver
 To:     linux-wireless@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
@@ -59,41 +53,14 @@ X-Mailing-List: linux-wireless@vger.kernel.org
 
 Hi,
 
-So I have been trying to reach out in aim to get this driver fixed as
-its regressed now to a total non working state.
+I am working on some frame injection from userspace using the ath9k
+driver. Everything works fine without aggregation. However, I would
+like to inject some A-MSDU frames. The problem is that if I try to set
+an MTU larger than 2304 I get this message:
 
-The card can see access points, but thats about as good as it gets as
-trying to connect to any networks ( either 2.4 ot 5 Ghz ) results in
-the following,
+ifconfig: SIOCSIFMTU: Invalid argument
 
-  wlp3s0: CTRL-EVENT-SCAN-FAILED ret=3D-22 retry=3D1
-
-( alot of these ) which then resets connection status with a failed timeout=
-.
-
-I am currently running FedoraCore 30 with the 5.2.5-200 kernel updated
-from 5.1.x yesterday. The firmware loaded is,
-
-loaded firmware version 9.221.4.1 build 25532 op_mode iwldvm
-
-Now with all that said, using a Linux Mint live boot from a usb device
-yeilds the card working fine at both 2.4 and 5ghz speeds, it connects
-within seconds. The kernal in this live boot is 4.15.x and uses the
-same firmware build as my FC install.
-
-I did see strange behavior with this card from around 4.18 to 20,
-thinking the card might have developed a fault and obtained a new one.
-This proved that this was not the case as I get the exact same
-behavior from both cards.
-
-Hope this information is helpful to solve quickly, please reach out
-for more information if required
+Is this a limitation of the driver/firmware? Is it possible to extend
+the max MTU?
 
 Thanks
-Nige
-
---=20
-=E2=80=9CScience is a differential equation. Religion is a boundary conditi=
-on.=E2=80=9D
-
-                           Alan Turing
