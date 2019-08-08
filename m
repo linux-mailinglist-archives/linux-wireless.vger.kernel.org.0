@@ -2,89 +2,85 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 694C7867C2
-	for <lists+linux-wireless@lfdr.de>; Thu,  8 Aug 2019 19:15:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A67A7867D0
+	for <lists+linux-wireless@lfdr.de>; Thu,  8 Aug 2019 19:17:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2404184AbfHHRPs (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 8 Aug 2019 13:15:48 -0400
-Received: from mail-lj1-f174.google.com ([209.85.208.174]:34128 "EHLO
-        mail-lj1-f174.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728020AbfHHRPs (ORCPT
+        id S2404271AbfHHRRf (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 8 Aug 2019 13:17:35 -0400
+Received: from mail-lj1-f196.google.com ([209.85.208.196]:44429 "EHLO
+        mail-lj1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2404269AbfHHRRe (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 8 Aug 2019 13:15:48 -0400
-Received: by mail-lj1-f174.google.com with SMTP id p17so89634771ljg.1
-        for <linux-wireless@vger.kernel.org>; Thu, 08 Aug 2019 10:15:47 -0700 (PDT)
+        Thu, 8 Aug 2019 13:17:34 -0400
+Received: by mail-lj1-f196.google.com with SMTP id k18so89578946ljc.11
+        for <linux-wireless@vger.kernel.org>; Thu, 08 Aug 2019 10:17:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=chromium.org; s=google;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=EOoJKzz8+HsFpsbiURgQ+oEv7KEhI/kLsc3IPOygbh4=;
-        b=nZKbJHRdS3B3hSJ52iM/I/Au2Gb1YFcz+a15UT2nQlvjBiHVrSRKYZ51kFnj5X2Ce6
-         CSHTjofQu4+kEq8gPQ4henUqlALGuRvZnXNAqbxWRH9g0O+iAWTNkJHdxP7KItHmMXC2
-         8qCesHRrihs69ZUNFZzQdD5jhvlDV4Fa9ZgxY=
+        bh=8DcWJXWzPDCP1JXkMB6+PoHDqx7nBE00NIoMaM7Ozbo=;
+        b=b8VQux5YwOICD7XuArcifCNwpSeSePlDeHW0RU0X23qjWJBdu5O5CDcOpDxUalRFBd
+         K8HOGLcHMcXaDikcUr6qItoyMntTwTChBXApwxhIbh6nCIa4djUkCTBEqvzdgROerSj1
+         QhoGDaN10bByJXvRlRjDudZ2WhUJj73xmHTpg=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=EOoJKzz8+HsFpsbiURgQ+oEv7KEhI/kLsc3IPOygbh4=;
-        b=I9QAXa5lCg7n3zoZotAvZycKapThPjOygfEJD70k39NrZTrfqGRvxC12U7hwRdshZK
-         aIlfF4HSG1kW3I7Aot4rI9vhrgYLdfN3DYa8pn1Sy8Sx7kzKekqUe/nv+NlIapG9coFI
-         Alah21N1TPvWy80BYxau1hWz3YDto/9LL5F4V1lqglV3w9RQ2HRDACO8jQu2QY0zUBdS
-         1BMSwQ54KVJIllX7rbnMnfkSUbmC2xPg2n9Vy7CgGIXplpzA8oBqnBsZ4XURnx052odp
-         zLh3Oyh6hBzKjXT+BliS4pxvmyMETv/yk54rL0pAazUjt4xdL+ljHRFUFRqPUUcuMdjD
-         Obmg==
-X-Gm-Message-State: APjAAAW4T2/B6e41TEa3Fyx4jA0bkLCf5pyqEjEDsbOIZqm33fVoyvf2
-        tah1vd/9rWafhNQTwcAXAJYbQRLG4A0=
-X-Google-Smtp-Source: APXvYqws2CiH4IeGLJosN+AvqFITooYnMU28gIIIWu7elCypL4hg+LovFsASPcS/XSsAf51lV5UmkQ==
-X-Received: by 2002:a2e:5d92:: with SMTP id v18mr8992050lje.9.1565284545979;
-        Thu, 08 Aug 2019 10:15:45 -0700 (PDT)
-Received: from mail-lf1-f51.google.com (mail-lf1-f51.google.com. [209.85.167.51])
-        by smtp.gmail.com with ESMTPSA id e26sm19013482ljl.33.2019.08.08.10.15.44
+        bh=8DcWJXWzPDCP1JXkMB6+PoHDqx7nBE00NIoMaM7Ozbo=;
+        b=FqgWQ/1S/WT4EFVMG7lYg4zwVcRUzcvgnuhiBQ00PmBqUsyw1AN+eWOIjltY/tS+r1
+         av/KvOsy10zVrmglMahN+bPE9rLXQFjBAKWw7tybZd5LlYyxZQbTOucCNncWvOwF7Ssz
+         aQlhOt08uIxrlsGI9jjprDAuvvYccMCV7Xv3+KyT8NJtjMJoY0AknjRlfsksGvo1t2Kv
+         PT/+4zcm6HCdglAMJhmQfyjIj5ZENIrQ8/i+McOv5QRyyKvpqiSCXcxg9gntiufDPlPv
+         8YecupKmWgw8v69jaBT563awUErh+5VNMgW8ILChqQA87fYrPQEXijppIdLjqPtqqoy9
+         +jZg==
+X-Gm-Message-State: APjAAAV4XxnXatFxluXWZcCUVKMPy6nniHtaZrvonq4U7t0Ro1X6cmhJ
+        PuaKsoBwCxk4cXRGlpyjS8Wc5OSlHAk=
+X-Google-Smtp-Source: APXvYqyl+6+Gp7QC0Xas1JCrAlDJhZr/KNN3AcIbRcwuq+v2X2qcMgtHQxvoOgWyp52f/K0OXBWONQ==
+X-Received: by 2002:a2e:9116:: with SMTP id m22mr8739555ljg.216.1565284652239;
+        Thu, 08 Aug 2019 10:17:32 -0700 (PDT)
+Received: from mail-lj1-f171.google.com (mail-lj1-f171.google.com. [209.85.208.171])
+        by smtp.gmail.com with ESMTPSA id d3sm35583ljj.55.2019.08.08.10.17.31
         for <linux-wireless@vger.kernel.org>
         (version=TLS1_3 cipher=AEAD-AES128-GCM-SHA256 bits=128/128);
-        Thu, 08 Aug 2019 10:15:45 -0700 (PDT)
-Received: by mail-lf1-f51.google.com with SMTP id b17so67427474lff.7
-        for <linux-wireless@vger.kernel.org>; Thu, 08 Aug 2019 10:15:44 -0700 (PDT)
-X-Received: by 2002:a05:6512:70:: with SMTP id i16mr9807995lfo.26.1565284544177;
- Thu, 08 Aug 2019 10:15:44 -0700 (PDT)
+        Thu, 08 Aug 2019 10:17:31 -0700 (PDT)
+Received: by mail-lj1-f171.google.com with SMTP id t28so89611893lje.9
+        for <linux-wireless@vger.kernel.org>; Thu, 08 Aug 2019 10:17:31 -0700 (PDT)
+X-Received: by 2002:a2e:55db:: with SMTP id g88mr138639lje.27.1565284650940;
+ Thu, 08 Aug 2019 10:17:30 -0700 (PDT)
 MIME-Version: 1.0
-References: <CAAooHFeLWrY_wmCp-HWqygh8gnKsfpoPCky7SykOBKZgXkb8OQ@mail.gmail.com>
- <20190403210200.GA93453@google.com> <211816ff03cf188d834a21b1fbc98b4f8c5b81f4.camel@sipsolutions.net>
-In-Reply-To: <211816ff03cf188d834a21b1fbc98b4f8c5b81f4.camel@sipsolutions.net>
+References: <20190227012139.188973-1-matthewmwang@chromium.org> <20190415223744.GD6979@w1.fi>
+In-Reply-To: <20190415223744.GD6979@w1.fi>
 From:   Brian Norris <briannorris@chromium.org>
-Date:   Thu, 8 Aug 2019 10:15:32 -0700
-X-Gmail-Original-Message-ID: <CA+ASDXOyXb0dPGOrjQR7C-b6dyftiZhkta3cwG28B9sC5wxHxQ@mail.gmail.com>
-Message-ID: <CA+ASDXOyXb0dPGOrjQR7C-b6dyftiZhkta3cwG28B9sC5wxHxQ@mail.gmail.com>
-Subject: Re: Flag for detecting 802.11r Fast BSS Transition support
-To:     Johannes Berg <johannes@sipsolutions.net>
-Cc:     Matthew Wang <matthewmwang@google.com>,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        Kirtika Ruchandani <kirtika@google.com>, j@w1.fi
+Date:   Thu, 8 Aug 2019 10:17:19 -0700
+X-Gmail-Original-Message-ID: <CA+ASDXPkNA6B9PqM8+VaEM2GoZW0PurJdDzon6M6UOt0HpZDxg@mail.gmail.com>
+Message-ID: <CA+ASDXPkNA6B9PqM8+VaEM2GoZW0PurJdDzon6M6UOt0HpZDxg@mail.gmail.com>
+Subject: Re: [PATCH] check for driver SME support when selecting FT suites
+To:     Jouni Malinen <j@w1.fi>
+Cc:     Matthew Wang <matthewmwang@chromium.org>,
+        hostap@lists.infradead.org,
+        Johannes Berg <johannes@sipsolutions.net>,
+        linux-wireless <linux-wireless@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-+ Jouni
++ Johannes, linux-wireless
 
-I forgot this was dangling:
+I see Matthew resent this with the proper sign-off, but it's not going
+anywhere, likely because of the below:
 
-On Mon, Apr 8, 2019 at 12:52 PM Johannes Berg <johannes@sipsolutions.net> wrote:
-> So I guess you'd have to figure out what operations the drivers need to
-> support then? I'm not even sure how wpa_s would handle this for SME
-> offload devices.
+On Mon, Apr 15, 2019 at 3:38 PM Jouni Malinen <j@w1.fi> wrote:
+> That said, I'd also like to understand how this has been tested with
+> drivers that do not use wpa_supplicant for SME, but that do support FT.
+> There are such drivers especially in number of Android devices and I'd
+> rather not break those use cases..
 
-I'm not intimately familiar with FT, but it looks like the only thing
-wpa_supplicant is asking for is NL80211_CMD_UPDATE_FT_IES. I see
-exactly one driver that implements this, but there's no flag for it.
-Well, I guess we could just run the command and look for EOPNOTSUPP...
+I see exactly 1 upstream driver that implements
+NL80211_CMD_UPDATE_FT_IES. We didn't really get anywhere so far on
+this thread:
 
-Jouni also claims [1] that there are plenty of out-of-tree non-SME
-drivers that support FT. Android drivers may not be directly relevant
-to upstream, but this topic does affect our ability to use
-wpa_supplicant generically.
+https://lore.kernel.org/linux-wireless/211816ff03cf188d834a21b1fbc98b4f8c5b81f4.camel@sipsolutions.net/
 
 Brian
-
-[1] http://lists.infradead.org/pipermail/hostap/2019-April/039951.html
