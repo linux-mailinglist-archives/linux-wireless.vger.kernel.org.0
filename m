@@ -2,132 +2,142 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 01095857FC
-	for <lists+linux-wireless@lfdr.de>; Thu,  8 Aug 2019 04:08:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C91A785B4C
+	for <lists+linux-wireless@lfdr.de>; Thu,  8 Aug 2019 09:10:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730754AbfHHCHn (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 7 Aug 2019 22:07:43 -0400
-Received: from mail-ot1-f67.google.com ([209.85.210.67]:43725 "EHLO
-        mail-ot1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730467AbfHHCHn (ORCPT
+        id S1731038AbfHHHKw (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 8 Aug 2019 03:10:52 -0400
+Received: from smtp.codeaurora.org ([198.145.29.96]:54184 "EHLO
+        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1730910AbfHHHKv (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 7 Aug 2019 22:07:43 -0400
-Received: by mail-ot1-f67.google.com with SMTP id j11so12003100otp.10;
-        Wed, 07 Aug 2019 19:07:43 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=sender:subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=5irRjFlEodBFYcIoINPd6Hefs75ZA4RqcjCGImHy834=;
-        b=PIMqovW9xwNekUOFRFjBjvf+EPVCA/6JoRl03NoBLKOBQE+W83wg5NIxRwipKT6olo
-         UM6uu3Eeu3E3w7BVwEZ6ZnaXbX+0B2JszyFv6GCUDVKkgHB+zhBH0jkv98X3GGyfDAtO
-         t0Gq7z/F24UGxg9Taj6B0lnSWvbI6GPju0UQP2A/PED+PDqqV/YDTKTP2k29X0fSF1l0
-         Q+hTV3xz/r5ziIkvVsKautPly/OWZGQww1zRWIdGBbkYhupWfef+bUr33H/IvZ1P7LgV
-         HKSepcxhONf6iTF2qU9RMEfryclIneWix0drE/D1QxAF49xM4CyW3w2A2On4B+9Zw5Ss
-         DJ4A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:sender:subject:to:cc:references:from:message-id
-         :date:user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=5irRjFlEodBFYcIoINPd6Hefs75ZA4RqcjCGImHy834=;
-        b=d5NlDeOd348esHD8N1beEPtU3n1cBOYBpNTa8zpqgBdO8hBvg7ioyOU7l9jaBteLIZ
-         E8vXPvDj/IwWuLrJDDQ8p6T4BpM7EQ0vHGLWY0dbZbWl4hsfySgQkkzSEaJPBIuINljP
-         VHE/b9sq5A4wsO/LWFplXZJL1ReryEezSf8jlki/yoTOtnjCC6JtdWelX9X98a2miR05
-         71lANZewMJ5ckHYKB0yca/8WqrgJrCyl0h+9Z7IUG3qapUZD6aNGCvJMGO+yfyIGpEyw
-         xCUN7QJEGZtO5NReAVDSwDnNfj94kvEDBVrfrgO3p263c083z+ykykzlwJtoBw4cNzDt
-         L1qA==
-X-Gm-Message-State: APjAAAWg/vgXyce9bofCO4tIxo5qpVANgRLvXSk6Pt30TBa4/s5bPszE
-        7BLC9r7BUXP6EGHTIZciV5MehqmP
-X-Google-Smtp-Source: APXvYqwvVUcnVj18kZL4ScFJF8hGiNPW9ltLimGjwH4W1BycRooE3k1La3jvXB8WzILK9zBg6tB+xQ==
-X-Received: by 2002:a05:6808:1d9:: with SMTP id x25mr848802oic.21.1565230062364;
-        Wed, 07 Aug 2019 19:07:42 -0700 (PDT)
-Received: from [192.168.1.112] (cpe-24-31-245-230.kc.res.rr.com. [24.31.245.230])
-        by smtp.gmail.com with ESMTPSA id a21sm30180341otr.4.2019.08.07.19.07.41
-        (version=TLS1_3 cipher=AEAD-AES128-GCM-SHA256 bits=128/128);
-        Wed, 07 Aug 2019 19:07:41 -0700 (PDT)
-Subject: Re: [PATCH v2] Fix non-kerneldoc comment in realtek/rtlwifi/usb.c
-To:     =?UTF-8?Q?Valdis_Kl=c4=93tnieks?= <valdis.kletnieks@vt.edu>,
+        Thu, 8 Aug 2019 03:10:51 -0400
+Received: by smtp.codeaurora.org (Postfix, from userid 1000)
+        id 61E6E602BC; Thu,  8 Aug 2019 07:10:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
+        s=default; t=1565248250;
+        bh=Gqbmq5rn8ky7RLP8vrGJolEOPnLSsYYhH0jYpshbEqQ=;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+        b=MD08oGuVgoAryDGKOyLaRIE1Xz78HGIXPJP2vvcIwme6Q06Ux4nDotts+fFYk8s4s
+         bTTUsHxz0TM0v4HelNGxKz/jn2FK1Rb72w9q5C2VfcKtm5dRD8hBfbOafQbcLMpG4n
+         x6N2lJOUribTRreaGwZvqoqeZHuN8vbcdjfQpYsc=
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        pdx-caf-mail.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.7 required=2.0 tests=ALL_TRUSTED,BAYES_00,
+        DKIM_INVALID,DKIM_SIGNED,SPF_NONE autolearn=no autolearn_force=no
+        version=3.4.0
+Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo@smtp.codeaurora.org)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 003AE602BC;
+        Thu,  8 Aug 2019 07:10:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
+        s=default; t=1565248249;
+        bh=Gqbmq5rn8ky7RLP8vrGJolEOPnLSsYYhH0jYpshbEqQ=;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+        b=cdjrC6KyMaYP6xjWN9YWXcrbXtPRURu85FLY+7vEX2jjSL84VD8nW6SXpX2hAgnrf
+         36CdDPDsqahdmp3dxyZJgytKZqwq8DwL9xD1ZUiofjePHy1zapd04XTyhvX0EukK/D
+         kIvYEwCRE4XolY8/WWeav5URR52LD/6OsITyRbAk=
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 003AE602BC
+Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
+From:   Kalle Valo <kvalo@codeaurora.org>
+To:     Larry Finger <Larry.Finger@lwfinger.net>
+Cc:     Valdis =?utf-8?Q?Kl=C4=93tnieks?= <valdis.kletnieks@vt.edu>,
         Ping-Ke Shih <pkshih@realtek.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        "David S. Miller" <davem@davemloft.net>
-Cc:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        "David S. Miller" <davem@davemloft.net>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
         linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2] Fix non-kerneldoc comment in realtek/rtlwifi/usb.c
 References: <34195.1565229118@turing-police>
-From:   Larry Finger <Larry.Finger@lwfinger.net>
-Message-ID: <15df2564-8815-f351-8fb2-b46611a90234@lwfinger.net>
-Date:   Wed, 7 Aug 2019 21:07:40 -0500
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.8.0
+        <15df2564-8815-f351-8fb2-b46611a90234@lwfinger.net>
+Date:   Thu, 08 Aug 2019 10:10:45 +0300
+In-Reply-To: <15df2564-8815-f351-8fb2-b46611a90234@lwfinger.net> (Larry
+        Finger's message of "Wed, 7 Aug 2019 21:07:40 -0500")
+Message-ID: <877e7odte2.fsf@kamboji.qca.qualcomm.com>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
 MIME-Version: 1.0
-In-Reply-To: <34195.1565229118@turing-police>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 8/7/19 8:51 PM, Valdis Klētnieks wrote:
-> Fix spurious warning message when building with W=1:
-> 
->    CC [M]  drivers/net/wireless/realtek/rtlwifi/usb.o
-> drivers/net/wireless/realtek/rtlwifi/usb.c:243: warning: Cannot understand  * on line 243 - I thought it was a doc line
-> drivers/net/wireless/realtek/rtlwifi/usb.c:760: warning: Cannot understand  * on line 760 - I thought it was a doc line
-> drivers/net/wireless/realtek/rtlwifi/usb.c:790: warning: Cannot understand  * on line 790 - I thought it was a doc line
-> 
-> Clean up the comment format.
-> 
-> Signed-off-by: Valdis Kletnieks <valdis.kletnieks@vt.edu>
-> 
-> ---
-> Changes since v1:  Larry Finger pointed out the patch wasn't checkpatch-clean.
-> 
-> diff --git a/drivers/net/wireless/realtek/rtlwifi/usb.c b/drivers/net/wireless/realtek/rtlwifi/usb.c
-> index 34d68dbf4b4c..4b59f3b46b28 100644
-> --- a/drivers/net/wireless/realtek/rtlwifi/usb.c
-> +++ b/drivers/net/wireless/realtek/rtlwifi/usb.c
-> @@ -239,10 +239,7 @@ static void _rtl_usb_io_handler_release(struct ieee80211_hw *hw)
->   	mutex_destroy(&rtlpriv->io.bb_mutex);
->   }
->   
-> -/**
-> - *
-> - *	Default aggregation handler. Do nothing and just return the oldest skb.
-> - */
-> +/*	Default aggregation handler. Do nothing and just return the oldest skb.  */
->   static struct sk_buff *_none_usb_tx_aggregate_hdl(struct ieee80211_hw *hw,
->   						  struct sk_buff_head *list)
->   {
-> @@ -756,11 +753,6 @@ static int rtl_usb_start(struct ieee80211_hw *hw)
->   	return err;
->   }
->   
-> -/**
-> - *
-> - *
-> - */
-> -
->   /*=======================  tx =========================================*/
->   static void rtl_usb_cleanup(struct ieee80211_hw *hw)
->   {
-> @@ -786,11 +778,7 @@ static void rtl_usb_cleanup(struct ieee80211_hw *hw)
->   	usb_kill_anchored_urbs(&rtlusb->tx_submitted);
->   }
->   
-> -/**
-> - *
-> - * We may add some struct into struct rtl_usb later. Do deinit here.
-> - *
-> - */
-> +/* We may add some struct into struct rtl_usb later. Do deinit here.  */
->   static void rtl_usb_deinit(struct ieee80211_hw *hw)
->   {
->   	rtl_usb_cleanup(hw);
+Larry Finger <Larry.Finger@lwfinger.net> writes:
 
-I missed that the subject line should be "rtwifi: Fix ....". Otherwise it is OK.
+> On 8/7/19 8:51 PM, Valdis Kl=C4=93tnieks wrote:
+>> Fix spurious warning message when building with W=3D1:
+>>
+>>    CC [M]  drivers/net/wireless/realtek/rtlwifi/usb.o
+>> drivers/net/wireless/realtek/rtlwifi/usb.c:243: warning: Cannot understa=
+nd  * on line 243 - I thought it was a doc line
+>> drivers/net/wireless/realtek/rtlwifi/usb.c:760: warning: Cannot understa=
+nd  * on line 760 - I thought it was a doc line
+>> drivers/net/wireless/realtek/rtlwifi/usb.c:790: warning: Cannot understa=
+nd  * on line 790 - I thought it was a doc line
+>>
+>> Clean up the comment format.
+>>
+>> Signed-off-by: Valdis Kletnieks <valdis.kletnieks@vt.edu>
+>>
+>> ---
+>> Changes since v1:  Larry Finger pointed out the patch wasn't checkpatch-=
+clean.
+>>
+>> diff --git a/drivers/net/wireless/realtek/rtlwifi/usb.c b/drivers/net/wi=
+reless/realtek/rtlwifi/usb.c
+>> index 34d68dbf4b4c..4b59f3b46b28 100644
+>> --- a/drivers/net/wireless/realtek/rtlwifi/usb.c
+>> +++ b/drivers/net/wireless/realtek/rtlwifi/usb.c
+>> @@ -239,10 +239,7 @@ static void _rtl_usb_io_handler_release(struct ieee=
+80211_hw *hw)
+>>   	mutex_destroy(&rtlpriv->io.bb_mutex);
+>>   }
+>>   -/**
+>> - *
+>> - *	Default aggregation handler. Do nothing and just return the oldest s=
+kb.
+>> - */
+>> +/*	Default aggregation handler. Do nothing and just return the oldest s=
+kb.  */
+>>   static struct sk_buff *_none_usb_tx_aggregate_hdl(struct ieee80211_hw =
+*hw,
+>>   						  struct sk_buff_head *list)
+>>   {
+>> @@ -756,11 +753,6 @@ static int rtl_usb_start(struct ieee80211_hw *hw)
+>>   	return err;
+>>   }
+>>   -/**
+>> - *
+>> - *
+>> - */
+>> -
+>>   /*=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D  tx =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D*/
+>>   static void rtl_usb_cleanup(struct ieee80211_hw *hw)
+>>   {
+>> @@ -786,11 +778,7 @@ static void rtl_usb_cleanup(struct ieee80211_hw *hw)
+>>   	usb_kill_anchored_urbs(&rtlusb->tx_submitted);
+>>   }
+>>   -/**
+>> - *
+>> - * We may add some struct into struct rtl_usb later. Do deinit here.
+>> - *
+>> - */
+>> +/* We may add some struct into struct rtl_usb later. Do deinit here.  */
+>>   static void rtl_usb_deinit(struct ieee80211_hw *hw)
+>>   {
+>>   	rtl_usb_cleanup(hw);
+>
+> I missed that the subject line should be "rtwifi: Fix ....". Otherwise it=
+ is OK.
 
-Larry
+I can fix the subject during commit.
 
-
+--=20
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatc=
+hes
