@@ -2,57 +2,35 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 4989788120
-	for <lists+linux-wireless@lfdr.de>; Fri,  9 Aug 2019 19:25:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B668C881A7
+	for <lists+linux-wireless@lfdr.de>; Fri,  9 Aug 2019 19:52:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2406976AbfHIRZY (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 9 Aug 2019 13:25:24 -0400
-Received: from mail-wr1-f65.google.com ([209.85.221.65]:39547 "EHLO
-        mail-wr1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726216AbfHIRZY (ORCPT
+        id S2436602AbfHIRwG (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 9 Aug 2019 13:52:06 -0400
+Received: from mail2.candelatech.com ([208.74.158.173]:45674 "EHLO
+        mail3.candelatech.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726628AbfHIRwG (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 9 Aug 2019 13:25:24 -0400
-Received: by mail-wr1-f65.google.com with SMTP id t16so8815548wra.6
-        for <linux-wireless@vger.kernel.org>; Fri, 09 Aug 2019 10:25:22 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=d4Vi2Ae41EjGx5uvSG0Bj7x8BoODLKGLWSBmAKUugHE=;
-        b=da93S33/Oj5FOZwiNEStiRjZr5MOASB+Vm1LkW/nk75q9a5dEzwG27ehH/PbhOMl1r
-         ahqJenDPWj9gjEtZJTbZL8dvGrWNhwAN8NlRmO9ctJS+dCctWZvSn1MPuOxGAu3yTESx
-         02RuQRGAtgf/EFbtHBPoPQlLEoCeLe2cbl3p+ogMZUgHJ+uZX0oA3lNNtlfERcrJ+mRt
-         1tf6CZtQjd6mVeRBwCn3GuE8n2TuNo+VtC//7iDDaia/tghQTZ5Pz3vfJ2VaKEoi7nSy
-         seUzQOzLKspfx+ngnr5IfuzQFmcbikoAbw/hWNpCddK4UQ5VQXIs7RTqTUzqCrVd0r93
-         MYsQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=d4Vi2Ae41EjGx5uvSG0Bj7x8BoODLKGLWSBmAKUugHE=;
-        b=TpO9Ej7Md2EdjPAAJ0VFwaohhJj35w5hhMUUSz8vYuLqbmcDC2SWhtBctgTxUvTZLt
-         Vu0I3jkT8NYpkok5prVXIM4AbZfsChgjGfw04o0k7Rwl9IrCvNiaULHdG8mRE/Tmr0aN
-         e6utrbk5Vw1ZWyEbyGK2TboinpZDjdcCpiaAh1CPlqljmlt+7M5giHQzljWb7KmpkePR
-         Fj9hJsmPOIPfvA+t39X6HLY9yk1+uPgnRCZZ7AD70rUJgLgWPhY7eTtZX4xN1ypHbqqe
-         PiMH/TUM/nd2v4Zz4EtG2ezq3SQU8TCPgS3IA/mIhqOANgeeotXXZRrLwS5gIxtpean1
-         soeA==
-X-Gm-Message-State: APjAAAW6GguS0ZozuY6jNdYPUG0pJ/y3Fy8m9svtGFJVg7o1hFEwZRA8
-        gsr3qIwKBjatf86tXevexd4=
-X-Google-Smtp-Source: APXvYqwoemQJ3QTQYW/IFz92DYpHsNSsc4XsrM1IFsD0eSnfZ9gvt78hF0AxYusHBRQ7sqfyJU0ScQ==
-X-Received: by 2002:adf:e883:: with SMTP id d3mr10521786wrm.330.1565371522002;
-        Fri, 09 Aug 2019 10:25:22 -0700 (PDT)
-Received: from localhost.localdomain ([5.171.105.77])
-        by smtp.gmail.com with ESMTPSA id r16sm8473598wrc.81.2019.08.09.10.25.20
-        (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
-        Fri, 09 Aug 2019 10:25:21 -0700 (PDT)
-From:   Lorenzo Bianconi <lorenzo.bianconi83@gmail.com>
-To:     nbd@nbd.name
-Cc:     lorenzo.bianconi@redhat.com, linux-wireless@vger.kernel.org,
-        Lorenzo Bianconi <lorenzo@kernel.org>
-Subject: [PATCH] mt76: mt7603: remove unnecessary mcu queue initialization
-Date:   Fri,  9 Aug 2019 19:25:15 +0200
-Message-Id: <47cf5a23db2bba6ad271f9507aea60827f84aa59.1565370483.git.lorenzo@kernel.org>
-X-Mailer: git-send-email 2.21.0
+        Fri, 9 Aug 2019 13:52:06 -0400
+X-Greylist: delayed 304 seconds by postgrey-1.27 at vger.kernel.org; Fri, 09 Aug 2019 13:52:06 EDT
+Received: from ben-dt4.candelatech.com (50-251-239-81-static.hfc.comcastbusiness.net [50.251.239.81])
+        by mail3.candelatech.com (Postfix) with ESMTP id AD0D3137561;
+        Fri,  9 Aug 2019 10:47:01 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail3.candelatech.com AD0D3137561
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=candelatech.com;
+        s=default; t=1565372821;
+        bh=BzgsWAl4vMLDLFs3dHyr1NfgoztUvjPPnhWchABtpJI=;
+        h=From:To:Cc:Subject:Date:From;
+        b=GBznpfr6xq5Q2Mb9M/Csrw960uQWr34jw2MsaOOVOGSuV16nNUhdzKTKz0mGgmfNn
+         SZSplH39pb5vEcr7WYHfBZ58Z/iDwl+yD8H9OSNdTD3+FfxQ/YJjDTK2M9uYX19ha8
+         TlovqSvgkB07kUeAqQBE8pGqFi/iDp1/jSekJOLA=
+From:   greearb@candelatech.com
+To:     linux-wireless@vger.kernel.org
+Cc:     johannes@sipsolutions.net, Ben Greear <greearb@candelatech.com>
+Subject: [PATCH 1/2] wireless: Support assoc-at timer in sta-info
+Date:   Fri,  9 Aug 2019 10:46:55 -0700
+Message-Id: <20190809174656.20872-1-greearb@candelatech.com>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
@@ -60,33 +38,75 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Lorenzo Bianconi <lorenzo@kernel.org>
+From: Ben Greear <greearb@candelatech.com>
 
-Remove unnecessary mcu queue initialization in mt7603_dma_init since it
-has been already done in mt76_mmio_init
+Report time stamp of when sta became associated.
 
-Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+This is the boottime clock, units are nano-seconds.
+
+Signed-off-by: Ben Greear <greearb@candelatech.com>
 ---
-This patch is based on 'mt76: move mt76_tx_tasklet in mt76 module'
-https://patchwork.kernel.org/patch/11087345/
----
- drivers/net/wireless/mediatek/mt76/mt7603/dma.c | 3 ---
- 1 file changed, 3 deletions(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7603/dma.c b/drivers/net/wireless/mediatek/mt76/mt7603/dma.c
-index b53d59c53c28..5c2c12289492 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7603/dma.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7603/dma.c
-@@ -170,9 +170,6 @@ int mt7603_dma_init(struct mt7603_dev *dev)
+This attempts to implement the associated-at timestamp reporting
+with boottime stamp instead of wall-clock, as suggested.
+
+ include/net/cfg80211.h       | 2 ++
+ include/uapi/linux/nl80211.h | 2 ++
+ net/wireless/nl80211.c       | 1 +
+ 3 files changed, 5 insertions(+)
+
+diff --git a/include/net/cfg80211.h b/include/net/cfg80211.h
+index ef510c916635..19c200b917eb 100644
+--- a/include/net/cfg80211.h
++++ b/include/net/cfg80211.h
+@@ -1306,6 +1306,7 @@ struct cfg80211_tid_stats {
+  *	indicate the relevant values in this struct for them
+  * @connected_time: time(in secs) since a station is last connected
+  * @inactive_time: time since last station activity (tx/rx) in milliseconds
++ * @assoc_at: bootime (ns) of the last association
+  * @rx_bytes: bytes (size of MPDUs) received from this station
+  * @tx_bytes: bytes (size of MPDUs) transmitted to this station
+  * @llid: mesh local link id
+@@ -1366,6 +1367,7 @@ struct station_info {
+ 	u64 filled;
+ 	u32 connected_time;
+ 	u32 inactive_time;
++	u64 assoc_at;
+ 	u64 rx_bytes;
+ 	u64 tx_bytes;
+ 	u16 llid;
+diff --git a/include/uapi/linux/nl80211.h b/include/uapi/linux/nl80211.h
+index 76d5811193be..3796e1e06665 100644
+--- a/include/uapi/linux/nl80211.h
++++ b/include/uapi/linux/nl80211.h
+@@ -3175,6 +3175,7 @@ enum nl80211_sta_bss_param {
+  *	sent to the station (u64, usec)
+  * @NL80211_STA_INFO_AIRTIME_WEIGHT: current airtime weight for station (u16)
+  * @NL80211_STA_INFO_AIRTIME_LINK_METRIC: airtime link metric for mesh station
++ * @NL80211_STA_INFO_ASSOC_AT_BOOTTIME: Timestamp of last association
+  * @__NL80211_STA_INFO_AFTER_LAST: internal
+  * @NL80211_STA_INFO_MAX: highest possible station info attribute
+  */
+@@ -3221,6 +3222,7 @@ enum nl80211_sta_info {
+ 	NL80211_STA_INFO_TX_DURATION,
+ 	NL80211_STA_INFO_AIRTIME_WEIGHT,
+ 	NL80211_STA_INFO_AIRTIME_LINK_METRIC,
++	NL80211_STA_INFO_ASSOC_AT_BOOTTIME,
  
- 	mt76_dma_attach(&dev->mt76);
+ 	/* keep last */
+ 	__NL80211_STA_INFO_AFTER_LAST,
+diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
+index 789cd98f02f5..b61a59b9d78b 100644
+--- a/net/wireless/nl80211.c
++++ b/net/wireless/nl80211.c
+@@ -5028,6 +5028,7 @@ static int nl80211_send_station(struct sk_buff *msg, u32 cmd, u32 portid,
  
--	init_waitqueue_head(&dev->mt76.mmio.mcu.wait);
--	skb_queue_head_init(&dev->mt76.mmio.mcu.res_q);
--
- 	mt76_clear(dev, MT_WPDMA_GLO_CFG,
- 		   MT_WPDMA_GLO_CFG_TX_DMA_EN |
- 		   MT_WPDMA_GLO_CFG_RX_DMA_EN |
+ 	PUT_SINFO(CONNECTED_TIME, connected_time, u32);
+ 	PUT_SINFO(INACTIVE_TIME, inactive_time, u32);
++	PUT_SINFO_U64(ASSOC_AT_BOOTTIME, assoc_at);
+ 
+ 	if (sinfo->filled & (BIT_ULL(NL80211_STA_INFO_RX_BYTES) |
+ 			     BIT_ULL(NL80211_STA_INFO_RX_BYTES64)) &&
 -- 
-2.21.0
+2.20.1
 
