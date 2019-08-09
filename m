@@ -2,71 +2,79 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A8CBC8716F
-	for <lists+linux-wireless@lfdr.de>; Fri,  9 Aug 2019 07:25:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6AE64874A1
+	for <lists+linux-wireless@lfdr.de>; Fri,  9 Aug 2019 10:54:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725912AbfHIFZk (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 9 Aug 2019 01:25:40 -0400
-Received: from mail-qt1-f170.google.com ([209.85.160.170]:36231 "EHLO
-        mail-qt1-f170.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725879AbfHIFZk (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 9 Aug 2019 01:25:40 -0400
-Received: by mail-qt1-f170.google.com with SMTP id z4so94772902qtc.3
-        for <linux-wireless@vger.kernel.org>; Thu, 08 Aug 2019 22:25:39 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:from:date:message-id:subject:to;
-        bh=KfpmdAj8e83x0hqfCvASlRQVgn/DwsVZsTHNWgDgops=;
-        b=YgiJ7bMSMCSBh2XzQjYGzxmUkicYKeqGwqTdgkFrvjZNFfcqJ1fG2/S5XNZQcjxBvc
-         WZ/sBOTTDMCEhEBMfeysuoY84qH09fkDQPnJEkzaiEw8Z///J9uom50YVn3FPQUrMk6B
-         po2y9T8BzM0KUJryl59UFjnmLobkhU5cO2PWl3WZybMeD9GICG4v+UTNGwCrly5HGz/F
-         LVg0gIgbN2zfNzjCZX5HagZEm6aC9Osk5EMuk4+wNsTd1cJA3UziFWVFvr1yeTku4Tgf
-         MbG8BnYCNhKsPa46Er1zgYiznCFW64/zba+ULL7EQd4P92Eop8o2EC2CDG9b/F2lvVgj
-         VsnQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:from:date:message-id:subject:to;
-        bh=KfpmdAj8e83x0hqfCvASlRQVgn/DwsVZsTHNWgDgops=;
-        b=BmW+8lwbmTVohIrgCIwFeMGeMv9KrUJN0qdI/fhiMmKdqOWb7IKSFgszw8CFjFCXWy
-         9ihuCGKZVPvdKUnVk8BfNKJn8/Q6No15XdzIgMGKR8gn/gtmNwAQG3E4VRzdMpu+FFQ3
-         ISSM/Gn4aBW632mhVep3ktOpEUf3mVPQby0xWUa7hfkJDGDYbvlVDvvHYWv5UqGoC5dk
-         E0H/Z8PORCMbJNVW2opt98WQ/f+MYb06RGSmt6YVH+Flvb/qRV7mTNLzDdBpDTZBUGJ7
-         Vl1Dg1R4CUbk7U7gby2tuqQNNmNWjsSlx4FtEsx2XhVXLbGS7qntXvdK9QEi1v75hoFO
-         CgkA==
-X-Gm-Message-State: APjAAAVFjdnXebaB/Hu0wBqd8sKXb4YvxxvgE/qVcjbRLLhBFdruRa1J
-        KqXHKXY55m9iPkLP0mk+v7qbVS1fYbAvDJAgadB0xwKF
-X-Google-Smtp-Source: APXvYqyLwmToiQ99ivMgqliMlSbA8TzoWLwIkOVWApMLBNSiT8NKwaevDw8vjQ9vZXMhNwOUsRE2e+ZHfTW4Q4Yg2wg=
-X-Received: by 2002:ac8:3258:: with SMTP id y24mr3713956qta.183.1565328338985;
- Thu, 08 Aug 2019 22:25:38 -0700 (PDT)
+        id S2406010AbfHIIyI (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 9 Aug 2019 04:54:08 -0400
+Received: from szxga04-in.huawei.com ([45.249.212.190]:4208 "EHLO huawei.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S2405785AbfHIIyI (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 9 Aug 2019 04:54:08 -0400
+Received: from DGGEMS404-HUB.china.huawei.com (unknown [172.30.72.59])
+        by Forcepoint Email with ESMTP id 4523D7AD945B9D40BD57;
+        Fri,  9 Aug 2019 16:54:05 +0800 (CST)
+Received: from localhost (10.133.213.239) by DGGEMS404-HUB.china.huawei.com
+ (10.3.19.204) with Microsoft SMTP Server id 14.3.439.0; Fri, 9 Aug 2019
+ 16:53:57 +0800
+From:   YueHaibing <yuehaibing@huawei.com>
+To:     <zajec5@gmail.com>, <kvalo@codeaurora.org>
+CC:     <linux-kernel@vger.kernel.org>, <linux-wireless@vger.kernel.org>,
+        YueHaibing <yuehaibing@huawei.com>
+Subject: [PATCH] bcma: remove two unused variables
+Date:   Fri, 9 Aug 2019 16:53:08 +0800
+Message-ID: <20190809085308.69748-1-yuehaibing@huawei.com>
+X-Mailer: git-send-email 2.10.2.windows.1
 MIME-Version: 1.0
-From:   Sergey Kharitonov <haritonovsb@gmail.com>
-Date:   Fri, 9 Aug 2019 09:25:28 +0400
-Message-ID: <CAHmv74wK2NYuj2JuDUz-og5w+e=H1=ef9eCSMTbO6otaYQatKg@mail.gmail.com>
-Subject: [Linux Realtek Wi-Fi support] rtl8192ee related bug
-To:     linux-wireless@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain
+X-Originating-IP: [10.133.213.239]
+X-CFilter-Loop: Reflected
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Dear Linux-Wireless,
-Some time ago a bug was reported
-https://bugzilla.kernel.org/show_bug.cgi?id=202943 related to
-rtl8192ee, the essence of which is high ping latency (even to the
-access point) without downloading something. If you generate a network
-load with a background download or just ping -i 0.001 -s 512.... the
-latency stabilizes and stays low.
-I tested my TP-Link TL-WN881ND v2 adapters (I got two of them in my
-PCs plugged in different motherboards (ASUS and MSI)) and the problem
-still persists in kernel 5.2.6 (archlinux current default). Just to
-mention, I tested with different module options and also two available
-firmwares I found (rtlwifi/rtl8192eefw.bin and
-rtlwifi/rtl8192eefw_new.bin).
-Would you please take some time to look at the bug? I can provide any
-additional information needed.
-Please let me know if we can make rtl8192ee driver better.
+drivers/bcma/driver_mips.c:70:18: warning:
+ ipsflag_irq_shift defined but not used [-Wunused-const-variable=]
+drivers/bcma/driver_mips.c:62:18: warning:
+ ipsflag_irq_mask defined but not used [-Wunused-const-variable=]
 
-Best regards,
-Sergey Kharitonov
+They are never used, so can be removed.
+
+Reported-by: Hulk Robot <hulkci@huawei.com>
+Signed-off-by: YueHaibing <yuehaibing@huawei.com>
+---
+ drivers/bcma/driver_mips.c | 16 ----------------
+ 1 file changed, 16 deletions(-)
+
+diff --git a/drivers/bcma/driver_mips.c b/drivers/bcma/driver_mips.c
+index 27e9686..87760aa 100644
+--- a/drivers/bcma/driver_mips.c
++++ b/drivers/bcma/driver_mips.c
+@@ -59,22 +59,6 @@ static inline void mips_write32(struct bcma_drv_mips *mcore,
+ 	bcma_write32(mcore->core, offset, value);
+ }
+ 
+-static const u32 ipsflag_irq_mask[] = {
+-	0,
+-	BCMA_MIPS_IPSFLAG_IRQ1,
+-	BCMA_MIPS_IPSFLAG_IRQ2,
+-	BCMA_MIPS_IPSFLAG_IRQ3,
+-	BCMA_MIPS_IPSFLAG_IRQ4,
+-};
+-
+-static const u32 ipsflag_irq_shift[] = {
+-	0,
+-	BCMA_MIPS_IPSFLAG_IRQ1_SHIFT,
+-	BCMA_MIPS_IPSFLAG_IRQ2_SHIFT,
+-	BCMA_MIPS_IPSFLAG_IRQ3_SHIFT,
+-	BCMA_MIPS_IPSFLAG_IRQ4_SHIFT,
+-};
+-
+ static u32 bcma_core_mips_irqflag(struct bcma_device *dev)
+ {
+ 	u32 flag;
+-- 
+2.7.4
+
+
