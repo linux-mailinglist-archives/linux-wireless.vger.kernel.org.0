@@ -2,73 +2,61 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id DD382886DB
-	for <lists+linux-wireless@lfdr.de>; Sat, 10 Aug 2019 01:23:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CFE2C887CE
+	for <lists+linux-wireless@lfdr.de>; Sat, 10 Aug 2019 06:11:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726557AbfHIXXS (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 9 Aug 2019 19:23:18 -0400
-Received: from smtp.codeaurora.org ([198.145.29.96]:55702 "EHLO
-        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726219AbfHIXXS (ORCPT
+        id S1725730AbfHJEH3 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 10 Aug 2019 00:07:29 -0400
+Received: from mail-lj1-f177.google.com ([209.85.208.177]:40926 "EHLO
+        mail-lj1-f177.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725554AbfHJEH3 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 9 Aug 2019 19:23:18 -0400
-Received: by smtp.codeaurora.org (Postfix, from userid 1000)
-        id 97A786074F; Fri,  9 Aug 2019 23:23:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1565392997;
-        bh=Z/uToZHand0AZYw/yT7Itox+SNXuy+UT3stslmnahKg=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=dFinRMHmePSY/ESAaBDE5a3sS14GwXaLunluxLRoj2F1zHaeTQiHEQr1YZKwCiDde
-         +vMpVVRKkdtEjCZUMRqW2ZqJWafkNCJrST3NhN60N0WsPqltA36Ocl2c2i0Z13oj5P
-         KMnT+gqvyQVEKyHBULwG6hwra4JQGz5748UWeGZ8=
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        pdx-caf-mail.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.7 required=2.0 tests=ALL_TRUSTED,BAYES_00,
-        DKIM_INVALID,DKIM_SIGNED autolearn=no autolearn_force=no version=3.4.0
-Received: from mail.codeaurora.org (localhost.localdomain [127.0.0.1])
-        by smtp.codeaurora.org (Postfix) with ESMTP id 0FB5360128;
-        Fri,  9 Aug 2019 23:23:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1565392997;
-        bh=Z/uToZHand0AZYw/yT7Itox+SNXuy+UT3stslmnahKg=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=dFinRMHmePSY/ESAaBDE5a3sS14GwXaLunluxLRoj2F1zHaeTQiHEQr1YZKwCiDde
-         +vMpVVRKkdtEjCZUMRqW2ZqJWafkNCJrST3NhN60N0WsPqltA36Ocl2c2i0Z13oj5P
-         KMnT+gqvyQVEKyHBULwG6hwra4JQGz5748UWeGZ8=
+        Sat, 10 Aug 2019 00:07:29 -0400
+Received: by mail-lj1-f177.google.com with SMTP id m8so60230339lji.7
+        for <linux-wireless@vger.kernel.org>; Fri, 09 Aug 2019 21:07:28 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:from:date:message-id:subject:to;
+        bh=GDkcv9528LMuk3r6zE9uQ0bQYJzFzdeJtGWSE4om+0c=;
+        b=Rwo4b9Pvw6eEAPtkCA/Mz8oe4Pl6httPaJAB1D1UMUg7R6ZBsmALU0JIDjC24D2v5C
+         v+ayCCcMmYeHi2jCHKouXpzXb8JGZmVpIE8XiyAqYgSXmvon40MZhSVxdhxLQgPJpFuX
+         ppei13dzbtutYkBnqNRPVqHxUZJAD2QVW/FaA5XjSfm2QeS6u0iEOM4LpHyKARs9ngON
+         N6m/e8WQBOldCYLGMCTgnJOi4pqM+Nb8VcaT6rkn35jv0V1No/Sx6ebIFAPB2038o6jA
+         2L8t2T6Bv9IpZXNej4laTYEFWqOTQ9n2lQOzTHs/IP+Fn4dcK2eYb0CXrVT9F95k9+M3
+         uDOg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:from:date:message-id:subject:to;
+        bh=GDkcv9528LMuk3r6zE9uQ0bQYJzFzdeJtGWSE4om+0c=;
+        b=nAq5mywZOz1EQI+0S4WUUIu3rEPxZAf4zsjFHT8hL1TNPe2/V2sXbSbmpHJmT6L6xU
+         +EGAdP9xtRbmcbz5fr00dAwmWgBXA9wF8o/tW3XGDZTF0ybJR77skVJF3vseG+jO8oT+
+         vu75dgHkCeXBoqJ50xYKagd+ow4PRwQmHNC5i2sipyE0Hzzz5Ycgp0In5Giph9ry3KaU
+         hwlj01vDkMv24XsGiRfB00uYuacU/KOWbz0tCcJlO7cwLvjQyVC4u0qvkcZ2zON6tQld
+         3z2bGl7LylcHmvqID9wvSyOUhXBifAyeZq4EEFP1akPpyg3wKbK+xIy2xVhbo76nf6tm
+         nRRw==
+X-Gm-Message-State: APjAAAWuEPpZzF5CydNfQTFyexoPaG9zJHEHBC7rNjpz0RrUSr6ImOON
+        buJMMokr0TyP3035eN0WauaHcEXpTSi43IEh5O8/4j/E
+X-Google-Smtp-Source: APXvYqytxtAwLNV9TuSQWXWMpnxH/EtQyW7eHYriayB1LH8aaW6QGLEPjWk4VeW2K+Y/pCWJnFF2dlPX9+VfYVlsFqc=
+X-Received: by 2002:a2e:80c8:: with SMTP id r8mr13315836ljg.168.1565410047035;
+ Fri, 09 Aug 2019 21:07:27 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII;
- format=flowed
-Content-Transfer-Encoding: 7bit
-Date:   Fri, 09 Aug 2019 16:23:16 -0700
-From:   Pradeep Kumar Chitrapu <pradeepc@codeaurora.org>
-To:     John Crispin <john@phrozen.org>
-Cc:     Johannes Berg <johannes@sipsolutions.net>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        linux-wireless@vger.kernel.org, ath11k@lists.infradead.org
-Subject: Re: [PATCH 6/6] ath11k: switch to using ieee80211_tx_status_ext()
-In-Reply-To: <20190714154419.11854-7-john@phrozen.org>
-References: <20190714154419.11854-1-john@phrozen.org>
- <20190714154419.11854-7-john@phrozen.org>
-Message-ID: <2dc32161ae3cf25deae0542c72941dc4@codeaurora.org>
-X-Sender: pradeepc@codeaurora.org
-User-Agent: Roundcube Webmail/1.2.5
+From:   Guo Wei Lim <limguowei@gmail.com>
+Date:   Sat, 10 Aug 2019 04:07:15 +0000
+Message-ID: <CAJSNYx0k7k8RyRT6siC1xv_0xqf3ggKSwNp7sp9c7y-kOgSeAg@mail.gmail.com>
+Subject: Unaligned Memory Access on mesh_*.c files
+To:     linux-wireless@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+I have traced a large number of unaligned memory access on mips cpu
+due to ether_addr_equal(), is_multicast_ether_addr(),
+is_broadcast_ether_addr() being called on odd addresses.
 
-> @@ -431,12 +434,18 @@ static void ath11k_dp_tx_complete_msdu(struct 
-> ath11k *ar,
-> -	ieee80211_tx_status(ar->hw, msdu);
-> +	spin_lock_bh(&ab->data_lock);
-> +	peer = ath11k_peer_find_by_id(ab, ts->peer_id);
-> +	arsta = (struct ath11k_sta *)peer->sta->drv_priv;
-Hi John,
+Even though the values are u8, the inlines in etherdevice.h converts
+them to u16 causing the issue.
 
-Accesing sta when peer is deleted is causing null pointer dereference 
-issue.
-
-Thanks
-Pradeep
+I can replace ether_addr_equal() with ether_addr_equal_unaligned() but
+it doesn't seem like a proper fix. Anyone has better ideas?
