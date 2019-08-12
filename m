@@ -2,129 +2,91 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 6339B8A668
-	for <lists+linux-wireless@lfdr.de>; Mon, 12 Aug 2019 20:40:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 71CC28A707
+	for <lists+linux-wireless@lfdr.de>; Mon, 12 Aug 2019 21:27:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726712AbfHLSkB (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 12 Aug 2019 14:40:01 -0400
-Received: from mail-pl1-f196.google.com ([209.85.214.196]:39438 "EHLO
-        mail-pl1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726453AbfHLSj7 (ORCPT
+        id S1726707AbfHLT1s (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 12 Aug 2019 15:27:48 -0400
+Received: from mail-ot1-f68.google.com ([209.85.210.68]:46102 "EHLO
+        mail-ot1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726681AbfHLT1s (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 12 Aug 2019 14:39:59 -0400
-Received: by mail-pl1-f196.google.com with SMTP id z3so1384491pln.6
-        for <linux-wireless@vger.kernel.org>; Mon, 12 Aug 2019 11:39:58 -0700 (PDT)
+        Mon, 12 Aug 2019 15:27:48 -0400
+Received: by mail-ot1-f68.google.com with SMTP id z17so44797125otk.13
+        for <linux-wireless@vger.kernel.org>; Mon, 12 Aug 2019 12:27:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=YgFa1SL69T309RLFZYkM7FIsdyI0JJIyDE2GolmJBeY=;
-        b=LyhV/oL3l2uuMOciq09Tn2meUd+ZcTuclSu3buDD5ZowCvErYrJGdj43sCmm1GCXvj
-         +N7fwsQjs74gjLArjIhRIQ+4IYt1ht5qZOLrnsFqk66jn3MVmIprh9L5w5nkqBjqEBMy
-         P3LG9OutafGM2oxAkim2AxmOHMOUIX1dqkxNo=
+        d=gmail.com; s=20161025;
+        h=sender:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=ma9oYcjlFNRNUI50KD0U7CugASZsr9TPjWF8u4CxHnI=;
+        b=GuIzhf9w6Er3zml4gHXI2m4ffHCI19Uw1vj9huzaHbK9zZKu8xoiqKXoINu0s6WwXb
+         611aIgLj8jY/EluD5uL66anMnagwl0dTh8V9RsZwF1RZZ5EVVavmzh+B4QAxIBtwxQd5
+         2AtOi2MmUNhHsVhEFHRoAVdUL0GITp2Ix/dMdxlR9MkSlTXzIQh6rlgwXFlnNhhHLnbV
+         zqmOw5iF7/A2SvupNeD+qTifz7/I+Fl6AbO0mBO2TjbZ9Kw2gT0gv1p4OSn0CpZSWx6t
+         n0Qt3zTMRS2yB5vO43Mb+dgcQ7uhK6oiIFaWbnexZJhQikwY45b9T/KRut+fHvqDFwzd
+         NfVA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=YgFa1SL69T309RLFZYkM7FIsdyI0JJIyDE2GolmJBeY=;
-        b=DdC6hUGy4LkvNEAChSCi75oTMu6ZOVf7zYDKl1FOv4kyZOx/cb4rUpE7ZQGg7dFsbu
-         GdDMLwA8nak+GEdWqpkqScKquJncIPIaVkb58Te70CfCgXE0G1fYuTbxO0g2wOjX4ImV
-         UNHNztgqfC6F9ux+/cWsrTIsIUcfPaofNQWZUJxougRDJ9jc0M2p61mLFwnUXnbfoKJQ
-         ygUW+LN6omGX5pMen7oAsGGaTb90QmydAfFsv2uR+sD1JnCznfNdWipmxFEwrQR3WrKS
-         jJ/juPbisIqUsx2Bnp354kdy/Ellr0STFGg0BDoc6FkG6yLen31vK+8BqDUa8FrGwvDx
-         Qmog==
-X-Gm-Message-State: APjAAAWGbWKykSvH0t9bZLIB5Y5lL5JAbbfIoU3x4TQcYTuYBXZx6VQn
-        lU9laI8H7rx81Ab1hCCMymdopSTttAA=
-X-Google-Smtp-Source: APXvYqz4AUzgfMYIcdFSviOngvjAqviG5G7y34vFbWsYW6D7O0Z0mw1NGX95+F5BcVZoZ4nwae/Z/g==
-X-Received: by 2002:a17:902:900a:: with SMTP id a10mr34891028plp.281.1565635198230;
-        Mon, 12 Aug 2019 11:39:58 -0700 (PDT)
-Received: from localhost ([2620:15c:202:1:75a:3f6e:21d:9374])
-        by smtp.gmail.com with ESMTPSA id i9sm119408681pgg.38.2019.08.12.11.39.57
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Mon, 12 Aug 2019 11:39:57 -0700 (PDT)
-Date:   Mon, 12 Aug 2019 11:39:54 -0700
-From:   Matthias Kaehlcke <mka@chromium.org>
-To:     Ulf Hansson <ulf.hansson@linaro.org>
-Cc:     Doug Anderson <dianders@chromium.org>,
-        Linux MMC List <linux-mmc@vger.kernel.org>,
-        Adrian Hunter <adrian.hunter@intel.com>,
-        Brian Norris <briannorris@chromium.org>,
-        Shawn Lin <shawn.lin@rock-chips.com>,
-        Guenter Roeck <groeck@chromium.org>,
-        Heiko Stuebner <heiko@sntech.de>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        "# 4.0+" <stable@vger.kernel.org>
-Subject: Re: [PATCH] mmc: core: Prevent processing SDIO IRQs when the card is
- suspended
-Message-ID: <20190812183954.GQ250418@google.com>
-References: <20190611123221.11580-1-ulf.hansson@linaro.org>
- <CAD=FV=XBVRsdiOD0vhgTvMXmqm=fzy9Bzd_x=E1TNPBsT_D-tQ@mail.gmail.com>
- <CAPDyKFqR-xSKdYZYBTK5kKOt1dk7dx_BjedHiDOKs7-X4od=dg@mail.gmail.com>
- <CAD=FV=WODbZa1fBrLbJBsd77xn5ekHWjks-ydxOSzjdBK83Rmg@mail.gmail.com>
- <CAPDyKFpqk4ZcVTqifnbnW1WgNfx9ZNebCttUPcK_e9KWqpDMjQ@mail.gmail.com>
+        h=x-gm-message-state:sender:from:to:cc:subject:date:message-id
+         :mime-version:content-transfer-encoding;
+        bh=ma9oYcjlFNRNUI50KD0U7CugASZsr9TPjWF8u4CxHnI=;
+        b=IgGM4QM1FIAiwRry8l6+gOoxZyBfLuRtv1kTLLPSppyUtMj+5DSiPaEAK6b23nY76W
+         ZPzlbaRRlw3tCnF9jxTDdpTlj0y7BAOUt0QSs085pVtQItA4OlSO3l4xC59OvgIeBLS5
+         g0xIdPqXayIcmgGdAWmP08sXU5sA08BppcgzBGpdWkGjPFxRyqKI76hDH5t61Bo8OXDG
+         p7jbg1ZWWEnUhweMbKS+foZGMumz9ANt4cuUepj/W1K4MXXqpafxj1Vts+YJex/9AdzP
+         wNtPwSRNmY9vUgLmSUIfe2g0Kb4ez4iLn/BxVxqZ3RA7LGrJl0z7g36Qg9vqgiWNaSxU
+         +CLg==
+X-Gm-Message-State: APjAAAUlMvejcWS7DgLswGvTF+JpU3mvWSZ/kHOk9NmL8JypMx872ebE
+        IkvOQdjPOp8Arf3cGi5dvng=
+X-Google-Smtp-Source: APXvYqwNlhPYUOoVt9x8E52pNxbnSm66iAdyPLX7U+QF0KN8uKbw6tWH4ha2s3eqO9yqdb2co3733Q==
+X-Received: by 2002:a05:6830:17d6:: with SMTP id p22mr13040666ota.202.1565638067848;
+        Mon, 12 Aug 2019 12:27:47 -0700 (PDT)
+Received: from localhost.localdomain (cpe-24-31-245-230.kc.res.rr.com. [24.31.245.230])
+        by smtp.gmail.com with ESMTPSA id n22sm1030575otk.28.2019.08.12.12.27.45
+        (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
+        Mon, 12 Aug 2019 12:27:45 -0700 (PDT)
+From:   Larry Finger <Larry.Finger@lwfinger.net>
+To:     kvalo@codeaurora.org
+Cc:     linux-wireless@vger.kernel.org, pkshih@realtek.com,
+        Larry Finger <Larry.Finger@lwfinger.net>
+Subject: [PATCH 5/5] rtlwifi: rtl8192cu: Fix value set in descriptor
+Date:   Mon, 12 Aug 2019 14:27:41 -0500
+Message-Id: <20190812192741.14479-1-Larry.Finger@lwfinger.net>
+X-Mailer: git-send-email 2.22.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <CAPDyKFpqk4ZcVTqifnbnW1WgNfx9ZNebCttUPcK_e9KWqpDMjQ@mail.gmail.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi Ulf,
+In the process of converting the bit manipulation macros were converted
+to use GENMASK(), the compiler reported a value too big for the field.
+The offending statement was trying to write 0x100 into a 5-bit field.
+An accompaning comment says to set bit 3, thus the code is changed
+appropriately.
 
-On Fri, Jun 14, 2019 at 01:55:54PM +0200, Ulf Hansson wrote:
-> On Thu, 13 Jun 2019 at 20:05, Doug Anderson <dianders@chromium.org> wrote:
-> >
-> > Hi,
-> >
-> > On Thu, Jun 13, 2019 at 2:30 AM Ulf Hansson <ulf.hansson@linaro.org> wrote:
-> > >
-> > > > A) Do we need to do anything extra to make sure we actually call the
-> > > > interrupt handler after we've resumed?  I guess we can't actually
-> > > > "lose" the interrupt since it will be sitting asserted in CCCR_INTx
-> > > > until we deal with it (right?), but maybe we need to do something to
-> > > > ensure the handler gets called once we're done resuming?
-> > >
-> > > Good point!
-> > >
-> > > Although, it also depends on if we are going to power off the SDIO
-> > > card or not. In other words, if the SDIO IRQ are configured as a
-> > > system wakeup.
-> >
-> > Even if it's not a system wakeup, we still don't want to drop the
-> > interrupt on the ground though, do we?  For instance, think about a
-> > level-triggered GPIO interrupt that's _not_ a wakeup interrupt.  If
-> > that gets asserted in suspend then we won't wakeup the system, but as
-> > soon as the system gets to a certain point in the resume sequence then
-> > we should pass the interrupt on to the handler.  If an edge triggered
-> > (but non-wakeup) interrupt fires when the system is resuming then we
-> > should similarly not drop it, should we?
-> 
-> GPIOs is clearly different.
-> 
-> When it comes to SDIO cards, re-playing/re-kicking an SDIO IRQ doesn't
-> make sense in case the SDIO card was powered off during system
-> suspend. The reason is simply because the internal state inside the
-> SDIO card gets lost at a power off. For example, the used SDIO func
-> number, needs to re-enabled before any SDIO IRQs can be delivered for
-> it.
-> 
-> So yes, I really think we should drop the SDIO IRQ, unless it's
-> configured as a wakeup. Simply because it's not valid after the system
-> has resumed.
+This error has been in the driver since its initial submission.
 
-With the dropped interrupts SDIO is broken on veyron jerry when
-the Marvell 8997 Bluetooth controller sends events while
-suspending. On the system MMC remains powered during suspend, but SDIO
-isn't configured as wakeup. On this system the problem can be fixed by
-processing the interrupt after resuming, however from the discussion
-it seems this isn't universally a good solution.
+Fixes: 29d00a3e46bb ("rtlwifi: rtl8192cu: Add routine trx")
+Signed-off-by: Larry Finger <Larry.Finger@lwfinger.net>
+---
+ drivers/net/wireless/realtek/rtlwifi/rtl8192cu/trx.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Not sure if this is just a special case that is best worked around in
-the downstream kernel of the device, or if this could affect other
-systems and it would be worth to address it upstream (e.g. by
-processing the dropped interrupt on resume if MMC_PM_KEEP_POWER is
-set and the SDIO interrupt is not configured as wakeup).
+diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8192cu/trx.c b/drivers/net/wireless/realtek/rtlwifi/rtl8192cu/trx.c
+index 0020adc004a5..9b5c7ec6b6f7 100644
+--- a/drivers/net/wireless/realtek/rtlwifi/rtl8192cu/trx.c
++++ b/drivers/net/wireless/realtek/rtlwifi/rtl8192cu/trx.c
+@@ -611,7 +611,7 @@ void rtl92cu_fill_fake_txdesc(struct ieee80211_hw *hw, u8 *pdesc,
+ 		SET_TX_DESC_NAV_USE_HDR(pdesc, 1);
+ 	} else {
+ 		SET_TX_DESC_HWSEQ_EN(pdesc, 1); /* Hw set sequence number */
+-		SET_TX_DESC_PKT_ID(pdesc, 0x100); /* set bit3 to 1. */
++		SET_TX_DESC_PKT_ID(pdesc, BIT(3)); /* set bit3 to 1. */
+ 	}
+ 	SET_TX_DESC_USE_RATE(pdesc, 1); /* use data rate which is set by Sw */
+ 	SET_TX_DESC_OWN(pdesc, 1);
+-- 
+2.22.0
+
