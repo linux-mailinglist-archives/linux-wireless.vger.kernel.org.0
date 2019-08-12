@@ -2,70 +2,62 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 82CE588FFA
-	for <lists+linux-wireless@lfdr.de>; Sun, 11 Aug 2019 08:26:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 36264897F1
+	for <lists+linux-wireless@lfdr.de>; Mon, 12 Aug 2019 09:37:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726296AbfHKGZz (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 11 Aug 2019 02:25:55 -0400
-Received: from s3.sipsolutions.net ([144.76.43.62]:51314 "EHLO
-        sipsolutions.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725826AbfHKGZy (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 11 Aug 2019 02:25:54 -0400
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <johannes@sipsolutions.net>)
-        id 1hwhIS-00073e-LD; Sun, 11 Aug 2019 08:25:40 +0200
-Message-ID: <f7de98001849bc98a0a084d2ffc369f4d9772d52.camel@sipsolutions.net>
-Subject: Re: [PATCH] `iwlist scan` fails with many networks available
-From:   Johannes Berg <johannes@sipsolutions.net>
-To:     James Nylen <jnylen@gmail.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Date:   Sun, 11 Aug 2019 08:25:39 +0200
-In-Reply-To: <CABVa4NhutjvHPbyaxNeVpJjf-RMJdwEX-Yjk4bkqLC1DN3oXPA@mail.gmail.com> (sfid-20190811_040820_184767_595B1CDB)
-References: <CABVa4NgWMkJuyB1P5fwQEYHwqBRiySE+fGQpMKt8zbp+xJ8+rw@mail.gmail.com>
-         <CABVa4NhutjvHPbyaxNeVpJjf-RMJdwEX-Yjk4bkqLC1DN3oXPA@mail.gmail.com>
-         (sfid-20190811_040820_184767_595B1CDB)
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.30.5 (3.30.5-1.fc29) 
+        id S1727002AbfHLHhY (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 12 Aug 2019 03:37:24 -0400
+Received: from smtp1.goneo.de ([85.220.129.30]:55118 "EHLO smtp1.goneo.de"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726304AbfHLHhY (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 12 Aug 2019 03:37:24 -0400
+X-Greylist: delayed 557 seconds by postgrey-1.27 at vger.kernel.org; Mon, 12 Aug 2019 03:37:23 EDT
+Received: from localhost (localhost [127.0.0.1])
+        by smtp1.goneo.de (Postfix) with ESMTP id 0FFD123F037;
+        Mon, 12 Aug 2019 09:28:04 +0200 (CEST)
+X-Virus-Scanned: by goneo
+X-Spam-Flag: NO
+X-Spam-Score: -3.095
+X-Spam-Level: 
+X-Spam-Status: No, score=-3.095 tagged_above=-999 tests=[ALL_TRUSTED=-1,
+        AWL=-0.195, BAYES_00=-1.9] autolearn=ham
+Received: from smtp1.goneo.de ([127.0.0.1])
+        by localhost (smtp1.goneo.de [127.0.0.1]) (amavisd-new, port 10024)
+        with ESMTP id X6NG7wCyM0OW; Mon, 12 Aug 2019 09:28:03 +0200 (CEST)
+Received: from lem-wkst-02.lemonage (hq.lemonage.de [87.138.178.34])
+        by smtp1.goneo.de (Postfix) with ESMTPSA id E38F923FA49;
+        Mon, 12 Aug 2019 09:28:02 +0200 (CEST)
+Date:   Mon, 12 Aug 2019 09:40:49 +0200
+From:   Lars Poeschel <poeschel@lemonage.de>
+To:     Johan Hovold <johan@kernel.org>
+Cc:     devicetree@vger.kernel.org, Samuel Ortiz <sameo@linux.intel.com>,
+        "open list:NFC SUBSYSTEM" <linux-wireless@vger.kernel.org>,
+        open list <linux-kernel@vger.kernel.org>,
+        netdev@vger.kernel.org
+Subject: Re: [PING 2] [PATCH v5 1/7] nfc: pn533: i2c: "pn532" as dt
+ compatible string
+Message-ID: <20190812074035.GA9797@lem-wkst-02.lemonage>
+References: <20190111161812.26325-1-poeschel@lemonage.de>
+ <20190228104801.GA14788@lem-wkst-02.lemonage>
+ <20190403094735.GA19351@lem-wkst-02.lemonage>
+ <20190805124236.GG3574@localhost>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20190805124236.GG3574@localhost>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Sun, 2019-08-11 at 02:08 +0000, James Nylen wrote:
-> In 5.x it's still possible for `ieee80211_scan_results` (`iwlist
-> scan`) to fail when too many wireless networks are available.  This
-> code path is used by `wicd`.
-> 
-> Previously: https://lkml.org/lkml/2017/4/2/192
+On Mon, Aug 05, 2019 at 02:42:36PM +0200, Johan Hovold wrote:
+> You may want to resend this series to netdev now. David Miller will be
+> picking up NFC patches directly from there.
 
-This has been known for probably a decade or longer. I don't know why
-'wicd' still insists on using wext, unless it's no longer maintained at
-all. nl80211 doesn't have this problem at all, and I think gives more
-details about the networks found too.
+Thank you very much for this information. Johannes Berg did reach out to
+me already.
+Rebase, test and resend is queued up for one of my next free timeslots.
 
-> I've been applying this updated patch to my own kernels since 2017 with
-> no issues.  I am sure it is not the ideal way to solve this problem, but
-> I'm making my fix available in case it helps others.
-
-I don't think silently dropping data is a good solution.
-
-I suppose we could consider applying a workaround like this if it has a
-condition checking that the buffer passed in is the maximum possible
-buffer (65535 bytes, due to iw_point::length being u16), but below that
--E2BIG serves well-written implementations as an indicator that they
-need to retry with a bigger buffer.
-
-> Please advise on next steps or if this is a dead end.
-
-I think wireless extensions are in fact a dead end and all software
-(even 'wicd', which seems to be the lone holdout) should migrate to
-nl80211 instead.
-
-johannes
-
+Thanks again,
+Lars
