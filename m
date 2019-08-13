@@ -2,67 +2,94 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 79E438BA79
-	for <lists+linux-wireless@lfdr.de>; Tue, 13 Aug 2019 15:37:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 318C78BAF2
+	for <lists+linux-wireless@lfdr.de>; Tue, 13 Aug 2019 15:58:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729202AbfHMNhA (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 13 Aug 2019 09:37:00 -0400
-Received: from mx1.redhat.com ([209.132.183.28]:36002 "EHLO mx1.redhat.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728413AbfHMNg6 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 13 Aug 2019 09:36:58 -0400
-Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.phx2.redhat.com [10.5.11.14])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        id S1729314AbfHMN6o (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 13 Aug 2019 09:58:44 -0400
+Received: from smtp.codeaurora.org ([198.145.29.96]:52166 "EHLO
+        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727407AbfHMN6o (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 13 Aug 2019 09:58:44 -0400
+Received: by smtp.codeaurora.org (Postfix, from userid 1000)
+        id 7880F608FF; Tue, 13 Aug 2019 13:58:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
+        s=default; t=1565704723;
+        bh=M8oAe1f6maG+IxzSwYrxoIVVdKazq93Sv32mx1kHDTk=;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+        b=UnYXjBsohipGcIhOiU7MbVsbLEx9berNqc16y6AT7dc/+7gM6zxDlknkaGartFwBs
+         wTmVznRdzrY7vbtfaxJW34Ni3lRNUiHaW/8eEfkCugzi5yqEM6ZWHdysjhRjB3oQgt
+         VkLtVzoHaMUKupIMsrs2eneH48+uRPOHZlasrHwI=
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        pdx-caf-mail.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.7 required=2.0 tests=ALL_TRUSTED,BAYES_00,
+        DKIM_INVALID,DKIM_SIGNED,SPF_NONE autolearn=no autolearn_force=no
+        version=3.4.0
+Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mx1.redhat.com (Postfix) with ESMTPS id D7068315C007;
-        Tue, 13 Aug 2019 13:36:57 +0000 (UTC)
-Received: from localhost (unknown [10.43.2.236])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 7D31F821FF;
-        Tue, 13 Aug 2019 13:36:57 +0000 (UTC)
-From:   Stanislaw Gruszka <sgruszka@redhat.com>
-To:     linux-wireless@vger.kernel.org
-Cc:     Felix Fietkau <nbd@nbd.name>,
-        Lorenzo Bianconi <lorenzo.bianconi@redhat.com>,
-        Ryder Lee <ryder.lee@mediatek.com>, Roy Luo <royluo@google.com>
-Subject: [PATCH 5.3] mt76: mt76x0e: disable 5GHz band for MT7630E
-Date:   Tue, 13 Aug 2019 15:36:56 +0200
-Message-Id: <1565703416-10669-1-git-send-email-sgruszka@redhat.com>
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.14
-X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16 (mx1.redhat.com [10.5.110.41]); Tue, 13 Aug 2019 13:36:57 +0000 (UTC)
+        (Authenticated sender: kvalo@smtp.codeaurora.org)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id AA5A560734;
+        Tue, 13 Aug 2019 13:58:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
+        s=default; t=1565704722;
+        bh=M8oAe1f6maG+IxzSwYrxoIVVdKazq93Sv32mx1kHDTk=;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+        b=IaI8Q6n2wPeQJAHwk4P9fPwbfo0nHJdPoiRlNZit9WBgBvAj3zU2/5X/WCuv732RX
+         vZFSpNsdsZs39QlwnnytW2C2fIDI61aQ+3GkJUV7EJzbTGFvac0y/PwRTQQFfQ5+Jl
+         a0EinvMjNaLJuO2Kne/S5kgkz5Rrrf8sqfsWTFiY=
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org AA5A560734
+Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
+From:   Kalle Valo <kvalo@codeaurora.org>
+To:     Andrey Konovalov <andreyknvl@google.com>
+Cc:     Ganapathi Bhat <gbhat@marvell.com>,
+        Dmitry Vyukov <dvyukov@google.com>,
+        syzbot <syzbot+dc4127f950da51639216@syzkaller.appspotmail.com>,
+        "amitkarwar\@gmail.com" <amitkarwar@gmail.com>,
+        "davem\@davemloft.net" <davem@davemloft.net>,
+        "huxinming820\@gmail.com" <huxinming820@gmail.com>,
+        "linux-kernel\@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "linux-usb\@vger.kernel.org" <linux-usb@vger.kernel.org>,
+        "linux-wireless\@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        "netdev\@vger.kernel.org" <netdev@vger.kernel.org>,
+        "nishants\@marvell.com" <nishants@marvell.com>,
+        "syzkaller-bugs\@googlegroups.com" <syzkaller-bugs@googlegroups.com>
+Subject: Re: [EXT] INFO: trying to register non-static key in del_timer_sync (2)
+References: <000000000000927a7b0586561537@google.com>
+        <MN2PR18MB263783F52CAD4A335FD8BB34A01A0@MN2PR18MB2637.namprd18.prod.outlook.com>
+        <CACT4Y+aQzBkAq86Hx4jNFnAUzjXnq8cS2NZKfeCaFrZa__g-cg@mail.gmail.com>
+        <MN2PR18MB26372D98386D79736A7947EEA0140@MN2PR18MB2637.namprd18.prod.outlook.com>
+        <MN2PR18MB263710E8F1F8FFA06B2EDB3CA0EC0@MN2PR18MB2637.namprd18.prod.outlook.com>
+        <CAAeHK+z8MBNikw_x50Crf8ZhOhcF=uvPHakvBx44K77xHRUNfg@mail.gmail.com>
+Date:   Tue, 13 Aug 2019 16:58:36 +0300
+In-Reply-To: <CAAeHK+z8MBNikw_x50Crf8ZhOhcF=uvPHakvBx44K77xHRUNfg@mail.gmail.com>
+        (Andrey Konovalov's message of "Tue, 13 Aug 2019 15:36:33 +0200")
+Message-ID: <87k1bhb20j.fsf@kamboji.qca.qualcomm.com>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
+MIME-Version: 1.0
+Content-Type: text/plain
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-MT7630E hardware does support 5GHz, but we do not properly configure phy
-for 5GHz channels. Scanning at this band not only do not show any APs
-but also can hang the firmware.
+Andrey Konovalov <andreyknvl@google.com> writes:
 
-Since vendor reference driver do not support 5GHz we don't know how
-properly configure 5GHz channels. So disable this band for MT7630E .
+> On Wed, Jun 12, 2019 at 6:03 PM Ganapathi Bhat <gbhat@marvell.com> wrote:
+>>
+>> Hi Dmitry,
+>>
+>> We have a patch to fix this: https://patchwork.kernel.org/patch/10990275/
+>
+> Hi Ganapathi,
+>
+> Has this patch been accepted anywhere? This bug is still open on syzbot.
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Stanislaw Gruszka <sgruszka@redhat.com>
----
- drivers/net/wireless/mediatek/mt76/mt76x0/eeprom.c | 5 +++++
- 1 file changed, 5 insertions(+)
+The patch is in "Changes Requested" state which means that the author is
+supposed to send a new version based on the review comments.
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76x0/eeprom.c b/drivers/net/wireless/mediatek/mt76/mt76x0/eeprom.c
-index ab6dfc026acb..36918b1bd653 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76x0/eeprom.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt76x0/eeprom.c
-@@ -67,6 +67,11 @@ static void mt76x0_set_chip_cap(struct mt76x02_dev *dev)
- 		dev_dbg(dev->mt76.dev, "mask out 2GHz support\n");
- 	}
- 
-+	if (is_mt7630(dev)) {
-+		dev->mt76.cap.has_5ghz = false;
-+		dev_dbg(dev->mt76.dev, "mask out 5GHz support\n");
-+	}
-+
- 	if (!mt76x02_field_valid(nic_conf1 & 0xff))
- 		nic_conf1 &= 0xff00;
- 
 -- 
-1.9.3
-
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
