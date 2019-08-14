@@ -2,134 +2,94 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 84FE78D00F
-	for <lists+linux-wireless@lfdr.de>; Wed, 14 Aug 2019 11:50:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 190EA8D134
+	for <lists+linux-wireless@lfdr.de>; Wed, 14 Aug 2019 12:47:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726383AbfHNJuY (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 14 Aug 2019 05:50:24 -0400
-Received: from mail-ot1-f67.google.com ([209.85.210.67]:45727 "EHLO
-        mail-ot1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725280AbfHNJuY (ORCPT
+        id S1726947AbfHNKrQ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 14 Aug 2019 06:47:16 -0400
+Received: from userp2120.oracle.com ([156.151.31.85]:35240 "EHLO
+        userp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726121AbfHNKrQ (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 14 Aug 2019 05:50:24 -0400
-Received: by mail-ot1-f67.google.com with SMTP id m24so27915852otp.12
-        for <linux-wireless@vger.kernel.org>; Wed, 14 Aug 2019 02:50:23 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=4Mpl2x0wUOtqSVNJzmCcBu6w+hNzqhf3ysgpJFe/+J4=;
-        b=T7UWn1DDIQXOpNj2FALaX9dfVLPEWthJ3kdgDf39DgzA0wNj45lVxNgoSgewN9PEIx
-         ElonJzvDUSTJanr9NyAF2/WsKO4rr/aKpEC9DdvASAJIenvUdOVg2l6IbLRahN9c8MVW
-         sHj/wDoDpPb9ZM9CxzBMsq0RBeqaxOYQsVUG9+B4kmhwtA+neuhbnKXg6AE/qhdpABc9
-         uHaUlz2evxq9lEvMMZ8duloXIswAAoPO4mh3AymfgbKOMFmfJzvEUMBlWvsYCqFVgooE
-         z94ucxQesiR9MfSmsouF76EK1MWeS90Od9ZxSocWCsbuNw778A7nLoziRYfOigQQVFh+
-         X9wA==
-X-Gm-Message-State: APjAAAVdf6YUQmS1pJJB74EOhIQV15DMZyfVk4Fj66VF7cKjVf2vpimI
-        U4e/dngECq9Mjn2F3il7vA40w0N7dtHmetYcDtV9wR3B7rg=
-X-Google-Smtp-Source: APXvYqwlOfbYjTZXb8DIpxX+wZtsdstps7b7KKFeq0jv4m1BYIFvkLuZZn9g4Lsi8ufu+wAGGhpfxgN31xpAWQ9T/Aw=
-X-Received: by 2002:a6b:ce19:: with SMTP id p25mr29966000iob.201.1565776223074;
- Wed, 14 Aug 2019 02:50:23 -0700 (PDT)
+        Wed, 14 Aug 2019 06:47:16 -0400
+Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
+        by userp2120.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x7EAiScZ106080;
+        Wed, 14 Aug 2019 10:47:09 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
+ : subject : message-id : mime-version : content-type; s=corp-2019-08-05;
+ bh=eKra3x3RanWfd2QP38dZBJ+NM2qqte9TkMuz8A9fS+Y=;
+ b=APnOxSlUsUU9UaMv9BSgc+qHqpPWqYH1d2pJXgHkv+gxkVELZMwOp4KR027rQ18i5ewG
+ NyDXixkmOrQE7PXZFToDDloAocUP0CyQx31NJdZYgNP11hxxf1nqROG/i7/jZ7FdLwqA
+ u45zNPO16Gs0LDjozamI43Dgg8TudvC0VClQ3btHTuervN4XEh8wAQbX8l27CQL6wsgS
+ hH38y3srbG4cKkxjm4aILF2TaPEea/pJu79v8jVKDcPDjxOsoGmgI4DDa2jVCp4tCFls
+ 1MoMFW94qH52Sqs4lOjEWaJFxzW+8NHabZvFhH4KWhrctnEbUcn4M5ZtUAtYEWynulJE YA== 
+Received: from userp3030.oracle.com (userp3030.oracle.com [156.151.31.80])
+        by userp2120.oracle.com with ESMTP id 2u9pjqkvge-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Wed, 14 Aug 2019 10:47:09 +0000
+Received: from pps.filterd (userp3030.oracle.com [127.0.0.1])
+        by userp3030.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x7EAkiad096175;
+        Wed, 14 Aug 2019 10:47:08 GMT
+Received: from aserv0122.oracle.com (aserv0122.oracle.com [141.146.126.236])
+        by userp3030.oracle.com with ESMTP id 2ubwqt2j0v-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Wed, 14 Aug 2019 10:47:05 +0000
+Received: from abhmp0010.oracle.com (abhmp0010.oracle.com [141.146.116.16])
+        by aserv0122.oracle.com (8.14.4/8.14.4) with ESMTP id x7EAkoOP025838;
+        Wed, 14 Aug 2019 10:46:50 GMT
+Received: from mwanda (/41.57.98.10)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Wed, 14 Aug 2019 03:46:49 -0700
+Date:   Wed, 14 Aug 2019 13:46:42 +0300
+From:   Dan Carpenter <dan.carpenter@oracle.com>
+To:     Yan-Hsuan Chuang <yhchuang@realtek.com>
+Cc:     Kalle Valo <kvalo@codeaurora.org>, linux-wireless@vger.kernel.org,
+        kernel-janitors@vger.kernel.org
+Subject: [PATCH] rtw88: Fix an error message
+Message-ID: <20190814104642.GA14268@mwanda>
 MIME-Version: 1.0
-References: <1565703400-10623-1-git-send-email-sgruszka@redhat.com>
-In-Reply-To: <1565703400-10623-1-git-send-email-sgruszka@redhat.com>
-From:   Lorenzo Bianconi <lorenzo.bianconi@redhat.com>
-Date:   Wed, 14 Aug 2019 11:50:12 +0200
-Message-ID: <CAJ0CqmXM4NRMYU6Lt_a4f+DXE2bVmhYrjQbgxHG0g=N+o3TeQw@mail.gmail.com>
-Subject: Re: [PATCH 5.3] mt76: mt76x0e: don't use hw encryption for MT7630E
-To:     Stanislaw Gruszka <sgruszka@redhat.com>
-Cc:     linux-wireless <linux-wireless@vger.kernel.org>,
-        Felix Fietkau <nbd@nbd.name>,
-        Ryder Lee <ryder.lee@mediatek.com>, Roy Luo <royluo@google.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Mailer: git-send-email haha only kidding
+User-Agent: Mutt/1.10.1 (2018-07-13)
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9348 signatures=668684
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 malwarescore=0
+ phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=999
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.0.1-1906280000 definitions=main-1908140111
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9348 signatures=668684
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
+ suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1011
+ lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=999 adultscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1906280000
+ definitions=main-1908140111
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
->
-> Since 41634aa8d6db ("mt76: only schedule txqs from the tx tasklet")
-> I can observe firmware hangs on MT7630E on station mode: tx stop
-> functioning after minor activity (rx keep working) and on module
-> unload device fail to stop with messages:
->
-> [ 5446.141413] mt76x0e 0000:06:00.0: TX DMA did not stop
-> [ 5449.176764] mt76x0e 0000:06:00.0: TX DMA did not stop
->
-> Loading module again results in failure to associate with AP.
-> Only machine power off / power on cycle can make device work again.
->
-> It's unclear why commit 41634aa8d6db causes the problem, but it is
-> related to HW encryption. Since issue is a firmware hang, that is super
-> hard to debug, just disable HW encryption as fix for the issue.
->
-> Fixes: 41634aa8d6db ("mt76: only schedule txqs from the tx tasklet")
-> Signed-off-by: Stanislaw Gruszka <sgruszka@redhat.com>
-> ---
->  drivers/net/wireless/mediatek/mt76/mt76x0/pci.c | 15 ++++++++++++++-
->  1 file changed, 14 insertions(+), 1 deletion(-)
->
-> diff --git a/drivers/net/wireless/mediatek/mt76/mt76x0/pci.c b/drivers/net/wireless/mediatek/mt76/mt76x0/pci.c
-> index 4585e1b756c2..6117e6ca08cb 100644
-> --- a/drivers/net/wireless/mediatek/mt76/mt76x0/pci.c
-> +++ b/drivers/net/wireless/mediatek/mt76/mt76x0/pci.c
-> @@ -62,6 +62,19 @@ static void mt76x0e_stop(struct ieee80211_hw *hw)
->         mt76x0e_stop_hw(dev);
->  }
->
-> +static int
-> +mt76x0e_set_key(struct ieee80211_hw *hw, enum set_key_cmd cmd,
-> +               struct ieee80211_vif *vif, struct ieee80211_sta *sta,
-> +               struct ieee80211_key_conf *key)
-> +{
-> +       struct mt76x02_dev *dev = hw->priv;
-> +
-> +       if (is_mt7630(dev))
-> +               return -EOPNOTSUPP;
+The WARN_ON() macro takes a condition, not a warning message.  I've
+changed this to use WARN() instead.
 
-Hi Stanislaw,
+Fixes: 4136214f7c46 ("rtw88: add BT co-existence support")
+Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+---
+ drivers/net/wireless/realtek/rtw88/coex.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Can you please try if disabling/enabling the tx tasklet during hw key
-configuration fixes the issue?
-Doing something like:
+diff --git a/drivers/net/wireless/realtek/rtw88/coex.c b/drivers/net/wireless/realtek/rtw88/coex.c
+index 4577fceddc5e..13701ec40302 100644
+--- a/drivers/net/wireless/realtek/rtw88/coex.c
++++ b/drivers/net/wireless/realtek/rtw88/coex.c
+@@ -1059,7 +1059,7 @@ static void rtw_coex_set_ant_path(struct rtw_dev *rtwdev, bool force, u8 phase)
+ 		pos_type = COEX_SWITCH_TO_WLG_BT;
+ 		break;
+ 	default:
+-		WARN_ON("unknown phase when setting antenna path\n");
++		WARN(1, "unknown phase when setting antenna path\n");
+ 		return;
+ 	}
+ 
+-- 
+2.20.1
 
-tasklet_disable(tx_tasklet)
-mt76x02_set_key()
-tasklet_enable(tx_tasklet)
-
-Moreover, have you double checked if there is any performance impact
-of not using hw encryption?
-If so, I guess it is better to just redefine mt76_wake_tx_queue for
-mt76x0e and run mt76_txq_schedule for 7630e:
-
-void mt76x0e_wake_tx_queue(struct ieee80211_hw *hw, struct ieee80211_txq *txq)
-{
-        if (is_mt7630(dev)) {
-            mt76_txq_schedule(dev, txq->ac);
-        } else {
-            tasklet_schedule(&dev->tx_tasklet);
-        }
-}
-
-Regards,
-Lorenzo
-
-> +
-> +       return mt76x02_set_key(hw, cmd, vif, sta, key);
-> +}
-> +
->  static void
->  mt76x0e_flush(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
->               u32 queues, bool drop)
-> @@ -78,7 +91,7 @@ static void mt76x0e_stop(struct ieee80211_hw *hw)
->         .configure_filter = mt76x02_configure_filter,
->         .bss_info_changed = mt76x02_bss_info_changed,
->         .sta_state = mt76_sta_state,
-> -       .set_key = mt76x02_set_key,
-> +       .set_key = mt76x0e_set_key,
->         .conf_tx = mt76x02_conf_tx,
->         .sw_scan_start = mt76x02_sw_scan,
->         .sw_scan_complete = mt76x02_sw_scan_complete,
-> --
-> 1.9.3
->
