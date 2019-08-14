@@ -2,37 +2,36 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 36EDC8C622
-	for <lists+linux-wireless@lfdr.de>; Wed, 14 Aug 2019 04:13:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AFBA48C93E
+	for <lists+linux-wireless@lfdr.de>; Wed, 14 Aug 2019 04:38:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728162AbfHNCNH (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 13 Aug 2019 22:13:07 -0400
-Received: from mail.kernel.org ([198.145.29.99]:45134 "EHLO mail.kernel.org"
+        id S1727899AbfHNCMc (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 13 Aug 2019 22:12:32 -0400
+Received: from mail.kernel.org ([198.145.29.99]:44604 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728125AbfHNCNE (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 13 Aug 2019 22:13:04 -0400
+        id S1727890AbfHNCMb (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 13 Aug 2019 22:12:31 -0400
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 9652120842;
-        Wed, 14 Aug 2019 02:13:02 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id B78CD2085A;
+        Wed, 14 Aug 2019 02:12:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1565748783;
-        bh=m9sBYGnmv53rPv9LLP7lEr4T1EH5recboZhvcMtI5ig=;
+        s=default; t=1565748750;
+        bh=IrEUGAr88LfF3a3ZzDjfIOiDjKCzLnV9v1Ei76PBG1M=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=K2wC9ZTqk7yBn8uTOxJyrdwDSi2DgB9VnWM6zDz4RvvCHFkYjtkTWwv7LGjmoOB5u
-         ueaFUVQLd7ti5uPUb/qnQj4qLBPm01PBGEIXkhyTBBPVKVqxCd7+v//NFouD2zLZXK
-         GUCXOMlSgNjXia2DuycjZrmerHiLYho/XZ2jolzg=
+        b=SCb6UVqZMwS2mLyKmJzLlIgzEdri+1HqkYe2T7XSiVQOdhx7kR2xzPwRVjUezXVNd
+         uULhxBL91IplQwl6n6yqJpizmgjTSRZ6h/8AB8x5Y9Z0zc7bjeHtZBEVp6r/LSAZMK
+         P/IgfAoqHZnk2zrxZ34Syl0wCY50G/0c7/V/61Pg=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Mordechay Goodstein <mordechay.goodstein@intel.com>,
-        Luca Coelho <luciano.coelho@intel.com>,
+Cc:     Manikanta Pubbisetty <mpubbise@codeaurora.org>,
         Johannes Berg <johannes.berg@intel.com>,
         Sasha Levin <sashal@kernel.org>,
         linux-wireless@vger.kernel.org, netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.2 062/123] iwlwifi: mvm: avoid races in rate init and rate perform
-Date:   Tue, 13 Aug 2019 22:09:46 -0400
-Message-Id: <20190814021047.14828-62-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.2 045/123] {nl,mac}80211: fix interface combinations on crypto controlled devices
+Date:   Tue, 13 Aug 2019 22:09:29 -0400
+Message-Id: <20190814021047.14828-45-sashal@kernel.org>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20190814021047.14828-1-sashal@kernel.org>
 References: <20190814021047.14828-1-sashal@kernel.org>
@@ -45,181 +44,177 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Mordechay Goodstein <mordechay.goodstein@intel.com>
+From: Manikanta Pubbisetty <mpubbise@codeaurora.org>
 
-[ Upstream commit 0f8084cdc1f9d4a6693ef4168167febb0918c6f6 ]
+[ Upstream commit e6f4051123fd33901e9655a675b22aefcdc5d277 ]
 
-Rate perform uses the lq_sta table to calculate the next rate to scale
-while rate init resets the same table,
+Commit 33d915d9e8ce ("{nl,mac}80211: allow 4addr AP operation on
+crypto controlled devices") has introduced a change which allows
+4addr operation on crypto controlled devices (ex: ath10k). This
+change has inadvertently impacted the interface combinations logic
+on such devices.
 
-Rate perform is done in soft irq context in parallel to rate init
-that can be called in case we are doing changes like AP changes BW
-or moving state for auth to assoc.
+General rule is that software interfaces like AP/VLAN should not be
+listed under supported interface combinations and should not be
+considered during validation of these combinations; because of the
+aforementioned change, AP/VLAN interfaces(if present) will be checked
+against interfaces supported by the device and blocks valid interface
+combinations.
 
-Signed-off-by: Mordechay Goodstein <mordechay.goodstein@intel.com>
-Signed-off-by: Luca Coelho <luciano.coelho@intel.com>
+Consider a case where an AP and AP/VLAN are up and running; when a
+second AP device is brought up on the same physical device, this AP
+will be checked against the AP/VLAN interface (which will not be
+part of supported interface combinations of the device) and blocks
+second AP to come up.
+
+Add a new API cfg80211_iftype_allowed() to fix the problem, this
+API works for all devices with/without SW crypto control.
+
+Signed-off-by: Manikanta Pubbisetty <mpubbise@codeaurora.org>
+Fixes: 33d915d9e8ce ("{nl,mac}80211: allow 4addr AP operation on crypto controlled devices")
+Link: https://lore.kernel.org/r/1563779690-9716-1-git-send-email-mpubbise@codeaurora.org
 Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/intel/iwlwifi/mvm/rs.c  | 42 ++++++++++++++++++--
- drivers/net/wireless/intel/iwlwifi/mvm/rs.h  |  7 +++-
- drivers/net/wireless/intel/iwlwifi/mvm/sta.c |  6 +++
- drivers/net/wireless/intel/iwlwifi/mvm/sta.h |  1 +
- 4 files changed, 51 insertions(+), 5 deletions(-)
+ include/net/cfg80211.h | 15 +++++++++++++++
+ net/mac80211/util.c    |  7 +++----
+ net/wireless/core.c    |  6 ++----
+ net/wireless/nl80211.c |  4 +---
+ net/wireless/util.c    | 27 +++++++++++++++++++++++++--
+ 5 files changed, 46 insertions(+), 13 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/rs.c b/drivers/net/wireless/intel/iwlwifi/mvm/rs.c
-index 63fdb4e68e9d7..836541caa3167 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/rs.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/rs.c
-@@ -1197,6 +1197,27 @@ static u8 rs_get_tid(struct ieee80211_hdr *hdr)
- 	return tid;
- }
+diff --git a/include/net/cfg80211.h b/include/net/cfg80211.h
+index 8fb5be3ca0ca8..8b13bd05befac 100644
+--- a/include/net/cfg80211.h
++++ b/include/net/cfg80211.h
+@@ -7254,6 +7254,21 @@ void cfg80211_pmsr_complete(struct wireless_dev *wdev,
+ 			    struct cfg80211_pmsr_request *req,
+ 			    gfp_t gfp);
  
-+void iwl_mvm_rs_init_wk(struct work_struct *wk)
-+{
-+	struct iwl_mvm_sta *mvmsta = container_of(wk, struct iwl_mvm_sta,
-+						  rs_init_wk);
-+	struct iwl_mvm_vif *mvmvif = iwl_mvm_vif_from_mac80211(mvmsta->vif);
-+	struct ieee80211_sta *sta;
++/**
++ * cfg80211_iftype_allowed - check whether the interface can be allowed
++ * @wiphy: the wiphy
++ * @iftype: interface type
++ * @is_4addr: use_4addr flag, must be '0' when check_swif is '1'
++ * @check_swif: check iftype against software interfaces
++ *
++ * Check whether the interface is allowed to operate; additionally, this API
++ * can be used to check iftype against the software interfaces when
++ * check_swif is '1'.
++ */
++bool cfg80211_iftype_allowed(struct wiphy *wiphy, enum nl80211_iftype iftype,
++			     bool is_4addr, u8 check_swif);
 +
-+	rcu_read_lock();
 +
-+	sta = rcu_dereference(mvmvif->mvm->fw_id_to_mac_id[mvmsta->sta_id]);
-+	if (WARN_ON_ONCE(IS_ERR_OR_NULL(sta))) {
-+		rcu_read_unlock();
-+		return;
-+	}
-+
-+	iwl_mvm_rs_rate_init(mvmvif->mvm, sta, mvmvif->phy_ctxt->channel->band,
-+			     true);
-+
-+	rcu_read_unlock();
-+}
-+
- void iwl_mvm_rs_tx_status(struct iwl_mvm *mvm, struct ieee80211_sta *sta,
- 			  int tid, struct ieee80211_tx_info *info, bool ndp)
- {
-@@ -1269,7 +1290,7 @@ void iwl_mvm_rs_tx_status(struct iwl_mvm *mvm, struct ieee80211_sta *sta,
- 		       (unsigned long)(lq_sta->last_tx +
- 				       (IWL_MVM_RS_IDLE_TIMEOUT * HZ)))) {
- 		IWL_DEBUG_RATE(mvm, "Tx idle for too long. reinit rs\n");
--		iwl_mvm_rs_rate_init(mvm, sta, info->band, true);
-+		schedule_work(&mvmsta->rs_init_wk);
- 		return;
+ /* Logging, debugging and troubleshooting/diagnostic helpers. */
+ 
+ /* wiphy_printk helpers, similar to dev_printk */
+diff --git a/net/mac80211/util.c b/net/mac80211/util.c
+index 1b224fa27367f..ad1e58184c4e4 100644
+--- a/net/mac80211/util.c
++++ b/net/mac80211/util.c
+@@ -3796,9 +3796,7 @@ int ieee80211_check_combinations(struct ieee80211_sub_if_data *sdata,
  	}
- 	lq_sta->last_tx = jiffies;
-@@ -1442,16 +1463,24 @@ static void rs_drv_mac80211_tx_status(void *mvm_r,
- 	struct iwl_op_mode *op_mode = mvm_r;
- 	struct iwl_mvm *mvm = IWL_OP_MODE_GET_MVM(op_mode);
- 	struct ieee80211_tx_info *info = IEEE80211_SKB_CB(skb);
-+	struct iwl_mvm_sta *mvmsta = iwl_mvm_sta_from_mac80211(sta);
  
--	if (!iwl_mvm_sta_from_mac80211(sta)->vif)
-+	if (!mvmsta->vif)
- 		return;
+ 	/* Always allow software iftypes */
+-	if (local->hw.wiphy->software_iftypes & BIT(iftype) ||
+-	    (iftype == NL80211_IFTYPE_AP_VLAN &&
+-	     local->hw.wiphy->flags & WIPHY_FLAG_4ADDR_AP)) {
++	if (cfg80211_iftype_allowed(local->hw.wiphy, iftype, 0, 1)) {
+ 		if (radar_detect)
+ 			return -EINVAL;
+ 		return 0;
+@@ -3833,7 +3831,8 @@ int ieee80211_check_combinations(struct ieee80211_sub_if_data *sdata,
  
- 	if (!ieee80211_is_data(hdr->frame_control) ||
- 	    info->flags & IEEE80211_TX_CTL_NO_ACK)
- 		return;
+ 		if (sdata_iter == sdata ||
+ 		    !ieee80211_sdata_running(sdata_iter) ||
+-		    local->hw.wiphy->software_iftypes & BIT(wdev_iter->iftype))
++		    cfg80211_iftype_allowed(local->hw.wiphy,
++					    wdev_iter->iftype, 0, 1))
+ 			continue;
  
-+	/* If it's locked we are in middle of init flow
-+	 * just wait for next tx status to update the lq_sta data
-+	 */
-+	if (!mutex_trylock(&mvmsta->lq_sta.rs_drv.mutex))
-+		return;
-+
- 	iwl_mvm_rs_tx_status(mvm, sta, rs_get_tid(hdr), info,
- 			     ieee80211_is_qos_nullfunc(hdr->frame_control));
-+	mutex_unlock(&mvmsta->lq_sta.rs_drv.mutex);
+ 		params.iftype_num[wdev_iter->iftype]++;
+diff --git a/net/wireless/core.c b/net/wireless/core.c
+index 53ad3dbb76fe5..ed24a0b071c33 100644
+--- a/net/wireless/core.c
++++ b/net/wireless/core.c
+@@ -1397,10 +1397,8 @@ static int cfg80211_netdev_notifier_call(struct notifier_block *nb,
+ 		}
+ 		break;
+ 	case NETDEV_PRE_UP:
+-		if (!(wdev->wiphy->interface_modes & BIT(wdev->iftype)) &&
+-		    !(wdev->iftype == NL80211_IFTYPE_AP_VLAN &&
+-		      rdev->wiphy.flags & WIPHY_FLAG_4ADDR_AP &&
+-		      wdev->use_4addr))
++		if (!cfg80211_iftype_allowed(wdev->wiphy, wdev->iftype,
++					     wdev->use_4addr, 0))
+ 			return notifier_from_errno(-EOPNOTSUPP);
+ 
+ 		if (rfkill_blocked(rdev->rfkill))
+diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
+index 520d437aa8d15..88a1de9def115 100644
+--- a/net/wireless/nl80211.c
++++ b/net/wireless/nl80211.c
+@@ -3481,9 +3481,7 @@ static int nl80211_new_interface(struct sk_buff *skb, struct genl_info *info)
+ 			return err;
+ 	}
+ 
+-	if (!(rdev->wiphy.interface_modes & (1 << type)) &&
+-	    !(type == NL80211_IFTYPE_AP_VLAN && params.use_4addr &&
+-	      rdev->wiphy.flags & WIPHY_FLAG_4ADDR_AP))
++	if (!cfg80211_iftype_allowed(&rdev->wiphy, type, params.use_4addr, 0))
+ 		return -EOPNOTSUPP;
+ 
+ 	err = nl80211_parse_mon_options(rdev, type, info, &params);
+diff --git a/net/wireless/util.c b/net/wireless/util.c
+index 1c39d6a2e8501..d0e35b7b9e350 100644
+--- a/net/wireless/util.c
++++ b/net/wireless/util.c
+@@ -1697,7 +1697,7 @@ int cfg80211_iter_combinations(struct wiphy *wiphy,
+ 	for (iftype = 0; iftype < NUM_NL80211_IFTYPES; iftype++) {
+ 		num_interfaces += params->iftype_num[iftype];
+ 		if (params->iftype_num[iftype] > 0 &&
+-		    !(wiphy->software_iftypes & BIT(iftype)))
++		    !cfg80211_iftype_allowed(wiphy, iftype, 0, 1))
+ 			used_iftypes |= BIT(iftype);
+ 	}
+ 
+@@ -1719,7 +1719,7 @@ int cfg80211_iter_combinations(struct wiphy *wiphy,
+ 			return -ENOMEM;
+ 
+ 		for (iftype = 0; iftype < NUM_NL80211_IFTYPES; iftype++) {
+-			if (wiphy->software_iftypes & BIT(iftype))
++			if (cfg80211_iftype_allowed(wiphy, iftype, 0, 1))
+ 				continue;
+ 			for (j = 0; j < c->n_limits; j++) {
+ 				all_iftypes |= limits[j].types;
+@@ -2072,3 +2072,26 @@ int ieee80211_get_vht_max_nss(struct ieee80211_vht_cap *cap,
+ 	return max_vht_nss;
  }
- 
- /*
-@@ -4136,10 +4165,15 @@ static const struct rate_control_ops rs_mvm_ops_drv = {
- void iwl_mvm_rs_rate_init(struct iwl_mvm *mvm, struct ieee80211_sta *sta,
- 			  enum nl80211_band band, bool update)
- {
--	if (iwl_mvm_has_tlc_offload(mvm))
-+	if (iwl_mvm_has_tlc_offload(mvm)) {
- 		rs_fw_rate_init(mvm, sta, band, update);
--	else
-+	} else {
-+		struct iwl_mvm_sta *mvmsta = iwl_mvm_sta_from_mac80211(sta);
+ EXPORT_SYMBOL(ieee80211_get_vht_max_nss);
 +
-+		mutex_lock(&mvmsta->lq_sta.rs_drv.mutex);
- 		rs_drv_rate_init(mvm, sta, band, update);
-+		mutex_unlock(&mvmsta->lq_sta.rs_drv.mutex);
++bool cfg80211_iftype_allowed(struct wiphy *wiphy, enum nl80211_iftype iftype,
++			     bool is_4addr, u8 check_swif)
++
++{
++	bool is_vlan = iftype == NL80211_IFTYPE_AP_VLAN;
++
++	switch (check_swif) {
++	case 0:
++		if (is_vlan && is_4addr)
++			return wiphy->flags & WIPHY_FLAG_4ADDR_AP;
++		return wiphy->interface_modes & BIT(iftype);
++	case 1:
++		if (!(wiphy->software_iftypes & BIT(iftype)) && is_vlan)
++			return wiphy->flags & WIPHY_FLAG_4ADDR_AP;
++		return wiphy->software_iftypes & BIT(iftype);
++	default:
++		break;
 +	}
- }
- 
- int iwl_mvm_rate_control_register(void)
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/rs.h b/drivers/net/wireless/intel/iwlwifi/mvm/rs.h
-index f7eb60dbaf202..086f47e2a4f0c 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/rs.h
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/rs.h
-@@ -4,7 +4,7 @@
-  * Copyright(c) 2003 - 2014 Intel Corporation. All rights reserved.
-  * Copyright(c) 2015 Intel Mobile Communications GmbH
-  * Copyright(c) 2017 Intel Deutschland GmbH
-- * Copyright(c) 2018 Intel Corporation
-+ * Copyright(c) 2018 - 2019 Intel Corporation
-  *
-  * Contact Information:
-  *  Intel Linux Wireless <linuxwifi@intel.com>
-@@ -376,6 +376,9 @@ struct iwl_lq_sta {
- 	/* tx power reduce for this sta */
- 	int tpc_reduce;
- 
-+	/* avoid races of reinit and update table from rx_tx */
-+	struct mutex mutex;
 +
- 	/* persistent fields - initialized only once - keep last! */
- 	struct lq_sta_pers {
- #ifdef CONFIG_MAC80211_DEBUGFS
-@@ -440,6 +443,8 @@ struct iwl_mvm_sta;
- int iwl_mvm_tx_protection(struct iwl_mvm *mvm, struct iwl_mvm_sta *mvmsta,
- 			  bool enable);
- 
-+void iwl_mvm_rs_init_wk(struct work_struct *wk);
-+
- #ifdef CONFIG_IWLWIFI_DEBUGFS
- void iwl_mvm_reset_frame_stats(struct iwl_mvm *mvm);
- #endif
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/sta.c b/drivers/net/wireless/intel/iwlwifi/mvm/sta.c
-index f545a737a92df..ac9bc65c4d156 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/sta.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/sta.c
-@@ -1684,6 +1684,10 @@ int iwl_mvm_add_sta(struct iwl_mvm *mvm,
- 	 */
- 	if (iwl_mvm_has_tlc_offload(mvm))
- 		iwl_mvm_rs_add_sta(mvm, mvm_sta);
-+	else
-+		mutex_init(&mvm_sta->lq_sta.rs_drv.mutex);
-+
-+	INIT_WORK(&mvm_sta->rs_init_wk, iwl_mvm_rs_init_wk);
- 
- 	iwl_mvm_toggle_tx_ant(mvm, &mvm_sta->tx_ant);
- 
-@@ -1846,6 +1850,8 @@ int iwl_mvm_rm_sta(struct iwl_mvm *mvm,
- 	if (ret)
- 		return ret;
- 
-+	cancel_work_sync(&mvm_sta->rs_init_wk);
-+
- 	/* flush its queues here since we are freeing mvm_sta */
- 	ret = iwl_mvm_flush_sta(mvm, mvm_sta, false, 0);
- 	if (ret)
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/sta.h b/drivers/net/wireless/intel/iwlwifi/mvm/sta.h
-index b4d4071b865db..6e93c30492b78 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/sta.h
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/sta.h
-@@ -421,6 +421,7 @@ struct iwl_mvm_sta {
- 		struct iwl_lq_sta_rs_fw rs_fw;
- 		struct iwl_lq_sta rs_drv;
- 	} lq_sta;
-+	struct work_struct rs_init_wk;
- 	struct ieee80211_vif *vif;
- 	struct iwl_mvm_key_pn __rcu *ptk_pn[4];
- 	struct iwl_mvm_rxq_dup_data *dup_data;
++	return false;
++}
++EXPORT_SYMBOL(cfg80211_iftype_allowed);
 -- 
 2.20.1
 
