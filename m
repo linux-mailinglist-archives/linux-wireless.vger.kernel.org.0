@@ -2,65 +2,134 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 1D9C68CED6
-	for <lists+linux-wireless@lfdr.de>; Wed, 14 Aug 2019 10:54:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 84FE78D00F
+	for <lists+linux-wireless@lfdr.de>; Wed, 14 Aug 2019 11:50:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725928AbfHNIyh (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 14 Aug 2019 04:54:37 -0400
-Received: from mx1.redhat.com ([209.132.183.28]:49652 "EHLO mx1.redhat.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725888AbfHNIyh (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 14 Aug 2019 04:54:37 -0400
-Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.phx2.redhat.com [10.5.11.14])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mx1.redhat.com (Postfix) with ESMTPS id 099EB2A09C6;
-        Wed, 14 Aug 2019 08:54:37 +0000 (UTC)
-Received: from localhost (unknown [10.40.205.151])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 5CF5D82201;
-        Wed, 14 Aug 2019 08:54:36 +0000 (UTC)
-Date:   Wed, 14 Aug 2019 10:54:35 +0200
-From:   Stanislaw Gruszka <sgruszka@redhat.com>
-To:     Sasha Levin <sashal@kernel.org>
-Cc:     linux-wireless@vger.kernel.org, Felix Fietkau <nbd@nbd.name>,
-        stable@vger.kernel.org
-Subject: Re: [PATCH 5.3] mt76: mt76x0e: disable 5GHz band for MT7630E
-Message-ID: <20190814085434.GB29199@redhat.com>
-References: <1565703416-10669-1-git-send-email-sgruszka@redhat.com>
- <20190813175526.CCBC220840@mail.kernel.org>
+        id S1726383AbfHNJuY (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 14 Aug 2019 05:50:24 -0400
+Received: from mail-ot1-f67.google.com ([209.85.210.67]:45727 "EHLO
+        mail-ot1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725280AbfHNJuY (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Wed, 14 Aug 2019 05:50:24 -0400
+Received: by mail-ot1-f67.google.com with SMTP id m24so27915852otp.12
+        for <linux-wireless@vger.kernel.org>; Wed, 14 Aug 2019 02:50:23 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=4Mpl2x0wUOtqSVNJzmCcBu6w+hNzqhf3ysgpJFe/+J4=;
+        b=T7UWn1DDIQXOpNj2FALaX9dfVLPEWthJ3kdgDf39DgzA0wNj45lVxNgoSgewN9PEIx
+         ElonJzvDUSTJanr9NyAF2/WsKO4rr/aKpEC9DdvASAJIenvUdOVg2l6IbLRahN9c8MVW
+         sHj/wDoDpPb9ZM9CxzBMsq0RBeqaxOYQsVUG9+B4kmhwtA+neuhbnKXg6AE/qhdpABc9
+         uHaUlz2evxq9lEvMMZ8duloXIswAAoPO4mh3AymfgbKOMFmfJzvEUMBlWvsYCqFVgooE
+         z94ucxQesiR9MfSmsouF76EK1MWeS90Od9ZxSocWCsbuNw778A7nLoziRYfOigQQVFh+
+         X9wA==
+X-Gm-Message-State: APjAAAVdf6YUQmS1pJJB74EOhIQV15DMZyfVk4Fj66VF7cKjVf2vpimI
+        U4e/dngECq9Mjn2F3il7vA40w0N7dtHmetYcDtV9wR3B7rg=
+X-Google-Smtp-Source: APXvYqwlOfbYjTZXb8DIpxX+wZtsdstps7b7KKFeq0jv4m1BYIFvkLuZZn9g4Lsi8ufu+wAGGhpfxgN31xpAWQ9T/Aw=
+X-Received: by 2002:a6b:ce19:: with SMTP id p25mr29966000iob.201.1565776223074;
+ Wed, 14 Aug 2019 02:50:23 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20190813175526.CCBC220840@mail.kernel.org>
-User-Agent: Mutt/1.11.3 (2019-02-01)
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.14
-X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16 (mx1.redhat.com [10.5.110.38]); Wed, 14 Aug 2019 08:54:37 +0000 (UTC)
+References: <1565703400-10623-1-git-send-email-sgruszka@redhat.com>
+In-Reply-To: <1565703400-10623-1-git-send-email-sgruszka@redhat.com>
+From:   Lorenzo Bianconi <lorenzo.bianconi@redhat.com>
+Date:   Wed, 14 Aug 2019 11:50:12 +0200
+Message-ID: <CAJ0CqmXM4NRMYU6Lt_a4f+DXE2bVmhYrjQbgxHG0g=N+o3TeQw@mail.gmail.com>
+Subject: Re: [PATCH 5.3] mt76: mt76x0e: don't use hw encryption for MT7630E
+To:     Stanislaw Gruszka <sgruszka@redhat.com>
+Cc:     linux-wireless <linux-wireless@vger.kernel.org>,
+        Felix Fietkau <nbd@nbd.name>,
+        Ryder Lee <ryder.lee@mediatek.com>, Roy Luo <royluo@google.com>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Tue, Aug 13, 2019 at 05:55:26PM +0000, Sasha Levin wrote:
-> Hi,
-> 
-> [This is an automated email]
-> 
-> This commit has been processed because it contains a -stable tag.
-> The stable tag indicates that it's relevant for the following trees: all
-> 
-> The bot has tested the following trees: v5.2.8, v4.19.66, v4.14.138, v4.9.189, v4.4.189.
-> 
-> v5.2.8: Build OK!
-> v4.19.66: Failed to apply! Possible dependencies:
->     86c71d3deefa ("mt76: move eeprom utility routines in mt76x02_eeprom.h")
->     d6500cf3700f ("mt76x0: add quirk to disable 2.4GHz band for Archer T1U")
->     eef40d209ad0 ("mt76: move common eeprom definitions in mt76x02-lib module")
-<snip>
-> NOTE: The patch will not be queued to stable trees until it is upstream.
-> 
-> How should we proceed with this patch?
+>
+> Since 41634aa8d6db ("mt76: only schedule txqs from the tx tasklet")
+> I can observe firmware hangs on MT7630E on station mode: tx stop
+> functioning after minor activity (rx keep working) and on module
+> unload device fail to stop with messages:
+>
+> [ 5446.141413] mt76x0e 0000:06:00.0: TX DMA did not stop
+> [ 5449.176764] mt76x0e 0000:06:00.0: TX DMA did not stop
+>
+> Loading module again results in failure to associate with AP.
+> Only machine power off / power on cycle can make device work again.
+>
+> It's unclear why commit 41634aa8d6db causes the problem, but it is
+> related to HW encryption. Since issue is a firmware hang, that is super
+> hard to debug, just disable HW encryption as fix for the issue.
+>
+> Fixes: 41634aa8d6db ("mt76: only schedule txqs from the tx tasklet")
+> Signed-off-by: Stanislaw Gruszka <sgruszka@redhat.com>
+> ---
+>  drivers/net/wireless/mediatek/mt76/mt76x0/pci.c | 15 ++++++++++++++-
+>  1 file changed, 14 insertions(+), 1 deletion(-)
+>
+> diff --git a/drivers/net/wireless/mediatek/mt76/mt76x0/pci.c b/drivers/net/wireless/mediatek/mt76/mt76x0/pci.c
+> index 4585e1b756c2..6117e6ca08cb 100644
+> --- a/drivers/net/wireless/mediatek/mt76/mt76x0/pci.c
+> +++ b/drivers/net/wireless/mediatek/mt76/mt76x0/pci.c
+> @@ -62,6 +62,19 @@ static void mt76x0e_stop(struct ieee80211_hw *hw)
+>         mt76x0e_stop_hw(dev);
+>  }
+>
+> +static int
+> +mt76x0e_set_key(struct ieee80211_hw *hw, enum set_key_cmd cmd,
+> +               struct ieee80211_vif *vif, struct ieee80211_sta *sta,
+> +               struct ieee80211_key_conf *key)
+> +{
+> +       struct mt76x02_dev *dev = hw->priv;
+> +
+> +       if (is_mt7630(dev))
+> +               return -EOPNOTSUPP;
 
-mt76x0e support was added in 4.20 , so it's fine just to apply this
-commit in 5.2 .
+Hi Stanislaw,
 
-Stanislaw 
+Can you please try if disabling/enabling the tx tasklet during hw key
+configuration fixes the issue?
+Doing something like:
+
+tasklet_disable(tx_tasklet)
+mt76x02_set_key()
+tasklet_enable(tx_tasklet)
+
+Moreover, have you double checked if there is any performance impact
+of not using hw encryption?
+If so, I guess it is better to just redefine mt76_wake_tx_queue for
+mt76x0e and run mt76_txq_schedule for 7630e:
+
+void mt76x0e_wake_tx_queue(struct ieee80211_hw *hw, struct ieee80211_txq *txq)
+{
+        if (is_mt7630(dev)) {
+            mt76_txq_schedule(dev, txq->ac);
+        } else {
+            tasklet_schedule(&dev->tx_tasklet);
+        }
+}
+
+Regards,
+Lorenzo
+
+> +
+> +       return mt76x02_set_key(hw, cmd, vif, sta, key);
+> +}
+> +
+>  static void
+>  mt76x0e_flush(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
+>               u32 queues, bool drop)
+> @@ -78,7 +91,7 @@ static void mt76x0e_stop(struct ieee80211_hw *hw)
+>         .configure_filter = mt76x02_configure_filter,
+>         .bss_info_changed = mt76x02_bss_info_changed,
+>         .sta_state = mt76_sta_state,
+> -       .set_key = mt76x02_set_key,
+> +       .set_key = mt76x0e_set_key,
+>         .conf_tx = mt76x02_conf_tx,
+>         .sw_scan_start = mt76x02_sw_scan,
+>         .sw_scan_complete = mt76x02_sw_scan_complete,
+> --
+> 1.9.3
+>
