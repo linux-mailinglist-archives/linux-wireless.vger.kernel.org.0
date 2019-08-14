@@ -2,92 +2,48 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 8C2388C86A
-	for <lists+linux-wireless@lfdr.de>; Wed, 14 Aug 2019 04:31:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A0BDA8CDCD
+	for <lists+linux-wireless@lfdr.de>; Wed, 14 Aug 2019 10:12:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729096AbfHNCQe (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 13 Aug 2019 22:16:34 -0400
-Received: from mail.kernel.org ([198.145.29.99]:47976 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1729082AbfHNCQb (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 13 Aug 2019 22:16:31 -0400
-Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id DE6C3216F4;
-        Wed, 14 Aug 2019 02:16:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1565748990;
-        bh=Z0iMMtFHe2A9hRTgv11UFMxnhmvJT9XmKwh+/FvW8LI=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=w6Dk/G8kANoLUyNxocEfK9S3Adq2jyV9+d1Vds8UP3hByB3FVVx739/jkVwtZBYB8
-         pAarpM7Vkn0gDIySwo21ZmbdO7qbyKkWxbW+nglJtv8wtIjyHP0OrA7Up+ewfUF+Y3
-         XK/9T2OUJTnd4L7GYZXgcenOqRTHDrcx1eELvDGY=
-From:   Sasha Levin <sashal@kernel.org>
-To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Jia-Ju Bai <baijiaju1990@gmail.com>,
-        Johannes Berg <johannes.berg@intel.com>,
-        Sasha Levin <sashal@kernel.org>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.19 24/68] mac80211_hwsim: Fix possible null-pointer dereferences in hwsim_dump_radio_nl()
-Date:   Tue, 13 Aug 2019 22:15:02 -0400
-Message-Id: <20190814021548.16001-24-sashal@kernel.org>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20190814021548.16001-1-sashal@kernel.org>
-References: <20190814021548.16001-1-sashal@kernel.org>
+        id S1727545AbfHNIMK convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 14 Aug 2019 04:12:10 -0400
+Received: from slot0.abamarket.ga ([178.156.202.135]:34407 "EHLO
+        slot0.abamarket.ga" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727478AbfHNIMG (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Wed, 14 Aug 2019 04:12:06 -0400
+X-Greylist: delayed 677 seconds by postgrey-1.27 at vger.kernel.org; Wed, 14 Aug 2019 04:12:05 EDT
+Content-Type: text/plain; charset="iso-8859-1"
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 8BIT
+Content-Description: Mail message body
+Subject: PLEASE CONFIRM PURCHASE ORDER
+To:     Recipients <mscarolynsmtih@gmail.com>
+From:   "Mr NARESH KUMAR" <mscarolynsmtih@gmail.com>
+Date:   Wed, 14 Aug 2019 15:50:53 +0800
+Reply-To: saiapex09@outlook.com
+Message-ID: <0.0.3.41B.1D55274B7BA1EFE.0@slot0.abamarket.ga>
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Jia-Ju Bai <baijiaju1990@gmail.com>
+Could you please confirm if your recieved our purchase order last week.
 
-[ Upstream commit b55f3b841099e641bdb2701d361a4c304e2dbd6f ]
+If no please confirm let me resend it to you.
 
-In hwsim_dump_radio_nl(), when genlmsg_put() on line 3617 fails, hdr is
-assigned to NULL. Then hdr is used on lines 3622 and 3623:
-    genl_dump_check_consistent(cb, hdr);
-    genlmsg_end(skb, hdr);
 
-Thus, possible null-pointer dereferences may occur.
 
-To fix these bugs, hdr is used here when it is not NULL.
 
-This bug is found by a static analysis tool STCheck written by us.
+NARESH KUMAR
 
-Signed-off-by: Jia-Ju Bai <baijiaju1990@gmail.com>
-Link: https://lore.kernel.org/r/20190729082332.28895-1-baijiaju1990@gmail.com
-[put braces on all branches]
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- drivers/net/wireless/mac80211_hwsim.c | 8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+Executive Purchase Saiapextrading Ltd
 
-diff --git a/drivers/net/wireless/mac80211_hwsim.c b/drivers/net/wireless/mac80211_hwsim.c
-index 7cd428c0af433..ce2dd06af62e8 100644
---- a/drivers/net/wireless/mac80211_hwsim.c
-+++ b/drivers/net/wireless/mac80211_hwsim.c
-@@ -3502,10 +3502,12 @@ static int hwsim_dump_radio_nl(struct sk_buff *skb,
- 		hdr = genlmsg_put(skb, NETLINK_CB(cb->skb).portid,
- 				  cb->nlh->nlmsg_seq, &hwsim_genl_family,
- 				  NLM_F_MULTI, HWSIM_CMD_GET_RADIO);
--		if (!hdr)
-+		if (hdr) {
-+			genl_dump_check_consistent(cb, hdr);
-+			genlmsg_end(skb, hdr);
-+		} else {
- 			res = -EMSGSIZE;
--		genl_dump_check_consistent(cb, hdr);
--		genlmsg_end(skb, hdr);
-+		}
- 	}
- 
- done:
--- 
-2.20.1
+Dubai, KSA.
 
+(T/F): +96-2667-264 777 / 778
+
+(Mo): +96 94284 02803
+
+Website - http://www.saiapexgeneraltrading.com
