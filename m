@@ -2,82 +2,92 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 374548F637
-	for <lists+linux-wireless@lfdr.de>; Thu, 15 Aug 2019 23:04:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 96EA68F646
+	for <lists+linux-wireless@lfdr.de>; Thu, 15 Aug 2019 23:11:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732992AbfHOVEi (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 15 Aug 2019 17:04:38 -0400
-Received: from mail-yw1-f68.google.com ([209.85.161.68]:37085 "EHLO
-        mail-yw1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729562AbfHOVEh (ORCPT
+        id S1732266AbfHOVLZ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 15 Aug 2019 17:11:25 -0400
+Received: from mail-lf1-f68.google.com ([209.85.167.68]:41320 "EHLO
+        mail-lf1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1730865AbfHOVLZ (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 15 Aug 2019 17:04:37 -0400
-Received: by mail-yw1-f68.google.com with SMTP id u141so1151397ywe.4;
-        Thu, 15 Aug 2019 14:04:37 -0700 (PDT)
+        Thu, 15 Aug 2019 17:11:25 -0400
+Received: by mail-lf1-f68.google.com with SMTP id 62so2587358lfa.8
+        for <linux-wireless@vger.kernel.org>; Thu, 15 Aug 2019 14:11:24 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=6rHFZp7Q9zNEGDrlZI7ThtXxX4J4GssJHaVlX0BDsnU=;
+        b=YBegRkSr9nfqFrxMWcrxZCGSuYot01qXHOoTtm5wN3VBHueQZiKwl9WSchw77Q+TVJ
+         diHdRMiSGJr/k7xx6YnJCegoZ29R5fc/EOgx0U44Ph81JtctlLRfL3KuiGAvGt04RhUV
+         1EzhB489KpLuTy17vHo7QbM5pjo5eMPKZECMg=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id;
-        bh=+R4DESpyDCTZ4/02fHbOI51O/W8uEbFi4iGwP/pNzHY=;
-        b=YGrI1rAgHm76+ahYOMIeT+o2/yHNDSjHdC2DUoghFLq+jgOVFZ2t4+/AhcdTWtU1Wo
-         IT7hQS2EVbiwqAgDQihDpYW4mnqjIn5bFjKLFIhJ7kzs/usAZzZZ7wY4VlKDcBtOs0zR
-         EaIzRRkEEGDONZSePtQyw22qjeHbPgiU4ovz7HXeXrGUmFgO9HWU1X8urU7T/UL8IMuo
-         c1ER7kTlT3aAm3WKm65iODSX/HTWyiTGcMO+nxqtXEXqZ8jAg2FOmxyB5NwIURuf89S0
-         cffsJoPT0TMYC8nDlhaRi3OQu1/wzDBKj9Lgjr/h4Ns0oIqp43D3SdB6nS+EBoBWzk4j
-         pimQ==
-X-Gm-Message-State: APjAAAWK1PU5D3CwDfkun+Leq/vwWZXAzCjnndoIhWqiQNrcgjR39Sfj
-        JM24r1d/sS/BiO09z4suypQ=
-X-Google-Smtp-Source: APXvYqz7fEvZy6Sm2rvk8VGtZJ+AorpI71niilpfuX4QYL55lDYQF0j9lQCgHV0uOFCk9Ksr1bp4hQ==
-X-Received: by 2002:a81:de4e:: with SMTP id o14mr4405193ywl.369.1565903076933;
-        Thu, 15 Aug 2019 14:04:36 -0700 (PDT)
-Received: from localhost.localdomain (24-158-240-219.dhcp.smyr.ga.charter.com. [24.158.240.219])
-        by smtp.gmail.com with ESMTPSA id s188sm871287ywd.7.2019.08.15.14.04.35
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
-        Thu, 15 Aug 2019 14:04:35 -0700 (PDT)
-From:   Wenwen Wang <wenwen@cs.uga.edu>
-To:     Wenwen Wang <wenwen@cs.uga.edu>
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=6rHFZp7Q9zNEGDrlZI7ThtXxX4J4GssJHaVlX0BDsnU=;
+        b=CuxhLDN4LHcJyNmmi+V28zKw2J09t5SEJzDfiwGkXpkVUt3HZQxcnVWx/vue5oBKoq
+         pbSdYlzvLAmXcJCLXvUguZRkdyhG/4EuhUYRD5Ku2axDlp2l91x3mI380ABSI7DlO2qC
+         nHAlz05RBRKk08+T9/ZkGaryxTpGckO5gAcLJ3CnZevH5An58I7D+n+gEZln/5rV4hEr
+         rg8v7X/0egz6oCdznkecikqkD6BofGfwiaJIZ5o9KlNJ8vm8jodlOLRNlHZNp7ptlitL
+         gnhO4CC8IJjWvvCvnfJaKpXp0bbKdTUK49n/gUL9l+6c5gg2rIL2kBmC3MK/r1xM6P1b
+         NXIg==
+X-Gm-Message-State: APjAAAX+4wXN4U31vLVJrthsjx/i3S7rEHEe4r2gAy+DF2OuAkSG7ZHf
+        ls0k6ClpyqtPPFEfZ4p8OPSK9KKjqoo=
+X-Google-Smtp-Source: APXvYqxu9qr/58JGSW4DyyzcxBNQtb6ix+6mHuibgLN6xL9YwlZByXnkkMpSFF7QpneYaavumFZJ/w==
+X-Received: by 2002:ac2:5104:: with SMTP id q4mr3593155lfb.56.1565903482650;
+        Thu, 15 Aug 2019 14:11:22 -0700 (PDT)
+Received: from mail-lj1-f179.google.com (mail-lj1-f179.google.com. [209.85.208.179])
+        by smtp.gmail.com with ESMTPSA id z83sm661602ljb.73.2019.08.15.14.11.21
+        for <linux-wireless@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 15 Aug 2019 14:11:21 -0700 (PDT)
+Received: by mail-lj1-f179.google.com with SMTP id m24so3423522ljg.8
+        for <linux-wireless@vger.kernel.org>; Thu, 15 Aug 2019 14:11:21 -0700 (PDT)
+X-Received: by 2002:a2e:b0e6:: with SMTP id h6mr3455892ljl.18.1565903481377;
+ Thu, 15 Aug 2019 14:11:21 -0700 (PDT)
+MIME-Version: 1.0
+References: <1564575767-27557-1-git-send-email-yhchuang@realtek.com> <1564575767-27557-3-git-send-email-yhchuang@realtek.com>
+In-Reply-To: <1564575767-27557-3-git-send-email-yhchuang@realtek.com>
+From:   Brian Norris <briannorris@chromium.org>
+Date:   Thu, 15 Aug 2019 14:11:10 -0700
+X-Gmail-Original-Message-ID: <CA+ASDXPJiNTXAihzohT06RS57gkJU9Q-u3kpp0piJP-3U1miFw@mail.gmail.com>
+Message-ID: <CA+ASDXPJiNTXAihzohT06RS57gkJU9Q-u3kpp0piJP-3U1miFw@mail.gmail.com>
+Subject: Re: [PATCH v3 2/3] rtw88: enclose c2h cmd handle with mutex
+To:     Tony Chuang <yhchuang@realtek.com>
 Cc:     Kalle Valo <kvalo@codeaurora.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        ath10k@lists.infradead.org (open list:QUALCOMM ATHEROS ATH10K WIRELESS
-        DRIVER),
-        linux-wireless@vger.kernel.org (open list:NETWORKING DRIVERS (WIRELESS)),
-        netdev@vger.kernel.org (open list:NETWORKING DRIVERS),
-        linux-kernel@vger.kernel.org (open list)
-Subject: [PATCH] ath10k: add cleanup in ath10k_sta_state()
-Date:   Thu, 15 Aug 2019 16:04:31 -0500
-Message-Id: <1565903072-3948-1-git-send-email-wenwen@cs.uga.edu>
-X-Mailer: git-send-email 2.7.4
+        linux-wireless <linux-wireless@vger.kernel.org>,
+        Stanislaw Gruszka <sgruszka@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-If 'sta->tdls' is false, no cleanup is executed, leading to memory/resource
-leaks, e.g., 'arsta->tx_stats'. To fix this issue, perform cleanup before
-go to the 'exit' label.
+I understand this is already queued up, but I still have a question:
 
-Signed-off-by: Wenwen Wang <wenwen@cs.uga.edu>
----
- drivers/net/wireless/ath/ath10k/mac.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+On Wed, Jul 31, 2019 at 5:23 AM <yhchuang@realtek.com> wrote:
+> C2H commands that cannot be handled in IRQ context should
+> be protected by rtwdev->mutex. Because they might have a
+> sequece of hardware operations that does not want to be
+> interfered.
 
-diff --git a/drivers/net/wireless/ath/ath10k/mac.c b/drivers/net/wireless/ath/ath10k/mac.c
-index 0606416..f99e6d2 100644
---- a/drivers/net/wireless/ath/ath10k/mac.c
-+++ b/drivers/net/wireless/ath/ath10k/mac.c
-@@ -6548,8 +6548,12 @@ static int ath10k_sta_state(struct ieee80211_hw *hw,
- 
- 		spin_unlock_bh(&ar->data_lock);
- 
--		if (!sta->tdls)
-+		if (!sta->tdls) {
-+			ath10k_peer_delete(ar, arvif->vdev_id, sta->addr);
-+			ath10k_mac_dec_num_stations(arvif, sta);
-+			kfree(arsta->tx_stats);
- 			goto exit;
-+		}
- 
- 		ret = ath10k_wmi_update_fw_tdls_state(ar, arvif->vdev_id,
- 						      WMI_TDLS_ENABLE_ACTIVE);
--- 
-2.7.4
+Can you elaborate on what interference you're looking at, exactly? I'm
+not a big fan of defensive addition of global locks, and this
+particular mutex isn't very targeted. It claims to be for mac80211
+callbacks, but you use it in quite a few places (some of which clearly
+don't make sense), and many of them are not related to mac80211
+callbacks AFAICT.
 
+To the contrary: this handler is called from the mac80211 work queue,
+which is ordered and therefore shouldn't be getting "interrupted"
+(e.g., conflicting commands). But then, you added the 'irqsafe'
+command, which gets run from the ISR...and doesn't hold this lock,
+obviously.
+
+It may well be that you're correct here, but I'd like to see a better
+explanation for stuff like this. And maybe an update to the
+rtw_dev::mutex comments.
+
+Brian
