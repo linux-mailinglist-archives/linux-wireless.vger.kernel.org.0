@@ -2,70 +2,82 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D558C8F5F2
-	for <lists+linux-wireless@lfdr.de>; Thu, 15 Aug 2019 22:48:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 374548F637
+	for <lists+linux-wireless@lfdr.de>; Thu, 15 Aug 2019 23:04:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732600AbfHOUss (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 15 Aug 2019 16:48:48 -0400
-Received: from smtp.codeaurora.org ([198.145.29.96]:37306 "EHLO
-        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728728AbfHOUss (ORCPT
+        id S1732992AbfHOVEi (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 15 Aug 2019 17:04:38 -0400
+Received: from mail-yw1-f68.google.com ([209.85.161.68]:37085 "EHLO
+        mail-yw1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729562AbfHOVEh (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 15 Aug 2019 16:48:48 -0400
-Received: by smtp.codeaurora.org (Postfix, from userid 1000)
-        id D3CDA601F6; Thu, 15 Aug 2019 20:48:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1565902127;
-        bh=iSOqHxzpkpMOGAEn+NEDsyChRjF6HJTBCmRyk9wfoH8=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=avIbPuulc+Fm4fCJuxOwXK+ZxGJj32e1lf2Y8Cx7bitBYiKAgU+6D0jdZ/hBBWqz/
-         PcrJUTyuDrApsDiJ4aLLmhoViogNzgEPRoYnXkVo52SQFSI2ZPg8IKXW1dAhw+FAre
-         FPbV7gwvRaC2FDxaT8zO/0WRI58BwovTB/yveL1g=
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        pdx-caf-mail.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.7 required=2.0 tests=ALL_TRUSTED,BAYES_00,
-        DKIM_INVALID,DKIM_SIGNED autolearn=no autolearn_force=no version=3.4.0
-Received: from mail.codeaurora.org (localhost.localdomain [127.0.0.1])
-        by smtp.codeaurora.org (Postfix) with ESMTP id 90177601F6;
-        Thu, 15 Aug 2019 20:48:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1565902127;
-        bh=iSOqHxzpkpMOGAEn+NEDsyChRjF6HJTBCmRyk9wfoH8=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=avIbPuulc+Fm4fCJuxOwXK+ZxGJj32e1lf2Y8Cx7bitBYiKAgU+6D0jdZ/hBBWqz/
-         PcrJUTyuDrApsDiJ4aLLmhoViogNzgEPRoYnXkVo52SQFSI2ZPg8IKXW1dAhw+FAre
-         FPbV7gwvRaC2FDxaT8zO/0WRI58BwovTB/yveL1g=
-MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII;
- format=flowed
-Content-Transfer-Encoding: 7bit
-Date:   Thu, 15 Aug 2019 13:48:47 -0700
-From:   Jeff Johnson <jjohnson@codeaurora.org>
-To:     James Prestwood <prestwoj@gmail.com>
-Cc:     linux-wireless@vger.kernel.org,
-        linux-wireless-owner@vger.kernel.org
-Subject: Re: [RFC 0/1] Allow MAC change on up interface
-In-Reply-To: <20190815185702.30937-1-prestwoj@gmail.com>
-References: <20190815185702.30937-1-prestwoj@gmail.com>
-Message-ID: <46810d9dbb674fb8d8fb442f2418868a@codeaurora.org>
-X-Sender: jjohnson@codeaurora.org
-User-Agent: Roundcube Webmail/1.2.5
+        Thu, 15 Aug 2019 17:04:37 -0400
+Received: by mail-yw1-f68.google.com with SMTP id u141so1151397ywe.4;
+        Thu, 15 Aug 2019 14:04:37 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=+R4DESpyDCTZ4/02fHbOI51O/W8uEbFi4iGwP/pNzHY=;
+        b=YGrI1rAgHm76+ahYOMIeT+o2/yHNDSjHdC2DUoghFLq+jgOVFZ2t4+/AhcdTWtU1Wo
+         IT7hQS2EVbiwqAgDQihDpYW4mnqjIn5bFjKLFIhJ7kzs/usAZzZZ7wY4VlKDcBtOs0zR
+         EaIzRRkEEGDONZSePtQyw22qjeHbPgiU4ovz7HXeXrGUmFgO9HWU1X8urU7T/UL8IMuo
+         c1ER7kTlT3aAm3WKm65iODSX/HTWyiTGcMO+nxqtXEXqZ8jAg2FOmxyB5NwIURuf89S0
+         cffsJoPT0TMYC8nDlhaRi3OQu1/wzDBKj9Lgjr/h4Ns0oIqp43D3SdB6nS+EBoBWzk4j
+         pimQ==
+X-Gm-Message-State: APjAAAWK1PU5D3CwDfkun+Leq/vwWZXAzCjnndoIhWqiQNrcgjR39Sfj
+        JM24r1d/sS/BiO09z4suypQ=
+X-Google-Smtp-Source: APXvYqz7fEvZy6Sm2rvk8VGtZJ+AorpI71niilpfuX4QYL55lDYQF0j9lQCgHV0uOFCk9Ksr1bp4hQ==
+X-Received: by 2002:a81:de4e:: with SMTP id o14mr4405193ywl.369.1565903076933;
+        Thu, 15 Aug 2019 14:04:36 -0700 (PDT)
+Received: from localhost.localdomain (24-158-240-219.dhcp.smyr.ga.charter.com. [24.158.240.219])
+        by smtp.gmail.com with ESMTPSA id s188sm871287ywd.7.2019.08.15.14.04.35
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
+        Thu, 15 Aug 2019 14:04:35 -0700 (PDT)
+From:   Wenwen Wang <wenwen@cs.uga.edu>
+To:     Wenwen Wang <wenwen@cs.uga.edu>
+Cc:     Kalle Valo <kvalo@codeaurora.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        ath10k@lists.infradead.org (open list:QUALCOMM ATHEROS ATH10K WIRELESS
+        DRIVER),
+        linux-wireless@vger.kernel.org (open list:NETWORKING DRIVERS (WIRELESS)),
+        netdev@vger.kernel.org (open list:NETWORKING DRIVERS),
+        linux-kernel@vger.kernel.org (open list)
+Subject: [PATCH] ath10k: add cleanup in ath10k_sta_state()
+Date:   Thu, 15 Aug 2019 16:04:31 -0500
+Message-Id: <1565903072-3948-1-git-send-email-wenwen@cs.uga.edu>
+X-Mailer: git-send-email 2.7.4
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 2019-08-15 11:57, James Prestwood wrote:
->  - Adds a new NL80211_ATTR for including a "random mac" to
->    CMD_CONNECT. This MAC is passed down the stack and gets set to
->    the net_device's address.
+If 'sta->tdls' is false, no cleanup is executed, leading to memory/resource
+leaks, e.g., 'arsta->tx_stats'. To fix this issue, perform cleanup before
+go to the 'exit' label.
 
-My initial reaction is that I'd avoid using the term "random". For some
-use cases the address may truly be random, but for other use cases it
-may be derived, perhaps in an AP-specific manner. Other terms which may
-be more appropriate are "spoofed mac", "administered mac", etc.
+Signed-off-by: Wenwen Wang <wenwen@cs.uga.edu>
+---
+ drivers/net/wireless/ath/ath10k/mac.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-It is a shame that due to backward compatibility we can't use
-NL80211_ATTR_MAC while shifting the current usage over to using
-NL80211_ATTR_BSSID.
+diff --git a/drivers/net/wireless/ath/ath10k/mac.c b/drivers/net/wireless/ath/ath10k/mac.c
+index 0606416..f99e6d2 100644
+--- a/drivers/net/wireless/ath/ath10k/mac.c
++++ b/drivers/net/wireless/ath/ath10k/mac.c
+@@ -6548,8 +6548,12 @@ static int ath10k_sta_state(struct ieee80211_hw *hw,
+ 
+ 		spin_unlock_bh(&ar->data_lock);
+ 
+-		if (!sta->tdls)
++		if (!sta->tdls) {
++			ath10k_peer_delete(ar, arvif->vdev_id, sta->addr);
++			ath10k_mac_dec_num_stations(arvif, sta);
++			kfree(arsta->tx_stats);
+ 			goto exit;
++		}
+ 
+ 		ret = ath10k_wmi_update_fw_tdls_state(ar, arvif->vdev_id,
+ 						      WMI_TDLS_ENABLE_ACTIVE);
+-- 
+2.7.4
+
