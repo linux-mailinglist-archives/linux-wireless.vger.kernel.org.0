@@ -2,69 +2,48 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B70658EF3D
-	for <lists+linux-wireless@lfdr.de>; Thu, 15 Aug 2019 17:23:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C727D8EF75
+	for <lists+linux-wireless@lfdr.de>; Thu, 15 Aug 2019 17:36:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728828AbfHOPXJ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 15 Aug 2019 11:23:09 -0400
-Received: from smtp.codeaurora.org ([198.145.29.96]:57502 "EHLO
-        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728728AbfHOPXJ (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 15 Aug 2019 11:23:09 -0400
-Received: by smtp.codeaurora.org (Postfix, from userid 1000)
-        id D6D0F60316; Thu, 15 Aug 2019 15:23:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1565882588;
-        bh=N1TGviypDozexgW2XAtfbZgd+tM59/RR+UyBKJ27jSM=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=OZXtp42V/zzLgdUXGBeDJmWG5GmAPbnaU358iv/IWIyM123b78mPFHExBduf+rlni
-         ygDU4WX285+R+b1D+uKpOfWlKGA1b3eIZmFod3uptztQKS54krlAMWrOOhX0oxok94
-         610XN137aLh3Kpo92Loc6GaNyb87LObyn+kNhULU=
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        pdx-caf-mail.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.7 required=2.0 tests=ALL_TRUSTED,BAYES_00,
-        DKIM_INVALID,DKIM_SIGNED autolearn=no autolearn_force=no version=3.4.0
-Received: from mail.codeaurora.org (localhost.localdomain [127.0.0.1])
-        by smtp.codeaurora.org (Postfix) with ESMTP id 5D20B60316;
-        Thu, 15 Aug 2019 15:23:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1565882588;
-        bh=N1TGviypDozexgW2XAtfbZgd+tM59/RR+UyBKJ27jSM=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=OZXtp42V/zzLgdUXGBeDJmWG5GmAPbnaU358iv/IWIyM123b78mPFHExBduf+rlni
-         ygDU4WX285+R+b1D+uKpOfWlKGA1b3eIZmFod3uptztQKS54krlAMWrOOhX0oxok94
-         610XN137aLh3Kpo92Loc6GaNyb87LObyn+kNhULU=
+        id S1729627AbfHOPgw (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 15 Aug 2019 11:36:52 -0400
+Received: from ocelot.miegl.cz ([195.201.216.236]:60764 "EHLO ocelot.miegl.cz"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725977AbfHOPgw (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 15 Aug 2019 11:36:52 -0400
+X-Greylist: delayed 480 seconds by postgrey-1.27 at vger.kernel.org; Thu, 15 Aug 2019 11:36:51 EDT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=miegl.cz; s=dkim;
+        t=1565882929; bh=RL3QjsituN+eKLm8rFAvRNU0p4kuHntE0WRM8nYx0Cc=;
+        h=Date:From:To:Subject;
+        b=j18/k5defNOvqDZ0rE8P8AGOKXF+u8BB2XCWI6KQ3gYzO5UvHMoTcmv8s6Ci5qWpH
+         ct7UoYKKsQBtNIjiyTOP4RPJ97xjHlDoDcoNl68aE7RU9ZMBScK4lHAWREjQoQ1sZF
+         as0lPxE3MFE270qNfJ/w7CvW6QZoQu4735JgWqJ12lB/u0ArF2zF7iRQTTE/vWtQk1
+         awhdiAtbVL9TjT9LMmfdZBSMxm00lcD11vFmrUGoYQQbN9In0avVsLOgbNzA+xRnr9
+         OqGmyt77Z+hUz/d3/nE9wbNE0N1wbRPfQMEJHOqd4zLmuac2n5nsSk/DVJTvjbsrXb
+         fHrz+Q6nExvrQ==
+Date:   Thu, 15 Aug 2019 17:28:44 +0200
+From:   Josef Miegl <josef@miegl.cz>
+To:     linux-wireless@vger.kernel.org
+Subject: Implementing Mikrotik IE
+Message-ID: <20190815152844.k5mmddvbwrohkzr6@pepin-laptop.localdomain>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII;
- format=flowed
-Content-Transfer-Encoding: 7bit
-Date:   Thu, 15 Aug 2019 08:23:08 -0700
-From:   Jeff Johnson <jjohnson@codeaurora.org>
-To:     Jouni Malinen <jouni@codeaurora.org>
-Cc:     Johannes Berg <johannes@sipsolutions.net>,
-        linux-wireless@vger.kernel.org,
-        Gurumoorthi Gnanasambandhan <gguru@codeaurora.org>,
-        linux-wireless-owner@vger.kernel.org
-Subject: Re: [PATCH] cfg80211: VLAN offload support for set_key and
- set_sta_vlan
-In-Reply-To: <20190815133825.8131-1-jouni@codeaurora.org>
-References: <20190815133825.8131-1-jouni@codeaurora.org>
-Message-ID: <16c2c5a92fb9b51ce2305a0585cb17d1@codeaurora.org>
-X-Sender: jjohnson@codeaurora.org
-User-Agent: Roundcube Webmail/1.2.5
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: NeoMutt/20180716
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 2019-08-15 06:38, Jouni Malinen wrote:
-> From: Gurumoorthi Gnanasambandhan <gguru@codeaurora.org>
-> [...]
-> By setting NL80211_EXT_FEATURE_VLAN_OFFLOAD flag the driver indicates
-> support for a single netdev with VLAN tagged frames. Separate
-> VLAN-specific netdevs are added using vcongig similar to Ethernet.
+I've been trying to implement Mikrotik IE. It is a vendor IE that
+carries stuff like radio name. Even though it is Mikrotik specific, UBNT
+has a patch for madwifi:
+https://github.com/jhairtt/ubnt-hal-0.7.379/blob/master/patches/madwifi-dfs-r3319-20080201/074-mtik-ie.patch
 
-nit: s/vcongig/vconfig/
+The IE is sent in beacon and assoc/reassoc frames. I think the correct
+place for this is mac80211, but I'm not sure how should I expose a
+switch to this functionality. Is there something like ioctl, or do I have
+to implement a switch in nl80211, then in cfg80211 and then finally in
+mac80211?
 
+Any advice is greatly appreciated.
