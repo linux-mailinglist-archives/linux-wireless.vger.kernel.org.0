@@ -2,87 +2,119 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 3012E8E071
-	for <lists+linux-wireless@lfdr.de>; Thu, 15 Aug 2019 00:14:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 820F88E8CB
+	for <lists+linux-wireless@lfdr.de>; Thu, 15 Aug 2019 12:09:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729879AbfHNWOX (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 14 Aug 2019 18:14:23 -0400
-Received: from mail-qt1-f196.google.com ([209.85.160.196]:34988 "EHLO
-        mail-qt1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729948AbfHNWOV (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 14 Aug 2019 18:14:21 -0400
-Received: by mail-qt1-f196.google.com with SMTP id u34so395994qte.2
-        for <linux-wireless@vger.kernel.org>; Wed, 14 Aug 2019 15:14:21 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=p6m83mGjllDiHyeRTSS1oVMHX5M/xE6ILn6PPhzsgs4=;
-        b=l5PC+4msT+R1VOq1FIInu61dIh2STHPN9aSBt/Y5M3n644FfA169IT6wzP+sfbruwG
-         5vHd8QNfmmF7FOlV1OW4+1ls9+argQAW0MZ9696kjqRFjMtNiRxkPVvom8CpuMz6+P3J
-         lvnykAE+N5ClLjt8+21Oenlj55mmWn47h6bOufTUj3iAyACG+cL0ImoQgj5m6u3w1/lr
-         fVPm9fs++0X3Li7mpOQ13No26+jYpH9OobXYps5GGnrfpp0Xq6qTsPtsJRMHzlRsuSi2
-         Q5RuPSHMeFGhG1MzboDTj+tp2IBpQDy9TN5wUYjWC528WeGARQxpLHz2F9meUvIkEvkQ
-         sSPA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=p6m83mGjllDiHyeRTSS1oVMHX5M/xE6ILn6PPhzsgs4=;
-        b=oLMWC8qGk0PYzN9dWZBnjyTom/zoJC9RkVc/sMU0vpCnrrFmlMYB3Z6suSFFWDwgp5
-         oNRe69/YgsPXQSXfpPGXDdCIHfMKSmFeroSKQuskYXbryaUcWaImI9se71JBI0Jyz6a6
-         p+pBKnOcPv3DPETC8ya9eZ3yBdnqjUe1+Pfg/4pWpI5vVH+2er0yTmsX7uI3uTyPEh5I
-         AOqrfuBaCeMiiNVf4M7iQS/vwytJF7VrllgLJB/1Pr1u4QpRoPWme6NPu2kvJ1Ww8Osd
-         yBQ5LT2AsMhrquofi/mIKsyvPCBLJ7sBHahB53fo/qgvN/j363C1vgON+an7Oju/Raxo
-         cZJQ==
-X-Gm-Message-State: APjAAAUqgOCrlgReLiNQnIQUNPTfzgMvZ+v2KT8asH2JMGqtubjnDQ73
-        1GI4T9rRmlWLF4YaHSaXCRffhfiTfBw/TJ+SjS4=
-X-Google-Smtp-Source: APXvYqwvEwq36YC/YcFdGthiFQqEswOUmu8y33AXL4ty34gsygcaTEjmhvj04/dFUfa1vFoE719aJcDSjuFoUwkSVes=
-X-Received: by 2002:aed:3826:: with SMTP id j35mr1333309qte.54.1565820860049;
- Wed, 14 Aug 2019 15:14:20 -0700 (PDT)
+        id S1731299AbfHOKJm (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 15 Aug 2019 06:09:42 -0400
+Received: from mx1.redhat.com ([209.132.183.28]:55614 "EHLO mx1.redhat.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1731293AbfHOKJm (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 15 Aug 2019 06:09:42 -0400
+Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.phx2.redhat.com [10.5.11.13])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mx1.redhat.com (Postfix) with ESMTPS id B0DBE3082E24;
+        Thu, 15 Aug 2019 10:09:41 +0000 (UTC)
+Received: from localhost (unknown [10.43.2.236])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id 51142608AB;
+        Thu, 15 Aug 2019 10:09:38 +0000 (UTC)
+Date:   Thu, 15 Aug 2019 12:09:37 +0200
+From:   Stanislaw Gruszka <sgruszka@redhat.com>
+To:     Lorenzo Bianconi <lorenzo.bianconi@redhat.com>
+Cc:     linux-wireless <linux-wireless@vger.kernel.org>,
+        Felix Fietkau <nbd@nbd.name>,
+        Ryder Lee <ryder.lee@mediatek.com>, Roy Luo <royluo@google.com>
+Subject: Re: [PATCH 5.3] mt76: mt76x0e: don't use hw encryption for MT7630E
+Message-ID: <20190815100936.GA21775@redhat.com>
+References: <1565703400-10623-1-git-send-email-sgruszka@redhat.com>
+ <CAJ0CqmXM4NRMYU6Lt_a4f+DXE2bVmhYrjQbgxHG0g=N+o3TeQw@mail.gmail.com>
 MIME-Version: 1.0
-Received: by 2002:aed:3544:0:0:0:0:0 with HTTP; Wed, 14 Aug 2019 15:14:19
- -0700 (PDT)
-Reply-To: Katerinejones19@gmail.com
-From:   "MS. MARYANNA B. THOMASON" <westernunion.benin982@gmail.com>
-Date:   Wed, 14 Aug 2019 23:14:19 +0100
-Message-ID: <CAP=nHB+U+By16HzeUHiDfPT5KNtemGam6gniZhL2s7_itZ3F8w@mail.gmail.com>
-Subject: TODAY, Wed, Aug 14, 2019 I AM READY FOR COMING TO YOUR ADDRESS WITH
- THIS ATM CARD
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAJ0CqmXM4NRMYU6Lt_a4f+DXE2bVmhYrjQbgxHG0g=N+o3TeQw@mail.gmail.com>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.13
+X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16 (mx1.redhat.com [10.5.110.46]); Thu, 15 Aug 2019 10:09:41 +0000 (UTC)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-ATTN DEAR PARCEL BENEFICIARY.
+On Wed, Aug 14, 2019 at 11:50:12AM +0200, Lorenzo Bianconi wrote:
+> >
+> > Since 41634aa8d6db ("mt76: only schedule txqs from the tx tasklet")
+> > I can observe firmware hangs on MT7630E on station mode: tx stop
+> > functioning after minor activity (rx keep working) and on module
+> > unload device fail to stop with messages:
+> >
+> > [ 5446.141413] mt76x0e 0000:06:00.0: TX DMA did not stop
+> > [ 5449.176764] mt76x0e 0000:06:00.0: TX DMA did not stop
+> >
+> > Loading module again results in failure to associate with AP.
+> > Only machine power off / power on cycle can make device work again.
+> >
+> > It's unclear why commit 41634aa8d6db causes the problem, but it is
+> > related to HW encryption. Since issue is a firmware hang, that is super
+> > hard to debug, just disable HW encryption as fix for the issue.
+> >
+> > Fixes: 41634aa8d6db ("mt76: only schedule txqs from the tx tasklet")
+> > Signed-off-by: Stanislaw Gruszka <sgruszka@redhat.com>
+> > ---
+> >  drivers/net/wireless/mediatek/mt76/mt76x0/pci.c | 15 ++++++++++++++-
+> >  1 file changed, 14 insertions(+), 1 deletion(-)
+> >
+> > diff --git a/drivers/net/wireless/mediatek/mt76/mt76x0/pci.c b/drivers/net/wireless/mediatek/mt76/mt76x0/pci.c
+> > index 4585e1b756c2..6117e6ca08cb 100644
+> > --- a/drivers/net/wireless/mediatek/mt76/mt76x0/pci.c
+> > +++ b/drivers/net/wireless/mediatek/mt76/mt76x0/pci.c
+> > @@ -62,6 +62,19 @@ static void mt76x0e_stop(struct ieee80211_hw *hw)
+> >         mt76x0e_stop_hw(dev);
+> >  }
+> >
+> > +static int
+> > +mt76x0e_set_key(struct ieee80211_hw *hw, enum set_key_cmd cmd,
+> > +               struct ieee80211_vif *vif, struct ieee80211_sta *sta,
+> > +               struct ieee80211_key_conf *key)
+> > +{
+> > +       struct mt76x02_dev *dev = hw->priv;
+> > +
+> > +       if (is_mt7630(dev))
+> > +               return -EOPNOTSUPP;
+> 
+> Hi Stanislaw,
+> 
+> Can you please try if disabling/enabling the tx tasklet during hw key
+> configuration fixes the issue?
+> Doing something like:
+> 
+> tasklet_disable(tx_tasklet)
+> mt76x02_set_key()
+> tasklet_enable(tx_tasklet)
 
-I AM CATHY JONES,DIPLOMATIC AGENT ASIGNED ON THE DELIVERY OF YOUR ATM
-CARD THROUGH MS. MARYANNA B. THOMASON, DHL MANAGEMENT DIRECTOR NEW
-YORK.
-TODAY, Wed, Aug 14, 2019 I AM READY FOR COMING TO YOUR ADDRESS WITH
-THIS ATM CARD, So before i deliver I want you to send me.
-official diplomatic agent delivery fee sum of $150.00 us
- only. I am here at JFK Airport,Florida. USA
+It does not help with the problem.
 
-SEND THIS FEE BY WESTERN UNION OR MONEY WITH RECEIVER'S NAME AND ADDRESS BELOW.
+> Moreover, have you double checked if there is any performance impact
+> of not using hw encryption?
 
-RECEIVER'S NAME-----------------ERROL PRINGLE
-ADDRESS----------------3500 OLD DENTON RD APT 208; CARROLLTON, TEXAS 75007
-COUNTRY----------------USA
-AMOUNT--------------------$150.00 ONLY
-TEST QUESTION----------------WHO IS THE CREATOR
-ANSWER------------------GOD
- meanwhile this $150.00 is required by the Custom Service,USA Homeland
-Security,for protection of your delivery, it will make the ATM CARD
-and funds worth $15.8MILLION US DOLLARS secure, Beleiev me, this is my
-word, remark my word,you will receive your delivery from me, Mrs.
-Cathy Jones once you send this only $150.00 today.
-I WAIT ON YOUR PAYMENT CONFIRMATION, ONCE I GOT YOUR PAYMENT, I WILL
-FINALLY ARRIVE TO YOUR NEAREST ADDRESS. today
-THANKS AND MAY GOD BLESS  YOU
-CATHY JONES,DIPLOMATIC AGENT
-EMAIL; katerinejones19@gmail.com
-CALL OR TEXT ME, DIPLOMATIC AGENT MS. CATHY JONES
-Phone Number; (408) 650-6103,
+I didn't observe any, but realized on this machine I have
+aesni_intel encryption accelerator. After rebuild kernel without
+CONFIG_CRYPTO_AES_NI_INTEL, 'perf top' showed extra 20% of cpu usage
+in aes_encrypt() when sending data with HW encryption disabled.
+
+> If so, I guess it is better to just redefine mt76_wake_tx_queue for
+> mt76x0e and run mt76_txq_schedule for 7630e:
+> 
+> void mt76x0e_wake_tx_queue(struct ieee80211_hw *hw, struct ieee80211_txq *txq)
+> {
+>         if (is_mt7630(dev)) {
+>             mt76_txq_schedule(dev, txq->ac);
+>         } else {
+>             tasklet_schedule(&dev->tx_tasklet);
+>         }
+> }
+
+Not sure about reduction of lock contention for which the tx_tasklet
+was introduced here, but looks ok for me as fix.
+ 
+Stanislaw
