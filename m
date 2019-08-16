@@ -2,60 +2,74 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 4C1BB900D9
-	for <lists+linux-wireless@lfdr.de>; Fri, 16 Aug 2019 13:38:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A44B59020E
+	for <lists+linux-wireless@lfdr.de>; Fri, 16 Aug 2019 14:56:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727145AbfHPLi0 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 16 Aug 2019 07:38:26 -0400
-Received: from ocelot.miegl.cz ([195.201.216.236]:60792 "EHLO ocelot.miegl.cz"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727081AbfHPLiZ (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 16 Aug 2019 07:38:25 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=miegl.cz; s=dkim;
-        t=1565955502; bh=E2bH3p8EBEYKHPMbTeyOV0lb/hYa7v9PsVY1ivTZ9mQ=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To;
-        b=McrjrGKd3WjrxSg5c10ccaWaqYRWaYgcnlMLQxG0Ac/CnTxD8WAmsjuCTgDsdc5Dn
-         QkCZJaCyF7jFXs0vJmMzvvigTzLeAGGxBH5SAk137Xt8uw2B+nTI4TAJM3MCK8GHEY
-         Bmd3n2lE1pRkudAaImuYcOTOxS3VrvdCFZi/cfElD3rvraaYIez5eVqt/QrKOeaf/E
-         yr5qnOP9nEH1bb5faKOD/rF8teKiwcOfC6r8NmK8CAboi6BbC0mOBlZOownkEYdT+y
-         gHs+pLT5sXoRSsPcKefI82QLez+M3cFbZMoshnLcKXz8rImW2HN+BeBXy+mFgBYkCH
-         XJ0PGHeGgNgUA==
-Date:   Fri, 16 Aug 2019 13:38:18 +0200
-From:   Josef Miegl <josef@miegl.cz>
-To:     Sebastian Gottschall <s.gottschall@newmedia-net.de>
-Cc:     linux-wireless <linux-wireless@vger.kernel.org>
-Subject: Re: Implementing Mikrotik IE
-Message-ID: <20190816113818.ohktykc4fyetzyvq@pepin-laptop.localdomain>
-References: <20190815152844.k5mmddvbwrohkzr6@pepin-laptop.localdomain>
- <3a079683-6f57-3b42-f909-90c46e14f14f@newmedia-net.de>
- <20190816111044.4ntizgmpa3twbzcg@pepin-laptop.localdomain>
- <e8129acb-fc32-c85c-b504-ab8777a3f1a3@newmedia-net.de>
+        id S1726597AbfHPM4C (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 16 Aug 2019 08:56:02 -0400
+Received: from paleale.coelho.fi ([176.9.41.70]:36126 "EHLO
+        farmhouse.coelho.fi" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
+        with ESMTP id S1726032AbfHPM4C (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 16 Aug 2019 08:56:02 -0400
+Received: from [91.156.6.193] (helo=redipa.ger.corp.intel.com)
+        by farmhouse.coelho.fi with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+        (Exim 4.92)
+        (envelope-from <luca@coelho.fi>)
+        id 1hyblw-00066W-6m; Fri, 16 Aug 2019 15:56:00 +0300
+From:   Luca Coelho <luca@coelho.fi>
+To:     kvalo@codeaurora.org
+Cc:     linux-wireless@vger.kernel.org
+Date:   Fri, 16 Aug 2019 15:55:50 +0300
+Message-Id: <20190816125554.8659-1-luca@coelho.fi>
+X-Mailer: git-send-email 2.23.0.rc1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <e8129acb-fc32-c85c-b504-ab8777a3f1a3@newmedia-net.de>
-User-Agent: NeoMutt/20180716
+Content-Transfer-Encoding: 8bit
+X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on farmhouse.coelho.fi
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.9 required=5.0 tests=ALL_TRUSTED,BAYES_00,
+        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.2
+Subject: [PATCH 0/4] iwlwifi: fixes intended for 5.3 2019-08-16
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Fri, Aug 16, 2019 at 01:15:30PM +0200, Sebastian Gottschall wrote:
-> in station mode you are right. you need to modify mac80211.
-Even if I don't need to capture the IE back? All I want is to include
-extra vendor IE in client assoc/reassoc frames. If this is something the
-current wireless stack cannot do, perhaps it should be implemented.
+From: Luca Coelho <luciano.coelho@intel.com>
 
-> i have a mod for mikrotik ie for ap and station implemented in mac80211.
-> i can send you a drop of my mac80211 tree which is not compatible with
-> upstream. but it will allow you to take off whatever you need to patch it
-> since such a
-> 
-> patch will never be accepted upstream. it adds a new field to the station
-> table which shows the radioname and broadcasts the radioname on ap side.
-> this has been tested
-> with ath9k and ath10k so far an works as expected. i modified also the iw
-> tool to show the informations
-Your mac80211 tree drop would be greatly appreciated.
+This is my third patchset with fixes for v5.3.
 
-Thanks
+The changes are:
+
+* fix one bug on 22560 Tx code;
+* prevent sending multicast frames when not associated;
+* a couple of fixes in the card detection code.
+
+As usual, I'm pushing this to a pending branch, for kbuild bot.  I
+will assign these patches to you in patchwork so you can apply them
+directly to wireless-drivers.
+
+Cheers,
+Luca.
+
+
+Emmanuel Grumbach (1):
+  iwlwifi: pcie: fix the byte count table format for 22560 devices
+
+Ilan Peer (1):
+  iwlwifi: mvm: Allow multicast data frames only when associated
+
+Luca Coelho (2):
+  iwlwifi: pcie: don't switch FW to qnj when ax201 is detected
+  iwlwifi: pcie: fix recognition of QuZ devices
+
+ .../net/wireless/intel/iwlwifi/mvm/mac-ctxt.c | 33 +++++++++++++++++--
+ .../net/wireless/intel/iwlwifi/mvm/mac80211.c | 10 ++++++
+ drivers/net/wireless/intel/iwlwifi/pcie/drv.c | 17 ++++++++++
+ .../net/wireless/intel/iwlwifi/pcie/trans.c   |  1 +
+ .../net/wireless/intel/iwlwifi/pcie/tx-gen2.c | 20 +++++++----
+ 5 files changed, 71 insertions(+), 10 deletions(-)
+
+-- 
+2.23.0.rc1
+
