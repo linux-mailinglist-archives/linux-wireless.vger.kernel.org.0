@@ -2,178 +2,98 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id DD4058FD27
-	for <lists+linux-wireless@lfdr.de>; Fri, 16 Aug 2019 10:07:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 406338FDD6
+	for <lists+linux-wireless@lfdr.de>; Fri, 16 Aug 2019 10:31:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726903AbfHPIHL convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 16 Aug 2019 04:07:11 -0400
-Received: from rtits2.realtek.com ([211.75.126.72]:40868 "EHLO
-        rtits2.realtek.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726819AbfHPIHL (ORCPT
+        id S1726954AbfHPIbd (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 16 Aug 2019 04:31:33 -0400
+Received: from mail-wr1-f68.google.com ([209.85.221.68]:46718 "EHLO
+        mail-wr1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726910AbfHPIbd (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 16 Aug 2019 04:07:11 -0400
-Authenticated-By: 
-X-SpamFilter-By: BOX Solutions SpamTrap 5.62 with qID x7G870ea019280, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (RTITCAS11.realtek.com.tw [172.21.6.12])
-        by rtits2.realtek.com.tw (8.15.2/2.57/5.78) with ESMTP id x7G870ea019280;
-        Fri, 16 Aug 2019 16:07:00 +0800
-Received: from RTITMBSVM04.realtek.com.tw ([fe80::e404:880:2ef1:1aa1]) by
- RTITCAS11.realtek.com.tw ([fe80::7c6d:ced5:c4ff:8297%15]) with mapi id
- 14.03.0468.000; Fri, 16 Aug 2019 16:07:00 +0800
-From:   Tony Chuang <yhchuang@realtek.com>
-To:     Tony Chuang <yhchuang@realtek.com>,
-        Jian-Hong Pan <jian-hong@endlessm.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        "David S . Miller" <davem@davemloft.net>
-CC:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux@endlessm.com" <linux@endlessm.com>
-Subject: RE: [PATCH] rtw88: pci: Move a mass of jobs in hw IRQ to soft IRQ
-Thread-Topic: [PATCH] rtw88: pci: Move a mass of jobs in hw IRQ to soft IRQ
-Thread-Index: AQHVU/x2Dr02g4Mib0ipy5Mk0nEf5ab9ZdpggAAEAFA=
-Date:   Fri, 16 Aug 2019 08:06:59 +0000
-Message-ID: <F7CD281DE3E379468C6D07993EA72F84D1892A52@RTITMBSVM04.realtek.com.tw>
-References: <20190816063109.4699-1-jian-hong@endlessm.com>
- <F7CD281DE3E379468C6D07993EA72F84D18929BF@RTITMBSVM04.realtek.com.tw>
-In-Reply-To: <F7CD281DE3E379468C6D07993EA72F84D18929BF@RTITMBSVM04.realtek.com.tw>
-Accept-Language: zh-TW, en-US
-Content-Language: zh-TW
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [172.21.68.183]
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 8BIT
+        Fri, 16 Aug 2019 04:31:33 -0400
+Received: by mail-wr1-f68.google.com with SMTP id z1so732024wru.13
+        for <linux-wireless@vger.kernel.org>; Fri, 16 Aug 2019 01:31:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=nMteWjiol09LnNTGAtg+qqwxoUC+aePsLIm1kIpTrJs=;
+        b=oCj+GOx8zj3DZDR8aTDgqrL6lshNRYHcEJ9xc7u/k5AAXmEozG5CiyjIcN62uoR4yk
+         /dZXF2qmsL6jlDXs1GlkR2A/kSPm/FFMDejUbnIKqNjQtHvOcl4zAg6VDFE80jvid6MD
+         52rJCbC9f15qQ3tWLYI9mE+Qjr2VSBI/Xc+5cXxFil0vTyG3GnDha7zPP8OJddjUr/Hq
+         kon3JPJo1IcTbdJL2KaVY8vLnRPATMCLI5ZJACiqczFx0h7wXsZNpPh56pMC+YTAO9cW
+         6XPg2vjaqtITAY9hZVyE6bhzL/BLKppzKSylT9ZNyy0Rn17zbVd0dOqMqj5AMFhpoO7L
+         oyPQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=nMteWjiol09LnNTGAtg+qqwxoUC+aePsLIm1kIpTrJs=;
+        b=bAK9z8wKXwe99VXuhIq9Pw7lKnDSqPmsAFIaYf7SPMfYmCa9jf9smVsVO3Yf1KnvX9
+         UkTVV0/mbDNtS+tmrtegHm26aBH/19vDBmkRPGIi6kmM31eHuQFk+2pO2CWjdjUOIMYZ
+         V6xnpfL1P50+i3Ce4BIrVkFQNHn0mdqw/EqfFY+O6zUupMFo4a+mhp7kWgXLxYaA6aBR
+         fAcVtpN4FnSkcIuY566QVymFxoKbATQYqaHHZ7bTmaf8DaaEltCaM/TEksVgbMcZHfiC
+         T/qjZdIv+4SJzC+oMrlyQYLKHsLmY3sd5zeTptnSVXxo/tkbhsPXhV4TLW41u369067z
+         ylXw==
+X-Gm-Message-State: APjAAAXC8pN5BiAVRBGSAUR7UeV2XQ+qMjMwGUYCpjZNeVMp1bi6jOn9
+        XD45qqKuybDzrJ2GSRYpsoK6A3Pc9gs6TD+C2HDctQ==
+X-Google-Smtp-Source: APXvYqwh5XDkO7F2xERL7f+E+ehgrXGdbgDaiyV9najpnyy1GfPAMnxMomE45gSsbegm0OpSlpcxM0Q0s5kDUvwvH7k=
+X-Received: by 2002:adf:e8c2:: with SMTP id k2mr9106596wrn.198.1565944291339;
+ Fri, 16 Aug 2019 01:31:31 -0700 (PDT)
 MIME-Version: 1.0
+References: <20190816065936.12214-1-contact@christina-quast.de>
+In-Reply-To: <20190816065936.12214-1-contact@christina-quast.de>
+From:   Ard Biesheuvel <ard.biesheuvel@linaro.org>
+Date:   Fri, 16 Aug 2019 11:31:23 +0300
+Message-ID: <CAKv+Gu-qbwCJzH2TMpe5hEh8UAO3XQ66Zzf9Nx4UqBXd3Lr79w@mail.gmail.com>
+Subject: Re: [PATCH 0/2] Use ccm(aes) aead transform in staging drivers
+To:     Christina Quast <contact@christina-quast.de>
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Payal Kshirsagar <payal.s.kshirsagar.98@gmail.com>,
+        Eric Biggers <ebiggers@google.com>,
+        Herbert Xu <herbert@gondor.apana.org.au>,
+        "open list:ANDROID DRIVERS" <devel@driverdev.osuosl.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Anushka Shukla <anushkacharu9@gmail.com>,
+        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
+        Zach Turner <turnerzdp@gmail.com>,
+        "<linux-wireless@vger.kernel.org>" <linux-wireless@vger.kernel.org>,
+        Johannes Berg <johannes@sipsolutions.net>,
+        "David S. Miller" <davem@davemloft.net>,
+        "open list:HARDWARE RANDOM NUMBER GENERATOR CORE" 
+        <linux-crypto@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi,
+On Fri, 16 Aug 2019 at 10:00, Christina Quast
+<contact@christina-quast.de> wrote:
+>
+> Use ccm(aes) aead transform instead of invoking the AES block cipher
+> block by block.
+>
 
-A few more questions below
+Thanks! This eliminates another two users of the bare cipher API,
+which is not the right abstraction for drivers to use.
 
-> > From: Jian-Hong Pan [mailto:jian-hong@endlessm.com]
-> >
-> > There is a mass of jobs between spin lock and unlock in the hardware
-> > IRQ which will occupy much time originally. To make system work more
-> > efficiently, this patch moves the jobs to the soft IRQ (bottom half) to
-> > reduce the time in hardware IRQ.
-> >
-> > Signed-off-by: Jian-Hong Pan <jian-hong@endlessm.com>
-> > ---
-> >  drivers/net/wireless/realtek/rtw88/pci.c | 36 +++++++++++++++++++-----
-> >  1 file changed, 29 insertions(+), 7 deletions(-)
-> >
-> > diff --git a/drivers/net/wireless/realtek/rtw88/pci.c
-> > b/drivers/net/wireless/realtek/rtw88/pci.c
-> > index 00ef229552d5..355606b167c6 100644
-> > --- a/drivers/net/wireless/realtek/rtw88/pci.c
-> > +++ b/drivers/net/wireless/realtek/rtw88/pci.c
-> > @@ -866,12 +866,29 @@ static irqreturn_t rtw_pci_interrupt_handler(int
-> irq,
-> > void *dev)
-> >  {
-> >  	struct rtw_dev *rtwdev = dev;
-> >  	struct rtw_pci *rtwpci = (struct rtw_pci *)rtwdev->priv;
-> > -	u32 irq_status[4];
-> > +	unsigned long flags;
-> >
-> > -	spin_lock(&rtwpci->irq_lock);
-> > +	spin_lock_irqsave(&rtwpci->irq_lock, flags);
+Reviewed-by: Ard Biesheuvel <ard.biesheuvel@linaro.org>
 
-I think you can use 'spin_lock()' here as it's in IRQ context?
+I don't have the hardware, so I can't test this.
 
-> >  	if (!rtwpci->irq_enabled)
-> >  		goto out;
-> >
-> > +	/* disable RTW PCI interrupt to avoid more interrupts before the end of
-> > +	 * thread function
-> > +	 */
-> > +	rtw_pci_disable_interrupt(rtwdev, rtwpci);
-
-
-Why do we need rtw_pci_disable_interrupt() here.
-Have you done any experiment and decided to add this.
-If you have can you share your results to me?
-
-
-> > +out:
-> > +	spin_unlock_irqrestore(&rtwpci->irq_lock, flags);
-
-spin_unlock()
-
-> > +
-> > +	return IRQ_WAKE_THREAD;
-> > +}
-> > +
-> > +static irqreturn_t rtw_pci_interrupt_threadfn(int irq, void *dev)
-> > +{
-> > +	struct rtw_dev *rtwdev = dev;
-> > +	struct rtw_pci *rtwpci = (struct rtw_pci *)rtwdev->priv;
-> > +	unsigned long flags;
-> > +	u32 irq_status[4];
-> > +
-> >  	rtw_pci_irq_recognized(rtwdev, rtwpci, irq_status);
-> >
-> >  	if (irq_status[0] & IMR_MGNTDOK)
-> > @@ -891,8 +908,11 @@ static irqreturn_t rtw_pci_interrupt_handler(int
-> irq,
-> > void *dev)
-> >  	if (irq_status[0] & IMR_ROK)
-> >  		rtw_pci_rx_isr(rtwdev, rtwpci, RTW_RX_QUEUE_MPDU);
-> >
-> > -out:
-> > -	spin_unlock(&rtwpci->irq_lock);
-> > +	/* all of the jobs for this interrupt have been done */
-> > +	spin_lock_irqsave(&rtwpci->irq_lock, flags);
-> 
-> Shouldn't we protect the ISRs above?
-> 
-> This patch could actually reduce the time of IRQ.
-> But I think I need to further test it with PCI MSI interrupt.
-> https://patchwork.kernel.org/patch/11081539/
-> 
-> Maybe we could drop the "rtw_pci_[enable/disable]_interrupt" when MSI
-> Is enabled with this patch.
-> 
-> > +	if (rtw_flag_check(rtwdev, RTW_FLAG_RUNNING))
-> > +		rtw_pci_enable_interrupt(rtwdev, rtwpci);
-> > +	spin_unlock_irqrestore(&rtwpci->irq_lock, flags);
-> >
-> >  	return IRQ_HANDLED;
-> >  }
-> > @@ -1152,8 +1172,10 @@ static int rtw_pci_probe(struct pci_dev *pdev,
-> >  		goto err_destroy_pci;
-> >  	}
-> >
-> > -	ret = request_irq(pdev->irq, &rtw_pci_interrupt_handler,
-> > -			  IRQF_SHARED, KBUILD_MODNAME, rtwdev);
-> > +	ret = devm_request_threaded_irq(rtwdev->dev, pdev->irq,
-> > +					rtw_pci_interrupt_handler,
-> > +					rtw_pci_interrupt_threadfn,
-> > +					IRQF_SHARED, KBUILD_MODNAME, rtwdev);
-> >  	if (ret) {
-> >  		ieee80211_unregister_hw(hw);
-> >  		goto err_destroy_pci;
-> > @@ -1192,7 +1214,7 @@ static void rtw_pci_remove(struct pci_dev
-> *pdev)
-> >  	rtw_pci_disable_interrupt(rtwdev, rtwpci);
-> >  	rtw_pci_destroy(rtwdev, pdev);
-> >  	rtw_pci_declaim(rtwdev, pdev);
-> > -	free_irq(rtwpci->pdev->irq, rtwdev);
-> > +	devm_free_irq(rtwdev->dev, rtwpci->pdev->irq, rtwdev);
-> >  	rtw_core_deinit(rtwdev);
-> >  	ieee80211_free_hw(hw);
-> >  }
-> > --
-> > 2.20.1
-> 
-> Yan-Hsuan
-> 
-
-Thanks
-Yan-Hsuan
-
+> Christina Quast (2):
+>   staging: rtl8192u: ieee80211: ieee80211_crypt_ccmp.c: Use crypto API
+>     ccm(aes)
+>   staging: rtl8192e: rtllib_crypt_ccmp.c: Use crypto API ccm(aes)
+>
+>  drivers/staging/rtl8192e/Kconfig              |   1 +
+>  drivers/staging/rtl8192e/rtllib_crypt_ccmp.c  | 187 ++++++++----------
+>  drivers/staging/rtl8192u/Kconfig              |   2 +
+>  .../rtl8192u/ieee80211/ieee80211_crypt_ccmp.c | 187 ++++++++----------
+>  4 files changed, 159 insertions(+), 218 deletions(-)
+>
+> --
+> 2.20.1
+>
