@@ -2,105 +2,149 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 769CA8F9E5
-	for <lists+linux-wireless@lfdr.de>; Fri, 16 Aug 2019 06:29:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E9AFA8FB18
+	for <lists+linux-wireless@lfdr.de>; Fri, 16 Aug 2019 08:33:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725956AbfHPE34 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 16 Aug 2019 00:29:56 -0400
-Received: from webmail.newmedia-net.de ([185.84.6.166]:56416 "EHLO
-        webmail.newmedia-net.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725897AbfHPE34 (ORCPT
+        id S1726736AbfHPGdB (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 16 Aug 2019 02:33:01 -0400
+Received: from mail-pg1-f195.google.com ([209.85.215.195]:46924 "EHLO
+        mail-pg1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725971AbfHPGdB (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 16 Aug 2019 00:29:56 -0400
-X-Greylist: delayed 1314 seconds by postgrey-1.27 at vger.kernel.org; Fri, 16 Aug 2019 00:29:55 EDT
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=newmedia-net.de; s=mikd;
-        h=Content-Transfer-Encoding:Content-Type:In-Reply-To:MIME-Version:Date:Message-ID:From:References:Cc:To:Subject; bh=i4IhJSjxLUQzhoiirqDCeKcDWv4elL/1nNicgosm/R4=;
-        b=QV51n/RT0qU82HRQrckNDCPPp9lhVQ0S/ioKe7YfWNhYU3SB1Uoq3IgkNwG7//sPbc+/sXc76UTM1CuSiRW4i1y/McZROX0GZl9nivScBaQE/EsEMVJ1xGqTRQErIe8vImUGx6scojiFFJSsa8RBWr5yDTDlNyzbUTqmZ8m8WMk=;
-Subject: Re: [PATCH 2/2] mac80211: add assoc-at support.
-To:     greearb@candelatech.com, linux-wireless@vger.kernel.org
-Cc:     johannes@sipsolutions.net
-References: <20190809174656.20872-1-greearb@candelatech.com>
- <20190809174656.20872-2-greearb@candelatech.com>
-From:   Sebastian Gottschall <s.gottschall@newmedia-net.de>
-Message-ID: <0fc19972-385e-084e-144d-d5bf41a21ca5@newmedia-net.de>
-Date:   Fri, 16 Aug 2019 06:09:46 +0200
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:60.0) Gecko/20100101
- Thunderbird/60.8.0
+        Fri, 16 Aug 2019 02:33:01 -0400
+Received: by mail-pg1-f195.google.com with SMTP id m3so1841274pgv.13
+        for <linux-wireless@vger.kernel.org>; Thu, 15 Aug 2019 23:33:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=endlessm-com.20150623.gappssmtp.com; s=20150623;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=giKjf990G493iYKWj/Ui8wiow3juJNHrDaZUgCQRucg=;
+        b=t45iSPu7tR8o35j/uLOMJwYsiha8ivSA5gVqNNkgQVFjcZB+4BP2Yk/b0rTwmLrlmb
+         k0CaUBYT9Ns1Dt/VWQBuQhz4Y/1oGuvyvRACwzQGN45sgKHH6Z3a7bUTdE2YvIi0mO7g
+         qIiUpWCGPNaZatrcktsx0njVruZBAN0VfRYSNdw4CIDjbtJNa1UrVYSzC6e6TJmPNP6X
+         Iv2CKXUoP3keyIWU54zue3gheVqqnkUD/+/PJNwzUgIJ/5HZx99J5Q3f7BGFiOcOuUin
+         X4QgV2nZKudS4hHLac7p9Ezwj3GVbwPMEXr4OA1uzlj7yVkqagPUBEQR/hGoOuH3x46n
+         DpuQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=giKjf990G493iYKWj/Ui8wiow3juJNHrDaZUgCQRucg=;
+        b=mnSdZEWMhctgn4KuHcbBm8Ph/Ca9CN3PZYAjRy9B16OJqXoZQL6ZtWcRzh57hoOaK1
+         goeTWgmOfszinh00HwPQ2OLQzfWvjq/E3VZcpmyRL8gLE76XWmU6fFfGt4X8XO4hH6nV
+         obHGQ8men1Mt3maKp1pGDMAAmRWudf43ORXDFzisEnve74YnnsNfltRHdwo7TQBtluBa
+         +0jEffr2oRSEOJgKBCRrDD/XfTXACnK5JQ+xf2T8ZbQW/ZS4NTE7JFkoCqwOoHvKVxFe
+         VcpZpRWrbRB3GscifGCUZMbylXKBEhjQurEuEOfYXX/gav7fO8kWVYKMHDiv6sYJG6OC
+         C2tg==
+X-Gm-Message-State: APjAAAW4RV/Cm9e7SfuB7mS2/g4Io34WyES/F0KyQ+i+5arXGf7cZYAj
+        NMq4ie4PAkuTiJdmkOBG6aAhq+Lc05JliQ==
+X-Google-Smtp-Source: APXvYqxBf8RxaN8Ch2BN2X+9nVBTNieL3l+Ic0s8PGxImNO8kNoljTjMy5t79+c6/oI7CXzdjJWHSw==
+X-Received: by 2002:a65:6904:: with SMTP id s4mr6390422pgq.33.1565937180619;
+        Thu, 15 Aug 2019 23:33:00 -0700 (PDT)
+Received: from localhost.localdomain (123-204-46-122.static.seed.net.tw. [123.204.46.122])
+        by smtp.gmail.com with ESMTPSA id y14sm3721991pge.7.2019.08.15.23.32.57
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 15 Aug 2019 23:32:59 -0700 (PDT)
+From:   Jian-Hong Pan <jian-hong@endlessm.com>
+To:     Yan-Hsuan Chuang <yhchuang@realtek.com>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        "David S . Miller" <davem@davemloft.net>
+Cc:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux@endlessm.com,
+        Jian-Hong Pan <jian-hong@endlessm.com>
+Subject: [PATCH] rtw88: pci: Move a mass of jobs in hw IRQ to soft IRQ
+Date:   Fri, 16 Aug 2019 14:31:10 +0800
+Message-Id: <20190816063109.4699-1-jian-hong@endlessm.com>
+X-Mailer: git-send-email 2.22.0
 MIME-Version: 1.0
-In-Reply-To: <20190809174656.20872-2-greearb@candelatech.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Received:  from [2003:c9:3f31:fa00:e41f:2151:796d:3095]
-        by webmail.newmedia-net.de with esmtpsa (TLSv1:AES128-SHA:128)
-        (Exim 4.72)
-        (envelope-from <s.gottschall@newmedia-net.de>)
-        id 1hyTZk-000827-LN; Fri, 16 Aug 2019 06:10:52 +0200
+Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-is this feature neccessary? we already have the information of the assoc 
-duration time. so its easy to calculate the assoc timestamp using the 
-current time without any patch
-do i miss something here?
+There is a mass of jobs between spin lock and unlock in the hardware
+IRQ which will occupy much time originally. To make system work more
+efficiently, this patch moves the jobs to the soft IRQ (bottom half) to
+reduce the time in hardware IRQ.
 
-Am 09.08.2019 um 19:46 schrieb greearb@candelatech.com:
-> From: Ben Greear <greearb@candelatech.com>
->
-> Report timestamp for when sta becomes associated.
->
-> Signed-off-by: Ben Greear <greearb@candelatech.com>
-> ---
->   net/mac80211/sta_info.c | 3 +++
->   net/mac80211/sta_info.h | 2 ++
->   2 files changed, 5 insertions(+)
->
-> diff --git a/net/mac80211/sta_info.c b/net/mac80211/sta_info.c
-> index cd88c8872372..f0820f058b5f 100644
-> --- a/net/mac80211/sta_info.c
-> +++ b/net/mac80211/sta_info.c
-> @@ -1995,6 +1995,7 @@ int sta_info_move_state(struct sta_info *sta,
->   	case IEEE80211_STA_ASSOC:
->   		if (sta->sta_state == IEEE80211_STA_AUTH) {
->   			set_bit(WLAN_STA_ASSOC, &sta->_flags);
-> +			sta->assoc_at_ms = ktime_to_ms(ktime_get_real());
->   			ieee80211_recalc_min_chandef(sta->sdata);
->   			if (!sta->sta.support_p2p_ps)
->   				ieee80211_recalc_p2p_go_ps_allowed(sta->sdata);
-> @@ -2224,6 +2225,7 @@ void sta_set_sinfo(struct sta_info *sta, struct station_info *sinfo,
->   			 BIT_ULL(NL80211_STA_INFO_STA_FLAGS) |
->   			 BIT_ULL(NL80211_STA_INFO_BSS_PARAM) |
->   			 BIT_ULL(NL80211_STA_INFO_CONNECTED_TIME) |
-> +			 BIT_ULL(NL80211_STA_INFO_ASSOC_AT_MS) |
->   			 BIT_ULL(NL80211_STA_INFO_RX_DROP_MISC);
->   
->   	if (sdata->vif.type == NL80211_IFTYPE_STATION) {
-> @@ -2232,6 +2234,7 @@ void sta_set_sinfo(struct sta_info *sta, struct station_info *sinfo,
->   	}
->   
->   	sinfo->connected_time = ktime_get_seconds() - sta->last_connected;
-> +	sinfo->assoc_at_ms = sta->assoc_at_ms;
->   	sinfo->inactive_time =
->   		jiffies_to_msecs(jiffies - ieee80211_sta_last_active(sta));
->   
-> diff --git a/net/mac80211/sta_info.h b/net/mac80211/sta_info.h
-> index bb02d5fac7ba..906b11acb0e8 100644
-> --- a/net/mac80211/sta_info.h
-> +++ b/net/mac80211/sta_info.h
-> @@ -468,6 +468,7 @@ struct ieee80211_sta_rx_stats {
->    *	the station when it leaves powersave or polls for frames
->    * @driver_buffered_tids: bitmap of TIDs the driver has data buffered on
->    * @txq_buffered_tids: bitmap of TIDs that mac80211 has txq data buffered on
-> + * @assoc_at_ms: time (in ms) of last association
->    * @last_connected: time (in seconds) when a station got connected
->    * @last_seq_ctrl: last received seq/frag number from this STA (per TID
->    *	plus one for non-QoS frames)
-> @@ -565,6 +566,7 @@ struct sta_info {
->   	unsigned long driver_buffered_tids;
->   	unsigned long txq_buffered_tids;
->   
-> +	unsigned long assoc_at_ms;
->   	long last_connected;
->   
->   	/* Updated from RX path only, no locking requirements */
+Signed-off-by: Jian-Hong Pan <jian-hong@endlessm.com>
+---
+ drivers/net/wireless/realtek/rtw88/pci.c | 36 +++++++++++++++++++-----
+ 1 file changed, 29 insertions(+), 7 deletions(-)
+
+diff --git a/drivers/net/wireless/realtek/rtw88/pci.c b/drivers/net/wireless/realtek/rtw88/pci.c
+index 00ef229552d5..355606b167c6 100644
+--- a/drivers/net/wireless/realtek/rtw88/pci.c
++++ b/drivers/net/wireless/realtek/rtw88/pci.c
+@@ -866,12 +866,29 @@ static irqreturn_t rtw_pci_interrupt_handler(int irq, void *dev)
+ {
+ 	struct rtw_dev *rtwdev = dev;
+ 	struct rtw_pci *rtwpci = (struct rtw_pci *)rtwdev->priv;
+-	u32 irq_status[4];
++	unsigned long flags;
+ 
+-	spin_lock(&rtwpci->irq_lock);
++	spin_lock_irqsave(&rtwpci->irq_lock, flags);
+ 	if (!rtwpci->irq_enabled)
+ 		goto out;
+ 
++	/* disable RTW PCI interrupt to avoid more interrupts before the end of
++	 * thread function
++	 */
++	rtw_pci_disable_interrupt(rtwdev, rtwpci);
++out:
++	spin_unlock_irqrestore(&rtwpci->irq_lock, flags);
++
++	return IRQ_WAKE_THREAD;
++}
++
++static irqreturn_t rtw_pci_interrupt_threadfn(int irq, void *dev)
++{
++	struct rtw_dev *rtwdev = dev;
++	struct rtw_pci *rtwpci = (struct rtw_pci *)rtwdev->priv;
++	unsigned long flags;
++	u32 irq_status[4];
++
+ 	rtw_pci_irq_recognized(rtwdev, rtwpci, irq_status);
+ 
+ 	if (irq_status[0] & IMR_MGNTDOK)
+@@ -891,8 +908,11 @@ static irqreturn_t rtw_pci_interrupt_handler(int irq, void *dev)
+ 	if (irq_status[0] & IMR_ROK)
+ 		rtw_pci_rx_isr(rtwdev, rtwpci, RTW_RX_QUEUE_MPDU);
+ 
+-out:
+-	spin_unlock(&rtwpci->irq_lock);
++	/* all of the jobs for this interrupt have been done */
++	spin_lock_irqsave(&rtwpci->irq_lock, flags);
++	if (rtw_flag_check(rtwdev, RTW_FLAG_RUNNING))
++		rtw_pci_enable_interrupt(rtwdev, rtwpci);
++	spin_unlock_irqrestore(&rtwpci->irq_lock, flags);
+ 
+ 	return IRQ_HANDLED;
+ }
+@@ -1152,8 +1172,10 @@ static int rtw_pci_probe(struct pci_dev *pdev,
+ 		goto err_destroy_pci;
+ 	}
+ 
+-	ret = request_irq(pdev->irq, &rtw_pci_interrupt_handler,
+-			  IRQF_SHARED, KBUILD_MODNAME, rtwdev);
++	ret = devm_request_threaded_irq(rtwdev->dev, pdev->irq,
++					rtw_pci_interrupt_handler,
++					rtw_pci_interrupt_threadfn,
++					IRQF_SHARED, KBUILD_MODNAME, rtwdev);
+ 	if (ret) {
+ 		ieee80211_unregister_hw(hw);
+ 		goto err_destroy_pci;
+@@ -1192,7 +1214,7 @@ static void rtw_pci_remove(struct pci_dev *pdev)
+ 	rtw_pci_disable_interrupt(rtwdev, rtwpci);
+ 	rtw_pci_destroy(rtwdev, pdev);
+ 	rtw_pci_declaim(rtwdev, pdev);
+-	free_irq(rtwpci->pdev->irq, rtwdev);
++	devm_free_irq(rtwdev->dev, rtwpci->pdev->irq, rtwdev);
+ 	rtw_core_deinit(rtwdev);
+ 	ieee80211_free_hw(hw);
+ }
+-- 
+2.20.1
+
