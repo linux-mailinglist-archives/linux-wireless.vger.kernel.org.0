@@ -2,55 +2,55 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 5519790833
+	by mail.lfdr.de (Postfix) with ESMTP id C343F90834
 	for <lists+linux-wireless@lfdr.de>; Fri, 16 Aug 2019 21:27:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727614AbfHPT1O (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 16 Aug 2019 15:27:14 -0400
-Received: from mail-ot1-f66.google.com ([209.85.210.66]:38492 "EHLO
-        mail-ot1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727545AbfHPT1O (ORCPT
+        id S1727618AbfHPT1P (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 16 Aug 2019 15:27:15 -0400
+Received: from mail-oi1-f194.google.com ([209.85.167.194]:32885 "EHLO
+        mail-oi1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727605AbfHPT1P (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 16 Aug 2019 15:27:14 -0400
-Received: by mail-ot1-f66.google.com with SMTP id r20so10624992ota.5
-        for <linux-wireless@vger.kernel.org>; Fri, 16 Aug 2019 12:27:13 -0700 (PDT)
+        Fri, 16 Aug 2019 15:27:15 -0400
+Received: by mail-oi1-f194.google.com with SMTP id q10so2069330oij.0
+        for <linux-wireless@vger.kernel.org>; Fri, 16 Aug 2019 12:27:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=exNpvN0pQHXYSl/nDCeQwqAVMdLSgpwL7PY4nJgIlNo=;
-        b=ecQNDbzr6Gu09g1Akx6yEsvqTztL4uzMMsZ7U7D6OmExRvUCrtJYMG1DgZLV5HYSBF
-         M/puNL5KmOmKAqsVZvQJGVXedC5PIgRONKRabwVLwSwEv1s9G15votnDK9V6jRvCJT8R
-         K+VF/M9v0ZihOvSgnqIT4cwqLL1yNQEZaY5Q6aepF6uWnsIEsM8ePGYst9bwn2D4La2p
-         X6VlGa3dhCr/NZWJcEYWNzaLfjZ6hIaQ4Z8l1F4QqAgUA0NHgORlG8ImRIW8OA7KnF62
-         ZQ/c5EDxl4RTIowCFNkDcDmzBy2t3MLoSZp6k7j0g5vOB+OXDKsi22LmMGmLcwtXPs0A
-         Gb+g==
+        bh=3MGczJpJnhYpOa70SoGTinK2q8+c9qBiRlOOViZ2kQ4=;
+        b=n8JXShHDgdiEvEqUov+OVLrPqMr2OSrPGUsvMPuI/Hp/MMhtUCU+nm0W9stJ5DHK3R
+         54/61w1dLc8OtrOE5llf/B0Ogj+fnilOQ6+kRyiNxVTfd3hhSA3LyOh7K/AjzeO9VD3n
+         jpntvSwi3QfN9bxCa9pFFOO2ZZV+3FTdymckFBKcWMo4x14VU+v3yY/0KiKCSy1yGFSi
+         3kemrSMwk+uBYtuBDybV8CEl5oEOqyXrTbanCg+FPuobZUIv5V1bEAxVKVTBgcQfZDSy
+         ffGun6UaBzfv9KNZeMslvsOrGop9NbmgShyTeSSGBlcITIHdvfXFWjrCNR0dVw7ciHY+
+         1fIA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=exNpvN0pQHXYSl/nDCeQwqAVMdLSgpwL7PY4nJgIlNo=;
-        b=J2j1TiLBPXkFwxNXK1GuUf+4wrKiI7haqKAK0aUaP81v5EHLXfxYTsXcim4Alkb5ED
-         hJtWc45mDHtJ8uQPWuBqG6s88K2BaAiuFDosmlxeyA5WH9HN4daBNxIbojZIIOJqPffs
-         EM5YXd8M1REYGs6xBunbmFGetihUnPx9jwOuzz2GPgWjT+lrnqjVdCqZlOo2uWpVp0kV
-         TbzIckP0aLLW/acnlTlvzKt78Szu0smsCazS+mtk8s0hI3uuk6lyPZiem4vYtAML+0RU
-         r4f4ltRuXBMYfTiNRXOalyAb7YBOZdaq3SbNJFTB5k8NYA31HZBJlLO1i9P0Si3y1uY8
-         JoWA==
-X-Gm-Message-State: APjAAAVHVjrztQzskkd6udQ3uKdxVWnxko4/BqA9Yf5IkuLEm/SwpT1j
-        +pFoF7rcsnHWYYzCzKe+y5E8nSlX
-X-Google-Smtp-Source: APXvYqwmVix8cVbkG3xS2IG0Nq8QsExnuTlRtZjh+imFqtXE+P6XSitrqXQ4i2XmIBSE8xXxwX9cSA==
-X-Received: by 2002:a05:6830:16:: with SMTP id c22mr8818596otp.116.1565983633125;
+        bh=3MGczJpJnhYpOa70SoGTinK2q8+c9qBiRlOOViZ2kQ4=;
+        b=NC73cTGD+DKc52X0Q5NX1fcl5VnfdWNakv6UdmteSC/t9eT7MT74JzJhJ/20WUyfZH
+         FNt7rXkWGyP6zjEnWZWJnZYw4X4xa7bYvPaqOpxC8r6hzziendV7cRpn/07yS9Yc4mlM
+         QIEKzonBn9M9XI9W87xTrKIrfkjKZTz7bch3RRvqSnOiKQUDhbBvO0yg0f929cRJ3B1b
+         xTsljvr8Q2rMS0i6oEe2eLJFn+fFnT2nfPUagLbefBqtLInC1xsWoIaglc8/30Ky6eZs
+         Vi3c7Ilu9JP+kE84D5DWoJJlIwrObS0uP9ZJ3knCs1ztugSDnhIJSgUT9oIBsRfcs3fV
+         Gziw==
+X-Gm-Message-State: APjAAAVP3FJl1XigUTv+BwvmJtG6+TJbUIRJKazm/QMy1QlwDxXySlQy
+        niqARfdolAhFKh69YZOMzuXVI3Da
+X-Google-Smtp-Source: APXvYqzKC+zLnQVQjGaXXx/NcIrcmIDLRMV5uMIUr+1yl1NZ3hANjFsIHC3znu3RmGRiCFfGNk4ARQ==
+X-Received: by 2002:aca:55d8:: with SMTP id j207mr6085381oib.38.1565983633830;
         Fri, 16 Aug 2019 12:27:13 -0700 (PDT)
 Received: from localhost.localdomain (cpe-70-114-247-242.austin.res.rr.com. [70.114.247.242])
-        by smtp.gmail.com with ESMTPSA id b10sm2452246oti.61.2019.08.16.12.27.12
+        by smtp.gmail.com with ESMTPSA id b10sm2452246oti.61.2019.08.16.12.27.13
         (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Fri, 16 Aug 2019 12:27:12 -0700 (PDT)
+        Fri, 16 Aug 2019 12:27:13 -0700 (PDT)
 From:   Denis Kenzior <denkenz@gmail.com>
 To:     linux-wireless@vger.kernel.org, johannes@sipsolutions.net
 Cc:     Denis Kenzior <denkenz@gmail.com>
-Subject: [RFCv2 3/4] nl80211: Don't split-dump for clients with large buffers
-Date:   Fri, 16 Aug 2019 14:27:02 -0500
-Message-Id: <20190816192703.12445-3-denkenz@gmail.com>
+Subject: [RFCv2 4/4] nl80211: Send large new_wiphy events
+Date:   Fri, 16 Aug 2019 14:27:03 -0500
+Message-Id: <20190816192703.12445-4-denkenz@gmail.com>
 X-Mailer: git-send-email 2.21.0
 In-Reply-To: <20190816192703.12445-1-denkenz@gmail.com>
 References: <20190816192703.12445-1-denkenz@gmail.com>
@@ -61,46 +61,97 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+Send large NEW_WIPHY events on a new multicast group so that clients
+that can accept larger messages do not need to round-trip to the kernel
+and perform extra filtered wiphy dumps.
+
+A new multicast group is introduced and the large message is sent before
+the legacy message.  This way clients that listen on both multicast
+groups can ignore duplicate legacy messages if needed.
+
 Signed-off-by: Denis Kenzior <denkenz@gmail.com>
 ---
- net/wireless/nl80211.c | 17 +++++++++++++++++
- 1 file changed, 17 insertions(+)
+ include/uapi/linux/nl80211.h |  1 +
+ net/wireless/nl80211.c       | 28 +++++++++++++++++++++++++++-
+ 2 files changed, 28 insertions(+), 1 deletion(-)
 
+diff --git a/include/uapi/linux/nl80211.h b/include/uapi/linux/nl80211.h
+index 822851d369ab..b9c1cf29cf09 100644
+--- a/include/uapi/linux/nl80211.h
++++ b/include/uapi/linux/nl80211.h
+@@ -50,6 +50,7 @@
+ #define NL80211_MULTICAST_GROUP_MLME		"mlme"
+ #define NL80211_MULTICAST_GROUP_VENDOR		"vendor"
+ #define NL80211_MULTICAST_GROUP_NAN		"nan"
++#define NL80211_MULTICAST_GROUP_CONFIG2		"config2"
+ #define NL80211_MULTICAST_GROUP_TESTMODE	"testmode"
+ 
+ /**
 diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
-index 682a095415eb..24b67de99f3a 100644
+index 24b67de99f3a..9ba9e1938d6b 100644
 --- a/net/wireless/nl80211.c
 +++ b/net/wireless/nl80211.c
-@@ -2498,6 +2498,22 @@ static int nl80211_dump_wiphy(struct sk_buff *skb, struct netlink_callback *cb)
- 			rtnl_unlock();
- 			return ret;
- 		}
+@@ -46,6 +46,7 @@ enum nl80211_multicast_groups {
+ 	NL80211_MCGRP_MLME,
+ 	NL80211_MCGRP_VENDOR,
+ 	NL80211_MCGRP_NAN,
++	NL80211_MCGRP_CONFIG2,
+ 	NL80211_MCGRP_TESTMODE /* keep last - ifdef! */
+ };
+ 
+@@ -56,6 +57,7 @@ static const struct genl_multicast_group nl80211_mcgrps[] = {
+ 	[NL80211_MCGRP_MLME] = { .name = NL80211_MULTICAST_GROUP_MLME },
+ 	[NL80211_MCGRP_VENDOR] = { .name = NL80211_MULTICAST_GROUP_VENDOR },
+ 	[NL80211_MCGRP_NAN] = { .name = NL80211_MULTICAST_GROUP_NAN },
++	[NL80211_MCGRP_CONFIG2] = { .name = NL80211_MULTICAST_GROUP_CONFIG2 },
+ #ifdef CONFIG_NL80211_TESTMODE
+ 	[NL80211_MCGRP_TESTMODE] = { .name = NL80211_MULTICAST_GROUP_TESTMODE }
+ #endif
+@@ -14730,12 +14732,34 @@ void nl80211_notify_wiphy(struct cfg80211_registered_device *rdev,
+ 			  enum nl80211_commands cmd)
+ {
+ 	struct sk_buff *msg;
++	size_t alloc_size;
+ 	struct nl80211_dump_wiphy_state state = {};
+ 
+ 	WARN_ON(cmd != NL80211_CMD_NEW_WIPHY &&
+ 		cmd != NL80211_CMD_DEL_WIPHY);
+ 
+-	msg = nlmsg_new(NLMSG_DEFAULT_SIZE, GFP_KERNEL);
++	if (cmd == NL80211_CMD_NEW_WIPHY) {
++		state.large_message = true;
++		alloc_size = 8192UL;
++	} else
++		alloc_size = NLMSG_DEFAULT_SIZE;
 +
-+		/*
-+		 * auto-detect support for large buffer sizes: af_netlink
-+		 * will allocate skbufs larger than 4096 in cases where
-+		 * it detects that the client receive buffer (given to
-+		 * recvmsg) is bigger.  In such cases we can assume that
-+		 * performing split dumps is wasteful since the client
-+		 * can likely safely consume the entire un-split wiphy
-+		 * message in one go without the extra message header
-+		 * overhead.
-+		 */
-+		if (skb_tailroom(skb) > 4096) {
-+			state->large_message = true;
-+			state->split = false;
-+		}
++	msg = nlmsg_new(alloc_size, GFP_KERNEL);
++	if (!msg)
++		goto legacy;
 +
- 		cb->args[0] = (long)state;
++	if (nl80211_send_wiphy(rdev, cmd, msg, 0, 0, 0, &state) < 0) {
++		nlmsg_free(msg);
++		goto legacy;
++	}
++
++	genlmsg_multicast_netns(&nl80211_fam, wiphy_net(&rdev->wiphy), msg, 0,
++				NL80211_MCGRP_CONFIG2, GFP_KERNEL);
++
++legacy:
++	state.large_message = false;
++	alloc_size = NLMSG_DEFAULT_SIZE;
++	msg = nlmsg_new(alloc_size, GFP_KERNEL);
+ 	if (!msg)
+ 		return;
+ 
+@@ -14763,6 +14787,8 @@ void nl80211_notify_iface(struct cfg80211_registered_device *rdev,
+ 		return;
  	}
  
-@@ -2531,6 +2547,7 @@ static int nl80211_dump_wiphy(struct sk_buff *skb, struct netlink_callback *cb)
- 				 * We can then retry with the larger buffer.
- 				 */
- 				if ((ret == -ENOBUFS || ret == -EMSGSIZE) &&
-+				    !state->large_message &&
- 				    !skb->len && !state->split &&
- 				    cb->min_dump_alloc < 4096) {
- 					cb->min_dump_alloc = 4096;
++	genlmsg_multicast_netns(&nl80211_fam, wiphy_net(&rdev->wiphy), msg, 0,
++				NL80211_MCGRP_CONFIG2, GFP_KERNEL);
+ 	genlmsg_multicast_netns(&nl80211_fam, wiphy_net(&rdev->wiphy), msg, 0,
+ 				NL80211_MCGRP_CONFIG, GFP_KERNEL);
+ }
 -- 
 2.21.0
 
