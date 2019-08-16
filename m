@@ -2,93 +2,61 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 251B38F98B
-	for <lists+linux-wireless@lfdr.de>; Fri, 16 Aug 2019 05:50:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2CBED8F9E6
+	for <lists+linux-wireless@lfdr.de>; Fri, 16 Aug 2019 06:29:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726568AbfHPDuQ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 15 Aug 2019 23:50:16 -0400
-Received: from mail-yb1-f194.google.com ([209.85.219.194]:41932 "EHLO
-        mail-yb1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726437AbfHPDuP (ORCPT
+        id S1726088AbfHPE36 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 16 Aug 2019 00:29:58 -0400
+Received: from webmail.newmedia-net.de ([185.84.6.166]:53789 "EHLO
+        webmail.newmedia-net.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725897AbfHPE35 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 15 Aug 2019 23:50:15 -0400
-Received: by mail-yb1-f194.google.com with SMTP id n7so1538332ybd.8;
-        Thu, 15 Aug 2019 20:50:15 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id;
-        bh=HlyAjF59EodmIyM3qXcajR4GZniJoos5543aYOc+XW0=;
-        b=btQj5AZ56dAs1ICKoWFSkZerkAWsY8DDUKdBSxAbKI5xEzlgG+1GSPdJoVh65IT6iT
-         CKcjMP3p/BH3MzhEaNDMVCKbpxzGDF1HX8FfEyVs05uu/go8iYXxL4u2HYj5LWffBZHO
-         qUdPqktDv7yZJbv00eGKeyzoQMTqAkeFg0ZgBZ1tWBHbYF6Yll7OFtxqSLMUQPDK9nLM
-         wzOfGJYv22pYWO7Gkr5vTyrqxK/DTXKvfV5AiLWamJkUcBMEsi2NE0dQ/uBW4AuRU/Ti
-         oM9wpiNBOfI1WB+3pI3OWsZgW/XFITMJYFs1b9tFIx57n/DboM48VgpqzoMA0Vz46JM2
-         PrZg==
-X-Gm-Message-State: APjAAAVfNiy5YGrm2GG74qE+1cHCKyR7tmOugZhZq3T8vTgCwjC48R3O
-        75DrskCwrJpuw4KTonQtntM=
-X-Google-Smtp-Source: APXvYqyluzVVRkI5Jg88I9nGUmrlyDDt+lwBFEgkQVf9GAjmf+sY7p0K7UTFO6+vsFZjoGH3cChgUg==
-X-Received: by 2002:a25:b325:: with SMTP id l37mr5673202ybj.197.1565927414973;
-        Thu, 15 Aug 2019 20:50:14 -0700 (PDT)
-Received: from localhost.localdomain (24-158-240-219.dhcp.smyr.ga.charter.com. [24.158.240.219])
-        by smtp.gmail.com with ESMTPSA id s188sm1066662ywd.7.2019.08.15.20.50.13
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
-        Thu, 15 Aug 2019 20:50:13 -0700 (PDT)
-From:   Wenwen Wang <wenwen@cs.uga.edu>
-To:     Wenwen Wang <wenwen@cs.uga.edu>
-Cc:     Kalle Valo <kvalo@codeaurora.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Herbert Xu <herbert@gondor.apana.org.au>,
-        Dan Carpenter <dan.carpenter@oracle.com>,
-        Eric Biggers <ebiggers@google.com>,
-        Ard Biesheuvel <ard.biesheuvel@linaro.org>,
-        linux-wireless@vger.kernel.org (open list:NETWORKING DRIVERS (WIRELESS)),
-        netdev@vger.kernel.org (open list:NETWORKING DRIVERS),
-        linux-kernel@vger.kernel.org (open list)
-Subject: [PATCH] airo: fix memory leaks
-Date:   Thu, 15 Aug 2019 22:50:02 -0500
-Message-Id: <1565927404-4755-1-git-send-email-wenwen@cs.uga.edu>
-X-Mailer: git-send-email 2.7.4
+        Fri, 16 Aug 2019 00:29:57 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=newmedia-net.de; s=mikd;
+        h=Content-Transfer-Encoding:Content-Type:In-Reply-To:MIME-Version:Date:Message-ID:From:References:To:Subject; bh=3XlZYMRFin0Z7cZTXT/iQxq3F7h241nqtpeIkiCO2wE=;
+        b=pvV6zT5/9Bw1KUGZvMVi004mF7dzbzR4S99IgiKoAKTi6YCuZykp4ltKnwmnIOKFkw3PPkc7tcccvH3JfF1F+m7disropIsUbmPbRKKoLDNl5b4VT1uyBRZGoqKi1HP56SpTdkd/CA6xwoco5EBbk+IqDFhVm3ffdSI8rO01BPw=;
+Subject: Re: Implementing Mikrotik IE
+To:     Josef Miegl <josef@miegl.cz>, linux-wireless@vger.kernel.org
+References: <20190815152844.k5mmddvbwrohkzr6@pepin-laptop.localdomain>
+From:   Sebastian Gottschall <s.gottschall@newmedia-net.de>
+Message-ID: <3a079683-6f57-3b42-f909-90c46e14f14f@newmedia-net.de>
+Date:   Fri, 16 Aug 2019 06:07:02 +0200
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:60.0) Gecko/20100101
+ Thunderbird/60.8.0
+MIME-Version: 1.0
+In-Reply-To: <20190815152844.k5mmddvbwrohkzr6@pepin-laptop.localdomain>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Received:  from [2003:c9:3f31:fa00:e41f:2151:796d:3095]
+        by webmail.newmedia-net.de with esmtpsa (TLSv1:AES128-SHA:128)
+        (Exim 4.72)
+        (envelope-from <s.gottschall@newmedia-net.de>)
+        id 1hyTX6-0007UE-4z; Fri, 16 Aug 2019 06:08:08 +0200
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-In proc_BSSList_open(), 'file->private_data' is allocated through kzalloc()
-and 'data->rbuffer' is allocated through kmalloc(). In the following
-execution, if an error occurs, they are not deallocated, leading to memory
-leaks. To fix this issue, free the allocated memory regions before
-returning the error.
+Hello
 
-Signed-off-by: Wenwen Wang <wenwen@cs.uga.edu>
----
- drivers/net/wireless/cisco/airo.c | 11 +++++++++--
- 1 file changed, 9 insertions(+), 2 deletions(-)
+Since i already have done this for dd-wrt for mac80211 i can tell you, 
+its not easy but possible. the most easy way for broadcasting a custom IE
+is just adding a custom IE with its properties to the hostapd 
+configuration. it does allow to set such properties
+so you dont need to change anything in mac80211 which requires some evil 
+hacks
 
-diff --git a/drivers/net/wireless/cisco/airo.c b/drivers/net/wireless/cisco/airo.c
-index 9342ffb..f43c065 100644
---- a/drivers/net/wireless/cisco/airo.c
-+++ b/drivers/net/wireless/cisco/airo.c
-@@ -5441,11 +5441,18 @@ static int proc_BSSList_open( struct inode *inode, struct file *file ) {
- 			Cmd cmd;
- 			Resp rsp;
- 
--			if (ai->flags & FLAG_RADIO_MASK) return -ENETDOWN;
-+			if (ai->flags & FLAG_RADIO_MASK) {
-+				kfree(data->rbuffer);
-+				kfree(file->private_data);
-+				return -ENETDOWN;
-+			}
- 			memset(&cmd, 0, sizeof(cmd));
- 			cmd.cmd=CMD_LISTBSS;
--			if (down_interruptible(&ai->sem))
-+			if (down_interruptible(&ai->sem)) {
-+				kfree(data->rbuffer);
-+				kfree(file->private_data);
- 				return -ERESTARTSYS;
-+			}
- 			issuecommand(ai, &cmd, &rsp);
- 			up(&ai->sem);
- 			data->readlen = 0;
--- 
-2.7.4
-
+Am 15.08.2019 um 17:28 schrieb Josef Miegl:
+> I've been trying to implement Mikrotik IE. It is a vendor IE that
+> carries stuff like radio name. Even though it is Mikrotik specific, UBNT
+> has a patch for madwifi:
+> https://github.com/jhairtt/ubnt-hal-0.7.379/blob/master/patches/madwifi-dfs-r3319-20080201/074-mtik-ie.patch
+>
+> The IE is sent in beacon and assoc/reassoc frames. I think the correct
+> place for this is mac80211, but I'm not sure how should I expose a
+> switch to this functionality. Is there something like ioctl, or do I have
+> to implement a switch in nl80211, then in cfg80211 and then finally in
+> mac80211?
+>
+> Any advice is greatly appreciated.
+>
