@@ -2,98 +2,82 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 406338FDD6
-	for <lists+linux-wireless@lfdr.de>; Fri, 16 Aug 2019 10:31:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6DE6E8FEB7
+	for <lists+linux-wireless@lfdr.de>; Fri, 16 Aug 2019 11:10:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726954AbfHPIbd (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 16 Aug 2019 04:31:33 -0400
-Received: from mail-wr1-f68.google.com ([209.85.221.68]:46718 "EHLO
-        mail-wr1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726910AbfHPIbd (ORCPT
+        id S1726863AbfHPJKk (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 16 Aug 2019 05:10:40 -0400
+Received: from sender4-op-o15.zoho.com ([136.143.188.15]:17517 "EHLO
+        sender4-op-o15.zoho.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726839AbfHPJKk (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 16 Aug 2019 04:31:33 -0400
-Received: by mail-wr1-f68.google.com with SMTP id z1so732024wru.13
-        for <linux-wireless@vger.kernel.org>; Fri, 16 Aug 2019 01:31:32 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=nMteWjiol09LnNTGAtg+qqwxoUC+aePsLIm1kIpTrJs=;
-        b=oCj+GOx8zj3DZDR8aTDgqrL6lshNRYHcEJ9xc7u/k5AAXmEozG5CiyjIcN62uoR4yk
-         /dZXF2qmsL6jlDXs1GlkR2A/kSPm/FFMDejUbnIKqNjQtHvOcl4zAg6VDFE80jvid6MD
-         52rJCbC9f15qQ3tWLYI9mE+Qjr2VSBI/Xc+5cXxFil0vTyG3GnDha7zPP8OJddjUr/Hq
-         kon3JPJo1IcTbdJL2KaVY8vLnRPATMCLI5ZJACiqczFx0h7wXsZNpPh56pMC+YTAO9cW
-         6XPg2vjaqtITAY9hZVyE6bhzL/BLKppzKSylT9ZNyy0Rn17zbVd0dOqMqj5AMFhpoO7L
-         oyPQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=nMteWjiol09LnNTGAtg+qqwxoUC+aePsLIm1kIpTrJs=;
-        b=bAK9z8wKXwe99VXuhIq9Pw7lKnDSqPmsAFIaYf7SPMfYmCa9jf9smVsVO3Yf1KnvX9
-         UkTVV0/mbDNtS+tmrtegHm26aBH/19vDBmkRPGIi6kmM31eHuQFk+2pO2CWjdjUOIMYZ
-         V6xnpfL1P50+i3Ce4BIrVkFQNHn0mdqw/EqfFY+O6zUupMFo4a+mhp7kWgXLxYaA6aBR
-         fAcVtpN4FnSkcIuY566QVymFxoKbATQYqaHHZ7bTmaf8DaaEltCaM/TEksVgbMcZHfiC
-         T/qjZdIv+4SJzC+oMrlyQYLKHsLmY3sd5zeTptnSVXxo/tkbhsPXhV4TLW41u369067z
-         ylXw==
-X-Gm-Message-State: APjAAAXC8pN5BiAVRBGSAUR7UeV2XQ+qMjMwGUYCpjZNeVMp1bi6jOn9
-        XD45qqKuybDzrJ2GSRYpsoK6A3Pc9gs6TD+C2HDctQ==
-X-Google-Smtp-Source: APXvYqwh5XDkO7F2xERL7f+E+ehgrXGdbgDaiyV9najpnyy1GfPAMnxMomE45gSsbegm0OpSlpcxM0Q0s5kDUvwvH7k=
-X-Received: by 2002:adf:e8c2:: with SMTP id k2mr9106596wrn.198.1565944291339;
- Fri, 16 Aug 2019 01:31:31 -0700 (PDT)
+        Fri, 16 Aug 2019 05:10:40 -0400
+X-Greylist: delayed 902 seconds by postgrey-1.27 at vger.kernel.org; Fri, 16 Aug 2019 05:10:39 EDT
+ARC-Seal: i=1; a=rsa-sha256; t=1565945734; cv=none; 
+        d=zoho.com; s=zohoarc; 
+        b=aawkqy3/T+ww5h9tpWYRXKNJO6uzjcl5PpZ/ScBEEcRXF3ilvRHywZHbMz1iiDkEPOnnjFUB299eCP4sMUH6YXywkB+gveH4aW1nQddd4QGRCsN9c7zHOjWg5uhS1MQZER6aTpIte3wvzEEmwWF0izXIggShvl6KAUKMdS8seWE=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zoho.com; s=zohoarc; 
+        t=1565945734; h=Content-Type:Content-Transfer-Encoding:Cc:Date:From:MIME-Version:Message-ID:Subject:To:ARC-Authentication-Results; 
+        bh=P686FzoH40wgnddMIMAu37CGrgXXQfgN5pjXU3pr9lw=; 
+        b=G/yaMM6xZHAAedqPGpdSOlx4lUMkLXYqGTKEbH0zWtO5ZRLYs2NdtigNMdWrLfPwuU1ZGQpDyIOWumG9ANwjMZZRWtFi3uDdrPGpvFETya2eXlpehC+eMiM/fRjZs4Ea2zypvq4DHxWVBsoCOX42BbribMAVtLTTi3+jR1W11rY=
+ARC-Authentication-Results: i=1; mx.zoho.com;
+        dkim=pass  header.i=in04.sg;
+        spf=pass  smtp.mailfrom=angelsl@in04.sg;
+        dmarc=pass header.from=<angelsl@in04.sg> header.from=<angelsl@in04.sg>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1565945734;
+        s=zoho; d=in04.sg; i=angelsl@in04.sg;
+        h=To:Cc:From:Subject:Message-ID:Date:MIME-Version:Content-Type:Content-Transfer-Encoding;
+        l=918; bh=P686FzoH40wgnddMIMAu37CGrgXXQfgN5pjXU3pr9lw=;
+        b=K0imBB80HR7Sa1qlOWOf+3y5Ev+xLyf48kMPodGF93VpiHF+fxG4YgvZ4IbC2eLi
+        pCOjOhfyM7B3kpi5M7lOgfCc7yNINgXfgF64PWAumxtY2tz8VJFf128sNk4lvlWU45n
+        /JDvXxenJjlrfn/cQYkHwlLnmwPH1ibHVWmoBPTc=
+Received: from [172.17.137.94] (137.132.216.39 [137.132.216.39]) by mx.zohomail.com
+        with SMTPS id 1565945732712882.5414306157879; Fri, 16 Aug 2019 01:55:32 -0700 (PDT)
+To:     Ilan Peer <ilan.peer@intel.com>,
+        Emmanuel Grumbach <emmanuel.grumbach@intel.com>
+Cc:     linux-wireless@vger.kernel.org
+From:   Tee Hao Wei <angelsl@in04.sg>
+Subject: iwlwifi: 9260: Spurious "Unhandled alg: 0x707" and 0x71b
+Message-ID: <badc218b-ea1f-3697-b1f2-3ebb294d9849@in04.sg>
+Date:   Fri, 16 Aug 2019 16:55:27 +0800
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.8.0
 MIME-Version: 1.0
-References: <20190816065936.12214-1-contact@christina-quast.de>
-In-Reply-To: <20190816065936.12214-1-contact@christina-quast.de>
-From:   Ard Biesheuvel <ard.biesheuvel@linaro.org>
-Date:   Fri, 16 Aug 2019 11:31:23 +0300
-Message-ID: <CAKv+Gu-qbwCJzH2TMpe5hEh8UAO3XQ66Zzf9Nx4UqBXd3Lr79w@mail.gmail.com>
-Subject: Re: [PATCH 0/2] Use ccm(aes) aead transform in staging drivers
-To:     Christina Quast <contact@christina-quast.de>
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Payal Kshirsagar <payal.s.kshirsagar.98@gmail.com>,
-        Eric Biggers <ebiggers@google.com>,
-        Herbert Xu <herbert@gondor.apana.org.au>,
-        "open list:ANDROID DRIVERS" <devel@driverdev.osuosl.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Anushka Shukla <anushkacharu9@gmail.com>,
-        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        Zach Turner <turnerzdp@gmail.com>,
-        "<linux-wireless@vger.kernel.org>" <linux-wireless@vger.kernel.org>,
-        Johannes Berg <johannes@sipsolutions.net>,
-        "David S. Miller" <davem@davemloft.net>,
-        "open list:HARDWARE RANDOM NUMBER GENERATOR CORE" 
-        <linux-crypto@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-GB
+Content-Transfer-Encoding: 7bit
+X-ZohoMailClient: External
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Fri, 16 Aug 2019 at 10:00, Christina Quast
-<contact@christina-quast.de> wrote:
->
-> Use ccm(aes) aead transform instead of invoking the AES block cipher
-> block by block.
->
+Hi,
 
-Thanks! This eliminates another two users of the bare cipher API,
-which is not the right abstraction for drivers to use.
+I've been getting "Unhandled alg: 0x707" or 0x71b randomly
+on my Intel 9260. It seems to happen most often when it
+associates to a new AP (or roams to a different one that
+has the same SSID/authentication). It also seems to happen
+only with particular APs. (I don't have access to the APs,
+so there's not much I know about them.)
 
-Reviewed-by: Ard Biesheuvel <ard.biesheuvel@linaro.org>
+I applied the two patches mentioned in Bugzilla #203593[1]
+i.e. "iwlwifi: mvm: Allow multicast data frames only when
+associated" and "iwlwifi: mvm: Allow multicast data frames
+only when authorized" on top of iwlwifi in 5.2.8, which
+improved the situation a lot, but it still happens pretty
+frequently.
 
-I don't have the hardware, so I can't test this.
+[1]: https://bugzilla.kernel.org/show_bug.cgi?id=203593
 
-> Christina Quast (2):
->   staging: rtl8192u: ieee80211: ieee80211_crypt_ccmp.c: Use crypto API
->     ccm(aes)
->   staging: rtl8192e: rtllib_crypt_ccmp.c: Use crypto API ccm(aes)
->
->  drivers/staging/rtl8192e/Kconfig              |   1 +
->  drivers/staging/rtl8192e/rtllib_crypt_ccmp.c  | 187 ++++++++----------
->  drivers/staging/rtl8192u/Kconfig              |   2 +
->  .../rtl8192u/ieee80211/ieee80211_crypt_ccmp.c | 187 ++++++++----------
->  4 files changed, 159 insertions(+), 218 deletions(-)
->
-> --
-> 2.20.1
->
+I'll try to collect some debug data soon. Also, I'll try
+to see if my 8260 has the same issues.
+
+Is there anything else I should try or any other patches I
+should backport?
+
+Thanks.
+
+-- 
+Hao Wei
+
