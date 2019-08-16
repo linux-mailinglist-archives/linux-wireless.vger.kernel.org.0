@@ -2,152 +2,79 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B4D7C8FCD4
-	for <lists+linux-wireless@lfdr.de>; Fri, 16 Aug 2019 09:54:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DED968FCE6
+	for <lists+linux-wireless@lfdr.de>; Fri, 16 Aug 2019 10:00:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726678AbfHPHyf convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 16 Aug 2019 03:54:35 -0400
-Received: from rtits2.realtek.com ([211.75.126.72]:40218 "EHLO
-        rtits2.realtek.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726622AbfHPHye (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 16 Aug 2019 03:54:34 -0400
-Authenticated-By: 
-X-SpamFilter-By: BOX Solutions SpamTrap 5.62 with qID x7G7sNNx016892, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (RTITCASV01.realtek.com.tw[172.21.6.18])
-        by rtits2.realtek.com.tw (8.15.2/2.57/5.78) with ESMTPS id x7G7sNNx016892
-        (version=TLSv1 cipher=DHE-RSA-AES256-SHA bits=256 verify=NOT);
-        Fri, 16 Aug 2019 15:54:24 +0800
-Received: from RTITMBSVM04.realtek.com.tw ([fe80::e404:880:2ef1:1aa1]) by
- RTITCASV01.realtek.com.tw ([::1]) with mapi id 14.03.0468.000; Fri, 16 Aug
- 2019 15:54:23 +0800
-From:   Tony Chuang <yhchuang@realtek.com>
-To:     Jian-Hong Pan <jian-hong@endlessm.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        "David S . Miller" <davem@davemloft.net>
-CC:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux@endlessm.com" <linux@endlessm.com>
-Subject: RE: [PATCH] rtw88: pci: Move a mass of jobs in hw IRQ to soft IRQ
-Thread-Topic: [PATCH] rtw88: pci: Move a mass of jobs in hw IRQ to soft IRQ
-Thread-Index: AQHVU/x2Dr02g4Mib0ipy5Mk0nEf5ab9Zdpg
-Date:   Fri, 16 Aug 2019 07:54:22 +0000
-Message-ID: <F7CD281DE3E379468C6D07993EA72F84D18929BF@RTITMBSVM04.realtek.com.tw>
-References: <20190816063109.4699-1-jian-hong@endlessm.com>
-In-Reply-To: <20190816063109.4699-1-jian-hong@endlessm.com>
-Accept-Language: zh-TW, en-US
-Content-Language: zh-TW
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [172.21.68.183]
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 8BIT
+        id S1726677AbfHPIAT (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 16 Aug 2019 04:00:19 -0400
+Received: from mail.kapsi.fi ([91.232.154.25]:58191 "EHLO mail.kapsi.fi"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726637AbfHPIAT (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 16 Aug 2019 04:00:19 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=kapsi.fi;
+         s=20161220; h=Content-Transfer-Encoding:Content-Type:MIME-Version:References
+        :In-Reply-To:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:Content-ID:
+        Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+        :Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+        List-Post:List-Owner:List-Archive;
+        bh=ZMHHL5jXCHia4KYz6zLJzGtMJy7uSZy2XpIK1XJOMZc=; b=tJa7HYaG2gkKVPwfFvZaQ5vdYC
+        ZptE/oLg9uFfhP9GuDGiVeIPZ3Hwl6LZd4Qw+zeouDzA7TTjfzI0CpxMt6qnB3SQ2NG7yeboVZXQ/
+        z11Q9CF8gnGUuvkym5pSqVHynssTyUpFoeJE2o/ilUm4MOkIhzt7GzZzG54WMwnTOU5gotvy2of7X
+        g1M3Enia8oqyvYT2EBxKzFXpl1TjNYSSflhV1IkJCFyddObQ6FF2CIMGM76L3oqV+M9WxnDM8mkgS
+        PiYAQhr6lS00mWuNbk34Kffd+YVnouqhW4TqZavBt7aRYftArqIbTkULUAiduYMTVezy+9UVZNBRb
+        R6M8CNUQ==;
+Received: from [194.100.106.190] (helo=lettuce)
+        by mail.kapsi.fi with esmtpsa (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.89)
+        (envelope-from <jekarl@iki.fi>)
+        id 1hyX9h-0005QR-15; Fri, 16 Aug 2019 11:00:13 +0300
+Date:   Fri, 16 Aug 2019 11:00:12 +0300
+From:   Emil Karlson <jekarl@iki.fi>
+To:     Stanislaw Gruszka <sgruszka@redhat.com>
+Cc:     Kalle Valo <kvalo@codeaurora.org>, linux-wireless@vger.kernel.org
+Subject: Re: Ap mode regression in linux-5.3-rc1 in rt2800usb
+Message-ID: <20190816110012.63982001@lettuce>
+In-Reply-To: <20190814085018.GA29199@redhat.com>
+References: <20190813215000.6cc27ade@lettuce>
+        <20190814085018.GA29199@redhat.com>
+X-Mailer: Claws Mail 3.17.3 (GTK+ 2.24.32; aarch64-unknown-linux-gnu)
 MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-SA-Exim-Connect-IP: 194.100.106.190
+X-SA-Exim-Mail-From: jekarl@iki.fi
+X-SA-Exim-Scanned: No (on mail.kapsi.fi); SAEximRunCond expanded to false
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-> From: Jian-Hong Pan [mailto:jian-hong@endlessm.com]
-> 
-> There is a mass of jobs between spin lock and unlock in the hardware
-> IRQ which will occupy much time originally. To make system work more
-> efficiently, this patch moves the jobs to the soft IRQ (bottom half) to
-> reduce the time in hardware IRQ.
-> 
-> Signed-off-by: Jian-Hong Pan <jian-hong@endlessm.com>
-> ---
->  drivers/net/wireless/realtek/rtw88/pci.c | 36 +++++++++++++++++++-----
->  1 file changed, 29 insertions(+), 7 deletions(-)
-> 
-> diff --git a/drivers/net/wireless/realtek/rtw88/pci.c
-> b/drivers/net/wireless/realtek/rtw88/pci.c
-> index 00ef229552d5..355606b167c6 100644
-> --- a/drivers/net/wireless/realtek/rtw88/pci.c
-> +++ b/drivers/net/wireless/realtek/rtw88/pci.c
-> @@ -866,12 +866,29 @@ static irqreturn_t rtw_pci_interrupt_handler(int irq,
-> void *dev)
->  {
->  	struct rtw_dev *rtwdev = dev;
->  	struct rtw_pci *rtwpci = (struct rtw_pci *)rtwdev->priv;
-> -	u32 irq_status[4];
-> +	unsigned long flags;
-> 
-> -	spin_lock(&rtwpci->irq_lock);
-> +	spin_lock_irqsave(&rtwpci->irq_lock, flags);
->  	if (!rtwpci->irq_enabled)
->  		goto out;
-> 
-> +	/* disable RTW PCI interrupt to avoid more interrupts before the end of
-> +	 * thread function
-> +	 */
-> +	rtw_pci_disable_interrupt(rtwdev, rtwpci);
-> +out:
-> +	spin_unlock_irqrestore(&rtwpci->irq_lock, flags);
-> +
-> +	return IRQ_WAKE_THREAD;
-> +}
-> +
-> +static irqreturn_t rtw_pci_interrupt_threadfn(int irq, void *dev)
-> +{
-> +	struct rtw_dev *rtwdev = dev;
-> +	struct rtw_pci *rtwpci = (struct rtw_pci *)rtwdev->priv;
-> +	unsigned long flags;
-> +	u32 irq_status[4];
-> +
->  	rtw_pci_irq_recognized(rtwdev, rtwpci, irq_status);
-> 
->  	if (irq_status[0] & IMR_MGNTDOK)
-> @@ -891,8 +908,11 @@ static irqreturn_t rtw_pci_interrupt_handler(int irq,
-> void *dev)
->  	if (irq_status[0] & IMR_ROK)
->  		rtw_pci_rx_isr(rtwdev, rtwpci, RTW_RX_QUEUE_MPDU);
-> 
-> -out:
-> -	spin_unlock(&rtwpci->irq_lock);
-> +	/* all of the jobs for this interrupt have been done */
-> +	spin_lock_irqsave(&rtwpci->irq_lock, flags);
+Greetings
 
-Shouldn't we protect the ISRs above?
+On Wed, 14 Aug 2019 10:50:19 +0200
+Stanislaw Gruszka <sgruszka@redhat.com> wrote:
 
-This patch could actually reduce the time of IRQ.
-But I think I need to further test it with PCI MSI interrupt.
-https://patchwork.kernel.org/patch/11081539/
-
-Maybe we could drop the "rtw_pci_[enable/disable]_interrupt" when MSI
-Is enabled with this patch.
-
-> +	if (rtw_flag_check(rtwdev, RTW_FLAG_RUNNING))
-> +		rtw_pci_enable_interrupt(rtwdev, rtwpci);
-> +	spin_unlock_irqrestore(&rtwpci->irq_lock, flags);
+> (cc linux-wireless mailing list)
 > 
->  	return IRQ_HANDLED;
->  }
-> @@ -1152,8 +1172,10 @@ static int rtw_pci_probe(struct pci_dev *pdev,
->  		goto err_destroy_pci;
->  	}
-> 
-> -	ret = request_irq(pdev->irq, &rtw_pci_interrupt_handler,
-> -			  IRQF_SHARED, KBUILD_MODNAME, rtwdev);
-> +	ret = devm_request_threaded_irq(rtwdev->dev, pdev->irq,
-> +					rtw_pci_interrupt_handler,
-> +					rtw_pci_interrupt_threadfn,
-> +					IRQF_SHARED, KBUILD_MODNAME, rtwdev);
->  	if (ret) {
->  		ieee80211_unregister_hw(hw);
->  		goto err_destroy_pci;
-> @@ -1192,7 +1214,7 @@ static void rtw_pci_remove(struct pci_dev *pdev)
->  	rtw_pci_disable_interrupt(rtwdev, rtwpci);
->  	rtw_pci_destroy(rtwdev, pdev);
->  	rtw_pci_declaim(rtwdev, pdev);
-> -	free_irq(rtwpci->pdev->irq, rtwdev);
-> +	devm_free_irq(rtwdev->dev, rtwpci->pdev->irq, rtwdev);
->  	rtw_core_deinit(rtwdev);
->  	ieee80211_free_hw(hw);
->  }
-> --
-> 2.20.1
+> On Tue, Aug 13, 2019 at 09:50:00PM +0300, Emil Karlson wrote:
+> > Greetings
+> > 
+> > After upgrading my ap running rt2800usb to linux-5.3-rc1 I noticed
+> > an unusual problem of not being able to connect to my ap with my
+> > android devices (nexus7/flo and nexus5x/bullhead), from tcpdump it
+> > seemed ap was receiving packets from the android devices after
+> > successful association, but android devices were not seeing the
+> > dhcp replies.
+> > 
+> > I reverted drivers/net/wireless/ralink to the state it is in v5.2.8
+> > and android clients can connect again normally. I did not
+> > explicitly set watchdog parameter to any value.
 
-Yan-Hsuan
+> Most suspicious are 710e6cc1595e and 41a531ffa4c5 .
+
+It seems to me that reverting only
+710e6cc1595e25378c4b9977f7a8b4ad4a72a109
+allows all my android devices to successfully connect to the internet.
+
+Best Regards
+-Emil
