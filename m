@@ -2,166 +2,74 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 0CB629002B
-	for <lists+linux-wireless@lfdr.de>; Fri, 16 Aug 2019 12:45:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 813B990087
+	for <lists+linux-wireless@lfdr.de>; Fri, 16 Aug 2019 13:10:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726981AbfHPKoz convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 16 Aug 2019 06:44:55 -0400
-Received: from rtits2.realtek.com ([211.75.126.72]:50081 "EHLO
-        rtits2.realtek.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726804AbfHPKoz (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 16 Aug 2019 06:44:55 -0400
-Authenticated-By: 
-X-SpamFilter-By: BOX Solutions SpamTrap 5.62 with qID x7GAiiEL013279, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (RTITCAS12.realtek.com.tw[172.21.6.16])
-        by rtits2.realtek.com.tw (8.15.2/2.57/5.78) with ESMTPS id x7GAiiEL013279
-        (version=TLSv1 cipher=DHE-RSA-AES256-SHA bits=256 verify=NOT);
-        Fri, 16 Aug 2019 18:44:44 +0800
-Received: from RTITMBSVM04.realtek.com.tw ([fe80::e404:880:2ef1:1aa1]) by
- RTITCAS12.realtek.com.tw ([::1]) with mapi id 14.03.0439.000; Fri, 16 Aug
- 2019 18:44:43 +0800
-From:   Tony Chuang <yhchuang@realtek.com>
-To:     Jian-Hong Pan <jian-hong@endlessm.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        "David S . Miller" <davem@davemloft.net>
-CC:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux@endlessm.com" <linux@endlessm.com>
-Subject: RE: [PATCH v2] rtw88: pci: Move a mass of jobs in hw IRQ to soft IRQ
-Thread-Topic: [PATCH v2] rtw88: pci: Move a mass of jobs in hw IRQ to soft
- IRQ
-Thread-Index: AQHVVBrblzqZYqIEtECYjaK+MuuQN6b9lGGg
-Date:   Fri, 16 Aug 2019 10:44:42 +0000
-Message-ID: <F7CD281DE3E379468C6D07993EA72F84D18932B7@RTITMBSVM04.realtek.com.tw>
-References: <CAPpJ_edibR0bxO0Pg=NAaRU8fGYheyN8NTv-gVyTDCJhE-iG5Q@mail.gmail.com>
- <20190816100903.7549-1-jian-hong@endlessm.com>
-In-Reply-To: <20190816100903.7549-1-jian-hong@endlessm.com>
-Accept-Language: zh-TW, en-US
-Content-Language: zh-TW
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [172.21.68.183]
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 8BIT
+        id S1727052AbfHPLKx (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 16 Aug 2019 07:10:53 -0400
+Received: from ocelot.miegl.cz ([195.201.216.236]:60790 "EHLO ocelot.miegl.cz"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727018AbfHPLKx (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 16 Aug 2019 07:10:53 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=miegl.cz; s=dkim;
+        t=1565953850; bh=U5QNjjmSjPR1Tc6nSH7JQtKMSInXcthJGV6j8RUwDmM=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To;
+        b=RjrCsyyIM+9ZZakaR/vbJPL5lllezaSQfyDHcNwkuKVEWWdi0d/jpzOV2gQKSRstR
+         qaQT0FZ1cWvvxY1VEgPDqUXuyWZictnOFi5LOIYy7LzvV4erG6efYbrz0x9bgmvmvM
+         WFqitFGAJn9b5m30OOvmG3IRAroi3clds8D/hJoekggUrDTguCFcMjdMd83O6+uAZf
+         /ODliYJGVFU3QeP1hW8J/kPq3/cVkGf/o03f7KOp7QHs2QT8qt71hsZLEGrI3h+aoK
+         iyS/yOHfll/lvY7WWXbmKvJOBzjun6g+NVQx+r84FmRzDrgNO2IkTb/N6M+ZK5IKOV
+         Cg2wO63css7qA==
+Date:   Fri, 16 Aug 2019 13:10:44 +0200
+From:   Josef Miegl <josef@miegl.cz>
+To:     Sebastian Gottschall <s.gottschall@newmedia-net.de>
+Cc:     linux-wireless@vger.kernel.org
+Subject: Re: Implementing Mikrotik IE
+Message-ID: <20190816111044.4ntizgmpa3twbzcg@pepin-laptop.localdomain>
+References: <20190815152844.k5mmddvbwrohkzr6@pepin-laptop.localdomain>
+ <3a079683-6f57-3b42-f909-90c46e14f14f@newmedia-net.de>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <3a079683-6f57-3b42-f909-90c46e14f14f@newmedia-net.de>
+User-Agent: NeoMutt/20180716
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-> From: Jian-Hong Pan
-> 
-> There is a mass of jobs between spin lock and unlock in the hardware
-> IRQ which will occupy much time originally. To make system work more
-> efficiently, this patch moves the jobs to the soft IRQ (bottom half) to
-> reduce the time in hardware IRQ.
-> 
-> Signed-off-by: Jian-Hong Pan <jian-hong@endlessm.com>
-> ---
-> v2:
->  Change the spin_lock_irqsave/unlock_irqrestore to spin_lock/unlock in
->  rtw_pci_interrupt_handler. Because the interrupts are already disabled
->  in the hardware interrupt handler.
-> 
->  drivers/net/wireless/realtek/rtw88/pci.c | 33 +++++++++++++++++++-----
->  1 file changed, 27 insertions(+), 6 deletions(-)
-> 
-> diff --git a/drivers/net/wireless/realtek/rtw88/pci.c
-> b/drivers/net/wireless/realtek/rtw88/pci.c
-> index 00ef229552d5..0740140d7e46 100644
-> --- a/drivers/net/wireless/realtek/rtw88/pci.c
-> +++ b/drivers/net/wireless/realtek/rtw88/pci.c
-> @@ -866,12 +866,28 @@ static irqreturn_t rtw_pci_interrupt_handler(int irq,
-> void *dev)
->  {
->  	struct rtw_dev *rtwdev = dev;
->  	struct rtw_pci *rtwpci = (struct rtw_pci *)rtwdev->priv;
-> -	u32 irq_status[4];
-> 
->  	spin_lock(&rtwpci->irq_lock);
->  	if (!rtwpci->irq_enabled)
->  		goto out;
-> 
-> +	/* disable RTW PCI interrupt to avoid more interrupts before the end of
-> +	 * thread function
-> +	 */
-> +	rtw_pci_disable_interrupt(rtwdev, rtwpci);
+Hello,
+setting vendor elements in hostapd works great - but I need to add these
+custom elements to assoc/reassoc management frames in station mode.
+Given that the vendor elements option in hostapd works great would it be
+possible to patch wpa_supplicant for it to work in station mode too?
 
-So basically it's to prevent back-to-back interrupts.
+Does nl80211 allow setting NL80211_ATTR_IE for station mode management
+frames?
 
-Nothing wrong about it, I just wondering why we don't like
-back-to-back interrupts. Does it means that those interrupts
-fired between irq_handler and threadfin would increase
-much more time to consume them.
+Also what are the 'evil hacks' you are talking about?
 
-> +out:
-> +	spin_unlock(&rtwpci->irq_lock);
-> +
-> +	return IRQ_WAKE_THREAD;
-> +}
-> +
-> +static irqreturn_t rtw_pci_interrupt_threadfn(int irq, void *dev)
-> +{
-> +	struct rtw_dev *rtwdev = dev;
-> +	struct rtw_pci *rtwpci = (struct rtw_pci *)rtwdev->priv;
-> +	unsigned long flags;
-> +	u32 irq_status[4];
-> +
->  	rtw_pci_irq_recognized(rtwdev, rtwpci, irq_status);
+On Fri, Aug 16, 2019 at 06:07:02AM +0200, Sebastian Gottschall wrote:
+> Hello
 > 
->  	if (irq_status[0] & IMR_MGNTDOK)
-> @@ -891,8 +907,11 @@ static irqreturn_t rtw_pci_interrupt_handler(int irq,
-> void *dev)
->  	if (irq_status[0] & IMR_ROK)
->  		rtw_pci_rx_isr(rtwdev, rtwpci, RTW_RX_QUEUE_MPDU);
+> Since i already have done this for dd-wrt for mac80211 i can tell you, its
+> not easy but possible. the most easy way for broadcasting a custom IE
+> is just adding a custom IE with its properties to the hostapd configuration.
+> it does allow to set such properties
+> so you dont need to change anything in mac80211 which requires some evil
+> hacks
 > 
-> -out:
-> -	spin_unlock(&rtwpci->irq_lock);
-> +	/* all of the jobs for this interrupt have been done */
-> +	spin_lock_irqsave(&rtwpci->irq_lock, flags);
-
-I suggest to protect the ISRs. Because next patches will require
-to check if the TX DMA path is empty. This means I will also add
-this rtwpci->irq_lock to the TX path, and check if the skb_queue
-does not have any pending SKBs not DMAed successfully.
-
-> +	if (rtw_flag_check(rtwdev, RTW_FLAG_RUNNING))
-
-Why check the flag here? Is there any racing or something?
-Otherwise it looks to break the symmetry.
-
-> +		rtw_pci_enable_interrupt(rtwdev, rtwpci);
-> +	spin_unlock_irqrestore(&rtwpci->irq_lock, flags);
-> 
->  	return IRQ_HANDLED;
->  }
-> @@ -1152,8 +1171,10 @@ static int rtw_pci_probe(struct pci_dev *pdev,
->  		goto err_destroy_pci;
->  	}
-> 
-> -	ret = request_irq(pdev->irq, &rtw_pci_interrupt_handler,
-> -			  IRQF_SHARED, KBUILD_MODNAME, rtwdev);
-> +	ret = devm_request_threaded_irq(rtwdev->dev, pdev->irq,
-> +					rtw_pci_interrupt_handler,
-> +					rtw_pci_interrupt_threadfn,
-> +					IRQF_SHARED, KBUILD_MODNAME, rtwdev);
->  	if (ret) {
->  		ieee80211_unregister_hw(hw);
->  		goto err_destroy_pci;
-> @@ -1192,7 +1213,7 @@ static void rtw_pci_remove(struct pci_dev *pdev)
->  	rtw_pci_disable_interrupt(rtwdev, rtwpci);
->  	rtw_pci_destroy(rtwdev, pdev);
->  	rtw_pci_declaim(rtwdev, pdev);
-> -	free_irq(rtwpci->pdev->irq, rtwdev);
-> +	devm_free_irq(rtwdev->dev, rtwpci->pdev->irq, rtwdev);
->  	rtw_core_deinit(rtwdev);
->  	ieee80211_free_hw(hw);
->  }
-> --
-> 2.20.1
-
-Yan-Hsuan
-
+> Am 15.08.2019 um 17:28 schrieb Josef Miegl:
+> > I've been trying to implement Mikrotik IE. It is a vendor IE that
+> > carries stuff like radio name. Even though it is Mikrotik specific, UBNT
+> > has a patch for madwifi:
+> > https://github.com/jhairtt/ubnt-hal-0.7.379/blob/master/patches/madwifi-dfs-r3319-20080201/074-mtik-ie.patch
+> > 
+> > The IE is sent in beacon and assoc/reassoc frames. I think the correct
+> > place for this is mac80211, but I'm not sure how should I expose a
+> > switch to this functionality. Is there something like ioctl, or do I have
+> > to implement a switch in nl80211, then in cfg80211 and then finally in
+> > mac80211?
+> > 
+> > Any advice is greatly appreciated.
+> > 
