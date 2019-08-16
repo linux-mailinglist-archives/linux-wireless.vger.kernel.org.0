@@ -2,73 +2,154 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id AC9AA8FF7F
-	for <lists+linux-wireless@lfdr.de>; Fri, 16 Aug 2019 11:56:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9C3328FFC2
+	for <lists+linux-wireless@lfdr.de>; Fri, 16 Aug 2019 12:10:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726989AbfHPJ41 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 16 Aug 2019 05:56:27 -0400
-Received: from mail-ed1-f43.google.com ([209.85.208.43]:41687 "EHLO
-        mail-ed1-f43.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726918AbfHPJ41 (ORCPT
+        id S1727031AbfHPKKi (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 16 Aug 2019 06:10:38 -0400
+Received: from mail-pf1-f194.google.com ([209.85.210.194]:43386 "EHLO
+        mail-pf1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726839AbfHPKKh (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 16 Aug 2019 05:56:27 -0400
-Received: by mail-ed1-f43.google.com with SMTP id w5so4623149edl.8
-        for <linux-wireless@vger.kernel.org>; Fri, 16 Aug 2019 02:56:26 -0700 (PDT)
+        Fri, 16 Aug 2019 06:10:37 -0400
+Received: by mail-pf1-f194.google.com with SMTP id v12so2893112pfn.10
+        for <linux-wireless@vger.kernel.org>; Fri, 16 Aug 2019 03:10:37 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=endlessm-com.20150623.gappssmtp.com; s=20150623;
+        h=from:to:cc:subject:date:message-id:in-reply-to:references
+         :mime-version:content-transfer-encoding;
+        bh=BziYCDS7YU8vYUQWJ4hyE7rgzHXY7u3/I6t4rVAc7Js=;
+        b=R/BjKxui66lKaPED3pI5oRmo9WbpFno/jivG60cueCwZVAbNmgMlimnp5k74+OJjib
+         5abcqYanAtnFBMcE0+mg/qAV5bloh75/Ek0FeTy7Wqu/rhr0tuscqHCDZONoXcx/7Exk
+         hlrykyaUzQRJtq5FXMPPmdgOnepFMvmi24yFmrH67dC/8TvYXuf9nwS3xJk2eeR4J1+v
+         S2m0BvtEImg1hR2oq6/tFHqZ0mJ6ErE7NBiTCOp8lWgSwfwWmSwNAI9sPLsyImio9YhD
+         WQw00PA5Pn9G2m7YusEMEehyFAcmEfWRsxDFunYRiEw+4H+DMF2cx302fdEBCAArohL5
+         McUQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:in-reply-to:references:date
-         :message-id:mime-version;
-        bh=DVmDCVA+evLtq2XLreSXuYjIzjRadJcmpmk+J0XOpeo=;
-        b=lat511NjSmWysS+jh6qx10YI6zfAvAl3UvGISeewdyVwH5IyL40Bci1cTrql59VsjR
-         jHHElwltIA5TXQ88WQ/pmDKdX/0AkrBR4Eud/jbBQIUnfk/tqw15/jldgnVeOHI2vC+2
-         At1M2VWygBEet76wy9xiLZ4o/sDuMsVB3tIHRj+/i8nScm8aE5UclGvAZR1SUfY0lBfa
-         mfar/f3RuHTdfhJCc15hIpd9X6hKGYEtDrEpDmyv8UcpYmCIxZ3tjTIuhbq2VY+jrD6a
-         4BCkMzr5JxFkE1KLgqvyROoxh3gQoJbgGpytuXD/iFWtk1Qvlf4hHCtrUjGmkp8f8Egt
-         c9Dg==
-X-Gm-Message-State: APjAAAWAQqHrHj5ZCzeE/gxUVMqX+7m9AZN9UQViPAhRTDdopeRpSMS9
-        nbA0c3Lf107odr/eJqq9xgJDmUa7iD0=
-X-Google-Smtp-Source: APXvYqziDrq4Ka0+eHosNg9s/pzYkUyfxpMM+s7hqHA3RVSMbI7aVVEwcCQ8Cf2oPEV6w9kkAbt/Dw==
-X-Received: by 2002:a50:cdd9:: with SMTP id h25mr9784639edj.231.1565949385699;
-        Fri, 16 Aug 2019 02:56:25 -0700 (PDT)
-Received: from alrua-x1.borgediget.toke.dk ([2a00:7660:6da:443::2])
-        by smtp.gmail.com with ESMTPSA id s4sm755452ejq.72.2019.08.16.02.56.24
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+         :references:mime-version:content-transfer-encoding;
+        bh=BziYCDS7YU8vYUQWJ4hyE7rgzHXY7u3/I6t4rVAc7Js=;
+        b=IDi0XHmoJDaLIbaZntRaZvnSksb5xdjGWhH7O+LDF8Y79p8vU2g9Exjp8FUh1hb05k
+         loaRC6ob/2lz4Fme7Gc1LckllHJkT/CRPSGRuBQ+LYZgSeGMyzty8qZLPVh5BozaIWC0
+         CZsLaYV5wBAdPNYEXlpSVo3DJBbqe/Zcav3036IiXN1BfhKhwGs+2PkGsLdsmb9Idsih
+         R/wEKOt04qi4MDkLzan6L/FU9ps4YfbRa+cbrveE9uIWtEymKF2qqjr1KDcSVkG1F7j0
+         USqMC416gwkTBHLGHi7N+IBoPJEn9gC1b4AjOgVA0LZbpOVx9iIWia2fBUcvjTQ6lOQd
+         Y7Hg==
+X-Gm-Message-State: APjAAAU+/FaYweRWUrXLRw36zuSEhUT8olnSHZNIqvSIALjaOl4KClRA
+        ENvFBpgEfRRwnOLqdhrzh/ePfg==
+X-Google-Smtp-Source: APXvYqxFJrZW6vR3K7MQzvy2yqkjKQMoEqS27lWzPrzxB2qLPWBt40nkwWhFIYENuxo4iYIo5SoWOA==
+X-Received: by 2002:a17:90a:8081:: with SMTP id c1mr6584848pjn.62.1565950236764;
+        Fri, 16 Aug 2019 03:10:36 -0700 (PDT)
+Received: from localhost.localdomain (123-204-46-122.static.seed.net.tw. [123.204.46.122])
+        by smtp.gmail.com with ESMTPSA id r75sm6230043pfc.18.2019.08.16.03.10.34
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 16 Aug 2019 02:56:24 -0700 (PDT)
-Received: by alrua-x1.borgediget.toke.dk (Postfix, from userid 1000)
-        id 06EFD1800B1; Fri, 16 Aug 2019 11:56:24 +0200 (CEST)
-From:   Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>
-To:     Jeff Johnson <jjohnson@codeaurora.org>,
-        James Prestwood <prestwoj@gmail.com>
-Cc:     linux-wireless@vger.kernel.org,
-        linux-wireless-owner@vger.kernel.org
-Subject: Re: [RFC 0/1] Allow MAC change on up interface
-In-Reply-To: <46810d9dbb674fb8d8fb442f2418868a@codeaurora.org>
-References: <20190815185702.30937-1-prestwoj@gmail.com> <46810d9dbb674fb8d8fb442f2418868a@codeaurora.org>
-X-Clacks-Overhead: GNU Terry Pratchett
-Date:   Fri, 16 Aug 2019 11:56:23 +0200
-Message-ID: <877e7dwi0o.fsf@toke.dk>
+        Fri, 16 Aug 2019 03:10:36 -0700 (PDT)
+From:   Jian-Hong Pan <jian-hong@endlessm.com>
+To:     Yan-Hsuan Chuang <yhchuang@realtek.com>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        "David S . Miller" <davem@davemloft.net>
+Cc:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux@endlessm.com,
+        Jian-Hong Pan <jian-hong@endlessm.com>
+Subject: [PATCH v2] rtw88: pci: Move a mass of jobs in hw IRQ to soft IRQ
+Date:   Fri, 16 Aug 2019 18:09:04 +0800
+Message-Id: <20190816100903.7549-1-jian-hong@endlessm.com>
+X-Mailer: git-send-email 2.22.0
+In-Reply-To: <CAPpJ_edibR0bxO0Pg=NAaRU8fGYheyN8NTv-gVyTDCJhE-iG5Q@mail.gmail.com>
+References: <CAPpJ_edibR0bxO0Pg=NAaRU8fGYheyN8NTv-gVyTDCJhE-iG5Q@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Jeff Johnson <jjohnson@codeaurora.org> writes:
+There is a mass of jobs between spin lock and unlock in the hardware
+IRQ which will occupy much time originally. To make system work more
+efficiently, this patch moves the jobs to the soft IRQ (bottom half) to
+reduce the time in hardware IRQ.
 
-> On 2019-08-15 11:57, James Prestwood wrote:
->>  - Adds a new NL80211_ATTR for including a "random mac" to
->>    CMD_CONNECT. This MAC is passed down the stack and gets set to
->>    the net_device's address.
->
-> My initial reaction is that I'd avoid using the term "random".
+Signed-off-by: Jian-Hong Pan <jian-hong@endlessm.com>
+---
+v2:
+ Change the spin_lock_irqsave/unlock_irqrestore to spin_lock/unlock in
+ rtw_pci_interrupt_handler. Because the interrupts are already disabled
+ in the hardware interrupt handler.
 
-+1 - from the description I was expecting calls to get_random_bytes() in
-the setter function :)
+ drivers/net/wireless/realtek/rtw88/pci.c | 33 +++++++++++++++++++-----
+ 1 file changed, 27 insertions(+), 6 deletions(-)
 
-> For some use cases the address may truly be random, but for other use
-> cases it may be derived, perhaps in an AP-specific manner. Other terms
-> which may be more appropriate are "spoofed mac", "administered mac",
-> etc.
+diff --git a/drivers/net/wireless/realtek/rtw88/pci.c b/drivers/net/wireless/realtek/rtw88/pci.c
+index 00ef229552d5..0740140d7e46 100644
+--- a/drivers/net/wireless/realtek/rtw88/pci.c
++++ b/drivers/net/wireless/realtek/rtw88/pci.c
+@@ -866,12 +866,28 @@ static irqreturn_t rtw_pci_interrupt_handler(int irq, void *dev)
+ {
+ 	struct rtw_dev *rtwdev = dev;
+ 	struct rtw_pci *rtwpci = (struct rtw_pci *)rtwdev->priv;
+-	u32 irq_status[4];
+ 
+ 	spin_lock(&rtwpci->irq_lock);
+ 	if (!rtwpci->irq_enabled)
+ 		goto out;
+ 
++	/* disable RTW PCI interrupt to avoid more interrupts before the end of
++	 * thread function
++	 */
++	rtw_pci_disable_interrupt(rtwdev, rtwpci);
++out:
++	spin_unlock(&rtwpci->irq_lock);
++
++	return IRQ_WAKE_THREAD;
++}
++
++static irqreturn_t rtw_pci_interrupt_threadfn(int irq, void *dev)
++{
++	struct rtw_dev *rtwdev = dev;
++	struct rtw_pci *rtwpci = (struct rtw_pci *)rtwdev->priv;
++	unsigned long flags;
++	u32 irq_status[4];
++
+ 	rtw_pci_irq_recognized(rtwdev, rtwpci, irq_status);
+ 
+ 	if (irq_status[0] & IMR_MGNTDOK)
+@@ -891,8 +907,11 @@ static irqreturn_t rtw_pci_interrupt_handler(int irq, void *dev)
+ 	if (irq_status[0] & IMR_ROK)
+ 		rtw_pci_rx_isr(rtwdev, rtwpci, RTW_RX_QUEUE_MPDU);
+ 
+-out:
+-	spin_unlock(&rtwpci->irq_lock);
++	/* all of the jobs for this interrupt have been done */
++	spin_lock_irqsave(&rtwpci->irq_lock, flags);
++	if (rtw_flag_check(rtwdev, RTW_FLAG_RUNNING))
++		rtw_pci_enable_interrupt(rtwdev, rtwpci);
++	spin_unlock_irqrestore(&rtwpci->irq_lock, flags);
+ 
+ 	return IRQ_HANDLED;
+ }
+@@ -1152,8 +1171,10 @@ static int rtw_pci_probe(struct pci_dev *pdev,
+ 		goto err_destroy_pci;
+ 	}
+ 
+-	ret = request_irq(pdev->irq, &rtw_pci_interrupt_handler,
+-			  IRQF_SHARED, KBUILD_MODNAME, rtwdev);
++	ret = devm_request_threaded_irq(rtwdev->dev, pdev->irq,
++					rtw_pci_interrupt_handler,
++					rtw_pci_interrupt_threadfn,
++					IRQF_SHARED, KBUILD_MODNAME, rtwdev);
+ 	if (ret) {
+ 		ieee80211_unregister_hw(hw);
+ 		goto err_destroy_pci;
+@@ -1192,7 +1213,7 @@ static void rtw_pci_remove(struct pci_dev *pdev)
+ 	rtw_pci_disable_interrupt(rtwdev, rtwpci);
+ 	rtw_pci_destroy(rtwdev, pdev);
+ 	rtw_pci_declaim(rtwdev, pdev);
+-	free_irq(rtwpci->pdev->irq, rtwdev);
++	devm_free_irq(rtwdev->dev, rtwpci->pdev->irq, rtwdev);
+ 	rtw_core_deinit(rtwdev);
+ 	ieee80211_free_hw(hw);
+ }
+-- 
+2.20.1
 
-"custom mac"?
