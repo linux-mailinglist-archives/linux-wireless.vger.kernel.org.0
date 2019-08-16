@@ -2,196 +2,170 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 521628FF05
-	for <lists+linux-wireless@lfdr.de>; Fri, 16 Aug 2019 11:28:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 042EA8FF13
+	for <lists+linux-wireless@lfdr.de>; Fri, 16 Aug 2019 11:33:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727014AbfHPJ2a (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 16 Aug 2019 05:28:30 -0400
-Received: from mail-vs1-f65.google.com ([209.85.217.65]:35270 "EHLO
-        mail-vs1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726998AbfHPJ2a (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 16 Aug 2019 05:28:30 -0400
-Received: by mail-vs1-f65.google.com with SMTP id q16so3341814vsm.2
-        for <linux-wireless@vger.kernel.org>; Fri, 16 Aug 2019 02:28:29 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=endlessm-com.20150623.gappssmtp.com; s=20150623;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc:content-transfer-encoding;
-        bh=KwYdFMrs2uqk68qN6B+I1aTFc12mXSjCsUdciNeUO7Y=;
-        b=fyzCdLDxDEvff0YzhGJ6ZhfCbs0u+Z3Sf50AXCD16lghsqbEnDtCkbVe64VykJQE6d
-         8+ODGxo8qDyACL5RvpFh66Wk8KxdgwbOw7/j/hRjH07BzzmNC9R8gb5hpYWe3indAJqJ
-         pANB/ismDMgTAm/nNdDHDoO/UoWG/suO+Xwrw6hCzEiTKm2Yl0p86fKveaxdA3Mn6TNt
-         tZwFOpymeWvqhZEBxbqNAWSQq1Zh4r43VSzWL4KBZRJ06tTXLFPN165+tuN2Uk5wjLu1
-         nMgBt3skOjoJffzQjmgj35AEsGVpZf4TNU2NSzWV40ZWW5D03YoFDKYtt/Lr063MBkmL
-         b9Ww==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=KwYdFMrs2uqk68qN6B+I1aTFc12mXSjCsUdciNeUO7Y=;
-        b=n1JPFKwK2zGr+sVI5yR1nR5BzFlfnvBQMGS6Mpm5vdhtJ74mnjbM12ltDSDOZnB0/D
-         DSDY4zjsvPp3NEnCmIzsiaqQ/yHbhCI9EgoCYZXbWeU+BMS+8LIwkdoeHiCPl7zOAGWw
-         caj6fPuqunZrOPmzrgXe9RvTPVGK8o9Rk7HobmxUS+hRgsRNQCLDyGxfFy1f1cXv6TzR
-         zXTnhV3S6czmn4N7sz7rK3PlD21DM5d0Pkt/UPJ47Fz7ktE3RWlHifEtvPJZfeiY5Ovo
-         QZ+sGg9nAvrT5hXHeZCXCQityoi4DwKCk9HuInng6R1gKSVPzO0h2V5biMUhvo+UxFCW
-         6DwA==
-X-Gm-Message-State: APjAAAUdML2SQXQ4AUHTG3zxFtfmvb/LCHRMmVbs6Hcup9WAszlk+NVg
-        8AgHb8MN/mvrqsBCwcN7ZX5AI3F/lLkUyeEDqMaQXw==
-X-Google-Smtp-Source: APXvYqyfAgG3EdeQBS93sMjZIwyIwpmLnXWpnoEISIrGKxq5pIGvknWDpGsbwSvidZKAm9qiYZhRFF2SLfOSP7fY3SE=
-X-Received: by 2002:a67:6507:: with SMTP id z7mr5571817vsb.206.1565947708395;
- Fri, 16 Aug 2019 02:28:28 -0700 (PDT)
+        id S1727071AbfHPJdF (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 16 Aug 2019 05:33:05 -0400
+Received: from mx1.redhat.com ([209.132.183.28]:35502 "EHLO mx1.redhat.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726918AbfHPJdF (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 16 Aug 2019 05:33:05 -0400
+Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.phx2.redhat.com [10.5.11.13])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mx1.redhat.com (Postfix) with ESMTPS id 331273082B40;
+        Fri, 16 Aug 2019 09:33:05 +0000 (UTC)
+Received: from localhost (unknown [10.43.2.236])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id D00A484006;
+        Fri, 16 Aug 2019 09:33:04 +0000 (UTC)
+Date:   Fri, 16 Aug 2019 11:33:02 +0200
+From:   Stanislaw Gruszka <sgruszka@redhat.com>
+To:     Emil Karlson <jekarl@iki.fi>
+Cc:     Kalle Valo <kvalo@codeaurora.org>, linux-wireless@vger.kernel.org
+Subject: Re: Ap mode regression in linux-5.3-rc1 in rt2800usb
+Message-ID: <20190816093302.GA2158@redhat.com>
+References: <20190813215000.6cc27ade@lettuce>
+ <20190814085018.GA29199@redhat.com>
+ <20190816110012.63982001@lettuce>
 MIME-Version: 1.0
-References: <20190816063109.4699-1-jian-hong@endlessm.com> <F7CD281DE3E379468C6D07993EA72F84D18929BF@RTITMBSVM04.realtek.com.tw>
- <F7CD281DE3E379468C6D07993EA72F84D1892A52@RTITMBSVM04.realtek.com.tw>
-In-Reply-To: <F7CD281DE3E379468C6D07993EA72F84D1892A52@RTITMBSVM04.realtek.com.tw>
-From:   Jian-Hong Pan <jian-hong@endlessm.com>
-Date:   Fri, 16 Aug 2019 17:27:51 +0800
-Message-ID: <CAPpJ_edibR0bxO0Pg=NAaRU8fGYheyN8NTv-gVyTDCJhE-iG5Q@mail.gmail.com>
-Subject: Re: [PATCH] rtw88: pci: Move a mass of jobs in hw IRQ to soft IRQ
-To:     Tony Chuang <yhchuang@realtek.com>
-Cc:     Kalle Valo <kvalo@codeaurora.org>,
-        "David S . Miller" <davem@davemloft.net>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux@endlessm.com" <linux@endlessm.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: multipart/mixed; boundary="MGYHOYXEY6WxJCY8"
+Content-Disposition: inline
+In-Reply-To: <20190816110012.63982001@lettuce>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.13
+X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16 (mx1.redhat.com [10.5.110.45]); Fri, 16 Aug 2019 09:33:05 +0000 (UTC)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Tony Chuang <yhchuang@realtek.com> =E6=96=BC 2019=E5=B9=B48=E6=9C=8816=E6=
-=97=A5 =E9=80=B1=E4=BA=94 =E4=B8=8B=E5=8D=884:07=E5=AF=AB=E9=81=93=EF=BC=9A
->
-> Hi,
->
-> A few more questions below
->
-> > > From: Jian-Hong Pan [mailto:jian-hong@endlessm.com]
-> > >
-> > > There is a mass of jobs between spin lock and unlock in the hardware
-> > > IRQ which will occupy much time originally. To make system work more
-> > > efficiently, this patch moves the jobs to the soft IRQ (bottom half) =
-to
-> > > reduce the time in hardware IRQ.
-> > >
-> > > Signed-off-by: Jian-Hong Pan <jian-hong@endlessm.com>
-> > > ---
-> > >  drivers/net/wireless/realtek/rtw88/pci.c | 36 +++++++++++++++++++---=
---
-> > >  1 file changed, 29 insertions(+), 7 deletions(-)
-> > >
-> > > diff --git a/drivers/net/wireless/realtek/rtw88/pci.c
-> > > b/drivers/net/wireless/realtek/rtw88/pci.c
-> > > index 00ef229552d5..355606b167c6 100644
-> > > --- a/drivers/net/wireless/realtek/rtw88/pci.c
-> > > +++ b/drivers/net/wireless/realtek/rtw88/pci.c
-> > > @@ -866,12 +866,29 @@ static irqreturn_t rtw_pci_interrupt_handler(in=
-t
-> > irq,
-> > > void *dev)
-> > >  {
-> > >     struct rtw_dev *rtwdev =3D dev;
-> > >     struct rtw_pci *rtwpci =3D (struct rtw_pci *)rtwdev->priv;
-> > > -   u32 irq_status[4];
-> > > +   unsigned long flags;
-> > >
-> > > -   spin_lock(&rtwpci->irq_lock);
-> > > +   spin_lock_irqsave(&rtwpci->irq_lock, flags);
->
-> I think you can use 'spin_lock()' here as it's in IRQ context?
 
-Ah!  You are right!  The interrupts are already disabled in the
-interrupt handler.  So, there is no need to disable more once.  I can
-tweak it.
+--MGYHOYXEY6WxJCY8
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-> > >     if (!rtwpci->irq_enabled)
-> > >             goto out;
-> > >
-> > > +   /* disable RTW PCI interrupt to avoid more interrupts before the =
-end of
-> > > +    * thread function
-> > > +    */
-> > > +   rtw_pci_disable_interrupt(rtwdev, rtwpci);
->
->
-> Why do we need rtw_pci_disable_interrupt() here.
-> Have you done any experiment and decided to add this.
-> If you have can you share your results to me?
+On Fri, Aug 16, 2019 at 11:00:12AM +0300, Emil Karlson wrote:
+> Greetings
+> 
+> On Wed, 14 Aug 2019 10:50:19 +0200
+> Stanislaw Gruszka <sgruszka@redhat.com> wrote:
+> 
+> > (cc linux-wireless mailing list)
+> > 
+> > On Tue, Aug 13, 2019 at 09:50:00PM +0300, Emil Karlson wrote:
+> > > Greetings
+> > > 
+> > > After upgrading my ap running rt2800usb to linux-5.3-rc1 I noticed
+> > > an unusual problem of not being able to connect to my ap with my
+> > > android devices (nexus7/flo and nexus5x/bullhead), from tcpdump it
+> > > seemed ap was receiving packets from the android devices after
+> > > successful association, but android devices were not seeing the
+> > > dhcp replies.
+> > > 
+> > > I reverted drivers/net/wireless/ralink to the state it is in v5.2.8
+> > > and android clients can connect again normally. I did not
+> > > explicitly set watchdog parameter to any value.
+> 
+> > Most suspicious are 710e6cc1595e and 41a531ffa4c5 .
+> 
+> It seems to me that reverting only
+> 710e6cc1595e25378c4b9977f7a8b4ad4a72a109
+> allows all my android devices to successfully connect to the internet.
 
-I got this idea "Avoid back to back interrupt" from Intel WiFi's driver.
-https://elixir.bootlin.com/linux/v5.3-rc4/source/drivers/net/wireless/intel=
-/iwlwifi/pcie/rx.c#L2071
+Please test attached patch as proposed fix for
+710e6cc1595e25378c4b9977f7a8b4ad4a72a109 and report back. Thanks.
 
-So, I disable rtw_pci interrupt here in first half IRQ.  (Re-enable in
-bottom half)
+Stanislaw
 
->
-> > > +out:
-> > > +   spin_unlock_irqrestore(&rtwpci->irq_lock, flags);
->
-> spin_unlock()
->
-> > > +
-> > > +   return IRQ_WAKE_THREAD;
-> > > +}
-> > > +
-> > > +static irqreturn_t rtw_pci_interrupt_threadfn(int irq, void *dev)
-> > > +{
-> > > +   struct rtw_dev *rtwdev =3D dev;
-> > > +   struct rtw_pci *rtwpci =3D (struct rtw_pci *)rtwdev->priv;
-> > > +   unsigned long flags;
-> > > +   u32 irq_status[4];
-> > > +
-> > >     rtw_pci_irq_recognized(rtwdev, rtwpci, irq_status);
-> > >
-> > >     if (irq_status[0] & IMR_MGNTDOK)
-> > > @@ -891,8 +908,11 @@ static irqreturn_t rtw_pci_interrupt_handler(int
-> > irq,
-> > > void *dev)
-> > >     if (irq_status[0] & IMR_ROK)
-> > >             rtw_pci_rx_isr(rtwdev, rtwpci, RTW_RX_QUEUE_MPDU);
-> > >
-> > > -out:
-> > > -   spin_unlock(&rtwpci->irq_lock);
-> > > +   /* all of the jobs for this interrupt have been done */
-> > > +   spin_lock_irqsave(&rtwpci->irq_lock, flags);
-> >
-> > Shouldn't we protect the ISRs above?
-> >
-> > This patch could actually reduce the time of IRQ.
-> > But I think I need to further test it with PCI MSI interrupt.
-> > https://patchwork.kernel.org/patch/11081539/
-> >
-> > Maybe we could drop the "rtw_pci_[enable/disable]_interrupt" when MSI
-> > Is enabled with this patch.
-> >
-> > > +   if (rtw_flag_check(rtwdev, RTW_FLAG_RUNNING))
-> > > +           rtw_pci_enable_interrupt(rtwdev, rtwpci);
+--MGYHOYXEY6WxJCY8
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: attachment; filename="rt2x00_clear_ivs_on_start.patch"
 
-Then, re-enable rtw_pci interrupt here in bottom half of the IRQ.
-Here is the place where Intel WiFi re-enable interrupts.
-https://elixir.bootlin.com/linux/v5.3-rc4/source/drivers/net/wireless/intel=
-/iwlwifi/pcie/rx.c#L1959
+diff --git a/drivers/net/wireless/ralink/rt2x00/rt2800lib.c b/drivers/net/wireless/ralink/rt2x00/rt2800lib.c
+index 4a996550288e..cbec2131e943 100644
+--- a/drivers/net/wireless/ralink/rt2x00/rt2800lib.c
++++ b/drivers/net/wireless/ralink/rt2x00/rt2800lib.c
+@@ -6095,6 +6095,15 @@ static int rt2800_init_registers(struct rt2x00_dev *rt2x00dev)
+ 	}
+ 
+ 	/*
++	 * Clear encryption initialization vectors on start, but keep them
++	 * for watchdog reset. Otherwise we will have wrong IVs and not be
++	 * able to keep connections after reset.
++	 */
++	if (!test_bit(DEVICE_STATE_RESET, &rt2x00dev->flags))
++		for (i = 0; i < 256; i++)
++			rt2800_register_write(rt2x00dev, MAC_IVEIV_ENTRY(i), 0);
++
++	/*
+ 	 * Clear all beacons
+ 	 */
+ 	for (i = 0; i < 8; i++)
+diff --git a/drivers/net/wireless/ralink/rt2x00/rt2x00.h b/drivers/net/wireless/ralink/rt2x00/rt2x00.h
+index d35ef06c5c7a..1dd54a0d083d 100644
+--- a/drivers/net/wireless/ralink/rt2x00/rt2x00.h
++++ b/drivers/net/wireless/ralink/rt2x00/rt2x00.h
+@@ -659,6 +659,7 @@ enum rt2x00_state_flags {
+ 	DEVICE_STATE_ENABLED_RADIO,
+ 	DEVICE_STATE_SCANNING,
+ 	DEVICE_STATE_FLUSHING,
++	DEVICE_STATE_RESET,
+ 
+ 	/*
+ 	 * Driver configuration
+diff --git a/drivers/net/wireless/ralink/rt2x00/rt2x00dev.c b/drivers/net/wireless/ralink/rt2x00/rt2x00dev.c
+index ad063c920323..c3eab767bc21 100644
+--- a/drivers/net/wireless/ralink/rt2x00/rt2x00dev.c
++++ b/drivers/net/wireless/ralink/rt2x00/rt2x00dev.c
+@@ -1253,13 +1253,14 @@ static int rt2x00lib_initialize(struct rt2x00_dev *rt2x00dev)
+ 
+ int rt2x00lib_start(struct rt2x00_dev *rt2x00dev)
+ {
+-	int retval;
++	int retval = 0;
+ 
+ 	if (test_bit(DEVICE_STATE_STARTED, &rt2x00dev->flags)) {
+ 		/*
+ 		 * This is special case for ieee80211_restart_hw(), otherwise
+ 		 * mac80211 never call start() two times in row without stop();
+ 		 */
++		set_bit(DEVICE_STATE_RESET, &rt2x00dev->flags);
+ 		rt2x00dev->ops->lib->pre_reset_hw(rt2x00dev);
+ 		rt2x00lib_stop(rt2x00dev);
+ 	}
+@@ -1270,14 +1271,14 @@ int rt2x00lib_start(struct rt2x00_dev *rt2x00dev)
+ 	 */
+ 	retval = rt2x00lib_load_firmware(rt2x00dev);
+ 	if (retval)
+-		return retval;
++		goto out;
+ 
+ 	/*
+ 	 * Initialize the device.
+ 	 */
+ 	retval = rt2x00lib_initialize(rt2x00dev);
+ 	if (retval)
+-		return retval;
++		goto out;
+ 
+ 	rt2x00dev->intf_ap_count = 0;
+ 	rt2x00dev->intf_sta_count = 0;
+@@ -1286,11 +1287,13 @@ int rt2x00lib_start(struct rt2x00_dev *rt2x00dev)
+ 	/* Enable the radio */
+ 	retval = rt2x00lib_enable_radio(rt2x00dev);
+ 	if (retval)
+-		return retval;
++		goto out;
+ 
+ 	set_bit(DEVICE_STATE_STARTED, &rt2x00dev->flags);
+ 
+-	return 0;
++out:
++	clear_bit(DEVICE_STATE_RESET, &rt2x00dev->flags);
++	return retval;
+ }
+ 
+ void rt2x00lib_stop(struct rt2x00_dev *rt2x00dev)
 
-Now, we can go back to the question "Shouldn't we protect the ISRs above?"
-
-1. What does the lock: rtwpci->irq_lock protect for?
-According to the code, seems only rtw_pci interrupt's state which is
-enabled or not.
-
-2. How about the ISRs you mentioned?
-This part will only be executed if there is a fresh rtw_pci interrupt.
-The first half already disabled rtw_pci interrupt, so there is no more
-fresh rtw_pci interrupt until rtw_pci interrupt is enabled again.
-Therefor, the rtwpci->irq_lock only wraps the rtw_pci interrupt
-enablement.
-
-If there is any more entry that I missed and will interfere, please let me =
-know.
-
-Thank you
-Jian-Hong Pan
+--MGYHOYXEY6WxJCY8--
