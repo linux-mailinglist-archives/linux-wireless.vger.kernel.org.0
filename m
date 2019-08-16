@@ -2,87 +2,81 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 7F13F903A6
-	for <lists+linux-wireless@lfdr.de>; Fri, 16 Aug 2019 16:07:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D4877905B9
+	for <lists+linux-wireless@lfdr.de>; Fri, 16 Aug 2019 18:27:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727273AbfHPOHJ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 16 Aug 2019 10:07:09 -0400
-Received: from szxga07-in.huawei.com ([45.249.212.35]:50388 "EHLO huawei.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1727286AbfHPOHJ (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 16 Aug 2019 10:07:09 -0400
-Received: from DGGEMS409-HUB.china.huawei.com (unknown [172.30.72.58])
-        by Forcepoint Email with ESMTP id 53D6156311E576FF5A5F;
-        Fri, 16 Aug 2019 22:06:09 +0800 (CST)
-Received: from localhost (10.133.213.239) by DGGEMS409-HUB.china.huawei.com
- (10.3.19.209) with Microsoft SMTP Server id 14.3.439.0; Fri, 16 Aug 2019
- 22:06:00 +0800
-From:   YueHaibing <yuehaibing@huawei.com>
-To:     <pkshih@realtek.com>, <kvalo@codeaurora.org>, <davem@davemloft.net>
-CC:     <linux-kernel@vger.kernel.org>, <netdev@vger.kernel.org>,
-        <linux-wireless@vger.kernel.org>,
-        YueHaibing <yuehaibing@huawei.com>
-Subject: [PATCH] rtlwifi: remove unused variables 'RTL8712_SDIO_EFUSE_TABLE' and 'MAX_PGPKT_SIZE'
-Date:   Fri, 16 Aug 2019 22:05:13 +0800
-Message-ID: <20190816140513.72572-1-yuehaibing@huawei.com>
-X-Mailer: git-send-email 2.10.2.windows.1
+        id S1726545AbfHPQ1b (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 16 Aug 2019 12:27:31 -0400
+Received: from mout2.fh-giessen.de ([212.201.18.46]:48390 "EHLO
+        mout2.fh-giessen.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725956AbfHPQ1b (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 16 Aug 2019 12:27:31 -0400
+X-Greylist: delayed 1134 seconds by postgrey-1.27 at vger.kernel.org; Fri, 16 Aug 2019 12:27:30 EDT
+Received: from mx2.fh-giessen.de ([212.201.18.41])
+        by mout2.fh-giessen.de with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <tobias.johannes.klausmann@mni.thm.de>)
+        id 1hyemB-0003t1-8u; Fri, 16 Aug 2019 18:08:27 +0200
+Received: from mailgate-2.its.fh-giessen.de ([212.201.18.14])
+        by mx2.fh-giessen.de with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <tobias.johannes.klausmann@mni.thm.de>)
+        id 1hyemB-006LjD-4G; Fri, 16 Aug 2019 18:08:27 +0200
+Received: from p2e561b42.dip0.t-ipconnect.de ([46.86.27.66] helo=[192.168.1.24])
+        by mailgate-2.its.fh-giessen.de with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        (Exim 4.92)
+        (envelope-from <tobias.johannes.klausmann@mni.thm.de>)
+        id 1hyemA-000UF7-Qz; Fri, 16 Aug 2019 18:08:26 +0200
+To:     kvalo@codeaurora.org, davem@davemloft.net,
+        ath10k@lists.infradead.org, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+        nicoleotsuka@gmail.com, hch@lst.de, m.szyprowski@samsung.com,
+        robin.murphy@arm.com, iommu@lists.linux-foundation.org
+From:   Tobias Klausmann <tobias.johannes.klausmann@mni.thm.de>
+Subject: regression in ath10k dma allocation
+Cc:     tobias.klausmann@freenet.de
+Message-ID: <8fe8b415-2d34-0a14-170b-dcb31c162e67@mni.thm.de>
+Date:   Fri, 16 Aug 2019 18:08:26 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:70.0) Gecko/20100101
+ Thunderbird/70.0a1
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [10.133.213.239]
-X-CFilter-Loop: Reflected
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Content-Language: en-US
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-drivers/net/wireless/realtek/rtlwifi/efuse.c:16:31:
- warning: RTL8712_SDIO_EFUSE_TABLE defined but not used [-Wunused-const-variable=]
-drivers/net/wireless/realtek/rtlwifi/efuse.c:9:17:
- warning: MAX_PGPKT_SIZE defined but not used [-Wunused-const-variable=]
+Hello all,
 
-They are never used, so can be removed.
+within the current development cycle i noted the ath10k driver failing 
+to setup:
 
-Reported-by: Hulk Robot <hulkci@huawei.com>
-Signed-off-by: YueHaibing <yuehaibing@huawei.com>
----
- drivers/net/wireless/realtek/rtlwifi/efuse.c | 17 -----------------
- 1 file changed, 17 deletions(-)
+[    3.185660] ath10k_pci 0000:02:00.0: failed to alloc CE dest ring 1: -12
+[    3.185664] ath10k_pci 0000:02:00.0: failed to allocate copy engine 
+pipe 1: -12
+[    3.185667] ath10k_pci 0000:02:00.0: failed to allocate copy engine 
+pipes: -12
+[    3.185669] ath10k_pci 0000:02:00.0: failed to setup resource: -12
+[    3.185692] ath10k_pci: probe of 0000:02:00.0 failed with error -12
 
-diff --git a/drivers/net/wireless/realtek/rtlwifi/efuse.c b/drivers/net/wireless/realtek/rtlwifi/efuse.c
-index ea4fc53..2646672 100644
---- a/drivers/net/wireless/realtek/rtlwifi/efuse.c
-+++ b/drivers/net/wireless/realtek/rtlwifi/efuse.c
-@@ -6,29 +6,12 @@
- #include "pci.h"
- #include <linux/export.h>
- 
--static const u8 MAX_PGPKT_SIZE = 9;
- static const u8 PGPKT_DATA_SIZE = 8;
- static const int EFUSE_MAX_SIZE = 512;
- 
- #define START_ADDRESS		0x1000
- #define REG_MCUFWDL		0x0080
- 
--static const struct efuse_map RTL8712_SDIO_EFUSE_TABLE[] = {
--	{0, 0, 0, 2},
--	{0, 1, 0, 2},
--	{0, 2, 0, 2},
--	{1, 0, 0, 1},
--	{1, 0, 1, 1},
--	{1, 1, 0, 1},
--	{1, 1, 1, 3},
--	{1, 3, 0, 17},
--	{3, 3, 1, 48},
--	{10, 0, 0, 6},
--	{10, 3, 0, 1},
--	{10, 3, 1, 1},
--	{11, 0, 0, 28}
--};
--
- static const struct rtl_efuse_ops efuse_ops = {
- 	.efuse_onebyte_read = efuse_one_byte_read,
- 	.efuse_logical_map_read = efuse_shadow_read,
--- 
-2.7.4
+the actual failure comes from [1] and indeed bisecting brought me to a 
+related commit "dma-contiguous: add dma_{alloc,free}_contiguous() 
+helpers" [2]. Reverting the commit fixes the problem, yet this might 
+just be the driver abusing the dma infrastructure, so hopefully someone 
+can have a look at it, as i'm not familiar with the code!
 
+
+[1]: 
+https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/drivers/net/wireless/ath/ath10k/ce.c?h=v5.3-rc4#n1650
+
+[2]: 
+https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=b1d2dc009dece4cd7e629419b52266ba51960a6b
+
+
+Greetings,
+
+Tobias
 
