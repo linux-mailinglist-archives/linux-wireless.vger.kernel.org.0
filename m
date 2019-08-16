@@ -2,92 +2,83 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 96EA68F646
-	for <lists+linux-wireless@lfdr.de>; Thu, 15 Aug 2019 23:11:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 007228F92F
+	for <lists+linux-wireless@lfdr.de>; Fri, 16 Aug 2019 04:45:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732266AbfHOVLZ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 15 Aug 2019 17:11:25 -0400
-Received: from mail-lf1-f68.google.com ([209.85.167.68]:41320 "EHLO
-        mail-lf1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730865AbfHOVLZ (ORCPT
+        id S1726537AbfHPCpg (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 15 Aug 2019 22:45:36 -0400
+Received: from rtits2.realtek.com ([211.75.126.72]:51928 "EHLO
+        rtits2.realtek.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726434AbfHPCpf (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 15 Aug 2019 17:11:25 -0400
-Received: by mail-lf1-f68.google.com with SMTP id 62so2587358lfa.8
-        for <linux-wireless@vger.kernel.org>; Thu, 15 Aug 2019 14:11:24 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=6rHFZp7Q9zNEGDrlZI7ThtXxX4J4GssJHaVlX0BDsnU=;
-        b=YBegRkSr9nfqFrxMWcrxZCGSuYot01qXHOoTtm5wN3VBHueQZiKwl9WSchw77Q+TVJ
-         diHdRMiSGJr/k7xx6YnJCegoZ29R5fc/EOgx0U44Ph81JtctlLRfL3KuiGAvGt04RhUV
-         1EzhB489KpLuTy17vHo7QbM5pjo5eMPKZECMg=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=6rHFZp7Q9zNEGDrlZI7ThtXxX4J4GssJHaVlX0BDsnU=;
-        b=CuxhLDN4LHcJyNmmi+V28zKw2J09t5SEJzDfiwGkXpkVUt3HZQxcnVWx/vue5oBKoq
-         pbSdYlzvLAmXcJCLXvUguZRkdyhG/4EuhUYRD5Ku2axDlp2l91x3mI380ABSI7DlO2qC
-         nHAlz05RBRKk08+T9/ZkGaryxTpGckO5gAcLJ3CnZevH5An58I7D+n+gEZln/5rV4hEr
-         rg8v7X/0egz6oCdznkecikqkD6BofGfwiaJIZ5o9KlNJ8vm8jodlOLRNlHZNp7ptlitL
-         gnhO4CC8IJjWvvCvnfJaKpXp0bbKdTUK49n/gUL9l+6c5gg2rIL2kBmC3MK/r1xM6P1b
-         NXIg==
-X-Gm-Message-State: APjAAAX+4wXN4U31vLVJrthsjx/i3S7rEHEe4r2gAy+DF2OuAkSG7ZHf
-        ls0k6ClpyqtPPFEfZ4p8OPSK9KKjqoo=
-X-Google-Smtp-Source: APXvYqxu9qr/58JGSW4DyyzcxBNQtb6ix+6mHuibgLN6xL9YwlZByXnkkMpSFF7QpneYaavumFZJ/w==
-X-Received: by 2002:ac2:5104:: with SMTP id q4mr3593155lfb.56.1565903482650;
-        Thu, 15 Aug 2019 14:11:22 -0700 (PDT)
-Received: from mail-lj1-f179.google.com (mail-lj1-f179.google.com. [209.85.208.179])
-        by smtp.gmail.com with ESMTPSA id z83sm661602ljb.73.2019.08.15.14.11.21
-        for <linux-wireless@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 15 Aug 2019 14:11:21 -0700 (PDT)
-Received: by mail-lj1-f179.google.com with SMTP id m24so3423522ljg.8
-        for <linux-wireless@vger.kernel.org>; Thu, 15 Aug 2019 14:11:21 -0700 (PDT)
-X-Received: by 2002:a2e:b0e6:: with SMTP id h6mr3455892ljl.18.1565903481377;
- Thu, 15 Aug 2019 14:11:21 -0700 (PDT)
-MIME-Version: 1.0
-References: <1564575767-27557-1-git-send-email-yhchuang@realtek.com> <1564575767-27557-3-git-send-email-yhchuang@realtek.com>
-In-Reply-To: <1564575767-27557-3-git-send-email-yhchuang@realtek.com>
-From:   Brian Norris <briannorris@chromium.org>
-Date:   Thu, 15 Aug 2019 14:11:10 -0700
-X-Gmail-Original-Message-ID: <CA+ASDXPJiNTXAihzohT06RS57gkJU9Q-u3kpp0piJP-3U1miFw@mail.gmail.com>
-Message-ID: <CA+ASDXPJiNTXAihzohT06RS57gkJU9Q-u3kpp0piJP-3U1miFw@mail.gmail.com>
-Subject: Re: [PATCH v3 2/3] rtw88: enclose c2h cmd handle with mutex
-To:     Tony Chuang <yhchuang@realtek.com>
-Cc:     Kalle Valo <kvalo@codeaurora.org>,
+        Thu, 15 Aug 2019 22:45:35 -0400
+Authenticated-By: 
+X-SpamFilter-By: BOX Solutions SpamTrap 5.62 with qID x7G2jINu016587, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (RTITCASV01.realtek.com.tw[172.21.6.18])
+        by rtits2.realtek.com.tw (8.15.2/2.57/5.78) with ESMTPS id x7G2jINu016587
+        (version=TLSv1 cipher=DHE-RSA-AES256-SHA bits=256 verify=NOT);
+        Fri, 16 Aug 2019 10:45:18 +0800
+Received: from RTITMBSVM04.realtek.com.tw ([fe80::e404:880:2ef1:1aa1]) by
+ RTITCASV01.realtek.com.tw ([::1]) with mapi id 14.03.0468.000; Fri, 16 Aug
+ 2019 10:45:18 +0800
+From:   Tony Chuang <yhchuang@realtek.com>
+To:     Brian Norris <briannorris@chromium.org>
+CC:     Kalle Valo <kvalo@codeaurora.org>,
         linux-wireless <linux-wireless@vger.kernel.org>,
         Stanislaw Gruszka <sgruszka@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
+Subject: RE: [PATCH v3 2/3] rtw88: enclose c2h cmd handle with mutex
+Thread-Topic: [PATCH v3 2/3] rtw88: enclose c2h cmd handle with mutex
+Thread-Index: AQHVR5q3nan8bHQ1XkuCG3EAT/So7qb8RpoAgADeJtA=
+Date:   Fri, 16 Aug 2019 02:45:17 +0000
+Message-ID: <F7CD281DE3E379468C6D07993EA72F84D18914D3@RTITMBSVM04.realtek.com.tw>
+References: <1564575767-27557-1-git-send-email-yhchuang@realtek.com>
+ <1564575767-27557-3-git-send-email-yhchuang@realtek.com>
+ <CA+ASDXPJiNTXAihzohT06RS57gkJU9Q-u3kpp0piJP-3U1miFw@mail.gmail.com>
+In-Reply-To: <CA+ASDXPJiNTXAihzohT06RS57gkJU9Q-u3kpp0piJP-3U1miFw@mail.gmail.com>
+Accept-Language: zh-TW, en-US
+Content-Language: zh-TW
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [172.21.68.183]
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+MIME-Version: 1.0
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-I understand this is already queued up, but I still have a question:
-
-On Wed, Jul 31, 2019 at 5:23 AM <yhchuang@realtek.com> wrote:
-> C2H commands that cannot be handled in IRQ context should
-> be protected by rtwdev->mutex. Because they might have a
-> sequece of hardware operations that does not want to be
-> interfered.
-
-Can you elaborate on what interference you're looking at, exactly? I'm
-not a big fan of defensive addition of global locks, and this
-particular mutex isn't very targeted. It claims to be for mac80211
-callbacks, but you use it in quite a few places (some of which clearly
-don't make sense), and many of them are not related to mac80211
-callbacks AFAICT.
-
-To the contrary: this handler is called from the mac80211 work queue,
-which is ordered and therefore shouldn't be getting "interrupted"
-(e.g., conflicting commands). But then, you added the 'irqsafe'
-command, which gets run from the ISR...and doesn't hold this lock,
-obviously.
-
-It may well be that you're correct here, but I'd like to see a better
-explanation for stuff like this. And maybe an update to the
-rtw_dev::mutex comments.
-
-Brian
+PiBJIHVuZGVyc3RhbmQgdGhpcyBpcyBhbHJlYWR5IHF1ZXVlZCB1cCwgYnV0IEkgc3RpbGwgaGF2
+ZSBhIHF1ZXN0aW9uOg0KPiANCj4gT24gV2VkLCBKdWwgMzEsIDIwMTkgYXQgNToyMyBBTSA8eWhj
+aHVhbmdAcmVhbHRlay5jb20+IHdyb3RlOg0KPiA+IEMySCBjb21tYW5kcyB0aGF0IGNhbm5vdCBi
+ZSBoYW5kbGVkIGluIElSUSBjb250ZXh0IHNob3VsZA0KPiA+IGJlIHByb3RlY3RlZCBieSBydHdk
+ZXYtPm11dGV4LiBCZWNhdXNlIHRoZXkgbWlnaHQgaGF2ZSBhDQo+ID4gc2VxdWVjZSBvZiBoYXJk
+d2FyZSBvcGVyYXRpb25zIHRoYXQgZG9lcyBub3Qgd2FudCB0byBiZQ0KPiA+IGludGVyZmVyZWQu
+DQo+IA0KPiBDYW4geW91IGVsYWJvcmF0ZSBvbiB3aGF0IGludGVyZmVyZW5jZSB5b3UncmUgbG9v
+a2luZyBhdCwgZXhhY3RseT8gSSdtDQo+IG5vdCBhIGJpZyBmYW4gb2YgZGVmZW5zaXZlIGFkZGl0
+aW9uIG9mIGdsb2JhbCBsb2NrcywgYW5kIHRoaXMNCj4gcGFydGljdWxhciBtdXRleCBpc24ndCB2
+ZXJ5IHRhcmdldGVkLiBJdCBjbGFpbXMgdG8gYmUgZm9yIG1hYzgwMjExDQo+IGNhbGxiYWNrcywg
+YnV0IHlvdSB1c2UgaXQgaW4gcXVpdGUgYSBmZXcgcGxhY2VzIChzb21lIG9mIHdoaWNoIGNsZWFy
+bHkNCj4gZG9uJ3QgbWFrZSBzZW5zZSksIGFuZCBtYW55IG9mIHRoZW0gYXJlIG5vdCByZWxhdGVk
+IHRvIG1hYzgwMjExDQo+IGNhbGxiYWNrcyBBRkFJQ1QuDQoNCkJhc2ljYWxseSBpdCBtdXN0IHBy
+b3RlY3QgcnR3ZGV2IGl0c2VsZiBmb3IgbWFjODAyMTEgY2FsbGJhY2tzLCBidXQNCndvcmsgcXVl
+dWUgYWxzbyBzaG91bGQgYmUgcHJvdGVjdGVkLCBhcyB3b3JrIHF1ZXVlIGNvdWxkIGJlIGludGVy
+ZmVyZWQNCmJ5IG1hYzgwMjExIGNhbGxiYWNrcyBJSVVDLiBBbmQgbW9zdCBvZiB0aGUgdGltZSB3
+aGF0IEkgd2FudCB0bw0KcHJvdGVjdCBpcyB0aGUgImhhcmR3YXJlIG9wZXJhdGlvbnMiLiBJIG1p
+Z2h0IGltcGxpY2l0bHkgYmluZHMgdGhvc2UNCnJlZ2lzdGVyIHJlYWQvd3JpdGUocykgd2l0aCB0
+aGUgcnR3ZGV2IHN0cnVjdC4NCg0KSSB0aGluayB0aGUgcHJvYmxlbSBoZXJlIGlzIEkgc2hvdWxk
+IGdpdmUgYSBiZXR0ZXIgY29tbWVudCB0byBiZXR0ZXINCmRlc2NyaWJlIHRoZSB1c2FnZSBvZiB0
+aGUgbXV0ZXguIEFuZCBJIGFsc28gd2FudCB0byBrZWVwIGl0IHNob3J0Lg0KDQo+IA0KPiBUbyB0
+aGUgY29udHJhcnk6IHRoaXMgaGFuZGxlciBpcyBjYWxsZWQgZnJvbSB0aGUgbWFjODAyMTEgd29y
+ayBxdWV1ZSwNCj4gd2hpY2ggaXMgb3JkZXJlZCBhbmQgdGhlcmVmb3JlIHNob3VsZG4ndCBiZSBn
+ZXR0aW5nICJpbnRlcnJ1cHRlZCINCj4gKGUuZy4sIGNvbmZsaWN0aW5nIGNvbW1hbmRzKS4gQnV0
+IHRoZW4sIHlvdSBhZGRlZCB0aGUgJ2lycXNhZmUnDQo+IGNvbW1hbmQsIHdoaWNoIGdldHMgcnVu
+IGZyb20gdGhlIElTUi4uLmFuZCBkb2Vzbid0IGhvbGQgdGhpcyBsb2NrLA0KPiBvYnZpb3VzbHku
+DQoNCkMySCB3b3JrIHF1ZXVlIHdpbGwgbm90IGludGVycnVwdCBlYWNoIG90aGVyLCBidXQgbWFj
+ODAyMTEgY2FsbGJhY2tzDQpjb3VsZCwgYXMgbW9zdCBvZiB0aGUgZnVuY3Rpb25zIGFyZSBjb25z
+aXN0IG9mIGEgc2VxdWVuY2Ugb2YgaGFyZHdhcmUNCnJlZ2lzdGVyIG9wZXJhdGlvbnMuIEFuZCBJ
+IGRvbid0IHdhbnQgdG8gdXNlIEkvTyB1bmRlciBJU1IgY29udGV4dCwNCnNvIGhlcmUgdG8gc3Bs
+aXQgdGhlIEMySCBjb21tYW5kcy4NCg0KPiANCj4gSXQgbWF5IHdlbGwgYmUgdGhhdCB5b3UncmUg
+Y29ycmVjdCBoZXJlLCBidXQgSSdkIGxpa2UgdG8gc2VlIGEgYmV0dGVyDQo+IGV4cGxhbmF0aW9u
+IGZvciBzdHVmZiBsaWtlIHRoaXMuIEFuZCBtYXliZSBhbiB1cGRhdGUgdG8gdGhlDQo+IHJ0d19k
+ZXY6Om11dGV4IGNvbW1lbnRzLg0KPiANCj4gQnJpYW4NCj4gDQoNCllhbi1Ic3Vhbg0K
