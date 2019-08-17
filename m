@@ -2,115 +2,81 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 177589109C
-	for <lists+linux-wireless@lfdr.de>; Sat, 17 Aug 2019 15:45:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4493A912C9
+	for <lists+linux-wireless@lfdr.de>; Sat, 17 Aug 2019 22:02:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726047AbfHQNp2 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 17 Aug 2019 09:45:28 -0400
-Received: from mail-qk1-f182.google.com ([209.85.222.182]:36392 "EHLO
-        mail-qk1-f182.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726032AbfHQNp2 (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 17 Aug 2019 09:45:28 -0400
-Received: by mail-qk1-f182.google.com with SMTP id d23so7166883qko.3;
-        Sat, 17 Aug 2019 06:45:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=7f33k6cNPh9WPs6RtCb536b1YPCD3hfQ1lzZVvFxde8=;
-        b=Ihr+aV1/pTz7DS+E0ZR9z51XRvhheOluY9f9+MNLcF7uqJ7Xqifla4K1FFqsyE/5PX
-         b4pva1CqhfZj7b0QsBnVqKDJa9W1oBrvnxwwjvIHH+kSJ7cZMOIxAZyLuG6RqvMHF9Ow
-         hecA5kKRlq+M+ZroCTJMP1EGKSywY2UJQ/cq4ok+w8BSZB04eDCZ5umsQbwRYVdANXQy
-         bK+yHVRgNo2/xXD9Bvbc+AuzE6N4tWh9Q5JoBp3tpfV8fofV2QjNz/nEIH4GtjCOIwyx
-         5f6xsWnHg2T9Y0adHMh1TOAn/4diswXK1Pji7sgpW3s8E9nnq50he6Zjz4DlkJj5EbWY
-         F52Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=7f33k6cNPh9WPs6RtCb536b1YPCD3hfQ1lzZVvFxde8=;
-        b=d3etZ05FcWoJXwjeKu9ezne3A0SbIVrLI+Tgct0PACagZHPeUnUD5NgFwIU7vwW4tK
-         kwiZBNSsFxY64Z6/FGjtttcpksm2gLEz/zIwaG9Lyd5DU3tLFQhCiq0Zxs6/a5RdhyRx
-         0SSeIfBEZ8WC7aX3/03tztggaiUF/gX1r+yJWLrTCnXHbopn7NepadCpSYHrRTxQMDDE
-         IG0w/guB2Xw8iLXDhKwOxbFcBG5XrhlrstaW/BNQjUVX5ubcct/mTWJjEFupOA/MFWBX
-         5TO1S2TzPR7/A8izUj5h4nMpbICLLYgIK2orUkrkVB3zFuVDyL2Xj9I1u+Z3/+uPJcnC
-         2ebw==
-X-Gm-Message-State: APjAAAVX2HaV2Hc5zFLc+CCAQA78oyrU1uw52QJgI3tzFhafydAubw+W
-        3JngRBG0V59eaQLRVtYWjWo=
-X-Google-Smtp-Source: APXvYqwTqJNQ9+U1rUSxBxmDGP0WXbh0/VWu9YQtT/tDp35V6jyJNfTlP9MAn0wc8XQx48OHq1dA+Q==
-X-Received: by 2002:a05:620a:1f0:: with SMTP id x16mr13639499qkn.11.1566049527376;
-        Sat, 17 Aug 2019 06:45:27 -0700 (PDT)
-Received: from chirva-void (pool-68-133-6-220.bflony.fios.verizon.net. [68.133.6.220])
-        by smtp.gmail.com with ESMTPSA id o29sm4740250qtf.19.2019.08.17.06.45.26
-        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
-        Sat, 17 Aug 2019 06:45:26 -0700 (PDT)
-Date:   Sat, 17 Aug 2019 09:45:25 -0400
-From:   Stuart Little <achirvasub@gmail.com>
-To:     Serge Belyshev <belyshev@depni.sinp.msu.ru>
-Cc:     Johannes Berg <johannes.berg@intel.com>,
-        Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
-        Luca Coelho <luciano.coelho@intel.com>,
-        kernel list <linux-kernel@vger.kernel.org>,
-        Intel Linux Wireless <linuxwifi@intel.com>,
-        linux-wireless@vger.kernel.org,
-        Haim Dreyfuss <haim.dreyfuss@intel.com>
-Subject: Re: PROBLEM: 5.3.0-rc* causes iwlwifi failure
-Message-ID: <20190817134525.GA12977@chirva-void>
-References: <20190817041258.GA1641@chirva-slack.chirva-slack>
- <87y2zsf9ps.fsf@depni.sinp.msu.ru>
+        id S1726067AbfHQUBz (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 17 Aug 2019 16:01:55 -0400
+Received: from mga09.intel.com ([134.134.136.24]:21166 "EHLO mga09.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726046AbfHQUBz (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Sat, 17 Aug 2019 16:01:55 -0400
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from orsmga004.jf.intel.com ([10.7.209.38])
+  by orsmga102.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 17 Aug 2019 13:01:54 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.64,398,1559545200"; 
+   d="scan'208";a="328987633"
+Received: from fmsmsx107.amr.corp.intel.com ([10.18.124.205])
+  by orsmga004.jf.intel.com with ESMTP; 17 Aug 2019 13:01:54 -0700
+Received: from hasmsx106.ger.corp.intel.com (10.184.198.20) by
+ fmsmsx107.amr.corp.intel.com (10.18.124.205) with Microsoft SMTP Server (TLS)
+ id 14.3.439.0; Sat, 17 Aug 2019 13:01:54 -0700
+Received: from hasmsx112.ger.corp.intel.com ([169.254.11.117]) by
+ HASMSX106.ger.corp.intel.com ([169.254.10.64]) with mapi id 14.03.0439.000;
+ Sat, 17 Aug 2019 23:01:51 +0300
+From:   "Grumbach, Emmanuel" <emmanuel.grumbach@intel.com>
+To:     "Peer, Ilan" <ilan.peer@intel.com>,
+        "angelsl@in04.sg" <angelsl@in04.sg>
+CC:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+Subject: Re: iwlwifi: 9260: Spurious "Unhandled alg: 0x707" and 0x71b
+Thread-Topic: iwlwifi: 9260: Spurious "Unhandled alg: 0x707" and 0x71b
+Thread-Index: AQHVVBBiNMsepcYDJEWnYm+n+hVrF6b/kr8A
+Date:   Sat, 17 Aug 2019 20:01:51 +0000
+Message-ID: <0e1a890d2896791d7291f0174cc0e96832d7ed33.camel@intel.com>
+References: <badc218b-ea1f-3697-b1f2-3ebb294d9849@in04.sg>
+In-Reply-To: <badc218b-ea1f-3697-b1f2-3ebb294d9849@in04.sg>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [10.252.3.144]
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <88263556BF208C4CA4005E734A2568FC@intel.com>
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <87y2zsf9ps.fsf@depni.sinp.msu.ru>
-User-Agent: Mutt/1.12.1 (2019-06-15)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Sat, Aug 17, 2019 at 11:59:59AM +0300, Serge Belyshev wrote:
-> It looks like that:
-> 
-> commit 4fd445a2c855bbcab81fbe06d110e78dbd974a5b
-> Author: Haim Dreyfuss <haim.dreyfuss@intel.com>
-> Date:   Thu May 2 11:45:02 2019 +0300
-> 
->     iwlwifi: mvm: Add log information about SAR status
->     
->     Inform users when SAR status is changing.
->     
->     Signed-off-by: Haim Dreyfuss <haim.dreyfuss@intel.com>
->     Signed-off-by: Luca Coelho <luciano.coelho@intel.com>
-> 
-> 
-> is the culprit. (manually) reverting it on top of 5.3-rc4 makes
-> everything work again.
-
-Revert how?
-
-git revert 4fd445a2c855bbcab81fbe06d110e78dbd974a5b
-
-errors out:
-
-warning: inexact rename detection was skipped due to too many files.
-warning: you may want to set your merge.renamelimit variable to at least 1583 and retry the command.
-error: could not revert 4fd445a2c855... iwlwifi: mvm: Add log information about SAR status
-hint: after resolving the conflicts, mark the corrected paths
-hint: with 'git add <paths>' or 'git rm <paths>'
-hint: and commit the result with 'git commit'
-
-Making a patch out of the commit with
-
-git format-patch -1 4fd445a2c855bbcab81fbe06d110e78dbd974a5b
-
-and attempting to apply the patch in reverse with
-
-git apply -R --ignore-space-change --ignore-whitespace <patch filename>
-
-also fails:
-
-error: patch failed: drivers/net/wireless/intel/iwlwifi/mvm/fw.c:861
-error: drivers/net/wireless/intel/iwlwifi/mvm/fw.c: patch does not apply
-error: patch failed: drivers/net/wireless/intel/iwlwifi/mvm/nvm.c:620
-error: drivers/net/wireless/intel/iwlwifi/mvm/nvm.c: patch does not apply
+SGksDQoNCk9uIEZyaSwgMjAxOS0wOC0xNiBhdCAxNjo1NSArMDgwMCwgVGVlIEhhbyBXZWkgd3Jv
+dGU6DQo+IEhpLA0KPiANCj4gSSd2ZSBiZWVuIGdldHRpbmcgIlVuaGFuZGxlZCBhbGc6IDB4NzA3
+IiBvciAweDcxYiByYW5kb21seQ0KPiBvbiBteSBJbnRlbCA5MjYwLiBJdCBzZWVtcyB0byBoYXBw
+ZW4gbW9zdCBvZnRlbiB3aGVuIGl0DQo+IGFzc29jaWF0ZXMgdG8gYSBuZXcgQVAgKG9yIHJvYW1z
+IHRvIGEgZGlmZmVyZW50IG9uZSB0aGF0DQo+IGhhcyB0aGUgc2FtZSBTU0lEL2F1dGhlbnRpY2F0
+aW9uKS4gSXQgYWxzbyBzZWVtcyB0byBoYXBwZW4NCj4gb25seSB3aXRoIHBhcnRpY3VsYXIgQVBz
+LiAoSSBkb24ndCBoYXZlIGFjY2VzcyB0byB0aGUgQVBzLA0KPiBzbyB0aGVyZSdzIG5vdCBtdWNo
+IEkga25vdyBhYm91dCB0aGVtLikNCj4gDQo+IEkgYXBwbGllZCB0aGUgdHdvIHBhdGNoZXMgbWVu
+dGlvbmVkIGluIEJ1Z3ppbGxhICMyMDM1OTNbMV0NCj4gaS5lLiAiaXdsd2lmaTogbXZtOiBBbGxv
+dyBtdWx0aWNhc3QgZGF0YSBmcmFtZXMgb25seSB3aGVuDQo+IGFzc29jaWF0ZWQiIGFuZCAiaXds
+d2lmaTogbXZtOiBBbGxvdyBtdWx0aWNhc3QgZGF0YSBmcmFtZXMNCj4gb25seSB3aGVuIGF1dGhv
+cml6ZWQiIG9uIHRvcCBvZiBpd2x3aWZpIGluIDUuMi44LCB3aGljaA0KPiBpbXByb3ZlZCB0aGUg
+c2l0dWF0aW9uIGEgbG90LCBidXQgaXQgc3RpbGwgaGFwcGVucyBwcmV0dHkNCj4gZnJlcXVlbnRs
+eS4NCj4gDQo+IFsxXTogaHR0cHM6Ly9idWd6aWxsYS5rZXJuZWwub3JnL3Nob3dfYnVnLmNnaT9p
+ZD0yMDM1OTMNCg0KVGhpcyBwcmludCBpcyBoYXJtbGVzcyByZWFsbHkuIEFmdGVyIHRoaXMgYnVn
+IGhhcyBiZWVuIHJlcG9ydGVkLCBJIGhhdmUNCmJlZW4gY29udGFjdCBieSB0aGUgZmlybXdhcmUg
+dGVhbSB3aG8gd2FudGVkIHRvIGRlcHJlY2F0ZSB0aGUgZmxhZyB0aGF0DQp3ZSBjaGFuZ2UgaW4g
+dGhlIGJ1ZyBmb3IgdGhhdCBCdWd6aWxsYSwgc28gdGhhdCB0aGUgZml4IHdpbGwgYmUgYSBuby1v
+cCANCmZvciBuZXdlciBmaXJtd2FyZS4gQm90dG9tIGxpbmUsIHdlIGFyZSByZW1vdmluZyB0aGlz
+IHByaW50LCBvciB3ZSBhcmUNCmxlYXZpbmcgaXQgb25seSBmb3IgdW5pY2FzdCBwYWNrZXRzLiBU
+aGlzIGhhcyBiZWVuIG1lcmdlZCBpbiBvdXINCmludGVybmFsIHJlcG9zaXRvcnkgYW5kIGl0IHdp
+bGwgYmUgdXBzdHJlYW1lZCBmb2xsb3dpbmcgdGhlIHJlZ3VsYXINCnByb2Nlc3MuDQoNCllvdSBj
+YW4gZmluZCBpdCBoZXJlIGluIG91ciBiYWNrcG9ydCBiYXNlZCBkcml2ZXI6DQoNCmh0dHBzOi8v
+Z2l0Lmtlcm5lbC5vcmcvcHViL3NjbS9saW51eC9rZXJuZWwvZ2l0L2l3bHdpZmkvYmFja3BvcnQt
+aXdsd2lmaS5naXQvY29tbWl0Lz9pZD1mOWI5ZjkyZGQ4NGM1YzQ2N2NiY2M2MjA1ODQ4NjRkZThm
+YmZiNTZjDQoNCg0KPiANCj4gSSdsbCB0cnkgdG8gY29sbGVjdCBzb21lIGRlYnVnIGRhdGEgc29v
+bi4gQWxzbywgSSdsbCB0cnkNCj4gdG8gc2VlIGlmIG15IDgyNjAgaGFzIHRoZSBzYW1lIGlzc3Vl
+cy4NCj4gDQo+IElzIHRoZXJlIGFueXRoaW5nIGVsc2UgSSBzaG91bGQgdHJ5IG9yIGFueSBvdGhl
+ciBwYXRjaGVzIEkNCj4gc2hvdWxkIGJhY2twb3J0Pw0KPiANCj4gVGhhbmtzLg0KPiANCg==
