@@ -2,75 +2,115 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 49E3691099
-	for <lists+linux-wireless@lfdr.de>; Sat, 17 Aug 2019 15:40:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 177589109C
+	for <lists+linux-wireless@lfdr.de>; Sat, 17 Aug 2019 15:45:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725966AbfHQNkj convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 17 Aug 2019 09:40:39 -0400
-Received: from coyote.holtmann.net ([212.227.132.17]:42751 "EHLO
-        mail.holtmann.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725832AbfHQNkj (ORCPT
+        id S1726047AbfHQNp2 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 17 Aug 2019 09:45:28 -0400
+Received: from mail-qk1-f182.google.com ([209.85.222.182]:36392 "EHLO
+        mail-qk1-f182.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726032AbfHQNp2 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 17 Aug 2019 09:40:39 -0400
-Received: from marcel-macbook.fritz.box (p4FEFC580.dip0.t-ipconnect.de [79.239.197.128])
-        by mail.holtmann.org (Postfix) with ESMTPSA id A772ECED30;
-        Sat, 17 Aug 2019 15:49:19 +0200 (CEST)
-Content-Type: text/plain;
-        charset=us-ascii
-Mime-Version: 1.0 (Mac OS X Mail 12.4 \(3445.104.11\))
-Subject: Re: Flag for detecting 802.11r Fast BSS Transition support
-From:   Marcel Holtmann <marcel@holtmann.org>
-In-Reply-To: <CA+ASDXNC0hwFzSTvZmUq-B7r_H+pZ3N=p_kjfMqKb1gftsmDKw@mail.gmail.com>
-Date:   Sat, 17 Aug 2019 15:40:36 +0200
-Cc:     Johannes Berg <johannes@sipsolutions.net>,
-        Matthew Wang <matthewmwang@google.com>,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        Kirtika Ruchandani <kirtika@google.com>,
-        Jouni Malinen <j@w1.fi>
-Content-Transfer-Encoding: 8BIT
-Message-Id: <7CCE8D56-9E1A-4E04-9C28-E384C1B2E2EA@holtmann.org>
-References: <CAAooHFeLWrY_wmCp-HWqygh8gnKsfpoPCky7SykOBKZgXkb8OQ@mail.gmail.com>
- <20190403210200.GA93453@google.com>
- <211816ff03cf188d834a21b1fbc98b4f8c5b81f4.camel@sipsolutions.net>
- <CA+ASDXOyXb0dPGOrjQR7C-b6dyftiZhkta3cwG28B9sC5wxHxQ@mail.gmail.com>
- <7687225C-D965-479E-BAE8-769B0AEADD76@holtmann.org>
- <CA+ASDXNC0hwFzSTvZmUq-B7r_H+pZ3N=p_kjfMqKb1gftsmDKw@mail.gmail.com>
-To:     Brian Norris <briannorris@chromium.org>
-X-Mailer: Apple Mail (2.3445.104.11)
+        Sat, 17 Aug 2019 09:45:28 -0400
+Received: by mail-qk1-f182.google.com with SMTP id d23so7166883qko.3;
+        Sat, 17 Aug 2019 06:45:27 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=7f33k6cNPh9WPs6RtCb536b1YPCD3hfQ1lzZVvFxde8=;
+        b=Ihr+aV1/pTz7DS+E0ZR9z51XRvhheOluY9f9+MNLcF7uqJ7Xqifla4K1FFqsyE/5PX
+         b4pva1CqhfZj7b0QsBnVqKDJa9W1oBrvnxwwjvIHH+kSJ7cZMOIxAZyLuG6RqvMHF9Ow
+         hecA5kKRlq+M+ZroCTJMP1EGKSywY2UJQ/cq4ok+w8BSZB04eDCZ5umsQbwRYVdANXQy
+         bK+yHVRgNo2/xXD9Bvbc+AuzE6N4tWh9Q5JoBp3tpfV8fofV2QjNz/nEIH4GtjCOIwyx
+         5f6xsWnHg2T9Y0adHMh1TOAn/4diswXK1Pji7sgpW3s8E9nnq50he6Zjz4DlkJj5EbWY
+         F52Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=7f33k6cNPh9WPs6RtCb536b1YPCD3hfQ1lzZVvFxde8=;
+        b=d3etZ05FcWoJXwjeKu9ezne3A0SbIVrLI+Tgct0PACagZHPeUnUD5NgFwIU7vwW4tK
+         kwiZBNSsFxY64Z6/FGjtttcpksm2gLEz/zIwaG9Lyd5DU3tLFQhCiq0Zxs6/a5RdhyRx
+         0SSeIfBEZ8WC7aX3/03tztggaiUF/gX1r+yJWLrTCnXHbopn7NepadCpSYHrRTxQMDDE
+         IG0w/guB2Xw8iLXDhKwOxbFcBG5XrhlrstaW/BNQjUVX5ubcct/mTWJjEFupOA/MFWBX
+         5TO1S2TzPR7/A8izUj5h4nMpbICLLYgIK2orUkrkVB3zFuVDyL2Xj9I1u+Z3/+uPJcnC
+         2ebw==
+X-Gm-Message-State: APjAAAVX2HaV2Hc5zFLc+CCAQA78oyrU1uw52QJgI3tzFhafydAubw+W
+        3JngRBG0V59eaQLRVtYWjWo=
+X-Google-Smtp-Source: APXvYqwTqJNQ9+U1rUSxBxmDGP0WXbh0/VWu9YQtT/tDp35V6jyJNfTlP9MAn0wc8XQx48OHq1dA+Q==
+X-Received: by 2002:a05:620a:1f0:: with SMTP id x16mr13639499qkn.11.1566049527376;
+        Sat, 17 Aug 2019 06:45:27 -0700 (PDT)
+Received: from chirva-void (pool-68-133-6-220.bflony.fios.verizon.net. [68.133.6.220])
+        by smtp.gmail.com with ESMTPSA id o29sm4740250qtf.19.2019.08.17.06.45.26
+        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
+        Sat, 17 Aug 2019 06:45:26 -0700 (PDT)
+Date:   Sat, 17 Aug 2019 09:45:25 -0400
+From:   Stuart Little <achirvasub@gmail.com>
+To:     Serge Belyshev <belyshev@depni.sinp.msu.ru>
+Cc:     Johannes Berg <johannes.berg@intel.com>,
+        Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
+        Luca Coelho <luciano.coelho@intel.com>,
+        kernel list <linux-kernel@vger.kernel.org>,
+        Intel Linux Wireless <linuxwifi@intel.com>,
+        linux-wireless@vger.kernel.org,
+        Haim Dreyfuss <haim.dreyfuss@intel.com>
+Subject: Re: PROBLEM: 5.3.0-rc* causes iwlwifi failure
+Message-ID: <20190817134525.GA12977@chirva-void>
+References: <20190817041258.GA1641@chirva-slack.chirva-slack>
+ <87y2zsf9ps.fsf@depni.sinp.msu.ru>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <87y2zsf9ps.fsf@depni.sinp.msu.ru>
+User-Agent: Mutt/1.12.1 (2019-06-15)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi Brian,
-
->>> Well, I guess we could just run the command and look for EOPNOTSUPP...
->> 
->> this kind of API design and usage is bad. Try-and-error approach is just not sustainable.
+On Sat, Aug 17, 2019 at 11:59:59AM +0300, Serge Belyshev wrote:
+> It looks like that:
 > 
-> Sure. That "suggestion" was quite literally an afterthought. Not
-> really a proper suggestion.
+> commit 4fd445a2c855bbcab81fbe06d110e78dbd974a5b
+> Author: Haim Dreyfuss <haim.dreyfuss@intel.com>
+> Date:   Thu May 2 11:45:02 2019 +0300
 > 
->> Even while it is late to add a proper flag that indicates support, we need to do this to make nl80211 better for the future.
+>     iwlwifi: mvm: Add log information about SAR status
+>     
+>     Inform users when SAR status is changing.
+>     
+>     Signed-off-by: Haim Dreyfuss <haim.dreyfuss@intel.com>
+>     Signed-off-by: Luca Coelho <luciano.coelho@intel.com>
 > 
-> I suppose. I'm not quite sure how I would make use of that properly
-> though, given the corpus of kernels out there where the flag doesn't
-> exist (but the feature does). Some other heurestic for determining
-> kernel recency? Compile-time flags for the relevant user space, such
-> that one builds it for "new kernel API (w/ flag)" vs. "old kernel API"
-> (with the latter not even trying to look for the flag)?
 > 
-> Or I guess a more proactive approach: implement both a "supported" and
-> an "unsupported" flag, so user space can figure out a tristate: flag
-> not available (old kernel -- user space is left to guess) vs. command
-> supported flag vs. command not supported flag.
-> 
-> That seems a bit awkward though.
+> is the culprit. (manually) reverting it on top of 5.3-rc4 makes
+> everything work again.
 
-I would not make it this complicated. Add the flag for future kernels and the move on with life. Trying to workaround older versions is something I would not bother with. It is always possible to backport the feature to older kernels. And if you have a distribution or an OEM that cares, then that is what is going to happen.
+Revert how?
 
-Regards
+git revert 4fd445a2c855bbcab81fbe06d110e78dbd974a5b
 
-Marcel
+errors out:
 
+warning: inexact rename detection was skipped due to too many files.
+warning: you may want to set your merge.renamelimit variable to at least 1583 and retry the command.
+error: could not revert 4fd445a2c855... iwlwifi: mvm: Add log information about SAR status
+hint: after resolving the conflicts, mark the corrected paths
+hint: with 'git add <paths>' or 'git rm <paths>'
+hint: and commit the result with 'git commit'
+
+Making a patch out of the commit with
+
+git format-patch -1 4fd445a2c855bbcab81fbe06d110e78dbd974a5b
+
+and attempting to apply the patch in reverse with
+
+git apply -R --ignore-space-change --ignore-whitespace <patch filename>
+
+also fails:
+
+error: patch failed: drivers/net/wireless/intel/iwlwifi/mvm/fw.c:861
+error: drivers/net/wireless/intel/iwlwifi/mvm/fw.c: patch does not apply
+error: patch failed: drivers/net/wireless/intel/iwlwifi/mvm/nvm.c:620
+error: drivers/net/wireless/intel/iwlwifi/mvm/nvm.c: patch does not apply
