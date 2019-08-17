@@ -2,88 +2,76 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 5D87B90B27
-	for <lists+linux-wireless@lfdr.de>; Sat, 17 Aug 2019 00:43:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6CEFA90BE7
+	for <lists+linux-wireless@lfdr.de>; Sat, 17 Aug 2019 03:30:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727757AbfHPWm4 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 16 Aug 2019 18:42:56 -0400
-Received: from mout2.fh-giessen.de ([212.201.18.46]:49138 "EHLO
-        mout2.fh-giessen.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727660AbfHPWm4 (ORCPT
+        id S1725988AbfHQB37 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 16 Aug 2019 21:29:59 -0400
+Received: from mail-lj1-f195.google.com ([209.85.208.195]:35600 "EHLO
+        mail-lj1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725938AbfHQB37 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 16 Aug 2019 18:42:56 -0400
-Received: from mx1.fh-giessen.de ([212.201.18.40])
-        by mout2.fh-giessen.de with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <tobias.johannes.klausmann@mni.thm.de>)
-        id 1hykvq-0007N2-AQ; Sat, 17 Aug 2019 00:42:50 +0200
-Received: from mailgate-2.its.fh-giessen.de ([212.201.18.14])
-        by mx1.fh-giessen.de with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <tobias.johannes.klausmann@mni.thm.de>)
-        id 1hykvq-008QGk-5h; Sat, 17 Aug 2019 00:42:50 +0200
-Received: from p2e561b42.dip0.t-ipconnect.de ([46.86.27.66] helo=[192.168.1.24])
-        by mailgate-2.its.fh-giessen.de with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        (Exim 4.92)
-        (envelope-from <tobias.johannes.klausmann@mni.thm.de>)
-        id 1hykvp-000Exn-SB; Sat, 17 Aug 2019 00:42:49 +0200
-Subject: Re: regression in ath10k dma allocation
-To:     Nicolin Chen <nicoleotsuka@gmail.com>
-Cc:     Christoph Hellwig <hch@lst.de>, kvalo@codeaurora.org,
-        davem@davemloft.net, ath10k@lists.infradead.org,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, m.szyprowski@samsung.com,
-        robin.murphy@arm.com, iommu@lists.linux-foundation.org,
-        tobias.klausmann@freenet.de
-References: <8fe8b415-2d34-0a14-170b-dcb31c162e67@mni.thm.de>
- <20190816164301.GA3629@lst.de>
- <af96ea6a-2b17-9b66-7aba-b7dae5bcbba5@mni.thm.de>
- <20190816222506.GA24413@Asurada-Nvidia.nvidia.com>
-From:   Tobias Klausmann <tobias.johannes.klausmann@mni.thm.de>
-Message-ID: <3f7475e3-e27b-aca7-c21e-71cac6cafc1c@mni.thm.de>
-Date:   Sat, 17 Aug 2019 00:42:48 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:70.0) Gecko/20100101
- Thunderbird/70.0a1
+        Fri, 16 Aug 2019 21:29:59 -0400
+Received: by mail-lj1-f195.google.com with SMTP id l14so6839477lje.2
+        for <linux-wireless@vger.kernel.org>; Fri, 16 Aug 2019 18:29:57 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=l5zP82JIYM+AT8kTl8ZmKqYDGrjqjh9d+SLlcon2/QI=;
+        b=TZYT4xz78WrPzadsQM99gC83MiiDHBheOTOyqzQwC6FLLt8yKfHks971YWhfqPp3N2
+         IIhLRW73hxVqQZEjIfzKn9Scb9Wifx991UouIuNn1bkM2EQlNWRQ9Wc6OUHOPvYnKlMY
+         DNd6Z+/CUao+9rblo8g6Go9PiJoGncYvrrAik=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=l5zP82JIYM+AT8kTl8ZmKqYDGrjqjh9d+SLlcon2/QI=;
+        b=jMZ3//k0lsIsY+eyZbxoiLc29oNfEFJNsBBfHVF0biLRZGM1K7f6BgT0/hIgNrmjRu
+         2MaLf5DQhMm2zZzZ5tBqbkDkfkcI8GEuP08WMMeJzDDZndpDTqpMrkM0gX4yd+E5VwXR
+         DNdJmFRTrCQ90SL13j6lf4+SjBWYQ4duJ+8zASzrhVYx9FvPYK6hHk9so6oM+p99WF/I
+         Hm/whpAQYwzsUiauuTRyFJ2JJs6l9VO6VZUz3s0GxvRSyZXbtDsshGM709lUzO0zPwZc
+         lfsFMZhFRUoQdbeC5UlWut3J3m5TNeLiHHZr+vQlvyuY2oWUg9A7oCNNBnHdeM6zyTOi
+         m+6A==
+X-Gm-Message-State: APjAAAUSdjaNdc17nczO3+dnvbgoxMVKe79UzOBERkmgrMexUMSHe0IV
+        RzvVAA4Eggqz7ZFxuepT42JYQ1cQ3tk=
+X-Google-Smtp-Source: APXvYqw4OFW25ZOqTYJCdLYyw+6UQpRUBrRQq3Xn5ELzeYbuKz+pMhisZmfI4RXf81Gk3lZi0vkSgA==
+X-Received: by 2002:a2e:5c8:: with SMTP id 191mr7017478ljf.241.1566005396427;
+        Fri, 16 Aug 2019 18:29:56 -0700 (PDT)
+Received: from mail-lj1-f179.google.com (mail-lj1-f179.google.com. [209.85.208.179])
+        by smtp.gmail.com with ESMTPSA id m23sm1207786ljh.97.2019.08.16.18.29.54
+        for <linux-wireless@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 16 Aug 2019 18:29:55 -0700 (PDT)
+Received: by mail-lj1-f179.google.com with SMTP id x4so6822743ljj.6
+        for <linux-wireless@vger.kernel.org>; Fri, 16 Aug 2019 18:29:54 -0700 (PDT)
+X-Received: by 2002:a05:651c:1135:: with SMTP id e21mr6947295ljo.83.1566005394425;
+ Fri, 16 Aug 2019 18:29:54 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <20190816222506.GA24413@Asurada-Nvidia.nvidia.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Content-Language: en-US
+References: <1564575767-27557-1-git-send-email-yhchuang@realtek.com>
+ <1564575767-27557-3-git-send-email-yhchuang@realtek.com> <CA+ASDXPJiNTXAihzohT06RS57gkJU9Q-u3kpp0piJP-3U1miFw@mail.gmail.com>
+ <F7CD281DE3E379468C6D07993EA72F84D18914D3@RTITMBSVM04.realtek.com.tw>
+In-Reply-To: <F7CD281DE3E379468C6D07993EA72F84D18914D3@RTITMBSVM04.realtek.com.tw>
+From:   Brian Norris <briannorris@chromium.org>
+Date:   Fri, 16 Aug 2019 18:29:43 -0700
+X-Gmail-Original-Message-ID: <CA+ASDXO2eoHW62Nmw1XNK_HAMgD=8AVNpAtsEod2RZibWZEy9g@mail.gmail.com>
+Message-ID: <CA+ASDXO2eoHW62Nmw1XNK_HAMgD=8AVNpAtsEod2RZibWZEy9g@mail.gmail.com>
+Subject: Re: [PATCH v3 2/3] rtw88: enclose c2h cmd handle with mutex
+To:     Tony Chuang <yhchuang@realtek.com>
+Cc:     Kalle Valo <kvalo@codeaurora.org>,
+        linux-wireless <linux-wireless@vger.kernel.org>,
+        Stanislaw Gruszka <sgruszka@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi Nicolin,
+On Thu, Aug 15, 2019 at 7:45 PM Tony Chuang <yhchuang@realtek.com> wrote:
+> I think the problem here is I should give a better comment to better
+> describe the usage of the mutex. And I also want to keep it short.
 
-On 17.08.19 00:25, Nicolin Chen wrote:
-> Hi Tobias
->
-> On Fri, Aug 16, 2019 at 10:16:45PM +0200, Tobias Klausmann wrote:
->>> do you have CONFIG_DMA_CMA set in your config?  If not please make sure
->>> you have this commit in your testing tree, and if the problem still
->>> persists it would be a little odd and we'd have to dig deeper:
->>>
->>> commit dd3dcede9fa0a0b661ac1f24843f4a1b1317fdb6
->>> Author: Nicolin Chen <nicoleotsuka@gmail.com>
->>> Date:   Wed May 29 17:54:25 2019 -0700
->>>
->>>       dma-contiguous: fix !CONFIG_DMA_CMA version of dma_{alloc, free}_contiguous()
->> yes CONFIG_DMA_CMA is set (=y, see attached config), the commit you mention
->> above is included, if you have any hints how to go forward, please let me
->> know!
-> For CONFIG_DMA_CMA=y, by judging the log with error code -12, I
-> feel this one should work for you. Would you please check if it
-> is included or try it out otherwise?
->
-> dma-contiguous: do not overwrite align in dma_alloc_contiguous()
-> https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git/commit/?id=c6622a425acd1d2f3a443cd39b490a8777b622d7
+I don't think we have limits on comments in source code -- better to
+document too much than not enough.
 
-
-Thanks for the hint, yet the commit is included and does not fix the 
-problem!
-
-Greetings,
-
-Tobias
-
+Brian
