@@ -2,123 +2,92 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A5605916A7
-	for <lists+linux-wireless@lfdr.de>; Sun, 18 Aug 2019 14:45:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 65EE1916DE
+	for <lists+linux-wireless@lfdr.de>; Sun, 18 Aug 2019 15:56:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726728AbfHRMpR (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 18 Aug 2019 08:45:17 -0400
-Received: from mail-wr1-f66.google.com ([209.85.221.66]:41769 "EHLO
-        mail-wr1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726097AbfHRMpQ (ORCPT
+        id S1726261AbfHRNzq (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 18 Aug 2019 09:55:46 -0400
+Received: from smtp.codeaurora.org ([198.145.29.96]:60706 "EHLO
+        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726005AbfHRNzq (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 18 Aug 2019 08:45:16 -0400
-Received: by mail-wr1-f66.google.com with SMTP id j16so5889041wrr.8
-        for <linux-wireless@vger.kernel.org>; Sun, 18 Aug 2019 05:45:15 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=amarulasolutions.com; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=R2axUqO7BW/8JGo+TtC7MH/Mt1ZFiLk2XRc0w1LrBFA=;
-        b=mGdfTPmmiXtRRsVK5clC/hcrfnL+/X7oI8OfBgNhBOk3gIaCEau8gEB9S3/eAg9Eg5
-         rt0TGuF4v5QGCXz3gPFs6yW5RwTn1ee32h/Mlved/1Uos2LxvDmwN52uJW+jdpZ4EAex
-         yjENM1Tt29kRC6UE1t8jl7zbSjMuLvR1kIxg4=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=R2axUqO7BW/8JGo+TtC7MH/Mt1ZFiLk2XRc0w1LrBFA=;
-        b=tZ79PcoluAgoI4OnAeyJuXWlDxtxW9H2SIdfFsxdAfUtZJPjCctW+n0vHxmmC6R0dV
-         b603my5OaZiIZN2ckin6sBEi65scAAR5PPIPYr26fCtxXVw24fVeWNMKsRPzTE6mHfk5
-         trqhxKAlTWrj/jhJwnBpOFNKUhVStas0/tn0s0M/2WOol4NCQ+5RSBpE7ZA2UxhsaZV8
-         NezDmWGV2a5PTXHoGuVQb/lyr2Q4zDY92oHlTMNCuhwzXtHo3m1XBUoAKXxWpxk4+N6J
-         WT+XuJXFqlRUQxhUbE4B56gB+lRsDBDJ0VcB7YSVloZ7gWELLKKmkX0FsuZiPCXHvgsg
-         Pn5w==
-X-Gm-Message-State: APjAAAVTNwcZ0e8dn+WbP/6gJMPmbZoiqJKafLs2upo0cdEQuUBbqclg
-        QiChHesWMLZoFzIBw1Xw80QU6fpb0EO+jXf55AWhQA==
-X-Google-Smtp-Source: APXvYqwPdJ5cn3hOeRS8SiLPSklEPlywvHiHvnoysw18xv8yvEqS8q2aUJepTQJ6Lrc+rN5hEFFrJNcoq488n8vaojI=
-X-Received: by 2002:adf:facc:: with SMTP id a12mr19969296wrs.205.1566132314527;
- Sun, 18 Aug 2019 05:45:14 -0700 (PDT)
+        Sun, 18 Aug 2019 09:55:46 -0400
+Received: by smtp.codeaurora.org (Postfix, from userid 1000)
+        id 3049D6231D; Sun, 18 Aug 2019 13:55:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
+        s=default; t=1566136546;
+        bh=BL2Kz7p7wIzPYNoIQbrFpMBFEcJ3Ey7mV/4O2AJ3yh0=;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+        b=GXLg8qPx1OaGv4MHsOeL2WLpX5mHd++eTNpLWW/R/mUi1/LeZSWm/XXNcZBSEgFSh
+         oID+kJShCpqwP7UAuZoM9FLeJtbUYCPzJg0ARTy9N/EJ8Qiqc1fSv8mYVCLwmQcav7
+         xjinLAEXWHTrUzzwYQZ0fHVBl7xIMBR9OvAszAPk=
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        pdx-caf-mail.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.7 required=2.0 tests=ALL_TRUSTED,BAYES_00,
+        DKIM_INVALID,DKIM_SIGNED,SPF_NONE autolearn=no autolearn_force=no
+        version=3.4.0
+Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo@smtp.codeaurora.org)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id EBA02622EA;
+        Sun, 18 Aug 2019 13:55:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
+        s=default; t=1566136545;
+        bh=BL2Kz7p7wIzPYNoIQbrFpMBFEcJ3Ey7mV/4O2AJ3yh0=;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+        b=b/tbY+YNDQ/iLapqj2V+1hbKAEUo4ofqNVwBCunDXYw76WKU8C8/ATm6k0NAJvBE3
+         5EkBwd8BjAddwwCPQmlcvXwPPDm+IBdH8GRpYV+V9K6CPFoc0GpuLdrNVLCpxu3fhZ
+         QODUG+Gwc6uDKUCQfvgEr4ryWtLahFV+OQlo6m/s=
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org EBA02622EA
+Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
+From:   Kalle Valo <kvalo@codeaurora.org>
+To:     Luca Coelho <luca@coelho.fi>
+Cc:     linux-wireless@vger.kernel.org
+Subject: Re: [PATCH 09/22] iwlwifi: remove iwl-constants.h
+References: <20190817065200.9701-1-luca@coelho.fi>
+        <20190817065200.9701-10-luca@coelho.fi>
+Date:   Sun, 18 Aug 2019 16:55:42 +0300
+In-Reply-To: <20190817065200.9701-10-luca@coelho.fi> (Luca Coelho's message of
+        "Sat, 17 Aug 2019 09:51:47 +0300")
+Message-ID: <877e7abmsh.fsf@kamboji.qca.qualcomm.com>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
 MIME-Version: 1.0
-References: <20190818104629.GA27360@amd>
-In-Reply-To: <20190818104629.GA27360@amd>
-From:   Michael Nazzareno Trimarchi <michael@amarulasolutions.com>
-Date:   Sun, 18 Aug 2019 14:45:03 +0200
-Message-ID: <CAOf5uwmprKDNd-6C0xigdV5ZdkGOquwoXcMVbteK9XNE+sKqSA@mail.gmail.com>
-Subject: Re: wifi on Motorola Droid 4 in 5.3-rc2
-To:     Pavel Machek <pavel@ucw.cz>
-Cc:     kernel list <linux-kernel@vger.kernel.org>,
-        linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
-        Linux OMAP Mailing List <linux-omap@vger.kernel.org>,
-        Tony Lindgren <tony@atomide.com>,
-        Sebastian Reichel <sre@kernel.org>, nekit1000@gmail.com,
-        mpartap@gmx.net, Merlijn Wajer <merlijn@wizzup.org>,
-        "open list:TI WILINK WIRELES..." <linux-wireless@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi Pavel
+Luca Coelho <luca@coelho.fi> writes:
 
-For the second part
+> From: Shahar S Matityahu <shahar.s.matityahu@intel.com>
+>
+> This file is included in a few source files, but its content
+> is never used. Remove it.
+>
+> Signed-off-by: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
+> Signed-off-by: Luca Coelho <luciano.coelho@intel.com>
+> ---
+>  drivers/net/wireless/intel/iwlwifi/mvm/ops.c | 1 +
+>  1 file changed, 1 insertion(+)
+>
+> diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/ops.c b/drivers/net/wireless/intel/iwlwifi/mvm/ops.c
+> index bf0b9ee05c44..2aa5320e9d1a 100644
+> --- a/drivers/net/wireless/intel/iwlwifi/mvm/ops.c
+> +++ b/drivers/net/wireless/intel/iwlwifi/mvm/ops.c
+> @@ -414,6 +414,7 @@ static const struct iwl_hcmd_names iwl_mvm_legacy_names[] = {
+>  	HCMD_NAME(SCAN_ITERATION_COMPLETE),
+>  	HCMD_NAME(D0I3_END_CMD),
+>  	HCMD_NAME(LTR_CONFIG),
+> +	HCMD_NAME(LDBG_CONFIG_CMD),
+>  };
+>  
+>  /* Please keep this array *SORTED* by hex value.
 
-On Sun, Aug 18, 2019 at 12:46 PM Pavel Machek <pavel@ucw.cz> wrote:
->
-> Hi!
->
-> First, I guess I should mention that this is first time I'm attempting
-> to get wifi going on D4.
->
-> I'm getting this:
->
-> user@devuan:~/g/ofono$ sudo ifconfig wlan0 down
-> user@devuan:~/g/ofono$ sudo ifconfig wlan0 up
-> user@devuan:~/g/ofono$ sudo iwlist wlan0 scan
-> wlan0     Interface doesn't support scanning.
->
-> user@devuan:~/g/ofono$ sudo ifconfig wlan0 down
-> user@devuan:~/g/ofono$ sudo iwlist wlan0 scan
-> wlan0     Interface doesn't support scanning.
->
-> user@devuan:~/g/ofono$
->
-> I'm getting this warning during bootup:
->
-> [   13.733703] asoc-audio-graph-card soundcard: No GPIO consumer pa
-> found
-> [   14.279724] wlcore: WARNING Detected unconfigured mac address in
-> nvs, derive from fuse instead.
-
-This is ok. It means that your nvs file is not the original one taken
-from android
-
-> [   14.293273] wlcore: WARNING Your device performance is not
-> optimized.
-
-you can use plt command with calibrate
-
-Michael
-
-> [   14.304443] wlcore: WARNING Please use the calibrator tool to
-> configure your device.
-> [   14.317474] wlcore: loaded
-> [   16.977325] motmdm serial0-0: motmdm_dlci_send_command: AT+VERSION=
-> got MASERATIBP_N_05.25.00R,026.0R,XSAMASR01VRZNA026.0R,???
->
-> Any ideas?
->
-> Best regards,
->                                                                         Pavel
->
-> --
-> (english) http://www.livejournal.com/~pavelmachek
-> (cesky, pictures) http://atrey.karlin.mff.cuni.cz/~pavel/picture/horses/blog.html
-
-
+The commit log does not seem to match with the actual patch.
 
 -- 
-| Michael Nazzareno Trimarchi                     Amarula Solutions BV |
-| COO  -  Founder                                      Cruquiuskade 47 |
-| +31(0)851119172                                 Amsterdam 1018 AM NL |
-|                  [`as] http://www.amarulasolutions.com               |
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
