@@ -2,540 +2,118 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A2F9F9175D
-	for <lists+linux-wireless@lfdr.de>; Sun, 18 Aug 2019 16:35:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 977599192F
+	for <lists+linux-wireless@lfdr.de>; Sun, 18 Aug 2019 21:10:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726608AbfHROff (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 18 Aug 2019 10:35:35 -0400
-Received: from alexa-out-ams-02.qualcomm.com ([185.23.61.163]:22419 "EHLO
-        alexa-out-ams-02.qualcomm.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726208AbfHROff (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 18 Aug 2019 10:35:35 -0400
-Received: from ironmsg03-ams.qualcomm.com ([10.251.56.4])
-  by alexa-out-ams-02.qualcomm.com with ESMTP; 18 Aug 2019 16:35:30 +0200
-Received: from unknown (HELO wigig-1329.mea.qualcomm.com) ([10.4.89.235])
-  by ironmsg03-ams.qualcomm.com with ESMTP; 18 Aug 2019 16:35:30 +0200
-From:   Alexei Avshalom Lazar <ailizaro@codeaurora.org>
-To:     Johannes Berg <johannes@sipsolutions.net>
-Cc:     Alexei Avshalom Lazar <ailizaro@codeaurora.org>,
-        linux-wireless@vger.kernel.org, wil6210@qti.qualcomm.com
-Subject: [PATCH v8 2/2] wil6210: Add EDMG channel support
-Date:   Sun, 18 Aug 2019 17:35:18 +0300
-Message-Id: <1566138918-3823-3-git-send-email-ailizaro@codeaurora.org>
-X-Mailer: git-send-email 2.7.4
-In-Reply-To: <1566138918-3823-1-git-send-email-ailizaro@codeaurora.org>
-References: <1566138918-3823-1-git-send-email-ailizaro@codeaurora.org>
+        id S1726952AbfHRTKF (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 18 Aug 2019 15:10:05 -0400
+Received: from mx2.mailbox.org ([80.241.60.215]:55502 "EHLO mx2.mailbox.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726089AbfHRTKF (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Sun, 18 Aug 2019 15:10:05 -0400
+Received: from smtp2.mailbox.org (smtp2.mailbox.org [80.241.60.241])
+        (using TLSv1.2 with cipher ECDHE-RSA-CHACHA20-POLY1305 (256/256 bits))
+        (No client certificate requested)
+        by mx2.mailbox.org (Postfix) with ESMTPS id 558E8A168F;
+        Sun, 18 Aug 2019 21:10:01 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at heinlein-support.de
+Received: from smtp2.mailbox.org ([80.241.60.241])
+        by spamfilter01.heinlein-hosting.de (spamfilter01.heinlein-hosting.de [80.241.56.115]) (amavisd-new, port 10030)
+        with ESMTP id DcJ8SqyB3S_Z; Sun, 18 Aug 2019 21:09:50 +0200 (CEST)
+From:   Hauke Mehrtens <hauke@hauke-m.de>
+To:     kvalo@codeaurora.org
+Cc:     hannu.nyman@iki.fi, ath10k@lists.infradead.org,
+        linux-wireless@vger.kernel.org, mpubbise@codeaurora.org,
+        Hauke Mehrtens <hauke@hauke-m.de>
+Subject: [PATCH] ath10k: Check if station exists before forwarding tx airtime report
+Date:   Sun, 18 Aug 2019 21:09:20 +0200
+Message-Id: <20190818190920.22813-1-hauke@hauke-m.de>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Add support for Enhanced Directional Multi-Gigabit (EDMG) channels 9-11.
-wil6210 reports it's EDMG capabilities (that are also based on FW
-capability) to cfg80211 by filling
-wiphy->bands[NL80211_BAND_60GHZ]->edmg_cap.
-wil6210 handles edmg.channels and edmg.bw_config requested in connect
-and start_ap operations.
+It looks like the FW on QCA9984 already reports the tx airtimes before
+the station is added to the peer entry. The peer entry is created in
+ath10k_peer_map_event() just with the vdev_id and the ethaddr, but
+not with a station entry, this is added later in ath10k_peer_create() in
+callbacks from mac80211.
 
-Signed-off-by: Alexei Avshalom Lazar <ailizaro@codeaurora.org>
+When there is no sta added to the peer entry, this function fails
+because it calls ieee80211_sta_register_airtime() with NULL.
+
+This was reported in OpenWrt some time ago:
+https://bugs.openwrt.org/index.php?do=details&task_id=2414
+
+This commit should fix this crash:
+[   75.991714] Unable to handle kernel paging request at virtual address fffff9e8
+[   75.991756] pgd = c0204000
+[   75.997955] [fffff9e8] *pgd=5fdfd861, *pte=00000000, *ppte=00000000
+[   76.000537] Internal error: Oops: 37 [#1] SMP ARM
+[   76.006686] Modules linked in: pppoe ppp_async ath10k_pci ath10k_core ath pptp pppox ppp_mppe ppp_generic mac80211 iptable_nat ipt_REJECT ipt_MASQUERADE cfg80211 xt_time xt_tcpudp xt_tcpmss xt_statistic xt_state xt_recent xt_nat xt_multiport xt_mark xt_mac xt_limit xt_length xt_hl xt_helper xt_esp xt_ecn xt_dscp xt_conntrack xt_connmark xt_connlimit xt_connbytes xt_comment xt_TCPMSS xt_REDIRECT xt_LOG xt_HL xt_FLOWOFFLOAD xt_DSCP xt_CT xt_CLASSIFY usbserial slhc nf_reject_ipv4 nf_nat_redirect nf_nat_masquerade_ipv4 nf_conntrack_ipv4 nf_nat_ipv4 nf_log_ipv4 nf_flow_table_hw nf_flow_table nf_defrag_ipv4 nf_conntrack_rtcache nf_conntrack_netlink iptable_raw iptable_mangle iptable_filter ipt_ah ipt_ECN ip_tables crc_ccitt compat chaoskey fuse sch_cake sch_tbf sch_ingress sch_htb sch_hfsc em_u32 cls_u32
+[   76.059974]  cls_tcindex cls_route cls_matchall cls_fw cls_flow cls_basic act_skbedit act_mirred ledtrig_usbport xt_set ip_set_list_set ip_set_hash_netportnet ip_set_hash_netport ip_set_hash_netnet ip_set_hash_netiface ip_set_hash_net ip_set_hash_mac ip_set_hash_ipportnet ip_set_hash_ipportip ip_set_hash_ipport ip_set_hash_ipmark ip_set_hash_ip ip_set_bitmap_port ip_set_bitmap_ipmac ip_set_bitmap_ip ip_set nfnetlink ip6table_nat nf_conntrack_ipv6 nf_defrag_ipv6 nf_nat_ipv6 ip6t_NPT ip6t_MASQUERADE nf_nat_masquerade_ipv6 nf_nat nf_conntrack nf_log_ipv6 nf_log_common ip6table_mangle ip6table_filter ip6_tables ip6t_REJECT x_tables nf_reject_ipv6 msdos ip_gre gre ifb sit tunnel4 ip_tunnel tun vfat fat hfsplus cifs nls_utf8 nls_iso8859_15 nls_iso8859_1 nls_cp850 nls_cp437 nls_cp1250 sha1_generic md5 md4
+[   76.130634]  usb_storage leds_gpio xhci_plat_hcd xhci_pci xhci_hcd dwc3 dwc3_of_simple ohci_platform ohci_hcd phy_qcom_dwc3 ahci ehci_platform sd_mod ahci_platform libahci_platform libahci libata scsi_mod ehci_hcd gpio_button_hotplug ext4 mbcache jbd2 exfat crc32c_generic
+[   76.154772] CPU: 0 PID: 0 Comm: swapper/0 Not tainted 4.14.132 #0
+[   76.177001] Hardware name: Generic DT based system
+[   76.182990] task: c0b06d80 task.stack: c0b00000
+[   76.187832] PC is at ieee80211_sta_register_airtime+0x24/0x148 [mac80211]
+[   76.192211] LR is at ath10k_htt_t2h_msg_handler+0x678/0x10f4 [ath10k_core]
+[   76.199052] pc : [<bf75bfac>]    lr : [<bf83e8b0>]    psr: a0000113
+[   76.205820] sp : c0b01d54  ip : 00000002  fp : bf869c0c
+[   76.211981] r10: 0000003c  r9 : dbdca138  r8 : 00060002
+[   76.217192] r7 : 00000000  r6 : dabe1150  r5 : 00000000  r4 : dbdc95c0
+[   76.222401] r3 : 00000000  r2 : 00060002  r1 : 00000000  r0 : 00000000
+[   76.229003] Flags: NzCv  IRQs on  FIQs on  Mode SVC_32  ISA ARM  Segment none
+[   76.235509] Control: 10c5787d  Table: 5c94006a  DAC: 00000051
+[   76.242716] Process swapper/0 (pid: 0, stack limit = 0xc0b00210)
+[   76.248446] Stack: (0xc0b01d54 to 0xc0b02000)
+[   76.254532] 1d40:                                              dbdc95c0 00000000 dabe1150
+[   76.258808] 1d60: 00000001 dabe1150 dbdca138 0000003c bf869c0c bf83e8b0 00000002 c0314b10
+[   76.266969] 1d80: dbdc9c70 00000001 00000001 dabe114c 00010000 00000000 dbdcd724 bf88f3d8
+[   76.275126] 1da0: c0310d28 db393c00 dbdc95c0 00000000 c0b01dd0 c07fb4c4 dbdcd724 00000001
+[   76.283286] 1dc0: 00000022 bf88b09c db393c00 00000022 c0b01dd0 c0b01dd0 00000000 dbdcc5c0
+[   76.291445] 1de0: bf88f04c dbdcd654 dbdcd71c dbdc95c0 00000014 dbdcd724 dbdcc5c0 00000005
+[   76.299605] 1e00: 0004b400 bf85c360 00000000 bf87101c c0b01e24 00000006 00000000 dbdc95c0
+[   76.307764] 1e20: 00000001 00000040 0000012c c0b01e80 1cf51000 bf85c448 dbdcd440 dbdc95c0
+[   76.315925] 1e40: dbdca440 ffffa880 00000040 bf88cb68 dbdcd440 00000001 00000040 ffffa880
+[   76.324084] 1e60: c0b02d00 c06d72e0 dd990080 c0a3f080 c0b255dc c0b047e4 c090afac c090e80c
+[   76.332244] 1e80: c0b01e80 c0b01e80 c0b01e88 c0b01e88 dd4cc200 00000000 00000003 c0b0208c
+[   76.340405] 1ea0: c0b02080 40000003 ffffe000 00000100 c0b02080 c03015c8 00000000 00000001
+[   76.348564] 1ec0: dd408000 c0a38210 c0b2c7c0 0000000a ffffa880 c0b02d00 c07fb764 00200102
+[   76.356723] 1ee0: dd4cc268 c0a3e414 00000000 00000000 00000001 dd408000 de803000 00000000
+[   76.364883] 1f00: 00000000 c03247cc c0a3e414 c0368f1c c0b03f60 c0b153cc de80200c de802000
+[   76.373042] 1f20: c0b01f48 c0301488 c0308630 60000013 ffffffff c0b01f7c 00000000 c0b00000
+[   76.381204] 1f40: 00000000 c030c08c 00000001 00000000 00000000 c0315180 ffffe000 c0b03cc0
+[   76.389363] 1f60: c0b03c70 00000000 00000000 c0a2da28 00000000 00000000 c0b01f90 c0b01f98
+[   76.397522] 1f80: c030862c c0308630 60000013 ffffffff 00000051 00000000 ffffe000 c035dd18
+[   76.405681] 1fa0: 000000bf c0b03c40 00000000 c0b2c000 dddfce80 c035e060 c0b2c040 c0a00cf4
+[   76.413842] 1fc0: ffffffff ffffffff 00000000 c0a0067c c0a2da28 00000000 00000000 c0b2c1d4
+[   76.422001] 1fe0: c0b03c5c c0a2da24 c0b07ee0 4220406a 512f04d0 4220807c 00000000 00000000
+[   76.430335] [<bf75bfac>] (ieee80211_sta_register_airtime [mac80211]) from [<00000002>] (0x2)
+[   76.438314] Code: e1cd81f0 e1a08002 e1cda1f8 e58de020 (e5102618)
+[   76.446965] ---[ end trace 227a38ade964d642 ]---
+
+Fixes: bb31b7cb106c ("ath10k: report tx airtime provided by fw")
+Signed-off-by: Hauke Mehrtens <hauke@hauke-m.de>
 ---
- drivers/net/wireless/ath/wil6210/cfg80211.c  | 206 +++++++++++++++++++++++++--
- drivers/net/wireless/ath/wil6210/txrx_edma.c |   2 +
- drivers/net/wireless/ath/wil6210/txrx_edma.h |   6 +
- drivers/net/wireless/ath/wil6210/wil6210.h   |   8 +-
- drivers/net/wireless/ath/wil6210/wmi.c       |   5 +-
- drivers/net/wireless/ath/wil6210/wmi.h       |  26 +++-
- 6 files changed, 240 insertions(+), 13 deletions(-)
+ drivers/net/wireless/ath/ath10k/htt_rx.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/ath/wil6210/cfg80211.c b/drivers/net/wireless/ath/wil6210/cfg80211.c
-index 2414f57..1883690 100644
---- a/drivers/net/wireless/ath/wil6210/cfg80211.c
-+++ b/drivers/net/wireless/ath/wil6210/cfg80211.c
-@@ -25,6 +25,22 @@
+diff --git a/drivers/net/wireless/ath/ath10k/htt_rx.c b/drivers/net/wireless/ath/ath10k/htt_rx.c
+index 83a7fb68fd24..7f3ec7fa5a44 100644
+--- a/drivers/net/wireless/ath/ath10k/htt_rx.c
++++ b/drivers/net/wireless/ath/ath10k/htt_rx.c
+@@ -2639,7 +2639,7 @@ static void ath10k_htt_rx_tx_compl_ind(struct ath10k *ar,
+ 		spin_lock_bh(&ar->data_lock);
  
- #define WIL_MAX_ROC_DURATION_MS 5000
- 
-+#define WIL_EDMG_CHANNEL_9_SUBCHANNELS	(BIT(0) | BIT(1))
-+#define WIL_EDMG_CHANNEL_10_SUBCHANNELS	(BIT(1) | BIT(2))
-+#define WIL_EDMG_CHANNEL_11_SUBCHANNELS	(BIT(2) | BIT(3))
-+
-+/* WIL_EDMG_BW_CONFIGURATION define the allowed channel bandwidth
-+ * configurations as defined by IEEE 802.11 section 9.4.2.251, Table 13.
-+ * The value 5 allowing CB1 and CB2 of adjacent channels.
-+ */
-+#define WIL_EDMG_BW_CONFIGURATION 5
-+
-+/* WIL_EDMG_CHANNELS is a bitmap that indicates the 2.16 GHz channel(s) that
-+ * are allowed to be used for EDMG transmissions in the BSS as defined by
-+ * IEEE 802.11 section 9.4.2.251.
-+ */
-+#define WIL_EDMG_CHANNELS (BIT(0) | BIT(1) | BIT(2) | BIT(3))
-+
- bool disable_ap_sme;
- module_param(disable_ap_sme, bool, 0444);
- MODULE_PARM_DESC(disable_ap_sme, " let user space handle AP mode SME");
-@@ -51,6 +67,39 @@ static struct ieee80211_channel wil_60ghz_channels[] = {
- 	CHAN60G(4, 0),
- };
- 
-+/* Rx channel bonding mode */
-+enum wil_rx_cb_mode {
-+	WIL_RX_CB_MODE_DMG,
-+	WIL_RX_CB_MODE_EDMG,
-+	WIL_RX_CB_MODE_WIDE,
-+};
-+
-+static int wil_rx_cb_mode_to_n_bonded(u8 cb_mode)
-+{
-+	switch (cb_mode) {
-+	case WIL_RX_CB_MODE_DMG:
-+	case WIL_RX_CB_MODE_EDMG:
-+		return 1;
-+	case WIL_RX_CB_MODE_WIDE:
-+		return 2;
-+	default:
-+		return 1;
-+	}
-+}
-+
-+static int wil_tx_cb_mode_to_n_bonded(u8 cb_mode)
-+{
-+	switch (cb_mode) {
-+	case WMI_TX_MODE_DMG:
-+	case WMI_TX_MODE_EDMG_CB1:
-+		return 1;
-+	case WMI_TX_MODE_EDMG_CB2:
-+		return 2;
-+	default:
-+		return 1;
-+	}
-+}
-+
- static void
- wil_memdup_ie(u8 **pdst, size_t *pdst_len, const u8 *src, size_t src_len)
- {
-@@ -82,6 +131,13 @@ void update_supported_bands(struct wil6210_priv *wil)
- 
- 	wiphy->bands[NL80211_BAND_60GHZ]->n_channels =
- 						wil_num_supported_channels(wil);
-+
-+	if (test_bit(WMI_FW_CAPABILITY_CHANNEL_BONDING, wil->fw_capabilities)) {
-+		wiphy->bands[NL80211_BAND_60GHZ]->edmg_cap.channels =
-+							WIL_EDMG_CHANNELS;
-+		wiphy->bands[NL80211_BAND_60GHZ]->edmg_cap.bw_config =
-+						      WIL_EDMG_BW_CONFIGURATION;
-+	}
- }
- 
- /* Vendor id to be used in vendor specific command and events
-@@ -300,6 +356,86 @@ int wil_iftype_nl2wmi(enum nl80211_iftype type)
- 	return -EOPNOTSUPP;
- }
- 
-+int wil_spec2wmi_ch(u8 spec_ch, u8 *wmi_ch)
-+{
-+	switch (spec_ch) {
-+	case 1:
-+		*wmi_ch = WMI_CHANNEL_1;
-+		break;
-+	case 2:
-+		*wmi_ch = WMI_CHANNEL_2;
-+		break;
-+	case 3:
-+		*wmi_ch = WMI_CHANNEL_3;
-+		break;
-+	case 4:
-+		*wmi_ch = WMI_CHANNEL_4;
-+		break;
-+	case 5:
-+		*wmi_ch = WMI_CHANNEL_5;
-+		break;
-+	case 6:
-+		*wmi_ch = WMI_CHANNEL_6;
-+		break;
-+	case 9:
-+		*wmi_ch = WMI_CHANNEL_9;
-+		break;
-+	case 10:
-+		*wmi_ch = WMI_CHANNEL_10;
-+		break;
-+	case 11:
-+		*wmi_ch = WMI_CHANNEL_11;
-+		break;
-+	case 12:
-+		*wmi_ch = WMI_CHANNEL_12;
-+		break;
-+	default:
-+		return -EINVAL;
-+	}
-+
-+	return 0;
-+}
-+
-+int wil_wmi2spec_ch(u8 wmi_ch, u8 *spec_ch)
-+{
-+	switch (wmi_ch) {
-+	case WMI_CHANNEL_1:
-+		*spec_ch = 1;
-+		break;
-+	case WMI_CHANNEL_2:
-+		*spec_ch = 2;
-+		break;
-+	case WMI_CHANNEL_3:
-+		*spec_ch = 3;
-+		break;
-+	case WMI_CHANNEL_4:
-+		*spec_ch = 4;
-+		break;
-+	case WMI_CHANNEL_5:
-+		*spec_ch = 5;
-+		break;
-+	case WMI_CHANNEL_6:
-+		*spec_ch = 6;
-+		break;
-+	case WMI_CHANNEL_9:
-+		*spec_ch = 9;
-+		break;
-+	case WMI_CHANNEL_10:
-+		*spec_ch = 10;
-+		break;
-+	case WMI_CHANNEL_11:
-+		*spec_ch = 11;
-+		break;
-+	case WMI_CHANNEL_12:
-+		*spec_ch = 12;
-+		break;
-+	default:
-+		return -EINVAL;
-+	}
-+
-+	return 0;
-+}
-+
- int wil_cid_fill_sinfo(struct wil6210_vif *vif, int cid,
- 		       struct station_info *sinfo)
- {
-@@ -314,6 +450,7 @@ int wil_cid_fill_sinfo(struct wil6210_vif *vif, int cid,
- 	} __packed reply;
- 	struct wil_net_stats *stats = &wil->sta[cid].stats;
- 	int rc;
-+	u8 txflag = RATE_INFO_FLAGS_DMG;
- 
- 	memset(&reply, 0, sizeof(reply));
- 
-@@ -327,7 +464,8 @@ int wil_cid_fill_sinfo(struct wil6210_vif *vif, int cid,
- 		    "  MCS %d TSF 0x%016llx\n"
- 		    "  BF status 0x%08x RSSI %d SQI %d%%\n"
- 		    "  Tx Tpt %d goodput %d Rx goodput %d\n"
--		    "  Sectors(rx:tx) my %d:%d peer %d:%d\n""}\n",
-+		    "  Sectors(rx:tx) my %d:%d peer %d:%d\n"
-+		    "  Tx mode %d}\n",
- 		    cid, vif->mid, le16_to_cpu(reply.evt.bf_mcs),
- 		    le64_to_cpu(reply.evt.tsf), reply.evt.status,
- 		    reply.evt.rssi,
-@@ -338,7 +476,8 @@ int wil_cid_fill_sinfo(struct wil6210_vif *vif, int cid,
- 		    le16_to_cpu(reply.evt.my_rx_sector),
- 		    le16_to_cpu(reply.evt.my_tx_sector),
- 		    le16_to_cpu(reply.evt.other_rx_sector),
--		    le16_to_cpu(reply.evt.other_tx_sector));
-+		    le16_to_cpu(reply.evt.other_tx_sector),
-+		    reply.evt.tx_mode);
- 
- 	sinfo->generation = wil->sinfo_gen;
- 
-@@ -351,9 +490,16 @@ int wil_cid_fill_sinfo(struct wil6210_vif *vif, int cid,
- 			BIT_ULL(NL80211_STA_INFO_RX_DROP_MISC) |
- 			BIT_ULL(NL80211_STA_INFO_TX_FAILED);
- 
--	sinfo->txrate.flags = RATE_INFO_FLAGS_DMG;
-+	if (wil->use_enhanced_dma_hw && reply.evt.tx_mode != WMI_TX_MODE_DMG)
-+		txflag = RATE_INFO_FLAGS_EDMG;
-+
-+	sinfo->txrate.flags = txflag;
- 	sinfo->txrate.mcs = le16_to_cpu(reply.evt.bf_mcs);
- 	sinfo->rxrate.mcs = stats->last_mcs_rx;
-+	sinfo->txrate.n_bonded_ch =
-+				  wil_tx_cb_mode_to_n_bonded(reply.evt.tx_mode);
-+	sinfo->rxrate.n_bonded_ch =
-+			     wil_rx_cb_mode_to_n_bonded(stats->last_cb_mode_rx);
- 	sinfo->rx_bytes = stats->rx_bytes;
- 	sinfo->rx_packets = stats->rx_packets;
- 	sinfo->rx_dropped_misc = stats->rx_dropped;
-@@ -1022,6 +1168,33 @@ static int wil_ft_connect(struct wiphy *wiphy,
- 	return rc;
- }
- 
-+static int wil_get_wmi_edmg_channel(struct wil6210_priv *wil, u8 edmg_bw_config,
-+				    u8 edmg_channels, u8 *wmi_ch)
-+{
-+	if (!edmg_bw_config) {
-+		*wmi_ch = 0;
-+		return 0;
-+	} else if (edmg_bw_config == WIL_EDMG_BW_CONFIGURATION) {
-+		/* convert from edmg channel bitmap into edmg channel number */
-+		switch (edmg_channels) {
-+		case WIL_EDMG_CHANNEL_9_SUBCHANNELS:
-+			return wil_spec2wmi_ch(9, wmi_ch);
-+		case WIL_EDMG_CHANNEL_10_SUBCHANNELS:
-+			return wil_spec2wmi_ch(10, wmi_ch);
-+		case WIL_EDMG_CHANNEL_11_SUBCHANNELS:
-+			return wil_spec2wmi_ch(11, wmi_ch);
-+		default:
-+			wil_err(wil, "Unsupported edmg channel bitmap 0x%x\n",
-+				edmg_channels);
-+			return -EINVAL;
-+		}
-+	} else {
-+		wil_err(wil, "Unsupported EDMG BW configuration %d\n",
-+			edmg_bw_config);
-+		return -EINVAL;
-+	}
-+}
-+
- static int wil_cfg80211_connect(struct wiphy *wiphy,
- 				struct net_device *ndev,
- 				struct cfg80211_connect_params *sme)
-@@ -1167,6 +1340,11 @@ static int wil_cfg80211_connect(struct wiphy *wiphy,
- 	memcpy(conn.ssid, ssid_eid+2, conn.ssid_len);
- 	conn.channel = ch - 1;
- 
-+	rc = wil_get_wmi_edmg_channel(wil, sme->edmg.bw_config,
-+				      sme->edmg.channels, &conn.edmg_channel);
-+	if (rc < 0)
-+		return rc;
-+
- 	ether_addr_copy(conn.bssid, bss->bssid);
- 	ether_addr_copy(conn.dst_mac, bss->bssid);
- 
-@@ -1728,7 +1906,7 @@ static int _wil_cfg80211_set_ies(struct wil6210_vif *vif,
- static int _wil_cfg80211_start_ap(struct wiphy *wiphy,
- 				  struct net_device *ndev,
- 				  const u8 *ssid, size_t ssid_len, u32 privacy,
--				  int bi, u8 chan,
-+				  int bi, u8 chan, u8 wmi_edmg_channel,
- 				  struct cfg80211_beacon_data *bcon,
- 				  u8 hidden_ssid, u32 pbss)
- {
-@@ -1791,6 +1969,7 @@ static int _wil_cfg80211_start_ap(struct wiphy *wiphy,
- 
- 	vif->privacy = privacy;
- 	vif->channel = chan;
-+	vif->wmi_edmg_channel = wmi_edmg_channel;
- 	vif->hidden_ssid = hidden_ssid;
- 	vif->pbss = pbss;
- 	vif->bi = bi;
-@@ -1801,7 +1980,8 @@ static int _wil_cfg80211_start_ap(struct wiphy *wiphy,
- 	if (!wil_has_other_active_ifaces(wil, ndev, false, true))
- 		wil6210_bus_request(wil, WIL_MAX_BUS_REQUEST_KBPS);
- 
--	rc = wmi_pcp_start(vif, bi, wmi_nettype, chan, hidden_ssid, is_go);
-+	rc = wmi_pcp_start(vif, bi, wmi_nettype, chan, wmi_edmg_channel,
-+			   hidden_ssid, is_go);
- 	if (rc)
- 		goto err_pcp_start;
- 
-@@ -1853,7 +2033,8 @@ void wil_cfg80211_ap_recovery(struct wil6210_priv *wil)
- 		rc = _wil_cfg80211_start_ap(wiphy, ndev,
- 					    vif->ssid, vif->ssid_len,
- 					    vif->privacy, vif->bi,
--					    vif->channel, &bcon,
-+					    vif->channel,
-+					    vif->wmi_edmg_channel, &bcon,
- 					    vif->hidden_ssid, vif->pbss);
- 		if (rc) {
- 			wil_err(wil, "vif %d recovery failed (%d)\n", i, rc);
-@@ -1903,7 +2084,8 @@ static int wil_cfg80211_change_beacon(struct wiphy *wiphy,
- 		rc = _wil_cfg80211_start_ap(wiphy, ndev, vif->ssid,
- 					    vif->ssid_len, privacy,
- 					    wdev->beacon_interval,
--					    vif->channel, bcon,
-+					    vif->channel,
-+					    vif->wmi_edmg_channel, bcon,
- 					    vif->hidden_ssid,
- 					    vif->pbss);
- 	} else {
-@@ -1922,10 +2104,17 @@ static int wil_cfg80211_start_ap(struct wiphy *wiphy,
- 	struct ieee80211_channel *channel = info->chandef.chan;
- 	struct cfg80211_beacon_data *bcon = &info->beacon;
- 	struct cfg80211_crypto_settings *crypto = &info->crypto;
-+	u8 wmi_edmg_channel;
- 	u8 hidden_ssid;
- 
- 	wil_dbg_misc(wil, "start_ap\n");
- 
-+	rc = wil_get_wmi_edmg_channel(wil, info->chandef.edmg.bw_config,
-+				      info->chandef.edmg.channels,
-+				      &wmi_edmg_channel);
-+	if (rc < 0)
-+		return rc;
-+
- 	if (!channel) {
- 		wil_err(wil, "AP: No channel???\n");
- 		return -EINVAL;
-@@ -1965,7 +2154,8 @@ static int wil_cfg80211_start_ap(struct wiphy *wiphy,
- 	rc = _wil_cfg80211_start_ap(wiphy, ndev,
- 				    info->ssid, info->ssid_len, info->privacy,
- 				    info->beacon_interval, channel->hw_value,
--				    bcon, hidden_ssid, info->pbss);
-+				    wmi_edmg_channel, bcon, hidden_ssid,
-+				    info->pbss);
- 
- 	return rc;
- }
-diff --git a/drivers/net/wireless/ath/wil6210/txrx_edma.c b/drivers/net/wireless/ath/wil6210/txrx_edma.c
-index 71b7ad4..29a9a24 100644
---- a/drivers/net/wireless/ath/wil6210/txrx_edma.c
-+++ b/drivers/net/wireless/ath/wil6210/txrx_edma.c
-@@ -1023,6 +1023,8 @@ static struct sk_buff *wil_sring_reap_rx_edma(struct wil6210_priv *wil,
- 		stats->last_mcs_rx = wil_rx_status_get_mcs(msg);
- 		if (stats->last_mcs_rx < ARRAY_SIZE(stats->rx_per_mcs))
- 			stats->rx_per_mcs[stats->last_mcs_rx]++;
-+
-+		stats->last_cb_mode_rx  = wil_rx_status_get_cb_mode(msg);
- 	}
- 
- 	if (!wil->use_rx_hw_reordering && !wil->use_compressed_rx_status &&
-diff --git a/drivers/net/wireless/ath/wil6210/txrx_edma.h b/drivers/net/wireless/ath/wil6210/txrx_edma.h
-index e9e6ea9..724d223 100644
---- a/drivers/net/wireless/ath/wil6210/txrx_edma.h
-+++ b/drivers/net/wireless/ath/wil6210/txrx_edma.h
-@@ -366,6 +366,12 @@ static inline u8 wil_rx_status_get_mcs(void *msg)
- 			    16, 21);
- }
- 
-+static inline u8 wil_rx_status_get_cb_mode(void *msg)
-+{
-+	return WIL_GET_BITS(((struct wil_rx_status_compressed *)msg)->d1,
-+			    22, 23);
-+}
-+
- static inline u16 wil_rx_status_get_flow_id(void *msg)
- {
- 	return WIL_GET_BITS(((struct wil_rx_status_compressed *)msg)->d0,
-diff --git a/drivers/net/wireless/ath/wil6210/wil6210.h b/drivers/net/wireless/ath/wil6210/wil6210.h
-index 6f456b3..d8c78a0 100644
---- a/drivers/net/wireless/ath/wil6210/wil6210.h
-+++ b/drivers/net/wireless/ath/wil6210/wil6210.h
-@@ -590,6 +590,7 @@ struct wil_net_stats {
- 	unsigned long	rx_amsdu_error; /* eDMA specific */
- 	unsigned long	rx_csum_err;
- 	u16 last_mcs_rx;
-+	u8 last_cb_mode_rx;
- 	u64 rx_per_mcs[WIL_MCS_MAX + 1];
- 	u32 ft_roams; /* relevant in STA mode */
- };
-@@ -850,6 +851,7 @@ struct wil6210_vif {
- 	DECLARE_BITMAP(status, wil_vif_status_last);
- 	u32 privacy; /* secure connection? */
- 	u16 channel; /* relevant in AP mode */
-+	u8 wmi_edmg_channel; /* relevant in AP mode */
- 	u8 hidden_ssid; /* relevant in AP mode */
- 	u32 ap_isolate; /* no intra-BSS communication */
- 	bool pbss;
-@@ -1335,7 +1337,7 @@ void wil_p2p_wdev_free(struct wil6210_priv *wil);
- 
- int wmi_set_mac_address(struct wil6210_priv *wil, void *addr);
- int wmi_pcp_start(struct wil6210_vif *vif, int bi, u8 wmi_nettype, u8 chan,
--		  u8 hidden_ssid, u8 is_go);
-+		  u8 edmg_chan, u8 hidden_ssid, u8 is_go);
- int wmi_pcp_stop(struct wil6210_vif *vif);
- int wmi_led_cfg(struct wil6210_priv *wil, bool enable);
- int wmi_abort_scan(struct wil6210_vif *vif);
-@@ -1412,6 +1414,10 @@ int wmi_mgmt_tx_ext(struct wil6210_vif *vif, const u8 *buf, size_t len,
- 		    u8 channel, u16 duration_ms);
- int wmi_rbufcap_cfg(struct wil6210_priv *wil, bool enable, u16 threshold);
- 
-+int wil_wmi2spec_ch(u8 wmi_ch, u8 *spec_ch);
-+int wil_spec2wmi_ch(u8 spec_ch, u8 *wmi_ch);
-+void wil_update_supported_bands(struct wil6210_priv *wil);
-+
- int reverse_memcmp(const void *cs, const void *ct, size_t count);
- 
- /* WMI for enhanced DMA */
-diff --git a/drivers/net/wireless/ath/wil6210/wmi.c b/drivers/net/wireless/ath/wil6210/wmi.c
-index 475b1a2..5760d14 100644
---- a/drivers/net/wireless/ath/wil6210/wmi.c
-+++ b/drivers/net/wireless/ath/wil6210/wmi.c
-@@ -2163,8 +2163,8 @@ int wmi_rbufcap_cfg(struct wil6210_priv *wil, bool enable, u16 threshold)
- 	return rc;
- }
- 
--int wmi_pcp_start(struct wil6210_vif *vif,
--		  int bi, u8 wmi_nettype, u8 chan, u8 hidden_ssid, u8 is_go)
-+int wmi_pcp_start(struct wil6210_vif *vif, int bi, u8 wmi_nettype,
-+		  u8 chan, u8 wmi_edmg_chan, u8 hidden_ssid, u8 is_go)
- {
- 	struct wil6210_priv *wil = vif_to_wil(vif);
- 	int rc;
-@@ -2174,6 +2174,7 @@ int wmi_pcp_start(struct wil6210_vif *vif,
- 		.network_type = wmi_nettype,
- 		.disable_sec_offload = 1,
- 		.channel = chan - 1,
-+		.edmg_channel = wmi_edmg_chan,
- 		.pcp_max_assoc_sta = wil->max_assoc_sta,
- 		.hidden_ssid = hidden_ssid,
- 		.is_go = is_go,
-diff --git a/drivers/net/wireless/ath/wil6210/wmi.h b/drivers/net/wireless/ath/wil6210/wmi.h
-index 3e37229..d75022b 100644
---- a/drivers/net/wireless/ath/wil6210/wmi.h
-+++ b/drivers/net/wireless/ath/wil6210/wmi.h
-@@ -97,6 +97,7 @@ enum wmi_fw_capability {
- 	WMI_FW_CAPABILITY_SET_SILENT_RSSI_TABLE		= 13,
- 	WMI_FW_CAPABILITY_LO_POWER_CALIB_FROM_OTP	= 14,
- 	WMI_FW_CAPABILITY_PNO				= 15,
-+	WMI_FW_CAPABILITY_CHANNEL_BONDING		= 17,
- 	WMI_FW_CAPABILITY_REF_CLOCK_CONTROL		= 18,
- 	WMI_FW_CAPABILITY_AP_SME_OFFLOAD_NONE		= 19,
- 	WMI_FW_CAPABILITY_MULTI_VIFS			= 20,
-@@ -361,6 +362,19 @@ enum wmi_connect_ctrl_flag_bits {
- 
- #define WMI_MAX_SSID_LEN	(32)
- 
-+enum wmi_channel {
-+	WMI_CHANNEL_1	= 0x00,
-+	WMI_CHANNEL_2	= 0x01,
-+	WMI_CHANNEL_3	= 0x02,
-+	WMI_CHANNEL_4	= 0x03,
-+	WMI_CHANNEL_5	= 0x04,
-+	WMI_CHANNEL_6	= 0x05,
-+	WMI_CHANNEL_9	= 0x06,
-+	WMI_CHANNEL_10	= 0x07,
-+	WMI_CHANNEL_11	= 0x08,
-+	WMI_CHANNEL_12	= 0x09,
-+};
-+
- /* WMI_CONNECT_CMDID */
- struct wmi_connect_cmd {
- 	u8 network_type;
-@@ -372,8 +386,12 @@ struct wmi_connect_cmd {
- 	u8 group_crypto_len;
- 	u8 ssid_len;
- 	u8 ssid[WMI_MAX_SSID_LEN];
-+	/* enum wmi_channel WMI_CHANNEL_1..WMI_CHANNEL_6; for EDMG this is
-+	 * the primary channel number
-+	 */
- 	u8 channel;
--	u8 reserved0;
-+	/* enum wmi_channel WMI_CHANNEL_9..WMI_CHANNEL_12 */
-+	u8 edmg_channel;
- 	u8 bssid[WMI_MAC_LEN];
- 	__le32 ctrl_flags;
- 	u8 dst_mac[WMI_MAC_LEN];
-@@ -2312,8 +2330,12 @@ struct wmi_notify_req_done_event {
- 
- /* WMI_CONNECT_EVENTID */
- struct wmi_connect_event {
-+	/* enum wmi_channel WMI_CHANNEL_1..WMI_CHANNEL_6; for EDMG this is
-+	 * the primary channel number
-+	 */
- 	u8 channel;
--	u8 reserved0;
-+	/* enum wmi_channel WMI_CHANNEL_9..WMI_CHANNEL_12 */
-+	u8 edmg_channel;
- 	u8 bssid[WMI_MAC_LEN];
- 	__le16 listen_interval;
- 	__le16 beacon_interval;
+ 		peer = ath10k_peer_find_by_id(ar, peer_id);
+-		if (!peer) {
++		if (!peer || !peer->sta) {
+ 			spin_unlock_bh(&ar->data_lock);
+ 			rcu_read_unlock();
+ 			continue;
 -- 
-2.7.4
+2.20.1
 
