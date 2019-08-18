@@ -2,119 +2,154 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 21F0D91645
-	for <lists+linux-wireless@lfdr.de>; Sun, 18 Aug 2019 12:53:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0D53591649
+	for <lists+linux-wireless@lfdr.de>; Sun, 18 Aug 2019 12:55:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726665AbfHRKxQ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 18 Aug 2019 06:53:16 -0400
-Received: from mail-wr1-f67.google.com ([209.85.221.67]:40983 "EHLO
-        mail-wr1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726089AbfHRKxO (ORCPT
+        id S1726372AbfHRKzd (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 18 Aug 2019 06:55:33 -0400
+Received: from mail-qt1-f193.google.com ([209.85.160.193]:37026 "EHLO
+        mail-qt1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726089AbfHRKzd (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 18 Aug 2019 06:53:14 -0400
-Received: by mail-wr1-f67.google.com with SMTP id j16so5731289wrr.8
-        for <linux-wireless@vger.kernel.org>; Sun, 18 Aug 2019 03:53:13 -0700 (PDT)
+        Sun, 18 Aug 2019 06:55:33 -0400
+Received: by mail-qt1-f193.google.com with SMTP id y26so11051620qto.4;
+        Sun, 18 Aug 2019 03:55:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=amarulasolutions.com; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=Mn0/40nGtsUo2sN2YIw9csG972CA1XynNu3U+6JTsm0=;
-        b=CCa3VEV9nHAUmx9d68iWDWylBayK+lIy9Fl8HxkaDXZXvQ5XEignxTOAdpmhokSt1v
-         yejAXT8PPiFVIAw2v+9OgCmaz9L7Xc9KTXC1kiu+pEFKgIbau4pSd1mYju6fbP2aZbZS
-         hEGsPfzVDGLJ/zhsk83x0Fjke5qBo8+mU2IGU=
+        d=gmail.com; s=20161025;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=JoziMIOxgfc46gepkQ5RoQyq+43sZ90qJzKjRqeCIUI=;
+        b=hKJPI+ciWx7o4i5JKfiyPnv2g+P0ZAEN4gHKXtWbzAcfSLnbmyUlpE6HNu9eK/hLrB
+         5P+bB6Li9Kpg4VegBogR60XhKNC04lCE4cFIEw77gRFMQDoaZKNX+Iwkdm17G0sCUQa6
+         loFPXJYT34VtOakZLlpMra5CqUAHAaBEDJIIti1jmD1pV78HtP6xeRVSlYM8F2HQYjlQ
+         iNuqWgI47wQy8hhve/FRMiI5rAoxdusW5fbjBa7+ORH8c2w/MmXlaAMVFOK6xaXCrb2J
+         q/1fBOR9ejOMHx/L3icLncOy8zRwFZSnFPsHEQ/ohrxiJUU+iEN/SZ5uUgifj2VE2HWA
+         445w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=Mn0/40nGtsUo2sN2YIw9csG972CA1XynNu3U+6JTsm0=;
-        b=pirfxi7NL0u44sFSY0siV03wPnM4SkGAHu7u7bMbdt5s3efj4xZDZ3Ge2NBEmkSk42
-         7jKe4zPFLIePK6BuE6qcDbvjiKyCowu5a6/4qJAkpA7F1BDqJwsAk1AjdOEfFgLBEUZs
-         kGs4eFo1LCEZ7jq56g0sXHqoX0Q8IFmsuZBCB6AyfPxgAUSv/QkLYSz9ggwTnnOp7RKo
-         U7a0nTwGvA7/767y8+aLuFBC907UeDPI0bufrnJp3g3NGArmOK7Rlxz7lW3iuIc5140S
-         10KZ/4Shj6HACH7Pvecaj2BYz3L8hNjtucsqVvaUeJbm8VZsTkFQ/zj6HuI54VcmLG6b
-         rwFQ==
-X-Gm-Message-State: APjAAAVbPAuX7t+905d0whRyHgupUfS2Xc8NSvvj4nLUwPU/dt4Oj0Gg
-        zHZtIK6XBKOgzhvp8MsQ7QgirV+OlCz9sOjW/6+8OQ==
-X-Google-Smtp-Source: APXvYqz7k6CPy+IQHrODHc6nnFCPtvXkIF9aMkK4LlE5z8uwq98J+HZFQPuQhZFEPsFDPCIgfem690EfOnrfjI//yH4=
-X-Received: by 2002:a05:6000:104f:: with SMTP id c15mr19997152wrx.225.1566125593062;
- Sun, 18 Aug 2019 03:53:13 -0700 (PDT)
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=JoziMIOxgfc46gepkQ5RoQyq+43sZ90qJzKjRqeCIUI=;
+        b=fRD2CM60Y2M73MI3zpLHJr3EKthrBZB/VIkr/VpP3cOXBYTtmURPIyUHVTkIHVO9fS
+         /vAhe6WZFmPaEYQ0Tj5fskjYoL1mqzrPDcHZK/kRExLRu84ef2vBwWFWY7vtZbk/+ijY
+         0mzqxkZA0MDCIiHq17WMiw+Ntg7/7dMo6/AF5y2PH3JwmL7B6uVJgIgxy6DIW57ZS+pn
+         WmYF6WZDcV/fHTlRd/U75gVhBruwJSsWoDVHUeDKUT7u2ojC3VdmziuXtkKoE3fD3GKV
+         ySuJWgopnN8grQTevFDMj1dq3g4zvF8wd618c72qCmWcuH5ivl7K+KM5RrkZqyTsRmY5
+         mM1A==
+X-Gm-Message-State: APjAAAVFBdJ3hKw7iREPTLqsEyhguvNIeCUFWbfnpGMUCIv1JxPDCXkA
+        r90NnbM1OEhSW8c/a+Ch2PA=
+X-Google-Smtp-Source: APXvYqxCiQ+rrh7/hesVSdNU25+8/o2nPdIZIt2TcYQr2uvHT/37ROpOGyEzn/6iB5A39XAy8aAtfg==
+X-Received: by 2002:a0c:c96a:: with SMTP id v39mr7413650qvj.121.1566125732228;
+        Sun, 18 Aug 2019 03:55:32 -0700 (PDT)
+Received: from chirva-void (pool-68-133-6-220.bflony.fios.verizon.net. [68.133.6.220])
+        by smtp.gmail.com with ESMTPSA id d22sm5403671qto.45.2019.08.18.03.55.31
+        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
+        Sun, 18 Aug 2019 03:55:31 -0700 (PDT)
+Date:   Sun, 18 Aug 2019 06:55:30 -0400
+From:   Stuart Little <achirvasub@gmail.com>
+To:     Chris Clayton <chris2553@googlemail.com>
+Cc:     LKML <linux-kernel@vger.kernel.org>,
+        linux-wireless <linux-wireless@vger.kernel.org>
+Subject: Re: PROBLEM: 5.3.0-rc* causes iwlwifi failure
+Message-ID: <20190818105530.GA1247@chirva-void>
+References: <fd102579-d83d-b86d-e165-8168c74a4bac@googlemail.com>
 MIME-Version: 1.0
-References: <20190818104629.GA27360@amd>
-In-Reply-To: <20190818104629.GA27360@amd>
-From:   Michael Nazzareno Trimarchi <michael@amarulasolutions.com>
-Date:   Sun, 18 Aug 2019 12:53:01 +0200
-Message-ID: <CAOf5uwnUx3mtGGHFGqKB30qcb_AMhMEhHLp2pf-4pUdhi7KP7w@mail.gmail.com>
-Subject: Re: wifi on Motorola Droid 4 in 5.3-rc2
-To:     Pavel Machek <pavel@ucw.cz>
-Cc:     kernel list <linux-kernel@vger.kernel.org>,
-        linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
-        Linux OMAP Mailing List <linux-omap@vger.kernel.org>,
-        Tony Lindgren <tony@atomide.com>,
-        Sebastian Reichel <sre@kernel.org>, nekit1000@gmail.com,
-        mpartap@gmx.net, Merlijn Wajer <merlijn@wizzup.org>,
-        "open list:TI WILINK WIRELES..." <linux-wireless@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <fd102579-d83d-b86d-e165-8168c74a4bac@googlemail.com>
+User-Agent: Mutt/1.12.1 (2019-06-15)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi
+On Sun, Aug 18, 2019 at 09:17:59AM +0100, Chris Clayton wrote:
+> 
+> 
+> On 17/08/2019 22:44, Stuart Little wrote:
+> > After some private coaching from Serge Belyshev on git-revert I can confirm that reverting that commit atop the current tree resolves the issue (the wifi card scans for and finds networks just fine, no dmesg errors reported, etc.).
+> > 
+> 
+> I've reported the "Microcode SW error detected" issue too, but, wrongly, only to LKML. I'll point that thread to this
+> one. I've also been experiencing my network stopping working after suspend resume, but haven't got round to reporting
+> that yet.
+> 
+> What was the git magic that you acquired to revert the patch, please?
+> 
 
-On Sun, Aug 18, 2019 at 12:46 PM Pavel Machek <pavel@ucw.cz> wrote:
->
-> Hi!
->
-> First, I guess I should mention that this is first time I'm attempting
-> to get wifi going on D4.
->
-> I'm getting this:
->
-> user@devuan:~/g/ofono$ sudo ifconfig wlan0 down
-> user@devuan:~/g/ofono$ sudo ifconfig wlan0 up
-> user@devuan:~/g/ofono$ sudo iwlist wlan0 scan
-> wlan0     Interface doesn't support scanning.
->
+$ git revert <offending commit>
 
-Try to use iw command. iwlist use an obsolete interface that you need
-to activate in kernel for back compatibility with old command. Can be
-your problem?
+This will fail as noted, but will place in a revert mode where you can fix the errors.
 
-Michael
+$ git status
 
-> user@devuan:~/g/ofono$ sudo ifconfig wlan0 down
-> user@devuan:~/g/ofono$ sudo iwlist wlan0 scan
-> wlan0     Interface doesn't support scanning.
->
-> user@devuan:~/g/ofono$
->
-> I'm getting this warning during bootup:
->
-> [   13.733703] asoc-audio-graph-card soundcard: No GPIO consumer pa
-> found
-> [   14.279724] wlcore: WARNING Detected unconfigured mac address in
-> nvs, derive from fuse instead.
-> [   14.293273] wlcore: WARNING Your device performance is not
-> optimized.
-> [   14.304443] wlcore: WARNING Please use the calibrator tool to
-> configure your device.
-> [   14.317474] wlcore: loaded
-> [   16.977325] motmdm serial0-0: motmdm_dlci_send_command: AT+VERSION=
-> got MASERATIBP_N_05.25.00R,026.0R,XSAMASR01VRZNA026.0R,???
->
-> Any ideas?
->
-> Best regards,
->                                                                         Pavel
->
-> --
-> (english) http://www.livejournal.com/~pavelmachek
-> (cesky, pictures) http://atrey.karlin.mff.cuni.cz/~pavel/picture/horses/blog.html
+will show (it did in my case, for the latest Linux tree at the time I did this) a modified file
 
+drivers/net/wireless/intel/iwlwifi/mvm/fw.c
 
+to be committed without issue and a conflicted file
 
--- 
-| Michael Nazzareno Trimarchi                     Amarula Solutions BV |
-| COO  -  Founder                                      Cruquiuskade 47 |
-| +31(0)851119172                                 Amsterdam 1018 AM NL |
-|                  [`as] http://www.amarulasolutions.com               |
+drivers/net/wireless/intel/iwlwifi/mvm/nvm.c
+
+whose conflicts you have to first resolve.
+
+I then opened that conflicted file in a text editor and simply removed everything between the lines
+
+<<<<<<< HEAD
+
+and 
+
+>>>>>>> parent of 4fd445a2c855... iwlwifi: mvm: Add log information about SAR status
+
+(inclusive). This resolved the conflict, whereupon
+
+$ git revert --continue
+
+and
+
+$ git commit -a
+
+will finish the reversion. 
+
+> > On Sat, Aug 17, 2019 at 11:59:59AM +0300, Serge Belyshev wrote:
+> >>
+> >>> I am on an Intel(R) Core(TM) i7-7500U CPU @ 2.70GHz running Linux
+> >>> x86_64 (Slackware), with a custom-compiled 5.3.0-rc4 (.config
+> >>> attached).
+> >>>
+> >>> I am using the Intel wifi adapter on this machine:
+> >>>
+> >>> 02:00.0 Network controller: Intel Corporation Device 24fb (rev 10)
+> >>>
+> >>> with the iwlwifi driver. I am attaching the output to 'lspci -vv -s
+> >>> 02:00.0' as the file device-info.
+> >>>
+> >>> All 5.3.0-rc* versions I have tried (including rc4) cause multiple
+> >>> dmesg iwlwifi-related errors (dmesg attached). Examples:
+> >>>
+> >>> iwlwifi 0000:02:00.0: Failed to get geographic profile info -5
+> >>> iwlwifi 0000:02:00.0: Microcode SW error detected.  Restarting 0x82000000
+> >>> iwlwifi 0000:02:00.0: 0x00000038 | BAD_COMMAND
+> >>>
+> >>
+> >> I have my logs filled with similar garbage throughout 5.3-rc*. Also
+> >> since 5.3-rcsomething not only it WARNS in dmesg about firmware failure,
+> >> but completely stops working after suspend/resume cycle.
+> >>
+> >> It looks like that:
+> >>
+> >> commit 4fd445a2c855bbcab81fbe06d110e78dbd974a5b
+> >> Author: Haim Dreyfuss <haim.dreyfuss@intel.com>
+> >> Date:   Thu May 2 11:45:02 2019 +0300
+> >>
+> >>     iwlwifi: mvm: Add log information about SAR status
+> >>     
+> >>     Inform users when SAR status is changing.
+> >>     
+> >>     Signed-off-by: Haim Dreyfuss <haim.dreyfuss@intel.com>
+> >>     Signed-off-by: Luca Coelho <luciano.coelho@intel.com>
+> >>
+> >>
+> >> is the culprit. (manually) reverting it on top of 5.3-rc4 makes
+> >> everything work again.
+> > 
