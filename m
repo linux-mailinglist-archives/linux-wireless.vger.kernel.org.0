@@ -2,27 +2,27 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id BD2409174C
-	for <lists+linux-wireless@lfdr.de>; Sun, 18 Aug 2019 16:15:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C15F49174D
+	for <lists+linux-wireless@lfdr.de>; Sun, 18 Aug 2019 16:15:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726523AbfHROPj (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 18 Aug 2019 10:15:39 -0400
-Received: from alexa-out-ams-01.qualcomm.com ([185.23.61.162]:44201 "EHLO
+        id S1726747AbfHROPk (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 18 Aug 2019 10:15:40 -0400
+Received: from alexa-out-ams-01.qualcomm.com ([185.23.61.162]:44203 "EHLO
         alexa-out-ams-01.qualcomm.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1725786AbfHROPj (ORCPT
+        by vger.kernel.org with ESMTP id S1726261AbfHROPj (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
         Sun, 18 Aug 2019 10:15:39 -0400
 Received: from ironmsg02-ams.qualcomm.com ([10.251.56.3])
   by alexa-out-ams-01.qualcomm.com with ESMTP; 18 Aug 2019 16:15:32 +0200
 Received: from unknown (HELO wigig-1329.mea.qualcomm.com) ([10.4.89.235])
-  by ironmsg02-ams.qualcomm.com with ESMTP; 18 Aug 2019 16:15:28 +0200
+  by ironmsg02-ams.qualcomm.com with ESMTP; 18 Aug 2019 16:15:30 +0200
 From:   Alexei Avshalom Lazar <ailizaro@codeaurora.org>
 To:     Johannes Berg <johannes@sipsolutions.net>
 Cc:     Alexei Avshalom Lazar <ailizaro@codeaurora.org>,
         linux-wireless@vger.kernel.org, wil6210@qti.qualcomm.com
-Subject: [PATCH v7 1/2] wil6210: Add EDMG channel support
-Date:   Sun, 18 Aug 2019 17:15:18 +0300
-Message-Id: <1566137719-3544-2-git-send-email-ailizaro@codeaurora.org>
+Subject: [PATCH v7 2/2] nl support for dmtool
+Date:   Sun, 18 Aug 2019 17:15:19 +0300
+Message-Id: <1566137719-3544-3-git-send-email-ailizaro@codeaurora.org>
 X-Mailer: git-send-email 2.7.4
 In-Reply-To: <1566137719-3544-1-git-send-email-ailizaro@codeaurora.org>
 References: <1566137719-3544-1-git-send-email-ailizaro@codeaurora.org>
@@ -31,511 +31,420 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Add support for Enhanced Directional Multi-Gigabit (EDMG) channels 9-11.
-wil6210 reports it's EDMG capabilities (that are also based on FW
-capability) to cfg80211 by filling
-wiphy->bands[NL80211_BAND_60GHZ]->edmg_cap.
-wil6210 handles edmg.channels and edmg.bw_config requested in connect
-and start_ap operations.
-
 Signed-off-by: Alexei Avshalom Lazar <ailizaro@codeaurora.org>
 ---
- drivers/net/wireless/ath/wil6210/cfg80211.c  | 206 +++++++++++++++++++++++++--
- drivers/net/wireless/ath/wil6210/txrx_edma.c |   2 +
- drivers/net/wireless/ath/wil6210/txrx_edma.h |   6 +
- drivers/net/wireless/ath/wil6210/wil6210.h   |   8 +-
- drivers/net/wireless/ath/wil6210/wmi.c       |   5 +-
- drivers/net/wireless/ath/wil6210/wmi.h       |  26 +++-
- 6 files changed, 240 insertions(+), 13 deletions(-)
+ drivers/net/wireless/ath/wil6210/Kconfig   |  11 ++
+ drivers/net/wireless/ath/wil6210/Makefile  |   1 +
+ drivers/net/wireless/ath/wil6210/ioctl.c   | 245 +++++++++++++++++++++++++++++
+ drivers/net/wireless/ath/wil6210/netdev.c  |   8 +
+ drivers/net/wireless/ath/wil6210/wil6210.h |   1 +
+ include/uapi/linux/wil6210_uapi.h          |  77 +++++++++
+ 6 files changed, 343 insertions(+)
+ create mode 100644 drivers/net/wireless/ath/wil6210/ioctl.c
+ create mode 100644 include/uapi/linux/wil6210_uapi.h
 
-diff --git a/drivers/net/wireless/ath/wil6210/cfg80211.c b/drivers/net/wireless/ath/wil6210/cfg80211.c
-index 2414f57..1883690 100644
---- a/drivers/net/wireless/ath/wil6210/cfg80211.c
-+++ b/drivers/net/wireless/ath/wil6210/cfg80211.c
-@@ -25,6 +25,22 @@
+diff --git a/drivers/net/wireless/ath/wil6210/Kconfig b/drivers/net/wireless/ath/wil6210/Kconfig
+index 0d1a8da..48b14de 100644
+--- a/drivers/net/wireless/ath/wil6210/Kconfig
++++ b/drivers/net/wireless/ath/wil6210/Kconfig
+@@ -53,3 +53,14 @@ config WIL6210_DEBUGFS
+ 	  option if you are interested in debugging the driver.
  
- #define WIL_MAX_ROC_DURATION_MS 5000
- 
-+#define WIL_EDMG_CHANNEL_9_SUBCHANNELS	(BIT(0) | BIT(1))
-+#define WIL_EDMG_CHANNEL_10_SUBCHANNELS	(BIT(1) | BIT(2))
-+#define WIL_EDMG_CHANNEL_11_SUBCHANNELS	(BIT(2) | BIT(3))
+ 	  If unsure, say Y to make it easier to debug problems.
 +
-+/* WIL_EDMG_BW_CONFIGURATION define the allowed channel bandwidth
-+ * configurations as defined by IEEE 802.11 section 9.4.2.251, Table 13.
-+ * The value 5 allowing CB1 and CB2 of adjacent channels.
++config WIL6210_WRITE_IOCTL
++	bool "wil6210 write ioctl to the device"
++	depends on WIL6210
++	default y
++	help
++	  Say Y here to allow write-access from user-space to
++	  the device memory through ioctl. This is useful for
++	  debugging purposes only.
++
++	  If unsure, say N.
+diff --git a/drivers/net/wireless/ath/wil6210/Makefile b/drivers/net/wireless/ath/wil6210/Makefile
+index 53a0d995..83a9696 100644
+--- a/drivers/net/wireless/ath/wil6210/Makefile
++++ b/drivers/net/wireless/ath/wil6210/Makefile
+@@ -12,6 +12,7 @@ wil6210-y += txrx.o
+ wil6210-y += txrx_edma.o
+ wil6210-y += debug.o
+ wil6210-y += rx_reorder.o
++wil6210-y += ioctl.o
+ wil6210-y += fw.o
+ wil6210-y += pm.o
+ wil6210-y += pmc.o
+diff --git a/drivers/net/wireless/ath/wil6210/ioctl.c b/drivers/net/wireless/ath/wil6210/ioctl.c
+new file mode 100644
+index 0000000..a3af6f5
+--- /dev/null
++++ b/drivers/net/wireless/ath/wil6210/ioctl.c
+@@ -0,0 +1,245 @@
++// SPDX-License-Identifier: ISC
++/* Copyright (c) 2014,2017 Qualcomm Atheros, Inc.
++ * Copyright (c) 2018-2019, The Linux Foundation. All rights reserved.
 + */
-+#define WIL_EDMG_BW_CONFIGURATION 5
 +
-+/* WIL_EDMG_CHANNELS is a bitmap that indicates the 2.16 GHz channel(s) that
-+ * are allowed to be used for EDMG transmissions in the BSS as defined by
-+ * IEEE 802.11 section 9.4.2.251.
-+ */
-+#define WIL_EDMG_CHANNELS (BIT(0) | BIT(1) | BIT(2) | BIT(3))
++#include <linux/uaccess.h>
 +
- bool disable_ap_sme;
- module_param(disable_ap_sme, bool, 0444);
- MODULE_PARM_DESC(disable_ap_sme, " let user space handle AP mode SME");
-@@ -51,6 +67,39 @@ static struct ieee80211_channel wil_60ghz_channels[] = {
- 	CHAN60G(4, 0),
- };
- 
-+/* Rx channel bonding mode */
-+enum wil_rx_cb_mode {
-+	WIL_RX_CB_MODE_DMG,
-+	WIL_RX_CB_MODE_EDMG,
-+	WIL_RX_CB_MODE_WIDE,
++#include "wil6210.h"
++#include <uapi/linux/wil6210_uapi.h>
++
++#define wil_hex_dump_ioctl(prefix_str, buf, len) \
++	print_hex_dump_debug("DBG[IOC ]" prefix_str, \
++			     DUMP_PREFIX_OFFSET, 16, 1, buf, len, true)
++#define wil_dbg_ioctl(wil, fmt, arg...) wil_dbg(wil, "DBG[IOC ]" fmt, ##arg)
++
++#define WIL_PRIV_DATA_MAX_LEN	8192
++#define CMD_SET_AP_WPS_P2P_IE	"SET_AP_WPS_P2P_IE"
++/* max memory block for read/write in bytes. BAR size + spare */
++#define WIL_MAX_MEM_BLOCK_SIZE	(8 * 1024 * 1024)
++
++struct wil_android_priv_data {
++	char *buf;
++	int used_len;
++	int total_len;
 +};
 +
-+static int wil_rx_cb_mode_to_n_bonded(u8 cb_mode)
++static void __iomem *wil_ioc_addr(struct wil6210_priv *wil, u32 addr,
++				  u32 size, enum wil_memio_op op)
 +{
-+	switch (cb_mode) {
-+	case WIL_RX_CB_MODE_DMG:
-+	case WIL_RX_CB_MODE_EDMG:
-+		return 1;
-+	case WIL_RX_CB_MODE_WIDE:
-+		return 2;
++	void __iomem *a;
++	u32 off;
++
++	switch (op & wil_mmio_addr_mask) {
++	case wil_mmio_addr_linker:
++		a = wmi_buffer(wil, cpu_to_le32(addr));
++		break;
++	case wil_mmio_addr_ahb:
++		a = wmi_addr(wil, addr);
++		break;
++	case wil_mmio_addr_bar:
++		a = wmi_addr(wil, addr + WIL6210_FW_HOST_OFF);
++		break;
 +	default:
-+		return 1;
++		wil_err(wil, "Unsupported address mode, op = 0x%08x\n", op);
++		return NULL;
 +	}
++
++	off = a - wil->csr;
++	if (size >= wil->bar_size - off) {
++		wil_err(wil,
++			"Invalid requested block: off(0x%08x) size(0x%08x)\n",
++			off, size);
++		return NULL;
++	}
++
++	return a;
 +}
 +
-+static int wil_tx_cb_mode_to_n_bonded(u8 cb_mode)
++static int wil_ioc_memio_dword(struct wil6210_priv *wil, void __user *data)
 +{
-+	switch (cb_mode) {
-+	case WMI_TX_MODE_DMG:
-+	case WMI_TX_MODE_EDMG_CB1:
-+		return 1;
-+	case WMI_TX_MODE_EDMG_CB2:
-+		return 2;
-+	default:
-+		return 1;
-+	}
-+}
++	struct wil_memio io;
++	void __iomem *a;
++	bool need_copy = false;
 +
- static void
- wil_memdup_ie(u8 **pdst, size_t *pdst_len, const u8 *src, size_t src_len)
- {
-@@ -82,6 +131,13 @@ void update_supported_bands(struct wil6210_priv *wil)
- 
- 	wiphy->bands[NL80211_BAND_60GHZ]->n_channels =
- 						wil_num_supported_channels(wil);
++	if (copy_from_user(&io, data, sizeof(io)))
++		return -EFAULT;
 +
-+	if (test_bit(WMI_FW_CAPABILITY_CHANNEL_BONDING, wil->fw_capabilities)) {
-+		wiphy->bands[NL80211_BAND_60GHZ]->edmg_cap.channels =
-+							WIL_EDMG_CHANNELS;
-+		wiphy->bands[NL80211_BAND_60GHZ]->edmg_cap.bw_config =
-+						      WIL_EDMG_BW_CONFIGURATION;
-+	}
- }
- 
- /* Vendor id to be used in vendor specific command and events
-@@ -300,6 +356,86 @@ int wil_iftype_nl2wmi(enum nl80211_iftype type)
- 	return -EOPNOTSUPP;
- }
- 
-+int wil_spec2wmi_ch(u8 spec_ch, u8 *wmi_ch)
-+{
-+	switch (spec_ch) {
-+	case 1:
-+		*wmi_ch = WMI_CHANNEL_1;
-+		break;
-+	case 2:
-+		*wmi_ch = WMI_CHANNEL_2;
-+		break;
-+	case 3:
-+		*wmi_ch = WMI_CHANNEL_3;
-+		break;
-+	case 4:
-+		*wmi_ch = WMI_CHANNEL_4;
-+		break;
-+	case 5:
-+		*wmi_ch = WMI_CHANNEL_5;
-+		break;
-+	case 6:
-+		*wmi_ch = WMI_CHANNEL_6;
-+		break;
-+	case 9:
-+		*wmi_ch = WMI_CHANNEL_9;
-+		break;
-+	case 10:
-+		*wmi_ch = WMI_CHANNEL_10;
-+		break;
-+	case 11:
-+		*wmi_ch = WMI_CHANNEL_11;
-+		break;
-+	case 12:
-+		*wmi_ch = WMI_CHANNEL_12;
-+		break;
-+	default:
++	wil_dbg_ioctl(wil, "IO: addr = 0x%08x val = 0x%08x op = 0x%08x\n",
++		      io.addr, io.val, io.op);
++
++	a = wil_ioc_addr(wil, io.addr, sizeof(u32), io.op);
++	if (!a) {
++		wil_err(wil, "invalid address 0x%08x, op = 0x%08x\n", io.addr,
++			io.op);
 +		return -EINVAL;
++	}
++	/* operation */
++	switch (io.op & wil_mmio_op_mask) {
++	case wil_mmio_read:
++		io.val = readl_relaxed(a);
++		need_copy = true;
++		break;
++#if defined(CONFIG_WIL6210_WRITE_IOCTL)
++	case wil_mmio_write:
++		writel_relaxed(io.val, a);
++		wmb(); /* make sure write propagated to HW */
++		break;
++#endif
++	default:
++		wil_err(wil, "Unsupported operation, op = 0x%08x\n", io.op);
++		return -EINVAL;
++	}
++
++	if (need_copy) {
++		wil_dbg_ioctl(wil,
++			      "IO done: addr(0x%08x) val(0x%08x) op(0x%08x)\n",
++			      io.addr, io.val, io.op);
++		if (copy_to_user(data, &io, sizeof(io)))
++			return -EFAULT;
 +	}
 +
 +	return 0;
 +}
 +
-+int wil_wmi2spec_ch(u8 wmi_ch, u8 *spec_ch)
++static int wil_ioc_memio_block(struct wil6210_priv *wil, void __user *data)
 +{
-+	switch (wmi_ch) {
-+	case WMI_CHANNEL_1:
-+		*spec_ch = 1;
-+		break;
-+	case WMI_CHANNEL_2:
-+		*spec_ch = 2;
-+		break;
-+	case WMI_CHANNEL_3:
-+		*spec_ch = 3;
-+		break;
-+	case WMI_CHANNEL_4:
-+		*spec_ch = 4;
-+		break;
-+	case WMI_CHANNEL_5:
-+		*spec_ch = 5;
-+		break;
-+	case WMI_CHANNEL_6:
-+		*spec_ch = 6;
-+		break;
-+	case WMI_CHANNEL_9:
-+		*spec_ch = 9;
-+		break;
-+	case WMI_CHANNEL_10:
-+		*spec_ch = 10;
-+		break;
-+	case WMI_CHANNEL_11:
-+		*spec_ch = 11;
-+		break;
-+	case WMI_CHANNEL_12:
-+		*spec_ch = 12;
-+		break;
-+	default:
++	struct wil_memio_block io;
++	void *block;
++	void __iomem *a;
++	int rc = 0;
++
++	if (copy_from_user(&io, data, sizeof(io)))
++		return -EFAULT;
++
++	wil_dbg_ioctl(wil, "IO: addr = 0x%08x size = 0x%08x op = 0x%08x\n",
++		      io.addr, io.size, io.op);
++
++	/* size */
++	if (io.size > WIL_MAX_MEM_BLOCK_SIZE) {
++		wil_err(wil, "size is too large:  0x%08x\n", io.size);
++		return -EINVAL;
++	}
++	if (io.size % 4) {
++		wil_err(wil, "size is not multiple of 4:  0x%08x\n", io.size);
 +		return -EINVAL;
 +	}
 +
-+	return 0;
-+}
++	a = wil_ioc_addr(wil, io.addr, io.size, io.op);
++	if (!a) {
++		wil_err(wil, "invalid address 0x%08x, op = 0x%08x\n", io.addr,
++			io.op);
++		return -EINVAL;
++	}
 +
- int wil_cid_fill_sinfo(struct wil6210_vif *vif, int cid,
- 		       struct station_info *sinfo)
- {
-@@ -314,6 +450,7 @@ int wil_cid_fill_sinfo(struct wil6210_vif *vif, int cid,
- 	} __packed reply;
- 	struct wil_net_stats *stats = &wil->sta[cid].stats;
- 	int rc;
-+	u8 txflag = RATE_INFO_FLAGS_DMG;
- 
- 	memset(&reply, 0, sizeof(reply));
- 
-@@ -327,7 +464,8 @@ int wil_cid_fill_sinfo(struct wil6210_vif *vif, int cid,
- 		    "  MCS %d TSF 0x%016llx\n"
- 		    "  BF status 0x%08x RSSI %d SQI %d%%\n"
- 		    "  Tx Tpt %d goodput %d Rx goodput %d\n"
--		    "  Sectors(rx:tx) my %d:%d peer %d:%d\n""}\n",
-+		    "  Sectors(rx:tx) my %d:%d peer %d:%d\n"
-+		    "  Tx mode %d}\n",
- 		    cid, vif->mid, le16_to_cpu(reply.evt.bf_mcs),
- 		    le64_to_cpu(reply.evt.tsf), reply.evt.status,
- 		    reply.evt.rssi,
-@@ -338,7 +476,8 @@ int wil_cid_fill_sinfo(struct wil6210_vif *vif, int cid,
- 		    le16_to_cpu(reply.evt.my_rx_sector),
- 		    le16_to_cpu(reply.evt.my_tx_sector),
- 		    le16_to_cpu(reply.evt.other_rx_sector),
--		    le16_to_cpu(reply.evt.other_tx_sector));
-+		    le16_to_cpu(reply.evt.other_tx_sector),
-+		    reply.evt.tx_mode);
- 
- 	sinfo->generation = wil->sinfo_gen;
- 
-@@ -351,9 +490,16 @@ int wil_cid_fill_sinfo(struct wil6210_vif *vif, int cid,
- 			BIT_ULL(NL80211_STA_INFO_RX_DROP_MISC) |
- 			BIT_ULL(NL80211_STA_INFO_TX_FAILED);
- 
--	sinfo->txrate.flags = RATE_INFO_FLAGS_DMG;
-+	if (wil->use_enhanced_dma_hw && reply.evt.tx_mode != WMI_TX_MODE_DMG)
-+		txflag = RATE_INFO_FLAGS_EDMG;
++	block = kmalloc(io.size, GFP_USER);
++	if (!block)
++		return -ENOMEM;
 +
-+	sinfo->txrate.flags = txflag;
- 	sinfo->txrate.mcs = le16_to_cpu(reply.evt.bf_mcs);
- 	sinfo->rxrate.mcs = stats->last_mcs_rx;
-+	sinfo->txrate.n_bonded_ch =
-+				  wil_tx_cb_mode_to_n_bonded(reply.evt.tx_mode);
-+	sinfo->rxrate.n_bonded_ch =
-+			     wil_rx_cb_mode_to_n_bonded(stats->last_cb_mode_rx);
- 	sinfo->rx_bytes = stats->rx_bytes;
- 	sinfo->rx_packets = stats->rx_packets;
- 	sinfo->rx_dropped_misc = stats->rx_dropped;
-@@ -1022,6 +1168,33 @@ static int wil_ft_connect(struct wiphy *wiphy,
- 	return rc;
- }
- 
-+static int wil_get_wmi_edmg_channel(struct wil6210_priv *wil, u8 edmg_bw_config,
-+				    u8 edmg_channels, u8 *wmi_ch)
-+{
-+	if (!edmg_bw_config) {
-+		*wmi_ch = 0;
-+		return 0;
-+	} else if (edmg_bw_config == WIL_EDMG_BW_CONFIGURATION) {
-+		/* convert from edmg channel bitmap into edmg channel number */
-+		switch (edmg_channels) {
-+		case WIL_EDMG_CHANNEL_9_SUBCHANNELS:
-+			return wil_spec2wmi_ch(9, wmi_ch);
-+		case WIL_EDMG_CHANNEL_10_SUBCHANNELS:
-+			return wil_spec2wmi_ch(10, wmi_ch);
-+		case WIL_EDMG_CHANNEL_11_SUBCHANNELS:
-+			return wil_spec2wmi_ch(11, wmi_ch);
-+		default:
-+			wil_err(wil, "Unsupported edmg channel bitmap 0x%x\n",
-+				edmg_channels);
-+			return -EINVAL;
++	/* operation */
++	switch (io.op & wil_mmio_op_mask) {
++	case wil_mmio_read:
++		wil_memcpy_fromio_32(block, a, io.size);
++		wil_hex_dump_ioctl("Read  ", block, io.size);
++		if (copy_to_user(io.block, block, io.size)) {
++			rc = -EFAULT;
++			goto out_free;
 +		}
-+	} else {
-+		wil_err(wil, "Unsupported EDMG BW configuration %d\n",
-+			edmg_bw_config);
++		break;
++#if defined(CONFIG_WIL6210_WRITE_IOCTL)
++	case wil_mmio_write:
++		if (copy_from_user(block, io.block, io.size)) {
++			rc = -EFAULT;
++			goto out_free;
++		}
++		wil_memcpy_toio_32(a, block, io.size);
++		wmb(); /* make sure write propagated to HW */
++		wil_hex_dump_ioctl("Write ", block, io.size);
++		break;
++#endif
++	default:
++		wil_err(wil, "Unsupported operation, op = 0x%08x\n", io.op);
++		rc = -EINVAL;
++		break;
++	}
++
++out_free:
++	kfree(block);
++	return rc;
++}
++
++static int wil_ioc_android(struct wil6210_priv *wil, void __user *data)
++{
++	int rc = 0;
++	char *command;
++	struct wil_android_priv_data priv_data;
++
++	wil_dbg_ioctl(wil, "ioc_android\n");
++
++	if (copy_from_user(&priv_data, data, sizeof(priv_data)))
++		return -EFAULT;
++
++	if (priv_data.total_len <= 0 ||
++	    priv_data.total_len >= WIL_PRIV_DATA_MAX_LEN) {
++		wil_err(wil, "invalid data len %d\n", priv_data.total_len);
 +		return -EINVAL;
 +	}
++
++	command = kmalloc(priv_data.total_len + 1, GFP_KERNEL);
++	if (!command)
++		return -ENOMEM;
++
++	if (copy_from_user(command, priv_data.buf, priv_data.total_len)) {
++		rc = -EFAULT;
++		goto out_free;
++	}
++
++	/* Make sure the command is NUL-terminated */
++	command[priv_data.total_len] = '\0';
++
++	wil_dbg_ioctl(wil, "ioc_android: command = %s\n", command);
++
++	/* P2P not supported, but WPS is (in AP mode).
++	 * Ignore those in order not to block WPS functionality
++	 * in non-P2P mode.
++	 */
++	if (strncasecmp(command, CMD_SET_AP_WPS_P2P_IE,
++			strlen(CMD_SET_AP_WPS_P2P_IE)) == 0)
++		rc = 0;
++	else
++		rc = -ENOIOCTLCMD;
++
++out_free:
++	kfree(command);
++	return rc;
 +}
 +
- static int wil_cfg80211_connect(struct wiphy *wiphy,
- 				struct net_device *ndev,
- 				struct cfg80211_connect_params *sme)
-@@ -1167,6 +1340,11 @@ static int wil_cfg80211_connect(struct wiphy *wiphy,
- 	memcpy(conn.ssid, ssid_eid+2, conn.ssid_len);
- 	conn.channel = ch - 1;
- 
-+	rc = wil_get_wmi_edmg_channel(wil, sme->edmg.bw_config,
-+				      sme->edmg.channels, &conn.edmg_channel);
-+	if (rc < 0)
-+		return rc;
++int wil_ioctl(struct wil6210_priv *wil, void __user *data, int cmd)
++{
++	int ret;
 +
- 	ether_addr_copy(conn.bssid, bss->bssid);
- 	ether_addr_copy(conn.dst_mac, bss->bssid);
- 
-@@ -1728,7 +1906,7 @@ static int _wil_cfg80211_set_ies(struct wil6210_vif *vif,
- static int _wil_cfg80211_start_ap(struct wiphy *wiphy,
- 				  struct net_device *ndev,
- 				  const u8 *ssid, size_t ssid_len, u32 privacy,
--				  int bi, u8 chan,
-+				  int bi, u8 chan, u8 wmi_edmg_channel,
- 				  struct cfg80211_beacon_data *bcon,
- 				  u8 hidden_ssid, u32 pbss)
- {
-@@ -1791,6 +1969,7 @@ static int _wil_cfg80211_start_ap(struct wiphy *wiphy,
- 
- 	vif->privacy = privacy;
- 	vif->channel = chan;
-+	vif->wmi_edmg_channel = wmi_edmg_channel;
- 	vif->hidden_ssid = hidden_ssid;
- 	vif->pbss = pbss;
- 	vif->bi = bi;
-@@ -1801,7 +1980,8 @@ static int _wil_cfg80211_start_ap(struct wiphy *wiphy,
- 	if (!wil_has_other_active_ifaces(wil, ndev, false, true))
- 		wil6210_bus_request(wil, WIL_MAX_BUS_REQUEST_KBPS);
- 
--	rc = wmi_pcp_start(vif, bi, wmi_nettype, chan, hidden_ssid, is_go);
-+	rc = wmi_pcp_start(vif, bi, wmi_nettype, chan, wmi_edmg_channel,
-+			   hidden_ssid, is_go);
- 	if (rc)
- 		goto err_pcp_start;
- 
-@@ -1853,7 +2033,8 @@ void wil_cfg80211_ap_recovery(struct wil6210_priv *wil)
- 		rc = _wil_cfg80211_start_ap(wiphy, ndev,
- 					    vif->ssid, vif->ssid_len,
- 					    vif->privacy, vif->bi,
--					    vif->channel, &bcon,
-+					    vif->channel,
-+					    vif->wmi_edmg_channel, &bcon,
- 					    vif->hidden_ssid, vif->pbss);
- 		if (rc) {
- 			wil_err(wil, "vif %d recovery failed (%d)\n", i, rc);
-@@ -1903,7 +2084,8 @@ static int wil_cfg80211_change_beacon(struct wiphy *wiphy,
- 		rc = _wil_cfg80211_start_ap(wiphy, ndev, vif->ssid,
- 					    vif->ssid_len, privacy,
- 					    wdev->beacon_interval,
--					    vif->channel, bcon,
-+					    vif->channel,
-+					    vif->wmi_edmg_channel, bcon,
- 					    vif->hidden_ssid,
- 					    vif->pbss);
- 	} else {
-@@ -1922,10 +2104,17 @@ static int wil_cfg80211_start_ap(struct wiphy *wiphy,
- 	struct ieee80211_channel *channel = info->chandef.chan;
- 	struct cfg80211_beacon_data *bcon = &info->beacon;
- 	struct cfg80211_crypto_settings *crypto = &info->crypto;
-+	u8 wmi_edmg_channel;
- 	u8 hidden_ssid;
- 
- 	wil_dbg_misc(wil, "start_ap\n");
- 
-+	rc = wil_get_wmi_edmg_channel(wil, info->chandef.edmg.bw_config,
-+				      info->chandef.edmg.channels,
-+				      &wmi_edmg_channel);
-+	if (rc < 0)
-+		return rc;
++	ret = wil_pm_runtime_get(wil);
++	if (ret < 0)
++		return ret;
 +
- 	if (!channel) {
- 		wil_err(wil, "AP: No channel???\n");
- 		return -EINVAL;
-@@ -1965,7 +2154,8 @@ static int wil_cfg80211_start_ap(struct wiphy *wiphy,
- 	rc = _wil_cfg80211_start_ap(wiphy, ndev,
- 				    info->ssid, info->ssid_len, info->privacy,
- 				    info->beacon_interval, channel->hw_value,
--				    bcon, hidden_ssid, info->pbss);
-+				    wmi_edmg_channel, bcon, hidden_ssid,
-+				    info->pbss);
- 
++	switch (cmd) {
++	case WIL_IOCTL_MEMIO:
++		ret = wil_ioc_memio_dword(wil, data);
++		break;
++	case WIL_IOCTL_MEMIO_BLOCK:
++		ret = wil_ioc_memio_block(wil, data);
++		break;
++	case (SIOCDEVPRIVATE + 1):
++		ret = wil_ioc_android(wil, data);
++		break;
++	default:
++		wil_dbg_ioctl(wil, "Unsupported IOCTL 0x%04x\n", cmd);
++		wil_pm_runtime_put(wil);
++		return -ENOIOCTLCMD;
++	}
++
++	wil_pm_runtime_put(wil);
++
++	wil_dbg_ioctl(wil, "ioctl(0x%04x) -> %d\n", cmd, ret);
++	return ret;
++}
+diff --git a/drivers/net/wireless/ath/wil6210/netdev.c b/drivers/net/wireless/ath/wil6210/netdev.c
+index 59f041d..bbe5e0a 100644
+--- a/drivers/net/wireless/ath/wil6210/netdev.c
++++ b/drivers/net/wireless/ath/wil6210/netdev.c
+@@ -91,12 +91,20 @@ static int wil_stop(struct net_device *ndev)
  	return rc;
  }
-diff --git a/drivers/net/wireless/ath/wil6210/txrx_edma.c b/drivers/net/wireless/ath/wil6210/txrx_edma.c
-index 71b7ad4..29a9a24 100644
---- a/drivers/net/wireless/ath/wil6210/txrx_edma.c
-+++ b/drivers/net/wireless/ath/wil6210/txrx_edma.c
-@@ -1023,6 +1023,8 @@ static struct sk_buff *wil_sring_reap_rx_edma(struct wil6210_priv *wil,
- 		stats->last_mcs_rx = wil_rx_status_get_mcs(msg);
- 		if (stats->last_mcs_rx < ARRAY_SIZE(stats->rx_per_mcs))
- 			stats->rx_per_mcs[stats->last_mcs_rx]++;
-+
-+		stats->last_cb_mode_rx  = wil_rx_status_get_cb_mode(msg);
- 	}
  
- 	if (!wil->use_rx_hw_reordering && !wil->use_compressed_rx_status &&
-diff --git a/drivers/net/wireless/ath/wil6210/txrx_edma.h b/drivers/net/wireless/ath/wil6210/txrx_edma.h
-index e9e6ea9..724d223 100644
---- a/drivers/net/wireless/ath/wil6210/txrx_edma.h
-+++ b/drivers/net/wireless/ath/wil6210/txrx_edma.h
-@@ -366,6 +366,12 @@ static inline u8 wil_rx_status_get_mcs(void *msg)
- 			    16, 21);
- }
- 
-+static inline u8 wil_rx_status_get_cb_mode(void *msg)
++static int wil_do_ioctl(struct net_device *ndev, struct ifreq *ifr, int cmd)
 +{
-+	return WIL_GET_BITS(((struct wil_rx_status_compressed *)msg)->d1,
-+			    22, 23);
++	struct wil6210_priv *wil = ndev_to_wil(ndev);
++
++	return wil_ioctl(wil, ifr->ifr_data, cmd);
 +}
 +
- static inline u16 wil_rx_status_get_flow_id(void *msg)
- {
- 	return WIL_GET_BITS(((struct wil_rx_status_compressed *)msg)->d0,
+ static const struct net_device_ops wil_netdev_ops = {
+ 	.ndo_open		= wil_open,
+ 	.ndo_stop		= wil_stop,
+ 	.ndo_start_xmit		= wil_start_xmit,
+ 	.ndo_set_mac_address	= eth_mac_addr,
+ 	.ndo_validate_addr	= eth_validate_addr,
++	.ndo_do_ioctl		= wil_do_ioctl,
+ };
+ 
+ static int wil6210_netdev_poll_rx(struct napi_struct *napi, int budget)
 diff --git a/drivers/net/wireless/ath/wil6210/wil6210.h b/drivers/net/wireless/ath/wil6210/wil6210.h
-index 6f456b3..d8c78a0 100644
+index d8c78a0..f200171 100644
 --- a/drivers/net/wireless/ath/wil6210/wil6210.h
 +++ b/drivers/net/wireless/ath/wil6210/wil6210.h
-@@ -590,6 +590,7 @@ struct wil_net_stats {
- 	unsigned long	rx_amsdu_error; /* eDMA specific */
- 	unsigned long	rx_csum_err;
- 	u16 last_mcs_rx;
-+	u8 last_cb_mode_rx;
- 	u64 rx_per_mcs[WIL_MCS_MAX + 1];
- 	u32 ft_roams; /* relevant in STA mode */
- };
-@@ -850,6 +851,7 @@ struct wil6210_vif {
- 	DECLARE_BITMAP(status, wil_vif_status_last);
- 	u32 privacy; /* secure connection? */
- 	u16 channel; /* relevant in AP mode */
-+	u8 wmi_edmg_channel; /* relevant in AP mode */
- 	u8 hidden_ssid; /* relevant in AP mode */
- 	u32 ap_isolate; /* no intra-BSS communication */
- 	bool pbss;
-@@ -1335,7 +1337,7 @@ void wil_p2p_wdev_free(struct wil6210_priv *wil);
+@@ -1380,6 +1380,7 @@ void wil_set_crypto_rx(u8 key_index, enum wmi_key_usage key_usage,
  
- int wmi_set_mac_address(struct wil6210_priv *wil, void *addr);
- int wmi_pcp_start(struct wil6210_vif *vif, int bi, u8 wmi_nettype, u8 chan,
--		  u8 hidden_ssid, u8 is_go);
-+		  u8 edmg_chan, u8 hidden_ssid, u8 is_go);
- int wmi_pcp_stop(struct wil6210_vif *vif);
- int wmi_led_cfg(struct wil6210_priv *wil, bool enable);
- int wmi_abort_scan(struct wil6210_vif *vif);
-@@ -1412,6 +1414,10 @@ int wmi_mgmt_tx_ext(struct wil6210_vif *vif, const u8 *buf, size_t len,
- 		    u8 channel, u16 duration_ms);
- int wmi_rbufcap_cfg(struct wil6210_priv *wil, bool enable, u16 threshold);
+ int wil_iftype_nl2wmi(enum nl80211_iftype type);
  
-+int wil_wmi2spec_ch(u8 wmi_ch, u8 *spec_ch);
-+int wil_spec2wmi_ch(u8 spec_ch, u8 *wmi_ch);
-+void wil_update_supported_bands(struct wil6210_priv *wil);
++int wil_ioctl(struct wil6210_priv *wil, void __user *data, int cmd);
+ int wil_request_firmware(struct wil6210_priv *wil, const char *name,
+ 			 bool load);
+ int wil_request_board(struct wil6210_priv *wil, const char *name);
+diff --git a/include/uapi/linux/wil6210_uapi.h b/include/uapi/linux/wil6210_uapi.h
+new file mode 100644
+index 0000000..860bc7c
+--- /dev/null
++++ b/include/uapi/linux/wil6210_uapi.h
+@@ -0,0 +1,77 @@
++/* SPDX-License-Identifier: ISC */
++/*
++ * Copyright (c) 2014 Qualcomm Atheros, Inc.
++ * Copyright (c) 2019, The Linux Foundation. All rights reserved.
++ */
 +
- int reverse_memcmp(const void *cs, const void *ct, size_t count);
- 
- /* WMI for enhanced DMA */
-diff --git a/drivers/net/wireless/ath/wil6210/wmi.c b/drivers/net/wireless/ath/wil6210/wmi.c
-index 475b1a2..5760d14 100644
---- a/drivers/net/wireless/ath/wil6210/wmi.c
-+++ b/drivers/net/wireless/ath/wil6210/wmi.c
-@@ -2163,8 +2163,8 @@ int wmi_rbufcap_cfg(struct wil6210_priv *wil, bool enable, u16 threshold)
- 	return rc;
- }
- 
--int wmi_pcp_start(struct wil6210_vif *vif,
--		  int bi, u8 wmi_nettype, u8 chan, u8 hidden_ssid, u8 is_go)
-+int wmi_pcp_start(struct wil6210_vif *vif, int bi, u8 wmi_nettype,
-+		  u8 chan, u8 wmi_edmg_chan, u8 hidden_ssid, u8 is_go)
- {
- 	struct wil6210_priv *wil = vif_to_wil(vif);
- 	int rc;
-@@ -2174,6 +2174,7 @@ int wmi_pcp_start(struct wil6210_vif *vif,
- 		.network_type = wmi_nettype,
- 		.disable_sec_offload = 1,
- 		.channel = chan - 1,
-+		.edmg_channel = wmi_edmg_chan,
- 		.pcp_max_assoc_sta = wil->max_assoc_sta,
- 		.hidden_ssid = hidden_ssid,
- 		.is_go = is_go,
-diff --git a/drivers/net/wireless/ath/wil6210/wmi.h b/drivers/net/wireless/ath/wil6210/wmi.h
-index 3e37229..d75022b 100644
---- a/drivers/net/wireless/ath/wil6210/wmi.h
-+++ b/drivers/net/wireless/ath/wil6210/wmi.h
-@@ -97,6 +97,7 @@ enum wmi_fw_capability {
- 	WMI_FW_CAPABILITY_SET_SILENT_RSSI_TABLE		= 13,
- 	WMI_FW_CAPABILITY_LO_POWER_CALIB_FROM_OTP	= 14,
- 	WMI_FW_CAPABILITY_PNO				= 15,
-+	WMI_FW_CAPABILITY_CHANNEL_BONDING		= 17,
- 	WMI_FW_CAPABILITY_REF_CLOCK_CONTROL		= 18,
- 	WMI_FW_CAPABILITY_AP_SME_OFFLOAD_NONE		= 19,
- 	WMI_FW_CAPABILITY_MULTI_VIFS			= 20,
-@@ -361,6 +362,19 @@ enum wmi_connect_ctrl_flag_bits {
- 
- #define WMI_MAX_SSID_LEN	(32)
- 
-+enum wmi_channel {
-+	WMI_CHANNEL_1	= 0x00,
-+	WMI_CHANNEL_2	= 0x01,
-+	WMI_CHANNEL_3	= 0x02,
-+	WMI_CHANNEL_4	= 0x03,
-+	WMI_CHANNEL_5	= 0x04,
-+	WMI_CHANNEL_6	= 0x05,
-+	WMI_CHANNEL_9	= 0x06,
-+	WMI_CHANNEL_10	= 0x07,
-+	WMI_CHANNEL_11	= 0x08,
-+	WMI_CHANNEL_12	= 0x09,
++#ifndef __WIL6210_UAPI_H__
++#define __WIL6210_UAPI_H__
++
++#if !defined(__KERNEL__)
++#define __user
++#endif
++
++#include <linux/sockios.h>
++
++/* Numbers SIOCDEVPRIVATE and SIOCDEVPRIVATE + 1
++ * are used by Android devices to implement PNO (preferred network offload).
++ * Albeit it is temporary solution, use different numbers to avoid conflicts
++ */
++
++/**
++ * Perform 32-bit I/O operation to the card memory
++ *
++ * User code should arrange data in memory like this:
++ *
++ *	struct wil_memio io;
++ *	struct ifreq ifr = {
++ *		.ifr_data = &io,
++ *	};
++ */
++#define WIL_IOCTL_MEMIO (SIOCDEVPRIVATE + 2)
++
++/**
++ * Perform block I/O operation to the card memory
++ *
++ * User code should arrange data in memory like this:
++ *
++ *	void *buf;
++ *	struct wil_memio_block io = {
++ *		.block = buf,
++ *	};
++ *	struct ifreq ifr = {
++ *		.ifr_data = &io,
++ *	};
++ */
++#define WIL_IOCTL_MEMIO_BLOCK (SIOCDEVPRIVATE + 3)
++
++/**
++ * operation to perform
++ *
++ * @wil_mmio_op_mask - bits defining operation,
++ * @wil_mmio_addr_mask - bits defining addressing mode
++ */
++enum wil_memio_op {
++	wil_mmio_read = 0,
++	wil_mmio_write = 1,
++	wil_mmio_op_mask = 0xff,
++	wil_mmio_addr_linker = 0 << 8,
++	wil_mmio_addr_ahb = 1 << 8,
++	wil_mmio_addr_bar = 2 << 8,
++	wil_mmio_addr_mask = 0xff00,
 +};
 +
- /* WMI_CONNECT_CMDID */
- struct wmi_connect_cmd {
- 	u8 network_type;
-@@ -372,8 +386,12 @@ struct wmi_connect_cmd {
- 	u8 group_crypto_len;
- 	u8 ssid_len;
- 	u8 ssid[WMI_MAX_SSID_LEN];
-+	/* enum wmi_channel WMI_CHANNEL_1..WMI_CHANNEL_6; for EDMG this is
-+	 * the primary channel number
-+	 */
- 	u8 channel;
--	u8 reserved0;
-+	/* enum wmi_channel WMI_CHANNEL_9..WMI_CHANNEL_12 */
-+	u8 edmg_channel;
- 	u8 bssid[WMI_MAC_LEN];
- 	__le32 ctrl_flags;
- 	u8 dst_mac[WMI_MAC_LEN];
-@@ -2312,8 +2330,12 @@ struct wmi_notify_req_done_event {
- 
- /* WMI_CONNECT_EVENTID */
- struct wmi_connect_event {
-+	/* enum wmi_channel WMI_CHANNEL_1..WMI_CHANNEL_6; for EDMG this is
-+	 * the primary channel number
-+	 */
- 	u8 channel;
--	u8 reserved0;
-+	/* enum wmi_channel WMI_CHANNEL_9..WMI_CHANNEL_12 */
-+	u8 edmg_channel;
- 	u8 bssid[WMI_MAC_LEN];
- 	__le16 listen_interval;
- 	__le16 beacon_interval;
++struct wil_memio {
++	uint32_t op; /* enum wil_memio_op */
++	uint32_t addr; /* should be 32-bit aligned */
++	uint32_t val;
++};
++
++struct wil_memio_block {
++	uint32_t op; /* enum wil_memio_op */
++	uint32_t addr; /* should be 32-bit aligned */
++	uint32_t size; /* should be multiple of 4 */
++	void __user *block; /* block address */
++};
++
++#endif /* __WIL6210_UAPI_H__ */
 -- 
 2.7.4
 
