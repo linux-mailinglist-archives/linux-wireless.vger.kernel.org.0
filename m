@@ -2,26 +2,26 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 94E9D926D7
-	for <lists+linux-wireless@lfdr.de>; Mon, 19 Aug 2019 16:35:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DCB3A926D3
+	for <lists+linux-wireless@lfdr.de>; Mon, 19 Aug 2019 16:35:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727378AbfHSOf2 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 19 Aug 2019 10:35:28 -0400
-Received: from paleale.coelho.fi ([176.9.41.70]:36802 "EHLO
+        id S1727368AbfHSOf0 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 19 Aug 2019 10:35:26 -0400
+Received: from paleale.coelho.fi ([176.9.41.70]:36808 "EHLO
         farmhouse.coelho.fi" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1727212AbfHSOfZ (ORCPT
+        with ESMTP id S1727094AbfHSOfZ (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
         Mon, 19 Aug 2019 10:35:25 -0400
 Received: from [91.156.6.193] (helo=redipa.ger.corp.intel.com)
         by farmhouse.coelho.fi with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
         (Exim 4.92)
         (envelope-from <luca@coelho.fi>)
-        id 1hzikl-0007sP-5E; Mon, 19 Aug 2019 17:35:23 +0300
+        id 1hzikl-0007sP-Uo; Mon, 19 Aug 2019 17:35:24 +0300
 From:   Luca Coelho <luca@coelho.fi>
 To:     kvalo@codeaurora.org
 Cc:     linux-wireless@vger.kernel.org
-Date:   Mon, 19 Aug 2019 17:34:51 +0300
-Message-Id: <20190819143507.6989-7-luca@coelho.fi>
+Date:   Mon, 19 Aug 2019 17:34:52 +0300
+Message-Id: <20190819143507.6989-8-luca@coelho.fi>
 X-Mailer: git-send-email 2.23.0.rc1
 In-Reply-To: <20190819143507.6989-1-luca@coelho.fi>
 References: <20190819143507.6989-1-luca@coelho.fi>
@@ -31,7 +31,7 @@ X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on farmhouse.coelho.fi
 X-Spam-Level: 
 X-Spam-Status: No, score=-2.9 required=5.0 tests=ALL_TRUSTED,BAYES_00,
         URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.2
-Subject: [PATCH v2 06/22] iwlwifi: dbg: move monitor recording functionality from header file
+Subject: [PATCH v2 07/22] iwlwifi: dbg: move debug recording stop from trans to op mode
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
@@ -39,219 +39,113 @@ X-Mailing-List: linux-wireless@vger.kernel.org
 
 From: Shahar S Matityahu <shahar.s.matityahu@intel.com>
 
-The recording functions are quite big to be inline and the driver should
-expose only the stop and restart functions that are allowed to be used
-rather then the internal helper functions. Move the functions from the
-header file.
+The op mode should stop the debug recording and not the transport layer.
+Rename iwl_fwrt_stop_device into iwl_fw_dbg_stop_sync and move the debug
+stop recording to it.
 
 Signed-off-by: Shahar S Matityahu <shahar.s.matityahu@intel.com>
 Signed-off-by: Luca Coelho <luciano.coelho@intel.com>
 ---
- drivers/net/wireless/intel/iwlwifi/fw/dbg.c | 85 ++++++++++++++++++++
- drivers/net/wireless/intel/iwlwifi/fw/dbg.h | 89 +--------------------
- 2 files changed, 89 insertions(+), 85 deletions(-)
+ drivers/net/wireless/intel/iwlwifi/fw/dbg.c          | 6 +++---
+ drivers/net/wireless/intel/iwlwifi/fw/dbg.h          | 2 +-
+ drivers/net/wireless/intel/iwlwifi/mvm/fw.c          | 1 +
+ drivers/net/wireless/intel/iwlwifi/mvm/mvm.h         | 3 ++-
+ drivers/net/wireless/intel/iwlwifi/pcie/trans-gen2.c | 3 ---
+ drivers/net/wireless/intel/iwlwifi/pcie/trans.c      | 3 ---
+ 6 files changed, 7 insertions(+), 11 deletions(-)
 
 diff --git a/drivers/net/wireless/intel/iwlwifi/fw/dbg.c b/drivers/net/wireless/intel/iwlwifi/fw/dbg.c
-index 4d81776f576d..dfb0c50df94c 100644
+index dfb0c50df94c..9ccaecc10474 100644
 --- a/drivers/net/wireless/intel/iwlwifi/fw/dbg.c
 +++ b/drivers/net/wireless/intel/iwlwifi/fw/dbg.c
-@@ -2937,3 +2937,88 @@ void iwl_fw_error_print_fseq_regs(struct iwl_fw_runtime *fwrt)
- 	iwl_trans_release_nic_access(trans, &flags);
+@@ -2862,7 +2862,7 @@ void iwl_fw_dbg_apply_point(struct iwl_fw_runtime *fwrt,
  }
- IWL_EXPORT_SYMBOL(iwl_fw_error_print_fseq_regs);
-+
-+static void _iwl_fw_dbg_stop_recording(struct iwl_trans *trans,
-+				       struct iwl_fw_dbg_params *params)
-+{
-+	if (trans->cfg->device_family == IWL_DEVICE_FAMILY_7000) {
-+		iwl_set_bits_prph(trans, MON_BUFF_SAMPLE_CTL, 0x100);
-+		return;
-+	}
-+
-+	if (params) {
-+		params->in_sample = iwl_read_umac_prph(trans, DBGC_IN_SAMPLE);
-+		params->out_ctrl = iwl_read_umac_prph(trans, DBGC_OUT_CTRL);
-+	}
-+
-+	iwl_write_umac_prph(trans, DBGC_IN_SAMPLE, 0);
-+	/* wait for the DBGC to finish writing the internal buffer to DRAM to
-+	 * avoid halting the HW while writing
-+	 */
-+	usleep_range(700, 1000);
-+	iwl_write_umac_prph(trans, DBGC_OUT_CTRL, 0);
-+#ifdef CONFIG_IWLWIFI_DEBUGFS
-+	trans->dbg.rec_on = false;
-+#endif
-+}
-+
-+void iwl_fw_dbg_stop_recording(struct iwl_trans *trans,
-+			       struct iwl_fw_dbg_params *params)
-+{
-+	/* if the FW crashed or not debug monitor cfg was given, there is
-+	 * no point in stopping
-+	 */
-+	if (test_bit(STATUS_FW_ERROR, &trans->status) ||
-+	    (!trans->dbg.dest_tlv &&
-+	     trans->dbg.ini_dest == IWL_FW_INI_LOCATION_INVALID))
-+		return;
-+
-+	if (trans->cfg->device_family >= IWL_DEVICE_FAMILY_22560) {
-+		IWL_ERR(trans,
-+			"WRT: unsupported device family %d for debug stop recording\n",
-+			trans->cfg->device_family);
-+		return;
-+	}
-+	_iwl_fw_dbg_stop_recording(trans, params);
-+}
-+IWL_EXPORT_SYMBOL(iwl_fw_dbg_stop_recording);
-+
-+static void _iwl_fw_dbg_restart_recording(struct iwl_trans *trans,
-+					  struct iwl_fw_dbg_params *params)
-+{
-+	if (WARN_ON(!params))
-+		return;
-+
-+	if (trans->cfg->device_family == IWL_DEVICE_FAMILY_7000) {
-+		iwl_clear_bits_prph(trans, MON_BUFF_SAMPLE_CTL, 0x100);
-+		iwl_clear_bits_prph(trans, MON_BUFF_SAMPLE_CTL, 0x1);
-+		iwl_set_bits_prph(trans, MON_BUFF_SAMPLE_CTL, 0x1);
-+	} else {
-+		iwl_write_umac_prph(trans, DBGC_IN_SAMPLE, params->in_sample);
-+		iwl_write_umac_prph(trans, DBGC_OUT_CTRL, params->out_ctrl);
-+	}
-+}
-+
-+void iwl_fw_dbg_restart_recording(struct iwl_fw_runtime *fwrt,
-+				  struct iwl_fw_dbg_params *params)
-+{
-+	/* if the FW crashed or not debug monitor cfg was given, there is
-+	 * no point in restarting
-+	 */
-+	if (test_bit(STATUS_FW_ERROR, &fwrt->trans->status) ||
-+	    (!fwrt->trans->dbg.dest_tlv &&
-+	     fwrt->trans->dbg.ini_dest == IWL_FW_INI_LOCATION_INVALID))
-+		return;
-+
-+	if (fwrt->trans->cfg->device_family >= IWL_DEVICE_FAMILY_22560) {
-+		IWL_ERR(fwrt,
-+			"WRT: unsupported device family %d for debug restart recording\n",
-+			fwrt->trans->cfg->device_family);
-+		return;
-+	}
-+	_iwl_fw_dbg_restart_recording(fwrt->trans, params);
-+#ifdef CONFIG_IWLWIFI_DEBUGFS
-+	iwl_fw_set_dbg_rec_on(fwrt);
-+#endif
-+}
-+IWL_EXPORT_SYMBOL(iwl_fw_dbg_restart_recording);
+ IWL_EXPORT_SYMBOL(iwl_fw_dbg_apply_point);
+ 
+-void iwl_fwrt_stop_device(struct iwl_fw_runtime *fwrt)
++void iwl_fw_dbg_stop_sync(struct iwl_fw_runtime *fwrt)
+ {
+ 	int i;
+ 
+@@ -2870,9 +2870,9 @@ void iwl_fwrt_stop_device(struct iwl_fw_runtime *fwrt)
+ 	for (i = 0; i < IWL_FW_RUNTIME_DUMP_WK_NUM; i++)
+ 		iwl_fw_dbg_collect_sync(fwrt, i);
+ 
+-	iwl_trans_stop_device(fwrt->trans);
++	iwl_fw_dbg_stop_recording(fwrt->trans, NULL);
+ }
+-IWL_EXPORT_SYMBOL(iwl_fwrt_stop_device);
++IWL_EXPORT_SYMBOL(iwl_fw_dbg_stop_sync);
+ 
+ void iwl_fw_dbg_periodic_trig_handler(struct timer_list *t)
+ {
 diff --git a/drivers/net/wireless/intel/iwlwifi/fw/dbg.h b/drivers/net/wireless/intel/iwlwifi/fw/dbg.h
-index a8459ac71b2c..d6b012459b04 100644
+index d6b012459b04..5582a11f7c89 100644
 --- a/drivers/net/wireless/intel/iwlwifi/fw/dbg.h
 +++ b/drivers/net/wireless/intel/iwlwifi/fw/dbg.h
-@@ -263,68 +263,11 @@ _iwl_fw_dbg_trigger_simple_stop(struct iwl_fw_runtime *fwrt,
- 					iwl_fw_dbg_get_trigger((fwrt)->fw,\
- 							       (trig)))
+@@ -373,7 +373,7 @@ static inline void iwl_fw_resume_timestamp(struct iwl_fw_runtime *fwrt) {}
+ void iwl_fw_dbg_apply_point(struct iwl_fw_runtime *fwrt,
+ 			    enum iwl_fw_ini_apply_point apply_point);
  
--static inline void
--_iwl_fw_dbg_stop_recording(struct iwl_trans *trans,
--			   struct iwl_fw_dbg_params *params)
--{
--	if (trans->cfg->device_family == IWL_DEVICE_FAMILY_7000) {
--		iwl_set_bits_prph(trans, MON_BUFF_SAMPLE_CTL, 0x100);
--		return;
--	}
-+void iwl_fw_dbg_stop_recording(struct iwl_trans *trans,
-+			       struct iwl_fw_dbg_params *params);
+-void iwl_fwrt_stop_device(struct iwl_fw_runtime *fwrt);
++void iwl_fw_dbg_stop_sync(struct iwl_fw_runtime *fwrt);
  
--	if (params) {
--		params->in_sample = iwl_read_umac_prph(trans, DBGC_IN_SAMPLE);
--		params->out_ctrl = iwl_read_umac_prph(trans, DBGC_OUT_CTRL);
--	}
--
--	iwl_write_umac_prph(trans, DBGC_IN_SAMPLE, 0);
--	/* wait for the DBGC to finish writing the internal buffer to DRAM to
--	 * avoid halting the HW while writing
--	 */
--	usleep_range(700, 1000);
--	iwl_write_umac_prph(trans, DBGC_OUT_CTRL, 0);
--#ifdef CONFIG_IWLWIFI_DEBUGFS
--	trans->dbg.rec_on = false;
--#endif
--}
--
--static inline void
--iwl_fw_dbg_stop_recording(struct iwl_trans *trans,
--			  struct iwl_fw_dbg_params *params)
--{
--	/* if the FW crashed or not debug monitor cfg was given, there is
--	 * no point in stopping
--	 */
--	if (test_bit(STATUS_FW_ERROR, &trans->status) ||
--	    (!trans->dbg.dest_tlv &&
--	     trans->dbg.ini_dest == IWL_FW_INI_LOCATION_INVALID))
--		return;
--
--	if (trans->cfg->device_family >= IWL_DEVICE_FAMILY_22560) {
--		IWL_ERR(trans,
--			"WRT: unsupported device family %d for debug stop recording\n",
--			trans->cfg->device_family);
--		return;
--	}
--	_iwl_fw_dbg_stop_recording(trans, params);
--}
--
--static inline void
--_iwl_fw_dbg_restart_recording(struct iwl_trans *trans,
--			      struct iwl_fw_dbg_params *params)
--{
--	if (WARN_ON(!params))
--		return;
--
--	if (trans->cfg->device_family == IWL_DEVICE_FAMILY_7000) {
--		iwl_clear_bits_prph(trans, MON_BUFF_SAMPLE_CTL, 0x100);
--		iwl_clear_bits_prph(trans, MON_BUFF_SAMPLE_CTL, 0x1);
--		iwl_set_bits_prph(trans, MON_BUFF_SAMPLE_CTL, 0x1);
--	} else {
--		iwl_write_umac_prph(trans, DBGC_IN_SAMPLE, params->in_sample);
--		iwl_write_umac_prph(trans, DBGC_OUT_CTRL, params->out_ctrl);
--	}
--}
-+void iwl_fw_dbg_restart_recording(struct iwl_fw_runtime *fwrt,
-+				  struct iwl_fw_dbg_params *params);
+ static inline void iwl_fw_lmac1_set_alive_err_table(struct iwl_trans *trans,
+ 						    u32 lmac_error_event_table)
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/fw.c b/drivers/net/wireless/intel/iwlwifi/mvm/fw.c
+index a57fc6198a72..ed6453b2fc79 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/fw.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/fw.c
+@@ -1140,6 +1140,7 @@ static int iwl_mvm_load_rt_fw(struct iwl_mvm *mvm)
+ 		return ret;
+ 	}
  
- #ifdef CONFIG_IWLWIFI_DEBUGFS
- static inline void iwl_fw_set_dbg_rec_on(struct iwl_fw_runtime *fwrt)
-@@ -336,30 +279,6 @@ static inline void iwl_fw_set_dbg_rec_on(struct iwl_fw_runtime *fwrt)
++	iwl_fw_dbg_stop_sync(&mvm->fwrt);
+ 	/*
+ 	 * Stop and start the transport without entering low power
+ 	 * mode. This will save the state of other components on the
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mvm.h b/drivers/net/wireless/intel/iwlwifi/mvm/mvm.h
+index a14701c8933b..e5703aa7935e 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/mvm.h
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/mvm.h
+@@ -2037,7 +2037,8 @@ static inline void iwl_mvm_stop_device(struct iwl_mvm *mvm)
+ 	lockdep_assert_held(&mvm->mutex);
+ 	iwl_fw_cancel_timestamp(&mvm->fwrt);
+ 	clear_bit(IWL_MVM_STATUS_FIRMWARE_RUNNING, &mvm->status);
+-	iwl_fwrt_stop_device(&mvm->fwrt);
++	iwl_fw_dbg_stop_sync(&mvm->fwrt);
++	iwl_trans_stop_device(mvm->trans);
+ 	iwl_free_fw_paging(&mvm->fwrt);
+ 	iwl_fw_dump_conf_clear(&mvm->fwrt);
  }
- #endif
+diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/trans-gen2.c b/drivers/net/wireless/intel/iwlwifi/pcie/trans-gen2.c
+index 8d17e68577fd..104b7cc75248 100644
+--- a/drivers/net/wireless/intel/iwlwifi/pcie/trans-gen2.c
++++ b/drivers/net/wireless/intel/iwlwifi/pcie/trans-gen2.c
+@@ -147,9 +147,6 @@ void _iwl_trans_pcie_gen2_stop_device(struct iwl_trans *trans, bool low_power)
  
--static inline void
--iwl_fw_dbg_restart_recording(struct iwl_fw_runtime *fwrt,
--			     struct iwl_fw_dbg_params *params)
--{
--	/* if the FW crashed or not debug monitor cfg was given, there is
--	 * no point in restarting
--	 */
--	if (test_bit(STATUS_FW_ERROR, &fwrt->trans->status) ||
--	    (!fwrt->trans->dbg.dest_tlv &&
--	     fwrt->trans->dbg.ini_dest == IWL_FW_INI_LOCATION_INVALID))
--		return;
+ 	trans_pcie->is_down = true;
+ 
+-	/* Stop dbgc before stopping device */
+-	iwl_fw_dbg_stop_recording(trans, NULL);
 -
--	if (fwrt->trans->cfg->device_family >= IWL_DEVICE_FAMILY_22560) {
--		IWL_ERR(fwrt,
--			"WRT: unsupported device family %d for debug restart recording\n",
--			fwrt->trans->cfg->device_family);
--		return;
--	}
--	_iwl_fw_dbg_restart_recording(fwrt->trans, params);
--#ifdef CONFIG_IWLWIFI_DEBUGFS
--	iwl_fw_set_dbg_rec_on(fwrt);
--#endif
--}
+ 	/* tell the device to stop sending interrupts */
+ 	iwl_disable_interrupts(trans);
+ 
+diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/trans.c b/drivers/net/wireless/intel/iwlwifi/pcie/trans.c
+index f5df5b370d78..a6deb61a3ab4 100644
+--- a/drivers/net/wireless/intel/iwlwifi/pcie/trans.c
++++ b/drivers/net/wireless/intel/iwlwifi/pcie/trans.c
+@@ -1242,9 +1242,6 @@ static void _iwl_trans_pcie_stop_device(struct iwl_trans *trans, bool low_power)
+ 
+ 	trans_pcie->is_down = true;
+ 
+-	/* Stop dbgc before stopping device */
+-	iwl_fw_dbg_stop_recording(trans, NULL);
 -
- static inline void iwl_fw_dump_conf_clear(struct iwl_fw_runtime *fwrt)
- {
- 	fwrt->dump.conf = FW_DBG_INVALID;
+ 	/* tell the device to stop sending interrupts */
+ 	iwl_disable_interrupts(trans);
+ 
 -- 
 2.23.0.rc1
 
