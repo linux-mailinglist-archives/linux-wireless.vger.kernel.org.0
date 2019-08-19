@@ -2,103 +2,111 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 5687791EC4
-	for <lists+linux-wireless@lfdr.de>; Mon, 19 Aug 2019 10:21:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BC61691FEB
+	for <lists+linux-wireless@lfdr.de>; Mon, 19 Aug 2019 11:19:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726964AbfHSIUv (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 19 Aug 2019 04:20:51 -0400
-Received: from mail-ed1-f65.google.com ([209.85.208.65]:46036 "EHLO
-        mail-ed1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726627AbfHSIUu (ORCPT
+        id S1727326AbfHSJTo (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 19 Aug 2019 05:19:44 -0400
+Received: from atrey.karlin.mff.cuni.cz ([195.113.26.193]:46955 "EHLO
+        atrey.karlin.mff.cuni.cz" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726857AbfHSJTo (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 19 Aug 2019 04:20:50 -0400
-Received: by mail-ed1-f65.google.com with SMTP id x19so845986eda.12
-        for <linux-wireless@vger.kernel.org>; Mon, 19 Aug 2019 01:20:49 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=wIyeIH+lXz1wr5/FlAgVKmefeqsuDUoj2vAiUqLGQUQ=;
-        b=Z+pubiVvcp/+SlQZBWNCFAdOz1x0zm39pSXpFij39QRhyP14p05YdIjl7kpJo8O1Sc
-         escZhmwqAuQ1f5k4CgSY4wIqVf7otJbNpS/c3I4K9buOOBDnce4EcGAL+ytQueHQBoAi
-         CbUQKmS5ajpdvVmuEewyW/MeC2VjtiGR5VNb0=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=wIyeIH+lXz1wr5/FlAgVKmefeqsuDUoj2vAiUqLGQUQ=;
-        b=WwpulK5HwittLxyXineL3zkAUFYH6BWsyqNLc7TNT+xC5N5IiV7QTngjelHW25Y+ri
-         jpqRHE+7l3lXaExr1nxqBXT622OcrpLXA/AveiOQVjXLPxj5jESnHyob4LLdLrqVvwXn
-         Gmq8/U9lQnDy1UhyyMENOaIg4dd+eLmbZUcW7UqA8HfZ6VxjtNRGrEvkN4/ZjWy2dMsF
-         iyzi9jYvV3QOba7ecUt3guidDs1MsUahkTJo8C2VJy7qywNlUIbM/CwZ7hxjVD0uTLKj
-         ZHJLqz+9NztfbNnmDENMPX7+X5pv44gEBZaDqeo6sE3hIUIuzB2wQaa7o16SPpSR+91X
-         yENg==
-X-Gm-Message-State: APjAAAX7LaFV6PXqzG0zIA6DChs9K8zJtz1n91+mHXcfb2s7eZaITsZU
-        GC2uOpBAejv6E78EqFrcd5MHSA==
-X-Google-Smtp-Source: APXvYqwqkzFJ27MI14UatOR4Wbtu6WTlyoFURGlK4ZVH2l6ui88kiNp/CNcLzT0r3K7u3o+LJHP79A==
-X-Received: by 2002:a50:9fc5:: with SMTP id c63mr23878448edf.252.1566202849178;
-        Mon, 19 Aug 2019 01:20:49 -0700 (PDT)
-Received: from [192.168.178.129] (f140230.upc-f.chello.nl. [80.56.140.230])
-        by smtp.gmail.com with ESMTPSA id z9sm2649272edd.18.2019.08.19.01.20.48
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Mon, 19 Aug 2019 01:20:48 -0700 (PDT)
-Subject: Re: [PATCH v7 2/2] nl support for dmtool
-To:     Alexei Avshalom Lazar <ailizaro@codeaurora.org>,
-        Johannes Berg <johannes@sipsolutions.net>
-Cc:     linux-wireless@vger.kernel.org, wil6210@qti.qualcomm.com
-References: <1566137719-3544-1-git-send-email-ailizaro@codeaurora.org>
- <1566137719-3544-3-git-send-email-ailizaro@codeaurora.org>
-From:   Arend Van Spriel <arend.vanspriel@broadcom.com>
-Message-ID: <a1edb82d-6bdb-a44d-4781-c05358fffad9@broadcom.com>
-Date:   Mon, 19 Aug 2019 10:20:49 +0200
-User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:60.0) Gecko/20100101
- Thunderbird/60.8.0
+        Mon, 19 Aug 2019 05:19:44 -0400
+Received: by atrey.karlin.mff.cuni.cz (Postfix, from userid 512)
+        id BF9CA815D4; Mon, 19 Aug 2019 11:19:28 +0200 (CEST)
+Date:   Mon, 19 Aug 2019 11:19:41 +0200
+From:   Pavel Machek <pavel@ucw.cz>
+To:     Kalle Valo <kvalo@codeaurora.org>
+Cc:     Michael Nazzareno Trimarchi <michael@amarulasolutions.com>,
+        kernel list <linux-kernel@vger.kernel.org>,
+        linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
+        Linux OMAP Mailing List <linux-omap@vger.kernel.org>,
+        Tony Lindgren <tony@atomide.com>,
+        Sebastian Reichel <sre@kernel.org>, nekit1000@gmail.com,
+        mpartap@gmx.net, Merlijn Wajer <merlijn@wizzup.org>,
+        "open list:TI WILINK WIRELES..." <linux-wireless@vger.kernel.org>
+Subject: Re: wifi on Motorola Droid 4 in 5.3-rc2
+Message-ID: <20190819091941.GA21072@amd>
+References: <20190818104629.GA27360@amd>
+ <CAOf5uwnUx3mtGGHFGqKB30qcb_AMhMEhHLp2pf-4pUdhi7KP7w@mail.gmail.com>
+ <20190818114332.GA32205@amd>
+ <87h86elgaa.fsf@tynnyri.adurom.net>
 MIME-Version: 1.0
-In-Reply-To: <1566137719-3544-3-git-send-email-ailizaro@codeaurora.org>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Type: multipart/signed; micalg=pgp-sha1;
+        protocol="application/pgp-signature"; boundary="zhXaljGHf11kAtnf"
+Content-Disposition: inline
+In-Reply-To: <87h86elgaa.fsf@tynnyri.adurom.net>
+User-Agent: Mutt/1.5.23 (2014-03-12)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 8/18/2019 4:15 PM, Alexei Avshalom Lazar wrote:
-> Signed-off-by: Alexei Avshalom Lazar <ailizaro@codeaurora.org>
-> ---
->   drivers/net/wireless/ath/wil6210/Kconfig   |  11 ++
->   drivers/net/wireless/ath/wil6210/Makefile  |   1 +
->   drivers/net/wireless/ath/wil6210/ioctl.c   | 245 +++++++++++++++++++++++++++++
->   drivers/net/wireless/ath/wil6210/netdev.c  |   8 +
->   drivers/net/wireless/ath/wil6210/wil6210.h |   1 +
->   include/uapi/linux/wil6210_uapi.h          |  77 +++++++++
->   6 files changed, 343 insertions(+)
->   create mode 100644 drivers/net/wireless/ath/wil6210/ioctl.c
->   create mode 100644 include/uapi/linux/wil6210_uapi.h
-> 
-> diff --git a/drivers/net/wireless/ath/wil6210/Kconfig b/drivers/net/wireless/ath/wil6210/Kconfig
-> index 0d1a8da..48b14de 100644
-> --- a/drivers/net/wireless/ath/wil6210/Kconfig
-> +++ b/drivers/net/wireless/ath/wil6210/Kconfig
-> @@ -53,3 +53,14 @@ config WIL6210_DEBUGFS
->   	  option if you are interested in debugging the driver.
->   
->   	  If unsure, say Y to make it easier to debug problems.
-> +
-> +config WIL6210_WRITE_IOCTL
-> +	bool "wil6210 write ioctl to the device"
-> +	depends on WIL6210
-> +	default y
-> +	help
-> +	  Say Y here to allow write-access from user-space to
-> +	  the device memory through ioctl. This is useful for
-> +	  debugging purposes only.
-> +
-> +	  If unsure, say N.
 
-I was about to scream in horror seeing this patch, but noticed you 
-rectified it in v8. *Phew*
+--zhXaljGHf11kAtnf
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Regards,
-Arend
+On Sun 2019-08-18 17:06:05, Kalle Valo wrote:
+> Pavel Machek <pavel@ucw.cz> writes:
+>=20
+> > On Sun 2019-08-18 12:53:01, Michael Nazzareno Trimarchi wrote:
+> >> Hi
+> >>=20
+> >> On Sun, Aug 18, 2019 at 12:46 PM Pavel Machek <pavel@ucw.cz> wrote:
+> >> >
+> >> > Hi!
+> >> >
+> >> > First, I guess I should mention that this is first time I'm attempti=
+ng
+> >> > to get wifi going on D4.
+> >> >
+> >> > I'm getting this:
+> >> >
+> >> > user@devuan:~/g/ofono$ sudo ifconfig wlan0 down
+> >> > user@devuan:~/g/ofono$ sudo ifconfig wlan0 up
+> >> > user@devuan:~/g/ofono$ sudo iwlist wlan0 scan
+> >> > wlan0     Interface doesn't support scanning.
+> >> >
+> >>=20
+> >> Try to use iw command. iwlist use an obsolete interface that you need
+> >> to activate in kernel for back compatibility with old command. Can be
+> >> your problem?
+> >
+> > Let me see ... CONFIG_CFG80211_WEXT was not set.
+> >
+> > Tried enabling it, and now I got. I remember getting it before,
+> > too... let me try few more boots, perhaps it is random.
+>=20
+> >From developers' point of view WEXT is ancient and untested, everybody
+> should switch to nl80211. So I strongly using iw (which uses nl80211).
+> Of course this nothing to do with the wlcore warning you saw, just
+> wanted to make you aware the state of wireless extensions.
+
+You may want to add this to Kconfig test... and maybe it would be good
+to mention iwconfig there, for easier grepping.
+
+I'm using rather old distro; I'll update, but kernel is expected to be
+back-compatible.. and tested :-).
+
+Best regards,
+									Pavel
+--=20
+(english) http://www.livejournal.com/~pavelmachek
+(cesky, pictures) http://atrey.karlin.mff.cuni.cz/~pavel/picture/horses/blo=
+g.html
+
+--zhXaljGHf11kAtnf
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1
+
+iEYEARECAAYFAl1aaa0ACgkQMOfwapXb+vLfxgCgwnUj/6zNjDP8mVxxlrKZK1lM
+pPoAnRZSZcbtXRDj7ieMQtZo77crQdVF
+=S9kP
+-----END PGP SIGNATURE-----
+
+--zhXaljGHf11kAtnf--
