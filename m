@@ -2,162 +2,100 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D45C694FA5
+	by mail.lfdr.de (Postfix) with ESMTP id 6B19094FA4
 	for <lists+linux-wireless@lfdr.de>; Mon, 19 Aug 2019 23:16:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728305AbfHSVP2 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 19 Aug 2019 17:15:28 -0400
-Received: from mail-pf1-f193.google.com ([209.85.210.193]:42170 "EHLO
-        mail-pf1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727971AbfHSVP2 (ORCPT
+        id S1728283AbfHSVPK (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 19 Aug 2019 17:15:10 -0400
+Received: from 3.mo69.mail-out.ovh.net ([188.165.52.203]:49326 "EHLO
+        3.mo69.mail-out.ovh.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727971AbfHSVPK (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 19 Aug 2019 17:15:28 -0400
-Received: by mail-pf1-f193.google.com with SMTP id i30so1908713pfk.9
-        for <linux-wireless@vger.kernel.org>; Mon, 19 Aug 2019 14:15:28 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=message-id:subject:from:to:date:in-reply-to:references:mime-version
-         :content-transfer-encoding;
-        bh=OzHkxoZ9WMRl6BFgxy9w5C3HMi2V/wnG5Z2iZdgkePU=;
-        b=g5ErnOe+SXbWe2q0nosSQKlksYnQHwxr+KYjRzN3IkSOtDeqHailZwlQTxYynCgti6
-         cdflylVL/Wso998UkoaZycoeK8ndPEu+n/MV4YIDza8ZDhUfBH720CILv5ui3jdsY6RW
-         b4tm2cx7W4qKffQwXy1clV6XydDMXu/aTKvIAQ6hw4jMPD9NX3ANVaGVM65/jK3y1lJJ
-         BhgVRbpKq0fnCrx0x1b2ja+Esnyvq0UE6ZKbFFvS8QNCBoDmdmKy4ihVA1pmmAKgs1UH
-         qckS5C4b68iYCwLzLobcDxpOUZ/uJgoJlsyhtnzZyfztmVk3sSWzj62OkB1KRccQxOmO
-         mIOw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:message-id:subject:from:to:date:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=OzHkxoZ9WMRl6BFgxy9w5C3HMi2V/wnG5Z2iZdgkePU=;
-        b=nUvXYKREFl5QtXfqM8WeKceG4j5vN4kHi2l3LedLmaakcLEy0lUkcUkMWOAPfD1hO5
-         kfVnDiJLG0MKSAoz8M7zSUKeV1L0Yfjeq5vLJqQhenR2ImfKFA6mfvSC4I2tcvrc7rhD
-         9WS9tcfPluXND4/cw5XzQ2/mJgbwB2NW7ARa6B2JTt4YQ1cN3qBg4zXr9HX2xpZI8lfb
-         b63clstZnPetXLZOFfTVIwYrXDjFasGBvsXUArhNAYEYfrRyn+7uKOaAwktksiyY/UgR
-         iC6MJ2L6oOIWo3C6Na8wZOzbpunJScac74uwXND6inY4l9LmDTPIfG7QO9suHwkcKMio
-         7//A==
-X-Gm-Message-State: APjAAAUUL+Vy0RHr3iwV9LG1aHbdbmsSzsKhdZWk0+rd4dr8qYyuJM1r
-        S+30ZBJvWNsYVCMilozIinPhdW5MiZo=
-X-Google-Smtp-Source: APXvYqzxTPVhp/f54VyWOhCr1pAE7MGkMpQrE624cOOvTrHwb7ijKkH1kBmNoyI8anuhiPFuI6Q/4Q==
-X-Received: by 2002:a17:90a:9f4b:: with SMTP id q11mr22492300pjv.105.1566249327673;
-        Mon, 19 Aug 2019 14:15:27 -0700 (PDT)
-Received: from jprestwo-test.jf.intel.com ([134.134.139.76])
-        by smtp.googlemail.com with ESMTPSA id m9sm34594481pgr.24.2019.08.19.14.15.26
-        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
-        Mon, 19 Aug 2019 14:15:26 -0700 (PDT)
-Message-ID: <c6b719d6279211bbf52443f327884d96ef63f2b2.camel@gmail.com>
-Subject: Re: [RFC 0/1] Allow MAC change on up interface
-From:   James Prestwood <prestwoj@gmail.com>
+        Mon, 19 Aug 2019 17:15:10 -0400
+Received: from player716.ha.ovh.net (unknown [10.108.35.74])
+        by mo69.mail-out.ovh.net (Postfix) with ESMTP id 95EDE64484
+        for <linux-wireless@vger.kernel.org>; Mon, 19 Aug 2019 23:15:07 +0200 (CEST)
+Received: from awhome.eu (p4FF9179D.dip0.t-ipconnect.de [79.249.23.157])
+        (Authenticated sender: postmaster@awhome.eu)
+        by player716.ha.ovh.net (Postfix) with ESMTPSA id 0DF578E406D2;
+        Mon, 19 Aug 2019 21:15:04 +0000 (UTC)
+Subject: Re: [PATCH 4/4] iwlwifi: Enable Extended Key ID for mvm and dvm
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=wetzel-home.de;
+        s=wetzel-home; t=1566249303;
+        bh=hbmNEuDHtukGJieI+S52JwOjHwsSoZzrGFjR5aHnaG4=;
+        h=Subject:To:Cc:References:From:Date:In-Reply-To;
+        b=sOHZQUbv8as+MLIDdN713rES/nrPwk5q2NLnJLny8aCRunbD6XbGJeBa4gqYs8tH3
+         xxshjTZ38p9NBfBu4t3uwT53dgGJdSzjXHUK4RYYbpu44aUKHKY8uiCY/yP/dvB1Nr
+         kt9l3ZPgIxT6tJ5viKY4ozSCiTcWLVcr/prCBcDA=
 To:     Johannes Berg <johannes@sipsolutions.net>,
-        linux-wireless@vger.kernel.org
-Date:   Mon, 19 Aug 2019 14:14:03 -0700
-In-Reply-To: <4848c3a9d0b330fab4442436244387a2c127fa03.camel@sipsolutions.net>
-References: <20190815185702.30937-1-prestwoj@gmail.com>
-         (sfid-20190815_205833_978900_86B1E73D) <645af7dad899e8eb186b3fee0f8a8a151a408557.camel@sipsolutions.net>
-         <394092a2f20697c9b055166a8254a5ef888551a5.camel@gmail.com>
-         (sfid-20190819_175627_344053_E33FB9B0) <4848c3a9d0b330fab4442436244387a2c127fa03.camel@sipsolutions.net>
-Content-Type: text/plain; charset="UTF-8"
-X-Mailer: Evolution 3.28.5-0ubuntu0.18.04.1 
-Mime-Version: 1.0
+        Luca Coelho <luca@coelho.fi>
+Cc:     linux-wireless@vger.kernel.org
+References: <20190629195015.19680-1-alexander@wetzel-home.de>
+ <20190629195015.19680-4-alexander@wetzel-home.de>
+ <cd1b1a83-55e2-3c07-dbe2-0c459bbcdc7e@wetzel-home.de>
+ <d3c6d084728e4203832688b63e884d25b0f74fcf.camel@sipsolutions.net>
+ <ae321cd5-6ef4-87c5-98ec-dbac37e83c6d@wetzel-home.de>
+ <eb0481b1928b0554daeda59cfc1d631e44bb2bdd.camel@sipsolutions.net>
+From:   Alexander Wetzel <alexander@wetzel-home.de>
+Message-ID: <42653433-58b5-10f0-288e-1e5731e012d1@wetzel-home.de>
+Date:   Mon, 19 Aug 2019 23:15:03 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.8.0
+MIME-Version: 1.0
+In-Reply-To: <eb0481b1928b0554daeda59cfc1d631e44bb2bdd.camel@sipsolutions.net>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
 Content-Transfer-Encoding: 7bit
+X-Ovh-Tracer-Id: 1250593322868219132
+X-VR-SPAMSTATE: OK
+X-VR-SPAMSCORE: -100
+X-VR-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgeduvddrudefledgudehkecutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfqggfjpdevjffgvefmvefgnecuuegrihhlohhuthemucehtddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmd
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi Johannes,
-
-Without reiterating what Denis said:
-
-<snip>
-
-> I don't, short of
+Am 19.08.19 um 22:23 schrieb Johannes Berg:
+> On Mon, 2019-08-19 at 17:52 +0200, Alexander Wetzel wrote:
 > 
-> 1) don't do that then
-> 2) extend the network stack to have
-> IFF_LIVE_BUT_NO_CARRIER_ADDR_CHANGE
->    or something like that
-
-So you mean 2 is my only option... ;) I am fine with this.
-
+>> We may also get away by adding only means to pass the keyid of the MPDU
+>> (zero or one) to the HW. That could be done quite simple, I think:
+>>
+>> We could add two new flags, e.g. IWL_TX_FLAGS_ENCRYPT_ID_0 and
+>> IWL_TX_FLAGS_ENCRYPT_ID_1 to avoid the need to change the structures
+>> iwl_tx_cmd_gen2 and iwl_tx_cmd_gen3.
+>> When the firmware would check and use the key referenced by the STA +
+>> flag-id prior to the "last installed" key that should be sufficient.
+>> By still using the last installed key without any of the new flags set
+>> we also would remain backward compatible.
+>>
+>> If you have any experimental firmware to test I'm happy to do so:-)
+>> Till then I'm back using older iwlwifi cards.
 > 
-> TBH, I'm not really sure I see any point in this to start with, many
-> devices will give the address to the firmware when the interface is
-> brought up (even iwlwifi does - I'm not sure we'd want to take your
-> patch for iwlwifi even if that works today, nothing says the firmware
-> might not change its mind on that), and so it's quite likely only
-> going
-> to be supported in few devices.
+> I'm not convinced that we can change the TX API at all, I suspect we
+> have to go detect it as we saw in the other patch. If we do actually
+> have the ability to change the TX API it might be simpler overall, but
+> anyway, I'd have to go look at how this is all implemented before I
+> comment further. Doesn't seem like an intractable problem, the only
+> question is if we get to spend time on it :)
 
-The iwlwifi change was just an example. It ultimately would be up to
-the maintainers of each driver to support this or not. Regardless,
-doing the ground work for a driver/firmware to support this is more
-valuable than continuing to neglect these quirks that make use of
-nl80211 difficult/racy.
+You are thinking about keeping the tx API untouched and modify the key 
+install logic?
+Just prevent the firmware to activate a key for Tx when it's installed 
+and notify the firmware by some means when the key can be used for Tx 
+and then switch everything to the new key?
 
-> 
-> You've also not really explained what exactly is troubling you with
-> changing the MAC address, you just mentioned some sort of "race
-> condition"?
+I guess there is no practical way I can get access to the firmware code, 
+correct? For me it sounds harder than the optional flag extension I had 
+in mind for the new tx API.
 
-In order to change the MAC on a per-AP/SSID is to: ifdown, change MAC,
-ifup via RTNL. The problem is that ifdown generates an RTNL link down
-event and there is no way of knowing how this event was generated (by
-you, hot-unplug, or some other issue in kernel?). Handling this without
-a race is simply not possible. You sort of just have to pray none of
-this happens (and its unlikely but it *could* happen).
+After all one of the existing flags can already suppress the encryption.
+Checking for the presence of two optional flags and use these to select 
+a different key sounded not very hard. But then I literally know nothing 
+about that and if the card/firmware has some fundamental issue handling 
+two unicast keys the picture changes of course...
 
-Besides efficiency another obvious reason for this change is simply
-ease of use. If the hardware supports doing this then why should
-userspace have to jump through hoops to accomplish it?
+So let's wait and see what you can turn up. Till then we have more than 
+enough other cards supporting Extended Key ID:-)
 
-> 
-> Now, one thing I can imagine would be that you'd want to optimize
-> 
->  * ifdown
->    - remove iface from fw/hw
->    - stop fw/hw
->  * change MAC
->  * ifup
->    - start fw/hw
->    - add iface to fw/hw
-> to just
-> 
->  * ifdown
->    - remove iface from fw/hw
->  * change MAC
->  * ifup
->    - add iface to fw/hw
-> 
-> i.e. not restart the firmware (which takes time) for all this, but
-> that
-> seems much easier to solve by e.g. having a combined operation for
-> all
-> of this that gets handled in mac80211, or more generally by having a
-> "please keep the firmware running" token that you can hold while you
-> do
-> the operation?
-> 
-> 
-> Your changes are also a bit strange - you modified the "connect" path
-> and iwlwifi, but the connect path is not usually (other than with iw
-> or
-> even iwconfig) taken for iwlwifi? And if you modify auth/assoc paths,
-> you get into even weirder problems - what if you use different
-> addresses
-> for auth and assoc? What if the assoc (or even connect) really was a
-> *re*assoc, and thus must have the same MAC address? To me, the whole
-> thing seems like more of a problem than a solution.
-
-The connect path is just what we (IWD) use for almost all types of
-connections that support it (apart from things like SAE/OWE/FT). Not
-sure what you mean for "usually not taken for iwlwifi"? If you have an
-iwlwifi card and you issue CMD_CONNECT thats the path it takes...
-
-Thanks,
-James
-
-> 
-> johannes
-> 
-
+Alexander
