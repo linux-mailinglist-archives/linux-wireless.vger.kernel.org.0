@@ -2,83 +2,137 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A19A194F7D
-	for <lists+linux-wireless@lfdr.de>; Mon, 19 Aug 2019 23:00:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0E9D794F77
+	for <lists+linux-wireless@lfdr.de>; Mon, 19 Aug 2019 22:59:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728229AbfHSVAD (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 19 Aug 2019 17:00:03 -0400
-Received: from 9.mo177.mail-out.ovh.net ([46.105.72.238]:58092 "EHLO
-        9.mo177.mail-out.ovh.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727769AbfHSVAD (ORCPT
+        id S1728387AbfHSU6U (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 19 Aug 2019 16:58:20 -0400
+Received: from mail-ot1-f52.google.com ([209.85.210.52]:46240 "EHLO
+        mail-ot1-f52.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727769AbfHSU6U (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 19 Aug 2019 17:00:03 -0400
-Received: from player755.ha.ovh.net (unknown [10.108.42.75])
-        by mo177.mail-out.ovh.net (Postfix) with ESMTP id 644151025AB
-        for <linux-wireless@vger.kernel.org>; Mon, 19 Aug 2019 22:50:50 +0200 (CEST)
-Received: from awhome.eu (p4FF9179D.dip0.t-ipconnect.de [79.249.23.157])
-        (Authenticated sender: postmaster@awhome.eu)
-        by player755.ha.ovh.net (Postfix) with ESMTPSA id E59C090B6EAD;
-        Mon, 19 Aug 2019 20:50:46 +0000 (UTC)
-Subject: Re: [PATCH] iwlwifi: Extended Key ID support for mvm and dvm
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=wetzel-home.de;
-        s=wetzel-home; t=1566247846;
-        bh=vWC3/wW/csnaR/+Rsx8WN7OJ+Enhk24DjISGYj98Oyc=;
-        h=Subject:To:Cc:References:From:Date:In-Reply-To;
-        b=HrMHO8hLorbZwlLDTY0N1NVsrzCfEi8YfSOo594+2MNZX8/mDR1fTCgMJJ8kCu0u9
-         FO5dsGmJRL6gMaLImDlDRG+iB/gTy07mrmZDQXZf0L/zpoK+C0h8aA1mdi510xHXPk
-         BMWz2yierKSGJrhw7hXr5dcvRO6m2VTuC+zLU960=
-To:     Johannes Berg <johannes@sipsolutions.net>, luciano.coelho@intel.com
-Cc:     linux-wireless@vger.kernel.org, linuxwifi@intel.com
-References: <20190819180540.2855-1-alexander@wetzel-home.de>
- <204c346ab9fc71865e4cb5f5c29ec33ca05050e2.camel@sipsolutions.net>
- <da471544-3370-8ba1-2265-d02ab09cdcee@wetzel-home.de>
- <52914e64663283eeff9445b8b1fb37986c15223d.camel@sipsolutions.net>
- <5bc077f7b2f017da7c027edd27a543910dd6ac32.camel@sipsolutions.net>
-From:   Alexander Wetzel <alexander@wetzel-home.de>
-Message-ID: <9e63e06d-48ef-e7aa-638a-b551a208665f@wetzel-home.de>
-Date:   Mon, 19 Aug 2019 22:50:45 +0200
+        Mon, 19 Aug 2019 16:58:20 -0400
+Received: by mail-ot1-f52.google.com with SMTP id z17so2983817otk.13
+        for <linux-wireless@vger.kernel.org>; Mon, 19 Aug 2019 13:58:19 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=subject:to:references:from:message-id:date:user-agent:mime-version
+         :in-reply-to:content-language:content-transfer-encoding;
+        bh=hxPql9sb19a8QE3QCF0HOaJAx0zXs17fQuUoIj0wpO8=;
+        b=ipKFTBt9N5CkQsg295S/7Jz0DcwbrCjj2PU61SVSP0ORFjPwmn1sRdEocSMMmxHClB
+         JLm0mSdBdoH2Tzt73PpM2sMW0xHsEkGLzJ1Z0ktwNgW2NckRjJt1GIrMyeJcORUoilpZ
+         ZXRqrIWiAEM/jmLDB0ivWSLt0ICzQBHcvPqocMwkmm1K7GAPGuqvl9fLioaLA9OnBNPn
+         nvhYphCcOJFOjcBN+nzTmiS146BE0Gn4dHcgOUtG4n9vNkVc2Kb+l01iN186EjqC0T6i
+         1nBT68H01r/QYJ6U5WXYP4XFplN4XWmWF6Tj+4kx+bHRRGtnE1P3qIKFHc8DAaIto2dF
+         h6Jg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=hxPql9sb19a8QE3QCF0HOaJAx0zXs17fQuUoIj0wpO8=;
+        b=Ha3+/K41fwvbvrqpdgEGq2ujYMu8Aw+Jb4XMp10GQutSMYtJVpx31zDA1p14e40Md0
+         gk5w0xI/uZAxR6o5fOPE/mKBhV523bm7lMgDDWmTWGfT2Wyv26zDVY4KDoTKu4cJs92/
+         P0Zf/N+58udiXgBgNeaGYaPmQ4EDlqa+bwHctPgSoB5exHhwt8+ke0WrtQ1wZ0q76Wku
+         lG40JAGbrztNh+ojhkc/pqfNTMZSU8pKH0enrISnMEvjvt1HPtGPlGw5UY8vVCI5E8i2
+         GzIJQtdv3YCyUe5UtAgA+2W7lgPJe6JjUkuiBr/57bHx/ePvsTM6yX/tBoVkxfOg1VlB
+         24EA==
+X-Gm-Message-State: APjAAAWncMpCquwte+mwr28Qj58+C7s/jPdhUSL4uaqulif4xl/5GZc5
+        07hX1vp7CbOQ/tK1v0E8c9clReV4
+X-Google-Smtp-Source: APXvYqxVEHaAx344nFeiFcqk1UKIwkSdUvEXeQq62KDSVkWA3Dv3eOnXelnLHSne/r0OAekZ6gW5ow==
+X-Received: by 2002:a9d:7a94:: with SMTP id l20mr20268006otn.66.1566248298813;
+        Mon, 19 Aug 2019 13:58:18 -0700 (PDT)
+Received: from [192.168.1.249] (cpe-70-114-247-242.austin.res.rr.com. [70.114.247.242])
+        by smtp.googlemail.com with ESMTPSA id k6sm5702823otp.57.2019.08.19.13.58.18
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Mon, 19 Aug 2019 13:58:18 -0700 (PDT)
+Subject: Re: [RFC 0/1] Allow MAC change on up interface
+To:     Johannes Berg <johannes@sipsolutions.net>,
+        James Prestwood <prestwoj@gmail.com>,
+        linux-wireless@vger.kernel.org
+References: <20190815185702.30937-1-prestwoj@gmail.com>
+ <645af7dad899e8eb186b3fee0f8a8a151a408557.camel@sipsolutions.net>
+ <394092a2f20697c9b055166a8254a5ef888551a5.camel@gmail.com>
+ <4848c3a9d0b330fab4442436244387a2c127fa03.camel@sipsolutions.net>
+From:   Denis Kenzior <denkenz@gmail.com>
+Message-ID: <1d975fec-a480-f40b-ff98-90d0e4852758@gmail.com>
+Date:   Mon, 19 Aug 2019 15:58:16 -0500
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
  Thunderbird/60.8.0
 MIME-Version: 1.0
-In-Reply-To: <5bc077f7b2f017da7c027edd27a543910dd6ac32.camel@sipsolutions.net>
+In-Reply-To: <4848c3a9d0b330fab4442436244387a2c127fa03.camel@sipsolutions.net>
 Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
-X-Ovh-Tracer-Id: 840484282674453704
-X-VR-SPAMSTATE: OK
-X-VR-SPAMSCORE: -100
-X-VR-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgeduvddrudefledgudehhecutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfqggfjpdevjffgvefmvefgnecuuegrihhlohhuthemucehtddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmd
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+Hi Johannes,
 
+> TBH, I'm not really sure I see any point in this to start with, many
+> devices will give the address to the firmware when the interface is
+> brought up (even iwlwifi does - I'm not sure we'd want to take your
+> patch for iwlwifi even if that works today, nothing says the firmware
+> might not change its mind on that), and so it's quite likely only going
+> to be supported in few devices.
 
-Am 19.08.19 um 22:09 schrieb Johannes Berg:
-> On Mon, 2019-08-19 at 22:03 +0200, Johannes Berg wrote:
->>
->>> While less desirable we still could get that working: The mvm driver
->>> would have to detect the key borders and then tell the firmware to
->>> switch over to the other key. But we would have to make sure to not
->>> re-enable A-MPDU aggregation till the card really has switched.
+Hmm... I sense a pattern of you not seeing a point in doing many 
+things... Do you actually use the stuff you maintain?
+
 > 
->> So probably you're right, and we'd have to disable A-MPDUs until we have
->> no outstanding old-key-retransmits, but that seems manageable.
+> You've also not really explained what exactly is troubling you with
+> changing the MAC address, you just mentioned some sort of "race
+> condition"?
+
+Well, one possible use case might be, oh something like this:
+
+https://source.android.com/devices/tech/connect/wifi-mac-randomization
+
 > 
-> Actually, we probably have to even delay the key switch until there are
-> no more frames to retransmit, because the hardware is involved to some
-> extent and it won't know about two keys or something... Not really sure
-> how it all works though, off the top of my head.
+> Now, one thing I can imagine would be that you'd want to optimize
+> 
+>   * ifdown
+>     - remove iface from fw/hw
+>     - stop fw/hw
+>   * change MAC
+>   * ifup
+>     - start fw/hw
+>     - add iface to fw/hw
+> 
+> to just
+> 
+>   * ifdown
+>     - remove iface from fw/hw
+>   * change MAC
+>   * ifup
+>     - add iface to fw/hw
+> 
 
-This sounds like the card is not really able to handle two unicast key 
-per STA, which would be a show stopper.
-But not sure if I can believe that: After all the card is setting the 
-correct keyid for the key and e.g. able to use keyid 1 for both send and 
-receive, so it's not simply assuming unicast keys are always using keyid 0.
+That would be a part of it...
 
-Honoring the keyid for that but then not be able to differentiate 
-between the keyids for re-transmits is nothing I would have expected. So 
-I still hope you are wrong here:-)
+> i.e. not restart the firmware (which takes time) for all this, but that
+> seems much easier to solve by e.g. having a combined operation for all
+> of this that gets handled in mac80211, or more generally by having a
+> "please keep the firmware running" token that you can hold while you do
+> the operation?
 
-Alexander
+And also maybe a bunch of other optimizations like not flushing scan 
+results?
+
+> 
+> Your changes are also a bit strange - you modified the "connect" path
+> and iwlwifi, but the connect path is not usually (other than with iw or
+> even iwconfig) taken for iwlwifi? And if you modify auth/assoc paths,
+> you get into even weirder problems - what if you use different addresses
+> for auth and assoc? What if the assoc (or even connect) really was a
+> *re*assoc, and thus must have the same MAC address? To me, the whole
+> thing seems like more of a problem than a solution.
+> 
+
+Okay, so there are some obstacles.  But can you get over the whole 
+"Don't hold it like this" part and actually offer up something constructive?
+
+Regards,
+-Denis
