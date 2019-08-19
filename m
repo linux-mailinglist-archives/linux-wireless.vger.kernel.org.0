@@ -2,88 +2,138 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 8316492455
-	for <lists+linux-wireless@lfdr.de>; Mon, 19 Aug 2019 15:09:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AECB8926CC
+	for <lists+linux-wireless@lfdr.de>; Mon, 19 Aug 2019 16:35:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727689AbfHSNJA (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 19 Aug 2019 09:09:00 -0400
-Received: from paleale.coelho.fi ([176.9.41.70]:36744 "EHLO
+        id S1726677AbfHSOfU (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 19 Aug 2019 10:35:20 -0400
+Received: from paleale.coelho.fi ([176.9.41.70]:36762 "EHLO
         farmhouse.coelho.fi" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1727440AbfHSNI7 (ORCPT
+        with ESMTP id S1726211AbfHSOfU (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 19 Aug 2019 09:08:59 -0400
-Received: from [91.156.6.193] (helo=redipa)
-        by farmhouse.coelho.fi with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+        Mon, 19 Aug 2019 10:35:20 -0400
+Received: from [91.156.6.193] (helo=redipa.ger.corp.intel.com)
+        by farmhouse.coelho.fi with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
         (Exim 4.92)
         (envelope-from <luca@coelho.fi>)
-        id 1hzhP7-0007qY-TD; Mon, 19 Aug 2019 16:08:58 +0300
-Message-ID: <6e207057abe66a389ad2145ba7e6a498d1640d01.camel@coelho.fi>
+        id 1hzikc-0007sP-Ur; Mon, 19 Aug 2019 17:35:17 +0300
 From:   Luca Coelho <luca@coelho.fi>
-To:     Kalle Valo <kvalo@codeaurora.org>
+To:     kvalo@codeaurora.org
 Cc:     linux-wireless@vger.kernel.org
-Date:   Mon, 19 Aug 2019 16:08:56 +0300
-In-Reply-To: <8736hybmln.fsf@kamboji.qca.qualcomm.com>
-References: <20190817065200.9701-1-luca@coelho.fi>
-         <20190817065200.9701-23-luca@coelho.fi>
-         <8736hybmln.fsf@kamboji.qca.qualcomm.com>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.30.5-1.1 
+Date:   Mon, 19 Aug 2019 17:34:45 +0300
+Message-Id: <20190819143507.6989-1-luca@coelho.fi>
+X-Mailer: git-send-email 2.23.0.rc1
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on farmhouse.coelho.fi
 X-Spam-Level: 
 X-Spam-Status: No, score=-2.9 required=5.0 tests=ALL_TRUSTED,BAYES_00,
         URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.2
-Subject: Re: [PATCH 22/22] iwlwifi: remove the code under IWLWIFI_PCIE_RTPM
+Subject: [PATCH v2 00/22] iwlwifi: updates intended for v5.4 2019-08-17-2
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Sun, 2019-08-18 at 16:59 +0300, Kalle Valo wrote:
-> Luca Coelho <luca@coelho.fi> writes:
-> 
-> > From: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
-> > 
-> > This is never set.
-> > 
-> > Signed-off-by: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
-> > Signed-off-by: Luca Coelho <luciano.coelho@intel.com>
-> > ---
-> >  drivers/net/wireless/intel/iwlwifi/Kconfig    | 14 ----
-> >  drivers/net/wireless/intel/iwlwifi/pcie/drv.c | 71 -------------------
-> >  .../net/wireless/intel/iwlwifi/pcie/trans.c   |  4 --
-> >  3 files changed, 89 deletions(-)
-> > 
-> > diff --git a/drivers/net/wireless/intel/iwlwifi/Kconfig b/drivers/net/wireless/intel/iwlwifi/Kconfig
-> > index 235349a33a3c..7dbc0d38bb3b 100644
-> > --- a/drivers/net/wireless/intel/iwlwifi/Kconfig
-> > +++ b/drivers/net/wireless/intel/iwlwifi/Kconfig
-> > @@ -92,20 +92,6 @@ config IWLWIFI_BCAST_FILTERING
-> >  	  If unsure, don't enable this option, as some programs might
-> >  	  expect incoming broadcasts for their normal operations.
-> >  
-> > -config IWLWIFI_PCIE_RTPM
-> > -       bool "Enable runtime power management mode for PCIe devices"
-> > -       depends on IWLMVM && PM && EXPERT
-> > -       help
-> > -         Say Y here to enable runtime power management for PCIe
-> > -         devices.  If enabled, the device will go into low power mode
-> > -         when idle for a short period of time, allowing for improved
-> > -         power saving during runtime. Note that this feature requires
-> > -         a tight integration with the platform. It is not recommended
-> > -         to enable this feature without proper validation with the
-> > -         specific target platform.
-> > -
-> > -	 If unsure, say N.
-> 
-> I would like to have more understanding why you are removing an existing
-> Kconfig option? "Never set" tells nothing.
+From: Luca Coelho <luciano.coelho@intel.com>
 
-Okay, I'll expand this commit message a bit, but leave the core of the
-explanation to the first patch.
+Hi,
 
---
+Here's the second version of the first set of patches intended for
+v5.4.  It's the usual development, new features, cleanups and
+bugfixes.
+
+The changes are:
+
+* Remove (broken) d0i3 support;
+* Debug infrastructure work continues;
+* Bump support FW API version to 49;
+* A few clean-ups;
+* Other small fixes and improvements;
+
+In v2:
+
+* Fixed the bogus commit message of patch 9/22.
+* Added more description to the two patches Kalle commented on (12/22
+  and 22/22);
+
+As usual, I'm pushing this to a pending branch, for kbuild bot, and
+will send a pull-request later.
+
+Please review.
+
 Cheers,
 Luca.
+
+
+Beker Ayala (1):
+  iwlwifi: mvm: fix scan config command size
+
+Emmanuel Grumbach (12):
+  iwlwifi: mvm: remove redundant condition in
+    iwl_mvm_set_hw_rfkill_state
+  iwlwifi: mvm: start to remove the code for d0i3
+  iwlwifi: remove all the d0i3 references
+  iwlwifi: mvm: remove the tx defer for d0i3
+  iwlwifi: mvm: remove the d0i3 entry/exit flow
+  iwlwifi: mvm: iwl_mvm_wowlan_config_key_params is for wowlan only
+  iwlwifi: mvm: remove d0i3_ap_sta_id
+  iwlwifi: mvm: remove iwl_mvm_update_d0i3_power_mode
+  iwlwifi: mvm: remove last leftovers of d0i3
+  iwlwifi: remove CMD_HIGH_PRIO
+  iwlwifi: trans: remove suspending flag
+  iwlwifi: remove the code under IWLWIFI_PCIE_RTPM
+
+Ilan Peer (1):
+  iwlwifi: mvm: Block 26-tone RU OFDMA transmissions
+
+Ilia Lin (1):
+  iwlwifi: Send DQA enable command only if TVL is on
+
+Johannes Berg (1):
+  iwlwifi: mvm: remove unnecessary forward declarations
+
+Luca Coelho (1):
+  iwlwifi: bump FW API to 49 for 22000 series
+
+Shahar S Matityahu (4):
+  iwlwifi: dbg: move monitor recording functionality from header file
+  iwlwifi: dbg: move debug recording stop from trans to op mode
+  iwlwifi: dbg: support debug recording suspend resume command
+  iwlwifi: add ldbg config cmd debug print
+
+Shaul Triebitz (1):
+  iwlwifi: mvm: add the skb length to a print
+
+ drivers/net/wireless/intel/iwlwifi/Kconfig    |  14 -
+ .../net/wireless/intel/iwlwifi/cfg/22000.c    |   2 +-
+ .../net/wireless/intel/iwlwifi/fw/api/debug.h |  30 +-
+ .../net/wireless/intel/iwlwifi/fw/api/mac.h   |   4 +
+ drivers/net/wireless/intel/iwlwifi/fw/dbg.c   | 102 +++-
+ drivers/net/wireless/intel/iwlwifi/fw/dbg.h   |  92 +---
+ drivers/net/wireless/intel/iwlwifi/fw/file.h  |   1 +
+ .../net/wireless/intel/iwlwifi/iwl-op-mode.h  |   4 +-
+ .../net/wireless/intel/iwlwifi/iwl-trans.h    |  13 +-
+ drivers/net/wireless/intel/iwlwifi/mvm/d3.c   | 186 +------
+ .../net/wireless/intel/iwlwifi/mvm/debugfs.c  | 111 -----
+ drivers/net/wireless/intel/iwlwifi/mvm/fw.c   |  13 +-
+ .../net/wireless/intel/iwlwifi/mvm/mac80211.c | 333 +++----------
+ drivers/net/wireless/intel/iwlwifi/mvm/mvm.h  | 117 +----
+ drivers/net/wireless/intel/iwlwifi/mvm/ops.c  | 460 +-----------------
+ .../net/wireless/intel/iwlwifi/mvm/power.c    |  82 +---
+ drivers/net/wireless/intel/iwlwifi/mvm/rx.c   |  18 +-
+ drivers/net/wireless/intel/iwlwifi/mvm/scan.c |   9 +-
+ drivers/net/wireless/intel/iwlwifi/mvm/sta.c  |  19 -
+ drivers/net/wireless/intel/iwlwifi/mvm/tdls.c |   9 -
+ .../wireless/intel/iwlwifi/mvm/time-event.c   |   8 +-
+ drivers/net/wireless/intel/iwlwifi/mvm/tt.c   |  12 +-
+ drivers/net/wireless/intel/iwlwifi/mvm/tx.c   |   5 +-
+ .../net/wireless/intel/iwlwifi/mvm/utils.c    |   8 +-
+ drivers/net/wireless/intel/iwlwifi/pcie/drv.c |  85 ----
+ .../wireless/intel/iwlwifi/pcie/trans-gen2.c  |   3 -
+ .../net/wireless/intel/iwlwifi/pcie/trans.c   |   7 -
+ 27 files changed, 251 insertions(+), 1496 deletions(-)
+
+-- 
+2.23.0.rc1
 
