@@ -2,309 +2,133 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C7A94927B4
-	for <lists+linux-wireless@lfdr.de>; Mon, 19 Aug 2019 16:56:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C42629493B
+	for <lists+linux-wireless@lfdr.de>; Mon, 19 Aug 2019 17:56:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726553AbfHSO4s (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 19 Aug 2019 10:56:48 -0400
-Received: from mail-qt1-f181.google.com ([209.85.160.181]:44451 "EHLO
-        mail-qt1-f181.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725536AbfHSO4s (ORCPT
+        id S1727698AbfHSP40 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 19 Aug 2019 11:56:26 -0400
+Received: from mail-pg1-f193.google.com ([209.85.215.193]:37811 "EHLO
+        mail-pg1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727580AbfHSP4Z (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 19 Aug 2019 10:56:48 -0400
-Received: by mail-qt1-f181.google.com with SMTP id 44so2176170qtg.11
-        for <linux-wireless@vger.kernel.org>; Mon, 19 Aug 2019 07:56:47 -0700 (PDT)
+        Mon, 19 Aug 2019 11:56:25 -0400
+Received: by mail-pg1-f193.google.com with SMTP id d1so1460210pgp.4
+        for <linux-wireless@vger.kernel.org>; Mon, 19 Aug 2019 08:56:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=mime-version:from:date:message-id:subject:to;
-        bh=ecnJjmGY3/9/lbHhC0G3Vm3XOyf71U5eAe7b11PSTiQ=;
-        b=QtNwRWhhB46n3Ulbf0SRsoelEknmHknBW0wdFLo/4NAw09XdrPhmDRcfdYzeSB0P2X
-         Lq+4GUruR8aUVQnWHBr5zhZYH+o5uTyAD+R25bx9VUzU6/cCgbOdOl357RMdMaQB92et
-         T5oqyGfmhX3e8edCEgTI4LW+V2DlZdoSZyu7httL+D37IZWQevoH8a7t9cFba8PvTeII
-         rkVLQSRSeeIziDVxbycxj+lREBqxJiNXsqXekd1oZt6sKh4ZkTvmJRHm0hehWhYJLnU6
-         iC1mXh2jsFuJT6/A19MvCASHny0vfzi4OCzvey7kOTs3y/EqSpPU+r3GmeZtMiu78xUJ
-         g2+Q==
+        h=message-id:subject:from:to:date:in-reply-to:references:mime-version
+         :content-transfer-encoding;
+        bh=ETknhA89ZTB2b5rKcUZ5prTFLDDlAikTGBogsbMBvTc=;
+        b=mTxqpG4VgkNnRjnE1+s7uWynEETfejkJLBBf9FwaTDT2VDPIn9jIaaBJMjaa6MDzE1
+         8P7OF/qJAdm2kHl9VSIMcR271T8uMqqW9BB450clnAyzlFNtCD1QTm/iRZTjB0QfOaUT
+         xSTi/ZPH8k5lyWAauCmEXUOPsgjoWq25ySErYQXRRhsY19sBV3uhzNFyIeS8NZCYPVAb
+         tfARLUSuxU6VI5juiMLu6SuspPn87JY1/7ruzic2C2SMp+UP1Q+39CXH3WiZfjJRcRGE
+         EvSG4vb6+qeD9mn1+oKgksd8XAgDFkEbo1rie0grPlWBLQghkxFALIrFecjIieEH3FS8
+         Y/AA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:from:date:message-id:subject:to;
-        bh=ecnJjmGY3/9/lbHhC0G3Vm3XOyf71U5eAe7b11PSTiQ=;
-        b=DrSCg8Lf5P7BQfPCuZl0SzaSDQYbmrWyImoskovuy+fQB4G+yAW29KuoCzy9YGo8Qy
-         xUrpB5brFzv5aUh/4FUetRwUPbsKffclVdh6Vx1NM3r3UvR9POilixv1+DvI5D5aEP2H
-         1HWsD1dBkbi61Bl1KmYZm8xmV4ikAe8mmxtXSlYVKlciLgDykW1KnvvGPtfZBFcAKPMt
-         0BxUaGtY426R2mvOikmUJr0AY15plEP3hAlqnmjkHKAMpC86EfcaOGt4dOxa9CzqreJJ
-         3f0jva0V3+XnhlGINTMUHGSE0/uGFuFaW2G7xnmjKXmsgbmEEvAuLaTN8hTq3cAXo45j
-         2szA==
-X-Gm-Message-State: APjAAAXyZQ6s2J+BO347fVpwPRMGWZ5gYYXsdqQYpnCvTbxlQajkGigm
-        Kp/JvdpqgcDadsPS7/HspKcEJN7/xbclirncPkYmSg==
-X-Google-Smtp-Source: APXvYqylSDfsubUvrTIq+W6Jx5uZoF50D6OX6zz7mfQkIZjZ4sEwBnPLyfK107mZXDM0658QrzzzBHhSGet77h+Qcyk=
-X-Received: by 2002:ad4:5145:: with SMTP id g5mr10931711qvq.151.1566226606667;
- Mon, 19 Aug 2019 07:56:46 -0700 (PDT)
-MIME-Version: 1.0
-From:   =?UTF-8?B?SsOhbiBWZXNlbMO9?= <jano.vesely@gmail.com>
-Date:   Mon, 19 Aug 2019 10:56:35 -0400
-Message-ID: <CA+K+NcTOj_7FAi_Fs+P7j5myPH1ARk_CfLb0UNsY32j788Q4rQ@mail.gmail.com>
-Subject: [5.2 regression] rtwpci loss of p2p capability
-To:     linux-wireless <linux-wireless@vger.kernel.org>,
-        Tony Chuang <yhchuang@realtek.com>
-Content-Type: multipart/mixed; boundary="000000000000886f9c0590798c8b"
+        h=x-gm-message-state:message-id:subject:from:to:date:in-reply-to
+         :references:mime-version:content-transfer-encoding;
+        bh=ETknhA89ZTB2b5rKcUZ5prTFLDDlAikTGBogsbMBvTc=;
+        b=AjYYYoI7MJCHlCZUZb5OEN58pl5x776dg3a7YXI/8453s830bSzgoH4L8v/cz36+fQ
+         jGpkJkAB6VtpVlC1D4VlMaAnirEja5lEcuFPTki2STi2h3F9trt7LZzYOoh3RGFzctmi
+         FqElWdO/SeTMXkGoTh/GbV6nLnKjT+gx5fB2v7WW7OjSpmdCkEmQYRrBJZUCVLBAavpC
+         8/Toe7RyNs7/NGb9lI/7CU1QweWxF36/OuYP+bkMMjMYUqWyMYKQgC/LpDXlVPKzHQmg
+         kgYBPXX4Gv/86HQUI3dE027YJc16d2n3QpfaFotqMGYoRoI0SKVNmqX6duWrI9bVqGTJ
+         dRHg==
+X-Gm-Message-State: APjAAAXPJ7l8AzV4+qm+YyQmLnQ0nPJNurwDsDr+YrnUzw0JGHmYr+lF
+        2RJwKs5PTQ2WqxZEhUEXBZuZfHVv9sA=
+X-Google-Smtp-Source: APXvYqx2DaxNqvbOJhupIMOD/gFIqemkpd06VrLbk5uwdxfFGaZyff/lA4Z6uBxw/hhAREhmwVTJuw==
+X-Received: by 2002:a17:90a:a105:: with SMTP id s5mr21176579pjp.51.1566230184889;
+        Mon, 19 Aug 2019 08:56:24 -0700 (PDT)
+Received: from jprestwo-test.jf.intel.com ([134.134.139.76])
+        by smtp.googlemail.com with ESMTPSA id b126sm20609204pfa.177.2019.08.19.08.56.23
+        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
+        Mon, 19 Aug 2019 08:56:24 -0700 (PDT)
+Message-ID: <394092a2f20697c9b055166a8254a5ef888551a5.camel@gmail.com>
+Subject: Re: [RFC 0/1] Allow MAC change on up interface
+From:   James Prestwood <prestwoj@gmail.com>
+To:     Johannes Berg <johannes@sipsolutions.net>,
+        linux-wireless@vger.kernel.org
+Date:   Mon, 19 Aug 2019 08:55:00 -0700
+In-Reply-To: <645af7dad899e8eb186b3fee0f8a8a151a408557.camel@sipsolutions.net>
+References: <20190815185702.30937-1-prestwoj@gmail.com>
+         (sfid-20190815_205833_978900_86B1E73D) <645af7dad899e8eb186b3fee0f8a8a151a408557.camel@sipsolutions.net>
+Content-Type: text/plain; charset="UTF-8"
+X-Mailer: Evolution 3.28.5-0ubuntu0.18.04.1 
+Mime-Version: 1.0
+Content-Transfer-Encoding: 7bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
---000000000000886f9c0590798c8b
-Content-Type: text/plain; charset="UTF-8"
+On Mon, 2019-08-19 at 12:14 +0200, Johannes Berg wrote:
+> On Thu, 2019-08-15 at 11:57 -0700, James Prestwood wrote:
+> > This is an example of how a devices MAC address could be changed
+> > while
+> > the interface is up. Currently RTNL and mac80211 both require the
+> > interface be down before changing the MAC.
+> > 
+> > After poking around a bit I found that some drivers can actually
+> > change the MAC while the iface is up. Allowing user space to do
+> > this
+> > while the iface is up would elminate a few potential race
+> > conditions
+> > that arise when changing the MAC from user space.
+> > 
+> > This commit does a few things:
+> >  - Adds an EXT_FEATURE that user space can check to see if the
+> > driver
+> >    allows this MAC changing.
+> >  - Adds a new NL80211_ATTR for including a "random mac" to     
+> >    CMD_CONNECT. This MAC is passed down the stack and gets set to 
+> >    the net_device's address.
+> >  - Set this wiphy extended feature in iwlwifi (just as an example)
+> >  - Relax checks in mac80211 which check if the interface is running
+> >  - Set IFF_LIVE_ADDR_CHANGE on net_device. Note: I know setting
+> > this
+> >    where I did is likely not the right way to do it, but for this
+> >    proof-of-concept it works. With guidance I can move this around
+> >    to a proper place.
+> 
+> 
+> It actually seems wrong to set IFF_LIVE_ADDR_CHANGE at all, because
+> you
+> don't actually support that - you only support setting it while not
+> connected?
 
-Hi,
+You are right, we only care about setting the MAC while not connected.
+But, the eth_ API's that set the MAC are contingent on
+IFF_LIVE_ADDR_CHANGE when the interface is running. If you follow down
+'dev_set_mac_address':
 
-I ran into another regression for rtwpci, going from 5.1 staging
-driver to 5.2 dropped p2p capability.
-Was this intentional? are there plans to bring it back?
-it was pretty useful for miracast connected displays.
+dev_set_mac_address ->
+   ndo_set_mac_address (ieee80211_change_mac) ->
+      eth_mac_addr ->
+         eth_prepare_mac_addr_change:
 
-I've attached 'iw phy0 info' for both 5.1 and 5.2 kernels which show the issue.
+You see the check for:
 
-thank you,
-Jan
+!(dev->priv_flags & IFF_LIVE_ADDR_CHANGE) && netif_running(dev)
 
---000000000000886f9c0590798c8b
-Content-Type: application/octet-stream; name="phy_5.2"
-Content-Disposition: attachment; filename="phy_5.2"
-Content-Transfer-Encoding: base64
-Content-ID: <f_jziiu4zr0>
-X-Attachment-Id: f_jziiu4zr0
+Like I said in my commit message, I did not think setting
+IFF_LIVE_ADDR_CHANGE where I did was the correct way to do it, but
+unless this eth code is changed its looking like it does need to be set
+somewhere to change the MAC while 'running'.
 
-V2lwaHkgcGh5MAoJbWF4ICMgc2NhbiBTU0lEczogNAoJbWF4IHNjYW4gSUVzIGxlbmd0aDogMjI0
-MyBieXRlcwoJbWF4ICMgc2NoZWQgc2NhbiBTU0lEczogMAoJbWF4ICMgbWF0Y2ggc2V0czogMAoJ
-bWF4ICMgc2NhbiBwbGFuczogMQoJbWF4IHNjYW4gcGxhbiBpbnRlcnZhbDogLTEKCW1heCBzY2Fu
-IHBsYW4gaXRlcmF0aW9uczogMAoJUmV0cnkgc2hvcnQgbGltaXQ6IDcKCVJldHJ5IGxvbmcgbGlt
-aXQ6IDQKCUNvdmVyYWdlIGNsYXNzOiAwICh1cCB0byAwbSkKCURldmljZSBzdXBwb3J0cyBULURM
-Uy4KCVN1cHBvcnRlZCBDaXBoZXJzOgoJCSogV0VQNDAgKDAwLTBmLWFjOjEpCgkJKiBXRVAxMDQg
-KDAwLTBmLWFjOjUpCgkJKiBUS0lQICgwMC0wZi1hYzoyKQoJCSogQ0NNUC0xMjggKDAwLTBmLWFj
-OjQpCgkJKiBDQ01QLTI1NiAoMDAtMGYtYWM6MTApCgkJKiBHQ01QLTEyOCAoMDAtMGYtYWM6OCkK
-CQkqIEdDTVAtMjU2ICgwMC0wZi1hYzo5KQoJCSogQ01BQyAoMDAtMGYtYWM6NikKCQkqIENNQUMt
-MjU2ICgwMC0wZi1hYzoxMykKCQkqIEdNQUMtMTI4ICgwMC0wZi1hYzoxMSkKCQkqIEdNQUMtMjU2
-ICgwMC0wZi1hYzoxMikKCUF2YWlsYWJsZSBBbnRlbm5hczogVFggMCBSWCAwCglTdXBwb3J0ZWQg
-aW50ZXJmYWNlIG1vZGVzOgoJCSAqIElCU1MKCQkgKiBtYW5hZ2VkCgkJICogQVAKCQkgKiBBUC9W
-TEFOCgkJICogbW9uaXRvcgoJCSAqIG1lc2ggcG9pbnQKCUJhbmQgMToKCQlDYXBhYmlsaXRpZXM6
-IDB4MTk2ZgoJCQlSWCBMRFBDCgkJCUhUMjAvSFQ0MAoJCQlTTSBQb3dlciBTYXZlIGRpc2FibGVk
-CgkJCVJYIEhUMjAgU0dJCgkJCVJYIEhUNDAgU0dJCgkJCVJYIFNUQkMgMS1zdHJlYW0KCQkJTWF4
-IEFNU0RVIGxlbmd0aDogNzkzNSBieXRlcwoJCQlEU1NTL0NDSyBIVDQwCgkJTWF4aW11bSBSWCBB
-TVBEVSBsZW5ndGggNjU1MzUgYnl0ZXMgKGV4cG9uZW50OiAweDAwMykKCQlNaW5pbXVtIFJYIEFN
-UERVIHRpbWUgc3BhY2luZzogMTYgdXNlYyAoMHgwNykKCQlIVCBNYXggUlggZGF0YSByYXRlOiAz
-MDAgTWJwcwoJCUhUIFRYL1JYIE1DUyByYXRlIGluZGV4ZXMgc3VwcG9ydGVkOiAwLTE1LCAzMgoJ
-CUJpdHJhdGVzIChub24tSFQpOgoJCQkqIDEuMCBNYnBzCgkJCSogMi4wIE1icHMKCQkJKiA1LjUg
-TWJwcwoJCQkqIDExLjAgTWJwcwoJCQkqIDYuMCBNYnBzCgkJCSogOS4wIE1icHMKCQkJKiAxMi4w
-IE1icHMKCQkJKiAxOC4wIE1icHMKCQkJKiAyNC4wIE1icHMKCQkJKiAzNi4wIE1icHMKCQkJKiA0
-OC4wIE1icHMKCQkJKiA1NC4wIE1icHMKCQlGcmVxdWVuY2llczoKCQkJKiAyNDEyIE1IeiBbMV0g
-KDMwLjAgZEJtKQoJCQkqIDI0MTcgTUh6IFsyXSAoMzAuMCBkQm0pCgkJCSogMjQyMiBNSHogWzNd
-ICgzMC4wIGRCbSkKCQkJKiAyNDI3IE1IeiBbNF0gKDMwLjAgZEJtKQoJCQkqIDI0MzIgTUh6IFs1
-XSAoMzAuMCBkQm0pCgkJCSogMjQzNyBNSHogWzZdICgzMC4wIGRCbSkKCQkJKiAyNDQyIE1IeiBb
-N10gKDMwLjAgZEJtKQoJCQkqIDI0NDcgTUh6IFs4XSAoMzAuMCBkQm0pCgkJCSogMjQ1MiBNSHog
-WzldICgzMC4wIGRCbSkKCQkJKiAyNDU3IE1IeiBbMTBdICgzMC4wIGRCbSkKCQkJKiAyNDYyIE1I
-eiBbMTFdICgzMC4wIGRCbSkKCQkJKiAyNDY3IE1IeiBbMTJdIChkaXNhYmxlZCkKCQkJKiAyNDcy
-IE1IeiBbMTNdIChkaXNhYmxlZCkKCQkJKiAyNDg0IE1IeiBbMTRdIChkaXNhYmxlZCkKCUJhbmQg
-MjoKCQlDYXBhYmlsaXRpZXM6IDB4MTk2ZgoJCQlSWCBMRFBDCgkJCUhUMjAvSFQ0MAoJCQlTTSBQ
-b3dlciBTYXZlIGRpc2FibGVkCgkJCVJYIEhUMjAgU0dJCgkJCVJYIEhUNDAgU0dJCgkJCVJYIFNU
-QkMgMS1zdHJlYW0KCQkJTWF4IEFNU0RVIGxlbmd0aDogNzkzNSBieXRlcwoJCQlEU1NTL0NDSyBI
-VDQwCgkJTWF4aW11bSBSWCBBTVBEVSBsZW5ndGggNjU1MzUgYnl0ZXMgKGV4cG9uZW50OiAweDAw
-MykKCQlNaW5pbXVtIFJYIEFNUERVIHRpbWUgc3BhY2luZzogMTYgdXNlYyAoMHgwNykKCQlIVCBN
-YXggUlggZGF0YSByYXRlOiAzMDAgTWJwcwoJCUhUIFRYL1JYIE1DUyByYXRlIGluZGV4ZXMgc3Vw
-cG9ydGVkOiAwLTE1LCAzMgoJCVZIVCBDYXBhYmlsaXRpZXMgKDB4MDNjMDAxYjIpOgoJCQlNYXgg
-TVBEVSBsZW5ndGg6IDExNDU0CgkJCVN1cHBvcnRlZCBDaGFubmVsIFdpZHRoOiBuZWl0aGVyIDE2
-MCBub3IgODArODAKCQkJUlggTERQQwoJCQlzaG9ydCBHSSAoODAgTUh6KQoJCQlUWCBTVEJDCgkJ
-CStIVEMtVkhUCgkJVkhUIFJYIE1DUyBzZXQ6CgkJCTEgc3RyZWFtczogTUNTIDAtOQoJCQkyIHN0
-cmVhbXM6IE1DUyAwLTkKCQkJMyBzdHJlYW1zOiBub3Qgc3VwcG9ydGVkCgkJCTQgc3RyZWFtczog
-bm90IHN1cHBvcnRlZAoJCQk1IHN0cmVhbXM6IG5vdCBzdXBwb3J0ZWQKCQkJNiBzdHJlYW1zOiBu
-b3Qgc3VwcG9ydGVkCgkJCTcgc3RyZWFtczogbm90IHN1cHBvcnRlZAoJCQk4IHN0cmVhbXM6IG5v
-dCBzdXBwb3J0ZWQKCQlWSFQgUlggaGlnaGVzdCBzdXBwb3J0ZWQ6IDc4MCBNYnBzCgkJVkhUIFRY
-IE1DUyBzZXQ6CgkJCTEgc3RyZWFtczogTUNTIDAtOQoJCQkyIHN0cmVhbXM6IE1DUyAwLTkKCQkJ
-MyBzdHJlYW1zOiBub3Qgc3VwcG9ydGVkCgkJCTQgc3RyZWFtczogbm90IHN1cHBvcnRlZAoJCQk1
-IHN0cmVhbXM6IG5vdCBzdXBwb3J0ZWQKCQkJNiBzdHJlYW1zOiBub3Qgc3VwcG9ydGVkCgkJCTcg
-c3RyZWFtczogbm90IHN1cHBvcnRlZAoJCQk4IHN0cmVhbXM6IG5vdCBzdXBwb3J0ZWQKCQlWSFQg
-VFggaGlnaGVzdCBzdXBwb3J0ZWQ6IDc4MCBNYnBzCgkJQml0cmF0ZXMgKG5vbi1IVCk6CgkJCSog
-Ni4wIE1icHMKCQkJKiA5LjAgTWJwcwoJCQkqIDEyLjAgTWJwcwoJCQkqIDE4LjAgTWJwcwoJCQkq
-IDI0LjAgTWJwcwoJCQkqIDM2LjAgTWJwcwoJCQkqIDQ4LjAgTWJwcwoJCQkqIDU0LjAgTWJwcwoJ
-CUZyZXF1ZW5jaWVzOgoJCQkqIDUxODAgTUh6IFszNl0gKDIzLjAgZEJtKQoJCQkqIDUyMDAgTUh6
-IFs0MF0gKDIzLjAgZEJtKQoJCQkqIDUyMjAgTUh6IFs0NF0gKDIzLjAgZEJtKQoJCQkqIDUyNDAg
-TUh6IFs0OF0gKDIzLjAgZEJtKQoJCQkqIDUyNjAgTUh6IFs1Ml0gKDIzLjAgZEJtKSAocmFkYXIg
-ZGV0ZWN0aW9uKQoJCQkqIDUyODAgTUh6IFs1Nl0gKDIzLjAgZEJtKSAocmFkYXIgZGV0ZWN0aW9u
-KQoJCQkqIDUzMDAgTUh6IFs2MF0gKDIzLjAgZEJtKSAocmFkYXIgZGV0ZWN0aW9uKQoJCQkqIDUz
-MjAgTUh6IFs2NF0gKDIzLjAgZEJtKSAocmFkYXIgZGV0ZWN0aW9uKQoJCQkqIDU1MDAgTUh6IFsx
-MDBdICgyMy4wIGRCbSkgKHJhZGFyIGRldGVjdGlvbikKCQkJKiA1NTIwIE1IeiBbMTA0XSAoMjMu
-MCBkQm0pIChyYWRhciBkZXRlY3Rpb24pCgkJCSogNTU0MCBNSHogWzEwOF0gKDIzLjAgZEJtKSAo
-cmFkYXIgZGV0ZWN0aW9uKQoJCQkqIDU1NjAgTUh6IFsxMTJdICgyMy4wIGRCbSkgKHJhZGFyIGRl
-dGVjdGlvbikKCQkJKiA1NTgwIE1IeiBbMTE2XSAoMjMuMCBkQm0pIChyYWRhciBkZXRlY3Rpb24p
-CgkJCSogNTYwMCBNSHogWzEyMF0gKDIzLjAgZEJtKSAocmFkYXIgZGV0ZWN0aW9uKQoJCQkqIDU2
-MjAgTUh6IFsxMjRdICgyMy4wIGRCbSkgKHJhZGFyIGRldGVjdGlvbikKCQkJKiA1NjQwIE1IeiBb
-MTI4XSAoMjMuMCBkQm0pIChyYWRhciBkZXRlY3Rpb24pCgkJCSogNTY2MCBNSHogWzEzMl0gKDIz
-LjAgZEJtKSAocmFkYXIgZGV0ZWN0aW9uKQoJCQkqIDU2ODAgTUh6IFsxMzZdICgyMy4wIGRCbSkg
-KHJhZGFyIGRldGVjdGlvbikKCQkJKiA1NzAwIE1IeiBbMTQwXSAoMjMuMCBkQm0pIChyYWRhciBk
-ZXRlY3Rpb24pCgkJCSogNTc0NSBNSHogWzE0OV0gKDMwLjAgZEJtKQoJCQkqIDU3NjUgTUh6IFsx
-NTNdICgzMC4wIGRCbSkKCQkJKiA1Nzg1IE1IeiBbMTU3XSAoMzAuMCBkQm0pCgkJCSogNTgwNSBN
-SHogWzE2MV0gKDMwLjAgZEJtKQoJCQkqIDU4MjUgTUh6IFsxNjVdICgzMC4wIGRCbSkKCVN1cHBv
-cnRlZCBjb21tYW5kczoKCQkgKiBuZXdfaW50ZXJmYWNlCgkJICogc2V0X2ludGVyZmFjZQoJCSAq
-IG5ld19rZXkKCQkgKiBzdGFydF9hcAoJCSAqIG5ld19zdGF0aW9uCgkJICogbmV3X21wYXRoCgkJ
-ICogc2V0X21lc2hfY29uZmlnCgkJICogc2V0X2JzcwoJCSAqIGF1dGhlbnRpY2F0ZQoJCSAqIGFz
-c29jaWF0ZQoJCSAqIGRlYXV0aGVudGljYXRlCgkJICogZGlzYXNzb2NpYXRlCgkJICogam9pbl9p
-YnNzCgkJICogam9pbl9tZXNoCgkJICogc2V0X3R4X2JpdHJhdGVfbWFzawoJCSAqIGZyYW1lCgkJ
-ICogZnJhbWVfd2FpdF9jYW5jZWwKCQkgKiBzZXRfd2lwaHlfbmV0bnMKCQkgKiBzZXRfY2hhbm5l
-bAoJCSAqIHNldF93ZHNfcGVlcgoJCSAqIHRkbHNfbWdtdAoJCSAqIHRkbHNfb3BlcgoJCSAqIHBy
-b2JlX2NsaWVudAoJCSAqIHNldF9ub2Fja19tYXAKCQkgKiByZWdpc3Rlcl9iZWFjb25zCgkJICog
-c3RhcnRfcDJwX2RldmljZQoJCSAqIHNldF9tY2FzdF9yYXRlCgkJICogY29ubmVjdAoJCSAqIGRp
-c2Nvbm5lY3QKCQkgKiBzZXRfcW9zX21hcAoJCSAqIFVua25vd24gY29tbWFuZCAoMTIxKQoJU3Vw
-cG9ydGVkIFRYIGZyYW1lIHR5cGVzOgoJCSAqIElCU1M6IDB4MDAgMHgxMCAweDIwIDB4MzAgMHg0
-MCAweDUwIDB4NjAgMHg3MCAweDgwIDB4OTAgMHhhMCAweGIwIDB4YzAgMHhkMCAweGUwIDB4ZjAK
-CQkgKiBtYW5hZ2VkOiAweDAwIDB4MTAgMHgyMCAweDMwIDB4NDAgMHg1MCAweDYwIDB4NzAgMHg4
-MCAweDkwIDB4YTAgMHhiMCAweGMwIDB4ZDAgMHhlMCAweGYwCgkJICogQVA6IDB4MDAgMHgxMCAw
-eDIwIDB4MzAgMHg0MCAweDUwIDB4NjAgMHg3MCAweDgwIDB4OTAgMHhhMCAweGIwIDB4YzAgMHhk
-MCAweGUwIDB4ZjAKCQkgKiBBUC9WTEFOOiAweDAwIDB4MTAgMHgyMCAweDMwIDB4NDAgMHg1MCAw
-eDYwIDB4NzAgMHg4MCAweDkwIDB4YTAgMHhiMCAweGMwIDB4ZDAgMHhlMCAweGYwCgkJICogbWVz
-aCBwb2ludDogMHgwMCAweDEwIDB4MjAgMHgzMCAweDQwIDB4NTAgMHg2MCAweDcwIDB4ODAgMHg5
-MCAweGEwIDB4YjAgMHhjMCAweGQwIDB4ZTAgMHhmMAoJCSAqIFAyUC1jbGllbnQ6IDB4MDAgMHgx
-MCAweDIwIDB4MzAgMHg0MCAweDUwIDB4NjAgMHg3MCAweDgwIDB4OTAgMHhhMCAweGIwIDB4YzAg
-MHhkMCAweGUwIDB4ZjAKCQkgKiBQMlAtR086IDB4MDAgMHgxMCAweDIwIDB4MzAgMHg0MCAweDUw
-IDB4NjAgMHg3MCAweDgwIDB4OTAgMHhhMCAweGIwIDB4YzAgMHhkMCAweGUwIDB4ZjAKCQkgKiBQ
-MlAtZGV2aWNlOiAweDAwIDB4MTAgMHgyMCAweDMwIDB4NDAgMHg1MCAweDYwIDB4NzAgMHg4MCAw
-eDkwIDB4YTAgMHhiMCAweGMwIDB4ZDAgMHhlMCAweGYwCglTdXBwb3J0ZWQgUlggZnJhbWUgdHlw
-ZXM6CgkJICogSUJTUzogMHg0MCAweGIwIDB4YzAgMHhkMAoJCSAqIG1hbmFnZWQ6IDB4NDAgMHhk
-MAoJCSAqIEFQOiAweDAwIDB4MjAgMHg0MCAweGEwIDB4YjAgMHhjMCAweGQwCgkJICogQVAvVkxB
-TjogMHgwMCAweDIwIDB4NDAgMHhhMCAweGIwIDB4YzAgMHhkMAoJCSAqIG1lc2ggcG9pbnQ6IDB4
-YjAgMHhjMCAweGQwCgkJICogUDJQLWNsaWVudDogMHg0MCAweGQwCgkJICogUDJQLUdPOiAweDAw
-IDB4MjAgMHg0MCAweGEwIDB4YjAgMHhjMCAweGQwCgkJICogUDJQLWRldmljZTogMHg0MCAweGQw
-Cglzb2Z0d2FyZSBpbnRlcmZhY2UgbW9kZXMgKGNhbiBhbHdheXMgYmUgYWRkZWQpOgoJCSAqIEFQ
-L1ZMQU4KCQkgKiBtb25pdG9yCglpbnRlcmZhY2UgY29tYmluYXRpb25zIGFyZSBub3Qgc3VwcG9y
-dGVkCglIVCBDYXBhYmlsaXR5IG92ZXJyaWRlczoKCQkgKiBNQ1M6IGZmIGZmIGZmIGZmIGZmIGZm
-IGZmIGZmIGZmIGZmCgkJICogbWF4aW11bSBBLU1TRFUgbGVuZ3RoCgkJICogc3VwcG9ydGVkIGNo
-YW5uZWwgd2lkdGgKCQkgKiBzaG9ydCBHSSBmb3IgNDAgTUh6CgkJICogbWF4IEEtTVBEVSBsZW5n
-dGggZXhwb25lbnQKCQkgKiBtaW4gTVBEVSBzdGFydCBzcGFjaW5nCglEZXZpY2Ugc3VwcG9ydHMg
-VFggc3RhdHVzIHNvY2tldCBvcHRpb24uCglEZXZpY2Ugc3VwcG9ydHMgSFQtSUJTUy4KCURldmlj
-ZSBzdXBwb3J0cyBTQUUgd2l0aCBBVVRIRU5USUNBVEUgY29tbWFuZAoJRGV2aWNlIHN1cHBvcnRz
-IGxvdyBwcmlvcml0eSBzY2FuLgoJRGV2aWNlIHN1cHBvcnRzIHNjYW4gZmx1c2guCglEZXZpY2Ug
-c3VwcG9ydHMgQVAgc2Nhbi4KCURldmljZSBzdXBwb3J0cyBwZXItdmlmIFRYIHBvd2VyIHNldHRp
-bmcKCURyaXZlciBzdXBwb3J0cyBmdWxsIHN0YXRlIHRyYW5zaXRpb25zIGZvciBBUC9HTyBjbGll
-bnRzCglEcml2ZXIgc3VwcG9ydHMgYSB1c2Vyc3BhY2UgTVBNCglEZXZpY2Ugc3VwcG9ydHMgY29u
-ZmlndXJpbmcgdmRldiBNQUMtYWRkciBvbiBjcmVhdGUuCg==
---000000000000886f9c0590798c8b
-Content-Type: application/octet-stream; name="phy_5.1"
-Content-Disposition: attachment; filename="phy_5.1"
-Content-Transfer-Encoding: base64
-Content-ID: <f_jziiu50o1>
-X-Attachment-Id: f_jziiu50o1
+Maybe this is a historical thing but the comment about
+IFF_LIVE_ADDR_CHANGE says "device supports hardware address change when
+it's running". Isn't a wireless adapter 'running' when not connected?
+Or does 'running' indicate some different state than up/down?
 
-V2lwaHkgcGh5MAoJbWF4ICMgc2NhbiBTU0lEczogNAoJbWF4IHNjYW4gSUVzIGxlbmd0aDogMjI0
-MyBieXRlcwoJbWF4ICMgc2NoZWQgc2NhbiBTU0lEczogMAoJbWF4ICMgbWF0Y2ggc2V0czogMAoJ
-bWF4ICMgc2NhbiBwbGFuczogMQoJbWF4IHNjYW4gcGxhbiBpbnRlcnZhbDogLTEKCW1heCBzY2Fu
-IHBsYW4gaXRlcmF0aW9uczogMAoJUlRTIHRocmVzaG9sZDogMjM0NwoJUmV0cnkgc2hvcnQgbGlt
-aXQ6IDcKCVJldHJ5IGxvbmcgbGltaXQ6IDQKCUNvdmVyYWdlIGNsYXNzOiAwICh1cCB0byAwbSkK
-CURldmljZSBzdXBwb3J0cyBSU04tSUJTUy4KCVN1cHBvcnRlZCBDaXBoZXJzOgoJCSogV0VQNDAg
-KDAwLTBmLWFjOjEpCgkJKiBXRVAxMDQgKDAwLTBmLWFjOjUpCgkJKiBUS0lQICgwMC0wZi1hYzoy
-KQoJCSogQ0NNUC0xMjggKDAwLTBmLWFjOjQpCgkJKiBDQ01QLTI1NiAoMDAtMGYtYWM6MTApCgkJ
-KiBHQ01QLTEyOCAoMDAtMGYtYWM6OCkKCQkqIEdDTVAtMjU2ICgwMC0wZi1hYzo5KQoJCSogQ01B
-QyAoMDAtMGYtYWM6NikKCQkqIENNQUMtMjU2ICgwMC0wZi1hYzoxMykKCQkqIEdNQUMtMTI4ICgw
-MC0wZi1hYzoxMSkKCQkqIEdNQUMtMjU2ICgwMC0wZi1hYzoxMikKCUF2YWlsYWJsZSBBbnRlbm5h
-czogVFggMCBSWCAwCglTdXBwb3J0ZWQgaW50ZXJmYWNlIG1vZGVzOgoJCSAqIElCU1MKCQkgKiBt
-YW5hZ2VkCgkJICogQVAKCQkgKiBBUC9WTEFOCgkJICogbW9uaXRvcgoJCSAqIG1lc2ggcG9pbnQK
-CQkgKiBQMlAtY2xpZW50CgkJICogUDJQLUdPCglCYW5kIDE6CgkJQ2FwYWJpbGl0aWVzOiAweDE4
-NmUKCQkJSFQyMC9IVDQwCgkJCVNNIFBvd2VyIFNhdmUgZGlzYWJsZWQKCQkJUlggSFQyMCBTR0kK
-CQkJUlggSFQ0MCBTR0kKCQkJTm8gUlggU1RCQwoJCQlNYXggQU1TRFUgbGVuZ3RoOiA3OTM1IGJ5
-dGVzCgkJCURTU1MvQ0NLIEhUNDAKCQlNYXhpbXVtIFJYIEFNUERVIGxlbmd0aCA2NTUzNSBieXRl
-cyAoZXhwb25lbnQ6IDB4MDAzKQoJCU1pbmltdW0gUlggQU1QRFUgdGltZSBzcGFjaW5nOiAxNiB1
-c2VjICgweDA3KQoJCUhUIE1heCBSWCBkYXRhIHJhdGU6IDMwMCBNYnBzCgkJSFQgVFgvUlggTUNT
-IHJhdGUgaW5kZXhlcyBzdXBwb3J0ZWQ6IDAtMTUsIDMyCgkJQml0cmF0ZXMgKG5vbi1IVCk6CgkJ
-CSogMS4wIE1icHMKCQkJKiAyLjAgTWJwcwoJCQkqIDUuNSBNYnBzCgkJCSogMTEuMCBNYnBzCgkJ
-CSogNi4wIE1icHMKCQkJKiA5LjAgTWJwcwoJCQkqIDEyLjAgTWJwcwoJCQkqIDE4LjAgTWJwcwoJ
-CQkqIDI0LjAgTWJwcwoJCQkqIDM2LjAgTWJwcwoJCQkqIDQ4LjAgTWJwcwoJCQkqIDU0LjAgTWJw
-cwoJCUZyZXF1ZW5jaWVzOgoJCQkqIDI0MTIgTUh6IFsxXSAoMjAuMCBkQm0pCgkJCSogMjQxNyBN
-SHogWzJdICgyMC4wIGRCbSkKCQkJKiAyNDIyIE1IeiBbM10gKDIwLjAgZEJtKQoJCQkqIDI0Mjcg
-TUh6IFs0XSAoMjAuMCBkQm0pCgkJCSogMjQzMiBNSHogWzVdICgyMC4wIGRCbSkKCQkJKiAyNDM3
-IE1IeiBbNl0gKDIwLjAgZEJtKQoJCQkqIDI0NDIgTUh6IFs3XSAoMjAuMCBkQm0pCgkJCSogMjQ0
-NyBNSHogWzhdICgyMC4wIGRCbSkKCQkJKiAyNDUyIE1IeiBbOV0gKDIwLjAgZEJtKQoJCQkqIDI0
-NTcgTUh6IFsxMF0gKDIwLjAgZEJtKQoJCQkqIDI0NjIgTUh6IFsxMV0gKDIwLjAgZEJtKQoJCQkq
-IDI0NjcgTUh6IFsxMl0gKGRpc2FibGVkKQoJCQkqIDI0NzIgTUh6IFsxM10gKGRpc2FibGVkKQoJ
-CQkqIDI0ODQgTUh6IFsxNF0gKGRpc2FibGVkKQoJQmFuZCAyOgoJCUNhcGFiaWxpdGllczogMHgx
-ODZlCgkJCUhUMjAvSFQ0MAoJCQlTTSBQb3dlciBTYXZlIGRpc2FibGVkCgkJCVJYIEhUMjAgU0dJ
-CgkJCVJYIEhUNDAgU0dJCgkJCU5vIFJYIFNUQkMKCQkJTWF4IEFNU0RVIGxlbmd0aDogNzkzNSBi
-eXRlcwoJCQlEU1NTL0NDSyBIVDQwCgkJTWF4aW11bSBSWCBBTVBEVSBsZW5ndGggNjU1MzUgYnl0
-ZXMgKGV4cG9uZW50OiAweDAwMykKCQlNaW5pbXVtIFJYIEFNUERVIHRpbWUgc3BhY2luZzogMTYg
-dXNlYyAoMHgwNykKCQlIVCBNYXggUlggZGF0YSByYXRlOiAzMDAgTWJwcwoJCUhUIFRYL1JYIE1D
-UyByYXRlIGluZGV4ZXMgc3VwcG9ydGVkOiAwLTE1LCAzMgoJCVZIVCBDYXBhYmlsaXRpZXMgKDB4
-MzNjMDE5YTIpOgoJCQlNYXggTVBEVSBsZW5ndGg6IDExNDU0CgkJCVN1cHBvcnRlZCBDaGFubmVs
-IFdpZHRoOiBuZWl0aGVyIDE2MCBub3IgODArODAKCQkJc2hvcnQgR0kgKDgwIE1IeikKCQkJVFgg
-U1RCQwoJCQlTVSBCZWFtZm9ybWVyCgkJCVNVIEJlYW1mb3JtZWUKCQkJK0hUQy1WSFQKCQkJUlgg
-YW50ZW5uYSBwYXR0ZXJuIGNvbnNpc3RlbmN5CgkJCVRYIGFudGVubmEgcGF0dGVybiBjb25zaXN0
-ZW5jeQoJCVZIVCBSWCBNQ1Mgc2V0OgoJCQkxIHN0cmVhbXM6IE1DUyAwLTkKCQkJMiBzdHJlYW1z
-OiBNQ1MgMC05CgkJCTMgc3RyZWFtczogbm90IHN1cHBvcnRlZAoJCQk0IHN0cmVhbXM6IG5vdCBz
-dXBwb3J0ZWQKCQkJNSBzdHJlYW1zOiBub3Qgc3VwcG9ydGVkCgkJCTYgc3RyZWFtczogbm90IHN1
-cHBvcnRlZAoJCQk3IHN0cmVhbXM6IG5vdCBzdXBwb3J0ZWQKCQkJOCBzdHJlYW1zOiBub3Qgc3Vw
-cG9ydGVkCgkJVkhUIFJYIGhpZ2hlc3Qgc3VwcG9ydGVkOiA4NjcgTWJwcwoJCVZIVCBUWCBNQ1Mg
-c2V0OgoJCQkxIHN0cmVhbXM6IE1DUyAwLTkKCQkJMiBzdHJlYW1zOiBNQ1MgMC05CgkJCTMgc3Ry
-ZWFtczogbm90IHN1cHBvcnRlZAoJCQk0IHN0cmVhbXM6IG5vdCBzdXBwb3J0ZWQKCQkJNSBzdHJl
-YW1zOiBub3Qgc3VwcG9ydGVkCgkJCTYgc3RyZWFtczogbm90IHN1cHBvcnRlZAoJCQk3IHN0cmVh
-bXM6IG5vdCBzdXBwb3J0ZWQKCQkJOCBzdHJlYW1zOiBub3Qgc3VwcG9ydGVkCgkJVkhUIFRYIGhp
-Z2hlc3Qgc3VwcG9ydGVkOiA4NjcgTWJwcwoJCUJpdHJhdGVzIChub24tSFQpOgoJCQkqIDYuMCBN
-YnBzCgkJCSogOS4wIE1icHMKCQkJKiAxMi4wIE1icHMKCQkJKiAxOC4wIE1icHMKCQkJKiAyNC4w
-IE1icHMKCQkJKiAzNi4wIE1icHMKCQkJKiA0OC4wIE1icHMKCQkJKiA1NC4wIE1icHMKCQlGcmVx
-dWVuY2llczoKCQkJKiA1MTgwIE1IeiBbMzZdICgyMy4wIGRCbSkKCQkJKiA1MjAwIE1IeiBbNDBd
-ICgyMy4wIGRCbSkKCQkJKiA1MjIwIE1IeiBbNDRdICgyMy4wIGRCbSkKCQkJKiA1MjQwIE1IeiBb
-NDhdICgyMy4wIGRCbSkKCQkJKiA1MjYwIE1IeiBbNTJdICgyMy4wIGRCbSkgKG5vIElSLCByYWRh
-ciBkZXRlY3Rpb24pCgkJCSogNTI4MCBNSHogWzU2XSAoMjMuMCBkQm0pIChubyBJUiwgcmFkYXIg
-ZGV0ZWN0aW9uKQoJCQkqIDUzMDAgTUh6IFs2MF0gKDIzLjAgZEJtKSAobm8gSVIsIHJhZGFyIGRl
-dGVjdGlvbikKCQkJKiA1MzIwIE1IeiBbNjRdICgyMy4wIGRCbSkgKG5vIElSLCByYWRhciBkZXRl
-Y3Rpb24pCgkJCSogNTUwMCBNSHogWzEwMF0gKDIzLjAgZEJtKSAobm8gSVIsIHJhZGFyIGRldGVj
-dGlvbikKCQkJKiA1NTIwIE1IeiBbMTA0XSAoMjMuMCBkQm0pIChubyBJUiwgcmFkYXIgZGV0ZWN0
-aW9uKQoJCQkqIDU1NDAgTUh6IFsxMDhdICgyMy4wIGRCbSkgKG5vIElSLCByYWRhciBkZXRlY3Rp
-b24pCgkJCSogNTU2MCBNSHogWzExMl0gKDIzLjAgZEJtKSAobm8gSVIsIHJhZGFyIGRldGVjdGlv
-bikKCQkJKiA1NTgwIE1IeiBbMTE2XSAoMjMuMCBkQm0pIChubyBJUiwgcmFkYXIgZGV0ZWN0aW9u
-KQoJCQkqIDU2MDAgTUh6IFsxMjBdICgyMy4wIGRCbSkgKG5vIElSLCByYWRhciBkZXRlY3Rpb24p
-CgkJCSogNTYyMCBNSHogWzEyNF0gKDIzLjAgZEJtKSAobm8gSVIsIHJhZGFyIGRldGVjdGlvbikK
-CQkJKiA1NjQwIE1IeiBbMTI4XSAoMjMuMCBkQm0pIChubyBJUiwgcmFkYXIgZGV0ZWN0aW9uKQoJ
-CQkqIDU2NjAgTUh6IFsxMzJdICgyMy4wIGRCbSkgKG5vIElSLCByYWRhciBkZXRlY3Rpb24pCgkJ
-CSogNTY4MCBNSHogWzEzNl0gKDIzLjAgZEJtKSAobm8gSVIsIHJhZGFyIGRldGVjdGlvbikKCQkJ
-KiA1NzAwIE1IeiBbMTQwXSAoMjMuMCBkQm0pIChubyBJUiwgcmFkYXIgZGV0ZWN0aW9uKQoJCQkq
-IDU3NDUgTUh6IFsxNDldICgzMC4wIGRCbSkKCQkJKiA1NzY1IE1IeiBbMTUzXSAoMzAuMCBkQm0p
-CgkJCSogNTc4NSBNSHogWzE1N10gKDMwLjAgZEJtKQoJCQkqIDU4MDUgTUh6IFsxNjFdICgzMC4w
-IGRCbSkKCQkJKiA1ODI1IE1IeiBbMTY1XSAoMzAuMCBkQm0pCglTdXBwb3J0ZWQgY29tbWFuZHM6
-CgkJICogbmV3X2ludGVyZmFjZQoJCSAqIHNldF9pbnRlcmZhY2UKCQkgKiBuZXdfa2V5CgkJICog
-c3RhcnRfYXAKCQkgKiBuZXdfc3RhdGlvbgoJCSAqIG5ld19tcGF0aAoJCSAqIHNldF9tZXNoX2Nv
-bmZpZwoJCSAqIHNldF9ic3MKCQkgKiBhdXRoZW50aWNhdGUKCQkgKiBhc3NvY2lhdGUKCQkgKiBk
-ZWF1dGhlbnRpY2F0ZQoJCSAqIGRpc2Fzc29jaWF0ZQoJCSAqIGpvaW5faWJzcwoJCSAqIGpvaW5f
-bWVzaAoJCSAqIHJlbWFpbl9vbl9jaGFubmVsCgkJICogc2V0X3R4X2JpdHJhdGVfbWFzawoJCSAq
-IGZyYW1lCgkJICogZnJhbWVfd2FpdF9jYW5jZWwKCQkgKiBzZXRfd2lwaHlfbmV0bnMKCQkgKiBz
-ZXRfY2hhbm5lbAoJCSAqIHNldF93ZHNfcGVlcgoJCSAqIHByb2JlX2NsaWVudAoJCSAqIHNldF9u
-b2Fja19tYXAKCQkgKiByZWdpc3Rlcl9iZWFjb25zCgkJICogc3RhcnRfcDJwX2RldmljZQoJCSAq
-IHNldF9tY2FzdF9yYXRlCgkJICogY29ubmVjdAoJCSAqIGRpc2Nvbm5lY3QKCQkgKiBzZXRfcW9z
-X21hcAoJCSAqIFVua25vd24gY29tbWFuZCAoMTIxKQoJU3VwcG9ydGVkIFRYIGZyYW1lIHR5cGVz
-OgoJCSAqIElCU1M6IDB4MDAgMHgxMCAweDIwIDB4MzAgMHg0MCAweDUwIDB4NjAgMHg3MCAweDgw
-IDB4OTAgMHhhMCAweGIwIDB4YzAgMHhkMCAweGUwIDB4ZjAKCQkgKiBtYW5hZ2VkOiAweDAwIDB4
-MTAgMHgyMCAweDMwIDB4NDAgMHg1MCAweDYwIDB4NzAgMHg4MCAweDkwIDB4YTAgMHhiMCAweGMw
-IDB4ZDAgMHhlMCAweGYwCgkJICogQVA6IDB4MDAgMHgxMCAweDIwIDB4MzAgMHg0MCAweDUwIDB4
-NjAgMHg3MCAweDgwIDB4OTAgMHhhMCAweGIwIDB4YzAgMHhkMCAweGUwIDB4ZjAKCQkgKiBBUC9W
-TEFOOiAweDAwIDB4MTAgMHgyMCAweDMwIDB4NDAgMHg1MCAweDYwIDB4NzAgMHg4MCAweDkwIDB4
-YTAgMHhiMCAweGMwIDB4ZDAgMHhlMCAweGYwCgkJICogbWVzaCBwb2ludDogMHgwMCAweDEwIDB4
-MjAgMHgzMCAweDQwIDB4NTAgMHg2MCAweDcwIDB4ODAgMHg5MCAweGEwIDB4YjAgMHhjMCAweGQw
-IDB4ZTAgMHhmMAoJCSAqIFAyUC1jbGllbnQ6IDB4MDAgMHgxMCAweDIwIDB4MzAgMHg0MCAweDUw
-IDB4NjAgMHg3MCAweDgwIDB4OTAgMHhhMCAweGIwIDB4YzAgMHhkMCAweGUwIDB4ZjAKCQkgKiBQ
-MlAtR086IDB4MDAgMHgxMCAweDIwIDB4MzAgMHg0MCAweDUwIDB4NjAgMHg3MCAweDgwIDB4OTAg
-MHhhMCAweGIwIDB4YzAgMHhkMCAweGUwIDB4ZjAKCQkgKiBQMlAtZGV2aWNlOiAweDAwIDB4MTAg
-MHgyMCAweDMwIDB4NDAgMHg1MCAweDYwIDB4NzAgMHg4MCAweDkwIDB4YTAgMHhiMCAweGMwIDB4
-ZDAgMHhlMCAweGYwCglTdXBwb3J0ZWQgUlggZnJhbWUgdHlwZXM6CgkJICogSUJTUzogMHg0MCAw
-eGIwIDB4YzAgMHhkMAoJCSAqIG1hbmFnZWQ6IDB4NDAgMHhkMAoJCSAqIEFQOiAweDAwIDB4MjAg
-MHg0MCAweGEwIDB4YjAgMHhjMCAweGQwCgkJICogQVAvVkxBTjogMHgwMCAweDIwIDB4NDAgMHhh
-MCAweGIwIDB4YzAgMHhkMAoJCSAqIG1lc2ggcG9pbnQ6IDB4YjAgMHhjMCAweGQwCgkJICogUDJQ
-LWNsaWVudDogMHg0MCAweGQwCgkJICogUDJQLUdPOiAweDAwIDB4MjAgMHg0MCAweGEwIDB4YjAg
-MHhjMCAweGQwCgkJICogUDJQLWRldmljZTogMHg0MCAweGQwCglzb2Z0d2FyZSBpbnRlcmZhY2Ug
-bW9kZXMgKGNhbiBhbHdheXMgYmUgYWRkZWQpOgoJCSAqIEFQL1ZMQU4KCQkgKiBtb25pdG9yCglp
-bnRlcmZhY2UgY29tYmluYXRpb25zIGFyZSBub3Qgc3VwcG9ydGVkCglIVCBDYXBhYmlsaXR5IG92
-ZXJyaWRlczoKCQkgKiBNQ1M6IGZmIGZmIGZmIGZmIGZmIGZmIGZmIGZmIGZmIGZmCgkJICogbWF4
-aW11bSBBLU1TRFUgbGVuZ3RoCgkJICogc3VwcG9ydGVkIGNoYW5uZWwgd2lkdGgKCQkgKiBzaG9y
-dCBHSSBmb3IgNDAgTUh6CgkJICogbWF4IEEtTVBEVSBsZW5ndGggZXhwb25lbnQKCQkgKiBtaW4g
-TVBEVSBzdGFydCBzcGFjaW5nCglEZXZpY2Ugc3VwcG9ydHMgVFggc3RhdHVzIHNvY2tldCBvcHRp
-b24uCglEZXZpY2Ugc3VwcG9ydHMgSFQtSUJTUy4KCURldmljZSBzdXBwb3J0cyBTQUUgd2l0aCBB
-VVRIRU5USUNBVEUgY29tbWFuZAoJRGV2aWNlIHN1cHBvcnRzIGxvdyBwcmlvcml0eSBzY2FuLgoJ
-RGV2aWNlIHN1cHBvcnRzIHNjYW4gZmx1c2guCglEZXZpY2Ugc3VwcG9ydHMgQVAgc2Nhbi4KCURl
-dmljZSBzdXBwb3J0cyBwZXItdmlmIFRYIHBvd2VyIHNldHRpbmcKCURyaXZlciBzdXBwb3J0cyBm
-dWxsIHN0YXRlIHRyYW5zaXRpb25zIGZvciBBUC9HTyBjbGllbnRzCglEcml2ZXIgc3VwcG9ydHMg
-YSB1c2Vyc3BhY2UgTVBNCglEZXZpY2Ugc3VwcG9ydHMgY29uZmlndXJpbmcgdmRldiBNQUMtYWRk
-ciBvbiBjcmVhdGUuCg==
---000000000000886f9c0590798c8b--
+If you have any suggestions on how I could do this without setting
+IFF_LIVE_ADDR_CHANGE I am all ears.
+
+Thanks,
+James
+
+> 
+> johannes
+> 
+
