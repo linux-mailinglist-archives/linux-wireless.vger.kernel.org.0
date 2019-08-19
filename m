@@ -2,162 +2,103 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 40E9D91E26
-	for <lists+linux-wireless@lfdr.de>; Mon, 19 Aug 2019 09:43:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5687791EC4
+	for <lists+linux-wireless@lfdr.de>; Mon, 19 Aug 2019 10:21:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727082AbfHSHlt (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 19 Aug 2019 03:41:49 -0400
-Received: from mail.kernel.org ([198.145.29.99]:60716 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726211AbfHSHls (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 19 Aug 2019 03:41:48 -0400
-Received: from localhost.localdomain (unknown [151.66.62.27])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id E753B204EC;
-        Mon, 19 Aug 2019 07:41:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1566200507;
-        bh=Og+X/SMir18rMV1HoTfUVf/nuPnNGj8aq8VW63BF9iA=;
-        h=From:To:Cc:Subject:Date:From;
-        b=bfx65PtrK/78o9N6bIg35AqBcOn5M+9e+8aFLuiRDmxOOFsMmuqV5AzgWSAoOBx9R
-         nisGMoSmE6yC47cdk/9TWow+6nD3XNQagp93hQJ0l0lOr/djHHghLQKIckauhy1oY/
-         Sr10hqYEsdS3IblvcHEKMz+Q3V1YUy5KZUfzeVkQ=
-From:   Lorenzo Bianconi <lorenzo@kernel.org>
-To:     kvalo@codeaurora.org
-Cc:     lorenzo.bianconi@redhat.com, linux-wireless@vger.kernel.org
-Subject: [PATCH] ath9k: dynack: fix possible deadlock in ath_dynack_node_{de}init
-Date:   Mon, 19 Aug 2019 09:41:39 +0200
-Message-Id: <3c5c90cd62da2db9a661b3045391da537dccf90f.1566200274.git.lorenzo@kernel.org>
-X-Mailer: git-send-email 2.21.0
+        id S1726964AbfHSIUv (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 19 Aug 2019 04:20:51 -0400
+Received: from mail-ed1-f65.google.com ([209.85.208.65]:46036 "EHLO
+        mail-ed1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726627AbfHSIUu (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 19 Aug 2019 04:20:50 -0400
+Received: by mail-ed1-f65.google.com with SMTP id x19so845986eda.12
+        for <linux-wireless@vger.kernel.org>; Mon, 19 Aug 2019 01:20:49 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=broadcom.com; s=google;
+        h=subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=wIyeIH+lXz1wr5/FlAgVKmefeqsuDUoj2vAiUqLGQUQ=;
+        b=Z+pubiVvcp/+SlQZBWNCFAdOz1x0zm39pSXpFij39QRhyP14p05YdIjl7kpJo8O1Sc
+         escZhmwqAuQ1f5k4CgSY4wIqVf7otJbNpS/c3I4K9buOOBDnce4EcGAL+ytQueHQBoAi
+         CbUQKmS5ajpdvVmuEewyW/MeC2VjtiGR5VNb0=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=wIyeIH+lXz1wr5/FlAgVKmefeqsuDUoj2vAiUqLGQUQ=;
+        b=WwpulK5HwittLxyXineL3zkAUFYH6BWsyqNLc7TNT+xC5N5IiV7QTngjelHW25Y+ri
+         jpqRHE+7l3lXaExr1nxqBXT622OcrpLXA/AveiOQVjXLPxj5jESnHyob4LLdLrqVvwXn
+         Gmq8/U9lQnDy1UhyyMENOaIg4dd+eLmbZUcW7UqA8HfZ6VxjtNRGrEvkN4/ZjWy2dMsF
+         iyzi9jYvV3QOba7ecUt3guidDs1MsUahkTJo8C2VJy7qywNlUIbM/CwZ7hxjVD0uTLKj
+         ZHJLqz+9NztfbNnmDENMPX7+X5pv44gEBZaDqeo6sE3hIUIuzB2wQaa7o16SPpSR+91X
+         yENg==
+X-Gm-Message-State: APjAAAX7LaFV6PXqzG0zIA6DChs9K8zJtz1n91+mHXcfb2s7eZaITsZU
+        GC2uOpBAejv6E78EqFrcd5MHSA==
+X-Google-Smtp-Source: APXvYqwqkzFJ27MI14UatOR4Wbtu6WTlyoFURGlK4ZVH2l6ui88kiNp/CNcLzT0r3K7u3o+LJHP79A==
+X-Received: by 2002:a50:9fc5:: with SMTP id c63mr23878448edf.252.1566202849178;
+        Mon, 19 Aug 2019 01:20:49 -0700 (PDT)
+Received: from [192.168.178.129] (f140230.upc-f.chello.nl. [80.56.140.230])
+        by smtp.gmail.com with ESMTPSA id z9sm2649272edd.18.2019.08.19.01.20.48
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Mon, 19 Aug 2019 01:20:48 -0700 (PDT)
+Subject: Re: [PATCH v7 2/2] nl support for dmtool
+To:     Alexei Avshalom Lazar <ailizaro@codeaurora.org>,
+        Johannes Berg <johannes@sipsolutions.net>
+Cc:     linux-wireless@vger.kernel.org, wil6210@qti.qualcomm.com
+References: <1566137719-3544-1-git-send-email-ailizaro@codeaurora.org>
+ <1566137719-3544-3-git-send-email-ailizaro@codeaurora.org>
+From:   Arend Van Spriel <arend.vanspriel@broadcom.com>
+Message-ID: <a1edb82d-6bdb-a44d-4781-c05358fffad9@broadcom.com>
+Date:   Mon, 19 Aug 2019 10:20:49 +0200
+User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:60.0) Gecko/20100101
+ Thunderbird/60.8.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+In-Reply-To: <1566137719-3544-3-git-send-email-ailizaro@codeaurora.org>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Fix following lockdep warning disabling bh in
-ath_dynack_node_init/ath_dynack_node_deinit
+On 8/18/2019 4:15 PM, Alexei Avshalom Lazar wrote:
+> Signed-off-by: Alexei Avshalom Lazar <ailizaro@codeaurora.org>
+> ---
+>   drivers/net/wireless/ath/wil6210/Kconfig   |  11 ++
+>   drivers/net/wireless/ath/wil6210/Makefile  |   1 +
+>   drivers/net/wireless/ath/wil6210/ioctl.c   | 245 +++++++++++++++++++++++++++++
+>   drivers/net/wireless/ath/wil6210/netdev.c  |   8 +
+>   drivers/net/wireless/ath/wil6210/wil6210.h |   1 +
+>   include/uapi/linux/wil6210_uapi.h          |  77 +++++++++
+>   6 files changed, 343 insertions(+)
+>   create mode 100644 drivers/net/wireless/ath/wil6210/ioctl.c
+>   create mode 100644 include/uapi/linux/wil6210_uapi.h
+> 
+> diff --git a/drivers/net/wireless/ath/wil6210/Kconfig b/drivers/net/wireless/ath/wil6210/Kconfig
+> index 0d1a8da..48b14de 100644
+> --- a/drivers/net/wireless/ath/wil6210/Kconfig
+> +++ b/drivers/net/wireless/ath/wil6210/Kconfig
+> @@ -53,3 +53,14 @@ config WIL6210_DEBUGFS
+>   	  option if you are interested in debugging the driver.
+>   
+>   	  If unsure, say Y to make it easier to debug problems.
+> +
+> +config WIL6210_WRITE_IOCTL
+> +	bool "wil6210 write ioctl to the device"
+> +	depends on WIL6210
+> +	default y
+> +	help
+> +	  Say Y here to allow write-access from user-space to
+> +	  the device memory through ioctl. This is useful for
+> +	  debugging purposes only.
+> +
+> +	  If unsure, say N.
 
-[   75.955878] --------------------------------
-[   75.955880] inconsistent {SOFTIRQ-ON-W} -> {IN-SOFTIRQ-W} usage.
-[   75.955884] swapper/0/0 [HC0[0]:SC1[3]:HE1:SE0] takes:
-[   75.955888] 00000000792a7ee0 (&(&da->qlock)->rlock){+.?.}, at: ath_dynack_sample_ack_ts+0x4d/0xa0 [ath9k_hw]
-[   75.955905] {SOFTIRQ-ON-W} state was registered at:
-[   75.955912]   lock_acquire+0x9a/0x160
-[   75.955917]   _raw_spin_lock+0x2c/0x70
-[   75.955927]   ath_dynack_node_init+0x2a/0x60 [ath9k_hw]
-[   75.955934]   ath9k_sta_state+0xec/0x160 [ath9k]
-[   75.955976]   drv_sta_state+0xb2/0x740 [mac80211]
-[   75.956008]   sta_info_insert_finish+0x21a/0x420 [mac80211]
-[   75.956039]   sta_info_insert_rcu+0x12b/0x2c0 [mac80211]
-[   75.956069]   sta_info_insert+0x7/0x70 [mac80211]
-[   75.956093]   ieee80211_prep_connection+0x42e/0x730 [mac80211]
-[   75.956120]   ieee80211_mgd_auth.cold+0xb9/0x15c [mac80211]
-[   75.956152]   cfg80211_mlme_auth+0x143/0x350 [cfg80211]
-[   75.956169]   nl80211_authenticate+0x25e/0x2b0 [cfg80211]
-[   75.956172]   genl_family_rcv_msg+0x198/0x400
-[   75.956174]   genl_rcv_msg+0x42/0x90
-[   75.956176]   netlink_rcv_skb+0x35/0xf0
-[   75.956178]   genl_rcv+0x1f/0x30
-[   75.956180]   netlink_unicast+0x154/0x200
-[   75.956182]   netlink_sendmsg+0x1bf/0x3d0
-[   75.956186]   ___sys_sendmsg+0x2c2/0x2f0
-[   75.956187]   __sys_sendmsg+0x44/0x80
-[   75.956190]   do_syscall_64+0x55/0x1a0
-[   75.956192]   entry_SYSCALL_64_after_hwframe+0x49/0xbe
-[   75.956194] irq event stamp: 2357092
-[   75.956196] hardirqs last  enabled at (2357092): [<ffffffff818c62de>] _raw_spin_unlock_irqrestore+0x3e/0x50
-[   75.956199] hardirqs last disabled at (2357091): [<ffffffff818c60b1>] _raw_spin_lock_irqsave+0x11/0x80
-[   75.956202] softirqs last  enabled at (2357072): [<ffffffff8106dc09>] irq_enter+0x59/0x60
-[   75.956204] softirqs last disabled at (2357073): [<ffffffff8106dcbe>] irq_exit+0xae/0xc0
-[   75.956206]
-               other info that might help us debug this:
-[   75.956207]  Possible unsafe locking scenario:
+I was about to scream in horror seeing this patch, but noticed you 
+rectified it in v8. *Phew*
 
-[   75.956208]        CPU0
-[   75.956209]        ----
-[   75.956210]   lock(&(&da->qlock)->rlock);
-[   75.956213]   <Interrupt>
-[   75.956214]     lock(&(&da->qlock)->rlock);
-[   75.956216]
-                *** DEADLOCK ***
-
-[   75.956217] 1 lock held by swapper/0/0:
-[   75.956219]  #0: 000000003bb5675c (&(&sc->sc_pcu_lock)->rlock){+.-.}, at: ath9k_tasklet+0x55/0x240 [ath9k]
-[   75.956225]
-               stack backtrace:
-[   75.956228] CPU: 0 PID: 0 Comm: swapper/0 Not tainted 5.3.0-rc1-wdn+ #13
-[   75.956229] Hardware name: Dell Inc. Studio XPS 1340/0K183D, BIOS A11 09/08/2009
-[   75.956231] Call Trace:
-[   75.956233]  <IRQ>
-[   75.956236]  dump_stack+0x67/0x90
-[   75.956239]  mark_lock+0x4c1/0x640
-[   75.956242]  ? check_usage_backwards+0x130/0x130
-[   75.956245]  ? sched_clock_local+0x12/0x80
-[   75.956247]  __lock_acquire+0x484/0x7a0
-[   75.956250]  ? __lock_acquire+0x3b9/0x7a0
-[   75.956252]  lock_acquire+0x9a/0x160
-[   75.956259]  ? ath_dynack_sample_ack_ts+0x4d/0xa0 [ath9k_hw]
-[   75.956262]  _raw_spin_lock_bh+0x34/0x80
-[   75.956268]  ? ath_dynack_sample_ack_ts+0x4d/0xa0 [ath9k_hw]
-[   75.956275]  ath_dynack_sample_ack_ts+0x4d/0xa0 [ath9k_hw]
-[   75.956280]  ath_rx_tasklet+0xd09/0xe90 [ath9k]
-[   75.956286]  ath9k_tasklet+0x102/0x240 [ath9k]
-[   75.956288]  tasklet_action_common.isra.0+0x6d/0x170
-[   75.956291]  __do_softirq+0xcc/0x425
-[   75.956294]  irq_exit+0xae/0xc0
-[   75.956296]  do_IRQ+0x8a/0x110
-[   75.956298]  common_interrupt+0xf/0xf
-[   75.956300]  </IRQ>
-[   75.956303] RIP: 0010:cpuidle_enter_state+0xb2/0x400
-[   75.956308] RSP: 0018:ffffffff82203e70 EFLAGS: 00000202 ORIG_RAX: ffffffffffffffd7
-[   75.956310] RAX: ffffffff82219800 RBX: ffffffff822bd0a0 RCX: 0000000000000000
-[   75.956312] RDX: 0000000000000046 RSI: 0000000000000006 RDI: ffffffff82219800
-[   75.956314] RBP: ffff888155a01c00 R08: 00000011af51aabe R09: 0000000000000000
-[   75.956315] R10: 0000000000000000 R11: 0000000000000000 R12: 0000000000000002
-[   75.956317] R13: 00000011af51aabe R14: 0000000000000003 R15: ffffffff82219800
-[   75.956321]  cpuidle_enter+0x24/0x40
-[   75.956323]  do_idle+0x1ac/0x220
-[   75.956326]  cpu_startup_entry+0x14/0x20
-[   75.956329]  start_kernel+0x482/0x489
-[   75.956332]  secondary_startup_64+0xa4/0xb0
-
-Fixes: c774d57fd47c ("ath9k: add dynamic ACK timeout estimation")
-Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
----
- drivers/net/wireless/ath/ath9k/dynack.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
-
-diff --git a/drivers/net/wireless/ath/ath9k/dynack.c b/drivers/net/wireless/ath/ath9k/dynack.c
-index f112fa5b2eac..1ccf20d8c160 100644
---- a/drivers/net/wireless/ath/ath9k/dynack.c
-+++ b/drivers/net/wireless/ath/ath9k/dynack.c
-@@ -298,9 +298,9 @@ void ath_dynack_node_init(struct ath_hw *ah, struct ath_node *an)
- 
- 	an->ackto = ackto;
- 
--	spin_lock(&da->qlock);
-+	spin_lock_bh(&da->qlock);
- 	list_add_tail(&an->list, &da->nodes);
--	spin_unlock(&da->qlock);
-+	spin_unlock_bh(&da->qlock);
- }
- EXPORT_SYMBOL(ath_dynack_node_init);
- 
-@@ -314,9 +314,9 @@ void ath_dynack_node_deinit(struct ath_hw *ah, struct ath_node *an)
- {
- 	struct ath_dynack *da = &ah->dynack;
- 
--	spin_lock(&da->qlock);
-+	spin_lock_bh(&da->qlock);
- 	list_del(&an->list);
--	spin_unlock(&da->qlock);
-+	spin_unlock_bh(&da->qlock);
- }
- EXPORT_SYMBOL(ath_dynack_node_deinit);
- 
--- 
-2.21.0
-
+Regards,
+Arend
