@@ -2,114 +2,83 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A8B6394F3C
-	for <lists+linux-wireless@lfdr.de>; Mon, 19 Aug 2019 22:42:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A19A194F7D
+	for <lists+linux-wireless@lfdr.de>; Mon, 19 Aug 2019 23:00:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728055AbfHSUmz (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 19 Aug 2019 16:42:55 -0400
-Received: from 6.mo7.mail-out.ovh.net ([188.165.39.218]:45258 "EHLO
-        6.mo7.mail-out.ovh.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727980AbfHSUmz (ORCPT
+        id S1728229AbfHSVAD (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 19 Aug 2019 17:00:03 -0400
+Received: from 9.mo177.mail-out.ovh.net ([46.105.72.238]:58092 "EHLO
+        9.mo177.mail-out.ovh.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727769AbfHSVAD (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 19 Aug 2019 16:42:55 -0400
-X-Greylist: delayed 17392 seconds by postgrey-1.27 at vger.kernel.org; Mon, 19 Aug 2019 16:42:53 EDT
-Received: from player755.ha.ovh.net (unknown [10.108.42.145])
-        by mo7.mail-out.ovh.net (Postfix) with ESMTP id 8687E12BE0C
-        for <linux-wireless@vger.kernel.org>; Mon, 19 Aug 2019 17:52:59 +0200 (CEST)
+        Mon, 19 Aug 2019 17:00:03 -0400
+Received: from player755.ha.ovh.net (unknown [10.108.42.75])
+        by mo177.mail-out.ovh.net (Postfix) with ESMTP id 644151025AB
+        for <linux-wireless@vger.kernel.org>; Mon, 19 Aug 2019 22:50:50 +0200 (CEST)
 Received: from awhome.eu (p4FF9179D.dip0.t-ipconnect.de [79.249.23.157])
         (Authenticated sender: postmaster@awhome.eu)
-        by player755.ha.ovh.net (Postfix) with ESMTPSA id 0C80A90A4B2C;
-        Mon, 19 Aug 2019 15:52:56 +0000 (UTC)
-From:   Alexander Wetzel <alexander@wetzel-home.de>
+        by player755.ha.ovh.net (Postfix) with ESMTPSA id E59C090B6EAD;
+        Mon, 19 Aug 2019 20:50:46 +0000 (UTC)
+Subject: Re: [PATCH] iwlwifi: Extended Key ID support for mvm and dvm
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=wetzel-home.de;
-        s=wetzel-home; t=1566229975;
-        bh=eIvcs0iqIrxoz4T9tyYlAB4GiLp35OTVycjMUEyOhJM=;
-        h=From:Subject:To:Cc:References:Date:In-Reply-To;
-        b=ghb/zn/din7ehT1mPJvWerGNlZDgqJeolRJFyGbAJw3okw4PsowJ5s/1on9TCgNpG
-         fjgyNsr0vJ3e25gsglhK1I6BkINpJPOavjOClHXZ9TBPBa5dg3Q/Gr4l7y8zyQgbXM
-         nDLpq/LTfov4uF6nutuUK1PGW9JeAh+L8OwDA/nA=
-Subject: Re: [PATCH 4/4] iwlwifi: Enable Extended Key ID for mvm and dvm
-To:     Johannes Berg <johannes@sipsolutions.net>,
-        Luca Coelho <luca@coelho.fi>
-Cc:     linux-wireless@vger.kernel.org
-References: <20190629195015.19680-1-alexander@wetzel-home.de>
- <20190629195015.19680-4-alexander@wetzel-home.de>
- <cd1b1a83-55e2-3c07-dbe2-0c459bbcdc7e@wetzel-home.de>
- <d3c6d084728e4203832688b63e884d25b0f74fcf.camel@sipsolutions.net>
-Message-ID: <ae321cd5-6ef4-87c5-98ec-dbac37e83c6d@wetzel-home.de>
-Date:   Mon, 19 Aug 2019 17:52:52 +0200
+        s=wetzel-home; t=1566247846;
+        bh=vWC3/wW/csnaR/+Rsx8WN7OJ+Enhk24DjISGYj98Oyc=;
+        h=Subject:To:Cc:References:From:Date:In-Reply-To;
+        b=HrMHO8hLorbZwlLDTY0N1NVsrzCfEi8YfSOo594+2MNZX8/mDR1fTCgMJJ8kCu0u9
+         FO5dsGmJRL6gMaLImDlDRG+iB/gTy07mrmZDQXZf0L/zpoK+C0h8aA1mdi510xHXPk
+         BMWz2yierKSGJrhw7hXr5dcvRO6m2VTuC+zLU960=
+To:     Johannes Berg <johannes@sipsolutions.net>, luciano.coelho@intel.com
+Cc:     linux-wireless@vger.kernel.org, linuxwifi@intel.com
+References: <20190819180540.2855-1-alexander@wetzel-home.de>
+ <204c346ab9fc71865e4cb5f5c29ec33ca05050e2.camel@sipsolutions.net>
+ <da471544-3370-8ba1-2265-d02ab09cdcee@wetzel-home.de>
+ <52914e64663283eeff9445b8b1fb37986c15223d.camel@sipsolutions.net>
+ <5bc077f7b2f017da7c027edd27a543910dd6ac32.camel@sipsolutions.net>
+From:   Alexander Wetzel <alexander@wetzel-home.de>
+Message-ID: <9e63e06d-48ef-e7aa-638a-b551a208665f@wetzel-home.de>
+Date:   Mon, 19 Aug 2019 22:50:45 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
  Thunderbird/60.8.0
 MIME-Version: 1.0
-In-Reply-To: <d3c6d084728e4203832688b63e884d25b0f74fcf.camel@sipsolutions.net>
+In-Reply-To: <5bc077f7b2f017da7c027edd27a543910dd6ac32.camel@sipsolutions.net>
 Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
-X-Ovh-Tracer-Id: 14256989047950679292
+X-Ovh-Tracer-Id: 840484282674453704
 X-VR-SPAMSTATE: OK
 X-VR-SPAMSCORE: -100
-X-VR-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgeduvddrudefledgleehucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuqfggjfdpvefjgfevmfevgfenuceurghilhhouhhtmecuhedttdenucesvcftvggtihhpihgvnhhtshculddquddttddm
+X-VR-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgeduvddrudefledgudehhecutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfqggfjpdevjffgvefmvefgnecuuegrihhlohhuthemucehtddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmd
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Am 19.08.19 um 11:43 schrieb Johannes Berg:
-> On Sat, 2019-08-17 at 10:31 +0200, Alexander Wetzel wrote:
->>> All iwlwifi cards are able to handle multiple keyids per STA and are
->>> therefore fully compatible with the Extended Key ID implementation
->>> provided by mac80211.
+
+
+Am 19.08.19 um 22:09 schrieb Johannes Berg:
+> On Mon, 2019-08-19 at 22:03 +0200, Johannes Berg wrote:
 >>
->> I just tried Extended Key ID with a AX200 card and it really looks like
->> it's incompatible:-(
+>>> While less desirable we still could get that working: The mvm driver
+>>> would have to detect the key borders and then tell the firmware to
+>>> switch over to the other key. But we would have to make sure to not
+>>> re-enable A-MPDU aggregation till the card really has switched.
 > 
-> Hmm.
+>> So probably you're right, and we'd have to disable A-MPDUs until we have
+>> no outstanding old-key-retransmits, but that seems manageable.
 > 
->> The card is starting to use the PTK key immediately after installation,
->> encrypting EAPOL #3 with the new (still Rx only!) key.
-> 
-> Right. This wasn't considered, I guess.
-> 
->> Digging around in the driver code it looks like we do not even pass the
->> key information any longer to the card: iwl_mvm_set_tx_params() is
->> bypassing iwl_mvm_set_tx_cmd_crypto() completely when we use the "new tx
->> API". So all cards setting "use_tfh" to true are now incompatible.
->>
->> Therefore it looks like that all cards starting with the 22000 series
->> can't be used with Extended Key ID any longer.
->>
->> Is there a way to hand over the key information within the new API or is
->> the way forward to block Extended Key ID when the "new tx API" is being
->> used?
-> 
-> Not right now, but I think it could be fixed.
+> Actually, we probably have to even delay the key switch until there are
+> no more frames to retransmit, because the hardware is involved to some
+> extent and it won't know about two keys or something... Not really sure
+> how it all works though, off the top of my head.
 
-That would be great!
+This sounds like the card is not really able to handle two unicast key 
+per STA, which would be a show stopper.
+But not sure if I can believe that: After all the card is setting the 
+correct keyid for the key and e.g. able to use keyid 1 for both send and 
+receive, so it's not simply assuming unicast keys are always using keyid 0.
 
-We may also get away by adding only means to pass the keyid of the MPDU 
-(zero or one) to the HW. That could be done quite simple, I think:
-
-We could add two new flags, e.g. IWL_TX_FLAGS_ENCRYPT_ID_0 and 
-IWL_TX_FLAGS_ENCRYPT_ID_1 to avoid the need to change the structures 
-iwl_tx_cmd_gen2 and iwl_tx_cmd_gen3.
-When the firmware would check and use the key referenced by the STA + 
-flag-id prior to the "last installed" key that should be sufficient.
-By still using the last installed key without any of the new flags set 
-we also would remain backward compatible.
-
-If you have any experimental firmware to test I'm happy to do so:-)
-Till then I'm back using older iwlwifi cards.
-
-> 
->> The card is fine with using keyid 1 for unicast keys. But it looks like
->> it assumes that a new key install also tells it to use the new key
->> immediately... Still digging around but pretty sure that's happening now.
-> 
-> Right.
-> 
-> For now I guess we have to disable it with the new TX API (which is
-> really what it depends on), we can try to fix the firmware later.
-
-Ok. I'll update the iwlwifi Extended key ID support patch accordingly.
+Honoring the keyid for that but then not be able to differentiate 
+between the keyids for re-transmits is nothing I would have expected. So 
+I still hope you are wrong here:-)
 
 Alexander
