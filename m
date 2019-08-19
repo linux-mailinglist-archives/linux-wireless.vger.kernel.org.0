@@ -2,141 +2,77 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id CB19C92037
-	for <lists+linux-wireless@lfdr.de>; Mon, 19 Aug 2019 11:24:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 21C3892092
+	for <lists+linux-wireless@lfdr.de>; Mon, 19 Aug 2019 11:43:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727218AbfHSJYR (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 19 Aug 2019 05:24:17 -0400
-Received: from atrey.karlin.mff.cuni.cz ([195.113.26.193]:47341 "EHLO
-        atrey.karlin.mff.cuni.cz" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726627AbfHSJYQ (ORCPT
+        id S1726694AbfHSJnM (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 19 Aug 2019 05:43:12 -0400
+Received: from s3.sipsolutions.net ([144.76.43.62]:38480 "EHLO
+        sipsolutions.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726314AbfHSJnM (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 19 Aug 2019 05:24:16 -0400
-Received: by atrey.karlin.mff.cuni.cz (Postfix, from userid 512)
-        id B65278043B; Mon, 19 Aug 2019 11:24:01 +0200 (CEST)
-Date:   Mon, 19 Aug 2019 11:24:14 +0200
-From:   Pavel Machek <pavel@ucw.cz>
-To:     Michael Nazzareno Trimarchi <michael@amarulasolutions.com>
-Cc:     kernel list <linux-kernel@vger.kernel.org>,
-        linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
-        Linux OMAP Mailing List <linux-omap@vger.kernel.org>,
-        Tony Lindgren <tony@atomide.com>,
-        Sebastian Reichel <sre@kernel.org>, nekit1000@gmail.com,
-        mpartap@gmx.net, Merlijn Wajer <merlijn@wizzup.org>,
-        "open list:TI WILINK WIRELES..." <linux-wireless@vger.kernel.org>
-Subject: Re: wifi on Motorola Droid 4 in 5.3-rc2
-Message-ID: <20190819092414.GB21072@amd>
-References: <20190818104629.GA27360@amd>
- <CAOf5uwnUx3mtGGHFGqKB30qcb_AMhMEhHLp2pf-4pUdhi7KP7w@mail.gmail.com>
- <20190818114332.GA32205@amd>
- <CAOf5uwncAHQ-nfFzQhv=T+pyXJ+60_QNT4F11VJg+25GjFFkxQ@mail.gmail.com>
+        Mon, 19 Aug 2019 05:43:12 -0400
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <johannes@sipsolutions.net>)
+        id 1hzeBq-0006qe-Ru; Mon, 19 Aug 2019 11:43:03 +0200
+Message-ID: <d3c6d084728e4203832688b63e884d25b0f74fcf.camel@sipsolutions.net>
+Subject: Re: [PATCH 4/4] iwlwifi: Enable Extended Key ID for mvm and dvm
+From:   Johannes Berg <johannes@sipsolutions.net>
+To:     Alexander Wetzel <alexander@wetzel-home.de>,
+        Luca Coelho <luca@coelho.fi>
+Cc:     linux-wireless@vger.kernel.org
+Date:   Mon, 19 Aug 2019 11:43:00 +0200
+In-Reply-To: <cd1b1a83-55e2-3c07-dbe2-0c459bbcdc7e@wetzel-home.de>
+References: <20190629195015.19680-1-alexander@wetzel-home.de>
+         <20190629195015.19680-4-alexander@wetzel-home.de>
+         <cd1b1a83-55e2-3c07-dbe2-0c459bbcdc7e@wetzel-home.de>
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.30.5 (3.30.5-1.fc29) 
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-        protocol="application/pgp-signature"; boundary="IiVenqGWf+H9Y6IX"
-Content-Disposition: inline
-In-Reply-To: <CAOf5uwncAHQ-nfFzQhv=T+pyXJ+60_QNT4F11VJg+25GjFFkxQ@mail.gmail.com>
-User-Agent: Mutt/1.5.23 (2014-03-12)
+Content-Transfer-Encoding: 7bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+On Sat, 2019-08-17 at 10:31 +0200, Alexander Wetzel wrote:
+> > All iwlwifi cards are able to handle multiple keyids per STA and are
+> > therefore fully compatible with the Extended Key ID implementation
+> > provided by mac80211.
+> 
+> I just tried Extended Key ID with a AX200 card and it really looks like 
+> it's incompatible:-(
 
---IiVenqGWf+H9Y6IX
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Hmm.
 
-Hi!
+> The card is starting to use the PTK key immediately after installation, 
+> encrypting EAPOL #3 with the new (still Rx only!) key.
 
-> > [   13.653778] panel-dsi-cm 58004000.encoder:display: using lookup
-> > tables for GPIO lookup
-> > [   13.661834] panel-dsi-cm 58004000.encoder:display: No GPIO consumer
-> > te found
-> > [   14.756622] ------------[ cut here ]------------
-> > [   14.761352] WARNING: CPU: 0 PID: 20 at
-> > /data/fast/l/k/drivers/net/wireless/ti/wlcore/sdio.c:86
-> > wl12xx_sdio_raw_read+0xa8/0x128
-> > [   14.772888] Modules linked in:
-> > [   14.776062] CPU: 0 PID: 20 Comm: kworker/0:1 Tainted: G        W
-> > 5.3.0-rc4-58571-gdbaece1 #85
-> > [   14.783630] Hardware name: Generic OMAP4 (Flattened Device Tree)
-> > [   14.791381] Workqueue: events request_firmware_work_func
->=20
-> You have a timeout here. Can be that your reset sequence of the wifi
-> is not optimal because
-> is not responding?
+Right. This wasn't considered, I guess.
 
-I tried delays and printks... WL12XX_REG_FUSE_BD_ADDR_1 read fails,
-and retrying does not really help. If you have idea how to debug/fix
-this, let me know...
+> Digging around in the driver code it looks like we do not even pass the 
+> key information any longer to the card: iwl_mvm_set_tx_params() is 
+> bypassing iwl_mvm_set_tx_cmd_crypto() completely when we use the "new tx 
+> API". So all cards setting "use_tfh" to true are now incompatible.
+> 
+> Therefore it looks like that all cards starting with the 22000 series 
+> can't be used with Extended Key ID any longer.
+> 
+> Is there a way to hand over the key information within the new API or is 
+> the way forward to block Extended Key ID when the "new tx API" is being 
+> used?
 
-Best regards,
-								Pavel
+Not right now, but I think it could be fixed.
 
-diff --git a/drivers/net/wireless/ti/wl12xx/main.c b/drivers/net/wireless/t=
-i/wl12xx/main.c
-index 3c9c623..afb294a 100644
---- a/drivers/net/wireless/ti/wl12xx/main.c
-+++ b/drivers/net/wireless/ti/wl12xx/main.c
-@@ -1505,24 +1505,40 @@ static int wl12xx_get_fuse_mac(struct wl1271 *wl)
- {
- 	u32 mac1, mac2;
- 	int ret;
--
-+=09
-+	mdelay(1);
-+	printk("get_fuse_mac: %d\n", __LINE__);
- 	ret =3D wlcore_set_partition(wl, &wl->ptable[PART_DRPW]);
- 	if (ret < 0)
- 		goto out;
-=20
-+	mdelay(1);
-+	printk("get_fuse_mac: %d\n", __LINE__);
-+	ret =3D wlcore_read32(wl, WL12XX_REG_FUSE_BD_ADDR_1, &mac1);
-+	if (ret < 0) {
-+	printk("get_fuse_mac: X %d\n", __LINE__);
-+	ret =3D wlcore_read32(wl, WL12XX_REG_FUSE_BD_ADDR_1, &mac1);
-+	if (ret < 0) {
-+	printk("get_fuse_mac: XX %d\n", __LINE__);
- 	ret =3D wlcore_read32(wl, WL12XX_REG_FUSE_BD_ADDR_1, &mac1);
- 	if (ret < 0)
- 		goto out;
-+	}
-+	}
-+=09
-=20
-+	printk("get_fuse_mac: %d\n", __LINE__);
- 	ret =3D wlcore_read32(wl, WL12XX_REG_FUSE_BD_ADDR_2, &mac2);
- 	if (ret < 0)
- 		goto out;
-=20
-+	printk("get_fuse_mac: %d\n", __LINE__);
- 	/* these are the two parts of the BD_ADDR */
- 	wl->fuse_oui_addr =3D ((mac2 & 0xffff) << 8) +
- 		((mac1 & 0xff000000) >> 24);
- 	wl->fuse_nic_addr =3D mac1 & 0xffffff;
-=20
-+	printk("get_fuse_mac: %d\n", __LINE__);
- 	ret =3D wlcore_set_partition(wl, &wl->ptable[PART_DOWN]);
-=20
- out:
+> The card is fine with using keyid 1 for unicast keys. But it looks like 
+> it assumes that a new key install also tells it to use the new key 
+> immediately... Still digging around but pretty sure that's happening now.
 
---=20
-(english) http://www.livejournal.com/~pavelmachek
-(cesky, pictures) http://atrey.karlin.mff.cuni.cz/~pavel/picture/horses/blo=
-g.html
+Right.
 
---IiVenqGWf+H9Y6IX
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
+For now I guess we have to disable it with the new TX API (which is
+really what it depends on), we can try to fix the firmware later.
 
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1
+johannes
 
-iEYEARECAAYFAl1aar4ACgkQMOfwapXb+vJb9wCdEMS4069vsm0A0Ev1TelvVMac
-tEUAoMRMPsW6X4ytZQOHwh1J6znBX4KV
-=Zu6g
------END PGP SIGNATURE-----
-
---IiVenqGWf+H9Y6IX--
