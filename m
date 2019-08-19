@@ -2,35 +2,33 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 776D894ED4
-	for <lists+linux-wireless@lfdr.de>; Mon, 19 Aug 2019 22:22:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 93B9594EDA
+	for <lists+linux-wireless@lfdr.de>; Mon, 19 Aug 2019 22:23:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728177AbfHSUV7 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 19 Aug 2019 16:21:59 -0400
-Received: from s3.sipsolutions.net ([144.76.43.62]:47548 "EHLO
+        id S1728387AbfHSUXe (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 19 Aug 2019 16:23:34 -0400
+Received: from s3.sipsolutions.net ([144.76.43.62]:47590 "EHLO
         sipsolutions.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728136AbfHSUV7 (ORCPT
+        with ESMTP id S1728055AbfHSUXd (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 19 Aug 2019 16:21:59 -0400
+        Mon, 19 Aug 2019 16:23:33 -0400
 Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
         (Exim 4.92)
         (envelope-from <johannes@sipsolutions.net>)
-        id 1hzoA8-00042J-L6; Mon, 19 Aug 2019 22:21:56 +0200
-Message-ID: <b3b7a99971f1512b4cd9c72920b699c252c1ae83.camel@sipsolutions.net>
-Subject: Re: Implementing Mikrotik IE
+        id 1hzoBa-00044T-W5; Mon, 19 Aug 2019 22:23:27 +0200
+Message-ID: <eb0481b1928b0554daeda59cfc1d631e44bb2bdd.camel@sipsolutions.net>
+Subject: Re: [PATCH 4/4] iwlwifi: Enable Extended Key ID for mvm and dvm
 From:   Johannes Berg <johannes@sipsolutions.net>
-To:     Josef Miegl <josef@miegl.cz>
-Cc:     Sebastian Gottschall <s.gottschall@newmedia-net.de>,
-        linux-wireless <linux-wireless@vger.kernel.org>
-Date:   Mon, 19 Aug 2019 22:21:55 +0200
-In-Reply-To: <20190819113706.ujsz67sxcwt2ulmt@pepin-laptop.localdomain>
-References: <20190815152844.k5mmddvbwrohkzr6@pepin-laptop.localdomain>
-         <3a079683-6f57-3b42-f909-90c46e14f14f@newmedia-net.de>
-         <20190816111044.4ntizgmpa3twbzcg@pepin-laptop.localdomain>
-         <e8129acb-fc32-c85c-b504-ab8777a3f1a3@newmedia-net.de>
-         <20190816113818.ohktykc4fyetzyvq@pepin-laptop.localdomain>
-         <9985fddfb059640f36665efc9c1ef2dc0bdb7662.camel@sipsolutions.net>
-         <20190819113706.ujsz67sxcwt2ulmt@pepin-laptop.localdomain>
+To:     Alexander Wetzel <alexander@wetzel-home.de>,
+        Luca Coelho <luca@coelho.fi>
+Cc:     linux-wireless@vger.kernel.org
+Date:   Mon, 19 Aug 2019 22:23:24 +0200
+In-Reply-To: <ae321cd5-6ef4-87c5-98ec-dbac37e83c6d@wetzel-home.de>
+References: <20190629195015.19680-1-alexander@wetzel-home.de>
+         <20190629195015.19680-4-alexander@wetzel-home.de>
+         <cd1b1a83-55e2-3c07-dbe2-0c459bbcdc7e@wetzel-home.de>
+         <d3c6d084728e4203832688b63e884d25b0f74fcf.camel@sipsolutions.net>
+         <ae321cd5-6ef4-87c5-98ec-dbac37e83c6d@wetzel-home.de>
 Content-Type: text/plain; charset="UTF-8"
 User-Agent: Evolution 3.30.5 (3.30.5-1.fc29) 
 MIME-Version: 1.0
@@ -40,47 +38,28 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Mon, 2019-08-19 at 13:37 +0200, Josef Miegl wrote:
-> On Mon, Aug 19, 2019 at 12:12:43PM +0200, Johannes Berg wrote:
-> > Contrary to what Sebastian states, it certainly is possible today,
-> > although not through wpa_supplicant's config file, only through the
-> > wpa_cli interface, using the VENDOR_ELEM_ADD command. There are various
-> > tests showing how to use this.
-> 
-> Thanks Johannes. I noticed this too and tried adding a config file
-> option (OpenWRT doesn't compile wpa_supplicant with wpa_cli). I've added
-> sta_vendor_elements option (exactly like ap_vendor_elements). This is
-> the code setting vendor_elem:
-> 
-> +++ b/wpa_supplicant/wpa_supplicant.c
-> @@ -5833,6 +5833,16 @@
->         wpas_mbo_update_non_pref_chan(wpa_s, wpa_s->conf->non_pref_chan);
->  #endif /* CONFIG_MBO */
-> 
-> +       if (wpa_s->conf->sta_vendor_elements) {
-> +               if (wpa_s->vendor_elem[VENDOR_ELEM_ASSOC_REQ] == NULL) {
-> +                       wpa_s->vendor_elem[VENDOR_ELEM_ASSOC_REQ] = wpa_s->conf->sta_vendor_elements;
-> +               } else {
-> +                       wpabuf_resize(&wpa_s->vendor_elem[VENDOR_ELEM_ASSOC_REQ], wpabuf_len(wpa_s->conf->sta_vendor_elements));
-> +                       wpabuf_put_buf(wpa_s->vendor_elem[VENDOR_ELEM_ASSOC_REQ], wpa_s->conf->sta_vendor_elements);
-> +               }
-> +       }
-> +
->         wpa_supplicant_set_default_scan_ies(wpa_s);
-> 
->         return 0;
-> 
-> 
-> But when I actually set sta_vendor_elements to something, all it does is
-> failing the 4-way handshake during association. The IE is perfectly
-> valid and it works with ap_vendor_elements, no nl80211 malformed IEs
-> error either. Am I missing something?
+On Mon, 2019-08-19 at 17:52 +0200, Alexander Wetzel wrote:
 
-I don't know, try capturing over the air?
+> We may also get away by adding only means to pass the keyid of the MPDU 
+> (zero or one) to the HW. That could be done quite simple, I think:
+> 
+> We could add two new flags, e.g. IWL_TX_FLAGS_ENCRYPT_ID_0 and 
+> IWL_TX_FLAGS_ENCRYPT_ID_1 to avoid the need to change the structures 
+> iwl_tx_cmd_gen2 and iwl_tx_cmd_gen3.
+> When the firmware would check and use the key referenced by the STA + 
+> flag-id prior to the "last installed" key that should be sufficient.
+> By still using the last installed key without any of the new flags set 
+> we also would remain backward compatible.
+> 
+> If you have any experimental firmware to test I'm happy to do so:-)
+> Till then I'm back using older iwlwifi cards.
 
-Perhaps the vendor IEs added this way are added *first* before all the
-RSN IEs, and that's tripping up your AP, and you'd have to add them
-*after* the normal elements? Not really sure where/how they're added?
+I'm not convinced that we can change the TX API at all, I suspect we
+have to go detect it as we saw in the other patch. If we do actually
+have the ability to change the TX API it might be simpler overall, but
+anyway, I'd have to go look at how this is all implemented before I
+comment further. Doesn't seem like an intractable problem, the only
+question is if we get to spend time on it :)
 
 johannes
 
