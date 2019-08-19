@@ -2,130 +2,103 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 4B19895052
-	for <lists+linux-wireless@lfdr.de>; Mon, 19 Aug 2019 23:58:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 44B6D95069
+	for <lists+linux-wireless@lfdr.de>; Tue, 20 Aug 2019 00:03:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728429AbfHSV6P (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 19 Aug 2019 17:58:15 -0400
-Received: from 3.mo68.mail-out.ovh.net ([46.105.58.60]:52533 "EHLO
-        3.mo68.mail-out.ovh.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728305AbfHSV6O (ORCPT
+        id S1728609AbfHSWCo (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 19 Aug 2019 18:02:44 -0400
+Received: from mail-io1-f67.google.com ([209.85.166.67]:33900 "EHLO
+        mail-io1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728494AbfHSWCo (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 19 Aug 2019 17:58:14 -0400
-Received: from player756.ha.ovh.net (unknown [10.109.146.1])
-        by mo68.mail-out.ovh.net (Postfix) with ESMTP id 05B7413FDD4
-        for <linux-wireless@vger.kernel.org>; Mon, 19 Aug 2019 22:42:19 +0200 (CEST)
-Received: from awhome.eu (p4FF9179D.dip0.t-ipconnect.de [79.249.23.157])
-        (Authenticated sender: postmaster@awhome.eu)
-        by player756.ha.ovh.net (Postfix) with ESMTPSA id 9A215822A27A;
-        Mon, 19 Aug 2019 20:42:16 +0000 (UTC)
-Subject: Re: [PATCH] iwlwifi: Extended Key ID support for mvm and dvm
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=wetzel-home.de;
-        s=wetzel-home; t=1566247335;
-        bh=JkJmf0f2qQYAH/UTva6yNj+o3ifCd17XHjteBcOJwyU=;
-        h=Subject:To:Cc:References:From:Date:In-Reply-To;
-        b=tF59v52XJxF8c1aIG9nhEaEToJwKxoUkQGJFOVFpNTPMhpaEuAZKzIREf0m4pKN2O
-         XnFnZN++gvUqSmKubQFMtIlG5Q0J7affa4z+FA79DzqwC7xi3oMsb7dQvFS2BfwbnP
-         l2/jMhAKlXIN5KNbTQMJYpN3V6eYL4OnlpvQgKHY=
-To:     Johannes Berg <johannes@sipsolutions.net>, luciano.coelho@intel.com
-Cc:     linux-wireless@vger.kernel.org, linuxwifi@intel.com
-References: <20190819180540.2855-1-alexander@wetzel-home.de>
- <204c346ab9fc71865e4cb5f5c29ec33ca05050e2.camel@sipsolutions.net>
- <da471544-3370-8ba1-2265-d02ab09cdcee@wetzel-home.de>
- <52914e64663283eeff9445b8b1fb37986c15223d.camel@sipsolutions.net>
-From:   Alexander Wetzel <alexander@wetzel-home.de>
-Message-ID: <ae57dab8-a6c2-c0a5-194b-27cef4c55e16@wetzel-home.de>
-Date:   Mon, 19 Aug 2019 22:42:14 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.8.0
+        Mon, 19 Aug 2019 18:02:44 -0400
+Received: by mail-io1-f67.google.com with SMTP id s21so7791675ioa.1;
+        Mon, 19 Aug 2019 15:02:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=nkPsYIq5p1Usn95zadxgW7erLbA98guz1UFddB9orFo=;
+        b=IRgzkkQ0QlYiIqgU9DslAGaSx9oz5wU5adcfTZWc60ibm3DHynGVVixJrWxAut0Pae
+         ARzqaY1/pxrAMSpTdcKfCBtRoFPMFS8+WZsScW495O7Pf7bJTCDAo3OOueleEgGs9Osv
+         59921BouToXc5Ovc92CQFjNHP3+/kGBqZvxV+QK34IvNWzoIEU93UHsUIxSn6eVvrsFU
+         g5treQ50nJkKHPa8rwc0Oh9s6WWKODy8zKxExTJhdznLdHOm5T7muHcEccqX8YZQ5L7d
+         ADPOmA+sRvWN3t/z9HxtD4g/Lgj4kzEYFnWJ9k7ClZwbnzn02QUlkT8waxriC/Wpe9nP
+         q53A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=nkPsYIq5p1Usn95zadxgW7erLbA98guz1UFddB9orFo=;
+        b=oYozfHj6p7SMaYdxmSXvkqz3omwdyg+ftHjVBaHiAqBlnLj6x9531et8jUk50jueoT
+         y2cU/oVuoVQsCwOEu43hu26qlol2JSmB1xXJj0Za8nKZa3h3GF5CKG8/dexHz8TzCJX1
+         vo/TNPdY3AlW7Sn9JLnWCqFK+QgbPhjdBs+6Hbh+5nkCxIG5dVn0FfYbLYATeh/888YB
+         pTCJ8dkbLQiWXEJam6b9NoOpcIzbpcb7rL3A355C/1AGZsCy/NlKmneuw0Va10AnswkK
+         KBYv+EisB1L8oCP9l6r5fp4PUqyMH3TjrBdJddx8EQ9cq8SORiLtmmRuF8e3kdImDEK4
+         6Gcw==
+X-Gm-Message-State: APjAAAXB6U8H/6BuBUmOb6K7bk/qaEOOS1bw9RIpAgXyrExtL8rl/B99
+        17LNTRGgJKvcUB6qlr4ZRbY=
+X-Google-Smtp-Source: APXvYqzjT1oN5/e8keSQCjVxoTzLRGG1vuf4kTYM+hq51sy7QzOV0GLDOYYsYVB78xsRtsZrFijh0Q==
+X-Received: by 2002:a6b:f30b:: with SMTP id m11mr21952710ioh.214.1566252163559;
+        Mon, 19 Aug 2019 15:02:43 -0700 (PDT)
+Received: from peng.science.purdue.edu (cos-128-210-107-27.science.purdue.edu. [128.210.107.27])
+        by smtp.googlemail.com with ESMTPSA id z9sm2850133ior.79.2019.08.19.15.02.42
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 19 Aug 2019 15:02:43 -0700 (PDT)
+From:   Hui Peng <benquike@gmail.com>
+To:     security@kernel.org
+Cc:     Hui Peng <benquike@gmail.com>,
+        Mathias Payer <mathias.payer@nebelwelt.net>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: [PATCH] Fix a double free bug in rsi_91x_deinit
+Date:   Mon, 19 Aug 2019 18:02:29 -0400
+Message-Id: <20190819220230.10597-1-benquike@gmail.com>
+X-Mailer: git-send-email 2.22.1
 MIME-Version: 1.0
-In-Reply-To: <52914e64663283eeff9445b8b1fb37986c15223d.camel@sipsolutions.net>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-Ovh-Tracer-Id: 696650569209158856
-X-VR-SPAMSTATE: OK
-X-VR-SPAMSCORE: -100
-X-VR-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgeduvddrudefledgudehfecutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfqggfjpdevjffgvefmvefgnecuuegrihhlohhuthemucehtddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmd
+Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+`dev` (struct rsi_91x_usbdev *) field of adapter
+(struct rsi_91x_usbdev *) is allocated  and initialized in
+`rsi_init_usb_interface`. If any error is detected in information
+read from the device side,  `rsi_init_usb_interface` will be
+freed. However, in the higher level error handling code in
+`rsi_probe`, if error is detected, `rsi_91x_deinit` is called
+again, in which `dev` will be freed again, resulting double free.
 
+This patch fixes the double free by removing the free operation on
+`dev` in `rsi_init_usb_interface`, because `rsi_91x_deinit` is also
+used in `rsi_disconnect`, in that code path, the `dev` field is not
+ (and thus needs to be) freed.
 
-Am 19.08.19 um 22:03 schrieb Johannes Berg:
-> On Mon, 2019-08-19 at 21:57 +0200, Alexander Wetzel wrote:
->>>> +
->>>> +	/* The new Tx API does not allow to pass the key or keyid of a MPDU to
->>>> +	 * the hw, preventing us to control which key(id) to use per MPDU.
->>>> +	 * Till that's fixed we can't use Extended Key ID for the newer cards.
->>>
->>> Technically we still don't need per MPDU, we just need to switch which
->>> one to use for TX after installing it for RX already.
->>
->> The Extended Key ID API we finally merged in mac80211 is not notifying
->> the driver when to switch the key over to the other id.
-> 
-> Oh, right, good point.
-> 
->> The current API provides the key/keyid per MPDU and let's mac80211 have
->> the full control what's the correct key for each frame.
-> 
-> Yeah, but as you noticed we no longer have that control per MPDU with
-> the new TX API in iwlmvm.
-> 
->> That's especially critical for drivers setting
->> IEEE80211_KEY_FLAG_GENERATE_IV and/or supporting A-MPDU's. Allowing the
->> driver to override the mac80211 decision is only safe when the
->> driver/card generates the PNs itself and also handles the A-MPDU key
->> borders correctly.
-> 
-> Sure, the device does generate the PN itself now with the new TX API
-> too. It doesn't care about A-MPDU key borders, but it probably could
-> when taught to care about extended key ID.
-> 
->> While less desirable we still could get that working: The mvm driver
->> would have to detect the key borders and then tell the firmware to
->> switch over to the other key. But we would have to make sure to not
->> re-enable A-MPDU aggregation till the card really has switched.
-> 
-> I'm not entirely sure off the top of my head how it works, but it seems
-> possible that if we just assign a new PN to retransmits of the same
-> frame but in a new A-MPDU after key switching, it wouldn't actually
-> matter?
+This bug was found in v4.19, but is also present in the latest version
+of kernel.
 
-I was thinking about mac80211 re-enabling A-MPDU aggregation but the 
-driver still using the old key for some frames and then switching to the 
-new key within one A-MPDU, causing non-compliant A-MPDUs.
+Reported-by: Hui Peng <benquike@gmail.com>
+Reported-by: Mathias Payer <mathias.payer@nebelwelt.net>
+Signed-off-by: Hui Peng <benquike@gmail.com>
+---
+ drivers/net/wireless/rsi/rsi_91x_usb.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-> But then again maybe somewhere it's stated that we must use the same key
-> for all transmit attempts of a single frame? Not sure.
+diff --git a/drivers/net/wireless/rsi/rsi_91x_usb.c b/drivers/net/wireless/rsi/rsi_91x_usb.c
+index c0a163e40402..ac917227f708 100644
+--- a/drivers/net/wireless/rsi/rsi_91x_usb.c
++++ b/drivers/net/wireless/rsi/rsi_91x_usb.c
+@@ -640,7 +640,6 @@ static int rsi_init_usb_interface(struct rsi_hw *adapter,
+ 	kfree(rsi_dev->tx_buffer);
+ 
+ fail_eps:
+-	kfree(rsi_dev);
+ 
+ 	return status;
+ }
+-- 
+2.22.1
 
-I know of course next to nothing how the hardware/firmware is handling 
-that, but I'm surprised this could be a problem. I assumed the card 
-would create a full MPDU (with the crypto headers) and use that for 
-retransmit and not create the MPDU new... After all you still have to 
-use the old PN and getting that right sounds tricky when you don't have 
-the full MPDU cached somehow. But I guess the high bandwidth and the 
-required buffer space forced you to extreme measures to conserve space...
-
-> 
-> I'm also not sure if we could actually assign a PN from the new key for
-> the retransmit, the hardware has to store those back into memory
-> normally.
-> 
-> So probably you're right, and we'd have to disable A-MPDUs until we have
-> no outstanding old-key-retransmits, but that seems manageable.
-
-Extending the A-MPDU block mac80211 is using to enforce the A-MPDU key 
-borders should be not very hard. Figuring out the time when we safely 
-can restart it - when re-transmits indeed are also an issue - I'm less 
-sure about. I believe re-transmits are handled by the card and not the 
-driver but so far had no reason to dig deeper into that topic. But I 
-guess a call to switch over the keyid which blocks till that is done 
-should take care of it.
-
-Alexander
-
-Alexander
