@@ -2,99 +2,98 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 340E494C2B
-	for <lists+linux-wireless@lfdr.de>; Mon, 19 Aug 2019 19:58:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 48B2B94C77
+	for <lists+linux-wireless@lfdr.de>; Mon, 19 Aug 2019 20:19:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728221AbfHSR6B (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 19 Aug 2019 13:58:01 -0400
-Received: from mail-ot1-f65.google.com ([209.85.210.65]:34250 "EHLO
-        mail-ot1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726987AbfHSR6B (ORCPT
+        id S1727965AbfHSSTb (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 19 Aug 2019 14:19:31 -0400
+Received: from mail-pg1-f193.google.com ([209.85.215.193]:46377 "EHLO
+        mail-pg1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727945AbfHSSTb (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 19 Aug 2019 13:58:01 -0400
-Received: by mail-ot1-f65.google.com with SMTP id c7so2502639otp.1;
-        Mon, 19 Aug 2019 10:58:00 -0700 (PDT)
+        Mon, 19 Aug 2019 14:19:31 -0400
+Received: by mail-pg1-f193.google.com with SMTP id m3so1657761pgv.13
+        for <linux-wireless@vger.kernel.org>; Mon, 19 Aug 2019 11:19:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=sender:subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=SPx17Q+G7qGGeLjARILuLl6TW51F+Z4DXKMa+q1QhGQ=;
-        b=NCQb6hAhIGnsCpdzTs7j+nh0saNaP8AahXNLtJPcx1sEJlMVEaUUkdrJHEOBuIqTgZ
-         NVXt998/bfTuQbaaYo1B+BNvEiAzmXxkp16nsDCBJQXJqaUEsn9Kewve9kBgmWebj8uT
-         wbCqB6FZAGC/j9q+MVM0GZR2/9a5bLDKbneZhY59ofsCMutEW9ZpxeJSgArfpJTFGthB
-         OXpUIP0rRSGRaZKM3oYHTEhTjfsdTR6crmS++gVDdHmqCYXY9ULwIj6pcQU3ZOAaJumZ
-         JY/sfkFIud7yT9Uh5B1Nv3KEOMdktqW34TQke4QfT1EARCsB2CxEbY9QrVAv2a7zVGKf
-         7fyA==
+        d=chromium.org; s=google;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=SJlge8rq+r4uUPWO3pCVCCkIuVNuW0aYbGKMgKd/2xw=;
+        b=OX9aulaDJeWrn/KfC+t0GIpZ5sYOrxoLMbFmQ5csC9q77hJG8Y5Y4uzZCsOPkacbHF
+         eACYdXSIlwNxdmfRA7SNHnreUAzUDskEkLGE3nAfIj0guS6r61u0UfLItCSXKRbn/QfJ
+         QBc2Uh3gQk6KGB5OH4yGEfjSie17cZROYkz/w=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:sender:subject:to:cc:references:from:message-id
-         :date:user-agent:mime-version:in-reply-to:content-language
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
          :content-transfer-encoding;
-        bh=SPx17Q+G7qGGeLjARILuLl6TW51F+Z4DXKMa+q1QhGQ=;
-        b=P5/L+h3Xj3hdYocZ3W4390+jU6iz9Zk7fQi9y2xjaPtkdp6DHgfLWtc3oZzyenKdOx
-         MQ8NcRjQrDaRS7q87vEQFrxRCpO3Kvgn08Z53VOm7ma7UkUON09IHNb/vg3MMFn2WcvF
-         ICG6WY0na7fD51XI1VRjFJIhRIom+CSLSW9858cwE6pDY0I0OLSnXDBhBUPeW5Ha1iCB
-         gBLwsYUja3bw0Ievl0KkdxWZ1ex5PZm/tIUsbZl8aVH3uxKVvG3X3LQLUOkjuTHmfapX
-         i/EmW2hVUX+ZZH+pwSFnjn5LAGtX/SqCxTXJX1qaFWActs2yxnajZoJj6yLn1K37TorK
-         XWZQ==
-X-Gm-Message-State: APjAAAVq6qGLbhHXduDL5yZiUNd9js7pFYCBiD833B8XIJfv8jWbXLSX
-        a2JLY31LxnbQDu0KfzGC27nXfa6r
-X-Google-Smtp-Source: APXvYqyoPbNGTmlnGTEcpz7fO0lq6n2L2EKn43BGGRvx/2q3Uayz1zGl3G1y2NZkto8hfZQLFmFHeQ==
-X-Received: by 2002:a05:6830:1592:: with SMTP id i18mr13058312otr.86.1566237480027;
-        Mon, 19 Aug 2019 10:58:00 -0700 (PDT)
-Received: from [192.168.1.153] (cpe-24-31-245-230.kc.res.rr.com. [24.31.245.230])
-        by smtp.gmail.com with ESMTPSA id 20sm5706479oth.43.2019.08.19.10.57.58
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 19 Aug 2019 10:57:59 -0700 (PDT)
-Subject: Re: [PATCH 2/2] staging: rtl8192e: rtllib_crypt_ccmp.c: Use crypto
- API ccm(aes)
-To:     Christina Quast <contact@christina-quast.de>,
-        ard.biesheuvel@linaro.org
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Payal Kshirsagar <payal.s.kshirsagar.98@gmail.com>,
-        Eric Biggers <ebiggers@google.com>,
-        Herbert Xu <herbert@gondor.apana.org.au>,
-        devel@driverdev.osuosl.org, linux-kernel@vger.kernel.org,
-        Anushka Shukla <anushkacharu9@gmail.com>,
-        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        Zach Turner <turnerzdp@gmail.com>,
-        linux-wireless@vger.kernel.org,
-        Johannes Berg <johannes@sipsolutions.net>,
-        "David S. Miller" <davem@davemloft.net>,
-        linux-crypto@vger.kernel.org
-References: <20190816065936.12214-1-contact@christina-quast.de>
- <20190816065936.12214-3-contact@christina-quast.de>
-From:   Larry Finger <Larry.Finger@lwfinger.net>
-Message-ID: <767c52c9-71ba-6639-631d-6f3cb0d6951c@lwfinger.net>
-Date:   Mon, 19 Aug 2019 12:57:57 -0500
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.8.0
+        bh=SJlge8rq+r4uUPWO3pCVCCkIuVNuW0aYbGKMgKd/2xw=;
+        b=jk+aAoyJWJCP8YdPCYGZnWKIpA9Da3loAwmfUQNfEIuOZty2QM095ckFrEKAarV8Tc
+         pUq7IagVcLuZIjXumcuyLxn+2WUl5k4kiLyPBRcV96keIDVUNLXWUm+ag8P/KzW3DeLq
+         puIXxKnmwQ7aIsmsXAM7FhBIAdn58HUACh5gm0B48m/vPRfHE+cwuPvmDyQS8/O13o8W
+         SGeMkm8VxZqi+svURNgcfAcBYeMvj1Eow1/YhXlbUT/TfvpZYqFirVcSC4rohCtlx5K+
+         x5ZKmFT72HqODocX0Yw2HUWpB0J/r3WG3+Hnzx0hwBphXRIedFSFl1PvXkgVr7v5i1WS
+         PrcA==
+X-Gm-Message-State: APjAAAURhTqTPE+xwecWeNCA1eYlUaZKqkD9p1ypTSlp37WWmnJGrcC5
+        jORI9G61x0szqa/yIkNSjTZfVvg+BhI=
+X-Google-Smtp-Source: APXvYqytE4xc/N9uZelcEE+Rlm8nsw99Haw09hYkjnFQv1ekLhzk+FenYSQ3b1GhI0wlrCYwI7tijw==
+X-Received: by 2002:a17:90a:d58c:: with SMTP id v12mr21859356pju.7.1566238769923;
+        Mon, 19 Aug 2019 11:19:29 -0700 (PDT)
+Received: from smtp.gmail.com ([2620:15c:202:1:534:b7c0:a63c:460c])
+        by smtp.gmail.com with ESMTPSA id 10sm26981889pfv.63.2019.08.19.11.19.28
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 19 Aug 2019 11:19:28 -0700 (PDT)
+From:   Brian Norris <briannorris@chromium.org>
+To:     <linux-wireless@vger.kernel.org>
+Cc:     Yan-Hsuan Chuang <yhchuang@realtek.com>,
+        Guenter Roeck <groeck@chromium.org>,
+        kbuild test robot <lkp@intel.com>,
+        Brian Norris <briannorris@chromium.org>
+Subject: [PATCH 5.4] rtw88: drop unused rtw_coex_coex_dm_reset()
+Date:   Mon, 19 Aug 2019 11:17:57 -0700
+Message-Id: <20190819181757.204572-1-briannorris@chromium.org>
+X-Mailer: git-send-email 2.23.0.rc1.153.gdeed80330f-goog
 MIME-Version: 1.0
-In-Reply-To: <20190816065936.12214-3-contact@christina-quast.de>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 8/16/19 1:59 AM, Christina Quast wrote:
-> Use ccm(aes) aead transform instead of invoking the AES block cipher
-> block by block.
-> 
-> Signed-off-by: Christina Quast <contact@christina-quast.de>
-> ---
->   drivers/staging/rtl8192e/Kconfig             |   1 +
->   drivers/staging/rtl8192e/rtllib_crypt_ccmp.c | 187 ++++++++-----------
->   2 files changed, 78 insertions(+), 110 deletions(-)
+From: Guenter Roeck <groeck@chromium.org>
 
-Tested-by: Larry Finger <Larry.finger@lwfinger.net>
+0day reports:
 
-This change for the RTL8192E works. I do not have the hardware for testing the 
-equivalent change for r8192u, but as the changes look the same, that one is 
-likely OK as well.
+sparse warnings:
 
-Thanks for the change,
+drivers/net/wireless/realtek/rtw88/coex.c:2457:6: sparse:
+	symbol 'rtw_coex_coex_dm_reset' was not declared. Should it be static?
 
-Larry
+rtw_coex_coex_dm_reset() is not called. Remove it.
+
+Fixes: 4136214f7c46 ("rtw88: add BT co-existence support")
+Reported-by: kbuild test robot <lkp@intel.com>
+Signed-off-by: Guenter Roeck <groeck@chromium.org>
+Signed-off-by: Brian Norris <briannorris@chromium.org>
+---
+ drivers/net/wireless/realtek/rtw88/coex.c | 5 -----
+ 1 file changed, 5 deletions(-)
+
+diff --git a/drivers/net/wireless/realtek/rtw88/coex.c b/drivers/net/wireless/realtek/rtw88/coex.c
+index 4577fceddc5e..9ee860db651a 100644
+--- a/drivers/net/wireless/realtek/rtw88/coex.c
++++ b/drivers/net/wireless/realtek/rtw88/coex.c
+@@ -2454,11 +2454,6 @@ void rtw_coex_wl_fwdbginfo_notify(struct rtw_dev *rtwdev, u8 *buf, u8 length)
+ 	rtw_coex_wl_ccklock_detect(rtwdev);
+ }
+ 
+-void rtw_coex_coex_dm_reset(struct rtw_dev *rtwdev)
+-{
+-	__rtw_coex_init_hw_config(rtwdev, false);
+-}
+-
+ void rtw_coex_wl_status_change_notify(struct rtw_dev *rtwdev)
+ {
+ 	struct rtw_coex *coex = &rtwdev->coex;
+-- 
+2.23.0.rc1.153.gdeed80330f-goog
+
