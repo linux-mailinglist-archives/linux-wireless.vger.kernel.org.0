@@ -2,31 +2,35 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 799A794ED1
-	for <lists+linux-wireless@lfdr.de>; Mon, 19 Aug 2019 22:21:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 776D894ED4
+	for <lists+linux-wireless@lfdr.de>; Mon, 19 Aug 2019 22:22:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728395AbfHSUVD (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 19 Aug 2019 16:21:03 -0400
-Received: from s3.sipsolutions.net ([144.76.43.62]:47536 "EHLO
+        id S1728177AbfHSUV7 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 19 Aug 2019 16:21:59 -0400
+Received: from s3.sipsolutions.net ([144.76.43.62]:47548 "EHLO
         sipsolutions.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728237AbfHSUVD (ORCPT
+        with ESMTP id S1728136AbfHSUV7 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 19 Aug 2019 16:21:03 -0400
+        Mon, 19 Aug 2019 16:21:59 -0400
 Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
         (Exim 4.92)
         (envelope-from <johannes@sipsolutions.net>)
-        id 1hzo9E-00041E-Mb; Mon, 19 Aug 2019 22:21:00 +0200
-Message-ID: <4848c3a9d0b330fab4442436244387a2c127fa03.camel@sipsolutions.net>
-Subject: Re: [RFC 0/1] Allow MAC change on up interface
+        id 1hzoA8-00042J-L6; Mon, 19 Aug 2019 22:21:56 +0200
+Message-ID: <b3b7a99971f1512b4cd9c72920b699c252c1ae83.camel@sipsolutions.net>
+Subject: Re: Implementing Mikrotik IE
 From:   Johannes Berg <johannes@sipsolutions.net>
-To:     James Prestwood <prestwoj@gmail.com>,
-        linux-wireless@vger.kernel.org
-Date:   Mon, 19 Aug 2019 22:20:59 +0200
-In-Reply-To: <394092a2f20697c9b055166a8254a5ef888551a5.camel@gmail.com> (sfid-20190819_175627_344053_E33FB9B0)
-References: <20190815185702.30937-1-prestwoj@gmail.com>
-         (sfid-20190815_205833_978900_86B1E73D) <645af7dad899e8eb186b3fee0f8a8a151a408557.camel@sipsolutions.net>
-         <394092a2f20697c9b055166a8254a5ef888551a5.camel@gmail.com>
-         (sfid-20190819_175627_344053_E33FB9B0)
+To:     Josef Miegl <josef@miegl.cz>
+Cc:     Sebastian Gottschall <s.gottschall@newmedia-net.de>,
+        linux-wireless <linux-wireless@vger.kernel.org>
+Date:   Mon, 19 Aug 2019 22:21:55 +0200
+In-Reply-To: <20190819113706.ujsz67sxcwt2ulmt@pepin-laptop.localdomain>
+References: <20190815152844.k5mmddvbwrohkzr6@pepin-laptop.localdomain>
+         <3a079683-6f57-3b42-f909-90c46e14f14f@newmedia-net.de>
+         <20190816111044.4ntizgmpa3twbzcg@pepin-laptop.localdomain>
+         <e8129acb-fc32-c85c-b504-ab8777a3f1a3@newmedia-net.de>
+         <20190816113818.ohktykc4fyetzyvq@pepin-laptop.localdomain>
+         <9985fddfb059640f36665efc9c1ef2dc0bdb7662.camel@sipsolutions.net>
+         <20190819113706.ujsz67sxcwt2ulmt@pepin-laptop.localdomain>
 Content-Type: text/plain; charset="UTF-8"
 User-Agent: Evolution 3.30.5 (3.30.5-1.fc29) 
 MIME-Version: 1.0
@@ -36,93 +40,47 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi James,
-
-> > It actually seems wrong to set IFF_LIVE_ADDR_CHANGE at all, because
-> > you
-> > don't actually support that - you only support setting it while not
-> > connected?
+On Mon, 2019-08-19 at 13:37 +0200, Josef Miegl wrote:
+> On Mon, Aug 19, 2019 at 12:12:43PM +0200, Johannes Berg wrote:
+> > Contrary to what Sebastian states, it certainly is possible today,
+> > although not through wpa_supplicant's config file, only through the
+> > wpa_cli interface, using the VENDOR_ELEM_ADD command. There are various
+> > tests showing how to use this.
 > 
-> You are right, we only care about setting the MAC while not connected.
-> But, the eth_ API's that set the MAC are contingent on
-> IFF_LIVE_ADDR_CHANGE when the interface is running. If you follow down
-> 'dev_set_mac_address':
+> Thanks Johannes. I noticed this too and tried adding a config file
+> option (OpenWRT doesn't compile wpa_supplicant with wpa_cli). I've added
+> sta_vendor_elements option (exactly like ap_vendor_elements). This is
+> the code setting vendor_elem:
 > 
-> dev_set_mac_address ->
->    ndo_set_mac_address (ieee80211_change_mac) ->
->       eth_mac_addr ->
->          eth_prepare_mac_addr_change:
+> +++ b/wpa_supplicant/wpa_supplicant.c
+> @@ -5833,6 +5833,16 @@
+>         wpas_mbo_update_non_pref_chan(wpa_s, wpa_s->conf->non_pref_chan);
+>  #endif /* CONFIG_MBO */
 > 
-> You see the check for:
+> +       if (wpa_s->conf->sta_vendor_elements) {
+> +               if (wpa_s->vendor_elem[VENDOR_ELEM_ASSOC_REQ] == NULL) {
+> +                       wpa_s->vendor_elem[VENDOR_ELEM_ASSOC_REQ] = wpa_s->conf->sta_vendor_elements;
+> +               } else {
+> +                       wpabuf_resize(&wpa_s->vendor_elem[VENDOR_ELEM_ASSOC_REQ], wpabuf_len(wpa_s->conf->sta_vendor_elements));
+> +                       wpabuf_put_buf(wpa_s->vendor_elem[VENDOR_ELEM_ASSOC_REQ], wpa_s->conf->sta_vendor_elements);
+> +               }
+> +       }
+> +
+>         wpa_supplicant_set_default_scan_ies(wpa_s);
 > 
-> !(dev->priv_flags & IFF_LIVE_ADDR_CHANGE) && netif_running(dev)
-
-Right.
-
-> Like I said in my commit message, I did not think setting
-> IFF_LIVE_ADDR_CHANGE where I did was the correct way to do it, but
-> unless this eth code is changed its looking like it does need to be set
-> somewhere to change the MAC while 'running'.
-
-Also right.
-
-> Maybe this is a historical thing but the comment about
-> IFF_LIVE_ADDR_CHANGE says "device supports hardware address change when
-> it's running". Isn't a wireless adapter 'running' when not connected?
-> Or does 'running' indicate some different state than up/down?
+>         return 0;
 > 
-> If you have any suggestions on how I could do this without setting
-> IFF_LIVE_ADDR_CHANGE I am all ears.
+> 
+> But when I actually set sta_vendor_elements to something, all it does is
+> failing the 4-way handshake during association. The IE is perfectly
+> valid and it works with ap_vendor_elements, no nl80211 malformed IEs
+> error either. Am I missing something?
 
-I don't, short of
+I don't know, try capturing over the air?
 
-1) don't do that then
-2) extend the network stack to have IFF_LIVE_BUT_NO_CARRIER_ADDR_CHANGE
-   or something like that
-
-TBH, I'm not really sure I see any point in this to start with, many
-devices will give the address to the firmware when the interface is
-brought up (even iwlwifi does - I'm not sure we'd want to take your
-patch for iwlwifi even if that works today, nothing says the firmware
-might not change its mind on that), and so it's quite likely only going
-to be supported in few devices.
-
-You've also not really explained what exactly is troubling you with
-changing the MAC address, you just mentioned some sort of "race
-condition"?
-
-Now, one thing I can imagine would be that you'd want to optimize
-
- * ifdown
-   - remove iface from fw/hw
-   - stop fw/hw
- * change MAC
- * ifup
-   - start fw/hw
-   - add iface to fw/hw
-
-to just
-
- * ifdown
-   - remove iface from fw/hw
- * change MAC
- * ifup
-   - add iface to fw/hw
-
-i.e. not restart the firmware (which takes time) for all this, but that
-seems much easier to solve by e.g. having a combined operation for all
-of this that gets handled in mac80211, or more generally by having a
-"please keep the firmware running" token that you can hold while you do
-the operation?
-
-
-Your changes are also a bit strange - you modified the "connect" path
-and iwlwifi, but the connect path is not usually (other than with iw or
-even iwconfig) taken for iwlwifi? And if you modify auth/assoc paths,
-you get into even weirder problems - what if you use different addresses
-for auth and assoc? What if the assoc (or even connect) really was a
-*re*assoc, and thus must have the same MAC address? To me, the whole
-thing seems like more of a problem than a solution.
+Perhaps the vendor IEs added this way are added *first* before all the
+RSN IEs, and that's tripping up your AP, and you'd have to add them
+*after* the normal elements? Not really sure where/how they're added?
 
 johannes
 
