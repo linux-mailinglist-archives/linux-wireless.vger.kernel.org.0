@@ -2,144 +2,222 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 8A69296BDB
-	for <lists+linux-wireless@lfdr.de>; Wed, 21 Aug 2019 00:00:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1B84196C06
+	for <lists+linux-wireless@lfdr.de>; Wed, 21 Aug 2019 00:13:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730501AbfHTWAh (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 20 Aug 2019 18:00:37 -0400
-Received: from mail-oi1-f181.google.com ([209.85.167.181]:37558 "EHLO
-        mail-oi1-f181.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727358AbfHTWAg (ORCPT
+        id S1730837AbfHTWN2 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 20 Aug 2019 18:13:28 -0400
+Received: from gesmail.globaledgesoft.com ([182.73.204.242]:60758 "EHLO
+        gesmail.globaledgesoft.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1729887AbfHTWN2 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 20 Aug 2019 18:00:36 -0400
-Received: by mail-oi1-f181.google.com with SMTP id b25so67792oib.4
-        for <linux-wireless@vger.kernel.org>; Tue, 20 Aug 2019 15:00:36 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=Th0Wwi5W3mxObi7CcFu+DqwvURX69t0W5hLqCx/fX54=;
-        b=LfI9zGLO2+3WUNhgVXWAlBz63qQmxo8/63OZ9XGtrPsr3Pu25zKbjoflPtE9gSQHwb
-         ZAS3FbfXi7RePEURQoOwEPEwMnWxmAIbdnEoE6BeXuFcNZSo9DSfT+A9jvqj/5pevMps
-         uG3iV7K4Af+nnhmLnGFwFem5rsDGd0MBQBV7+NzvHttuDTC4C609OZdX6REnXg9oIzU3
-         7U5s49O7l4SqqslU4Aj9V1PXrxesbM/9D4mxnnuA8OHlSaWRfb3y/0ArDKe+WbaJqKpG
-         1GpwNYqtSWtgRg9n7pBRS1jNY3V8gaeCOZt3kwCr/k2i1YXg4UY8aaKVsUB9Ccuy7GOj
-         0uSA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=Th0Wwi5W3mxObi7CcFu+DqwvURX69t0W5hLqCx/fX54=;
-        b=oLk6Bqi8qB0tVhDNzj008poCKyuiyaIdwUJh1g/156uFvDpBCewZLjvX6EWcEeR6Vo
-         UT6KZ4lhYOWFWOdOffsjYF316ZCkl1bcgca38zoTSFTEczeC7jBvLEZMv00RtWna9lRr
-         Kf0NfU6kI/FHo1r84zFFk1RiEjLJoqzxd698d8P+wU11LPhAqZwHwzSVcjYPLHyqvsV7
-         0fNs2I61538meIdfELcQU5052U/40F74WNQ1SFrmTL//NCG5QK3JL3I3y0Ai4DA8VIYZ
-         emoHDATHHtc64CxP6tTdfO81Hsc3W36VXQi4AQWuLL09e47H4u4/hzK8kTjsXU34jSA5
-         InPA==
-X-Gm-Message-State: APjAAAWMz0kyo5fRnBJ5Xax1ZJs1jdh4xI0w+4k1gohn3O5gqfsLAmy6
-        j2GUydsmAe1m18YMxUr4LKZedY6G
-X-Google-Smtp-Source: APXvYqy2L8DF4XPha3H8vVZRiaNsqLCeywnarXFLNK/Q3eyH41A/t5Xn4aEMbrQO98fKunx7DaTr+w==
-X-Received: by 2002:aca:4cd0:: with SMTP id z199mr1540769oia.112.1566338435263;
-        Tue, 20 Aug 2019 15:00:35 -0700 (PDT)
-Received: from [192.168.1.249] (cpe-70-114-247-242.austin.res.rr.com. [70.114.247.242])
-        by smtp.googlemail.com with ESMTPSA id n13sm7428353otf.51.2019.08.20.15.00.33
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Tue, 20 Aug 2019 15:00:34 -0700 (PDT)
-Subject: Re: [RFC 0/1] Allow MAC change on up interface
-To:     Dan Williams <dcbw@redhat.com>,
-        Johannes Berg <johannes@sipsolutions.net>,
-        James Prestwood <prestwoj@gmail.com>
-Cc:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-References: <20190815185702.30937-1-prestwoj@gmail.com>
- <645af7dad899e8eb186b3fee0f8a8a151a408557.camel@sipsolutions.net>
- <394092a2f20697c9b055166a8254a5ef888551a5.camel@gmail.com>
- <4848c3a9d0b330fab4442436244387a2c127fa03.camel@sipsolutions.net>
- <c6b719d6279211bbf52443f327884d96ef63f2b2.camel@gmail.com>
- <6835732fcc59ba8dbbcda4abc6e17dad499a7d8d.camel@sipsolutions.net>
- <b115e933-a357-9904-e831-dea7df1b46b9@gmail.com>
- <3576ad937c0b40b971a1b9c1a7c7396731a94bad.camel@sipsolutions.net>
- <8c04da29-7515-1196-8431-67a6390bc00d@gmail.com>
- <3fd41591acd55535863f11a0cc4f0f5f2afd5bdf.camel@sipsolutions.net>
- <3313f0a7-2b38-9941-46bf-4c1a3e06a267@gmail.com>
- <3beb3208443d39201272e822d26c1389aa4940db.camel@redhat.com>
-From:   Denis Kenzior <denkenz@gmail.com>
-Message-ID: <86a8b422-87e3-5ab7-40fe-604969ec8ec1@gmail.com>
-Date:   Tue, 20 Aug 2019 16:52:49 -0500
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.8.0
-MIME-Version: 1.0
-In-Reply-To: <3beb3208443d39201272e822d26c1389aa4940db.camel@redhat.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+        Tue, 20 Aug 2019 18:13:28 -0400
+Received: from mail.globaledgesoft.com (mail.globaledgesoft.com [172.16.2.30])
+        (using TLSv1 with cipher ADH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by gesmail.globaledgesoft.com (Postfix) with ESMTP id 08E657C8849;
+        Wed, 21 Aug 2019 03:42:34 +0530 (IST)
+Received: from mail.globaledgesoft.com (localhost [127.0.0.1])
+        by mail.globaledgesoft.com (Postfix) with ESMTPS id BE4B0B8086B;
+        Wed, 21 Aug 2019 03:49:02 +0530 (IST)
+Received: from localhost (localhost [127.0.0.1])
+        by mail.globaledgesoft.com (Postfix) with ESMTP id A5AB1B80855;
+        Wed, 21 Aug 2019 03:49:02 +0530 (IST)
+X-Amavis-Modified: Mail body modified (using disclaimer) -
+        mail.globaledgesoft.com
+Received: from mail.globaledgesoft.com ([127.0.0.1])
+        by localhost (mail.globaledgesoft.com [127.0.0.1]) (amavisd-new, port 10026)
+        with ESMTP id 6Y_zAGCWdaQ8; Wed, 21 Aug 2019 03:49:02 +0530 (IST)
+Received: from localhost.localdomain (unknown [172.16.2.250])
+        by mail.globaledgesoft.com (Postfix) with ESMTPSA id 731BBB8071C;
+        Wed, 21 Aug 2019 03:49:02 +0530 (IST)
+From:   Balakrishna Bandi <b.balakrishna@globaledgesoft.com>
+To:     kvalo@codeaurora.org
+Cc:     linux-wireless@vger.kernel.org,
+        Balakrishna Bandi <b.balakrishna@globaledgesoft.com>
+Subject: [PATCH 1/1] rt2x00: Queue flush fix
+Date:   Wed, 21 Aug 2019 03:43:05 +0530
+Message-Id: <1566339185-11875-1-git-send-email-b.balakrishna@globaledgesoft.com>
+X-Mailer: git-send-email 1.9.1
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi Dan,
+Added rt2x00 queue flush fix and beacon frames checks.
 
-On 8/20/19 4:18 PM, Dan Williams wrote:
+Signed-off-by: Balakrishna Bandi <b.balakrishna@globaledgesoft.com>
+---
+ drivers/net/wireless/ralink/rt2x00/rt2800mmio.c  |  2 +-
+ drivers/net/wireless/ralink/rt2x00/rt2x00dev.c   |  7 ++--
+ drivers/net/wireless/ralink/rt2x00/rt2x00mac.c   | 22 ++++++++++--
+ drivers/net/wireless/ralink/rt2x00/rt2x00queue.c | 44 +++++++++++++++++++-----
+ 4 files changed, 61 insertions(+), 14 deletions(-)
 
-<snip>
+diff --git a/drivers/net/wireless/ralink/rt2x00/rt2800mmio.c b/drivers/net/wireless/ralink/rt2x00/rt2800mmio.c
+index 110bb39..9964371 100644
+--- a/drivers/net/wireless/ralink/rt2x00/rt2800mmio.c
++++ b/drivers/net/wireless/ralink/rt2x00/rt2800mmio.c
+@@ -566,7 +566,7 @@ void rt2800mmio_queue_init(struct data_queue *queue)
+ 
+ 	switch (queue->qid) {
+ 	case QID_RX:
+-		queue->limit = 128;
++		queue->limit = 512;
+ 		queue->data_size = AGGREGATION_SIZE;
+ 		queue->desc_size = RXD_DESC_SIZE;
+ 		queue->winfo_size = rxwi_size;
+diff --git a/drivers/net/wireless/ralink/rt2x00/rt2x00dev.c b/drivers/net/wireless/ralink/rt2x00/rt2x00dev.c
+index 35414f9..085a41e 100644
+--- a/drivers/net/wireless/ralink/rt2x00/rt2x00dev.c
++++ b/drivers/net/wireless/ralink/rt2x00/rt2x00dev.c
+@@ -128,7 +128,8 @@ static void rt2x00lib_intf_scheduled_iter(void *data, u8 *mac,
+ 
+ 	if (test_and_clear_bit(DELAYED_UPDATE_BEACON, &intf->delayed_flags)) {
+ 		mutex_lock(&intf->beacon_skb_mutex);
+-		rt2x00queue_update_beacon(rt2x00dev, vif);
++		if (intf->enable_beacon)
++			rt2x00queue_update_beacon(rt2x00dev, vif);
+ 		mutex_unlock(&intf->beacon_skb_mutex);
+ 	}
+ }
+@@ -191,6 +192,7 @@ static void rt2x00lib_beaconupdate_iter(void *data, u8 *mac,
+ 					struct ieee80211_vif *vif)
+ {
+ 	struct rt2x00_dev *rt2x00dev = data;
++	struct rt2x00_intf *intf = vif_to_intf(vif);
+ 
+ 	if (vif->type != NL80211_IFTYPE_AP &&
+ 	    vif->type != NL80211_IFTYPE_ADHOC &&
+@@ -204,7 +206,8 @@ static void rt2x00lib_beaconupdate_iter(void *data, u8 *mac,
+ 	 * never be called for USB devices.
+ 	 */
+ 	WARN_ON(rt2x00_is_usb(rt2x00dev));
+-	rt2x00queue_update_beacon(rt2x00dev, vif);
++	if (intf->enable_beacon)
++		rt2x00queue_update_beacon(rt2x00dev, vif);
+ }
+ 
+ void rt2x00lib_beacondone(struct rt2x00_dev *rt2x00dev)
+diff --git a/drivers/net/wireless/ralink/rt2x00/rt2x00mac.c b/drivers/net/wireless/ralink/rt2x00/rt2x00mac.c
+index beb20c5..5c424da 100644
+--- a/drivers/net/wireless/ralink/rt2x00/rt2x00mac.c
++++ b/drivers/net/wireless/ralink/rt2x00/rt2x00mac.c
+@@ -103,6 +103,25 @@ void rt2x00mac_tx(struct ieee80211_hw *hw,
+ 	 */
+ 	if (!test_bit(DEVICE_STATE_PRESENT, &rt2x00dev->flags))
+ 		goto exit_free_skb;
++	/* Dirty hack for queue overrun protection,
++	 * if AC_VO/AC_VI/AC_BE is full, use next queue.
++	 * if AC_BK is full use previous queue.
++	 */
++	if (qid < 4) {
++		queue = rt2x00queue_get_tx_queue(rt2x00dev,qid);
++		if (unlikely(rt2x00queue_full(queue))) {
++			switch(qid) {
++				case 0: /* QID_AC_VO */
++				case 1: /* QID_AC_VI */
++				case 2: /* QID_AC_BE */
++					qid++;
++					break;
++				case 3: /* QID_AC_BK */
++					qid--;
++					break;
++			}
++		}
++	}
+ 
+ 	/*
+ 	 * Use the ATIM queue if appropriate and present.
+@@ -602,8 +621,7 @@ void rt2x00mac_bss_info_changed(struct ieee80211_hw *hw,
+ 			 * Upload beacon to the H/W. This is only required on
+ 			 * USB devices. PCI devices fetch beacons periodically.
+ 			 */
+-			if (rt2x00_is_usb(rt2x00dev))
+-				rt2x00queue_update_beacon(rt2x00dev, vif);
++			rt2x00queue_update_beacon(rt2x00dev, vif);
+ 
+ 			if (rt2x00dev->intf_beaconing == 1) {
+ 				/*
+diff --git a/drivers/net/wireless/ralink/rt2x00/rt2x00queue.c b/drivers/net/wireless/ralink/rt2x00/rt2x00queue.c
+index 3b6100e..4254811 100644
+--- a/drivers/net/wireless/ralink/rt2x00/rt2x00queue.c
++++ b/drivers/net/wireless/ralink/rt2x00/rt2x00queue.c
+@@ -986,25 +986,37 @@ void rt2x00queue_stop_queue(struct data_queue *queue)
+ 
+ void rt2x00queue_flush_queue(struct data_queue *queue, bool drop)
+ {
++	unsigned int i;
++	bool started;
+ 	bool tx_queue =
+ 		(queue->qid == QID_AC_VO) ||
+ 		(queue->qid == QID_AC_VI) ||
+ 		(queue->qid == QID_AC_BE) ||
+ 		(queue->qid == QID_AC_BK);
++	mutex_lock(&queue->status_lock);
++	/* If the queue has been started, we must stop it temporarily
++	 * to prevent any new frames to be queued on the device. If
++	 * we are not dropping the pending frames, the queue must
++	 * only be stopped in the software and not the hardware,
++	 * otherwise the queue will never become empty on its own.
++	 */
++	started = test_bit(QUEUE_STARTED, &queue->flags);
++	if (started) {
++		// pause the queue.
++		rt2x00queue_pause_queue(queue);
+ 
++		/* If we are not supposed to drop any pending
++		 * frames, this means we must force a start (=kick)
++		 * to the queue to make sure the hardware will
++		 * start transmitting.
++		 */
++		if (!drop && tx_queue)
++			queue->rt2x00dev->ops->lib->kick_queue(queue);
++	}
+ 	if (rt2x00queue_empty(queue))
+ 		return;
+ 
+ 	/*
+-	 * If we are not supposed to drop any pending
+-	 * frames, this means we must force a start (=kick)
+-	 * to the queue to make sure the hardware will
+-	 * start transmitting.
+-	 */
+-	if (!drop && tx_queue)
+-		queue->rt2x00dev->ops->lib->kick_queue(queue);
+-
+-	/*
+ 	 * Check if driver supports flushing, if that is the case we can
+ 	 * defer the flushing to the driver. Otherwise we must use the
+ 	 * alternative which just waits for the queue to become empty.
+@@ -1013,11 +1025,25 @@ void rt2x00queue_flush_queue(struct data_queue *queue, bool drop)
+ 		queue->rt2x00dev->ops->lib->flush_queue(queue, drop);
+ 
+ 	/*
++	 * When we don't want to drop any frames, or when
++	 * the driver doesn't fully flush the queue correcly,
++	 * we must wait for the queue to become empty.
++	 */
++	for (i = 0; !rt2x00queue_empty(queue) && i < 10; i++)
++		msleep(10);
++
++	/*
+ 	 * The queue flush has failed...
+ 	 */
+ 	if (unlikely(!rt2x00queue_empty(queue)))
+ 		rt2x00_warn(queue->rt2x00dev, "Queue %d failed to flush\n",
+ 			    queue->qid);
++	/*
++	 * Restore the queue to the previous status.
++	 */
++	if (started)
++		rt2x00queue_unpause_queue(queue);
++	mutex_unlock(&queue->status_lock);
+ }
+ EXPORT_SYMBOL_GPL(rt2x00queue_flush_queue);
+ 
+-- 
+1.9.1
 
-> 
-> Code will be written, but I'd rather it be written once rather than 3+
-> times for STA/AP/Mesh/etc.
-> 
+Disclaimer:- The information contained in this electronic message and any attachments to this message are intended for the exclusive use of the addressee(s) and may contain proprietary, confidential or privileged information. If you are not the intended recipient, you should not disseminate, distribute or copy this e-mail. Please notify the sender immediately and destroy all copies of this message and any attachments. The views expressed in this E-mail message (including the enclosure/(s) or attachment/(s) if any) are those of the individual sender, except where the sender expressly, and with authority, states them to be the views of GlobalEdge. Before opening any mail and attachments please check them for viruses .GlobalEdge does not accept any liability for virus infected mails.
 
-I'm not sure you can state that definitively just yet?  So the real 
-question is whether saving the extra round-trip to the kernel is worth 
-the in-kernel complexity.  Given that interleaved system calls are 
-_always_ a problem, I argue that it is worth it for at least the Station 
-case (and it will keep connection times even faster to boot).  Isn't 
-minimizing the latency of connections the end goal here?  I get that 
-there are trade offs and people have other opinions on what a good trade 
-off is.
-
-But don't misunderstand, either solution is better than what we have 
-today.  My argument is: "why close the door on a particular solution 
-until the costs are known?"
-
->> The rest, I'm not sure why you are worried about them now?  For
->> station
->> there's a very clear & present use case.  If such a clear and
->> present
->> use case is presented for AP or Mesh, then deal with it then.
-> 
-> Why would you not want to pass a random MAC for AP or Mesh modes? The
-> same reasons for MAC randomization apply for all those too, I'd think.
-
-Umm, I was not arguing against doing that at all?  All I said was that 
-no such use case was yet presented.  For AP it isn't typically needed to 
-rapidly switch between MAC addresses while keeping the device UP.  If 
-you think there's such a need, I'm happy to learn something new? Same 
-goes for Mesh really?
-
-> 
->>> I don't see how this will not keep proliferating, and each new
->>> thing
->>> will come with its own dozen lines of code, a new feature flag,
->>> etc.
->>
->> Such is life? :)
-> 
-> Not really. It's the job of maintainers to balance all these things, to
-> step back and think of the bigger picture and the future rather than
-> just solving one particular use-case today.
->  > Your tone leaves the impression you want a particular solution pushed
-> through without the normal planning/architecture discussions that
-> accompany API changes. And that's not how the process typically works.
-> 
-
-So who's attacking who now?  We're trying to solve a long standing issue 
-that nobody has bothered to fix for years in a clean way.  Something 
-that one of your projects would benefit from, btw.
-
-I have a technical opinion about how it should look like.  Johannes 
-might have a different opinion.  In the end it is up to him and I can go 
-pound sand.  So yes, I know how the process works ;)
-
-Regards,
--Denis
