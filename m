@@ -2,95 +2,65 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 6ADE695A85
-	for <lists+linux-wireless@lfdr.de>; Tue, 20 Aug 2019 10:59:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id ED4F495BB5
+	for <lists+linux-wireless@lfdr.de>; Tue, 20 Aug 2019 11:54:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729371AbfHTI7G (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 20 Aug 2019 04:59:06 -0400
-Received: from s3.sipsolutions.net ([144.76.43.62]:60828 "EHLO
-        sipsolutions.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728545AbfHTI7G (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 20 Aug 2019 04:59:06 -0400
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <johannes@sipsolutions.net>)
-        id 1hzzyp-000242-Tt; Tue, 20 Aug 2019 10:59:04 +0200
-Message-ID: <72ac048c01619e0639fc182cd32818a5712cda1c.camel@sipsolutions.net>
-Subject: Re: [RFC 0/1] Allow MAC change on up interface
-From:   Johannes Berg <johannes@sipsolutions.net>
-To:     Denis Kenzior <denkenz@gmail.com>,
-        James Prestwood <prestwoj@gmail.com>,
-        linux-wireless@vger.kernel.org
-Date:   Tue, 20 Aug 2019 10:59:01 +0200
-In-Reply-To: <1d975fec-a480-f40b-ff98-90d0e4852758@gmail.com> (sfid-20190819_225820_644148_FB77722C)
-References: <20190815185702.30937-1-prestwoj@gmail.com>
-         <645af7dad899e8eb186b3fee0f8a8a151a408557.camel@sipsolutions.net>
-         <394092a2f20697c9b055166a8254a5ef888551a5.camel@gmail.com>
-         <4848c3a9d0b330fab4442436244387a2c127fa03.camel@sipsolutions.net>
-         <1d975fec-a480-f40b-ff98-90d0e4852758@gmail.com>
-         (sfid-20190819_225820_644148_FB77722C)
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.30.5 (3.30.5-1.fc29) 
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+        id S1729508AbfHTJyv (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 20 Aug 2019 05:54:51 -0400
+Received: from nbd.name ([46.4.11.11]:35134 "EHLO nbd.name"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1728414AbfHTJyv (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 20 Aug 2019 05:54:51 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name;
+         s=20160729; h=Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:
+        MIME-Version:Content-Type:Content-Transfer-Encoding:Content-ID:
+        Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+        :Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
+        List-Subscribe:List-Post:List-Owner:List-Archive;
+        bh=tTp1fjksS0JpZH20cKYmebD4iIPFT82tIq/AMBeJzhQ=; b=LRrmS6+bVD1sXmNJBo7MIFHByt
+        25mvakMZJrnze/9fA1a+Okg2DR/Rqhc8zKGf6JFZR7jmEIgKOLFb71smCg8ewKqEX49YOSzf9CRpO
+        B9fnVX6mi3mt+9zQtYq9R8WmQuhHOKNWxrayZF9gm9H+kgqXrA32Oh1FgeywhHeqegeY=;
+Received: from p54ae9443.dip0.t-ipconnect.de ([84.174.148.67] helo=maeck.local)
+        by ds12 with esmtpsa (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.89)
+        (envelope-from <nbd@nbd.name>)
+        id 1i00qn-0003nu-V9; Tue, 20 Aug 2019 11:54:50 +0200
+Received: by maeck.local (Postfix, from userid 501)
+        id 5788063E610C; Tue, 20 Aug 2019 11:54:49 +0200 (CEST)
+From:   Felix Fietkau <nbd@nbd.name>
+To:     linux-wireless@vger.kernel.org
+Cc:     johannes@sipsolutions.net
+Subject: [PATCH 1/4] mac80211: minstrel_ht: fix per-group max throughput rate initialization
+Date:   Tue, 20 Aug 2019 11:54:46 +0200
+Message-Id: <20190820095449.45255-1-nbd@nbd.name>
+X-Mailer: git-send-email 2.17.0
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Mon, 2019-08-19 at 15:58 -0500, Denis Kenzior wrote:
-> Hi Johannes,
+The group number needs to be multiplied by the number of rates per group
+to get the full rate index
 
-[...]
+Fixes: 5935839ad73583 ("mac80211: improve minstrel_ht rate sorting by throughput & probability")
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
+---
+ net/mac80211/rc80211_minstrel_ht.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-> Hmm... I sense a pattern of you not seeing a point in doing many 
-> things... Do you actually use the stuff you maintain?
-
-[...]
-
-> Well, one possible use case might be, oh something like this:
-> 
-> https://source.android.com/devices/tech/connect/wifi-mac-randomization
-
-[...]
-
-> And also maybe a bunch of other optimizations like not flushing scan 
-> results?
-
-Stop.
-
-Your tone, and in particular the constant snide comments and attacks on
-me are, quite frankly, getting extremely tiring.
-
-It almost seems like you're just trying to bully me into taking your
-patches by constantly trying to make me feel that I cannot know better
-anyway. This is not how you should be treating anyone.
-
-Look, I did say I don't see a point in this, but you're taking that out
-of context. I also stated that I didn't understand the whole thing about
-"race conditions" and all, because nobody actually explained the
-reasoning behind the changes here.
-
-James, unlike you, managed to reply on point and explain why it was
-needed. If all you can do is accuse me of not using the software and
-therefore not knowing how it should be used, even implying that I'm not
-smart enough to understand the use cases, then I don't know why you
-bother replying at all.
-
-I can understand your frustration to some extent, and I want to give you
-the benefit of doubt and want to believe this behaviour was borne out of
-it, since I've been reviewing your changes relatively critically.
-
-However, I also want to believe that I've been (trying to) keep the
-discussion on a technical level, telling you why I believe some things
-shouldn't be done the way you did them, rather than telling you that
-you're not smart enough to be working on this. If you feel otherwise,
-please do let me know and I'll go back to understand, in order to
-improve my behaviour in the future.
-
-Please help keep the discussion technical, without demeaning undertones.
-
-Thanks,
-johannes
+diff --git a/net/mac80211/rc80211_minstrel_ht.c b/net/mac80211/rc80211_minstrel_ht.c
+index 5a882da82f0e..ba230b037257 100644
+--- a/net/mac80211/rc80211_minstrel_ht.c
++++ b/net/mac80211/rc80211_minstrel_ht.c
+@@ -575,7 +575,7 @@ minstrel_ht_update_stats(struct minstrel_priv *mp, struct minstrel_ht_sta *mi)
+ 
+ 		/* (re)Initialize group rate indexes */
+ 		for(j = 0; j < MAX_THR_RATES; j++)
+-			tmp_group_tp_rate[j] = group;
++			tmp_group_tp_rate[j] = MCS_GROUP_RATES * group;
+ 
+ 		for (i = 0; i < MCS_GROUP_RATES; i++) {
+ 			if (!(mi->supported[group] & BIT(i)))
+-- 
+2.17.0
 
