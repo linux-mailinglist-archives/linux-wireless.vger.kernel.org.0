@@ -2,152 +2,160 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D947F969A2
-	for <lists+linux-wireless@lfdr.de>; Tue, 20 Aug 2019 21:43:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 18D35969D7
+	for <lists+linux-wireless@lfdr.de>; Tue, 20 Aug 2019 21:54:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729984AbfHTTn2 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 20 Aug 2019 15:43:28 -0400
-Received: from s3.sipsolutions.net ([144.76.43.62]:42432 "EHLO
-        sipsolutions.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729231AbfHTTn1 (ORCPT
+        id S1730883AbfHTTyd (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 20 Aug 2019 15:54:33 -0400
+Received: from mail-ot1-f67.google.com ([209.85.210.67]:37937 "EHLO
+        mail-ot1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1730552AbfHTTyd (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 20 Aug 2019 15:43:27 -0400
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <johannes@sipsolutions.net>)
-        id 1i0A2P-0006uR-7X; Tue, 20 Aug 2019 21:43:25 +0200
-Message-ID: <3576ad937c0b40b971a1b9c1a7c7396731a94bad.camel@sipsolutions.net>
+        Tue, 20 Aug 2019 15:54:33 -0400
+Received: by mail-ot1-f67.google.com with SMTP id r20so6200995ota.5
+        for <linux-wireless@vger.kernel.org>; Tue, 20 Aug 2019 12:54:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=subject:to:references:from:message-id:date:user-agent:mime-version
+         :in-reply-to:content-language:content-transfer-encoding;
+        bh=9/yC4yLR8WBmE/nahyN6o17ldKIX20B3dXoDiaJY11g=;
+        b=iMfb2751WL9pwiW3Bl6QAw+eWn/Ufg4/8HftyDm55L81qhl6PEP6hXU7FMMFoH+u9W
+         1+3Ri93px1NiWWo9Vyy0mD9GhLbBdXtgg9BXrOg6Fyc3LIeLp+oaB1U1192PjXUWuAnv
+         MPKcvzLdFB29WQZ9tVKygXppvPdki3avww2FcSp+dd7a+6EJqouaXgtJ4hX3V14Z0j71
+         vRfvmuPX8tebVKoubQc3Ztjr2NheJ+QKSKCLJms0AoBgQouvuRcG66Ok3xA8jux2xbjI
+         ssDvWujVXyxnJrLWVCh6QhKiePIo7vM7nVNY/c0DpWxF9Ce0bLXp3FYQxrprZ6loRRv3
+         3i8A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=9/yC4yLR8WBmE/nahyN6o17ldKIX20B3dXoDiaJY11g=;
+        b=P8GZ6hWdBnEa4+er6XLtd/i0SW3jUOxef1SN60Tklk6tIBWKh00npr8Q5JVIFUEclL
+         aKy8hMhC9E20SKNgK/3LOGt9in1UzIftVVuR4+y1TKiVQ+2hKVvYhYoHaudbY/JSmqkU
+         IHx40J5kw4m9xklLxABllXM8rgGt0z5JOCXK5JVXMZw2R9QP46eOFg+FkKLqiyTlWGFQ
+         w92S6bSVjD45E+b31Z95yyz9oIE4foPs+fzpSVvvRwYmy5fZyaGETbG4uDdK2umfE8uR
+         xWY9nozxUNmn9j0Tb+hRI1Z7OQlFdAJ8EQiLsCoh6M4LehBmAzlvCjddhKG93/iRnnjX
+         0m1Q==
+X-Gm-Message-State: APjAAAWn+1dvLvhIekYlvLMkXi9wMBAwuJ0egMKb6/U/roSc+vSPPc64
+        61lJwg43kdhrpqGF/8TFEFLBzWjd
+X-Google-Smtp-Source: APXvYqyH3fDwSyAUjW40ZPHWjsmq1HYB7Zs2DSY2ateFuNeO/h2KlPI4UQz5xqCEnyBX7n/sSubbYQ==
+X-Received: by 2002:a9d:458f:: with SMTP id x15mr22908878ote.314.1566330871516;
+        Tue, 20 Aug 2019 12:54:31 -0700 (PDT)
+Received: from [192.168.1.249] (cpe-70-114-247-242.austin.res.rr.com. [70.114.247.242])
+        by smtp.googlemail.com with ESMTPSA id u191sm4546555oie.42.2019.08.20.12.54.30
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Tue, 20 Aug 2019 12:54:30 -0700 (PDT)
 Subject: Re: [RFC 0/1] Allow MAC change on up interface
-From:   Johannes Berg <johannes@sipsolutions.net>
-To:     Denis Kenzior <denkenz@gmail.com>,
-        James Prestwood <prestwoj@gmail.com>
-Cc:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        Dan Williams <dcbw@redhat.com>
-Date:   Tue, 20 Aug 2019 21:43:22 +0200
-In-Reply-To: <b115e933-a357-9904-e831-dea7df1b46b9@gmail.com> (sfid-20190820_213040_001184_91DC1D7A)
+To:     Johannes Berg <johannes@sipsolutions.net>,
+        James Prestwood <prestwoj@gmail.com>,
+        linux-wireless@vger.kernel.org
 References: <20190815185702.30937-1-prestwoj@gmail.com>
-         <645af7dad899e8eb186b3fee0f8a8a151a408557.camel@sipsolutions.net>
-         <394092a2f20697c9b055166a8254a5ef888551a5.camel@gmail.com>
-         <4848c3a9d0b330fab4442436244387a2c127fa03.camel@sipsolutions.net>
-         <c6b719d6279211bbf52443f327884d96ef63f2b2.camel@gmail.com>
-         <6835732fcc59ba8dbbcda4abc6e17dad499a7d8d.camel@sipsolutions.net>
-         <b115e933-a357-9904-e831-dea7df1b46b9@gmail.com>
-         (sfid-20190820_213040_001184_91DC1D7A)
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.30.5 (3.30.5-1.fc29) 
+ <645af7dad899e8eb186b3fee0f8a8a151a408557.camel@sipsolutions.net>
+ <394092a2f20697c9b055166a8254a5ef888551a5.camel@gmail.com>
+ <4848c3a9d0b330fab4442436244387a2c127fa03.camel@sipsolutions.net>
+ <1d975fec-a480-f40b-ff98-90d0e4852758@gmail.com>
+ <72ac048c01619e0639fc182cd32818a5712cda1c.camel@sipsolutions.net>
+ <7b9a7df3-6880-98f6-5c09-257165025559@gmail.com>
+ <dd58815c934ab52acbd8a21d04dd0d44e9d32913.camel@sipsolutions.net>
+From:   Denis Kenzior <denkenz@gmail.com>
+Message-ID: <fcfc70bc-78ba-cd06-55ab-d53d80ac2cc8@gmail.com>
+Date:   Tue, 20 Aug 2019 14:46:46 -0500
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.8.0
 MIME-Version: 1.0
+In-Reply-To: <dd58815c934ab52acbd8a21d04dd0d44e9d32913.camel@sipsolutions.net>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
 Content-Transfer-Encoding: 7bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Tue, 2019-08-20 at 14:22 -0500, Denis Kenzior wrote:
-> Hi Johannes,
+Hi Johannes,
+
+On 8/20/19 2:32 PM, Johannes Berg wrote:
+> Hi Denis,
 > 
-> So keeping things purely technical now :)
+> Rather than replying to all the separate items here, just two things:
 > 
-> > I thought so, but I had another thought later. It might be possible to
-> > set LIVE_ADDR_CHANGE, but then block it in mac80211 when the interface
-> > is already connected (or beaconing, or whatever, using the MAC address
-> > in some way - even while scanning, remain-on-channel is active, etc.)
-> > 
+> 1) I'll reiterate - please keep things civil. You're taking things out
+>     of context a *lot* here, in what seems like an attempt to draw a
+>     parallel between my and your utterances.
 > 
-> Here's what we would like to see:
+> 2) I'll take your point that I've been somewhat dismissive in tone, and
+>     will try to change that.
 > 
-> - The ability for userspace to add a 'Local Mac Address to use' 
-> attribute on CMD_CONNECT and CMD_AUTHENTICATE.
 
-Why here though? I don't really like this as it's extra complexity
-there, and dev_set_mac_address() is really easy to call from userspace.
-Yes, that's sort of a round-trip more (you wouldn't even really have to
-wait for it I guess), but we have to make trade-offs like that (vs.
-kernel complexity) at some point.
+I'll apologize for the methods I used, but you were not getting to 2) 
+above via our earlier discussions.  Anyway, peace.
 
-> - It doesn't seem useful to add this to CMD_ASSOCIATE at the moment, as 
-> for new connections you'd always go either through CMD_AUTHENTICATE, 
-> CMD_ASSOCIATE sequence or use CMD_CONNECT.  This should take care of 
-> some (most) of your objections about specifying different addresses for 
-> authenticate/associate.  Feel free to correct me here.
-
-That wasn't really my objection, I was more wondering why James
-implemented it *only* for CMD_CONNECT, when I had been under the
-(apparently mistaken) impression that one would generally prefer
-CMD_ASSOCIATE over CMD_CONNECT, if available.
-
-> - Optionally (and I'm thinking of tools like NM here), add the ability 
-> to set the mac address via RTNL while the device is UP but has no 
-> carrier, and things like scanning, offchannel, etc are not in progress. 
-> Though really I don't see how NM could guarantee this without bringing 
-> the device down first, so I'll let NM guys chime in to see if this is a 
-> good idea.
-
-I'm thinking along the lines of letting you do this *instead* of the
-scheme you described above. That way, we don't even need to have a
-discussion over whether it makes sense at CONNECT, AUTH, ASSOC, or
-whatever because you can essentially do it before/with any of these
-commands.
-
-Why would this not be sufficient?
-
-> - We definitely do not want to to mess with the device state otherwise. 
-> E.g. no firmware downloading, powering the adapter down, etc.  That just 
-> takes too much time.
-
-I can understand this part.
-
-> So tell us what you would like to see.  A new 
-> IFF_NO_CARRIER_ADDRESS_CHANGE or whether it is possible to use 
-> IFF_LIVE_ADDR_CHANGE with some additional restrictions.
-
-I don't know. This is not something I'm intimately familiar with. I
-could imagine (as you quoted above) that we just set
-IFF_LIVE_ADDR_CHANGE and manage the exclusions local to e.g. mac80211.
-
-> > I still think you'd have to bake it into the mac80211<->driver API
-> > somehow, because we normally "add_interface()" with the MAC address, and
-> > nothing says that the driver cannot ignore the MAC address from that
-> > point on. The fact that iwlwifi just copies it into every new MAC_CTXT
-> > command and the firmware actually accepts the update seems rather
-> > accidental and therefore fragile to rely on.
-> > 
 > 
-> Since you seem to have a clear(er?) idea here, can you elaborate or 
-> possibly provide the driver interface changes you want to see?
+> I do want to reply to two things specifically though:
+> 
+>> Fine.  I get that.  But how about asking what the use case is? Or say
+>> you don't quite understand why something is needed?
+> 
+> Really, I should *not* have to ask that. You should consider it your
+> obligation to provide enough information for me to review patches
+> without having to go back and ask what it is you actually want to
+> achieve.
 
-I can see a few ways of doing this, for example having an optional
-"change_vif_addr" method in the mac80211 ops, so that drivers can do the
-necessary work. I suppose iwlwifi would actually want to send a new
-MAC_CONTEXT command at this time, for example, because the firmware is
-notoriously finicky when it comes to command sequences.
+So let me ask you this.  What do you _want_ to see when a contributor 
+submits something as an RFC, which that contributor states is not ready 
+for 'true' review and is really there to generate feedback?
 
-Alternatively, and this would work with all drivers, you could just
-pretend to remove/add the interface, ie. in mac80211 call
+Do you want to have that contributor use a different prefix? Every 
+maintainer is differrent.  I get that.  So if we want to start an actual 
+brainstorming session with you, how do we accomplish that?
 
- drv_remove_interface(sdata)
- // set new mac addr
- drv_add_interface(sdata)
+> 
+> Compared to some other subsystems and maintainers I've dealt with, I
+> think I've actually been rather patient in trying to extract the purpose
+> of your changes, rather than *really* just dismissing them (which I've
+> felt like many times.)
+> 
 
-This has the advantage that it'll be guaranteed to work with all
-drivers, at the expense of perhaps a few more firmware commands
-(depending on the driver).
+I'll admit you're not the worst I've dealt with, but you can always 
+improve, right? :)
 
-You can probably come up with other ways, like having a feature flag
-whether this is supported and then the driver has to detect it as
-certain documented points in time, etc., but all of those feel
-relatively fragile to me.
+>> a maintainer who's job (by definition)
+>> is to encourage new contributors and improve the subsystem he
+>> maintains...?
+> 
+> This is what maybe you see as the maintainer's role, but I disagree, at
+> least to some extent. I see the role more of a supervisor, somebody
+> who's ensuring that all the changes coming in will work together. Yes, I
+> have my own incentive to improve things, but if you have a particular
+> incentive to improve a particular use case, the onus really is on you to
+> convince me of that, not on me to try to ferret the reasoning out of you
+> and make those improvements my own.
+> 
 
+So this goes back to my earlier point.  How do you want us to start a 
+discussion with you such that you don't become a 'supervisor' and 
+instead try to understand the pain points first?
 
-My personal preference would be for
+And really, we are not expecting you to do the improvements on your own. 
+  But you know the subsystem best.  So you really should consider giving 
+actual guidance on how to accomplish something in the best way.
 
- * allow RTNL MAC address changes at "idle" times (TBD what that really
-   means) with IFF_LIVE_ADDR_CHANGE, but mac80211 guarding it
- * mac80211 doing remove/add as far as the driver is concerned
+Also, look at it from the PoV of any new contributor.  So while I can 
+definitely relate to what you're saying here, I think you should put 
+yourself in your peer's shoes and try to be more understanding of their 
+perspective.  At least make the effort to hear people out...
 
-Yes, you can probably shave a few more milliseconds off by adding more
-complexity, but unless we measure that and find it to be significant, I
-think the added complexity (in cfg80211 code) and restrictions (many
-drivers not supporting it if it's opt-in) wouldn't be worth it.
+> 
+> So please - come with some actual reasoning. This particular thread only
+> offered "would elminate a few potential race conditions", in the cover
+> letter, not even the patch itself, so it wasn't very useful. I was
+> perhaps less than courteous trying to extract the reasoning, but I
+> shouldn't have to in the first place.
+> 
 
-johannes
+Okay, so we'll work on that.  But this is a two way street too.  And 
+sometimes it seems like you're not actually reading the cover letters ;)
 
+Regards,
+-Denis
