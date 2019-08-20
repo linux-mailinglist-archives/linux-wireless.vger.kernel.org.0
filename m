@@ -2,30 +2,35 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2A4EB969F4
-	for <lists+linux-wireless@lfdr.de>; Tue, 20 Aug 2019 22:06:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B6842969F6
+	for <lists+linux-wireless@lfdr.de>; Tue, 20 Aug 2019 22:06:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730702AbfHTUGC (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 20 Aug 2019 16:06:02 -0400
-Received: from s3.sipsolutions.net ([144.76.43.62]:42808 "EHLO
+        id S1730744AbfHTUGp (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 20 Aug 2019 16:06:45 -0400
+Received: from s3.sipsolutions.net ([144.76.43.62]:42816 "EHLO
         sipsolutions.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729833AbfHTUGC (ORCPT
+        with ESMTP id S1730618AbfHTUGp (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 20 Aug 2019 16:06:02 -0400
+        Tue, 20 Aug 2019 16:06:45 -0400
 Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
         (Exim 4.92)
         (envelope-from <johannes@sipsolutions.net>)
-        id 1i0AOD-0007Om-8M; Tue, 20 Aug 2019 22:05:57 +0200
-Message-ID: <8c791df54a831f32fddd634e71e5e91342532535.camel@sipsolutions.net>
-Subject: Re: [PATCH 04/49] ath11k: add ahb.c
+        id 1i0AOw-0007QV-W7; Tue, 20 Aug 2019 22:06:43 +0200
+Message-ID: <eb4b7894434dc1e194b88f4bd1bf0b2476700a2c.camel@sipsolutions.net>
+Subject: Re: [RFC 0/1] Allow MAC change on up interface
 From:   Johannes Berg <johannes@sipsolutions.net>
-To:     Kalle Valo <kvalo@codeaurora.org>, linux-wireless@vger.kernel.org
-Cc:     ath11k@lists.infradead.org, devicetree@vger.kernel.org
-Date:   Tue, 20 Aug 2019 22:05:55 +0200
-In-Reply-To: <1566316095-27507-5-git-send-email-kvalo@codeaurora.org> (sfid-20190820_175156_108502_D7159DB2)
-References: <1566316095-27507-1-git-send-email-kvalo@codeaurora.org>
-         <1566316095-27507-5-git-send-email-kvalo@codeaurora.org>
-         (sfid-20190820_175156_108502_D7159DB2)
+To:     James Prestwood <prestwoj@gmail.com>,
+        linux-wireless@vger.kernel.org
+Date:   Tue, 20 Aug 2019 22:06:41 +0200
+In-Reply-To: <661903fa345563615cb781a6d9608607a3db963d.camel@gmail.com> (sfid-20190820_215350_076033_9D62468D)
+References: <20190815185702.30937-1-prestwoj@gmail.com>
+         (sfid-20190815_205833_978900_86B1E73D) <645af7dad899e8eb186b3fee0f8a8a151a408557.camel@sipsolutions.net>
+         <394092a2f20697c9b055166a8254a5ef888551a5.camel@gmail.com>
+         (sfid-20190819_175627_344053_E33FB9B0) <4848c3a9d0b330fab4442436244387a2c127fa03.camel@sipsolutions.net>
+         <c6b719d6279211bbf52443f327884d96ef63f2b2.camel@gmail.com>
+         (sfid-20190819_231529_805133_AD4E6DEE) <6835732fcc59ba8dbbcda4abc6e17dad499a7d8d.camel@sipsolutions.net>
+         <661903fa345563615cb781a6d9608607a3db963d.camel@gmail.com>
+         (sfid-20190820_215350_076033_9D62468D)
 Content-Type: text/plain; charset="UTF-8"
 User-Agent: Evolution 3.30.5 (3.30.5-1.fc29) 
 MIME-Version: 1.0
@@ -35,89 +40,36 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Tue, 2019-08-20 at 18:47 +0300, Kalle Valo wrote:
+On Tue, 2019-08-20 at 15:53 -0400, James Prestwood wrote:
+
+> > I thought so, but I had another thought later. It might be possible
+> > to
+> > set LIVE_ADDR_CHANGE, but then block it in mac80211 when the
+> > interface
+> > is already connected (or beaconing, or whatever, using the MAC
+> > address
+> > in some way - even while scanning, remain-on-channel is active, etc.)
 > 
-> +static const struct service_to_pipe target_service_to_ce_map_wlan[] = {
-> +	{
-> +		__cpu_to_le32(ATH11K_HTC_SVC_ID_WMI_DATA_VO),
-> +		__cpu_to_le32(PIPEDIR_OUT),	/* out = UL = host -> target */
-> +		__cpu_to_le32(3),
-> +	},
+> Yeah that makes sense.
+> 
+> > I still think you'd have to bake it into the mac80211<->driver API
+> > somehow, because we normally "add_interface()" with the MAC address,
+> > and
+> > nothing says that the driver cannot ignore the MAC address from that
+> > point on. The fact that iwlwifi just copies it into every new
+> > MAC_CTXT
+> > command and the firmware actually accepts the update seems rather
+> > accidental and therefore fragile to rely on.
+> 
+> I havent looked into the actual drivers WRT add_interface so I'll take
+> a look. But I think I see the separation now and why it may not work
+> for all drivers/firmwares the way I did it.
+> 
+> So are you thinking we need another driver method:
+> "change_mac/set_mac"?
 
-this might be nicer as C99 initializers as well? It's a struct of some
-sort, after all.
-
-> +	{ /* must be last */
-> +		__cpu_to_le32(0),
-> +		__cpu_to_le32(0),
-> +		__cpu_to_le32(0),
-> +	},
-
-You don't need endian conversion for 0, even sparse will not complain,
-but I'd argue it should anyway be something like
-
-	{ /* terminator entry */ }
-
-since that's why it's there I guess?
-
-> +#define ATH11K_TX_RING_MASK_3 0x0
-
-You have a LOT of masks here that are 0, that seems odd?
-
-> +/* enum ext_irq_num - irq nubers that can be used by external modules
-
-typo ("numbers")
-
-> +inline u32 ath11k_ahb_read32(struct ath11k_base *ab, u32 offset)
-> +{
-> +	return ioread32(ab->mem + offset);
-> +}
-> +
-> +inline void ath11k_ahb_write32(struct ath11k_base *ab, u32 offset, u32 value)
-> +{
-> +	iowrite32(value, ab->mem + offset);
-> +}
-
-Just "inline" doesn't seem to make that much sense? If it's only used
-here then I guess it should be static, otherwise not inline? Or maybe
-you want it to be inlined *in this file* but available out-of-line
-otherwise? I'm not sure that actually is guaranteed to work right in C?
-
-> +		val = ath11k_ahb_read32(ab, CE_HOST_IE_ADDRESS);
-> +		val |= BIT(ce_id);
-> +		ath11k_ahb_write32(ab, CE_HOST_IE_ADDRESS, val);
-
-You could perhaps benefit from ath11k_ahb_setbit32() or something like
-that, this repeats a few times?
-
-> +	if (__le32_to_cpu(ce_config->pipedir) & PIPEDIR_OUT) {
-> +		val = ath11k_ahb_read32(ab, CE_HOST_IE_ADDRESS);
-> +		val &= ~BIT(ce_id);
-> +		ath11k_ahb_write32(ab, CE_HOST_IE_ADDRESS, val);
-
-and clearbit32() maybe. Dunno, I saw only 3 instances of each here I
-guess, but still, feels repetitive.
-
-> +int ath11k_ahb_start(struct ath11k_base *ab)
-> +{
-> +	ath11k_ahb_ce_irqs_enable(ab);
-> +	ath11k_ce_rx_post_buf(ab);
-> +
-> +	/* Bring up other components as appropriate */
-
-Hmm. What would be appropriate? It's not really doing anything else?
-
-> +void ath11k_ahb_stop(struct ath11k_base *ab)
-> +{
-> +	if (!test_bit(ATH11K_FLAG_CRASH_FLUSH, &ab->dev_flags))
-> +		ath11k_ahb_ce_irqs_disable(ab);
-> +	ath11k_ahb_sync_ce_irqs(ab);
-> +	ath11k_ahb_kill_tasklets(ab);
-> +	del_timer_sync(&ab->rx_replenish_retry);
-> +	ath11k_ce_cleanup_pipes(ab);
-> +	/* Shutdown other components as appropriate */
-
-likewise, it's not doing anything else?
+Perhaps. Let's continue that in the other sub-thread, where I replied in
+more detail to Denis.
 
 johannes
 
