@@ -2,160 +2,168 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 18D35969D7
-	for <lists+linux-wireless@lfdr.de>; Tue, 20 Aug 2019 21:54:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 362C3969D1
+	for <lists+linux-wireless@lfdr.de>; Tue, 20 Aug 2019 21:53:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730883AbfHTTyd (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 20 Aug 2019 15:54:33 -0400
-Received: from mail-ot1-f67.google.com ([209.85.210.67]:37937 "EHLO
-        mail-ot1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730552AbfHTTyd (ORCPT
+        id S1730701AbfHTTxv (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 20 Aug 2019 15:53:51 -0400
+Received: from mail-pf1-f194.google.com ([209.85.210.194]:45276 "EHLO
+        mail-pf1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1730839AbfHTTxs (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 20 Aug 2019 15:54:33 -0400
-Received: by mail-ot1-f67.google.com with SMTP id r20so6200995ota.5
-        for <linux-wireless@vger.kernel.org>; Tue, 20 Aug 2019 12:54:32 -0700 (PDT)
+        Tue, 20 Aug 2019 15:53:48 -0400
+Received: by mail-pf1-f194.google.com with SMTP id w26so3994964pfq.12
+        for <linux-wireless@vger.kernel.org>; Tue, 20 Aug 2019 12:53:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=subject:to:references:from:message-id:date:user-agent:mime-version
-         :in-reply-to:content-language:content-transfer-encoding;
-        bh=9/yC4yLR8WBmE/nahyN6o17ldKIX20B3dXoDiaJY11g=;
-        b=iMfb2751WL9pwiW3Bl6QAw+eWn/Ufg4/8HftyDm55L81qhl6PEP6hXU7FMMFoH+u9W
-         1+3Ri93px1NiWWo9Vyy0mD9GhLbBdXtgg9BXrOg6Fyc3LIeLp+oaB1U1192PjXUWuAnv
-         MPKcvzLdFB29WQZ9tVKygXppvPdki3avww2FcSp+dd7a+6EJqouaXgtJ4hX3V14Z0j71
-         vRfvmuPX8tebVKoubQc3Ztjr2NheJ+QKSKCLJms0AoBgQouvuRcG66Ok3xA8jux2xbjI
-         ssDvWujVXyxnJrLWVCh6QhKiePIo7vM7nVNY/c0DpWxF9Ce0bLXp3FYQxrprZ6loRRv3
-         3i8A==
+        h=message-id:subject:from:to:date:in-reply-to:references:user-agent
+         :mime-version:content-transfer-encoding;
+        bh=tNC4FzTGFxO3xaX7hqooEqsSiSbjVM8S8v0TCC8pPNg=;
+        b=Jolfcvv28dPA3O3hVidmkECBKmYDKPxZaESjrit6PJcMtxGdOvkTg6wyh3BGVkFCg8
+         ZnkdMdjDt/6Fid1lZtYiHwXkamu9glmAzh62jwysxYex77C8xFpA2N48Yf7GibXdIDK+
+         tY3KacN3U9MwhiafHab223BJ/uNWYLOBViMAXhWcdw2ObDR+pwNY1/MCWovNmp732Gzb
+         59hi0P+p/x3DPvGlhmalJ5Pw46CVhDs3pINphqsw3jLI0mSWqGHq+eTwy7TJ5bRAvU0Z
+         eqDr+5ua6F+YExk6XnPZ9T8uUuu+AkkBvTnEmqWguXZsxxhvh7ddzSUGw2ubLO1u0KXn
+         6zsg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=9/yC4yLR8WBmE/nahyN6o17ldKIX20B3dXoDiaJY11g=;
-        b=P8GZ6hWdBnEa4+er6XLtd/i0SW3jUOxef1SN60Tklk6tIBWKh00npr8Q5JVIFUEclL
-         aKy8hMhC9E20SKNgK/3LOGt9in1UzIftVVuR4+y1TKiVQ+2hKVvYhYoHaudbY/JSmqkU
-         IHx40J5kw4m9xklLxABllXM8rgGt0z5JOCXK5JVXMZw2R9QP46eOFg+FkKLqiyTlWGFQ
-         w92S6bSVjD45E+b31Z95yyz9oIE4foPs+fzpSVvvRwYmy5fZyaGETbG4uDdK2umfE8uR
-         xWY9nozxUNmn9j0Tb+hRI1Z7OQlFdAJ8EQiLsCoh6M4LehBmAzlvCjddhKG93/iRnnjX
-         0m1Q==
-X-Gm-Message-State: APjAAAWn+1dvLvhIekYlvLMkXi9wMBAwuJ0egMKb6/U/roSc+vSPPc64
-        61lJwg43kdhrpqGF/8TFEFLBzWjd
-X-Google-Smtp-Source: APXvYqyH3fDwSyAUjW40ZPHWjsmq1HYB7Zs2DSY2ateFuNeO/h2KlPI4UQz5xqCEnyBX7n/sSubbYQ==
-X-Received: by 2002:a9d:458f:: with SMTP id x15mr22908878ote.314.1566330871516;
-        Tue, 20 Aug 2019 12:54:31 -0700 (PDT)
-Received: from [192.168.1.249] (cpe-70-114-247-242.austin.res.rr.com. [70.114.247.242])
-        by smtp.googlemail.com with ESMTPSA id u191sm4546555oie.42.2019.08.20.12.54.30
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Tue, 20 Aug 2019 12:54:30 -0700 (PDT)
+        h=x-gm-message-state:message-id:subject:from:to:date:in-reply-to
+         :references:user-agent:mime-version:content-transfer-encoding;
+        bh=tNC4FzTGFxO3xaX7hqooEqsSiSbjVM8S8v0TCC8pPNg=;
+        b=tqKO838TifirDjI/jAqh0MzV4cKXsGxiy7vMDEQi1oMz4usnt72L3TmqzmtJaojlZy
+         hDosBSzUgiA3z3JcMJ1HVbFd33jGou/BvEg3xCGpbqQ1m7YUQ01Eyfay/tedbXsPwkS+
+         BFI70z6L0IrF/aTHg5JpJLoJHuwIRjPRhdgNhsUdiuyydlmaYfznN/SLEfLwkV0grjBI
+         vS9/0eO1l1pwuodzpAhbnOpvVkjPbkcs4Zqo84SKosCL5bQQSueZidbHrbSjG+x3mWTk
+         P1s6hy6wZZc6FKhouVI3tEDRILKO0OxJ1/F8e8zruWAZorwoVPZ2jwN9ziguSGNL9wzp
+         zkvA==
+X-Gm-Message-State: APjAAAV1vnytXYTzeOSoFJd4CIyGK4IzWm87TZ0eaVSIIv8RP47oPjsH
+        8W7eIzHGlgu4xNdBRp8j79ICUlxqxpBHWA==
+X-Google-Smtp-Source: APXvYqwQExr+cuflkXhe6+3cTSLvKHqUFKQDl2CTeRR8EGbqjGD+V0sQQCAngbmsMHnroCZLKU2mxQ==
+X-Received: by 2002:a62:1a45:: with SMTP id a66mr32603031pfa.142.1566330827749;
+        Tue, 20 Aug 2019 12:53:47 -0700 (PDT)
+Received: from nozdemir-mobl.amr.corp.intel.com (jfdmzpr04-ext.jf.intel.com. [134.134.139.73])
+        by smtp.gmail.com with ESMTPSA id dw7sm718629pjb.21.2019.08.20.12.53.46
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 20 Aug 2019 12:53:46 -0700 (PDT)
+Message-ID: <661903fa345563615cb781a6d9608607a3db963d.camel@gmail.com>
 Subject: Re: [RFC 0/1] Allow MAC change on up interface
+From:   James Prestwood <prestwoj@gmail.com>
 To:     Johannes Berg <johannes@sipsolutions.net>,
-        James Prestwood <prestwoj@gmail.com>,
         linux-wireless@vger.kernel.org
+Date:   Tue, 20 Aug 2019 15:53:35 -0400
+In-Reply-To: <6835732fcc59ba8dbbcda4abc6e17dad499a7d8d.camel@sipsolutions.net>
 References: <20190815185702.30937-1-prestwoj@gmail.com>
- <645af7dad899e8eb186b3fee0f8a8a151a408557.camel@sipsolutions.net>
- <394092a2f20697c9b055166a8254a5ef888551a5.camel@gmail.com>
- <4848c3a9d0b330fab4442436244387a2c127fa03.camel@sipsolutions.net>
- <1d975fec-a480-f40b-ff98-90d0e4852758@gmail.com>
- <72ac048c01619e0639fc182cd32818a5712cda1c.camel@sipsolutions.net>
- <7b9a7df3-6880-98f6-5c09-257165025559@gmail.com>
- <dd58815c934ab52acbd8a21d04dd0d44e9d32913.camel@sipsolutions.net>
-From:   Denis Kenzior <denkenz@gmail.com>
-Message-ID: <fcfc70bc-78ba-cd06-55ab-d53d80ac2cc8@gmail.com>
-Date:   Tue, 20 Aug 2019 14:46:46 -0500
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.8.0
+         (sfid-20190815_205833_978900_86B1E73D) <645af7dad899e8eb186b3fee0f8a8a151a408557.camel@sipsolutions.net>
+         <394092a2f20697c9b055166a8254a5ef888551a5.camel@gmail.com>
+         (sfid-20190819_175627_344053_E33FB9B0) <4848c3a9d0b330fab4442436244387a2c127fa03.camel@sipsolutions.net>
+         <c6b719d6279211bbf52443f327884d96ef63f2b2.camel@gmail.com>
+         (sfid-20190819_231529_805133_AD4E6DEE) <6835732fcc59ba8dbbcda4abc6e17dad499a7d8d.camel@sipsolutions.net>
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.32.4 (3.32.4-1.fc30) 
 MIME-Version: 1.0
-In-Reply-To: <dd58815c934ab52acbd8a21d04dd0d44e9d32913.camel@sipsolutions.net>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
 Content-Transfer-Encoding: 7bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi Johannes,
+On Tue, 2019-08-20 at 08:59 +0200, Johannes Berg wrote:
+> Hi James,
+> 
+> Thanks for staying on topic.
+> 
+> > > I don't, short of
+> > > 
+> > > 1) don't do that then
+> > > 2) extend the network stack to have
+> > > IFF_LIVE_BUT_NO_CARRIER_ADDR_CHANGE
+> > >    or something like that
+> > 
+> > So you mean 2 is my only option... ;) I am fine with this.
+> 
+> :-)
+> 
+> I thought so, but I had another thought later. It might be possible
+> to
+> set LIVE_ADDR_CHANGE, but then block it in mac80211 when the
+> interface
+> is already connected (or beaconing, or whatever, using the MAC
+> address
+> in some way - even while scanning, remain-on-channel is active, etc.)
 
-On 8/20/19 2:32 PM, Johannes Berg wrote:
-> Hi Denis,
-> 
-> Rather than replying to all the separate items here, just two things:
-> 
-> 1) I'll reiterate - please keep things civil. You're taking things out
->     of context a *lot* here, in what seems like an attempt to draw a
->     parallel between my and your utterances.
-> 
-> 2) I'll take your point that I've been somewhat dismissive in tone, and
->     will try to change that.
-> 
-
-I'll apologize for the methods I used, but you were not getting to 2) 
-above via our earlier discussions.  Anyway, peace.
-
-> 
-> I do want to reply to two things specifically though:
-> 
->> Fine.  I get that.  But how about asking what the use case is? Or say
->> you don't quite understand why something is needed?
-> 
-> Really, I should *not* have to ask that. You should consider it your
-> obligation to provide enough information for me to review patches
-> without having to go back and ask what it is you actually want to
-> achieve.
-
-So let me ask you this.  What do you _want_ to see when a contributor 
-submits something as an RFC, which that contributor states is not ready 
-for 'true' review and is really there to generate feedback?
-
-Do you want to have that contributor use a different prefix? Every 
-maintainer is differrent.  I get that.  So if we want to start an actual 
-brainstorming session with you, how do we accomplish that?
+Yeah that makes sense.
 
 > 
-> Compared to some other subsystems and maintainers I've dealt with, I
-> think I've actually been rather patient in trying to extract the purpose
-> of your changes, rather than *really* just dismissing them (which I've
-> felt like many times.)
-> 
+> I still think you'd have to bake it into the mac80211<->driver API
+> somehow, because we normally "add_interface()" with the MAC address,
+> and
+> nothing says that the driver cannot ignore the MAC address from that
+> point on. The fact that iwlwifi just copies it into every new
+> MAC_CTXT
+> command and the firmware actually accepts the update seems rather
+> accidental and therefore fragile to rely on.
 
-I'll admit you're not the worst I've dealt with, but you can always 
-improve, right? :)
+I havent looked into the actual drivers WRT add_interface so I'll take
+a look. But I think I see the separation now and why it may not work
+for all drivers/firmwares the way I did it.
 
->> a maintainer who's job (by definition)
->> is to encourage new contributors and improve the subsystem he
->> maintains...?
-> 
-> This is what maybe you see as the maintainer's role, but I disagree, at
-> least to some extent. I see the role more of a supervisor, somebody
-> who's ensuring that all the changes coming in will work together. Yes, I
-> have my own incentive to improve things, but if you have a particular
-> incentive to improve a particular use case, the onus really is on you to
-> convince me of that, not on me to try to ferret the reasoning out of you
-> and make those improvements my own.
-> 
-
-So this goes back to my earlier point.  How do you want us to start a 
-discussion with you such that you don't become a 'supervisor' and 
-instead try to understand the pain points first?
-
-And really, we are not expecting you to do the improvements on your own. 
-  But you know the subsystem best.  So you really should consider giving 
-actual guidance on how to accomplish something in the best way.
-
-Also, look at it from the PoV of any new contributor.  So while I can 
-definitely relate to what you're saying here, I think you should put 
-yourself in your peer's shoes and try to be more understanding of their 
-perspective.  At least make the effort to hear people out...
+So are you thinking we need another driver method:
+"change_mac/set_mac"?
 
 > 
-> So please - come with some actual reasoning. This particular thread only
-> offered "would elminate a few potential race conditions", in the cover
-> letter, not even the patch itself, so it wasn't very useful. I was
-> perhaps less than courteous trying to extract the reasoning, but I
-> shouldn't have to in the first place.
+> > The iwlwifi change was just an example. It ultimately would be up
+> > to
+> > the maintainers of each driver to support this or not. 
+> 
+> Sure. I was just trying to say what I wrote one paragraph up.
+> 
+> > > You've also not really explained what exactly is troubling you
+> > > with
+> > > changing the MAC address, you just mentioned some sort of "race
+> > > condition"?
+> > 
+> > In order to change the MAC on a per-AP/SSID is to: ifdown, change
+> > MAC,
+> > ifup via RTNL. The problem is that ifdown generates an RTNL link
+> > down
+> > event and there is no way of knowing how this event was generated
+> > (by
+> > you, hot-unplug, or some other issue in kernel?). Handling this
+> > without
+> > a race is simply not possible. You sort of just have to pray none
+> > of
+> > this happens (and its unlikely but it *could* happen).
+> 
+> I see, at least sort of. I'm having a hard time seeing how this
+> really
+> is a problem in practice, but I suppose that's because I haven't
+> tried
+> implementing a fully event-driven stack.
+> 
+> > The connect path is just what we (IWD) use for almost all types of
+> > connections that support it (apart from things like SAE/OWE/FT).
+> > Not
+> > sure what you mean for "usually not taken for iwlwifi"? If you have
+> > an
+> > iwlwifi card and you issue CMD_CONNECT thats the path it takes...
+> 
+> Interesting. I didn't think you'd do that, since it gives you far
+> less
+> control over things, and you need the other paths anyway for the
+> features you mention, and the implementation in cfg80211 is far less
+> complete than a typical firmware implementation would be.
+
+There was talk about ditching CMD_CONNECT at one point, but for the
+most part it does everything we need for the majority of connections.
+
+But ultimately yes I think we do want this feature for
+CMD_AUTHENTICATE/ASSOCIATE, and those details may be a bit more
+involved. CMD_CONNECT was just an easier way to get my foot in the door
+:)
+
+Thanks,
+James
+> 
+> johannes
 > 
 
-Okay, so we'll work on that.  But this is a two way street too.  And 
-sometimes it seems like you're not actually reading the cover letters ;)
-
-Regards,
--Denis
