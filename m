@@ -2,221 +2,344 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 5BCDC9628B
-	for <lists+linux-wireless@lfdr.de>; Tue, 20 Aug 2019 16:36:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C2C419633F
+	for <lists+linux-wireless@lfdr.de>; Tue, 20 Aug 2019 16:56:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729927AbfHTOgC (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 20 Aug 2019 10:36:02 -0400
-Received: from mail-ed1-f67.google.com ([209.85.208.67]:46319 "EHLO
-        mail-ed1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729260AbfHTOgC (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 20 Aug 2019 10:36:02 -0400
-Received: by mail-ed1-f67.google.com with SMTP id z51so6568588edz.13
-        for <linux-wireless@vger.kernel.org>; Tue, 20 Aug 2019 07:36:00 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ncentric-com.20150623.gappssmtp.com; s=20150623;
-        h=subject:to:references:from:message-id:date:user-agent:mime-version
-         :in-reply-to:content-transfer-encoding:content-language;
-        bh=OJadLMK3ar3SoE5nMcfV5jCOULU3QVNq1hrjPlAQB4A=;
-        b=n4bnrgng5bjSXGTnjGIPz4lE1zLQj8REPtIZUyz52JPbS/V2OmOVM3aNtDQMaN5OOg
-         hFE8B1D6YJJLuRJVF9q+sKKFkPhpXYBkz2VaS4qY2giTWdHjUChkB9o75N/rzlaIFiV3
-         TKMoDA0Zh4x/HDRM8ZRXD7nTqNJ67BLKUPlOqJ93API32iJmusgxMDq4B21nWYGccuap
-         A3DbrXOSYIVyLoU1IRSXeBdUK6KnAQk3DuOjhuhgjb9CU4lfhopJH9DDr9zRtuxxwizb
-         NQ8muHhNrZOi1llPKoknLqIkgsB3POG9uvw8PyYX+7cdOv/vjJ/rW/NuBBtseUan1BZB
-         Sh8Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-transfer-encoding
-         :content-language;
-        bh=OJadLMK3ar3SoE5nMcfV5jCOULU3QVNq1hrjPlAQB4A=;
-        b=MSpjl4euFlR4AtoNbmOPrDG7W1qB4PeZLrLZocANdxM3O6IHQxG9ldKIHHX7A4YMJX
-         EWKtNB0MJaP4KjNLPDMiHWZsBTzhss3rZpYneBKUgx2BF49hludcHxUfXddIykJi/0Xp
-         S5Zv03+7uSCJS2X7pK8r/DdluXLm3L4M0w0lA/4qXGzpoqPytCrLldPc3fhF/mhelcpB
-         LZu3nED5fglYf7UEujB1lWr8wIfPf9hMmJa7RAD5WBOyG3HdWeX1XAiSHDSLdpFpJuKQ
-         2XBHPTV5mX/2iAKiUsaxPnH9RtElM+A6RKhHGFNpcCqrI4b4OQSfervugTisPkFClliq
-         uHXg==
-X-Gm-Message-State: APjAAAVQ7lr9Iw9EGHnrZFxTu6sMD1DpI96Wirw5vGKpgCn65SOJ3ffn
-        yALMAcVg5kfjBqGCWwm9qAQ+pLqTQjM=
-X-Google-Smtp-Source: APXvYqwD5a8ATtQP5cITdlRnIPU3ppQFwUr3HAmAklXjbpDzarPVsssIGQ+P1RMcQ5+GZnktVJgqKg==
-X-Received: by 2002:a05:6402:1641:: with SMTP id s1mr30469590edx.52.1566311759193;
-        Tue, 20 Aug 2019 07:35:59 -0700 (PDT)
-Received: from [192.168.3.176] (d515300d8.static.telenet.be. [81.83.0.216])
-        by smtp.gmail.com with ESMTPSA id h38sm3537144eda.58.2019.08.20.07.35.58
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Tue, 20 Aug 2019 07:35:58 -0700 (PDT)
-Subject: Re: Fwd: [PATCH] ath9k: dynack: fix possible deadlock in
- ath_dynack_node_{de}init
-To:     Lorenzo Bianconi <lorenzo.bianconi83@gmail.com>,
-        linux-wireless@vger.kernel.org
-References: <3c5c90cd62da2db9a661b3045391da537dccf90f.1566200274.git.lorenzo@kernel.org>
- <CAA2SeNKp9Zsofm+7MDZveR94GCDJJtz_aF+bHX_vevg9tWnGgQ@mail.gmail.com>
-From:   Koen Vandeputte <koen.vandeputte@ncentric.com>
-Message-ID: <abd74240-f31b-0d5d-5cde-be8b3e6c1267@ncentric.com>
-Date:   Tue, 20 Aug 2019 16:35:58 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.8.0
+        id S1726981AbfHTO4h (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 20 Aug 2019 10:56:37 -0400
+Received: from mail.kernel.org ([198.145.29.99]:46710 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725971AbfHTO4h (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 20 Aug 2019 10:56:37 -0400
+Received: from localhost.localdomain (unknown [151.66.62.27])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 91B8C22DA7;
+        Tue, 20 Aug 2019 14:56:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1566312995;
+        bh=fWPHi2G90VrGYB2psSLnFH2aE2tL9JstkqH0Dr2SBgg=;
+        h=From:To:Cc:Subject:Date:From;
+        b=SxwJu3RSm07ZizYkpQdom6MkIKw6vX+4lGN7XwGQntse3KsHX6aozzTApBkZAkYkX
+         LpqZjKoGzfoWnkKcK16VK2wCKtTcHXyf0WK6daUNoLTWXh7NE/ru9vKIeIjOduyqCx
+         6l7nvPryRyWJJ4l4qDNKn28NFIOFqHwecZZhvd9c=
+From:   Lorenzo Bianconi <lorenzo@kernel.org>
+To:     nbd@nbd.name
+Cc:     lorenzo.bianconi@redhat.com, linux-wireless@vger.kernel.org,
+        ryder.lee@mediatek.com, royluo@google.com
+Subject: [PATCH v2] mt76: mt7615: add BIP_CMAC_128 cipher support
+Date:   Tue, 20 Aug 2019 16:56:25 +0200
+Message-Id: <0b91d401306199aab40b7d4ea3a94aa6a4b37f62.1566312764.git.lorenzo@kernel.org>
+X-Mailer: git-send-email 2.21.0
 MIME-Version: 1.0
-In-Reply-To: <CAA2SeNKp9Zsofm+7MDZveR94GCDJJtz_aF+bHX_vevg9tWnGgQ@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Content-Language: en-US
+Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 20.08.19 16:33, Lorenzo Bianconi wrote:
-> ---------- Forwarded message ---------
-> From: Lorenzo Bianconi <lorenzo@kernel.org>
-> Date: Mon, Aug 19, 2019 at 9:44 AM
-> Subject: [PATCH] ath9k: dynack: fix possible deadlock in
-> ath_dynack_node_{de}init
-> To: <kvalo@codeaurora.org>
-> Cc: <lorenzo.bianconi@redhat.com>, <linux-wireless@vger.kernel.org>
->
->
-> Fix following lockdep warning disabling bh in
-> ath_dynack_node_init/ath_dynack_node_deinit
->
-> [   75.955878] --------------------------------
-> [   75.955880] inconsistent {SOFTIRQ-ON-W} -> {IN-SOFTIRQ-W} usage.
-> [   75.955884] swapper/0/0 [HC0[0]:SC1[3]:HE1:SE0] takes:
-> [   75.955888] 00000000792a7ee0 (&(&da->qlock)->rlock){+.?.}, at:
-> ath_dynack_sample_ack_ts+0x4d/0xa0 [ath9k_hw]
-> [   75.955905] {SOFTIRQ-ON-W} state was registered at:
-> [   75.955912]   lock_acquire+0x9a/0x160
-> [   75.955917]   _raw_spin_lock+0x2c/0x70
-> [   75.955927]   ath_dynack_node_init+0x2a/0x60 [ath9k_hw]
-> [   75.955934]   ath9k_sta_state+0xec/0x160 [ath9k]
-> [   75.955976]   drv_sta_state+0xb2/0x740 [mac80211]
-> [   75.956008]   sta_info_insert_finish+0x21a/0x420 [mac80211]
-> [   75.956039]   sta_info_insert_rcu+0x12b/0x2c0 [mac80211]
-> [   75.956069]   sta_info_insert+0x7/0x70 [mac80211]
-> [   75.956093]   ieee80211_prep_connection+0x42e/0x730 [mac80211]
-> [   75.956120]   ieee80211_mgd_auth.cold+0xb9/0x15c [mac80211]
-> [   75.956152]   cfg80211_mlme_auth+0x143/0x350 [cfg80211]
-> [   75.956169]   nl80211_authenticate+0x25e/0x2b0 [cfg80211]
-> [   75.956172]   genl_family_rcv_msg+0x198/0x400
-> [   75.956174]   genl_rcv_msg+0x42/0x90
-> [   75.956176]   netlink_rcv_skb+0x35/0xf0
-> [   75.956178]   genl_rcv+0x1f/0x30
-> [   75.956180]   netlink_unicast+0x154/0x200
-> [   75.956182]   netlink_sendmsg+0x1bf/0x3d0
-> [   75.956186]   ___sys_sendmsg+0x2c2/0x2f0
-> [   75.956187]   __sys_sendmsg+0x44/0x80
-> [   75.956190]   do_syscall_64+0x55/0x1a0
-> [   75.956192]   entry_SYSCALL_64_after_hwframe+0x49/0xbe
-> [   75.956194] irq event stamp: 2357092
-> [   75.956196] hardirqs last  enabled at (2357092):
-> [<ffffffff818c62de>] _raw_spin_unlock_irqrestore+0x3e/0x50
-> [   75.956199] hardirqs last disabled at (2357091):
-> [<ffffffff818c60b1>] _raw_spin_lock_irqsave+0x11/0x80
-> [   75.956202] softirqs last  enabled at (2357072):
-> [<ffffffff8106dc09>] irq_enter+0x59/0x60
-> [   75.956204] softirqs last disabled at (2357073):
-> [<ffffffff8106dcbe>] irq_exit+0xae/0xc0
-> [   75.956206]
->                 other info that might help us debug this:
-> [   75.956207]  Possible unsafe locking scenario:
->
-> [   75.956208]        CPU0
-> [   75.956209]        ----
-> [   75.956210]   lock(&(&da->qlock)->rlock);
-> [   75.956213]   <Interrupt>
-> [   75.956214]     lock(&(&da->qlock)->rlock);
-> [   75.956216]
->                  *** DEADLOCK ***
->
-> [   75.956217] 1 lock held by swapper/0/0:
-> [   75.956219]  #0: 000000003bb5675c
-> (&(&sc->sc_pcu_lock)->rlock){+.-.}, at: ath9k_tasklet+0x55/0x240
-> [ath9k]
-> [   75.956225]
->                 stack backtrace:
-> [   75.956228] CPU: 0 PID: 0 Comm: swapper/0 Not tainted 5.3.0-rc1-wdn+ #13
-> [   75.956229] Hardware name: Dell Inc. Studio XPS 1340/0K183D, BIOS
-> A11 09/08/2009
-> [   75.956231] Call Trace:
-> [   75.956233]  <IRQ>
-> [   75.956236]  dump_stack+0x67/0x90
-> [   75.956239]  mark_lock+0x4c1/0x640
-> [   75.956242]  ? check_usage_backwards+0x130/0x130
-> [   75.956245]  ? sched_clock_local+0x12/0x80
-> [   75.956247]  __lock_acquire+0x484/0x7a0
-> [   75.956250]  ? __lock_acquire+0x3b9/0x7a0
-> [   75.956252]  lock_acquire+0x9a/0x160
-> [   75.956259]  ? ath_dynack_sample_ack_ts+0x4d/0xa0 [ath9k_hw]
-> [   75.956262]  _raw_spin_lock_bh+0x34/0x80
-> [   75.956268]  ? ath_dynack_sample_ack_ts+0x4d/0xa0 [ath9k_hw]
-> [   75.956275]  ath_dynack_sample_ack_ts+0x4d/0xa0 [ath9k_hw]
-> [   75.956280]  ath_rx_tasklet+0xd09/0xe90 [ath9k]
-> [   75.956286]  ath9k_tasklet+0x102/0x240 [ath9k]
-> [   75.956288]  tasklet_action_common.isra.0+0x6d/0x170
-> [   75.956291]  __do_softirq+0xcc/0x425
-> [   75.956294]  irq_exit+0xae/0xc0
-> [   75.956296]  do_IRQ+0x8a/0x110
-> [   75.956298]  common_interrupt+0xf/0xf
-> [   75.956300]  </IRQ>
-> [   75.956303] RIP: 0010:cpuidle_enter_state+0xb2/0x400
-> [   75.956308] RSP: 0018:ffffffff82203e70 EFLAGS: 00000202 ORIG_RAX:
-> ffffffffffffffd7
-> [   75.956310] RAX: ffffffff82219800 RBX: ffffffff822bd0a0 RCX: 0000000000000000
-> [   75.956312] RDX: 0000000000000046 RSI: 0000000000000006 RDI: ffffffff82219800
-> [   75.956314] RBP: ffff888155a01c00 R08: 00000011af51aabe R09: 0000000000000000
-> [   75.956315] R10: 0000000000000000 R11: 0000000000000000 R12: 0000000000000002
-> [   75.956317] R13: 00000011af51aabe R14: 0000000000000003 R15: ffffffff82219800
-> [   75.956321]  cpuidle_enter+0x24/0x40
-> [   75.956323]  do_idle+0x1ac/0x220
-> [   75.956326]  cpu_startup_entry+0x14/0x20
-> [   75.956329]  start_kernel+0x482/0x489
-> [   75.956332]  secondary_startup_64+0xa4/0xb0
->
-> Fixes: c774d57fd47c ("ath9k: add dynamic ACK timeout estimation")
-> Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
-> ---
->   drivers/net/wireless/ath/ath9k/dynack.c | 8 ++++----
->   1 file changed, 4 insertions(+), 4 deletions(-)
->
-> diff --git a/drivers/net/wireless/ath/ath9k/dynack.c
-> b/drivers/net/wireless/ath/ath9k/dynack.c
-> index f112fa5b2eac..1ccf20d8c160 100644
-> --- a/drivers/net/wireless/ath/ath9k/dynack.c
-> +++ b/drivers/net/wireless/ath/ath9k/dynack.c
-> @@ -298,9 +298,9 @@ void ath_dynack_node_init(struct ath_hw *ah,
-> struct ath_node *an)
->
->          an->ackto = ackto;
->
-> -       spin_lock(&da->qlock);
-> +       spin_lock_bh(&da->qlock);
->          list_add_tail(&an->list, &da->nodes);
-> -       spin_unlock(&da->qlock);
-> +       spin_unlock_bh(&da->qlock);
->   }
->   EXPORT_SYMBOL(ath_dynack_node_init);
->
-> @@ -314,9 +314,9 @@ void ath_dynack_node_deinit(struct ath_hw *ah,
-> struct ath_node *an)
->   {
->          struct ath_dynack *da = &ah->dynack;
->
-> -       spin_lock(&da->qlock);
-> +       spin_lock_bh(&da->qlock);
->          list_del(&an->list);
-> -       spin_unlock(&da->qlock);
-> +       spin_unlock_bh(&da->qlock);
->   }
->   EXPORT_SYMBOL(ath_dynack_node_deinit);
->
-> --
-> 2.21.0
->
-Tested on a large amount of devices with lockdep enabled, covering:
+Refactor mt7615_mac_wtbl_set_key and introduce
+the following routines in order to configure wtbl entries
+and properly add hw support to BIP_CMAC_128 cipher:
+- mt7615_mac_wtbl_update_cipher
+- mt7615_mac_wtbl_update_pk
+- mt7615_mac_wtbl_update_key
 
-- single core - dual core - dual cpu
+Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+---
+Changes since v1:
+- rebase ontop of 'mac80211: add IEEE80211_KEY_FLAG_GENERATE_MMIE to
+  ieee80211_key_flags'
+---
+ drivers/net/wireless/mediatek/mt76/mac80211.c |   5 +-
+ drivers/net/wireless/mediatek/mt76/mt76.h     |   1 +
+ .../net/wireless/mediatek/mt76/mt7615/mac.c   | 173 +++++++++++++-----
+ .../net/wireless/mediatek/mt76/mt7615/main.c  |   3 +
+ 4 files changed, 135 insertions(+), 47 deletions(-)
 
-Tested-by: Koen Vandeputte <koen.vandeputte@ncentric.com>
+diff --git a/drivers/net/wireless/mediatek/mt76/mac80211.c b/drivers/net/wireless/mediatek/mt76/mac80211.c
+index 581415425cd6..b97249898e9b 100644
+--- a/drivers/net/wireless/mediatek/mt76/mac80211.c
++++ b/drivers/net/wireless/mediatek/mt76/mac80211.c
+@@ -476,9 +476,10 @@ void mt76_wcid_key_setup(struct mt76_dev *dev, struct mt76_wcid *wcid,
+ 	if (!key)
+ 		return;
+ 
+-	if (key->cipher == WLAN_CIPHER_SUITE_CCMP)
+-		wcid->rx_check_pn = true;
++	if (key->cipher != WLAN_CIPHER_SUITE_CCMP)
++		return;
+ 
++	wcid->rx_check_pn = true;
+ 	for (i = 0; i < IEEE80211_NUM_TIDS; i++) {
+ 		ieee80211_get_key_rx_seq(key, i, &seq);
+ 		memcpy(wcid->rx_key_pn[i], seq.ccmp.pn, sizeof(seq.ccmp.pn));
+diff --git a/drivers/net/wireless/mediatek/mt76/mt76.h b/drivers/net/wireless/mediatek/mt76/mt76.h
+index 95ba6e98afa2..59ddfb3fcbae 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt76.h
++++ b/drivers/net/wireless/mediatek/mt76/mt76.h
+@@ -204,6 +204,7 @@ struct mt76_wcid {
+ 
+ 	u8 rx_check_pn;
+ 	u8 rx_key_pn[IEEE80211_NUM_TIDS][6];
++	u16 cipher;
+ 
+ 	u32 tx_info;
+ 	bool sw_iv;
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/mac.c b/drivers/net/wireless/mediatek/mt76/mt7615/mac.c
+index 0554aa2dbe2f..24d21f788bd3 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7615/mac.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7615/mac.c
+@@ -312,6 +312,7 @@ int mt7615_mac_write_txwi(struct mt7615_dev *dev, __le32 *txwi,
+ 	struct ieee80211_tx_info *info = IEEE80211_SKB_CB(skb);
+ 	struct ieee80211_tx_rate *rate = &info->control.rates[0];
+ 	struct ieee80211_hdr *hdr = (struct ieee80211_hdr *)skb->data;
++	bool multicast = is_multicast_ether_addr(hdr->addr1);
+ 	struct ieee80211_vif *vif = info->control.vif;
+ 	int tx_count = 8;
+ 	u8 fc_type, fc_stype, p_fmt, q_idx, omac_idx = 0, wmm_idx = 0;
+@@ -364,8 +365,18 @@ int mt7615_mac_write_txwi(struct mt7615_dev *dev, __le32 *txwi,
+ 
+ 	val = FIELD_PREP(MT_TXD2_FRAME_TYPE, fc_type) |
+ 	      FIELD_PREP(MT_TXD2_SUB_TYPE, fc_stype) |
+-	      FIELD_PREP(MT_TXD2_MULTICAST,
+-			 is_multicast_ether_addr(hdr->addr1));
++	      FIELD_PREP(MT_TXD2_MULTICAST, multicast);
++	if (key) {
++		if (multicast && ieee80211_is_robust_mgmt_frame(skb) &&
++		    key->cipher == WLAN_CIPHER_SUITE_AES_CMAC) {
++			val |= MT_TXD2_BIP;
++			txwi[3] = 0;
++		} else {
++			txwi[3] = cpu_to_le32(MT_TXD3_PROTECT_FRAME);
++		}
++	} else {
++		txwi[3] = 0;
++	}
+ 	txwi[2] = cpu_to_le32(val);
+ 
+ 	if (!(info->flags & IEEE80211_TX_CTL_AMPDU))
+@@ -422,14 +433,11 @@ int mt7615_mac_write_txwi(struct mt7615_dev *dev, __le32 *txwi,
+ 	}
+ 	val |= FIELD_PREP(MT_TXD3_SEQ, seqno);
+ 
+-	txwi[3] = cpu_to_le32(val);
++	txwi[3] |= cpu_to_le32(val);
+ 
+ 	if (info->flags & IEEE80211_TX_CTL_NO_ACK)
+ 		txwi[3] |= cpu_to_le32(MT_TXD3_NO_ACK);
+ 
+-	if (key)
+-		txwi[3] |= cpu_to_le32(MT_TXD3_PROTECT_FRAME);
+-
+ 	txwi[7] = FIELD_PREP(MT_TXD7_TYPE, fc_type) |
+ 		  FIELD_PREP(MT_TXD7_SUB_TYPE, fc_stype);
+ 
+@@ -593,27 +601,17 @@ void mt7615_mac_set_rates(struct mt7615_dev *dev, struct mt7615_sta *sta,
+ }
+ 
+ static enum mt7615_cipher_type
+-mt7615_mac_get_key_info(struct ieee80211_key_conf *key,
+-			u8 *key_data, enum set_key_cmd cmd)
++mt7615_mac_get_cipher(int cipher)
+ {
+-	if (cmd == DISABLE_KEY)
+-		return MT_CIPHER_NONE;
+-
+-	if (key->keylen > 32)
+-		return MT_CIPHER_NONE;
+-
+-	memcpy(key_data, key->key, key->keylen);
+-
+-	switch (key->cipher) {
++	switch (cipher) {
+ 	case WLAN_CIPHER_SUITE_WEP40:
+ 		return MT_CIPHER_WEP40;
+ 	case WLAN_CIPHER_SUITE_WEP104:
+ 		return MT_CIPHER_WEP104;
+ 	case WLAN_CIPHER_SUITE_TKIP:
+-		/* Rx/Tx MIC keys are swapped */
+-		memcpy(key_data + 16, key->key + 24, 8);
+-		memcpy(key_data + 24, key->key + 16, 8);
+ 		return MT_CIPHER_TKIP;
++	case WLAN_CIPHER_SUITE_AES_CMAC:
++		return MT_CIPHER_BIP_CMAC_128;
+ 	case WLAN_CIPHER_SUITE_CCMP:
+ 		return MT_CIPHER_AES_CCMP;
+ 	case WLAN_CIPHER_SUITE_CCMP_256:
+@@ -629,40 +627,71 @@ mt7615_mac_get_key_info(struct ieee80211_key_conf *key,
+ 	}
+ }
+ 
+-int mt7615_mac_wtbl_set_key(struct mt7615_dev *dev, struct mt76_wcid *wcid,
+-			    struct ieee80211_key_conf *key,
+-			    enum set_key_cmd cmd)
++static int
++mt7615_mac_wtbl_update_key(struct mt7615_dev *dev, struct mt76_wcid *wcid,
++			   struct ieee80211_key_conf *key,
++			   enum mt7615_cipher_type cipher,
++			   enum set_key_cmd cmd)
+ {
+-	enum mt7615_cipher_type cipher;
+-	u8 key_data[32] = {};
+-	u32 addr, w0, w1;
+-	int err = 0;
++	u32 addr = mt7615_mac_wtbl_addr(wcid->idx) + 30 * 4;
++	u8 data[32] = {};
+ 
+-	spin_lock_bh(&dev->mt76.lock);
+-	if (!mt76_poll(dev, MT_WTBL_UPDATE, MT_WTBL_UPDATE_BUSY, 0, 5000)) {
+-		err = -ETIMEDOUT;
+-		goto out;
+-	}
++	if (key->keylen > sizeof(data))
++		return -EINVAL;
+ 
+-	cipher = mt7615_mac_get_key_info(key, key_data, cmd);
+-	if (cipher == MT_CIPHER_NONE && cmd == SET_KEY) {
+-		err = -EOPNOTSUPP;
+-		goto out;
++	mt76_rr_copy(dev, addr, data, sizeof(data));
++	if (cmd == SET_KEY) {
++		if (cipher == MT_CIPHER_TKIP) {
++			/* Rx/Tx MIC keys are swapped */
++			memcpy(data + 16, key->key + 24, 8);
++			memcpy(data + 24, key->key + 16, 8);
++		}
++		if (cipher != MT_CIPHER_BIP_CMAC_128 && wcid->cipher)
++			memmove(data + 16, data, 16);
++		if (cipher != MT_CIPHER_BIP_CMAC_128 || !wcid->cipher)
++			memcpy(data, key->key, key->keylen);
++		else if (cipher == MT_CIPHER_BIP_CMAC_128)
++			memcpy(data + 16, key->key, 16);
++	} else {
++		if (wcid->cipher & ~BIT(cipher)) {
++			if (cipher != MT_CIPHER_BIP_CMAC_128)
++				memmove(data, data + 16, 16);
++			memset(data + 16, 0, 16);
++		} else {
++			memset(data, 0, sizeof(data));
++		}
+ 	}
++	mt76_wr_copy(dev, addr, data, sizeof(data));
+ 
+-	addr = mt7615_mac_wtbl_addr(wcid->idx);
++	return 0;
++}
+ 
+-	mt76_wr_copy(dev, addr + 30 * 4, key_data, sizeof(key_data));
++static int
++mt7615_mac_wtbl_update_pk(struct mt7615_dev *dev, struct mt76_wcid *wcid,
++			  enum mt7615_cipher_type cipher, int keyidx,
++			  enum set_key_cmd cmd)
++{
++	u32 addr = mt7615_mac_wtbl_addr(wcid->idx), w0, w1;
+ 
+-	mt76_rmw(dev, addr + 2 * 4, MT_WTBL_W2_KEY_TYPE,
+-		 FIELD_PREP(MT_WTBL_W2_KEY_TYPE, cipher));
++	if (!mt76_poll(dev, MT_WTBL_UPDATE, MT_WTBL_UPDATE_BUSY, 0, 5000))
++		return -ETIMEDOUT;
+ 
+ 	w0 = mt76_rr(dev, addr);
+ 	w1 = mt76_rr(dev, addr + 4);
+-	w0 &= ~(MT_WTBL_W0_KEY_IDX | MT_WTBL_W0_RX_KEY_VALID);
+-	if (cmd == SET_KEY)
+-		w0 |= FIELD_PREP(MT_WTBL_W0_KEY_IDX, key->keyidx) |
+-		      MT_WTBL_W0_RX_KEY_VALID;
++	if (cmd == SET_KEY) {
++		w0 |= MT_WTBL_W0_RX_KEY_VALID |
++		      FIELD_PREP(MT_WTBL_W0_RX_IK_VALID,
++				 cipher == MT_CIPHER_BIP_CMAC_128);
++		if (cipher != MT_CIPHER_BIP_CMAC_128 ||
++		    !wcid->cipher)
++			w0 |= FIELD_PREP(MT_WTBL_W0_KEY_IDX, keyidx);
++	}  else {
++		if (!(wcid->cipher & ~BIT(cipher)))
++			w0 &= ~(MT_WTBL_W0_RX_KEY_VALID |
++				MT_WTBL_W0_KEY_IDX);
++		if (cipher == MT_CIPHER_BIP_CMAC_128)
++			w0 &= ~MT_WTBL_W0_RX_IK_VALID;
++	}
+ 	mt76_wr(dev, MT_WTBL_RICR0, w0);
+ 	mt76_wr(dev, MT_WTBL_RICR1, w1);
+ 
+@@ -671,7 +700,61 @@ int mt7615_mac_wtbl_set_key(struct mt7615_dev *dev, struct mt76_wcid *wcid,
+ 		MT_WTBL_UPDATE_RXINFO_UPDATE);
+ 
+ 	if (!mt76_poll(dev, MT_WTBL_UPDATE, MT_WTBL_UPDATE_BUSY, 0, 5000))
+-		err = -ETIMEDOUT;
++		return -ETIMEDOUT;
++
++	return 0;
++}
++
++static void
++mt7615_mac_wtbl_update_cipher(struct mt7615_dev *dev, struct mt76_wcid *wcid,
++			      enum mt7615_cipher_type cipher,
++			      enum set_key_cmd cmd)
++{
++	u32 addr = mt7615_mac_wtbl_addr(wcid->idx);
++
++	if (cmd == SET_KEY) {
++		if (cipher != MT_CIPHER_BIP_CMAC_128 || !wcid->cipher)
++			mt76_rmw(dev, addr + 2 * 4, MT_WTBL_W2_KEY_TYPE,
++				 FIELD_PREP(MT_WTBL_W2_KEY_TYPE, cipher));
++	} else {
++		if (cipher != MT_CIPHER_BIP_CMAC_128 &&
++		    wcid->cipher & BIT(MT_CIPHER_BIP_CMAC_128))
++			mt76_rmw(dev, addr + 2 * 4, MT_WTBL_W2_KEY_TYPE,
++				 FIELD_PREP(MT_WTBL_W2_KEY_TYPE,
++					    MT_CIPHER_BIP_CMAC_128));
++		else if (!(wcid->cipher & ~BIT(cipher)))
++			mt76_clear(dev, addr + 2 * 4, MT_WTBL_W2_KEY_TYPE);
++	}
++}
++
++int mt7615_mac_wtbl_set_key(struct mt7615_dev *dev,
++			    struct mt76_wcid *wcid,
++			    struct ieee80211_key_conf *key,
++			    enum set_key_cmd cmd)
++{
++	enum mt7615_cipher_type cipher;
++	int err;
++
++	cipher = mt7615_mac_get_cipher(key->cipher);
++	if (cipher == MT_CIPHER_NONE)
++		return -EOPNOTSUPP;
++
++	spin_lock_bh(&dev->mt76.lock);
++
++	mt7615_mac_wtbl_update_cipher(dev, wcid, cipher, cmd);
++	err = mt7615_mac_wtbl_update_key(dev, wcid, key, cipher, cmd);
++	if (err < 0)
++		goto out;
++
++	err = mt7615_mac_wtbl_update_pk(dev, wcid, cipher, key->keyidx,
++					cmd);
++	if (err < 0)
++		goto out;
++
++	if (cmd == SET_KEY)
++		wcid->cipher |= BIT(cipher);
++	else
++		wcid->cipher &= ~BIT(cipher);
+ 
+ out:
+ 	spin_unlock_bh(&dev->mt76.lock);
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/main.c b/drivers/net/wireless/mediatek/mt76/mt7615/main.c
+index 5fdda85175c0..9347e0fe99bd 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7615/main.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7615/main.c
+@@ -183,6 +183,9 @@ static int mt7615_set_key(struct ieee80211_hw *hw, enum set_key_cmd cmd,
+ 
+ 	/* fall back to sw encryption for unsupported ciphers */
+ 	switch (key->cipher) {
++	case WLAN_CIPHER_SUITE_AES_CMAC:
++		key->flags |= IEEE80211_KEY_FLAG_GENERATE_MMIE;
++		break;
+ 	case WLAN_CIPHER_SUITE_WEP40:
+ 	case WLAN_CIPHER_SUITE_WEP104:
+ 	case WLAN_CIPHER_SUITE_TKIP:
+-- 
+2.21.0
 
->
