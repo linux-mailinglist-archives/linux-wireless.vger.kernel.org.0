@@ -2,56 +2,68 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A86AD95D51
-	for <lists+linux-wireless@lfdr.de>; Tue, 20 Aug 2019 13:27:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 795D795DE7
+	for <lists+linux-wireless@lfdr.de>; Tue, 20 Aug 2019 13:54:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729541AbfHTL1f (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 20 Aug 2019 07:27:35 -0400
-Received: from mx1.redhat.com ([209.132.183.28]:35916 "EHLO mx1.redhat.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1729458AbfHTL1f (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 20 Aug 2019 07:27:35 -0400
-Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.phx2.redhat.com [10.5.11.15])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mx1.redhat.com (Postfix) with ESMTPS id 6734818C8905;
-        Tue, 20 Aug 2019 11:27:35 +0000 (UTC)
-Received: from localhost (unknown [10.43.2.236])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id AC1E339C3;
-        Tue, 20 Aug 2019 11:27:34 +0000 (UTC)
-Date:   Tue, 20 Aug 2019 13:27:31 +0200
-From:   Stanislaw Gruszka <sgruszka@redhat.com>
-To:     Fredrik Noring <noring@nocrew.org>
-Cc:     Kalle Valo <kvalo@codeaurora.org>,
-        Helmut Schaa <helmut.schaa@googlemail.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        linux-wireless@vger.kernel.org
-Subject: Re: rt2800: Commit 710e6cc1595e breaks ID 148f:3070 RT2870/RT3070
- USB wifi
-Message-ID: <20190820112730.GB2227@redhat.com>
-References: <20190820112050.GA35458@sx9>
+        id S1728947AbfHTLyn (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 20 Aug 2019 07:54:43 -0400
+Received: from webmail.newmedia-net.de ([185.84.6.166]:48579 "EHLO
+        webmail.newmedia-net.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728771AbfHTLyn (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 20 Aug 2019 07:54:43 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=newmedia-net.de; s=mikd;
+        h=Content-Transfer-Encoding:Content-Type:In-Reply-To:MIME-Version:Date:Message-ID:From:References:Cc:To:Subject; bh=VuoE3t0KeuPRrsMQRcqh6KVC581VByHkQ/fvcQi8doc=;
+        b=NFt/Id4UnENqr/xOLSFJ7u3RfOQgQyvvUTZJg8RsJqsKBSuuBk9Gbx8bq5U6ZSDGEHZFyXkrYQ22GLE+/bM7Qt9pHcgW0kML/W38zT0VqZgbCFtnEAPx2Sv7Sz1WViJYgewBokJTFhOYGKTJl1NyffEP/uIoPM1yKbQcZYDkuho=;
+Subject: Re: Implementing Mikrotik IE
+To:     Johannes Berg <johannes@sipsolutions.net>,
+        Josef Miegl <josef@miegl.cz>
+Cc:     linux-wireless <linux-wireless@vger.kernel.org>
+References: <20190815152844.k5mmddvbwrohkzr6@pepin-laptop.localdomain>
+ <3a079683-6f57-3b42-f909-90c46e14f14f@newmedia-net.de>
+ <20190816111044.4ntizgmpa3twbzcg@pepin-laptop.localdomain>
+ <e8129acb-fc32-c85c-b504-ab8777a3f1a3@newmedia-net.de>
+ <20190816113818.ohktykc4fyetzyvq@pepin-laptop.localdomain>
+ <9985fddfb059640f36665efc9c1ef2dc0bdb7662.camel@sipsolutions.net>
+From:   Sebastian Gottschall <s.gottschall@newmedia-net.de>
+Message-ID: <b8009787-a182-d5f2-6dde-ee540c65a03b@newmedia-net.de>
+Date:   Tue, 20 Aug 2019 13:53:41 +0200
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:60.0) Gecko/20100101
+ Thunderbird/60.8.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20190820112050.GA35458@sx9>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.15
-X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.6.2 (mx1.redhat.com [10.5.110.70]); Tue, 20 Aug 2019 11:27:35 +0000 (UTC)
+In-Reply-To: <9985fddfb059640f36665efc9c1ef2dc0bdb7662.camel@sipsolutions.net>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Received:  from [212.111.244.1] (helo=[172.29.0.186])
+        by webmail.newmedia-net.de with esmtpsa (TLSv1:AES128-SHA:128)
+        (Exim 4.72)
+        (envelope-from <s.gottschall@newmedia-net.de>)
+        id 1i02iv-0005tk-02; Tue, 20 Aug 2019 13:54:49 +0200
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Tue, Aug 20, 2019 at 01:20:50PM +0200, Fredrik Noring wrote:
-> Hi Stanislaw,
-> 
-> Commit 710e6cc1595e ("rt2800: do not nullify initialization vector data")
-> breaks USB device 006: ID 148f:3070 Ralink Technology, Corp. RT2870/RT3070
-> Wireless Adapter. No particular error messages are produced, but its
-> interface becomes unreachable. Reverting this commit in 5.3.0-rc5 solves
-> the problem.
 
-Hi, I've recently sent the patch that should fix the problem:
-https://lore.kernel.org/linux-wireless/1566213607-6723-1-git-send-email-sgruszka@redhat.com/T/#u
-
-Stanislaw
+Am 19.08.2019 um 12:12 schrieb Johannes Berg:
+> On Fri, 2019-08-16 at 13:38 +0200, Josef Miegl wrote:
+>> On Fri, Aug 16, 2019 at 01:15:30PM +0200, Sebastian Gottschall wrote:
+>>> in station mode you are right. you need to modify mac80211.
+>> Even if I don't need to capture the IE back? All I want is to include
+>> extra vendor IE in client assoc/reassoc frames. If this is something the
+>> current wireless stack cannot do, perhaps it should be implemented.
+> Contrary to what Sebastian states, it certainly is possible today,
+> although not through wpa_supplicant's config file, only through the
+> wpa_cli interface, using the VENDOR_ELEM_ADD command. There are various
+> tests showing how to use this.
+>
+> johannes
+i was talking about a different scenario. its not about adding a 
+element, but to read it back for gui for instance. this is why i made a 
+patch which parses this special ie
+and adds the radioname as extra element to the station table. this works 
+for ap as well of course. so iw ath0 station dump will print out the 
+radio name if available
+>
+>
+>
