@@ -2,25 +2,25 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id AF45B9652E
-	for <lists+linux-wireless@lfdr.de>; Tue, 20 Aug 2019 17:49:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EED0A96533
+	for <lists+linux-wireless@lfdr.de>; Tue, 20 Aug 2019 17:49:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730478AbfHTPtH (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 20 Aug 2019 11:49:07 -0400
-Received: from smtp.codeaurora.org ([198.145.29.96]:40816 "EHLO
+        id S1730510AbfHTPtO (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 20 Aug 2019 11:49:14 -0400
+Received: from smtp.codeaurora.org ([198.145.29.96]:41608 "EHLO
         smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726550AbfHTPtH (ORCPT
+        with ESMTP id S1730495AbfHTPtN (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 20 Aug 2019 11:49:07 -0400
+        Tue, 20 Aug 2019 11:49:13 -0400
 Received: by smtp.codeaurora.org (Postfix, from userid 1000)
-        id DA55C61A92; Tue, 20 Aug 2019 15:49:02 +0000 (UTC)
+        id 15D9B61AA1; Tue, 20 Aug 2019 15:49:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1566316146;
-        bh=RpcS+OjYX9Dnl4rbYbhX0ZwYhX2ugq9yDDkV3fgvOoc=;
+        s=default; t=1566316151;
+        bh=SQKUo/j+HASGUZOz66LRbQDeRpXlgAd5A9bsStXWTX4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=YenoGHOA+jmW49yKFsc8pvq2UPO5n+GRU7UtV6vpYjQ+BYGm0hR8Rk9vQsAxVLQIE
-         ijLeRka3Fu9b+z6sw9mlosdSo8IOg4qSshx2DH6apHqG1g58IyLp0fuF8w8eYPjCvf
-         9RxtrvHmQ6aSNeDyrCopE44LJF9tziIq0IIjLu3U=
+        b=AtOLKQYCn8+uAPbknCg/vjPqYRMSq+IRpFo8nBj72naHPNCogxMOYUkD8UEicvZPB
+         7SMzDEb09Xr6HLjAr0fKI3CDjsn4jfoNFSvtC8EYCgaa2BxtqrvftzxhnYwiH/qn4y
+         ks5D7BseQFvlhLiAWL4RAJ4p7+mTXvMOZPBbUvPc=
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         pdx-caf-mail.web.codeaurora.org
 X-Spam-Level: 
@@ -31,24 +31,24 @@ Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-SHA256 (128/128 bits))
         (No client certificate requested)
         (Authenticated sender: kvalo@smtp.codeaurora.org)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id ABBFE613A7;
-        Tue, 20 Aug 2019 15:48:57 +0000 (UTC)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 23DAB61A76;
+        Tue, 20 Aug 2019 15:48:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1566316139;
-        bh=RpcS+OjYX9Dnl4rbYbhX0ZwYhX2ugq9yDDkV3fgvOoc=;
+        s=default; t=1566316142;
+        bh=SQKUo/j+HASGUZOz66LRbQDeRpXlgAd5A9bsStXWTX4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=TW0fnack26TyFqSNC8t96ziq6NfzZFnTIQx9seyX0ouLqZ42WSENgqCI24ruQh+ia
-         /L7/wPcQL2Iz3Z7OLCsgUz6Id3mOVupeRDrizn+4gljNG5bbQIY7NxR2W7yf6/If9U
-         9IY5e+nN8lZ4OseEJnDIbaaBuLMxTxv5/YL5lgNU=
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org ABBFE613A7
+        b=XFEIQGvInXCGdBfmKLA61dn+RLBXXwvDM6BHrD8jsXsMiIYutIXGblbwgqIoAMWJf
+         UTVvu9C294Ts9oUwBT6I/YRnFM8lMRYp1D/h9N4GGaQvWGleJHvNueNd1pqQ/4KTF4
+         GCPuRouOq642EOSPhVTaMaLbtxVlCRjZn0Z5DhU8=
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 23DAB61A76
 Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
 Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
 From:   Kalle Valo <kvalo@codeaurora.org>
 To:     linux-wireless@vger.kernel.org
 Cc:     ath11k@lists.infradead.org, devicetree@vger.kernel.org
-Subject: [PATCH 14/49] ath11k: add debugfs_sta.c
-Date:   Tue, 20 Aug 2019 18:47:40 +0300
-Message-Id: <1566316095-27507-15-git-send-email-kvalo@codeaurora.org>
+Subject: [PATCH 15/49] ath11k: add dp.c
+Date:   Tue, 20 Aug 2019 18:47:41 +0300
+Message-Id: <1566316095-27507-16-git-send-email-kvalo@codeaurora.org>
 X-Mailer: git-send-email 2.7.4
 In-Reply-To: <1566316095-27507-1-git-send-email-kvalo@codeaurora.org>
 References: <1566316095-27507-1-git-send-email-kvalo@codeaurora.org>
@@ -58,551 +58,911 @@ List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
 ---
- drivers/net/wireless/ath/ath11k/debugfs_sta.c | 538 ++++++++++++++++++++++++++
- 1 file changed, 538 insertions(+)
+ drivers/net/wireless/ath/ath11k/dp.c | 898 +++++++++++++++++++++++++++++++++++
+ 1 file changed, 898 insertions(+)
 
-diff --git a/drivers/net/wireless/ath/ath11k/debugfs_sta.c b/drivers/net/wireless/ath/ath11k/debugfs_sta.c
+diff --git a/drivers/net/wireless/ath/ath11k/dp.c b/drivers/net/wireless/ath/ath11k/dp.c
 new file mode 100644
-index 000000000000..2ca3bc47e502
+index 000000000000..b55d9d023a55
 --- /dev/null
-+++ b/drivers/net/wireless/ath/ath11k/debugfs_sta.c
-@@ -0,0 +1,538 @@
++++ b/drivers/net/wireless/ath/ath11k/dp.c
+@@ -0,0 +1,898 @@
 +// SPDX-License-Identifier: ISC
 +/*
 + * Copyright (c) 2018-2019 The Linux Foundation. All rights reserved.
 + */
 +
-+#include <linux/vmalloc.h>
-+
++#include <linux/kfifo.h>
 +#include "core.h"
-+#include "peer.h"
++#include "dp_tx.h"
++#include "hal_tx.h"
 +#include "debug.h"
++#include "dp_rx.h"
++#include "peer.h"
 +
-+void
-+ath11k_accumulate_per_peer_tx_stats(struct ath11k_sta *arsta,
-+				    struct ath11k_per_peer_tx_stats *peer_stats,
-+				    u8 legacy_rate_idx)
++static void ath11k_dp_htt_htc_tx_complete(struct ath11k_base *ab,
++					  struct sk_buff *skb)
 +{
-+	struct rate_info *txrate = &arsta->txrate;
-+	struct ath11k_htt_tx_stats *tx_stats;
-+	int gi, mcs, bw, nss;
-+
-+	if (!arsta->tx_stats)
-+		return;
-+
-+	tx_stats = arsta->tx_stats;
-+	gi = FIELD_GET(RATE_INFO_FLAGS_SHORT_GI, arsta->txrate.flags);
-+	mcs = txrate->mcs;
-+	bw = txrate->bw;
-+	nss = txrate->nss - 1;
-+
-+#define STATS_OP_FMT(name) tx_stats->stats[ATH11K_STATS_TYPE_##name]
-+
-+	if (txrate->flags & RATE_INFO_FLAGS_HE_MCS) {
-+		STATS_OP_FMT(SUCC).he[0][mcs] += peer_stats->succ_bytes;
-+		STATS_OP_FMT(SUCC).he[1][mcs] += peer_stats->succ_pkts;
-+		STATS_OP_FMT(FAIL).he[0][mcs] += peer_stats->failed_bytes;
-+		STATS_OP_FMT(FAIL).he[1][mcs] += peer_stats->failed_pkts;
-+		STATS_OP_FMT(RETRY).he[0][mcs] += peer_stats->retry_bytes;
-+		STATS_OP_FMT(RETRY).he[1][mcs] += peer_stats->retry_pkts;
-+	} else if (txrate->flags & RATE_INFO_FLAGS_VHT_MCS) {
-+		STATS_OP_FMT(SUCC).vht[0][mcs] += peer_stats->succ_bytes;
-+		STATS_OP_FMT(SUCC).vht[1][mcs] += peer_stats->succ_pkts;
-+		STATS_OP_FMT(FAIL).vht[0][mcs] += peer_stats->failed_bytes;
-+		STATS_OP_FMT(FAIL).vht[1][mcs] += peer_stats->failed_pkts;
-+		STATS_OP_FMT(RETRY).vht[0][mcs] += peer_stats->retry_bytes;
-+		STATS_OP_FMT(RETRY).vht[1][mcs] += peer_stats->retry_pkts;
-+	} else if (txrate->flags & RATE_INFO_FLAGS_MCS) {
-+		STATS_OP_FMT(SUCC).ht[0][mcs] += peer_stats->succ_bytes;
-+		STATS_OP_FMT(SUCC).ht[1][mcs] += peer_stats->succ_pkts;
-+		STATS_OP_FMT(FAIL).ht[0][mcs] += peer_stats->failed_bytes;
-+		STATS_OP_FMT(FAIL).ht[1][mcs] += peer_stats->failed_pkts;
-+		STATS_OP_FMT(RETRY).ht[0][mcs] += peer_stats->retry_bytes;
-+		STATS_OP_FMT(RETRY).ht[1][mcs] += peer_stats->retry_pkts;
-+	} else {
-+		mcs = legacy_rate_idx;
-+
-+		STATS_OP_FMT(SUCC).legacy[0][mcs] += peer_stats->succ_bytes;
-+		STATS_OP_FMT(SUCC).legacy[1][mcs] += peer_stats->succ_pkts;
-+		STATS_OP_FMT(FAIL).legacy[0][mcs] += peer_stats->failed_bytes;
-+		STATS_OP_FMT(FAIL).legacy[1][mcs] += peer_stats->failed_pkts;
-+		STATS_OP_FMT(RETRY).legacy[0][mcs] += peer_stats->retry_bytes;
-+		STATS_OP_FMT(RETRY).legacy[1][mcs] += peer_stats->retry_pkts;
-+	}
-+
-+	if (peer_stats->is_ampdu) {
-+		tx_stats->ba_fails += peer_stats->ba_fails;
-+
-+		if (txrate->flags & RATE_INFO_FLAGS_HE_MCS) {
-+			STATS_OP_FMT(AMPDU).he[0][mcs] +=
-+			peer_stats->succ_bytes + peer_stats->retry_bytes;
-+			STATS_OP_FMT(AMPDU).he[1][mcs] +=
-+			peer_stats->succ_pkts + peer_stats->retry_pkts;
-+		} else if (txrate->flags & RATE_INFO_FLAGS_MCS) {
-+			STATS_OP_FMT(AMPDU).ht[0][mcs] +=
-+			peer_stats->succ_bytes + peer_stats->retry_bytes;
-+			STATS_OP_FMT(AMPDU).ht[1][mcs] +=
-+			peer_stats->succ_pkts + peer_stats->retry_pkts;
-+		} else {
-+			STATS_OP_FMT(AMPDU).vht[0][mcs] +=
-+			peer_stats->succ_bytes + peer_stats->retry_bytes;
-+			STATS_OP_FMT(AMPDU).vht[1][mcs] +=
-+			peer_stats->succ_pkts + peer_stats->retry_pkts;
-+		}
-+		STATS_OP_FMT(AMPDU).bw[0][bw] +=
-+			peer_stats->succ_bytes + peer_stats->retry_bytes;
-+		STATS_OP_FMT(AMPDU).nss[0][nss] +=
-+			peer_stats->succ_bytes + peer_stats->retry_bytes;
-+		STATS_OP_FMT(AMPDU).gi[0][gi] +=
-+			peer_stats->succ_bytes + peer_stats->retry_bytes;
-+		STATS_OP_FMT(AMPDU).bw[1][bw] +=
-+			peer_stats->succ_pkts + peer_stats->retry_pkts;
-+		STATS_OP_FMT(AMPDU).nss[1][nss] +=
-+			peer_stats->succ_pkts + peer_stats->retry_pkts;
-+		STATS_OP_FMT(AMPDU).gi[1][gi] +=
-+			peer_stats->succ_pkts + peer_stats->retry_pkts;
-+	} else {
-+		tx_stats->ack_fails += peer_stats->ba_fails;
-+	}
-+
-+	STATS_OP_FMT(SUCC).bw[0][bw] += peer_stats->succ_bytes;
-+	STATS_OP_FMT(SUCC).nss[0][nss] += peer_stats->succ_bytes;
-+	STATS_OP_FMT(SUCC).gi[0][gi] += peer_stats->succ_bytes;
-+
-+	STATS_OP_FMT(SUCC).bw[1][bw] += peer_stats->succ_pkts;
-+	STATS_OP_FMT(SUCC).nss[1][nss] += peer_stats->succ_pkts;
-+	STATS_OP_FMT(SUCC).gi[1][gi] += peer_stats->succ_pkts;
-+
-+	STATS_OP_FMT(FAIL).bw[0][bw] += peer_stats->failed_bytes;
-+	STATS_OP_FMT(FAIL).nss[0][nss] += peer_stats->failed_bytes;
-+	STATS_OP_FMT(FAIL).gi[0][gi] += peer_stats->failed_bytes;
-+
-+	STATS_OP_FMT(FAIL).bw[1][bw] += peer_stats->failed_pkts;
-+	STATS_OP_FMT(FAIL).nss[1][nss] += peer_stats->failed_pkts;
-+	STATS_OP_FMT(FAIL).gi[1][gi] += peer_stats->failed_pkts;
-+
-+	STATS_OP_FMT(RETRY).bw[0][bw] += peer_stats->retry_bytes;
-+	STATS_OP_FMT(RETRY).nss[0][nss] += peer_stats->retry_bytes;
-+	STATS_OP_FMT(RETRY).gi[0][gi] += peer_stats->retry_bytes;
-+
-+	STATS_OP_FMT(RETRY).bw[1][bw] += peer_stats->retry_pkts;
-+	STATS_OP_FMT(RETRY).nss[1][nss] += peer_stats->retry_pkts;
-+	STATS_OP_FMT(RETRY).gi[1][gi] += peer_stats->retry_pkts;
-+
-+	tx_stats->tx_duration += peer_stats->duration;
++	dev_kfree_skb_any(skb);
 +}
 +
-+void ath11k_update_per_peer_stats_from_txcompl(struct ath11k *ar,
-+					       struct sk_buff *msdu,
-+					       struct hal_tx_status *ts)
++void ath11k_dp_peer_cleanup(struct ath11k *ar, int vdev_id, const u8 *addr)
 +{
 +	struct ath11k_base *ab = ar->ab;
-+	struct ath11k_per_peer_tx_stats *peer_stats = &ar->cached_stats;
 +	struct ath11k_peer *peer;
-+	struct ath11k_sta *arsta;
-+	struct ieee80211_sta *sta;
-+	u16 rate;
-+	u8 rate_idx;
-+	int ret;
 +
-+	rcu_read_lock();
++	/* TODO: Any other peer specific DP cleanup */
++
 +	spin_lock_bh(&ab->base_lock);
-+	peer = ath11k_peer_find_by_id(ab, ts->peer_id);
-+	if (!peer || !peer->sta) {
-+		ath11k_warn(ab, "failed to find the peer\n");
++	peer = ath11k_peer_find(ab, vdev_id, addr);
++	if (!peer) {
++		ath11k_warn(ab, "failed to lookup peer %pM on vdev %d\n",
++			    addr, vdev_id);
 +		spin_unlock_bh(&ab->base_lock);
-+		rcu_read_unlock();
 +		return;
 +	}
 +
-+	sta = peer->sta;
-+	arsta = (struct ath11k_sta *)sta->drv_priv;
-+
-+	memset(&arsta->txrate, 0, sizeof(arsta->txrate));
-+
-+	if (ts->pkt_type == HAL_TX_RATE_STATS_PKT_TYPE_11A ||
-+	    ts->pkt_type == HAL_TX_RATE_STATS_PKT_TYPE_11B) {
-+		ret = ath11k_mac_hw_ratecode_to_legacy_rate(ts->mcs,
-+							    ts->pkt_type,
-+							    &rate_idx,
-+							    &rate);
-+		if (ret < 0) {
-+			spin_unlock_bh(&ab->base_lock);
-+			rcu_read_unlock();
-+			return;
-+		}
-+		arsta->txrate.legacy = rate;
-+	} else if (ts->pkt_type == HAL_TX_RATE_STATS_PKT_TYPE_11N) {
-+		if (ts->mcs > 7) {
-+			ath11k_warn(ab, "Invalid HT mcs index %d\n", ts->mcs);
-+			spin_unlock_bh(&ab->base_lock);
-+			rcu_read_unlock();
-+			return;
-+		}
-+
-+		arsta->txrate.mcs = ts->mcs + 8 * (arsta->last_txrate.nss - 1);
-+		arsta->txrate.flags = RATE_INFO_FLAGS_MCS;
-+		if (ts->sgi)
-+			arsta->txrate.flags |= RATE_INFO_FLAGS_SHORT_GI;
-+	} else if (ts->pkt_type == HAL_TX_RATE_STATS_PKT_TYPE_11AC) {
-+		if (ts->mcs > 9) {
-+			ath11k_warn(ab, "Invalid VHT mcs index %d\n", ts->mcs);
-+			spin_unlock_bh(&ab->base_lock);
-+			rcu_read_unlock();
-+			return;
-+		}
-+
-+		arsta->txrate.mcs = ts->mcs;
-+		arsta->txrate.flags = RATE_INFO_FLAGS_VHT_MCS;
-+		if (ts->sgi)
-+			arsta->txrate.flags |= RATE_INFO_FLAGS_SHORT_GI;
-+	} else {
-+		/*TODO: update HE rates */
-+	}
-+
-+	arsta->txrate.nss = arsta->last_txrate.nss;
-+	arsta->txrate.bw = ts->bw;
-+
-+	ath11k_accumulate_per_peer_tx_stats(arsta, peer_stats, rate_idx);
++	ath11k_peer_rx_tid_cleanup(ar, peer);
 +	spin_unlock_bh(&ab->base_lock);
-+	rcu_read_unlock();
 +}
 +
-+static ssize_t ath11k_dbg_sta_dump_tx_stats(struct file *file,
-+					    char __user *user_buf,
-+					    size_t count, loff_t *ppos)
++int ath11k_dp_peer_setup(struct ath11k *ar, int vdev_id, const u8 *addr)
 +{
-+	struct ieee80211_sta *sta = file->private_data;
-+	struct ath11k_sta *arsta = (struct ath11k_sta *)sta->drv_priv;
-+	struct ath11k *ar = arsta->arvif->ar;
-+	struct ath11k_htt_data_stats *stats;
-+	static const char *str_name[ATH11K_STATS_TYPE_MAX] = {"succ", "fail",
-+							      "retry", "ampdu"};
-+	static const char *str[ATH11K_COUNTER_TYPE_MAX] = {"bytes", "packets"};
-+	int len = 0, i, j, k, retval = 0;
-+	const int size = 2 * 4096;
-+	char *buf;
-+
-+	buf = kzalloc(size, GFP_KERNEL);
-+	if (!buf)
-+		return -ENOMEM;
-+
-+	mutex_lock(&ar->conf_mutex);
-+
-+	spin_lock_bh(&ar->data_lock);
-+	for (k = 0; k < ATH11K_STATS_TYPE_MAX; k++) {
-+		for (j = 0; j < ATH11K_COUNTER_TYPE_MAX; j++) {
-+			stats = &arsta->tx_stats->stats[k];
-+			len += scnprintf(buf + len, size - len, "%s_%s\n",
-+					 str_name[k],
-+					 str[j]);
-+			len += scnprintf(buf + len, size - len,
-+					 " HE MCS %s\n",
-+					 str[j]);
-+			for (i = 0; i < ATH11K_HE_MCS_NUM; i++)
-+				len += scnprintf(buf + len, size - len,
-+						 "  %llu ",
-+						 stats->he[j][i]);
-+			len += scnprintf(buf + len, size - len, "\n");
-+			len += scnprintf(buf + len, size - len,
-+					 " VHT MCS %s\n",
-+					 str[j]);
-+			for (i = 0; i < ATH11K_VHT_MCS_NUM; i++)
-+				len += scnprintf(buf + len, size - len,
-+						 "  %llu ",
-+						 stats->vht[j][i]);
-+			len += scnprintf(buf + len, size - len, "\n");
-+			len += scnprintf(buf + len, size - len, " HT MCS %s\n",
-+					 str[j]);
-+			for (i = 0; i < ATH11K_HT_MCS_NUM; i++)
-+				len += scnprintf(buf + len, size - len,
-+						 "  %llu ", stats->ht[j][i]);
-+			len += scnprintf(buf + len, size - len, "\n");
-+			len += scnprintf(buf + len, size - len,
-+					" BW %s (20,40,80,160 MHz)\n", str[j]);
-+			len += scnprintf(buf + len, size - len,
-+					 "  %llu %llu %llu %llu\n",
-+					 stats->bw[j][0], stats->bw[j][1],
-+					 stats->bw[j][2], stats->bw[j][3]);
-+			len += scnprintf(buf + len, size - len,
-+					 " NSS %s (1x1,2x2,3x3,4x4)\n", str[j]);
-+			len += scnprintf(buf + len, size - len,
-+					 "  %llu %llu %llu %llu\n",
-+					 stats->nss[j][0], stats->nss[j][1],
-+					 stats->nss[j][2], stats->nss[j][3]);
-+			len += scnprintf(buf + len, size - len,
-+					 " GI %s (0.4us,0.8us,1.6us,3.2us)\n",
-+					 str[j]);
-+			len += scnprintf(buf + len, size - len,
-+					 "  %llu %llu %llu %llu\n",
-+					 stats->gi[j][0], stats->gi[j][1],
-+					 stats->gi[j][2], stats->gi[j][3]);
-+			len += scnprintf(buf + len, size - len,
-+					 " legacy rate %s (1,2 ... Mbps)\n  ",
-+					 str[j]);
-+			for (i = 0; i < ATH11K_LEGACY_NUM; i++)
-+				len += scnprintf(buf + len, size - len, "%llu ",
-+						 stats->legacy[j][i]);
-+			len += scnprintf(buf + len, size - len, "\n");
-+		}
-+	}
-+
-+	len += scnprintf(buf + len, size - len,
-+			 "\nTX duration\n %llu usecs\n",
-+			 arsta->tx_stats->tx_duration);
-+	len += scnprintf(buf + len, size - len,
-+			"BA fails\n %llu\n", arsta->tx_stats->ba_fails);
-+	len += scnprintf(buf + len, size - len,
-+			"ack fails\n %llu\n", arsta->tx_stats->ack_fails);
-+	spin_unlock_bh(&ar->data_lock);
-+
-+	if (len > size)
-+		len = size;
-+	retval = simple_read_from_buffer(user_buf, count, ppos, buf, len);
-+	kfree(buf);
-+
-+	mutex_unlock(&ar->conf_mutex);
-+	return retval;
-+}
-+
-+static const struct file_operations fops_tx_stats = {
-+	.read = ath11k_dbg_sta_dump_tx_stats,
-+	.open = simple_open,
-+	.owner = THIS_MODULE,
-+	.llseek = default_llseek,
-+};
-+
-+static ssize_t ath11k_dbg_sta_dump_rx_stats(struct file *file,
-+					    char __user *user_buf,
-+					    size_t count, loff_t *ppos)
-+{
-+	struct ieee80211_sta *sta = file->private_data;
-+	struct ath11k_sta *arsta = (struct ath11k_sta *)sta->drv_priv;
-+	struct ath11k *ar = arsta->arvif->ar;
-+	struct ath11k_rx_peer_stats *rx_stats = arsta->rx_stats;
-+	int len = 0, i, retval = 0;
-+	const int size = 4096;
-+	char *buf;
-+
-+	if (!rx_stats)
-+		return -ENOENT;
-+
-+	buf = kzalloc(size, GFP_KERNEL);
-+	if (!buf)
-+		return -ENOMEM;
-+
-+	mutex_lock(&ar->conf_mutex);
-+	spin_lock_bh(&ar->ab->base_lock);
-+
-+	len += scnprintf(buf + len, size - len, "RX peer stats:\n");
-+	len += scnprintf(buf + len, size - len, "Num of MSDUs: %llu\n",
-+			 rx_stats->num_msdu);
-+	len += scnprintf(buf + len, size - len, "Num of MSDUs with TCP L4: %llu\n",
-+			 rx_stats->tcp_msdu_count);
-+	len += scnprintf(buf + len, size - len, "Num of MSDUs with UDP L4: %llu\n",
-+			 rx_stats->udp_msdu_count);
-+	len += scnprintf(buf + len, size - len, "Num of MSDUs part of AMPDU: %llu\n",
-+			 rx_stats->ampdu_msdu_count);
-+	len += scnprintf(buf + len, size - len, "Num of MSDUs not part of AMPDU: %llu\n",
-+			 rx_stats->non_ampdu_msdu_count);
-+	len += scnprintf(buf + len, size - len, "Num of MSDUs using STBC: %llu\n",
-+			 rx_stats->stbc_count);
-+	len += scnprintf(buf + len, size - len, "Num of MSDUs beamformed: %llu\n",
-+			 rx_stats->beamformed_count);
-+	len += scnprintf(buf + len, size - len, "Num of MPDUs with FCS ok: %llu\n",
-+			 rx_stats->num_mpdu_fcs_ok);
-+	len += scnprintf(buf + len, size - len, "Num of MPDUs with FCS error: %llu\n",
-+			 rx_stats->num_mpdu_fcs_err);
-+	len += scnprintf(buf + len, size - len,
-+			 "GI: 0.8us %llu 0.4us %llu 1.6us %llu 3.2us %llu\n",
-+			 rx_stats->gi_count[0], rx_stats->gi_count[1],
-+			 rx_stats->gi_count[2], rx_stats->gi_count[3]);
-+	len += scnprintf(buf + len, size - len,
-+			 "BW: 20Mhz %llu 40Mhz %llu 80Mhz %llu 160Mhz %llu\n",
-+			 rx_stats->bw_count[0], rx_stats->bw_count[1],
-+			 rx_stats->bw_count[2], rx_stats->bw_count[3]);
-+	len += scnprintf(buf + len, size - len, "BCC %llu LDPC %llu\n",
-+			 rx_stats->coding_count[0], rx_stats->coding_count[1]);
-+	len += scnprintf(buf + len, size - len,
-+			 "preamble: 11A %llu 11B %llu 11N %llu 11AC %llu 11AX %llu\n",
-+			 rx_stats->pream_cnt[0], rx_stats->pream_cnt[1],
-+			 rx_stats->pream_cnt[2], rx_stats->pream_cnt[3],
-+			 rx_stats->pream_cnt[4]);
-+	len += scnprintf(buf + len, size - len,
-+			 "reception type: SU %llu MU_MIMO %llu MU_OFDMA %llu MU_OFDMA_MIMO %llu\n",
-+			 rx_stats->reception_type[0], rx_stats->reception_type[1],
-+			 rx_stats->reception_type[2], rx_stats->reception_type[3]);
-+	len += scnprintf(buf + len, size - len, "TID(0-15) Legacy TID(16):");
-+	for (i = 0; i <= IEEE80211_NUM_TIDS; i++)
-+		len += scnprintf(buf + len, size - len, "%llu ", rx_stats->tid_count[i]);
-+	len += scnprintf(buf + len, size - len, "\nMCS(0-11) Legacy MCS(12):");
-+	for (i = 0; i < HAL_RX_MAX_MCS + 1; i++)
-+		len += scnprintf(buf + len, size - len, "%llu ", rx_stats->mcs_count[i]);
-+	len += scnprintf(buf + len, size - len, "\nNSS(1-8):");
-+	for (i = 0; i < HAL_RX_MAX_NSS; i++)
-+		len += scnprintf(buf + len, size - len, "%llu ", rx_stats->nss_count[i]);
-+	len += scnprintf(buf + len, size - len, "\nRX Duration:%llu ",
-+			 rx_stats->rx_duration);
-+	len += scnprintf(buf + len, size - len, "\n");
-+
-+	spin_unlock_bh(&ar->ab->base_lock);
-+
-+	if (len > size)
-+		len = size;
-+	retval = simple_read_from_buffer(user_buf, count, ppos, buf, len);
-+	kfree(buf);
-+
-+	mutex_unlock(&ar->conf_mutex);
-+	return retval;
-+}
-+
-+static const struct file_operations fops_rx_stats = {
-+	.read = ath11k_dbg_sta_dump_rx_stats,
-+	.open = simple_open,
-+	.owner = THIS_MODULE,
-+	.llseek = default_llseek,
-+};
-+
-+static int
-+ath11k_dbg_sta_open_htt_peer_stats(struct inode *inode, struct file *file)
-+{
-+	struct ieee80211_sta *sta = inode->i_private;
-+	struct ath11k_sta *arsta = (struct ath11k_sta *)sta->drv_priv;
-+	struct ath11k *ar = arsta->arvif->ar;
-+	struct debug_htt_stats_req *stats_req;
++	struct ath11k_base *ab = ar->ab;
++	u32 reo_dest;
 +	int ret;
 +
-+	stats_req = vzalloc(sizeof(*stats_req) + ATH11K_HTT_STATS_BUF_SIZE);
-+	if (!stats_req)
++	/* NOTE: reo_dest ring id starts from 1 unlike mac_id which starts from 0 */
++	reo_dest = ar->dp.mac_id + 1;
++	ret = ath11k_wmi_set_peer_param(ar, addr, vdev_id,
++					WMI_PEER_SET_DEFAULT_ROUTING,
++					DP_RX_HASH_ENABLE | (reo_dest << 1));
++
++	if (ret) {
++		ath11k_warn(ab, "failed to set default routing %d peer :%pM vdev_id :%d\n",
++			    ret, addr, vdev_id);
++		return ret;
++	}
++
++	ret = ath11k_peer_rx_tid_setup(ar, addr, vdev_id,
++				       HAL_DESC_REO_NON_QOS_TID, 1, 0);
++	if (ret) {
++		ath11k_warn(ab, "failed to setup rxd tid queue for non-qos tid %d\n",
++			    ret);
++		return ret;
++	}
++
++	ret = ath11k_peer_rx_tid_setup(ar, addr, vdev_id, 0, 1, 0);
++	if (ret) {
++		ath11k_warn(ab, "failed to setup rxd tid queue for tid 0 %d\n",
++			    ret);
++		return ret;
++	}
++
++	/* TODO: Setup other peer specific resource used in data path */
++
++	return 0;
++}
++
++void ath11k_dp_srng_cleanup(struct ath11k_base *ab, struct dp_srng *ring)
++{
++	if (!ring->vaddr_unaligned)
++		return;
++
++	dma_free_coherent(ab->dev, ring->size, ring->vaddr_unaligned,
++			  ring->paddr_unaligned);
++
++	ring->vaddr_unaligned = NULL;
++}
++
++int ath11k_dp_srng_setup(struct ath11k_base *ab, struct dp_srng *ring,
++			 enum hal_ring_type type, int ring_num,
++			 int mac_id, int num_entries)
++{
++	struct hal_srng_params params = { 0 };
++	int entry_sz = ath11k_hal_srng_get_entrysize(type);
++	int max_entries = ath11k_hal_srng_get_max_entries(type);
++	int ret;
++
++	if (max_entries < 0 || entry_sz < 0)
++		return -EINVAL;
++
++	if (num_entries > max_entries)
++		num_entries = max_entries;
++
++	ring->size = (num_entries * entry_sz) + HAL_RING_BASE_ALIGN - 1;
++	ring->vaddr_unaligned = dma_alloc_coherent(ab->dev, ring->size,
++						   &ring->paddr_unaligned,
++						   GFP_KERNEL);
++	if (!ring->vaddr_unaligned)
 +		return -ENOMEM;
 +
-+	mutex_lock(&ar->conf_mutex);
-+	ar->debug.htt_stats.stats_req = stats_req;
-+	stats_req->type = ATH11K_DBG_HTT_EXT_STATS_PEER_INFO;
-+	memcpy(stats_req->peer_addr, sta->addr, ETH_ALEN);
-+	ret = ath11k_dbg_htt_stats_req(ar);
-+	mutex_unlock(&ar->conf_mutex);
-+	if (ret < 0)
-+		goto out;
++	ring->vaddr = PTR_ALIGN(ring->vaddr_unaligned, HAL_RING_BASE_ALIGN);
++	ring->paddr = ring->paddr_unaligned + ((unsigned long)ring->vaddr -
++		      (unsigned long)ring->vaddr_unaligned);
 +
-+	file->private_data = stats_req;
-+	return 0;
-+out:
-+	vfree(stats_req);
-+	return ret;
-+}
++	params.ring_base_vaddr = ring->vaddr;
++	params.ring_base_paddr = ring->paddr;
++	params.num_entries = num_entries;
 +
-+static int
-+ath11k_dbg_sta_release_htt_peer_stats(struct inode *inode, struct file *file)
-+{
-+	vfree(file->private_data);
-+	return 0;
-+}
-+
-+static ssize_t ath11k_dbg_sta_read_htt_peer_stats(struct file *file,
-+						  char __user *user_buf,
-+						  size_t count, loff_t *ppos)
-+{
-+	struct debug_htt_stats_req *stats_req = file->private_data;
-+	char *buf;
-+	u32 length = 0;
-+
-+	buf = stats_req->buf;
-+	length = min_t(u32, stats_req->buf_len, ATH11K_HTT_STATS_BUF_SIZE);
-+	return simple_read_from_buffer(user_buf, count, ppos, buf, length);
-+}
-+
-+static const struct file_operations fops_htt_peer_stats = {
-+	.open = ath11k_dbg_sta_open_htt_peer_stats,
-+	.release = ath11k_dbg_sta_release_htt_peer_stats,
-+	.read = ath11k_dbg_sta_read_htt_peer_stats,
-+	.owner = THIS_MODULE,
-+	.llseek = default_llseek,
-+};
-+
-+static ssize_t ath11k_dbg_sta_write_peer_pktlog(struct file *file,
-+						const char __user *buf,
-+						size_t count, loff_t *ppos)
-+{
-+	struct ieee80211_sta *sta = file->private_data;
-+	struct ath11k_sta *arsta = (struct ath11k_sta *)sta->drv_priv;
-+	struct ath11k *ar = arsta->arvif->ar;
-+	int ret, enable;
-+
-+	mutex_lock(&ar->conf_mutex);
-+
-+	if (ar->state != ATH11K_STATE_ON) {
-+		ret = -ENETDOWN;
-+		goto out;
++	switch (type) {
++	case HAL_REO_DST:
++		params.intr_batch_cntr_thres_entries =
++					HAL_SRNG_INT_BATCH_THRESHOLD_RX;
++		params.intr_timer_thres_us = HAL_SRNG_INT_TIMER_THRESHOLD_RX;
++		break;
++	case HAL_RXDMA_BUF:
++	case HAL_RXDMA_MONITOR_BUF:
++	case HAL_RXDMA_MONITOR_STATUS:
++		params.low_threshold = num_entries >> 3;
++		params.flags |= HAL_SRNG_FLAGS_LOW_THRESH_INTR_EN;
++		params.intr_batch_cntr_thres_entries = 0;
++		params.intr_timer_thres_us = HAL_SRNG_INT_TIMER_THRESHOLD_RX;
++		break;
++	case HAL_WBM2SW_RELEASE:
++		if (ring_num < 3) {
++			params.intr_batch_cntr_thres_entries =
++					HAL_SRNG_INT_BATCH_THRESHOLD_TX;
++			params.intr_timer_thres_us =
++					HAL_SRNG_INT_TIMER_THRESHOLD_TX;
++			break;
++		}
++		/* follow through when ring_num >= 3 */
++		/* fall through */
++	case HAL_REO_EXCEPTION:
++	case HAL_REO_REINJECT:
++	case HAL_REO_CMD:
++	case HAL_REO_STATUS:
++	case HAL_TCL_DATA:
++	case HAL_TCL_CMD:
++	case HAL_TCL_STATUS:
++	case HAL_WBM_IDLE_LINK:
++	case HAL_SW2WBM_RELEASE:
++	case HAL_RXDMA_DST:
++	case HAL_RXDMA_MONITOR_DST:
++	case HAL_RXDMA_MONITOR_DESC:
++	case HAL_RXDMA_DIR_BUF:
++		params.intr_batch_cntr_thres_entries =
++					HAL_SRNG_INT_BATCH_THRESHOLD_OTHER;
++		params.intr_timer_thres_us = HAL_SRNG_INT_TIMER_THRESHOLD_OTHER;
++		break;
++	default:
++		ath11k_warn(ab, "Not a valid ring type in dp :%d\n", type);
++		return -EINVAL;
 +	}
 +
-+	ret = kstrtoint_from_user(buf, count, 0, &enable);
-+	if (ret)
-+		goto out;
++	ret = ath11k_hal_srng_setup(ab, type, ring_num, mac_id, &params);
++	if (ret < 0) {
++		ath11k_warn(ab, "failed to setup srng: %d ring_id %d\n",
++			    ret, ring_num);
++		return ret;
++	}
 +
-+	ar->debug.pktlog_peer_valid = enable;
-+	memcpy(ar->debug.pktlog_peer_addr, sta->addr, ETH_ALEN);
++	ring->ring_id = ret;
 +
-+	/* Send peer based pktlog enable/disable */
-+	ret = ath11k_wmi_pdev_peer_pktlog_filter(ar, sta->addr, enable);
++	return 0;
++}
++
++static void ath11k_dp_srng_common_cleanup(struct ath11k_base *ab)
++{
++	struct ath11k_dp *dp = &ab->dp;
++	int i;
++
++	ath11k_dp_srng_cleanup(ab, &dp->wbm_desc_rel_ring);
++	ath11k_dp_srng_cleanup(ab, &dp->tcl_cmd_ring);
++	ath11k_dp_srng_cleanup(ab, &dp->tcl_status_ring);
++	for (i = 0; i < DP_TCL_NUM_RING_MAX; i++) {
++		ath11k_dp_srng_cleanup(ab, &dp->tx_ring[i].tcl_data_ring);
++		ath11k_dp_srng_cleanup(ab, &dp->tx_ring[i].tcl_comp_ring);
++	}
++	ath11k_dp_srng_cleanup(ab, &dp->reo_reinject_ring);
++	ath11k_dp_srng_cleanup(ab, &dp->rx_rel_ring);
++	ath11k_dp_srng_cleanup(ab, &dp->reo_except_ring);
++	ath11k_dp_srng_cleanup(ab, &dp->reo_cmd_ring);
++	ath11k_dp_srng_cleanup(ab, &dp->reo_status_ring);
++}
++
++static int ath11k_dp_srng_common_setup(struct ath11k_base *ab)
++{
++	struct ath11k_dp *dp = &ab->dp;
++	struct hal_srng *srng;
++	int i, ret;
++
++	ret = ath11k_dp_srng_setup(ab, &dp->wbm_desc_rel_ring,
++				   HAL_SW2WBM_RELEASE, 0, 0,
++				   DP_WBM_RELEASE_RING_SIZE);
 +	if (ret) {
-+		ath11k_warn(ar->ab, "failed to set peer pktlog filter %pM: %d\n",
-+			    sta->addr, ret);
-+		goto out;
++		ath11k_warn(ab, "failed to set up wbm2sw_release ring :%d\n",
++			    ret);
++		goto err;
 +	}
 +
-+	ath11k_dbg(ar->ab, ATH11K_DBG_WMI, "peer pktlog filter set to %d\n",
-+		   enable);
-+	ret = count;
++	ret = ath11k_dp_srng_setup(ab, &dp->tcl_cmd_ring, HAL_TCL_CMD, 0, 0,
++				   DP_TCL_CMD_RING_SIZE);
++	if (ret) {
++		ath11k_warn(ab, "failed to set up tcl_cmd ring :%d\n", ret);
++		goto err;
++	}
 +
-+out:
-+	mutex_unlock(&ar->conf_mutex);
++	ret = ath11k_dp_srng_setup(ab, &dp->tcl_status_ring, HAL_TCL_STATUS,
++				   0, 0, DP_TCL_STATUS_RING_SIZE);
++	if (ret) {
++		ath11k_warn(ab, "failed to set up tcl_status ring :%d\n", ret);
++		goto err;
++	}
++
++	for (i = 0; i < DP_TCL_NUM_RING_MAX; i++) {
++		ret = ath11k_dp_srng_setup(ab, &dp->tx_ring[i].tcl_data_ring,
++					   HAL_TCL_DATA, i, 0,
++					   DP_TCL_DATA_RING_SIZE);
++		if (ret) {
++			ath11k_warn(ab, "failed to set up tcl_data ring (%d) :%d\n",
++				    i, ret);
++			goto err;
++		}
++
++		ret = ath11k_dp_srng_setup(ab, &dp->tx_ring[i].tcl_comp_ring,
++					   HAL_WBM2SW_RELEASE, i, 0,
++					   DP_TX_COMP_RING_SIZE);
++		if (ret) {
++			ath11k_warn(ab, "failed to set up tcl_comp ring ring (%d) :%d\n",
++				    i, ret);
++			goto err;
++		}
++
++		srng = &ab->hal.srng_list[dp->tx_ring[i].tcl_data_ring.ring_id];
++		ath11k_hal_tx_init_data_ring(ab, srng);
++	}
++
++	ret = ath11k_dp_srng_setup(ab, &dp->reo_reinject_ring, HAL_REO_REINJECT,
++				   0, 0, DP_REO_REINJECT_RING_SIZE);
++	if (ret) {
++		ath11k_warn(ab, "failed to set up reo_reinject ring :%d\n",
++			    ret);
++		goto err;
++	}
++
++	ret = ath11k_dp_srng_setup(ab, &dp->rx_rel_ring, HAL_WBM2SW_RELEASE,
++				   3, 0, DP_RX_RELEASE_RING_SIZE);
++	if (ret) {
++		ath11k_warn(ab, "failed to set up rx_rel ring :%d\n", ret);
++		goto err;
++	}
++
++	ret = ath11k_dp_srng_setup(ab, &dp->reo_except_ring, HAL_REO_EXCEPTION,
++				   0, 0, DP_REO_EXCEPTION_RING_SIZE);
++	if (ret) {
++		ath11k_warn(ab, "failed to set up reo_exception ring :%d\n",
++			    ret);
++		goto err;
++	}
++
++	ret = ath11k_dp_srng_setup(ab, &dp->reo_cmd_ring, HAL_REO_CMD,
++				   0, 0, DP_REO_CMD_RING_SIZE);
++	if (ret) {
++		ath11k_warn(ab, "failed to set up reo_cmd ring :%d\n", ret);
++		goto err;
++	}
++
++	srng = &ab->hal.srng_list[dp->reo_cmd_ring.ring_id];
++	ath11k_hal_reo_init_cmd_ring(ab, srng);
++
++	ret = ath11k_dp_srng_setup(ab, &dp->reo_status_ring, HAL_REO_STATUS,
++				   0, 0, DP_REO_STATUS_RING_SIZE);
++	if (ret) {
++		ath11k_warn(ab, "failed to set up reo_status ring :%d\n", ret);
++		goto err;
++	}
++
++	ath11k_hal_reo_hw_setup(ab);
++
++	return 0;
++
++err:
++	ath11k_dp_srng_common_cleanup(ab);
++
 +	return ret;
 +}
 +
-+static ssize_t ath11k_dbg_sta_read_peer_pktlog(struct file *file,
-+					       char __user *ubuf,
-+					       size_t count, loff_t *ppos)
++static void ath11k_dp_scatter_idle_link_desc_cleanup(struct ath11k_base *ab)
 +{
-+	struct ieee80211_sta *sta = file->private_data;
-+	struct ath11k_sta *arsta = (struct ath11k_sta *)sta->drv_priv;
-+	struct ath11k *ar = arsta->arvif->ar;
-+	char buf[32] = {0};
-+	int len;
++	struct ath11k_dp *dp = &ab->dp;
++	struct hal_wbm_idle_scatter_list *slist = dp->scatter_list;
++	int i;
 +
-+	mutex_lock(&ar->conf_mutex);
-+	len = scnprintf(buf, sizeof(buf), "%08x %pM\n",
-+			ar->debug.pktlog_peer_valid,
-+			ar->debug.pktlog_peer_addr);
-+	mutex_unlock(&ar->conf_mutex);
++	for (i = 0; i < DP_IDLE_SCATTER_BUFS_MAX; i++) {
++		if (!slist[i].vaddr)
++			continue;
 +
-+	return simple_read_from_buffer(ubuf, count, ppos, buf, len);
++		dma_free_coherent(ab->dev, HAL_WBM_IDLE_SCATTER_BUF_SIZE_MAX,
++				  slist[i].vaddr, slist[i].paddr);
++		slist[i].vaddr = NULL;
++	}
 +}
 +
-+static const struct file_operations fops_peer_pktlog = {
-+	.write = ath11k_dbg_sta_write_peer_pktlog,
-+	.read = ath11k_dbg_sta_read_peer_pktlog,
-+	.open = simple_open,
-+	.owner = THIS_MODULE,
-+	.llseek = default_llseek,
-+};
-+
-+void ath11k_sta_add_debugfs(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
-+			    struct ieee80211_sta *sta, struct dentry *dir)
++static int ath11k_dp_scatter_idle_link_desc_setup(struct ath11k_base *ab,
++						  int size,
++						  u32 n_link_desc_bank,
++						  u32 n_link_desc,
++						  u32 last_bank_sz)
 +{
-+	struct ath11k *ar = hw->priv;
++	struct ath11k_dp *dp = &ab->dp;
++	struct dp_link_desc_bank *link_desc_banks = dp->link_desc_banks;
++	struct hal_wbm_idle_scatter_list *slist = dp->scatter_list;
++	u32 n_entries_per_buf;
++	int num_scatter_buf, scatter_idx;
++	struct hal_wbm_link_desc *scatter_buf;
++	int align_bytes, n_entries;
++	dma_addr_t paddr;
++	int rem_entries;
++	int i;
++	int ret = 0;
++	u32 end_offset;
 +
-+	if (ath11k_debug_is_extd_tx_stats_enabled(ar))
-+		debugfs_create_file("tx_stats", 0400, dir, sta,
-+				    &fops_tx_stats);
-+	if (ath11k_debug_is_extd_rx_stats_enabled(ar))
-+		debugfs_create_file("rx_stats", 0400, dir, sta,
-+				    &fops_rx_stats);
++	n_entries_per_buf = HAL_WBM_IDLE_SCATTER_BUF_SIZE /
++			    ath11k_hal_srng_get_entrysize(HAL_WBM_IDLE_LINK);
++	num_scatter_buf = DIV_ROUND_UP(size, HAL_WBM_IDLE_SCATTER_BUF_SIZE);
 +
-+	debugfs_create_file("htt_peer_stats", 0400, dir, sta,
-+			    &fops_htt_peer_stats);
++	if (num_scatter_buf > DP_IDLE_SCATTER_BUFS_MAX)
++		return -EINVAL;
 +
-+	debugfs_create_file("peer_pktlog", 0644, dir, sta,
-+			    &fops_peer_pktlog);
++	for (i = 0; i < num_scatter_buf; i++) {
++		slist[i].vaddr = dma_alloc_coherent(ab->dev,
++						    HAL_WBM_IDLE_SCATTER_BUF_SIZE_MAX,
++						    &slist[i].paddr, GFP_KERNEL);
++		if (!slist[i].vaddr) {
++			ret = -ENOMEM;
++			goto err;
++		}
++	}
++
++	scatter_idx = 0;
++	scatter_buf = slist[scatter_idx].vaddr;
++	rem_entries = n_entries_per_buf;
++
++	for (i = 0; i < n_link_desc_bank; i++) {
++		align_bytes = link_desc_banks[i].vaddr -
++			      link_desc_banks[i].vaddr_unaligned;
++		n_entries = (DP_LINK_DESC_ALLOC_SIZE_THRESH - align_bytes) /
++			     HAL_LINK_DESC_SIZE;
++		paddr = link_desc_banks[i].paddr;
++		while (n_entries) {
++			ath11k_hal_set_link_desc_addr(scatter_buf, i, paddr);
++			n_entries--;
++			paddr += HAL_LINK_DESC_SIZE;
++			if (rem_entries) {
++				rem_entries--;
++				scatter_buf++;
++				continue;
++			}
++
++			rem_entries = n_entries_per_buf;
++			scatter_idx++;
++			scatter_buf = slist[scatter_idx].vaddr;
++		}
++	}
++
++	end_offset = (scatter_buf - slist[scatter_idx].vaddr) *
++		     sizeof(struct hal_wbm_link_desc);
++	ath11k_hal_setup_link_idle_list(ab, slist, num_scatter_buf,
++					n_link_desc, end_offset);
++
++	return 0;
++
++err:
++	ath11k_dp_scatter_idle_link_desc_cleanup(ab);
++
++	return ret;
++}
++
++static void
++ath11k_dp_link_desc_bank_free(struct ath11k_base *ab,
++			      struct dp_link_desc_bank *link_desc_banks)
++{
++	int i;
++
++	for (i = 0; i < DP_LINK_DESC_BANKS_MAX; i++) {
++		if (link_desc_banks[i].vaddr_unaligned) {
++			dma_free_coherent(ab->dev,
++					  link_desc_banks[i].size,
++					  link_desc_banks[i].vaddr_unaligned,
++					  link_desc_banks[i].paddr_unaligned);
++			link_desc_banks[i].vaddr_unaligned = NULL;
++		}
++	}
++}
++
++static int ath11k_dp_link_desc_bank_alloc(struct ath11k_base *ab,
++					  struct dp_link_desc_bank *desc_bank,
++					  int n_link_desc_bank,
++					  int last_bank_sz)
++{
++	struct ath11k_dp *dp = &ab->dp;
++	int i;
++	int ret = 0;
++	int desc_sz = DP_LINK_DESC_ALLOC_SIZE_THRESH;
++
++	for (i = 0; i < n_link_desc_bank; i++) {
++		if (i == (n_link_desc_bank - 1) && last_bank_sz)
++			desc_sz = last_bank_sz;
++
++		desc_bank[i].vaddr_unaligned =
++					dma_alloc_coherent(ab->dev, desc_sz,
++							   &desc_bank[i].paddr_unaligned,
++							   GFP_KERNEL);
++		if (!desc_bank[i].vaddr_unaligned) {
++			ret = -ENOMEM;
++			goto err;
++		}
++
++		desc_bank[i].vaddr = PTR_ALIGN(desc_bank[i].vaddr_unaligned,
++					       HAL_LINK_DESC_ALIGN);
++		desc_bank[i].paddr = desc_bank[i].paddr_unaligned +
++				     ((unsigned long)desc_bank[i].vaddr -
++				      (unsigned long)desc_bank[i].vaddr_unaligned);
++		desc_bank[i].size = desc_sz;
++	}
++
++	return 0;
++
++err:
++	ath11k_dp_link_desc_bank_free(ab, dp->link_desc_banks);
++
++	return ret;
++}
++
++void ath11k_dp_link_desc_cleanup(struct ath11k_base *ab,
++				 struct dp_link_desc_bank *desc_bank,
++				 u32 ring_type, struct dp_srng *ring)
++{
++	ath11k_dp_link_desc_bank_free(ab, desc_bank);
++
++	if (ring_type != HAL_RXDMA_MONITOR_DESC) {
++		ath11k_dp_srng_cleanup(ab, ring);
++		ath11k_dp_scatter_idle_link_desc_cleanup(ab);
++	}
++}
++
++static int ath11k_wbm_idle_ring_setup(struct ath11k_base *ab, u32 *n_link_desc)
++{
++	struct ath11k_dp *dp = &ab->dp;
++	u32 n_mpdu_link_desc, n_mpdu_queue_desc;
++	u32 n_tx_msdu_link_desc, n_rx_msdu_link_desc;
++	int ret = 0;
++
++	n_mpdu_link_desc = (DP_NUM_TIDS_MAX * DP_AVG_MPDUS_PER_TID_MAX) /
++			   HAL_NUM_MPDUS_PER_LINK_DESC;
++
++	n_mpdu_queue_desc = n_mpdu_link_desc /
++			    HAL_NUM_MPDU_LINKS_PER_QUEUE_DESC;
++
++	n_tx_msdu_link_desc = (DP_NUM_TIDS_MAX * DP_AVG_FLOWS_PER_TID *
++			       DP_AVG_MSDUS_PER_FLOW) /
++			      HAL_NUM_TX_MSDUS_PER_LINK_DESC;
++
++	n_rx_msdu_link_desc = (DP_NUM_TIDS_MAX * DP_AVG_MPDUS_PER_TID_MAX *
++			       DP_AVG_MSDUS_PER_MPDU) /
++			      HAL_NUM_RX_MSDUS_PER_LINK_DESC;
++
++	*n_link_desc = n_mpdu_link_desc + n_mpdu_queue_desc +
++		      n_tx_msdu_link_desc + n_rx_msdu_link_desc;
++
++	ret = ath11k_dp_srng_setup(ab, &dp->wbm_idle_ring,
++				   HAL_WBM_IDLE_LINK, 0, 0, *n_link_desc);
++	if (ret) {
++		ath11k_warn(ab, "failed to setup wbm_idle_ring: %d\n", ret);
++		return ret;
++	}
++	return ret;
++}
++
++int ath11k_dp_link_desc_setup(struct ath11k_base *ab,
++			      struct dp_link_desc_bank *link_desc_banks,
++			      u32 ring_type, struct hal_srng *srng,
++			      u32 n_link_desc)
++{
++	u32 tot_mem_sz;
++	u32 n_link_desc_bank, last_bank_sz;
++	u32 entry_sz, align_bytes, n_entries;
++	u32 paddr;
++	u32 *desc;
++	int i, ret;
++
++	if (n_link_desc & (n_link_desc - 1))
++		n_link_desc = 1 << fls(n_link_desc);
++
++	tot_mem_sz = n_link_desc * HAL_LINK_DESC_SIZE;
++	tot_mem_sz += HAL_LINK_DESC_ALIGN;
++
++	if (tot_mem_sz <= DP_LINK_DESC_ALLOC_SIZE_THRESH) {
++		n_link_desc_bank = 1;
++		last_bank_sz = tot_mem_sz;
++	} else {
++		n_link_desc_bank = tot_mem_sz /
++				   (DP_LINK_DESC_ALLOC_SIZE_THRESH -
++				    HAL_LINK_DESC_ALIGN);
++		last_bank_sz = tot_mem_sz %
++			       (DP_LINK_DESC_ALLOC_SIZE_THRESH -
++				HAL_LINK_DESC_ALIGN);
++
++		if (last_bank_sz)
++			n_link_desc_bank += 1;
++	}
++
++	if (n_link_desc_bank > DP_LINK_DESC_BANKS_MAX)
++		return -EINVAL;
++
++	ret = ath11k_dp_link_desc_bank_alloc(ab, link_desc_banks,
++					     n_link_desc_bank, last_bank_sz);
++	if (ret)
++		return ret;
++
++	/* Setup link desc idle list for HW internal usage */
++	entry_sz = ath11k_hal_srng_get_entrysize(ring_type);
++	tot_mem_sz = entry_sz * n_link_desc;
++
++	/* Setup scatter desc list when the total memory requirement is more */
++	if (tot_mem_sz > DP_LINK_DESC_ALLOC_SIZE_THRESH &&
++	    ring_type != HAL_RXDMA_MONITOR_DESC) {
++		ret = ath11k_dp_scatter_idle_link_desc_setup(ab, tot_mem_sz,
++							     n_link_desc_bank,
++							     n_link_desc,
++							     last_bank_sz);
++		if (ret) {
++			ath11k_warn(ab, "failed to setup scatting idle list descriptor :%d\n",
++				    ret);
++			goto fail_desc_bank_free;
++		}
++
++		return 0;
++	}
++
++	spin_lock_bh(&srng->lock);
++
++	ath11k_hal_srng_access_begin(ab, srng);
++
++	for (i = 0; i < n_link_desc_bank; i++) {
++		align_bytes = link_desc_banks[i].vaddr -
++			      link_desc_banks[i].vaddr_unaligned;
++		n_entries = (link_desc_banks[i].size - align_bytes) /
++			    HAL_LINK_DESC_SIZE;
++		paddr = link_desc_banks[i].paddr;
++		while (n_entries &&
++		       (desc = ath11k_hal_srng_src_get_next_entry(ab, srng))) {
++			ath11k_hal_set_link_desc_addr((struct hal_wbm_link_desc *)desc,
++						      i, paddr);
++			n_entries--;
++			paddr += HAL_LINK_DESC_SIZE;
++		}
++	}
++
++	ath11k_hal_srng_access_end(ab, srng);
++
++	spin_unlock_bh(&srng->lock);
++
++	return 0;
++
++fail_desc_bank_free:
++	ath11k_dp_link_desc_bank_free(ab, link_desc_banks);
++
++	return ret;
++}
++
++int ath11k_dp_service_srng(struct ath11k_base *ab,
++			   struct ath11k_ext_irq_grp *irq_grp,
++			   int budget)
++{
++	struct napi_struct *napi = &irq_grp->napi;
++	int grp_id = irq_grp->grp_id;
++	int work_done = 0;
++	int i = 0;
++	int tot_work_done = 0;
++
++	while (ath11k_tx_ring_mask[grp_id] >> i) {
++		if (ath11k_tx_ring_mask[grp_id] & BIT(i))
++			ath11k_dp_tx_completion_handler(ab, i);
++		i++;
++	}
++
++	if (ath11k_rx_err_ring_mask[grp_id]) {
++		work_done = ath11k_dp_process_rx_err(ab, napi, budget);
++		budget -= work_done;
++		tot_work_done += work_done;
++		if (budget <= 0)
++			goto done;
++	}
++
++	if (ath11k_rx_wbm_rel_ring_mask[grp_id]) {
++		work_done = ath11k_dp_rx_process_wbm_err(ab,
++							 napi,
++							 budget);
++		budget -= work_done;
++		tot_work_done += work_done;
++
++		if (budget <= 0)
++			goto done;
++	}
++
++	if (ath11k_rx_ring_mask[grp_id]) {
++		for (i = 0; i <  ab->num_radios; i++) {
++			if (ath11k_rx_ring_mask[grp_id] & BIT(i)) {
++				work_done = ath11k_dp_process_rx(ab, i, napi,
++								 &irq_grp->pending_q,
++								 budget);
++				budget -= work_done;
++				tot_work_done += work_done;
++			}
++			if (budget <= 0)
++				goto done;
++		}
++	}
++
++	if (rx_mon_status_ring_mask[grp_id]) {
++		for (i = 0; i <  ab->num_radios; i++) {
++			if (rx_mon_status_ring_mask[grp_id] & BIT(i)) {
++				work_done =
++				ath11k_dp_rx_process_mon_rings(ab,
++							       i, napi,
++							       budget);
++				budget -= work_done;
++				tot_work_done += work_done;
++			}
++			if (budget <= 0)
++				goto done;
++		}
++	}
++
++	if (ath11k_reo_status_ring_mask[grp_id])
++		ath11k_dp_process_reo_status(ab);
++
++	for (i = 0; i < ab->num_radios; i++) {
++		if (ath11k_rxdma2host_ring_mask[grp_id] & BIT(i)) {
++			work_done = ath11k_dp_process_rxdma_err(ab, i, budget);
++			budget -= work_done;
++			tot_work_done += work_done;
++		}
++
++		if (budget <= 0)
++			goto done;
++
++		if (ath11k_host2rxdma_ring_mask[grp_id] & BIT(i)) {
++			struct ath11k_pdev_dp *dp = &ab->pdevs[i].ar->dp;
++			struct dp_rxdma_ring *rx_ring = &dp->rx_refill_buf_ring;
++
++			ath11k_dp_rxbufs_replenish(ab, i, rx_ring, 0,
++						   HAL_RX_BUF_RBM_SW3_BM,
++						   GFP_ATOMIC);
++		}
++	}
++	/* TODO: Implement handler for other interrupts */
++
++done:
++	return tot_work_done;
++}
++
++void ath11k_dp_pdev_free(struct ath11k_base *ab)
++{
++	struct ath11k *ar;
++	int i;
++
++	for (i = 0; i < ab->num_radios; i++) {
++		ar = ab->pdevs[i].ar;
++		ath11k_dp_rx_pdev_free(ab, i);
++		ath11k_debug_unregister(ar);
++		ath11k_dp_rx_pdev_mon_detach(ar);
++	}
++}
++
++int ath11k_dp_pdev_alloc(struct ath11k_base *ab)
++{
++	struct ath11k *ar;
++	struct ath11k_pdev_dp *dp;
++	int ret;
++	int i;
++
++	for (i = 0; i <  ab->num_radios; i++) {
++		ar = ab->pdevs[i].ar;
++		dp = &ar->dp;
++		dp->mac_id = i;
++		idr_init(&dp->rx_refill_buf_ring.bufs_idr);
++		spin_lock_init(&dp->rx_refill_buf_ring.idr_lock);
++		atomic_set(&dp->num_tx_pending, 0);
++		init_waitqueue_head(&dp->tx_empty_waitq);
++		idr_init(&dp->rx_mon_status_refill_ring.bufs_idr);
++		spin_lock_init(&dp->rx_mon_status_refill_ring.idr_lock);
++		idr_init(&dp->rxdma_mon_buf_ring.bufs_idr);
++		spin_lock_init(&dp->rxdma_mon_buf_ring.idr_lock);
++	}
++
++	/* TODO:Per-pdev rx ring unlike tx ring which is mapped to different AC's */
++	for (i = 0; i < ab->num_radios; i++) {
++		ar = ab->pdevs[i].ar;
++		ret = ath11k_dp_rx_pdev_alloc(ab, i);
++		if (ret) {
++			ath11k_warn(ab, "failed to allocate pdev rx for pdev_id :%d\n",
++				    i);
++			goto err;
++		}
++		ret = ath11k_dp_rx_pdev_mon_attach(ar);
++		if (ret) {
++			ath11k_warn(ab, "failed to initialize mon pdev %d\n",
++				    i);
++			goto err;
++		}
++	}
++
++	return 0;
++
++err:
++	ath11k_dp_pdev_free(ab);
++
++	return ret;
++}
++
++int ath11k_dp_htt_connect(struct ath11k_dp *dp)
++{
++	struct ath11k_htc_svc_conn_req conn_req;
++	struct ath11k_htc_svc_conn_resp conn_resp;
++	int status;
++
++	memset(&conn_req, 0, sizeof(conn_req));
++	memset(&conn_resp, 0, sizeof(conn_resp));
++
++	conn_req.ep_ops.ep_tx_complete = ath11k_dp_htt_htc_tx_complete;
++	conn_req.ep_ops.ep_rx_complete = ath11k_dp_htt_htc_t2h_msg_handler;
++
++	/* connect to control service */
++	conn_req.service_id = ATH11K_HTC_SVC_ID_HTT_DATA_MSG;
++
++	status = ath11k_htc_connect_service(&dp->ab->htc, &conn_req,
++					    &conn_resp);
++
++	if (status)
++		return status;
++
++	dp->eid = conn_resp.eid;
++
++	return 0;
++}
++
++static void ath11k_dp_update_vdev_search(struct ath11k_vif *arvif)
++{
++	/* Enable AddrY (SA based search) for STA mode. All other modes it
++	 * is going to be AddrX (DA based search). For STA mode, set search
++	 * type based on AST value.
++	 */
++	switch (arvif->vdev_type) {
++	case WMI_VDEV_TYPE_STA:
++		arvif->hal_addr_search_flags = HAL_TX_ADDRY_EN;
++		arvif->search_type = HAL_TX_ADDR_SEARCH_INDEX;
++		break;
++	case WMI_VDEV_TYPE_AP:
++	case WMI_VDEV_TYPE_IBSS:
++		arvif->hal_addr_search_flags = HAL_TX_ADDRX_EN;
++		arvif->search_type = HAL_TX_ADDR_SEARCH_DEFAULT;
++		break;
++	case WMI_VDEV_TYPE_MONITOR:
++	default:
++		return;
++	}
++}
++
++void ath11k_dp_vdev_tx_attach(struct ath11k *ar, struct ath11k_vif *arvif)
++{
++	arvif->tcl_metadata |= FIELD_PREP(HTT_TCL_META_DATA_TYPE, 1) |
++			       FIELD_PREP(HTT_TCL_META_DATA_VDEV_ID,
++					  arvif->vdev_id) |
++			       FIELD_PREP(HTT_TCL_META_DATA_PDEV_ID,
++					  ar->pdev->pdev_id);
++
++	/* set HTT extension valid bit to 0 by default */
++	arvif->tcl_metadata &= ~HTT_TCL_META_DATA_VALID_HTT;
++
++	ath11k_dp_update_vdev_search(arvif);
++}
++
++static int ath11k_dp_tx_pending_cleanup(int buf_id, void *skb, void *ctx)
++{
++	struct ath11k_base *ab = (struct ath11k_base *)ctx;
++	struct sk_buff *msdu = skb;
++
++	dma_unmap_single(ab->dev, ATH11K_SKB_CB(msdu)->paddr, msdu->len,
++			 DMA_TO_DEVICE);
++
++	dev_kfree_skb_any(msdu);
++
++	return 0;
++}
++
++void ath11k_dp_free(struct ath11k_base *ab)
++{
++	struct ath11k_dp *dp = &ab->dp;
++	int i;
++
++	ath11k_dp_link_desc_cleanup(ab, dp->link_desc_banks,
++				    HAL_WBM_IDLE_LINK, &dp->wbm_idle_ring);
++
++	ath11k_dp_srng_common_cleanup(ab);
++
++	ath11k_dp_reo_cmd_list_cleanup(ab);
++
++	for (i = 0; i < DP_TCL_NUM_RING_MAX; i++) {
++		spin_lock_bh(&dp->tx_ring[i].tx_idr_lock);
++		idr_for_each(&dp->tx_ring[i].txbuf_idr,
++			     ath11k_dp_tx_pending_cleanup, ab);
++		idr_destroy(&dp->tx_ring[i].txbuf_idr);
++		spin_unlock_bh(&dp->tx_ring[i].tx_idr_lock);
++
++		spin_lock_bh(&dp->tx_ring[i].tx_status_lock);
++		kfifo_free(&dp->tx_ring[i].tx_status_fifo);
++		spin_unlock_bh(&dp->tx_ring[i].tx_status_lock);
++	}
++
++	/* Deinit any SOC level resource */
++}
++
++int ath11k_dp_alloc(struct ath11k_base *ab)
++{
++	struct ath11k_dp *dp = &ab->dp;
++	struct hal_srng *srng = NULL;
++	size_t size = 0;
++	u32 n_link_desc = 0;
++	int ret;
++	int i;
++
++	dp->ab = ab;
++
++	INIT_LIST_HEAD(&dp->reo_cmd_list);
++	INIT_LIST_HEAD(&dp->reo_cmd_cache_flush_list);
++	spin_lock_init(&dp->reo_cmd_lock);
++
++	ret = ath11k_wbm_idle_ring_setup(ab, &n_link_desc);
++	if (ret) {
++		ath11k_warn(ab, "failed to setup wbm_idle_ring: %d\n", ret);
++		return ret;
++	}
++
++	srng = &ab->hal.srng_list[dp->wbm_idle_ring.ring_id];
++
++	ret = ath11k_dp_link_desc_setup(ab, dp->link_desc_banks,
++					HAL_WBM_IDLE_LINK, srng, n_link_desc);
++	if (ret) {
++		ath11k_warn(ab, "failed to setup link desc: %d\n", ret);
++		return ret;
++	}
++
++	ret = ath11k_dp_srng_common_setup(ab);
++	if (ret)
++		goto fail_link_desc_cleanup;
++
++	size = roundup_pow_of_two(DP_TX_COMP_RING_SIZE);
++
++	for (i = 0; i < DP_TCL_NUM_RING_MAX; i++) {
++		idr_init(&dp->tx_ring[i].txbuf_idr);
++		spin_lock_init(&dp->tx_ring[i].tx_idr_lock);
++		dp->tx_ring[i].tcl_data_ring_id = i;
++
++		spin_lock_init(&dp->tx_ring[i].tx_status_lock);
++		ret = kfifo_alloc(&dp->tx_ring[i].tx_status_fifo, size,
++				  GFP_KERNEL);
++		if (ret)
++			goto fail_cmn_srng_cleanup;
++	}
++
++	for (i = 0; i < HAL_DSCP_TID_MAP_TBL_NUM_ENTRIES_MAX; i++)
++		ath11k_hal_tx_set_dscp_tid_map(ab, i);
++
++	/* Init any SOC level resource for DP */
++
++	return 0;
++
++fail_cmn_srng_cleanup:
++	ath11k_dp_srng_common_cleanup(ab);
++
++fail_link_desc_cleanup:
++	ath11k_dp_link_desc_cleanup(ab, dp->link_desc_banks,
++				    HAL_WBM_IDLE_LINK, &dp->wbm_idle_ring);
++
++	return ret;
 +}
 
