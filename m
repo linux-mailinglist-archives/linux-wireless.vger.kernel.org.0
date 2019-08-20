@@ -2,25 +2,25 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2F6DA96551
-	for <lists+linux-wireless@lfdr.de>; Tue, 20 Aug 2019 17:50:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 06C5496566
+	for <lists+linux-wireless@lfdr.de>; Tue, 20 Aug 2019 17:50:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730233AbfHTPuM (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 20 Aug 2019 11:50:12 -0400
-Received: from smtp.codeaurora.org ([198.145.29.96]:44868 "EHLO
+        id S1730205AbfHTPu0 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 20 Aug 2019 11:50:26 -0400
+Received: from smtp.codeaurora.org ([198.145.29.96]:46116 "EHLO
         smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729820AbfHTPuM (ORCPT
+        with ESMTP id S1729820AbfHTPuZ (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 20 Aug 2019 11:50:12 -0400
+        Tue, 20 Aug 2019 11:50:25 -0400
 Received: by smtp.codeaurora.org (Postfix, from userid 1000)
-        id A567761B34; Tue, 20 Aug 2019 15:49:23 +0000 (UTC)
+        id A2CCA61BB4; Tue, 20 Aug 2019 15:49:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1566316204;
-        bh=XU45K/dZOyRuwlEsa1lAEkFqRe+iK11RUNxbM6gYsqE=;
+        s=default; t=1566316220;
+        bh=Jtb/4TRt17DN2bYOik7Tx9hWHYkvpXwVKBRNSG5SnQc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=QpW9OSDHvBf5GgoU00RtpWmOVTohNOIGFA5x9jZuwYzoxKQbU7xamr5UpFTr4FoPG
-         9XzRvuL3qr1ECDwGJNDPL+jP/nm0mpbmNVYAE97nv0D0p/kUpUQqfA3PT58l+yEubR
-         EvRzoKpufyNgX9umJeygxgqVTpfn77q0uN6Iz0qQ=
+        b=jnK9ddLYGA4Gz+AX40P8hk0gqgGidPMp8ceR35MjyjhUWyeUESKBdiWA9lDf1ZFiO
+         fkBSmAF/2MQvsmb91iUc0taScTaKj655OxUVRhN+6HUC9nyWniZr9K56McyKkMvJEQ
+         fDG01nZvTdtRZKJQZVEgQm0pG7CrseBWfuBeoTfQ=
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         pdx-caf-mail.web.codeaurora.org
 X-Spam-Level: 
@@ -31,24 +31,24 @@ Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-SHA256 (128/128 bits))
         (No client certificate requested)
         (Authenticated sender: kvalo@smtp.codeaurora.org)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id A373261ACD;
-        Tue, 20 Aug 2019 15:49:06 +0000 (UTC)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 53A9E61AE7;
+        Tue, 20 Aug 2019 15:49:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1566316151;
-        bh=XU45K/dZOyRuwlEsa1lAEkFqRe+iK11RUNxbM6gYsqE=;
+        s=default; t=1566316167;
+        bh=Jtb/4TRt17DN2bYOik7Tx9hWHYkvpXwVKBRNSG5SnQc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=l9eB46dKWZAT1QCulyEWW1sMo7RbiP4C+BiJ2aAP2vmW4u9PTKbNbiVOppTE24Bpl
-         gp6rFJHg2qrGJdtG+LErsP6cNMgCLsOODFW10SKQ2j2REuTNqfIgMQ4kcrXAWoUmOX
-         /R7O5oRuvuKu75SX3fIGfBn6NWavxGW4y3/sGdVE=
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org A373261ACD
+        b=hCocCzX5QY+wYsRnJv1wotuISGkRLTgGUswIOa/mBQIosyKTTWq7GvhSYs86mjWi7
+         jTHByNZvBMxlEMP2khYX9jSh+PKvLNf0hsPJDnNF78TrBCa0Cs0MTvL8/PJjEm/g32
+         yHp9MqCdcBGyBaHlS054zM4RfIlWS4INQNT/GG70=
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 53A9E61AE7
 Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
 Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
 From:   Kalle Valo <kvalo@codeaurora.org>
 To:     linux-wireless@vger.kernel.org
 Cc:     ath11k@lists.infradead.org, devicetree@vger.kernel.org
-Subject: [PATCH 17/49] ath11k: add dp_rx.c
-Date:   Tue, 20 Aug 2019 18:47:43 +0300
-Message-Id: <1566316095-27507-18-git-send-email-kvalo@codeaurora.org>
+Subject: [PATCH 23/49] ath11k: add hal_desc.h
+Date:   Tue, 20 Aug 2019 18:47:49 +0300
+Message-Id: <1566316095-27507-24-git-send-email-kvalo@codeaurora.org>
 X-Mailer: git-send-email 2.7.4
 In-Reply-To: <1566316095-27507-1-git-send-email-kvalo@codeaurora.org>
 References: <1566316095-27507-1-git-send-email-kvalo@codeaurora.org>
@@ -58,4155 +58,2482 @@ List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
 ---
- drivers/net/wireless/ath/ath11k/dp_rx.c | 4142 +++++++++++++++++++++++++++++++
- 1 file changed, 4142 insertions(+)
+ drivers/net/wireless/ath/ath11k/hal_desc.h | 2469 ++++++++++++++++++++++++++++
+ 1 file changed, 2469 insertions(+)
 
-diff --git a/drivers/net/wireless/ath/ath11k/dp_rx.c b/drivers/net/wireless/ath/ath11k/dp_rx.c
+diff --git a/drivers/net/wireless/ath/ath11k/hal_desc.h b/drivers/net/wireless/ath/ath11k/hal_desc.h
 new file mode 100644
-index 000000000000..cc3bf25c9a91
+index 000000000000..dbfb82130db6
 --- /dev/null
-+++ b/drivers/net/wireless/ath/ath11k/dp_rx.c
-@@ -0,0 +1,4142 @@
-+// SPDX-License-Identifier: ISC
++++ b/drivers/net/wireless/ath/ath11k/hal_desc.h
+@@ -0,0 +1,2469 @@
++/* SPDX-License-Identifier: ISC */
 +/*
 + * Copyright (c) 2018-2019 The Linux Foundation. All rights reserved.
 + */
-+
-+#include <linux/ieee80211.h>
-+#include "core.h"
-+#include "debug.h"
-+#include "hal_desc.h"
-+#include "hw.h"
-+#include "dp_rx.h"
-+#include "hal_rx.h"
-+#include "dp_tx.h"
-+#include "peer.h"
-+
-+static u8 *ath11k_dp_rx_h_80211_hdr(struct hal_rx_desc *desc)
-+{
-+	return desc->hdr_status;
-+}
-+
-+static enum hal_encrypt_type ath11k_dp_rx_h_mpdu_start_enctype(struct hal_rx_desc *desc)
-+{
-+	if (!(__le32_to_cpu(desc->mpdu_start.info1) &
-+	    RX_MPDU_START_INFO1_ENCRYPT_INFO_VALID))
-+		return HAL_ENCRYPT_TYPE_OPEN;
-+
-+	return FIELD_GET(RX_MPDU_START_INFO2_ENC_TYPE,
-+			 __le32_to_cpu(desc->mpdu_start.info2));
-+}
-+
-+static u8 ath11k_dp_rx_h_mpdu_start_decap_type(struct hal_rx_desc *desc)
-+{
-+	return FIELD_GET(RX_MPDU_START_INFO5_DECAP_TYPE,
-+			 __le32_to_cpu(desc->mpdu_start.info5));
-+}
-+
-+static bool ath11k_dp_rx_h_attn_msdu_done(struct hal_rx_desc *desc)
-+{
-+	return !!FIELD_GET(RX_ATTENTION_INFO2_MSDU_DONE,
-+			   __le32_to_cpu(desc->attention.info2));
-+}
-+
-+static bool ath11k_dp_rx_h_attn_first_mpdu(struct hal_rx_desc *desc)
-+{
-+	return !!FIELD_GET(RX_ATTENTION_INFO1_FIRST_MPDU,
-+			   __le32_to_cpu(desc->attention.info1));
-+}
-+
-+static bool ath11k_dp_rx_h_attn_l4_cksum_fail(struct hal_rx_desc *desc)
-+{
-+	return !!FIELD_GET(RX_ATTENTION_INFO1_TCP_UDP_CKSUM_FAIL,
-+			   __le32_to_cpu(desc->attention.info1));
-+}
-+
-+static bool ath11k_dp_rx_h_attn_ip_cksum_fail(struct hal_rx_desc *desc)
-+{
-+	return !!FIELD_GET(RX_ATTENTION_INFO1_IP_CKSUM_FAIL,
-+			   __le32_to_cpu(desc->attention.info1));
-+}
-+
-+static bool ath11k_dp_rx_h_attn_is_decrypted(struct hal_rx_desc *desc)
-+{
-+	return (FIELD_GET(RX_ATTENTION_INFO2_DCRYPT_STATUS_CODE,
-+			  __le32_to_cpu(desc->attention.info2)) ==
-+		RX_DESC_DECRYPT_STATUS_CODE_OK);
-+}
-+
-+static u32 ath11k_dp_rx_h_attn_mpdu_err(struct hal_rx_desc *desc)
-+{
-+	u32 info = __le32_to_cpu(desc->attention.info1);
-+	u32 errmap = 0;
-+
-+	if (info & RX_ATTENTION_INFO1_FCS_ERR)
-+		errmap |= DP_RX_MPDU_ERR_FCS;
-+
-+	if (info & RX_ATTENTION_INFO1_DECRYPT_ERR)
-+		errmap |= DP_RX_MPDU_ERR_DECRYPT;
-+
-+	if (info & RX_ATTENTION_INFO1_TKIP_MIC_ERR)
-+		errmap |= DP_RX_MPDU_ERR_TKIP_MIC;
-+
-+	if (info & RX_ATTENTION_INFO1_A_MSDU_ERROR)
-+		errmap |= DP_RX_MPDU_ERR_AMSDU_ERR;
-+
-+	if (info & RX_ATTENTION_INFO1_OVERFLOW_ERR)
-+		errmap |= DP_RX_MPDU_ERR_OVERFLOW;
-+
-+	if (info & RX_ATTENTION_INFO1_MSDU_LEN_ERR)
-+		errmap |= DP_RX_MPDU_ERR_MSDU_LEN;
-+
-+	if (info & RX_ATTENTION_INFO1_MPDU_LEN_ERR)
-+		errmap |= DP_RX_MPDU_ERR_MPDU_LEN;
-+
-+	return errmap;
-+}
-+
-+static u16 ath11k_dp_rx_h_msdu_start_msdu_len(struct hal_rx_desc *desc)
-+{
-+	return FIELD_GET(RX_MSDU_START_INFO1_MSDU_LENGTH,
-+			 __le32_to_cpu(desc->msdu_start.info1));
-+}
-+
-+static u8 ath11k_dp_rx_h_msdu_start_sgi(struct hal_rx_desc *desc)
-+{
-+	return FIELD_GET(RX_MSDU_START_INFO3_SGI,
-+			 __le32_to_cpu(desc->msdu_start.info3));
-+}
-+
-+static u8 ath11k_dp_rx_h_msdu_start_rate_mcs(struct hal_rx_desc *desc)
-+{
-+	return FIELD_GET(RX_MSDU_START_INFO3_RATE_MCS,
-+			 __le32_to_cpu(desc->msdu_start.info3));
-+}
-+
-+static u8 ath11k_dp_rx_h_msdu_start_rx_bw(struct hal_rx_desc *desc)
-+{
-+	return FIELD_GET(RX_MSDU_START_INFO3_RECV_BW,
-+			 __le32_to_cpu(desc->msdu_start.info3));
-+}
-+
-+static u32 ath11k_dp_rx_h_msdu_start_freq(struct hal_rx_desc *desc)
-+{
-+	return __le32_to_cpu(desc->msdu_start.phy_meta_data);
-+}
-+
-+static u8 ath11k_dp_rx_h_msdu_start_pkt_type(struct hal_rx_desc *desc)
-+{
-+	return FIELD_GET(RX_MSDU_START_INFO3_PKT_TYPE,
-+			 __le32_to_cpu(desc->msdu_start.info3));
-+}
-+
-+static u8 ath11k_dp_rx_h_msdu_start_nss(struct hal_rx_desc *desc)
-+{
-+	u8 mimo_ss_bitmap = FIELD_GET(RX_MSDU_START_INFO3_MIMO_SS_BITMAP,
-+				      __le32_to_cpu(desc->msdu_start.info3));
-+
-+	return hweight8(mimo_ss_bitmap);
-+}
-+
-+static u8 ath11k_dp_rx_h_msdu_end_l3pad(struct hal_rx_desc *desc)
-+{
-+	return FIELD_GET(RX_MSDU_END_INFO2_L3_HDR_PADDING,
-+			 __le32_to_cpu(desc->msdu_end.info2));
-+}
-+
-+static bool ath11k_dp_rx_h_msdu_end_first_msdu(struct hal_rx_desc *desc)
-+{
-+	return !!FIELD_GET(RX_MSDU_END_INFO2_FIRST_MSDU,
-+			   __le32_to_cpu(desc->msdu_end.info2));
-+}
-+
-+static bool ath11k_dp_rx_h_msdu_end_last_msdu(struct hal_rx_desc *desc)
-+{
-+	return !!FIELD_GET(RX_MSDU_END_INFO2_LAST_MSDU,
-+			   __le32_to_cpu(desc->msdu_end.info2));
-+}
-+
-+static void ath11k_dp_rx_desc_end_tlv_copy(struct hal_rx_desc *fdesc,
-+					   struct hal_rx_desc *ldesc)
-+{
-+	memcpy((u8 *)&fdesc->msdu_end, (u8 *)&ldesc->msdu_end,
-+	       sizeof(struct rx_msdu_end));
-+	memcpy((u8 *)&fdesc->attention, (u8 *)&ldesc->attention,
-+	       sizeof(struct rx_attention));
-+	memcpy((u8 *)&fdesc->mpdu_end, (u8 *)&ldesc->mpdu_end,
-+	       sizeof(struct rx_mpdu_end));
-+}
-+
-+static u32 ath11k_dp_rxdesc_get_mpdulen_err(struct hal_rx_desc *rx_desc)
-+{
-+	struct rx_attention *rx_attn;
-+
-+	rx_attn = &rx_desc->attention;
-+
-+	return FIELD_GET(RX_ATTENTION_INFO1_MPDU_LEN_ERR,
-+			 __le32_to_cpu(rx_attn->info1));
-+}
-+
-+static u32 ath11k_dp_rxdesc_get_decap_format(struct hal_rx_desc *rx_desc)
-+{
-+	struct rx_msdu_start *rx_msdu_start;
-+
-+	rx_msdu_start = &rx_desc->msdu_start;
-+
-+	return FIELD_GET(RX_MSDU_START_INFO2_DECAP_FORMAT,
-+			 __le32_to_cpu(rx_msdu_start->info2));
-+}
-+
-+static u8 *ath11k_dp_rxdesc_get_80211hdr(struct hal_rx_desc *rx_desc)
-+{
-+	u8 *rx_pkt_hdr;
-+
-+	rx_pkt_hdr = &rx_desc->msdu_payload[0];
-+
-+	return rx_pkt_hdr;
-+}
-+
-+static bool ath11k_dp_rxdesc_mpdu_valid(struct hal_rx_desc *rx_desc)
-+{
-+	u32 tlv_tag;
-+
-+	tlv_tag = FIELD_GET(HAL_TLV_HDR_TAG,
-+			    __le32_to_cpu(rx_desc->mpdu_start_tag));
-+
-+	return tlv_tag == HAL_RX_MPDU_START ? true : false;
-+}
-+
-+static u32 ath11k_dp_rxdesc_get_ppduid(struct hal_rx_desc *rx_desc)
-+{
-+	return __le16_to_cpu(rx_desc->mpdu_start.phy_ppdu_id);
-+}
-+
-+/* Returns number of Rx buffers replenished */
-+int ath11k_dp_rxbufs_replenish(struct ath11k_base *ab, int mac_id,
-+			       struct dp_rxdma_ring *rx_ring,
-+			       int req_entries,
-+			       enum hal_rx_buf_return_buf_manager mgr,
-+			       gfp_t gfp)
-+{
-+	struct hal_srng *srng;
-+	u32 *desc;
-+	struct sk_buff *skb;
-+	int num_free;
-+	int num_remain;
-+	int buf_id;
-+	u32 cookie;
-+	dma_addr_t paddr;
-+
-+	req_entries = min(req_entries, rx_ring->bufs_max);
-+
-+	srng = &ab->hal.srng_list[rx_ring->refill_buf_ring.ring_id];
-+
-+	spin_lock_bh(&srng->lock);
-+
-+	ath11k_hal_srng_access_begin(ab, srng);
-+
-+	num_free = ath11k_hal_srng_src_num_free(ab, srng, true);
-+	if (!req_entries && (num_free > (rx_ring->bufs_max * 3) / 4))
-+		req_entries = num_free;
-+
-+	req_entries = min(num_free, req_entries);
-+	num_remain = req_entries;
-+
-+	while (num_remain > 0) {
-+		skb = dev_alloc_skb(DP_RX_BUFFER_SIZE +
-+				    DP_RX_BUFFER_ALIGN_SIZE);
-+		if (!skb)
-+			break;
-+
-+		if (!IS_ALIGNED((unsigned long)skb->data,
-+				DP_RX_BUFFER_ALIGN_SIZE)) {
-+			skb_pull(skb,
-+				 PTR_ALIGN(skb->data, DP_RX_BUFFER_ALIGN_SIZE) -
-+				 skb->data);
-+		}
-+
-+		paddr = dma_map_single(ab->dev, skb->data,
-+				       skb->len + skb_tailroom(skb),
-+				       DMA_FROM_DEVICE);
-+		if (dma_mapping_error(ab->dev, paddr))
-+			goto fail_free_skb;
-+
-+		spin_lock_bh(&rx_ring->idr_lock);
-+		buf_id = idr_alloc(&rx_ring->bufs_idr, skb, 0,
-+				   rx_ring->bufs_max * 3, gfp);
-+		spin_unlock_bh(&rx_ring->idr_lock);
-+		if (buf_id < 0)
-+			goto fail_dma_unmap;
-+
-+		desc = ath11k_hal_srng_src_get_next_entry(ab, srng);
-+		if (!desc)
-+			goto fail_idr_remove;
-+
-+		ATH11K_SKB_RXCB(skb)->paddr = paddr;
-+
-+		cookie = FIELD_PREP(DP_RXDMA_BUF_COOKIE_PDEV_ID, mac_id) |
-+			 FIELD_PREP(DP_RXDMA_BUF_COOKIE_BUF_ID, buf_id);
-+
-+		num_remain--;
-+
-+		ath11k_hal_rx_buf_addr_info_set(desc, paddr, cookie, mgr);
-+	}
-+
-+	ath11k_hal_srng_access_end(ab, srng);
-+
-+	spin_unlock_bh(&srng->lock);
-+
-+	return req_entries - num_remain;
-+
-+fail_idr_remove:
-+	spin_lock_bh(&rx_ring->idr_lock);
-+	idr_remove(&rx_ring->bufs_idr, buf_id);
-+	spin_unlock_bh(&rx_ring->idr_lock);
-+fail_dma_unmap:
-+	dma_unmap_single(ab->dev, paddr, skb->len + skb_tailroom(skb),
-+			 DMA_FROM_DEVICE);
-+fail_free_skb:
-+	dev_kfree_skb_any(skb);
-+
-+	ath11k_hal_srng_access_end(ab, srng);
-+
-+	spin_unlock_bh(&srng->lock);
-+
-+	return req_entries - num_remain;
-+}
-+
-+static int ath11k_dp_rxdma_buf_ring_free(struct ath11k *ar,
-+					 struct dp_rxdma_ring *rx_ring)
-+{
-+	struct ath11k_pdev_dp *dp = &ar->dp;
-+	struct sk_buff *skb;
-+	int buf_id;
-+
-+	spin_lock_bh(&rx_ring->idr_lock);
-+	idr_for_each_entry(&rx_ring->bufs_idr, skb, buf_id) {
-+		idr_remove(&rx_ring->bufs_idr, buf_id);
-+		/* TODO: Understand where internal driver does this dma_unmap of
-+		 * of rxdma_buffer.
-+		 */
-+		dma_unmap_single(ar->ab->dev, ATH11K_SKB_RXCB(skb)->paddr,
-+				 skb->len + skb_tailroom(skb), DMA_FROM_DEVICE);
-+		dev_kfree_skb_any(skb);
-+	}
-+
-+	idr_destroy(&rx_ring->bufs_idr);
-+	spin_unlock_bh(&rx_ring->idr_lock);
-+
-+	rx_ring = &dp->rx_mon_status_refill_ring;
-+
-+	spin_lock_bh(&rx_ring->idr_lock);
-+	idr_for_each_entry(&rx_ring->bufs_idr, skb, buf_id) {
-+		idr_remove(&rx_ring->bufs_idr, buf_id);
-+		/* XXX: Understand where internal driver does this dma_unmap of
-+		 * of rxdma_buffer.
-+		 */
-+		dma_unmap_single(ar->ab->dev, ATH11K_SKB_RXCB(skb)->paddr,
-+				 skb->len + skb_tailroom(skb), DMA_BIDIRECTIONAL);
-+		dev_kfree_skb_any(skb);
-+	}
-+
-+	idr_destroy(&rx_ring->bufs_idr);
-+	spin_unlock_bh(&rx_ring->idr_lock);
-+	return 0;
-+}
-+
-+static int ath11k_dp_rxdma_pdev_buf_free(struct ath11k *ar)
-+{
-+	struct ath11k_pdev_dp *dp = &ar->dp;
-+	struct dp_rxdma_ring *rx_ring = &dp->rx_refill_buf_ring;
-+
-+	ath11k_dp_rxdma_buf_ring_free(ar, rx_ring);
-+
-+	rx_ring = &dp->rxdma_mon_buf_ring;
-+	ath11k_dp_rxdma_buf_ring_free(ar, rx_ring);
-+
-+	rx_ring = &dp->rx_mon_status_refill_ring;
-+	ath11k_dp_rxdma_buf_ring_free(ar, rx_ring);
-+	return 0;
-+}
-+
-+static int ath11k_dp_rxdma_ring_buf_setup(struct ath11k *ar,
-+					  struct dp_rxdma_ring *rx_ring,
-+					  u32 ringtype)
-+{
-+	struct ath11k_pdev_dp *dp = &ar->dp;
-+	int num_entries;
-+
-+	num_entries = rx_ring->refill_buf_ring.size /
-+		      ath11k_hal_srng_get_entrysize(ringtype);
-+
-+	rx_ring->bufs_max = num_entries;
-+	ath11k_dp_rxbufs_replenish(ar->ab, dp->mac_id, rx_ring, num_entries,
-+				   HAL_RX_BUF_RBM_SW3_BM, GFP_KERNEL);
-+	return 0;
-+}
-+
-+static int ath11k_dp_rxdma_pdev_buf_setup(struct ath11k *ar)
-+{
-+	struct ath11k_pdev_dp *dp = &ar->dp;
-+	struct dp_rxdma_ring *rx_ring = &dp->rx_refill_buf_ring;
-+
-+	ath11k_dp_rxdma_ring_buf_setup(ar, rx_ring, HAL_RXDMA_BUF);
-+
-+	rx_ring = &dp->rxdma_mon_buf_ring;
-+	ath11k_dp_rxdma_ring_buf_setup(ar, rx_ring, HAL_RXDMA_MONITOR_BUF);
-+
-+	rx_ring = &dp->rx_mon_status_refill_ring;
-+	ath11k_dp_rxdma_ring_buf_setup(ar, rx_ring, HAL_RXDMA_MONITOR_STATUS);
-+
-+	return 0;
-+}
-+
-+static void ath11k_dp_rx_pdev_srng_free(struct ath11k *ar)
-+{
-+	struct ath11k_pdev_dp *dp = &ar->dp;
-+
-+	ath11k_dp_srng_cleanup(ar->ab, &dp->rx_refill_buf_ring.refill_buf_ring);
-+	ath11k_dp_srng_cleanup(ar->ab, &dp->reo_dst_ring);
-+	ath11k_dp_srng_cleanup(ar->ab, &dp->rxdma_err_dst_ring);
-+	ath11k_dp_srng_cleanup(ar->ab, &dp->rx_mon_status_refill_ring.refill_buf_ring);
-+	ath11k_dp_srng_cleanup(ar->ab, &dp->rxdma_mon_buf_ring.refill_buf_ring);
-+}
-+
-+static int ath11k_dp_rx_pdev_srng_alloc(struct ath11k *ar)
-+{
-+	struct ath11k_pdev_dp *dp = &ar->dp;
-+	struct dp_srng *srng = NULL;
-+	int ret;
-+
-+	ret = ath11k_dp_srng_setup(ar->ab,
-+				   &dp->rx_refill_buf_ring.refill_buf_ring,
-+				   HAL_RXDMA_BUF, 0,
-+				   dp->mac_id, DP_RXDMA_BUF_RING_SIZE);
-+	if (ret) {
-+		ath11k_warn(ar->ab, "failed to setup rx_refill_buf_ring\n");
-+		return ret;
-+	}
-+
-+	ret = ath11k_dp_srng_setup(ar->ab, &dp->reo_dst_ring, HAL_REO_DST,
-+				   dp->mac_id, dp->mac_id,
-+				   DP_REO_DST_RING_SIZE);
-+	if (ret) {
-+		ath11k_warn(ar->ab, "failed to setup reo_dst_ring\n");
-+		return ret;
-+	}
-+
-+	ret = ath11k_dp_srng_setup(ar->ab, &dp->rxdma_err_dst_ring,
-+				   HAL_RXDMA_DST, 0, dp->mac_id,
-+				   DP_RXDMA_ERR_DST_RING_SIZE);
-+	if (ret) {
-+		ath11k_warn(ar->ab, "failed to setup rxdma_err_dst_ring\n");
-+		return ret;
-+	}
-+
-+	srng = &dp->rx_mon_status_refill_ring.refill_buf_ring;
-+	ret = ath11k_dp_srng_setup(ar->ab,
-+				   srng,
-+				   HAL_RXDMA_MONITOR_STATUS, 0, dp->mac_id,
-+				   DP_RXDMA_MON_STATUS_RING_SIZE);
-+	if (ret) {
-+		ath11k_warn(ar->ab,
-+			    "failed to setup rx_mon_status_refill_ring\n");
-+		return ret;
-+	}
-+	ret = ath11k_dp_srng_setup(ar->ab,
-+				   &dp->rxdma_mon_buf_ring.refill_buf_ring,
-+				   HAL_RXDMA_MONITOR_BUF, 0, dp->mac_id,
-+				   DP_RXDMA_MONITOR_BUF_RING_SIZE);
-+	if (ret) {
-+		ath11k_warn(ar->ab,
-+			    "failed to setup HAL_RXDMA_MONITOR_BUF\n");
-+		return ret;
-+	}
-+
-+	ret = ath11k_dp_srng_setup(ar->ab, &dp->rxdma_mon_dst_ring,
-+				   HAL_RXDMA_MONITOR_DST, 0, dp->mac_id,
-+				   DP_RXDMA_MONITOR_DST_RING_SIZE);
-+	if (ret) {
-+		ath11k_warn(ar->ab,
-+			    "failed to setup HAL_RXDMA_MONITOR_DST\n");
-+		return ret;
-+	}
-+
-+	ret = ath11k_dp_srng_setup(ar->ab, &dp->rxdma_mon_desc_ring,
-+				   HAL_RXDMA_MONITOR_DESC, 0, dp->mac_id,
-+				   DP_RXDMA_MONITOR_DESC_RING_SIZE);
-+	if (ret) {
-+		ath11k_warn(ar->ab,
-+			    "failed to setup HAL_RXDMA_MONITOR_DESC\n");
-+		return ret;
-+	}
-+
-+	return 0;
-+}
-+
-+void ath11k_dp_reo_cmd_list_cleanup(struct ath11k_base *ab)
-+{
-+	struct ath11k_dp *dp = &ab->dp;
-+	struct dp_reo_cmd *cmd, *tmp;
-+	struct dp_reo_cache_flush_elem *cmd_cache, *tmp_cache;
-+
-+	spin_lock_bh(&dp->reo_cmd_lock);
-+	list_for_each_entry_safe(cmd, tmp, &dp->reo_cmd_list, list) {
-+		list_del(&cmd->list);
-+		dma_unmap_single(ab->dev, cmd->data.paddr,
-+				 cmd->data.size, DMA_BIDIRECTIONAL);
-+		kfree(cmd->data.vaddr);
-+		kfree(cmd);
-+	}
-+
-+	list_for_each_entry_safe(cmd_cache, tmp_cache,
-+				 &dp->reo_cmd_cache_flush_list, list) {
-+		list_del(&cmd_cache->list);
-+		dma_unmap_single(ab->dev, cmd_cache->data.paddr,
-+				 cmd_cache->data.size, DMA_BIDIRECTIONAL);
-+		kfree(cmd_cache->data.vaddr);
-+		kfree(cmd_cache);
-+	}
-+	spin_unlock_bh(&dp->reo_cmd_lock);
-+}
-+
-+static void ath11k_dp_reo_cmd_free(struct ath11k_dp *dp, void *ctx,
-+				   enum hal_reo_cmd_status status)
-+{
-+	struct dp_rx_tid *rx_tid = ctx;
-+
-+	if (status != HAL_REO_CMD_SUCCESS)
-+		ath11k_warn(dp->ab, "failed to flush rx tid hw desc, tid %d status %d\n",
-+			    rx_tid->tid, status);
-+
-+	dma_unmap_single(dp->ab->dev, rx_tid->paddr, rx_tid->size,
-+			 DMA_BIDIRECTIONAL);
-+	kfree(rx_tid->vaddr);
-+}
-+
-+static void ath11k_dp_reo_cache_flush(struct ath11k_base *ab,
-+				      struct dp_rx_tid *rx_tid)
-+{
-+	struct ath11k_hal_reo_cmd cmd = {0};
-+	unsigned long tot_desc_sz, desc_sz;
-+	int ret;
-+
-+	tot_desc_sz = rx_tid->size;
-+	desc_sz = ath11k_hal_reo_qdesc_size(0, HAL_DESC_REO_NON_QOS_TID);
-+
-+	while (tot_desc_sz > desc_sz) {
-+		tot_desc_sz -= desc_sz;
-+		cmd.addr_lo = lower_32_bits(rx_tid->paddr + tot_desc_sz);
-+		cmd.addr_hi = upper_32_bits(rx_tid->paddr);
-+		ret = ath11k_dp_tx_send_reo_cmd(ab, rx_tid,
-+						HAL_REO_CMD_FLUSH_CACHE, &cmd,
-+						NULL);
-+		if (ret)
-+			ath11k_warn(ab,
-+				    "failed to send HAL_REO_CMD_FLUSH_CACHE, tid %d (%d)\n",
-+				    rx_tid->tid, ret);
-+	}
-+
-+	memset(&cmd, 0, sizeof(cmd));
-+	cmd.addr_lo = lower_32_bits(rx_tid->paddr);
-+	cmd.addr_hi = upper_32_bits(rx_tid->paddr);
-+	cmd.flag |= HAL_REO_CMD_FLG_NEED_STATUS;
-+	ret = ath11k_dp_tx_send_reo_cmd(ab, rx_tid,
-+					HAL_REO_CMD_FLUSH_CACHE,
-+					&cmd, ath11k_dp_reo_cmd_free);
-+	if (ret) {
-+		ath11k_err(ab, "failed to send HAL_REO_CMD_FLUSH_CACHE cmd, tid %d (%d)\n",
-+			   rx_tid->tid, ret);
-+		dma_unmap_single(ab->dev, rx_tid->paddr, rx_tid->size,
-+				 DMA_BIDIRECTIONAL);
-+		kfree(rx_tid->vaddr);
-+	}
-+}
-+
-+static void ath11k_dp_rx_tid_del_func(struct ath11k_dp *dp, void *ctx,
-+				      enum hal_reo_cmd_status status)
-+{
-+	struct ath11k_base *ab = dp->ab;
-+	struct dp_rx_tid *rx_tid = ctx;
-+	struct dp_reo_cache_flush_elem *elem, *tmp;
-+
-+	if (status == HAL_REO_CMD_DRAIN) {
-+		goto free_desc;
-+	} else if (status != HAL_REO_CMD_SUCCESS) {
-+		/* Shouldn't happen! Cleanup in case of other failure? */
-+		ath11k_warn(ab, "failed to delete rx tid %d hw descriptor %d\n",
-+			    rx_tid->tid, status);
-+		return;
-+	}
-+
-+	elem = kzalloc(sizeof(*elem), GFP_ATOMIC);
-+	if (!elem)
-+		goto free_desc;
-+
-+	elem->ts = jiffies;
-+	memcpy(&elem->data, rx_tid, sizeof(*rx_tid));
-+
-+	spin_lock_bh(&dp->reo_cmd_lock);
-+	list_add_tail(&elem->list, &dp->reo_cmd_cache_flush_list);
-+	spin_unlock_bh(&dp->reo_cmd_lock);
-+
-+	/* Flush and invalidate aged REO desc from HW cache */
-+	spin_lock_bh(&dp->reo_cmd_lock);
-+	list_for_each_entry_safe(elem, tmp, &dp->reo_cmd_cache_flush_list,
-+				 list) {
-+		if (time_after(jiffies, elem->ts +
-+			       msecs_to_jiffies(DP_REO_DESC_FREE_TIMEOUT_MS))) {
-+			list_del(&elem->list);
-+			spin_unlock_bh(&dp->reo_cmd_lock);
-+
-+			ath11k_dp_reo_cache_flush(ab, &elem->data);
-+			kfree(elem);
-+			spin_lock_bh(&dp->reo_cmd_lock);
-+		}
-+	}
-+	spin_unlock_bh(&dp->reo_cmd_lock);
-+
-+	return;
-+free_desc:
-+	dma_unmap_single(ab->dev, rx_tid->paddr, rx_tid->size,
-+			 DMA_BIDIRECTIONAL);
-+	kfree(rx_tid->vaddr);
-+}
-+
-+static void ath11k_peer_rx_tid_delete(struct ath11k *ar,
-+				      struct ath11k_peer *peer, u8 tid)
-+{
-+	struct ath11k_hal_reo_cmd cmd = {0};
-+	struct dp_rx_tid *rx_tid = &peer->rx_tid[tid];
-+	int ret;
-+
-+	if (!rx_tid->active)
-+		return;
-+
-+	cmd.flag = HAL_REO_CMD_FLG_NEED_STATUS;
-+	cmd.addr_lo = lower_32_bits(rx_tid->paddr);
-+	cmd.addr_hi = upper_32_bits(rx_tid->paddr);
-+	cmd.upd0 |= HAL_REO_CMD_UPD0_VLD;
-+	ret = ath11k_dp_tx_send_reo_cmd(ar->ab, rx_tid,
-+					HAL_REO_CMD_UPDATE_RX_QUEUE, &cmd,
-+					ath11k_dp_rx_tid_del_func);
-+	if (ret) {
-+		ath11k_err(ar->ab, "failed to send HAL_REO_CMD_UPDATE_RX_QUEUE cmd, tid %d (%d)\n",
-+			   tid, ret);
-+		dma_unmap_single(ar->ab->dev, rx_tid->paddr, rx_tid->size,
-+				 DMA_BIDIRECTIONAL);
-+		kfree(rx_tid->vaddr);
-+	}
-+
-+	rx_tid->active = false;
-+}
-+
-+void ath11k_peer_rx_tid_cleanup(struct ath11k *ar, struct ath11k_peer *peer)
-+{
-+	int i;
-+
-+	for (i = 0; i <= IEEE80211_NUM_TIDS; i++)
-+		ath11k_peer_rx_tid_delete(ar, peer, i);
-+}
-+
-+static int ath11k_peer_rx_tid_reo_update(struct ath11k *ar,
-+					 struct ath11k_peer *peer,
-+					 struct dp_rx_tid *rx_tid,
-+					 u32 ba_win_sz, u16 ssn)
-+{
-+	struct ath11k_hal_reo_cmd cmd = {0};
-+	int ret;
-+
-+	cmd.addr_lo = lower_32_bits(rx_tid->paddr);
-+	cmd.addr_hi = upper_32_bits(rx_tid->paddr);
-+	cmd.flag = HAL_REO_CMD_FLG_NEED_STATUS;
-+	cmd.upd0 = HAL_REO_CMD_UPD0_BA_WINDOW_SIZE |
-+		   HAL_REO_CMD_UPD0_SSN;
-+	cmd.ba_window_size = ba_win_sz;
-+	cmd.upd2 = FIELD_PREP(HAL_REO_CMD_UPD2_SSN, ssn);
-+
-+	ret = ath11k_dp_tx_send_reo_cmd(ar->ab, rx_tid,
-+					HAL_REO_CMD_UPDATE_RX_QUEUE, &cmd,
-+					NULL);
-+	if (ret) {
-+		ath11k_warn(ar->ab, "failed to update rx tid queue, tid %d (%d)\n",
-+			    rx_tid->tid, ret);
-+		return ret;
-+	}
-+
-+	rx_tid->ba_win_sz = ba_win_sz;
-+
-+	return 0;
-+}
-+
-+static void ath11k_dp_rx_tid_mem_free(struct ath11k_base *ab,
-+				      const u8 *peer_mac, int vdev_id, u8 tid)
-+{
-+	struct ath11k_peer *peer;
-+	struct dp_rx_tid *rx_tid;
-+
-+	spin_lock_bh(&ab->base_lock);
-+
-+	peer = ath11k_peer_find(ab, vdev_id, peer_mac);
-+	if (!peer) {
-+		ath11k_warn(ab, "failed to find the peer to free up rx tid mem\n");
-+		goto unlock_exit;
-+	}
-+
-+	rx_tid = &peer->rx_tid[tid];
-+	if (!rx_tid->active)
-+		goto unlock_exit;
-+
-+	dma_unmap_single(ab->dev, rx_tid->paddr, rx_tid->size,
-+			 DMA_BIDIRECTIONAL);
-+	kfree(rx_tid->vaddr);
-+
-+	rx_tid->active = false;
-+
-+unlock_exit:
-+	spin_unlock_bh(&ab->base_lock);
-+}
-+
-+int ath11k_peer_rx_tid_setup(struct ath11k *ar, const u8 *peer_mac, int vdev_id,
-+			     u8 tid, u32 ba_win_sz, u16 ssn)
-+{
-+	struct ath11k_base *ab = ar->ab;
-+	struct ath11k_peer *peer;
-+	struct dp_rx_tid *rx_tid;
-+	u32 hw_desc_sz;
-+	u32 *addr_aligned;
-+	void *vaddr;
-+	dma_addr_t paddr;
-+	int ret;
-+
-+	spin_lock_bh(&ab->base_lock);
-+
-+	peer = ath11k_peer_find(ab, vdev_id, peer_mac);
-+	if (!peer) {
-+		ath11k_warn(ab, "failed to find the peer to set up rx tid\n");
-+		spin_unlock_bh(&ab->base_lock);
-+		return -ENOENT;
-+	}
-+
-+	rx_tid = &peer->rx_tid[tid];
-+	/* Update the tid queue if it is already setup */
-+	if (rx_tid->active) {
-+		paddr = rx_tid->paddr;
-+		ret = ath11k_peer_rx_tid_reo_update(ar, peer, rx_tid,
-+						    ba_win_sz, ssn);
-+		spin_unlock_bh(&ab->base_lock);
-+		if (ret) {
-+			ath11k_warn(ab, "failed to update reo for rx tid %d\n", tid);
-+			return ret;
-+		}
-+
-+		ret = ath11k_wmi_peer_rx_reorder_queue_setup(ar, vdev_id,
-+							     peer_mac, paddr,
-+							     tid, 1, ba_win_sz);
-+		if (ret)
-+			ath11k_warn(ab, "failed to send wmi command to update rx reorder queue, tid :%d (%d)\n",
-+				    tid, ret);
-+		return ret;
-+	}
-+
-+	rx_tid->tid = tid;
-+
-+	rx_tid->ba_win_sz = ba_win_sz;
-+
-+	/* TODO: Optimize the memory allocation for qos tid based on the
-+	 * the actual BA window size in REO tid update path.
-+	 */
-+	if (tid == HAL_DESC_REO_NON_QOS_TID)
-+		hw_desc_sz = ath11k_hal_reo_qdesc_size(ba_win_sz, tid);
-+	else
-+		hw_desc_sz = ath11k_hal_reo_qdesc_size(DP_BA_WIN_SZ_MAX, tid);
-+
-+	vaddr = kzalloc(hw_desc_sz + HAL_LINK_DESC_ALIGN - 1, GFP_KERNEL);
-+	if (!vaddr) {
-+		spin_unlock_bh(&ab->base_lock);
-+		return -ENOMEM;
-+	}
-+
-+	addr_aligned = PTR_ALIGN(vaddr, HAL_LINK_DESC_ALIGN);
-+
-+	ath11k_hal_reo_qdesc_setup(addr_aligned, tid, ba_win_sz, ssn);
-+
-+	paddr = dma_map_single(ab->dev, addr_aligned, hw_desc_sz,
-+			       DMA_BIDIRECTIONAL);
-+
-+	ret = dma_mapping_error(ab->dev, paddr);
-+	if (ret) {
-+		spin_unlock_bh(&ab->base_lock);
-+		goto err_mem_free;
-+	}
-+
-+	rx_tid->vaddr = vaddr;
-+	rx_tid->paddr = paddr;
-+	rx_tid->size = hw_desc_sz;
-+	rx_tid->active = true;
-+
-+	spin_unlock_bh(&ab->base_lock);
-+
-+	ret = ath11k_wmi_peer_rx_reorder_queue_setup(ar, vdev_id, peer_mac,
-+						     paddr, tid, 1, ba_win_sz);
-+	if (ret) {
-+		ath11k_warn(ar->ab, "failed to setup rx reorder queue, tid :%d (%d)\n",
-+			    tid, ret);
-+		ath11k_dp_rx_tid_mem_free(ab, peer_mac, vdev_id, tid);
-+	}
-+
-+	return ret;
-+
-+err_mem_free:
-+	kfree(vaddr);
-+
-+	return ret;
-+}
-+
-+int ath11k_dp_rx_ampdu_start(struct ath11k *ar,
-+			     struct ieee80211_ampdu_params *params)
-+{
-+	struct ath11k_base *ab = ar->ab;
-+	struct ath11k_sta *arsta = (void *)params->sta->drv_priv;
-+	int vdev_id = arsta->arvif->vdev_id;
-+	int ret;
-+
-+	ret = ath11k_peer_rx_tid_setup(ar, params->sta->addr, vdev_id,
-+				       params->tid, params->buf_size,
-+				       params->ssn);
-+	if (ret)
-+		ath11k_warn(ab, "failed to setup rx tid %d\n", ret);
-+
-+	return ret;
-+}
-+
-+int ath11k_dp_rx_ampdu_stop(struct ath11k *ar,
-+			    struct ieee80211_ampdu_params *params)
-+{
-+	struct ath11k_base *ab = ar->ab;
-+	struct ath11k_peer *peer;
-+	struct ath11k_sta *arsta = (void *)params->sta->drv_priv;
-+	int vdev_id = arsta->arvif->vdev_id;
-+	dma_addr_t paddr;
-+	bool active;
-+	int ret;
-+
-+	spin_lock_bh(&ab->base_lock);
-+
-+	peer = ath11k_peer_find(ab, vdev_id, params->sta->addr);
-+	if (!peer) {
-+		ath11k_warn(ab, "failed to find the peer to stop rx aggregation\n");
-+		spin_unlock_bh(&ab->base_lock);
-+		return -ENOENT;
-+	}
-+
-+	paddr = peer->rx_tid[params->tid].paddr;
-+	active = peer->rx_tid[params->tid].active;
-+
-+	ath11k_peer_rx_tid_delete(ar, peer, params->tid);
-+
-+	spin_unlock_bh(&ab->base_lock);
-+
-+	if (!active)
-+		return 0;
-+
-+	ret = ath11k_wmi_peer_rx_reorder_queue_setup(ar, vdev_id,
-+						     params->sta->addr, paddr,
-+						     params->tid, 1, 1);
-+	if (ret)
-+		ath11k_warn(ab, "failed to send wmi to delete rx tid %d\n",
-+			    ret);
-+
-+	return ret;
-+}
-+
-+static int ath11k_get_ppdu_user_index(struct htt_ppdu_stats *ppdu_stats,
-+				      u16 peer_id)
-+{
-+	int i;
-+
-+	for (i = 0; i < HTT_PPDU_STATS_MAX_USERS - 1; i++) {
-+		if (ppdu_stats->user_stats[i].is_valid_peer_id) {
-+			if (peer_id == ppdu_stats->user_stats[i].peer_id)
-+				return i;
-+		} else {
-+			return i;
-+		}
-+	}
-+
-+	return -EINVAL;
-+}
-+
-+static int ath11k_htt_tlv_ppdu_stats_parse(struct ath11k_base *ab,
-+					   u16 tag, u16 len, const void *ptr,
-+					   void *data)
-+{
-+	struct htt_ppdu_stats_info *ppdu_info;
-+	struct htt_ppdu_user_stats *user_stats;
-+	int cur_user;
-+	u16 peer_id;
-+
-+	ppdu_info = (struct htt_ppdu_stats_info *)data;
-+
-+	switch (tag) {
-+	case HTT_PPDU_STATS_TAG_COMMON:
-+		if (len < sizeof(struct htt_ppdu_stats_common)) {
-+			ath11k_warn(ab, "Invalid len %d for the tag 0x%x\n",
-+				    len, tag);
-+			return -EINVAL;
-+		}
-+		memcpy((void *)&ppdu_info->ppdu_stats.common, ptr,
-+		       sizeof(struct htt_ppdu_stats_common));
-+		break;
-+	case HTT_PPDU_STATS_TAG_USR_RATE:
-+		if (len < sizeof(struct htt_ppdu_stats_user_rate)) {
-+			ath11k_warn(ab, "Invalid len %d for the tag 0x%x\n",
-+				    len, tag);
-+			return -EINVAL;
-+		}
-+
-+		peer_id = ((struct htt_ppdu_stats_user_rate *)ptr)->sw_peer_id;
-+		cur_user = ath11k_get_ppdu_user_index(&ppdu_info->ppdu_stats,
-+						      peer_id);
-+		if (cur_user < 0)
-+			return -EINVAL;
-+		user_stats = &ppdu_info->ppdu_stats.user_stats[cur_user];
-+		user_stats->peer_id = peer_id;
-+		user_stats->is_valid_peer_id = true;
-+		memcpy((void *)&user_stats->rate, ptr,
-+		       sizeof(struct htt_ppdu_stats_user_rate));
-+		user_stats->tlv_flags |= BIT(tag);
-+		break;
-+	case HTT_PPDU_STATS_TAG_USR_COMPLTN_COMMON:
-+		if (len < sizeof(struct htt_ppdu_stats_usr_cmpltn_cmn)) {
-+			ath11k_warn(ab, "Invalid len %d for the tag 0x%x\n",
-+				    len, tag);
-+			return -EINVAL;
-+		}
-+
-+		peer_id = ((struct htt_ppdu_stats_usr_cmpltn_cmn *)ptr)->sw_peer_id;
-+		cur_user = ath11k_get_ppdu_user_index(&ppdu_info->ppdu_stats,
-+						      peer_id);
-+		if (cur_user < 0)
-+			return -EINVAL;
-+		user_stats = &ppdu_info->ppdu_stats.user_stats[cur_user];
-+		user_stats->peer_id = peer_id;
-+		user_stats->is_valid_peer_id = true;
-+		memcpy((void *)&user_stats->cmpltn_cmn, ptr,
-+		       sizeof(struct htt_ppdu_stats_usr_cmpltn_cmn));
-+		user_stats->tlv_flags |= BIT(tag);
-+		break;
-+	case HTT_PPDU_STATS_TAG_USR_COMPLTN_ACK_BA_STATUS:
-+		if (len <
-+		    sizeof(struct htt_ppdu_stats_usr_cmpltn_ack_ba_status)) {
-+			ath11k_warn(ab, "Invalid len %d for the tag 0x%x\n",
-+				    len, tag);
-+			return -EINVAL;
-+		}
-+
-+		peer_id =
-+		((struct htt_ppdu_stats_usr_cmpltn_ack_ba_status *)ptr)->sw_peer_id;
-+		cur_user = ath11k_get_ppdu_user_index(&ppdu_info->ppdu_stats,
-+						      peer_id);
-+		if (cur_user < 0)
-+			return -EINVAL;
-+		user_stats = &ppdu_info->ppdu_stats.user_stats[cur_user];
-+		user_stats->peer_id = peer_id;
-+		user_stats->is_valid_peer_id = true;
-+		memcpy((void *)&user_stats->ack_ba, ptr,
-+		       sizeof(struct htt_ppdu_stats_usr_cmpltn_ack_ba_status));
-+		user_stats->tlv_flags |= BIT(tag);
-+		break;
-+	}
-+	return 0;
-+}
-+
-+int ath11k_dp_htt_tlv_iter(struct ath11k_base *ab, const void *ptr, size_t len,
-+			   int (*iter)(struct ath11k_base *ar, u16 tag, u16 len,
-+				       const void *ptr, void *data),
-+			   void *data)
-+{
-+	const struct htt_tlv *tlv;
-+	const void *begin = ptr;
-+	u16 tlv_tag, tlv_len;
-+	int ret = -EINVAL;
-+
-+	while (len > 0) {
-+		if (len < sizeof(*tlv)) {
-+			ath11k_err(ab, "htt tlv parse failure at byte %zd (%zu bytes left, %zu expected)\n",
-+				   ptr - begin, len, sizeof(*tlv));
-+			return -EINVAL;
-+		}
-+		tlv = (struct htt_tlv *)ptr;
-+		tlv_tag = FIELD_GET(HTT_TLV_TAG, tlv->header);
-+		tlv_len = FIELD_GET(HTT_TLV_LEN, tlv->header);
-+		ptr += sizeof(*tlv);
-+		len -= sizeof(*tlv);
-+
-+		if (tlv_len > len) {
-+			ath11k_err(ab, "htt tlv parse failure of tag %hhu at byte %zd (%zu bytes left, %hhu expected)\n",
-+				   tlv_tag, ptr - begin, len, tlv_len);
-+			return -EINVAL;
-+		}
-+		ret = iter(ab, tlv_tag, tlv_len, ptr, data);
-+		if (ret == -ENOMEM)
-+			return ret;
-+
-+		ptr += tlv_len;
-+		len -= tlv_len;
-+	}
-+	return 0;
-+}
-+
-+static u8 ath11k_bw_to_mac80211_bw(u8 bw)
-+{
-+	u8 ret = 0;
-+
-+	switch (bw) {
-+	case ATH11K_BW_20:
-+		ret = RATE_INFO_BW_20;
-+		break;
-+	case ATH11K_BW_40:
-+		ret = RATE_INFO_BW_40;
-+		break;
-+	case ATH11K_BW_80:
-+		ret = RATE_INFO_BW_80;
-+		break;
-+	case ATH11K_BW_160:
-+		ret = RATE_INFO_BW_160;
-+		break;
-+	}
-+
-+	return ret;
-+}
-+
-+static u32 ath11k_bw_to_mac80211_bwflags(u8 bw)
-+{
-+	u32 bwflags = 0;
-+
-+	switch (bw) {
-+	case ATH11K_BW_40:
-+		bwflags = IEEE80211_TX_RC_40_MHZ_WIDTH;
-+		break;
-+	case ATH11K_BW_80:
-+		bwflags = IEEE80211_TX_RC_80_MHZ_WIDTH;
-+		break;
-+	case ATH11K_BW_160:
-+		bwflags = IEEE80211_TX_RC_160_MHZ_WIDTH;
-+		break;
-+	}
-+
-+	return bwflags;
-+}
-+
-+static void
-+ath11k_update_per_peer_tx_stats(struct ath11k *ar,
-+				struct htt_ppdu_stats *ppdu_stats, u8 user)
-+{
-+	struct ath11k_base *ab = ar->ab;
-+	struct ath11k_peer *peer;
-+	struct ieee80211_sta *sta;
-+	struct ath11k_sta *arsta;
-+	struct htt_ppdu_stats_user_rate *user_rate;
-+	struct ieee80211_chanctx_conf *conf = NULL;
-+	struct ath11k_per_peer_tx_stats *peer_stats = &ar->peer_tx_stats;
-+	struct htt_ppdu_user_stats *usr_stats = &ppdu_stats->user_stats[user];
-+	struct htt_ppdu_stats_common *common = &ppdu_stats->common;
-+	int ret;
-+	u8 flags, mcs, nss, bw, sgi, rate_idx = 0;
-+	u32 succ_bytes = 0;
-+	u16 rate = 0, succ_pkts = 0;
-+	u32 tx_duration = 0;
-+	bool is_ampdu = false;
-+
-+	if (!usr_stats)
-+		return;
-+
-+	if (!(usr_stats->tlv_flags & BIT(HTT_PPDU_STATS_TAG_USR_RATE)))
-+		return;
-+
-+	if (usr_stats->tlv_flags & BIT(HTT_PPDU_STATS_TAG_USR_COMPLTN_COMMON))
-+		is_ampdu =
-+			HTT_USR_CMPLTN_IS_AMPDU(usr_stats->cmpltn_cmn.flags);
-+
-+	if (usr_stats->tlv_flags &
-+	    BIT(HTT_PPDU_STATS_TAG_USR_COMPLTN_ACK_BA_STATUS)) {
-+		succ_bytes = usr_stats->ack_ba.success_bytes;
-+		succ_pkts = FIELD_GET(HTT_PPDU_STATS_ACK_BA_INFO_NUM_MSDU_M,
-+				      usr_stats->ack_ba.info);
-+	}
-+
-+	if (common->fes_duration_us)
-+		tx_duration = common->fes_duration_us;
-+
-+	user_rate = &usr_stats->rate;
-+	flags = HTT_USR_RATE_PREAMBLE(user_rate->rate_flags);
-+	bw = HTT_USR_RATE_BW(user_rate->rate_flags) - 2;
-+	nss = HTT_USR_RATE_NSS(user_rate->rate_flags) + 1;
-+	mcs = HTT_USR_RATE_MCS(user_rate->rate_flags);
-+	sgi = HTT_USR_RATE_GI(user_rate->rate_flags);
-+
-+	/* Note: If host configured fixed rates and in some other special
-+	 * cases, the broadcast/management frames are sent in different rates.
-+	 * Firmware rate's control to be skipped for this?
-+	 */
-+
-+	if (flags == WMI_RATE_PREAMBLE_VHT && mcs > 9) {
-+		ath11k_warn(ab, "Invalid VHT mcs %hhd peer stats",  mcs);
-+		return;
-+	}
-+
-+	if (flags == WMI_RATE_PREAMBLE_HT && (mcs > 7 || nss < 1)) {
-+		ath11k_warn(ab, "Invalid HT mcs %hhd nss %hhd peer stats",
-+			    mcs, nss);
-+		return;
-+	}
-+
-+	if (flags == WMI_RATE_PREAMBLE_CCK || flags == WMI_RATE_PREAMBLE_OFDM) {
-+		ret = ath11k_mac_hw_ratecode_to_legacy_rate(mcs,
-+							    flags,
-+							    &rate_idx,
-+							    &rate);
-+		if (ret < 0)
-+			return;
-+	}
-+
-+	rcu_read_lock();
-+	spin_lock_bh(&ab->base_lock);
-+	peer = ath11k_peer_find_by_id(ab, usr_stats->peer_id);
-+
-+	if (!peer || !peer->sta) {
-+		spin_unlock_bh(&ab->base_lock);
-+		rcu_read_unlock();
-+		return;
-+	}
-+
-+	sta = peer->sta;
-+	arsta = (struct ath11k_sta *)sta->drv_priv;
-+
-+	memset(&arsta->txrate, 0, sizeof(arsta->txrate));
-+	memset(&arsta->tx_info.status, 0, sizeof(arsta->tx_info.status));
-+
-+	switch (flags) {
-+	case WMI_RATE_PREAMBLE_OFDM:
-+		arsta->txrate.legacy = rate;
-+		if (arsta->arvif && arsta->arvif->vif)
-+			conf = rcu_dereference(arsta->arvif->vif->chanctx_conf);
-+		if (conf && conf->def.chan->band == NL80211_BAND_5GHZ)
-+			arsta->tx_info.status.rates[0].idx = rate_idx - 4;
-+		break;
-+	case WMI_RATE_PREAMBLE_CCK:
-+		arsta->txrate.legacy = rate;
-+		arsta->tx_info.status.rates[0].idx = rate_idx;
-+		if (mcs > ATH11K_HW_RATE_CCK_LP_1M &&
-+		    mcs <= ATH11K_HW_RATE_CCK_SP_2M)
-+			arsta->tx_info.status.rates[0].flags |=
-+					IEEE80211_TX_RC_USE_SHORT_PREAMBLE;
-+		break;
-+	case WMI_RATE_PREAMBLE_HT:
-+		arsta->txrate.mcs = mcs + 8 * (nss - 1);
-+		arsta->tx_info.status.rates[0].idx = arsta->txrate.mcs;
-+		arsta->txrate.flags = RATE_INFO_FLAGS_MCS;
-+		arsta->tx_info.status.rates[0].flags |= IEEE80211_TX_RC_MCS;
-+		if (sgi) {
-+			arsta->txrate.flags |= RATE_INFO_FLAGS_SHORT_GI;
-+			arsta->tx_info.status.rates[0].flags |=
-+					IEEE80211_TX_RC_SHORT_GI;
-+		}
-+		break;
-+	case WMI_RATE_PREAMBLE_VHT:
-+		arsta->txrate.mcs = mcs;
-+		ieee80211_rate_set_vht(&arsta->tx_info.status.rates[0], mcs, nss);
-+		arsta->txrate.flags = RATE_INFO_FLAGS_VHT_MCS;
-+		arsta->tx_info.status.rates[0].flags |= IEEE80211_TX_RC_VHT_MCS;
-+		if (sgi) {
-+			arsta->txrate.flags |= RATE_INFO_FLAGS_SHORT_GI;
-+			arsta->tx_info.status.rates[0].flags |=
-+						IEEE80211_TX_RC_SHORT_GI;
-+		}
-+		break;
-+	}
-+
-+	arsta->txrate.nss = nss;
-+	arsta->txrate.bw = ath11k_bw_to_mac80211_bw(bw);
-+	arsta->tx_info.status.rates[0].flags |= ath11k_bw_to_mac80211_bwflags(bw);
-+
-+	memcpy(&arsta->last_txrate, &arsta->txrate, sizeof(struct rate_info));
-+
-+	if (succ_pkts) {
-+		arsta->tx_info.flags = IEEE80211_TX_STAT_ACK;
-+		arsta->tx_info.status.rates[0].count = 1;
-+		ieee80211_tx_rate_update(ar->hw, sta, &arsta->tx_info);
-+	}
-+
-+	memset(peer_stats, 0, sizeof(*peer_stats));
-+
-+	peer_stats->succ_pkts = succ_pkts;
-+	peer_stats->succ_bytes = succ_bytes;
-+	peer_stats->is_ampdu = is_ampdu;
-+	peer_stats->duration = tx_duration;
-+	peer_stats->ba_fails =
-+		HTT_USR_CMPLTN_LONG_RETRY(usr_stats->cmpltn_cmn.flags) +
-+		HTT_USR_CMPLTN_SHORT_RETRY(usr_stats->cmpltn_cmn.flags);
-+
-+	if (ath11k_debug_is_extd_tx_stats_enabled(ar))
-+		ath11k_accumulate_per_peer_tx_stats(arsta,
-+						    peer_stats, rate_idx);
-+
-+	spin_unlock_bh(&ab->base_lock);
-+	rcu_read_unlock();
-+}
-+
-+static void ath11k_htt_update_ppdu_stats(struct ath11k *ar,
-+					 struct htt_ppdu_stats *ppdu_stats)
-+{
-+	u8 user;
-+
-+	for (user = 0; user < HTT_PPDU_STATS_MAX_USERS - 1; user++)
-+		ath11k_update_per_peer_tx_stats(ar, ppdu_stats, user);
-+}
-+
-+static
-+struct htt_ppdu_stats_info *ath11k_dp_htt_get_ppdu_desc(struct ath11k *ar,
-+							u32 ppdu_id)
-+{
-+	struct htt_ppdu_stats_info *ppdu_info = NULL;
-+
-+	spin_lock_bh(&ar->data_lock);
-+	if (!list_empty(&ar->ppdu_stats_info)) {
-+		list_for_each_entry(ppdu_info, &ar->ppdu_stats_info, list) {
-+			if (ppdu_info && ppdu_info->ppdu_id == ppdu_id) {
-+				spin_unlock_bh(&ar->data_lock);
-+				return ppdu_info;
-+			}
-+		}
-+
-+		if (ar->ppdu_stat_list_depth > HTT_PPDU_DESC_MAX_DEPTH) {
-+			ppdu_info = list_first_entry(&ar->ppdu_stats_info,
-+						     typeof(*ppdu_info), list);
-+			list_del(&ppdu_info->list);
-+			ar->ppdu_stat_list_depth--;
-+			ath11k_htt_update_ppdu_stats(ar, &ppdu_info->ppdu_stats);
-+			kfree(ppdu_info);
-+		}
-+	}
-+	spin_unlock_bh(&ar->data_lock);
-+
-+	ppdu_info = kzalloc(sizeof(*ppdu_info), GFP_KERNEL);
-+	if (!ppdu_info)
-+		return NULL;
-+
-+	spin_lock_bh(&ar->data_lock);
-+	list_add_tail(&ppdu_info->list, &ar->ppdu_stats_info);
-+	ar->ppdu_stat_list_depth++;
-+	spin_unlock_bh(&ar->data_lock);
-+
-+	return ppdu_info;
-+}
-+
-+static int ath11k_htt_pull_ppdu_stats(struct ath11k_base *ab,
-+				      struct sk_buff *skb)
-+{
-+	struct ath11k_htt_ppdu_stats_msg *msg;
-+	struct htt_ppdu_stats_info *ppdu_info;
-+	struct ath11k *ar;
-+	int ret;
-+	u8 pdev_id;
-+	u32 ppdu_id, len;
-+
-+	msg = (struct ath11k_htt_ppdu_stats_msg *)skb->data;
-+	len = FIELD_GET(HTT_T2H_PPDU_STATS_INFO_PAYLOAD_SIZE, msg->info);
-+	pdev_id = FIELD_GET(HTT_T2H_PPDU_STATS_INFO_PDEV_ID, msg->info);
-+	ppdu_id = msg->ppdu_id;
-+
-+	rcu_read_lock();
-+	ar = ath11k_mac_get_ar_by_pdev_id(ab, pdev_id);
-+	if (!ar) {
-+		ret = -EINVAL;
-+		goto exit;
-+	}
-+
-+	if (ath11k_debug_is_pktlog_lite_mode_enabled(ar))
-+		trace_ath11k_htt_ppdu_stats(ar, skb->data, len);
-+
-+	ppdu_info = ath11k_dp_htt_get_ppdu_desc(ar, ppdu_id);
-+	if (!ppdu_info) {
-+		ret = -EINVAL;
-+		goto exit;
-+	}
-+
-+	ppdu_info->ppdu_id = ppdu_id;
-+	ret = ath11k_dp_htt_tlv_iter(ab, msg->data, len,
-+				     ath11k_htt_tlv_ppdu_stats_parse,
-+				     (void *)ppdu_info);
-+	if (ret) {
-+		ath11k_warn(ab, "Failed to parse tlv %d\n", ret);
-+		goto exit;
-+	}
-+
-+exit:
-+	rcu_read_unlock();
-+
-+	return ret;
-+}
-+
-+static void ath11k_htt_pktlog(struct ath11k_base *ab, struct sk_buff *skb)
-+{
-+	struct htt_pktlog_msg *data = (struct htt_pktlog_msg *)skb->data;
-+	struct ath11k *ar;
-+	u32 len;
-+	u8 pdev_id;
-+
-+	len = FIELD_GET(HTT_T2H_PPDU_STATS_INFO_PAYLOAD_SIZE, data->hdr);
-+
-+	if (len > ATH11K_HTT_PKTLOG_MAX_SIZE) {
-+		ath11k_warn(ab, "htt pktlog buffer size %d, expected < %d\n",
-+			    len,
-+			    ATH11K_HTT_PKTLOG_MAX_SIZE);
-+		return;
-+	}
-+
-+	pdev_id = FIELD_GET(HTT_T2H_PPDU_STATS_INFO_PDEV_ID, data->hdr);
-+	pdev_id = DP_HW2SW_MACID(pdev_id);
-+	ar = ab->pdevs[pdev_id].ar;
-+
-+	trace_ath11k_htt_pktlog(ar, data->payload, len);
-+}
-+
-+void ath11k_dp_htt_htc_t2h_msg_handler(struct ath11k_base *ab,
-+				       struct sk_buff *skb)
-+{
-+	struct ath11k_dp *dp = &ab->dp;
-+	struct htt_resp_msg *resp = (struct htt_resp_msg *)skb->data;
-+	enum htt_t2h_msg_type type = FIELD_GET(HTT_T2H_MSG_TYPE, *(u32 *)resp);
-+	u16 peer_id;
-+	u8 vdev_id;
-+	u8 mac_addr[ETH_ALEN];
-+	u16 peer_mac_h16;
-+	u16 ast_hash;
-+
-+	ath11k_dbg(ab, ATH11K_DBG_DP_HTT, "dp_htt rx msg type :0x%0x\n", type);
-+
-+	switch (type) {
-+	case HTT_T2H_MSG_TYPE_VERSION_CONF:
-+		dp->htt_tgt_ver_major = FIELD_GET(HTT_T2H_VERSION_CONF_MAJOR,
-+						  resp->version_msg.version);
-+		dp->htt_tgt_ver_minor = FIELD_GET(HTT_T2H_VERSION_CONF_MINOR,
-+						  resp->version_msg.version);
-+		complete(&dp->htt_tgt_version_received);
-+		break;
-+	case HTT_T2H_MSG_TYPE_PEER_MAP:
-+		vdev_id = FIELD_GET(HTT_T2H_PEER_MAP_INFO_VDEV_ID,
-+				    resp->peer_map_ev.info);
-+		peer_id = FIELD_GET(HTT_T2H_PEER_MAP_INFO_PEER_ID,
-+				    resp->peer_map_ev.info);
-+		peer_mac_h16 = FIELD_GET(HTT_T2H_PEER_MAP_INFO1_MAC_ADDR_H16,
-+					 resp->peer_map_ev.info1);
-+		ath11k_dp_get_mac_addr(resp->peer_map_ev.mac_addr_l32,
-+				       peer_mac_h16, mac_addr);
-+		ast_hash = FIELD_GET(HTT_T2H_PEER_MAP_INFO2_AST_HASH_VAL,
-+				     resp->peer_map_ev.info1);
-+		ath11k_peer_map_event(ab, vdev_id, peer_id, mac_addr, ast_hash);
-+		break;
-+	case HTT_T2H_MSG_TYPE_PEER_UNMAP:
-+		peer_id = FIELD_GET(HTT_T2H_PEER_UNMAP_INFO_PEER_ID,
-+				    resp->peer_unmap_ev.info);
-+		ath11k_peer_unmap_event(ab, peer_id);
-+		break;
-+	case HTT_T2H_MSG_TYPE_PPDU_STATS_IND:
-+		ath11k_htt_pull_ppdu_stats(ab, skb);
-+		break;
-+	case HTT_T2H_MSG_TYPE_EXT_STATS_CONF:
-+		ath11k_dbg_htt_ext_stats_handler(ab, skb);
-+		break;
-+	case HTT_T2H_MSG_TYPE_PKTLOG:
-+		ath11k_htt_pktlog(ab, skb);
-+		break;
-+	default:
-+		ath11k_warn(ab, "htt event %d not handled\n", type);
-+		break;
-+	}
-+
-+	dev_kfree_skb_any(skb);
-+}
-+
-+static int ath11k_dp_rx_msdu_coalesce(struct ath11k *ar,
-+				      struct sk_buff_head *msdu_list,
-+				      struct sk_buff *first, struct sk_buff *last,
-+				      u8 l3pad_bytes, int msdu_len)
-+{
-+	struct sk_buff *skb;
-+	struct ath11k_skb_rxcb *rxcb = ATH11K_SKB_RXCB(first);
-+	struct hal_rx_desc *ldesc;
-+	int space_extra;
-+	int rem_len;
-+	int buf_len;
-+
-+	if (!rxcb->is_continuation) {
-+		skb_put(first, HAL_RX_DESC_SIZE + l3pad_bytes + msdu_len);
-+		skb_pull(first, HAL_RX_DESC_SIZE + l3pad_bytes);
-+		return 0;
-+	}
-+
-+	if (WARN_ON_ONCE(msdu_len <= (DP_RX_BUFFER_SIZE -
-+			 (HAL_RX_DESC_SIZE + l3pad_bytes)))) {
-+		skb_put(first, HAL_RX_DESC_SIZE + l3pad_bytes + msdu_len);
-+		skb_pull(first, HAL_RX_DESC_SIZE + l3pad_bytes);
-+		return 0;
-+	}
-+
-+	ldesc = (struct hal_rx_desc *)last->data;
-+	rxcb->is_first_msdu = ath11k_dp_rx_h_msdu_end_first_msdu(ldesc);
-+	rxcb->is_last_msdu = ath11k_dp_rx_h_msdu_end_last_msdu(ldesc);
-+
-+	/* MSDU spans over multiple buffers because the length of the MSDU
-+	 * exceeds DP_RX_BUFFER_SIZE - HAL_RX_DESC_SIZE. So assume the data
-+	 * in the first buf is of length DP_RX_BUFFER_SIZE - HAL_RX_DESC_SIZE.
-+	 */
-+	skb_put(first, DP_RX_BUFFER_SIZE);
-+	skb_pull(first, HAL_RX_DESC_SIZE + l3pad_bytes);
-+
-+	space_extra = msdu_len - (DP_RX_BUFFER_SIZE + skb_tailroom(first));
-+	if (space_extra > 0 &&
-+	    (pskb_expand_head(first, 0, space_extra, GFP_ATOMIC) < 0)) {
-+		/* Free up all buffers of the MSDU */
-+		while ((skb = __skb_dequeue(msdu_list)) != NULL) {
-+			rxcb = ATH11K_SKB_RXCB(skb);
-+			if (!rxcb->is_continuation) {
-+				dev_kfree_skb_any(skb);
-+				break;
-+			}
-+			dev_kfree_skb_any(skb);
-+		}
-+		return -ENOMEM;
-+	}
-+
-+	/* When an MSDU spread over multiple buffers attention, MSDU_END and
-+	 * MPDU_END tlvs are valid only in the last buffer. Copy those tlvs.
-+	 */
-+	ath11k_dp_rx_desc_end_tlv_copy(rxcb->rx_desc, ldesc);
-+
-+	rem_len = msdu_len -
-+		  (DP_RX_BUFFER_SIZE - HAL_RX_DESC_SIZE - l3pad_bytes);
-+	while ((skb = __skb_dequeue(msdu_list)) != NULL && rem_len > 0) {
-+		rxcb = ATH11K_SKB_RXCB(skb);
-+		if (rxcb->is_continuation)
-+			buf_len = DP_RX_BUFFER_SIZE - HAL_RX_DESC_SIZE;
-+		else
-+			buf_len = rem_len;
-+
-+		if (buf_len > (DP_RX_BUFFER_SIZE - HAL_RX_DESC_SIZE)) {
-+			WARN_ON_ONCE(1);
-+			dev_kfree_skb_any(skb);
-+			return -EINVAL;
-+		}
-+
-+		skb_put(skb, buf_len + HAL_RX_DESC_SIZE);
-+		skb_pull(skb, HAL_RX_DESC_SIZE);
-+		skb_copy_from_linear_data(skb, skb_put(first, buf_len),
-+					  buf_len);
-+		dev_kfree_skb_any(skb);
-+
-+		rem_len -= buf_len;
-+		if (!rxcb->is_continuation)
-+			break;
-+	}
-+
-+	return 0;
-+}
-+
-+static struct sk_buff *ath11k_dp_rx_get_msdu_last_buf(struct sk_buff_head *msdu_list,
-+						      struct sk_buff *first)
-+{
-+	struct sk_buff *skb;
-+	struct ath11k_skb_rxcb *rxcb = ATH11K_SKB_RXCB(first);
-+
-+	if (!rxcb->is_continuation)
-+		return first;
-+
-+	skb_queue_walk(msdu_list, skb) {
-+		rxcb = ATH11K_SKB_RXCB(skb);
-+		if (!rxcb->is_continuation)
-+			return skb;
-+	}
-+
-+	return NULL;
-+}
-+
-+static int ath11k_dp_rx_retrieve_amsdu(struct ath11k *ar,
-+				       struct sk_buff_head *msdu_list,
-+				       struct sk_buff_head *amsdu_list)
-+{
-+	struct sk_buff *msdu = skb_peek(msdu_list);
-+	struct sk_buff *last_buf;
-+	struct ath11k_skb_rxcb *rxcb;
-+	struct ieee80211_hdr *hdr;
-+	struct hal_rx_desc *rx_desc, *lrx_desc;
-+	u16 msdu_len;
-+	u8 l3_pad_bytes;
-+	u8 *hdr_status;
-+	int ret;
-+
-+	if (!msdu)
-+		return -ENOENT;
-+
-+	rx_desc = (struct hal_rx_desc *)msdu->data;
-+	hdr_status = ath11k_dp_rx_h_80211_hdr(rx_desc);
-+	hdr = (struct ieee80211_hdr *)hdr_status;
-+	/* Process only data frames */
-+	if (!ieee80211_is_data(hdr->frame_control)) {
-+		__skb_unlink(msdu, msdu_list);
-+		dev_kfree_skb_any(msdu);
-+		return -EINVAL;
-+	}
-+
-+	do {
-+		__skb_unlink(msdu, msdu_list);
-+		last_buf = ath11k_dp_rx_get_msdu_last_buf(msdu_list, msdu);
-+		if (!last_buf) {
-+			ath11k_warn(ar->ab,
-+				    "No valid Rx buffer to access Atten/MSDU_END/MPDU_END tlvs\n");
-+			ret = -EIO;
-+			goto free_out;
-+		}
-+
-+		rx_desc = (struct hal_rx_desc *)msdu->data;
-+		lrx_desc = (struct hal_rx_desc *)last_buf->data;
-+
-+		if (!ath11k_dp_rx_h_attn_msdu_done(lrx_desc)) {
-+			ath11k_warn(ar->ab, "msdu_done bit in attention is not set\n");
-+			ret = -EIO;
-+			goto free_out;
-+		}
-+
-+		rxcb = ATH11K_SKB_RXCB(msdu);
-+		rxcb->rx_desc = rx_desc;
-+		msdu_len = ath11k_dp_rx_h_msdu_start_msdu_len(rx_desc);
-+		l3_pad_bytes = ath11k_dp_rx_h_msdu_end_l3pad(lrx_desc);
-+
-+		if (!rxcb->is_continuation) {
-+			skb_put(msdu, HAL_RX_DESC_SIZE + l3_pad_bytes + msdu_len);
-+			skb_pull(msdu, HAL_RX_DESC_SIZE + l3_pad_bytes);
-+		} else {
-+			ret = ath11k_dp_rx_msdu_coalesce(ar, msdu_list,
-+							 msdu, last_buf,
-+							 l3_pad_bytes, msdu_len);
-+			if (ret) {
-+				ath11k_warn(ar->ab,
-+					    "failed to coalesce msdu rx buffer%d\n", ret);
-+				goto free_out;
-+			}
-+		}
-+		__skb_queue_tail(amsdu_list, msdu);
-+
-+		/* Should we also consider msdu_cnt from mpdu_meta while
-+		 * preparing amsdu list?
-+		 */
-+		if (rxcb->is_last_msdu)
-+			break;
-+	} while ((msdu = skb_peek(msdu_list)) != NULL);
-+
-+	return 0;
-+
-+free_out:
-+	dev_kfree_skb_any(msdu);
-+	__skb_queue_purge(amsdu_list);
-+
-+	return ret;
-+}
-+
-+static void ath11k_dp_rx_h_csum_offload(struct sk_buff *msdu)
-+{
-+	struct ath11k_skb_rxcb *rxcb = ATH11K_SKB_RXCB(msdu);
-+	bool ip_csum_fail, l4_csum_fail;
-+
-+	ip_csum_fail = ath11k_dp_rx_h_attn_ip_cksum_fail(rxcb->rx_desc);
-+	l4_csum_fail = ath11k_dp_rx_h_attn_l4_cksum_fail(rxcb->rx_desc);
-+
-+	msdu->ip_summed = (ip_csum_fail || l4_csum_fail) ?
-+			  CHECKSUM_NONE : CHECKSUM_UNNECESSARY;
-+}
-+
-+static int ath11k_dp_rx_crypto_mic_len(struct ath11k *ar,
-+				       enum hal_encrypt_type enctype)
-+{
-+	switch (enctype) {
-+	case HAL_ENCRYPT_TYPE_OPEN:
-+	case HAL_ENCRYPT_TYPE_TKIP_NO_MIC:
-+	case HAL_ENCRYPT_TYPE_TKIP_MIC:
-+		return 0;
-+	case HAL_ENCRYPT_TYPE_CCMP_128:
-+		return IEEE80211_CCMP_MIC_LEN;
-+	case HAL_ENCRYPT_TYPE_CCMP_256:
-+		return IEEE80211_CCMP_256_MIC_LEN;
-+	case HAL_ENCRYPT_TYPE_GCMP_128:
-+	case HAL_ENCRYPT_TYPE_AES_GCMP_256:
-+		return IEEE80211_GCMP_MIC_LEN;
-+	case HAL_ENCRYPT_TYPE_WEP_40:
-+	case HAL_ENCRYPT_TYPE_WEP_104:
-+	case HAL_ENCRYPT_TYPE_WEP_128:
-+	case HAL_ENCRYPT_TYPE_WAPI_GCM_SM4:
-+	case HAL_ENCRYPT_TYPE_WAPI:
-+		break;
-+	}
-+
-+	ath11k_warn(ar->ab, "unsupported encryption type %d for mic len\n", enctype);
-+	return 0;
-+}
-+
-+static int ath11k_dp_rx_crypto_param_len(struct ath11k *ar,
-+					 enum hal_encrypt_type enctype)
-+{
-+	switch (enctype) {
-+	case HAL_ENCRYPT_TYPE_OPEN:
-+		return 0;
-+	case HAL_ENCRYPT_TYPE_TKIP_NO_MIC:
-+	case HAL_ENCRYPT_TYPE_TKIP_MIC:
-+		return IEEE80211_TKIP_IV_LEN;
-+	case HAL_ENCRYPT_TYPE_CCMP_128:
-+		return IEEE80211_CCMP_HDR_LEN;
-+	case HAL_ENCRYPT_TYPE_CCMP_256:
-+		return IEEE80211_CCMP_256_HDR_LEN;
-+	case HAL_ENCRYPT_TYPE_GCMP_128:
-+	case HAL_ENCRYPT_TYPE_AES_GCMP_256:
-+		return IEEE80211_GCMP_HDR_LEN;
-+	case HAL_ENCRYPT_TYPE_WEP_40:
-+	case HAL_ENCRYPT_TYPE_WEP_104:
-+	case HAL_ENCRYPT_TYPE_WEP_128:
-+	case HAL_ENCRYPT_TYPE_WAPI_GCM_SM4:
-+	case HAL_ENCRYPT_TYPE_WAPI:
-+		break;
-+	}
-+
-+	ath11k_warn(ar->ab, "unsupported encryption type %d\n", enctype);
-+	return 0;
-+}
-+
-+static int ath11k_dp_rx_crypto_icv_len(struct ath11k *ar,
-+				       enum hal_encrypt_type enctype)
-+{
-+	switch (enctype) {
-+	case HAL_ENCRYPT_TYPE_OPEN:
-+	case HAL_ENCRYPT_TYPE_CCMP_128:
-+	case HAL_ENCRYPT_TYPE_CCMP_256:
-+	case HAL_ENCRYPT_TYPE_GCMP_128:
-+	case HAL_ENCRYPT_TYPE_AES_GCMP_256:
-+		return 0;
-+	case HAL_ENCRYPT_TYPE_TKIP_NO_MIC:
-+	case HAL_ENCRYPT_TYPE_TKIP_MIC:
-+		return IEEE80211_TKIP_ICV_LEN;
-+	case HAL_ENCRYPT_TYPE_WEP_40:
-+	case HAL_ENCRYPT_TYPE_WEP_104:
-+	case HAL_ENCRYPT_TYPE_WEP_128:
-+	case HAL_ENCRYPT_TYPE_WAPI_GCM_SM4:
-+	case HAL_ENCRYPT_TYPE_WAPI:
-+		break;
-+	}
-+
-+	ath11k_warn(ar->ab, "unsupported encryption type %d\n", enctype);
-+	return 0;
-+}
-+
-+static void ath11k_dp_rx_h_undecap_nwifi(struct ath11k *ar,
-+					 struct sk_buff *msdu,
-+					 u8 *first_hdr,
-+					 enum hal_encrypt_type enctype,
-+					 struct ieee80211_rx_status *status)
-+{
-+	struct ieee80211_hdr *hdr;
-+	size_t hdr_len;
-+	u8 da[ETH_ALEN];
-+	u8 sa[ETH_ALEN];
-+
-+	/* pull decapped header and copy SA & DA */
-+	hdr = (struct ieee80211_hdr *)msdu->data;
-+	ether_addr_copy(da, ieee80211_get_DA(hdr));
-+	ether_addr_copy(sa, ieee80211_get_SA(hdr));
-+	skb_pull(msdu, ieee80211_hdrlen(hdr->frame_control));
-+
-+	/* push original 802.11 header */
-+	hdr = (struct ieee80211_hdr *)first_hdr;
-+	hdr_len = ieee80211_hdrlen(hdr->frame_control);
-+
-+	if (!(status->flag & RX_FLAG_IV_STRIPPED)) {
-+		memcpy(skb_push(msdu,
-+				ath11k_dp_rx_crypto_param_len(ar, enctype)),
-+		       (void *)hdr + hdr_len,
-+		       ath11k_dp_rx_crypto_param_len(ar, enctype));
-+	}
-+
-+	memcpy(skb_push(msdu, hdr_len), hdr, hdr_len);
-+
-+	/* original 802.11 header has a different DA and in
-+	 * case of 4addr it may also have different SA
-+	 */
-+	hdr = (struct ieee80211_hdr *)msdu->data;
-+	ether_addr_copy(ieee80211_get_DA(hdr), da);
-+	ether_addr_copy(ieee80211_get_SA(hdr), sa);
-+}
-+
-+static void ath11k_dp_rx_h_undecap_raw(struct ath11k *ar, struct sk_buff *msdu,
-+				       enum hal_encrypt_type enctype,
-+				       struct ieee80211_rx_status *status,
-+				       bool decrypted)
-+{
-+	struct ath11k_skb_rxcb *rxcb = ATH11K_SKB_RXCB(msdu);
-+	struct ieee80211_hdr *hdr;
-+	size_t hdr_len;
-+	size_t crypto_len;
-+
-+	if (!rxcb->is_first_msdu ||
-+	    !(rxcb->is_first_msdu && rxcb->is_last_msdu)) {
-+		WARN_ON_ONCE(1);
-+		return;
-+	}
-+
-+	skb_trim(msdu, msdu->len - FCS_LEN);
-+
-+	if (!decrypted)
-+		return;
-+
-+	hdr = (void *)msdu->data;
-+
-+	/* Tail */
-+	if (status->flag & RX_FLAG_IV_STRIPPED) {
-+		skb_trim(msdu, msdu->len -
-+			 ath11k_dp_rx_crypto_mic_len(ar, enctype));
-+
-+		skb_trim(msdu, msdu->len -
-+			 ath11k_dp_rx_crypto_icv_len(ar, enctype));
-+	} else {
-+		/* MIC */
-+		if (status->flag & RX_FLAG_MIC_STRIPPED)
-+			skb_trim(msdu, msdu->len -
-+				 ath11k_dp_rx_crypto_mic_len(ar, enctype));
-+
-+		/* ICV */
-+		if (status->flag & RX_FLAG_ICV_STRIPPED)
-+			skb_trim(msdu, msdu->len -
-+				 ath11k_dp_rx_crypto_icv_len(ar, enctype));
-+	}
-+
-+	/* MMIC */
-+	if ((status->flag & RX_FLAG_MMIC_STRIPPED) &&
-+	    !ieee80211_has_morefrags(hdr->frame_control) &&
-+	    enctype == HAL_ENCRYPT_TYPE_TKIP_MIC)
-+		skb_trim(msdu, msdu->len - IEEE80211_CCMP_MIC_LEN);
-+
-+	/* Head */
-+	if (status->flag & RX_FLAG_IV_STRIPPED) {
-+		hdr_len = ieee80211_hdrlen(hdr->frame_control);
-+		crypto_len = ath11k_dp_rx_crypto_param_len(ar, enctype);
-+
-+		memmove((void *)msdu->data + crypto_len,
-+			(void *)msdu->data, hdr_len);
-+		skb_pull(msdu, crypto_len);
-+	}
-+}
-+
-+static void *ath11k_dp_rx_h_find_rfc1042(struct ath11k *ar,
-+					 struct sk_buff *msdu,
-+					 enum hal_encrypt_type enctype)
-+{
-+	struct ath11k_skb_rxcb *rxcb = ATH11K_SKB_RXCB(msdu);
-+	struct ieee80211_hdr *hdr;
-+	size_t hdr_len, crypto_len;
-+	void *rfc1042;
-+	bool is_amsdu;
-+
-+	is_amsdu = !(rxcb->is_first_msdu && rxcb->is_last_msdu);
-+	hdr = (struct ieee80211_hdr *)ath11k_dp_rx_h_80211_hdr(rxcb->rx_desc);
-+	rfc1042 = hdr;
-+
-+	if (rxcb->is_first_msdu) {
-+		hdr_len = ieee80211_hdrlen(hdr->frame_control);
-+		crypto_len = ath11k_dp_rx_crypto_param_len(ar, enctype);
-+
-+		rfc1042 += hdr_len + crypto_len;
-+	}
-+
-+	if (is_amsdu)
-+		rfc1042 += sizeof(struct ath11k_dp_amsdu_subframe_hdr);
-+
-+	return rfc1042;
-+}
-+
-+static void ath11k_dp_rx_h_undecap_eth(struct ath11k *ar,
-+				       struct sk_buff *msdu,
-+				       u8 *first_hdr,
-+				       enum hal_encrypt_type enctype,
-+				       struct ieee80211_rx_status *status)
-+{
-+	struct ieee80211_hdr *hdr;
-+	struct ethhdr *eth;
-+	size_t hdr_len;
-+	u8 da[ETH_ALEN];
-+	u8 sa[ETH_ALEN];
-+	void *rfc1042;
-+
-+	rfc1042 = ath11k_dp_rx_h_find_rfc1042(ar, msdu, enctype);
-+	if (WARN_ON_ONCE(!rfc1042))
-+		return;
-+
-+	/* pull decapped header and copy SA & DA */
-+	eth = (struct ethhdr *)msdu->data;
-+	ether_addr_copy(da, eth->h_dest);
-+	ether_addr_copy(sa, eth->h_source);
-+	skb_pull(msdu, sizeof(struct ethhdr));
-+
-+	/* push rfc1042/llc/snap */
-+	memcpy(skb_push(msdu, sizeof(struct ath11k_dp_rfc1042_hdr)), rfc1042,
-+	       sizeof(struct ath11k_dp_rfc1042_hdr));
-+
-+	/* push original 802.11 header */
-+	hdr = (struct ieee80211_hdr *)first_hdr;
-+	hdr_len = ieee80211_hdrlen(hdr->frame_control);
-+
-+	if (!(status->flag & RX_FLAG_IV_STRIPPED)) {
-+		memcpy(skb_push(msdu,
-+				ath11k_dp_rx_crypto_param_len(ar, enctype)),
-+		       (void *)hdr + hdr_len,
-+		       ath11k_dp_rx_crypto_param_len(ar, enctype));
-+	}
-+
-+	memcpy(skb_push(msdu, hdr_len), hdr, hdr_len);
-+
-+	/* original 802.11 header has a different DA and in
-+	 * case of 4addr it may also have different SA
-+	 */
-+	hdr = (struct ieee80211_hdr *)msdu->data;
-+	ether_addr_copy(ieee80211_get_DA(hdr), da);
-+	ether_addr_copy(ieee80211_get_SA(hdr), sa);
-+}
-+
-+static void ath11k_dp_rx_h_undecap(struct ath11k *ar, struct sk_buff *msdu,
-+				   struct hal_rx_desc *rx_desc,
-+				   enum hal_encrypt_type enctype,
-+				   struct ieee80211_rx_status *status,
-+				   bool decrypted)
-+{
-+	u8 *first_hdr;
-+	u8 decap;
-+
-+	first_hdr = ath11k_dp_rx_h_80211_hdr(rx_desc);
-+	decap = ath11k_dp_rx_h_mpdu_start_decap_type(rx_desc);
-+
-+	switch (decap) {
-+	case DP_RX_DECAP_TYPE_NATIVE_WIFI:
-+		ath11k_dp_rx_h_undecap_nwifi(ar, msdu, first_hdr,
-+					     enctype, status);
-+		break;
-+	case DP_RX_DECAP_TYPE_RAW:
-+		ath11k_dp_rx_h_undecap_raw(ar, msdu, enctype, status,
-+					   decrypted);
-+		break;
-+	case DP_RX_DECAP_TYPE_ETHERNET2_DIX:
-+		ath11k_dp_rx_h_undecap_eth(ar, msdu, first_hdr,
-+					   enctype, status);
-+		break;
-+	case DP_RX_DECAP_TYPE_8023:
-+		/* TODO: Handle undecap for these formats */
-+		break;
-+	}
-+}
-+
-+static void ath11k_dp_rx_h_mpdu(struct ath11k *ar,
-+				struct sk_buff_head *amsdu_list,
-+				struct hal_rx_desc *rx_desc,
-+				struct ieee80211_rx_status *rx_status)
-+{
-+	struct ieee80211_hdr *hdr;
-+	enum hal_encrypt_type enctype;
-+	struct sk_buff *last_msdu;
-+	struct sk_buff *msdu;
-+	struct ath11k_skb_rxcb *last_rxcb;
-+	bool is_decrypted;
-+	u32 err_bitmap;
-+	u8 *qos;
-+
-+	if (skb_queue_empty(amsdu_list))
-+		return;
-+
-+	hdr = (struct ieee80211_hdr *)ath11k_dp_rx_h_80211_hdr(rx_desc);
-+
-+	/* Each A-MSDU subframe will use the original header as the base and be
-+	 * reported as a separate MSDU so strip the A-MSDU bit from QoS Ctl.
-+	 */
-+	if (ieee80211_is_data_qos(hdr->frame_control)) {
-+		qos = ieee80211_get_qos_ctl(hdr);
-+		qos[0] &= ~IEEE80211_QOS_CTL_A_MSDU_PRESENT;
-+	}
-+
-+	is_decrypted = ath11k_dp_rx_h_attn_is_decrypted(rx_desc);
-+	enctype = ath11k_dp_rx_h_mpdu_start_enctype(rx_desc);
-+
-+	/* Some attention flags are valid only in the last MSDU. */
-+	last_msdu = skb_peek_tail(amsdu_list);
-+	last_rxcb = ATH11K_SKB_RXCB(last_msdu);
-+
-+	err_bitmap = ath11k_dp_rx_h_attn_mpdu_err(last_rxcb->rx_desc);
-+
-+	/* Clear per-MPDU flags while leaving per-PPDU flags intact. */
-+	rx_status->flag &= ~(RX_FLAG_FAILED_FCS_CRC |
-+			     RX_FLAG_MMIC_ERROR |
-+			     RX_FLAG_DECRYPTED |
-+			     RX_FLAG_IV_STRIPPED |
-+			     RX_FLAG_MMIC_STRIPPED);
-+
-+	if (err_bitmap & DP_RX_MPDU_ERR_FCS)
-+		rx_status->flag |= RX_FLAG_FAILED_FCS_CRC;
-+
-+	if (err_bitmap & DP_RX_MPDU_ERR_TKIP_MIC)
-+		rx_status->flag |= RX_FLAG_MMIC_ERROR;
-+
-+	if (is_decrypted)
-+		rx_status->flag |= RX_FLAG_DECRYPTED | RX_FLAG_MMIC_STRIPPED |
-+				   RX_FLAG_MIC_STRIPPED | RX_FLAG_ICV_STRIPPED;
-+
-+	skb_queue_walk(amsdu_list, msdu) {
-+		ath11k_dp_rx_h_csum_offload(msdu);
-+		ath11k_dp_rx_h_undecap(ar, msdu, rx_desc,
-+				       enctype, rx_status, is_decrypted);
-+	}
-+}
-+
-+static void ath11k_dp_rx_h_rate(struct ath11k *ar, struct hal_rx_desc *rx_desc,
-+				struct ieee80211_rx_status *rx_status)
-+{
-+	struct ieee80211_supported_band *sband;
-+	enum rx_msdu_start_pkt_type pkt_type;
-+	u8 bw;
-+	u8 rate_mcs, nss;
-+	u8 sgi;
-+	bool is_cck;
-+
-+	pkt_type = ath11k_dp_rx_h_msdu_start_pkt_type(rx_desc);
-+	bw = ath11k_dp_rx_h_msdu_start_rx_bw(rx_desc);
-+	rate_mcs = ath11k_dp_rx_h_msdu_start_rate_mcs(rx_desc);
-+	nss = ath11k_dp_rx_h_msdu_start_nss(rx_desc);
-+	sgi = ath11k_dp_rx_h_msdu_start_sgi(rx_desc);
-+
-+	switch (pkt_type) {
-+	case RX_MSDU_START_PKT_TYPE_11A:
-+	case RX_MSDU_START_PKT_TYPE_11B:
-+		is_cck = (pkt_type == RX_MSDU_START_PKT_TYPE_11B);
-+		sband = &ar->mac.sbands[rx_status->band];
-+		rx_status->rate_idx = ath11k_mac_hw_rate_to_idx(sband, rate_mcs,
-+								is_cck);
-+		break;
-+	case RX_MSDU_START_PKT_TYPE_11N:
-+		rx_status->encoding = RX_ENC_HT;
-+		if (rate_mcs > ATH11K_HT_MCS_MAX) {
-+			ath11k_warn(ar->ab,
-+				    "Received with invalid mcs in HT mode %d\n",
-+				     rate_mcs);
-+			break;
-+		}
-+		rx_status->rate_idx = rate_mcs + (8 * (nss - 1));
-+		if (sgi)
-+			rx_status->enc_flags |= RX_ENC_FLAG_SHORT_GI;
-+		rx_status->bw = ath11k_bw_to_mac80211_bw(bw);
-+		break;
-+	case RX_MSDU_START_PKT_TYPE_11AC:
-+		rx_status->encoding = RX_ENC_VHT;
-+		rx_status->rate_idx = rate_mcs;
-+		if (rate_mcs > ATH11K_VHT_MCS_MAX) {
-+			ath11k_warn(ar->ab,
-+				    "Received with invalid mcs in VHT mode %d\n",
-+				     rate_mcs);
-+			break;
-+		}
-+		rx_status->nss = nss;
-+		if (sgi)
-+			rx_status->enc_flags |= RX_ENC_FLAG_SHORT_GI;
-+		rx_status->bw = ath11k_bw_to_mac80211_bw(bw);
-+		break;
-+	case RX_MSDU_START_PKT_TYPE_11AX:
-+		rx_status->rate_idx = rate_mcs;
-+		if (rate_mcs > ATH11K_HE_MCS_MAX) {
-+			ath11k_warn(ar->ab,
-+				    "Received with invalid mcs in HE mode %d\n",
-+				    rate_mcs);
-+			break;
-+		}
-+		rx_status->encoding = RX_ENC_HE;
-+		rx_status->nss = nss;
-+		rx_status->bw = ath11k_bw_to_mac80211_bw(bw);
-+		break;
-+	}
-+}
-+
-+static void ath11k_dp_rx_h_ppdu(struct ath11k *ar, struct hal_rx_desc *rx_desc,
-+				struct ieee80211_rx_status *rx_status)
-+{
-+	u8 channel_num;
-+
-+	rx_status->freq = 0;
-+	rx_status->rate_idx = 0;
-+	rx_status->nss = 0;
-+	rx_status->encoding = RX_ENC_LEGACY;
-+	rx_status->bw = RATE_INFO_BW_20;
-+
-+	rx_status->flag |= RX_FLAG_NO_SIGNAL_VAL;
-+
-+	channel_num = ath11k_dp_rx_h_msdu_start_freq(rx_desc);
-+
-+	if (channel_num >= 1 && channel_num <= 14) {
-+		rx_status->band = NL80211_BAND_2GHZ;
-+	} else if (channel_num >= 36 && channel_num <= 173) {
-+		rx_status->band = NL80211_BAND_5GHZ;
-+	} else {
-+		ath11k_warn(ar->ab, "Unsupported Channel info received %d\n",
-+			    channel_num);
-+		return;
-+	}
-+
-+	rx_status->freq = ieee80211_channel_to_frequency(channel_num,
-+							 rx_status->band);
-+
-+	ath11k_dp_rx_h_rate(ar, rx_desc, rx_status);
-+}
-+
-+static void ath11k_dp_rx_process_amsdu(struct ath11k *ar,
-+				       struct sk_buff_head *amsdu_list,
-+				       struct ieee80211_rx_status *rx_status)
-+{
-+	struct sk_buff *first;
-+	struct ath11k_skb_rxcb *rxcb;
-+	struct hal_rx_desc *rx_desc;
-+	bool first_mpdu;
-+
-+	if (skb_queue_empty(amsdu_list))
-+		return;
-+
-+	first = skb_peek(amsdu_list);
-+	rxcb = ATH11K_SKB_RXCB(first);
-+	rx_desc = rxcb->rx_desc;
-+
-+	first_mpdu = ath11k_dp_rx_h_attn_first_mpdu(rx_desc);
-+	if (first_mpdu)
-+		ath11k_dp_rx_h_ppdu(ar, rx_desc, rx_status);
-+
-+	ath11k_dp_rx_h_mpdu(ar, amsdu_list, rx_desc, rx_status);
-+}
-+
-+static char *ath11k_print_get_tid(struct ieee80211_hdr *hdr, char *out,
-+				  size_t size)
-+{
-+	u8 *qc;
-+	int tid;
-+
-+	if (!ieee80211_is_data_qos(hdr->frame_control))
-+		return "";
-+
-+	qc = ieee80211_get_qos_ctl(hdr);
-+	tid = *qc & IEEE80211_QOS_CTL_TID_MASK;
-+	snprintf(out, size, "tid %d", tid);
-+
-+	return out;
-+}
-+
-+static void ath11k_dp_rx_deliver_msdu(struct ath11k *ar, struct napi_struct *napi,
-+				      struct sk_buff *msdu)
-+{
-+	struct ieee80211_rx_status *status;
-+	struct ieee80211_hdr *hdr = (struct ieee80211_hdr *)msdu->data;
-+	char tid[32];
-+
-+	status = IEEE80211_SKB_RXCB(msdu);
-+
-+	ath11k_dbg(ar->ab, ATH11K_DBG_DATA,
-+		   "rx skb %pK len %u peer %pM %s %s sn %u %s%s%s%s%s%s%s %srate_idx %u vht_nss %u freq %u band %u flag 0x%x fcs-err %i mic-err %i amsdu-more %i\n",
-+		   msdu,
-+		   msdu->len,
-+		   ieee80211_get_SA(hdr),
-+		   ath11k_print_get_tid(hdr, tid, sizeof(tid)),
-+		   is_multicast_ether_addr(ieee80211_get_DA(hdr)) ?
-+							"mcast" : "ucast",
-+		   (__le16_to_cpu(hdr->seq_ctrl) & IEEE80211_SCTL_SEQ) >> 4,
-+		   (status->encoding == RX_ENC_LEGACY) ? "legacy" : "",
-+		   (status->encoding == RX_ENC_HT) ? "ht" : "",
-+		   (status->encoding == RX_ENC_VHT) ? "vht" : "",
-+		   (status->encoding == RX_ENC_HE) ? "he" : "",
-+		   (status->bw == RATE_INFO_BW_40) ? "40" : "",
-+		   (status->bw == RATE_INFO_BW_80) ? "80" : "",
-+		   (status->bw == RATE_INFO_BW_160) ? "160" : "",
-+		   status->enc_flags & RX_ENC_FLAG_SHORT_GI ? "sgi " : "",
-+		   status->rate_idx,
-+		   status->nss,
-+		   status->freq,
-+		   status->band, status->flag,
-+		   !!(status->flag & RX_FLAG_FAILED_FCS_CRC),
-+		   !!(status->flag & RX_FLAG_MMIC_ERROR),
-+		   !!(status->flag & RX_FLAG_AMSDU_MORE));
-+
-+	/* TODO: trace rx packet */
-+
-+	ieee80211_rx_napi(ar->hw, NULL, msdu, napi);
-+}
-+
-+static void ath11k_dp_rx_pre_deliver_amsdu(struct ath11k *ar,
-+					   struct sk_buff_head *amsdu_list,
-+					   struct ieee80211_rx_status *rxs)
-+{
-+	struct sk_buff *msdu;
-+	struct sk_buff *first_subframe;
-+	struct ieee80211_rx_status *status;
-+
-+	first_subframe = skb_peek(amsdu_list);
-+
-+	skb_queue_walk(amsdu_list, msdu) {
-+		/* Setup per-MSDU flags */
-+		if (skb_queue_empty(amsdu_list))
-+			rxs->flag &= ~RX_FLAG_AMSDU_MORE;
-+		else
-+			rxs->flag |= RX_FLAG_AMSDU_MORE;
-+
-+		if (msdu == first_subframe) {
-+			first_subframe = NULL;
-+			rxs->flag &= ~RX_FLAG_ALLOW_SAME_PN;
-+		} else {
-+			rxs->flag |= RX_FLAG_ALLOW_SAME_PN;
-+		}
-+		rxs->flag |= RX_FLAG_SKIP_MONITOR;
-+
-+		status = IEEE80211_SKB_RXCB(msdu);
-+		*status = *rxs;
-+	}
-+}
-+
-+static void ath11k_dp_rx_process_pending_packets(struct ath11k_base *ab,
-+						 struct napi_struct *napi,
-+						 struct sk_buff_head *pending_q,
-+						 int *quota, u8 mac_id)
-+{
-+	struct ath11k *ar;
-+	struct sk_buff *msdu;
-+	struct ath11k_pdev *pdev;
-+
-+	if (skb_queue_empty(pending_q))
-+		return;
-+
-+	ar = ab->pdevs[mac_id].ar;
-+
-+	rcu_read_lock();
-+	pdev = rcu_dereference(ab->pdevs_active[mac_id]);
-+
-+	while (*quota && (msdu = __skb_dequeue(pending_q))) {
-+		if (!pdev) {
-+			dev_kfree_skb_any(msdu);
-+			continue;
-+		}
-+
-+		ath11k_dp_rx_deliver_msdu(ar, napi, msdu);
-+		(*quota)--;
-+	}
-+	rcu_read_unlock();
-+}
-+
-+int ath11k_dp_process_rx(struct ath11k_base *ab, int mac_id,
-+			 struct napi_struct *napi, struct sk_buff_head *pending_q,
-+			 int budget)
-+{
-+	struct ath11k *ar = ab->pdevs[mac_id].ar;
-+	struct ath11k_pdev_dp *dp = &ar->dp;
-+	struct ieee80211_rx_status *rx_status = &dp->rx_status;
-+	struct dp_rxdma_ring *rx_ring = &dp->rx_refill_buf_ring;
-+	struct hal_srng *srng;
-+	struct hal_rx_meta_info meta_info;
-+	struct sk_buff *msdu;
-+	struct sk_buff_head msdu_list;
-+	struct sk_buff_head amsdu_list;
-+	struct ath11k_skb_rxcb *rxcb;
-+	u32 *rx_desc;
-+	int buf_id;
-+	int num_buffs_reaped = 0;
-+	int quota = budget;
-+	int ret;
-+	bool done = false;
-+
-+	/* Process any pending packets from the previous napi poll.
-+	 * Note: All msdu's in this pending_q corresponds to the same mac id
-+	 * due to pdev based reo dest mapping and also since each irq group id
-+	 * maps to specific reo dest ring.
-+	 */
-+	ath11k_dp_rx_process_pending_packets(ab, napi, pending_q, &quota,
-+					     mac_id);
-+
-+	/* If all quota is exhausted by processing the pending_q,
-+	 * Wait for the next napi poll to reap the new info
-+	 */
-+	if (!quota)
-+		goto exit;
-+
-+	__skb_queue_head_init(&msdu_list);
-+
-+	srng = &ab->hal.srng_list[dp->reo_dst_ring.ring_id];
-+
-+	spin_lock_bh(&srng->lock);
-+
-+	ath11k_hal_srng_access_begin(ab, srng);
-+
-+try_again:
-+	while ((rx_desc = ath11k_hal_srng_dst_get_next_entry(ab, srng))) {
-+		memset(&meta_info, 0, sizeof(meta_info));
-+		ath11k_hal_rx_parse_dst_ring_desc(ab, rx_desc, &meta_info);
-+
-+		buf_id = FIELD_GET(DP_RXDMA_BUF_COOKIE_BUF_ID,
-+				   meta_info.msdu_meta.cookie);
-+		spin_lock_bh(&rx_ring->idr_lock);
-+		msdu = idr_find(&rx_ring->bufs_idr, buf_id);
-+		if (!msdu) {
-+			ath11k_warn(ab, "frame rx with invalid buf_id %d\n",
-+				    buf_id);
-+			spin_unlock_bh(&rx_ring->idr_lock);
-+			continue;
-+		}
-+
-+		idr_remove(&rx_ring->bufs_idr, buf_id);
-+		spin_unlock_bh(&rx_ring->idr_lock);
-+
-+		rxcb = ATH11K_SKB_RXCB(msdu);
-+		dma_unmap_single(ab->dev, rxcb->paddr,
-+				 msdu->len + skb_tailroom(msdu),
-+				 DMA_FROM_DEVICE);
-+
-+		num_buffs_reaped++;
-+
-+		if (meta_info.push_reason !=
-+		    HAL_REO_DEST_RING_PUSH_REASON_ROUTING_INSTRUCTION) {
-+			/* TODO: Check if the msdu can be sent up for processing */
-+			dev_kfree_skb_any(msdu);
-+			ab->soc_stats.hal_reo_error[dp->reo_dst_ring.ring_id]++;
-+			continue;
-+		}
-+
-+		rxcb->is_first_msdu = meta_info.msdu_meta.first;
-+		rxcb->is_last_msdu = meta_info.msdu_meta.last;
-+		rxcb->is_continuation = meta_info.msdu_meta.continuation;
-+		rxcb->mac_id = mac_id;
-+		__skb_queue_tail(&msdu_list, msdu);
-+
-+		/* Stop reaping from the ring once quota is exhausted
-+		 * and we've received all msdu's in the the AMSDU. The
-+		 * additional msdu's reaped in excess of quota here would
-+		 * be pushed into the pending queue to be processed during
-+		 * the next napi poll.
-+		 * Note: More profiling can be done to see the impact on
-+		 * pending_q and throughput during various traffic & density
-+		 * and how use of budget instead of remaining quota affects it.
-+		 */
-+		if (num_buffs_reaped >= quota && rxcb->is_last_msdu &&
-+		    !rxcb->is_continuation) {
-+			done = true;
-+			break;
-+		}
-+	}
-+
-+	/* Hw might have updated the head pointer after we cached it.
-+	 * In this case, even though there are entries in the ring we'll
-+	 * get rx_desc NULL. Give the read another try with updated cached
-+	 * head pointer so that we can reap complete MPDU in the current
-+	 * rx processing.
-+	 */
-+	if (!done && ath11k_hal_srng_dst_num_free(ab, srng, true)) {
-+		ath11k_hal_srng_access_end(ab, srng);
-+		goto try_again;
-+	}
-+
-+	ath11k_hal_srng_access_end(ab, srng);
-+
-+	spin_unlock_bh(&srng->lock);
-+
-+	if (!num_buffs_reaped)
-+		goto exit;
-+
-+	/* Should we reschedule it later if we are not able to replenish all
-+	 * the buffers?
-+	 */
-+	ath11k_dp_rxbufs_replenish(ab, mac_id, rx_ring, num_buffs_reaped,
-+				   HAL_RX_BUF_RBM_SW3_BM, GFP_ATOMIC);
-+
-+	rcu_read_lock();
-+	if (!rcu_dereference(ab->pdevs_active[mac_id])) {
-+		__skb_queue_purge(&msdu_list);
-+		goto rcu_unlock;
-+	}
-+
-+	if (test_bit(ATH11K_CAC_RUNNING, &ar->dev_flags)) {
-+		__skb_queue_purge(&msdu_list);
-+		goto rcu_unlock;
-+	}
-+
-+	while (!skb_queue_empty(&msdu_list)) {
-+		__skb_queue_head_init(&amsdu_list);
-+		ret = ath11k_dp_rx_retrieve_amsdu(ar, &msdu_list, &amsdu_list);
-+		if (ret) {
-+			if (ret == -EIO) {
-+				ath11k_err(ab, "rx ring got corrupted %d\n", ret);
-+				__skb_queue_purge(&msdu_list);
-+				/* Should stop processing any more rx in
-+				 * future from this ring?
-+				 */
-+				goto rcu_unlock;
-+			}
-+
-+			/* A-MSDU retrieval got failed due to non-fatal condition,
-+			 * continue processing with the next msdu.
-+			 */
-+			continue;
-+		}
-+
-+		ath11k_dp_rx_process_amsdu(ar, &amsdu_list, rx_status);
-+
-+		ath11k_dp_rx_pre_deliver_amsdu(ar, &amsdu_list, rx_status);
-+		skb_queue_splice_tail(&amsdu_list, pending_q);
-+	}
-+
-+	while (quota && (msdu = __skb_dequeue(pending_q))) {
-+		ath11k_dp_rx_deliver_msdu(ar, napi, msdu);
-+		quota--;
-+	}
-+
-+rcu_unlock:
-+	rcu_read_unlock();
-+exit:
-+	return budget - quota;
-+}
-+
-+static void ath11k_dp_rx_update_peer_stats(struct ath11k_sta *arsta,
-+					   struct hal_rx_mon_ppdu_info *ppdu_info)
-+{
-+	struct ath11k_rx_peer_stats *rx_stats = arsta->rx_stats;
-+	u32 num_msdu;
-+
-+	if (!rx_stats)
-+		return;
-+
-+	num_msdu = ppdu_info->tcp_msdu_count + ppdu_info->tcp_ack_msdu_count +
-+		   ppdu_info->udp_msdu_count + ppdu_info->other_msdu_count;
-+
-+	rx_stats->num_msdu += num_msdu;
-+	rx_stats->tcp_msdu_count += ppdu_info->tcp_msdu_count +
-+				    ppdu_info->tcp_ack_msdu_count;
-+	rx_stats->udp_msdu_count += ppdu_info->udp_msdu_count;
-+	rx_stats->other_msdu_count += ppdu_info->other_msdu_count;
-+
-+	if (ppdu_info->preamble_type == HAL_RX_PREAMBLE_11A ||
-+	    ppdu_info->preamble_type == HAL_RX_PREAMBLE_11B) {
-+		ppdu_info->nss = 1;
-+		ppdu_info->mcs = HAL_RX_MAX_MCS;
-+		ppdu_info->tid = IEEE80211_NUM_TIDS;
-+	}
-+
-+	if (ppdu_info->nss > 0 && ppdu_info->nss <= HAL_RX_MAX_NSS)
-+		rx_stats->nss_count[ppdu_info->nss - 1] += num_msdu;
-+
-+	if (ppdu_info->mcs <= HAL_RX_MAX_MCS)
-+		rx_stats->mcs_count[ppdu_info->mcs] += num_msdu;
-+
-+	if (ppdu_info->gi < HAL_RX_GI_MAX)
-+		rx_stats->gi_count[ppdu_info->gi] += num_msdu;
-+
-+	if (ppdu_info->bw < HAL_RX_BW_MAX)
-+		rx_stats->bw_count[ppdu_info->bw] += num_msdu;
-+
-+	if (ppdu_info->ldpc < HAL_RX_SU_MU_CODING_MAX)
-+		rx_stats->coding_count[ppdu_info->ldpc] += num_msdu;
-+
-+	if (ppdu_info->tid <= IEEE80211_NUM_TIDS)
-+		rx_stats->tid_count[ppdu_info->tid] += num_msdu;
-+
-+	if (ppdu_info->preamble_type < HAL_RX_PREAMBLE_MAX)
-+		rx_stats->pream_cnt[ppdu_info->preamble_type] += num_msdu;
-+
-+	if (ppdu_info->reception_type < HAL_RX_RECEPTION_TYPE_MAX)
-+		rx_stats->reception_type[ppdu_info->reception_type] += num_msdu;
-+
-+	if (ppdu_info->is_stbc)
-+		rx_stats->stbc_count += num_msdu;
-+
-+	if (ppdu_info->beamformed)
-+		rx_stats->beamformed_count += num_msdu;
-+
-+	if (ppdu_info->num_mpdu_fcs_ok > 1)
-+		rx_stats->ampdu_msdu_count += num_msdu;
-+	else
-+		rx_stats->non_ampdu_msdu_count += num_msdu;
-+
-+	rx_stats->num_mpdu_fcs_ok += ppdu_info->num_mpdu_fcs_ok;
-+	rx_stats->num_mpdu_fcs_err += ppdu_info->num_mpdu_fcs_err;
-+
-+	arsta->rssi_comb = ppdu_info->rssi_comb;
-+	rx_stats->rx_duration += ppdu_info->rx_duration;
-+	arsta->rx_duration = rx_stats->rx_duration;
-+}
-+
-+static struct sk_buff *ath11k_dp_rx_alloc_mon_status_buf(struct ath11k_base *ab,
-+							 struct dp_rxdma_ring *rx_ring,
-+							 int *buf_id, gfp_t gfp)
-+{
-+	struct sk_buff *skb;
-+	dma_addr_t paddr;
-+
-+	skb = dev_alloc_skb(DP_RX_BUFFER_SIZE +
-+			    DP_RX_BUFFER_ALIGN_SIZE);
-+
-+	if (!skb)
-+		goto fail_alloc_skb;
-+
-+	if (!IS_ALIGNED((unsigned long)skb->data,
-+			DP_RX_BUFFER_ALIGN_SIZE)) {
-+		skb_pull(skb, PTR_ALIGN(skb->data, DP_RX_BUFFER_ALIGN_SIZE) -
-+			 skb->data);
-+	}
-+
-+	paddr = dma_map_single(ab->dev, skb->data,
-+			       skb->len + skb_tailroom(skb),
-+			       DMA_BIDIRECTIONAL);
-+	if (unlikely(dma_mapping_error(ab->dev, paddr)))
-+		goto fail_free_skb;
-+
-+	spin_lock_bh(&rx_ring->idr_lock);
-+	*buf_id = idr_alloc(&rx_ring->bufs_idr, skb, 0,
-+			    rx_ring->bufs_max, gfp);
-+	spin_unlock_bh(&rx_ring->idr_lock);
-+	if (*buf_id < 0)
-+		goto fail_dma_unmap;
-+
-+	ATH11K_SKB_RXCB(skb)->paddr = paddr;
-+	return skb;
-+
-+fail_dma_unmap:
-+	dma_unmap_single(ab->dev, paddr, skb->len + skb_tailroom(skb),
-+			 DMA_BIDIRECTIONAL);
-+fail_free_skb:
-+	dev_kfree_skb_any(skb);
-+fail_alloc_skb:
-+	return NULL;
-+}
-+
-+int ath11k_dp_rx_mon_status_bufs_replenish(struct ath11k_base *ab, int mac_id,
-+					   struct dp_rxdma_ring *rx_ring,
-+					   int req_entries,
-+					   enum hal_rx_buf_return_buf_manager mgr,
-+					   gfp_t gfp)
-+{
-+	struct hal_srng *srng;
-+	u32 *desc;
-+	struct sk_buff *skb;
-+	int num_free;
-+	int num_remain;
-+	int buf_id;
-+	u32 cookie;
-+	dma_addr_t paddr;
-+
-+	req_entries = min(req_entries, rx_ring->bufs_max);
-+
-+	srng = &ab->hal.srng_list[rx_ring->refill_buf_ring.ring_id];
-+
-+	spin_lock_bh(&srng->lock);
-+
-+	ath11k_hal_srng_access_begin(ab, srng);
-+
-+	num_free = ath11k_hal_srng_src_num_free(ab, srng, true);
-+
-+	req_entries = min(num_free, req_entries);
-+	num_remain = req_entries;
-+
-+	while (num_remain > 0) {
-+		skb = ath11k_dp_rx_alloc_mon_status_buf(ab, rx_ring,
-+							&buf_id, gfp);
-+		if (!skb)
-+			break;
-+		paddr = ATH11K_SKB_RXCB(skb)->paddr;
-+
-+		desc = ath11k_hal_srng_src_get_next_entry(ab, srng);
-+		if (!desc)
-+			goto fail_desc_get;
-+
-+		cookie = FIELD_PREP(DP_RXDMA_BUF_COOKIE_PDEV_ID, mac_id) |
-+			 FIELD_PREP(DP_RXDMA_BUF_COOKIE_BUF_ID, buf_id);
-+
-+		num_remain--;
-+
-+		ath11k_hal_rx_buf_addr_info_set(desc, paddr, cookie, mgr);
-+	}
-+
-+	ath11k_hal_srng_access_end(ab, srng);
-+
-+	spin_unlock_bh(&srng->lock);
-+
-+	return req_entries - num_remain;
-+
-+fail_desc_get:
-+	spin_lock_bh(&rx_ring->idr_lock);
-+	idr_remove(&rx_ring->bufs_idr, buf_id);
-+	spin_unlock_bh(&rx_ring->idr_lock);
-+	dma_unmap_single(ab->dev, paddr, skb->len + skb_tailroom(skb),
-+			 DMA_BIDIRECTIONAL);
-+	dev_kfree_skb_any(skb);
-+	ath11k_hal_srng_access_end(ab, srng);
-+	spin_unlock_bh(&srng->lock);
-+
-+	return req_entries - num_remain;
-+}
-+
-+static int ath11k_dp_rx_reap_mon_status_ring(struct ath11k_base *ab, int mac_id,
-+					     int *budget, struct sk_buff_head *skb_list)
-+{
-+	struct ath11k *ar = ab->pdevs[mac_id].ar;
-+	struct ath11k_pdev_dp *dp = &ar->dp;
-+	struct dp_rxdma_ring *rx_ring = &dp->rx_mon_status_refill_ring;
-+	struct hal_srng *srng;
-+	void *rx_mon_status_desc;
-+	struct sk_buff *skb;
-+	struct ath11k_skb_rxcb *rxcb;
-+	struct hal_tlv_hdr *tlv;
-+	u32 cookie;
-+	int buf_id;
-+	dma_addr_t paddr;
-+	u8 rbm;
-+	int num_buffs_reaped = 0;
-+
-+	srng = &ab->hal.srng_list[rx_ring->refill_buf_ring.ring_id];
-+
-+	spin_lock_bh(&srng->lock);
-+
-+	ath11k_hal_srng_access_begin(ab, srng);
-+	while (*budget) {
-+		*budget -= 1;
-+		rx_mon_status_desc =
-+			ath11k_hal_srng_src_peek(ab, srng);
-+		if (!rx_mon_status_desc)
-+			break;
-+
-+		ath11k_hal_rx_buf_addr_info_get(rx_mon_status_desc, &paddr,
-+						&cookie, &rbm);
-+		if (paddr) {
-+			buf_id = FIELD_GET(DP_RXDMA_BUF_COOKIE_BUF_ID, cookie);
-+
-+			spin_lock_bh(&rx_ring->idr_lock);
-+			skb = idr_find(&rx_ring->bufs_idr, buf_id);
-+			if (!skb) {
-+				ath11k_warn(ab, "rx monitor status with invalid buf_id %d\n",
-+					    buf_id);
-+				spin_unlock_bh(&rx_ring->idr_lock);
-+				continue;
-+			}
-+
-+			idr_remove(&rx_ring->bufs_idr, buf_id);
-+			spin_unlock_bh(&rx_ring->idr_lock);
-+
-+			rxcb = ATH11K_SKB_RXCB(skb);
-+
-+			dma_sync_single_for_cpu(ab->dev, rxcb->paddr,
-+						skb->len + skb_tailroom(skb),
-+						DMA_FROM_DEVICE);
-+
-+			dma_unmap_single(ab->dev, rxcb->paddr,
-+					 skb->len + skb_tailroom(skb),
-+					 DMA_BIDIRECTIONAL);
-+
-+			tlv = (struct hal_tlv_hdr *)skb->data;
-+			if (FIELD_GET(HAL_TLV_HDR_TAG, tlv->tl) !=
-+					HAL_RX_STATUS_BUFFER_DONE) {
-+				ath11k_hal_srng_src_get_next_entry(ab, srng);
-+				continue;
-+			}
-+
-+			__skb_queue_tail(skb_list, skb);
-+		}
-+
-+		skb = ath11k_dp_rx_alloc_mon_status_buf(ab, rx_ring,
-+							&buf_id, GFP_ATOMIC);
-+
-+		if (!skb) {
-+			ath11k_hal_rx_buf_addr_info_set(rx_mon_status_desc, 0, 0,
-+							HAL_RX_BUF_RBM_SW3_BM);
-+			num_buffs_reaped++;
-+			break;
-+		}
-+		rxcb = ATH11K_SKB_RXCB(skb);
-+
-+		cookie = FIELD_PREP(DP_RXDMA_BUF_COOKIE_PDEV_ID, mac_id) |
-+			 FIELD_PREP(DP_RXDMA_BUF_COOKIE_BUF_ID, buf_id);
-+
-+		ath11k_hal_rx_buf_addr_info_set(rx_mon_status_desc, rxcb->paddr,
-+						cookie, HAL_RX_BUF_RBM_SW3_BM);
-+		ath11k_hal_srng_src_get_next_entry(ab, srng);
-+		num_buffs_reaped++;
-+	}
-+	ath11k_hal_srng_access_end(ab, srng);
-+	spin_unlock_bh(&srng->lock);
-+
-+	return num_buffs_reaped;
-+}
-+
-+int ath11k_dp_rx_process_mon_status(struct ath11k_base *ab, int mac_id,
-+				    struct napi_struct *napi, int budget)
-+{
-+	struct ath11k *ar = ab->pdevs[mac_id].ar;
-+	enum hal_rx_mon_status hal_status;
-+	struct sk_buff *skb;
-+	struct sk_buff_head skb_list;
-+	struct hal_rx_mon_ppdu_info ppdu_info;
-+	struct ath11k_peer *peer;
-+	struct ath11k_sta *arsta;
-+	int num_buffs_reaped = 0;
-+
-+	__skb_queue_head_init(&skb_list);
-+
-+	num_buffs_reaped = ath11k_dp_rx_reap_mon_status_ring(ab, mac_id, &budget,
-+							     &skb_list);
-+	if (!num_buffs_reaped)
-+		goto exit;
-+
-+	while ((skb = __skb_dequeue(&skb_list))) {
-+		memset(&ppdu_info, 0, sizeof(ppdu_info));
-+		ppdu_info.peer_id = HAL_INVALID_PEERID;
-+
-+		if (ath11k_debug_is_pktlog_rx_stats_enabled(ar))
-+			trace_ath11k_htt_rxdesc(ar, skb->data, DP_RX_BUFFER_SIZE);
-+
-+		hal_status = ath11k_hal_rx_parse_mon_status(ab, &ppdu_info, skb);
-+
-+		if (ppdu_info.peer_id == HAL_INVALID_PEERID ||
-+		    hal_status != HAL_RX_MON_STATUS_PPDU_DONE) {
-+			dev_kfree_skb_any(skb);
-+			continue;
-+		}
-+
-+		rcu_read_lock();
-+		spin_lock_bh(&ab->base_lock);
-+		peer = ath11k_peer_find_by_id(ab, ppdu_info.peer_id);
-+
-+		if (!peer || !peer->sta) {
-+			ath11k_warn(ab, "failed to find the peer with peer_id %d\n",
-+				    ppdu_info.peer_id);
-+			spin_unlock_bh(&ab->base_lock);
-+			rcu_read_unlock();
-+			dev_kfree_skb_any(skb);
-+			continue;
-+		}
-+
-+		arsta = (struct ath11k_sta *)peer->sta->drv_priv;
-+		ath11k_dp_rx_update_peer_stats(arsta, &ppdu_info);
-+
-+		if (ath11k_debug_is_pktlog_peer_valid(ar, peer->addr))
-+			trace_ath11k_htt_rxdesc(ar, skb->data, DP_RX_BUFFER_SIZE);
-+
-+		spin_unlock_bh(&ab->base_lock);
-+		rcu_read_unlock();
-+
-+		dev_kfree_skb_any(skb);
-+	}
-+exit:
-+	return num_buffs_reaped;
-+}
-+
-+static int ath11k_dp_rx_link_desc_return(struct ath11k_base *ab,
-+					 u32 *link_desc,
-+					 enum hal_wbm_rel_bm_act action)
-+{
-+	struct ath11k_dp *dp = &ab->dp;
-+	struct hal_srng *srng;
-+	u32 *desc;
-+	int ret = 0;
-+
-+	srng = &ab->hal.srng_list[dp->wbm_desc_rel_ring.ring_id];
-+
-+	spin_lock_bh(&srng->lock);
-+
-+	ath11k_hal_srng_access_begin(ab, srng);
-+
-+	desc = ath11k_hal_srng_src_get_next_entry(ab, srng);
-+	if (!desc) {
-+		ret = -ENOBUFS;
-+		goto exit;
-+	}
-+
-+	ath11k_hal_rx_msdu_link_desc_set(ab, (void *)desc, (void *)link_desc,
-+					 action);
-+
-+exit:
-+	ath11k_hal_srng_access_end(ab, srng);
-+
-+	spin_unlock_bh(&srng->lock);
-+
-+	return ret;
-+}
-+
-+static void ath11k_dp_rx_frag_h_mpdu(struct ath11k *ar,
-+				     struct sk_buff *msdu,
-+				     struct hal_rx_desc *rx_desc,
-+				     struct ieee80211_rx_status *rx_status)
-+{
-+	u8 rx_channel;
-+	enum hal_encrypt_type enctype;
-+	bool is_decrypted;
-+	u32 err_bitmap;
-+
-+	is_decrypted = ath11k_dp_rx_h_attn_is_decrypted(rx_desc);
-+	enctype = ath11k_dp_rx_h_mpdu_start_enctype(rx_desc);
-+	err_bitmap = ath11k_dp_rx_h_attn_mpdu_err(rx_desc);
-+
-+	if (err_bitmap & DP_RX_MPDU_ERR_FCS)
-+		rx_status->flag |= RX_FLAG_FAILED_FCS_CRC;
-+
-+	if (err_bitmap & DP_RX_MPDU_ERR_TKIP_MIC)
-+		rx_status->flag |= RX_FLAG_MMIC_ERROR;
-+
-+	rx_status->encoding = RX_ENC_LEGACY;
-+	rx_status->bw = RATE_INFO_BW_20;
-+
-+	rx_status->flag |= RX_FLAG_NO_SIGNAL_VAL;
-+
-+	rx_channel = ath11k_dp_rx_h_msdu_start_freq(rx_desc);
-+
-+	if (rx_channel >= 1 && rx_channel <= 14) {
-+		rx_status->band = NL80211_BAND_2GHZ;
-+	} else if (rx_channel >= 36 && rx_channel <= 173) {
-+		rx_status->band = NL80211_BAND_5GHZ;
-+	} else {
-+		ath11k_warn(ar->ab, "Unsupported Channel info received %d\n",
-+			    rx_channel);
-+		return;
-+	}
-+
-+	rx_status->freq = ieee80211_channel_to_frequency(rx_channel,
-+							 rx_status->band);
-+	ath11k_dp_rx_h_rate(ar, rx_desc, rx_status);
-+
-+	/* Rx fragments are received in raw mode */
-+	skb_trim(msdu, msdu->len - FCS_LEN);
-+
-+	if (is_decrypted) {
-+		rx_status->flag |= RX_FLAG_DECRYPTED | RX_FLAG_MIC_STRIPPED;
-+		skb_trim(msdu, msdu->len -
-+			 ath11k_dp_rx_crypto_mic_len(ar, enctype));
-+	}
-+}
-+
-+static int
-+ath11k_dp_process_rx_err_buf(struct ath11k *ar, struct napi_struct *napi,
-+			     int buf_id, bool frag)
-+{
-+	struct ath11k_pdev_dp *dp = &ar->dp;
-+	struct dp_rxdma_ring *rx_ring = &dp->rx_refill_buf_ring;
-+	struct ieee80211_rx_status rx_status = {0};
-+	struct sk_buff *msdu;
-+	struct ath11k_skb_rxcb *rxcb;
-+	struct ieee80211_rx_status *status;
-+	struct hal_rx_desc *rx_desc;
-+	u16 msdu_len;
-+
-+	spin_lock_bh(&rx_ring->idr_lock);
-+	msdu = idr_find(&rx_ring->bufs_idr, buf_id);
-+	if (!msdu) {
-+		ath11k_warn(ar->ab, "rx err buf with invalid buf_id %d\n",
-+			    buf_id);
-+		spin_unlock_bh(&rx_ring->idr_lock);
-+		return -EINVAL;
-+	}
-+
-+	idr_remove(&rx_ring->bufs_idr, buf_id);
-+	spin_unlock_bh(&rx_ring->idr_lock);
-+
-+	rxcb = ATH11K_SKB_RXCB(msdu);
-+	dma_unmap_single(ar->ab->dev, rxcb->paddr,
-+			 msdu->len + skb_tailroom(msdu),
-+			 DMA_FROM_DEVICE);
-+
-+	if (!frag) {
-+		/* Process only rx fragments below, and drop
-+		 * msdu's indicated due to error reasons.
-+		 */
-+		dev_kfree_skb_any(msdu);
-+		return 0;
-+	}
-+
-+	rcu_read_lock();
-+	if (!rcu_dereference(ar->ab->pdevs_active[ar->pdev_idx])) {
-+		dev_kfree_skb_any(msdu);
-+		goto exit;
-+	}
-+
-+	if (test_bit(ATH11K_CAC_RUNNING, &ar->dev_flags)) {
-+		dev_kfree_skb_any(msdu);
-+		goto exit;
-+	}
-+
-+	rx_desc = (struct hal_rx_desc *)msdu->data;
-+	msdu_len = ath11k_dp_rx_h_msdu_start_msdu_len(rx_desc);
-+	skb_put(msdu, HAL_RX_DESC_SIZE + msdu_len);
-+	skb_pull(msdu, HAL_RX_DESC_SIZE);
-+
-+	ath11k_dp_rx_frag_h_mpdu(ar, msdu, rx_desc, &rx_status);
-+
-+	status = IEEE80211_SKB_RXCB(msdu);
-+
-+	*status = rx_status;
-+
-+	ath11k_dp_rx_deliver_msdu(ar, napi, msdu);
-+
-+exit:
-+	rcu_read_unlock();
-+	return 0;
-+}
-+
-+int ath11k_dp_process_rx_err(struct ath11k_base *ab, struct napi_struct *napi,
-+			     int budget)
-+{
-+	struct hal_rx_msdu_meta meta[HAL_NUM_RX_MSDUS_PER_LINK_DESC];
-+	struct dp_link_desc_bank *link_desc_banks;
-+	enum hal_rx_buf_return_buf_manager rbm;
-+	int tot_n_bufs_reaped, quota, ret, i;
-+	int n_bufs_reaped[MAX_RADIOS] = {0};
-+	struct hal_rx_meta_info meta_info;
-+	struct dp_rxdma_ring *rx_ring;
-+	struct dp_srng *reo_except;
-+	u32 desc_bank, num_msdus;
-+	struct hal_srng *srng;
-+	struct ath11k_dp *dp;
-+	void *link_desc_va;
-+	int buf_id, mac_id;
-+	struct ath11k *ar;
-+	dma_addr_t paddr;
-+	u32 *desc;
-+	bool is_frag;
-+
-+	tot_n_bufs_reaped = 0;
-+	quota = budget;
-+
-+	dp = &ab->dp;
-+	reo_except = &dp->reo_except_ring;
-+	link_desc_banks = dp->link_desc_banks;
-+
-+	srng = &ab->hal.srng_list[reo_except->ring_id];
-+
-+	spin_lock_bh(&srng->lock);
-+
-+	ath11k_hal_srng_access_begin(ab, srng);
-+
-+	while (budget &&
-+	       (desc = ath11k_hal_srng_dst_get_next_entry(ab, srng))) {
-+		ab->soc_stats.err_ring_pkts++;
-+		ret = ath11k_hal_desc_reo_parse_err(ab, desc, &paddr,
-+						    &desc_bank);
-+		if (ret) {
-+			ath11k_warn(ab, "failed to parse error reo desc %d\n",
-+				    ret);
-+			continue;
-+		}
-+		link_desc_va = link_desc_banks[desc_bank].vaddr +
-+			       (paddr - link_desc_banks[desc_bank].paddr);
-+		ath11k_hal_rx_msdu_link_info_get(link_desc_va, &num_msdus, meta,
-+						 &rbm);
-+		if (rbm != HAL_RX_BUF_RBM_WBM_IDLE_DESC_LIST &&
-+		    rbm != HAL_RX_BUF_RBM_SW3_BM) {
-+			ab->soc_stats.invalid_rbm++;
-+			ath11k_warn(ab, "invalid return buffer manager %d\n", rbm);
-+			ath11k_dp_rx_link_desc_return(ab, desc,
-+						      HAL_WBM_REL_BM_ACT_REL_MSDU);
-+			continue;
-+		}
-+
-+		memset(&meta_info, 0, sizeof(meta_info));
-+		ath11k_hal_rx_parse_dst_ring_desc(ab, desc, &meta_info);
-+
-+		is_frag = meta_info.mpdu_meta.frag;
-+
-+		/* Return the link desc back to wbm idle list */
-+		ath11k_dp_rx_link_desc_return(ab, desc,
-+					      HAL_WBM_REL_BM_ACT_PUT_IN_IDLE);
-+
-+		for (i = 0; i < num_msdus; i++) {
-+			buf_id = FIELD_GET(DP_RXDMA_BUF_COOKIE_BUF_ID,
-+					   meta[i].cookie);
-+
-+			mac_id = FIELD_GET(DP_RXDMA_BUF_COOKIE_PDEV_ID,
-+					   meta[i].cookie);
-+
-+			ar = ab->pdevs[mac_id].ar;
-+
-+			if (!ath11k_dp_process_rx_err_buf(ar, napi, buf_id,
-+							  is_frag)) {
-+				n_bufs_reaped[mac_id]++;
-+				tot_n_bufs_reaped++;
-+			}
-+		}
-+
-+		if (tot_n_bufs_reaped >= quota) {
-+			tot_n_bufs_reaped = quota;
-+			goto exit;
-+		}
-+
-+		budget = quota - tot_n_bufs_reaped;
-+	}
-+
-+exit:
-+	ath11k_hal_srng_access_end(ab, srng);
-+
-+	spin_unlock_bh(&srng->lock);
-+
-+	for (i = 0; i <  ab->num_radios; i++) {
-+		if (!n_bufs_reaped[i])
-+			continue;
-+
-+		ar = ab->pdevs[i].ar;
-+		rx_ring = &ar->dp.rx_refill_buf_ring;
-+
-+		ath11k_dp_rxbufs_replenish(ab, i, rx_ring, n_bufs_reaped[i],
-+					   HAL_RX_BUF_RBM_SW3_BM, GFP_ATOMIC);
-+	}
-+
-+	return tot_n_bufs_reaped;
-+}
-+
-+static void ath11k_dp_rx_null_q_desc_sg_drop(struct ath11k *ar,
-+					     int msdu_len,
-+					     struct sk_buff_head *msdu_list)
-+{
-+	struct sk_buff *skb, *tmp;
-+	struct ath11k_skb_rxcb *rxcb;
-+	int n_buffs;
-+
-+	n_buffs = DIV_ROUND_UP(msdu_len,
-+			       (DP_RX_BUFFER_SIZE - HAL_RX_DESC_SIZE));
-+
-+	skb_queue_walk_safe(msdu_list, skb, tmp) {
-+		rxcb = ATH11K_SKB_RXCB(skb);
-+		if (rxcb->err_rel_src == HAL_WBM_REL_SRC_MODULE_REO &&
-+		    rxcb->err_code == HAL_REO_DEST_RING_ERROR_CODE_DESC_ADDR_ZERO) {
-+			if (!n_buffs)
-+				break;
-+			__skb_unlink(skb, msdu_list);
-+			dev_kfree_skb_any(skb);
-+			n_buffs--;
-+		}
-+	}
-+}
-+
-+static int ath11k_dp_rx_h_null_q_desc(struct ath11k *ar, struct sk_buff *msdu,
-+				      struct ieee80211_rx_status *status,
-+				      struct sk_buff_head *msdu_list)
-+{
-+	struct sk_buff_head amsdu_list;
-+	u16 msdu_len;
-+	struct hal_rx_desc *desc = (struct hal_rx_desc *)msdu->data;
-+	u8 l3pad_bytes;
-+	struct ath11k_skb_rxcb *rxcb = ATH11K_SKB_RXCB(msdu);
-+
-+	msdu_len = ath11k_dp_rx_h_msdu_start_msdu_len(desc);
-+
-+	if ((msdu_len + HAL_RX_DESC_SIZE) > DP_RX_BUFFER_SIZE) {
-+		/* First buffer will be freed by the caller, so deduct it's length */
-+		msdu_len = msdu_len - (DP_RX_BUFFER_SIZE - HAL_RX_DESC_SIZE);
-+		ath11k_dp_rx_null_q_desc_sg_drop(ar, msdu_len, msdu_list);
-+		return -EINVAL;
-+	}
-+
-+	if (!ath11k_dp_rx_h_attn_msdu_done(desc)) {
-+		ath11k_warn(ar->ab,
-+			    "msdu_done bit not set in null_q_des processing\n");
-+		__skb_queue_purge(msdu_list);
-+		return -EIO;
-+	}
-+
-+	/* Handle NULL queue descriptor violations arising out a missing
-+	 * REO queue for a given peer or a given TID. This typically
-+	 * may happen if a packet is received on a QOS enabled TID before the
-+	 * ADDBA negotiation for that TID, when the TID queue is setup. Or
-+	 * it may also happen for MC/BC frames if they are not routed to the
-+	 * non-QOS TID queue, in the absence of any other default TID queue.
-+	 * This error can show up both in a REO destination or WBM release ring.
-+	 */
-+
-+	__skb_queue_head_init(&amsdu_list);
-+
-+	rxcb->is_first_msdu = ath11k_dp_rx_h_msdu_end_first_msdu(desc);
-+	rxcb->is_last_msdu = ath11k_dp_rx_h_msdu_end_last_msdu(desc);
-+
-+	l3pad_bytes = ath11k_dp_rx_h_msdu_end_l3pad(desc);
-+
-+	if ((HAL_RX_DESC_SIZE + l3pad_bytes + msdu_len) > DP_RX_BUFFER_SIZE)
-+		return -EINVAL;
-+
-+	skb_put(msdu, HAL_RX_DESC_SIZE + l3pad_bytes + msdu_len);
-+	skb_pull(msdu, HAL_RX_DESC_SIZE + l3pad_bytes);
-+
-+	ath11k_dp_rx_h_ppdu(ar, desc, status);
-+
-+	__skb_queue_tail(&amsdu_list, msdu);
-+
-+	ath11k_dp_rx_h_mpdu(ar, &amsdu_list, desc, status);
-+
-+	/* Please note that caller will having the access to msdu and completing
-+	 * rx with mac80211. Need not worry about cleaning up amsdu_list.
-+	 */
-+
-+	return 0;
-+}
-+
-+static bool ath11k_dp_rx_h_reo_err(struct ath11k *ar, struct sk_buff *msdu,
-+				   struct ieee80211_rx_status *status,
-+				   struct sk_buff_head *msdu_list)
-+{
-+	struct ath11k_skb_rxcb *rxcb = ATH11K_SKB_RXCB(msdu);
-+	bool drop = false;
-+
-+	ar->ab->soc_stats.reo_error[rxcb->err_code]++;
-+
-+	switch (rxcb->err_code) {
-+	case HAL_REO_DEST_RING_ERROR_CODE_DESC_ADDR_ZERO:
-+		if (ath11k_dp_rx_h_null_q_desc(ar, msdu, status, msdu_list))
-+			drop = true;
-+		break;
-+	default:
-+		/* TODO: Review other errors and process them to mac80211
-+		 * as appropriate.
-+		 */
-+		drop = true;
-+		break;
-+	}
-+
-+	return drop;
-+}
-+
-+static void ath11k_dp_rx_h_tkip_mic_err(struct ath11k *ar, struct sk_buff *msdu,
-+					struct ieee80211_rx_status *status)
-+{
-+	u16 msdu_len;
-+	struct hal_rx_desc *desc = (struct hal_rx_desc *)msdu->data;
-+	u8 l3pad_bytes;
-+	struct ath11k_skb_rxcb *rxcb = ATH11K_SKB_RXCB(msdu);
-+
-+	rxcb->is_first_msdu = ath11k_dp_rx_h_msdu_end_first_msdu(desc);
-+	rxcb->is_last_msdu = ath11k_dp_rx_h_msdu_end_last_msdu(desc);
-+
-+	l3pad_bytes = ath11k_dp_rx_h_msdu_end_l3pad(desc);
-+	msdu_len = ath11k_dp_rx_h_msdu_start_msdu_len(desc);
-+	skb_put(msdu, HAL_RX_DESC_SIZE + l3pad_bytes + msdu_len);
-+	skb_pull(msdu, HAL_RX_DESC_SIZE + l3pad_bytes);
-+
-+	ath11k_dp_rx_h_ppdu(ar, desc, status);
-+
-+	status->flag |= RX_FLAG_MMIC_ERROR;
-+
-+	ath11k_dp_rx_h_undecap(ar, msdu, desc,
-+			       HAL_ENCRYPT_TYPE_TKIP_MIC, status, false);
-+}
-+
-+static bool ath11k_dp_rx_h_rxdma_err(struct ath11k *ar,  struct sk_buff *msdu,
-+				     struct ieee80211_rx_status *status)
-+{
-+	struct ath11k_skb_rxcb *rxcb = ATH11K_SKB_RXCB(msdu);
-+	bool drop = false;
-+
-+	ar->ab->soc_stats.rxdma_error[rxcb->err_code]++;
-+
-+	switch (rxcb->err_code) {
-+	case HAL_REO_ENTR_RING_RXDMA_ECODE_TKIP_MIC_ERR:
-+		ath11k_dp_rx_h_tkip_mic_err(ar, msdu, status);
-+		break;
-+	default:
-+		/* TODO: Review other rxdma error code to check if anything is
-+		 * worth reporting to mac80211
-+		 */
-+		drop = true;
-+		break;
-+	}
-+
-+	return drop;
-+}
-+
-+static void ath11k_dp_rx_wbm_err(struct ath11k *ar,
-+				 struct napi_struct *napi,
-+				 struct sk_buff *msdu,
-+				 struct sk_buff_head *msdu_list)
-+{
-+	struct ath11k_skb_rxcb *rxcb = ATH11K_SKB_RXCB(msdu);
-+	struct ieee80211_rx_status rxs = {0};
-+	struct ieee80211_rx_status *status;
-+	bool drop = true;
-+
-+	switch (rxcb->err_rel_src) {
-+	case HAL_WBM_REL_SRC_MODULE_REO:
-+		drop = ath11k_dp_rx_h_reo_err(ar, msdu, &rxs, msdu_list);
-+		break;
-+	case HAL_WBM_REL_SRC_MODULE_RXDMA:
-+		drop = ath11k_dp_rx_h_rxdma_err(ar, msdu, &rxs);
-+		break;
-+	default:
-+		/* msdu will get freed */
-+		break;
-+	}
-+
-+	if (drop) {
-+		dev_kfree_skb_any(msdu);
-+		return;
-+	}
-+
-+	status = IEEE80211_SKB_RXCB(msdu);
-+	*status = rxs;
-+
-+	ath11k_dp_rx_deliver_msdu(ar, napi, msdu);
-+}
-+
-+int ath11k_dp_rx_process_wbm_err(struct ath11k_base *ab,
-+				 struct napi_struct *napi, int budget)
-+{
-+	struct ath11k *ar;
-+	struct ath11k_dp *dp = &ab->dp;
-+	struct dp_rxdma_ring *rx_ring;
-+	struct hal_rx_wbm_rel_info err_info;
-+	struct hal_srng *srng;
-+	struct sk_buff *msdu;
-+	struct sk_buff_head msdu_list[MAX_RADIOS];
-+	struct ath11k_skb_rxcb *rxcb;
-+	u32 *rx_desc;
-+	int buf_id, mac_id;
-+	int num_buffs_reaped[MAX_RADIOS] = {0};
-+	int total_num_buffs_reaped = 0;
-+	int ret, i;
-+
-+	for (i = 0; i < MAX_RADIOS; i++)
-+		__skb_queue_head_init(&msdu_list[i]);
-+
-+	srng = &ab->hal.srng_list[dp->rx_rel_ring.ring_id];
-+
-+	spin_lock_bh(&srng->lock);
-+
-+	ath11k_hal_srng_access_begin(ab, srng);
-+
-+	while (budget) {
-+		rx_desc = ath11k_hal_srng_dst_get_next_entry(ab, srng);
-+		if (!rx_desc)
-+			break;
-+
-+		ret = ath11k_hal_wbm_desc_parse_err(ab, rx_desc, &err_info);
-+		if (ret) {
-+			ath11k_warn(ab,
-+				    "failed to parse rx error in wbm_rel ring desc %d\n",
-+				    ret);
-+			continue;
-+		}
-+
-+		buf_id = FIELD_GET(DP_RXDMA_BUF_COOKIE_BUF_ID, err_info.cookie);
-+		mac_id = FIELD_GET(DP_RXDMA_BUF_COOKIE_PDEV_ID, err_info.cookie);
-+
-+		ar = ab->pdevs[mac_id].ar;
-+		rx_ring = &ar->dp.rx_refill_buf_ring;
-+
-+		spin_lock_bh(&rx_ring->idr_lock);
-+		msdu = idr_find(&rx_ring->bufs_idr, buf_id);
-+		if (!msdu) {
-+			ath11k_warn(ab, "frame rx with invalid buf_id %d pdev %d\n",
-+				    buf_id, mac_id);
-+			spin_unlock_bh(&rx_ring->idr_lock);
-+			continue;
-+		}
-+
-+		idr_remove(&rx_ring->bufs_idr, buf_id);
-+		spin_unlock_bh(&rx_ring->idr_lock);
-+
-+		rxcb = ATH11K_SKB_RXCB(msdu);
-+		dma_unmap_single(ab->dev, rxcb->paddr,
-+				 msdu->len + skb_tailroom(msdu),
-+				 DMA_FROM_DEVICE);
-+
-+		num_buffs_reaped[mac_id]++;
-+		total_num_buffs_reaped++;
-+		budget--;
-+
-+		if (err_info.push_reason !=
-+		    HAL_REO_DEST_RING_PUSH_REASON_ERR_DETECTED) {
-+			dev_kfree_skb_any(msdu);
-+			continue;
-+		}
-+
-+		rxcb->err_rel_src = err_info.err_rel_src;
-+		rxcb->err_code = err_info.err_code;
-+		rxcb->rx_desc = (struct hal_rx_desc *)msdu->data;
-+		__skb_queue_tail(&msdu_list[mac_id], msdu);
-+	}
-+
-+	ath11k_hal_srng_access_end(ab, srng);
-+
-+	spin_unlock_bh(&srng->lock);
-+
-+	if (!total_num_buffs_reaped)
-+		goto done;
-+
-+	for (i = 0; i <  ab->num_radios; i++) {
-+		if (!num_buffs_reaped[i])
-+			continue;
-+
-+		ar = ab->pdevs[i].ar;
-+		rx_ring = &ar->dp.rx_refill_buf_ring;
-+
-+		ath11k_dp_rxbufs_replenish(ab, i, rx_ring, num_buffs_reaped[i],
-+					   HAL_RX_BUF_RBM_SW3_BM, GFP_ATOMIC);
-+	}
-+
-+	rcu_read_lock();
-+	for (i = 0; i <  ab->num_radios; i++) {
-+		if (!rcu_dereference(ab->pdevs_active[i])) {
-+			__skb_queue_purge(&msdu_list[i]);
-+			continue;
-+		}
-+
-+		ar = ab->pdevs[i].ar;
-+
-+		if (test_bit(ATH11K_CAC_RUNNING, &ar->dev_flags)) {
-+			__skb_queue_purge(&msdu_list[i]);
-+			continue;
-+		}
-+
-+		while ((msdu = __skb_dequeue(&msdu_list[i])) != NULL)
-+			ath11k_dp_rx_wbm_err(ar, napi, msdu, &msdu_list[i]);
-+	}
-+	rcu_read_unlock();
-+done:
-+	return total_num_buffs_reaped;
-+}
-+
-+int ath11k_dp_process_rxdma_err(struct ath11k_base *ab, int mac_id, int budget)
-+{
-+	struct ath11k *ar = ab->pdevs[mac_id].ar;
-+	struct dp_srng *err_ring = &ar->dp.rxdma_err_dst_ring;
-+	struct dp_rxdma_ring *rx_ring = &ar->dp.rx_refill_buf_ring;
-+	struct dp_link_desc_bank *link_desc_banks = ab->dp.link_desc_banks;
-+	struct hal_srng *srng;
-+	struct hal_rx_msdu_meta meta[HAL_NUM_RX_MSDUS_PER_LINK_DESC];
-+	enum hal_rx_buf_return_buf_manager rbm;
-+	enum hal_reo_entr_rxdma_ecode rxdma_err_code;
-+	struct ath11k_skb_rxcb *rxcb;
-+	struct sk_buff *skb;
-+	struct hal_reo_entrance_ring *entr_ring;
-+	void *desc;
-+	int num_buf_freed = 0;
-+	int quota = budget;
-+	dma_addr_t paddr;
-+	u32 desc_bank;
-+	void *link_desc_va;
-+	int num_msdus;
-+	int i;
-+	int buf_id;
-+
-+	srng = &ab->hal.srng_list[err_ring->ring_id];
-+
-+	spin_lock_bh(&srng->lock);
-+
-+	ath11k_hal_srng_access_begin(ab, srng);
-+
-+	while (quota-- &&
-+	       (desc = ath11k_hal_srng_dst_get_next_entry(ab, srng))) {
-+		ath11k_hal_rx_reo_ent_paddr_get(ab, desc, &paddr, &desc_bank);
-+
-+		entr_ring = (struct hal_reo_entrance_ring *)desc;
-+		rxdma_err_code =
-+			FIELD_GET(HAL_REO_ENTR_RING_INFO1_RXDMA_ERROR_CODE,
-+				  entr_ring->info1);
-+		ab->soc_stats.rxdma_error[rxdma_err_code]++;
-+
-+		link_desc_va = link_desc_banks[desc_bank].vaddr +
-+			       (paddr - link_desc_banks[desc_bank].paddr);
-+		ath11k_hal_rx_msdu_link_info_get(link_desc_va, &num_msdus, meta,
-+						 &rbm);
-+
-+		for (i = 0; i < num_msdus; i++) {
-+			buf_id = FIELD_GET(DP_RXDMA_BUF_COOKIE_BUF_ID,
-+					   meta[i].cookie);
-+
-+			spin_lock_bh(&rx_ring->idr_lock);
-+			skb = idr_find(&rx_ring->bufs_idr, buf_id);
-+			if (!skb) {
-+				ath11k_warn(ab, "rxdma error with invalid buf_id %d\n",
-+					    buf_id);
-+				spin_unlock_bh(&rx_ring->idr_lock);
-+				continue;
-+			}
-+
-+			idr_remove(&rx_ring->bufs_idr, buf_id);
-+			spin_unlock_bh(&rx_ring->idr_lock);
-+
-+			rxcb = ATH11K_SKB_RXCB(skb);
-+			dma_unmap_single(ab->dev, rxcb->paddr,
-+					 skb->len + skb_tailroom(skb),
-+					 DMA_FROM_DEVICE);
-+			dev_kfree_skb_any(skb);
-+
-+			num_buf_freed++;
-+		}
-+
-+		ath11k_dp_rx_link_desc_return(ab, desc,
-+					      HAL_WBM_REL_BM_ACT_PUT_IN_IDLE);
-+	}
-+
-+	ath11k_hal_srng_access_end(ab, srng);
-+
-+	spin_unlock_bh(&srng->lock);
-+
-+	if (num_buf_freed)
-+		ath11k_dp_rxbufs_replenish(ab, mac_id, rx_ring, num_buf_freed,
-+					   HAL_RX_BUF_RBM_SW3_BM, GFP_ATOMIC);
-+
-+	return budget - quota;
-+}
-+
-+void ath11k_dp_process_reo_status(struct ath11k_base *ab)
-+{
-+	struct ath11k_dp *dp = &ab->dp;
-+	struct hal_srng *srng;
-+	struct dp_reo_cmd *cmd, *tmp;
-+	bool found = false;
-+	u32 *reo_desc;
-+	u16 tag;
-+	struct hal_reo_status reo_status;
-+
-+	srng = &ab->hal.srng_list[dp->reo_status_ring.ring_id];
-+
-+	memset(&reo_status, 0, sizeof(reo_status));
-+
-+	spin_lock_bh(&srng->lock);
-+
-+	ath11k_hal_srng_access_begin(ab, srng);
-+
-+	while ((reo_desc = ath11k_hal_srng_dst_get_next_entry(ab, srng))) {
-+		tag = FIELD_GET(HAL_SRNG_TLV_HDR_TAG, *reo_desc);
-+
-+		switch (tag) {
-+		case HAL_REO_GET_QUEUE_STATS_STATUS:
-+			ath11k_hal_reo_status_queue_stats(ab, reo_desc,
-+							  &reo_status);
-+			break;
-+		case HAL_REO_FLUSH_QUEUE_STATUS:
-+			ath11k_hal_reo_flush_queue_status(ab, reo_desc,
-+							  &reo_status);
-+			break;
-+		case HAL_REO_FLUSH_CACHE_STATUS:
-+			ath11k_hal_reo_flush_cache_status(ab, reo_desc,
-+							  &reo_status);
-+			break;
-+		case HAL_REO_UNBLOCK_CACHE_STATUS:
-+			ath11k_hal_reo_unblk_cache_status(ab, reo_desc,
-+							  &reo_status);
-+			break;
-+		case HAL_REO_FLUSH_TIMEOUT_LIST_STATUS:
-+			ath11k_hal_reo_flush_timeout_list_status(ab, reo_desc,
-+								 &reo_status);
-+			break;
-+		case HAL_REO_DESCRIPTOR_THRESHOLD_REACHED_STATUS:
-+			ath11k_hal_reo_desc_thresh_reached_status(ab, reo_desc,
-+								  &reo_status);
-+			break;
-+		case HAL_REO_UPDATE_RX_REO_QUEUE_STATUS:
-+			ath11k_hal_reo_update_rx_reo_queue_status(ab, reo_desc,
-+								  &reo_status);
-+			break;
-+		default:
-+			ath11k_warn(ab, "Unknown reo status type %d\n", tag);
-+			continue;
-+		}
-+
-+		spin_lock_bh(&dp->reo_cmd_lock);
-+		list_for_each_entry_safe(cmd, tmp, &dp->reo_cmd_list, list) {
-+			if (reo_status.uniform_hdr.cmd_num == cmd->cmd_num) {
-+				found = true;
-+				list_del(&cmd->list);
-+				break;
-+			}
-+		}
-+		spin_unlock_bh(&dp->reo_cmd_lock);
-+
-+		if (found) {
-+			cmd->handler(dp, (void *)&cmd->data,
-+				     reo_status.uniform_hdr.cmd_status);
-+			kfree(cmd);
-+		}
-+
-+		found = false;
-+	}
-+
-+	ath11k_hal_srng_access_end(ab, srng);
-+
-+	spin_unlock_bh(&srng->lock);
-+}
-+
-+void ath11k_dp_rx_pdev_free(struct ath11k_base *ab, int mac_id)
-+{
-+	struct ath11k *ar = ab->pdevs[mac_id].ar;
-+
-+	ath11k_dp_rx_pdev_srng_free(ar);
-+	ath11k_dp_rxdma_pdev_buf_free(ar);
-+}
-+
-+int ath11k_dp_rx_pdev_alloc(struct ath11k_base *ab, int mac_id)
-+{
-+	struct ath11k *ar = ab->pdevs[mac_id].ar;
-+	struct ath11k_pdev_dp *dp = &ar->dp;
-+	u32 ring_id;
-+	int ret;
-+
-+	ret = ath11k_dp_rx_pdev_srng_alloc(ar);
-+	if (ret) {
-+		ath11k_warn(ab, "failed to setup rx srngs\n");
-+		return ret;
-+	}
-+
-+	ret = ath11k_dp_rxdma_pdev_buf_setup(ar);
-+	if (ret) {
-+		ath11k_warn(ab, "failed to setup rxdma ring\n");
-+		return ret;
-+	}
-+
-+	ring_id = dp->rx_refill_buf_ring.refill_buf_ring.ring_id;
-+	ret = ath11k_dp_tx_htt_srng_setup(ab, ring_id, mac_id, HAL_RXDMA_BUF);
-+	if (ret) {
-+		ath11k_warn(ab, "failed to configure rx_refill_buf_ring %d\n",
-+			    ret);
-+		return ret;
-+	}
-+
-+	ring_id = dp->rxdma_err_dst_ring.ring_id;
-+	ret = ath11k_dp_tx_htt_srng_setup(ab, ring_id, mac_id, HAL_RXDMA_DST);
-+	if (ret) {
-+		ath11k_warn(ab, "failed to configure rxdma_err_dest_ring %d\n",
-+			    ret);
-+		return ret;
-+	}
-+
-+	ring_id = dp->rxdma_mon_buf_ring.refill_buf_ring.ring_id;
-+	ret = ath11k_dp_tx_htt_srng_setup(ab, ring_id,
-+					  mac_id, HAL_RXDMA_MONITOR_BUF);
-+	if (ret) {
-+		ath11k_warn(ab, "failed to configure rxdma_mon_buf_ring %d\n",
-+			    ret);
-+		return ret;
-+	}
-+	ret = ath11k_dp_tx_htt_srng_setup(ab,
-+					  dp->rxdma_mon_dst_ring.ring_id,
-+					  mac_id, HAL_RXDMA_MONITOR_DST);
-+	if (ret) {
-+		ath11k_warn(ab, "failed to configure rxdma_mon_dst_ring %d\n",
-+			    ret);
-+		return ret;
-+	}
-+	ret = ath11k_dp_tx_htt_srng_setup(ab,
-+					  dp->rxdma_mon_desc_ring.ring_id,
-+					  mac_id, HAL_RXDMA_MONITOR_DESC);
-+	if (ret) {
-+		ath11k_warn(ab, "failed to configure rxdma_mon_dst_ring %d\n",
-+			    ret);
-+		return ret;
-+	}
-+	ring_id = dp->rx_mon_status_refill_ring.refill_buf_ring.ring_id;
-+	ret = ath11k_dp_tx_htt_srng_setup(ab, ring_id, mac_id,
-+					  HAL_RXDMA_MONITOR_STATUS);
-+	if (ret) {
-+		ath11k_warn(ab,
-+			    "failed to configure mon_status_refill_ring %d\n",
-+			    ret);
-+		return ret;
-+	}
-+	return 0;
-+}
-+
-+static void ath11k_dp_mon_set_frag_len(u32 *total_len, u32 *frag_len)
-+{
-+	if (*total_len >= (DP_RX_BUFFER_SIZE - sizeof(struct hal_rx_desc))) {
-+		*frag_len = DP_RX_BUFFER_SIZE - sizeof(struct hal_rx_desc);
-+		*total_len -= *frag_len;
-+	} else {
-+		*frag_len = *total_len;
-+		*total_len = 0;
-+	}
-+}
-+
-+static
-+int ath11k_dp_rx_monitor_link_desc_return(struct ath11k *ar,
-+					  void *p_last_buf_addr_info,
-+					  u8 mac_id)
-+{
-+	struct ath11k_pdev_dp *dp = &ar->dp;
-+	struct dp_srng *dp_srng;
-+	void *hal_srng;
-+	void *src_srng_desc;
-+	int ret = 0;
-+
-+	dp_srng = &dp->rxdma_mon_desc_ring;
-+	hal_srng = &ar->ab->hal.srng_list[dp_srng->ring_id];
-+
-+	ath11k_hal_srng_access_begin(ar->ab, hal_srng);
-+
-+	src_srng_desc = ath11k_hal_srng_src_get_next_entry(ar->ab, hal_srng);
-+
-+	if (src_srng_desc) {
-+		struct ath11k_buffer_addr *src_desc =
-+				(struct ath11k_buffer_addr *)src_srng_desc;
-+
-+		*src_desc = *((struct ath11k_buffer_addr *)p_last_buf_addr_info);
-+	} else {
-+		ath11k_dbg(ar->ab, ATH11K_DBG_DATA,
-+			   "Monitor Link Desc Ring %d Full", mac_id);
-+		ret = -ENOMEM;
-+	}
-+
-+	ath11k_hal_srng_access_end(ar->ab, hal_srng);
-+	return ret;
-+}
-+
-+static
-+void ath11k_dp_rx_mon_next_link_desc_get(void *rx_msdu_link_desc,
-+					 dma_addr_t *paddr, u32 *sw_cookie,
-+					 void **pp_buf_addr_info)
-+{
-+	struct hal_rx_msdu_link *msdu_link =
-+			(struct hal_rx_msdu_link *)rx_msdu_link_desc;
-+	struct ath11k_buffer_addr *buf_addr_info;
-+	u8 rbm = 0;
-+
-+	buf_addr_info = (struct ath11k_buffer_addr *)&msdu_link->buf_addr_info;
-+
-+	ath11k_hal_rx_buf_addr_info_get(buf_addr_info, paddr, sw_cookie, &rbm);
-+
-+	*pp_buf_addr_info = (void *)buf_addr_info;
-+}
-+
-+static int ath11k_dp_pkt_set_pktlen(struct sk_buff *skb, u32 len)
-+{
-+	if (skb->len > len) {
-+		skb_trim(skb, len);
-+	} else {
-+		if (skb_tailroom(skb) < len - skb->len) {
-+			if ((pskb_expand_head(skb, 0,
-+					      len - skb->len - skb_tailroom(skb),
-+					      GFP_ATOMIC))) {
-+				dev_kfree_skb_any(skb);
-+				return -ENOMEM;
-+			}
-+		}
-+		skb_put(skb, (len - skb->len));
-+	}
-+	return 0;
-+}
-+
-+static void ath11k_hal_rx_msdu_list_get(struct ath11k *ar,
-+					void *msdu_link_desc,
-+					struct hal_rx_msdu_list *msdu_list,
-+					u16 *num_msdus)
-+{
-+	struct hal_rx_msdu_details *msdu_details = NULL;
-+	struct rx_msdu_desc *msdu_desc_info = NULL;
-+	struct hal_rx_msdu_link *msdu_link = NULL;
-+	int i;
-+	u32 last = FIELD_PREP(RX_MSDU_DESC_INFO0_LAST_MSDU_IN_MPDU, 1);
-+	u32 first = FIELD_PREP(RX_MSDU_DESC_INFO0_FIRST_MSDU_IN_MPDU, 1);
-+	u8  tmp  = 0;
-+
-+	msdu_link = (struct hal_rx_msdu_link *)msdu_link_desc;
-+	msdu_details = &msdu_link->msdu_link[0];
-+
-+	for (i = 0; i < HAL_RX_NUM_MSDU_DESC; i++) {
-+		if (FIELD_GET(BUFFER_ADDR_INFO0_ADDR,
-+			      msdu_details[i].buf_addr_info.info0) == 0) {
-+			msdu_desc_info = &msdu_details[i - 1].rx_msdu_info;
-+			msdu_desc_info->info0 |= last;
-+			;
-+			break;
-+		}
-+		msdu_desc_info = &msdu_details[i].rx_msdu_info;
-+
-+		if (!i)
-+			msdu_desc_info->info0 |= first;
-+		else if (i == (HAL_RX_NUM_MSDU_DESC - 1))
-+			msdu_desc_info->info0 |= last;
-+		msdu_list->msdu_info[i].msdu_flags = msdu_desc_info->info0;
-+		msdu_list->msdu_info[i].msdu_len =
-+			 HAL_RX_MSDU_PKT_LENGTH_GET(msdu_desc_info->info0);
-+		msdu_list->sw_cookie[i] =
-+			FIELD_GET(BUFFER_ADDR_INFO1_SW_COOKIE,
-+				  msdu_details[i].buf_addr_info.info1);
-+		tmp = FIELD_GET(BUFFER_ADDR_INFO1_RET_BUF_MGR,
-+				msdu_details[i].buf_addr_info.info1);
-+		msdu_list->rbm[i] = tmp;
-+	}
-+	*num_msdus = i;
-+}
-+
-+static u32 ath11k_dp_rx_mon_comp_ppduid(u32 msdu_ppdu_id, u32 *ppdu_id,
-+					u32 *rx_bufs_used)
-+{
-+	u32 ret = 0;
-+
-+	if ((*ppdu_id < msdu_ppdu_id) &&
-+	    ((msdu_ppdu_id - *ppdu_id) < DP_NOT_PPDU_ID_WRAP_AROUND)) {
-+		*ppdu_id = msdu_ppdu_id;
-+		ret = msdu_ppdu_id;
-+	} else if ((*ppdu_id > msdu_ppdu_id) &&
-+		((*ppdu_id - msdu_ppdu_id) > DP_NOT_PPDU_ID_WRAP_AROUND)) {
-+		/* mon_dst is behind than mon_status
-+		 * skip dst_ring and free it
-+		 */
-+		*rx_bufs_used += 1;
-+		*ppdu_id = msdu_ppdu_id;
-+		ret = msdu_ppdu_id;
-+	}
-+	return ret;
-+}
-+
-+static void ath11k_dp_mon_get_buf_len(struct hal_rx_msdu_desc_info *info,
-+				      bool *is_frag, u32 *total_len,
-+				      u32 *frag_len, u32 *msdu_cnt)
-+{
-+	if (info->msdu_flags & RX_MSDU_DESC_INFO0_MSDU_CONTINUATION) {
-+		if (!*is_frag) {
-+			*total_len = info->msdu_len;
-+			*is_frag = true;
-+		}
-+		ath11k_dp_mon_set_frag_len(total_len,
-+					   frag_len);
-+	} else {
-+		if (*is_frag) {
-+			ath11k_dp_mon_set_frag_len(total_len,
-+						   frag_len);
-+		} else {
-+			*frag_len = info->msdu_len;
-+		}
-+		*is_frag = false;
-+		*msdu_cnt -= 1;
-+	}
-+}
-+
-+static u32
-+ath11k_dp_rx_mon_mpdu_pop(struct ath11k *ar,
-+			  void *ring_entry, struct sk_buff **head_msdu,
-+			  struct sk_buff **tail_msdu, u32 *npackets,
-+			  u32 *ppdu_id)
-+{
-+	struct ath11k_pdev_dp *dp = &ar->dp;
-+	struct ath11k_mon_data *pmon = (struct ath11k_mon_data *)&dp->mon_data;
-+	struct dp_rxdma_ring *rx_ring = &dp->rxdma_mon_buf_ring;
-+	struct sk_buff *msdu = NULL, *last = NULL;
-+	struct hal_rx_msdu_list msdu_list;
-+	void *p_buf_addr_info, *p_last_buf_addr_info;
-+	struct hal_rx_desc *rx_desc;
-+	void *rx_msdu_link_desc;
-+	dma_addr_t paddr;
-+	u16 num_msdus = 0;
-+	u32 rx_buf_size, rx_pkt_offset, sw_cookie;
-+	u32 rx_bufs_used = 0, i = 0;
-+	u32 msdu_ppdu_id = 0, msdu_cnt = 0;
-+	u32 total_len = 0, frag_len = 0;
-+	bool is_frag, is_first_msdu;
-+	bool drop_mpdu = false;
-+	struct ath11k_skb_rxcb *rxcb;
-+	struct hal_reo_entrance_ring *ent_desc =
-+			(struct hal_reo_entrance_ring *)ring_entry;
-+	int buf_id;
-+
-+	ath11k_hal_rx_reo_ent_buf_paddr_get(ring_entry, &paddr,
-+					    &sw_cookie, &p_last_buf_addr_info,
-+					    &msdu_cnt);
-+
-+	if (FIELD_GET(HAL_REO_ENTR_RING_INFO1_RXDMA_PUSH_REASON,
-+		      ent_desc->info1) ==
-+		      HAL_REO_DEST_RING_PUSH_REASON_ERR_DETECTED) {
-+		u8 rxdma_err =
-+			FIELD_GET(HAL_REO_ENTR_RING_INFO1_RXDMA_ERROR_CODE,
-+				  ent_desc->info1);
-+		if (rxdma_err == HAL_REO_ENTR_RING_RXDMA_ECODE_FLUSH_REQUEST_ERR ||
-+		    rxdma_err == HAL_REO_ENTR_RING_RXDMA_ECODE_MPDU_LEN_ERR ||
-+		    rxdma_err == HAL_REO_ENTR_RING_RXDMA_ECODE_OVERFLOW_ERR) {
-+			drop_mpdu = true;
-+			pmon->rx_mon_stats.dest_mpdu_drop++;
-+		}
-+	}
-+
-+	is_frag = false;
-+	is_first_msdu = true;
-+
-+	do {
-+		if (pmon->mon_last_linkdesc_paddr == paddr) {
-+			pmon->rx_mon_stats.dup_mon_linkdesc_cnt++;
-+			return rx_bufs_used;
-+		}
-+
-+		rx_msdu_link_desc =
-+			(void *)pmon->link_desc_banks[sw_cookie].vaddr +
-+			(paddr - pmon->link_desc_banks[sw_cookie].paddr);
-+
-+		ath11k_hal_rx_msdu_list_get(ar, rx_msdu_link_desc, &msdu_list,
-+					    &num_msdus);
-+
-+		for (i = 0; i < num_msdus; i++) {
-+			u32 l2_hdr_offset;
-+
-+			if (pmon->mon_last_buf_cookie == msdu_list.sw_cookie[i]) {
-+				ath11k_dbg(ar->ab, ATH11K_DBG_DATA,
-+					   "i %d last_cookie %d is same\n",
-+					   i, pmon->mon_last_buf_cookie);
-+				drop_mpdu = true;
-+				pmon->rx_mon_stats.dup_mon_buf_cnt++;
-+				continue;
-+			}
-+			buf_id = FIELD_GET(DP_RXDMA_BUF_COOKIE_BUF_ID,
-+					   msdu_list.sw_cookie[i]);
-+
-+			spin_lock_bh(&rx_ring->idr_lock);
-+			msdu = idr_find(&rx_ring->bufs_idr, buf_id);
-+			spin_unlock_bh(&rx_ring->idr_lock);
-+			if (!msdu) {
-+				ath11k_dbg(ar->ab, ATH11K_DBG_DATA,
-+					   "msdu_pop: invalid buf_id %d\n", buf_id);
-+				break;
-+			}
-+			rxcb = ATH11K_SKB_RXCB(msdu);
-+			if (!rxcb->unmapped) {
-+				dma_unmap_single(ar->ab->dev, rxcb->paddr,
-+						 msdu->len +
-+						 skb_tailroom(msdu),
-+						 DMA_FROM_DEVICE);
-+				rxcb->unmapped = 1;
-+			}
-+			if (drop_mpdu) {
-+				ath11k_dbg(ar->ab, ATH11K_DBG_DATA,
-+					   "i %d drop msdu %p *ppdu_id %x\n",
-+					   i, msdu, *ppdu_id);
-+				dev_kfree_skb_any(msdu);
-+				msdu = NULL;
-+				goto next_msdu;
-+			}
-+
-+			rx_desc = (struct hal_rx_desc *)msdu->data;
-+
-+			rx_pkt_offset = sizeof(struct hal_rx_desc);
-+			l2_hdr_offset = ath11k_dp_rx_h_msdu_end_l3pad(rx_desc);
-+
-+			if (is_first_msdu) {
-+				if (!ath11k_dp_rxdesc_mpdu_valid(rx_desc)) {
-+					drop_mpdu = true;
-+					dev_kfree_skb_any(msdu);
-+					msdu = NULL;
-+					pmon->mon_last_linkdesc_paddr = paddr;
-+					goto next_msdu;
-+				}
-+
-+				msdu_ppdu_id =
-+					ath11k_dp_rxdesc_get_ppduid(rx_desc);
-+
-+				if (ath11k_dp_rx_mon_comp_ppduid(msdu_ppdu_id,
-+								 ppdu_id,
-+								 &rx_bufs_used))
-+					return rx_bufs_used;
-+				pmon->mon_last_linkdesc_paddr = paddr;
-+				is_first_msdu = false;
-+			}
-+			ath11k_dp_mon_get_buf_len(&msdu_list.msdu_info[i],
-+						  &is_frag, &total_len,
-+						  &frag_len, &msdu_cnt);
-+			rx_buf_size = rx_pkt_offset + l2_hdr_offset + frag_len;
-+
-+			ath11k_dp_pkt_set_pktlen(msdu, rx_buf_size);
-+
-+			if (!(*head_msdu))
-+				*head_msdu = msdu;
-+			else if (last)
-+				last->next = msdu;
-+
-+			last = msdu;
-+next_msdu:
-+			pmon->mon_last_buf_cookie = msdu_list.sw_cookie[i];
-+			rx_bufs_used++;
-+			spin_lock_bh(&rx_ring->idr_lock);
-+			idr_remove(&rx_ring->bufs_idr, buf_id);
-+			spin_unlock_bh(&rx_ring->idr_lock);
-+		}
-+
-+		ath11k_dp_rx_mon_next_link_desc_get(rx_msdu_link_desc, &paddr,
-+						    &sw_cookie,
-+						    &p_buf_addr_info);
-+
-+		if (ath11k_dp_rx_monitor_link_desc_return(ar,
-+							  p_last_buf_addr_info,
-+							  dp->mac_id))
-+			ath11k_dbg(ar->ab, ATH11K_DBG_DATA,
-+				   "dp_rx_monitor_link_desc_return failed");
-+
-+		p_last_buf_addr_info = p_buf_addr_info;
-+
-+	} while (paddr && msdu_cnt);
-+
-+	if (last)
-+		last->next = NULL;
-+
-+	*tail_msdu = msdu;
-+
-+	if (msdu_cnt == 0)
-+		*npackets = 1;
-+
-+	return rx_bufs_used;
-+}
-+
-+static void ath11k_dp_rx_msdus_set_payload(struct sk_buff *msdu)
-+{
-+	u32 rx_pkt_offset, l2_hdr_offset;
-+
-+	rx_pkt_offset = sizeof(struct hal_rx_desc);
-+	l2_hdr_offset = ath11k_dp_rx_h_msdu_end_l3pad((struct hal_rx_desc *)msdu->data);
-+	skb_pull(msdu, rx_pkt_offset + l2_hdr_offset);
-+}
-+
-+static struct sk_buff *
-+ath11k_dp_rx_mon_merg_msdus(struct ath11k *ar,
-+			    u32 mac_id, struct sk_buff *head_msdu,
-+			    struct sk_buff *last_msdu,
-+			    struct ieee80211_rx_status *rxs)
-+{
-+	struct sk_buff *msdu, *mpdu_buf, *prev_buf;
-+	u32 decap_format, wifi_hdr_len;
-+	struct hal_rx_desc *rx_desc;
-+	char *hdr_desc;
-+	u8 *dest;
-+	struct ieee80211_hdr_3addr *wh;
-+
-+	mpdu_buf = NULL;
-+
-+	if (!head_msdu)
-+		goto err_merge_fail;
-+
-+	rx_desc = (struct hal_rx_desc *)head_msdu->data;
-+
-+	if (ath11k_dp_rxdesc_get_mpdulen_err(rx_desc))
-+		return NULL;
-+
-+	decap_format = ath11k_dp_rxdesc_get_decap_format(rx_desc);
-+
-+	ath11k_dp_rx_h_ppdu(ar, rx_desc, rxs);
-+
-+	if (decap_format == DP_RX_DECAP_TYPE_RAW) {
-+		ath11k_dp_rx_msdus_set_payload(head_msdu);
-+
-+		prev_buf = head_msdu;
-+		msdu = head_msdu->next;
-+
-+		while (msdu) {
-+			ath11k_dp_rx_msdus_set_payload(msdu);
-+
-+			prev_buf = msdu;
-+			msdu = msdu->next;
-+		}
-+
-+		prev_buf->next = NULL;
-+
-+		skb_trim(prev_buf, prev_buf->len - HAL_RX_FCS_LEN);
-+	} else if (decap_format == DP_RX_DECAP_TYPE_NATIVE_WIFI) {
-+		__le16 qos_field;
-+		u8 qos_pkt = 0;
-+
-+		rx_desc = (struct hal_rx_desc *)head_msdu->data;
-+		hdr_desc = ath11k_dp_rxdesc_get_80211hdr(rx_desc);
-+
-+		/* Base size */
-+		wifi_hdr_len = sizeof(struct ieee80211_hdr_3addr);
-+		wh = (struct ieee80211_hdr_3addr *)hdr_desc;
-+
-+		if (ieee80211_is_data_qos(wh->frame_control)) {
-+			struct ieee80211_qos_hdr *qwh =
-+					(struct ieee80211_qos_hdr *)hdr_desc;
-+
-+			qos_field = qwh->qos_ctrl;
-+			qos_pkt = 1;
-+		}
-+		msdu = head_msdu;
-+
-+		while (msdu) {
-+			rx_desc = (struct hal_rx_desc *)msdu->data;
-+			hdr_desc = ath11k_dp_rxdesc_get_80211hdr(rx_desc);
-+
-+			if (qos_pkt) {
-+				dest = skb_push(msdu, sizeof(__le16));
-+				if (!dest)
-+					goto err_merge_fail;
-+				memcpy(dest, hdr_desc, wifi_hdr_len);
-+				memcpy(dest + wifi_hdr_len,
-+				       (u8 *)&qos_field, sizeof(__le16));
-+			}
-+			ath11k_dp_rx_msdus_set_payload(msdu);
-+			prev_buf = msdu;
-+			msdu = msdu->next;
-+		}
-+		dest = skb_put(prev_buf, HAL_RX_FCS_LEN);
-+		if (!dest)
-+			goto err_merge_fail;
-+
-+		ath11k_dbg(ar->ab, ATH11K_DBG_DATA,
-+			   "mpdu_buf %pK mpdu_buf->len %u",
-+			   prev_buf, prev_buf->len);
-+	} else {
-+		ath11k_dbg(ar->ab, ATH11K_DBG_DATA,
-+			   "decap format %d is not supported!\n",
-+			   decap_format);
-+		goto err_merge_fail;
-+	}
-+
-+	return head_msdu;
-+
-+err_merge_fail:
-+	if (mpdu_buf && decap_format != DP_RX_DECAP_TYPE_RAW) {
-+		ath11k_dbg(ar->ab, ATH11K_DBG_DATA,
-+			   "err_merge_fail mpdu_buf %pK", mpdu_buf);
-+		/* Free the head buffer */
-+		dev_kfree_skb_any(mpdu_buf);
-+	}
-+	return NULL;
-+}
-+
-+static int ath11k_dp_rx_mon_deliver(struct ath11k *ar, u32 mac_id,
-+				    struct sk_buff *head_msdu,
-+				    struct sk_buff *tail_msdu,
-+				    struct napi_struct *napi)
-+{
-+	struct ath11k_pdev_dp *dp = &ar->dp;
-+	struct sk_buff *mon_skb, *skb_next, *header;
-+	struct ieee80211_rx_status *rxs = &dp->rx_status, *status;
-+
-+	mon_skb = ath11k_dp_rx_mon_merg_msdus(ar, mac_id, head_msdu,
-+					      tail_msdu, rxs);
-+
-+	if (!mon_skb)
-+		goto mon_deliver_fail;
-+
-+	header = mon_skb;
-+
-+	rxs->flag = 0;
-+	do {
-+		skb_next = mon_skb->next;
-+		if (!skb_next)
-+			rxs->flag &= ~RX_FLAG_AMSDU_MORE;
-+		else
-+			rxs->flag |= RX_FLAG_AMSDU_MORE;
-+
-+		if (mon_skb == header) {
-+			header = NULL;
-+			rxs->flag &= ~RX_FLAG_ALLOW_SAME_PN;
-+		} else {
-+			rxs->flag |= RX_FLAG_ALLOW_SAME_PN;
-+		}
-+		rxs->flag |= RX_FLAG_ONLY_MONITOR;
-+
-+		status = IEEE80211_SKB_RXCB(mon_skb);
-+		*status = *rxs;
-+
-+		ath11k_dp_rx_deliver_msdu(ar, napi, mon_skb);
-+		mon_skb = skb_next;
-+	} while (mon_skb && (mon_skb != tail_msdu));
-+	rxs->flag = 0;
-+
-+	return 0;
-+
-+mon_deliver_fail:
-+	mon_skb = head_msdu;
-+	while (mon_skb) {
-+		skb_next = mon_skb->next;
-+		dev_kfree_skb_any(mon_skb);
-+		mon_skb = skb_next;
-+	}
-+	return -EINVAL;
-+}
-+
-+static void ath11k_dp_rx_mon_dest_process(struct ath11k *ar, u32 quota,
-+					  struct napi_struct *napi)
-+{
-+	struct ath11k_pdev_dp *dp = &ar->dp;
-+	struct ath11k_mon_data *pmon = (struct ath11k_mon_data *)&dp->mon_data;
-+	void *ring_entry;
-+	void *mon_dst_srng;
-+	u32 ppdu_id;
-+	u32 rx_bufs_used;
-+	struct ath11k_pdev_mon_stats *rx_mon_stats;
-+	u32	 npackets = 0;
-+
-+	mon_dst_srng = &ar->ab->hal.srng_list[dp->rxdma_mon_dst_ring.ring_id];
-+
-+	if (!mon_dst_srng) {
-+		ath11k_warn(ar->ab,
-+			    "HAL Monitor Destination Ring Init Failed -- %pK",
-+			    mon_dst_srng);
-+		return;
-+	}
-+
-+	spin_lock_bh(&pmon->mon_lock);
-+
-+	ath11k_hal_srng_access_begin(ar->ab, mon_dst_srng);
-+
-+	ppdu_id = pmon->mon_ppdu_info.ppdu_id;
-+	rx_bufs_used = 0;
-+	rx_mon_stats = &pmon->rx_mon_stats;
-+
-+	while ((ring_entry = ath11k_hal_srng_dst_peek(ar->ab, mon_dst_srng))) {
-+		struct sk_buff *head_msdu, *tail_msdu;
-+
-+		head_msdu = NULL;
-+		tail_msdu = NULL;
-+
-+		rx_bufs_used += ath11k_dp_rx_mon_mpdu_pop(ar, ring_entry,
-+							  &head_msdu,
-+							  &tail_msdu,
-+							  &npackets, &ppdu_id);
-+
-+		if (ppdu_id != pmon->mon_ppdu_info.ppdu_id) {
-+			pmon->mon_ppdu_status = DP_PPDU_STATUS_START;
-+			ath11k_dbg(ar->ab, ATH11K_DBG_DATA,
-+				   "dest_rx: new ppdu_id %x != status ppdu_id %x",
-+				   ppdu_id, pmon->mon_ppdu_info.ppdu_id);
-+			break;
-+		}
-+		if (head_msdu && tail_msdu) {
-+			ath11k_dp_rx_mon_deliver(ar, dp->mac_id, head_msdu,
-+						 tail_msdu, napi);
-+			rx_mon_stats->dest_mpdu_done++;
-+		}
-+
-+		ring_entry = ath11k_hal_srng_dst_get_next_entry(ar->ab,
-+								mon_dst_srng);
-+	}
-+	ath11k_hal_srng_access_end(ar->ab, mon_dst_srng);
-+
-+	spin_unlock_bh(&pmon->mon_lock);
-+
-+	if (rx_bufs_used) {
-+		rx_mon_stats->dest_ppdu_done++;
-+		ath11k_dp_rxbufs_replenish(ar->ab, dp->mac_id,
-+					   &dp->rxdma_mon_buf_ring,
-+					   rx_bufs_used,
-+					   HAL_RX_BUF_RBM_SW3_BM, GFP_ATOMIC);
-+	}
-+}
-+
-+static void ath11k_dp_rx_mon_status_process_tlv(struct ath11k *ar,
-+						u32 quota,
-+						struct napi_struct *napi)
-+{
-+	struct ath11k_pdev_dp *dp = &ar->dp;
-+	struct ath11k_mon_data *pmon = (struct ath11k_mon_data *)&dp->mon_data;
-+	struct hal_rx_mon_ppdu_info *ppdu_info;
-+	struct sk_buff *status_skb;
-+	u32 tlv_status = HAL_TLV_STATUS_BUF_DONE;
-+	struct ath11k_pdev_mon_stats *rx_mon_stats;
-+
-+	ppdu_info = &pmon->mon_ppdu_info;
-+	rx_mon_stats = &pmon->rx_mon_stats;
-+
-+	if (pmon->mon_ppdu_status != DP_PPDU_STATUS_START)
-+		return;
-+
-+	while (!skb_queue_empty(&pmon->rx_status_q)) {
-+		status_skb = skb_dequeue(&pmon->rx_status_q);
-+
-+		tlv_status = ath11k_hal_rx_parse_mon_status(ar->ab, ppdu_info,
-+							    status_skb);
-+		if (tlv_status == HAL_TLV_STATUS_PPDU_DONE) {
-+			rx_mon_stats->status_ppdu_done++;
-+			pmon->mon_ppdu_status = DP_PPDU_STATUS_DONE;
-+			ath11k_dp_rx_mon_dest_process(ar, quota, napi);
-+			pmon->mon_ppdu_status = DP_PPDU_STATUS_START;
-+		}
-+		dev_kfree_skb_any(status_skb);
-+	}
-+}
-+
-+static int ath11k_dp_mon_process_rx(struct ath11k_base *ab, int mac_id,
-+				    struct napi_struct *napi, int budget)
-+{
-+	struct ath11k *ar = ab->pdevs[mac_id].ar;
-+	struct ath11k_pdev_dp *dp = &ar->dp;
-+	struct ath11k_mon_data *pmon = (struct ath11k_mon_data *)&dp->mon_data;
-+	int num_buffs_reaped = 0;
-+
-+	num_buffs_reaped = ath11k_dp_rx_reap_mon_status_ring(ar->ab, dp->mac_id, &budget,
-+							     &pmon->rx_status_q);
-+	if (num_buffs_reaped)
-+		ath11k_dp_rx_mon_status_process_tlv(ar, budget, napi);
-+
-+	return num_buffs_reaped;
-+}
-+
-+int ath11k_dp_rx_process_mon_rings(struct ath11k_base *ab, int mac_id,
-+				   struct napi_struct *napi, int budget)
-+{
-+	struct ath11k *ar = ab->pdevs[mac_id].ar;
-+	int ret = 0;
-+
-+	if (test_bit(ATH11K_FLAG_MONITOR_ENABLED, &ar->monitor_flags))
-+		ret = ath11k_dp_mon_process_rx(ab, mac_id, napi, budget);
-+	else
-+		ret = ath11k_dp_rx_process_mon_status(ab, mac_id, napi, budget);
-+	return ret;
-+}
-+
-+static int ath11k_dp_rx_pdev_mon_status_attach(struct ath11k *ar)
-+{
-+	struct ath11k_pdev_dp *dp = &ar->dp;
-+	struct ath11k_mon_data *pmon = (struct ath11k_mon_data *)&dp->mon_data;
-+
-+	skb_queue_head_init(&pmon->rx_status_q);
-+
-+	pmon->mon_ppdu_status = DP_PPDU_STATUS_START;
-+
-+	memset(&pmon->rx_mon_stats, 0,
-+	       sizeof(pmon->rx_mon_stats));
-+	return 0;
-+}
-+
-+int ath11k_dp_rx_pdev_mon_attach(struct ath11k *ar)
-+{
-+	struct ath11k_pdev_dp *dp = &ar->dp;
-+	struct ath11k_mon_data *pmon = &dp->mon_data;
-+	struct hal_srng *mon_desc_srng = NULL;
-+	struct dp_srng *dp_srng;
-+	int ret = 0;
-+	u32 n_link_desc = 0;
-+
-+	ret = ath11k_dp_rx_pdev_mon_status_attach(ar);
-+	if (ret) {
-+		ath11k_warn(ar->ab, "pdev_mon_status_attach() failed");
-+		return ret;
-+	}
-+
-+	dp_srng = &dp->rxdma_mon_desc_ring;
-+	n_link_desc = dp_srng->size /
-+		ath11k_hal_srng_get_entrysize(HAL_RXDMA_MONITOR_DESC);
-+	mon_desc_srng =
-+		&ar->ab->hal.srng_list[dp->rxdma_mon_desc_ring.ring_id];
-+
-+	ret = ath11k_dp_link_desc_setup(ar->ab, pmon->link_desc_banks,
-+					HAL_RXDMA_MONITOR_DESC, mon_desc_srng,
-+					n_link_desc);
-+	if (ret) {
-+		ath11k_warn(ar->ab, "mon_link_desc_pool_setup() failed");
-+		return ret;
-+	}
-+	pmon->mon_last_linkdesc_paddr = 0;
-+	pmon->mon_last_buf_cookie = DP_RX_DESC_COOKIE_MAX + 1;
-+	spin_lock_init(&pmon->mon_lock);
-+	return 0;
-+}
-+
-+static int ath11k_dp_mon_link_free(struct ath11k *ar)
-+{
-+	struct ath11k_pdev_dp *dp = &ar->dp;
-+	struct ath11k_mon_data *pmon = &dp->mon_data;
-+
-+	ath11k_dp_link_desc_cleanup(ar->ab, pmon->link_desc_banks,
-+				    HAL_RXDMA_MONITOR_DESC,
-+				    &dp->rxdma_mon_desc_ring);
-+	return 0;
-+}
-+
-+int ath11k_dp_rx_pdev_mon_detach(struct ath11k *ar)
-+{
-+	ath11k_dp_mon_link_free(ar);
-+	return 0;
-+}
++#ifndef ATH11K_HAL_DESC_H
++#define ATH11K_HAL_DESC_H
++
++#define BUFFER_ADDR_INFO0_ADDR         GENMASK(31, 0)
++
++#define BUFFER_ADDR_INFO1_ADDR         GENMASK(7, 0)
++#define BUFFER_ADDR_INFO1_RET_BUF_MGR  GENMASK(10, 8)
++#define BUFFER_ADDR_INFO1_SW_COOKIE    GENMASK(31, 11)
++
++struct ath11k_buffer_addr {
++	u32 info0;
++	u32 info1;
++} __packed;
++
++/* ath11k_buffer_addr
++ *
++ * info0
++ *		Address (lower 32 bits) of the msdu buffer or msdu extension
++ *		descriptor or Link descriptor
++ *
++ * addr
++ *		Address (upper 8 bits) of the msdu buffer or msdu extension
++ *		descriptor or Link descriptor
++ *
++ * return_buffer_manager (RBM)
++ *		Consumer: WBM
++ *		Producer: SW/FW
++ *		Indicates to which buffer manager the buffer or MSDU_EXTENSION
++ *		descriptor or link descriptor that is being pointed to shall be
++ *		returned after the frame has been processed. It is used by WBM
++ *		for routing purposes.
++ *
++ *		Values are defined in enum %HAL_RX_BUF_RBM_
++ *
++ * sw_buffer_cookie
++ *		Cookie field exclusively used by SW. HW ignores the contents,
++ *		accept that it passes the programmed value on to other
++ *		descriptors together with the physical address.
++ *
++ *		Field can be used by SW to for example associate the buffers
++ *		physical address with the virtual address.
++ */
++
++enum hal_tlv_tag {
++	HAL_MACTX_CBF_START                    =   0 /* 0x0 */,
++	HAL_PHYRX_DATA                         =   1 /* 0x1 */,
++	HAL_PHYRX_CBF_DATA_RESP                =   2 /* 0x2 */,
++	HAL_PHYRX_ABORT_REQUEST                =   3 /* 0x3 */,
++	HAL_PHYRX_USER_ABORT_NOTIFICATION      =   4 /* 0x4 */,
++	HAL_MACTX_DATA_RESP                    =   5 /* 0x5 */,
++	HAL_MACTX_CBF_DATA                     =   6 /* 0x6 */,
++	HAL_MACTX_CBF_DONE                     =   7 /* 0x7 */,
++	HAL_MACRX_CBF_READ_REQUEST             =   8 /* 0x8 */,
++	HAL_MACRX_CBF_DATA_REQUEST             =   9 /* 0x9 */,
++	HAL_MACRX_EXPECT_NDP_RECEPTION         =  10 /* 0xa */,
++	HAL_MACRX_FREEZE_CAPTURE_CHANNEL       =  11 /* 0xb */,
++	HAL_MACRX_NDP_TIMEOUT                  =  12 /* 0xc */,
++	HAL_MACRX_ABORT_ACK                    =  13 /* 0xd */,
++	HAL_MACRX_REQ_IMPLICIT_FB              =  14 /* 0xe */,
++	HAL_MACRX_CHAIN_MASK                   =  15 /* 0xf */,
++	HAL_MACRX_NAP_USER                     =  16 /* 0x10 */,
++	HAL_MACRX_ABORT_REQUEST                =  17 /* 0x11 */,
++	HAL_PHYTX_OTHER_TRANSMIT_INFO16        =  18 /* 0x12 */,
++	HAL_PHYTX_ABORT_ACK                    =  19 /* 0x13 */,
++	HAL_PHYTX_ABORT_REQUEST                =  20 /* 0x14 */,
++	HAL_PHYTX_PKT_END                      =  21 /* 0x15 */,
++	HAL_PHYTX_PPDU_HEADER_INFO_REQUEST     =  22 /* 0x16 */,
++	HAL_PHYTX_REQUEST_CTRL_INFO            =  23 /* 0x17 */,
++	HAL_PHYTX_DATA_REQUEST                 =  24 /* 0x18 */,
++	HAL_PHYTX_BF_CV_LOADING_DONE           =  25 /* 0x19 */,
++	HAL_PHYTX_NAP_ACK                      =  26 /* 0x1a */,
++	HAL_PHYTX_NAP_DONE                     =  27 /* 0x1b */,
++	HAL_PHYTX_OFF_ACK                      =  28 /* 0x1c */,
++	HAL_PHYTX_ON_ACK                       =  29 /* 0x1d */,
++	HAL_PHYTX_SYNTH_OFF_ACK                =  30 /* 0x1e */,
++	HAL_PHYTX_DEBUG16                      =  31 /* 0x1f */,
++	HAL_MACTX_ABORT_REQUEST                =  32 /* 0x20 */,
++	HAL_MACTX_ABORT_ACK                    =  33 /* 0x21 */,
++	HAL_MACTX_PKT_END                      =  34 /* 0x22 */,
++	HAL_MACTX_PRE_PHY_DESC                 =  35 /* 0x23 */,
++	HAL_MACTX_BF_PARAMS_COMMON             =  36 /* 0x24 */,
++	HAL_MACTX_BF_PARAMS_PER_USER           =  37 /* 0x25 */,
++	HAL_MACTX_PREFETCH_CV                  =  38 /* 0x26 */,
++	HAL_MACTX_USER_DESC_COMMON             =  39 /* 0x27 */,
++	HAL_MACTX_USER_DESC_PER_USER           =  40 /* 0x28 */,
++	HAL_EXAMPLE_USER_TLV_16                =  41 /* 0x29 */,
++	HAL_EXAMPLE_TLV_16                     =  42 /* 0x2a */,
++	HAL_MACTX_PHY_OFF                      =  43 /* 0x2b */,
++	HAL_MACTX_PHY_ON                       =  44 /* 0x2c */,
++	HAL_MACTX_SYNTH_OFF                    =  45 /* 0x2d */,
++	HAL_MACTX_EXPECT_CBF_COMMON            =  46 /* 0x2e */,
++	HAL_MACTX_EXPECT_CBF_PER_USER          =  47 /* 0x2f */,
++	HAL_MACTX_PHY_DESC                     =  48 /* 0x30 */,
++	HAL_MACTX_L_SIG_A                      =  49 /* 0x31 */,
++	HAL_MACTX_L_SIG_B                      =  50 /* 0x32 */,
++	HAL_MACTX_HT_SIG                       =  51 /* 0x33 */,
++	HAL_MACTX_VHT_SIG_A                    =  52 /* 0x34 */,
++	HAL_MACTX_VHT_SIG_B_SU20               =  53 /* 0x35 */,
++	HAL_MACTX_VHT_SIG_B_SU40               =  54 /* 0x36 */,
++	HAL_MACTX_VHT_SIG_B_SU80               =  55 /* 0x37 */,
++	HAL_MACTX_VHT_SIG_B_SU160              =  56 /* 0x38 */,
++	HAL_MACTX_VHT_SIG_B_MU20               =  57 /* 0x39 */,
++	HAL_MACTX_VHT_SIG_B_MU40               =  58 /* 0x3a */,
++	HAL_MACTX_VHT_SIG_B_MU80               =  59 /* 0x3b */,
++	HAL_MACTX_VHT_SIG_B_MU160              =  60 /* 0x3c */,
++	HAL_MACTX_SERVICE                      =  61 /* 0x3d */,
++	HAL_MACTX_HE_SIG_A_SU                  =  62 /* 0x3e */,
++	HAL_MACTX_HE_SIG_A_MU_DL               =  63 /* 0x3f */,
++	HAL_MACTX_HE_SIG_A_MU_UL               =  64 /* 0x40 */,
++	HAL_MACTX_HE_SIG_B1_MU                 =  65 /* 0x41 */,
++	HAL_MACTX_HE_SIG_B2_MU                 =  66 /* 0x42 */,
++	HAL_MACTX_HE_SIG_B2_OFDMA              =  67 /* 0x43 */,
++	HAL_MACTX_DELETE_CV                    =  68 /* 0x44 */,
++	HAL_MACTX_MU_UPLINK_COMMON             =  69 /* 0x45 */,
++	HAL_MACTX_MU_UPLINK_USER_SETUP         =  70 /* 0x46 */,
++	HAL_MACTX_OTHER_TRANSMIT_INFO          =  71 /* 0x47 */,
++	HAL_MACTX_PHY_NAP                      =  72 /* 0x48 */,
++	HAL_MACTX_DEBUG                        =  73 /* 0x49 */,
++	HAL_PHYRX_ABORT_ACK                    =  74 /* 0x4a */,
++	HAL_PHYRX_GENERATED_CBF_DETAILS        =  75 /* 0x4b */,
++	HAL_PHYRX_RSSI_LEGACY                  =  76 /* 0x4c */,
++	HAL_PHYRX_RSSI_HT                      =  77 /* 0x4d */,
++	HAL_PHYRX_USER_INFO                    =  78 /* 0x4e */,
++	HAL_PHYRX_PKT_END                      =  79 /* 0x4f */,
++	HAL_PHYRX_DEBUG                        =  80 /* 0x50 */,
++	HAL_PHYRX_CBF_TRANSFER_DONE            =  81 /* 0x51 */,
++	HAL_PHYRX_CBF_TRANSFER_ABORT           =  82 /* 0x52 */,
++	HAL_PHYRX_L_SIG_A                      =  83 /* 0x53 */,
++	HAL_PHYRX_L_SIG_B                      =  84 /* 0x54 */,
++	HAL_PHYRX_HT_SIG                       =  85 /* 0x55 */,
++	HAL_PHYRX_VHT_SIG_A                    =  86 /* 0x56 */,
++	HAL_PHYRX_VHT_SIG_B_SU20               =  87 /* 0x57 */,
++	HAL_PHYRX_VHT_SIG_B_SU40               =  88 /* 0x58 */,
++	HAL_PHYRX_VHT_SIG_B_SU80               =  89 /* 0x59 */,
++	HAL_PHYRX_VHT_SIG_B_SU160              =  90 /* 0x5a */,
++	HAL_PHYRX_VHT_SIG_B_MU20               =  91 /* 0x5b */,
++	HAL_PHYRX_VHT_SIG_B_MU40               =  92 /* 0x5c */,
++	HAL_PHYRX_VHT_SIG_B_MU80               =  93 /* 0x5d */,
++	HAL_PHYRX_VHT_SIG_B_MU160              =  94 /* 0x5e */,
++	HAL_PHYRX_HE_SIG_A_SU                  =  95 /* 0x5f */,
++	HAL_PHYRX_HE_SIG_A_MU_DL               =  96 /* 0x60 */,
++	HAL_PHYRX_HE_SIG_A_MU_UL               =  97 /* 0x61 */,
++	HAL_PHYRX_HE_SIG_B1_MU                 =  98 /* 0x62 */,
++	HAL_PHYRX_HE_SIG_B2_MU                 =  99 /* 0x63 */,
++	HAL_PHYRX_HE_SIG_B2_OFDMA              = 100 /* 0x64 */,
++	HAL_PHYRX_OTHER_RECEIVE_INFO           = 101 /* 0x65 */,
++	HAL_PHYRX_COMMON_USER_INFO             = 102 /* 0x66 */,
++	HAL_PHYRX_DATA_DONE                    = 103 /* 0x67 */,
++	HAL_RECEIVE_RSSI_INFO                  = 104 /* 0x68 */,
++	HAL_RECEIVE_USER_INFO                  = 105 /* 0x69 */,
++	HAL_MIMO_CONTROL_INFO                  = 106 /* 0x6a */,
++	HAL_RX_LOCATION_INFO                   = 107 /* 0x6b */,
++	HAL_COEX_TX_REQ                        = 108 /* 0x6c */,
++	HAL_DUMMY                              = 109 /* 0x6d */,
++	HAL_RX_TIMING_OFFSET_INFO              = 110 /* 0x6e */,
++	HAL_EXAMPLE_TLV_32_NAME                = 111 /* 0x6f */,
++	HAL_MPDU_LIMIT                         = 112 /* 0x70 */,
++	HAL_NA_LENGTH_END                      = 113 /* 0x71 */,
++	HAL_OLE_BUF_STATUS                     = 114 /* 0x72 */,
++	HAL_PCU_PPDU_SETUP_DONE                = 115 /* 0x73 */,
++	HAL_PCU_PPDU_SETUP_END                 = 116 /* 0x74 */,
++	HAL_PCU_PPDU_SETUP_INIT                = 117 /* 0x75 */,
++	HAL_PCU_PPDU_SETUP_START               = 118 /* 0x76 */,
++	HAL_PDG_FES_SETUP                      = 119 /* 0x77 */,
++	HAL_PDG_RESPONSE                       = 120 /* 0x78 */,
++	HAL_PDG_TX_REQ                         = 121 /* 0x79 */,
++	HAL_SCH_WAIT_INSTR                     = 122 /* 0x7a */,
++	HAL_SCHEDULER_TLV                      = 123 /* 0x7b */,
++	HAL_TQM_FLOW_EMPTY_STATUS              = 124 /* 0x7c */,
++	HAL_TQM_FLOW_NOT_EMPTY_STATUS          = 125 /* 0x7d */,
++	HAL_TQM_GEN_MPDU_LENGTH_LIST           = 126 /* 0x7e */,
++	HAL_TQM_GEN_MPDU_LENGTH_LIST_STATUS    = 127 /* 0x7f */,
++	HAL_TQM_GEN_MPDUS                      = 128 /* 0x80 */,
++	HAL_TQM_GEN_MPDUS_STATUS               = 129 /* 0x81 */,
++	HAL_TQM_REMOVE_MPDU                    = 130 /* 0x82 */,
++	HAL_TQM_REMOVE_MPDU_STATUS             = 131 /* 0x83 */,
++	HAL_TQM_REMOVE_MSDU                    = 132 /* 0x84 */,
++	HAL_TQM_REMOVE_MSDU_STATUS             = 133 /* 0x85 */,
++	HAL_TQM_UPDATE_TX_MPDU_COUNT           = 134 /* 0x86 */,
++	HAL_TQM_WRITE_CMD                      = 135 /* 0x87 */,
++	HAL_OFDMA_TRIGGER_DETAILS              = 136 /* 0x88 */,
++	HAL_TX_DATA                            = 137 /* 0x89 */,
++	HAL_TX_FES_SETUP                       = 138 /* 0x8a */,
++	HAL_RX_PACKET                          = 139 /* 0x8b */,
++	HAL_EXPECTED_RESPONSE                  = 140 /* 0x8c */,
++	HAL_TX_MPDU_END                        = 141 /* 0x8d */,
++	HAL_TX_MPDU_START                      = 142 /* 0x8e */,
++	HAL_TX_MSDU_END                        = 143 /* 0x8f */,
++	HAL_TX_MSDU_START                      = 144 /* 0x90 */,
++	HAL_TX_SW_MODE_SETUP                   = 145 /* 0x91 */,
++	HAL_TXPCU_BUFFER_STATUS                = 146 /* 0x92 */,
++	HAL_TXPCU_USER_BUFFER_STATUS           = 147 /* 0x93 */,
++	HAL_DATA_TO_TIME_CONFIG                = 148 /* 0x94 */,
++	HAL_EXAMPLE_USER_TLV_32                = 149 /* 0x95 */,
++	HAL_MPDU_INFO                          = 150 /* 0x96 */,
++	HAL_PDG_USER_SETUP                     = 151 /* 0x97 */,
++	HAL_TX_11AH_SETUP                      = 152 /* 0x98 */,
++	HAL_REO_UPDATE_RX_REO_QUEUE_STATUS     = 153 /* 0x99 */,
++	HAL_TX_PEER_ENTRY                      = 154 /* 0x9a */,
++	HAL_TX_RAW_OR_NATIVE_FRAME_SETUP       = 155 /* 0x9b */,
++	HAL_EXAMPLE_STRUCT_NAME                = 156 /* 0x9c */,
++	HAL_PCU_PPDU_SETUP_END_INFO            = 157 /* 0x9d */,
++	HAL_PPDU_RATE_SETTING                  = 158 /* 0x9e */,
++	HAL_PROT_RATE_SETTING                  = 159 /* 0x9f */,
++	HAL_RX_MPDU_DETAILS                    = 160 /* 0xa0 */,
++	HAL_EXAMPLE_USER_TLV_42                = 161 /* 0xa1 */,
++	HAL_RX_MSDU_LINK                       = 162 /* 0xa2 */,
++	HAL_RX_REO_QUEUE                       = 163 /* 0xa3 */,
++	HAL_ADDR_SEARCH_ENTRY                  = 164 /* 0xa4 */,
++	HAL_SCHEDULER_CMD                      = 165 /* 0xa5 */,
++	HAL_TX_FLUSH                           = 166 /* 0xa6 */,
++	HAL_TQM_ENTRANCE_RING                  = 167 /* 0xa7 */,
++	HAL_TX_DATA_WORD                       = 168 /* 0xa8 */,
++	HAL_TX_MPDU_DETAILS                    = 169 /* 0xa9 */,
++	HAL_TX_MPDU_LINK                       = 170 /* 0xaa */,
++	HAL_TX_MPDU_LINK_PTR                   = 171 /* 0xab */,
++	HAL_TX_MPDU_QUEUE_HEAD                 = 172 /* 0xac */,
++	HAL_TX_MPDU_QUEUE_EXT                  = 173 /* 0xad */,
++	HAL_TX_MPDU_QUEUE_EXT_PTR              = 174 /* 0xae */,
++	HAL_TX_MSDU_DETAILS                    = 175 /* 0xaf */,
++	HAL_TX_MSDU_EXTENSION                  = 176 /* 0xb0 */,
++	HAL_TX_MSDU_FLOW                       = 177 /* 0xb1 */,
++	HAL_TX_MSDU_LINK                       = 178 /* 0xb2 */,
++	HAL_TX_MSDU_LINK_ENTRY_PTR             = 179 /* 0xb3 */,
++	HAL_RESPONSE_RATE_SETTING              = 180 /* 0xb4 */,
++	HAL_TXPCU_BUFFER_BASICS                = 181 /* 0xb5 */,
++	HAL_UNIFORM_DESCRIPTOR_HEADER          = 182 /* 0xb6 */,
++	HAL_UNIFORM_TQM_CMD_HEADER             = 183 /* 0xb7 */,
++	HAL_UNIFORM_TQM_STATUS_HEADER          = 184 /* 0xb8 */,
++	HAL_USER_RATE_SETTING                  = 185 /* 0xb9 */,
++	HAL_WBM_BUFFER_RING                    = 186 /* 0xba */,
++	HAL_WBM_LINK_DESCRIPTOR_RING           = 187 /* 0xbb */,
++	HAL_WBM_RELEASE_RING                   = 188 /* 0xbc */,
++	HAL_TX_FLUSH_REQ                       = 189 /* 0xbd */,
++	HAL_RX_MSDU_DETAILS                    = 190 /* 0xbe */,
++	HAL_TQM_WRITE_CMD_STATUS               = 191 /* 0xbf */,
++	HAL_TQM_GET_MPDU_QUEUE_STATS           = 192 /* 0xc0 */,
++	HAL_TQM_GET_MSDU_FLOW_STATS            = 193 /* 0xc1 */,
++	HAL_EXAMPLE_USER_CTLV_32               = 194 /* 0xc2 */,
++	HAL_TX_FES_STATUS_START                = 195 /* 0xc3 */,
++	HAL_TX_FES_STATUS_USER_PPDU            = 196 /* 0xc4 */,
++	HAL_TX_FES_STATUS_USER_RESPONSE        = 197 /* 0xc5 */,
++	HAL_TX_FES_STATUS_END                  = 198 /* 0xc6 */,
++	HAL_RX_TRIG_INFO                       = 199 /* 0xc7 */,
++	HAL_RXPCU_TX_SETUP_CLEAR               = 200 /* 0xc8 */,
++	HAL_RX_FRAME_BITMAP_REQ                = 201 /* 0xc9 */,
++	HAL_RX_FRAME_BITMAP_ACK                = 202 /* 0xca */,
++	HAL_COEX_RX_STATUS                     = 203 /* 0xcb */,
++	HAL_RX_START_PARAM                     = 204 /* 0xcc */,
++	HAL_RX_PPDU_START                      = 205 /* 0xcd */,
++	HAL_RX_PPDU_END                        = 206 /* 0xce */,
++	HAL_RX_MPDU_START                      = 207 /* 0xcf */,
++	HAL_RX_MPDU_END                        = 208 /* 0xd0 */,
++	HAL_RX_MSDU_START                      = 209 /* 0xd1 */,
++	HAL_RX_MSDU_END                        = 210 /* 0xd2 */,
++	HAL_RX_ATTENTION                       = 211 /* 0xd3 */,
++	HAL_RECEIVED_RESPONSE_INFO             = 212 /* 0xd4 */,
++	HAL_RX_PHY_SLEEP                       = 213 /* 0xd5 */,
++	HAL_RX_HEADER                          = 214 /* 0xd6 */,
++	HAL_RX_PEER_ENTRY                      = 215 /* 0xd7 */,
++	HAL_RX_FLUSH                           = 216 /* 0xd8 */,
++	HAL_RX_RESPONSE_REQUIRED_INFO          = 217 /* 0xd9 */,
++	HAL_RX_FRAMELESS_BAR_DETAILS           = 218 /* 0xda */,
++	HAL_TQM_GET_MPDU_QUEUE_STATS_STATUS    = 219 /* 0xdb */,
++	HAL_TQM_GET_MSDU_FLOW_STATS_STATUS     = 220 /* 0xdc */,
++	HAL_TX_CBF_INFO                        = 221 /* 0xdd */,
++	HAL_PCU_PPDU_SETUP_USER                = 222 /* 0xde */,
++	HAL_RX_MPDU_PCU_START                  = 223 /* 0xdf */,
++	HAL_RX_PM_INFO                         = 224 /* 0xe0 */,
++	HAL_RX_USER_PPDU_END                   = 225 /* 0xe1 */,
++	HAL_RX_PRE_PPDU_START                  = 226 /* 0xe2 */,
++	HAL_RX_PREAMBLE                        = 227 /* 0xe3 */,
++	HAL_TX_FES_SETUP_COMPLETE              = 228 /* 0xe4 */,
++	HAL_TX_LAST_MPDU_FETCHED               = 229 /* 0xe5 */,
++	HAL_TXDMA_STOP_REQUEST                 = 230 /* 0xe6 */,
++	HAL_RXPCU_SETUP                        = 231 /* 0xe7 */,
++	HAL_RXPCU_USER_SETUP                   = 232 /* 0xe8 */,
++	HAL_TX_FES_STATUS_ACK_OR_BA            = 233 /* 0xe9 */,
++	HAL_TQM_ACKED_MPDU                     = 234 /* 0xea */,
++	HAL_COEX_TX_RESP                       = 235 /* 0xeb */,
++	HAL_COEX_TX_STATUS                     = 236 /* 0xec */,
++	HAL_MACTX_COEX_PHY_CTRL                = 237 /* 0xed */,
++	HAL_COEX_STATUS_BROADCAST              = 238 /* 0xee */,
++	HAL_RESPONSE_START_STATUS              = 239 /* 0xef */,
++	HAL_RESPONSE_END_STATUS                = 240 /* 0xf0 */,
++	HAL_CRYPTO_STATUS                      = 241 /* 0xf1 */,
++	HAL_RECEIVED_TRIGGER_INFO              = 242 /* 0xf2 */,
++	HAL_REO_ENTRANCE_RING                  = 243 /* 0xf3 */,
++	HAL_RX_MPDU_LINK                       = 244 /* 0xf4 */,
++	HAL_COEX_TX_STOP_CTRL                  = 245 /* 0xf5 */,
++	HAL_RX_PPDU_ACK_REPORT                 = 246 /* 0xf6 */,
++	HAL_RX_PPDU_NO_ACK_REPORT              = 247 /* 0xf7 */,
++	HAL_SCH_COEX_STATUS                    = 248 /* 0xf8 */,
++	HAL_SCHEDULER_COMMAND_STATUS           = 249 /* 0xf9 */,
++	HAL_SCHEDULER_RX_PPDU_NO_RESPONSE_STATUS = 250 /* 0xfa */,
++	HAL_TX_FES_STATUS_PROT                 = 251 /* 0xfb */,
++	HAL_TX_FES_STATUS_START_PPDU           = 252 /* 0xfc */,
++	HAL_TX_FES_STATUS_START_PROT           = 253 /* 0xfd */,
++	HAL_TXPCU_PHYTX_DEBUG32                = 254 /* 0xfe */,
++	HAL_TXPCU_PHYTX_OTHER_TRANSMIT_INFO32  = 255 /* 0xff */,
++	HAL_TX_MPDU_COUNT_TRANSFER_END         = 256 /* 0x100 */,
++	HAL_WHO_ANCHOR_OFFSET                  = 257 /* 0x101 */,
++	HAL_WHO_ANCHOR_VALUE                   = 258 /* 0x102 */,
++	HAL_WHO_CCE_INFO                       = 259 /* 0x103 */,
++	HAL_WHO_COMMIT                         = 260 /* 0x104 */,
++	HAL_WHO_COMMIT_DONE                    = 261 /* 0x105 */,
++	HAL_WHO_FLUSH                          = 262 /* 0x106 */,
++	HAL_WHO_L2_LLC                         = 263 /* 0x107 */,
++	HAL_WHO_L2_PAYLOAD                     = 264 /* 0x108 */,
++	HAL_WHO_L3_CHECKSUM                    = 265 /* 0x109 */,
++	HAL_WHO_L3_INFO                        = 266 /* 0x10a */,
++	HAL_WHO_L4_CHECKSUM                    = 267 /* 0x10b */,
++	HAL_WHO_L4_INFO                        = 268 /* 0x10c */,
++	HAL_WHO_MSDU                           = 269 /* 0x10d */,
++	HAL_WHO_MSDU_MISC                      = 270 /* 0x10e */,
++	HAL_WHO_PACKET_DATA                    = 271 /* 0x10f */,
++	HAL_WHO_PACKET_HDR                     = 272 /* 0x110 */,
++	HAL_WHO_PPDU_END                       = 273 /* 0x111 */,
++	HAL_WHO_PPDU_START                     = 274 /* 0x112 */,
++	HAL_WHO_TSO                            = 275 /* 0x113 */,
++	HAL_WHO_WMAC_HEADER_PV0                = 276 /* 0x114 */,
++	HAL_WHO_WMAC_HEADER_PV1                = 277 /* 0x115 */,
++	HAL_WHO_WMAC_IV                        = 278 /* 0x116 */,
++	HAL_MPDU_INFO_END                      = 279 /* 0x117 */,
++	HAL_MPDU_INFO_BITMAP                   = 280 /* 0x118 */,
++	HAL_TX_QUEUE_EXTENSION                 = 281 /* 0x119 */,
++	HAL_RX_PEER_ENTRY_DETAILS              = 282 /* 0x11a */,
++	HAL_RX_REO_QUEUE_REFERENCE             = 283 /* 0x11b */,
++	HAL_RX_REO_QUEUE_EXT                   = 284 /* 0x11c */,
++	HAL_SCHEDULER_SELFGEN_RESPONSE_STATUS  = 285 /* 0x11d */,
++	HAL_TQM_UPDATE_TX_MPDU_COUNT_STATUS    = 286 /* 0x11e */,
++	HAL_TQM_ACKED_MPDU_STATUS              = 287 /* 0x11f */,
++	HAL_TQM_ADD_MSDU_STATUS                = 288 /* 0x120 */,
++	HAL_RX_MPDU_LINK_PTR                   = 289 /* 0x121 */,
++	HAL_REO_DESTINATION_RING               = 290 /* 0x122 */,
++	HAL_TQM_LIST_GEN_DONE                  = 291 /* 0x123 */,
++	HAL_WHO_TERMINATE                      = 292 /* 0x124 */,
++	HAL_TX_LAST_MPDU_END                   = 293 /* 0x125 */,
++	HAL_TX_CV_DATA                         = 294 /* 0x126 */,
++	HAL_TCL_ENTRANCE_FROM_PPE_RING         = 295 /* 0x127 */,
++	HAL_PPDU_TX_END                        = 296 /* 0x128 */,
++	HAL_PROT_TX_END                        = 297 /* 0x129 */,
++	HAL_PDG_RESPONSE_RATE_SETTING          = 298 /* 0x12a */,
++	HAL_MPDU_INFO_GLOBAL_END               = 299 /* 0x12b */,
++	HAL_TQM_SCH_INSTR_GLOBAL_END           = 300 /* 0x12c */,
++	HAL_RX_PPDU_END_USER_STATS             = 301 /* 0x12d */,
++	HAL_RX_PPDU_END_USER_STATS_EXT         = 302 /* 0x12e */,
++	HAL_NO_ACK_REPORT                      = 303 /* 0x12f */,
++	HAL_ACK_REPORT                         = 304 /* 0x130 */,
++	HAL_UNIFORM_REO_CMD_HEADER             = 305 /* 0x131 */,
++	HAL_REO_GET_QUEUE_STATS                = 306 /* 0x132 */,
++	HAL_REO_FLUSH_QUEUE                    = 307 /* 0x133 */,
++	HAL_REO_FLUSH_CACHE                    = 308 /* 0x134 */,
++	HAL_REO_UNBLOCK_CACHE                  = 309 /* 0x135 */,
++	HAL_UNIFORM_REO_STATUS_HEADER          = 310 /* 0x136 */,
++	HAL_REO_GET_QUEUE_STATS_STATUS         = 311 /* 0x137 */,
++	HAL_REO_FLUSH_QUEUE_STATUS             = 312 /* 0x138 */,
++	HAL_REO_FLUSH_CACHE_STATUS             = 313 /* 0x139 */,
++	HAL_REO_UNBLOCK_CACHE_STATUS           = 314 /* 0x13a */,
++	HAL_TQM_FLUSH_CACHE                    = 315 /* 0x13b */,
++	HAL_TQM_UNBLOCK_CACHE                  = 316 /* 0x13c */,
++	HAL_TQM_FLUSH_CACHE_STATUS             = 317 /* 0x13d */,
++	HAL_TQM_UNBLOCK_CACHE_STATUS           = 318 /* 0x13e */,
++	HAL_RX_PPDU_END_STATUS_DONE            = 319 /* 0x13f */,
++	HAL_RX_STATUS_BUFFER_DONE              = 320 /* 0x140 */,
++	HAL_BUFFER_ADDR_INFO                   = 321 /* 0x141 */,
++	HAL_RX_MSDU_DESC_INFO                  = 322 /* 0x142 */,
++	HAL_RX_MPDU_DESC_INFO                  = 323 /* 0x143 */,
++	HAL_TCL_DATA_CMD                       = 324 /* 0x144 */,
++	HAL_TCL_GSE_CMD                        = 325 /* 0x145 */,
++	HAL_TCL_EXIT_BASE                      = 326 /* 0x146 */,
++	HAL_TCL_COMPACT_EXIT_RING              = 327 /* 0x147 */,
++	HAL_TCL_REGULAR_EXIT_RING              = 328 /* 0x148 */,
++	HAL_TCL_EXTENDED_EXIT_RING             = 329 /* 0x149 */,
++	HAL_UPLINK_COMMON_INFO                 = 330 /* 0x14a */,
++	HAL_UPLINK_USER_SETUP_INFO             = 331 /* 0x14b */,
++	HAL_TX_DATA_SYNC                       = 332 /* 0x14c */,
++	HAL_PHYRX_CBF_READ_REQUEST_ACK         = 333 /* 0x14d */,
++	HAL_TCL_STATUS_RING                    = 334 /* 0x14e */,
++	HAL_TQM_GET_MPDU_HEAD_INFO             = 335 /* 0x14f */,
++	HAL_TQM_SYNC_CMD                       = 336 /* 0x150 */,
++	HAL_TQM_GET_MPDU_HEAD_INFO_STATUS      = 337 /* 0x151 */,
++	HAL_TQM_SYNC_CMD_STATUS                = 338 /* 0x152 */,
++	HAL_TQM_THRESHOLD_DROP_NOTIFICATION_STATUS = 339 /* 0x153 */,
++	HAL_TQM_DESCRIPTOR_THRESHOLD_REACHED_STATUS = 340 /* 0x154 */,
++	HAL_REO_FLUSH_TIMEOUT_LIST             = 341 /* 0x155 */,
++	HAL_REO_FLUSH_TIMEOUT_LIST_STATUS      = 342 /* 0x156 */,
++	HAL_REO_TO_PPE_RING                    = 343 /* 0x157 */,
++	HAL_RX_MPDU_INFO                       = 344 /* 0x158 */,
++	HAL_REO_DESCRIPTOR_THRESHOLD_REACHED_STATUS = 345 /* 0x159 */,
++	HAL_SCHEDULER_RX_SIFS_RESPONSE_TRIGGER_STATUS = 346 /* 0x15a */,
++	HAL_EXAMPLE_USER_TLV_32_NAME           = 347 /* 0x15b */,
++	HAL_RX_PPDU_START_USER_INFO            = 348 /* 0x15c */,
++	HAL_RX_RXPCU_CLASSIFICATION_OVERVIEW   = 349 /* 0x15d */,
++	HAL_RX_RING_MASK                       = 350 /* 0x15e */,
++	HAL_WHO_CLASSIFY_INFO                  = 351 /* 0x15f */,
++	HAL_TXPT_CLASSIFY_INFO                 = 352 /* 0x160 */,
++	HAL_RXPT_CLASSIFY_INFO                 = 353 /* 0x161 */,
++	HAL_TX_FLOW_SEARCH_ENTRY               = 354 /* 0x162 */,
++	HAL_RX_FLOW_SEARCH_ENTRY               = 355 /* 0x163 */,
++	HAL_RECEIVED_TRIGGER_INFO_DETAILS      = 356 /* 0x164 */,
++	HAL_COEX_MAC_NAP                       = 357 /* 0x165 */,
++	HAL_MACRX_ABORT_REQUEST_INFO           = 358 /* 0x166 */,
++	HAL_MACTX_ABORT_REQUEST_INFO           = 359 /* 0x167 */,
++	HAL_PHYRX_ABORT_REQUEST_INFO           = 360 /* 0x168 */,
++	HAL_PHYTX_ABORT_REQUEST_INFO           = 361 /* 0x169 */,
++	HAL_RXPCU_PPDU_END_INFO                = 362 /* 0x16a */,
++	HAL_WHO_MESH_CONTROL                   = 363 /* 0x16b */,
++	HAL_L_SIG_A_INFO                       = 364 /* 0x16c */,
++	HAL_L_SIG_B_INFO                       = 365 /* 0x16d */,
++	HAL_HT_SIG_INFO                        = 366 /* 0x16e */,
++	HAL_VHT_SIG_A_INFO                     = 367 /* 0x16f */,
++	HAL_VHT_SIG_B_SU20_INFO                = 368 /* 0x170 */,
++	HAL_VHT_SIG_B_SU40_INFO                = 369 /* 0x171 */,
++	HAL_VHT_SIG_B_SU80_INFO                = 370 /* 0x172 */,
++	HAL_VHT_SIG_B_SU160_INFO               = 371 /* 0x173 */,
++	HAL_VHT_SIG_B_MU20_INFO                = 372 /* 0x174 */,
++	HAL_VHT_SIG_B_MU40_INFO                = 373 /* 0x175 */,
++	HAL_VHT_SIG_B_MU80_INFO                = 374 /* 0x176 */,
++	HAL_VHT_SIG_B_MU160_INFO               = 375 /* 0x177 */,
++	HAL_SERVICE_INFO                       = 376 /* 0x178 */,
++	HAL_HE_SIG_A_SU_INFO                   = 377 /* 0x179 */,
++	HAL_HE_SIG_A_MU_DL_INFO                = 378 /* 0x17a */,
++	HAL_HE_SIG_A_MU_UL_INFO                = 379 /* 0x17b */,
++	HAL_HE_SIG_B1_MU_INFO                  = 380 /* 0x17c */,
++	HAL_HE_SIG_B2_MU_INFO                  = 381 /* 0x17d */,
++	HAL_HE_SIG_B2_OFDMA_INFO               = 382 /* 0x17e */,
++	HAL_PDG_SW_MODE_BW_START               = 383 /* 0x17f */,
++	HAL_PDG_SW_MODE_BW_END                 = 384 /* 0x180 */,
++	HAL_PDG_WAIT_FOR_MAC_REQUEST           = 385 /* 0x181 */,
++	HAL_PDG_WAIT_FOR_PHY_REQUEST           = 386 /* 0x182 */,
++	HAL_SCHEDULER_END                      = 387 /* 0x183 */,
++	HAL_PEER_TABLE_ENTRY                   = 388 /* 0x184 */,
++	HAL_SW_PEER_INFO                       = 389 /* 0x185 */,
++	HAL_RXOLE_CCE_CLASSIFY_INFO            = 390 /* 0x186 */,
++	HAL_TCL_CCE_CLASSIFY_INFO              = 391 /* 0x187 */,
++	HAL_RXOLE_CCE_INFO                     = 392 /* 0x188 */,
++	HAL_TCL_CCE_INFO                       = 393 /* 0x189 */,
++	HAL_TCL_CCE_SUPERRULE                  = 394 /* 0x18a */,
++	HAL_CCE_RULE                           = 395 /* 0x18b */,
++	HAL_RX_PPDU_START_DROPPED              = 396 /* 0x18c */,
++	HAL_RX_PPDU_END_DROPPED                = 397 /* 0x18d */,
++	HAL_RX_PPDU_END_STATUS_DONE_DROPPED    = 398 /* 0x18e */,
++	HAL_RX_MPDU_START_DROPPED              = 399 /* 0x18f */,
++	HAL_RX_MSDU_START_DROPPED              = 400 /* 0x190 */,
++	HAL_RX_MSDU_END_DROPPED                = 401 /* 0x191 */,
++	HAL_RX_MPDU_END_DROPPED                = 402 /* 0x192 */,
++	HAL_RX_ATTENTION_DROPPED               = 403 /* 0x193 */,
++	HAL_TXPCU_USER_SETUP                   = 404 /* 0x194 */,
++	HAL_RXPCU_USER_SETUP_EXT               = 405 /* 0x195 */,
++	HAL_CE_SRC_DESC                        = 406 /* 0x196 */,
++	HAL_CE_STAT_DESC                       = 407 /* 0x197 */,
++	HAL_RXOLE_CCE_SUPERRULE                = 408 /* 0x198 */,
++	HAL_TX_RATE_STATS_INFO                 = 409 /* 0x199 */,
++	HAL_CMD_PART_0_END                     = 410 /* 0x19a */,
++	HAL_MACTX_SYNTH_ON                     = 411 /* 0x19b */,
++	HAL_SCH_CRITICAL_TLV_REFERENCE         = 412 /* 0x19c */,
++	HAL_TQM_MPDU_GLOBAL_START              = 413 /* 0x19d */,
++	HAL_EXAMPLE_TLV_32                     = 414 /* 0x19e */,
++	HAL_TQM_UPDATE_TX_MSDU_FLOW            = 415 /* 0x19f */,
++	HAL_TQM_UPDATE_TX_MPDU_QUEUE_HEAD      = 416 /* 0x1a0 */,
++	HAL_TQM_UPDATE_TX_MSDU_FLOW_STATUS     = 417 /* 0x1a1 */,
++	HAL_TQM_UPDATE_TX_MPDU_QUEUE_HEAD_STATUS = 418 /* 0x1a2 */,
++	HAL_REO_UPDATE_RX_REO_QUEUE            = 419 /* 0x1a3 */,
++	HAL_CE_DST_DESC			       = 420 /* 0x1a4 */,
++	HAL_TLV_BASE                           = 511 /* 0x1ff */,
++};
++
++#define HAL_TLV_HDR_TAG		GENMASK(9, 1)
++#define HAL_TLV_HDR_LEN		GENMASK(25, 10)
++
++#define HAL_TLV_ALIGN	4
++
++struct hal_tlv_hdr {
++	u32 tl;
++	u8 value[0];
++} __packed;
++
++#define RX_MPDU_DESC_INFO0_MSDU_COUNT		GENMASK(7, 0)
++#define RX_MPDU_DESC_INFO0_SEQ_NUM		GENMASK(19, 8)
++#define RX_MPDU_DESC_INFO0_FRAG_FLAG		BIT(20)
++#define RX_MPDU_DESC_INFO0_MPDU_RETRY		BIT(21)
++#define RX_MPDU_DESC_INFO0_AMPDU_FLAG		BIT(22)
++#define RX_MPDU_DESC_INFO0_BAR_FRAME		BIT(23)
++#define RX_MPDU_DESC_INFO0_VALID_PN		BIT(24)
++#define RX_MPDU_DESC_INFO0_VALID_SA		BIT(25)
++#define RX_MPDU_DESC_INFO0_SA_IDX_TIMEOUT	BIT(26)
++#define RX_MPDU_DESC_INFO0_VALID_DA		BIT(27)
++#define RX_MPDU_DESC_INFO0_DA_MCBC		BIT(28)
++#define RX_MPDU_DESC_INFO0_DA_IDX_TIMEOUT	BIT(29)
++#define RX_MPDU_DESC_INFO0_RAW_MPDU		BIT(30)
++
++struct rx_mpdu_desc {
++	u32 info0; /* %RX_MPDU_DESC_INFO */
++	u32 meta_data;
++} __packed;
++
++/* rx_mpdu_desc
++ *		Producer: RXDMA
++ *		Consumer: REO/SW/FW
++ *
++ * msdu_count
++ *		The number of MSDUs within the MPDU
++ *
++ * mpdu_sequence_number
++ *		The field can have two different meanings based on the setting
++ *		of field 'bar_frame'. If 'bar_frame' is set, it means the MPDU
++ *		start sequence number from the BAR frame otherwise it means
++ *		the MPDU sequence number of the received frame.
++ *
++ * fragment_flag
++ *		When set, this MPDU is a fragment and REO should forward this
++ *		fragment MPDU to the REO destination ring without any reorder
++ *		checks, pn checks or bitmap update. This implies that REO is
++ *		forwarding the pointer to the MSDU link descriptor.
++ *
++ * mpdu_retry_bit
++ *		The retry bit setting from the MPDU header of the received frame
++ *
++ * ampdu_flag
++ *		Indicates the MPDU was received as part of an A-MPDU.
++ *
++ * bar_frame
++ *		Indicates the received frame is a BAR frame. After processing,
++ *		this frame shall be pushed to SW or deleted.
++ *
++ * valid_pn
++ *		When not set, REO will not perform a PN sequence number check.
++ *
++ * valid_sa
++ *		Indicates OLE found a valid SA entry for all MSDUs in this MPDU.
++ *
++ * sa_idx_timeout
++ *		Indicates, at least 1 MSDU within the MPDU has an unsuccessful
++ *		MAC source address search due to the expiration of search timer.
++ *
++ * valid_da
++ *		When set, OLE found a valid DA entry for all MSDUs in this MPDU.
++ *
++ * da_mcbc
++ *		Field Only valid if valid_da is set. Indicates at least one of
++ *		the DA addresses is a Multicast or Broadcast address.
++ *
++ * da_idx_timeout
++ *		Indicates, at least 1 MSDU within the MPDU has an unsuccessful
++ *		MAC destination address search due to the expiration of search
++ *		timer.
++ *
++ * raw_mpdu
++ *		Field only valid when first_msdu_in_mpdu_flag is set. Indicates
++ *		the contents in the MSDU buffer contains a 'RAW' MPDU.
++ */
++
++enum hal_rx_msdu_desc_reo_dest_ind {
++	HAL_RX_MSDU_DESC_REO_DEST_IND_TCL,
++	HAL_RX_MSDU_DESC_REO_DEST_IND_SW1,
++	HAL_RX_MSDU_DESC_REO_DEST_IND_SW2,
++	HAL_RX_MSDU_DESC_REO_DEST_IND_SW3,
++	HAL_RX_MSDU_DESC_REO_DEST_IND_SW4,
++	HAL_RX_MSDU_DESC_REO_DEST_IND_RELEASE,
++	HAL_RX_MSDU_DESC_REO_DEST_IND_FW,
++};
++
++#define RX_MSDU_DESC_INFO0_FIRST_MSDU_IN_MPDU	BIT(0)
++#define RX_MSDU_DESC_INFO0_LAST_MSDU_IN_MPDU	BIT(1)
++#define RX_MSDU_DESC_INFO0_MSDU_CONTINUATION	BIT(2)
++#define RX_MSDU_DESC_INFO0_MSDU_LENGTH		GENMASK(16, 3)
++#define RX_MSDU_DESC_INFO0_REO_DEST_IND		GENMASK(21, 17)
++#define RX_MSDU_DESC_INFO0_MSDU_DROP		BIT(22)
++#define RX_MSDU_DESC_INFO0_VALID_SA		BIT(23)
++#define RX_MSDU_DESC_INFO0_SA_IDX_TIMEOUT	BIT(24)
++#define RX_MSDU_DESC_INFO0_VALID_DA		BIT(25)
++#define RX_MSDU_DESC_INFO0_DA_MCBC		BIT(26)
++#define RX_MSDU_DESC_INFO0_DA_IDX_TIMEOUT	BIT(27)
++
++#define HAL_RX_MSDU_PKT_LENGTH_GET(val)		\
++	(FIELD_GET(RX_MSDU_DESC_INFO0_MSDU_LENGTH, (val)))
++
++struct rx_msdu_desc {
++	u32 info0;
++	u32 rsvd0;
++} __packed;
++
++/* rx_msdu_desc
++ *
++ * first_msdu_in_mpdu
++ *		Indicates first msdu in mpdu.
++ *
++ * last_msdu_in_mpdu
++ *		Indicates last msdu in mpdu. This flag can be true only when
++ *		'Msdu_continuation' set to 0. This implies that when an msdu
++ *		is spread out over multiple buffers and thus msdu_continuation
++ *		is set, only for the very last buffer of the msdu, can the
++ *		'last_msdu_in_mpdu' be set.
++ *
++ *		When both first_msdu_in_mpdu and last_msdu_in_mpdu are set,
++ *		the MPDU that this MSDU belongs to only contains a single MSDU.
++ *
++ * msdu_continuation
++ *		When set, this MSDU buffer was not able to hold the entire MSDU.
++ *		The next buffer will therefor contain additional information
++ *		related to this MSDU.
++ *
++ * msdu_length
++ *		Field is only valid in combination with the 'first_msdu_in_mpdu'
++ *		being set. Full MSDU length in bytes after decapsulation. This
++ *		field is still valid for MPDU frames without A-MSDU. It still
++ *		represents MSDU length after decapsulation Or in case of RAW
++ *		MPDUs, it indicates the length of the entire MPDU (without FCS
++ *		field).
++ *
++ * reo_destination_indication
++ *		The id of the reo exit ring where the msdu frame shall push
++ *		after (MPDU level) reordering has finished. Values are defined
++ *		in enum %HAL_RX_MSDU_DESC_REO_DEST_IND_.
++ *
++ * msdu_drop
++ *		Indicates that REO shall drop this MSDU and not forward it to
++ *		any other ring.
++ *
++ * valid_sa
++ *		Indicates OLE found a valid SA entry for this MSDU.
++ *
++ * sa_idx_timeout
++ *		Indicates, an unsuccessful MAC source address search due to
++ *		the expiration of search timer for this MSDU.
++ *
++ * valid_da
++ *		When set, OLE found a valid DA entry for this MSDU.
++ *
++ * da_mcbc
++ *		Field Only valid if valid_da is set. Indicates the DA address
++ *		is a Multicast or Broadcast address for this MSDU.
++ *
++ * da_idx_timeout
++ *		Indicates, an unsuccessful MAC destination address search due
++ *		to the expiration of search timer fot this MSDU.
++ */
++
++enum hal_reo_dest_ring_buffer_type {
++	HAL_REO_DEST_RING_BUFFER_TYPE_MSDU,
++	HAL_REO_DEST_RING_BUFFER_TYPE_LINK_DESC,
++};
++
++enum hal_reo_dest_ring_push_reason {
++	HAL_REO_DEST_RING_PUSH_REASON_ERR_DETECTED,
++	HAL_REO_DEST_RING_PUSH_REASON_ROUTING_INSTRUCTION,
++};
++
++enum hal_reo_dest_ring_error_code {
++	HAL_REO_DEST_RING_ERROR_CODE_DESC_ADDR_ZERO,
++	HAL_REO_DEST_RING_ERROR_CODE_DESC_INVALID,
++	HAL_REO_DEST_RING_ERROR_CODE_AMPDU_IN_NON_BA,
++	HAL_REO_DEST_RING_ERROR_CODE_NON_BA_DUPLICATE,
++	HAL_REO_DEST_RING_ERROR_CODE_BA_DUPLICATE,
++	HAL_REO_DEST_RING_ERROR_CODE_FRAME_2K_JUMP,
++	HAL_REO_DEST_RING_ERROR_CODE_BAR_2K_JUMP,
++	HAL_REO_DEST_RING_ERROR_CODE_FRAME_OOR,
++	HAL_REO_DEST_RING_ERROR_CODE_BAR_OOR,
++	HAL_REO_DEST_RING_ERROR_CODE_NO_BA_SESSION,
++	HAL_REO_DEST_RING_ERROR_CODE_FRAME_SN_EQUALS_SSN,
++	HAL_REO_DEST_RING_ERROR_CODE_PN_CHECK_FAILED,
++	HAL_REO_DEST_RING_ERROR_CODE_2K_ERR_FLAG_SET,
++	HAL_REO_DEST_RING_ERROR_CODE_PN_ERR_FLAG_SET,
++	HAL_REO_DEST_RING_ERROR_CODE_DESC_BLOCKED,
++	HAL_REO_DEST_RING_ERROR_CODE_MAX,
++};
++
++#define HAL_REO_DEST_RING_INFO0_QUEUE_ADDR_HI		GENMASK(7, 0)
++#define HAL_REO_DEST_RING_INFO0_BUFFER_TYPE		BIT(8)
++#define HAL_REO_DEST_RING_INFO0_PUSH_REASON		GENMASK(10, 9)
++#define HAL_REO_DEST_RING_INFO0_ERROR_CODE		GENMASK(15, 11)
++#define HAL_REO_DEST_RING_INFO0_RX_QUEUE_NUM		GENMASK(31, 16)
++
++#define HAL_REO_DEST_RING_INFO1_REORDER_INFO_VALID	BIT(0)
++#define HAL_REO_DEST_RING_INFO1_REORDER_OPCODE		GENMASK(4, 1)
++#define HAL_REO_DEST_RING_INFO1_REORDER_SLOT_IDX	GENMASK(12, 5)
++
++#define HAL_REO_DEST_RING_INFO2_RING_ID			GENMASK(27, 20)
++#define HAL_REO_DEST_RING_INFO2_LOOPING_COUNT		GENMASK(31, 28)
++
++struct hal_reo_dest_ring {
++	struct ath11k_buffer_addr buf_addr_info;
++	struct rx_mpdu_desc rx_mpdu_info;
++	struct rx_msdu_desc rx_msdu_info;
++	u32 queue_addr_lo;
++	u32 info0; /* %HAL_REO_DEST_RING_INFO0_ */
++	u32 info1; /* %HAL_REO_DEST_RING_INFO1_ */
++	u32 rsvd0;
++	u32 rsvd1;
++	u32 rsvd2;
++	u32 rsvd3;
++	u32 rsvd4;
++	u32 rsvd5;
++	u32 info2; /* %HAL_REO_DEST_RING_INFO2_ */
++} __packed;
++
++/* hal_reo_dest_ring
++ *
++ *		Producer: RXDMA
++ *		Consumer: REO/SW/FW
++ *
++ * buf_addr_info
++ *		Details of the physical address of a buffer or MSDU
++ *		link descriptor.
++ *
++ * rx_mpdu_info
++ *		General information related to the MPDU that is passed
++ *		on from REO entrance ring to the REO destination ring.
++ *
++ * rx_msdu_info
++ *		General information related to the MSDU that is passed
++ *		on from RXDMA all the way to to the REO destination ring.
++ *
++ * queue_addr_lo
++ *		Address (lower 32 bits) of the REO queue descriptor.
++ *
++ * queue_addr_hi
++ *		Address (upper 8 bits) of the REO queue descriptor.
++ *
++ * buffer_type
++ *		Indicates the type of address provided in the buf_addr_info.
++ *		Values are defined in enum %HAL_REO_DEST_RING_BUFFER_TYPE_.
++ *
++ * push_reason
++ *		Reason for pushing this frame to this exit ring. Values are
++ *		defined in enum %HAL_REO_DEST_RING_PUSH_REASON_.
++ *
++ * error_code
++ *		Valid only when 'push_reason' is set. All error codes are
++ *		defined in enum %HAL_REO_DEST_RING_ERROR_CODE_.
++ *
++ * rx_queue_num
++ *		Indicates the REO MPDU reorder queue id from which this frame
++ *		originated.
++ *
++ * reorder_info_valid
++ *		When set, REO has been instructed to not perform the actual
++ *		re-ordering of frames for this queue, but just to insert
++ *		the reorder opcodes.
++ *
++ * reorder_opcode
++ *		Field is valid when 'reorder_info_valid' is set. This field is
++ *		always valid for debug purpose as well.
++ *
++ * reorder_slot_idx
++ *		Valid only when 'reorder_info_valid' is set.
++ *
++ * ring_id
++ *		The buffer pointer ring id.
++ *		0 - Idle ring
++ *		1 - N refers to other rings.
++ *
++ * looping_count
++ *		Indicates the number of times the producer of entries into
++ *		this ring has looped around the ring.
++ */
++
++enum hal_reo_entr_rxdma_ecode {
++	HAL_REO_ENTR_RING_RXDMA_ECODE_OVERFLOW_ERR,
++	HAL_REO_ENTR_RING_RXDMA_ECODE_MPDU_LEN_ERR,
++	HAL_REO_ENTR_RING_RXDMA_ECODE_FCS_ERR,
++	HAL_REO_ENTR_RING_RXDMA_ECODE_DECRYPT_ERR,
++	HAL_REO_ENTR_RING_RXDMA_ECODE_TKIP_MIC_ERR,
++	HAL_REO_ENTR_RING_RXDMA_ECODE_UNECRYPTED_ERR,
++	HAL_REO_ENTR_RING_RXDMA_ECODE_MSDU_LEN_ERR,
++	HAL_REO_ENTR_RING_RXDMA_ECODE_MSDU_LIMIT_ERR,
++	HAL_REO_ENTR_RING_RXDMA_ECODE_WIFI_PARSE_ERR,
++	HAL_REO_ENTR_RING_RXDMA_ECODE_AMSDU_PARSE_ERR,
++	HAL_REO_ENTR_RING_RXDMA_ECODE_SA_TIMEOUT_ERR,
++	HAL_REO_ENTR_RING_RXDMA_ECODE_DA_TIMEOUT_ERR,
++	HAL_REO_ENTR_RING_RXDMA_ECODE_FLOW_TIMEOUT_ERR,
++	HAL_REO_ENTR_RING_RXDMA_ECODE_FLUSH_REQUEST_ERR,
++	HAL_REO_ENTR_RING_RXDMA_ECODE_MAX,
++};
++
++#define HAL_REO_ENTR_RING_INFO0_QUEUE_ADDR_HI		GENMASK(7, 0)
++#define HAL_REO_ENTR_RING_INFO0_MPDU_BYTE_COUNT		GENMASK(21, 8)
++#define HAL_REO_ENTR_RING_INFO0_DEST_IND		GENMASK(26, 22)
++#define HAL_REO_ENTR_RING_INFO0_FRAMELESS_BAR		BIT(27)
++
++#define HAL_REO_ENTR_RING_INFO1_RXDMA_PUSH_REASON	GENMASK(1, 0)
++#define HAL_REO_ENTR_RING_INFO1_RXDMA_ERROR_CODE	GENMASK(6, 2)
++
++struct hal_reo_entrance_ring {
++	struct ath11k_buffer_addr buf_addr_info;
++	struct rx_mpdu_desc rx_mpdu_info;
++	u32 queue_addr_lo;
++	u32 info0; /* %HAL_REO_ENTR_RING_INFO0_ */
++	u32 info1; /* %HAL_REO_ENTR_RING_INFO1_ */
++	u32 info2; /* %HAL_REO_DEST_RING_INFO2_ */
++
++} __packed;
++
++/* hal_reo_entrance_ring
++ *
++ *		Producer: RXDMA
++ *		Consumer: REO
++ *
++ * buf_addr_info
++ *		Details of the physical address of a buffer or MSDU
++ *		link descriptor.
++ *
++ * rx_mpdu_info
++ *		General information related to the MPDU that is passed
++ *		on from REO entrance ring to the REO destination ring.
++ *
++ * queue_addr_lo
++ *		Address (lower 32 bits) of the REO queue descriptor.
++ *
++ * queue_addr_hi
++ *		Address (upper 8 bits) of the REO queue descriptor.
++ *
++ * mpdu_byte_count
++ *		An approximation of the number of bytes received in this MPDU.
++ *		Used to keeps stats on the amount of data flowing
++ *		through a queue.
++ *
++ * reo_destination_indication
++ *		The id of the reo exit ring where the msdu frame shall push
++ *		after (MPDU level) reordering has finished. Values are defined
++ *		in enum %HAL_RX_MSDU_DESC_REO_DEST_IND_.
++ *
++ * frameless_bar
++ *		Indicates that this REO entrance ring struct contains BAR info
++ *		from a multi TID BAR frame. The original multi TID BAR frame
++ *		itself contained all the REO info for the first TID, but all
++ *		the subsequent TID info and their linkage to the REO descriptors
++ *		is passed down as 'frameless' BAR info.
++ *
++ *		The only fields valid in this descriptor when this bit is set
++ *		are queue_addr_lo, queue_addr_hi, mpdu_sequence_number,
++ *		bar_frame and peer_meta_data.
++ *
++ * rxdma_push_reason
++ *		Reason for pushing this frame to this exit ring. Values are
++ *		defined in enum %HAL_REO_DEST_RING_PUSH_REASON_.
++ *
++ * rxdma_error_code
++ *		Valid only when 'push_reason' is set. All error codes are
++ *		defined in enum %HAL_REO_ENTR_RING_RXDMA_ECODE_.
++ *
++ * ring_id
++ *		The buffer pointer ring id.
++ *		0 - Idle ring
++ *		1 - N refers to other rings.
++ *
++ * looping_count
++ *		Indicates the number of times the producer of entries into
++ *		this ring has looped around the ring.
++ */
++
++#define HAL_REO_CMD_HDR_INFO0_CMD_NUMBER	GENMASK(15, 0)
++#define HAL_REO_CMD_HDR_INFO0_STATUS_REQUIRED	BIT(16)
++
++struct hal_reo_cmd_hdr {
++	u32 info0;
++} __packed;
++
++#define HAL_REO_GET_QUEUE_STATS_INFO0_QUEUE_ADDR_HI	GENMASK(7, 0)
++#define HAL_REO_GET_QUEUE_STATS_INFO0_CLEAR_STATS	BIT(8)
++
++struct hal_reo_get_queue_stats {
++	struct hal_reo_cmd_hdr cmd;
++	u32 queue_addr_lo;
++	u32 info0;
++	u32 rsvd0[6];
++} __packed;
++
++/* hal_reo_get_queue_stats
++ *		Producer: SW
++ *		Consumer: REO
++ *
++ * cmd
++ *		Details for command execution tracking purposes.
++ *
++ * queue_addr_lo
++ *		Address (lower 32 bits) of the REO queue descriptor.
++ *
++ * queue_addr_hi
++ *		Address (upper 8 bits) of the REO queue descriptor.
++ *
++ * clear_stats
++ *		Clear stats settings. When set, Clear the stats after
++ *		generating the status.
++ *
++ *		Following stats will be cleared.
++ *		Timeout_count
++ *		Forward_due_to_bar_count
++ *		Duplicate_count
++ *		Frames_in_order_count
++ *		BAR_received_count
++ *		MPDU_Frames_processed_count
++ *		MSDU_Frames_processed_count
++ *		Total_processed_byte_count
++ *		Late_receive_MPDU_count
++ *		window_jump_2k
++ *		Hole_count
++ */
++
++#define HAL_REO_FLUSH_QUEUE_INFO0_DESC_ADDR_HI		GENMASK(7, 0)
++#define HAL_REO_FLUSH_QUEUE_INFO0_BLOCK_DESC_ADDR	BIT(8)
++#define HAL_REO_FLUSH_QUEUE_INFO0_BLOCK_RESRC_IDX	GENMASK(10, 9)
++
++struct hal_reo_flush_queue {
++	struct hal_reo_cmd_hdr cmd;
++	u32 desc_addr_lo;
++	u32 info0;
++	u32 rsvd0[6];
++} __packed;
++
++#define HAL_REO_FLUSH_CACHE_INFO0_CACHE_ADDR_HI		GENMASK(7, 0)
++#define HAL_REO_FLUSH_CACHE_INFO0_FWD_ALL_MPDUS		BIT(8)
++#define HAL_REO_FLUSH_CACHE_INFO0_RELEASE_BLOCK_IDX	BIT(9)
++#define HAL_REO_FLUSH_CACHE_INFO0_BLOCK_RESRC_IDX	GENMASK(11, 10)
++#define HAL_REO_FLUSH_CACHE_INFO0_FLUSH_WO_INVALIDATE	BIT(12)
++#define HAL_REO_FLUSH_CACHE_INFO0_BLOCK_CACHE_USAGE	BIT(13)
++#define HAL_REO_FLUSH_CACHE_INFO0_FLUSH_ALL		BIT(14)
++
++struct hal_reo_flush_cache {
++	struct hal_reo_cmd_hdr cmd;
++	u32 cache_addr_lo;
++	u32 info0;
++	u32 rsvd0[6];
++} __packed;
++
++#define HAL_TCL_DATA_CMD_INFO0_DESC_TYPE	BIT(0)
++#define HAL_TCL_DATA_CMD_INFO0_EPD		BIT(1)
++#define HAL_TCL_DATA_CMD_INFO0_ENCAP_TYPE	GENMASK(3, 2)
++#define HAL_TCL_DATA_CMD_INFO0_ENCRYPT_TYPE	GENMASK(7, 4)
++#define HAL_TCL_DATA_CMD_INFO0_SRC_BUF_SWAP	BIT(8)
++#define HAL_TCL_DATA_CMD_INFO0_LNK_META_SWAP	BIT(9)
++#define HAL_TCL_DATA_CMD_INFO0_SEARCH_TYPE	BIT(12)
++#define HAL_TCL_DATA_CMD_INFO0_ADDRX_EN		BIT(14)
++#define HAL_TCL_DATA_CMD_INFO0_ADDRY_EN		BIT(15)
++#define HAL_TCL_DATA_CMD_INFO0_CMD_NUM		GENMASK(31, 16)
++
++#define HAL_TCL_DATA_CMD_INFO1_DATA_LEN		GENMASK(15, 0)
++#define HAL_TCL_DATA_CMD_INFO1_IP4_CKSUM_EN	BIT(16)
++#define HAL_TCL_DATA_CMD_INFO1_UDP4_CKSUM_EN	BIT(17)
++#define HAL_TCL_DATA_CMD_INFO1_UDP6_CKSUM_EN	BIT(18)
++#define HAL_TCL_DATA_CMD_INFO1_TCP4_CKSUM_EN	BIT(19)
++#define HAL_TCL_DATA_CMD_INFO1_TCP6_CKSUM_EN	BIT(20)
++#define HAL_TCL_DATA_CMD_INFO1_TO_FW		BIT(21)
++#define HAL_TCL_DATA_CMD_INFO1_PKT_OFFSET	GENMASK(31, 23)
++
++#define HAL_TCL_DATA_CMD_INFO2_BUF_TIMESTAMP	GENMASK(18, 0)
++#define HAL_TCL_DATA_CMD_INFO2_BUF_T_VALID	BIT(19)
++#define HAL_TCL_DATA_CMD_INFO2_MESH_ENABLE	BIT(20)
++#define HAL_TCL_DATA_CMD_INFO2_TID_OVERWRITE	BIT(21)
++#define HAL_TCL_DATA_CMD_INFO2_TID		GENMASK(25, 22)
++#define HAL_TCL_DATA_CMD_INFO2_LMAC_ID		GENMASK(27, 26)
++
++#define HAL_TCL_DATA_CMD_INFO3_DSCP_TID_TABLE_IDX	GENMASK(5, 0)
++#define HAL_TCL_DATA_CMD_INFO3_SEARCH_INDEX		GENMASK(25, 6)
++#define HAL_TCL_DATA_CMD_INFO3_CACHE_SET_NUM		GENMASK(29, 26)
++
++#define HAL_TCL_DATA_CMD_INFO4_RING_ID			GENMASK(27, 20)
++#define HAL_TCL_DATA_CMD_INFO4_LOOPING_COUNT		GENMASK(31, 28)
++
++enum hal_encrypt_type {
++	HAL_ENCRYPT_TYPE_WEP_40,
++	HAL_ENCRYPT_TYPE_WEP_104,
++	HAL_ENCRYPT_TYPE_TKIP_NO_MIC,
++	HAL_ENCRYPT_TYPE_WEP_128,
++	HAL_ENCRYPT_TYPE_TKIP_MIC,
++	HAL_ENCRYPT_TYPE_WAPI,
++	HAL_ENCRYPT_TYPE_CCMP_128,
++	HAL_ENCRYPT_TYPE_OPEN,
++	HAL_ENCRYPT_TYPE_CCMP_256,
++	HAL_ENCRYPT_TYPE_GCMP_128,
++	HAL_ENCRYPT_TYPE_AES_GCMP_256,
++	HAL_ENCRYPT_TYPE_WAPI_GCM_SM4,
++};
++
++enum hal_tcl_encap_type {
++	HAL_TCL_ENCAP_TYPE_RAW,
++	HAL_TCL_ENCAP_TYPE_NATIVE_WIFI,
++	HAL_TCL_ENCAP_TYPE_ETHERNET,
++	HAL_TCL_ENCAP_TYPE_802_3 = 3,
++};
++
++enum hal_tcl_desc_type {
++	HAL_TCL_DESC_TYPE_BUFFER,
++	HAL_TCL_DESC_TYPE_EXT_DESC,
++};
++
++enum hal_wbm_htt_tx_comp_status {
++	HAL_WBM_REL_HTT_TX_COMP_STATUS_OK,
++	HAL_WBM_REL_HTT_TX_COMP_STATUS_DROP,
++	HAL_WBM_REL_HTT_TX_COMP_STATUS_TTL,
++	HAL_WBM_REL_HTT_TX_COMP_STATUS_REINJ,
++	HAL_WBM_REL_HTT_TX_COMP_STATUS_INSPECT,
++	HAL_WBM_REL_HTT_TX_COMP_STATUS_MEC_NOTIFY,
++};
++
++struct hal_tcl_data_cmd {
++	struct ath11k_buffer_addr buf_addr_info;
++	u32 info0;
++	u32 info1;
++	u32 info2;
++	u32 info3;
++	u32 info4;
++} __packed;
++
++/* hal_tcl_data_cmd
++ *
++ * buf_addr_info
++ *		Details of the physical address of a buffer or MSDU
++ *		link descriptor.
++ *
++ * desc_type
++ *		Indicates the type of address provided in the buf_addr_info.
++ *		Values are defined in enum %HAL_REO_DEST_RING_BUFFER_TYPE_.
++ *
++ * epd
++ *		When this bit is set then input packet is an EPD type.
++ *
++ * encap_type
++ *		Indicates the encapsulation that HW will perform. Values are
++ *		defined in enum %HAL_TCL_ENCAP_TYPE_.
++ *
++ * encrypt_type
++ *		Field only valid for encap_type: RAW
++ *		Values are defined in enum %HAL_ENCRYPT_TYPE_.
++ *
++ * src_buffer_swap
++ *		Treats source memory (packet buffer) organization as big-endian.
++ *		1'b0: Source memory is little endian
++ *		1'b1: Source memory is big endian
++ *
++ * link_meta_swap
++ *		Treats link descriptor and Metadata as big-endian.
++ *		1'b0: memory is little endian
++ *		1'b1: memory is big endian
++ *
++ * search_type
++ *		Search type select
++ *		0 - Normal search, 1 - Index based address search,
++ *		2 - Index based flow search
++ *
++ * addrx_en
++ * addry_en
++ *		Address X/Y search enable in ASE correspondingly.
++ *		1'b0: Search disable
++ *		1'b1: Search Enable
++ *
++ * cmd_num
++ *		This number can be used to match against status.
++ *
++ * data_length
++ *		MSDU length in case of direct descriptor. Length of link
++ *		extension descriptor in case of Link extension descriptor.
++ *
++ * *_checksum_en
++ *		Enable checksum replacement for ipv4, udp_over_ipv4, ipv6,
++ *		udp_over_ipv6, tcp_over_ipv4 and tcp_over_ipv6.
++ *
++ * to_fw
++ *		Forward packet to FW along with classification result. The
++ *		packet will not be forward to TQM when this bit is set.
++ *		1'b0: Use classification result to forward the packet.
++ *		1'b1: Override classification result & forward packet only to fw
++ *
++ * packet_offset
++ *		Packet offset from Metadata in case of direct buffer descriptor.
++ *
++ * buffer_timestamp
++ * buffer_timestamp_valid
++ *		Frame system entrance timestamp. It shall be filled by first
++ *		module (SW, TCL or TQM) that sees the frames first.
++ *
++ * mesh_enable
++ *		For raw WiFi frames, this indicates transmission to a mesh STA,
++ *		enabling the interpretation of the 'Mesh Control Present' bit
++ *		(bit 8) of QoS Control.
++ *		For native WiFi frames, this indicates that a 'Mesh Control'
++ *		field is present between the header and the LLC.
++ *
++ * hlos_tid_overwrite
++ *
++ *		When set, TCL shall ignore the IP DSCP and VLAN PCP
++ *		fields and use HLOS_TID as the final TID. Otherwise TCL
++ *		shall consider the DSCP and PCP fields as well as HLOS_TID
++ *		and choose a final TID based on the configured priority
++ *
++ * hlos_tid
++ *		HLOS MSDU priority
++ *		Field is used when HLOS_TID_overwrite is set.
++ *
++ * lmac_id
++ *		TCL uses this LMAC_ID in address search, i.e, while
++ *		finding matching entry for the packet in AST corresponding
++ *		to given LMAC_ID
++ *
++ *		If LMAC ID is all 1s (=> value 3), it indicates wildcard
++ *		match for any MAC
++ *
++ * dscp_tid_table_num
++ *		DSCP to TID mapping table number that need to be used
++ *		for the MSDU.
++ *
++ * search_index
++ *		The index that will be used for index based address or
++ *		flow search. The field is valid when 'search_type' is  1 or 2.
++ *
++ * cache_set_num
++ *
++ *		Cache set number that should be used to cache the index
++ *		based search results, for address and flow search. This
++ *		value should be equal to LSB four bits of the hash value of
++ *		match data, in case of search index points to an entry which
++ *		may be used in content based search also. The value can be
++ *		anything when the entry pointed by search index will not be
++ *		used for content based search.
++ *
++ * ring_id
++ *		The buffer pointer ring ID.
++ *		0 refers to the IDLE ring
++ *		1 - N refers to other rings
++ *
++ * looping_count
++ *
++ *		A count value that indicates the number of times the
++ *		producer of entries into the Ring has looped around the
++ *		ring.
++ *
++ *		At initialization time, this value is set to 0. On the
++ *		first loop, this value is set to 1. After the max value is
++ *		reached allowed by the number of bits for this field, the
++ *		count value continues with 0 again.
++ *
++ *		In case SW is the consumer of the ring entries, it can
++ *		use this field to figure out up to where the producer of
++ *		entries has created new entries. This eliminates the need to
++ *		check where the head pointer' of the ring is located once
++ *		the SW starts processing an interrupt indicating that new
++ *		entries have been put into this ring...
++ *
++ *		Also note that SW if it wants only needs to look at the
++ *		LSB bit of this count value.
++ */
++
++#define HAL_TCL_DESC_LEN sizeof(struct hal_tcl_data_cmd)
++
++enum hal_tcl_gse_ctrl {
++	HAL_TCL_GSE_CTRL_RD_STAT,
++	HAL_TCL_GSE_CTRL_SRCH_DIS,
++	HAL_TCL_GSE_CTRL_WR_BK_SINGLE,
++	HAL_TCL_GSE_CTRL_WR_BK_ALL,
++	HAL_TCL_GSE_CTRL_INVAL_SINGLE,
++	HAL_TCL_GSE_CTRL_INVAL_ALL,
++	HAL_TCL_GSE_CTRL_WR_BK_INVAL_SINGLE,
++	HAL_TCL_GSE_CTRL_WR_BK_INVAL_ALL,
++	HAL_TCL_GSE_CTRL_CLR_STAT_SINGLE,
++};
++
++/* hal_tcl_gse_ctrl
++ *
++ * rd_stat
++ *		Report or Read statistics
++ * srch_dis
++ *		Search disable. Report only Hash.
++ * wr_bk_single
++ *		Write Back single entry
++ * wr_bk_all
++ *		Write Back entire cache entry
++ * inval_single
++ *		Invalidate single cache entry
++ * inval_all
++ *		Invalidate entire cache
++ * wr_bk_inval_single
++ *		Write back and invalidate single entry in cache
++ * wr_bk_inval_all
++ *		Write back and invalidate entire cache
++ * clr_stat_single
++ *		Clear statistics for single entry
++ */
++
++#define HAL_TCL_GSE_CMD_INFO0_CTRL_BUF_ADDR_HI		GENMASK(7, 0)
++#define HAL_TCL_GSE_CMD_INFO0_GSE_CTRL			GENMASK(11, 8)
++#define HAL_TCL_GSE_CMD_INFO0_GSE_SEL			BIT(12)
++#define HAL_TCL_GSE_CMD_INFO0_STATUS_DEST_RING_ID	BIT(13)
++#define HAL_TCL_GSE_CMD_INFO0_SWAP			BIT(14)
++
++#define HAL_TCL_GSE_CMD_INFO1_RING_ID			GENMASK(27, 20)
++#define HAL_TCL_GSE_CMD_INFO1_LOOPING_COUNT		GENMASK(31, 28)
++
++struct hal_tcl_gse_cmd {
++	u32 ctrl_buf_addr_lo;
++	u32 info0;
++	u32 meta_data[2];
++	u32 rsvd0[2];
++	u32 info1;
++} __packed;
++
++/* hal_tcl_gse_cmd
++ *
++ * ctrl_buf_addr_lo, ctrl_buf_addr_hi
++ *		Address of a control buffer containing additional info needed
++ *		for this command execution.
++ *
++ * gse_ctrl
++ *		GSE control operations. This includes cache operations and table
++ *		entry statistics read/clear operation. Values are defined in
++ *		enum %HAL_TCL_GSE_CTRL.
++ *
++ * gse_sel
++ *		To select the ASE/FSE to do the operation mention by GSE_ctrl.
++ *		0: FSE select 1: ASE select
++ *
++ * status_destination_ring_id
++ *		TCL status ring to which the GSE status needs to be send.
++ *
++ * swap
++ *		Bit to enable byte swapping of contents of buffer.
++ *
++ * meta_data
++ *		Meta data to be returned in the status descriptor
++ */
++
++enum hal_tcl_cache_op_res {
++	HAL_TCL_CACHE_OP_RES_DONE,
++	HAL_TCL_CACHE_OP_RES_NOT_FOUND,
++	HAL_TCL_CACHE_OP_RES_TIMEOUT,
++};
++
++#define HAL_TCL_STATUS_RING_INFO0_GSE_CTRL		GENMASK(3, 0)
++#define HAL_TCL_STATUS_RING_INFO0_GSE_SEL		BIT(4)
++#define HAL_TCL_STATUS_RING_INFO0_CACHE_OP_RES		GENMASK(6, 5)
++#define HAL_TCL_STATUS_RING_INFO0_MSDU_CNT		GENMASK(31, 8)
++
++#define HAL_TCL_STATUS_RING_INFO1_HASH_IDX		GENMASK(19, 0)
++
++#define HAL_TCL_STATUS_RING_INFO2_RING_ID		GENMASK(27, 20)
++#define HAL_TCL_STATUS_RING_INFO2_LOOPING_COUNT		GENMASK(31, 28)
++
++struct hal_tcl_status_ring {
++	u32 info0;
++	u32 msdu_byte_count;
++	u32 msdu_timestamp;
++	u32 meta_data[2];
++	u32 info1;
++	u32 rsvd0;
++	u32 info2;
++} __packed;
++
++/* hal_tcl_status_ring
++ *
++ * gse_ctrl
++ *		GSE control operations. This includes cache operations and table
++ *		entry statistics read/clear operation. Values are defined in
++ *		enum %HAL_TCL_GSE_CTRL.
++ *
++ * gse_sel
++ *		To select the ASE/FSE to do the operation mention by GSE_ctrl.
++ *		0: FSE select 1: ASE select
++ *
++ * cache_op_res
++ *		Cache operation result. Values are defined in enum
++ *		%HAL_TCL_CACHE_OP_RES_.
++ *
++ * msdu_cnt
++ * msdu_byte_count
++ *		MSDU count of Entry and MSDU byte count for entry 1.
++ *
++ * hash_indx
++ *		Hash value of the entry in case of search failed or disabled.
++ */
++
++#define HAL_CE_SRC_DESC_ADDR_INFO_ADDR_HI	GENMASK(7, 0)
++#define HAL_CE_SRC_DESC_ADDR_INFO_HASH_EN	BIT(8)
++#define HAL_CE_SRC_DESC_ADDR_INFO_BYTE_SWAP	BIT(9)
++#define HAL_CE_SRC_DESC_ADDR_INFO_DEST_SWAP	BIT(10)
++#define HAL_CE_SRC_DESC_ADDR_INFO_GATHER	BIT(11)
++#define HAL_CE_SRC_DESC_ADDR_INFO_LEN		GENMASK(31, 16)
++
++#define HAL_CE_SRC_DESC_META_INFO_DATA		GENMASK(15, 0)
++
++#define HAL_CE_SRC_DESC_FLAGS_RING_ID		GENMASK(27, 20)
++#define HAL_CE_SRC_DESC_FLAGS_LOOP_CNT		HAL_SRNG_DESC_LOOP_CNT
++
++struct hal_ce_srng_src_desc {
++	u32 buffer_addr_low;
++	u32 buffer_addr_info; /* %HAL_CE_SRC_DESC_ADDR_INFO_ */
++	u32 meta_info; /* %HAL_CE_SRC_DESC_META_INFO_ */
++	u32 flags; /* %HAL_CE_SRC_DESC_FLAGS_ */
++} __packed;
++
++/*
++ * hal_ce_srng_src_desc
++ *
++ * buffer_addr_lo
++ *		LSB 32 bits of the 40 Bit Pointer to the source buffer
++ *
++ * buffer_addr_hi
++ *		MSB 8 bits of the 40 Bit Pointer to the source buffer
++ *
++ * toeplitz_en
++ *		Enable generation of 32-bit Toeplitz-LFSR hash for
++ *		data transfer. In case of gather field in first source
++ *		ring entry of the gather copy cycle in taken into account.
++ *
++ * src_swap
++ *		Treats source memory organization as big-endian. For
++ *		each dword read (4 bytes), the byte 0 is swapped with byte 3
++ *		and byte 1 is swapped with byte 2.
++ *		In case of gather field in first source ring entry of
++ *		the gather copy cycle in taken into account.
++ *
++ * dest_swap
++ *		Treats destination memory organization as big-endian.
++ *		For each dword write (4 bytes), the byte 0 is swapped with
++ *		byte 3 and byte 1 is swapped with byte 2.
++ *		In case of gather field in first source ring entry of
++ *		the gather copy cycle in taken into account.
++ *
++ * gather
++ *		Enables gather of multiple copy engine source
++ *		descriptors to one destination.
++ *
++ * ce_res_0
++ *		Reserved
++ *
++ *
++ * length
++ *		Length of the buffer in units of octets of the current
++ *		descriptor
++ *
++ * fw_metadata
++ *		Meta data used by FW.
++ *		In case of gather field in first source ring entry of
++ *		the gather copy cycle in taken into account.
++ *
++ * ce_res_1
++ *		Reserved
++ *
++ * ce_res_2
++ *		Reserved
++ *
++ * ring_id
++ *		The buffer pointer ring ID.
++ *		0 refers to the IDLE ring
++ *		1 - N refers to other rings
++ *		Helps with debugging when dumping ring contents.
++ *
++ * looping_count
++ *		A count value that indicates the number of times the
++ *		producer of entries into the Ring has looped around the
++ *		ring.
++ *
++ *		At initialization time, this value is set to 0. On the
++ *		first loop, this value is set to 1. After the max value is
++ *		reached allowed by the number of bits for this field, the
++ *		count value continues with 0 again.
++ *
++ *		In case SW is the consumer of the ring entries, it can
++ *		use this field to figure out up to where the producer of
++ *		entries has created new entries. This eliminates the need to
++ *		check where the head pointer' of the ring is located once
++ *		the SW starts processing an interrupt indicating that new
++ *		entries have been put into this ring...
++ *
++ *		Also note that SW if it wants only needs to look at the
++ *		LSB bit of this count value.
++ */
++
++#define HAL_CE_DEST_DESC_ADDR_INFO_ADDR_HI		GENMASK(7, 0)
++#define HAL_CE_DEST_DESC_ADDR_INFO_RING_ID		GENMASK(27, 20)
++#define HAL_CE_DEST_DESC_ADDR_INFO_LOOP_CNT		HAL_SRNG_DESC_LOOP_CNT
++
++struct hal_ce_srng_dest_desc {
++	u32 buffer_addr_low;
++	u32 buffer_addr_info; /* %HAL_CE_DEST_DESC_ADDR_INFO_ */
++} __packed;
++
++/* hal_ce_srng_dest_desc
++ *
++ * dst_buffer_low
++ *		LSB 32 bits of the 40 Bit Pointer to the Destination
++ *		buffer
++ *
++ * dst_buffer_high
++ *		MSB 8 bits of the 40 Bit Pointer to the Destination
++ *		buffer
++ *
++ * ce_res_4
++ *		Reserved
++ *
++ * ring_id
++ *		The buffer pointer ring ID.
++ *		0 refers to the IDLE ring
++ *		1 - N refers to other rings
++ *		Helps with debugging when dumping ring contents.
++ *
++ * looping_count
++ *		A count value that indicates the number of times the
++ *		producer of entries into the Ring has looped around the
++ *		ring.
++ *
++ *		At initialization time, this value is set to 0. On the
++ *		first loop, this value is set to 1. After the max value is
++ *		reached allowed by the number of bits for this field, the
++ *		count value continues with 0 again.
++ *
++ *		In case SW is the consumer of the ring entries, it can
++ *		use this field to figure out up to where the producer of
++ *		entries has created new entries. This eliminates the need to
++ *		check where the head pointer' of the ring is located once
++ *		the SW starts processing an interrupt indicating that new
++ *		entries have been put into this ring...
++ *
++ *		Also note that SW if it wants only needs to look at the
++ *		LSB bit of this count value.
++ */
++
++#define HAL_CE_DST_STATUS_DESC_FLAGS_HASH_EN		BIT(8)
++#define HAL_CE_DST_STATUS_DESC_FLAGS_BYTE_SWAP		BIT(9)
++#define HAL_CE_DST_STATUS_DESC_FLAGS_DEST_SWAP		BIT(10)
++#define HAL_CE_DST_STATUS_DESC_FLAGS_GATHER		BIT(11)
++#define HAL_CE_DST_STATUS_DESC_FLAGS_LEN		GENMASK(31, 16)
++
++#define HAL_CE_DST_STATUS_DESC_META_INFO_DATA		GENMASK(7, 0)
++#define HAL_CE_DST_STATUS_DESC_META_INFO_RING_ID	GENMASK(27, 20)
++#define HAL_CE_DST_STATUS_DESC_META_INFO_LOOP_CNT	HAL_SRNG_DESC_LOOP_CNT
++
++struct hal_ce_srng_dst_status_desc {
++	u32 flags; /* %HAL_CE_DST_STATUS_DESC_FLAGS_ */
++	u32 toeplitz_hash0;
++	u32 toeplitz_hash1;
++	u32 meta_info; /* HAL_CE_DST_STATUS_DESC_META_INFO_ */
++} __packed;
++
++/* hal_ce_srng_dst_status_desc
++ *
++ * ce_res_5
++ *		Reserved
++ *
++ * toeplitz_en
++ *
++ * src_swap
++ *		Source memory buffer swapped
++ *
++ * dest_swap
++ *		Destination  memory buffer swapped
++ *
++ * gather
++ *		Gather of multiple copy engine source descriptors to one
++ *		destination enabled
++ *
++ * ce_res_6
++ *		Reserved
++ *
++ * length
++ *		Sum of all the Lengths of the source descriptor in the
++ *		gather chain
++ *
++ * toeplitz_hash_0
++ *		32 LS bits of 64 bit Toeplitz LFSR hash result
++ *
++ * toeplitz_hash_1
++ *		32 MS bits of 64 bit Toeplitz LFSR hash result
++ *
++ * fw_metadata
++ *		Meta data used by FW
++ *		In case of gather field in first source ring entry of
++ *		the gather copy cycle in taken into account.
++ *
++ * ce_res_7
++ *		Reserved
++ *
++ * ring_id
++ *		The buffer pointer ring ID.
++ *		0 refers to the IDLE ring
++ *		1 - N refers to other rings
++ *		Helps with debugging when dumping ring contents.
++ *
++ * looping_count
++ *		A count value that indicates the number of times the
++ *		producer of entries into the Ring has looped around the
++ *		ring.
++ *
++ *		At initialization time, this value is set to 0. On the
++ *		first loop, this value is set to 1. After the max value is
++ *		reached allowed by the number of bits for this field, the
++ *		count value continues with 0 again.
++ *
++ *		In case SW is the consumer of the ring entries, it can
++ *		use this field to figure out up to where the producer of
++ *		entries has created new entries. This eliminates the need to
++ *		check where the head pointer' of the ring is located once
++ *		the SW starts processing an interrupt indicating that new
++ *		entries have been put into this ring...
++ *
++ *		Also note that SW if it wants only needs to look at the
++ *			LSB bit of this count value.
++ */
++
++#define HAL_TX_RATE_STATS_INFO0_VALID		BIT(0)
++#define HAL_TX_RATE_STATS_INFO0_BW		GENMASK(2, 1)
++#define HAL_TX_RATE_STATS_INFO0_PKT_TYPE	GENMASK(6, 3)
++#define HAL_TX_RATE_STATS_INFO0_STBC		BIT(7)
++#define HAL_TX_RATE_STATS_INFO0_LDPC		BIT(8)
++#define HAL_TX_RATE_STATS_INFO0_SGI		GENMASK(10, 9)
++#define HAL_TX_RATE_STATS_INFO0_MCS		GENMASK(14, 11)
++#define HAL_TX_RATE_STATS_INFO0_OFDMA_TX	BIT(15)
++#define HAL_TX_RATE_STATS_INFO0_TONES_IN_RU	GENMASK(27, 16)
++
++enum hal_tx_rate_stats_bw {
++	HAL_TX_RATE_STATS_BW_20,
++	HAL_TX_RATE_STATS_BW_40,
++	HAL_TX_RATE_STATS_BW_80,
++	HAL_TX_RATE_STATS_BW_160,
++};
++
++enum hal_tx_rate_stats_pkt_type {
++	HAL_TX_RATE_STATS_PKT_TYPE_11A,
++	HAL_TX_RATE_STATS_PKT_TYPE_11B,
++	HAL_TX_RATE_STATS_PKT_TYPE_11N,
++	HAL_TX_RATE_STATS_PKT_TYPE_11AC,
++	HAL_TX_RATE_STATS_PKT_TYPE_11AX,
++};
++
++enum hal_tx_rate_stats_sgi {
++	HAL_TX_RATE_STATS_SGI_08US,
++	HAL_TX_RATE_STATS_SGI_04US,
++	HAL_TX_RATE_STATS_SGI_16US,
++	HAL_TX_RATE_STATS_SGI_32US,
++};
++
++struct hal_tx_rate_stats {
++	u32 info0;
++	u32 tsf;
++} __packed;
++
++struct hal_wbm_link_desc {
++	struct ath11k_buffer_addr buf_addr_info;
++} __packed;
++
++/* hal_wbm_link_desc
++ *
++ *	Producer: WBM
++ *	Consumer: WBM
++ *
++ * buf_addr_info
++ *		Details of the physical address of a buffer or MSDU
++ *		link descriptor.
++ */
++
++enum hal_wbm_rel_src_module {
++	HAL_WBM_REL_SRC_MODULE_TQM,
++	HAL_WBM_REL_SRC_MODULE_RXDMA,
++	HAL_WBM_REL_SRC_MODULE_REO,
++	HAL_WBM_REL_SRC_MODULE_FW,
++	HAL_WBM_REL_SRC_MODULE_SW,
++};
++
++enum hal_wbm_rel_desc_type {
++	HAL_WBM_REL_DESC_TYPE_REL_MSDU,
++	HAL_WBM_REL_DESC_TYPE_MSDU_LINK,
++	HAL_WBM_REL_DESC_TYPE_MPDU_LINK,
++	HAL_WBM_REL_DESC_TYPE_MSDU_EXT,
++	HAL_WBM_REL_DESC_TYPE_QUEUE_EXT,
++};
++
++/* hal_wbm_rel_desc_type
++ *
++ * msdu_buffer
++ *	The address points to an MSDU buffer
++ *
++ * msdu_link_descriptor
++ *	The address points to an Tx MSDU link descriptor
++ *
++ * mpdu_link_descriptor
++ *	The address points to an MPDU link descriptor
++ *
++ * msdu_ext_descriptor
++ *	The address points to an MSDU extension descriptor
++ *
++ * queue_ext_descriptor
++ *	The address points to an TQM queue extension descriptor. WBM should
++ *	treat this is the same way as a link descriptor.
++ */
++
++enum hal_wbm_rel_bm_act {
++	HAL_WBM_REL_BM_ACT_PUT_IN_IDLE,
++	HAL_WBM_REL_BM_ACT_REL_MSDU,
++};
++
++/* hal_wbm_rel_bm_act
++ *
++ * put_in_idle_list
++ *	Put the buffer or descriptor back in the idle list. In case of MSDU or
++ *	MDPU link descriptor, BM does not need to check to release any
++ *	individual MSDU buffers.
++ *
++ * release_msdu_list
++ *	This BM action can only be used in combination with desc_type being
++ *	msdu_link_descriptor. Field first_msdu_index points out which MSDU
++ *	pointer in the MSDU link descriptor is the first of an MPDU that is
++ *	released. BM shall release all the MSDU buffers linked to this first
++ *	MSDU buffer pointer. All related MSDU buffer pointer entries shall be
++ *	set to value 0, which represents the 'NULL' pointer. When all MSDU
++ *	buffer pointers in the MSDU link descriptor are 'NULL', the MSDU link
++ *	descriptor itself shall also be released.
++ */
++
++#define HAL_WBM_RELEASE_INFO0_REL_SRC_MODULE		GENMASK(2, 0)
++#define HAL_WBM_RELEASE_INFO0_BM_ACTION			GENMASK(5, 3)
++#define HAL_WBM_RELEASE_INFO0_DESC_TYPE			GENMASK(8, 6)
++#define HAL_WBM_RELEASE_INFO0_FIRST_MSDU_IDX		GENMASK(12, 9)
++#define HAL_WBM_RELEASE_INFO0_TQM_RELEASE_REASON	GENMASK(16, 13)
++#define HAL_WBM_RELEASE_INFO0_RXDMA_PUSH_REASON		GENMASK(18, 17)
++#define HAL_WBM_RELEASE_INFO0_RXDMA_ERROR_CODE		GENMASK(23, 19)
++#define HAL_WBM_RELEASE_INFO0_REO_PUSH_REASON		GENMASK(25, 24)
++#define HAL_WBM_RELEASE_INFO0_REO_ERROR_CODE		GENMASK(30, 26)
++#define HAL_WBM_RELEASE_INFO0_WBM_INTERNAL_ERROR	BIT(31)
++
++#define HAL_WBM_RELEASE_INFO1_TQM_STATUS_NUMBER		GENMASK(23, 0)
++#define HAL_WBM_RELEASE_INFO1_TRANSMIT_COUNT		GENMASK(30, 24)
++
++#define HAL_WBM_RELEASE_INFO2_ACK_FRAME_RSSI		GENMASK(7, 0)
++#define HAL_WBM_RELEASE_INFO2_SW_REL_DETAILS_VALID	BIT(8)
++#define HAL_WBM_RELEASE_INFO2_FIRST_MSDU		BIT(9)
++#define HAL_WBM_RELEASE_INFO2_LAST_MSDU			BIT(10)
++#define HAL_WBM_RELEASE_INFO2_MSDU_IN_AMSDU		BIT(11)
++#define HAL_WBM_RELEASE_INFO2_FW_TX_NOTIF_FRAME		BIT(12)
++#define HAL_WBM_RELEASE_INFO2_BUFFER_TIMESTAMP		GENMASK(31, 13)
++
++#define HAL_WBM_RELEASE_INFO3_PEER_ID			GENMASK(15, 0)
++#define HAL_WBM_RELEASE_INFO3_TID			GENMASK(19, 16)
++#define HAL_WBM_RELEASE_INFO3_RING_ID			GENMASK(27, 20)
++#define HAL_WBM_RELEASE_INFO3_LOOPING_COUNT		GENMASK(31, 28)
++
++#define HAL_WBM_REL_HTT_TX_COMP_INFO0_STATUS		GENMASK(12, 9)
++#define HAL_WBM_REL_HTT_TX_COMP_INFO0_REINJ_REASON	GENMASK(16, 13)
++#define HAL_WBM_REL_HTT_TX_COMP_INFO0_EXP_FRAME		BIT(17)
++
++struct hal_wbm_release_ring {
++	struct ath11k_buffer_addr buf_addr_info;
++	u32 info0;
++	u32 info1;
++	u32 info2;
++	struct hal_tx_rate_stats rate_stats;
++	u32 info3;
++} __packed;
++
++/* hal_wbm_release_ring
++ *
++ *	Producer: SW/TQM/RXDMA/REO/SWITCH
++ *	Consumer: WBM/SW/FW
++ *
++ * HTT tx status is overlayed on wbm_release ring on 4-byte words 2, 3, 4 and 5
++ * for software based completions.
++ *
++ * buf_addr_info
++ *	Details of the physical address of the buffer or link descriptor.
++ *
++ * release_source_module
++ *	Indicates which module initiated the release of this buffer/descriptor.
++ *	Values are defined in enum %HAL_WBM_REL_SRC_MODULE_.
++ *
++ * bm_action
++ *	Field only valid when the field return_buffer_manager in
++ *	Released_buff_or_desc_addr_info indicates:
++ *		WBM_IDLE_BUF_LIST / WBM_IDLE_DESC_LIST
++ *	Values are defined in enum %HAL_WBM_REL_BM_ACT_.
++ *
++ * buffer_or_desc_type
++ *	Field only valid when WBM is marked as the return_buffer_manager in
++ *	the Released_Buffer_address_info. Indicates that type of buffer or
++ *	descriptor is being released. Values are in enum %HAL_WBM_REL_DESC_TYPE.
++ *
++ * first_msdu_index
++ *	Field only valid for the bm_action release_msdu_list. The index of the
++ *	first MSDU in an MSDU link descriptor all belonging to the same MPDU.
++ *
++ * tqm_release_reason
++ *	Field only valid when Release_source_module is set to release_source_TQM
++ *	Release reasons are defined in enum %HAL_WBM_TQM_REL_REASON_.
++ *
++ * rxdma_push_reason
++ * reo_push_reason
++ *	Indicates why rxdma/reo pushed the frame to this ring and values are
++ *	defined in enum %HAL_REO_DEST_RING_PUSH_REASON_.
++ *
++ * rxdma_error_code
++ *	Field only valid when 'rxdma_push_reason' set to 'error_detected'.
++ *	Values are defined in enum %HAL_REO_ENTR_RING_RXDMA_ECODE_.
++ *
++ * reo_error_code
++ *	Field only valid when 'reo_push_reason' set to 'error_detected'. Values
++ *	are defined in enum %HAL_REO_DEST_RING_ERROR_CODE_.
++ *
++ * wbm_internal_error
++ *	Is set when WBM got a buffer pointer but the action was to push it to
++ *	the idle link descriptor ring or do link related activity OR
++ *	Is set when WBM got a link buffer pointer but the action was to push it
++ *	to the buffer descriptor ring.
++ *
++ * tqm_status_number
++ *	The value in this field is equal to tqm_cmd_number in TQM command. It is
++ *	used to correlate the statu with TQM commands. Only valid when
++ *	release_source_module is TQM.
++ *
++ * transmit_count
++ *	The number of times the frame has been transmitted, valid only when
++ *	release source in TQM.
++ *
++ * ack_frame_rssi
++ *	This field is only valid when the source is TQM. If this frame is
++ *	removed as the result of the reception of an ACK or BA, this field
++ *	indicates the RSSI of the received ACK or BA frame.
++ *
++ * sw_release_details_valid
++ *	This is set when WMB got a 'release_msdu_list' command from TQM and
++ *	return buffer manager is not WMB. WBM will then de-aggregate all MSDUs
++ *	and pass them one at a time on to the 'buffer owner'.
++ *
++ * first_msdu
++ *	Field only valid when SW_release_details_valid is set.
++ *	When set, this MSDU is the first MSDU pointed to in the
++ *	'release_msdu_list' command.
++ *
++ * last_msdu
++ *	Field only valid when SW_release_details_valid is set.
++ *	When set, this MSDU is the last MSDU pointed to in the
++ *	'release_msdu_list' command.
++ *
++ * msdu_part_of_amsdu
++ *	Field only valid when SW_release_details_valid is set.
++ *	When set, this MSDU was part of an A-MSDU in MPDU
++ *
++ * fw_tx_notify_frame
++ *	Field only valid when SW_release_details_valid is set.
++ *
++ * buffer_timestamp
++ *	Field only valid when SW_release_details_valid is set.
++ *	This is the Buffer_timestamp field from the
++ *	Timestamp in units of 1024 us
++ *
++ * struct hal_tx_rate_stats rate_stats
++ *	Details for command execution tracking purposes.
++ *
++ * sw_peer_id
++ * tid
++ *	Field only valid when Release_source_module is set to
++ *	release_source_TQM
++ *
++ *	1) Release of msdu buffer due to drop_frame = 1. Flow is
++ *	not fetched and hence sw_peer_id and tid = 0
++ *
++ *	buffer_or_desc_type = e_num 0
++ *	MSDU_rel_buffertqm_release_reason = e_num 1
++ *	tqm_rr_rem_cmd_rem
++ *
++ *	2) Release of msdu buffer due to Flow is not fetched and
++ *	hence sw_peer_id and tid = 0
++ *
++ *	buffer_or_desc_type = e_num 0
++ *	MSDU_rel_buffertqm_release_reason = e_num 1
++ *	tqm_rr_rem_cmd_rem
++ *
++ *	3) Release of msdu link due to remove_mpdu or acked_mpdu
++ *	command.
++ *
++ *	buffer_or_desc_type = e_num1
++ *	msdu_link_descriptortqm_release_reason can be:e_num 1
++ *	tqm_rr_rem_cmd_reme_num 2 tqm_rr_rem_cmd_tx
++ *	e_num 3 tqm_rr_rem_cmd_notxe_num 4 tqm_rr_rem_cmd_aged
++ *
++ *	This field represents the TID from the TX_MSDU_FLOW
++ *	descriptor or TX_MPDU_QUEUE descriptor
++ *
++ * rind_id
++ *	For debugging.
++ *	This field is filled in by the SRNG module.
++ *	It help to identify the ring that is being looked
++ *
++ * looping_count
++ *	A count value that indicates the number of times the
++ *	producer of entries into the Buffer Manager Ring has looped
++ *	around the ring.
++ *
++ *	At initialization time, this value is set to 0. On the
++ *	first loop, this value is set to 1. After the max value is
++ *	reached allowed by the number of bits for this field, the
++ *	count value continues with 0 again.
++ *
++ *	In case SW is the consumer of the ring entries, it can
++ *	use this field to figure out up to where the producer of
++ *	entries has created new entries. This eliminates the need to
++ *	check where the head pointer' of the ring is located once
++ *	the SW starts processing an interrupt indicating that new
++ *	entries have been put into this ring...
++ *
++ *	Also note that SW if it wants only needs to look at the
++ *	LSB bit of this count value.
++ */
++
++/**
++ * enum hal_wbm_tqm_rel_reason - TQM release reason code
++ * @HAL_WBM_TQM_REL_REASON_FRAME_ACKED: ACK or BACK received for the frame
++ * @HAL_WBM_TQM_REL_REASON_CMD_REMOVE_MPDU: Command remove_mpdus initiated by SW
++ * @HAL_WBM_TQM_REL_REASON_CMD_REMOVE_TX: Command remove transmitted_mpdus
++ *	initiated by sw.
++ * @HAL_WBM_TQM_REL_REASON_CMD_REMOVE_NOTX: Command remove untransmitted_mpdus
++ *	initiated by sw.
++ * @HAL_WBM_TQM_REL_REASON_CMD_REMOVE_AGED_FRAMES: Command remove aged msdus or
++ *	mpdus.
++ * @HAL_WBM_TQM_REL_REASON_CMD_REMOVE_RESEAON1: Remove command initiated by
++ *	fw with fw_reason1.
++ * @HAL_WBM_TQM_REL_REASON_CMD_REMOVE_RESEAON2: Remove command initiated by
++ *	fw with fw_reason2.
++ * @HAL_WBM_TQM_REL_REASON_CMD_REMOVE_RESEAON3: Remove command initiated by
++ *	fw with fw_reason3.
++ */
++enum hal_wbm_tqm_rel_reason {
++	HAL_WBM_TQM_REL_REASON_FRAME_ACKED,
++	HAL_WBM_TQM_REL_REASON_CMD_REMOVE_MPDU,
++	HAL_WBM_TQM_REL_REASON_CMD_REMOVE_TX,
++	HAL_WBM_TQM_REL_REASON_CMD_REMOVE_NOTX,
++	HAL_WBM_TQM_REL_REASON_CMD_REMOVE_AGED_FRAMES,
++	HAL_WBM_TQM_REL_REASON_CMD_REMOVE_RESEAON1,
++	HAL_WBM_TQM_REL_REASON_CMD_REMOVE_RESEAON2,
++	HAL_WBM_TQM_REL_REASON_CMD_REMOVE_RESEAON3,
++};
++
++struct hal_wbm_buffer_ring {
++	struct ath11k_buffer_addr buf_addr_info;
++};
++
++enum hal_desc_owner {
++	HAL_DESC_OWNER_WBM,
++	HAL_DESC_OWNER_SW,
++	HAL_DESC_OWNER_TQM,
++	HAL_DESC_OWNER_RXDMA,
++	HAL_DESC_OWNER_REO,
++	HAL_DESC_OWNER_SWITCH,
++};
++
++enum hal_desc_buf_type {
++	HAL_DESC_BUF_TYPE_TX_MSDU_LINK,
++	HAL_DESC_BUF_TYPE_TX_MPDU_LINK,
++	HAL_DESC_BUF_TYPE_TX_MPDU_QUEUE_HEAD,
++	HAL_DESC_BUF_TYPE_TX_MPDU_QUEUE_EXT,
++	HAL_DESC_BUF_TYPE_TX_FLOW,
++	HAL_DESC_BUF_TYPE_TX_BUFFER,
++	HAL_DESC_BUF_TYPE_RX_MSDU_LINK,
++	HAL_DESC_BUF_TYPE_RX_MPDU_LINK,
++	HAL_DESC_BUF_TYPE_RX_REO_QUEUE,
++	HAL_DESC_BUF_TYPE_RX_REO_QUEUE_EXT,
++	HAL_DESC_BUF_TYPE_RX_BUFFER,
++	HAL_DESC_BUF_TYPE_IDLE_LINK,
++};
++
++#define HAL_DESC_REO_OWNED		4
++#define HAL_DESC_REO_QUEUE_DESC		8
++#define HAL_DESC_REO_QUEUE_EXT_DESC	9
++#define HAL_DESC_REO_NON_QOS_TID	16
++
++#define HAL_DESC_HDR_INFO0_OWNER	GENMASK(3, 0)
++#define HAL_DESC_HDR_INFO0_BUF_TYPE	GENMASK(7, 4)
++#define HAL_DESC_HDR_INFO0_DBG_RESERVED	GENMASK(31, 8)
++
++struct hal_desc_header {
++	u32 info0;
++} __packed;
++
++struct hal_rx_mpdu_link_ptr {
++	struct ath11k_buffer_addr addr_info;
++} __packed;
++
++struct hal_rx_msdu_details {
++	struct ath11k_buffer_addr buf_addr_info;
++	struct rx_msdu_desc rx_msdu_info;
++} __packed;
++
++#define HAL_RX_MSDU_LNK_INFO0_RX_QUEUE_NUMBER		GENMASK(15, 0)
++#define HAL_RX_MSDU_LNK_INFO0_FIRST_MSDU_LNK		BIT(16)
++
++struct hal_rx_msdu_link {
++	struct hal_desc_header desc_hdr;
++	struct ath11k_buffer_addr buf_addr_info;
++	u32 info0;
++	u32 pn[4];
++	struct hal_rx_msdu_details msdu_link[6];
++} __packed;
++
++struct hal_rx_reo_queue_ext {
++	struct hal_desc_header desc_hdr;
++	u32 rsvd;
++	struct hal_rx_mpdu_link_ptr mpdu_link[15];
++} __packed;
++
++/* hal_rx_reo_queue_ext
++ *	Consumer: REO
++ *	Producer: REO
++ *
++ * descriptor_header
++ *	Details about which module owns this struct.
++ *
++ * mpdu_link
++ *	Pointer to the next MPDU_link descriptor in the MPDU queue.
++ */
++
++enum hal_rx_reo_queue_pn_size {
++	HAL_RX_REO_QUEUE_PN_SIZE_24,
++	HAL_RX_REO_QUEUE_PN_SIZE_48,
++	HAL_RX_REO_QUEUE_PN_SIZE_128,
++};
++
++#define HAL_RX_REO_QUEUE_RX_QUEUE_NUMBER		GENMASK(15, 0)
++
++#define HAL_RX_REO_QUEUE_INFO0_VLD			BIT(0)
++#define HAL_RX_REO_QUEUE_INFO0_ASSOC_LNK_DESC_COUNTER	GENMASK(2, 1)
++#define HAL_RX_REO_QUEUE_INFO0_DIS_DUP_DETECTION	BIT(3)
++#define HAL_RX_REO_QUEUE_INFO0_SOFT_REORDER_EN		BIT(4)
++#define HAL_RX_REO_QUEUE_INFO0_AC			GENMASK(6, 5)
++#define HAL_RX_REO_QUEUE_INFO0_BAR			BIT(7)
++#define HAL_RX_REO_QUEUE_INFO0_RETRY			BIT(8)
++#define HAL_RX_REO_QUEUE_INFO0_CHECK_2K_MODE		BIT(9)
++#define HAL_RX_REO_QUEUE_INFO0_OOR_MODE			BIT(10)
++#define HAL_RX_REO_QUEUE_INFO0_BA_WINDOW_SIZE		GENMASK(18, 11)
++#define HAL_RX_REO_QUEUE_INFO0_PN_CHECK			BIT(19)
++#define HAL_RX_REO_QUEUE_INFO0_EVEN_PN			BIT(20)
++#define HAL_RX_REO_QUEUE_INFO0_UNEVEN_PN		BIT(21)
++#define HAL_RX_REO_QUEUE_INFO0_PN_HANDLE_ENABLE		BIT(22)
++#define HAL_RX_REO_QUEUE_INFO0_PN_SIZE			GENMASK(24, 23)
++#define HAL_RX_REO_QUEUE_INFO0_IGNORE_AMPDU_FLG		BIT(25)
++
++#define HAL_RX_REO_QUEUE_INFO1_SVLD			BIT(0)
++#define HAL_RX_REO_QUEUE_INFO1_SSN			GENMASK(12, 1)
++#define HAL_RX_REO_QUEUE_INFO1_CURRENT_IDX		GENMASK(20, 13)
++#define HAL_RX_REO_QUEUE_INFO1_SEQ_2K_ERR		BIT(21)
++#define HAL_RX_REO_QUEUE_INFO1_PN_ERR			BIT(22)
++#define HAL_RX_REO_QUEUE_INFO1_PN_VALID			BIT(31)
++
++#define HAL_RX_REO_QUEUE_INFO2_MPDU_COUNT		GENMASK(6, 0)
++#define HAL_RX_REO_QUEUE_INFO2_MSDU_COUNT		(31, 7)
++
++#define HAL_RX_REO_QUEUE_INFO3_TIMEOUT_COUNT		GENMASK(9, 4)
++#define HAL_RX_REO_QUEUE_INFO3_FWD_DUE_TO_BAR_CNT	GENMASK(15, 10)
++#define HAL_RX_REO_QUEUE_INFO3_DUPLICATE_COUNT		GENMASK(31, 10)
++
++#define HAL_RX_REO_QUEUE_INFO4_FRAME_IN_ORD_COUNT	GENMASK(23, 0)
++#define HAL_RX_REO_QUEUE_INFO4_BAR_RECVD_COUNT		GENMASK(31, 24)
++
++#define HAL_RX_REO_QUEUE_INFO5_LATE_RX_MPDU_COUNT	GENMASK(11, 0)
++#define HAL_RX_REO_QUEUE_INFO5_WINDOW_JUMP_2K		GENMASK(15, 12)
++#define HAL_RX_REO_QUEUE_INFO5_HOLE_COUNT		GENMASK(31, 16)
++
++struct hal_rx_reo_queue {
++	struct hal_desc_header desc_hdr;
++	u32 rx_queue_num;
++	u32 info0;
++	u32 info1;
++	u32 pn[4];
++	u32 last_rx_enqueue_timestamp;
++	u32 last_rx_dequeue_timestamp;
++	u32 next_aging_queue[2];
++	u32 prev_aging_queue[2];
++	u32 rx_bitmap[8];
++	u32 info2;
++	u32 info3;
++	u32 info4;
++	u32 processed_mpdus;
++	u32 processed_msdus;
++	u32 processed_total_bytes;
++	u32 info5;
++	u32 rsvd[3];
++	struct hal_rx_reo_queue_ext ext_desc[0];
++} __packed;
++
++/* hal_rx_reo_queue
++ *
++ * descriptor_header
++ *	Details about which module owns this struct. Note that sub field
++ *	Buffer_type shall be set to receive_reo_queue_descriptor.
++ *
++ * receive_queue_number
++ *	Indicates the MPDU queue ID to which this MPDU link descriptor belongs.
++ *
++ * vld
++ *	Valid bit indicating a session is established and the queue descriptor
++ *	is valid.
++ * associated_link_descriptor_counter
++ *	Indicates which of the 3 link descriptor counters shall be incremented
++ *	or decremented when link descriptors are added or removed from this
++ *	flow queue.
++ * disable_duplicate_detection
++ *	When set, do not perform any duplicate detection.
++ * soft_reorder_enable
++ *	When set, REO has been instructed to not perform the actual re-ordering
++ *	of frames for this queue, but just to insert the reorder opcodes.
++ * ac
++ *	Indicates the access category of the queue descriptor.
++ * bar
++ *	Indicates if BAR has been received.
++ * retry
++ *	Retry bit is checked if this bit is set.
++ * chk_2k_mode
++ *	Indicates what type of operation is expected from Reo when the received
++ *	frame SN falls within the 2K window.
++ * oor_mode
++ *	Indicates what type of operation is expected when the received frame
++ *	falls within the OOR window.
++ * ba_window_size
++ *	Indicates the negotiated (window size + 1). Max of 256 bits.
++ *
++ *	A value 255 means 256 bitmap, 63 means 64 bitmap, 0 (means non-BA
++ *	session, with window size of 0). The 3 values here are the main values
++ *	validated, but other values should work as well.
++ *
++ *	A BA window size of 0 (=> one frame entry bitmat), means that there is
++ *	no additional rx_reo_queue_ext desc. following rx_reo_queue in memory.
++ *	A BA window size of 1 - 105, means that there is 1 rx_reo_queue_ext.
++ *	A BA window size of 106 - 210, means that there are 2 rx_reo_queue_ext.
++ *	A BA window size of 211 - 256, means that there are 3 rx_reo_queue_ext.
++ * pn_check_needed, pn_shall_be_even, pn_shall_be_uneven, pn_handling_enable,
++ * pn_size
++ *	REO shall perform the PN increment check, even number check, uneven
++ *	number check, PN error check and size of the PN field check.
++ * ignore_ampdu_flag
++ *	REO shall ignore the ampdu_flag on entrance descriptor for this queue.
++ *
++ * svld
++ *	Sequence number in next field is valid one.
++ * ssn
++ *	 Starting Sequence number of the session.
++ * current_index
++ *	Points to last forwarded packet
++ * seq_2k_error_detected_flag
++ *	REO has detected a 2k error jump in the sequence number and from that
++ *	moment forward, all new frames are forwarded directly to FW, without
++ *	duplicate detect, reordering, etc.
++ * pn_error_detected_flag
++ *	REO has detected a PN error.
++ */
++
++#define HAL_REO_UPD_RX_QUEUE_INFO0_QUEUE_ADDR_HI		GENMASK(7, 0)
++#define HAL_REO_UPD_RX_QUEUE_INFO0_UPD_RX_QUEUE_NUM		BIT(8)
++#define HAL_REO_UPD_RX_QUEUE_INFO0_UPD_VLD			BIT(9)
++#define HAL_REO_UPD_RX_QUEUE_INFO0_UPD_ASSOC_LNK_DESC_CNT	BIT(10)
++#define HAL_REO_UPD_RX_QUEUE_INFO0_UPD_DIS_DUP_DETECTION	BIT(11)
++#define HAL_REO_UPD_RX_QUEUE_INFO0_UPD_SOFT_REORDER_EN		BIT(12)
++#define HAL_REO_UPD_RX_QUEUE_INFO0_UPD_AC			BIT(13)
++#define HAL_REO_UPD_RX_QUEUE_INFO0_UPD_BAR			BIT(14)
++#define HAL_REO_UPD_RX_QUEUE_INFO0_UPD_RETRY			BIT(15)
++#define HAL_REO_UPD_RX_QUEUE_INFO0_UPD_CHECK_2K_MODE		BIT(16)
++#define HAL_REO_UPD_RX_QUEUE_INFO0_UPD_OOR_MODE			BIT(17)
++#define HAL_REO_UPD_RX_QUEUE_INFO0_UPD_BA_WINDOW_SIZE		BIT(18)
++#define HAL_REO_UPD_RX_QUEUE_INFO0_UPD_PN_CHECK			BIT(19)
++#define HAL_REO_UPD_RX_QUEUE_INFO0_UPD_EVEN_PN			BIT(20)
++#define HAL_REO_UPD_RX_QUEUE_INFO0_UPD_UNEVEN_PN		BIT(21)
++#define HAL_REO_UPD_RX_QUEUE_INFO0_UPD_PN_HANDLE_ENABLE		BIT(22)
++#define HAL_REO_UPD_RX_QUEUE_INFO0_UPD_PN_SIZE			BIT(23)
++#define HAL_REO_UPD_RX_QUEUE_INFO0_UPD_IGNORE_AMPDU_FLG		BIT(24)
++#define HAL_REO_UPD_RX_QUEUE_INFO0_UPD_SVLD			BIT(25)
++#define HAL_REO_UPD_RX_QUEUE_INFO0_UPD_SSN			BIT(26)
++#define HAL_REO_UPD_RX_QUEUE_INFO0_UPD_SEQ_2K_ERR		BIT(27)
++#define HAL_REO_UPD_RX_QUEUE_INFO0_UPD_PN_ERR			BIT(28)
++#define HAL_REO_UPD_RX_QUEUE_INFO0_UPD_PN_VALID			BIT(29)
++#define HAL_REO_UPD_RX_QUEUE_INFO0_UPD_PN			BIT(30)
++
++#define HAL_REO_UPD_RX_QUEUE_INFO1_RX_QUEUE_NUMBER		GENMASK(15, 0)
++#define HAL_REO_UPD_RX_QUEUE_INFO1_VLD				BIT(16)
++#define HAL_REO_UPD_RX_QUEUE_INFO1_ASSOC_LNK_DESC_COUNTER	GENMASK(18, 17)
++#define HAL_REO_UPD_RX_QUEUE_INFO1_DIS_DUP_DETECTION		BIT(19)
++#define HAL_REO_UPD_RX_QUEUE_INFO1_SOFT_REORDER_EN		BIT(20)
++#define HAL_REO_UPD_RX_QUEUE_INFO1_AC				GENMASK(22, 21)
++#define HAL_REO_UPD_RX_QUEUE_INFO1_BAR				BIT(23)
++#define HAL_REO_UPD_RX_QUEUE_INFO1_RETRY			BIT(24)
++#define HAL_REO_UPD_RX_QUEUE_INFO1_CHECK_2K_MODE		BIT(25)
++#define HAL_REO_UPD_RX_QUEUE_INFO1_OOR_MODE			BIT(26)
++#define HAL_REO_UPD_RX_QUEUE_INFO1_PN_CHECK			BIT(27)
++#define HAL_REO_UPD_RX_QUEUE_INFO1_EVEN_PN			BIT(28)
++#define HAL_REO_UPD_RX_QUEUE_INFO1_UNEVEN_PN			BIT(29)
++#define HAL_REO_UPD_RX_QUEUE_INFO1_PN_HANDLE_ENABLE		BIT(30)
++#define HAL_REO_UPD_RX_QUEUE_INFO1_IGNORE_AMPDU_FLG		BIT(31)
++
++#define HAL_REO_UPD_RX_QUEUE_INFO2_BA_WINDOW_SIZE		GENMASK(7, 0)
++#define HAL_REO_UPD_RX_QUEUE_INFO2_PN_SIZE			GENMASK(9, 8)
++#define HAL_REO_UPD_RX_QUEUE_INFO2_SVLD				BIT(10)
++#define HAL_REO_UPD_RX_QUEUE_INFO2_SSN				GENMASK(22, 11)
++#define HAL_REO_UPD_RX_QUEUE_INFO2_SEQ_2K_ERR			BIT(23)
++#define HAL_REO_UPD_RX_QUEUE_INFO2_PN_ERR			BIT(24)
++#define HAL_REO_UPD_RX_QUEUE_INFO2_PN_VALID			BIT(25)
++
++struct hal_reo_update_rx_queue {
++	struct hal_reo_cmd_hdr cmd;
++	u32 queue_addr_lo;
++	u32 info0;
++	u32 info1;
++	u32 info2;
++	u32 pn[4];
++} __packed;
++
++#define HAL_REO_UNBLOCK_CACHE_INFO0_UNBLK_CACHE		BIT(0)
++#define HAL_REO_UNBLOCK_CACHE_INFO0_RESOURCE_IDX	GENMASK(2, 1)
++
++struct hal_reo_unblock_cache {
++	struct hal_reo_cmd_hdr cmd;
++	u32 info0;
++	u32 rsvd[7];
++} __packed;
++
++enum hal_reo_exec_status {
++	HAL_REO_EXEC_STATUS_SUCCESS,
++	HAL_REO_EXEC_STATUS_BLOCKED,
++	HAL_REO_EXEC_STATUS_FAILED,
++	HAL_REO_EXEC_STATUS_RESOURCE_BLOCKED,
++};
++
++#define HAL_REO_STATUS_HDR_INFO0_STATUS_NUM	GENMASK(15, 0)
++#define HAL_REO_STATUS_HDR_INFO0_EXEC_TIME	GENMASK(25, 16)
++#define HAL_REO_STATUS_HDR_INFO0_EXEC_STATUS	GENMASK(27, 26)
++
++struct hal_reo_status_hdr {
++	u32 info0;
++	u32 timestamp;
++} __packed;
++
++/* hal_reo_status_hdr
++ *		Producer: REO
++ *		Consumer: SW
++ *
++ * status_num
++ *		The value in this field is equal to value of the reo command
++ *		number. This field helps to correlate the statuses with the REO
++ *		commands.
++ *
++ * execution_time (in us)
++ *		The amount of time REO took to excecute the command. Note that
++ *		this time does not include the duration of the command waiting
++ *		in the command ring, before the execution started.
++ *
++ * execution_status
++ *		Execution status of the command. Values are defined in
++ *		enum %HAL_REO_EXEC_STATUS_.
++ */
++#define HAL_REO_GET_QUEUE_STATS_STATUS_INFO0_SSN		GENMASK(11, 0)
++#define HAL_REO_GET_QUEUE_STATS_STATUS_INFO0_CUR_IDX		GENMASK(19, 12)
++
++#define HAL_REO_GET_QUEUE_STATS_STATUS_INFO1_MPDU_COUNT		GENMASK(6, 0)
++#define HAL_REO_GET_QUEUE_STATS_STATUS_INFO1_MSDU_COUNT		GENMASK(31, 7)
++
++#define HAL_REO_GET_QUEUE_STATS_STATUS_INFO2_TIMEOUT_COUNT	GENMASK(9, 4)
++#define HAL_REO_GET_QUEUE_STATS_STATUS_INFO2_FDTB_COUNT		GENMASK(15, 10)
++#define HAL_REO_GET_QUEUE_STATS_STATUS_INFO2_DUPLICATE_COUNT	GENMASK(31, 16)
++
++#define HAL_REO_GET_QUEUE_STATS_STATUS_INFO3_FIO_COUNT		GENMASK(23, 0)
++#define HAL_REO_GET_QUEUE_STATS_STATUS_INFO3_BAR_RCVD_CNT	GENMASK(31, 24)
++
++#define HAL_REO_GET_QUEUE_STATS_STATUS_INFO4_LATE_RX_MPDU	GENMASK(11, 0)
++#define HAL_REO_GET_QUEUE_STATS_STATUS_INFO4_WINDOW_JMP2K	GENMASK(15, 12)
++#define HAL_REO_GET_QUEUE_STATS_STATUS_INFO4_HOLE_COUNT		GENMASK(31, 16)
++
++#define HAL_REO_GET_QUEUE_STATS_STATUS_INFO5_LOOPING_CNT	GENMASK(31, 28)
++
++struct hal_reo_get_queue_stats_status {
++	struct hal_reo_status_hdr hdr;
++	u32 info0;
++	u32 pn[4];
++	u32 last_rx_enqueue_timestamp;
++	u32 last_rx_dequeue_timestamp;
++	u32 rx_bitmap[8];
++	u32 info1;
++	u32 info2;
++	u32 info3;
++	u32 num_mpdu_frames;
++	u32 num_msdu_frames;
++	u32 total_bytes;
++	u32 info4;
++	u32 info5;
++} __packed;
++
++/* hal_reo_get_queue_stats_status
++ *		Producer: REO
++ *		Consumer: SW
++ *
++ * status_hdr
++ *		Details that can link this status with the original command. It
++ *		also contains info on how long REO took to execute this command.
++ *
++ * ssn
++ *		Starting Sequence number of the session, this changes whenever
++ *		window moves (can be filled by SW then maintained by REO).
++ *
++ * current_index
++ *		Points to last forwarded packet.
++ *
++ * pn
++ *		Bits of the PN number.
++ *
++ * last_rx_enqueue_timestamp
++ * last_rx_dequeue_timestamp
++ *		Timestamp of arrival of the last MPDU for this queue and
++ *		Timestamp of forwarding an MPDU accordingly.
++ *
++ * rx_bitmap
++ *		When a bit is set, the corresponding frame is currently held
++ *		in the re-order queue. The bitmap  is Fully managed by HW.
++ *
++ * current_mpdu_count
++ * current_msdu_count
++ *		The number of MPDUs and MSDUs in the queue.
++ *
++ * timeout_count
++ *		The number of times REO started forwarding frames even though
++ *		there is a hole in the bitmap. Forwarding reason is timeout.
++ *
++ * forward_due_to_bar_count
++ *		The number of times REO started forwarding frames even though
++ *		there is a hole in the bitmap. Fwd reason is reception of BAR.
++ *
++ * duplicate_count
++ *		The number of duplicate frames that have been detected.
++ *
++ * frames_in_order_count
++ *		The number of frames that have been received in order (without
++ *		a hole that prevented them from being forwarded immediately).
++ *
++ * bar_received_count
++ *		The number of times a BAR frame is received.
++ *
++ * mpdu_frames_processed_count
++ * msdu_frames_processed_count
++ *		The total number of MPDU/MSDU frames that have been processed.
++ *
++ * total_bytes
++ *		An approximation of the number of bytes received for this queue.
++ *
++ * late_receive_mpdu_count
++ *		The number of MPDUs received after the window had already moved
++ *		on. The 'late' sequence window is defined as
++ *		(Window SSN - 256) - (Window SSN - 1).
++ *
++ * window_jump_2k
++ *		The number of times the window moved more than 2K
++ *
++ * hole_count
++ *		The number of times a hole was created in the receive bitmap.
++ *
++ * looping_count
++ *		A count value that indicates the number of times the producer of
++ *		entries into this Ring has looped around the ring.
++ */
++
++#define HAL_REO_STATUS_LOOP_CNT			GENMASK(31, 28)
++
++#define HAL_REO_FLUSH_QUEUE_INFO0_ERR_DETECTED	BIT(0)
++#define HAL_REO_FLUSH_QUEUE_INFO0_RSVD		GENMASK(31, 1)
++#define HAL_REO_FLUSH_QUEUE_INFO1_RSVD		GENMASK(27, 0)
++
++struct hal_reo_flush_queue_status {
++	struct hal_reo_status_hdr hdr;
++	u32 info0;
++	u32 rsvd0[21];
++	u32 info1;
++} __packed;
++
++/* hal_reo_flush_queue_status
++ *		Producer: REO
++ *		Consumer: SW
++ *
++ * status_hdr
++ *		Details that can link this status with the original command. It
++ *		also contains info on how long REO took to execute this command.
++ *
++ * error_detected
++ *		Status of blocking resource
++ *
++ *		0 - No error has been detected while executing this command
++ *		1 - Error detected. The resource to be used for blocking was
++ *		    already in use.
++ *
++ * looping_count
++ *		A count value that indicates the number of times the producer of
++ *		entries into this Ring has looped around the ring.
++ */
++
++#define HAL_REO_FLUSH_CACHE_STATUS_INFO0_IS_ERR			BIT(0)
++#define HAL_REO_FLUSH_CACHE_STATUS_INFO0_BLOCK_ERR_CODE		GENMASK(2, 1)
++#define HAL_REO_FLUSH_CACHE_STATUS_INFO0_FLUSH_STATUS_HIT	BIT(8)
++#define HAL_REO_FLUSH_CACHE_STATUS_INFO0_FLUSH_DESC_TYPE	GENMASK(11, 9)
++#define HAL_REO_FLUSH_CACHE_STATUS_INFO0_FLUSH_CLIENT_ID	GENMASK(15, 12)
++#define HAL_REO_FLUSH_CACHE_STATUS_INFO0_FLUSH_ERR		GENMASK(17, 16)
++#define HAL_REO_FLUSH_CACHE_STATUS_INFO0_FLUSH_COUNT		GENMASK(25, 18)
++
++struct hal_reo_flush_cache_status {
++	struct hal_reo_status_hdr hdr;
++	u32 info0;
++	u32 rsvd0[21];
++	u32 info1;
++} __packed;
++
++/* hal_reo_flush_cache_status
++ *		Producer: REO
++ *		Consumer: SW
++ *
++ * status_hdr
++ *		Details that can link this status with the original command. It
++ *		also contains info on how long REO took to execute this command.
++ *
++ * error_detected
++ *		Status for blocking resource handling
++ *
++ *		0 - No error has been detected while executing this command
++ *		1 - An error in the blocking resource management was detected
++ *
++ * block_error_details
++ *		only valid when error_detected is set
++ *
++ *		0 - No blocking related errors found
++ *		1 - Blocking resource is already in use
++ *		2 - Resource requested to be unblocked, was not blocked
++ *
++ * cache_controller_flush_status_hit
++ *		The status that the cache controller returned on executing the
++ *		flush command.
++ *
++ *		0 - miss; 1 - hit
++ *
++ * cache_controller_flush_status_desc_type
++ *		Flush descriptor type
++ *
++ * cache_controller_flush_status_client_id
++ *		Module who made the flush request
++ *
++ *		In REO, this is always 0
++ *
++ * cache_controller_flush_status_error
++ *		Error condition
++ *
++ *		0 - No error found
++ *		1 - HW interface is still busy
++ *		2 - Line currently locked. Used for one line flush command
++ *		3 - At least one line is still locked.
++ *		    Used for cache flush command.
++ *
++ * cache_controller_flush_count
++ *		The number of lines that were actually flushed out
++ *
++ * looping_count
++ *		A count value that indicates the number of times the producer of
++ *		entries into this Ring has looped around the ring.
++ */
++
++#define HAL_REO_UNBLOCK_CACHE_STATUS_INFO0_IS_ERR	BIT(0)
++#define HAL_REO_UNBLOCK_CACHE_STATUS_INFO0_TYPE		BIT(1)
++
++struct hal_reo_unblock_cache_status {
++	struct hal_reo_status_hdr hdr;
++	u32 info0;
++	u32 rsvd0[21];
++	u32 info1;
++} __packed;
++
++/* hal_reo_unblock_cache_status
++ *		Producer: REO
++ *		Consumer: SW
++ *
++ * status_hdr
++ *		Details that can link this status with the original command. It
++ *		also contains info on how long REO took to execute this command.
++ *
++ * error_detected
++ *		0 - No error has been detected while executing this command
++ *		1 - The blocking resource was not in use, and therefore it could
++ *		    not be unblocked.
++ *
++ * unblock_type
++ *		Reference to the type of unblock command
++ *		0 - Unblock a blocking resource
++ *		1 - The entire cache usage is unblock
++ *
++ * looping_count
++ *		A count value that indicates the number of times the producer of
++ *		entries into this Ring has looped around the ring.
++ */
++
++#define HAL_REO_FLUSH_TIMEOUT_STATUS_INFO0_IS_ERR		BIT(0)
++#define HAL_REO_FLUSH_TIMEOUT_STATUS_INFO0_LIST_EMPTY		BIT(1)
++
++#define HAL_REO_FLUSH_TIMEOUT_STATUS_INFO1_REL_DESC_COUNT	GENMASK(15, 0)
++#define HAL_REO_FLUSH_TIMEOUT_STATUS_INFO1_FWD_BUF_COUNT	GENMASK(31, 16)
++
++struct hal_reo_flush_timeout_list_status {
++	struct hal_reo_status_hdr hdr;
++	u32 info0;
++	u32 info1;
++	u32 rsvd0[20];
++	u32 info2;
++} __packed;
++
++/* hal_reo_flush_timeout_list_status
++ *		Producer: REO
++ *		Consumer: SW
++ *
++ * status_hdr
++ *		Details that can link this status with the original command. It
++ *		also contains info on how long REO took to execute this command.
++ *
++ * error_detected
++ *		0 - No error has been detected while executing this command
++ *		1 - Command not properly executed and returned with error
++ *
++ * timeout_list_empty
++ *		When set, REO has depleted the timeout list and all entries are
++ *		gone.
++ *
++ * release_desc_count
++ *		Producer: SW; Consumer: REO
++ *		The number of link descriptor released
++ *
++ * forward_buf_count
++ *		Producer: SW; Consumer: REO
++ *		The number of buffers forwarded to the REO destination rings
++ *
++ * looping_count
++ *		A count value that indicates the number of times the producer of
++ *		entries into this Ring has looped around the ring.
++ */
++
++#define HAL_REO_DESC_THRESH_STATUS_INFO0_THRESH_INDEX		GENMASK(1, 0)
++#define HAL_REO_DESC_THRESH_STATUS_INFO1_LINK_DESC_COUNTER0	GENMASK(23, 0)
++#define HAL_REO_DESC_THRESH_STATUS_INFO2_LINK_DESC_COUNTER1	GENMASK(23, 0)
++#define HAL_REO_DESC_THRESH_STATUS_INFO3_LINK_DESC_COUNTER2	GENMASK(23, 0)
++#define HAL_REO_DESC_THRESH_STATUS_INFO4_LINK_DESC_COUNTER_SUM	GENMASK(23, 0)
++
++struct hal_reo_desc_thresh_reached_status {
++	struct hal_reo_status_hdr hdr;
++	u32 info0;
++	u32 info1;
++	u32 info2;
++	u32 info3;
++	u32 info4;
++	u32 rsvd0[17];
++	u32 info5;
++} __packed;
++
++/* hal_reo_desc_thresh_reached_status
++ *		Producer: REO
++ *		Consumer: SW
++ *
++ * status_hdr
++ *		Details that can link this status with the original command. It
++ *		also contains info on how long REO took to execute this command.
++ *
++ * threshold_index
++ *		The index of the threshold register whose value got reached
++ *
++ * link_descriptor_counter0
++ * link_descriptor_counter1
++ * link_descriptor_counter2
++ * link_descriptor_counter_sum
++ *		Value of the respective counters at generation of this message
++ *
++ * looping_count
++ *		A count value that indicates the number of times the producer of
++ *		entries into this Ring has looped around the ring.
++ */
++
++#endif /* ATH11K_HAL_DESC_H */
 
