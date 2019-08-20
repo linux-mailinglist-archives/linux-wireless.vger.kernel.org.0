@@ -2,43 +2,74 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 49FD996BB1
-	for <lists+linux-wireless@lfdr.de>; Tue, 20 Aug 2019 23:47:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8A69296BDB
+	for <lists+linux-wireless@lfdr.de>; Wed, 21 Aug 2019 00:00:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730778AbfHTVp3 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 20 Aug 2019 17:45:29 -0400
-Received: from resqmta-po-10v.sys.comcast.net ([96.114.154.169]:58168 "EHLO
-        resqmta-po-10v.sys.comcast.net" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1729900AbfHTVp3 (ORCPT
+        id S1730501AbfHTWAh (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 20 Aug 2019 18:00:37 -0400
+Received: from mail-oi1-f181.google.com ([209.85.167.181]:37558 "EHLO
+        mail-oi1-f181.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727358AbfHTWAg (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 20 Aug 2019 17:45:29 -0400
-X-Greylist: delayed 488 seconds by postgrey-1.27 at vger.kernel.org; Tue, 20 Aug 2019 17:45:29 EDT
-Received: from resomta-po-02v.sys.comcast.net ([96.114.154.226])
-        by resqmta-po-10v.sys.comcast.net with ESMTP
-        id 0AK5ien1yELdD0BofiXRgQ; Tue, 20 Aug 2019 21:37:21 +0000
+        Tue, 20 Aug 2019 18:00:36 -0400
+Received: by mail-oi1-f181.google.com with SMTP id b25so67792oib.4
+        for <linux-wireless@vger.kernel.org>; Tue, 20 Aug 2019 15:00:36 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=comcastmailservice.net; s=20180828_2048; t=1566337041;
-        bh=UhDBttiLRJbW+K/1QYuR4RJzGSjujyufOihg+1sy1Wk=;
-        h=Received:Received:To:From:Subject:Message-ID:Date:MIME-Version:
-         Content-Type;
-        b=RaaUaR3zdmEaLOCoTbFYzgs4s5Wg79dRm7ZSTrg6ARb+Q2K65zaFAjmvmU+YtdZCm
-         UKshhRi4BQWVbaLFSlt3sR3N0G6wsTTA6FQbvaqhVBP+LaAH9X4k67avzM2ysKSufF
-         1SKaZpmErgwfIBkC2GhUovpQsUapTyp69ERzk4M+AhUIbPAUKITVzXELIfSbMr0J3u
-         yCphvqJoMHpf3vZ2oHZ5vrf6oYNcxrpi6jdpijWaiyGs6a1+nuN6NM5+/+Bn1EMFmz
-         MMimiIsn8xWS9bbFJMnWQYGh9RLaMPGPzIevk7QxWYhhuU+2eYxVGQ1iI+nQC6a2HZ
-         s8hGxdwGwRrmA==
-Received: from touchy.whiterc.com ([IPv6:2601:601:1400:69b3:e5f4:286a:2b22:968c])
-        by resomta-po-02v.sys.comcast.net with ESMTPSA
-        id 0BoeivRXmSllN0Boei58Jt; Tue, 20 Aug 2019 21:37:21 +0000
-X-Xfinity-VMeta: sc=0;st=legit
-To:     linux-wireless@vger.kernel.org
-From:   Robert White <rwhite@pobox.com>
-Subject: ACS for ath10k?
-Message-ID: <cfd40fca-11f1-d123-956b-ab6a8ab291b5@pobox.com>
-Date:   Tue, 20 Aug 2019 21:37:20 +0000
+        d=gmail.com; s=20161025;
+        h=subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=Th0Wwi5W3mxObi7CcFu+DqwvURX69t0W5hLqCx/fX54=;
+        b=LfI9zGLO2+3WUNhgVXWAlBz63qQmxo8/63OZ9XGtrPsr3Pu25zKbjoflPtE9gSQHwb
+         ZAS3FbfXi7RePEURQoOwEPEwMnWxmAIbdnEoE6BeXuFcNZSo9DSfT+A9jvqj/5pevMps
+         uG3iV7K4Af+nnhmLnGFwFem5rsDGd0MBQBV7+NzvHttuDTC4C609OZdX6REnXg9oIzU3
+         7U5s49O7l4SqqslU4Aj9V1PXrxesbM/9D4mxnnuA8OHlSaWRfb3y/0ArDKe+WbaJqKpG
+         1GpwNYqtSWtgRg9n7pBRS1jNY3V8gaeCOZt3kwCr/k2i1YXg4UY8aaKVsUB9Ccuy7GOj
+         0uSA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=Th0Wwi5W3mxObi7CcFu+DqwvURX69t0W5hLqCx/fX54=;
+        b=oLk6Bqi8qB0tVhDNzj008poCKyuiyaIdwUJh1g/156uFvDpBCewZLjvX6EWcEeR6Vo
+         UT6KZ4lhYOWFWOdOffsjYF316ZCkl1bcgca38zoTSFTEczeC7jBvLEZMv00RtWna9lRr
+         Kf0NfU6kI/FHo1r84zFFk1RiEjLJoqzxd698d8P+wU11LPhAqZwHwzSVcjYPLHyqvsV7
+         0fNs2I61538meIdfELcQU5052U/40F74WNQ1SFrmTL//NCG5QK3JL3I3y0Ai4DA8VIYZ
+         emoHDATHHtc64CxP6tTdfO81Hsc3W36VXQi4AQWuLL09e47H4u4/hzK8kTjsXU34jSA5
+         InPA==
+X-Gm-Message-State: APjAAAWMz0kyo5fRnBJ5Xax1ZJs1jdh4xI0w+4k1gohn3O5gqfsLAmy6
+        j2GUydsmAe1m18YMxUr4LKZedY6G
+X-Google-Smtp-Source: APXvYqy2L8DF4XPha3H8vVZRiaNsqLCeywnarXFLNK/Q3eyH41A/t5Xn4aEMbrQO98fKunx7DaTr+w==
+X-Received: by 2002:aca:4cd0:: with SMTP id z199mr1540769oia.112.1566338435263;
+        Tue, 20 Aug 2019 15:00:35 -0700 (PDT)
+Received: from [192.168.1.249] (cpe-70-114-247-242.austin.res.rr.com. [70.114.247.242])
+        by smtp.googlemail.com with ESMTPSA id n13sm7428353otf.51.2019.08.20.15.00.33
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Tue, 20 Aug 2019 15:00:34 -0700 (PDT)
+Subject: Re: [RFC 0/1] Allow MAC change on up interface
+To:     Dan Williams <dcbw@redhat.com>,
+        Johannes Berg <johannes@sipsolutions.net>,
+        James Prestwood <prestwoj@gmail.com>
+Cc:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+References: <20190815185702.30937-1-prestwoj@gmail.com>
+ <645af7dad899e8eb186b3fee0f8a8a151a408557.camel@sipsolutions.net>
+ <394092a2f20697c9b055166a8254a5ef888551a5.camel@gmail.com>
+ <4848c3a9d0b330fab4442436244387a2c127fa03.camel@sipsolutions.net>
+ <c6b719d6279211bbf52443f327884d96ef63f2b2.camel@gmail.com>
+ <6835732fcc59ba8dbbcda4abc6e17dad499a7d8d.camel@sipsolutions.net>
+ <b115e933-a357-9904-e831-dea7df1b46b9@gmail.com>
+ <3576ad937c0b40b971a1b9c1a7c7396731a94bad.camel@sipsolutions.net>
+ <8c04da29-7515-1196-8431-67a6390bc00d@gmail.com>
+ <3fd41591acd55535863f11a0cc4f0f5f2afd5bdf.camel@sipsolutions.net>
+ <3313f0a7-2b38-9941-46bf-4c1a3e06a267@gmail.com>
+ <3beb3208443d39201272e822d26c1389aa4940db.camel@redhat.com>
+From:   Denis Kenzior <denkenz@gmail.com>
+Message-ID: <86a8b422-87e3-5ab7-40fe-604969ec8ec1@gmail.com>
+Date:   Tue, 20 Aug 2019 16:52:49 -0500
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
  Thunderbird/60.8.0
 MIME-Version: 1.0
+In-Reply-To: <3beb3208443d39201272e822d26c1389aa4940db.camel@redhat.com>
 Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
@@ -47,86 +78,68 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-For a brief shining moment several months ago the ath10k board I kitted 
-up for my access point... worked. I wish I remembered the details. 
-Anyway, now days hostapd ACS fails with:
+Hi Dan,
 
-Configuration file: hostapd.conf.experimental
-wlan0: interface state UNINITIALIZED->COUNTRY_UPDATE
-ACS: Automatic channel selection started, this may take a bit
-wlan0: interface state COUNTRY_UPDATE->ACS
-wlan0: ACS-STARTED
-ACS: Survey is missing noise floor
-ACS: Survey is missing noise floor
-ACS: Survey is missing noise floor
-ACS: Survey is missing noise floor
-ACS: Survey is missing noise floor
-ACS: Channel 52 has insufficient survey data
-...
-ACS: Survey is missing noise floor
-ACS: Survey is missing noise floor
-ACS: Survey is missing noise floor
-ACS: Survey is missing noise floor
-ACS: Survey is missing noise floor
-ACS: Channel 144 has insufficient survey data
-ACS: Surveys have insufficient data
-ACS: All study options have failed
-Interface initialization failed
-wlan0: interface state ACS->DISABLED
-wlan0: AP-DISABLED
-ACS: Possibly channel configuration is invalid, please report this along 
-with your config file.
-ACS: Failed to start
-wlan0: AP-DISABLED
-hostapd_free_hapd_data: Interface wlan0 wasn't started
-nl80211: deinit ifname=wlan0 disabled_11b_rates=0
-wlan0: interface state DISABLED->DISABLED
-wlan0: interface state DISABLED->DISABLED
-wlan0: AP-DISABLED
-wlan0: CTRL-EVENT-TERMINATING
-hostapd_free_hapd_data: Interface wlan0 wasn't started
+On 8/20/19 4:18 PM, Dan Williams wrote:
 
-In dmesg I get about 200 (if I include the suppressed redundant 
-messages) copies of
-ath10k_pci 0000:03:00.0: failed to parse chan info event: -71
+<snip>
 
-preceeded by:
-[  389.383439] ath10k_pci 0000:03:00.0: unsupported HTC service id: 1536
+> 
+> Code will be written, but I'd rather it be written once rather than 3+
+> times for STA/AP/Mesh/etc.
+> 
 
+I'm not sure you can state that definitively just yet?  So the real 
+question is whether saving the extra round-trip to the kernel is worth 
+the in-kernel complexity.  Given that interleaved system calls are 
+_always_ a problem, I argue that it is worth it for at least the Station 
+case (and it will keep connection times even faster to boot).  Isn't 
+minimizing the latency of connections the end goal here?  I get that 
+there are trade offs and people have other opinions on what a good trade 
+off is.
 
+But don't misunderstand, either solution is better than what we have 
+today.  My argument is: "why close the door on a particular solution 
+until the costs are known?"
 
-Relevant info:
-[   15.279360] ath10k_pci 0000:03:00.0: limiting irq mode to: 2
-[   15.279446] ath10k_pci 0000:03:00.0: pci irq msi oper_irq_mode 2 
-irq_mode 2 reset_mode 0
-[   15.834892] ath10k_pci 0000:03:00.0: qca988x hw2.0 target 0x4100016c 
-chip_id 0x043202ff sub 0000:0000
-[   15.834900] ath10k_pci 0000:03:00.0: kconfig debug 0 debugfs 1 
-tracing 0 dfs 1 testmode 0
-[   15.835488] ath10k_pci 0000:03:00.0: firmware ver 10.2.4-1.0-00045 
-api 5 features no-p2p,raw-mode,mfp,allows-mesh-bcast crc32 ccbd5104
-[   15.913439] ath10k_pci 0000:03:00.0: board_file api 1 bmi_id N/A 
-crc32 bebc7c08
-[   17.022617] ath10k_pci 0000:03:00.0: unsupported HTC service id: 1536
-[   17.043897] ath10k_pci 0000:03:00.0: htt-ver 2.1 wmi-op 5 htt-op 2 
-cal otp max-sta 128 raw 0 hwcrypto 1
-[   17.100699] ath: EEPROM regdomain: 0x6a
-[   17.100701] ath: EEPROM indicates we should expect a direct regpair map
-[   17.100703] ath: Country alpha2 being used: 00
-[   17.100704] ath: Regpair used: 0x6a
+>> The rest, I'm not sure why you are worried about them now?  For
+>> station
+>> there's a very clear & present use case.  If such a clear and
+>> present
+>> use case is presented for AP or Mesh, then deal with it then.
+> 
+> Why would you not want to pass a random MAC for AP or Mesh modes? The
+> same reasons for MAC randomization apply for all those too, I'd think.
 
+Umm, I was not arguing against doing that at all?  All I said was that 
+no such use case was yet presented.  For AP it isn't typically needed to 
+rapidly switch between MAC addresses while keeping the device UP.  If 
+you think there's such a need, I'm happy to learn something new? Same 
+goes for Mesh really?
 
-Note that if I manually select a channel the AP runs fine, so everythign 
-else seemes to be good except the parse error or firmware issue.
+> 
+>>> I don't see how this will not keep proliferating, and each new
+>>> thing
+>>> will come with its own dozen lines of code, a new feature flag,
+>>> etc.
+>>
+>> Such is life? :)
+> 
+> Not really. It's the job of maintainers to balance all these things, to
+> step back and think of the bigger picture and the future rather than
+> just solving one particular use-case today.
+>  > Your tone leaves the impression you want a particular solution pushed
+> through without the normal planning/architecture discussions that
+> accompany API changes. And that's not how the process typically works.
+> 
 
+So who's attacking who now?  We're trying to solve a long standing issue 
+that nobody has bothered to fix for years in a clean way.  Something 
+that one of your projects would benefit from, btw.
 
-lspci output:
+I have a technical opinion about how it should look like.  Johannes 
+might have a different opinion.  In the end it is up to him and I can go 
+pound sand.  So yes, I know how the process works ;)
 
-03:00.0 Network controller: Qualcomm Atheros QCA986x/988x 802.11ac 
-Wireless Network Adapter
-
-Am I just SOL?
-Is there a way to check/dump the channel info event that cannot be parsed?
-
-
---Rob.
+Regards,
+-Denis
