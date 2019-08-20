@@ -2,25 +2,25 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 5F5A296520
-	for <lists+linux-wireless@lfdr.de>; Tue, 20 Aug 2019 17:48:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C9EA09651E
+	for <lists+linux-wireless@lfdr.de>; Tue, 20 Aug 2019 17:48:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730273AbfHTPsj (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 20 Aug 2019 11:48:39 -0400
-Received: from smtp.codeaurora.org ([198.145.29.96]:39162 "EHLO
+        id S1730267AbfHTPsi (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 20 Aug 2019 11:48:38 -0400
+Received: from smtp.codeaurora.org ([198.145.29.96]:39238 "EHLO
         smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727077AbfHTPsi (ORCPT
+        with ESMTP id S1729980AbfHTPsi (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
         Tue, 20 Aug 2019 11:48:38 -0400
 Received: by smtp.codeaurora.org (Postfix, from userid 1000)
-        id 7FB4E61A3E; Tue, 20 Aug 2019 15:48:35 +0000 (UTC)
+        id 0BBAA61A3F; Tue, 20 Aug 2019 15:48:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1566316116;
-        bh=TMfpNdegRbuy6jnTC8tceEgmmpQ25iyEu6AjNYLU4uk=;
+        s=default; t=1566316117;
+        bh=7F/LH2tUdWDA0l6vEbe5SHjrX36hTXpn0+CGo+lYN/k=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=AdcZz5xteo99hqbpByYwt71GNwSLev0g2aKR5ng0GP/Wf24JTCMYwTglVJkJ+GNn7
-         XZ+ilQxKOku9CAEsotxRhIUVx5XhWtCoUcQQj0dUK8bPLlInkQ+Qux+N986eXoBeZD
-         yKDIEFuCPnm87bVfqUh6OdBFE8VMqMIz70FRqhRY=
+        b=cYesxX7s+40/UFVUkkFkOSnAuOqxy7Elpqa/uClSP1JvjZU98FM2nKlZFHaISDGim
+         oCWwkGvQMh8lnqtejPyO8M/QamU9Z/AGsBBtymj70kD/ZeCX4b9XKiTm26oQ6TZwBs
+         +GaEkc+i9X4KadBUZpbCMhKZNs9MOkAFjTxLZS+U=
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         pdx-caf-mail.web.codeaurora.org
 X-Spam-Level: 
@@ -31,24 +31,24 @@ Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-SHA256 (128/128 bits))
         (No client certificate requested)
         (Authenticated sender: kvalo@smtp.codeaurora.org)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 169F261A38;
-        Tue, 20 Aug 2019 15:48:30 +0000 (UTC)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id DF0C361A3D;
+        Tue, 20 Aug 2019 15:48:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1566316113;
-        bh=TMfpNdegRbuy6jnTC8tceEgmmpQ25iyEu6AjNYLU4uk=;
+        s=default; t=1566316115;
+        bh=7F/LH2tUdWDA0l6vEbe5SHjrX36hTXpn0+CGo+lYN/k=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Jty05oMEZ2YADGa6q2cV1brATiPvoL0xn3yzHRV984AqvA+8RqKQ0LpAIzkwBc6ma
-         UXfnp2/0o6duq2N+Z8q4YJnOhiTyisBgD8YCeGdjMiI7qko0e0n26xZdDKd/eAgzjI
-         gCSZe9f8kjqbPb/Vtyr58wsRBLNZRyTKDP+LVxw4=
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 169F261A38
+        b=AghaBy7b4blcrn6mEZhlXZe4tCn8VOAPmBSL8anyEcfEzPIIVdII3kHNoUujSPJn6
+         k+f3Ahv24jYJUn4Y4XDQPZQs3izJb316tRlPHK6TfN9sN18UaKLLpOtS7+sVhKwXcB
+         ajBKn/TKkfh9aGkd92u3Cp32Ckh6wAJwhpL0cMYs=
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org DF0C361A3D
 Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
 Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
 From:   Kalle Valo <kvalo@codeaurora.org>
 To:     linux-wireless@vger.kernel.org
 Cc:     ath11k@lists.infradead.org, devicetree@vger.kernel.org
-Subject: [PATCH 06/49] ath11k: add ce.c
-Date:   Tue, 20 Aug 2019 18:47:32 +0300
-Message-Id: <1566316095-27507-7-git-send-email-kvalo@codeaurora.org>
+Subject: [PATCH 07/49] ath11k: add ce.h
+Date:   Tue, 20 Aug 2019 18:47:33 +0300
+Message-Id: <1566316095-27507-8-git-send-email-kvalo@codeaurora.org>
 X-Mailer: git-send-email 2.7.4
 In-Reply-To: <1566316095-27507-1-git-send-email-kvalo@codeaurora.org>
 References: <1566316095-27507-1-git-send-email-kvalo@codeaurora.org>
@@ -58,825 +58,191 @@ List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
 ---
- drivers/net/wireless/ath/ath11k/ce.c | 812 +++++++++++++++++++++++++++++++++++
- 1 file changed, 812 insertions(+)
+ drivers/net/wireless/ath/ath11k/ce.h | 178 +++++++++++++++++++++++++++++++++++
+ 1 file changed, 178 insertions(+)
 
-diff --git a/drivers/net/wireless/ath/ath11k/ce.c b/drivers/net/wireless/ath/ath11k/ce.c
+diff --git a/drivers/net/wireless/ath/ath11k/ce.h b/drivers/net/wireless/ath/ath11k/ce.h
 new file mode 100644
-index 000000000000..c1b170cf45ba
+index 000000000000..b9f8a0b4cd7e
 --- /dev/null
-+++ b/drivers/net/wireless/ath/ath11k/ce.c
-@@ -0,0 +1,812 @@
-+// SPDX-License-Identifier: ISC
++++ b/drivers/net/wireless/ath/ath11k/ce.h
+@@ -0,0 +1,178 @@
++/* SPDX-License-Identifier: ISC */
 +/*
 + * Copyright (c) 2018-2019 The Linux Foundation. All rights reserved.
 + */
 +
-+#include "dp_rx.h"
-+#include "debug.h"
++#ifndef ATH11K_CE_H
++#define ATH11K_CE_H
 +
-+static const struct ce_attr host_ce_config_wlan[] = {
-+	/* CE0: host->target HTC control and raw streams */
-+	{
-+		.flags = CE_ATTR_FLAGS,
-+		.src_nentries = 16,
-+		.src_sz_max = 2048,
-+		.dest_nentries = 0,
-+	},
++#define CE_COUNT 12
 +
-+	/* CE1: target->host HTT + HTC control */
-+	{
-+		.flags = CE_ATTR_FLAGS,
-+		.src_nentries = 0,
-+		.src_sz_max = 2048,
-+		.dest_nentries = 512,
-+		.recv_cb = ath11k_htc_rx_completion_handler,
-+	},
++/* Byte swap data words */
++#define CE_ATTR_BYTE_SWAP_DATA 2
 +
-+	/* CE2: target->host WMI */
-+	{
-+		.flags = CE_ATTR_FLAGS,
-+		.src_nentries = 0,
-+		.src_sz_max = 2048,
-+		.dest_nentries = 512,
-+		.recv_cb = ath11k_htc_rx_completion_handler,
-+	},
++/* no interrupt on copy completion */
++#define CE_ATTR_DIS_INTR		8
 +
-+	/* CE3: host->target WMI (mac0) */
-+	{
-+		.flags = CE_ATTR_FLAGS,
-+		.src_nentries = 32,
-+		.src_sz_max = 2048,
-+		.dest_nentries = 0,
-+	},
++/* Host software's Copy Engine configuration. */
++#ifdef __BIG_ENDIAN
++#define CE_ATTR_FLAGS CE_ATTR_BYTE_SWAP_DATA
++#else
++#define CE_ATTR_FLAGS 0
++#endif
 +
-+	/* CE4: host->target HTT */
-+	{
-+		.flags = CE_ATTR_FLAGS | CE_ATTR_DIS_INTR,
-+		.src_nentries = 2048,
-+		.src_sz_max = 256,
-+		.dest_nentries = 0,
-+	},
++/* Threshold to poll for tx completion in case of Interrupt disabled CE's */
++#define ATH11K_CE_USAGE_THRESHOLD 32
 +
-+	/* CE5: target->host pktlog */
-+	{
-+		.flags = CE_ATTR_FLAGS,
-+		.src_nentries = 0,
-+		.src_sz_max = 2048,
-+		.dest_nentries = 512,
-+		.recv_cb = ath11k_dp_htt_htc_t2h_msg_handler,
-+	},
++void ath11k_ce_byte_swap(void *mem, u32 len);
 +
-+	/* CE6: target autonomous hif_memcpy */
-+	{
-+		.flags = CE_ATTR_FLAGS | CE_ATTR_DIS_INTR,
-+		.src_nentries = 0,
-+		.src_sz_max = 0,
-+		.dest_nentries = 0,
-+	},
++/*
++ * Directions for interconnect pipe configuration.
++ * These definitions may be used during configuration and are shared
++ * between Host and Target.
++ *
++ * Pipe Directions are relative to the Host, so PIPEDIR_IN means
++ * "coming IN over air through Target to Host" as with a WiFi Rx operation.
++ * Conversely, PIPEDIR_OUT means "going OUT from Host through Target over air"
++ * as with a WiFi Tx operation. This is somewhat awkward for the "middle-man"
++ * Target since things that are "PIPEDIR_OUT" are coming IN to the Target
++ * over the interconnect.
++ */
++#define PIPEDIR_NONE		0
++#define PIPEDIR_IN		1 /* Target-->Host, WiFi Rx direction */
++#define PIPEDIR_OUT		2 /* Host->Target, WiFi Tx direction */
++#define PIPEDIR_INOUT		3 /* bidirectional */
++#define PIPEDIR_INOUT_H2H	4 /* bidirectional, host to host */
 +
-+	/* CE7: host->target WMI (mac1) */
-+	{
-+		.flags = CE_ATTR_FLAGS,
-+		.src_nentries = 32,
-+		.src_sz_max = 2048,
-+		.dest_nentries = 0,
-+	},
++/* CE address/mask */
++#define CE_HOST_IE_ADDRESS	0x00A1803C
++#define CE_HOST_IE_2_ADDRESS	0x00A18040
++#define CE_HOST_IE_3_ADDRESS	CE_HOST_IE_ADDRESS
 +
-+	/* CE8: target autonomous hif_memcpy */
-+	{
-+		.flags = CE_ATTR_FLAGS,
-+		.src_nentries = 0,
-+		.src_sz_max = 0,
-+		.dest_nentries = 0,
-+	},
++#define CE_HOST_IE_3_SHIFT	0xC
 +
-+	/* CE9: host->target WMI (mac2) */
-+	{
-+		.flags = CE_ATTR_FLAGS,
-+		.src_nentries = 32,
-+		.src_sz_max = 2048,
-+		.dest_nentries = 0,
-+	},
++#define CE_RING_IDX_INCR(nentries_mask, idx) (((idx) + 1) & (nentries_mask))
 +
-+	/* CE10: target->host HTT */
-+	{
-+		.flags = CE_ATTR_FLAGS,
-+		.src_nentries = 0,
-+		.src_sz_max = 2048,
-+		.dest_nentries = 512,
-+		.recv_cb = ath11k_htc_rx_completion_handler,
-+	},
++#define ATH11K_CE_RX_POST_RETRY_JIFFIES 50
 +
-+	/* CE11: Not used */
-+	{
-+		.flags = CE_ATTR_FLAGS,
-+		.src_nentries = 0,
-+		.src_sz_max = 0,
-+		.dest_nentries = 0,
-+	},
++struct ath11k_base;
++
++/* Establish a mapping between a service/direction and a pipe. */
++struct service_to_pipe {
++	__le32 service_id;
++	__le32 pipedir;
++	__le32 pipenum;
 +};
 +
-+static int ath11k_ce_rx_buf_enqueue_pipe(struct ath11k_ce_pipe *pipe,
-+					 struct sk_buff *skb, dma_addr_t paddr)
-+{
-+	struct ath11k_base *ab = pipe->ab;
-+	struct ath11k_ce_ring *ring = pipe->dest_ring;
-+	struct hal_srng *srng;
-+	unsigned int write_index;
-+	unsigned int nentries_mask = ring->nentries_mask;
-+	u32 *desc;
-+	int ret;
-+
-+	lockdep_assert_held(&ab->ce.ce_lock);
-+
-+	write_index = ring->write_index;
-+
-+	srng = &ab->hal.srng_list[ring->hal_ring_id];
-+
-+	spin_lock_bh(&srng->lock);
-+
-+	ath11k_hal_srng_access_begin(ab, srng);
-+
-+	if (unlikely(ath11k_hal_srng_src_num_free(ab, srng, false) < 1)) {
-+		ret = -ENOSPC;
-+		goto err;
-+	}
-+
-+	desc = ath11k_hal_srng_src_get_next_entry(ab, srng);
-+	if (!desc) {
-+		ret = -ENOSPC;
-+		goto err;
-+	}
-+
-+	ath11k_hal_ce_dst_set_desc(desc, paddr);
-+
-+	ring->skb[write_index] = skb;
-+	write_index = CE_RING_IDX_INCR(nentries_mask, write_index);
-+	ring->write_index = write_index;
-+
-+	ath11k_hal_srng_access_end(ab, srng);
-+
-+	spin_unlock_bh(&srng->lock);
-+
-+	pipe->rx_buf_needed--;
-+
-+	return 0;
-+
-+err:
-+	ath11k_hal_srng_access_end(ab, srng);
-+
-+	spin_unlock_bh(&srng->lock);
-+
-+	return ret;
-+}
-+
-+static int ath11k_ce_rx_post_pipe(struct ath11k_ce_pipe *pipe)
-+{
-+	struct ath11k_base *ab = pipe->ab;
-+	struct sk_buff *skb;
-+	dma_addr_t paddr;
-+	int ret = 0;
-+
-+	if (!(pipe->dest_ring || pipe->status_ring))
-+		return 0;
-+
-+	spin_lock_bh(&ab->ce.ce_lock);
-+	while (pipe->rx_buf_needed) {
-+		skb = dev_alloc_skb(pipe->buf_sz);
-+		if (!skb) {
-+			ret = -ENOMEM;
-+			goto exit;
-+		}
-+
-+		WARN_ON_ONCE(!IS_ALIGNED((unsigned long)skb->data, 4));
-+
-+		paddr = dma_map_single(ab->dev, skb->data,
-+				       skb->len + skb_tailroom(skb),
-+				       DMA_FROM_DEVICE);
-+		if (unlikely(dma_mapping_error(ab->dev, paddr))) {
-+			ath11k_warn(ab, "failed to dma map ce rx buf\n");
-+			dev_kfree_skb_any(skb);
-+			ret = -EIO;
-+			goto exit;
-+		}
-+
-+		ATH11K_SKB_RXCB(skb)->paddr = paddr;
-+
-+		ret = ath11k_ce_rx_buf_enqueue_pipe(pipe, skb, paddr);
-+
-+		if (ret) {
-+			ath11k_warn(ab, "failed to enqueue rx buf: %d\n", ret);
-+			dma_unmap_single(ab->dev, paddr,
-+					 skb->len + skb_tailroom(skb),
-+					 DMA_FROM_DEVICE);
-+			dev_kfree_skb_any(skb);
-+			goto exit;
-+		}
-+	}
-+
-+exit:
-+	spin_unlock_bh(&ab->ce.ce_lock);
-+	return ret;
-+}
-+
-+static int ath11k_ce_completed_recv_next(struct ath11k_ce_pipe *pipe,
-+					 struct sk_buff **skb, int *nbytes)
-+{
-+	struct ath11k_base *ab = pipe->ab;
-+	struct hal_srng *srng;
-+	unsigned int sw_index;
-+	unsigned int nentries_mask;
-+	u32 *desc;
-+	int ret = 0;
-+
-+	spin_lock_bh(&ab->ce.ce_lock);
-+
-+	sw_index = pipe->dest_ring->sw_index;
-+	nentries_mask = pipe->dest_ring->nentries_mask;
-+
-+	srng = &ab->hal.srng_list[pipe->status_ring->hal_ring_id];
-+
-+	spin_lock_bh(&srng->lock);
-+
-+	ath11k_hal_srng_access_begin(ab, srng);
-+
-+	desc = ath11k_hal_srng_dst_get_next_entry(ab, srng);
-+	if (!desc) {
-+		ret = -EIO;
-+		goto err;
-+	}
-+
-+	*nbytes = ath11k_hal_ce_dst_status_get_length(desc);
-+	if (*nbytes == 0) {
-+		ret = -EIO;
-+		goto err;
-+	}
-+
-+	*skb = pipe->dest_ring->skb[sw_index];
-+	pipe->dest_ring->skb[sw_index] = NULL;
-+
-+	sw_index = CE_RING_IDX_INCR(nentries_mask, sw_index);
-+	pipe->dest_ring->sw_index = sw_index;
-+
-+	pipe->rx_buf_needed++;
-+err:
-+	ath11k_hal_srng_access_end(ab, srng);
-+
-+	spin_unlock_bh(&srng->lock);
-+
-+	spin_unlock_bh(&ab->ce.ce_lock);
-+
-+	return ret;
-+}
-+
-+static void ath11k_ce_recv_process_cb(struct ath11k_ce_pipe *pipe)
-+{
-+	struct ath11k_base *ab = pipe->ab;
-+	struct sk_buff *skb;
-+	struct sk_buff_head list;
-+	unsigned int nbytes, max_nbytes;
-+	int ret;
-+
-+	__skb_queue_head_init(&list);
-+	while (ath11k_ce_completed_recv_next(pipe, &skb, &nbytes) == 0) {
-+		max_nbytes = skb->len + skb_tailroom(skb);
-+		dma_unmap_single(ab->dev, ATH11K_SKB_RXCB(skb)->paddr,
-+				 max_nbytes, DMA_FROM_DEVICE);
-+
-+		if (unlikely(max_nbytes < nbytes)) {
-+			ath11k_warn(ab, "rxed more than expected (nbytes %d, max %d)",
-+				    nbytes, max_nbytes);
-+			dev_kfree_skb_any(skb);
-+			continue;
-+		}
-+
-+		skb_put(skb, nbytes);
-+		__skb_queue_tail(&list, skb);
-+	}
-+
-+	while ((skb = __skb_dequeue(&list))) {
-+		ath11k_dbg(ab, ATH11K_DBG_AHB, "rx ce pipe %d len %d\n",
-+			   pipe->pipe_num, skb->len);
-+		pipe->recv_cb(ab, skb);
-+	}
-+
-+	ret = ath11k_ce_rx_post_pipe(pipe);
-+	if (ret && ret != -ENOSPC) {
-+		ath11k_warn(ab, "failed to post rx buf to pipe: %d err: %d\n",
-+			    pipe->pipe_num, ret);
-+		mod_timer(&ab->rx_replenish_retry,
-+			  jiffies + ATH11K_CE_RX_POST_RETRY_JIFFIES);
-+	}
-+}
-+
-+static int ath11k_ce_completed_send_next(struct ath11k_ce_pipe *pipe,
-+					 struct sk_buff **skb)
-+{
-+	struct ath11k_base *ab = pipe->ab;
-+	struct hal_srng *srng;
-+	unsigned int sw_index;
-+	unsigned int nentries_mask;
-+	u32 *desc;
-+	int ret = 0;
-+
-+	spin_lock_bh(&ab->ce.ce_lock);
-+
-+	sw_index = pipe->src_ring->sw_index;
-+	nentries_mask = pipe->src_ring->nentries_mask;
-+
-+	srng = &ab->hal.srng_list[pipe->src_ring->hal_ring_id];
-+
-+	spin_lock_bh(&srng->lock);
-+
-+	ath11k_hal_srng_access_begin(ab, srng);
-+
-+	desc = ath11k_hal_srng_src_reap_next(ab, srng);
-+	if (!desc) {
-+		ret = -EIO;
-+		goto err_unlock;
-+	}
-+
-+	*skb = pipe->src_ring->skb[sw_index];
-+
-+	pipe->src_ring->skb[sw_index] = NULL;
-+
-+	sw_index = CE_RING_IDX_INCR(nentries_mask, sw_index);
-+	pipe->src_ring->sw_index = sw_index;
-+
-+err_unlock:
-+	spin_unlock_bh(&srng->lock);
-+
-+	spin_unlock_bh(&ab->ce.ce_lock);
-+
-+	return ret;
-+}
-+
-+static void ath11k_ce_send_done_cb(struct ath11k_ce_pipe *pipe)
-+{
-+	struct ath11k_base *ab = pipe->ab;
-+	struct sk_buff *skb;
-+
-+	while (ath11k_ce_completed_send_next(pipe, &skb) == 0) {
-+		if (!skb)
-+			continue;
-+
-+		dma_unmap_single(ab->dev, ATH11K_SKB_CB(skb)->paddr, skb->len,
-+				 DMA_TO_DEVICE);
-+		dev_kfree_skb_any(skb);
-+	}
-+}
-+
-+static int ath11k_ce_init_ring(struct ath11k_base *ab,
-+			       struct ath11k_ce_ring *ce_ring,
-+			       int ce_id, enum hal_ring_type type)
-+{
-+	struct hal_srng_params params = { 0 };
-+	int ret;
-+
-+	params.ring_base_paddr = ce_ring->base_addr_ce_space;
-+	params.ring_base_vaddr = ce_ring->base_addr_owner_space;
-+	params.num_entries = ce_ring->nentries;
-+
-+	switch (type) {
-+	case HAL_CE_SRC:
-+		if (!(CE_ATTR_DIS_INTR & host_ce_config_wlan[ce_id].flags))
-+			params.intr_batch_cntr_thres_entries = 1;
-+		break;
-+	case HAL_CE_DST:
-+		params.max_buffer_len = host_ce_config_wlan[ce_id].src_sz_max;
-+		if (!(host_ce_config_wlan[ce_id].flags & CE_ATTR_DIS_INTR)) {
-+			params.intr_timer_thres_us = 1024;
-+			params.flags |= HAL_SRNG_FLAGS_LOW_THRESH_INTR_EN;
-+			params.low_threshold = ce_ring->nentries - 3;
-+		}
-+		break;
-+	case HAL_CE_DST_STATUS:
-+		if (!(host_ce_config_wlan[ce_id].flags & CE_ATTR_DIS_INTR)) {
-+			params.intr_batch_cntr_thres_entries = 1;
-+			params.intr_timer_thres_us = 0x1000;
-+		}
-+		break;
-+	default:
-+		ath11k_warn(ab, "Invalid CE ring type %d\n", type);
-+		return -EINVAL;
-+	}
-+
-+	/* TODO: Init other params needed by HAL to init the ring */
-+
-+	ret = ath11k_hal_srng_setup(ab, type, ce_id, 0, &params);
-+	if (ret < 0) {
-+		ath11k_warn(ab, "failed to setup srng: %d ring_id %d\n",
-+			    ret, ce_id);
-+		return ret;
-+	}
-+	ce_ring->hal_ring_id = ret;
-+
-+	return 0;
-+}
-+
-+static struct ath11k_ce_ring *
-+ath11k_ce_alloc_ring(struct ath11k_base *ab, int nentries, int desc_sz)
-+{
-+	struct ath11k_ce_ring *ce_ring;
-+	dma_addr_t base_addr;
-+
-+	ce_ring = kzalloc(sizeof(*ce_ring) + (nentries * sizeof(*ce_ring->skb)),
-+			  GFP_KERNEL);
-+	if (ce_ring == NULL)
-+		return ERR_PTR(-ENOMEM);
-+
-+	ce_ring->nentries = nentries;
-+	ce_ring->nentries_mask = nentries - 1;
-+
-+	/* Legacy platforms that do not support cache
-+	 * coherent DMA are unsupported
-+	 */
-+	ce_ring->base_addr_owner_space_unaligned =
-+		dma_alloc_coherent(ab->dev,
-+				   nentries * desc_sz + CE_DESC_RING_ALIGN,
-+				   &base_addr, GFP_KERNEL);
-+	if (!ce_ring->base_addr_owner_space_unaligned) {
-+		kfree(ce_ring);
-+		return ERR_PTR(-ENOMEM);
-+	}
-+
-+	ce_ring->base_addr_ce_space_unaligned = base_addr;
-+
-+	ce_ring->base_addr_owner_space = PTR_ALIGN(
-+			ce_ring->base_addr_owner_space_unaligned,
-+			CE_DESC_RING_ALIGN);
-+	ce_ring->base_addr_ce_space = ALIGN(
-+			ce_ring->base_addr_ce_space_unaligned,
-+			CE_DESC_RING_ALIGN);
-+
-+	return ce_ring;
-+}
-+
-+static int ath11k_ce_alloc_pipe(struct ath11k_base *ab, int ce_id)
-+{
-+	struct ath11k_ce_pipe *pipe = &ab->ce.ce_pipe[ce_id];
-+	const struct ce_attr *attr = &host_ce_config_wlan[ce_id];
-+	int nentries;
-+	int desc_sz;
-+
-+	pipe->attr_flags = attr->flags;
-+
-+	if (attr->src_nentries) {
-+		pipe->send_cb = ath11k_ce_send_done_cb;
-+		nentries = roundup_pow_of_two(attr->src_nentries);
-+		desc_sz = ath11k_hal_ce_get_desc_size(HAL_CE_DESC_SRC);
-+		pipe->src_ring = ath11k_ce_alloc_ring(ab, nentries, desc_sz);
-+		if (!pipe->src_ring)
-+			return -ENOMEM;
-+	}
-+
-+	if (attr->dest_nentries) {
-+		pipe->recv_cb = attr->recv_cb;
-+		nentries = roundup_pow_of_two(attr->dest_nentries);
-+		desc_sz = ath11k_hal_ce_get_desc_size(HAL_CE_DESC_DST);
-+		pipe->dest_ring = ath11k_ce_alloc_ring(ab, nentries, desc_sz);
-+
-+		if (!pipe->dest_ring)
-+			return -ENOMEM;
-+
-+		desc_sz = ath11k_hal_ce_get_desc_size(HAL_CE_DESC_DST_STATUS);
-+		pipe->status_ring = ath11k_ce_alloc_ring(ab, nentries, desc_sz);
-+		if (!pipe->status_ring)
-+			return -ENOMEM;
-+	}
-+
-+	return 0;
-+}
-+
-+void ath11k_ce_per_engine_service(struct ath11k_base *ab, u16 ce_id)
-+{
-+	struct ath11k_ce_pipe *pipe = &ab->ce.ce_pipe[ce_id];
-+
-+	if (pipe->send_cb)
-+		pipe->send_cb(pipe);
-+
-+	if (pipe->recv_cb)
-+		ath11k_ce_recv_process_cb(pipe);
-+}
-+
-+void ath11k_ce_poll_send_completed(struct ath11k_base *ab, u8 pipe_id)
-+{
-+	struct ath11k_ce_pipe *pipe = &ab->ce.ce_pipe[pipe_id];
-+
-+	if ((pipe->attr_flags & CE_ATTR_DIS_INTR) && pipe->send_cb)
-+		pipe->send_cb(pipe);
-+}
-+
-+int ath11k_ce_send(struct ath11k_base *ab, struct sk_buff *skb, u8 pipe_id,
-+		   u16 transfer_id)
-+{
-+	struct ath11k_ce_pipe *pipe = &ab->ce.ce_pipe[pipe_id];
-+	struct hal_srng *srng;
-+	u32 *desc;
-+	unsigned int write_index, sw_index;
-+	unsigned int nentries_mask;
-+	int ret = 0;
-+	u8 byte_swap_data = 0;
-+	int num_used;
-+
-+	/* Check if some entries could be regained by handling tx completion if
-+	 * the CE has interrupts disabled and the used entries is more than the
-+	 * defined usage threshold.
-+	 */
-+	if (pipe->attr_flags & CE_ATTR_DIS_INTR) {
-+		spin_lock_bh(&ab->ce.ce_lock);
-+		write_index = pipe->src_ring->write_index;
-+
-+		sw_index = pipe->src_ring->sw_index;
-+
-+		if (write_index >= sw_index)
-+			num_used = write_index - sw_index;
-+		else
-+			num_used = pipe->src_ring->nentries - sw_index +
-+				   write_index;
-+
-+		spin_unlock_bh(&ab->ce.ce_lock);
-+
-+		if (num_used > ATH11K_CE_USAGE_THRESHOLD)
-+			ath11k_ce_poll_send_completed(ab, pipe->pipe_num);
-+	}
-+
-+	if (test_bit(ATH11K_FLAG_CRASH_FLUSH, &ab->dev_flags))
-+		return -ESHUTDOWN;
-+
-+	spin_lock_bh(&ab->ce.ce_lock);
-+
-+	write_index = pipe->src_ring->write_index;
-+	nentries_mask = pipe->src_ring->nentries_mask;
-+
-+	srng = &ab->hal.srng_list[pipe->src_ring->hal_ring_id];
-+
-+	spin_lock_bh(&srng->lock);
-+
-+	ath11k_hal_srng_access_begin(ab, srng);
-+
-+	if (unlikely(ath11k_hal_srng_src_num_free(ab, srng, false) < 1)) {
-+		ath11k_hal_srng_access_end(ab, srng);
-+		ret = -ENOBUFS;
-+		goto err_unlock;
-+	}
-+
-+	desc = ath11k_hal_srng_src_get_next_reaped(ab, srng);
-+	if (!desc) {
-+		ath11k_hal_srng_access_end(ab, srng);
-+		ret = -ENOBUFS;
-+		goto err_unlock;
-+	}
-+
-+	if (pipe->attr_flags & CE_ATTR_BYTE_SWAP_DATA)
-+		byte_swap_data = 1;
-+
-+	ath11k_hal_ce_src_set_desc(desc, ATH11K_SKB_CB(skb)->paddr,
-+				   skb->len, transfer_id, byte_swap_data);
-+
-+	pipe->src_ring->skb[write_index] = skb;
-+	pipe->src_ring->write_index = CE_RING_IDX_INCR(nentries_mask,
-+						       write_index);
-+
-+	ath11k_hal_srng_access_end(ab, srng);
-+
-+	spin_unlock_bh(&srng->lock);
-+
-+	spin_unlock_bh(&ab->ce.ce_lock);
-+
-+	return 0;
-+
-+err_unlock:
-+	spin_unlock_bh(&srng->lock);
-+
-+	spin_unlock_bh(&ab->ce.ce_lock);
-+
-+	return ret;
-+}
-+
-+static void ath11k_ce_rx_pipe_cleanup(struct ath11k_ce_pipe *pipe)
-+{
-+	struct ath11k_base *ab = pipe->ab;
-+	struct ath11k_ce_ring *ring = pipe->dest_ring;
-+	struct sk_buff *skb;
-+	int i;
-+
-+	if (!(ring && pipe->buf_sz))
-+		return;
-+
-+	for (i = 0; i < ring->nentries; i++) {
-+		skb = ring->skb[i];
-+		if (!skb)
-+			continue;
-+
-+		ring->skb[i] = NULL;
-+		dma_unmap_single(ab->dev, ATH11K_SKB_RXCB(skb)->paddr,
-+				 skb->len + skb_tailroom(skb), DMA_FROM_DEVICE);
-+		dev_kfree_skb_any(skb);
-+	}
-+}
-+
-+void ath11k_ce_cleanup_pipes(struct ath11k_base *ab)
-+{
-+	struct ath11k_ce_pipe *pipe;
-+	int pipe_num;
-+
-+	for (pipe_num = 0; pipe_num < CE_COUNT; pipe_num++) {
-+		pipe = &ab->ce.ce_pipe[pipe_num];
-+		ath11k_ce_rx_pipe_cleanup(pipe);
-+
-+		/* Cleanup any src CE's which have interrupts disabled */
-+		ath11k_ce_poll_send_completed(ab, pipe_num);
-+
-+		/* NOTE: Should we also clean up tx buffer in all pipes? */
-+	}
-+}
-+
-+void ath11k_ce_rx_post_buf(struct ath11k_base *ab)
-+{
-+	struct ath11k_ce_pipe *pipe;
-+	int i;
-+	int ret;
-+
-+	for (i = 0; i < CE_COUNT; i++) {
-+		pipe = &ab->ce.ce_pipe[i];
-+		ret = ath11k_ce_rx_post_pipe(pipe);
-+		if (ret) {
-+			if (ret == -ENOSPC)
-+				continue;
-+
-+			ath11k_warn(ab, "failed to post rx buf to pipe: %d err: %d\n",
-+				    i, ret);
-+			mod_timer(&ab->rx_replenish_retry,
-+				  jiffies + ATH11K_CE_RX_POST_RETRY_JIFFIES);
-+
-+			return;
-+		}
-+	}
-+}
-+
-+void ath11k_ce_rx_replenish_retry(struct timer_list *t)
-+{
-+	struct ath11k_base *ab = from_timer(ab, t, rx_replenish_retry);
-+
-+	ath11k_ce_rx_post_buf(ab);
-+}
-+
-+int ath11k_ce_init_pipes(struct ath11k_base *ab)
-+{
-+	struct ath11k_ce_pipe *pipe;
-+	int i;
-+	int ret;
-+
-+	for (i = 0; i < CE_COUNT; i++) {
-+		pipe = &ab->ce.ce_pipe[i];
-+
-+		if (pipe->src_ring) {
-+			ret = ath11k_ce_init_ring(ab, pipe->src_ring, i,
-+						  HAL_CE_SRC);
-+			if (ret) {
-+				ath11k_warn(ab, "failed to init src ring: %d\n",
-+					    ret);
-+				/* Should we clear any partial init */
-+				return ret;
-+			}
-+
-+			pipe->src_ring->write_index = 0;
-+			pipe->src_ring->sw_index = 0;
-+		}
-+
-+		if (pipe->dest_ring) {
-+			ret = ath11k_ce_init_ring(ab, pipe->dest_ring, i,
-+						  HAL_CE_DST);
-+			if (ret) {
-+				ath11k_warn(ab, "failed to init dest ring: %d\n",
-+					    ret);
-+				/* Should we clear any partial init */
-+				return ret;
-+			}
-+
-+			pipe->rx_buf_needed = pipe->dest_ring->nentries ?
-+					      pipe->dest_ring->nentries - 2 : 0;
-+
-+			pipe->dest_ring->write_index = 0;
-+			pipe->dest_ring->sw_index = 0;
-+		}
-+
-+		if (pipe->status_ring) {
-+			ret = ath11k_ce_init_ring(ab, pipe->status_ring, i,
-+						  HAL_CE_DST_STATUS);
-+			if (ret) {
-+				ath11k_warn(ab, "failed to init dest status ing: %d\n",
-+					    ret);
-+				/* Should we clear any partial init */
-+				return ret;
-+			}
-+
-+			pipe->status_ring->write_index = 0;
-+			pipe->status_ring->sw_index = 0;
-+		}
-+	}
-+
-+	return 0;
-+}
-+
-+void ath11k_ce_free_pipes(struct ath11k_base *ab)
-+{
-+	struct ath11k_ce_pipe *pipe;
-+	int desc_sz;
-+	int i;
-+
-+	for (i = 0; i < CE_COUNT; i++) {
-+		pipe = &ab->ce.ce_pipe[i];
-+
-+		if (pipe->src_ring) {
-+			desc_sz = ath11k_hal_ce_get_desc_size(HAL_CE_DESC_SRC);
-+			dma_free_coherent(ab->dev,
-+					  pipe->src_ring->nentries * desc_sz +
-+					  CE_DESC_RING_ALIGN,
-+					  pipe->src_ring->base_addr_owner_space,
-+					  pipe->src_ring->base_addr_ce_space);
-+			kfree(pipe->src_ring);
-+			pipe->src_ring = NULL;
-+		}
-+
-+		if (pipe->dest_ring) {
-+			desc_sz = ath11k_hal_ce_get_desc_size(HAL_CE_DESC_DST);
-+			dma_free_coherent(ab->dev,
-+					  pipe->dest_ring->nentries * desc_sz +
-+					  CE_DESC_RING_ALIGN,
-+					  pipe->dest_ring->base_addr_owner_space,
-+					  pipe->dest_ring->base_addr_ce_space);
-+			kfree(pipe->dest_ring);
-+			pipe->dest_ring = NULL;
-+		}
-+
-+		if (pipe->status_ring) {
-+			desc_sz =
-+			  ath11k_hal_ce_get_desc_size(HAL_CE_DESC_DST_STATUS);
-+			dma_free_coherent(ab->dev,
-+					  pipe->status_ring->nentries * desc_sz +
-+					  CE_DESC_RING_ALIGN,
-+					  pipe->status_ring->base_addr_owner_space,
-+					  pipe->status_ring->base_addr_ce_space);
-+			kfree(pipe->status_ring);
-+			pipe->status_ring = NULL;
-+		}
-+	}
-+}
-+
-+int ath11k_ce_alloc_pipes(struct ath11k_base *ab)
-+{
-+	struct ath11k_ce_pipe *pipe;
-+	int i;
-+	int ret;
-+	const struct ce_attr *attr;
-+
-+	spin_lock_init(&ab->ce.ce_lock);
-+
-+	for (i = 0; i < CE_COUNT; i++) {
-+		attr = &host_ce_config_wlan[i];
-+		pipe = &ab->ce.ce_pipe[i];
-+		pipe->pipe_num = i;
-+		pipe->ab = ab;
-+		pipe->buf_sz = attr->src_sz_max;
-+
-+		ret = ath11k_ce_alloc_pipe(ab, i);
-+		if (ret) {
-+			/* Free any parial successful allocation */
-+			ath11k_ce_free_pipes(ab);
-+			return ret;
-+		}
-+	}
-+
-+	return 0;
-+}
-+
-+/* For Big Endian Host, Copy Engine byte_swap is enabled
-+ * When Copy Engine does byte_swap, need to byte swap again for the
-+ * Host to get/put buffer content in the correct byte order
++/*
++ * Configuration information for a Copy Engine pipe.
++ * Passed from Host to Target during startup (one per CE).
++ *
++ * NOTE: Structure is shared between Host software and Target firmware!
 + */
-+void ath11k_ce_byte_swap(void *mem, u32 len)
-+{
-+	int i;
++struct ce_pipe_config {
++	__le32 pipenum;
++	__le32 pipedir;
++	__le32 nentries;
++	__le32 nbytes_max;
++	__le32 flags;
++	__le32 reserved;
++};
 +
-+	if (IS_ENABLED(CONFIG_CPU_BIG_ENDIAN)) {
-+		if (!mem)
-+			return;
++struct ce_attr {
++	/* CE_ATTR_* values */
++	unsigned int flags;
 +
-+		for (i = 0; i < (len / 4); i++) {
-+			*(u32 *)mem = swab32(*(u32 *)mem);
-+			mem += 4;
-+		}
-+	}
-+}
++	/* #entries in source ring - Must be a power of 2 */
++	unsigned int src_nentries;
 +
-+int ath11k_ce_get_attr_flags(int ce_id)
-+{
-+	if (ce_id >= CE_COUNT)
-+		return -EINVAL;
++	/*
++	 * Max source send size for this CE.
++	 * This is also the minimum size of a destination buffer.
++	 */
++	unsigned int src_sz_max;
 +
-+	return host_ce_config_wlan[ce_id].flags;
-+}
++	/* #entries in destination ring - Must be a power of 2 */
++	unsigned int dest_nentries;
++
++	void (*recv_cb)(struct ath11k_base *, struct sk_buff *);
++};
++
++#define CE_DESC_RING_ALIGN 8
++
++struct ath11k_ce_ring {
++	/* Number of entries in this ring; must be power of 2 */
++	unsigned int nentries;
++	unsigned int nentries_mask;
++
++	/* For dest ring, this is the next index to be processed
++	 * by software after it was/is received into.
++	 *
++	 * For src ring, this is the last descriptor that was sent
++	 * and completion processed by software.
++	 *
++	 * Regardless of src or dest ring, this is an invariant
++	 * (modulo ring size):
++	 *     write index >= read index >= sw_index
++	 */
++	unsigned int sw_index;
++	/* cached copy */
++	unsigned int write_index;
++
++	/* Start of DMA-coherent area reserved for descriptors */
++	/* Host address space */
++	void *base_addr_owner_space_unaligned;
++	/* CE address space */
++	u32 base_addr_ce_space_unaligned;
++
++	/* Actual start of descriptors.
++	 * Aligned to descriptor-size boundary.
++	 * Points into reserved DMA-coherent area, above.
++	 */
++	/* Host address space */
++	void *base_addr_owner_space;
++
++	/* CE address space */
++	u32 base_addr_ce_space;
++
++	/* HAL ring id */
++	u32 hal_ring_id;
++
++	/* keep last */
++	struct sk_buff *skb[0];
++};
++
++struct ath11k_ce_pipe {
++	struct ath11k_base *ab;
++	u16 pipe_num;
++	unsigned int attr_flags;
++	unsigned int buf_sz;
++	unsigned int rx_buf_needed;
++
++	void (*send_cb)(struct ath11k_ce_pipe *);
++	void (*recv_cb)(struct ath11k_base *, struct sk_buff *);
++
++	struct tasklet_struct intr_tq;
++	struct ath11k_ce_ring *src_ring;
++	struct ath11k_ce_ring *dest_ring;
++	struct ath11k_ce_ring *status_ring;
++};
++
++struct ath11k_ce {
++	struct ath11k_ce_pipe ce_pipe[CE_COUNT];
++	/* Protects rings of all ce pipes */
++	spinlock_t ce_lock;
++};
++
++void ath11k_ce_cleanup_pipes(struct ath11k_base *ab);
++void ath11k_ce_rx_replenish_retry(struct timer_list *t);
++void ath11k_ce_per_engine_service(struct ath11k_base *ab, u16 ce_id);
++int ath11k_ce_send(struct ath11k_base *ab, struct sk_buff *skb, u8 pipe_id,
++		   u16 transfer_id);
++void ath11k_ce_rx_post_buf(struct ath11k_base *ab);
++int ath11k_ce_init_pipes(struct ath11k_base *ab);
++int ath11k_ce_alloc_pipes(struct ath11k_base *ab);
++void ath11k_ce_free_pipes(struct ath11k_base *ab);
++int ath11k_ce_get_attr_flags(int ce_id);
++void ath11k_ce_poll_send_completed(struct ath11k_base *ab, u8 pipe_id);
++#endif
 
