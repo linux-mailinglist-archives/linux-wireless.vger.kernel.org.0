@@ -2,531 +2,143 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 1DAFE95BB4
-	for <lists+linux-wireless@lfdr.de>; Tue, 20 Aug 2019 11:54:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 18A5B95C50
+	for <lists+linux-wireless@lfdr.de>; Tue, 20 Aug 2019 12:32:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729553AbfHTJyw (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 20 Aug 2019 05:54:52 -0400
-Received: from nbd.name ([46.4.11.11]:35138 "EHLO nbd.name"
+        id S1729686AbfHTKcD (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 20 Aug 2019 06:32:03 -0400
+Received: from nbd.name ([46.4.11.11]:37280 "EHLO nbd.name"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1729333AbfHTJyw (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 20 Aug 2019 05:54:52 -0400
+        id S1729589AbfHTKcD (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 20 Aug 2019 06:32:03 -0400
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name;
-         s=20160729; h=References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
-        Sender:Reply-To:MIME-Version:Content-Type:Content-Transfer-Encoding:
+         s=20160729; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:
+        MIME-Version:Date:Message-ID:From:References:Cc:To:Subject:Sender:Reply-To:
         Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
         Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
         List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=XrY8/WAMpKFGejwXk8tsiBJqlLrlpwDsEQS1PsYDfxY=; b=REQXsMFdFzGBJ2ZEiQ3EqDhtgy
-        j25XZsHUhnIBX5mB/ACmpFFq8bqLYqTXSjuGB7gj7QeeX6n6DbCRP0+4ukQfMW3TRvQbpsOgoRkkW
-        H81n5gaV/EGTzGiFPgvD5GqxxXlswXiq1X5fz7tuwLQWz5PaoXGao08ATVqPJ5oOqc0o=;
-Received: from p54ae9443.dip0.t-ipconnect.de ([84.174.148.67] helo=maeck.local)
-        by ds12 with esmtpsa (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        bh=G12kepHNo4d/aWlX/r6KKesBBnEBpcHlYG9XPxPrp/c=; b=h6p7VoBQI0mLtHlnnOo+zHrdl0
+        YOGsuB6x1hWAyxaOGPh9rI2Tq6QkJkq/LvF4B1jCEnB6CsdVPF4bqxbadRr/AZrvLt7G5LHfhJwQc
+        e/d6VqDpkA6ZVHm7IoUC4NIX9jB1q6HR2UZFErsfnNiLY9nP+EnStCDps/642QjiwHz0=;
+Received: from p54ae9443.dip0.t-ipconnect.de ([84.174.148.67] helo=nf.local)
+        by ds12 with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
         (Exim 4.89)
         (envelope-from <nbd@nbd.name>)
-        id 1i00qn-0003nt-V7; Tue, 20 Aug 2019 11:54:50 +0200
-Received: by maeck.local (Postfix, from userid 501)
-        id 5324C63E6109; Tue, 20 Aug 2019 11:54:49 +0200 (CEST)
+        id 1i01Qj-0006Hs-36; Tue, 20 Aug 2019 12:31:57 +0200
+Subject: Re: [PATCH 5.3] mt76: mt76x0e: don't use hw encryption for MT7630E
+To:     Stanislaw Gruszka <sgruszka@redhat.com>
+Cc:     Lorenzo Bianconi <lorenzo.bianconi@redhat.com>,
+        linux-wireless <linux-wireless@vger.kernel.org>,
+        Ryder Lee <ryder.lee@mediatek.com>, Roy Luo <royluo@google.com>
+References: <1565703400-10623-1-git-send-email-sgruszka@redhat.com>
+ <CAJ0CqmXM4NRMYU6Lt_a4f+DXE2bVmhYrjQbgxHG0g=N+o3TeQw@mail.gmail.com>
+ <20190815100936.GA21775@redhat.com>
+ <727fd528-16c1-e3b3-e1a9-2edbcbdddee7@nbd.name>
+ <20190819110639.GA6037@redhat.com>
 From:   Felix Fietkau <nbd@nbd.name>
-To:     linux-wireless@vger.kernel.org
-Cc:     johannes@sipsolutions.net
-Subject: [PATCH 4/4] mac80211: minstrel_ht: improve rate probing for devices with static fallback
-Date:   Tue, 20 Aug 2019 11:54:49 +0200
-Message-Id: <20190820095449.45255-4-nbd@nbd.name>
-X-Mailer: git-send-email 2.17.0
-In-Reply-To: <20190820095449.45255-1-nbd@nbd.name>
-References: <20190820095449.45255-1-nbd@nbd.name>
+Openpgp: preference=signencrypt
+Autocrypt: addr=nbd@nbd.name; prefer-encrypt=mutual; keydata=
+ mQGiBEah5CcRBADIY7pu4LIv3jBlyQ/2u87iIZGe6f0f8pyB4UjzfJNXhJb8JylYYRzIOSxh
+ ExKsdLCnJqsG1PY1mqTtoG8sONpwsHr2oJ4itjcGHfn5NJSUGTbtbbxLro13tHkGFCoCr4Z5
+ Pv+XRgiANSpYlIigiMbOkide6wbggQK32tC20QxUIwCg4k6dtV/4kwEeiOUfErq00TVqIiEE
+ AKcUi4taOuh/PQWx/Ujjl/P1LfJXqLKRPa8PwD4j2yjoc9l+7LptSxJThL9KSu6gtXQjcoR2
+ vCK0OeYJhgO4kYMI78h1TSaxmtImEAnjFPYJYVsxrhay92jisYc7z5R/76AaELfF6RCjjGeP
+ wdalulG+erWju710Bif7E1yjYVWeA/9Wd1lsOmx6uwwYgNqoFtcAunDaMKi9xVQW18FsUusM
+ TdRvTZLBpoUAy+MajAL+R73TwLq3LnKpIcCwftyQXK5pEDKq57OhxJVv1Q8XkA9Dn1SBOjNB
+ l25vJDFAT9ntp9THeDD2fv15yk4EKpWhu4H00/YX8KkhFsrtUs69+vZQwbQcRmVsaXggRmll
+ dGthdSA8bmJkQG5iZC5uYW1lPohgBBMRAgAgBQJGoeQnAhsjBgsJCAcDAgQVAggDBBYCAwEC
+ HgECF4AACgkQ130UHQKnbvXsvgCgjsAIIOsY7xZ8VcSm7NABpi91yTMAniMMmH7FRenEAYMa
+ VrwYTIThkTlQuQINBEah5FQQCACMIep/hTzgPZ9HbCTKm9xN4bZX0JjrqjFem1Nxf3MBM5vN
+ CYGBn8F4sGIzPmLhl4xFeq3k5irVg/YvxSDbQN6NJv8o+tP6zsMeWX2JjtV0P4aDIN1pK2/w
+ VxcicArw0VYdv2ZCarccFBgH2a6GjswqlCqVM3gNIMI8ikzenKcso8YErGGiKYeMEZLwHaxE
+ Y7mTPuOTrWL8uWWRL5mVjhZEVvDez6em/OYvzBwbkhImrryF29e3Po2cfY2n7EKjjr3/141K
+ DHBBdgXlPNfDwROnA5ugjjEBjwkwBQqPpDA7AYPvpHh5vLbZnVGu5CwG7NAsrb2isRmjYoqk
+ wu++3117AAMFB/9S0Sj7qFFQcD4laADVsabTpNNpaV4wAgVTRHKV/kC9luItzwDnUcsZUPdQ
+ f3MueRJ3jIHU0UmRBG3uQftqbZJj3ikhnfvyLmkCNe+/hXhPu9sGvXyi2D4vszICvc1KL4RD
+ aLSrOsROx22eZ26KqcW4ny7+va2FnvjsZgI8h4sDmaLzKczVRIiLITiMpLFEU/VoSv0m1F4B
+ FtRgoiyjFzigWG0MsTdAN6FJzGh4mWWGIlE7o5JraNhnTd+yTUIPtw3ym6l8P+gbvfoZida0
+ TspgwBWLnXQvP5EDvlZnNaKa/3oBes6z0QdaSOwZCRA3QSLHBwtgUsrT6RxRSweLrcabiEkE
+ GBECAAkFAkah5FQCGwwACgkQ130UHQKnbvW2GgCfTKx80VvCR/PvsUlrvdOLsIgeRGAAn1ee
+ RjMaxwtSdaCKMw3j33ZbsWS4
+Message-ID: <7b46ab63-d69d-f389-b3c2-245cbe11c7b7@nbd.name>
+Date:   Tue, 20 Aug 2019 12:31:56 +0200
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.14; rv:60.0)
+ Gecko/20100101 Thunderbird/60.8.0
+MIME-Version: 1.0
+In-Reply-To: <20190819110639.GA6037@redhat.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On some devices that only support static rate fallback tables sending rate
-control probing packets can be really expensive.
-Probing lower rates can already hurt throughput quite a bit. What hurts even
-more is the fact that on mt76x0/mt76x2, single probing packets can only be
-forced by directing packets at a different internal hardware queue, which
-causes some heavy reordering and extra latency.
-The reordering issue is mainly problematic while pushing lots of packets to
-a particular station. If there is little activity, the overhead of probing is
-neglegible.
+On 2019-08-19 13:06, Stanislaw Gruszka wrote:
+> On Thu, Aug 15, 2019 at 12:20:54PM +0200, Felix Fietkau wrote:
+>> On 2019-08-15 12:09, Stanislaw Gruszka wrote:
+>> >> Hi Stanislaw,
+>> >> 
+>> >> Can you please try if disabling/enabling the tx tasklet during hw key
+>> >> configuration fixes the issue?
+>> >> Doing something like:
+>> >> 
+>> >> tasklet_disable(tx_tasklet)
+>> >> mt76x02_set_key()
+>> >> tasklet_enable(tx_tasklet)
+>> > 
+>> > It does not help with the problem.
+>> > 
+>> >> Moreover, have you double checked if there is any performance impact
+>> >> of not using hw encryption?
+>> > 
+>> > I didn't observe any, but realized on this machine I have
+>> > aesni_intel encryption accelerator. After rebuild kernel without
+>> > CONFIG_CRYPTO_AES_NI_INTEL, 'perf top' showed extra 20% of cpu usage
+>> > in aes_encrypt() when sending data with HW encryption disabled.
+>> > 
+>> >> If so, I guess it is better to just redefine mt76_wake_tx_queue for
+>> >> mt76x0e and run mt76_txq_schedule for 7630e:
+>> >> 
+>> >> void mt76x0e_wake_tx_queue(struct ieee80211_hw *hw, struct ieee80211_txq *txq)
+>> >> {
+>> >>         if (is_mt7630(dev)) {
+>> >>             mt76_txq_schedule(dev, txq->ac);
+>> >>         } else {
+>> >>             tasklet_schedule(&dev->tx_tasklet);
+>> >>         }
+>> >> }
+>> > 
+>> > Not sure about reduction of lock contention for which the tx_tasklet
+>> > was introduced here, but looks ok for me as fix.
+>> I think if we work around the bug like this, it can easily come back to
+>> bite us again later. 
+> 
+> I'm not into workarounds any kind, but this is really strange issue,
+> maybe FW bug that triggers just by slightly different driver behaviour.
+> 
+>> I don't see any logical explanation as to how this
+>> makes a difference with hardware encryption.
+>> Also, I think it would be helpful to figure out what key operation (if
+>> any) triggers this, adding or removing keys.
+> 
+> Seems not to be related with set_key operation at all. We set 2 HW
+> keys at the beginning and hang happen after some tx/rx traffic
+> without any re-keyring.
+> 
+> I'm not sure why disabling HW encryption helps. Maybe it is due to
+> ordering or timing. With SW encryption we spend more time in mac80211
+> before pass skb's to the driver. Or maybe we just mix some HW keys 
+> and SW (group) keys in way that FW does not like.
+> 
+>> Maybe it could also help if we change the order in which the WCID table
+>> entries are updated, i.e. changing MT_WCID_ATTR first when removing keys.
+>> 
+>> Maybe temporarily clearing MT_MAC_SYS_CTRL_ENABLE_TX before the key
+>> update and setting it again afterwards could also help.
+> 
+> I tested below patch and it did not help.
+Can you test if disabling hw encryption only for shared or only for
+pairwise keys makes any difference?
 
-The static fallback behavior is designed to pretty much only handle rate
-control algorithms that use only a very limited set of rates on which the
-algorithm switches up/down based on packet error rate.
-
-In order to better support that kind of hardware, this patch implements a
-different approach to rate probing where it switches to a slightly higher rate,
-waits for tx status feedback, then updates the stats and switches back to
-the new max throughput rate. This only triggers above a packet rate of 100
-per stats interval (~50ms).
-For that kind of probing, the code has to reduce the set of probing rates
-a lot more compared to single packet probing, so it uses only one packet
-per MCS group which is either slightly faster, or as close as possible to
-the max throughput rate.
-This allows switching between similar rates with different numbers of
-streams. The algorithm assumes that the hardware will work its way lower
-within an MCS group in case of retransmissions, so that lower rates don't
-have to be probed by the high packets per second rate probing code.
-
-To further reduce the search space, it also does not probe rates with lower
-channel bandwidth than the max throughput rate.
-
-At the moment, these changes will only affect mt76x0/mt76x2.
-
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
----
- net/mac80211/rc80211_minstrel.h    |   1 +
- net/mac80211/rc80211_minstrel_ht.c | 240 +++++++++++++++++++++++++----
- net/mac80211/rc80211_minstrel_ht.h |  12 ++
- 3 files changed, 225 insertions(+), 28 deletions(-)
-
-diff --git a/net/mac80211/rc80211_minstrel.h b/net/mac80211/rc80211_minstrel.h
-index 3c96a853adbd..51d8b2c846e7 100644
---- a/net/mac80211/rc80211_minstrel.h
-+++ b/net/mac80211/rc80211_minstrel.h
-@@ -95,6 +95,7 @@ struct minstrel_sta_info {
- struct minstrel_priv {
- 	struct ieee80211_hw *hw;
- 	bool has_mrr;
-+	u32 sample_switch;
- 	unsigned int cw_min;
- 	unsigned int cw_max;
- 	unsigned int max_retry;
-diff --git a/net/mac80211/rc80211_minstrel_ht.c b/net/mac80211/rc80211_minstrel_ht.c
-index c5868a1de306..a01168514840 100644
---- a/net/mac80211/rc80211_minstrel_ht.c
-+++ b/net/mac80211/rc80211_minstrel_ht.c
-@@ -18,6 +18,8 @@
- #define AVG_AMPDU_SIZE	16
- #define AVG_PKT_SIZE	1200
- 
-+#define SAMPLE_SWITCH_THR	100
-+
- /* Number of bits for an average sized packet */
- #define MCS_NBITS ((AVG_PKT_SIZE * AVG_AMPDU_SIZE) << 3)
- 
-@@ -58,6 +60,7 @@
- 	[GROUP_IDX(_streams, _sgi, _ht40)] = {				\
- 	.streams = _streams,						\
- 	.shift = _s,							\
-+	.bw = _ht40,							\
- 	.flags =							\
- 		IEEE80211_TX_RC_MCS |					\
- 		(_sgi ? IEEE80211_TX_RC_SHORT_GI : 0) |			\
-@@ -94,6 +97,7 @@
- 	[VHT_GROUP_IDX(_streams, _sgi, _bw)] = {			\
- 	.streams = _streams,						\
- 	.shift = _s,							\
-+	.bw = _bw,							\
- 	.flags =							\
- 		IEEE80211_TX_RC_VHT_MCS |				\
- 		(_sgi ? IEEE80211_TX_RC_SHORT_GI : 0) |			\
-@@ -526,6 +530,133 @@ minstrel_ht_prob_rate_reduce_streams(struct minstrel_ht_sta *mi)
- 	}
- }
- 
-+static inline int
-+minstrel_get_duration(int index)
-+{
-+	const struct mcs_group *group = &minstrel_mcs_groups[index / MCS_GROUP_RATES];
-+	unsigned int duration = group->duration[index % MCS_GROUP_RATES];
-+	return duration << group->shift;
-+}
-+
-+static bool
-+minstrel_ht_probe_group(struct minstrel_ht_sta *mi, const struct mcs_group *tp_group,
-+						int tp_idx, const struct mcs_group *group)
-+{
-+	if (group->bw < tp_group->bw)
-+		return false;
-+
-+	if (group->streams == tp_group->streams)
-+		return true;
-+
-+	if (tp_idx < 4 && group->streams == tp_group->streams - 1)
-+		return true;
-+
-+	return group->streams == tp_group->streams + 1;
-+}
-+
-+static void
-+minstrel_ht_find_probe_rates(struct minstrel_ht_sta *mi, u16 *rates, int *n_rates,
-+			     bool faster_rate)
-+{
-+	const struct mcs_group *group, *tp_group;
-+	int i, g, max_dur;
-+	int tp_idx;
-+
-+	tp_group = &minstrel_mcs_groups[mi->max_tp_rate[0] / MCS_GROUP_RATES];
-+	tp_idx = mi->max_tp_rate[0] % MCS_GROUP_RATES;
-+
-+	max_dur = minstrel_get_duration(mi->max_tp_rate[0]);
-+	if (faster_rate)
-+		max_dur -= max_dur / 16;
-+
-+	for (g = 0; g < MINSTREL_GROUPS_NB; g++) {
-+		u16 supported = mi->supported[g];
-+
-+		if (!supported)
-+			continue;
-+
-+		group = &minstrel_mcs_groups[g];
-+		if (!minstrel_ht_probe_group(mi, tp_group, tp_idx, group))
-+			continue;
-+
-+		for (i = 0; supported; supported >>= 1, i++) {
-+			int idx;
-+
-+			if (!(supported & 1))
-+				continue;
-+
-+			if ((group->duration[i] << group->shift) > max_dur)
-+				continue;
-+
-+			idx = g * MCS_GROUP_RATES + i;
-+			if (idx == mi->max_tp_rate[0])
-+				continue;
-+
-+			rates[(*n_rates)++] = idx;
-+			break;
-+		}
-+	}
-+}
-+
-+static void
-+minstrel_ht_rate_sample_switch(struct minstrel_priv *mp,
-+			       struct minstrel_ht_sta *mi)
-+{
-+	struct minstrel_rate_stats *mrs;
-+	u16 rates[MINSTREL_GROUPS_NB];
-+	int n_rates = 0;
-+	int probe_rate = 0;
-+	bool faster_rate;
-+	int i;
-+	u8 random;
-+
-+	/*
-+	 * Use rate switching instead of probing packets for devices with
-+	 * little control over retry fallback behavior
-+	 */
-+	if (mp->hw->max_rates > 1)
-+		return;
-+
-+	/*
-+	 * If the current EWMA prob is >75%, look for a rate that's 6.25%
-+	 * faster than the max tp rate.
-+	 * If that fails, look again for a rate that is at least as fast
-+	 */
-+	mrs = minstrel_get_ratestats(mi, mi->max_tp_rate[0]);
-+	faster_rate = mrs->prob_ewma > MINSTREL_FRAC(75, 100);
-+	minstrel_ht_find_probe_rates(mi, rates, &n_rates, faster_rate);
-+	if (!n_rates && faster_rate)
-+		minstrel_ht_find_probe_rates(mi, rates, &n_rates, false);
-+
-+	/* If no suitable rate was found, try to pick the next one in the group */
-+	if (!n_rates) {
-+		int g_idx = mi->max_tp_rate[0] / MCS_GROUP_RATES;
-+		u16 supported = mi->supported[g_idx];
-+
-+		supported >>= mi->max_tp_rate[0] % MCS_GROUP_RATES;
-+		for (i = 0; supported; i++) {
-+			if (!(supported & 1))
-+				continue;
-+
-+			probe_rate = mi->max_tp_rate[0] + i;
-+			goto out;
-+		}
-+
-+		return;
-+	}
-+
-+	i = 0;
-+	if (n_rates > 1) {
-+		random = prandom_u32();
-+		i = random % n_rates;
-+	}
-+	probe_rate = rates[i];
-+
-+out:
-+	mi->sample_rate = probe_rate;
-+	mi->sample_mode = MINSTREL_SAMPLE_ACTIVE;
-+}
-+
- /*
-  * Update rate statistics and select new primary rates
-  *
-@@ -536,7 +667,8 @@ minstrel_ht_prob_rate_reduce_streams(struct minstrel_ht_sta *mi)
-  *    higher throughput rates, even if the probablity is a bit lower
-  */
- static void
--minstrel_ht_update_stats(struct minstrel_priv *mp, struct minstrel_ht_sta *mi)
-+minstrel_ht_update_stats(struct minstrel_priv *mp, struct minstrel_ht_sta *mi,
-+			 bool sample)
- {
- 	struct minstrel_mcs_group_data *mg;
- 	struct minstrel_rate_stats *mrs;
-@@ -544,6 +676,18 @@ minstrel_ht_update_stats(struct minstrel_priv *mp, struct minstrel_ht_sta *mi)
- 	u16 tmp_mcs_tp_rate[MAX_THR_RATES], tmp_group_tp_rate[MAX_THR_RATES];
- 	u16 tmp_cck_tp_rate[MAX_THR_RATES], index;
- 
-+	mi->sample_mode = MINSTREL_SAMPLE_IDLE;
-+
-+	if (sample) {
-+		mi->total_packets_cur = mi->total_packets -
-+					mi->total_packets_last;
-+		mi->total_packets_last = mi->total_packets;
-+	}
-+	if (!mp->sample_switch)
-+		sample = false;
-+	if (mi->total_packets_cur < SAMPLE_SWITCH_THR && mp->sample_switch != 1)
-+	    sample = false;
-+
- 	if (mi->ampdu_packets > 0) {
- 		if (!ieee80211_hw_check(mp->hw, TX_STATUS_NO_AMPDU_LEN))
- 			mi->avg_ampdu_len = minstrel_ewma(mi->avg_ampdu_len,
-@@ -630,12 +774,16 @@ minstrel_ht_update_stats(struct minstrel_priv *mp, struct minstrel_ht_sta *mi)
- 	/* try to sample all available rates during each interval */
- 	mi->sample_count *= 8;
- 
-+	if (sample)
-+		minstrel_ht_rate_sample_switch(mp, mi);
-+
- #ifdef CONFIG_MAC80211_DEBUGFS
- 	/* use fixed index if set */
- 	if (mp->fixed_rate_idx != -1) {
- 		for (i = 0; i < 4; i++)
- 			mi->max_tp_rate[i] = mp->fixed_rate_idx;
- 		mi->max_prob_rate = mp->fixed_rate_idx;
-+		mi->sample_mode = MINSTREL_SAMPLE_IDLE;
- 	}
- #endif
- 
-@@ -739,15 +887,17 @@ minstrel_ht_tx_status(void *priv, struct ieee80211_supported_band *sband,
- 	struct minstrel_ht_sta_priv *msp = priv_sta;
- 	struct minstrel_ht_sta *mi = &msp->ht;
- 	struct ieee80211_tx_rate *ar = info->status.rates;
--	struct minstrel_rate_stats *rate, *rate2;
-+	struct minstrel_rate_stats *rate, *rate2, *rate_sample = NULL;
- 	struct minstrel_priv *mp = priv;
- 	bool last, update = false;
-+	bool sample_status = false;
- 	int i;
- 
- 	if (!msp->is_ht)
- 		return mac80211_minstrel.tx_status_ext(priv, sband,
- 						       &msp->legacy, st);
- 
-+
- 	/* This packet was aggregated but doesn't carry status info */
- 	if ((info->flags & IEEE80211_TX_CTL_AMPDU) &&
- 	    !(info->flags & IEEE80211_TX_STAT_AMPDU))
-@@ -773,12 +923,17 @@ minstrel_ht_tx_status(void *priv, struct ieee80211_supported_band *sband,
- 	if (info->flags & IEEE80211_TX_CTL_RATE_CTRL_PROBE)
- 		mi->sample_packets += info->status.ampdu_len;
- 
-+	if (mi->sample_mode != MINSTREL_SAMPLE_IDLE)
-+		rate_sample = minstrel_get_ratestats(mi, mi->sample_rate);
-+
- 	last = !minstrel_ht_txstat_valid(mp, &ar[0]);
- 	for (i = 0; !last; i++) {
- 		last = (i == IEEE80211_TX_MAX_RATES - 1) ||
- 		       !minstrel_ht_txstat_valid(mp, &ar[i + 1]);
- 
- 		rate = minstrel_ht_get_stats(mp, mi, &ar[i]);
-+		if (rate == rate_sample)
-+			sample_status = true;
- 
- 		if (last)
- 			rate->success += info->status.ampdu_ack_len;
-@@ -786,44 +941,60 @@ minstrel_ht_tx_status(void *priv, struct ieee80211_supported_band *sband,
- 		rate->attempts += ar[i].count * info->status.ampdu_len;
- 	}
- 
--	/*
--	 * check for sudden death of spatial multiplexing,
--	 * downgrade to a lower number of streams if necessary.
--	 */
--	rate = minstrel_get_ratestats(mi, mi->max_tp_rate[0]);
--	if (rate->attempts > 30 &&
--	    MINSTREL_FRAC(rate->success, rate->attempts) <
--	    MINSTREL_FRAC(20, 100)) {
--		minstrel_downgrade_rate(mi, &mi->max_tp_rate[0], true);
-+	switch (mi->sample_mode) {
-+	case MINSTREL_SAMPLE_IDLE:
-+		break;
-+
-+	case MINSTREL_SAMPLE_ACTIVE:
-+		if (!sample_status)
-+			break;
-+
-+		mi->sample_mode = MINSTREL_SAMPLE_PENDING;
- 		update = true;
--	}
-+		break;
-+
-+	case MINSTREL_SAMPLE_PENDING:
-+		if (sample_status)
-+			break;
- 
--	rate2 = minstrel_get_ratestats(mi, mi->max_tp_rate[1]);
--	if (rate2->attempts > 30 &&
--	    MINSTREL_FRAC(rate2->success, rate2->attempts) <
--	    MINSTREL_FRAC(20, 100)) {
--		minstrel_downgrade_rate(mi, &mi->max_tp_rate[1], false);
- 		update = true;
-+		minstrel_ht_update_stats(mp, mi, false);
-+		break;
-+	}
-+
-+
-+	if (mp->hw->max_rates > 1) {
-+		/*
-+		 * check for sudden death of spatial multiplexing,
-+		 * downgrade to a lower number of streams if necessary.
-+		 */
-+		rate = minstrel_get_ratestats(mi, mi->max_tp_rate[0]);
-+		if (rate->attempts > 30 &&
-+		    MINSTREL_FRAC(rate->success, rate->attempts) <
-+		    MINSTREL_FRAC(20, 100)) {
-+			minstrel_downgrade_rate(mi, &mi->max_tp_rate[0], true);
-+			update = true;
-+		}
-+
-+		rate2 = minstrel_get_ratestats(mi, mi->max_tp_rate[1]);
-+		if (rate2->attempts > 30 &&
-+		    MINSTREL_FRAC(rate2->success, rate2->attempts) <
-+		    MINSTREL_FRAC(20, 100)) {
-+			minstrel_downgrade_rate(mi, &mi->max_tp_rate[1], false);
-+			update = true;
-+		}
- 	}
- 
- 	if (time_after(jiffies, mi->last_stats_update +
- 				(mp->update_interval / 2 * HZ) / 1000)) {
- 		update = true;
--		minstrel_ht_update_stats(mp, mi);
-+		minstrel_ht_update_stats(mp, mi, true);
- 	}
- 
- 	if (update)
- 		minstrel_ht_update_rates(mp, mi);
- }
- 
--static inline int
--minstrel_get_duration(int index)
--{
--	const struct mcs_group *group = &minstrel_mcs_groups[index / MCS_GROUP_RATES];
--	unsigned int duration = group->duration[index % MCS_GROUP_RATES];
--	return duration << group->shift;
--}
--
- static void
- minstrel_calc_retransmit(struct minstrel_priv *mp, struct minstrel_ht_sta *mi,
-                          int index)
-@@ -988,14 +1159,18 @@ static void
- minstrel_ht_update_rates(struct minstrel_priv *mp, struct minstrel_ht_sta *mi)
- {
- 	struct ieee80211_sta_rates *rates;
-+	u16 first_rate = mi->max_tp_rate[0];
- 	int i = 0;
- 
-+	if (mi->sample_mode == MINSTREL_SAMPLE_ACTIVE)
-+		first_rate = mi->sample_rate;
-+
- 	rates = kzalloc(sizeof(*rates), GFP_ATOMIC);
- 	if (!rates)
- 		return;
- 
- 	/* Start with max_tp_rate[0] */
--	minstrel_ht_set_rate(mp, mi, rates, i++, mi->max_tp_rate[0]);
-+	minstrel_ht_set_rate(mp, mi, rates, i++, first_rate);
- 
- 	if (mp->hw->max_rates >= 3) {
- 		/* At least 3 tx rates supported, use max_tp_rate[1] next */
-@@ -1020,6 +1195,11 @@ minstrel_get_sample_rate(struct minstrel_priv *mp, struct minstrel_ht_sta *mi)
- 	int tp_rate1, tp_rate2;
- 	int sample_idx = 0;
- 
-+	if (mp->hw->max_rates == 1 && mp->sample_switch &&
-+	    (mi->total_packets_cur >= SAMPLE_SWITCH_THR ||
-+	     mp->sample_switch == 1))
-+		return -1;
-+
- 	if (mi->sample_wait > 0) {
- 		mi->sample_wait--;
- 		return -1;
-@@ -1341,7 +1521,7 @@ minstrel_ht_update_caps(void *priv, struct ieee80211_supported_band *sband,
- 	mi->supported[MINSTREL_CCK_GROUP] |= mi->cck_supported_short << 4;
- 
- 	/* create an initial rate table with the lowest supported rates */
--	minstrel_ht_update_stats(mp, mi);
-+	minstrel_ht_update_stats(mp, mi, true);
- 	minstrel_ht_update_rates(mp, mi);
- 
- 	return;
-@@ -1459,6 +1639,8 @@ minstrel_ht_alloc(struct ieee80211_hw *hw, struct dentry *debugfsdir)
- 	if (!mp)
- 		return NULL;
- 
-+	mp->sample_switch = -1;
-+
- 	/* contention window settings
- 	 * Just an approximation. Using the per-queue values would complicate
- 	 * the calculations and is probably unnecessary */
-@@ -1490,6 +1672,8 @@ minstrel_ht_alloc(struct ieee80211_hw *hw, struct dentry *debugfsdir)
- 	mp->fixed_rate_idx = (u32) -1;
- 	debugfs_create_u32("fixed_rate_idx", S_IRUGO | S_IWUGO, debugfsdir,
- 			   &mp->fixed_rate_idx);
-+	debugfs_create_u32("sample_switch", S_IRUGO | S_IWUSR, debugfsdir,
-+			   &mp->sample_switch);
- #endif
- 
- 	minstrel_ht_init_cck_rates(mp);
-diff --git a/net/mac80211/rc80211_minstrel_ht.h b/net/mac80211/rc80211_minstrel_ht.h
-index 80296268c778..f938701e7ab7 100644
---- a/net/mac80211/rc80211_minstrel_ht.h
-+++ b/net/mac80211/rc80211_minstrel_ht.h
-@@ -33,6 +33,7 @@ struct mcs_group {
- 	u16 flags;
- 	u8 streams;
- 	u8 shift;
-+	u8 bw;
- 	u16 duration[MCS_GROUP_RATES];
- };
- 
-@@ -50,6 +51,12 @@ struct minstrel_mcs_group_data {
- 	struct minstrel_rate_stats rates[MCS_GROUP_RATES];
- };
- 
-+enum minstrel_sample_mode {
-+	MINSTREL_SAMPLE_IDLE,
-+	MINSTREL_SAMPLE_ACTIVE,
-+	MINSTREL_SAMPLE_PENDING,
-+};
-+
- struct minstrel_ht_sta {
- 	struct ieee80211_sta *sta;
- 
-@@ -71,6 +78,8 @@ struct minstrel_ht_sta {
- 	unsigned int overhead;
- 	unsigned int overhead_rtscts;
- 
-+	unsigned int total_packets_last;
-+	unsigned int total_packets_cur;
- 	unsigned int total_packets;
- 	unsigned int sample_packets;
- 
-@@ -82,6 +91,9 @@ struct minstrel_ht_sta {
- 	u8 sample_count;
- 	u8 sample_slow;
- 
-+	enum minstrel_sample_mode sample_mode;
-+	u16 sample_rate;
-+
- 	/* current MCS group to be sampled */
- 	u8 sample_group;
- 
--- 
-2.17.0
-
+- Felix
