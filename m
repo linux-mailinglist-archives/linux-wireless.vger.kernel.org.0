@@ -2,110 +2,93 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 0BC9C97191
-	for <lists+linux-wireless@lfdr.de>; Wed, 21 Aug 2019 07:29:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 256CA971DA
+	for <lists+linux-wireless@lfdr.de>; Wed, 21 Aug 2019 08:01:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727210AbfHUF3q (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 21 Aug 2019 01:29:46 -0400
-Received: from paleale.coelho.fi ([176.9.41.70]:37632 "EHLO
-        farmhouse.coelho.fi" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1727201AbfHUF3q (ORCPT
+        id S1727381AbfHUGBP (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 21 Aug 2019 02:01:15 -0400
+Received: from alexa-out-tai-02.qualcomm.com ([103.229.16.227]:34199 "EHLO
+        alexa-out-tai-02.qualcomm.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1725385AbfHUGBP (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 21 Aug 2019 01:29:46 -0400
-Received: from [91.156.6.193] (helo=redipa)
-        by farmhouse.coelho.fi with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-        (Exim 4.92)
-        (envelope-from <luca@coelho.fi>)
-        id 1i0JBo-0000Zs-FR; Wed, 21 Aug 2019 08:29:45 +0300
-Message-ID: <ec9cd5cf1a351788ae0fa692ae4ac7b29c328b16.camel@coelho.fi>
-From:   Luca Coelho <luca@coelho.fi>
-To:     Alexander Beregalov <a.beregalov@gmail.com>,
-        linux-wireless@vger.kernel.org
-Date:   Wed, 21 Aug 2019 08:29:43 +0300
-In-Reply-To: <CAA1sL1SoUWqQ7TRFnsPthHpPRhYjF6cnSh0tTY4nwO2O=FAGUQ@mail.gmail.com>
-References: <CAA1sL1SoUWqQ7TRFnsPthHpPRhYjF6cnSh0tTY4nwO2O=FAGUQ@mail.gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.30.5-1.1 
+        Wed, 21 Aug 2019 02:01:15 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
+  d=qti.qualcomm.com; i=@qti.qualcomm.com; q=dns/txt;
+  s=qcdkim; t=1566367274; x=1597903274;
+  h=from:to:cc:date:message-id:references:in-reply-to:
+   content-transfer-encoding:mime-version:subject;
+  bh=Z4sOZIIqc3uNbOQ5iNitu/gQo/TygmuGLUxJ+qGRP88=;
+  b=yZ8p2RPRMD1Wjd4pjzW4ESxHfGnrorIpjKeIIJVGz2u79k8wawdSE3rI
+   zMrB8mcuEA32T6iF0wYHIlsN2kzvrblr3t1LSGtiTCN9cADEHok6OEYNm
+   8/N0sDpXv/WfK8+kXL4ZT/Ghi7P8AaXyd6tnSgfOo4PKxOtn82FK7Yfdr
+   g=;
+Subject: RE: [PATCH 2/7] ath10k: change max RX bundle size from 8 to 32 for sdio
+Thread-Topic: [PATCH 2/7] ath10k: change max RX bundle size from 8 to 32 for sdio
+Received: from ironmsg01-tai.qualcomm.com ([10.249.140.6])
+  by alexa-out-tai-02.qualcomm.com with ESMTP; 21 Aug 2019 14:01:12 +0800
+Received: from aptaiexm02b.ap.qualcomm.com ([10.249.150.12])
+  by ironmsg01-tai.qualcomm.com with ESMTP/TLS/AES256-SHA; 21 Aug 2019 14:01:07 +0800
+Received: from aptaiexm02f.ap.qualcomm.com (10.249.150.16) by
+ aptaiexm02b.ap.qualcomm.com (10.249.150.12) with Microsoft SMTP Server (TLS)
+ id 15.0.1473.3; Wed, 21 Aug 2019 14:01:05 +0800
+Received: from aptaiexm02f.ap.qualcomm.com ([fe80::4152:1436:e436:faa1]) by
+ aptaiexm02f.ap.qualcomm.com ([fe80::4152:1436:e436:faa1%19]) with mapi id
+ 15.00.1473.005; Wed, 21 Aug 2019 14:01:05 +0800
+From:   Wen Gong <wgong@qti.qualcomm.com>
+To:     =?iso-8859-1?Q?Toke_H=F8iland-J=F8rgensen?= <toke@redhat.com>,
+        Wen Gong <wgong@codeaurora.org>,
+        "ath10k@lists.infradead.org" <ath10k@lists.infradead.org>
+CC:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+Thread-Index: AQHVV1IT665ZCd8Q0062/iF/q1AQPqcFGalg
+Date:   Wed, 21 Aug 2019 06:01:05 +0000
+Message-ID: <59f668bda688419e9b6f44587d391135@aptaiexm02f.ap.qualcomm.com>
+References: <1566302108-18219-1-git-send-email-wgong@codeaurora.org>
+ <1566302108-18219-3-git-send-email-wgong@codeaurora.org>
+ <87ef1gt49d.fsf@toke.dk>
+In-Reply-To: <87ef1gt49d.fsf@toke.dk>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-ms-exchange-transport-fromentityheader: Hosted
+x-originating-ip: [10.80.80.8]
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on farmhouse.coelho.fi
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.9 required=5.0 tests=ALL_TRUSTED,BAYES_00
-        autolearn=ham autolearn_force=no version=3.4.2
-Subject: Re: iwlwifi 9000 issue with FW v46
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi Alex,
+> -----Original Message-----
+> From: ath10k <ath10k-bounces@lists.infradead.org> On Behalf Of Toke
+> H=F8iland-J=F8rgensen
+> Sent: Tuesday, August 20, 2019 8:23 PM
+> To: Wen Gong <wgong@codeaurora.org>; ath10k@lists.infradead.org
+> Cc: linux-wireless@vger.kernel.org
+> Subject: [EXT] Re: [PATCH 2/7] ath10k: change max RX bundle size from 8 t=
+o
+> 32 for sdio
+>=20
+> Wen Gong <wgong@codeaurora.org> writes:
+>=20
+> > The max bundle size support by firmware is 32, change it from 8 to 32
+> > will help performance. This results in significant performance
+> > improvement on RX path.
+>=20
+> What happens when the hardware doesn't have enough data to fill a
+> bundle? Does it send a smaller one, or does it wait until it can fill
+> it?
+>=20
 
-On Thu, 2019-08-01 at 16:30 -0400, Alexander Beregalov wrote:
-> Hello,
-> After some update WiFi stopped working, there is an error with FW 9000 ver46
-> /lib/firmware/iwlwifi-9000-pu-b0-jf-b0-46.ucode
-> 
-> iwlwifi 0000:00:14.3: loaded firmware version 46.a41adfe7.0 op_mode iwlmvm
-> iwlwifi 0000:00:14.3: Detected Intel(R) Dual Band Wireless AC 9560, REV=0x318
-> iwlwifi 0000:00:14.3: Applying debug destination EXTERNAL_DRAM
-> iwlwifi 0000:00:14.3: FW already configured (0) - re-configuring
-> iwlwifi 0000:00:14.3: Microcode SW error detected. Restarting 0x0.
-> iwlwifi 0000:00:14.3: Start IWL Error Log Dump:
-> iwlwifi 0000:00:14.3: Status: 0x00000100, count: 6
-> iwlwifi 0000:00:14.3: Loaded firmware version: 46.a41adfe7.0
-> ieee80211 phy0: Hardware restart was requested
-> iwlwifi 0000:00:14.3: iwlwifi transaction failed, dumping registers
-> iwlwifi 0000:00:14.3: iwlwifi device config registers:
-> iwlwifi 0000:00:14.3: 00000000: 9df08086 00100406 02800030 00800010
-> a121c004 00000000 00000000 00000000
-> iwlwifi 0000:00:14.3: 00000020: 00000000 00000000 00000000 42348086
-> 00000000 000000c8 00000000 000001ff
-> iwlwifi 0000:00:14.3: iwlwifi device memory mapped registers:
-> iwlwifi 0000:00:14.3: 00000000: 00c89008 00000040 00000000 00000000
-> 00000000 00000000 00000000 00000000
-> iwlwifi 0000:00:14.3: 00000020: 00000000 0c040005 00000312 d55555d5
-> d55555d5 d55555d5 80008040 041f0040
-> iwlwifi 0000:00:14.3: FW error in SYNC CMD GEO_TX_POWER_LIMIT
-> 
-> FW is provided by
-> iwl7260-firmware-25.30.13.0-99.fc30.noarch
-> 
-> Kernel is 5.1.16-300.fc30.x86_64
-> Full dmesg is attached
-> 
-> ver43 does work
-> 
-> iwlwifi 0000:00:14.3: Direct firmware load for
-> iwlwifi-9000-pu-b0-jf-b0-46.ucode failed with error -2
-> iwlwifi 0000:00:14.3: Direct firmware load for
-> iwlwifi-9000-pu-b0-jf-b0-45.ucode failed with error -2
-> iwlwifi 0000:00:14.3: Direct firmware load for
-> iwlwifi-9000-pu-b0-jf-b0-44.ucode failed with error -2
-> iwlwifi 0000:00:14.3: loaded firmware version 43.95eb4e97.0 op_mode iwlmvm
-> iwlwifi 0000:00:14.3: Detected Intel(R) Dual Band Wireless AC 9560, REV=0x318
-> iwlwifi 0000:00:14.3: base HW address: a8:6d:aa:5e:59:ed
-> ieee80211 phy0: Selected rate control algorithm 'iwl-mvm-rs'
-> thermal thermal_zone8: failed to read out thermal zone (-61)
-> iwlwifi 0000:00:14.3 wlo1: renamed from wlan0
-> wlo1: authenticate with 70:b3:17:4a:cc:ce
-> wlo1: send auth to 70:b3:17:4a:cc:ce (try 1/3)
-> wlo1: authenticated
-> 
-> I also tried iwlwifi-9000-pu-b0-jf-b0-46.ucode from git
-> (git.kernel.org/pub/scm/linux/kernel/git/firmware/linux-firmware.git)
-> with the same result, however images are different:
-> FC30: size 1460788, md5 43103f10a8f8657db3f5791f5d0e82aa
-> git: size 1467952, md5 b0158bcaded550a01f9c446bb7940a9e
+The bundle is filled by firmware.=20
+It will not wait until it can fill it.
+For example, if you do ping per second, it will have only 1 ping packet
+In the bundle.
 
-This problem was solved with the following patch:
-
-https://patchwork.kernel.org/patch/11021735/
-
-I have sent it to stable v5.2 and Greg queued it for the next stable
-release.  Not that v5.1 has reached EOL, so it will probably never get
-the fix.
-
---
-Cheers,
-Luca.
-
+> -Toke
+>=20
+> _______________________________________________
+> ath10k mailing list
+> ath10k@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/ath10k
