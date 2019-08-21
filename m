@@ -2,59 +2,58 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 64A94976AE
-	for <lists+linux-wireless@lfdr.de>; Wed, 21 Aug 2019 12:08:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 36F7E976B7
+	for <lists+linux-wireless@lfdr.de>; Wed, 21 Aug 2019 12:10:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725268AbfHUKI4 convert rfc822-to-8bit (ORCPT
+        id S1727334AbfHUKKc convert rfc822-to-8bit (ORCPT
         <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 21 Aug 2019 06:08:56 -0400
-Received: from mx1.redhat.com ([209.132.183.28]:43933 "EHLO mx1.redhat.com"
+        Wed, 21 Aug 2019 06:10:32 -0400
+Received: from mx1.redhat.com ([209.132.183.28]:59058 "EHLO mx1.redhat.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726389AbfHUKIz (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 21 Aug 2019 06:08:55 -0400
-Received: from mail-ed1-f70.google.com (mail-ed1-f70.google.com [209.85.208.70])
+        id S1726217AbfHUKKb (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Wed, 21 Aug 2019 06:10:31 -0400
+Received: from mail-ed1-f69.google.com (mail-ed1-f69.google.com [209.85.208.69])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mx1.redhat.com (Postfix) with ESMTPS id A88A56404C
-        for <linux-wireless@vger.kernel.org>; Wed, 21 Aug 2019 10:08:55 +0000 (UTC)
-Received: by mail-ed1-f70.google.com with SMTP id f11so1091449edb.16
-        for <linux-wireless@vger.kernel.org>; Wed, 21 Aug 2019 03:08:55 -0700 (PDT)
+        by mx1.redhat.com (Postfix) with ESMTPS id 2BAA483F3D
+        for <linux-wireless@vger.kernel.org>; Wed, 21 Aug 2019 10:10:31 +0000 (UTC)
+Received: by mail-ed1-f69.google.com with SMTP id f11so1093750edb.16
+        for <linux-wireless@vger.kernel.org>; Wed, 21 Aug 2019 03:10:31 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:in-reply-to:references:date
          :message-id:mime-version:content-transfer-encoding;
-        bh=umZ1aaOBeJjkeJ1S0Jm8f7ll4VqlupnyjFqoji04PLs=;
-        b=QsMoJmYQV+tHkicvrrlWRdQmwRdeq0xvUl0lZ38HnUrqj1My+WKTZL3Uveokp0jJWF
-         RtmzcNA6j6Yfta2HTCAw6/8dPTzL799PUAywc7be2+pxJlaXIlVtEa2QGAKAuZsx7e2s
-         6kAf2yskPIAoMhqF3oURQ4/nopCj1LA8pBDMfR2m4yMUAsAKBAffPMjYBdCOdNVlrdvi
-         oyb/R5+LI3W5juItuM0q/sxaqgsKUVxSOyeJN7cjLeVfsFqQfQBcOhBC1PVQpBiTpSWV
-         TdwOA5+25rr8ivS/CM7P5rUSI56Q5vG2xGcsrv/9+QkdOLluME6HKd1fCnNZpj5Gd74r
-         NA0A==
-X-Gm-Message-State: APjAAAWoKDvHn41eX3WvU8dA5if2Y2QQKrY6UdLLGD0P7QBmW8FMzkYJ
-        xicbvVy5F+9Bn8YZ1L1iD8gGCMZ5ahpbbTU33CAOdi7N5l1Zs0A4Us20JOLqT8R5EpVC6//1/7v
-        48rUNskDkzS56MYMIxEfo74BUefA=
-X-Received: by 2002:a50:f10d:: with SMTP id w13mr35413407edl.222.1566382134250;
-        Wed, 21 Aug 2019 03:08:54 -0700 (PDT)
-X-Google-Smtp-Source: APXvYqyjtqsPfVaOVcGj4bIlvdZRLCMANdsMw6mmT1TMubKmHil2CT5/yEMGNW9mzQ6x4eSTUcPRVQ==
-X-Received: by 2002:a50:f10d:: with SMTP id w13mr35413397edl.222.1566382134121;
-        Wed, 21 Aug 2019 03:08:54 -0700 (PDT)
-Received: from alrua-x1.borgediget.toke.dk ([2a00:7660:6da:443::2])
-        by smtp.gmail.com with ESMTPSA id x42sm4028988ede.24.2019.08.21.03.08.53
+        bh=8sBw1pzj3D8oNi/fIhRETMzxkmcUyKcDfjDtHp5hRqg=;
+        b=GvKlgwRJwpUISV1V8ZMLKHKmhtRS+WKdXEbUK1FvnwNBsm7pd+qYey12o1oqcB4evr
+         o8SSXPQ0xBiOnmdVX0nxj1GwE9LPRix2wj+Zx/ltz4hhXAuWlwZVyIop/UGQa3UPOB69
+         CecxX5I1lxF4VRmEVG25g44S5l7pA33BFCBqAMHRuTaWql4l/qcEpvlOAVBlJSSSrXdT
+         6BEWf+xu+HWuJxZHm2pBXVomC6XNMaQrboolMtHp6zqde+jNvP8y8gATQGnYVO7xX1TI
+         QcciOHqyGSXzoSSCyYbdhaZwQVX+VQdkMdHuVUgaxlpT81RQ7D1bot5Scm06H8y43ynG
+         EjGA==
+X-Gm-Message-State: APjAAAW3w2IgsTrW6oZ1HpbsUeE183k0keEJ3UStLgp71mYYQe4dG9OB
+        rpkizIfi/XCXyanDMoOQN6WDcxHRrOFgyh+7ajJAF5ky1ZVXoSoni5syqbTOcHX1KTf4JabMXRf
+        0S3vfvsz4Y8e3eo2Dhm+49cko8wY=
+X-Received: by 2002:a17:906:1b0d:: with SMTP id o13mr30067117ejg.96.1566382229491;
+        Wed, 21 Aug 2019 03:10:29 -0700 (PDT)
+X-Google-Smtp-Source: APXvYqyd3E5HYBNShFpCV41jp08tnq1HHLUa5AYaE/M2Y8ba2T6CwiqUzX7t1gKN1O12nCIaKVeLPg==
+X-Received: by 2002:a17:906:1b0d:: with SMTP id o13mr30067103ejg.96.1566382229316;
+        Wed, 21 Aug 2019 03:10:29 -0700 (PDT)
+Received: from alrua-x1.borgediget.toke.dk (borgediget.toke.dk. [85.204.121.218])
+        by smtp.gmail.com with ESMTPSA id w3sm3996451edu.4.2019.08.21.03.10.28
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 21 Aug 2019 03:08:53 -0700 (PDT)
+        Wed, 21 Aug 2019 03:10:28 -0700 (PDT)
 Received: by alrua-x1.borgediget.toke.dk (Postfix, from userid 1000)
-        id D5D07181CEF; Wed, 21 Aug 2019 12:08:52 +0200 (CEST)
+        id F212E181CEF; Wed, 21 Aug 2019 12:10:27 +0200 (CEST)
 From:   Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>
-To:     Vasanthakumar Thiagarajan <vthiagar@codeaurora.org>
-Cc:     Kalle Valo <kvalo@codeaurora.org>, linux-wireless@vger.kernel.org,
-        ath11k@lists.infradead.org, devicetree@vger.kernel.org,
-        linux-wireless-owner@vger.kernel.org
-Subject: Re: [PATCH 31/49] ath11k: add mac.c
-In-Reply-To: <ac6e7dbbd53e7ba9e82e49baca22b73c@codeaurora.org>
-References: <1566316095-27507-1-git-send-email-kvalo@codeaurora.org> <1566316095-27507-32-git-send-email-kvalo@codeaurora.org> <8736hvu6e6.fsf@toke.dk> <ac6e7dbbd53e7ba9e82e49baca22b73c@codeaurora.org>
+To:     Wen Gong <wgong@qti.qualcomm.com>, Wen Gong <wgong@codeaurora.org>,
+        "ath10k\@lists.infradead.org" <ath10k@lists.infradead.org>
+Cc:     "linux-wireless\@vger.kernel.org" <linux-wireless@vger.kernel.org>
+Subject: RE: [PATCH 4/7] ath10k: disable TX complete indication of htt for sdio
+In-Reply-To: <00992d0991704b0fae73a500bb2eb504@aptaiexm02f.ap.qualcomm.com>
+References: <1566302108-18219-1-git-send-email-wgong@codeaurora.org> <1566302108-18219-5-git-send-email-wgong@codeaurora.org> <87blwkt480.fsf@toke.dk> <00992d0991704b0fae73a500bb2eb504@aptaiexm02f.ap.qualcomm.com>
 X-Clacks-Overhead: GNU Terry Pratchett
-Date:   Wed, 21 Aug 2019 12:08:52 +0200
-Message-ID: <875zmqsudn.fsf@toke.dk>
+Date:   Wed, 21 Aug 2019 12:10:27 +0200
+Message-ID: <8736husub0.fsf@toke.dk>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: 8BIT
@@ -63,29 +62,44 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Vasanthakumar Thiagarajan <vthiagar@codeaurora.org> writes:
+Wen Gong <wgong@qti.qualcomm.com> writes:
 
-> On 2019-08-20 22:21, Toke Høiland-Jørgensen wrote:
->> [... snip ... ]
+>> -----Original Message-----
+>> From: ath10k <ath10k-bounces@lists.infradead.org> On Behalf Of Toke
+>> Høiland-Jørgensen
+>> Sent: Tuesday, August 20, 2019 8:24 PM
+>> To: Wen Gong <wgong@codeaurora.org>; ath10k@lists.infradead.org
+>> Cc: linux-wireless@vger.kernel.org
+>> Subject: [EXT] Re: [PATCH 4/7] ath10k: disable TX complete indication of htt
+>> for sdio
 >> 
->>> +static const struct ieee80211_ops ath11k_ops = {
->>> +	.tx				= ath11k_mac_op_tx,
+>> Wen Gong <wgong@codeaurora.org> writes:
 >> 
->> No wake_tx_queue? :(
->
-> Yes, packet queueing is handled in firmware. This makes sense
-> especially when we enable 802.11 encap offload support where most of
-> the data path processing in mac80211 will be skipped and packet is
-> given to driver/firmware in 802.3 format itself. Then firmware would
-> take care of all the classification, queueing and encapsulation
-> operations.
+>> > Tx complete message from firmware cost bus bandwidth of sdio, and bus
+>> > bandwidth is the bollteneck of throughput, it will effect the bandwidth
+>> > occupancy of data packet of TX and RX.
+>> >
+>> > This patch disable TX complete indication from firmware for htt data
+>> > packet, it results in significant performance improvement on TX path.
+>> 
+>> Wait, how does that work? Am I understanding it correctly that this
+>> replaces a per-packet TX completion with a periodic one sent out of
+>> band?
+> When this patch applied, firmware will not indicate tx complete for tx
+> Data, it only indicate HTT_T2H_MSG_TYPE_TX_CREDIT_UPDATE_IND,
+> This htt msg will tell how many data tx complete without status(status maybe success/fail).
 
-Well, so does ath10k, and yet we still saw a significant improvement by
-moving queueing back into the host where it can be handled by the
-FQ-CoDel-enabled queueing structure.
+Ah, so this is basically a counter of how much data is currently queued
+in the firmware?
 
-So, *how* does the firmware handle the queueing? Does it have
-per-stations queues? Per-flow queues? What's the latency under load
-figures for the firmware queues?
+>> And could you explain what the credits thing is for, please? :)
+> For high latency bus chip, all the tx data's content(include ip/udp/tcp header
+> and payload) will be transfer to firmware's memory via bus.
+> And firmware has limited memory for tx data, the tx data's content must
+> Saved in firmware memory before it tx complete, if ath10k transfer tx
+> data more than the limit, firmware will occur error. The credit is used
+> to avoid ath10k exceed the limit.
+
+What's a typical limit in the firmware?
 
 -Toke
