@@ -2,32 +2,32 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id CE50E973BA
-	for <lists+linux-wireless@lfdr.de>; Wed, 21 Aug 2019 09:41:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7B7E0973BE
+	for <lists+linux-wireless@lfdr.de>; Wed, 21 Aug 2019 09:42:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727409AbfHUHlP (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 21 Aug 2019 03:41:15 -0400
-Received: from s3.sipsolutions.net ([144.76.43.62]:56814 "EHLO
+        id S1727457AbfHUHmK (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 21 Aug 2019 03:42:10 -0400
+Received: from s3.sipsolutions.net ([144.76.43.62]:56832 "EHLO
         sipsolutions.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727191AbfHUHlP (ORCPT
+        with ESMTP id S1727063AbfHUHmK (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 21 Aug 2019 03:41:15 -0400
+        Wed, 21 Aug 2019 03:42:10 -0400
 Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
         (Exim 4.92)
         (envelope-from <johannes@sipsolutions.net>)
-        id 1i0LF1-0004ut-Hd; Wed, 21 Aug 2019 09:41:11 +0200
-Message-ID: <d37c085c66fd4703f324c5576000a16fe469d3b1.camel@sipsolutions.net>
-Subject: Re: [PATCHv6 2/9] nl80211: Add new netlink attribute for TID
- speicific retry count
+        id 1i0LFu-0004x4-OY; Wed, 21 Aug 2019 09:42:06 +0200
+Message-ID: <82bff92e6fa9ccc968566d30195cd3cd29e17a1d.camel@sipsolutions.net>
+Subject: Re: [PATCHv6 1/9] nl80211: New netlink command for TID specific
+ configuration
 From:   Johannes Berg <johannes@sipsolutions.net>
 To:     Tamizh chelvam <tamizhr@codeaurora.org>
 Cc:     ath10k@lists.infradead.org, linux-wireless@vger.kernel.org
-Date:   Wed, 21 Aug 2019 09:41:10 +0200
-In-Reply-To: <66f9219ed5bd03f96f23947c2bb6f990@codeaurora.org>
+Date:   Wed, 21 Aug 2019 09:42:05 +0200
+In-Reply-To: <be096df17632b1a71441a23a373682bf@codeaurora.org>
 References: <1560835632-17405-1-git-send-email-tamizhr@codeaurora.org>
-         <1560835632-17405-3-git-send-email-tamizhr@codeaurora.org>
-         <6351a05f5c205db47740116b4bec5a6476317792.camel@sipsolutions.net>
-         <66f9219ed5bd03f96f23947c2bb6f990@codeaurora.org>
+         <1560835632-17405-2-git-send-email-tamizhr@codeaurora.org>
+         <ea1f9969b52fed2da8b0e88ed8b06527bfc272aa.camel@sipsolutions.net>
+         <be096df17632b1a71441a23a373682bf@codeaurora.org>
 Content-Type: text/plain; charset="UTF-8"
 User-Agent: Evolution 3.30.5 (3.30.5-1.fc29) 
 MIME-Version: 1.0
@@ -37,34 +37,33 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Sat, 2019-08-10 at 17:36 +0530, Tamizh chelvam wrote:
-> 
-> > > +	[NL80211_TID_ATTR_CONFIG_RETRY] = { .type = NLA_FLAG },
-> > > +	[NL80211_TID_ATTR_CONFIG_RETRY_SHORT] = NLA_POLICY_MIN(NLA_U8, 0),
-> > > +	[NL80211_TID_ATTR_CONFIG_RETRY_LONG] = NLA_POLICY_MIN(NLA_U8, 0),
+On Sat, 2019-08-10 at 18:10 +0530, Tamizh chelvam wrote:
+> On 2019-07-31 14:55, Johannes Berg wrote:
+> > On Tue, 2019-06-18 at 10:57 +0530, Tamizh chelvam wrote:
+> > >  /**
+> > > + * enum nl80211_tid_config - TID config state
+> > > + * @NL80211_TID_CONFIG_DEFAULT: Default config for the TID
+> > > + * @NL80211_TID_CONFIG_ENABLE: Enable config for the TID
+> > > + * NL80211_TID_CONFIG_DISABLE: Disable config for the TID
+> > > + */
+> > > +enum nl80211_tid_config {
+> > > +	NL80211_TID_CONFIG_DEFAULT,
+> > > +	NL80211_TID_CONFIG_ENABLE,
+> > > +	NL80211_TID_CONFIG_DISABLE,
+> > > +};
 > > 
-> > min of 0 doesn't make sense, maybe you meant 1? otherwise just don't 
-> > set
-> > anything here.
+> > Hmm. Looking at this in more detail in patch 3, I don't understand.
 > > 
-> The min value changed to 0 from 1 as per the previous discussions, since 
-> this is a retry count and not a tx count.
-> Or Shall I remove this min value to avoid the confusion ?
+> > How is DEFAULT different from "attribute not present", i.e. "no
+> > changes"?
+> > 
+> This DEFAULT is used to notify the driver to use default configuration 
+> value of driver/vif.
+> This will be used when the attribute is not present.
 
-Yeah, I think then you should just remove the min value. Perhaps a max
-value is needed, but I don't know.
-
-> > > +			tid_conf->retry_short = -1;
-> > > +
-> > 
-> > I guess you should document that -1 means no changes? Not sure how the
-> > IEEE80211_TID_CONF_RETRY comes in, you're always setting it, so that's
-> > useless - better remove that and document that -1 means no changes?
-> > 
-> The value -1 is to notify the driver to use default value by removing 
-> peer specific retry count.
-
-Oh. So I think that's slightly different, please document that.
+Hm, but then why is it valid in the nl80211 attribute? That seems
+confusing. Maybe there should rather be a validity bit somewhere in the
+internal API, so the nl82011 API doesn't need to be concerned with this?
 
 johannes
 
