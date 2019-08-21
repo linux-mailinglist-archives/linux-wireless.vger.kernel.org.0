@@ -2,30 +2,32 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 1534997358
-	for <lists+linux-wireless@lfdr.de>; Wed, 21 Aug 2019 09:28:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D8C96973A3
+	for <lists+linux-wireless@lfdr.de>; Wed, 21 Aug 2019 09:35:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727922AbfHUH2i (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 21 Aug 2019 03:28:38 -0400
-Received: from s3.sipsolutions.net ([144.76.43.62]:56640 "EHLO
+        id S1727206AbfHUHdf (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 21 Aug 2019 03:33:35 -0400
+Received: from s3.sipsolutions.net ([144.76.43.62]:56702 "EHLO
         sipsolutions.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727063AbfHUH2i (ORCPT
+        with ESMTP id S1726224AbfHUHdf (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 21 Aug 2019 03:28:38 -0400
+        Wed, 21 Aug 2019 03:33:35 -0400
 Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
         (Exim 4.92)
         (envelope-from <johannes@sipsolutions.net>)
-        id 1i0L2q-0004S7-Gi; Wed, 21 Aug 2019 09:28:36 +0200
-Message-ID: <b97092279b6147af6c9f4366293bc15df2996b86.camel@sipsolutions.net>
+        id 1i0L7d-0004bI-Cj; Wed, 21 Aug 2019 09:33:33 +0200
+Message-ID: <d98fc06c44dd5d708afb9cae134d32df8d09204c.camel@sipsolutions.net>
 Subject: Re: [PATCH] cfg80211: VLAN offload support for set_key and
  set_sta_vlan
 From:   Johannes Berg <johannes@sipsolutions.net>
 To:     Jouni Malinen <jouni@codeaurora.org>
 Cc:     linux-wireless@vger.kernel.org,
         Gurumoorthi Gnanasambandhan <gguru@codeaurora.org>
-Date:   Wed, 21 Aug 2019 09:28:35 +0200
-In-Reply-To: <20190815133825.8131-1-jouni@codeaurora.org>
+Date:   Wed, 21 Aug 2019 09:33:32 +0200
+In-Reply-To: <20190820205046.GA9860@jouni.qca.qualcomm.com>
 References: <20190815133825.8131-1-jouni@codeaurora.org>
+         <3a8edc6691a03ed3c253d95811d5fd6cae453a03.camel@sipsolutions.net>
+         <20190820205046.GA9860@jouni.qca.qualcomm.com>
 Content-Type: text/plain; charset="UTF-8"
 User-Agent: Evolution 3.30.5 (3.30.5-1.fc29) 
 MIME-Version: 1.0
@@ -35,67 +37,37 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Thu, 2019-08-15 at 16:38 +0300, Jouni Malinen wrote:
+On Tue, 2019-08-20 at 23:50 +0300, Jouni Malinen wrote:
 
-> +/**
-> + * DOC: VLAN offload support for setting group keys and binding STAs to VLANs
-> + *
-> + * By setting @NL80211_EXT_FEATURE_VLAN_OFFLOAD flag drivers can indicate they
-> + * support offloading VLAN functionality in a manner where the driver exposes a
-> + * single netdev that used VLAN tagged frames and separate VLAN-specific netdevs
-> + * can then be added using vconfig similarly to the Ethernet case.
+> > Without really looking at the specifics, it might be relatively simple
+> > to support this in mac80211?
+> 
+> Yes, that is something that I was thinking about when going through
+> this.. I don't remember why exactly mac80211 ended up with its current
+> design for per-AP_VLAN netdevs without tags, but it could indeed be
+> quite convenient to have this alternative approach available. 
 
-I don't think we should be referring to vconfig these days? It's pretty
-much a deprecated userspace tool, the kernel would like to think that
-all of this is done over netlink with iproute2 now :-)
+Even just for testing it :-)
 
-But even then, it should probably just reference the kernel mechanisms
-(creating a VLAN netdev) than the userspace implementation thereof
-(vconfig or iproute2).
+> I guess
+> both of them have some benefits, so this would likely be left with two
+> different mechanisms left to maintain, 
 
-Something that's not quite clear to me - I think we support some frames
-on the AP interface even when VLANs are in use. Would the tagged AP/VLAN
-interface actually support untagged frames, and then in what way? I
-think it'd be good to specify that here.
+Yes, unless we find a way to attach nl80211 to 802.1q interfaces so we
+can pretend to do the netdevs ... not really worth it.
 
+We could encapsulate the backward compatibility on top of this feature,
+theoretically, by always asking the drivers to use this feature and then
+implementing the AP_VLAN interfaces in cfg80211 entirely, but again,
+probably not worth it since it's only mac80211, not a bunch of drivers.
 
-> + * %NL80211_CMD_NEW_KEY and %NL80211_CMD_SET_STATION will optionally specify
-> + * vlan_id using NL80211_ATTR_VLAN_ID.
+> but the needed implementation in
+> mac80211 for this would seem to be pretty minimal (also without looking
+> at the exact details..).
 
-Guess that should be %NL80211_ATTR_VLAN_ID too.
-
-> +	[NL80211_ATTR_VLAN_ID] = { .type = NLA_U16 },
-
-That should probably have a range, VLAN IDs can only be 1-4094 since
-there's only a 12-bit field and all-0/all-1 are reserved.
-
-Saves us from having to check it in the drivers later on, since they'd
-otherwise generate invalid (or confusing) frames if there's no check.
- 
->  /* policy for the key attributes */
-> @@ -3865,6 +3866,9 @@ static int nl80211_new_key(struct sk_buff *skb, struct genl_info *info)
->  	if (info->attrs[NL80211_ATTR_MAC])
->  		mac_addr = nla_data(info->attrs[NL80211_ATTR_MAC]);
->  
-> +	if (info->attrs[NL80211_ATTR_VLAN_ID])
-> +		key.p.vlan_id = nla_get_u16(info->attrs[NL80211_ATTR_VLAN_ID]);
-
-Seems like there probably should be some kind of check on what type of
-key can set a VLAN ID?
-
->  	if (key.type == -1) {
->  		if (mac_addr)
->  			key.type = NL80211_KEYTYPE_PAIRWISE;
-> @@ -5647,6 +5651,9 @@ static int nl80211_set_station(struct sk_buff *skb, struct genl_info *info)
->  	if (info->attrs[NL80211_ATTR_STA_AID])
->  		params.aid = nla_get_u16(info->attrs[NL80211_ATTR_STA_AID]);
->  
-> +	if (info->attrs[NL80211_ATTR_VLAN_ID])
-> +		params.vlan_id = nla_get_u16(info->attrs[NL80211_ATTR_VLAN_ID]);
-
-How about nl80211_new_station()? Also, should it really be allowed to
-change this at will? I'm not sure we allow changing the VLAN netdev (if
-used) at will?
+Yeah, on RX the station lookup would just have to find the VLAN ID and
+use __vlan_hwaccel_put_tag(); on TX ... not sure, probably
+skb_vlan_tag_present()?
 
 johannes
 
