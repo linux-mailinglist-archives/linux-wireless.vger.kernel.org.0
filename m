@@ -2,93 +2,115 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 468B79769B
-	for <lists+linux-wireless@lfdr.de>; Wed, 21 Aug 2019 12:02:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A9A18976A3
+	for <lists+linux-wireless@lfdr.de>; Wed, 21 Aug 2019 12:04:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727205AbfHUKCK convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 21 Aug 2019 06:02:10 -0400
-Received: from mx1.redhat.com ([209.132.183.28]:34144 "EHLO mx1.redhat.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726370AbfHUKCK (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 21 Aug 2019 06:02:10 -0400
-Received: from mail-ed1-f70.google.com (mail-ed1-f70.google.com [209.85.208.70])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mx1.redhat.com (Postfix) with ESMTPS id 1C74185362
-        for <linux-wireless@vger.kernel.org>; Wed, 21 Aug 2019 10:02:10 +0000 (UTC)
-Received: by mail-ed1-f70.google.com with SMTP id i10so1083682edv.14
-        for <linux-wireless@vger.kernel.org>; Wed, 21 Aug 2019 03:02:10 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:in-reply-to:references:date
-         :message-id:mime-version:content-transfer-encoding;
-        bh=07D+Vb3VLQ7yy1uusVKQzDL7GcVauqDp+oTev9vZRJc=;
-        b=n22YNFtMQQGwB463pN4pfu1RpN6HMReIJMzY7/LqH1FxqcKxkLRTKn50kBMfte/VKA
-         bnqg2/q1kvHu/UdDouqUYQMj0I/ckVd2ybusDjZ2Z2BEhAQu7Sx2fmm6RD8wIcbJVHv8
-         YgcyYRXiErOOheAr4YNqT0Hj+hpM4Rm1yWUyKZ9aDScrPvYAdwsUxpFTu43FlkQKMg9n
-         W5Khb2U8eh3tVr/+hi3lAEYvbWZzavOFTmwf/hS3cdBw5c4qCxqDn6RxKzon1+pGI3e1
-         vNXkcTg1C0D3RELjFbHMmtFNj+50nJxlWsoLq+xNb7t/e/7hzm3ejTNF+YY5gwbpkzg5
-         c35g==
-X-Gm-Message-State: APjAAAUo/fpfSJ5LDySHRKGbvI/btL0ud+TijKTe/AFFxv+vz0CNOhVU
-        w76wHIIDwsA+lZ426OwkuFVJVI5+qbyiQNWUVj72ydw57JW/40WmY/lKP4+Hfe5kFjyL2jkcyLA
-        18H6cVn4amT8K3iS5EnHXgpDDJo8=
-X-Received: by 2002:a17:906:80da:: with SMTP id a26mr14494756ejx.222.1566381728590;
-        Wed, 21 Aug 2019 03:02:08 -0700 (PDT)
-X-Google-Smtp-Source: APXvYqw0JI0SafZ9Vvbuugd0J1jl5yuOT94aDRH1vgoNYwg1udQjTld/BlgZzN9lZuYSJZCyNtPcGQ==
-X-Received: by 2002:a17:906:80da:: with SMTP id a26mr14494741ejx.222.1566381728442;
-        Wed, 21 Aug 2019 03:02:08 -0700 (PDT)
-Received: from alrua-x1.borgediget.toke.dk ([2a00:7660:6da:443::2])
-        by smtp.gmail.com with ESMTPSA id v6sm3043620ejx.28.2019.08.21.03.02.07
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 21 Aug 2019 03:02:07 -0700 (PDT)
-Received: by alrua-x1.borgediget.toke.dk (Postfix, from userid 1000)
-        id 27C49181CEF; Wed, 21 Aug 2019 12:02:07 +0200 (CEST)
-From:   Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>
-To:     Wen Gong <wgong@qti.qualcomm.com>, Wen Gong <wgong@codeaurora.org>,
-        "ath10k\@lists.infradead.org" <ath10k@lists.infradead.org>
-Cc:     "linux-wireless\@vger.kernel.org" <linux-wireless@vger.kernel.org>
-Subject: RE: [PATCH 2/7] ath10k: change max RX bundle size from 8 to 32 for sdio
-In-Reply-To: <59f668bda688419e9b6f44587d391135@aptaiexm02f.ap.qualcomm.com>
-References: <1566302108-18219-1-git-send-email-wgong@codeaurora.org> <1566302108-18219-3-git-send-email-wgong@codeaurora.org> <87ef1gt49d.fsf@toke.dk> <59f668bda688419e9b6f44587d391135@aptaiexm02f.ap.qualcomm.com>
-X-Clacks-Overhead: GNU Terry Pratchett
-Date:   Wed, 21 Aug 2019 12:02:07 +0200
-Message-ID: <878srmsuow.fsf@toke.dk>
+        id S1726973AbfHUKEd (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 21 Aug 2019 06:04:33 -0400
+Received: from s3.sipsolutions.net ([144.76.43.62]:59040 "EHLO
+        sipsolutions.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726478AbfHUKEd (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Wed, 21 Aug 2019 06:04:33 -0400
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <johannes@sipsolutions.net>)
+        id 1i0NTh-0007nV-5L; Wed, 21 Aug 2019 12:04:29 +0200
+From:   Johannes Berg <johannes@sipsolutions.net>
+To:     David Miller <davem@davemloft.net>
+Cc:     netdev@vger.kernel.org, linux-wireless@vger.kernel.org
+Subject: pull-request: mac80211-next 2019-08-21
+Date:   Wed, 21 Aug 2019 12:04:23 +0200
+Message-Id: <20190821100424.13682-1-johannes@sipsolutions.net>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 8BIT
+Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Wen Gong <wgong@qti.qualcomm.com> writes:
+Hi Dave,
 
->> -----Original Message-----
->> From: ath10k <ath10k-bounces@lists.infradead.org> On Behalf Of Toke
->> Høiland-Jørgensen
->> Sent: Tuesday, August 20, 2019 8:23 PM
->> To: Wen Gong <wgong@codeaurora.org>; ath10k@lists.infradead.org
->> Cc: linux-wireless@vger.kernel.org
->> Subject: [EXT] Re: [PATCH 2/7] ath10k: change max RX bundle size from 8 to
->> 32 for sdio
->> 
->> Wen Gong <wgong@codeaurora.org> writes:
->> 
->> > The max bundle size support by firmware is 32, change it from 8 to 32
->> > will help performance. This results in significant performance
->> > improvement on RX path.
->> 
->> What happens when the hardware doesn't have enough data to fill a
->> bundle? Does it send a smaller one, or does it wait until it can fill
->> it?
->> 
->
-> The bundle is filled by firmware. 
-> It will not wait until it can fill it.
-> For example, if you do ping per second, it will have only 1 ping packet
-> In the bundle.
+For -next, we have more changes, but as described in the tag
+they really just fall into a few groups of changes :-)
 
-Right, cool.
+Please pull and let me know if there's any problem.
 
--Toke
+Thanks,
+johannes
+
+
+
+The following changes since commit 8c40f3b212a373be843a29db608b462af5c3ed5d:
+
+  Merge tag 'mlx5-updates-2019-08-15' of git://git.kernel.org/pub/scm/linux/kernel/git/saeed/linux (2019-08-20 22:59:45 -0700)
+
+are available in the Git repository at:
+
+  git://git.kernel.org/pub/scm/linux/kernel/git/jberg/mac80211-next.git tags/mac80211-next-for-davem-2019-08-21
+
+for you to fetch changes up to 48cb39522a9d4d4680865e40a88f975a1cee6abc:
+
+  mac80211: minstrel_ht: improve rate probing for devices with static fallback (2019-08-21 11:10:13 +0200)
+
+----------------------------------------------------------------
+Here are a few groups of changes:
+ * EDMG channel support (60 GHz, just a single patch)
+ * initial 6/7 GHz band support (Arend)
+ * association timestamp recording (Ben)
+ * rate control improvements for better performance with
+   the mt76 driver (Felix)
+ * various fixes for previous HE support changes (John)
+
+----------------------------------------------------------------
+Alexei Avshalom Lazar (1):
+      nl80211: Add support for EDMG channels
+
+Arend van Spriel (8):
+      nl80211: add 6GHz band definition to enum nl80211_band
+      cfg80211: add 6GHz UNII band definitions
+      cfg80211: util: add 6GHz channel to freq conversion and vice versa
+      cfg80211: extend ieee80211_operating_class_to_band() for 6GHz
+      cfg80211: add 6GHz in code handling array with NUM_NL80211_BANDS entries
+      cfg80211: use same IR permissive rules for 6GHz band
+      cfg80211: ibss: use 11a mandatory rates for 6GHz band operation
+      cfg80211: apply same mandatory rate flags for 5GHz and 6GHz
+
+Ben Greear (2):
+      cfg80211: Support assoc-at timer in sta-info
+      mac80211: add assoc-at support
+
+Felix Fietkau (4):
+      mac80211: minstrel_ht: fix per-group max throughput rate initialization
+      mac80211: minstrel_ht: reduce unnecessary rate probing attempts
+      mac80211: minstrel_ht: fix default max throughput rate indexes
+      mac80211: minstrel_ht: improve rate probing for devices with static fallback
+
+John Crispin (5):
+      mac80211: fix TX legacy rate reporting when tx_status_ext is used
+      mac80211: fix bad guard when reporting legacy rates
+      mac80211: 80Mhz was not reported properly when using tx_status_ext
+      mac80211: add missing length field increment when generating Radiotap header
+      mac80211: fix possible NULL pointerderef in obss pd code
+
+ drivers/net/wireless/ath/wil6210/cfg80211.c |   2 +-
+ include/net/cfg80211.h                      |  88 ++++++++-
+ include/uapi/linux/nl80211.h                |  29 +++
+ net/mac80211/he.c                           |   3 +-
+ net/mac80211/mlme.c                         |   2 +-
+ net/mac80211/rc80211_minstrel.h             |   1 +
+ net/mac80211/rc80211_minstrel_ht.c          | 277 ++++++++++++++++++++++++----
+ net/mac80211/rc80211_minstrel_ht.h          |  12 ++
+ net/mac80211/sta_info.c                     |   3 +
+ net/mac80211/sta_info.h                     |   2 +
+ net/mac80211/status.c                       |  31 ++--
+ net/mac80211/tx.c                           |   1 +
+ net/wireless/chan.c                         | 162 +++++++++++++++-
+ net/wireless/ibss.c                         |  16 +-
+ net/wireless/nl80211.c                      |  39 ++++
+ net/wireless/reg.c                          |  21 ++-
+ net/wireless/trace.h                        |   3 +-
+ net/wireless/util.c                         |  56 +++++-
+ 18 files changed, 684 insertions(+), 64 deletions(-)
+
