@@ -2,130 +2,109 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 1A023971E5
-	for <lists+linux-wireless@lfdr.de>; Wed, 21 Aug 2019 08:07:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A0A8097225
+	for <lists+linux-wireless@lfdr.de>; Wed, 21 Aug 2019 08:17:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727716AbfHUGHf (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 21 Aug 2019 02:07:35 -0400
-Received: from smtp.codeaurora.org ([198.145.29.96]:59652 "EHLO
-        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727630AbfHUGHf (ORCPT
+        id S1727931AbfHUGQe (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 21 Aug 2019 02:16:34 -0400
+Received: from dvalin.narfation.org ([213.160.73.56]:51742 "EHLO
+        dvalin.narfation.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726193AbfHUGQd (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 21 Aug 2019 02:07:35 -0400
-Received: by smtp.codeaurora.org (Postfix, from userid 1000)
-        id 9282B60ACF; Wed, 21 Aug 2019 06:07:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1566367654;
-        bh=pXIBqk4P+QePW7ibCGrnyuR0zHexMYLeI86KiWRpM0Y=;
-        h=From:To:Cc:Subject:Date:From;
-        b=JaVC9qTTK66W6xP3lSDunbODw1J9tS5SFbIFCUKIT/+Va2VCWRGWixZfR4wm0uw+E
-         /ov9w6X91zUGfI1Ojw7KTugXe+VbJ1xwNcOiGmYbZM6+HMYs76oxTzv4GuELiyXGpc
-         /lUJSNGC3t1Qb3V0rHnDdOQdSCBhPMP+XXQJ8Trs=
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        pdx-caf-mail.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.7 required=2.0 tests=ALL_TRUSTED,BAYES_00,
-        DKIM_INVALID,DKIM_SIGNED,SPF_NONE autolearn=no autolearn_force=no
-        version=3.4.0
-Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        (Authenticated sender: kvalo@smtp.codeaurora.org)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 97F0E60741;
-        Wed, 21 Aug 2019 06:07:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1566367654;
-        bh=pXIBqk4P+QePW7ibCGrnyuR0zHexMYLeI86KiWRpM0Y=;
-        h=From:To:Cc:Subject:Date:From;
-        b=JaVC9qTTK66W6xP3lSDunbODw1J9tS5SFbIFCUKIT/+Va2VCWRGWixZfR4wm0uw+E
-         /ov9w6X91zUGfI1Ojw7KTugXe+VbJ1xwNcOiGmYbZM6+HMYs76oxTzv4GuELiyXGpc
-         /lUJSNGC3t1Qb3V0rHnDdOQdSCBhPMP+XXQJ8Trs=
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 97F0E60741
-Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
-From:   Kalle Valo <kvalo@codeaurora.org>
-To:     David Miller <davem@davemloft.net>
-Cc:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        Johannes Berg <johannes@sipsolutions.net>
-Subject: pull-request: wireless-drivers 2019-08-21
-Date:   Wed, 21 Aug 2019 09:07:30 +0300
-Message-ID: <87zhk359wd.fsf@kamboji.qca.qualcomm.com>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
+        Wed, 21 Aug 2019 02:16:33 -0400
+Received: from bentobox.localnet (p200300C5971038EC000000000000063E.dip0.t-ipconnect.de [IPv6:2003:c5:9710:38ec::63e])
+        by dvalin.narfation.org (Postfix) with ESMTPSA id 20AB51FDA5;
+        Wed, 21 Aug 2019 06:16:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=narfation.org;
+        s=20121; t=1566368190;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=k4//DVBJlSXUGTW5ZqV7kGgLVyVIxoMGbLM0K+vEU0s=;
+        b=RC+wAhiPSvtbwpyeAG2ZTtBjr/OjQxdWTZ6uDwKtmgGk/1PDpT6VdH5wghM758ejn1Lp6t
+        7xzxVdl5O2PSmP/RvSOpB6DSisypMl8/Tw5pMVctTenw9jO6bl7WzvBLA+brGMy0y+tJyu
+        mOAv3H9O1wZKuPoCZl1NRS0NXTyzebo=
+From:   Sven Eckelmann <sven@narfation.org>
+To:     ath11k@lists.infradead.org
+Cc:     Kalle Valo <kvalo@codeaurora.org>, linux-wireless@vger.kernel.org,
+        devicetree@vger.kernel.org
+Subject: Re: [PATCH 31/49] ath11k: add mac.c
+Date:   Wed, 21 Aug 2019 08:16:27 +0200
+Message-ID: <1635460.phzPRRphLd@bentobox>
+In-Reply-To: <1566316095-27507-32-git-send-email-kvalo@codeaurora.org>
+References: <1566316095-27507-1-git-send-email-kvalo@codeaurora.org> <1566316095-27507-32-git-send-email-kvalo@codeaurora.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: multipart/signed; boundary="nextPart2661494.foTVnLV1sx"; micalg="pgp-sha512"; protocol="application/pgp-signature"
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=narfation.org;
+        s=20121; t=1566368190;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=k4//DVBJlSXUGTW5ZqV7kGgLVyVIxoMGbLM0K+vEU0s=;
+        b=s6tBhDL6MOTBzrc7Nob2aQpCEYHBKeTuhP/Vh01hxjEPhF+fyPVrfClgEdHVHmpwHzPI9A
+        F8S5naZNTdvOkEV0Qz4BVfDGRJkyvhGAd8/R/EOxxbv1a5aVqqaNvY3tRhaCKph4XvKsTZ
+        1TznsXH+FKbpDQzWhvQMe+qh12ti6Bw=
+ARC-Seal: i=1; s=20121; d=narfation.org; t=1566368190; a=rsa-sha256;
+        cv=none;
+        b=A2muYssPS2gHpC7ZUulw62vCxEty0lZbBCorb1sBT2IK8VJ/qLwTfw3aHr8xHiXvveBtB8
+        DTRVXnFQpNv8RF02ikaS2mHsE6Mczct72+YxpjYVFmSDognVUhcKYwRdpVSBhenIsspnr8
+        NOvIMuUkcNS/Ll/+41b762BqU1vm/CE=
+ARC-Authentication-Results: i=1;
+        dvalin.narfation.org;
+        auth=pass smtp.auth=sven smtp.mailfrom=sven@narfation.org
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi Dave,
+--nextPart2661494.foTVnLV1sx
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="us-ascii"
 
-here's a pull request to net for 5.3, more info below. I will be offline
-the next week, but Johannes should be able to help if there are any
-issues.
+On Tuesday, 20 August 2019 17:47:57 CEST Kalle Valo wrote:
+> +static void ath11k_peer_assoc_h_rates(struct ath11k *ar,
+> +                                     struct ieee80211_vif *vif,
+> +                                     struct ieee80211_sta *sta,
+> +                                     struct peer_assoc_params *arg)
+> +{
+> +       struct ath11k_vif *arvif = (void *)vif->drv_priv;
+> +       struct wmi_rate_set_arg *rateset = &arg->peer_legacy_rates;
+> +       struct cfg80211_chan_def def;
+> +       const struct ieee80211_supported_band *sband;
+> +       const struct ieee80211_rate *rates;
+> +       enum nl80211_band band;
+> +       u32 ratemask;
+> +       u8 rate;
 
-Kalle
+rate has to be u32 [1].
+
+Kind regards,
+	Sven
+
+[1] https://patchwork.kernel.org/patch/11089507/
+--nextPart2661494.foTVnLV1sx
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: This is a digitally signed message part.
+Content-Transfer-Encoding: 7Bit
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCgAdFiEEF10rh2Elc9zjMuACXYcKB8Eme0YFAl1c4bsACgkQXYcKB8Em
+e0aLmBAAhoE9lMj0hnfUTO5uRdRLBjgzTR+CAV2Bc72Q4TRzRnt/7NoWfTrViIXW
+Q0MepQ/3Hs6bZc0s+IOqIEduGCGRNrJcbc6q6HlkmcYQmqfkC7cbfnZyzhDZFOLM
+0HbG2wTomoKEJqshc0aDMjaV3N4i6Tj5em590kUktfYTLHoZFJs4G7AdAnIC9nB7
+Kij4lbg6zmOemuenkT0LV/6D3RVjJr0MkcGNd3jsRFgdtCZCJf/5EtVu5goMASSz
+yGwcnTBrp9kaXRp2XRw4j5FO8oogMxXl77neGvnrUHG9mUF23ke+5Dr6X9wOrnpe
+m6zd2RI/2L1E8tKUMUnm7BaJhmqOtJaE6Jd8jcFjptHo8EUe6tr1ZkC7E46xFCER
+fhOqsULieRZDBDLpuhTWCTYip7OO8E842GDTvyD3SWUCbaFVOzF9ttolvvqLKMfB
+V5ntQ5KfyWB9q+3NMNMvqCQqVZnUnTVK2QvDt3JHC6uhqoZiyFGTy3RVFdBVr06x
+g24bg/lEXSTV4nMFUzMlJ+9upRZ3q0H1l6x4bPfWdZNdow/jzuhejvyXv/NTQujR
+iGCb9BPWictQ8QAfZI/FJdrJehlsUe68pQIstiKXVSGKGUzuhYnOhmr4q+yfuYsj
+vC7uBwgqDsGEH2mzGYATTcU04cE2W7XOCckFk9pGO2UOaQIcMrY=
+=8elU
+-----END PGP SIGNATURE-----
+
+--nextPart2661494.foTVnLV1sx--
 
 
-The following changes since commit d1abaeb3be7b5fa6d7a1fbbd2e14e3310005c4c1:
 
-  Linux 5.3-rc5 (2019-08-18 14:31:08 -0700)
-
-are available in the git repository at:
-
-  git://git.kernel.org/pub/scm/linux/kernel/git/kvalo/wireless-drivers.git tags/wireless-drivers-for-davem-2019-08-21
-
-for you to fetch changes up to 5a8c31aa63578cb0ff390a57537f1cb4b312a1ed:
-
-  iwlwifi: pcie: fix recognition of QuZ devices (2019-08-20 17:00:42 +0300)
-
-----------------------------------------------------------------
-wireless-drivers fixes for 5.3
-
-Third set of fixes for 5.3, and most likely the last one. The rt2x00
-regression has been reported multiple times, others are of lower
-priority.
-
-mt76
-
-* fix hang on resume on certain machines
-
-rt2x00
-
-* fix AP mode regression related to encryption
-
-iwlwifi
-
-* avoid unnecessary error messages due to multicast frames when not
-  associated
-
-* fix configuration for ax201 devices
-
-* fix recognition of QuZ devices
-
-----------------------------------------------------------------
-Emmanuel Grumbach (1):
-      iwlwifi: pcie: fix the byte count table format for 22560 devices
-
-Ilan Peer (1):
-      iwlwifi: mvm: Allow multicast data frames only when associated
-
-Luca Coelho (2):
-      iwlwifi: pcie: don't switch FW to qnj when ax201 is detected
-      iwlwifi: pcie: fix recognition of QuZ devices
-
-Stanislaw Gruszka (2):
-      mt76: mt76x0u: do not reset radio on resume
-      rt2x00: clear IV's on start to fix AP mode regression
-
- drivers/net/wireless/intel/iwlwifi/mvm/mac-ctxt.c | 33 ++++++++++++++++++++---
- drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c | 10 +++++++
- drivers/net/wireless/intel/iwlwifi/pcie/drv.c     | 17 ++++++++++++
- drivers/net/wireless/intel/iwlwifi/pcie/trans.c   |  1 +
- drivers/net/wireless/intel/iwlwifi/pcie/tx-gen2.c | 20 +++++++++-----
- drivers/net/wireless/mediatek/mt76/mt76x0/usb.c   |  8 +++---
- drivers/net/wireless/ralink/rt2x00/rt2800lib.c    |  9 +++++++
- drivers/net/wireless/ralink/rt2x00/rt2x00.h       |  1 +
- drivers/net/wireless/ralink/rt2x00/rt2x00dev.c    | 13 +++++----
- 9 files changed, 93 insertions(+), 19 deletions(-)
