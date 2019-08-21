@@ -2,86 +2,59 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A098E986F6
-	for <lists+linux-wireless@lfdr.de>; Thu, 22 Aug 2019 00:05:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1E0FF9882A
+	for <lists+linux-wireless@lfdr.de>; Thu, 22 Aug 2019 01:58:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729309AbfHUWEV (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 21 Aug 2019 18:04:21 -0400
-Received: from 3.mo2.mail-out.ovh.net ([46.105.58.226]:52358 "EHLO
-        3.mo2.mail-out.ovh.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727484AbfHUWEV (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 21 Aug 2019 18:04:21 -0400
-Received: from player788.ha.ovh.net (unknown [10.108.42.184])
-        by mo2.mail-out.ovh.net (Postfix) with ESMTP id AA5381AA3C7
-        for <linux-wireless@vger.kernel.org>; Wed, 21 Aug 2019 23:45:58 +0200 (CEST)
-Received: from awhome.eu (p57B7E04C.dip0.t-ipconnect.de [87.183.224.76])
-        (Authenticated sender: postmaster@awhome.eu)
-        by player788.ha.ovh.net (Postfix) with ESMTPSA id 0914A8FB8FEA;
-        Wed, 21 Aug 2019 21:45:55 +0000 (UTC)
-Subject: Re: [linuxwifi] Intel Centrino Ultimate N 6300 regression
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=wetzel-home.de;
-        s=wetzel-home; t=1566423953;
-        bh=uQ9QfbcZbrm3tEffITExqAoMKYqHYGgkn6zJJlepJao=;
-        h=Subject:To:Cc:References:From:Date:In-Reply-To;
-        b=PYJajWbRcimavUxfeaPgX5Eqrel0HiZC279Lu4BpbgQFnJb3STorAlcNgJdmjP/le
-         fQEfLNIrNqgcAVB9oEl+T1vLoaZfH59SIgLoIwqEG7IlFjBjWXx0bjabYhegxkAyVT
-         j1MSWM8nqxXrcC7jXVlRpt+ozgWzayZyIMXs7Gos=
-To:     Nigel Sollars <nsollars@gmail.com>,
-        Luciano Coelho <luciano.coelho@intel.com>
-Cc:     linuxwifi@intel.com, linux-wireless@vger.kernel.org
-References: <CAG6aBkWDyGDtWX7X0t-FjynkYxpdhpZsAv4Ysw3dKf+iEu+mig@mail.gmail.com>
- <941b807b02962fadaf738942baf1621738872723.camel@intel.com>
- <CAG6aBkW09YFz4asHZkhWBUenBiT3dgb7iGXBCq8KkCM09QXjLg@mail.gmail.com>
-From:   Alexander Wetzel <alexander@wetzel-home.de>
-Message-ID: <4e63174a-34cc-cebf-4eb9-205f0d237574@wetzel-home.de>
-Date:   Wed, 21 Aug 2019 23:45:50 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.8.0
+        id S1729644AbfHUX5m (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 21 Aug 2019 19:57:42 -0400
+Received: from ocelot.miegl.cz ([195.201.216.236]:32938 "EHLO ocelot.miegl.cz"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727255AbfHUX5m (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Wed, 21 Aug 2019 19:57:42 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=miegl.cz; s=dkim;
+        t=1566431858; bh=rK/Pi7EguZq44uQT0yZvSGUkDVb+LvjOSqIOOcFIEBw=;
+        h=Date:In-Reply-To:References:Subject:To:CC:From;
+        b=iaDJtpn20bGQKet9KP8tUnGIOcGIStgS84tc3zhBzNFO67kNUDmXBHHZjX1eC1HzD
+         OCdbZ3ytWTZK5sPn0c+Kl82gL2GYR9ULFGFuRiCeaxzDdqcvpVfC47FTG4AhwR5T2W
+         p2k53T9rOu8t+Ls7LgGJs0a9p/ObCX/wR/DxfkZmD4EQW11VPHBmmUHyIX6Tz/NGLo
+         PXnqUkHH2/OT3/0m/eM4R/rQMjUYuDeA+XJ5n7F/El1FA2au08l6zem/iCgve+8C3W
+         HHDtBK62aMBUFMNDekHiVsxmv0YmMLqW7ZWlDrTHaW+ZL66GUXRd3SEA2Pul3t7CWg
+         /jHB0wc3F1HWw==
+Date:   Thu, 22 Aug 2019 01:57:34 +0200
+User-Agent: K-9 Mail for Android
+In-Reply-To: <8ec8202e-ca07-3594-5873-5b282d553711@newmedia-net.de>
+References: <20190815152844.k5mmddvbwrohkzr6@pepin-laptop.localdomain> <3a079683-6f57-3b42-f909-90c46e14f14f@newmedia-net.de> <20190816111044.4ntizgmpa3twbzcg@pepin-laptop.localdomain> <e8129acb-fc32-c85c-b504-ab8777a3f1a3@newmedia-net.de> <20190816113818.ohktykc4fyetzyvq@pepin-laptop.localdomain> <9985fddfb059640f36665efc9c1ef2dc0bdb7662.camel@sipsolutions.net> <b8009787-a182-d5f2-6dde-ee540c65a03b@newmedia-net.de> <bb0d7dd87a7821df245919c86458bd50a3d1a81e.camel@sipsolutions.net> <8ec8202e-ca07-3594-5873-5b282d553711@newmedia-net.de>
 MIME-Version: 1.0
-In-Reply-To: <CAG6aBkW09YFz4asHZkhWBUenBiT3dgb7iGXBCq8KkCM09QXjLg@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-Ovh-Tracer-Id: 13516991332400045093
-X-VR-SPAMSTATE: OK
-X-VR-SPAMSCORE: -100
-X-VR-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgeduvddrudeggedgtdegucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuqfggjfdpvefjgfevmfevgfenuceurghilhhouhhtmecuhedttdenucesvcftvggtihhpihgvnhhtshculddquddttddm
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Subject: Re: Implementing Mikrotik IE
+To:     Sebastian Gottschall <s.gottschall@newmedia-net.de>,
+        Johannes Berg <johannes@sipsolutions.net>
+CC:     linux-wireless <linux-wireless@vger.kernel.org>
+From:   Josef Miegl <josef@miegl.cz>
+Message-ID: <E28FAC24-4B21-48FB-A010-770BCEF4CCA1@miegl.cz>
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
->> So I have been trying to reach out in aim to get this driver fixed as its regressed now to a total non working state.
->>
->> The card can see access points, but thats about as good as it gets as trying to connect to any networks ( either 2.4 ot 5 Ghz ) results in the following,
->>
->>    wlp3s0: CTRL-EVENT-SCAN-FAILED ret=-22 retry=1
->>
->> ( alot of these ) which then resets connection status with a failed timeout.
->>
->> I am currently running FedoraCore 30 with the 5.2.5-200 kernel updated from 5.1.x yesterday. The firmware loaded is,
->>
->> loaded firmware version 9.221.4.1 build 25532 op_mode iwldvm
->>
->> Now with all that said, using a Linux Mint live boot from a usb device yeilds the card working fine at both 2.4 and 5ghz speeds, it connects within seconds. The kernal in this live boot is 4.15.x and uses the same firmware build as my FC install.
+On August 20, 2019 2:36:21 PM GMT+02:00, Sebastian Gottschall <s=2Egottscha=
+ll@newmedia-net=2Ede> wrote:
+>i know=2E thats why i never even tried to contribute it upstream=2E but
+>from=20
+>hostapd side it was more complicated than just hacking mac80211
+>and from stations a second mod for wpa_supplicant would be needed and=20
+>since the dd-wrt webgui just uses nl80211 to show the station table
+>its more comportable and takes less code just todo it within the driver
+>i there is special interest in it i could of course try to clean it up=20
+>and make a upstream patch out of it
 
-I'm also using a "Intel Corporation Centrino Ultimate-N 6300 (rev 3e)" 
-card and it's working perfectly with 5.3.0-rc4-wt here.
-(And with most wireless-testing kernels for the last years, too..)
+I don't think something like Mikrotiks IE belongs to hostapd=2E The cleane=
+st solution is probably parsing the IE and generating the IE for hostapd wi=
+th an external tool, that can the dd-wrt GUI then use=2E I've made a simple=
+ C program for this, can share if you want=2E
 
-Now there was one noteworthy bug in the last year we handled on the 
-mailing list:
-https://lore.kernel.org/linux-wireless/87k1rk1af5.fsf@kamboji.qca.qualcomm.com/
+Josef
 
-But then this was a null pointer and does not match to what you observe. 
-(And that really should be fixed in any 5.2 kernel...)
-
-I'm using a Gentoo ~amd64 system and wpa_supplicant more or less 
-tracking git upstream and the wireless-testing kernels with the same 
-firmware as you.
-
-So whatever it is, it's not affecting me. I would suggest to try a 
-vanilla 5.2 kernel and maybe also an updated wpa_supplicant version next...
-
-Alexander
+Josef
