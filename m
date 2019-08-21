@@ -2,76 +2,107 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 25C01980D4
-	for <lists+linux-wireless@lfdr.de>; Wed, 21 Aug 2019 18:59:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BBBDE9810A
+	for <lists+linux-wireless@lfdr.de>; Wed, 21 Aug 2019 19:12:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729627AbfHUQ7d convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 21 Aug 2019 12:59:33 -0400
-Received: from coyote.holtmann.net ([212.227.132.17]:43766 "EHLO
-        mail.holtmann.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726252AbfHUQ7c (ORCPT
+        id S1729162AbfHURKj (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 21 Aug 2019 13:10:39 -0400
+Received: from smtp.codeaurora.org ([198.145.29.96]:40850 "EHLO
+        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727014AbfHURKj (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 21 Aug 2019 12:59:32 -0400
-Received: from marcel-macpro.fritz.box (p4FEFC580.dip0.t-ipconnect.de [79.239.197.128])
-        by mail.holtmann.org (Postfix) with ESMTPSA id BAD9CCECE5;
-        Wed, 21 Aug 2019 19:08:14 +0200 (CEST)
-Content-Type: text/plain;
-        charset=us-ascii
-Mime-Version: 1.0 (Mac OS X Mail 12.4 \(3445.104.11\))
-Subject: Re: Flag for detecting 802.11r Fast BSS Transition support
-From:   Marcel Holtmann <marcel@holtmann.org>
-In-Reply-To: <CA+ASDXPhX3Yet=dJn8Pet_inP1uyueFZqBmuNXvmTrjv1r497g@mail.gmail.com>
-Date:   Wed, 21 Aug 2019 18:59:29 +0200
-Cc:     Johannes Berg <johannes@sipsolutions.net>,
-        Matthew Wang <matthewmwang@google.com>,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        Kirtika Ruchandani <kirtika@google.com>,
-        Jouni Malinen <j@w1.fi>
-Content-Transfer-Encoding: 8BIT
-Message-Id: <FB8ED8A5-6606-4818-9A44-8944C5DC0E96@holtmann.org>
-References: <CAAooHFeLWrY_wmCp-HWqygh8gnKsfpoPCky7SykOBKZgXkb8OQ@mail.gmail.com>
- <20190403210200.GA93453@google.com>
- <211816ff03cf188d834a21b1fbc98b4f8c5b81f4.camel@sipsolutions.net>
- <CA+ASDXOyXb0dPGOrjQR7C-b6dyftiZhkta3cwG28B9sC5wxHxQ@mail.gmail.com>
- <7687225C-D965-479E-BAE8-769B0AEADD76@holtmann.org>
- <CA+ASDXNC0hwFzSTvZmUq-B7r_H+pZ3N=p_kjfMqKb1gftsmDKw@mail.gmail.com>
- <7CCE8D56-9E1A-4E04-9C28-E384C1B2E2EA@holtmann.org>
- <CA+ASDXPhX3Yet=dJn8Pet_inP1uyueFZqBmuNXvmTrjv1r497g@mail.gmail.com>
-To:     Brian Norris <briannorris@chromium.org>
-X-Mailer: Apple Mail (2.3445.104.11)
+        Wed, 21 Aug 2019 13:10:39 -0400
+Received: by smtp.codeaurora.org (Postfix, from userid 1000)
+        id D97AE6053B; Wed, 21 Aug 2019 17:10:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
+        s=default; t=1566407438;
+        bh=BPG+50GEihZMgIjrDRDUOTuJxXQViNocmnGH9RAx9e0=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=d0p3F5o/8rWI9YZ4rdK6/3b3B+iNyAP9QWNzCASZSZuE43KA29LFseXojIDLaaQFJ
+         TyABWqyL+nMR/FeFyVUepJrsCmn6IfYmghSq6dc1AbS9PgjlkVj9caHHRxhmRQfvWr
+         WzByFYNhJtA2fAKsnqKPVNBjloSNvsHRbT8BLN0w=
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        pdx-caf-mail.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.7 required=2.0 tests=ALL_TRUSTED,BAYES_00,
+        DKIM_INVALID,DKIM_SIGNED autolearn=no autolearn_force=no version=3.4.0
+Received: from mail.codeaurora.org (localhost.localdomain [127.0.0.1])
+        by smtp.codeaurora.org (Postfix) with ESMTP id 41367607DE;
+        Wed, 21 Aug 2019 17:10:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
+        s=default; t=1566407438;
+        bh=BPG+50GEihZMgIjrDRDUOTuJxXQViNocmnGH9RAx9e0=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=d0p3F5o/8rWI9YZ4rdK6/3b3B+iNyAP9QWNzCASZSZuE43KA29LFseXojIDLaaQFJ
+         TyABWqyL+nMR/FeFyVUepJrsCmn6IfYmghSq6dc1AbS9PgjlkVj9caHHRxhmRQfvWr
+         WzByFYNhJtA2fAKsnqKPVNBjloSNvsHRbT8BLN0w=
+MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII;
+ format=flowed
+Content-Transfer-Encoding: 7bit
+Date:   Wed, 21 Aug 2019 22:40:38 +0530
+From:   Vasanthakumar Thiagarajan <vthiagar@codeaurora.org>
+To:     Johannes Berg <johannes@sipsolutions.net>
+Cc:     Kalle Valo <kvalo@codeaurora.org>, linux-wireless@vger.kernel.org,
+        ath11k@lists.infradead.org, devicetree@vger.kernel.org,
+        linux-wireless-owner@vger.kernel.org
+Subject: Re: [PATCH 04/49] ath11k: add ahb.c
+In-Reply-To: <e0cbf7b86b275f87c0a69bd9a31e5b9fa8691d3a.camel@sipsolutions.net>
+References: <1566316095-27507-1-git-send-email-kvalo@codeaurora.org>
+ <1566316095-27507-5-git-send-email-kvalo@codeaurora.org>
+ (sfid-20190820_175156_108502_D7159DB2)
+ <8c791df54a831f32fddd634e71e5e91342532535.camel@sipsolutions.net>
+ <e53ddcaa11d069fbe9d083b9b0105d19@codeaurora.org>
+ <e0cbf7b86b275f87c0a69bd9a31e5b9fa8691d3a.camel@sipsolutions.net>
+Message-ID: <c35138041d9a3431594fda8afe8c354e@codeaurora.org>
+X-Sender: vthiagar@codeaurora.org
+User-Agent: Roundcube Webmail/1.2.5
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi Brian,
-
->> And if you have a distribution or an OEM that cares, then that is what is going to happen.
+On 2019-08-21 15:10, Johannes Berg wrote:
+> On Wed, 2019-08-21 at 14:59 +0530, Vasanthakumar Thiagarajan wrote:
 > 
-> I can see where you might not be particularly sympathetic to this
-> concern, but where I re-started this thread, I added in Jouni, due to
-> his mention of:
+>> > > +#define ATH11K_TX_RING_MASK_3 0x0
+>> >
+>> > You have a LOT of masks here that are 0, that seems odd?
+>> 
+>> We'll remove them.
 > 
-> "There are such drivers [supporting FT] especially in number of
-> Android devices and I'd
-> rather not break those use cases.." [1]
+> I'm not sure you should just *remove* them, that might very well be
+> valid and what you need here, I'm just saying it looks odd since you
+> usually expect masks to, well, not really mask *everything*?
+
+Right, we'll try to clean that up wherever possible.
+
 > 
-> That doesn't exactly sound like a case where he's willing to break
-> compatibility with older kernels in new wpa_supplicant. But maybe I
-> shouldn't put words in his mouth. (On the other hand, Android systems
-> are likely to not ever get either kernel *or* wpa_supplicant version
-> upgrades, so maybe it's not really a problem at all!)
+>> > > +inline u32 ath11k_ahb_read32(struct ath11k_base *ab, u32 offset)
+>> > > +{
+>> > > +	return ioread32(ab->mem + offset);
+>> > > +}
+>> > > +
+>> > > +inline void ath11k_ahb_write32(struct ath11k_base *ab, u32 offset,
+>> > > u32 value)
+>> > > +{
+>> > > +	iowrite32(value, ab->mem + offset);
+>> > > +}
+>> >
+>> > Just "inline" doesn't seem to make that much sense? If it's only used
+>> > here then I guess it should be static, otherwise not inline? Or maybe
+>> > you want it to be inlined *in this file* but available out-of-line
+>> > otherwise? I'm not sure that actually is guaranteed to work right in C?
+>> 
+>> Yes, these read/write functions are used from other files as well. May
+>> be define them as static inline in ahb.c will be fine.
 > 
-> Anyway, I'll just cook a patch, and then figure out whether/how I can
-> teach wpa_supplicant to respect it. (Or, continue forking
-> wpa_supplicant as we have been wont to do...)
+> No, if they're static they cannot be used from other files, but if
+> they're declared and used elsewhere they can't really be inline ...
+> 
+> You could declare them static inline in ahb.h I guess, instead.
 
-it would be beneficial for iwd and not just wpa_supplicant.
+My bad, I wanted to mean the same, moving those function to ahb.h as 
+static inline.
 
-The try-and-error method is not really working for iwd since we are 100% event driven. It is important that we get told what is supported and what not before trying to connect or roam.
-
-Regards
-
-Marcel
-
+Vasanth
