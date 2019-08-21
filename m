@@ -2,66 +2,94 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2B1D09854D
-	for <lists+linux-wireless@lfdr.de>; Wed, 21 Aug 2019 22:13:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C4B5A98612
+	for <lists+linux-wireless@lfdr.de>; Wed, 21 Aug 2019 22:56:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727316AbfHUUMd (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 21 Aug 2019 16:12:33 -0400
-Received: from s3.sipsolutions.net ([144.76.43.62]:45472 "EHLO
-        sipsolutions.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726330AbfHUUMd (ORCPT
+        id S1729999AbfHUU4G (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 21 Aug 2019 16:56:06 -0400
+Received: from mail2.candelatech.com ([208.74.158.173]:35302 "EHLO
+        mail3.candelatech.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726828AbfHUU4G (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 21 Aug 2019 16:12:33 -0400
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <johannes@sipsolutions.net>)
-        id 1i0Wy6-0004YW-Nc; Wed, 21 Aug 2019 22:12:31 +0200
-Message-ID: <6efb9b56c77cd9ea945f89c3371b49c301dc2b4e.camel@sipsolutions.net>
-Subject: Re: Implementing Mikrotik IE
-From:   Johannes Berg <johannes@sipsolutions.net>
-To:     Josef Miegl <josef@miegl.cz>
-Cc:     Sebastian Gottschall <s.gottschall@newmedia-net.de>,
-        linux-wireless <linux-wireless@vger.kernel.org>
-Date:   Wed, 21 Aug 2019 22:12:26 +0200
-In-Reply-To: <A3C14EA9-BA2D-4745-BBB9-E10028B6DE13@miegl.cz>
-References: <20190815152844.k5mmddvbwrohkzr6@pepin-laptop.localdomain>
-         <3a079683-6f57-3b42-f909-90c46e14f14f@newmedia-net.de>
-         <20190816111044.4ntizgmpa3twbzcg@pepin-laptop.localdomain>
-         <e8129acb-fc32-c85c-b504-ab8777a3f1a3@newmedia-net.de>
-         <20190816113818.ohktykc4fyetzyvq@pepin-laptop.localdomain>
-         <9985fddfb059640f36665efc9c1ef2dc0bdb7662.camel@sipsolutions.net>
-         <20190819113706.ujsz67sxcwt2ulmt@pepin-laptop.localdomain>
-         <b3b7a99971f1512b4cd9c72920b699c252c1ae83.camel@sipsolutions.net>
-         <A3C14EA9-BA2D-4745-BBB9-E10028B6DE13@miegl.cz>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.30.5 (3.30.5-1.fc29) 
+        Wed, 21 Aug 2019 16:56:06 -0400
+Received: from [172.31.98.117] (unknown [4.30.140.19])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail3.candelatech.com (Postfix) with ESMTPSA id 48F5B65937;
+        Wed, 21 Aug 2019 13:56:05 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail3.candelatech.com 48F5B65937
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=candelatech.com;
+        s=default; t=1566420965;
+        bh=tn97RrEF9v5NWqJ32TwFzwgA90Xb3Eis2NWu7Ey627k=;
+        h=Date:From:To:Subject:From;
+        b=EG5QIJM/zLC0FyGqyND5e9BfZlqXN+y+j5Xy+K01a0z9QxugyeLFpmJdamWhCpSrs
+         QYzvEiZZqeLa25h0QyZ8UWZjxTpW763YeWOILPtFjFqDkkpz5cV600MtbQt5vvZsgF
+         jKDTy74Oqq/SaMPvtZaVZtrxP0RV3QdRYbvDAT0E=
+Message-ID: <5D5DAFE4.6080706@candelatech.com>
+Date:   Wed, 21 Aug 2019 13:56:04 -0700
+From:   Ben Greear <greearb@candelatech.com>
+Organization: Candela Technologies
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:31.0) Gecko/20100101 Thunderbird/31.3.0
 MIME-Version: 1.0
+To:     ath10k <ath10k@lists.infradead.org>, pillair@codeaurora.org,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+Subject: Regression with commit "ath10k: fill the channel survey results for
+ WCN3990 correctly"
+Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Transfer-Encoding: 7bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Wed, 2019-08-21 at 22:04 +0200, Josef Miegl wrote:
-> 
-> The vendor elements are added at the very end of the frame. In fact I
-> tried moving the RSN IE to the end of the frame so that the frame is
-> similar to the one ubnt airos produces. No luck either. One thing I've
-> learned is that ubnt airos assoc req frames have the WMM/WME IE placed
-> before HT Capabilities. But I'm not sure how to move it and also not
-> sure if it would actually work.
-> 
-> I am getting 4WAY_HANDSHAKE_TIMEOUT. From capturing I can see the
-> station sends Key (msg 2 of 4) and a bunch of acknowledgements, but it
-> never sends Key (msg 4 of 4) afterwards.
-> 
-> I feel like I'm stuck.. What could be the reason for this behaviour?
+Hello,
 
-What AP are you trying to connect to? Have you tried adding some other
-random vendor IE, with an OUI that the AP is almost certain to not know?
-Maybe it's actually interpreting this somehow?
+I just noticed in 5.2.7+ kernel than this commit below appears to break WMI
+message for my 10.1 firmware, and based on code inspection, 10.2 will be broken
+as well.
 
-Would you be willing to show sniffer captures so we could take a look?
+10.1 struct ends with cycle_count, and 10.2 ends with one 32-bit number
+after that, but which is not chan_tx_pwr_range.
 
-johannes
+I guess you need to create your own wmi msg for the WCN3990.
+
+The change to 10.4 chan_info event is also wrong for my relatively
+new version of 10.4 code, so likely breaks firmware in use.  last member
+in that struct in my 10.4 fw src is 'A_UINT32 rx_11b_mode_data_duration;'
+
+
+commit 13104929d2ec32aec0552007d55b9e15bc07176b
+Author: Rakesh Pillai <pillair@codeaurora.org>
+Date:   Wed Oct 17 16:50:03 2018 +0530
+
+     ath10k: fill the channel survey results for WCN3990 correctly
+
+
+
+diff --git a/drivers/net/wireless/ath/ath10k/wmi.h b/drivers/net/wireless/ath/ath10k/wmi.h
+index 4971d61..58e33ab 100644
+--- a/drivers/net/wireless/ath/ath10k/wmi.h
++++ b/drivers/net/wireless/ath/ath10k/wmi.h
+@@ -6442,6 +6442,14 @@ struct wmi_chan_info_event {
+         __le32 noise_floor;
+         __le32 rx_clear_count;
+         __le32 cycle_count;
++       __le32 chan_tx_pwr_range;
++       __le32 chan_tx_pwr_tp;
++       __le32 rx_frame_count;
++       __le32 my_bss_rx_cycle_count;
++       __le32 rx_11b_mode_data_duration;
++       __le32 tx_frame_cnt;
++       __le32 mac_clk_mhz;
++
+  } __packed;
+
+
+
+Thanks,
+Ben
+
+-- 
+Ben Greear <greearb@candelatech.com>
+Candela Technologies Inc  http://www.candelatech.com
 
