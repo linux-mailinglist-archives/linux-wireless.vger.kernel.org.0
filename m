@@ -2,143 +2,109 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 76FEF9811C
-	for <lists+linux-wireless@lfdr.de>; Wed, 21 Aug 2019 19:17:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D88F098427
+	for <lists+linux-wireless@lfdr.de>; Wed, 21 Aug 2019 21:16:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729713AbfHURRl (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 21 Aug 2019 13:17:41 -0400
-Received: from paleale.coelho.fi ([176.9.41.70]:37902 "EHLO
-        farmhouse.coelho.fi" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1729309AbfHURRl (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 21 Aug 2019 13:17:41 -0400
-Received: from [91.156.6.193] (helo=redipa.ger.corp.intel.com)
-        by farmhouse.coelho.fi with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-        (Exim 4.92)
-        (envelope-from <luca@coelho.fi>)
-        id 1i0UEs-0001sI-Q9; Wed, 21 Aug 2019 20:17:39 +0300
-From:   Luca Coelho <luca@coelho.fi>
-To:     kvalo@codeaurora.org
-Cc:     linux-wireless@vger.kernel.org
-Date:   Wed, 21 Aug 2019 20:17:32 +0300
-Message-Id: <20190821171732.2266-1-luca@coelho.fi>
-X-Mailer: git-send-email 2.23.0.rc1
-In-Reply-To: <20190821123040.13982-1-luca@coelho.fi>
-References: <20190821123040.13982-1-luca@coelho.fi>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on farmhouse.coelho.fi
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.9 required=5.0 tests=ALL_TRUSTED,BAYES_00,
-        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.2
-Subject: [PATCH v5.3 v2] iwlwifi: pcie: handle switching killer Qu B0 NICs to C0
+        id S1727998AbfHUTOs (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 21 Aug 2019 15:14:48 -0400
+Received: from nbd.name ([46.4.11.11]:39506 "EHLO nbd.name"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726741AbfHUTOr (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Wed, 21 Aug 2019 15:14:47 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name;
+         s=20160729; h=Message-Id:Date:Subject:To:From:Sender:Reply-To:Cc:
+        MIME-Version:Content-Type:Content-Transfer-Encoding:Content-ID:
+        Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+        :Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
+        List-Subscribe:List-Post:List-Owner:List-Archive;
+        bh=TWWXZiaLLh61AqE6SYqCDUJTsdFYOBVH5suvDm8J1cQ=; b=HdPVQew22vAVj4iqe9k5m82y9q
+        O4y/z5g+JvofNJYnHwIHZyH63tqYjbvoXDbKNalqOM7AjUHGvW0Pbe0VVAtuE5vhsdYbyo0suONW7
+        NGY/IlNghgntHYMES2F97u7iie85Wzc0nTd/nwIhWCacT2vOS1Ef2iZfJN6DIH+FWwUM=;
+Received: from p54ae9443.dip0.t-ipconnect.de ([84.174.148.67] helo=maeck.local)
+        by ds12 with esmtpsa (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.89)
+        (envelope-from <nbd@nbd.name>)
+        id 1i0W4D-0002e2-0K
+        for linux-wireless@vger.kernel.org; Wed, 21 Aug 2019 21:14:46 +0200
+Received: by maeck.local (Postfix, from userid 501)
+        id A0A7863FB68B; Wed, 21 Aug 2019 21:14:43 +0200 (CEST)
+From:   Felix Fietkau <nbd@nbd.name>
+To:     linux-wireless@vger.kernel.org
+Subject: [PATCH] mt76: mt7615: apply calibration-free data from OTP
+Date:   Wed, 21 Aug 2019 21:14:43 +0200
+Message-Id: <20190821191443.36764-1-nbd@nbd.name>
+X-Mailer: git-send-email 2.17.0
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Luca Coelho <luciano.coelho@intel.com>
+MT7615 chips usually come pre-calibrated, even when used on embedded boards.
+In that case, the on-flash EEPROM data needs to be merged with some data
+from OTP ROM.
+Run this merge if the external EEPROM data is valid and OTP has valid fields.
 
-We need to use a different firmware for C0 versions of killer Qu NICs.
-Add structures for them and handle them in the if block that detects
-C0 revisions.
-
-Additionally, instead of having an inclusive check for QnJ devices,
-make the selection exclusive, so that switching to QnJ is the
-exception, not the default.  This prevents us from having to add all
-the non-QnJ cards to an exclusion list.  To do so, only go into the
-QnJ block if the device has an RF ID type HR and HW revision QnJ.
-
-Cc: stable@vger.kernel.org # 5.2
-Signed-off-by: Luca Coelho <luciano.coelho@intel.com>
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
 ---
- .../net/wireless/intel/iwlwifi/cfg/22000.c    | 24 +++++++++++++++++++
- .../net/wireless/intel/iwlwifi/iwl-config.h   |  2 ++
- drivers/net/wireless/intel/iwlwifi/pcie/drv.c |  4 ++++
- .../net/wireless/intel/iwlwifi/pcie/trans.c   |  7 +-----
- 4 files changed, 31 insertions(+), 6 deletions(-)
+ .../wireless/mediatek/mt76/mt7615/eeprom.c    | 38 +++++++++++++++++++
+ 1 file changed, 38 insertions(+)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/cfg/22000.c b/drivers/net/wireless/intel/iwlwifi/cfg/22000.c
-index 1f500cddb3a7..55b713255b8e 100644
---- a/drivers/net/wireless/intel/iwlwifi/cfg/22000.c
-+++ b/drivers/net/wireless/intel/iwlwifi/cfg/22000.c
-@@ -556,6 +556,30 @@ const struct iwl_cfg killer1650i_2ax_cfg_qu_b0_hr_b0 = {
- 	.max_tx_agg_size = IEEE80211_MAX_AMPDU_BUF_HT,
- };
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/eeprom.c b/drivers/net/wireless/mediatek/mt76/mt7615/eeprom.c
+index dc94f52e6e8b..515bb58e19fd 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7615/eeprom.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7615/eeprom.c
+@@ -154,6 +154,42 @@ int mt7615_eeprom_get_power_index(struct mt7615_dev *dev,
+ 	return index;
+ }
  
-+const struct iwl_cfg killer1650s_2ax_cfg_qu_c0_hr_b0 = {
-+	.name = "Killer(R) Wi-Fi 6 AX1650i 160MHz Wireless Network Adapter (201NGW)",
-+	.fw_name_pre = IWL_QU_C_HR_B_FW_PRE,
-+	IWL_DEVICE_22500,
-+	/*
-+	 * This device doesn't support receiving BlockAck with a large bitmap
-+	 * so we need to restrict the size of transmitted aggregation to the
-+	 * HT size; mac80211 would otherwise pick the HE max (256) by default.
-+	 */
-+	.max_tx_agg_size = IEEE80211_MAX_AMPDU_BUF_HT,
-+};
++static void mt7615_apply_cal_free_data(struct mt7615_dev *dev)
++{
++	static const u16 ical[] = {
++		0x53, 0x54, 0x55, 0x56, 0x57, 0x5c, 0x5d, 0x62, 0x63, 0x68,
++		0x69, 0x6e, 0x6f, 0x73, 0x74, 0x78, 0x79, 0x82, 0x83, 0x87,
++		0x88, 0x8c, 0x8d, 0x91, 0x92, 0x96, 0x97, 0x9b, 0x9c, 0xa0,
++		0xa1, 0xaa, 0xab, 0xaf, 0xb0, 0xb4, 0xb5, 0xb9, 0xba, 0xf4,
++		0xf7, 0xff,
++		0x140, 0x141, 0x145, 0x146, 0x14a, 0x14b, 0x154, 0x155, 0x159,
++		0x15a, 0x15e, 0x15f, 0x163, 0x164, 0x168, 0x169, 0x16d, 0x16e,
++		0x172, 0x173, 0x17c, 0x17d, 0x181, 0x182, 0x186, 0x187, 0x18b,
++		0x18c
++	};
++	static const u16 ical_nocheck[] = {
++		0x110, 0x111, 0x112, 0x113, 0x114, 0x115, 0x116, 0x117, 0x118,
++		0x1b5, 0x1b6, 0x1b7, 0x3ac, 0x3ad, 0x3ae, 0x3af, 0x3b0, 0x3b1,
++		0x3b2
++	};
++	u8 *eeprom = dev->mt76.eeprom.data;
++	u8 *otp = dev->mt76.otp.data;
++	int i;
 +
-+const struct iwl_cfg killer1650i_2ax_cfg_qu_c0_hr_b0 = {
-+	.name = "Killer(R) Wi-Fi 6 AX1650s 160MHz Wireless Network Adapter (201D2W)",
-+	.fw_name_pre = IWL_QU_C_HR_B_FW_PRE,
-+	IWL_DEVICE_22500,
-+	/*
-+	 * This device doesn't support receiving BlockAck with a large bitmap
-+	 * so we need to restrict the size of transmitted aggregation to the
-+	 * HT size; mac80211 would otherwise pick the HE max (256) by default.
-+	 */
-+	.max_tx_agg_size = IEEE80211_MAX_AMPDU_BUF_HT,
-+};
++	if (!otp)
++		return;
 +
- const struct iwl_cfg iwl22000_2ax_cfg_jf = {
- 	.name = "Intel(R) Dual Band Wireless AX 22000",
- 	.fw_name_pre = IWL_QU_B_JF_B_FW_PRE,
-diff --git a/drivers/net/wireless/intel/iwlwifi/iwl-config.h b/drivers/net/wireless/intel/iwlwifi/iwl-config.h
-index 1c1bf1b281cd..6c04f8223aff 100644
---- a/drivers/net/wireless/intel/iwlwifi/iwl-config.h
-+++ b/drivers/net/wireless/intel/iwlwifi/iwl-config.h
-@@ -577,6 +577,8 @@ extern const struct iwl_cfg iwl_ax1650i_cfg_quz_hr;
- extern const struct iwl_cfg iwl_ax1650s_cfg_quz_hr;
- extern const struct iwl_cfg killer1650s_2ax_cfg_qu_b0_hr_b0;
- extern const struct iwl_cfg killer1650i_2ax_cfg_qu_b0_hr_b0;
-+extern const struct iwl_cfg killer1650s_2ax_cfg_qu_c0_hr_b0;
-+extern const struct iwl_cfg killer1650i_2ax_cfg_qu_c0_hr_b0;
- extern const struct iwl_cfg killer1650x_2ax_cfg;
- extern const struct iwl_cfg killer1650w_2ax_cfg;
- extern const struct iwl_cfg iwl9461_2ac_cfg_qu_b0_jf_b0;
-diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/drv.c b/drivers/net/wireless/intel/iwlwifi/pcie/drv.c
-index 7c5aaeaf7fe5..d9ed53b7c768 100644
---- a/drivers/net/wireless/intel/iwlwifi/pcie/drv.c
-+++ b/drivers/net/wireless/intel/iwlwifi/pcie/drv.c
-@@ -1062,6 +1062,10 @@ static int iwl_pci_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
- 			iwl_trans->cfg = &iwl9560_2ac_cfg_qu_c0_jf_b0;
- 		else if (iwl_trans->cfg == &iwl9560_2ac_160_cfg_qu_b0_jf_b0)
- 			iwl_trans->cfg = &iwl9560_2ac_160_cfg_qu_c0_jf_b0;
-+		else if (iwl_trans->cfg == &killer1650s_2ax_cfg_qu_b0_hr_b0)
-+			iwl_trans->cfg = &killer1650s_2ax_cfg_qu_c0_hr_b0;
-+		else if (iwl_trans->cfg == &killer1650i_2ax_cfg_qu_b0_hr_b0)
-+			iwl_trans->cfg = &killer1650i_2ax_cfg_qu_c0_hr_b0;
- 	}
++	for (i = 0; i < ARRAY_SIZE(ical); i++)
++		if (!otp[ical[i]])
++			return;
++
++	for (i = 0; i < ARRAY_SIZE(ical); i++)
++		eeprom[ical[i]] = otp[ical[i]];
++
++	for (i = 0; i < ARRAY_SIZE(ical_nocheck); i++)
++		eeprom[ical_nocheck[i]] = otp[ical_nocheck[i]];
++}
++
+ int mt7615_eeprom_init(struct mt7615_dev *dev)
+ {
+ 	int ret;
+@@ -166,6 +202,8 @@ int mt7615_eeprom_init(struct mt7615_dev *dev)
+ 	if (ret && dev->mt76.otp.data)
+ 		memcpy(dev->mt76.eeprom.data, dev->mt76.otp.data,
+ 		       MT7615_EEPROM_SIZE);
++	else
++		mt7615_apply_cal_free_data(dev);
  
- 	/* same thing for QuZ... */
-diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/trans.c b/drivers/net/wireless/intel/iwlwifi/pcie/trans.c
-index 935e35dafce5..db62c8314603 100644
---- a/drivers/net/wireless/intel/iwlwifi/pcie/trans.c
-+++ b/drivers/net/wireless/intel/iwlwifi/pcie/trans.c
-@@ -3602,12 +3602,7 @@ struct iwl_trans *iwl_trans_pcie_alloc(struct pci_dev *pdev,
- 		}
- 	} else if (CSR_HW_RF_ID_TYPE_CHIP_ID(trans->hw_rf_id) ==
- 		   CSR_HW_RF_ID_TYPE_CHIP_ID(CSR_HW_RF_ID_TYPE_HR) &&
--		   ((trans->cfg != &iwl_ax200_cfg_cc &&
--		     trans->cfg != &iwl_ax201_cfg_qu_hr &&
--		     trans->cfg != &killer1650x_2ax_cfg &&
--		     trans->cfg != &killer1650w_2ax_cfg &&
--		     trans->cfg != &iwl_ax201_cfg_quz_hr) ||
--		    trans->hw_rev == CSR_HW_REV_TYPE_QNJ_B0)) {
-+		   trans->hw_rev == CSR_HW_REV_TYPE_QNJ_B0) {
- 		u32 hw_status;
- 
- 		hw_status = iwl_read_prph(trans, UMAG_GEN_HW_STATUS);
+ 	mt7615_eeprom_parse_hw_cap(dev);
+ 	memcpy(dev->mt76.macaddr, dev->mt76.eeprom.data + MT_EE_MAC_ADDR,
 -- 
-2.23.0.rc1
+2.17.0
 
