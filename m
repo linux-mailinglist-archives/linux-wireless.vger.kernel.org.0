@@ -2,112 +2,176 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id ACEBC97589
-	for <lists+linux-wireless@lfdr.de>; Wed, 21 Aug 2019 11:03:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3786597638
+	for <lists+linux-wireless@lfdr.de>; Wed, 21 Aug 2019 11:30:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727040AbfHUJDF (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 21 Aug 2019 05:03:05 -0400
-Received: from nbd.name ([46.4.11.11]:58806 "EHLO nbd.name"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726739AbfHUJDF (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 21 Aug 2019 05:03:05 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name;
-         s=20160729; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:
-        MIME-Version:Date:Message-ID:From:References:Cc:To:Subject:Sender:Reply-To:
-        Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-        Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
-        List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=2nHznY7Qu8mOJssYCNffar/RcxYRnf1JP1C9aBwJLgE=; b=R3a4zdtHcLJIEFeVD2wfbrV8Ul
-        96rkXBhQrwfiGOuTgsGOoiyLdmmCLGNxA7WUvjxGDC1Op3Gw96nXQbjOo/tJ+PEVbZcl7dNB/LX5t
-        I48C7yj20avYx2n9dHfFcQIcm1m60/dsfsx6WPvLwptY2uWp6YMnUI5KuVY5QkLNQm7E=;
-Received: from p54ae9443.dip0.t-ipconnect.de ([84.174.148.67] helo=nf.local)
-        by ds12 with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        (Exim 4.89)
-        (envelope-from <nbd@nbd.name>)
-        id 1i0MWD-0000Dr-7I; Wed, 21 Aug 2019 11:03:01 +0200
-Subject: Re: [PATCH 5.3] mt76: mt76x0e: don't use hw encryption for MT7630E
-To:     Stanislaw Gruszka <sgruszka@redhat.com>
-Cc:     Lorenzo Bianconi <lorenzo.bianconi@redhat.com>,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        Ryder Lee <ryder.lee@mediatek.com>, Roy Luo <royluo@google.com>
-References: <1565703400-10623-1-git-send-email-sgruszka@redhat.com>
- <CAJ0CqmXM4NRMYU6Lt_a4f+DXE2bVmhYrjQbgxHG0g=N+o3TeQw@mail.gmail.com>
- <20190815100936.GA21775@redhat.com>
- <727fd528-16c1-e3b3-e1a9-2edbcbdddee7@nbd.name>
- <20190819110639.GA6037@redhat.com>
- <7b46ab63-d69d-f389-b3c2-245cbe11c7b7@nbd.name>
- <20190820112438.GA2227@redhat.com> <20190821084724.GB20223@redhat.com>
-From:   Felix Fietkau <nbd@nbd.name>
-Openpgp: preference=signencrypt
-Autocrypt: addr=nbd@nbd.name; prefer-encrypt=mutual; keydata=
- mQGiBEah5CcRBADIY7pu4LIv3jBlyQ/2u87iIZGe6f0f8pyB4UjzfJNXhJb8JylYYRzIOSxh
- ExKsdLCnJqsG1PY1mqTtoG8sONpwsHr2oJ4itjcGHfn5NJSUGTbtbbxLro13tHkGFCoCr4Z5
- Pv+XRgiANSpYlIigiMbOkide6wbggQK32tC20QxUIwCg4k6dtV/4kwEeiOUfErq00TVqIiEE
- AKcUi4taOuh/PQWx/Ujjl/P1LfJXqLKRPa8PwD4j2yjoc9l+7LptSxJThL9KSu6gtXQjcoR2
- vCK0OeYJhgO4kYMI78h1TSaxmtImEAnjFPYJYVsxrhay92jisYc7z5R/76AaELfF6RCjjGeP
- wdalulG+erWju710Bif7E1yjYVWeA/9Wd1lsOmx6uwwYgNqoFtcAunDaMKi9xVQW18FsUusM
- TdRvTZLBpoUAy+MajAL+R73TwLq3LnKpIcCwftyQXK5pEDKq57OhxJVv1Q8XkA9Dn1SBOjNB
- l25vJDFAT9ntp9THeDD2fv15yk4EKpWhu4H00/YX8KkhFsrtUs69+vZQwbQcRmVsaXggRmll
- dGthdSA8bmJkQG5iZC5uYW1lPohgBBMRAgAgBQJGoeQnAhsjBgsJCAcDAgQVAggDBBYCAwEC
- HgECF4AACgkQ130UHQKnbvXsvgCgjsAIIOsY7xZ8VcSm7NABpi91yTMAniMMmH7FRenEAYMa
- VrwYTIThkTlQuQINBEah5FQQCACMIep/hTzgPZ9HbCTKm9xN4bZX0JjrqjFem1Nxf3MBM5vN
- CYGBn8F4sGIzPmLhl4xFeq3k5irVg/YvxSDbQN6NJv8o+tP6zsMeWX2JjtV0P4aDIN1pK2/w
- VxcicArw0VYdv2ZCarccFBgH2a6GjswqlCqVM3gNIMI8ikzenKcso8YErGGiKYeMEZLwHaxE
- Y7mTPuOTrWL8uWWRL5mVjhZEVvDez6em/OYvzBwbkhImrryF29e3Po2cfY2n7EKjjr3/141K
- DHBBdgXlPNfDwROnA5ugjjEBjwkwBQqPpDA7AYPvpHh5vLbZnVGu5CwG7NAsrb2isRmjYoqk
- wu++3117AAMFB/9S0Sj7qFFQcD4laADVsabTpNNpaV4wAgVTRHKV/kC9luItzwDnUcsZUPdQ
- f3MueRJ3jIHU0UmRBG3uQftqbZJj3ikhnfvyLmkCNe+/hXhPu9sGvXyi2D4vszICvc1KL4RD
- aLSrOsROx22eZ26KqcW4ny7+va2FnvjsZgI8h4sDmaLzKczVRIiLITiMpLFEU/VoSv0m1F4B
- FtRgoiyjFzigWG0MsTdAN6FJzGh4mWWGIlE7o5JraNhnTd+yTUIPtw3ym6l8P+gbvfoZida0
- TspgwBWLnXQvP5EDvlZnNaKa/3oBes6z0QdaSOwZCRA3QSLHBwtgUsrT6RxRSweLrcabiEkE
- GBECAAkFAkah5FQCGwwACgkQ130UHQKnbvW2GgCfTKx80VvCR/PvsUlrvdOLsIgeRGAAn1ee
- RjMaxwtSdaCKMw3j33ZbsWS4
-Message-ID: <433c1d1f-3590-375f-ed8d-c9de2af873d5@nbd.name>
-Date:   Wed, 21 Aug 2019 11:03:00 +0200
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.14; rv:60.0)
- Gecko/20100101 Thunderbird/60.8.0
+        id S1726730AbfHUJ3g (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 21 Aug 2019 05:29:36 -0400
+Received: from smtp.codeaurora.org ([198.145.29.96]:55902 "EHLO
+        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726448AbfHUJ3g (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Wed, 21 Aug 2019 05:29:36 -0400
+Received: by smtp.codeaurora.org (Postfix, from userid 1000)
+        id D4A4C60E40; Wed, 21 Aug 2019 09:29:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
+        s=default; t=1566379774;
+        bh=GKZY1jxnpJvVPvKA7ZzH4YK0+Sf31FF3nAQtvn89uvI=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=ZWUBdkQgiu+jTWEi0tZ2PIEM4EOCDU3SxAf8ZCd2sd4DaXaRbKnJnQSSIFI6J7DSh
+         rrS8TYgm0kEDKdKOP6v9HVRgQB5CRFQL4V2/vyOD0Na7/TXIIxGVDoM+Isg+M354V0
+         kdQQt2L08RfD3U3hqA4RgTxIm7sfbhAfKUfh3J7Q=
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        pdx-caf-mail.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.7 required=2.0 tests=ALL_TRUSTED,BAYES_00,
+        DKIM_INVALID,DKIM_SIGNED autolearn=no autolearn_force=no version=3.4.0
+Received: from mail.codeaurora.org (localhost.localdomain [127.0.0.1])
+        by smtp.codeaurora.org (Postfix) with ESMTP id 0C0BF609F3;
+        Wed, 21 Aug 2019 09:29:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
+        s=default; t=1566379774;
+        bh=GKZY1jxnpJvVPvKA7ZzH4YK0+Sf31FF3nAQtvn89uvI=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=ZWUBdkQgiu+jTWEi0tZ2PIEM4EOCDU3SxAf8ZCd2sd4DaXaRbKnJnQSSIFI6J7DSh
+         rrS8TYgm0kEDKdKOP6v9HVRgQB5CRFQL4V2/vyOD0Na7/TXIIxGVDoM+Isg+M354V0
+         kdQQt2L08RfD3U3hqA4RgTxIm7sfbhAfKUfh3J7Q=
 MIME-Version: 1.0
-In-Reply-To: <20190821084724.GB20223@redhat.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
+Content-Type: text/plain; charset=US-ASCII;
+ format=flowed
 Content-Transfer-Encoding: 7bit
+Date:   Wed, 21 Aug 2019 14:59:33 +0530
+From:   Vasanthakumar Thiagarajan <vthiagar@codeaurora.org>
+To:     Johannes Berg <johannes@sipsolutions.net>
+Cc:     Kalle Valo <kvalo@codeaurora.org>, linux-wireless@vger.kernel.org,
+        ath11k@lists.infradead.org, devicetree@vger.kernel.org,
+        linux-wireless-owner@vger.kernel.org
+Subject: Re: [PATCH 04/49] ath11k: add ahb.c
+In-Reply-To: <8c791df54a831f32fddd634e71e5e91342532535.camel@sipsolutions.net>
+References: <1566316095-27507-1-git-send-email-kvalo@codeaurora.org>
+ <1566316095-27507-5-git-send-email-kvalo@codeaurora.org>
+ (sfid-20190820_175156_108502_D7159DB2)
+ <8c791df54a831f32fddd634e71e5e91342532535.camel@sipsolutions.net>
+Message-ID: <e53ddcaa11d069fbe9d083b9b0105d19@codeaurora.org>
+X-Sender: vthiagar@codeaurora.org
+User-Agent: Roundcube Webmail/1.2.5
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 2019-08-21 10:47, Stanislaw Gruszka wrote:
-> On Tue, Aug 20, 2019 at 01:24:39PM +0200, Stanislaw Gruszka wrote:
->> > Can you test if disabling hw encryption only for shared or only for
->> > pairwise keys makes any difference?
->> 
->> Disabling only pairwise keys helps. Disabling only shared keys does
->> not help.
->> 
->> Not sure if this will be helpful information or make things more
->> confusing, but seems the difference between mt76_txq_schedule()
->> and tasklet_schedule() in mt76_wake_tx_queue() is that on 
->> mt76_txq_schedule() some tx packets are serialized by dev->rx_lock
->> (because some ARP and TCP packets are sent via network stack as response
->> of incoming packet within ieee80211_rx_napi() call). Removing
->> spin_lock(&dev->rx_lock) in mt76_rx_complete() make the problem
->> reproducible again with mt76_txq_schedule() & HW encryption.
-> 
-> So, I think this is FW/HW issue related with encryption and ordering
-> and we should apply patch originally posted in this thread that
-> disable HW encryption for MT7630E.
-> 
-> I do not think we should disable HW encryption only for pairwise keys,
-> because FW/HW can have the same bug for shared keys, but is not
-> triggered in my test, as we do not sent lot of group frames.
-I'm still not convinced that this is just the hardware implementation of
-hw crypto being faulty. I think it's more likely that there's a bug in
-the tx path somewhere, which causes hangs on MT7630E but remains hidden
-(or at least recoverable) on other devices.
-I'm currently reviewing key handling in the mac80211 fast-xmit codepath
-and get the feeling that something might be racy there.
-I will let you know when I make some progress with that review.
-If we can't find the bug soon, then I'm fine with merging this patch.
-Right now, I would like to see first if we can fix it properly.
+On 2019-08-21 01:35, Johannes Berg wrote:
 
-- Felix
+Thanks for the comments!
+
+> On Tue, 2019-08-20 at 18:47 +0300, Kalle Valo wrote:
+>> 
+>> +static const struct service_to_pipe target_service_to_ce_map_wlan[] = 
+>> {
+>> +	{
+>> +		__cpu_to_le32(ATH11K_HTC_SVC_ID_WMI_DATA_VO),
+>> +		__cpu_to_le32(PIPEDIR_OUT),	/* out = UL = host -> target */
+>> +		__cpu_to_le32(3),
+>> +	},
+> 
+> this might be nicer as C99 initializers as well? It's a struct of some
+> sort, after all.
+
+Sure.
+
+> 
+>> +	{ /* must be last */
+>> +		__cpu_to_le32(0),
+>> +		__cpu_to_le32(0),
+>> +		__cpu_to_le32(0),
+>> +	},
+> 
+> You don't need endian conversion for 0, even sparse will not complain,
+> but I'd argue it should anyway be something like
+> 
+> 	{ /* terminator entry */ }
+> 
+> since that's why it's there I guess?
+
+Ok.
+
+> 
+>> +#define ATH11K_TX_RING_MASK_3 0x0
+> 
+> You have a LOT of masks here that are 0, that seems odd?
+
+We'll remove them.
+
+> 
+>> +/* enum ext_irq_num - irq nubers that can be used by external modules
+> 
+> typo ("numbers")
+> 
+>> +inline u32 ath11k_ahb_read32(struct ath11k_base *ab, u32 offset)
+>> +{
+>> +	return ioread32(ab->mem + offset);
+>> +}
+>> +
+>> +inline void ath11k_ahb_write32(struct ath11k_base *ab, u32 offset, 
+>> u32 value)
+>> +{
+>> +	iowrite32(value, ab->mem + offset);
+>> +}
+> 
+> Just "inline" doesn't seem to make that much sense? If it's only used
+> here then I guess it should be static, otherwise not inline? Or maybe
+> you want it to be inlined *in this file* but available out-of-line
+> otherwise? I'm not sure that actually is guaranteed to work right in C?
+
+Yes, these read/write functions are used from other files as well. May 
+be define
+them as static inline in ahb.c will be fine.
+
+> 
+>> +		val = ath11k_ahb_read32(ab, CE_HOST_IE_ADDRESS);
+>> +		val |= BIT(ce_id);
+>> +		ath11k_ahb_write32(ab, CE_HOST_IE_ADDRESS, val);
+> 
+> You could perhaps benefit from ath11k_ahb_setbit32() or something like
+> that, this repeats a few times?
+> 
+>> +	if (__le32_to_cpu(ce_config->pipedir) & PIPEDIR_OUT) {
+>> +		val = ath11k_ahb_read32(ab, CE_HOST_IE_ADDRESS);
+>> +		val &= ~BIT(ce_id);
+>> +		ath11k_ahb_write32(ab, CE_HOST_IE_ADDRESS, val);
+> 
+> and clearbit32() maybe. Dunno, I saw only 3 instances of each here I
+> guess, but still, feels repetitive.
+
+Sure.
+
+> 
+>> +int ath11k_ahb_start(struct ath11k_base *ab)
+>> +{
+>> +	ath11k_ahb_ce_irqs_enable(ab);
+>> +	ath11k_ce_rx_post_buf(ab);
+>> +
+>> +	/* Bring up other components as appropriate */
+> 
+> Hmm. What would be appropriate? It's not really doing anything else?
+
+These comments added during development not to miss anything during
+bring up. Now it is not really needed, we'll remove them.
+
+> 
+>> +void ath11k_ahb_stop(struct ath11k_base *ab)
+>> +{
+>> +	if (!test_bit(ATH11K_FLAG_CRASH_FLUSH, &ab->dev_flags))
+>> +		ath11k_ahb_ce_irqs_disable(ab);
+>> +	ath11k_ahb_sync_ce_irqs(ab);
+>> +	ath11k_ahb_kill_tasklets(ab);
+>> +	del_timer_sync(&ab->rx_replenish_retry);
+>> +	ath11k_ce_cleanup_pipes(ab);
+>> +	/* Shutdown other components as appropriate */
+> 
+> likewise, it's not doing anything else?
+> 
+
+Sure. Thanks.
+
+Vasanth
