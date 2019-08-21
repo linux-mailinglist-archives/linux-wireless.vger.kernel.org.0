@@ -2,26 +2,26 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 5906397B09
-	for <lists+linux-wireless@lfdr.de>; Wed, 21 Aug 2019 15:38:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BACA397B08
+	for <lists+linux-wireless@lfdr.de>; Wed, 21 Aug 2019 15:38:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728914AbfHUNiM (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        id S1729007AbfHUNiM (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
         Wed, 21 Aug 2019 09:38:12 -0400
-Received: from paleale.coelho.fi ([176.9.41.70]:37758 "EHLO
+Received: from paleale.coelho.fi ([176.9.41.70]:37768 "EHLO
         farmhouse.coelho.fi" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1728932AbfHUNiK (ORCPT
+        with ESMTP id S1728995AbfHUNiL (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 21 Aug 2019 09:38:10 -0400
+        Wed, 21 Aug 2019 09:38:11 -0400
 Received: from [91.156.6.193] (helo=redipa.ger.corp.intel.com)
         by farmhouse.coelho.fi with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
         (Exim 4.92)
         (envelope-from <luca@coelho.fi>)
-        id 1i0QoS-0000lZ-HN; Wed, 21 Aug 2019 16:38:08 +0300
+        id 1i0QoT-0000lZ-69; Wed, 21 Aug 2019 16:38:09 +0300
 From:   Luca Coelho <luca@coelho.fi>
 To:     kvalo@codeaurora.org
 Cc:     linux-wireless@vger.kernel.org
-Date:   Wed, 21 Aug 2019 16:37:46 +0300
-Message-Id: <20190821133800.23636-5-luca@coelho.fi>
+Date:   Wed, 21 Aug 2019 16:37:47 +0300
+Message-Id: <20190821133800.23636-6-luca@coelho.fi>
 X-Mailer: git-send-email 2.23.0.rc1
 In-Reply-To: <20190821133800.23636-1-luca@coelho.fi>
 References: <20190821133800.23636-1-luca@coelho.fi>
@@ -31,79 +31,154 @@ X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on farmhouse.coelho.fi
 X-Spam-Level: 
 X-Spam-Status: No, score=-2.9 required=5.0 tests=ALL_TRUSTED,BAYES_00,
         URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.2
-Subject: [PATCH 04/18] iwlwifi: mvm: use FW thermal monitoring regardless of CONFIG_THERMAL
+Subject: [PATCH 05/18] iwlwifi: Set w-pointer upon resume according to SN
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Johannes Berg <johannes.berg@intel.com>
+From: Alex Malamud <alex.malamud@intel.com>
 
-It doesn't make sense to use the FW thermal monitoring only if we
-have CONFIG_THERMAL, because then we use the default thresholds
-etc. which may be different from what the firmware implements, as
-we don't maintain them in the driver now. Only the CTDP code needs
-to actually be under CONFIG_THERMAL.
+During D3 state, FW may send packets.
+As a result, "write" queue pointer will be incremented by FW.
+Upon resume from D3, driver should adjust its shadows of "write" and "read"
+pointers to the value reported by FW.
 
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+1. Keep TID used during wowlan configuration.
+2. Upon resume, set driver's "write" and "read" queue pointers
+	to the value reported by FW.
+
+Signed-off-by: Alex Malamud <alex.malamud@intel.com>
 Signed-off-by: Luca Coelho <luciano.coelho@intel.com>
 ---
- drivers/net/wireless/intel/iwlwifi/mvm/fw.c  | 5 +----
- drivers/net/wireless/intel/iwlwifi/mvm/mvm.h | 4 ----
- 2 files changed, 1 insertion(+), 8 deletions(-)
+ drivers/net/wireless/intel/iwlwifi/iwl-trans.h     | 13 +++++++++++++
+ drivers/net/wireless/intel/iwlwifi/mvm/d3.c        |  9 +++++++++
+ drivers/net/wireless/intel/iwlwifi/mvm/mvm.h       |  1 +
+ drivers/net/wireless/intel/iwlwifi/pcie/internal.h |  1 +
+ drivers/net/wireless/intel/iwlwifi/pcie/trans.c    |  2 ++
+ drivers/net/wireless/intel/iwlwifi/pcie/tx.c       | 14 ++++++++++++++
+ 6 files changed, 40 insertions(+)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/fw.c b/drivers/net/wireless/intel/iwlwifi/mvm/fw.c
-index bb2aec9c6738..411a79e15333 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/fw.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/fw.c
-@@ -1273,7 +1273,6 @@ int iwl_mvm_up(struct iwl_mvm *mvm)
- 			goto error;
- 	}
+diff --git a/drivers/net/wireless/intel/iwlwifi/iwl-trans.h b/drivers/net/wireless/intel/iwlwifi/iwl-trans.h
+index 942662eaf523..034c935b5579 100644
+--- a/drivers/net/wireless/intel/iwlwifi/iwl-trans.h
++++ b/drivers/net/wireless/intel/iwlwifi/iwl-trans.h
+@@ -562,6 +562,8 @@ struct iwl_trans_ops {
+ 	void (*reclaim)(struct iwl_trans *trans, int queue, int ssn,
+ 			struct sk_buff_head *skbs);
  
--#ifdef CONFIG_THERMAL
- 	if (iwl_mvm_is_tt_in_fw(mvm)) {
- 		/* in order to give the responsibility of ct-kill and
- 		 * TX backoff to FW we need to send empty temperature reporting
-@@ -1285,6 +1284,7 @@ int iwl_mvm_up(struct iwl_mvm *mvm)
- 		iwl_mvm_tt_tx_backoff(mvm, 0);
- 	}
- 
-+#ifdef CONFIG_THERMAL
- 	/* TODO: read the budget from BIOS / Platform NVM */
- 
- 	/*
-@@ -1297,9 +1297,6 @@ int iwl_mvm_up(struct iwl_mvm *mvm)
- 		if (ret)
- 			goto error;
- 	}
--#else
--	/* Initialize tx backoffs to the minimal possible */
--	iwl_mvm_tt_tx_backoff(mvm, 0);
- #endif
- 
- 	if (!fw_has_capa(&mvm->fw->ucode_capa, IWL_UCODE_TLV_CAPA_SET_LTR_GEN2))
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mvm.h b/drivers/net/wireless/intel/iwlwifi/mvm/mvm.h
-index 2aa9bfc5e113..3efcc3a939b8 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/mvm.h
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/mvm.h
-@@ -1422,7 +1422,6 @@ iwl_mvm_get_agg_status(struct iwl_mvm *mvm, void *tx_resp)
- 
- static inline bool iwl_mvm_is_tt_in_fw(struct iwl_mvm *mvm)
- {
--#ifdef CONFIG_THERMAL
- 	/* these two TLV are redundant since the responsibility to CT-kill by
- 	 * FW happens only after we send at least one command of
- 	 * temperature THs report.
-@@ -1431,9 +1430,6 @@ static inline bool iwl_mvm_is_tt_in_fw(struct iwl_mvm *mvm)
- 			   IWL_UCODE_TLV_CAPA_CT_KILL_BY_FW) &&
- 	       fw_has_capa(&mvm->fw->ucode_capa,
- 			   IWL_UCODE_TLV_CAPA_TEMP_THS_REPORT_SUPPORT);
--#else /* CONFIG_THERMAL */
--	return false;
--#endif /* CONFIG_THERMAL */
++	void (*set_q_ptrs)(struct iwl_trans *trans, int queue, int ptr);
++
+ 	bool (*txq_enable)(struct iwl_trans *trans, int queue, u16 ssn,
+ 			   const struct iwl_trans_txq_scd_cfg *cfg,
+ 			   unsigned int queue_wdg_timeout);
+@@ -999,6 +1001,17 @@ static inline void iwl_trans_reclaim(struct iwl_trans *trans, int queue,
+ 	trans->ops->reclaim(trans, queue, ssn, skbs);
  }
  
- static inline bool iwl_mvm_is_ctdp_supported(struct iwl_mvm *mvm)
++static inline void iwl_trans_set_q_ptrs(struct iwl_trans *trans, int queue,
++					int ptr)
++{
++	if (WARN_ON_ONCE(trans->state != IWL_TRANS_FW_ALIVE)) {
++		IWL_ERR(trans, "%s bad state = %d\n", __func__, trans->state);
++		return;
++	}
++
++	trans->ops->set_q_ptrs(trans, queue, ptr);
++}
++
+ static inline void iwl_trans_txq_disable(struct iwl_trans *trans, int queue,
+ 					 bool configure_scd)
+ {
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/d3.c b/drivers/net/wireless/intel/iwlwifi/mvm/d3.c
+index 89839a83d8c2..6f7345b121a6 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/d3.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/d3.c
+@@ -831,6 +831,8 @@ iwl_mvm_wowlan_config(struct iwl_mvm *mvm,
+ 	bool unified_image = fw_has_capa(&mvm->fw->ucode_capa,
+ 					 IWL_UCODE_TLV_CAPA_CNSLDTD_D3_D0_IMG);
+ 
++	mvm->offload_tid = wowlan_config_cmd->offloading_tid;
++
+ 	if (!unified_image) {
+ 		ret = iwl_mvm_switch_to_d3(mvm);
+ 		if (ret)
+@@ -1656,6 +1658,13 @@ static bool iwl_mvm_query_wakeup_reasons(struct iwl_mvm *mvm,
+ 		mvm_ap_sta->tid_data[i].seq_number = seq;
+ 	}
+ 
++	if (mvm->trans->cfg->device_family >= IWL_DEVICE_FAMILY_22000) {
++		i = mvm->offload_tid;
++		iwl_trans_set_q_ptrs(mvm->trans,
++				     mvm_ap_sta->tid_data[i].txq_id,
++				     mvm_ap_sta->tid_data[i].seq_number >> 4);
++	}
++
+ 	/* now we have all the data we need, unlock to avoid mac80211 issues */
+ 	mutex_unlock(&mvm->mutex);
+ 
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mvm.h b/drivers/net/wireless/intel/iwlwifi/mvm/mvm.h
+index 3efcc3a939b8..79bbdf8121cc 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/mvm.h
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/mvm.h
+@@ -1001,6 +1001,7 @@ struct iwl_mvm {
+ 	struct ieee80211_channel **nd_channels;
+ 	int n_nd_channels;
+ 	bool net_detect;
++	u8 offload_tid;
+ #ifdef CONFIG_IWLWIFI_DEBUGFS
+ 	bool d3_wake_sysassert;
+ 	bool d3_test_active;
+diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/internal.h b/drivers/net/wireless/intel/iwlwifi/pcie/internal.h
+index 9f5d0fc839fe..6bf2a816e221 100644
+--- a/drivers/net/wireless/intel/iwlwifi/pcie/internal.h
++++ b/drivers/net/wireless/intel/iwlwifi/pcie/internal.h
+@@ -697,6 +697,7 @@ void iwl_pcie_hcmd_complete(struct iwl_trans *trans,
+ 			    struct iwl_rx_cmd_buffer *rxb);
+ void iwl_trans_pcie_reclaim(struct iwl_trans *trans, int txq_id, int ssn,
+ 			    struct sk_buff_head *skbs);
++void iwl_trans_pcie_set_q_ptrs(struct iwl_trans *trans, int txq_id, int ptr);
+ void iwl_trans_pcie_tx_reset(struct iwl_trans *trans);
+ void iwl_pcie_gen2_update_byte_tbl(struct iwl_trans_pcie *trans_pcie,
+ 				   struct iwl_txq *txq, u16 byte_cnt,
+diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/trans.c b/drivers/net/wireless/intel/iwlwifi/pcie/trans.c
+index a423c5c6605e..3a4be2ff3d42 100644
+--- a/drivers/net/wireless/intel/iwlwifi/pcie/trans.c
++++ b/drivers/net/wireless/intel/iwlwifi/pcie/trans.c
+@@ -3397,6 +3397,8 @@ static const struct iwl_trans_ops trans_ops_pcie_gen2 = {
+ 	.tx = iwl_trans_pcie_gen2_tx,
+ 	.reclaim = iwl_trans_pcie_reclaim,
+ 
++	.set_q_ptrs = iwl_trans_pcie_set_q_ptrs,
++
+ 	.txq_alloc = iwl_trans_pcie_dyn_txq_alloc,
+ 	.txq_free = iwl_trans_pcie_dyn_txq_free,
+ 	.wait_txq_empty = iwl_trans_pcie_wait_txq_empty,
+diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/tx.c b/drivers/net/wireless/intel/iwlwifi/pcie/tx.c
+index 2f0ba7ef53b8..b25f51b5893c 100644
+--- a/drivers/net/wireless/intel/iwlwifi/pcie/tx.c
++++ b/drivers/net/wireless/intel/iwlwifi/pcie/tx.c
+@@ -1234,6 +1234,20 @@ void iwl_trans_pcie_reclaim(struct iwl_trans *trans, int txq_id, int ssn,
+ 	spin_unlock_bh(&txq->lock);
+ }
+ 
++/* Set wr_ptr of specific device and txq  */
++void iwl_trans_pcie_set_q_ptrs(struct iwl_trans *trans, int txq_id, int ptr)
++{
++	struct iwl_trans_pcie *trans_pcie = IWL_TRANS_GET_PCIE_TRANS(trans);
++	struct iwl_txq *txq = trans_pcie->txq[txq_id];
++
++	spin_lock_bh(&txq->lock);
++
++	txq->write_ptr = ptr;
++	txq->read_ptr = txq->write_ptr;
++
++	spin_unlock_bh(&txq->lock);
++}
++
+ static int iwl_pcie_set_cmd_in_flight(struct iwl_trans *trans,
+ 				      const struct iwl_host_cmd *cmd)
+ {
 -- 
 2.23.0.rc1
 
