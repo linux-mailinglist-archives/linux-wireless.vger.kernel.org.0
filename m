@@ -2,77 +2,165 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 74A30978B2
-	for <lists+linux-wireless@lfdr.de>; Wed, 21 Aug 2019 14:00:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 026E69795B
+	for <lists+linux-wireless@lfdr.de>; Wed, 21 Aug 2019 14:30:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726852AbfHUL7Y (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 21 Aug 2019 07:59:24 -0400
-Received: from smtprelay0126.hostedemail.com ([216.40.44.126]:55891 "EHLO
-        smtprelay.hostedemail.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1726749AbfHUL7Y (ORCPT
+        id S1728232AbfHUMar (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 21 Aug 2019 08:30:47 -0400
+Received: from paleale.coelho.fi ([176.9.41.70]:37724 "EHLO
+        farmhouse.coelho.fi" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
+        with ESMTP id S1728230AbfHUMar (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 21 Aug 2019 07:59:24 -0400
-Received: from filter.hostedemail.com (clb03-v110.bra.tucows.net [216.40.38.60])
-        by smtprelay06.hostedemail.com (Postfix) with ESMTP id 9803D1802B9F8;
-        Wed, 21 Aug 2019 11:59:22 +0000 (UTC)
-X-Session-Marker: 6A6F6540706572636865732E636F6D
-X-Spam-Summary: 2,0,0,,d41d8cd98f00b204,joe@perches.com,:::::::::::::::::::,RULES_HIT:41:355:379:599:800:960:968:973:988:989:1260:1277:1311:1313:1314:1345:1359:1437:1515:1516:1518:1534:1540:1593:1594:1711:1730:1747:1777:1792:2393:2559:2562:2828:3138:3139:3140:3141:3142:3352:3622:3865:3871:4321:4605:5007:10004:10400:10848:11232:11657:11658:11914:12043:12296:12297:12438:12555:12740:12760:12895:13069:13311:13357:13439:14181:14659:14721:21080:21451:21627:30054:30070:30091,0,RBL:23.242.196.136:@perches.com:.lbl8.mailshell.net-62.14.0.180 64.201.201.201,CacheIP:none,Bayesian:0.5,0.5,0.5,Netcheck:none,DomainCache:0,MSF:not bulk,SPF:fn,MSBL:0,DNSBL:neutral,Custom_rules:0:0:0,LFtime:25,LUA_SUMMARY:none
-X-HE-Tag: bead95_6e7a6e0c32b4a
-X-Filterd-Recvd-Size: 2118
-Received: from XPS-9350.home (cpe-23-242-196-136.socal.res.rr.com [23.242.196.136])
-        (Authenticated sender: joe@perches.com)
-        by omf14.hostedemail.com (Postfix) with ESMTPA;
-        Wed, 21 Aug 2019 11:59:19 +0000 (UTC)
-Message-ID: <5613f082389460cb8de4251c08038c914683bd49.camel@perches.com>
-Subject: Re: [PATCH v2] mt76: fix some checkpatch warnings
-From:   Joe Perches <joe@perches.com>
-To:     Ryder Lee <ryder.lee@mediatek.com>, Felix Fietkau <nbd@nbd.name>,
-        Lorenzo Bianconi <lorenzo.bianconi@redhat.com>
-Cc:     Roy Luo <royluo@google.com>, YF Luo <yf.luo@mediatek.com>,
-        Yiwei Chung <yiwei.chung@mediatek.com>,
-        Sean Wang <sean.wang@mediatek.com>,
-        linux-wireless@vger.kernel.org, linux-mediatek@lists.infradead.org,
-        linux-kernel@vger.kernel.org
-Date:   Wed, 21 Aug 2019 04:59:16 -0700
-In-Reply-To: <4ff1174b111ab61e147510ffbcde706d1a00600d.1566356513.git.ryder.lee@mediatek.com>
-References: <4ff1174b111ab61e147510ffbcde706d1a00600d.1566356513.git.ryder.lee@mediatek.com>
-Content-Type: text/plain; charset="ISO-8859-1"
-User-Agent: Evolution 3.32.1-2 
+        Wed, 21 Aug 2019 08:30:47 -0400
+Received: from [91.156.6.193] (helo=redipa.ger.corp.intel.com)
+        by farmhouse.coelho.fi with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+        (Exim 4.92)
+        (envelope-from <luca@coelho.fi>)
+        id 1i0PlE-0000kL-Kn; Wed, 21 Aug 2019 15:30:46 +0300
+From:   Luca Coelho <luca@coelho.fi>
+To:     kvalo@codeaurora.org
+Cc:     linux-wireless@vger.kernel.org
+Date:   Wed, 21 Aug 2019 15:30:40 +0300
+Message-Id: <20190821123040.13982-1-luca@coelho.fi>
+X-Mailer: git-send-email 2.23.0.rc1
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on farmhouse.coelho.fi
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.9 required=5.0 tests=ALL_TRUSTED,BAYES_00,
+        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.2
+Subject: [PATCH v5.3] iwlwifi: pcie: handle switching killer Qu B0 NICs to C0
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Wed, 2019-08-21 at 11:11 +0800, Ryder Lee wrote:
-> This fixes the following checkpatch warnings:
-> CHECK: Alignment should match open parenthesis
-> CHECK: No space is necessary after a cast
-> 
-> Signed-off-by: Ryder Lee <ryder.lee@mediatek.com>
-> ---
-> Changes since v2: remove false positive checkpatch warnings.
+From: Luca Coelho <luciano.coelho@intel.com>
 
-What were those?
+We need to use a different firmware for C0 versions of killer Qu NICs.
+Add structures for them and handle them in the if block that detects
+C0 revisions.
 
-> diff --git a/drivers/net/wireless/mediatek/mt76/dma.c b/drivers/net/wireless/mediatek/mt76/dma.c
-[]
-> @@ -587,8 +589,8 @@ mt76_check_sta(struct mt76_dev *dev, struct sk_buff *skb)
->  	}
->  
->  	if (ieee80211_has_morefrags(hdr->frame_control) ||
-> -		!(ieee80211_is_mgmt(hdr->frame_control) ||
-> -		  ieee80211_is_data(hdr->frame_control)))
-> +	    !(ieee80211_is_mgmt(hdr->frame_control) ||
-> +	    ieee80211_is_data(hdr->frame_control)))
+Additionally, instead of having an inclusive check for QnJ devices,
+make the selection exclusive, so that switching to QnJ is the
+exception, not the default.  This prevents us from having to add all
+the non-QnJ cards to an exclusion list.  To do so, only go into the
+QnJ block if the device has an RF ID type HR and HW revision QnJ.
 
-Poor alignment here.
+Cc: stable@vger.kernel.org # 5.2
+Signed-off-by: Luca Coelho <luciano.coelho@intel.com>
+---
+ .../net/wireless/intel/iwlwifi/cfg/22000.c    | 24 ++++++++++++++++
+ .../net/wireless/intel/iwlwifi/iwl-config.h   |  2 ++
+ drivers/net/wireless/intel/iwlwifi/pcie/drv.c | 28 +++++++++++--------
+ .../net/wireless/intel/iwlwifi/pcie/trans.c   |  7 +----
+ 4 files changed, 43 insertions(+), 18 deletions(-)
 
-This should be:
-
-	if (ieee80211_has_morefrags(hdr->frame_control) ||
-	    !(ieee80211_is_mgmt(hdr->frame_control) ||
-	      ieee80211_is_data(hdr->frame_control)))
-
+diff --git a/drivers/net/wireless/intel/iwlwifi/cfg/22000.c b/drivers/net/wireless/intel/iwlwifi/cfg/22000.c
+index 1f500cddb3a7..55b713255b8e 100644
+--- a/drivers/net/wireless/intel/iwlwifi/cfg/22000.c
++++ b/drivers/net/wireless/intel/iwlwifi/cfg/22000.c
+@@ -556,6 +556,30 @@ const struct iwl_cfg killer1650i_2ax_cfg_qu_b0_hr_b0 = {
+ 	.max_tx_agg_size = IEEE80211_MAX_AMPDU_BUF_HT,
+ };
+ 
++const struct iwl_cfg killer1650s_2ax_cfg_qu_c0_hr_b0 = {
++	.name = "Killer(R) Wi-Fi 6 AX1650i 160MHz Wireless Network Adapter (201NGW)",
++	.fw_name_pre = IWL_QU_C_HR_B_FW_PRE,
++	IWL_DEVICE_22500,
++	/*
++	 * This device doesn't support receiving BlockAck with a large bitmap
++	 * so we need to restrict the size of transmitted aggregation to the
++	 * HT size; mac80211 would otherwise pick the HE max (256) by default.
++	 */
++	.max_tx_agg_size = IEEE80211_MAX_AMPDU_BUF_HT,
++};
++
++const struct iwl_cfg killer1650i_2ax_cfg_qu_c0_hr_b0 = {
++	.name = "Killer(R) Wi-Fi 6 AX1650s 160MHz Wireless Network Adapter (201D2W)",
++	.fw_name_pre = IWL_QU_C_HR_B_FW_PRE,
++	IWL_DEVICE_22500,
++	/*
++	 * This device doesn't support receiving BlockAck with a large bitmap
++	 * so we need to restrict the size of transmitted aggregation to the
++	 * HT size; mac80211 would otherwise pick the HE max (256) by default.
++	 */
++	.max_tx_agg_size = IEEE80211_MAX_AMPDU_BUF_HT,
++};
++
+ const struct iwl_cfg iwl22000_2ax_cfg_jf = {
+ 	.name = "Intel(R) Dual Band Wireless AX 22000",
+ 	.fw_name_pre = IWL_QU_B_JF_B_FW_PRE,
+diff --git a/drivers/net/wireless/intel/iwlwifi/iwl-config.h b/drivers/net/wireless/intel/iwlwifi/iwl-config.h
+index 1c1bf1b281cd..6c04f8223aff 100644
+--- a/drivers/net/wireless/intel/iwlwifi/iwl-config.h
++++ b/drivers/net/wireless/intel/iwlwifi/iwl-config.h
+@@ -577,6 +577,8 @@ extern const struct iwl_cfg iwl_ax1650i_cfg_quz_hr;
+ extern const struct iwl_cfg iwl_ax1650s_cfg_quz_hr;
+ extern const struct iwl_cfg killer1650s_2ax_cfg_qu_b0_hr_b0;
+ extern const struct iwl_cfg killer1650i_2ax_cfg_qu_b0_hr_b0;
++extern const struct iwl_cfg killer1650s_2ax_cfg_qu_c0_hr_b0;
++extern const struct iwl_cfg killer1650i_2ax_cfg_qu_c0_hr_b0;
+ extern const struct iwl_cfg killer1650x_2ax_cfg;
+ extern const struct iwl_cfg killer1650w_2ax_cfg;
+ extern const struct iwl_cfg iwl9461_2ac_cfg_qu_b0_jf_b0;
+diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/drv.c b/drivers/net/wireless/intel/iwlwifi/pcie/drv.c
+index 7c5aaeaf7fe5..65d2f6b996dd 100644
+--- a/drivers/net/wireless/intel/iwlwifi/pcie/drv.c
++++ b/drivers/net/wireless/intel/iwlwifi/pcie/drv.c
+@@ -1050,18 +1050,22 @@ static int iwl_pci_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
+ 	 * thing to do to support Qu C-step.
+ 	 */
+ 	if (iwl_trans->hw_rev == CSR_HW_REV_TYPE_QU_C0) {
+-		if (iwl_trans->cfg == &iwl_ax101_cfg_qu_hr)
+-			iwl_trans->cfg = &iwl_ax101_cfg_qu_c0_hr_b0;
+-		else if (iwl_trans->cfg == &iwl_ax201_cfg_qu_hr)
+-			iwl_trans->cfg = &iwl_ax201_cfg_qu_c0_hr_b0;
+-		else if (iwl_trans->cfg == &iwl9461_2ac_cfg_qu_b0_jf_b0)
+-			iwl_trans->cfg = &iwl9461_2ac_cfg_qu_c0_jf_b0;
+-		else if (iwl_trans->cfg == &iwl9462_2ac_cfg_qu_b0_jf_b0)
+-			iwl_trans->cfg = &iwl9462_2ac_cfg_qu_c0_jf_b0;
+-		else if (iwl_trans->cfg == &iwl9560_2ac_cfg_qu_b0_jf_b0)
+-			iwl_trans->cfg = &iwl9560_2ac_cfg_qu_c0_jf_b0;
+-		else if (iwl_trans->cfg == &iwl9560_2ac_160_cfg_qu_b0_jf_b0)
+-			iwl_trans->cfg = &iwl9560_2ac_160_cfg_qu_c0_jf_b0;
++		if (iwl_trans->cfg= &iwl_ax101_cfg_qu_hr)
++			iwl_trans->cfg &iwl_ax101_cfg_qu_c0_hr_b0;
++		else if (iwl_trans->cfg= &iwl_ax201_cfg_qu_hr)
++			iwl_trans->cfg &iwl_ax201_cfg_qu_c0_hr_b0;
++		else if (iwl_trans->cfg= &iwl9461_2ac_cfg_qu_b0_jf_b0)
++			iwl_trans->cfg &iwl9461_2ac_cfg_qu_c0_jf_b0;
++		else if (iwl_trans->cfg= &iwl9462_2ac_cfg_qu_b0_jf_b0)
++			iwl_trans->cfg &iwl9462_2ac_cfg_qu_c0_jf_b0;
++		else if (iwl_trans->cfg= &iwl9560_2ac_cfg_qu_b0_jf_b0)
++			iwl_trans->cfg &iwl9560_2ac_cfg_qu_c0_jf_b0;
++		else if (iwl_trans->cfg= &iwl9560_2ac_160_cfg_qu_b0_jf_b0)
++			iwl_trans->cfg &iwl9560_2ac_160_cfg_qu_c0_jf_b0;
++		else if (iwl_trans->cfg= &killer1650s_2ax_cfg_qu_b0_hr_b0)
++			iwl_trans->cfg &killer1650s_2ax_cfg_qu_c0_hr_b0;
++		else if (iwl_trans->cfg= &killer1650i_2ax_cfg_qu_b0_hr_b0)
++			iwl_trans->cfg &killer1650i_2ax_cfg_qu_c0_hr_b0;
+ 	}
+ 
+ 	/* same thing for QuZ... */
+diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/trans.c b/drivers/net/wireless/intel/iwlwifi/pcie/trans.c
+index 935e35dafce5..db62c8314603 100644
+--- a/drivers/net/wireless/intel/iwlwifi/pcie/trans.c
++++ b/drivers/net/wireless/intel/iwlwifi/pcie/trans.c
+@@ -3602,12 +3602,7 @@ struct iwl_trans *iwl_trans_pcie_alloc(struct pci_dev *pdev,
+ 		}
+ 	} else if (CSR_HW_RF_ID_TYPE_CHIP_ID(trans->hw_rf_id) ==
+ 		   CSR_HW_RF_ID_TYPE_CHIP_ID(CSR_HW_RF_ID_TYPE_HR) &&
+-		   ((trans->cfg != &iwl_ax200_cfg_cc &&
+-		     trans->cfg != &iwl_ax201_cfg_qu_hr &&
+-		     trans->cfg != &killer1650x_2ax_cfg &&
+-		     trans->cfg != &killer1650w_2ax_cfg &&
+-		     trans->cfg != &iwl_ax201_cfg_quz_hr) ||
+-		    trans->hw_rev == CSR_HW_REV_TYPE_QNJ_B0)) {
++		   trans->hw_rev == CSR_HW_REV_TYPE_QNJ_B0) {
+ 		u32 hw_status;
+ 
+ 		hw_status = iwl_read_prph(trans, UMAG_GEN_HW_STATUS);
+-- 
+2.23.0.rc1
 
