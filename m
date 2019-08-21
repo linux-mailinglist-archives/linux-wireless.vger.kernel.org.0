@@ -2,77 +2,104 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id ED90297155
-	for <lists+linux-wireless@lfdr.de>; Wed, 21 Aug 2019 07:02:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A75A99715C
+	for <lists+linux-wireless@lfdr.de>; Wed, 21 Aug 2019 07:04:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727300AbfHUFCE (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 21 Aug 2019 01:02:04 -0400
-Received: from smtp.codeaurora.org ([198.145.29.96]:54244 "EHLO
-        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727076AbfHUFCE (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 21 Aug 2019 01:02:04 -0400
-Received: by smtp.codeaurora.org (Postfix, from userid 1000)
-        id 619C6608CE; Wed, 21 Aug 2019 05:02:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1566363723;
-        bh=OAXHvSPcASypt4knp+um/R3qsvrj0A8AZ+xVOBmayO4=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=diz8aflHFUW35YLB3+JlPG8vBzsU+wtkBV/QOXz10ckS1qFvNqsplp5U6i1J0Wn0m
-         0CHQlOIoFJlZFYybPKKYRB1pMejwIoElVladHPFGglq6/bt/9cmUGoACPV5k9ZFKt3
-         EWedm0beHRnPNK437+Io7AdNIkgXvLt1jRCpqGn4=
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        pdx-caf-mail.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.7 required=2.0 tests=ALL_TRUSTED,BAYES_00,
-        DKIM_INVALID,DKIM_SIGNED autolearn=no autolearn_force=no version=3.4.0
-Received: from mail.codeaurora.org (localhost.localdomain [127.0.0.1])
-        by smtp.codeaurora.org (Postfix) with ESMTP id B83E8608CE;
-        Wed, 21 Aug 2019 05:02:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1566363722;
-        bh=OAXHvSPcASypt4knp+um/R3qsvrj0A8AZ+xVOBmayO4=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=khAQESoRJxq3DRAgV9aOv3HjhPETvHXCJA9Qou7aN9WdS/GR4PwlQRtbIBB6kOBmH
-         QjKlQkRgQwFjuI4bNX49J7EeK0zr8/anSOSoFJtEQkSdmJ6KTmAZiQod3GmZMZ1+mu
-         qHjmfiWfz4rJ9cYhV7ZjYyPRWqlGJp7Ov/vy+xBs=
+        id S1727720AbfHUFES (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 21 Aug 2019 01:04:18 -0400
+Received: from mga14.intel.com ([192.55.52.115]:55993 "EHLO mga14.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726463AbfHUFER (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Wed, 21 Aug 2019 01:04:17 -0400
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from fmsmga008.fm.intel.com ([10.253.24.58])
+  by fmsmga103.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 20 Aug 2019 22:04:17 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.64,411,1559545200"; 
+   d="scan'208";a="178395485"
+Received: from pkacprow-mobl.ger.corp.intel.com ([10.252.30.96])
+  by fmsmga008.fm.intel.com with ESMTP; 20 Aug 2019 22:04:15 -0700
+Message-ID: <eaf2a4bee9a925b02c711bf006949ab25bd0e5fb.camel@intel.com>
+Subject: Re: PROBLEM: 5.3.0-rc* causes iwlwifi failure
+From:   Luciano Coelho <luciano.coelho@intel.com>
+To:     Stuart Little <achirvasub@gmail.com>
+Cc:     Serge Belyshev <belyshev@depni.sinp.msu.ru>,
+        Johannes Berg <johannes.berg@intel.com>,
+        Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
+        kernel list <linux-kernel@vger.kernel.org>,
+        Intel Linux Wireless <linuxwifi@intel.com>,
+        linux-wireless@vger.kernel.org,
+        Haim Dreyfuss <haim.dreyfuss@intel.com>
+Date:   Wed, 21 Aug 2019 08:04:14 +0300
+In-Reply-To: <20190820233734.GA1406@chirva-slack.chirva-slack>
+References: <20190817041258.GA1641@chirva-slack.chirva-slack>
+         <87y2zsf9ps.fsf@depni.sinp.msu.ru>
+         <20190817214448.GB1070@chirva-slack.chirva-slack>
+         <1b1e573e6502c97851838a3b27ac0b272198926c.camel@intel.com>
+         <20190820233734.GA1406@chirva-slack.chirva-slack>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.30.5-1.1 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8;
- format=flowed
-Content-Transfer-Encoding: 8bit
-Date:   Wed, 21 Aug 2019 10:32:02 +0530
-From:   Vasanthakumar Thiagarajan <vthiagar@codeaurora.org>
-To:     =?UTF-8?Q?Toke_H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>
-Cc:     Kalle Valo <kvalo@codeaurora.org>, linux-wireless@vger.kernel.org,
-        ath11k@lists.infradead.org, devicetree@vger.kernel.org,
-        linux-wireless-owner@vger.kernel.org
-Subject: Re: [PATCH 31/49] ath11k: add mac.c
-In-Reply-To: <8736hvu6e6.fsf@toke.dk>
-References: <1566316095-27507-1-git-send-email-kvalo@codeaurora.org>
- <1566316095-27507-32-git-send-email-kvalo@codeaurora.org>
- <8736hvu6e6.fsf@toke.dk>
-Message-ID: <ac6e7dbbd53e7ba9e82e49baca22b73c@codeaurora.org>
-X-Sender: vthiagar@codeaurora.org
-User-Agent: Roundcube Webmail/1.2.5
+Content-Transfer-Encoding: 7bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 2019-08-20 22:21, Toke Høiland-Jørgensen wrote:
-> [... snip ... ]
+On Tue, 2019-08-20 at 19:37 -0400, Stuart Little wrote:
+> On Tue, Aug 20, 2019 at 01:45:37PM +0300, Luciano Coelho wrote:
+> > I'll have to look into all NIC/FW-version combinations that we have
+> > and
+> > update the iwl_mvm_sar_geo_support() function accordingly, which
+> > is,
+> > BTW, the easier place for you to change if you want to workaround
+> > the
+> > issue.
 > 
->> +static const struct ieee80211_ops ath11k_ops = {
->> +	.tx				= ath11k_mac_op_tx,
+> Thanks!
 > 
-> No wake_tx_queue? :(
+> I didn't quite know how to interpret this suggestion (i.e. what the
+> change should be), so I was poking around in there out of curiosity.
+> One simple-minded thing that worked was to just pretend that that
+> function always returns false:
+> 
+> --- cut here ---
+> 
+> diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/fw.c
+> b/drivers/net/wireless/intel/iwlwifi/mvm/fw.c
+> index 5de54d1559dd..8c0160e5588f 100644
+> --- a/drivers/net/wireless/intel/iwlwifi/mvm/fw.c
+> +++ b/drivers/net/wireless/intel/iwlwifi/mvm/fw.c
+> @@ -925,7 +925,7 @@ int iwl_mvm_get_sar_geo_profile(struct iwl_mvm
+> *mvm)
+>                 .data = { data },
+>         };
+>  
+> -       if (!iwl_mvm_sar_geo_support(mvm))
+> +       /*if (!iwl_mvm_sar_geo_support(mvm))*/
+>                 return -EOPNOTSUPP;
+>  
+>         ret = iwl_mvm_send_cmd(mvm, &cmd);
+> @@ -953,7 +953,7 @@ static int iwl_mvm_sar_geo_init(struct iwl_mvm
+> *mvm)
+>         int ret, i, j;
+>         u16 cmd_wide_id =  WIDE_ID(PHY_OPS_GROUP,
+> GEO_TX_POWER_LIMIT);
+>  
+> -       if (!iwl_mvm_sar_geo_support(mvm))
+> +       /*if (!iwl_mvm_sar_geo_support(mvm))*/
+>                 return 0;
+>  
+>         ret = iwl_mvm_sar_get_wgds_table(mvm);
+> 
+> --- cut here ---
 
-Yes, packet queueing is handled in firmware. This makes sense especially 
-when we enable 802.11 encap
-offload support where most of the data path processing in mac80211 will 
-be skipped and packet is given
-to driver/firmware in 802.3 format itself. Then firmware would take care 
-of all the classification,
-queueing and encapsulation operations.
+Yeah, I meant more or less to return false for your NIC.  You could
+have just forced that function return false.
 
-Vasanth
+--
+Cheers,
+Luca.
+
