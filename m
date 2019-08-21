@@ -2,26 +2,26 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id BACA397B08
-	for <lists+linux-wireless@lfdr.de>; Wed, 21 Aug 2019 15:38:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C710597B0A
+	for <lists+linux-wireless@lfdr.de>; Wed, 21 Aug 2019 15:38:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729007AbfHUNiM (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 21 Aug 2019 09:38:12 -0400
-Received: from paleale.coelho.fi ([176.9.41.70]:37768 "EHLO
+        id S1729010AbfHUNiN (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 21 Aug 2019 09:38:13 -0400
+Received: from paleale.coelho.fi ([176.9.41.70]:37776 "EHLO
         farmhouse.coelho.fi" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1728995AbfHUNiL (ORCPT
+        with ESMTP id S1727696AbfHUNiM (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 21 Aug 2019 09:38:11 -0400
+        Wed, 21 Aug 2019 09:38:12 -0400
 Received: from [91.156.6.193] (helo=redipa.ger.corp.intel.com)
         by farmhouse.coelho.fi with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
         (Exim 4.92)
         (envelope-from <luca@coelho.fi>)
-        id 1i0QoT-0000lZ-69; Wed, 21 Aug 2019 16:38:09 +0300
+        id 1i0QoU-0000lZ-0a; Wed, 21 Aug 2019 16:38:10 +0300
 From:   Luca Coelho <luca@coelho.fi>
 To:     kvalo@codeaurora.org
 Cc:     linux-wireless@vger.kernel.org
-Date:   Wed, 21 Aug 2019 16:37:47 +0300
-Message-Id: <20190821133800.23636-6-luca@coelho.fi>
+Date:   Wed, 21 Aug 2019 16:37:48 +0300
+Message-Id: <20190821133800.23636-7-luca@coelho.fi>
 X-Mailer: git-send-email 2.23.0.rc1
 In-Reply-To: <20190821133800.23636-1-luca@coelho.fi>
 References: <20190821133800.23636-1-luca@coelho.fi>
@@ -31,154 +31,188 @@ X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on farmhouse.coelho.fi
 X-Spam-Level: 
 X-Spam-Status: No, score=-2.9 required=5.0 tests=ALL_TRUSTED,BAYES_00,
         URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.2
-Subject: [PATCH 05/18] iwlwifi: Set w-pointer upon resume according to SN
+Subject: [PATCH 06/18] iwlwifi: remove runtime_pm_mode
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Alex Malamud <alex.malamud@intel.com>
+From: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
 
-During D3 state, FW may send packets.
-As a result, "write" queue pointer will be incremented by FW.
-Upon resume from D3, driver should adjust its shadows of "write" and "read"
-pointers to the value reported by FW.
+This is always set to IWL_PLAT_PM_MODE_DISABLED
 
-1. Keep TID used during wowlan configuration.
-2. Upon resume, set driver's "write" and "read" queue pointers
-	to the value reported by FW.
-
-Signed-off-by: Alex Malamud <alex.malamud@intel.com>
+Signed-off-by: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
 Signed-off-by: Luca Coelho <luciano.coelho@intel.com>
 ---
- drivers/net/wireless/intel/iwlwifi/iwl-trans.h     | 13 +++++++++++++
- drivers/net/wireless/intel/iwlwifi/mvm/d3.c        |  9 +++++++++
- drivers/net/wireless/intel/iwlwifi/mvm/mvm.h       |  1 +
- drivers/net/wireless/intel/iwlwifi/pcie/internal.h |  1 +
- drivers/net/wireless/intel/iwlwifi/pcie/trans.c    |  2 ++
- drivers/net/wireless/intel/iwlwifi/pcie/tx.c       | 14 ++++++++++++++
- 6 files changed, 40 insertions(+)
+ .../net/wireless/intel/iwlwifi/iwl-trans.h    | 33 +++----------------
+ drivers/net/wireless/intel/iwlwifi/pcie/drv.c | 28 ----------------
+ .../net/wireless/intel/iwlwifi/pcie/trans.c   |  9 -----
+ 3 files changed, 5 insertions(+), 65 deletions(-)
 
 diff --git a/drivers/net/wireless/intel/iwlwifi/iwl-trans.h b/drivers/net/wireless/intel/iwlwifi/iwl-trans.h
-index 942662eaf523..034c935b5579 100644
+index 034c935b5579..b50290a724ff 100644
 --- a/drivers/net/wireless/intel/iwlwifi/iwl-trans.h
 +++ b/drivers/net/wireless/intel/iwlwifi/iwl-trans.h
-@@ -562,6 +562,8 @@ struct iwl_trans_ops {
- 	void (*reclaim)(struct iwl_trans *trans, int queue, int ssn,
- 			struct sk_buff_head *skbs);
+@@ -630,9 +630,6 @@ enum iwl_trans_state {
+ /**
+  * DOC: Platform power management
+  *
+- * There are two types of platform power management: system-wide
+- * (WoWLAN) and runtime.
+- *
+  * In system-wide power management the entire platform goes into a low
+  * power state (e.g. idle or suspend to RAM) at the same time and the
+  * device is configured as a wakeup source for the entire platform.
+@@ -641,48 +638,32 @@ enum iwl_trans_state {
+  * put the platform in low power mode).  The device's behavior in this
+  * mode is dictated by the wake-on-WLAN configuration.
+  *
+- * In runtime power management, only the devices which are themselves
+- * idle enter a low power state.  This is done at runtime, which means
+- * that the entire system is still running normally.  This mode is
+- * usually triggered automatically by the device driver and requires
+- * the ability to enter and exit the low power modes in a very short
+- * time, so there is not much impact in usability.
+- *
+  * The terms used for the device's behavior are as follows:
+  *
+  *	- D0: the device is fully powered and the host is awake;
+  *	- D3: the device is in low power mode and only reacts to
+  *		specific events (e.g. magic-packet received or scan
+  *		results found);
+- *	- D0I3: the device is in low power mode and reacts to any
+- *		activity (e.g. RX);
+  *
+  * These terms reflect the power modes in the firmware and are not to
+- * be confused with the physical device power state.  The NIC can be
+- * in D0I3 mode even if, for instance, the PCI device is in D3 state.
++ * be confused with the physical device power state.
+  */
  
-+	void (*set_q_ptrs)(struct iwl_trans *trans, int queue, int ptr);
-+
- 	bool (*txq_enable)(struct iwl_trans *trans, int queue, u16 ssn,
- 			   const struct iwl_trans_txq_scd_cfg *cfg,
- 			   unsigned int queue_wdg_timeout);
-@@ -999,6 +1001,17 @@ static inline void iwl_trans_reclaim(struct iwl_trans *trans, int queue,
- 	trans->ops->reclaim(trans, queue, ssn, skbs);
- }
+ /**
+  * enum iwl_plat_pm_mode - platform power management mode
+  *
+  * This enumeration describes the device's platform power management
+- * behavior when in idle mode (i.e. runtime power management) or when
+- * in system-wide suspend (i.e WoWLAN).
++ * behavior when in system-wide suspend (i.e WoWLAN).
+  *
+  * @IWL_PLAT_PM_MODE_DISABLED: power management is disabled for this
+- *	device.  At runtime, this means that nothing happens and the
+- *	device always remains in active.  In system-wide suspend mode,
+- *	it means that the all connections will be closed automatically
+- *	by mac80211 before the platform is suspended.
++ *	device.  In system-wide suspend mode, it means that the all
++ *	connections will be closed automatically by mac80211 before
++ *	the platform is suspended.
+  * @IWL_PLAT_PM_MODE_D3: the device goes into D3 mode (i.e. WoWLAN).
+- *	For runtime power management, this mode is not officially
+- *	supported.
+- * @IWL_PLAT_PM_MODE_D0I3: the device goes into D0I3 mode.
+  */
+ enum iwl_plat_pm_mode {
+ 	IWL_PLAT_PM_MODE_DISABLED,
+ 	IWL_PLAT_PM_MODE_D3,
+-	IWL_PLAT_PM_MODE_D0I3,
+ };
  
-+static inline void iwl_trans_set_q_ptrs(struct iwl_trans *trans, int queue,
-+					int ptr)
-+{
-+	if (WARN_ON_ONCE(trans->state != IWL_TRANS_FW_ALIVE)) {
-+		IWL_ERR(trans, "%s bad state = %d\n", __func__, trans->state);
-+		return;
-+	}
-+
-+	trans->ops->set_q_ptrs(trans, queue, ptr);
-+}
-+
- static inline void iwl_trans_txq_disable(struct iwl_trans *trans, int queue,
- 					 bool configure_scd)
+ /* Max time to wait for trans to become idle/non-idle on d0i3
+@@ -795,9 +776,6 @@ struct iwl_trans_debug {
+  * @system_pm_mode: the system-wide power management mode in use.
+  *	This mode is set dynamically, depending on the WoWLAN values
+  *	configured from the userspace at runtime.
+- * @runtime_pm_mode: the runtime power management mode in use.  This
+- *	mode is set during the initialization phase and is not
+- *	supposed to change during runtime.
+  */
+ struct iwl_trans {
+ 	const struct iwl_trans_ops *ops;
+@@ -842,7 +820,6 @@ struct iwl_trans {
+ 	struct iwl_self_init_dram init_dram;
+ 
+ 	enum iwl_plat_pm_mode system_pm_mode;
+-	enum iwl_plat_pm_mode runtime_pm_mode;
+ 
+ 	/* pointer to trans specific struct */
+ 	/*Ensure that this pointer will always be aligned to sizeof pointer */
+diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/drv.c b/drivers/net/wireless/intel/iwlwifi/pcie/drv.c
+index 2a34f074d72c..10c9167d78fa 100644
+--- a/drivers/net/wireless/intel/iwlwifi/pcie/drv.c
++++ b/drivers/net/wireless/intel/iwlwifi/pcie/drv.c
+@@ -1076,25 +1076,6 @@ static int iwl_pci_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
+ 	/* register transport layer debugfs here */
+ 	iwl_trans_pcie_dbgfs_register(iwl_trans);
+ 
+-	/* if RTPM is in use, enable it in our device */
+-	if (iwl_trans->runtime_pm_mode != IWL_PLAT_PM_MODE_DISABLED) {
+-		/* We explicitly set the device to active here to
+-		 * clear contingent errors.
+-		 */
+-		pm_runtime_set_active(&pdev->dev);
+-
+-		pm_runtime_set_autosuspend_delay(&pdev->dev,
+-					 iwlwifi_mod_params.d0i3_timeout);
+-		pm_runtime_use_autosuspend(&pdev->dev);
+-
+-		/* We are not supposed to call pm_runtime_allow() by
+-		 * ourselves, but let userspace enable runtime PM via
+-		 * sysfs.  However, since we don't enable this from
+-		 * userspace yet, we need to allow/forbid() ourselves.
+-		*/
+-		pm_runtime_allow(&pdev->dev);
+-	}
+-
+ 	/* The PCI device starts with a reference taken and we are
+ 	 * supposed to release it here.  But to simplify the
+ 	 * interaction with the opmode, we don't do it now, but let
+@@ -1112,15 +1093,6 @@ static void iwl_pci_remove(struct pci_dev *pdev)
  {
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/d3.c b/drivers/net/wireless/intel/iwlwifi/mvm/d3.c
-index 89839a83d8c2..6f7345b121a6 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/d3.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/d3.c
-@@ -831,6 +831,8 @@ iwl_mvm_wowlan_config(struct iwl_mvm *mvm,
- 	bool unified_image = fw_has_capa(&mvm->fw->ucode_capa,
- 					 IWL_UCODE_TLV_CAPA_CNSLDTD_D3_D0_IMG);
+ 	struct iwl_trans *trans = pci_get_drvdata(pdev);
  
-+	mvm->offload_tid = wowlan_config_cmd->offloading_tid;
-+
- 	if (!unified_image) {
- 		ret = iwl_mvm_switch_to_d3(mvm);
- 		if (ret)
-@@ -1656,6 +1658,13 @@ static bool iwl_mvm_query_wakeup_reasons(struct iwl_mvm *mvm,
- 		mvm_ap_sta->tid_data[i].seq_number = seq;
- 	}
+-	/* if RTPM was in use, restore it to the state before probe */
+-	if (trans->runtime_pm_mode != IWL_PLAT_PM_MODE_DISABLED) {
+-		/* We should not call forbid here, but we do for now.
+-		 * Check the comment to pm_runtime_allow() in
+-		 * iwl_pci_probe().
+-		 */
+-		pm_runtime_forbid(trans->dev);
+-	}
+-
+ 	iwl_drv_stop(trans->drv);
  
-+	if (mvm->trans->cfg->device_family >= IWL_DEVICE_FAMILY_22000) {
-+		i = mvm->offload_tid;
-+		iwl_trans_set_q_ptrs(mvm->trans,
-+				     mvm_ap_sta->tid_data[i].txq_id,
-+				     mvm_ap_sta->tid_data[i].seq_number >> 4);
-+	}
-+
- 	/* now we have all the data we need, unlock to avoid mac80211 issues */
- 	mutex_unlock(&mvm->mutex);
- 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mvm.h b/drivers/net/wireless/intel/iwlwifi/mvm/mvm.h
-index 3efcc3a939b8..79bbdf8121cc 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/mvm.h
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/mvm.h
-@@ -1001,6 +1001,7 @@ struct iwl_mvm {
- 	struct ieee80211_channel **nd_channels;
- 	int n_nd_channels;
- 	bool net_detect;
-+	u8 offload_tid;
- #ifdef CONFIG_IWLWIFI_DEBUGFS
- 	bool d3_wake_sysassert;
- 	bool d3_test_active;
-diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/internal.h b/drivers/net/wireless/intel/iwlwifi/pcie/internal.h
-index 9f5d0fc839fe..6bf2a816e221 100644
---- a/drivers/net/wireless/intel/iwlwifi/pcie/internal.h
-+++ b/drivers/net/wireless/intel/iwlwifi/pcie/internal.h
-@@ -697,6 +697,7 @@ void iwl_pcie_hcmd_complete(struct iwl_trans *trans,
- 			    struct iwl_rx_cmd_buffer *rxb);
- void iwl_trans_pcie_reclaim(struct iwl_trans *trans, int txq_id, int ssn,
- 			    struct sk_buff_head *skbs);
-+void iwl_trans_pcie_set_q_ptrs(struct iwl_trans *trans, int txq_id, int ptr);
- void iwl_trans_pcie_tx_reset(struct iwl_trans *trans);
- void iwl_pcie_gen2_update_byte_tbl(struct iwl_trans_pcie *trans_pcie,
- 				   struct iwl_txq *txq, u16 byte_cnt,
+ 	iwl_trans_pcie_free(trans);
 diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/trans.c b/drivers/net/wireless/intel/iwlwifi/pcie/trans.c
-index a423c5c6605e..3a4be2ff3d42 100644
+index 3a4be2ff3d42..8eaacf423d33 100644
 --- a/drivers/net/wireless/intel/iwlwifi/pcie/trans.c
 +++ b/drivers/net/wireless/intel/iwlwifi/pcie/trans.c
-@@ -3397,6 +3397,8 @@ static const struct iwl_trans_ops trans_ops_pcie_gen2 = {
- 	.tx = iwl_trans_pcie_gen2_tx,
- 	.reclaim = iwl_trans_pcie_reclaim,
- 
-+	.set_q_ptrs = iwl_trans_pcie_set_q_ptrs,
-+
- 	.txq_alloc = iwl_trans_pcie_dyn_txq_alloc,
- 	.txq_free = iwl_trans_pcie_dyn_txq_free,
- 	.wait_txq_empty = iwl_trans_pcie_wait_txq_empty,
-diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/tx.c b/drivers/net/wireless/intel/iwlwifi/pcie/tx.c
-index 2f0ba7ef53b8..b25f51b5893c 100644
---- a/drivers/net/wireless/intel/iwlwifi/pcie/tx.c
-+++ b/drivers/net/wireless/intel/iwlwifi/pcie/tx.c
-@@ -1234,6 +1234,20 @@ void iwl_trans_pcie_reclaim(struct iwl_trans *trans, int txq_id, int ssn,
- 	spin_unlock_bh(&txq->lock);
+@@ -3312,18 +3312,11 @@ static struct iwl_trans_dump_data
+ #ifdef CONFIG_PM_SLEEP
+ static int iwl_trans_pcie_suspend(struct iwl_trans *trans)
+ {
+-	if (trans->runtime_pm_mode == IWL_PLAT_PM_MODE_D0I3 &&
+-	    (trans->system_pm_mode == IWL_PLAT_PM_MODE_D0I3))
+-		return iwl_pci_fw_enter_d0i3(trans);
+-
+ 	return 0;
  }
  
-+/* Set wr_ptr of specific device and txq  */
-+void iwl_trans_pcie_set_q_ptrs(struct iwl_trans *trans, int txq_id, int ptr)
-+{
-+	struct iwl_trans_pcie *trans_pcie = IWL_TRANS_GET_PCIE_TRANS(trans);
-+	struct iwl_txq *txq = trans_pcie->txq[txq_id];
-+
-+	spin_lock_bh(&txq->lock);
-+
-+	txq->write_ptr = ptr;
-+	txq->read_ptr = txq->write_ptr;
-+
-+	spin_unlock_bh(&txq->lock);
-+}
-+
- static int iwl_pcie_set_cmd_in_flight(struct iwl_trans *trans,
- 				      const struct iwl_host_cmd *cmd)
+ static void iwl_trans_pcie_resume(struct iwl_trans *trans)
  {
+-	if (trans->runtime_pm_mode == IWL_PLAT_PM_MODE_D0I3 &&
+-	    (trans->system_pm_mode == IWL_PLAT_PM_MODE_D0I3))
+-		iwl_pci_fw_exit_d0i3(trans);
+ }
+ #endif /* CONFIG_PM_SLEEP */
+ 
+@@ -3660,8 +3653,6 @@ struct iwl_trans *iwl_trans_pcie_alloc(struct pci_dev *pdev,
+ 						   WQ_HIGHPRI | WQ_UNBOUND, 1);
+ 	INIT_WORK(&trans_pcie->rba.rx_alloc, iwl_pcie_rx_allocator_work);
+ 
+-	trans->runtime_pm_mode = IWL_PLAT_PM_MODE_DISABLED;
+-
+ #ifdef CONFIG_IWLWIFI_DEBUGFS
+ 	trans_pcie->fw_mon_data.state = IWL_FW_MON_DBGFS_STATE_CLOSED;
+ 	mutex_init(&trans_pcie->fw_mon_data.mutex);
 -- 
 2.23.0.rc1
 
