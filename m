@@ -2,139 +2,96 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 959C697D02
-	for <lists+linux-wireless@lfdr.de>; Wed, 21 Aug 2019 16:31:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9401A980C1
+	for <lists+linux-wireless@lfdr.de>; Wed, 21 Aug 2019 18:57:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729290AbfHUObA (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 21 Aug 2019 10:31:00 -0400
-Received: from mail-pg1-f181.google.com ([209.85.215.181]:44633 "EHLO
-        mail-pg1-f181.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728608AbfHUObA (ORCPT
+        id S1728687AbfHUQzN (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 21 Aug 2019 12:55:13 -0400
+Received: from mail-lj1-f196.google.com ([209.85.208.196]:40125 "EHLO
+        mail-lj1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726696AbfHUQzN (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 21 Aug 2019 10:31:00 -0400
-Received: by mail-pg1-f181.google.com with SMTP id i18so1406269pgl.11
-        for <linux-wireless@vger.kernel.org>; Wed, 21 Aug 2019 07:31:00 -0700 (PDT)
+        Wed, 21 Aug 2019 12:55:13 -0400
+Received: by mail-lj1-f196.google.com with SMTP id e27so2812284ljb.7
+        for <linux-wireless@vger.kernel.org>; Wed, 21 Aug 2019 09:55:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
+        d=chromium.org; s=google;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc:content-transfer-encoding;
-        bh=0VnRFh7HJ8ewHwMiT+1D9/Ktnse6AXEoOJSlUdW0veI=;
-        b=kQcx7ZJmtRk9bMYoYOagPayWGFtKyM0G5HkDOOukJZ+b7j3FsaVfOXL6b8PNpUh7jI
-         ABJjkKRvEb21W5JtCDxe9E5lxCaJToE7WRg9qiJgkRgUXi0s7+EA5gCYk40Xut8I7q+t
-         jiYMNv0PmjocNHG/QXtKAfSoLkATGb2eu2/XzZeJDsDXXnRHbnv0p298CNICthIxcsCk
-         11QLVYFjH8GAqiggO3syxGTIOCU0q6ZjTlKlgHcBdkhJD8TnB4ggqsBh4qIOazOrHbor
-         haWZlLdo/Vs59k6Wo0V8vTChr6N/2Kv3vo6YJfZgLqbrp8awqC/IJkv1oIrFoI2LREZe
-         dN4g==
+         :cc;
+        bh=fC+xVlvgXST1/NQH//ytY3s0lRg4O2zmw3CO7A9igoE=;
+        b=PFdpxL5seBUCI3yKCgNoc+5iwrFx1oO7MixJbwzFHyRUUiafibbcrl1sIveU2Bd+5o
+         ySd/Keng9axup1SAclUnwknR8hhFRzuYR/2qZ2/e/atDI4co98OKbSV2ND/YtKqDqs9w
+         1Kr24gxT44zDWYxM3y15P1y4xwb1RnW00j5Kc=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=0VnRFh7HJ8ewHwMiT+1D9/Ktnse6AXEoOJSlUdW0veI=;
-        b=bfPTwt+ql+dPbYA0ftKdZAh3yi7PTrHryhQaQyBvLCbPNRBGJ+CyfFmzynxtgzKB+n
-         J9xrJzX+LHC4hx6lNNCQWfOLoBodmcNYxrDsB4eFWn3l4y1Yl20uW76aNXAMTRFVrYDo
-         xoIb76uelzkj6avkJh8saVydG4sa1u8z/5nCGsGMMpSP/C8oX63AknsDN21nARC0c//Z
-         sC14+93yKvEaDaUt/IuQHSXQ/N5vf2cZlwK3Z22CdBfPAcbE48WE/PMQ0M266xbNRcht
-         r8PtzNDXWNclM044SLfh2KNkBJOY7rO2KeFvNmirdCLxrP3DeUp12ta8mLsWDa8mddVM
-         j5aQ==
-X-Gm-Message-State: APjAAAUW3laTk38+IDO4cCuGqaJJA0ZSmbT3uNBQiOep4tDAila70PGg
-        /9kGfmkKK+6Ewb1WyobW8NSp9v6+3lhUh1KYs0g=
-X-Google-Smtp-Source: APXvYqxfdN9KnslwMQmwEyeO3ZHHxfysMHlWvVDig6QSddCdvWDJh0sBvHuf4UcoUt5mRrwp4zKlDQEyMGH5xUPjrS0=
-X-Received: by 2002:a17:90a:b393:: with SMTP id e19mr300903pjr.118.1566397859730;
- Wed, 21 Aug 2019 07:30:59 -0700 (PDT)
+         :message-id:subject:to:cc;
+        bh=fC+xVlvgXST1/NQH//ytY3s0lRg4O2zmw3CO7A9igoE=;
+        b=kZ7vlMvmQNzVplUcv94rftoZ5VWInIuKFX00dmisNU2bPBPXOKH9k3njcFlgM/YEuq
+         C3/lPGh82W3JJduk4a4YhVS00+vPj6rf2pTYsBHMzbU+evFyFK9O0vCyCpCoxFBW8rTI
+         lRX5ltBRymuujWS0JP/Enzjf8IT5nX4X8Nh5iQwPLAW/+jp3l3kcrmYO9HQ2vWm7j03f
+         yJwZwBFD5uo9LSX/u89B/pp841I2gjA5bGJJs7tnPi8WbVTd/OHYAJbtIe98Ifnj5Xxs
+         6rPgQZnLM4kiT8ghh/sjaNKtAAHj5R8b/c7/F4bgshmuapdYq7yFZv0lUouYlAeRlDUh
+         rfNQ==
+X-Gm-Message-State: APjAAAXyDRQ8LROoegaafrUhxGP52LHDnFoMIKuqB31r3N66OYrxJ+Lg
+        qzD8WG/YnPk8aCF6e+n44yheU7SMwGU=
+X-Google-Smtp-Source: APXvYqy+k/8F02SCapMNP5sxZC9mujseTq0n986XCR16pGototvdyV3/VQ3KmdZDMF+ZJsPRryuThQ==
+X-Received: by 2002:a2e:9597:: with SMTP id w23mr18798306ljh.147.1566406510636;
+        Wed, 21 Aug 2019 09:55:10 -0700 (PDT)
+Received: from mail-lj1-f170.google.com (mail-lj1-f170.google.com. [209.85.208.170])
+        by smtp.gmail.com with ESMTPSA id j4sm3407801ljg.23.2019.08.21.09.55.09
+        for <linux-wireless@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 21 Aug 2019 09:55:10 -0700 (PDT)
+Received: by mail-lj1-f170.google.com with SMTP id h15so2785772ljg.10
+        for <linux-wireless@vger.kernel.org>; Wed, 21 Aug 2019 09:55:09 -0700 (PDT)
+X-Received: by 2002:a2e:b0e6:: with SMTP id h6mr17998911ljl.18.1566406509095;
+ Wed, 21 Aug 2019 09:55:09 -0700 (PDT)
 MIME-Version: 1.0
-References: <CAG6aBkWDyGDtWX7X0t-FjynkYxpdhpZsAv4Ysw3dKf+iEu+mig@mail.gmail.com>
- <941b807b02962fadaf738942baf1621738872723.camel@intel.com>
-In-Reply-To: <941b807b02962fadaf738942baf1621738872723.camel@intel.com>
-From:   Nigel Sollars <nsollars@gmail.com>
-Date:   Wed, 21 Aug 2019 10:30:50 -0400
-Message-ID: <CAG6aBkW09YFz4asHZkhWBUenBiT3dgb7iGXBCq8KkCM09QXjLg@mail.gmail.com>
-Subject: Re: [linuxwifi] Intel Centrino Ultimate N 6300 regression
-To:     Luciano Coelho <luciano.coelho@intel.com>
-Cc:     linuxwifi@intel.com, linux-wireless@vger.kernel.org
+References: <CAAooHFeLWrY_wmCp-HWqygh8gnKsfpoPCky7SykOBKZgXkb8OQ@mail.gmail.com>
+ <20190403210200.GA93453@google.com> <211816ff03cf188d834a21b1fbc98b4f8c5b81f4.camel@sipsolutions.net>
+ <CA+ASDXOyXb0dPGOrjQR7C-b6dyftiZhkta3cwG28B9sC5wxHxQ@mail.gmail.com>
+ <7687225C-D965-479E-BAE8-769B0AEADD76@holtmann.org> <CA+ASDXNC0hwFzSTvZmUq-B7r_H+pZ3N=p_kjfMqKb1gftsmDKw@mail.gmail.com>
+ <7CCE8D56-9E1A-4E04-9C28-E384C1B2E2EA@holtmann.org>
+In-Reply-To: <7CCE8D56-9E1A-4E04-9C28-E384C1B2E2EA@holtmann.org>
+From:   Brian Norris <briannorris@chromium.org>
+Date:   Wed, 21 Aug 2019 09:54:57 -0700
+X-Gmail-Original-Message-ID: <CA+ASDXPhX3Yet=dJn8Pet_inP1uyueFZqBmuNXvmTrjv1r497g@mail.gmail.com>
+Message-ID: <CA+ASDXPhX3Yet=dJn8Pet_inP1uyueFZqBmuNXvmTrjv1r497g@mail.gmail.com>
+Subject: Re: Flag for detecting 802.11r Fast BSS Transition support
+To:     Marcel Holtmann <marcel@holtmann.org>
+Cc:     Johannes Berg <johannes@sipsolutions.net>,
+        Matthew Wang <matthewmwang@google.com>,
+        linux-wireless <linux-wireless@vger.kernel.org>,
+        Kirtika Ruchandani <kirtika@google.com>,
+        Jouni Malinen <j@w1.fi>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Thanks for the feedback I will look into this and report my findings,
-to answer your question, yes I can build a kernel to do this testing.
+On Sat, Aug 17, 2019 at 6:40 AM Marcel Holtmann <marcel@holtmann.org> wrote:
+> And if you have a distribution or an OEM that cares, then that is what is going to happen.
 
-I will also update my Redhat Bug Ticket with this information also
+I can see where you might not be particularly sympathetic to this
+concern, but where I re-started this thread, I added in Jouni, due to
+his mention of:
 
-Regards
-Nigel Sollars
+"There are such drivers [supporting FT] especially in number of
+Android devices and I'd
+rather not break those use cases.." [1]
 
-On Wed, Aug 21, 2019 at 2:08 AM Luciano Coelho <luciano.coelho@intel.com> w=
-rote:
->
-> Hi Nigel,
->
-> Unfortunately we don't actively support these old devices anymore, though=
- we try to help as much as we can.
->
-> This error is -EINVAL, which means that the driver is not recognizing a p=
-arameter passed to it. It's hard to tell exactly what is causing that witho=
-ut further investigation. Are you able to compile the kernel and do some te=
-sts? One way you could do it is to replace the -EINVAL with a line number, =
-so we can try to see where the invalid parameter error is coming from. Doin=
-g something like this: http://pastebin.coelho.fi/03fa29d951db5405.txt
->
-> Then the returned error should correspond to a line number on the driver.
->
-> Another thing you could try is to bisect the kernel between the last know=
-n good version and the one that fails. To do that you should try to find a =
-newer kernel than 4.15 that works, preferrably as close to 5.1 as possible.
->
-> HTH.
->
-> --
-> Cheers,
-> Luca.
->
->
-> On Thu, 2019-08-08 at 10:42 -0400, Nigel Sollars wrote:
->
-> Hi,
->
-> So I have been trying to reach out in aim to get this driver fixed as its=
- regressed now to a total non working state.
->
-> The card can see access points, but thats about as good as it gets as try=
-ing to connect to any networks ( either 2.4 ot 5 Ghz ) results in the follo=
-wing,
->
->   wlp3s0: CTRL-EVENT-SCAN-FAILED ret=3D-22 retry=3D1
->
-> ( alot of these ) which then resets connection status with a failed timeo=
-ut.
->
-> I am currently running FedoraCore 30 with the 5.2.5-200 kernel updated fr=
-om 5.1.x yesterday. The firmware loaded is,
->
-> loaded firmware version 9.221.4.1 build 25532 op_mode iwldvm
->
-> Now with all that said, using a Linux Mint live boot from a usb device ye=
-ilds the card working fine at both 2.4 and 5ghz speeds, it connects within =
-seconds. The kernal in this live boot is 4.15.x and uses the same firmware =
-build as my FC install.
->
-> I did see strange behavior with this card from around 4.18 to 20, thinkin=
-g the card might have developed a fault and obtained a new one. This proved=
- that this was not the case as I get the exact same behavior from both card=
-s.
->
-> Hope this information is helpful to solve quickly, please reach out for m=
-ore information if required
->
-> Thanks
-> Nige
->
+That doesn't exactly sound like a case where he's willing to break
+compatibility with older kernels in new wpa_supplicant. But maybe I
+shouldn't put words in his mouth. (On the other hand, Android systems
+are likely to not ever get either kernel *or* wpa_supplicant version
+upgrades, so maybe it's not really a problem at all!)
 
+Anyway, I'll just cook a patch, and then figure out whether/how I can
+teach wpa_supplicant to respect it. (Or, continue forking
+wpa_supplicant as we have been wont to do...)
 
---=20
-=E2=80=9CScience is a differential equation. Religion is a boundary conditi=
-on.=E2=80=9D
+Brian
 
-                           Alan Turing
+[1] http://lists.infradead.org/pipermail/hostap/2019-April/039951.html
