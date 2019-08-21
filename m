@@ -2,109 +2,103 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A0A8097225
-	for <lists+linux-wireless@lfdr.de>; Wed, 21 Aug 2019 08:17:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3286E9722E
+	for <lists+linux-wireless@lfdr.de>; Wed, 21 Aug 2019 08:20:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727931AbfHUGQe (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 21 Aug 2019 02:16:34 -0400
-Received: from dvalin.narfation.org ([213.160.73.56]:51742 "EHLO
-        dvalin.narfation.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726193AbfHUGQd (ORCPT
+        id S1727929AbfHUGUS (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 21 Aug 2019 02:20:18 -0400
+Received: from alexa-out-tai-01.qualcomm.com ([103.229.16.226]:59543 "EHLO
+        alexa-out-tai-01.qualcomm.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726484AbfHUGUS (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 21 Aug 2019 02:16:33 -0400
-Received: from bentobox.localnet (p200300C5971038EC000000000000063E.dip0.t-ipconnect.de [IPv6:2003:c5:9710:38ec::63e])
-        by dvalin.narfation.org (Postfix) with ESMTPSA id 20AB51FDA5;
-        Wed, 21 Aug 2019 06:16:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=narfation.org;
-        s=20121; t=1566368190;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=k4//DVBJlSXUGTW5ZqV7kGgLVyVIxoMGbLM0K+vEU0s=;
-        b=RC+wAhiPSvtbwpyeAG2ZTtBjr/OjQxdWTZ6uDwKtmgGk/1PDpT6VdH5wghM758ejn1Lp6t
-        7xzxVdl5O2PSmP/RvSOpB6DSisypMl8/Tw5pMVctTenw9jO6bl7WzvBLA+brGMy0y+tJyu
-        mOAv3H9O1wZKuPoCZl1NRS0NXTyzebo=
-From:   Sven Eckelmann <sven@narfation.org>
-To:     ath11k@lists.infradead.org
-Cc:     Kalle Valo <kvalo@codeaurora.org>, linux-wireless@vger.kernel.org,
-        devicetree@vger.kernel.org
-Subject: Re: [PATCH 31/49] ath11k: add mac.c
-Date:   Wed, 21 Aug 2019 08:16:27 +0200
-Message-ID: <1635460.phzPRRphLd@bentobox>
-In-Reply-To: <1566316095-27507-32-git-send-email-kvalo@codeaurora.org>
-References: <1566316095-27507-1-git-send-email-kvalo@codeaurora.org> <1566316095-27507-32-git-send-email-kvalo@codeaurora.org>
+        Wed, 21 Aug 2019 02:20:18 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
+  d=qti.qualcomm.com; i=@qti.qualcomm.com; q=dns/txt;
+  s=qcdkim; t=1566368417; x=1597904417;
+  h=from:to:cc:date:message-id:references:in-reply-to:
+   content-transfer-encoding:mime-version:subject;
+  bh=WBkZXWKm6w/uVqLAawYFur0sYNZA3WC5C6OFy6a7AnA=;
+  b=ua6E30DrXaRlL9HWWqdo4oaJBqExPCKMu6JFN+/ahSriLsGBt9rkgLVu
+   yVxGjH+OLoMSGoJ3KkbbViOFw38iW1L0N05Pp2jqfrgIThfONha/bicQ2
+   vVvFmHCrcJJWz8Ml/J7F+of2vwWGGXt9cJSmP2Wk/bFyz2O3wX04NB++f
+   s=;
+Subject: RE: [PATCH 4/7] ath10k: disable TX complete indication of htt for sdio
+Thread-Topic: [PATCH 4/7] ath10k: disable TX complete indication of htt for sdio
+Received: from ironmsg02-tai.qualcomm.com ([10.249.140.7])
+  by alexa-out-tai-01.qualcomm.com with ESMTP; 21 Aug 2019 14:20:16 +0800
+Received: from aptaiexm02f.ap.qualcomm.com ([10.249.150.16])
+  by ironmsg02-tai.qualcomm.com with ESMTP/TLS/AES256-SHA; 21 Aug 2019 14:20:11 +0800
+Received: from aptaiexm02f.ap.qualcomm.com (10.249.150.16) by
+ aptaiexm02f.ap.qualcomm.com (10.249.150.16) with Microsoft SMTP Server (TLS)
+ id 15.0.1473.3; Wed, 21 Aug 2019 14:20:09 +0800
+Received: from aptaiexm02f.ap.qualcomm.com ([fe80::4152:1436:e436:faa1]) by
+ aptaiexm02f.ap.qualcomm.com ([fe80::4152:1436:e436:faa1%19]) with mapi id
+ 15.00.1473.005; Wed, 21 Aug 2019 14:20:09 +0800
+From:   Wen Gong <wgong@qti.qualcomm.com>
+To:     =?iso-8859-1?Q?Toke_H=F8iland-J=F8rgensen?= <toke@redhat.com>,
+        Wen Gong <wgong@codeaurora.org>,
+        "ath10k@lists.infradead.org" <ath10k@lists.infradead.org>
+CC:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+Thread-Index: AQHVV1IyEev87vakM0G2WVqJ6I35M6cFHQig
+Date:   Wed, 21 Aug 2019 06:20:09 +0000
+Message-ID: <00992d0991704b0fae73a500bb2eb504@aptaiexm02f.ap.qualcomm.com>
+References: <1566302108-18219-1-git-send-email-wgong@codeaurora.org>
+ <1566302108-18219-5-git-send-email-wgong@codeaurora.org>
+ <87blwkt480.fsf@toke.dk>
+In-Reply-To: <87blwkt480.fsf@toke.dk>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-ms-exchange-transport-fromentityheader: Hosted
+x-originating-ip: [10.80.80.8]
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="nextPart2661494.foTVnLV1sx"; micalg="pgp-sha512"; protocol="application/pgp-signature"
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=narfation.org;
-        s=20121; t=1566368190;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=k4//DVBJlSXUGTW5ZqV7kGgLVyVIxoMGbLM0K+vEU0s=;
-        b=s6tBhDL6MOTBzrc7Nob2aQpCEYHBKeTuhP/Vh01hxjEPhF+fyPVrfClgEdHVHmpwHzPI9A
-        F8S5naZNTdvOkEV0Qz4BVfDGRJkyvhGAd8/R/EOxxbv1a5aVqqaNvY3tRhaCKph4XvKsTZ
-        1TznsXH+FKbpDQzWhvQMe+qh12ti6Bw=
-ARC-Seal: i=1; s=20121; d=narfation.org; t=1566368190; a=rsa-sha256;
-        cv=none;
-        b=A2muYssPS2gHpC7ZUulw62vCxEty0lZbBCorb1sBT2IK8VJ/qLwTfw3aHr8xHiXvveBtB8
-        DTRVXnFQpNv8RF02ikaS2mHsE6Mczct72+YxpjYVFmSDognVUhcKYwRdpVSBhenIsspnr8
-        NOvIMuUkcNS/Ll/+41b762BqU1vm/CE=
-ARC-Authentication-Results: i=1;
-        dvalin.narfation.org;
-        auth=pass smtp.auth=sven smtp.mailfrom=sven@narfation.org
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
---nextPart2661494.foTVnLV1sx
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="us-ascii"
-
-On Tuesday, 20 August 2019 17:47:57 CEST Kalle Valo wrote:
-> +static void ath11k_peer_assoc_h_rates(struct ath11k *ar,
-> +                                     struct ieee80211_vif *vif,
-> +                                     struct ieee80211_sta *sta,
-> +                                     struct peer_assoc_params *arg)
-> +{
-> +       struct ath11k_vif *arvif = (void *)vif->drv_priv;
-> +       struct wmi_rate_set_arg *rateset = &arg->peer_legacy_rates;
-> +       struct cfg80211_chan_def def;
-> +       const struct ieee80211_supported_band *sband;
-> +       const struct ieee80211_rate *rates;
-> +       enum nl80211_band band;
-> +       u32 ratemask;
-> +       u8 rate;
-
-rate has to be u32 [1].
-
-Kind regards,
-	Sven
-
-[1] https://patchwork.kernel.org/patch/11089507/
---nextPart2661494.foTVnLV1sx
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: This is a digitally signed message part.
-Content-Transfer-Encoding: 7Bit
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCgAdFiEEF10rh2Elc9zjMuACXYcKB8Eme0YFAl1c4bsACgkQXYcKB8Em
-e0aLmBAAhoE9lMj0hnfUTO5uRdRLBjgzTR+CAV2Bc72Q4TRzRnt/7NoWfTrViIXW
-Q0MepQ/3Hs6bZc0s+IOqIEduGCGRNrJcbc6q6HlkmcYQmqfkC7cbfnZyzhDZFOLM
-0HbG2wTomoKEJqshc0aDMjaV3N4i6Tj5em590kUktfYTLHoZFJs4G7AdAnIC9nB7
-Kij4lbg6zmOemuenkT0LV/6D3RVjJr0MkcGNd3jsRFgdtCZCJf/5EtVu5goMASSz
-yGwcnTBrp9kaXRp2XRw4j5FO8oogMxXl77neGvnrUHG9mUF23ke+5Dr6X9wOrnpe
-m6zd2RI/2L1E8tKUMUnm7BaJhmqOtJaE6Jd8jcFjptHo8EUe6tr1ZkC7E46xFCER
-fhOqsULieRZDBDLpuhTWCTYip7OO8E842GDTvyD3SWUCbaFVOzF9ttolvvqLKMfB
-V5ntQ5KfyWB9q+3NMNMvqCQqVZnUnTVK2QvDt3JHC6uhqoZiyFGTy3RVFdBVr06x
-g24bg/lEXSTV4nMFUzMlJ+9upRZ3q0H1l6x4bPfWdZNdow/jzuhejvyXv/NTQujR
-iGCb9BPWictQ8QAfZI/FJdrJehlsUe68pQIstiKXVSGKGUzuhYnOhmr4q+yfuYsj
-vC7uBwgqDsGEH2mzGYATTcU04cE2W7XOCckFk9pGO2UOaQIcMrY=
-=8elU
------END PGP SIGNATURE-----
-
---nextPart2661494.foTVnLV1sx--
-
-
-
+> -----Original Message-----
+> From: ath10k <ath10k-bounces@lists.infradead.org> On Behalf Of Toke
+> H=F8iland-J=F8rgensen
+> Sent: Tuesday, August 20, 2019 8:24 PM
+> To: Wen Gong <wgong@codeaurora.org>; ath10k@lists.infradead.org
+> Cc: linux-wireless@vger.kernel.org
+> Subject: [EXT] Re: [PATCH 4/7] ath10k: disable TX complete indication of =
+htt
+> for sdio
+>=20
+> Wen Gong <wgong@codeaurora.org> writes:
+>=20
+> > Tx complete message from firmware cost bus bandwidth of sdio, and bus
+> > bandwidth is the bollteneck of throughput, it will effect the bandwidth
+> > occupancy of data packet of TX and RX.
+> >
+> > This patch disable TX complete indication from firmware for htt data
+> > packet, it results in significant performance improvement on TX path.
+>=20
+> Wait, how does that work? Am I understanding it correctly that this
+> replaces a per-packet TX completion with a periodic one sent out of
+> band?
+When this patch applied, firmware will not indicate tx complete for tx
+Data, it only indicate HTT_T2H_MSG_TYPE_TX_CREDIT_UPDATE_IND,
+This htt msg will tell how many data tx complete without status(status mayb=
+e success/fail).
+>=20
+> And could you explain what the credits thing is for, please? :)
+For high latency bus chip, all the tx data's content(include ip/udp/tcp hea=
+der
+and payload) will be transfer to firmware's memory via bus.
+And firmware has limited memory for tx data, the tx data's content must
+Saved in firmware memory before it tx complete, if ath10k transfer tx
+data more than the limit, firmware will occur error. The credit is used
+to avoid ath10k exceed the limit.
+>=20
+> -Toke
+>=20
+> _______________________________________________
+> ath10k mailing list
+> ath10k@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/ath10k
