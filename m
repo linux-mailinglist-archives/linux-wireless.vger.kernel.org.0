@@ -2,87 +2,100 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 9B4B09896D
-	for <lists+linux-wireless@lfdr.de>; Thu, 22 Aug 2019 04:26:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 72E8998B85
+	for <lists+linux-wireless@lfdr.de>; Thu, 22 Aug 2019 08:44:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730825AbfHVC0P (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 21 Aug 2019 22:26:15 -0400
-Received: from rtits2.realtek.com ([211.75.126.72]:41467 "EHLO
-        rtits2.realtek.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728822AbfHVC0P (ORCPT
+        id S1731786AbfHVGon (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 22 Aug 2019 02:44:43 -0400
+Received: from paleale.coelho.fi ([176.9.41.70]:37996 "EHLO
+        farmhouse.coelho.fi" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
+        with ESMTP id S1725710AbfHVGom (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 21 Aug 2019 22:26:15 -0400
-Authenticated-By: 
-X-SpamFilter-By: BOX Solutions SpamTrap 5.62 with qID x7M2Q6rF009795, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (RTITCAS12.realtek.com.tw[172.21.6.16])
-        by rtits2.realtek.com.tw (8.15.2/2.57/5.78) with ESMTPS id x7M2Q6rF009795
-        (version=TLSv1 cipher=DHE-RSA-AES256-SHA bits=256 verify=NOT);
-        Thu, 22 Aug 2019 10:26:06 +0800
-Received: from RTITMBSVM04.realtek.com.tw ([fe80::e404:880:2ef1:1aa1]) by
- RTITCAS12.realtek.com.tw ([::1]) with mapi id 14.03.0439.000; Thu, 22 Aug
- 2019 10:26:06 +0800
-From:   Tony Chuang <yhchuang@realtek.com>
-To:     Brian Norris <briannorris@chromium.org>
-CC:     "kvalo@codeaurora.org" <kvalo@codeaurora.org>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "jano.vesely@gmail.com" <jano.vesely@gmail.com>
-Subject: RE: [PATCH] rtw88: pci: enable MSI interrupt
-Thread-Topic: [PATCH] rtw88: pci: enable MSI interrupt
-Thread-Index: AQHVRsz7S+hWGWZ+/EW68pA5j53xh6bjDjWAgADwiMCADQCTAIAUcNlQ
-Date:   Thu, 22 Aug 2019 02:26:05 +0000
-Message-ID: <F7CD281DE3E379468C6D07993EA72F84D18A6A16@RTITMBSVM04.realtek.com.tw>
-References: <1564487414-9615-1-git-send-email-yhchuang@realtek.com>
- <20190730195703.GA224792@google.com>
- <F7CD281DE3E379468C6D07993EA72F84D18855BB@RTITMBSVM04.realtek.com.tw>
- <CA+ASDXPFVHaXM_5VtWNeTW8mPSZi6EX9JYoJRn4RTygA6iKQpg@mail.gmail.com>
-In-Reply-To: <CA+ASDXPFVHaXM_5VtWNeTW8mPSZi6EX9JYoJRn4RTygA6iKQpg@mail.gmail.com>
-Accept-Language: zh-TW, en-US
-Content-Language: zh-TW
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [172.21.68.183]
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+        Thu, 22 Aug 2019 02:44:42 -0400
+Received: from [91.156.6.193] (helo=redipa)
+        by farmhouse.coelho.fi with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+        (Exim 4.92)
+        (envelope-from <luca@coelho.fi>)
+        id 1i0gpo-0003BT-2q; Thu, 22 Aug 2019 09:44:39 +0300
+Message-ID: <ef088cbd8b18d10ffe3e5ced20f2457430c1bd52.camel@coelho.fi>
+From:   Luca Coelho <luca@coelho.fi>
+To:     Jonas Hahnfeld <hahnjo@hahnjo.de>, kvalo@codeaurora.org
+Cc:     linux-wireless@vger.kernel.org
+Date:   Thu, 22 Aug 2019 09:44:34 +0300
+In-Reply-To: <8402552457c387269d3e535b5f2ef42159e17f91.camel@hahnjo.de>
+References: <20190720102545.5952-1-luca@coelho.fi>
+         <20190720102545.5952-17-luca@coelho.fi>
+         <8402552457c387269d3e535b5f2ef42159e17f91.camel@hahnjo.de>
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.30.5-1.1 
 MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on farmhouse.coelho.fi
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.9 required=5.0 tests=ALL_TRUSTED,BAYES_00,
+        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.2
+Subject: Re: [PATCH 16/16] iwlwifi: mvm: fix version check for
+ GEO_TX_POWER_LIMIT support
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-DQoNCj4gT24gQmVoYWxmIE9mIEJyaWFuIE5vcnJpcw0KPiBPbiBUaHUsIEF1ZyAxLCAyMDE5IGF0
-IDI6MjEgQU0gVG9ueSBDaHVhbmcgPHloY2h1YW5nQHJlYWx0ZWsuY29tPg0KPiB3cm90ZToNCj4g
-PiA+IFN1YmplY3Q6IFJlOiBbUEFUQ0hdIHJ0dzg4OiBwY2k6IGVuYWJsZSBNU0kgaW50ZXJydXB0
-DQo+ID4gPiBPbiBUdWUsIEp1bCAzMCwgMjAxOSBhdCAwNzo1MDoxNFBNICswODAwLCB5aGNodWFu
-Z0ByZWFsdGVrLmNvbQ0KPiB3cm90ZToNCj4gPiA+ID4gLS0tIGEvZHJpdmVycy9uZXQvd2lyZWxl
-c3MvcmVhbHRlay9ydHc4OC9wY2kuYw0KPiA+ID4gPiArKysgYi9kcml2ZXJzL25ldC93aXJlbGVz
-cy9yZWFsdGVrL3J0dzg4L3BjaS5jDQo+ID4gPiA+IEBAIC04NzQsNiArODc4LDcgQEAgc3RhdGlj
-IGlycXJldHVybl90IHJ0d19wY2lfaW50ZXJydXB0X2hhbmRsZXIoaW50DQo+IGlycSwNCj4gPiA+
-IHZvaWQgKmRldikNCj4gPiA+ID4gICAgIGlmICghcnR3cGNpLT5pcnFfZW5hYmxlZCkNCj4gPiA+
-ID4gICAgICAgICAgICAgZ290byBvdXQ7DQo+ID4gPiA+DQo+ID4gPiA+ICsgICBydHdfcGNpX2Rp
-c2FibGVfaW50ZXJydXB0KHJ0d2RldiwgcnR3cGNpKTsNCj4gPiA+DQo+ID4gPiBXaHkgZXhhY3Rs
-eSBkbyB5b3UgaGF2ZSB0byBtYXNrIGludGVycnVwdHMgZHVyaW5nIHRoZSBJU1I/IElzIHRoZXJl
-IGENCj4gPiA+IHJhY2UgaW4gcnR3X3BjaV9pcnFfcmVjb2duaXplZCgpIG9yIHNvbWV0aGluZz8N
-Cj4gPg0KPiA+DQo+ID4gSSB0aGluayB0aGVyZSBpcyBhIHJhY2UgYmV0d2VlbiBTVyBhbmQgSFcs
-IGlmIHdlIGRvIG5vdCBzdG9wIHRoZQ0KPiA+IElSUSBmaXJzdCwgd3JpdGUgMSBjbGVhciB3aWxs
-IG1ha2UgdGhlIGludGVycnVwdCB0byBiZSBsb3N0Lg0KPiANCj4gVGhpcyBkb2Vzbid0IG5lZWQg
-dG8gc2xvdyBkb3duIHRoaXMgcGF0Y2ggKEkgdGhpbmsgdjIgaXMgZmluZSksIGJ1dCBJDQo+IHN0
-aWxsIGRvbid0IHF1aXRlIHVuZGVyc3RhbmQuIEJlZm9yZSB0aGlzIGFkZGl0aW9uLCB0aGUgc2Vx
-dWVuY2UgaXM6DQo+IChhKSByZWFkIG91dCB5b3VyIElSUSBzdGF0dXMNCj4gKGIpIGFjayB0aGUg
-dW4tbWFza2VkIElSUXMgeW91IHNlZQ0KPiAoYykgb3BlcmF0ZSBvbiB0aG9zZSBJUlFzDQo+IA0K
-PiBFdmVuIGlmIGEgbmV3IElSUSBjb21lcyBpbiB0aGUgbWlkZGxlIG9mIChiKSwgc2hvdWxkbid0
-IGl0IGJlDQo+IHN1ZmZpY2llbnQgdG8gbW92ZSBvbiB0byAoYyksIHdoZXJlIHlvdSdyZSBzdGls
-bCBwcmVwYXJlZCB0byBoYW5kbGUNCj4gdGhhdCBJUlE/DQo+IA0KPiBPciBpZiB0aGUgSVJRIGNv
-bWVzIGFmdGVyIChiKSwgeW91IHdvbid0IEFDSyBpdCwgYW5kIHlvdSBzaG91bGQNCj4gaW1tZWRp
-YXRlbHkgZ2V0IGEgbmV3IElSUSBhZnRlciB5b3UgcmV0dXJuPw0KDQpJIHRoaW5rIGl0J3MgYmVj
-YXVzZSB0aGF0IE1TSSBpbnRlcnJ1cHRzIGFyZSBlZGdlLXRyaWdnZXJlZC4NCklmIHRoZSBpbnRl
-cnJ1cHQgY29tZXMgd2hlbiBJUlEgaXMgYmVpbmcgcHJvY2Vzc2VkLCB0aGUgaW50ZXJydXB0IHdv
-bid0IGJlIHJlY2VpdmVkLg0KSWYgdGhlIGludGVycnVwdCBpcyBub3QgcmVjZWl2ZWQsIHRoZSBp
-bnRlcnJ1cHQgd29uJ3QgYmUgV3JpdGUtMS1DbGVhcmVkLCBhbmQgd29uJ3QgYmUgZmlyZWQgYWdh
-aW4uDQoNClNvIGRyaXZlciBzaG91bGQgZGlzYWJsZSB0aGUgaW50ZXJydXB0IHVudGlsIHRoZSBJ
-U1JzIGFyZSBkb25lLg0KDQo+IA0KPiBJIGd1ZXNzIHRoYXQncyBhc3N1bWluZyB0aGF0IHRoZXNl
-IHJlZ2lzdGVycyBhcmUgV3JpdGUgMSB0byBDbGVhci4gQnV0DQo+IGlmIHNvLCB0aGF0IG1lYW5z
-IHJ0d19wY2lfaXJxX3JlY29nbml6ZWQoKSBpcyBlZmZlY3RpdmVseSBhdG9taWMsIG5vPw0KPiAN
-Cj4gQWxzbywgc29tZXdoYXQgdW5yZWxhdGVkOiBidXQgd2h5IGRvIHlvdSB1bm1hc2sgSElNUjEs
-IHdoZW4geW91J3JlIG5vdA0KPiBhY3R1YWxseSBoYW5kbGluZyBhbnkgb2YgaXRzIElSUSBiaXRz
-Pw0KDQpXZSBjb3VsZCB1c2UgSElNUjEsIGp1c3Qgbm90IGhhbmRsaW5nIGFueSBvZiB0aGVtIG5v
-dyA6KQ0KDQo+IA0KPiBCcmlhbg0KPiANCg0KWWFuLUhzdWFuDQo=
+On Thu, 2019-08-01 at 16:07 +0200, Jonas Hahnfeld wrote:
+> Am Samstag, den 20.07.2019, 13:25 +0300 schrieb Luca Coelho:
+> > From: Luca Coelho <
+> > luciano.coelho@intel.com
+> > 
+> > We erroneously added a check for FW API version 41 before sending
+> > GEO_TX_POWER_LIMIT, but this was already implemented in version 38.
+> > Additionally, it was cherry-picked to older versions, namely 17, 26
+> > and 29, so check for those as well.
+> > 
+> > Signed-off-by: Luca Coelho <
+> > luciano.coelho@intel.com
+> > ---
+> >  drivers/net/wireless/intel/iwlwifi/mvm/fw.c | 9 +++++++--
+> >  1 file changed, 7 insertions(+), 2 deletions(-)
+> > 
+> > diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/fw.c b/drivers/net/wireless/intel/iwlwifi/mvm/fw.c
+> > index a837cf40afde..00c89bcfdf6a 100644
+> > --- a/drivers/net/wireless/intel/iwlwifi/mvm/fw.c
+> > +++ b/drivers/net/wireless/intel/iwlwifi/mvm/fw.c
+> > @@ -886,9 +886,14 @@ static bool iwl_mvm_sar_geo_support(struct iwl_mvm *mvm)
+> >  	 * The GEO_TX_POWER_LIMIT command is not supported on earlier
+> >  	 * firmware versions.  Unfortunately, we don't have a TLV API
+> >  	 * flag to rely on, so rely on the major version which is in
+> > -	 * the first byte of ucode_ver.
+> > +	 * the first byte of ucode_ver.  This was implemented
+> > +	 * initially on version 38 and then backported to 36, 29 and
+> > +	 * 17.
+> >  	 */
+> > -	return IWL_UCODE_SERIAL(mvm->fw->ucode_ver) >= 41;
+> > +	return IWL_UCODE_SERIAL(mvm->fw->ucode_ver) >= 38 ||
+> > +	       IWL_UCODE_SERIAL(mvm->fw->ucode_ver) == 36 ||
+> > +	       IWL_UCODE_SERIAL(mvm->fw->ucode_ver) == 29 ||
+> > +	       IWL_UCODE_SERIAL(mvm->fw->ucode_ver) == 17;
+> >  }
+> >  
+> >  int iwl_mvm_get_sar_geo_profile(struct iwl_mvm *mvm)
+> 
+> After pulling iwlwifi-fixes-for-kvalo-2019-07-30, I still get firmware
+> crashes on my "Intel(R) Dual Band Wireless AC 8260" which uses firmware
+> version 36. I tried the latest ucode in linux-firmware (36.77d01142.0),
+> but it seems GEO_TX_POWER_LIMIT is not yet implemented there.
+> 
+> Could you let me know which firmware version I need for Linux 5.3? Can
+> there be a check in iwl_mvm_sar_geo_support() that the backported
+> support is indeed available?
+
+We have some issues detecting whether the FW supports this command or
+not.  There is already a bugzilla[1] for this (and a bunch of
+duplicates), so let's track it there.
+
+https://bugzilla.kernel.org/show_bug.cgi?id=204151
+
+
+--
+Cheers,
+Luca.
+
