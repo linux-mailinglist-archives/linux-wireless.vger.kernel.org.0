@@ -2,36 +2,40 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2CB5898BB3
-	for <lists+linux-wireless@lfdr.de>; Thu, 22 Aug 2019 08:54:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C3FB898BDC
+	for <lists+linux-wireless@lfdr.de>; Thu, 22 Aug 2019 08:58:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728493AbfHVGvY (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 22 Aug 2019 02:51:24 -0400
-Received: from mga02.intel.com ([134.134.136.20]:41293 "EHLO mga02.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728275AbfHVGvX (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 22 Aug 2019 02:51:23 -0400
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from fmsmga002.fm.intel.com ([10.253.24.26])
-  by orsmga101.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 21 Aug 2019 23:51:23 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.64,415,1559545200"; 
-   d="scan'208";a="208030984"
-Received: from pkacprow-mobl.ger.corp.intel.com ([10.252.30.96])
-  by fmsmga002.fm.intel.com with ESMTP; 21 Aug 2019 23:51:22 -0700
-Message-ID: <146b04a490e9e742b76cf7a4f259ef06bbaedd7f.camel@intel.com>
-Subject: Re: Regression with the latest iwlwifi 9260 and Canon Point firmware
-From:   Luciano Coelho <luciano.coelho@intel.com>
-To:     Peter Robinson <pbrobinson@gmail.com>
-Cc:     linux-wireless@vger.kernel.org
-Date:   Thu, 22 Aug 2019 09:51:21 +0300
-In-Reply-To: <a5b555a03f97a73064bd5d7927dd16379642baa0.camel@intel.com>
-References: <CALeDE9Mwtm8fVMm6Ce99aju=UqPPSaZWQR+zZtJodENZ6_m+_Q@mail.gmail.com>
-         <a5b555a03f97a73064bd5d7927dd16379642baa0.camel@intel.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+        id S1731156AbfHVG6v (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 22 Aug 2019 02:58:51 -0400
+Received: from s3.sipsolutions.net ([144.76.43.62]:56364 "EHLO
+        sipsolutions.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1731064AbfHVG6u (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 22 Aug 2019 02:58:50 -0400
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <johannes@sipsolutions.net>)
+        id 1i0h3X-0000g0-Qr; Thu, 22 Aug 2019 08:58:47 +0200
+Message-ID: <a4df85e6c9ff221e89b970ecf3c39960f2b4cd56.camel@sipsolutions.net>
+Subject: Re: Implementing Mikrotik IE
+From:   Johannes Berg <johannes@sipsolutions.net>
+To:     Josef Miegl <josef@miegl.cz>,
+        Sebastian Gottschall <s.gottschall@newmedia-net.de>
+Cc:     linux-wireless <linux-wireless@vger.kernel.org>
+Date:   Thu, 22 Aug 2019 08:58:47 +0200
+In-Reply-To: <E28FAC24-4B21-48FB-A010-770BCEF4CCA1@miegl.cz>
+References: <20190815152844.k5mmddvbwrohkzr6@pepin-laptop.localdomain>
+         <3a079683-6f57-3b42-f909-90c46e14f14f@newmedia-net.de>
+         <20190816111044.4ntizgmpa3twbzcg@pepin-laptop.localdomain>
+         <e8129acb-fc32-c85c-b504-ab8777a3f1a3@newmedia-net.de>
+         <20190816113818.ohktykc4fyetzyvq@pepin-laptop.localdomain>
+         <9985fddfb059640f36665efc9c1ef2dc0bdb7662.camel@sipsolutions.net>
+         <b8009787-a182-d5f2-6dde-ee540c65a03b@newmedia-net.de>
+         <bb0d7dd87a7821df245919c86458bd50a3d1a81e.camel@sipsolutions.net>
+         <8ec8202e-ca07-3594-5873-5b282d553711@newmedia-net.de>
+         <E28FAC24-4B21-48FB-A010-770BCEF4CCA1@miegl.cz>
 Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.30.5-1.1 
+User-Agent: Evolution 3.30.5 (3.30.5-1.fc29) 
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
 Sender: linux-wireless-owner@vger.kernel.org
@@ -39,29 +43,34 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Thu, 2019-08-22 at 09:50 +0300, Luciano Coelho wrote:
-> On Mon, 2019-07-29 at 19:49 +0100, Peter Robinson wrote:
-> > Hi Luca,
-> > 
-> > Similar to the issues seen in the thread on [1] thje 9260 we're seeing
-> > the same reports in Fedora on both versions of the firmware [2], on
-> > both the 9260 series but also the Cannon Point-LP CNVi wifi devices as
-> > well. There's more details and dmesg output in that bug report.
-> > 
-> > Do you have an update on the issue?
+On Thu, 2019-08-22 at 01:57 +0200, Josef Miegl wrote:
+> On August 20, 2019 2:36:21 PM GMT+02:00, Sebastian Gottschall <s.gottschall@newmedia-net.de> wrote:
+> > i know. thats why i never even tried to contribute it upstream. but
+> > from 
+> > hostapd side it was more complicated than just hacking mac80211
+> > and from stations a second mod for wpa_supplicant would be needed and 
+> > since the dd-wrt webgui just uses nl80211 to show the station table
+> > its more comportable and takes less code just todo it within the driver
+> > i there is special interest in it i could of course try to clean it up 
+> > and make a upstream patch out of it
 > 
-> Hi,
-> 
-> Please check this bugzilla entry:
-> 
-> https://patchwork.kernel.org/patch/11021735/
+> I don't think something like Mikrotiks IE belongs to hostapd. The
+> cleanest solution is probably parsing the IE and generating the IE for
+> hostapd with an external tool, that can the dd-wrt GUI then use. I've
+> made a simple C program for this, can share if you want.
 
-I meant this bugzilla entry:
+Sebastian was talking about yet another case - namely recording it for
+the stations, to be able to show it.
 
-https://bugzilla.kernel.org/show_bug.cgi?id=204387
+I guess hostapd could be made to just generally record *all* the
+association request IEs that a station sent and make those available
+over the control interface.
 
+Alternatively, you could have another application just listen to nl80211
+events, I guess.
 
---
-Luca.
+Or even the kernel could capture *all*, but I don't see why we'd waste
+unpageable kernel memory for it.
 
+johannes
 
