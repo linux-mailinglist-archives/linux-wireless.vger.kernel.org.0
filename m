@@ -2,80 +2,86 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 3E7299999D
-	for <lists+linux-wireless@lfdr.de>; Thu, 22 Aug 2019 18:55:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5F10D99E2C
+	for <lists+linux-wireless@lfdr.de>; Thu, 22 Aug 2019 19:49:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732387AbfHVQzP (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 22 Aug 2019 12:55:15 -0400
-Received: from s3.sipsolutions.net ([144.76.43.62]:36666 "EHLO
-        sipsolutions.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728080AbfHVQzP (ORCPT
+        id S2393220AbfHVRs0 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 22 Aug 2019 13:48:26 -0400
+Received: from mail-pg1-f193.google.com ([209.85.215.193]:33004 "EHLO
+        mail-pg1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2393217AbfHVRsW (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 22 Aug 2019 12:55:15 -0400
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <johannes@sipsolutions.net>)
-        id 1i0qMh-0003xQ-PO; Thu, 22 Aug 2019 18:55:12 +0200
-Message-ID: <fe3e6a33692a07d15287800749b688e796c43f9a.camel@sipsolutions.net>
-Subject: Re: [PATCH] bcma: fix incorrect update of BCMA_CORE_PCI_MDIO_DATA
-From:   Johannes Berg <johannes@sipsolutions.net>
-To:     Colin King <colin.king@canonical.com>,
-        Hauke Mehrtens <hauke@hauke-m.de>,
-        =?UTF-8?Q?Rafa=C5=82_Mi=C5=82ecki?= <zajec5@gmail.com>,
-        linux-wireless@vger.kernel.org
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Date:   Thu, 22 Aug 2019 18:55:07 +0200
-In-Reply-To: <20190822133524.6274-1-colin.king@canonical.com> (sfid-20190822_153601_850332_39AACB50)
-References: <20190822133524.6274-1-colin.king@canonical.com>
-         (sfid-20190822_153601_850332_39AACB50)
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.30.5 (3.30.5-1.fc29) 
+        Thu, 22 Aug 2019 13:48:22 -0400
+Received: by mail-pg1-f193.google.com with SMTP id n190so4100433pgn.0
+        for <linux-wireless@vger.kernel.org>; Thu, 22 Aug 2019 10:48:21 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=aKPaTzLWDYHVrXr9xDJMJ0YlW1PawE9mWGi+KiPZfk4=;
+        b=fRfhrMA61H6irTDGq+QNDBg7D/WfWx6Aa7Ry6MaNiZ5jo8Ao7ORFSCjqwXoE9PGvkc
+         nnUTPsSgPK1kwHFnLVdRLxmv4ZtxNrw7F6i7nY5dKPHFlD039ZdQtJPiBxGo2P/k9nYm
+         QxOU5Y6gjKYKCQKdmtk+qw1HRBjedVFZX5sSo=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=aKPaTzLWDYHVrXr9xDJMJ0YlW1PawE9mWGi+KiPZfk4=;
+        b=e3rytVbYvpZlK+s4SA/ps40CTM6D5x4SUPM8Hp5vP+UvJI7aqPY5ciLWCKcE8L3oay
+         U1erG0r3TygRn/xZCOMIIEdrFefTbl3YBRUbjd4ci4CMoCdcH2r2Nn85n5TxFIa/N92V
+         3yZUF3NKAWejiY0C3KOzk4JYUeLGsFkenyZuFjwmJc41s7WAdCGwR7SQBSs9e5Gh/r6k
+         uk8+08mobAvphlvmE52NUqDHNY8k/wVY8ZJrwV12n0yCIHFIMUclqCOFgIuEkyIi0jQY
+         Sk1pmQMgDbFXN/CDzVM7qeHokGxMuumgMTIRsLYmR07SGExzQTksUvOk+jwtdoSOJcm8
+         GYTA==
+X-Gm-Message-State: APjAAAVn2P6eh5D+D3/i4nyJW3Zm4khN5pBG1O6EAvhkvdSR66S0hybh
+        EZtuvIY8HQlcTIj41UOMFVkVF4VheHU=
+X-Google-Smtp-Source: APXvYqyABwKNcJpe0wLJVSYK7zv+DWUUI9QzW8L3iG7a6vg6E5gDC+/cfX9TidXavQMb+eYaKUhDcw==
+X-Received: by 2002:a17:90a:d149:: with SMTP id t9mr937055pjw.58.1566496101340;
+        Thu, 22 Aug 2019 10:48:21 -0700 (PDT)
+Received: from localhost ([2620:15c:202:201:2b10:8627:31e7:c5ec])
+        by smtp.gmail.com with ESMTPSA id m37sm8943184pjb.0.2019.08.22.10.48.20
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Thu, 22 Aug 2019 10:48:20 -0700 (PDT)
+From:   Matthew Wang <matthewmwang@chromium.org>
+To:     johannes@sipsolutions.net
+Cc:     davem@davemloft.net, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Matthew Wang <matthewmwang@chromium.org>
+Subject: [PATCH] nl80211: add NL80211_CMD_UPDATE_FT_IES to supported commands
+Date:   Thu, 22 Aug 2019 10:48:06 -0700
+Message-Id: <20190822174806.2954-1-matthewmwang@chromium.org>
+X-Mailer: git-send-email 2.23.0.187.g17f5b7556c-goog
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Thu, 2019-08-22 at 14:35 +0100, Colin King wrote:
-> From: Colin Ian King <colin.king@canonical.com>
-> 
-> An earlier commit re-worked the setting of the bitmask and is now
-> assigning v with some bit flags rather than bitwise or-ing them
-> into v, consequently the earlier bit-settings of v are being lost.
-> Fix this by replacing an assignment with the bitwise or instead.
-> 
-> Addresses-Coverity: ("Unused value")
-> Fixes: 2be25cac8402 ("bcma: add constants for PCI and use them")
-> Signed-off-by: Colin Ian King <colin.king@canonical.com>
-> ---
->  drivers/bcma/driver_pci.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/bcma/driver_pci.c b/drivers/bcma/driver_pci.c
-> index f499a469e66d..d219ee947c07 100644
-> --- a/drivers/bcma/driver_pci.c
-> +++ b/drivers/bcma/driver_pci.c
-> @@ -78,7 +78,7 @@ static u16 bcma_pcie_mdio_read(struct bcma_drv_pci *pc, u16 device, u8 address)
->  		v |= (address << BCMA_CORE_PCI_MDIODATA_REGADDR_SHF_OLD);
->  	}
->  
-> -	v = BCMA_CORE_PCI_MDIODATA_START;
-> +	v |= BCMA_CORE_PCI_MDIODATA_START;
+Add NL80211_CMD_UPDATE_FT_IES to supported commands. In mac80211 drivers,
+this can be implemented via existing NL80211_CMD_AUTHENTICATE and
+NL80211_ATTR_IE, but non-mac80211 drivers have a separate command for
+this. A driver supports FT if it either is mac80211 or supports this
+command.
 
-The same bug/issue is in bcma_pcie_mdio_write() btw.
+Signed-off-by: Matthew Wang <matthewmwang@chromium.org>
+Change-Id: I93e3d09a6d949466d1aea48bff2c3ad862edccc6
+---
+ net/wireless/nl80211.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-It *seems* correct to me - otherwise the "address" parameter to the
-function is entirely unused, which can't really be right.
-
-There are only two code paths that ever get here:
- * bcma_pcicore_serdes_workaround
- * bcma_core_pci_power_save
-
-The register at 0 is BCMA_CORE_PCI_CTL, which only has a few bits so
-even bad values written there by accident might not hurt much ...
-
-So it seems possible that it was just always broken.
-
-johannes
+diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
+index fd05ae1437a9..c2f9e6b429b2 100644
+--- a/net/wireless/nl80211.c
++++ b/net/wireless/nl80211.c
+@@ -2065,6 +2065,7 @@ static int nl80211_send_wiphy(struct cfg80211_registered_device *rdev,
+ 				CMD(add_tx_ts, ADD_TX_TS);
+ 			CMD(set_multicast_to_unicast, SET_MULTICAST_TO_UNICAST);
+ 			CMD(update_connect_params, UPDATE_CONNECT_PARAMS);
++			CMD(update_ft_ies, UPDATE_FT_IES);
+ 		}
+ #undef CMD
+ 
+-- 
+2.23.0.187.g17f5b7556c-goog
 
