@@ -2,68 +2,83 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A835C98C74
-	for <lists+linux-wireless@lfdr.de>; Thu, 22 Aug 2019 09:33:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EA5FE98C7F
+	for <lists+linux-wireless@lfdr.de>; Thu, 22 Aug 2019 09:40:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730693AbfHVHdH (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 22 Aug 2019 03:33:07 -0400
-Received: from nbd.name ([46.4.11.11]:48308 "EHLO nbd.name"
+        id S1731373AbfHVHk0 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 22 Aug 2019 03:40:26 -0400
+Received: from nbd.name ([46.4.11.11]:48482 "EHLO nbd.name"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727401AbfHVHdH (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 22 Aug 2019 03:33:07 -0400
+        id S1730840AbfHVHk0 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 22 Aug 2019 03:40:26 -0400
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name;
-         s=20160729; h=References:In-Reply-To:Message-Id:Date:Subject:To:From:Sender:
-        Reply-To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:Content-ID:
-        Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-        :Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-        List-Post:List-Owner:List-Archive;
-        bh=VqjATVpTyEqs1ltrFyg6uxwkwpjsBGN9OkEqaHYMft8=; b=Lvtw+OSdjudHIAZS898qb4zeC2
-        7V8/0QmqxmkmGAeUv1kLsrBTLpMwuG8gt/Dhn43CXCDQkcGuNfmXHRXBjpWugUAbhh5LDCdctDD7m
-        7rNDSIQ/c7zeIyEa+3CipCoyI125XtfZXzu0BUyGXtcjD2QsnL+BvPHF55Ow8+nuZKSE=;
-Received: from p54ae9443.dip0.t-ipconnect.de ([84.174.148.67] helo=maeck.local)
-        by ds12 with esmtpsa (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+         s=20160729; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:
+        MIME-Version:Date:Message-ID:From:References:Cc:To:Subject:Sender:Reply-To:
+        Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+        Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+        List-Subscribe:List-Post:List-Owner:List-Archive;
+        bh=QfitXH/X5/vvMZBNG11lVot2oWAiqQGL/rIf5mq82U4=; b=PCh0dCkH9JcBcG/XnnPsaKe4F4
+        0gObWXoBIaoQHIoGdxVNQBaYzLXR2wr13QnD/1mqRkcRZCd5SoJB7+4cikfo+peUbrwexPyHzr1uH
+        40ivZDugCh+RbiobNA12IZwQcwNlrPMYGhof7YiYnr85EL7u1Pr88xs1PjEcFMVs0GI8=;
+Received: from p54ae9443.dip0.t-ipconnect.de ([84.174.148.67] helo=nf.local)
+        by ds12 with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
         (Exim 4.89)
         (envelope-from <nbd@nbd.name>)
-        id 1i0hak-0002gu-0Y
-        for linux-wireless@vger.kernel.org; Thu, 22 Aug 2019 09:33:06 +0200
-Received: by maeck.local (Postfix, from userid 501)
-        id 7494663FD13C; Thu, 22 Aug 2019 09:33:05 +0200 (CEST)
+        id 1i0hho-0002vU-SD; Thu, 22 Aug 2019 09:40:24 +0200
+Subject: Re: [PATCH 1/1] [MT76x02] [STA interface]
+To:     Balakrishna Bandi <b.balakrishna@globaledgesoft.com>,
+        lorenzo.bianconi83@gmail.com
+Cc:     linux-wireless@vger.kernel.org
+References: <1566315751-7688-1-git-send-email-b.balakrishna@globaledgesoft.com>
 From:   Felix Fietkau <nbd@nbd.name>
-To:     linux-wireless@vger.kernel.org
-Subject: [PATCH 2/2] mt76: stop rx aggregation on station removal
-Date:   Thu, 22 Aug 2019 09:33:05 +0200
-Message-Id: <20190822073305.37840-2-nbd@nbd.name>
-X-Mailer: git-send-email 2.17.0
-In-Reply-To: <20190822073305.37840-1-nbd@nbd.name>
-References: <20190822073305.37840-1-nbd@nbd.name>
+Openpgp: preference=signencrypt
+Autocrypt: addr=nbd@nbd.name; prefer-encrypt=mutual; keydata=
+ mQGiBEah5CcRBADIY7pu4LIv3jBlyQ/2u87iIZGe6f0f8pyB4UjzfJNXhJb8JylYYRzIOSxh
+ ExKsdLCnJqsG1PY1mqTtoG8sONpwsHr2oJ4itjcGHfn5NJSUGTbtbbxLro13tHkGFCoCr4Z5
+ Pv+XRgiANSpYlIigiMbOkide6wbggQK32tC20QxUIwCg4k6dtV/4kwEeiOUfErq00TVqIiEE
+ AKcUi4taOuh/PQWx/Ujjl/P1LfJXqLKRPa8PwD4j2yjoc9l+7LptSxJThL9KSu6gtXQjcoR2
+ vCK0OeYJhgO4kYMI78h1TSaxmtImEAnjFPYJYVsxrhay92jisYc7z5R/76AaELfF6RCjjGeP
+ wdalulG+erWju710Bif7E1yjYVWeA/9Wd1lsOmx6uwwYgNqoFtcAunDaMKi9xVQW18FsUusM
+ TdRvTZLBpoUAy+MajAL+R73TwLq3LnKpIcCwftyQXK5pEDKq57OhxJVv1Q8XkA9Dn1SBOjNB
+ l25vJDFAT9ntp9THeDD2fv15yk4EKpWhu4H00/YX8KkhFsrtUs69+vZQwbQcRmVsaXggRmll
+ dGthdSA8bmJkQG5iZC5uYW1lPohgBBMRAgAgBQJGoeQnAhsjBgsJCAcDAgQVAggDBBYCAwEC
+ HgECF4AACgkQ130UHQKnbvXsvgCgjsAIIOsY7xZ8VcSm7NABpi91yTMAniMMmH7FRenEAYMa
+ VrwYTIThkTlQuQINBEah5FQQCACMIep/hTzgPZ9HbCTKm9xN4bZX0JjrqjFem1Nxf3MBM5vN
+ CYGBn8F4sGIzPmLhl4xFeq3k5irVg/YvxSDbQN6NJv8o+tP6zsMeWX2JjtV0P4aDIN1pK2/w
+ VxcicArw0VYdv2ZCarccFBgH2a6GjswqlCqVM3gNIMI8ikzenKcso8YErGGiKYeMEZLwHaxE
+ Y7mTPuOTrWL8uWWRL5mVjhZEVvDez6em/OYvzBwbkhImrryF29e3Po2cfY2n7EKjjr3/141K
+ DHBBdgXlPNfDwROnA5ugjjEBjwkwBQqPpDA7AYPvpHh5vLbZnVGu5CwG7NAsrb2isRmjYoqk
+ wu++3117AAMFB/9S0Sj7qFFQcD4laADVsabTpNNpaV4wAgVTRHKV/kC9luItzwDnUcsZUPdQ
+ f3MueRJ3jIHU0UmRBG3uQftqbZJj3ikhnfvyLmkCNe+/hXhPu9sGvXyi2D4vszICvc1KL4RD
+ aLSrOsROx22eZ26KqcW4ny7+va2FnvjsZgI8h4sDmaLzKczVRIiLITiMpLFEU/VoSv0m1F4B
+ FtRgoiyjFzigWG0MsTdAN6FJzGh4mWWGIlE7o5JraNhnTd+yTUIPtw3ym6l8P+gbvfoZida0
+ TspgwBWLnXQvP5EDvlZnNaKa/3oBes6z0QdaSOwZCRA3QSLHBwtgUsrT6RxRSweLrcabiEkE
+ GBECAAkFAkah5FQCGwwACgkQ130UHQKnbvW2GgCfTKx80VvCR/PvsUlrvdOLsIgeRGAAn1ee
+ RjMaxwtSdaCKMw3j33ZbsWS4
+Message-ID: <314470a5-557e-bc96-d58a-446ebb142a57@nbd.name>
+Date:   Thu, 22 Aug 2019 09:40:24 +0200
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.14; rv:60.0)
+ Gecko/20100101 Thunderbird/60.8.0
+MIME-Version: 1.0
+In-Reply-To: <1566315751-7688-1-git-send-email-b.balakrishna@globaledgesoft.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Fixes use-after-free issues on forced station removal during hardware restart
-on MT76x02
+On 2019-08-20 17:42, Balakrishna Bandi wrote:
+> MT76-Station sends class 3 frames after deauthentication from 3rd party AP
+> (Sending BAR frame after deauth).
+> 
+> Fix to be, do not send BAR frame after deauth.
+> 
+> Signed-off-by: Balakrishna Bandi <b.balakrishna@globaledgesoft.com>
+The same issue is also present for MT7615 and MT7603, and the patch
+subject line is wrong. I will send a more complete fix
 
-Fixes: aee5b8cf2477 ("mt76: implement A-MPDU rx reordering in the driver code")
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
----
- drivers/net/wireless/mediatek/mt76/mac80211.c | 3 +++
- 1 file changed, 3 insertions(+)
+Thanks,
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mac80211.c b/drivers/net/wireless/mediatek/mt76/mac80211.c
-index aeb535204c4d..32ddbf088817 100644
---- a/drivers/net/wireless/mediatek/mt76/mac80211.c
-+++ b/drivers/net/wireless/mediatek/mt76/mac80211.c
-@@ -708,6 +708,9 @@ void __mt76_sta_remove(struct mt76_dev *dev, struct ieee80211_vif *vif,
- 	rcu_assign_pointer(dev->wcid[idx], NULL);
- 	synchronize_rcu();
- 
-+	for (i = 0; i < ARRAY_SIZE(wcid->aggr); i++)
-+		mt76_rx_aggr_stop(dev, wcid, i);
-+
- 	if (dev->drv->sta_remove)
- 		dev->drv->sta_remove(dev, vif, sta);
- 
--- 
-2.17.0
-
+- Felix
