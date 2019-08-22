@@ -2,88 +2,123 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 9731C98BEE
-	for <lists+linux-wireless@lfdr.de>; Thu, 22 Aug 2019 09:00:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3C8C098C62
+	for <lists+linux-wireless@lfdr.de>; Thu, 22 Aug 2019 09:23:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731326AbfHVHAW (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 22 Aug 2019 03:00:22 -0400
-Received: from s3.sipsolutions.net ([144.76.43.62]:56386 "EHLO
-        sipsolutions.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728605AbfHVHAV (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 22 Aug 2019 03:00:21 -0400
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <johannes@sipsolutions.net>)
-        id 1i0h51-0000jL-Nk; Thu, 22 Aug 2019 09:00:19 +0200
-Message-ID: <5ee160209eb1f9e70f6224c393389266280d7d80.camel@sipsolutions.net>
-Subject: Re: Implementing Mikrotik IE
-From:   Johannes Berg <johannes@sipsolutions.net>
-To:     Josef Miegl <josef@miegl.cz>
-Cc:     Sebastian Gottschall <s.gottschall@newmedia-net.de>,
-        linux-wireless <linux-wireless@vger.kernel.org>
-Date:   Thu, 22 Aug 2019 09:00:18 +0200
-In-Reply-To: <58A25955-2A17-4DE7-82FB-3B20E00C96EC@miegl.cz>
-References: <20190815152844.k5mmddvbwrohkzr6@pepin-laptop.localdomain>
-         <3a079683-6f57-3b42-f909-90c46e14f14f@newmedia-net.de>
-         <20190816111044.4ntizgmpa3twbzcg@pepin-laptop.localdomain>
-         <e8129acb-fc32-c85c-b504-ab8777a3f1a3@newmedia-net.de>
-         <20190816113818.ohktykc4fyetzyvq@pepin-laptop.localdomain>
-         <9985fddfb059640f36665efc9c1ef2dc0bdb7662.camel@sipsolutions.net>
-         <20190819113706.ujsz67sxcwt2ulmt@pepin-laptop.localdomain>
-         <b3b7a99971f1512b4cd9c72920b699c252c1ae83.camel@sipsolutions.net>
-         <A3C14EA9-BA2D-4745-BBB9-E10028B6DE13@miegl.cz>
-         <6efb9b56c77cd9ea945f89c3371b49c301dc2b4e.camel@sipsolutions.net>
-         <58A25955-2A17-4DE7-82FB-3B20E00C96EC@miegl.cz>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.30.5 (3.30.5-1.fc29) 
+        id S1731549AbfHVHX6 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 22 Aug 2019 03:23:58 -0400
+Received: from nbd.name ([46.4.11.11]:47842 "EHLO nbd.name"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1730108AbfHVHX5 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 22 Aug 2019 03:23:57 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name;
+         s=20160729; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:
+        MIME-Version:Date:Message-ID:From:References:Cc:To:Subject:Sender:Reply-To:
+        Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+        Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+        List-Subscribe:List-Post:List-Owner:List-Archive;
+        bh=MpxEvYdF0A5oRvLeItRazTuQVEm3aMYwiz/tcTLfxCw=; b=Q2rQlOkvTKhatpMloNd33JY6Lr
+        H3FC0Qzl21D+jTkkERssc5gn/Ax+QuTUoGaqS9+HG9AnVtHv1JSEwQeYZ0Z+lOblPyrBwOGemaJGI
+        X6Vd4z7L3EO8AOCe5RWWKvQTiu1c3Ac8BwR3/Atx012pfAjNNOeSucEOFm/sLfZeq7t4=;
+Received: from p54ae9443.dip0.t-ipconnect.de ([84.174.148.67] helo=nf.local)
+        by ds12 with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        (Exim 4.89)
+        (envelope-from <nbd@nbd.name>)
+        id 1i0hRo-0002Ct-OR; Thu, 22 Aug 2019 09:23:52 +0200
+Subject: Re: [PATCH 5.3] mt76: mt76x0e: don't use hw encryption for MT7630E
+To:     Stanislaw Gruszka <sgruszka@redhat.com>
+Cc:     Lorenzo Bianconi <lorenzo.bianconi@redhat.com>,
+        linux-wireless <linux-wireless@vger.kernel.org>,
+        Ryder Lee <ryder.lee@mediatek.com>, Roy Luo <royluo@google.com>
+References: <1565703400-10623-1-git-send-email-sgruszka@redhat.com>
+ <CAJ0CqmXM4NRMYU6Lt_a4f+DXE2bVmhYrjQbgxHG0g=N+o3TeQw@mail.gmail.com>
+ <20190815100936.GA21775@redhat.com>
+ <727fd528-16c1-e3b3-e1a9-2edbcbdddee7@nbd.name>
+ <20190819110639.GA6037@redhat.com>
+ <7b46ab63-d69d-f389-b3c2-245cbe11c7b7@nbd.name>
+ <20190820112438.GA2227@redhat.com> <20190821084724.GB20223@redhat.com>
+ <433c1d1f-3590-375f-ed8d-c9de2af873d5@nbd.name>
+ <876a4137-ecd5-2e6c-0c75-87eae895e672@nbd.name>
+ <20190821112244.GA23546@redhat.com>
+From:   Felix Fietkau <nbd@nbd.name>
+Openpgp: preference=signencrypt
+Autocrypt: addr=nbd@nbd.name; prefer-encrypt=mutual; keydata=
+ mQGiBEah5CcRBADIY7pu4LIv3jBlyQ/2u87iIZGe6f0f8pyB4UjzfJNXhJb8JylYYRzIOSxh
+ ExKsdLCnJqsG1PY1mqTtoG8sONpwsHr2oJ4itjcGHfn5NJSUGTbtbbxLro13tHkGFCoCr4Z5
+ Pv+XRgiANSpYlIigiMbOkide6wbggQK32tC20QxUIwCg4k6dtV/4kwEeiOUfErq00TVqIiEE
+ AKcUi4taOuh/PQWx/Ujjl/P1LfJXqLKRPa8PwD4j2yjoc9l+7LptSxJThL9KSu6gtXQjcoR2
+ vCK0OeYJhgO4kYMI78h1TSaxmtImEAnjFPYJYVsxrhay92jisYc7z5R/76AaELfF6RCjjGeP
+ wdalulG+erWju710Bif7E1yjYVWeA/9Wd1lsOmx6uwwYgNqoFtcAunDaMKi9xVQW18FsUusM
+ TdRvTZLBpoUAy+MajAL+R73TwLq3LnKpIcCwftyQXK5pEDKq57OhxJVv1Q8XkA9Dn1SBOjNB
+ l25vJDFAT9ntp9THeDD2fv15yk4EKpWhu4H00/YX8KkhFsrtUs69+vZQwbQcRmVsaXggRmll
+ dGthdSA8bmJkQG5iZC5uYW1lPohgBBMRAgAgBQJGoeQnAhsjBgsJCAcDAgQVAggDBBYCAwEC
+ HgECF4AACgkQ130UHQKnbvXsvgCgjsAIIOsY7xZ8VcSm7NABpi91yTMAniMMmH7FRenEAYMa
+ VrwYTIThkTlQuQINBEah5FQQCACMIep/hTzgPZ9HbCTKm9xN4bZX0JjrqjFem1Nxf3MBM5vN
+ CYGBn8F4sGIzPmLhl4xFeq3k5irVg/YvxSDbQN6NJv8o+tP6zsMeWX2JjtV0P4aDIN1pK2/w
+ VxcicArw0VYdv2ZCarccFBgH2a6GjswqlCqVM3gNIMI8ikzenKcso8YErGGiKYeMEZLwHaxE
+ Y7mTPuOTrWL8uWWRL5mVjhZEVvDez6em/OYvzBwbkhImrryF29e3Po2cfY2n7EKjjr3/141K
+ DHBBdgXlPNfDwROnA5ugjjEBjwkwBQqPpDA7AYPvpHh5vLbZnVGu5CwG7NAsrb2isRmjYoqk
+ wu++3117AAMFB/9S0Sj7qFFQcD4laADVsabTpNNpaV4wAgVTRHKV/kC9luItzwDnUcsZUPdQ
+ f3MueRJ3jIHU0UmRBG3uQftqbZJj3ikhnfvyLmkCNe+/hXhPu9sGvXyi2D4vszICvc1KL4RD
+ aLSrOsROx22eZ26KqcW4ny7+va2FnvjsZgI8h4sDmaLzKczVRIiLITiMpLFEU/VoSv0m1F4B
+ FtRgoiyjFzigWG0MsTdAN6FJzGh4mWWGIlE7o5JraNhnTd+yTUIPtw3ym6l8P+gbvfoZida0
+ TspgwBWLnXQvP5EDvlZnNaKa/3oBes6z0QdaSOwZCRA3QSLHBwtgUsrT6RxRSweLrcabiEkE
+ GBECAAkFAkah5FQCGwwACgkQ130UHQKnbvW2GgCfTKx80VvCR/PvsUlrvdOLsIgeRGAAn1ee
+ RjMaxwtSdaCKMw3j33ZbsWS4
+Message-ID: <05f1198f-f10e-a1df-a4b0-231ff70ac073@nbd.name>
+Date:   Thu, 22 Aug 2019 09:23:52 +0200
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.14; rv:60.0)
+ Gecko/20100101 Thunderbird/60.8.0
 MIME-Version: 1.0
+In-Reply-To: <20190821112244.GA23546@redhat.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
 Content-Transfer-Encoding: 7bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Wed, 2019-08-21 at 23:17 +0200, Josef Miegl wrote:
-> On August 21, 2019 10:12:26 PM GMT+02:00, Johannes Berg <johannes@sipsolutions.net> wrote:
-> > What AP are you trying to connect to? Have you tried adding some other
-> > random vendor IE, with an OUI that the AP is almost certain to not
-> > know?
-> > Maybe it's actually interpreting this somehow?
-> > 
-> > Would you be willing to show sniffer captures so we could take a look?
-> > 
-> > johannes
+On 2019-08-21 13:22, Stanislaw Gruszka wrote:
+> On Wed, Aug 21, 2019 at 12:40:14PM +0200, Felix Fietkau wrote:
+>> On 2019-08-21 11:03, Felix Fietkau wrote:
+>> > On 2019-08-21 10:47, Stanislaw Gruszka wrote:
+>> >> On Tue, Aug 20, 2019 at 01:24:39PM +0200, Stanislaw Gruszka wrote:
+>> >>> > Can you test if disabling hw encryption only for shared or only for
+>> >>> > pairwise keys makes any difference?
+>> >>> 
+>> >>> Disabling only pairwise keys helps. Disabling only shared keys does
+>> >>> not help.
+>> >>> 
+>> >>> Not sure if this will be helpful information or make things more
+>> >>> confusing, but seems the difference between mt76_txq_schedule()
+>> >>> and tasklet_schedule() in mt76_wake_tx_queue() is that on 
+>> >>> mt76_txq_schedule() some tx packets are serialized by dev->rx_lock
+>> >>> (because some ARP and TCP packets are sent via network stack as response
+>> >>> of incoming packet within ieee80211_rx_napi() call). Removing
+>> >>> spin_lock(&dev->rx_lock) in mt76_rx_complete() make the problem
+>> >>> reproducible again with mt76_txq_schedule() & HW encryption.
+>> >> 
+>> >> So, I think this is FW/HW issue related with encryption and ordering
+>> >> and we should apply patch originally posted in this thread that
+>> >> disable HW encryption for MT7630E.
+>> >> 
+>> >> I do not think we should disable HW encryption only for pairwise keys,
+>> >> because FW/HW can have the same bug for shared keys, but is not
+>> >> triggered in my test, as we do not sent lot of group frames.
+>> > I'm still not convinced that this is just the hardware implementation of
+>> > hw crypto being faulty. I think it's more likely that there's a bug in
+>> > the tx path somewhere, which causes hangs on MT7630E but remains hidden
+>> > (or at least recoverable) on other devices.
+>> > I'm currently reviewing key handling in the mac80211 fast-xmit codepath
+>> > and get the feeling that something might be racy there.
+>> > I will let you know when I make some progress with that review.
+>> > If we can't find the bug soon, then I'm fine with merging this patch.
+>> > Right now, I would like to see first if we can fix it properly.
+>> Another question: Does a watchdog restart happen before tx fails?
 > 
-> Of course it's interpreting the IE. Random vendor IE works fine. 
+> No, we do not run wdt_work for mt76x0e.
+I didn't find anything conclusive yet, so I agree with merging this
+patch for now until we have a better fix.
 
-Ok, that wasn't really clear to me until now.
-
-> Let me explain why I'm even bothering with sending this mikrotik IE in
-> association requests. The Mikrotik IE has a flag that tells the AP if
-> the station wants WDS. Setting that flag and sending the mikrotik IE
-> is required for transparent bridging with a mikrotik AP.
-
-Aha, ok.
-
-> Sending the Mikrotik IE with the WDS bit set to 0 works fine. 
-
-Even more curious :-)
-
-> Now I'm sure this is a problem on Mikrotiks side, however in ubnts
-> airos this works as expected, and since their airos is probably based
-> on openwrt there has to be a way to make this work.
-> 
-> I will send you the captures, however there doesn't seem to be
-> anything much interesting in them.
-
-Indeed, it seems unlikely I could get anything from that.
-
-Do you have a successful handshake done by a "real" client
-implementation?
-
-Perhaps it expects the 4-way-HS to already be in 4-addr frame format, or
-something else special in the 4-way-HS if you have WDS?
-
-johannes
-
+- Felix
