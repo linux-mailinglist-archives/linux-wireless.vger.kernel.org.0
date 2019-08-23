@@ -2,73 +2,104 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 751059A83F
-	for <lists+linux-wireless@lfdr.de>; Fri, 23 Aug 2019 09:10:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DCEE79A8AB
+	for <lists+linux-wireless@lfdr.de>; Fri, 23 Aug 2019 09:22:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2389565AbfHWHJ7 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 23 Aug 2019 03:09:59 -0400
-Received: from mx1.redhat.com ([209.132.183.28]:44324 "EHLO mx1.redhat.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2388050AbfHWHJ7 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 23 Aug 2019 03:09:59 -0400
-Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.phx2.redhat.com [10.5.11.15])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mx1.redhat.com (Postfix) with ESMTPS id 117AA102700F;
-        Fri, 23 Aug 2019 07:09:59 +0000 (UTC)
-Received: from localhost (unknown [10.43.2.236])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id ADC2C5D6B2;
-        Fri, 23 Aug 2019 07:09:58 +0000 (UTC)
-From:   Stanislaw Gruszka <sgruszka@redhat.com>
-To:     linux-wireless@vger.kernel.org
-Cc:     Felix Fietkau <nbd@nbd.name>, Daniel Golle <daniel@makrotopia.org>,
-        =?UTF-8?q?Tomislav=20Po=C5=BEega?= <pozega.tomislav@gmail.com>,
-        Mathias Kresin <dev@kresin.me>
-Subject: [PATCH] rt2x00: do not set IEEE80211_TX_STAT_AMPDU_NO_BACK on tx status
-Date:   Fri, 23 Aug 2019 09:09:56 +0200
-Message-Id: <1566544196-20371-1-git-send-email-sgruszka@redhat.com>
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.15
-X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.6.2 (mx1.redhat.com [10.5.110.66]); Fri, 23 Aug 2019 07:09:59 +0000 (UTC)
+        id S2390290AbfHWHWa (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 23 Aug 2019 03:22:30 -0400
+Received: from mail-qt1-f196.google.com ([209.85.160.196]:40936 "EHLO
+        mail-qt1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2390277AbfHWHWa (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 23 Aug 2019 03:22:30 -0400
+Received: by mail-qt1-f196.google.com with SMTP id g4so502413qtq.7
+        for <linux-wireless@vger.kernel.org>; Fri, 23 Aug 2019 00:22:29 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=nNHdvFqH7RmVudOUs67Jz5dt0KxwBdgyqp7eCOsiZvY=;
+        b=cCYAQen27zfY6vuObP7pdRP476ty4fWcwQifaNmGZMh5VaP3+3C2tEjofU8pSrIhKZ
+         iIuYrGlvI84Anb07TexEfHcNxfA7G5KwhMjI2Q6YLiSPSi979gzGLj54O+WQkiSvNayD
+         5+IEoFG6/TtbD83zWfoAi0qqu7oiC12h4v6RYZmSCvZmPARnlrsXwn3uA09oXztbZzRh
+         CU00yxggbMkpcOEy2pLBu4DsnTVEEgtC4X7q38wGUQoSIVcRfobDVnysASc4Tn7jSmPz
+         Ri+6XWEVbkUDnGJkBO/LLPfQU6Eg3Vmf2V1OHT8GzXznYrwDnZG5zoy7Ge/A3IvFq4KM
+         P/Yg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=nNHdvFqH7RmVudOUs67Jz5dt0KxwBdgyqp7eCOsiZvY=;
+        b=od5B9u6CxCbTVXHpIgRQX7Zdy07CBCDwQsgxKs8Z8Jna1Jg/s71r2HuHC0imVDda8w
+         AvAC8vPBVDGt1EQ9rY22MAFlwCbrrqcDmAz3XBgcbxEaEuCVejHMBVRkgSR8p9IEVRTe
+         GtRIviETro+ULOgkVjCSZ3Z8S6POQGtZ7d+Zh+sokAd08bS5jNXKOkLbqwjONCM3T/EA
+         jbKuJrtL6I6LEiOR7DTvXGOoDGF33NSuCBNab4DLSAJmDBgZjSogBOKG9SOrp2u6L147
+         vkWX9hI3OG+gkf8pkw8fM4rolfqZ/ab0vYsDNLeBwXEJDz8hIzStx1VXJuUVNRulvvxu
+         5IHg==
+X-Gm-Message-State: APjAAAWTeL4zbxzsxD70TORmtxA7AL5zisstfJNR90KV5shXutJPxQC3
+        tFjZVyATSwYVI8XuFd8EKXSKVvlQPQdYdrsEb4Q=
+X-Google-Smtp-Source: APXvYqw4FRs48iO09ajElX4qZWhBCDlmOTINQKjhJx9bbT82WDYK+FetAAFAzpslpKQazj7tg7ZPJflQHgsr9IvzXg4=
+X-Received: by 2002:ac8:7445:: with SMTP id h5mr187024qtr.53.1566544949262;
+ Fri, 23 Aug 2019 00:22:29 -0700 (PDT)
+MIME-Version: 1.0
+References: <1565166487-22048-1-git-send-email-yhchuang@realtek.com> <20190823063728.14117-1-drake@endlessm.com>
+In-Reply-To: <20190823063728.14117-1-drake@endlessm.com>
+From:   =?UTF-8?B?SsOhbiBWZXNlbMO9?= <jano.vesely@gmail.com>
+Date:   Fri, 23 Aug 2019 03:22:18 -0400
+Message-ID: <CA+K+NcSYKEkdx5ux6iwUs7pMidObZBrg9yDcP1zT73DcccpDPQ@mail.gmail.com>
+Subject: Re: [PATCH v2] rtw88: pci: enable MSI interrupt
+To:     Daniel Drake <drake@endlessm.com>
+Cc:     Tony Chuang <yhchuang@realtek.com>, briannorris@chromium.org,
+        gojun077@gmail.com, kvalo@codeaurora.org,
+        linux-wireless <linux-wireless@vger.kernel.org>,
+        linux@endlessm.com
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-According to documentation IEEE80211_TX_STAT_AMPDU_NO_BACK is suppose
-to be used when we do not recive BA (BlockAck). However on rt2x00 we
-use it when remote station fail to decode one or more subframes within
-AMPDU (some bits are not set in BlockAck bitmap). Setting the flag result
-in sent of BAR (BlockAck Request) frame and this might result of abuse
-of BA session, since remote station can sent BA with incorrect
-sequence numbers after receiving BAR. This problem is visible especially
-when connecting two rt2800 devices.
+On Fri, Aug 23, 2019 at 2:37 AM Daniel Drake <drake@endlessm.com> wrote:
+>
+> > +     rtw_pci_disable_interrupt(rtwdev, rtwpci);
+>
+> I checked the discussion on the v1 patch thread but I still don't follow
+> this.
+>
+> You're worried about the case where we're inside the interrupt handler and:
+>  1. We read the interrupt status to note what needs to be done
+>  2. <another interrupt arrives here, requiring other work to be done>
+>  3. We clear the interrupt status bits
+>  4. We proceed to handle the interrupt but missing any work requested by
+>     the interrupt in step 2.
+>
+> Is that right?
+>
+> I'm not an expert here, but I don't think this is something that drivers
+> have to worry about. Surely the interrupt controller can be expected to
+> have a mechanism to "queue up" any interrupt that arrives while an
+> interrupt is being handled? Otherwise handling of all types of
+> edge-triggered interrupts (not just MSI) would be overly painful across the
+> board.
 
-Previously I observed some performance benefits when using the flag
-when connecting with iwlwifi devices. But currently possibly due
-to reacent changes in rt2x00 removing the flag has no effect on
-those test cases.
+That's my understanding as well.
+entering the interrupt vector clears the IFLAG, so any interrupt will
+wait until the IFLAG is restored, or delivered to a different CPU.
+wouldn't it be safer to enable interrupts only _after_ registering the
+handler in the "rtw_pci_request_irq" function?
 
-So remove the IEEE80211_TX_STAT_AMPDU_NO_BACK.
+regards,
+Jan
 
-Signed-off-by: Stanislaw Gruszka <sgruszka@redhat.com>
----
- drivers/net/wireless/ralink/rt2x00/rt2x00dev.c | 3 ---
- 1 file changed, 3 deletions(-)
 
-diff --git a/drivers/net/wireless/ralink/rt2x00/rt2x00dev.c b/drivers/net/wireless/ralink/rt2x00/rt2x00dev.c
-index 9d158237ac67..c3eab767bc21 100644
---- a/drivers/net/wireless/ralink/rt2x00/rt2x00dev.c
-+++ b/drivers/net/wireless/ralink/rt2x00/rt2x00dev.c
-@@ -371,9 +371,6 @@ static void rt2x00lib_fill_tx_status(struct rt2x00_dev *rt2x00dev,
- 				  IEEE80211_TX_CTL_AMPDU;
- 		tx_info->status.ampdu_len = 1;
- 		tx_info->status.ampdu_ack_len = success ? 1 : 0;
--
--		if (!success)
--			tx_info->flags |= IEEE80211_TX_STAT_AMPDU_NO_BACK;
- 	}
- 
- 	if (rate_flags & IEEE80211_TX_RC_USE_RTS_CTS) {
--- 
-1.9.3
-
+>
+> See e.g. https://patchwork.kernel.org/patch/3333681/ as a reference for
+> what correct interrupt controller behaviour should look like.
+>
+> > +             ret = pci_enable_msi(pdev);
+>
+> pci_enable_msi() is "deprecated, don't use"
+>
+> Thanks
+> Daniel
+>
