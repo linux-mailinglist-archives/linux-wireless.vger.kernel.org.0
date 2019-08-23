@@ -2,72 +2,88 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 3A9C79ADAF
-	for <lists+linux-wireless@lfdr.de>; Fri, 23 Aug 2019 12:54:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 103029ADE2
+	for <lists+linux-wireless@lfdr.de>; Fri, 23 Aug 2019 13:08:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732338AbfHWKyt (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 23 Aug 2019 06:54:49 -0400
-Received: from s3.sipsolutions.net ([144.76.43.62]:57186 "EHLO
-        sipsolutions.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1731280AbfHWKyt (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 23 Aug 2019 06:54:49 -0400
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <johannes@sipsolutions.net>)
-        id 1i17DQ-00023m-8j; Fri, 23 Aug 2019 12:54:44 +0200
-Message-ID: <a8f0fcfcc9d810aee1df461f051a757703cde2e5.camel@sipsolutions.net>
-Subject: Re: Implementing Mikrotik IE
-From:   Johannes Berg <johannes@sipsolutions.net>
-To:     Josef Miegl <josef@miegl.cz>
-Cc:     Sebastian Gottschall <s.gottschall@newmedia-net.de>,
-        linux-wireless <linux-wireless@vger.kernel.org>
-Date:   Fri, 23 Aug 2019 12:54:42 +0200
-In-Reply-To: <68A3B9AF-8864-4C0F-A50B-71CCB76AE81D@miegl.cz>
-References: <20190815152844.k5mmddvbwrohkzr6@pepin-laptop.localdomain>
-         <3a079683-6f57-3b42-f909-90c46e14f14f@newmedia-net.de>
-         <20190816111044.4ntizgmpa3twbzcg@pepin-laptop.localdomain>
-         <e8129acb-fc32-c85c-b504-ab8777a3f1a3@newmedia-net.de>
-         <20190816113818.ohktykc4fyetzyvq@pepin-laptop.localdomain>
-         <9985fddfb059640f36665efc9c1ef2dc0bdb7662.camel@sipsolutions.net>
-         <20190819113706.ujsz67sxcwt2ulmt@pepin-laptop.localdomain>
-         <b3b7a99971f1512b4cd9c72920b699c252c1ae83.camel@sipsolutions.net>
-         <A3C14EA9-BA2D-4745-BBB9-E10028B6DE13@miegl.cz>
-         <6efb9b56c77cd9ea945f89c3371b49c301dc2b4e.camel@sipsolutions.net>
-         <58A25955-2A17-4DE7-82FB-3B20E00C96EC@miegl.cz>
-         <5ee160209eb1f9e70f6224c393389266280d7d80.camel@sipsolutions.net>
-         (sfid-20190822_090033_537095_4B41631C) <0452a0cbb36bcffa8371a58dfd931864c1f79eef.camel@sipsolutions.net>
-         <68A3B9AF-8864-4C0F-A50B-71CCB76AE81D@miegl.cz>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.30.5 (3.30.5-1.fc29) 
+        id S2390567AbfHWLHn (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 23 Aug 2019 07:07:43 -0400
+Received: from nbd.name ([46.4.11.11]:50230 "EHLO nbd.name"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726247AbfHWLHm (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 23 Aug 2019 07:07:42 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name;
+         s=20160729; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:
+        MIME-Version:Date:Message-ID:From:References:Cc:To:Subject:Sender:Reply-To:
+        Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+        Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+        List-Subscribe:List-Post:List-Owner:List-Archive;
+        bh=LAv14xBDaIohDD4Erb5BrR+vAz31vPo/+adgvMu/7MI=; b=WTTeFnBGKMij/9WAFwDZZNzF/l
+        MZhKH7Q5CiuYF/JbZXYqsh+5Xro6Xdbvd2+WDyE4PbxiqqJkalSn2ELmivO8QVSTSGZfsDsUWx7V8
+        psfREPo2Cp8c/TrZvzeL1uqyEHUGavDIg267Vx3+/9lQf9GkFC6oXJZ+rZyk6k6U66CM=;
+Received: from p54ae9443.dip0.t-ipconnect.de ([84.174.148.67] helo=nf.local)
+        by ds12 with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        (Exim 4.89)
+        (envelope-from <nbd@nbd.name>)
+        id 1i17Pu-0005Ev-QB; Fri, 23 Aug 2019 13:07:38 +0200
+Subject: Re: [PATCH][next] mac80211: minstrel_ht: fix infinite loop because
+ supported is not being shifted
+To:     Colin King <colin.king@canonical.com>,
+        Johannes Berg <johannes@sipsolutions.net>,
+        "David S . Miller" <davem@davemloft.net>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20190822122034.28664-1-colin.king@canonical.com>
+From:   Felix Fietkau <nbd@nbd.name>
+Openpgp: preference=signencrypt
+Autocrypt: addr=nbd@nbd.name; prefer-encrypt=mutual; keydata=
+ mQGiBEah5CcRBADIY7pu4LIv3jBlyQ/2u87iIZGe6f0f8pyB4UjzfJNXhJb8JylYYRzIOSxh
+ ExKsdLCnJqsG1PY1mqTtoG8sONpwsHr2oJ4itjcGHfn5NJSUGTbtbbxLro13tHkGFCoCr4Z5
+ Pv+XRgiANSpYlIigiMbOkide6wbggQK32tC20QxUIwCg4k6dtV/4kwEeiOUfErq00TVqIiEE
+ AKcUi4taOuh/PQWx/Ujjl/P1LfJXqLKRPa8PwD4j2yjoc9l+7LptSxJThL9KSu6gtXQjcoR2
+ vCK0OeYJhgO4kYMI78h1TSaxmtImEAnjFPYJYVsxrhay92jisYc7z5R/76AaELfF6RCjjGeP
+ wdalulG+erWju710Bif7E1yjYVWeA/9Wd1lsOmx6uwwYgNqoFtcAunDaMKi9xVQW18FsUusM
+ TdRvTZLBpoUAy+MajAL+R73TwLq3LnKpIcCwftyQXK5pEDKq57OhxJVv1Q8XkA9Dn1SBOjNB
+ l25vJDFAT9ntp9THeDD2fv15yk4EKpWhu4H00/YX8KkhFsrtUs69+vZQwbQcRmVsaXggRmll
+ dGthdSA8bmJkQG5iZC5uYW1lPohgBBMRAgAgBQJGoeQnAhsjBgsJCAcDAgQVAggDBBYCAwEC
+ HgECF4AACgkQ130UHQKnbvXsvgCgjsAIIOsY7xZ8VcSm7NABpi91yTMAniMMmH7FRenEAYMa
+ VrwYTIThkTlQuQINBEah5FQQCACMIep/hTzgPZ9HbCTKm9xN4bZX0JjrqjFem1Nxf3MBM5vN
+ CYGBn8F4sGIzPmLhl4xFeq3k5irVg/YvxSDbQN6NJv8o+tP6zsMeWX2JjtV0P4aDIN1pK2/w
+ VxcicArw0VYdv2ZCarccFBgH2a6GjswqlCqVM3gNIMI8ikzenKcso8YErGGiKYeMEZLwHaxE
+ Y7mTPuOTrWL8uWWRL5mVjhZEVvDez6em/OYvzBwbkhImrryF29e3Po2cfY2n7EKjjr3/141K
+ DHBBdgXlPNfDwROnA5ugjjEBjwkwBQqPpDA7AYPvpHh5vLbZnVGu5CwG7NAsrb2isRmjYoqk
+ wu++3117AAMFB/9S0Sj7qFFQcD4laADVsabTpNNpaV4wAgVTRHKV/kC9luItzwDnUcsZUPdQ
+ f3MueRJ3jIHU0UmRBG3uQftqbZJj3ikhnfvyLmkCNe+/hXhPu9sGvXyi2D4vszICvc1KL4RD
+ aLSrOsROx22eZ26KqcW4ny7+va2FnvjsZgI8h4sDmaLzKczVRIiLITiMpLFEU/VoSv0m1F4B
+ FtRgoiyjFzigWG0MsTdAN6FJzGh4mWWGIlE7o5JraNhnTd+yTUIPtw3ym6l8P+gbvfoZida0
+ TspgwBWLnXQvP5EDvlZnNaKa/3oBes6z0QdaSOwZCRA3QSLHBwtgUsrT6RxRSweLrcabiEkE
+ GBECAAkFAkah5FQCGwwACgkQ130UHQKnbvW2GgCfTKx80VvCR/PvsUlrvdOLsIgeRGAAn1ee
+ RjMaxwtSdaCKMw3j33ZbsWS4
+Message-ID: <accffa31-b954-0dcd-6c42-44fad63b96e2@nbd.name>
+Date:   Fri, 23 Aug 2019 13:07:37 +0200
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.14; rv:60.0)
+ Gecko/20100101 Thunderbird/60.8.0
 MIME-Version: 1.0
+In-Reply-To: <20190822122034.28664-1-colin.king@canonical.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
 Content-Transfer-Encoding: 7bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+On 2019-08-22 14:20, Colin King wrote:
+> From: Colin Ian King <colin.king@canonical.com>
+> 
+> Currently the for-loop will spin forever if variable supported is
+> non-zero because supported is never changed.  Fix this by adding in
+> the missing right shift of supported.
+> 
+> Addresses-Coverity: ("Infinite loop")
+> Fixes: 48cb39522a9d ("mac80211: minstrel_ht: improve rate probing for devices with static fallback")
+> Signed-off-by: Colin Ian King <colin.king@canonical.com>
+Acked-by: Felix Fietkau <nbd@nbd.name>
 
-> Works great. Is there a possibility that a toggle for this could be
-> accepted upstream? After all, WDS isn't really standardized.
+Thanks,
 
-I general, I'd say yes. However!
-
-There's ongoing to work to make EAPOL frames go over nl80211 instead,
-see e.g. ieee80211_tx_control_port() in mac80211, and this patch for
-hostapd:
-
-https://patchwork.ozlabs.org/patch/1108185/
-
-I'd prefer to have it in this path, by having a flag like the "bool
-unencrypted" passed to ieee80211_tx_control_port(), (and replace "bool
-unencrypted" by "unsigned int flags"). That way, we don't have to
-actually keep any state.
-
-In mac80211, we can pass this down to __ieee80211_subif_start_xmit() and
-ieee80211_build_hdr() in the ctrl_flags or something like that. It
-doesn't actually need to be a control or info flag, so we could add yet
-another argument to save the space, but dunno if that's worth it now.
-
-johannes
-
+- Felix
