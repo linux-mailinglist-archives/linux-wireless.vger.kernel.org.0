@@ -2,80 +2,93 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 040A49AA93
-	for <lists+linux-wireless@lfdr.de>; Fri, 23 Aug 2019 10:46:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D209D9AA98
+	for <lists+linux-wireless@lfdr.de>; Fri, 23 Aug 2019 10:47:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732682AbfHWIqS (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 23 Aug 2019 04:46:18 -0400
-Received: from mx1.redhat.com ([209.132.183.28]:41340 "EHLO mx1.redhat.com"
+        id S2390104AbfHWIrl (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 23 Aug 2019 04:47:41 -0400
+Received: from mga17.intel.com ([192.55.52.151]:54559 "EHLO mga17.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1732418AbfHWIqS (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 23 Aug 2019 04:46:18 -0400
-Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.phx2.redhat.com [10.5.11.23])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mx1.redhat.com (Postfix) with ESMTPS id C3B0130014C6;
-        Fri, 23 Aug 2019 08:46:17 +0000 (UTC)
-Received: from localhost (unknown [10.43.2.236])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 8D5C42635A;
-        Fri, 23 Aug 2019 08:46:14 +0000 (UTC)
-From:   Stanislaw Gruszka <sgruszka@redhat.com>
-To:     linux-wireless@vger.kernel.org
-Cc:     Felix Fietkau <nbd@nbd.name>,
-        Lorenzo Bianconi <lorenzo.bianconi@redhat.com>,
-        Ryder Lee <ryder.lee@mediatek.com>, Roy Luo <royluo@google.com>
-Subject: [PATCH] mt76: make mt76_rx_convert static
-Date:   Fri, 23 Aug 2019 10:46:12 +0200
-Message-Id: <1566549972-6026-1-git-send-email-sgruszka@redhat.com>
-X-Scanned-By: MIMEDefang 2.84 on 10.5.11.23
-X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16 (mx1.redhat.com [10.5.110.45]); Fri, 23 Aug 2019 08:46:17 +0000 (UTC)
+        id S1732418AbfHWIrk (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 23 Aug 2019 04:47:40 -0400
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from fmsmga006.fm.intel.com ([10.253.24.20])
+  by fmsmga107.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 23 Aug 2019 01:47:40 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.64,420,1559545200"; 
+   d="scan'208";a="379699010"
+Received: from monicaar-mobl1.amr.corp.intel.com ([10.252.26.241])
+  by fmsmga006.fm.intel.com with ESMTP; 23 Aug 2019 01:47:39 -0700
+Message-ID: <1cfaffb7bcd3bf1e8ff9f18fda0cfbee4b716176.camel@intel.com>
+Subject: Re: [bug report] iwlwifi: Add support for SAR South Korea limitation
+From:   Luciano Coelho <luciano.coelho@intel.com>
+To:     Dan Carpenter <dan.carpenter@oracle.com>, haim.dreyfuss@intel.com
+Cc:     linux-wireless@vger.kernel.org
+Date:   Fri, 23 Aug 2019 11:47:38 +0300
+In-Reply-To: <20190806142435.GA13072@mwanda>
+References: <20190806142435.GA13072@mwanda>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.30.5-1.1 
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-mt76_rx_convert() not need to be exported any longer.
+Hi Dan,
 
-Signed-off-by: Stanislaw Gruszka <sgruszka@redhat.com>
----
- drivers/net/wireless/mediatek/mt76/mac80211.c | 3 +--
- drivers/net/wireless/mediatek/mt76/mt76.h     | 2 --
- 2 files changed, 1 insertion(+), 4 deletions(-)
+On Tue, 2019-08-06 at 17:24 +0300, Dan Carpenter wrote:
+> Hello Haim Dreyfuss,
+> 
+> The patch 0c3d7282233c: "iwlwifi: Add support for SAR South Korea
+> limitation" from Feb 27, 2019, leads to the following static checker
+> warning:
+> 
+> 	drivers/net/wireless/intel/iwlwifi/fw/acpi.c:166 iwl_acpi_get_mcc()
+> 	warn: passing a valid pointer to 'PTR_ERR'
+> 
+> drivers/net/wireless/intel/iwlwifi/fw/acpi.c
+>    153  int iwl_acpi_get_mcc(struct device *dev, char *mcc)
+>    154  {
+>    155          union acpi_object *wifi_pkg, *data;
+>    156          u32 mcc_val;
+>    157          int ret, tbl_rev;
+>    158  
+>    159          data = iwl_acpi_get_object(dev, ACPI_WRDD_METHOD);
+>    160          if (IS_ERR(data))
+>    161                  return PTR_ERR(data);
+>    162  
+>    163          wifi_pkg = iwl_acpi_get_wifi_pkg(dev, data, ACPI_WRDD_WIFI_DATA_SIZE,
+>    164                                           &tbl_rev);
+>    165          if (IS_ERR(wifi_pkg) || tbl_rev != 0) {
+>                                         ^^^^^^^^^^^^
+> wifi_pkg is not a valid error code.  Also it feels like it might be more
+> future proof to blacklist rev 1 instead of whitelisting rev 0.
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mac80211.c b/drivers/net/wireless/mediatek/mt76/mac80211.c
-index fa481d2f11bd..1a2c143b34d0 100644
---- a/drivers/net/wireless/mediatek/mt76/mac80211.c
-+++ b/drivers/net/wireless/mediatek/mt76/mac80211.c
-@@ -484,7 +484,7 @@ void mt76_wcid_key_setup(struct mt76_dev *dev, struct mt76_wcid *wcid,
- }
- EXPORT_SYMBOL(mt76_wcid_key_setup);
- 
--struct ieee80211_sta *mt76_rx_convert(struct sk_buff *skb)
-+static struct ieee80211_sta *mt76_rx_convert(struct sk_buff *skb)
- {
- 	struct ieee80211_rx_status *status = IEEE80211_SKB_RXCB(skb);
- 	struct mt76_rx_status mstat;
-@@ -511,7 +511,6 @@ struct ieee80211_sta *mt76_rx_convert(struct sk_buff *skb)
- 
- 	return wcid_to_sta(mstat.wcid);
- }
--EXPORT_SYMBOL(mt76_rx_convert);
- 
- static int
- mt76_check_ccmp_pn(struct sk_buff *skb)
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76.h b/drivers/net/wireless/mediatek/mt76/mt76.h
-index d67c6a26c87c..570c159515a0 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt76.h
-@@ -749,8 +749,6 @@ int mt76_sta_state(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
- void __mt76_sta_remove(struct mt76_dev *dev, struct ieee80211_vif *vif,
- 		       struct ieee80211_sta *sta);
- 
--struct ieee80211_sta *mt76_rx_convert(struct sk_buff *skb);
--
- int mt76_get_min_avg_rssi(struct mt76_dev *dev);
- 
- int mt76_get_txpower(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
--- 
-1.9.3
+Yeah, this code is wrong.  If wifi_pkg is valid but tbl_rev is != 0,
+then we will return a valid pointer instead of an error.  I'll fix
+this.
+
+But regarding blacklisting one, I think it's better as it is.  We mean
+that the only revision we support is 0, if we get 1 or higher, we
+return -EINVAL, because we handle it.  When we add support for other
+revisions, we need to change it.
+
+
+>    166                  ret = PTR_ERR(wifi_pkg);
+>    167                  goto out_free;
+>    168          }
+
+
+Thanks for reporting!
+
+(and yeah, I'll handle the other occurrences you mentioned too).
+
+--
+Cheers,
+Luca.
+
 
