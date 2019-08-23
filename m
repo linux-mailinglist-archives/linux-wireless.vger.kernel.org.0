@@ -2,61 +2,60 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D77F69A6EF
-	for <lists+linux-wireless@lfdr.de>; Fri, 23 Aug 2019 07:11:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 398E19A6FA
+	for <lists+linux-wireless@lfdr.de>; Fri, 23 Aug 2019 07:19:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2391838AbfHWFLC (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 23 Aug 2019 01:11:02 -0400
-Received: from paleale.coelho.fi ([176.9.41.70]:38246 "EHLO
-        farmhouse.coelho.fi" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S2391664AbfHWFLC (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 23 Aug 2019 01:11:02 -0400
-Received: from [91.156.6.193] (helo=redipa)
-        by farmhouse.coelho.fi with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-        (Exim 4.92)
-        (envelope-from <luca@coelho.fi>)
-        id 1i11qf-0003ji-VH; Fri, 23 Aug 2019 08:10:54 +0300
-Message-ID: <df4c42b44950c8d145479ade68786335f9d0526c.camel@coelho.fi>
-From:   Luca Coelho <luca@coelho.fi>
-To:     Colin King <colin.king@canonical.com>,
-        Johannes Berg <johannes.berg@intel.com>,
-        Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
-        Intel Linux Wireless <linuxwifi@intel.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        "David S . Miller" <davem@davemloft.net>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Date:   Fri, 23 Aug 2019 08:10:52 +0300
-In-Reply-To: <20190801164419.3439-1-colin.king@canonical.com>
-References: <20190801164419.3439-1-colin.king@canonical.com>
+        id S2391937AbfHWFRm (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 23 Aug 2019 01:17:42 -0400
+Received: from mga17.intel.com ([192.55.52.151]:38604 "EHLO mga17.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S2391807AbfHWFRm (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 23 Aug 2019 01:17:42 -0400
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from fmsmga003.fm.intel.com ([10.253.24.29])
+  by fmsmga107.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 22 Aug 2019 22:17:42 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.64,420,1559545200"; 
+   d="scan'208";a="186777188"
+Received: from pkacprow-mobl.ger.corp.intel.com ([10.252.30.96])
+  by FMSMGA003.fm.intel.com with ESMTP; 22 Aug 2019 22:17:40 -0700
+Message-ID: <84a882c0bd2954c21735005534abb5568b2fc806.camel@intel.com>
+Subject: Re: [PATCH] iwlwifi: mvm: fix old-style declaration
+From:   Luciano Coelho <luciano.coelho@intel.com>
+To:     YueHaibing <yuehaibing@huawei.com>, johannes.berg@intel.com,
+        emmanuel.grumbach@intel.com, linuxwifi@intel.com,
+        kvalo@codeaurora.org, sara.sharon@intel.com
+Cc:     linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
+        linux-wireless@vger.kernel.org
+Date:   Fri, 23 Aug 2019 08:17:39 +0300
+In-Reply-To: <20190726141838.19424-1-yuehaibing@huawei.com>
+References: <20190726141838.19424-1-yuehaibing@huawei.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 Content-Type: text/plain; charset="UTF-8"
 User-Agent: Evolution 3.30.5-1.1 
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on farmhouse.coelho.fi
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.9 required=5.0 tests=ALL_TRUSTED,BAYES_00,
-        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.2
-Subject: Re: [PATCH] iwlwifi: remove redundant assignment to variable bufsz
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Thu, 2019-08-01 at 17:44 +0100, Colin King wrote:
-> From: Colin Ian King <colin.king@canonical.com>
+On Fri, 2019-07-26 at 22:18 +0800, YueHaibing wrote:
+> There expect the 'static' keyword to come first in a
+> declaration, and we get a warning for this with "make W=1":
 > 
-> The variable bufsz is being initialized with a value that is never
-> read and it is being updated later with a new value. The
-> initialization is redundant and can be removed.
+> drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c:427:1: warning:
+>  'static' is not at beginning of declaration [-Wold-style-declaration]
+> drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c:434:1: warning:
+>  'static' is not at beginning of declaration [-Wold-style-declaration]
 > 
-> Addresses-Coverity: ("Unused value")
-> Signed-off-by: Colin Ian King <colin.king@canonical.com>
+> Reported-by: Hulk Robot <hulkci@huawei.com>
+> Signed-off-by: YueHaibing <yuehaibing@huawei.com>
 > ---
 
-Thanks! I applied this to our internal tree and it will reach the
-mainline following our usual upstreaming process.
+Thanks! Johannes applied this in our internal tree a few weeks ago and
+it will reach the mainline following our usual upstreaming process.
 
 --
 Cheers,
