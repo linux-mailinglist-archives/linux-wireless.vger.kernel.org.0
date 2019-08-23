@@ -2,60 +2,61 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 53ABC9A6EC
-	for <lists+linux-wireless@lfdr.de>; Fri, 23 Aug 2019 07:09:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D77F69A6EF
+	for <lists+linux-wireless@lfdr.de>; Fri, 23 Aug 2019 07:11:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2391832AbfHWFJU (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 23 Aug 2019 01:09:20 -0400
-Received: from mga03.intel.com ([134.134.136.65]:27832 "EHLO mga03.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2391823AbfHWFJU (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 23 Aug 2019 01:09:20 -0400
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from orsmga005.jf.intel.com ([10.7.209.41])
-  by orsmga103.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 22 Aug 2019 22:09:19 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.64,420,1559545200"; 
-   d="scan'208";a="354511719"
-Received: from pkacprow-mobl.ger.corp.intel.com ([10.252.30.96])
-  by orsmga005.jf.intel.com with ESMTP; 22 Aug 2019 22:09:15 -0700
-Message-ID: <56cf56cdc54aa2deba627c5c1c51b7391e493ab9.camel@intel.com>
-Subject: Re: [PATCH net-next 07/10] iwlwifi: Use dev_get_drvdata where
- possible
-From:   Luciano Coelho <luciano.coelho@intel.com>
-To:     Chuhong Yuan <hslester96@gmail.com>
-Cc:     Johannes Berg <johannes.berg@intel.com>,
+        id S2391838AbfHWFLC (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 23 Aug 2019 01:11:02 -0400
+Received: from paleale.coelho.fi ([176.9.41.70]:38246 "EHLO
+        farmhouse.coelho.fi" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
+        with ESMTP id S2391664AbfHWFLC (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 23 Aug 2019 01:11:02 -0400
+Received: from [91.156.6.193] (helo=redipa)
+        by farmhouse.coelho.fi with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+        (Exim 4.92)
+        (envelope-from <luca@coelho.fi>)
+        id 1i11qf-0003ji-VH; Fri, 23 Aug 2019 08:10:54 +0300
+Message-ID: <df4c42b44950c8d145479ade68786335f9d0526c.camel@coelho.fi>
+From:   Luca Coelho <luca@coelho.fi>
+To:     Colin King <colin.king@canonical.com>,
+        Johannes Berg <johannes.berg@intel.com>,
         Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
         Intel Linux Wireless <linuxwifi@intel.com>,
         Kalle Valo <kvalo@codeaurora.org>,
         "David S . Miller" <davem@davemloft.net>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Date:   Fri, 23 Aug 2019 08:09:14 +0300
-In-Reply-To: <20190724112738.13457-1-hslester96@gmail.com>
-References: <20190724112738.13457-1-hslester96@gmail.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Date:   Fri, 23 Aug 2019 08:10:52 +0300
+In-Reply-To: <20190801164419.3439-1-colin.king@canonical.com>
+References: <20190801164419.3439-1-colin.king@canonical.com>
 Content-Type: text/plain; charset="UTF-8"
 User-Agent: Evolution 3.30.5-1.1 
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
+X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on farmhouse.coelho.fi
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.9 required=5.0 tests=ALL_TRUSTED,BAYES_00,
+        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.2
+Subject: Re: [PATCH] iwlwifi: remove redundant assignment to variable bufsz
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Wed, 2019-07-24 at 19:27 +0800, Chuhong Yuan wrote:
-> Instead of using to_pci_dev + pci_get_drvdata,
-> use dev_get_drvdata to make code simpler.
+On Thu, 2019-08-01 at 17:44 +0100, Colin King wrote:
+> From: Colin Ian King <colin.king@canonical.com>
 > 
-> Signed-off-by: Chuhong Yuan <hslester96@gmail.com>
+> The variable bufsz is being initialized with a value that is never
+> read and it is being updated later with a new value. The
+> initialization is redundant and can be removed.
+> 
+> Addresses-Coverity: ("Unused value")
+> Signed-off-by: Colin Ian King <colin.king@canonical.com>
 > ---
 
-This patch is not relevant anymore because we have removed all
-D0i3/runtime PM code.
-
-Thanks anyway!
+Thanks! I applied this to our internal tree and it will reach the
+mainline following our usual upstreaming process.
 
 --
 Cheers,
