@@ -2,118 +2,62 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 907649A6D2
-	for <lists+linux-wireless@lfdr.de>; Fri, 23 Aug 2019 06:45:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 53ABC9A6EC
+	for <lists+linux-wireless@lfdr.de>; Fri, 23 Aug 2019 07:09:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2391741AbfHWEpN (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 23 Aug 2019 00:45:13 -0400
-Received: from paleale.coelho.fi ([176.9.41.70]:38210 "EHLO
-        farmhouse.coelho.fi" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S2389942AbfHWEpN (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 23 Aug 2019 00:45:13 -0400
-Received: from [91.156.6.193] (helo=redipa)
-        by farmhouse.coelho.fi with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-        (Exim 4.92)
-        (envelope-from <luca@coelho.fi>)
-        id 1i11Rk-0003if-4g; Fri, 23 Aug 2019 07:45:08 +0300
-Message-ID: <2a5e239858780618fa248bf825e10e3958c56bc9.camel@coelho.fi>
-From:   Luca Coelho <luca@coelho.fi>
-To:     "linux-firmware@kernel.org" <linux-firmware@kernel.org>
-Cc:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        linuxwifi <linuxwifi@intel.com>,
-        "kyle@infradead.org" <kyle@infradead.org>,
-        "jwboyer@kernel.org" <jwboyer@kernel.org>,
-        "ben@decadent.org.uk" <ben@decadent.org.uk>, dor.shaish@intel.com
-Date:   Fri, 23 Aug 2019 07:45:06 +0300
-Content-Type: multipart/signed; micalg="pgp-sha512";
-        protocol="application/pgp-signature"; boundary="=-Q+3k9GdluOZWOZM3/X5K"
+        id S2391832AbfHWFJU (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 23 Aug 2019 01:09:20 -0400
+Received: from mga03.intel.com ([134.134.136.65]:27832 "EHLO mga03.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S2391823AbfHWFJU (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 23 Aug 2019 01:09:20 -0400
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from orsmga005.jf.intel.com ([10.7.209.41])
+  by orsmga103.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 22 Aug 2019 22:09:19 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.64,420,1559545200"; 
+   d="scan'208";a="354511719"
+Received: from pkacprow-mobl.ger.corp.intel.com ([10.252.30.96])
+  by orsmga005.jf.intel.com with ESMTP; 22 Aug 2019 22:09:15 -0700
+Message-ID: <56cf56cdc54aa2deba627c5c1c51b7391e493ab9.camel@intel.com>
+Subject: Re: [PATCH net-next 07/10] iwlwifi: Use dev_get_drvdata where
+ possible
+From:   Luciano Coelho <luciano.coelho@intel.com>
+To:     Chuhong Yuan <hslester96@gmail.com>
+Cc:     Johannes Berg <johannes.berg@intel.com>,
+        Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
+        Intel Linux Wireless <linuxwifi@intel.com>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        "David S . Miller" <davem@davemloft.net>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Date:   Fri, 23 Aug 2019 08:09:14 +0300
+In-Reply-To: <20190724112738.13457-1-hslester96@gmail.com>
+References: <20190724112738.13457-1-hslester96@gmail.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+Content-Type: text/plain; charset="UTF-8"
 User-Agent: Evolution 3.30.5-1.1 
 MIME-Version: 1.0
-X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on farmhouse.coelho.fi
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.9 required=5.0 tests=ALL_TRUSTED,BAYES_00,
-        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.2
-Subject: pull request: iwlwifi firmware updates 2019-08-23
+Content-Transfer-Encoding: 7bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+On Wed, 2019-07-24 at 19:27 +0800, Chuhong Yuan wrote:
+> Instead of using to_pci_dev + pci_get_drvdata,
+> use dev_get_drvdata to make code simpler.
+> 
+> Signed-off-by: Chuhong Yuan <hslester96@gmail.com>
+> ---
 
---=-Q+3k9GdluOZWOZM3/X5K
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+This patch is not relevant anymore because we have removed all
+D0i3/runtime PM code.
 
-Hi,
-
-This contains some updated firmwares for all our currently maintained
-FW binaries.
-
-Please pull or let me know if there are any issues.
+Thanks anyway!
 
 --
 Cheers,
 Luca.
-
-
-The following changes since commit c0fb3d9862477e31717e04e008debf6328b8980a=
-:
-
-  check_whence: Add copy-firmware.sh to the list of ignored files (2019-08-=
-21 08:03:43 -0400)
-
-are available in the Git repository at:
-
-  git://git.kernel.org/pub/scm/linux/kernel/git/iwlwifi/linux-firmware.git =
-tags/iwlwifi-fw-2019-08-23
-
-for you to fetch changes up to 40e4162adfc91390f6fbbd8269f9439832af1dde:
-
-  iwlwifi: update FWs to core45-152 release (2019-08-23 07:35:14 +0300)
-
-----------------------------------------------------------------
-Update iwlwifi firmwares to Core45-152
-
-----------------------------------------------------------------
-Luca Coelho (1):
-      iwlwifi: update FWs to core45-152 release
-
- WHENCE                            |  22 +++++++++++-----------
- iwlwifi-8000C-36.ucode            | Bin 2401356 -> 2401356 bytes
- iwlwifi-8265-36.ucode             | Bin 2414592 -> 2414592 bytes
- iwlwifi-9000-pu-b0-jf-b0-46.ucode | Bin 1467952 -> 1462068 bytes
- iwlwifi-9260-th-b0-jf-b0-46.ucode | Bin 1469012 -> 1463820 bytes
- iwlwifi-Qu-b0-hr-b0-48.ucode      | Bin 1106204 -> 1106228 bytes
- iwlwifi-Qu-b0-jf-b0-48.ucode      | Bin 1052772 -> 1052796 bytes
- iwlwifi-Qu-c0-hr-b0-48.ucode      | Bin 1106224 -> 1106248 bytes
- iwlwifi-Qu-c0-jf-b0-48.ucode      | Bin 1052792 -> 1052816 bytes
- iwlwifi-QuZ-a0-hr-b0-48.ucode     | Bin 1105644 -> 1105668 bytes
- iwlwifi-QuZ-a0-jf-b0-48.ucode     | Bin 1052584 -> 1052608 bytes
- iwlwifi-cc-a0-48.ucode            | Bin 1096680 -> 1096704 bytes
- 12 files changed, 11 insertions(+), 11 deletions(-)
-
---=-Q+3k9GdluOZWOZM3/X5K
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: This is a digitally signed message part
-Content-Transfer-Encoding: 7bit
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCgAdFiEEF3LNfgb2BPWm68smoUecoho8xfoFAl1fb1IACgkQoUecoho8
-xfrbbQ/+ONPtXLJnJdoZ5u3wrgdekBrAKP9litckZTfWRUWXVtv6SmahhBNYnVIV
-02fXXJ3FGSyvQBX65flZ+JbKgmxdN3800S4EY8VEIRgzSnKEYRS4r94KwaqXm+FT
-ikcp5Sb2ChkxUm1zZ/3E1o+VBiOpz5KEmJPFrfOMP3+b9Lz819Y3Sy9z/eWCV+6v
-m84KYdpOoC5p/TgpOGTvtftsLK1T4qXfSVZ5PzHO4YV1ijLkSi7EfHDBze4E/4Te
-cslg7zMcRnMjLjMjLvTzCvl8JJsW8PESqKQpvc26QtO41OvR5fKJ2Ws2+nDNBBtR
-prctcNoumkYCegCfQ562S2lCRg9FReyaLjqDGdmWomDAGYtIiS4scOPfhJZNu5LE
-J3gVTRPpxFN0R/jqrGsHIDDu0NIR+a2BX4fsoa7/PL08T9HSrrTM6hnCItE2q8ls
-75UwPXqgzapHJU3KSnY5BTXEpWCPNee837WUS0YB9lYe+8cbHwMv/hj/Y1/NNA0f
-GnZ/M1kJWy6OjjcIULpkoDKrfe5R0mHdDJlb/M/7V7NHojLDRWXQkpoMQ6NiZrcs
-lDyWkXr8b0I5Z2KwvlGPkzp7zIPO9dX64nBNFqYxfF76OcTdA4xZhGSxhGM/368O
-wbHKilP/m+2nkzWNKqdFy5q9TAdRW58cor53/loaObVHRFyh+iM=
-=h9SK
------END PGP SIGNATURE-----
-
---=-Q+3k9GdluOZWOZM3/X5K--
 
