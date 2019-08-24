@@ -2,68 +2,105 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 1753C9BBF2
-	for <lists+linux-wireless@lfdr.de>; Sat, 24 Aug 2019 07:19:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 786789BC9B
+	for <lists+linux-wireless@lfdr.de>; Sat, 24 Aug 2019 10:48:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725807AbfHXFTg (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 24 Aug 2019 01:19:36 -0400
-Received: from mail-io1-f65.google.com ([209.85.166.65]:38508 "EHLO
-        mail-io1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725782AbfHXFTg (ORCPT
+        id S1726058AbfHXIsX (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 24 Aug 2019 04:48:23 -0400
+Received: from mail-lf1-f67.google.com ([209.85.167.67]:45821 "EHLO
+        mail-lf1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725616AbfHXIsX (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 24 Aug 2019 01:19:36 -0400
-Received: by mail-io1-f65.google.com with SMTP id p12so25077762iog.5
-        for <linux-wireless@vger.kernel.org>; Fri, 23 Aug 2019 22:19:35 -0700 (PDT)
+        Sat, 24 Aug 2019 04:48:23 -0400
+Received: by mail-lf1-f67.google.com with SMTP id a30so8772162lfk.12;
+        Sat, 24 Aug 2019 01:48:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=xffSZoeEsT6W79B2O8n1Y95CCP4jcyur3pRaEjhRstw=;
-        b=FmyyS4t1+TBtnyNxSyf3IhP4NRofT7zUH9V0e5KiE/GyUEWSF0lO+HShE3XUZOkhL9
-         +JVbZDZGVL+7KxN4sTPr9oimhlY2Rzf9QcTRSePIpr2V30J+g3hf+r2z0AxDOCtNfAQc
-         VAjPGujNDJNCwqc27aGvVViExcfAvc4atTecphTq8stNFj0C/KgwVZECAYypJePNwF5O
-         0BtqOrW2VcgAtdWOGENzcBD+fEKlbKf3PBcvvwf2zr33ktzakgWNf5S0jZ2s/5P0ZSde
-         8gljCQcWtUVDCbgeACvlFIJnnmZVG7GrUXwV2WyGUgnB8ztmkn66ijm3FT6TAZKZVBlz
-         BnjQ==
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=jAKYmNodOYsJUt+/MXg5I2xorFlQfQabnP3uXvypvqA=;
+        b=aZFlho9Tmkpszrem/8A+w4JrJz68CTR2RUcH77gMLSO9wzg3tHKqmdiikXBaNf1PIz
+         4srPV2br76qdV+xgwGTWY79CRKEvNS6q6sogZQZdoug9+KUWmdu5NRVbiceWOIUsRuO+
+         fqiYCg+A9tYdZ66U136zJTVBGCZdvYBfc07+5nCvHiaIv5CavKIrqSBJl56Ti58IjY2P
+         AgmUqwbJB/d/UR33zpHefZuXOaoHE8hNhiOiJE1YBQ+L1JR7SW4LDxRjyYlEN0N9AFZJ
+         NBy5PBFCJX5NsHhcmQFAyDILvFwjB49VFmb82VfdcojkQM83XfDKSIXeAkaATPQd16Bv
+         yNVw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=xffSZoeEsT6W79B2O8n1Y95CCP4jcyur3pRaEjhRstw=;
-        b=X95GaXCQkqGuVwhwyPNDcn/PXmxKI3aRGnhdm1/Ap68z+PnJ72pjKkx8XdoAy5Q0xw
-         agzEgYRLLMbliFRTYDDhStcKYmERZYrkuzNcNSJWQlFnDr7FppknhRZvYrR+yo/5VWgA
-         dGVfPgFpGPDY04b1NrhrrmmmnWGYdCcbjc5Le78xeAfeVlkjNsrYOqSlssky18gFwgJ2
-         NnLGqJrIzJquW0ldGREe3uYT5RrUhPKwG6P5DKTo6HgSM28YhyiFpxNEJyVhp4T3USu7
-         lqkHI9WcSxKg1Cs1tqkDQSeTXkWp5iVMfJ3lpNnCE8qalcrzHKxfdokJSMgN0uX3IaTa
-         z6uA==
-X-Gm-Message-State: APjAAAXCSc+Cfd1/fJwI5zijZns6n1EV+bAZDCosmnXwRSzik9FjyxDD
-        kZkhEZfuwLfRBpQMIeXHYM63wvef2z72AKqMVXE=
-X-Google-Smtp-Source: APXvYqzWFLEekiYZOsAXOjFpiRaH/XQlvDWChazqi/lRkbjriIsCezitlafsP+yWpktb6lGaQlvTp+KYVPme3tueWMA=
-X-Received: by 2002:a02:a492:: with SMTP id d18mr8757481jam.27.1566623975283;
- Fri, 23 Aug 2019 22:19:35 -0700 (PDT)
-MIME-Version: 1.0
-References: <1564427246-25592-1-git-send-email-hanipouspilot@gmail.com>
- <20190823190019.GZ3071@ubuntu-xps13> <CANoib0F5U7suFoHdKYuqQvjB+XN5bkqzNtBd6RkUi_Rnt7_OrA@mail.gmail.com>
- <20190823192143.GA3071@ubuntu-xps13>
-In-Reply-To: <20190823192143.GA3071@ubuntu-xps13>
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=jAKYmNodOYsJUt+/MXg5I2xorFlQfQabnP3uXvypvqA=;
+        b=KVkLhExjmaZwhkZbCV3Q997YO7wBopl1CimkRhzJ7eAlVO6cTvvQRuZMDdxeakjAeK
+         bGlVd9Hr6+ezB/M4BsrM1Xhisb7tGiL3Zzv5UJqvKZgkikzCbCUmb5L7xAKKi1vGTLvH
+         65M6C2nJBVNNCGdlHcyQY5znxzIqLIiLDAUUspGvjDBuuvXasoeznKTNBJEFbNNkf/tH
+         rRZjVs1jv3NWAzzCgZGiFn1rDKT6iTB66AYAZV1U9CvQt82awiyRu5Sfl6AvFdvNEqOu
+         Nrb/fvhMJk/0WVruzzNQsOeHLSWC6db7qm5Q+rpKqUn5XFa4lnOWUQSXs3hEWN0heOWR
+         D5/w==
+X-Gm-Message-State: APjAAAWdUOCA/2e/pVpAO9PDH40hF/11QfPLt1sYOmg8oz7DwdIIBxDR
+        NqQjn6ogmmZ4dAReIXO37iI=
+X-Google-Smtp-Source: APXvYqx79f5q4WxtprT/3spGqQLaUKwprKNhE9/G/BtOYL6UuJjzDwQtYX+b1Zh0JRtpRUSYk8ZN1g==
+X-Received: by 2002:ac2:558a:: with SMTP id v10mr1327282lfg.162.1566636500662;
+        Sat, 24 Aug 2019 01:48:20 -0700 (PDT)
+Received: from natasha-samsung.lan ([31.173.82.37])
+        by smtp.gmail.com with ESMTPSA id p5sm1007948lfk.95.2019.08.24.01.48.18
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
+        Sat, 24 Aug 2019 01:48:19 -0700 (PDT)
 From:   Dmitry Tunin <hanipouspilot@gmail.com>
-Date:   Sat, 24 Aug 2019 08:19:25 +0300
-Message-ID: <CANoib0H_NdF7oJv6rno4xVNx9xRcykvh6DrEWo6K45m8NMuDaA@mail.gmail.com>
-Subject: Re: [PATCH v2] wireless-regdb: update regulatory rules for Russia
- (RU) on 5GHz
 To:     Seth Forshee <seth.forshee@canonical.com>
 Cc:     wireless-regdb@lists.infradead.org,
-        linux-wireless <linux-wireless@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+        linux-wireless <linux-wireless@vger.kernel.org>,
+        linux-kernel@vger.kernel.org,
+        Dmitry Tunin <hanipouspilot@gmail.com>
+Subject: [PATCH v3] Russian entry is incorrect. According to the last regulations document of Feb 29, 2016, 160 MHz channels and 802.11ad are allowed.
+Date:   Sat, 24 Aug 2019 11:48:10 +0300
+Message-Id: <1566636490-3438-1-git-send-email-hanipouspilot@gmail.com>
+X-Mailer: git-send-email 2.7.4
+MIME-Version: 1.0
+Content-Type: text/plain; charset=y
+Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-> It's not specifically 20 dBm, it's halving the power limit (i.e.
-> reducing it by 3 dBm).
+http://rfs-rf.ru/upload/medialibrary/c1a/prilozhenie-1-k-resheniyu-gkrch-_-16_36_03.pdf
 
-I suggest to leave it on 23dBm. It is low enough especially for 5650 - 5850.
-I am sure that a lot of Linux devices are certified that have this limit.
+Note that there was never a DFS requirement in Russia, but always was
+NO-OUTDOOR on 5GHz.
+Maximum power is 200mW that is ~23dBm on all 5GHz channels.
+Also Russia has never been regulated by ETSI.
 
-The TPC mentioned in the reg doc doesn't explain what it means.
+EIRP has been reduced by 4dBm because of TPC requirement.
+
+Signed-off-by: Dmitry Tunin <hanipouspilot@gmail.com>
+---
+ db.txt | 12 +++++-------
+ 1 file changed, 5 insertions(+), 7 deletions(-)
+
+diff --git a/db.txt b/db.txt
+index 37393e6..9e4dc27 100644
+--- a/db.txt
++++ b/db.txt
+@@ -1097,14 +1097,12 @@ country RS: DFS-ETSI
+ 	# 60 GHz band channels 1-4, ref: Etsi En 302 567
+ 	(57000 - 66000 @ 2160), (40)
+ 
+-country RU: DFS-ETSI
+-	(2402 - 2482 @ 40), (20)
+-	(5170 - 5250 @ 80), (20), AUTO-BW
+-	(5250 - 5330 @ 80), (20), DFS, AUTO-BW
+-	(5650 - 5730 @ 80), (30), DFS
+-	(5735 - 5835 @ 80), (30)
++country RU:
++	(2400 - 2483.5 @ 40), (20)
++	(5150 - 5350 @ 160), (20), NO-OUTDOOR
++	(5650 - 5850 @ 160), (20), NO-OUTDOOR
+ 	# 60 GHz band channels 1-4, ref: Changes to NLA 124_Order №129_22042015.pdf
+-	(57000 - 66000 @ 2160), (40)
++	(57000 - 66000 @ 2160), (40), NO-OUTDOOR
+ 
+ country RW: DFS-FCC
+ 	(2402 - 2482 @ 40), (20)
+-- 
+2.7.4
+
