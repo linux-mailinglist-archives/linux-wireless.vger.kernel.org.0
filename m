@@ -2,128 +2,114 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B24379C600
-	for <lists+linux-wireless@lfdr.de>; Sun, 25 Aug 2019 21:59:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EAB279C755
+	for <lists+linux-wireless@lfdr.de>; Mon, 26 Aug 2019 04:44:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729021AbfHYT7N (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 25 Aug 2019 15:59:13 -0400
-Received: from mail-yb1-f195.google.com ([209.85.219.195]:36597 "EHLO
-        mail-yb1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726345AbfHYT7N (ORCPT
+        id S1729222AbfHZCop (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 25 Aug 2019 22:44:45 -0400
+Received: from alexa-out-tai-02.qualcomm.com ([103.229.16.227]:59744 "EHLO
+        alexa-out-tai-02.qualcomm.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1729217AbfHZCop (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 25 Aug 2019 15:59:13 -0400
-Received: by mail-yb1-f195.google.com with SMTP id m9so6295774ybm.3;
-        Sun, 25 Aug 2019 12:59:12 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc:content-transfer-encoding;
-        bh=rwdGdHc5KELH58u1BLWdqe0IVwKNlhK1cPic66vQ+zU=;
-        b=bSajX2fiMz0VjXbIV4wnXHBDvSsPaxrH7TFTd2LSonNzwULf8szR+ynQRM5duKSLiZ
-         6u+IW3HboTgjVDEKcLRnzQa8bx+oIxFbncZJaNvGhO2WjoGamaQ0ykejl12qRtdw+xwA
-         r1xQMAGVkEQtHJZBIEH5P86kKBdFifIpN/5XOPQSiMriX2HbIjhjvWwI4XPEax4MGltn
-         y9GtUmNeasaflS7e2dlYmmg5MO+WCPsjMEqmgYdfzVlMaDvPNsOYJ49o368Xq/OdibJq
-         jVKbNQXVGxxEgkpKt5+8b7wIEm+b6i7b6qdSr9eUWrbkAxRbTuSnf2T+4rNxVulHHLgd
-         s5AA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=rwdGdHc5KELH58u1BLWdqe0IVwKNlhK1cPic66vQ+zU=;
-        b=f2aUix0Ek9hiLQA2HwFSGHX5ahoMp+yzHtKbCR/mVGSYsCuehAKwJnyl9REo2HW/bi
-         KkV7SsoXqlamZH43e3U2ReqZkzZa8fIGzXRgNz7SKjEM9j9dHSxsXu8ya5Ekawrr8Dwb
-         bkY+D4E1+FrZ8pWYfWTzniUQw9Wj9FDd8rWsLNQ2zehcW7M+Zkdp8y3Qgcq9mFOPMx/s
-         6dSwvx4DatL6MsQKuovwdYIRHin67aUUyCOtx/8p52KMthH0aeglSTPfojYUZHUOcQXB
-         YLdUbKhBA1XWhC+xcngp3nIq2MNH8B81Wk6x4M5ZrMj4P0oiFhqtWT2s6dn4JvvGb6FE
-         P2kg==
-X-Gm-Message-State: APjAAAXz8b2RSjfED8VuXCUE0a9og6D67g16iAnWasd4hS0w8LpSMBjA
-        6kf0j6ige9ImB1lcR1sLi3QJpOwA2qkWZVx1idLoKB7d
-X-Google-Smtp-Source: APXvYqzwvRBFD8dbPT63nz0/dQB3HooyKUWSSED2MN2hPgbFCv35jNh6d0sMzl66Umz9z6f5+8DZoLUyJu3J6cf1iGw=
-X-Received: by 2002:a25:2f56:: with SMTP id v83mr9833100ybv.2.1566763152247;
- Sun, 25 Aug 2019 12:59:12 -0700 (PDT)
-MIME-Version: 1.0
-References: <20190822133524.6274-1-colin.king@canonical.com>
- <d3c16158-ef89-f5ee-2f67-4357c70e8fe9@lwfinger.net> <31258833-174f-080b-489e-85d3556bd1de@canonical.com>
-In-Reply-To: <31258833-174f-080b-489e-85d3556bd1de@canonical.com>
-From:   =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>
-Date:   Sun, 25 Aug 2019 21:59:01 +0200
-Message-ID: <CACna6ryAmfhUENTWR33Xfngh_6zJe0EF_JKAxDUXXZPHYevkzA@mail.gmail.com>
-Subject: Re: [PATCH] bcma: fix incorrect update of BCMA_CORE_PCI_MDIO_DATA
-To:     Colin Ian King <colin.king@canonical.com>
-Cc:     Larry Finger <Larry.Finger@lwfinger.net>,
-        Hauke Mehrtens <hauke@hauke-m.de>,
+        Sun, 25 Aug 2019 22:44:45 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
+  d=qti.qualcomm.com; i=@qti.qualcomm.com; q=dns/txt;
+  s=qcdkim; t=1566787484; x=1598323484;
+  h=from:to:date:message-id:references:in-reply-to:
+   content-transfer-encoding:mime-version:subject;
+  bh=BzEFt8b9wy/Vl7PDQctKswOFZmk7CSwMUpyH2Io/PEM=;
+  b=mC9FquS1MrKXCOkAJdtwabZjljYqu0d0mWF5YaeSkkifxXsOReZFDC/u
+   iMZ+5yiHSMeEELb61QGXTUdyc60h3L3dOHlsD+LGgcdWXJcn+alxlDAX1
+   j6Aaj+W1B6Z0cuIImozzOAq0xXVAE6Sn+S45W3VqCFJ5duJxIFV+aQ4Fd
+   c=;
+Subject: RE: [PATCH] ath10k: remove TX lock from ath10k_htt_tx_inc_pending
+Thread-Topic: [PATCH] ath10k: remove TX lock from ath10k_htt_tx_inc_pending
+Received: from ironmsg01-tai.qualcomm.com ([10.249.140.6])
+  by alexa-out-tai-02.qualcomm.com with ESMTP; 26 Aug 2019 10:44:43 +0800
+Received: from aptaiexm02a.ap.qualcomm.com ([10.249.150.11])
+  by ironmsg01-tai.qualcomm.com with ESMTP/TLS/AES256-SHA; 26 Aug 2019 10:44:39 +0800
+Received: from aptaiexm02f.ap.qualcomm.com (10.249.150.16) by
+ aptaiexm02a.ap.qualcomm.com (10.249.150.11) with Microsoft SMTP Server (TLS)
+ id 15.0.1473.3; Mon, 26 Aug 2019 10:44:37 +0800
+Received: from aptaiexm02f.ap.qualcomm.com ([fe80::4152:1436:e436:faa1]) by
+ aptaiexm02f.ap.qualcomm.com ([fe80::4152:1436:e436:faa1%19]) with mapi id
+ 15.00.1473.005; Mon, 26 Aug 2019 10:44:37 +0800
+From:   Wen Gong <wgong@qti.qualcomm.com>
+To:     Erik Stromdahl <erik.stromdahl@gmail.com>,
+        Kalle Valo <kvalo@qca.qualcomm.com>,
         "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        kernel-janitors@vger.kernel.org,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+        "ath10k@lists.infradead.org" <ath10k@lists.infradead.org>
+Thread-Index: AQHVWoLUu0EcF57GtkCF/PdkQDEHWacMuQEQ
+Date:   Mon, 26 Aug 2019 02:44:37 +0000
+Message-ID: <4cd30880ae754f5599e6b1a4c1ac6a74@aptaiexm02f.ap.qualcomm.com>
+References: <20190824134857.4094-1-erik.stromdahl@gmail.com>
+In-Reply-To: <20190824134857.4094-1-erik.stromdahl@gmail.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-ms-exchange-transport-fromentityheader: Hosted
+x-originating-ip: [10.249.136.10]
+Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Thu, 22 Aug 2019 at 18:11, Colin Ian King <colin.king@canonical.com> wro=
-te:
-> On 22/08/2019 17:03, Larry Finger wrote:
-> > On 8/22/19 8:35 AM, Colin King wrote:
-> >> From: Colin Ian King <colin.king@canonical.com>
-> >>
-> >> An earlier commit re-worked the setting of the bitmask and is now
-> >> assigning v with some bit flags rather than bitwise or-ing them
-> >> into v, consequently the earlier bit-settings of v are being lost.
-> >> Fix this by replacing an assignment with the bitwise or instead.
-> >>
-> >> Addresses-Coverity: ("Unused value")
-> >> Fixes: 2be25cac8402 ("bcma: add constants for PCI and use them")
-> >> Signed-off-by: Colin Ian King <colin.king@canonical.com>
-> >> ---
-> >>   drivers/bcma/driver_pci.c | 2 +-
-> >>   1 file changed, 1 insertion(+), 1 deletion(-)
-> >>
-> >> diff --git a/drivers/bcma/driver_pci.c b/drivers/bcma/driver_pci.c
-> >> index f499a469e66d..d219ee947c07 100644
-> >> --- a/drivers/bcma/driver_pci.c
-> >> +++ b/drivers/bcma/driver_pci.c
-> >> @@ -78,7 +78,7 @@ static u16 bcma_pcie_mdio_read(struct bcma_drv_pci
-> >> *pc, u16 device, u8 address)
-> >>           v |=3D (address << BCMA_CORE_PCI_MDIODATA_REGADDR_SHF_OLD);
-> >>       }
-> >>   -    v =3D BCMA_CORE_PCI_MDIODATA_START;
-> >> +    v |=3D BCMA_CORE_PCI_MDIODATA_START;
-> >>       v |=3D BCMA_CORE_PCI_MDIODATA_READ;
-> >>       v |=3D BCMA_CORE_PCI_MDIODATA_TA;
-> >
-> > I'm not sure the "Fixes" attribute is correct.
-> >
-> > The changes for this section in commit 2be25cac8402 are
-> >
-> > -       v =3D (1 << 30); /* Start of Transaction */
-> > -       v |=3D (1 << 28); /* Write Transaction */
-> > -       v |=3D (1 << 17); /* Turnaround */
-> > -       v |=3D (0x1F << 18);
-> > +       v =3D BCMA_CORE_PCI_MDIODATA_START;
-> > +       v |=3D BCMA_CORE_PCI_MDIODATA_WRITE;
-> > +       v |=3D (BCMA_CORE_PCI_MDIODATA_DEV_ADDR <<
-> > +             BCMA_CORE_PCI_MDIODATA_DEVADDR_SHF);
-> > +       v |=3D (BCMA_CORE_PCI_MDIODATA_BLK_ADDR <<
-> > +             BCMA_CORE_PCI_MDIODATA_REGADDR_SHF);
-> > +       v |=3D BCMA_CORE_PCI_MDIODATA_TA;
-> >
-> > Because the code has done quite a bit of work on v just above this
-> > section, I agree that this is likely an error, but that error happened
-> > in an earlier commit. Thus 2be25cac8402 did not introduce the error,
-> > merely copied it.
->
-> Ugh, this goes back further. I didn't spot that. I'm less confident of
-> what the correct settings should be now.
->
-> >
-> > Has this change been tested?
->
-> Afraid not, I don't have the H/W.
-
-Please send V2 with updated commit message (Fixes tag) +
-bcma_pcie_mdio_write fixed. I'll try to test it.
-
---=20
-Rafa=C5=82
+> -----Original Message-----
+> From: ath10k <ath10k-bounces@lists.infradead.org> On Behalf Of Erik
+> Stromdahl
+> Sent: Saturday, August 24, 2019 9:49 PM
+> To: Kalle Valo <kvalo@qca.qualcomm.com>; linux-wireless@vger.kernel.org;
+> ath10k@lists.infradead.org
+> Cc: Erik Stromdahl <erik.stromdahl@gmail.com>
+> Subject: [EXT] [PATCH] ath10k: remove TX lock from
+> ath10k_htt_tx_inc_pending
+>=20
+> This commit removes the call to ath10k_mac_tx_lock() from
+> ath10k_htt_tx_inc_pending() in case the high water mark is reached.
+>=20
+> ath10k_mac_tx_lock() calls ieee80211_stop_queues() in order to stop
+> mac80211 from pushing more TX data to the driver (this is the TX lock).
+>=20
+> If a driver is trying to fetch an skb from a queue while the queue is
+> stopped, ieee80211_tx_dequeue() will return NULL.
+>=20
+> So, in ath10k_mac_tx_push_txq(), there is a risk that the call to
+> ath10k_htt_tx_inc_pending() results in a stop of the mac80211 TX queues
+> just before the skb is fetched.
+>=20
+> This will cause ieee80211_tx_dequeue() to return NULL and
+> ath10k_mac_tx_push_txq() to exit prematurely and return -ENOENT.
+> Before the function returns ath10k_htt_tx_dec_pending() will be called.
+> This call will re-enable the TX queues through ath10k_mac_tx_unlock().
+> When ath10k_mac_tx_push_txq() has returned, the TX queue will be
+> returned back to mac80211 with ieee80211_return_txq() without the skb
+> being properly consumed.
+>=20
+> Since the TX queues were re-enabled in the error exit path of
+> ath10k_mac_tx_push_txq(), mac80211 can continue pushing data to the
+> driver. If the hardware does not consume the data, the above mentioned
+> case will be repeated over and over.
+>=20
+> A case when the hardware is not able to transmit the data from the host
+> is when a STA has been dis-associated from an AP and has not yet been
+> able to re-associate. In this case there will be no TX_COMPL_INDs from
+> the hardware, resulting in the TX counter not be decremented.
+>=20
+> This phenomenon has been observed in both a real and a test setup.
+>=20
+> In order to fix this, the actual TX locking (the call to
+> ath10k_mac_tx_lock()) was removed from ath10k_htt_tx_inc_pending().
+> Instead, ath10k_mac_tx_lock() is called separately after the skb has
+> been fetched (after the call to ieee80211_tx_dequeue()). At this point
+> it is OK to stop the queues.
+Is this patch will impact throughput?
+>=20
+>=20
+> _______________________________________________
+> ath10k mailing list
+> ath10k@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/ath10k
