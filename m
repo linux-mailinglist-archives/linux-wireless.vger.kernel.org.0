@@ -2,56 +2,56 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id CDAFE9D772
-	for <lists+linux-wireless@lfdr.de>; Mon, 26 Aug 2019 22:35:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B939D9D8CA
+	for <lists+linux-wireless@lfdr.de>; Tue, 27 Aug 2019 00:03:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2387811AbfHZUfE (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 26 Aug 2019 16:35:04 -0400
-Received: from mail-oi1-f193.google.com ([209.85.167.193]:33068 "EHLO
-        mail-oi1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729078AbfHZUfE (ORCPT
+        id S1726257AbfHZWDv (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 26 Aug 2019 18:03:51 -0400
+Received: from mail-ot1-f67.google.com ([209.85.210.67]:35099 "EHLO
+        mail-ot1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726160AbfHZWDv (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 26 Aug 2019 16:35:04 -0400
-Received: by mail-oi1-f193.google.com with SMTP id l2so13204892oil.0
-        for <linux-wireless@vger.kernel.org>; Mon, 26 Aug 2019 13:35:03 -0700 (PDT)
+        Mon, 26 Aug 2019 18:03:51 -0400
+Received: by mail-ot1-f67.google.com with SMTP id 100so5960169otn.2
+        for <linux-wireless@vger.kernel.org>; Mon, 26 Aug 2019 15:03:50 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=sender:from:to:cc:subject:date:message-id:mime-version
          :content-transfer-encoding;
-        bh=qoYiEk1waDT7qbi157hrIkf5SSOuTsP9qZITTpaF0gA=;
-        b=CPraZmS3mTdnX8wAOqm0ScwBDWON9b/lfR2mNJSmx7+cyhoYwThnUTryxIqSpJBNdW
-         VrXF6GVY2u3QppNi1ZgmWlwHvmArZIY3Bp/jsC0v20afCB1faZxsVqvsVXq+22IO4mz8
-         hbSWtTBBdJcI2+iYH5HZYTuRYEaOVQHOa10QTWY6aR2tBXKubI3XILPAh7I5kKUw+fF0
-         Hkb/Yj13v4z+4bEQ4rZgK1uVQcga2/sw+Zx9cD3bghzlmNSjgDv0XEomVXwotgB+/4xP
-         JOkcgNr1odJBv9DbdMH579qRFSJJSURmuBcx7eIQXaMLt8um8e0SQfBZJQpgRujSFrqY
-         QgYw==
+        bh=T0xz6rcUxyAdoL/mjFWr2brmUZM3SJQbaxYdb5VrHZI=;
+        b=BFt15WFH2k8PelGM2usufNXLI4eHgCjBcMCJV34ynVx4DSt/KpOArDQUNGKOrw7Qop
+         SX7BS2fubaVpsibTEOxoMEZO4+57TkFakp08tEmAbqCPFFB2CSuFfyzvyehr73nft1AU
+         uYbll33j67/2s1SCDlkDxpQlDwOWSS2MjO5k6UQgtw/mWntlehoyp3wrhbxwj8IwSwoU
+         FFySbPhisVOpT3ESTXmEX6gnALZON5D3IjWzHmPdJDdleE+53ZQx4G5mEJOTWxR3jnn3
+         cBgPALRtxLEkqru7FRPgC1S+0JI2TRqYVPogGArqHf4/CQnMdcdi2zeL9+b81nIe7hI6
+         AcsQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:sender:from:to:cc:subject:date:message-id
          :mime-version:content-transfer-encoding;
-        bh=qoYiEk1waDT7qbi157hrIkf5SSOuTsP9qZITTpaF0gA=;
-        b=kbDkRv2HhW/2TcL0YthP9ZsKk//u3F5+XtVAmEewSDJ4KStxutkG6JJSme8UxIKo3G
-         YdBOv9+ojnhOGiSKbl/MVHyW/meTCjmeJ99nRydYYZQ9ldJTxAAbuIdB1yVhZD2TJuMp
-         kdAYzvE08m9PxN8xtVAaHZQYFVulNX37Ck7/+Mj8uu+T5aWZxAz7zy9P49Ja8ZybQjF4
-         s/gKGiJleFbYkhOHZgTLhj4bSLIF2FgkXx5pDciHTFbOPtMArHaClwNY5ZII2QuYGFTK
-         r0sJ9CYuxBFXy0wF3/3hxBocDJwTGgCDKo/f8rO/riRIs51FE74uxaImMM8otDdbE24u
-         r38w==
-X-Gm-Message-State: APjAAAW9WNLHVAPi3TcSYhWsPLDDR2kQBRNVg3/3DZ1CPoTaFCw6oFxD
-        GOIEr99PTjfv5CZfh1sjArOF30z/
-X-Google-Smtp-Source: APXvYqyIM5uMNfctUi5Xdak8RwH289qGfYB4aLR2SBQQFVMSYllt3pSW7fwfFe7Ha9+NfTUu6SpSlQ==
-X-Received: by 2002:aca:fc8e:: with SMTP id a136mr14017114oii.104.1566851703545;
-        Mon, 26 Aug 2019 13:35:03 -0700 (PDT)
+        bh=T0xz6rcUxyAdoL/mjFWr2brmUZM3SJQbaxYdb5VrHZI=;
+        b=hdBmh1M4UE8eqsgFKDKpnCWjnqnvLj79iLsBEKwkP0NwOMOJ7lU3BJFjx9vdbvqolG
+         AtC/UqSwLZ2OHy9epQMn/Jsfcftb1x8D0Z0EQ5rpuEUP0g51BqzxyysZnEGb3TwYO9Nx
+         BKP8zYRZoIPWsNcotZiYlHiXmx+oJ889PBq7fk9HtVOz09TPOLZoQ0sz6PdAO28N9nos
+         6bA1T6KyUKl+PDo2iN33L6VkToyQLVdDB/0UAd/CP/vkD1CneGbAXQDulYuIJ0bVRkr6
+         MqR+ZRIZps5EfCkt1OUZG3/i0IAn8ECB96I+4OE99ATtbMN9kFiQCz5t5zW1nL5pgyKG
+         1Sow==
+X-Gm-Message-State: APjAAAV28VwEkmxqFAULfW2uPckAwKs+enhouxCFEbEQr2ytfFcjwn1P
+        K/3d8B2YwidNBf+IzvhRT6o=
+X-Google-Smtp-Source: APXvYqynw9aQIphSgSKwGJ+pJl0Y976XTPPx0m+C65QqNDSpo1kQeABvHHTm0tvrQQGLc6c28rin/A==
+X-Received: by 2002:a9d:1288:: with SMTP id g8mr1865478otg.306.1566857030313;
+        Mon, 26 Aug 2019 15:03:50 -0700 (PDT)
 Received: from localhost.localdomain (cpe-24-31-245-230.kc.res.rr.com. [24.31.245.230])
-        by smtp.gmail.com with ESMTPSA id m205sm3145485oia.57.2019.08.26.13.35.02
+        by smtp.gmail.com with ESMTPSA id n19sm3709926oic.46.2019.08.26.15.03.48
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 26 Aug 2019 13:35:02 -0700 (PDT)
+        Mon, 26 Aug 2019 15:03:49 -0700 (PDT)
 From:   Larry Finger <Larry.Finger@lwfinger.net>
 To:     kvalo@codeaurora.org
 Cc:     linux-wireless@vger.kernel.org, pkshih@realtek.com,
         Larry Finger <Larry.Finger@lwfinger.net>
-Subject: [PATCH] rtlwifi: rtl_pci: Fix memory leak then hardware init fails
-Date:   Mon, 26 Aug 2019 15:34:58 -0500
-Message-Id: <20190826203458.8056-1-Larry.Finger@lwfinger.net>
+Subject: [PATCH v2] rtlwifi: rtl_pci: Fix memory leak when hardware init fails
+Date:   Mon, 26 Aug 2019 17:03:44 -0500
+Message-Id: <20190826220344.7084-1-Larry.Finger@lwfinger.net>
 X-Mailer: git-send-email 2.22.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -67,13 +67,15 @@ fixes all the drivers with only a single patch.
 
 Signed-off-by: Larry Finger <Larry.Finger@lwfinger.net>
 ---
+v2 - Fix typo in subject line
+---
 Kalle,
 
 This bug has been present in the driver since it was added to the
 kernel, there is no particular rush in applying it.
 
 Larry
-
+---
  drivers/net/wireless/realtek/rtlwifi/pci.c | 2 ++
  1 file changed, 2 insertions(+)
 
