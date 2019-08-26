@@ -2,161 +2,299 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 3DA049C9F8
-	for <lists+linux-wireless@lfdr.de>; Mon, 26 Aug 2019 09:15:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2A3679CA06
+	for <lists+linux-wireless@lfdr.de>; Mon, 26 Aug 2019 09:22:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729880AbfHZHPI (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 26 Aug 2019 03:15:08 -0400
-Received: from mail-pf1-f193.google.com ([209.85.210.193]:33716 "EHLO
-        mail-pf1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729348AbfHZHPI (ORCPT
+        id S1729919AbfHZHVx (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 26 Aug 2019 03:21:53 -0400
+Received: from mail-vk1-f195.google.com ([209.85.221.195]:35312 "EHLO
+        mail-vk1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729625AbfHZHVx (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 26 Aug 2019 03:15:08 -0400
-Received: by mail-pf1-f193.google.com with SMTP id g2so11218987pfq.0
-        for <linux-wireless@vger.kernel.org>; Mon, 26 Aug 2019 00:15:08 -0700 (PDT)
+        Mon, 26 Aug 2019 03:21:53 -0400
+Received: by mail-vk1-f195.google.com with SMTP id b184so3760265vkh.2
+        for <linux-wireless@vger.kernel.org>; Mon, 26 Aug 2019 00:21:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=endlessm-com.20150623.gappssmtp.com; s=20150623;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=8n+YcTBfTmkKFgYucRuL8pDTwqdXrd2vM7W5/c926a4=;
-        b=DQD23wX5rGLBsx9zqWRJghGYD79QMpq3czy9MyRWPCQTvBl60/tswSG6NiHqZCNjKU
-         Zu+SmyTEPx5Tk9S88yTDOYSiKeoKc39DpxqwJU6gULTMAIX/cHdTVlFY3cCw3FHvyRVn
-         zOf8meilXbas0AwY9hgFxg+jE4C1Y1iMvmpcJ5wHAt6TuiEEixNUeFKr/sHB6xuEsY31
-         RhYDis5ifpS2cFk0R6TnedXvI7wO8o2FyWZ+RypylQoCHetwfXGrS4q20GogitJ5JRHa
-         mcgbuCMyJJ0xiyZYIbQzsEaa0L12aGT4G9un2AgBicptMwKd8ai6Vs1p6CmdKNbXHukR
-         1QYw==
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc:content-transfer-encoding;
+        bh=Q//x/B+FcM5+mJKULk/MG/UlK4qdLpiW5WdWmOLmU7s=;
+        b=FAgv1IhJFDubdW4a8IRMDFF7CJnLICrSzCXNV2KIDokUkWTZPW64toOYjmqCftxUAk
+         TKJp6jam2Q1Vfiq7TG4EpHv+eTbbQ2f1CGRJ+DSRzVj6789Ku6ZzK5LWdbwxI46ox0SS
+         ZWRlWw2cGfpTZog2t3WNNMjk5+i+6jdEpR8tY4/DzmulesZcwdxgfs9L8iRfBu3D6+z9
+         e9fG/Od0+6fJrQQtBvojIbFiP8DBP62UQElQ3LtF8MBQU3SRcwVgWaRk16x1yvUX9SyD
+         8f1pKdOaKRAYVhA9lfcgar53ApGcNfN5v2Em8CUnTiYmwMqy6lbssyuInVqWV6VpclJX
+         kY2A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=8n+YcTBfTmkKFgYucRuL8pDTwqdXrd2vM7W5/c926a4=;
-        b=qa9cS//fcEcig9p8mOiF21x7QUmYMLjGPvl+fVLiaUlvHggpaEhiI/yhbj81jGON7P
-         Df/nXnDu5P8rQZzB4TW6fikbUov0XTd41iIZH8XWw1+SneFF/j9NslO/w422OiwPIJZF
-         ZgZOpFqeM3afi+Y8Tyj/iCCHnLPXbeeMW0Pxb8eLxyRN+pfKvEByCyG9XgZ4leE8mPcn
-         XQhGte/9U5EzRLbrnVqyrJIhKtsovm+waqcjTA/YGEMEjOsVohs1fplC4NIEniHJ0PUC
-         WK2krDeV066OAzldHuFxjJPnslNsEnkFf1GmORpjOlMO4Lw4V6zyleULpo0Irnswdn22
-         pR7A==
-X-Gm-Message-State: APjAAAUUegWW5AZ1rI5g3yk5HnXvRYpHFND+J0FdVWedubOs2MTtMEhy
-        uh6FjbE9o6vyCePYA79KPD3hqQ==
-X-Google-Smtp-Source: APXvYqx7ejqPLj9k2h0XJ0X3g0hvXd7pRFFT4LMlGp44C6DeCkTM7znQfZ5bLhx4QWY/s16r13DcEA==
-X-Received: by 2002:a17:90a:a105:: with SMTP id s5mr18181660pjp.51.1566803707694;
-        Mon, 26 Aug 2019 00:15:07 -0700 (PDT)
-Received: from localhost.localdomain (123-204-46-122.static.seed.net.tw. [123.204.46.122])
-        by smtp.gmail.com with ESMTPSA id w2sm11064485pjr.27.2019.08.26.00.15.04
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 26 Aug 2019 00:15:07 -0700 (PDT)
-From:   Jian-Hong Pan <jian-hong@endlessm.com>
-To:     Yan-Hsuan Chuang <yhchuang@realtek.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        "David S . Miller" <davem@davemloft.net>
-Cc:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux@endlessm.com,
-        Jian-Hong Pan <jian-hong@endlessm.com>
-Subject: [PATCH v4] rtw88: pci: Move a mass of jobs in hw IRQ to soft IRQ
-Date:   Mon, 26 Aug 2019 15:08:29 +0800
-Message-Id: <20190826070827.1436-1-jian-hong@endlessm.com>
-X-Mailer: git-send-email 2.23.0
-In-Reply-To: <F7CD281DE3E379468C6D07993EA72F84D18A5786@RTITMBSVM04.realtek.com.tw>
-References: <F7CD281DE3E379468C6D07993EA72F84D18A5786@RTITMBSVM04.realtek.com.tw>
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc:content-transfer-encoding;
+        bh=Q//x/B+FcM5+mJKULk/MG/UlK4qdLpiW5WdWmOLmU7s=;
+        b=oXgL/lCKcS5fgj497qMn6+2rL5gQXANLMTf95EB+GYItXuzejZYohNez1ERPFekW3f
+         FS3CAzGZw//MWCKngoWIP5M+ctJevclaC1RzOTn7O0ME6CmmoG9imhXwUrsUWKRU9o0S
+         I3eKsyLmp7k+XtSiCzkhseH88cW0VNaECSuGiJqqXotfeiSfkmILsBHUGkI3O0YERobi
+         +7svQFiyEP1D+sSecbV9D3w+lH8sRzyybUyn59QUc1FYpeksSf9V2bc67QiG7awszGLQ
+         FBVRnREH8WqEM/tD3PAxcpRJE1pu82mcvbnaoucTBuVUgY5KKRcmUMxW+ybAVuw+jkHu
+         Q6UA==
+X-Gm-Message-State: APjAAAVxveu19psZ1gfV8ft8rZYOWQjCPR5NMQ6+ijW+rMindbQ5HMIq
+        WNi04/Iobqmc8gFLHMgf0jHMRHbiH7DGuYT1SrhHLg==
+X-Google-Smtp-Source: APXvYqznGccIjmJXFqVoPf9Q3Qu8ITqUYkyxxABcNsL+ixapg2DtVic3eVRnXspFOdEfJxm4mPn4tcv1H+dhSfQTLgg=
+X-Received: by 2002:ac5:c7b5:: with SMTP id d21mr5608482vkn.56.1566804111572;
+ Mon, 26 Aug 2019 00:21:51 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <CAPpJ_edU68X-Ki+J61qfws+1-=zv54bcak9tzkMX=CkDS5mOMA@mail.gmail.com>
+ <20190820045934.24841-1-jian-hong@endlessm.com> <F7CD281DE3E379468C6D07993EA72F84D18A5786@RTITMBSVM04.realtek.com.tw>
+In-Reply-To: <F7CD281DE3E379468C6D07993EA72F84D18A5786@RTITMBSVM04.realtek.com.tw>
+From:   Jian-Hong Pan <jian-hong@endlessm.com>
+Date:   Mon, 26 Aug 2019 15:21:15 +0800
+Message-ID: <CAPpJ_edXoHhR++pn9gwbi==wHQXW4y2Z5-_KajdcpMQp-FqQXw@mail.gmail.com>
+Subject: Re: [PATCH v3] rtw88: pci: Move a mass of jobs in hw IRQ to soft IRQ
+To:     Tony Chuang <yhchuang@realtek.com>
+Cc:     Kalle Valo <kvalo@codeaurora.org>,
+        "David S . Miller" <davem@davemloft.net>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "linux@endlessm.com" <linux@endlessm.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-There is a mass of jobs between spin lock and unlock in the hardware
-IRQ which will occupy much time originally. To make system work more
-efficiently, this patch moves the jobs to the soft IRQ (bottom half) to
-reduce the time in hardware IRQ.
+Tony Chuang <yhchuang@realtek.com> =E6=96=BC 2019=E5=B9=B48=E6=9C=8821=E6=
+=97=A5 =E9=80=B1=E4=B8=89 =E4=B8=8B=E5=8D=884:16=E5=AF=AB=E9=81=93=EF=BC=9A
+>
+> Hi,
+>
+> > From: Jian-Hong Pan [mailto:jian-hong@endlessm.com]
+> >
+> > There is a mass of jobs between spin lock and unlock in the hardware
+> > IRQ which will occupy much time originally. To make system work more
+> > efficiently, this patch moves the jobs to the soft IRQ (bottom half) to
+> > reduce the time in hardware IRQ.
+> >
+> > Signed-off-by: Jian-Hong Pan <jian-hong@endlessm.com>
+> > ---
+> > v2:
+> >  Change the spin_lock_irqsave/unlock_irqrestore to spin_lock/unlock in
+> >  rtw_pci_interrupt_handler. Because the interrupts are already disabled
+> >  in the hardware interrupt handler.
+> >
+> > v3:
+> >  Extend the spin lock protecting area for the TX path in
+> >  rtw_pci_interrupt_threadfn by Realtek's suggestion
+> >
+> >  drivers/net/wireless/realtek/rtw88/pci.c | 33 +++++++++++++++++++-----
+> >  1 file changed, 27 insertions(+), 6 deletions(-)
+> >
+> > diff --git a/drivers/net/wireless/realtek/rtw88/pci.c
+> > b/drivers/net/wireless/realtek/rtw88/pci.c
+> > index 00ef229552d5..a8c17a01f318 100644
+> > --- a/drivers/net/wireless/realtek/rtw88/pci.c
+> > +++ b/drivers/net/wireless/realtek/rtw88/pci.c
+> > @@ -866,12 +866,29 @@ static irqreturn_t rtw_pci_interrupt_handler(int =
+irq,
+> > void *dev)
+> >  {
+> >       struct rtw_dev *rtwdev =3D dev;
+> >       struct rtw_pci *rtwpci =3D (struct rtw_pci *)rtwdev->priv;
+> > -     u32 irq_status[4];
+> >
+> >       spin_lock(&rtwpci->irq_lock);
+> >       if (!rtwpci->irq_enabled)
+> >               goto out;
+> >
+> > +     /* disable RTW PCI interrupt to avoid more interrupts before the =
+end of
+> > +      * thread function
+> > +      */
+> > +     rtw_pci_disable_interrupt(rtwdev, rtwpci);
+> > +out:
+> > +     spin_unlock(&rtwpci->irq_lock);
+> > +
+> > +     return IRQ_WAKE_THREAD;
+> > +}
+> > +
+> > +static irqreturn_t rtw_pci_interrupt_threadfn(int irq, void *dev)
+> > +{
+> > +     struct rtw_dev *rtwdev =3D dev;
+> > +     struct rtw_pci *rtwpci =3D (struct rtw_pci *)rtwdev->priv;
+> > +     unsigned long flags;
+> > +     u32 irq_status[4];
+> > +
+> > +     spin_lock_irqsave(&rtwpci->irq_lock, flags);
+> >       rtw_pci_irq_recognized(rtwdev, rtwpci, irq_status);
+> >
+> >       if (irq_status[0] & IMR_MGNTDOK)
+> > @@ -891,8 +908,10 @@ static irqreturn_t rtw_pci_interrupt_handler(int i=
+rq,
+> > void *dev)
+> >       if (irq_status[0] & IMR_ROK)
+> >               rtw_pci_rx_isr(rtwdev, rtwpci, RTW_RX_QUEUE_MPDU);
+> >
+> > -out:
+> > -     spin_unlock(&rtwpci->irq_lock);
+> > +     /* all of the jobs for this interrupt have been done */
+> > +     if (rtw_flag_check(rtwdev, RTW_FLAG_RUNNING))
+> > +             rtw_pci_enable_interrupt(rtwdev, rtwpci);
+>
+> I've applied this patch and tested it.
+> But I failed to connect to AP, it seems that the
+> scan_result is empty. And when I failed to connect
+> to the AP, I found that the IMR is not enabled.
+> I guess the check bypass the interrupt enable function.
+>
+> And I also found that *without MSI*, the driver is
+> able to connect to the AP. Could you please verify
+> this patch again with MSI interrupt enabled and
+> send a v4?
+>
+> You can find my MSI patch on
+> https://patchwork.kernel.org/patch/11081539/
 
-Signed-off-by: Jian-Hong Pan <jian-hong@endlessm.com>
----
-v2:
- Change the spin_lock_irqsave/unlock_irqrestore to spin_lock/unlock in
- rtw_pci_interrupt_handler. Because the interrupts are already disabled
- in the hardware interrupt handler.
+I have just sent v4 patch.  Also tested the modified MSI patch like below:
+The WiFi works fine on ASUS X512DK (including MSI enabled).
 
-v3:
- Extend the spin lock protecting area for the TX path in
- rtw_pci_interrupt_threadfn by Realtek's suggestion
+Jian-Hong Pan
 
-v4:
- Remove the WiFi running check in rtw_pci_interrupt_threadfn to avoid AP
- connection failed by Realtek's suggestion.
-
- drivers/net/wireless/realtek/rtw88/pci.c | 32 +++++++++++++++++++-----
- 1 file changed, 26 insertions(+), 6 deletions(-)
-
-diff --git a/drivers/net/wireless/realtek/rtw88/pci.c b/drivers/net/wireless/realtek/rtw88/pci.c
-index 00ef229552d5..955dd6c6fb57 100644
+diff --git a/drivers/net/wireless/realtek/rtw88/pci.c
+b/drivers/net/wireless/realtek/rtw88/pci.c
+index 955dd6c6fb57..d18f5aae1585 100644
 --- a/drivers/net/wireless/realtek/rtw88/pci.c
 +++ b/drivers/net/wireless/realtek/rtw88/pci.c
-@@ -866,12 +866,29 @@ static irqreturn_t rtw_pci_interrupt_handler(int irq, void *dev)
- {
- 	struct rtw_dev *rtwdev = dev;
- 	struct rtw_pci *rtwpci = (struct rtw_pci *)rtwdev->priv;
--	u32 irq_status[4];
- 
- 	spin_lock(&rtwpci->irq_lock);
- 	if (!rtwpci->irq_enabled)
- 		goto out;
- 
-+	/* disable RTW PCI interrupt to avoid more interrupts before the end of
-+	 * thread function
-+	 */
-+	rtw_pci_disable_interrupt(rtwdev, rtwpci);
-+out:
-+	spin_unlock(&rtwpci->irq_lock);
+@@ -11,6 +11,10 @@
+ #include "fw.h"
+ #include "debug.h"
+
++static bool rtw_disable_msi;
++module_param_named(disable_msi, rtw_disable_msi, bool, 0644);
++MODULE_PARM_DESC(disable_msi, "Set Y to disable MSI interrupt support");
 +
-+	return IRQ_WAKE_THREAD;
+ static u32 rtw_pci_tx_queue_idx_addr[] =3D {
+     [RTW_TX_QUEUE_BK]    =3D RTK_PCI_TXBD_IDX_BKQ,
+     [RTW_TX_QUEUE_BE]    =3D RTK_PCI_TXBD_IDX_BEQ,
+@@ -1116,6 +1120,48 @@ static struct rtw_hci_ops rtw_pci_ops =3D {
+     .write_data_h2c =3D rtw_pci_write_data_h2c,
+ };
+
++static int rtw_pci_request_irq(struct rtw_dev *rtwdev, struct pci_dev *pde=
+v)
++{
++    struct rtw_pci *rtwpci =3D (struct rtw_pci *)rtwdev->priv;
++    int ret;
++
++    if (!rtw_disable_msi) {
++        ret =3D pci_enable_msi(pdev);
++        if (ret) {
++            rtw_warn(rtwdev, "failed to enable msi %d, using legacy irq\n"=
+,
++                 ret);
++        } else {
++            rtw_warn(rtwdev, "pci msi enabled\n");
++            rtwpci->msi_enabled =3D true;
++        }
++    }
++
++    ret =3D devm_request_threaded_irq(rtwdev->dev, pdev->irq,
++                    rtw_pci_interrupt_handler,
++                    rtw_pci_interrupt_threadfn,
++                    IRQF_SHARED, KBUILD_MODNAME, rtwdev);
++    if (ret) {
++        rtw_err(rtwdev, "failed to request irq %d\n", ret);
++        if (rtwpci->msi_enabled) {
++            pci_disable_msi(pdev);
++            rtwpci->msi_enabled =3D false;
++        }
++    }
++
++    return ret;
 +}
 +
-+static irqreturn_t rtw_pci_interrupt_threadfn(int irq, void *dev)
++static void rtw_pci_free_irq(struct rtw_dev *rtwdev, struct pci_dev *pdev)
 +{
-+	struct rtw_dev *rtwdev = dev;
-+	struct rtw_pci *rtwpci = (struct rtw_pci *)rtwdev->priv;
-+	unsigned long flags;
-+	u32 irq_status[4];
++    struct rtw_pci *rtwpci =3D (struct rtw_pci *)rtwdev->priv;
 +
-+	spin_lock_irqsave(&rtwpci->irq_lock, flags);
- 	rtw_pci_irq_recognized(rtwdev, rtwpci, irq_status);
- 
- 	if (irq_status[0] & IMR_MGNTDOK)
-@@ -891,8 +908,9 @@ static irqreturn_t rtw_pci_interrupt_handler(int irq, void *dev)
- 	if (irq_status[0] & IMR_ROK)
- 		rtw_pci_rx_isr(rtwdev, rtwpci, RTW_RX_QUEUE_MPDU);
- 
--out:
--	spin_unlock(&rtwpci->irq_lock);
-+	/* all of the jobs for this interrupt have been done */
-+	rtw_pci_enable_interrupt(rtwdev, rtwpci);
-+	spin_unlock_irqrestore(&rtwpci->irq_lock, flags);
- 
- 	return IRQ_HANDLED;
- }
-@@ -1152,8 +1170,10 @@ static int rtw_pci_probe(struct pci_dev *pdev,
- 		goto err_destroy_pci;
- 	}
- 
--	ret = request_irq(pdev->irq, &rtw_pci_interrupt_handler,
--			  IRQF_SHARED, KBUILD_MODNAME, rtwdev);
-+	ret = devm_request_threaded_irq(rtwdev->dev, pdev->irq,
-+					rtw_pci_interrupt_handler,
-+					rtw_pci_interrupt_threadfn,
-+					IRQF_SHARED, KBUILD_MODNAME, rtwdev);
- 	if (ret) {
- 		ieee80211_unregister_hw(hw);
- 		goto err_destroy_pci;
-@@ -1192,7 +1212,7 @@ static void rtw_pci_remove(struct pci_dev *pdev)
- 	rtw_pci_disable_interrupt(rtwdev, rtwpci);
- 	rtw_pci_destroy(rtwdev, pdev);
- 	rtw_pci_declaim(rtwdev, pdev);
--	free_irq(rtwpci->pdev->irq, rtwdev);
-+	devm_free_irq(rtwdev->dev, rtwpci->pdev->irq, rtwdev);
- 	rtw_core_deinit(rtwdev);
- 	ieee80211_free_hw(hw);
- }
--- 
-2.20.1
++    devm_free_irq(rtwdev->dev, rtwpci->pdev->irq, rtwdev);
++    if (rtwpci->msi_enabled) {
++        pci_disable_msi(pdev);
++        rtwpci->msi_enabled =3D false;
++    }
++}
++
+ static int rtw_pci_probe(struct pci_dev *pdev,
+              const struct pci_device_id *id)
+ {
+@@ -1170,10 +1216,7 @@ static int rtw_pci_probe(struct pci_dev *pdev,
+         goto err_destroy_pci;
+     }
 
+-    ret =3D devm_request_threaded_irq(rtwdev->dev, pdev->irq,
+-                    rtw_pci_interrupt_handler,
+-                    rtw_pci_interrupt_threadfn,
+-                    IRQF_SHARED, KBUILD_MODNAME, rtwdev);
++    ret =3D rtw_pci_request_irq(rtwdev, pdev);
+     if (ret) {
+         ieee80211_unregister_hw(hw);
+         goto err_destroy_pci;
+@@ -1212,7 +1255,7 @@ static void rtw_pci_remove(struct pci_dev *pdev)
+     rtw_pci_disable_interrupt(rtwdev, rtwpci);
+     rtw_pci_destroy(rtwdev, pdev);
+     rtw_pci_declaim(rtwdev, pdev);
+-    devm_free_irq(rtwdev->dev, rtwpci->pdev->irq, rtwdev);
++    rtw_pci_free_irq(rtwdev, pdev);
+     rtw_core_deinit(rtwdev);
+     ieee80211_free_hw(hw);
+ }
+diff --git a/drivers/net/wireless/realtek/rtw88/pci.h
+b/drivers/net/wireless/realtek/rtw88/pci.h
+index 87824a4caba9..a8e369c5eaca 100644
+--- a/drivers/net/wireless/realtek/rtw88/pci.h
++++ b/drivers/net/wireless/realtek/rtw88/pci.h
+@@ -186,6 +186,7 @@ struct rtw_pci {
+     spinlock_t irq_lock;
+     u32 irq_mask[4];
+     bool irq_enabled;
++    bool msi_enabled;
+
+     u16 rx_tag;
+     struct rtw_pci_tx_ring tx_rings[RTK_MAX_TX_QUEUE_NUM];
+
+
+> > +     spin_unlock_irqrestore(&rtwpci->irq_lock, flags);
+> >
+> >       return IRQ_HANDLED;
+> >  }
+> > @@ -1152,8 +1171,10 @@ static int rtw_pci_probe(struct pci_dev *pdev,
+> >               goto err_destroy_pci;
+> >       }
+> >
+> > -     ret =3D request_irq(pdev->irq, &rtw_pci_interrupt_handler,
+> > -                       IRQF_SHARED, KBUILD_MODNAME, rtwdev);
+> > +     ret =3D devm_request_threaded_irq(rtwdev->dev, pdev->irq,
+> > +                                     rtw_pci_interrupt_handler,
+> > +                                     rtw_pci_interrupt_threadfn,
+> > +                                     IRQF_SHARED, KBUILD_MODNAME, rtwd=
+ev);
+> >       if (ret) {
+> >               ieee80211_unregister_hw(hw);
+> >               goto err_destroy_pci;
+> > @@ -1192,7 +1213,7 @@ static void rtw_pci_remove(struct pci_dev *pdev)
+> >       rtw_pci_disable_interrupt(rtwdev, rtwpci);
+> >       rtw_pci_destroy(rtwdev, pdev);
+> >       rtw_pci_declaim(rtwdev, pdev);
+> > -     free_irq(rtwpci->pdev->irq, rtwdev);
+> > +     devm_free_irq(rtwdev->dev, rtwpci->pdev->irq, rtwdev);
+> >       rtw_core_deinit(rtwdev);
+> >       ieee80211_free_hw(hw);
+> >  }
+> > --
+>
+>
+> NACK
+> Need to verify it with MSI https://patchwork.kernel.org/patch/11081539/
+> And hope v4 could fix it.
+>
+> Yan-Hsuan
+>
