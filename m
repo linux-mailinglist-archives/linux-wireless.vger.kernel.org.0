@@ -2,299 +2,268 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2A3679CA06
-	for <lists+linux-wireless@lfdr.de>; Mon, 26 Aug 2019 09:22:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B96509D100
+	for <lists+linux-wireless@lfdr.de>; Mon, 26 Aug 2019 15:48:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729919AbfHZHVx (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 26 Aug 2019 03:21:53 -0400
-Received: from mail-vk1-f195.google.com ([209.85.221.195]:35312 "EHLO
-        mail-vk1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729625AbfHZHVx (ORCPT
+        id S1730548AbfHZNsI (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 26 Aug 2019 09:48:08 -0400
+Received: from dvalin.narfation.org ([213.160.73.56]:37082 "EHLO
+        dvalin.narfation.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728550AbfHZNsI (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 26 Aug 2019 03:21:53 -0400
-Received: by mail-vk1-f195.google.com with SMTP id b184so3760265vkh.2
-        for <linux-wireless@vger.kernel.org>; Mon, 26 Aug 2019 00:21:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=endlessm-com.20150623.gappssmtp.com; s=20150623;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc:content-transfer-encoding;
-        bh=Q//x/B+FcM5+mJKULk/MG/UlK4qdLpiW5WdWmOLmU7s=;
-        b=FAgv1IhJFDubdW4a8IRMDFF7CJnLICrSzCXNV2KIDokUkWTZPW64toOYjmqCftxUAk
-         TKJp6jam2Q1Vfiq7TG4EpHv+eTbbQ2f1CGRJ+DSRzVj6789Ku6ZzK5LWdbwxI46ox0SS
-         ZWRlWw2cGfpTZog2t3WNNMjk5+i+6jdEpR8tY4/DzmulesZcwdxgfs9L8iRfBu3D6+z9
-         e9fG/Od0+6fJrQQtBvojIbFiP8DBP62UQElQ3LtF8MBQU3SRcwVgWaRk16x1yvUX9SyD
-         8f1pKdOaKRAYVhA9lfcgar53ApGcNfN5v2Em8CUnTiYmwMqy6lbssyuInVqWV6VpclJX
-         kY2A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=Q//x/B+FcM5+mJKULk/MG/UlK4qdLpiW5WdWmOLmU7s=;
-        b=oXgL/lCKcS5fgj497qMn6+2rL5gQXANLMTf95EB+GYItXuzejZYohNez1ERPFekW3f
-         FS3CAzGZw//MWCKngoWIP5M+ctJevclaC1RzOTn7O0ME6CmmoG9imhXwUrsUWKRU9o0S
-         I3eKsyLmp7k+XtSiCzkhseH88cW0VNaECSuGiJqqXotfeiSfkmILsBHUGkI3O0YERobi
-         +7svQFiyEP1D+sSecbV9D3w+lH8sRzyybUyn59QUc1FYpeksSf9V2bc67QiG7awszGLQ
-         FBVRnREH8WqEM/tD3PAxcpRJE1pu82mcvbnaoucTBuVUgY5KKRcmUMxW+ybAVuw+jkHu
-         Q6UA==
-X-Gm-Message-State: APjAAAVxveu19psZ1gfV8ft8rZYOWQjCPR5NMQ6+ijW+rMindbQ5HMIq
-        WNi04/Iobqmc8gFLHMgf0jHMRHbiH7DGuYT1SrhHLg==
-X-Google-Smtp-Source: APXvYqznGccIjmJXFqVoPf9Q3Qu8ITqUYkyxxABcNsL+ixapg2DtVic3eVRnXspFOdEfJxm4mPn4tcv1H+dhSfQTLgg=
-X-Received: by 2002:ac5:c7b5:: with SMTP id d21mr5608482vkn.56.1566804111572;
- Mon, 26 Aug 2019 00:21:51 -0700 (PDT)
+        Mon, 26 Aug 2019 09:48:08 -0400
+Received: from bentobox.localnet (p200300C5970CB6F80000000000000699.dip0.t-ipconnect.de [IPv6:2003:c5:970c:b6f8::699])
+        by dvalin.narfation.org (Postfix) with ESMTPSA id 48B061FE75;
+        Mon, 26 Aug 2019 13:48:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=narfation.org;
+        s=20121; t=1566827283;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=UzOXWYaqad32QXBAmtszP5EUVKl3fPXSUq2j9ipqBQ8=;
+        b=J6+PGDuwaFtgfJYrGjAkOtdPt4WqFrouFD8rJGAvNXR1Wym1qYJfOCNN6dnOrCwQqzU2vC
+        pwxEIshCju8cFiOrpyLGn8UF363PPQ+1DXkzgYRQ+k2BQcVEX6y+QOKK8JOt3D4w8z/XiD
+        uxH4C3/PkZwNL+KKBfJGn8U8xWKQwYk=
+From:   Sven Eckelmann <sven@narfation.org>
+To:     ath11k@lists.infradead.org
+Cc:     Kalle Valo <kvalo@codeaurora.org>, linux-wireless@vger.kernel.org,
+        devicetree@vger.kernel.org
+Subject: Re: [PATCH 10/49] ath11k: add debug.c
+Date:   Mon, 26 Aug 2019 15:47:57 +0200
+Message-ID: <2708501.D2hezO5Rnt@bentobox>
+In-Reply-To: <1566316095-27507-11-git-send-email-kvalo@codeaurora.org>
+References: <1566316095-27507-1-git-send-email-kvalo@codeaurora.org> <1566316095-27507-11-git-send-email-kvalo@codeaurora.org>
 MIME-Version: 1.0
-References: <CAPpJ_edU68X-Ki+J61qfws+1-=zv54bcak9tzkMX=CkDS5mOMA@mail.gmail.com>
- <20190820045934.24841-1-jian-hong@endlessm.com> <F7CD281DE3E379468C6D07993EA72F84D18A5786@RTITMBSVM04.realtek.com.tw>
-In-Reply-To: <F7CD281DE3E379468C6D07993EA72F84D18A5786@RTITMBSVM04.realtek.com.tw>
-From:   Jian-Hong Pan <jian-hong@endlessm.com>
-Date:   Mon, 26 Aug 2019 15:21:15 +0800
-Message-ID: <CAPpJ_edXoHhR++pn9gwbi==wHQXW4y2Z5-_KajdcpMQp-FqQXw@mail.gmail.com>
-Subject: Re: [PATCH v3] rtw88: pci: Move a mass of jobs in hw IRQ to soft IRQ
-To:     Tony Chuang <yhchuang@realtek.com>
-Cc:     Kalle Valo <kvalo@codeaurora.org>,
-        "David S . Miller" <davem@davemloft.net>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux@endlessm.com" <linux@endlessm.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: multipart/signed; boundary="nextPart3959043.Os2YI8mG4J"; micalg="pgp-sha512"; protocol="application/pgp-signature"
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=narfation.org;
+        s=20121; t=1566827283;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=UzOXWYaqad32QXBAmtszP5EUVKl3fPXSUq2j9ipqBQ8=;
+        b=jnk0cQm8NqsMqi3gCItpeRfc7fV+Eutt4grxajDEQ1pH825wuay5caxSkVnNXgwVwpwG8h
+        aJesF+E6R+qikmVaP/1VaM2+QWzkfsyJGOfAEWX4NfvOC4FIfXI4F/P46DnibzkiTFpmDR
+        hjc1i9iyhy8WNoZrWbNgF8mKZ2xg7Hg=
+ARC-Seal: i=1; s=20121; d=narfation.org; t=1566827283; a=rsa-sha256;
+        cv=none;
+        b=dcQB79EqPD4WvyRx7UTLyzayqggSLEKx4VbBs+cRQFR/nhl3pyV68XTlOy9Z24hD6ScohS
+        hGq5dCvahnBHXxrzFEoikuUPVL4htrmv6W9sEDg1np6bFctuWCtWBaybtKmghlP7pdFILY
+        lUnlKRevc9y8Fxsqotu+W3SOy8YeyNU=
+ARC-Authentication-Results: i=1;
+        dvalin.narfation.org;
+        auth=pass smtp.auth=sven smtp.mailfrom=sven@narfation.org
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Tony Chuang <yhchuang@realtek.com> =E6=96=BC 2019=E5=B9=B48=E6=9C=8821=E6=
-=97=A5 =E9=80=B1=E4=B8=89 =E4=B8=8B=E5=8D=884:16=E5=AF=AB=E9=81=93=EF=BC=9A
->
-> Hi,
->
-> > From: Jian-Hong Pan [mailto:jian-hong@endlessm.com]
-> >
-> > There is a mass of jobs between spin lock and unlock in the hardware
-> > IRQ which will occupy much time originally. To make system work more
-> > efficiently, this patch moves the jobs to the soft IRQ (bottom half) to
-> > reduce the time in hardware IRQ.
-> >
-> > Signed-off-by: Jian-Hong Pan <jian-hong@endlessm.com>
-> > ---
-> > v2:
-> >  Change the spin_lock_irqsave/unlock_irqrestore to spin_lock/unlock in
-> >  rtw_pci_interrupt_handler. Because the interrupts are already disabled
-> >  in the hardware interrupt handler.
-> >
-> > v3:
-> >  Extend the spin lock protecting area for the TX path in
-> >  rtw_pci_interrupt_threadfn by Realtek's suggestion
-> >
-> >  drivers/net/wireless/realtek/rtw88/pci.c | 33 +++++++++++++++++++-----
-> >  1 file changed, 27 insertions(+), 6 deletions(-)
-> >
-> > diff --git a/drivers/net/wireless/realtek/rtw88/pci.c
-> > b/drivers/net/wireless/realtek/rtw88/pci.c
-> > index 00ef229552d5..a8c17a01f318 100644
-> > --- a/drivers/net/wireless/realtek/rtw88/pci.c
-> > +++ b/drivers/net/wireless/realtek/rtw88/pci.c
-> > @@ -866,12 +866,29 @@ static irqreturn_t rtw_pci_interrupt_handler(int =
-irq,
-> > void *dev)
-> >  {
-> >       struct rtw_dev *rtwdev =3D dev;
-> >       struct rtw_pci *rtwpci =3D (struct rtw_pci *)rtwdev->priv;
-> > -     u32 irq_status[4];
-> >
-> >       spin_lock(&rtwpci->irq_lock);
-> >       if (!rtwpci->irq_enabled)
-> >               goto out;
-> >
-> > +     /* disable RTW PCI interrupt to avoid more interrupts before the =
-end of
-> > +      * thread function
-> > +      */
-> > +     rtw_pci_disable_interrupt(rtwdev, rtwpci);
-> > +out:
-> > +     spin_unlock(&rtwpci->irq_lock);
-> > +
-> > +     return IRQ_WAKE_THREAD;
-> > +}
-> > +
-> > +static irqreturn_t rtw_pci_interrupt_threadfn(int irq, void *dev)
-> > +{
-> > +     struct rtw_dev *rtwdev =3D dev;
-> > +     struct rtw_pci *rtwpci =3D (struct rtw_pci *)rtwdev->priv;
-> > +     unsigned long flags;
-> > +     u32 irq_status[4];
-> > +
-> > +     spin_lock_irqsave(&rtwpci->irq_lock, flags);
-> >       rtw_pci_irq_recognized(rtwdev, rtwpci, irq_status);
-> >
-> >       if (irq_status[0] & IMR_MGNTDOK)
-> > @@ -891,8 +908,10 @@ static irqreturn_t rtw_pci_interrupt_handler(int i=
-rq,
-> > void *dev)
-> >       if (irq_status[0] & IMR_ROK)
-> >               rtw_pci_rx_isr(rtwdev, rtwpci, RTW_RX_QUEUE_MPDU);
-> >
-> > -out:
-> > -     spin_unlock(&rtwpci->irq_lock);
-> > +     /* all of the jobs for this interrupt have been done */
-> > +     if (rtw_flag_check(rtwdev, RTW_FLAG_RUNNING))
-> > +             rtw_pci_enable_interrupt(rtwdev, rtwpci);
->
-> I've applied this patch and tested it.
-> But I failed to connect to AP, it seems that the
-> scan_result is empty. And when I failed to connect
-> to the AP, I found that the IMR is not enabled.
-> I guess the check bypass the interrupt enable function.
->
-> And I also found that *without MSI*, the driver is
-> able to connect to the AP. Could you please verify
-> this patch again with MSI interrupt enabled and
-> send a v4?
->
-> You can find my MSI patch on
-> https://patchwork.kernel.org/patch/11081539/
+--nextPart3959043.Os2YI8mG4J
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="us-ascii"
 
-I have just sent v4 patch.  Also tested the modified MSI patch like below:
-The WiFi works fine on ASUS X512DK (including MSI enabled).
+On Tuesday, 20 August 2019 17:47:36 CEST Kalle Valo wrote:
+> +static ssize_t ath11k_read_simulate_fw_crash(struct file *file,
+> +                                            char __user *user_buf,
+> +                                            size_t count, loff_t *ppos)
+> +{
+> +       const char buf[] =
+> +               "To simulate firmware crash write one of the keywords to this file:\n"
+> +               "`assert` - this will send WMI_FORCE_FW_HANG_CMDID to firmware to cause assert.\n"
+> +               "`hw-restart` - this will simply queue hw restart without fw/hw actually crashing.\n";
+> +
+> +       return simple_read_from_buffer(user_buf, count, ppos, buf, strlen(buf));
+> +}
 
-Jian-Hong Pan
+There is nothing in the write handler which handles "hw-restart". It just 
+causes an -EINVAL.
 
-diff --git a/drivers/net/wireless/realtek/rtw88/pci.c
-b/drivers/net/wireless/realtek/rtw88/pci.c
-index 955dd6c6fb57..d18f5aae1585 100644
---- a/drivers/net/wireless/realtek/rtw88/pci.c
-+++ b/drivers/net/wireless/realtek/rtw88/pci.c
-@@ -11,6 +11,10 @@
- #include "fw.h"
- #include "debug.h"
+> +
+> +/* Simulate firmware crash:
+> + * 'soft': Call wmi command causing firmware hang. This firmware hang is
+> + * recoverable by warm firmware reset.
+> + * 'hard': Force firmware crash by setting any vdev parameter for not allowed
+> + * vdev id. This is hard firmware crash because it is recoverable only by cold
+> + * firmware reset.
+> + */
+> +static ssize_t ath11k_write_simulate_fw_crash(struct file *file,
+> +                                             const char __user *user_buf,
+> +                                             size_t count, loff_t *ppos)
+> +{
+> +       struct ath11k_base *ab = file->private_data;
+> +       struct ath11k_pdev *pdev;
+> +       struct ath11k *ar = ab->pdevs[0].ar;
+> +       char buf[32] = {0};
+> +       ssize_t rc;
+> +       int i, ret, radioup;
+> +
+> +       for (i = 0; i < ab->num_radios; i++) {
+> +               pdev = &ab->pdevs[i];
+> +               ar = pdev->ar;
+> +               if (ar && ar->state == ATH11K_STATE_ON) {
+> +                       radioup = 1;
+> +                       break;
+> +               }
+> +       }
+> +       /* filter partial writes and invalid commands */
+> +       if (*ppos != 0 || count >= sizeof(buf) || count == 0)
+> +               return -EINVAL;
+> +
+> +       rc = simple_write_to_buffer(buf, sizeof(buf) - 1, ppos, user_buf, count);
+> +       if (rc < 0)
+> +               return rc;
+> +
+> +       /* drop the possible '\n' from the end */
+> +       if (buf[*ppos - 1] == '\n')
+> +               buf[*ppos - 1] = '\0';
+> +
+> +       if (radioup == 0) {
+> +               ret = -ENETDOWN;
+> +               goto exit;
+> +       }
+> +
+> +       if (!strcmp(buf, "assert")) {
+> +               ath11k_info(ab, "simulating firmware assert crash\n");
+> +               ret = ath11k_wmi_force_fw_hang_cmd(ar,
+> +                                                  ATH11K_WMI_FW_HANG_ASSERT_TYPE,
+> +                                                  ATH11K_WMI_FW_HANG_DELAY);
+> +       } else {
+> +               ret = -EINVAL;
+> +               goto exit;
+> +       }
+> +
+> +       if (ret) {
+> +               ath11k_warn(ab, "failed to simulate firmware crash: %d\n", ret);
+> +               goto exit;
+> +       }
+> +
+> +       ret = count;
+> +
+> +exit:
+> +       return ret;
+> +}
 
-+static bool rtw_disable_msi;
-+module_param_named(disable_msi, rtw_disable_msi, bool, 0644);
-+MODULE_PARM_DESC(disable_msi, "Set Y to disable MSI interrupt support");
-+
- static u32 rtw_pci_tx_queue_idx_addr[] =3D {
-     [RTW_TX_QUEUE_BK]    =3D RTK_PCI_TXBD_IDX_BKQ,
-     [RTW_TX_QUEUE_BE]    =3D RTK_PCI_TXBD_IDX_BEQ,
-@@ -1116,6 +1120,48 @@ static struct rtw_hci_ops rtw_pci_ops =3D {
-     .write_data_h2c =3D rtw_pci_write_data_h2c,
- };
+And right now, the write of an "assert" to this file just causes an fatal error for the system:
 
-+static int rtw_pci_request_irq(struct rtw_dev *rtwdev, struct pci_dev *pde=
-v)
-+{
-+    struct rtw_pci *rtwpci =3D (struct rtw_pci *)rtwdev->priv;
-+    int ret;
-+
-+    if (!rtw_disable_msi) {
-+        ret =3D pci_enable_msi(pdev);
-+        if (ret) {
-+            rtw_warn(rtwdev, "failed to enable msi %d, using legacy irq\n"=
-,
-+                 ret);
-+        } else {
-+            rtw_warn(rtwdev, "pci msi enabled\n");
-+            rtwpci->msi_enabled =3D true;
-+        }
-+    }
-+
-+    ret =3D devm_request_threaded_irq(rtwdev->dev, pdev->irq,
-+                    rtw_pci_interrupt_handler,
-+                    rtw_pci_interrupt_threadfn,
-+                    IRQF_SHARED, KBUILD_MODNAME, rtwdev);
-+    if (ret) {
-+        rtw_err(rtwdev, "failed to request irq %d\n", ret);
-+        if (rtwpci->msi_enabled) {
-+            pci_disable_msi(pdev);
-+            rtwpci->msi_enabled =3D false;
-+        }
-+    }
-+
-+    return ret;
-+}
-+
-+static void rtw_pci_free_irq(struct rtw_dev *rtwdev, struct pci_dev *pdev)
-+{
-+    struct rtw_pci *rtwpci =3D (struct rtw_pci *)rtwdev->priv;
-+
-+    devm_free_irq(rtwdev->dev, rtwpci->pdev->irq, rtwdev);
-+    if (rtwpci->msi_enabled) {
-+        pci_disable_msi(pdev);
-+        rtwpci->msi_enabled =3D false;
-+    }
-+}
-+
- static int rtw_pci_probe(struct pci_dev *pdev,
-              const struct pci_device_id *id)
- {
-@@ -1170,10 +1216,7 @@ static int rtw_pci_probe(struct pci_dev *pdev,
-         goto err_destroy_pci;
-     }
+    [ 4312.409255] qcom-q6v5-wcss-pil cd00000.qcom_q6v5_wcss: fatal error received:
+    [ 4312.409255] QC Image Version: QC_IMAGE_VERSION_STRING=WLAN.HK.2.1.0.1-00410-QCAHKSWPL_SILICONZ-2
+    [ 4312.409255] Image Variant : IMAGE_VARIANT_STRING=8074.wlanfw.eval_v2Q
+    [ 4312.409255] 
+    [ 4312.409255] wlan_wmi.c:234 Assertion 0 failedparam0 :zero, param1 :zero, param2 :zero.
+    [ 4312.409255] Thread ID      : 0x00000069  Thread name    : WLAN RT0  Process ID     : 0
+    [ 4312.409255] Register:
+    [ 4312.409255] SP : 0x4c168d58
+    [ 4312.409255] FP : 0x4c168d60
+    [ 4312.409255] PC : 0x4b1c8850
+    [ 4312.409255] SSR : 0x00000008
+    [ 4312.409255] BADVA : 0x00020000
+    [ 4312.409255] LR : 0x4b1c7c68
+    [ 4312.409255] 
+    [ 4312.409255] Stack Dump
+    [ 4312.409255] from : 0x4c168d58
+    [ 4312.409255] to   : 0x4c168f00
+    [ 4312.409255] 
+    [ 4312.455997] remoteproc remoteproc0: crash detected in cd00000.qcom_q6v5_wcss: type fatal error
+    [ 4312.478259] remoteproc remoteproc0: handling crash #1 in cd00000.qcom_q6v5_wcss
+    [ 4312.486826] Kernel panic - not syncing: remoteproc remoteproc0: Resetting the SoC - cd00000.qcom_q6v5_wcss crashed
+    [ 4312.494028] CPU: 2 PID: 5590 Comm: kworker/2:0 Tainted: G        W       4.4.60 #0
+    [ 4312.504436] Hardware name: Generic DT based system
+    [ 4312.511991] Workqueue: events rproc_crash_handler_work
+    [ 4312.521880] [<8021e86c>] (unwind_backtrace) from [<8021b404>] (show_stack+0x10/0x14)
+    [ 4312.521979] [<8021b404>] (show_stack) from [<803dd818>] (dump_stack+0x7c/0x9c)
+    [ 4312.529789] [<803dd818>] (dump_stack) from [<80225d80>] (panic+0x84/0x1f8)
+    [ 4312.536818] [<80225d80>] (panic) from [<80555278>] (rproc_crash_handler_work+0x90/0x98)
+    [ 4312.543678] [<80555278>] (rproc_crash_handler_work) from [<802380e8>] (process_one_work+0x1c0/0x2f8)
+    [ 4312.551578] [<802380e8>] (process_one_work) from [<80238d24>] (worker_thread+0x2b0/0x3ec)
+    [ 4312.560952] [<80238d24>] (worker_thread) from [<8023cf84>] (kthread+0xd8/0xec)
+    [ 4312.569023] [<8023cf84>] (kthread) from [<80209be8>] (ret_from_fork+0x14/0x2c)
+    [ 4312.576141] CPU0: stopping
+    [ 4312.583335] CPU: 0 PID: 0 Comm: swapper/0 Tainted: G        W       4.4.60 #0
+    [ 4312.586032] Hardware name: Generic DT based system
+    [ 4312.593237] [<8021e86c>] (unwind_backtrace) from [<8021b404>] (show_stack+0x10/0x14)
+    [ 4312.597930] [<8021b404>] (show_stack) from [<803dd818>] (dump_stack+0x7c/0x9c)
+    [ 4312.605827] [<803dd818>] (dump_stack) from [<8021dc3c>] (handle_IPI+0xe8/0x180)
+    [ 4312.612858] [<8021dc3c>] (handle_IPI) from [<802093a4>] (gic_handle_irq+0x78/0x94)
+    [ 4312.620063] [<802093a4>] (gic_handle_irq) from [<8020a480>] (__irq_svc+0x40/0x74)
+    [ 4312.627701] Exception stack(0x80c67f60 to 0x80c67fa8)
+    [ 4312.635249] 7f60: 00000001 00000000 00000000 8020b320 00000000 80c66000 00000000 80c612cc
+    [ 4312.640291] 7f80: 80c67fb8 808f3a30 80cae010 00000000 00000000 80c67fb0 80218edc 80218ee0
+    [ 4312.648448] 7fa0: 60000013 ffffffff
+    [ 4312.656601] [<8020a480>] (__irq_svc) from [<80218ee0>] (arch_cpu_idle+0x2c/0x50)
+    [ 4312.659909] [<80218ee0>] (arch_cpu_idle) from [<80254b38>] (cpu_startup_entry+0x134/0x214)
+    [ 4312.667553] [<80254b38>] (cpu_startup_entry) from [<808cac48>] (start_kernel+0x380/0x404)
+    [ 4312.675620] CPU1: stopping
+    [ 4312.683855] CPU: 1 PID: 0 Comm: swapper/1 Tainted: G        W       4.4.60 #0
+    [ 4312.686466] Hardware name: Generic DT based system
+    [ 4312.693671] [<8021e86c>] (unwind_backtrace) from [<8021b404>] (show_stack+0x10/0x14)
+    [ 4312.698363] [<8021b404>] (show_stack) from [<803dd818>] (dump_stack+0x7c/0x9c)
+    [ 4312.706263] [<803dd818>] (dump_stack) from [<8021dc3c>] (handle_IPI+0xe8/0x180)
+    [ 4312.713293] [<8021dc3c>] (handle_IPI) from [<802093a4>] (gic_handle_irq+0x78/0x94)
+    [ 4312.720497] [<802093a4>] (gic_handle_irq) from [<8020a480>] (__irq_svc+0x40/0x74)
+    [ 4312.728135] Exception stack(0xbe083f98 to 0xbe083fe0)
+    [ 4312.735683] 3f80:                                                       00000001 00000000
+    [ 4312.740725] 3fa0: 00000000 8020b320 00000000 be082000 00000000 80c612cc be083ff0 410fd034
+    [ 4312.748884] 3fc0: 00000000 00000000 00000000 be083fe8 80218edc 80218ee0 60000013 ffffffff
+    [ 4312.757045] [<8020a480>] (__irq_svc) from [<80218ee0>] (arch_cpu_idle+0x2c/0x50)
+    [ 4312.765203] [<80218ee0>] (arch_cpu_idle) from [<80254b38>] (cpu_startup_entry+0x134/0x214)
+    [ 4312.772669] [<80254b38>] (cpu_startup_entry) from [<4120944c>] (0x4120944c)
+    [ 4312.780737] CPU3: stopping
+    [ 4312.787589] CPU: 3 PID: 0 Comm: swapper/3 Tainted: G        W       4.4.60 #0
+    [ 4312.790372] Hardware name: Generic DT based system
+    [ 4312.797577] [<8021e86c>] (unwind_backtrace) from [<8021b404>] (show_stack+0x10/0x14)
+    [ 4312.802270] [<8021b404>] (show_stack) from [<803dd818>] (dump_stack+0x7c/0x9c)
+    [ 4312.810167] [<803dd818>] (dump_stack) from [<8021dc3c>] (handle_IPI+0xe8/0x180)
+    [ 4312.817199] [<8021dc3c>] (handle_IPI) from [<802093a4>] (gic_handle_irq+0x78/0x94)
+    [ 4312.824403] [<802093a4>] (gic_handle_irq) from [<8020a480>] (__irq_svc+0x40/0x74)
+    [ 4312.832041] Exception stack(0xbe087f98 to 0xbe087fe0)
+    [ 4312.839588] 7f80:                                                       00000001 00000000
+    [ 4312.844630] 7fa0: 00000000 8020b320 00000000 be086000 00000000 80c612cc be087ff0 410fd034
+    [ 4312.852791] 7fc0: 00000000 00000000 00000000 be087fe8 80218edc 80218ee0 60000013 ffffffff
+    [ 4312.860951] [<8020a480>] (__irq_svc) from [<80218ee0>] (arch_cpu_idle+0x2c/0x50)
+    [ 4312.869109] [<80218ee0>] (arch_cpu_idle) from [<80254b38>] (cpu_startup_entry+0x134/0x214)
+    [ 4312.876576] [<80254b38>] (cpu_startup_entry) from [<4120944c>] (0x4120944c)
+    [ 4312.884650] The reading for sensor 4 is 0x002041f7
+    [ 4312.891499] The reading for sensor 5 is 0x002051f4
+    [ 4312.896415] Couldn't get reading for sensor 6
+    [ 4312.901189] Couldn't get reading for sensor 7
+    [ 4312.905561] The reading for sensor 8 is 0x002081e0
+    [ 4312.909902] The reading for sensor 9 is 0x002091f7
+    [ 4312.914645] Couldn't get reading for sensor 10
+    [ 4312.919364] The reading for sensor 11 is 0x0020b1fa
+    [ 4312.923791] The reading for sensor 12 is 0x0020c1fa
+    [ 4312.928621] Couldn't get reading for sensor 13
+    [ 4312.933425] The reading for sensor 14 is 0x0020e1f4
+    [ 4312.937941] The reading for sensor 15 is 0x0020f1e7
+    [ 4313.942700] Rebooting in 3 seconds..
 
--    ret =3D devm_request_threaded_irq(rtwdev->dev, pdev->irq,
--                    rtw_pci_interrupt_handler,
--                    rtw_pci_interrupt_threadfn,
--                    IRQF_SHARED, KBUILD_MODNAME, rtwdev);
-+    ret =3D rtw_pci_request_irq(rtwdev, pdev);
-     if (ret) {
-         ieee80211_unregister_hw(hw);
-         goto err_destroy_pci;
-@@ -1212,7 +1255,7 @@ static void rtw_pci_remove(struct pci_dev *pdev)
-     rtw_pci_disable_interrupt(rtwdev, rtwpci);
-     rtw_pci_destroy(rtwdev, pdev);
-     rtw_pci_declaim(rtwdev, pdev);
--    devm_free_irq(rtwdev->dev, rtwpci->pdev->irq, rtwdev);
-+    rtw_pci_free_irq(rtwdev, pdev);
-     rtw_core_deinit(rtwdev);
-     ieee80211_free_hw(hw);
- }
-diff --git a/drivers/net/wireless/realtek/rtw88/pci.h
-b/drivers/net/wireless/realtek/rtw88/pci.h
-index 87824a4caba9..a8e369c5eaca 100644
---- a/drivers/net/wireless/realtek/rtw88/pci.h
-+++ b/drivers/net/wireless/realtek/rtw88/pci.h
-@@ -186,6 +186,7 @@ struct rtw_pci {
-     spinlock_t irq_lock;
-     u32 irq_mask[4];
-     bool irq_enabled;
-+    bool msi_enabled;
-
-     u16 rx_tag;
-     struct rtw_pci_tx_ring tx_rings[RTK_MAX_TX_QUEUE_NUM];
+Maybe can be fixed by a different kernel (for the remoteproc). But I don't 
+have this kernel at the moment.
 
 
-> > +     spin_unlock_irqrestore(&rtwpci->irq_lock, flags);
-> >
-> >       return IRQ_HANDLED;
-> >  }
-> > @@ -1152,8 +1171,10 @@ static int rtw_pci_probe(struct pci_dev *pdev,
-> >               goto err_destroy_pci;
-> >       }
-> >
-> > -     ret =3D request_irq(pdev->irq, &rtw_pci_interrupt_handler,
-> > -                       IRQF_SHARED, KBUILD_MODNAME, rtwdev);
-> > +     ret =3D devm_request_threaded_irq(rtwdev->dev, pdev->irq,
-> > +                                     rtw_pci_interrupt_handler,
-> > +                                     rtw_pci_interrupt_threadfn,
-> > +                                     IRQF_SHARED, KBUILD_MODNAME, rtwd=
-ev);
-> >       if (ret) {
-> >               ieee80211_unregister_hw(hw);
-> >               goto err_destroy_pci;
-> > @@ -1192,7 +1213,7 @@ static void rtw_pci_remove(struct pci_dev *pdev)
-> >       rtw_pci_disable_interrupt(rtwdev, rtwpci);
-> >       rtw_pci_destroy(rtwdev, pdev);
-> >       rtw_pci_declaim(rtwdev, pdev);
-> > -     free_irq(rtwpci->pdev->irq, rtwdev);
-> > +     devm_free_irq(rtwdev->dev, rtwpci->pdev->irq, rtwdev);
-> >       rtw_core_deinit(rtwdev);
-> >       ieee80211_free_hw(hw);
-> >  }
-> > --
->
->
-> NACK
-> Need to verify it with MSI https://patchwork.kernel.org/patch/11081539/
-> And hope v4 could fix it.
->
-> Yan-Hsuan
->
+Kind regards,
+	Sven
+--nextPart3959043.Os2YI8mG4J
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: This is a digitally signed message part.
+Content-Transfer-Encoding: 7Bit
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCgAdFiEEF10rh2Elc9zjMuACXYcKB8Eme0YFAl1j4w0ACgkQXYcKB8Em
+e0ZVBRAAlcj3GncLg9QhAmWQ7iOXsQEOohUBZkAavzK/HL+g43TNCMUyOx12gTkC
+aqaSs9uZpQu5wrcPOih4AYF/ZnECHd3y0FVGoUxamgT/ZEw3430Q6pZtU9SayT2h
+Tle88xGTtPG94/HgE1bdAvjh6hA5ThNihWwA/6eVPSsQ0JGrXPyI9xaqGqeC0X8W
+vH9FHmR6ByjiHuxlXP5HUtDRR+H8ieMdHWOAJBxn1Jv1/dq+gjEVoUtUq3e9UF6N
+A/8tFeHcXTJ5LpZyixxEY3llkqSqaTVQvKqNE1erDUZ8qMaEmgmI5HEnLg+R/VDD
+dJviRmgCov+gCXnof+7m/spOE+6s+6mHfYRe3hhJltDtcjmLNjxdph8hvo066xMj
+avOJDeDaWfljjHrkuTnl4RkJX/I20uUcuzlkcAhs1v3It+THoCLvwnwKnau384B2
+ED3NVMX73ymp1Byo1uPzki2yoD0q/p0SqMU69zZ1iGexzIkxcQD1SUo5X1jL2Gfd
+GYfXOqz/gbYnMliTweAljlmFWc/4wRRqA/DlrAWQJanzio4LS1duwNrMJAd5qC22
+mFOfVuGQZ1tiMOp6EgnLYbvO2IRIWwo5eeA5dWXN+8TNl+lP7l8gcjJzNKgiPSVR
+QmRJMhAul6rahQB551JMhogZrp6a2rTbi9OraqrWf+p1wy/qLDY=
+=H8sw
+-----END PGP SIGNATURE-----
+
+--nextPart3959043.Os2YI8mG4J--
+
+
+
