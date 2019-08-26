@@ -2,125 +2,94 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E4BEB9D487
-	for <lists+linux-wireless@lfdr.de>; Mon, 26 Aug 2019 18:56:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CDAFE9D772
+	for <lists+linux-wireless@lfdr.de>; Mon, 26 Aug 2019 22:35:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732160AbfHZQ4A (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 26 Aug 2019 12:56:00 -0400
-Received: from mail-lj1-f194.google.com ([209.85.208.194]:43626 "EHLO
-        mail-lj1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1731603AbfHZQz7 (ORCPT
+        id S2387811AbfHZUfE (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 26 Aug 2019 16:35:04 -0400
+Received: from mail-oi1-f193.google.com ([209.85.167.193]:33068 "EHLO
+        mail-oi1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729078AbfHZUfE (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 26 Aug 2019 12:55:59 -0400
-Received: by mail-lj1-f194.google.com with SMTP id h15so15731172ljg.10
-        for <linux-wireless@vger.kernel.org>; Mon, 26 Aug 2019 09:55:58 -0700 (PDT)
+        Mon, 26 Aug 2019 16:35:04 -0400
+Received: by mail-oi1-f193.google.com with SMTP id l2so13204892oil.0
+        for <linux-wireless@vger.kernel.org>; Mon, 26 Aug 2019 13:35:03 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=subject:to:references:from:message-id:date:user-agent:mime-version
-         :in-reply-to:content-language:content-transfer-encoding;
-        bh=neUUe6izlW2YSFhsPDka8y7efVuU1RFZ0BA0ZiRsZkQ=;
-        b=eb0gFOdmbv++1BKVSisN3IyaMyYkr60kiNgCyxQxyXUjNCMgeggucG7+ktJzoFjV/1
-         s6doEulqrHS7+SO9vpChOyp2kDHQnWbtQopLEcOJiWLp7nXgWi0TAxKOGtHMM1x6NtTK
-         uGEWJpa+AqwJEnHNC0E7L0nTeGiQSOc1ITq3LLEeWp1oqbPkw5+Flo1R4ZrN6F0Bh7VY
-         KExg+ZM52Iu6BfpqijbHOYbcE1zJLjQiJCbFsIOfMmr4cHubAyCRVnfTZMeXhWv8kLhl
-         HRyRn13Nwqsii5b91wIzq/Mp63KCtuTSMTzthdj+mNORVFeRc16XaV8w+f7g+9U4i6Ac
-         3TOQ==
+        h=sender:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=qoYiEk1waDT7qbi157hrIkf5SSOuTsP9qZITTpaF0gA=;
+        b=CPraZmS3mTdnX8wAOqm0ScwBDWON9b/lfR2mNJSmx7+cyhoYwThnUTryxIqSpJBNdW
+         VrXF6GVY2u3QppNi1ZgmWlwHvmArZIY3Bp/jsC0v20afCB1faZxsVqvsVXq+22IO4mz8
+         hbSWtTBBdJcI2+iYH5HZYTuRYEaOVQHOa10QTWY6aR2tBXKubI3XILPAh7I5kKUw+fF0
+         Hkb/Yj13v4z+4bEQ4rZgK1uVQcga2/sw+Zx9cD3bghzlmNSjgDv0XEomVXwotgB+/4xP
+         JOkcgNr1odJBv9DbdMH579qRFSJJSURmuBcx7eIQXaMLt8um8e0SQfBZJQpgRujSFrqY
+         QgYw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=neUUe6izlW2YSFhsPDka8y7efVuU1RFZ0BA0ZiRsZkQ=;
-        b=Pqhqgs1libYB4Pq4HxlqcwjJi+0W55mN2YQELbROvhaWSyA4DUxtciYyjjhLjSicM/
-         btt2v6hvw1i1voMNxA4KlENwtfC/JVVd1JUops8CYkICGFgEyyH07hEowfh45AXjVsVI
-         Ydw32SaQAbe/BRqO8uBogz5BJdZCdMYSav/xOfs9tu524+t8SQb5rIA6D3iqDM8qqcC7
-         QMZ0AfR/gmChX8YBGMUfK5lTro8SYIc1rJ+UozH+35rrYdOdUCyG9+lr2DVWTYTiFrDC
-         AgcbpoCYidZsT18fbQ0XUHsHVVUk1Nwebfwuu4NxMJGmGKzObZ4VaoxT/AQs4iia9ZOU
-         8LUw==
-X-Gm-Message-State: APjAAAW73xa8wx+D8rN9IoJWxvQMHQp/rB5TXdaeeSZmSX7Iu4ZOm9oy
-        0A6TeQ+a+CKC4ouvChisM9I=
-X-Google-Smtp-Source: APXvYqyp5CUSwmR+nEPU5dI4Ah9LNeS1xAdAf4B3V+XhtRmdlnz15hd1HiQECRdwbrlPB9yEwJwMBA==
-X-Received: by 2002:a2e:3e18:: with SMTP id l24mr11327221lja.67.1566838557599;
-        Mon, 26 Aug 2019 09:55:57 -0700 (PDT)
-Received: from [192.168.1.244] (81-233-89-221-no75.tbcn.telia.com. [81.233.89.221])
-        by smtp.gmail.com with ESMTPSA id o5sm2033709lfn.42.2019.08.26.09.55.56
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 26 Aug 2019 09:55:56 -0700 (PDT)
-Subject: Re: [PATCH] ath10k: remove TX lock from ath10k_htt_tx_inc_pending
-To:     Wen Gong <wgong@qti.qualcomm.com>,
-        Kalle Valo <kvalo@qca.qualcomm.com>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "ath10k@lists.infradead.org" <ath10k@lists.infradead.org>
-References: <20190824134857.4094-1-erik.stromdahl@gmail.com>
- <4cd30880ae754f5599e6b1a4c1ac6a74@aptaiexm02f.ap.qualcomm.com>
-From:   Erik Stromdahl <erik.stromdahl@gmail.com>
-Message-ID: <70fe66cc-e966-70bb-3dcf-4de55fc52cf9@gmail.com>
-Date:   Mon, 26 Aug 2019 18:55:55 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.7.0
+        h=x-gm-message-state:sender:from:to:cc:subject:date:message-id
+         :mime-version:content-transfer-encoding;
+        bh=qoYiEk1waDT7qbi157hrIkf5SSOuTsP9qZITTpaF0gA=;
+        b=kbDkRv2HhW/2TcL0YthP9ZsKk//u3F5+XtVAmEewSDJ4KStxutkG6JJSme8UxIKo3G
+         YdBOv9+ojnhOGiSKbl/MVHyW/meTCjmeJ99nRydYYZQ9ldJTxAAbuIdB1yVhZD2TJuMp
+         kdAYzvE08m9PxN8xtVAaHZQYFVulNX37Ck7/+Mj8uu+T5aWZxAz7zy9P49Ja8ZybQjF4
+         s/gKGiJleFbYkhOHZgTLhj4bSLIF2FgkXx5pDciHTFbOPtMArHaClwNY5ZII2QuYGFTK
+         r0sJ9CYuxBFXy0wF3/3hxBocDJwTGgCDKo/f8rO/riRIs51FE74uxaImMM8otDdbE24u
+         r38w==
+X-Gm-Message-State: APjAAAW9WNLHVAPi3TcSYhWsPLDDR2kQBRNVg3/3DZ1CPoTaFCw6oFxD
+        GOIEr99PTjfv5CZfh1sjArOF30z/
+X-Google-Smtp-Source: APXvYqyIM5uMNfctUi5Xdak8RwH289qGfYB4aLR2SBQQFVMSYllt3pSW7fwfFe7Ha9+NfTUu6SpSlQ==
+X-Received: by 2002:aca:fc8e:: with SMTP id a136mr14017114oii.104.1566851703545;
+        Mon, 26 Aug 2019 13:35:03 -0700 (PDT)
+Received: from localhost.localdomain (cpe-24-31-245-230.kc.res.rr.com. [24.31.245.230])
+        by smtp.gmail.com with ESMTPSA id m205sm3145485oia.57.2019.08.26.13.35.02
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 26 Aug 2019 13:35:02 -0700 (PDT)
+From:   Larry Finger <Larry.Finger@lwfinger.net>
+To:     kvalo@codeaurora.org
+Cc:     linux-wireless@vger.kernel.org, pkshih@realtek.com,
+        Larry Finger <Larry.Finger@lwfinger.net>
+Subject: [PATCH] rtlwifi: rtl_pci: Fix memory leak then hardware init fails
+Date:   Mon, 26 Aug 2019 15:34:58 -0500
+Message-Id: <20190826203458.8056-1-Larry.Finger@lwfinger.net>
+X-Mailer: git-send-email 2.22.1
 MIME-Version: 1.0
-In-Reply-To: <4cd30880ae754f5599e6b1a4c1ac6a74@aptaiexm02f.ap.qualcomm.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+If the call to hw_init() fails for any of the drivers, the driver will
+leak memory that was allocated in BT coexistence setup. Technically, each
+of the drivers should have done this free; however placing it in rtl_pci
+fixes all the drivers with only a single patch.
 
+Signed-off-by: Larry Finger <Larry.Finger@lwfinger.net>
+---
+Kalle,
 
-On 8/26/19 4:44 AM, Wen Gong wrote:
->> -----Original Message-----
->> From: ath10k <ath10k-bounces@lists.infradead.org> On Behalf Of Erik
->> Stromdahl
->> Sent: Saturday, August 24, 2019 9:49 PM
->> To: Kalle Valo <kvalo@qca.qualcomm.com>; linux-wireless@vger.kernel.org;
->> ath10k@lists.infradead.org
->> Cc: Erik Stromdahl <erik.stromdahl@gmail.com>
->> Subject: [EXT] [PATCH] ath10k: remove TX lock from
->> ath10k_htt_tx_inc_pending
->>
->> This commit removes the call to ath10k_mac_tx_lock() from
->> ath10k_htt_tx_inc_pending() in case the high water mark is reached.
->>
->> ath10k_mac_tx_lock() calls ieee80211_stop_queues() in order to stop
->> mac80211 from pushing more TX data to the driver (this is the TX lock).
->>
->> If a driver is trying to fetch an skb from a queue while the queue is
->> stopped, ieee80211_tx_dequeue() will return NULL.
->>
->> So, in ath10k_mac_tx_push_txq(), there is a risk that the call to
->> ath10k_htt_tx_inc_pending() results in a stop of the mac80211 TX queues
->> just before the skb is fetched.
->>
->> This will cause ieee80211_tx_dequeue() to return NULL and
->> ath10k_mac_tx_push_txq() to exit prematurely and return -ENOENT.
->> Before the function returns ath10k_htt_tx_dec_pending() will be called.
->> This call will re-enable the TX queues through ath10k_mac_tx_unlock().
->> When ath10k_mac_tx_push_txq() has returned, the TX queue will be
->> returned back to mac80211 with ieee80211_return_txq() without the skb
->> being properly consumed.
->>
->> Since the TX queues were re-enabled in the error exit path of
->> ath10k_mac_tx_push_txq(), mac80211 can continue pushing data to the
->> driver. If the hardware does not consume the data, the above mentioned
->> case will be repeated over and over.
->>
->> A case when the hardware is not able to transmit the data from the host
->> is when a STA has been dis-associated from an AP and has not yet been
->> able to re-associate. In this case there will be no TX_COMPL_INDs from
->> the hardware, resulting in the TX counter not be decremented.
->>
->> This phenomenon has been observed in both a real and a test setup.
->>
->> In order to fix this, the actual TX locking (the call to
->> ath10k_mac_tx_lock()) was removed from ath10k_htt_tx_inc_pending().
->> Instead, ath10k_mac_tx_lock() is called separately after the skb has
->> been fetched (after the call to ieee80211_tx_dequeue()). At this point
->> it is OK to stop the queues.
-> Is this patch will impact throughput?
-No, I haven't seen any performance degradation.
+This bug has been present in the driver since it was added to the
+kernel, there is no particular rush in applying it.
 
-I can't see that it should impact the throughput even in theory (rather the opposite
-actually since we reduce the likelihood of dropping packets).
+Larry
+
+ drivers/net/wireless/realtek/rtlwifi/pci.c | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/drivers/net/wireless/realtek/rtlwifi/pci.c b/drivers/net/wireless/realtek/rtlwifi/pci.c
+index 4055e0ab75ba..c275fc932adb 100644
+--- a/drivers/net/wireless/realtek/rtlwifi/pci.c
++++ b/drivers/net/wireless/realtek/rtlwifi/pci.c
+@@ -1793,6 +1793,8 @@ static int rtl_pci_start(struct ieee80211_hw *hw)
+ 	if (err) {
+ 		RT_TRACE(rtlpriv, COMP_INIT, DBG_DMESG,
+ 			 "Failed to config hardware!\n");
++		kfree(rtlpriv->btcoexist.btc_context);
++		kfree(rtlpriv->btcoexist.wifi_only_context);
+ 		return err;
+ 	}
+ 	rtlpriv->cfg->ops->set_hw_reg(hw, HW_VAR_RETRY_LIMIT,
+-- 
+2.22.1
+
