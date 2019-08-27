@@ -2,96 +2,75 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 58D379F306
-	for <lists+linux-wireless@lfdr.de>; Tue, 27 Aug 2019 21:13:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1C58C9F658
+	for <lists+linux-wireless@lfdr.de>; Wed, 28 Aug 2019 00:46:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730438AbfH0TNx (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 27 Aug 2019 15:13:53 -0400
-Received: from mail2.candelatech.com ([208.74.158.173]:45936 "EHLO
-        mail3.candelatech.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730379AbfH0TNx (ORCPT
+        id S1726315AbfH0Wqn (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 27 Aug 2019 18:46:43 -0400
+Received: from mail-oi1-f194.google.com ([209.85.167.194]:40177 "EHLO
+        mail-oi1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725989AbfH0Wqn (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 27 Aug 2019 15:13:53 -0400
-Received: from [192.168.100.195] (50-251-239-81-static.hfc.comcastbusiness.net [50.251.239.81])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail3.candelatech.com (Postfix) with ESMTPSA id B06CCDDE7;
-        Tue, 27 Aug 2019 12:13:51 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail3.candelatech.com B06CCDDE7
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=candelatech.com;
-        s=default; t=1566933231;
-        bh=xQteBVwidZSGC2MZfHHOR7dAWZi7qDYFFFClYgjptwo=;
-        h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
-        b=m/NdBaWWuaEyGUDgK5fKEuea6TpFHxts1IPUIe4QXLhbuwLHtgoQrYqywPGNJsp1w
-         Ck53cutqu4rPGWPAnq/cf3/Tcub78y1amEr3T0hvnNN5TqWXp2kJ893kQx31JWXlIn
-         meerxpxK/G2AUca0U/xW91NNV0RyLDNHWCPFdJpk=
-Subject: Re: [PATCH 31/49] ath11k: add mac.c
-To:     =?UTF-8?Q?Toke_H=c3=b8iland-J=c3=b8rgensen?= <toke@redhat.com>,
-        Vasanthakumar Thiagarajan <vthiagar@codeaurora.org>
-Cc:     Kalle Valo <kvalo@codeaurora.org>, linux-wireless@vger.kernel.org,
-        ath11k@lists.infradead.org, devicetree@vger.kernel.org,
-        linux-wireless-owner@vger.kernel.org
-References: <1566316095-27507-1-git-send-email-kvalo@codeaurora.org>
- <1566316095-27507-32-git-send-email-kvalo@codeaurora.org>
- <8736hvu6e6.fsf@toke.dk> <ac6e7dbbd53e7ba9e82e49baca22b73c@codeaurora.org>
- <875zmqsudn.fsf@toke.dk> <14737343f1925a771ddd8dadf0f2b5a3@codeaurora.org>
- <87sgpmikne.fsf@toke.dk>
-From:   Ben Greear <greearb@candelatech.com>
-Organization: Candela Technologies
-Message-ID: <0aa03fd8-1fad-416b-0cd5-fcca79732987@candelatech.com>
-Date:   Tue, 27 Aug 2019 12:13:51 -0700
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.7.0
+        Tue, 27 Aug 2019 18:46:43 -0400
+Received: by mail-oi1-f194.google.com with SMTP id h21so568496oie.7
+        for <linux-wireless@vger.kernel.org>; Tue, 27 Aug 2019 15:46:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=25chdCYf0WLbaWJ1yIXHrz2KNV2ouPI+/8g6eWTkRUI=;
+        b=LqwsHri3SSoNnYgDZb0EaU9XfJlUik2go+7NkZ+K3u5bpmktEX/VcMYgNOM5OZKJC3
+         n1Zk3gQ2D57owbQ1HfnNsCmcwKx0KjWmfqAfYI5lPRG+v+4+AATyUzE+BDWWwIvMX59D
+         23X+LRg1w0xZbSAOkDGEbf0NBl1Gh/FA06Vom9VUOPqDlSDcUvrfKqY9bdJp9AGrA679
+         EmE6nsYgrZ5OdAlfY1ii2wjPMXLQnTJeS4gmhRx8F9cGTMy93AbcjZTyXS8ppBt3pl41
+         TlKlbJj+uVCA6JI23RwfcN3bXGYeYPZG3PjCBLFhdUMfLLBIG4T7aJAybXTH2q/Q1wb+
+         HP2w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=25chdCYf0WLbaWJ1yIXHrz2KNV2ouPI+/8g6eWTkRUI=;
+        b=nY9am3K91GHgfDitvHQO6XqFTRUhJM+6p7ruqdjswcNrexWYM7l6fbJl52EQjNTgcH
+         JaB19FDCn/QLZIKehhPSPg11WOUj1yYhEnW4XYgihMvfMPvdpeam29WBjEeNuOTli2JP
+         fERsTv1sSczwlQMAwNhnjquVZCqSKuvxMqw/KT5H5zJ8VznEpTf7homDR0/5dtXAOVyy
+         hQYddkpGZTcCPBfYfZxhSUmjpWKxBo5ZEwzEmmmIYKSUHpR5W+ZA3WlmgdxY9YfMCPw7
+         dXbVz3HR9HDSudoQmPGAfmSUvX1fI17n8QIfMUV2Zsqrqc3cRj2L+y/eE+mVVW+CZ+0A
+         SBFw==
+X-Gm-Message-State: APjAAAXG9ngOrm1VfJQMSiY4eEeNchyGVZoxOcQ/aZ56qZmjGJtPuHZX
+        +B2gLfgQQJKRLENpg+Z4vTcO1bdN
+X-Google-Smtp-Source: APXvYqwdV3PAgnTYkwWGSSDQSKDb8PFM+W4FSP7zH7131Tqa/JfmbfAcuwAZdHirrqGE+Vm0As30mg==
+X-Received: by 2002:a54:4715:: with SMTP id k21mr752798oik.125.1566946002461;
+        Tue, 27 Aug 2019 15:46:42 -0700 (PDT)
+Received: from localhost.localdomain (cpe-70-114-247-242.austin.res.rr.com. [70.114.247.242])
+        by smtp.gmail.com with ESMTPSA id a94sm289911otb.15.2019.08.27.15.46.41
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Tue, 27 Aug 2019 15:46:41 -0700 (PDT)
+From:   Denis Kenzior <denkenz@gmail.com>
+To:     linux-wireless@vger.kernel.org
+Cc:     Denis Kenzior <denkenz@gmail.com>
+Subject: [PATCH 0/2] mac80211: Control Port over nl80211 fixes
+Date:   Tue, 27 Aug 2019 17:41:18 -0500
+Message-Id: <20190827224120.14545-1-denkenz@gmail.com>
+X-Mailer: git-send-email 2.19.2
 MIME-Version: 1.0
-In-Reply-To: <87sgpmikne.fsf@toke.dk>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
 Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 8/27/19 10:27 AM, Toke Høiland-Jørgensen wrote:
-> Vasanthakumar Thiagarajan <vthiagar@codeaurora.org> writes:
-> 
->> On 2019-08-21 15:38, Toke Høiland-Jørgensen wrote:
->>> Vasanthakumar Thiagarajan <vthiagar@codeaurora.org> writes:
->>>
->>>> On 2019-08-20 22:21, Toke Høiland-Jørgensen wrote:
->>>>> [... snip ... ]
->>>>>
->>>>>> +static const struct ieee80211_ops ath11k_ops = {
->>>>>> +	.tx				= ath11k_mac_op_tx,
->>>>>
->>>>> No wake_tx_queue? :(
->>>>
->>>> Yes, packet queueing is handled in firmware. This makes sense
->>>> especially when we enable 802.11 encap offload support where most of
->>>> the data path processing in mac80211 will be skipped and packet is
->>>> given to driver/firmware in 802.3 format itself. Then firmware would
->>>> take care of all the classification, queueing and encapsulation
->>>> operations.
->>>
->>> Well, so does ath10k, and yet we still saw a significant improvement by
->>> moving queueing back into the host where it can be handled by the
->>> FQ-CoDel-enabled queueing structure.
->>>
->>
->> Sure, we could probably try that with ath11k as well at some point when
->> we have a baseline with HE support.
-> 
-> Well, rather than retrofit change things later, why not start out with a
-> wake_tx_queue-based driver?
+Couple of small fixes for Control Port handling in mac80211.  The
+original commit was working by some crazy luck in all testing, but
+manifested itself on certain hardware that managed to drop PAE frames
+with uncanny consistency.
 
-If there is something that works at all, lets get it upstream when it is
-easier to develop and test against.  Then we will have a baseline to test against
-when adding new features and so forth.
+Denis Kenzior (2):
+  mac80211: Don't memset RXCB prior to PAE intercept
+  mac80211: Correctly set noencrypt for PAE frames
 
-Thanks,
-Ben
+ net/mac80211/rx.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
 -- 
-Ben Greear <greearb@candelatech.com>
-Candela Technologies Inc  http://www.candelatech.com
+2.19.2
 
