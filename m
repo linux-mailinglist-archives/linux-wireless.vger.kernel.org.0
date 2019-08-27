@@ -2,145 +2,202 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 9DEA79EB63
-	for <lists+linux-wireless@lfdr.de>; Tue, 27 Aug 2019 16:45:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0E4209F141
+	for <lists+linux-wireless@lfdr.de>; Tue, 27 Aug 2019 19:13:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727893AbfH0OpK (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 27 Aug 2019 10:45:10 -0400
-Received: from mout.web.de ([217.72.192.78]:46695 "EHLO mout.web.de"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725920AbfH0OpK (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 27 Aug 2019 10:45:10 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
-        s=dbaedf251592; t=1566917097;
-        bh=136zRDCFtnxKZVXYpCFtMMCXu8o+6cc0jXSq2IGvEdE=;
-        h=X-UI-Sender-Class:To:Cc:From:Subject:Date;
-        b=JIdC+EyHDjXoCaMupMgQjdj/fx/udqs5aYP90IMaA50uYo4ueWb26+SRSJQRn3Hez
-         5AmIS/Zcyff9TarKJGDjAbRu+gg4SjaDhR2StzJd8sEVljr1+xv8TDy6A/jWqejCEN
-         6UtQKr2zT8AzT4BMVi7M9zdfY/MkoYVvJsOoEwXs=
-X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
-Received: from [192.168.1.2] ([93.135.143.232]) by smtp.web.de (mrweb102
- [213.165.67.124]) with ESMTPSA (Nemesis) id 0LtWsC-1iAQge3NAq-010t8c; Tue, 27
- Aug 2019 16:44:56 +0200
-To:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        wil6210@qti.qualcomm.com, "David S. Miller" <davem@davemloft.net>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        Maya Erez <merez@codeaurora.org>
-Cc:     LKML <linux-kernel@vger.kernel.org>,
-        kernel-janitors@vger.kernel.org
-From:   Markus Elfring <Markus.Elfring@web.de>
-Subject: [PATCH] wil6210: Delete an unnecessary kfree() call in
- wil_tid_ampdu_rx_alloc()
-Openpgp: preference=signencrypt
-Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
- 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 FEE=
-Message-ID: <b9620e49-618d-b392-6456-17de5807df75@web.de>
-Date:   Tue, 27 Aug 2019 16:44:55 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.8.0
+        id S1728584AbfH0RNK (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 27 Aug 2019 13:13:10 -0400
+Received: from mail-ot1-f65.google.com ([209.85.210.65]:37561 "EHLO
+        mail-ot1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726871AbfH0RNK (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 27 Aug 2019 13:13:10 -0400
+Received: by mail-ot1-f65.google.com with SMTP id f17so19429792otq.4;
+        Tue, 27 Aug 2019 10:13:09 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=wUYcGOihIFBtqyF78I1wqZoT2CD9kDfXER8AguN6CgA=;
+        b=WjrOkidefgyDmdfNYjalL+8L5ln+VOeZufnP5ItMWaql2v/RkAM4BZI8znE+e2YfIf
+         oyuxYU+JqynpbrD9JeZM0ZeESj8c4rXu+X62PXLfB3YfPJthZbRbiLXeE3+8E47aQww3
+         TffFJSm+iJkdSHiHBxfAwrd1Q3RuEAmQnxDYzz2TsQCt2kCSYuia9xJ/uAbnKh8iieZl
+         KR8en5CoN1p7KwzEhyMIrQmi+c4ocedulQjqEFK4TCP7E/T8uiSLuWmcg3TWl7Zwgq/p
+         6FUu1pbzLf0PWKAyCJ84Ia2qgFP8d11O4UXZb4N4rJrW89GZZyCbTsYWpV6EFKbH156i
+         t6Cg==
+X-Gm-Message-State: APjAAAWPMV9ZLmC3X7wp/Z5JTLhCwiCyRPQjPLDkgwp8k6FsDInle7Fp
+        KFryuxUKlX3DzNfpbQja8ZcMHY4=
+X-Google-Smtp-Source: APXvYqy98TpLrSxlV1ojf0lXeSfSeyebsq72mnJuH64qfVIj1LcSukYQ45O5BvjuNn/IAChpfJqO7g==
+X-Received: by 2002:a9d:4685:: with SMTP id z5mr14158650ote.359.1566925988988;
+        Tue, 27 Aug 2019 10:13:08 -0700 (PDT)
+Received: from localhost (24-155-109-49.dyn.grandenetworks.net. [24.155.109.49])
+        by smtp.gmail.com with ESMTPSA id v5sm5282620otk.64.2019.08.27.10.13.08
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 27 Aug 2019 10:13:08 -0700 (PDT)
+Date:   Tue, 27 Aug 2019 12:13:07 -0500
+From:   Rob Herring <robh@kernel.org>
+To:     Kalle Valo <kvalo@codeaurora.org>
+Cc:     linux-wireless@vger.kernel.org, ath11k@lists.infradead.org,
+        devicetree@vger.kernel.org
+Subject: Re: [PATCH 01/49] dt: bindings: net: add qcom,ath11k.txt
+Message-ID: <20190827171307.GA23128@bogus>
+References: <1566316095-27507-1-git-send-email-kvalo@codeaurora.org>
+ <1566316095-27507-2-git-send-email-kvalo@codeaurora.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:b686WEIBMhQs/LRLyV8vd+6S5YnUNI6Z/b6Mb9kUJkzfm22gkgr
- SD3bwJXJ5QYl5l6xcEC+ODDSWEmEM+1Tj2R/LQPx6ZDUX446fGmIpVjwA4/9RrzuJJiYRSr
- cr9bPo1OaYdGhir/9y+7lnNPswNsgrSZ9v+TySYGAoolEBeMWMEpS7q/lk2Ueyie9Spfvb4
- fWXgI8v0Er5wyF6j5DDaQ==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:nlpurH5kzFE=:KhYmMYV8dRvHYcOWKRRTsV
- eyO402nyTD+mB9uwhPKkZAB3ox1w2JQIvDuL7J3R88aFNWWFhhCXO7bDiVJFl2SEJDUwPvy2i
- LYHmAEAOA+Bh5GJCCKwUJKo+S5EIkSrtJ0AYO8VP39DMzBC0WP0wHJt8tb98OEjF1TJMWzdTd
- jCUSAIeKRnJzhy78YI7du3RnVCyH+G1TDuCcNx+NJpojvXAQK0XWzx7dqETgdarAOLZamzK4k
- B/WW/bcU3qP1KI8lFlC4Ukk0i5kTLnasL6H01sLZV2bCFIWNBjtrVe1RXbUkvsE+xuKk97AVV
- 45whQalTAmrpcSIbwn8e3oMWriGSinUy6MEwXO1voZ6s18fe6utZhxbFH34N30xz6t01iphPZ
- jO56wMPPlPrlByE0C0GAh70ZX0x97WQbMHTufymNPpTJf1wrs2FaP94VvMlbwyw0s0rcFCXNA
- s7mdl15fdUrAb7DS9P++EwJubCf2T8roEMvq1RXJUAjod3mvRViBOjC7zIkQIQTDnLYP38Rwn
- y7oTRQMxZtXKJMK0sgfkyHNzYnxwWAx6UMoppaDBgKMj5e8QTB8kKyobs/oREggtrUS6c7YoR
- pX+Gr0uAnbQgYfLEieUUfCVC5/mWCQEzcMhlOVWXalI77hQ5GU0XwbUf4Y6DMw2dP3cIXM42z
- QAcoYmUUyaVNz6lfy0BVCdUKbbIjRNImV/DgmdXR+/J8Bia7+FnZeQacL4bauPFBPJS7FiQXY
- A1LQ09IYM8X1WGCxsnJGU2NXYm8PAvC1/+bijiHYAQJriXNVJJr1YJ11fquMyqcCEUDm+gzwg
- bpV2BdG0RFaul/vE9o/ydlVvkCFckzDDPyNIjfF/qFuFcSv9zOzgZ+LBXi7B9IjONLqNu7k17
- 0UIHA096Il7hsamUXFczdycotF36SU7yDANSym6WsOMfNv3+wqjox/yMQZ1vGsOmZjUZytDXJ
- plq2oD0dYj5KLAAeLciCXQJ4jdedngsuQIFcCfh8XTW0EIVMk/aW33f+3gnuvCK5WhUytrArC
- 4ctYGE74Q8vsLCpiYiogOx6AuNp3u+DQO0hLa/pw7pKGx0RZYJNRmMSynNmEaYWhLQhe1A3Qk
- mO6jVqM4OJNmoUjnN4a9S1QY9DfCgzN7YioRQK6Ae3K2sTLsybmu5ADmZmUdaXA9ElJdTEgn9
- ehwb8=
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1566316095-27507-2-git-send-email-kvalo@codeaurora.org>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Markus Elfring <elfring@users.sourceforge.net>
-Date: Tue, 27 Aug 2019 16:39:02 +0200
+On Tue, Aug 20, 2019 at 06:47:27PM +0300, Kalle Valo wrote:
 
-A null pointer would be passed to a call of the function =E2=80=9Ckfree=E2=
-=80=9D
-directly after a call of the function =E2=80=9Ckcalloc=E2=80=9D failed at =
-one place.
-Remove this superfluous function call.
+Missing commit message and Sob (and on the other patches).
 
-This issue was detected by using the Coccinelle software.
+> ---
+>  .../bindings/net/wireless/qcom,ath11k.txt          | 127 +++++++++++++++++++++
+>  1 file changed, 127 insertions(+)
 
-Signed-off-by: Markus Elfring <elfring@users.sourceforge.net>
-=2D--
- drivers/net/wireless/ath/wil6210/rx_reorder.c | 1 -
- 1 file changed, 1 deletion(-)
+Please use the DT schema format (YAML). See writing-schema.md.
 
-diff --git a/drivers/net/wireless/ath/wil6210/rx_reorder.c b/drivers/net/w=
-ireless/ath/wil6210/rx_reorder.c
-index 784239bcb3a6..13246d216803 100644
-=2D-- a/drivers/net/wireless/ath/wil6210/rx_reorder.c
-+++ b/drivers/net/wireless/ath/wil6210/rx_reorder.c
-@@ -260,7 +260,6 @@ struct wil_tid_ampdu_rx *wil_tid_ampdu_rx_alloc(struct=
- wil6210_priv *wil,
- 	r->reorder_buf =3D
- 		kcalloc(size, sizeof(struct sk_buff *), GFP_KERNEL);
- 	if (!r->reorder_buf) {
--		kfree(r->reorder_buf);
- 		kfree(r);
- 		return NULL;
- 	}
-=2D-
-2.23.0
+> 
+> diff --git a/Documentation/devicetree/bindings/net/wireless/qcom,ath11k.txt b/Documentation/devicetree/bindings/net/wireless/qcom,ath11k.txt
+> new file mode 100644
+> index 000000000000..1824238b4b50
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/net/wireless/qcom,ath11k.txt
+> @@ -0,0 +1,127 @@
+> +* Qualcomm Technologies ath11k wireless devices
+> +
+> +Required properties:
+> +- compatible: Should be "qcom,ipq8074-wifi"
+> +
+> +AHB based ipq8074 uses most of the properties defined in this doc.
+> +
+> +Optional properties:
+> +- reg: Address and length of the register set for the device.
+> +- interrupts: List of interrupt lines. Must contain an entry
+> +	      for each entry in the interrupt-names property.
 
+Need to be explicit as to how many interrupts and what they are.
+
+> +- interrupt-names: Must include the entries for CE interrupt
+> +		   names ("ce0" to "ce11") and hw srng interrupt
+> +		   names.
+> +- qcom,rproc: DT entry of q6v5-wcss
+> +
+> +Example:
+> +
+> +wifi0: wifi@c000000 {
+> +	compatible = "qcom,ipq8074-wifi";
+> +	reg = <0xc000000 0x2000000>;
+> +	interrupts = <0 320 1>,
+> +		     <0 319 1>,
+> +		     <0 318 1>,
+> +		     <0 317 1>,
+> +		     <0 316 1>,
+> +		     <0 315 1>,
+> +		     <0 314 1>,
+> +		     <0 311 1>,
+> +		     <0 310 1>,
+> +		     <0 411 1>,
+> +		     <0 410 1>,
+> +		     <0 40 1>,
+> +		     <0 39 1>,
+> +		     <0 302 1>,
+> +		     <0 301 1>,
+> +		     <0 37 1>,
+> +		     <0 36 1>,
+> +		     <0 296 1>,
+> +		     <0 295 1>,
+> +		     <0 294 1>,
+> +		     <0 293 1>,
+> +		     <0 292 1>,
+> +		     <0 291 1>,
+> +		     <0 290 1>,
+> +		     <0 289 1>,
+> +		     <0 288 1>,
+> +		     <0 239 1>,
+> +		     <0 236 1>,
+> +		     <0 235 1>,
+> +		     <0 234 1>,
+> +		     <0 233 1>,
+> +		     <0 232 1>,
+> +		     <0 231 1>,
+> +		     <0 230 1>,
+> +		     <0 229 1>,
+> +		     <0 228 1>,
+> +		     <0 224 1>,
+> +		     <0 223 1>,
+> +		     <0 203 1>,
+> +		     <0 183 1>,
+> +		     <0 180 1>,
+> +		     <0 179 1>,
+> +		     <0 178 1>,
+> +		     <0 177 1>,
+> +		     <0 176 1>,
+> +		     <0 163 1>,
+> +		     <0 162 1>,
+> +		     <0 160 1>,
+> +		     <0 159 1>,
+> +		     <0 158 1>,
+> +		     <0 157 1>,
+> +		     <0 156 1>;
+> +	interrupt-names = "misc-pulse1",
+> +			  "misc-latch",
+> +			  "sw-exception",
+> +			  "watchdog",
+> +			  "ce0",
+> +			  "ce1",
+> +			  "ce2",
+> +			  "ce3",
+> +			  "ce4",
+> +			  "ce5",
+> +			  "ce6",
+> +			  "ce7",
+> +			  "ce8",
+> +			  "ce9",
+> +			  "ce10",
+> +			  "ce11",
+> +			  "host2wbm-desc-feed",
+> +			  "host2reo-re-injection",
+> +			  "host2reo-command",
+> +			  "host2rxdma-monitor-ring3",
+> +			  "host2rxdma-monitor-ring2",
+> +			  "host2rxdma-monitor-ring1",
+> +			  "reo2ost-exception",
+> +			  "wbm2host-rx-release",
+> +			  "reo2host-status",
+> +			  "reo2host-destination-ring4",
+> +			  "reo2host-destination-ring3",
+> +			  "reo2host-destination-ring2",
+> +			  "reo2host-destination-ring1",
+> +			  "rxdma2host-monitor-destination-mac3",
+> +			  "rxdma2host-monitor-destination-mac2",
+> +			  "rxdma2host-monitor-destination-mac1",
+> +			  "ppdu-end-interrupts-mac3",
+> +			  "ppdu-end-interrupts-mac2",
+> +			  "ppdu-end-interrupts-mac1",
+> +			  "rxdma2host-monitor-status-ring-mac3",
+> +			  "rxdma2host-monitor-status-ring-mac2",
+> +			  "rxdma2host-monitor-status-ring-mac1",
+> +			  "host2rxdma-host-buf-ring-mac3",
+> +			  "host2rxdma-host-buf-ring-mac2",
+> +			  "host2rxdma-host-buf-ring-mac1",
+> +			  "rxdma2host-destination-ring-mac3",
+> +			  "rxdma2host-destination-ring-mac2",
+> +			  "rxdma2host-destination-ring-mac1",
+> +			  "host2tcl-input-ring4",
+> +			  "host2tcl-input-ring3",
+> +			  "host2tcl-input-ring2",
+> +			  "host2tcl-input-ring1",
+> +			  "wbm2host-tx-completions-ring3",
+> +			  "wbm2host-tx-completions-ring2",
+> +			  "wbm2host-tx-completions-ring1",
+> +			  "tcl2host-status-ring";
+> +	qcom,rproc = <&qcom_q6v5_wcss>;
+> +};
+> 
