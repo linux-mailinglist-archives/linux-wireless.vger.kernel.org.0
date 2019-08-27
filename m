@@ -2,76 +2,99 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 9E1E89E62A
-	for <lists+linux-wireless@lfdr.de>; Tue, 27 Aug 2019 12:51:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B1FD89E667
+	for <lists+linux-wireless@lfdr.de>; Tue, 27 Aug 2019 13:03:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729161AbfH0Kvm (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 27 Aug 2019 06:51:42 -0400
-Received: from smtp.codeaurora.org ([198.145.29.96]:34960 "EHLO
+        id S1729516AbfH0LDA (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 27 Aug 2019 07:03:00 -0400
+Received: from smtp.codeaurora.org ([198.145.29.96]:51548 "EHLO
         smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725793AbfH0Kvm (ORCPT
+        with ESMTP id S1729452AbfH0LDA (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 27 Aug 2019 06:51:42 -0400
+        Tue, 27 Aug 2019 07:03:00 -0400
 Received: by smtp.codeaurora.org (Postfix, from userid 1000)
-        id 27C5C60C5F; Tue, 27 Aug 2019 10:51:41 +0000 (UTC)
+        id 3E21D61D6B; Tue, 27 Aug 2019 11:02:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1566903101;
-        bh=dXh5psJH6KJJwOule8YyV+lVoNFEfbqfaGzAIfFICjk=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=gVxpTkSpLlaBiMFIfcR7epwWKbcMZ678oYJ2rlddCMUmTf/G/Cj1iP/CavPa1u9GH
-         Mu9/L32YQvUzj88J3ekb+D4kkUkC4j7Xd1FNgtmGPBOcqbmefHtGJB8dqvDozCooeq
-         iDbToqppgB/uXxOagBGbnNZAlSKt3B4ut2G8GdCo=
+        s=default; t=1566903779;
+        bh=LpEBqMTTYl3m6DImrwzQAPL4eEOspM6cbI3I/sdfpkY=;
+        h=From:To:Cc:Subject:Date:From;
+        b=KBNhSRlLlLOxyG6DNLC67Urg0GKs2/sGgdfq8L3cEeRqZULwqiCcwoeE2ewBvuPiL
+         ADEzCr9eqVT35CyK+7wJL/V1K7e1P2Xj4N4f3aaQ5u6RsYCPRm3OLfVMCQAbUrrMbE
+         z9i2+cO4UFa1jjY9CgOqnIObCA6plzUY1YV6QopY=
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         pdx-caf-mail.web.codeaurora.org
 X-Spam-Level: 
 X-Spam-Status: No, score=-2.7 required=2.0 tests=ALL_TRUSTED,BAYES_00,
-        DKIM_INVALID,DKIM_SIGNED autolearn=no autolearn_force=no version=3.4.0
-Received: from mail.codeaurora.org (localhost.localdomain [127.0.0.1])
-        by smtp.codeaurora.org (Postfix) with ESMTP id DE32F60271;
-        Tue, 27 Aug 2019 10:51:40 +0000 (UTC)
+        DKIM_INVALID,DKIM_SIGNED,SPF_NONE autolearn=no autolearn_force=no
+        version=3.4.0
+Received: from wgong-HP-Z240-SFF-Workstation.qca.qualcomm.com (unknown [180.166.53.21])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-SHA256 (128/128 bits))
+        (No client certificate requested)
+        (Authenticated sender: wgong@smtp.codeaurora.org)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 9A2A561C22;
+        Tue, 27 Aug 2019 11:02:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1566903100;
-        bh=dXh5psJH6KJJwOule8YyV+lVoNFEfbqfaGzAIfFICjk=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=T1TEoDfVyZADU302XoSqoVVv+q1iRcGcfduhF6tujJ5Da1UZtQwc4MTCCBvlHFoKJ
-         JF8X6pRW2R/6cVl4EBRjlx93Czshdn/mYpHCCvclibn7FIvA1NT3HQAKwXXklx/l9e
-         31og8cOBU8FLcvXBAn4qIO+Ocnk0Oaik5mSNyTAo=
-MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII;
- format=flowed
-Content-Transfer-Encoding: 7bit
-Date:   Tue, 27 Aug 2019 16:21:40 +0530
-From:   Vasanthakumar Thiagarajan <vthiagar@codeaurora.org>
-To:     Nicolas Cavallari <Nicolas.Cavallari@green-communications.fr>
-Cc:     Kalle Valo <kvalo@codeaurora.org>, linux-wireless@vger.kernel.org,
-        ath11k@lists.infradead.org, devicetree@vger.kernel.org,
-        linux-wireless-owner@vger.kernel.org
-Subject: Re: [PATCH 31/49] ath11k: add mac.c
-In-Reply-To: <c37a9fc4-aa74-a333-a67c-cce66ad78ec0@green-communications.fr>
-References: <1566316095-27507-1-git-send-email-kvalo@codeaurora.org>
- <1566316095-27507-32-git-send-email-kvalo@codeaurora.org>
- <c37a9fc4-aa74-a333-a67c-cce66ad78ec0@green-communications.fr>
-Message-ID: <1da054e86da63423a5e58c22c2c79d79@codeaurora.org>
-X-Sender: vthiagar@codeaurora.org
-User-Agent: Roundcube Webmail/1.2.5
+        s=default; t=1566903735;
+        bh=LpEBqMTTYl3m6DImrwzQAPL4eEOspM6cbI3I/sdfpkY=;
+        h=From:To:Cc:Subject:Date:From;
+        b=nEmn1DpZg7CmPbTHzaIRC969T/sfajpxYlTtKQNL48bdDI8Xnxx4zPv2VPy9BWBzT
+         Ix3DTdXx1GHJKhra6fQv4OwM6lgwn8I2flTAyYv5yI2jh/rBMpdeKCdAlU7Melajx1
+         erdgVz7yheaRZuHKgnGX3+bY3so/Xf31ETOTw/i4=
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 9A2A561C22
+Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=wgong@codeaurora.org
+From:   Wen Gong <wgong@codeaurora.org>
+To:     ath10k@lists.infradead.org
+Cc:     linux-wireless@vger.kernel.org
+Subject: [PATCH v2 0/7] ath10k: improve throughout of tcp/udp TX/RX of sdio
+Date:   Tue, 27 Aug 2019 19:01:40 +0800
+Message-Id: <1566903707-27536-1-git-send-email-wgong@codeaurora.org>
+X-Mailer: git-send-email 1.9.1
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 2019-08-23 20:32, Nicolas Cavallari wrote:
-> On 20/08/2019 17:47, Kalle Valo wrote:
->> +	ar->hw->wiphy->interface_modes = BIT(NL80211_IFTYPE_STATION) |
->> +					 BIT(NL80211_IFTYPE_AP) |
->> +					 BIT(NL80211_IFTYPE_MESH_POINT);
-> 
-> [...]
-> 
->> +	ar->hw->wiphy->flags |= WIPHY_FLAG_IBSS_RSN;
-> 
-> so IBSS-RSN is supported without IBSS support ?
+The bottleneck of throughout on sdio chip is the bus bandwidth, to the
+patches are all to increase the use ratio of sdio bus.
 
-Sure. IBSS-RSN is not relevant when IBSS is not supported, I guess.
-We'll take care of this. Thanks.
+                      udp-rx    udp-tx    tcp-rx    tcp-tx
+without patches(Mbps)  320        180       170       151
+with patches(Mbps)     450        410       400       320
 
-Vasanth
+These patches only affect sdio bus chip, explanation is mentioned in each
+patch's commit log.
+
+Alagu Sankar (1):
+  ath10k: enable RX bundle receive for sdio
+v2: fix incorrect skb tail of rx bundle in ath10k_sdio_mbox_rx_process_packet
+
+Wen Gong (6):
+  ath10k: change max RX bundle size from 8 to 32 for sdio
+v2: change macro HTC_GET_BUNDLE_COUNT
+
+  ath10k: add workqueue for RX path of sdio
+  ath10k: disable TX complete indication of htt for sdio
+v2: change some code style
+
+  ath10k: add htt TX bundle for sdio
+  ath10k: enable alt data of TX path for sdio
+  ath10k: enable napi on RX path for sdio
+
+ drivers/net/wireless/ath/ath10k/core.c   |  36 ++-
+ drivers/net/wireless/ath/ath10k/core.h   |   4 +-
+ drivers/net/wireless/ath/ath10k/hif.h    |   9 +
+ drivers/net/wireless/ath/ath10k/htc.c    | 374 ++++++++++++++++++++++++++++---
+ drivers/net/wireless/ath/ath10k/htc.h    |  41 +++-
+ drivers/net/wireless/ath/ath10k/htt.c    |  15 ++
+ drivers/net/wireless/ath/ath10k/htt.h    |  20 +-
+ drivers/net/wireless/ath/ath10k/htt_rx.c |  82 ++++++-
+ drivers/net/wireless/ath/ath10k/htt_tx.c |  37 ++-
+ drivers/net/wireless/ath/ath10k/hw.h     |   2 +-
+ drivers/net/wireless/ath/ath10k/sdio.c   | 292 +++++++++++++++++++++---
+ drivers/net/wireless/ath/ath10k/sdio.h   |  31 ++-
+ 12 files changed, 850 insertions(+), 93 deletions(-)
+
+-- 
+1.9.1
+
