@@ -2,101 +2,100 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 214ED9E2B0
-	for <lists+linux-wireless@lfdr.de>; Tue, 27 Aug 2019 10:30:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C4F5F9E399
+	for <lists+linux-wireless@lfdr.de>; Tue, 27 Aug 2019 11:04:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728859AbfH0Iao (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 27 Aug 2019 04:30:44 -0400
-Received: from mail.kapsi.fi ([91.232.154.25]:37387 "EHLO mail.kapsi.fi"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728762AbfH0Iao (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 27 Aug 2019 04:30:44 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=kapsi.fi;
-         s=20161220; h=Content-Transfer-Encoding:Content-Type:MIME-Version:References
-        :In-Reply-To:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:Content-ID:
-        Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-        :Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-        List-Post:List-Owner:List-Archive;
-        bh=lz3osODEUPjBC59yNMazlxf9VZyBoemJKN2ReZcKz24=; b=kHnPKJyLEYuyDWZ85ep/6V8Rwf
-        fafN7eUElmpmO0N5kbpdAunQoJutW0s7zZX+s8Z/uYb818FhHf/x4iFkEC8xz1B4ovpTv9AuaL7/Y
-        ofPUbZYFZ/+A46RqQ8T7pQCVaFJUwnLQF9CKmOwQrABVo8YB+LxVRHgXKgwbkWqaNkuwLL1zmN1lS
-        tWXsaaEWj+9VgTB48tTY5zYn0I7zx4KaVYfbhkuvO+h5ouoU8DZY7QiPjUXh2eIwXoXfeHHSN+dod
-        uBuMs0hcfQbECxo883CQos81Pd4Ot8Zwv1LCcj9S2PCYPM6N+Nac2MRIOTj1g46yaRfnegLGiKYpV
-        K5gUb7VQ==;
-Received: from [194.100.106.190] (helo=lettuce)
-        by mail.kapsi.fi with esmtpsa (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.89)
-        (envelope-from <jekarl@iki.fi>)
-        id 1i2Ws5-0006NV-8h; Tue, 27 Aug 2019 11:30:33 +0300
-Date:   Tue, 27 Aug 2019 11:30:32 +0300
-From:   Emil Karlson <jekarl@iki.fi>
-To:     Stanislaw Gruszka <sgruszka@redhat.com>
-Cc:     linux-wireless@vger.kernel.org, Felix Fietkau <nbd@nbd.name>,
-        Daniel Golle <daniel@makrotopia.org>,
-        Tomislav =?UTF-8?B?UG/FvmVnYQ==?= <pozega.tomislav@gmail.com>,
-        Mathias Kresin <dev@kresin.me>,
-        Fredrik Noring <noring@nocrew.org>
-Subject: Re: [PATCH 5.3] rt2x00: clear up IV's on key removal
-Message-ID: <20190827113032.42e69b72@lettuce>
-In-Reply-To: <1566564483-31088-1-git-send-email-sgruszka@redhat.com>
-References: <1566564483-31088-1-git-send-email-sgruszka@redhat.com>
-X-Mailer: Claws Mail 3.17.3 (GTK+ 2.24.32; aarch64-unknown-linux-gnu)
+        id S1728676AbfH0JEZ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 27 Aug 2019 05:04:25 -0400
+Received: from smtp.codeaurora.org ([198.145.29.96]:45410 "EHLO
+        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725805AbfH0JEZ (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 27 Aug 2019 05:04:25 -0400
+Received: by smtp.codeaurora.org (Postfix, from userid 1000)
+        id 6974A60D35; Tue, 27 Aug 2019 09:04:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
+        s=default; t=1566896664;
+        bh=HS1OouRZhdolW8NM9h0nQjiU3lPKdOar2sWLkTzCqIw=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=hklnlLAqmsvSOtq5T/om8QBF63iOcu7BXR6BbPH1dKiQqvI0R00QMq3ZwMwRiaFkY
+         yDvRgvYZIRwGcdMEvSHv4FdjC6epE2BuIiPAk79+VWbpGq8DLkWdWSK+/xsBes+h+F
+         qgEBM6UceEsYnyDV2WA9B0koy87IoDwfYwZL42Jw=
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        pdx-caf-mail.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.7 required=2.0 tests=ALL_TRUSTED,BAYES_00,
+        DKIM_INVALID,DKIM_SIGNED autolearn=no autolearn_force=no version=3.4.0
+Received: from mail.codeaurora.org (localhost.localdomain [127.0.0.1])
+        by smtp.codeaurora.org (Postfix) with ESMTP id B3BCE6044E;
+        Tue, 27 Aug 2019 09:04:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
+        s=default; t=1566896663;
+        bh=HS1OouRZhdolW8NM9h0nQjiU3lPKdOar2sWLkTzCqIw=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=Z+odZ4KFprdkXmC8ksOERWY0gRUlHknCnpCeMfZ0w+yI0utkR7sE99SQYqYypyMXU
+         uia4IJmmH7m4YPm1wa2VmlJVQrBj0TtxKbmOhWcvA8WPDggCiKGi8qGC/x4hzBdA0p
+         KE0X9egMkxKuRueOOaTWd2MHMnek++/L7I8ysgj4=
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Content-Type: text/plain; charset=US-ASCII;
+ format=flowed
 Content-Transfer-Encoding: 7bit
-X-SA-Exim-Connect-IP: 194.100.106.190
-X-SA-Exim-Mail-From: jekarl@iki.fi
-X-SA-Exim-Scanned: No (on mail.kapsi.fi); SAEximRunCond expanded to false
+Date:   Tue, 27 Aug 2019 14:34:23 +0530
+From:   Anilkumar Kolli <akolli@codeaurora.org>
+To:     Sven Eckelmann <sven@narfation.org>
+Cc:     ath11k@lists.infradead.org, devicetree@vger.kernel.org,
+        linux-wireless@vger.kernel.org, Kalle Valo <kvalo@codeaurora.org>
+Subject: Re: [PATCH 10/49] ath11k: add debug.c
+In-Reply-To: <4441194.D8eDD6Tzdi@bentobox>
+References: <1566316095-27507-1-git-send-email-kvalo@codeaurora.org>
+ <2708501.D2hezO5Rnt@bentobox>
+ <80bdedf3740960e0ce05b02a77d1b457@codeaurora.org>
+ <4441194.D8eDD6Tzdi@bentobox>
+Message-ID: <6622b83f754404ec05b9442027757c5e@codeaurora.org>
+X-Sender: akolli@codeaurora.org
+User-Agent: Roundcube Webmail/1.2.5
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Fri, 23 Aug 2019 14:48:03 +0200
-Stanislaw Gruszka <sgruszka@redhat.com> wrote:
-
-> After looking at code I realized that my previous fix
-> 95844124385e ("rt2x00: clear IV's on start to fix AP mode regression")
-> was incomplete. We can still have wrong IV's after re-keyring.
-> To fix that, clear up IV's also on key removal.
+On 2019-08-27 13:05, Sven Eckelmann wrote:
+> On Tuesday, 27 August 2019 09:33:39 CEST Anilkumar Kolli wrote:
+> [...]
+>> >     [ 4312.884650] The reading for sensor 4 is 0x002041f7
+>> >     [ 4312.891499] The reading for sensor 5 is 0x002051f4
+>> >     [ 4312.896415] Couldn't get reading for sensor 6
+>> >     [ 4312.901189] Couldn't get reading for sensor 7
+>> >     [ 4312.905561] The reading for sensor 8 is 0x002081e0
+>> >     [ 4312.909902] The reading for sensor 9 is 0x002091f7
+>> >     [ 4312.914645] Couldn't get reading for sensor 10
+>> >     [ 4312.919364] The reading for sensor 11 is 0x0020b1fa
+>> >     [ 4312.923791] The reading for sensor 12 is 0x0020c1fa
+>> >     [ 4312.928621] Couldn't get reading for sensor 13
+>> >     [ 4312.933425] The reading for sensor 14 is 0x0020e1f4
+>> >     [ 4312.937941] The reading for sensor 15 is 0x0020f1e7
+>> >     [ 4313.942700] Rebooting in 3 seconds..
+>> >
+>> > Maybe can be fixed by a different kernel (for the remoteproc). But I
+>> > don't
+>> > have this kernel at the moment.
+>> >
+>> 
+>> The write of an "assert", sends 'WMI_FORCE_FW_HANG_CMDID' WMI command 
+>> to
+>> target firmware.
+>> This WMI command forces the target to assert.
 > 
-> Fixes: 710e6cc1595e ("rt2800: do not nullify initialization vector
-> data") Signed-off-by: Stanislaw Gruszka <sgruszka@redhat.com>
-> ---
->  drivers/net/wireless/ralink/rt2x00/rt2800lib.c | 19
-> ++++++++++++------- 1 file changed, 12 insertions(+), 7 deletions(-)
+> Yes, but it shouldn't kill the complete system.
 > 
-> diff --git a/drivers/net/wireless/ralink/rt2x00/rt2800lib.c
-> b/drivers/net/wireless/ralink/rt2x00/rt2800lib.c index
-> ecbe78b8027b..28e2de04834e 100644 ---
-> a/drivers/net/wireless/ralink/rt2x00/rt2800lib.c +++
-> b/drivers/net/wireless/ralink/rt2x00/rt2800lib.c @@ -1654,13 +1654,18
-> @@ static void rt2800_config_wcid_attr_cipher(struct rt2x00_dev
-> *rt2x00dev, offset = MAC_IVEIV_ENTRY(key->hw_key_idx);
->  
-> -	rt2800_register_multiread(rt2x00dev, offset,
-> -				  &iveiv_entry, sizeof(iveiv_entry));
-> -	if ((crypto->cipher == CIPHER_TKIP) ||
-> -	    (crypto->cipher == CIPHER_TKIP_NO_MIC) ||
-> -	    (crypto->cipher == CIPHER_AES))
-> -		iveiv_entry.iv[3] |= 0x20;
-> -	iveiv_entry.iv[3] |= key->keyidx << 6;
-> +	if (crypto->cmd == SET_KEY) {
-> +		rt2800_register_multiread(rt2x00dev, offset,
-> +					  &iveiv_entry,
-> sizeof(iveiv_entry));
-> +		if ((crypto->cipher == CIPHER_TKIP) ||
-> +		    (crypto->cipher == CIPHER_TKIP_NO_MIC) ||
-> +		    (crypto->cipher == CIPHER_AES))
-> +			iveiv_entry.iv[3] |= 0x20;
-> +		iveiv_entry.iv[3] |= key->keyidx << 6;
-> +	} else {
-> +		memset(&iveiv_entry, 0, sizeof(iveiv_entry));
-> +	}
-> +
->  	rt2800_register_multiwrite(rt2x00dev, offset,
->  				   &iveiv_entry,
-> sizeof(iveiv_entry)); }
+This will not kill the whole system, This will crash target and we have 
+mechanism to recover the system.
 
-Seems to work when used with the previous patch on top of 5.3-rc6
-tested-by: Emil Karlson <jekarl@iki.fi>
+Hope u have generated the crash with below patch,
+https://source.codeaurora.org/quic/qsdk/oss/system/feeds/wlan-open/tree/mac80211/patches/019-ath11k-disable-q6-recovery-to-crash-kernel.patch?h=win_ap.1.0
+
+Please remove this patch to see the target recover after the crash.
+
+Thanks
+Anil
+
