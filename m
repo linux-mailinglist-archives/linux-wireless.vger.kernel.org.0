@@ -2,118 +2,338 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B934B9DEDA
-	for <lists+linux-wireless@lfdr.de>; Tue, 27 Aug 2019 09:36:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3116D9DEE7
+	for <lists+linux-wireless@lfdr.de>; Tue, 27 Aug 2019 09:41:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727986AbfH0HgB (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 27 Aug 2019 03:36:01 -0400
-Received: from dvalin.narfation.org ([213.160.73.56]:54524 "EHLO
-        dvalin.narfation.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725879AbfH0HgB (ORCPT
+        id S1725985AbfH0HlA (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 27 Aug 2019 03:41:00 -0400
+Received: from mail-qt1-f194.google.com ([209.85.160.194]:35095 "EHLO
+        mail-qt1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725825AbfH0HlA (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 27 Aug 2019 03:36:01 -0400
-Received: from bentobox.localnet (p200300C5970B0CE86C4047C4D7108D73.dip0.t-ipconnect.de [IPv6:2003:c5:970b:ce8:6c40:47c4:d710:8d73])
-        by dvalin.narfation.org (Postfix) with ESMTPSA id C165F200F4;
-        Tue, 27 Aug 2019 07:35:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=narfation.org;
-        s=20121; t=1566891358;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=rOrC2IaHAVZ//zfqDte0Y5Hbg3OHEzewX2dPc2zfRhs=;
-        b=aT39pVoKq6VsPxQkuY5FieMpGBsAcUnmVY2LB4WlPLOpS6MBRvo11CF+L+q8gGnmK5EKXZ
-        3GsxKCwmXaIMguAg6J28oC5X1MC4zp2Zfl8rpC2TH4hui3o7l0nrR2HpXvxfYL9OXgWHBO
-        fiKY5HeJd5UgaUNJqwPmgkELVA7oeG0=
-From:   Sven Eckelmann <sven@narfation.org>
-To:     Anilkumar Kolli <akolli@codeaurora.org>
-Cc:     ath11k@lists.infradead.org, devicetree@vger.kernel.org,
-        linux-wireless@vger.kernel.org, Kalle Valo <kvalo@codeaurora.org>
-Subject: Re: [PATCH 10/49] ath11k: add debug.c
-Date:   Tue, 27 Aug 2019 09:35:54 +0200
-Message-ID: <4441194.D8eDD6Tzdi@bentobox>
-In-Reply-To: <80bdedf3740960e0ce05b02a77d1b457@codeaurora.org>
-References: <1566316095-27507-1-git-send-email-kvalo@codeaurora.org> <2708501.D2hezO5Rnt@bentobox> <80bdedf3740960e0ce05b02a77d1b457@codeaurora.org>
+        Tue, 27 Aug 2019 03:41:00 -0400
+Received: by mail-qt1-f194.google.com with SMTP id u34so20460833qte.2
+        for <linux-wireless@vger.kernel.org>; Tue, 27 Aug 2019 00:40:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=Q7/Ysi6i3hSX2h3ET8u99u1P+8TfVQZkXvhJxsOQMLY=;
+        b=gKS6ZjD++I/lhiVWy1yDe4pJ2htQR4MCE5twbK3y9MY+Yzy0RwgEJzLocX61L0AEqr
+         EnuBuwMG14ALQIPdi+dBS3zbTuv4/w3aXtshDG4dgaxfu6OZyc/HsUzRt3i5QKO30HxG
+         Q4NjRApsdWsU/1DPoRsgSu2reyTXdEw0JgWPI=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=Q7/Ysi6i3hSX2h3ET8u99u1P+8TfVQZkXvhJxsOQMLY=;
+        b=cKEs0RspYIE4U/YJH5j3A/buwCC1G/iquazuQs1jG6BVNVqP15CcM9LOT1dk83FySu
+         Yzj7nMoT65r4XewmOgnSdCtjUnB+neOVJIDnR9IbGJPjEuxuF4lMhwqvmsdS/+HU8B6I
+         sxgn6eMdKKrjmcbrsUVZYecEA8ntw7qn6w5XM4P1KkzJmnUKqUgBPwOZihFCEfsF+f8j
+         bSWS1s3HlrEMcceSsCdBw/Pkspu4q+OubB7FgEejjkNifpOk/IiX/taeuM1qYZf3BzXx
+         EXOfSqAs+Z361QuBWkU/iSzu7XLKq56tzlZgvbnDDMCxEwIXJts04kZ7aIM0Vi/hPod0
+         epsQ==
+X-Gm-Message-State: APjAAAX+1uI8SG9RAjIm/DQzrLx5ecY/ohbKpAhbrJGPo/pFRLNl3/5D
+        QB20hvg8ghxfZ7d6M4GjsgXMrc6fMizjhlmenFlwKA==
+X-Google-Smtp-Source: APXvYqyYUyXsbqhDfzAB+AMVxkChlJzxQftfAYzAQ4yvLqtCGEUTyVnN24lVCjL23MVSHjdFd2Hl/p+2C68d04Bmo+4=
+X-Received: by 2002:ac8:f43:: with SMTP id l3mr21376787qtk.278.1566891658662;
+ Tue, 27 Aug 2019 00:40:58 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="nextPart2493492.G6y1Xp12sA"; micalg="pgp-sha512"; protocol="application/pgp-signature"
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=narfation.org;
-        s=20121; t=1566891358;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=rOrC2IaHAVZ//zfqDte0Y5Hbg3OHEzewX2dPc2zfRhs=;
-        b=bXNDVrN5g9KqGtvXA3llhA9n/Fewg/BDzITGjLibhCDwjmNOJsuTvC5XU9hId+UD8IRIXo
-        ZH9mEXHFbsOSOpStkrPNqYzCNmlpZbh420FivLaytl+hif11EGJDlZwIZ8PFkLo3HDvTiO
-        85IYNJZroyf89oOiRW2gK1BkhdXh3OU=
-ARC-Seal: i=1; s=20121; d=narfation.org; t=1566891358; a=rsa-sha256;
-        cv=none;
-        b=adDZbf4ygUZFchkRUjlfU/bqtRI8cXqfLBfu6bzEaSW9+QotOjh+uAQBVgF1M9QMBSNUWd
-        e8XMnzWeglO0k4ZiJqKCSc0Knop0zz9AjwNFGUPTh3YHfzPu5JUO+OvNnoP7eeJ+qqIoba
-        PQ/Hw4wTSFJco3kMlm6aBFTkDAAbFLc=
-ARC-Authentication-Results: i=1;
-        dvalin.narfation.org;
-        auth=pass smtp.auth=sven smtp.mailfrom=sven@narfation.org
+References: <1566302108-18219-1-git-send-email-wgong@codeaurora.org> <1566302108-18219-2-git-send-email-wgong@codeaurora.org>
+In-Reply-To: <1566302108-18219-2-git-send-email-wgong@codeaurora.org>
+From:   Nicolas Boichat <drinkcat@chromium.org>
+Date:   Tue, 27 Aug 2019 15:40:47 +0800
+Message-ID: <CANMq1KBR0nd+XOJWpgWyoJdsFgZByQyjD-0dpttygiN0OfiD5Q@mail.gmail.com>
+Subject: Re: [PATCH 1/7] ath10k: enable RX bundle receive for sdio
+To:     Wen Gong <wgong@codeaurora.org>
+Cc:     ath10k@lists.infradead.org,
+        "open list:NETWORKING DRIVERS (WIRELESS)" 
+        <linux-wireless@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
---nextPart2493492.G6y1Xp12sA
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="us-ascii"
+On Tue, Aug 20, 2019 at 7:55 PM Wen Gong <wgong@codeaurora.org> wrote:
+>
+> From: Alagu Sankar <alagusankar@silex-india.com>
+>
+> The existing implementation of initiating multiple sdio transfers for
+> receive bundling is slowing down the receive speed. Combining the
+> transfers using a bundle method would be ideal.
+>
+> The transmission utilization ratio for sdio bus for small packet is
+> slow, because the space and time cost for sdio bus is same for large
+> length packet and small length packet. So the speed of data for large
+> length packet is higher than small length.
+>
+> Test result of different length of data:
+> data packet(byte)   cost time(us)   calculated rate(Mbps)
+>       256               28                73
+>       512               33               124
+>      1024               35               234
+>      1792               45               318
+>     14336              168               682
+>     28672              333               688
+>     57344              660               695
+>
+> Tested with QCA6174 SDIO with firmware
+> WLAN.RMH.4.4.1-00007-QCARMSWP-1.
+>
+> Signed-off-by: Alagu Sankar <alagusankar@silex-india.com>
+> Signed-off-by: Wen Gong <wgong@codeaurora.org>
+> ---
+>  drivers/net/wireless/ath/ath10k/sdio.c | 101 ++++++++++++++++++++++++---------
+>  drivers/net/wireless/ath/ath10k/sdio.h |   7 ++-
+>  2 files changed, 79 insertions(+), 29 deletions(-)
+>
+> diff --git a/drivers/net/wireless/ath/ath10k/sdio.c b/drivers/net/wireless/ath/ath10k/sdio.c
+> index 8ed4fbd..d9395f0 100644
+> --- a/drivers/net/wireless/ath/ath10k/sdio.c
+> +++ b/drivers/net/wireless/ath/ath10k/sdio.c
+> @@ -24,6 +24,9 @@
+>  #include "trace.h"
+>  #include "sdio.h"
+>
+> +#define ATH10K_SDIO_DMA_BUF_SIZE       (32 * 1024)
+> +#define ATH10K_SDIO_VSG_BUF_SIZE       (32 * 1024)
+> +
+>  /* inlined helper functions */
+>
+>  static inline int ath10k_sdio_calc_txrx_padded_len(struct ath10k_sdio *ar_sdio,
+> @@ -489,11 +492,11 @@ static int ath10k_sdio_mbox_rx_process_packets(struct ath10k *ar,
+>         return ret;
+>  }
+>
+> -static int ath10k_sdio_mbox_alloc_pkt_bundle(struct ath10k *ar,
+> -                                            struct ath10k_sdio_rx_data *rx_pkts,
+> -                                            struct ath10k_htc_hdr *htc_hdr,
+> -                                            size_t full_len, size_t act_len,
+> -                                            size_t *bndl_cnt)
+> +static int ath10k_sdio_mbox_alloc_bundle(struct ath10k *ar,
+> +                                        struct ath10k_sdio_rx_data *rx_pkts,
+> +                                        struct ath10k_htc_hdr *htc_hdr,
+> +                                        size_t full_len, size_t act_len,
+> +                                        size_t *bndl_cnt)
+>  {
+>         int ret, i;
+>
+> @@ -534,6 +537,7 @@ static int ath10k_sdio_mbox_rx_alloc(struct ath10k *ar,
+>         size_t full_len, act_len;
+>         bool last_in_bundle;
+>         int ret, i;
+> +       int pkt_cnt = 0;
+>
+>         if (n_lookaheads > ATH10K_SDIO_MAX_RX_MSGS) {
+>                 ath10k_warn(ar,
+> @@ -577,20 +581,22 @@ static int ath10k_sdio_mbox_rx_alloc(struct ath10k *ar,
+>                          */
+>                         size_t bndl_cnt;
+>
+> -                       ret = ath10k_sdio_mbox_alloc_pkt_bundle(ar,
+> -                                                               &ar_sdio->rx_pkts[i],
+> -                                                               htc_hdr,
+> -                                                               full_len,
+> -                                                               act_len,
+> -                                                               &bndl_cnt);
+> +                       struct ath10k_sdio_rx_data *rx_pkts =
+> +                               &ar_sdio->rx_pkts[pkt_cnt];
+> +
+> +                       ret = ath10k_sdio_mbox_alloc_bundle(ar,
+> +                                                           rx_pkts,
+> +                                                           htc_hdr,
+> +                                                           full_len,
+> +                                                           act_len,
+> +                                                           &bndl_cnt);
+>
+>                         if (ret) {
+>                                 ath10k_warn(ar, "alloc_bundle error %d\n", ret);
+>                                 goto err;
+>                         }
+>
+> -                       n_lookaheads += bndl_cnt;
+> -                       i += bndl_cnt;
+> +                       pkt_cnt += bndl_cnt;
+>                         /*Next buffer will be the last in the bundle */
+>                         last_in_bundle = true;
+>                 }
+> @@ -602,7 +608,7 @@ static int ath10k_sdio_mbox_rx_alloc(struct ath10k *ar,
+>                 if (htc_hdr->flags & ATH10K_HTC_FLAGS_RECV_1MORE_BLOCK)
+>                         full_len += ATH10K_HIF_MBOX_BLOCK_SIZE;
+>
+> -               ret = ath10k_sdio_mbox_alloc_rx_pkt(&ar_sdio->rx_pkts[i],
+> +               ret = ath10k_sdio_mbox_alloc_rx_pkt(&ar_sdio->rx_pkts[pkt_cnt],
+>                                                     act_len,
+>                                                     full_len,
+>                                                     last_in_bundle,
+> @@ -611,9 +617,10 @@ static int ath10k_sdio_mbox_rx_alloc(struct ath10k *ar,
+>                         ath10k_warn(ar, "alloc_rx_pkt error %d\n", ret);
+>                         goto err;
+>                 }
+> +               pkt_cnt++;
+>         }
+>
+> -       ar_sdio->n_rx_pkts = i;
+> +       ar_sdio->n_rx_pkts = pkt_cnt;
+>
+>         return 0;
+>
+> @@ -627,41 +634,72 @@ static int ath10k_sdio_mbox_rx_alloc(struct ath10k *ar,
+>         return ret;
+>  }
+>
+> -static int ath10k_sdio_mbox_rx_packet(struct ath10k *ar,
+> -                                     struct ath10k_sdio_rx_data *pkt)
+> +static int ath10k_sdio_mbox_rx_fetch(struct ath10k *ar)
+>  {
+>         struct ath10k_sdio *ar_sdio = ath10k_sdio_priv(ar);
+> -       struct sk_buff *skb = pkt->skb;
+> +       struct ath10k_sdio_rx_data *pkt = &ar_sdio->rx_pkts[0];
+> +       struct sk_buff *skb;
+>         int ret;
+>
+> +       skb = pkt->skb;
 
-On Tuesday, 27 August 2019 09:33:39 CEST Anilkumar Kolli wrote:
-[...]
-> >     [ 4312.884650] The reading for sensor 4 is 0x002041f7
-> >     [ 4312.891499] The reading for sensor 5 is 0x002051f4
-> >     [ 4312.896415] Couldn't get reading for sensor 6
-> >     [ 4312.901189] Couldn't get reading for sensor 7
-> >     [ 4312.905561] The reading for sensor 8 is 0x002081e0
-> >     [ 4312.909902] The reading for sensor 9 is 0x002091f7
-> >     [ 4312.914645] Couldn't get reading for sensor 10
-> >     [ 4312.919364] The reading for sensor 11 is 0x0020b1fa
-> >     [ 4312.923791] The reading for sensor 12 is 0x0020c1fa
-> >     [ 4312.928621] Couldn't get reading for sensor 13
-> >     [ 4312.933425] The reading for sensor 14 is 0x0020e1f4
-> >     [ 4312.937941] The reading for sensor 15 is 0x0020f1e7
-> >     [ 4313.942700] Rebooting in 3 seconds..
-> > 
-> > Maybe can be fixed by a different kernel (for the remoteproc). But I 
-> > don't
-> > have this kernel at the moment.
-> > 
-> 
-> The write of an "assert", sends 'WMI_FORCE_FW_HANG_CMDID' WMI command to 
-> target firmware.
-> This WMI command forces the target to assert.
+The code was a bit more compat before, why not keep this?
+struct sk_buff *skb = pkt->skb;
 
-Yes, but it shouldn't kill the complete system.
+>         ret = ath10k_sdio_readsb(ar, ar_sdio->mbox_info.htc_addr,
+>                                  skb->data, pkt->alloc_len);
+> -       pkt->status = ret;
+> -       if (!ret)
+> +
+> +       if (ret) {
+> +               ar_sdio->n_rx_pkts = 0;
+> +               ath10k_sdio_mbox_free_rx_pkt(pkt);
+> +       } else {
+> +               pkt->status = ret;
+>                 skb_put(skb, pkt->act_len);
+> +       }
+>
+>         return ret;
+>  }
+>
+> -static int ath10k_sdio_mbox_rx_fetch(struct ath10k *ar)
+> +static int ath10k_sdio_mbox_rx_fetch_bundle(struct ath10k *ar)
+>  {
+>         struct ath10k_sdio *ar_sdio = ath10k_sdio_priv(ar);
+> +       struct ath10k_sdio_rx_data *pkt;
+>         int ret, i;
+> +       u32 pkt_offset, virt_pkt_len;
+>
+> +       virt_pkt_len = 0;
+>         for (i = 0; i < ar_sdio->n_rx_pkts; i++) {
+> -               ret = ath10k_sdio_mbox_rx_packet(ar,
+> -                                                &ar_sdio->rx_pkts[i]);
+> -               if (ret)
+> +               virt_pkt_len += ar_sdio->rx_pkts[i].alloc_len;
+> +       }
+> +
+> +       if (virt_pkt_len < ATH10K_SDIO_DMA_BUF_SIZE) {
+> +               ret = ath10k_sdio_readsb(ar, ar_sdio->mbox_info.htc_addr,
+> +                                        ar_sdio->vsg_buffer, virt_pkt_len);
+> +               if (ret) {
+> +                       i = 0;
+>                         goto err;
+> +               }
+> +       } else {
+> +               ath10k_err(ar, "size exceeding limit %d\n", virt_pkt_len);
+> +       }
+> +
+> +       pkt_offset = 0;
+> +       for (i = 0; i < ar_sdio->n_rx_pkts; i++) {
+> +               struct sk_buff *skb = ar_sdio->rx_pkts[i].skb;
+> +
+> +               pkt = &ar_sdio->rx_pkts[i];
+> +               memcpy(skb->data, ar_sdio->vsg_buffer + pkt_offset,
+> +                      pkt->alloc_len);
 
-Kind regards,
-	Sven
+Why do you copy alloc_len if you only plan to use act_len?
 
---nextPart2493492.G6y1Xp12sA
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: This is a digitally signed message part.
-Content-Transfer-Encoding: 7Bit
+Actually, just use skb_put_data.
 
------BEGIN PGP SIGNATURE-----
+Also, do you have the same issue as
+https://patchwork.kernel.org/patch/11116215/ w.r.t. act_len being
+incorrect?
 
-iQIzBAABCgAdFiEEF10rh2Elc9zjMuACXYcKB8Eme0YFAl1k3VoACgkQXYcKB8Em
-e0a9MA//dLviXuRMjJGR01qJslAHx12n9IorBsRkDov60rQnOk+6rClZmgUHW4xI
-RSNvzfGlTy9IH+vbmdsNKfK8ixnw9g4m8L5wxwzjGSjEOmerQOxHSsnOu9zTZnWG
-AXlgdDSWfI06nx42aehdzZ9P6dgh0jpHIdc3m3t+qdhKsi4Tp3wA0aGyWdwaw2Qd
-Ok34en5klPN629oEUEVIiPqvpr2xymiKrSnGx3F1cxXY7+hG9JtDhXj9jgVUlSXi
-F76GSE5y/oEwZ0rCvziqismYir/xJntI7e2PX1IOLC3LirFkJvGY1J80ZaQRmyas
-DQqt069SZL3bzsQn/FnQ/kgPJM6iTW0JkmThyLwPiy0ITJUQBQxJpUALP/kRPcrg
-7L9c3uox6qMu/PKwUsgS/uxVWQ6t0X0BYX5ZQkl9pgM81gd0UG6CIov2x0tybkzX
-rVCyVfVWPIA2OKbiExwZG201zghNu56Gzl7+lhWZFFy4FNBZUwcilONDHhECfuEi
-0wrVx9UCMrxDMC8BZHa2mQV6+Bu9qbBz1eogQbtbtWk5A37iiQsvwGUZTU8q756p
-I0BR+ZcBlW09kd9oyWOdXGnvOYjmyasT4uZatCYEWwdplXcfHCuA3oRrt3b61SsJ
-f12M3O/Umhq0rBL/bx/ZxNeZF4F2msSDi0PW+w6mFdGaPqgwLpc=
-=I7YO
------END PGP SIGNATURE-----
-
---nextPart2493492.G6y1Xp12sA--
-
-
-
+> +               pkt->status = 0;
+> +               skb_put(skb, pkt->act_len);
+> +               pkt_offset += pkt->alloc_len;
+>         }
+>
+>         return 0;
+>
+>  err:
+>         /* Free all packets that was not successfully fetched. */
+> -       for (; i < ar_sdio->n_rx_pkts; i++)
+> +       for (i = 0; i < ar_sdio->n_rx_pkts; i++)
+>                 ath10k_sdio_mbox_free_rx_pkt(&ar_sdio->rx_pkts[i]);
+>
+> +       ar_sdio->n_rx_pkts = 0;
+> +
+>         return ret;
+>  }
+>
+> @@ -704,7 +742,10 @@ static int ath10k_sdio_mbox_rxmsg_pending_handler(struct ath10k *ar,
+>                          */
+>                         *done = false;
+>
+> -               ret = ath10k_sdio_mbox_rx_fetch(ar);
+> +               if (ar_sdio->n_rx_pkts > 1)
+> +                       ret = ath10k_sdio_mbox_rx_fetch_bundle(ar);
+> +               else
+> +                       ret = ath10k_sdio_mbox_rx_fetch(ar);
+>
+>                 /* Process fetched packets. This will potentially update
+>                  * n_lookaheads depending on if the packets contain lookahead
+> @@ -1112,7 +1153,7 @@ static int ath10k_sdio_bmi_get_rx_lookahead(struct ath10k *ar)
+>                                          MBOX_HOST_INT_STATUS_ADDRESS,
+>                                          &rx_word);
+>                 if (ret) {
+> -                       ath10k_warn(ar, "unable to read RX_LOOKAHEAD_VALID: %d\n", ret);
+> +                       ath10k_warn(ar, "unable to read rx_lookahd: %d\n", ret);
+>                         return ret;
+>                 }
+>
+> @@ -2007,6 +2048,12 @@ static int ath10k_sdio_probe(struct sdio_func *func,
+>                 goto err_core_destroy;
+>         }
+>
+> +       ar_sdio->vsg_buffer = devm_kmalloc(ar->dev, ATH10K_SDIO_VSG_BUF_SIZE, GFP_KERNEL);
+> +       if (!ar_sdio->vsg_buffer) {
+> +               ret = -ENOMEM;
+> +               goto err_core_destroy;
+> +       }
+> +
+>         ar_sdio->irq_data.irq_en_reg =
+>                 devm_kzalloc(ar->dev, sizeof(struct ath10k_sdio_irq_enable_regs),
+>                              GFP_KERNEL);
+> diff --git a/drivers/net/wireless/ath/ath10k/sdio.h b/drivers/net/wireless/ath/ath10k/sdio.h
+> index b8c7ac0..4896eca 100644
+> --- a/drivers/net/wireless/ath/ath10k/sdio.h
+> +++ b/drivers/net/wireless/ath/ath10k/sdio.h
+> @@ -138,8 +138,8 @@ struct ath10k_sdio_irq_proc_regs {
+>         u8 rx_lookahead_valid;
+>         u8 host_int_status2;
+>         u8 gmbox_rx_avail;
+> -       __le32 rx_lookahead[2];
+> -       __le32 rx_gmbox_lookahead_alias[2];
+> +       __le32 rx_lookahead[2 * ATH10K_HIF_MBOX_NUM_MAX];
+> +       __le32 int_status_enable;
+>  };
+>
+>  struct ath10k_sdio_irq_enable_regs {
+> @@ -196,6 +196,9 @@ struct ath10k_sdio {
+>         struct ath10k *ar;
+>         struct ath10k_sdio_irq_data irq_data;
+>
+> +       /* temporary buffer for sdio read */
+> +       u8 *vsg_buffer;
+> +
+>         /* temporary buffer for BMI requests */
+>         u8 *bmi_buf;
+>
+> --
+> 1.9.1
+>
