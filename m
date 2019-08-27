@@ -2,152 +2,66 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id BFCC39E88B
-	for <lists+linux-wireless@lfdr.de>; Tue, 27 Aug 2019 15:02:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CF4159E8AE
+	for <lists+linux-wireless@lfdr.de>; Tue, 27 Aug 2019 15:09:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728965AbfH0NCr (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 27 Aug 2019 09:02:47 -0400
-Received: from mail-ua1-f67.google.com ([209.85.222.67]:46706 "EHLO
-        mail-ua1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726054AbfH0NCr (ORCPT
+        id S1726552AbfH0NJU (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 27 Aug 2019 09:09:20 -0400
+Received: from webmail.newmedia-net.de ([185.84.6.166]:53227 "EHLO
+        webmail.newmedia-net.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726250AbfH0NJU (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 27 Aug 2019 09:02:47 -0400
-Received: by mail-ua1-f67.google.com with SMTP id y19so6925893ual.13
-        for <linux-wireless@vger.kernel.org>; Tue, 27 Aug 2019 06:02:46 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=endlessm-com.20150623.gappssmtp.com; s=20150623;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc:content-transfer-encoding;
-        bh=KoZu/deJw/NlVxV4sAB1mkOWHaFltVntjfb4kcZq9oA=;
-        b=u3QPZvvxJMpSan6eed9+9NraNySTEXwJYWaVskDG0YCPV/14fA29shOSMnrJ/POeAE
-         MwV5WWpnW7vJFbbs39eKd10d+z65EtP7raPwZhtK3Zv2TRgXkcfctl7mxE7Lzk/iRn2B
-         6wp1BCqQ2yWZ1cYbalDa9tQm1CqV0bMfbGuuQa5qjGr73VeY3MeG+0oepsuSqmYuCzF4
-         5VyFJuEoEGvAT0Gdjd9a2UUaDdezRz+oZIv7yVR9d37eCJE15KL7dUCKg47njLFWHBDU
-         OP0hOpPAuLbfrg052fn7X6Rm6vAWAB02NuLezW0po9Stt8O2C2nrpTLy12FA0Y9jh1SI
-         FRuA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=KoZu/deJw/NlVxV4sAB1mkOWHaFltVntjfb4kcZq9oA=;
-        b=L6NyIF8OsvUjajuttjJOwFRmZUMQr9vyWA8msw+80PdudLcw2idv2YZkK7QD+NajG9
-         asdc0sAuOGZzRRZSQbz0RO8hyQUEhdqxIyekcsScrzL9VrhMZFSYgJkOxAg7sgpvjY1j
-         txxiEAasidP6i7UiDUnowhVWZ5E1JZSiGWbkvJ3VU8+M2x3QWoe+jkumBsYOSJahY1fu
-         Y8IQBqKuaUMdn+kZffcbSAsqx/p3Yn4R0s8xzpaN7OSBCEZOhaiQsQDqB6WMUeMzcs8N
-         8tijHG/z90VRqVmN3FiEHP3+NmineJoFFjud22uh0Apuv34Gag1dHa5qDL/dcZ+rMiK3
-         dHsw==
-X-Gm-Message-State: APjAAAVhoL63WrwK2gsXJqOow0+xG3aL/PyBl99MOaoCgQuXQC/UA0/2
-        bJBDe82D3lvTVNTI5h7FPgoIvejp6s3AymZo5u0pTA==
-X-Google-Smtp-Source: APXvYqymJZlZWZVqIafnDPxdw7EOMyk7iVnzb9WG+LHkPElnHnPIbqdbnvx1WIlDBiIEaUBDUtYRQ5SkTzJil0hXus8=
-X-Received: by 2002:ab0:248a:: with SMTP id i10mr8754460uan.32.1566910965602;
- Tue, 27 Aug 2019 06:02:45 -0700 (PDT)
+        Tue, 27 Aug 2019 09:09:20 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=newmedia-net.de; s=mikd;
+        h=Content-Transfer-Encoding:Content-Type:In-Reply-To:MIME-Version:Date:Message-ID:From:References:Cc:To:Subject; bh=1uka5lm6+H8O8gpjjc+QzORwqmfq7rLlqsQrvV1+UNs=;
+        b=fQFtQDJykntRasoxnQhifhNHSur+u9EWfiqKD0hTxVSHpQwc3XVPzdNwc9qvIpX5TItAYSyOTP33cXG2NzOOOTqnK8wVOPD3ye88DXYwJMTnG8vCRJHyoKOBlt/0nqOLTE8tvCqcN36asPf1x7cKVskIOfCZXXkO8eMSBkpAxas=;
+Subject: Re: Implementing Mikrotik IE
+To:     Josef Miegl <josef@miegl.cz>,
+        Johannes Berg <johannes@sipsolutions.net>
+Cc:     linux-wireless <linux-wireless@vger.kernel.org>
+References: <20190815152844.k5mmddvbwrohkzr6@pepin-laptop.localdomain>
+ <3a079683-6f57-3b42-f909-90c46e14f14f@newmedia-net.de>
+ <20190816111044.4ntizgmpa3twbzcg@pepin-laptop.localdomain>
+ <e8129acb-fc32-c85c-b504-ab8777a3f1a3@newmedia-net.de>
+ <20190816113818.ohktykc4fyetzyvq@pepin-laptop.localdomain>
+ <9985fddfb059640f36665efc9c1ef2dc0bdb7662.camel@sipsolutions.net>
+ <20190819113706.ujsz67sxcwt2ulmt@pepin-laptop.localdomain>
+ <b3b7a99971f1512b4cd9c72920b699c252c1ae83.camel@sipsolutions.net>
+ <A3C14EA9-BA2D-4745-BBB9-E10028B6DE13@miegl.cz>
+ <6efb9b56c77cd9ea945f89c3371b49c301dc2b4e.camel@sipsolutions.net>
+ <58A25955-2A17-4DE7-82FB-3B20E00C96EC@miegl.cz>
+ <5ee160209eb1f9e70f6224c393389266280d7d80.camel@sipsolutions.net>
+ <0452a0cbb36bcffa8371a58dfd931864c1f79eef.camel@sipsolutions.net>
+ <68A3B9AF-8864-4C0F-A50B-71CCB76AE81D@miegl.cz>
+From:   Sebastian Gottschall <s.gottschall@newmedia-net.de>
+Message-ID: <21433c24-4860-be12-8d79-11e954e0bf9d@newmedia-net.de>
+Date:   Tue, 27 Aug 2019 15:08:10 +0200
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:60.0) Gecko/20100101
+ Thunderbird/60.8.0
 MIME-Version: 1.0
-References: <1565166487-22048-1-git-send-email-yhchuang@realtek.com>
- <20190823063728.14117-1-drake@endlessm.com> <CA+K+NcSYKEkdx5ux6iwUs7pMidObZBrg9yDcP1zT73DcccpDPQ@mail.gmail.com>
- <F7CD281DE3E379468C6D07993EA72F84D18AE7C8@RTITMBSVM04.realtek.com.tw>
-In-Reply-To: <F7CD281DE3E379468C6D07993EA72F84D18AE7C8@RTITMBSVM04.realtek.com.tw>
-From:   Jian-Hong Pan <jian-hong@endlessm.com>
-Date:   Tue, 27 Aug 2019 21:02:52 +0800
-Message-ID: <CAPpJ_echMhQoKG=+rtkhMjdeFGDPbuyzE-DLBZ-7KL5+WcEVHw@mail.gmail.com>
-Subject: Re: [PATCH v2] rtw88: pci: enable MSI interrupt
-To:     Tony Chuang <yhchuang@realtek.com>
-Cc:     =?UTF-8?B?SsOhbiBWZXNlbMO9?= <jano.vesely@gmail.com>,
-        Daniel Drake <drake@endlessm.com>,
-        "briannorris@chromium.org" <briannorris@chromium.org>,
-        "gojun077@gmail.com" <gojun077@gmail.com>,
-        "kvalo@codeaurora.org" <kvalo@codeaurora.org>,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        "linux@endlessm.com" <linux@endlessm.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <68A3B9AF-8864-4C0F-A50B-71CCB76AE81D@miegl.cz>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Received:  from [212.111.244.1] (helo=[172.29.0.186])
+        by webmail.newmedia-net.de with esmtpsa (TLSv1:AES128-SHA:128)
+        (Exim 4.72)
+        (envelope-from <s.gottschall@newmedia-net.de>)
+        id 1i2bDy-0004Mc-H2; Tue, 27 Aug 2019 15:09:26 +0200
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Tony Chuang <yhchuang@realtek.com> =E6=96=BC 2019=E5=B9=B48=E6=9C=8827=E6=
-=97=A5 =E9=80=B1=E4=BA=8C =E4=B8=8B=E5=8D=888:12=E5=AF=AB=E9=81=93=EF=BC=9A
->
-> Hi Daniel and J=C3=A1n,
->
->
-> > From: J=C3=A1n Vesel=C3=BD > Sent: Friday, August 23, 2019 3:22 PM
-> > On Fri, Aug 23, 2019 at 2:37 AM Daniel Drake <drake@endlessm.com> wrote=
-:
-> > >
-> > > > +     rtw_pci_disable_interrupt(rtwdev, rtwpci);
-> > >
-> > > I checked the discussion on the v1 patch thread but I still don't fol=
-low
-> > > this.
-> > >
-> > > You're worried about the case where we're inside the interrupt handle=
-r and:
-> > >  1. We read the interrupt status to note what needs to be done
-> > >  2. <another interrupt arrives here, requiring other work to be done>
-> > >  3. We clear the interrupt status bits
-> > >  4. We proceed to handle the interrupt but missing any work requested=
- by
-> > >     the interrupt in step 2.
-> > >
-> > > Is that right?
-> > >
-> > > I'm not an expert here, but I don't think this is something that driv=
-ers
-> > > have to worry about. Surely the interrupt controller can be expected =
-to
-> > > have a mechanism to "queue up" any interrupt that arrives while an
-> > > interrupt is being handled? Otherwise handling of all types of
-> > > edge-triggered interrupts (not just MSI) would be overly painful acro=
-ss the
-> > > board.
-> >
-> > That's my understanding as well.
-> > entering the interrupt vector clears the IFLAG, so any interrupt will
-> > wait until the IFLAG is restored, or delivered to a different CPU.
-> > wouldn't it be safer to enable interrupts only _after_ registering the
-> > handler in the "rtw_pci_request_irq" function?
-> >
-> > regards,
-> > Jan
->
->
-> Yes that's not something drivers need to care about. But I think it is
-> Because there's a race condition between SW/HW when clearing the ISR.
-> If interrupt comes after reading ISR and before write-1-clear, the interr=
-upt
-> controller would have interrupt status raised, and never issue interrupt
-> signal to host when other new interrupts status are raised.
->
-> To avoid this, driver requires to protect the ISR write-1-clear process b=
-y
-> disabling the IMR.
->
->
-> >
-> >
-> > >
-> > > See e.g. https://patchwork.kernel.org/patch/3333681/ as a reference f=
-or
-> > > what correct interrupt controller behaviour should look like.
-> > >
-> > > > +             ret =3D pci_enable_msi(pdev);
-> > >
-> > > pci_enable_msi() is "deprecated, don't use"
->
-> Do you mean I should remove this?
-> But I cannot find another proper way to enable the MSI.
-> Maybe pci_alloc_irq_vectors() could work but I am not sure if
-> It is recommended.
 
-According to the kernel documentation "The MSI Driver Guide HOWTO",
-pci_alloc_irq_vectors, pci_irq_vector and pci_free_irq_vectors are the
-functions.
-https://elixir.bootlin.com/linux/v5.3-rc6/source/Documentation/PCI/msi-howt=
-o.rst
+Am 22.08.2019 um 23:06 schrieb Josef Miegl:
+> On August 22, 2019 10:08:13 PM GMT+02:00, Johannes Berg <johannes@sipsolutions.net> wrote:
+>> On Thu, 2019-08-22 at 09:00 +0200, Johannes Berg wrote:
+>>> Perhaps it expects the 4-way-HS to already be in 4-addr frame format,
+>> or
+>>> something else special in the 4-way-HS if you have WDS?
+>> I think this is actually the right guess.
+> Yes, it indeed it! Thank you so much Johannes!
+good finding. my idea here is if we parse the wds flags field from mtik 
+ie within mac80211 we could also support this special handing without 
+any workaround
 
-Here is an example in r8169 module.
-https://elixir.bootlin.com/linux/v5.3-rc6/source/drivers/net/ethernet/realt=
-ek/r8169_main.c#L6603
-
-Jian-Hong Pan
