@@ -2,37 +2,37 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 3163B9FF73
-	for <lists+linux-wireless@lfdr.de>; Wed, 28 Aug 2019 12:18:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9D54D9FF9E
+	for <lists+linux-wireless@lfdr.de>; Wed, 28 Aug 2019 12:20:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726965AbfH1KSR (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 28 Aug 2019 06:18:17 -0400
-Received: from nbd.name ([46.4.11.11]:55608 "EHLO nbd.name"
+        id S1726583AbfH1KUp (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 28 Aug 2019 06:20:45 -0400
+Received: from nbd.name ([46.4.11.11]:55800 "EHLO nbd.name"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726941AbfH1KSR (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 28 Aug 2019 06:18:17 -0400
+        id S1726370AbfH1KUp (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Wed, 28 Aug 2019 06:20:45 -0400
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name;
          s=20160729; h=Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:
         MIME-Version:Content-Type:Content-Transfer-Encoding:Content-ID:
         Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
         :Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
         List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=IIPGxvotUkyTcUcfM2KASgiuxjYwfNCDTd6ZX07WbQA=; b=JMdjXWyK/wvZz3CcPOWIRyc86e
-        /cKQ616IqSvbnMDgisKPBhKeHtOJmisLI/2pHyi3Sm2IgU/MfIAuLujabjDs6v73P6YfGjfCru1j+
-        GKtBj/cd8KC2Pasi9GU5LcliUFBvSZkiSjFQ7YYuR+oRkmYpUkGoxG+UaYqCLt5Ssues=;
+        bh=sYtIHDq0hXyvHzpMqvLCoQN2O7ptY9/XB+9t+gKTmzY=; b=K8wWR1unP5L/FSHLCkDYzE5BKO
+        d5mgb0vQmEWds1udQ9xPJ0bVGuomTRYq+0mR4qZeLuAp7Z0qbhQ85XwWyq01XV+aGf5wgL/QzOW7w
+        8MDpZUnupVR5HsdW1RUu1XOglYcsCAlnyB9ANEm//0L0TKzbt9I052QSGXWjbOp1oEgQ=;
 Received: from p5b206034.dip0.t-ipconnect.de ([91.32.96.52] helo=maeck.local)
         by ds12 with esmtpsa (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
         (Exim 4.89)
         (envelope-from <nbd@nbd.name>)
-        id 1i2v1q-0004so-Lp; Wed, 28 Aug 2019 12:18:14 +0200
+        id 1i2v4F-00057E-2V; Wed, 28 Aug 2019 12:20:43 +0200
 Received: by maeck.local (Postfix, from userid 501)
-        id 0D3FA64CA8AF; Wed, 28 Aug 2019 12:18:13 +0200 (CEST)
+        id 86C3F64CACDB; Wed, 28 Aug 2019 12:20:42 +0200 (CEST)
 From:   Felix Fietkau <nbd@nbd.name>
 To:     linux-wireless@vger.kernel.org
 Cc:     johannes@sipsolutions.net
-Subject: [PATCH] cfg80211: add local BSS receive time to survey information
-Date:   Wed, 28 Aug 2019 12:18:13 +0200
-Message-Id: <20190828101813.55063-1-nbd@nbd.name>
+Subject: [PATCH v2] cfg80211: add local BSS receive time to survey information
+Date:   Wed, 28 Aug 2019 12:20:42 +0200
+Message-Id: <20190828102042.58016-1-nbd@nbd.name>
 X-Mailer: git-send-email 2.17.0
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
@@ -108,7 +108,7 @@ index 822851d369ab..e74cf4daad02 100644
  	/* keep last */
  	__NL80211_SURVEY_INFO_AFTER_LAST,
 diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
-index 1a107f29016b..32cfa71dc64d 100644
+index 1a107f29016b..3eea7a6f9070 100644
 --- a/net/wireless/nl80211.c
 +++ b/net/wireless/nl80211.c
 @@ -8777,6 +8777,10 @@ static int nl80211_send_survey(struct sk_buff *msg, u32 portid, u32 seq,
@@ -117,7 +117,7 @@ index 1a107f29016b..32cfa71dc64d 100644
  		goto nla_put_failure;
 +	if ((survey->filled & SURVEY_INFO_TIME_BSS_RX) &&
 +	    nla_put_u64_64bit(msg, NL80211_SURVEY_INFO_TIME_BSS_RX,
-+			      survey->time_rx, NL80211_SURVEY_INFO_PAD))
++			      survey->time_bss_rx, NL80211_SURVEY_INFO_PAD))
 +		goto nla_put_failure;
  
  	nla_nest_end(msg, infoattr);
