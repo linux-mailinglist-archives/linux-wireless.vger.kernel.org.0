@@ -2,323 +2,157 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D4DFE9F9E4
-	for <lists+linux-wireless@lfdr.de>; Wed, 28 Aug 2019 07:40:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C1FE79FB1B
+	for <lists+linux-wireless@lfdr.de>; Wed, 28 Aug 2019 09:04:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726145AbfH1FkA (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 28 Aug 2019 01:40:00 -0400
-Received: from mail-qk1-f194.google.com ([209.85.222.194]:46976 "EHLO
-        mail-qk1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726101AbfH1FkA (ORCPT
+        id S1726407AbfH1HEm (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 28 Aug 2019 03:04:42 -0400
+Received: from mail-qt1-f195.google.com ([209.85.160.195]:35844 "EHLO
+        mail-qt1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726169AbfH1HEm (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 28 Aug 2019 01:40:00 -0400
-Received: by mail-qk1-f194.google.com with SMTP id p13so1347727qkg.13
-        for <linux-wireless@vger.kernel.org>; Tue, 27 Aug 2019 22:39:59 -0700 (PDT)
+        Wed, 28 Aug 2019 03:04:42 -0400
+Received: by mail-qt1-f195.google.com with SMTP id z4so1898118qtc.3
+        for <linux-wireless@vger.kernel.org>; Wed, 28 Aug 2019 00:04:41 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
+        d=endlessm-com.20150623.gappssmtp.com; s=20150623;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=FmEasWFfCVRnldPBQ+jdySlU4FrAhij5729T2hMxeSQ=;
-        b=gPucmNGTVU2P9UX/bsLzCg/GzrtXLuPOxwRw+teKE177krGwj8HmWbOgaguC5k0Fh6
-         YxhoUlO0PERS0AuP70cVLhYqxoaBra4rnLxiswEABouAOYgpyxI0IpfDQEtRGxpwcxXN
-         G5BNmu9fdp7OA7bw0cf//Y9TcrY6SEnZf5U+8=
+        bh=l5WYDQGBr72uC1iZWzAcRPmXL6XyAAfTwXX6nty/xZU=;
+        b=klmT9L0XlssqErq3yRPe3YA8ohQqSkM8HY/V4GvWT0J30jrPGJjclljJlq0oQq4MsJ
+         +0Bt+pxMQa/jbubXlgs4jwTbwh23inzWvgKFOlBdKmQaj8r4UyDqJRwGeq1HBtqdYMua
+         lwJCWkSrl4gFFGfCcsAPF2caNmrdxVbQIDTJI32Pt6L+Tk4llwYzBJw5YZIXnjBL6Pq8
+         XkESnVW+r8JU7/kj5FKyjeLOBmkB9wx9Jh0egEw9MXb8z3NffOhkcv9PYEpq0mT65cEx
+         m5oTcO/kh5C06FMGEzn8dTteDnYsnNyRm4Y+TzcrkxYappjX99FBfbHRTs3i8EyqMmiG
+         /+QQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=FmEasWFfCVRnldPBQ+jdySlU4FrAhij5729T2hMxeSQ=;
-        b=qC0wYojbV/uW3iSkJX8boSDAioP4KQp/nwEnygtgYFeb8fK67jvJemUdqmXdQT3o+m
-         HC3nl1gA0dYbw0NYUk7Pei5RUYT5NdcOpcPoDRka15oufw7TQ5e38Em6r/aAmfbSb7/R
-         lpslOWew8JO+WhmE+XpYRChZ2HSUnTN8a9UxpOm2Ls3N7WhTT38kQpIqXPt7Mh2gG84D
-         X2Mc7GGivEBtkwfO14trPPV2tPpU4OF85WfDzbEA8LPGBP4+GHcMQuWjjdOgzO1LzNtF
-         NBCJOCAjhHHCJoGdqg7BkvNgANhIQZANkrWIeiyWvcJQPO73rUfzg5/jDDynD11vVQxt
-         Icwg==
-X-Gm-Message-State: APjAAAXrBavVatuZnWf3g8LIV+AY0CJoqZx8tXkd6ML8MFeRFrXBi7yO
-        89a81go2Rr3WIwHeOuKL2k29L3F6GU3ABjidIOoZ+9d+
-X-Google-Smtp-Source: APXvYqxHTwf6/nwiZpUUXx16bR+3ItvFbvLgVQqamDCOa0eQwaY64uHPTcsctVhtVLKxvrTvq4pyFSg4WErVBefL500=
-X-Received: by 2002:a05:620a:1590:: with SMTP id d16mr2258346qkk.18.1566970798919;
- Tue, 27 Aug 2019 22:39:58 -0700 (PDT)
+        bh=l5WYDQGBr72uC1iZWzAcRPmXL6XyAAfTwXX6nty/xZU=;
+        b=HNlJY73AjbibU1H/hMxLy9PsIXyJEQLU3cO61kSFYedaq+sKleiR9NacVIs9Jg7iTq
+         3vjij7FIs5B9QcLEvKdUsRjg95iU5kZwqo3TEdTd46aAK/SON/Pzw2P+3DwGTJhHO52e
+         ILkwpj2rvoxOzRWEewPLJNWHDMBSKfWfU7BO0qEkHEwoeKnqJZ/QZzQGgw+4S5Cz3Rg5
+         kS7E8xBvpcfvpWSnNu5u1DpqfepOGeP50Lb5vlRCNhY+TxW3MuFGlLtvLFBEwFnnSLvF
+         QmDnx7Y8nyUL4x3swaq+q6kOpHP0MrbaeLx48mhbJB6mnNVwIY65xVrSeUm2gpN1MKuU
+         Q6Jw==
+X-Gm-Message-State: APjAAAUJ7+c/bsfKgWCvWm8Oy0P9tZkM6TyOfzY3KLVGFpOWpxjQA811
+        vVORT5WZMCCqWy6afDxo1kBDhwjZFvFKnNU3PrC8HA==
+X-Google-Smtp-Source: APXvYqxzq0kw92o8/VFrXogdt3BMnl1G7hSpCAntVNGwtI6w/kqQk8NWv4beL2f9kDUyqAfl/+IzhSAAvnNiraMUvsI=
+X-Received: by 2002:a0c:d84b:: with SMTP id i11mr1781901qvj.86.1566975880595;
+ Wed, 28 Aug 2019 00:04:40 -0700 (PDT)
 MIME-Version: 1.0
-References: <1566903707-27536-1-git-send-email-wgong@codeaurora.org> <1566903707-27536-8-git-send-email-wgong@codeaurora.org>
-In-Reply-To: <1566903707-27536-8-git-send-email-wgong@codeaurora.org>
-From:   Nicolas Boichat <drinkcat@chromium.org>
-Date:   Wed, 28 Aug 2019 13:39:47 +0800
-Message-ID: <CANMq1KCQZCOw8kHn2MJfAT9fWoLCmz2jFWqHzd=9QOgZ7MeaXQ@mail.gmail.com>
-Subject: Re: [PATCH v2 7/7] ath10k: enable napi on RX path for sdio
-To:     Wen Gong <wgong@codeaurora.org>
-Cc:     ath10k@lists.infradead.org,
-        "open list:NETWORKING DRIVERS (WIRELESS)" 
-        <linux-wireless@vger.kernel.org>
+References: <1565166487-22048-1-git-send-email-yhchuang@realtek.com>
+ <20190823063728.14117-1-drake@endlessm.com> <CA+K+NcSYKEkdx5ux6iwUs7pMidObZBrg9yDcP1zT73DcccpDPQ@mail.gmail.com>
+ <F7CD281DE3E379468C6D07993EA72F84D18AE7C8@RTITMBSVM04.realtek.com.tw>
+In-Reply-To: <F7CD281DE3E379468C6D07993EA72F84D18AE7C8@RTITMBSVM04.realtek.com.tw>
+From:   Daniel Drake <drake@endlessm.com>
+Date:   Wed, 28 Aug 2019 15:04:29 +0800
+Message-ID: <CAD8Lp46=Adn3GWAkHspdqBHVjz6sekET9nzNOCnW7sCFGtoeDQ@mail.gmail.com>
+Subject: Re: [PATCH v2] rtw88: pci: enable MSI interrupt
+To:     Tony Chuang <yhchuang@realtek.com>
+Cc:     =?UTF-8?B?SsOhbiBWZXNlbMO9?= <jano.vesely@gmail.com>,
+        "briannorris@chromium.org" <briannorris@chromium.org>,
+        "gojun077@gmail.com" <gojun077@gmail.com>,
+        "kvalo@codeaurora.org" <kvalo@codeaurora.org>,
+        linux-wireless <linux-wireless@vger.kernel.org>,
+        "linux@endlessm.com" <linux@endlessm.com>
 Content-Type: text/plain; charset="UTF-8"
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Tue, Aug 27, 2019 at 7:02 PM Wen Gong <wgong@codeaurora.org> wrote:
+On Tue, Aug 27, 2019 at 8:11 PM Tony Chuang <yhchuang@realtek.com> wrote:
+> Because there's a race condition between SW/HW when clearing the ISR.
+> If interrupt comes after reading ISR and before write-1-clear, the interrupt
+> controller would have interrupt status raised, and never issue interrupt
+> signal to host when other new interrupts status are raised.
 >
-> For tcp RX, the quantity of tcp acks to remote is 1/2 of the quantity
-> of tcp data from remote, then it will have many small length packets
-> on TX path of sdio bus, then it reduce the RX packets's bandwidth of
-> tcp.
->
-> This patch enable napi on RX path, then the RX packet of tcp will not
-> feed to tcp stack immeditely from mac80211 since GRO is enabled by
-> default, it will feed to tcp stack after napi complete, if rx bundle
-> is enabled, then it will feed to tcp stack one time for each bundle
-> of RX. For example, RX bundle size is 32, then tcp stack will receive
-> one large length packet, its length is neary 1500*32, then tcp stack
-> will send a tcp ack for this large packet, this will reduce the tcp
-> acks ratio from 1/2 to 1/32. This results in significant performance
-> improvement for tcp RX.
->
-> Tcp rx throughout is 240Mbps without this patch, and it arrive 390Mbps
-> with this patch. The cpu usage has no obvious difference with and
-> without NAPI.
->
-> call stack for each RX packet on GRO path:
-> (skb length is about 1500 bytes)
->   skb_gro_receive ([kernel.kallsyms])
->   tcp4_gro_receive ([kernel.kallsyms])
->   inet_gro_receive ([kernel.kallsyms])
->   dev_gro_receive ([kernel.kallsyms])
->   napi_gro_receive ([kernel.kallsyms])
->   ieee80211_deliver_skb ([mac80211])
->   ieee80211_rx_handlers ([mac80211])
->   ieee80211_prepare_and_rx_handle ([mac80211])
->   ieee80211_rx_napi ([mac80211])
->   ath10k_htt_rx_proc_rx_ind_hl ([ath10k_core])
->   ath10k_htt_rx_pktlog_completion_handler ([ath10k_core])
->   ath10k_sdio_napi_poll ([ath10k_sdio])
->   net_rx_action ([kernel.kallsyms])
->   softirqentry_text_start ([kernel.kallsyms])
->   do_softirq ([kernel.kallsyms])
->
-> call stack for napi complete and send tcp ack from tcp stack:
-> (skb length is about 1500*32 bytes)
->  _tcp_ack_snd_check ([kernel.kallsyms])
->  tcp_v4_do_rcv ([kernel.kallsyms])
->  tcp_v4_rcv ([kernel.kallsyms])
->  local_deliver_finish ([kernel.kallsyms])
->  ip_local_deliver ([kernel.kallsyms])
->  ip_rcv_finish ([kernel.kallsyms])
->  ip_rcv ([kernel.kallsyms])
->  netif_receive_skb_core ([kernel.kallsyms])
->  netif_receive_skb_one_core([kernel.kallsyms])
->  netif_receive_skb ([kernel.kallsyms])
->  netif_receive_skb_internal ([kernel.kallsyms])
->  napi_gro_complete ([kernel.kallsyms])
->  napi_gro_flush ([kernel.kallsyms])
->  napi_complete_done ([kernel.kallsyms])
->  ath10k_sdio_napi_poll ([ath10k_sdio])
->  net_rx_action ([kernel.kallsyms])
->  __softirqentry_text_start ([kernel.kallsyms])
->  do_softirq ([kernel.kallsyms])
->
-> Tested with QCA6174 SDIO with firmware
-> WLAN.RMH.4.4.1-00007-QCARMSWP-1.
->
-> Signed-off-by: Wen Gong <wgong@codeaurora.org>
-> ---
->  drivers/net/wireless/ath/ath10k/htt.c    |  2 ++
->  drivers/net/wireless/ath/ath10k/htt.h    |  3 +++
->  drivers/net/wireless/ath/ath10k/htt_rx.c | 46 ++++++++++++++++++++++++++------
->  drivers/net/wireless/ath/ath10k/sdio.c   | 33 +++++++++++++++++++++++
->  4 files changed, 76 insertions(+), 8 deletions(-)
->
-> diff --git a/drivers/net/wireless/ath/ath10k/htt.c b/drivers/net/wireless/ath/ath10k/htt.c
-> index 127b4e4..f69346f 100644
-> --- a/drivers/net/wireless/ath/ath10k/htt.c
-> +++ b/drivers/net/wireless/ath/ath10k/htt.c
-> @@ -157,6 +157,8 @@ int ath10k_htt_connect(struct ath10k_htt *htt)
->
->         htt->eid = conn_resp.eid;
->
-> +       skb_queue_head_init(&htt->rx_indication_head);
-> +
->         if (ar->bus_param.dev_type == ATH10K_DEV_TYPE_HL) {
->                 ep = &ar->htc.endpoint[htt->eid];
->                 ath10k_htc_setup_tx_req(ep);
-> diff --git a/drivers/net/wireless/ath/ath10k/htt.h b/drivers/net/wireless/ath/ath10k/htt.h
-> index 4851a2e..462a25b 100644
-> --- a/drivers/net/wireless/ath/ath10k/htt.h
-> +++ b/drivers/net/wireless/ath/ath10k/htt.h
-> @@ -1879,6 +1879,8 @@ struct ath10k_htt {
->         struct ath10k *ar;
->         enum ath10k_htc_ep_id eid;
->
-> +       struct sk_buff_head rx_indication_head;
-> +
->         u8 target_version_major;
->         u8 target_version_minor;
->         struct completion target_version_received;
-> @@ -2298,6 +2300,7 @@ int ath10k_htt_tx_mgmt_inc_pending(struct ath10k_htt *htt, bool is_mgmt,
->  void ath10k_htt_rx_pktlog_completion_handler(struct ath10k *ar,
->                                              struct sk_buff *skb);
->  int ath10k_htt_txrx_compl_task(struct ath10k *ar, int budget);
-> +int ath10k_htt_rx_hl_indication(struct ath10k *ar, int budget);
->  void ath10k_htt_set_tx_ops(struct ath10k_htt *htt);
->  void ath10k_htt_set_rx_ops(struct ath10k_htt *htt);
->  #endif
-> diff --git a/drivers/net/wireless/ath/ath10k/htt_rx.c b/drivers/net/wireless/ath/ath10k/htt_rx.c
-> index e2d8b51..9340ae3 100644
-> --- a/drivers/net/wireless/ath/ath10k/htt_rx.c
-> +++ b/drivers/net/wireless/ath/ath10k/htt_rx.c
-> @@ -2263,7 +2263,7 @@ static bool ath10k_htt_rx_proc_rx_ind_hl(struct ath10k_htt *htt,
->         if (mpdu_ranges->mpdu_range_status == HTT_RX_IND_MPDU_STATUS_TKIP_MIC_ERR)
->                 rx_status->flag |= RX_FLAG_MMIC_ERROR;
->
-> -       ieee80211_rx_ni(ar->hw, skb);
-> +       ieee80211_rx_napi(ar->hw, NULL, skb, &ar->napi);
->
->         /* We have delivered the skb to the upper layers (mac80211) so we
->          * must not free it.
-> @@ -3664,14 +3664,12 @@ bool ath10k_htt_t2h_msg_handler(struct ath10k *ar, struct sk_buff *skb)
->                 break;
->         }
->         case HTT_T2H_MSG_TYPE_RX_IND:
-> -               if (ar->bus_param.dev_type == ATH10K_DEV_TYPE_HL)
-> -                       return ath10k_htt_rx_proc_rx_ind_hl(htt,
-> -                                                           &resp->rx_ind_hl,
-> -                                                           skb,
-> -                                                           HTT_RX_PN_CHECK,
-> -                                                           HTT_RX_NON_TKIP_MIC);
-> -               else
-> +               if (ar->bus_param.dev_type != ATH10K_DEV_TYPE_HL) {
->                         ath10k_htt_rx_proc_rx_ind_ll(htt, &resp->rx_ind);
-> +               } else {
-> +                       skb_queue_tail(&htt->rx_indication_head, skb);
-> +                       return false;
-> +               }
->                 break;
->         case HTT_T2H_MSG_TYPE_PEER_MAP: {
->                 struct htt_peer_map_event ev = {
-> @@ -3895,6 +3893,38 @@ static int ath10k_htt_rx_deliver_msdu(struct ath10k *ar, int quota, int budget)
->         return quota;
->  }
->
-> +int ath10k_htt_rx_hl_indication(struct ath10k *ar, int budget)
-> +{
-> +       struct htt_resp *resp;
-> +       struct ath10k_htt *htt = &ar->htt;
-> +       struct sk_buff *skb;
-> +       bool release;
-> +       int quota = 0;
-> +
-> +       while (quota < budget) {
+> To avoid this, driver requires to protect the ISR write-1-clear process by
+> disabling the IMR.
 
-This looks like a for loop:
+Just to be clear with an example of two interrupts in quick
+succession, first ROK then MGNTDOK. I would expect the hardware to
+behave as follows:
 
-for (quota = 0; quota < budget; quota++)
+1. Interrupts are enabled in HIMR reg. MSI is in use.
+--- Hardware needs to flag RX condition. It sets IMR_ROK flag in HISR,
+then raises a MSI interrupt.
+--- Interrupt controller receives this and begins handling it:
+2. rtw88 interrupt handler begins execution
+3. rtw_pci_irq_recognized()  reads HISR values. ROK is the only bit set.
+--- Hardware needs to flag MGNTDOK condition, so it sets the MGNTDOK
+bit in HISR and raises another interrupt.
+--- Interrupt controller queues this interrupt since it's in the
+middle of handling the original ROK interrupt.
+4. Back in rtw_pci_irq_recognized(), the HISR values from earlier are
+written back to clear them. In this case just the ROK bit is written
+back to unset the interrupt. MGNTDOK interrupt is left pending (not
+yet noticed by the driver)
+5. Interrupt handler continues & finishes handling the RX event.
+6. With the first interrupt done, interrupt controller handles the
+queued interrupt and causes rtw88 interrupt handler to execute again
+7. rtw88 interrupt handler handles and MGNTDOK interrupt.
 
-> +               skb = skb_dequeue(&htt->rx_indication_head);
-> +               if (!skb)
-> +                       break;
-> +
-> +               resp = (struct htt_resp *)skb->data;
-> +
-> +               release = ath10k_htt_rx_proc_rx_ind_hl(htt,
-> +                                                      &resp->rx_ind_hl,
-> +                                                      skb,
-> +                                                      HTT_RX_PN_CHECK,
-> +                                                      HTT_RX_NON_TKIP_MIC);
-> +
-> +               if (release)
-> +                       dev_kfree_skb_any(skb);
-> +
-> +               ath10k_dbg(ar, ATH10K_DBG_HTT, "rx indication poll pending count:%d\n",
-> +                          skb_queue_len(&htt->rx_indication_head));
-> +               quota++;
-> +       }
-> +       return quota;
-> +}
-> +EXPORT_SYMBOL(ath10k_htt_rx_hl_indication);
-> +
->  int ath10k_htt_txrx_compl_task(struct ath10k *ar, int budget)
->  {
->         struct ath10k_htt *htt = &ar->htt;
-> diff --git a/drivers/net/wireless/ath/ath10k/sdio.c b/drivers/net/wireless/ath/ath10k/sdio.c
-> index a302eda..a1ef31e 100644
-> --- a/drivers/net/wireless/ath/ath10k/sdio.c
-> +++ b/drivers/net/wireless/ath/ath10k/sdio.c
-> @@ -1406,6 +1406,9 @@ static void ath10k_rx_indication_async_work(struct work_struct *work)
->                 spin_lock_bh(&ar_sdio->wr_async_lock_rx);
->         }
->
-> +       if (test_bit(ATH10K_FLAG_CORE_REGISTERED, &ar->dev_flags))
-> +               napi_schedule(&ar->napi);
-> +
->         spin_unlock_bh(&ar_sdio->wr_async_lock_rx);
->  }
->
-> @@ -1824,6 +1827,8 @@ static int ath10k_sdio_hif_start(struct ath10k *ar)
->         struct ath10k_sdio *ar_sdio = ath10k_sdio_priv(ar);
->         int ret;
->
-> +       napi_enable(&ar->napi);
-> +
->         /* Sleep 20 ms before HIF interrupts are disabled.
->          * This will give target plenty of time to process the BMI done
->          * request before interrupts are disabled.
-> @@ -1962,6 +1967,9 @@ static void ath10k_sdio_hif_stop(struct ath10k *ar)
->         }
->
->         spin_unlock_bh(&ar_sdio->wr_async_lock);
-> +
-> +       napi_synchronize(&ar->napi);
-> +       napi_disable(&ar->napi);
->  }
->
->  #ifdef CONFIG_PM
-> @@ -2138,6 +2146,26 @@ static SIMPLE_DEV_PM_OPS(ath10k_sdio_pm_ops, ath10k_sdio_pm_suspend,
->
->  #endif /* CONFIG_PM_SLEEP */
->
-> +static int ath10k_sdio_napi_poll(struct napi_struct *ctx, int budget)
-> +{
-> +       struct ath10k *ar = container_of(ctx, struct ath10k, napi);
-> +       int done = 0;
 
-No need to initialize to 0;
+But are you saying it does not do this, and the behaviour (without
+your change) is instead:
 
-> +
-> +       done = ath10k_htt_rx_hl_indication(ar, budget);
-> +       ath10k_dbg(ar, ATH10K_DBG_SDIO, "napi poll: done: %d,budget:%d\n", done, budget);
-> +
-> +       if (done < budget)
-> +               napi_complete_done(ctx, done);
-> +
-> +       return done;
-> +}
-> +
-> +void ath10k_sdio_init_napi(struct ath10k *ar)
-> +{
-> +       netif_napi_add(&ar->napi_dev, &ar->napi, ath10k_sdio_napi_poll,
-> +                      ATH10K_NAPI_BUDGET);
-> +}
-> +
->  static int ath10k_sdio_probe(struct sdio_func *func,
->                              const struct sdio_device_id *id)
->  {
-> @@ -2163,6 +2191,8 @@ static int ath10k_sdio_probe(struct sdio_func *func,
->                 return -ENOMEM;
->         }
->
-> +       ath10k_sdio_init_napi(ar);
-> +
->         ath10k_dbg(ar, ATH10K_DBG_BOOT,
->                    "sdio new func %d vendor 0x%x device 0x%x block 0x%x/0x%x\n",
->                    func->num, func->vendor, func->device,
-> @@ -2283,6 +2313,9 @@ static void ath10k_sdio_remove(struct sdio_func *func)
->                    func->num, func->vendor, func->device);
->
->         ath10k_core_unregister(ar);
-> +
-> +       netif_napi_del(&ar->napi);
-> +
->         ath10k_core_destroy(ar);
->
->         flush_workqueue(ar_sdio->workqueue);
-> --
-> 1.9.1
->
+1. Interrupts are enabled in HIMR reg. MSI is in use.
+--- Hardware needs to flag RX condition. It sets IMR_ROK flag in HISR,
+then raises a MSI interrupt.
+--- Interrupt controller receives this and begins handling it:
+2. rtw88 interrupt handler begins execution
+3. rtw_pci_irq_recognized()  reads HISR values. ROK is the only bit set.
+--- Hardware needs to flag MGNTDOK condition, so it sets the MGNTDOK
+bit in HISR. However it does NOT raise an interrupt since other bits
+in HISR were still set at this time.
+4. Back in rtw_pci_irq_recognized(), the HISR values from earlier are
+written back. In this case just the ROK bit is written back to unset
+the interrupt. MGNTDOK interrupt is left pending (not yet noticed by
+the driver)
+5. Interrupt handler continues & finishes handling the RX event.
+6. MGNTDOK interrupt is left pending, and no more interrupts will be
+generated by the hardware because even if it sets more HISR bits, the
+MGNTDOK bit was already set so it doesn't raise more interrupts.
+
+i.e. you're effectively saying that the hardware will *only* generate
+an interrupt when *all* HISR bits were zero immediately before the new
+interrupt HISR bit is set?
+
+
+And then with your change applied it would look like this:
+
+1. Interrupts are enabled in HIMR reg. MSI is in use.
+--- Hardware needs to flag RX condition. It sets IMR_ROK flag in HISR,
+then raises a MSI interrupt.
+--- Interrupt controller receives this and begins handling it:
+2. rtw88 interrupt handler begins execution
+3. Interrupts are disabled in HIMR reg.
+4. rtw_pci_irq_recognized()  reads HISR values. ROK is the only bit set.
+--- Hardware needs to flag MGNTDOK condition, however because
+interrupts are disabled in HIMR, it simply queues this condition
+internally, without affecting HISR values, without generating another
+interrupt.
+4. Back in rtw_pci_irq_recognized(), the HISR values from earlier are
+written back. In this case just the ROK bit is written back to unset
+the interrupt. HISR is now value 0.
+5. Interrupt handler handles the RX event.
+6. Interrupt handler re-enables interrupts in HIMR just before finishing.
+--- In response, hardware checks its internal queue and realises that
+a MGNTDOK condition is pending. It sets the MGNTDOK bit in HISR and
+raises a new interrupt.
+
+Is that right? It seems like strange behaviour on the hardware side.
+
+> Do you mean I should remove this?
+> But I cannot find another proper way to enable the MSI.
+> Maybe pci_alloc_irq_vectors() could work but I am not sure if
+> It is recommended.
+
+Yes, I think you should switch to pci_alloc_irq_vectors() which is the
+recommended, documented way.
+
+Thanks,
+Daniel
