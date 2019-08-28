@@ -2,46 +2,98 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 3A51EA0BA5
-	for <lists+linux-wireless@lfdr.de>; Wed, 28 Aug 2019 22:38:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B802BA0C3F
+	for <lists+linux-wireless@lfdr.de>; Wed, 28 Aug 2019 23:16:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726875AbfH1Uhx (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 28 Aug 2019 16:37:53 -0400
-Received: from s3.sipsolutions.net ([144.76.43.62]:42448 "EHLO
-        sipsolutions.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726687AbfH1Uhw (ORCPT
+        id S1726725AbfH1VQe (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 28 Aug 2019 17:16:34 -0400
+Received: from mail-oi1-f195.google.com ([209.85.167.195]:45109 "EHLO
+        mail-oi1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726400AbfH1VQe (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 28 Aug 2019 16:37:52 -0400
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-        (Exim 4.92.1)
-        (envelope-from <johannes@sipsolutions.net>)
-        id 1i34hS-0000bq-Na; Wed, 28 Aug 2019 22:37:50 +0200
-Message-ID: <1d14994df1c4e9dd83fcd76a1d99ce7b23067bd5.camel@sipsolutions.net>
-Subject: Re: [PATCH] mwifiex: Fix three heap overflow at parsing element in
- cfg80211_ap_settings
-From:   Johannes Berg <johannes@sipsolutions.net>
-To:     huangwenabc@gmail.com, linux-wireless@vger.kernel.org
-Cc:     amitkarwar@gmail.com, nishants@marvell.com, gbhat@marvell.com,
-        huxinming820@gmail.com, solar@openwall.com, greg@kroah.com,
-        kvalo@codeaurora.org, sashal@kernel.org, mrehak@redhat.com
-Date:   Wed, 28 Aug 2019 22:37:49 +0200
-In-Reply-To: <adff8812a50ca03f22fd0b3573a19ca42481c009.camel@sipsolutions.net> (sfid-20190828_223705_013504_4162F072)
-References: <20190828020751.13625-1-huangwenabc@gmail.com>
-         (sfid-20190828_040827_580483_8289AFC7) <adff8812a50ca03f22fd0b3573a19ca42481c009.camel@sipsolutions.net>
-         (sfid-20190828_223705_013504_4162F072)
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.30.5 (3.30.5-1.fc29) 
+        Wed, 28 Aug 2019 17:16:34 -0400
+Received: by mail-oi1-f195.google.com with SMTP id v12so839626oic.12;
+        Wed, 28 Aug 2019 14:16:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=UZ8/awWTq6cNNlpOfMcpLe0hFlviAxwzUTQVPhW35AY=;
+        b=FLDmMYK8Nomgd5BV8aX5uue5BsU/74nkB8cA+cc+SkvzJJS1K9MBCFcaW4LuVk+jAi
+         zqwkgV6oDoNCnXhdtfKlOym14TsZK5ZyRMcJCdbXNrXjbxRzgTC+JyUNmB6gXk66EBTB
+         p46Hu+U/aAefSS23vwIZJEUlgYUL2I9nqP/gU+vZ3bOJ4umkTQ4fjAc2aPtucT+IcqCu
+         wgN+pKA3ntLHP7x//HrCawf0IerRBuwxnWn2qdeRG5i0ySh/kGVfpZcOk5W8MYzbSvoO
+         Gw4qrCHYKOz9Rq0+3a+ZbkiFuAVgAE4v+HfXPL/7OAoGpbD3MF5Wgy8+FLuPZjjIJ1sg
+         ZjXA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=UZ8/awWTq6cNNlpOfMcpLe0hFlviAxwzUTQVPhW35AY=;
+        b=OicbXZh9NvebxEiUz9kmHUXeHsh4ZfIwCFEu+DmtjX/oY+ZJfeo6KY3mSodb5bMmSX
+         HlPlGYnXqXyaOmlAxbLGEN52eYgkUA7TWft+puXNpJiiX3C/dZPw6KNaDsvJYJYkfLud
+         mc124szUJ2VZnJRhcU5gQnXE6EpQyZ63JHSiI7jKoyQVua32UyLeb0Vz/hd5wg2tzAyc
+         kKcPoNTgfFWQPcWDZt6BWIGIEY2Nxs8ZzO7wcULSSl4fQHjjVKcyUnEqsFGpliIYIedC
+         qir5p5yF5tqiegUQrKmyTkXSwaI2ESru07s9GvPXWVobvCKl6UVGHWhcI+hp15V4TLxm
+         mXYg==
+X-Gm-Message-State: APjAAAWA5SJ9UONiC8i4B16LnaGmCrYAAKZ8bfzDGvzl6nG0MAUvpRZy
+        HeYJ1YINmrwX5x2CHRgZJ/yEvXvR
+X-Google-Smtp-Source: APXvYqzo7wpp4z+FyKGJBUCFpbBfLoN4fkvhh1vncucKq/vxbX1HAl8WCTzLD5gSJiFFYze+rFJQSw==
+X-Received: by 2002:a54:4814:: with SMTP id j20mr4139687oij.33.1567026993118;
+        Wed, 28 Aug 2019 14:16:33 -0700 (PDT)
+Received: from localhost.localdomain (cpe-70-114-247-242.austin.res.rr.com. [70.114.247.242])
+        by smtp.gmail.com with ESMTPSA id z26sm85608oih.16.2019.08.28.14.16.32
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Wed, 28 Aug 2019 14:16:32 -0700 (PDT)
+From:   Denis Kenzior <denkenz@gmail.com>
+To:     linux-wireless@vger.kernel.org
+Cc:     Denis Kenzior <denkenz@gmail.com>, stable@vger.kernel.org
+Subject: [PATCH] cfg80211: Purge frame registrations on iftype change
+Date:   Wed, 28 Aug 2019 16:11:10 -0500
+Message-Id: <20190828211110.15005-1-denkenz@gmail.com>
+X-Mailer: git-send-email 2.19.2
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Wed, 2019-08-28 at 22:36 +0200, Johannes Berg wrote:
-> First of all, the subject doesn't make a lot of sense?
+Currently frame registrations are not purged, even when changing the
+interface type.  This can lead to potentially weird / dangerous
+situations where frames possibly not relevant to a given interface
+type remain registered and mgmt_frame_register is not called for the
+no-longer-relevant frame types.
 
-Ah, the whole thing is called under that function I guess, never mind
+The kernel currently relies on userspace apps to actually purge the
+registrations themselves, e.g. by closing the nl80211 socket associated
+with those frames.  However, this requires multiple nl80211 sockets to
+be open by the userspace app, and for userspace to be aware of all state
+changes.  This is not something that the kernel should rely on.
 
-johannes
+This commit adds a call to cfg80211_mlme_purge_registrations() to
+forcefully remove any registrations left over prior to switching the
+iftype.
+
+Cc: stable@vger.kernel.org
+
+Signed-off-by: Denis Kenzior <denkenz@gmail.com>
+---
+ net/wireless/util.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/net/wireless/util.c b/net/wireless/util.c
+index c99939067bb0..3fa092b78e62 100644
+--- a/net/wireless/util.c
++++ b/net/wireless/util.c
+@@ -964,6 +964,7 @@ int cfg80211_change_iface(struct cfg80211_registered_device *rdev,
+ 		}
+ 
+ 		cfg80211_process_rdev_events(rdev);
++		cfg80211_mlme_purge_registrations(dev->ieee80211_ptr);
+ 	}
+ 
+ 	err = rdev_change_virtual_intf(rdev, dev, ntype, params);
+-- 
+2.19.2
 
