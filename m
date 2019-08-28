@@ -2,25 +2,25 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A8FF3A22A4
-	for <lists+linux-wireless@lfdr.de>; Thu, 29 Aug 2019 19:44:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 05453A22BD
+	for <lists+linux-wireless@lfdr.de>; Thu, 29 Aug 2019 19:50:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727483AbfH2Roa (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 29 Aug 2019 13:44:30 -0400
-Received: from smtp.codeaurora.org ([198.145.29.96]:59868 "EHLO
+        id S1727688AbfH2RuL (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 29 Aug 2019 13:50:11 -0400
+Received: from smtp.codeaurora.org ([198.145.29.96]:40892 "EHLO
         smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726661AbfH2Roa (ORCPT
+        with ESMTP id S1726661AbfH2RuL (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 29 Aug 2019 13:44:30 -0400
+        Thu, 29 Aug 2019 13:50:11 -0400
 Received: by smtp.codeaurora.org (Postfix, from userid 1000)
-        id 2019A7B3A2; Thu, 29 Aug 2019 05:55:46 +0000 (UTC)
+        id 8F2F08C132; Wed, 28 Aug 2019 18:23:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1567058147;
-        bh=V5+/g04vzbcDSpCHu1S97zQ4VVuMHRebUkXWjwLANnQ=;
+        s=default; t=1567016634;
+        bh=tEwaNskhQU0l2kwZ6hKbPVuBg6hmErAaNV+DJ3sTs1k=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ka6Yqjn2CDYlSq72w7wN2xtaR2lufAKgtpQZ/abI+zgUEYWgWxGuS00RqMxNT4yrZ
-         KMFVQJ6IZ+DJCejRyTT1FcHScNMzMNst6Lq8lVrQHHrhHTU6X0JNvFXeNMaLejzkOk
-         D/CXMissVTflKwHF5JRBWb34WFyxfPMdJ9uFdNQo=
+        b=MomnUhJ/HSzokE3ULrYgDyoqEJnNEGE7x+tEztQhQf6d+cvD0GDA1t6vTImna9f45
+         CXN4zt9JSElsfOT4sM82+lxKOmMu8mdxTzxYDxz3/abWvedQhBbWqN8Q/kVNIdYKOv
+         4H3wQI5M6dKOBoVjgiNwksq+rSih3aw7zppHa4uU=
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         pdx-caf-mail.web.codeaurora.org
 X-Spam-Level: 
@@ -31,24 +31,24 @@ Received: from wgong-HP-Z240-SFF-Workstation.qca.qualcomm.com (unknown [180.166.
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-SHA256 (128/128 bits))
         (No client certificate requested)
         (Authenticated sender: wgong@smtp.codeaurora.org)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 133537A407;
-        Wed, 28 Aug 2019 13:16:37 +0000 (UTC)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 824597784B;
+        Wed, 28 Aug 2019 13:16:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1566998199;
-        bh=V5+/g04vzbcDSpCHu1S97zQ4VVuMHRebUkXWjwLANnQ=;
+        s=default; t=1566998200;
+        bh=tEwaNskhQU0l2kwZ6hKbPVuBg6hmErAaNV+DJ3sTs1k=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=MKN3Mu2VEAM+fkcbeC95oL0gmPziyQXzHFuWS+0SIuN3tUK/4QiNh9DAg4CXjOWiV
-         4gCJBZZzJN3dp9AZZxR3GNOn9LWF9tgJJiCRN5aCZT3og53PzPA4O3vJsMVTuN+Wpg
-         CEPdfqRBgDsYbhyRGHIVZ29bxXatDqRVq5YbFXyI=
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 133537A407
+        b=Mv+GFiIQkRxXZGgzHKigc01oc6cf9MXbQbhzHd5YH8grsMgMcmezX7e9JeIJDMjDm
+         YkVaq/RQzB5cexS7dT23ABpl6G8i6FjiatY+ClnVHNU+XohXzfuuv0gtXe49UQFEBl
+         J1Uvxf6ezMsXva14Ci3wFaS9cdfA6gsgL25VAbhQ=
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 824597784B
 Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
 Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=wgong@codeaurora.org
 From:   Wen Gong <wgong@codeaurora.org>
 To:     ath10k@lists.infradead.org
 Cc:     linux-wireless@vger.kernel.org
-Subject: [PATCH v3 4/8] ath10k: add workqueue for RX path of sdio
-Date:   Wed, 28 Aug 2019 21:16:13 +0800
-Message-Id: <1566998177-2658-5-git-send-email-wgong@codeaurora.org>
+Subject: [PATCH v3 5/8] ath10k: disable TX complete indication of htt for sdio
+Date:   Wed, 28 Aug 2019 21:16:14 +0800
+Message-Id: <1566998177-2658-6-git-send-email-wgong@codeaurora.org>
 X-Mailer: git-send-email 1.9.1
 In-Reply-To: <1566998177-2658-1-git-send-email-wgong@codeaurora.org>
 References: <1566998177-2658-1-git-send-email-wgong@codeaurora.org>
@@ -57,240 +57,355 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-The thread of read rx message by sdio bus from firmware is
-synchronous, it will cost much time for process the left part
-of rx message which includes indicate the rx packet to uppper
-net stack. It will reduce the time of read from sdio.
+Tx complete message from firmware cost bus bandwidth of sdio, and bus
+bandwidth is the bollteneck of throughput, it will effect the bandwidth
+occupancy of data packet of TX and RX.
 
-This patch move the indication to a workqueue, it results in
-significant performance improvement on RX path.
+This patch disable TX complete indication from firmware for htt data
+packet, it results in significant performance improvement on TX path.
+
+The downside of this patch is ath10k will not know the TX status of
+the data packet for poor signal situation. Although upper network stack
+or application layer have retry mechanism, the retry will be later than
+ath10k get the TX fail status if not disable TX complete.
+
+This patch only effect sdio chip, it will not effect PCI, SNOC etc.
 
 Tested with QCA6174 SDIO with firmware
 WLAN.RMH.4.4.1-00007-QCARMSWP-1.
 
 Signed-off-by: Wen Gong <wgong@codeaurora.org>
 ---
-v2:no change
+v2:change some code style
 v3:change some code style
- drivers/net/wireless/ath/ath10k/sdio.c | 116 ++++++++++++++++++++++++++++++++-
- drivers/net/wireless/ath/ath10k/sdio.h |  20 ++++++
- 2 files changed, 133 insertions(+), 3 deletions(-)
+ drivers/net/wireless/ath/ath10k/core.c   |  9 ++++++++-
+ drivers/net/wireless/ath/ath10k/hif.h    |  9 +++++++++
+ drivers/net/wireless/ath/ath10k/htc.c    | 10 ++++++++++
+ drivers/net/wireless/ath/ath10k/htc.h    |  3 +++
+ drivers/net/wireless/ath/ath10k/htt.c    |  5 +++++
+ drivers/net/wireless/ath/ath10k/htt.h    | 13 +++++++++++-
+ drivers/net/wireless/ath/ath10k/htt_rx.c | 34 +++++++++++++++++++++++++++++++-
+ drivers/net/wireless/ath/ath10k/htt_tx.c | 31 +++++++++++++++++++++++++++++
+ drivers/net/wireless/ath/ath10k/hw.h     |  2 +-
+ drivers/net/wireless/ath/ath10k/sdio.c   | 23 +++++++++++++++++++++
+ 10 files changed, 135 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath10k/sdio.c b/drivers/net/wireless/ath/ath10k/sdio.c
-index bd808e5..609bc0f 100644
---- a/drivers/net/wireless/ath/ath10k/sdio.c
-+++ b/drivers/net/wireless/ath/ath10k/sdio.c
-@@ -412,6 +412,66 @@ static int ath10k_sdio_mbox_rx_process_packet(struct ath10k *ar,
+diff --git a/drivers/net/wireless/ath/ath10k/core.c b/drivers/net/wireless/ath/ath10k/core.c
+index dc45d16..d56dcbd 100644
+--- a/drivers/net/wireless/ath/ath10k/core.c
++++ b/drivers/net/wireless/ath/ath10k/core.c
+@@ -30,6 +30,7 @@
+ 
+ static unsigned int ath10k_cryptmode_param;
+ static bool uart_print;
++static bool disable_tx_comp = true;
+ static bool skip_otp;
+ static bool rawmode;
+ static bool fw_diag_log;
+@@ -41,6 +42,9 @@
+ module_param_named(debug_mask, ath10k_debug_mask, uint, 0644);
+ module_param_named(cryptmode, ath10k_cryptmode_param, uint, 0644);
+ module_param(uart_print, bool, 0644);
++
++/* If upper layer need the TX complete status, it can enable tx complete */
++module_param(disable_tx_comp, bool, 0644);
+ module_param(skip_otp, bool, 0644);
+ module_param(rawmode, bool, 0644);
+ module_param(fw_diag_log, bool, 0644);
+@@ -688,7 +692,10 @@ static void ath10k_init_sdio(struct ath10k *ar, enum ath10k_firmware_mode mode)
+ 	/* Data transfer is not initiated, when reduced Tx completion
+ 	 * is used for SDIO. disable it until fixed
+ 	 */
+-	param &= ~HI_ACS_FLAGS_SDIO_REDUCE_TX_COMPL_SET;
++	if (disable_tx_comp)
++		param |= HI_ACS_FLAGS_SDIO_REDUCE_TX_COMPL_SET;
++	else
++		param &= ~HI_ACS_FLAGS_SDIO_REDUCE_TX_COMPL_SET;
+ 
+ 	/* Alternate credit size of 1544 as used by SDIO firmware is
+ 	 * not big enough for mac80211 / native wifi frames. disable it
+diff --git a/drivers/net/wireless/ath/ath10k/hif.h b/drivers/net/wireless/ath/ath10k/hif.h
+index 496ee34..0dd8973 100644
+--- a/drivers/net/wireless/ath/ath10k/hif.h
++++ b/drivers/net/wireless/ath/ath10k/hif.h
+@@ -56,6 +56,8 @@ struct ath10k_hif_ops {
+ 
+ 	int (*swap_mailbox)(struct ath10k *ar);
+ 
++	int (*get_htt_tx_complete)(struct ath10k *ar);
++
+ 	int (*map_service_to_pipe)(struct ath10k *ar, u16 service_id,
+ 				   u8 *ul_pipe, u8 *dl_pipe);
+ 
+@@ -144,6 +146,13 @@ static inline int ath10k_hif_swap_mailbox(struct ath10k *ar)
  	return 0;
  }
  
-+static struct ath10k_sdio_rx_request *ath10k_sdio_alloc_rx_req(struct ath10k *ar)
++static inline int ath10k_hif_get_htt_tx_complete(struct ath10k *ar)
 +{
-+	struct ath10k_sdio *ar_sdio = ath10k_sdio_priv(ar);
-+	struct ath10k_sdio_rx_request *rx_req;
-+
-+	spin_lock_bh(&ar_sdio->rx_lock);
-+
-+	if (list_empty(&ar_sdio->rx_req_freeq)) {
-+		rx_req = NULL;
-+		ath10k_dbg(ar, ATH10K_DBG_SDIO, "rx_req alloc fail\n");
-+		goto out;
-+	}
-+
-+	rx_req = list_first_entry(&ar_sdio->rx_req_freeq,
-+				  struct ath10k_sdio_rx_request, list);
-+	list_del(&rx_req->list);
-+
-+out:
-+	spin_unlock_bh(&ar_sdio->rx_lock);
-+	return rx_req;
-+}
-+
-+static void ath10k_sdio_free_rx_req(struct ath10k *ar,
-+				    struct ath10k_sdio_rx_request *rx_req)
-+{
-+	struct ath10k_sdio *ar_sdio = ath10k_sdio_priv(ar);
-+
-+	memset(rx_req, 0, sizeof(*rx_req));
-+
-+	spin_lock_bh(&ar_sdio->rx_lock);
-+	list_add_tail(&rx_req->list, &ar_sdio->rx_req_freeq);
-+	spin_unlock_bh(&ar_sdio->rx_lock);
-+}
-+
-+static int ath10k_sdio_prep_async_rx_req(struct ath10k *ar,
-+					 struct sk_buff *skb,
-+					 struct ath10k_htc_ep *ep)
-+{
-+	struct ath10k_sdio *ar_sdio = ath10k_sdio_priv(ar);
-+	struct ath10k_sdio_rx_request *rx_req;
-+
-+	/* Allocate a rx request for the message and queue it on the
-+	 * SDIO rx workqueue.
-+	 */
-+	rx_req = ath10k_sdio_alloc_rx_req(ar);
-+	if (!rx_req) {
-+		ath10k_warn(ar, "unable to allocate rx request for async request\n");
-+		return -ENOMEM;
-+	}
-+
-+	rx_req->skb = skb;
-+	rx_req->ep = ep;
-+
-+	spin_lock_bh(&ar_sdio->wr_async_lock_rx);
-+	list_add_tail(&rx_req->list, &ar_sdio->wr_asyncq_rx);
-+	spin_unlock_bh(&ar_sdio->wr_async_lock_rx);
-+
++	if (ar->hif.ops->get_htt_tx_complete)
++		return ar->hif.ops->get_htt_tx_complete(ar);
 +	return 0;
 +}
 +
- static int ath10k_sdio_mbox_rx_process_packets(struct ath10k *ar,
- 					       u32 lookaheads[],
- 					       int *n_lookahead)
-@@ -465,10 +525,16 @@ static int ath10k_sdio_mbox_rx_process_packets(struct ath10k *ar,
- 		if (ret)
- 			goto out;
- 
--		if (!pkt->trailer_only)
--			ep->ep_ops.ep_rx_complete(ar_sdio->ar, pkt->skb);
--		else
-+		if (!pkt->trailer_only) {
-+			ret = ath10k_sdio_prep_async_rx_req(ar, pkt->skb, ep);
-+			if (ret)
-+				kfree_skb(pkt->skb);
-+			else
-+				queue_work(ar->workqueue_aux,
-+					   &ar_sdio->wr_async_work_rx);
-+		} else {
- 			kfree_skb(pkt->skb);
-+		}
- 
- 		/* The RX complete handler now owns the skb...*/
- 		pkt->skb = NULL;
-@@ -1317,6 +1383,26 @@ static void __ath10k_sdio_write_async(struct ath10k *ar,
- 	ath10k_sdio_free_bus_req(ar, req);
+ static inline int ath10k_hif_map_service_to_pipe(struct ath10k *ar,
+ 						 u16 service_id,
+ 						 u8 *ul_pipe, u8 *dl_pipe)
+diff --git a/drivers/net/wireless/ath/ath10k/htc.c b/drivers/net/wireless/ath/ath10k/htc.c
+index 1d4d1a1..4c6cdc2 100644
+--- a/drivers/net/wireless/ath/ath10k/htc.c
++++ b/drivers/net/wireless/ath/ath10k/htc.c
+@@ -660,6 +660,16 @@ int ath10k_htc_wait_target(struct ath10k_htc *htc)
+ 	return 0;
  }
  
-+static void ath10k_rx_indication_async_work(struct work_struct *work)
++void ath10k_htc_change_tx_credit_flow(struct ath10k_htc *htc,
++				      enum ath10k_htc_ep_id eid,
++				      bool enable)
 +{
-+	struct ath10k_sdio *ar_sdio = container_of(work, struct ath10k_sdio,
-+						   wr_async_work_rx);
-+	struct ath10k *ar = ar_sdio->ar;
-+	struct ath10k_sdio_rx_request *req, *tmp_req;
++	struct ath10k *ar = htc->ar;
++	struct ath10k_htc_ep *ep = &ar->htc.endpoint[eid];
 +
-+	spin_lock_bh(&ar_sdio->wr_async_lock_rx);
-+
-+	list_for_each_entry_safe(req, tmp_req, &ar_sdio->wr_asyncq_rx, list) {
-+		list_del(&req->list);
-+		spin_unlock_bh(&ar_sdio->wr_async_lock_rx);
-+		req->ep->ep_ops.ep_rx_complete(ar, req->skb);
-+		ath10k_sdio_free_rx_req(ar, req);
-+		spin_lock_bh(&ar_sdio->wr_async_lock_rx);
-+	}
-+
-+	spin_unlock_bh(&ar_sdio->wr_async_lock_rx);
++	ep->tx_credit_flow_enabled = enable;
 +}
 +
- static void ath10k_sdio_write_async_work(struct work_struct *work)
- {
- 	struct ath10k_sdio *ar_sdio = container_of(work, struct ath10k_sdio,
-@@ -1805,10 +1891,24 @@ static void ath10k_sdio_irq_disable(struct ath10k *ar)
- static void ath10k_sdio_hif_stop(struct ath10k *ar)
- {
- 	struct ath10k_sdio_bus_request *req, *tmp_req;
-+	struct ath10k_sdio_rx_request *rx_req, *tmp_rx_req;
- 	struct ath10k_sdio *ar_sdio = ath10k_sdio_priv(ar);
+ int ath10k_htc_connect_service(struct ath10k_htc *htc,
+ 			       struct ath10k_htc_svc_conn_req *conn_req,
+ 			       struct ath10k_htc_svc_conn_resp *conn_resp)
+diff --git a/drivers/net/wireless/ath/ath10k/htc.h b/drivers/net/wireless/ath/ath10k/htc.h
+index ffda8bf..0c93d19e 100644
+--- a/drivers/net/wireless/ath/ath10k/htc.h
++++ b/drivers/net/wireless/ath/ath10k/htc.h
+@@ -373,6 +373,9 @@ struct ath10k_htc {
+ int ath10k_htc_connect_service(struct ath10k_htc *htc,
+ 			       struct ath10k_htc_svc_conn_req  *conn_req,
+ 			       struct ath10k_htc_svc_conn_resp *conn_resp);
++void ath10k_htc_change_tx_credit_flow(struct ath10k_htc *htc,
++				      enum ath10k_htc_ep_id eid,
++				      bool enable);
+ int ath10k_htc_send(struct ath10k_htc *htc, enum ath10k_htc_ep_id eid,
+ 		    struct sk_buff *packet);
+ struct sk_buff *ath10k_htc_alloc_skb(struct ath10k *ar, int size);
+diff --git a/drivers/net/wireless/ath/ath10k/htt.c b/drivers/net/wireless/ath/ath10k/htt.c
+index 7b75200..4354bf2 100644
+--- a/drivers/net/wireless/ath/ath10k/htt.c
++++ b/drivers/net/wireless/ath/ath10k/htt.c
+@@ -10,6 +10,7 @@
+ #include "htt.h"
+ #include "core.h"
+ #include "debug.h"
++#include "hif.h"
  
- 	ath10k_sdio_irq_disable(ar);
+ static const enum htt_t2h_msg_type htt_main_t2h_msg_types[] = {
+ 	[HTT_MAIN_T2H_MSG_TYPE_VERSION_CONF] = HTT_T2H_MSG_TYPE_VERSION_CONF,
+@@ -153,6 +154,10 @@ int ath10k_htt_connect(struct ath10k_htt *htt)
  
-+	cancel_work_sync(&ar_sdio->wr_async_work_rx);
-+
-+	spin_lock_bh(&ar_sdio->wr_async_lock_rx);
-+
-+	/* Free all RX requests that have not been handled */
-+	list_for_each_entry_safe(rx_req, tmp_rx_req, &ar_sdio->wr_asyncq_rx, list) {
-+		list_del(&rx_req->list);
-+		rx_req->ep->ep_ops.ep_rx_complete(ar, rx_req->skb);
-+		ath10k_sdio_free_rx_req(ar, rx_req);
-+	}
-+
-+	spin_unlock_bh(&ar_sdio->wr_async_lock_rx);
-+
- 	cancel_work_sync(&ar_sdio->wr_async_work);
+ 	htt->eid = conn_resp.eid;
  
- 	spin_lock_bh(&ar_sdio->wr_async_lock);
-@@ -2087,6 +2187,16 @@ static int ath10k_sdio_probe(struct sdio_func *func,
- 	for (i = 0; i < ATH10K_SDIO_BUS_REQUEST_MAX_NUM; i++)
- 		ath10k_sdio_free_bus_req(ar, &ar_sdio->bus_req[i]);
- 
-+	spin_lock_init(&ar_sdio->rx_lock);
-+	spin_lock_init(&ar_sdio->wr_async_lock_rx);
-+	INIT_LIST_HEAD(&ar_sdio->rx_req_freeq);
-+	INIT_LIST_HEAD(&ar_sdio->wr_asyncq_rx);
++	htt->disable_tx_comp = ath10k_hif_get_htt_tx_complete(htt->ar);
++	if (htt->disable_tx_comp)
++		ath10k_htc_change_tx_credit_flow(&htt->ar->htc, htt->eid, true);
 +
-+	INIT_WORK(&ar_sdio->wr_async_work_rx, ath10k_rx_indication_async_work);
-+
-+	for (i = 0; i < ARRAY_SIZE(ar_sdio->rx_req); i++)
-+		ath10k_sdio_free_rx_req(ar, &ar_sdio->rx_req[i]);
-+
- 	dev_id_base = FIELD_GET(QCA_MANUFACTURER_ID_BASE, id->device);
- 	switch (dev_id_base) {
- 	case QCA_MANUFACTURER_ID_AR6005_BASE:
-diff --git a/drivers/net/wireless/ath/ath10k/sdio.h b/drivers/net/wireless/ath/ath10k/sdio.h
-index 3ca76c7..9bb438e 100644
---- a/drivers/net/wireless/ath/ath10k/sdio.h
-+++ b/drivers/net/wireless/ath/ath10k/sdio.h
-@@ -38,6 +38,7 @@
+ 	return 0;
+ }
  
- #define ATH10K_HIF_MBOX_NUM_MAX                 4
- #define ATH10K_SDIO_BUS_REQUEST_MAX_NUM         64
-+#define ATH10K_SDIO_RX_REQUEST_MAX_NUM          1024
- 
- #define ATH10K_SDIO_HIF_COMMUNICATION_TIMEOUT_HZ (100 * HZ)
- 
-@@ -98,6 +99,12 @@
- #define ATH10K_FIFO_TIMEOUT_AND_CHIP_CONTROL_DISABLE_SLEEP_OFF 0xFFFEFFFF
- #define ATH10K_FIFO_TIMEOUT_AND_CHIP_CONTROL_DISABLE_SLEEP_ON 0x10000
- 
-+struct ath10k_sdio_rx_request {
-+	struct list_head list;
-+	struct sk_buff *skb;
-+	struct ath10k_htc_ep *ep;
-+};
-+
- struct ath10k_sdio_bus_request {
- 	struct list_head list;
- 
-@@ -187,9 +194,17 @@ struct ath10k_sdio {
- 	struct ath10k_sdio_bus_request bus_req[ATH10K_SDIO_BUS_REQUEST_MAX_NUM];
- 	/* free list of bus requests */
- 	struct list_head bus_req_freeq;
-+
- 	/* protects access to bus_req_freeq */
- 	spinlock_t lock;
- 
-+	/* available rx requests */
-+	struct ath10k_sdio_rx_request rx_req[ATH10K_SDIO_RX_REQUEST_MAX_NUM];
-+	/* free list of rx requests */
-+	struct list_head rx_req_freeq;
-+	/* protects access to rx_req_freeq */
-+	spinlock_t rx_lock;
-+
- 	struct ath10k_sdio_rx_data rx_pkts[ATH10K_SDIO_MAX_RX_MSGS];
- 	size_t n_rx_pkts;
- 
-@@ -209,6 +224,11 @@ struct ath10k_sdio {
- 	struct list_head wr_asyncq;
- 	/* protects access to wr_asyncq */
- 	spinlock_t wr_async_lock;
-+
-+	struct work_struct wr_async_work_rx;
-+	struct list_head wr_asyncq_rx;
-+	/* protects access to wr_asyncq_rx */
-+	spinlock_t wr_async_lock_rx;
+diff --git a/drivers/net/wireless/ath/ath10k/htt.h b/drivers/net/wireless/ath/ath10k/htt.h
+index 30c0800..889bf9f 100644
+--- a/drivers/net/wireless/ath/ath10k/htt.h
++++ b/drivers/net/wireless/ath/ath10k/htt.h
+@@ -150,9 +150,19 @@ enum htt_data_tx_desc_flags1 {
+ 	HTT_DATA_TX_DESC_FLAGS1_MORE_IN_BATCH    = 1 << 12,
+ 	HTT_DATA_TX_DESC_FLAGS1_CKSUM_L3_OFFLOAD = 1 << 13,
+ 	HTT_DATA_TX_DESC_FLAGS1_CKSUM_L4_OFFLOAD = 1 << 14,
+-	HTT_DATA_TX_DESC_FLAGS1_RSVD1            = 1 << 15
++	HTT_DATA_TX_DESC_FLAGS1_TX_COMPLETE      = 1 << 15
  };
  
- static inline struct ath10k_sdio *ath10k_sdio_priv(struct ath10k *ar)
++#define HTT_TX_CREDIT_DELTA_ABS_M      0xffff0000
++#define HTT_TX_CREDIT_DELTA_ABS_S      16
++#define HTT_TX_CREDIT_DELTA_ABS_GET(word) \
++	    (((word) & HTT_TX_CREDIT_DELTA_ABS_M) >> HTT_TX_CREDIT_DELTA_ABS_S)
++
++#define HTT_TX_CREDIT_SIGN_BIT_M       0x00000100
++#define HTT_TX_CREDIT_SIGN_BIT_S       8
++#define HTT_TX_CREDIT_SIGN_BIT_GET(word) \
++	    (((word) & HTT_TX_CREDIT_SIGN_BIT_M) >> HTT_TX_CREDIT_SIGN_BIT_S)
++
+ enum htt_data_tx_ext_tid {
+ 	HTT_DATA_TX_EXT_TID_NON_QOS_MCAST_BCAST = 16,
+ 	HTT_DATA_TX_EXT_TID_MGMT                = 17,
+@@ -2019,6 +2029,7 @@ struct ath10k_htt {
+ 	bool tx_mem_allocated;
+ 	const struct ath10k_htt_tx_ops *tx_ops;
+ 	const struct ath10k_htt_rx_ops *rx_ops;
++	bool disable_tx_comp;
+ };
+ 
+ struct ath10k_htt_tx_ops {
+diff --git a/drivers/net/wireless/ath/ath10k/htt_rx.c b/drivers/net/wireless/ath/ath10k/htt_rx.c
+index 83a7fb6..5bf3179 100644
+--- a/drivers/net/wireless/ath/ath10k/htt_rx.c
++++ b/drivers/net/wireless/ath/ath10k/htt_rx.c
+@@ -3691,6 +3691,9 @@ bool ath10k_htt_t2h_msg_handler(struct ath10k *ar, struct sk_buff *skb)
+ 	}
+ 	case HTT_T2H_MSG_TYPE_MGMT_TX_COMPLETION: {
+ 		struct htt_tx_done tx_done = {};
++		struct ath10k_htt *htt = &ar->htt;
++		struct ath10k_htc *htc = &ar->htc;
++		struct ath10k_htc_ep *ep = &ar->htc.endpoint[htt->eid];
+ 		int status = __le32_to_cpu(resp->mgmt_tx_completion.status);
+ 		int info = __le32_to_cpu(resp->mgmt_tx_completion.info);
+ 
+@@ -3716,6 +3719,12 @@ bool ath10k_htt_t2h_msg_handler(struct ath10k *ar, struct sk_buff *skb)
+ 			break;
+ 		}
+ 
++		if (htt->disable_tx_comp) {
++			spin_lock_bh(&htc->tx_lock);
++			ep->tx_credits++;
++			spin_unlock_bh(&htc->tx_lock);
++		}
++
+ 		status = ath10k_txrx_tx_unref(htt, &tx_done);
+ 		if (!status) {
+ 			spin_lock_bh(&htt->tx_lock);
+@@ -3790,8 +3799,31 @@ bool ath10k_htt_t2h_msg_handler(struct ath10k *ar, struct sk_buff *skb)
+ 		skb_queue_tail(&htt->rx_in_ord_compl_q, skb);
+ 		return false;
+ 	}
+-	case HTT_T2H_MSG_TYPE_TX_CREDIT_UPDATE_IND:
++	case HTT_T2H_MSG_TYPE_TX_CREDIT_UPDATE_IND: {
++		struct ath10k_htt *htt = &ar->htt;
++		struct ath10k_htc *htc = &ar->htc;
++		struct ath10k_htc_ep *ep = &ar->htc.endpoint[htt->eid];
++		u32 msg_word = __le32_to_cpu(*(__le32 *)resp);
++		int htt_credit_delta;
++
++		htt_credit_delta = HTT_TX_CREDIT_DELTA_ABS_GET(msg_word);
++		if (HTT_TX_CREDIT_SIGN_BIT_GET(msg_word))
++			htt_credit_delta = -htt_credit_delta;
++
++		ath10k_dbg(ar, ATH10K_DBG_HTT,
++			   "credit update: delta:%d\n",
++			   htt_credit_delta);
++
++		if (htt->disable_tx_comp) {
++			spin_lock_bh(&htc->tx_lock);
++			ep->tx_credits += htt_credit_delta;
++			spin_unlock_bh(&htc->tx_lock);
++			ath10k_dbg(ar, ATH10K_DBG_HTT,
++				   "credit total:%d\n",
++				   ep->tx_credits);
++		}
+ 		break;
++	}
+ 	case HTT_T2H_MSG_TYPE_CHAN_CHANGE: {
+ 		u32 phymode = __le32_to_cpu(resp->chan_change.phymode);
+ 		u32 freq = __le32_to_cpu(resp->chan_change.freq);
+diff --git a/drivers/net/wireless/ath/ath10k/htt_tx.c b/drivers/net/wireless/ath/ath10k/htt_tx.c
+index 2ef717f1..7eb753a8 100644
+--- a/drivers/net/wireless/ath/ath10k/htt_tx.c
++++ b/drivers/net/wireless/ath/ath10k/htt_tx.c
+@@ -543,7 +543,35 @@ void ath10k_htt_tx_free(struct ath10k_htt *htt)
+ 
+ void ath10k_htt_htc_tx_complete(struct ath10k *ar, struct sk_buff *skb)
+ {
++	struct ath10k_htt *htt = &ar->htt;
++	struct htt_tx_done tx_done = {0};
++	struct htt_cmd_hdr *htt_hdr;
++	struct htt_data_tx_desc *desc_hdr;
++	u16 flags1;
++
+ 	dev_kfree_skb_any(skb);
++
++	if (!htt->disable_tx_comp)
++		return;
++
++	htt_hdr = (struct htt_cmd_hdr *)skb->data;
++	if (htt_hdr->msg_type != HTT_H2T_MSG_TYPE_TX_FRM)
++		return;
++
++	desc_hdr = (struct htt_data_tx_desc *)
++		(skb->data + sizeof(*htt_hdr));
++	flags1 = __le16_to_cpu(desc_hdr->flags1);
++
++	ath10k_dbg(ar, ATH10K_DBG_HTT,
++		   "htt tx complete msdu id:%u ,flags1:%x\n",
++		   __le16_to_cpu(desc_hdr->id), flags1);
++
++	if (flags1 & HTT_DATA_TX_DESC_FLAGS1_TX_COMPLETE)
++		return;
++
++	tx_done.status = HTT_TX_COMPL_STATE_ACK;
++	tx_done.msdu_id = __le16_to_cpu(desc_hdr->id);
++	ath10k_txrx_tx_unref(&ar->htt, &tx_done);
+ }
+ 
+ void ath10k_htt_hif_tx_complete(struct ath10k *ar, struct sk_buff *skb)
+@@ -1261,6 +1289,9 @@ static int ath10k_htt_tx_hl(struct ath10k_htt *htt, enum ath10k_hw_txrx_mode txm
+ 		flags0 |= SM(ATH10K_HW_TXRX_MGMT,
+ 			     HTT_DATA_TX_DESC_FLAGS0_PKT_TYPE);
+ 		flags0 |= HTT_DATA_TX_DESC_FLAGS0_MAC_HDR_PRESENT;
++
++		if (htt->disable_tx_comp)
++			flags1 |= HTT_DATA_TX_DESC_FLAGS1_TX_COMPLETE;
+ 		break;
+ 	}
+ 
+diff --git a/drivers/net/wireless/ath/ath10k/hw.h b/drivers/net/wireless/ath/ath10k/hw.h
+index 2ae57c1..6349665 100644
+--- a/drivers/net/wireless/ath/ath10k/hw.h
++++ b/drivers/net/wireless/ath/ath10k/hw.h
+@@ -759,7 +759,7 @@ struct ath10k_hw_ops {
+ #define TARGET_TLV_NUM_TDLS_VDEVS		1
+ #define TARGET_TLV_NUM_TIDS			((TARGET_TLV_NUM_PEERS) * 2)
+ #define TARGET_TLV_NUM_MSDU_DESC		(1024 + 32)
+-#define TARGET_TLV_NUM_MSDU_DESC_HL		64
++#define TARGET_TLV_NUM_MSDU_DESC_HL		1024
+ #define TARGET_TLV_NUM_WOW_PATTERNS		22
+ #define TARGET_TLV_MGMT_NUM_MSDU_DESC		(50)
+ 
+diff --git a/drivers/net/wireless/ath/ath10k/sdio.c b/drivers/net/wireless/ath/ath10k/sdio.c
+index 609bc0f..c641f1b 100644
+--- a/drivers/net/wireless/ath/ath10k/sdio.c
++++ b/drivers/net/wireless/ath/ath10k/sdio.c
+@@ -1784,6 +1784,28 @@ static int ath10k_sdio_hif_swap_mailbox(struct ath10k *ar)
+ 	return 0;
+ }
+ 
++static int ath10k_sdio_get_htt_tx_complete(struct ath10k *ar)
++{
++	u32 addr, val;
++	int ret;
++
++	addr = host_interest_item_address(HI_ITEM(hi_acs_flags));
++
++	ret = ath10k_sdio_hif_diag_read32(ar, addr, &val);
++	if (ret) {
++		ath10k_warn(ar,
++			    "unable to read hi_acs_flags for htt tx comple : %d\n", ret);
++		return ret;
++	}
++
++	ret = (val & HI_ACS_FLAGS_SDIO_REDUCE_TX_COMPL_FW_ACK);
++
++	ath10k_dbg(ar, ATH10K_DBG_SDIO, "sdio reduce tx complete fw%sack\n",
++		   ret ? " " : " not ");
++
++	return ret;
++}
++
+ /* HIF start/stop */
+ 
+ static int ath10k_sdio_hif_start(struct ath10k *ar)
+@@ -2067,6 +2089,7 @@ static void ath10k_sdio_hif_send_complete_check(struct ath10k *ar,
+ 	.start			= ath10k_sdio_hif_start,
+ 	.stop			= ath10k_sdio_hif_stop,
+ 	.swap_mailbox		= ath10k_sdio_hif_swap_mailbox,
++	.get_htt_tx_complete	= ath10k_sdio_get_htt_tx_complete,
+ 	.map_service_to_pipe	= ath10k_sdio_hif_map_service_to_pipe,
+ 	.get_default_pipe	= ath10k_sdio_hif_get_default_pipe,
+ 	.send_complete_check	= ath10k_sdio_hif_send_complete_check,
 -- 
 1.9.1
 
