@@ -2,98 +2,118 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B802BA0C3F
-	for <lists+linux-wireless@lfdr.de>; Wed, 28 Aug 2019 23:16:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E22D2A0F7A
+	for <lists+linux-wireless@lfdr.de>; Thu, 29 Aug 2019 04:26:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726725AbfH1VQe (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 28 Aug 2019 17:16:34 -0400
-Received: from mail-oi1-f195.google.com ([209.85.167.195]:45109 "EHLO
-        mail-oi1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726400AbfH1VQe (ORCPT
+        id S1726245AbfH2C0y (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 28 Aug 2019 22:26:54 -0400
+Received: from smtp.codeaurora.org ([198.145.29.96]:45704 "EHLO
+        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726081AbfH2C0y (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 28 Aug 2019 17:16:34 -0400
-Received: by mail-oi1-f195.google.com with SMTP id v12so839626oic.12;
-        Wed, 28 Aug 2019 14:16:33 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=UZ8/awWTq6cNNlpOfMcpLe0hFlviAxwzUTQVPhW35AY=;
-        b=FLDmMYK8Nomgd5BV8aX5uue5BsU/74nkB8cA+cc+SkvzJJS1K9MBCFcaW4LuVk+jAi
-         zqwkgV6oDoNCnXhdtfKlOym14TsZK5ZyRMcJCdbXNrXjbxRzgTC+JyUNmB6gXk66EBTB
-         p46Hu+U/aAefSS23vwIZJEUlgYUL2I9nqP/gU+vZ3bOJ4umkTQ4fjAc2aPtucT+IcqCu
-         wgN+pKA3ntLHP7x//HrCawf0IerRBuwxnWn2qdeRG5i0ySh/kGVfpZcOk5W8MYzbSvoO
-         Gw4qrCHYKOz9Rq0+3a+ZbkiFuAVgAE4v+HfXPL/7OAoGpbD3MF5Wgy8+FLuPZjjIJ1sg
-         ZjXA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=UZ8/awWTq6cNNlpOfMcpLe0hFlviAxwzUTQVPhW35AY=;
-        b=OicbXZh9NvebxEiUz9kmHUXeHsh4ZfIwCFEu+DmtjX/oY+ZJfeo6KY3mSodb5bMmSX
-         HlPlGYnXqXyaOmlAxbLGEN52eYgkUA7TWft+puXNpJiiX3C/dZPw6KNaDsvJYJYkfLud
-         mc124szUJ2VZnJRhcU5gQnXE6EpQyZ63JHSiI7jKoyQVua32UyLeb0Vz/hd5wg2tzAyc
-         kKcPoNTgfFWQPcWDZt6BWIGIEY2Nxs8ZzO7wcULSSl4fQHjjVKcyUnEqsFGpliIYIedC
-         qir5p5yF5tqiegUQrKmyTkXSwaI2ESru07s9GvPXWVobvCKl6UVGHWhcI+hp15V4TLxm
-         mXYg==
-X-Gm-Message-State: APjAAAWA5SJ9UONiC8i4B16LnaGmCrYAAKZ8bfzDGvzl6nG0MAUvpRZy
-        HeYJ1YINmrwX5x2CHRgZJ/yEvXvR
-X-Google-Smtp-Source: APXvYqzo7wpp4z+FyKGJBUCFpbBfLoN4fkvhh1vncucKq/vxbX1HAl8WCTzLD5gSJiFFYze+rFJQSw==
-X-Received: by 2002:a54:4814:: with SMTP id j20mr4139687oij.33.1567026993118;
-        Wed, 28 Aug 2019 14:16:33 -0700 (PDT)
-Received: from localhost.localdomain (cpe-70-114-247-242.austin.res.rr.com. [70.114.247.242])
-        by smtp.gmail.com with ESMTPSA id z26sm85608oih.16.2019.08.28.14.16.32
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Wed, 28 Aug 2019 14:16:32 -0700 (PDT)
-From:   Denis Kenzior <denkenz@gmail.com>
-To:     linux-wireless@vger.kernel.org
-Cc:     Denis Kenzior <denkenz@gmail.com>, stable@vger.kernel.org
-Subject: [PATCH] cfg80211: Purge frame registrations on iftype change
-Date:   Wed, 28 Aug 2019 16:11:10 -0500
-Message-Id: <20190828211110.15005-1-denkenz@gmail.com>
-X-Mailer: git-send-email 2.19.2
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+        Wed, 28 Aug 2019 22:26:54 -0400
+Received: by smtp.codeaurora.org (Postfix, from userid 1000)
+        id 862317BB5D; Wed, 28 Aug 2019 14:30:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
+        s=default; t=1567002670;
+        bh=eIFTXnN44WQlprMoS4na5h5ialFdvgw0zGNk/aZgyd8=;
+        h=From:To:Cc:Subject:Date:From;
+        b=MU6yuXjhc9iDeA4JX5ZuiiLw62zHUpV/VlxVEgsQsx62QnW7jLBOJOJllwS+cNYxW
+         mOGG3P0vj78xIYMItStToW/CwpMfwC768ytxeZSWydYxBWE511gSbGdWjG1TrMfC/+
+         Qyv9PEwxDZvXgWiPXy/jU3/i+xNT9m47ym+Qwo0c=
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        pdx-caf-mail.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.7 required=2.0 tests=ALL_TRUSTED,BAYES_00,
+        DKIM_INVALID,DKIM_SIGNED,SPF_NONE autolearn=no autolearn_force=no
+        version=3.4.0
+Received: from wgong-HP-Z240-SFF-Workstation.qca.qualcomm.com (unknown [180.166.53.21])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-SHA256 (128/128 bits))
+        (No client certificate requested)
+        (Authenticated sender: wgong@smtp.codeaurora.org)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id DC92D648D6;
+        Wed, 28 Aug 2019 13:16:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
+        s=default; t=1566998190;
+        bh=eIFTXnN44WQlprMoS4na5h5ialFdvgw0zGNk/aZgyd8=;
+        h=From:To:Cc:Subject:Date:From;
+        b=TGPUC1agNyoMwY5phusLKU9eJpJafFQmxqmZWqrPfZsFUUxCZDLKknmR4GbrY2898
+         LHNl+HxgnQi9UQovD6uvr2q7KqGYmMG6ONhIj0J3XlewvFHl5Vxx073396rBKMets7
+         euTvks6CErAIp0xa/XYJLT/8q5ySNIRqno4pHHHU=
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org DC92D648D6
+Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=wgong@codeaurora.org
+From:   Wen Gong <wgong@codeaurora.org>
+To:     ath10k@lists.infradead.org
+Cc:     linux-wireless@vger.kernel.org
+Subject: [PATCH v3 0/8] ath10k: improve throughout of tcp/udp TX/RX of sdio
+Date:   Wed, 28 Aug 2019 21:16:09 +0800
+Message-Id: <1566998177-2658-1-git-send-email-wgong@codeaurora.org>
+X-Mailer: git-send-email 1.9.1
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Currently frame registrations are not purged, even when changing the
-interface type.  This can lead to potentially weird / dangerous
-situations where frames possibly not relevant to a given interface
-type remain registered and mgmt_frame_register is not called for the
-no-longer-relevant frame types.
+The bottleneck of throughout on sdio chip is the bus bandwidth, to the
+patches are all to increase the use ratio of sdio bus.
 
-The kernel currently relies on userspace apps to actually purge the
-registrations themselves, e.g. by closing the nl80211 socket associated
-with those frames.  However, this requires multiple nl80211 sockets to
-be open by the userspace app, and for userspace to be aware of all state
-changes.  This is not something that the kernel should rely on.
+                      udp-rx    udp-tx    tcp-rx    tcp-tx
+without patches(Mbps)  320        180       170       151
+with patches(Mbps)     450        410       400       320
 
-This commit adds a call to cfg80211_mlme_purge_registrations() to
-forcefully remove any registrations left over prior to switching the
-iftype.
+These patches only affect sdio bus chip, explanation is mentioned in each
+patch's commit log.
 
-Cc: stable@vger.kernel.org
+Alagu Sankar (1):
+  ath10k: enable RX bundle receive for sdio
+v2: fix incorrect skb tail of rx bundle in ath10k_sdio_mbox_rx_process_packet
+v3: change some code style
+split fix incorrect skb tail of rx bundle to patch "adjust skb length in ath10k_sdio_mbox_rx_packet"
 
-Signed-off-by: Denis Kenzior <denkenz@gmail.com>
----
- net/wireless/util.c | 1 +
- 1 file changed, 1 insertion(+)
+Wen Gong (7):
+  ath10k: adjust skb length in ath10k_sdio_mbox_rx_packet
+v2:no this patch
+v2:new added
 
-diff --git a/net/wireless/util.c b/net/wireless/util.c
-index c99939067bb0..3fa092b78e62 100644
---- a/net/wireless/util.c
-+++ b/net/wireless/util.c
-@@ -964,6 +964,7 @@ int cfg80211_change_iface(struct cfg80211_registered_device *rdev,
- 		}
- 
- 		cfg80211_process_rdev_events(rdev);
-+		cfg80211_mlme_purge_registrations(dev->ieee80211_ptr);
- 	}
- 
- 	err = rdev_change_virtual_intf(rdev, dev, ntype, params);
+  ath10k: change max RX bundle size from 8 to 32 for sdio
+v2:change macro HTC_GET_BUNDLE_COUNT
+v3:change some code style
+
+  ath10k: add workqueue for RX path of sdio
+v2:no change
+v3:change some code style
+
+  ath10k: disable TX complete indication of htt for sdio
+v2:change some code style
+v3:change some code style
+
+  ath10k: add htt TX bundle for sdio
+v2:no change
+v3:change some code style
+
+  ath10k: enable alt data of TX path for sdio
+v2:no change
+v3:change some code style
+
+  ath10k: enable napi on RX path for sdio
+v2:no change
+v3:change some code style
+
+ drivers/net/wireless/ath/ath10k/core.c   |  42 +++-
+ drivers/net/wireless/ath/ath10k/core.h   |   4 +-
+ drivers/net/wireless/ath/ath10k/hif.h    |   9 +
+ drivers/net/wireless/ath/ath10k/htc.c    | 376 ++++++++++++++++++++++++++++---
+ drivers/net/wireless/ath/ath10k/htc.h    |  43 +++-
+ drivers/net/wireless/ath/ath10k/htt.c    |  15 ++
+ drivers/net/wireless/ath/ath10k/htt.h    |  20 +-
+ drivers/net/wireless/ath/ath10k/htt_rx.c |  80 ++++++-
+ drivers/net/wireless/ath/ath10k/htt_tx.c |  38 +++-
+ drivers/net/wireless/ath/ath10k/hw.h     |   2 +-
+ drivers/net/wireless/ath/ath10k/sdio.c   | 279 ++++++++++++++++++++---
+ drivers/net/wireless/ath/ath10k/sdio.h   |  31 ++-
+ 12 files changed, 844 insertions(+), 95 deletions(-)
+
 -- 
-2.19.2
+1.9.1
 
