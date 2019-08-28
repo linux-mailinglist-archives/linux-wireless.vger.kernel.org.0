@@ -2,157 +2,103 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C1FE79FB1B
-	for <lists+linux-wireless@lfdr.de>; Wed, 28 Aug 2019 09:04:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 33B2C9FDC9
+	for <lists+linux-wireless@lfdr.de>; Wed, 28 Aug 2019 11:02:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726407AbfH1HEm (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 28 Aug 2019 03:04:42 -0400
-Received: from mail-qt1-f195.google.com ([209.85.160.195]:35844 "EHLO
-        mail-qt1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726169AbfH1HEm (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 28 Aug 2019 03:04:42 -0400
-Received: by mail-qt1-f195.google.com with SMTP id z4so1898118qtc.3
-        for <linux-wireless@vger.kernel.org>; Wed, 28 Aug 2019 00:04:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=endlessm-com.20150623.gappssmtp.com; s=20150623;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=l5WYDQGBr72uC1iZWzAcRPmXL6XyAAfTwXX6nty/xZU=;
-        b=klmT9L0XlssqErq3yRPe3YA8ohQqSkM8HY/V4GvWT0J30jrPGJjclljJlq0oQq4MsJ
-         +0Bt+pxMQa/jbubXlgs4jwTbwh23inzWvgKFOlBdKmQaj8r4UyDqJRwGeq1HBtqdYMua
-         lwJCWkSrl4gFFGfCcsAPF2caNmrdxVbQIDTJI32Pt6L+Tk4llwYzBJw5YZIXnjBL6Pq8
-         XkESnVW+r8JU7/kj5FKyjeLOBmkB9wx9Jh0egEw9MXb8z3NffOhkcv9PYEpq0mT65cEx
-         m5oTcO/kh5C06FMGEzn8dTteDnYsnNyRm4Y+TzcrkxYappjX99FBfbHRTs3i8EyqMmiG
-         /+QQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=l5WYDQGBr72uC1iZWzAcRPmXL6XyAAfTwXX6nty/xZU=;
-        b=HNlJY73AjbibU1H/hMxLy9PsIXyJEQLU3cO61kSFYedaq+sKleiR9NacVIs9Jg7iTq
-         3vjij7FIs5B9QcLEvKdUsRjg95iU5kZwqo3TEdTd46aAK/SON/Pzw2P+3DwGTJhHO52e
-         ILkwpj2rvoxOzRWEewPLJNWHDMBSKfWfU7BO0qEkHEwoeKnqJZ/QZzQGgw+4S5Cz3Rg5
-         kS7E8xBvpcfvpWSnNu5u1DpqfepOGeP50Lb5vlRCNhY+TxW3MuFGlLtvLFBEwFnnSLvF
-         QmDnx7Y8nyUL4x3swaq+q6kOpHP0MrbaeLx48mhbJB6mnNVwIY65xVrSeUm2gpN1MKuU
-         Q6Jw==
-X-Gm-Message-State: APjAAAUJ7+c/bsfKgWCvWm8Oy0P9tZkM6TyOfzY3KLVGFpOWpxjQA811
-        vVORT5WZMCCqWy6afDxo1kBDhwjZFvFKnNU3PrC8HA==
-X-Google-Smtp-Source: APXvYqxzq0kw92o8/VFrXogdt3BMnl1G7hSpCAntVNGwtI6w/kqQk8NWv4beL2f9kDUyqAfl/+IzhSAAvnNiraMUvsI=
-X-Received: by 2002:a0c:d84b:: with SMTP id i11mr1781901qvj.86.1566975880595;
- Wed, 28 Aug 2019 00:04:40 -0700 (PDT)
+        id S1726272AbfH1JB7 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 28 Aug 2019 05:01:59 -0400
+Received: from mail.kernel.org ([198.145.29.99]:33842 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726232AbfH1JB7 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Wed, 28 Aug 2019 05:01:59 -0400
+Received: from localhost.localdomain (unknown [151.66.62.27])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id C94E02173E;
+        Wed, 28 Aug 2019 09:01:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1566982918;
+        bh=P+C97dr/137EFnzJNj1mSeHDHSecOowv+CYRHPhZgm0=;
+        h=From:To:Cc:Subject:Date:From;
+        b=2Z3G7vh3je635Vl7FiIO4j77bXLcDy4MHl1IV4oUbd4Rnvtw496KvPiatnXMDx0Ha
+         Z8DR4OSJuPqWmFeVw+uLDWxJWlxIuX/DNlsakxIAoXrIVaJqlVD7TyjtDtXjmDlMMr
+         Mk7uiXTJNt6hpaRfKp3IFzCRw1I+r2waHZl1KTyY=
+From:   Lorenzo Bianconi <lorenzo@kernel.org>
+To:     nbd@nbd.name
+Cc:     lorenzo.bianconi@redhat.com, linux-wireless@vger.kernel.org,
+        ryder.lee@mediatek.com, royluo@google.com
+Subject: [PATCH] mt76: mt7615: introduce mt7615_txwi_to_txp utility routine
+Date:   Wed, 28 Aug 2019 11:01:40 +0200
+Message-Id: <dc0c2f3853ec9b0ca82d15b7f371e74cba3476c1.1566982809.git.lorenzo@kernel.org>
+X-Mailer: git-send-email 2.21.0
 MIME-Version: 1.0
-References: <1565166487-22048-1-git-send-email-yhchuang@realtek.com>
- <20190823063728.14117-1-drake@endlessm.com> <CA+K+NcSYKEkdx5ux6iwUs7pMidObZBrg9yDcP1zT73DcccpDPQ@mail.gmail.com>
- <F7CD281DE3E379468C6D07993EA72F84D18AE7C8@RTITMBSVM04.realtek.com.tw>
-In-Reply-To: <F7CD281DE3E379468C6D07993EA72F84D18AE7C8@RTITMBSVM04.realtek.com.tw>
-From:   Daniel Drake <drake@endlessm.com>
-Date:   Wed, 28 Aug 2019 15:04:29 +0800
-Message-ID: <CAD8Lp46=Adn3GWAkHspdqBHVjz6sekET9nzNOCnW7sCFGtoeDQ@mail.gmail.com>
-Subject: Re: [PATCH v2] rtw88: pci: enable MSI interrupt
-To:     Tony Chuang <yhchuang@realtek.com>
-Cc:     =?UTF-8?B?SsOhbiBWZXNlbMO9?= <jano.vesely@gmail.com>,
-        "briannorris@chromium.org" <briannorris@chromium.org>,
-        "gojun077@gmail.com" <gojun077@gmail.com>,
-        "kvalo@codeaurora.org" <kvalo@codeaurora.org>,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        "linux@endlessm.com" <linux@endlessm.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Tue, Aug 27, 2019 at 8:11 PM Tony Chuang <yhchuang@realtek.com> wrote:
-> Because there's a race condition between SW/HW when clearing the ISR.
-> If interrupt comes after reading ISR and before write-1-clear, the interrupt
-> controller would have interrupt status raised, and never issue interrupt
-> signal to host when other new interrupts status are raised.
->
-> To avoid this, driver requires to protect the ISR write-1-clear process by
-> disabling the IMR.
+Introduce mt7615_txwi_to_txp utility routine to convert mt76_txwi_cache
+into mt7615_txp and remove duplicated code
 
-Just to be clear with an example of two interrupts in quick
-succession, first ROK then MGNTDOK. I would expect the hardware to
-behave as follows:
+Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+---
+ drivers/net/wireless/mediatek/mt76/mt7615/mac.c |  8 ++------
+ drivers/net/wireless/mediatek/mt76/mt7615/mac.h | 13 +++++++++++++
+ 2 files changed, 15 insertions(+), 6 deletions(-)
 
-1. Interrupts are enabled in HIMR reg. MSI is in use.
---- Hardware needs to flag RX condition. It sets IMR_ROK flag in HISR,
-then raises a MSI interrupt.
---- Interrupt controller receives this and begins handling it:
-2. rtw88 interrupt handler begins execution
-3. rtw_pci_irq_recognized()  reads HISR values. ROK is the only bit set.
---- Hardware needs to flag MGNTDOK condition, so it sets the MGNTDOK
-bit in HISR and raises another interrupt.
---- Interrupt controller queues this interrupt since it's in the
-middle of handling the original ROK interrupt.
-4. Back in rtw_pci_irq_recognized(), the HISR values from earlier are
-written back to clear them. In this case just the ROK bit is written
-back to unset the interrupt. MGNTDOK interrupt is left pending (not
-yet noticed by the driver)
-5. Interrupt handler continues & finishes handling the RX event.
-6. With the first interrupt done, interrupt controller handles the
-queued interrupt and causes rtw88 interrupt handler to execute again
-7. rtw88 interrupt handler handles and MGNTDOK interrupt.
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/mac.c b/drivers/net/wireless/mediatek/mt76/mt7615/mac.c
+index c35c386ea6bd..e07ce2c10013 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7615/mac.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7615/mac.c
+@@ -232,11 +232,9 @@ void mt7615_tx_complete_skb(struct mt76_dev *mdev, enum mt76_txq_id qid,
+ 		struct mt76_txwi_cache *t;
+ 		struct mt7615_dev *dev;
+ 		struct mt7615_txp *txp;
+-		u8 *txwi_ptr;
+ 
+-		txwi_ptr = mt76_get_txwi_ptr(mdev, e->txwi);
+-		txp = (struct mt7615_txp *)(txwi_ptr + MT_TXD_SIZE);
+ 		dev = container_of(mdev, struct mt7615_dev, mt76);
++		txp = mt7615_txwi_to_txp(mdev, e->txwi);
+ 
+ 		spin_lock_bh(&dev->token_lock);
+ 		t = idr_remove(&dev->token, le16_to_cpu(txp->token));
+@@ -449,11 +447,9 @@ void mt7615_txp_skb_unmap(struct mt76_dev *dev,
+ 			  struct mt76_txwi_cache *t)
+ {
+ 	struct mt7615_txp *txp;
+-	u8 *txwi;
+ 	int i;
+ 
+-	txwi = mt76_get_txwi_ptr(dev, t);
+-	txp = (struct mt7615_txp *)(txwi + MT_TXD_SIZE);
++	txp = mt7615_txwi_to_txp(dev, t);
+ 	for (i = 1; i < txp->nbuf; i++)
+ 		dma_unmap_single(dev->dev, le32_to_cpu(txp->buf[i]),
+ 				 le16_to_cpu(txp->len[i]), DMA_TO_DEVICE);
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/mac.h b/drivers/net/wireless/mediatek/mt76/mt7615/mac.h
+index 051b540e79fd..38695d4f92e2 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7615/mac.h
++++ b/drivers/net/wireless/mediatek/mt76/mt7615/mac.h
+@@ -317,4 +317,17 @@ enum mt7615_cipher_type {
+ 	MT_CIPHER_GCMP_256,
+ };
+ 
++static inline struct mt7615_txp *
++mt7615_txwi_to_txp(struct mt76_dev *dev, struct mt76_txwi_cache *t)
++{
++	u8 *txwi;
++
++	if (!t)
++		return NULL;
++
++	txwi = mt76_get_txwi_ptr(dev, t);
++
++	return (struct mt7615_txp *)(txwi + MT_TXD_SIZE);
++}
++
+ #endif
+-- 
+2.21.0
 
-
-But are you saying it does not do this, and the behaviour (without
-your change) is instead:
-
-1. Interrupts are enabled in HIMR reg. MSI is in use.
---- Hardware needs to flag RX condition. It sets IMR_ROK flag in HISR,
-then raises a MSI interrupt.
---- Interrupt controller receives this and begins handling it:
-2. rtw88 interrupt handler begins execution
-3. rtw_pci_irq_recognized()  reads HISR values. ROK is the only bit set.
---- Hardware needs to flag MGNTDOK condition, so it sets the MGNTDOK
-bit in HISR. However it does NOT raise an interrupt since other bits
-in HISR were still set at this time.
-4. Back in rtw_pci_irq_recognized(), the HISR values from earlier are
-written back. In this case just the ROK bit is written back to unset
-the interrupt. MGNTDOK interrupt is left pending (not yet noticed by
-the driver)
-5. Interrupt handler continues & finishes handling the RX event.
-6. MGNTDOK interrupt is left pending, and no more interrupts will be
-generated by the hardware because even if it sets more HISR bits, the
-MGNTDOK bit was already set so it doesn't raise more interrupts.
-
-i.e. you're effectively saying that the hardware will *only* generate
-an interrupt when *all* HISR bits were zero immediately before the new
-interrupt HISR bit is set?
-
-
-And then with your change applied it would look like this:
-
-1. Interrupts are enabled in HIMR reg. MSI is in use.
---- Hardware needs to flag RX condition. It sets IMR_ROK flag in HISR,
-then raises a MSI interrupt.
---- Interrupt controller receives this and begins handling it:
-2. rtw88 interrupt handler begins execution
-3. Interrupts are disabled in HIMR reg.
-4. rtw_pci_irq_recognized()  reads HISR values. ROK is the only bit set.
---- Hardware needs to flag MGNTDOK condition, however because
-interrupts are disabled in HIMR, it simply queues this condition
-internally, without affecting HISR values, without generating another
-interrupt.
-4. Back in rtw_pci_irq_recognized(), the HISR values from earlier are
-written back. In this case just the ROK bit is written back to unset
-the interrupt. HISR is now value 0.
-5. Interrupt handler handles the RX event.
-6. Interrupt handler re-enables interrupts in HIMR just before finishing.
---- In response, hardware checks its internal queue and realises that
-a MGNTDOK condition is pending. It sets the MGNTDOK bit in HISR and
-raises a new interrupt.
-
-Is that right? It seems like strange behaviour on the hardware side.
-
-> Do you mean I should remove this?
-> But I cannot find another proper way to enable the MSI.
-> Maybe pci_alloc_irq_vectors() could work but I am not sure if
-> It is recommended.
-
-Yes, I think you should switch to pci_alloc_irq_vectors() which is the
-recommended, documented way.
-
-Thanks,
-Daniel
