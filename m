@@ -2,89 +2,127 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 660BB9F65C
-	for <lists+linux-wireless@lfdr.de>; Wed, 28 Aug 2019 00:46:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E90BB9F820
+	for <lists+linux-wireless@lfdr.de>; Wed, 28 Aug 2019 04:08:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726370AbfH0Wqp (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 27 Aug 2019 18:46:45 -0400
-Received: from mail-ot1-f68.google.com ([209.85.210.68]:44554 "EHLO
-        mail-ot1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725989AbfH0Wqo (ORCPT
+        id S1726127AbfH1CIY (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 27 Aug 2019 22:08:24 -0400
+Received: from mail-pg1-f195.google.com ([209.85.215.195]:41425 "EHLO
+        mail-pg1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726096AbfH1CIY (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 27 Aug 2019 18:46:44 -0400
-Received: by mail-ot1-f68.google.com with SMTP id w4so789213ote.11;
-        Tue, 27 Aug 2019 15:46:44 -0700 (PDT)
+        Tue, 27 Aug 2019 22:08:24 -0400
+Received: by mail-pg1-f195.google.com with SMTP id x15so498545pgg.8
+        for <linux-wireless@vger.kernel.org>; Tue, 27 Aug 2019 19:08:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=X+nREUwlvZXeg9X1aSX0ROEww5kCvuINCgrBH5wkbvw=;
-        b=AaNy3pDQEz4qKUspyqPvb/jUVpmOatG2OMB/sfCKSylcXVoApZPklZVchlOZQfRE1L
-         p87wAnWdZeR9RrlOY/7xFUk1jZiRYmq7mfSIyyUjifWPyO2omyXEBvMto5xpnUJz0os3
-         ghIOSBq74gba7SFTuZx9cVEi7JYSmiKwJuxTA6hSN4Y5ugyyhUffNddvx5/Yohz89slD
-         1xcVm9nT5tYkGauj/wFH0fm6aIzRR7kF0exOObDrIbtNMb3QwxCvqA7xSEfIV16QtdT1
-         KHn2PcY/df0l14EGlt40Bw+NoBK7csYul9oSCyjVx33TZ2e9xgQcKpR4ZW2mLNTe+o9k
-         sRLA==
+        h=from:to:cc:subject:date:message-id;
+        bh=zF/rdCcsl+Dpf6pR2o3pkaHSiAFxtHTEr8wwdACI24s=;
+        b=IA7BwRJCgc0gGOw5C7lZohfbL4xQenMqPwKog/a6322QW1ZCJo9+YA44hqHGeXCCET
+         NzgcdXikIEmDh9azkSiFIxncYWnKwJsXdUBhCP5nDp2GciRXS2NQ65JtbqagrheD4lVf
+         +Pb00xgDSgKWQYTcqwSA2yYT9narnQxKODABGmtA6gwCWCG+SvqcZk1ekpnyXQocS6vh
+         L4PoCWF3BnZkp235hrtOyzso68sDkVNJz6ZDJG47SIGi//SqblL8+W5L0VdodxWNIeOu
+         V0anGG8f/Doy0MOpkTorfiducAsLMgfQi1lDZvmLLVd/YWR2IdlSkGuUlYYSPRh3iRQj
+         YnnA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=X+nREUwlvZXeg9X1aSX0ROEww5kCvuINCgrBH5wkbvw=;
-        b=ju8Yf13Ony7IlPXYTzqXNyEQsFuXQr67DUD/kVW6A2ydazXeURxX7iNjsLaJbS1790
-         5BMwZfTQgA2/tgiN3q+HtKlHBt/GQ6NktVEZQB37vzXMutOk3yPFDkKiGi4QTNuSVeiK
-         NJejZWuJHZQ6wRuiRrxYOvLnuo54DcNov2ljnJUUkmbQLCgCB6JuXEC0ZWQt4cWXHAvF
-         1U+P9FIUUiA5JgAj87JcQQ5wHXo+o/n87Ibbnp2LIKnILD9OxgQvDa6ZTcied1JbBn9Y
-         6kJulL9al+k/7qqGNie+IG/AzUBb/mXLMkmwz9gJ2qAWnJ1HrqA/dBF+NwRKrICftEJq
-         +Gnw==
-X-Gm-Message-State: APjAAAU4XpHLwIs8Tc925wr1+7CtSGQC8mKMy0lLJ2sDLqJr7YBlNM9H
-        WrbBjK68yJ5zYnGGdMwBeK32zsCY
-X-Google-Smtp-Source: APXvYqyC9uItvFTAEkvyjpaI4wJtSJfSyQOnYnSFOkp2/pG8b3xd6J1sDqIVmRQNwC5EVuwRNRed2Q==
-X-Received: by 2002:a9d:70cf:: with SMTP id w15mr849477otj.320.1566946003753;
-        Tue, 27 Aug 2019 15:46:43 -0700 (PDT)
-Received: from localhost.localdomain (cpe-70-114-247-242.austin.res.rr.com. [70.114.247.242])
-        by smtp.gmail.com with ESMTPSA id a94sm289911otb.15.2019.08.27.15.46.43
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Tue, 27 Aug 2019 15:46:43 -0700 (PDT)
-From:   Denis Kenzior <denkenz@gmail.com>
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=zF/rdCcsl+Dpf6pR2o3pkaHSiAFxtHTEr8wwdACI24s=;
+        b=ceinhwS780P1iDieuukVIn2k6b1mW5L9RUW5Cf1wgXUoym0eeHIjHVxJDyte535qY3
+         CmHO4Q8viRG4ycIifiJTtKzn7mp0QMeWcG7RpgoAXfZb1XBaj3FXDJjBXyNqvfB23VVm
+         Zb+siWZHFloiDp+3ZXmTCt24f0/gTWglkCVEa3ZfuE+YCjsiIvct8Srqi+lNeoam6Le7
+         w3SlkLkHqr9G3GSN1Rt9Yf0hCymRFlkBbZvnVSLdOTveygH1WdYVD2huLvriEbKL8i6k
+         SMCb8fXq8mXURblOh+3S7/gmLpaBK7zUi3JpGLnVo5jEH8uIhhxLrJXjoHC9eXTHpO+2
+         MpOQ==
+X-Gm-Message-State: APjAAAXQVDCD0oVuK0PpIHqp2Jm0L7G6KsvCQ6CgnO4uaNG9QmRxWN+8
+        M58+vc7TzkG1sr6shISyFwdcfGBkfjM=
+X-Google-Smtp-Source: APXvYqyECYmkfkZ/6i0IjVBxhjaFZfVQ8xU9tke4CVSodxqtntgjXHLzr6BDXwVULEb6EBySirWb5w==
+X-Received: by 2002:a62:cec4:: with SMTP id y187mr1893773pfg.84.1566958103164;
+        Tue, 27 Aug 2019 19:08:23 -0700 (PDT)
+Received: from localhost ([67.218.142.97])
+        by smtp.gmail.com with ESMTPSA id m34sm467149pje.5.2019.08.27.19.08.21
+        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
+        Tue, 27 Aug 2019 19:08:22 -0700 (PDT)
+From:   huangwenabc@gmail.com
 To:     linux-wireless@vger.kernel.org
-Cc:     Denis Kenzior <denkenz@gmail.com>, stable@vger.kernel.org
-Subject: [PATCH 2/2] mac80211: Correctly set noencrypt for PAE frames
-Date:   Tue, 27 Aug 2019 17:41:20 -0500
-Message-Id: <20190827224120.14545-3-denkenz@gmail.com>
-X-Mailer: git-send-email 2.19.2
-In-Reply-To: <20190827224120.14545-1-denkenz@gmail.com>
-References: <20190827224120.14545-1-denkenz@gmail.com>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Cc:     amitkarwar@gmail.com, nishants@marvell.com, gbhat@marvell.com,
+        huxinming820@gmail.com, solar@openwall.com, greg@kroah.com,
+        kvalo@codeaurora.org, sashal@kernel.org, mrehak@redhat.com
+Subject: [PATCH] mwifiex: Fix three heap overflow at parsing element in cfg80211_ap_settings
+Date:   Wed, 28 Aug 2019 10:07:51 +0800
+Message-Id: <20190828020751.13625-1-huangwenabc@gmail.com>
+X-Mailer: git-send-email 2.17.1
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-The noencrypt flag was intended to be set if the "frame was received
-unencrypted" according to include/uapi/linux/nl80211.h.  However, the
-current behavior is opposite of this.
+From: Wen Huang <huangwenabc@gmail.com>
 
-Cc: stable@vger.kernel.org
-Fixes: 018f6fbf540d ("mac80211: Send control port frames over nl80211")
-Signed-off-by: Denis Kenzior <denkenz@gmail.com>
+mwifiex_update_vs_ie(),mwifiex_set_uap_rates() and 
+mwifiex_set_wmm_params() call memcpy() without checking
+the destination size.Since the source is given from 
+user-space, this may trigger a heap buffer overflow.
+
+Fix them by putting the length check before performing memcpy().
+
+This fix addresses CVE-2019-14814,CVE-2019-14815,CVE-2019-14816.
+
+Signed-off-by: Wen Huang <huangwenabc@gmail.com>
 ---
- net/mac80211/rx.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/wireless/marvell/mwifiex/ie.c      | 3 +++
+ drivers/net/wireless/marvell/mwifiex/uap_cmd.c | 9 ++++++++-
+ 2 files changed, 11 insertions(+), 1 deletion(-)
 
-diff --git a/net/mac80211/rx.c b/net/mac80211/rx.c
-index 7c4aeac006fb..8514c1f4ca90 100644
---- a/net/mac80211/rx.c
-+++ b/net/mac80211/rx.c
-@@ -2447,7 +2447,7 @@ static void ieee80211_deliver_skb_to_local_stack(struct sk_buff *skb,
- 		      skb->protocol == cpu_to_be16(ETH_P_PREAUTH)) &&
- 		     sdata->control_port_over_nl80211)) {
- 		struct ieee80211_rx_status *status = IEEE80211_SKB_RXCB(skb);
--		bool noencrypt = status->flag & RX_FLAG_DECRYPTED;
-+		bool noencrypt = (status->flag & RX_FLAG_DECRYPTED) == 0;
+diff --git a/drivers/net/wireless/marvell/mwifiex/ie.c b/drivers/net/wireless/marvell/mwifiex/ie.c
+index 653d347a9..580387f9f 100644
+--- a/drivers/net/wireless/marvell/mwifiex/ie.c
++++ b/drivers/net/wireless/marvell/mwifiex/ie.c
+@@ -241,6 +241,9 @@ static int mwifiex_update_vs_ie(const u8 *ies, int ies_len,
+ 		}
  
- 		cfg80211_rx_control_port(dev, skb, noencrypt);
- 		dev_kfree_skb(skb);
+ 		vs_ie = (struct ieee_types_header *)vendor_ie;
++		if (le16_to_cpu(ie->ie_length) + vs_ie->len + 2 >
++			IEEE_MAX_IE_SIZE)
++			return -EINVAL;
+ 		memcpy(ie->ie_buffer + le16_to_cpu(ie->ie_length),
+ 		       vs_ie, vs_ie->len + 2);
+ 		le16_unaligned_add_cpu(&ie->ie_length, vs_ie->len + 2);
+diff --git a/drivers/net/wireless/marvell/mwifiex/uap_cmd.c b/drivers/net/wireless/marvell/mwifiex/uap_cmd.c
+index 18f7d9bf3..0939a8c8f 100644
+--- a/drivers/net/wireless/marvell/mwifiex/uap_cmd.c
++++ b/drivers/net/wireless/marvell/mwifiex/uap_cmd.c
+@@ -265,6 +265,8 @@ mwifiex_set_uap_rates(struct mwifiex_uap_bss_param *bss_cfg,
+ 
+ 	rate_ie = (void *)cfg80211_find_ie(WLAN_EID_SUPP_RATES, var_pos, len);
+ 	if (rate_ie) {
++		if (rate_ie->len > MWIFIEX_SUPPORTED_RATES)
++			return;
+ 		memcpy(bss_cfg->rates, rate_ie + 1, rate_ie->len);
+ 		rate_len = rate_ie->len;
+ 	}
+@@ -272,8 +274,11 @@ mwifiex_set_uap_rates(struct mwifiex_uap_bss_param *bss_cfg,
+ 	rate_ie = (void *)cfg80211_find_ie(WLAN_EID_EXT_SUPP_RATES,
+ 					   params->beacon.tail,
+ 					   params->beacon.tail_len);
+-	if (rate_ie)
++	if (rate_ie) {
++		if (rate_ie->len > MWIFIEX_SUPPORTED_RATES - rate_len)
++			return;
+ 		memcpy(bss_cfg->rates + rate_len, rate_ie + 1, rate_ie->len);
++	}
+ 
+ 	return;
+ }
+@@ -391,6 +396,8 @@ mwifiex_set_wmm_params(struct mwifiex_private *priv,
+ 					    params->beacon.tail_len);
+ 	if (vendor_ie) {
+ 		wmm_ie = vendor_ie;
++		if (*(wmm_ie + 1) > sizeof(struct mwifiex_types_wmm_info))
++			return;
+ 		memcpy(&bss_cfg->wmm_info, wmm_ie +
+ 		       sizeof(struct ieee_types_header), *(wmm_ie + 1));
+ 		priv->wmm_enabled = 1;
 -- 
-2.19.2
+2.17.1
 
