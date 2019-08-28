@@ -2,126 +2,85 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 9D54D9FF9E
-	for <lists+linux-wireless@lfdr.de>; Wed, 28 Aug 2019 12:20:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D2955A0262
+	for <lists+linux-wireless@lfdr.de>; Wed, 28 Aug 2019 15:00:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726583AbfH1KUp (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 28 Aug 2019 06:20:45 -0400
-Received: from nbd.name ([46.4.11.11]:55800 "EHLO nbd.name"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726370AbfH1KUp (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 28 Aug 2019 06:20:45 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name;
-         s=20160729; h=Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:
-        MIME-Version:Content-Type:Content-Transfer-Encoding:Content-ID:
-        Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-        :Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
-        List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=sYtIHDq0hXyvHzpMqvLCoQN2O7ptY9/XB+9t+gKTmzY=; b=K8wWR1unP5L/FSHLCkDYzE5BKO
-        d5mgb0vQmEWds1udQ9xPJ0bVGuomTRYq+0mR4qZeLuAp7Z0qbhQ85XwWyq01XV+aGf5wgL/QzOW7w
-        8MDpZUnupVR5HsdW1RUu1XOglYcsCAlnyB9ANEm//0L0TKzbt9I052QSGXWjbOp1oEgQ=;
-Received: from p5b206034.dip0.t-ipconnect.de ([91.32.96.52] helo=maeck.local)
-        by ds12 with esmtpsa (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.89)
-        (envelope-from <nbd@nbd.name>)
-        id 1i2v4F-00057E-2V; Wed, 28 Aug 2019 12:20:43 +0200
-Received: by maeck.local (Postfix, from userid 501)
-        id 86C3F64CACDB; Wed, 28 Aug 2019 12:20:42 +0200 (CEST)
-From:   Felix Fietkau <nbd@nbd.name>
-To:     linux-wireless@vger.kernel.org
-Cc:     johannes@sipsolutions.net
-Subject: [PATCH v2] cfg80211: add local BSS receive time to survey information
-Date:   Wed, 28 Aug 2019 12:20:42 +0200
-Message-Id: <20190828102042.58016-1-nbd@nbd.name>
-X-Mailer: git-send-email 2.17.0
+        id S1726575AbfH1M77 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 28 Aug 2019 08:59:59 -0400
+Received: from alexa-out-tai-02.qualcomm.com ([103.229.16.227]:29647 "EHLO
+        alexa-out-tai-02.qualcomm.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726197AbfH1M77 (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Wed, 28 Aug 2019 08:59:59 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
+  d=qti.qualcomm.com; i=@qti.qualcomm.com; q=dns/txt;
+  s=qcdkim; t=1566997198; x=1598533198;
+  h=from:to:cc:date:message-id:references:in-reply-to:
+   content-transfer-encoding:mime-version:subject;
+  bh=wOU4tVJO3ByJwR7Ch5MaE86PQonwsrDPw/6jEeqaQdE=;
+  b=azE88Xdp+YEunauBrvo+vGLkfhxyD4U59kelXnK2iZwnvFIYmnfBvcLN
+   omYPwhegnwmHc14xSRfph2DIMcMm/ljh84zumcePNdVSZ6UdmVzP8Ig2p
+   Wzu9Txcor2uWngi7lTe9OXS2jbm3WQNLfctt2guPxbReJJ9qyjDfyEiPu
+   k=;
+Subject: RE: [PATCH v2 4/7] ath10k: disable TX complete indication of htt for sdio
+Thread-Topic: [PATCH v2 4/7] ath10k: disable TX complete indication of htt for sdio
+Received: from ironmsg03-tai.qualcomm.com ([10.249.140.8])
+  by alexa-out-tai-02.qualcomm.com with ESMTP; 28 Aug 2019 20:59:56 +0800
+Received: from aptaiexm02f.ap.qualcomm.com ([10.249.150.16])
+  by ironmsg03-tai.qualcomm.com with ESMTP/TLS/AES256-SHA; 28 Aug 2019 20:59:52 +0800
+Received: from aptaiexm02f.ap.qualcomm.com (10.249.150.16) by
+ aptaiexm02f.ap.qualcomm.com (10.249.150.16) with Microsoft SMTP Server (TLS)
+ id 15.0.1473.3; Wed, 28 Aug 2019 20:59:50 +0800
+Received: from aptaiexm02f.ap.qualcomm.com ([fe80::4152:1436:e436:faa1]) by
+ aptaiexm02f.ap.qualcomm.com ([fe80::4152:1436:e436:faa1%19]) with mapi id
+ 15.00.1473.005; Wed, 28 Aug 2019 20:59:50 +0800
+From:   Wen Gong <wgong@qti.qualcomm.com>
+To:     Nicolas Boichat <drinkcat@chromium.org>,
+        Wen Gong <wgong@codeaurora.org>
+CC:     "open list:NETWORKING DRIVERS (WIRELESS)" 
+        <linux-wireless@vger.kernel.org>,
+        "ath10k@lists.infradead.org" <ath10k@lists.infradead.org>
+Thread-Index: AQHVXWFSQ/SJykVh+UihzVRM6dfs6acQhZzQ
+Date:   Wed, 28 Aug 2019 12:59:50 +0000
+Message-ID: <d97ba89eaee24e07ac14c34fca2ad46d@aptaiexm02f.ap.qualcomm.com>
+References: <1566903707-27536-1-git-send-email-wgong@codeaurora.org>
+ <1566903707-27536-5-git-send-email-wgong@codeaurora.org>
+ <CANMq1KDeQaJWYiAz=P9pKm0_seNmtnEHVgt9T0-=40Ew=zLs0A@mail.gmail.com>
+In-Reply-To: <CANMq1KDeQaJWYiAz=P9pKm0_seNmtnEHVgt9T0-=40Ew=zLs0A@mail.gmail.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-ms-exchange-transport-fromentityheader: Hosted
+x-originating-ip: [10.249.136.10]
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-This is useful for checking how much airtime is being used up by other
-transmissions on the channel, e.g. by calculating (time_rx - time_bss_rx)
-or (time_busy - time_bss_rx - time_tx)
-
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
----
- include/net/cfg80211.h       | 4 ++++
- include/uapi/linux/nl80211.h | 3 +++
- net/wireless/nl80211.c       | 4 ++++
- 3 files changed, 11 insertions(+)
-
-diff --git a/include/net/cfg80211.h b/include/net/cfg80211.h
-index 35ec1f0a2bf9..bf97c4f805d3 100644
---- a/include/net/cfg80211.h
-+++ b/include/net/cfg80211.h
-@@ -694,6 +694,7 @@ ieee80211_chandef_max_power(struct cfg80211_chan_def *chandef)
-  * @SURVEY_INFO_TIME_RX: receive time was filled in
-  * @SURVEY_INFO_TIME_TX: transmit time was filled in
-  * @SURVEY_INFO_TIME_SCAN: scan time was filled in
-+ * @SURVEY_INFO_TIME_BSS_RX: local BSS receive time was filled in
-  *
-  * Used by the driver to indicate which info in &struct survey_info
-  * it has filled in during the get_survey().
-@@ -707,6 +708,7 @@ enum survey_info_flags {
- 	SURVEY_INFO_TIME_RX		= BIT(5),
- 	SURVEY_INFO_TIME_TX		= BIT(6),
- 	SURVEY_INFO_TIME_SCAN		= BIT(7),
-+	SURVEY_INFO_TIME_BSS_RX		= BIT(8),
- };
- 
- /**
-@@ -723,6 +725,7 @@ enum survey_info_flags {
-  * @time_rx: amount of time the radio spent receiving data
-  * @time_tx: amount of time the radio spent transmitting data
-  * @time_scan: amount of time the radio spent for scanning
-+ * @time_bss_rx: amount of time the radio spent receiving data on a local BSS
-  *
-  * Used by dump_survey() to report back per-channel survey information.
-  *
-@@ -737,6 +740,7 @@ struct survey_info {
- 	u64 time_rx;
- 	u64 time_tx;
- 	u64 time_scan;
-+	u64 time_bss_rx;
- 	u32 filled;
- 	s8 noise;
- };
-diff --git a/include/uapi/linux/nl80211.h b/include/uapi/linux/nl80211.h
-index 822851d369ab..e74cf4daad02 100644
---- a/include/uapi/linux/nl80211.h
-+++ b/include/uapi/linux/nl80211.h
-@@ -3843,6 +3843,8 @@ enum nl80211_user_reg_hint_type {
-  * @NL80211_SURVEY_INFO_TIME_SCAN: time the radio spent for scan
-  *	(on this channel or globally)
-  * @NL80211_SURVEY_INFO_PAD: attribute used for padding for 64-bit alignment
-+ * @NL80211_SURVEY_INFO_TIME_BSS_RX: amount of time the radio spent
-+ *	receiving local BSS data
-  * @NL80211_SURVEY_INFO_MAX: highest survey info attribute number
-  *	currently defined
-  * @__NL80211_SURVEY_INFO_AFTER_LAST: internal use
-@@ -3859,6 +3861,7 @@ enum nl80211_survey_info {
- 	NL80211_SURVEY_INFO_TIME_TX,
- 	NL80211_SURVEY_INFO_TIME_SCAN,
- 	NL80211_SURVEY_INFO_PAD,
-+	NL80211_SURVEY_INFO_TIME_BSS_RX,
- 
- 	/* keep last */
- 	__NL80211_SURVEY_INFO_AFTER_LAST,
-diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
-index 1a107f29016b..3eea7a6f9070 100644
---- a/net/wireless/nl80211.c
-+++ b/net/wireless/nl80211.c
-@@ -8777,6 +8777,10 @@ static int nl80211_send_survey(struct sk_buff *msg, u32 portid, u32 seq,
- 	    nla_put_u64_64bit(msg, NL80211_SURVEY_INFO_TIME_SCAN,
- 			      survey->time_scan, NL80211_SURVEY_INFO_PAD))
- 		goto nla_put_failure;
-+	if ((survey->filled & SURVEY_INFO_TIME_BSS_RX) &&
-+	    nla_put_u64_64bit(msg, NL80211_SURVEY_INFO_TIME_BSS_RX,
-+			      survey->time_bss_rx, NL80211_SURVEY_INFO_PAD))
-+		goto nla_put_failure;
- 
- 	nla_nest_end(msg, infoattr);
- 
--- 
-2.17.0
-
+> -----Original Message-----
+> From: ath10k <ath10k-bounces@lists.infradead.org> On Behalf Of Nicolas
+> Boichat
+> Sent: Wednesday, August 28, 2019 1:27 PM
+> To: Wen Gong <wgong@codeaurora.org>
+> Cc: open list:NETWORKING DRIVERS (WIRELESS) <linux-
+> wireless@vger.kernel.org>; ath10k@lists.infradead.org
+> Subject: [EXT] Re: [PATCH v2 4/7] ath10k: disable TX complete indication =
+of
+> htt for sdio
+> >  static unsigned int ath10k_cryptmode_param;
+> >  static bool uart_print;
+> > +static bool disable_tx_comp =3D true;
+>=20
+> So you don't like my feedback to call this enable_tx_comp? That's ok,
+> but please let me know why ,-)
+Since tx complete is enabled by default, so disable_tx_comp will be a=20
+Make sense word per my understand.
+>=20
+> _______________________________________________
+> ath10k mailing list
+> ath10k@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/ath10k
