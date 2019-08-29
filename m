@@ -2,118 +2,87 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E22D2A0F7A
-	for <lists+linux-wireless@lfdr.de>; Thu, 29 Aug 2019 04:26:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 28BB6A136F
+	for <lists+linux-wireless@lfdr.de>; Thu, 29 Aug 2019 10:13:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726245AbfH2C0y (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 28 Aug 2019 22:26:54 -0400
-Received: from smtp.codeaurora.org ([198.145.29.96]:45704 "EHLO
-        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726081AbfH2C0y (ORCPT
+        id S1726214AbfH2INy (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 29 Aug 2019 04:13:54 -0400
+Received: from paleale.coelho.fi ([176.9.41.70]:39172 "EHLO
+        farmhouse.coelho.fi" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
+        with ESMTP id S1725990AbfH2INx (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 28 Aug 2019 22:26:54 -0400
-Received: by smtp.codeaurora.org (Postfix, from userid 1000)
-        id 862317BB5D; Wed, 28 Aug 2019 14:30:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1567002670;
-        bh=eIFTXnN44WQlprMoS4na5h5ialFdvgw0zGNk/aZgyd8=;
-        h=From:To:Cc:Subject:Date:From;
-        b=MU6yuXjhc9iDeA4JX5ZuiiLw62zHUpV/VlxVEgsQsx62QnW7jLBOJOJllwS+cNYxW
-         mOGG3P0vj78xIYMItStToW/CwpMfwC768ytxeZSWydYxBWE511gSbGdWjG1TrMfC/+
-         Qyv9PEwxDZvXgWiPXy/jU3/i+xNT9m47ym+Qwo0c=
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        pdx-caf-mail.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.7 required=2.0 tests=ALL_TRUSTED,BAYES_00,
-        DKIM_INVALID,DKIM_SIGNED,SPF_NONE autolearn=no autolearn_force=no
-        version=3.4.0
-Received: from wgong-HP-Z240-SFF-Workstation.qca.qualcomm.com (unknown [180.166.53.21])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-SHA256 (128/128 bits))
-        (No client certificate requested)
-        (Authenticated sender: wgong@smtp.codeaurora.org)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id DC92D648D6;
-        Wed, 28 Aug 2019 13:16:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1566998190;
-        bh=eIFTXnN44WQlprMoS4na5h5ialFdvgw0zGNk/aZgyd8=;
-        h=From:To:Cc:Subject:Date:From;
-        b=TGPUC1agNyoMwY5phusLKU9eJpJafFQmxqmZWqrPfZsFUUxCZDLKknmR4GbrY2898
-         LHNl+HxgnQi9UQovD6uvr2q7KqGYmMG6ONhIj0J3XlewvFHl5Vxx073396rBKMets7
-         euTvks6CErAIp0xa/XYJLT/8q5ySNIRqno4pHHHU=
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org DC92D648D6
-Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=wgong@codeaurora.org
-From:   Wen Gong <wgong@codeaurora.org>
-To:     ath10k@lists.infradead.org
+        Thu, 29 Aug 2019 04:13:53 -0400
+Received: from [91.156.6.193] (helo=redipa.ger.corp.intel.com)
+        by farmhouse.coelho.fi with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+        (Exim 4.92)
+        (envelope-from <luca@coelho.fi>)
+        id 1i3FZ1-0000ts-DP; Thu, 29 Aug 2019 11:13:52 +0300
+From:   Luca Coelho <luca@coelho.fi>
+To:     kvalo@codeaurora.org
 Cc:     linux-wireless@vger.kernel.org
-Subject: [PATCH v3 0/8] ath10k: improve throughout of tcp/udp TX/RX of sdio
-Date:   Wed, 28 Aug 2019 21:16:09 +0800
-Message-Id: <1566998177-2658-1-git-send-email-wgong@codeaurora.org>
-X-Mailer: git-send-email 1.9.1
+Date:   Thu, 29 Aug 2019 11:13:46 +0300
+Message-Id: <20190829081346.13294-1-luca@coelho.fi>
+X-Mailer: git-send-email 2.23.0.rc1
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on farmhouse.coelho.fi
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.9 required=5.0 tests=ALL_TRUSTED,BAYES_00,
+        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.2
+Subject: [PATCH v5.3] iwlwifi: assign directly to iwl_trans->cfg in QuZ detection
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-The bottleneck of throughout on sdio chip is the bus bandwidth, to the
-patches are all to increase the use ratio of sdio bus.
+From: Luca Coelho <luciano.coelho@intel.com>
 
-                      udp-rx    udp-tx    tcp-rx    tcp-tx
-without patches(Mbps)  320        180       170       151
-with patches(Mbps)     450        410       400       320
+We were erroneously assigning the new configuration to a local
+variable cfg, but that was not being assigned to anything, so the
+change was getting lost.  Assign directly to iwl_trans->cfg instead.
 
-These patches only affect sdio bus chip, explanation is mentioned in each
-patch's commit log.
+Fixes: 5a8c31aa6357 ("iwlwifi: pcie: fix recognition of QuZ devices")
+Cc: stable@vger.kernel.org # 5.2
+Signed-off-by: Luca Coelho <luciano.coelho@intel.com>
+---
+ drivers/net/wireless/intel/iwlwifi/pcie/drv.c | 24 +++++++++----------
+ 1 file changed, 12 insertions(+), 12 deletions(-)
 
-Alagu Sankar (1):
-  ath10k: enable RX bundle receive for sdio
-v2: fix incorrect skb tail of rx bundle in ath10k_sdio_mbox_rx_process_packet
-v3: change some code style
-split fix incorrect skb tail of rx bundle to patch "adjust skb length in ath10k_sdio_mbox_rx_packet"
-
-Wen Gong (7):
-  ath10k: adjust skb length in ath10k_sdio_mbox_rx_packet
-v2:no this patch
-v2:new added
-
-  ath10k: change max RX bundle size from 8 to 32 for sdio
-v2:change macro HTC_GET_BUNDLE_COUNT
-v3:change some code style
-
-  ath10k: add workqueue for RX path of sdio
-v2:no change
-v3:change some code style
-
-  ath10k: disable TX complete indication of htt for sdio
-v2:change some code style
-v3:change some code style
-
-  ath10k: add htt TX bundle for sdio
-v2:no change
-v3:change some code style
-
-  ath10k: enable alt data of TX path for sdio
-v2:no change
-v3:change some code style
-
-  ath10k: enable napi on RX path for sdio
-v2:no change
-v3:change some code style
-
- drivers/net/wireless/ath/ath10k/core.c   |  42 +++-
- drivers/net/wireless/ath/ath10k/core.h   |   4 +-
- drivers/net/wireless/ath/ath10k/hif.h    |   9 +
- drivers/net/wireless/ath/ath10k/htc.c    | 376 ++++++++++++++++++++++++++++---
- drivers/net/wireless/ath/ath10k/htc.h    |  43 +++-
- drivers/net/wireless/ath/ath10k/htt.c    |  15 ++
- drivers/net/wireless/ath/ath10k/htt.h    |  20 +-
- drivers/net/wireless/ath/ath10k/htt_rx.c |  80 ++++++-
- drivers/net/wireless/ath/ath10k/htt_tx.c |  38 +++-
- drivers/net/wireless/ath/ath10k/hw.h     |   2 +-
- drivers/net/wireless/ath/ath10k/sdio.c   | 279 ++++++++++++++++++++---
- drivers/net/wireless/ath/ath10k/sdio.h   |  31 ++-
- 12 files changed, 844 insertions(+), 95 deletions(-)
-
+diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/drv.c b/drivers/net/wireless/intel/iwlwifi/pcie/drv.c
+index d9ed53b7c768..3b12e7ad35e1 100644
+--- a/drivers/net/wireless/intel/iwlwifi/pcie/drv.c
++++ b/drivers/net/wireless/intel/iwlwifi/pcie/drv.c
+@@ -1070,18 +1070,18 @@ static int iwl_pci_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
+ 
+ 	/* same thing for QuZ... */
+ 	if (iwl_trans->hw_rev == CSR_HW_REV_TYPE_QUZ) {
+-		if (cfg == &iwl_ax101_cfg_qu_hr)
+-			cfg = &iwl_ax101_cfg_quz_hr;
+-		else if (cfg == &iwl_ax201_cfg_qu_hr)
+-			cfg = &iwl_ax201_cfg_quz_hr;
+-		else if (cfg == &iwl9461_2ac_cfg_qu_b0_jf_b0)
+-			cfg = &iwl9461_2ac_cfg_quz_a0_jf_b0_soc;
+-		else if (cfg == &iwl9462_2ac_cfg_qu_b0_jf_b0)
+-			cfg = &iwl9462_2ac_cfg_quz_a0_jf_b0_soc;
+-		else if (cfg == &iwl9560_2ac_cfg_qu_b0_jf_b0)
+-			cfg = &iwl9560_2ac_cfg_quz_a0_jf_b0_soc;
+-		else if (cfg == &iwl9560_2ac_160_cfg_qu_b0_jf_b0)
+-			cfg = &iwl9560_2ac_160_cfg_quz_a0_jf_b0_soc;
++		if (iwl_trans->cfg == &iwl_ax101_cfg_qu_hr)
++			iwl_trans->cfg = &iwl_ax101_cfg_quz_hr;
++		else if (iwl_trans->cfg == &iwl_ax201_cfg_qu_hr)
++			iwl_trans->cfg = &iwl_ax201_cfg_quz_hr;
++		else if (iwl_trans->cfg == &iwl9461_2ac_cfg_qu_b0_jf_b0)
++			iwl_trans->cfg = &iwl9461_2ac_cfg_quz_a0_jf_b0_soc;
++		else if (iwl_trans->cfg == &iwl9462_2ac_cfg_qu_b0_jf_b0)
++			iwl_trans->cfg = &iwl9462_2ac_cfg_quz_a0_jf_b0_soc;
++		else if (iwl_trans->cfg == &iwl9560_2ac_cfg_qu_b0_jf_b0)
++			iwl_trans->cfg = &iwl9560_2ac_cfg_quz_a0_jf_b0_soc;
++		else if (iwl_trans->cfg == &iwl9560_2ac_160_cfg_qu_b0_jf_b0)
++			iwl_trans->cfg = &iwl9560_2ac_160_cfg_quz_a0_jf_b0_soc;
+ 	}
+ 
+ #endif
 -- 
-1.9.1
+2.23.0.rc1
 
