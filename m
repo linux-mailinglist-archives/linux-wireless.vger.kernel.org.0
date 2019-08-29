@@ -2,38 +2,38 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id F3A58A1747
-	for <lists+linux-wireless@lfdr.de>; Thu, 29 Aug 2019 12:54:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 190EEA1710
+	for <lists+linux-wireless@lfdr.de>; Thu, 29 Aug 2019 12:53:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728063AbfH2Kuc (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 29 Aug 2019 06:50:32 -0400
-Received: from mail.kernel.org ([198.145.29.99]:57806 "EHLO mail.kernel.org"
+        id S1728524AbfH2KxI (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 29 Aug 2019 06:53:08 -0400
+Received: from mail.kernel.org ([198.145.29.99]:58434 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728036AbfH2Kub (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 29 Aug 2019 06:50:31 -0400
+        id S1728332AbfH2Ku4 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 29 Aug 2019 06:50:56 -0400
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 040D523426;
-        Thu, 29 Aug 2019 10:50:29 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 30A2B23427;
+        Thu, 29 Aug 2019 10:50:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1567075830;
-        bh=jrGBXnZGVyzQTvUTydLj6Dz7Vl/A26rZftB3HB8JYw4=;
+        s=default; t=1567075855;
+        bh=itrWbVp+qN9Vqqyd+kbsmhxYfVC5+mSK+neoJ3ELT+M=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=otfxtDQ9TAMJAQzB+xDBvrhphscT3LH/RurRcQsup+8GenYqhPZ7MoqLPzJTuo1Yi
-         X+Pr9YpQsscRg/SlU/YK45r8ZqJ2bvGYqxaF/yT/sEXVIiws2oL67JoXgII9+fFII+
-         82AtNbFsifB+DeKssw3/lFU/HL32AQQOl5wBh+jg=
+        b=1x0hHYhx34FdG7JK3ej0/SlbSpyVOTCCHLsY1JNDN+Io9fGuhT9/JjhYAFPItJVZi
+         jrNNjEh6VxAxhGDva+HsR/4XE2vrUc2zBmxHKdkmjUnqKIacnfQVK2Tk/fY2yblYJB
+         G1hWj+piW5hoy7fpvw5bm0khF3Ugn9aM8oRcJv3g=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     Johannes Berg <johannes.berg@intel.com>,
         Sasha Levin <sashal@kernel.org>,
         linux-wireless@vger.kernel.org, netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.19 18/29] mac80211: fix possible sta leak
-Date:   Thu, 29 Aug 2019 06:49:58 -0400
-Message-Id: <20190829105009.2265-18-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.14 10/14] mac80211: fix possible sta leak
+Date:   Thu, 29 Aug 2019 06:50:39 -0400
+Message-Id: <20190829105043.2508-10-sashal@kernel.org>
 X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20190829105009.2265-1-sashal@kernel.org>
-References: <20190829105009.2265-1-sashal@kernel.org>
+In-Reply-To: <20190829105043.2508-1-sashal@kernel.org>
+References: <20190829105043.2508-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -60,10 +60,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 5 insertions(+), 4 deletions(-)
 
 diff --git a/net/mac80211/cfg.c b/net/mac80211/cfg.c
-index 40c5102234679..a48e83b19cfa7 100644
+index 150dd2160cefb..8168c667d91d9 100644
 --- a/net/mac80211/cfg.c
 +++ b/net/mac80211/cfg.c
-@@ -1471,6 +1471,11 @@ static int ieee80211_add_station(struct wiphy *wiphy, struct net_device *dev,
+@@ -1459,6 +1459,11 @@ static int ieee80211_add_station(struct wiphy *wiphy, struct net_device *dev,
  	if (is_multicast_ether_addr(mac))
  		return -EINVAL;
  
@@ -75,7 +75,7 @@ index 40c5102234679..a48e83b19cfa7 100644
  	sta = sta_info_alloc(sdata, mac, GFP_KERNEL);
  	if (!sta)
  		return -ENOMEM;
-@@ -1478,10 +1483,6 @@ static int ieee80211_add_station(struct wiphy *wiphy, struct net_device *dev,
+@@ -1466,10 +1471,6 @@ static int ieee80211_add_station(struct wiphy *wiphy, struct net_device *dev,
  	if (params->sta_flags_set & BIT(NL80211_STA_FLAG_TDLS_PEER))
  		sta->sta.tdls = true;
  
