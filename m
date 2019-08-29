@@ -2,59 +2,46 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D63B8A29AA
-	for <lists+linux-wireless@lfdr.de>; Fri, 30 Aug 2019 00:22:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CAD23A2B21
+	for <lists+linux-wireless@lfdr.de>; Fri, 30 Aug 2019 01:44:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727969AbfH2WWA (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 29 Aug 2019 18:22:00 -0400
-Received: from alexa-out-sd-02.qualcomm.com ([199.106.114.39]:53947 "EHLO
-        alexa-out-sd-02.qualcomm.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1727763AbfH2WWA (ORCPT
+        id S1726369AbfH2Xoh (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 29 Aug 2019 19:44:37 -0400
+Received: from shards.monkeyblade.net ([23.128.96.9]:55366 "EHLO
+        shards.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726014AbfH2Xog (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 29 Aug 2019 18:22:00 -0400
-Received: from unknown (HELO ironmsg-SD-alpha.qualcomm.com) ([10.53.140.30])
-  by alexa-out-sd-02.qualcomm.com with ESMTP; 29 Aug 2019 15:22:00 -0700
-Received: from asinghal-linux.qualcomm.com ([10.234.220.60])
-  by ironmsg-SD-alpha.qualcomm.com with ESMTP; 29 Aug 2019 15:22:00 -0700
-Received: by asinghal-linux.qualcomm.com (Postfix, from userid 73644)
-        id 0D30136AF; Thu, 29 Aug 2019 15:22:00 -0700 (PDT)
-From:   Amar Singhal <asinghal@codeaurora.org>
-To:     johannes@sipsolutions.net, jouni@codeaurora.org
-Cc:     linux-wireless@vger.kernel.org, jjohnson@codeaurora.org,
-        rmanohar@codeaurora.org, Amar Singhal <asinghal@codeaurora.org>
-Subject: [PATCH] cfg80211: Convert 6 GHz channel frequency to channel number
-Date:   Thu, 29 Aug 2019 15:21:30 -0700
-Message-Id: <1567117290-19295-1-git-send-email-asinghal@codeaurora.org>
-X-Mailer: git-send-email 1.9.1
+        Thu, 29 Aug 2019 19:44:36 -0400
+Received: from localhost (unknown [IPv6:2601:601:9f80:35cd::d71])
+        (using TLSv1 with cipher AES256-SHA (256/256 bits))
+        (Client did not present a certificate)
+        (Authenticated sender: davem-davemloft)
+        by shards.monkeyblade.net (Postfix) with ESMTPSA id 8795A153BFAED;
+        Thu, 29 Aug 2019 16:44:36 -0700 (PDT)
+Date:   Thu, 29 Aug 2019 16:44:36 -0700 (PDT)
+Message-Id: <20190829.164436.2240833341936181396.davem@davemloft.net>
+To:     johannes@sipsolutions.net
+Cc:     netdev@vger.kernel.org, linux-wireless@vger.kernel.org
+Subject: Re: pull-request: mac80211 2019-08-29
+From:   David Miller <davem@davemloft.net>
+In-Reply-To: <20190829150011.10512-1-johannes@sipsolutions.net>
+References: <20190829150011.10512-1-johannes@sipsolutions.net>
+X-Mailer: Mew version 6.8 on Emacs 26.1
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+X-Greylist: Sender succeeded SMTP AUTH, not delayed by milter-greylist-4.5.12 (shards.monkeyblade.net [149.20.54.216]); Thu, 29 Aug 2019 16:44:36 -0700 (PDT)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Enhance function ieee80211_frequency_to_channel by adding 6 GHz
-channels.
+From: Johannes Berg <johannes@sipsolutions.net>
+Date: Thu, 29 Aug 2019 17:00:10 +0200
 
-Signed-off-by: Amar Singhal <asinghal@codeaurora.org>
----
- net/wireless/util.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+> We have just three more fixes now, and one of those is a driver fix
+> because Kalle is on vacation and I'm covering for him in the meantime.
+> 
+> Please pull and let me know if there's any problem.
 
-diff --git a/net/wireless/util.c b/net/wireless/util.c
-index cf63b63..9aba8d54 100644
---- a/net/wireless/util.c
-+++ b/net/wireless/util.c
-@@ -111,8 +111,10 @@ int ieee80211_frequency_to_channel(int freq)
- 		return (freq - 2407) / 5;
- 	else if (freq >= 4910 && freq <= 4980)
- 		return (freq - 4000) / 5;
--	else if (freq <= 45000) /* DMG band lower limit */
-+	else if (freq > 5000 && freq <= 5920)
- 		return (freq - 5000) / 5;
-+	else if (freq >= 5945 && freq <= 7205)
-+		  return (freq - 5940) / 5;
- 	else if (freq >= 58320 && freq <= 70200)
- 		return (freq - 56160) / 2160;
- 	else
---
-1.9.1
-
+Ok, pulled, thanks.
