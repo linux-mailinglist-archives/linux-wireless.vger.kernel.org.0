@@ -2,53 +2,51 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 857A0A2CFD
-	for <lists+linux-wireless@lfdr.de>; Fri, 30 Aug 2019 04:51:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DAE22A2CFF
+	for <lists+linux-wireless@lfdr.de>; Fri, 30 Aug 2019 04:52:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727397AbfH3Cvk (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 29 Aug 2019 22:51:40 -0400
-Received: from alexa-out-tai-02.qualcomm.com ([103.229.16.227]:23008 "EHLO
-        alexa-out-tai-02.qualcomm.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1727386AbfH3Cvk (ORCPT
+        id S1727410AbfH3CwU (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 29 Aug 2019 22:52:20 -0400
+Received: from alexa-out-tai-01.qualcomm.com ([103.229.16.226]:46981 "EHLO
+        alexa-out-tai-01.qualcomm.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1727386AbfH3CwU (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 29 Aug 2019 22:51:40 -0400
+        Thu, 29 Aug 2019 22:52:20 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
   d=qti.qualcomm.com; i=@qti.qualcomm.com; q=dns/txt;
-  s=qcdkim; t=1567133499; x=1598669499;
+  s=qcdkim; t=1567133538; x=1598669538;
   h=from:to:cc:date:message-id:references:in-reply-to:
    content-transfer-encoding:mime-version:subject;
-  bh=mji4E8HLRAVVgay0BufnntHbSpXKpC2+0GLTt3ptbDw=;
-  b=NofdxpdYbPJo9C4BDdEQZEgQM/xQo/iLQKiE5FURHNZlwBk/xE1WDFog
-   2NtuFeXRICuvW7ZMlhUkcBoKygwXpU/a4dmSsraP+GkhkBDrMgOfsqXEF
-   AoURt8jKgVvZG+BpICa2TOAIqzg37jCNDd1H8byNKUZxI+CncUaMBMvZL
-   g=;
-Subject: RE: [PATCH v2 5/7] ath10k: add htt TX bundle for sdio
-Thread-Topic: [PATCH v2 5/7] ath10k: add htt TX bundle for sdio
-Received: from ironmsg01-tai.qualcomm.com ([10.249.140.6])
-  by alexa-out-tai-02.qualcomm.com with ESMTP; 30 Aug 2019 10:51:38 +0800
-Received: from aptaiexm02f.ap.qualcomm.com ([10.249.150.16])
-  by ironmsg01-tai.qualcomm.com with ESMTP/TLS/AES256-SHA; 30 Aug 2019 10:51:38 +0800
+  bh=JAiY7LbEsdAUN6ap71H6955nIQdA1Ou1KE3uQG8mYSs=;
+  b=EZoORRBsENnAQnwUg6ShcyUkYhyoAnbyBFT/M6IOF3cIS8RR+li8NKOf
+   t1eRv/xFWFv7Ix8F9NbZ2ORk0R7HyZ0GAi8TRhVt5gxOqLhshmVuWCKYz
+   1YvtG2V2Nr7q5vRcER3RtHOOh8X92q0vkURjXwNMBvdNbDp/SmbduiG1c
+   4=;
+Subject: RE: [PATCH v2 6/7] ath10k: enable alt data of TX path for sdio
+Thread-Topic: [PATCH v2 6/7] ath10k: enable alt data of TX path for sdio
+Received: from ironmsg02-tai.qualcomm.com ([10.249.140.7])
+  by alexa-out-tai-01.qualcomm.com with ESMTP; 30 Aug 2019 10:52:17 +0800
+Received: from aptaiexm02e.ap.qualcomm.com ([10.249.150.15])
+  by ironmsg02-tai.qualcomm.com with ESMTP/TLS/AES256-SHA; 30 Aug 2019 10:52:17 +0800
 Received: from aptaiexm02f.ap.qualcomm.com (10.249.150.16) by
- aptaiexm02f.ap.qualcomm.com (10.249.150.16) with Microsoft SMTP Server (TLS)
- id 15.0.1473.3; Fri, 30 Aug 2019 10:51:36 +0800
+ aptaiexm02e.ap.qualcomm.com (10.249.150.15) with Microsoft SMTP Server (TLS)
+ id 15.0.1473.3; Fri, 30 Aug 2019 10:52:15 +0800
 Received: from aptaiexm02f.ap.qualcomm.com ([fe80::4152:1436:e436:faa1]) by
  aptaiexm02f.ap.qualcomm.com ([fe80::4152:1436:e436:faa1%19]) with mapi id
- 15.00.1473.005; Fri, 30 Aug 2019 10:51:36 +0800
+ 15.00.1473.005; Fri, 30 Aug 2019 10:52:15 +0800
 From:   Wen Gong <wgong@qti.qualcomm.com>
-To:     Wen Gong <wgong@qti.qualcomm.com>,
-        Nicolas Boichat <drinkcat@chromium.org>,
+To:     Nicolas Boichat <drinkcat@chromium.org>,
         Wen Gong <wgong@codeaurora.org>
 CC:     "open list:NETWORKING DRIVERS (WIRELESS)" 
         <linux-wireless@vger.kernel.org>,
         "ath10k@lists.infradead.org" <ath10k@lists.infradead.org>
-Thread-Index: AQHVXWKa4RLo4LlR4Eu0hbim+24wL6cQhk8AgAJ6ZQA=
-Date:   Fri, 30 Aug 2019 02:51:36 +0000
-Message-ID: <ad1a5a4649aa49a78021a9f9628b17f1@aptaiexm02f.ap.qualcomm.com>
+Thread-Index: AQHVXWLfkQPj6Bb+V0+8K59OZN03UacTAPOQ
+Date:   Fri, 30 Aug 2019 02:52:15 +0000
+Message-ID: <46f55dc93a744069a4107e1bce6674a0@aptaiexm02f.ap.qualcomm.com>
 References: <1566903707-27536-1-git-send-email-wgong@codeaurora.org>
- <1566903707-27536-6-git-send-email-wgong@codeaurora.org>
- <CANMq1KAQncoZ3yX5Sfsc5tR8z9tJyA=jFF4_F1K=hLRe51OD4g@mail.gmail.com>
- <2ebd81574092476a952ddeb671d1bfcf@aptaiexm02f.ap.qualcomm.com>
-In-Reply-To: <2ebd81574092476a952ddeb671d1bfcf@aptaiexm02f.ap.qualcomm.com>
+ <1566903707-27536-7-git-send-email-wgong@codeaurora.org>
+ <CANMq1KDJSwyzz2y-yadJPnGijm=G6y0zg1tMZDyacH8a990BOg@mail.gmail.com>
+In-Reply-To: <CANMq1KDJSwyzz2y-yadJPnGijm=G6y0zg1tMZDyacH8a990BOg@mail.gmail.com>
 Accept-Language: en-US
 Content-Language: en-US
 X-MS-Has-Attach: 
@@ -64,15 +62,18 @@ List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
 > -----Original Message-----
-> From: ath10k <ath10k-bounces@lists.infradead.org> On Behalf Of Wen Gong
-> Sent: Wednesday, August 28, 2019 9:03 PM
-> To: Nicolas Boichat <drinkcat@chromium.org>; Wen Gong
-> <wgong@codeaurora.org>
+> From: ath10k <ath10k-bounces@lists.infradead.org> On Behalf Of Nicolas
+> Boichat
+> Sent: Wednesday, August 28, 2019 1:38 PM
+> To: Wen Gong <wgong@codeaurora.org>
 > Cc: open list:NETWORKING DRIVERS (WIRELESS) <linux-
 > wireless@vger.kernel.org>; ath10k@lists.infradead.org
-> Subject: [EXT] RE: [PATCH v2 5/7] ath10k: add htt TX bundle for sdio
+> Subject: [EXT] Re: [PATCH v2 6/7] ath10k: enable alt data of TX path for =
+sdio
 >=20
-Changed and V3 sent, https://patchwork.kernel.org/patch/11121539/=20
+Changed and V3 sent, https://patchwork.kernel.org/patch/11122141/
+
+>=20
 > _______________________________________________
 > ath10k mailing list
 > ath10k@lists.infradead.org
