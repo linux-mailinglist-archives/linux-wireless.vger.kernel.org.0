@@ -2,92 +2,61 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id EF556A3642
-	for <lists+linux-wireless@lfdr.de>; Fri, 30 Aug 2019 14:07:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D4F3FA37DE
+	for <lists+linux-wireless@lfdr.de>; Fri, 30 Aug 2019 15:37:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727933AbfH3MHA (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 30 Aug 2019 08:07:00 -0400
-Received: from mail.kernel.org ([198.145.29.99]:60208 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727928AbfH3MG7 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 30 Aug 2019 08:06:59 -0400
-Received: from localhost.localdomain (nat-pool-mxp-t.redhat.com [149.6.153.186])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 4FFB621721;
-        Fri, 30 Aug 2019 12:06:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1567166812;
-        bh=mfzJylxmbYnOeISRWfpHmnDMaGj6dcvEKPdLqlFsuSc=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=rdSSSXe6DCACnougqKmpWNVc4At2SN3VLfhApvfvsxwXXgX+2BljK9Ys6pCHhG6Dm
-         7w/NJ4Cvh3c9YCNi6DsHICbLbMoRQL015BKhezTKweh+ToDHEkLb3/k4sTR+QoHTd7
-         6868Dz8V8yzgIV3kbM2pHR13K4Sj2lPINCH8x2F8=
-Date:   Fri, 30 Aug 2019 14:06:47 +0200
-From:   Lorenzo Bianconi <lorenzo@kernel.org>
-To:     Ryder Lee <ryder.lee@mediatek.com>
-Cc:     nbd@nbd.name, lorenzo.bianconi@redhat.com,
-        linux-wireless@vger.kernel.org, royluo@google.com
-Subject: Re: [PATCH] mt76: mt7615: move mt7615 sta utilities in pci.c
-Message-ID: <20190830120647.GD5910@localhost.localdomain>
-References: <e095a331854ab9c9619f86ae8860502abf808fbe.1567068930.git.lorenzo@kernel.org>
- <1567165961.8079.3.camel@mtkswgap22>
+        id S1727922AbfH3Nhn (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 30 Aug 2019 09:37:43 -0400
+Received: from mail.w1.fi ([212.71.239.96]:48838 "EHLO
+        li674-96.members.linode.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1727434AbfH3Nhn (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 30 Aug 2019 09:37:43 -0400
+Received: from localhost (localhost [127.0.0.1])
+        by li674-96.members.linode.com (Postfix) with ESMTP id 99C8110F8C;
+        Fri, 30 Aug 2019 13:37:41 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at w1.fi
+Received: from li674-96.members.linode.com ([127.0.0.1])
+        by localhost (mail.w1.fi [127.0.0.1]) (amavisd-new, port 10024)
+        with ESMTP id ysy4ALtN3t0D; Fri, 30 Aug 2019 13:37:40 +0000 (UTC)
+Received: by jm (sSMTP sendmail emulation); Fri, 30 Aug 2019 16:37:37 +0300
+Date:   Fri, 30 Aug 2019 16:37:37 +0300
+From:   Jouni Malinen <j@w1.fi>
+To:     Johannes Berg <johannes@sipsolutions.net>
+Cc:     Sven Eckelmann <sven@narfation.org>, linux-wireless@vger.kernel.org
+Subject: Re: [PATCH v6] mac80211_hwsim: Register support for HE meshpoint
+Message-ID: <20190830133737.GC21204@w1.fi>
+References: <20190813063657.7544-1-sven@narfation.org>
+ <20190813105549.GA26160@w1.fi>
+ <3127506.552nsDcnha@bentobox>
+ <766f6d196106fa7ca6036b2ce20243e042d9168d.camel@sipsolutions.net>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="6WlEvdN9Dv0WHSBl"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <1567165961.8079.3.camel@mtkswgap22>
-User-Agent: Mutt/1.12.1 (2019-06-15)
+In-Reply-To: <766f6d196106fa7ca6036b2ce20243e042d9168d.camel@sipsolutions.net>
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+On Fri, Aug 30, 2019 at 12:38:20PM +0200, Johannes Berg wrote:
+> > > mesh_secure_ocv_mix_legacy
+> > > wpas_mesh_open_ht40
+> > > mesh_secure_ocv_mix_ht
+> 
+> > No, these also failed for me without the mac80211_hwsim patch [3] in a full 
+> > test run. And thus not analyzed further by me.
+> 
+> I also see these fail if (and only if) I have this patch applied.
+> 
+> I'm going to drop this patch (again) for now, even if the situation is
+> now better I still don't want to knowingly break things there.
+> 
+> Please resend once that's all sorted out.
 
---6WlEvdN9Dv0WHSBl
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+I pushed the relevant wpa_supplicant changes into hostap.git and all the
+hwsim test cases pass now with the current snapshot when this
+mac80211_hwsim patch is included.
 
-> On Thu, 2019-08-29 at 10:57 +0200, Lorenzo Bianconi wrote:
-> > Move mt7615_sta_add, mt7615_sta_assoc, mt7615_sta_ps and mt7615_sta_rem=
-ove
-> > utility routines in pci.c and make them static since they are only used=
- to
-> > initialize mt76_driver_ops callbacks
-> >=20
-> > Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
-> > ---
-> >  .../net/wireless/mediatek/mt76/mt7615/mac.c   |  4 --
-> >  .../net/wireless/mediatek/mt76/mt7615/main.c  | 40 ---------------
-> >  .../wireless/mediatek/mt76/mt7615/mt7615.h    |  7 ---
-> >  .../net/wireless/mediatek/mt76/mt7615/pci.c   | 49 +++++++++++++++++++
-> >  4 files changed, 49 insertions(+), 51 deletions(-)
->=20
-> Just to note that we might have other interface shares with the same
-> utility routines in upcoming days.
->=20
-> Ryder
->=20
-
-Hi Ryder,
-
-I guess what really matter is if they are non-PCI based devices and if they=
-=20
-rely on the same mcu commands
-
-Regards,
-Lorenzo
-
---6WlEvdN9Dv0WHSBl
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYIAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCXWkRVQAKCRA6cBh0uS2t
-rIU/AQCnqFPJZ+twx5/H2mjtW8UH/XIL7bgJpW32XoxQa1+wpgD7BeIDSQBns7GU
-Og0zmYUMRQPPS07SKkvVh1Hm+xmxlAA=
-=WInN
------END PGP SIGNATURE-----
-
---6WlEvdN9Dv0WHSBl--
+-- 
+Jouni Malinen                                            PGP id EFC895FA
