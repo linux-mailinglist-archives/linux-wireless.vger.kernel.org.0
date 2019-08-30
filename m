@@ -2,62 +2,62 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 0E2A5A3C0F
-	for <lists+linux-wireless@lfdr.de>; Fri, 30 Aug 2019 18:33:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DB433A3CAF
+	for <lists+linux-wireless@lfdr.de>; Fri, 30 Aug 2019 18:55:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727883AbfH3QdB (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 30 Aug 2019 12:33:01 -0400
-Received: from mail-ot1-f67.google.com ([209.85.210.67]:46461 "EHLO
-        mail-ot1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727792AbfH3QdB (ORCPT
+        id S1728111AbfH3QzR (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 30 Aug 2019 12:55:17 -0400
+Received: from mail-ot1-f65.google.com ([209.85.210.65]:36526 "EHLO
+        mail-ot1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726183AbfH3QzR (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 30 Aug 2019 12:33:01 -0400
-Received: by mail-ot1-f67.google.com with SMTP id z17so7446632otk.13
-        for <linux-wireless@vger.kernel.org>; Fri, 30 Aug 2019 09:33:00 -0700 (PDT)
+        Fri, 30 Aug 2019 12:55:17 -0400
+Received: by mail-ot1-f65.google.com with SMTP id k18so7586889otr.3
+        for <linux-wireless@vger.kernel.org>; Fri, 30 Aug 2019 09:55:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=subject:to:references:from:message-id:date:user-agent:mime-version
          :in-reply-to:content-language:content-transfer-encoding;
-        bh=gScIWUZsqIWeQ/Jj6Me/x1jSg8AxJSb+7yOkWd1JZtI=;
-        b=gziIcTeSVZY5w77wQevunRwAilLgMjgmmQVQpb94FCy7D/nWZak2Sf4rcb2DALGFmG
-         zrz7w/YTCHWNI6rExn3p6HA9zK07ZkEKPBuFFHs3JtaJ+snNH45Ix3z9zt8C/UwAiUDp
-         sgNspowCWuwG0a3//ZBT00GeywYAm6ATRE2yJwv2uNrwF9AYYIDbjcMBHOA23Vbt/C7b
-         nMmuZOYCn1Zc38z0GXxqrW3jnPgZFPL0yK6c2kIyoE0tmU35e0cqjevC4/ZUVhmnz6iC
-         bmn5u6zfAEqH30kdcr2Fpj/DGFm+Gd/fZ9Asvkd9n4+c2YPCAgPV3Vw/wi5tdDoF+FWj
-         97+w==
+        bh=hOWPt9D3wtZLYl74Bh3Q8GcQxuAnKB6MXNeOglOBCSo=;
+        b=AG6yQwrLQKbqxCSLEj3F9Am3Mecy25wgYeO+RjDTBQ1Hg4ejIi5bVNcZqEIkpHAW7L
+         1RUttkEFuItN4iFIDED2Ow/4ejzNPbBlQLY53j0PU3roTgTUdRijEtE+f5EtYZh1kQif
+         SfZWblKTZoAF62FhCe7WVfN2n1HSeV7FlzGLW+RcqlnH3QuDqBkRp4M5c4ArZDBNIX/c
+         CPjrfZT7V74YSQBJu5U2SccP0+mUhGFy9+LrLVFUHK7pe0WqpASe+KDqHk5ybI/B+uMF
+         AYNN4ZSq3lE/XgSMaPjDEn3UIQB9B1F58BBkWTUzXoZvWnNAoyO63J7pcieustHF6Z0X
+         ioGQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:subject:to:references:from:message-id:date
          :user-agent:mime-version:in-reply-to:content-language
          :content-transfer-encoding;
-        bh=gScIWUZsqIWeQ/Jj6Me/x1jSg8AxJSb+7yOkWd1JZtI=;
-        b=tMjH++7pFnh9y+7OUCooMQZ9UMDaMEmO0SdKL3E2WtqA7qIPVh1U591zfELUn568QG
-         NYUz77UO/EX/UpXw/Hreyfy3k2MUDVjy6TjvZ7XZsawNZ7YBHxNI3hNga+l4Cd/bPSOt
-         kCeNY7VzSPPxwYWsTQwuTHpPjMCKaQ4rVjbNJnVdn18oxB0IDGkxySZK/wRPVO+n1qEk
-         nzP1qELkXCBrEKAJ5ld8iVXLitnzwbMWyd8L+Jw437Kum9O4u53pAbGRX4ugqapRfvJC
-         QUOUSArjBKg8nafVrZbOvrAkQ3LAVMaT/nsmrG8FdpoRctRXzI2AT7fkEoBC6B18IBF9
-         CgLg==
-X-Gm-Message-State: APjAAAVRmXnENUT3XNMZS38MaVWUhn35X8VR45b8NGiQiRjxcLpOuvkX
-        eVPaHva4QST5+4O3llDSmuXWRTOe
-X-Google-Smtp-Source: APXvYqw2/khTofMbLcCMNuI0FvbcijApkkiP3HMQkmMkRt2wxFFq36WIQ76Lq/wdupIvQXtXRQsbpQ==
-X-Received: by 2002:a05:6830:144b:: with SMTP id w11mr13170183otp.185.1567182780164;
-        Fri, 30 Aug 2019 09:33:00 -0700 (PDT)
+        bh=hOWPt9D3wtZLYl74Bh3Q8GcQxuAnKB6MXNeOglOBCSo=;
+        b=Pr9TBmaqWANWDttzoHCJ/GkO1jAgrN+REr9Sn+XnUpz/8FwFvwYLm3XcrMeGWaS0M9
+         6mjjY4xEs5Rgna3Y+J1Gts3Tw3O25X6ZULp35u04e6Q/eDEpn1kWGYpvW3kiPhXntjDK
+         /ehHd3uLHojEstMbodLufRopwCB7n4I7bNdMorFkW5QzIF427nG3bSIdJ3YxvX7weTas
+         9gH1tt2yB3EE1q5/fzOxaGQ1JgMPAzOdTwTmh2r5WAGNyUMkVHU8duMmF/iGtmUq3+vI
+         awPifuDzUmZYL1wusEpyqg/JK4oVRKfYPpcKwTHP26hgRjwzKgjRAc4b56cZ4zKEBwry
+         3oCA==
+X-Gm-Message-State: APjAAAXJG0VxRcxE/Uy9cauAWRLeOfkKiJ+5vQ2jjnpmle+kjLdM4yGF
+        FNeuiGfrQ7lnVLfhy+9r/yukNB8d
+X-Google-Smtp-Source: APXvYqzs/EEFzfODXa2CaTIRqOjXJSSwxPy6e2SYpVR9jZaW9FKj6CA9kbr01q2f8w1H0xNlg6EQ/g==
+X-Received: by 2002:a05:6830:1b65:: with SMTP id d5mr13280647ote.278.1567184116053;
+        Fri, 30 Aug 2019 09:55:16 -0700 (PDT)
 Received: from [192.168.1.249] (cpe-70-114-247-242.austin.res.rr.com. [70.114.247.242])
-        by smtp.googlemail.com with ESMTPSA id t18sm2067030otk.73.2019.08.30.09.32.57
+        by smtp.googlemail.com with ESMTPSA id z85sm1161811oia.42.2019.08.30.09.55.14
         (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Fri, 30 Aug 2019 09:32:58 -0700 (PDT)
-Subject: Re: [RFCv2 1/4] nl80211: Fix broken non-split wiphy dumps
+        Fri, 30 Aug 2019 09:55:15 -0700 (PDT)
+Subject: Re: [PATCH 1/2] nl80211: Add NL80211_EXT_FEATURE_LIVE_IFTYPE_CHANGE
 To:     Johannes Berg <johannes@sipsolutions.net>,
         linux-wireless@vger.kernel.org
-References: <20190816192703.12445-1-denkenz@gmail.com>
- <f7c98da178677cbb0cad3568f4ea4ab85171edd8.camel@sipsolutions.net>
+References: <20190826162637.7535-1-denkenz@gmail.com>
+ <f5986ccd8ecdcc08d5c3e0d65f8bddef8b0af021.camel@sipsolutions.net>
 From:   Denis Kenzior <denkenz@gmail.com>
-Message-ID: <5fc07547-80fe-99ee-a83d-5fabe3c92a1b@gmail.com>
-Date:   Fri, 30 Aug 2019 11:32:57 -0500
+Message-ID: <73e78b3e-f36a-aa29-a818-e0e1f0598b2f@gmail.com>
+Date:   Fri, 30 Aug 2019 11:55:13 -0500
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
  Thunderbird/60.8.0
 MIME-Version: 1.0
-In-Reply-To: <f7c98da178677cbb0cad3568f4ea4ab85171edd8.camel@sipsolutions.net>
+In-Reply-To: <f5986ccd8ecdcc08d5c3e0d65f8bddef8b0af021.camel@sipsolutions.net>
 Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
@@ -68,47 +68,65 @@ X-Mailing-List: linux-wireless@vger.kernel.org
 
 Hi Johannes,
 
-On 8/30/19 4:03 AM, Johannes Berg wrote:
-> On Fri, 2019-08-16 at 14:27 -0500, Denis Kenzior wrote:
->> If a (legacy) client requested a wiphy dump but did not provide the
->> NL80211_ATTR_SPLIT_WIPHY_DUMP attribute, the dump was supposed to be
->> composed of purely non-split NEW_WIPHY messages, with 1 wiphy per
->> message.  At least this was the intent after commit:
->> 3713b4e364ef ("nl80211: allow splitting wiphy information in dumps")
+On 8/30/19 5:19 AM, Johannes Berg wrote:
+> On Mon, 2019-08-26 at 11:26 -0500, Denis Kenzior wrote:
 >>
->> However, in reality the non-split dumps were broken very shortly after.
->> Perhaps around commit:
->> fe1abafd942f ("nl80211: re-add channel width and extended capa advertising")
+>> + *	Prior to Kernel 5.4, userspace applications should implement the
+>> + *	following behavior:
 > 
-> Fun. I guess we updated all userspace quickly enough to not actually
-> have any issues there. As far as I remember, nobody ever complained, so
-> I guess people just updated their userspace.
-> 
-> Given that it's been 6+ years, maybe we're better off just removing the
-> whole non-split thing then, instead of fixing it. Seems even less likely
-> now that somebody would run a 6+yo supplicant (from before its commit
-> c30a4ab045ce ("nl80211: Fix mode settings with split wiphy dump")).
+> I'm not sure mentioning the kernel version here does us any good? I
+> mean, you really need to implement that behaviour regardless of kernel
+> version, if NL80211_EXT_FEATURE_LIVE_IFTYPE_CHANGE isn't set.
 > 
 
-That would be my vote, given that we're probably one of a handful of 
-people in this world that understand that code path.
+Agreed.  I guess I just view nl80211.h as a sort of combination between 
+a uapi file and an actual manpage.  And manpages do mention which kernel 
+version a certain feature/flag/whatever was added.  Such info can be 
+useful in many ways, e.g. figuring out which kernel version might be 
+required for a certain piece of hardware, etc.
 
-But...  How would we handle non-dump versions of GET_WIPHY?  To this day 
-I have dhcpcd issuing fun stuff like:
+Another point where this might be useful is if the kernel starts 
+enforcing certain behavior that it didn't before.  E.g. I mentioned this 
+in the purge thread that a lot of mode change failure cases could be 
+caught if the kernel checked this flag prior to doing anything.
 
-< Request: Get Wiphy (0x01) len 8 [ack] 
-0.374832
-     Interface Index: 59 (0x0000003b)
+I really leave this up to you if this is something you think is a good 
+idea or not.
 
-> OTOH, this is a simple fix, would removing the non-split mode result in
-> any appreciable cleanups? Perhaps not, and we'd have to insert something
-> instead to reject non-split and log a warning, or whatnot.
+>> + * @NL80211_EXT_FEATURE_LIVE_IFTYPE_CHANGE: This device supports switching
+>> + * 	the IFTYPE of an interface without having to bring the device DOWN
+>> + * 	first via RTNL.  Exact semantics of this feature is driver
+>> + * 	implementation dependent.
+> 
+> That's not really nice.
+
+Sorry.  This came from some doc changes I have pending.  I think I wrote 
+this after looking at some fullmac drivers and how they handle mode 
+changes and the wording reflects the exasperation I felt at the time.
+
+Do you want to suggest some alternate wording?  I think it is worth it 
+to have some fair warning in the docs stating that prior to version so 
+and so the semantics are completely driver dependent.
+
+> 
+>> For mac80211, the following restrictions
+>> + * 	apply:
+>> + * 		- Only devices currently in IFTYPE AP, P2P_GO, P2P_CLIENT,
+>> + * 		  STATION, ADHOC and OCB can be switched.
+>> + * 		- The target IFTYPE must be one of: AP, P2P_GO, P2P_CLIENT,
+>> + * 		  STATION, ADHOC or OCB.
+>> + * 	Other drivers are expected to follow similar restrictions.
+> 
+> Maybe we should instead have a "bitmask of interface types that can be
+> switched while live" or something like that?
 > 
 
-Getting rid of the legacy non-split case would simplify things.  We 
-could also be a-lot smarter about how we split up the messages in order 
-to utilize buffer space more efficiently.  I think you cover this in 
-your other replies, but I haven't processed those yet.
+I'm fine with that, but this would only apply to newer kernels, no? 
+Don't we at least want to attempt to state what the rules are for older 
+ones?
+
+An alternative might be to simply state what the restrictions are and 
+just enforce those at the cfg80211 level.
 
 Regards,
 -Denis
