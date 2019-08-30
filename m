@@ -2,136 +2,157 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id F2EEDA3E54
-	for <lists+linux-wireless@lfdr.de>; Fri, 30 Aug 2019 21:21:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CA9B7A3EB3
+	for <lists+linux-wireless@lfdr.de>; Fri, 30 Aug 2019 21:56:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727945AbfH3TVt (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 30 Aug 2019 15:21:49 -0400
-Received: from gateway22.websitewelcome.com ([192.185.46.187]:24743 "EHLO
-        gateway22.websitewelcome.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1727883AbfH3TVt (ORCPT
+        id S1728072AbfH3T43 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 30 Aug 2019 15:56:29 -0400
+Received: from mail-ot1-f68.google.com ([209.85.210.68]:47024 "EHLO
+        mail-ot1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728053AbfH3T42 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 30 Aug 2019 15:21:49 -0400
-X-Greylist: delayed 1466 seconds by postgrey-1.27 at vger.kernel.org; Fri, 30 Aug 2019 15:21:49 EDT
-Received: from cm13.websitewelcome.com (cm13.websitewelcome.com [100.42.49.6])
-        by gateway22.websitewelcome.com (Postfix) with ESMTP id 6AD7C8AB0
-        for <linux-wireless@vger.kernel.org>; Fri, 30 Aug 2019 13:57:22 -0500 (CDT)
-Received: from gator4166.hostgator.com ([108.167.133.22])
-        by cmsmtp with SMTP
-        id 3m5KierIz3Qi03m5KiJlvt; Fri, 30 Aug 2019 13:57:22 -0500
-X-Authority-Reason: nr=8
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=embeddedor.com; s=default; h=Content-Type:MIME-Version:Message-ID:Subject:
-        Cc:To:From:Date:Sender:Reply-To:Content-Transfer-Encoding:Content-ID:
-        Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-        :Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
-        List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=cPkR+sjQETckei88bj4J3c37q+XYl3hWNTjp7VyXbZ0=; b=oABKnLPqx/CkQNLn7fGJAdolHe
-        EIcYU6kFVYE/porHtSK1snbeKvFjYfqU/ek5Gqkqsw++Ge8fOHMrzxmqyMU8xQjDApdRB3dKOfYUz
-        I3TFUcU8m5vQAmF9cPvzATIXC8K1PaFhkJn3UrDuMn3UNGZG2c6AKxEBt4i2hfyON9FR9O0cfEh50
-        CR4fqc5WVuurWn5GkYQjiRMqotoF2VbnLjcVRHxk7MFLsi70DakRzWtATYPcXE3boldfPxBr0ZgCv
-        f67/hFI/y7MNIo6a3e18pk9gSCviRUM0S3Ma1M5BUAt/aB/0WO3sAh7fIID/vT3iIlQBxcPecAxKH
-        qyWpbZRA==;
-Received: from [189.152.216.116] (port=39024 helo=embeddedor)
-        by gator4166.hostgator.com with esmtpa (Exim 4.92)
-        (envelope-from <gustavo@embeddedor.com>)
-        id 1i3m5J-002Gwo-7r; Fri, 30 Aug 2019 13:57:21 -0500
-Date:   Fri, 30 Aug 2019 13:57:16 -0500
-From:   "Gustavo A. R. Silva" <gustavo@embeddedor.com>
-To:     Daniel Drake <dsd@gentoo.org>, Ulrich Kunitz <kune@deine-taler.de>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        "David S. Miller" <davem@davemloft.net>
-Cc:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        "Gustavo A. R. Silva" <gustavo@embeddedor.com>
-Subject: [PATCH][next] zd1211rw: zd_usb: Use struct_size() helper
-Message-ID: <20190830185716.GA10044@embeddedor>
+        Fri, 30 Aug 2019 15:56:28 -0400
+Received: by mail-ot1-f68.google.com with SMTP id z17so8013562otk.13
+        for <linux-wireless@vger.kernel.org>; Fri, 30 Aug 2019 12:56:28 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=subject:to:references:from:message-id:date:user-agent:mime-version
+         :in-reply-to:content-language:content-transfer-encoding;
+        bh=YpoG8jIkxXjVtNoO0jl5YfFLEKuc9+sp9Ac02XuP3Ps=;
+        b=a36Vr/CJaChQDoNbnl6ccll5pu/0k7QFH0f27qCbfPfZKiYEU1v8BdPbx+W+mBlt4w
+         auABZ8XMci4HZjR1mWftvuHRKe0P2tXYHEfI8ZZ3eSrif+VE784nGtt+h7+LpljndpiE
+         zLo1zTMlGGo4riIl+U5+6epBdb+6BcoF69TngP8UyzFzlxteFODCXMpHuBhsaXtP4q9X
+         knQ/r4pQGIK9N8HTcpMCkfn6KfhbBh2M0l1eJAXx5oNED6eEPatQdxgPTfa4h5cL7a7r
+         rqLhoaRUxOjau6FtaNFzaTRI0IMswPWkNDw4W7MSVZcIdhfLYhBIc98mVORujYoRzShN
+         t9UA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=YpoG8jIkxXjVtNoO0jl5YfFLEKuc9+sp9Ac02XuP3Ps=;
+        b=KxbmszElqp1ugmtSeTLiy7IT5K4DBVs6sClb/ulpe+7kJy1mFFt837YaUSYDlJn12i
+         LU3LVEVY2BDmeKVYRaWpR2hXWCcZgX+BUn+CPAxxzk4vf7dzwSIT6j7VFqfvMNFUN8Wj
+         4GsF47j+v2JmXHx28FvYxYwElYNW0SvV/ayg5d2YgPHbi2olk3JgoCqvBVbsBsV7XNCy
+         lHqwNhnGewHNsQaR1zi8A5dvznBMYJzrF/tjqnB2qmelW7un2nzNsyNye3BCIi1TRzkm
+         vZqiZmrHQHys9sX8TD9Hayv0hN9kHUuQTtAX5ONnikVd0NtiWalP+bLnd0Gq9MgyJcui
+         Xr+g==
+X-Gm-Message-State: APjAAAWZSv5s4EGLCszsRmJMKNqUvLRg6apBvlNHhJhJaH7+grCwGM+O
+        JNJNySNzSzFfGXAPzzdsLhF3Hvhb
+X-Google-Smtp-Source: APXvYqyfV1+PxblVZieIWJjd6aoVdgJdsPbLV75/WG16XnGaC9nkwY3ZHYgqRQrjGLtsfX86KArppA==
+X-Received: by 2002:a05:6830:1151:: with SMTP id x17mr8322726otq.270.1567194987743;
+        Fri, 30 Aug 2019 12:56:27 -0700 (PDT)
+Received: from [192.168.1.249] (cpe-70-114-247-242.austin.res.rr.com. [70.114.247.242])
+        by smtp.googlemail.com with ESMTPSA id n29sm1811067oij.50.2019.08.30.12.56.18
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Fri, 30 Aug 2019 12:56:18 -0700 (PDT)
+Subject: Re: [RFCv2 2/4] nl80211: Support >4096 byte NEW_WIPHY event nlmsg
+To:     Johannes Berg <johannes@sipsolutions.net>,
+        linux-wireless@vger.kernel.org
+References: <20190816192703.12445-1-denkenz@gmail.com>
+ <20190816192703.12445-2-denkenz@gmail.com>
+ <34a0b0652403edcb630f65a240a30dfddb82950c.camel@sipsolutions.net>
+From:   Denis Kenzior <denkenz@gmail.com>
+Message-ID: <aed69235-12b6-bf27-083a-5cb97dfec4cb@gmail.com>
+Date:   Fri, 30 Aug 2019 14:56:17 -0500
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.8.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.9.4 (2018-02-28)
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - gator4166.hostgator.com
-X-AntiAbuse: Original Domain - vger.kernel.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - embeddedor.com
-X-BWhitelist: no
-X-Source-IP: 189.152.216.116
-X-Source-L: No
-X-Exim-ID: 1i3m5J-002Gwo-7r
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
-X-Source-Sender: (embeddedor) [189.152.216.116]:39024
-X-Source-Auth: gustavo@embeddedor.com
-X-Email-Count: 14
-X-Source-Cap: Z3V6aWRpbmU7Z3V6aWRpbmU7Z2F0b3I0MTY2Lmhvc3RnYXRvci5jb20=
-X-Local-Domain: yes
+In-Reply-To: <34a0b0652403edcb630f65a240a30dfddb82950c.camel@sipsolutions.net>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-One of the more common cases of allocation size calculations is finding
-the size of a structure that has a zero-sized array at the end, along
-with memory for some number of elements for that array. For example:
+Hi Johannes,
 
-struct usb_int_regs {
-	...
-        struct reg_data regs[0];
-} __packed;
+On 8/30/19 4:36 AM, Johannes Berg wrote:
+> On Fri, 2019-08-16 at 14:27 -0500, Denis Kenzior wrote:
+>> For historical reasons, NEW_WIPHY messages generated by dumps or
+>> GET_WIPHY commands were limited to 4096 bytes due to userspace tools
+>> using limited buffers.
+> 
+> I think now that I've figured out why, it'd be good to note that it
+> wasn't due to userspace tools, but rather due to the default netlink
+> dump skb allocation at the time, prior to commit  9063e21fb026
+> ("netlink: autosize skb lengthes").
+> 
 
-Make use of the struct_size() helper instead of an open-coded version
-in order to avoid any potential type mistakes.
+Sure, will take care of it.
 
-So, replace the following function:
+>> Once the sizes NEW_WIPHY messages exceeded these
+>> sizes, split dumps were introduced.  All any non-legacy data was added
+>> only to messages using split-dumps (including filtered dumps).
+>>
+>> However, split-dumping has quite a significant overhead.  On cards
+>> tested, split dumps generated message sizes 1.7-1.8x compared to
+>> non-split dumps, while still comfortably fitting into an 8k buffer.  The
+>> kernel now expects userspace to provide 16k buffers by default, and 32k
+>> buffers are possible.
+>>
+>> Introduce a concept of a large message, so that if the kernel detects
+>> that userspace has provided a buffer of sufficient size, a non-split
+>> message could be generated.
+> 
+> So, there's still a wrinkle with this. Larger SKB allocation can fail,
+> and instead of returning an error to userspace, the kernel will allocate
+> a smaller SKB instead.
+> 
+> With genetlink, we currently don't even have a way of controlling the
+> minimum allocation that's always required.
+> 
+> Since we already have basically all of the mechanics, I'd say perhaps a
+> better concept would be to "split when necessary", aborting if split
+> isn't supported.
+> 
+> IOW, do something like
+> 
+> ... nl80211_send_wiphy(...)
+> {
+> [...]
+> 
+> switch (state->split_start) {
+> [...]
+> case <N>:
+> 	[...] // put stuff
+> 	state->split_start++;
+> 	state->skb_end = nlmsg_get_pos(skb);
+> 	/* fall through */
+> case <N+1>:
+> [...]
+> }
+> 
+> finish:
+> 	genlmsg_end(msg, hdr);
+> 	return 0;
+> nla_put_failure:
+> 	if (state->split_start < 9) {
+> 		genlmsg_cancel(msg, hdr);
+> 		return -EMSGSIZE;
+> 	}
+> 	nlmsg_trim(msg, state->skb_end);
+> 	goto finish;
+> }
+> 
+> 
+> That way, we fill each SKB as much as possible, up to 32k if userspace
+> provided big enough buffers *and* we could allocate the SKB.
+> 
+> 
+> Your userspace would still set the split flag, and thus be compatible
+> with all kinds of options:
+>   * really old kernel not supporting split
+>   * older kernel sending many messages
+>   * kernel after this change packing more into one message
+>   * even if allocating big SKBs failed
+> 
 
-static int usb_int_regs_length(unsigned int count)
-{
-       return sizeof(struct usb_int_regs) + count * sizeof(struct reg_data);
-}
+What I was thinking was to attempt to build a large message first and if 
+that fails to fail over to the old logic.  But I think what you propose 
+is even better.  I'll incorporate this feedback into the next version.
 
-with:
-
-struct_size(regs, regs, count)
-
-This code was detected with the help of Coccinelle.
-
-Signed-off-by: Gustavo A. R. Silva <gustavo@embeddedor.com>
----
- drivers/net/wireless/zydas/zd1211rw/zd_usb.c | 11 +++--------
- 1 file changed, 3 insertions(+), 8 deletions(-)
-
-diff --git a/drivers/net/wireless/zydas/zd1211rw/zd_usb.c b/drivers/net/wireless/zydas/zd1211rw/zd_usb.c
-index 1965cd0fafc4..4e44ea8c652d 100644
---- a/drivers/net/wireless/zydas/zd1211rw/zd_usb.c
-+++ b/drivers/net/wireless/zydas/zd1211rw/zd_usb.c
-@@ -1597,11 +1597,6 @@ static int zd_ep_regs_out_msg(struct usb_device *udev, void *data, int len,
- 	}
- }
- 
--static int usb_int_regs_length(unsigned int count)
--{
--	return sizeof(struct usb_int_regs) + count * sizeof(struct reg_data);
--}
--
- static void prepare_read_regs_int(struct zd_usb *usb,
- 				  struct usb_req_read_regs *req,
- 				  unsigned int count)
-@@ -1636,10 +1631,10 @@ static bool check_read_regs(struct zd_usb *usb, struct usb_req_read_regs *req,
- 	/* The created block size seems to be larger than expected.
- 	 * However results appear to be correct.
- 	 */
--	if (rr->length < usb_int_regs_length(count)) {
-+	if (rr->length < struct_size(regs, regs, count)) {
- 		dev_dbg_f(zd_usb_dev(usb),
--			 "error: actual length %d less than expected %d\n",
--			 rr->length, usb_int_regs_length(count));
-+			 "error: actual length %d less than expected %ld\n",
-+			 rr->length, struct_size(regs, regs, count));
- 		return false;
- 	}
- 
--- 
-2.23.0
-
+Regards,
+-Denis
