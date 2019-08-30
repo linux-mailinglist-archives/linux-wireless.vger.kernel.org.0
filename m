@@ -2,131 +2,102 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id DB433A3CAF
-	for <lists+linux-wireless@lfdr.de>; Fri, 30 Aug 2019 18:55:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 26BBBA3CB7
+	for <lists+linux-wireless@lfdr.de>; Fri, 30 Aug 2019 18:56:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728111AbfH3QzR (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 30 Aug 2019 12:55:17 -0400
-Received: from mail-ot1-f65.google.com ([209.85.210.65]:36526 "EHLO
-        mail-ot1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726183AbfH3QzR (ORCPT
+        id S1727926AbfH3Q4u (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 30 Aug 2019 12:56:50 -0400
+Received: from mail-lj1-f196.google.com ([209.85.208.196]:43825 "EHLO
+        mail-lj1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727304AbfH3Q4t (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 30 Aug 2019 12:55:17 -0400
-Received: by mail-ot1-f65.google.com with SMTP id k18so7586889otr.3
-        for <linux-wireless@vger.kernel.org>; Fri, 30 Aug 2019 09:55:16 -0700 (PDT)
+        Fri, 30 Aug 2019 12:56:49 -0400
+Received: by mail-lj1-f196.google.com with SMTP id h15so7083993ljg.10
+        for <linux-wireless@vger.kernel.org>; Fri, 30 Aug 2019 09:56:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=subject:to:references:from:message-id:date:user-agent:mime-version
-         :in-reply-to:content-language:content-transfer-encoding;
-        bh=hOWPt9D3wtZLYl74Bh3Q8GcQxuAnKB6MXNeOglOBCSo=;
-        b=AG6yQwrLQKbqxCSLEj3F9Am3Mecy25wgYeO+RjDTBQ1Hg4ejIi5bVNcZqEIkpHAW7L
-         1RUttkEFuItN4iFIDED2Ow/4ejzNPbBlQLY53j0PU3roTgTUdRijEtE+f5EtYZh1kQif
-         SfZWblKTZoAF62FhCe7WVfN2n1HSeV7FlzGLW+RcqlnH3QuDqBkRp4M5c4ArZDBNIX/c
-         CPjrfZT7V74YSQBJu5U2SccP0+mUhGFy9+LrLVFUHK7pe0WqpASe+KDqHk5ybI/B+uMF
-         AYNN4ZSq3lE/XgSMaPjDEn3UIQB9B1F58BBkWTUzXoZvWnNAoyO63J7pcieustHF6Z0X
-         ioGQ==
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=LqizBXax0mkO4gxIZRPwBrd4VcJG7zs6D6D/3vSkVdo=;
+        b=nkQ4Em09M/EJ1BWGTo3sxQANyOOs8LboG1LQh66nOapSCQ1YakZhv/IbA8g9ZaPHBg
+         sYucTURCONeFJakGGyFcE7repjibY04K7FVtdOdhB8N04pMERv8eyKJPAI/8SwLzLYGn
+         1fv/fYzgOiPpLPNswHMoMIb03fuNaaMy0PRUU6nhZjgHzhmwmAjZxBzVzyBmxniWKrqu
+         JTBg43qyBex+QkAusLI/KVD8qf1qJMvBYCvmREiLDxIkQ72OgjtZ2cVXPZZKrTUi9+Re
+         SOUVNg8DVETR/Z3U2mEcgdSM4RbEeS8FTxU8dfQ5RWbVDrOt98l0RsY1frDtU9lUFFJp
+         MO7A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
          :content-transfer-encoding;
-        bh=hOWPt9D3wtZLYl74Bh3Q8GcQxuAnKB6MXNeOglOBCSo=;
-        b=Pr9TBmaqWANWDttzoHCJ/GkO1jAgrN+REr9Sn+XnUpz/8FwFvwYLm3XcrMeGWaS0M9
-         6mjjY4xEs5Rgna3Y+J1Gts3Tw3O25X6ZULp35u04e6Q/eDEpn1kWGYpvW3kiPhXntjDK
-         /ehHd3uLHojEstMbodLufRopwCB7n4I7bNdMorFkW5QzIF427nG3bSIdJ3YxvX7weTas
-         9gH1tt2yB3EE1q5/fzOxaGQ1JgMPAzOdTwTmh2r5WAGNyUMkVHU8duMmF/iGtmUq3+vI
-         awPifuDzUmZYL1wusEpyqg/JK4oVRKfYPpcKwTHP26hgRjwzKgjRAc4b56cZ4zKEBwry
-         3oCA==
-X-Gm-Message-State: APjAAAXJG0VxRcxE/Uy9cauAWRLeOfkKiJ+5vQ2jjnpmle+kjLdM4yGF
-        FNeuiGfrQ7lnVLfhy+9r/yukNB8d
-X-Google-Smtp-Source: APXvYqzs/EEFzfODXa2CaTIRqOjXJSSwxPy6e2SYpVR9jZaW9FKj6CA9kbr01q2f8w1H0xNlg6EQ/g==
-X-Received: by 2002:a05:6830:1b65:: with SMTP id d5mr13280647ote.278.1567184116053;
-        Fri, 30 Aug 2019 09:55:16 -0700 (PDT)
-Received: from [192.168.1.249] (cpe-70-114-247-242.austin.res.rr.com. [70.114.247.242])
-        by smtp.googlemail.com with ESMTPSA id z85sm1161811oia.42.2019.08.30.09.55.14
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Fri, 30 Aug 2019 09:55:15 -0700 (PDT)
-Subject: Re: [PATCH 1/2] nl80211: Add NL80211_EXT_FEATURE_LIVE_IFTYPE_CHANGE
-To:     Johannes Berg <johannes@sipsolutions.net>,
-        linux-wireless@vger.kernel.org
-References: <20190826162637.7535-1-denkenz@gmail.com>
- <f5986ccd8ecdcc08d5c3e0d65f8bddef8b0af021.camel@sipsolutions.net>
-From:   Denis Kenzior <denkenz@gmail.com>
-Message-ID: <73e78b3e-f36a-aa29-a818-e0e1f0598b2f@gmail.com>
-Date:   Fri, 30 Aug 2019 11:55:13 -0500
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.8.0
+        bh=LqizBXax0mkO4gxIZRPwBrd4VcJG7zs6D6D/3vSkVdo=;
+        b=FfwON8s9mT7Z7l4p2fSuxV7MQYGqOCmNk1GJ/yV+LBZL/dlcF8fEK8n4Oprdge63NA
+         +x2yK/8mXawgWhOYmvSXWiypouJDmTrdL0+fhgSNMb2DAsw7XU559azUlCjZxTJb32Dw
+         6YSr9UHBFxdyHPz6uuIsAZE8q3omfWm6RQ1Pf5cV2rhBi/uOl/PBraC5bBbBf+QsdnVe
+         biuUb12SJFF1PrcW26YHaWrg8e6yVl7rPUdOSqMvIK1PtGLlReS1YMjhCZLyEoTEOlvr
+         Co8OzlLxcWifSw0cbamG4Fu+z6Oecx1+jWZ8fZCbyE9OBmmDctJyEc7aC1jJoRiokVWo
+         CvEQ==
+X-Gm-Message-State: APjAAAUOsTewuE1EibKo1LUaGPuQ4Pww8MQepcmF12jSFmTY7/vHmeNX
+        RWxedAqtik8yGQcQNH+vfyY=
+X-Google-Smtp-Source: APXvYqwmJLM91wWs1FSSXYmou50YeFpjAtM6iVh+Iymrriiq2OQq57EiGlQXlnKQIQZ8rjahhF8RMg==
+X-Received: by 2002:a05:651c:104a:: with SMTP id x10mr8730610ljm.238.1567184208119;
+        Fri, 30 Aug 2019 09:56:48 -0700 (PDT)
+Received: from natasha-samsung.lan ([31.173.80.208])
+        by smtp.gmail.com with ESMTPSA id s21sm925348ljm.28.2019.08.30.09.56.46
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
+        Fri, 30 Aug 2019 09:56:47 -0700 (PDT)
+From:   Dmitry Tunin <hanipouspilot@gmail.com>
+To:     seth.forshee@canonical.com
+Cc:     wireless-regdb@lists.infradead.org, linux-wireless@vger.kernel.org,
+        Dmitry Tunin <hanipouspilot@gmail.com>
+Subject: [PATCH] =?UTF-8?q?wireless-regdb:=20update=20regulatory=20rulez?= =?UTF-8?q?=20for=20Kazak=D1=80stan=20(KZ)?=
+Date:   Fri, 30 Aug 2019 19:56:35 +0300
+Message-Id: <1567184195-24992-1-git-send-email-hanipouspilot@gmail.com>
+X-Mailer: git-send-email 2.7.4
 MIME-Version: 1.0
-In-Reply-To: <f5986ccd8ecdcc08d5c3e0d65f8bddef8b0af021.camel@sipsolutions.net>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi Johannes,
+Update according to the regulatory rule of January 21, 2015
 
-On 8/30/19 5:19 AM, Johannes Berg wrote:
-> On Mon, 2019-08-26 at 11:26 -0500, Denis Kenzior wrote:
->>
->> + *	Prior to Kernel 5.4, userspace applications should implement the
->> + *	following behavior:
-> 
-> I'm not sure mentioning the kernel version here does us any good? I
-> mean, you really need to implement that behaviour regardless of kernel
-> version, if NL80211_EXT_FEATURE_LIVE_IFTYPE_CHANGE isn't set.
-> 
+http://egov.kz/cms/ru/law/list/V1500010730
+https://tengrinews.kz/zakon/pravitelstvo_respubliki_kazahstan_premer_ministr_rk/svyaz/id-V1500010730/
 
-Agreed.  I guess I just view nl80211.h as a sort of combination between 
-a uapi file and an actual manpage.  And manpages do mention which kernel 
-version a certain feature/flag/whatever was added.  Such info can be 
-useful in many ways, e.g. figuring out which kernel version might be 
-required for a certain piece of hardware, etc.
+No DFS or TPC is mentioned in the document. Neither is 80 MHz channel width.
 
-Another point where this might be useful is if the kernel starts 
-enforcing certain behavior that it didn't before.  E.g. I mentioned this 
-in the purge thread that a lot of mode change failure cases could be 
-caught if the kernel checked this flag prior to doing anything.
+Signed-off-by: Dmitry Tunin <hanipouspilot@gmail.com>
+---
+ db.txt | 14 +++++++-------
+ 1 file changed, 7 insertions(+), 7 deletions(-)
 
-I really leave this up to you if this is something you think is a good 
-idea or not.
+diff --git a/db.txt b/db.txt
+index 37393e6..491598e 100644
+--- a/db.txt
++++ b/db.txt
+@@ -717,13 +717,13 @@ country KY: DFS-FCC
+ 	(5735 - 5835 @ 80), (30)
+ 
+ # Source:
+-# http://mic.gov.kz/sites/default/files/pages/pravila_prisvoeniya_polos_chastot_no34.pdf
+-# http://adilet.zan.kz/rus/docs/P000001379_
+-country KZ: DFS-ETSI
+-	(2402 - 2482 @ 40), (20)
+-	(5150 - 5250 @ 80), (20), NO-OUTDOOR, AUTO-BW
+-	(5250 - 5350 @ 80), (20), NO-OUTDOOR, DFS, AUTO-BW
+-	(5470 - 5725 @ 80), (20), NO-OUTDOOR, DFS
++# http://egov.kz/cms/ru/law/list/V1500010730
++# https://tengrinews.kz/zakon/pravitelstvo_respubliki_kazahstan_premer_ministr_rk/svyaz/id-V1500010730/
++country KZ:
++	(2400 - 2483.5 @ 40), (20)
++	(5150 - 5350 @ 160), (23), NO-OUTDOOR
++	(5470 - 5850 @ 160), (20), NO-OUTDOOR
++	(57000 - 66000 @ 2160), (40), NO-OUTDOOR
+ 
+ country LB: DFS-FCC
+ 	(2402 - 2482 @ 40), (20)
+-- 
+2.7.4
 
->> + * @NL80211_EXT_FEATURE_LIVE_IFTYPE_CHANGE: This device supports switching
->> + * 	the IFTYPE of an interface without having to bring the device DOWN
->> + * 	first via RTNL.  Exact semantics of this feature is driver
->> + * 	implementation dependent.
-> 
-> That's not really nice.
-
-Sorry.  This came from some doc changes I have pending.  I think I wrote 
-this after looking at some fullmac drivers and how they handle mode 
-changes and the wording reflects the exasperation I felt at the time.
-
-Do you want to suggest some alternate wording?  I think it is worth it 
-to have some fair warning in the docs stating that prior to version so 
-and so the semantics are completely driver dependent.
-
-> 
->> For mac80211, the following restrictions
->> + * 	apply:
->> + * 		- Only devices currently in IFTYPE AP, P2P_GO, P2P_CLIENT,
->> + * 		  STATION, ADHOC and OCB can be switched.
->> + * 		- The target IFTYPE must be one of: AP, P2P_GO, P2P_CLIENT,
->> + * 		  STATION, ADHOC or OCB.
->> + * 	Other drivers are expected to follow similar restrictions.
-> 
-> Maybe we should instead have a "bitmask of interface types that can be
-> switched while live" or something like that?
-> 
-
-I'm fine with that, but this would only apply to newer kernels, no? 
-Don't we at least want to attempt to state what the rules are for older 
-ones?
-
-An alternative might be to simply state what the restrictions are and 
-just enforce those at the cfg80211 level.
-
-Regards,
--Denis
