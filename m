@@ -2,31 +2,29 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 89C38A3483
-	for <lists+linux-wireless@lfdr.de>; Fri, 30 Aug 2019 11:53:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AD3BAA34AC
+	for <lists+linux-wireless@lfdr.de>; Fri, 30 Aug 2019 12:14:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727170AbfH3Jxj (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 30 Aug 2019 05:53:39 -0400
-Received: from s3.sipsolutions.net ([144.76.43.62]:34004 "EHLO
+        id S1727417AbfH3KO6 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 30 Aug 2019 06:14:58 -0400
+Received: from s3.sipsolutions.net ([144.76.43.62]:34270 "EHLO
         sipsolutions.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726480AbfH3Jxj (ORCPT
+        with ESMTP id S1725780AbfH3KO6 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 30 Aug 2019 05:53:39 -0400
+        Fri, 30 Aug 2019 06:14:58 -0400
 Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
         (Exim 4.92.1)
         (envelope-from <johannes@sipsolutions.net>)
-        id 1i3db7-00035U-9L; Fri, 30 Aug 2019 11:53:37 +0200
-Message-ID: <3d2b8edaaf51ec96bf3983c8a14922e30f419ff3.camel@sipsolutions.net>
-Subject: Re: [RFCv2 1/4] nl80211: Fix broken non-split wiphy dumps
+        id 1i3dvi-0003UB-QJ; Fri, 30 Aug 2019 12:14:55 +0200
+Message-ID: <2eb256e8a7be09f35dc4f0f3b61e0363691f41f0.camel@sipsolutions.net>
+Subject: Re: [RFCv2 4/4] nl80211: Send large new_wiphy events
 From:   Johannes Berg <johannes@sipsolutions.net>
 To:     Denis Kenzior <denkenz@gmail.com>, linux-wireless@vger.kernel.org
-Date:   Fri, 30 Aug 2019 11:53:36 +0200
-In-Reply-To: <ec3b9fd84fb8c5d333445d872bb0f864a4655a6b.camel@sipsolutions.net> (sfid-20190830_114008_989593_CFB8ED94)
+Date:   Fri, 30 Aug 2019 12:14:53 +0200
+In-Reply-To: <20190816192703.12445-4-denkenz@gmail.com> (sfid-20190816_212731_253959_D0B83E63)
 References: <20190816192703.12445-1-denkenz@gmail.com>
-         (sfid-20190816_212729_636741_39C4CEB6) <f7c98da178677cbb0cad3568f4ea4ab85171edd8.camel@sipsolutions.net>
-         (sfid-20190830_110356_499003_5F22B3F6) <00161d6069cda67dbd8b918dd987e01dc1a3dab3.camel@sipsolutions.net>
-         (sfid-20190830_111018_535326_C90DC0EB) <ec3b9fd84fb8c5d333445d872bb0f864a4655a6b.camel@sipsolutions.net>
-         (sfid-20190830_114008_989593_CFB8ED94)
+         <20190816192703.12445-4-denkenz@gmail.com>
+         (sfid-20190816_212731_253959_D0B83E63)
 Content-Type: text/plain; charset="UTF-8"
 User-Agent: Evolution 3.30.5 (3.30.5-1.fc29) 
 MIME-Version: 1.0
@@ -36,38 +34,78 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Fri, 2019-08-30 at 11:40 +0200, Johannes Berg wrote:
-> On Fri, 2019-08-30 at 11:10 +0200, Johannes Berg wrote:
-> > On Fri, 2019-08-30 at 11:03 +0200, Johannes Berg wrote:
-> > > On Fri, 2019-08-16 at 14:27 -0500, Denis Kenzior wrote:
-> > > > If a (legacy) client requested a wiphy dump but did not provide the
-> > > > NL80211_ATTR_SPLIT_WIPHY_DUMP attribute, the dump was supposed to be
-> > > > composed of purely non-split NEW_WIPHY messages, with 1 wiphy per
-> > > > message.  At least this was the intent after commit:
-> > > > 3713b4e364ef ("nl80211: allow splitting wiphy information in dumps")
-> > > > 
-> > > > However, in reality the non-split dumps were broken very shortly after.
-> > > > Perhaps around commit:
-> > > > fe1abafd942f ("nl80211: re-add channel width and extended capa advertising")
-> > > 
-> > > Fun. I guess we updated all userspace quickly enough to not actually
-> > > have any issues there. As far as I remember, nobody ever complained, so
-> > > I guess people just updated their userspace.
-> > 
-> > Actually, going back in time to the code there (e.g. iw and hostap), it
-> > seems that it quite possibly never was a userspace issue, just an issue
-> > with netlink allocating a 4k SKB by default for dumps.
-> > 
-> > Even then, libnl would've defaulted to a 16k recvmsg() buffer size, and
-> > we didn't override that anywhere.
+On Fri, 2019-08-16 at 14:27 -0500, Denis Kenzior wrote:
+> Send large NEW_WIPHY events on a new multicast group so that clients
+> that can accept larger messages do not need to round-trip to the kernel
+> and perform extra filtered wiphy dumps.
 > 
-> Ah, also not quite true, at the time it still had a 4k default, until
-> commit 807fddc4cd9e ("nl: Increase receive buffer size to 4 pages")
-> dated May 8, 2013.
+> A new multicast group is introduced and the large message is sent before
+> the legacy message.  This way clients that listen on both multicast
+> groups can ignore duplicate legacy messages if needed.
 
-However, even before that, it would have supported responding to
-MSG_TRUNC by retrying the recvmsg(), but hostap/iw wouldn't have set
-nl_socket_enable_msg_peek()... oh well.
+Since I just did the digging, it seems that this would affect (old)
+applications with libnl up to 3.2.22, unless they changed the default
+recvmsg() buffer size.
+
+I think this is a pretty decent approach, but I'm slightly worried about
+hitting the new limits (16k) eventually. It seems far off now, but who
+knows what kind of data we'll add. HE is (and likely will be) adding
+quite a bit since it has everything for each interface type - something
+drivers have for the most part not implemented yet. That trend will only
+continue, as complexity in the spec doesn't seem to be going down.
+
+And I don't really want to see "config3" a couple of years down the
+road...
+
+So can we at least mandate (document) that "config2" basically has no
+message limit, and you will use MSG_PEEK/handle MSG_TRUNC with it?
+
+That way, we can later bump the 8192 even beyond 16k if needed, and not
+run into problems.
+
+> +       if (cmd == NL80211_CMD_NEW_WIPHY) {
+> +               state.large_message = true;
+> +               alloc_size = 8192UL;
+> +       } else
+> +               alloc_size = NLMSG_DEFAULT_SIZE;
+> +
+
+nit: there should be braces on both branches
+
+> +       if (nl80211_send_wiphy(rdev, cmd, msg, 0, 0, 0, &state) < 0) {
+> +               nlmsg_free(msg);
+> +               goto legacy;
+> +       }
+
+I think that'd be worth a WARN_ON(), it should never happen that you
+actually run out of space, it means that the above wasn't big enough.
+
+Now, on the previous patches I actually thought that you could set
+"state->split" (and you should) and not need "state->large_message" in
+order to indicate that the sub-functions are allowed to create larger
+data - just keep filling the SKBs as much as possible for the dump.
+
+Here, it seems like we do need it. It might be possible to get away
+without it (by setting split here, and then having some special code to
+handle the case of it not getting to the end), but that doesn't seem
+worth it.
+
+> @@ -14763,6 +14787,8 @@ void nl80211_notify_iface(struct cfg80211_registered_device *rdev,
+>                 return;
+>         }
+>  
+> +       genlmsg_multicast_netns(&nl80211_fam, wiphy_net(&rdev->wiphy), msg, 0,
+> +                               NL80211_MCGRP_CONFIG2, GFP_KERNEL);
+
+Hmm. That seems only needed if you don't want to listen on "config" at
+all, but in the patch description you explicitly said that you send it
+on "config2" *before* "config" for compatibility reasons (which makes
+sense) - so what is it?
+
+I'm having a hard time seeing anyone get away with only listening on
+config2 since that'd basically require very recent (as of now future)
+kernel. Are you planning this for a world where you can ditch support
+for kernel<5.4 (or so)?
 
 johannes
 
