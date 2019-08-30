@@ -2,89 +2,84 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 30BF1A355D
-	for <lists+linux-wireless@lfdr.de>; Fri, 30 Aug 2019 13:03:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 67F18A359B
+	for <lists+linux-wireless@lfdr.de>; Fri, 30 Aug 2019 13:25:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726969AbfH3LDQ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 30 Aug 2019 07:03:16 -0400
-Received: from mail-wm1-f67.google.com ([209.85.128.67]:34106 "EHLO
-        mail-wm1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725780AbfH3LDQ (ORCPT
+        id S1727789AbfH3LY7 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 30 Aug 2019 07:24:59 -0400
+Received: from paleale.coelho.fi ([176.9.41.70]:39416 "EHLO
+        farmhouse.coelho.fi" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
+        with ESMTP id S1727410AbfH3LY7 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 30 Aug 2019 07:03:16 -0400
-Received: by mail-wm1-f67.google.com with SMTP id y135so4138388wmc.1
-        for <linux-wireless@vger.kernel.org>; Fri, 30 Aug 2019 04:03:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=/6rJXpyU5uSX2XcxIQgLawITemN1VdIxT4IEdo6B2gU=;
-        b=eFtQ08ojUVQt8ea227d+CptaFRmOsqkNVx4PccUle/1H7XSsdAPi35yI/aFjzgkb/E
-         SFw9r/Zc/BaQCeB6T0qv0TKVGaqzCnEMBIp1kunajZIKAXiCPBUds4FtRcAi7pIAEXVO
-         hy4ZFw5Vp2xCWnk05Q+70noj7qvT4ZX3eOJaI=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=/6rJXpyU5uSX2XcxIQgLawITemN1VdIxT4IEdo6B2gU=;
-        b=c99GHguAGIS7LBy8mQhSoRlJ6SJc/FLXnUPuj+ujc0FXUT8QVCXfAGL5BxLV2rJN04
-         L2AktI38vitUsiwKZDRYtsrTVTF2DRtvaXKeKjf/3O7blEd5WO9/+i/xFFjm9UKHzip1
-         okZmMDUWZ8OCGRldfwpBhg9rvF032cRlVWnaEZaFYbhV5AVemeUZztiL6ImnMuyxWkxm
-         n9+he14qB+qR1/aVMtlzlG5fRwbKZzVMhAaxX3pugi1wRFyt5RU2eFpFn9LkLiE634Eq
-         LyhPhomkjzMc7Y8MEL2cbLFqcC7ByFqcxPtJ02vCrF/z5QMBZllsdTJ17kMVfU5qEJIP
-         brYg==
-X-Gm-Message-State: APjAAAWsLvBLZ4Iu4TUn9JQBEOKmdL2JFYwIsJkKfO537W/DIor2wC3e
-        8i17XO275GiuBBxSQaoXrztxQA==
-X-Google-Smtp-Source: APXvYqwUSppxmHaK5pBfo/uspfEaSwnP5WUOooA/LJ7D9lPEw+7kAzTBoU+hBWhcKfRre9SfxWQiVA==
-X-Received: by 2002:a1c:4c04:: with SMTP id z4mr17550297wmf.1.1567162994262;
-        Fri, 30 Aug 2019 04:03:14 -0700 (PDT)
-Received: from [10.176.68.244] ([192.19.248.250])
-        by smtp.gmail.com with ESMTPSA id n9sm5834526wrp.54.2019.08.30.04.03.13
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Fri, 30 Aug 2019 04:03:13 -0700 (PDT)
-Subject: Re: [PATCH] cfg80211: Add new helper function for channels
-To:     Johannes Berg <johannes@sipsolutions.net>,
-        Amar Singhal <asinghal@codeaurora.org>, jouni@codeaurora.org
-Cc:     linux-wireless@vger.kernel.org, jjohnson@codeaurora.org,
-        rmanohar@codeaurora.org
-References: <1567115381-7831-1-git-send-email-asinghal@codeaurora.org>
- <01082dca-8d71-c674-1f61-ab5d7e07c007@broadcom.com>
- <6222b9d9d125c4c3a9f60cc0fe73cef2011b9959.camel@sipsolutions.net>
-From:   Arend Van Spriel <arend.vanspriel@broadcom.com>
-Message-ID: <9a9c8024-a9f9-72f9-557a-c185dca9c15c@broadcom.com>
-Date:   Fri, 30 Aug 2019 13:03:12 +0200
-User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:60.0) Gecko/20100101
- Thunderbird/60.8.0
+        Fri, 30 Aug 2019 07:24:59 -0400
+Received: from [91.156.6.193] (helo=redipa.ger.corp.intel.com)
+        by farmhouse.coelho.fi with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+        (Exim 4.92)
+        (envelope-from <luca@coelho.fi>)
+        id 1i3f1U-0001lc-8x; Fri, 30 Aug 2019 14:24:56 +0300
+From:   Luca Coelho <luca@coelho.fi>
+To:     johannes@sipsolutions.net
+Cc:     linux-wireless@vger.kernel.org
+Date:   Fri, 30 Aug 2019 14:24:43 +0300
+Message-Id: <20190830112451.21655-1-luca@coelho.fi>
+X-Mailer: git-send-email 2.23.0.rc1
 MIME-Version: 1.0
-In-Reply-To: <6222b9d9d125c4c3a9f60cc0fe73cef2011b9959.camel@sipsolutions.net>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on farmhouse.coelho.fi
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.9 required=5.0 tests=ALL_TRUSTED,BAYES_00,
+        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.2
+Subject: [PATCH 0/8] cfg80211/mac80211 patches from our internal tree 2019-08-30
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 8/30/2019 12:41 PM, Johannes Berg wrote:
-> On Fri, 2019-08-30 at 12:40 +0200, Arend Van Spriel wrote:
-> 
->>> +EXPORT_SYMBOL(ieee80211_channel_op_class_to_frequency);
->>
->> The function ieee80211_operating_class_to_band() uses ranges within
->> switch statement, eg.:
->>
->>           case 128 ... 130:
->>                   *band = NL80211_BAND_5GHZ;
->>                   return true;
-> 
-> No that you remind me - how is this new function not just a composition
-> of the existing ones?
-> 
-> i.e. just convert the op_class to band first, and then (band, channel)
-> to freq?
+From: Luca Coelho <luciano.coelho@intel.com>
 
-yup. that would have my preference actually.
+Hi,
 
-Regards,
-Arend
+Some patches with mac80211 and cfg80211 changes from our internal
+tree.
+
+Please review, though you have already reviewed most if not all of
+them ;)
+
+Cheers,
+Luca.
+
+
+Ilan Peer (1):
+  mac80211: Allow user space to register for station Rx authentication
+
+Johannes Berg (4):
+  cfg80211: always shut down on HW rfkill
+  mac80211: list features in WEP/TKIP disable in better order
+  mac80211: remove unnecessary key condition
+  mac80211: IBSS: send deauth when expiring inactive STAs
+
+Lior Cohen (1):
+  mac80211: clear crypto tx tailroom counter upon keys enable
+
+Luca Coelho (1):
+  mac80211: don't check if key is NULL in ieee80211_key_link()
+
+Mordechay Goodstein (1):
+  mac80211: vht: add support VHT EXT NSS BW in parsing VHT
+
+ net/mac80211/ibss.c        |  8 +++++++
+ net/mac80211/ieee80211_i.h |  3 ++-
+ net/mac80211/key.c         | 48 +++++++++++++-------------------------
+ net/mac80211/key.h         |  4 ++--
+ net/mac80211/main.c        | 13 +++++++++++
+ net/mac80211/mlme.c        | 13 ++++++-----
+ net/mac80211/util.c        | 11 ++++-----
+ net/mac80211/vht.c         | 10 +++++++-
+ net/wireless/core.c        | 13 ++++++-----
+ net/wireless/core.h        |  2 +-
+ net/wireless/wext-compat.c |  5 ++--
+ 11 files changed, 72 insertions(+), 58 deletions(-)
+
+-- 
+2.23.0.rc1
+
