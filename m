@@ -2,63 +2,63 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id CA9B7A3EB3
-	for <lists+linux-wireless@lfdr.de>; Fri, 30 Aug 2019 21:56:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 39479A3F0D
+	for <lists+linux-wireless@lfdr.de>; Fri, 30 Aug 2019 22:36:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728072AbfH3T43 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 30 Aug 2019 15:56:29 -0400
-Received: from mail-ot1-f68.google.com ([209.85.210.68]:47024 "EHLO
-        mail-ot1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728053AbfH3T42 (ORCPT
+        id S1728094AbfH3UgP (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 30 Aug 2019 16:36:15 -0400
+Received: from mail-ot1-f47.google.com ([209.85.210.47]:36050 "EHLO
+        mail-ot1-f47.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727963AbfH3UgO (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 30 Aug 2019 15:56:28 -0400
-Received: by mail-ot1-f68.google.com with SMTP id z17so8013562otk.13
-        for <linux-wireless@vger.kernel.org>; Fri, 30 Aug 2019 12:56:28 -0700 (PDT)
+        Fri, 30 Aug 2019 16:36:14 -0400
+Received: by mail-ot1-f47.google.com with SMTP id k18so8199153otr.3
+        for <linux-wireless@vger.kernel.org>; Fri, 30 Aug 2019 13:36:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=subject:to:references:from:message-id:date:user-agent:mime-version
-         :in-reply-to:content-language:content-transfer-encoding;
-        bh=YpoG8jIkxXjVtNoO0jl5YfFLEKuc9+sp9Ac02XuP3Ps=;
-        b=a36Vr/CJaChQDoNbnl6ccll5pu/0k7QFH0f27qCbfPfZKiYEU1v8BdPbx+W+mBlt4w
-         auABZ8XMci4HZjR1mWftvuHRKe0P2tXYHEfI8ZZ3eSrif+VE784nGtt+h7+LpljndpiE
-         zLo1zTMlGGo4riIl+U5+6epBdb+6BcoF69TngP8UyzFzlxteFODCXMpHuBhsaXtP4q9X
-         knQ/r4pQGIK9N8HTcpMCkfn6KfhbBh2M0l1eJAXx5oNED6eEPatQdxgPTfa4h5cL7a7r
-         rqLhoaRUxOjau6FtaNFzaTRI0IMswPWkNDw4W7MSVZcIdhfLYhBIc98mVORujYoRzShN
-         t9UA==
+        h=sender:subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=QRUvOObB2bApT9R/NlY0yu/F4vFRVuVcOjsOEt25/VM=;
+        b=RVl3laEvYLI/AyeqKcMJR9zxhlv8PZ4JO3OMGdeSqaPbx+iInPD2sb7+wxOMKd2PvI
+         RmMIWsE8h2zCe4ZZibGm3GnPK1WZqVvWAI7LnM2u9f84qAGAVfQPVUs8KuQMv04rpwmB
+         /WfmVWTf7I8RwX0FoADYLKQ4EGcpaQBu5tdPMe+SuXWVO9uFC7hU003CW8E4NfBcKTCM
+         ictf7zgZO7Va/zWxkcjQkasVDiSu/XLJ8yxuYNvSwQT6cA+gdR6K+SK6uGu/voryRUKg
+         TxWs70jB5wN0fPTIixo7ij1p+Hy21W4Cpu5S9yprrp76mA+evIo5aLNhgY1uHFmxWOQV
+         EL4w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
+        h=x-gm-message-state:sender:subject:to:cc:references:from:message-id
+         :date:user-agent:mime-version:in-reply-to:content-language
          :content-transfer-encoding;
-        bh=YpoG8jIkxXjVtNoO0jl5YfFLEKuc9+sp9Ac02XuP3Ps=;
-        b=KxbmszElqp1ugmtSeTLiy7IT5K4DBVs6sClb/ulpe+7kJy1mFFt837YaUSYDlJn12i
-         LU3LVEVY2BDmeKVYRaWpR2hXWCcZgX+BUn+CPAxxzk4vf7dzwSIT6j7VFqfvMNFUN8Wj
-         4GsF47j+v2JmXHx28FvYxYwElYNW0SvV/ayg5d2YgPHbi2olk3JgoCqvBVbsBsV7XNCy
-         lHqwNhnGewHNsQaR1zi8A5dvznBMYJzrF/tjqnB2qmelW7un2nzNsyNye3BCIi1TRzkm
-         vZqiZmrHQHys9sX8TD9Hayv0hN9kHUuQTtAX5ONnikVd0NtiWalP+bLnd0Gq9MgyJcui
-         Xr+g==
-X-Gm-Message-State: APjAAAWZSv5s4EGLCszsRmJMKNqUvLRg6apBvlNHhJhJaH7+grCwGM+O
-        JNJNySNzSzFfGXAPzzdsLhF3Hvhb
-X-Google-Smtp-Source: APXvYqyfV1+PxblVZieIWJjd6aoVdgJdsPbLV75/WG16XnGaC9nkwY3ZHYgqRQrjGLtsfX86KArppA==
-X-Received: by 2002:a05:6830:1151:: with SMTP id x17mr8322726otq.270.1567194987743;
-        Fri, 30 Aug 2019 12:56:27 -0700 (PDT)
-Received: from [192.168.1.249] (cpe-70-114-247-242.austin.res.rr.com. [70.114.247.242])
-        by smtp.googlemail.com with ESMTPSA id n29sm1811067oij.50.2019.08.30.12.56.18
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Fri, 30 Aug 2019 12:56:18 -0700 (PDT)
-Subject: Re: [RFCv2 2/4] nl80211: Support >4096 byte NEW_WIPHY event nlmsg
-To:     Johannes Berg <johannes@sipsolutions.net>,
-        linux-wireless@vger.kernel.org
-References: <20190816192703.12445-1-denkenz@gmail.com>
- <20190816192703.12445-2-denkenz@gmail.com>
- <34a0b0652403edcb630f65a240a30dfddb82950c.camel@sipsolutions.net>
-From:   Denis Kenzior <denkenz@gmail.com>
-Message-ID: <aed69235-12b6-bf27-083a-5cb97dfec4cb@gmail.com>
-Date:   Fri, 30 Aug 2019 14:56:17 -0500
+        bh=QRUvOObB2bApT9R/NlY0yu/F4vFRVuVcOjsOEt25/VM=;
+        b=GIT5oR5xsC9gG7EUUDb1GX+sQCygwXhNFRh4EmUZGCbUl5hLyxHHnVLE7wOkZqe+Q+
+         /9Xd1K9K7WlHg6ei++CLzMdyG+Kx2UMuvjfNfA5MrJeodzxSIUJkPzyWHdEQ3LzvHrxJ
+         hrwCd1k/xpmzQHIiATyg20DQeqZSZIqo1be4tsrFliSBpXwv/xzZQr7nxKGd/j6pOrTh
+         JSJy9krA8yckyRSrQhitV9RsI41JnO/u7ypLTccACqn/ePQl1I4mnrzEWxwqGtWCKVe5
+         Qzi+x/mCrjWMWCNlvKgRq4jvFjMTA2OfxIeYHIXIBnURVHgkrUYjdMksj94MqMvEbfsM
+         rhAg==
+X-Gm-Message-State: APjAAAXsLutHReYOBOsT1B+lUfQ3TmFLj2ayhnGegt7XSg6PWjIHLywU
+        3l2YUG05P3x21YrJSPoKkYnXroT8
+X-Google-Smtp-Source: APXvYqwdr8A2ST9SabeotOdhbjtK6/Vku72LlH1AAF+rtWKxC8i8jBc2BG20EkbfUAoneWA5/c87ZQ==
+X-Received: by 2002:a9d:6a94:: with SMTP id l20mr13341525otq.221.1567197373748;
+        Fri, 30 Aug 2019 13:36:13 -0700 (PDT)
+Received: from localhost.localdomain (cpe-24-31-245-230.kc.res.rr.com. [24.31.245.230])
+        by smtp.gmail.com with ESMTPSA id k6sm2399512otp.57.2019.08.30.13.36.12
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 30 Aug 2019 13:36:12 -0700 (PDT)
+Subject: Re: [Linux Realtek Wi-Fi support] rtl8192ee related bug
+To:     Sergey Kharitonov <haritonovsb@gmail.com>
+Cc:     linux-wireless@vger.kernel.org
+References: <CAHmv74wK2NYuj2JuDUz-og5w+e=H1=ef9eCSMTbO6otaYQatKg@mail.gmail.com>
+ <9172166a-eb77-a508-ba54-08fdf96912fc@lwfinger.net>
+ <CAHmv74wNOM1QKUPp2Vax2Z+-JyoFC81WHVZ+XbYgiRMUGxCFUQ@mail.gmail.com>
+From:   Larry Finger <Larry.Finger@lwfinger.net>
+Message-ID: <9492be2d-abd1-0e1d-5d80-1a72b0250749@lwfinger.net>
+Date:   Fri, 30 Aug 2019 15:36:11 -0500
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.8.0
+ Thunderbird/60.6.1
 MIME-Version: 1.0
-In-Reply-To: <34a0b0652403edcb630f65a240a30dfddb82950c.camel@sipsolutions.net>
+In-Reply-To: <CAHmv74wNOM1QKUPp2Vax2Z+-JyoFC81WHVZ+XbYgiRMUGxCFUQ@mail.gmail.com>
 Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
@@ -67,92 +67,52 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi Johannes,
+On 8/10/19 1:13 PM, Sergey Kharitonov wrote:
+> Dear Mr. Finger!
+> Thank you for paying attention to the problem. I've just posted an
+> updated information to that bug before receiving this message.
+> 
+> I get these results
+> ~]$ ping 192.168.88.1
+> PING 192.168.88.1 (192.168.88.1) 56(84) bytes of data.
+> 64 bytes from 192.168.88.1: icmp_seq=1 ttl=64 time=0.746 ms
+> 64 bytes from 192.168.88.1: icmp_seq=2 ttl=64 time=0.868 ms
+> 64 bytes from 192.168.88.1: icmp_seq=3 ttl=64 time=0.853 ms
+> 64 bytes from 192.168.88.1: icmp_seq=4 ttl=64 time=0.868 ms
+> 64 bytes from 192.168.88.1: icmp_seq=5 ttl=64 time=0.818 ms
+> 64 bytes from 192.168.88.1: icmp_seq=6 ttl=64 time=0.844 ms
+> 64 bytes from 192.168.88.1: icmp_seq=7 ttl=64 time=0.841 ms
+> 64 bytes from 192.168.88.1: icmp_seq=8 ttl=64 time=0.913 ms
+> 64 bytes from 192.168.88.1: icmp_seq=9 ttl=64 time=0.844 ms
+> 64 bytes from 192.168.88.1: icmp_seq=10 ttl=64 time=0.886 ms
+> ^C
+> --- 192.168.88.1 ping statistics ---
+> 10 packets transmitted, 10 received, 0% packet loss, time 387ms
+> rtt min/avg/max/mdev = 0.746/0.848/0.913/0.044 ms
+> 
+> with a driver from rtl8192ee_revised.tar.bz2 file in
+> https://github.com/lwfinger/rtlwifi_new/tree/extended repository built
+> against Linux 4.19.65-1-lts ArchLinux current LTS kernel.
 
-On 8/30/19 4:36 AM, Johannes Berg wrote:
-> On Fri, 2019-08-16 at 14:27 -0500, Denis Kenzior wrote:
->> For historical reasons, NEW_WIPHY messages generated by dumps or
->> GET_WIPHY commands were limited to 4096 bytes due to userspace tools
->> using limited buffers.
-> 
-> I think now that I've figured out why, it'd be good to note that it
-> wasn't due to userspace tools, but rather due to the default netlink
-> dump skb allocation at the time, prior to commit  9063e21fb026
-> ("netlink: autosize skb lengthes").
-> 
+I have completed but not yet sent some updates for rtl8192ee. Using them and 
+kernel 5.3-rc6, I am getting the following:
 
-Sure, will take care of it.
+--- 192.168.1.1 ping statistics ---
+100 packets transmitted, 100 received, 0% packet loss, time 99134ms
+rtt min/avg/max/mdev = 0.881/1.487/8.198/0.844 ms
 
->> Once the sizes NEW_WIPHY messages exceeded these
->> sizes, split dumps were introduced.  All any non-legacy data was added
->> only to messages using split-dumps (including filtered dumps).
->>
->> However, split-dumping has quite a significant overhead.  On cards
->> tested, split dumps generated message sizes 1.7-1.8x compared to
->> non-split dumps, while still comfortably fitting into an 8k buffer.  The
->> kernel now expects userspace to provide 16k buffers by default, and 32k
->> buffers are possible.
->>
->> Introduce a concept of a large message, so that if the kernel detects
->> that userspace has provided a buffer of sufficient size, a non-split
->> message could be generated.
-> 
-> So, there's still a wrinkle with this. Larger SKB allocation can fail,
-> and instead of returning an error to userspace, the kernel will allocate
-> a smaller SKB instead.
-> 
-> With genetlink, we currently don't even have a way of controlling the
-> minimum allocation that's always required.
-> 
-> Since we already have basically all of the mechanics, I'd say perhaps a
-> better concept would be to "split when necessary", aborting if split
-> isn't supported.
-> 
-> IOW, do something like
-> 
-> ... nl80211_send_wiphy(...)
-> {
-> [...]
-> 
-> switch (state->split_start) {
-> [...]
-> case <N>:
-> 	[...] // put stuff
-> 	state->split_start++;
-> 	state->skb_end = nlmsg_get_pos(skb);
-> 	/* fall through */
-> case <N+1>:
-> [...]
-> }
-> 
-> finish:
-> 	genlmsg_end(msg, hdr);
-> 	return 0;
-> nla_put_failure:
-> 	if (state->split_start < 9) {
-> 		genlmsg_cancel(msg, hdr);
-> 		return -EMSGSIZE;
-> 	}
-> 	nlmsg_trim(msg, state->skb_end);
-> 	goto finish;
-> }
-> 
-> 
-> That way, we fill each SKB as much as possible, up to 32k if userspace
-> provided big enough buffers *and* we could allocate the SKB.
-> 
-> 
-> Your userspace would still set the split flag, and thus be compatible
-> with all kinds of options:
->   * really old kernel not supporting split
->   * older kernel sending many messages
->   * kernel after this change packing more into one message
->   * even if allocating big SKBs failed
-> 
+This is using the "old" firmware with the following md5sum:
 
-What I was thinking was to attempt to build a large message first and if 
-that fails to fail over to the old logic.  But I think what you propose 
-is even better.  I'll incorporate this feedback into the next version.
+c8d25646cbc9efdcb818fc95ad5836a9  /lib/firmware/rtlwifi/rtl8192eefw.bin
 
-Regards,
--Denis
+The new driver patches convert a set of macros to read and write the descriptors 
+into inline routines. The calling sequences are also converted from u8 * to 
+__le32 *, but I would not expect much improvement with the latter changes.
+
+Using a local speed test web site, I am getting 100 Mbps download and 80 Mbps 
+upload rates.
+
+Larry
+
+
+
