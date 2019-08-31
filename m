@@ -2,242 +2,289 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 8DBB0A43CA
-	for <lists+linux-wireless@lfdr.de>; Sat, 31 Aug 2019 11:52:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 00BB8A44A8
+	for <lists+linux-wireless@lfdr.de>; Sat, 31 Aug 2019 15:45:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726671AbfHaJwu (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 31 Aug 2019 05:52:50 -0400
-Received: from paleale.coelho.fi ([176.9.41.70]:39724 "EHLO
-        farmhouse.coelho.fi" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1726659AbfHaJwu (ORCPT
+        id S1727305AbfHaNpZ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 31 Aug 2019 09:45:25 -0400
+Received: from isilmar-4.linta.de ([136.243.71.142]:47826 "EHLO
+        isilmar-4.linta.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726740AbfHaNpZ (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 31 Aug 2019 05:52:50 -0400
-Received: from [91.156.6.193] (helo=redipa.ger.corp.intel.com)
-        by farmhouse.coelho.fi with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-        (Exim 4.92)
-        (envelope-from <luca@coelho.fi>)
-        id 1i400W-0002OQ-2w; Sat, 31 Aug 2019 12:49:20 +0300
-From:   Luca Coelho <luca@coelho.fi>
-To:     kvalo@codeaurora.org
+        Sat, 31 Aug 2019 09:45:25 -0400
+X-Greylist: delayed 377 seconds by postgrey-1.27 at vger.kernel.org; Sat, 31 Aug 2019 09:45:23 EDT
+X-isilmar-external: YES
+X-isilmar-external: YES
+X-isilmar-external: YES
+X-isilmar-external: YES
+X-isilmar-external: YES
+Received: from owl.dominikbrodowski.net (owl-tcp.brodo.linta [10.1.0.111])
+        by isilmar-4.linta.de (Postfix) with ESMTPSA id 2FE5E2006F8;
+        Sat, 31 Aug 2019 13:39:05 +0000 (UTC)
+Received: by owl.dominikbrodowski.net (Postfix, from userid 1000)
+        id E932D807DA; Sat, 31 Aug 2019 15:38:52 +0200 (CEST)
+Date:   Sat, 31 Aug 2019 15:38:52 +0200
+From:   Dominik Brodowski <linux@dominikbrodowski.net>
+To:     johannes.berg@intel.com, emmanuel.grumbach@intel.com,
+        luciano.coelho@intel.com, linuxwifi@intel.com
 Cc:     linux-wireless@vger.kernel.org
-Date:   Sat, 31 Aug 2019 12:48:59 +0300
-Message-Id: <20190831094859.6391-20-luca@coelho.fi>
-X-Mailer: git-send-email 2.23.0.rc1
-In-Reply-To: <20190831094859.6391-1-luca@coelho.fi>
-References: <20190831094859.6391-1-luca@coelho.fi>
+Subject: iwlwifi: WARNING: SOFTIRQ-safe -> SOFTIRQ-unsafe lock order detected
+Message-ID: <20190831133852.GA5488@owl.dominikbrodowski.net>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on farmhouse.coelho.fi
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.9 required=5.0 tests=ALL_TRUSTED,BAYES_00,
-        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.2
-Subject: [PATCH 19/19] iwlwifi: dbg_ini: use regions ops array instead of switch case in dump flow
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.12.1 (2019-06-15)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Shahar S Matityahu <shahar.s.matityahu@intel.com>
+Hi!
 
-Make a static regions ops array and use it instead of switch case when
-determining what op to use to collect a region.
+On 5.3.0-rc6+, I get the following lockdep warning:
 
-Signed-off-by: Shahar S Matityahu <shahar.s.matityahu@intel.com>
-Signed-off-by: Luca Coelho <luciano.coelho@intel.com>
----
- drivers/net/wireless/intel/iwlwifi/fw/dbg.c | 150 +++++++++++---------
- 1 file changed, 79 insertions(+), 71 deletions(-)
+=====================================================
+WARNING: SOFTIRQ-safe -> SOFTIRQ-unsafe lock order detected
+5.3.0-rc6+ #1 Tainted: G                T
+-----------------------------------------------------
+kworker/u16:1/59 [HC0[0]:SC0[2]:HE1:SE0] is trying to acquire:
+000000009c839cff (&(&mvm_sta->lq_sta.rs_drv.pers.lock)->rlock){+.+.}, at: iwl_mvm_rs_rate_init+0x53/0x80
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/fw/dbg.c b/drivers/net/wireless/intel/iwlwifi/fw/dbg.c
-index 0c7035033f27..04afaec2d80e 100644
---- a/drivers/net/wireless/intel/iwlwifi/fw/dbg.c
-+++ b/drivers/net/wireless/intel/iwlwifi/fw/dbg.c
-@@ -1648,7 +1648,7 @@ struct iwl_dump_ini_mem_ops {
-  */
- static u32 iwl_dump_ini_mem(struct iwl_fw_runtime *fwrt, struct list_head *list,
- 			    struct iwl_fw_ini_region_cfg *reg,
--			    struct iwl_dump_ini_mem_ops *ops)
-+			    const struct iwl_dump_ini_mem_ops *ops)
- {
- 	struct iwl_fw_ini_dump_entry *entry;
- 	struct iwl_fw_error_dump_data *tlv;
-@@ -1656,8 +1656,8 @@ static u32 iwl_dump_ini_mem(struct iwl_fw_runtime *fwrt, struct list_head *list,
- 	u32 num_of_ranges, i, type = le32_to_cpu(reg->region_type), size;
- 	void *range;
- 
--	if (WARN_ON(!ops || !ops->get_num_of_ranges || !ops->get_size ||
--		    !ops->fill_mem_hdr || !ops->fill_range))
-+	if (!ops->get_num_of_ranges || !ops->get_size || !ops->fill_mem_hdr ||
-+	    !ops->fill_range)
- 		return 0;
- 
- 	size = ops->get_size(fwrt, reg);
-@@ -1789,6 +1789,75 @@ static u32 iwl_dump_ini_info(struct iwl_fw_runtime *fwrt,
- 	return entry->size;
+0000000084f6e8c2 (&(&sta->rate_ctrl_lock)->rlock){+.-.}, at: rate_control_rate_update+0xd0/0x1f0
+which would create a new lock dependency:
+ (&(&sta->rate_ctrl_lock)->rlock){+.-.} -> (&(&mvm_sta->lq_sta.rs_drv.pers.lock)->rlock){+.+.}
+
+ (&(&sta->rate_ctrl_lock)->rlock){+.-.}
+
+  lock_acquire+0xb8/0x1b0
+  _raw_spin_lock_bh+0x39/0x80
+  rate_control_get_rate+0x10e/0x140
+  ieee80211_tx_h_rate_ctrl+0x1a9/0x3f0
+  ieee80211_xmit_fast+0x260/0x9d0
+  __ieee80211_subif_start_xmit+0x146/0x390
+  ieee80211_subif_start_xmit+0x4a/0x3c0
+  dev_hard_start_xmit+0xb0/0x310
+  sch_direct_xmit+0xed/0x230
+  __dev_queue_xmit+0x5ef/0xc10
+  ip_finish_output2+0x2f2/0x9a0
+  ip_output+0x84/0x250
+  __ip_queue_xmit+0x1e0/0x5e0
+  __tcp_transmit_skb+0x59f/0xb70
+  tcp_write_xmit+0x369/0x1110
+  tcp_tsq_handler+0x4f/0xa0
+  tcp_tasklet_func+0xdd/0x120
+  tasklet_action_common.isra.0+0x60/0xb0
+  __do_softirq+0xf0/0x478
+  do_softirq_own_stack+0x2a/0x40
+  do_softirq.part.0+0x4e/0x50
+  __local_bh_enable_ip+0xfb/0x100
+  iwl_pcie_irq_handler+0x1e9/0x7e0
+  irq_thread_fn+0x20/0x60
+  irq_thread+0xfa/0x1b0
+  kthread+0x10a/0x140
+  ret_from_fork+0x3a/0x50
+
+ (&(&mvm_sta->lq_sta.rs_drv.pers.lock)->rlock){+.+.}
+
+...
+  lock_acquire+0xb8/0x1b0
+  _raw_spin_lock+0x34/0x80
+  iwl_mvm_rs_rate_init+0x53/0x80
+  iwl_mvm_mac_sta_state+0x39c/0x640
+  drv_sta_state+0xb2/0x7c0
+  sta_info_move_state+0x196/0x280
+  ieee80211_assoc_success+0x91e/0xfd0
+  ieee80211_rx_mgmt_assoc_resp.cold+0x2dd/0x5f4
+  ieee80211_sta_rx_queued_mgmt+0xd7/0x7d0
+  ieee80211_iface_work+0x1c4/0x2f0
+  process_one_work+0x234/0x580
+  worker_thread+0x50/0x3b0
+  kthread+0x10a/0x140
+  ret_from_fork+0x3a/0x50
+
+ Possible interrupt unsafe locking scenario:
+       CPU0                    CPU1
+       ----                    ----
+  lock(&(&mvm_sta->lq_sta.rs_drv.pers.lock)->rlock);
+                               local_irq_disable();
+                               lock(&(&sta->rate_ctrl_lock)->rlock);
+                               lock(&(&mvm_sta->lq_sta.rs_drv.pers.lock)->rlock);
+  <Interrupt>
+    lock(&(&sta->rate_ctrl_lock)->rlock);
+
+6 locks held by kworker/u16:1/59:
+ #0: 000000001e6d0995 ((wq_completion)phy0){+.+.}, at: process_one_work+0x1b1/0x580
+ #1: 00000000378cac4d ((work_completion)(&sdata->work)){+.+.}, at: process_one_work+0x1b1/0x580
+ #2: 00000000bbbbed75 (&wdev->mtx){+.+.}, at: ieee80211_sta_rx_queued_mgmt+0x51/0x7d0
+ #3: 000000007f128f47 (&local->sta_mtx){+.+.}, at: ieee80211_rx_mgmt_beacon+0x583/0x16c0
+ #4: 00000000fc24f76f (rcu_read_lock){....}, at: rate_control_rate_update+0x44/0x1f0
+ #5: 0000000084f6e8c2 (&(&sta->rate_ctrl_lock)->rlock){+.-.}, at: rate_control_rate_update+0xd0/0x1f0
+
+-> (&(&sta->rate_ctrl_lock)->rlock){+.-.} ops: 99793 {
+   HARDIRQ-ON-W at:
+                    lock_acquire+0xb8/0x1b0
+                    _raw_spin_lock_bh+0x39/0x80
+                    rate_control_rate_init+0xba/0x1d0
+                    ieee80211_assoc_success+0x8bc/0xfd0
+                    ieee80211_rx_mgmt_assoc_resp.cold+0x2dd/0x5f4
+                    ieee80211_sta_rx_queued_mgmt+0xd7/0x7d0
+                    ieee80211_iface_work+0x1c4/0x2f0
+                    process_one_work+0x234/0x580
+                    worker_thread+0x50/0x3b0
+                    kthread+0x10a/0x140
+                    ret_from_fork+0x3a/0x50
+   IN-SOFTIRQ-W at:
+                    lock_acquire+0xb8/0x1b0
+                    _raw_spin_lock_bh+0x39/0x80
+                    rate_control_get_rate+0x10e/0x140
+                    ieee80211_tx_h_rate_ctrl+0x1a9/0x3f0
+                    ieee80211_xmit_fast+0x260/0x9d0
+                    __ieee80211_subif_start_xmit+0x146/0x390
+                    ieee80211_subif_start_xmit+0x4a/0x3c0
+                    dev_hard_start_xmit+0xb0/0x310
+                    sch_direct_xmit+0xed/0x230
+                    __dev_queue_xmit+0x5ef/0xc10
+                    ip_finish_output2+0x2f2/0x9a0
+                    ip_output+0x84/0x250
+                    __ip_queue_xmit+0x1e0/0x5e0
+                    __tcp_transmit_skb+0x59f/0xb70
+                    tcp_write_xmit+0x369/0x1110
+                    tcp_tsq_handler+0x4f/0xa0
+                    tcp_tasklet_func+0xdd/0x120
+                    tasklet_action_common.isra.0+0x60/0xb0
+                    __do_softirq+0xf0/0x478
+                    do_softirq_own_stack+0x2a/0x40
+                    do_softirq.part.0+0x4e/0x50
+                    __local_bh_enable_ip+0xfb/0x100
+                    iwl_pcie_irq_handler+0x1e9/0x7e0
+                    irq_thread_fn+0x20/0x60
+                    irq_thread+0xfa/0x1b0
+                    kthread+0x10a/0x140
+                    ret_from_fork+0x3a/0x50
+   INITIAL USE at:
+                   lock_acquire+0xb8/0x1b0
+                   _raw_spin_lock_bh+0x39/0x80
+                   rate_control_rate_init+0xba/0x1d0
+                   ieee80211_assoc_success+0x8bc/0xfd0
+                   ieee80211_rx_mgmt_assoc_resp.cold+0x2dd/0x5f4
+                   ieee80211_sta_rx_queued_mgmt+0xd7/0x7d0
+                   ieee80211_iface_work+0x1c4/0x2f0
+                   process_one_work+0x234/0x580
+                   worker_thread+0x50/0x3b0
+                   kthread+0x10a/0x140
+                   ret_from_fork+0x3a/0x50
  }
- 
-+static const struct iwl_dump_ini_mem_ops iwl_dump_ini_region_ops[] = {
-+	[IWL_FW_INI_REGION_INVALID] = {},
-+	[IWL_FW_INI_REGION_DEVICE_MEMORY] = {
-+		.get_num_of_ranges = iwl_dump_ini_mem_ranges,
-+		.get_size = iwl_dump_ini_mem_get_size,
-+		.fill_mem_hdr = iwl_dump_ini_mem_fill_header,
-+		.fill_range = iwl_dump_ini_dev_mem_iter,
-+	},
-+	[IWL_FW_INI_REGION_PERIPHERY_MAC] = {
-+		.get_num_of_ranges = iwl_dump_ini_mem_ranges,
-+		.get_size = iwl_dump_ini_mem_get_size,
-+		.fill_mem_hdr = iwl_dump_ini_mem_fill_header,
-+		.fill_range = iwl_dump_ini_prph_iter,
-+	},
-+	[IWL_FW_INI_REGION_PERIPHERY_PHY] = {},
-+	[IWL_FW_INI_REGION_PERIPHERY_AUX] = {},
-+	[IWL_FW_INI_REGION_DRAM_BUFFER] = {
-+		.get_num_of_ranges = iwl_dump_ini_mon_dram_ranges,
-+		.get_size = iwl_dump_ini_mon_dram_get_size,
-+		.fill_mem_hdr = iwl_dump_ini_mon_dram_fill_header,
-+		.fill_range = iwl_dump_ini_mon_dram_iter,
-+	},
-+	[IWL_FW_INI_REGION_DRAM_IMR] = {},
-+	[IWL_FW_INI_REGION_INTERNAL_BUFFER] = {
-+		.get_num_of_ranges = iwl_dump_ini_mem_ranges,
-+		.get_size = iwl_dump_ini_mon_smem_get_size,
-+		.fill_mem_hdr = iwl_dump_ini_mon_smem_fill_header,
-+		.fill_range = iwl_dump_ini_dev_mem_iter,
-+	},
-+	[IWL_FW_INI_REGION_TXF] = {
-+		.get_num_of_ranges = iwl_dump_ini_txf_ranges,
-+		.get_size = iwl_dump_ini_txf_get_size,
-+		.fill_mem_hdr = iwl_dump_ini_mem_fill_header,
-+		.fill_range = iwl_dump_ini_txf_iter,
-+	},
-+	[IWL_FW_INI_REGION_RXF] = {
-+		.get_num_of_ranges = iwl_dump_ini_rxf_ranges,
-+		.get_size = iwl_dump_ini_rxf_get_size,
-+		.fill_mem_hdr = iwl_dump_ini_mem_fill_header,
-+		.fill_range = iwl_dump_ini_rxf_iter,
-+	},
-+	[IWL_FW_INI_REGION_PAGING] = {
-+		.fill_mem_hdr = iwl_dump_ini_mem_fill_header,
-+		.get_num_of_ranges = iwl_dump_ini_paging_ranges,
-+		.get_size = iwl_dump_ini_paging_get_size,
-+		.fill_range = iwl_dump_ini_paging_iter,
-+	},
-+	[IWL_FW_INI_REGION_CSR] = {
-+		.get_num_of_ranges = iwl_dump_ini_mem_ranges,
-+		.get_size = iwl_dump_ini_mem_get_size,
-+		.fill_mem_hdr = iwl_dump_ini_mem_fill_header,
-+		.fill_range = iwl_dump_ini_csr_iter,
-+	},
-+	[IWL_FW_INI_REGION_NOTIFICATION] = {},
-+	[IWL_FW_INI_REGION_DHC] = {},
-+	[IWL_FW_INI_REGION_LMAC_ERROR_TABLE] = {
-+		.get_num_of_ranges = iwl_dump_ini_mem_ranges,
-+		.get_size = iwl_dump_ini_mem_get_size,
-+		.fill_mem_hdr = iwl_dump_ini_mem_fill_header,
-+		.fill_range = iwl_dump_ini_dev_mem_iter,
-+	},
-+	[IWL_FW_INI_REGION_UMAC_ERROR_TABLE] = {
-+		.get_num_of_ranges = iwl_dump_ini_mem_ranges,
-+		.get_size = iwl_dump_ini_mem_get_size,
-+		.fill_mem_hdr = iwl_dump_ini_mem_fill_header,
-+		.fill_range = iwl_dump_ini_dev_mem_iter,
-+	},
-+};
-+
- static u32 iwl_dump_ini_trigger(struct iwl_fw_runtime *fwrt,
- 				struct iwl_fw_ini_trigger *trigger,
- 				struct list_head *list)
-@@ -1797,9 +1866,8 @@ static u32 iwl_dump_ini_trigger(struct iwl_fw_runtime *fwrt,
- 	u32 size = 0;
- 
- 	for (i = 0; i < le32_to_cpu(trigger->num_regions); i++) {
--		u32 reg_id = le32_to_cpu(trigger->data[i]);
-+		u32 reg_id = le32_to_cpu(trigger->data[i]), reg_type;
- 		struct iwl_fw_ini_region_cfg *reg;
--		struct iwl_dump_ini_mem_ops ops;
- 
- 		if (WARN_ON(reg_id >= ARRAY_SIZE(fwrt->dump.active_regs)))
- 			continue;
-@@ -1816,72 +1884,12 @@ static u32 iwl_dump_ini_trigger(struct iwl_fw_runtime *fwrt,
- 		if (le32_to_cpu(reg->domain) != IWL_FW_INI_DBG_DOMAIN_ALWAYS_ON)
- 			continue;
- 
--		switch (le32_to_cpu(reg->region_type)) {
--		case IWL_FW_INI_REGION_DEVICE_MEMORY:
--		case IWL_FW_INI_REGION_LMAC_ERROR_TABLE:
--		case IWL_FW_INI_REGION_UMAC_ERROR_TABLE:
--			ops.get_num_of_ranges = iwl_dump_ini_mem_ranges;
--			ops.get_size = iwl_dump_ini_mem_get_size;
--			ops.fill_mem_hdr = iwl_dump_ini_mem_fill_header;
--			ops.fill_range = iwl_dump_ini_dev_mem_iter;
--			size += iwl_dump_ini_mem(fwrt, list, reg, &ops);
--			break;
--		case IWL_FW_INI_REGION_PERIPHERY_MAC:
--			ops.get_num_of_ranges =	iwl_dump_ini_mem_ranges;
--			ops.get_size = iwl_dump_ini_mem_get_size;
--			ops.fill_mem_hdr = iwl_dump_ini_mem_fill_header;
--			ops.fill_range = iwl_dump_ini_prph_iter;
--			size += iwl_dump_ini_mem(fwrt, list, reg, &ops);
--			break;
--		case IWL_FW_INI_REGION_DRAM_BUFFER:
--			ops.get_num_of_ranges = iwl_dump_ini_mon_dram_ranges;
--			ops.get_size = iwl_dump_ini_mon_dram_get_size;
--			ops.fill_mem_hdr = iwl_dump_ini_mon_dram_fill_header;
--			ops.fill_range = iwl_dump_ini_mon_dram_iter;
--			size += iwl_dump_ini_mem(fwrt, list, reg, &ops);
--			break;
--		case IWL_FW_INI_REGION_INTERNAL_BUFFER:
--			ops.get_num_of_ranges = iwl_dump_ini_mem_ranges;
--			ops.get_size = iwl_dump_ini_mon_smem_get_size;
--			ops.fill_mem_hdr = iwl_dump_ini_mon_smem_fill_header;
--			ops.fill_range = iwl_dump_ini_dev_mem_iter;
--			size += iwl_dump_ini_mem(fwrt, list, reg, &ops);
--			break;
--		case IWL_FW_INI_REGION_PAGING:
--			ops.fill_mem_hdr = iwl_dump_ini_mem_fill_header;
--			ops.get_num_of_ranges = iwl_dump_ini_paging_ranges;
--			ops.get_size = iwl_dump_ini_paging_get_size;
--			ops.fill_range = iwl_dump_ini_paging_iter;
--			size += iwl_dump_ini_mem(fwrt, list, reg, &ops);
--			break;
--		case IWL_FW_INI_REGION_TXF:
--			ops.get_num_of_ranges = iwl_dump_ini_txf_ranges;
--			ops.get_size = iwl_dump_ini_txf_get_size;
--			ops.fill_mem_hdr = iwl_dump_ini_mem_fill_header;
--			ops.fill_range = iwl_dump_ini_txf_iter;
--			size += iwl_dump_ini_mem(fwrt, list, reg, &ops);
--			break;
--		case IWL_FW_INI_REGION_RXF:
--			ops.get_num_of_ranges = iwl_dump_ini_rxf_ranges;
--			ops.get_size = iwl_dump_ini_rxf_get_size;
--			ops.fill_mem_hdr = iwl_dump_ini_mem_fill_header;
--			ops.fill_range = iwl_dump_ini_rxf_iter;
--			size += iwl_dump_ini_mem(fwrt, list, reg, &ops);
--			break;
--		case IWL_FW_INI_REGION_CSR:
--			ops.get_num_of_ranges =	iwl_dump_ini_mem_ranges;
--			ops.get_size = iwl_dump_ini_mem_get_size;
--			ops.fill_mem_hdr = iwl_dump_ini_mem_fill_header;
--			ops.fill_range = iwl_dump_ini_csr_iter;
--			size += iwl_dump_ini_mem(fwrt, list, reg, &ops);
--			break;
--		case IWL_FW_INI_REGION_PERIPHERY_PHY:
--		case IWL_FW_INI_REGION_PERIPHERY_AUX:
--		case IWL_FW_INI_REGION_DRAM_IMR:
--			/* This is undefined yet */
--		default:
--			break;
--		}
-+		reg_type = le32_to_cpu(reg->region_type);
-+		if (reg_type >= ARRAY_SIZE(iwl_dump_ini_region_ops))
-+			continue;
-+
-+		size += iwl_dump_ini_mem(fwrt, list, reg,
-+					 &iwl_dump_ini_region_ops[reg_type]);
- 	}
- 
- 	if (size)
--- 
-2.23.0.rc1
+ ... key      at: [<ffffffff8ca725b0>] __key.104096+0x0/0x10
+ ... acquired at:
+   lock_acquire+0xb8/0x1b0
+   _raw_spin_lock+0x34/0x80
+   iwl_mvm_rs_rate_init+0x53/0x80
+   rate_control_rate_update+0xf2/0x1f0
+   ieee80211_rx_mgmt_beacon.cold+0x131/0x20b
+   ieee80211_sta_rx_queued_mgmt+0x8b/0x7d0
+   ieee80211_iface_work+0x1c4/0x2f0
+   process_one_work+0x234/0x580
+   worker_thread+0x50/0x3b0
+   kthread+0x10a/0x140
+   ret_from_fork+0x3a/0x50
 
+
+ and SOFTIRQ-irq-unsafe lock:
+-> (&(&mvm_sta->lq_sta.rs_drv.pers.lock)->rlock){+.+.} ops: 51276 {
+   HARDIRQ-ON-W at:
+                    lock_acquire+0xb8/0x1b0
+                    _raw_spin_lock+0x34/0x80
+                    iwl_mvm_rs_rate_init+0x53/0x80
+                    iwl_mvm_mac_sta_state+0x39c/0x640
+                    drv_sta_state+0xb2/0x7c0
+                    sta_info_move_state+0x196/0x280
+                    ieee80211_assoc_success+0x91e/0xfd0
+                    ieee80211_rx_mgmt_assoc_resp.cold+0x2dd/0x5f4
+                    ieee80211_sta_rx_queued_mgmt+0xd7/0x7d0
+                    ieee80211_iface_work+0x1c4/0x2f0
+                    process_one_work+0x234/0x580
+                    worker_thread+0x50/0x3b0
+                    kthread+0x10a/0x140
+                    ret_from_fork+0x3a/0x50
+   SOFTIRQ-ON-W at:
+                    lock_acquire+0xb8/0x1b0
+                    _raw_spin_lock+0x34/0x80
+                    iwl_mvm_rs_rate_init+0x53/0x80
+                    iwl_mvm_mac_sta_state+0x39c/0x640
+                    drv_sta_state+0xb2/0x7c0
+                    sta_info_move_state+0x196/0x280
+                    ieee80211_assoc_success+0x91e/0xfd0
+                    ieee80211_rx_mgmt_assoc_resp.cold+0x2dd/0x5f4
+                    ieee80211_sta_rx_queued_mgmt+0xd7/0x7d0
+                    ieee80211_iface_work+0x1c4/0x2f0
+                    process_one_work+0x234/0x580
+                    worker_thread+0x50/0x3b0
+                    kthread+0x10a/0x140
+                    ret_from_fork+0x3a/0x50
+   INITIAL USE at:
+                   lock_acquire+0xb8/0x1b0
+                   _raw_spin_lock+0x34/0x80
+                   iwl_mvm_rs_rate_init+0x53/0x80
+                   iwl_mvm_mac_sta_state+0x39c/0x640
+                   drv_sta_state+0xb2/0x7c0
+                   sta_info_move_state+0x196/0x280
+                   ieee80211_assoc_success+0x91e/0xfd0
+                   ieee80211_rx_mgmt_assoc_resp.cold+0x2dd/0x5f4
+                   ieee80211_sta_rx_queued_mgmt+0xd7/0x7d0
+                   ieee80211_iface_work+0x1c4/0x2f0
+                   process_one_work+0x234/0x580
+                   worker_thread+0x50/0x3b0
+                   kthread+0x10a/0x140
+                   ret_from_fork+0x3a/0x50
+ }
+ ... key      at: [<ffffffff8ca40eb0>] __key.90552+0x0/0x10
+ ... acquired at:
+   lock_acquire+0xb8/0x1b0
+   _raw_spin_lock+0x34/0x80
+   iwl_mvm_rs_rate_init+0x53/0x80
+   rate_control_rate_update+0xf2/0x1f0
+   ieee80211_rx_mgmt_beacon.cold+0x131/0x20b
+   ieee80211_sta_rx_queued_mgmt+0x8b/0x7d0
+   ieee80211_iface_work+0x1c4/0x2f0
+   process_one_work+0x234/0x580
+   worker_thread+0x50/0x3b0
+   kthread+0x10a/0x140
+   ret_from_fork+0x3a/0x50
+
+
+CPU: 2 PID: 59 Comm: kworker/u16:1 Tainted: G                T 5.3.0-rc6+ #1
+Hardware name: Dell Inc. Latitude 7390/09386V, BIOS 1.9.2 04/03/2019
+Workqueue: phy0 ieee80211_iface_work
+Call Trace:
+ dump_stack+0x67/0x98
+ check_irq_usage.cold+0x495/0x50a
+ ? mark_held_locks+0x46/0x70
+ ? check_noncircular+0xbf/0x1c0
+ ? lockdep_hardirqs_on+0xe3/0x1b0
+ ? __lock_acquire+0xe6a/0x1ac0
+ __lock_acquire+0xe6a/0x1ac0
+ lock_acquire+0xb8/0x1b0
+ ? iwl_mvm_rs_rate_init+0x53/0x80
+ _raw_spin_lock+0x34/0x80
+ ? iwl_mvm_rs_rate_init+0x53/0x80
+ iwl_mvm_rs_rate_init+0x53/0x80
+ rate_control_rate_update+0xf2/0x1f0
+ ieee80211_rx_mgmt_beacon.cold+0x131/0x20b
+ ? _raw_spin_unlock_irqrestore+0x34/0x60
+ ? _raw_spin_unlock_irqrestore+0x3e/0x60
+ ieee80211_sta_rx_queued_mgmt+0x8b/0x7d0
+ ? __lock_acquire+0x4dc/0x1ac0
+ ? __lock_acquire+0x4dc/0x1ac0
+ ? skb_dequeue+0x18/0x70
+ ? preempt_count_sub+0x9b/0xd0
+ ieee80211_iface_work+0x1c4/0x2f0
+ process_one_work+0x234/0x580
+ worker_thread+0x50/0x3b0
+ kthread+0x10a/0x140
+ ? process_one_work+0x580/0x580
+ ? kthread_park+0x80/0x80
+ ret_from_fork+0x3a/0x50
+
+
+Thanks,
+	Dominik
