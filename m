@@ -2,289 +2,145 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 00BB8A44A8
-	for <lists+linux-wireless@lfdr.de>; Sat, 31 Aug 2019 15:45:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C72AAA45AB
+	for <lists+linux-wireless@lfdr.de>; Sat, 31 Aug 2019 20:02:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727305AbfHaNpZ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 31 Aug 2019 09:45:25 -0400
-Received: from isilmar-4.linta.de ([136.243.71.142]:47826 "EHLO
-        isilmar-4.linta.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726740AbfHaNpZ (ORCPT
+        id S1728492AbfHaSCX (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 31 Aug 2019 14:02:23 -0400
+Received: from mail-pl1-f196.google.com ([209.85.214.196]:44652 "EHLO
+        mail-pl1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728478AbfHaSCX (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 31 Aug 2019 09:45:25 -0400
-X-Greylist: delayed 377 seconds by postgrey-1.27 at vger.kernel.org; Sat, 31 Aug 2019 09:45:23 EDT
-X-isilmar-external: YES
-X-isilmar-external: YES
-X-isilmar-external: YES
-X-isilmar-external: YES
-X-isilmar-external: YES
-Received: from owl.dominikbrodowski.net (owl-tcp.brodo.linta [10.1.0.111])
-        by isilmar-4.linta.de (Postfix) with ESMTPSA id 2FE5E2006F8;
-        Sat, 31 Aug 2019 13:39:05 +0000 (UTC)
-Received: by owl.dominikbrodowski.net (Postfix, from userid 1000)
-        id E932D807DA; Sat, 31 Aug 2019 15:38:52 +0200 (CEST)
-Date:   Sat, 31 Aug 2019 15:38:52 +0200
-From:   Dominik Brodowski <linux@dominikbrodowski.net>
-To:     johannes.berg@intel.com, emmanuel.grumbach@intel.com,
-        luciano.coelho@intel.com, linuxwifi@intel.com
-Cc:     linux-wireless@vger.kernel.org
-Subject: iwlwifi: WARNING: SOFTIRQ-safe -> SOFTIRQ-unsafe lock order detected
-Message-ID: <20190831133852.GA5488@owl.dominikbrodowski.net>
+        Sat, 31 Aug 2019 14:02:23 -0400
+Received: by mail-pl1-f196.google.com with SMTP id t14so4769778plr.11;
+        Sat, 31 Aug 2019 11:02:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=sender:date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=5nRMB4IW4JokHlubGZbzIicn3I6oGCg/ecnx4Zzd8hA=;
+        b=kx5tTAva1/o/PL169ZPjnoyZD+Ansp+1mDodo04gQgShU0TCdcNZeOtUPK8+fZVhL5
+         lew9KtupKB9J0+INUGzw38Vf92JsoEUQ2O8fZamM0DYkxK9IANZyC1hdUhlOOqtZhVsZ
+         M0HSVCJZNNH3QU/4dNl+iV8TEqYfkFq8ttTN0RmGw+UuoRVqtkIp1BdTGqW8Lf6ONbn+
+         iYAAnBb+t72WurZSBl7N6pyI7EzvAE4Y4yT4nokOzak/s5SZTqg5e8/FvWKXSI9ufl7v
+         FnmclSqtXjwwLEfELSnCmsks1svDXwMJOZfM/klrdezoRhK5HnBNVDFBFruS2D0FRNoe
+         mI1A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:sender:date:from:to:cc:subject:message-id
+         :references:mime-version:content-disposition:in-reply-to:user-agent;
+        bh=5nRMB4IW4JokHlubGZbzIicn3I6oGCg/ecnx4Zzd8hA=;
+        b=exYRsJf42zZBAKzykyv9YiFYbwhKnPLl62XenWBmg7NcQCq6waRPeM/ijHcvYrVgXw
+         hqstKx+b95sPcH/jofcN/qlSIHOm3EnZ7dWk8QC9WJD+AMnWTRcR8qVrUnfjwmx4Rb96
+         SUKgU8nUqsrudNfMpHJfSXN5NoDKLcq9CiYRNlZIS8iWiP5MtJheHx/57O2VJ28XYdO1
+         Znt5HVixbWWaH2W9+KnJ71SlurS2yAELzPbWV4cnkBT+pZ73Enk+mmKYYEOAxKyrodxE
+         r52Rlg6PYkplukXdkUbIqnRafAubG6KR38TogOYt2UzTKrYLfIJn/11d42KRoO8tUpax
+         5c9g==
+X-Gm-Message-State: APjAAAXhne/epR6LAvB0Q6yAa5I7f+T2YfiDohGOv1/1stbXnoMy95qB
+        Wgxm3WcX4d9jlCwxmsNRsEU=
+X-Google-Smtp-Source: APXvYqzXNrh3ap8PtFUb7zdMAzzda5/eC6jYpkT/S06cjKI69hbYwJ0L/MpexlnS1Vx7pc8YHhxmfQ==
+X-Received: by 2002:a17:902:f204:: with SMTP id gn4mr21912191plb.23.1567274542452;
+        Sat, 31 Aug 2019 11:02:22 -0700 (PDT)
+Received: from localhost ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
+        by smtp.gmail.com with ESMTPSA id r23sm16174082pfg.10.2019.08.31.11.02.20
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Sat, 31 Aug 2019 11:02:21 -0700 (PDT)
+Date:   Sat, 31 Aug 2019 11:02:19 -0700
+From:   Guenter Roeck <linux@roeck-us.net>
+To:     Hui Peng <benquike@gmail.com>
+Cc:     kvalo@codeaurora.org, davem@davemloft.net,
+        Mathias Payer <mathias.payer@nebelwelt.net>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 1/2] Fix a NULL-ptr-deref bug in
+ ath6kl_usb_alloc_urb_from_pipe
+Message-ID: <20190831180219.GA20860@roeck-us.net>
+References: <20190804002905.11292-1-benquike@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-User-Agent: Mutt/1.12.1 (2019-06-15)
+In-Reply-To: <20190804002905.11292-1-benquike@gmail.com>
+User-Agent: Mutt/1.5.24 (2015-08-30)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi!
+On Sat, Aug 03, 2019 at 08:29:04PM -0400, Hui Peng wrote:
+> The `ar_usb` field of `ath6kl_usb_pipe_usb_pipe` objects
+> are initialized to point to the containing `ath6kl_usb` object
+> according to endpoint descriptors read from the device side, as shown
+> below in `ath6kl_usb_setup_pipe_resources`:
+> 
+> for (i = 0; i < iface_desc->desc.bNumEndpoints; ++i) {
+> 	endpoint = &iface_desc->endpoint[i].desc;
+> 
+> 	// get the address from endpoint descriptor
+> 	pipe_num = ath6kl_usb_get_logical_pipe_num(ar_usb,
+> 						endpoint->bEndpointAddress,
+> 						&urbcount);
+> 	......
+> 	// select the pipe object
+> 	pipe = &ar_usb->pipes[pipe_num];
+> 
+> 	// initialize the ar_usb field
+> 	pipe->ar_usb = ar_usb;
+> }
+> 
+> The driver assumes that the addresses reported in endpoint
+> descriptors from device side  to be complete. If a device is
+> malicious and does not report complete addresses, it may trigger
+> NULL-ptr-deref `ath6kl_usb_alloc_urb_from_pipe` and
+> `ath6kl_usb_free_urb_to_pipe`.
+> 
+> This patch fixes the bug by preventing potential NULL-ptr-deref.
+> 
+> Signed-off-by: Hui Peng <benquike@gmail.com>
+> Reported-by: Hui Peng <benquike@gmail.com>
+> Reported-by: Mathias Payer <mathias.payer@nebelwelt.net>
 
-On 5.3.0-rc6+, I get the following lockdep warning:
+I don't see this patch in the upstream kernel or in -next.
 
-=====================================================
-WARNING: SOFTIRQ-safe -> SOFTIRQ-unsafe lock order detected
-5.3.0-rc6+ #1 Tainted: G                T
------------------------------------------------------
-kworker/u16:1/59 [HC0[0]:SC0[2]:HE1:SE0] is trying to acquire:
-000000009c839cff (&(&mvm_sta->lq_sta.rs_drv.pers.lock)->rlock){+.+.}, at: iwl_mvm_rs_rate_init+0x53/0x80
+At the same time, it is supposed to fix CVE-2019-15098, which has
+a CVSS v2.0 score of 7.8 (high).
 
-0000000084f6e8c2 (&(&sta->rate_ctrl_lock)->rlock){+.-.}, at: rate_control_rate_update+0xd0/0x1f0
-which would create a new lock dependency:
- (&(&sta->rate_ctrl_lock)->rlock){+.-.} -> (&(&mvm_sta->lq_sta.rs_drv.pers.lock)->rlock){+.+.}
-
- (&(&sta->rate_ctrl_lock)->rlock){+.-.}
-
-  lock_acquire+0xb8/0x1b0
-  _raw_spin_lock_bh+0x39/0x80
-  rate_control_get_rate+0x10e/0x140
-  ieee80211_tx_h_rate_ctrl+0x1a9/0x3f0
-  ieee80211_xmit_fast+0x260/0x9d0
-  __ieee80211_subif_start_xmit+0x146/0x390
-  ieee80211_subif_start_xmit+0x4a/0x3c0
-  dev_hard_start_xmit+0xb0/0x310
-  sch_direct_xmit+0xed/0x230
-  __dev_queue_xmit+0x5ef/0xc10
-  ip_finish_output2+0x2f2/0x9a0
-  ip_output+0x84/0x250
-  __ip_queue_xmit+0x1e0/0x5e0
-  __tcp_transmit_skb+0x59f/0xb70
-  tcp_write_xmit+0x369/0x1110
-  tcp_tsq_handler+0x4f/0xa0
-  tcp_tasklet_func+0xdd/0x120
-  tasklet_action_common.isra.0+0x60/0xb0
-  __do_softirq+0xf0/0x478
-  do_softirq_own_stack+0x2a/0x40
-  do_softirq.part.0+0x4e/0x50
-  __local_bh_enable_ip+0xfb/0x100
-  iwl_pcie_irq_handler+0x1e9/0x7e0
-  irq_thread_fn+0x20/0x60
-  irq_thread+0xfa/0x1b0
-  kthread+0x10a/0x140
-  ret_from_fork+0x3a/0x50
-
- (&(&mvm_sta->lq_sta.rs_drv.pers.lock)->rlock){+.+.}
-
-...
-  lock_acquire+0xb8/0x1b0
-  _raw_spin_lock+0x34/0x80
-  iwl_mvm_rs_rate_init+0x53/0x80
-  iwl_mvm_mac_sta_state+0x39c/0x640
-  drv_sta_state+0xb2/0x7c0
-  sta_info_move_state+0x196/0x280
-  ieee80211_assoc_success+0x91e/0xfd0
-  ieee80211_rx_mgmt_assoc_resp.cold+0x2dd/0x5f4
-  ieee80211_sta_rx_queued_mgmt+0xd7/0x7d0
-  ieee80211_iface_work+0x1c4/0x2f0
-  process_one_work+0x234/0x580
-  worker_thread+0x50/0x3b0
-  kthread+0x10a/0x140
-  ret_from_fork+0x3a/0x50
-
- Possible interrupt unsafe locking scenario:
-       CPU0                    CPU1
-       ----                    ----
-  lock(&(&mvm_sta->lq_sta.rs_drv.pers.lock)->rlock);
-                               local_irq_disable();
-                               lock(&(&sta->rate_ctrl_lock)->rlock);
-                               lock(&(&mvm_sta->lq_sta.rs_drv.pers.lock)->rlock);
-  <Interrupt>
-    lock(&(&sta->rate_ctrl_lock)->rlock);
-
-6 locks held by kworker/u16:1/59:
- #0: 000000001e6d0995 ((wq_completion)phy0){+.+.}, at: process_one_work+0x1b1/0x580
- #1: 00000000378cac4d ((work_completion)(&sdata->work)){+.+.}, at: process_one_work+0x1b1/0x580
- #2: 00000000bbbbed75 (&wdev->mtx){+.+.}, at: ieee80211_sta_rx_queued_mgmt+0x51/0x7d0
- #3: 000000007f128f47 (&local->sta_mtx){+.+.}, at: ieee80211_rx_mgmt_beacon+0x583/0x16c0
- #4: 00000000fc24f76f (rcu_read_lock){....}, at: rate_control_rate_update+0x44/0x1f0
- #5: 0000000084f6e8c2 (&(&sta->rate_ctrl_lock)->rlock){+.-.}, at: rate_control_rate_update+0xd0/0x1f0
-
--> (&(&sta->rate_ctrl_lock)->rlock){+.-.} ops: 99793 {
-   HARDIRQ-ON-W at:
-                    lock_acquire+0xb8/0x1b0
-                    _raw_spin_lock_bh+0x39/0x80
-                    rate_control_rate_init+0xba/0x1d0
-                    ieee80211_assoc_success+0x8bc/0xfd0
-                    ieee80211_rx_mgmt_assoc_resp.cold+0x2dd/0x5f4
-                    ieee80211_sta_rx_queued_mgmt+0xd7/0x7d0
-                    ieee80211_iface_work+0x1c4/0x2f0
-                    process_one_work+0x234/0x580
-                    worker_thread+0x50/0x3b0
-                    kthread+0x10a/0x140
-                    ret_from_fork+0x3a/0x50
-   IN-SOFTIRQ-W at:
-                    lock_acquire+0xb8/0x1b0
-                    _raw_spin_lock_bh+0x39/0x80
-                    rate_control_get_rate+0x10e/0x140
-                    ieee80211_tx_h_rate_ctrl+0x1a9/0x3f0
-                    ieee80211_xmit_fast+0x260/0x9d0
-                    __ieee80211_subif_start_xmit+0x146/0x390
-                    ieee80211_subif_start_xmit+0x4a/0x3c0
-                    dev_hard_start_xmit+0xb0/0x310
-                    sch_direct_xmit+0xed/0x230
-                    __dev_queue_xmit+0x5ef/0xc10
-                    ip_finish_output2+0x2f2/0x9a0
-                    ip_output+0x84/0x250
-                    __ip_queue_xmit+0x1e0/0x5e0
-                    __tcp_transmit_skb+0x59f/0xb70
-                    tcp_write_xmit+0x369/0x1110
-                    tcp_tsq_handler+0x4f/0xa0
-                    tcp_tasklet_func+0xdd/0x120
-                    tasklet_action_common.isra.0+0x60/0xb0
-                    __do_softirq+0xf0/0x478
-                    do_softirq_own_stack+0x2a/0x40
-                    do_softirq.part.0+0x4e/0x50
-                    __local_bh_enable_ip+0xfb/0x100
-                    iwl_pcie_irq_handler+0x1e9/0x7e0
-                    irq_thread_fn+0x20/0x60
-                    irq_thread+0xfa/0x1b0
-                    kthread+0x10a/0x140
-                    ret_from_fork+0x3a/0x50
-   INITIAL USE at:
-                   lock_acquire+0xb8/0x1b0
-                   _raw_spin_lock_bh+0x39/0x80
-                   rate_control_rate_init+0xba/0x1d0
-                   ieee80211_assoc_success+0x8bc/0xfd0
-                   ieee80211_rx_mgmt_assoc_resp.cold+0x2dd/0x5f4
-                   ieee80211_sta_rx_queued_mgmt+0xd7/0x7d0
-                   ieee80211_iface_work+0x1c4/0x2f0
-                   process_one_work+0x234/0x580
-                   worker_thread+0x50/0x3b0
-                   kthread+0x10a/0x140
-                   ret_from_fork+0x3a/0x50
- }
- ... key      at: [<ffffffff8ca725b0>] __key.104096+0x0/0x10
- ... acquired at:
-   lock_acquire+0xb8/0x1b0
-   _raw_spin_lock+0x34/0x80
-   iwl_mvm_rs_rate_init+0x53/0x80
-   rate_control_rate_update+0xf2/0x1f0
-   ieee80211_rx_mgmt_beacon.cold+0x131/0x20b
-   ieee80211_sta_rx_queued_mgmt+0x8b/0x7d0
-   ieee80211_iface_work+0x1c4/0x2f0
-   process_one_work+0x234/0x580
-   worker_thread+0x50/0x3b0
-   kthread+0x10a/0x140
-   ret_from_fork+0x3a/0x50
-
-
- and SOFTIRQ-irq-unsafe lock:
--> (&(&mvm_sta->lq_sta.rs_drv.pers.lock)->rlock){+.+.} ops: 51276 {
-   HARDIRQ-ON-W at:
-                    lock_acquire+0xb8/0x1b0
-                    _raw_spin_lock+0x34/0x80
-                    iwl_mvm_rs_rate_init+0x53/0x80
-                    iwl_mvm_mac_sta_state+0x39c/0x640
-                    drv_sta_state+0xb2/0x7c0
-                    sta_info_move_state+0x196/0x280
-                    ieee80211_assoc_success+0x91e/0xfd0
-                    ieee80211_rx_mgmt_assoc_resp.cold+0x2dd/0x5f4
-                    ieee80211_sta_rx_queued_mgmt+0xd7/0x7d0
-                    ieee80211_iface_work+0x1c4/0x2f0
-                    process_one_work+0x234/0x580
-                    worker_thread+0x50/0x3b0
-                    kthread+0x10a/0x140
-                    ret_from_fork+0x3a/0x50
-   SOFTIRQ-ON-W at:
-                    lock_acquire+0xb8/0x1b0
-                    _raw_spin_lock+0x34/0x80
-                    iwl_mvm_rs_rate_init+0x53/0x80
-                    iwl_mvm_mac_sta_state+0x39c/0x640
-                    drv_sta_state+0xb2/0x7c0
-                    sta_info_move_state+0x196/0x280
-                    ieee80211_assoc_success+0x91e/0xfd0
-                    ieee80211_rx_mgmt_assoc_resp.cold+0x2dd/0x5f4
-                    ieee80211_sta_rx_queued_mgmt+0xd7/0x7d0
-                    ieee80211_iface_work+0x1c4/0x2f0
-                    process_one_work+0x234/0x580
-                    worker_thread+0x50/0x3b0
-                    kthread+0x10a/0x140
-                    ret_from_fork+0x3a/0x50
-   INITIAL USE at:
-                   lock_acquire+0xb8/0x1b0
-                   _raw_spin_lock+0x34/0x80
-                   iwl_mvm_rs_rate_init+0x53/0x80
-                   iwl_mvm_mac_sta_state+0x39c/0x640
-                   drv_sta_state+0xb2/0x7c0
-                   sta_info_move_state+0x196/0x280
-                   ieee80211_assoc_success+0x91e/0xfd0
-                   ieee80211_rx_mgmt_assoc_resp.cold+0x2dd/0x5f4
-                   ieee80211_sta_rx_queued_mgmt+0xd7/0x7d0
-                   ieee80211_iface_work+0x1c4/0x2f0
-                   process_one_work+0x234/0x580
-                   worker_thread+0x50/0x3b0
-                   kthread+0x10a/0x140
-                   ret_from_fork+0x3a/0x50
- }
- ... key      at: [<ffffffff8ca40eb0>] __key.90552+0x0/0x10
- ... acquired at:
-   lock_acquire+0xb8/0x1b0
-   _raw_spin_lock+0x34/0x80
-   iwl_mvm_rs_rate_init+0x53/0x80
-   rate_control_rate_update+0xf2/0x1f0
-   ieee80211_rx_mgmt_beacon.cold+0x131/0x20b
-   ieee80211_sta_rx_queued_mgmt+0x8b/0x7d0
-   ieee80211_iface_work+0x1c4/0x2f0
-   process_one_work+0x234/0x580
-   worker_thread+0x50/0x3b0
-   kthread+0x10a/0x140
-   ret_from_fork+0x3a/0x50
-
-
-CPU: 2 PID: 59 Comm: kworker/u16:1 Tainted: G                T 5.3.0-rc6+ #1
-Hardware name: Dell Inc. Latitude 7390/09386V, BIOS 1.9.2 04/03/2019
-Workqueue: phy0 ieee80211_iface_work
-Call Trace:
- dump_stack+0x67/0x98
- check_irq_usage.cold+0x495/0x50a
- ? mark_held_locks+0x46/0x70
- ? check_noncircular+0xbf/0x1c0
- ? lockdep_hardirqs_on+0xe3/0x1b0
- ? __lock_acquire+0xe6a/0x1ac0
- __lock_acquire+0xe6a/0x1ac0
- lock_acquire+0xb8/0x1b0
- ? iwl_mvm_rs_rate_init+0x53/0x80
- _raw_spin_lock+0x34/0x80
- ? iwl_mvm_rs_rate_init+0x53/0x80
- iwl_mvm_rs_rate_init+0x53/0x80
- rate_control_rate_update+0xf2/0x1f0
- ieee80211_rx_mgmt_beacon.cold+0x131/0x20b
- ? _raw_spin_unlock_irqrestore+0x34/0x60
- ? _raw_spin_unlock_irqrestore+0x3e/0x60
- ieee80211_sta_rx_queued_mgmt+0x8b/0x7d0
- ? __lock_acquire+0x4dc/0x1ac0
- ? __lock_acquire+0x4dc/0x1ac0
- ? skb_dequeue+0x18/0x70
- ? preempt_count_sub+0x9b/0xd0
- ieee80211_iface_work+0x1c4/0x2f0
- process_one_work+0x234/0x580
- worker_thread+0x50/0x3b0
- kthread+0x10a/0x140
- ? process_one_work+0x580/0x580
- ? kthread_park+0x80/0x80
- ret_from_fork+0x3a/0x50
-
+Is this patch going to be applied to the upstream kernel ?  If not,
+are there reasons to believe that the vulnerability is not as severe
+as its CVSS score indicates ?
 
 Thanks,
-	Dominik
+Guenter
+
+> ---
+>  drivers/net/wireless/ath/ath6kl/usb.c | 8 ++++++++
+>  1 file changed, 8 insertions(+)
+> 
+> diff --git a/drivers/net/wireless/ath/ath6kl/usb.c b/drivers/net/wireless/ath/ath6kl/usb.c
+> index 4defb7a0330f..53b66e9434c9 100644
+> --- a/drivers/net/wireless/ath/ath6kl/usb.c
+> +++ b/drivers/net/wireless/ath/ath6kl/usb.c
+> @@ -132,6 +132,10 @@ ath6kl_usb_alloc_urb_from_pipe(struct ath6kl_usb_pipe *pipe)
+>  	struct ath6kl_urb_context *urb_context = NULL;
+>  	unsigned long flags;
+>  
+> +	/* bail if this pipe is not initialized */
+> +	if (!pipe->ar_usb)
+> +		return NULL;
+> +
+>  	spin_lock_irqsave(&pipe->ar_usb->cs_lock, flags);
+>  	if (!list_empty(&pipe->urb_list_head)) {
+>  		urb_context =
+> @@ -150,6 +154,10 @@ static void ath6kl_usb_free_urb_to_pipe(struct ath6kl_usb_pipe *pipe,
+>  {
+>  	unsigned long flags;
+>  
+> +	/* bail if this pipe is not initialized */
+> +	if (!pipe->ar_usb)
+> +		return;
+> +
+>  	spin_lock_irqsave(&pipe->ar_usb->cs_lock, flags);
+>  	pipe->urb_cnt++;
+>  
+> -- 
+> 2.22.0
+> 
