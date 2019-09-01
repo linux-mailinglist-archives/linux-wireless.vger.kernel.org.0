@@ -2,112 +2,113 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 65354A4668
-	for <lists+linux-wireless@lfdr.de>; Sun,  1 Sep 2019 00:01:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BC75BA483D
+	for <lists+linux-wireless@lfdr.de>; Sun,  1 Sep 2019 09:56:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728534AbfHaWBM (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 31 Aug 2019 18:01:12 -0400
-Received: from mail-wr1-f65.google.com ([209.85.221.65]:38251 "EHLO
-        mail-wr1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726150AbfHaWBM (ORCPT
+        id S1728822AbfIAHzz (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 1 Sep 2019 03:55:55 -0400
+Received: from smtp.codeaurora.org ([198.145.29.96]:53430 "EHLO
+        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725887AbfIAHzy (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 31 Aug 2019 18:01:12 -0400
-Received: by mail-wr1-f65.google.com with SMTP id l11so1467266wrx.5;
-        Sat, 31 Aug 2019 15:01:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=sender:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=0yEuPdy6ASwhJKW6dartSJLwpi4f/BFysZLH5JVYxHQ=;
-        b=usspT5CNIeKkij/GcInOZgg+MatRCVTjwWmcH7uzhoXLr1Q31xZbjVR3f32M733NWB
-         oQSOCwVGW10mx4B06Qj/+tTc0VbkQZereIr6FgzqaZvE6YWGWkRoeVCW6WIRMfS3XfSe
-         9fwKr6fLDsmZRHHKPvGbeSRx+p/CZknOtvo52GuHUQQuw1TO/HqsQNVZJIf2CuI2u66W
-         qF/xCvnPbUttO8OqlKrTyvXaqbYusMQRFbgDYIj9sRsnqa4BIP2SLazoe1HIEv9uLtvn
-         4nlKIn+pZhYkONhOhj0uIKENVT3hPrWW+ZM9nfSUet2JHAm6qXI+NFT2M68IjW8TOX/P
-         /mnw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:sender:from:to:cc:subject:date:message-id
-         :mime-version:content-transfer-encoding;
-        bh=0yEuPdy6ASwhJKW6dartSJLwpi4f/BFysZLH5JVYxHQ=;
-        b=dFU96JpxaqZyBEtrvqwdbtVMIwK8VMssryNsIX4YzwDOy8A8XNQT/jSAVAT9zKyEsQ
-         VeshssoygiFlrnHuJmJ7PjAzmOvDmef5vNf2xDrXpYqggd8g4UFIrgXh1fiPqrw0c01d
-         MwrSIutxvEAZs/70oE7cAanE2+AtLw9Lye+d+Q9ERxWErmZF6iweBXu3n2wZCKd2Wcb7
-         EfnUeGxRLBPTTe6rf3IoakIqMFBXDcgK9ykHl0IAZPtJA5BF5TITicnrJbQDTUj6aoFO
-         gS9XgToZo10OGeYlR/mNiWja4lrFp6/Q/kSPZbDF0BSUmsJSvhVKM5owdXxBqI/5DtbT
-         kATA==
-X-Gm-Message-State: APjAAAWzu30mxwTy9yCgA3REWyumkn6jRyuFrRoVp4vfNyzcQn3Rb384
-        r4ID/t9N9bSEIL7FdhM7NNg=
-X-Google-Smtp-Source: APXvYqwyvK5/VTscyfz6qINEgc49Nn/haWjIqp8NHL/RRmaNp+tow6fArj3i+Suc18bzKYioJTNwOQ==
-X-Received: by 2002:adf:fd41:: with SMTP id h1mr17693907wrs.315.1567288870126;
-        Sat, 31 Aug 2019 15:01:10 -0700 (PDT)
-Received: from localhost.localdomain (ip5b4096c3.dynamic.kabel-deutschland.de. [91.64.150.195])
-        by smtp.gmail.com with ESMTPSA id m19sm7370844wml.28.2019.08.31.15.01.09
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 31 Aug 2019 15:01:09 -0700 (PDT)
-From:   Krzysztof Wilczynski <kw@linux.com>
-To:     Kalle Valo <kvalo@codeaurora.org>
-Cc:     Johannes Berg <johannes.berg@intel.com>,
-        Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
-        Luca Coelho <luciano.coelho@intel.com>,
-        Intel Linux Wireless <linuxwifi@intel.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Sara Sharon <sara.sharon@intel.com>,
-        Shaul Triebitz <shaul.triebitz@intel.com>,
-        Liad Kaufman <liad.kaufman@intel.com>,
+        Sun, 1 Sep 2019 03:55:54 -0400
+Received: by smtp.codeaurora.org (Postfix, from userid 1000)
+        id D4992607EB; Sun,  1 Sep 2019 07:55:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
+        s=default; t=1567324553;
+        bh=Q8AFvlCqM8riRdgz/ITzP8CxLVE9Flu8eH1HtXTq798=;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+        b=QfGIqeG+/i7+GoSzsPwmM6vwzGmH9cly81z6HP8VXvKScy01D0wfMcF5EufUch4qb
+         eDfCT8fWLo2tZluhTaeAiDiDp5mTs0ciLJ2t4YUGd6xfWWN3TodLXu7jsRq+rxyyuE
+         R4t9Nb9ILLjoj/Ibs08k9cxZLYuWI9eaknegb7Iw=
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        pdx-caf-mail.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.7 required=2.0 tests=ALL_TRUSTED,BAYES_00,
+        DKIM_INVALID,DKIM_SIGNED,SPF_NONE autolearn=no autolearn_force=no
+        version=3.4.0
+Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo@smtp.codeaurora.org)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 179F76076A;
+        Sun,  1 Sep 2019 07:55:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
+        s=default; t=1567324552;
+        bh=Q8AFvlCqM8riRdgz/ITzP8CxLVE9Flu8eH1HtXTq798=;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+        b=MK9cZIdSPGuA3OlBYVxHbVcFYDKNeN01bYliE9iEreD30MgarxdjgKvFveKOIb4z8
+         D0HKCIx09Bf3IZcv/cmP+geov5Q6exWhpJGqgq9pJHUmLmA26J903XSHg+EJZ5Hei7
+         v0wHIIm4t772JMKbYz9Si0/TuMwUSQEUC5tzHqVk=
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 179F76076A
+Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
+From:   Kalle Valo <kvalo@codeaurora.org>
+To:     Guenter Roeck <linux@roeck-us.net>
+Cc:     Hui Peng <benquike@gmail.com>, davem@davemloft.net,
+        Mathias Payer <mathias.payer@nebelwelt.net>,
         linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
         linux-kernel@vger.kernel.org
-Subject: [PATCH] iwlwifi: mvm: Move static keyword to the front of declarations
-Date:   Sun,  1 Sep 2019 00:01:08 +0200
-Message-Id: <20190831220108.10602-1-kw@linux.com>
-X-Mailer: git-send-email 2.23.0
+Subject: Re: [PATCH 1/2] Fix a NULL-ptr-deref bug in ath6kl_usb_alloc_urb_from_pipe
+References: <20190804002905.11292-1-benquike@gmail.com>
+        <20190831180219.GA20860@roeck-us.net>
+Date:   Sun, 01 Sep 2019 10:55:48 +0300
+In-Reply-To: <20190831180219.GA20860@roeck-us.net> (Guenter Roeck's message of
+        "Sat, 31 Aug 2019 11:02:19 -0700")
+Message-ID: <87sgpgqwl7.fsf@kamboji.qca.qualcomm.com>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Move the static keyword to the front of declarations of
-he_if_types_ext_capa_sta and he_iftypes_ext_capa, and
-resolve the following compiler warnings that can be seen
-when building with warnings enabled (W=1):
+Guenter Roeck <linux@roeck-us.net> writes:
 
-drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c:427:1: warning:
-  ‘static’ is not at beginning of declaration [-Wold-style-declaration]
+> On Sat, Aug 03, 2019 at 08:29:04PM -0400, Hui Peng wrote:
+>> The `ar_usb` field of `ath6kl_usb_pipe_usb_pipe` objects
+>> are initialized to point to the containing `ath6kl_usb` object
+>> according to endpoint descriptors read from the device side, as shown
+>> below in `ath6kl_usb_setup_pipe_resources`:
+>> 
+>> for (i = 0; i < iface_desc->desc.bNumEndpoints; ++i) {
+>> 	endpoint = &iface_desc->endpoint[i].desc;
+>> 
+>> 	// get the address from endpoint descriptor
+>> 	pipe_num = ath6kl_usb_get_logical_pipe_num(ar_usb,
+>> 						endpoint->bEndpointAddress,
+>> 						&urbcount);
+>> 	......
+>> 	// select the pipe object
+>> 	pipe = &ar_usb->pipes[pipe_num];
+>> 
+>> 	// initialize the ar_usb field
+>> 	pipe->ar_usb = ar_usb;
+>> }
+>> 
+>> The driver assumes that the addresses reported in endpoint
+>> descriptors from device side  to be complete. If a device is
+>> malicious and does not report complete addresses, it may trigger
+>> NULL-ptr-deref `ath6kl_usb_alloc_urb_from_pipe` and
+>> `ath6kl_usb_free_urb_to_pipe`.
+>> 
+>> This patch fixes the bug by preventing potential NULL-ptr-deref.
+>> 
+>> Signed-off-by: Hui Peng <benquike@gmail.com>
+>> Reported-by: Hui Peng <benquike@gmail.com>
+>> Reported-by: Mathias Payer <mathias.payer@nebelwelt.net>
+>
+> I don't see this patch in the upstream kernel or in -next.
+>
+> At the same time, it is supposed to fix CVE-2019-15098, which has
+> a CVSS v2.0 score of 7.8 (high).
+>
+> Is this patch going to be applied to the upstream kernel ?
 
-drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c:434:1: warning:
-  ‘static’ is not at beginning of declaration [-Wold-style-declaration]
+Lately I have been very busy and I have not had a chance to apply ath6kl
+nor ath10k patches. This patch is on my queue and my plan is to go
+through my patch queue next week.
 
-Signed-off-by: Krzysztof Wilczynski <kw@linux.com>
----
-Related: https://lore.kernel.org/r/20190827233017.GK9987@google.com
-
- drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c b/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
-index d6499763f0dd..937a843fed56 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
-@@ -424,14 +424,14 @@ int iwl_mvm_init_fw_regd(struct iwl_mvm *mvm)
- 	return ret;
- }
- 
--const static u8 he_if_types_ext_capa_sta[] = {
-+static const u8 he_if_types_ext_capa_sta[] = {
- 	 [0] = WLAN_EXT_CAPA1_EXT_CHANNEL_SWITCHING,
- 	 [2] = WLAN_EXT_CAPA3_MULTI_BSSID_SUPPORT,
- 	 [7] = WLAN_EXT_CAPA8_OPMODE_NOTIF,
- 	 [9] = WLAN_EXT_CAPA10_TWT_REQUESTER_SUPPORT,
- };
- 
--const static struct wiphy_iftype_ext_capab he_iftypes_ext_capa[] = {
-+static const struct wiphy_iftype_ext_capab he_iftypes_ext_capa[] = {
- 	{
- 		.iftype = NL80211_IFTYPE_STATION,
- 		.extended_capabilities = he_if_types_ext_capa_sta,
 -- 
-2.22.1
-
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
