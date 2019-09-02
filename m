@@ -2,128 +2,138 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 01502A5C67
-	for <lists+linux-wireless@lfdr.de>; Mon,  2 Sep 2019 20:49:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5F7C1A5CB5
+	for <lists+linux-wireless@lfdr.de>; Mon,  2 Sep 2019 21:32:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726946AbfIBSr1 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 2 Sep 2019 14:47:27 -0400
-Received: from wout4-smtp.messagingengine.com ([64.147.123.20]:46253 "EHLO
-        wout4-smtp.messagingengine.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726849AbfIBSr1 (ORCPT
+        id S1727064AbfIBTcm (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 2 Sep 2019 15:32:42 -0400
+Received: from mail-pg1-f196.google.com ([209.85.215.196]:42995 "EHLO
+        mail-pg1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726997AbfIBTcm (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 2 Sep 2019 14:47:27 -0400
-Received: from compute6.internal (compute6.nyi.internal [10.202.2.46])
-        by mailout.west.internal (Postfix) with ESMTP id 061EF603;
-        Mon,  2 Sep 2019 14:47:25 -0400 (EDT)
-Received: from mailfrontend1 ([10.202.2.162])
-  by compute6.internal (MEProxy); Mon, 02 Sep 2019 14:47:26 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kroah.com; h=
-        date:from:to:cc:subject:message-id:references:mime-version
-        :content-type:in-reply-to; s=fm1; bh=jvdK4Jen2RCEgg6SQll6JQs4XBc
-        0TdXI2+8sajCKgts=; b=HisKgtPmjyc50Q51dI6x7O1Av5K1DiCIy1weJNbAQyw
-        NfaB/lELa/xXGitPGzwxdP4YKIE5eQuWRkY8OjLThDrlGjy4wIRPCCCM0F8J5yPs
-        qnP44YP0hxLE5FZeJUtyhvgNsI36Mqeol2P+TGQHDyxUlnlN4j18++cV/3tV+IE4
-        sAx5isdqwoWqGWF3ztVVWl96xGEWu4nsEKeqldn2PPpiiLFAevmLCqR9yIdMbVmX
-        7VabDz+NgxGWM6wbJXuNX/lmuqFw8setF43TKQVJmr81WNCjoYdQrIIVI4293eSI
-        SD26MTg73bvsdM4RUMeiIIQI+q+6M7LCyMLotBZpeuQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-        messagingengine.com; h=cc:content-type:date:from:in-reply-to
-        :message-id:mime-version:references:subject:to:x-me-proxy
-        :x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; bh=jvdK4J
-        en2RCEgg6SQll6JQs4XBc0TdXI2+8sajCKgts=; b=QabHFEFQWkHTq5vl5QGksW
-        rlyGRzCUhfuiZzb5RYyNPXDoPeynBP7U1fZBhwrCOiEiK9+QQuHrDu4ELhGYuMvr
-        5jpPp3vdaENeP2I8C3f3+aMAaypPBSHRNU5n7/hgekMNR0Ju+G8mTyUDgV6DRznD
-        c9o17kbAdA/rsu6g9nVWcUuZp7npeavjk5SgP//4v1++65Fdd6tTilrE9/Jh63vs
-        YHrXAubgBr5lqclByIZogtLha5AikIG2OogvGmkCz4URX5EBABHpcHUiHhN2ddjf
-        aBuGRkOyA0Md9CKU8Zqlzooni5O2EyQ39ojLYSrIO5crmHIUVbJjLVUO8DZDquPQ
-        ==
-X-ME-Sender: <xms:vGNtXbYhVGvIlWBwCFVBis5BFP2Resu-kSZ4wIOMT3prTAHAYErA8A>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeduvddrudejtddgudeftdcutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfgh
-    necuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmd
-    enucfjughrpeffhffvuffkfhggtggujggfsehttdertddtredvnecuhfhrohhmpefirhgv
-    ghcumffjuceoghhrvghgsehkrhhorghhrdgtohhmqeenucfkphepkeefrdekiedrkeelrd
-    dutdejnecurfgrrhgrmhepmhgrihhlfhhrohhmpehgrhgvgheskhhrohgrhhdrtghomhen
-    ucevlhhushhtvghrufhiiigvpedt
-X-ME-Proxy: <xmx:vGNtXWQeoXkHmPTKTGMktd-Y0DdjZ_LkDh3cTGsR9MQgZ8NtvUJqew>
-    <xmx:vGNtXWzZ87g03H-RuVlzafF7d98RTNAQ3LsZpMP0IowkOHYiAbXBdQ>
-    <xmx:vGNtXaftgrtj1O4hdO2WxJX5rPxi8LAUiQvuOmN1pmZMxGdmO-BwiQ>
-    <xmx:vWNtXXE9soBGrsTKaiNyfLXGB8tdSUbTNs1CLLuy4Pndc4z0fis56A>
-Received: from localhost (83-86-89-107.cable.dynamic.v4.ziggo.nl [83.86.89.107])
-        by mail.messagingengine.com (Postfix) with ESMTPA id 46D188005B;
-        Mon,  2 Sep 2019 14:47:24 -0400 (EDT)
-Date:   Mon, 2 Sep 2019 20:47:22 +0200
-From:   Greg KH <greg@kroah.com>
-To:     Guenter Roeck <linux@roeck-us.net>
+        Mon, 2 Sep 2019 15:32:42 -0400
+Received: by mail-pg1-f196.google.com with SMTP id p3so7846606pgb.9;
+        Mon, 02 Sep 2019 12:32:41 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=sender:subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=8uh9/XY6ueQfpSKxv8VJgELq8LY9QmNiFoOeViVR+c4=;
+        b=pxQviwEBr0hEsNe1eCykn9M13dqO4mBqfwj1m4MWuDTkWkG1B1LZzsTNWegeoiL1lP
+         00DtTplx0zqiFxhT56al/XqE3yasqKgdVyNUuz7aygxtgDMHjgorrndMHCKqN0yhK2uD
+         7/3G5Fj4npqW6VrT+9aQwJEPwcY5kM7sWlv27K1NpbLPzf75Y82nJL0tk5W9sTEeZrOs
+         Nsq68NrEn+S1AvwCZvc3CyoHDWFBwjU1HPjkM4rdBq/SdrSg7owZi9APYacuzdGcejmc
+         kypgTMmRWfZK/iQDjbZhYK0NkB9o7AKYlkFx327UltxETd2zlnCmbTx3VFUa018uAh1F
+         c/DA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:sender:subject:to:cc:references:from:message-id
+         :date:user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=8uh9/XY6ueQfpSKxv8VJgELq8LY9QmNiFoOeViVR+c4=;
+        b=ScIUzUF3gOtpeYbiqRbrznDchQqQwWQ6nNSaFgVe0Fy0f0PvVKmUv0v3INb6oQ0VqY
+         O/WgNbb33k4RaCWEfgJgTxjmp2bp3zAAoH7Yv9/0W2HIrkL8acL0gOui98ylkSjGsTjh
+         /7m2jImicvB3gj4qcq+otfFQRh/D/8KmpRWOc0xGNQFyEZdL8qyzathor+4XLDUGXutj
+         0BG0Cdk/psXGzr/Rn8+DZlH1kysojniN0doFoJACt/OIbVYD0EJxMKszPZlZG1WW0/qc
+         0HFz9hahhXglNM5fdzK43tcxLd+dcWtrltSHMzmGPJKwPI0qPRpTl6crwUGHx9LibxJQ
+         8hCw==
+X-Gm-Message-State: APjAAAVR3i43N0M+qwaodXvoMeWBtPlo7cRoPNjbwyXQd0zkX91WUxm2
+        pUoQgmPI7ZP+BdmLNCHpc49WJRdR
+X-Google-Smtp-Source: APXvYqxkFooiS6ICYvQ9vnRobKav0pYZiEQBh4lXbGG9jTnEa4sKiiIHfpqFUrzUb3VN42qxhULyew==
+X-Received: by 2002:aa7:809a:: with SMTP id v26mr36157719pff.82.1567452760864;
+        Mon, 02 Sep 2019 12:32:40 -0700 (PDT)
+Received: from server.roeck-us.net ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
+        by smtp.gmail.com with ESMTPSA id i6sm10739350pfq.20.2019.09.02.12.32.38
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Mon, 02 Sep 2019 12:32:39 -0700 (PDT)
+Subject: Re: [PATCH] Fix a double free bug in rsi_91x_deinit
+To:     Greg KH <greg@kroah.com>
 Cc:     Kalle Valo <kvalo@codeaurora.org>, Hui Peng <benquike@gmail.com>,
         security@kernel.org, Mathias Payer <mathias.payer@nebelwelt.net>,
         "David S. Miller" <davem@davemloft.net>,
         linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
         linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] Fix a double free bug in rsi_91x_deinit
-Message-ID: <20190902184722.GC5697@kroah.com>
 References: <20190819220230.10597-1-benquike@gmail.com>
  <20190831181852.GA22160@roeck-us.net>
  <87k1asqw87.fsf@kamboji.qca.qualcomm.com>
  <385361d3-048e-9b3f-c749-aa5861e397e7@roeck-us.net>
+ <20190902184722.GC5697@kroah.com>
+From:   Guenter Roeck <linux@roeck-us.net>
+Message-ID: <804fb4dc-23e5-3442-c64e-9857d61d6b6c@roeck-us.net>
+Date:   Mon, 2 Sep 2019 12:32:37 -0700
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.8.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <385361d3-048e-9b3f-c749-aa5861e397e7@roeck-us.net>
-User-Agent: Mutt/1.12.1 (2019-06-15)
+In-Reply-To: <20190902184722.GC5697@kroah.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Sun, Sep 01, 2019 at 07:08:29AM -0700, Guenter Roeck wrote:
-> On 9/1/19 1:03 AM, Kalle Valo wrote:
-> > Guenter Roeck <linux@roeck-us.net> writes:
-> > 
-> > > On Mon, Aug 19, 2019 at 06:02:29PM -0400, Hui Peng wrote:
-> > > > `dev` (struct rsi_91x_usbdev *) field of adapter
-> > > > (struct rsi_91x_usbdev *) is allocated  and initialized in
-> > > > `rsi_init_usb_interface`. If any error is detected in information
-> > > > read from the device side,  `rsi_init_usb_interface` will be
-> > > > freed. However, in the higher level error handling code in
-> > > > `rsi_probe`, if error is detected, `rsi_91x_deinit` is called
-> > > > again, in which `dev` will be freed again, resulting double free.
-> > > > 
-> > > > This patch fixes the double free by removing the free operation on
-> > > > `dev` in `rsi_init_usb_interface`, because `rsi_91x_deinit` is also
-> > > > used in `rsi_disconnect`, in that code path, the `dev` field is not
-> > > >   (and thus needs to be) freed.
-> > > > 
-> > > > This bug was found in v4.19, but is also present in the latest version
-> > > > of kernel.
-> > > > 
-> > > > Reported-by: Hui Peng <benquike@gmail.com>
-> > > > Reported-by: Mathias Payer <mathias.payer@nebelwelt.net>
-> > > > Signed-off-by: Hui Peng <benquike@gmail.com>
-> > > 
-> > > FWIW:
-> > > 
-> > > Reviewed-by: Guenter Roeck <linux@roeck-us.net>
-> > > 
-> > > This patch is listed as fix for CVE-2019-15504, which has a CVSS 2.0 score
-> > > of 10.0 (high) and CVSS 3.0 score of 9.8 (critical).
-> > 
-> > A double free in error path is considered as a critical CVE issue? I'm
-> > very curious, why is that?
-> > 
+On 9/2/19 11:47 AM, Greg KH wrote:
+> On Sun, Sep 01, 2019 at 07:08:29AM -0700, Guenter Roeck wrote:
+>> On 9/1/19 1:03 AM, Kalle Valo wrote:
+>>> Guenter Roeck <linux@roeck-us.net> writes:
+>>>
+>>>> On Mon, Aug 19, 2019 at 06:02:29PM -0400, Hui Peng wrote:
+>>>>> `dev` (struct rsi_91x_usbdev *) field of adapter
+>>>>> (struct rsi_91x_usbdev *) is allocated  and initialized in
+>>>>> `rsi_init_usb_interface`. If any error is detected in information
+>>>>> read from the device side,  `rsi_init_usb_interface` will be
+>>>>> freed. However, in the higher level error handling code in
+>>>>> `rsi_probe`, if error is detected, `rsi_91x_deinit` is called
+>>>>> again, in which `dev` will be freed again, resulting double free.
+>>>>>
+>>>>> This patch fixes the double free by removing the free operation on
+>>>>> `dev` in `rsi_init_usb_interface`, because `rsi_91x_deinit` is also
+>>>>> used in `rsi_disconnect`, in that code path, the `dev` field is not
+>>>>>    (and thus needs to be) freed.
+>>>>>
+>>>>> This bug was found in v4.19, but is also present in the latest version
+>>>>> of kernel.
+>>>>>
+>>>>> Reported-by: Hui Peng <benquike@gmail.com>
+>>>>> Reported-by: Mathias Payer <mathias.payer@nebelwelt.net>
+>>>>> Signed-off-by: Hui Peng <benquike@gmail.com>
+>>>>
+>>>> FWIW:
+>>>>
+>>>> Reviewed-by: Guenter Roeck <linux@roeck-us.net>
+>>>>
+>>>> This patch is listed as fix for CVE-2019-15504, which has a CVSS 2.0 score
+>>>> of 10.0 (high) and CVSS 3.0 score of 9.8 (critical).
+>>>
+>>> A double free in error path is considered as a critical CVE issue? I'm
+>>> very curious, why is that?
+>>>
+>>
+>> You'd have to ask the people assigning CVSS scores. However, if the memory
+>> was reallocated, that reallocated memory (which is still in use) is freed.
+>> Then all kinds of bad things can happen.
 > 
-> You'd have to ask the people assigning CVSS scores. However, if the memory
-> was reallocated, that reallocated memory (which is still in use) is freed.
-> Then all kinds of bad things can happen.
+> Yes, but moving from "bad things _can_ happen" to "bad things happen" in
+> an instance like this will be a tough task.  It also requires physical
+> access to the machine.
+> 
 
-Yes, but moving from "bad things _can_ happen" to "bad things happen" in
-an instance like this will be a tough task.  It also requires physical
-access to the machine.
+Is this correct even with usbip enabled ?
 
-Anyway, that doesn't mean we shouldn't fix it, it's just that CVSS can
-be crazy when it comes to kernel patches (i.e. almost all fixes should
-be "critical"...)
+> Anyway, that doesn't mean we shouldn't fix it, it's just that CVSS can
+> be crazy when it comes to kernel patches (i.e. almost all fixes should
+> be "critical"...)
+> 
 
-thanks,
+Not all of them, but probably too many. That is why I asked if the problem
+is real. I _used_ to trust CVSS scores, but by now I am at least somewhat
+suspicious - especially if a patch wasn't applied for a period of time,
+like this series of usb patches.
 
-greg k-h
+Having said that, I am even more wary of double-free problems - those tend
+to be notoriously difficult to debug. I'd rather have them out of my way,
+even if they are unlikely to be seen in the real world (plus, Murphy
+says that anything unlikely is going to happen almost immediately).
+
+Guenter
