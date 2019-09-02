@@ -2,81 +2,91 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 93AAEA5417
-	for <lists+linux-wireless@lfdr.de>; Mon,  2 Sep 2019 12:35:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8A462A55BE
+	for <lists+linux-wireless@lfdr.de>; Mon,  2 Sep 2019 14:18:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730107AbfIBKet (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 2 Sep 2019 06:34:49 -0400
-Received: from mail-qk1-f194.google.com ([209.85.222.194]:36847 "EHLO
-        mail-qk1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729806AbfIBKes (ORCPT
+        id S1730900AbfIBMSr (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 2 Sep 2019 08:18:47 -0400
+Received: from smtp.codeaurora.org ([198.145.29.96]:40544 "EHLO
+        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1730493AbfIBMSq (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 2 Sep 2019 06:34:48 -0400
-Received: by mail-qk1-f194.google.com with SMTP id s18so1048244qkj.3
-        for <linux-wireless@vger.kernel.org>; Mon, 02 Sep 2019 03:34:48 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=endlessm-com.20150623.gappssmtp.com; s=20150623;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc:content-transfer-encoding;
-        bh=HrYleHo7nrR1/Z71MdIjCfVOgQijXsHb14Ro+VSgCeM=;
-        b=i3+kIeqSXoK0iOBj+wai1Vr1raogOYIbH8m1Sh9MNalWDpQCD/fdQ8piOmiIjzFlNh
-         0zYcZi9MNcxKSj504INt/yvvrZluoj4wcmMG95+DL81DsMviA24irKW3qRxsfv9HDexa
-         HNI4WrPSs28jdII+OubdtAV06Z/AWmQO22cJ6dGY79YPr1RIoPU22AXlxHfNK/EzVxDL
-         xT0lfjnUmIUWkfEM3vOFPa7oueHNw3vygvbLIuDIrmkKxpvwlc4aBuosl6wsdA4cqcXK
-         VC2lzT+1883qI22aHl0SYMdyVPcD/VN5KdqBCIswwFif6/C3+Sky4FD+/3r4n/rMcKzC
-         ctkw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=HrYleHo7nrR1/Z71MdIjCfVOgQijXsHb14Ro+VSgCeM=;
-        b=XxhGCe62SisuWMvA9kMHOZZtFnaPUrX3aMimS9Y1SAjLRArTJq7B5Gju1ZDkiGEZM3
-         rOkIPnu2ULY9eRmaVnTADne31Do6a6AaFhivF95bVjlc9BxjaoS+Lrxo1UqB0B9sUEKJ
-         k3Nt9c3Rmd2o7SyRqtdOmYiBWqC3pP8W51R+3+S4ZI+/D+fN5ECaGpvowtHxS5XvrsMP
-         Gqgdl/G27zWbrabCpgSrN6brXwoiOvqlioyq5iAbh+d2MBRUKUSsxSVwABYsmFMvV/60
-         eskAd13cQbjFGRmLowJM2iTrINPTE49r36DcPE2vUtPnmUvkjSi09xL5v2zSh9K6rhUY
-         0eIw==
-X-Gm-Message-State: APjAAAUWFDg1RNXZgkJp98sBdJZbhIO+CWckiAFbuB/Bb1kb8nsA2P7v
-        P+6dAiEe48h7+e6+AlC6R1Zptj346y9eWDMUI/AcRg==
-X-Google-Smtp-Source: APXvYqw3bxFuJ+VurIkQUsALgpnMuJH6hDV3SlUHQEk8YlXUOCBR4b5GVmXMsrsWE2xMt+e43gZ/6IIs+dZh3C9T15o=
-X-Received: by 2002:ae9:c206:: with SMTP id j6mr27074925qkg.14.1567420487866;
- Mon, 02 Sep 2019 03:34:47 -0700 (PDT)
-MIME-Version: 1.0
-References: <1567407757-26951-1-git-send-email-yhchuang@realtek.com>
-In-Reply-To: <1567407757-26951-1-git-send-email-yhchuang@realtek.com>
-From:   Daniel Drake <drake@endlessm.com>
-Date:   Mon, 2 Sep 2019 18:34:36 +0800
-Message-ID: <CAD8Lp44L06OAXvoP=jU9Tt0YgfWrRmTN0v4Jq_gjxrOTYn5XwQ@mail.gmail.com>
-Subject: Re: [PATCH v3] rtw88: pci: enable MSI interrupt
+        Mon, 2 Sep 2019 08:18:46 -0400
+Received: by smtp.codeaurora.org (Postfix, from userid 1000)
+        id BB1796013C; Mon,  2 Sep 2019 12:18:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
+        s=default; t=1567426725;
+        bh=y6MOPZNbdbsIKE5xMmrunzT5yG/1NCmehpMObitEB84=;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+        b=FZQXrQGFNjBudozbjsIDfMWIUBBa1KVSEpSixXN1uEuzOzfW2vMk/AkW15+o6+1Sf
+         Zi3X66wweKmQG8DCj2uejJPLwt4RlgzWRhYjU+0gFJxecz+acbzLdNwKTDgrLqiKnf
+         kLNR50T7I1cLKuhtzZycvVRqm180NLuHz2oTGT5w=
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        pdx-caf-mail.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.7 required=2.0 tests=ALL_TRUSTED,BAYES_00,
+        DKIM_INVALID,DKIM_SIGNED,SPF_NONE autolearn=no autolearn_force=no
+        version=3.4.0
+Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo@smtp.codeaurora.org)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 6970260159;
+        Mon,  2 Sep 2019 12:18:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
+        s=default; t=1567426725;
+        bh=y6MOPZNbdbsIKE5xMmrunzT5yG/1NCmehpMObitEB84=;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+        b=FZQXrQGFNjBudozbjsIDfMWIUBBa1KVSEpSixXN1uEuzOzfW2vMk/AkW15+o6+1Sf
+         Zi3X66wweKmQG8DCj2uejJPLwt4RlgzWRhYjU+0gFJxecz+acbzLdNwKTDgrLqiKnf
+         kLNR50T7I1cLKuhtzZycvVRqm180NLuHz2oTGT5w=
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 6970260159
+Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
+From:   Kalle Valo <kvalo@codeaurora.org>
 To:     Tony Chuang <yhchuang@realtek.com>
-Cc:     Kalle Valo <kvalo@codeaurora.org>,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        =?UTF-8?B?SsOhbiBWZXNlbMO9?= <jano.vesely@gmail.com>,
-        Linux Upstreaming Team <linux@endlessm.com>,
-        Brian Norris <briannorris@chromium.org>, gojun077@gmail.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Cc:     Jian-Hong Pan <jian-hong@endlessm.com>,
+        "David S . Miller" <davem@davemloft.net>,
+        "linux-wireless\@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        "netdev\@vger.kernel.org" <netdev@vger.kernel.org>,
+        "linux-kernel\@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "linux\@endlessm.com" <linux@endlessm.com>
+Subject: Re: [PATCH v4] rtw88: pci: Move a mass of jobs in hw IRQ to soft IRQ
+References: <F7CD281DE3E379468C6D07993EA72F84D18A5786@RTITMBSVM04.realtek.com.tw>
+        <20190826070827.1436-1-jian-hong@endlessm.com>
+        <F7CD281DE3E379468C6D07993EA72F84D18AE2DA@RTITMBSVM04.realtek.com.tw>
+Date:   Mon, 02 Sep 2019 15:18:40 +0300
+In-Reply-To: <F7CD281DE3E379468C6D07993EA72F84D18AE2DA@RTITMBSVM04.realtek.com.tw>
+        (Tony Chuang's message of "Tue, 27 Aug 2019 09:20:32 +0000")
+Message-ID: <875zmarivz.fsf@kamboji.qca.qualcomm.com>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
+MIME-Version: 1.0
+Content-Type: text/plain
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Mon, Sep 2, 2019 at 3:02 PM <yhchuang@realtek.com> wrote:
-> From: Yu-Yen Ting <steventing@realtek.com>
+Tony Chuang <yhchuang@realtek.com> writes:
+
+>> From: Jian-Hong Pan 
+>> Subject: [PATCH v4] rtw88: pci: Move a mass of jobs in hw IRQ to soft IRQ
+>> 
+>> There is a mass of jobs between spin lock and unlock in the hardware
+>> IRQ which will occupy much time originally. To make system work more
+>> efficiently, this patch moves the jobs to the soft IRQ (bottom half) to
+>> reduce the time in hardware IRQ.
+>> 
+>> Signed-off-by: Jian-Hong Pan <jian-hong@endlessm.com>
 >
-> MSI interrupt should be enabled on certain platform.
+> Now it works fine with MSI interrupt enabled.
 >
-> Add a module parameter disable_msi to disable MSI interrupt,
-> driver will then use legacy interrupt instead.
->
-> One could rebind the PCI device, probe() will pick up the
-> new value of the module parameter. Such as:
->
->     echo '0000:01:00.0' > /sys/bus/pci/drivers/rtw_pci/unbind
->     echo '0000:01:00.0' > /sys/bus/pci/drivers/rtw_pci/bind
->
-> Tested-by: J=C3=A1n Vesel=C3=BD <jano.vesely@gmail.com>
-> Reviewed-by: Brian Norris <briannorris@chromium.org>
-Reviewed-by: Daniel Drake <drake@endlessm.com>
-> Signed-off-by: Yu-Yen Ting <steventing@realtek.com>
-> Signed-off-by: Yan-Hsuan Chuang <yhchuang@realtek.com>
+> But this patch is conflicting with MSI interrupt patch.
+> Is there a better way we can make Kalle apply them more smoothly?
+> I can rebase them and submit both if you're OK.
+
+Yeah, submitting all the MSI patches in the same patchset is the easiest
+approach. That way they apply cleanly to wireless-drivers-next.
+
+-- 
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
