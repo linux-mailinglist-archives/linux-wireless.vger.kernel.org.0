@@ -2,145 +2,78 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E7ED4A4D5F
-	for <lists+linux-wireless@lfdr.de>; Mon,  2 Sep 2019 05:02:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B101CA4D75
+	for <lists+linux-wireless@lfdr.de>; Mon,  2 Sep 2019 05:13:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729214AbfIBDCX (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 1 Sep 2019 23:02:23 -0400
-Received: from rtits2.realtek.com ([211.75.126.72]:49422 "EHLO
-        rtits2.realtek.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729070AbfIBDCX (ORCPT
+        id S1729257AbfIBDNl (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 1 Sep 2019 23:13:41 -0400
+Received: from mail-qt1-f195.google.com ([209.85.160.195]:42284 "EHLO
+        mail-qt1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729070AbfIBDNl (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 1 Sep 2019 23:02:23 -0400
-Authenticated-By: 
-X-SpamFilter-By: BOX Solutions SpamTrap 5.62 with qID x8232AJZ009850, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (RTITCASV02.realtek.com.tw[172.21.6.19])
-        by rtits2.realtek.com.tw (8.15.2/2.57/5.78) with ESMTPS id x8232AJZ009850
-        (version=TLSv1 cipher=DHE-RSA-AES256-SHA bits=256 verify=NOT);
-        Mon, 2 Sep 2019 11:02:10 +0800
-Received: from RTITMBSVM04.realtek.com.tw ([fe80::e404:880:2ef1:1aa1]) by
- RTITCASV02.realtek.com.tw ([::1]) with mapi id 14.03.0468.000; Mon, 2 Sep
- 2019 11:02:10 +0800
-From:   Tony Chuang <yhchuang@realtek.com>
-To:     Daniel Drake <drake@endlessm.com>
-CC:     =?utf-8?B?SsOhbiBWZXNlbMO9?= <jano.vesely@gmail.com>,
+        Sun, 1 Sep 2019 23:13:41 -0400
+Received: by mail-qt1-f195.google.com with SMTP id t12so14222249qtp.9
+        for <linux-wireless@vger.kernel.org>; Sun, 01 Sep 2019 20:13:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=endlessm-com.20150623.gappssmtp.com; s=20150623;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=28+/T/OSoe5xtTzXYJfwA8f5Dr5EAdXkZvx39Gcm3do=;
+        b=oZ4KIPT6ygpwz/Kpa81scsD4zlNEt5xhNBTHj8ZrW8Bc5VYs/kwJkdw4SV1YZASFWF
+         9CzU/IvmZVICWBHBR55dPrnFFZHhNLJGRKWFsSpwLradlMFnk3rb1hVifY5GUWKDrBK3
+         dhgTPtdSFFs6CsbhlG8miEtN6dim9HDg6pKxLd+29ck4BenL08mX/x19TFEwuPvyYVCc
+         g/9WZ2luvKvuHuOxOmJeoke/jcz45d87fH8L9j05pn2hIMhDA2O2lUGBRM+qdHoq/lqC
+         yiVk5ZsPqKxeIrqltkKCy4KsmVJdhxN3dAIKC8G4PmVKd62u5/Uzuh2GsgwTgvsfzOi5
+         O2HA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=28+/T/OSoe5xtTzXYJfwA8f5Dr5EAdXkZvx39Gcm3do=;
+        b=khF6BTUV4zdU/FEkNGqaj1S8zdR2MzpDlXsUEcPssDxMFyHiZuK2rPLaP5QQUlM0sB
+         i6/ZoCPGwaTspiX34lZme7Ek2+0h8gtitgQsGeoDQp47t1CpLfDVe2zQjc00/t37rq5S
+         i8cAtTWiifHZ/Fx3hF1dXeyx0B6DTI5YRT+w1FQpZAfyc7gCjK7hmoTk+iO9wCjne73c
+         LThkh2jp1o4e6G74Gs3jVP9RAsSsYFtRax2GPBWZchdk0ymleiMIYHKtQYXXYVtmnUS9
+         WzMXK5c/hzWsp3gRMKPK6DkfhI8B5InLqTJ3AOPUNPqeM0922oivy6wUIDGC87mBhIBO
+         gLgw==
+X-Gm-Message-State: APjAAAXeZWWm0pk5Xr6NIhXrDcOrgvmDLArZoIXXZd/IZRroiJWkcKW2
+        ulOlMeQjKiG5i3mlH7LtPmJefw0uX6mny5o2d5gVJA==
+X-Google-Smtp-Source: APXvYqyVH6U0gxCfJa1EEVj8oYso/0tkvX3CFptxi0mbga9qQWi3387Vcmjb5/jUhHeQ2ZQ4zyi7JxSgpjjSprEs4Q0=
+X-Received: by 2002:ac8:3389:: with SMTP id c9mr11098775qtb.391.1567394020247;
+ Sun, 01 Sep 2019 20:13:40 -0700 (PDT)
+MIME-Version: 1.0
+References: <1565166487-22048-1-git-send-email-yhchuang@realtek.com>
+ <20190823063728.14117-1-drake@endlessm.com> <CA+K+NcSYKEkdx5ux6iwUs7pMidObZBrg9yDcP1zT73DcccpDPQ@mail.gmail.com>
+ <F7CD281DE3E379468C6D07993EA72F84D18AE7C8@RTITMBSVM04.realtek.com.tw>
+ <CAD8Lp46=Adn3GWAkHspdqBHVjz6sekET9nzNOCnW7sCFGtoeDQ@mail.gmail.com> <F7CD281DE3E379468C6D07993EA72F84D18C1ABF@RTITMBSVM04.realtek.com.tw>
+In-Reply-To: <F7CD281DE3E379468C6D07993EA72F84D18C1ABF@RTITMBSVM04.realtek.com.tw>
+From:   Daniel Drake <drake@endlessm.com>
+Date:   Mon, 2 Sep 2019 11:13:28 +0800
+Message-ID: <CAD8Lp46djFdVmifZn-CovgjFURAbbaeeBuc21hd1v0He071kUw@mail.gmail.com>
+Subject: Re: [PATCH v2] rtw88: pci: enable MSI interrupt
+To:     Tony Chuang <yhchuang@realtek.com>
+Cc:     =?UTF-8?B?SsOhbiBWZXNlbMO9?= <jano.vesely@gmail.com>,
         "briannorris@chromium.org" <briannorris@chromium.org>,
         "gojun077@gmail.com" <gojun077@gmail.com>,
         "kvalo@codeaurora.org" <kvalo@codeaurora.org>,
         linux-wireless <linux-wireless@vger.kernel.org>,
         "linux@endlessm.com" <linux@endlessm.com>
-Subject: RE: [PATCH v2] rtw88: pci: enable MSI interrupt
-Thread-Topic: [PATCH v2] rtw88: pci: enable MSI interrupt
-Thread-Index: AQHVTPoaeqcBDNg9T0OOoI++rn3wpqcH2mYAgAAMhwCABxwygIAAunuAgAgbAEA=
-Date:   Mon, 2 Sep 2019 03:02:09 +0000
-Message-ID: <F7CD281DE3E379468C6D07993EA72F84D18C1ABF@RTITMBSVM04.realtek.com.tw>
-References: <1565166487-22048-1-git-send-email-yhchuang@realtek.com>
- <20190823063728.14117-1-drake@endlessm.com>
- <CA+K+NcSYKEkdx5ux6iwUs7pMidObZBrg9yDcP1zT73DcccpDPQ@mail.gmail.com>
- <F7CD281DE3E379468C6D07993EA72F84D18AE7C8@RTITMBSVM04.realtek.com.tw>
- <CAD8Lp46=Adn3GWAkHspdqBHVjz6sekET9nzNOCnW7sCFGtoeDQ@mail.gmail.com>
-In-Reply-To: <CAD8Lp46=Adn3GWAkHspdqBHVjz6sekET9nzNOCnW7sCFGtoeDQ@mail.gmail.com>
-Accept-Language: zh-TW, en-US
-Content-Language: zh-TW
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [172.21.68.183]
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-MIME-Version: 1.0
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-SGksDQoNCkEgZmV3IHNjYXR0ZXJlZCBjb21tZW50cyBiZWxvdy4NCg0KPiBGcm9tOiBEYW5pZWwg
-RHJha2UgW21haWx0bzpkcmFrZUBlbmRsZXNzbS5jb21dDQo+IA0KPiBPbiBUdWUsIEF1ZyAyNywg
-MjAxOSBhdCA4OjExIFBNIFRvbnkgQ2h1YW5nIDx5aGNodWFuZ0ByZWFsdGVrLmNvbT4NCj4gd3Jv
-dGU6DQo+ID4gQmVjYXVzZSB0aGVyZSdzIGEgcmFjZSBjb25kaXRpb24gYmV0d2VlbiBTVy9IVyB3
-aGVuIGNsZWFyaW5nIHRoZSBJU1IuDQo+ID4gSWYgaW50ZXJydXB0IGNvbWVzIGFmdGVyIHJlYWRp
-bmcgSVNSIGFuZCBiZWZvcmUgd3JpdGUtMS1jbGVhciwgdGhlIGludGVycnVwdA0KPiA+IGNvbnRy
-b2xsZXIgd291bGQgaGF2ZSBpbnRlcnJ1cHQgc3RhdHVzIHJhaXNlZCwgYW5kIG5ldmVyIGlzc3Vl
-IGludGVycnVwdA0KPiA+IHNpZ25hbCB0byBob3N0IHdoZW4gb3RoZXIgbmV3IGludGVycnVwdHMg
-c3RhdHVzIGFyZSByYWlzZWQuDQo+ID4NCj4gPiBUbyBhdm9pZCB0aGlzLCBkcml2ZXIgcmVxdWly
-ZXMgdG8gcHJvdGVjdCB0aGUgSVNSIHdyaXRlLTEtY2xlYXIgcHJvY2VzcyBieQ0KPiA+IGRpc2Fi
-bGluZyB0aGUgSU1SLg0KPiANCj4gSnVzdCB0byBiZSBjbGVhciB3aXRoIGFuIGV4YW1wbGUgb2Yg
-dHdvIGludGVycnVwdHMgaW4gcXVpY2sNCj4gc3VjY2Vzc2lvbiwgZmlyc3QgUk9LIHRoZW4gTUdO
-VERPSy4gSSB3b3VsZCBleHBlY3QgdGhlIGhhcmR3YXJlIHRvDQo+IGJlaGF2ZSBhcyBmb2xsb3dz
-Og0KPiANCj4gMS4gSW50ZXJydXB0cyBhcmUgZW5hYmxlZCBpbiBISU1SIHJlZy4gTVNJIGlzIGlu
-IHVzZS4NCj4gLS0tIEhhcmR3YXJlIG5lZWRzIHRvIGZsYWcgUlggY29uZGl0aW9uLiBJdCBzZXRz
-IElNUl9ST0sgZmxhZyBpbiBISVNSLA0KPiB0aGVuIHJhaXNlcyBhIE1TSSBpbnRlcnJ1cHQuDQo+
-IC0tLSBJbnRlcnJ1cHQgY29udHJvbGxlciByZWNlaXZlcyB0aGlzIGFuZCBiZWdpbnMgaGFuZGxp
-bmcgaXQ6DQo+IDIuIHJ0dzg4IGludGVycnVwdCBoYW5kbGVyIGJlZ2lucyBleGVjdXRpb24NCj4g
-My4gcnR3X3BjaV9pcnFfcmVjb2duaXplZCgpICByZWFkcyBISVNSIHZhbHVlcy4gUk9LIGlzIHRo
-ZSBvbmx5IGJpdCBzZXQuDQo+IC0tLSBIYXJkd2FyZSBuZWVkcyB0byBmbGFnIE1HTlRET0sgY29u
-ZGl0aW9uLCBzbyBpdCBzZXRzIHRoZSBNR05URE9LDQo+IGJpdCBpbiBISVNSIGFuZCByYWlzZXMg
-YW5vdGhlciBpbnRlcnJ1cHQuDQo+IC0tLSBJbnRlcnJ1cHQgY29udHJvbGxlciBxdWV1ZXMgdGhp
-cyBpbnRlcnJ1cHQgc2luY2UgaXQncyBpbiB0aGUNCj4gbWlkZGxlIG9mIGhhbmRsaW5nIHRoZSBv
-cmlnaW5hbCBST0sgaW50ZXJydXB0Lg0KPiA0LiBCYWNrIGluIHJ0d19wY2lfaXJxX3JlY29nbml6
-ZWQoKSwgdGhlIEhJU1IgdmFsdWVzIGZyb20gZWFybGllciBhcmUNCj4gd3JpdHRlbiBiYWNrIHRv
-IGNsZWFyIHRoZW0uIEluIHRoaXMgY2FzZSBqdXN0IHRoZSBST0sgYml0IGlzIHdyaXR0ZW4NCj4g
-YmFjayB0byB1bnNldCB0aGUgaW50ZXJydXB0LiBNR05URE9LIGludGVycnVwdCBpcyBsZWZ0IHBl
-bmRpbmcgKG5vdA0KPiB5ZXQgbm90aWNlZCBieSB0aGUgZHJpdmVyKQ0KPiA1LiBJbnRlcnJ1cHQg
-aGFuZGxlciBjb250aW51ZXMgJiBmaW5pc2hlcyBoYW5kbGluZyB0aGUgUlggZXZlbnQuDQo+IDYu
-IFdpdGggdGhlIGZpcnN0IGludGVycnVwdCBkb25lLCBpbnRlcnJ1cHQgY29udHJvbGxlciBoYW5k
-bGVzIHRoZQ0KPiBxdWV1ZWQgaW50ZXJydXB0IGFuZCBjYXVzZXMgcnR3ODggaW50ZXJydXB0IGhh
-bmRsZXIgdG8gZXhlY3V0ZSBhZ2Fpbg0KPiA3LiBydHc4OCBpbnRlcnJ1cHQgaGFuZGxlciBoYW5k
-bGVzIGFuZCBNR05URE9LIGludGVycnVwdC4NCj4gDQo+IA0KPiBCdXQgYXJlIHlvdSBzYXlpbmcg
-aXQgZG9lcyBub3QgZG8gdGhpcywgYW5kIHRoZSBiZWhhdmlvdXIgKHdpdGhvdXQNCj4geW91ciBj
-aGFuZ2UpIGlzIGluc3RlYWQ6DQo+IA0KPiAxLiBJbnRlcnJ1cHRzIGFyZSBlbmFibGVkIGluIEhJ
-TVIgcmVnLiBNU0kgaXMgaW4gdXNlLg0KPiAtLS0gSGFyZHdhcmUgbmVlZHMgdG8gZmxhZyBSWCBj
-b25kaXRpb24uIEl0IHNldHMgSU1SX1JPSyBmbGFnIGluIEhJU1IsDQo+IHRoZW4gcmFpc2VzIGEg
-TVNJIGludGVycnVwdC4NCj4gLS0tIEludGVycnVwdCBjb250cm9sbGVyIHJlY2VpdmVzIHRoaXMg
-YW5kIGJlZ2lucyBoYW5kbGluZyBpdDoNCj4gMi4gcnR3ODggaW50ZXJydXB0IGhhbmRsZXIgYmVn
-aW5zIGV4ZWN1dGlvbg0KPiAzLiBydHdfcGNpX2lycV9yZWNvZ25pemVkKCkgIHJlYWRzIEhJU1Ig
-dmFsdWVzLiBST0sgaXMgdGhlIG9ubHkgYml0IHNldC4NCj4gLS0tIEhhcmR3YXJlIG5lZWRzIHRv
-IGZsYWcgTUdOVERPSyBjb25kaXRpb24sIHNvIGl0IHNldHMgdGhlIE1HTlRET0sNCj4gYml0IGlu
-IEhJU1IuIEhvd2V2ZXIgaXQgZG9lcyBOT1QgcmFpc2UgYW4gaW50ZXJydXB0IHNpbmNlIG90aGVy
-IGJpdHMNCj4gaW4gSElTUiB3ZXJlIHN0aWxsIHNldCBhdCB0aGlzIHRpbWUuDQo+IDQuIEJhY2sg
-aW4gcnR3X3BjaV9pcnFfcmVjb2duaXplZCgpLCB0aGUgSElTUiB2YWx1ZXMgZnJvbSBlYXJsaWVy
-IGFyZQ0KPiB3cml0dGVuIGJhY2suIEluIHRoaXMgY2FzZSBqdXN0IHRoZSBST0sgYml0IGlzIHdy
-aXR0ZW4gYmFjayB0byB1bnNldA0KPiB0aGUgaW50ZXJydXB0LiBNR05URE9LIGludGVycnVwdCBp
-cyBsZWZ0IHBlbmRpbmcgKG5vdCB5ZXQgbm90aWNlZCBieQ0KPiB0aGUgZHJpdmVyKQ0KPiA1LiBJ
-bnRlcnJ1cHQgaGFuZGxlciBjb250aW51ZXMgJiBmaW5pc2hlcyBoYW5kbGluZyB0aGUgUlggZXZl
-bnQuDQo+IDYuIE1HTlRET0sgaW50ZXJydXB0IGlzIGxlZnQgcGVuZGluZywgYW5kIG5vIG1vcmUg
-aW50ZXJydXB0cyB3aWxsIGJlDQo+IGdlbmVyYXRlZCBieSB0aGUgaGFyZHdhcmUgYmVjYXVzZSBl
-dmVuIGlmIGl0IHNldHMgbW9yZSBISVNSIGJpdHMsIHRoZQ0KPiBNR05URE9LIGJpdCB3YXMgYWxy
-ZWFkeSBzZXQgc28gaXQgZG9lc24ndCByYWlzZSBtb3JlIGludGVycnVwdHMuDQo+IA0KPiBpLmUu
-IHlvdSdyZSBlZmZlY3RpdmVseSBzYXlpbmcgdGhhdCB0aGUgaGFyZHdhcmUgd2lsbCAqb25seSog
-Z2VuZXJhdGUNCj4gYW4gaW50ZXJydXB0IHdoZW4gKmFsbCogSElTUiBiaXRzIHdlcmUgemVybyBp
-bW1lZGlhdGVseSBiZWZvcmUgdGhlIG5ldw0KPiBpbnRlcnJ1cHQgSElTUiBiaXQgaXMgc2V0Pw0K
-DQpZZXMsIHRoYXQncyB3aGF0IEkgYW0gc2F5aW5nIGFib3V0LiBJIGtub3cgaXQgbG9va3Mgc3Ry
-YW5nZSwgYnV0IEkgdGhpbmsNCnRoaXMgaXMgUmVhbHRlaydzIGRlc2lnbi4gQW5kIGFzIGZhciBh
-cyBJIGtub3cgdGhpcyBoYXMgYmVlbiB1c2VkIGZvciA5LTEwDQp5ZWFycy4NCg0KPiANCj4gDQo+
-IEFuZCB0aGVuIHdpdGggeW91ciBjaGFuZ2UgYXBwbGllZCBpdCB3b3VsZCBsb29rIGxpa2UgdGhp
-czoNCj4gDQo+IDEuIEludGVycnVwdHMgYXJlIGVuYWJsZWQgaW4gSElNUiByZWcuIE1TSSBpcyBp
-biB1c2UuDQo+IC0tLSBIYXJkd2FyZSBuZWVkcyB0byBmbGFnIFJYIGNvbmRpdGlvbi4gSXQgc2V0
-cyBJTVJfUk9LIGZsYWcgaW4gSElTUiwNCj4gdGhlbiByYWlzZXMgYSBNU0kgaW50ZXJydXB0Lg0K
-PiAtLS0gSW50ZXJydXB0IGNvbnRyb2xsZXIgcmVjZWl2ZXMgdGhpcyBhbmQgYmVnaW5zIGhhbmRs
-aW5nIGl0Og0KPiAyLiBydHc4OCBpbnRlcnJ1cHQgaGFuZGxlciBiZWdpbnMgZXhlY3V0aW9uDQo+
-IDMuIEludGVycnVwdHMgYXJlIGRpc2FibGVkIGluIEhJTVIgcmVnLg0KPiA0LiBydHdfcGNpX2ly
-cV9yZWNvZ25pemVkKCkgIHJlYWRzIEhJU1IgdmFsdWVzLiBST0sgaXMgdGhlIG9ubHkgYml0IHNl
-dC4NCj4gLS0tIEhhcmR3YXJlIG5lZWRzIHRvIGZsYWcgTUdOVERPSyBjb25kaXRpb24sIGhvd2V2
-ZXIgYmVjYXVzZQ0KPiBpbnRlcnJ1cHRzIGFyZSBkaXNhYmxlZCBpbiBISU1SLCBpdCBzaW1wbHkg
-cXVldWVzIHRoaXMgY29uZGl0aW9uDQo+IGludGVybmFsbHksIHdpdGhvdXQgYWZmZWN0aW5nIEhJ
-U1IgdmFsdWVzLCB3aXRob3V0IGdlbmVyYXRpbmcgYW5vdGhlcg0KPiBpbnRlcnJ1cHQuDQoNClRo
-aXMgbWlnaHQgYmUgYSBsaXR0bGUgZGlmZmVyZW50IGhlcmUsIEkgdGhpbmsgdGhlIE1HTlRET0sg
-ZmxhZyBpcyBzdGlsbCBzZXQuDQpCdXQgbmV3IGludGVycnVwdCB3aWxsIG5vdCBiZSBnZW5lcmF0
-ZWQsIHVudGlsIEhJTVIgaXMgcmUtZW5hYmxlZCwgYW5kIEkNCnRoaW5rIHJlLWVuYWJsaW5nIHRo
-ZSBISU1SIGNvdWxkIHRyaWdnZXIgdGhlIGhhcmR3YXJlIHRvIGNoZWNrIGlmIGFueQ0KSElTUiBi
-aXQgaXMgc2V0LCBhbmQgdGhlbiBnZW5lcmF0ZSBpbnRlcnJ1cHQuDQoNCj4gNC4gQmFjayBpbiBy
-dHdfcGNpX2lycV9yZWNvZ25pemVkKCksIHRoZSBISVNSIHZhbHVlcyBmcm9tIGVhcmxpZXIgYXJl
-DQo+IHdyaXR0ZW4gYmFjay4gSW4gdGhpcyBjYXNlIGp1c3QgdGhlIFJPSyBiaXQgaXMgd3JpdHRl
-biBiYWNrIHRvIHVuc2V0DQo+IHRoZSBpbnRlcnJ1cHQuIEhJU1IgaXMgbm93IHZhbHVlIDAuDQo+
-IDUuIEludGVycnVwdCBoYW5kbGVyIGhhbmRsZXMgdGhlIFJYIGV2ZW50Lg0KPiA2LiBJbnRlcnJ1
-cHQgaGFuZGxlciByZS1lbmFibGVzIGludGVycnVwdHMgaW4gSElNUiBqdXN0IGJlZm9yZSBmaW5p
-c2hpbmcuDQo+IC0tLSBJbiByZXNwb25zZSwgaGFyZHdhcmUgY2hlY2tzIGl0cyBpbnRlcm5hbCBx
-dWV1ZSBhbmQgcmVhbGlzZXMgdGhhdA0KPiBhIE1HTlRET0sgY29uZGl0aW9uIGlzIHBlbmRpbmcu
-IEl0IHNldHMgdGhlIE1HTlRET0sgYml0IGluIEhJU1IgYW5kDQo+IHJhaXNlcyBhIG5ldyBpbnRl
-cnJ1cHQuDQo+IA0KPiBJcyB0aGF0IHJpZ2h0PyBJdCBzZWVtcyBsaWtlIHN0cmFuZ2UgYmVoYXZp
-b3VyIG9uIHRoZSBoYXJkd2FyZSBzaWRlLg0KPiANCg0KSW5kZWVkIGl0IGlzIGEgbGl0dGxlIHN0
-cmFuZ2UgYnV0IGl0IHdvcmtzIGxpa2UgdGhhdCwgaWYgSSBkb24ndCBkaXNhYmxlIEhJTVIsDQpp
-bnRlcnJ1cHQgY291bGQgYmUgbG9zdCBhbmQgbmV2ZXIgZ2V0cyBpbnRvIGludGVycnVwdCBoYW5k
-bGVyIGFnYWluLg0KSWYgc28sIHRoZSBpbnRlcnJ1cHQgd2lsbCBiZSBzdG9wcGVkLCBhbmQgVFgv
-UlggcGF0aCB3aWxsIGJlIGZyZWV6ZWQuDQoNCj4gDQo+IFRoYW5rcywNCj4gRGFuaWVsDQo+IA0K
-DQpUaGFua3MsDQpZYW4tSHN1YW4NCg==
+On Mon, Sep 2, 2019 at 11:02 AM Tony Chuang <yhchuang@realtek.com> wrote:
+> Indeed it is a little strange but it works like that, if I don't disable HIMR,
+> interrupt could be lost and never gets into interrupt handler again.
+> If so, the interrupt will be stopped, and TX/RX path will be freezed.
+
+OK, thanks for checking & explaining.
+
+It's a bit hard to put in words as we have seen, but it would be good
+if you could try to summarise this unusual design in the commit
+message or in a code comment.
+
+Thanks!
+Daniel
