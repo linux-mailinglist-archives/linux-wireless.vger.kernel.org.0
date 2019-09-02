@@ -2,109 +2,127 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 0161DA527A
-	for <lists+linux-wireless@lfdr.de>; Mon,  2 Sep 2019 11:06:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1E31EA52A3
+	for <lists+linux-wireless@lfdr.de>; Mon,  2 Sep 2019 11:22:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730848AbfIBJGU convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 2 Sep 2019 05:06:20 -0400
-Received: from rtits2.realtek.com ([211.75.126.72]:51227 "EHLO
-        rtits2.realtek.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730361AbfIBJGT (ORCPT
+        id S1729822AbfIBJWl (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 2 Sep 2019 05:22:41 -0400
+Received: from smtp.codeaurora.org ([198.145.29.96]:60314 "EHLO
+        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729804AbfIBJWk (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 2 Sep 2019 05:06:19 -0400
-Authenticated-By: 
-X-SpamFilter-By: BOX Solutions SpamTrap 5.62 with qID x829644v009540, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (RTITCASV02.realtek.com.tw[172.21.6.19])
-        by rtits2.realtek.com.tw (8.15.2/2.57/5.78) with ESMTPS id x829644v009540
-        (version=TLSv1 cipher=DHE-RSA-AES256-SHA bits=256 verify=NOT);
-        Mon, 2 Sep 2019 17:06:04 +0800
-Received: from RTITMBSVM04.realtek.com.tw ([fe80::e404:880:2ef1:1aa1]) by
- RTITCASV02.realtek.com.tw ([::1]) with mapi id 14.03.0468.000; Mon, 2 Sep
- 2019 17:06:04 +0800
-From:   Tony Chuang <yhchuang@realtek.com>
-To:     Tony Chuang <yhchuang@realtek.com>,
-        "kvalo@codeaurora.org" <kvalo@codeaurora.org>
-CC:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "briannorris@chromium.org" <briannorris@chromium.org>,
-        "sgruszka@redhat.com" <sgruszka@redhat.com>
-Subject: RE: [PATCH 0/8] rtw88: enhance and stabilize T-Put performance
-Thread-Topic: [PATCH 0/8] rtw88: enhance and stabilize T-Put performance
-Thread-Index: AQHVTQyHs8QWm0j420C8jmKyMDfjhKcYQM2w
-Date:   Mon, 2 Sep 2019 09:06:03 +0000
-Message-ID: <F7CD281DE3E379468C6D07993EA72F84D18C2176@RTITMBSVM04.realtek.com.tw>
-References: <1565174405-2689-1-git-send-email-yhchuang@realtek.com>
-In-Reply-To: <1565174405-2689-1-git-send-email-yhchuang@realtek.com>
-Accept-Language: zh-TW, en-US
-Content-Language: zh-TW
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [172.21.68.183]
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 8BIT
-MIME-Version: 1.0
+        Mon, 2 Sep 2019 05:22:40 -0400
+Received: by smtp.codeaurora.org (Postfix, from userid 1000)
+        id 89F3B60264; Mon,  2 Sep 2019 09:22:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
+        s=default; t=1567416159;
+        bh=Iv4eOvYHtTloypDJ7hVQSISV8i4783SmON8jpHeGegs=;
+        h=From:To:Cc:Subject:Date:From;
+        b=W94qtX/Z31mGv4JJFW6SNoZXQTloh45QXUEMFc9BR54yzD7u5paS62WNJxAacO+TN
+         IWnXRau/6/Lchhc2IoYxCc4YBQLpE3NhxskbHiGhf1iQ+e2CxMMYJ6yWS13TFpNV+u
+         eukKpb1wWElDCYwDTZyobS0xDlrR9cZHoLhilUVA=
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        pdx-caf-mail.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.7 required=2.0 tests=ALL_TRUSTED,BAYES_00,
+        DKIM_INVALID,DKIM_SIGNED,SPF_NONE autolearn=no autolearn_force=no
+        version=3.4.0
+Received: from wgong-HP-Z240-SFF-Workstation.qca.qualcomm.com (unknown [180.166.53.21])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-SHA256 (128/128 bits))
+        (No client certificate requested)
+        (Authenticated sender: wgong@smtp.codeaurora.org)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 38EF6602EF;
+        Mon,  2 Sep 2019 09:22:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
+        s=default; t=1567416159;
+        bh=Iv4eOvYHtTloypDJ7hVQSISV8i4783SmON8jpHeGegs=;
+        h=From:To:Cc:Subject:Date:From;
+        b=W94qtX/Z31mGv4JJFW6SNoZXQTloh45QXUEMFc9BR54yzD7u5paS62WNJxAacO+TN
+         IWnXRau/6/Lchhc2IoYxCc4YBQLpE3NhxskbHiGhf1iQ+e2CxMMYJ6yWS13TFpNV+u
+         eukKpb1wWElDCYwDTZyobS0xDlrR9cZHoLhilUVA=
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 38EF6602EF
+Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=wgong@codeaurora.org
+From:   Wen Gong <wgong@codeaurora.org>
+To:     ath10k@lists.infradead.org
+Cc:     linux-wireless@vger.kernel.org
+Subject: [PATCH v4 0/8] ath10k: improve throughout of tcp/udp TX/RX of sdio
+Date:   Mon,  2 Sep 2019 17:22:18 +0800
+Message-Id: <1567416146-14403-1-git-send-email-wgong@codeaurora.org>
+X-Mailer: git-send-email 1.9.1
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-> From: Yan-Hsuan Chuang <yhchuang@realtek.com>
-> 
-> This patch set could enhance and stabilize the throughput
-> performance for rtw88, especially for RTL8822CE.
-> 
-> The RFKs, such as IQK and DPK, can make sure the radio
-> components works more reliable. They reduce the distortion
-> and nonlinearity that the components inherently have.
-> 
-> The parameter update is a result that is fine-tuned to
-> optimize the hardware utilization.
-> 
-> And CCK PD can help to adjust CCK signal threshold to
-> reduce FAs, and get a better TRX performance in 2.4G.
-> 
-> Interrupt migration helps some slower platforms not to
-> over utilize the host CPU, reduce its loading.
-> 
-> 
-> Chin-Yen Lee (1):
->   rtw88: 8822c: update pwr_seq to v13
-> 
-> Tsang-Shian Lin (1):
->   rtw88: 8822c: Enable interrupt migration
-> 
-> Tzu-En Huang (2):
->   rtw88: 8822c: add SW DPK support
->   rtw88: add dynamic cck pd mechanism
-> 
-> Yan-Hsuan Chuang (4):
->   rtw88: 8822c: update PHY parameter to v38
->   rtw88: 8822c: add FW IQK support
->   rtw88: move IQK/DPK into phy_calibration
->   rtw88: allows to receive AMSDU in AMPDU
-> 
->  drivers/net/wireless/realtek/rtw88/coex.c          |    2 +-
->  drivers/net/wireless/realtek/rtw88/coex.h          |    1 +
->  drivers/net/wireless/realtek/rtw88/mac80211.c      |    2 +-
->  drivers/net/wireless/realtek/rtw88/main.c          |    1 +
->  drivers/net/wireless/realtek/rtw88/main.h          |   56 +-
->  drivers/net/wireless/realtek/rtw88/phy.c           |  143 +
->  drivers/net/wireless/realtek/rtw88/phy.h           |    2 +
->  drivers/net/wireless/realtek/rtw88/reg.h           |   17 +
->  drivers/net/wireless/realtek/rtw88/rtw8822b.c      |    7 +-
->  drivers/net/wireless/realtek/rtw88/rtw8822c.c      | 1178 +++-
->  drivers/net/wireless/realtek/rtw88/rtw8822c.h      |   86 +
->  .../net/wireless/realtek/rtw88/rtw8822c_table.c    | 6930
-> ++++++++++++++------
->  .../net/wireless/realtek/rtw88/rtw8822c_table.h    |    3 +
->  13 files changed, 6323 insertions(+), 2105 deletions(-)
-> 
-> --
-> 2.7.4
-> 
-> 
+The bottleneck of throughout on sdio chip is the bus bandwidth, to the
+patches are all to increase the use ratio of sdio bus.
 
-This a gentle ping for the series.
-Any suggestion is welcome :)
+                      udp-rx    udp-tx    tcp-rx    tcp-tx
+without patches(Mbps)  320        180       170       151
+with patches(Mbps)     450        410       400       320
 
-Yan-Hsuan
+These patches only affect sdio bus chip, explanation is mentioned in each
+patch's commit log.
+
+Alagu Sankar (1):
+  ath10k: enable RX bundle receive for sdio
+v2: fix incorrect skb tail of rx bundle in ath10k_sdio_mbox_rx_process_packet
+v3: change some code style
+split fix incorrect skb tail of rx bundle to patch "adjust skb length in ath10k_sdio_mbox_rx_packet"
+v4: add err handle in ath10k_sdio_mbox_rx_fetch_bundle
+
+Nicolas Boichat (1):
+  ath10k: adjust skb length in ath10k_sdio_mbox_rx_packet
+v2: no this patch
+v3: new added
+v4: change commit log
+
+Wen Gong (6):
+  ath10k: change max RX bundle size from 8 to 32 for sdio
+v2: change macro HTC_GET_BUNDLE_COUNT
+v3: change some code style
+v4: add macro ATH10K_HTC_FLAG_BUNDLE_MASK
+
+  ath10k: add workqueue for RX path of sdio
+v2: no change
+v3: change some code style
+v4: no change
+
+  ath10k: disable TX complete indication of htt for sdio
+v2: change some code style
+v3: change some code style
+v4: no change
+
+  ath10k: add htt TX bundle for sdio
+v2: no change
+v3: change some code style
+v4: no change
+
+  ath10k: enable alt data of TX path for sdio
+v2: no change
+v3: change some code style
+v4: add macro ATH10K_HTC_MSG_READY_EXT_ALT_DATA_MASK
+
+  ath10k: enable napi on RX path for sdio
+v2: no change
+v3: change some code style
+v4: change some code style
+
+ drivers/net/wireless/ath/ath10k/core.c   |  42 +++-
+ drivers/net/wireless/ath/ath10k/core.h   |   4 +-
+ drivers/net/wireless/ath/ath10k/hif.h    |   9 +
+ drivers/net/wireless/ath/ath10k/htc.c    | 377 ++++++++++++++++++++++++++++---
+ drivers/net/wireless/ath/ath10k/htc.h    |  49 +++-
+ drivers/net/wireless/ath/ath10k/htt.c    |  15 ++
+ drivers/net/wireless/ath/ath10k/htt.h    |  20 +-
+ drivers/net/wireless/ath/ath10k/htt_rx.c |  80 ++++++-
+ drivers/net/wireless/ath/ath10k/htt_tx.c |  38 +++-
+ drivers/net/wireless/ath/ath10k/hw.h     |   2 +-
+ drivers/net/wireless/ath/ath10k/sdio.c   | 281 ++++++++++++++++++++---
+ drivers/net/wireless/ath/ath10k/sdio.h   |  31 ++-
+ 12 files changed, 851 insertions(+), 97 deletions(-)
+
+-- 
+1.9.1
+
