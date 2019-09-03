@@ -2,25 +2,25 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 595EAA6A84
-	for <lists+linux-wireless@lfdr.de>; Tue,  3 Sep 2019 15:55:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4AF98A6AF7
+	for <lists+linux-wireless@lfdr.de>; Tue,  3 Sep 2019 16:14:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729272AbfICNzW (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 3 Sep 2019 09:55:22 -0400
-Received: from smtp.codeaurora.org ([198.145.29.96]:33430 "EHLO
+        id S1729393AbfICOOU (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 3 Sep 2019 10:14:20 -0400
+Received: from smtp.codeaurora.org ([198.145.29.96]:48612 "EHLO
         smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728576AbfICNzW (ORCPT
+        with ESMTP id S1729117AbfICOOU (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 3 Sep 2019 09:55:22 -0400
+        Tue, 3 Sep 2019 10:14:20 -0400
 Received: by smtp.codeaurora.org (Postfix, from userid 1000)
-        id 34A40602FE; Tue,  3 Sep 2019 13:55:21 +0000 (UTC)
+        id 9A6716090F; Tue,  3 Sep 2019 14:14:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1567518921;
-        bh=vpuAZkMQK2ZFS6tbmxl5dnvT1U76VTwXtsFnvAQ8SCU=;
+        s=default; t=1567520059;
+        bh=zXyYEMXgxwMe5kM6w/V7cIEreB+fNKc7naZiALNTuV0=;
         h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-        b=cF4EsaD1Ppr50QyIHKwaV+hFeIHeWFrP2w50mOkX804W5poW+dY2Fs+NgVx3QTRr1
-         hkg23xuWRrZgx6UPBqNY00MsAEfkLKMHifmpVlkC9IQ1Ly5GeY5F1pPdOwz+u3SC5u
-         L6K5uGDdny0VWOwci0ePEKqwbzFcrCe2ABv3xh2A=
+        b=KiOMKliERg7LuKGLumbuTIJ+UJL6E16SGVratZI6NIzYldjnimsKv2QvcAQV5XHO4
+         WwpZ1pBMjBso7JOeTQ+2vgL3verNFkH1LumYPZjaubGlS6kLW7cIbDL+HXDzTiT8rX
+         JpoYnqpTze27eHIU3lZonO0fJyF39wANCedKN4M4=
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         pdx-caf-mail.web.codeaurora.org
 X-Spam-Level: 
@@ -31,34 +31,34 @@ Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
         (Authenticated sender: kvalo@smtp.codeaurora.org)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 9ECA7602EF;
-        Tue,  3 Sep 2019 13:55:18 +0000 (UTC)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 4C3D56013C;
+        Tue,  3 Sep 2019 14:14:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1567518920;
-        bh=vpuAZkMQK2ZFS6tbmxl5dnvT1U76VTwXtsFnvAQ8SCU=;
+        s=default; t=1567520056;
+        bh=zXyYEMXgxwMe5kM6w/V7cIEreB+fNKc7naZiALNTuV0=;
         h=Subject:From:In-Reply-To:References:To:Cc:From;
-        b=Mx1oOGdAP3rS/RZz440W+Is4Z5hA243GvXV0Fb8/231frCMDhaKeLKEjKHgtxJNh5
-         tapTvV5t1y2SruEM6oWFbffWlk7fmI0zcioQR+Mpl0SS2cG2WXSQqeEblyOEdFqA/t
-         r5vwxxXRThxXtB77JTUJRxGAJTtSxVB2lddu5Q88=
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 9ECA7602EF
+        b=Y/go4IHw5C2+Czr7z7sw1YY2om5Qpc43pr14YwOkFu3rW4sx63XNo/9WjnRnjEz+h
+         iOaeD/GBzmWPmUWxK3+bY5oueaSiTPPfbPWaG4cxjaHKbHJiOIIm3MULYdr94wPRpL
+         HK760yQDod/5l0ijZ3wIKP/xYHSIgKWNfWytub+g=
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 4C3D56013C
 Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
 Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH] rsi: fix a double free bug in rsi_91x_deinit()
+Subject: Re: [PATCH 2/2] Fix a NULL-ptr-deref bug in
+ ath10k_usb_alloc_urb_from_pipe
 From:   Kalle Valo <kvalo@codeaurora.org>
-In-Reply-To: <20190819220230.10597-1-benquike@gmail.com>
-References: <20190819220230.10597-1-benquike@gmail.com>
+In-Reply-To: <20190804003101.11541-1-benquike@gmail.com>
+References: <20190804003101.11541-1-benquike@gmail.com>
 To:     Hui Peng <benquike@gmail.com>
-Cc:     security@kernel.org, Hui Peng <benquike@gmail.com>,
+Cc:     davem@davemloft.net, Hui Peng <benquike@gmail.com>,
         Mathias Payer <mathias.payer@nebelwelt.net>,
-        "David S. Miller" <davem@davemloft.net>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org
+        ath10k@lists.infradead.org, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org, linux-kernel@vger.kernel.org
 User-Agent: pwcli/0.0.0-git (https://github.com/kvalo/pwcli/) Python/2.7.12
-Message-Id: <20190903135521.34A40602FE@smtp.codeaurora.org>
-Date:   Tue,  3 Sep 2019 13:55:21 +0000 (UTC)
+Message-Id: <20190903141418.9A6716090F@smtp.codeaurora.org>
+Date:   Tue,  3 Sep 2019 14:14:18 +0000 (UTC)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
@@ -66,33 +66,62 @@ X-Mailing-List: linux-wireless@vger.kernel.org
 
 Hui Peng <benquike@gmail.com> wrote:
 
-> `dev` (struct rsi_91x_usbdev *) field of adapter
-> (struct rsi_91x_usbdev *) is allocated  and initialized in
-> `rsi_init_usb_interface`. If any error is detected in information
-> read from the device side,  `rsi_init_usb_interface` will be
-> freed. However, in the higher level error handling code in
-> `rsi_probe`, if error is detected, `rsi_91x_deinit` is called
-> again, in which `dev` will be freed again, resulting double free.
+> The `ar_usb` field of `ath10k_usb_pipe_usb_pipe` objects
+> are initialized to point to the containing `ath10k_usb` object
+> according to endpoint descriptors read from the device side, as shown
+> below in `ath10k_usb_setup_pipe_resources`:
 > 
-> This patch fixes the double free by removing the free operation on
-> `dev` in `rsi_init_usb_interface`, because `rsi_91x_deinit` is also
-> used in `rsi_disconnect`, in that code path, the `dev` field is not
->  (and thus needs to be) freed.
+> for (i = 0; i < iface_desc->desc.bNumEndpoints; ++i) {
+>         endpoint = &iface_desc->endpoint[i].desc;
 > 
-> This bug was found in v4.19, but is also present in the latest version
-> of kernel. Fixes CVE-2019-15504.
+>         // get the address from endpoint descriptor
+>         pipe_num = ath10k_usb_get_logical_pipe_num(ar_usb,
+>                                                 endpoint->bEndpointAddress,
+>                                                 &urbcount);
+>         ......
+>         // select the pipe object
+>         pipe = &ar_usb->pipes[pipe_num];
 > 
+>         // initialize the ar_usb field
+>         pipe->ar_usb = ar_usb;
+> }
+> 
+> The driver assumes that the addresses reported in endpoint
+> descriptors from device side  to be complete. If a device is
+> malicious and does not report complete addresses, it may trigger
+> NULL-ptr-deref `ath10k_usb_alloc_urb_from_pipe` and
+> `ath10k_usb_free_urb_to_pipe`.
+> 
+> This patch fixes the bug by preventing potential NULL-ptr-deref.
+> 
+> Signed-off-by: Hui Peng <benquike@gmail.com>
 > Reported-by: Hui Peng <benquike@gmail.com>
 > Reported-by: Mathias Payer <mathias.payer@nebelwelt.net>
-> Signed-off-by: Hui Peng <benquike@gmail.com>
-> Reviewed-by: Guenter Roeck <linux@roeck-us.net>
+> Reviewed-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
-Patch applied to wireless-drivers.git, thanks.
+This causes a new warning, please build test your patches.
 
-8b51dc729147 rsi: fix a double free bug in rsi_91x_deinit()
+In file included from ./include/uapi/linux/posix_types.h:5,
+                 from ./include/uapi/linux/types.h:14,
+                 from ./include/linux/types.h:6,
+                 from ./include/linux/list.h:5,
+                 from ./include/linux/module.h:9,
+                 from drivers/net/wireless/ath/ath10k/usb.c:8:
+drivers/net/wireless/ath/ath10k/usb.c: In function 'ath10k_usb_free_urb_to_pipe':
+./include/linux/stddef.h:8:14: warning: 'return' with a value, in function returning void
+ #define NULL ((void *)0)
+              ^
+drivers/net/wireless/ath/ath10k/usb.c:64:10: note: in expansion of macro 'NULL'
+   return NULL;
+          ^~~~
+drivers/net/wireless/ath/ath10k/usb.c:57:13: note: declared here
+ static void ath10k_usb_free_urb_to_pipe(struct ath10k_usb_pipe *pipe,
+             ^~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Patch set to Changes Requested.
 
 -- 
-https://patchwork.kernel.org/patch/11102087/
+https://patchwork.kernel.org/patch/11074657/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
