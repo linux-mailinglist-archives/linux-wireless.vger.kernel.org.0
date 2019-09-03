@@ -2,126 +2,128 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 4AF98A6AF7
-	for <lists+linux-wireless@lfdr.de>; Tue,  3 Sep 2019 16:14:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2977CA6DDA
+	for <lists+linux-wireless@lfdr.de>; Tue,  3 Sep 2019 18:17:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729393AbfICOOU (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 3 Sep 2019 10:14:20 -0400
-Received: from smtp.codeaurora.org ([198.145.29.96]:48612 "EHLO
-        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729117AbfICOOU (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 3 Sep 2019 10:14:20 -0400
-Received: by smtp.codeaurora.org (Postfix, from userid 1000)
-        id 9A6716090F; Tue,  3 Sep 2019 14:14:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1567520059;
-        bh=zXyYEMXgxwMe5kM6w/V7cIEreB+fNKc7naZiALNTuV0=;
-        h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-        b=KiOMKliERg7LuKGLumbuTIJ+UJL6E16SGVratZI6NIzYldjnimsKv2QvcAQV5XHO4
-         WwpZ1pBMjBso7JOeTQ+2vgL3verNFkH1LumYPZjaubGlS6kLW7cIbDL+HXDzTiT8rX
-         JpoYnqpTze27eHIU3lZonO0fJyF39wANCedKN4M4=
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        pdx-caf-mail.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-0.8 required=2.0 tests=ALL_TRUSTED,BAYES_00,
-        DKIM_INVALID,DKIM_SIGNED,MISSING_DATE,MISSING_MID,SPF_NONE autolearn=no
-        autolearn_force=no version=3.4.0
-Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        id S1730072AbfICQRf (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 3 Sep 2019 12:17:35 -0400
+Received: from mail.taht.net ([176.58.107.8]:58616 "EHLO mail.taht.net"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1729705AbfICQRf (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 3 Sep 2019 12:17:35 -0400
+X-Greylist: delayed 464 seconds by postgrey-1.27 at vger.kernel.org; Tue, 03 Sep 2019 12:17:33 EDT
+Received: from dancer.taht.net (unknown [IPv6:2603:3024:1536:86f0:eea8:6bff:fefe:9a2])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        (Authenticated sender: kvalo@smtp.codeaurora.org)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 4C3D56013C;
-        Tue,  3 Sep 2019 14:14:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1567520056;
-        bh=zXyYEMXgxwMe5kM6w/V7cIEreB+fNKc7naZiALNTuV0=;
-        h=Subject:From:In-Reply-To:References:To:Cc:From;
-        b=Y/go4IHw5C2+Czr7z7sw1YY2om5Qpc43pr14YwOkFu3rW4sx63XNo/9WjnRnjEz+h
-         iOaeD/GBzmWPmUWxK3+bY5oueaSiTPPfbPWaG4cxjaHKbHJiOIIm3MULYdr94wPRpL
-         HK760yQDod/5l0ijZ3wIKP/xYHSIgKWNfWytub+g=
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 4C3D56013C
-Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
-Content-Type: text/plain; charset="utf-8"
+        by mail.taht.net (Postfix) with ESMTPSA id 7B95A21B3D;
+        Tue,  3 Sep 2019 16:09:47 +0000 (UTC)
+From:   Dave Taht <dave@taht.net>
+To:     Wen Gong <wgong@qti.qualcomm.com>, ath10k@lists.infradead.org,
+        linux-wireless@vger.kernel.org
+Subject: Re: [PATCH 2/7] ath10k: change max RX bundle size from 8 to 32 for sdio
+References: <1566302108-18219-1-git-send-email-wgong@codeaurora.org>
+        <1566302108-18219-3-git-send-email-wgong@codeaurora.org>
+Date:   Tue, 03 Sep 2019 09:09:35 -0700
+In-Reply-To: <1566302108-18219-3-git-send-email-wgong@codeaurora.org> (Wen
+        Gong's message of "Tue, 20 Aug 2019 19:55:03 +0800")
+Message-ID: <87k1apnyyo.fsf@taht.net>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH 2/2] Fix a NULL-ptr-deref bug in
- ath10k_usb_alloc_urb_from_pipe
-From:   Kalle Valo <kvalo@codeaurora.org>
-In-Reply-To: <20190804003101.11541-1-benquike@gmail.com>
-References: <20190804003101.11541-1-benquike@gmail.com>
-To:     Hui Peng <benquike@gmail.com>
-Cc:     davem@davemloft.net, Hui Peng <benquike@gmail.com>,
-        Mathias Payer <mathias.payer@nebelwelt.net>,
-        ath10k@lists.infradead.org, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-User-Agent: pwcli/0.0.0-git (https://github.com/kvalo/pwcli/) Python/2.7.12
-Message-Id: <20190903141418.9A6716090F@smtp.codeaurora.org>
-Date:   Tue,  3 Sep 2019 14:14:18 +0000 (UTC)
+Content-Type: text/plain
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hui Peng <benquike@gmail.com> wrote:
 
-> The `ar_usb` field of `ath10k_usb_pipe_usb_pipe` objects
-> are initialized to point to the containing `ath10k_usb` object
-> according to endpoint descriptors read from the device side, as shown
-> below in `ath10k_usb_setup_pipe_resources`:
-> 
-> for (i = 0; i < iface_desc->desc.bNumEndpoints; ++i) {
->         endpoint = &iface_desc->endpoint[i].desc;
-> 
->         // get the address from endpoint descriptor
->         pipe_num = ath10k_usb_get_logical_pipe_num(ar_usb,
->                                                 endpoint->bEndpointAddress,
->                                                 &urbcount);
->         ......
->         // select the pipe object
->         pipe = &ar_usb->pipes[pipe_num];
-> 
->         // initialize the ar_usb field
->         pipe->ar_usb = ar_usb;
-> }
-> 
-> The driver assumes that the addresses reported in endpoint
-> descriptors from device side  to be complete. If a device is
-> malicious and does not report complete addresses, it may trigger
-> NULL-ptr-deref `ath10k_usb_alloc_urb_from_pipe` and
-> `ath10k_usb_free_urb_to_pipe`.
-> 
-> This patch fixes the bug by preventing potential NULL-ptr-deref.
-> 
-> Signed-off-by: Hui Peng <benquike@gmail.com>
-> Reported-by: Hui Peng <benquike@gmail.com>
-> Reported-by: Mathias Payer <mathias.payer@nebelwelt.net>
-> Reviewed-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+In terms of deeply grokking what increasing buffering to achieve high
+bandwidth on a testbench, vs what it can do to clobber latency in the
+real world at low bandwidths, I tend to point folk at:
 
-This causes a new warning, please build test your patches.
+https://www.youtube.com/watch?v=Rb-UnHDw02o&t=25m40s
 
-In file included from ./include/uapi/linux/posix_types.h:5,
-                 from ./include/uapi/linux/types.h:14,
-                 from ./include/linux/types.h:6,
-                 from ./include/linux/list.h:5,
-                 from ./include/linux/module.h:9,
-                 from drivers/net/wireless/ath/ath10k/usb.c:8:
-drivers/net/wireless/ath/ath10k/usb.c: In function 'ath10k_usb_free_urb_to_pipe':
-./include/linux/stddef.h:8:14: warning: 'return' with a value, in function returning void
- #define NULL ((void *)0)
-              ^
-drivers/net/wireless/ath/ath10k/usb.c:64:10: note: in expansion of macro 'NULL'
-   return NULL;
-          ^~~~
-drivers/net/wireless/ath/ath10k/usb.c:57:13: note: declared here
- static void ath10k_usb_free_urb_to_pipe(struct ath10k_usb_pipe *pipe,
-             ^~~~~~~~~~~~~~~~~~~~~~~~~~~
+where I got a whole bunch of hackers to stand up and act like packets
+in an aggregating FIFO wifi queue.
 
-Patch set to Changes Requested.
+This key section is only 8 minutes long, and I promise, y'all laugh
+at least 3 times at the demonstration.
 
--- 
-https://patchwork.kernel.org/patch/11074657/
+At the time, also, the ath10k was so overbuffered that on one test
+I could try to start 100 flows, and only get five.
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+https://lwn.net/Articles/705884/
 
+and on my slides:
+
+https://blog.linuxplumbersconf.org/2016/ocw//system/presentations/3963/original/linuxplumbers_wifi_latency-3Nov.pdf
+
+
+Wen Gong <wgong@codeaurora.org> writes:
+
+> The max bundle size support by firmware is 32, change it from 8 to 32
+> will help performance. This results in significant performance
+> improvement on RX path.
+>
+> Tested with QCA6174 SDIO with firmware
+> WLAN.RMH.4.4.1-00007-QCARMSWP-1.
+>
+> Signed-off-by: Wen Gong <wgong@codeaurora.org>
+> ---
+>  drivers/net/wireless/ath/ath10k/htc.h  | 2 +-
+>  drivers/net/wireless/ath/ath10k/sdio.c | 5 +++--
+>  drivers/net/wireless/ath/ath10k/sdio.h | 4 ++--
+>  3 files changed, 6 insertions(+), 5 deletions(-)
+>
+> diff --git a/drivers/net/wireless/ath/ath10k/htc.h b/drivers/net/wireless/ath/ath10k/htc.h
+> index f55d3ca..8c79b9e 100644
+> --- a/drivers/net/wireless/ath/ath10k/htc.h
+> +++ b/drivers/net/wireless/ath/ath10k/htc.h
+> @@ -39,7 +39,7 @@
+>   * 4-byte aligned.
+>   */
+>  
+> -#define HTC_HOST_MAX_MSG_PER_RX_BUNDLE        8
+> +#define HTC_HOST_MAX_MSG_PER_RX_BUNDLE        32
+>  
+>  enum ath10k_htc_tx_flags {
+>  	ATH10K_HTC_FLAG_NEED_CREDIT_UPDATE = 0x01,
+> diff --git a/drivers/net/wireless/ath/ath10k/sdio.c b/drivers/net/wireless/ath/ath10k/sdio.c
+> index d9395f0..baa6051 100644
+> --- a/drivers/net/wireless/ath/ath10k/sdio.c
+> +++ b/drivers/net/wireless/ath/ath10k/sdio.c
+> @@ -24,8 +24,8 @@
+>  #include "trace.h"
+>  #include "sdio.h"
+>  
+> -#define ATH10K_SDIO_DMA_BUF_SIZE	(32 * 1024)
+> -#define ATH10K_SDIO_VSG_BUF_SIZE	(32 * 1024)
+> +#define ATH10K_SDIO_DMA_BUF_SIZE	(64 * 1024)
+> +#define ATH10K_SDIO_VSG_BUF_SIZE	(64 * 1024)
+>  
+>  /* inlined helper functions */
+>  
+> @@ -501,6 +501,7 @@ static int ath10k_sdio_mbox_alloc_bundle(struct ath10k *ar,
+>  	int ret, i;
+>  
+>  	*bndl_cnt = FIELD_GET(ATH10K_HTC_FLAG_BUNDLE_MASK, htc_hdr->flags);
+> +	*bndl_cnt += (FIELD_GET(GENMASK(3, 2), htc_hdr->flags) << 4);
+>  
+>  	if (*bndl_cnt > HTC_HOST_MAX_MSG_PER_RX_BUNDLE) {
+>  		ath10k_warn(ar,
+> diff --git a/drivers/net/wireless/ath/ath10k/sdio.h b/drivers/net/wireless/ath/ath10k/sdio.h
+> index 4896eca..3ca76c7 100644
+> --- a/drivers/net/wireless/ath/ath10k/sdio.h
+> +++ b/drivers/net/wireless/ath/ath10k/sdio.h
+> @@ -89,10 +89,10 @@
+>   * to the maximum value (HTC_HOST_MAX_MSG_PER_RX_BUNDLE).
+>   *
+>   * in this case the driver must allocate
+> - * (HTC_HOST_MAX_MSG_PER_RX_BUNDLE * HTC_HOST_MAX_MSG_PER_RX_BUNDLE) skb's.
+> + * (HTC_HOST_MAX_MSG_PER_RX_BUNDLE * 2) skb's.
+>   */
+>  #define ATH10K_SDIO_MAX_RX_MSGS \
+> -	(HTC_HOST_MAX_MSG_PER_RX_BUNDLE * HTC_HOST_MAX_MSG_PER_RX_BUNDLE)
+> +	(HTC_HOST_MAX_MSG_PER_RX_BUNDLE * 2)
+>  
+>  #define ATH10K_FIFO_TIMEOUT_AND_CHIP_CONTROL   0x00000868u
+>  #define ATH10K_FIFO_TIMEOUT_AND_CHIP_CONTROL_DISABLE_SLEEP_OFF 0xFFFEFFFF
