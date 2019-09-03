@@ -2,25 +2,25 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C21F6A694D
-	for <lists+linux-wireless@lfdr.de>; Tue,  3 Sep 2019 15:07:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4D490A69D2
+	for <lists+linux-wireless@lfdr.de>; Tue,  3 Sep 2019 15:28:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729367AbfICNGj (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 3 Sep 2019 09:06:39 -0400
-Received: from smtp.codeaurora.org ([198.145.29.96]:58520 "EHLO
+        id S1729036AbfICN2d (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 3 Sep 2019 09:28:33 -0400
+Received: from smtp.codeaurora.org ([198.145.29.96]:43640 "EHLO
         smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729088AbfICNGj (ORCPT
+        with ESMTP id S1727667AbfICN2c (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 3 Sep 2019 09:06:39 -0400
+        Tue, 3 Sep 2019 09:28:32 -0400
 Received: by smtp.codeaurora.org (Postfix, from userid 1000)
-        id E38C36090E; Tue,  3 Sep 2019 13:06:37 +0000 (UTC)
+        id 06B08605A2; Tue,  3 Sep 2019 13:28:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1567515997;
-        bh=iYGhXpPlajGpKbgH+Vr47Mz8PaZJai97C3ZVp5vJip0=;
+        s=default; t=1567517312;
+        bh=UPDX6OgSiKhPn73uoKfLUN84tKWC0UsUxKg7qiPDziI=;
         h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-        b=DJN8UxEpeLXw+LNie/A0qWBTUGTZBwqVQGYr5b4G+FThYhhV+aEY9MPSpDkmuIqkh
-         oZIpks6R2pbUFc6jEpwOwvrXhiGkjFcuykPgbKHKGscHuml/7ftxlocoH2vnnwltdV
-         PdAwOtcYuSKt6m7v7JEy3h5IOBtd9VcDlNgamBnc=
+        b=GmhbteQqPQjnAZ8QYiB6rrVvVseElNosQGAMNjvscqwK+CLVTOLP7h578MWb9YFmW
+         WfQwvBhdFIxVicFRHcbJdq35cCbDqfgwKf1qEwnXhTOym1g1CR+ZKp3fQ9bLGc+4MM
+         EwKN1g0L0XtAUI3JtUWxrv1X8URXj48lQs++OpWk=
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         pdx-caf-mail.web.codeaurora.org
 X-Spam-Level: 
@@ -31,57 +31,55 @@ Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
         (Authenticated sender: kvalo@smtp.codeaurora.org)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id A4616602F2;
-        Tue,  3 Sep 2019 13:06:35 +0000 (UTC)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id D93616058E;
+        Tue,  3 Sep 2019 13:28:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1567515997;
-        bh=iYGhXpPlajGpKbgH+Vr47Mz8PaZJai97C3ZVp5vJip0=;
+        s=default; t=1567517310;
+        bh=UPDX6OgSiKhPn73uoKfLUN84tKWC0UsUxKg7qiPDziI=;
         h=Subject:From:In-Reply-To:References:To:Cc:From;
-        b=bNeeRYqTRtYpuIsgSbAPI/D9RUHO0pja5RYmMoKD0/sjflArFZVcUyEKpt3yRWbBG
-         K+T2AHXjNc2WcVFxcKxQDb+QO8Nhp/wBx5Xb6U2DjQwsAQTD1BQCLGdt6hi9l5c48x
-         zLo/GDuxby3CRwugfbTlPSfBPh4rdG7068ZCK1sY=
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org A4616602F2
+        b=cOiLnE8bR+TiLPho47oqp5FD3LPgwG+OPY/dMEiQEOMtEKk44N9wpUbltUD9zRI5N
+         43xJ39LoVYKpuUPrTSvhH62It+leoiZiYdGJq/tEZZxvtVUvAWSjUBqVUVWf/qg20u
+         n8iAncYLe0c3iOCEaI+27kvsfh9+I2xWVsW7RFVk=
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org D93616058E
 Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
 Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH v2] rtlwifi: fix non-kerneldoc comment in usb.c
+Subject: Re: [PATCH 5/5] rtlwifi: rtl8192cu: Fix value set in descriptor
 From:   Kalle Valo <kvalo@codeaurora.org>
-In-Reply-To: <34195.1565229118@turing-police>
-References: <34195.1565229118@turing-police>
-To:     "Valdis =?utf-8?q?Kl=C4=93tnieks?= " <valdis.kletnieks@vt.edu>
-Cc:     Ping-Ke Shih <pkshih@realtek.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org
+In-Reply-To: <20190812192741.14479-1-Larry.Finger@lwfinger.net>
+References: <20190812192741.14479-1-Larry.Finger@lwfinger.net>
+To:     Larry Finger <Larry.Finger@lwfinger.net>
+Cc:     linux-wireless@vger.kernel.org, pkshih@realtek.com,
+        Larry Finger <Larry.Finger@lwfinger.net>
 User-Agent: pwcli/0.0.0-git (https://github.com/kvalo/pwcli/) Python/2.7.12
-Message-Id: <20190903130637.E38C36090E@smtp.codeaurora.org>
-Date:   Tue,  3 Sep 2019 13:06:37 +0000 (UTC)
+Message-Id: <20190903132832.06B08605A2@smtp.codeaurora.org>
+Date:   Tue,  3 Sep 2019 13:28:32 +0000 (UTC)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-"Valdis wrote:
+Larry Finger <Larry.Finger@lwfinger.net> wrote:
 
-> Fix spurious warning message when building with W=1:
+> In the process of converting the bit manipulation macros were converted
+> to use GENMASK(), the compiler reported a value too big for the field.
+> The offending statement was trying to write 0x100 into a 5-bit field.
+> An accompaning comment says to set bit 3, thus the code is changed
+> appropriately.
 > 
->   CC [M]  drivers/net/wireless/realtek/rtlwifi/usb.o
-> drivers/net/wireless/realtek/rtlwifi/usb.c:243: warning: Cannot understand  * on line 243 - I thought it was a doc line
-> drivers/net/wireless/realtek/rtlwifi/usb.c:760: warning: Cannot understand  * on line 760 - I thought it was a doc line
-> drivers/net/wireless/realtek/rtlwifi/usb.c:790: warning: Cannot understand  * on line 790 - I thought it was a doc line
+> This error has been in the driver since its initial submission.
 > 
-> Clean up the comment format.
-> 
-> Signed-off-by: Valdis Kletnieks <valdis.kletnieks@vt.edu>
+> Fixes: 29d00a3e46bb ("rtlwifi: rtl8192cu: Add routine trx")
+> Signed-off-by: Larry Finger <Larry.Finger@lwfinger.net>
 
 Patch applied to wireless-drivers-next.git, thanks.
 
-b6326fc025aa rtlwifi: fix non-kerneldoc comment in usb.c
+01bb31de5262 rtlwifi: rtl8192cu: Fix value set in descriptor
 
 -- 
-https://patchwork.kernel.org/patch/11083073/
+https://patchwork.kernel.org/patch/11090677/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
