@@ -2,25 +2,25 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 1893DA6A0C
-	for <lists+linux-wireless@lfdr.de>; Tue,  3 Sep 2019 15:38:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 245CEA6A12
+	for <lists+linux-wireless@lfdr.de>; Tue,  3 Sep 2019 15:38:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729083AbfICNiL (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 3 Sep 2019 09:38:11 -0400
-Received: from smtp.codeaurora.org ([198.145.29.96]:50560 "EHLO
+        id S1729426AbfICNio (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 3 Sep 2019 09:38:44 -0400
+Received: from smtp.codeaurora.org ([198.145.29.96]:50744 "EHLO
         smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727667AbfICNiL (ORCPT
+        with ESMTP id S1727005AbfICNin (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 3 Sep 2019 09:38:11 -0400
+        Tue, 3 Sep 2019 09:38:43 -0400
 Received: by smtp.codeaurora.org (Postfix, from userid 1000)
-        id 56175607EB; Tue,  3 Sep 2019 13:38:10 +0000 (UTC)
+        id 8B9BD6025A; Tue,  3 Sep 2019 13:38:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1567517890;
-        bh=/IIAX28ybymPI/d9nKwEudqgSJsDn9fKIihspf4kSbQ=;
+        s=default; t=1567517922;
+        bh=ej069zxmm9FbOAIunXcS+l57Bk7LOELm9ibfNx23sA8=;
         h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-        b=UQNXHCCBivXTF5pjjKKNDZTCKrDsTBiazTwFlALMM4qi6D21BIDoT4DWD8nLmlM+Q
-         zkKteZOhSII8aM73Cy3sGCPFOINWUzq8Uxc7dHCy1vFinf9R2rwUVmuLQJV77snEhw
-         CTYaOOSHSj0W/OK//lZvDgIqSDUPjFrQNLz0lJQU=
+        b=XO1qSstPVykmMPstFDLagfancdpch3VXv9ZMCWrmcVBcRrlb67aQmoKMwDKSnWklo
+         xgOMyq98tKll+8Znge4Ucp2/9uRAih0i3QsnawRjUNIOywW4iSkxG0hKYxjxmnbwYW
+         PosY9fzlT7tsWhdAHcjWlZLBldR8NKZyONwLkCA0=
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         pdx-caf-mail.web.codeaurora.org
 X-Spam-Level: 
@@ -31,55 +31,60 @@ Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
         (Authenticated sender: kvalo@smtp.codeaurora.org)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 5F5316025A;
-        Tue,  3 Sep 2019 13:38:08 +0000 (UTC)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 45E496025A;
+        Tue,  3 Sep 2019 13:38:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1567517889;
-        bh=/IIAX28ybymPI/d9nKwEudqgSJsDn9fKIihspf4kSbQ=;
+        s=default; t=1567517922;
+        bh=ej069zxmm9FbOAIunXcS+l57Bk7LOELm9ibfNx23sA8=;
         h=Subject:From:In-Reply-To:References:To:Cc:From;
-        b=H0DEDnV8ysmtJNkTpNZokvcwULQFizARdxwrZ2svNKMYXuphsnYh7to4LLG0gVkjD
-         pgf5TOl4AnCmoibZ+yB1e4MEQFmmbIFzpMnn8Z1tx6vFM/cRDf9/C8/tX4ngfzt83o
-         SCcPnlO5s4JJVErc69CGK24BTLHM4P91OnKE3m/I=
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 5F5316025A
+        b=I6HEaAHYPOzMcZJ3O/nnMRCvNnXSrYspLAyfEsxmP/ZKHtEdWjzsEdE4D82iXe/3u
+         Rfe43h+jZf8Hoci4A4dTcmbM1MiDKFcgwdA5OoxS8IuPXEo91NS+tM8FStk4LyYkrd
+         Pi7FCUBTj5PTqRjKiyhDCY6SCRap+Y/6ww82jVLo=
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 45E496025A
 Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
 Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH] bcma: remove two unused variables
+Subject: Re: [PATCH] brcmfmac: remove redundant assignment to pointer hash
 From:   Kalle Valo <kvalo@codeaurora.org>
-In-Reply-To: <20190809085308.69748-1-yuehaibing@huawei.com>
-References: <20190809085308.69748-1-yuehaibing@huawei.com>
-To:     YueHaibing <yuehaibing@huawei.com>
-Cc:     <zajec5@gmail.com>, <linux-kernel@vger.kernel.org>,
-        <linux-wireless@vger.kernel.org>,
-        YueHaibing <yuehaibing@huawei.com>
+In-Reply-To: <20190809172217.1809-1-colin.king@canonical.com>
+References: <20190809172217.1809-1-colin.king@canonical.com>
+To:     Colin King <colin.king@canonical.com>
+Cc:     Arend van Spriel <arend.vanspriel@broadcom.com>,
+        Hante Meuleman <hante.meuleman@broadcom.com>,
+        Chi-Hsien Lin <chi-hsien.lin@cypress.com>,
+        Wright Feng <wright.feng@cypress.com>,
+        "David S . Miller" <davem@davemloft.net>,
+        linux-wireless@vger.kernel.org,
+        brcm80211-dev-list.pdl@broadcom.com,
+        brcm80211-dev-list@cypress.com, netdev@vger.kernel.org,
+        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
 User-Agent: pwcli/0.0.0-git (https://github.com/kvalo/pwcli/) Python/2.7.12
-Message-Id: <20190903133810.56175607EB@smtp.codeaurora.org>
-Date:   Tue,  3 Sep 2019 13:38:10 +0000 (UTC)
+Message-Id: <20190903133842.8B9BD6025A@smtp.codeaurora.org>
+Date:   Tue,  3 Sep 2019 13:38:42 +0000 (UTC)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-YueHaibing <yuehaibing@huawei.com> wrote:
+Colin King <colin.king@canonical.com> wrote:
 
-> drivers/bcma/driver_mips.c:70:18: warning:
->  ipsflag_irq_shift defined but not used [-Wunused-const-variable=]
-> drivers/bcma/driver_mips.c:62:18: warning:
->  ipsflag_irq_mask defined but not used [-Wunused-const-variable=]
+> From: Colin Ian King <colin.king@canonical.com>
 > 
-> They are never used, so can be removed.
+> The pointer hash is being initialized with a value that is never read
+> and is being re-assigned a little later on. The assignment is
+> redundant and hence can be removed.
 > 
-> Reported-by: Hulk Robot <hulkci@huawei.com>
-> Signed-off-by: YueHaibing <yuehaibing@huawei.com>
+> Addresses-Coverity: ("Unused value")
+> Signed-off-by: Colin Ian King <colin.king@canonical.com>
 
 Patch applied to wireless-drivers-next.git, thanks.
 
-0a60e0aa495f bcma: remove two unused variables
+73c742bb9c9b brcmfmac: remove redundant assignment to pointer hash
 
 -- 
-https://patchwork.kernel.org/patch/11085683/
+https://patchwork.kernel.org/patch/11087385/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
