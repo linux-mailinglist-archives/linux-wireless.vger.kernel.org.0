@@ -2,25 +2,25 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B2B11A6A4C
-	for <lists+linux-wireless@lfdr.de>; Tue,  3 Sep 2019 15:46:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1000AA6A58
+	for <lists+linux-wireless@lfdr.de>; Tue,  3 Sep 2019 15:49:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729171AbfICNp5 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 3 Sep 2019 09:45:57 -0400
-Received: from smtp.codeaurora.org ([198.145.29.96]:55756 "EHLO
+        id S1729246AbfICNtS (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 3 Sep 2019 09:49:18 -0400
+Received: from smtp.codeaurora.org ([198.145.29.96]:56658 "EHLO
         smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727624AbfICNp5 (ORCPT
+        with ESMTP id S1729171AbfICNtS (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 3 Sep 2019 09:45:57 -0400
+        Tue, 3 Sep 2019 09:49:18 -0400
 Received: by smtp.codeaurora.org (Postfix, from userid 1000)
-        id 03455607C3; Tue,  3 Sep 2019 13:45:56 +0000 (UTC)
+        id 449E5602CA; Tue,  3 Sep 2019 13:49:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1567518356;
-        bh=8MtYQPJtCCG1I+6U/438W5qf6/QsXnNCsuIDqRRNfbY=;
+        s=default; t=1567518557;
+        bh=mnaFV7XJnFz6G8NXxmImCVpTBftk1UBUWzAq4JGnIco=;
         h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-        b=A+gZ6QEsC/ll3TPk4tjHG99YrINSuJC/UJ84PVmIW4OOEiKN4Epr6jJqt+dKSuWds
-         zu4G++k5YCmr2T8j+OTSw7ADNZYhk6d2qNLL436HDlsps7vmqNuWH7Y0J/ZlxLOUIu
-         XRyil3F9BjnV2Ukv/Mpsg1F5U2m/EIMZPRR17BXU=
+        b=oenNZt/3emlnzGAyHDlLx4olOXDc4ObRDXEzuAx0cAuaOsB1ezh04CUjQ4mXcI3GI
+         hFBfySfA970KdDQUEfYyA5Rr5+ODtFo2ds/pdrDp86bZsNNnEy38EblFCil0kfMJNP
+         Bi/QO4pFr+wYZ93Xa0dzO09gHSL07UyUrDC0JeaM=
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         pdx-caf-mail.web.codeaurora.org
 X-Spam-Level: 
@@ -31,74 +31,63 @@ Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
         (Authenticated sender: kvalo@smtp.codeaurora.org)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id A761E602A9;
-        Tue,  3 Sep 2019 13:45:53 +0000 (UTC)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 43B85602A9;
+        Tue,  3 Sep 2019 13:49:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1567518355;
-        bh=8MtYQPJtCCG1I+6U/438W5qf6/QsXnNCsuIDqRRNfbY=;
+        s=default; t=1567518556;
+        bh=mnaFV7XJnFz6G8NXxmImCVpTBftk1UBUWzAq4JGnIco=;
         h=Subject:From:In-Reply-To:References:To:Cc:From;
-        b=j7w/Kur1P/Zm59AjGDGKckWzdgryME7rOH//1nD3YM240//d5I36GBWnCq9XIHqPv
-         AJSKhX2FUyLwXs7PHkMK5yz/aIkrZKOo1kx4PKuqpS0yPptd6VsH8jBmxrUmlIh+4R
-         bx5eE0rKMCujLoVxyaRr88JFHGxly7SmoJBD172Q=
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org A761E602A9
+        b=IPQrOIdc3yX7DIQhQZKShytxc/L4G24eWWANn4YUfksksdP5e5Ez5zdGOs/l/KnRa
+         NqWy9xAmudS6ULa77Q9ppuF0z4K02lfhpaBiZICYmBrjyhtU2KnzwkVAz9FtVXVTf5
+         okdAnFd2NpgGg5M+0sWtXr00iLsbFciOGK8dZa4I=
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 43B85602A9
 Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
 Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH][next] zd1211rw: zd_usb: Use struct_size() helper
+Subject: Re: [PATCH 5.3] mt76: mt76x0e: don't use hw encryption for MT7630E
 From:   Kalle Valo <kvalo@codeaurora.org>
-In-Reply-To: <20190830185716.GA10044@embeddedor>
-References: <20190830185716.GA10044@embeddedor>
-To:     "Gustavo A. R. Silva" <gustavo@embeddedor.com>
-Cc:     Daniel Drake <dsd@gentoo.org>, Ulrich Kunitz <kune@deine-taler.de>,
-        "David S. Miller" <davem@davemloft.net>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        "Gustavo A. R. Silva" <gustavo@embeddedor.com>
+In-Reply-To: <1565703400-10623-1-git-send-email-sgruszka@redhat.com>
+References: <1565703400-10623-1-git-send-email-sgruszka@redhat.com>
+To:     Stanislaw Gruszka <sgruszka@redhat.com>
+Cc:     linux-wireless@vger.kernel.org, Felix Fietkau <nbd@nbd.name>,
+        Lorenzo Bianconi <lorenzo.bianconi@redhat.com>,
+        Ryder Lee <ryder.lee@mediatek.com>, Roy Luo <royluo@google.com>
 User-Agent: pwcli/0.0.0-git (https://github.com/kvalo/pwcli/) Python/2.7.12
-Message-Id: <20190903134556.03455607C3@smtp.codeaurora.org>
-Date:   Tue,  3 Sep 2019 13:45:56 +0000 (UTC)
+Message-Id: <20190903134917.449E5602CA@smtp.codeaurora.org>
+Date:   Tue,  3 Sep 2019 13:49:17 +0000 (UTC)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-"Gustavo A. R. Silva" <gustavo@embeddedor.com> wrote:
+Stanislaw Gruszka <sgruszka@redhat.com> wrote:
 
-> One of the more common cases of allocation size calculations is finding
-> the size of a structure that has a zero-sized array at the end, along
-> with memory for some number of elements for that array. For example:
+> Since 41634aa8d6db ("mt76: only schedule txqs from the tx tasklet")
+> I can observe firmware hangs on MT7630E on station mode: tx stop
+> functioning after minor activity (rx keep working) and on module
+> unload device fail to stop with messages:
 > 
-> struct usb_int_regs {
-> 	...
->         struct reg_data regs[0];
-> } __packed;
+> [ 5446.141413] mt76x0e 0000:06:00.0: TX DMA did not stop
+> [ 5449.176764] mt76x0e 0000:06:00.0: TX DMA did not stop
 > 
-> Make use of the struct_size() helper instead of an open-coded version
-> in order to avoid any potential type mistakes.
+> Loading module again results in failure to associate with AP.
+> Only machine power off / power on cycle can make device work again.
 > 
-> So, replace the following function:
+> It's unclear why commit 41634aa8d6db causes the problem, but it is
+> related to HW encryption. Since issue is a firmware hang, that is super
+> hard to debug, just disable HW encryption as fix for the issue.
 > 
-> static int usb_int_regs_length(unsigned int count)
-> {
->        return sizeof(struct usb_int_regs) + count * sizeof(struct reg_data);
-> }
-> 
-> with:
-> 
-> struct_size(regs, regs, count)
-> 
-> This code was detected with the help of Coccinelle.
-> 
-> Signed-off-by: Gustavo A. R. Silva <gustavo@embeddedor.com>
+> Fixes: 41634aa8d6db ("mt76: only schedule txqs from the tx tasklet")
+> Signed-off-by: Stanislaw Gruszka <sgruszka@redhat.com>
 
-Patch applied to wireless-drivers-next.git, thanks.
+Patch applied to wireless-drivers.git, thanks.
 
-84b0b6635247 zd1211rw: zd_usb: Use struct_size() helper
+34b0e9b767bf mt76: mt76x0e: don't use hw encryption for MT7630E
 
 -- 
-https://patchwork.kernel.org/patch/11124457/
+https://patchwork.kernel.org/patch/11092283/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
