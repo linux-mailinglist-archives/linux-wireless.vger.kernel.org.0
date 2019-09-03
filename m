@@ -2,25 +2,25 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 4D490A69D2
-	for <lists+linux-wireless@lfdr.de>; Tue,  3 Sep 2019 15:28:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 97E4BA69D5
+	for <lists+linux-wireless@lfdr.de>; Tue,  3 Sep 2019 15:29:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729036AbfICN2d (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 3 Sep 2019 09:28:33 -0400
-Received: from smtp.codeaurora.org ([198.145.29.96]:43640 "EHLO
+        id S1729053AbfICN24 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 3 Sep 2019 09:28:56 -0400
+Received: from smtp.codeaurora.org ([198.145.29.96]:43856 "EHLO
         smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727667AbfICN2c (ORCPT
+        with ESMTP id S1727667AbfICN24 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 3 Sep 2019 09:28:32 -0400
+        Tue, 3 Sep 2019 09:28:56 -0400
 Received: by smtp.codeaurora.org (Postfix, from userid 1000)
-        id 06B08605A2; Tue,  3 Sep 2019 13:28:32 +0000 (UTC)
+        id 8AD376083E; Tue,  3 Sep 2019 13:28:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1567517312;
-        bh=UPDX6OgSiKhPn73uoKfLUN84tKWC0UsUxKg7qiPDziI=;
+        s=default; t=1567517335;
+        bh=K3E/QGwt8PVRCKQtxROTYRObKHRnmgQXb96agiICqk8=;
         h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-        b=GmhbteQqPQjnAZ8QYiB6rrVvVseElNosQGAMNjvscqwK+CLVTOLP7h578MWb9YFmW
-         WfQwvBhdFIxVicFRHcbJdq35cCbDqfgwKf1qEwnXhTOym1g1CR+ZKp3fQ9bLGc+4MM
-         EwKN1g0L0XtAUI3JtUWxrv1X8URXj48lQs++OpWk=
+        b=oWyyGkcBm1bYRXtIfgtVXK459fuDWDJoQMzTNnBsY/ImTIbY9QSWvLttZzumOIZA1
+         kDaHy4tacjsRgjM64U0+vY49NBK5IlXrv9ChgsfiX3OjX9MPUdKAUSqhNwYZF2D8WB
+         hofKGcTK4EQkXUQnLK6CxS3yIFjbuWvuJ3/CNcAw=
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         pdx-caf-mail.web.codeaurora.org
 X-Spam-Level: 
@@ -31,55 +31,57 @@ Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
         (Authenticated sender: kvalo@smtp.codeaurora.org)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id D93616058E;
-        Tue,  3 Sep 2019 13:28:29 +0000 (UTC)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 9BE12605A2;
+        Tue,  3 Sep 2019 13:28:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1567517310;
-        bh=UPDX6OgSiKhPn73uoKfLUN84tKWC0UsUxKg7qiPDziI=;
+        s=default; t=1567517335;
+        bh=K3E/QGwt8PVRCKQtxROTYRObKHRnmgQXb96agiICqk8=;
         h=Subject:From:In-Reply-To:References:To:Cc:From;
-        b=cOiLnE8bR+TiLPho47oqp5FD3LPgwG+OPY/dMEiQEOMtEKk44N9wpUbltUD9zRI5N
-         43xJ39LoVYKpuUPrTSvhH62It+leoiZiYdGJq/tEZZxvtVUvAWSjUBqVUVWf/qg20u
-         n8iAncYLe0c3iOCEaI+27kvsfh9+I2xWVsW7RFVk=
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org D93616058E
+        b=Pnl8xAnYep/ueky0p38sQ5/fga0Je+FBS3gzV+NwrmnenpvFCrATfI+ltEAHqdYiB
+         Opdsiuopg4OisnZpnm1kjyEuyUsKq8GdSb96qRUzGY5bmJSVY2izYar8wEzsgWlywB
+         iH9/9lue5LhiNXIPrbwStw0XnfCUTA4GLUnHh+C0=
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 9BE12605A2
 Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
 Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH 5/5] rtlwifi: rtl8192cu: Fix value set in descriptor
+Subject: Re: [PATCH] rtlwifi: remove unused variables
+ 'RTL8712_SDIO_EFUSE_TABLE' and 'MAX_PGPKT_SIZE'
 From:   Kalle Valo <kvalo@codeaurora.org>
-In-Reply-To: <20190812192741.14479-1-Larry.Finger@lwfinger.net>
-References: <20190812192741.14479-1-Larry.Finger@lwfinger.net>
-To:     Larry Finger <Larry.Finger@lwfinger.net>
-Cc:     linux-wireless@vger.kernel.org, pkshih@realtek.com,
-        Larry Finger <Larry.Finger@lwfinger.net>
+In-Reply-To: <20190816140513.72572-1-yuehaibing@huawei.com>
+References: <20190816140513.72572-1-yuehaibing@huawei.com>
+To:     YueHaibing <yuehaibing@huawei.com>
+Cc:     <pkshih@realtek.com>, <davem@davemloft.net>,
+        <linux-kernel@vger.kernel.org>, <netdev@vger.kernel.org>,
+        <linux-wireless@vger.kernel.org>,
+        YueHaibing <yuehaibing@huawei.com>
 User-Agent: pwcli/0.0.0-git (https://github.com/kvalo/pwcli/) Python/2.7.12
-Message-Id: <20190903132832.06B08605A2@smtp.codeaurora.org>
-Date:   Tue,  3 Sep 2019 13:28:32 +0000 (UTC)
+Message-Id: <20190903132855.8AD376083E@smtp.codeaurora.org>
+Date:   Tue,  3 Sep 2019 13:28:55 +0000 (UTC)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Larry Finger <Larry.Finger@lwfinger.net> wrote:
+YueHaibing <yuehaibing@huawei.com> wrote:
 
-> In the process of converting the bit manipulation macros were converted
-> to use GENMASK(), the compiler reported a value too big for the field.
-> The offending statement was trying to write 0x100 into a 5-bit field.
-> An accompaning comment says to set bit 3, thus the code is changed
-> appropriately.
+> drivers/net/wireless/realtek/rtlwifi/efuse.c:16:31:
+>  warning: RTL8712_SDIO_EFUSE_TABLE defined but not used [-Wunused-const-variable=]
+> drivers/net/wireless/realtek/rtlwifi/efuse.c:9:17:
+>  warning: MAX_PGPKT_SIZE defined but not used [-Wunused-const-variable=]
 > 
-> This error has been in the driver since its initial submission.
+> They are never used, so can be removed.
 > 
-> Fixes: 29d00a3e46bb ("rtlwifi: rtl8192cu: Add routine trx")
-> Signed-off-by: Larry Finger <Larry.Finger@lwfinger.net>
+> Reported-by: Hulk Robot <hulkci@huawei.com>
+> Signed-off-by: YueHaibing <yuehaibing@huawei.com>
 
 Patch applied to wireless-drivers-next.git, thanks.
 
-01bb31de5262 rtlwifi: rtl8192cu: Fix value set in descriptor
+84d31d3b6234 rtlwifi: remove unused variables 'RTL8712_SDIO_EFUSE_TABLE' and 'MAX_PGPKT_SIZE'
 
 -- 
-https://patchwork.kernel.org/patch/11090677/
+https://patchwork.kernel.org/patch/11097803/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
