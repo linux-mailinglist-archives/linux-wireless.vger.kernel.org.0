@@ -2,99 +2,104 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id EC12EA5F77
-	for <lists+linux-wireless@lfdr.de>; Tue,  3 Sep 2019 04:46:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 39743A6035
+	for <lists+linux-wireless@lfdr.de>; Tue,  3 Sep 2019 06:29:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726944AbfICCq3 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 2 Sep 2019 22:46:29 -0400
-Received: from mail-ua1-f66.google.com ([209.85.222.66]:46313 "EHLO
-        mail-ua1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726465AbfICCq2 (ORCPT
+        id S1725886AbfICE3u (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 3 Sep 2019 00:29:50 -0400
+Received: from mail-lj1-f193.google.com ([209.85.208.193]:42879 "EHLO
+        mail-lj1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725839AbfICE3t (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 2 Sep 2019 22:46:28 -0400
-Received: by mail-ua1-f66.google.com with SMTP id k12so996459uan.13
-        for <linux-wireless@vger.kernel.org>; Mon, 02 Sep 2019 19:46:28 -0700 (PDT)
+        Tue, 3 Sep 2019 00:29:49 -0400
+Received: by mail-lj1-f193.google.com with SMTP id y23so3494546lje.9
+        for <linux-wireless@vger.kernel.org>; Mon, 02 Sep 2019 21:29:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=endlessm-com.20150623.gappssmtp.com; s=20150623;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc:content-transfer-encoding;
-        bh=AByWFfabD0l5iIzr5haXrtys5MddymuIhBEL878c4XY=;
-        b=r+fx7yV1xbQ9sHs5L7OOr1JLJ+A4esBD3gDKm9U2L8BCCFvyDYOSHxOSPBzf9a1EZZ
-         xtOz7Hr1MIbb4f/YVB4o/bEzbaC57dstqFY4WU4nUq5+Y+FP0r1m7WIEC+/vFr4Sk4QI
-         ePzwfTXS2Ah6+Iu3ib9mI9DAfPBz1puxEZnoI965Pe8Rbe/q5+t5BhaMxS8jWtD38uwJ
-         6VwI8OZfzg2P4speGtcr0VD2ZYSRKs9U+es+7Eii36rvMU7Cna4J1SKAirmVglAn37Fv
-         KOdPws33K8IAtQ/btnf5BVwdGd5pXjDRFjr9sWXkILTIEXjW263cb00WR9/whbe3DKL0
-         YPpA==
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=enTt+jkm0v3fng6HHcPOq5aNP3rxl48YxOS+5cW4FlQ=;
+        b=kYzm06n7cCz0CiV/2F0/S5KjNr77uXEUEMYwnTrmhPwcC7Fqw20OMYeHoBRCue33qp
+         R6VSX/jqwH3sk22Z6MnnlWo0ITWsWtEEmjvhlgWheGlmN4PQJo0Z7rijRo6aNoxfhIxs
+         an5P0rszhjXUHbHikLqQoXCMvrb97DPDlCgoIa2yhu6s7HndPvFtqHPebZ+sBEEYQ3nD
+         n0HZSLoatFNa+X8WTMmFrtP1Dl3CRUIcTouMKN0UFIEbsMvfU4dcPjiKwHO72YI7nxCv
+         hbrjQVruTrxyVZPvqlC1ZoEsJlsq9pstzJ8l/6OUO5cr6KRPOnVSdiDF8BvOMBFo1OrN
+         GDFg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=AByWFfabD0l5iIzr5haXrtys5MddymuIhBEL878c4XY=;
-        b=sLn8gf+mjGR0G0nr208U+ufLzJmsnqDfB+SwHSgQaWNlkuTJBhv5PYZoIRRXl6ZRGp
-         5uM7G3QtH6b9nsgnlJ6TIWxtfo68aj5PXCg+dVn2PaHCccFev92nWeJoeQvQ0ybJiLQ4
-         eIJ4Fraa0MxlQ0kn+LjcGjflsPL/KZMP00xQqc0fmECsQSb6tgLDWspwKeYGyqzqD/vn
-         /f6f2IRojz++e4DlOjE0VVUAe079VI1cw1ntjQWX6pUMXrPdaEP2LspximyJbdCTehnR
-         dnQJKgau7JYEp3NHGkHCxXaISLgVmnGjuo9i085rYL2NjPIuk8vJOQw5BapuI78tcrlV
-         GE+Q==
-X-Gm-Message-State: APjAAAX1IIHUawJZrTxCzVBh+vU1cCh61oCHwjESobe7nZE83LEaXHDA
-        41cq8KVXG0La36yR7iQZEA06nNDXVXKlsz63QbsEMjKpeyrh5Q==
-X-Google-Smtp-Source: APXvYqzjf5enxc0SW2FFkOXEpgTPIgid1ZZ4ujO1/Sq4DMROIL+2Z+lkMf6wyEuNdktTUPuG5JsXpOzdhYyXmJpHM94=
-X-Received: by 2002:ab0:248a:: with SMTP id i10mr14573606uan.32.1567478787657;
- Mon, 02 Sep 2019 19:46:27 -0700 (PDT)
-MIME-Version: 1.0
-References: <F7CD281DE3E379468C6D07993EA72F84D18A5786@RTITMBSVM04.realtek.com.tw>
- <20190826070827.1436-1-jian-hong@endlessm.com> <F7CD281DE3E379468C6D07993EA72F84D18AE2DA@RTITMBSVM04.realtek.com.tw>
- <875zmarivz.fsf@kamboji.qca.qualcomm.com>
-In-Reply-To: <875zmarivz.fsf@kamboji.qca.qualcomm.com>
-From:   Jian-Hong Pan <jian-hong@endlessm.com>
-Date:   Tue, 3 Sep 2019 10:45:50 +0800
-Message-ID: <CAPpJ_efAxQN4pRdpVmT5Pdkp-6Y-QVOQdJR4iY4A-PXZokLGtA@mail.gmail.com>
-Subject: Re: [PATCH v4] rtw88: pci: Move a mass of jobs in hw IRQ to soft IRQ
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=enTt+jkm0v3fng6HHcPOq5aNP3rxl48YxOS+5cW4FlQ=;
+        b=rfRs5TXaS50n8U+26dX8LYzm3qpOHp/umcwJ8jFxVb3E31/847STkfuqgaWp83xHe4
+         DfPkMzrMLHrKCDI4WkA+CErVOTeeb+9dx4Nm27Za5VlvG22lfC33IEdA+J6+I9v2IZAY
+         i/mwi5gwtCo5RuorKTKVA4vsEoOs+t54CcTs1V/AveFVWDiv5zGgG++Chh6WISLsq8kV
+         h/NOf29QAmca45QmQGNV0XBL8kYRssz+0doSg6Edfjsv/3Y7dBNnF/LrQfIi57SA0hhp
+         ssy7ITkSSU32p6/wBkVuH/MVQmeCOT8XsZRUeX9dFUo9qJIdxYfaW3pz2g02WiYcuvmn
+         uqlA==
+X-Gm-Message-State: APjAAAW5r+Og16eKJmOVhUG0xvOZvMC8M2rji6Up7ZdCwxa5kOsS0jrt
+        lFWFkxyo3mJJYUh7ffAaNsA=
+X-Google-Smtp-Source: APXvYqzmd0rztYD5rmCmdSKp0sDfe/KmKI950pVgmUl2ZvPYW/xqOK21PqDXcMYIXTgmabfuyY2HGQ==
+X-Received: by 2002:a2e:1409:: with SMTP id u9mr6465706ljd.162.1567484987628;
+        Mon, 02 Sep 2019 21:29:47 -0700 (PDT)
+Received: from localhost.localdomain (ip-194-187-74-233.konfederacka.maverick.com.pl. [194.187.74.233])
+        by smtp.gmail.com with ESMTPSA id d25sm2265125lfj.15.2019.09.02.21.29.46
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Mon, 02 Sep 2019 21:29:46 -0700 (PDT)
+From:   =?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <zajec5@gmail.com>
 To:     Kalle Valo <kvalo@codeaurora.org>
-Cc:     Tony Chuang <yhchuang@realtek.com>,
-        "David S . Miller" <davem@davemloft.net>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux@endlessm.com" <linux@endlessm.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Cc:     Arend van Spriel <arend.vanspriel@broadcom.com>,
+        Franky Lin <franky.lin@broadcom.com>,
+        Hante Meuleman <hante.meuleman@broadcom.com>,
+        Chi-Hsien Lin <chi-hsien.lin@cypress.com>,
+        Wright Feng <wright.feng@cypress.com>,
+        Winnie Chang <winnie.chang@cypress.com>,
+        linux-wireless@vger.kernel.org,
+        brcm80211-dev-list.pdl@broadcom.com,
+        brcm80211-dev-list@cypress.com,
+        =?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <rafal@milecki.pl>
+Subject: [PATCH 0/3] brcmfmac: keep wiphy during PCIe driver lifetime
+Date:   Tue,  3 Sep 2019 06:29:25 +0200
+Message-Id: <20190903042928.18621-1-zajec5@gmail.com>
+X-Mailer: git-send-email 2.21.0
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Kalle Valo <kvalo@codeaurora.org> =E6=96=BC 2019=E5=B9=B49=E6=9C=882=E6=97=
-=A5 =E9=80=B1=E4=B8=80 =E4=B8=8B=E5=8D=888:18=E5=AF=AB=E9=81=93=EF=BC=9A
->
-> Tony Chuang <yhchuang@realtek.com> writes:
->
-> >> From: Jian-Hong Pan
-> >> Subject: [PATCH v4] rtw88: pci: Move a mass of jobs in hw IRQ to soft =
-IRQ
-> >>
-> >> There is a mass of jobs between spin lock and unlock in the hardware
-> >> IRQ which will occupy much time originally. To make system work more
-> >> efficiently, this patch moves the jobs to the soft IRQ (bottom half) t=
-o
-> >> reduce the time in hardware IRQ.
-> >>
-> >> Signed-off-by: Jian-Hong Pan <jian-hong@endlessm.com>
-> >
-> > Now it works fine with MSI interrupt enabled.
-> >
-> > But this patch is conflicting with MSI interrupt patch.
-> > Is there a better way we can make Kalle apply them more smoothly?
-> > I can rebase them and submit both if you're OK.
+From: Rafał Miłecki <rafal@milecki.pl>
 
-The rebase work is appreciated.
+Driver's main init/attach function brcmf_attach() was handling both:
+wiphy allocation and driver initialization. It meant getting a new wiphy
+on every init (initial, resume, error recovery).
 
-Thank you,
-Jian-Hong Pan
+For supplicants/authenticators and Linux users it's move convenient to
+have the same wiphy over driver's lifetime. It allows e.g. automatic
+recovery after a firmware crash.
 
-> Yeah, submitting all the MSI patches in the same patchset is the easiest
-> approach. That way they apply cleanly to wireless-drivers-next.
->
-> --
-> https://wireless.wiki.kernel.org/en/developers/documentation/submittingpa=
-tches
+This patchset was tested on BCM4366 (PCIe) and BCM43430 (SDIO).
+
+Right now only PCIe makes use of keeping the same wiphy. I got RPi Zero
+W so I'm planning to add firmware crash recovery & keep wiphy for SDIO
+in the future.
+
+Rafał Miłecki (3):
+  brcmfmac: move "cfg80211_ops" pointer to another struct
+  brcmfmac: split brcmf_attach() and brcmf_detach() functions
+  brcmfmac: don't realloc wiphy during PCIe reset
+
+ .../broadcom/brcm80211/brcmfmac/bus.h         |  4 +-
+ .../broadcom/brcm80211/brcmfmac/cfg80211.c    |  1 -
+ .../broadcom/brcm80211/brcmfmac/cfg80211.h    |  1 -
+ .../broadcom/brcm80211/brcmfmac/core.c        | 42 ++++++++++++++-----
+ .../broadcom/brcm80211/brcmfmac/core.h        |  1 +
+ .../broadcom/brcm80211/brcmfmac/pcie.c        | 13 +++++-
+ .../broadcom/brcm80211/brcmfmac/sdio.c        | 15 +++++--
+ .../broadcom/brcm80211/brcmfmac/usb.c         | 34 ++++++++++++---
+ 8 files changed, 87 insertions(+), 24 deletions(-)
+
+-- 
+2.21.0
+
