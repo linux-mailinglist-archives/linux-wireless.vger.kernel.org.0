@@ -2,103 +2,99 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 8F267A5EC8
-	for <lists+linux-wireless@lfdr.de>; Tue,  3 Sep 2019 03:18:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EC12EA5F77
+	for <lists+linux-wireless@lfdr.de>; Tue,  3 Sep 2019 04:46:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726197AbfICBSi (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 2 Sep 2019 21:18:38 -0400
-Received: from mail-ot1-f67.google.com ([209.85.210.67]:35319 "EHLO
-        mail-ot1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725955AbfICBSi (ORCPT
+        id S1726944AbfICCq3 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 2 Sep 2019 22:46:29 -0400
+Received: from mail-ua1-f66.google.com ([209.85.222.66]:46313 "EHLO
+        mail-ua1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726465AbfICCq2 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 2 Sep 2019 21:18:38 -0400
-Received: by mail-ot1-f67.google.com with SMTP id 100so15134220otn.2
-        for <linux-wireless@vger.kernel.org>; Mon, 02 Sep 2019 18:18:38 -0700 (PDT)
+        Mon, 2 Sep 2019 22:46:28 -0400
+Received: by mail-ua1-f66.google.com with SMTP id k12so996459uan.13
+        for <linux-wireless@vger.kernel.org>; Mon, 02 Sep 2019 19:46:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=sender:from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=iKRw3YAmqmgHvf0RsxYwv0O/aEY2i3zqXVRRQVICAnA=;
-        b=fh7MKIWpVMn+vBpBL+m8DP7sPbJQqC/WCYwJH9+Y73947T4YPIGKZrCEpQeSzZx5SC
-         FYEsAr7iCvA2IMTUbPuK37Z6FikaCjxEJXU5nds/Df3huEBKk19pXx5UhEmY3WZmT4gt
-         /gLbIbL9iv1Ufwy0UQO+Rv3t28aQXr+Az+tvrrC2kMwIInRi7Z8qgIp8EluFrDEOqncg
-         X2Do7PD85VKFpWl340buuG3Lkt9g7R4MHprKNbuOnCdKTNtwQqA5i34gjPBZpPlx5NXR
-         dHATFfkBAes+Nt8dgqWI1dRyK0NnMUkJ3FGjQamo93h4EYdEUyuE6sQ38rrg+TeYBIlD
-         TCQg==
+        d=endlessm-com.20150623.gappssmtp.com; s=20150623;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc:content-transfer-encoding;
+        bh=AByWFfabD0l5iIzr5haXrtys5MddymuIhBEL878c4XY=;
+        b=r+fx7yV1xbQ9sHs5L7OOr1JLJ+A4esBD3gDKm9U2L8BCCFvyDYOSHxOSPBzf9a1EZZ
+         xtOz7Hr1MIbb4f/YVB4o/bEzbaC57dstqFY4WU4nUq5+Y+FP0r1m7WIEC+/vFr4Sk4QI
+         ePzwfTXS2Ah6+Iu3ib9mI9DAfPBz1puxEZnoI965Pe8Rbe/q5+t5BhaMxS8jWtD38uwJ
+         6VwI8OZfzg2P4speGtcr0VD2ZYSRKs9U+es+7Eii36rvMU7Cna4J1SKAirmVglAn37Fv
+         KOdPws33K8IAtQ/btnf5BVwdGd5pXjDRFjr9sWXkILTIEXjW263cb00WR9/whbe3DKL0
+         YPpA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:sender:from:to:cc:subject:date:message-id
-         :in-reply-to:references;
-        bh=iKRw3YAmqmgHvf0RsxYwv0O/aEY2i3zqXVRRQVICAnA=;
-        b=c7/r7qcIrYoRYuSSW5PWTDa9IbLfhTaNOfEg2xPU72NwsPX6wtdxMKipYTuw+RGvNC
-         qBtM1L5DLCGUECmgSIXEQ4evgAWcXZi5FSaq8KEpDZ6It6uazC5mDRy3gIgxIK/ltu9h
-         1cLJwp8coPizeV4Sl6E7IBCnlwfHSuh/mPzSxkCeG5xfWfBLKhwTky8pqTk8Gj0Ic/kc
-         Z69FPNmh8lH7/thDaaX+epzEm+QrWJxxgh1Un+u6J3mFYhvbSM1QB/Ow/8NnPix1bVlR
-         vaNq8sWlp6wJHh2kQ6SnwJXyFUvhKg+lKxQD0wZdLidaXtPPxNzOsclrilfoJ2jel8E1
-         KHGg==
-X-Gm-Message-State: APjAAAWNoAQpbWV+ka75GJmzUAA8c5UoLE+iRtvzE66AJyBAcaweBygj
-        Ik63bShrr7ZxHyBtPTOdUQk=
-X-Google-Smtp-Source: APXvYqxHIgEL05Ycemi7/iJWxvOnAVE8IkHOECBc50/bu/zQO2yh/JGXct17ghTA4/snCCncNhKvvw==
-X-Received: by 2002:a9d:6218:: with SMTP id g24mr845309otj.326.1567473517833;
-        Mon, 02 Sep 2019 18:18:37 -0700 (PDT)
-Received: from localhost.localdomain (cpe-24-31-245-230.kc.res.rr.com. [24.31.245.230])
-        by smtp.gmail.com with ESMTPSA id d13sm230244oth.11.2019.09.02.18.18.37
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Mon, 02 Sep 2019 18:18:37 -0700 (PDT)
-From:   Larry Finger <Larry.Finger@lwfinger.net>
-To:     kvalo@codeaurora.org
-Cc:     linux-wireless@vger.kernel.org, pkshih@realtek.com,
-        Larry Finger <Larry.Finger@lwfinger.net>
-Subject: [PATCH 3/3] rtlwifi: rtl8192ce: Fix incorrect returned values
-Date:   Mon,  2 Sep 2019 20:18:13 -0500
-Message-Id: <20190903011813.13946-4-Larry.Finger@lwfinger.net>
-X-Mailer: git-send-email 2.16.4
-In-Reply-To: <20190903011813.13946-1-Larry.Finger@lwfinger.net>
-References: <20190903011813.13946-1-Larry.Finger@lwfinger.net>
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc:content-transfer-encoding;
+        bh=AByWFfabD0l5iIzr5haXrtys5MddymuIhBEL878c4XY=;
+        b=sLn8gf+mjGR0G0nr208U+ufLzJmsnqDfB+SwHSgQaWNlkuTJBhv5PYZoIRRXl6ZRGp
+         5uM7G3QtH6b9nsgnlJ6TIWxtfo68aj5PXCg+dVn2PaHCccFev92nWeJoeQvQ0ybJiLQ4
+         eIJ4Fraa0MxlQ0kn+LjcGjflsPL/KZMP00xQqc0fmECsQSb6tgLDWspwKeYGyqzqD/vn
+         /f6f2IRojz++e4DlOjE0VVUAe079VI1cw1ntjQWX6pUMXrPdaEP2LspximyJbdCTehnR
+         dnQJKgau7JYEp3NHGkHCxXaISLgVmnGjuo9i085rYL2NjPIuk8vJOQw5BapuI78tcrlV
+         GE+Q==
+X-Gm-Message-State: APjAAAX1IIHUawJZrTxCzVBh+vU1cCh61oCHwjESobe7nZE83LEaXHDA
+        41cq8KVXG0La36yR7iQZEA06nNDXVXKlsz63QbsEMjKpeyrh5Q==
+X-Google-Smtp-Source: APXvYqzjf5enxc0SW2FFkOXEpgTPIgid1ZZ4ujO1/Sq4DMROIL+2Z+lkMf6wyEuNdktTUPuG5JsXpOzdhYyXmJpHM94=
+X-Received: by 2002:ab0:248a:: with SMTP id i10mr14573606uan.32.1567478787657;
+ Mon, 02 Sep 2019 19:46:27 -0700 (PDT)
+MIME-Version: 1.0
+References: <F7CD281DE3E379468C6D07993EA72F84D18A5786@RTITMBSVM04.realtek.com.tw>
+ <20190826070827.1436-1-jian-hong@endlessm.com> <F7CD281DE3E379468C6D07993EA72F84D18AE2DA@RTITMBSVM04.realtek.com.tw>
+ <875zmarivz.fsf@kamboji.qca.qualcomm.com>
+In-Reply-To: <875zmarivz.fsf@kamboji.qca.qualcomm.com>
+From:   Jian-Hong Pan <jian-hong@endlessm.com>
+Date:   Tue, 3 Sep 2019 10:45:50 +0800
+Message-ID: <CAPpJ_efAxQN4pRdpVmT5Pdkp-6Y-QVOQdJR4iY4A-PXZokLGtA@mail.gmail.com>
+Subject: Re: [PATCH v4] rtw88: pci: Move a mass of jobs in hw IRQ to soft IRQ
+To:     Kalle Valo <kvalo@codeaurora.org>
+Cc:     Tony Chuang <yhchuang@realtek.com>,
+        "David S . Miller" <davem@davemloft.net>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "linux@endlessm.com" <linux@endlessm.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-In commit 98fd8db59a00 ("rtlwifi: rtl8192ce: Convert macros that set
-descriptor"), all the routines that get fields from a descriptor
-were changed to return signed integer values. This is incorrect for the
-routines that get the entire 32-bit word. In this case, an unsigned
-quantity is required.
+Kalle Valo <kvalo@codeaurora.org> =E6=96=BC 2019=E5=B9=B49=E6=9C=882=E6=97=
+=A5 =E9=80=B1=E4=B8=80 =E4=B8=8B=E5=8D=888:18=E5=AF=AB=E9=81=93=EF=BC=9A
+>
+> Tony Chuang <yhchuang@realtek.com> writes:
+>
+> >> From: Jian-Hong Pan
+> >> Subject: [PATCH v4] rtw88: pci: Move a mass of jobs in hw IRQ to soft =
+IRQ
+> >>
+> >> There is a mass of jobs between spin lock and unlock in the hardware
+> >> IRQ which will occupy much time originally. To make system work more
+> >> efficiently, this patch moves the jobs to the soft IRQ (bottom half) t=
+o
+> >> reduce the time in hardware IRQ.
+> >>
+> >> Signed-off-by: Jian-Hong Pan <jian-hong@endlessm.com>
+> >
+> > Now it works fine with MSI interrupt enabled.
+> >
+> > But this patch is conflicting with MSI interrupt patch.
+> > Is there a better way we can make Kalle apply them more smoothly?
+> > I can rebase them and submit both if you're OK.
 
-Fixes: 98fd8db59a00 ("rtlwifi: rtl8192ce: Convert macros that set descriptor")
-Signed-off-by: Larry Finger <Larry.Finger@lwfinger.net>
----
- drivers/net/wireless/realtek/rtlwifi/rtl8192ce/trx.h | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+The rebase work is appreciated.
 
-diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8192ce/trx.h b/drivers/net/wireless/realtek/rtlwifi/rtl8192ce/trx.h
-index 709dcac9d84b..b45b05a6a523 100644
---- a/drivers/net/wireless/realtek/rtlwifi/rtl8192ce/trx.h
-+++ b/drivers/net/wireless/realtek/rtlwifi/rtl8192ce/trx.h
-@@ -216,7 +216,7 @@ static inline void set_tx_desc_tx_buffer_address(__le32 *__pdesc, u32  __val)
- 	*(__pdesc + 8) = cpu_to_le32(__val);
- }
- 
--static inline int get_tx_desc_tx_buffer_address(__le32 *__pdesc)
-+static inline u32 get_tx_desc_tx_buffer_address(__le32 *__pdesc)
- {
- 	return le32_to_cpu(*((__pdesc + 8)));
- }
-@@ -311,12 +311,12 @@ static inline int get_rx_desc_bw(__le32 *__pdesc)
- 	return le32_get_bits(*((__pdesc + 3)), BIT(9));
- }
- 
--static inline int get_rx_desc_tsfl(__le32 *__pdesc)
-+static inline u32 get_rx_desc_tsfl(__le32 *__pdesc)
- {
- 	return le32_to_cpu(*((__pdesc + 5)));
- }
- 
--static inline int get_rx_desc_buff_addr(__le32 *__pdesc)
-+static inline u32 get_rx_desc_buff_addr(__le32 *__pdesc)
- {
- 	return le32_to_cpu(*((__pdesc + 6)));
- }
--- 
-2.16.4
+Thank you,
+Jian-Hong Pan
 
+> Yeah, submitting all the MSI patches in the same patchset is the easiest
+> approach. That way they apply cleanly to wireless-drivers-next.
+>
+> --
+> https://wireless.wiki.kernel.org/en/developers/documentation/submittingpa=
+tches
