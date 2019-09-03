@@ -2,25 +2,25 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 9DF76A69DF
-	for <lists+linux-wireless@lfdr.de>; Tue,  3 Sep 2019 15:30:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F00BAA69E3
+	for <lists+linux-wireless@lfdr.de>; Tue,  3 Sep 2019 15:31:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729020AbfICNab (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 3 Sep 2019 09:30:31 -0400
-Received: from smtp.codeaurora.org ([198.145.29.96]:44916 "EHLO
+        id S1729245AbfICNbh (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 3 Sep 2019 09:31:37 -0400
+Received: from smtp.codeaurora.org ([198.145.29.96]:45756 "EHLO
         smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728490AbfICNab (ORCPT
+        with ESMTP id S1728094AbfICNbh (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 3 Sep 2019 09:30:31 -0400
+        Tue, 3 Sep 2019 09:31:37 -0400
 Received: by smtp.codeaurora.org (Postfix, from userid 1000)
-        id 5686E60592; Tue,  3 Sep 2019 13:30:30 +0000 (UTC)
+        id 609F06085C; Tue,  3 Sep 2019 13:31:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1567517430;
-        bh=g42NlNJI+hsdcPYmWIDPfGm2cRsjwuTD2+C8vpUkwUU=;
+        s=default; t=1567517496;
+        bh=by5fl6zo+ZrhsJJMhajMU5tEQKjknqS9fCgsp2dtaCA=;
         h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-        b=BQt2UfWsgTPcE+r084EZSBJFLQCnRIULoV1XFBYhwqwF+sJyFei5Cvpu6e/G2SOdt
-         FcZh6TenaDtRrWpqD+RRebgke0NaeM8Cv9GH/U2fqYMEcUfTC/MIelgGRH0JNusy1o
-         wWpgsfhN9QbZIjXOjKFRKYCE6Cmn1/mrU+73GLeo=
+        b=ovbRAxIBbJ2Vj+CLXWMHA+tyfd1gFPBcUpe5lRBcxHIjS/ZjDsnI3jbZwuMZCoqQm
+         Nr8+KUh4IdB69k6X3mW/yf3iOIPs6xVwcudQ9TQFuKmKKC/LEKU4VfIEaNcsu5nqLc
+         SHhZ7HJV5z0Q0QTfRPzhd2kJ6qMJWmwJJ9xwUjJw=
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         pdx-caf-mail.web.codeaurora.org
 X-Spam-Level: 
@@ -31,32 +31,31 @@ Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
         (Authenticated sender: kvalo@smtp.codeaurora.org)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id E83CF602BA;
-        Tue,  3 Sep 2019 13:30:28 +0000 (UTC)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id CF316605A2;
+        Tue,  3 Sep 2019 13:31:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1567517430;
-        bh=g42NlNJI+hsdcPYmWIDPfGm2cRsjwuTD2+C8vpUkwUU=;
+        s=default; t=1567517495;
+        bh=by5fl6zo+ZrhsJJMhajMU5tEQKjknqS9fCgsp2dtaCA=;
         h=Subject:From:In-Reply-To:References:To:Cc:From;
-        b=oZHCdgPEXy6ZyBA8kLW7FKRVTZP9ptOq4PxikpLVqvi9gs8r9J/SEZBSJUcay//Hx
-         tSOCEn6/HD5ImNOY8y4Dlg/XLpZPPGQmKFw7qdKiOnrbHCCaKUhhbmNNtTg3Cp50/J
-         oaPTLx8U1BDUCXai9fIJaou3QS6388BIj6q4P4SU=
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org E83CF602BA
+        b=O6uzXl9nbTPAY0CUOjQBN0p9+EPb7CbZink7EY9jjZm8eRycVLKIrpjhsC4SbWl8E
+         NxBC9x9ECOg5tKIIkvXf+F0GBacB9/nqGFymjOkOKFrPUxSbzYs7g/kixel4GFUx7q
+         14XKFPcU7bPbGqSQtM0TmE8Cx9UCiqPnYTBZEz0Y=
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org CF316605A2
 Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
 Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH v2] rtlwifi: rtl_pci: Fix memory leak when hardware init
- fails
+Subject: Re: [PATCH 1/5] rtlwifi: rtl8192ee: Remove unused GET_XXX and SET_XXX
 From:   Kalle Valo <kvalo@codeaurora.org>
-In-Reply-To: <20190826220344.7084-1-Larry.Finger@lwfinger.net>
-References: <20190826220344.7084-1-Larry.Finger@lwfinger.net>
+In-Reply-To: <20190831180644.7937-2-Larry.Finger@lwfinger.net>
+References: <20190831180644.7937-2-Larry.Finger@lwfinger.net>
 To:     Larry Finger <Larry.Finger@lwfinger.net>
 Cc:     linux-wireless@vger.kernel.org, pkshih@realtek.com,
         Larry Finger <Larry.Finger@lwfinger.net>
 User-Agent: pwcli/0.0.0-git (https://github.com/kvalo/pwcli/) Python/2.7.12
-Message-Id: <20190903133030.5686E60592@smtp.codeaurora.org>
-Date:   Tue,  3 Sep 2019 13:30:30 +0000 (UTC)
+Message-Id: <20190903133136.609F06085C@smtp.codeaurora.org>
+Date:   Tue,  3 Sep 2019 13:31:36 +0000 (UTC)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
@@ -64,19 +63,21 @@ X-Mailing-List: linux-wireless@vger.kernel.org
 
 Larry Finger <Larry.Finger@lwfinger.net> wrote:
 
-> If the call to hw_init() fails for any of the drivers, the driver will
-> leak memory that was allocated in BT coexistence setup. Technically, each
-> of the drivers should have done this free; however placing it in rtl_pci
-> fixes all the drivers with only a single patch.
+> As the first step in converting from macros that get/set information
+> in the RX and TX descriptors, unused macros are being removed.
 > 
 > Signed-off-by: Larry Finger <Larry.Finger@lwfinger.net>
 
-Patch applied to wireless-drivers-next.git, thanks.
+5 patches applied to wireless-drivers-next.git, thanks.
 
-8cc782cd997d rtlwifi: rtl_pci: Fix memory leak when hardware init fails
+8ef113ff0fed rtlwifi: rtl8192ee: Remove unused GET_XXX and SET_XXX
+11f92ca1475c rtlwifi: rtl8192ee: Replace local bit manipulation macros
+7f1c7460e932 rtlwifi: rtl8192ee: Convert macros that set descriptor
+200e8bd4df8f rtlwifi: rtl8192ee: Convert inline routines to little-endian words
+9dc35d8a555b rtlwifi: rtl8192ee: Remove some variable initializations
 
 -- 
-https://patchwork.kernel.org/patch/11115745/
+https://patchwork.kernel.org/patch/11124953/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
