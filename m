@@ -2,26 +2,26 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 931AFA62B6
-	for <lists+linux-wireless@lfdr.de>; Tue,  3 Sep 2019 09:37:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 054A8A62B4
+	for <lists+linux-wireless@lfdr.de>; Tue,  3 Sep 2019 09:37:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728058AbfICHhz (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 3 Sep 2019 03:37:55 -0400
-Received: from paleale.coelho.fi ([176.9.41.70]:40328 "EHLO
+        id S1727999AbfICHhv (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 3 Sep 2019 03:37:51 -0400
+Received: from paleale.coelho.fi ([176.9.41.70]:40316 "EHLO
         farmhouse.coelho.fi" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1725888AbfICHhz (ORCPT
+        with ESMTP id S1725888AbfICHhv (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 3 Sep 2019 03:37:55 -0400
+        Tue, 3 Sep 2019 03:37:51 -0400
 Received: from [91.156.6.193] (helo=redipa.ger.corp.intel.com)
         by farmhouse.coelho.fi with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
         (Exim 4.92)
         (envelope-from <luca@coelho.fi>)
-        id 1i53Ne-0004Cd-B6; Tue, 03 Sep 2019 10:37:35 +0300
+        id 1i53Nf-0004Cd-A4; Tue, 03 Sep 2019 10:37:35 +0300
 From:   Luca Coelho <luca@coelho.fi>
 To:     kvalo@codeaurora.org
 Cc:     linux-wireless@vger.kernel.org
-Date:   Tue,  3 Sep 2019 10:37:05 +0300
-Message-Id: <20190903073714.32278-13-luca@coelho.fi>
+Date:   Tue,  3 Sep 2019 10:37:06 +0300
+Message-Id: <20190903073714.32278-14-luca@coelho.fi>
 X-Mailer: git-send-email 2.23.0.rc1
 In-Reply-To: <20190903073714.32278-1-luca@coelho.fi>
 References: <20190903073714.32278-1-luca@coelho.fi>
@@ -31,7 +31,7 @@ X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on farmhouse.coelho.fi
 X-Spam-Level: 
 X-Spam-Status: No, score=-2.9 required=5.0 tests=ALL_TRUSTED,BAYES_00,
         URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.2
-Subject: [PATCH 12/21] iwlwifi: mvm: drop BA sessions on too many old-SN frames
+Subject: [PATCH 13/21] iwlwifi: mvm: handle BAR_FRAME_RELEASE (0xc2) notification
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
@@ -39,139 +39,171 @@ X-Mailing-List: linux-wireless@vger.kernel.org
 
 From: Johannes Berg <johannes.berg@intel.com>
 
-Certain APs (I think a certain Broadcom model) interact badly with our
-full state BA bitmap handling, and if triggered badly with many powersave
-transitions they keep sending frames from before the window, which our
-hardware then doesn't appear to ACK (to them) since it has moved on and
-is sending ACKs for higher SNs now.
+In prior hardware generations (e.g. 9000 series), we received the BAR
+frame with fake NSSN information to handle releasing frames from the
+reorder buffer for the default queue, the other queues were getting
+the FRAME_RELEASE notification in this case.
 
-Try to detect this situation and if this keeps happening, disable the
-aggregation session.
+With multi-TID block-ack, the firmware no longer sends us the BAR
+frame because the fake RX is quite big (just the metadata is around
+48 bytes or so). Instead, it now sends us one (or multiple) special
+release notifications (0xc2). The hardware consumes these as well,
+but only generates the FRAME_RELEASE (0xc3) for queues other than
+the default queue. We thus need to handle them in the same way we
+handle the normal FRAME_RELEASE.
 
 Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Luca Coelho <luciano.coelho@intel.com>
 ---
- .../wireless/intel/iwlwifi/mvm/constants.h    |  1 +
- drivers/net/wireless/intel/iwlwifi/mvm/mvm.h  |  9 ++++
- drivers/net/wireless/intel/iwlwifi/mvm/rxmq.c | 53 +++++++++++++++++++
- 3 files changed, 63 insertions(+)
+ .../wireless/intel/iwlwifi/fw/api/commands.h  |  7 ++++
+ .../net/wireless/intel/iwlwifi/fw/api/rx.h    | 32 +++++++++++++++
+ drivers/net/wireless/intel/iwlwifi/mvm/mvm.h  |  2 +
+ drivers/net/wireless/intel/iwlwifi/mvm/ops.c  |  3 ++
+ drivers/net/wireless/intel/iwlwifi/mvm/rxmq.c | 39 +++++++++++++++++++
+ 5 files changed, 83 insertions(+)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/constants.h b/drivers/net/wireless/intel/iwlwifi/mvm/constants.h
-index 915b172da57a..60aff2ecec12 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/constants.h
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/constants.h
-@@ -153,5 +153,6 @@
- #define IWL_MVM_FTM_INITIATOR_DYNACK		true
- #define IWL_MVM_D3_DEBUG			false
- #define IWL_MVM_USE_TWT				false
-+#define IWL_MVM_AMPDU_CONSEC_DROPS_DELBA	10
+diff --git a/drivers/net/wireless/intel/iwlwifi/fw/api/commands.h b/drivers/net/wireless/intel/iwlwifi/fw/api/commands.h
+index 4d2274bcc0b5..22dff2c92d4f 100644
+--- a/drivers/net/wireless/intel/iwlwifi/fw/api/commands.h
++++ b/drivers/net/wireless/intel/iwlwifi/fw/api/commands.h
+@@ -474,6 +474,13 @@ enum iwl_legacy_cmds {
+ 	 */
+ 	REPLY_RX_MPDU_CMD = 0xc1,
  
- #endif /* __MVM_CONSTANTS_H */
++	/**
++	 * @BAR_FRAME_RELEASE: Frame release from BAR notification, used for
++	 *	multi-TID BAR (previously, the BAR frame itself was reported
++	 *	instead). Uses &struct iwl_bar_frame_release.
++	 */
++	BAR_FRAME_RELEASE = 0xc2,
++
+ 	/**
+ 	 * @FRAME_RELEASE:
+ 	 * Frame release (reorder helper) notification, uses
+diff --git a/drivers/net/wireless/intel/iwlwifi/fw/api/rx.h b/drivers/net/wireless/intel/iwlwifi/fw/api/rx.h
+index 9b0bb89599fc..a93449db7bb2 100644
+--- a/drivers/net/wireless/intel/iwlwifi/fw/api/rx.h
++++ b/drivers/net/wireless/intel/iwlwifi/fw/api/rx.h
+@@ -746,6 +746,38 @@ struct iwl_frame_release {
+ 	__le16 nssn;
+ };
+ 
++/**
++ * enum iwl_bar_frame_release_sta_tid - STA/TID information for BAR release
++ * @IWL_BAR_FRAME_RELEASE_TID_MASK: TID mask
++ * @IWL_BAR_FRAME_RELEASE_STA_MASK: STA mask
++ */
++enum iwl_bar_frame_release_sta_tid {
++	IWL_BAR_FRAME_RELEASE_TID_MASK = 0x0000000f,
++	IWL_BAR_FRAME_RELEASE_STA_MASK = 0x000001f0,
++};
++
++/**
++ * enum iwl_bar_frame_release_ba_info - BA information for BAR release
++ * @IWL_BAR_FRAME_RELEASE_NSSN_MASK: NSSN mask
++ * @IWL_BAR_FRAME_RELEASE_SN_MASK: SN mask (ignored by driver)
++ * @IWL_BAR_FRAME_RELEASE_BAID_MASK: BAID mask
++ */
++enum iwl_bar_frame_release_ba_info {
++	IWL_BAR_FRAME_RELEASE_NSSN_MASK	= 0x00000fff,
++	IWL_BAR_FRAME_RELEASE_SN_MASK	= 0x00fff000,
++	IWL_BAR_FRAME_RELEASE_BAID_MASK	= 0x3f000000,
++};
++
++/**
++ * struct iwl_bar_frame_release - frame release from BAR info
++ * @sta_tid: STA & TID information, see &enum iwl_bar_frame_release_sta_tid.
++ * @ba_info: BA information, see &enum iwl_bar_frame_release_ba_info.
++ */
++struct iwl_bar_frame_release {
++	__le32 sta_tid;
++	__le32 ba_info;
++} __packed; /* RX_BAR_TO_FRAME_RELEASE_API_S_VER_1 */
++
+ enum iwl_rss_hash_func_en {
+ 	IWL_RSS_HASH_TYPE_IPV4_TCP,
+ 	IWL_RSS_HASH_TYPE_IPV4_UDP,
 diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mvm.h b/drivers/net/wireless/intel/iwlwifi/mvm/mvm.h
-index 2540d7ffbbc1..b8a8369457b9 100644
+index b8a8369457b9..843d00bf2bd5 100644
 --- a/drivers/net/wireless/intel/iwlwifi/mvm/mvm.h
 +++ b/drivers/net/wireless/intel/iwlwifi/mvm/mvm.h
-@@ -661,6 +661,12 @@ struct iwl_mvm_tcm {
-  * @valid: reordering is valid for this queue
-  * @lock: protect reorder buffer internal state
-  * @mvm: mvm pointer, needed for frame timer context
-+ * @consec_oldsn_drops: consecutive drops due to old SN
-+ * @consec_oldsn_ampdu_gp2: A-MPDU GP2 timestamp to track
-+ *	when to apply old SN consecutive drop workaround
-+ * @consec_oldsn_prev_drop: track whether or not an MPDU
-+ *	that was single/part of the previous A-MPDU was
-+ *	dropped due to old SN
-  */
- struct iwl_mvm_reorder_buffer {
- 	u16 head_sn;
-@@ -674,6 +680,9 @@ struct iwl_mvm_reorder_buffer {
- 	bool valid;
- 	spinlock_t lock;
- 	struct iwl_mvm *mvm;
-+	unsigned int consec_oldsn_drops;
-+	u32 consec_oldsn_ampdu_gp2;
-+	unsigned int consec_oldsn_prev_drop:1;
- } ____cacheline_aligned_in_smp;
- 
- /**
+@@ -1606,6 +1606,8 @@ void iwl_mvm_rx_monitor_no_data(struct iwl_mvm *mvm, struct napi_struct *napi,
+ 				struct iwl_rx_cmd_buffer *rxb, int queue);
+ void iwl_mvm_rx_frame_release(struct iwl_mvm *mvm, struct napi_struct *napi,
+ 			      struct iwl_rx_cmd_buffer *rxb, int queue);
++void iwl_mvm_rx_bar_frame_release(struct iwl_mvm *mvm, struct napi_struct *napi,
++				  struct iwl_rx_cmd_buffer *rxb, int queue);
+ int iwl_mvm_notify_rx_queue(struct iwl_mvm *mvm, u32 rxq_mask,
+ 			    const u8 *data, u32 count, bool async);
+ void iwl_mvm_rx_queue_notif(struct iwl_mvm *mvm, struct napi_struct *napi,
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/ops.c b/drivers/net/wireless/intel/iwlwifi/mvm/ops.c
+index 35b393f8cd85..961c7ab7950b 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/ops.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/ops.c
+@@ -389,6 +389,7 @@ static const struct iwl_hcmd_names iwl_mvm_legacy_names[] = {
+ 	HCMD_NAME(SCAN_ITERATION_COMPLETE_UMAC),
+ 	HCMD_NAME(REPLY_RX_PHY_CMD),
+ 	HCMD_NAME(REPLY_RX_MPDU_CMD),
++	HCMD_NAME(BAR_FRAME_RELEASE),
+ 	HCMD_NAME(FRAME_RELEASE),
+ 	HCMD_NAME(BA_NOTIF),
+ 	HCMD_NAME(MCC_UPDATE_CMD),
+@@ -1060,6 +1061,8 @@ static void iwl_mvm_rx_mq(struct iwl_op_mode *op_mode,
+ 		iwl_mvm_rx_queue_notif(mvm, napi, rxb, 0);
+ 	else if (cmd == WIDE_ID(LEGACY_GROUP, FRAME_RELEASE))
+ 		iwl_mvm_rx_frame_release(mvm, napi, rxb, 0);
++	else if (cmd == WIDE_ID(LEGACY_GROUP, BAR_FRAME_RELEASE))
++		iwl_mvm_rx_bar_frame_release(mvm, napi, rxb, 0);
+ 	else if (cmd == WIDE_ID(DATA_PATH_GROUP, RX_NO_DATA_NOTIF))
+ 		iwl_mvm_rx_monitor_no_data(mvm, napi, rxb, 0);
+ 	else
 diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/rxmq.c b/drivers/net/wireless/intel/iwlwifi/mvm/rxmq.c
-index 25d038092eec..f3f9e641ae70 100644
+index f3f9e641ae70..c48d6fb16408 100644
 --- a/drivers/net/wireless/intel/iwlwifi/mvm/rxmq.c
 +++ b/drivers/net/wireless/intel/iwlwifi/mvm/rxmq.c
-@@ -781,6 +781,55 @@ void iwl_mvm_rx_queue_notif(struct iwl_mvm *mvm, struct napi_struct *napi,
- 		wake_up(&mvm->rx_sync_waitq);
+@@ -2014,3 +2014,42 @@ void iwl_mvm_rx_frame_release(struct iwl_mvm *mvm, struct napi_struct *napi,
+ 					  le16_to_cpu(release->nssn),
+ 					  queue, 0);
  }
- 
-+static void iwl_mvm_oldsn_workaround(struct iwl_mvm *mvm,
-+				     struct ieee80211_sta *sta, int tid,
-+				     struct iwl_mvm_reorder_buffer *buffer,
-+				     u32 reorder, u32 gp2, int queue)
++
++void iwl_mvm_rx_bar_frame_release(struct iwl_mvm *mvm, struct napi_struct *napi,
++				  struct iwl_rx_cmd_buffer *rxb, int queue)
 +{
-+	struct iwl_mvm_sta *mvmsta = iwl_mvm_sta_from_mac80211(sta);
++	struct iwl_rx_packet *pkt = rxb_addr(rxb);
++	struct iwl_bar_frame_release *release = (void *)pkt->data;
++	unsigned int baid = le32_get_bits(release->ba_info,
++					  IWL_BAR_FRAME_RELEASE_BAID_MASK);
++	unsigned int nssn = le32_get_bits(release->ba_info,
++					  IWL_BAR_FRAME_RELEASE_NSSN_MASK);
++	unsigned int sta_id = le32_get_bits(release->sta_tid,
++					    IWL_BAR_FRAME_RELEASE_STA_MASK);
++	unsigned int tid = le32_get_bits(release->sta_tid,
++					 IWL_BAR_FRAME_RELEASE_TID_MASK);
++	struct iwl_mvm_baid_data *baid_data;
 +
-+	if (gp2 != buffer->consec_oldsn_ampdu_gp2) {
-+		/* we have a new (A-)MPDU ... */
-+
-+		/*
-+		 * reset counter to 0 if we didn't have any oldsn in
-+		 * the last A-MPDU (as detected by GP2 being identical)
-+		 */
-+		if (!buffer->consec_oldsn_prev_drop)
-+			buffer->consec_oldsn_drops = 0;
-+
-+		/* either way, update our tracking state */
-+		buffer->consec_oldsn_ampdu_gp2 = gp2;
-+	} else if (buffer->consec_oldsn_prev_drop) {
-+		/*
-+		 * tracking state didn't change, and we had an old SN
-+		 * indication before - do nothing in this case, we
-+		 * already noted this one down and are waiting for the
-+		 * next A-MPDU (by GP2)
-+		 */
-+		return;
-+	}
-+
-+	/* return unless this MPDU has old SN */
-+	if (!(reorder & IWL_RX_MPDU_REORDER_BA_OLD_SN))
++	if (WARN_ON_ONCE(baid == IWL_RX_REORDER_DATA_INVALID_BAID ||
++			 baid >= ARRAY_SIZE(mvm->baid_map)))
 +		return;
 +
-+	/* update state */
-+	buffer->consec_oldsn_prev_drop = 1;
-+	buffer->consec_oldsn_drops++;
-+
-+	/* if limit is reached, send del BA and reset state */
-+	if (buffer->consec_oldsn_drops == IWL_MVM_AMPDU_CONSEC_DROPS_DELBA) {
-+		IWL_WARN(mvm,
-+			 "reached %d old SN frames from %pM on queue %d, stopping BA session on TID %d\n",
-+			 IWL_MVM_AMPDU_CONSEC_DROPS_DELBA,
-+			 sta->addr, queue, tid);
-+		ieee80211_stop_rx_ba_session(mvmsta->vif, BIT(tid), sta->addr);
-+		buffer->consec_oldsn_prev_drop = 0;
-+		buffer->consec_oldsn_drops = 0;
++	rcu_read_lock();
++	baid_data = rcu_dereference(mvm->baid_map[baid]);
++	if (!baid_data) {
++		IWL_DEBUG_RX(mvm,
++			     "Got valid BAID %d but not allocated, invalid BAR release!\n",
++			      baid);
++		goto out;
 +	}
++
++	if (WARN(tid != baid_data->tid || sta_id != baid_data->sta_id,
++		 "baid 0x%x is mapped to sta:%d tid:%d, but BAR release received for sta:%d tid:%d\n",
++		 baid, baid_data->sta_id, baid_data->tid, sta_id,
++		 tid))
++		goto out;
++
++	iwl_mvm_release_frames_from_notif(mvm, napi, baid, nssn, queue, 0);
++out:
++	rcu_read_unlock();
 +}
-+
- /*
-  * Returns true if the MPDU was buffered\dropped, false if it should be passed
-  * to upper layer.
-@@ -792,6 +841,7 @@ static bool iwl_mvm_reorder(struct iwl_mvm *mvm,
- 			    struct sk_buff *skb,
- 			    struct iwl_rx_mpdu_desc *desc)
- {
-+	struct ieee80211_rx_status *rx_status = IEEE80211_SKB_RXCB(skb);
- 	struct ieee80211_hdr *hdr = iwl_mvm_skb_get_hdr(skb);
- 	struct iwl_mvm_sta *mvm_sta;
- 	struct iwl_mvm_baid_data *baid_data;
-@@ -894,6 +944,9 @@ static bool iwl_mvm_reorder(struct iwl_mvm *mvm,
- 				       min_sn, IWL_MVM_RELEASE_SEND_RSS_SYNC);
- 	}
- 
-+	iwl_mvm_oldsn_workaround(mvm, sta, tid, buffer, reorder,
-+				 rx_status->device_timestamp, queue);
-+
- 	/* drop any oudated packets */
- 	if (ieee80211_sn_less(sn, buffer->head_sn))
- 		goto drop;
 -- 
 2.23.0.rc1
 
