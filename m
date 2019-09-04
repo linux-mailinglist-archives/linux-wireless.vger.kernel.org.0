@@ -2,73 +2,83 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 800E9A7F12
-	for <lists+linux-wireless@lfdr.de>; Wed,  4 Sep 2019 11:16:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B748CA7FE7
+	for <lists+linux-wireless@lfdr.de>; Wed,  4 Sep 2019 12:01:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728402AbfIDJQz (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 4 Sep 2019 05:16:55 -0400
-Received: from alexa-out-tai-02.qualcomm.com ([103.229.16.227]:61915 "EHLO
-        alexa-out-tai-02.qualcomm.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726240AbfIDJQz (ORCPT
+        id S1729122AbfIDKBQ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 4 Sep 2019 06:01:16 -0400
+Received: from mail-lf1-f50.google.com ([209.85.167.50]:39487 "EHLO
+        mail-lf1-f50.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726010AbfIDKBQ (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 4 Sep 2019 05:16:55 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
-  d=qti.qualcomm.com; i=@qti.qualcomm.com; q=dns/txt;
-  s=qcdkim; t=1567588613; x=1599124613;
-  h=from:to:cc:date:message-id:references:in-reply-to:
-   content-transfer-encoding:mime-version:subject;
-  bh=PP2Afg5yUDKY22iaTPrCbZSu1AzLCBo5mDxsK7cDJHg=;
-  b=NaoHIGaD5+pKZeZFI3mTR4hHNVHWqXa8GbPldfunp8DQozCCJ11YOqVH
-   +ekaRU7ZplKQlydLwNevq7YLe7EdzLNoxxSVONhPQ+2A11E1wISk52tIC
-   /rOl3R1ora7E6KK17CDhrSfmySlM3TSz1/egRFve1R/MctXliM6xur+fi
-   4=;
-Subject: RE: [PATCH] mac80211: Store max_mtu in ieee80211_hw
-Thread-Topic: [PATCH] mac80211: Store max_mtu in ieee80211_hw
-Received: from ironmsg01-tai.qualcomm.com ([10.249.140.6])
-  by alexa-out-tai-02.qualcomm.com with ESMTP; 04 Sep 2019 17:16:52 +0800
-Received: from aptaiexm02b.ap.qualcomm.com ([10.249.150.12])
-  by ironmsg01-tai.qualcomm.com with ESMTP/TLS/AES256-SHA; 04 Sep 2019 17:16:47 +0800
-Received: from aptaiexm02f.ap.qualcomm.com (10.249.150.16) by
- aptaiexm02b.ap.qualcomm.com (10.249.150.12) with Microsoft SMTP Server (TLS)
- id 15.0.1473.3; Wed, 4 Sep 2019 17:16:45 +0800
-Received: from aptaiexm02f.ap.qualcomm.com ([fe80::4152:1436:e436:faa1]) by
- aptaiexm02f.ap.qualcomm.com ([fe80::4152:1436:e436:faa1%19]) with mapi id
- 15.00.1473.005; Wed, 4 Sep 2019 17:16:45 +0800
-From:   Wen Gong <wgong@qti.qualcomm.com>
-To:     Johannes Berg <johannes@sipsolutions.net>,
-        Wen Gong <wgong@codeaurora.org>,
-        "ath10k@lists.infradead.org" <ath10k@lists.infradead.org>
-CC:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-Thread-Index: AQHVYu8BqfI75AhjWkCFjZRYnAho5acbPPdg
-Date:   Wed, 4 Sep 2019 09:16:45 +0000
-Message-ID: <6d86b38a6ea947d5821cd8a90c649ba4@aptaiexm02f.ap.qualcomm.com>
-References: <1567577743-27684-1-git-send-email-wgong@codeaurora.org>
- <582e0a7eef96bb7d97fee4bae340ded97fda86a2.camel@sipsolutions.net>
-In-Reply-To: <582e0a7eef96bb7d97fee4bae340ded97fda86a2.camel@sipsolutions.net>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-ms-exchange-transport-fromentityheader: Hosted
-x-originating-ip: [10.249.136.10]
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+        Wed, 4 Sep 2019 06:01:16 -0400
+Received: by mail-lf1-f50.google.com with SMTP id l11so15405198lfk.6
+        for <linux-wireless@vger.kernel.org>; Wed, 04 Sep 2019 03:01:15 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=message-id:subject:from:to:cc:date:user-agent:mime-version
+         :content-transfer-encoding;
+        bh=V0Mf2ZXillY6hvYcBPK7m2UMkeRJi1VCx4kOhhDXxUM=;
+        b=CKPYt6IvRnN1uxvZYA6XDithl1KDtG82stauZkdOL+dmcni3mNMg3Y3HOb3Q3HpvzH
+         PUbq99k1lfUYOzAA2ZHAz5UYw7KV/c5f+OuwxTHb2d9CKXQk9PwtIAal3NR1+t9fIEnW
+         4OvdD9+c/ej+wv3BhYqlpdgFb1nBegCubmGbq6ECo5ZSHSx9qXTyp731K6wNyXMFCxE0
+         oVuTpqALc97yFBzZit5Spz4ITbGmuo5tD3YyyOBi0V3Ae0xeGIygkqrukptpIa/9PJG7
+         W56TmqbTouuxiTzWLd3HOFRgLJpwxyWq9DHgWwzzvpGSZ+fQUknTSeNCkt382C88uiwB
+         HOCA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:message-id:subject:from:to:cc:date:user-agent
+         :mime-version:content-transfer-encoding;
+        bh=V0Mf2ZXillY6hvYcBPK7m2UMkeRJi1VCx4kOhhDXxUM=;
+        b=YAxSECv8l5BcHSdEVnYn2Kg7sJaSsHMnarK+CrzUTqXLWTbfp0L5IShJ+T8bx4HGfX
+         yHo2Gf+ubWZgfCJz20uEX277t0avega0gSuOBOzMR5nX+Bh7xmP663d1a4wDWpepvxwx
+         cBZ3Uvv33pNOuC1X9E6kQt4e87zz9ZcazSxdpxZ2szsG9S8ONrRXHzc8qrd109uPy1Yg
+         njYpLY3ts2qs/Mvlk0HPmztkQEYkn4c3AJ/bfyy86B6lMT22BwIzPMiGmWqWR9RE+Qe6
+         3Gegt7JtD7nMU5weFiKBmwlDzee84xqv4TYWe37XLKpTAkyExt5k5dumaKj6CzbTFM8S
+         987g==
+X-Gm-Message-State: APjAAAU3AKQzURMM7ZnbY/ETUd4xJBnMjQmAPIX83RbPofnF0ej/jKFq
+        pY3NeOq/74aUkOS02xfCrN4=
+X-Google-Smtp-Source: APXvYqxLuWH/C72kaXEWeAamaMlL3HIHXMnLSuA0bm4ScDBIwnsAoKoqtf+AEs3mmUPkoaKgbcc9eg==
+X-Received: by 2002:a19:9104:: with SMTP id t4mr22353895lfd.179.1567591274431;
+        Wed, 04 Sep 2019 03:01:14 -0700 (PDT)
+Received: from Timur-XPS ([185.252.118.68])
+        by smtp.gmail.com with ESMTPSA id l23sm3236356lje.106.2019.09.04.03.01.12
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 04 Sep 2019 03:01:13 -0700 (PDT)
+Message-ID: <c74b5248ab0d5d5fa73226494c2179eeb767d725.camel@gmail.com>
+Subject: QCA6174 ath10k firmware crash on kernel 5.x
+From:   Timur =?ISO-8859-1?Q?Krist=F3f?= <timur.kristof@gmail.com>
+To:     ath10k@lists.infradead.org, Kalle Valo <kvalo@codeaurora.org>
+Cc:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+Date:   Wed, 04 Sep 2019 13:01:10 +0300
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.32.4 (3.32.4-1.fc30) 
 MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-> -----Original Message-----
-> From: ath10k <ath10k-bounces@lists.infradead.org> On Behalf Of Johannes
-> Berg
-> Sent: Wednesday, September 4, 2019 3:04 PM
-> To: Wen Gong <wgong@codeaurora.org>; ath10k@lists.infradead.org
-> Cc: linux-wireless@vger.kernel.org
-> Subject: [EXT] Re: [PATCH] mac80211: Store max_mtu in ieee80211_hw
->=20
-Patch v2 sent, https://patchwork.kernel.org/patch/11129707/
-> _______________________________________________
-> ath10k mailing list
-> ath10k@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/ath10k
+Hi,
+
+I've got a QCA6174 wireless device in my Dell XPS 13 9370. There is a
+problematic AP, and every time I connect to this AP, the connection
+only works for a couple of hours and then it stops working until I
+disable and re-enable the wireless adapter.
+
+Here is the dmesg log:
+https://pastebin.com/CnbBSNg3
+
+There is a firmware crash. Then the driver fails to read the firmware
+dump.
+
+Note that I've only seen the problem with this specific AP and not
+others. Is there any way I can figure out what exactly is it with this
+AP that triggers the problem?
+
+Thanks & best regards,
+Tim
+
+ps. I'm not on the mailing list, please CC me on your replies.
+
