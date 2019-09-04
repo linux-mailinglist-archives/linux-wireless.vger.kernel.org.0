@@ -2,48 +2,48 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id F345AA78E2
-	for <lists+linux-wireless@lfdr.de>; Wed,  4 Sep 2019 04:36:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 695F5A78E8
+	for <lists+linux-wireless@lfdr.de>; Wed,  4 Sep 2019 04:37:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728537AbfIDCgP (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 3 Sep 2019 22:36:15 -0400
-Received: from alexa-out-tai-01.qualcomm.com ([103.229.16.226]:61033 "EHLO
-        alexa-out-tai-01.qualcomm.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1728081AbfIDCgO (ORCPT
+        id S1727499AbfIDChU (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 3 Sep 2019 22:37:20 -0400
+Received: from alexa-out-tai-02.qualcomm.com ([103.229.16.227]:35670 "EHLO
+        alexa-out-tai-02.qualcomm.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1727374AbfIDChU (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 3 Sep 2019 22:36:14 -0400
+        Tue, 3 Sep 2019 22:37:20 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
   d=qti.qualcomm.com; i=@qti.qualcomm.com; q=dns/txt;
-  s=qcdkim; t=1567564573; x=1599100573;
+  s=qcdkim; t=1567564639; x=1599100639;
   h=from:to:cc:date:message-id:references:in-reply-to:
    content-transfer-encoding:mime-version:subject;
-  bh=690DLbJxVsbxOExZq8IUhPHXvFBmzIqUtcCG05hSjww=;
-  b=n3WzH5fUaCCj2jz6JpAJKuVXT4+xItohuApk8KB7pTM/4aGj8JjxXf0X
-   DrFvxv1Srr0F7QWjSeNYyJ+Tx1ndWr9ymc9JIa/K6cQbC3IInnNDo4C60
-   Oe8Av0Mj0xMuWmrjoRuybvz1cdLNr9MEK0Hw51xSUh7dU/lbZbvJcdIb1
-   I=;
-Subject: RE: [PATCH 6/7] ath10k: enable alt data of TX path for sdio
-Thread-Topic: [PATCH 6/7] ath10k: enable alt data of TX path for sdio
-Received: from ironmsg01-tai.qualcomm.com ([10.249.140.6])
-  by alexa-out-tai-01.qualcomm.com with ESMTP; 04 Sep 2019 10:36:12 +0800
-Received: from aptaiexm02f.ap.qualcomm.com ([10.249.150.16])
-  by ironmsg01-tai.qualcomm.com with ESMTP/TLS/AES256-SHA; 04 Sep 2019 10:36:12 +0800
+  bh=g9u/yU9+0rtxWO/CVuWR2Mu+vWnGorb9YD6CCHbIVs4=;
+  b=cvJamroVp48lUPo2URku6EBfladuZicSzNCbIEq4kKpYMPbILICWx1Zy
+   wuI2ELrwWIDMNHjzqDtZ7jeNnMccxHnxgMNStqWm0uOrt0iTyjvA6ECVj
+   dMWgkqvYXf8uNyPlad6up7nx2qUpqZ1sbIw1aJ6KLjyPRjr6/1wPimWjb
+   U=;
+Subject: RE: [PATCH 7/7] ath10k: enable napi on RX path for sdio
+Thread-Topic: [PATCH 7/7] ath10k: enable napi on RX path for sdio
+Received: from ironmsg02-tai.qualcomm.com ([10.249.140.7])
+  by alexa-out-tai-02.qualcomm.com with ESMTP; 04 Sep 2019 10:37:18 +0800
+Received: from aptaiexm02b.ap.qualcomm.com ([10.249.150.12])
+  by ironmsg02-tai.qualcomm.com with ESMTP/TLS/AES256-SHA; 04 Sep 2019 10:37:18 +0800
 Received: from aptaiexm02f.ap.qualcomm.com (10.249.150.16) by
- aptaiexm02f.ap.qualcomm.com (10.249.150.16) with Microsoft SMTP Server (TLS)
- id 15.0.1473.3; Wed, 4 Sep 2019 10:36:10 +0800
+ aptaiexm02b.ap.qualcomm.com (10.249.150.12) with Microsoft SMTP Server (TLS)
+ id 15.0.1473.3; Wed, 4 Sep 2019 10:37:16 +0800
 Received: from aptaiexm02f.ap.qualcomm.com ([fe80::4152:1436:e436:faa1]) by
  aptaiexm02f.ap.qualcomm.com ([fe80::4152:1436:e436:faa1%19]) with mapi id
- 15.00.1473.005; Wed, 4 Sep 2019 10:36:10 +0800
+ 15.00.1473.005; Wed, 4 Sep 2019 10:37:16 +0800
 From:   Wen Gong <wgong@qti.qualcomm.com>
 To:     Wen Gong <wgong@codeaurora.org>,
         "ath10k@lists.infradead.org" <ath10k@lists.infradead.org>
 CC:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-Thread-Index: AQHVV05f2gRGX/2790KPloZXhaSku6ca5EUg
-Date:   Wed, 4 Sep 2019 02:36:10 +0000
-Message-ID: <6f4908a41585459986245b33ddc02120@aptaiexm02f.ap.qualcomm.com>
+Thread-Index: AQHVV05o/A96nV2nAk2Zzc4nCVwcnaca5I9w
+Date:   Wed, 4 Sep 2019 02:37:16 +0000
+Message-ID: <2f1d0d1cdd6d4f9097304d52ff3d3c98@aptaiexm02f.ap.qualcomm.com>
 References: <1566302108-18219-1-git-send-email-wgong@codeaurora.org>
- <1566302108-18219-7-git-send-email-wgong@codeaurora.org>
-In-Reply-To: <1566302108-18219-7-git-send-email-wgong@codeaurora.org>
+ <1566302108-18219-8-git-send-email-wgong@codeaurora.org>
+In-Reply-To: <1566302108-18219-8-git-send-email-wgong@codeaurora.org>
 Accept-Language: en-US
 Content-Language: en-US
 X-MS-Has-Attach: 
@@ -63,9 +63,10 @@ X-Mailing-List: linux-wireless@vger.kernel.org
 > Sent: Tuesday, August 20, 2019 7:55 PM
 > To: ath10k@lists.infradead.org
 > Cc: linux-wireless@vger.kernel.org
-> Subject: [EXT] [PATCH 6/7] ath10k: enable alt data of TX path for sdio
+> Subject: [EXT] [PATCH 7/7] ath10k: enable napi on RX path for sdio
 >=20
-Patch v2 sent, https://patchwork.kernel.org/patch/11116683/=20
+Patch v2 sent, https://patchwork.kernel.org/patch/11116669/
+
 >=20
 > _______________________________________________
 > ath10k mailing list
