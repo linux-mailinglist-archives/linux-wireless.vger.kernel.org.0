@@ -2,98 +2,93 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 63A42A7A35
-	for <lists+linux-wireless@lfdr.de>; Wed,  4 Sep 2019 06:43:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 48F1CA7B22
+	for <lists+linux-wireless@lfdr.de>; Wed,  4 Sep 2019 08:05:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728590AbfIDEnb (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 4 Sep 2019 00:43:31 -0400
-Received: from alexa-out-tai-01.qualcomm.com ([103.229.16.226]:34223 "EHLO
-        alexa-out-tai-01.qualcomm.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1728515AbfIDEna (ORCPT
+        id S1728145AbfIDGFq (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 4 Sep 2019 02:05:46 -0400
+Received: from smtp.codeaurora.org ([198.145.29.96]:51536 "EHLO
+        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726004AbfIDGFp (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 4 Sep 2019 00:43:30 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
-  d=qti.qualcomm.com; i=@qti.qualcomm.com; q=dns/txt;
-  s=qcdkim; t=1567572209; x=1599108209;
-  h=from:to:date:message-id:references:in-reply-to:
-   content-transfer-encoding:mime-version:subject;
-  bh=DMDQwa1wMgq3WtQtLRk0tX1gDVhgMz6LcVx5a87hHFo=;
-  b=P8kXHcZxs6TDG/bnelMFI5ijqrqhnVXRP9PYzmTneIydX54FwqQciDX0
-   DYN20LHeSLZaQir0l+NuDNa2T77UdzKJcIXas9ZCVAgNfWATJh8pHzyH9
-   r+wgjDNQ+l67Gt1fXYqbMTtJqpUO0EZfUiODkY4PhkchpnOLKkXmvEcNj
-   E=;
-Subject: RE: [PATCH 2/7] ath10k: change max RX bundle size from 8 to 32 for sdio
-Thread-Topic: [PATCH 2/7] ath10k: change max RX bundle size from 8 to 32 for sdio
-Received: from ironmsg03-tai.qualcomm.com ([10.249.140.8])
-  by alexa-out-tai-01.qualcomm.com with ESMTP; 04 Sep 2019 12:43:27 +0800
-Received: from aptaiexm02a.ap.qualcomm.com ([10.249.150.11])
-  by ironmsg03-tai.qualcomm.com with ESMTP/TLS/AES256-SHA; 04 Sep 2019 12:43:23 +0800
-Received: from aptaiexm02f.ap.qualcomm.com (10.249.150.16) by
- aptaiexm02a.ap.qualcomm.com (10.249.150.11) with Microsoft SMTP Server (TLS)
- id 15.0.1473.3; Wed, 4 Sep 2019 12:43:21 +0800
-Received: from aptaiexm02f.ap.qualcomm.com ([fe80::4152:1436:e436:faa1]) by
- aptaiexm02f.ap.qualcomm.com ([fe80::4152:1436:e436:faa1%19]) with mapi id
- 15.00.1473.005; Wed, 4 Sep 2019 12:43:21 +0800
-From:   Wen Gong <wgong@qti.qualcomm.com>
-To:     Dave Taht <dave@taht.net>,
-        "ath10k@lists.infradead.org" <ath10k@lists.infradead.org>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-Thread-Index: AQHVYnII1QGsPhG3K0ybAPHFlPgABKca8VbA
-Date:   Wed, 4 Sep 2019 04:43:21 +0000
-Message-ID: <259d8d7f8c2a4c428ae14ff211c83c1a@aptaiexm02f.ap.qualcomm.com>
-References: <1566302108-18219-1-git-send-email-wgong@codeaurora.org>
-        <1566302108-18219-3-git-send-email-wgong@codeaurora.org>
- <87k1apnyyo.fsf@taht.net>
-In-Reply-To: <87k1apnyyo.fsf@taht.net>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-ms-exchange-transport-fromentityheader: Hosted
-x-originating-ip: [10.249.136.10]
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+        Wed, 4 Sep 2019 02:05:45 -0400
+Received: by smtp.codeaurora.org (Postfix, from userid 1000)
+        id C65D96115D; Wed,  4 Sep 2019 06:05:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
+        s=default; t=1567577144;
+        bh=aShqyN0Qd6KXTO9xyxybPT3f0jnGflZlYOUa5dN9MtI=;
+        h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
+        b=STRjU44NdPfHLvhvJf59rfO2e+otP8z8kz7owHCPYKbhNJD6kNnp2DrfGWorpSh1t
+         I1JiwOMCTQBW98xr/+B/SExCmicLYymGmvUS6Nk8XZWy5+GcT/VJP37gyEtPoXOtrd
+         W6yLQol5a4whNtPxMs2CZmDuDnDRQYlhs6UOsD0Q=
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        pdx-caf-mail.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-0.8 required=2.0 tests=ALL_TRUSTED,BAYES_00,
+        DKIM_INVALID,DKIM_SIGNED,MISSING_DATE,MISSING_MID,SPF_NONE autolearn=no
+        autolearn_force=no version=3.4.0
+Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo@smtp.codeaurora.org)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 3BFF160863;
+        Wed,  4 Sep 2019 06:05:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
+        s=default; t=1567577144;
+        bh=aShqyN0Qd6KXTO9xyxybPT3f0jnGflZlYOUa5dN9MtI=;
+        h=Subject:From:In-Reply-To:References:To:Cc:From;
+        b=W9orP2b1CDYEo1ik0R2sfFMCtfiUjF4z+YuTqKHcozs+wahtDFaobbukAxKr3uHWu
+         wHcl/fCHKSkMxy39qXSlncnhtPFbWu54g5NvLTJbrgIHb0gaMeSc6cXPSSXQ2eJ5ok
+         kddufNvugFu6k6heCmNPZBF5Wos26rzTvyuy6uW8=
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 3BFF160863
+Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH][next] wil6210: fix wil_cid_valid with negative cid values
+From:   Kalle Valo <kvalo@codeaurora.org>
+In-Reply-To: <20190702144026.13013-1-colin.king@canonical.com>
+References: <20190702144026.13013-1-colin.king@canonical.com>
+To:     Colin King <colin.king@canonical.com>
+Cc:     Maya Erez <merez@codeaurora.org>,
+        "David S . Miller" <davem@davemloft.net>,
+        linux-wireless@vger.kernel.org, wil6210@qti.qualcomm.com,
+        netdev@vger.kernel.org, kernel-janitors@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+User-Agent: pwcli/0.0.0-git (https://github.com/kvalo/pwcli/) Python/2.7.12
+Message-Id: <20190904060544.C65D96115D@smtp.codeaurora.org>
+Date:   Wed,  4 Sep 2019 06:05:44 +0000 (UTC)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-> -----Original Message-----
-> From: Dave Taht <dave@taht.net>
-> Sent: Wednesday, September 4, 2019 12:10 AM
-> To: Wen Gong <wgong@qti.qualcomm.com>; ath10k@lists.infradead.org;
-> linux-wireless@vger.kernel.org
-> Subject: [EXT] Re: [PATCH 2/7] ath10k: change max RX bundle size from 8 t=
-o
-> 32 for sdio
->=20
->=20
-> In terms of deeply grokking what increasing buffering to achieve high
-> bandwidth on a testbench, vs what it can do to clobber latency in the
-> real world at low bandwidths, I tend to point folk at:
->=20
-> https://www.youtube.com/watch?v=3DRb-UnHDw02o&t=3D25m40s
->=20
-> where I got a whole bunch of hackers to stand up and act like packets
-> in an aggregating FIFO wifi queue.
->=20
-> This key section is only 8 minutes long, and I promise, y'all laugh
-> at least 3 times at the demonstration.
->=20
-> At the time, also, the ath10k was so overbuffered that on one test
-> I could try to start 100 flows, and only get five.
->=20
-> https://lwn.net/Articles/705884/
->=20
-> and on my slides:
->=20
-> https://blog.linuxplumbersconf.org/2016/ocw//system/presentations/3963/
-> original/linuxplumbers_wifi_latency-3Nov.pdf
->=20
-Hi Dave,
-So your mean is change 8  to 32 will impact latency? It will increase laten=
-cy of rx?
+Colin King <colin.king@canonical.com> wrote:
 
->=20
-> 0xFFFEFFFF
+> There are several occasions where a negative cid value is passed
+> into wil_cid_valid and this is converted into a u8 causing the
+> range check of cid >= 0 to always succeed.  Fix this by making
+> the cid argument an int to handle any -ve error value of cid.
+> 
+> An example of this behaviour is in wil_cfg80211_dump_station,
+> where cid is assigned -ENOENT if the call to wil_find_cid_by_idx
+> fails, and this -ve value is passed to wil_cid_valid.  I believe
+> that the conversion of -ENOENT to the u8 value 254 which is
+> greater than wil->max_assoc_sta causes wil_find_cid_by_idx to
+> currently work fine, but I think is by luck and not the
+> intended behaviour.
+> 
+> Signed-off-by: Colin Ian King <colin.king@canonical.com>
+> Reviewed-by: Maya Erez <merez@codeaurora.org>
+> Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
+
+Patch applied to ath-next branch of ath.git, thanks.
+
+23bb9f692b66 wil6210: fix wil_cid_valid with negative cid values
+
+-- 
+https://patchwork.kernel.org/patch/11027989/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+
