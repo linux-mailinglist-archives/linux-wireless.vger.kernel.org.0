@@ -2,53 +2,53 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 5F80FA7C9C
-	for <lists+linux-wireless@lfdr.de>; Wed,  4 Sep 2019 09:19:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 75982A7CA9
+	for <lists+linux-wireless@lfdr.de>; Wed,  4 Sep 2019 09:20:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728922AbfIDHTY (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 4 Sep 2019 03:19:24 -0400
-Received: from mail-qt1-f196.google.com ([209.85.160.196]:43452 "EHLO
-        mail-qt1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728698AbfIDHTX (ORCPT
+        id S1729073AbfIDHUU (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 4 Sep 2019 03:20:20 -0400
+Received: from mail-qt1-f195.google.com ([209.85.160.195]:34625 "EHLO
+        mail-qt1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726061AbfIDHUU (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 4 Sep 2019 03:19:23 -0400
-Received: by mail-qt1-f196.google.com with SMTP id l22so11035224qtp.10
-        for <linux-wireless@vger.kernel.org>; Wed, 04 Sep 2019 00:19:22 -0700 (PDT)
+        Wed, 4 Sep 2019 03:20:20 -0400
+Received: by mail-qt1-f195.google.com with SMTP id a13so23304845qtj.1
+        for <linux-wireless@vger.kernel.org>; Wed, 04 Sep 2019 00:20:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :content-transfer-encoding;
-        bh=Qu7o7rztC+MVwy4nICnfoy4ExB5K29trQMEqKQNwYfI=;
-        b=jnLukmOcoPntIIuTzGGDx2p+l1tmfA8WTmA9ycL8e5i3/ien+imDhk7ldoYByAvtyC
-         Uhl4E8o1eEHjs/0zyIn/I2IqCtreoyIRWNIGsu4pRCRVNcaGXdXJigKdet+rt1Niem7V
-         qr93ij3nqG6xLbl+n4oDmXN8QSPOjF7l4l+KZ8lLwmqCLpxiDGNdpsZfiH7lgIR2kPLS
-         G1bpV1QkcwmqMfqtsdBQoAcUXB+Z5/kqAaqam6WiIbb5+ot6e5BauvnBuOcpxS5NwPeC
-         owQAtdDXcsejE65jw5JzHQOYbDUWLLzJt7IUJL1cAUDSnZdMeGK9Lucxz9IqeaH1LvID
-         uveA==
+        bh=3Ke+IlWkm+vZ8bhXCYtufOMhIz47CItVmYE1oj5gVqg=;
+        b=mNykI3M6hT+6ZnwqA+uGPkI/T69+1kVOhXyvB3lTUMYFWKn50K/596kDAMfqs59kOI
+         bGzJ2g8yN9JcySSFVoArCc2/vbZFhNnFutGAVl6Dj2ni6iMbh7Mk+WfExamTXbscAqZG
+         s0PosGR/MGMmc//a4BDYTFNRTP1x7cTtXX1ZwZcn44VQYGAt+3Pya7fwncsxUUR370Rr
+         0TtnA7lnjFlktJG4hRBceXsWXVjGsbci0lMRjJHlHR0Qh1HOmQpl1m/LOvd44sThA9eS
+         9rEieGXQlun6/37vqfyLNu2YYwQh3LwdwGBqoMjfT3xi0Ea70si6Hm0Og8nnXqJe8BBi
+         QgtA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:content-transfer-encoding;
-        bh=Qu7o7rztC+MVwy4nICnfoy4ExB5K29trQMEqKQNwYfI=;
-        b=tEIlSVXsSq68LN1yXlyLDE3YRxJ2s0mKqBv3u/B1qIYtGjPG4/1mR5Fw4JrycUHejp
-         bHixeyKqlCaqetemLMHiKSSYNGChgr10ekNnKihGcy3ybZA8KppK+5iUKDyfXyUSqP40
-         ksFt8xTdu6BdzXk29O/q3ynHpGK33y5v5kbDvP+c3bgjJ1zgc2tKJyIkir4CjoVlB+Jc
-         1iSnz+El9AK4J+HbeuZd6tg27PQ0pr7wOdy/waHConIW1YqoPLyLlg8O86xhQiOpRK9q
-         ZGzcHIOYTulS2P0QltVEgVLRJh6kiZRruwW0LDXPi/9qgVhoWXLQ6YUtkIFZpgCwBdaN
-         WGUA==
-X-Gm-Message-State: APjAAAUr8lDjG86wE952jRZPLf0Y73nTL6pl4kjSKtpoZb8CXsMUbNDz
-        kW5WA0DV6F/v9X3f6it2y+KbO0K2s+WUuJd+eGyeBQ==
-X-Google-Smtp-Source: APXvYqxnKxvxjdMW4UFNeQFFlNfeaN17iy10NuPOoILMotVycgGA+OwU7izhjTgd6o+UogTLsUApPdCJQUZy5fFBkgA=
-X-Received: by 2002:ac8:1e08:: with SMTP id n8mr37719814qtl.144.1567581562068;
- Wed, 04 Sep 2019 00:19:22 -0700 (PDT)
+        bh=3Ke+IlWkm+vZ8bhXCYtufOMhIz47CItVmYE1oj5gVqg=;
+        b=fgNCurqOJ6F7WgVLZnWyHb0+hEh8q1zdN94VVHNIuBVC7YamgSCcjFPFbIXu6TJJJ3
+         2z2pbY0iO0mr2uWz96NccUhWNZGprQc1YC4MxqKz6oWAHIoobZ2Hj5LjSho8zQ5ZDShT
+         admsUUe1sZ5E69QGyi3orI1X/dPn92a3jFlG3LwkWZ2S4iBUgWFYiJ4HLpzbAahixk9b
+         lzBHeM+FzbyUPsi10KDmJz7OaIXibzNpIuFdMPgen6qdMlyuUMY6c66TBjwb+aZiuW9R
+         m48LL64ygA38pqf6iJRa4/AOb9xUENNe7DAS44KwtqtaJ+T1qWrL6PdprhSwmspQ6+KN
+         PgEQ==
+X-Gm-Message-State: APjAAAWerxDNUdQBMxawk5UaEBHeA3/zuYMacUHI30ivBAQWbVgpl679
+        NC2ldHgqNuYuPTNVPy7MpgFDpA5vCyC3PY9QVv8=
+X-Google-Smtp-Source: APXvYqxBUm8TUmTuULtrnJBYhN2nVThAZbt15l0BYFqAyiFCyptIILxvEEGNwHBDEAWpBWJ36TLGEfvkWTmDMEaVoHI=
+X-Received: by 2002:a0c:8a6d:: with SMTP id 42mr16195641qvu.138.1567581618649;
+ Wed, 04 Sep 2019 00:20:18 -0700 (PDT)
 MIME-Version: 1.0
-References: <CAFb4eQksH4B8fO8kShaLSPk+-tNsE3tdUHb7qbXXSneSwjt9QA@mail.gmail.com>
-In-Reply-To: <CAFb4eQksH4B8fO8kShaLSPk+-tNsE3tdUHb7qbXXSneSwjt9QA@mail.gmail.com>
+References: <CAFb4eQnHy5GFRq21C-knnOc9jrcXUYYameoS2Onk9jqp2Pjqig@mail.gmail.com>
+In-Reply-To: <CAFb4eQnHy5GFRq21C-knnOc9jrcXUYYameoS2Onk9jqp2Pjqig@mail.gmail.com>
 From:   Equipe Soft <equipe.soft.isere@gmail.com>
-Date:   Wed, 4 Sep 2019 09:19:10 +0200
-Message-ID: <CAFb4eQkPjP0vVpknnddY4EeMfzZhaAhmOOu+h8DmaaiFT78iOA@mail.gmail.com>
-Subject: Re: Issue with intel wireless-AC 9260 in wifi direct in 5Ghz
-To:     linux-wireless@vger.kernel.org
+Date:   Wed, 4 Sep 2019 09:20:07 +0200
+Message-ID: <CAFb4eQ=MhqhKL9_wCo++g94F+z_-15ZJitiYh1dLqf99CKwTog@mail.gmail.com>
+Subject: Re: Issue with Intel(R) Wireless-AC 9260 in wifi direct in 5GHz
+To:     linuxwifi@intel.com, linux-wireless@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 Sender: linux-wireless-owner@vger.kernel.org
@@ -56,26 +56,23 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hello, Did you have any news about the issue?
-Regards.
+Hello, do you have any news about the issue?
 
-Le mer. 28 ao=C3=BBt 2019 =C3=A0 19:21, Equipe Soft
+Le mer. 28 ao=C3=BBt 2019 =C3=A0 19:17, Equipe Soft
 <equipe.soft.isere@gmail.com> a =C3=A9crit :
 >
 > Hello,
-> I'm trying to set up a wifi direct group between my AC9260 wifi board
-> and a android tablet supporting WifiDirect.
+> I'm trying to set up a wifi direct group between my AC9260 wifi board and=
+ a android tablet supporting WifiDirect.
 >
 > I tried several configurations and I faced some issues.
-> Here follow the testing sequence. All the following command are sent
-> through wpa_cli:
+> Here follow the testing sequence. All the following command are sent thro=
+ugh wpa_cli:
 >
 > > p2p_find
-> P2P-DEVICE-FOUND f2:ee:10:c2:ce:68 p2p_dev_addr=3Df2:ee:10:c2:ce:68
-> pri_dev_type=3D10-0050F204-5 name=3D'[Tablet] Galaxy Tab S3'
-> config_methods=3D0x188 dev_capab=3D0x25 group_capab=3D0x0 vendor_elems=3D=
-1
-> new=3D1
+> P2P-DEVICE-FOUND f2:ee:10:c2:ce:68 p2p_dev_addr=3Df2:ee:10:c2:ce:68 pri_d=
+ev_type=3D10-0050F204-5 name=3D'[Tablet] Galaxy Tab S3' config_methods=3D0x=
+188 dev_capab=3D0x25 group_capab=3D0x0 vendor_elems=3D1 new=3D1
 >
 > >p2p_connect f2:ee:10:c2:ce:68 pin 1234 go_intent=3D1
 > 74493685
@@ -83,16 +80,15 @@ Le mer. 28 ao=C3=BBt 2019 =C3=A0 19:21, Equipe Soft
 > PIN is set on the tablet then, on my terminal I see:
 >
 > P2P-GO-NEG-SUCCESS role=3DGO freq=3D5785 ht40=3D0 peer_dev=3Df2:ee:10:c2:=
-ce:68
-> peer_iface=3Df2:ee:10:c2:4e:68 wps_method=3DDisplay
+ce:68 peer_iface=3Df2:ee:10:c2:4e:68 wps_method=3DDisplay
 > P2P-GROUP-FORMATION-FAILURE
 > P2P-GROUP-REMOVED p2p-wlan0-0 GO reason=3DFORMATION_FAILED
 >
 > dmesg :
 >
 > [ 1875.593069] IPv6: ADDRCONF(NETDEV_UP): p2p-wlan0-0: link is not ready
-> [ 1875.659199] iwlwifi 0000:01:00.0: Microcode SW error detected.
-> Restarting 0x2000000.
+> [ 1875.659199] iwlwifi 0000:01:00.0: Microcode SW error detected.  Restar=
+ting 0x2000000.
 > [ 1875.667246] iwlwifi 0000:01:00.0: Start IWL Error Log Dump:
 > [ 1875.672851] iwlwifi 0000:01:00.0: Status: 0x00000100, count: 6
 > [ 1875.678718] iwlwifi 0000:01:00.0: Loaded firmware version: 38.755cfdd8=
@@ -148,34 +144,34 @@ ce:68
 > [ 1875.951810] iwlwifi 0000:01:00.0: 0x0006012B | last host cmd
 > [ 1875.957488] iwlwifi 0000:01:00.0: 0x00000000 | isr status reg
 > [ 1875.963268] ieee80211 phy0: Hardware restart was requested
-> [ 1875.968932] iwlwifi 0000:01:00.0: iwlwifi transaction failed,
-> dumping registers
+> [ 1875.968932] iwlwifi 0000:01:00.0: iwlwifi transaction failed, dumping =
+registers
 > [ 1875.976275] iwlwifi 0000:01:00.0: iwlwifi device config registers:
-> [ 1875.983647] iwlwifi 0000:01:00.0: 00000000: 25268086 00100406
-> 02800029 00000000 e0000004 00000000 00000000 00000000
-> [ 1875.994312] iwlwifi 0000:01:00.0: 00000020: 00000000 00000000
-> 00000000 00148086 00000000 000000c8 00000000 0000012b
+> [ 1875.983647] iwlwifi 0000:01:00.0: 00000000: 25268086 00100406 02800029=
+ 00000000 e0000004 00000000 00000000 00000000
+> [ 1875.994312] iwlwifi 0000:01:00.0: 00000020: 00000000 00000000 00000000=
+ 00148086 00000000 000000c8 00000000 0000012b
 > [ 1876.004835] iwlwifi 0000:01:00.0: iwlwifi device memory mapped registe=
 rs:
-> [ 1876.011780] iwlwifi 0000:01:00.0: 00000000: 00c89004 00000040
-> 00000000 ba00008b 00000000 00000000 00027e1f 00000000
-> [ 1876.022251] iwlwifi 0000:01:00.0: 00000020: 00000000 0c040005
-> 00000321 d55555d5 d55555d5 d55555d5 80008040 041f0044
+> [ 1876.011780] iwlwifi 0000:01:00.0: 00000000: 00c89004 00000040 00000000=
+ ba00008b 00000000 00000000 00027e1f 00000000
+> [ 1876.022251] iwlwifi 0000:01:00.0: 00000020: 00000000 0c040005 00000321=
+ d55555d5 d55555d5 d55555d5 80008040 041f0044
 > [ 1876.032714] iwlwifi 0000:01:00.0: iwlwifi device AER capability struct=
 ure:
-> [ 1876.039694] iwlwifi 0000:01:00.0: 00000000: 14c10001 00000000
-> 00000000 00462031 00000000 00002000 00000000 00000000
+> [ 1876.039694] iwlwifi 0000:01:00.0: 00000000: 14c10001 00000000 00000000=
+ 00462031 00000000 00002000 00000000 00000000
 > [ 1876.050219] iwlwifi 0000:01:00.0: 00000020: 00000000 00000000 00000000
-> [ 1876.056838] iwlwifi 0000:01:00.0: iwlwifi parent port
-> (0000:00:00.0) config registers:
-> [ 1876.064933] iwlwifi 0000:00:00.0: 00000000: d02110ee 00100006
-> 06040000 00010000 00000000 00000000 000c0100 00000000
-> [ 1876.075399] iwlwifi 0000:00:00.0: 00000020: e000e000 0001fff1
-> 00000000 00000000 00000000 00000040 00000000 0000012b
+> [ 1876.056838] iwlwifi 0000:01:00.0: iwlwifi parent port (0000:00:00.0) c=
+onfig registers:
+> [ 1876.064933] iwlwifi 0000:00:00.0: 00000000: d02110ee 00100006 06040000=
+ 00010000 00000000 00000000 000c0100 00000000
+> [ 1876.075399] iwlwifi 0000:00:00.0: 00000020: e000e000 0001fff1 00000000=
+ 00000000 00000000 00000040 00000000 0000012b
 > [ 1876.085869] iwlwifi 0000:01:00.0: FW error in SYNC CMD BINDING_CONTEXT=
 _CMD
-> [ 1876.092773] CPU: 1 PID: 498 Comm: wpa_supplicant Not tainted
-> 4.18.31-yocto-standard #1
+> [ 1876.092773] CPU: 1 PID: 498 Comm: wpa_supplicant Not tainted 4.18.31-y=
+octo-standard #1
 > [ 1876.100680] Hardware name: ********
 > [ 1876.105290] Call trace:
 > [ 1876.107744]  dump_backtrace+0x0/0x158
@@ -206,8 +202,9 @@ _CMD
 > [ 1876.213092] iwlwifi 0000:01:00.0: Failed to remove MAC context: -5
 > [ 1876.219353] iwlwifi 0000:01:00.0: PHY ctxt cmd error. ret=3D-5
 >
-> It looks like the module firmware got an error when trying to set the
-> module in AP in 5GHz. I know there could be some regulatory limitation
-> for IBSS in 5Ghz, but why this does not work for wifi direct.
+> It looks like the module firmware got an error when trying to set the mod=
+ule in AP in 5GHz. I know there could be some regulatory limitation for IBS=
+S in 5Ghz, but why this does not work for wifi direct.
 > Thanks for your time.
 > @team.
+>
