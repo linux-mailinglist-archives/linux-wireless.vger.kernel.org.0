@@ -2,25 +2,25 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 48F1CA7B22
-	for <lists+linux-wireless@lfdr.de>; Wed,  4 Sep 2019 08:05:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E50A3A7B27
+	for <lists+linux-wireless@lfdr.de>; Wed,  4 Sep 2019 08:06:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728145AbfIDGFq (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 4 Sep 2019 02:05:46 -0400
-Received: from smtp.codeaurora.org ([198.145.29.96]:51536 "EHLO
+        id S1727959AbfIDGGz (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 4 Sep 2019 02:06:55 -0400
+Received: from smtp.codeaurora.org ([198.145.29.96]:52038 "EHLO
         smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726004AbfIDGFp (ORCPT
+        with ESMTP id S1726045AbfIDGGz (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 4 Sep 2019 02:05:45 -0400
+        Wed, 4 Sep 2019 02:06:55 -0400
 Received: by smtp.codeaurora.org (Postfix, from userid 1000)
-        id C65D96115D; Wed,  4 Sep 2019 06:05:44 +0000 (UTC)
+        id BDDCC61194; Wed,  4 Sep 2019 06:06:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1567577144;
-        bh=aShqyN0Qd6KXTO9xyxybPT3f0jnGflZlYOUa5dN9MtI=;
+        s=default; t=1567577214;
+        bh=6oY1hWWjdduDaRo/PIdjq07I2zzTLs1oqnPDSebwuRE=;
         h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-        b=STRjU44NdPfHLvhvJf59rfO2e+otP8z8kz7owHCPYKbhNJD6kNnp2DrfGWorpSh1t
-         I1JiwOMCTQBW98xr/+B/SExCmicLYymGmvUS6Nk8XZWy5+GcT/VJP37gyEtPoXOtrd
-         W6yLQol5a4whNtPxMs2CZmDuDnDRQYlhs6UOsD0Q=
+        b=LXaj16397dI+ChOmwwRENCZ75C+raRvZGaDpY0AILvLZM0RD1YsbqlsMg3d9bJGwM
+         uWb4C4b3nC9o9ZDULngEpuzQiPwEeytLm+VU8ZZdZtOHTHB+RuuieyK+hvLlui2k4G
+         mD7AZcQZ4A17yNUBx95HVAECI17d48/kuofPPswI=
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         pdx-caf-mail.web.codeaurora.org
 X-Spam-Level: 
@@ -31,64 +31,55 @@ Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
         (Authenticated sender: kvalo@smtp.codeaurora.org)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 3BFF160863;
-        Wed,  4 Sep 2019 06:05:42 +0000 (UTC)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 1239F6118C;
+        Wed,  4 Sep 2019 06:06:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1567577144;
-        bh=aShqyN0Qd6KXTO9xyxybPT3f0jnGflZlYOUa5dN9MtI=;
+        s=default; t=1567577214;
+        bh=6oY1hWWjdduDaRo/PIdjq07I2zzTLs1oqnPDSebwuRE=;
         h=Subject:From:In-Reply-To:References:To:Cc:From;
-        b=W9orP2b1CDYEo1ik0R2sfFMCtfiUjF4z+YuTqKHcozs+wahtDFaobbukAxKr3uHWu
-         wHcl/fCHKSkMxy39qXSlncnhtPFbWu54g5NvLTJbrgIHb0gaMeSc6cXPSSXQ2eJ5ok
-         kddufNvugFu6k6heCmNPZBF5Wos26rzTvyuy6uW8=
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 3BFF160863
+        b=dmkdYM0Gskv4SeR/Jw3K8IJbGy99L86+CIPxTC6NbJ+xJ9Y1QQ4v17G1gSGZapn3h
+         R4DBmmFi2Mcx9VQWJ7nGDGs+bAiYPW45s70YSiVF9e6Numvk60TnZe3B/O9Zza0ex7
+         VZ5hA+7sqMDWZCsI/6mZgijjnzCsbx+/D9/2lJag=
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 1239F6118C
 Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
 Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH][next] wil6210: fix wil_cid_valid with negative cid values
+Subject: Re: [PATCH v8 2/2] wil6210: Add EDMG channel support
 From:   Kalle Valo <kvalo@codeaurora.org>
-In-Reply-To: <20190702144026.13013-1-colin.king@canonical.com>
-References: <20190702144026.13013-1-colin.king@canonical.com>
-To:     Colin King <colin.king@canonical.com>
-Cc:     Maya Erez <merez@codeaurora.org>,
-        "David S . Miller" <davem@davemloft.net>,
-        linux-wireless@vger.kernel.org, wil6210@qti.qualcomm.com,
-        netdev@vger.kernel.org, kernel-janitors@vger.kernel.org,
-        linux-kernel@vger.kernel.org
+In-Reply-To: <1566138918-3823-3-git-send-email-ailizaro@codeaurora.org>
+References: <1566138918-3823-3-git-send-email-ailizaro@codeaurora.org>
+To:     Alexei Avshalom Lazar <ailizaro@codeaurora.org>
+Cc:     Johannes Berg <johannes@sipsolutions.net>,
+        Alexei Avshalom Lazar <ailizaro@codeaurora.org>,
+        linux-wireless@vger.kernel.org, wil6210@qti.qualcomm.com
 User-Agent: pwcli/0.0.0-git (https://github.com/kvalo/pwcli/) Python/2.7.12
-Message-Id: <20190904060544.C65D96115D@smtp.codeaurora.org>
-Date:   Wed,  4 Sep 2019 06:05:44 +0000 (UTC)
+Message-Id: <20190904060654.BDDCC61194@smtp.codeaurora.org>
+Date:   Wed,  4 Sep 2019 06:06:54 +0000 (UTC)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Colin King <colin.king@canonical.com> wrote:
+Alexei Avshalom Lazar <ailizaro@codeaurora.org> wrote:
 
-> There are several occasions where a negative cid value is passed
-> into wil_cid_valid and this is converted into a u8 causing the
-> range check of cid >= 0 to always succeed.  Fix this by making
-> the cid argument an int to handle any -ve error value of cid.
+> Add support for Enhanced Directional Multi-Gigabit (EDMG) channels 9-11.
+> wil6210 reports it's EDMG capabilities (that are also based on FW
+> capability) to cfg80211 by filling
+> wiphy->bands[NL80211_BAND_60GHZ]->edmg_cap.
+> wil6210 handles edmg.channels and edmg.bw_config requested in connect
+> and start_ap operations.
 > 
-> An example of this behaviour is in wil_cfg80211_dump_station,
-> where cid is assigned -ENOENT if the call to wil_find_cid_by_idx
-> fails, and this -ve value is passed to wil_cid_valid.  I believe
-> that the conversion of -ENOENT to the u8 value 254 which is
-> greater than wil->max_assoc_sta causes wil_find_cid_by_idx to
-> currently work fine, but I think is by luck and not the
-> intended behaviour.
-> 
-> Signed-off-by: Colin Ian King <colin.king@canonical.com>
-> Reviewed-by: Maya Erez <merez@codeaurora.org>
+> Signed-off-by: Alexei Avshalom Lazar <ailizaro@codeaurora.org>
 > Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
 
 Patch applied to ath-next branch of ath.git, thanks.
 
-23bb9f692b66 wil6210: fix wil_cid_valid with negative cid values
+9abe3e306ecc wil6210: Add EDMG channel support
 
 -- 
-https://patchwork.kernel.org/patch/11027989/
+https://patchwork.kernel.org/patch/11099621/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
