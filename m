@@ -2,70 +2,92 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2FAA8AA071
-	for <lists+linux-wireless@lfdr.de>; Thu,  5 Sep 2019 12:50:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9966BAA13B
+	for <lists+linux-wireless@lfdr.de>; Thu,  5 Sep 2019 13:24:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732456AbfIEKud (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 5 Sep 2019 06:50:33 -0400
-Received: from alexa-out-tai-02.qualcomm.com ([103.229.16.227]:7002 "EHLO
-        alexa-out-tai-02.qualcomm.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1731476AbfIEKuc (ORCPT
+        id S1732090AbfIELYR (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 5 Sep 2019 07:24:17 -0400
+Received: from smtp.codeaurora.org ([198.145.29.96]:52194 "EHLO
+        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726162AbfIELYR (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 5 Sep 2019 06:50:32 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
-  d=qti.qualcomm.com; i=@qti.qualcomm.com; q=dns/txt;
-  s=qcdkim; t=1567680632; x=1599216632;
-  h=from:to:cc:date:message-id:references:in-reply-to:
-   content-transfer-encoding:mime-version:subject;
-  bh=rVn3Xny9R8JPc+zFOJCISKNCSjmBTjjXhYya3D/aurc=;
-  b=o3wAOwoDXJ+GMbSyiNjzE6d/Obz/Bet7Fj6drAPyaAZJ4Hj0ucA9VYKv
-   oHcZfDmLMgHZdVcn/zRZcIxcEa/wmwMtQoQiq8KgqAjT6H06K0FuuQ53S
-   bdKyKjxs0FUIQHBKRcE1tPJSU9Am3lxxCfjTyZrItwYzjQ6R9u3qhN25C
-   Y=;
-Subject: RE: [PATCH v4 8/8] ath10k: enable napi on RX path for sdio
-Thread-Topic: [PATCH v4 8/8] ath10k: enable napi on RX path for sdio
-Received: from ironmsg02-tai.qualcomm.com ([10.249.140.7])
-  by alexa-out-tai-02.qualcomm.com with ESMTP; 05 Sep 2019 18:50:31 +0800
-Received: from aptaiexm02b.ap.qualcomm.com ([10.249.150.12])
-  by ironmsg02-tai.qualcomm.com with ESMTP/TLS/AES256-SHA; 05 Sep 2019 18:50:31 +0800
-Received: from aptaiexm02f.ap.qualcomm.com (10.249.150.16) by
- aptaiexm02b.ap.qualcomm.com (10.249.150.12) with Microsoft SMTP Server (TLS)
- id 15.0.1473.3; Thu, 5 Sep 2019 18:50:29 +0800
-Received: from aptaiexm02f.ap.qualcomm.com ([fe80::4152:1436:e436:faa1]) by
- aptaiexm02f.ap.qualcomm.com ([fe80::4152:1436:e436:faa1%19]) with mapi id
- 15.00.1473.005; Thu, 5 Sep 2019 18:50:29 +0800
-From:   Wen Gong <wgong@qti.qualcomm.com>
-To:     Wen Gong <wgong@codeaurora.org>,
-        "ath10k@lists.infradead.org" <ath10k@lists.infradead.org>
-CC:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-Thread-Index: AQHVYXAmp8mxVCKAGUqXejG7xPiQLacc7HIg
-Date:   Thu, 5 Sep 2019 10:50:29 +0000
-Message-ID: <c816734498c349119c12c23bc8a4827f@aptaiexm02f.ap.qualcomm.com>
-References: <1567416146-14403-1-git-send-email-wgong@codeaurora.org>
- <1567416146-14403-9-git-send-email-wgong@codeaurora.org>
-In-Reply-To: <1567416146-14403-9-git-send-email-wgong@codeaurora.org>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-ms-exchange-transport-fromentityheader: Hosted
-x-originating-ip: [10.249.136.10]
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+        Thu, 5 Sep 2019 07:24:17 -0400
+Received: by smtp.codeaurora.org (Postfix, from userid 1000)
+        id 2887660863; Thu,  5 Sep 2019 11:24:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
+        s=default; t=1567682656;
+        bh=bXBc7zdddhaTSlMEPK7QbTKYtRiz+go4+nkLx5X8eGo=;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+        b=Dw3p9VD1EiFBn6m05v01IAd5hewDHO58IUpHPFnO2+rgUyPHaFDb0rdx+7ViYa4Ug
+         YMOsCKCCt5LMz9SsoklOHWK7Ym9JIxBoXC4hP3dBJbOaFLUh92hR2eHskKng4h1/Bg
+         M8qZ4CwSGqzmak/7BFcQzMt8lNcbWWK1V8U9Y2wo=
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        pdx-caf-mail.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.7 required=2.0 tests=ALL_TRUSTED,BAYES_00,
+        DKIM_INVALID,DKIM_SIGNED,SPF_NONE autolearn=no autolearn_force=no
+        version=3.4.0
+Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo@smtp.codeaurora.org)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 516EA605A0;
+        Thu,  5 Sep 2019 11:24:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
+        s=default; t=1567682655;
+        bh=bXBc7zdddhaTSlMEPK7QbTKYtRiz+go4+nkLx5X8eGo=;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+        b=o/c+5rO6ZLjyJfeUGgc/+kRxkSAcMHI3IJE3C8bn7dMzRII5cWU2CjHiLPPBOSItU
+         HNzme+I89qUyXfoBqFANzjJsJYRONvawJrY8k0WgyQWZaSXeabEwmKMz4jrLd8Sqfd
+         yudt+xTC+p2XFrgNg5RQ+wywwlYm4gP7yG//kJGY=
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 516EA605A0
+Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
+From:   Kalle Valo <kvalo@codeaurora.org>
+To:     Vasanthakumar Thiagarajan <vthiagar@codeaurora.org>
+Cc:     Johannes Berg <johannes@sipsolutions.net>,
+        devicetree@vger.kernel.org, linux-wireless@vger.kernel.org,
+        ath11k@lists.infradead.org
+Subject: Re: [PATCH 31/49] ath11k: add mac.c
+References: <1566316095-27507-1-git-send-email-kvalo@codeaurora.org>
+        <1566316095-27507-32-git-send-email-kvalo@codeaurora.org>
+        <4076919b34cad119eb4146025f587285ef40e37c.camel@sipsolutions.net>
+        <ee38dc5e80097d0ebc186f81b2f11d37@codeaurora.org>
+Date:   Thu, 05 Sep 2019 14:24:11 +0300
+In-Reply-To: <ee38dc5e80097d0ebc186f81b2f11d37@codeaurora.org> (Vasanthakumar
+        Thiagarajan's message of "Fri, 23 Aug 2019 17:45:41 +0530")
+Message-ID: <878sr3nfz8.fsf@kamboji.qca.qualcomm.com>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
 MIME-Version: 1.0
+Content-Type: text/plain
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-> -----Original Message-----
-> From: ath10k <ath10k-bounces@lists.infradead.org> On Behalf Of Wen Gong
-> Sent: Monday, September 2, 2019 5:22 PM
-> To: ath10k@lists.infradead.org
-> Cc: linux-wireless@vger.kernel.org
-> Subject: [EXT] [PATCH v4 8/8] ath10k: enable napi on RX path for sdio
->=20
-Patch v5 sent with change, https://patchwork.kernel.org/patch/11132677/
-> ath10k mailing list
-> ath10k@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/ath10k
+Vasanthakumar Thiagarajan <vthiagar@codeaurora.org> writes:
+
+> On 2019-08-21 02:16, Johannes Berg wrote:
+>> On Tue, 2019-08-20 at 18:47 +0300, Kalle Valo wrote:
+>>
+>>> +static int ath11k_mac_op_config(struct ieee80211_hw *hw, u32 changed)
+>>> +{
+>>> +	struct ath11k *ar = hw->priv;
+>>> +	int ret = 0;
+>>> +
+>>> +	/* mac80211 requires this op to be present and that's why
+>>> +	 * there's an empty function, this can be extended when
+>>> +	 * required.
+>>> +	 */
+>>
+>> Well, oops. Maybe it shouldn't be required?
+>
+> I think we require this for some configuration handling. The comment
+> is to be updated with proper information. We'll address that.
+
+The way I'm understanding Johannes' comment is that maybe we should
+change mac80211 to require this op to be present. Should be easy to fix
+in mac80211, right?
+
+-- 
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
