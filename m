@@ -2,86 +2,87 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id EFE99AA8F5
-	for <lists+linux-wireless@lfdr.de>; Thu,  5 Sep 2019 18:27:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 61E2EAA909
+	for <lists+linux-wireless@lfdr.de>; Thu,  5 Sep 2019 18:33:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732468AbfIEQ1P (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 5 Sep 2019 12:27:15 -0400
-Received: from szxga07-in.huawei.com ([45.249.212.35]:46374 "EHLO huawei.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1729136AbfIEQ1P (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 5 Sep 2019 12:27:15 -0400
-Received: from DGGEMS412-HUB.china.huawei.com (unknown [172.30.72.59])
-        by Forcepoint Email with ESMTP id 60E7CD4EAD94FA4432E6;
-        Fri,  6 Sep 2019 00:27:11 +0800 (CST)
-Received: from linux-ibm.site (10.175.102.37) by
- DGGEMS412-HUB.china.huawei.com (10.3.19.212) with Microsoft SMTP Server id
- 14.3.439.0; Fri, 6 Sep 2019 00:27:03 +0800
-From:   zhong jiang <zhongjiang@huawei.com>
-To:     <kvalo@codeaurora.org>
-CC:     <davem@davemloft.net>, <zhongjiang@huawei.com>,
-        <linux-wireless@vger.kernel.org>, <netdev@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>
-Subject: [PATCH] brcmsmac: Use DIV_ROUND_CLOSEST directly to make it readable
-Date:   Fri, 6 Sep 2019 00:24:08 +0800
-Message-ID: <1567700648-28162-1-git-send-email-zhongjiang@huawei.com>
-X-Mailer: git-send-email 1.7.12.4
+        id S1733270AbfIEQdG (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 5 Sep 2019 12:33:06 -0400
+Received: from mail.kernel.org ([198.145.29.99]:50414 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S2387514AbfIEQdG (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 5 Sep 2019 12:33:06 -0400
+Received: from localhost.localdomain.com (nat-pool-mxp-t.redhat.com [149.6.153.186])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 3624F207E0;
+        Thu,  5 Sep 2019 16:33:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1567701186;
+        bh=q1s0RaKk4zugfY9Ia+Mvs5FsJqMqplq4LQp9gKF161E=;
+        h=From:To:Cc:Subject:Date:From;
+        b=UZsipGlmDg9kk0bojTUqHc3oRyrs8n/Myu5S/K0PKVAfS0l/tiQRyQx5HBm21FOHk
+         EgnJTSXOM+0OmelkJfsE4W+0G6r8OAuwiwrlMWo0but3TbtvIwBF3pSkmVcuGQqn8K
+         /61lh4G0pG2wqOn/syc2lt+KqcKQW6gJumehOZow=
+From:   Lorenzo Bianconi <lorenzo@kernel.org>
+To:     nbd@nbd.name
+Cc:     lorenzo.bianconi@redhat.com, linux-wireless@vger.kernel.org,
+        sgruszka@redhat.com
+Subject: [PATCH] mt76: usb: add lockdep_assert_held in __mt76u_vendor_request
+Date:   Thu,  5 Sep 2019 18:32:58 +0200
+Message-Id: <ac42b8b5c2a924417df020d817a7cea4ddd7c1a7.1567701052.git.lorenzo@kernel.org>
+X-Mailer: git-send-email 2.21.0
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [10.175.102.37]
-X-CFilter-Loop: Reflected
+Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-The kernel.h macro DIV_ROUND_CLOSEST performs the computation (x + d/2)/d
-but is perhaps more readable.
+Introduce lockdep_assert_held macro in __mt76u_vendor_request routine
+and remove comments regarding usb_ctrl_mtx lock
 
-Signed-off-by: zhong jiang <zhongjiang@huawei.com>
+Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
 ---
- .../net/wireless/broadcom/brcm80211/brcmsmac/phy/phy_n.c   | 14 +++++++-------
- 1 file changed, 7 insertions(+), 7 deletions(-)
+ drivers/net/wireless/mediatek/mt76/usb.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmsmac/phy/phy_n.c b/drivers/net/wireless/broadcom/brcm80211/brcmsmac/phy/phy_n.c
-index 07f61d6..3bf152d 100644
---- a/drivers/net/wireless/broadcom/brcm80211/brcmsmac/phy/phy_n.c
-+++ b/drivers/net/wireless/broadcom/brcm80211/brcmsmac/phy/phy_n.c
-@@ -17748,7 +17748,7 @@ static void wlc_phy_txpwrctrl_pwr_setup_nphy(struct brcms_phy *pi)
- 			num = 8 *
- 			      (16 * b0[tbl_id - 26] + b1[tbl_id - 26] * idx);
- 			den = 32768 + a1[tbl_id - 26] * idx;
--			pwr_est = max(((4 * num + den / 2) / den), -8);
-+			pwr_est = max(DIV_ROUND_CLOSEST(4 * num, den), -8);
- 			if (NREV_LT(pi->pubpi.phy_rev, 3)) {
- 				if (idx <=
- 				    (uint) (31 - idle_tssi[tbl_id - 26] + 1))
-@@ -26990,8 +26990,8 @@ static void wlc_phy_rxcal_phycleanup_nphy(struct brcms_phy *pi, u8 rx_core)
- 				     NPHY_RXCAL_TONEAMP, 0, cal_type, false);
+diff --git a/drivers/net/wireless/mediatek/mt76/usb.c b/drivers/net/wireless/mediatek/mt76/usb.c
+index 20c6fe510e9d..cac058fc41ef 100644
+--- a/drivers/net/wireless/mediatek/mt76/usb.c
++++ b/drivers/net/wireless/mediatek/mt76/usb.c
+@@ -15,7 +15,6 @@ static bool disable_usb_sg;
+ module_param_named(disable_usb_sg, disable_usb_sg, bool, 0644);
+ MODULE_PARM_DESC(disable_usb_sg, "Disable usb scatter-gather support");
  
- 		wlc_phy_rx_iq_est_nphy(pi, est, num_samps, 32, 0);
--		i_pwr = (est[rx_core].i_pwr + num_samps / 2) / num_samps;
--		q_pwr = (est[rx_core].q_pwr + num_samps / 2) / num_samps;
-+		i_pwr = DIV_ROUND_CLOSEST(est[rx_core].i_pwr, num_samps);
-+		q_pwr = DIV_ROUND_CLOSEST(est[rx_core].q_pwr, num_samps);
- 		curr_pwr = i_pwr + q_pwr;
+-/* should be called with usb_ctrl_mtx locked */
+ static int __mt76u_vendor_request(struct mt76_dev *dev, u8 req,
+ 				  u8 req_type, u16 val, u16 offset,
+ 				  void *buf, size_t len)
+@@ -24,6 +23,8 @@ static int __mt76u_vendor_request(struct mt76_dev *dev, u8 req,
+ 	unsigned int pipe;
+ 	int i, ret;
  
- 		switch (gainctrl_dirn) {
-@@ -27673,10 +27673,10 @@ static int wlc_phy_cal_rxiq_nphy_rev3(struct brcms_phy *pi,
- 					wlc_phy_rx_iq_est_nphy(pi, est,
- 							       num_samps, 32,
- 							       0);
--					i_pwr =	(est[rx_core].i_pwr +
--						 num_samps / 2) / num_samps;
--					q_pwr =	(est[rx_core].q_pwr +
--						 num_samps / 2) / num_samps;
-+					i_pwr = DIV_ROUND_CLOSEST(est[rx_core].i_pwr,
-+									 num_samps);
-+					q_pwr = DIV_ROUND_CLOSEST(est[rx_core].q_pwr,
-+									 num_samps);
- 					tot_pwr[gain_pass] = i_pwr + q_pwr;
- 				} else {
++	lockdep_assert_held(&dev->usb.usb_ctrl_mtx);
++
+ 	pipe = (req_type & USB_DIR_IN) ? usb_rcvctrlpipe(udev, 0)
+ 				       : usb_sndctrlpipe(udev, 0);
+ 	for (i = 0; i < MT_VEND_REQ_MAX_RETRY; i++) {
+@@ -60,7 +61,6 @@ int mt76u_vendor_request(struct mt76_dev *dev, u8 req,
+ }
+ EXPORT_SYMBOL_GPL(mt76u_vendor_request);
  
+-/* should be called with usb_ctrl_mtx locked */
+ static u32 __mt76u_rr(struct mt76_dev *dev, u32 addr)
+ {
+ 	struct mt76_usb *usb = &dev->usb;
+@@ -103,7 +103,6 @@ static u32 mt76u_rr(struct mt76_dev *dev, u32 addr)
+ 	return ret;
+ }
+ 
+-/* should be called with usb_ctrl_mtx locked */
+ static void __mt76u_wr(struct mt76_dev *dev, u32 addr, u32 val)
+ {
+ 	struct mt76_usb *usb = &dev->usb;
 -- 
-1.7.12.4
+2.21.0
 
