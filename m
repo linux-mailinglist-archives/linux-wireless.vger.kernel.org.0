@@ -2,98 +2,129 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 57CD4AA39E
-	for <lists+linux-wireless@lfdr.de>; Thu,  5 Sep 2019 14:58:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5A21FAA3EE
+	for <lists+linux-wireless@lfdr.de>; Thu,  5 Sep 2019 15:12:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2389548AbfIEM6t (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 5 Sep 2019 08:58:49 -0400
-Received: from smtp.codeaurora.org ([198.145.29.96]:57220 "EHLO
-        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726968AbfIEM6t (ORCPT
+        id S1731737AbfIENMt (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 5 Sep 2019 09:12:49 -0400
+Received: from paleale.coelho.fi ([176.9.41.70]:40894 "EHLO
+        farmhouse.coelho.fi" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
+        with ESMTP id S1730839AbfIENMt (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 5 Sep 2019 08:58:49 -0400
-Received: by smtp.codeaurora.org (Postfix, from userid 1000)
-        id 40F066085C; Thu,  5 Sep 2019 12:58:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1567688328;
-        bh=SVm1xOC+6yoRDmuNHC0o7z9gkaB5p3fWnHJ6QbO85UU=;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=JtvXigEw1r+Dueatd3lGzlpTIfodkLhohP3p4N9t9PV78bfCcA39dgGyNGxBnKq2u
-         VsdKXS71dMkfUbz50t7DQOYbrObq0ftqiCB6URwWdHeaWFXeLr4T+9Qj5jMxUaXGx6
-         qjudbA9ZuXYbiLrNhkcKwg1WJSJQBjBtSEuChpxU=
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        pdx-caf-mail.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.7 required=2.0 tests=ALL_TRUSTED,BAYES_00,
-        DKIM_INVALID,DKIM_SIGNED,SPF_NONE autolearn=no autolearn_force=no
-        version=3.4.0
-Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        (Authenticated sender: kvalo@smtp.codeaurora.org)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 1BA546013C;
-        Thu,  5 Sep 2019 12:58:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1567688327;
-        bh=SVm1xOC+6yoRDmuNHC0o7z9gkaB5p3fWnHJ6QbO85UU=;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=VEaFOVjZzKJ4RZH68izomToIgoCKvK0BfhNO1nMo6C3/HSkd9qOWVwjRcEnWBkZ5k
-         jpMWoD/cU589U2JN1Oz8+ZVpNJVsZYPKRI/I6xQuhkbQHuGVYPxqqlraH1Q/YaK85k
-         C1EQA8s7UmvYE9Wk73TSx5RsftIZEWgSdOmhpXOI=
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 1BA546013C
-Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
-From:   Kalle Valo <kvalo@codeaurora.org>
-To:     Luca Coelho <luca@coelho.fi>
+        Thu, 5 Sep 2019 09:12:49 -0400
+Received: from [91.156.6.193] (helo=redipa.ger.corp.intel.com)
+        by farmhouse.coelho.fi with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+        (Exim 4.92)
+        (envelope-from <luca@coelho.fi>)
+        id 1i5rZ8-0005yI-Ev; Thu, 05 Sep 2019 16:12:47 +0300
+From:   Luca Coelho <luca@coelho.fi>
+To:     kvalo@codeaurora.org
 Cc:     linux-wireless@vger.kernel.org
-Subject: Re: [PATCH 05/18] iwlwifi: Set w-pointer upon resume according to SN
-References: <20190821133800.23636-1-luca@coelho.fi>
-        <20190821133800.23636-6-luca@coelho.fi>
-        <87sgpdpqni.fsf@kamboji.qca.qualcomm.com>
-        <183bb8fceadadebc688bf3419321b5700df001fd.camel@coelho.fi>
-Date:   Thu, 05 Sep 2019 15:58:44 +0300
-In-Reply-To: <183bb8fceadadebc688bf3419321b5700df001fd.camel@coelho.fi> (Luca
-        Coelho's message of "Thu, 05 Sep 2019 15:56:01 +0300")
-Message-ID: <87sgpalx17.fsf@kamboji.qca.qualcomm.com>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
+Date:   Thu,  5 Sep 2019 16:12:23 +0300
+Message-Id: <20190905131241.23487-1-luca@coelho.fi>
+X-Mailer: git-send-email 2.23.0.rc1
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Transfer-Encoding: 8bit
+X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on farmhouse.coelho.fi
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.9 required=5.0 tests=ALL_TRUSTED,BAYES_00,
+        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.2
+Subject: [PATCH v2 00/18] iwlwifi: updates intended for v5.4 2019-08-21-2
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Luca Coelho <luca@coelho.fi> writes:
+From: Luca Coelho <luciano.coelho@intel.com>
 
-> On Tue, 2019-09-03 at 14:26 +0300, Kalle Valo wrote:
->> Luca Coelho <luca@coelho.fi> writes:
->> 
->> > From: Alex Malamud <alex.malamud@intel.com>
->> > 
->> > During D3 state, FW may send packets.
->> > As a result, "write" queue pointer will be incremented by FW.
->> > Upon resume from D3, driver should adjust its shadows of "write" and "read"
->> > pointers to the value reported by FW.
->> > 
->> > 1. Keep TID used during wowlan configuration.
->> > 2. Upon resume, set driver's "write" and "read" queue pointers
->> > 	to the value reported by FW.
->> > 
->> > Signed-off-by: Alex Malamud <alex.malamud@intel.com>
->> > Signed-off-by: Luca Coelho <luciano.coelho@intel.com>
->> 
->> A typo in the title, s/w-pointer/q-pointer/ maybe?
->
-> This means "write pointer" because that's the one that is incremented
-> during WoWLAN.  The feature was called update write pointer or
-> something, that's where it comes from.
+Hi,
 
-Ok.
+Here's the second set of patches intended for v5.4.  It's the usual
+development, new features, cleanups and bugfixes.
 
-> Do you want me to reword the subject?
+The changes are:
 
-Nah, I was just curious because I couldn't figure out what that
-"w-pointer" means and saw q-ptr (something like that) in the code.
+* Removal of (broken) d0i3 continues;
+* Debug infrastructure work continues;
+* Fix for the SN value in certain suspend/resume situations;
+* Some work on new FW scan APIs;
+* Work on LTR FW APIs;
+* A few clean-ups;
+* Other small fixes and improvements;
+
+In v2:
+   * fixed subject and commit message of the first patch;
+
+As usual, I'm pushing this to a pending branch, for kbuild bot, and
+will send a pull-request later.
+
+Please review.
+
+Cheers,
+Luca.
+
+
+Alex Malamud (2):
+  iwlwifi: LTR updates
+  iwlwifi: Set w-pointer upon resume according to SN
+
+Ayala Beker (2):
+  iwlwifi: scan: add support for new scan request command version
+  iwlwifi: scan: don't pass large argument by value
+
+Emmanuel Grumbach (6):
+  iwlwifi: remove runtime_pm_mode
+  iwlwifi: remove the opmode's d0i3 handlers
+  iwlwifi: pcie: remove the refs / unrefs from the transport
+  iwlwifi: pcie: remove some more d0i3 code from the transport
+  iwlwifi: remove the d0i3 related module parameters
+  iwlwifi: remove pm_runtime completely
+
+Haim Dreyfuss (1):
+  iwlwifi: remove unused regdb_ptrs allocation
+
+Johannes Berg (1):
+  iwlwifi: mvm: use FW thermal monitoring regardless of CONFIG_THERMAL
+
+Mordechay Goodstein (1):
+  iwlwifi: mvm: name magic numbers with enum
+
+Shahar S Matityahu (5):
+  iwlwifi: dbg_ini: align dbg tlv functions names to a single format
+  iwlwifi: dbg: add debug periphery registers to 9000 device family
+  iwlwifi: dbg_ini: maintain buffer allocations from trans instead of
+    TLVs buffer
+  iwlwifi: dbg_ini: use linked list to store debug TLVs
+  iwlwifi: dbg_ini: remove periphery phy and aux regions handling
+
+ .../wireless/intel/iwlwifi/fw/api/dbg-tlv.h   |   2 +
+ .../net/wireless/intel/iwlwifi/fw/api/rs.h    |  18 ++-
+ .../net/wireless/intel/iwlwifi/fw/api/scan.h  |  55 ++++++-
+ drivers/net/wireless/intel/iwlwifi/fw/dbg.c   |  53 +++---
+ drivers/net/wireless/intel/iwlwifi/fw/file.h  |   4 +-
+ drivers/net/wireless/intel/iwlwifi/fw/img.h   |   9 --
+ .../net/wireless/intel/iwlwifi/iwl-dbg-tlv.c  | 153 +++++-------------
+ .../net/wireless/intel/iwlwifi/iwl-dbg-tlv.h  |  24 ++-
+ drivers/net/wireless/intel/iwlwifi/iwl-drv.c  |  19 +--
+ .../wireless/intel/iwlwifi/iwl-modparams.h    |   9 +-
+ .../wireless/intel/iwlwifi/iwl-nvm-parse.c    |  14 --
+ .../net/wireless/intel/iwlwifi/iwl-op-mode.h  |  23 ---
+ .../net/wireless/intel/iwlwifi/iwl-trans.c    |  14 --
+ .../net/wireless/intel/iwlwifi/iwl-trans.h    | 106 ++++--------
+ drivers/net/wireless/intel/iwlwifi/mvm/d3.c   |   9 ++
+ .../net/wireless/intel/iwlwifi/mvm/debugfs.c  |  37 +++++
+ drivers/net/wireless/intel/iwlwifi/mvm/fw.c   |  17 +-
+ drivers/net/wireless/intel/iwlwifi/mvm/mvm.h  |  11 +-
+ .../net/wireless/intel/iwlwifi/mvm/rs-fw.c    |  19 ++-
+ drivers/net/wireless/intel/iwlwifi/mvm/scan.c |  87 +++++++---
+ drivers/net/wireless/intel/iwlwifi/pcie/drv.c |  99 ------------
+ .../wireless/intel/iwlwifi/pcie/internal.h    |  11 +-
+ .../wireless/intel/iwlwifi/pcie/trans-gen2.c  |   6 +-
+ .../net/wireless/intel/iwlwifi/pcie/trans.c   |  67 ++------
+ .../net/wireless/intel/iwlwifi/pcie/tx-gen2.c |  42 +----
+ drivers/net/wireless/intel/iwlwifi/pcie/tx.c  |  92 ++++-------
+ 26 files changed, 363 insertions(+), 637 deletions(-)
 
 -- 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+2.23.0.rc1
+
