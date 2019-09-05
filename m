@@ -2,57 +2,62 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 9F0DEAACD0
-	for <lists+linux-wireless@lfdr.de>; Thu,  5 Sep 2019 22:10:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D9A8DAACD3
+	for <lists+linux-wireless@lfdr.de>; Thu,  5 Sep 2019 22:11:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2388362AbfIEUKS (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 5 Sep 2019 16:10:18 -0400
-Received: from nbd.name ([46.4.11.11]:55150 "EHLO nbd.name"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1732468AbfIEUKS (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 5 Sep 2019 16:10:18 -0400
-Received: from p5dcfb5d4.dip0.t-ipconnect.de ([93.207.181.212] helo=[10.255.231.27])
-        by ds12 with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        (Exim 4.89)
-        (envelope-from <john@phrozen.org>)
-        id 1i5y5A-00084d-Fd; Thu, 05 Sep 2019 22:10:16 +0200
-Subject: Re: iw scan dump for /AX attributes?
-To:     Johannes Berg <johannes@sipsolutions.net>,
-        Ben Greear <greearb@candelatech.com>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-References: <8afa882e-64de-7c8b-49f4-ac318f395102@candelatech.com>
- <bf856e90e1a90f88f69365000dc24d29c025ec70.camel@sipsolutions.net>
-From:   John Crispin <john@phrozen.org>
-Message-ID: <55c26ec5-7745-1823-da2f-89abfcf30f6c@phrozen.org>
-Date:   Thu, 5 Sep 2019 22:10:15 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.7.2
+        id S1732841AbfIEULj (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 5 Sep 2019 16:11:39 -0400
+Received: from smtp.codeaurora.org ([198.145.29.96]:59614 "EHLO
+        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1730777AbfIEULj (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 5 Sep 2019 16:11:39 -0400
+Received: by smtp.codeaurora.org (Postfix, from userid 1000)
+        id A7641602EE; Thu,  5 Sep 2019 20:11:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
+        s=default; t=1567714298;
+        bh=To3WAd2bX7Z10le6Dxnqd0HRZWxcwydt0jg9aBddT84=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=HTFni/y9kfhEJySNZKHm3OqnNcoaeJvcVgAXkbq8q3iXISpA5wCRNF+DKaCk4eP4t
+         gJRs5MTkIqrS0TYVmos628bGZbO9Si63GfhOkxp6w3cY71kcDTEDuXAF4wKQAEEnuF
+         ooGKDTHyqUkr2AS4uC9Z9noTNitnKFeGNABoJI0Q=
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        pdx-caf-mail.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.7 required=2.0 tests=ALL_TRUSTED,BAYES_00,
+        DKIM_INVALID,DKIM_SIGNED autolearn=no autolearn_force=no version=3.4.0
+Received: from mail.codeaurora.org (localhost.localdomain [127.0.0.1])
+        by smtp.codeaurora.org (Postfix) with ESMTP id 3ADF260592;
+        Thu,  5 Sep 2019 20:11:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
+        s=default; t=1567714298;
+        bh=To3WAd2bX7Z10le6Dxnqd0HRZWxcwydt0jg9aBddT84=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=HTFni/y9kfhEJySNZKHm3OqnNcoaeJvcVgAXkbq8q3iXISpA5wCRNF+DKaCk4eP4t
+         gJRs5MTkIqrS0TYVmos628bGZbO9Si63GfhOkxp6w3cY71kcDTEDuXAF4wKQAEEnuF
+         ooGKDTHyqUkr2AS4uC9Z9noTNitnKFeGNABoJI0Q=
 MIME-Version: 1.0
-In-Reply-To: <bf856e90e1a90f88f69365000dc24d29c025ec70.camel@sipsolutions.net>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Content-Language: en-US
+Content-Type: text/plain; charset=US-ASCII;
+ format=flowed
+Content-Transfer-Encoding: 7bit
+Date:   Thu, 05 Sep 2019 13:11:38 -0700
+From:   Jeff Johnson <jjohnson@codeaurora.org>
+To:     Wen Gong <wgong@codeaurora.org>
+Cc:     ath10k@lists.infradead.org, johannes@sipsolutions.net,
+        linux-wireless@vger.kernel.org,
+        linux-wireless-owner@vger.kernel.org
+Subject: Re: [PATCH v2] mac80211: Store max_mtu in ieee80211_hw
+In-Reply-To: <1567587484-31930-1-git-send-email-wgong@codeaurora.org>
+References: <1567587484-31930-1-git-send-email-wgong@codeaurora.org>
+Message-ID: <8d156cf1983fb973c9ff5d9d15fb070d@codeaurora.org>
+X-Sender: jjohnson@codeaurora.org
+User-Agent: Roundcube Webmail/1.2.5
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+On 2019-09-04 01:58, Wen Gong wrote:
+> Make it possibly for drivers to adjust the default mat_mtu
 
-On 05/09/2019 21:02, Johannes Berg wrote:
-> On Thu, 2019-09-05 at 11:20 -0700, Ben Greear wrote:
->
->> Is anyone working on getting iw to print out /AX (HE) related
->> info?
-> Good question, I wonder why we didn't do that. But no, we're not working
-> on it as far as I know, and I haven't seen anything from anyone else
-> either.
->
-> johannes
->
-
-Hi Ben,
-
-I sent patches recently for most of the AX stuff recently, got some 
-local patches for scan, will post them soonish
-
-     John
+nit: mat_mtu => max_mtu
