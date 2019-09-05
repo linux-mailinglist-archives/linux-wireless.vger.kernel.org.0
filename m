@@ -2,85 +2,86 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 78B1EAA8C7
-	for <lists+linux-wireless@lfdr.de>; Thu,  5 Sep 2019 18:21:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EFE99AA8F5
+	for <lists+linux-wireless@lfdr.de>; Thu,  5 Sep 2019 18:27:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731437AbfIEQUv (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 5 Sep 2019 12:20:51 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:40276 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726263AbfIEQUv (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 5 Sep 2019 12:20:51 -0400
-Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
-        by youngberry.canonical.com with esmtpsa (TLS1.0:RSA_AES_256_CBC_SHA1:32)
-        (Exim 4.76)
-        (envelope-from <colin.king@canonical.com>)
-        id 1i5uV7-0004Fz-BA; Thu, 05 Sep 2019 16:20:49 +0000
-From:   Colin King <colin.king@canonical.com>
-To:     =?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <zajec5@gmail.com>,
-        linux-wireless@vger.kernel.org
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] bcma: make arrays pwr_info_offset and sprom_sizes static const, shrinks object size
-Date:   Thu,  5 Sep 2019 17:20:49 +0100
-Message-Id: <20190905162049.14333-1-colin.king@canonical.com>
-X-Mailer: git-send-email 2.20.1
+        id S1732468AbfIEQ1P (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 5 Sep 2019 12:27:15 -0400
+Received: from szxga07-in.huawei.com ([45.249.212.35]:46374 "EHLO huawei.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1729136AbfIEQ1P (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 5 Sep 2019 12:27:15 -0400
+Received: from DGGEMS412-HUB.china.huawei.com (unknown [172.30.72.59])
+        by Forcepoint Email with ESMTP id 60E7CD4EAD94FA4432E6;
+        Fri,  6 Sep 2019 00:27:11 +0800 (CST)
+Received: from linux-ibm.site (10.175.102.37) by
+ DGGEMS412-HUB.china.huawei.com (10.3.19.212) with Microsoft SMTP Server id
+ 14.3.439.0; Fri, 6 Sep 2019 00:27:03 +0800
+From:   zhong jiang <zhongjiang@huawei.com>
+To:     <kvalo@codeaurora.org>
+CC:     <davem@davemloft.net>, <zhongjiang@huawei.com>,
+        <linux-wireless@vger.kernel.org>, <netdev@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>
+Subject: [PATCH] brcmsmac: Use DIV_ROUND_CLOSEST directly to make it readable
+Date:   Fri, 6 Sep 2019 00:24:08 +0800
+Message-ID: <1567700648-28162-1-git-send-email-zhongjiang@huawei.com>
+X-Mailer: git-send-email 1.7.12.4
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Originating-IP: [10.175.102.37]
+X-CFilter-Loop: Reflected
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Colin Ian King <colin.king@canonical.com>
+The kernel.h macro DIV_ROUND_CLOSEST performs the computation (x + d/2)/d
+but is perhaps more readable.
 
-Arrays pwr_info_offset and sprom_sizes can be make static const rather
-than populating them on the stack. Shrinks object size by 236 bytes.
-
-Before:
-   text	   data	    bss	    dec	    hex	filename
-  11300	   1320	     64	  12684	   318c	drivers/bcma/sprom.o
-
-After:
-   text	   data	    bss	    dec	    hex	filename
-  10904	   1480	     64	  12448	   30a0	drivers/bcma/sprom.o
-
-(gcc version 9.2.1, amd64)
-
-Signed-off-by: Colin Ian King <colin.king@canonical.com>
+Signed-off-by: zhong jiang <zhongjiang@huawei.com>
 ---
- drivers/bcma/sprom.c | 10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
+ .../net/wireless/broadcom/brcm80211/brcmsmac/phy/phy_n.c   | 14 +++++++-------
+ 1 file changed, 7 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/bcma/sprom.c b/drivers/bcma/sprom.c
-index 206edd3ba668..bd2c923a6586 100644
---- a/drivers/bcma/sprom.c
-+++ b/drivers/bcma/sprom.c
-@@ -222,7 +222,7 @@ static void bcma_sprom_extract_r8(struct bcma_bus *bus, const u16 *sprom)
- {
- 	u16 v, o;
- 	int i;
--	u16 pwr_info_offset[] = {
-+	static const u16 pwr_info_offset[] = {
- 		SSB_SROM8_PWR_INFO_CORE0, SSB_SROM8_PWR_INFO_CORE1,
- 		SSB_SROM8_PWR_INFO_CORE2, SSB_SROM8_PWR_INFO_CORE3
- 	};
-@@ -578,9 +578,11 @@ int bcma_sprom_get(struct bcma_bus *bus)
- {
- 	u16 offset = BCMA_CC_SPROM;
- 	u16 *sprom;
--	size_t sprom_sizes[] = { SSB_SPROMSIZE_WORDS_R4,
--				 SSB_SPROMSIZE_WORDS_R10,
--				 SSB_SPROMSIZE_WORDS_R11, };
-+	static const size_t sprom_sizes[] = {
-+		SSB_SPROMSIZE_WORDS_R4,
-+		SSB_SPROMSIZE_WORDS_R10,
-+		SSB_SPROMSIZE_WORDS_R11,
-+	};
- 	int i, err = 0;
+diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmsmac/phy/phy_n.c b/drivers/net/wireless/broadcom/brcm80211/brcmsmac/phy/phy_n.c
+index 07f61d6..3bf152d 100644
+--- a/drivers/net/wireless/broadcom/brcm80211/brcmsmac/phy/phy_n.c
++++ b/drivers/net/wireless/broadcom/brcm80211/brcmsmac/phy/phy_n.c
+@@ -17748,7 +17748,7 @@ static void wlc_phy_txpwrctrl_pwr_setup_nphy(struct brcms_phy *pi)
+ 			num = 8 *
+ 			      (16 * b0[tbl_id - 26] + b1[tbl_id - 26] * idx);
+ 			den = 32768 + a1[tbl_id - 26] * idx;
+-			pwr_est = max(((4 * num + den / 2) / den), -8);
++			pwr_est = max(DIV_ROUND_CLOSEST(4 * num, den), -8);
+ 			if (NREV_LT(pi->pubpi.phy_rev, 3)) {
+ 				if (idx <=
+ 				    (uint) (31 - idle_tssi[tbl_id - 26] + 1))
+@@ -26990,8 +26990,8 @@ static void wlc_phy_rxcal_phycleanup_nphy(struct brcms_phy *pi, u8 rx_core)
+ 				     NPHY_RXCAL_TONEAMP, 0, cal_type, false);
  
- 	if (!bus->drv_cc.core)
+ 		wlc_phy_rx_iq_est_nphy(pi, est, num_samps, 32, 0);
+-		i_pwr = (est[rx_core].i_pwr + num_samps / 2) / num_samps;
+-		q_pwr = (est[rx_core].q_pwr + num_samps / 2) / num_samps;
++		i_pwr = DIV_ROUND_CLOSEST(est[rx_core].i_pwr, num_samps);
++		q_pwr = DIV_ROUND_CLOSEST(est[rx_core].q_pwr, num_samps);
+ 		curr_pwr = i_pwr + q_pwr;
+ 
+ 		switch (gainctrl_dirn) {
+@@ -27673,10 +27673,10 @@ static int wlc_phy_cal_rxiq_nphy_rev3(struct brcms_phy *pi,
+ 					wlc_phy_rx_iq_est_nphy(pi, est,
+ 							       num_samps, 32,
+ 							       0);
+-					i_pwr =	(est[rx_core].i_pwr +
+-						 num_samps / 2) / num_samps;
+-					q_pwr =	(est[rx_core].q_pwr +
+-						 num_samps / 2) / num_samps;
++					i_pwr = DIV_ROUND_CLOSEST(est[rx_core].i_pwr,
++									 num_samps);
++					q_pwr = DIV_ROUND_CLOSEST(est[rx_core].q_pwr,
++									 num_samps);
+ 					tot_pwr[gain_pass] = i_pwr + q_pwr;
+ 				} else {
+ 
 -- 
-2.20.1
+1.7.12.4
 
