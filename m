@@ -2,106 +2,73 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id F31DCAA44F
-	for <lists+linux-wireless@lfdr.de>; Thu,  5 Sep 2019 15:23:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AE1ECAA4EF
+	for <lists+linux-wireless@lfdr.de>; Thu,  5 Sep 2019 15:46:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2389282AbfIENXO (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 5 Sep 2019 09:23:14 -0400
-Received: from paleale.coelho.fi ([176.9.41.70]:41210 "EHLO
-        farmhouse.coelho.fi" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1732933AbfIENXO (ORCPT
+        id S1731059AbfIENpo (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 5 Sep 2019 09:45:44 -0400
+Received: from smtp.codeaurora.org ([198.145.29.96]:33038 "EHLO
+        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727768AbfIENpo (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 5 Sep 2019 09:23:14 -0400
-Received: from [91.156.6.193] (helo=redipa.ger.corp.intel.com)
-        by farmhouse.coelho.fi with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-        (Exim 4.92)
-        (envelope-from <luca@coelho.fi>)
-        id 1i5rip-00062D-S2; Thu, 05 Sep 2019 16:22:48 +0300
-From:   Luca Coelho <luca@coelho.fi>
-To:     kvalo@codeaurora.org
-Cc:     linux-wireless@vger.kernel.org
-Date:   Thu,  5 Sep 2019 16:22:20 +0300
-Message-Id: <20190905132220.23970-22-luca@coelho.fi>
-X-Mailer: git-send-email 2.23.0.rc1
-In-Reply-To: <20190905132220.23970-1-luca@coelho.fi>
-References: <20190905132220.23970-1-luca@coelho.fi>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on farmhouse.coelho.fi
+        Thu, 5 Sep 2019 09:45:44 -0400
+Received: by smtp.codeaurora.org (Postfix, from userid 1000)
+        id 3F7506058E; Thu,  5 Sep 2019 13:45:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
+        s=default; t=1567691143;
+        bh=w/3IIFOS8nQCteH4ddE4gwv4ezqYRxVFmhWF+d+7VVo=;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+        b=Th/mutnX9LoQy2L+Z2WxUuvkvxHhhZ7Mm7O/CGwZJMHjB86g/C/f4PA1XjaycV9PV
+         U3B7/n8G19cBWyfSOwXEal5vD5gyjeoZEARHBoPulvNndDj5nxkk+4S51SxEQH3jPb
+         hWXKrY+/8tV9xOjkAEhG8jjSPziXnCSyC+Q6NNlc=
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        pdx-caf-mail.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-2.9 required=5.0 tests=ALL_TRUSTED,BAYES_00,
-        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.2
-Subject: [PATCH v2 21/21] iwlwifi: dbg: remove iwl_fw_cancel_dumps function
+X-Spam-Status: No, score=-2.7 required=2.0 tests=ALL_TRUSTED,BAYES_00,
+        DKIM_INVALID,DKIM_SIGNED,SPF_NONE autolearn=no autolearn_force=no
+        version=3.4.0
+Received: from tynnyri.adurom.net (tynnyri.adurom.net [51.15.11.48])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo@smtp.codeaurora.org)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id F0148606E1;
+        Thu,  5 Sep 2019 13:45:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
+        s=default; t=1567691141;
+        bh=w/3IIFOS8nQCteH4ddE4gwv4ezqYRxVFmhWF+d+7VVo=;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+        b=LRz+KeonYRJHD+DyRA20Bu+pgLL9j/vsbUaKJ1ZP7Ag6GRwlJdDuNNnOeQ/oZk+aj
+         y/50pCEp9lgl9poE40jH8uXGLxlucvMp8HKF+DCjV28XEw1U2G8FYNG9/icUxf4wP9
+         Mqw0Haixr+BmHHHq+FSO0TdRi0Mk6PozxfUFvfzw=
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org F0148606E1
+Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
+From:   Kalle Valo <kvalo@codeaurora.org>
+To:     zhong jiang <zhongjiang@huawei.com>
+Cc:     <kvalo@codeaurora.org>, <davem@davemloft.net>,
+        <linux-wireless@vger.kernel.org>, <netdev@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH] hostap: remove set but not used variable 'copied' in prism2_io_debug_proc_read
+References: <1567497430-22539-1-git-send-email-zhongjiang@huawei.com>
+        <5D6E1DF2.1000109@huawei.com>
+Date:   Thu, 05 Sep 2019 16:45:37 +0300
+In-Reply-To: <5D6E1DF2.1000109@huawei.com> (zhong jiang's message of "Tue, 3
+        Sep 2019 16:01:54 +0800")
+Message-ID: <87zhjij1q6.fsf@tynnyri.adurom.net>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
+MIME-Version: 1.0
+Content-Type: text/plain
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Shahar S Matityahu <shahar.s.matityahu@intel.com>
+zhong jiang <zhongjiang@huawei.com> writes:
 
-Use cancel_delayed_work_sync on the dump workers only in case of
-unloading the op mode. In any other case use iwl_fw_flush_dumps or
-iwl_fw_dbg_stop_sync (depends if the op mode mutex is held or not).
-This way, the driver will wait until debug data is collected in all
-cases but op mode unloading.
+> Please ignore the patch.  Because  the hostap_proc.c is marked as 'obsolete'.
 
-Signed-off-by: Shahar S Matityahu <shahar.s.matityahu@intel.com>
-Signed-off-by: Luca Coelho <luciano.coelho@intel.com>
----
- drivers/net/wireless/intel/iwlwifi/fw/dbg.h       | 11 -----------
- drivers/net/wireless/intel/iwlwifi/fw/runtime.h   |  4 ++++
- drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c |  1 -
- 3 files changed, 4 insertions(+), 12 deletions(-)
+You mean marked in the MAINTAINERS file? I don't see that as a problem,
+I can (and should) still apply any patches submitted to hostap driver.
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/fw/dbg.h b/drivers/net/wireless/intel/iwlwifi/fw/dbg.h
-index 14181e6dc00d..e3b5dd34643f 100644
---- a/drivers/net/wireless/intel/iwlwifi/fw/dbg.h
-+++ b/drivers/net/wireless/intel/iwlwifi/fw/dbg.h
-@@ -321,17 +321,6 @@ static inline void iwl_fw_flush_dumps(struct iwl_fw_runtime *fwrt)
- 	}
- }
- 
--static inline void iwl_fw_cancel_dumps(struct iwl_fw_runtime *fwrt)
--{
--	int i;
--
--	iwl_dbg_tlv_del_timers(fwrt->trans);
--	for (i = 0; i < IWL_FW_RUNTIME_DUMP_WK_NUM; i++) {
--		cancel_delayed_work_sync(&fwrt->dump.wks[i].wk);
--		fwrt->dump.wks[i].ini_trig_id = IWL_FW_TRIGGER_ID_INVALID;
--	}
--}
--
- #ifdef CONFIG_IWLWIFI_DEBUGFS
- static inline void iwl_fw_cancel_timestamp(struct iwl_fw_runtime *fwrt)
- {
-diff --git a/drivers/net/wireless/intel/iwlwifi/fw/runtime.h b/drivers/net/wireless/intel/iwlwifi/fw/runtime.h
-index 8b8ab6d692b6..be436c18a047 100644
---- a/drivers/net/wireless/intel/iwlwifi/fw/runtime.h
-+++ b/drivers/net/wireless/intel/iwlwifi/fw/runtime.h
-@@ -203,6 +203,10 @@ static inline void iwl_fw_runtime_free(struct iwl_fw_runtime *fwrt)
- 		kfree(active->trig);
- 		active->trig = NULL;
- 	}
-+
-+	iwl_dbg_tlv_del_timers(fwrt->trans);
-+	for (i = 0; i < IWL_FW_RUNTIME_DUMP_WK_NUM; i++)
-+		cancel_delayed_work_sync(&fwrt->dump.wks[i].wk);
- }
- 
- void iwl_fw_runtime_suspend(struct iwl_fw_runtime *fwrt);
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c b/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
-index 11b24d143cb6..2d14c59ccbdb 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
-@@ -1243,7 +1243,6 @@ static void iwl_mvm_mac_stop(struct ieee80211_hw *hw)
- 	 */
- 	clear_bit(IWL_MVM_STATUS_FIRMWARE_RUNNING, &mvm->status);
- 
--	iwl_fw_cancel_dumps(&mvm->fwrt);
- 	cancel_delayed_work_sync(&mvm->cs_tx_unblock_dwork);
- 	cancel_delayed_work_sync(&mvm->scan_timeout_dwork);
- 	iwl_fw_free_dump_desc(&mvm->fwrt);
 -- 
-2.23.0.rc1
-
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
