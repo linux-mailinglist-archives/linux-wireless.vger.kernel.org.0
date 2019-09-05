@@ -2,87 +2,56 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 61E2EAA909
-	for <lists+linux-wireless@lfdr.de>; Thu,  5 Sep 2019 18:33:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DDBB2AAABD
+	for <lists+linux-wireless@lfdr.de>; Thu,  5 Sep 2019 20:20:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1733270AbfIEQdG (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 5 Sep 2019 12:33:06 -0400
-Received: from mail.kernel.org ([198.145.29.99]:50414 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2387514AbfIEQdG (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 5 Sep 2019 12:33:06 -0400
-Received: from localhost.localdomain.com (nat-pool-mxp-t.redhat.com [149.6.153.186])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        id S2389317AbfIESU0 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 5 Sep 2019 14:20:26 -0400
+Received: from mail2.candelatech.com ([208.74.158.173]:40852 "EHLO
+        mail3.candelatech.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1730926AbfIESU0 (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 5 Sep 2019 14:20:26 -0400
+Received: from [192.168.100.195] (50-251-239-81-static.hfc.comcastbusiness.net [50.251.239.81])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 3624F207E0;
-        Thu,  5 Sep 2019 16:33:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1567701186;
-        bh=q1s0RaKk4zugfY9Ia+Mvs5FsJqMqplq4LQp9gKF161E=;
-        h=From:To:Cc:Subject:Date:From;
-        b=UZsipGlmDg9kk0bojTUqHc3oRyrs8n/Myu5S/K0PKVAfS0l/tiQRyQx5HBm21FOHk
-         EgnJTSXOM+0OmelkJfsE4W+0G6r8OAuwiwrlMWo0but3TbtvIwBF3pSkmVcuGQqn8K
-         /61lh4G0pG2wqOn/syc2lt+KqcKQW6gJumehOZow=
-From:   Lorenzo Bianconi <lorenzo@kernel.org>
-To:     nbd@nbd.name
-Cc:     lorenzo.bianconi@redhat.com, linux-wireless@vger.kernel.org,
-        sgruszka@redhat.com
-Subject: [PATCH] mt76: usb: add lockdep_assert_held in __mt76u_vendor_request
-Date:   Thu,  5 Sep 2019 18:32:58 +0200
-Message-Id: <ac42b8b5c2a924417df020d817a7cea4ddd7c1a7.1567701052.git.lorenzo@kernel.org>
-X-Mailer: git-send-email 2.21.0
+        by mail3.candelatech.com (Postfix) with ESMTPSA id 03286104B
+        for <linux-wireless@vger.kernel.org>; Thu,  5 Sep 2019 11:20:25 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail3.candelatech.com 03286104B
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=candelatech.com;
+        s=default; t=1567707626;
+        bh=xklPLRHh0uXJZ5jVbsxtjE1xQXJy2cW88dXK+fpQfGE=;
+        h=To:From:Subject:Date:From;
+        b=bLOgyVx4xpu1dfwUHkAbnMEYz+ZoJBa1txZ313nNhCgMK/AWeUJq+zc4Tii77QuJp
+         n2/b9HYlsV4/X7pjQbEUgscvo5NpYRac2aI04tcRdb9v2swe+62YetSdOjsEaR3Uhs
+         Fz4WUukJbuxSO/2WITQ22QPJdo1maQC7TT93NPL4=
+To:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+From:   Ben Greear <greearb@candelatech.com>
+Subject: iw scan dump for /AX attributes?
+Organization: Candela Technologies
+Message-ID: <8afa882e-64de-7c8b-49f4-ac318f395102@candelatech.com>
+Date:   Thu, 5 Sep 2019 11:20:25 -0700
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.7.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Introduce lockdep_assert_held macro in __mt76u_vendor_request routine
-and remove comments regarding usb_ctrl_mtx lock
+Hello,
 
-Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
----
- drivers/net/wireless/mediatek/mt76/usb.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+Is anyone working on getting iw to print out /AX (HE) related
+info?  As far as I can tell, it does not do so currently, but maybe
+I am doing something wrong.
 
-diff --git a/drivers/net/wireless/mediatek/mt76/usb.c b/drivers/net/wireless/mediatek/mt76/usb.c
-index 20c6fe510e9d..cac058fc41ef 100644
---- a/drivers/net/wireless/mediatek/mt76/usb.c
-+++ b/drivers/net/wireless/mediatek/mt76/usb.c
-@@ -15,7 +15,6 @@ static bool disable_usb_sg;
- module_param_named(disable_usb_sg, disable_usb_sg, bool, 0644);
- MODULE_PARM_DESC(disable_usb_sg, "Disable usb scatter-gather support");
- 
--/* should be called with usb_ctrl_mtx locked */
- static int __mt76u_vendor_request(struct mt76_dev *dev, u8 req,
- 				  u8 req_type, u16 val, u16 offset,
- 				  void *buf, size_t len)
-@@ -24,6 +23,8 @@ static int __mt76u_vendor_request(struct mt76_dev *dev, u8 req,
- 	unsigned int pipe;
- 	int i, ret;
- 
-+	lockdep_assert_held(&dev->usb.usb_ctrl_mtx);
-+
- 	pipe = (req_type & USB_DIR_IN) ? usb_rcvctrlpipe(udev, 0)
- 				       : usb_sndctrlpipe(udev, 0);
- 	for (i = 0; i < MT_VEND_REQ_MAX_RETRY; i++) {
-@@ -60,7 +61,6 @@ int mt76u_vendor_request(struct mt76_dev *dev, u8 req,
- }
- EXPORT_SYMBOL_GPL(mt76u_vendor_request);
- 
--/* should be called with usb_ctrl_mtx locked */
- static u32 __mt76u_rr(struct mt76_dev *dev, u32 addr)
- {
- 	struct mt76_usb *usb = &dev->usb;
-@@ -103,7 +103,6 @@ static u32 mt76u_rr(struct mt76_dev *dev, u32 addr)
- 	return ret;
- }
- 
--/* should be called with usb_ctrl_mtx locked */
- static void __mt76u_wr(struct mt76_dev *dev, u32 addr, u32 val)
- {
- 	struct mt76_usb *usb = &dev->usb;
+Thanks,
+Ben
+
 -- 
-2.21.0
+Ben Greear <greearb@candelatech.com>
+Candela Technologies Inc  http://www.candelatech.com
 
