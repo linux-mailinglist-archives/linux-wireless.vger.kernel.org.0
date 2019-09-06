@@ -2,77 +2,45 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 590CAAB800
-	for <lists+linux-wireless@lfdr.de>; Fri,  6 Sep 2019 14:19:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9B4C9AB928
+	for <lists+linux-wireless@lfdr.de>; Fri,  6 Sep 2019 15:22:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2392006AbfIFMTg (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 6 Sep 2019 08:19:36 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:40133 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1732863AbfIFMTg (ORCPT
+        id S2393270AbfIFNWM (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 6 Sep 2019 09:22:12 -0400
+Received: from shards.monkeyblade.net ([23.128.96.9]:60074 "EHLO
+        shards.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728793AbfIFNWL (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 6 Sep 2019 08:19:36 -0400
-Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
-        by youngberry.canonical.com with esmtpsa (TLS1.0:RSA_AES_256_CBC_SHA1:32)
-        (Exim 4.76)
-        (envelope-from <colin.king@canonical.com>)
-        id 1i6DD4-0002Bw-N2; Fri, 06 Sep 2019 12:19:26 +0000
-From:   Colin King <colin.king@canonical.com>
-To:     Felix Fietkau <nbd@nbd.name>,
-        Lorenzo Bianconi <lorenzo.bianconi83@gmail.com>,
-        Ryder Lee <ryder.lee@mediatek.com>,
-        Roy Luo <royluo@google.com>, Kalle Valo <kvalo@codeaurora.org>,
-        "David S . Miller" <davem@davemloft.net>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        linux-mediatek@lists.infradead.org
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] mt76: mt76x0e: make array mt76x0_chan_map static const, makes object smaller
-Date:   Fri,  6 Sep 2019 13:19:26 +0100
-Message-Id: <20190906121926.24080-1-colin.king@canonical.com>
-X-Mailer: git-send-email 2.20.1
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+        Fri, 6 Sep 2019 09:22:11 -0400
+Received: from localhost (unknown [88.214.184.128])
+        (using TLSv1 with cipher AES256-SHA (256/256 bits))
+        (Client did not present a certificate)
+        (Authenticated sender: davem-davemloft)
+        by shards.monkeyblade.net (Postfix) with ESMTPSA id 9D4FF152F9952;
+        Fri,  6 Sep 2019 06:22:10 -0700 (PDT)
+Date:   Fri, 06 Sep 2019 15:22:09 +0200 (CEST)
+Message-Id: <20190906.152209.944704898049442468.davem@davemloft.net>
+To:     kvalo@codeaurora.org
+Cc:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: pull-request: wireless-drivers 2019-09-05
+From:   David Miller <davem@davemloft.net>
+In-Reply-To: <87k1amluae.fsf@kamboji.qca.qualcomm.com>
+References: <87k1amluae.fsf@kamboji.qca.qualcomm.com>
+X-Mailer: Mew version 6.8 on Emacs 26.2
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+X-Greylist: Sender succeeded SMTP AUTH, not delayed by milter-greylist-4.5.12 (shards.monkeyblade.net [149.20.54.216]); Fri, 06 Sep 2019 06:22:11 -0700 (PDT)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Colin Ian King <colin.king@canonical.com>
+From: Kalle Valo <kvalo@codeaurora.org>
+Date: Thu, 05 Sep 2019 16:58:01 +0300
 
-Don't populate the array mt76x0_chan_map on the stack but instead make it
-static const. Makes the object code smaller by 80 bytes.
+> here's a pull request to net tree for v5.3, more info below. Please let
+> me know if there are any problems.
 
-Before:
-   text	   data	    bss	    dec	    hex	filename
-   7685	   1192	      0	   8877	   22ad	mediatek/mt76/mt76x0/eeprom.o
-
-After:
-   text	   data	    bss	    dec	    hex	filename
-   7541	   1256	      0	   8797	   225d	mediatek/mt76/mt76x0/eeprom.o
-
-(gcc version 9.2.1, amd64)
-
-Signed-off-by: Colin Ian King <colin.king@canonical.com>
----
- drivers/net/wireless/mediatek/mt76/mt76x0/eeprom.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76x0/eeprom.c b/drivers/net/wireless/mediatek/mt76/mt76x0/eeprom.c
-index 9d4426f6905f..96368fac4228 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76x0/eeprom.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt76x0/eeprom.c
-@@ -212,7 +212,7 @@ void mt76x0_get_tx_power_per_rate(struct mt76x02_dev *dev,
- void mt76x0_get_power_info(struct mt76x02_dev *dev,
- 			   struct ieee80211_channel *chan, s8 *tp)
- {
--	struct mt76x0_chan_map {
-+	static const struct mt76x0_chan_map {
- 		u8 chan;
- 		u8 offset;
- 	} chan_map[] = {
--- 
-2.20.1
-
+Pulled, thanks Kalle.
