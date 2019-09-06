@@ -2,63 +2,69 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 99BCEABC7A
-	for <lists+linux-wireless@lfdr.de>; Fri,  6 Sep 2019 17:29:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6DA92ABCC1
+	for <lists+linux-wireless@lfdr.de>; Fri,  6 Sep 2019 17:41:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2389837AbfIFP3Z (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 6 Sep 2019 11:29:25 -0400
-Received: from mail.kernel.org ([198.145.29.99]:54826 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2388007AbfIFP3Z (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 6 Sep 2019 11:29:25 -0400
-Received: from localhost.localdomain.com (unknown [151.66.4.139])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 622092070C;
-        Fri,  6 Sep 2019 15:29:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1567783764;
-        bh=goP0T3nK9wdPLM00EOzxui8WH6coYbI+vkgT50x1Uug=;
-        h=From:To:Cc:Subject:Date:From;
-        b=iCVkv0XW9kvBUvbAlgcQYhkSe+ErY/EBI3yhViGoadkYST84/2FwRuESWtDMLPxrM
-         0YoXMTp8u8k+ufz0xsKovvtT+jLTPBY7mKGZ+PMTRyv8Pe9JJN+WZzWu12VRQMxRJI
-         hFaT+JuVGxXHcrwFVq07SFPyuwJ58maj7IYUqwSs=
-From:   Lorenzo Bianconi <lorenzo@kernel.org>
-To:     nbd@nbd.name
-Cc:     lorenzo.bianconi@redhat.com, linux-wireless@vger.kernel.org,
-        ryder.lee@mediatek.com, royluo@google.com
-Subject: [PATCH] mt76: mt7615: enable SCS by default
-Date:   Fri,  6 Sep 2019 17:29:04 +0200
-Message-Id: <5933942ffd23f71b925cc6be26e9918fd663ed46.1567783646.git.lorenzo@kernel.org>
-X-Mailer: git-send-email 2.21.0
+        id S2391707AbfIFPkz (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 6 Sep 2019 11:40:55 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:50329 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1731817AbfIFPkz (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 6 Sep 2019 11:40:55 -0400
+Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
+        by youngberry.canonical.com with esmtpsa (TLS1.0:RSA_AES_256_CBC_SHA1:32)
+        (Exim 4.76)
+        (envelope-from <colin.king@canonical.com>)
+        id 1i6GM1-00042X-PR; Fri, 06 Sep 2019 15:40:53 +0000
+From:   Colin King <colin.king@canonical.com>
+To:     Michael Buesch <m@bues.ch>, linux-wireless@vger.kernel.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH] ssb: make array pwr_info_offset static const, makes object smaller
+Date:   Fri,  6 Sep 2019 16:40:53 +0100
+Message-Id: <20190906154053.32218-1-colin.king@canonical.com>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Enable Smart Carrier Sense algorithm by default in order to improve
-performances in a noisy environment
+From: Colin Ian King <colin.king@canonical.com>
 
-Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+Don't populate the array pwr_info_offset on the stack but instead make it
+static const. Makes the object code smaller by 207 bytes.
+
+Before:
+   text	   data	    bss	    dec	    hex	filename
+  26066	   3000	     64	  29130	   71ca	drivers/ssb/pci.o
+
+After:
+   text	   data	    bss	    dec	    hex	filename
+  25763	   3096	     64	  28923	   70fb	drivers/ssb/pci.o
+
+(gcc version 9.2.1, amd64)
+
+Signed-off-by: Colin Ian King <colin.king@canonical.com>
 ---
- drivers/net/wireless/mediatek/mt76/mt7615/init.c | 2 +-
+ drivers/ssb/pci.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/init.c b/drivers/net/wireless/mediatek/mt76/mt7615/init.c
-index 1104e4c8aaa6..835499979b73 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7615/init.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7615/init.c
-@@ -50,7 +50,7 @@ static void mt7615_mac_init(struct mt7615_dev *dev)
- 		 MT_TMAC_CTCR0_INS_DDLMT_EN);
- 
- 	mt7615_mcu_set_rts_thresh(dev, 0x92b);
--	mt7615_mac_set_scs(dev, false);
-+	mt7615_mac_set_scs(dev, true);
- 
- 	mt76_rmw(dev, MT_AGG_SCR, MT_AGG_SCR_NLNAV_MID_PTEC_DIS,
- 		 MT_AGG_SCR_NLNAV_MID_PTEC_DIS);
+diff --git a/drivers/ssb/pci.c b/drivers/ssb/pci.c
+index da2d2ab8104d..7c3ae52f2b15 100644
+--- a/drivers/ssb/pci.c
++++ b/drivers/ssb/pci.c
+@@ -595,7 +595,7 @@ static void sprom_extract_r8(struct ssb_sprom *out, const u16 *in)
+ {
+ 	int i;
+ 	u16 o;
+-	u16 pwr_info_offset[] = {
++	static const u16 pwr_info_offset[] = {
+ 		SSB_SROM8_PWR_INFO_CORE0, SSB_SROM8_PWR_INFO_CORE1,
+ 		SSB_SROM8_PWR_INFO_CORE2, SSB_SROM8_PWR_INFO_CORE3
+ 	};
 -- 
-2.21.0
+2.20.1
 
