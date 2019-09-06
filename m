@@ -2,78 +2,57 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E6954AB318
-	for <lists+linux-wireless@lfdr.de>; Fri,  6 Sep 2019 09:17:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5415FAB36E
+	for <lists+linux-wireless@lfdr.de>; Fri,  6 Sep 2019 09:44:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2391732AbfIFHRN (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 6 Sep 2019 03:17:13 -0400
-Received: from smtp.codeaurora.org ([198.145.29.96]:46650 "EHLO
-        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2388342AbfIFHRM (ORCPT
+        id S1730303AbfIFHoR (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 6 Sep 2019 03:44:17 -0400
+Received: from s3.sipsolutions.net ([144.76.43.62]:56382 "EHLO
+        sipsolutions.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726323AbfIFHoQ (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 6 Sep 2019 03:17:12 -0400
-Received: by smtp.codeaurora.org (Postfix, from userid 1000)
-        id DB78D60850; Fri,  6 Sep 2019 07:17:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1567754231;
-        bh=+SsJ26Vq1jMBdCexWKLadMh+XLJUUN3QS+Dutxsq8UE=;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=nZ2Dzch0GIA9bM15XwqNwlmpuuQoAt0Gpq32S0SbBnKr/313eWaSDdQ2lUGf2h6M1
-         Wfb+kSOYGmHDPDud3hxbV0wGPUKdPn3wsqeULr5UNg7MmfodenPZYswtyuvOUCU6fD
-         iUz1H4cmERfpPoQABt9l4aQborqsppmFL907FdzI=
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        pdx-caf-mail.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.7 required=2.0 tests=ALL_TRUSTED,BAYES_00,
-        DKIM_INVALID,DKIM_SIGNED,SPF_NONE autolearn=no autolearn_force=no
-        version=3.4.0
-Received: from x230.qca.qualcomm.com (37-130-177-42.bb.dnainternet.fi [37.130.177.42])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        (Authenticated sender: kvalo@smtp.codeaurora.org)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 951DA60159;
-        Fri,  6 Sep 2019 07:17:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1567754231;
-        bh=+SsJ26Vq1jMBdCexWKLadMh+XLJUUN3QS+Dutxsq8UE=;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=nZ2Dzch0GIA9bM15XwqNwlmpuuQoAt0Gpq32S0SbBnKr/313eWaSDdQ2lUGf2h6M1
-         Wfb+kSOYGmHDPDud3hxbV0wGPUKdPn3wsqeULr5UNg7MmfodenPZYswtyuvOUCU6fD
-         iUz1H4cmERfpPoQABt9l4aQborqsppmFL907FdzI=
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 951DA60159
-Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
-From:   Kalle Valo <kvalo@codeaurora.org>
-To:     Chris Chiu <chiu@endlessm.com>
-Cc:     Jes Sorensen <Jes.Sorensen@gmail.com>,
-        David Miller <davem@davemloft.net>,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        netdev <netdev@vger.kernel.org>,
-        Linux Kernel <linux-kernel@vger.kernel.org>,
-        Linux Upstreaming Team <linux@endlessm.com>
-Subject: Re: [PATCH] rtl8xxxu: add bluetooth co-existence support for single antenna
-References: <20190903053735.85957-1-chiu@endlessm.com>
-        <CAB4CAwc5OBUWFThh__FedmG=fR-_1_GxUuiAb0J5yfU8c1aTfg@mail.gmail.com>
-Date:   Fri, 06 Sep 2019 10:17:05 +0300
-In-Reply-To: <CAB4CAwc5OBUWFThh__FedmG=fR-_1_GxUuiAb0J5yfU8c1aTfg@mail.gmail.com>
-        (Chris Chiu's message of "Fri, 6 Sep 2019 10:44:10 +0800")
-Message-ID: <874l1p28su.fsf@codeaurora.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
+        Fri, 6 Sep 2019 03:44:16 -0400
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+        (Exim 4.92.1)
+        (envelope-from <johannes@sipsolutions.net>)
+        id 1i68ul-0006uc-08; Fri, 06 Sep 2019 09:44:15 +0200
+Message-ID: <ef59752f56684e6a6850ea12802918f0434abf77.camel@sipsolutions.net>
+Subject: Re: [RFC] cfg80211: Allow self managed devices to update global
+ regulatory
+From:   Johannes Berg <johannes@sipsolutions.net>
+To:     Sriram R <srirrama@codeaurora.org>
+Cc:     linux-wireless@vger.kernel.org
+Date:   Fri, 06 Sep 2019 09:44:14 +0200
+In-Reply-To: <1567739733-18852-1-git-send-email-srirrama@codeaurora.org>
+References: <1567739733-18852-1-git-send-email-srirrama@codeaurora.org>
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.30.5 (3.30.5-1.fc29) 
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Chris Chiu <chiu@endlessm.com> writes:
+On Fri, 2019-09-06 at 08:45 +0530, Sriram R wrote:
+> Currently, self managed drivers cannot update the global regulatory
+> using a regulatory hint from driver if the wiphy regd is already set
+> from other sources.
+> Due to this, when a regulatory hint is provided to cfg80211 from
+> self managed devices, the request gets ignored and global reg is
+> always at default, i.e World reg, DFS-UNSET.
+> Hence in such systems, the result of 'iw reg get' does not indicate a
+> valid global regd.
 
-> Gentle ping. Cheers.
+Yeah, but ... if you have a self-managed PHY you should anyway use
 
-Please edit your quotes. Including the full patch in quotes makes my use
-of patchwork horrible:
+   iw phy0 reg get
 
-https://patchwork.kernel.org/patch/11127227/
+instead of plain
 
--- 
-Kalle Valo
+   iw reg get
+
+so I'm not sure I understand?
+
+johannes
+
