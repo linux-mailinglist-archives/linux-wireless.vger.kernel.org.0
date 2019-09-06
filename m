@@ -2,88 +2,134 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A6424AC2CC
-	for <lists+linux-wireless@lfdr.de>; Sat,  7 Sep 2019 01:08:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CC771AC30E
+	for <lists+linux-wireless@lfdr.de>; Sat,  7 Sep 2019 01:31:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2387813AbfIFXIu (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 6 Sep 2019 19:08:50 -0400
-Received: from 14.mo5.mail-out.ovh.net ([188.165.51.82]:52601 "EHLO
-        14.mo5.mail-out.ovh.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1731231AbfIFXIu (ORCPT
+        id S2405452AbfIFXau (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 6 Sep 2019 19:30:50 -0400
+Received: from out1-smtp.messagingengine.com ([66.111.4.25]:51599 "EHLO
+        out1-smtp.messagingengine.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1728978AbfIFXau (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 6 Sep 2019 19:08:50 -0400
-X-Greylist: delayed 6601 seconds by postgrey-1.27 at vger.kernel.org; Fri, 06 Sep 2019 19:08:49 EDT
-Received: from player770.ha.ovh.net (unknown [10.108.35.124])
-        by mo5.mail-out.ovh.net (Postfix) with ESMTP id B41CB24CD2D
-        for <linux-wireless@vger.kernel.org>; Fri,  6 Sep 2019 22:41:42 +0200 (CEST)
-Received: from awhome.eu (p579AAC71.dip0.t-ipconnect.de [87.154.172.113])
-        (Authenticated sender: postmaster@awhome.eu)
-        by player770.ha.ovh.net (Postfix) with ESMTPSA id 4C05198C6C24;
-        Fri,  6 Sep 2019 20:41:39 +0000 (UTC)
-Subject: Re: [PATCH] iwlwifi: Extended Key ID support for mvm and dvm
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=wetzel-home.de;
-        s=wetzel-home; t=1567802498;
-        bh=d0aScw7BCx55bqh8LfPetRnRw5IBfRzycfqZrrrRPeI=;
-        h=Subject:To:Cc:References:From:Date:In-Reply-To;
-        b=ObER0WPUTJLvpcfS6uHxtAJ42iv/rta4oQLYYtXkP3kzNmqZAS2+e5A67+stebOwy
-         h5KyTHCBCaQhbfpjegcBo9XnswcMvz9LkK3+ayUcjGJdPCGsAvdVs8wL2GI+Hb7UQH
-         QT/AOmIUdH4b0Rhh3PXr1Q57nSTRVfQWgqB0bFYo=
-To:     johannes@sipsolutions.net, luciano.coelho@intel.com
-Cc:     linux-wireless@vger.kernel.org, linuxwifi@intel.com
-References: <20190819180540.2855-1-alexander@wetzel-home.de>
-From:   Alexander Wetzel <alexander@wetzel-home.de>
-Message-ID: <7f05a2e7-c3ae-1101-39be-b55cf10452b3@wetzel-home.de>
-Date:   Fri, 6 Sep 2019 22:41:38 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.0
+        Fri, 6 Sep 2019 19:30:50 -0400
+Received: from compute6.internal (compute6.nyi.internal [10.202.2.46])
+        by mailout.nyi.internal (Postfix) with ESMTP id F1DF32202A;
+        Fri,  6 Sep 2019 19:30:48 -0400 (EDT)
+Received: from mailfrontend2 ([10.202.2.163])
+  by compute6.internal (MEProxy); Fri, 06 Sep 2019 19:30:49 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kroah.com; h=
+        date:from:to:cc:subject:message-id:references:mime-version
+        :content-type:in-reply-to; s=fm1; bh=FGZ8S19n43tAruLCrzOkg9MRjNq
+        62BLa54KBCyPc1Ic=; b=enS/hQsCWDFF6qI3rbYcTZyLHh+uaaU9vPEpOkLCmAh
+        J7u+hgfrXrQgUw/UILiZB3WDTnXjgqQwqBCNgHKAgF4v90BGOvt0LDjKt2lUkKcK
+        WR90Qqu0RRR+Yif2oSKFAsrVc2S4UIKAXZTGwrh6hiYCN7d/2E4taU23IsrVAJ1U
+        2paxk/lz18QuvdCaAiErJmc0NX+c2fTI27NhBq3kBaHs/mwi5bAH/mCFo+e1WLkK
+        1Uufn0n86xD3Zoj02TJl+dh0lr1487+NPDRhbBgGz975OYH5u/xHaD+EQzOS1oi1
+        Bc76tvsJR6jcWMVKZpP5CZatBu1ii8W4pCac9ANJCow==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+        messagingengine.com; h=cc:content-type:date:from:in-reply-to
+        :message-id:mime-version:references:subject:to:x-me-proxy
+        :x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; bh=FGZ8S1
+        9n43tAruLCrzOkg9MRjNq62BLa54KBCyPc1Ic=; b=HOVzxhMYZCcjkYxlDqttm8
+        Cw3fkZxuMsEUL/AwNxTpDF7jKUnJwaDaZQbMSxd47q/Ur7qKqugM78rb2RU+EUAI
+        nXVFj/1JGME89Vj0BUeaavKy/HQI2IbVUeaw5QyYrLzRXjbgNW4zK1CvM5UFdU3f
+        yihV2xmAtNxuf8zqOUAobHZWVUOxLmyI63ByQnQHn0Ih/ctwgUe8Yco3xYJ32WnT
+        HsdHRO5WftlGBhcVA5fya4cTCuYKEcXHzniYIVZfit0CFsYphCG5yZSwvQZoodh4
+        GmiwrqgPCsAWxs51Wbk2fobHaaNSlZzRCyrYjwj4M+9gZ6pMbt+ApSJDJ0mfkc8g
+        ==
+X-ME-Sender: <xms:KOxyXeCXnbphK_rHEudHrWoJMT_zQuvc0MryatwIn4QqRgvU95Fe2A>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeduvddrudektddgvdduucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
+    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
+    cujfgurhepfffhvffukfhfgggtuggjfgesthdtredttdervdenucfhrhhomhepifhrvghg
+    ucfmjfcuoehgrhgvgheskhhrohgrhhdrtghomheqnecukfhppeektddrvdehuddrudeivd
+    drudeigeenucfrrghrrghmpehmrghilhhfrhhomhepghhrvghgsehkrhhorghhrdgtohhm
+    necuvehluhhsthgvrhfuihiivgeptd
+X-ME-Proxy: <xmx:KOxyXbG7eu3pSwfAE_T3eYhzU37ZxMp-b2vM4GCzpKhOC1BVn8glmA>
+    <xmx:KOxyXSjv9NaFxJVTtG9_RVE646Ut2ntkRKqOAFXtpTVwYWYjsG4Jig>
+    <xmx:KOxyXRzi6UZo7EXZoB2wLa6_jeLcWUxTT01cptI3lg0bt9Ratj4YvQ>
+    <xmx:KOxyXYuKPS2NVxX3TMzGKiaqBdn6ejmA8XLM42f6iZY02RNnAaBiSw>
+Received: from localhost (unknown [80.251.162.164])
+        by mail.messagingengine.com (Postfix) with ESMTPA id 01ED8D6005B;
+        Fri,  6 Sep 2019 19:30:47 -0400 (EDT)
+Date:   Sat, 7 Sep 2019 01:30:45 +0200
+From:   Greg KH <greg@kroah.com>
+To:     Mark Salyzyn <salyzyn@android.com>
+Cc:     linux-kernel@vger.kernel.org, kernel-team@android.com,
+        Johannes Berg <johannes@sipsolutions.net>,
+        "David S. Miller" <davem@davemloft.net>,
+        Marcel Holtmann <marcel@holtmann.org>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        stable@vger.kernel.org
+Subject: Re: [PATCH v2] net: enable wireless core features with
+ LEGACY_WEXT_ALLCONFIG
+Message-ID: <20190906233045.GB9478@kroah.com>
+References: <20190906192403.195620-1-salyzyn@android.com>
 MIME-Version: 1.0
-In-Reply-To: <20190819180540.2855-1-alexander@wetzel-home.de>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-Ovh-Tracer-Id: 14161006082064260296
-X-VR-SPAMSTATE: OK
-X-VR-SPAMSCORE: 0
-X-VR-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgeduvddrudejledgudeflecutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfqggfjpdevjffgvefmvefgnecuuegrihhlohhuthemucehtddtnecu
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20190906192403.195620-1-salyzyn@android.com>
+User-Agent: Mutt/1.12.1 (2019-06-15)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Am 19.08.19 um 20:05 schrieb Alexander Wetzel:
-> All iwlwifi cards below the 22000 series are able to handle multiple
-> keyids per STA and allow the selection of the encryption key per MPDU.
+On Fri, Sep 06, 2019 at 12:24:00PM -0700, Mark Salyzyn wrote:
+> In embedded environments the requirements are to be able to pick and
+> chose which features one requires built into the kernel.  If an
+> embedded environment wants to supports loading modules that have been
+> kbuilt out of tree, there is a need to enable hidden configurations
+> for legacy wireless core features to provide the API surface for
+> them to load.
 > 
-> These are therefore fully compatible with the Extended Key ID support
-> implementation in mac80211.
+> Introduce CONFIG_LEGACY_WEXT_ALLCONFIG to select all legacy wireless
+> extension core features by activating in turn all the associated
+> hidden configuration options, without having to specifically select
+> any wireless module(s).
 > 
-> Enable Extended Key ID support for all dvm cards and the mvm cards not
-> using the incompatible new Tx API introduced for the 22000 series.
-> 
-> Signed-off-by: Alexander Wetzel <alexander@wetzel-home.de>
+> Signed-off-by: Mark Salyzyn <salyzyn@android.com>
+> Cc: kernel-team@android.com
+> Cc: Johannes Berg <johannes@sipsolutions.net>
+> Cc: "David S. Miller" <davem@davemloft.net>
+> Cc: Marcel Holtmann <marcel@holtmann.org>
+> Cc: linux-wireless@vger.kernel.org
+> Cc: netdev@vger.kernel.org
+> Cc: linux-kernel@vger.kernel.org
+> Cc: stable@vger.kernel.org # 4.19
 > ---
+> v2: change name and documentation to CONFIG_LEGACY_WEXT_ALLCONFIG
+> ---
+>  net/wireless/Kconfig | 14 ++++++++++++++
+>  1 file changed, 14 insertions(+)
 > 
-> This is basically the V3 of the patch, but the other patches were part
-> of series and this here is the first standalone version.
+> diff --git a/net/wireless/Kconfig b/net/wireless/Kconfig
+> index 67f8360dfcee..0d646cf28de5 100644
+> --- a/net/wireless/Kconfig
+> +++ b/net/wireless/Kconfig
+> @@ -17,6 +17,20 @@ config WEXT_SPY
+>  config WEXT_PRIV
+>  	bool
+>  
+> +config LEGACY_WEXT_ALLCONFIG
+> +	bool "allconfig for legacy wireless extensions"
+> +	select WIRELESS_EXT
+> +	select WEXT_CORE
+> +	select WEXT_PROC
+> +	select WEXT_SPY
+> +	select WEXT_PRIV
+> +	help
+> +	  Config option used to enable all the legacy wireless extensions to
+> +	  the core functionality used by add-in modules.
+> +
+> +	  If you are not building a kernel to be used for a variety of
+> +	  out-of-kernel built wireless modules, say N here.
+> +
+>  config CFG80211
+>  	tristate "cfg80211 - wireless configuration API"
+>  	depends on RFKILL || !RFKILL
+> -- 
+> 2.23.0.187.g17f5b7556c-goog
 > 
-> V1: https://patchwork.kernel.org/patch/10931879/
-> V2: https://patchwork.kernel.org/patch/11024137/
-> 
-> V1 become deprecated due to redesigning the Extended Key ID support API.
-> V2 became deprecated due to the discovery that the 22000 is not (yet)
-> able to support Extended Key ID.
-> 
-> The patch is still super trivial, but I cross checked that Extended Key
-> ID support is enabled with my old 3168 card and disabled with my new
-> AX200 card.
 
-For what it's worth:
-
-I just upgraded my test AP from the initial AC 3168 to an AC 9560 card 
-after the AC 201 turned out to be incompatible (for now).
-
-So I can now confirm that Extended Key ID is also working with this card 
-and the patch here. (Tested against my "reference" system using an old 
-Intel Ultimate-N 6300.)
-
-Alexander
+How is this patch applicable to stable kernels???
