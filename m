@@ -2,78 +2,63 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 039A0ABA78
-	for <lists+linux-wireless@lfdr.de>; Fri,  6 Sep 2019 16:15:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 99BCEABC7A
+	for <lists+linux-wireless@lfdr.de>; Fri,  6 Sep 2019 17:29:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2394074AbfIFOPk (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 6 Sep 2019 10:15:40 -0400
-Received: from smtp.codeaurora.org ([198.145.29.96]:48544 "EHLO
-        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1731458AbfIFOPj (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 6 Sep 2019 10:15:39 -0400
-Received: by smtp.codeaurora.org (Postfix, from userid 1000)
-        id A3D876115B; Fri,  6 Sep 2019 14:15:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1567779338;
-        bh=YxWVDgNYq3t0Z/Me2htRzh5Q3a84zN7UuKetlbZ9CzU=;
-        h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-        b=nhY1H0Ou74lN75hpPtr8ZQWhuuGxuHzuI2pJc6U5HMRnDq4alru2wx6UsAA/BxsUU
-         J6zG/VgsQAcjOs6k03rsAHEjHV9hVSAom4nPK2kt3C9o+bnjGYWHZrgM1wgtPSNsf6
-         CDbqHpyf7Ivp+H87So1A8VGcWtmYLw7z/+iiqf1Y=
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        pdx-caf-mail.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-0.8 required=2.0 tests=ALL_TRUSTED,BAYES_00,
-        DKIM_INVALID,DKIM_SIGNED,MISSING_DATE,MISSING_MID,SPF_NONE autolearn=no
-        autolearn_force=no version=3.4.0
-Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
+        id S2389837AbfIFP3Z (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 6 Sep 2019 11:29:25 -0400
+Received: from mail.kernel.org ([198.145.29.99]:54826 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S2388007AbfIFP3Z (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 6 Sep 2019 11:29:25 -0400
+Received: from localhost.localdomain.com (unknown [151.66.4.139])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        (Authenticated sender: kvalo@smtp.codeaurora.org)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 2271B602EE;
-        Fri,  6 Sep 2019 14:15:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1567779338;
-        bh=YxWVDgNYq3t0Z/Me2htRzh5Q3a84zN7UuKetlbZ9CzU=;
-        h=Subject:From:In-Reply-To:References:To:Cc:From;
-        b=FdvsUbhDVLNrotUI/UUy2bR+ZZmda8cbKF3qhQSGK15azzSqk8mNgNGVWOC9wgU0s
-         HYGpdYjmMVUApLpDAIC4W3LcvJfJDD0/+oeGLCTdI6uBJqJS10Ehd14IaiumTGrtnd
-         j6ac3BhEDBzS0Y+wJCpMDBrbgnlKecN62T4kTmwE=
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 2271B602EE
-Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
-Content-Type: text/plain; charset="utf-8"
+        by mail.kernel.org (Postfix) with ESMTPSA id 622092070C;
+        Fri,  6 Sep 2019 15:29:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1567783764;
+        bh=goP0T3nK9wdPLM00EOzxui8WH6coYbI+vkgT50x1Uug=;
+        h=From:To:Cc:Subject:Date:From;
+        b=iCVkv0XW9kvBUvbAlgcQYhkSe+ErY/EBI3yhViGoadkYST84/2FwRuESWtDMLPxrM
+         0YoXMTp8u8k+ufz0xsKovvtT+jLTPBY7mKGZ+PMTRyv8Pe9JJN+WZzWu12VRQMxRJI
+         hFaT+JuVGxXHcrwFVq07SFPyuwJ58maj7IYUqwSs=
+From:   Lorenzo Bianconi <lorenzo@kernel.org>
+To:     nbd@nbd.name
+Cc:     lorenzo.bianconi@redhat.com, linux-wireless@vger.kernel.org,
+        ryder.lee@mediatek.com, royluo@google.com
+Subject: [PATCH] mt76: mt7615: enable SCS by default
+Date:   Fri,  6 Sep 2019 17:29:04 +0200
+Message-Id: <5933942ffd23f71b925cc6be26e9918fd663ed46.1567783646.git.lorenzo@kernel.org>
+X-Mailer: git-send-email 2.21.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH v1] zd1211rw: use %*ph to print small buffer
-From:   Kalle Valo <kvalo@codeaurora.org>
-In-Reply-To: <20190904175323.77984-1-andriy.shevchenko@linux.intel.com>
-References: <20190904175323.77984-1-andriy.shevchenko@linux.intel.com>
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc:     Daniel Drake <dsd@gentoo.org>, Ulrich Kunitz <kune@deine-taler.de>,
-        linux-wireless@vger.kernel.org,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-User-Agent: pwcli/0.0.0-git (https://github.com/kvalo/pwcli/) Python/2.7.12
-Message-Id: <20190906141538.A3D876115B@smtp.codeaurora.org>
-Date:   Fri,  6 Sep 2019 14:15:38 +0000 (UTC)
+Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Andy Shevchenko <andriy.shevchenko@linux.intel.com> wrote:
+Enable Smart Carrier Sense algorithm by default in order to improve
+performances in a noisy environment
 
-> Use %*ph format to print small buffer as hex string.
-> 
-> Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+---
+ drivers/net/wireless/mediatek/mt76/mt7615/init.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Patch applied to wireless-drivers-next.git, thanks.
-
-d13b12c30c34 zd1211rw: use %*ph to print small buffer
-
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/init.c b/drivers/net/wireless/mediatek/mt76/mt7615/init.c
+index 1104e4c8aaa6..835499979b73 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7615/init.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7615/init.c
+@@ -50,7 +50,7 @@ static void mt7615_mac_init(struct mt7615_dev *dev)
+ 		 MT_TMAC_CTCR0_INS_DDLMT_EN);
+ 
+ 	mt7615_mcu_set_rts_thresh(dev, 0x92b);
+-	mt7615_mac_set_scs(dev, false);
++	mt7615_mac_set_scs(dev, true);
+ 
+ 	mt76_rmw(dev, MT_AGG_SCR, MT_AGG_SCR_NLNAV_MID_PTEC_DIS,
+ 		 MT_AGG_SCR_NLNAV_MID_PTEC_DIS);
 -- 
-https://patchwork.kernel.org/patch/11131201/
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+2.21.0
 
