@@ -2,25 +2,25 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 43566ABA43
-	for <lists+linux-wireless@lfdr.de>; Fri,  6 Sep 2019 16:06:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DA5FBABA55
+	for <lists+linux-wireless@lfdr.de>; Fri,  6 Sep 2019 16:09:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2393932AbfIFOGG (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 6 Sep 2019 10:06:06 -0400
-Received: from smtp.codeaurora.org ([198.145.29.96]:39946 "EHLO
+        id S2392650AbfIFOJ0 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 6 Sep 2019 10:09:26 -0400
+Received: from smtp.codeaurora.org ([198.145.29.96]:43726 "EHLO
         smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2393798AbfIFOGF (ORCPT
+        with ESMTP id S2388731AbfIFOJ0 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 6 Sep 2019 10:06:05 -0400
+        Fri, 6 Sep 2019 10:09:26 -0400
 Received: by smtp.codeaurora.org (Postfix, from userid 1000)
-        id 2BADE60770; Fri,  6 Sep 2019 14:06:03 +0000 (UTC)
+        id 01290611FD; Fri,  6 Sep 2019 14:09:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1567778763;
-        bh=V1dlkOUoFvPwbVzpwF7XL6XrB7q+VyTY3styvqJpTlw=;
+        s=default; t=1567778965;
+        bh=KSJpt9scN4yU1PTl/pWE/qpGUaJDYlS33aeVkCOmrkc=;
         h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-        b=kbjY7xTtoXcI6ITPkFE79JeY4xRfffHl+Bk4uR+qnoOD6Smx0Z3VP0FA2p3g5KEkW
-         zna1Cippu1AswCirATViIgKW5ZrpiIvNkDrr6aZcYBbO+O+h64D53uvTUWmimYNzvl
-         xfezxIoyJxN1kfHBbubc4w6kfXwTI1eBuvT0lyN0=
+        b=DH8r0WMHvwvKvOFeQjbtLQUdgem93LxqCKMd3779rTNbdloje6ih5FXNbDhlCx6eR
+         L9UOuUqZOElDUAvLIWVbp0SoxJKWj1veVXzwMT1S+V3M4ograHd2g7tVeflnsMww4q
+         sQwQD+XQhTcb5/9tPeJ4cYpu7zZZmgHJl1gBbdzw=
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         pdx-caf-mail.web.codeaurora.org
 X-Spam-Level: 
@@ -31,169 +31,62 @@ Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
         (Authenticated sender: kvalo@smtp.codeaurora.org)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 074E960770;
-        Fri,  6 Sep 2019 14:06:00 +0000 (UTC)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id B9E976115A;
+        Fri,  6 Sep 2019 14:09:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1567778762;
-        bh=V1dlkOUoFvPwbVzpwF7XL6XrB7q+VyTY3styvqJpTlw=;
+        s=default; t=1567778964;
+        bh=KSJpt9scN4yU1PTl/pWE/qpGUaJDYlS33aeVkCOmrkc=;
         h=Subject:From:In-Reply-To:References:To:Cc:From;
-        b=QCSS4CN8PRlJlTkKGr6LB8rKS20kgW3ZNveIz8yfJHMyI8HwuRFuiTHt6bWo3tc21
-         gO/z3ihn51SKLlAf3IfIM3XtQ45ZSEuxY0HL+i2KZNRSCgKAm343udW5Fv9xHhZay0
-         IEQ6z3y1QjDjz3UXj+ZmoMQNy0T4c+60RPj4kM6k=
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 074E960770
+        b=m/FTmyOOJxcKZgRm0ygG7HuYWdo8tHU+vSXNgSjP5coXzn0yUP6QXDTWWgIga5762
+         bPU+5EhdozMuZ/wdND0EyoAzEX4bSKG45crUby8AtxrXJst2KCc7RVeLlq0hxAa5db
+         UNIdQylHsajeMo+DtnnF9KaQeEb3VSXX6g9mQwco=
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org B9E976115A
 Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
 Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH 1/8] rtw88: 8822c: update PHY parameter to v38
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH V2 1/2] brcmfmac: add stub version of
+ brcmf_debugfs_get_devdir()
 From:   Kalle Valo <kvalo@codeaurora.org>
-In-Reply-To: <1565174405-2689-2-git-send-email-yhchuang@realtek.com>
-References: <1565174405-2689-2-git-send-email-yhchuang@realtek.com>
-To:     <yhchuang@realtek.com>
-Cc:     <linux-wireless@vger.kernel.org>, <briannorris@chromium.org>,
-        <sgruszka@redhat.com>
+In-Reply-To: <20190901113436.23665-1-zajec5@gmail.com>
+References: <20190901113436.23665-1-zajec5@gmail.com>
+To:     =?utf-8?b?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>
+Cc:     Arend van Spriel <arend.vanspriel@broadcom.com>,
+        Franky Lin <franky.lin@broadcom.com>,
+        Hante Meuleman <hante.meuleman@broadcom.com>,
+        Chi-Hsien Lin <chi-hsien.lin@cypress.com>,
+        Wright Feng <wright.feng@cypress.com>,
+        Winnie Chang <winnie.chang@cypress.com>,
+        linux-wireless@vger.kernel.org,
+        brcm80211-dev-list.pdl@broadcom.com,
+        brcm80211-dev-list@cypress.com,
+        =?utf-8?b?UmFmYcWCIE1pxYJlY2tp?= <rafal@milecki.pl>
 User-Agent: pwcli/0.0.0-git (https://github.com/kvalo/pwcli/) Python/2.7.12
-Message-Id: <20190906140603.2BADE60770@smtp.codeaurora.org>
-Date:   Fri,  6 Sep 2019 14:06:03 +0000 (UTC)
+Message-Id: <20190906140925.01290611FD@smtp.codeaurora.org>
+Date:   Fri,  6 Sep 2019 14:09:24 +0000 (UTC)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-<yhchuang@realtek.com> wrote:
+Rafał Miłecki wrote:
 
-> From: Yan-Hsuan Chuang <yhchuang@realtek.com>
+> From: Rafał Miłecki <rafal@milecki.pl>
 > 
-> Update PHY hardware parameters to v38.
+> In case of compiling driver without DEBUG expose a stub function to make
+> writing debug code much simpler (no extra conditions). This will allow
+> e.g. using debugfs_create_file() without any magic if or #ifdef.
 > 
-> Signed-off-by: Yan-Hsuan Chuang <yhchuang@realtek.com>
+> Signed-off-by: Rafał Miłecki <rafal@milecki.pl>
 
-New warnings:
+2 patches applied to wireless-drivers-next.git, thanks.
 
-drivers/net/wireless/realtek/rtw88/phy.c: In function 'rtw_phy_get_dis_dpd_by_rate_diff':
-drivers/net/wireless/realtek/rtw88/phy.c:1553:6: warning: this statement may fall through [-Wimplicit-fallthrough=]
-   if (DIS_DPD_RATE ## _rate & chip->dpd_ratemask)  \
-      ^
-drivers/net/wireless/realtek/rtw88/phy.c:1557:2: note: in expansion of macro 'RTW_DPD_RATE_CHECK'
-  RTW_DPD_RATE_CHECK(6M);
-  ^~~~~~~~~~~~~~~~~~
-drivers/net/wireless/realtek/rtw88/phy.c:1552:2: note: here
-  case DESC_RATE ## _rate:     \
-  ^~~~
-drivers/net/wireless/realtek/rtw88/phy.c:1558:2: note: in expansion of macro 'RTW_DPD_RATE_CHECK'
-  RTW_DPD_RATE_CHECK(9M);
-  ^~~~~~~~~~~~~~~~~~
-drivers/net/wireless/realtek/rtw88/phy.c:1553:6: warning: this statement may fall through [-Wimplicit-fallthrough=]
-   if (DIS_DPD_RATE ## _rate & chip->dpd_ratemask)  \
-      ^
-drivers/net/wireless/realtek/rtw88/phy.c:1558:2: note: in expansion of macro 'RTW_DPD_RATE_CHECK'
-  RTW_DPD_RATE_CHECK(9M);
-  ^~~~~~~~~~~~~~~~~~
-drivers/net/wireless/realtek/rtw88/phy.c:1552:2: note: here
-  case DESC_RATE ## _rate:     \
-  ^~~~
-drivers/net/wireless/realtek/rtw88/phy.c:1559:2: note: in expansion of macro 'RTW_DPD_RATE_CHECK'
-  RTW_DPD_RATE_CHECK(MCS0);
-  ^~~~~~~~~~~~~~~~~~
-drivers/net/wireless/realtek/rtw88/phy.c:1553:6: warning: this statement may fall through [-Wimplicit-fallthrough=]
-   if (DIS_DPD_RATE ## _rate & chip->dpd_ratemask)  \
-      ^
-drivers/net/wireless/realtek/rtw88/phy.c:1559:2: note: in expansion of macro 'RTW_DPD_RATE_CHECK'
-  RTW_DPD_RATE_CHECK(MCS0);
-  ^~~~~~~~~~~~~~~~~~
-drivers/net/wireless/realtek/rtw88/phy.c:1552:2: note: here
-  case DESC_RATE ## _rate:     \
-  ^~~~
-drivers/net/wireless/realtek/rtw88/phy.c:1560:2: note: in expansion of macro 'RTW_DPD_RATE_CHECK'
-  RTW_DPD_RATE_CHECK(MCS1);
-  ^~~~~~~~~~~~~~~~~~
-drivers/net/wireless/realtek/rtw88/phy.c:1553:6: warning: this statement may fall through [-Wimplicit-fallthrough=]
-   if (DIS_DPD_RATE ## _rate & chip->dpd_ratemask)  \
-      ^
-drivers/net/wireless/realtek/rtw88/phy.c:1560:2: note: in expansion of macro 'RTW_DPD_RATE_CHECK'
-  RTW_DPD_RATE_CHECK(MCS1);
-  ^~~~~~~~~~~~~~~~~~
-drivers/net/wireless/realtek/rtw88/phy.c:1552:2: note: here
-  case DESC_RATE ## _rate:     \
-  ^~~~
-drivers/net/wireless/realtek/rtw88/phy.c:1561:2: note: in expansion of macro 'RTW_DPD_RATE_CHECK'
-  RTW_DPD_RATE_CHECK(MCS8);
-  ^~~~~~~~~~~~~~~~~~
-drivers/net/wireless/realtek/rtw88/phy.c:1553:6: warning: this statement may fall through [-Wimplicit-fallthrough=]
-   if (DIS_DPD_RATE ## _rate & chip->dpd_ratemask)  \
-      ^
-drivers/net/wireless/realtek/rtw88/phy.c:1561:2: note: in expansion of macro 'RTW_DPD_RATE_CHECK'
-  RTW_DPD_RATE_CHECK(MCS8);
-  ^~~~~~~~~~~~~~~~~~
-drivers/net/wireless/realtek/rtw88/phy.c:1552:2: note: here
-  case DESC_RATE ## _rate:     \
-  ^~~~
-drivers/net/wireless/realtek/rtw88/phy.c:1562:2: note: in expansion of macro 'RTW_DPD_RATE_CHECK'
-  RTW_DPD_RATE_CHECK(MCS9);
-  ^~~~~~~~~~~~~~~~~~
-drivers/net/wireless/realtek/rtw88/phy.c:1553:6: warning: this statement may fall through [-Wimplicit-fallthrough=]
-   if (DIS_DPD_RATE ## _rate & chip->dpd_ratemask)  \
-      ^
-drivers/net/wireless/realtek/rtw88/phy.c:1562:2: note: in expansion of macro 'RTW_DPD_RATE_CHECK'
-  RTW_DPD_RATE_CHECK(MCS9);
-  ^~~~~~~~~~~~~~~~~~
-drivers/net/wireless/realtek/rtw88/phy.c:1552:2: note: here
-  case DESC_RATE ## _rate:     \
-  ^~~~
-drivers/net/wireless/realtek/rtw88/phy.c:1563:2: note: in expansion of macro 'RTW_DPD_RATE_CHECK'
-  RTW_DPD_RATE_CHECK(VHT1SS_MCS0);
-  ^~~~~~~~~~~~~~~~~~
-drivers/net/wireless/realtek/rtw88/phy.c:1553:6: warning: this statement may fall through [-Wimplicit-fallthrough=]
-   if (DIS_DPD_RATE ## _rate & chip->dpd_ratemask)  \
-      ^
-drivers/net/wireless/realtek/rtw88/phy.c:1563:2: note: in expansion of macro 'RTW_DPD_RATE_CHECK'
-  RTW_DPD_RATE_CHECK(VHT1SS_MCS0);
-  ^~~~~~~~~~~~~~~~~~
-drivers/net/wireless/realtek/rtw88/phy.c:1552:2: note: here
-  case DESC_RATE ## _rate:     \
-  ^~~~
-drivers/net/wireless/realtek/rtw88/phy.c:1564:2: note: in expansion of macro 'RTW_DPD_RATE_CHECK'
-  RTW_DPD_RATE_CHECK(VHT1SS_MCS1);
-  ^~~~~~~~~~~~~~~~~~
-drivers/net/wireless/realtek/rtw88/phy.c:1553:6: warning: this statement may fall through [-Wimplicit-fallthrough=]
-   if (DIS_DPD_RATE ## _rate & chip->dpd_ratemask)  \
-      ^
-drivers/net/wireless/realtek/rtw88/phy.c:1564:2: note: in expansion of macro 'RTW_DPD_RATE_CHECK'
-  RTW_DPD_RATE_CHECK(VHT1SS_MCS1);
-  ^~~~~~~~~~~~~~~~~~
-drivers/net/wireless/realtek/rtw88/phy.c:1552:2: note: here
-  case DESC_RATE ## _rate:     \
-  ^~~~
-drivers/net/wireless/realtek/rtw88/phy.c:1565:2: note: in expansion of macro 'RTW_DPD_RATE_CHECK'
-  RTW_DPD_RATE_CHECK(VHT2SS_MCS0);
-  ^~~~~~~~~~~~~~~~~~
-drivers/net/wireless/realtek/rtw88/phy.c:1553:6: warning: this statement may fall through [-Wimplicit-fallthrough=]
-   if (DIS_DPD_RATE ## _rate & chip->dpd_ratemask)  \
-      ^
-drivers/net/wireless/realtek/rtw88/phy.c:1565:2: note: in expansion of macro 'RTW_DPD_RATE_CHECK'
-  RTW_DPD_RATE_CHECK(VHT2SS_MCS0);
-  ^~~~~~~~~~~~~~~~~~
-drivers/net/wireless/realtek/rtw88/phy.c:1552:2: note: here
-  case DESC_RATE ## _rate:     \
-  ^~~~
-drivers/net/wireless/realtek/rtw88/phy.c:1566:2: note: in expansion of macro 'RTW_DPD_RATE_CHECK'
-  RTW_DPD_RATE_CHECK(VHT2SS_MCS1);
-  ^~~~~~~~~~~~~~~~~~
-
-8 patches set to Changes Requested.
-
-11081855 [1/8] rtw88: 8822c: update PHY parameter to v38
-11081853 [2/8] rtw88: 8822c: update pwr_seq to v13
-11081843 [3/8] rtw88: 8822c: Enable interrupt migration
-11081851 [PATCH 4/8] rtw88: 8822c: add FW IQK support
-11081857 [5/8] rtw88: 8822c: add SW DPK support
-11081845 [6/8] rtw88: move IQK/DPK into phy_calibration
-11081849 [7/8] rtw88: add dynamic cck pd mechanism
-11081847 [8/8] rtw88: allows to receive AMSDU in AMPDU
+cb34212b1c25 brcmfmac: add stub version of brcmf_debugfs_get_devdir()
+2f8c8e62cd50 brcmfmac: add "reset" debugfs entry for testing reset
 
 -- 
-https://patchwork.kernel.org/patch/11081855/
+https://patchwork.kernel.org/patch/11125179/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
