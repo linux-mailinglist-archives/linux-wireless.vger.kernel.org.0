@@ -2,61 +2,59 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 4A30CAC07C
-	for <lists+linux-wireless@lfdr.de>; Fri,  6 Sep 2019 21:24:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1EF7BAC23E
+	for <lists+linux-wireless@lfdr.de>; Fri,  6 Sep 2019 23:54:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2393099AbfIFTYM (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 6 Sep 2019 15:24:12 -0400
-Received: from mail-pf1-f195.google.com ([209.85.210.195]:38426 "EHLO
-        mail-pf1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2391133AbfIFTYK (ORCPT
+        id S2404397AbfIFVy1 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 6 Sep 2019 17:54:27 -0400
+Received: from mail-wr1-f65.google.com ([209.85.221.65]:42403 "EHLO
+        mail-wr1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2404236AbfIFVy1 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 6 Sep 2019 15:24:10 -0400
-Received: by mail-pf1-f195.google.com with SMTP id h195so5159965pfe.5
-        for <linux-wireless@vger.kernel.org>; Fri, 06 Sep 2019 12:24:10 -0700 (PDT)
+        Fri, 6 Sep 2019 17:54:27 -0400
+Received: by mail-wr1-f65.google.com with SMTP id q14so7988109wrm.9
+        for <linux-wireless@vger.kernel.org>; Fri, 06 Sep 2019 14:54:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=android.com; s=20161025;
+        d=gmail.com; s=20161025;
         h=from:to:cc:subject:date:message-id:mime-version
          :content-transfer-encoding;
-        bh=no7kS2T1qNHP9Zpdwy1E09Unjz4x2T2LCFjYktICQgk=;
-        b=EvVkZs2J1AZ9GTp9kf0rnbiW9t2ITXImmd49lXjLrxM2btzrl5yd/T4Hcqo/dKLr6y
-         Q5j5C5pCfxhbgmewV0/bNfJQ11TPyEMOE3jrODvA82aEojWf9Qagh/WFcF6vaHbvq6Pv
-         ev3h/NdCyySH/YJt+JjM3K4bz5MFm47zXRTobzyogztVYzdQs9Ly0u15OSUf5Lk/j6SB
-         RG9fVhihQPPSJt2EGqZ3gtgMX2daLtUNhaDhavGZdofleGMAejroOkOi4OGSv8cP+w2i
-         XxbWLbE+QmfgowhG25brlvJTcvLuXFDfSOxclhU2h1c30ee7cuEd8IGt1UjKfFDGlYwa
-         Rd3Q==
+        bh=leeQnibrGjVek5bG1abJ4jTx9dAaPgO2nMR8X0LXbwQ=;
+        b=trE7xY9GPQv2iuCLVqox8AQq0Lsf5NU9QJTAcp2BC6+wmFEmDTXcTLyfGbivZ3e7+6
+         d0BaDWT5Sqzicra5tIq0l2BkBpN32JKRwWbenNGwSK7wtXpafDd3vu/qHD80rgglhW3B
+         obcgHje2W9Sqa0wzhjRvlEW9I7ycFc670oSoMhKb/FjSzNOC8/gCJbl/vItZl+KoE7wZ
+         pra5UZJMvNQj+hE2EL8eLh4EysMCWds3zebIwIrWi4/4Ohz7SM6RUBKMS6H187ETnNtF
+         6GNkIY0t61sSw+fUGl9Pwl2I3dUSrJn2H15VR1R2pmAPypjrB+4N4SLMevHTisyaBBP9
+         +HFQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
          :content-transfer-encoding;
-        bh=no7kS2T1qNHP9Zpdwy1E09Unjz4x2T2LCFjYktICQgk=;
-        b=dvvZqHLMJZdmkcABg7A+2vIjg0+frBHoDED65ctWNsAI9imoKBPmMA5rZS5Fps0+l8
-         czpo7uVD1TNoc1gD5Nc37Y53d7t7GcBzTx4n/PPJuXPTVjgyQaBX/QUNdTRDm7cTUvKK
-         li41VJCj5YUO1dzhHrdoZP54zo8rXIXFZf4abpIOkNmCK9k5jOTB2Fk5Q4U89X6dZsNg
-         m9YD4VzlXEEjrTXuiN86/tIj3C1LZC9bIlcx0U01WuKfEICyG5JQfzcituzmMGI2TTd5
-         EHqWQ3RHOqbbTTrH4KnAzTyx8BSMEy6avd6QtLegebM9drfD/56og7pud7BdFKTNtRU0
-         Z2VQ==
-X-Gm-Message-State: APjAAAVUd5teLdPky4ODVAArXVxX3DA7At8km9cYIGkzCSAlRejzrHAO
-        ES9BWGoMkQG5y5AWcoAufXG/lA==
-X-Google-Smtp-Source: APXvYqxHNghJveR3zrEVoimn0Wso+4JUVbYfHGnGsGo9B8NC/uWVASyxOZhZvPVLoA9ALyNt2tAvJw==
-X-Received: by 2002:a65:64c5:: with SMTP id t5mr9650538pgv.168.1567797849694;
-        Fri, 06 Sep 2019 12:24:09 -0700 (PDT)
-Received: from nebulus.mtv.corp.google.com ([2620:15c:211:200:5404:91ba:59dc:9400])
-        by smtp.gmail.com with ESMTPSA id b24sm7024169pfi.75.2019.09.06.12.24.08
+        bh=leeQnibrGjVek5bG1abJ4jTx9dAaPgO2nMR8X0LXbwQ=;
+        b=L4A3zpGrWVFl9DTjfaTckMNiHY1orihjxIZHaIG36TI/H1wEppSlfFLEVQ4TBtkDLF
+         L6c4IbZ66SP5RKKgxZ2yY34MM6QjFkkhNNG+d76ctb3/fljikI9lGGhFqjtIzSkfJhVH
+         yUp2VQydDpV6iD0z9t9/UK5spXxAYk4R8LWb6GMzMo7WceAeah+Dm/eoCvlKvqPyZsiK
+         iUL+hgdrQ84vrFW7WGbVs1zE1rR6Y0Wa6fD3dTNkOlOtC/uHlSex6oru4Gp9gt92yVqH
+         nSeamZ+1Sag7X+qX/GsGIYoJgmyJCWAkISvEXcyqaivEvDwSQdGaNekVGH31oUSttQi1
+         NoAw==
+X-Gm-Message-State: APjAAAUyoNAfWAZZlqxMP3oZ1qp/Qoy8xpzVfs+Dj/VMqZyDaHAf4wXN
+        MMK5AXUVeU6a6ksss9xj5Xv9lWbd
+X-Google-Smtp-Source: APXvYqwjNxT0UzdDs3WrSxxQ0dcEXEjQWUW6TZQ0dwyL2czZEE5cLl/61EiChq7S+Pz/h3UJxmpidQ==
+X-Received: by 2002:a05:6000:12d1:: with SMTP id l17mr8799749wrx.91.1567806865330;
+        Fri, 06 Sep 2019 14:54:25 -0700 (PDT)
+Received: from debian64.daheim (p5B0D72DC.dip0.t-ipconnect.de. [91.13.114.220])
+        by smtp.gmail.com with ESMTPSA id a15sm1923314wmj.25.2019.09.06.14.54.24
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 06 Sep 2019 12:24:09 -0700 (PDT)
-From:   Mark Salyzyn <salyzyn@android.com>
-To:     linux-kernel@vger.kernel.org
-Cc:     kernel-team@android.com, Mark Salyzyn <salyzyn@android.com>,
-        Johannes Berg <johannes@sipsolutions.net>,
-        "David S. Miller" <davem@davemloft.net>,
-        Marcel Holtmann <marcel@holtmann.org>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        stable@vger.kernel.org
-Subject: [PATCH v2] net: enable wireless core features with LEGACY_WEXT_ALLCONFIG
-Date:   Fri,  6 Sep 2019 12:24:00 -0700
-Message-Id: <20190906192403.195620-1-salyzyn@android.com>
-X-Mailer: git-send-email 2.23.0.187.g17f5b7556c-goog
+        Fri, 06 Sep 2019 14:54:24 -0700 (PDT)
+Received: from chuck by debian64.daheim with local (Exim 4.92.1)
+        (envelope-from <chunkeey@gmail.com>)
+        id 1i6MBT-00069E-Uy; Fri, 06 Sep 2019 23:54:23 +0200
+From:   Christian Lamparter <chunkeey@gmail.com>
+To:     linux-wireless@vger.kernel.org, ath10k@lists.infradead.org
+Cc:     Kalle Valo <kvalo@codeaurora.org>
+Subject: [PATCH] ath10k: restore QCA9880-AR1A (v1) detection
+Date:   Fri,  6 Sep 2019 23:54:23 +0200
+Message-Id: <20190906215423.23589-1-chunkeey@gmail.com>
+X-Mailer: git-send-email 2.23.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
@@ -64,58 +62,97 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-In embedded environments the requirements are to be able to pick and
-chose which features one requires built into the kernel.  If an
-embedded environment wants to supports loading modules that have been
-kbuilt out of tree, there is a need to enable hidden configurations
-for legacy wireless core features to provide the API surface for
-them to load.
+This patch restores the old behavior that read
+the chip_id on the QCA988x before resetting the
+chip. This needs to be done in this order since
+the unsupported QCA988x AR1A chips fall off the
+bus when resetted. Otherwise the next MMIO Op
+after the reset causes a BUS ERROR and panic.
 
-Introduce CONFIG_LEGACY_WEXT_ALLCONFIG to select all legacy wireless
-extension core features by activating in turn all the associated
-hidden configuration options, without having to specifically select
-any wireless module(s).
-
-Signed-off-by: Mark Salyzyn <salyzyn@android.com>
-Cc: kernel-team@android.com
-Cc: Johannes Berg <johannes@sipsolutions.net>
-Cc: "David S. Miller" <davem@davemloft.net>
-Cc: Marcel Holtmann <marcel@holtmann.org>
-Cc: linux-wireless@vger.kernel.org
-Cc: netdev@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org
-Cc: stable@vger.kernel.org # 4.19
+Cc: stable@vger.kernel.org
+Fixes: 1a7fecb766c8 ("ath10k: reset chip before reading chip_id in probe")
+Signed-off-by: Christian Lamparter <chunkeey@gmail.com>
 ---
-v2: change name and documentation to CONFIG_LEGACY_WEXT_ALLCONFIG
----
- net/wireless/Kconfig | 14 ++++++++++++++
- 1 file changed, 14 insertions(+)
+ drivers/net/wireless/ath/ath10k/pci.c | 36 +++++++++++++++++++--------
+ 1 file changed, 25 insertions(+), 11 deletions(-)
 
-diff --git a/net/wireless/Kconfig b/net/wireless/Kconfig
-index 67f8360dfcee..0d646cf28de5 100644
---- a/net/wireless/Kconfig
-+++ b/net/wireless/Kconfig
-@@ -17,6 +17,20 @@ config WEXT_SPY
- config WEXT_PRIV
- 	bool
+diff --git a/drivers/net/wireless/ath/ath10k/pci.c b/drivers/net/wireless/ath/ath10k/pci.c
+index a0b4d265c6eb..347bb92e4130 100644
+--- a/drivers/net/wireless/ath/ath10k/pci.c
++++ b/drivers/net/wireless/ath/ath10k/pci.c
+@@ -3490,7 +3490,7 @@ static int ath10k_pci_probe(struct pci_dev *pdev,
+ 	struct ath10k_pci *ar_pci;
+ 	enum ath10k_hw_rev hw_rev;
+ 	struct ath10k_bus_params bus_params = {};
+-	bool pci_ps;
++	bool pci_ps, is_qca988x = false;
+ 	int (*pci_soft_reset)(struct ath10k *ar);
+ 	int (*pci_hard_reset)(struct ath10k *ar);
+ 	u32 (*targ_cpu_to_ce_addr)(struct ath10k *ar, u32 addr);
+@@ -3500,6 +3500,7 @@ static int ath10k_pci_probe(struct pci_dev *pdev,
+ 	case QCA988X_2_0_DEVICE_ID:
+ 		hw_rev = ATH10K_HW_QCA988X;
+ 		pci_ps = false;
++		is_qca988x = true;
+ 		pci_soft_reset = ath10k_pci_warm_reset;
+ 		pci_hard_reset = ath10k_pci_qca988x_chip_reset;
+ 		targ_cpu_to_ce_addr = ath10k_pci_qca988x_targ_cpu_to_ce_addr;
+@@ -3619,25 +3620,34 @@ static int ath10k_pci_probe(struct pci_dev *pdev,
+ 		goto err_deinit_irq;
+ 	}
  
-+config LEGACY_WEXT_ALLCONFIG
-+	bool "allconfig for legacy wireless extensions"
-+	select WIRELESS_EXT
-+	select WEXT_CORE
-+	select WEXT_PROC
-+	select WEXT_SPY
-+	select WEXT_PRIV
-+	help
-+	  Config option used to enable all the legacy wireless extensions to
-+	  the core functionality used by add-in modules.
++	bus_params.dev_type = ATH10K_DEV_TYPE_LL;
++	bus_params.link_can_suspend = true;
++	/* Read CHIP_ID before reset to catch QCA9880-AR1A v1 devices that
++	 * fall off the bus during chip_reset. These chips have the same pci
++	 * device id as the QCA9880 BR4A or 2R4E. So that's why the check.
++	 */
++	if (is_qca988x) {
++		bus_params.chip_id =
++			ath10k_pci_soc_read32(ar, SOC_CHIP_ID_ADDRESS);
++		if (bus_params.chip_id != 0xffffffff) {
++			if (!ath10k_pci_chip_is_supported(pdev->device,
++							  bus_params.chip_id))
++				goto err_unsupported;
++		}
++	}
 +
-+	  If you are not building a kernel to be used for a variety of
-+	  out-of-kernel built wireless modules, say N here.
+ 	ret = ath10k_pci_chip_reset(ar);
+ 	if (ret) {
+ 		ath10k_err(ar, "failed to reset chip: %d\n", ret);
+ 		goto err_free_irq;
+ 	}
+ 
+-	bus_params.dev_type = ATH10K_DEV_TYPE_LL;
+-	bus_params.link_can_suspend = true;
+ 	bus_params.chip_id = ath10k_pci_soc_read32(ar, SOC_CHIP_ID_ADDRESS);
+-	if (bus_params.chip_id == 0xffffffff) {
+-		ath10k_err(ar, "failed to get chip id\n");
+-		goto err_free_irq;
+-	}
++	if (bus_params.chip_id == 0xffffffff)
++		goto err_unsupported;
+ 
+-	if (!ath10k_pci_chip_is_supported(pdev->device, bus_params.chip_id)) {
+-		ath10k_err(ar, "device %04x with chip_id %08x isn't supported\n",
+-			   pdev->device, bus_params.chip_id);
++	if (!ath10k_pci_chip_is_supported(pdev->device, bus_params.chip_id))
+ 		goto err_free_irq;
+-	}
+ 
+ 	ret = ath10k_core_register(ar, &bus_params);
+ 	if (ret) {
+@@ -3647,6 +3657,10 @@ static int ath10k_pci_probe(struct pci_dev *pdev,
+ 
+ 	return 0;
+ 
++err_unsupported:
++	ath10k_err(ar, "device %04x with chip_id %08x isn't supported\n",
++		   pdev->device, bus_params.chip_id);
 +
- config CFG80211
- 	tristate "cfg80211 - wireless configuration API"
- 	depends on RFKILL || !RFKILL
+ err_free_irq:
+ 	ath10k_pci_free_irq(ar);
+ 	ath10k_pci_rx_retry_sync(ar);
 -- 
-2.23.0.187.g17f5b7556c-goog
+2.23.0
 
