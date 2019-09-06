@@ -2,56 +2,58 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 12835ABCF5
+	by mail.lfdr.de (Postfix) with ESMTP id 8D07EABCF6
 	for <lists+linux-wireless@lfdr.de>; Fri,  6 Sep 2019 17:49:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2394933AbfIFPtM (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 6 Sep 2019 11:49:12 -0400
-Received: from mail-ot1-f51.google.com ([209.85.210.51]:44595 "EHLO
-        mail-ot1-f51.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1732456AbfIFPtL (ORCPT
+        id S1727514AbfIFPtP (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 6 Sep 2019 11:49:15 -0400
+Received: from mail-oi1-f194.google.com ([209.85.167.194]:37131 "EHLO
+        mail-oi1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727084AbfIFPtP (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 6 Sep 2019 11:49:11 -0400
-Received: by mail-ot1-f51.google.com with SMTP id 21so6115721otj.11
-        for <linux-wireless@vger.kernel.org>; Fri, 06 Sep 2019 08:49:10 -0700 (PDT)
+        Fri, 6 Sep 2019 11:49:15 -0400
+Received: by mail-oi1-f194.google.com with SMTP id v7so5329178oib.4
+        for <linux-wireless@vger.kernel.org>; Fri, 06 Sep 2019 08:49:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=pZuCK/LFe/OO1BZ3AqGk4ZltIe3DN6IjRd0ZQCCV4HE=;
-        b=VVgPsTw7tdR8ZTTxfHyTqhFef1mVV/I+n6vowXOUKKJN8lJUsgbGMSgbldvWhGYWk1
-         DIrDL8CVethiTZYXaopRzhzScy23FFeGyRVdDfyRzvXZBFjLSkd47+GSkFwCvFl8/xc/
-         c/pTWJ86IeFs60nydcHzF4cteKJ6R54O93GSMEsxJxo4wiLJ3SlWRoDPtO1r9Rb3hM73
-         7uQkkBUaw2WrFnlTNbr7Vi3jw+PugZOQVZvQkXQMTLCzsgdkePPhYAQkt1FT07tLs8s7
-         S8JclLtsRGAVsTkWfDk5gcbBz4VvtNeJ9CHgT/KulDyQvWy0Iy1ta5rMKqCYEDQyh7RD
-         PLGw==
+        h=from:to:cc:subject:date:message-id:in-reply-to:references
+         :mime-version:content-transfer-encoding;
+        bh=Y4zYoeG0qp85quCFLqiyskmkmcCb3vxTaAAxYUywA3U=;
+        b=QjPJvVwlDQy+oUie7ulW5bREI3td8cmDwUf3MNeqRvjH90VxnCgV69tfxlu6tkhzkD
+         3/Q/G9igJdU9s5n1gorFoe+vadln5MgMGBY6dd59hkd6tYPTavjzAwyt+CIkTb/EEq/w
+         NQ581dQaH/oYZOjK4eLa4JI/q/nPXCc9i0Kmwzsg5bGutO3sVriJsN94gO0b3WbsLB2w
+         5Fpis9w6Bk5uPm9KGYFJ/Gv+PmAZ1EIyevss/Emz8PpYzwUGPGyJ/9arojljfUJnip5A
+         i7ko3ivigOJE1OZa3UnOyGVB5FsAoiEdN3d4GPtGig6Gw25oHjyU7vBjsVwCU13VKgUx
+         03OA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=pZuCK/LFe/OO1BZ3AqGk4ZltIe3DN6IjRd0ZQCCV4HE=;
-        b=rM/J9mjyESz9GI6jpWYXYS9MbuYOE0FcHSs2rz/eXnVrTceleLtiXu2Cq12/H8eDde
-         4UBDsDxm9EaNXjaDfnPrLV4DU0zENImYlC5VpyJzTZi534sZzc6g49EIj1QmhXhHUMf5
-         P1wqMMQN00p1jhDuzSdN1pytZZjiftEoXK/yq4X1IbawTbp6NIkFX7VMONIYxhQpFiQG
-         mPdw4DWIhtqy/M70utxe/IQNfw8Qj81NxS6HsN4or+gqH4upa2hlhTbVGheXzwN1MThe
-         04TLan6f/oblEHPlJjz0xKyhglQIe8PUy+4poVbo2sBXhNGlSOZRDrJdUSvfUNCohZvO
-         E7YQ==
-X-Gm-Message-State: APjAAAV1myT+A0qzSu/6+pQOo/prk7uVErzTbmMo2+mex7reukKvuwIr
-        79qCX7PBnP9rywL+G+ngHLlpeRKk
-X-Google-Smtp-Source: APXvYqxsa2Cbo7TRB16QpFHHGuCmGAG7r2Cqx9iLETnpXdzMHVuy/pfuqrwsXW9jpyIxPMLrizOv2g==
-X-Received: by 2002:a9d:6356:: with SMTP id y22mr7608951otk.20.1567784950355;
-        Fri, 06 Sep 2019 08:49:10 -0700 (PDT)
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+         :references:mime-version:content-transfer-encoding;
+        bh=Y4zYoeG0qp85quCFLqiyskmkmcCb3vxTaAAxYUywA3U=;
+        b=Bavyd293X440Cwj4LJJ3nWzbhK1oPirJqkBjjC0gsUmr45Xys/gw0GQFNiGN49KPrS
+         iIp/hCh0Z0Iz9OXJQKGXk/druuq5nW3UUOtmkF5m5XI2hYbYHJ/y/jC5fMWg8Jm8kXYk
+         uJFdEy3T/QPKAcBWPuASjI34HBAVpzu9hGV5iMYIXoSC3ZyHYqH6Whob9q6y6659ludA
+         NdsVKG8jAikz9uvctVzzOKYdp9U683Iqswhy1zZCOYQ146TfKK/HX20O7ri0dGlV6pw5
+         H8EY1YO9zH8lBT9PLSle4O7TPsjyb3kFQHFI3/rBJleMdnlMK3+MOLlLsgVw1x/iYNi6
+         wKJg==
+X-Gm-Message-State: APjAAAVvnUNlv/pI2/Gu3EXSLv5qHBWyu9CZuOxT4ojAS6te7+s59g7o
+        LCDENGXxtcsgfPj7gKwJCS/J+gEr
+X-Google-Smtp-Source: APXvYqwJaBdV4yeGaitv80DdebZb/iPsx+XXTB8Vi/8dJfxgLEOlsIvQD4Y/jmHoy4oKR4hqqihWuQ==
+X-Received: by 2002:aca:388b:: with SMTP id f133mr7756522oia.9.1567784953638;
+        Fri, 06 Sep 2019 08:49:13 -0700 (PDT)
 Received: from localhost.localdomain (cpe-70-114-247-242.austin.res.rr.com. [70.114.247.242])
-        by smtp.gmail.com with ESMTPSA id j7sm2105587otn.65.2019.09.06.08.49.05
+        by smtp.gmail.com with ESMTPSA id j7sm2105587otn.65.2019.09.06.08.49.10
         (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Fri, 06 Sep 2019 08:49:05 -0700 (PDT)
+        Fri, 06 Sep 2019 08:49:10 -0700 (PDT)
 From:   Denis Kenzior <denkenz@gmail.com>
 To:     linux-wireless@vger.kernel.org, johannes@sipsolutions.net
 Cc:     Denis Kenzior <denkenz@gmail.com>
-Subject: [RFCv3 1/3] nl80211: Fix broken non-split wiphy dumps
-Date:   Fri,  6 Sep 2019 10:43:01 -0500
-Message-Id: <20190906154303.9303-1-denkenz@gmail.com>
+Subject: [RFCv3 2/3] nl80211: Support >4096 byte NEW_WIPHY event nlmsg
+Date:   Fri,  6 Sep 2019 10:43:02 -0500
+Message-Id: <20190906154303.9303-2-denkenz@gmail.com>
 X-Mailer: git-send-email 2.19.2
+In-Reply-To: <20190906154303.9303-1-denkenz@gmail.com>
+References: <20190906154303.9303-1-denkenz@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
@@ -59,84 +61,501 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-If a (legacy) client requested a wiphy dump but did not provide the
-NL80211_ATTR_SPLIT_WIPHY_DUMP attribute, the dump was supposed to be
-composed of purely non-split NEW_WIPHY messages, with 1 wiphy per
-message.  At least this was the intent after commit:
-3713b4e364ef ("nl80211: allow splitting wiphy information in dumps")
+For historical reasons, NEW_WIPHY messages generated by dumps or
+GET_WIPHY commands were limited to 4096 bytes.  This was due to the
+fact that the kernel only allocated 4k buffers prior to commit
+9063e21fb026 ("netlink: autosize skb lengthes").  Once the sizes of
+NEW_WIPHY messages exceeded these sizes, split dumps were introduced.
 
-However, in reality the non-split dumps were broken very shortly after.
-Perhaps around commit:
-fe1abafd942f ("nl80211: re-add channel width and extended capa advertising")
+Any new, non-legacy data was added only to messages using split-dumps
+(including filtered dumps).
 
-The reason for the bug is a missing setting of split_start to 0 in the
-case of a non-split dump.
+However, split-dumping has quite a significant overhead.  On cards
+tested, split dumps generated message sizes 1.7-1.8x compared to
+non-split dumps, while still comfortably fitting into an 8k buffer.  The
+kernel now expects userspace to provide 16k buffers by default, and 32k
+buffers are possible.
 
-Here is a sample non-split dump performed on kernel 4.19, some parts
-were cut for brevity:
-< Request: Get Wiphy (0x01) len 0 [ack,0x300]
-> Result: New Wiphy (0x03) len 3496 [multi]
-    Wiphy: 0 (0x00000000)
-    Wiphy Name: phy0
-    Generation: 1 (0x00000001)
-<snip>
-> Result: New Wiphy (0x03) len 68 [multi]
-    Wiphy: 0 (0x00000000)
-    Wiphy Name: phy0
-    Generation: 1 (0x00000001)
-    Extended Capabilities: len 8
-        Capability: bit  2: Extended channel switching
-        Capability: bit 62: Opmode Notification
-    Extended Capabilities Mask: len 8
-        04 00 00 00 00 00 00 40                          .......@
-    VHT Capability Mask: len 12
-        f0 1f 80 33 ff ff 00 00 ff ff 00 00              ...3........
-> Result: New Wiphy (0x03) len 28 [multi]
-    Wiphy: 0 (0x00000000)
-    Wiphy Name: phy0
-    Generation: 1 (0x00000001)
-> Result: New Wiphy (0x03) len 28 [multi]
-    Wiphy: 0 (0x00000000)
-    Wiphy Name: phy0
-    Generation: 1 (0x00000001)
-> Result: New Wiphy (0x03) len 52 [multi]
-    Wiphy: 0 (0x00000000)
-    Wiphy Name: phy0
-    Generation: 1 (0x00000001)
-    Max CSA Counters: len 1
-        02                                               .
-    Scheduled Scan Maximum Requests: len 4
-        01 00 00 00                                      ....
-    Extended Features: len 4
-        02 02 00 04                                      ....
-> Result: New Wiphy (0x03) len 36 [multi]
-    Wiphy: 0 (0x00000000)
-    Wiphy Name: phy0
-    Generation: 1 (0x00000001)
-    Reserved: len 4
-        00 00 00 00                                      ....
-> Complete: Get Wiphy (0x01) len 4 [multi]
-    Status: 0
+The kernel netlink layer is now much smarter and utilizes certain
+heuristics for figuring out what buffer sizes userspace provides, so it
+can allocate optimally sized buffers for netlink messages accordingly.
+This commit changes the split logic so that messages are packed more
+compactly into the (potentially) larger buffers provided by userspace.
+
+If large-enough buffers are provided, then split dumps will generate a
+single netlink NEW_WIPHY message for each wiphy being dumped, removing
+any overhead.
 
 Signed-off-by: Denis Kenzior <denkenz@gmail.com>
 ---
- net/wireless/nl80211.c | 3 +++
- 1 file changed, 3 insertions(+)
+ net/wireless/nl80211.c | 222 +++++++++++++++++++++--------------------
+ 1 file changed, 112 insertions(+), 110 deletions(-)
+
+Changes since last version:
+
+- Patch completely rewritten based on Johannes' feedback.  We now try to
+  pack as many attributes as can fit into the current message.  If the
+  application uses large enough buffers (typically 8k is sufficient as
+  of the time of this writing), then no splitting is even required.
+- Rewrote the commit description based on Johannes' git history
+  findings.  E.g. the kernel was at fault for the 4096 byte buffer size
+  limits and not userspace.
+- Patch 3 was dropped as it was no longer required
+
+Other thoughts:
+
+- I tested the split dump with 3k, 4k and 8k userspace buffers and
+  things seem to work as expected.
+- The code in case '3' is quite complex, but it does try to support a
+  message running out of room in the middle of a channel dump and
+  restarting from where it left off in the next split message.  Perhaps
+  this can be simplified, but it seems this capability is useful.
+  Please take extra care when reviewing this.
+- I dropped the split and restart logic in case 13 as no current driver
+  besides iwlwifi seems to support the attributes here, and the
+  attributes appear to be quite small anyway.
 
 diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
-index 3e30e18d1d89..ff6200fcd492 100644
+index ff6200fcd492..03421f66eea3 100644
 --- a/net/wireless/nl80211.c
 +++ b/net/wireless/nl80211.c
-@@ -2191,6 +2191,9 @@ static int nl80211_send_wiphy(struct cfg80211_registered_device *rdev,
- 		 * but break unconditionally so unsplit data stops here.
- 		 */
- 		state->split_start++;
+@@ -1854,8 +1854,8 @@ static int nl80211_send_pmsr_capa(struct cfg80211_registered_device *rdev,
+ struct nl80211_dump_wiphy_state {
+ 	s64 filter_wiphy;
+ 	long start;
+-	long split_start, band_start, chan_start, capa_start;
+-	bool split;
++	long split_start, band_start, chan_start;
++	bool legacy;
+ };
+ 
+ static int nl80211_send_wiphy(struct cfg80211_registered_device *rdev,
+@@ -1867,8 +1867,9 @@ static int nl80211_send_wiphy(struct cfg80211_registered_device *rdev,
+ 	struct nlattr *nl_bands, *nl_band;
+ 	struct nlattr *nl_freqs, *nl_freq;
+ 	struct nlattr *nl_cmds;
+-	enum nl80211_band band;
+ 	struct ieee80211_channel *chan;
++	void *last_good_pos = 0;
++	void *last_channel_pos;
+ 	int i;
+ 	const struct ieee80211_txrx_stypes *mgmt_stypes =
+ 				rdev->wiphy.mgmt_stypes;
+@@ -1939,9 +1940,9 @@ static int nl80211_send_wiphy(struct cfg80211_registered_device *rdev,
+ 		if ((rdev->wiphy.flags & WIPHY_FLAG_TDLS_EXTERNAL_SETUP) &&
+ 		    nla_put_flag(msg, NL80211_ATTR_TDLS_EXTERNAL_SETUP))
+ 			goto nla_put_failure;
 +
-+		if (!state->split)
-+			state->split_start = 0;
- 		break;
++		last_good_pos = nlmsg_get_pos(msg);
+ 		state->split_start++;
+-		if (state->split)
+-			break;
+ 		/* fall through */
+ 	case 1:
+ 		if (nla_put(msg, NL80211_ATTR_CIPHER_SUITES,
+@@ -1986,17 +1987,16 @@ static int nl80211_send_wiphy(struct cfg80211_registered_device *rdev,
+ 			}
+ 		}
+ 
++		last_good_pos = nlmsg_get_pos(msg);
+ 		state->split_start++;
+-		if (state->split)
+-			break;
+ 		/* fall through */
+ 	case 2:
+ 		if (nl80211_put_iftypes(msg, NL80211_ATTR_SUPPORTED_IFTYPES,
+ 					rdev->wiphy.interface_modes))
+ 				goto nla_put_failure;
++
++		last_good_pos = nlmsg_get_pos(msg);
+ 		state->split_start++;
+-		if (state->split)
+-			break;
+ 		/* fall through */
+ 	case 3:
+ 		nl_bands = nla_nest_start_noflag(msg,
+@@ -2004,81 +2004,78 @@ static int nl80211_send_wiphy(struct cfg80211_registered_device *rdev,
+ 		if (!nl_bands)
+ 			goto nla_put_failure;
+ 
+-		for (band = state->band_start;
+-		     band < NUM_NL80211_BANDS; band++) {
++		/* Position in the buffer if we added a set of channel info */
++		last_channel_pos = 0;
++
++		while (state->band_start < NUM_NL80211_BANDS) {
+ 			struct ieee80211_supported_band *sband;
+ 
+-			sband = rdev->wiphy.bands[band];
++			sband = rdev->wiphy.bands[state->band_start];
+ 
+-			if (!sband)
++			if (!sband) {
++				state->band_start++;
+ 				continue;
++			}
+ 
+-			nl_band = nla_nest_start_noflag(msg, band);
++			nl_band = nla_nest_start_noflag(msg, state->band_start);
+ 			if (!nl_band)
+-				goto nla_put_failure;
++				goto band_put_failure;
+ 
+-			switch (state->chan_start) {
+-			case 0:
+-				if (nl80211_send_band_rateinfo(msg, sband))
+-					goto nla_put_failure;
+-				state->chan_start++;
+-				if (state->split)
+-					break;
+-				/* fall through */
+-			default:
+-				/* add frequencies */
+-				nl_freqs = nla_nest_start_noflag(msg,
+-								 NL80211_BAND_ATTR_FREQS);
+-				if (!nl_freqs)
+-					goto nla_put_failure;
++			if (!state->chan_start &&
++			    nl80211_send_band_rateinfo(msg, sband))
++				goto band_put_failure;
++
++			nl_freqs = nla_nest_start_noflag(msg,
++							 NL80211_BAND_ATTR_FREQS);
++			if (!nl_freqs)
++				goto band_put_failure;
+ 
+-				for (i = state->chan_start - 1;
+-				     i < sband->n_channels;
+-				     i++) {
+-					nl_freq = nla_nest_start_noflag(msg,
+-									i);
+-					if (!nl_freq)
+-						goto nla_put_failure;
++			while (state->chan_start < sband->n_channels) {
++				nl_freq = nla_nest_start_noflag(msg,
++								state->chan_start);
++				if (!nl_freq)
++					goto chan_put_failure;
+ 
+-					chan = &sband->channels[i];
++				chan = &sband->channels[state->chan_start];
+ 
+-					if (nl80211_msg_put_channel(
+-							msg, &rdev->wiphy, chan,
+-							state->split))
+-						goto nla_put_failure;
++				if (nl80211_msg_put_channel(msg, &rdev->wiphy,
++							    chan,
++							    !state->legacy))
++					goto chan_put_failure;
+ 
+-					nla_nest_end(msg, nl_freq);
+-					if (state->split)
+-						break;
+-				}
+-				if (i < sband->n_channels)
+-					state->chan_start = i + 2;
+-				else
+-					state->chan_start = 0;
+-				nla_nest_end(msg, nl_freqs);
++				nla_nest_end(msg, nl_freq);
++				state->chan_start++;
++				last_channel_pos = nlmsg_get_pos(msg);
+ 			}
+ 
++chan_put_failure:
++			if (!last_channel_pos)
++				goto nla_put_failure;
++
++			nlmsg_trim(msg, last_channel_pos);
++			nla_nest_end(msg, nl_freqs);
+ 			nla_nest_end(msg, nl_band);
+ 
+-			if (state->split) {
+-				/* start again here */
+-				if (state->chan_start)
+-					band--;
++			if (state->chan_start < sband->n_channels)
+ 				break;
+-			}
++
++			state->chan_start = 0;
++			state->band_start++;
+ 		}
+-		nla_nest_end(msg, nl_bands);
+ 
+-		if (band < NUM_NL80211_BANDS)
+-			state->band_start = band + 1;
+-		else
+-			state->band_start = 0;
++band_put_failure:
++		if (!last_channel_pos)
++			goto nla_put_failure;
++
++		nla_nest_end(msg, nl_bands);
+ 
+-		/* if bands & channels are done, continue outside */
+-		if (state->band_start == 0 && state->chan_start == 0)
+-			state->split_start++;
+-		if (state->split)
++		if (state->band_start < NUM_NL80211_BANDS)
+ 			break;
++
++		state->band_start = 0;
++
++		last_good_pos = nlmsg_get_pos(msg);
++		state->split_start++;
+ 		/* fall through */
+ 	case 4:
+ 		nl_cmds = nla_nest_start_noflag(msg,
+@@ -2089,7 +2086,7 @@ static int nl80211_send_wiphy(struct cfg80211_registered_device *rdev,
+ 		i = nl80211_add_commands_unsplit(rdev, msg);
+ 		if (i < 0)
+ 			goto nla_put_failure;
+-		if (state->split) {
++		if (!state->legacy) {
+ 			CMD(crit_proto_start, CRIT_PROTOCOL_START);
+ 			CMD(crit_proto_stop, CRIT_PROTOCOL_STOP);
+ 			if (rdev->wiphy.flags & WIPHY_FLAG_HAS_CHANNEL_SWITCH)
+@@ -2105,9 +2102,8 @@ static int nl80211_send_wiphy(struct cfg80211_registered_device *rdev,
+ #undef CMD
+ 
+ 		nla_nest_end(msg, nl_cmds);
++		last_good_pos = nlmsg_get_pos(msg);
+ 		state->split_start++;
+-		if (state->split)
+-			break;
+ 		/* fall through */
+ 	case 5:
+ 		if (rdev->ops->remain_on_channel &&
+@@ -2123,20 +2119,17 @@ static int nl80211_send_wiphy(struct cfg80211_registered_device *rdev,
+ 
+ 		if (nl80211_send_mgmt_stypes(msg, mgmt_stypes))
+ 			goto nla_put_failure;
++
++		last_good_pos = nlmsg_get_pos(msg);
+ 		state->split_start++;
+-		if (state->split)
+-			break;
+ 		/* fall through */
+ 	case 6:
+ #ifdef CONFIG_PM
+-		if (nl80211_send_wowlan(msg, rdev, state->split))
++		if (nl80211_send_wowlan(msg, rdev, !state->legacy))
+ 			goto nla_put_failure;
+-		state->split_start++;
+-		if (state->split)
+-			break;
+-#else
+-		state->split_start++;
+ #endif
++		last_good_pos = nlmsg_get_pos(msg);
++		state->split_start++;
+ 		/* fall through */
+ 	case 7:
+ 		if (nl80211_put_iftypes(msg, NL80211_ATTR_SOFTWARE_IFTYPES,
+@@ -2144,12 +2137,11 @@ static int nl80211_send_wiphy(struct cfg80211_registered_device *rdev,
+ 			goto nla_put_failure;
+ 
+ 		if (nl80211_put_iface_combinations(&rdev->wiphy, msg,
+-						   state->split))
++						   !state->legacy))
+ 			goto nla_put_failure;
+ 
++		last_good_pos = nlmsg_get_pos(msg);
+ 		state->split_start++;
+-		if (state->split)
+-			break;
+ 		/* fall through */
+ 	case 8:
+ 		if ((rdev->wiphy.flags & WIPHY_FLAG_HAVE_AP_SME) &&
+@@ -2160,10 +2152,10 @@ static int nl80211_send_wiphy(struct cfg80211_registered_device *rdev,
+ 		features = rdev->wiphy.features;
+ 		/*
+ 		 * We can only add the per-channel limit information if the
+-		 * dump is split, otherwise it makes it too big. Therefore
+-		 * only advertise it in that case.
++		 * dump is for a non-legacy message, otherwise it makes it too
++		 * big. Therefore only advertise it in that case.
+ 		 */
+-		if (state->split)
++		if (!state->legacy)
+ 			features |= NL80211_FEATURE_ADVERTISE_CHAN_LIMITS;
+ 		if (nla_put_u32(msg, NL80211_ATTR_FEATURE_FLAGS, features))
+ 			goto nla_put_failure;
+@@ -2182,19 +2174,19 @@ static int nl80211_send_wiphy(struct cfg80211_registered_device *rdev,
+ 
+ 		/*
+ 		 * Any information below this point is only available to
+-		 * applications that can deal with it being split. This
+-		 * helps ensure that newly added capabilities don't break
+-		 * older tools by overrunning their buffers.
+-		 *
+-		 * We still increment split_start so that in the split
+-		 * case we'll continue with more data in the next round,
+-		 * but break unconditionally so unsplit data stops here.
++		 * applications that are not legacy, e.g. ones that requested
++		 * a split-dump or using large buffers.  This helps ensure
++		 * that newly added capabilities don't break older tools by
++		 * overrunning their buffers.
+ 		 */
+-		state->split_start++;
+-
+-		if (!state->split)
++		if (state->legacy) {
+ 			state->split_start = 0;
+-		break;
++			break;
++		}
++
++		last_good_pos = nlmsg_get_pos(msg);
++		state->split_start++;
++		/* Fall through */
  	case 9:
  		if (rdev->wiphy.extended_capabilities &&
+ 		    (nla_put(msg, NL80211_ATTR_EXT_CAPA,
+@@ -2235,8 +2227,9 @@ static int nl80211_send_wiphy(struct cfg80211_registered_device *rdev,
+ 			nla_nest_end(msg, attr);
+ 		}
+ 
++		last_good_pos = nlmsg_get_pos(msg);
+ 		state->split_start++;
+-		break;
++		/* Fall through */
+ 	case 10:
+ 		if (nl80211_send_coalesce(msg, rdev))
+ 			goto nla_put_failure;
+@@ -2251,8 +2244,9 @@ static int nl80211_send_wiphy(struct cfg80211_registered_device *rdev,
+ 				rdev->wiphy.max_ap_assoc_sta))
+ 			goto nla_put_failure;
+ 
++		last_good_pos = nlmsg_get_pos(msg);
+ 		state->split_start++;
+-		break;
++		/* Fall through */
+ 	case 11:
+ 		if (rdev->wiphy.n_vendor_commands) {
+ 			const struct nl80211_vendor_cmd_info *info;
+@@ -2287,8 +2281,10 @@ static int nl80211_send_wiphy(struct cfg80211_registered_device *rdev,
+ 			}
+ 			nla_nest_end(msg, nested);
+ 		}
++
++		last_good_pos = nlmsg_get_pos(msg);
+ 		state->split_start++;
+-		break;
++		/* Fall through */
+ 	case 12:
+ 		if (rdev->wiphy.flags & WIPHY_FLAG_HAS_CHANNEL_SWITCH &&
+ 		    nla_put_u8(msg, NL80211_ATTR_MAX_CSA_COUNTERS,
+@@ -2329,8 +2325,9 @@ static int nl80211_send_wiphy(struct cfg80211_registered_device *rdev,
+ 			nla_nest_end(msg, nested);
+ 		}
+ 
++		last_good_pos = nlmsg_get_pos(msg);
+ 		state->split_start++;
+-		break;
++		/* Fall through */
+ 	case 13:
+ 		if (rdev->wiphy.num_iftype_ext_capab &&
+ 		    rdev->wiphy.iftype_ext_capab) {
+@@ -2341,8 +2338,7 @@ static int nl80211_send_wiphy(struct cfg80211_registered_device *rdev,
+ 			if (!nested)
+ 				goto nla_put_failure;
+ 
+-			for (i = state->capa_start;
+-			     i < rdev->wiphy.num_iftype_ext_capab; i++) {
++			for (i = 0; i < rdev->wiphy.num_iftype_ext_capab; i++) {
+ 				const struct wiphy_iftype_ext_capab *capab;
+ 
+ 				capab = &rdev->wiphy.iftype_ext_capab[i];
+@@ -2361,14 +2357,8 @@ static int nl80211_send_wiphy(struct cfg80211_registered_device *rdev,
+ 					goto nla_put_failure;
+ 
+ 				nla_nest_end(msg, nested_ext_capab);
+-				if (state->split)
+-					break;
+ 			}
+ 			nla_nest_end(msg, nested);
+-			if (i < rdev->wiphy.num_iftype_ext_capab) {
+-				state->capa_start = i + 1;
+-				break;
+-			}
+ 		}
+ 
+ 		if (nla_put_u32(msg, NL80211_ATTR_BANDS,
+@@ -2397,14 +2387,16 @@ static int nl80211_send_wiphy(struct cfg80211_registered_device *rdev,
+ 				goto nla_put_failure;
+ 		}
+ 
++		last_good_pos = nlmsg_get_pos(msg);
+ 		state->split_start++;
+-		break;
++		/* Fall through */
+ 	case 14:
+ 		if (nl80211_send_pmsr_capa(rdev, msg))
+ 			goto nla_put_failure;
+ 
++		last_good_pos = nlmsg_get_pos(msg);
+ 		state->split_start++;
+-		break;
++		/* Fall through */
+ 	case 15:
+ 		if (rdev->wiphy.akm_suites &&
+ 		    nla_put(msg, NL80211_ATTR_AKM_SUITES,
+@@ -2421,8 +2413,14 @@ static int nl80211_send_wiphy(struct cfg80211_registered_device *rdev,
+ 	return 0;
+ 
+  nla_put_failure:
+-	genlmsg_cancel(msg, hdr);
+-	return -EMSGSIZE;
++	if ((state->legacy && state->split_start < 9) ||
++	    !last_good_pos) {
++		genlmsg_cancel(msg, hdr);
++		return -EMSGSIZE;
++	}
++
++	nlmsg_trim(msg, last_good_pos);
++	goto finish;
+ }
+ 
+ static int nl80211_dump_wiphy_parse(struct sk_buff *skb,
+@@ -2445,7 +2443,7 @@ static int nl80211_dump_wiphy_parse(struct sk_buff *skb,
+ 		goto out;
+ 	}
+ 
+-	state->split = tb[NL80211_ATTR_SPLIT_WIPHY_DUMP];
++	state->legacy = !tb[NL80211_ATTR_SPLIT_WIPHY_DUMP];
+ 	if (tb[NL80211_ATTR_WIPHY])
+ 		state->filter_wiphy = nla_get_u32(tb[NL80211_ATTR_WIPHY]);
+ 	if (tb[NL80211_ATTR_WDEV])
+@@ -2526,7 +2524,7 @@ static int nl80211_dump_wiphy(struct sk_buff *skb, struct netlink_callback *cb)
+ 				 * We can then retry with the larger buffer.
+ 				 */
+ 				if ((ret == -ENOBUFS || ret == -EMSGSIZE) &&
+-				    !skb->len && !state->split &&
++				    !skb->len && state->legacy &&
+ 				    cb->min_dump_alloc < 4096) {
+ 					cb->min_dump_alloc = 4096;
+ 					state->split_start = 0;
+@@ -2558,6 +2556,8 @@ static int nl80211_get_wiphy(struct sk_buff *skb, struct genl_info *info)
+ 	struct cfg80211_registered_device *rdev = info->user_ptr[0];
+ 	struct nl80211_dump_wiphy_state state = {};
+ 
++	state.legacy = true;
++
+ 	msg = nlmsg_new(4096, GFP_KERNEL);
+ 	if (!msg)
+ 		return -ENOMEM;
+@@ -14737,6 +14737,8 @@ void nl80211_notify_wiphy(struct cfg80211_registered_device *rdev,
+ 	WARN_ON(cmd != NL80211_CMD_NEW_WIPHY &&
+ 		cmd != NL80211_CMD_DEL_WIPHY);
+ 
++	state.legacy = true;
++
+ 	msg = nlmsg_new(NLMSG_DEFAULT_SIZE, GFP_KERNEL);
+ 	if (!msg)
+ 		return;
 -- 
 2.19.2
 
