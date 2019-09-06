@@ -2,470 +2,117 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 817E5AB0B5
-	for <lists+linux-wireless@lfdr.de>; Fri,  6 Sep 2019 04:44:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7E5A5AB0B7
+	for <lists+linux-wireless@lfdr.de>; Fri,  6 Sep 2019 04:49:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2392003AbfIFCoX (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 5 Sep 2019 22:44:23 -0400
-Received: from mail-qk1-f194.google.com ([209.85.222.194]:42801 "EHLO
-        mail-qk1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2391996AbfIFCoX (ORCPT
+        id S2392026AbfIFCtR (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 5 Sep 2019 22:49:17 -0400
+Received: from smtp.codeaurora.org ([198.145.29.96]:43044 "EHLO
+        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2391203AbfIFCtR (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 5 Sep 2019 22:44:23 -0400
-Received: by mail-qk1-f194.google.com with SMTP id f13so4255930qkm.9
-        for <linux-wireless@vger.kernel.org>; Thu, 05 Sep 2019 19:44:22 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=endlessm-com.20150623.gappssmtp.com; s=20150623;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=K/4fDDIpYX1nGa6Qb0nPeh0ZVgtz+HFbR6HLyKfwiow=;
-        b=ossHTH2g18CyBktaNondYX5A59F/z9Ziw9LEOsQoedZRquVj7Rw1ocpCcRBwfGDiNN
-         XDcrXNG1h97c8OjkeFt9KUEYl3wESgQlXiGgyeyD81XHHmg3qwI+FIu60b7iA/Jc80R1
-         YQ6Ffafu+1/manE9swdb+5LGdSlhU1uYbDuioDdk0EEsVZLyutv8m0FLgVNv1mJQIOix
-         7Y6T7n5rqAtEl3g61FLrlmu2IKV4Upp7+bZxKgkKsGSIT/dANx5tzdkeQsZCSVNASiEJ
-         qy3Za53B0ZKDtw9ni5svJRzIHL/1EMo42uMhTndOwcf05K2Ozq0XmYXQoKcwVCq56d48
-         3HNA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=K/4fDDIpYX1nGa6Qb0nPeh0ZVgtz+HFbR6HLyKfwiow=;
-        b=Yiv3vhB8rb/PtS65BEv+Xd3BvM/icoyFAdR/5Mn9LPsz1JPZDxQP65ZrTkKR+VhUEt
-         VJCjZB2A93aI+vDrZSuUWF6uta9E5glur1PBSn9Uxx2NmZQsZGAKp3SGG2hVke/goHx1
-         IXIcl2VA/VgaVx+wew1aEJT/4bAl41IUYT9bpzqdFO7l/dp1XPrIPhDX7rEgHsgFwFBG
-         j+p2+7raPmy8V2Ylrq5FPxuJkCAFxGNxU6k1WEgYafAyuRXQWtLaKGN1+vNia2+oy6fi
-         x0ma/6Sz3IyS4pKxnAWOarBO04f4sWbr2mc4xfBiZZ7ZVObg5ILDas0HUX57uIzeIJyn
-         bIFg==
-X-Gm-Message-State: APjAAAWfJJm6xAYE4So4CAe8RHnjEyc2PqflvrvDNrI4cf7Ls7fpV2Ed
-        1ADDBdqLJonsd+hUMRBTLtziaBAlEzYchCUFI089Iw==
-X-Google-Smtp-Source: APXvYqwc7TOG0qibPM4UpDyayQcgcpSOVZsKzmYC6H/swTX41ex+SHTRGFEebvWWuNtzu1q1d94blBrP3gQqxi4cy1o=
-X-Received: by 2002:a37:9303:: with SMTP id v3mr6641447qkd.369.1567737861435;
- Thu, 05 Sep 2019 19:44:21 -0700 (PDT)
-MIME-Version: 1.0
-References: <20190903053735.85957-1-chiu@endlessm.com>
-In-Reply-To: <20190903053735.85957-1-chiu@endlessm.com>
-From:   Chris Chiu <chiu@endlessm.com>
-Date:   Fri, 6 Sep 2019 10:44:10 +0800
-Message-ID: <CAB4CAwc5OBUWFThh__FedmG=fR-_1_GxUuiAb0J5yfU8c1aTfg@mail.gmail.com>
-Subject: Re: [PATCH] rtl8xxxu: add bluetooth co-existence support for single antenna
-To:     Jes Sorensen <Jes.Sorensen@gmail.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        David Miller <davem@davemloft.net>
-Cc:     linux-wireless <linux-wireless@vger.kernel.org>,
-        netdev <netdev@vger.kernel.org>,
-        Linux Kernel <linux-kernel@vger.kernel.org>,
-        Linux Upstreaming Team <linux@endlessm.com>
-Content-Type: text/plain; charset="UTF-8"
+        Thu, 5 Sep 2019 22:49:17 -0400
+Received: by smtp.codeaurora.org (Postfix, from userid 1000)
+        id 90BC761156; Fri,  6 Sep 2019 02:49:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
+        s=default; t=1567738156;
+        bh=hlzVBwok/QzMQuoaegaXi8Wvuq3sxGWAqeY0kUwtYLs=;
+        h=From:To:Cc:Subject:Date:From;
+        b=UfVahC0LEp/k2Ys2rE6RqohL74LFRuTKV3Db0vdZwZY8uRtN+YcyMaKYcnm78PisS
+         cN/ZQ0N3LYkEjH0sgXTEF/uQg2W6TixPju6o9nHnxbyxds5LNAa9pbTdq6uGWgvzr3
+         vZlWACqUgmF17XgzADJslR6ynEsRtKusXAj5gfNk=
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        pdx-caf-mail.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.7 required=2.0 tests=ALL_TRUSTED,BAYES_00,
+        DKIM_INVALID,DKIM_SIGNED,SPF_NONE autolearn=no autolearn_force=no
+        version=3.4.0
+Received: from wgong-HP-Z240-SFF-Workstation.qca.qualcomm.com (unknown [180.166.53.21])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-SHA256 (128/128 bits))
+        (No client certificate requested)
+        (Authenticated sender: wgong@smtp.codeaurora.org)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 0019D60213;
+        Fri,  6 Sep 2019 02:49:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
+        s=default; t=1567738156;
+        bh=hlzVBwok/QzMQuoaegaXi8Wvuq3sxGWAqeY0kUwtYLs=;
+        h=From:To:Cc:Subject:Date:From;
+        b=UfVahC0LEp/k2Ys2rE6RqohL74LFRuTKV3Db0vdZwZY8uRtN+YcyMaKYcnm78PisS
+         cN/ZQ0N3LYkEjH0sgXTEF/uQg2W6TixPju6o9nHnxbyxds5LNAa9pbTdq6uGWgvzr3
+         vZlWACqUgmF17XgzADJslR6ynEsRtKusXAj5gfNk=
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 0019D60213
+Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=wgong@codeaurora.org
+From:   Wen Gong <wgong@codeaurora.org>
+To:     ath10k@lists.infradead.org, johannes@sipsolutions.net
+Cc:     linux-wireless@vger.kernel.org
+Subject: [PATCH v3] mac80211: Store max_mtu in ieee80211_hw
+Date:   Fri,  6 Sep 2019 10:48:57 +0800
+Message-Id: <1567738137-31748-1-git-send-email-wgong@codeaurora.org>
+X-Mailer: git-send-email 1.9.1
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Tue, Sep 3, 2019 at 1:37 PM Chris Chiu <chiu@endlessm.com> wrote:
->
-> The RTL8723BU suffers the wifi disconnection problem while bluetooth
-> device connected. While wifi is doing tx/rx, the bluetooth will scan
-> without results. This is due to the wifi and bluetooth share the same
-> single antenna for RF communication and they need to have a mechanism
-> to collaborate.
->
-> BT information is provided via the packet sent from co-processor to
-> host (C2H). It contains the status of BT but the rtl8723bu_handle_c2h
-> dose not really handle it. And there's no bluetooth coexistence
-> mechanism to deal with it.
->
-> This commit adds a workqueue to set the tdma configurations and
-> coefficient table per the parsed bluetooth link status and given
-> wifi connection state. The tdma/coef table comes from the vendor
-> driver code of the RTL8192EU and RTL8723BU. However, this commit is
-> only for single antenna scenario which RTL8192EU is default dual
-> antenna. The rtl8xxxu_parse_rxdesc24 which invokes the handle_c2h
-> is only for 8723b and 8192e so the mechanism is expected to work
-> on both chips with single antenna. Note RTL8192EU dual antenna is
-> not supported.
->
-> Signed-off-by: Chris Chiu <chiu@endlessm.com>
-> ---
->  .../net/wireless/realtek/rtl8xxxu/rtl8xxxu.h  |  37 +++
->  .../realtek/rtl8xxxu/rtl8xxxu_8723b.c         |   2 -
->  .../wireless/realtek/rtl8xxxu/rtl8xxxu_core.c | 243 +++++++++++++++++-
->  3 files changed, 275 insertions(+), 7 deletions(-)
->
-> diff --git a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu.h b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu.h
-> index 582c2a346cec..22e95b11bfbb 100644
-> --- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu.h
-> +++ b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu.h
-> @@ -1220,6 +1220,37 @@ enum ratr_table_mode_new {
->         RATEID_IDX_BGN_3SS = 14,
->  };
->
-> +#define BT_INFO_8723B_1ANT_B_FTP               BIT(7)
-> +#define BT_INFO_8723B_1ANT_B_A2DP              BIT(6)
-> +#define BT_INFO_8723B_1ANT_B_HID               BIT(5)
-> +#define BT_INFO_8723B_1ANT_B_SCO_BUSY          BIT(4)
-> +#define BT_INFO_8723B_1ANT_B_ACL_BUSY          BIT(3)
-> +#define BT_INFO_8723B_1ANT_B_INQ_PAGE          BIT(2)
-> +#define BT_INFO_8723B_1ANT_B_SCO_ESCO          BIT(1)
-> +#define BT_INFO_8723B_1ANT_B_CONNECTION        BIT(0)
-> +
-> +enum _BT_8723B_1ANT_STATUS {
-> +       BT_8723B_1ANT_STATUS_NON_CONNECTED_IDLE      = 0x0,
-> +       BT_8723B_1ANT_STATUS_CONNECTED_IDLE          = 0x1,
-> +       BT_8723B_1ANT_STATUS_INQ_PAGE                = 0x2,
-> +       BT_8723B_1ANT_STATUS_ACL_BUSY                = 0x3,
-> +       BT_8723B_1ANT_STATUS_SCO_BUSY                = 0x4,
-> +       BT_8723B_1ANT_STATUS_ACL_SCO_BUSY            = 0x5,
-> +       BT_8723B_1ANT_STATUS_MAX
-> +};
-> +
-> +struct rtl8xxxu_btcoex {
-> +       u8      bt_status;
-> +       bool    bt_busy;
-> +       bool    has_sco;
-> +       bool    has_a2dp;
-> +       bool    has_hid;
-> +       bool    has_pan;
-> +       bool    hid_only;
-> +       bool    a2dp_only;
-> +       bool    c2h_bt_inquiry;
-> +};
-> +
->  #define RTL8XXXU_RATR_STA_INIT 0
->  #define RTL8XXXU_RATR_STA_HIGH 1
->  #define RTL8XXXU_RATR_STA_MID  2
-> @@ -1340,6 +1371,10 @@ struct rtl8xxxu_priv {
->          */
->         struct ieee80211_vif *vif;
->         struct delayed_work ra_watchdog;
-> +       struct work_struct c2hcmd_work;
-> +       struct sk_buff_head c2hcmd_queue;
-> +       spinlock_t c2hcmd_lock;
-> +       struct rtl8xxxu_btcoex bt_coex;
->  };
->
->  struct rtl8xxxu_rx_urb {
-> @@ -1486,6 +1521,8 @@ void rtl8xxxu_fill_txdesc_v2(struct ieee80211_hw *hw, struct ieee80211_hdr *hdr,
->                              struct rtl8xxxu_txdesc32 *tx_desc32, bool sgi,
->                              bool short_preamble, bool ampdu_enable,
->                              u32 rts_rate);
-> +void rtl8723bu_set_ps_tdma(struct rtl8xxxu_priv *priv,
-> +                          u8 arg1, u8 arg2, u8 arg3, u8 arg4, u8 arg5);
->
->  extern struct rtl8xxxu_fileops rtl8192cu_fops;
->  extern struct rtl8xxxu_fileops rtl8192eu_fops;
-> diff --git a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8723b.c b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8723b.c
-> index ceffe05bd65b..9ba661b3d767 100644
-> --- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8723b.c
-> +++ b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8723b.c
-> @@ -1580,9 +1580,7 @@ static void rtl8723b_enable_rf(struct rtl8xxxu_priv *priv)
->         /*
->          * Software control, antenna at WiFi side
->          */
-> -#ifdef NEED_PS_TDMA
->         rtl8723bu_set_ps_tdma(priv, 0x08, 0x00, 0x00, 0x00, 0x00);
-> -#endif
->
->         rtl8xxxu_write32(priv, REG_BT_COEX_TABLE1, 0x55555555);
->         rtl8xxxu_write32(priv, REG_BT_COEX_TABLE2, 0x55555555);
-> diff --git a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
-> index a6f358b9e447..4f72c2d14d44 100644
-> --- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
-> +++ b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
-> @@ -3820,9 +3820,8 @@ void rtl8xxxu_power_off(struct rtl8xxxu_priv *priv)
->         rtl8xxxu_write8(priv, REG_RSV_CTRL, 0x0e);
->  }
->
-> -#ifdef NEED_PS_TDMA
-> -static void rtl8723bu_set_ps_tdma(struct rtl8xxxu_priv *priv,
-> -                                 u8 arg1, u8 arg2, u8 arg3, u8 arg4, u8 arg5)
-> +void rtl8723bu_set_ps_tdma(struct rtl8xxxu_priv *priv,
-> +                          u8 arg1, u8 arg2, u8 arg3, u8 arg4, u8 arg5)
->  {
->         struct h2c_cmd h2c;
->
-> @@ -3835,7 +3834,6 @@ static void rtl8723bu_set_ps_tdma(struct rtl8xxxu_priv *priv,
->         h2c.b_type_dma.data5 = arg5;
->         rtl8xxxu_gen2_h2c_cmd(priv, &h2c, sizeof(h2c.b_type_dma));
->  }
-> -#endif
->
->  void rtl8xxxu_gen2_disable_rf(struct rtl8xxxu_priv *priv)
->  {
-> @@ -5186,12 +5184,239 @@ static void rtl8xxxu_rx_urb_work(struct work_struct *work)
->         }
->  }
->
-> +void rtl8723bu_set_coex_with_type(struct rtl8xxxu_priv *priv, u8 type)
-> +{
-> +       switch (type) {
-> +       case 0:
-> +               rtl8xxxu_write32(priv, REG_BT_COEX_TABLE1, 0x55555555);
-> +               rtl8xxxu_write32(priv, REG_BT_COEX_TABLE2, 0x55555555);
-> +               rtl8xxxu_write32(priv, REG_BT_COEX_TABLE3, 0x00ffffff);
-> +               rtl8xxxu_write8(priv, REG_BT_COEX_TABLE4, 0x03);
-> +               break;
-> +       case 1:
-> +       case 3:
-> +               rtl8xxxu_write32(priv, REG_BT_COEX_TABLE1, 0x55555555);
-> +               rtl8xxxu_write32(priv, REG_BT_COEX_TABLE2, 0x5a5a5a5a);
-> +               rtl8xxxu_write32(priv, REG_BT_COEX_TABLE3, 0x00ffffff);
-> +               rtl8xxxu_write8(priv, REG_BT_COEX_TABLE4, 0x03);
-> +               break;
-> +       case 2:
-> +               rtl8xxxu_write32(priv, REG_BT_COEX_TABLE1, 0x5a5a5a5a);
-> +               rtl8xxxu_write32(priv, REG_BT_COEX_TABLE2, 0x5a5a5a5a);
-> +               rtl8xxxu_write32(priv, REG_BT_COEX_TABLE3, 0x00ffffff);
-> +               rtl8xxxu_write8(priv, REG_BT_COEX_TABLE4, 0x03);
-> +               break;
-> +       case 4:
-> +               rtl8xxxu_write32(priv, REG_BT_COEX_TABLE1, 0x5a5a5a5a);
-> +               rtl8xxxu_write32(priv, REG_BT_COEX_TABLE2, 0xaaaa5a5a);
-> +               rtl8xxxu_write32(priv, REG_BT_COEX_TABLE3, 0x00ffffff);
-> +               rtl8xxxu_write8(priv, REG_BT_COEX_TABLE4, 0x03);
-> +               break;
-> +       case 5:
-> +               rtl8xxxu_write32(priv, REG_BT_COEX_TABLE1, 0x5a5a5a5a);
-> +               rtl8xxxu_write32(priv, REG_BT_COEX_TABLE2, 0xaa5a5a5a);
-> +               rtl8xxxu_write32(priv, REG_BT_COEX_TABLE3, 0x00ffffff);
-> +               rtl8xxxu_write8(priv, REG_BT_COEX_TABLE4, 0x03);
-> +               break;
-> +       case 6:
-> +               rtl8xxxu_write32(priv, REG_BT_COEX_TABLE1, 0x55555555);
-> +               rtl8xxxu_write32(priv, REG_BT_COEX_TABLE2, 0xaaaaaaaa);
-> +               rtl8xxxu_write32(priv, REG_BT_COEX_TABLE3, 0x00ffffff);
-> +               rtl8xxxu_write8(priv, REG_BT_COEX_TABLE4, 0x03);
-> +               break;
-> +       case 7:
-> +               rtl8xxxu_write32(priv, REG_BT_COEX_TABLE1, 0xaaaaaaaa);
-> +               rtl8xxxu_write32(priv, REG_BT_COEX_TABLE2, 0xaaaaaaaa);
-> +               rtl8xxxu_write32(priv, REG_BT_COEX_TABLE3, 0x00ffffff);
-> +               rtl8xxxu_write8(priv, REG_BT_COEX_TABLE4, 0x03);
-> +               break;
-> +       default:
-> +               break;
-> +       }
-> +}
-> +
-> +void rtl8723bu_update_bt_link_info(struct rtl8xxxu_priv *priv, u8 bt_info)
-> +{
-> +       struct rtl8xxxu_btcoex *btcoex = &priv->bt_coex;
-> +
-> +       if (bt_info & BT_INFO_8723B_1ANT_B_INQ_PAGE)
-> +               btcoex->c2h_bt_inquiry = true;
-> +       else
-> +               btcoex->c2h_bt_inquiry = false;
-> +
-> +       if (!(bt_info & BT_INFO_8723B_1ANT_B_CONNECTION)) {
-> +               btcoex->bt_status = BT_8723B_1ANT_STATUS_NON_CONNECTED_IDLE;
-> +               btcoex->has_sco = false;
-> +               btcoex->has_hid = false;
-> +               btcoex->has_pan = false;
-> +               btcoex->has_a2dp = false;
-> +       } else {
-> +               if ((bt_info & 0x1f) == BT_INFO_8723B_1ANT_B_CONNECTION)
-> +                       btcoex->bt_status = BT_8723B_1ANT_STATUS_CONNECTED_IDLE;
-> +               else if ((bt_info & BT_INFO_8723B_1ANT_B_SCO_ESCO) ||
-> +                        (bt_info & BT_INFO_8723B_1ANT_B_SCO_BUSY))
-> +                       btcoex->bt_status = BT_8723B_1ANT_STATUS_SCO_BUSY;
-> +               else if (bt_info & BT_INFO_8723B_1ANT_B_ACL_BUSY)
-> +                       btcoex->bt_status = BT_8723B_1ANT_STATUS_ACL_BUSY;
-> +               else
-> +                       btcoex->bt_status = BT_8723B_1ANT_STATUS_MAX;
-> +
-> +               if (bt_info & BT_INFO_8723B_1ANT_B_FTP)
-> +                       btcoex->has_pan = true;
-> +               else
-> +                       btcoex->has_pan = false;
-> +
-> +               if (bt_info & BT_INFO_8723B_1ANT_B_A2DP)
-> +                       btcoex->has_a2dp = true;
-> +               else
-> +                       btcoex->has_a2dp = false;
-> +
-> +               if (bt_info & BT_INFO_8723B_1ANT_B_HID)
-> +                       btcoex->has_hid = true;
-> +               else
-> +                       btcoex->has_hid = false;
-> +
-> +               if (bt_info & BT_INFO_8723B_1ANT_B_SCO_ESCO)
-> +                       btcoex->has_sco = true;
-> +               else
-> +                       btcoex->has_sco = false;
-> +       }
-> +
-> +       if (!btcoex->has_a2dp &&
-> +           !btcoex->has_sco &&
-> +           !btcoex->has_pan &&
-> +           btcoex->has_hid)
-> +               btcoex->hid_only = true;
-> +       else
-> +               btcoex->hid_only = false;
-> +
-> +       if (!btcoex->has_sco &&
-> +           !btcoex->has_pan &&
-> +           !btcoex->has_hid &&
-> +           btcoex->has_a2dp)
-> +               btcoex->has_a2dp = true;
-> +       else
-> +               btcoex->has_a2dp = false;
-> +
-> +       if (btcoex->bt_status == BT_8723B_1ANT_STATUS_SCO_BUSY ||
-> +           btcoex->bt_status == BT_8723B_1ANT_STATUS_ACL_BUSY)
-> +               btcoex->bt_busy = true;
-> +       else
-> +               btcoex->bt_busy = false;
-> +}
-> +
-> +static void rtl8xxxu_c2hcmd_callback(struct work_struct *work)
-> +{
-> +       struct rtl8xxxu_priv *priv;
-> +       struct rtl8723bu_c2h *c2h;
-> +       struct ieee80211_vif *vif;
-> +       struct device *dev;
-> +       struct sk_buff *skb = NULL;
-> +       unsigned long flags;
-> +       int len;
-> +       u8 bt_info = 0;
-> +       struct rtl8xxxu_btcoex *btcoex;
-> +
-> +       priv = container_of(work, struct rtl8xxxu_priv, c2hcmd_work);
-> +       vif = priv->vif;
-> +       btcoex = &priv->bt_coex;
-> +       dev = &priv->udev->dev;
-> +
-> +       if (priv->rf_paths > 1)
-> +               goto out;
-> +
-> +       while (!skb_queue_empty(&priv->c2hcmd_queue)) {
-> +               spin_lock_irqsave(&priv->c2hcmd_lock, flags);
-> +               skb = __skb_dequeue(&priv->c2hcmd_queue);
-> +               spin_unlock_irqrestore(&priv->c2hcmd_lock, flags);
-> +
-> +               c2h = (struct rtl8723bu_c2h *)skb->data;
-> +               len = skb->len - 2;
-> +
-> +               switch (c2h->id) {
-> +               case C2H_8723B_BT_INFO:
-> +                       bt_info = c2h->bt_info.bt_info;
-> +
-> +                       rtl8723bu_update_bt_link_info(priv, bt_info);
-> +
-> +                       if (btcoex->c2h_bt_inquiry) {
-> +                               if (vif && !vif->bss_conf.assoc) {
-> +                                       rtl8723bu_set_ps_tdma(priv, 0x8, 0x0, 0x0, 0x0, 0x0);
-> +                                       rtl8723bu_set_coex_with_type(priv, 0);
-> +                               } else if (btcoex->has_sco ||
-> +                                          btcoex->has_hid ||
-> +                                          btcoex->has_a2dp) {
-> +                                       rtl8723bu_set_ps_tdma(priv, 0x61, 0x35, 0x3, 0x11, 0x11);
-> +                                       rtl8723bu_set_coex_with_type(priv, 4);
-> +                               } else if (btcoex->has_pan) {
-> +                                       rtl8723bu_set_ps_tdma(priv, 0x61, 0x3f, 0x3, 0x11, 0x11);
-> +                                       rtl8723bu_set_coex_with_type(priv, 4);
-> +                               } else {
-> +                                       rtl8723bu_set_ps_tdma(priv, 0x8, 0x0, 0x0, 0x0, 0x0);
-> +                                       rtl8723bu_set_coex_with_type(priv, 7);
-> +                               }
-> +
-> +                               return;
-> +                       }
-> +
-> +                       if (vif && vif->bss_conf.assoc) {
-> +                               u32 val32 = 0;
-> +                               u32 high_prio_tx = 0, high_prio_rx = 0;
-> +
-> +                               val32 = rtl8xxxu_read32(priv, 0x770);
-> +                               high_prio_tx = val32 & 0x0000ffff;
-> +                               high_prio_rx = (val32  & 0xffff0000) >> 16;
-> +
-> +                               if (btcoex->bt_busy) {
-> +                                       if (btcoex->hid_only) {
-> +                                               rtl8723bu_set_ps_tdma(priv, 0x61, 0x20, 0x3, 0x11, 0x11);
-> +                                               rtl8723bu_set_coex_with_type(priv, 5);
-> +                                       } else if (btcoex->a2dp_only) {
-> +                                               rtl8723bu_set_ps_tdma(priv, 0x61, 0x35, 0x3, 0x11, 0x11);
-> +                                               rtl8723bu_set_coex_with_type(priv, 4);
-> +                                       } else if ((btcoex->has_a2dp &&
-> +                                                   btcoex->has_pan) ||
-> +                                                  (btcoex->has_hid &&
-> +                                                   btcoex->has_a2dp &&
-> +                                                   btcoex->has_pan)) {
-> +                                               rtl8723bu_set_ps_tdma(priv, 0x51, 0x21, 0x3, 0x10, 0x10);
-> +                                               rtl8723bu_set_coex_with_type(priv, 4);
-> +                                       } else if (btcoex->has_hid &&
-> +                                                btcoex->has_a2dp) {
-> +                                               rtl8723bu_set_ps_tdma(priv, 0x51, 0x21, 0x3, 0x10, 0x10);
-> +                                               rtl8723bu_set_coex_with_type(priv, 3);
-> +                                       } else {
-> +                                               rtl8723bu_set_ps_tdma(priv, 0x61, 0x35, 0x3, 0x11, 0x11);
-> +                                               rtl8723bu_set_coex_with_type(priv, 4);
-> +                                       }
-> +                               } else {
-> +                                       rtl8723bu_set_ps_tdma(priv, 0x8, 0x0, 0x0, 0x0, 0x0);
-> +                                       if (high_prio_tx + high_prio_rx <= 60)
-> +                                               rtl8723bu_set_coex_with_type(priv, 2);
-> +                                       else
-> +                                               rtl8723bu_set_coex_with_type(priv, 7);
-> +                               }
-> +                       } else {
-> +                               rtl8723bu_set_ps_tdma(priv, 0x8, 0x0, 0x0, 0x0, 0x0);
-> +                               rtl8723bu_set_coex_with_type(priv, 0);
-> +                       }
-> +                       break;
-> +               default:
-> +                       break;
-> +               }
-> +       }
-> +
-> +out:
-> +       dev_kfree_skb(skb);
-> +}
-> +
->  static void rtl8723bu_handle_c2h(struct rtl8xxxu_priv *priv,
->                                  struct sk_buff *skb)
->  {
->         struct rtl8723bu_c2h *c2h = (struct rtl8723bu_c2h *)skb->data;
->         struct device *dev = &priv->udev->dev;
->         int len;
-> +       unsigned long flags;
->
->         len = skb->len - 2;
->
-> @@ -5229,6 +5454,12 @@ static void rtl8723bu_handle_c2h(struct rtl8xxxu_priv *priv,
->                                16, 1, c2h->raw.payload, len, false);
->                 break;
->         }
-> +
-> +       spin_lock_irqsave(&priv->c2hcmd_lock, flags);
-> +       __skb_queue_tail(&priv->c2hcmd_queue, skb);
-> +       spin_unlock_irqrestore(&priv->c2hcmd_lock, flags);
-> +
-> +       schedule_work(&priv->c2hcmd_work);
->  }
->
->  int rtl8xxxu_parse_rxdesc16(struct rtl8xxxu_priv *priv, struct sk_buff *skb)
-> @@ -5353,7 +5584,6 @@ int rtl8xxxu_parse_rxdesc24(struct rtl8xxxu_priv *priv, struct sk_buff *skb)
->                 struct device *dev = &priv->udev->dev;
->                 dev_dbg(dev, "%s: C2H packet\n", __func__);
->                 rtl8723bu_handle_c2h(priv, skb);
-> -               dev_kfree_skb(skb);
->                 return RX_TYPE_C2H;
->         }
->
-> @@ -6272,6 +6502,9 @@ static int rtl8xxxu_probe(struct usb_interface *interface,
->         spin_lock_init(&priv->rx_urb_lock);
->         INIT_WORK(&priv->rx_urb_wq, rtl8xxxu_rx_urb_work);
->         INIT_DELAYED_WORK(&priv->ra_watchdog, rtl8xxxu_watchdog_callback);
-> +       spin_lock_init(&priv->c2hcmd_lock);
-> +       INIT_WORK(&priv->c2hcmd_work, rtl8xxxu_c2hcmd_callback);
-> +       skb_queue_head_init(&priv->c2hcmd_queue);
->
->         usb_set_intfdata(interface, hw);
->
-> --
-> 2.20.1
->
+Make it possibly for drivers to adjust the default max_mtu
+by storing it in the hardware struct.
 
-Gentle ping. Cheers.
+Signed-off-by: Wen Gong <wgong@codeaurora.org>
+---
+v2: change to set max_mtu to IEEE80211_MAX_DATA_LEN in alloc_hw
+v3: change commit log(mat_mtu->max_mtu)
+ include/net/mac80211.h | 3 +++
+ net/mac80211/iface.c   | 2 +-
+ net/mac80211/main.c    | 1 +
+ 3 files changed, 5 insertions(+), 1 deletion(-)
 
-Chris
+diff --git a/include/net/mac80211.h b/include/net/mac80211.h
+index d26da01..8545b03 100644
+--- a/include/net/mac80211.h
++++ b/include/net/mac80211.h
+@@ -2454,6 +2454,8 @@ enum ieee80211_hw_flags {
+  *
+  * @weight_multiplier: Driver specific airtime weight multiplier used while
+  *	refilling deficit of each TXQ.
++ *
++ * @max_mtu: the max mtu could be set.
+  */
+ struct ieee80211_hw {
+ 	struct ieee80211_conf conf;
+@@ -2491,6 +2493,7 @@ struct ieee80211_hw {
+ 	u8 max_nan_de_entries;
+ 	u8 tx_sk_pacing_shift;
+ 	u8 weight_multiplier;
++	u32 max_mtu;
+ };
+ 
+ static inline bool _ieee80211_hw_check(struct ieee80211_hw *hw,
+diff --git a/net/mac80211/iface.c b/net/mac80211/iface.c
+index 06aac0a..32d87f0 100644
+--- a/net/mac80211/iface.c
++++ b/net/mac80211/iface.c
+@@ -1877,7 +1877,7 @@ int ieee80211_if_add(struct ieee80211_local *local, const char *name,
+ 
+ 		/* MTU range: 256 - 2304 */
+ 		ndev->min_mtu = 256;
+-		ndev->max_mtu = IEEE80211_MAX_DATA_LEN;
++		ndev->max_mtu = local->hw.max_mtu;
+ 
+ 		ret = register_netdevice(ndev);
+ 		if (ret) {
+diff --git a/net/mac80211/main.c b/net/mac80211/main.c
+index 85e4162..89a6a09 100644
+--- a/net/mac80211/main.c
++++ b/net/mac80211/main.c
+@@ -638,6 +638,7 @@ struct ieee80211_hw *ieee80211_alloc_hw_nm(size_t priv_data_len,
+ 					 IEEE80211_RADIOTAP_VHT_KNOWN_BANDWIDTH;
+ 	local->hw.uapsd_queues = IEEE80211_DEFAULT_UAPSD_QUEUES;
+ 	local->hw.uapsd_max_sp_len = IEEE80211_DEFAULT_MAX_SP_LEN;
++	local->hw.max_mtu = IEEE80211_MAX_DATA_LEN;
+ 	local->user_power_level = IEEE80211_UNSET_POWER_LEVEL;
+ 	wiphy->ht_capa_mod_mask = &mac80211_ht_capa_mod_mask;
+ 	wiphy->vht_capa_mod_mask = &mac80211_vht_capa_mod_mask;
+-- 
+1.9.1
+
