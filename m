@@ -2,196 +2,589 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 00369AC9BA
-	for <lists+linux-wireless@lfdr.de>; Sun,  8 Sep 2019 00:45:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 66D5CAC9DA
+	for <lists+linux-wireless@lfdr.de>; Sun,  8 Sep 2019 01:18:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727777AbfIGWpa (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 7 Sep 2019 18:45:30 -0400
-Received: from mout.gmx.net ([212.227.17.20]:58315 "EHLO mout.gmx.net"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727008AbfIGWpa (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 7 Sep 2019 18:45:30 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
-        s=badeba3b8450; t=1567896321;
-        bh=4lXI7mpOD8zVmTmtFm0u3CfzyV2aXBi9k00W0xTME8o=;
-        h=X-UI-Sender-Class:To:From:Subject:Date;
-        b=jjJkviBW3vW4MJln/sy2UHp2HvopHoH1y/93vaEllLS9zh7QuFDIlv1fnNReg2IzK
-         oNBEZ30321Q2h6Vd38/DE6+wlx8OKIZaIn2yKOT6+f2WHLhOG+Q21EfGIxbiWRFy0R
-         +x4AD9uDiEyQ23gwsFqBGLydm8y1Kc7zxb/TD8s8=
-X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
-Received: from [0.0.0.0] ([13.231.109.76]) by mail.gmx.com (mrgmx101
- [212.227.17.174]) with ESMTPSA (Nemesis) id 0M0LtB-1iPvP2017N-00uYHB; Sun, 08
- Sep 2019 00:45:21 +0200
-To:     linuxwifi@intel.com,
-        linux-wireless <linux-wireless@vger.kernel.org>
-From:   Qu Wenruo <quwenruo.btrfs@gmx.com>
-Autocrypt: addr=quwenruo.btrfs@gmx.com; prefer-encrypt=mutual; keydata=
- mQENBFnVga8BCACyhFP3ExcTIuB73jDIBA/vSoYcTyysFQzPvez64TUSCv1SgXEByR7fju3o
- 8RfaWuHCnkkea5luuTZMqfgTXrun2dqNVYDNOV6RIVrc4YuG20yhC1epnV55fJCThqij0MRL
- 1NxPKXIlEdHvN0Kov3CtWA+R1iNN0RCeVun7rmOrrjBK573aWC5sgP7YsBOLK79H3tmUtz6b
- 9Imuj0ZyEsa76Xg9PX9Hn2myKj1hfWGS+5og9Va4hrwQC8ipjXik6NKR5GDV+hOZkktU81G5
- gkQtGB9jOAYRs86QG/b7PtIlbd3+pppT0gaS+wvwMs8cuNG+Pu6KO1oC4jgdseFLu7NpABEB
- AAG0IlF1IFdlbnJ1byA8cXV3ZW5ydW8uYnRyZnNAZ214LmNvbT6JAVQEEwEIAD4CGwMFCwkI
- BwIGFQgJCgsCBBYCAwECHgECF4AWIQQt33LlpaVbqJ2qQuHCPZHzoSX+qAUCWdWCnQUJCWYC
- bgAKCRDCPZHzoSX+qAR8B/94VAsSNygx1C6dhb1u1Wp1Jr/lfO7QIOK/nf1PF0VpYjTQ2au8
- ihf/RApTna31sVjBx3jzlmpy+lDoPdXwbI3Czx1PwDbdhAAjdRbvBmwM6cUWyqD+zjVm4RTG
- rFTPi3E7828YJ71Vpda2qghOYdnC45xCcjmHh8FwReLzsV2A6FtXsvd87bq6Iw2axOHVUax2
- FGSbardMsHrya1dC2jF2R6n0uxaIc1bWGweYsq0LXvLcvjWH+zDgzYCUB0cfb+6Ib/ipSCYp
- 3i8BevMsTs62MOBmKz7til6Zdz0kkqDdSNOq8LgWGLOwUTqBh71+lqN2XBpTDu1eLZaNbxSI
- ilaVuQENBFnVga8BCACqU+th4Esy/c8BnvliFAjAfpzhI1wH76FD1MJPmAhA3DnX5JDORcga
- CbPEwhLj1xlwTgpeT+QfDmGJ5B5BlrrQFZVE1fChEjiJvyiSAO4yQPkrPVYTI7Xj34FnscPj
- /IrRUUka68MlHxPtFnAHr25VIuOS41lmYKYNwPNLRz9Ik6DmeTG3WJO2BQRNvXA0pXrJH1fN
- GSsRb+pKEKHKtL1803x71zQxCwLh+zLP1iXHVM5j8gX9zqupigQR/Cel2XPS44zWcDW8r7B0
- q1eW4Jrv0x19p4P923voqn+joIAostyNTUjCeSrUdKth9jcdlam9X2DziA/DHDFfS5eq4fEv
- ABEBAAGJATwEGAEIACYWIQQt33LlpaVbqJ2qQuHCPZHzoSX+qAUCWdWBrwIbDAUJA8JnAAAK
- CRDCPZHzoSX+qA3xB/4zS8zYh3Cbm3FllKz7+RKBw/ETBibFSKedQkbJzRlZhBc+XRwF61mi
- f0SXSdqKMbM1a98fEg8H5kV6GTo62BzvynVrf/FyT+zWbIVEuuZttMk2gWLIvbmWNyrQnzPl
- mnjK4AEvZGIt1pk+3+N/CMEfAZH5Aqnp0PaoytRZ/1vtMXNgMxlfNnb96giC3KMR6U0E+siA
- 4V7biIoyNoaN33t8m5FwEwd2FQDG9dAXWhG13zcm9gnk63BN3wyCQR+X5+jsfBaS4dvNzvQv
- h8Uq/YGjCoV1ofKYh3WKMY8avjq25nlrhzD/Nto9jHp8niwr21K//pXVA81R2qaXqGbql+zo
-Subject: Slow performance (~30mbps) with Intel 9260 (and 8265, 3168) using 5G
-Message-ID: <c078f515-51bd-2195-6b96-901db8872028@gmx.com>
-Date:   Sun, 8 Sep 2019 06:45:17 +0800
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.0
+        id S2392028AbfIGXSW (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 7 Sep 2019 19:18:22 -0400
+Received: from mail-wr1-f44.google.com ([209.85.221.44]:44584 "EHLO
+        mail-wr1-f44.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727632AbfIGXSW (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Sat, 7 Sep 2019 19:18:22 -0400
+Received: by mail-wr1-f44.google.com with SMTP id 30so9993935wrk.11;
+        Sat, 07 Sep 2019 16:18:19 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id:in-reply-to:references
+         :mime-version:content-transfer-encoding;
+        bh=ho5rMqmvPV/b/YmpXToBzxMOBGjfEQyC6kp5sZH2O9g=;
+        b=crOpftYYJyOpDkmIh1LJKrucBmKU57BKLnAB9toHsusLcFSwP6eZQCOWNOrWKy60UJ
+         ZzzMUDtx42kYT/cbSJlIPQedR9JzrhwG9Ypb69UqBzY219eJyeUgrTLEweEeZ4Pnw8RW
+         4bvtXTUchFuYiB8fC42pv6QXbZ/Uop0nRpFo8wlFiDMKzcLGi3oBcbAWGxJcAHJqocI1
+         6VbaESA8/JYk5yP3CNhJfY4IOcyoIz/ksdAMeBu1m4c4fO4GU5OTqDaChEwUB9mB2cBP
+         +W3oJf5mL2cL4sipthTAYinAwW+2rTUT+iIdLx3udeAVmsIzH5jJApsc8VZGKSm/Le7y
+         pGiQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+         :references:mime-version:content-transfer-encoding;
+        bh=ho5rMqmvPV/b/YmpXToBzxMOBGjfEQyC6kp5sZH2O9g=;
+        b=D3dMa2rSFpBRxtjYmkJEFoBDUZuos9zhQjaroz/aO66fEcoVCMy+QGiP3XPgKco/yK
+         YfZSgjrTMp/88gLqR7zReR1M4+gC7iZw+dXVWgv+vaaMLrpnvsRL0fK5fiStfPsLd8QJ
+         91R6FUT9N7VnvN3eiJHMvSD8eFijs5QEI2uc8KR7Y6Q2JdeRgvdY+Ppp20ZEL5flAdhh
+         yx5Ak9GUHQQjD2wvcR/ggNxhS8dGM/VAkQdpY83JTiikag5Jiuuihtet2tPpuhao26Lj
+         EGo95Yf3CSZgift/xAueef6ajVkMXNZ6/cyLYzie8SHsLHaSIghXQjo9NJk6ahKeHaKe
+         4nbg==
+X-Gm-Message-State: APjAAAXi3PhyYlKT16r0dI72aS5KvcFZJ8ScWmxNEuZqK2qTwY4g5fcd
+        XFRzGQcT1tohjQcIzNUnFx8=
+X-Google-Smtp-Source: APXvYqxhf+v1eBFCusMuONg6h8MDuROGxmo9w9eQTHdxd2yUSI3FQHDUGkBqlFjWwzwHp163qpj8iQ==
+X-Received: by 2002:adf:ef05:: with SMTP id e5mr12502866wro.127.1567898298181;
+        Sat, 07 Sep 2019 16:18:18 -0700 (PDT)
+Received: from debian64.daheim (pD9E29DC7.dip0.t-ipconnect.de. [217.226.157.199])
+        by smtp.gmail.com with ESMTPSA id k9sm19185994wrd.7.2019.09.07.16.18.17
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 07 Sep 2019 16:18:17 -0700 (PDT)
+Received: from localhost.daheim ([127.0.0.1] helo=debian64.localnet)
+        by debian64.daheim with esmtp (Exim 4.92.1)
+        (envelope-from <chunkeey@gmail.com>)
+        id 1i6jyC-0007V1-HK; Sun, 08 Sep 2019 01:18:16 +0200
+From:   Christian Lamparter <chunkeey@gmail.com>
+To:     linux-wireless@vger.kernel.org, ath10k@lists.infradead.org,
+        Sasha Levin <sashal@kernel.org>
+Cc:     Kalle Valo <kvalo@codeaurora.org>, stable@vger.kernel.org
+Subject: stable backports for "ath10k: restore QCA9880-AR1A (v1) detection"
+Date:   Sun, 08 Sep 2019 01:18:13 +0200
+Message-ID: <8482869.vuxnZITksI@debian64>
+In-Reply-To: <20190907214359.1C52A21835@mail.kernel.org>
+References: <20190906215423.23589-1-chunkeey@gmail.com> <20190907214359.1C52A21835@mail.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature";
- boundary="p0O42tIYRPwAAth2rgBH57Zz7yzaHZBdv"
-X-Provags-ID: V03:K1:0LCM4roEYBMogqzTivF16va/9q6Oc4OK2rPNfedoBLP/mLjxMfb
- Ij5p30zLNvGU0MaP7oY53xJSsMROkxDeYPzVfJwLKltf79DJycMngxQEyiqzjdHg0O2dAPY
- SmCpuRvXVmBZmWDJr+N7hoeMd2/bpl6OOxRh2VBOYSkZjbBkKVpShuj5f2VY4lYEik/VclY
- qVrfWuRYgtQkh2NY3+FgA==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:uxfawLsfVso=:2PZaYQRYISaI2B1CtzoxtP
- jB5KSVsvfaddCSdIm/rV35o65vfD/nCal54oSg8sHQ7qhH/g4tfnPBZAUj3Dzmf2HvyAfXuSy
- UdewW5o08bK8l997BMWIBIjro+jGubgoLlD9CVGoWEcchR3nW9BLbn/lAaX5byglUp5UbllFe
- pUfBcE94nnLcDQFJlyjbqD0gQxyWXblg4SOYLTvf+PWKKf+AX/Zs4D8ZV6MuKlAD/BGmVTfaW
- PSZrDuQnlFQ5VEejpvctYJ9/WMcsnaUFdan2bMP2NO8z/O150JIsmM+yMxkg5aGPeoJuqsGrZ
- LOi7rPpIdxseoQUUKLGx4+sIKTKL+KuF2EFKbjGUTJEa3EWeQsye+aa197yIndBD7DLHW24BG
- AetSX8Jvaw7GydQizbbuEGl5VZhdfJzDkNpwv675ElJolgYKO3SNsGpGbFtmr7099osEjcJZh
- zx+pYrT2vJyHz/vZV02AXZLaPU6cB8dCsqR7e0YcyYAwXnqxcMh2taBCI52dqek36ag4gui47
- UoSmFBBME6/ZMynBPvaMssvB5BoHI6slVipxbPo76BdQ9mNNucUl0jO+512OWwok7z0F5HEoG
- FsV4wVnPWf+xp+bhfXdcjkWomGMrgPvJuXNvxW7KvqR92aDS0CxPCS1H7Wzy5eWamovMO+TL8
- cviTJ3yAJVDv7RPsu+vYeaaTym/qW4PAx8lad6Tje1g2DC78Mo22GVAqRl3HrwvWcTVggi2fi
- rkcGJeykMemcIsPToMDGN0pmS0DLNSLIz9e7VJD1CVkY4DKhRSKGnWphzB/nACqPw6Rs7UL4K
- RyA7Ol8eZ1Ixf9FMm1Z62a9Q5RpchH8q9LFnEoDbAHupcwAdsaE15cmwJMEq2T7G3ft6V2kP+
- W4ly5VoKHL9x+zn/RMlYBICpt38cnJg6LoKNPxvqFoxYxu/q+H9EHW5VZYnXCUzlzTbGxe8sA
- 4OLdzb6GlomzFzdqRDNwSRL51W0Rf37DsfdZzh0VW/lBAfo1QZGy2WQLPHJs/y5sbUfEIq8Ig
- n7JaXKb3iP249lInVclSB9YIog+a2o5WvNEODFQFGgq6fQYuSWQR0plM2YK5cXp6DtmKq22jw
- +h7y9KkdcNamQKMf0Mk/7ENSxMP6nI9tebUXioMxC903e6jSwYZ2PwFZNxj7b9UF740kmBehV
- z5EMabteT4VNnhGicwcroCeu04SdM13nMnz7nawa7MNhsNvX9q+GUMJIgdaSFPMLUswp2OL94
- +4A3kByLZjiTP9Uo8
+Content-Type: multipart/mixed; boundary="nextPart5470804.AK8FHB7eIg"
+Content-Transfer-Encoding: 7Bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
---p0O42tIYRPwAAth2rgBH57Zz7yzaHZBdv
-Content-Type: multipart/mixed; boundary="YpyZWlzSilrNyNS5jdk3WJNSrIkaZwcAd"
+This is a multi-part message in MIME format.
 
---YpyZWlzSilrNyNS5jdk3WJNSrIkaZwcAd
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: quoted-printable
+--nextPart5470804.AK8FHB7eIg
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="us-ascii"
 
-Hi,
+Hello,
 
-Recent upgraded my wifi adapter from 8265 to 9260 of my ThinkPad X1C 6th
-gen.
+On Saturday, September 7, 2019 11:43:58 PM CEST Sasha Levin wrote:
+> This commit has been processed because it contains a "Fixes:" tag,
+> fixing commit: 1a7fecb766c8 ath10k: reset chip before reading chip_id in probe.
+> 
+> The bot has tested the following trees: v5.2.13, v4.19.71, v4.14.142, v4.9.191, v4.4.191.
+> 
+> v5.2.13: Failed to apply! Possible dependencies:
+>     6d084ac27ab4 ("ath10k: initialise struct ath10k_bus params to zero")
 
-However the initial test is producing some unacceptable results:
+The bot is right. Either add that patch or remove the "= {};" from the patch
+that was sent to linux-wireless (based on "wireless-testing.git").
 
-Furthermore, my desktop (intel 3168), and the original 8265 of my laptop
-also reproduce the same result.
-Kernels are the same 5.2.11-arch1-1-ARCH across my laptop and desktop.
-Tried lts (4.19) on my laptop, the same result.
-Even under Windows, it's all the same.
+Alternatively, I've also added patches (as file attachments, I did this in
+the hopes of fooling patchwork and the bots at least a bit... as well as
+parking the patches for later). That said, I think this will go horribly
+wrong because of this response. Since It has been a long time since I needed
+a multi-version patch so I'm sorry for not being up-to-date with the latest
+for-stable meta.
 
-[  5] local 240e:3a1:c40:6c0::278 port 43334 connected to
-240e:3a1:c40:6c0::16b port 5201
-[ ID] Interval           Transfer     Bitrate         Retr  Cwnd
-[  5]   0.00-1.00   sec  4.95 MBytes  41.5 Mbits/sec    0    219 KBytes
+> v4.19.71: Failed to apply! Possible dependencies:
+>     31324d17976e ("ath10k: support extended board data download for dual-band QCA9984")
+>     [...] too much
+> [...]: [...]
+> 
+> NOTE: The patch will not be queued to stable trees until it is upstream.
+> 
+> How should we proceed with this patch?
+You could let loose your ci-bot on the attached patches and see if they would
+do the trick. I'm very optimistic that this will need some more time though. 
+So, "let's cross that bridge whenever we get there."
 
-[  5]   1.00-2.00   sec  2.44 MBytes  20.5 Mbits/sec    0    248 KBytes
+Cheers,
+Christian
+--nextPart5470804.AK8FHB7eIg
+Content-Disposition: attachment; filename="4-9-ath10k-restore-QCA9880-AR1A-v1-detection.patch"
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/x-patch; charset="UTF-8"; name="4-9-ath10k-restore-QCA9880-AR1A-v1-detection.patch"
 
-[  5]   2.00-3.00   sec  1.58 MBytes  13.3 Mbits/sec    1   1.39 KBytes
+From 38ac13d668f237941c8b77f16375f8f0e4de966a Mon Sep 17 00:00:00 2001
+From: Christian Lamparter <chunkeey@gmail.com>
+Date: Mon, 25 Mar 2019 13:50:19 +0100
+Subject: [PATCH 4.9] ath10k: restore QCA9880-AR1A (v1) detection
+To: linux-wireless@vger.kernel.org,
+    ath10k@lists.infradead.org
+Cc: Kalle Valo <kvalo@codeaurora.org>
 
-[  5]   3.00-4.00   sec  1.10 MBytes  9.21 Mbits/sec   44    194 KBytes
+This patch restores the old behavior that read
+the chip_id on the QCA988x before resetting the
+chip. This needs to be done in this order since
+the unsupported QCA988x AR1A chips fall off the
+bus when resetted. Otherwise the next MMIO Op
+after the reset causes a BUS ERROR and panic.
 
-[  5]   4.00-5.00   sec  4.39 MBytes  36.8 Mbits/sec    0    226 KBytes
+Cc: stable@vger.kernel.org # 4.9
+Fixes: 1a7fecb766c8 ("ath10k: reset chip before reading chip_id in probe")
+Signed-off-by: Christian Lamparter <chunkeey@gmail.com>
+---
+ drivers/net/wireless/ath/ath10k/pci.c | 36 +++++++++++++++++++--------
+ 1 file changed, 25 insertions(+), 11 deletions(-)
 
-[  5]   5.00-6.00   sec  4.39 MBytes  36.8 Mbits/sec    0    247 KBytes
+diff --git a/drivers/net/wireless/ath/ath10k/pci.c b/drivers/net/wireless/ath/ath10k/pci.c
+--- a/drivers/net/wireless/ath/ath10k/pci.c	2019-09-08 00:07:21.374565470 +0200
++++ b/drivers/net/wireless/ath/ath10k/pci.c	2019-09-08 00:17:15.365912133 +0200
+@@ -3172,7 +3172,7 @@ static int ath10k_pci_probe(struct pci_d
+ 	struct ath10k_pci *ar_pci;
+ 	enum ath10k_hw_rev hw_rev;
+ 	u32 chip_id;
+-	bool pci_ps;
++	bool pci_ps, is_qca988x = false;
+ 	int (*pci_soft_reset)(struct ath10k *ar);
+ 	int (*pci_hard_reset)(struct ath10k *ar);
+ 	u32 (*targ_cpu_to_ce_addr)(struct ath10k *ar, u32 addr);
+@@ -3181,6 +3181,7 @@ static int ath10k_pci_probe(struct pci_d
+ 	case QCA988X_2_0_DEVICE_ID:
+ 		hw_rev = ATH10K_HW_QCA988X;
+ 		pci_ps = false;
++		is_qca988x = true;
+ 		pci_soft_reset = ath10k_pci_warm_reset;
+ 		pci_hard_reset = ath10k_pci_qca988x_chip_reset;
+ 		targ_cpu_to_ce_addr = ath10k_pci_qca988x_targ_cpu_to_ce_addr;
+@@ -3300,6 +3301,19 @@ static int ath10k_pci_probe(struct pci_d
+ 		goto err_deinit_irq;
+ 	}
+ 
++	/* Read CHIP_ID before reset to catch QCA9880-AR1A v1 devices that
++	 * fall off the bus during chip_reset. These chips have the same pci
++	 * device id as the QCA9880 BR4A or 2R4E. So that's why the check.
++	 */
++	if (is_qca988x) {
++		chip_id = ath10k_pci_soc_read32(ar, SOC_CHIP_ID_ADDRESS);
++		if (chip_id != 0xffffffff) {
++			if (!ath10k_pci_chip_is_supported(pdev->device,
++							  chip_id))
++				goto err_unsupported;
++		}
++	}
++
+ 	ret = ath10k_pci_chip_reset(ar);
+ 	if (ret) {
+ 		ath10k_err(ar, "failed to reset chip: %d\n", ret);
+@@ -3312,11 +3326,8 @@ static int ath10k_pci_probe(struct pci_d
+ 		goto err_free_irq;
+ 	}
+ 
+-	if (!ath10k_pci_chip_is_supported(pdev->device, chip_id)) {
+-		ath10k_err(ar, "device %04x with chip_id %08x isn't supported\n",
+-			   pdev->device, chip_id);
+-		goto err_free_irq;
+-	}
++	if (!ath10k_pci_chip_is_supported(pdev->device, chip_id))
++		goto err_unsupported;
+ 
+ 	ret = ath10k_core_register(ar, chip_id);
+ 	if (ret) {
+@@ -3326,6 +3337,10 @@ static int ath10k_pci_probe(struct pci_d
+ 
+ 	return 0;
+ 
++err_unsupported:
++	ath10k_err(ar, "device %04x with chip_id %08x isn't supported\n",
++		   pdev->device, bus_params.chip_id);
++
+ err_free_irq:
+ 	ath10k_pci_free_irq(ar);
+ 	ath10k_pci_rx_retry_sync(ar);
 
-[  5]   6.00-7.00   sec  4.39 MBytes  36.8 Mbits/sec    0    257 KBytes
+--nextPart5470804.AK8FHB7eIg
+Content-Disposition: attachment; filename="4-4-ath10k-restore-QCA9880-AR1A-v1-detection.patch"
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/x-patch; charset="UTF-8"; name="4-4-ath10k-restore-QCA9880-AR1A-v1-detection.patch"
 
-[  5]   7.00-8.00   sec  4.57 MBytes  38.3 Mbits/sec    0    259 KBytes
+From 38ac13d668f237941c8b77f16375f8f0e4de966a Mon Sep 17 00:00:00 2001
+From: Christian Lamparter <chunkeey@gmail.com>
+Date: Mon, 25 Mar 2019 13:50:19 +0100
+Subject: [PATCH 4.4] ath10k: restore QCA9880-AR1A (v1) detection
+To: linux-wireless@vger.kernel.org,
+    ath10k@lists.infradead.org
+Cc: Kalle Valo <kvalo@codeaurora.org>
 
-[  5]   8.00-9.00   sec  3.84 MBytes  32.2 Mbits/sec    0    259 KBytes
+This patch restores the old behavior that read
+the chip_id on the QCA988x before resetting the
+chip. This needs to be done in this order since
+the unsupported QCA988x AR1A chips fall off the
+bus when resetted. Otherwise the next MMIO Op
+after the reset causes a BUS ERROR and panic.
 
-[  5]   9.00-10.00  sec  4.39 MBytes  36.8 Mbits/sec    0    261 KBytes
+Cc: stable@vger.kernel.org # 4.4
+Fixes: 1a7fecb766c8 ("ath10k: reset chip before reading chip_id in probe")
+Signed-off-by: Christian Lamparter <chunkeey@gmail.com>
+---
+ drivers/net/wireless/ath/ath10k/pci.c | 36 +++++++++++++++++++--------
+ 1 file changed, 25 insertions(+), 11 deletions(-)
 
-- - - - - - - - - - - - - - - - - - - - - - - - -
-[ ID] Interval           Transfer     Bitrate         Retr
-[  5]   0.00-10.00  sec  36.0 MBytes  30.2 Mbits/sec   45             sen=
-der
-[  5]   0.00-10.02  sec  34.9 MBytes  29.2 Mbits/sec
-receiver
+diff --git a/drivers/net/wireless/ath/ath10k/pci.c b/drivers/net/wireless/ath/ath10k/pci.c
+--- a/drivers/net/wireless/ath/ath10k/pci.c	2019-09-08 00:07:21.374565470 +0200
++++ b/drivers/net/wireless/ath/ath10k/pci.c	2019-09-08 00:17:15.365912133 +0200
+@@ -2988,12 +2988,13 @@ static int ath10k_pci_probe(struct pci_d
+ 	struct ath10k_pci *ar_pci;
+ 	enum ath10k_hw_rev hw_rev;
+ 	u32 chip_id;
+-	bool pci_ps;
++	bool pci_ps, is_qca988x = false;
+ 
+ 	switch (pci_dev->device) {
+ 	case QCA988X_2_0_DEVICE_ID:
+ 		hw_rev = ATH10K_HW_QCA988X;
+ 		pci_ps = false;
++		is_qca988x = true;
+ 		break;
+ 	case QCA6164_2_1_DEVICE_ID:
+ 	case QCA6174_2_1_DEVICE_ID:
+@@ -3087,6 +3088,19 @@ static int ath10k_pci_probe(struct pci_d
+ 		goto err_deinit_irq;
+ 	}
+ 
++	/* Read CHIP_ID before reset to catch QCA9880-AR1A v1 devices that
++	 * fall off the bus during chip_reset. These chips have the same pci
++	 * device id as the QCA9880 BR4A or 2R4E. So that's why the check.
++	 */
++	if (is_qca988x) {
++		chip_id = ath10k_pci_soc_read32(ar, SOC_CHIP_ID_ADDRESS);
++		if (chip_id != 0xffffffff) {
++			if (!ath10k_pci_chip_is_supported(pdev->device,
++							  chip_id))
++				goto err_unsupported;
++		}
++	}
++
+ 	ret = ath10k_pci_chip_reset(ar);
+ 	if (ret) {
+ 		ath10k_err(ar, "failed to reset chip: %d\n", ret);
+@@ -3099,11 +3113,8 @@ static int ath10k_pci_probe(struct pci_d
+ 		goto err_free_irq;
+ 	}
+ 
+-	if (!ath10k_pci_chip_is_supported(pdev->device, chip_id)) {
+-		ath10k_err(ar, "device %04x with chip_id %08x isn't supported\n",
+-			   pdev->device, chip_id);
+-		goto err_free_irq;
+-	}
++	if (!ath10k_pci_chip_is_supported(pdev->device, chip_id))
++		goto err_unsupported;
+ 
+ 	ret = ath10k_core_register(ar, chip_id);
+ 	if (ret) {
+@@ -3113,6 +3124,10 @@ static int ath10k_pci_probe(struct pci_d
+ 
+ 	return 0;
+ 
++err_unsupported:
++	ath10k_err(ar, "device %04x with chip_id %08x isn't supported\n",
++		   pdev->device, bus_params.chip_id);
++
+ err_free_irq:
+ 	ath10k_pci_free_irq(ar);
+ 	ath10k_pci_kill_tasklet(ar);
 
-Yep, less than 40mbps using 5G.
-While I can even feel obvious lag when using ssh, some quick keystroke
-will easily cause a lag.
+--nextPart5470804.AK8FHB7eIg
+Content-Disposition: attachment; filename="4-14-ath10k-restore-QCA9880-AR1A-v1-detection.patch"
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/x-patch; charset="UTF-8"; name="4-14-ath10k-restore-QCA9880-AR1A-v1-detection.patch"
 
-I though it's the Linux support causing problem (even I'm using Arch
-with 5.2 kernel) for the newer 9260 card, then I switched back to 8265.
-But the same problem still exists!!
-What makes things even stranger, under Windows, it's all the same result.=
+From 38ac13d668f237941c8b77f16375f8f0e4de966a Mon Sep 17 00:00:00 2001
+From: Christian Lamparter <chunkeey@gmail.com>
+Date: Mon, 25 Mar 2019 13:50:19 +0100
+Subject: [PATCH 4.14] ath10k: restore QCA9880-AR1A (v1) detection
+To: linux-wireless@vger.kernel.org,
+    ath10k@lists.infradead.org
+Cc: Kalle Valo <kvalo@codeaurora.org>
+
+This patch restores the old behavior that read
+the chip_id on the QCA988x before resetting the
+chip. This needs to be done in this order since
+the unsupported QCA988x AR1A chips fall off the
+bus when resetted. Otherwise the next MMIO Op
+after the reset causes a BUS ERROR and panic.
+
+Cc: stable@vger.kernel.org # 4.14
+Fixes: 1a7fecb766c8 ("ath10k: reset chip before reading chip_id in probe")
+Signed-off-by: Christian Lamparter <chunkeey@gmail.com>
+---
+ drivers/net/wireless/ath/ath10k/pci.c | 36 +++++++++++++++++++--------
+ 1 file changed, 25 insertions(+), 11 deletions(-)
+
+diff --git a/drivers/net/wireless/ath/ath10k/pci.c b/drivers/net/wireless/ath/ath10k/pci.c
+--- a/drivers/net/wireless/ath/ath10k/pci.c	2019-09-08 00:07:21.374565470 +0200
++++ b/drivers/net/wireless/ath/ath10k/pci.c	2019-09-08 00:17:15.365912133 +0200
+@@ -3202,7 +3202,7 @@ static int ath10k_pci_probe(struct pci_d
+ 	struct ath10k_pci *ar_pci;
+ 	enum ath10k_hw_rev hw_rev;
+ 	u32 chip_id;
+-	bool pci_ps;
++	bool pci_ps, is_qca988x = false;
+ 	int (*pci_soft_reset)(struct ath10k *ar);
+ 	int (*pci_hard_reset)(struct ath10k *ar);
+ 	u32 (*targ_cpu_to_ce_addr)(struct ath10k *ar, u32 addr);
+@@ -3211,6 +3211,7 @@ static int ath10k_pci_probe(struct pci_d
+ 	case QCA988X_2_0_DEVICE_ID:
+ 		hw_rev = ATH10K_HW_QCA988X;
+ 		pci_ps = false;
++		is_qca988x = true;
+ 		pci_soft_reset = ath10k_pci_warm_reset;
+ 		pci_hard_reset = ath10k_pci_qca988x_chip_reset;
+ 		targ_cpu_to_ce_addr = ath10k_pci_qca988x_targ_cpu_to_ce_addr;
+@@ -3331,6 +3332,19 @@ static int ath10k_pci_probe(struct pci_d
+ 		goto err_deinit_irq;
+ 	}
+ 
++	/* Read CHIP_ID before reset to catch QCA9880-AR1A v1 devices that
++	 * fall off the bus during chip_reset. These chips have the same pci
++	 * device id as the QCA9880 BR4A or 2R4E. So that's why the check.
++	 */
++	if (is_qca988x) {
++		chip_id = ath10k_pci_soc_read32(ar, SOC_CHIP_ID_ADDRESS);
++		if (chip_id != 0xffffffff) {
++			if (!ath10k_pci_chip_is_supported(pdev->device,
++							  chip_id))
++				goto err_unsupported;
++		}
++	}
++
+ 	ret = ath10k_pci_chip_reset(ar);
+ 	if (ret) {
+ 		ath10k_err(ar, "failed to reset chip: %d\n", ret);
+@@ -3343,11 +3357,8 @@ static int ath10k_pci_probe(struct pci_d
+ 		goto err_free_irq;
+ 	}
+ 
+-	if (!ath10k_pci_chip_is_supported(pdev->device, chip_id)) {
+-		ath10k_err(ar, "device %04x with chip_id %08x isn't supported\n",
+-			   pdev->device, chip_id);
+-		goto err_free_irq;
+-	}
++	if (!ath10k_pci_chip_is_supported(pdev->device, chip_id))
++		goto err_unsupported;
+ 
+ 	ret = ath10k_core_register(ar, chip_id);
+ 	if (ret) {
+@@ -3357,6 +3368,10 @@ static int ath10k_pci_probe(struct pci_d
+ 
+ 	return 0;
+ 
++err_unsupported:
++	ath10k_err(ar, "device %04x with chip_id %08x isn't supported\n",
++		   pdev->device, bus_params.chip_id);
++
+ err_free_irq:
+ 	ath10k_pci_free_irq(ar);
+ 	ath10k_pci_rx_retry_sync(ar);
+
+--nextPart5470804.AK8FHB7eIg
+Content-Disposition: attachment; filename="4-19-ath10k-restore-QCA9880-AR1A-v1-detection.patch"
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/x-patch; charset="UTF-8"; name="4-19-ath10k-restore-QCA9880-AR1A-v1-detection.patch"
+
+From 38ac13d668f237941c8b77f16375f8f0e4de966a Mon Sep 17 00:00:00 2001
+From: Christian Lamparter <chunkeey@gmail.com>
+Date: Mon, 25 Mar 2019 13:50:19 +0100
+Subject: [PATCH 4.19] ath10k: restore QCA9880-AR1A (v1) detection
+To: linux-wireless@vger.kernel.org,
+    ath10k@lists.infradead.org
+Cc: Kalle Valo <kvalo@codeaurora.org>
+
+This patch restores the old behavior that read
+the chip_id on the QCA988x before resetting the
+chip. This needs to be done in this order since
+the unsupported QCA988x AR1A chips fall off the
+bus when resetted. Otherwise the next MMIO Op
+after the reset causes a BUS ERROR and panic.
+
+Cc: stable@vger.kernel.org # 4.19
+Fixes: 1a7fecb766c8 ("ath10k: reset chip before reading chip_id in probe")
+Signed-off-by: Christian Lamparter <chunkeey@gmail.com>
+---
+ drivers/net/wireless/ath/ath10k/pci.c | 36 +++++++++++++++++++--------
+ 1 file changed, 25 insertions(+), 11 deletions(-)
+
+diff --git a/drivers/net/wireless/ath/ath10k/pci.c b/drivers/net/wireless/ath/ath10k/pci.c
+--- a/drivers/net/wireless/ath/ath10k/pci.c	2019-09-08 00:07:21.374565470 +0200
++++ b/drivers/net/wireless/ath/ath10k/pci.c	2019-09-08 00:17:15.365912133 +0200
+@@ -3483,7 +3483,7 @@ static int ath10k_pci_probe(struct pci_d
+ 	struct ath10k_pci *ar_pci;
+ 	enum ath10k_hw_rev hw_rev;
+ 	u32 chip_id;
+-	bool pci_ps;
++	bool pci_ps, is_qca988x = false;
+ 	int (*pci_soft_reset)(struct ath10k *ar);
+ 	int (*pci_hard_reset)(struct ath10k *ar);
+ 	u32 (*targ_cpu_to_ce_addr)(struct ath10k *ar, u32 addr);
+@@ -3493,6 +3493,7 @@ static int ath10k_pci_probe(struct pci_d
+ 	case QCA988X_2_0_DEVICE_ID:
+ 		hw_rev = ATH10K_HW_QCA988X;
+ 		pci_ps = false;
++		is_qca988x = true;
+ 		pci_soft_reset = ath10k_pci_warm_reset;
+ 		pci_hard_reset = ath10k_pci_qca988x_chip_reset;
+ 		targ_cpu_to_ce_addr = ath10k_pci_qca988x_targ_cpu_to_ce_addr;
+@@ -3612,6 +3613,19 @@ static int ath10k_pci_probe(struct pci_d
+ 		goto err_deinit_irq;
+ 	}
+ 
++	/* Read CHIP_ID before reset to catch QCA9880-AR1A v1 devices that
++	 * fall off the bus during chip_reset. These chips have the same pci
++	 * device id as the QCA9880 BR4A or 2R4E. So that's why the check.
++	 */
++	if (is_qca988x) {
++		chip_id = ath10k_pci_soc_read32(ar, SOC_CHIP_ID_ADDRESS);
++		if (chip_id != 0xffffffff) {
++			if (!ath10k_pci_chip_is_supported(pdev->device,
++							  chip_id))
++				goto err_unsupported;
++		}
++	}
++
+ 	ret = ath10k_pci_chip_reset(ar);
+ 	if (ret) {
+ 		ath10k_err(ar, "failed to reset chip: %d\n", ret);
+@@ -3624,11 +3638,8 @@ static int ath10k_pci_probe(struct pci_d
+ 		goto err_free_irq;
+ 	}
+ 
+-	if (!ath10k_pci_chip_is_supported(pdev->device, chip_id)) {
+-		ath10k_err(ar, "device %04x with chip_id %08x isn't supported\n",
+-			   pdev->device, chip_id);
+-		goto err_free_irq;
+-	}
++	if (!ath10k_pci_chip_is_supported(pdev->device, chip_id))
++		goto err_unsupported;
+ 
+ 	ret = ath10k_core_register(ar, chip_id);
+ 	if (ret) {
+@@ -3638,6 +3649,10 @@ static int ath10k_pci_probe(struct pci_d
+ 
+ 	return 0;
+ 
++err_unsupported:
++	ath10k_err(ar, "device %04x with chip_id %08x isn't supported\n",
++		   pdev->device, bus_params.chip_id);
++
+ err_free_irq:
+ 	ath10k_pci_free_irq(ar);
+ 	ath10k_pci_rx_retry_sync(ar);
+
+--nextPart5470804.AK8FHB7eIg
+Content-Disposition: attachment; filename="5-2-ath10k-restore-QCA9880-AR1A-v1-detection.patch"
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/x-patch; charset="UTF-8"; name="5-2-ath10k-restore-QCA9880-AR1A-v1-detection.patch"
+
+From 38ac13d668f237941c8b77f16375f8f0e4de966a Mon Sep 17 00:00:00 2001
+From: Christian Lamparter <chunkeey@gmail.com>
+Date: Mon, 25 Mar 2019 13:50:19 +0100
+Subject: [PATCH 5.2] ath10k: restore QCA9880-AR1A (v1) detection
+To: linux-wireless@vger.kernel.org,
+    ath10k@lists.infradead.org
+Cc: Kalle Valo <kvalo@codeaurora.org>
+
+This patch restores the old behavior that read
+the chip_id on the QCA988x before resetting the
+chip. This needs to be done in this order since
+the unsupported QCA988x AR1A chips fall off the
+bus when resetted. Otherwise the next MMIO Op
+after the reset causes a BUS ERROR and panic.
+
+Cc: stable@vger.kernel.org # 5.2
+Fixes: 1a7fecb766c8 ("ath10k: reset chip before reading chip_id in probe")
+Signed-off-by: Christian Lamparter <chunkeey@gmail.com>
+---
+ drivers/net/wireless/ath/ath10k/pci.c | 36 +++++++++++++++++++--------
+ 1 file changed, 25 insertions(+), 11 deletions(-)
+
+diff --git a/drivers/net/wireless/ath/ath10k/pci.c b/drivers/net/wireless/ath/ath10k/pci.c
+--- a/drivers/net/wireless/ath/ath10k/pci.c
++++ b/drivers/net/wireless/ath/ath10k/pci.c
+@@ -3490,7 +3490,7 @@ static int ath10k_pci_probe(struct pci_dev *pdev,
+ 	struct ath10k_pci *ar_pci;
+ 	enum ath10k_hw_rev hw_rev;
+ 	struct ath10k_bus_params bus_params;
+-	bool pci_ps;
++	bool pci_ps, is_qca988x = false;
+ 	int (*pci_soft_reset)(struct ath10k *ar);
+ 	int (*pci_hard_reset)(struct ath10k *ar);
+ 	u32 (*targ_cpu_to_ce_addr)(struct ath10k *ar, u32 addr);
+@@ -3500,6 +3500,7 @@ static int ath10k_pci_probe(struct pci_dev *pdev,
+ 	case QCA988X_2_0_DEVICE_ID:
+ 		hw_rev = ATH10K_HW_QCA988X;
+ 		pci_ps = false;
++		is_qca988x = true;
+ 		pci_soft_reset = ath10k_pci_warm_reset;
+ 		pci_hard_reset = ath10k_pci_qca988x_chip_reset;
+ 		targ_cpu_to_ce_addr = ath10k_pci_qca988x_targ_cpu_to_ce_addr;
+@@ -3619,25 +3620,34 @@ static int ath10k_pci_probe(struct pci_dev *pdev,
+ 		goto err_deinit_irq;
+ 	}
+ 
++	bus_params.dev_type = ATH10K_DEV_TYPE_LL;
++	bus_params.link_can_suspend = true;
++	/* Read CHIP_ID before reset to catch QCA9880-AR1A v1 devices that
++	 * fall off the bus during chip_reset. These chips have the same pci
++	 * device id as the QCA9880 BR4A or 2R4E. So that's why the check.
++	 */
++	if (is_qca988x) {
++		bus_params.chip_id =
++			ath10k_pci_soc_read32(ar, SOC_CHIP_ID_ADDRESS);
++		if (bus_params.chip_id != 0xffffffff) {
++			if (!ath10k_pci_chip_is_supported(pdev->device,
++							  bus_params.chip_id))
++				goto err_unsupported;
++		}
++	}
++
+ 	ret = ath10k_pci_chip_reset(ar);
+ 	if (ret) {
+ 		ath10k_err(ar, "failed to reset chip: %d\n", ret);
+ 		goto err_free_irq;
+ 	}
+ 
+-	bus_params.dev_type = ATH10K_DEV_TYPE_LL;
+-	bus_params.link_can_suspend = true;
+ 	bus_params.chip_id = ath10k_pci_soc_read32(ar, SOC_CHIP_ID_ADDRESS);
+-	if (bus_params.chip_id == 0xffffffff) {
+-		ath10k_err(ar, "failed to get chip id\n");
+-		goto err_free_irq;
+-	}
++	if (bus_params.chip_id == 0xffffffff)
++		goto err_unsupported;
+ 
+-	if (!ath10k_pci_chip_is_supported(pdev->device, bus_params.chip_id)) {
+-		ath10k_err(ar, "device %04x with chip_id %08x isn't supported\n",
+-			   pdev->device, bus_params.chip_id);
++	if (!ath10k_pci_chip_is_supported(pdev->device, bus_params.chip_id))
+ 		goto err_free_irq;
+-	}
+ 
+ 	ret = ath10k_core_register(ar, &bus_params);
+ 	if (ret) {
+@@ -3647,6 +3657,10 @@ static int ath10k_pci_probe(struct pci_dev *pdev,
+ 
+ 	return 0;
+ 
++err_unsupported:
++	ath10k_err(ar, "device %04x with chip_id %08x isn't supported\n",
++		   pdev->device, bus_params.chip_id);
++
+ err_free_irq:
+ 	ath10k_pci_free_irq(ar);
+ 	ath10k_pci_rx_retry_sync(ar);
+-- 
+2.23.0
 
 
-To exclude the problem of the AP, my android phone can easily get over
-200mbps through the same AP.
-
-Furthermore, I tested my desktop which has an Intel 3168 card, and to my
-surprise, it's the same result less than 40mbps.
+--nextPart5470804.AK8FHB7eIg--
 
 
-Although it doesn't really hurt as both my desktop and laptop is mostly
-connected through ethernet, it still doesn't make sense to me.
 
-Here is the dmesg of my laptop. (Please ignore the perf buffer warning,
-as I also tried to trace iwlwifi:* and iwlwifi_msg:* events)
-https://paste.fedoraproject.org/paste/d5TO6kvbBOwQ~tkLgDbXsQ/raw
-
-The iw list output:
-https://paste.fedoraproject.org/paste/QKIOLyItCLcwTJoan8Wd3g/raw
-
-
-Any ideas how this could happen to 3 different intel cards on two
-different systems? (Although all running the same Arch kernel and latest
-firmware)
-
-Thanks,
-Qu
-
-
---YpyZWlzSilrNyNS5jdk3WJNSrIkaZwcAd--
-
---p0O42tIYRPwAAth2rgBH57Zz7yzaHZBdv
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: OpenPGP digital signature
-Content-Disposition: attachment; filename="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAEBCAAdFiEELd9y5aWlW6idqkLhwj2R86El/qgFAl10Mv0ACgkQwj2R86El
-/qhzhAgAj26cpa48bUL5MjqTalEVGPgZDD7hLOUyOiwJe0kw4RrReRd5G4Fokyyl
-hXPqG02KeSfSTZCC7cTMFiHVbb/BX7yI7GouaMoR/z/X1EvbTSSnDGpncbUC1NrT
-G4a/XD1MCdDo0CF9cIb0Wx6je7meRi5EyzAiE1WWBmxrn4ARTgOMhaRq5SS8Zsjk
-bgUQcG+pMl6Otp0a3Nlj0WSbQdIcj3jni4HB7KUX3ubmiQMus9on0/c86jphSi70
-3fjwII6E8RIFsnb7w/Iv5dGV+hYwjx3h7g4NuxzuOrFEr7dVvN+jPGlokLhyHWYc
-AnhtNYZToi1Um1yQ7ob2u8WLA5zGoA==
-=28EL
------END PGP SIGNATURE-----
-
---p0O42tIYRPwAAth2rgBH57Zz7yzaHZBdv--
