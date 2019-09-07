@@ -2,109 +2,82 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 1F848AC6B2
-	for <lists+linux-wireless@lfdr.de>; Sat,  7 Sep 2019 15:05:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A5096AC732
+	for <lists+linux-wireless@lfdr.de>; Sat,  7 Sep 2019 17:11:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2405957AbfIGNEo (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 7 Sep 2019 09:04:44 -0400
-Received: from userp2130.oracle.com ([156.151.31.86]:36978 "EHLO
-        userp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1732838AbfIGNEo (ORCPT
+        id S2391160AbfIGPLO (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 7 Sep 2019 11:11:14 -0400
+Received: from paleale.coelho.fi ([176.9.41.70]:41536 "EHLO
+        farmhouse.coelho.fi" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
+        with ESMTP id S2388430AbfIGPLO (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 7 Sep 2019 09:04:44 -0400
-Received: from pps.filterd (userp2130.oracle.com [127.0.0.1])
-        by userp2130.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x87D4fcH073862;
-        Sat, 7 Sep 2019 13:04:41 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
- : subject : message-id : mime-version : content-type; s=corp-2019-08-05;
- bh=uRthtHpoVWuAHwxZjkWAa2K2TroMtq+YoapP0IHbxYA=;
- b=JzG0ZR/v++Ro7yOcai+afbSufjGghDcimE/nMJhQo42E2CrknIeHwK5rb/LEnrQUc5/V
- cZ24vmI9YuQxVQQEn0uH1R5fbk67rWtFqgZ2Ut4UoofysB3JKSAKltmzzrK6fEGwDCH5
- zh/pgkhfCypR6541tgL2DjJfn9mMUkKb3Yydnow6NgeZJ1r9XRnv3/FRBVf8YT4TZUec
- tKRvZzsDXaR3HMbFhdUYvjVoZ8cgox9K2wTrRVK9FCV+/hNn239mMRf5lT2q4Jl1orpM
- roGOAGbbfpg+UiESGypTTSMBjhC897ySfxrIYug3srw7EUKBq02941oAj4lVSEG3qEHV xw== 
-Received: from userp3020.oracle.com (userp3020.oracle.com [156.151.31.79])
-        by userp2130.oracle.com with ESMTP id 2uvd2680b1-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Sat, 07 Sep 2019 13:04:41 +0000
-Received: from pps.filterd (userp3020.oracle.com [127.0.0.1])
-        by userp3020.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x87Cw3km004522;
-        Sat, 7 Sep 2019 13:02:40 GMT
-Received: from userv0121.oracle.com (userv0121.oracle.com [156.151.31.72])
-        by userp3020.oracle.com with ESMTP id 2uv3wj99y4-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Sat, 07 Sep 2019 13:02:40 +0000
-Received: from abhmp0017.oracle.com (abhmp0017.oracle.com [141.146.116.23])
-        by userv0121.oracle.com (8.14.4/8.13.8) with ESMTP id x87D2eBg031247;
-        Sat, 7 Sep 2019 13:02:40 GMT
-Received: from mwanda (/41.57.98.10)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Sat, 07 Sep 2019 06:02:39 -0700
-Date:   Sat, 7 Sep 2019 16:02:34 +0300
-From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     masashi.honma@gmail.com
-Cc:     linux-wireless@vger.kernel.org
-Subject: [bug report] nl80211: Fix possible Spectre-v1 for CQM RSSI thresholds
-Message-ID: <20190907130234.GA32057@mwanda>
+        Sat, 7 Sep 2019 11:11:14 -0400
+Received: from [91.156.6.193] (helo=redipa)
+        by farmhouse.coelho.fi with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+        (Exim 4.92)
+        (envelope-from <luca@coelho.fi>)
+        id 1i6cMl-0007dL-T2; Sat, 07 Sep 2019 18:11:11 +0300
+Message-ID: <287fc1be9e095b7f8875635bbd72c69fd263b7e6.camel@coelho.fi>
+From:   Luca Coelho <luca@coelho.fi>
+To:     Kalle Valo <kvalo@codeaurora.org>
+Cc:     linux-wireless@vger.kernel.org, linuxwifi@intel.com,
+        david.e.box@intel.com, joe.konno@intel.com
+Date:   Sat, 07 Sep 2019 18:11:06 +0300
+In-Reply-To: <87h85owov3.fsf@codeaurora.org>
+References: <ed169588021b846217aa86cbf2576a1375653065.camel@coelho.fi>
+         <87h85owov3.fsf@codeaurora.org>
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.30.5-1.1 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.10.1 (2018-07-13)
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9372 signatures=668685
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=1 malwarescore=0
- phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=793
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.0.1-1906280000 definitions=main-1909070140
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9372 signatures=668685
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
- suspectscore=1 phishscore=0 bulkscore=0 spamscore=0 clxscore=1011
- lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=857 adultscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1906280000
- definitions=main-1909070141
+Content-Transfer-Encoding: 7bit
+X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on farmhouse.coelho.fi
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.9 required=5.0 tests=ALL_TRUSTED,BAYES_00,
+        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.2
+Subject: Re: pull-request: iwlwifi-next 2019-09-06
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hello Masashi Honma,
+On Sat, 2019-09-07 at 10:24 +0300, Kalle Valo wrote:
+> Luca Coelho <luca@coelho.fi> writes:
+> 
+> > Here's a batch of patches intended for v5.4.  This includes the last
+> > patchset 4 patchsets I sent.  Usual development work.  More details
+> > about the contents in the tag
+> > description.
+> > 
+> > I pushed this to my pending branch and I got results from kbuildbot to
+> > some of the series, but I didn't get any results yet from the two last
+> > v2 series I sent.  I'll let you know if I get any results in the next
+> > couple of days.
+> 
+> Yesterday evening I pulled this to my pending branch and I did get a
+> success report from kbuildbot.
 
-The patch 1222a1601488: "nl80211: Fix possible Spectre-v1 for CQM
-RSSI thresholds" from Sep 25, 2018, leads to the following static
-checker warning:
+Great! Yesterday evening I got a "build incomplete" message and again
+the same today.
 
-	net/wireless/nl80211.c:10820 cfg80211_cqm_rssi_update()
-	warn: disabling speculation after use: 'i'
 
-net/wireless/nl80211.c
- 10804          last = wdev->cqm_config->last_rssi_event_value;
- 10805          hyst = wdev->cqm_config->rssi_hyst;
- 10806          n = wdev->cqm_config->n_rssi_thresholds;
- 10807  
- 10808          for (i = 0; i < n; i++)
- 10809                  if (last < wdev->cqm_config->rssi_thresholds[i])
-                                                     ^^^^^^^^^^^^^^^^^^
-We've already used "i" as an index.
+> > Please let me know if there are any issues.
+> > 
+> > Cheers,
+> > Luca.
+> > 
+> > 
+> > The following changes since commit a18da8f6194978c2b32a8367fb0df81cc6417848:
+> > 
+> >   Merge tag 'mt76-for-kvalo-2019-09-05' of https://github.com/nbd168/wireless (2019-09-06 11:59:32 +0300)
+> > 
+> > are available in the Git repository at:
+> > 
+> >   git://git.kernel.org/pub/scm/linux/kernel/git/iwlwifi/iwlwifi-next.git tags/iwlwifi-next-for-kalle-2019-09-06
+> 
+> Pulled, thanks Luca.
 
- 10810                          break;
- 10811  
- 10812          low_index = i - 1;
- 10813          if (low_index >= 0) {
- 10814                  low_index = array_index_nospec(low_index, n);
-                                    ^^^^^^^^^^^^^^^^^^
+Thanks!
 
- 10815                  low = wdev->cqm_config->rssi_thresholds[low_index] - hyst;
- 10816          } else {
- 10817                  low = S32_MIN;
- 10818          }
- 10819          if (i < n) {
- 10820                  i = array_index_nospec(i, n);
-                            ^^^^^^^^^^^^^^^^^^
-So this seems like closing the barn door after the horses have left.
+--
+Luca.
 
- 10821                  high = wdev->cqm_config->rssi_thresholds[i] + hyst - 1;
- 10822          } else {
- 10823                  high = S32_MAX;
- 10824          }
-
-regards,
-dan carpenter
