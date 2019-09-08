@@ -2,162 +2,130 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E577EACB3B
-	for <lists+linux-wireless@lfdr.de>; Sun,  8 Sep 2019 08:32:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 19A9BACB87
+	for <lists+linux-wireless@lfdr.de>; Sun,  8 Sep 2019 10:20:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726579AbfIHGch (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 8 Sep 2019 02:32:37 -0400
-Received: from mail-oi1-f195.google.com ([209.85.167.195]:33048 "EHLO
-        mail-oi1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726385AbfIHGch (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 8 Sep 2019 02:32:37 -0400
-Received: by mail-oi1-f195.google.com with SMTP id e12so7938980oie.0
-        for <linux-wireless@vger.kernel.org>; Sat, 07 Sep 2019 23:32:36 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
-         :cc;
-        bh=dLtjxvefmPsTqwguHpJKZUk+b0qbK0gCwrT3RQ5TPGM=;
-        b=ZK30FGYPn3DhY9EPZnYFl4udlxLNfjIbrUAKV9kOguKF3EJMxA4yjKnn9rAZQ7Yg1F
-         RnrdtZtuQiORmENPCgWaEnnjDH+i/VGIqpnTDUbvgqTNEab8Yt2KBngTUCWpyAbCt/RY
-         QKZylmaPaTpzmou+Z8AGW3PNvAuUJh9u77aJvrhMxj9lhkdSyhi21km4YX3boFHvOpuc
-         mQTLdaAaPYYLxfMegV3/2nSuo5+sZvO0nayWc43OHOKEPwBU7oky2Udk9yqdQxe7Pq6Z
-         HiEK06nh/NCopBTtkj5dlAWnF74LOJuw5WsLRE+f8NOIogP8wtTJ+yDtxEPPuNcUX0VJ
-         6+NA==
+        id S1727065AbfIHIUt (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 8 Sep 2019 04:20:49 -0400
+Received: from mx1.redhat.com ([209.132.183.28]:43346 "EHLO mx1.redhat.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726799AbfIHIUt (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Sun, 8 Sep 2019 04:20:49 -0400
+Received: from mail-ed1-f70.google.com (mail-ed1-f70.google.com [209.85.208.70])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mx1.redhat.com (Postfix) with ESMTPS id B992489C33
+        for <linux-wireless@vger.kernel.org>; Sun,  8 Sep 2019 08:20:48 +0000 (UTC)
+Received: by mail-ed1-f70.google.com with SMTP id c2so6212859edy.18
+        for <linux-wireless@vger.kernel.org>; Sun, 08 Sep 2019 01:20:48 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:in-reply-to:references:from:date
-         :message-id:subject:to:cc;
-        bh=dLtjxvefmPsTqwguHpJKZUk+b0qbK0gCwrT3RQ5TPGM=;
-        b=PoaEz1wNqRKkKwHENtEbvO3zh37eqqFO5tSNudqnZXXUpQdtbXdK32QRO1fh19c+lR
-         F+V90ccj/DXHJ5sbpnxHQ3CZBLMezGeQm5mVHBxcFsHbAgFfNtvAfiRguEeLCOegcdww
-         12oz1eOF6fwbcSpXho1l+HmzIHuwTI2algu8lkHqAvjXBoBQAmy13s/QjxZ1wt/N6AXo
-         R3Rn8+dQj6q0nCwO852GYsv/j4oYMywI8VIFvnqRCV+Nep5Bd4IXyVXZeb5dQchqObp3
-         Wr4qg63Wg1xFzV3gi+tHcKHRbSIg821XDrDVyDVwT+MY9T8lXZ/JhizWQpN6/mHxTdrb
-         Eoog==
-X-Gm-Message-State: APjAAAVt+Ctan7AGlN7tSRF559QClYK4DIV+pT2xV6NIesHLClumWybx
-        FHaIuqvpO7/OzTjXVqg+YmCgtvXyeCy7U2zY7g8=
-X-Google-Smtp-Source: APXvYqz2lgth8Eoypm7N796eC0TY7gK5P0AlQD5/piLA1dX+q7sQ8Yzn3oSizx8asZXvVp7w916dY5CIFMCe2DupVP4=
-X-Received: by 2002:aca:fdc9:: with SMTP id b192mr12478978oii.50.1567924356321;
- Sat, 07 Sep 2019 23:32:36 -0700 (PDT)
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+         :references:mime-version:content-transfer-encoding;
+        bh=tDUlvgh3TJNH+HOn7EG167U749zEBUbsuQdh4Cjmd8A=;
+        b=VsG4YVk7MIEXrIkRuUsjOvRMGrW//fxQdsW0JTcjPQL2xSGLaDaRGYMrPimh6QOef0
+         xzfuwB6fYYfYKkrY2Dc+JoBNCAP6agQY9AyGn67Wk11B0k4WG2KEDZhMetM8hwV39S/1
+         96CvCtymOA2Q3XTsNPJDqgZyIIOYSj7bwEj2a5OS/s38CrWUXbjIzUkHrhPhs+dYfFVE
+         zyOYBN2FEqotbBzOVu3L5lK9Oe87/8s1DS/5UXjK0re352jZgOiEc/eswJTA8fMapGXT
+         SazQTUx3RvZ5RhBpP1P3y76CUuBzwQBg4MHqKrWnySGfpLfghhdlodnwDAnGy34l7Is2
+         N9ng==
+X-Gm-Message-State: APjAAAW32ZsclU7fIlPrObfTkbX7qA1RURn9Ql4JU2g/cbXjTWiQHt0u
+        EZ3cuijf6eiRbYDor3thGJS3Fi5QEesPNm7ONRIoMBh5eSkQQJe6BBaAa9P6BCfVpxvVYqriEcd
+        +3h2nOzWsitpK9dPTMHerHf5Uf1w=
+X-Received: by 2002:aa7:da18:: with SMTP id r24mr18610345eds.37.1567930847461;
+        Sun, 08 Sep 2019 01:20:47 -0700 (PDT)
+X-Google-Smtp-Source: APXvYqyUine6UkF8vYruWsm1TkYCnL+NgjVhuiXx0uWhrtbmqhr23a4HHNDbcMc+Zio0U1jaFUENZQ==
+X-Received: by 2002:aa7:da18:: with SMTP id r24mr18610313eds.37.1567930847128;
+        Sun, 08 Sep 2019 01:20:47 -0700 (PDT)
+Received: from alrua-x1.borgediget.toke.dk (borgediget.toke.dk. [85.204.121.218])
+        by smtp.gmail.com with ESMTPSA id t21sm1364896ejs.37.2019.09.08.01.20.46
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 08 Sep 2019 01:20:46 -0700 (PDT)
+Received: by alrua-x1.borgediget.toke.dk (Postfix, from userid 1000)
+        id 0F739180615; Sun,  8 Sep 2019 09:20:44 +0100 (WEST)
+From:   =?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>
+To:     make-wifi-fast@lists.bufferbloat.net,
+        linux-wireless@vger.kernel.org, ast@kernel.org,
+        bpf@vger.kernel.org, daniel@iogearbox.net, davem@davemloft.net,
+        hawk@kernel.org, jakub.kicinski@netronome.com,
+        john.fastabend@gmail.com, kafai@fb.com,
+        linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
+        songliubraving@fb.com, syzkaller-bugs@googlegroups.com, yhs@fb.com
+Cc:     =?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>,
+        syzbot+4e7a85b1432052e8d6f8@syzkaller.appspotmail.com
+Subject: [PATCH bpf-next] xdp: Fix race in dev_map_hash_update_elem() when replacing element
+Date:   Sun,  8 Sep 2019 09:20:16 +0100
+Message-Id: <20190908082016.17214-1-toke@redhat.com>
+X-Mailer: git-send-email 2.23.0
+In-Reply-To: <0000000000005091a70591d3e1d9@google.com>
+References: <0000000000005091a70591d3e1d9@google.com>
 MIME-Version: 1.0
-Received: by 2002:a9d:2286:0:0:0:0:0 with HTTP; Sat, 7 Sep 2019 23:32:35 -0700 (PDT)
-In-Reply-To: <20190906215423.23589-1-chunkeey@gmail.com>
-References: <20190906215423.23589-1-chunkeey@gmail.com>
-From:   Tom Psyborg <pozega.tomislav@gmail.com>
-Date:   Sun, 8 Sep 2019 08:32:35 +0200
-Message-ID: <CAKR_QV+y9u_gP_+dZ=bFYJgANeq+W19v9Xx_SwydB5fe4ozhtg@mail.gmail.com>
-Subject: Re: [PATCH] ath10k: restore QCA9880-AR1A (v1) detection
-To:     Christian Lamparter <chunkeey@gmail.com>
-Cc:     linux-wireless@vger.kernel.org, ath10k@lists.infradead.org,
-        Kalle Valo <kvalo@codeaurora.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 06/09/2019, Christian Lamparter <chunkeey@gmail.com> wrote:
-> This patch restores the old behavior that read
-> the chip_id on the QCA988x before resetting the
-> chip. This needs to be done in this order since
-> the unsupported QCA988x AR1A chips fall off the
-> bus when resetted. Otherwise the next MMIO Op
-> after the reset causes a BUS ERROR and panic.
->
-> Cc: stable@vger.kernel.org
-> Fixes: 1a7fecb766c8 ("ath10k: reset chip before reading chip_id in probe")
-> Signed-off-by: Christian Lamparter <chunkeey@gmail.com>
-> ---
->  drivers/net/wireless/ath/ath10k/pci.c | 36 +++++++++++++++++++--------
->  1 file changed, 25 insertions(+), 11 deletions(-)
->
-> diff --git a/drivers/net/wireless/ath/ath10k/pci.c
-> b/drivers/net/wireless/ath/ath10k/pci.c
-> index a0b4d265c6eb..347bb92e4130 100644
-> --- a/drivers/net/wireless/ath/ath10k/pci.c
-> +++ b/drivers/net/wireless/ath/ath10k/pci.c
-> @@ -3490,7 +3490,7 @@ static int ath10k_pci_probe(struct pci_dev *pdev,
->  	struct ath10k_pci *ar_pci;
->  	enum ath10k_hw_rev hw_rev;
->  	struct ath10k_bus_params bus_params = {};
-> -	bool pci_ps;
-> +	bool pci_ps, is_qca988x = false;
->  	int (*pci_soft_reset)(struct ath10k *ar);
->  	int (*pci_hard_reset)(struct ath10k *ar);
->  	u32 (*targ_cpu_to_ce_addr)(struct ath10k *ar, u32 addr);
-> @@ -3500,6 +3500,7 @@ static int ath10k_pci_probe(struct pci_dev *pdev,
->  	case QCA988X_2_0_DEVICE_ID:
->  		hw_rev = ATH10K_HW_QCA988X;
->  		pci_ps = false;
-> +		is_qca988x = true;
->  		pci_soft_reset = ath10k_pci_warm_reset;
->  		pci_hard_reset = ath10k_pci_qca988x_chip_reset;
->  		targ_cpu_to_ce_addr = ath10k_pci_qca988x_targ_cpu_to_ce_addr;
-> @@ -3619,25 +3620,34 @@ static int ath10k_pci_probe(struct pci_dev *pdev,
->  		goto err_deinit_irq;
->  	}
->
-> +	bus_params.dev_type = ATH10K_DEV_TYPE_LL;
-> +	bus_params.link_can_suspend = true;
-> +	/* Read CHIP_ID before reset to catch QCA9880-AR1A v1 devices that
-> +	 * fall off the bus during chip_reset. These chips have the same pci
-> +	 * device id as the QCA9880 BR4A or 2R4E. So that's why the check.
-> +	 */
-> +	if (is_qca988x) {
-> +		bus_params.chip_id =
-> +			ath10k_pci_soc_read32(ar, SOC_CHIP_ID_ADDRESS);
-> +		if (bus_params.chip_id != 0xffffffff) {
-> +			if (!ath10k_pci_chip_is_supported(pdev->device,
-> +							  bus_params.chip_id))
-> +				goto err_unsupported;
-> +		}
-> +	}
-> +
->  	ret = ath10k_pci_chip_reset(ar);
->  	if (ret) {
->  		ath10k_err(ar, "failed to reset chip: %d\n", ret);
->  		goto err_free_irq;
->  	}
->
-> -	bus_params.dev_type = ATH10K_DEV_TYPE_LL;
-> -	bus_params.link_can_suspend = true;
->  	bus_params.chip_id = ath10k_pci_soc_read32(ar, SOC_CHIP_ID_ADDRESS);
-> -	if (bus_params.chip_id == 0xffffffff) {
-> -		ath10k_err(ar, "failed to get chip id\n");
-> -		goto err_free_irq;
-> -	}
-> +	if (bus_params.chip_id == 0xffffffff)
-> +		goto err_unsupported;
->
-> -	if (!ath10k_pci_chip_is_supported(pdev->device, bus_params.chip_id)) {
-> -		ath10k_err(ar, "device %04x with chip_id %08x isn't supported\n",
-> -			   pdev->device, bus_params.chip_id);
-> +	if (!ath10k_pci_chip_is_supported(pdev->device, bus_params.chip_id))
->  		goto err_free_irq;
-> -	}
->
->  	ret = ath10k_core_register(ar, &bus_params);
->  	if (ret) {
-> @@ -3647,6 +3657,10 @@ static int ath10k_pci_probe(struct pci_dev *pdev,
->
->  	return 0;
->
-> +err_unsupported:
-> +	ath10k_err(ar, "device %04x with chip_id %08x isn't supported\n",
-> +		   pdev->device, bus_params.chip_id);
-> +
->  err_free_irq:
->  	ath10k_pci_free_irq(ar);
->  	ath10k_pci_rx_retry_sync(ar);
-> --
-> 2.23.0
->
->
+syzbot found a crash in dev_map_hash_update_elem(), when replacing an
+element with a new one. Jesper correctly identified the cause of the crash
+as a race condition between the initial lookup in the map (which is done
+before taking the lock), and the removal of the old element.
 
-Looks fine. For the time being. Have you looked any further to
-actually support this chip? It seems warm reset is causing bus errors,
-and cold reset goes through without crash.
-Firmware gets loaded but is stuck at receiving control response, most
-likely because of htc packet length or response message length.
+Rather than just add a second lookup into the hashmap after taking the
+lock, fix this by reworking the function logic to take the lock before the
+initial lookup.
+
+Fixes: 6f9d451ab1a3 ("xdp: Add devmap_hash map type for looking up devices by hashed index")
+Reported-and-tested-by: syzbot+4e7a85b1432052e8d6f8@syzkaller.appspotmail.com
+Signed-off-by: Toke Høiland-Jørgensen <toke@redhat.com>
+---
+ kernel/bpf/devmap.c | 17 ++++++++++++-----
+ 1 file changed, 12 insertions(+), 5 deletions(-)
+
+diff --git a/kernel/bpf/devmap.c b/kernel/bpf/devmap.c
+index 9af048a932b5..d27f3b60ff6d 100644
+--- a/kernel/bpf/devmap.c
++++ b/kernel/bpf/devmap.c
+@@ -650,19 +650,22 @@ static int __dev_map_hash_update_elem(struct net *net, struct bpf_map *map,
+ 	u32 ifindex = *(u32 *)value;
+ 	u32 idx = *(u32 *)key;
+ 	unsigned long flags;
++	int err = -EEXIST;
+ 
+ 	if (unlikely(map_flags > BPF_EXIST || !ifindex))
+ 		return -EINVAL;
+ 
++	spin_lock_irqsave(&dtab->index_lock, flags);
++
+ 	old_dev = __dev_map_hash_lookup_elem(map, idx);
+ 	if (old_dev && (map_flags & BPF_NOEXIST))
+-		return -EEXIST;
++		goto out_err;
+ 
+ 	dev = __dev_map_alloc_node(net, dtab, ifindex, idx);
+-	if (IS_ERR(dev))
+-		return PTR_ERR(dev);
+-
+-	spin_lock_irqsave(&dtab->index_lock, flags);
++	if (IS_ERR(dev)) {
++		err = PTR_ERR(dev);
++		goto out_err;
++	}
+ 
+ 	if (old_dev) {
+ 		hlist_del_rcu(&old_dev->index_hlist);
+@@ -683,6 +686,10 @@ static int __dev_map_hash_update_elem(struct net *net, struct bpf_map *map,
+ 		call_rcu(&old_dev->rcu, __dev_map_entry_free);
+ 
+ 	return 0;
++
++out_err:
++	spin_unlock_irqrestore(&dtab->index_lock, flags);
++	return err;
+ }
+ 
+ static int dev_map_hash_update_elem(struct bpf_map *map, void *key, void *value,
+-- 
+2.23.0
+
