@@ -2,340 +2,162 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 1BA82ACA8E
-	for <lists+linux-wireless@lfdr.de>; Sun,  8 Sep 2019 06:03:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E577EACB3B
+	for <lists+linux-wireless@lfdr.de>; Sun,  8 Sep 2019 08:32:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726912AbfIHEDu (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 8 Sep 2019 00:03:50 -0400
-Received: from mail-ot1-f47.google.com ([209.85.210.47]:34945 "EHLO
-        mail-ot1-f47.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726217AbfIHEDs (ORCPT
+        id S1726579AbfIHGch (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 8 Sep 2019 02:32:37 -0400
+Received: from mail-oi1-f195.google.com ([209.85.167.195]:33048 "EHLO
+        mail-oi1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726385AbfIHGch (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 8 Sep 2019 00:03:48 -0400
-Received: by mail-ot1-f47.google.com with SMTP id 100so9445536otn.2
-        for <linux-wireless@vger.kernel.org>; Sat, 07 Sep 2019 21:03:47 -0700 (PDT)
+        Sun, 8 Sep 2019 02:32:37 -0400
+Received: by mail-oi1-f195.google.com with SMTP id e12so7938980oie.0
+        for <linux-wireless@vger.kernel.org>; Sat, 07 Sep 2019 23:32:36 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=sender:from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=MFOa5xFz3zP6vCoGjLAhAG5g6YSox67Djza4Ft4RUL8=;
-        b=pN/8Jxu0bklSytLEmNJb4GMBqIBT8kpqY8sol0lB1PnCvy1ncCJMIiTSNNfyZQ55su
-         nYkAZw0t556SCrUJD++/e2RbRa5XOkSRVlm3hLMlBgx4ArWco5LvFP92ReUgKXhxJ3DL
-         056uLsxYMZd30XfQZrKgtGGvRu+YDNDDioGCRl//ar8mYrZafE1laYfdGH7zBDaCnlSe
-         LwWOB7yMFfDUAZlhbP413ksY/QVFPd1j4oo/f1NnXFB8yoDEyJMpj5FjLMSuWARJtOz+
-         wwkvOD2sC/OZbfUtKTvYMqcAjmO1f5tgIh2CT6KaSZXUK/uJsNxZUd67qg3e1uEaackB
-         HRhw==
+        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
+         :cc;
+        bh=dLtjxvefmPsTqwguHpJKZUk+b0qbK0gCwrT3RQ5TPGM=;
+        b=ZK30FGYPn3DhY9EPZnYFl4udlxLNfjIbrUAKV9kOguKF3EJMxA4yjKnn9rAZQ7Yg1F
+         RnrdtZtuQiORmENPCgWaEnnjDH+i/VGIqpnTDUbvgqTNEab8Yt2KBngTUCWpyAbCt/RY
+         QKZylmaPaTpzmou+Z8AGW3PNvAuUJh9u77aJvrhMxj9lhkdSyhi21km4YX3boFHvOpuc
+         mQTLdaAaPYYLxfMegV3/2nSuo5+sZvO0nayWc43OHOKEPwBU7oky2Udk9yqdQxe7Pq6Z
+         HiEK06nh/NCopBTtkj5dlAWnF74LOJuw5WsLRE+f8NOIogP8wtTJ+yDtxEPPuNcUX0VJ
+         6+NA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:sender:from:to:cc:subject:date:message-id
-         :in-reply-to:references:mime-version:content-transfer-encoding;
-        bh=MFOa5xFz3zP6vCoGjLAhAG5g6YSox67Djza4Ft4RUL8=;
-        b=mgNxu7IN4oZJeLS8lLU2or4r+d1ZdIdoiJIRrjSGe3Wz3B1fNNyOORSNbpBtTCo5QG
-         w/xOqtrUWq1fP058NJGdpD6sDqpaM8UbeKdX9/DJHzRCrFDVaT+kTQpprDKYDyFAgTMR
-         1WmTwte16wI7xapfhlXr6yylqzquskhQ6weC94skjXIEkiIa2yHKuXf5zsyk5OlpoN8e
-         dbOE7p5MirvPCluYsyUfsmTC60VDvUyWcZaNA5s0FgNo2l2T/fQMtmrp7f1XFTQtIxPz
-         9hNYkXpp6F0qe/3Y8Bt8haQ20ceNrHB0+aFiz0bvnI2Gnb2XtuELQ5HEybOMTKQ/ExLF
-         BvNQ==
-X-Gm-Message-State: APjAAAVbksHwusET1u/yDTl01xNGTaQ31fly+Z1vOgCfEyXHicjUDEsp
-        mRk9dFduM/VXgdw+BbobKzY=
-X-Google-Smtp-Source: APXvYqz2Zjm0EzyhQT/OfPxi8lvbmWZtk/d8YwVx9uyKCGAFNVpJwUUR/6jWc5ZifICm3tBMsDzSCA==
-X-Received: by 2002:a9d:7495:: with SMTP id t21mr13359006otk.41.1567915427168;
-        Sat, 07 Sep 2019 21:03:47 -0700 (PDT)
-Received: from localhost.localdomain (cpe-24-31-245-230.kc.res.rr.com. [24.31.245.230])
-        by smtp.gmail.com with ESMTPSA id x80sm1419178oia.37.2019.09.07.21.03.46
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 07 Sep 2019 21:03:46 -0700 (PDT)
-From:   Larry Finger <Larry.Finger@lwfinger.net>
-To:     kvalo@codeaurora.org
-Cc:     linux-wireless@vger.kernel.org, pkshih@realtek.com,
-        Larry Finger <Larry.Finger@lwfinger.net>
-Subject: [PATCH 9/9] rtlwifi: rtl8188ee: rtl8192ce: rtl8192de: rtl8723ae: rtl8821ae: Remove some unused bit manipulation macros
-Date:   Sat,  7 Sep 2019 23:03:35 -0500
-Message-Id: <20190908040335.19838-10-Larry.Finger@lwfinger.net>
-X-Mailer: git-send-email 2.23.0
-In-Reply-To: <20190908040335.19838-1-Larry.Finger@lwfinger.net>
-References: <20190908040335.19838-1-Larry.Finger@lwfinger.net>
+        h=x-gm-message-state:mime-version:in-reply-to:references:from:date
+         :message-id:subject:to:cc;
+        bh=dLtjxvefmPsTqwguHpJKZUk+b0qbK0gCwrT3RQ5TPGM=;
+        b=PoaEz1wNqRKkKwHENtEbvO3zh37eqqFO5tSNudqnZXXUpQdtbXdK32QRO1fh19c+lR
+         F+V90ccj/DXHJ5sbpnxHQ3CZBLMezGeQm5mVHBxcFsHbAgFfNtvAfiRguEeLCOegcdww
+         12oz1eOF6fwbcSpXho1l+HmzIHuwTI2algu8lkHqAvjXBoBQAmy13s/QjxZ1wt/N6AXo
+         R3Rn8+dQj6q0nCwO852GYsv/j4oYMywI8VIFvnqRCV+Nep5Bd4IXyVXZeb5dQchqObp3
+         Wr4qg63Wg1xFzV3gi+tHcKHRbSIg821XDrDVyDVwT+MY9T8lXZ/JhizWQpN6/mHxTdrb
+         Eoog==
+X-Gm-Message-State: APjAAAVt+Ctan7AGlN7tSRF559QClYK4DIV+pT2xV6NIesHLClumWybx
+        FHaIuqvpO7/OzTjXVqg+YmCgtvXyeCy7U2zY7g8=
+X-Google-Smtp-Source: APXvYqz2lgth8Eoypm7N796eC0TY7gK5P0AlQD5/piLA1dX+q7sQ8Yzn3oSizx8asZXvVp7w916dY5CIFMCe2DupVP4=
+X-Received: by 2002:aca:fdc9:: with SMTP id b192mr12478978oii.50.1567924356321;
+ Sat, 07 Sep 2019 23:32:36 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Received: by 2002:a9d:2286:0:0:0:0:0 with HTTP; Sat, 7 Sep 2019 23:32:35 -0700 (PDT)
+In-Reply-To: <20190906215423.23589-1-chunkeey@gmail.com>
+References: <20190906215423.23589-1-chunkeey@gmail.com>
+From:   Tom Psyborg <pozega.tomislav@gmail.com>
+Date:   Sun, 8 Sep 2019 08:32:35 +0200
+Message-ID: <CAKR_QV+y9u_gP_+dZ=bFYJgANeq+W19v9Xx_SwydB5fe4ozhtg@mail.gmail.com>
+Subject: Re: [PATCH] ath10k: restore QCA9880-AR1A (v1) detection
+To:     Christian Lamparter <chunkeey@gmail.com>
+Cc:     linux-wireless@vger.kernel.org, ath10k@lists.infradead.org,
+        Kalle Valo <kvalo@codeaurora.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Each of these drivers defines some device to host macros that are never
-used, thus they can be removed.
+On 06/09/2019, Christian Lamparter <chunkeey@gmail.com> wrote:
+> This patch restores the old behavior that read
+> the chip_id on the QCA988x before resetting the
+> chip. This needs to be done in this order since
+> the unsupported QCA988x AR1A chips fall off the
+> bus when resetted. Otherwise the next MMIO Op
+> after the reset causes a BUS ERROR and panic.
+>
+> Cc: stable@vger.kernel.org
+> Fixes: 1a7fecb766c8 ("ath10k: reset chip before reading chip_id in probe")
+> Signed-off-by: Christian Lamparter <chunkeey@gmail.com>
+> ---
+>  drivers/net/wireless/ath/ath10k/pci.c | 36 +++++++++++++++++++--------
+>  1 file changed, 25 insertions(+), 11 deletions(-)
+>
+> diff --git a/drivers/net/wireless/ath/ath10k/pci.c
+> b/drivers/net/wireless/ath/ath10k/pci.c
+> index a0b4d265c6eb..347bb92e4130 100644
+> --- a/drivers/net/wireless/ath/ath10k/pci.c
+> +++ b/drivers/net/wireless/ath/ath10k/pci.c
+> @@ -3490,7 +3490,7 @@ static int ath10k_pci_probe(struct pci_dev *pdev,
+>  	struct ath10k_pci *ar_pci;
+>  	enum ath10k_hw_rev hw_rev;
+>  	struct ath10k_bus_params bus_params = {};
+> -	bool pci_ps;
+> +	bool pci_ps, is_qca988x = false;
+>  	int (*pci_soft_reset)(struct ath10k *ar);
+>  	int (*pci_hard_reset)(struct ath10k *ar);
+>  	u32 (*targ_cpu_to_ce_addr)(struct ath10k *ar, u32 addr);
+> @@ -3500,6 +3500,7 @@ static int ath10k_pci_probe(struct pci_dev *pdev,
+>  	case QCA988X_2_0_DEVICE_ID:
+>  		hw_rev = ATH10K_HW_QCA988X;
+>  		pci_ps = false;
+> +		is_qca988x = true;
+>  		pci_soft_reset = ath10k_pci_warm_reset;
+>  		pci_hard_reset = ath10k_pci_qca988x_chip_reset;
+>  		targ_cpu_to_ce_addr = ath10k_pci_qca988x_targ_cpu_to_ce_addr;
+> @@ -3619,25 +3620,34 @@ static int ath10k_pci_probe(struct pci_dev *pdev,
+>  		goto err_deinit_irq;
+>  	}
+>
+> +	bus_params.dev_type = ATH10K_DEV_TYPE_LL;
+> +	bus_params.link_can_suspend = true;
+> +	/* Read CHIP_ID before reset to catch QCA9880-AR1A v1 devices that
+> +	 * fall off the bus during chip_reset. These chips have the same pci
+> +	 * device id as the QCA9880 BR4A or 2R4E. So that's why the check.
+> +	 */
+> +	if (is_qca988x) {
+> +		bus_params.chip_id =
+> +			ath10k_pci_soc_read32(ar, SOC_CHIP_ID_ADDRESS);
+> +		if (bus_params.chip_id != 0xffffffff) {
+> +			if (!ath10k_pci_chip_is_supported(pdev->device,
+> +							  bus_params.chip_id))
+> +				goto err_unsupported;
+> +		}
+> +	}
+> +
+>  	ret = ath10k_pci_chip_reset(ar);
+>  	if (ret) {
+>  		ath10k_err(ar, "failed to reset chip: %d\n", ret);
+>  		goto err_free_irq;
+>  	}
+>
+> -	bus_params.dev_type = ATH10K_DEV_TYPE_LL;
+> -	bus_params.link_can_suspend = true;
+>  	bus_params.chip_id = ath10k_pci_soc_read32(ar, SOC_CHIP_ID_ADDRESS);
+> -	if (bus_params.chip_id == 0xffffffff) {
+> -		ath10k_err(ar, "failed to get chip id\n");
+> -		goto err_free_irq;
+> -	}
+> +	if (bus_params.chip_id == 0xffffffff)
+> +		goto err_unsupported;
+>
+> -	if (!ath10k_pci_chip_is_supported(pdev->device, bus_params.chip_id)) {
+> -		ath10k_err(ar, "device %04x with chip_id %08x isn't supported\n",
+> -			   pdev->device, bus_params.chip_id);
+> +	if (!ath10k_pci_chip_is_supported(pdev->device, bus_params.chip_id))
+>  		goto err_free_irq;
+> -	}
+>
+>  	ret = ath10k_core_register(ar, &bus_params);
+>  	if (ret) {
+> @@ -3647,6 +3657,10 @@ static int ath10k_pci_probe(struct pci_dev *pdev,
+>
+>  	return 0;
+>
+> +err_unsupported:
+> +	ath10k_err(ar, "device %04x with chip_id %08x isn't supported\n",
+> +		   pdev->device, bus_params.chip_id);
+> +
+>  err_free_irq:
+>  	ath10k_pci_free_irq(ar);
+>  	ath10k_pci_rx_retry_sync(ar);
+> --
+> 2.23.0
+>
+>
 
-Signed-off-by: Larry Finger <Larry.Finger@lwfinger.net>
----
- drivers/net/wireless/realtek/rtlwifi/base.h   | 27 ---------------
- .../wireless/realtek/rtlwifi/rtl8188ee/def.h  | 29 ----------------
- .../wireless/realtek/rtlwifi/rtl8192ce/def.h  | 33 -------------------
- .../wireless/realtek/rtlwifi/rtl8192de/def.h  | 31 -----------------
- .../wireless/realtek/rtlwifi/rtl8723ae/def.h  | 31 -----------------
- .../wireless/realtek/rtlwifi/rtl8821ae/def.h  | 31 -----------------
- 6 files changed, 182 deletions(-)
-
-diff --git a/drivers/net/wireless/realtek/rtlwifi/base.h b/drivers/net/wireless/realtek/rtlwifi/base.h
-index 99565ad09cdc..e4a7e074ae3f 100644
---- a/drivers/net/wireless/realtek/rtlwifi/base.h
-+++ b/drivers/net/wireless/realtek/rtlwifi/base.h
-@@ -46,15 +46,6 @@ enum ap_peer {
- #define MAX_LISTEN_INTERVAL		10
- #define MAX_RATE_TRIES			4
- 
--#define SET_80211_HDR_FRAME_CONTROL(_hdr, _val)		\
--	WRITEEF2BYTE(_hdr, _val)
--#define SET_80211_HDR_TYPE_AND_SUBTYPE(_hdr, _val)	\
--	WRITEEF1BYTE(_hdr, _val)
--#define SET_80211_HDR_PWR_MGNT(_hdr, _val)		\
--	SET_BITS_TO_LE_2BYTE(_hdr, 12, 1, _val)
--#define SET_80211_HDR_TO_DS(_hdr, _val)			\
--	SET_BITS_TO_LE_2BYTE(_hdr, 8, 1, _val)
--
- #define SET_80211_PS_POLL_AID(_hdr, _val)		\
- 	(*(u16 *)((u8 *)(_hdr) + 2) = _val)
- #define SET_80211_PS_POLL_BSSID(_hdr, _val)		\
-@@ -62,30 +53,12 @@ enum ap_peer {
- #define SET_80211_PS_POLL_TA(_hdr, _val)		\
- 	ether_addr_copy(((u8 *)(_hdr))+10, (u8 *)(_val))
- 
--#define SET_80211_HDR_DURATION(_hdr, _val)	\
--	(*(u16 *)((u8 *)(_hdr) + FRAME_OFFSET_DURATION) = le16_to_cpu(_val))
- #define SET_80211_HDR_ADDRESS1(_hdr, _val)	\
- 	CP_MACADDR((u8 *)(_hdr)+FRAME_OFFSET_ADDRESS1, (u8 *)(_val))
- #define SET_80211_HDR_ADDRESS2(_hdr, _val)	\
- 	CP_MACADDR((u8 *)(_hdr)+FRAME_OFFSET_ADDRESS2, (u8 *)(_val))
- #define SET_80211_HDR_ADDRESS3(_hdr, _val)	\
- 	CP_MACADDR((u8 *)(_hdr)+FRAME_OFFSET_ADDRESS3, (u8 *)(_val))
--#define SET_80211_HDR_FRAGMENT_SEQUENCE(_hdr, _val)  \
--	WRITEEF2BYTE((u8 *)(_hdr)+FRAME_OFFSET_SEQUENCE, _val)
--
--#define SET_BEACON_PROBE_RSP_TIME_STAMP_LOW(__phdr, __val)	\
--	WRITEEF4BYTE(((u8 *)(__phdr)) + 24, __val)
--#define SET_BEACON_PROBE_RSP_TIME_STAMP_HIGH(__phdr, __val) \
--	WRITEEF4BYTE(((u8 *)(__phdr)) + 28, __val)
--#define SET_BEACON_PROBE_RSP_BEACON_INTERVAL(__phdr, __val) \
--	WRITEEF2BYTE(((u8 *)(__phdr)) + 32, __val)
--#define GET_BEACON_PROBE_RSP_CAPABILITY_INFO(__phdr)		\
--	READEF2BYTE(((u8 *)(__phdr)) + 34)
--#define SET_BEACON_PROBE_RSP_CAPABILITY_INFO(__phdr, __val) \
--	WRITEEF2BYTE(((u8 *)(__phdr)) + 34, __val)
--#define MASK_BEACON_PROBE_RSP_CAPABILITY_INFO(__phdr, __val) \
--	SET_BEACON_PROBE_RSP_CAPABILITY_INFO(__phdr, \
--	(GET_BEACON_PROBE_RSP_CAPABILITY_INFO(__phdr) & (~(__val))))
- 
- #define SET_TX_DESC_SPE_RPT(__pdesc, __val)			\
- 	SET_BITS_TO_LE_4BYTE((__pdesc) + 8, 19, 1, __val)
-diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8188ee/def.h b/drivers/net/wireless/realtek/rtlwifi/rtl8188ee/def.h
-index fa2e1b063f68..edcca42c7464 100644
---- a/drivers/net/wireless/realtek/rtlwifi/rtl8188ee/def.h
-+++ b/drivers/net/wireless/realtek/rtlwifi/rtl8188ee/def.h
-@@ -12,35 +12,6 @@
- #define RX_CMD_QUEUE					1
- 
- #define	C2H_RX_CMD_HDR_LEN				8
--#define	GET_C2H_CMD_CMD_LEN(__prxhdr)			\
--	LE_BITS_TO_4BYTE((__prxhdr), 0, 16)
--#define	GET_C2H_CMD_ELEMENT_ID(__prxhdr)		\
--	LE_BITS_TO_4BYTE((__prxhdr), 16, 8)
--#define	GET_C2H_CMD_CMD_SEQ(__prxhdr)			\
--	LE_BITS_TO_4BYTE((__prxhdr), 24, 7)
--#define	GET_C2H_CMD_CONTINUE(__prxhdr)			\
--	LE_BITS_TO_4BYTE((__prxhdr), 31, 1)
--#define	GET_C2H_CMD_CONTENT(__prxhdr)			\
--	((u8 *)(__prxhdr) + C2H_RX_CMD_HDR_LEN)
--
--#define	GET_C2H_CMD_FEEDBACK_ELEMENT_ID(__pcmdfbhdr)	\
--	LE_BITS_TO_4BYTE((__pcmdfbhdr), 0, 8)
--#define	GET_C2H_CMD_FEEDBACK_CCX_LEN(__pcmdfbhdr)	\
--	LE_BITS_TO_4BYTE((__pcmdfbhdr), 8, 8)
--#define	GET_C2H_CMD_FEEDBACK_CCX_CMD_CNT(__pcmdfbhdr)	\
--	LE_BITS_TO_4BYTE((__pcmdfbhdr), 16, 16)
--#define	GET_C2H_CMD_FEEDBACK_CCX_MAC_ID(__pcmdfbhdr)	\
--	LE_BITS_TO_4BYTE(((__pcmdfbhdr) + 4), 0, 5)
--#define	GET_C2H_CMD_FEEDBACK_CCX_VALID(__pcmdfbhdr)	\
--	LE_BITS_TO_4BYTE(((__pcmdfbhdr) + 4), 7, 1)
--#define	GET_C2H_CMD_FEEDBACK_CCX_RETRY_CNT(__pcmdfbhdr)	\
--	LE_BITS_TO_4BYTE(((__pcmdfbhdr) + 4), 8, 5)
--#define	GET_C2H_CMD_FEEDBACK_CCX_TOK(__pcmdfbhdr)	\
--	LE_BITS_TO_4BYTE(((__pcmdfbhdr) + 4), 15, 1)
--#define	GET_C2H_CMD_FEEDBACK_CCX_QSEL(__pcmdfbhdr)	\
--	LE_BITS_TO_4BYTE(((__pcmdfbhdr) + 4), 16, 4)
--#define	GET_C2H_CMD_FEEDBACK_CCX_SEQ(__pcmdfbhdr)	\
--	LE_BITS_TO_4BYTE(((__pcmdfbhdr) + 4), 20, 12)
- 
- #define CHIP_BONDING_IDENTIFIER(_value)	(((_value)>>22)&0x3)
- 
-diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8192ce/def.h b/drivers/net/wireless/realtek/rtlwifi/rtl8192ce/def.h
-index 147bf2407f8f..34486bd3e109 100644
---- a/drivers/net/wireless/realtek/rtlwifi/rtl8192ce/def.h
-+++ b/drivers/net/wireless/realtek/rtlwifi/rtl8192ce/def.h
-@@ -17,39 +17,6 @@
- #define RX_MPDU_QUEUE					0
- #define RX_CMD_QUEUE					1
- 
--#define	C2H_RX_CMD_HDR_LEN				8
--#define	GET_C2H_CMD_CMD_LEN(__prxhdr)		\
--	LE_BITS_TO_4BYTE((__prxhdr), 0, 16)
--#define	GET_C2H_CMD_ELEMENT_ID(__prxhdr)	\
--	LE_BITS_TO_4BYTE((__prxhdr), 16, 8)
--#define	GET_C2H_CMD_CMD_SEQ(__prxhdr)		\
--	LE_BITS_TO_4BYTE((__prxhdr), 24, 7)
--#define	GET_C2H_CMD_CONTINUE(__prxhdr)		\
--	LE_BITS_TO_4BYTE((__prxhdr), 31, 1)
--#define	GET_C2H_CMD_CONTENT(__prxhdr)		\
--	((u8 *)(__prxhdr) + C2H_RX_CMD_HDR_LEN)
--
--#define	GET_C2H_CMD_FEEDBACK_ELEMENT_ID(__pcmdfbhdr)	\
--	LE_BITS_TO_4BYTE((__pcmdfbhdr), 0, 8)
--#define	GET_C2H_CMD_FEEDBACK_CCX_LEN(__pcmdfbhdr)	\
--	LE_BITS_TO_4BYTE((__pcmdfbhdr), 8, 8)
--#define	GET_C2H_CMD_FEEDBACK_CCX_CMD_CNT(__pcmdfbhdr)	\
--	LE_BITS_TO_4BYTE((__pcmdfbhdr), 16, 16)
--#define	GET_C2H_CMD_FEEDBACK_CCX_MAC_ID(__pcmdfbhdr)	\
--	LE_BITS_TO_4BYTE(((__pcmdfbhdr) + 4), 0, 5)
--#define	GET_C2H_CMD_FEEDBACK_CCX_VALID(__pcmdfbhdr)	\
--	LE_BITS_TO_4BYTE(((__pcmdfbhdr) + 4), 7, 1)
--#define	GET_C2H_CMD_FEEDBACK_CCX_RETRY_CNT(__pcmdfbhdr)	\
--	LE_BITS_TO_4BYTE(((__pcmdfbhdr) + 4), 8, 5)
--#define	GET_C2H_CMD_FEEDBACK_CCX_TOK(__pcmdfbhdr)	\
--	LE_BITS_TO_4BYTE(((__pcmdfbhdr) + 4), 15, 1)
--#define	GET_C2H_CMD_FEEDBACK_CCX_QSEL(__pcmdfbhdr)	\
--	LE_BITS_TO_4BYTE(((__pcmdfbhdr) + 4), 16, 4)
--#define	GET_C2H_CMD_FEEDBACK_CCX_SEQ(__pcmdfbhdr)	\
--	LE_BITS_TO_4BYTE(((__pcmdfbhdr) + 4), 20, 12)
--#define GET_RX_STATUS_DESC_BUFF_ADDR(__pdesc)			\
--	SHIFT_AND_MASK_LE(__pdesc + 24, 0, 32)
--
- #define CHIP_VER_B			BIT(4)
- #define CHIP_BONDING_IDENTIFIER(_value) (((_value) >> 22) & 0x3)
- #define CHIP_BONDING_92C_1T2R		0x1
-diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8192de/def.h b/drivers/net/wireless/realtek/rtlwifi/rtl8192de/def.h
-index fa33b05db052..21726d9b4aef 100644
---- a/drivers/net/wireless/realtek/rtlwifi/rtl8192de/def.h
-+++ b/drivers/net/wireless/realtek/rtlwifi/rtl8192de/def.h
-@@ -26,37 +26,6 @@
- #define RX_MPDU_QUEUE					0
- #define RX_CMD_QUEUE					1
- 
--#define	C2H_RX_CMD_HDR_LEN				8
--#define	GET_C2H_CMD_CMD_LEN(__prxhdr)			\
--	LE_BITS_TO_4BYTE((__prxhdr), 0, 16)
--#define	GET_C2H_CMD_ELEMENT_ID(__prxhdr)		\
--	LE_BITS_TO_4BYTE((__prxhdr), 16, 8)
--#define	GET_C2H_CMD_CMD_SEQ(__prxhdr)			\
--	LE_BITS_TO_4BYTE((__prxhdr), 24, 7)
--#define	GET_C2H_CMD_CONTINUE(__prxhdr)			\
--	LE_BITS_TO_4BYTE((__prxhdr), 31, 1)
--#define	GET_C2H_CMD_CONTENT(__prxhdr)			\
--	((u8 *)(__prxhdr) + C2H_RX_CMD_HDR_LEN)
--
--#define	GET_C2H_CMD_FEEDBACK_ELEMENT_ID(__pcmdfbhdr)	\
--	LE_BITS_TO_4BYTE((__pcmdfbhdr), 0, 8)
--#define	GET_C2H_CMD_FEEDBACK_CCX_LEN(__pcmdfbhdr)	\
--	LE_BITS_TO_4BYTE((__pcmdfbhdr), 8, 8)
--#define	GET_C2H_CMD_FEEDBACK_CCX_CMD_CNT(__pcmdfbhdr)	\
--	LE_BITS_TO_4BYTE((__pcmdfbhdr), 16, 16)
--#define	GET_C2H_CMD_FEEDBACK_CCX_MAC_ID(__pcmdfbhdr)	\
--	LE_BITS_TO_4BYTE(((__pcmdfbhdr) + 4), 0, 5)
--#define	GET_C2H_CMD_FEEDBACK_CCX_VALID(__pcmdfbhdr)	\
--	LE_BITS_TO_4BYTE(((__pcmdfbhdr) + 4), 7, 1)
--#define	GET_C2H_CMD_FEEDBACK_CCX_RETRY_CNT(__pcmdfbhdr)	\
--	LE_BITS_TO_4BYTE(((__pcmdfbhdr) + 4), 8, 5)
--#define	GET_C2H_CMD_FEEDBACK_CCX_TOK(__pcmdfbhdr)	\
--	LE_BITS_TO_4BYTE(((__pcmdfbhdr) + 4), 15, 1)
--#define	GET_C2H_CMD_FEEDBACK_CCX_QSEL(__pcmdfbhdr)	\
--	LE_BITS_TO_4BYTE(((__pcmdfbhdr) + 4), 16, 4)
--#define	GET_C2H_CMD_FEEDBACK_CCX_SEQ(__pcmdfbhdr)	\
--	LE_BITS_TO_4BYTE(((__pcmdfbhdr) + 4), 20, 12)
--
- enum version_8192d {
- 	VERSION_TEST_CHIP_88C = 0x0000,
- 	VERSION_TEST_CHIP_92C = 0x0020,
-diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8723ae/def.h b/drivers/net/wireless/realtek/rtlwifi/rtl8723ae/def.h
-index 42958df6b5d4..84505a8500c0 100644
---- a/drivers/net/wireless/realtek/rtlwifi/rtl8723ae/def.h
-+++ b/drivers/net/wireless/realtek/rtlwifi/rtl8723ae/def.h
-@@ -11,37 +11,6 @@
- #define RX_MPDU_QUEUE						0
- #define RX_CMD_QUEUE						1
- 
--#define	C2H_RX_CMD_HDR_LEN					8
--#define	GET_C2H_CMD_CMD_LEN(__prxhdr)		\
--	LE_BITS_TO_4BYTE((__prxhdr), 0, 16)
--#define	GET_C2H_CMD_ELEMENT_ID(__prxhdr)	\
--	LE_BITS_TO_4BYTE((__prxhdr), 16, 8)
--#define	GET_C2H_CMD_CMD_SEQ(__prxhdr)		\
--	LE_BITS_TO_4BYTE((__prxhdr), 24, 7)
--#define	GET_C2H_CMD_CONTINUE(__prxhdr)		\
--	LE_BITS_TO_4BYTE((__prxhdr), 31, 1)
--#define	GET_C2H_CMD_CONTENT(__prxhdr)		\
--	((u8 *)(__prxhdr) + C2H_RX_CMD_HDR_LEN)
--
--#define	GET_C2H_CMD_FEEDBACK_ELEMENT_ID(__pcmdfbhdr)	\
--	LE_BITS_TO_4BYTE((__pcmdfbhdr), 0, 8)
--#define	GET_C2H_CMD_FEEDBACK_CCX_LEN(__pcmdfbhdr)		\
--	LE_BITS_TO_4BYTE((__pcmdfbhdr), 8, 8)
--#define	GET_C2H_CMD_FEEDBACK_CCX_CMD_CNT(__pcmdfbhdr)	\
--	LE_BITS_TO_4BYTE((__pcmdfbhdr), 16, 16)
--#define	GET_C2H_CMD_FEEDBACK_CCX_MAC_ID(__pcmdfbhdr)	\
--	LE_BITS_TO_4BYTE(((__pcmdfbhdr) + 4), 0, 5)
--#define	GET_C2H_CMD_FEEDBACK_CCX_VALID(__pcmdfbhdr)		\
--	LE_BITS_TO_4BYTE(((__pcmdfbhdr) + 4), 7, 1)
--#define	GET_C2H_CMD_FEEDBACK_CCX_RETRY_CNT(__pcmdfbhdr)	\
--	LE_BITS_TO_4BYTE(((__pcmdfbhdr) + 4), 8, 5)
--#define	GET_C2H_CMD_FEEDBACK_CCX_TOK(__pcmdfbhdr)		\
--	LE_BITS_TO_4BYTE(((__pcmdfbhdr) + 4), 15, 1)
--#define	GET_C2H_CMD_FEEDBACK_CCX_QSEL(__pcmdfbhdr)		\
--	LE_BITS_TO_4BYTE(((__pcmdfbhdr) + 4), 16, 4)
--#define	GET_C2H_CMD_FEEDBACK_CCX_SEQ(__pcmdfbhdr)		\
--	LE_BITS_TO_4BYTE(((__pcmdfbhdr) + 4), 20, 12)
--
- #define CHIP_BONDING_IDENTIFIER(_value)	(((_value)>>22)&0x3)
- #define	CHIP_BONDING_92C_1T2R		0x1
- 
-diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8821ae/def.h b/drivers/net/wireless/realtek/rtlwifi/rtl8821ae/def.h
-index 827bc5f35d2a..235a7965675c 100644
---- a/drivers/net/wireless/realtek/rtlwifi/rtl8821ae/def.h
-+++ b/drivers/net/wireless/realtek/rtlwifi/rtl8821ae/def.h
-@@ -107,37 +107,6 @@
- 
- #define MAX_RX_DMA_BUFFER_SIZE_8812	0x3E80
- 
--#define	C2H_RX_CMD_HDR_LEN					8
--#define	GET_C2H_CMD_CMD_LEN(__prxhdr)		\
--	LE_BITS_TO_4BYTE((__prxhdr), 0, 16)
--#define	GET_C2H_CMD_ELEMENT_ID(__prxhdr)	\
--	LE_BITS_TO_4BYTE((__prxhdr), 16, 8)
--#define	GET_C2H_CMD_CMD_SEQ(__prxhdr)		\
--	LE_BITS_TO_4BYTE((__prxhdr), 24, 7)
--#define	GET_C2H_CMD_CONTINUE(__prxhdr)		\
--	LE_BITS_TO_4BYTE((__prxhdr), 31, 1)
--#define	GET_C2H_CMD_CONTENT(__prxhdr)		\
--	((u8 *)(__prxhdr) + C2H_RX_CMD_HDR_LEN)
--
--#define	GET_C2H_CMD_FEEDBACK_ELEMENT_ID(__pcmdfbhdr)	\
--	LE_BITS_TO_4BYTE((__pcmdfbhdr), 0, 8)
--#define	GET_C2H_CMD_FEEDBACK_CCX_LEN(__pcmdfbhdr)		\
--	LE_BITS_TO_4BYTE((__pcmdfbhdr), 8, 8)
--#define	GET_C2H_CMD_FEEDBACK_CCX_CMD_CNT(__pcmdfbhdr)	\
--	LE_BITS_TO_4BYTE((__pcmdfbhdr), 16, 16)
--#define	GET_C2H_CMD_FEEDBACK_CCX_MAC_ID(__pcmdfbhdr)	\
--	LE_BITS_TO_4BYTE(((__pcmdfbhdr) + 4), 0, 5)
--#define	GET_C2H_CMD_FEEDBACK_CCX_VALID(__pcmdfbhdr)		\
--	LE_BITS_TO_4BYTE(((__pcmdfbhdr) + 4), 7, 1)
--#define	GET_C2H_CMD_FEEDBACK_CCX_RETRY_CNT(__pcmdfbhdr)	\
--	LE_BITS_TO_4BYTE(((__pcmdfbhdr) + 4), 8, 5)
--#define	GET_C2H_CMD_FEEDBACK_CCX_TOK(__pcmdfbhdr)		\
--	LE_BITS_TO_4BYTE(((__pcmdfbhdr) + 4), 15, 1)
--#define	GET_C2H_CMD_FEEDBACK_CCX_QSEL(__pcmdfbhdr)		\
--	LE_BITS_TO_4BYTE(((__pcmdfbhdr) + 4), 16, 4)
--#define	GET_C2H_CMD_FEEDBACK_CCX_SEQ(__pcmdfbhdr)		\
--	LE_BITS_TO_4BYTE(((__pcmdfbhdr) + 4), 20, 12)
--
- #define CHIP_BONDING_IDENTIFIER(_value)	(((_value)>>22)&0x3)
- 
- #define CHIP_8812				BIT(2)
--- 
-2.23.0
-
+Looks fine. For the time being. Have you looked any further to
+actually support this chip? It seems warm reset is causing bus errors,
+and cold reset goes through without crash.
+Firmware gets loaded but is stuck at receiving control response, most
+likely because of htc packet length or response message length.
