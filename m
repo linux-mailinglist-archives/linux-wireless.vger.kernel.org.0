@@ -2,81 +2,89 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 6F794ACA27
-	for <lists+linux-wireless@lfdr.de>; Sun,  8 Sep 2019 02:55:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EEDF9ACA28
+	for <lists+linux-wireless@lfdr.de>; Sun,  8 Sep 2019 02:57:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726164AbfIHAzV (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 7 Sep 2019 20:55:21 -0400
-Received: from mail-pf1-f172.google.com ([209.85.210.172]:38861 "EHLO
-        mail-pf1-f172.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726060AbfIHAzV (ORCPT
+        id S1728090AbfIHA5Y (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 7 Sep 2019 20:57:24 -0400
+Received: from mail-pf1-f193.google.com ([209.85.210.193]:45442 "EHLO
+        mail-pf1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725875AbfIHA5Y (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 7 Sep 2019 20:55:21 -0400
-Received: by mail-pf1-f172.google.com with SMTP id h195so6903573pfe.5
-        for <linux-wireless@vger.kernel.org>; Sat, 07 Sep 2019 17:55:21 -0700 (PDT)
+        Sat, 7 Sep 2019 20:57:24 -0400
+Received: by mail-pf1-f193.google.com with SMTP id y72so6866747pfb.12
+        for <linux-wireless@vger.kernel.org>; Sat, 07 Sep 2019 17:57:24 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=o1+VAU3r1wnOC38/TQf5t+G28XJ3eh9QIfBuXGwopyo=;
-        b=veoIEBwmywO6uWa+MCQuzqJEzevrIDRDEx8NkkUWvN4LkFRUBvICEkeembqVhOaG8x
-         VGZRen20W0p+WKWdljuHPIchSR5FtI08sxIJ/6cwI60fPBaTeo13N6ciCSV7ic4SQCiI
-         VIH1vP5VOPaQi4RCzEWrDvqhwF1k1bniUNotHD42yqDwE94RPh70kNDgqINyXmzDiY3n
-         OQ7P+IaGMzJIuhbXNuUxc6ucwnOxpsmrNfiHMmuz7c07dUxHRsy2o2m84s3sQOhD38aY
-         iWgqcrRkZm6YZSe136yLhy12N9wImM8ITsZ6f1sicecSupExEElJ9ed79IJQcCBYsXqB
-         /ocA==
+        h=from:to:cc:subject:date:message-id;
+        bh=bPq/4t69TRbTrMCPtzqiFbtZoY8oWm8dFvyqL6hbl4o=;
+        b=LWZ0iH+a1tNSHUqeXKTcBg3tMamoZsndQ0BHMAgzPg2icEltbFcSIY07Qd2WErPski
+         27fzPCNQXN1O2HT81d8E0GDO6fRflYWVCZ/7J0xDiGFDUky/0kNKPuSLFhqjtIKyaDzl
+         PsvhjOm3qfT+cIFJ6zwpclK2in9dQDqw6oCUezQPsCCHUhw4blmTwhsp82rcZqQxew5R
+         JaRBDpte5wARB4pXCpm+ZHF5aw7cTJEmV9tPxo7E5YajVpVzmiNAb15ZpDlYPDXLH8dN
+         WSKZheNPMPtyLl/LPeQbRGewiL4WFPCP9JTgOO4aCYetf9fyGQeGSR6PmSTds1d9aXRc
+         x1ow==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=o1+VAU3r1wnOC38/TQf5t+G28XJ3eh9QIfBuXGwopyo=;
-        b=RF7RrDMyTIewUclsc1I9WcGTFeztpMOSYcDVH3682RBkevx/VhkLgrf1j5FIOVffQw
-         IHjiyV/8ZwfwOMhrquGHktLJLnZiV3nYC1ioa+2OITwmhFdQGuJJByLsg8k7116sDyLK
-         wjJZZBqLKMFrTyEPUGXH5MIxtwAfPeSf16v0NJbqCCTBB1NVG651F/eFJkg66TLGfeBx
-         g+vfStteI9F20F/9p9xxR2DzzJDlrVGufSVloJUVpJ3vG5eQG15OqL0JHIASBfSn0N8Q
-         KR0vv4EJQPp+9O9dlGb/yhxTLNdUoUKdI1GlvKlwZmX3F4r1o/TD4vcaCiLnwohlFpii
-         Kq8Q==
-X-Gm-Message-State: APjAAAUNTesAZdkJSx1ktJS3DUT/Kb3GFZ+AUW2DWsjZ6eQXoOJxTVjZ
-        Nn760HYhNnfOJPz7Kgn3LY1qtb6q
-X-Google-Smtp-Source: APXvYqziC3mnPw9XCzhnhOK/aNU+BEToH/AyFs7sDNf4Ctvg1J1o+w0WtQtmBccWUwCLWQev9EStig==
-X-Received: by 2002:aa7:8e08:: with SMTP id c8mr15259685pfr.238.1567904120162;
-        Sat, 07 Sep 2019 17:55:20 -0700 (PDT)
-Received: from ?IPv6:2409:11:53c0:1f00:6859:dd0a:96bf:4dec? ([2409:11:53c0:1f00:6859:dd0a:96bf:4dec])
-        by smtp.gmail.com with ESMTPSA id p1sm1346915pfb.112.2019.09.07.17.55.18
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Sat, 07 Sep 2019 17:55:19 -0700 (PDT)
-Subject: Re: [bug report] nl80211: Fix possible Spectre-v1 for CQM RSSI
- thresholds
-To:     Dan Carpenter <dan.carpenter@oracle.com>
-Cc:     linux-wireless@vger.kernel.org
-References: <20190907130234.GA32057@mwanda>
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=bPq/4t69TRbTrMCPtzqiFbtZoY8oWm8dFvyqL6hbl4o=;
+        b=Z0EN1xTFk3Iac362w0qNxbkInH+vkQqCy4iGS8WIwA1JY+crGGLF1omXZWNzRFvzXA
+         QYoUKohfW+hYb7Qw40XXQVKgjWRpKbHB9gRu8rZsF6vySktuzor/T+yYWi+H97Sjj2lv
+         k3oW8sjKq9V60obz0J+RJr6OSEy4q4Qvc5yJQgBlAQ/qAJ9iJyKeySyJTM63XnB5V0Dp
+         TPktDprPQD6jBWkKqV6yEtGsxPxV/KS8oM8QTwokywnht+Bw/QzXXNK/dS1abZpL52MY
+         0veQ2/2IkN6lnXO0bpiqSlCcx4PEV3/PEnYkj2d3Sy03T6iJ06V4FuV9IoVNFyclBj46
+         77NA==
+X-Gm-Message-State: APjAAAVk1TUhvFdATgwkfdCu/x1dr0V2A0YBmL+MZzsAKPobengrinQ4
+        aeab0ekuS/5KfcC25enNM5Y=
+X-Google-Smtp-Source: APXvYqzN3cL1Sdovp7VJX0cVIotkpZS0N2b/K/BWbg3r56YqowrHfZ4i770L/tHZmrhC9Dz1WybqSA==
+X-Received: by 2002:aa7:94af:: with SMTP id a15mr19517570pfl.157.1567904243988;
+        Sat, 07 Sep 2019 17:57:23 -0700 (PDT)
+Received: from gtx1600.flets-east.jp ([2409:11:53c0:1f00:6859:dd0a:96bf:4dec])
+        by smtp.gmail.com with ESMTPSA id e3sm9237033pjr.9.2019.09.07.17.57.22
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 07 Sep 2019 17:57:23 -0700 (PDT)
 From:   Masashi Honma <masashi.honma@gmail.com>
-Message-ID: <4ec1ee46-d178-15e4-4918-f9a516ce23d2@gmail.com>
-Date:   Sun, 8 Sep 2019 09:55:17 +0900
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.8.0
-MIME-Version: 1.0
-In-Reply-To: <20190907130234.GA32057@mwanda>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+To:     johannes@sipsolutions.net
+Cc:     linux-wireless@vger.kernel.org, dan.carpenter@oracle.com,
+        Masashi Honma <masashi.honma@gmail.com>
+Subject: [PATCH] nl80211: Fix possible Spectre-v1 for CQM RSSI thresholds
+Date:   Sun,  8 Sep 2019 09:56:53 +0900
+Message-Id: <20190908005653.17433-1-masashi.honma@gmail.com>
+X-Mailer: git-send-email 2.17.1
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 2019/09/07 22:02, Dan Carpenter wrote:
-> The patch 1222a1601488: "nl80211: Fix possible Spectre-v1 for CQM
-> RSSI thresholds" from Sep 25, 2018, leads to the following static
-> checker warning:
-> 
-> 	net/wireless/nl80211.c:10820 cfg80211_cqm_rssi_update()
-> 	warn: disabling speculation after use: 'i'
+commit 1222a16014888ed9733c11e221730d4a8196222b "nl80211: Fix possible
+Spectre-v1 for CQM RSSI thresholds" requires one more fix to prevent
+accessing to rssi_thresholds[n]. Because user can control
+rssi_thresholds[i] values to make i reach to n. For example,
+rssi_thresholds = {-400, -300, -200, -100} when last is -34.
 
-Thanks.
+Reported-by: Dan Carpenter <dan.carpenter@oracle.com>
+Signed-off-by: Masashi Honma <masashi.honma@gmail.com>
+---
+ net/wireless/nl80211.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-I will send a patch to prevent accessing to rssi_thresholds[n].
+diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
+index 3e30e18d1d89..773b22654c23 100644
+--- a/net/wireless/nl80211.c
++++ b/net/wireless/nl80211.c
+@@ -10805,9 +10805,11 @@ static int cfg80211_cqm_rssi_update(struct cfg80211_registered_device *rdev,
+ 	hyst = wdev->cqm_config->rssi_hyst;
+ 	n = wdev->cqm_config->n_rssi_thresholds;
+ 
+-	for (i = 0; i < n; i++)
++	for (i = 0; i < n; i++) {
++		i = array_index_nospec(i, n);
+ 		if (last < wdev->cqm_config->rssi_thresholds[i])
+ 			break;
++	}
+ 
+ 	low_index = i - 1;
+ 	if (low_index >= 0) {
+-- 
+2.17.1
 
-Regards,
-Masashi Honma.
