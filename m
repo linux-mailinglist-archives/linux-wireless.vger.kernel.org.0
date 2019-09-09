@@ -2,206 +2,150 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id ABB86ADAE7
-	for <lists+linux-wireless@lfdr.de>; Mon,  9 Sep 2019 16:13:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2AB3BADB1F
+	for <lists+linux-wireless@lfdr.de>; Mon,  9 Sep 2019 16:24:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2405292AbfIIOMe (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 9 Sep 2019 10:12:34 -0400
-Received: from esa6.microchip.iphmx.com ([216.71.154.253]:1496 "EHLO
-        esa6.microchip.iphmx.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2405252AbfIIOMd (ORCPT
+        id S1726765AbfIIOYc (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 9 Sep 2019 10:24:32 -0400
+Received: from mail-pl1-f195.google.com ([209.85.214.195]:39538 "EHLO
+        mail-pl1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725294AbfIIOYc (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 9 Sep 2019 10:12:33 -0400
-Received-SPF: Pass (esa6.microchip.iphmx.com: domain of
-  Eugen.Hristev@microchip.com designates 198.175.253.82 as
-  permitted sender) identity=mailfrom;
-  client-ip=198.175.253.82; receiver=esa6.microchip.iphmx.com;
-  envelope-from="Eugen.Hristev@microchip.com";
-  x-sender="Eugen.Hristev@microchip.com";
-  x-conformance=spf_only; x-record-type="v=spf1";
-  x-record-text="v=spf1 mx a:ushub1.microchip.com
-  a:smtpout.microchip.com a:mx1.microchip.iphmx.com
-  a:mx2.microchip.iphmx.com include:servers.mcsv.net
-  include:mktomail.com include:spf.protection.outlook.com ~all"
-Received-SPF: None (esa6.microchip.iphmx.com: no sender
-  authenticity information available from domain of
-  postmaster@email.microchip.com) identity=helo;
-  client-ip=198.175.253.82; receiver=esa6.microchip.iphmx.com;
-  envelope-from="Eugen.Hristev@microchip.com";
-  x-sender="postmaster@email.microchip.com";
-  x-conformance=spf_only
-Authentication-Results: esa6.microchip.iphmx.com; spf=Pass smtp.mailfrom=Eugen.Hristev@microchip.com; spf=None smtp.helo=postmaster@email.microchip.com; dkim=pass (signature verified) header.i=@microchiptechnology.onmicrosoft.com; dmarc=pass (p=none dis=none) d=microchip.com
-IronPort-SDR: 0fu/paoIoLMVP7AU65SxSw/DN6bchkn9BecuGlGqslUmHZAHVAOAc/U/bz3/3UlbbD9zkvQcm7
- +DCwuRFts7Eo6Ahfqb3jrwLdJTaz4vAr1VrOkxk8GmtI3LFUzX3fr0f6N4wcuHqxdJem75v8BE
- dkIj8TAHCzJX+5/wleFntL6AP5Ji0BFN8xO3oeN55IogRR985ls7RYrNdVuJpDGnOJbGnFeW95
- BQMiiSJI2UZnPdYTNakzbsVXj4Zf5iqN1C+e/rpyA5gelLfFqbB0fXHwuUt/o9ECwjg20aRC6+
- /QM=
-X-IronPort-AV: E=Sophos;i="5.64,484,1559545200"; 
-   d="scan'208";a="45418043"
-Received: from smtpout.microchip.com (HELO email.microchip.com) ([198.175.253.82])
-  by esa6.microchip.iphmx.com with ESMTP/TLS/AES256-SHA256; 09 Sep 2019 07:12:31 -0700
-Received: from chn-vm-ex01.mchp-main.com (10.10.85.143) by
- chn-vm-ex03.mchp-main.com (10.10.85.151) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.1713.5; Mon, 9 Sep 2019 07:12:31 -0700
-Received: from NAM01-SN1-obe.outbound.protection.outlook.com (10.10.215.89) by
- email.microchip.com (10.10.87.71) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.1713.5 via Frontend
- Transport; Mon, 9 Sep 2019 07:12:30 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=MOPGqFe+jBqLoBJPfSfbYpNQj4uwimC63eUTmQkttYoi+t2Vh+L/AQtzO51upqWNjZ7g7CZi6pH07/dwXwtGqxR6tULrPnp7tOszHZMfQ6tKpqyjXESiB1HzCwVLZNdjhDak5dDLisDuy2AgPreXMaFJX/cK+flqjrWrcteVnTzYzgpSN+NcWSS5wstzrdO6atIo/0k/uzbPUwRMkkN/FnSk9vgAvTsh3koOntIn7LRQGZDBtkjK4tYgri63OeW5vCd6qtVE0w1itd41X26h8U6EhnwBEf39lrRdLqfGuh3UpAEPwkN5fT/AxTqUUj2MXT2LSaEeidC3iYZRe5dUDw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=T1QIZJ54sZgHR+KxPxkQiUF2fC2iVOqjOTvkQHZ7kBc=;
- b=hPH87+/Wg9Tqp8HH9z/ZARKuqJDIhXnK6DIgBm5iM/HzlORzqyMUG9AyoWk9M+UQp+RjMlfOGkXf+trgW69HDo5P4cmsvoaP2tNw1dP581Vl8XRWkUmYH6WALHMSNoMSwTSsDKtTNpFhxPGDn067mC1AU4WQ0mOzFKHt3rzFZkvz/u5wyyalD5peyrdkQwdNUtzvv7FcpCAJb4AkvmT4hD0CBD8Ljwx5G4JoOMp7L8A07V1O+5W3SkZH+452k1fWY0aTziOehS3tmwxuKexSBj8Z5OpCEh0RWh9+m6NoQIFMKjQ9M7uyNv5g35Ib/vHg6NKFqtWj9NrkkPk98pHcYQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=microchip.com; dmarc=pass action=none
- header.from=microchip.com; dkim=pass header.d=microchip.com; arc=none
+        Mon, 9 Sep 2019 10:24:32 -0400
+Received: by mail-pl1-f195.google.com with SMTP id bd8so6588738plb.6
+        for <linux-wireless@vger.kernel.org>; Mon, 09 Sep 2019 07:24:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=microchiptechnology.onmicrosoft.com;
- s=selector2-microchiptechnology-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=T1QIZJ54sZgHR+KxPxkQiUF2fC2iVOqjOTvkQHZ7kBc=;
- b=bYGXKmwOIjr/N/E1/TONxLbH0es1Y9+sWyWKxmnGz8G4A4WJqUOazPinhNNQTs2fwvv+WHJRH4OJZ1/ILbz/ObFnCYCi1D/bCTIj+xvDh0N6XtZ2ZqLbX8WK2ZtKaWVuOWlKbY35iBCTt3VTmfbVwB/ELoC5V2qHJ7KIs9jr8As=
-Received: from DM5PR11MB1242.namprd11.prod.outlook.com (10.168.108.8) by
- DM5PR11MB1596.namprd11.prod.outlook.com (10.172.37.145) with Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.2241.18; Mon, 9 Sep 2019 14:12:30 +0000
-Received: from DM5PR11MB1242.namprd11.prod.outlook.com
- ([fe80::a141:1974:9668:fbe2]) by DM5PR11MB1242.namprd11.prod.outlook.com
- ([fe80::a141:1974:9668:fbe2%12]) with mapi id 15.20.2241.018; Mon, 9 Sep 2019
- 14:12:30 +0000
-From:   <Eugen.Hristev@microchip.com>
-To:     <Adham.Abozaeid@microchip.com>, <Ajay.Kathat@microchip.com>,
-        <gregkh@linuxfoundation.org>, <linux-wireless@vger.kernel.org>,
-        <devel@driverdev.osuosl.org>, <linux-kernel@vger.kernel.org>
-CC:     <Nicolas.Ferre@microchip.com>, <Claudiu.Beznea@microchip.com>,
-        <Eugen.Hristev@microchip.com>
-Subject: [PATCH v2 2/2] staging: wilc1000: look for rtc_clk clock
-Thread-Topic: [PATCH v2 2/2] staging: wilc1000: look for rtc_clk clock
-Thread-Index: AQHVZxidJg0uPq4NhUukllBtOHKh4Q==
-Date:   Mon, 9 Sep 2019 14:12:29 +0000
-Message-ID: <1568037993-4646-2-git-send-email-eugen.hristev@microchip.com>
-References: <1568037993-4646-1-git-send-email-eugen.hristev@microchip.com>
-In-Reply-To: <1568037993-4646-1-git-send-email-eugen.hristev@microchip.com>
-Accept-Language: en-US, ro-RO
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-clientproxiedby: VI1PR09CA0080.eurprd09.prod.outlook.com
- (2603:10a6:802:29::24) To DM5PR11MB1242.namprd11.prod.outlook.com
- (2603:10b6:3:14::8)
-x-mailer: git-send-email 2.7.4
-x-ms-exchange-messagesentrepresentingtype: 1
-x-originating-ip: [94.177.32.156]
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: 1e9d70e2-9e4f-422f-c910-08d7352fbfdf
-x-microsoft-antispam: BCL:0;PCL:0;RULEID:(2390118)(7020095)(4652040)(8989299)(4534185)(4627221)(201703031133081)(201702281549075)(8990200)(5600166)(711020)(4605104)(1401327)(2017052603328)(7193020);SRVR:DM5PR11MB1596;
-x-ms-traffictypediagnostic: DM5PR11MB1596:
-x-ms-exchange-transport-forked: True
-x-microsoft-antispam-prvs: <DM5PR11MB1596D7C867618849E2623E7FE8B70@DM5PR11MB1596.namprd11.prod.outlook.com>
-x-ms-oob-tlc-oobclassifiers: OLM:6430;
-x-forefront-prvs: 01559F388D
-x-forefront-antispam-report: SFV:NSPM;SFS:(10009020)(396003)(366004)(136003)(346002)(376002)(39860400002)(199004)(189003)(2501003)(3846002)(6116002)(4326008)(11346002)(446003)(81166006)(50226002)(186003)(26005)(8936002)(2616005)(476003)(486006)(71200400001)(71190400001)(81156014)(8676002)(66476007)(66556008)(64756008)(66446008)(25786009)(7736002)(66066001)(66946007)(305945005)(102836004)(6506007)(386003)(5660300002)(316002)(99286004)(54906003)(110136005)(14454004)(256004)(14444005)(36756003)(2906002)(6436002)(107886003)(2201001)(53936002)(86362001)(6512007)(52116002)(76176011)(478600001)(6486002);DIR:OUT;SFP:1101;SCL:1;SRVR:DM5PR11MB1596;H:DM5PR11MB1242.namprd11.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;A:1;MX:1;
-received-spf: None (protection.outlook.com: microchip.com does not designate
- permitted sender hosts)
-x-ms-exchange-senderadcheck: 1
-x-microsoft-antispam-message-info: 7l8ZnS4P6DUicBtCMgdgTfIZknoUv6IDShDEt2cIRoTDh3TiDryy/oTzjNDwVBUlhmhx1P1qPUWZE5rCKbrIvmASEnzgHtXX9XCtrTMm0Hl+fPgGbf/Rw2ORcLn8BeCqr67jC/HvPioHKSV/DzcxQJIv2l1ey7Y873FWWTmA3eTOiusxvJTqYqeew74hd+37nEI+z4EQK5AGJZtbJU9Q8JbahaDPWwTKWDFQuB8redkf7NrnYT/FRcOfG62iM8U85ZQpGP3psCElfrkwZZJxFR0tIU+uQdzFNXG2STmDc/pwkkvWgpMSETgM1nWrZ3oUQ4gGGFYbqbhBC7yXLsgwEuAt94tSk49I3AtLFWeqbnYQmBQbRk7pNW5cBzHXrHeIQm8HL2LEs13sFKakhGu8KV04AyhWt4afaexBZlPKp9k=
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+        d=android.com; s=20161025;
+        h=subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-transfer-encoding:content-language;
+        bh=lbfN6bb/Cab8FhmK5hvUyGyJpQngTjGaLYzqkqMwwaw=;
+        b=EQ4hPfczVhylUYRlafgNbmIAVyWADkVHZnQxtGRIDwglF0ej4vEUlQs4ZeqXnwPEVT
+         2ItoFqyzus9e3C0nBj3hom99xV4k3T0CnheuBynGqH5sQvEQ34XAQhBwBybwtiIy3DG+
+         HFo0UykNjE7Ogp1fggKxfUNxUCAKcjjkDu/pIKDyQPDwrQnl584WWKljk91zf9jF9t5J
+         UxmGqAlEc3+ie2cousgkn5X6twTsNaKVgxb19X0CRygS41KNfbTazoD6PnAzvMvCjZsx
+         LwVP7Jkc348TE/OgZywMPCJfjkGWRz7YH79hq1nFdZgYockykF0oLyiXdECXQXnwNcbi
+         Cjtg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-transfer-encoding
+         :content-language;
+        bh=lbfN6bb/Cab8FhmK5hvUyGyJpQngTjGaLYzqkqMwwaw=;
+        b=nozWZGuwUfONbM786zpDg5tjyuWQFkkhHmOgOYoVef7H9fdQgALfF/hBo4K65Foseb
+         lpR6c7OZoHSE8d74O/3il2MEqxE7JuFyBrXDu/QSqL0BgJXgez6dyUV9SlLYqvS/e4+8
+         sVGsev/ddKXEyCzrm6z6C5pUTSfro5o4g/pWl2H8p9Opah9gQEv4haErUYHTYjOar4wn
+         Qx+iRGS9TTCxGwZMeNjeOq2Pk1efmNKtFOZXoGqtE5FSM/Ft10qto/QQG1mCefnHjD7m
+         nJ/q4TITdxEyyPAM1sFfTWHgQQfrDUewzfbmATCanLpksZ83Tr1y8hdUTf3UCMSRo2Iq
+         Vk2A==
+X-Gm-Message-State: APjAAAVyROumnyq72BBgVwQGWplz0+Ep4gokCO85i6wwvOkMCS5Z7Pq0
+        9p9mi+CfOtIErQvZoG88Wszm7DsOSzvSNQ==
+X-Google-Smtp-Source: APXvYqyjDridxJhQUEYdPB5+tEjPSrzcb2ywbeHXAAUKunZY07oQ/lp8Rm8oyeLdMgC3OJ/Z3wtddQ==
+X-Received: by 2002:a17:902:a615:: with SMTP id u21mr23375821plq.4.1568039071132;
+        Mon, 09 Sep 2019 07:24:31 -0700 (PDT)
+Received: from nebulus.mtv.corp.google.com ([2620:15c:211:200:5404:91ba:59dc:9400])
+        by smtp.googlemail.com with ESMTPSA id z21sm16010682pfn.183.2019.09.09.07.24.30
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 09 Sep 2019 07:24:30 -0700 (PDT)
+Subject: Re: [PATCH v2] net: enable wireless core features with
+ LEGACY_WEXT_ALLCONFIG
+To:     Greg KH <greg@kroah.com>
+Cc:     linux-kernel@vger.kernel.org, kernel-team@android.com,
+        Johannes Berg <johannes@sipsolutions.net>,
+        "David S. Miller" <davem@davemloft.net>,
+        Marcel Holtmann <marcel@holtmann.org>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        stable@vger.kernel.org
+References: <20190906192403.195620-1-salyzyn@android.com>
+ <20190906233045.GB9478@kroah.com>
+From:   Mark Salyzyn <salyzyn@android.com>
+Message-ID: <b7027a5d-5d75-677b-0e9b-cd70e5e30092@android.com>
+Date:   Mon, 9 Sep 2019 07:24:29 -0700
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.8.0
 MIME-Version: 1.0
-X-MS-Exchange-CrossTenant-Network-Message-Id: 1e9d70e2-9e4f-422f-c910-08d7352fbfdf
-X-MS-Exchange-CrossTenant-originalarrivaltime: 09 Sep 2019 14:12:29.9551
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 3f4057f3-b418-4d4e-ba84-d55b4e897d88
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: psCpZW6xuXP7OZ/zrAyuTeNtxyv+YMTYi1w56B200aEmKSmFK+PWXtAnapcjL0MgWt9+X50DIT07m4siV7xsiy9vs/V9jZ352PreOXzwUPk=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM5PR11MB1596
+In-Reply-To: <20190906233045.GB9478@kroah.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Content-Language: en-GB
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Eugen Hristev <eugen.hristev@microchip.com>
+On 9/6/19 4:30 PM, Greg KH wrote:
+> On Fri, Sep 06, 2019 at 12:24:00PM -0700, Mark Salyzyn wrote:
+>> In embedded environments the requirements are to be able to pick and
+>> chose which features one requires built into the kernel.  If an
+>> embedded environment wants to supports loading modules that have been
+>> kbuilt out of tree, there is a need to enable hidden configurations
+>> for legacy wireless core features to provide the API surface for
+>> them to load.
+>>
+>> Introduce CONFIG_LEGACY_WEXT_ALLCONFIG to select all legacy wireless
+>> extension core features by activating in turn all the associated
+>> hidden configuration options, without having to specifically select
+>> any wireless module(s).
+>>
+>> Signed-off-by: Mark Salyzyn <salyzyn@android.com>
+>> Cc: kernel-team@android.com
+>> Cc: Johannes Berg <johannes@sipsolutions.net>
+>> Cc: "David S. Miller" <davem@davemloft.net>
+>> Cc: Marcel Holtmann <marcel@holtmann.org>
+>> Cc: linux-wireless@vger.kernel.org
+>> Cc: netdev@vger.kernel.org
+>> Cc: linux-kernel@vger.kernel.org
+>> Cc: stable@vger.kernel.org # 4.19
+>> ---
+>> v2: change name and documentation to CONFIG_LEGACY_WEXT_ALLCONFIG
+>> ---
+>>   net/wireless/Kconfig | 14 ++++++++++++++
+>>   1 file changed, 14 insertions(+)
+>>
+>> diff --git a/net/wireless/Kconfig b/net/wireless/Kconfig
+>> index 67f8360dfcee..0d646cf28de5 100644
+>> --- a/net/wireless/Kconfig
+>> +++ b/net/wireless/Kconfig
+>> @@ -17,6 +17,20 @@ config WEXT_SPY
+>>   config WEXT_PRIV
+>>   	bool
+>>   
+>> +config LEGACY_WEXT_ALLCONFIG
+>> +	bool "allconfig for legacy wireless extensions"
+>> +	select WIRELESS_EXT
+>> +	select WEXT_CORE
+>> +	select WEXT_PROC
+>> +	select WEXT_SPY
+>> +	select WEXT_PRIV
+>> +	help
+>> +	  Config option used to enable all the legacy wireless extensions to
+>> +	  the core functionality used by add-in modules.
+>> +
+>> +	  If you are not building a kernel to be used for a variety of
+>> +	  out-of-kernel built wireless modules, say N here.
+>> +
+>>   config CFG80211
+>>   	tristate "cfg80211 - wireless configuration API"
+>>   	depends on RFKILL || !RFKILL
+>> -- 
+>> 2.23.0.187.g17f5b7556c-goog
+>>
+> How is this patch applicable to stable kernels???
 
-If rtc_clk is provided from DT, use it and enable it.
-This is optional.
-The signal may be hardcoded and no need to be requested,
-but if DT provides it, use it.
+A) worth a shot ;-}
 
-Signed-off-by: Eugen Hristev <eugen.hristev@microchip.com>
-Acked-by: Ajay Singh <ajay.kathat@microchip.com>
----
+B) there is a shortcoming in _all_ kernel versions with respect to 
+hidden configurations options like this, hoping to set one precedent in 
+how to handle them if acceptable to the community.
 
-Changes in v2:
-- rebased on staging-next
+C) [AGENDA ALERT] Android _will_ be back-porting this to android-4.19 
+kernel anyway, would help maintenance if via stable. <holding hat in hand>
 
- drivers/staging/wilc1000/wilc_sdio.c          | 14 ++++++++++++++
- drivers/staging/wilc1000/wilc_wfi_netdevice.h |  1 +
- 2 files changed, 15 insertions(+)
+D) Not an ABI or interface break, does not introduce instability, but 
+rather keeps downstream kernels of any distributions from having to hack 
+in their own alternate means of dealing with this problem leading to 
+further fragmentation.
 
-diff --git a/drivers/staging/wilc1000/wilc_sdio.c b/drivers/staging/wilc100=
-0/wilc_sdio.c
-index 2f9aa36..c787c5d 100644
---- a/drivers/staging/wilc1000/wilc_sdio.c
-+++ b/drivers/staging/wilc1000/wilc_sdio.c
-@@ -4,6 +4,7 @@
-  * All rights reserved.
-  */
-=20
-+#include <linux/clk.h>
- #include <linux/mmc/sdio_func.h>
- #include <linux/mmc/host.h>
-=20
-@@ -151,6 +152,12 @@ static int wilc_sdio_probe(struct sdio_func *func,
- 	wilc->dev =3D &func->dev;
- 	wilc->gpio_irq =3D gpio;
-=20
-+	wilc->rtc_clk =3D devm_clk_get(&func->card->dev, "rtc_clk");
-+	if (PTR_ERR_OR_ZERO(wilc->rtc_clk) =3D=3D -EPROBE_DEFER)
-+		return -EPROBE_DEFER;
-+	else if (!IS_ERR(wilc->rtc_clk))
-+		clk_prepare_enable(wilc->rtc_clk);
-+
- 	dev_info(&func->dev, "Driver Initializing success\n");
- 	return 0;
- }
-@@ -162,6 +169,10 @@ static void wilc_sdio_remove(struct sdio_func *func)
- 	/* free the GPIO in module remove */
- 	if (wilc->gpio_irq)
- 		gpiod_put(wilc->gpio_irq);
-+
-+	if (!IS_ERR(wilc->rtc_clk))
-+		clk_disable_unprepare(wilc->rtc_clk);
-+
- 	wilc_netdev_cleanup(wilc);
- }
-=20
-@@ -193,6 +204,9 @@ static int wilc_sdio_suspend(struct device *dev)
- 	dev_info(dev, "sdio suspend\n");
- 	chip_wakeup(wilc);
-=20
-+	if (!IS_ERR(wilc->rtc_clk))
-+		clk_disable_unprepare(wilc->rtc_clk);
-+
- 	if (wilc->suspend_event) {
- 		host_sleep_notify(wilc);
- 		chip_allow_sleep(wilc);
-diff --git a/drivers/staging/wilc1000/wilc_wfi_netdevice.h b/drivers/stagin=
-g/wilc1000/wilc_wfi_netdevice.h
-index 7e7ce94..978a8bd 100644
---- a/drivers/staging/wilc1000/wilc_wfi_netdevice.h
-+++ b/drivers/staging/wilc1000/wilc_wfi_netdevice.h
-@@ -216,6 +216,7 @@ struct wilc {
- 	int io_type;
- 	s8 mac_status;
- 	struct gpio_desc *gpio_irq;
-+	struct clk *rtc_clk;
- 	bool initialized;
- 	int dev_irq_num;
- 	int close;
---=20
-2.7.4
+E) Timely discussion item for LPC?
+
+Sincerely -- Mark Salyzyn
 
