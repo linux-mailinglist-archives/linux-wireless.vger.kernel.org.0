@@ -2,101 +2,170 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D627DADFD4
-	for <lists+linux-wireless@lfdr.de>; Mon,  9 Sep 2019 22:14:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8FD02AE15C
+	for <lists+linux-wireless@lfdr.de>; Tue, 10 Sep 2019 01:06:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2387423AbfIIUOG (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 9 Sep 2019 16:14:06 -0400
-Received: from mail2.candelatech.com ([208.74.158.173]:52486 "EHLO
-        mail3.candelatech.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1731972AbfIIUOG (ORCPT
+        id S1730474AbfIIXGO (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 9 Sep 2019 19:06:14 -0400
+Received: from wnew3-smtp.messagingengine.com ([64.147.123.17]:42215 "EHLO
+        wnew3-smtp.messagingengine.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1728358AbfIIXGO (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 9 Sep 2019 16:14:06 -0400
-Received: from v-f24-64.candelatech.com (50-251-239-81-static.hfc.comcastbusiness.net [50.251.239.81])
-        by mail3.candelatech.com (Postfix) with ESMTP id 3AA96104B;
-        Mon,  9 Sep 2019 13:14:05 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail3.candelatech.com 3AA96104B
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=candelatech.com;
-        s=default; t=1568060045;
-        bh=w6y9HuM2L42xLMAW9g5SiLkogh8H80Jjpx9kY/hroqk=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=jR94SEQiDlMDA6n4xJVBFuxK1ph3e48gRJNL1pK18r9E1Jk1OxR4HiNRvNQz6shrP
-         tKTbNO2Vy9eiFsOOMFpxXKpik5Vjb3852mNgnY/2U5J/miQN2ZfEj1dMMYSarZtSr5
-         l8xHk3iGuQx/aPPrFUCGGiNppfSw7AC2OHvKnMZo=
-From:   greearb@candelatech.com
-To:     linux-wireless@vger.kernel.org
-Cc:     Ben Greear <greearb@candelatech.com>
-Subject: [PATCH-v2 2/2] iw:  Print current time in station info dump
-Date:   Mon,  9 Sep 2019 13:13:57 -0700
-Message-Id: <1568060037-7481-2-git-send-email-greearb@candelatech.com>
-X-Mailer: git-send-email 2.7.5
-In-Reply-To: <1568060037-7481-1-git-send-email-greearb@candelatech.com>
-References: <1568060037-7481-1-git-send-email-greearb@candelatech.com>
+        Mon, 9 Sep 2019 19:06:14 -0400
+X-Greylist: delayed 485 seconds by postgrey-1.27 at vger.kernel.org; Mon, 09 Sep 2019 19:06:13 EDT
+Received: from compute6.internal (compute6.nyi.internal [10.202.2.46])
+        by mailnew.west.internal (Postfix) with ESMTP id C597A5C0;
+        Mon,  9 Sep 2019 18:58:07 -0400 (EDT)
+Received: from mailfrontend1 ([10.202.2.162])
+  by compute6.internal (MEProxy); Mon, 09 Sep 2019 18:58:08 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kroah.com; h=
+        date:from:to:cc:subject:message-id:references:mime-version
+        :content-type:in-reply-to; s=fm1; bh=c7SRxgGkl/n7ftaGRuh/aN2wiSp
+        1GC91qqjIL142vpY=; b=G3dZKzQxG/jRRbNObX/rxwuitX3uvOm0yJq4spn6u4F
+        yD2CpkOUVoxiuTrX2QZMwr5LUXv+DKhqAkX4KgyhTaUT58aDQgRUxDJt3eWbC5Mr
+        piw33yd5qX8u4yPMt9k2N5nEOUak+hc2Gr/H+CQBU8Ac8/4C2QL6WQ5RnDP9Mo4L
+        FusaMeESRa7eu1NPJqXpWUlekmBNcr+TVhqNMjBQbiEF/cOOz9rBJNoqG1UBfLy8
+        Ag2qtQf26igPzpoRjORYHrqlC6MIwfXJZAkfSFk0cBG3qqT5haB/DBlm5tUV8zrH
+        tkA1PSImctrM9gglg+mp/j5nggylrKIQ5YXM375XTEw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+        messagingengine.com; h=cc:content-type:date:from:in-reply-to
+        :message-id:mime-version:references:subject:to:x-me-proxy
+        :x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; bh=c7SRxg
+        Gkl/n7ftaGRuh/aN2wiSp1GC91qqjIL142vpY=; b=RPWpxAuxPaSDJpabSG4dYI
+        Ptth1BbAnXyffkgaFO7Py31VLFwXre/UPi4ecVVdDVTqnRdQXj1g9s7cDnzaWDMv
+        JX10+fZipUFybkjtTEWISPKVBJyuRF6RGoVgROZRp+o8rNB2IAhypKZejBtzfjKC
+        lOYIqNLyqTqbn6aYVZL1VGSE0EcODUujXe7ewereY7ZM3MWvxQsOuN62IEU2X529
+        7poLNXuYYaYAQTIFjjgnPcbh/i9+tDKNpXU+o94lhOIz1AFTB8bkKTANpaTDQ5d8
+        aGK44GIfGfr2vqmCQZIgqlORbgROGILTtiJC3PmiXB9TwOMuN1I7ZWNgvp7AaJxw
+        ==
+X-ME-Sender: <xms:_th2XYFUAqHgaVXLqngGFV8WqvWxz17vLWRO4v8mF34Uq31HL17ARg>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeduvddrudekjedgudefucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
+    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
+    goufhprghmkfhpqdhouhhtucdlhedttddmnecujfgurhepfffhvffukfhfgggtuggjfges
+    thdtredttdervdenucfhrhhomhepifhrvghgucfmjfcuoehgrhgvgheskhhrohgrhhdrtg
+    homheqnecuffhomhgrihhnpehkvghrnhgvlhdrohhrghenucfkphepiedvrddvkedrvdeg
+    tddruddugeenucfrrghrrghmpehmrghilhhfrhhomhepghhrvghgsehkrhhorghhrdgtoh
+    hmnecuvehluhhsthgvrhfuihiivgeptd
+X-ME-Proxy: <xmx:_th2XaF8_gevEinqTQQ_uNl-FdiE_vr_10nWdYvuL4Vg_bFMldp0Xg>
+    <xmx:_th2XQ3WXthQKPBf4ag-nrUOUCrRJiQARH8mBGnLtBjyhhkeB5niqg>
+    <xmx:_th2Xcdox1BsHrIBY_f9kUVdliBot0N3RNtWfUu8C9OINpQx6FUgoQ>
+    <xmx:_9h2Xdt6HwnmZejBm85Y1O-QNzqJqOUZpCfmiAxqpLkysdRAiHtjdk5ywtk>
+Received: from localhost (unknown [62.28.240.114])
+        by mail.messagingengine.com (Postfix) with ESMTPA id 1611280068;
+        Mon,  9 Sep 2019 18:58:05 -0400 (EDT)
+Date:   Mon, 9 Sep 2019 23:58:04 +0100
+From:   Greg KH <greg@kroah.com>
+To:     Mark Salyzyn <salyzyn@android.com>
+Cc:     linux-kernel@vger.kernel.org, kernel-team@android.com,
+        Johannes Berg <johannes@sipsolutions.net>,
+        "David S. Miller" <davem@davemloft.net>,
+        Marcel Holtmann <marcel@holtmann.org>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        stable@vger.kernel.org
+Subject: Re: [PATCH v2] net: enable wireless core features with
+ LEGACY_WEXT_ALLCONFIG
+Message-ID: <20190909225804.GA26405@kroah.com>
+References: <20190906192403.195620-1-salyzyn@android.com>
+ <20190906233045.GB9478@kroah.com>
+ <b7027a5d-5d75-677b-0e9b-cd70e5e30092@android.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <b7027a5d-5d75-677b-0e9b-cd70e5e30092@android.com>
+User-Agent: Mutt/1.12.1 (2019-06-15)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Ben Greear <greearb@candelatech.com>
+On Mon, Sep 09, 2019 at 07:24:29AM -0700, Mark Salyzyn wrote:
+> On 9/6/19 4:30 PM, Greg KH wrote:
+> > On Fri, Sep 06, 2019 at 12:24:00PM -0700, Mark Salyzyn wrote:
+> > > In embedded environments the requirements are to be able to pick and
+> > > chose which features one requires built into the kernel.  If an
+> > > embedded environment wants to supports loading modules that have been
+> > > kbuilt out of tree, there is a need to enable hidden configurations
+> > > for legacy wireless core features to provide the API surface for
+> > > them to load.
+> > > 
+> > > Introduce CONFIG_LEGACY_WEXT_ALLCONFIG to select all legacy wireless
+> > > extension core features by activating in turn all the associated
+> > > hidden configuration options, without having to specifically select
+> > > any wireless module(s).
+> > > 
+> > > Signed-off-by: Mark Salyzyn <salyzyn@android.com>
+> > > Cc: kernel-team@android.com
+> > > Cc: Johannes Berg <johannes@sipsolutions.net>
+> > > Cc: "David S. Miller" <davem@davemloft.net>
+> > > Cc: Marcel Holtmann <marcel@holtmann.org>
+> > > Cc: linux-wireless@vger.kernel.org
+> > > Cc: netdev@vger.kernel.org
+> > > Cc: linux-kernel@vger.kernel.org
+> > > Cc: stable@vger.kernel.org # 4.19
+> > > ---
+> > > v2: change name and documentation to CONFIG_LEGACY_WEXT_ALLCONFIG
+> > > ---
+> > >   net/wireless/Kconfig | 14 ++++++++++++++
+> > >   1 file changed, 14 insertions(+)
+> > > 
+> > > diff --git a/net/wireless/Kconfig b/net/wireless/Kconfig
+> > > index 67f8360dfcee..0d646cf28de5 100644
+> > > --- a/net/wireless/Kconfig
+> > > +++ b/net/wireless/Kconfig
+> > > @@ -17,6 +17,20 @@ config WEXT_SPY
+> > >   config WEXT_PRIV
+> > >   	bool
+> > > +config LEGACY_WEXT_ALLCONFIG
+> > > +	bool "allconfig for legacy wireless extensions"
+> > > +	select WIRELESS_EXT
+> > > +	select WEXT_CORE
+> > > +	select WEXT_PROC
+> > > +	select WEXT_SPY
+> > > +	select WEXT_PRIV
+> > > +	help
+> > > +	  Config option used to enable all the legacy wireless extensions to
+> > > +	  the core functionality used by add-in modules.
+> > > +
+> > > +	  If you are not building a kernel to be used for a variety of
+> > > +	  out-of-kernel built wireless modules, say N here.
+> > > +
+> > >   config CFG80211
+> > >   	tristate "cfg80211 - wireless configuration API"
+> > >   	depends on RFKILL || !RFKILL
+> > > -- 
+> > > 2.23.0.187.g17f5b7556c-goog
+> > > 
+> > How is this patch applicable to stable kernels???
+> 
+> A) worth a shot ;-}
 
-This lets us more precisely calculate the absolute timestamp
-of last-rix (ie, now - idle).
+Not nice, please, you know better :)
 
-Signed-off-by: Ben Greear <greearb@candelatech.com>
----
- station.c | 21 +++++++++++++++++++--
- 1 file changed, 19 insertions(+), 2 deletions(-)
+> B) there is a shortcoming in _all_ kernel versions with respect to hidden
+> configurations options like this, hoping to set one precedent in how to
+> handle them if acceptable to the community.
 
-diff --git a/station.c b/station.c
-index 61a317d..1be3974 100644
---- a/station.c
-+++ b/station.c
-@@ -7,6 +7,7 @@
- #include <netlink/genl/ctrl.h>
- #include <netlink/msg.h>
- #include <netlink/attr.h>
-+#include <time.h>
- 
- #include "nl80211.h"
- #include "iw.h"
-@@ -326,6 +327,12 @@ static int print_sta_handler(struct nl_msg *msg, void *arg)
- 		[NL80211_STA_INFO_ACK_SIGNAL_AVG] = { .type = NLA_U8 },
- 	};
- 	char *chain;
-+	struct timeval now;
-+	unsigned long long now_ms;
-+
-+	gettimeofday(&now, NULL);
-+	now_ms = now.tv_sec * 1000;
-+	now_ms += (now.tv_usec / 1000);
- 
- 	nla_parse(tb, NL80211_ATTR_MAX, genlmsg_attrdata(gnlh, 0),
- 		  genlmsg_attrlen(gnlh, 0), NULL);
-@@ -571,12 +578,22 @@ static int print_sta_handler(struct nl_msg *msg, void *arg)
- 			nla_get_u32(sinfo[NL80211_STA_INFO_CONNECTED_TIME]));
- 	if (sinfo[NL80211_STA_INFO_ASSOC_AT_BOOTTIME]) {
- 		unsigned long long bt;
-+		struct timespec now_ts;
-+		unsigned long long boot_ns;
-+		unsigned long long assoc_at_ms;
-+
-+		clock_gettime(CLOCK_BOOTTIME, &now_ts);
-+		boot_ns = now_ts.tv_sec * 1000000000;
-+		boot_ns += now_ts.tv_nsec;
-+
- 		bt = (unsigned long long)nla_get_u64(sinfo[NL80211_STA_INFO_ASSOC_AT_BOOTTIME]);
--		printf("\n\tassociated at:\t%llu.%.3llus [boottime]",
-+		printf("\n\tassociated at [boottime]:\t%llu.%.3llus",
- 		       bt/1000000000, (bt%1000000000)/1000000);
-+		assoc_at_ms = now_ms - ((boot_ns - bt) / 1000000);
-+		printf("\n\tassociated at:\t%llu ms", assoc_at_ms);
- 	}
- 
--	printf("\n");
-+	printf("\n\tcurrent time:\t%llu ms\n", now_ms);
- 	return NL_SKIP;
- }
- 
--- 
-2.7.5
+That's fine, but it's a new feature, not for stable.
 
+> C) [AGENDA ALERT] Android _will_ be back-porting this to android-4.19 kernel
+> anyway, would help maintenance if via stable. <holding hat in hand>
+
+That's fine, lots of distros backport loads of stuff for new features
+for stuff that is upstream.  That's trivial to do, don't try to abuse
+the stable tree for new features like this please.  It only makes
+maintainers grumpy when you do so :(
+
+> D) Not an ABI or interface break, does not introduce instability, but rather
+> keeps downstream kernels of any distributions from having to hack in their
+> own alternate means of dealing with this problem leading to further
+> fragmentation.
+
+Again, new feature, not fixing a bug, so not applicable for stable.
+
+For penance I require a handwritten copy of:
+    https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html
+
+thanks,
+
+greg k-h
