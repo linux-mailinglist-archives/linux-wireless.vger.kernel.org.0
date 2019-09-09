@@ -2,88 +2,89 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 29FE5ADE4A
-	for <lists+linux-wireless@lfdr.de>; Mon,  9 Sep 2019 19:54:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 89CDAADF01
+	for <lists+linux-wireless@lfdr.de>; Mon,  9 Sep 2019 20:33:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730614AbfIIRye (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 9 Sep 2019 13:54:34 -0400
-Received: from mail2.candelatech.com ([208.74.158.173]:47198 "EHLO
-        mail3.candelatech.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728768AbfIIRyd (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 9 Sep 2019 13:54:33 -0400
-Received: from [192.168.100.195] (50-251-239-81-static.hfc.comcastbusiness.net [50.251.239.81])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail3.candelatech.com (Postfix) with ESMTPSA id 019F0104F;
-        Mon,  9 Sep 2019 10:54:32 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail3.candelatech.com 019F0104F
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=candelatech.com;
-        s=default; t=1568051673;
-        bh=P87i8rDeKSGMZ4nSZ288ctogc5bMt8oYMTzCYbWpRog=;
-        h=Subject:To:References:From:Date:In-Reply-To:From;
-        b=NRVfpbHVzTNjXSaCNOalGJmydRbUYDxOumjHtp9pfCWtxq8si9s7obOjrsNvKX/4b
-         d8eqqyMCD0Dvslmv8ipkyBr3XdxCFVRjcT/+Ed7NjyaH1shGDyDElmvKv4P71p92BV
-         /Wp7eYdd0We3GU5QYgBOw9EgfdcfCGDhB5Iz0ztg=
-Subject: Re: intel AX200 crash on 5.2.7+
-To:     Johannes Berg <johannes@sipsolutions.net>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-References: <438925e0-deab-d84d-2b0a-da544d0989b3@candelatech.com>
- <2e30e4df1eb69362f00db89efb133856ec96b755.camel@sipsolutions.net>
-From:   Ben Greear <greearb@candelatech.com>
-Organization: Candela Technologies
-Message-ID: <9eae12b1-a5da-1943-0f81-90e05308ec82@candelatech.com>
-Date:   Mon, 9 Sep 2019 10:54:32 -0700
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.7.0
+        id S1730444AbfIISdk (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 9 Sep 2019 14:33:40 -0400
+Received: from bues.ch ([80.190.117.144]:35222 "EHLO bues.ch"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727014AbfIISdk (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 9 Sep 2019 14:33:40 -0400
+X-Greylist: delayed 2442 seconds by postgrey-1.27 at vger.kernel.org; Mon, 09 Sep 2019 14:33:38 EDT
+Received: by bues.ch with esmtpsa (Exim 4.92)
+        (envelope-from <m@bues.ch>)
+        id 1i7NqP-0005NC-Vv; Mon, 09 Sep 2019 19:52:54 +0200
+Date:   Mon, 9 Sep 2019 19:53:12 +0200
+From:   Michael =?UTF-8?B?QsO8c2No?= <m@bues.ch>
+To:     Kalle Valo <kvalo@codeaurora.org>
+Cc:     Colin King <colin.king@canonical.com>,
+        linux-wireless@vger.kernel.org, kernel-janitors@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] ssb: make array pwr_info_offset static const, makes
+ object smaller
+Message-ID: <20190909195312.1873c0f7@wiggum>
+In-Reply-To: <20190906154053.32218-1-colin.king@canonical.com>
+References: <20190906154053.32218-1-colin.king@canonical.com>
+X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-In-Reply-To: <2e30e4df1eb69362f00db89efb133856ec96b755.camel@sipsolutions.net>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Type: multipart/signed; boundary="Sig_/Gh5rJFI_YvQsdaAQbg3kPxs";
+ protocol="application/pgp-signature"; micalg=pgp-sha512
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 9/9/19 10:40 AM, Johannes Berg wrote:
-> On Mon, 2019-09-09 at 10:03 -0700, Ben Greear wrote:
->> Hello,
->>
->> Looks like we managed to crash the AX200 firmware.  This was running 5.2.7+ kernel
->> in an apu2 platform.
->>
->> Is there a better place to report/discuss this?
-> 
-> This is OK for first reports, but usually we'll ask to file a bug on
-> bugzilla.kernel.org (and assign to linuxwifi@intel.com if you can? Not
-> sure it's possible - or add that to CC at least)
-> 
->> [ 6066.180908] iwlwifi 0000:01:00.0: 0x00000942 | ADVANCED_SYSASSERT
-> 
-> Hmm, that's a calibration failure.
-> 
-> Did you do anything special in that environment?
+--Sig_/Gh5rJFI_YvQsdaAQbg3kPxs
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
-Nothing that I'm aware of.  The person who found the crash said they had
-run some throughput tests, and then the radio went away.
+On Fri,  6 Sep 2019 16:40:53 +0100
+Colin King <colin.king@canonical.com> wrote:
 
-We put one of the radios in a more powerful system, and will continue
-testing.
+> diff --git a/drivers/ssb/pci.c b/drivers/ssb/pci.c
+> index da2d2ab8104d..7c3ae52f2b15 100644
+> --- a/drivers/ssb/pci.c
+> +++ b/drivers/ssb/pci.c
+> @@ -595,7 +595,7 @@ static void sprom_extract_r8(struct ssb_sprom *out, c=
+onst u16 *in)
+>  {
+>  	int i;
+>  	u16 o;
+> -	u16 pwr_info_offset[] =3D {
+> +	static const u16 pwr_info_offset[] =3D {
+>  		SSB_SROM8_PWR_INFO_CORE0, SSB_SROM8_PWR_INFO_CORE1,
+>  		SSB_SROM8_PWR_INFO_CORE2, SSB_SROM8_PWR_INFO_CORE3
+>  	};
 
-> 
-> I guess filing a bug would be best, so we have a record for it and can
-> hand it off to the firmware team or similar.
+Thanks for your contribution. This change makes sense.
 
-I was able to add them to CC I think, but don't think I can re-assign the bug.
+Kalle, can you please take it?
 
-https://bugzilla.kernel.org/show_bug.cgi?id=204801
+Acked-by: Michael B=C3=BCsch <m@bues.ch>
 
-Thanks,
-Ben
+--=20
+Michael
 
+--Sig_/Gh5rJFI_YvQsdaAQbg3kPxs
+Content-Type: application/pgp-signature
+Content-Description: OpenPGP digital signature
 
--- 
-Ben Greear <greearb@candelatech.com>
-Candela Technologies Inc  http://www.candelatech.com
+-----BEGIN PGP SIGNATURE-----
 
+iQIzBAEBCgAdFiEEihRzkKVZOnT2ipsS9TK+HZCNiw4FAl12kYgACgkQ9TK+HZCN
+iw4dkg//RkZq55Col2WsmizgjsdDYipwL9loeVjtw64YjtT2ZVcwSzQfooPf253D
+BKLbB6AbBNc3oniPuicHJZGxNX5ppfO6teIcHvzd1gtlNIDyRRU+dFA4DoqskKlK
+9n7JWAWmXxLhpw8121mQmtV5MYbHJRR6fhemrDJPtKRwJLfcZSLF5ENUu3VCifw2
+/G5PqA7Lsu7llxd6Cl5uz3fD4wX3o9LRaVsF/QZvmGoV6FdqUgf/cRGXtOGYzCQ4
+2DVxrykaS8VTWqvbJQ1LIlDv1u2cGxIWlvAlI3t40CCR6md914C9abWj+o48wDPd
+DE/kCQeJy6uHqcc3yYTp888a4tnWnsAovNySHNwefvRCbcU3q5fKbluX5Zth9r1u
+6JqQoAglH3wNUaUJ1nXuASWz9l7J9IkJakzHZzzxy1cQ5uvZXeP5T1FPbrlKOSJX
+cvICP9T79dtDR9XmjRd5jKLpXCHNO0ZVgo6PfxoRJtxD60cwLtKMKlNjP+9Hto23
+sKnQ6wuEhIluxun1x4pb73+8WLzL8f9u9nlh/HVSvnh39QlarMUMAbWXAH/J182J
+O/65KfRCcUkoBxMIvwtnCckj08NmrHrS5DVIp2YaMbzjlLpKvFSCxf+65pB2CREt
+EeG3/vOb9ElEjrJdWXy+BB4rOCLoxk4Ks07DZXbrq0FJPjg5DbI=
+=/ENb
+-----END PGP SIGNATURE-----
+
+--Sig_/Gh5rJFI_YvQsdaAQbg3kPxs--
