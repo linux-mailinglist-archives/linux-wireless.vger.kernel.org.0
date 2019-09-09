@@ -2,52 +2,53 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D71EBAD9AD
-	for <lists+linux-wireless@lfdr.de>; Mon,  9 Sep 2019 15:07:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 659FFAD9C9
+	for <lists+linux-wireless@lfdr.de>; Mon,  9 Sep 2019 15:15:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729429AbfIINHF (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 9 Sep 2019 09:07:05 -0400
-Received: from mail-yw1-f65.google.com ([209.85.161.65]:39932 "EHLO
-        mail-yw1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726640AbfIINHF (ORCPT
+        id S1730023AbfIINPd (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 9 Sep 2019 09:15:33 -0400
+Received: from mail-yb1-f194.google.com ([209.85.219.194]:37838 "EHLO
+        mail-yb1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729836AbfIINPd (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 9 Sep 2019 09:07:05 -0400
-Received: by mail-yw1-f65.google.com with SMTP id n11so4733183ywn.6
-        for <linux-wireless@vger.kernel.org>; Mon, 09 Sep 2019 06:07:05 -0700 (PDT)
+        Mon, 9 Sep 2019 09:15:33 -0400
+Received: by mail-yb1-f194.google.com with SMTP id t5so4587217ybt.4
+        for <linux-wireless@vger.kernel.org>; Mon, 09 Sep 2019 06:15:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc:content-transfer-encoding;
-        bh=HrzW3VB/q2r1Q6KPFAz7jaBapkI4V54IDpJ0PkrkRQs=;
-        b=sDldOrX8wbMtITxBeCIBxjU4E2OteFV3Xl27joGMILvVgCuebTqQkR5y531a2l2eB6
-         KCIXxi4mmXdHhB6chky4ZMUweggrKVOfBmai51+ATwlIIA8AUrt8cGL/6XkV3ZyHzu01
-         ZHFUgUOaNkA0LZ8K1GPgpn/9yC/1pDCqpj6YPjjJhouI4+CPcyZVe8l7w1MvO6zxTj5X
-         KRuqMlKDkVqLRQPDGp+BcFHW4+plZ/kNdLE4SjpTbrqiXrhZKlDEX0J51QA2Z3C+goxW
-         Do+Ngn2B6A/9qN62dS6pFoo4ftjKk/IpOJrjsm9QtYLaSpBTby1duJ1Ce3y4/jZM3BoD
-         DZKw==
+        bh=ShzV6sE+FHwBgPYo4HneWQclwQ4A3p6MfIbRnOSiJ08=;
+        b=rMIyGNnog02e8T0HRPMwaQva4DkVfVQ3uwJ90aOSuwiMBukTjyGVt0+bJRrn0zPCbE
+         L+gBOmQViR4zXORUv7UNO4G/ZiEik2ZEbAYcdUbXRI9ZL/m1+b+lT3jJnh/GABSNA8Mm
+         V4wkVP6/QYEFBssKDy1Dtx9hxprcZ/Ey2CYDjsgM2aMVPjsmJxr7NKKEgs7xtNaOEyJ+
+         Xjf8rERm6QBSEeNsFUToRjJdqTGiTrzNuuR11TZhyhwkEUOUKNaWUbKbh8qOAC4MC6gD
+         oxC13UBFQ+6cjJ1+Vui627ihTmuP1WwP67ODDOl5FrUEap6uvLvq4yeE2GxHUlm4ce6R
+         A9Xw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc:content-transfer-encoding;
-        bh=HrzW3VB/q2r1Q6KPFAz7jaBapkI4V54IDpJ0PkrkRQs=;
-        b=Ah6wzzoSkQDk9XUZzF3vBs+dcMeQvoRgYigU3ClJ8pybMfiCLghNGktVEQpWuxO/XI
-         dlDwq/fnySNskfDtu5FacTfUVbGDPtiaMlylp3uhWJpm39A68wN0rrA2tW0fvi4P21oq
-         ZIHv0JC5b71AoK1tyFzibo3Dcfb3xyESSsJaP48UW1oytNmHIjktS88Lsu62xBH+3Vro
-         kaprm+KLife5a+ZaFCLZ1gv5noNRD2dxBmi0odpxF8q2hohJYrTYe/7BkcPn7+tZ6x4M
-         j09N39Vg/XfR22rm/e/X3euNEmkojQ4kRO5r0ApxnQFULexw8j5fEsNd3yO/a4uZ4esd
-         kxaA==
-X-Gm-Message-State: APjAAAXfNLUIg41iWe1hxwuBmUzzXxAduZQoTfUCbyM+9P0AXNVrJV+S
-        iJoGe3LR1G7nUApy7iGrhNi9eV0jD1rubc8joxWK7A==
-X-Google-Smtp-Source: APXvYqyPzGuU5mhTJLWr7uOfVFt5x7EOiJPZir+0SYxRGpz21vkg0A4tGtUryiNIQmOUqxsPR5WgHElLKQ7rO3x6NZY=
-X-Received: by 2002:a81:411:: with SMTP id 17mr16003029ywe.235.1568034424507;
- Mon, 09 Sep 2019 06:07:04 -0700 (PDT)
+        bh=ShzV6sE+FHwBgPYo4HneWQclwQ4A3p6MfIbRnOSiJ08=;
+        b=fwZBUjhxIB2bm5/zM8gvSqoUq3EZtjQDZpza7gxZmaDPKJDGwmbiel6qkicCqUpWH/
+         JH2JMvpABug/VlGZ18JMksV8G1DgKeJIpY3WoQe2QQTjLtGWdRcrXb0njBxZt6BjbKkr
+         uCyhjZIthMVAZu7hLcrhRh3NwTRGDwVT/ziWdTJpRg3xcnPGHj9f3r48Fi5HTGO0Iho8
+         M7ri7dPvnoLL6iwO/uM7xjopCWqmM6HAjJ9DXMXQb6p9tCBOP42b8xYIJYbtnLPJ3Z2i
+         sGXxpTKj5G74nckLsUwaYcYILkflGBw4pbJ41hNEKGuFK+6D3wpjiNqj86Ft+xfOo9ZN
+         f9aQ==
+X-Gm-Message-State: APjAAAXlqvxFRrePKj+gnKsWWgw3V75TiRnB/22fDm4WedI/bkj8w8D+
+        pM26JX+3DVv9pDCX0KIYIJz5RaL9J8d/PoC59pA=
+X-Google-Smtp-Source: APXvYqx8jT8MgUT7S9ZnvFoJbxu3CaIb9RmoYtMDawysPfHwVN3skLly8GfUPqLf88rtcqQ2DZkSxRoYEsWH+3zdb5c=
+X-Received: by 2002:a25:3242:: with SMTP id y63mr15916170yby.455.1568034931171;
+ Mon, 09 Sep 2019 06:15:31 -0700 (PDT)
 MIME-Version: 1.0
-References: <20190903042928.18621-1-zajec5@gmail.com> <251e608a-c311-3827-02cd-886c8403f7ec@broadcom.com>
-In-Reply-To: <251e608a-c311-3827-02cd-886c8403f7ec@broadcom.com>
+References: <20190903042928.18621-1-zajec5@gmail.com> <20190903042928.18621-2-zajec5@gmail.com>
+ <527c6f46-bad4-58ac-afce-ca62ddda7c5b@broadcom.com>
+In-Reply-To: <527c6f46-bad4-58ac-afce-ca62ddda7c5b@broadcom.com>
 From:   =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>
-Date:   Mon, 9 Sep 2019 15:06:53 +0200
-Message-ID: <CACna6rxPTqy2fReSOq2qx-LFJALuSQfbBcqhb48acY7jv4J6zw@mail.gmail.com>
-Subject: Re: [PATCH 0/3] brcmfmac: keep wiphy during PCIe driver lifetime
+Date:   Mon, 9 Sep 2019 15:15:20 +0200
+Message-ID: <CACna6ry4TXRQb4Ls1TSccKLDrNictuk3HNQf7LKp6C-=DJTbVw@mail.gmail.com>
+Subject: Re: [PATCH 1/3] brcmfmac: move "cfg80211_ops" pointer to another struct
 To:     Arend Van Spriel <arend.vanspriel@broadcom.com>
 Cc:     Kalle Valo <kvalo@codeaurora.org>,
         Franky Lin <franky.lin@broadcom.com>,
@@ -69,24 +70,25 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Tue, 3 Sep 2019 at 20:51, Arend Van Spriel
+On Tue, 3 Sep 2019 at 20:59, Arend Van Spriel
 <arend.vanspriel@broadcom.com> wrote:
 > On 9/3/2019 6:29 AM, Rafa=C5=82 Mi=C5=82ecki wrote:
 > > From: Rafa=C5=82 Mi=C5=82ecki <rafal@milecki.pl>
 > >
-> > Driver's main init/attach function brcmf_attach() was handling both:
-> > wiphy allocation and driver initialization. It meant getting a new wiph=
-y
-> > on every init (initial, resume, error recovery).
+> > This moves "ops" pointer from "struct brcmf_cfg80211_info" to the
+> > "struct brcmf_pub". This movement makes it possible to allocate wiphy
+> > without attaching cfg80211 (brcmf_cfg80211_attach()). It's required for
+> > later separation of wiphy allocation and driver initialization.
 > >
-> > For supplicants/authenticators and Linux users it's move convenient to
-> > have the same wiphy over driver's lifetime. It allows e.g. automatic
-> > recovery after a firmware crash.
+> > While at it fix also an unlikely memory leak in the brcmf_attach().
 >
-> Typo: 'move' should be 'more'.
+> Always good ;-)
+>
+> I recall there is some fiddling with the callback ops in cfg80211.c. Is
+> that broken by this reorg. Need to look into that.
 
-Well, it's just a cover letter (0/3), that message won't go anywhere
-to the git repository.
+I don't see how this patch could break that. It still calls
+brcmf_cfg80211_get_ops() and passes settings as an argument.
 
---=20
+--
 Rafa=C5=82
