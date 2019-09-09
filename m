@@ -2,82 +2,99 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 38610ACB95
-	for <lists+linux-wireless@lfdr.de>; Sun,  8 Sep 2019 10:33:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4B6D9AD1B8
+	for <lists+linux-wireless@lfdr.de>; Mon,  9 Sep 2019 04:00:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727232AbfIHId5 convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 8 Sep 2019 04:33:57 -0400
-Received: from mx1.redhat.com ([209.132.183.28]:44280 "EHLO mx1.redhat.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727223AbfIHId4 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 8 Sep 2019 04:33:56 -0400
-Received: from mail-lf1-f71.google.com (mail-lf1-f71.google.com [209.85.167.71])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mx1.redhat.com (Postfix) with ESMTPS id 87BF889C31
-        for <linux-wireless@vger.kernel.org>; Sun,  8 Sep 2019 08:33:56 +0000 (UTC)
-Received: by mail-lf1-f71.google.com with SMTP id a14so2268203lfk.18
-        for <linux-wireless@vger.kernel.org>; Sun, 08 Sep 2019 01:33:56 -0700 (PDT)
+        id S1732636AbfIICAD (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 8 Sep 2019 22:00:03 -0400
+Received: from mail-oi1-f193.google.com ([209.85.167.193]:40812 "EHLO
+        mail-oi1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1732416AbfIICAC (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Sun, 8 Sep 2019 22:00:02 -0400
+Received: by mail-oi1-f193.google.com with SMTP id b80so9249356oii.7
+        for <linux-wireless@vger.kernel.org>; Sun, 08 Sep 2019 19:00:02 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=sender:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=JfJceDjBRXhhRN3a47LasO6WN7hQmKEe9vrZuAEi+iU=;
+        b=ONbMYcVegrgr/+KzKIs5D+4EXHaNn3ee5HMVKJgvIxzsdTuIYaZjC80V1MlCzHvn0T
+         l60DDBHz3gWgs8DNod9KJIr1/r+uCJOXRNgcb1X+Z3RaLFlzewKYVVsAjsfP9Fx6Zcin
+         HAph5nlNshY4/e+0ZhyNf/uuV519lGHu4Sm1hWItbmb2WtIUoi59iGK3amO/bNXu0fg2
+         FwCHEBrr4gzLHZRIjXBC4svl1hcEhwLZI1pQGeL5mq29wqIZ8Y5w652J7m492+rB3hRt
+         MkW1Pj6L3LzXK4QBGNJ/nohhyzMy55pEm8caIMI7LxIAbi4RjmH+XRUioeCu/SCq1pgn
+         fNZQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:subject:in-reply-to:references:date
-         :message-id:mime-version:content-transfer-encoding;
-        bh=Yx3kKsh4gyeDt5/46KJgnEnzulqjHSTWwYhh5BfKF6M=;
-        b=mEFdo3uODURMEv4q/ai+bOlBkjQ2KP5NxbcxJYxQFbdlpCHd0LEABwOaR15v5+4O10
-         gmUEd4W0tUJWiItf0TvMZZ0lQoYjvGDp+yYxWADJ5021oTxuUAngpCTelBfIRM0kB3+q
-         Kn3UTeKVdt840n83QOdUUWlYx8qdF4PgHYOH0Z3t8aOVB9IPzZs4Dg37fLlFYWbO3DRP
-         1dM7lIeEb5aUoHSxAqYDDxkEm5kzgntueSZKGmiy6XB9a5GJJXlbYEgCitL0jpzlVwAZ
-         7yli+BzObfG6brA7S27+hD2Xcr5bzRGHATu0afXM25hMZcLCAKbGAEKRA9vpINn+vJ4k
-         EHxg==
-X-Gm-Message-State: APjAAAXZyL3dLuWlRNB/MGO2FvzfF1UC97z/A+m78ALq73r+lKB7FfUx
-        tqefKBF4ATukEvuAOQqqvBP8qllfdLrAGM/3XGhw52pWi9/AQlWRBjEnmlLhBjLJX4QUcjp1n0W
-        nMd1SCDdKvQnkadjz7hioXDSVK24=
-X-Received: by 2002:a2e:a40e:: with SMTP id p14mr11869367ljn.29.1567931634716;
-        Sun, 08 Sep 2019 01:33:54 -0700 (PDT)
-X-Google-Smtp-Source: APXvYqxkyQoRp9d3iYIZBzRDfVde3dxjcokxivsZpSyT+YTN73wAApU9AFlsfUpCOXC23q8ZXUbvNA==
-X-Received: by 2002:a2e:a40e:: with SMTP id p14mr11869361ljn.29.1567931634559;
-        Sun, 08 Sep 2019 01:33:54 -0700 (PDT)
-Received: from alrua-x1.borgediget.toke.dk (borgediget.toke.dk. [85.204.121.218])
-        by smtp.gmail.com with ESMTPSA id l18sm1892478lje.88.2019.09.08.01.33.53
+        h=x-gm-message-state:sender:from:to:cc:subject:date:message-id
+         :mime-version:content-transfer-encoding;
+        bh=JfJceDjBRXhhRN3a47LasO6WN7hQmKEe9vrZuAEi+iU=;
+        b=B+yURsTEAub3wzfEmmZei6P3gJCwyxcd0OyuoF87ZFzJZdvN7gb30eStpYuLSHaLX9
+         p/oNuA66O6EoElqZ36bywsCRl1EHG5g7Eipzwpwb/aLVo9Vgk/jpejg2tYxvNMf1bIrX
+         5nagWFNqPi2LhKWQ0ULNwZQgLkaOZ9I3vD1kjRCzsRtQI7yQnzNY/3APRJ0UPLCw3r/1
+         Euh4D7KRXMaFarlNMGVstW9Xj8WmtePMiU9OOTyjLVGDzeu5Zfj6VCz1/8eWEflu7YpE
+         Qqt1xe/cfBNEZtZ97t+AcLw6cSI/qJ3OSCFn5xnBP8C1xUD+3+ayFtoTa+PkTpAbhrL0
+         X1Qw==
+X-Gm-Message-State: APjAAAWXzyoRnhYM1T6RvVLTEug5etLD4V+rl6mf/kqoVftn4DyN9aQF
+        8rTSUKgt40h/rN9xIpReUW8=
+X-Google-Smtp-Source: APXvYqxQIRabWPoYjzbkG0LtdjFEJ4cqO0nM7KgbmxiZXVQV9/9SoDoh3ZaMJHRiORxt0a6Ojkbj3w==
+X-Received: by 2002:aca:c641:: with SMTP id w62mr15582225oif.24.1567994401866;
+        Sun, 08 Sep 2019 19:00:01 -0700 (PDT)
+Received: from localhost.localdomain (cpe-24-31-245-230.kc.res.rr.com. [24.31.245.230])
+        by smtp.gmail.com with ESMTPSA id k10sm1468420oij.16.2019.09.08.19.00.00
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 08 Sep 2019 01:33:53 -0700 (PDT)
-Received: by alrua-x1.borgediget.toke.dk (Postfix, from userid 1000)
-        id DEF52180615; Sun,  8 Sep 2019 09:33:51 +0100 (WEST)
-From:   Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>
-To:     make-wifi-fast@lists.bufferbloat.net,
-        linux-wireless@vger.kernel.org
-Subject: Re: [PATCH bpf-next] xdp: Fix race in dev_map_hash_update_elem() when replacing element
-In-Reply-To: <20190908082016.17214-1-toke@redhat.com>
-References: <0000000000005091a70591d3e1d9@google.com> <20190908082016.17214-1-toke@redhat.com>
-X-Clacks-Overhead: GNU Terry Pratchett
-Date:   Sun, 08 Sep 2019 09:33:51 +0100
-Message-ID: <87sgp7w5jk.fsf@toke.dk>
+        Sun, 08 Sep 2019 19:00:01 -0700 (PDT)
+From:   Larry Finger <Larry.Finger@lwfinger.net>
+To:     kvalo@codeaurora.org
+Cc:     linux-wireless@vger.kernel.org, pkshih@realtek.com,
+        Larry Finger <Larry.Finger@lwfinger.net>
+Subject: [PATCH v2 0/9] rtlwifi: Remove special macros used to manipulate RX and TX descriptors
+Date:   Sun,  8 Sep 2019 20:59:49 -0500
+Message-Id: <20190909015958.29834-1-Larry.Finger@lwfinger.net>
+X-Mailer: git-send-email 2.23.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 8BIT
+Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Toke Høiland-Jørgensen <toke@redhat.com> writes:
+These patches continue the set of changes that remove the special macros
+to read or write the RX and TX descriptors. The bit manipulations in the
+__le32 words use GENMASK() and BIT() operations.
 
-> syzbot found a crash in dev_map_hash_update_elem(), when replacing an
-> element with a new one. Jesper correctly identified the cause of the crash
-> as a race condition between the initial lookup in the map (which is done
-> before taking the lock), and the removal of the old element.
->
-> Rather than just add a second lookup into the hashmap after taking the
-> lock, fix this by reworking the function logic to take the lock before the
-> initial lookup.
->
-> Fixes: 6f9d451ab1a3 ("xdp: Add devmap_hash map type for looking up devices by hashed index")
-> Reported-and-tested-by: syzbot+4e7a85b1432052e8d6f8@syzkaller.appspotmail.com
-> Signed-off-by: Toke Høiland-Jørgensen <toke@redhat.com>
-> ---
+The final patch removes unused macros for C2H operations.
 
-Oops, this wasn't supposed to go to linux-wireless and make-wifi-fast;
-apologies for the noise! :)
+Signed-off-by: Larry Finger <Larry.Finger@lwfinger.net>
 
--Toke
+---
+V2 - Add a missing inline direective in rtl8723be/trx.h
+
+Larry Finger (9):
+  rtlwifi: rtl8723ae: Remove unused GET_XXX and SET_XXX macros
+  rtlwifi: rtl8723ae: Replace local bit manipulation macros
+  rtlwifi: rtl8723ae: Convert macros that set descriptor
+  rtlwifi: rtl8723ae: Convert inline routines to little-endian words
+  rtlwifi: rtl8723be: Remove unused SET_XXX and GET_XXX macros
+  rtlwifi: rtl8723be: Replace local bit manipulation macros
+  rtlwifi: rtl8723be: Convert macros that set descriptor
+  rtlwifi: rtl8723be: Convert inline routines to little-endian words
+  rtlwifi: rtl8188ee: rtl8192ce: rtl8192de: rtl8723ae: rtl8821ae: Remove
+    some unused bit manipulation macros
+
+ drivers/net/wireless/realtek/rtlwifi/base.h   |  27 -
+ .../wireless/realtek/rtlwifi/rtl8188ee/def.h  |  29 -
+ .../wireless/realtek/rtlwifi/rtl8192ce/def.h  |  33 -
+ .../wireless/realtek/rtlwifi/rtl8192de/def.h  |  31 -
+ .../wireless/realtek/rtlwifi/rtl8723ae/def.h  |  31 -
+ .../wireless/realtek/rtlwifi/rtl8723ae/trx.c  | 212 ++---
+ .../wireless/realtek/rtlwifi/rtl8723ae/trx.h  | 794 +++++++-----------
+ .../wireless/realtek/rtlwifi/rtl8723be/trx.c  | 236 +++---
+ .../wireless/realtek/rtlwifi/rtl8723be/trx.h  | 718 ++++++++--------
+ .../wireless/realtek/rtlwifi/rtl8821ae/def.h  |  31 -
+ 10 files changed, 922 insertions(+), 1220 deletions(-)
+
+-- 
+2.23.0
+
