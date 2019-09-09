@@ -2,107 +2,95 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B7E2DAD305
-	for <lists+linux-wireless@lfdr.de>; Mon,  9 Sep 2019 08:19:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DFBCCAD372
+	for <lists+linux-wireless@lfdr.de>; Mon,  9 Sep 2019 09:16:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727909AbfIIGTC (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 9 Sep 2019 02:19:02 -0400
-Received: from mga01.intel.com ([192.55.52.88]:2052 "EHLO mga01.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727898AbfIIGTC (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 9 Sep 2019 02:19:02 -0400
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from orsmga005.jf.intel.com ([10.7.209.41])
-  by fmsmga101.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 08 Sep 2019 23:19:02 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.64,483,1559545200"; 
-   d="scan'208";a="359386304"
-Received: from mjtillin-mobl1.ger.corp.intel.com ([10.252.1.17])
-  by orsmga005.jf.intel.com with ESMTP; 08 Sep 2019 23:19:00 -0700
-Message-ID: <10f877f29750ceb357fa5b54bf07122c658270ca.camel@intel.com>
-Subject: Re: [linuxwifi] Slow performance (~30mbps) with Intel 9260 (and
- 8265, 3168) using 5G
-From:   Luciano Coelho <luciano.coelho@intel.com>
-To:     Qu Wenruo <quwenruo.btrfs@gmx.com>, linuxwifi@intel.com,
-        linux-wireless <linux-wireless@vger.kernel.org>
-Date:   Mon, 09 Sep 2019 09:18:59 +0300
-In-Reply-To: <42bd356c-6c59-79dc-bb37-5bc36d07a9af@gmx.com>
-References: <c078f515-51bd-2195-6b96-901db8872028@gmx.com>
-         <5d79c06b7d718e8255ee192902dba5aad780fba5.camel@intel.com>
-         <42bd356c-6c59-79dc-bb37-5bc36d07a9af@gmx.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.30.5-1.1 
+        id S1731421AbfIIHQZ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 9 Sep 2019 03:16:25 -0400
+Received: from rtits2.realtek.com ([211.75.126.72]:57948 "EHLO
+        rtits2.realtek.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727483AbfIIHQZ (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 9 Sep 2019 03:16:25 -0400
+Authenticated-By: 
+X-SpamFilter-By: BOX Solutions SpamTrap 5.62 with qID x897GHtA014328, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (RTITCASV01.realtek.com.tw[172.21.6.18])
+        by rtits2.realtek.com.tw (8.15.2/2.57/5.78) with ESMTPS id x897GHtA014328
+        (version=TLSv1 cipher=DHE-RSA-AES256-SHA bits=256 verify=NOT);
+        Mon, 9 Sep 2019 15:16:17 +0800
+Received: from localhost.localdomain (172.21.68.126) by
+ RTITCASV01.realtek.com.tw (172.21.6.18) with Microsoft SMTP Server id
+ 14.3.468.0; Mon, 9 Sep 2019 15:16:16 +0800
+From:   <yhchuang@realtek.com>
+To:     <kvalo@codeaurora.org>
+CC:     <linux-wireless@vger.kernel.org>, <briannorris@chromium.org>
+Subject: [PATCH v2 0/8] rtw88: enhance and stabilize T-Put performance
+Date:   Mon, 9 Sep 2019 15:16:03 +0800
+Message-ID: <1568013371-21805-1-git-send-email-yhchuang@realtek.com>
+X-Mailer: git-send-email 2.7.4
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Originating-IP: [172.21.68.126]
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Mon, 2019-09-09 at 14:09 +0800, Qu Wenruo wrote:
-> 
-> On 2019/9/9 下午2:00, Luciano Coelho wrote:
-> > Hi,
-> > 
-> > On Sun, 2019-09-08 at 06:45 +0800, Qu Wenruo wrote:
-> > > Hi,
-> > > 
-> [...]
-> > > Any ideas how this could happen to 3 different intel cards on two
-> > > different systems? (Although all running the same Arch kernel and latest
-> > > firmware)
-> > 
-> > This really must be an environment issue.  You are describing the same
-> > problem with different NICs (which mean different FWs are being used)
-> > and the same problem on Windows (which means different driver version
-> > being used), so it's not a new bug in either the firmware or the
-> > driver.
-> 
-> You're completely right. I have reset and upgraded my router (an MT7621
-> based router with OpenWRT) to latest OpenWRT, then the problem just went
-> away.
+From: Yan-Hsuan Chuang <yhchuang@realtek.com>
 
-Great!
+This patch set could enhance and stabilize the throughput
+performance for rtw88, especially for RTL8822CE.
+
+The RFKs, such as IQK and DPK, can make sure the radio
+components works more reliable. They reduce the distortion
+and nonlinearity that the components inherently have.
+
+The parameter update is a result that is fine-tuned to
+optimize the hardware utilization.
+
+And CCK PD can help to adjust CCK signal threshold to
+reduce FAs, and get a better TRX performance in 2.4G.
+
+Interrupt migration helps some slower platforms not to
+over utilize the host CPU, reduce its loading.
 
 
-> It looks like, under the original environment, it's the Android phone
-> doing something strange.
-
-It's hard to tell, because the characteristics of the WiFi on your
-Android phone are very different from those on your laptop.
+v1 -> v2
+   * fix implicit fall-through warnings
+   * add more log for FW IQK
 
 
-> > Was it working properly before? Did it start happening only when you
-> > changed the NIC (even though you changed it back and it remained not
-> > working)? What else changed?
-> 
-> Nothing really, so I may hit something wrong with the NIC of the router,
-> not all these NICs.
+Chin-Yen Lee (1):
+  rtw88: 8822c: update pwr_seq to v13
 
-There was probably an upgrade of OpenWRT that started causing the
-issue.  Hard to say.
+Tsang-Shian Lin (1):
+  rtw88: 8822c: Enable interrupt migration
 
+Tzu-En Huang (2):
+  rtw88: 8822c: add SW DPK support
+  rtw88: add dynamic cck pd mechanism
 
-> > I can't see anything hinting any issues in dmesg.  Also, I'm a bit
-> > confused about the "5G" you mention.  Does that mean that the AP is
-> > connected to the internet via 5G?
-> 
-> Sorry for the confusion, I mean 5Ghz.
+Yan-Hsuan Chuang (4):
+  rtw88: 8822c: update PHY parameter to v38
+  rtw88: 8822c: add FW IQK support
+  rtw88: move IQK/DPK into phy_calibration
+  rtw88: allows to receive AMSDU in AMPDU
 
-Ah, I should have guessed, of course.  It's just that the word 5G has a
-totally different meaning, hardcoded in my head, so I got confused. ;)
+ drivers/net/wireless/realtek/rtw88/coex.c          |    2 +-
+ drivers/net/wireless/realtek/rtw88/coex.h          |    1 +
+ drivers/net/wireless/realtek/rtw88/mac80211.c      |    2 +-
+ drivers/net/wireless/realtek/rtw88/main.c          |    1 +
+ drivers/net/wireless/realtek/rtw88/main.h          |   56 +-
+ drivers/net/wireless/realtek/rtw88/phy.c           |  145 +
+ drivers/net/wireless/realtek/rtw88/phy.h           |    2 +
+ drivers/net/wireless/realtek/rtw88/reg.h           |   17 +
+ drivers/net/wireless/realtek/rtw88/rtw8822b.c      |    7 +-
+ drivers/net/wireless/realtek/rtw88/rtw8822c.c      | 1178 +++-
+ drivers/net/wireless/realtek/rtw88/rtw8822c.h      |   86 +
+ .../net/wireless/realtek/rtw88/rtw8822c_table.c    | 6930 ++++++++++++++------
+ .../net/wireless/realtek/rtw88/rtw8822c_table.h    |    3 +
+ 13 files changed, 6325 insertions(+), 2105 deletions(-)
 
-
-> All tests are done in 5GHz freq (802.11ac), and iperf server is
-> connected by RJ45 (1Gbps) and iperf client is through wifi.
-> 
-> Anyway, after resetting the router, it's now back to the ~300 mpbs range.
-
-That's great to hear! Let us know if you encounter any further issues.
-
---
-Cheers,
-Luca.
+-- 
+2.7.4
 
