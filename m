@@ -2,87 +2,83 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C6319AEB9C
-	for <lists+linux-wireless@lfdr.de>; Tue, 10 Sep 2019 15:32:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 50565AF185
+	for <lists+linux-wireless@lfdr.de>; Tue, 10 Sep 2019 21:05:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727410AbfIJNcN (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 10 Sep 2019 09:32:13 -0400
-Received: from smtp.codeaurora.org ([198.145.29.96]:44746 "EHLO
-        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725935AbfIJNcN (ORCPT
+        id S1726527AbfIJTEr (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 10 Sep 2019 15:04:47 -0400
+Received: from mail-wr1-f65.google.com ([209.85.221.65]:44995 "EHLO
+        mail-wr1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725942AbfIJTEq (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 10 Sep 2019 09:32:13 -0400
-Received: by smtp.codeaurora.org (Postfix, from userid 1000)
-        id 2DAE3602F2; Tue, 10 Sep 2019 13:32:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1568122332;
-        bh=vQPgNw5a7gU0FduUPKVc7pHyoB4RAkWfX8HhQ2BonBY=;
-        h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-        b=Kuy79+OsiVZi69+uo8aTQy6XYrve8opGsQxOGUI1M2SeGG9WJsxx1Hx/VrD/D7Ffg
-         Mh/CAlGN8fig8/sky/UO88/xsgUnCi4yYq1IGQgvapB/748K7HIPyaH/VMlTn5vuWC
-         qstsYV9bVyyq3iaidfihKzfP8ifCd+lqc7wQ7eFI=
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        pdx-caf-mail.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-0.8 required=2.0 tests=ALL_TRUSTED,BAYES_00,
-        DKIM_INVALID,DKIM_SIGNED,MISSING_DATE,MISSING_MID,SPF_NONE autolearn=no
-        autolearn_force=no version=3.4.0
-Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        (Authenticated sender: kvalo@smtp.codeaurora.org)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 421EF602BC;
-        Tue, 10 Sep 2019 13:32:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1568122331;
-        bh=vQPgNw5a7gU0FduUPKVc7pHyoB4RAkWfX8HhQ2BonBY=;
-        h=Subject:From:In-Reply-To:References:To:Cc:From;
-        b=nYJ/FPZVw/skDA6fn9S/lZGMJvbw9+aRH3ncbVxul5PV/jnTLGL27uM82xIB8kQpj
-         J2OLOTtObzZYslP9fEgyPC8JledNL/vcqSmFedf846VXmVKm7d9CYjcO0Je8Etd7/p
-         lSFf9+kqCoTEYGOQlvEuVYIs+EJ/c00ZxM5H9v/Q=
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 421EF602BC
-Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH] ath9k: release allocated buffer if timed out
-From:   Kalle Valo <kvalo@codeaurora.org>
-In-Reply-To: <20190906185931.19288-1-navid.emamdoost@gmail.com>
-References: <20190906185931.19288-1-navid.emamdoost@gmail.com>
-To:     Navid Emamdoost <navid.emamdoost@gmail.com>
-Cc:     unlisted-recipients:; (no To-header on input) emamd001@umn.edu,
-        smccaman@umn.edu, kjlu@umn.edu,
-        Navid Emamdoost <navid.emamdoost@gmail.com>,
-        QCA ath9k Development <ath9k-devel@qca.qualcomm.com>,
-        "David S. Miller" <davem@davemloft.net>,
+        Tue, 10 Sep 2019 15:04:46 -0400
+Received: by mail-wr1-f65.google.com with SMTP id k6so9649637wrn.11;
+        Tue, 10 Sep 2019 12:04:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=od6IWHhGZ3spsiCZG9/kdZx0y1/zoDRsOeEYPUkz2sQ=;
+        b=Qfq48iz3esxK6VmHRhko2SXnnPs0vh5iPOv6axMSLBAZ4qaAVa0zw17HjdIUdqZ2Ck
+         Icis/B0jwiEhVQLsCxRX8jLSXHxOMFAdxUvUkBC4qdcQlaOxEnVh6X6nL66R9+38gac2
+         mdV02YVLzojkoXBhvlHSm1vHt/lPSDO+hBwoFkMj5mMH7eRBvZwYn/D5NyzqYcg5mJDr
+         pAjfL/9vmIy15igl78dRoBChk1rucThQ9Mmi3UHzqMxLTkTN5m8Z1VQUMpr+5CFUlgXW
+         RdJo7hmIWYa2DDHp0g3zE3oyrnpzrA+mAL//Z15qIsW48ivHXdW8A8bHaHPg9ACNhvcj
+         dsrw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=od6IWHhGZ3spsiCZG9/kdZx0y1/zoDRsOeEYPUkz2sQ=;
+        b=s73TS7Ri33pPlcvTY8JAwUie8kEa6KmkhOHbxGFbBo2/XPP1vOWNRjhoeK4AAjhqHZ
+         KJGxwV3ktQ2OEuvuYQxRoitRoAm/P5qV06B/RsfukFZCuZ6NkQLT45Qtl9BUZnd2RSJw
+         hmqSLeh9JtcMchiT4PtJACxjH+BYEhAIPC5TgcqtuJzYbMe2v5ovsolEdIAoZCcHkPFW
+         fK+7TlDI00OtSmC29w/ZFhsytD78w5/blYCsiHJS65mKaxHSbRu6rmUgCn8yTJldK0kg
+         +wWkFwL5nZdrBnKfzbEziVJAbgT3nl6VGmNJ65Vua4m7XCcUPlvIFTGgdWaF8URM3KFO
+         Ei5Q==
+X-Gm-Message-State: APjAAAVBQyUhe7uZQoE6tGBp9jYp75RCP0fNwyPXEgf2HbLnLu2NkWRA
+        Tpuex7Q44HTd59DLCBgSaEk=
+X-Google-Smtp-Source: APXvYqwa23L2H2yM5Xh3ZjeyAtrKxXUPAe/e24njkdHnmteRl5sgMmnMu7x8F1sgr/a1jb/j9hVRlg==
+X-Received: by 2002:adf:fe07:: with SMTP id n7mr1403110wrr.90.1568142284558;
+        Tue, 10 Sep 2019 12:04:44 -0700 (PDT)
+Received: from localhost.localdomain ([2a02:8108:96bf:e0ab:2b68:5d76:a12a:e6ba])
+        by smtp.gmail.com with ESMTPSA id w15sm14222967wru.53.2019.09.10.12.04.43
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 10 Sep 2019 12:04:44 -0700 (PDT)
+From:   Michael Straube <straube.linux@gmail.com>
+To:     kvalo@codeaurora.org
+Cc:     pkshih@realtek.com, davem@davemloft.net,
         linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Illegal-Object: Syntax error in Cc: address found on vger.kernel.org:
-        Cc:     unlisted-recipients:; (no To-header on input)emamd001@umn.edu
-                                                                     ^-missing end of address
-User-Agent: pwcli/0.0.0-git (https://github.com/kvalo/pwcli/) Python/2.7.12
-Message-Id: <20190910133212.2DAE3602F2@smtp.codeaurora.org>
-Date:   Tue, 10 Sep 2019 13:32:12 +0000 (UTC)
+        linux-kernel@vger.kernel.org,
+        Michael Straube <straube.linux@gmail.com>
+Subject: [PATCH 0/3] rtlwifi: use generic rtl_evm_db_to_percentage
+Date:   Tue, 10 Sep 2019 21:04:19 +0200
+Message-Id: <20190910190422.63378-1-straube.linux@gmail.com>
+X-Mailer: git-send-email 2.23.0
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Navid Emamdoost <navid.emamdoost@gmail.com> wrote:
+Functions _rtl92{c,d}_evm_db_to_percentage are functionally identical
+to the generic version rtl_evm_db_to percentage. This series converts
+rtl8192ce, rtl8192cu and rtl8192de to use the generic version.
 
-> In ath9k_wmi_cmd, the allocated network buffer needs to be released
-> if timeout happens. Otherwise memory will be leaked.
-> 
-> Signed-off-by: Navid Emamdoost <navid.emamdoost@gmail.com>
-> Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
+Michael Straube (3):
+  rtlwifi: rtl8192ce: replace _rtl92c_evm_db_to_percentage with generic
+    version
+  rtlwifi: rtl8192cu: replace _rtl92c_evm_db_to_percentage with generic
+    version
+  rtlwifi: rtl8192de: replace _rtl92d_evm_db_to_percentage with generic
+    version
 
-Patch applied to ath-next branch of ath.git, thanks.
-
-728c1e2a05e4 ath9k: release allocated buffer if timed out
+ .../wireless/realtek/rtlwifi/rtl8192ce/trx.c  | 23 +------------------
+ .../wireless/realtek/rtlwifi/rtl8192cu/mac.c  | 18 +--------------
+ .../wireless/realtek/rtlwifi/rtl8192de/trx.c  | 18 ++-------------
+ 3 files changed, 4 insertions(+), 55 deletions(-)
 
 -- 
-https://patchwork.kernel.org/patch/11135843/
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+2.23.0
 
