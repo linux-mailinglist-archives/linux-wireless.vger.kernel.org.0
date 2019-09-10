@@ -2,105 +2,91 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 34B98AEAFF
-	for <lists+linux-wireless@lfdr.de>; Tue, 10 Sep 2019 15:00:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 652CEAEB33
+	for <lists+linux-wireless@lfdr.de>; Tue, 10 Sep 2019 15:12:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2390963AbfIJM7m (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 10 Sep 2019 08:59:42 -0400
-Received: from mail-ot1-f68.google.com ([209.85.210.68]:46713 "EHLO
-        mail-ot1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727071AbfIJM7m (ORCPT
+        id S1730522AbfIJNMp (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 10 Sep 2019 09:12:45 -0400
+Received: from smtp.codeaurora.org ([198.145.29.96]:33848 "EHLO
+        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1730517AbfIJNMp (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 10 Sep 2019 08:59:42 -0400
-Received: by mail-ot1-f68.google.com with SMTP id g19so18402425otg.13
-        for <linux-wireless@vger.kernel.org>; Tue, 10 Sep 2019 05:59:42 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
-         :cc;
-        bh=jqek9cTuxOVyyem7HaT7VFiIzPh0AIP2n48z7Rb1qmA=;
-        b=Dkkt1GTc2eajU+J+J+R4hnNQMJzi6EgshdS3myxu6JYLTLnFbDw3XKlP8DsYcoLJmJ
-         JXPvjAWz+YL2kiyQ7Ii62ecTwo/2G2sDwR2xD58k3zgo1Cye1Y3GViwbvkW6mURGAMFF
-         tEK55XaSwTMYAFaKfmbEqBInGd3S2PAQlCiNihHGphMrlBl3AADDio69gp+DiUxo4ZzB
-         Rjufng5XymZhpX0QU0To3EIminv3qPZL8Lg6eoiS83DqsTqWf0jedsU3f8JOOhuzQgPg
-         rRPYqvltHjuFjlURNRhBx12GTlSrHyWb0piki0D442lpxt8WAVmSrUcHwjDuN4lFanG/
-         mSHQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:in-reply-to:references:from:date
-         :message-id:subject:to:cc;
-        bh=jqek9cTuxOVyyem7HaT7VFiIzPh0AIP2n48z7Rb1qmA=;
-        b=NTWj2l4OEfcqxm+GmgMsogvp08yfhDuiOxHYH6wzK6zbq7JtYdUqfG+gITK4yAMqZI
-         VEtddFj9X7vOPH9qeU7EPXvHUygYG2Gmb47BtDctt7x98k2t2lZoCLfr6kCKwe/Kp/0l
-         9HZWwPnr7Xn7j98LH0ta8DWO1mEP17yYwAu7+EbDed5XYQ2OoAtHH7k5gNwTy2vh013b
-         AtC38ndztQIn8n9IYi8Fjb+D34M7y6CpBkUPJ4kzxKdox9mpnlXTvitpVobydR++G0uD
-         FUnIf/ElNbZOm9vtLVvWhLDhV4yRmvgG/cALtdS009fRZO4FxxjIcSkIlLRbO/E2Tl0M
-         eHAg==
-X-Gm-Message-State: APjAAAV7S7IqkYxqG3hZ2BbT2oEOFHWuUnIW0bTlP+TtnN2/jwfEuBeh
-        aqRIpA4C02CHdubd9s0lmP7s7u83Yyhp/+D81mTmcQ==
-X-Google-Smtp-Source: APXvYqyX7NKFXkv1ChR/FaEEzbd9XYAjINqR1jnnsqiWInRfuPzyhU/HLE8lu90CV18CG5xzGnpErJWhxu35cHZOWzY=
-X-Received: by 2002:a05:6830:18f3:: with SMTP id d19mr13675533otf.256.1568120381700;
- Tue, 10 Sep 2019 05:59:41 -0700 (PDT)
+        Tue, 10 Sep 2019 09:12:45 -0400
+Received: by smtp.codeaurora.org (Postfix, from userid 1000)
+        id 1343F6050D; Tue, 10 Sep 2019 13:12:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
+        s=default; t=1568121164;
+        bh=KQToKmaWm/fWAohRUFoScC5Iid7B75pf763E2R9dIFs=;
+        h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
+        b=NlJMLbtFM4BgSKL+Swo5REmh4d2rXGSYK+n9Z442+05p2jwGSw0bAr0yVOOKt+izi
+         r2yiMVV40T7wZ2TgN/DC5YqtZsR8rNDsGvXJV6FWwhse/jDIAqDgGXB73MU77oQJQp
+         m+JGAJzQ82adad+YX42GzkRJQsoAnJsV3pcC5iHY=
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        pdx-caf-mail.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-0.8 required=2.0 tests=ALL_TRUSTED,BAYES_00,
+        DKIM_INVALID,DKIM_SIGNED,MISSING_DATE,MISSING_MID,SPF_NONE autolearn=no
+        autolearn_force=no version=3.4.0
+Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo@smtp.codeaurora.org)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id DD4CF602BC;
+        Tue, 10 Sep 2019 13:12:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
+        s=default; t=1568121163;
+        bh=KQToKmaWm/fWAohRUFoScC5Iid7B75pf763E2R9dIFs=;
+        h=Subject:From:In-Reply-To:References:To:Cc:From;
+        b=bafT6GmJv+rs1Lo3+49K2FiHFCKq6s8pIyQztgUDUhX5en07eAsnhOcLrQjfvmLCE
+         pyJvngQgWH8Uf+koJ+GbhvDhKpU5HpsfbQbSPrK09xXcrr8KBmIG3AAV21J2WIQH74
+         v+2r6zF7jGtT3py8/CWIldYffRb8WTkAlbK7tCTw=
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org DD4CF602BC
+Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Received: by 2002:a9d:2286:0:0:0:0:0 with HTTP; Tue, 10 Sep 2019 05:59:40
- -0700 (PDT)
-In-Reply-To: <87h85kfwfn.fsf@codeaurora.org>
-References: <20190906215423.23589-1-chunkeey@gmail.com> <20190907214359.1C52A21835@mail.kernel.org>
- <CAKR_QVKv8kgXSSCwd8esw28hARA61Pah3usRi+ZZG6ss2CcS=g@mail.gmail.com> <87h85kfwfn.fsf@codeaurora.org>
-From:   Tom Psyborg <pozega.tomislav@gmail.com>
-Date:   Tue, 10 Sep 2019 14:59:40 +0200
-Message-ID: <CAKR_QVJpGZCBaE3hW6FShykYa=T6hy2dHn22daQVodWGL_-Afw@mail.gmail.com>
-Subject: Re: [PATCH] ath10k: restore QCA9880-AR1A (v1) detection
-To:     Kalle Valo <kvalo@codeaurora.org>
-Cc:     Sasha Levin <sashal@kernel.org>, linux-wireless@vger.kernel.org,
-        ath10k@lists.infradead.org,
-        Christian Lamparter <chunkeey@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH] ath10k:  Free beacon buf later in vdev teardown.
+From:   Kalle Valo <kvalo@codeaurora.org>
+In-Reply-To: <20190227162756.13048-1-greearb@candelatech.com>
+References: <20190227162756.13048-1-greearb@candelatech.com>
+To:     greearb@candelatech.com
+Cc:     linux-wireless@vger.kernel.org,
+        Ben Greear <greearb@candelatech.com>
+User-Agent: pwcli/0.0.0-git (https://github.com/kvalo/pwcli/) Python/2.7.12
+Message-Id: <20190910131244.1343F6050D@smtp.codeaurora.org>
+Date:   Tue, 10 Sep 2019 13:12:44 +0000 (UTC)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 10/09/2019, Kalle Valo <kvalo@codeaurora.org> wrote:
-> (dropping stable list)
->
-> Tom Psyborg <pozega.tomislav@gmail.com> writes:
->
->> According to this very old post
->> http://lists.infradead.org/pipermail/ath10k/2013-July/000021.html
->> seems like you've been misinformed on amount of these cards that were
->> put out in the market.
->>
->> At least digipart only have >40000 units in stocks
->> https://www.digipart.com/part/QCA9880-AR1A and other retailers
->> probably few thousands more.
->>
->> With that large amount of cards I think it is justified to request
->> firmware support for the chip. And probably a lot easier to make few
->> firmware modifications than go hacking a bunch of API calls so it
->> works with v2 firmware.
->
-> I'm very surprised that QCA9880 hw1.0 boards are still available, after
-> six years. Did you confirm that it really is hw1.0 and not just some
-> mixup with hardware ids or something like that?
+greearb@candelatech.com wrote:
 
-Print on the chip clearly says QCA9880-AR1A. ID same as for v2 - 003C.
+> My wave-1 firmware often crashes when I am bringing down
+> AP vdevs, and sometimes at least some machines lockup hard
+> after spewing IOMMU errors.
+> 
+> I don't see the same issue in STA mode, so I suspect beacons
+> are the issue.
+> 
+> Moving the beacon buf deletion to later in the vdev teardown
+> logic appears to help this problem.  Firmware still crashes
+> often, but several iterations did not show IOMMU errors and
+> machine didn't hang.
 
-> old hw1.0 firmware to see if it works.
+I'm not really fond of fixing issues just by luck but after a quick look at the
+code I can't see any harm in this change either. So I guess it's ok.
 
-I don't know which fw blob version that is. I could not find it
-online. All files are v2 related.
+But can you provide the exact hardware and firmware you used for testing, I'll
+add it to the commit log. I want to document that in every commit:
 
->
-> But if it's really is hw1.0 I doubt there will be any support for that.
-> I recommend to avoid hw1.0 altogether.
->
-> --
-> Kalle Valo
->
+https://wireless.wiki.kernel.org/en/users/drivers/ath10k/submittingpatches#guidelines
 
-That would be too bad, even worse when you find out that
-qca-wifi-10.2.4.58.1 driver fails to load firmware too. The only one
-that works is qca-wifi that comes with tp-link firmware, some very
-early version 10.0.108 or somtehing like that that has no available
-sources..
+Please also CC ath10k list when submitting patches.
+
+-- 
+https://patchwork.kernel.org/patch/10831867/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+
