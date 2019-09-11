@@ -2,112 +2,97 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D637AAFE6D
-	for <lists+linux-wireless@lfdr.de>; Wed, 11 Sep 2019 16:13:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3D43EAFE70
+	for <lists+linux-wireless@lfdr.de>; Wed, 11 Sep 2019 16:14:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728189AbfIKONZ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 11 Sep 2019 10:13:25 -0400
-Received: from mail-ot1-f68.google.com ([209.85.210.68]:44789 "EHLO
-        mail-ot1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728062AbfIKONZ (ORCPT
+        id S1726954AbfIKOOi (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 11 Sep 2019 10:14:38 -0400
+Received: from mail-ed1-f67.google.com ([209.85.208.67]:39535 "EHLO
+        mail-ed1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725981AbfIKOOi (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 11 Sep 2019 10:13:25 -0400
-Received: by mail-ot1-f68.google.com with SMTP id 21so22648087otj.11
-        for <linux-wireless@vger.kernel.org>; Wed, 11 Sep 2019 07:13:23 -0700 (PDT)
+        Wed, 11 Sep 2019 10:14:38 -0400
+Received: by mail-ed1-f67.google.com with SMTP id u6so20774473edq.6
+        for <linux-wireless@vger.kernel.org>; Wed, 11 Sep 2019 07:14:36 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=subject:to:references:from:message-id:date:user-agent:mime-version
-         :in-reply-to:content-language:content-transfer-encoding;
-        bh=bAdIpTZ8oIohVBz3HfgsMq4OBMpmfT9f9i5Ck+jMakE=;
-        b=i6Dk9lv9TYY/3ihFvN51ORXPxSDhRbn/apk1ZWWUAqXWzlOB5eU8O9ImbGRe6zpA8a
-         2aRH0kPzDzOtpF1rwpOQyFFPAvp+50JeRmq6rxLSMM7GTelPxXVHV5TqyxQ6Fw5cYC7r
-         lJhlkkyM+qoMuJGhl39LeAZOtNqKZqY2oW3RaApLzGPI8fF4F97HA/zwKFzW03QKHhLb
-         qd2blPbeHEO01u/+/Eh2xPSwpzyUF7TOkGfTydsaDljDgVSBYXaoJmndMB0ZPz7rYucO
-         S0EDJC3YJr0bHjN+ZS0KesyrfI3kBDAi/g3kWlFkxQvkJt2FZlnI1tg/geFNIw0VrpyV
-         /41g==
+        d=ncentric-com.20150623.gappssmtp.com; s=20150623;
+        h=from:to:cc:subject:date:message-id;
+        bh=+cIXqEJuYpA0+Q8sRtzqfZF30sEabB61l9AAF9nu7w8=;
+        b=1w4BZWxgJw5sYsf/oizvm5Y1vZsVCuO6CczfYzJmOcFZVOrDWaqS6jCUj31CX2g/vo
+         M0RNlo39TaZQuv5AS6JZGfhJDORORN+HHb+ccywhzGtqE73gdsEKg7zXAZPOtCYk1+er
+         1w0SyS5bEmy5QatqCQm1smp/wO/JmDQ3afjXezPjwRZxdqg48uAyMTW+0Gq4yGS8yhfz
+         M1RNFyh4/OqzVXVmTtKd7oTrLeRcvpOjtM6zsstXQ3drTDF/J5UyXOdyfZgbs0KK3hbJ
+         T/RdEGapuKajCekomdr2i5HnYT9FlR5Avd4+QhQB7wNquQTaZi+KyGtbYk+CfwQc+Flp
+         WS6w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=bAdIpTZ8oIohVBz3HfgsMq4OBMpmfT9f9i5Ck+jMakE=;
-        b=neqEX/qdBeDbe04fjzxKWxxAONLzFMbPJw8n7YfdOBkgfEI37zem4iw1RLcocxW7Jf
-         T9zrvqGErmIL7hYbhwq6+eanLSmhSMo0O12RdwvVb8360WzXD/QJit+I7GIUoCJhZsPx
-         uqPfUhYbLdiz2tuZr/xgKdHbosjL32NtKK+2/BHB+uIfYGx5DCpGiJKpN0sLt1mS2hIu
-         0cf6hD0py2scF8s8xdq2gotZ7TG19S0Ar4FEDbr5psERdrbeve1KE5zza4SdXDui7B2L
-         eD8VdnxBs85E6magPQdMZou/gV0RF4bRxD9HFBDJ9P/nVdV++Sbtfd2Xf1nB4JOAZ0go
-         tyvA==
-X-Gm-Message-State: APjAAAWUNidoUQhznj0auhP4XI07HGBa5QSfRGnIj9WzOspSbNYeUySy
-        UHjJojY4Nfrm0QdRE5TBZvG4pxnB
-X-Google-Smtp-Source: APXvYqwdNKJLzqPpfAXOMqOp+oIbN+l6NdUv4QEpJ/1+P2GzNt1zOakPqxQ+4mrfVM1LZQFpU7I1TQ==
-X-Received: by 2002:a9d:6742:: with SMTP id w2mr31070902otm.225.1568211203265;
-        Wed, 11 Sep 2019 07:13:23 -0700 (PDT)
-Received: from [192.168.1.249] (cpe-70-114-247-242.austin.res.rr.com. [70.114.247.242])
-        by smtp.googlemail.com with ESMTPSA id 36sm8081792ott.66.2019.09.11.07.13.22
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Wed, 11 Sep 2019 07:13:22 -0700 (PDT)
-Subject: Re: [RFCv3 3/3] nl80211: Send large new_wiphy events
-To:     Johannes Berg <johannes@sipsolutions.net>,
-        linux-wireless@vger.kernel.org
-References: <20190906154303.9303-1-denkenz@gmail.com>
- <20190906154303.9303-3-denkenz@gmail.com>
- <127c19b1855302a467a1bdbf2f25f625a0254d9e.camel@sipsolutions.net>
-From:   Denis Kenzior <denkenz@gmail.com>
-Message-ID: <f48bdad3-f9f8-20b7-b6ff-6248368a7ae1@gmail.com>
-Date:   Wed, 11 Sep 2019 07:20:01 -0500
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.8.0
-MIME-Version: 1.0
-In-Reply-To: <127c19b1855302a467a1bdbf2f25f625a0254d9e.camel@sipsolutions.net>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=+cIXqEJuYpA0+Q8sRtzqfZF30sEabB61l9AAF9nu7w8=;
+        b=qKinzh2vT/juvAbk8XfVFFmeqkBOIZvfd1sZnAqYAlujd7qYQTqWX65A/sc2ZUu/35
+         FF6igNiiHdg4F40elRg5lOG/L99ryL8V7V04u8Kj2fenFvJ2pIZeCwaWjNWhJZetU9A6
+         7IjTGNJJghk4ntG1uh8x3ltEafKUTBDPWwIY5rTsu5yf2vvbhg3DSf0uzIioMFfyQE2B
+         Fj+x3Wt/boQ+5Q8uW0C7Mbj1zCoJM/MioAaS4Ls0lMWZT9ZtQLnLwWFG0i9tts8TKLBt
+         iixJFHhJ623D3Zac66bATUgAZAmoQjvEXtN/3nudAKi6P8lACdlBAEjeQj1rAOKOq8W+
+         dYeQ==
+X-Gm-Message-State: APjAAAWpBAfUEW8i+kLxT/h7sZ3HWq0bsorIEMJk7jYUTRhy3jD7hKvC
+        5PalaGjqmX91eUz0aTp2+8SbSXNQmv4=
+X-Google-Smtp-Source: APXvYqydsRCRcwEEyTT3hW+df5ueJfCqumb3KQ1ikA/4kdRwuRb/3FqmeJT+UULfDHbqueX/KjBqVg==
+X-Received: by 2002:a05:6402:2d0:: with SMTP id b16mr38007788edx.147.1568211276171;
+        Wed, 11 Sep 2019 07:14:36 -0700 (PDT)
+Received: from kvdp-BRIX.cmb.citymesh.com (d515300d8.static.telenet.be. [81.83.0.216])
+        by smtp.gmail.com with ESMTPSA id g20sm1156821ejs.15.2019.09.11.07.14.35
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 11 Sep 2019 07:14:35 -0700 (PDT)
+From:   Koen Vandeputte <koen.vandeputte@ncentric.com>
+To:     linux-wireless@vger.kernel.org
+Cc:     johannes@sipsolutions.net,
+        Koen Vandeputte <koen.vandeputte@ncentric.com>
+Subject: [PATCH] mac80211: IBSS: avoid unneeded return value processing
+Date:   Wed, 11 Sep 2019 16:14:31 +0200
+Message-Id: <20190911141431.12498-1-koen.vandeputte@ncentric.com>
+X-Mailer: git-send-email 2.17.1
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-hi Johannes,
+when ieee80211_ibss_csa_beacon() fails, we return it's value.
+When it succeeds, we basically copy it's value and also .. return it.
 
-On 9/11/19 4:47 AM, Johannes Berg wrote:
-> On Fri, 2019-09-06 at 10:43 -0500, Denis Kenzior wrote:
->>
->> + *	There are no limits (outside of netlink protocol limits) on
->> + *	message sizes that can be sent over the "config2" multicast group. It
->> + *	is assumed that applications utilizing "config2" multicast group
->> + *	utilize buffers that are inherently large enough or can utilize
->> + *	MSG_PEEK/MSG_TRUNC in the netlink transport in order to allocate big
->> + *	enough buffers.
-> 
-> I'm not sure I see how the applications could do buffers that are
-> "inherently" large enough, there's no practical message size limit, is
-> there (32-bits for the size).
+Just return it immediately, simplifying the code.
 
-The kernel caps this to 32k right now if I read the code correctly.  But 
-fair point.
+Signed-off-by: Koen Vandeputte <koen.vandeputte@ncentric.com>
+---
+ net/mac80211/ibss.c | 9 +--------
+ 1 file changed, 1 insertion(+), 8 deletions(-)
 
-> 
-> I'd argue this should just say that applications should use large
-> buffers and still use MSG_PEEK/handle MSG_TRUNC, but I can also edit it
-> later.
-> 
->> +	msg = nlmsg_new(alloc_size, GFP_KERNEL);
->> +	if (!msg)
->> +		goto legacy;
->> +
->> +	if (WARN_ON(nl80211_send_wiphy(rdev, cmd, msg, 0, 0, 0, &state) < 0)) {
->> +		nlmsg_free(msg);
->> +		goto legacy;
->> +	}
->> +
->> +	genlmsg_multicast_netns(&nl80211_fam, wiphy_net(&rdev->wiphy), msg, 0,
->> +				NL80211_MCGRP_CONFIG2, GFP_KERNEL);
->> +
->> +legacy:
-> 
-> nit: just use "else" instead of the goto?
+diff --git a/net/mac80211/ibss.c b/net/mac80211/ibss.c
+index 0a6ff01c68a9..d40744903fa9 100644
+--- a/net/mac80211/ibss.c
++++ b/net/mac80211/ibss.c
+@@ -538,7 +538,6 @@ int ieee80211_ibss_finish_csa(struct ieee80211_sub_if_data *sdata)
+ {
+ 	struct ieee80211_if_ibss *ifibss = &sdata->u.ibss;
+ 	struct cfg80211_bss *cbss;
+-	int err, changed = 0;
+ 
+ 	sdata_assert_lock(sdata);
+ 
+@@ -560,13 +559,7 @@ int ieee80211_ibss_finish_csa(struct ieee80211_sub_if_data *sdata)
+ 	ifibss->chandef = sdata->csa_chandef;
+ 
+ 	/* generate the beacon */
+-	err = ieee80211_ibss_csa_beacon(sdata, NULL);
+-	if (err < 0)
+-		return err;
+-
+-	changed |= err;
+-
+-	return changed;
++	return ieee80211_ibss_csa_beacon(sdata, NULL);
+ }
+ 
+ void ieee80211_ibss_stop(struct ieee80211_sub_if_data *sdata)
+-- 
+2.17.1
 
-I'm not sure I understand?  We want to send both messages here...
-
-Regards,
--Denis
