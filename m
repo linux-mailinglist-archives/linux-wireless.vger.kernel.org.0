@@ -2,112 +2,111 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 936DBB03E3
-	for <lists+linux-wireless@lfdr.de>; Wed, 11 Sep 2019 20:48:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 51A67B0473
+	for <lists+linux-wireless@lfdr.de>; Wed, 11 Sep 2019 21:10:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730166AbfIKSsQ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 11 Sep 2019 14:48:16 -0400
-Received: from smtp.codeaurora.org ([198.145.29.96]:60890 "EHLO
-        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729016AbfIKSsQ (ORCPT
+        id S1730260AbfIKTKc convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 11 Sep 2019 15:10:32 -0400
+Received: from roobidoo.pudai.com ([216.14.118.130]:50498 "EHLO
+        roobidoo.pudai.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
+        with ESMTP id S1728415AbfIKTKc (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 11 Sep 2019 14:48:16 -0400
-Received: by smtp.codeaurora.org (Postfix, from userid 1000)
-        id 09CC460A50; Wed, 11 Sep 2019 18:48:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1568227695;
-        bh=fqLyZWfORQEC6v2+nP26Sy1WzgSPYbYDAMK27hsI/aM=;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=Zmn0VYxjz9scf466LpHylBrRTkA2pA87LGVT89iiuYIuLXGwPHR1DYgX3FGiwmobS
-         t+QCf0mnrQE34HEKrj2FVXLJWMbnGg00k1c+uS9U6DL4OSlAbkh93773cXZTkJdPXk
-         cd1r9XzktA6BDPbemGmGON23N1VwkRuUO5MMHrvo=
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        pdx-caf-mail.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.7 required=2.0 tests=ALL_TRUSTED,BAYES_00,
-        DKIM_INVALID,DKIM_SIGNED,SPF_NONE autolearn=no autolearn_force=no
-        version=3.4.0
-Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        (Authenticated sender: kvalo@smtp.codeaurora.org)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 6633560256;
-        Wed, 11 Sep 2019 18:48:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1568227694;
-        bh=fqLyZWfORQEC6v2+nP26Sy1WzgSPYbYDAMK27hsI/aM=;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=ELVDQ4yBwmWuMQqmVGmxRYOhTtlyRU6jCwAb3UnUg0v9ooHc0HPskOWE89vdnBX8c
-         4eFlpirL9TxhLpPpLbUhMzNgtwIR3iCm8UGMDqdPlni9ZRfN8TbtNlstGC1/lXFnmK
-         /qKvzz3JVyycQejo+UVgQZ1uvFkEJzaWP6DdAEjA=
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 6633560256
-Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
-From:   Kalle Valo <kvalo@codeaurora.org>
-To:     Johannes Berg <johannes@sipsolutions.net>
-Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        linux-wireless@vger.kernel.org, Netdev <netdev@vger.kernel.org>,
-        Linux List Kernel Mailing <linux-kernel@vger.kernel.org>,
-        ath10k@lists.infradead.org
-Subject: Re: WARNING at net/mac80211/sta_info.c:1057 (__sta_info_destroy_part2())
-References: <CAHk-=wgBuu8PiYpD7uWgxTSY8aUOJj6NJ=ivNQPYjAKO=cRinA@mail.gmail.com>
-        <feecebfcceba521703f13c8ee7f5bb9016924cb6.camel@sipsolutions.net>
-        <87ef0mlmqg.fsf@tynnyri.adurom.net>
-        <383b145b608e0fe3a35ffb0ceb99fdf938d4e2bb.camel@sipsolutions.net>
-Date:   Wed, 11 Sep 2019 21:48:09 +0300
-In-Reply-To: <383b145b608e0fe3a35ffb0ceb99fdf938d4e2bb.camel@sipsolutions.net>
-        (Johannes Berg's message of "Wed, 11 Sep 2019 20:23:33 +0200")
-Message-ID: <87zhjak6ty.fsf@kamboji.qca.qualcomm.com>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
+        Wed, 11 Sep 2019 15:10:32 -0400
+Received: from [71.219.36.120] (port=5964 helo=[10.168.3.100])
+        by roobidoo.pudai.com with esmtpsa (TLSv1.2:ECDHE-RSA-AES128-GCM-SHA256:128)
+        (Exim 4.92)
+        (envelope-from <tim@timhiggins.com>)
+        id 1i880c-0005pF-Uy; Wed, 11 Sep 2019 14:10:31 -0500
+Cc:     tim@timhiggins.com
+Subject: Re: Question on Intel AX200
+To:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+References: <33bd9a39-0028-2f99-f43e-5e15c9e87287@candelatech.com>
+ <ebe5532f-f456-2534-cd5e-c44d4c43696b@timhiggins.com>
+ <CAM0KTbDS3FpGkdTB7J5PKNyjC809d6tt1E8aQE5D8d1ya-Y78Q@mail.gmail.com>
+From:   Tim Higgins <tim@timhiggins.com>
+Message-ID: <6e9ad429-2a0b-37a8-4767-c5a036f77567@timhiggins.com>
+Date:   Wed, 11 Sep 2019 15:10:34 -0400
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:60.0) Gecko/20100101
+ Thunderbird/60.9.0
 MIME-Version: 1.0
-Content-Type: text/plain
+In-Reply-To: <CAM0KTbDS3FpGkdTB7J5PKNyjC809d6tt1E8aQE5D8d1ya-Y78Q@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 8BIT
+Content-Language: en-US
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - roobidoo.pudai.com
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - timhiggins.com
+X-Get-Message-Sender-Via: roobidoo.pudai.com: authenticated_id: tim@timhiggins.com
+X-Authenticated-Sender: roobidoo.pudai.com: tim@timhiggins.com
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Johannes Berg <johannes@sipsolutions.net> writes:
 
-> On Wed, 2019-09-11 at 21:19 +0300, Kalle Valo wrote:
->> > Looks like indeed the driver gives the device at least *3 seconds* for
->> > every command, see ath10k_wmi_cmd_send(), so most likely this would
->> > eventually have finished, but who knows how many firmware commands it
->> > would still have attempted to send...
->> 
->> 3 seconds is a bit short but in normal cases it should be enough. Of
->> course we could increase the delay but I'm skeptic it would help here.
->
-> I was thinking 3 seconds is way too long :-)
+>> On 9/11/2019 9:49 AM, Ben Greear wrote:
+>>> Hello,
+>>>
+>>> Does anyone know how well AX200 currently supports:
+>>>
+>>> OFDMA
+>>>
+>>> MU-MIMO (receiver)
+>>>
+>>> AP Mode
+>>>
+>>> And, can anyone suggest a good /AX AP to test against for these features?
+>>>
+>>> Thanks,
+>>> Ben
+>>>
+>> Hi Ben,
+>> I've been doing a lot of testing with the AX200 as a STA and sniffer, focusing on trying to see
+>> if OFDMA lives up to its advertised features. This topic is probably not of interest to this
+>> general list, so I'm happy to take the discussion to one-on-one.
+>>
+>> Tim
+I'll provide a brief summary and anyone interested can follow up directly with me.
 
-Heh :)
+My focus is on the consumer Wi-Fi space, so I can't speak for Enterprise grade gear.
+In that space, the only products that currently have OFDMA enabled are the ASUS RT-AX88U 
+(Broadcom platform),  NETGEAR RAX120 (Qualcomm platform) and Arris SURFboard mAX PRO and 
+SURFboard mAX PLUS. I have looked at the ASUS and NETGEAR, but don't have the Arris in hand.
 
->> > Perhaps the driver should mark the device as dead and fail quickly once
->> > it timed out once, or so, but I'll let Kalle comment on that.
->> 
->> Actually we do try to restart the device when a timeout happens in
->> ath10k_wmi_cmd_send():
->> 
->>         if (ret == -EAGAIN) {
->>                 ath10k_warn(ar, "wmi command %d timeout, restarting hardware\n",
->>                             cmd_id);
->>                 queue_work(ar->workqueue, &ar->restart_work);
->>         }
->
-> Yeah, and this is the problem, in a sense, I'd think. It seems to me
-> that at this point the code needs to tag the device as "dead" and
-> immediately return from any further commands submitted to it with an
-> error (e.g. -EIO).
+Engenius' EWS357AP (Qualcomm platform) also has OFDMA enabled. I'm not sure of the state of 
+publicly released firmware. I tried a few firmware versions and the results were not very good. 
+So I've set that one aside for now.
 
-Yeah, ath10k_core_restart() is supposed change to state
-ATH10K_STATE_RESTARTING but very few mac80211 ops in ath10k_ops are
-checking for it, and to me it looks like quite late even. I think a
-proper fix for ops which can sleep is to check ar->state is
-ATH10K_STATE_ON and for ops which cannot sleep check
-ATH10K_FLAG_CRASH_FLUSH.
+The ASUS has beta code that the company says supports OFDMA DL in 5 GHz best, uplink no so much 
+and 2.4 GHz is not stable.
 
-But of course this just fixes the symptoms, the root cause for timeouts
-needs to be found as well.
+The NETGEAR supports OFDMA in both 2.4 and 5 GHz, but downlink only.
 
--- 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+There is no product I know of that supports DL and UL OFDMA in both bands.
+
+I've been using four Samsung S10e's as my STAs to run traffic to using iperf3. I also have a few 
+Intel AX200's on ASUS mini ITX boards and one on an ASUS pico ITX board. Right now, the AX200 is 
+used mainly for capture. Thanks to help from Johannes, I got the debug kernel capability working 
+that allows capturing individual AIDs. So I can capture OFDMA data frames and, of course, HE 
+management and trigger frames.
+
+An ongoing issue is that I'm not sure what I'm supposed to be seeing when sniffing OFDMA DL and 
+UL traffic. The DL OFDMA and UL OFDMA sequences described in David Coleman's Aerohive blog 
+posts, which are also in the CWNA 5th Edition Study Guide that David co-authored, have yet to be 
+seen.
+https://blog.aerohive.com/dl-ofdma/
+https://blog.aerohive.com/uplink-orthogonal-division-multiple-access-ul-ofdma-in-802-11ax/
+
+So I don't even know if the products I'm testing are implementing "proper" OFDMA.
+
+I've yet to see OFDMA's key features of higher efficiency and lower latency using simple TCP/IP 
+traffic and ping. There are many moving parts on both AP and STA...this is going to take awhile 
+to sort out.
+
+
