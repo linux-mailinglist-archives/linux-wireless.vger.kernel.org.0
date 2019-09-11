@@ -2,35 +2,31 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 65EAEB0389
-	for <lists+linux-wireless@lfdr.de>; Wed, 11 Sep 2019 20:23:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 55531B0395
+	for <lists+linux-wireless@lfdr.de>; Wed, 11 Sep 2019 20:26:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729886AbfIKSXm (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 11 Sep 2019 14:23:42 -0400
-Received: from s3.sipsolutions.net ([144.76.43.62]:48026 "EHLO
+        id S1730010AbfIKS0E (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 11 Sep 2019 14:26:04 -0400
+Received: from s3.sipsolutions.net ([144.76.43.62]:48104 "EHLO
         sipsolutions.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728105AbfIKSXm (ORCPT
+        with ESMTP id S1728198AbfIKS0D (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 11 Sep 2019 14:23:42 -0400
+        Wed, 11 Sep 2019 14:26:03 -0400
 Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
         (Exim 4.92)
         (envelope-from <johannes@sipsolutions.net>)
-        id 1i87HD-000795-UV; Wed, 11 Sep 2019 20:23:36 +0200
-Message-ID: <383b145b608e0fe3a35ffb0ceb99fdf938d4e2bb.camel@sipsolutions.net>
-Subject: Re: WARNING at net/mac80211/sta_info.c:1057
- (__sta_info_destroy_part2())
+        id 1i87JZ-0007DN-Ac; Wed, 11 Sep 2019 20:26:01 +0200
+Message-ID: <4909a428ee6fef2bf8b0e61841bc88062f534b13.camel@sipsolutions.net>
+Subject: Re: [RFC 0/4] Allow live MAC address change
 From:   Johannes Berg <johannes@sipsolutions.net>
-To:     Kalle Valo <kvalo@codeaurora.org>
-Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        linux-wireless@vger.kernel.org, Netdev <netdev@vger.kernel.org>,
-        Linux List Kernel Mailing <linux-kernel@vger.kernel.org>,
-        ath10k@lists.infradead.org
-Date:   Wed, 11 Sep 2019 20:23:33 +0200
-In-Reply-To: <87ef0mlmqg.fsf@tynnyri.adurom.net>
-References: <CAHk-=wgBuu8PiYpD7uWgxTSY8aUOJj6NJ=ivNQPYjAKO=cRinA@mail.gmail.com>
-         <feecebfcceba521703f13c8ee7f5bb9016924cb6.camel@sipsolutions.net>
-         <87ef0mlmqg.fsf@tynnyri.adurom.net>
+To:     James Prestwood <prestwoj@gmail.com>,
+        linux-wireless@vger.kernel.org
+Date:   Wed, 11 Sep 2019 20:25:59 +0200
+In-Reply-To: <4c43ea6a74cacc61184bc5b1387fecaa40711369.camel@gmail.com> (sfid-20190911_175613_316165_C021A0FB)
+References: <20190904191155.28056-1-prestwoj@gmail.com>
+         (sfid-20190904_221357_305070_478BF6CA) <d776271eac8b7cd24da6dbd21fb87186b30a0e7f.camel@sipsolutions.net>
+         <4c43ea6a74cacc61184bc5b1387fecaa40711369.camel@gmail.com>
+         (sfid-20190911_175613_316165_C021A0FB)
 Content-Type: text/plain; charset="UTF-8"
 User-Agent: Evolution 3.30.5 (3.30.5-1.fc29) 
 MIME-Version: 1.0
@@ -40,51 +36,46 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Wed, 2019-09-11 at 21:19 +0300, Kalle Valo wrote:
-> > Looks like indeed the driver gives the device at least *3 seconds* for
-> > every command, see ath10k_wmi_cmd_send(), so most likely this would
-> > eventually have finished, but who knows how many firmware commands it
-> > would still have attempted to send...
+On Wed, 2019-09-11 at 08:54 -0700, James Prestwood wrote:
 > 
-> 3 seconds is a bit short but in normal cases it should be enough. Of
-> course we could increase the delay but I'm skeptic it would help here.
+> I could have made this a bit more clear. I initially did measure the
+> time to a full connection, including EAPoL, but the more I timed the
+> more chance there was for scheduling delays that really threw off the
+> results. Not that these results weren't valid, I just would have needed
+> to time many many more runs to get a decent averaged time. The method
+> of timings I took just isolated things a bit better.
 
-I was thinking 3 seconds is way too long :-)
+Sure, makes sense, and I didn't think you were doing that, I was just
+wondering what exactly you did measure.
 
-> > Perhaps the driver should mark the device as dead and fail quickly once
-> > it timed out once, or so, but I'll let Kalle comment on that.
-> 
-> Actually we do try to restart the device when a timeout happens in
-> ath10k_wmi_cmd_send():
-> 
->         if (ret == -EAGAIN) {
->                 ath10k_warn(ar, "wmi command %d timeout, restarting hardware\n",
->                             cmd_id);
->                 queue_work(ar->workqueue, &ar->restart_work);
->         }
+> For the three methods below I measured the time from the connection
+> initiation (either powering down via RTNL, changing MAC via RTNL, or
+> sending CMD_CONNECT) until we got a success callback from CMD_CONNECT,
+> including changing the MAC via RTNL in those cases.
 
-Yeah, and this is the problem, in a sense, I'd think. It seems to me
-that at this point the code needs to tag the device as "dead" and
-immediately return from any further commands submitted to it with an
-error (e.g. -EIO). You can can actually see in the initial report that
-while the restart was triggered, it too is waiting to acquire the RTNL:
+Ah, ok.
 
->    Workqueue: events_freezable ieee80211_restart_work [mac80211]
->    Call Trace:
->     schedule+0x39/0xa0
->     schedule_preempt_disabled+0xa/0x10
->     __mutex_lock.isra.0+0x263/0x4b0
->     ieee80211_restart_work+0x54/0xe0 [mac80211]
->     process_one_work+0x1cf/0x370
->     worker_thread+0x4a/0x3c0
->     kthread+0xfb/0x130
->     ret_from_fork+0x35/0x40
+> Out of curiosity how this behavior is different than the power down +
+> RTNL MAC change (the current way of doing things)? If you power down
+> the device, change the MAC, then power up does that MAC get reset after
+> a disconnection/failure?
 
+No, of course not? But then you're explicitly issuing a command ("change
+the MAC address") that is supposed to affect state indefinitely, vs.
+issuing a command ("please connect") that isn't really meant to.
 
-So basically all this delay is mac80211 and the driver doing stuff with
-the device, but every single thing has to time out and probably some
-stuff loops etc., and then it just takes long enough with the RTNL held
-that everything goes south.
+If there was one thing that we learned from wext, IMHO it was that
+keeping all the state in the kernel is bad for you, and it's much better
+to handle things if the state gets reset when you disconnect etc. In
+most places that's what we do now and I think it has served us well, so
+I'm very reluctant to mix things that need state in the kernel with
+those that don't.
 
+(You might not remember wext, but you'd have to issue a bunch of
+commands in the right order, and it would keep all the state inbetween;
+if you forgot to clear the BSSID after setting it, it'd be remembered
+and you couldn't connect to a new AP unless you reset it, etc.)
+
+Thanks,
 johannes
 
