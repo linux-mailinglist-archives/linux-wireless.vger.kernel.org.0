@@ -2,25 +2,25 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 194BBB0364
-	for <lists+linux-wireless@lfdr.de>; Wed, 11 Sep 2019 20:10:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D9FA3B037A
+	for <lists+linux-wireless@lfdr.de>; Wed, 11 Sep 2019 20:19:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729758AbfIKSKS (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 11 Sep 2019 14:10:18 -0400
-Received: from smtp.codeaurora.org ([198.145.29.96]:42450 "EHLO
+        id S1729914AbfIKSTZ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 11 Sep 2019 14:19:25 -0400
+Received: from smtp.codeaurora.org ([198.145.29.96]:46830 "EHLO
         smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729603AbfIKSKS (ORCPT
+        with ESMTP id S1728198AbfIKSTZ (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 11 Sep 2019 14:10:18 -0400
+        Wed, 11 Sep 2019 14:19:25 -0400
 Received: by smtp.codeaurora.org (Postfix, from userid 1000)
-        id 7AEC26083E; Wed, 11 Sep 2019 18:10:17 +0000 (UTC)
+        id 33882607C6; Wed, 11 Sep 2019 18:19:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1568225417;
-        bh=cth2OToflJTkN3D/O4iZhjJihL/01YTrfPtE4GsgCgo=;
+        s=default; t=1568225964;
+        bh=Cq8dA5RuJNCfEAowmhvZuC5y4iuFy5mhIPmTToluUMs=;
         h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=Y9CJw4+v9XT5TXnfyFAawO9Mpw3Qtkezxm7jhZfPKZc/37GSSbc+cHV0k5gzYrohF
-         erKa33beW9l5sVO7lIANR4cQ0HMSBchNv0WeRbl4w4y/+1c2WVsCHmfPxA0kwHrukL
-         mpOJgP1ynurI/3tRDjPEnq5UDTGtD77dPxQ+B5E8=
+        b=D4aSuyuLCh3pJmHnnFpuTZCHcgVPaPoy16SYi1IkAD2LGzeyMkb1mf4M04VdRUEsl
+         deUcjNc05bsek504fYmwIDZbrG6EDW1lu3lpUtBPeCdZqQkJ68cukQl+Hzlsp1p82J
+         wny+cIg6vd2kG6sSC7EPTgNfqTVcbu96E3ggKVSY=
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         pdx-caf-mail.web.codeaurora.org
 X-Spam-Level: 
@@ -31,31 +31,33 @@ Received: from tynnyri.adurom.net (tynnyri.adurom.net [51.15.11.48])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
         (Authenticated sender: kvalo@smtp.codeaurora.org)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 2562660790;
-        Wed, 11 Sep 2019 18:10:14 +0000 (UTC)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 933CF602BC;
+        Wed, 11 Sep 2019 18:19:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1568225416;
-        bh=cth2OToflJTkN3D/O4iZhjJihL/01YTrfPtE4GsgCgo=;
+        s=default; t=1568225963;
+        bh=Cq8dA5RuJNCfEAowmhvZuC5y4iuFy5mhIPmTToluUMs=;
         h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=hMuxXxp35tcUz+Y20r9+iJeSGY4gCb3KvvG3mouExKnNPiuJewGZizo1agn4D68EW
-         xoFmIYgzdTgXMttGUXjHfUOaWope0ATvEuZ/iCEtWuY8oDwk7DBe9zGxI0JaG0K5jG
-         p7MysMxZzVH2ThqosFRpGC5xMCXYpd12jWhd9sRc=
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 2562660790
+        b=oPoyWpwWaYG6gmpB5EbPPo9zZG4bz8pA8hQ3l4p8ZV5bp+GMzxvD0tduXjlV+A/vn
+         4PvOsNNH3umELX67JiyoIbxDx+wsjMi3kYHic0fJIv+3qNnM2tnVsy/YnztgZjQHat
+         egYPG4zlizRYUB9g1n3e9+jHAuwVloSa1avaEzGg=
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 933CF602BC
 Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
 Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
 From:   Kalle Valo <kvalo@codeaurora.org>
-To:     Linus Torvalds <torvalds@linux-foundation.org>
-Cc:     Johannes Berg <johannes@sipsolutions.net>,
+To:     Johannes Berg <johannes@sipsolutions.net>
+Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
         "David S. Miller" <davem@davemloft.net>,
+        Kalle Valo <kvalo@codeaurora.org>,
         linux-wireless@vger.kernel.org, Netdev <netdev@vger.kernel.org>,
         Linux List Kernel Mailing <linux-kernel@vger.kernel.org>,
         ath10k@lists.infradead.org
 Subject: Re: WARNING at net/mac80211/sta_info.c:1057 (__sta_info_destroy_part2())
 References: <CAHk-=wgBuu8PiYpD7uWgxTSY8aUOJj6NJ=ivNQPYjAKO=cRinA@mail.gmail.com>
-Date:   Wed, 11 Sep 2019 21:10:12 +0300
-In-Reply-To: <CAHk-=wgBuu8PiYpD7uWgxTSY8aUOJj6NJ=ivNQPYjAKO=cRinA@mail.gmail.com>
-        (Linus Torvalds's message of "Wed, 11 Sep 2019 11:05:46 +0100")
-Message-ID: <87lfuuln5n.fsf@tynnyri.adurom.net>
+        <feecebfcceba521703f13c8ee7f5bb9016924cb6.camel@sipsolutions.net>
+Date:   Wed, 11 Sep 2019 21:19:19 +0300
+In-Reply-To: <feecebfcceba521703f13c8ee7f5bb9016924cb6.camel@sipsolutions.net>
+        (Johannes Berg's message of "Wed, 11 Sep 2019 12:26:32 +0200")
+Message-ID: <87ef0mlmqg.fsf@tynnyri.adurom.net>
 User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
 MIME-Version: 1.0
 Content-Type: text/plain
@@ -64,95 +66,53 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-+ ath10k list
+Johannes Berg <johannes@sipsolutions.net> writes:
 
-Linus Torvalds <torvalds@linux-foundation.org> writes:
-
-> So I'm at LCA, reading email, using my laptop more than I normally do,
-> and with different networking than I normally do.
+>>    ath10k_pci 0000:02:00.0: wmi command 16387 timeout, restarting hardware
+>>    ath10k_pci 0000:02:00.0: failed to set 5g txpower 23: -11
+>>    ath10k_pci 0000:02:00.0: failed to setup tx power 23: -11
+>>    ath10k_pci 0000:02:00.0: failed to recalc tx power: -11
+>>    ath10k_pci 0000:02:00.0: failed to set inactivity time for vdev 0: -108
+>>    ath10k_pci 0000:02:00.0: failed to setup powersave: -108
+>> 
+>> That certainly looks like something did try to set a power limit, but
+>> eventually failed.
 >
-> And I just had a 802.11 WARN_ON() trigger, followed by essentially a
-> dead machine due to some lock held (maybe rtnl_lock).
+> Yeah, that does seem a bit fishy. Kalle would have to comment for
+> ath10k.
 >
-> It's possible that the lock held thing happened before, and is the
-> _reason_ for the delay, I don't know. I had to reboot the machine, but
-> I gathered as much information as made sense and was obvious before I
-> did so. That's appended.
-
-Some notes while investigating this:
-
-> But wait!
+>> Immediately after that:
+>> 
+>>    wlp2s0: deauthenticating from 54:ec:2f:05:70:2c by local choice
+>> (Reason: 3=DEAUTH_LEAVING)
 >
-> ... then 10+ minutes later:
->
->    ath10k_pci 0000:02:00.0: wmi command 16387 timeout, restarting hardware
->    ath10k_pci 0000:02:00.0: failed to set 5g txpower 23: -11
->    ath10k_pci 0000:02:00.0: failed to setup tx power 23: -11
->    ath10k_pci 0000:02:00.0: failed to recalc tx power: -11
->    ath10k_pci 0000:02:00.0: failed to set inactivity time for vdev 0: -108
->    ath10k_pci 0000:02:00.0: failed to setup powersave: -108
->
-> That certainly looks like something did try to set a power limit, but
-> eventually failed.
+> I don't _think_ any of the above would be a reason to disconnect, but it
+> clearly looks like the device got stuck at this point, since everything
+> just fails afterwards.
 
-I suspect the failing WMI command is called from:
+Yeah, to me it looks anything ath10k tries to do with the devie fails,
+even resetting the device.
 
-ath10k_bss_info_changed()
-ath10k_mac_txpower_recalc()
-ath10k_mac_txpower_setup()
-ath10k_wmi_pdev_set_param()
-ath10k_wmi_cmd_send()
-ath10k_wmi_cmd_send_nowait()
-ath10k_htc_send()
+> Looks like indeed the driver gives the device at least *3 seconds* for
+> every command, see ath10k_wmi_cmd_send(), so most likely this would
+> eventually have finished, but who knows how many firmware commands it
+> would still have attempted to send...
 
--11 is -EAGAIN which would mean that the HTC credits have run out some
- reason for the WMI command:
+3 seconds is a bit short but in normal cases it should be enough. Of
+course we could increase the delay but I'm skeptic it would help here.
 
-if (ep->tx_credits < credits) {
-        ath10k_dbg(ar, ATH10K_DBG_HTC,
-                "htc insufficient credits ep %d required %d available %d\n",
-                eid, credits, ep->tx_credits);
-        spin_unlock_bh(&htc->tx_lock);
-        ret = -EAGAIN;
-        goto err_pull;
-}
+> Perhaps the driver should mark the device as dead and fail quickly once
+> it timed out once, or so, but I'll let Kalle comment on that.
 
-Credits can run out, for example, if there's a lot of WMI command/event
-activity and are not returned during the 3s wait, firmware crashed or
-problems with the PCI bus. But when the WMI command timeout happens
-ath10k is supposed to restart the firmware and everything should be
-usable again.
-                                             
-> Immediately after that:
->
->    wlp2s0: deauthenticating from 54:ec:2f:05:70:2c by local choice
-> (Reason: 3=DEAUTH_LEAVING)
->    ath10k_pci 0000:02:00.0: failed to read hi_board_data address: -16
->    ath10k_pci 0000:02:00.0: failed to receive initialized event from
-> target: 00000000
->    ath10k_pci 0000:02:00.0: failed to receive initialized event from
-> target: 00000000
->    ath10k_pci 0000:02:00.0: failed to wait for target init: -110
+Actually we do try to restart the device when a timeout happens in
+ath10k_wmi_cmd_send():
 
-I suspect here ath10k tries to reset the target during stop operation,
-"failed to receive initialized event from target" comes from:
-
-ath10k_pci_hif_stop()
-ath10k_pci_safe_chip_reset()
-ath10k_pci_warm_reset()
-ath10k_pci_wait_for_target_init()
-
-It shouldn't fail like that, which makes me suspect either a low level
-problem or a bug in qca6174 firmware restart code. To check the latter,
-could you please try to force a firmware crash and see if firmware
-restart is working for you?
-
-To crash the firmware you need to write either "hard" or "assert" (I
-forgot which one QCA6174 firmware supports) to
-/sys/kernel/debug/ieee80211/phy*/ath10k/simulate_fw_crash. And what
-should happen is that the firmware crashes, ath10k prints a big pile of
-warnings, restarts it and in few seconds everything resumes to normal
-without user space even noticing it.
+        if (ret == -EAGAIN) {
+                ath10k_warn(ar, "wmi command %d timeout, restarting hardware\n",
+                            cmd_id);
+                queue_work(ar->workqueue, &ar->restart_work);
+        }
+                        
 
 -- 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
