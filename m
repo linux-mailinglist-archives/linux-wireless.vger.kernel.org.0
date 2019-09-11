@@ -2,74 +2,139 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 9EE2DAFD61
-	for <lists+linux-wireless@lfdr.de>; Wed, 11 Sep 2019 15:06:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5D48CAFD7B
+	for <lists+linux-wireless@lfdr.de>; Wed, 11 Sep 2019 15:13:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727659AbfIKNGK (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 11 Sep 2019 09:06:10 -0400
-Received: from s3.sipsolutions.net ([144.76.43.62]:39898 "EHLO
+        id S1728081AbfIKNNh (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 11 Sep 2019 09:13:37 -0400
+Received: from s3.sipsolutions.net ([144.76.43.62]:40576 "EHLO
         sipsolutions.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727837AbfIKNGJ (ORCPT
+        with ESMTP id S1727302AbfIKNNg (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 11 Sep 2019 09:06:09 -0400
+        Wed, 11 Sep 2019 09:13:36 -0400
 Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
         (Exim 4.92)
         (envelope-from <johannes@sipsolutions.net>)
-        id 1i82Jw-0007pA-9M; Wed, 11 Sep 2019 15:06:04 +0200
-Message-ID: <d0de07f0918863c8bc9bebccd8c6a7402a2ad173.camel@sipsolutions.net>
-Subject: Re: [PATCH] mac80211: Do not send Layer 2 Update frame before
- authorization
+        id 1i82R7-00086x-GK; Wed, 11 Sep 2019 15:13:29 +0200
 From:   Johannes Berg <johannes@sipsolutions.net>
-To:     Jouni Malinen <jouni@codeaurora.org>
-Cc:     linux-wireless@vger.kernel.org, David Miller <davem@davemloft.net>,
-        netdev@vger.kernel.org
-Date:   Wed, 11 Sep 2019 15:06:03 +0200
-In-Reply-To: <20190911130305.23704-1-jouni@codeaurora.org>
-References: <20190911130305.23704-1-jouni@codeaurora.org>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.30.5 (3.30.5-1.fc29) 
+To:     David Miller <davem@davemloft.net>
+Cc:     netdev@vger.kernel.org, linux-wireless@vger.kernel.org
+Subject: pull-request: mac80211-next 2019-09-11
+Date:   Wed, 11 Sep 2019 15:13:25 +0200
+Message-Id: <20190911131326.24032-1-johannes@sipsolutions.net>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Wed, 2019-09-11 at 16:03 +0300, Jouni Malinen wrote:
-> The Layer 2 Update frame is used to update bridges when a station roams
-> to another AP even if that STA does not transmit any frames after the
-> reassociation. This behavior was described in IEEE Std 802.11F-2003 as
-> something that would happen based on MLME-ASSOCIATE.indication, i.e.,
-> before completing 4-way handshake. However, this IEEE trial-use
-> recommended practice document was published before RSN (IEEE Std
-> 802.11i-2004) and as such, did not consider RSN use cases. Furthermore,
-> IEEE Std 802.11F-2003 was withdrawn in 2006 and as such, has not been
-> maintained amd should not be used anymore.
-> 
-> Sending out the Layer 2 Update frame immediately after association is
-> fine for open networks (and also when using SAE, FT protocol, or FILS
-> authentication when the station is actually authenticated by the time
-> association completes). However, it is not appropriate for cases where
-> RSN is used with PSK or EAP authentication since the station is actually
-> fully authenticated only once the 4-way handshake completes after
-> authentication and attackers might be able to use the unauthenticated
-> triggering of Layer 2 Update frame transmission to disrupt bridge
-> behavior.
-> 
-> Fix this by postponing transmission of the Layer 2 Update frame from
-> station entry addition to the point when the station entry is marked
-> authorized. Similarly, send out the VLAN binding update only if the STA
-> entry has already been authorized.
+Hi Dave,
 
-Reviewed-by: Johannes Berg <johannes@sipsolutions.net>
+As detailed below, here are some more changes for -next, almost
+certainly the final round since the merge window is around the
+corner now.
 
-Dave, if you were still planning to send a pull request to Linus before
-he closes the tree on Sunday this would be good to include (and we
-should also backport it to stable later).
-
-If not, I can pick it up afterwards, let me know.
+Please pull and let me know if there's any problem.
 
 Thanks,
 johannes
 
+
+
+The following changes since commit c76c992525245ec1c7b6738bf887c42099abab02:
+
+  nexthops: remove redundant assignment to variable err (2019-08-22 12:14:05 -0700)
+
+are available in the Git repository at:
+
+  git://git.kernel.org/pub/scm/linux/kernel/git/jberg/mac80211-next.git tags/mac80211-next-for-davem-2019-09-11
+
+for you to fetch changes up to c1d3ad84eae35414b6b334790048406bd6301b12:
+
+  cfg80211: Purge frame registrations on iftype change (2019-09-11 10:45:10 +0200)
+
+----------------------------------------------------------------
+We have a number of changes, but things are settling down:
+ * a fix in the new 6 GHz channel support
+ * a fix for recent minstrel (rate control) updates
+   for an infinite loop
+ * handle interface type changes better wrt. management frame
+   registrations (for management frames sent to userspace)
+ * add in-BSS RX time to survey information
+ * handle HW rfkill properly if !CONFIG_RFKILL
+ * send deauth on IBSS station expiry, to avoid state mismatches
+ * handle deferred crypto tailroom updates in mac80211 better
+   when device restart happens
+ * fix a spectre-v1 - really a continuation of a previous patch
+ * advertise NL80211_CMD_UPDATE_FT_IES as supported if so
+ * add some missing parsing in VHT extended NSS support
+ * support HE in mac80211_hwsim
+ * let mac80211 drivers determine the max MTU themselves
+along with the usual cleanups etc.
+
+----------------------------------------------------------------
+Arend van Spriel (1):
+      cfg80211: fix boundary value in ieee80211_frequency_to_channel()
+
+Colin Ian King (1):
+      mac80211: minstrel_ht: fix infinite loop because supported is not being shifted
+
+Denis Kenzior (1):
+      cfg80211: Purge frame registrations on iftype change
+
+Felix Fietkau (1):
+      cfg80211: add local BSS receive time to survey information
+
+Johannes Berg (4):
+      cfg80211: always shut down on HW rfkill
+      mac80211: list features in WEP/TKIP disable in better order
+      mac80211: remove unnecessary key condition
+      mac80211: IBSS: send deauth when expiring inactive STAs
+
+Lior Cohen (1):
+      mac80211: clear crypto tx tailroom counter upon keys enable
+
+Luca Coelho (1):
+      mac80211: don't check if key is NULL in ieee80211_key_link()
+
+Masashi Honma (1):
+      nl80211: Fix possible Spectre-v1 for CQM RSSI thresholds
+
+Matthew Wang (1):
+      nl80211: add NL80211_CMD_UPDATE_FT_IES to supported commands
+
+Mordechay Goodstein (1):
+      mac80211: vht: add support VHT EXT NSS BW in parsing VHT
+
+Sven Eckelmann (1):
+      mac80211_hwsim: Register support for HE meshpoint
+
+Wen Gong (1):
+      mac80211: allow drivers to set max MTU
+
+zhong jiang (1):
+      cfg80211: Do not compare with boolean in nl80211_common_reg_change_event
+
+ drivers/net/wireless/mac80211_hwsim.c | 283 +++++++++++++++++++++++-----------
+ include/net/cfg80211.h                |   4 +
+ include/net/mac80211.h                |   3 +
+ include/uapi/linux/nl80211.h          |   3 +
+ net/mac80211/ibss.c                   |   8 +
+ net/mac80211/ieee80211_i.h            |   3 +-
+ net/mac80211/iface.c                  |   2 +-
+ net/mac80211/key.c                    |  48 ++----
+ net/mac80211/key.h                    |   4 +-
+ net/mac80211/main.c                   |   1 +
+ net/mac80211/mlme.c                   |  13 +-
+ net/mac80211/rc80211_minstrel_ht.c    |   2 +-
+ net/mac80211/util.c                   |  11 +-
+ net/mac80211/vht.c                    |  10 +-
+ net/wireless/core.c                   |  13 +-
+ net/wireless/core.h                   |   2 +-
+ net/wireless/nl80211.c                |  17 +-
+ net/wireless/util.c                   |   3 +-
+ net/wireless/wext-compat.c            |   5 +-
+ 19 files changed, 274 insertions(+), 161 deletions(-)
 
