@@ -2,78 +2,106 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 7301EAFE35
-	for <lists+linux-wireless@lfdr.de>; Wed, 11 Sep 2019 16:00:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8F711AFE48
+	for <lists+linux-wireless@lfdr.de>; Wed, 11 Sep 2019 16:06:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727656AbfIKN76 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 11 Sep 2019 09:59:58 -0400
-Received: from shards.monkeyblade.net ([23.128.96.9]:43630 "EHLO
-        shards.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726149AbfIKN76 (ORCPT
+        id S1727674AbfIKOGG (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 11 Sep 2019 10:06:06 -0400
+Received: from mail-oi1-f193.google.com ([209.85.167.193]:36697 "EHLO
+        mail-oi1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726149AbfIKOGG (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 11 Sep 2019 09:59:58 -0400
-Received: from localhost (unknown [148.69.85.38])
-        (using TLSv1 with cipher AES256-SHA (256/256 bits))
-        (Client did not present a certificate)
-        (Authenticated sender: davem-davemloft)
-        by shards.monkeyblade.net (Postfix) with ESMTPSA id F279215002437;
-        Wed, 11 Sep 2019 06:59:56 -0700 (PDT)
-Date:   Wed, 11 Sep 2019 15:59:55 +0200 (CEST)
-Message-Id: <20190911.155955.1215273750491589577.davem@davemloft.net>
-To:     johannes@sipsolutions.net
-Cc:     jouni@codeaurora.org, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org
-Subject: Re: [PATCH] mac80211: Do not send Layer 2 Update frame before
- authorization
-From:   David Miller <davem@davemloft.net>
-In-Reply-To: <d0de07f0918863c8bc9bebccd8c6a7402a2ad173.camel@sipsolutions.net>
-References: <20190911130305.23704-1-jouni@codeaurora.org>
-        <d0de07f0918863c8bc9bebccd8c6a7402a2ad173.camel@sipsolutions.net>
-X-Mailer: Mew version 6.8 on Emacs 26.2
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
+        Wed, 11 Sep 2019 10:06:06 -0400
+Received: by mail-oi1-f193.google.com with SMTP id k20so14197135oih.3;
+        Wed, 11 Sep 2019 07:06:05 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=dG0h5xr7PLWX3L1atFp9BWDn9f7GpG/Z8DYTb3U4rQ4=;
+        b=ZP2OF21C3vwcf7/IRHQORsFEZmCsgicTi1Op+DG2/KplgJVDynX5wuLDrzyOkVlX0f
+         hUxoAlJXYriNpae7K3bbZYoOSoXR4gP1JXwCMVCzd612qB1PvozP0/3K1BZMB3yjV0a+
+         c6SxtaouKPgXbvv8LyiwDU00REQsv4TdN6phb5TvoUyQSNVkOWusjkdqO8pLPNAcs0MP
+         ahg0exc4I5NlVcrSt1w2lwVXxEAb6iQc0VEpGIb2Wgoui/tEvmFxN0pcH4Mu59IBFdT5
+         CNTSLVkfygneI9wOBFNzad4DvfAzafUeP08r/nYxdOm2Ld/uOiDmAS1CNJ17yQi8cChr
+         chxA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=dG0h5xr7PLWX3L1atFp9BWDn9f7GpG/Z8DYTb3U4rQ4=;
+        b=S6O3vTBluwMl6jEl3XtZFrCWNnz9q+ZJlFwrmQ2/9ElDdPIpBkzS/FrBoX8WOHX+/A
+         ckP8Bf1k4YgzSE3iWWo29IwCSbBvDnhJyOs4ERUjb88ThE1Jb2be2qgGf82jBBhlJAp0
+         vWRSB8Z0TBXDs8GwiybZmPlMry02/igpOHesyGbpdrW1CP4zcUdeMVLRIgR8wS0ZZ/xR
+         8tVpbR9gxM971wZ/OrmI4wb6AHo5/JzGw0BuGWfwEqMge8jUCVqAxcCxBAdV97Bx7PP1
+         4IM69IkVjhBAkIoPtsKQ9zfrhRl4gwuHQYaJForON0snsZoa0YO5CzzvyDLMAzX/lZI9
+         +8Kw==
+X-Gm-Message-State: APjAAAV0b7yj5Tk2feB+FgwALGotTKSLddeVWs8WJuUYikI3eTrDBne7
+        5XpLuULqg2uR9Lw+dPtZpIUCqlvQ
+X-Google-Smtp-Source: APXvYqyX2jvH3BqvZXW/hU+naeoh/m6eknkg01iFOvHHszGb1/7T64Zi4J5PJex2m/6UnXOf4OnC2w==
+X-Received: by 2002:aca:c645:: with SMTP id w66mr4413165oif.9.1568210765336;
+        Wed, 11 Sep 2019 07:06:05 -0700 (PDT)
+Received: from [192.168.1.249] (cpe-70-114-247-242.austin.res.rr.com. [70.114.247.242])
+        by smtp.googlemail.com with ESMTPSA id i47sm8174197ota.1.2019.09.11.07.06.04
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Wed, 11 Sep 2019 07:06:04 -0700 (PDT)
+Subject: Re: [PATCH] cfg80211: Purge frame registrations on iftype change
+To:     Johannes Berg <johannes@sipsolutions.net>,
+        linux-wireless@vger.kernel.org
+Cc:     stable@vger.kernel.org
+References: <20190828211110.15005-1-denkenz@gmail.com>
+ <5dc694c33759a32eb3796668a8b396c0133e1ebe.camel@sipsolutions.net>
+ <bb8d43d2-8383-1f7c-94f8-feecc29240f3@gmail.com>
+ <ea9a895d18a34b876c440e6272b1d55d27c8a419.camel@sipsolutions.net>
+From:   Denis Kenzior <denkenz@gmail.com>
+Message-ID: <8fdb9d1f-d535-22ed-1a1a-357f826ecf54@gmail.com>
+Date:   Wed, 11 Sep 2019 07:12:42 -0500
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.8.0
+MIME-Version: 1.0
+In-Reply-To: <ea9a895d18a34b876c440e6272b1d55d27c8a419.camel@sipsolutions.net>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
 Content-Transfer-Encoding: 7bit
-X-Greylist: Sender succeeded SMTP AUTH, not delayed by milter-greylist-4.5.12 (shards.monkeyblade.net [149.20.54.216]); Wed, 11 Sep 2019 06:59:57 -0700 (PDT)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Johannes Berg <johannes@sipsolutions.net>
-Date: Wed, 11 Sep 2019 15:06:03 +0200
+Hi Johannes,
 
-> On Wed, 2019-09-11 at 16:03 +0300, Jouni Malinen wrote:
->> The Layer 2 Update frame is used to update bridges when a station roams
->> to another AP even if that STA does not transmit any frames after the
->> reassociation. This behavior was described in IEEE Std 802.11F-2003 as
->> something that would happen based on MLME-ASSOCIATE.indication, i.e.,
->> before completing 4-way handshake. However, this IEEE trial-use
->> recommended practice document was published before RSN (IEEE Std
->> 802.11i-2004) and as such, did not consider RSN use cases. Furthermore,
->> IEEE Std 802.11F-2003 was withdrawn in 2006 and as such, has not been
->> maintained amd should not be used anymore.
->> 
->> Sending out the Layer 2 Update frame immediately after association is
->> fine for open networks (and also when using SAE, FT protocol, or FILS
->> authentication when the station is actually authenticated by the time
->> association completes). However, it is not appropriate for cases where
->> RSN is used with PSK or EAP authentication since the station is actually
->> fully authenticated only once the 4-way handshake completes after
->> authentication and attackers might be able to use the unauthenticated
->> triggering of Layer 2 Update frame transmission to disrupt bridge
->> behavior.
->> 
->> Fix this by postponing transmission of the Layer 2 Update frame from
->> station entry addition to the point when the station entry is marked
->> authorized. Similarly, send out the VLAN binding update only if the STA
->> entry has already been authorized.
+>> 'typical' failure paths.  I didn't add such checking in the other patch
+>> set since I felt you might find it overly intrusive on userspace.  But
+>> maybe we really should do this?
 > 
-> Reviewed-by: Johannes Berg <johannes@sipsolutions.net>
-> 
-> Dave, if you were still planning to send a pull request to Linus before
-> he closes the tree on Sunday this would be good to include (and we
-> should also backport it to stable later).
-> 
-> If not, I can pick it up afterwards, let me know.
+> As I just said on the other patch, I think we probably should do that
+> there, if just to be able to advertise a correct set of interface types
+> that you can switch between there. I don't see how it'd be more
+> intrusive to userspace than failing later? :-)
 
-Ok I applied this directly, thanks.
+What I was worried about was that all the fullmac drivers would have had 
+to be updated to set the feature bit, and it would have caused 
+wpa_s/hostapd to no longer be able to do the whole set_iftype -> ebusy 
+-> ifdown & set_iftype retry logic until all were updated.
+
+>> I would concur as that is what happens today.  But should it?
+> 
+> Well, dunno, what should happen? If you ask drivers they might want to
+> remove & re-register after, for those registrations that are still
+> possible.
+> 
+
+I would think you'd want to define a clear order of operations that 
+cfg80211 / mac80211 would enforce :)
+
+> 
+> Let's not then.
+> 
+> I've applied this patch now.
+> 
+
+Great, thanks.
+
+Regards,
+-Denis
