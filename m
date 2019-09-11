@@ -2,86 +2,68 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 4BC85B0264
-	for <lists+linux-wireless@lfdr.de>; Wed, 11 Sep 2019 19:11:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DB03DB027F
+	for <lists+linux-wireless@lfdr.de>; Wed, 11 Sep 2019 19:20:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729430AbfIKRLL (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 11 Sep 2019 13:11:11 -0400
-Received: from mail-io1-f50.google.com ([209.85.166.50]:38480 "EHLO
-        mail-io1-f50.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729256AbfIKRLL (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 11 Sep 2019 13:11:11 -0400
-Received: by mail-io1-f50.google.com with SMTP id k5so22287348iol.5
-        for <linux-wireless@vger.kernel.org>; Wed, 11 Sep 2019 10:11:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=ygnyHLY/uFwC1kwbN8MCBbpW8iAis2gnfNllxgQCVJo=;
-        b=h6+JgJpfA5H8eENjfyjcgRRWgpp+pN1ZP9i9GcpRkqlTA3gSnTFFDnFizil6025L+G
-         o6cJcymeImeoKB2Lk8JEUh2HDcs5iqzcZf27t/GLb7f5OPcyNOZ9XOJ1hDyjOK1vk1gV
-         u0zILcwfkf60VE34qZW60ht8dxLbanS42PHYr7bULpAswZTYmDsMUde7pqKA01k2s24C
-         X4GhFqy2CF0wFEVtwss0bbepZPdVkBf7e9Gzss/2RUBU+MS69cfFkh861UcgFzGQpj/L
-         KUa1aiBTrbfFQtauQZwUvgcucVOn07q9gATZE8/f8RxvpmGUqtclaJiiRdmkZvEPua8R
-         JeAQ==
+        id S1729433AbfIKRUF (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 11 Sep 2019 13:20:05 -0400
+Received: from mx1.redhat.com ([209.132.183.28]:43532 "EHLO mx1.redhat.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1729130AbfIKRUF (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Wed, 11 Sep 2019 13:20:05 -0400
+Received: from mail-ed1-f70.google.com (mail-ed1-f70.google.com [209.85.208.70])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mx1.redhat.com (Postfix) with ESMTPS id 44000C04BD33
+        for <linux-wireless@vger.kernel.org>; Wed, 11 Sep 2019 17:20:05 +0000 (UTC)
+Received: by mail-ed1-f70.google.com with SMTP id ca13so13046951edb.10
+        for <linux-wireless@vger.kernel.org>; Wed, 11 Sep 2019 10:20:05 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=ygnyHLY/uFwC1kwbN8MCBbpW8iAis2gnfNllxgQCVJo=;
-        b=HkXURKSEQSRhiSwC7XSD5DMsV6XkK4y+CCtijisO9yLPKN0Do7RxgvLuWvmq5JXv5X
-         MPgq1mJMOnY+fvCv/qE4J4Des1deg/jGnK3CB0YJ5jmxj4xE6VX7ADXSIoBjmr8ji+ZS
-         CaIDF53jbPVAfLWPXBNHQhu/8S6Qnm3XLu/362YG8fQvvpDD2fZSbMIvsKJrlranzME0
-         PKEGdMGSOEMpweG1D4V5ItlR39L9IsyBiXVQ0R74h9zD5hfitdlCIR216Eig0P/9/5QX
-         8E4v9x2rCZ+BXarAwn3YM36DUBCkRwk8y5vdSjkH13TqVjiTdLIDrJsD6e0hKGs52rgN
-         g2Yg==
-X-Gm-Message-State: APjAAAXrGQemz0YUov/zP/C55oujgsUHW14Q81OYNOsrLi432XX02Ivv
-        royuxHMqtK/HCMcKRctbd8Sgg0sa94saTtEBgfGt4w==
-X-Google-Smtp-Source: APXvYqwEwaUvXGA5ncWul0NgrXKfgm/AF8a0IVn081pIIQFDo62mGfvAQ9EvY1tQt0JeArpe37wKqybZAPvOjgRXZps=
-X-Received: by 2002:a6b:b593:: with SMTP id e141mr7078244iof.233.1568221870061;
- Wed, 11 Sep 2019 10:11:10 -0700 (PDT)
-MIME-Version: 1.0
-References: <33bd9a39-0028-2f99-f43e-5e15c9e87287@candelatech.com> <ebe5532f-f456-2534-cd5e-c44d4c43696b@timhiggins.com>
-In-Reply-To: <ebe5532f-f456-2534-cd5e-c44d4c43696b@timhiggins.com>
-From:   Sid Hayn <sidhayn@gmail.com>
-Date:   Wed, 11 Sep 2019 13:11:01 -0400
-Message-ID: <CAM0KTbDS3FpGkdTB7J5PKNyjC809d6tt1E8aQE5D8d1ya-Y78Q@mail.gmail.com>
-Subject: Re: Question on Intel AX200
-To:     Tim Higgins <tim@timhiggins.com>
+        h=x-gm-message-state:from:to:cc:subject:in-reply-to:references:date
+         :message-id:mime-version;
+        bh=a5lEYwR3+gF8lf/iExjadUv4s66SOSzI/9iES5bWJ/s=;
+        b=uZZhwgtFjWE2ulbARuyE8lCUSCQOxA2HlUOn6OP8/wumgfcnpP8cLaMQ3hWBQAep7n
+         NEcARDgqbGoFWglyhT2l5GYQGplR3x2jQK2HymbsRXQyvZwA5Yu+u0XM2QR/3cpdwcOk
+         AaVmTD2wcbRx4pzW0BgQaqWs9vYbP/IcedHERr6/OSgadVqU2835Q0aIMhD0ZQoo45+S
+         EhyOxpuvctRIwqRxYCDfdpgMimNl//gAVD6sZD/oOEuG3wwvjhHCDb6QjBLVxEe1C+dt
+         6j81FX9zGsRsPbkCplmLdFiRBR/Y8FYluuvjzRwMJ2gHvBzhNHn+60678/SxBa+gm63Y
+         lDzA==
+X-Gm-Message-State: APjAAAUTKxs8ZM9g/I8Uicahjpg7gwoCxXYPFHKHdA4a1VEjnUJnANS2
+        tQvK/MZrFG5P/7/bByOnUyUV5ANKuvUOhSCsk+b40niMDZsTywgtfGYpmtUXjunyO6gPYQqVXiZ
+        P85FIeAajXcZdr0VSpwWdgkfD6xk=
+X-Received: by 2002:a17:906:b2d3:: with SMTP id cf19mr11711530ejb.75.1568222404032;
+        Wed, 11 Sep 2019 10:20:04 -0700 (PDT)
+X-Google-Smtp-Source: APXvYqwm/39DQwYxzGNFzn2OX5kVeb+8NunrbjJu9ky57Rhr9u9JdnUYhFITtRntGorXR8KpQGV06w==
+X-Received: by 2002:a17:906:b2d3:: with SMTP id cf19mr11711509ejb.75.1568222403743;
+        Wed, 11 Sep 2019 10:20:03 -0700 (PDT)
+Received: from alrua-x1.borgediget.toke.dk (borgediget.toke.dk. [85.204.121.218])
+        by smtp.gmail.com with ESMTPSA id f5sm4226847edt.42.2019.09.11.10.20.02
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 11 Sep 2019 10:20:03 -0700 (PDT)
+Received: by alrua-x1.borgediget.toke.dk (Postfix, from userid 1000)
+        id B67BC1804C8; Wed, 11 Sep 2019 18:20:01 +0100 (WEST)
+From:   Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>
+To:     Sid Hayn <sidhayn@gmail.com>, Tim Higgins <tim@timhiggins.com>
 Cc:     Ben Greear <greearb@candelatech.com>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+        "linux-wireless\@vger.kernel.org" <linux-wireless@vger.kernel.org>
+Subject: Re: Question on Intel AX200
+In-Reply-To: <CAM0KTbDS3FpGkdTB7J5PKNyjC809d6tt1E8aQE5D8d1ya-Y78Q@mail.gmail.com>
+References: <33bd9a39-0028-2f99-f43e-5e15c9e87287@candelatech.com> <ebe5532f-f456-2534-cd5e-c44d4c43696b@timhiggins.com> <CAM0KTbDS3FpGkdTB7J5PKNyjC809d6tt1E8aQE5D8d1ya-Y78Q@mail.gmail.com>
+X-Clacks-Overhead: GNU Terry Pratchett
+Date:   Wed, 11 Sep 2019 18:20:01 +0100
+Message-ID: <871rwmu4vy.fsf@toke.dk>
+MIME-Version: 1.0
+Content-Type: text/plain
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-I'm pretty interested in hearing this too.
+Sid Hayn <sidhayn@gmail.com> writes:
 
--Zero
+> I'm pretty interested in hearing this too.
 
-On Wed, Sep 11, 2019 at 12:41 PM Tim Higgins <tim@timhiggins.com> wrote:
->
-> On 9/11/2019 9:49 AM, Ben Greear wrote:
-> > Hello,
-> >
-> > Does anyone know how well AX200 currently supports:
-> >
-> > OFDMA
-> >
-> > MU-MIMO (receiver)
-> >
-> > AP Mode
-> >
-> > And, can anyone suggest a good /AX AP to test against for these features?
-> >
-> > Thanks,
-> > Ben
-> >
-> Hi Ben,
-> I've been doing a lot of testing with the AX200 as a STA and sniffer, focusing on trying to see
-> if OFDMA lives up to its advertised features. This topic is probably not of interest to this
-> general list, so I'm happy to take the discussion to one-on-one.
->
-> Tim
+Me too! :)
+
+-Toke
