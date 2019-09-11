@@ -2,80 +2,112 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 683D5B03C2
-	for <lists+linux-wireless@lfdr.de>; Wed, 11 Sep 2019 20:39:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 936DBB03E3
+	for <lists+linux-wireless@lfdr.de>; Wed, 11 Sep 2019 20:48:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729952AbfIKSjD (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 11 Sep 2019 14:39:03 -0400
-Received: from 9.mo177.mail-out.ovh.net ([46.105.72.238]:44599 "EHLO
-        9.mo177.mail-out.ovh.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728105AbfIKSjD (ORCPT
+        id S1730166AbfIKSsQ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 11 Sep 2019 14:48:16 -0400
+Received: from smtp.codeaurora.org ([198.145.29.96]:60890 "EHLO
+        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729016AbfIKSsQ (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 11 Sep 2019 14:39:03 -0400
-Received: from player759.ha.ovh.net (unknown [10.108.42.75])
-        by mo177.mail-out.ovh.net (Postfix) with ESMTP id B388510A779
-        for <linux-wireless@vger.kernel.org>; Wed, 11 Sep 2019 20:32:35 +0200 (CEST)
-Received: from awhome.eu (p57B7E67F.dip0.t-ipconnect.de [87.183.230.127])
-        (Authenticated sender: postmaster@awhome.eu)
-        by player759.ha.ovh.net (Postfix) with ESMTPSA id 4262A9BD64FE;
-        Wed, 11 Sep 2019 18:32:31 +0000 (UTC)
-Subject: Re: [PATCH 04/11] wil6210: fix PTK re-key race
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=wetzel-home.de;
-        s=wetzel-home; t=1568226750;
-        bh=qX5Y5CibUuOeLykiOfLjmkSRR0ryT2fWdLXAec9OBjA=;
-        h=Subject:To:Cc:References:From:Date:In-Reply-To;
-        b=mIz3QtPu5Jo+gFMtgjy2cr2XiHt6JeXafpu45EFVnNVxb3etpzYDz+RaFI9zRnX8V
-         cX8wzz959Hkp1MxnrdSFbi4L+HVGp+t5HFwkrybPYGvdC42mUPYurS96KmrqZWk3P/
-         goTk7/VRLl3ECg1KA7Hhfkgid+bylVsD/OEtKnV8=
-To:     Kalle Valo <kvalo@codeaurora.org>, Maya Erez <merez@codeaurora.org>
-Cc:     Ahmad Masri <amasri@codeaurora.org>,
-        linux-wireless@vger.kernel.org, wil6210@qti.qualcomm.com
-References: <1567931575-27984-5-git-send-email-merez@codeaurora.org>
- <20190910132315.D7AC7602F2@smtp.codeaurora.org>
-From:   Alexander Wetzel <alexander@wetzel-home.de>
-Message-ID: <7b636313-fa4a-5ee4-935a-ba2ed5dde1e5@wetzel-home.de>
-Date:   Wed, 11 Sep 2019 20:32:26 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.0
+        Wed, 11 Sep 2019 14:48:16 -0400
+Received: by smtp.codeaurora.org (Postfix, from userid 1000)
+        id 09CC460A50; Wed, 11 Sep 2019 18:48:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
+        s=default; t=1568227695;
+        bh=fqLyZWfORQEC6v2+nP26Sy1WzgSPYbYDAMK27hsI/aM=;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+        b=Zmn0VYxjz9scf466LpHylBrRTkA2pA87LGVT89iiuYIuLXGwPHR1DYgX3FGiwmobS
+         t+QCf0mnrQE34HEKrj2FVXLJWMbnGg00k1c+uS9U6DL4OSlAbkh93773cXZTkJdPXk
+         cd1r9XzktA6BDPbemGmGON23N1VwkRuUO5MMHrvo=
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        pdx-caf-mail.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.7 required=2.0 tests=ALL_TRUSTED,BAYES_00,
+        DKIM_INVALID,DKIM_SIGNED,SPF_NONE autolearn=no autolearn_force=no
+        version=3.4.0
+Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo@smtp.codeaurora.org)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 6633560256;
+        Wed, 11 Sep 2019 18:48:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
+        s=default; t=1568227694;
+        bh=fqLyZWfORQEC6v2+nP26Sy1WzgSPYbYDAMK27hsI/aM=;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+        b=ELVDQ4yBwmWuMQqmVGmxRYOhTtlyRU6jCwAb3UnUg0v9ooHc0HPskOWE89vdnBX8c
+         4eFlpirL9TxhLpPpLbUhMzNgtwIR3iCm8UGMDqdPlni9ZRfN8TbtNlstGC1/lXFnmK
+         /qKvzz3JVyycQejo+UVgQZ1uvFkEJzaWP6DdAEjA=
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 6633560256
+Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
+From:   Kalle Valo <kvalo@codeaurora.org>
+To:     Johannes Berg <johannes@sipsolutions.net>
+Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        linux-wireless@vger.kernel.org, Netdev <netdev@vger.kernel.org>,
+        Linux List Kernel Mailing <linux-kernel@vger.kernel.org>,
+        ath10k@lists.infradead.org
+Subject: Re: WARNING at net/mac80211/sta_info.c:1057 (__sta_info_destroy_part2())
+References: <CAHk-=wgBuu8PiYpD7uWgxTSY8aUOJj6NJ=ivNQPYjAKO=cRinA@mail.gmail.com>
+        <feecebfcceba521703f13c8ee7f5bb9016924cb6.camel@sipsolutions.net>
+        <87ef0mlmqg.fsf@tynnyri.adurom.net>
+        <383b145b608e0fe3a35ffb0ceb99fdf938d4e2bb.camel@sipsolutions.net>
+Date:   Wed, 11 Sep 2019 21:48:09 +0300
+In-Reply-To: <383b145b608e0fe3a35ffb0ceb99fdf938d4e2bb.camel@sipsolutions.net>
+        (Johannes Berg's message of "Wed, 11 Sep 2019 20:23:33 +0200")
+Message-ID: <87zhjak6ty.fsf@kamboji.qca.qualcomm.com>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
 MIME-Version: 1.0
-In-Reply-To: <20190910132315.D7AC7602F2@smtp.codeaurora.org>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-Ovh-Tracer-Id: 4450400857231596664
-X-VR-SPAMSTATE: OK
-X-VR-SPAMSCORE: -100
-X-VR-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgedufedrtdefgdellecutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfqggfjpdevjffgvefmvefgnecuuegrihhlohhuthemucehtddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmd
+Content-Type: text/plain
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Am 10.09.19 um 15:23 schrieb Kalle Valo:
-> Maya Erez <merez@codeaurora.org> wrote:
-> 
->> Fix a race between cfg80211 add_key call and transmitting of 4/4 EAP
->> packet. In case the transmit is delayed until after the add key takes
->> place, message 4/4 will be encrypted with the new key, and the
->> receiver side (AP) will drop it due to MIC error.
->>
->> Wil6210 will monitor and look for the transmitted packet 4/4 eap key.
->> In case add_key takes place before the transmission completed, then
->> wil6210 will let the FW store the key and wil6210 will notify the FW
->> to use the PTK key only after 4/4 eap packet transmission was
->> completed.
-> 
-> This is rather ugly but I guess still ok. Or what do people think?
-> 
+Johannes Berg <johannes@sipsolutions.net> writes:
 
-I don't know anything about the driver here but in mac80211 the idea to 
-avoid the race is to simply flush the queues prior deleting the outgoing 
-key.
+> On Wed, 2019-09-11 at 21:19 +0300, Kalle Valo wrote:
+>> > Looks like indeed the driver gives the device at least *3 seconds* for
+>> > every command, see ath10k_wmi_cmd_send(), so most likely this would
+>> > eventually have finished, but who knows how many firmware commands it
+>> > would still have attempted to send...
+>> 
+>> 3 seconds is a bit short but in normal cases it should be enough. Of
+>> course we could increase the delay but I'm skeptic it would help here.
+>
+> I was thinking 3 seconds is way too long :-)
 
-Now wpa_supplicant is not yet bypassing qdisks, but adding the socket 
-parameter PACKET_QDISC_BYPASS is basically a one-liner in wpa_supplicant 
-and should allow a generic way for drivers to avoid the race with a 
-simple queue flush...
+Heh :)
 
-Alexander
+>> > Perhaps the driver should mark the device as dead and fail quickly once
+>> > it timed out once, or so, but I'll let Kalle comment on that.
+>> 
+>> Actually we do try to restart the device when a timeout happens in
+>> ath10k_wmi_cmd_send():
+>> 
+>>         if (ret == -EAGAIN) {
+>>                 ath10k_warn(ar, "wmi command %d timeout, restarting hardware\n",
+>>                             cmd_id);
+>>                 queue_work(ar->workqueue, &ar->restart_work);
+>>         }
+>
+> Yeah, and this is the problem, in a sense, I'd think. It seems to me
+> that at this point the code needs to tag the device as "dead" and
+> immediately return from any further commands submitted to it with an
+> error (e.g. -EIO).
 
+Yeah, ath10k_core_restart() is supposed change to state
+ATH10K_STATE_RESTARTING but very few mac80211 ops in ath10k_ops are
+checking for it, and to me it looks like quite late even. I think a
+proper fix for ops which can sleep is to check ar->state is
+ATH10K_STATE_ON and for ops which cannot sleep check
+ATH10K_FLAG_CRASH_FLUSH.
+
+But of course this just fixes the symptoms, the root cause for timeouts
+needs to be found as well.
+
+-- 
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
