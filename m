@@ -2,154 +2,145 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2B83EAFD53
-	for <lists+linux-wireless@lfdr.de>; Wed, 11 Sep 2019 15:03:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 39AEBAFD55
+	for <lists+linux-wireless@lfdr.de>; Wed, 11 Sep 2019 15:03:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728046AbfIKNDZ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 11 Sep 2019 09:03:25 -0400
-Received: from smtp.codeaurora.org ([198.145.29.96]:47422 "EHLO
-        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726954AbfIKNDZ (ORCPT
+        id S1728057AbfIKNDq (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 11 Sep 2019 09:03:46 -0400
+Received: from mail2.candelatech.com ([208.74.158.173]:57976 "EHLO
+        mail3.candelatech.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726954AbfIKNDq (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 11 Sep 2019 09:03:25 -0400
-Received: by smtp.codeaurora.org (Postfix, from userid 1000)
-        id 043A860A50; Wed, 11 Sep 2019 13:03:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1568207004;
-        bh=Jx/H8oT6Fb0ToJyhm6N2k1MFhWHCeP6x1nQka7AZfdM=;
-        h=From:To:Cc:Subject:Date:From;
-        b=NmoSn7t7TUkRwv+lUPdCOllROZ4p+i2djL8MovwBf9L933YaJHFCbmV1/PZZOogzN
-         28qpb7JKkDXfnHfUS97+yDfMcy4Bdg8ABrKsFHymfk3Wg3BdpjPZfXgYeRkboygjG4
-         hPFixsZ4j278JhheI9NgIGoTJn6sASansHBG7cHM=
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        pdx-caf-mail.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.7 required=2.0 tests=ALL_TRUSTED,BAYES_00,
-        DKIM_INVALID,DKIM_SIGNED,SPF_NONE autolearn=no autolearn_force=no
-        version=3.4.0
-Received: from jouni.codeaurora.org (37-130-183-34.bb.dnainternet.fi [37.130.183.34])
+        Wed, 11 Sep 2019 09:03:46 -0400
+Received: from [192.168.1.47] (unknown [50.34.216.97])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        (Authenticated sender: jouni@smtp.codeaurora.org)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id AD7D4604D4;
-        Wed, 11 Sep 2019 13:03:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1568207003;
-        bh=Jx/H8oT6Fb0ToJyhm6N2k1MFhWHCeP6x1nQka7AZfdM=;
-        h=From:To:Cc:Subject:Date:From;
-        b=Jy+sAxVJ7qrvnRCr9Z4GyR3HLlNeI+hIhh0Uc67TAaZiiy3eI6m22N56jz+yl1UvD
-         dtSJDx1K89Y3ngKWHKkDCNuAWls/JyoZaiebCYZcuQfgy2VPi3rNv8maPjDjHUHzyW
-         h4IBRmiESb9KSJ1HPRbMlRr6r6Xvss5bybowIdVA=
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org AD7D4604D4
-Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=jouni@codeaurora.org
-From:   Jouni Malinen <jouni@codeaurora.org>
-To:     Johannes Berg <johannes@sipsolutions.net>
-Cc:     linux-wireless@vger.kernel.org, David Miller <davem@davemloft.net>,
-        netdev@vger.kernel.org, Jouni Malinen <jouni@codeaurora.org>
-Subject: [PATCH] mac80211: Do not send Layer 2 Update frame before authorization
-Date:   Wed, 11 Sep 2019 16:03:05 +0300
-Message-Id: <20190911130305.23704-1-jouni@codeaurora.org>
-X-Mailer: git-send-email 2.20.1
+        by mail3.candelatech.com (Postfix) with ESMTPSA id 4D7DE104F;
+        Wed, 11 Sep 2019 06:03:44 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail3.candelatech.com 4D7DE104F
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=candelatech.com;
+        s=default; t=1568207025;
+        bh=XIn3JBORtKzOkERfGjA3+iWzadACjJyAvSCJ/fogVqA=;
+        h=Subject:To:References:Cc:From:Date:In-Reply-To:From;
+        b=CzsmEeLIiQrpfB+wLCa7XQ8FXXHnDjxlpGIfPOi68TLjouBlWMdKbC+N/VH+BHLCS
+         InupJwTM0AK4i+yPeXA3RNJ1+VM/pj8ZcG1bZdo+jZLXFasa0bGpjtwb+ohIx+K3KY
+         56+I9JUpJk4JZ7/mO6xiUBOyvT4kdLGGAwQUK2xY=
+Subject: Re: WARNING at net/mac80211/sta_info.c:1057
+ (__sta_info_destroy_part2())
+To:     Johannes Berg <johannes@sipsolutions.net>,
+        Linus Torvalds <torvalds@linux-foundation.org>
+References: <CAHk-=wgBuu8PiYpD7uWgxTSY8aUOJj6NJ=ivNQPYjAKO=cRinA@mail.gmail.com>
+ <feecebfcceba521703f13c8ee7f5bb9016924cb6.camel@sipsolutions.net>
+ <CAHk-=wj_jneK+UYzHhjwsH0XxP0knM+2o2OeFVEz-FjuQ77-ow@mail.gmail.com>
+ <30679d3f86731475943856196478677e70a349a9.camel@sipsolutions.net>
+Cc:     "David S. Miller" <davem@davemloft.net>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        linux-wireless@vger.kernel.org, Netdev <netdev@vger.kernel.org>,
+        Linux List Kernel Mailing <linux-kernel@vger.kernel.org>
+From:   Ben Greear <greearb@candelatech.com>
+Message-ID: <2d673d55-eb27-8573-b8ae-a493335723cf@candelatech.com>
+Date:   Wed, 11 Sep 2019 06:03:43 -0700
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:45.0) Gecko/20100101
+ Thunderbird/45.8.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+In-Reply-To: <30679d3f86731475943856196478677e70a349a9.camel@sipsolutions.net>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 7bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-The Layer 2 Update frame is used to update bridges when a station roams
-to another AP even if that STA does not transmit any frames after the
-reassociation. This behavior was described in IEEE Std 802.11F-2003 as
-something that would happen based on MLME-ASSOCIATE.indication, i.e.,
-before completing 4-way handshake. However, this IEEE trial-use
-recommended practice document was published before RSN (IEEE Std
-802.11i-2004) and as such, did not consider RSN use cases. Furthermore,
-IEEE Std 802.11F-2003 was withdrawn in 2006 and as such, has not been
-maintained amd should not be used anymore.
 
-Sending out the Layer 2 Update frame immediately after association is
-fine for open networks (and also when using SAE, FT protocol, or FILS
-authentication when the station is actually authenticated by the time
-association completes). However, it is not appropriate for cases where
-RSN is used with PSK or EAP authentication since the station is actually
-fully authenticated only once the 4-way handshake completes after
-authentication and attackers might be able to use the unauthenticated
-triggering of Layer 2 Update frame transmission to disrupt bridge
-behavior.
 
-Fix this by postponing transmission of the Layer 2 Update frame from
-station entry addition to the point when the station entry is marked
-authorized. Similarly, send out the VLAN binding update only if the STA
-entry has already been authorized.
+On 09/11/2019 05:04 AM, Johannes Berg wrote:
+> On Wed, 2019-09-11 at 12:58 +0100, Linus Torvalds wrote:
+>>
+>> And I didn't think about it or double-check, because the errors that
+>> then followed later _looked_ like that TX power failing that I thought
+>> hadn't happened.
+>
+> Yeah, it could be something already got stuck there, hard to say.
+>
+>>> Since we see that something actually did an rfkill operation. Did you
+>>> push a button there?
+>>
+>> No, I tried to turn off and turn on Wifi manually (no button, just the
+>> settings panel).
+>
+> That does usually also cause rfkill, so that explains how we got down
+> this particular code path.
+>
+>> I didn't notice the WARN_ON(), I just noticed that there was no
+>> networking, and "turn it off and on again" is obviously the first
+>> thing to try ;)
+>
+> :-)
+>
+>> Sep 11 10:27:13 xps13 kernel: WARNING: CPU: 4 PID: 1246 at
+>> net/mac80211/sta_info.c:1057 __sta_info_destroy_part2+0x147/0x150
+>> [mac80211]
+>>
+>> but if you want full logs I can send them in private to you.
+>
+> No, it's fine, though maybe Kalle does - he was stepping out for a while
+> but said he'd look later.
+>
+> This is the interesting time - 10:27:13 we get one of the first
+> failures. Really the first one was this:
+>
+>> Sep 11 10:27:07 xps13 kernel: ath10k_pci 0000:02:00.0: wmi command 16387 timeout, restarting hardware
+>
+>
+>> I do suspect it's atheros and suspend/resume or something. The
+>> wireless clearly worked for a while after the resume, but then at some
+>> point it stopped.
+>
+> I'm not really sure it's related to suspend/resume at all, the firmware
+> seems to just have gotten stuck, and the device and firmware most likely
+> got reset over the suspend/resume anyway.
+>
+>>> The only explanation I therefore have is that something is just taking
+>>> *forever* in that code path, hence my question about timing information
+>>> on the logs.
+>>
+>> Yeah, maybe it would time out everything eventually. But not for a
+>> long time. It hadn't cleared up by
+>>
+>>   Sep 11 10:36:21 xps13 gnome-session-f[6837]: gnome-session-failed:
+>> Fatal IO error 0 (Success) on X server :0.
+>
+> Ok, that's way longer than I would have guessed even! That's over 9
+> minutes, that'd be close to 200 commands having to be issued and timing
+> out ...
+>
+> I don't know. What I wrote before is basically all I can say, I think
+> the driver gets stuck somewhere waiting for the device "forever", and
+> the stack just doesn't get to release the lock, causing all the follow-
+> up problems.
 
-Signed-off-by: Jouni Malinen <jouni@codeaurora.org>
----
- net/mac80211/cfg.c      | 14 ++++----------
- net/mac80211/sta_info.c |  4 ++++
- 2 files changed, 8 insertions(+), 10 deletions(-)
+It looks to me like the ath10k firmware is not responding to commands and/or
+is out of its WMI tx credits.  The code often takes a lock and then blocks for up to 3
+or so seconds waiting for a response from the firmware, and the mac80211 calling
+code is often already holding rtnl.  Pretty much every mac80211 call will cause a
+WMI message and thus potentially hit this timeout.
 
-diff --git a/net/mac80211/cfg.c b/net/mac80211/cfg.c
-index ed56b0c6fe19..817f37b64eb5 100644
---- a/net/mac80211/cfg.c
-+++ b/net/mac80211/cfg.c
-@@ -1532,7 +1532,6 @@ static int ieee80211_add_station(struct wiphy *wiphy, struct net_device *dev,
- 	struct sta_info *sta;
- 	struct ieee80211_sub_if_data *sdata;
- 	int err;
--	int layer2_update;
- 
- 	if (params->vlan) {
- 		sdata = IEEE80211_DEV_TO_SUB_IF(params->vlan);
-@@ -1575,18 +1574,12 @@ static int ieee80211_add_station(struct wiphy *wiphy, struct net_device *dev,
- 	    test_sta_flag(sta, WLAN_STA_ASSOC))
- 		rate_control_rate_init(sta);
- 
--	layer2_update = sdata->vif.type == NL80211_IFTYPE_AP_VLAN ||
--		sdata->vif.type == NL80211_IFTYPE_AP;
--
- 	err = sta_info_insert_rcu(sta);
- 	if (err) {
- 		rcu_read_unlock();
- 		return err;
- 	}
- 
--	if (layer2_update)
--		cfg80211_send_layer2_update(sta->sdata->dev, sta->sta.addr);
--
- 	rcu_read_unlock();
- 
- 	return 0;
-@@ -1684,10 +1677,11 @@ static int ieee80211_change_station(struct wiphy *wiphy,
- 		sta->sdata = vlansdata;
- 		ieee80211_check_fast_xmit(sta);
- 
--		if (test_sta_flag(sta, WLAN_STA_AUTHORIZED))
-+		if (test_sta_flag(sta, WLAN_STA_AUTHORIZED)) {
- 			ieee80211_vif_inc_num_mcast(sta->sdata);
--
--		cfg80211_send_layer2_update(sta->sdata->dev, sta->sta.addr);
-+			cfg80211_send_layer2_update(sta->sdata->dev,
-+						    sta->sta.addr);
-+		}
- 	}
- 
- 	err = sta_apply_parameters(local, sta, params);
-diff --git a/net/mac80211/sta_info.c b/net/mac80211/sta_info.c
-index df553070206c..bd11fef2139f 100644
---- a/net/mac80211/sta_info.c
-+++ b/net/mac80211/sta_info.c
-@@ -1979,6 +1979,10 @@ int sta_info_move_state(struct sta_info *sta,
- 			ieee80211_check_fast_xmit(sta);
- 			ieee80211_check_fast_rx(sta);
- 		}
-+		if (sta->sdata->vif.type == NL80211_IFTYPE_AP_VLAN ||
-+		    sta->sdata->vif.type == NL80211_IFTYPE_AP)
-+			cfg80211_send_layer2_update(sta->sdata->dev,
-+						    sta->sta.addr);
- 		break;
- 	default:
- 		break;
+This can easily cause rtnl to be held for 3 seconds, but after that, I believe
+upstream ath10k will now time out and kill the firmware and restart.  (I run
+a significantly modified ath10k driver, and that is how mine works, at least.)
+
+In this case, it looks like restarting the firmware/NIC failed, and I guess
+that must get it in a state where it is still blocking and trying to talk
+to the firmware?  Or maybe deadlock down inside ath10k driver.
+
+For what it's worth, we see that WARN_ON often when ath10k firmware crashes, but it
+seems to not be a big deal and the system normally recovers fine.
+
+Out of curiosity, I'm interested to know what ath10k NIC chipset this is from.
+
+Thanks,
+Ben
+
 -- 
-2.20.1
-
+Ben Greear <greearb@candelatech.com>
+Candela Technologies Inc  http://www.candelatech.com
