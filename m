@@ -2,63 +2,65 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 79DF7AFEC4
-	for <lists+linux-wireless@lfdr.de>; Wed, 11 Sep 2019 16:35:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E2FFBAFFC0
+	for <lists+linux-wireless@lfdr.de>; Wed, 11 Sep 2019 17:17:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727873AbfIKOfA (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 11 Sep 2019 10:35:00 -0400
-Received: from mail-io1-f65.google.com ([209.85.166.65]:46904 "EHLO
-        mail-io1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726525AbfIKOe7 (ORCPT
+        id S1728291AbfIKPRV (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 11 Sep 2019 11:17:21 -0400
+Received: from mail-ot1-f54.google.com ([209.85.210.54]:40242 "EHLO
+        mail-ot1-f54.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728183AbfIKPRV (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 11 Sep 2019 10:34:59 -0400
-Received: by mail-io1-f65.google.com with SMTP id d17so24394414ios.13
-        for <linux-wireless@vger.kernel.org>; Wed, 11 Sep 2019 07:34:59 -0700 (PDT)
+        Wed, 11 Sep 2019 11:17:21 -0400
+Received: by mail-ot1-f54.google.com with SMTP id y39so22919126ota.7
+        for <linux-wireless@vger.kernel.org>; Wed, 11 Sep 2019 08:17:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=subject:to:references:from:message-id:date:user-agent:mime-version
          :in-reply-to:content-language:content-transfer-encoding;
-        bh=41Q+bSt+zk/urfd+3M92GAE+/vZjtUqdirBuejf7HQE=;
-        b=J9NjVbQAN3ySd73MW+O3W1cA1QVywkySLmzc/Aa629HlUsODCIWdHOi/SRrDWUY0pu
-         QwLq+U0TL9t3eFwn6gw4afSwwSzWLn5ZYNLO+dAxRFHsiXKCpnFU4GRw3EUZ2RiQCUj6
-         GN7ouHTzzUQ+YqfpwtCUi5ztWxXTd7QaSBFBA2lOvtufuxFVXRSycMdWLSx9GXKec83R
-         LQuOEO/zp/2IJdqYZfsYLyxEkwnND2KBU3ZQptW8X820jFHPAD7sduYSZKOp6YuAYtwu
-         QedhjOzWW8jhGV6mvd4bfsOQvsQyKNVyEuCtyDDze2nAtGUkjKD5PfDG51x3yRHp7wFh
-         YzCg==
+        bh=w6/F/d2P0bNIPOnh5jaEFjQ8//w4DSzVS7q5TwNPS0E=;
+        b=gE8lGM94zrTh/5oWYhtel9CPQfI4FZjPKg8vyvZJjHC9iFqG98Y8nNl6/KmjU7XfYv
+         brPzNB0OmWmqavkTpYaKolR+QkraM1LFLJv30J30+JXU0STkgJDeRkiz3STEuSgtVpiQ
+         rvB8P7VQ+zCKZs1uLDbf7EfAH0k5kBJbVXiZdflp/m5FvZUIU615/1MlEoUe5Ta2tMI/
+         a5SyCah/Xr66rHT22igPXcGBaRbaus5PXrvmxM3CQD253E2hGC6omFixUrM9cazVp3qr
+         c9SyfZjOBn/Whzu0VdHpbEDSY1/CQgl/OLULMFX5x+71sbENqaN/C2IqOkRnhvZVdjmt
+         XrXg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:subject:to:references:from:message-id:date
          :user-agent:mime-version:in-reply-to:content-language
          :content-transfer-encoding;
-        bh=41Q+bSt+zk/urfd+3M92GAE+/vZjtUqdirBuejf7HQE=;
-        b=efX/HzQl1Rgo+RtSPRkMZ+26dhMHaT2Juza6Xo+WTL5WKX6X41+kltI/YH2xzw/bMQ
-         xlcTX2ApAaHVLCIs/aY+NVt9Lo4inZu9c39fuwvKerRvIdyDAtlndErIvEBiMijAhEPe
-         W6pAItgf9io+ZWc+wOYAu2Ad8dASgJxUA8vrHNm5LWk56PTTW1ycCq8N75eURjEPqTc8
-         Z4QqEBQc3Gq+oEBDRsu8oNXghkogPCaSJyKiM2N+H7TW2QOPgy2W0yAzeBL4Swp8XqXv
-         xzJh4rJzM/6mJtwXDFw3BJAud3L2sjvnYe8cdfkgMsCBcvVHEClhwffgqoSvzUXTxDg9
-         zGaw==
-X-Gm-Message-State: APjAAAUqCmSYq7jwYdkMwyzOnnILI+Excxjib9KzLXCoa/rsV4Gg1dUa
-        FdA9hwj1BUlChdIOxpZrP6WFfBL9
-X-Google-Smtp-Source: APXvYqyqLairWH/kjm6Gd4OFXmwXKobePx+5WeRXJQ5H4l8uZ2R8BDdw9FaBqvkI0XNM5icT0fTtvA==
-X-Received: by 2002:a6b:f80a:: with SMTP id o10mr17533892ioh.148.1568212498849;
-        Wed, 11 Sep 2019 07:34:58 -0700 (PDT)
+        bh=w6/F/d2P0bNIPOnh5jaEFjQ8//w4DSzVS7q5TwNPS0E=;
+        b=KpdhYK+jY3fRqai+r5eMzlrNfMh+eGFD5XdmNgfE0zNtXbZvW5Q6FJsxwZu1dv6TiM
+         aNVK329H6JTM8nDuYsJdSJ36DwG8ijg7KiFAR/huBzYP9ZM0qjZrb1CIRv67AMCKpvHK
+         NME4apoaelGauDmFvfUDmbZ6gPZcoKZEV0MoxCsqc9h8lYrAnQ42muQPtWSov7ATvDis
+         vCBZs3WI703fYgzIrNnT027u6acfVKfvLDUJK8cOZwfoABwZAcb6yEeJZQZxCI4mS5Nr
+         6LAzQ/SY+He1GfZIFxI5/Lm5/MjS7TbbTSKl0Mjyc5/bbJsOPWJagmll4Y3dDrG7SQnD
+         wyag==
+X-Gm-Message-State: APjAAAVZIiTJnebrWDRAk4IaKP5+H+PLK+/gDPEfAWljTugKXTPevQKr
+        qlICLp7ze4onBi853g2IGpB2+2XU
+X-Google-Smtp-Source: APXvYqwVns+L2brJVjKMksz/vJRtTpGY/pt3cEv25iSGecN8VB2q3wxR9Or4Yby8ovYO4GxjsMvjeg==
+X-Received: by 2002:a05:6830:200d:: with SMTP id e13mr14203825otp.315.1568215040580;
+        Wed, 11 Sep 2019 08:17:20 -0700 (PDT)
 Received: from [192.168.1.249] (cpe-70-114-247-242.austin.res.rr.com. [70.114.247.242])
-        by smtp.googlemail.com with ESMTPSA id n1sm16358037iob.7.2019.09.11.07.34.58
+        by smtp.googlemail.com with ESMTPSA id v2sm7578961otq.52.2019.09.11.08.17.19
         (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Wed, 11 Sep 2019 07:34:58 -0700 (PDT)
-Subject: Re: [RFCv3 2/3] nl80211: Support >4096 byte NEW_WIPHY event nlmsg
+        Wed, 11 Sep 2019 08:17:20 -0700 (PDT)
+Subject: Re: [RFCv3 3/3] nl80211: Send large new_wiphy events
 To:     Johannes Berg <johannes@sipsolutions.net>,
         linux-wireless@vger.kernel.org
 References: <20190906154303.9303-1-denkenz@gmail.com>
- <20190906154303.9303-2-denkenz@gmail.com>
- <4397b67b63d1b1a332afa9010e7f48abd54b49b2.camel@sipsolutions.net>
+ <20190906154303.9303-3-denkenz@gmail.com>
+ <127c19b1855302a467a1bdbf2f25f625a0254d9e.camel@sipsolutions.net>
+ <f48bdad3-f9f8-20b7-b6ff-6248368a7ae1@gmail.com>
+ <0b12af1b27954f62a5ce715f95176d1f0ff393a3.camel@sipsolutions.net>
 From:   Denis Kenzior <denkenz@gmail.com>
-Message-ID: <5bd58103-bdb7-b72c-0b64-76c8573ca380@gmail.com>
-Date:   Wed, 11 Sep 2019 07:41:34 -0500
+Message-ID: <d97f7b4b-6508-4773-b13d-dab052349f47@gmail.com>
+Date:   Wed, 11 Sep 2019 08:23:58 -0500
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
  Thunderbird/60.8.0
 MIME-Version: 1.0
-In-Reply-To: <4397b67b63d1b1a332afa9010e7f48abd54b49b2.camel@sipsolutions.net>
+In-Reply-To: <0b12af1b27954f62a5ce715f95176d1f0ff393a3.camel@sipsolutions.net>
 Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
@@ -69,165 +71,51 @@ X-Mailing-List: linux-wireless@vger.kernel.org
 
 Hi Johannes,
 
-On 9/11/19 4:44 AM, Johannes Berg wrote:
-> Hi,
+On 9/11/19 10:12 AM, Johannes Berg wrote:
+> On Wed, 2019-09-11 at 07:20 -0500, Denis Kenzior wrote:
 > 
-> The first patch looks good, couple of nits/comments on this one below.
+>>> I'm not sure I see how the applications could do buffers that are
+>>> "inherently" large enough, there's no practical message size limit, is
+>>> there (32-bits for the size).
+>>
+>> The kernel caps this to 32k right now if I read the code correctly.  But
+>> fair point.
 > 
-> On Fri, 2019-09-06 at 10:43 -0500, Denis Kenzior wrote:
->> For historical reasons, NEW_WIPHY messages generated by dumps or
->> GET_WIPHY commands were limited to 4096 bytes.  This was due to the
->> fact that the kernel only allocated 4k buffers prior to commit
->> 9063e21fb026 ("netlink: autosize skb lengthes").  Once the sizes of
->> NEW_WIPHY messages exceeded these sizes, split dumps were introduced.
-> 
-> Actually, userspace prior to around the same time *also* only used 4k
-> buffers (old libnl), and so even with that kernel we still could
-> possibly have to deal with userspace that had 4k messages only ... but
-> we could have solved that part trivially instead of adding code to split
-> it, just the kernel part was still in the way then.
-> 
-> Anyway, I can reword this per my understanding (but will have to reread
-> all my messages I guess).
+> The kernel caps this for dumps only, no? We can allocate here ourselves
+> for multicasting a message as large as we like I think.
 > 
 
-Sure
+Right, but it is set for only 8k at the moment.  Anyway, I will take 
+care of this.
 
->> - The code in case '3' is quite complex, but it does try to support a
->>    message running out of room in the middle of a channel dump and
->>    restarting from where it left off in the next split message.  Perhaps
->>    this can be simplified, but it seems this capability is useful.
->>    Please take extra care when reviewing this.
+>>>> +	if (WARN_ON(nl80211_send_wiphy(rdev, cmd, msg, 0, 0, 0, &state) < 0)) {
+>>>> +		nlmsg_free(msg);
+>>>> +		goto legacy;
+>>>> +	}
+>>>> +
+>>>> +	genlmsg_multicast_netns(&nl80211_fam, wiphy_net(&rdev->wiphy), msg, 0,
+>>>> +				NL80211_MCGRP_CONFIG2, GFP_KERNEL);
+>>>> +
+>>>> +legacy:
+>>>
+>>> nit: just use "else" instead of the goto?
+>>
+>> I'm not sure I understand?  We want to send both messages here...
 > 
-> Is it useful? You say it basically all fits today, and that means the
-> channels will either fit into a single message or not ... Then again, if
-> we add a lot of channels or a lot more data to each channel. Hmm. OK, I
-> guess better if we do have it.
+> It's equivalent to:
 > 
+> -----
+> if (WARN_ON(nl80211_send_wiphy(...) < 0)
+>     nlmsg_free(msg);
+> else
+>     genlmsg_multicast_netns(...);
+> 
+> ... code for legacy ...
+> -----
+> 
+> no?
 
-For my dual band cards the channel dump all fits into a ~1k attribute if 
-I recall correctly.  So there may not really be a need for this.  Or at 
-the very least we could keep things simple(r) and only split at the band 
-level, not at the individual channel level.
-
-All the cards I tried would split well after case 9 with 4096 byte 
-buffers anyway.  The channel dump is quite early in the message and it 
-would really need to become bloated for this code path to be triggered...
-
-> 
->> +	void *last_good_pos = 0;
-> 
-> Use NULL.
-
-Will fix
-
-> 
->> +		last_good_pos = nlmsg_get_pos(msg);
->>   		state->split_start++;
-> 
-> Maybe we're better off having a local macro for these two lines? That
-> way, we don't risk updating one without the other, which would be
-> confusing.
-
-Yep, will do that.
-
-> 
->> @@ -2004,81 +2004,78 @@ static int nl80211_send_wiphy(struct cfg80211_registered_device *rdev,
->>   		if (!nl_bands)
->>   			goto nla_put_failure;
->>   
->> -		for (band = state->band_start;
->> -		     band < NUM_NL80211_BANDS; band++) {
->> +		/* Position in the buffer if we added a set of channel info */
->> +		last_channel_pos = 0;
-> 
-> NULL
-
-Will fix
-
-> 
->> [snip]
-> 
->> +chan_put_failure:
->> +			if (!last_channel_pos)
->> +				goto nla_put_failure;
->> +
->> +			nlmsg_trim(msg, last_channel_pos);
->> +			nla_nest_end(msg, nl_freqs);
->>   			nla_nest_end(msg, nl_band);
->>   
->> -			if (state->split) {
->> -				/* start again here */
->> -				if (state->chan_start)
->> -					band--;
->> +			if (state->chan_start < sband->n_channels)
->>   				break;
->> -			}
->> +
->> +			state->chan_start = 0;
->> +			state->band_start++;
->>   		}
->> -		nla_nest_end(msg, nl_bands);
->>   
->> -		if (band < NUM_NL80211_BANDS)
->> -			state->band_start = band + 1;
->> -		else
->> -			state->band_start = 0;
->> +band_put_failure:
->> +		if (!last_channel_pos)
->> +			goto nla_put_failure;
->> +
->> +		nla_nest_end(msg, nl_bands);
->>   
->> -		/* if bands & channels are done, continue outside */
->> -		if (state->band_start == 0 && state->chan_start == 0)
->> -			state->split_start++;
->> -		if (state->split)
->> +		if (state->band_start < NUM_NL80211_BANDS)
->>   			break;
-> 
-> Thinking out loud, maybe we could simplify this by just having a small
-> "stack" of nested attributes to end?
-> 
-> I mean, essentially, you have here similar code to the nla_put_failure
-> label, in that it finishes and sends out the message, except here you
-> have to end a bunch of nested attributes.
-> 
-> What if we did something like
-> 
-> #define dump_nest_start(msg, attr) ({ 				\
-> 	struct nlattr r = nla_nest_start_noflag(msg, attr);	\
-> 	BUG_ON(nest_stack_depth >= ARRAY_SIZE(nest_stack);	\
-> 	nest_stack[nest_stack_depth++] = r;			\
-> 	r;							\
-> })
-> 
-> #define dump_nest_end(msg, r) do {				\
-> 	BUG_ON(nest_stack_depth > 0);				\
-> 	nest_stack_depth--;					\
-> 	BUG_ON(nest_stack[nest_stack_depth] == r);		\
-> 	nla_nest_end(msg, r);					\
-> } while (0)
-> 
-> 
-> or something like that (we probably don't want to use
-> nla_nest_start_noflag() for future attributes, etc. but anyway).
-> 
-> Then we could unwind any nesting at the end in the common code at the
-> nla_put_failure label very easily, I think?
-
-I see where you're going with this, I think I do anyway...
-
-The current logic uses last_channel_pos for some of the trickery in 
-addition to last_good_pos.  So nla_put_failure would have to be made 
-aware of that.  Perhaps we can store last_good_pos in the stack, but the 
-split mechanism only allows the splits to be done at certain points... 
-I think the above could be doable, but the code would be even more complex.
-
-Right now only the channel dump uses this (and I'm still not fully 
-convinced we should go to all the trouble), so one argument would be not 
-to introduce something this generic until another user of it manifests 
-itself?
+Ah, now I see what you want.  Sure I will take care of this in v4.
 
 Regards,
 -Denis
