@@ -2,74 +2,69 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 0E3DDAF1BB
-	for <lists+linux-wireless@lfdr.de>; Tue, 10 Sep 2019 21:11:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3000AAF408
+	for <lists+linux-wireless@lfdr.de>; Wed, 11 Sep 2019 03:31:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727734AbfIJTLS (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 10 Sep 2019 15:11:18 -0400
-Received: from mail2-relais-roc.national.inria.fr ([192.134.164.83]:25645 "EHLO
-        mail2-relais-roc.national.inria.fr" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1725797AbfIJTLS (ORCPT
+        id S1726590AbfIKBbj (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 10 Sep 2019 21:31:39 -0400
+Received: from rtits2.realtek.com ([211.75.126.72]:46032 "EHLO
+        rtits2.realtek.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726224AbfIKBbj (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 10 Sep 2019 15:11:18 -0400
-X-IronPort-AV: E=Sophos;i="5.64,490,1559512800"; 
-   d="scan'208";a="401135346"
-Received: from abo-12-105-68.mrs.modulonet.fr (HELO hadrien) ([85.68.105.12])
-  by mail2-relais-roc.national.inria.fr with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 10 Sep 2019 21:11:16 +0200
-Date:   Tue, 10 Sep 2019 21:11:16 +0200 (CEST)
-From:   Julia Lawall <julia.lawall@lip6.fr>
-X-X-Sender: jll@hadrien
-To:     amitkarwar@gmail.com, siva8118@gmail.com
-cc:     syzkaller-bugs@googlegroups.com, kvalo@codeaurora.org,
-        davem@davemloft.net, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: syzbot report in rsi_91x_usb.c
-Message-ID: <alpine.DEB.2.21.1909102049130.2551@hadrien>
-User-Agent: Alpine 2.21 (DEB 202 2017-01-01)
+        Tue, 10 Sep 2019 21:31:39 -0400
+Authenticated-By: 
+X-SpamFilter-By: BOX Solutions SpamTrap 5.62 with qID x8B1VQsF002738, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (RTITCASV02.realtek.com.tw[172.21.6.19])
+        by rtits2.realtek.com.tw (8.15.2/2.57/5.78) with ESMTPS id x8B1VQsF002738
+        (version=TLSv1 cipher=DHE-RSA-AES256-SHA bits=256 verify=NOT);
+        Wed, 11 Sep 2019 09:31:26 +0800
+Received: from RTITMBSVM04.realtek.com.tw ([fe80::e404:880:2ef1:1aa1]) by
+ RTITCASV02.realtek.com.tw ([::1]) with mapi id 14.03.0468.000; Wed, 11 Sep
+ 2019 09:31:26 +0800
+From:   Pkshih <pkshih@realtek.com>
+To:     "kvalo@codeaurora.org" <kvalo@codeaurora.org>,
+        "straube.linux@gmail.com" <straube.linux@gmail.com>
+CC:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        "davem@davemloft.net" <davem@davemloft.net>,
+        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH 0/3] rtlwifi: use generic rtl_evm_db_to_percentage
+Thread-Topic: [PATCH 0/3] rtlwifi: use generic rtl_evm_db_to_percentage
+Thread-Index: AQHVaAqdltESvzrja0+EOTUTCYZIa6clKw6A
+Date:   Wed, 11 Sep 2019 01:31:25 +0000
+Message-ID: <1568165485.3098.2.camel@realtek.com>
+References: <20190910190422.63378-1-straube.linux@gmail.com>
+In-Reply-To: <20190910190422.63378-1-straube.linux@gmail.com>
+Accept-Language: en-US, zh-TW
+Content-Language: zh-TW
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [172.21.69.95]
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <629A5078FF38464BB101AEF5EE9DD6A5@realtek.com>
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hello,
-
-I spent some time looking at:
-
-https://syzkaller.appspot.com/bug?id=c1b6aa968706d9380dcdb98a9f2c338071cc938c
-
-which does not yet report that it has been fixed.
-
-The problem seems to be in rsi_probe in
-drivers/net/wireless/rsi/rsi_91x_usb.c.  This ends with the following
-code:
-
-        status = rsi_rx_urb_submit(adapter, WLAN_EP);
-        if (status)
-                goto err1;
-
-        if (adapter->priv->coex_mode > 1) {
-                status = rsi_rx_urb_submit(adapter, BT_EP);
-                if (status)
-                        goto err1;
-        }
-
-        return 0;
-err1:
-        rsi_deinit_usb_interface(adapter);
-err:
-        rsi_91x_deinit(adapter);
-
-
-The problem seems to be that the first call to rsi_rx_urb_submit succeeds,
-submitting an urb, and then theh second one fails.  Both share adapter,
-which is used in rsi_rx_done_handler, invoked later as the callback
-provided with usb_submit_urb.  But adapter, and in particular its rsi_dev
-field, are freed by the rsi_91x_deinit call due to the failure of the
-second call to rsi_rx_urb_submit.
-
-How should this be fixed?
-
-thanks,
-julia
+T24gVHVlLCAyMDE5LTA5LTEwIGF0IDIxOjA0ICswMjAwLCBNaWNoYWVsIFN0cmF1YmUgd3JvdGU6
+DQo+IEZ1bmN0aW9ucyBfcnRsOTJ7YyxkfV9ldm1fZGJfdG9fcGVyY2VudGFnZSBhcmUgZnVuY3Rp
+b25hbGx5IGlkZW50aWNhbA0KPiB0byB0aGUgZ2VuZXJpYyB2ZXJzaW9uIHJ0bF9ldm1fZGJfdG8g
+cGVyY2VudGFnZS4gVGhpcyBzZXJpZXMgY29udmVydHMNCj4gcnRsODE5MmNlLCBydGw4MTkyY3Ug
+YW5kIHJ0bDgxOTJkZSB0byB1c2UgdGhlIGdlbmVyaWMgdmVyc2lvbi4NCj4gDQo+IE1pY2hhZWwg
+U3RyYXViZSAoMyk6DQo+IMKgIHJ0bHdpZmk6IHJ0bDgxOTJjZTogcmVwbGFjZSBfcnRsOTJjX2V2
+bV9kYl90b19wZXJjZW50YWdlIHdpdGggZ2VuZXJpYw0KPiDCoMKgwqDCoHZlcnNpb24NCj4gwqAg
+cnRsd2lmaTogcnRsODE5MmN1OiByZXBsYWNlIF9ydGw5MmNfZXZtX2RiX3RvX3BlcmNlbnRhZ2Ug
+d2l0aCBnZW5lcmljDQo+IMKgwqDCoMKgdmVyc2lvbg0KPiDCoCBydGx3aWZpOiBydGw4MTkyZGU6
+IHJlcGxhY2UgX3J0bDkyZF9ldm1fZGJfdG9fcGVyY2VudGFnZSB3aXRoIGdlbmVyaWMNCj4gwqDC
+oMKgwqB2ZXJzaW9uDQo+IA0KPiDCoC4uLi93aXJlbGVzcy9yZWFsdGVrL3J0bHdpZmkvcnRsODE5
+MmNlL3RyeC5jwqDCoHwgMjMgKy0tLS0tLS0tLS0tLS0tLS0tLQ0KPiDCoC4uLi93aXJlbGVzcy9y
+ZWFsdGVrL3J0bHdpZmkvcnRsODE5MmN1L21hYy5jwqDCoHwgMTggKy0tLS0tLS0tLS0tLS0tDQo+
+IMKgLi4uL3dpcmVsZXNzL3JlYWx0ZWsvcnRsd2lmaS9ydGw4MTkyZGUvdHJ4LmPCoMKgfCAxOCAr
+Ky0tLS0tLS0tLS0tLS0NCj4gwqAzIGZpbGVzIGNoYW5nZWQsIDQgaW5zZXJ0aW9ucygrKSwgNTUg
+ZGVsZXRpb25zKC0pDQo+IA0KDQpJIGNoZWNrZWQgdGhlIGdlbmVyaWMgdmVyc2lvbiBhbmQgcmVt
+b3ZlZCBmdW5jdGlvbnMsIGFuZCB0aGV5IGFyZSBpbmRlZWQNCmlkZW50aWNhbC4gVGhhbmtzIGZv
+ciB5b3VyIHBhdGNoZXMuDQoNCkFja2VkLWJ5OiBQaW5nLUtlIFNoaWggPHBrc2hpaEByZWFsdGVr
+LmNvbT4NCg0KDQo=
