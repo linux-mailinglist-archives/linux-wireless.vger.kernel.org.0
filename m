@@ -2,97 +2,78 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 3D43EAFE70
-	for <lists+linux-wireless@lfdr.de>; Wed, 11 Sep 2019 16:14:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 00142AFEA9
+	for <lists+linux-wireless@lfdr.de>; Wed, 11 Sep 2019 16:22:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726954AbfIKOOi (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 11 Sep 2019 10:14:38 -0400
-Received: from mail-ed1-f67.google.com ([209.85.208.67]:39535 "EHLO
-        mail-ed1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725981AbfIKOOi (ORCPT
+        id S1726781AbfIKOWD (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 11 Sep 2019 10:22:03 -0400
+Received: from mail-ed1-f41.google.com ([209.85.208.41]:33636 "EHLO
+        mail-ed1-f41.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726058AbfIKOWD (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 11 Sep 2019 10:14:38 -0400
-Received: by mail-ed1-f67.google.com with SMTP id u6so20774473edq.6
-        for <linux-wireless@vger.kernel.org>; Wed, 11 Sep 2019 07:14:36 -0700 (PDT)
+        Wed, 11 Sep 2019 10:22:03 -0400
+Received: by mail-ed1-f41.google.com with SMTP id o9so20855157edq.0
+        for <linux-wireless@vger.kernel.org>; Wed, 11 Sep 2019 07:22:01 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=ncentric-com.20150623.gappssmtp.com; s=20150623;
-        h=from:to:cc:subject:date:message-id;
-        bh=+cIXqEJuYpA0+Q8sRtzqfZF30sEabB61l9AAF9nu7w8=;
-        b=1w4BZWxgJw5sYsf/oizvm5Y1vZsVCuO6CczfYzJmOcFZVOrDWaqS6jCUj31CX2g/vo
-         M0RNlo39TaZQuv5AS6JZGfhJDORORN+HHb+ccywhzGtqE73gdsEKg7zXAZPOtCYk1+er
-         1w0SyS5bEmy5QatqCQm1smp/wO/JmDQ3afjXezPjwRZxdqg48uAyMTW+0Gq4yGS8yhfz
-         M1RNFyh4/OqzVXVmTtKd7oTrLeRcvpOjtM6zsstXQ3drTDF/J5UyXOdyfZgbs0KK3hbJ
-         T/RdEGapuKajCekomdr2i5HnYT9FlR5Avd4+QhQB7wNquQTaZi+KyGtbYk+CfwQc+Flp
-         WS6w==
+        h=to:from:subject:message-id:date:user-agent:mime-version
+         :content-transfer-encoding:content-language;
+        bh=sArSpBkf+4qlRMOhVCj4DTH+DjrtuWHKyImMKkgWsSI=;
+        b=RuUUnhhkmhbxz7dI/bhyFlXpVvysOjcsTjKeE6NKfVEIIRkKGyyXUHhjcLZIbkF9yd
+         sfPosM1u/HjqtcWsycz01Ifw6rKYMa1r8hSkF697AMG2Q2CA0g7vAz5vURm2QqHT79GE
+         UI56O8n8wXRhuj81rQdaMWbwzIzGKfVvqsk+6N4V1Y5JQlV3O/oRfXeNDsDevlPnwoME
+         aHABp1qkDCEw/LxbvZwXUh4T+A7qVebmRaoFKoaw0mvxCwqxbRp0wQRYGGbntHkNAwFi
+         oqhYmKG1dfCjQznpGNN07kCAv2w4/45dWph5bX9ugSYfupkKwOSRFbivD+4Dm41Z7EIB
+         uFaQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id;
-        bh=+cIXqEJuYpA0+Q8sRtzqfZF30sEabB61l9AAF9nu7w8=;
-        b=qKinzh2vT/juvAbk8XfVFFmeqkBOIZvfd1sZnAqYAlujd7qYQTqWX65A/sc2ZUu/35
-         FF6igNiiHdg4F40elRg5lOG/L99ryL8V7V04u8Kj2fenFvJ2pIZeCwaWjNWhJZetU9A6
-         7IjTGNJJghk4ntG1uh8x3ltEafKUTBDPWwIY5rTsu5yf2vvbhg3DSf0uzIioMFfyQE2B
-         Fj+x3Wt/boQ+5Q8uW0C7Mbj1zCoJM/MioAaS4Ls0lMWZT9ZtQLnLwWFG0i9tts8TKLBt
-         iixJFHhJ623D3Zac66bATUgAZAmoQjvEXtN/3nudAKi6P8lACdlBAEjeQj1rAOKOq8W+
-         dYeQ==
-X-Gm-Message-State: APjAAAWpBAfUEW8i+kLxT/h7sZ3HWq0bsorIEMJk7jYUTRhy3jD7hKvC
-        5PalaGjqmX91eUz0aTp2+8SbSXNQmv4=
-X-Google-Smtp-Source: APXvYqydsRCRcwEEyTT3hW+df5ueJfCqumb3KQ1ikA/4kdRwuRb/3FqmeJT+UULfDHbqueX/KjBqVg==
-X-Received: by 2002:a05:6402:2d0:: with SMTP id b16mr38007788edx.147.1568211276171;
-        Wed, 11 Sep 2019 07:14:36 -0700 (PDT)
-Received: from kvdp-BRIX.cmb.citymesh.com (d515300d8.static.telenet.be. [81.83.0.216])
-        by smtp.gmail.com with ESMTPSA id g20sm1156821ejs.15.2019.09.11.07.14.35
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 11 Sep 2019 07:14:35 -0700 (PDT)
-From:   Koen Vandeputte <koen.vandeputte@ncentric.com>
+        h=x-gm-message-state:to:from:subject:message-id:date:user-agent
+         :mime-version:content-transfer-encoding:content-language;
+        bh=sArSpBkf+4qlRMOhVCj4DTH+DjrtuWHKyImMKkgWsSI=;
+        b=j5s6HDC0V2+yGtQAwVzHFVn5BLoHSwebrhF17JtJ7XKGgJZ9NGRK3mdnmUj40ytt8C
+         6f/CGjJabtTSNvVnrVbaANIxhlApQfJbrhDmCYiJ6CTCimbUJ4yWLp5md9e2LUkEcIPM
+         xEoxsQVzqqyMQCWfNdytrBBq3I8Ija57RheoPFRM4m9FdIpfFcL5Nwb+d5D9msUGs3v/
+         6kReVT91pMpArIGkwqfRJTDABtWPYQTOVCJ9i7/chRcXKwwGjf5oGcOli6gEvOysQ3zW
+         /GLYwbxNpwPdtfMSdcjaewHa5XhS/jlezs11get/2DDEGOKEasL1tfjvpuSHfrpUySrj
+         NHmQ==
+X-Gm-Message-State: APjAAAUr/4Rxz3yELJYqOnZsYKxUwaXBX//E0bhCzGj6UHXJleo7nrQG
+        u/MtQELhUMzIeGW9IQJZsW8e1xPANQs=
+X-Google-Smtp-Source: APXvYqy7x18zjzgVWZ52wMAnrGh9V/EVVqLyZWMUY5A5fmxJgAaKy8xRbzRSYCULP8z0MH03j1hO8Q==
+X-Received: by 2002:a05:6402:b0d:: with SMTP id bm13mr24278552edb.125.1568211720915;
+        Wed, 11 Sep 2019 07:22:00 -0700 (PDT)
+Received: from [192.168.3.176] (d515300d8.static.telenet.be. [81.83.0.216])
+        by smtp.gmail.com with ESMTPSA id e20sm2434163eja.75.2019.09.11.07.22.00
+        for <linux-wireless@vger.kernel.org>
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Wed, 11 Sep 2019 07:22:00 -0700 (PDT)
 To:     linux-wireless@vger.kernel.org
-Cc:     johannes@sipsolutions.net,
-        Koen Vandeputte <koen.vandeputte@ncentric.com>
-Subject: [PATCH] mac80211: IBSS: avoid unneeded return value processing
-Date:   Wed, 11 Sep 2019 16:14:31 +0200
-Message-Id: <20190911141431.12498-1-koen.vandeputte@ncentric.com>
-X-Mailer: git-send-email 2.17.1
+From:   Koen Vandeputte <koen.vandeputte@ncentric.com>
+Subject: sta_info - sta_info_get_by_idx()
+Message-ID: <1704e157-bb11-0aa8-ec8b-e95a3007fa0c@ncentric.com>
+Date:   Wed, 11 Sep 2019 16:21:59 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.8.0
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Content-Language: en-US
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-when ieee80211_ibss_csa_beacon() fails, we return it's value.
-When it succeeds, we basically copy it's value and also .. return it.
+Hi All,
 
-Just return it immediately, simplifying the code.
+Within sta_info.c, there is a function named sta_info_get_by_idx().
 
-Signed-off-by: Koen Vandeputte <koen.vandeputte@ncentric.com>
----
- net/mac80211/ibss.c | 9 +--------
- 1 file changed, 1 insertion(+), 8 deletions(-)
+- In sta_info.h, it is marked as BROKEN
 
-diff --git a/net/mac80211/ibss.c b/net/mac80211/ibss.c
-index 0a6ff01c68a9..d40744903fa9 100644
---- a/net/mac80211/ibss.c
-+++ b/net/mac80211/ibss.c
-@@ -538,7 +538,6 @@ int ieee80211_ibss_finish_csa(struct ieee80211_sub_if_data *sdata)
- {
- 	struct ieee80211_if_ibss *ifibss = &sdata->u.ibss;
- 	struct cfg80211_bss *cbss;
--	int err, changed = 0;
- 
- 	sdata_assert_lock(sdata);
- 
-@@ -560,13 +559,7 @@ int ieee80211_ibss_finish_csa(struct ieee80211_sub_if_data *sdata)
- 	ifibss->chandef = sdata->csa_chandef;
- 
- 	/* generate the beacon */
--	err = ieee80211_ibss_csa_beacon(sdata, NULL);
--	if (err < 0)
--		return err;
--
--	changed |= err;
--
--	return changed;
-+	return ieee80211_ibss_csa_beacon(sdata, NULL);
- }
- 
- void ieee80211_ibss_stop(struct ieee80211_sub_if_data *sdata)
--- 
-2.17.1
+- in cfg.c it's actively used in function function ieee80211_dump_station()
+
+
+So is it broken? or not? :-)
+
+Thanks,
+
+Koen
 
