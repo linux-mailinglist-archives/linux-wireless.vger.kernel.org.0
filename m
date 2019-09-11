@@ -2,181 +2,212 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 8B332AFA50
-	for <lists+linux-wireless@lfdr.de>; Wed, 11 Sep 2019 12:26:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 72BE1AFC01
+	for <lists+linux-wireless@lfdr.de>; Wed, 11 Sep 2019 13:58:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727504AbfIKK0l (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 11 Sep 2019 06:26:41 -0400
-Received: from s3.sipsolutions.net ([144.76.43.62]:35302 "EHLO
-        sipsolutions.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727090AbfIKK0k (ORCPT
+        id S1727810AbfIKL6w (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 11 Sep 2019 07:58:52 -0400
+Received: from mail-lf1-f68.google.com ([209.85.167.68]:33855 "EHLO
+        mail-lf1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727307AbfIKL6u (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 11 Sep 2019 06:26:40 -0400
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <johannes@sipsolutions.net>)
-        id 1i7zpZ-00044U-VN; Wed, 11 Sep 2019 12:26:34 +0200
-Message-ID: <feecebfcceba521703f13c8ee7f5bb9016924cb6.camel@sipsolutions.net>
-Subject: Re: WARNING at net/mac80211/sta_info.c:1057
- (__sta_info_destroy_part2())
-From:   Johannes Berg <johannes@sipsolutions.net>
-To:     Linus Torvalds <torvalds@linux-foundation.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Kalle Valo <kvalo@codeaurora.org>
-Cc:     linux-wireless@vger.kernel.org, Netdev <netdev@vger.kernel.org>,
-        Linux List Kernel Mailing <linux-kernel@vger.kernel.org>
-Date:   Wed, 11 Sep 2019 12:26:32 +0200
-In-Reply-To: <CAHk-=wgBuu8PiYpD7uWgxTSY8aUOJj6NJ=ivNQPYjAKO=cRinA@mail.gmail.com> (sfid-20190911_120605_906320_E6C720CE)
-References: <CAHk-=wgBuu8PiYpD7uWgxTSY8aUOJj6NJ=ivNQPYjAKO=cRinA@mail.gmail.com>
-         (sfid-20190911_120605_906320_E6C720CE)
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.30.5 (3.30.5-1.fc29) 
+        Wed, 11 Sep 2019 07:58:50 -0400
+Received: by mail-lf1-f68.google.com with SMTP id r22so4909494lfm.1
+        for <linux-wireless@vger.kernel.org>; Wed, 11 Sep 2019 04:58:48 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linux-foundation.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=7y00Zo+5wfahV0f4/m81h1l5nqsfXa8NWKboTHI3bB8=;
+        b=IlGa9i2PgZ+p/7vPskXhJMz24AHlJrognoCRIq6cXUTri02E8LYJ3BVJxl0TCIs5xW
+         aaMVjXylk4QgfGuLFaXhqfexFBZp8KMJmssk0x1OFhAAfHIVz9C8V+VmtHVQP/C/CTZu
+         2Ffzul3fzuvdBRW8zyUDq8vdQs6F98erwQq+A=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=7y00Zo+5wfahV0f4/m81h1l5nqsfXa8NWKboTHI3bB8=;
+        b=WIF6/5/vNtC/C5sP6AhuB8hsi1obQQMv98n4Epd4RALa4mLjiV2Qp/SDAsUoP82tpZ
+         0EWqHi+CaDMkYB5Ah1MwhtmYUqEDyaYk9jrVFSmpoKbtAp76sDE94a1PRPfTs4bwTchJ
+         WeMzuU5QK1eoQFyfhyRqW610EFRZCy1VU49C2lB/wBp20zoYXNMyDecM58n6WWCEvKFR
+         CyrkQBUoP0pS0vS5mCM811EuQoDe7dshHH70z5h9AiqvFRPLF3nc84i26WljVsNbf63e
+         cxFgZLACUZ3z6oJhaS5EJR0yFYgOhN0WJT6ZLAjic1MY9qKBwZxQA0FnlJr0Me3W7G7d
+         kfyQ==
+X-Gm-Message-State: APjAAAXCXsm5ukUDAxKIDsXFMteHZf9QkI0tr9ke/gOGOmFdFTGqw5Rg
+        9UR0e9dTcQ7fHFM6NAtZmpoW5ZGjscQQrQ==
+X-Google-Smtp-Source: APXvYqxXLT0rORlVoth/hcIpF9DK/YPj1ygaCMTYmSPxHd4sMASrebe/s3lzmntBXdU4tKk3N4duCA==
+X-Received: by 2002:ac2:47f8:: with SMTP id b24mr23983257lfp.134.1568203127165;
+        Wed, 11 Sep 2019 04:58:47 -0700 (PDT)
+Received: from mail-lj1-f179.google.com (mail-lj1-f179.google.com. [209.85.208.179])
+        by smtp.gmail.com with ESMTPSA id y4sm4105622ljd.82.2019.09.11.04.58.46
+        for <linux-wireless@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 11 Sep 2019 04:58:46 -0700 (PDT)
+Received: by mail-lj1-f179.google.com with SMTP id u14so19685558ljj.11
+        for <linux-wireless@vger.kernel.org>; Wed, 11 Sep 2019 04:58:46 -0700 (PDT)
+X-Received: by 2002:a2e:3c14:: with SMTP id j20mr22307828lja.84.1568203125714;
+ Wed, 11 Sep 2019 04:58:45 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+References: <CAHk-=wgBuu8PiYpD7uWgxTSY8aUOJj6NJ=ivNQPYjAKO=cRinA@mail.gmail.com>
+ <feecebfcceba521703f13c8ee7f5bb9016924cb6.camel@sipsolutions.net>
+In-Reply-To: <feecebfcceba521703f13c8ee7f5bb9016924cb6.camel@sipsolutions.net>
+From:   Linus Torvalds <torvalds@linux-foundation.org>
+Date:   Wed, 11 Sep 2019 12:58:29 +0100
+X-Gmail-Original-Message-ID: <CAHk-=wj_jneK+UYzHhjwsH0XxP0knM+2o2OeFVEz-FjuQ77-ow@mail.gmail.com>
+Message-ID: <CAHk-=wj_jneK+UYzHhjwsH0XxP0knM+2o2OeFVEz-FjuQ77-ow@mail.gmail.com>
+Subject: Re: WARNING at net/mac80211/sta_info.c:1057 (__sta_info_destroy_part2())
+To:     Johannes Berg <johannes@sipsolutions.net>
+Cc:     "David S. Miller" <davem@davemloft.net>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        linux-wireless@vger.kernel.org, Netdev <netdev@vger.kernel.org>,
+        Linux List Kernel Mailing <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi,
+On Wed, Sep 11, 2019 at 11:26 AM Johannes Berg
+<johannes@sipsolutions.net> wrote:
+>
+> Hi,
+>
+> > So I'm at LCA
+>
+> When did LCA move to Portugal? ;-))
 
-> So I'm at LCA
+Heh. I may be jetlagged and not thinking straight.  LCA/LPC ;)
 
-When did LCA move to Portugal? ;-))
+> > Previous resume looks normal:
+> > [snip]
+> >    wlp2s0: Limiting TX power to 23 (23 - 0) dBm as advertised by
+> > 54:ec:2f:05:70:2c
+>
+> Is that the message you meant?
+>
+> > I say _almost_, because I don't see the "No TX power limit" for the
+> > country lookup (yes, Portugal) this time?
+>
+> because here you had it too, just a bit earlier. It usually comes when a
+> beacon is received the first time, which depends on the AP timing.
 
-> , reading email, using my laptop more than I normally do,
-> and with different networking than I normally do.
-> 
-> And I just had a 802.11 WARN_ON() trigger, followed by essentially a
-> dead machine due to some lock held (maybe rtnl_lock).
+Duh. I'm blind and didn't notice, because I was expecting it in the same order.
 
-yes, it's definitely stuck on the RTNL, all the lot of the workqueues
-are trying to acquire it (linkwatch, ipv6, but oddly enough even the
-mac80211 restart work).
+And I didn't think about it or double-check, because the errors that
+then followed later _looked_ like that TX power failing that I thought
+hadn't happened.
 
-> It's possible that the lock held thing happened before, and is the
-> _reason_ for the delay, I don't know.
+> I don't _think_ any of the above would be a reason to disconnect, but it
+> clearly looks like the device got stuck at this point, since everything
+> just fails afterwards.
 
-No, we do have the lock in the WARN_ON(), somewhere around
-dev_close_many() it is acquired.
+Yeah, maybe the power stuff was just another effect of things getting
+stuck, rather than the reason for it getting stuck.
 
-> Previous resume looks normal:
-> [snip]
->    wlp2s0: Limiting TX power to 23 (23 - 0) dBm as advertised by
-> 54:ec:2f:05:70:2c
+So I probably mis-attributed the cause.
 
-Is that the message you meant?
+> >    WARNING: CPU: 4 PID: 1246 at net/mac80211/sta_info.c:1057
+> > __sta_info_destroy_part2+0x147/0x150 [mac80211]
+>
+> Not really a surprise. Perhaps we shouldn't even WARN_ON() this, if the
+> driver is stuck completely and returning errors to everything that
+> doesn't help so much.
+>
+> Then again, the stack trace was helpful this time:
+>
+> >     ieee80211_set_disassoc+0xc2/0x590 [mac80211]
+> >     ieee80211_mgd_deauth.cold+0x4a/0x1b8 [mac80211]
+> >     cfg80211_mlme_deauth+0xb3/0x1d0 [cfg80211]
+> >     cfg80211_mlme_down+0x66/0x90 [cfg80211]
+> >     cfg80211_disconnect+0x129/0x1e0 [cfg80211]
+> >     cfg80211_leave+0x27/0x40 [cfg80211]
+> >     cfg80211_netdev_notifier_call+0x1a7/0x4e0 [cfg80211]
+> >     notifier_call_chain+0x4c/0x70
+> >     __dev_close_many+0x57/0x100
+> >     dev_close_many+0x8d/0x140
+> >     dev_close.part.0+0x44/0x70
+> >     cfg80211_shutdown_all_interfaces+0x71/0xd0 [cfg80211]
+> >     cfg80211_rfkill_set_block+0x22/0x30 [cfg80211]
+> >     rfkill_set_block+0x92/0x140 [rfkill]
+> >     rfkill_fop_write+0x11f/0x1c0 [rfkill]
+> >     vfs_write+0xb6/0x1a0
+>
+>
+> Since we see that something actually did an rfkill operation. Did you
+> push a button there?
 
-> Another _almost_ successful suspend/resume:
-> [snip
->    wlp2s0: RX AssocResp from 54:ec:2f:05:70:2c (capab=0x1011 status=0 aid=2)
->    wlp2s0: associated
->    wlp2s0: Limiting TX power to 23 (23 - 0) dBm as advertised by
-> 54:ec:2f:05:70:2c
->    ath: EEPROM regdomain: 0x826c
->    ath: EEPROM indicates we should expect a country code
->    ath: doing EEPROM country->regdmn map search
->    ath: country maps to regdmn code: 0x37
->    ath: Country alpha2 being used: PT
->    ath: Regpair used: 0x37
->    ath: regdomain 0x826c dynamically updated by country element
->    IPv6: ADDRCONF(NETDEV_CHANGE): wlp2s0: link becomes ready
-> 
-> I say _almost_, because I don't see the "No TX power limit" for the
-> country lookup (yes, Portugal) this time?
+No, I tried to turn off and turn on Wifi manually (no button, just the
+settings panel).
 
-because here you had it too, just a bit earlier. It usually comes when a
-beacon is received the first time, which depends on the AP timing.
+I didn't notice the WARN_ON(), I just noticed that there was no
+networking, and "turn it off and on again" is obviously the first
+thing to try ;)
 
->    ath10k_pci 0000:02:00.0: wmi command 16387 timeout, restarting hardware
->    ath10k_pci 0000:02:00.0: failed to set 5g txpower 23: -11
->    ath10k_pci 0000:02:00.0: failed to setup tx power 23: -11
->    ath10k_pci 0000:02:00.0: failed to recalc tx power: -11
->    ath10k_pci 0000:02:00.0: failed to set inactivity time for vdev 0: -108
->    ath10k_pci 0000:02:00.0: failed to setup powersave: -108
-> 
-> That certainly looks like something did try to set a power limit, but
-> eventually failed.
+> You don't happen to have timing information on these logs, perhaps
+> recorded in the logfile/journal?
 
-Yeah, that does seem a bit fishy. Kalle would have to comment for
-ath10k.
+Sure. I cleaned up the logs to not spam people with lots of illegible
+data, but it's all in the journal log.
 
-> Immediately after that:
-> 
->    wlp2s0: deauthenticating from 54:ec:2f:05:70:2c by local choice
-> (Reason: 3=DEAUTH_LEAVING)
+Rough timeline:
 
-I don't _think_ any of the above would be a reason to disconnect, but it
-clearly looks like the device got stuck at this point, since everything
-just fails afterwards.
+Sep 11 03:40:00 xps13 kernel: PM: suspend entry (s2idle)
+Sep 11 03:40:00 xps13 kernel: Filesystems sync: 0.028 seconds
+...
+Sep 11 10:13:14 xps13 kernel: Restarting tasks ... done.
+Sep 11 10:13:14 xps13 kernel: PM: suspend exit
+Sep 11 10:13:14 xps13 kernel: ath10k_pci 0000:02:00.0: UART prints enabled
+Sep 11 10:13:14 xps13 kernel: ath10k_pci 0000:02:00.0: unsupported HTC
+service id: 1536
+Sep 11 10:13:23 xps13 kernel: wlp2s0: authenticate with 54:ec:2f:05:70:2c
+Sep 11 10:13:23 xps13 kernel: wlp2s0: send auth to 54:ec:2f:05:70:2c (try 1/3)
+Sep 11 10:13:23 xps13 kernel: wlp2s0: authenticated
+Sep 11 10:13:23 xps13 kernel: wlp2s0: Limiting TX power to 23 (23 - 0)
+dBm as advertised by 54:ec:2f:05:70:2c
+...
+Sep 11 10:13:23 xps13 kernel: ath: regdomain 0x826c dynamically
+updated by country element
+Sep 11 10:13:24 xps13 kernel: IPv6: ADDRCONF(NETDEV_CHANGE): wlp2s0:
+link becomes ready
+Sep 11 10:27:07 xps13 kernel: ath10k_pci 0000:02:00.0: wmi command
+16387 timeout, restarting hardware
+...
+Sep 11 10:27:07 xps13 kernel: ath10k_pci 0000:02:00.0: failed to read
+hi_board_data address: -16
+Sep 11 10:27:10 xps13 kernel: ath10k_pci 0000:02:00.0: failed to
+receive initialized event from target: 00000000
+Sep 11 10:27:13 xps13 kernel: ath10k_pci 0000:02:00.0: failed to
+receive initialized event from target: 00000000
+...
+Sep 11 10:27:13 xps13 kernel: WARNING: CPU: 4 PID: 1246 at
+net/mac80211/sta_info.c:1057 __sta_info_destroy_part2+0x147/0x150
+[mac80211]
 
->    ath10k_pci 0000:02:00.0: failed to delete peer 54:ec:2f:05:70:2c
-> for vdev 0: -108
-> 
-> and this then results in:
-> 
->    WARNING: CPU: 4 PID: 1246 at net/mac80211/sta_info.c:1057
-> __sta_info_destroy_part2+0x147/0x150 [mac80211]
+but if you want full logs I can send them in private to you.
 
-Not really a surprise. Perhaps we shouldn't even WARN_ON() this, if the
-driver is stuck completely and returning errors to everything that
-doesn't help so much.
+I do suspect it's atheros and suspend/resume or something. The
+wireless clearly worked for a while after the resume, but then at some
+point it stopped.
 
-Then again, the stack trace was helpful this time:
+> It seems odd to me, since the RTNL is acquired by
+> cfg80211_rfkill_set_block() and that doesn't even have an error path, it
+> just does
+>         rtnl_lock();
+>         cfg80211_shutdown_all_interfaces(&rdev->wiphy);
+>         rtnl_unlock();
+>
+> The only explanation I therefore have is that something is just taking
+> *forever* in that code path, hence my question about timing information
+> on the logs.
 
->     ieee80211_set_disassoc+0xc2/0x590 [mac80211]
->     ieee80211_mgd_deauth.cold+0x4a/0x1b8 [mac80211]
->     cfg80211_mlme_deauth+0xb3/0x1d0 [cfg80211]
->     cfg80211_mlme_down+0x66/0x90 [cfg80211]
->     cfg80211_disconnect+0x129/0x1e0 [cfg80211]
->     cfg80211_leave+0x27/0x40 [cfg80211]
->     cfg80211_netdev_notifier_call+0x1a7/0x4e0 [cfg80211]
->     notifier_call_chain+0x4c/0x70
->     __dev_close_many+0x57/0x100
->     dev_close_many+0x8d/0x140
->     dev_close.part.0+0x44/0x70
->     cfg80211_shutdown_all_interfaces+0x71/0xd0 [cfg80211]
->     cfg80211_rfkill_set_block+0x22/0x30 [cfg80211]
->     rfkill_set_block+0x92/0x140 [rfkill]
->     rfkill_fop_write+0x11f/0x1c0 [rfkill]
->     vfs_write+0xb6/0x1a0
+Yeah, maybe it would time out everything eventually. But not for a
+long time. It hadn't cleared up by
 
+  Sep 11 10:36:21 xps13 gnome-session-f[6837]: gnome-session-failed:
+Fatal IO error 0 (Success) on X server :0.
 
-Since we see that something actually did an rfkill operation. Did you
-push a button there?
+which is when I shut down the machine (and had to then force a hard
+power-off because the shutdown wanted things that needed the rtnl_lock
+to go away)
 
-Like I said above, the fact that we get into notifier_call_chain() from
-rfkill_set_block() means that we acquired the RTNL here somewhere
-between these.
-
->    ath10k_pci 0000:02:00.0: failed to recalculate rts/cts prot for vdev 0: -108
->    ath10k_pci 0000:02:00.0: failed to set cts protection for vdev 0: -108
-> 
-> and it looks like it leaves some lock held.
-
-Yeah, the RTNL.
-
-You don't happen to have timing information on these logs, perhaps
-recorded in the logfile/journal?
-
-It seems odd to me, since the RTNL is acquired by
-cfg80211_rfkill_set_block() and that doesn't even have an error path, it
-just does
-        rtnl_lock();
-        cfg80211_shutdown_all_interfaces(&rdev->wiphy);
-        rtnl_unlock();
-
-The only explanation I therefore have is that something is just taking
-*forever* in that code path, hence my question about timing information
-on the logs.
-
-Looks like indeed the driver gives the device at least *3 seconds* for
-every command, see ath10k_wmi_cmd_send(), so most likely this would
-eventually have finished, but who knows how many firmware commands it
-would still have attempted to send...
-
-Perhaps the driver should mark the device as dead and fail quickly once
-it timed out once, or so, but I'll let Kalle comment on that.
-
-johannes
-
+                 Linus
