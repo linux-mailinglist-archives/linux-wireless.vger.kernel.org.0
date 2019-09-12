@@ -2,106 +2,93 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D0F9CB1405
-	for <lists+linux-wireless@lfdr.de>; Thu, 12 Sep 2019 19:51:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3BCC5B1469
+	for <lists+linux-wireless@lfdr.de>; Thu, 12 Sep 2019 20:27:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726504AbfILRvh (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 12 Sep 2019 13:51:37 -0400
-Received: from smtp.codeaurora.org ([198.145.29.96]:51232 "EHLO
-        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726317AbfILRvh (ORCPT
+        id S1727041AbfILS1Q (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 12 Sep 2019 14:27:16 -0400
+Received: from mail-ot1-f66.google.com ([209.85.210.66]:39077 "EHLO
+        mail-ot1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726699AbfILS1P (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 12 Sep 2019 13:51:37 -0400
-Received: by smtp.codeaurora.org (Postfix, from userid 1000)
-        id 3D2F96083E; Thu, 12 Sep 2019 17:51:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1568310696;
-        bh=kXsMDOtWTcNbxd196a6efQcC5znV1ESekIYUH1AgZ4g=;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=WbZSZf4yDTiH7qE3M5gI+8i1nZ28OtxHMdfVLWoGslECknQAI4xtDJVPcopkNr6rc
-         da0dfkxuOWrPVCKI0pSiWqxro6WzgfwfAA+Ade7pg55kG7csDsI1wGD3Ze+YF0bZGO
-         DKAUtpvouW6DUInvqMC7ypw/UtbRcV6nhYCe/dY4=
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        pdx-caf-mail.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.7 required=2.0 tests=ALL_TRUSTED,BAYES_00,
-        DKIM_INVALID,DKIM_SIGNED,SPF_NONE autolearn=no autolearn_force=no
-        version=3.4.0
-Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        (Authenticated sender: kvalo@smtp.codeaurora.org)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 9C39E60790;
-        Thu, 12 Sep 2019 17:51:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1568310695;
-        bh=kXsMDOtWTcNbxd196a6efQcC5znV1ESekIYUH1AgZ4g=;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=N9e0lRkVSBtnvypTmYuf3flKusG3XHvYMVCGh3rDppoyOTOYWtIsVfiYyR946XxHl
-         e1QU1JNodRgMD5deA6aNP6loAF7xXcn4T6uE1ialLcuk9HzuHBQeBegKbr624ePDWq
-         I/Pfg10TGihvqAx95/0BAw+dFPygRXXiPXMoWbq4=
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 9C39E60790
-Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
-From:   Kalle Valo <kvalo@codeaurora.org>
-To:     Wen Gong <wgong@codeaurora.org>
-Cc:     linux-wireless@vger.kernel.org, ath10k@lists.infradead.org
-Subject: Re: [PATCH v5 0/8] ath10k: improve throughout of tcp/udp TX/RX of sdio
-References: <1567679893-14029-1-git-send-email-wgong@codeaurora.org>
-        <87tv9hikwe.fsf@kamboji.qca.qualcomm.com>
-Date:   Thu, 12 Sep 2019 20:51:32 +0300
-In-Reply-To: <87tv9hikwe.fsf@kamboji.qca.qualcomm.com> (Kalle Valo's message
-        of "Thu, 12 Sep 2019 18:39:29 +0300")
-Message-ID: <87d0g5h07v.fsf@kamboji.qca.qualcomm.com>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
+        Thu, 12 Sep 2019 14:27:15 -0400
+Received: by mail-ot1-f66.google.com with SMTP id n7so27012697otk.6
+        for <linux-wireless@vger.kernel.org>; Thu, 12 Sep 2019 11:27:15 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=s6GMtIi3HjkXwuzI57wEqXmZ5UwZMWaEyRig8szPvaY=;
+        b=gx183safwPX5LPA8N6+y/ansnwWMRZUjhKAE0+4smpyxKAfMFNdfJCNI5bnHcRKyC4
+         ++r1EyoZRhdnDVbsNdo3N3D0LBrfJADsKrF3mYVen/fZClN45eZU8ImQ840kqzvsQnS+
+         v3mSxDHk58/Wwu0ALMpXU3Fu3FUUuhJ72lnxzuxucTqtZ/0G72OYJ7HeN73lFGBKifP7
+         Bcj1Vv0SKrrbNrdm0jMj2Mc5SXpZepXhEqIgL6ziTEbTj/VU/xOgVOF9Iqs7dZfVHSo1
+         EHsen+O4YsaelJjCJAv/8tnsRnBSUn3dd07/aAWAvngIQaDviWaQ8Qb9FJ9J80K3vhFr
+         e+RA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=s6GMtIi3HjkXwuzI57wEqXmZ5UwZMWaEyRig8szPvaY=;
+        b=HMPlot/GJCJ4cN22oaJwp9pw3wjhxDADYoQKSM4/xLjuBe9QfY2EAiQ+pEkkRMC+hX
+         VaKlJO5sUftOJuyrHm3omGH1VMM5KTzYZrr029/PrizqKEdiPFHR6+TZ8XXXcJ0vR3SM
+         e15b4UCOCFCAQatwxLZNdT+DDOXz2p+zcnv0IHbQmOF6copmk5zdtk9fsoqP2j1ha2Q+
+         KZ5CfOV+q2Oj9O9Wh5iYjwATbw6j1fmOq9d94YvkOzB3LLZjC+u6smwDI1l+Uuocffge
+         3xtnjp+jW1+Y7JLBzwz/Zp3cbd9/HZ0nG3nzt0GGsd29h4WPYhfuvbEMdk38l/oKzbx7
+         mluw==
+X-Gm-Message-State: APjAAAXOx+X5/eVwD4GV88qG97aP2JBVMBRcvmbKR9h3ao4BhfTv8dpq
+        E857EOE4AC9m72EX0F718dmpUIZE
+X-Google-Smtp-Source: APXvYqwy0q20oxahB7wSldt03QE2TyyHqrKlFQVT6Zu8bbXZePQPZ6UMGpPGRkATwWLW5lPUHBg1qg==
+X-Received: by 2002:a9d:7411:: with SMTP id n17mr12008059otk.118.1568312835085;
+        Thu, 12 Sep 2019 11:27:15 -0700 (PDT)
+Received: from [192.168.1.249] (cpe-70-114-247-242.austin.res.rr.com. [70.114.247.242])
+        by smtp.googlemail.com with ESMTPSA id y23sm8816597oti.10.2019.09.12.11.27.13
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Thu, 12 Sep 2019 11:27:14 -0700 (PDT)
+Subject: Re: [PATCH 04/11] wil6210: fix PTK re-key race
+To:     Alexander Wetzel <alexander@wetzel-home.de>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        Maya Erez <merez@codeaurora.org>
+Cc:     Ahmad Masri <amasri@codeaurora.org>,
+        linux-wireless@vger.kernel.org, wil6210@qti.qualcomm.com
+References: <1567931575-27984-5-git-send-email-merez@codeaurora.org>
+ <20190910132315.D7AC7602F2@smtp.codeaurora.org>
+ <7b636313-fa4a-5ee4-935a-ba2ed5dde1e5@wetzel-home.de>
+From:   Denis Kenzior <denkenz@gmail.com>
+Message-ID: <2c6bc637-62c2-020c-ab83-d2e1677d96b2@gmail.com>
+Date:   Thu, 12 Sep 2019 12:39:37 -0500
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.8.0
 MIME-Version: 1.0
-Content-Type: text/plain
+In-Reply-To: <7b636313-fa4a-5ee4-935a-ba2ed5dde1e5@wetzel-home.de>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Kalle Valo <kvalo@codeaurora.org> writes:
+Hi Alexander,
 
-> Wen Gong <wgong@codeaurora.org> writes:
->
->> The bottleneck of throughout on sdio chip is the bus bandwidth, to the
->> patches are all to increase the use ratio of sdio bus.
->>
->>                       udp-rx    udp-tx    tcp-rx    tcp-tx
->> without patches(Mbps)  320        180       170       151
->> with patches(Mbps)     450        410       400       320
->>
->> These patches only affect sdio bus chip, explanation is mentioned in each
->> patch's commit log.
->
-> I tried to apply patches 2-8, patch 2 had a conflict due to my changes
-> and patch 8 didn't apply at all. Also I saw few warnings with the
-> patches I was able to test:
->
-> $ ath10k-check
-> drivers/net/wireless/ath/ath10k/htc.c: In function 'ath10k_htc_bundle_tx_work':
-> drivers/net/wireless/ath/ath10k/htc.c:796:24: warning: variable 'eid'
-> set but not used [-Wunused-but-set-variable]
-> drivers/net/wireless/ath/ath10k/sdio.c:2169:6: warning: no previous
-> prototype for 'ath10k_sdio_check_fw_reg' [-Wmissing-prototypes]
-> drivers/net/wireless/ath/ath10k/sdio.c: In function 'ath10k_sdio_check_fw_reg':
-> drivers/net/wireless/ath/ath10k/sdio.c:2171:6: warning: variable 'ret'
-> set but not used [-Wunused-but-set-variable]
-> drivers/net/wireless/ath/ath10k/sdio.c: In function 'ath10k_sdio_fw_crashed_dump':
-> drivers/net/wireless/ath/ath10k/sdio.c:2434:17: warning: too many
-> arguments for format [-Wformat-extra-args]
-> drivers/net/wireless/ath/ath10k/sdio.c:2169:6: warning: symbol
-> 'ath10k_sdio_check_fw_reg' was not declared. Should it be static?
-> drivers/net/wireless/ath/ath10k/sdio.c: In function 'ath10k_sdio_fw_crashed_dump':
-> drivers/net/wireless/ath/ath10k/sdio.c:2434:17: warning: too many
-> arguments for format [-Wformat-extra-args]
-> drivers/net/wireless/ath/ath10k/sdio.c:734: braces {} are not
-> necessary for single statement blocks
-> drivers/net/wireless/ath/ath10k/sdio.c:969: braces {} are not
-> necessary for single statement blocks
+> I don't know anything about the driver here but in mac80211 the idea to 
+> avoid the race is to simply flush the queues prior deleting the outgoing 
+> key.
 
-Actually some of the warnings are from another patch.
+Maybe a silly question, but what does flushing the queue mean in this 
+context?  Is it waiting for all the packets to be sent or dropping them 
+on the floor?
 
--- 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+> 
+> Now wpa_supplicant is not yet bypassing qdisks, but adding the socket 
+> parameter PACKET_QDISC_BYPASS is basically a one-liner in wpa_supplicant 
+> and should allow a generic way for drivers to avoid the race with a 
+> simple queue flush...
+
+Can you expand on this actually?  What would the sequence of events be?
+
+Also, how would this be made to work with CONTROL_PORT over NL80211 ?
+
+Regards,
+-Denis
