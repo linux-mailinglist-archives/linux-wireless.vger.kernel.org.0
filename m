@@ -2,75 +2,105 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 475FBB0B00
-	for <lists+linux-wireless@lfdr.de>; Thu, 12 Sep 2019 11:11:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E3E89B0F0E
+	for <lists+linux-wireless@lfdr.de>; Thu, 12 Sep 2019 14:47:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730509AbfILJLs (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 12 Sep 2019 05:11:48 -0400
-Received: from mail-qt1-f193.google.com ([209.85.160.193]:42875 "EHLO
-        mail-qt1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730185AbfILJLr (ORCPT
+        id S1731716AbfILMrl (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 12 Sep 2019 08:47:41 -0400
+Received: from smtp.codeaurora.org ([198.145.29.96]:54502 "EHLO
+        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1731633AbfILMrk (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 12 Sep 2019 05:11:47 -0400
-Received: by mail-qt1-f193.google.com with SMTP id c17so9389106qtv.9
-        for <linux-wireless@vger.kernel.org>; Thu, 12 Sep 2019 02:11:47 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=endlessm-com.20150623.gappssmtp.com; s=20150623;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=DEVrMHSfJtogStN1Xu1alrJktvw6GAivaNKUvNSvqiI=;
-        b=uwhocuUXvhEfH69GKAiZ8Xo8PJ6JFf3wKJLlMn0XuRgSlLsndrpBYaoetABW4uMU6l
-         W9NJ/mcrj6QU0BAQ6JRJ2JUnsFPoziLSlUSeSv6VItskkHpzyxrkqylK7OjO5BOzODKB
-         SM3eoNOY4kY5dewRiQSl8n6Dgh2HBLUvCdUk7WDaPtsThB22vjTHYIa9IEB8+cTlRMIt
-         M3HH2bIkHqqd7M3HbmDyf51ltkF2D0cqzHZio2e5q5OZWoB+C6vSPlugk1g3VnMLFcbE
-         NW0/Llc1Nh+DdPE+boXwREvr1UtIbk7PylYLc1WYR35mGCI99NKJafVas+BmPRuxUeM/
-         a9TA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=DEVrMHSfJtogStN1Xu1alrJktvw6GAivaNKUvNSvqiI=;
-        b=p4Se0Y6Wr0yR4gV2RdX9nvzKI/EdtWn5ApHpAUoNSRaxRi4SV0p4B67qF6eHl8rOcB
-         4/HuWBFypwMiNI2N2IY6QMgY/DPSXq6/FRLQlL5j4RRsumTqczS2A0gA+jWnhpXHe+li
-         9zZKT/BFfEYXbwWoG+L68nPeRBx2MnFps+tFHRl5ORGwxvd3Yascrx84E8v4WQaBH5oo
-         GgmvxEUlDzFG1PA3S5kuP8ODMZGcF5B3/F7Ufl2GnCAzYpN0GT/9epebuGSFysCs4QPV
-         CtUPNOG+uHyCGOrZIHP9lrn6A28TK+xfiuBnwI1jk8MVy6AIktBf/6bclZNNt900Buz6
-         hcJg==
-X-Gm-Message-State: APjAAAUQfgUVvMnq/+94TaTxy3EKZuVPCRzsrKY9LOhmyCv1zlpSA7LB
-        hlOMkW3HJ5qbEd6qBf2K8m1Jlo2p2wpUyOF94lTaOQ==
-X-Google-Smtp-Source: APXvYqy8JumoXQv64fBpR2GU4a7OLIWPCqtBssZQ2XwfKDoLVO9yPHc1VizLXwxMeyolG+T90pjmAvhk7pAdsnCzJRw=
-X-Received: by 2002:a05:6214:88e:: with SMTP id cz14mr12586805qvb.120.1568279506360;
- Thu, 12 Sep 2019 02:11:46 -0700 (PDT)
+        Thu, 12 Sep 2019 08:47:40 -0400
+Received: by smtp.codeaurora.org (Postfix, from userid 1000)
+        id 95AF9602F8; Thu, 12 Sep 2019 12:47:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
+        s=default; t=1568292459;
+        bh=AWN62OfRj3SQmc/u/jmlMyQII1/8N63safwuJap2dr8=;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+        b=Y/SbeYRal4cbdFf1KpphAMFh4mjh+5YC/JynFTTneUDw4nazL8fJnE1ZRuSFz7nNQ
+         QNGistiGUDK3m33KLwFlNITlZ11lRimVopiIX937FQ/voeHDyrJxFqzhSJqYaYg0IJ
+         +mk73O3OqRWJ4lO3YAHdRnQhFluxasSTdl805mq4=
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        pdx-caf-mail.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.7 required=2.0 tests=ALL_TRUSTED,BAYES_00,
+        DKIM_INVALID,DKIM_SIGNED,SPF_NONE autolearn=no autolearn_force=no
+        version=3.4.0
+Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo@smtp.codeaurora.org)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 535F5602FE;
+        Thu, 12 Sep 2019 12:47:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
+        s=default; t=1568292459;
+        bh=AWN62OfRj3SQmc/u/jmlMyQII1/8N63safwuJap2dr8=;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+        b=Y/SbeYRal4cbdFf1KpphAMFh4mjh+5YC/JynFTTneUDw4nazL8fJnE1ZRuSFz7nNQ
+         QNGistiGUDK3m33KLwFlNITlZ11lRimVopiIX937FQ/voeHDyrJxFqzhSJqYaYg0IJ
+         +mk73O3OqRWJ4lO3YAHdRnQhFluxasSTdl805mq4=
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 535F5602FE
+Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
+From:   Kalle Valo <kvalo@codeaurora.org>
+To:     Ben Greear <greearb@candelatech.com>
+Cc:     linux-wireless@vger.kernel.org
+Subject: Re: [PATCH] ath10k: Free beacon buf later in vdev teardown.
+References: <20190227162756.13048-1-greearb@candelatech.com>
+        <20190910131244.267AF602F2@smtp.codeaurora.org>
+        <89712e32-1fb2-f002-15ed-046871c161ce@candelatech.com>
+Date:   Thu, 12 Sep 2019 15:47:35 +0300
+In-Reply-To: <89712e32-1fb2-f002-15ed-046871c161ce@candelatech.com> (Ben
+        Greear's message of "Tue, 10 Sep 2019 06:19:35 -0700")
+Message-ID: <87v9txk7fc.fsf@kamboji.qca.qualcomm.com>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
 MIME-Version: 1.0
-References: <1568270355-29727-1-git-send-email-yhchuang@realtek.com>
- <1568270355-29727-3-git-send-email-yhchuang@realtek.com> <CAB4CAwde2ciT8AtYOXP3NJw=fq3uano_GQYXNKjcL+M+hKeWhA@mail.gmail.com>
- <F7CD281DE3E379468C6D07993EA72F84D18D2D2B@RTITMBSVM04.realtek.com.tw>
-In-Reply-To: <F7CD281DE3E379468C6D07993EA72F84D18D2D2B@RTITMBSVM04.realtek.com.tw>
-From:   Chris Chiu <chiu@endlessm.com>
-Date:   Thu, 12 Sep 2019 17:11:35 +0800
-Message-ID: <CAB4CAwdw95yr-zgPA-3Wor2FRMu5YoetFJiLbjWWqUzo-wj2yg@mail.gmail.com>
-Subject: Re: [PATCH 2/2] rtw88: report RX power for each antenna
-To:     Tony Chuang <yhchuang@realtek.com>
-Cc:     Kalle Valo <kvalo@codeaurora.org>,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        "briannorris@chromium.org" <briannorris@chromium.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Thu, Sep 12, 2019 at 3:43 PM Tony Chuang <yhchuang@realtek.com> wrote:
+Ben Greear <greearb@candelatech.com> writes:
 
-> > >
-> > > From: Yan-Hsuan Chuang <yhchuang@realtek.com>
-> > >
-> > > Report chains and chain_signal in ieee80211_rx_status.
-> > > It is useful for program such as tcpdump to see if the
-> > > antennas are well connected/placed.
-> > >
-> > > 8822C is able to receive CCK rates with 2 antennas, while
-> > > 8822B can only use 1 antenna path to receive CCK rates.
-> > >
-> > > Signed-off-by: Yan-Hsuan Chuang <yhchuang@realtek.com>
-Reviewed-by: Chris Chiu <chiu@endlessm.com>
+> On 09/10/2019 06:12 AM, Kalle Valo wrote:
+>> greearb@candelatech.com wrote:
+>>
+>>> My wave-1 firmware often crashes when I am bringing down
+>>> AP vdevs, and sometimes at least some machines lockup hard
+>>> after spewing IOMMU errors.
+>>>
+>>> I don't see the same issue in STA mode, so I suspect beacons
+>>> are the issue.
+>>>
+>>> Moving the beacon buf deletion to later in the vdev teardown
+>>> logic appears to help this problem.  Firmware still crashes
+>>> often, but several iterations did not show IOMMU errors and
+>>> machine didn't hang.
+>>
+>> I'm not really fond of fixing issues just by luck but after a quick look at the
+>> code I can't see any harm in this change either. So I guess it's ok.
+>>
+>> But can you provide the exact hardware and firmware you used for testing, I'll
+>> add it to the commit log. I want to document that in every commit:
+>
+> I used Compex WLE900VX hardware, and the firmware was ath10k-ct something or other,
+> it has been a long time, so I don't recall the exact firmware version.
+
+Ok, I added QCA9880 and unspecified version of ath10k-ct firmware to the
+commit log.
+
+> The real fix for this is to have the firmware do proper beacon tx
+> completion logic so that the driver can know when it can safely free
+> buffers. I implemented this in my ath10k-ct firmware/driver, but
+> unless you want to start accepting patches for my firmware, then that
+> will not help upstream ath10k.
+
+It's a challenge enough to support so many differerent QCOM firmware
+branches and still try to avoid bloating the driver too much to keep it
+maintainable. Adding support for a new firmware branch/fork with a
+significantly different interface would make everything so much harder.
+
+-- 
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
