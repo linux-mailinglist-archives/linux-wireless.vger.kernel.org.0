@@ -2,84 +2,96 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 65513B120E
-	for <lists+linux-wireless@lfdr.de>; Thu, 12 Sep 2019 17:22:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C1BE0B1258
+	for <lists+linux-wireless@lfdr.de>; Thu, 12 Sep 2019 17:39:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732727AbfILPWZ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 12 Sep 2019 11:22:25 -0400
-Received: from smtp.codeaurora.org ([198.145.29.96]:43332 "EHLO
+        id S1732835AbfILPje (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 12 Sep 2019 11:39:34 -0400
+Received: from smtp.codeaurora.org ([198.145.29.96]:59038 "EHLO
         smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1732699AbfILPWZ (ORCPT
+        with ESMTP id S1732566AbfILPje (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 12 Sep 2019 11:22:25 -0400
+        Thu, 12 Sep 2019 11:39:34 -0400
 Received: by smtp.codeaurora.org (Postfix, from userid 1000)
-        id 58DEB60721; Thu, 12 Sep 2019 15:22:24 +0000 (UTC)
+        id 7A2296083E; Thu, 12 Sep 2019 15:39:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1568301744;
-        bh=xJW5vnSW0xtpqAmoxihKdTOOdXupf7C9bR/J2VrocSs=;
-        h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-        b=J9kH0+6J7qLn3hMbqrafmASVQ98ZxM6LgCSfUBXWJhYS6dkFOK64jTZ6Becty0vMt
-         Iuq5qAQAN3fYIInZRs4iV0DNLdIBhSlShTH1XWtw4MlgGu1OejRrqIegPsNwb29LMZ
-         iSv0khwZvPrlbl1zuiHBXzL+MoHc7wGvjr8so3js=
+        s=default; t=1568302773;
+        bh=hHHBTfNtzMKKd0mSltPpqrfqv6HJp7GitBCPceSZ6mc=;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+        b=hWmU42krLoUvkLK313LJ7Kr63UCkwnN8A4BRMCk1xse4rwVH9jHE/4rRAafH9+ZQy
+         xG5eTvVRFwE4S+ZTUoB49yG8samH64/WWj+Ahw7UmhQruGIAblv0MoKxnS9QYpxmH4
+         nlcV+3LUlCuk4eCL9PRTj1VgEcsNJpWgwqbEYGrw=
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         pdx-caf-mail.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-0.8 required=2.0 tests=ALL_TRUSTED,BAYES_00,
-        DKIM_INVALID,DKIM_SIGNED,MISSING_DATE,MISSING_MID,SPF_NONE autolearn=no
-        autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-2.7 required=2.0 tests=ALL_TRUSTED,BAYES_00,
+        DKIM_INVALID,DKIM_SIGNED,SPF_NONE autolearn=no autolearn_force=no
+        version=3.4.0
 Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
         (Authenticated sender: kvalo@smtp.codeaurora.org)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 12B5C602C3;
-        Thu, 12 Sep 2019 15:22:22 +0000 (UTC)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 848B16055A;
+        Thu, 12 Sep 2019 15:39:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1568301744;
-        bh=xJW5vnSW0xtpqAmoxihKdTOOdXupf7C9bR/J2VrocSs=;
-        h=Subject:From:In-Reply-To:References:To:Cc:From;
-        b=VYMuGG0tt8gbPMwiaNCrdOrzgetOmN6BPGxXui9Q5uXzmC1Eez8PjiLbFWT8ZHK93
-         d56Yo9oXaolTqs/KodHqnxmX5vIg4eiKiclCyl9JAmxg6q7IgMR/B5Q58Q+RmaB6qr
-         dLzUq1YPVwrnjlq0n/Np6fDKzo9FgduIJMPzJYvk=
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 12B5C602C3
+        s=default; t=1568302772;
+        bh=hHHBTfNtzMKKd0mSltPpqrfqv6HJp7GitBCPceSZ6mc=;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+        b=cLPuYJokIj+wsdj6tpwXTxDf/adYZnXXIlKzHid088HzjM0do1p0Q/gkP7ASE36+r
+         sYNihBu63AYsrrbr03+ro30377Ej6BvouZrAbcJ+IStiMAxVKRlKhNlOGU6oloVbK8
+         +qUpdlIOLHrdkxyZfO5EyvZPbdHvwJogZr8AiP/U=
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 848B16055A
 Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
 Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH 02/11] wil6210: add support for pci linkdown recovery
 From:   Kalle Valo <kvalo@codeaurora.org>
-In-Reply-To: <1567931575-27984-3-git-send-email-merez@codeaurora.org>
-References: <1567931575-27984-3-git-send-email-merez@codeaurora.org>
-To:     Maya Erez <merez@codeaurora.org>
-Cc:     Maya Erez <merez@codeaurora.org>, linux-wireless@vger.kernel.org,
-        wil6210@qti.qualcomm.com
-User-Agent: pwcli/0.0.0-git (https://github.com/kvalo/pwcli/) Python/2.7.12
-Message-Id: <20190912152224.58DEB60721@smtp.codeaurora.org>
-Date:   Thu, 12 Sep 2019 15:22:24 +0000 (UTC)
+To:     Wen Gong <wgong@codeaurora.org>
+Cc:     ath10k@lists.infradead.org, linux-wireless@vger.kernel.org
+Subject: Re: [PATCH v5 0/8] ath10k: improve throughout of tcp/udp TX/RX of sdio
+References: <1567679893-14029-1-git-send-email-wgong@codeaurora.org>
+Date:   Thu, 12 Sep 2019 18:39:29 +0300
+In-Reply-To: <1567679893-14029-1-git-send-email-wgong@codeaurora.org> (Wen
+        Gong's message of "Thu, 5 Sep 2019 18:38:05 +0800")
+Message-ID: <87tv9hikwe.fsf@kamboji.qca.qualcomm.com>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
+MIME-Version: 1.0
+Content-Type: text/plain
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Maya Erez <merez@codeaurora.org> wrote:
+Wen Gong <wgong@codeaurora.org> writes:
 
-> Some platforms can notify on pci linkdown events.
-> Add pci linkdown recovery flow, invoked upon pci linkdown
-> notification.
-> A new wil6210 status flag is added, wil_status_pci_linkdown, to
-> prevent pci suspend / resume until the recovery is completed.
-> After the pci link is recovered in the platform pci recovery
-> callback the device is being reset and the interface and AP
-> mode states are restored.
-> 
-> Signed-off-by: Maya Erez <merez@codeaurora.org>
+> The bottleneck of throughout on sdio chip is the bus bandwidth, to the
+> patches are all to increase the use ratio of sdio bus.
+>
+>                       udp-rx    udp-tx    tcp-rx    tcp-tx
+> without patches(Mbps)  320        180       170       151
+> with patches(Mbps)     450        410       400       320
+>
+> These patches only affect sdio bus chip, explanation is mentioned in each
+> patch's commit log.
 
-Dropping per Maya's request
+I tried to apply patches 2-8, patch 2 had a conflict due to my changes
+and patch 8 didn't apply at all. Also I saw few warnings with the
+patches I was able to test:
 
-Patch set to Changes Requested.
+$ ath10k-check
+drivers/net/wireless/ath/ath10k/htc.c: In function 'ath10k_htc_bundle_tx_work':
+drivers/net/wireless/ath/ath10k/htc.c:796:24: warning: variable 'eid' set but not used [-Wunused-but-set-variable]
+drivers/net/wireless/ath/ath10k/sdio.c:2169:6: warning: no previous prototype for 'ath10k_sdio_check_fw_reg' [-Wmissing-prototypes]
+drivers/net/wireless/ath/ath10k/sdio.c: In function 'ath10k_sdio_check_fw_reg':
+drivers/net/wireless/ath/ath10k/sdio.c:2171:6: warning: variable 'ret' set but not used [-Wunused-but-set-variable]
+drivers/net/wireless/ath/ath10k/sdio.c: In function 'ath10k_sdio_fw_crashed_dump':
+drivers/net/wireless/ath/ath10k/sdio.c:2434:17: warning: too many arguments for format [-Wformat-extra-args]
+drivers/net/wireless/ath/ath10k/sdio.c:2169:6: warning: symbol 'ath10k_sdio_check_fw_reg' was not declared. Should it be static?
+drivers/net/wireless/ath/ath10k/sdio.c: In function 'ath10k_sdio_fw_crashed_dump':
+drivers/net/wireless/ath/ath10k/sdio.c:2434:17: warning: too many arguments for format [-Wformat-extra-args]
+drivers/net/wireless/ath/ath10k/sdio.c:734: braces {} are not necessary for single statement blocks
+drivers/net/wireless/ath/ath10k/sdio.c:969: braces {} are not necessary for single statement blocks
+
+But please don't send a new version until I have provided review
+comments.
 
 -- 
-https://patchwork.kernel.org/patch/11136843/
-
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
-
