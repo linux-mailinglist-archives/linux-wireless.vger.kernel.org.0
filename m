@@ -2,76 +2,69 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 05913B09A3
-	for <lists+linux-wireless@lfdr.de>; Thu, 12 Sep 2019 09:43:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BDF5AB0AEB
+	for <lists+linux-wireless@lfdr.de>; Thu, 12 Sep 2019 11:06:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729818AbfILHnY (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 12 Sep 2019 03:43:24 -0400
-Received: from rtits2.realtek.com ([211.75.126.72]:47539 "EHLO
-        rtits2.realtek.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726965AbfILHnY (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 12 Sep 2019 03:43:24 -0400
-Authenticated-By: 
-X-SpamFilter-By: BOX Solutions SpamTrap 5.62 with qID x8C7hGNW005218, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (RTITCAS11.realtek.com.tw[172.21.6.12])
-        by rtits2.realtek.com.tw (8.15.2/2.57/5.78) with ESMTPS id x8C7hGNW005218
-        (version=TLSv1.2 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Thu, 12 Sep 2019 15:43:16 +0800
-Received: from RTITMBSVM04.realtek.com.tw ([fe80::e404:880:2ef1:1aa1]) by
- RTITCAS11.realtek.com.tw ([fe80::7c6d:ced5:c4ff:8297%15]) with mapi id
- 14.03.0468.000; Thu, 12 Sep 2019 15:43:15 +0800
-From:   Tony Chuang <yhchuang@realtek.com>
-To:     Chris Chiu <chiu@endlessm.com>
-CC:     Kalle Valo <kvalo@codeaurora.org>,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        "briannorris@chromium.org" <briannorris@chromium.org>
-Subject: RE: [PATCH 2/2] rtw88: report RX power for each antenna
-Thread-Topic: [PATCH 2/2] rtw88: report RX power for each antenna
-Thread-Index: AQHVaTTdaq5/HwkqZUyeOZkd8ApRzqcnGx+AgACNUlA=
-Date:   Thu, 12 Sep 2019 07:43:15 +0000
-Message-ID: <F7CD281DE3E379468C6D07993EA72F84D18D2D2B@RTITMBSVM04.realtek.com.tw>
-References: <1568270355-29727-1-git-send-email-yhchuang@realtek.com>
- <1568270355-29727-3-git-send-email-yhchuang@realtek.com>
- <CAB4CAwde2ciT8AtYOXP3NJw=fq3uano_GQYXNKjcL+M+hKeWhA@mail.gmail.com>
-In-Reply-To: <CAB4CAwde2ciT8AtYOXP3NJw=fq3uano_GQYXNKjcL+M+hKeWhA@mail.gmail.com>
-Accept-Language: zh-TW, en-US
-Content-Language: zh-TW
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [172.21.68.183]
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+        id S1730397AbfILJGt (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 12 Sep 2019 05:06:49 -0400
+Received: from mail.kernel.org ([198.145.29.99]:44698 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1730327AbfILJGt (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 12 Sep 2019 05:06:49 -0400
+Received: from localhost.localdomain (unknown [151.66.2.116])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id B4944208C2;
+        Thu, 12 Sep 2019 09:06:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1568279208;
+        bh=fZOJ2Kl0ZYjvKJA1CR34MEzzz3UcLv5pZOn5vtN+q48=;
+        h=From:To:Cc:Subject:Date:From;
+        b=169gd4eVjfBA6jvXkFxWI3dWD4W2ry1bVQZ5L1fAKVo84qRVCaZqz/abb+zqNelHr
+         YVopykdW1rXIfleVp8KH0H15zDBuLTEid3644/Fr0WmiH1mQgkNMZwuazLM/xqn79B
+         JaZYWfcBtMXcx2vrEVsnIZY7yxc1d8rbODTS5m8Y=
+From:   Lorenzo Bianconi <lorenzo@kernel.org>
+To:     nbd@nbd.name
+Cc:     lorenzo.bianconi@redhat.com, linux-wireless@vger.kernel.org,
+        sgruszka@redhat.com
+Subject: [PATCH 0/4] mt76x02: tidy up mib counters
+Date:   Thu, 12 Sep 2019 11:06:34 +0200
+Message-Id: <cover.1568278771.git.lorenzo@kernel.org>
+X-Mailer: git-send-email 2.21.0
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-PiBGcm9tOiBDaHJpcyBDaGl1IA0KPiANCj4gT24gVGh1LCBTZXAgMTIsIDIwMTkgYXQgMjozOSBQ
-TSA8eWhjaHVhbmdAcmVhbHRlay5jb20+IHdyb3RlOg0KPiA+DQo+ID4gRnJvbTogWWFuLUhzdWFu
-IENodWFuZyA8eWhjaHVhbmdAcmVhbHRlay5jb20+DQo+ID4NCj4gPiBSZXBvcnQgY2hhaW5zIGFu
-ZCBjaGFpbl9zaWduYWwgaW4gaWVlZTgwMjExX3J4X3N0YXR1cy4NCj4gPiBJdCBpcyB1c2VmdWwg
-Zm9yIHByb2dyYW0gc3VjaCBhcyB0Y3BkdW1wIHRvIHNlZSBpZiB0aGUNCj4gPiBhbnRlbm5hcyBh
-cmUgd2VsbCBjb25uZWN0ZWQvcGxhY2VkLg0KPiA+DQo+ID4gODgyMkMgaXMgYWJsZSB0byByZWNl
-aXZlIENDSyByYXRlcyB3aXRoIDIgYW50ZW5uYXMsIHdoaWxlDQo+ID4gODgyMkIgY2FuIG9ubHkg
-dXNlIDEgYW50ZW5uYSBwYXRoIHRvIHJlY2VpdmUgQ0NLIHJhdGVzLg0KPiA+DQo+ID4gU2lnbmVk
-LW9mZi1ieTogWWFuLUhzdWFuIENodWFuZyA8eWhjaHVhbmdAcmVhbHRlay5jb20+DQo+ID4gLS0t
-DQo+ID4gIGRyaXZlcnMvbmV0L3dpcmVsZXNzL3JlYWx0ZWsvcnR3ODgvcnR3ODgyMmIuYyB8IDEg
-Kw0KPiA+ICBkcml2ZXJzL25ldC93aXJlbGVzcy9yZWFsdGVrL3J0dzg4L3J0dzg4MjJjLmMgfCA2
-ICsrKy0tLQ0KPiA+ICBkcml2ZXJzL25ldC93aXJlbGVzcy9yZWFsdGVrL3J0dzg4L3J4LmMgICAg
-ICAgfCA1ICsrKysrDQo+ID4gIDMgZmlsZXMgY2hhbmdlZCwgOSBpbnNlcnRpb25zKCspLCAzIGRl
-bGV0aW9ucygtKQ0KPiA+DQo+ID4gZGlmZiAtLWdpdCBhL2RyaXZlcnMvbmV0L3dpcmVsZXNzL3Jl
-YWx0ZWsvcnR3ODgvcnR3ODgyMmIuYw0KPiBiL2RyaXZlcnMvbmV0L3dpcmVsZXNzL3JlYWx0ZWsv
-cnR3ODgvcnR3ODgyMmIuYw0KPiA+IGluZGV4IDU2ODAzM2EuLjA4NjExOTUgMTAwNjQ0DQo+ID4g
-LS0tIGEvZHJpdmVycy9uZXQvd2lyZWxlc3MvcmVhbHRlay9ydHc4OC9ydHc4ODIyYi5jDQo+ID4g
-KysrIGIvZHJpdmVycy9uZXQvd2lyZWxlc3MvcmVhbHRlay9ydHc4OC9ydHc4ODIyYi5jDQo+ID4g
-QEAgLTc2Niw2ICs3NjYsNyBAQCBzdGF0aWMgdm9pZCBxdWVyeV9waHlfc3RhdHVzX3BhZ2UwKHN0
-cnVjdCBydHdfZGV2DQo+ICpydHdkZXYsIHU4ICpwaHlfc3RhdHVzLA0KPiA+ICAgICAgICAgczgg
-bWluX3J4X3Bvd2VyID0gLTEyMDsNCj4gPiAgICAgICAgIHU4IHB3ZGIgPSBHRVRfUEhZX1NUQVRf
-UDBfUFdEQihwaHlfc3RhdHVzKTsNCj4gPg0KPiA+ICsgICAgICAgLyogODgyMkIgdXNlcyBvbmx5
-IDEgYW50ZW5uYSB0byBSWCBDQ0sgcmF0ZXMgKi8NCj4gPiAgICAgICAgIHBrdF9zdGF0LT5yeF9w
-b3dlcltSRl9QQVRIX0FdID0gcHdkYiAtIDExMDsNCj4gDQo+IEl0IG9ubHkgdXNlcyBQQVRIX0Eg
-Zm9yIHJlY2VpdmluZyBDQ0sgcmF0ZXMgcGFja2V0cz8gVGhlIGNvbW1lbnQgc2VlbXMNCj4gbm90
-IGNsZWFyIGVub3VnaC4NCj4gDQoNClllcywgaXQgY2FuIG9ubHkgdXNlIFBBVEhfQSwgc28gd2Ug
-ZG9uJ3QgaGF2ZSBQV0RCX1tBfEJdIGZvciA4ODIyQi4NCg0KWWFuLUhzdWFuDQoNCg==
+Move shared mib counter code in common code.
+Reset aggregation statistics restarting the device for mt76x02u and mt76x0e
+drivers.
+Unify mt76x02u_mac_start for mt76x2u and mt76x0u drivers
+
+Lorenzo Bianconi (4):
+  mt76: mt76x02: move mac_reset_counter in mt76x02_lib module
+  mt76: mt76x2: move mt76x02_mac_reset_counters in mt76x02_mac_start
+  mt76: mt76x0u: reset counter starting the device
+  mt76: mt76x02u: move mt76x02u_mac_start in mt76x02-usb moudle
+
+ .../net/wireless/mediatek/mt76/mt76x0/init.c  | 27 -------------------
+ .../wireless/mediatek/mt76/mt76x0/mt76x0.h    |  1 -
+ .../net/wireless/mediatek/mt76/mt76x0/usb.c   |  2 +-
+ .../net/wireless/mediatek/mt76/mt76x02_mac.c  | 21 +++++++++++++++
+ .../net/wireless/mediatek/mt76/mt76x02_mac.h  |  1 +
+ .../net/wireless/mediatek/mt76/mt76x02_mmio.c |  1 +
+ .../net/wireless/mediatek/mt76/mt76x02_usb.h  |  1 +
+ .../wireless/mediatek/mt76/mt76x02_usb_core.c | 21 +++++++++++++++
+ .../net/wireless/mediatek/mt76/mt76x2/mac.h   |  1 -
+ .../wireless/mediatek/mt76/mt76x2/mt76x2u.h   |  1 -
+ .../wireless/mediatek/mt76/mt76x2/pci_init.c  | 21 ++-------------
+ .../wireless/mediatek/mt76/mt76x2/pci_main.c  |  6 ++---
+ .../wireless/mediatek/mt76/mt76x2/usb_mac.c   | 27 -------------------
+ .../wireless/mediatek/mt76/mt76x2/usb_main.c  |  3 ++-
+ 14 files changed, 52 insertions(+), 82 deletions(-)
+
+-- 
+2.21.0
+
