@@ -2,25 +2,25 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 5CADCB13F8
-	for <lists+linux-wireless@lfdr.de>; Thu, 12 Sep 2019 19:46:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D0F9CB1405
+	for <lists+linux-wireless@lfdr.de>; Thu, 12 Sep 2019 19:51:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727239AbfILRqE (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 12 Sep 2019 13:46:04 -0400
-Received: from smtp.codeaurora.org ([198.145.29.96]:48834 "EHLO
+        id S1726504AbfILRvh (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 12 Sep 2019 13:51:37 -0400
+Received: from smtp.codeaurora.org ([198.145.29.96]:51232 "EHLO
         smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727298AbfILRp6 (ORCPT
+        with ESMTP id S1726317AbfILRvh (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 12 Sep 2019 13:45:58 -0400
+        Thu, 12 Sep 2019 13:51:37 -0400
 Received: by smtp.codeaurora.org (Postfix, from userid 1000)
-        id B126960790; Thu, 12 Sep 2019 17:45:57 +0000 (UTC)
+        id 3D2F96083E; Thu, 12 Sep 2019 17:51:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1568310357;
-        bh=NomiIUWIpO7zNfhNi0Mb4r3uO+M77AU+yjjx24sAiq8=;
+        s=default; t=1568310696;
+        bh=kXsMDOtWTcNbxd196a6efQcC5znV1ESekIYUH1AgZ4g=;
         h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=DlWQWB/360decLVvnZky0qgtHvQeXw/VnQ86Gyv/WeHioD1+n+8zteHAkmfgeUcqZ
-         bMhMgWLdmfWbpK0sdyJFaERqtzYNuzBeJQh5GUWWeba35LpNonenBKtztSrMXdEHhH
-         rJ6kXZakHnFESy2gccxnjGq3Wy4Di9nGIp+A9QBk=
+        b=WbZSZf4yDTiH7qE3M5gI+8i1nZ28OtxHMdfVLWoGslECknQAI4xtDJVPcopkNr6rc
+         da0dfkxuOWrPVCKI0pSiWqxro6WzgfwfAA+Ade7pg55kG7csDsI1wGD3Ze+YF0bZGO
+         DKAUtpvouW6DUInvqMC7ypw/UtbRcV6nhYCe/dY4=
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         pdx-caf-mail.web.codeaurora.org
 X-Spam-Level: 
@@ -31,29 +31,28 @@ Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
         (Authenticated sender: kvalo@smtp.codeaurora.org)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 7FC906055A;
-        Thu, 12 Sep 2019 17:45:55 +0000 (UTC)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 9C39E60790;
+        Thu, 12 Sep 2019 17:51:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1568310356;
-        bh=NomiIUWIpO7zNfhNi0Mb4r3uO+M77AU+yjjx24sAiq8=;
+        s=default; t=1568310695;
+        bh=kXsMDOtWTcNbxd196a6efQcC5znV1ESekIYUH1AgZ4g=;
         h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=h7ePW9OEn0yiyJi3BH2aeADPm8dq8yIXP3/UbtX/+zlWu9VDU7O+Pt/pxUpEJwYBg
-         HEmrU9TjMrpNKGCis3GVaPh38QNrsyUU88NUz17sHoEOSjfofNM2qy+1HhmkBML3T0
-         AWIq3GMMFlBowi0ZFGF7je/0J+Hmv20isubG9up0=
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 7FC906055A
+        b=N9e0lRkVSBtnvypTmYuf3flKusG3XHvYMVCGh3rDppoyOTOYWtIsVfiYyR946XxHl
+         e1QU1JNodRgMD5deA6aNP6loAF7xXcn4T6uE1ialLcuk9HzuHBQeBegKbr624ePDWq
+         I/Pfg10TGihvqAx95/0BAw+dFPygRXXiPXMoWbq4=
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 9C39E60790
 Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
 Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
 From:   Kalle Valo <kvalo@codeaurora.org>
-To:     zhong jiang <zhongjiang@huawei.com>
-Cc:     <davem@davemloft.net>, <linux-wireless@vger.kernel.org>,
-        <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH 2/3] wlegacy: Remove unneeded variable and make function to be void
-References: <1568306492-42998-1-git-send-email-zhongjiang@huawei.com>
-        <1568306492-42998-3-git-send-email-zhongjiang@huawei.com>
-Date:   Thu, 12 Sep 2019 20:45:52 +0300
-In-Reply-To: <1568306492-42998-3-git-send-email-zhongjiang@huawei.com> (zhong
-        jiang's message of "Fri, 13 Sep 2019 00:41:31 +0800")
-Message-ID: <87h85hh0hb.fsf@kamboji.qca.qualcomm.com>
+To:     Wen Gong <wgong@codeaurora.org>
+Cc:     linux-wireless@vger.kernel.org, ath10k@lists.infradead.org
+Subject: Re: [PATCH v5 0/8] ath10k: improve throughout of tcp/udp TX/RX of sdio
+References: <1567679893-14029-1-git-send-email-wgong@codeaurora.org>
+        <87tv9hikwe.fsf@kamboji.qca.qualcomm.com>
+Date:   Thu, 12 Sep 2019 20:51:32 +0300
+In-Reply-To: <87tv9hikwe.fsf@kamboji.qca.qualcomm.com> (Kalle Valo's message
+        of "Thu, 12 Sep 2019 18:39:29 +0300")
+Message-ID: <87d0g5h07v.fsf@kamboji.qca.qualcomm.com>
 User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
 MIME-Version: 1.0
 Content-Type: text/plain
@@ -62,56 +61,47 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-zhong jiang <zhongjiang@huawei.com> writes:
+Kalle Valo <kvalo@codeaurora.org> writes:
 
-> il4965_set_tkip_dynamic_key_info  do not need return value to
-> cope with different ases. And change functon return type to void.
+> Wen Gong <wgong@codeaurora.org> writes:
 >
-> Signed-off-by: zhong jiang <zhongjiang@huawei.com>
-> ---
->  drivers/net/wireless/intel/iwlegacy/4965-mac.c | 8 ++------
->  1 file changed, 2 insertions(+), 6 deletions(-)
+>> The bottleneck of throughout on sdio chip is the bus bandwidth, to the
+>> patches are all to increase the use ratio of sdio bus.
+>>
+>>                       udp-rx    udp-tx    tcp-rx    tcp-tx
+>> without patches(Mbps)  320        180       170       151
+>> with patches(Mbps)     450        410       400       320
+>>
+>> These patches only affect sdio bus chip, explanation is mentioned in each
+>> patch's commit log.
 >
-> diff --git a/drivers/net/wireless/intel/iwlegacy/4965-mac.c b/drivers/net/wireless/intel/iwlegacy/4965-mac.c
-> index ffb705b..a7bbfe2 100644
-> --- a/drivers/net/wireless/intel/iwlegacy/4965-mac.c
-> +++ b/drivers/net/wireless/intel/iwlegacy/4965-mac.c
-> @@ -3326,12 +3326,11 @@ struct il_mod_params il4965_mod_params = {
->  	return il_send_add_sta(il, &sta_cmd, CMD_SYNC);
->  }
->  
-> -static int
-> +static void
->  il4965_set_tkip_dynamic_key_info(struct il_priv *il,
->  				 struct ieee80211_key_conf *keyconf, u8 sta_id)
->  {
->  	unsigned long flags;
-> -	int ret = 0;
->  	__le16 key_flags = 0;
->  
->  	key_flags |= (STA_KEY_FLG_TKIP | STA_KEY_FLG_MAP_KEY_MSK);
-> @@ -3367,8 +3366,6 @@ struct il_mod_params il4965_mod_params = {
->  	memcpy(il->stations[sta_id].sta.key.key, keyconf->key, 16);
->  
->  	spin_unlock_irqrestore(&il->sta_lock, flags);
-> -
-> -	return ret;
->  }
->  
->  void
-> @@ -3483,8 +3480,7 @@ struct il_mod_params il4965_mod_params = {
->  		    il4965_set_ccmp_dynamic_key_info(il, keyconf, sta_id);
->  		break;
->  	case WLAN_CIPHER_SUITE_TKIP:
-> -		ret =
-> -		    il4965_set_tkip_dynamic_key_info(il, keyconf, sta_id);
-> +		il4965_set_tkip_dynamic_key_info(il, keyconf, sta_id);
->  		break;
->  	case WLAN_CIPHER_SUITE_WEP40:
->  	case WLAN_CIPHER_SUITE_WEP104:
+> I tried to apply patches 2-8, patch 2 had a conflict due to my changes
+> and patch 8 didn't apply at all. Also I saw few warnings with the
+> patches I was able to test:
+>
+> $ ath10k-check
+> drivers/net/wireless/ath/ath10k/htc.c: In function 'ath10k_htc_bundle_tx_work':
+> drivers/net/wireless/ath/ath10k/htc.c:796:24: warning: variable 'eid'
+> set but not used [-Wunused-but-set-variable]
+> drivers/net/wireless/ath/ath10k/sdio.c:2169:6: warning: no previous
+> prototype for 'ath10k_sdio_check_fw_reg' [-Wmissing-prototypes]
+> drivers/net/wireless/ath/ath10k/sdio.c: In function 'ath10k_sdio_check_fw_reg':
+> drivers/net/wireless/ath/ath10k/sdio.c:2171:6: warning: variable 'ret'
+> set but not used [-Wunused-but-set-variable]
+> drivers/net/wireless/ath/ath10k/sdio.c: In function 'ath10k_sdio_fw_crashed_dump':
+> drivers/net/wireless/ath/ath10k/sdio.c:2434:17: warning: too many
+> arguments for format [-Wformat-extra-args]
+> drivers/net/wireless/ath/ath10k/sdio.c:2169:6: warning: symbol
+> 'ath10k_sdio_check_fw_reg' was not declared. Should it be static?
+> drivers/net/wireless/ath/ath10k/sdio.c: In function 'ath10k_sdio_fw_crashed_dump':
+> drivers/net/wireless/ath/ath10k/sdio.c:2434:17: warning: too many
+> arguments for format [-Wformat-extra-args]
+> drivers/net/wireless/ath/ath10k/sdio.c:734: braces {} are not
+> necessary for single statement blocks
+> drivers/net/wireless/ath/ath10k/sdio.c:969: braces {} are not
+> necessary for single statement blocks
 
-To me this looks inconsistent with the rest of the cases in the switch
-statement. And won't we then return the ret variable uninitalised?
+Actually some of the warnings are from another patch.
 
 -- 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
