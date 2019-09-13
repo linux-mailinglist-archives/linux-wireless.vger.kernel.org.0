@@ -2,25 +2,25 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 118C1B2150
-	for <lists+linux-wireless@lfdr.de>; Fri, 13 Sep 2019 15:50:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C4CE5B2154
+	for <lists+linux-wireless@lfdr.de>; Fri, 13 Sep 2019 15:50:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2391664AbfIMNol (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 13 Sep 2019 09:44:41 -0400
-Received: from smtp.codeaurora.org ([198.145.29.96]:60136 "EHLO
+        id S2391742AbfIMNpH (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 13 Sep 2019 09:45:07 -0400
+Received: from smtp.codeaurora.org ([198.145.29.96]:60338 "EHLO
         smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2388489AbfIMNol (ORCPT
+        with ESMTP id S2388489AbfIMNpH (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 13 Sep 2019 09:44:41 -0400
+        Fri, 13 Sep 2019 09:45:07 -0400
 Received: by smtp.codeaurora.org (Postfix, from userid 1000)
-        id 17711607CA; Fri, 13 Sep 2019 13:44:40 +0000 (UTC)
+        id E0AC7601C3; Fri, 13 Sep 2019 13:45:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1568382280;
-        bh=vyt/3hzOSaAAxezkzLOi1iLD8HN1GuNmP4hYAG0W1FA=;
+        s=default; t=1568382305;
+        bh=ADAqA+whk9w0uC3vat1A4dogJzHi6GhWR1q6R+KlqbE=;
         h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-        b=MnbV2qHM+bSPAbTmHbg3nNzGX8DE/Q0+tzN/lE933ZItOchPc5uZcPQs5Mz7ATmks
-         JrDztRdcLFwTrmgQK95K4ty+XDlw8/PdsybhmbYwq5NZmwjbO1Dsv06Ix52pF5pcCW
-         dOWdsrKhFzbaOx8HqxpOI+dsAt1RgYMWDIxp4jwI=
+        b=Mv5EQRF+2icBxLcVdL3hWvzuWSHJUKX+icoHEpcFsKEz/gmkaugUuGDrsDqBlKpAo
+         MW+1ryZavunSzj4lrVRVx2he/5kgpASn8ixy494tJCbLJ7SaZmNa9b/64FCUrTRTHd
+         udqTs7uXADwX/SNo3+je8RIGTfD+no7olbmpxh1o=
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         pdx-caf-mail.web.codeaurora.org
 X-Spam-Level: 
@@ -31,35 +31,33 @@ Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
         (Authenticated sender: kvalo@smtp.codeaurora.org)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 8882A602C3;
-        Fri, 13 Sep 2019 13:44:37 +0000 (UTC)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id BBEAE602C3;
+        Fri, 13 Sep 2019 13:45:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1568382279;
-        bh=vyt/3hzOSaAAxezkzLOi1iLD8HN1GuNmP4hYAG0W1FA=;
+        s=default; t=1568382304;
+        bh=ADAqA+whk9w0uC3vat1A4dogJzHi6GhWR1q6R+KlqbE=;
         h=Subject:From:In-Reply-To:References:To:Cc:From;
-        b=FY+xJdkjqkV26JGjs6bIKRSpXRDCVa6SNEM0zTU+FtViblbDIbmbVNBhMGWqx9gLG
-         r2xJm5zysJeRssGkH0F33b204BuNk+MPyzcB2n2/YWMyfUFqauvNVJaP8XTJKME6nz
-         Bn5RqyFwn9Dq6FS4qDVz1y/o4J6Ri1rLAHgVbPmE=
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 8882A602C3
+        b=lO449eYqECj0tX0nxq5RHUcGQnAzKv/NnU8sxJd8dSMbVeJUqfyJKqg9+VBWXJOSV
+         LwKMs7jNPhJHf0DdZfYWxp1pjmcTMHhSZCbblwgHKfD+E1LysD8xqBIwiamySYeY6n
+         TvHZ+7/qqUz2PEKqlWLsxQiDy44Yz34J4SsqF+fc=
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org BBEAE602C3
 Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
 Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH] rtlwifi: rtl8821ae: make array static const and remove
- redundant assignment
+Subject: Re: [PATCH] bcma: make arrays pwr_info_offset and sprom_sizes static
+ const, shrinks object size
 From:   Kalle Valo <kvalo@codeaurora.org>
-In-Reply-To: <20190905150022.3609-1-colin.king@canonical.com>
-References: <20190905150022.3609-1-colin.king@canonical.com>
+In-Reply-To: <20190905162049.14333-1-colin.king@canonical.com>
+References: <20190905162049.14333-1-colin.king@canonical.com>
 To:     Colin King <colin.king@canonical.com>
-Cc:     Ping-Ke Shih <pkshih@realtek.com>,
-        "David S . Miller" <davem@davemloft.net>,
-        Larry Finger <Larry.Finger@lwfinger.net>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Cc:     =?utf-8?b?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>,
+        linux-wireless@vger.kernel.org, kernel-janitors@vger.kernel.org,
+        linux-kernel@vger.kernel.org
 User-Agent: pwcli/0.0.0-git (https://github.com/kvalo/pwcli/) Python/2.7.12
-Message-Id: <20190913134440.17711607CA@smtp.codeaurora.org>
-Date:   Fri, 13 Sep 2019 13:44:40 +0000 (UTC)
+Message-Id: <20190913134505.E0AC7601C3@smtp.codeaurora.org>
+Date:   Fri, 13 Sep 2019 13:45:05 +0000 (UTC)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
@@ -69,29 +67,27 @@ Colin King <colin.king@canonical.com> wrote:
 
 > From: Colin Ian King <colin.king@canonical.com>
 > 
-> The array channel_all can be make static const rather than populating
-> it on the stack, this makes the code smaller.  Also, variable place
-> is being initialized with a value that is never read, so this assignment
-> is redundant and can be removed.
+> Arrays pwr_info_offset and sprom_sizes can be make static const rather
+> than populating them on the stack. Shrinks object size by 236 bytes.
 > 
 > Before:
 >    text	   data	    bss	    dec	    hex	filename
->  118537	   9591	      0	 128128	  1f480	realtek/rtlwifi/rtl8821ae/phy.o
+>   11300	   1320	     64	  12684	   318c	drivers/bcma/sprom.o
 > 
 > After:
 >    text	   data	    bss	    dec	    hex	filename
->  118331	   9687	      0	 128018	  1f412	realtek/rtlwifi/rtl8821ae/phy.o
+>   10904	   1480	     64	  12448	   30a0	drivers/bcma/sprom.o
 > 
-> Saves 110 bytes, (gcc version 9.2.1, amd64)
+> (gcc version 9.2.1, amd64)
 > 
 > Signed-off-by: Colin Ian King <colin.king@canonical.com>
 
 Patch applied to wireless-drivers-next.git, thanks.
 
-569ce0a486fd rtlwifi: rtl8821ae: make array static const and remove redundant assignment
+c57391f41572 bcma: make arrays pwr_info_offset and sprom_sizes static const, shrinks object size
 
 -- 
-https://patchwork.kernel.org/patch/11133295/
+https://patchwork.kernel.org/patch/11133647/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
