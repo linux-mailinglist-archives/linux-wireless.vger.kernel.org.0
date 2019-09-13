@@ -2,164 +2,103 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E7D83B2660
-	for <lists+linux-wireless@lfdr.de>; Fri, 13 Sep 2019 22:01:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 24640B26AA
+	for <lists+linux-wireless@lfdr.de>; Fri, 13 Sep 2019 22:29:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730498AbfIMUBM (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 13 Sep 2019 16:01:12 -0400
-Received: from mail-pf1-f194.google.com ([209.85.210.194]:38979 "EHLO
-        mail-pf1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729118AbfIMUBM (ORCPT
+        id S2387927AbfIMU3x (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 13 Sep 2019 16:29:53 -0400
+Received: from smtp.codeaurora.org ([198.145.29.96]:36194 "EHLO
+        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2387637AbfIMU3x (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 13 Sep 2019 16:01:12 -0400
-Received: by mail-pf1-f194.google.com with SMTP id i1so9895207pfa.6
-        for <linux-wireless@vger.kernel.org>; Fri, 13 Sep 2019 13:01:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=iLaTBTMcQ8c6qsmuKz70nF4P1DHHOjxBGMhLZv8o2h4=;
-        b=spb5uKG3C8T2cDhJgAy+8Ga6Cbx+Yq3v47agmteg+FiVVO/Yhmv+gw+/4JeEu3n1qU
-         mouBVM7xy2vJ2NDDGUAxZd91hcYEsBivelWd/c5knsgQ3AeNM7yMOVTV0SVHoXVCQYx5
-         nNd4M09wo8ZlxAvEj5LswjbxqM4OT2wB9Z3WqNJOFPSyWR+uM3tkVfs/4b0jIh7gHTx5
-         W+PSiUD06GjczIDTtx+J+IHD22l7AhqR3wzOEA+7hTu7fJepTR38YSjkgNCbI9gcSb2+
-         Pmy7yEd6Kjf07/IHbr2COOXhcaDMCM8yJlqoh9Z24b1ukFDnbc5g9ZeUkeX1BfpzB31h
-         7vqQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references;
-        bh=iLaTBTMcQ8c6qsmuKz70nF4P1DHHOjxBGMhLZv8o2h4=;
-        b=Hr7aMDoXAgi8TWNGjZlr+8xArecDKEgdldfai/rE/5wf9d+eXOQyvhsCwAYSPWnc7P
-         /J1DbUKnRkKYbKX72JcW6ZJz/SWYTJzBFZVOkAlSe4XEArHmND8DqkzLT5B7ZMEZXV92
-         K6d4JKBG8D3GjELRGFZFIZf4X425jm+02tFhuM3zSZBp+ujJbAYSbpHJM1bclrkKkOnC
-         Im1DSbFk8/GlIO5iwbTEA0bP2LcyYbD6nk50iNrTc+H4dKi3ATrlH8Cn50t5fdLzVZeT
-         gbneuQZa7Gq7qlnEVkUzNmvhE+PCbO9c5s9jag1C5d3/e7tvcrjSpMF9wJl4rSdDxhLH
-         WHrw==
-X-Gm-Message-State: APjAAAWdOkipEdJRXJMYOxXlbshOAvSq4jO3kcRvDLjW2chAgY14nHBg
-        6NWctgHN7tfuzFPYS29pfMd9a1l1jrY=
-X-Google-Smtp-Source: APXvYqwFcgbPtkfu0VNDU54KbU2j8lNvUXwmpDhTgSOQ8hqMTzGLP/HB5zeR/n2DqtOFpKZinf2Uhw==
-X-Received: by 2002:a63:fe15:: with SMTP id p21mr45259217pgh.149.1568404869691;
-        Fri, 13 Sep 2019 13:01:09 -0700 (PDT)
-Received: from jprestwo-test.jf.intel.com ([134.134.139.76])
-        by smtp.gmail.com with ESMTPSA id 143sm24819392pgc.6.2019.09.13.13.01.08
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 13 Sep 2019 13:01:08 -0700 (PDT)
-From:   James Prestwood <prestwoj@gmail.com>
-To:     linux-wireless@vger.kernel.org
-Cc:     James Prestwood <prestwoj@gmail.com>
-Subject: [PATCH 2/2] mac80211: Support LIVE_ADDRESS_CHANGE feature
-Date:   Fri, 13 Sep 2019 12:59:08 -0700
-Message-Id: <20190913195908.7871-2-prestwoj@gmail.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20190913195908.7871-1-prestwoj@gmail.com>
-References: <20190913195908.7871-1-prestwoj@gmail.com>
+        Fri, 13 Sep 2019 16:29:53 -0400
+Received: by smtp.codeaurora.org (Postfix, from userid 1000)
+        id 55CB8607F4; Fri, 13 Sep 2019 20:29:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
+        s=default; t=1568406592;
+        bh=etafjzTA6Zi879lr6Ovwc5pyqqqoiOtwlPwoiVSGFJI=;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+        b=n6MrWAaqmN1xuck78P6Klx6Ee40HY6mvHJlyE9Ibhyyz+QgbvgPLG9TLY0DM+SRl/
+         7iLHIvmt0yjpE+UapI+wuERQX5DClbeVXYTHORP9C5n3GbNSoqMIZgDOJvAiQ5KRXH
+         8kFyOE0BKjF7iHcB+1wJ6l39pmdDJyq1lv9PmmHA=
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        pdx-caf-mail.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.7 required=2.0 tests=ALL_TRUSTED,BAYES_00,
+        DKIM_INVALID,DKIM_SIGNED,SPF_NONE autolearn=no autolearn_force=no
+        version=3.4.0
+Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo@smtp.codeaurora.org)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 20F8C60769;
+        Fri, 13 Sep 2019 20:29:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
+        s=default; t=1568406591;
+        bh=etafjzTA6Zi879lr6Ovwc5pyqqqoiOtwlPwoiVSGFJI=;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+        b=SNX4KNbaXjQpOmrNB++Ct/TqJd17gtJui+qGc9JXT/4oHv0XpFkQVGeUv30BOpHdN
+         UXnjAjJWG03noDLnFxK6Ik1TssLZP3sBPqTGTqjHa6qGlyfEz+g9ms3zTaydD9c1dM
+         2CRH7Q7ULR/EsHL8Vn4/M8L92iRNWc0u8aWGrDPE=
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 20F8C60769
+Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
+From:   Kalle Valo <kvalo@codeaurora.org>
+To:     kbuild test robot <lkp@intel.com>
+Cc:     Tzu-En Huang <tehuang@realtek.com>, kbuild-all@01.org,
+        Yan-Hsuan Chuang <yhchuang@realtek.com>,
+        linux-wireless@vger.kernel.org
+Subject: Re: [PATCH] rtw88: 8822c: fix boolreturn.cocci warnings
+References: <201909140114.9pMJS5nZ%lkp@intel.com>
+        <20190913173221.cgz7jdi5ggbfummj@48261080c7f1>
+Date:   Fri, 13 Sep 2019 23:29:46 +0300
+In-Reply-To: <20190913173221.cgz7jdi5ggbfummj@48261080c7f1> (kbuild test
+        robot's message of "Sat, 14 Sep 2019 01:32:21 +0800")
+Message-ID: <87v9twc539.fsf@kamboji.qca.qualcomm.com>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
+MIME-Version: 1.0
+Content-Type: text/plain
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Signed-off-by: James Prestwood <prestwoj@gmail.com>
----
- net/mac80211/iface.c | 51 ++++++++++++++++++++++++++++++++++++++++++--
- net/mac80211/main.c  |  1 +
- 2 files changed, 50 insertions(+), 2 deletions(-)
+kbuild test robot <lkp@intel.com> writes:
 
-diff --git a/net/mac80211/iface.c b/net/mac80211/iface.c
-index 8dc6580e1787..16ef6b83e7ea 100644
---- a/net/mac80211/iface.c
-+++ b/net/mac80211/iface.c
-@@ -198,15 +198,57 @@ static int ieee80211_verify_mac(struct ieee80211_sub_if_data *sdata, u8 *addr,
- 	return ret;
- }
- 
-+static int ieee80211_can_live_addr_change(struct ieee80211_sub_if_data *sdata)
-+{
-+	if (netif_carrier_ok(sdata->dev))
-+		return -EBUSY;
-+
-+	switch (sdata->vif.type) {
-+	case NL80211_IFTYPE_AP:
-+	case NL80211_IFTYPE_P2P_GO:
-+	case NL80211_IFTYPE_AP_VLAN:
-+	case NL80211_IFTYPE_WDS:
-+	case NL80211_IFTYPE_MESH_POINT:
-+	case NL80211_IFTYPE_MONITOR:
-+	case NL80211_IFTYPE_OCB:
-+		/* No further checking required, when started or UP these
-+		 * interface types set carrier
-+		 */
-+		break;
-+	case NL80211_IFTYPE_ADHOC:
-+		if (sdata->u.ibss.ssid_len != 0)
-+			return -EBUSY;
-+		break;
-+	case NL80211_IFTYPE_STATION:
-+	case NL80211_IFTYPE_P2P_CLIENT:
-+		if (!list_empty(&sdata->local->roc_list) ||
-+					!sdata->local->scanning)
-+			return -EBUSY;
-+		break;
-+	default:
-+		return -EOPNOTSUPP;
-+	}
-+
-+	return 0;
-+}
-+
-+
- static int ieee80211_change_mac(struct net_device *dev, void *addr)
- {
- 	struct ieee80211_sub_if_data *sdata = IEEE80211_DEV_TO_SUB_IF(dev);
-+	struct ieee80211_local *local = sdata->local;
- 	struct sockaddr *sa = addr;
- 	bool check_dup = true;
-+	bool live = false;
- 	int ret;
- 
--	if (ieee80211_sdata_running(sdata))
--		return -EBUSY;
-+	if (ieee80211_sdata_running(sdata)) {
-+		ret = ieee80211_can_live_addr_change(sdata);
-+		if (ret)
-+			return ret;
-+
-+		live = true;
-+	}
- 
- 	if (sdata->vif.type == NL80211_IFTYPE_MONITOR &&
- 	    !(sdata->u.mntr.flags & MONITOR_FLAG_ACTIVE))
-@@ -216,7 +258,11 @@ static int ieee80211_change_mac(struct net_device *dev, void *addr)
- 	if (ret)
- 		return ret;
- 
-+	if (live)
-+		drv_remove_interface(local, sdata);
- 	ret = eth_mac_addr(dev, sa);
-+	if (live)
-+		drv_add_interface(local, sdata);
- 
- 	if (ret == 0)
- 		memcpy(sdata->vif.addr, sa->sa_data, ETH_ALEN);
-@@ -1871,6 +1917,7 @@ int ieee80211_if_add(struct ieee80211_local *local, const char *name,
- 			sdata->u.mgd.use_4addr = params->use_4addr;
- 
- 		ndev->features |= local->hw.netdev_features;
-+		ndev->priv_flags |= IFF_LIVE_ADDR_CHANGE;
- 
- 		netdev_set_default_ethtool_ops(ndev, &ieee80211_ethtool_ops);
- 
-diff --git a/net/mac80211/main.c b/net/mac80211/main.c
-index 29b9d57df1a3..0aea583e5e69 100644
---- a/net/mac80211/main.c
-+++ b/net/mac80211/main.c
-@@ -596,6 +596,7 @@ struct ieee80211_hw *ieee80211_alloc_hw_nm(size_t priv_data_len,
- 		wiphy_ext_feature_set(wiphy, NL80211_EXT_FEATURE_TXQS);
- 
- 	wiphy_ext_feature_set(wiphy, NL80211_EXT_FEATURE_RRM);
-+	wiphy_ext_feature_set(wiphy, NL80211_EXT_FEATURE_LIVE_ADDRESS_CHANGE);
- 
- 	wiphy->bss_priv_size = sizeof(struct ieee80211_bss);
- 
+> From: kbuild test robot <lkp@intel.com>
+>
+> drivers/net/wireless/realtek/rtw88/rtw8822c.c:2606:9-10: WARNING: return of 0/1 in function 'rtw8822c_dpk_coef_iq_check' with return type bool
+>
+>  Return statements in functions returning bool should use
+>  true/false instead of 1/0.
+> Generated by: scripts/coccinelle/misc/boolreturn.cocci
+>
+> Fixes: 5227c2ee453d ("rtw88: 8822c: add SW DPK support")
+> CC: Tzu-En Huang <tehuang@realtek.com>
+> Signed-off-by: kbuild test robot <lkp@intel.com>
+> ---
+>
+> tree:   https://kernel.googlesource.com/pub/scm/linux/kernel/git/kvalo/wireless-drivers-next.git master
+> head:   f9e568754562e0f506e12aa899c378b4155080e9
+> commit: 5227c2ee453d2f778192d8bb0f1a6072892aaa8e [23/32] rtw88: 8822c: add SW DPK support
+>
+>  rtw8822c.c |    4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+>
+> --- a/drivers/net/wireless/realtek/rtw88/rtw8822c.c
+> +++ b/drivers/net/wireless/realtek/rtw88/rtw8822c.c
+> @@ -2603,9 +2603,9 @@ static bool rtw8822c_dpk_coef_iq_check(s
+>  {
+>  	if (coef_i == 0x1000 || coef_i == 0x0fff ||
+>  	    coef_q == 0x1000 || coef_q == 0x0fff)
+> -		return 1;
+> +		return true;
+>  	else
+> -		return 0;
+> +		return false;
+
+Can someone submit this to linux-wireless so that patchwork can see it,
+please?
+
 -- 
-2.17.1
-
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
