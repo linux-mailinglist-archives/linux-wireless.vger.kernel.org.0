@@ -2,114 +2,111 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 4F1ECB271D
-	for <lists+linux-wireless@lfdr.de>; Fri, 13 Sep 2019 23:16:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8837FB27FD
+	for <lists+linux-wireless@lfdr.de>; Sat, 14 Sep 2019 00:07:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731160AbfIMVQY (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 13 Sep 2019 17:16:24 -0400
-Received: from mail-pl1-f193.google.com ([209.85.214.193]:46161 "EHLO
-        mail-pl1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725747AbfIMVQY (ORCPT
+        id S2390540AbfIMWEv (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 13 Sep 2019 18:04:51 -0400
+Received: from 2.mo1.mail-out.ovh.net ([178.32.119.250]:34624 "EHLO
+        2.mo1.mail-out.ovh.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2389867AbfIMWEv (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 13 Sep 2019 17:16:24 -0400
-Received: by mail-pl1-f193.google.com with SMTP id t1so13770935plq.13
-        for <linux-wireless@vger.kernel.org>; Fri, 13 Sep 2019 14:16:23 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=message-id:subject:from:to:date:in-reply-to:references:mime-version
-         :content-transfer-encoding;
-        bh=YUuz0V7V7oa0s38GRBhksIbT5ZdpiR5vkrUs8FdjOf0=;
-        b=N0le8tizLl2mMsbCviqEdW+mOskA2nNdaNj3IYOFs6xh6/TL3B1v0/G3fOl02VRw1O
-         5aO/w58RWzdstmiB3by7qgnzFiCdrRWic2VqH41KkAXUvRPZY7HW1TeHbaobx/mUrBVV
-         Pe9HkgDED7AH68uHDTFFFd1XN3eFnJRqcY9y0T3pKmQV6bluzQtOW/N7q62jSUf2jLfd
-         EWLSYAx5r0meCD7dpgHH+dgKQ8G8TPjdgIrqv5qmuwtX4LABy+LFtKpj3UCA7K4ENPj3
-         abPj3/GITlDf8BYEQ4bcDFEV1RVlMlI72lkijByj4wjpJmObKjpFcFKIuUsRZ9HTtgcN
-         fnYQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:message-id:subject:from:to:date:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=YUuz0V7V7oa0s38GRBhksIbT5ZdpiR5vkrUs8FdjOf0=;
-        b=XzFOhAYDuXB1W5IfdJyHBlyNDF8eMtAxToBU8PvTbHtQU/SxqNUkn0j4fkXAoF/kf3
-         tKFPsTXMDDsADuSLw7pPCnJ47gy0gMsAcNaqNbU5Smg2v7+hU7wDy7DdFkXQc69X/cHF
-         /ouN5ru0bdYYSddXtU/Lbc/IcGLKhdDoPSz6wp4sW+WDvw9gE1531HCDngDZJ03M+Ex1
-         xWWQDpg+bOLQshcvwB5ZTdyD+o0CDBrSrp3qW8QO6GQnXi+6XSFS2WJsHFLUwtdyEfcD
-         UXLVSsAnvuloQfy9tbUMv1235zwjZEoF5DYz17RQfH7LhTzvhhbbvGIWtt/itzCAD2lr
-         lNLA==
-X-Gm-Message-State: APjAAAVn9xRZbjbBKOuVYBmzuIDCuRjfcFQQU9bOfp7wfPD/E2tBZyAs
-        eZ0y32z7SWDaEi87giIXfnI=
-X-Google-Smtp-Source: APXvYqzLNndXSjQBbfqXbMWEM9oj5hDLj227FoPRWogWIV1qq8AR9v5NXHnoekgT6IFk3OgzO3hoAw==
-X-Received: by 2002:a17:902:a618:: with SMTP id u24mr48138629plq.342.1568409382767;
-        Fri, 13 Sep 2019 14:16:22 -0700 (PDT)
-Received: from jprestwo-test.jf.intel.com ([134.134.139.76])
-        by smtp.googlemail.com with ESMTPSA id q21sm32491131pfh.18.2019.09.13.14.16.22
-        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
-        Fri, 13 Sep 2019 14:16:22 -0700 (PDT)
-Message-ID: <b43f737c06a392957e6f651d59282a3f36fd05e5.camel@gmail.com>
-Subject: Re: [PATCH 1/2] nl80211: Add LIVE_ADDR_CHANGE feature
-From:   James Prestwood <prestwoj@gmail.com>
-To:     Johannes Berg <johannes@sipsolutions.net>,
-        linux-wireless@vger.kernel.org
-Date:   Fri, 13 Sep 2019 14:14:27 -0700
-In-Reply-To: <47aaaccf7d8fb58587f0cfbe38acd18e1420dc9a.camel@sipsolutions.net>
-References: <20190913195908.7871-1-prestwoj@gmail.com>
-         (sfid-20190913_220113_419728_36032050) <6c85d9b108825939afb84ebc8a708a211f7e2b98.camel@sipsolutions.net>
-         <38c222129dd182de4c55e536a89eada7f58a1bf1.camel@gmail.com>
-         (sfid-20190913_225826_111097_E5ED9AB1) <47aaaccf7d8fb58587f0cfbe38acd18e1420dc9a.camel@sipsolutions.net>
-Content-Type: text/plain; charset="UTF-8"
-X-Mailer: Evolution 3.28.5-0ubuntu0.18.04.1 
-Mime-Version: 1.0
-Content-Transfer-Encoding: 7bit
+        Fri, 13 Sep 2019 18:04:51 -0400
+X-Greylist: delayed 2403 seconds by postgrey-1.27 at vger.kernel.org; Fri, 13 Sep 2019 18:04:50 EDT
+Received: from player158.ha.ovh.net (unknown [10.108.42.83])
+        by mo1.mail-out.ovh.net (Postfix) with ESMTP id ECF9F18F557
+        for <linux-wireless@vger.kernel.org>; Fri, 13 Sep 2019 22:48:21 +0200 (CEST)
+Received: from awhome.eu (p57B7E67F.dip0.t-ipconnect.de [87.183.230.127])
+        (Authenticated sender: postmaster@awhome.eu)
+        by player158.ha.ovh.net (Postfix) with ESMTPSA id 18D539B283E7;
+        Fri, 13 Sep 2019 20:48:15 +0000 (UTC)
+Subject: Re: [PATCH 04/11] wil6210: fix PTK re-key race
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=wetzel-home.de;
+        s=wetzel-home; t=1568407693;
+        bh=C/MTRKucCQexrI44T2Nu91LyY+09ypq/BewO4fLc6ds=;
+        h=Subject:To:Cc:References:From:Date:In-Reply-To;
+        b=VtRTV5cQt5QosVKvoBQIpHDTBH+0b3lY+f5TkSj97mUbWypygB7gC4m0jUu1cKSwj
+         6G/DMenw0Cb8fDQD+mNcwoeeLgjPGPGn3FjEQanzWKNzdxhA5DDndhONLi1U25SKQl
+         eDloSXeuAWMEjjj2z3nHjJyNcrSNXm7lyDyiTXgo=
+To:     Denis Kenzior <denkenz@gmail.com>,
+        Arend Van Spriel <arend.vanspriel@broadcom.com>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        Maya Erez <merez@codeaurora.org>
+Cc:     Ahmad Masri <amasri@codeaurora.org>,
+        linux-wireless@vger.kernel.org, wil6210@qti.qualcomm.com
+References: <1567931575-27984-5-git-send-email-merez@codeaurora.org>
+ <20190910132315.D7AC7602F2@smtp.codeaurora.org>
+ <7b636313-fa4a-5ee4-935a-ba2ed5dde1e5@wetzel-home.de>
+ <2c6bc637-62c2-020c-ab83-d2e1677d96b2@gmail.com>
+ <5716f475-856e-7fd2-637b-67927f4f78bc@wetzel-home.de>
+ <74c0e328-320c-0999-836e-1bfb0fa224ff@broadcom.com>
+ <13f699ef-16c2-3ba7-79a0-0934f5e39368@gmail.com>
+From:   Alexander Wetzel <alexander@wetzel-home.de>
+Message-ID: <46f1141c-929c-9686-017d-fe4305d9c922@wetzel-home.de>
+Date:   Fri, 13 Sep 2019 22:48:13 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.0
+MIME-Version: 1.0
+In-Reply-To: <13f699ef-16c2-3ba7-79a0-0934f5e39368@gmail.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
+X-Ovh-Tracer-Id: 41939774643313792
+X-VR-SPAMSTATE: OK
+X-VR-SPAMSCORE: -100
+X-VR-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgedufedrtdejgdduheefucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuqfggjfdpvefjgfevmfevgfenuceurghilhhouhhtmecuhedttdenucesvcftvggtihhpihgvnhhtshculddquddttddm
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Fri, 2019-09-13 at 23:01 +0200, Johannes Berg wrote:
-> On Fri, 2019-09-13 at 13:56 -0700, James Prestwood wrote:
-> > Hi,
-> > 
-> > On Fri, 2019-09-13 at 22:48 +0200, Johannes Berg wrote:
-> > > On Fri, 2019-09-13 at 12:59 -0700, James Prestwood wrote:
-> > > > Add a new feature bit signifying that the wireless hardware
-> > > > supports
-> > > > changing the mac address while the underlying net_device is
-> > > > UP.  Note
-> > > > that this is slightly different from IFF_LIVE_ADDR_CHANGE as
-> > > > additional
-> > > > restrictions might be imposed by the hardware.  Typical
-> > > > restrictions
-> > > > are:
-> > > > 	- No connection is active on this interface, e.g.
-> > > > carrier is
-> > > > off
-> > > > 	- No scan is in progress
-> > > > 	- No offchannel operation is in progress
-> > > 
-> > > Hmm, what do you need this patch for?
-> > > 
-> > > IFF_LIVE_ADDR_CHANGE should be sufficient to discover it?
-> > 
-> > Because userspace needs to know if this is supported?
-> > IFF_LIVE_ADDR_CHANGE is a private flag... AFAIK userspace has no
-> > way of
-> > obtaining this.
+Am 13.09.19 um 16:33 schrieb Denis Kenzior:
+> Hi Arend, Alexander,
 > 
-> Oh, annoying.
+>> Basically, we now have two bypass methods dealing with the 
+>> same/similar issue:
+>>
+>> 1) bypass the QDISC.
+>> 2) bypass network stack entirely with CONTROL_PORT.
 > 
-> But that doesn't really mean that nl80211 is an appropriate place to
-> advertise it, IMHO?
+> It also raises the question in my mind as to why we have two ways of 
+> doing the same thing?  From the discussion so far it also sounds like 
+> each requires somewhat different / special handling in the driver. 
+> Wouldn't it make sense to deprecate one and encourage drivers to 
+> implement the other?
+> 
 
-The intention of the flag was not soley related to
-CMD_CONNECT/CMD_AUTHENTICATE. Its an indication that the
-hardware/driver supports a live address change. If you don't want it
-here could you suggest a better location for it?
+My understanding is, that any control port frame must bypass any queues 
+and just send out the frame directly, correct? Any packets send via it 
+is directly jumping to the very front and is immediately send out.
+And that the intend of it is to replace the "old" path.
 
+So the best way forward here would be to
+
+1) implement the patch here to work around the problem without 
+control_port or the theoretical QDISC bypass
+2) start implementing control port for the future.
+
+correct?
+
+
+> CONTROL_PORT was added specifically to take care of the re-keying races 
+> and can be extended with additional attributes over time, as needed 
+> (perhaps for extended key id, etc).  Also note that in our testing 
+> CONTROL_PORT is _way_ faster than PAE socket...
 > 
-> And in nl80211 you'd need the flag for if you actually have the
-> "change
-> MAC address during connect" attribute.
-> 
-> johannes
-> 
+
+Extended Key ID is pretty robust when rekeying and the driver/card only 
+has to take care to not mix KeyIDs within one A-MPDU. It's no problem 
+encrypting eapol#4 with the new key. You can even encrypt it at the 
+initial connect and it will work. Basically all races the "classical" 
+rekey has to work around go away.
+
+For "normal" rekeys it's working pretty well with ath9k and iwlwifi even 
+without control_port and just learned some weeks ago that QDISC could 
+still cause issues...
+
+Alexander
+
+
 
