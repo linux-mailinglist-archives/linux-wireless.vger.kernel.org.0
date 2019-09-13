@@ -2,25 +2,25 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 96CEDB2148
-	for <lists+linux-wireless@lfdr.de>; Fri, 13 Sep 2019 15:50:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 118C1B2150
+	for <lists+linux-wireless@lfdr.de>; Fri, 13 Sep 2019 15:50:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2390382AbfIMNnB (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 13 Sep 2019 09:43:01 -0400
-Received: from smtp.codeaurora.org ([198.145.29.96]:59598 "EHLO
+        id S2391664AbfIMNol (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 13 Sep 2019 09:44:41 -0400
+Received: from smtp.codeaurora.org ([198.145.29.96]:60136 "EHLO
         smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2388473AbfIMNnB (ORCPT
+        with ESMTP id S2388489AbfIMNol (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 13 Sep 2019 09:43:01 -0400
+        Fri, 13 Sep 2019 09:44:41 -0400
 Received: by smtp.codeaurora.org (Postfix, from userid 1000)
-        id DBEB060710; Fri, 13 Sep 2019 13:42:59 +0000 (UTC)
+        id 17711607CA; Fri, 13 Sep 2019 13:44:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1568382179;
-        bh=Ja4ceG8awDLyP6lPXdyb6uLP/6pbJZpWydMXOFW+26Q=;
+        s=default; t=1568382280;
+        bh=vyt/3hzOSaAAxezkzLOi1iLD8HN1GuNmP4hYAG0W1FA=;
         h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-        b=XvGzC+6huv+7a1sNFc0pmzUq3qvzdztxG2IvTy9ERoqSZkiZ5ToOwqRf8ybpSgAtX
-         6L0/jZVnzRWpqz6esTEMYr2y0d9T95gWpfhYnNOAw2qHLv7R5a37MKiz7M/CzVTu2J
-         pda6n05rfKe9OOLtmM8IAXJNlPKO45UxFxXCU2UU=
+        b=MnbV2qHM+bSPAbTmHbg3nNzGX8DE/Q0+tzN/lE933ZItOchPc5uZcPQs5Mz7ATmks
+         JrDztRdcLFwTrmgQK95K4ty+XDlw8/PdsybhmbYwq5NZmwjbO1Dsv06Ix52pF5pcCW
+         dOWdsrKhFzbaOx8HqxpOI+dsAt1RgYMWDIxp4jwI=
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         pdx-caf-mail.web.codeaurora.org
 X-Spam-Level: 
@@ -31,66 +31,67 @@ Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
         (Authenticated sender: kvalo@smtp.codeaurora.org)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 03E2F601C3;
-        Fri, 13 Sep 2019 13:42:56 +0000 (UTC)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 8882A602C3;
+        Fri, 13 Sep 2019 13:44:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1568382179;
-        bh=Ja4ceG8awDLyP6lPXdyb6uLP/6pbJZpWydMXOFW+26Q=;
+        s=default; t=1568382279;
+        bh=vyt/3hzOSaAAxezkzLOi1iLD8HN1GuNmP4hYAG0W1FA=;
         h=Subject:From:In-Reply-To:References:To:Cc:From;
-        b=UPSBbIpeEQNcPSb5JSIJU6pLbFQcmBEjMLxtwx1r2JAb/2AvdJHnMNd2SWmSmbBa8
-         z9OvVqgcb3adv4j+0cEIXnrEU4luuBPIQy0MquE2QvkNddHumUViquJLOOD2ZmSVbq
-         0sbilHNtVsv9RgM4Zo9JaR6tzpy/5FAgGCM8yptE=
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 03E2F601C3
+        b=FY+xJdkjqkV26JGjs6bIKRSpXRDCVa6SNEM0zTU+FtViblbDIbmbVNBhMGWqx9gLG
+         r2xJm5zysJeRssGkH0F33b204BuNk+MPyzcB2n2/YWMyfUFqauvNVJaP8XTJKME6nz
+         Bn5RqyFwn9Dq6FS4qDVz1y/o4J6Ri1rLAHgVbPmE=
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 8882A602C3
 Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
 Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH 1/3] brcmfmac: move "cfg80211_ops" pointer to another
- struct
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH] rtlwifi: rtl8821ae: make array static const and remove
+ redundant assignment
 From:   Kalle Valo <kvalo@codeaurora.org>
-In-Reply-To: <20190903042928.18621-2-zajec5@gmail.com>
-References: <20190903042928.18621-2-zajec5@gmail.com>
-To:     =?utf-8?b?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>
-Cc:     Arend van Spriel <arend.vanspriel@broadcom.com>,
-        Franky Lin <franky.lin@broadcom.com>,
-        Hante Meuleman <hante.meuleman@broadcom.com>,
-        Chi-Hsien Lin <chi-hsien.lin@cypress.com>,
-        Wright Feng <wright.feng@cypress.com>,
-        Winnie Chang <winnie.chang@cypress.com>,
-        linux-wireless@vger.kernel.org,
-        brcm80211-dev-list.pdl@broadcom.com,
-        brcm80211-dev-list@cypress.com,
-        =?utf-8?b?UmFmYcWCIE1pxYJlY2tp?= <rafal@milecki.pl>
+In-Reply-To: <20190905150022.3609-1-colin.king@canonical.com>
+References: <20190905150022.3609-1-colin.king@canonical.com>
+To:     Colin King <colin.king@canonical.com>
+Cc:     Ping-Ke Shih <pkshih@realtek.com>,
+        "David S . Miller" <davem@davemloft.net>,
+        Larry Finger <Larry.Finger@lwfinger.net>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
 User-Agent: pwcli/0.0.0-git (https://github.com/kvalo/pwcli/) Python/2.7.12
-Message-Id: <20190913134259.DBEB060710@smtp.codeaurora.org>
-Date:   Fri, 13 Sep 2019 13:42:59 +0000 (UTC)
+Message-Id: <20190913134440.17711607CA@smtp.codeaurora.org>
+Date:   Fri, 13 Sep 2019 13:44:40 +0000 (UTC)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Rafał Miłecki wrote:
+Colin King <colin.king@canonical.com> wrote:
 
-> From: Rafał Miłecki <rafal@milecki.pl>
+> From: Colin Ian King <colin.king@canonical.com>
 > 
-> This moves "ops" pointer from "struct brcmf_cfg80211_info" to the
-> "struct brcmf_pub". This movement makes it possible to allocate wiphy
-> without attaching cfg80211 (brcmf_cfg80211_attach()). It's required for
-> later separation of wiphy allocation and driver initialization.
+> The array channel_all can be make static const rather than populating
+> it on the stack, this makes the code smaller.  Also, variable place
+> is being initialized with a value that is never read, so this assignment
+> is redundant and can be removed.
 > 
-> While at it fix also an unlikely memory leak in the brcmf_attach().
+> Before:
+>    text	   data	    bss	    dec	    hex	filename
+>  118537	   9591	      0	 128128	  1f480	realtek/rtlwifi/rtl8821ae/phy.o
 > 
-> Signed-off-by: Rafał Miłecki <rafal@milecki.pl>
+> After:
+>    text	   data	    bss	    dec	    hex	filename
+>  118331	   9687	      0	 128018	  1f412	realtek/rtlwifi/rtl8821ae/phy.o
+> 
+> Saves 110 bytes, (gcc version 9.2.1, amd64)
+> 
+> Signed-off-by: Colin Ian King <colin.king@canonical.com>
 
-3 patches applied to wireless-drivers-next.git, thanks.
+Patch applied to wireless-drivers-next.git, thanks.
 
-ba76ff25ee64 brcmfmac: move "cfg80211_ops" pointer to another struct
-450914c39f88 brcmfmac: split brcmf_attach() and brcmf_detach() functions
-a1f5aac1765a brcmfmac: don't realloc wiphy during PCIe reset
+569ce0a486fd rtlwifi: rtl8821ae: make array static const and remove redundant assignment
 
 -- 
-https://patchwork.kernel.org/patch/11127163/
+https://patchwork.kernel.org/patch/11133295/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
