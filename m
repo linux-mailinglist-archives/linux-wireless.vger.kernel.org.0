@@ -2,103 +2,51 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 24640B26AA
-	for <lists+linux-wireless@lfdr.de>; Fri, 13 Sep 2019 22:29:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 812ABB26D6
+	for <lists+linux-wireless@lfdr.de>; Fri, 13 Sep 2019 22:48:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2387927AbfIMU3x (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 13 Sep 2019 16:29:53 -0400
-Received: from smtp.codeaurora.org ([198.145.29.96]:36194 "EHLO
-        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2387637AbfIMU3x (ORCPT
+        id S2389409AbfIMUsH (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 13 Sep 2019 16:48:07 -0400
+Received: from s3.sipsolutions.net ([144.76.43.62]:33320 "EHLO
+        sipsolutions.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2388620AbfIMUsG (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 13 Sep 2019 16:29:53 -0400
-Received: by smtp.codeaurora.org (Postfix, from userid 1000)
-        id 55CB8607F4; Fri, 13 Sep 2019 20:29:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1568406592;
-        bh=etafjzTA6Zi879lr6Ovwc5pyqqqoiOtwlPwoiVSGFJI=;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=n6MrWAaqmN1xuck78P6Klx6Ee40HY6mvHJlyE9Ibhyyz+QgbvgPLG9TLY0DM+SRl/
-         7iLHIvmt0yjpE+UapI+wuERQX5DClbeVXYTHORP9C5n3GbNSoqMIZgDOJvAiQ5KRXH
-         8kFyOE0BKjF7iHcB+1wJ6l39pmdDJyq1lv9PmmHA=
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        pdx-caf-mail.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.7 required=2.0 tests=ALL_TRUSTED,BAYES_00,
-        DKIM_INVALID,DKIM_SIGNED,SPF_NONE autolearn=no autolearn_force=no
-        version=3.4.0
-Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        (Authenticated sender: kvalo@smtp.codeaurora.org)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 20F8C60769;
-        Fri, 13 Sep 2019 20:29:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1568406591;
-        bh=etafjzTA6Zi879lr6Ovwc5pyqqqoiOtwlPwoiVSGFJI=;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=SNX4KNbaXjQpOmrNB++Ct/TqJd17gtJui+qGc9JXT/4oHv0XpFkQVGeUv30BOpHdN
-         UXnjAjJWG03noDLnFxK6Ik1TssLZP3sBPqTGTqjHa6qGlyfEz+g9ms3zTaydD9c1dM
-         2CRH7Q7ULR/EsHL8Vn4/M8L92iRNWc0u8aWGrDPE=
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 20F8C60769
-Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
-From:   Kalle Valo <kvalo@codeaurora.org>
-To:     kbuild test robot <lkp@intel.com>
-Cc:     Tzu-En Huang <tehuang@realtek.com>, kbuild-all@01.org,
-        Yan-Hsuan Chuang <yhchuang@realtek.com>,
+        Fri, 13 Sep 2019 16:48:06 -0400
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <johannes@sipsolutions.net>)
+        id 1i8sU8-0000h7-TX; Fri, 13 Sep 2019 22:48:05 +0200
+Message-ID: <6c85d9b108825939afb84ebc8a708a211f7e2b98.camel@sipsolutions.net>
+Subject: Re: [PATCH 1/2] nl80211: Add LIVE_ADDR_CHANGE feature
+From:   Johannes Berg <johannes@sipsolutions.net>
+To:     James Prestwood <prestwoj@gmail.com>,
         linux-wireless@vger.kernel.org
-Subject: Re: [PATCH] rtw88: 8822c: fix boolreturn.cocci warnings
-References: <201909140114.9pMJS5nZ%lkp@intel.com>
-        <20190913173221.cgz7jdi5ggbfummj@48261080c7f1>
-Date:   Fri, 13 Sep 2019 23:29:46 +0300
-In-Reply-To: <20190913173221.cgz7jdi5ggbfummj@48261080c7f1> (kbuild test
-        robot's message of "Sat, 14 Sep 2019 01:32:21 +0800")
-Message-ID: <87v9twc539.fsf@kamboji.qca.qualcomm.com>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
+Date:   Fri, 13 Sep 2019 22:48:03 +0200
+In-Reply-To: <20190913195908.7871-1-prestwoj@gmail.com> (sfid-20190913_220113_419728_36032050)
+References: <20190913195908.7871-1-prestwoj@gmail.com>
+         (sfid-20190913_220113_419728_36032050)
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.30.5 (3.30.5-1.fc29) 
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-kbuild test robot <lkp@intel.com> writes:
+On Fri, 2019-09-13 at 12:59 -0700, James Prestwood wrote:
+> Add a new feature bit signifying that the wireless hardware supports
+> changing the mac address while the underlying net_device is UP.  Note
+> that this is slightly different from IFF_LIVE_ADDR_CHANGE as additional
+> restrictions might be imposed by the hardware.  Typical restrictions
+> are:
+> 	- No connection is active on this interface, e.g. carrier is off
+> 	- No scan is in progress
+> 	- No offchannel operation is in progress
 
-> From: kbuild test robot <lkp@intel.com>
->
-> drivers/net/wireless/realtek/rtw88/rtw8822c.c:2606:9-10: WARNING: return of 0/1 in function 'rtw8822c_dpk_coef_iq_check' with return type bool
->
->  Return statements in functions returning bool should use
->  true/false instead of 1/0.
-> Generated by: scripts/coccinelle/misc/boolreturn.cocci
->
-> Fixes: 5227c2ee453d ("rtw88: 8822c: add SW DPK support")
-> CC: Tzu-En Huang <tehuang@realtek.com>
-> Signed-off-by: kbuild test robot <lkp@intel.com>
-> ---
->
-> tree:   https://kernel.googlesource.com/pub/scm/linux/kernel/git/kvalo/wireless-drivers-next.git master
-> head:   f9e568754562e0f506e12aa899c378b4155080e9
-> commit: 5227c2ee453d2f778192d8bb0f1a6072892aaa8e [23/32] rtw88: 8822c: add SW DPK support
->
->  rtw8822c.c |    4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
->
-> --- a/drivers/net/wireless/realtek/rtw88/rtw8822c.c
-> +++ b/drivers/net/wireless/realtek/rtw88/rtw8822c.c
-> @@ -2603,9 +2603,9 @@ static bool rtw8822c_dpk_coef_iq_check(s
->  {
->  	if (coef_i == 0x1000 || coef_i == 0x0fff ||
->  	    coef_q == 0x1000 || coef_q == 0x0fff)
-> -		return 1;
-> +		return true;
->  	else
-> -		return 0;
-> +		return false;
+Hmm, what do you need this patch for?
 
-Can someone submit this to linux-wireless so that patchwork can see it,
-please?
+IFF_LIVE_ADDR_CHANGE should be sufficient to discover it?
 
--- 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+johannes
+
