@@ -2,213 +2,325 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 32289B2942
-	for <lists+linux-wireless@lfdr.de>; Sat, 14 Sep 2019 03:19:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F0E97B2AF2
+	for <lists+linux-wireless@lfdr.de>; Sat, 14 Sep 2019 12:14:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2390883AbfINBTA (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 13 Sep 2019 21:19:00 -0400
-Received: from 17.mo3.mail-out.ovh.net ([87.98.178.58]:57118 "EHLO
-        17.mo3.mail-out.ovh.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2390867AbfINBS7 (ORCPT
+        id S1728438AbfINKOr (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 14 Sep 2019 06:14:47 -0400
+Received: from smtp.codeaurora.org ([198.145.29.96]:48556 "EHLO
+        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726313AbfINKOq (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 13 Sep 2019 21:18:59 -0400
-X-Greylist: delayed 4199 seconds by postgrey-1.27 at vger.kernel.org; Fri, 13 Sep 2019 21:18:58 EDT
-Received: from player726.ha.ovh.net (unknown [10.108.35.211])
-        by mo3.mail-out.ovh.net (Postfix) with ESMTP id B44B6225034
-        for <linux-wireless@vger.kernel.org>; Fri, 13 Sep 2019 20:43:55 +0200 (CEST)
-Received: from awhome.eu (p57B7E67F.dip0.t-ipconnect.de [87.183.230.127])
-        (Authenticated sender: postmaster@awhome.eu)
-        by player726.ha.ovh.net (Postfix) with ESMTPSA id C5C289B9C9DA;
-        Fri, 13 Sep 2019 18:43:48 +0000 (UTC)
-Subject: Re: [PATCH 04/11] wil6210: fix PTK re-key race
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=wetzel-home.de;
-        s=wetzel-home; t=1568400227;
-        bh=55B5kFC1l9NnAPKYZQM5AqW8VaMp7jUnZAHoghe6lkc=;
-        h=Subject:To:Cc:References:From:Date:In-Reply-To;
-        b=kIpP8gSLjAYljau+OmS5OMGilU3nbRvTBAf/UO2Z+H71s4wazgNEq+n6MioZqFPjG
-         Z9cNkJe0Pj0yxgAfOiFIl6aqgjmtlm4aUWzJJWERrJEkbD8yOj8Q/YpH1D0CKrMSec
-         9CFuD1aCzX66Ryf6HH6kfUgj4CRKvXwJO304Y6VA=
-To:     Arend Van Spriel <arend.vanspriel@broadcom.com>,
-        Denis Kenzior <denkenz@gmail.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        Maya Erez <merez@codeaurora.org>
-Cc:     Ahmad Masri <amasri@codeaurora.org>,
-        linux-wireless@vger.kernel.org, wil6210@qti.qualcomm.com
-References: <1567931575-27984-5-git-send-email-merez@codeaurora.org>
- <20190910132315.D7AC7602F2@smtp.codeaurora.org>
- <7b636313-fa4a-5ee4-935a-ba2ed5dde1e5@wetzel-home.de>
- <2c6bc637-62c2-020c-ab83-d2e1677d96b2@gmail.com>
- <5716f475-856e-7fd2-637b-67927f4f78bc@wetzel-home.de>
- <74c0e328-320c-0999-836e-1bfb0fa224ff@broadcom.com>
-From:   Alexander Wetzel <alexander@wetzel-home.de>
-Message-ID: <039058ff-178b-2396-eb10-107d8b5f8b93@wetzel-home.de>
-Date:   Fri, 13 Sep 2019 20:43:45 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.0
+        Sat, 14 Sep 2019 06:14:46 -0400
+Received: by smtp.codeaurora.org (Postfix, from userid 1000)
+        id F10BA60770; Sat, 14 Sep 2019 10:14:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
+        s=default; t=1568456084;
+        bh=fUu3G73u8wJrx9tfph3HNlcTBRREdUClNrhZxCLdNq4=;
+        h=From:To:Cc:Subject:Date:From;
+        b=DdWW76/ap19/OyQsbTmDueeCp85kj0cW/QU58RqlnDD4Uud8dq0b0i3oAg3EWw+0Y
+         GS/OrBn2ceMinw1aL5sROT9kqTOpLm010q3CxSQzCasYx0v67pH4Z4J5UBLXcmoZ3h
+         1VflemmACp9o4X7MIjKZpr6e2eBkUfHI8IWXZ3t4=
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        pdx-caf-mail.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.7 required=2.0 tests=ALL_TRUSTED,BAYES_00,
+        DKIM_INVALID,DKIM_SIGNED,SPF_NONE autolearn=no autolearn_force=no
+        version=3.4.0
+Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo@smtp.codeaurora.org)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id D6469607F1;
+        Sat, 14 Sep 2019 10:14:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
+        s=default; t=1568456084;
+        bh=fUu3G73u8wJrx9tfph3HNlcTBRREdUClNrhZxCLdNq4=;
+        h=From:To:Cc:Subject:Date:From;
+        b=DdWW76/ap19/OyQsbTmDueeCp85kj0cW/QU58RqlnDD4Uud8dq0b0i3oAg3EWw+0Y
+         GS/OrBn2ceMinw1aL5sROT9kqTOpLm010q3CxSQzCasYx0v67pH4Z4J5UBLXcmoZ3h
+         1VflemmACp9o4X7MIjKZpr6e2eBkUfHI8IWXZ3t4=
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org D6469607F1
+Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
+From:   Kalle Valo <kvalo@codeaurora.org>
+To:     David Miller <davem@davemloft.net>
+Cc:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: pull-request: wireless-drivers-next 2019-09-14
+Date:   Sat, 14 Sep 2019 13:14:40 +0300
+Message-ID: <87r24jchgv.fsf@kamboji.qca.qualcomm.com>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
 MIME-Version: 1.0
-In-Reply-To: <74c0e328-320c-0999-836e-1bfb0fa224ff@broadcom.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
-X-Ovh-Tracer-Id: 16387191672066874496
-X-VR-SPAMSTATE: OK
-X-VR-SPAMSCORE: -100
-X-VR-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgedufedrtdejgdduvdekucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuqfggjfdpvefjgfevmfevgfenuceurghilhhouhhtmecuhedttdenucesvcftvggtihhpihgvnhhtshculddquddttddm
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
->> Hi Denis,
->>
->>>> I don't know anything about the driver here but in mac80211 the idea 
->>>> to avoid the race is to simply flush the queues prior deleting the 
->>>> outgoing key.
->>>
->>> Maybe a silly question, but what does flushing the queue mean in this 
->>> context?  Is it waiting for all the packets to be sent or dropping 
->>> them on the floor?
->>>
->>
->> It's stopping them to make sure nothing can be added and then sends 
->> out all MPDUs in the queues.
->>
->>>>
->>>> Now wpa_supplicant is not yet bypassing qdisks, but adding the 
->>>> socket parameter PACKET_QDISC_BYPASS is basically a one-liner in 
->>>> wpa_supplicant and should allow a generic way for drivers to avoid 
->>>> the race with a simple queue flush...
->>>
->>> Can you expand on this actually?  What would the sequence of events be?
->>>
->>
->> 1) wpa_supplicant hands over eapol #4 to the kernel.
->>     When bypassing the QDISC the frame is directly added to a driver
->>     queue or directly send out. When the send call returns the driver
->>     has eapol 4 either in the queuem already send it or the send command
->>     has failed.
->>
->> 2) wpa_supplicant deletes the old key (NL80211_CMD_DEL_KEY)
->>
->> 3) The driver stops all hw queues and sends out all MPDUs queued up to
->>     that time
->>
->> 4) Driver makes sure no traffic can be send with no/wrong key or PN to
->>     STA
->>
->> 5) the driver really removes the key from the HW/installs the new and
->>     resumes normal operation
->>
->> I've just posted my hostpad patch to use PACKET_QDISC_BYPASS for eapol 
->> frames; It's probably too optimistic and need more code to retry a 
->> transmit to compensate for the missing QDISC buffers.
->>
->>> Also, how would this be made to work with CONTROL_PORT over NL80211 ?
->>>
->>
->> Control port is an optional feature drivers can provide. 
->> wpa_supplicant should just use it when available or fall back to the 
->> "traditional" path when not. Now the driver don't has to flush all 
->> queues when using control port, as long as it makes sure the control 
->> port frame will be send out prior to deleting the key.
->>
->> But then the driver must know that eapol frames will really be handed 
->> over via control port; So I guess flushing all queues is still the 
->> simpler solution. So I guess it will change next to nothing...
-> 
-> Well, in the steps you describe (maybe its just how you describe it) it 
-> relies on how the driver is handling it all. I mean step 4) seems more 
-> the goal of the whole approach.
->
-Well, if you do not take care there are plenty of pitfalls a driver can 
-fall into when trying to rekey, especially when having ongoing traffic.
-Most drivers will need some code to make sure they can safely delete the 
-old key for a STA and install a new one without a full disassociation.
-Just what exactly is driver/hw depended. (I've detailed knowledge for 
-iwlfifi and ath9k and good guess how ath10 is handling it. All other 
-cards: No idea...)
+Hi Dave,
 
-I've tested around ten different cards (Android, iPhone, notebooks, usb 
-dongles) and found only two handling it correctly. The chances that 
-someone has both an AP and a device handling that correctly is therefore 
-not very good, but then my sample is still too small to be representative.
-Known broken devices are e.g. Samsung galaxy S5, Nexus 5x, HTC 10, my 
-Samsumg Smart TV, iwlwifi cards (both windows and linux, just different) 
-and for sure any device using ath9k driver with a kernel < 4.19.
+here's a pull request to net-next tree for v5.4, more info below. Please
+let me know if there are any problems.
 
-The only "good" devices I found were an iPhone (forgot the model) and a 
-Microsoft Surface Pro (also forgot the exact model)
+Kalle
 
-I was focusing on cards I'm using: iwlwifi, ath9k and ath10k. Of those 
-cards ath10k was ok, iwlwif was working around 50% of the rekeys and 
-ath9k 100% broken (pretty sure it compromised even the security by 
-sending out the some frames two times: With encryption and without.
+The following changes since commit 172ca8308b0517ca2522a8c885755fd5c20294e7:
 
-The details of that are best documented here, which fixed it for many - 
-but probably not all - mac80211 cards:
-https://patchwork.kernel.org/patch/10583675/
+  cxgb4: Fix spelling typos (2019-09-12 12:50:56 +0100)
 
-The core idea here is, to tell hostpd/wpa_supplicant when a driver 
-believes it can rekey correctly and without that confirmation refuses to 
-reky but disconnect/reconects fast. But that is work in progress, 
-delayed by first implementing the "ideal" rekey solution added in IEEE 
-802.11 - 2102 "Extended key ID".
+are available in the git repository at:
 
-Problem is of course, that all card/drivers are handling things a bit 
-different and what works for one may well be broken for another. ath10k 
-is a good sample for that: Doing basically everything in HW it worked 
-quite well, bypassing the pitfalls.
+  git://git.kernel.org/pub/scm/linux/kernel/git/kvalo/wireless-drivers-next=
+.git tags/wireless-drivers-next-for-davem-2019-09-14
 
-The generic risks are:
-- PN out of sync with the key (ath9k's main fault)
-   Especially risky are drivers using HW crypto but generating the PNs in
-   SW.
+for you to fetch changes up to f9e568754562e0f506e12aa899c378b4155080e9:
 
-- A-MPDU sessions across rekeys. (Holding back MPDUs till all belonging
-   to the session are received. And then bump the PN for the new key to
-   the value the old key used. And then dropping all MPDUs for the new
-   key as "replay")
+  Merge ath-next from git://git.kernel.org/pub/scm/linux/kernel/git/kvalo/a=
+th.git (2019-09-13 18:15:58 +0300)
 
-- Not stopping/blocking Tx depending on the outgoing key
+----------------------------------------------------------------
+wireless-drivers-next patches for 5.4
 
-- repeating lost frames originally send with the old with the new key
+Last set of patches for 5.4. wil6210 and rtw88 being most active this
+time, but ath9k also having a new module to load devices without
+EEPROM.
 
+Major changes:
 
-> Basically, we now have two bypass methods dealing with the same/similar 
-> issue:
-> 
-> 1) bypass the QDISC.
-> 2) bypass network stack entirely with CONTROL_PORT.
-> 
-> How does option 1) work for drivers that skip the QDISC for all traffic 
+wil6210
 
-Which drivers skip QDISC, and how? I'm not aware of a way "normal" 
-network traffic can do that.
-A "normal" linux wlan driver will register as a network card and short 
-of setting PACKET_QDISC_BYPASS on the socket or providing a non-standard 
-API all network traffic will pass trough QDISC. (But that's mostly new 
-area for me, just stitched the path together end2end some days ago.)
+* add support for Enhanced Directional Multi-Gigabit (EDMG) channels 9-11
 
-Now assuming you start a load generator using PACKET_QDISC_BYPASS and 
-try to rekey the connection: the NIC driver still will have the eapol#4 
-in one of it's queue. So stopping to add new skb's for the queues and 
-send out everything which is in the driver queues would send out tons of 
-other MPDUs, but one of them would be the eapol #4 one.
+* add debugfs file to show PCM ring content
 
-The only "trick" here is, that the the sendto() call from wpa_supplicant 
-up to the *driver* queues is atomic. With PACKET_QDISC_BYPASS set it - 
-at least for my understanding after investigating the issue some hours.
+* report boottime_ns in scan results
 
-Once the sendto call returns and code execution in wpa_supplicant 
-continues - heading for the key deletion - the eapol #4 MPDU is 
-accessible for the driver and can be send out.
+ath9k
 
-> and rely on mac80211 to schedule the packets? Guess mac80211 can control 
-> that, right?
-> 
+* add a separate loader for AR92XX (and older) pci(e) without eeprom
 
-Not sure i understand that part.. mac80211 is like the top half of a 
-wlan driver: It handles some parts but the full driver consists of 
-(mac80211 + low level driver).
+brcmfmac
 
-Alexander
+* use the same wiphy after PCIe reset to not confuse the user space
+
+rtw88
+
+* enable interrupt migration
+
+* enable AMSDU in AMPDU aggregation
+
+* report RX power for each antenna
+
+* enable to DPK and IQK calibration methods to improve performance
+
+----------------------------------------------------------------
+Ahmad Masri (1):
+      wil6210: fix PTK re-key race
+
+Alexei Avshalom Lazar (2):
+      wil6210: Add EDMG channel support
+      wil6210: verify cid value is valid
+
+Arnd Bergmann (1):
+      wcn36xx: use dynamic allocation for large variables
+
+Ben Greear (1):
+      ath10k: free beacon buf later in vdev teardown
+
+Chin-Yen Lee (1):
+      rtw88: 8822c: update pwr_seq to v13
+
+Christian Lamparter (1):
+      ath9k: add loader for AR92XX (and older) pci(e)
+
+Colin Ian King (4):
+      wil6210: fix wil_cid_valid with negative cid values
+      rtlwifi: rtl8821ae: make array static const and remove redundant assi=
+gnment
+      bcma: make arrays pwr_info_offset and sprom_sizes static const, shrin=
+ks object size
+      ssb: make array pwr_info_offset static const, makes object smaller
+
+Dedy Lansky (4):
+      wil6210: add wil_netif_rx() helper function
+      wil6210: add debugfs to show PMC ring content
+      wil6210: make sure DR bit is read before rest of the status message
+      wil6210: properly initialize discovery_expired_work
+
+Hui Peng (1):
+      ath6kl: fix a NULL-ptr-deref bug in ath6kl_usb_alloc_urb_from_pipe()
+
+Jia-Ju Bai (1):
+      ath6kl: Fix a possible null-pointer dereference in ath6kl_htc_mbox_cr=
+eate()
+
+Kalle Valo (1):
+      Merge ath-next from git://git.kernel.org/.../kvalo/ath.git
+
+Larry Finger (9):
+      rtlwifi: rtl8723ae: Remove unused GET_XXX and SET_XXX macros
+      rtlwifi: rtl8723ae: Replace local bit manipulation macros
+      rtlwifi: rtl8723ae: Convert macros that set descriptor
+      rtlwifi: rtl8723ae: Convert inline routines to little-endian words
+      rtlwifi: rtl8723be: Remove unused SET_XXX and GET_XXX macros
+      rtlwifi: rtl8723be: Replace local bit manipulation macros
+      rtlwifi: rtl8723be: Convert macros that set descriptor
+      rtlwifi: rtl8723be: Convert inline routines to little-endian words
+      rtlwifi: rtl8188ee: rtl8192ce: rtl8192de: rtl8723ae: rtl8821ae: Remov=
+e some unused bit manipulation macros
+
+Lior David (3):
+      wil6210: use writel_relaxed in wil_debugfs_iomem_x32_set
+      wil6210: fix RX short frame check
+      wil6210: ignore reset errors for FW during probe
+
+Lorenzo Bianconi (5):
+      ath9k: dynack: fix possible deadlock in ath_dynack_node_{de}init
+      ath9k: dyanck: introduce ath_dynack_set_timeout routine
+      ath9k: dynack: properly set last timeout timestamp in ath_dynack_reset
+      ath9k: dynack: set max timeout according to channel width
+      ath9k: dynack: set ackto to max timeout in ath_dynack_reset
+
+Lubomir Rintel (1):
+      libertas: use mesh_wdev->ssid instead of priv->mesh_ssid
+
+Luis Correia (1):
+      CREDITS: Update email address
+
+Markus Elfring (1):
+      wil6210: Delete an unnecessary kfree() call in wil_tid_ampdu_rx_alloc=
+()
+
+Maya Erez (1):
+      wil6210: report boottime_ns in scan results
+
+Michael Straube (3):
+      rtlwifi: rtl8192ce: replace _rtl92c_evm_db_to_percentage with generic=
+ version
+      rtlwifi: rtl8192cu: replace _rtl92c_evm_db_to_percentage with generic=
+ version
+      rtlwifi: rtl8192de: replace _rtl92d_evm_db_to_percentage with generic=
+ version
+
+Navid Emamdoost (2):
+      ath9k_htc: release allocated buffer if timed out
+      ath9k: release allocated buffer if timed out
+
+Nicolas Boichat (1):
+      ath10k: adjust skb length in ath10k_sdio_mbox_rx_packet
+
+Rafa=C5=82 Mi=C5=82ecki (3):
+      brcmfmac: move "cfg80211_ops" pointer to another struct
+      brcmfmac: split brcmf_attach() and brcmf_detach() functions
+      brcmfmac: don't realloc wiphy during PCIe reset
+
+Rakesh Pillai (1):
+      ath10k: fix channel info parsing for non tlv target
+
+Tsang-Shian Lin (2):
+      rtw88: 8822c: Enable interrupt migration
+      rtw88: fix wrong rx power calculation
+
+Tzu-En Huang (2):
+      rtw88: 8822c: add SW DPK support
+      rtw88: add dynamic cck pd mechanism
+
+Wen Gong (2):
+      ath10k: add mic bytes for pmf management packet
+      ath10k: add reorder and change PN check logic for mac80211
+
+Yan-Hsuan Chuang (5):
+      rtw88: 8822c: update PHY parameter to v38
+      rtw88: 8822c: add FW IQK support
+      rtw88: move IQK/DPK into phy_calibration
+      rtw88: allows to receive AMSDU in AMPDU
+      rtw88: report RX power for each antenna
+
+YueHaibing (1):
+      carl9170: remove set but not used variable 'udev'
+
+zhong jiang (2):
+      ath9k: Remove unneeded variable to store return value
+      brcmsmac: Use DIV_ROUND_CLOSEST directly to make it readable
+
+ CREDITS                                            |    2 +-
+ drivers/bcma/sprom.c                               |   10 +-
+ drivers/net/wireless/ath/ath10k/htt_rx.c           |   91 +-
+ drivers/net/wireless/ath/ath10k/htt_tx.c           |    8 +
+ drivers/net/wireless/ath/ath10k/mac.c              |    9 +-
+ drivers/net/wireless/ath/ath10k/sdio.c             |   29 +-
+ drivers/net/wireless/ath/ath10k/wmi-tlv.c          |    2 +-
+ drivers/net/wireless/ath/ath10k/wmi-tlv.h          |   16 +
+ drivers/net/wireless/ath/ath10k/wmi.h              |    8 -
+ drivers/net/wireless/ath/ath6kl/htc_mbox.c         |    4 +-
+ drivers/net/wireless/ath/ath6kl/usb.c              |    8 +
+ drivers/net/wireless/ath/ath9k/Kconfig             |   16 +
+ drivers/net/wireless/ath/ath9k/Makefile            |    2 +
+ .../net/wireless/ath/ath9k/ath9k_pci_owl_loader.c  |  215 +
+ drivers/net/wireless/ath/ath9k/dynack.c            |  101 +-
+ drivers/net/wireless/ath/ath9k/htc_drv_init.c      |    4 +-
+ drivers/net/wireless/ath/ath9k/htc_hst.c           |    3 +
+ drivers/net/wireless/ath/ath9k/wmi.c               |    1 +
+ drivers/net/wireless/ath/carl9170/usb.c            |    2 -
+ drivers/net/wireless/ath/wcn36xx/smd.c             |  186 +-
+ drivers/net/wireless/ath/wil6210/cfg80211.c        |  221 +-
+ drivers/net/wireless/ath/wil6210/debugfs.c         |   16 +-
+ drivers/net/wireless/ath/wil6210/main.c            |    4 +
+ drivers/net/wireless/ath/wil6210/netdev.c          |    4 +
+ drivers/net/wireless/ath/wil6210/pcie_bus.c        |    4 +-
+ drivers/net/wireless/ath/wil6210/pmc.c             |   26 +
+ drivers/net/wireless/ath/wil6210/pmc.h             |    1 +
+ drivers/net/wireless/ath/wil6210/rx_reorder.c      |    1 -
+ drivers/net/wireless/ath/wil6210/txrx.c            |  244 +-
+ drivers/net/wireless/ath/wil6210/txrx.h            |   42 +
+ drivers/net/wireless/ath/wil6210/txrx_edma.c       |   40 +-
+ drivers/net/wireless/ath/wil6210/txrx_edma.h       |   12 +-
+ drivers/net/wireless/ath/wil6210/wil6210.h         |   25 +-
+ drivers/net/wireless/ath/wil6210/wmi.c             |   43 +-
+ drivers/net/wireless/ath/wil6210/wmi.h             |   29 +-
+ .../net/wireless/broadcom/brcm80211/brcmfmac/bus.h |    4 +-
+ .../broadcom/brcm80211/brcmfmac/cfg80211.c         |    1 -
+ .../broadcom/brcm80211/brcmfmac/cfg80211.h         |    1 -
+ .../wireless/broadcom/brcm80211/brcmfmac/core.c    |   42 +-
+ .../wireless/broadcom/brcm80211/brcmfmac/core.h    |    1 +
+ .../wireless/broadcom/brcm80211/brcmfmac/pcie.c    |   13 +-
+ .../wireless/broadcom/brcm80211/brcmfmac/sdio.c    |   15 +-
+ .../net/wireless/broadcom/brcm80211/brcmfmac/usb.c |   34 +-
+ .../broadcom/brcm80211/brcmsmac/phy/phy_n.c        |   14 +-
+ drivers/net/wireless/marvell/libertas/dev.h        |    2 -
+ drivers/net/wireless/marvell/libertas/mesh.c       |   31 +-
+ drivers/net/wireless/marvell/libertas/mesh.h       |    3 +-
+ drivers/net/wireless/realtek/rtlwifi/base.h        |   27 -
+ .../net/wireless/realtek/rtlwifi/rtl8188ee/def.h   |   29 -
+ .../net/wireless/realtek/rtlwifi/rtl8192ce/def.h   |   33 -
+ .../net/wireless/realtek/rtlwifi/rtl8192ce/trx.c   |   23 +-
+ .../net/wireless/realtek/rtlwifi/rtl8192cu/mac.c   |   18 +-
+ .../net/wireless/realtek/rtlwifi/rtl8192de/def.h   |   31 -
+ .../net/wireless/realtek/rtlwifi/rtl8192de/trx.c   |   18 +-
+ .../net/wireless/realtek/rtlwifi/rtl8723ae/def.h   |   31 -
+ .../net/wireless/realtek/rtlwifi/rtl8723ae/trx.c   |  212 +-
+ .../net/wireless/realtek/rtlwifi/rtl8723ae/trx.h   |  794 +--
+ .../net/wireless/realtek/rtlwifi/rtl8723be/trx.c   |  236 +-
+ .../net/wireless/realtek/rtlwifi/rtl8723be/trx.h   |  718 +-
+ .../net/wireless/realtek/rtlwifi/rtl8821ae/def.h   |   31 -
+ .../net/wireless/realtek/rtlwifi/rtl8821ae/phy.c   |    4 +-
+ drivers/net/wireless/realtek/rtw88/coex.c          |    2 +-
+ drivers/net/wireless/realtek/rtw88/coex.h          |    1 +
+ drivers/net/wireless/realtek/rtw88/mac80211.c      |    2 +-
+ drivers/net/wireless/realtek/rtw88/main.c          |    1 +
+ drivers/net/wireless/realtek/rtw88/main.h          |   56 +-
+ drivers/net/wireless/realtek/rtw88/phy.c           |  145 +
+ drivers/net/wireless/realtek/rtw88/phy.h           |    2 +
+ drivers/net/wireless/realtek/rtw88/reg.h           |   17 +
+ drivers/net/wireless/realtek/rtw88/rtw8822b.c      |    8 +-
+ drivers/net/wireless/realtek/rtw88/rtw8822c.c      | 1188 +++-
+ drivers/net/wireless/realtek/rtw88/rtw8822c.h      |   86 +
+ .../net/wireless/realtek/rtw88/rtw8822c_table.c    | 6930 ++++++++++++++--=
+----
+ .../net/wireless/realtek/rtw88/rtw8822c_table.h    |    3 +
+ drivers/net/wireless/realtek/rtw88/rx.c            |    5 +
+ drivers/ssb/pci.c                                  |    2 +-
+ 76 files changed, 8589 insertions(+), 3654 deletions(-)
+ create mode 100644 drivers/net/wireless/ath/ath9k/ath9k_pci_owl_loader.c
