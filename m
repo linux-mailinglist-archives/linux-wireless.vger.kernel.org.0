@@ -2,57 +2,64 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B22C4B2FC0
-	for <lists+linux-wireless@lfdr.de>; Sun, 15 Sep 2019 13:38:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 71EB2B31B4
+	for <lists+linux-wireless@lfdr.de>; Sun, 15 Sep 2019 21:32:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729949AbfIOLiJ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 15 Sep 2019 07:38:09 -0400
-Received: from shards.monkeyblade.net ([23.128.96.9]:37372 "EHLO
-        shards.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725997AbfIOLiJ (ORCPT
+        id S1727612AbfIOTcU (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 15 Sep 2019 15:32:20 -0400
+Received: from smtp02.smtpout.orange.fr ([80.12.242.124]:47920 "EHLO
+        smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726039AbfIOTcU (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 15 Sep 2019 07:38:09 -0400
-Received: from localhost (93-63-141-166.ip28.fastwebnet.it [93.63.141.166])
-        (using TLSv1 with cipher AES256-SHA (256/256 bits))
-        (Client did not present a certificate)
-        (Authenticated sender: davem-davemloft)
-        by shards.monkeyblade.net (Postfix) with ESMTPSA id 3C140153C1B7C;
-        Sun, 15 Sep 2019 04:38:07 -0700 (PDT)
-Date:   Sun, 15 Sep 2019 12:38:02 +0100 (WEST)
-Message-Id: <20190915.123802.763880169246602189.davem@davemloft.net>
-To:     kvalo@codeaurora.org
-Cc:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: pull-request: wireless-drivers-next 2019-09-14
-From:   David Miller <davem@davemloft.net>
-In-Reply-To: <87muf5df3i.fsf@kamboji.qca.qualcomm.com>
-References: <87r24jchgv.fsf@kamboji.qca.qualcomm.com>
-        <20190914.140843.945413345284987204.davem@davemloft.net>
-        <87muf5df3i.fsf@kamboji.qca.qualcomm.com>
-X-Mailer: Mew version 6.8 on Emacs 26.2
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-X-Greylist: Sender succeeded SMTP AUTH, not delayed by milter-greylist-4.5.12 (shards.monkeyblade.net [149.20.54.216]); Sun, 15 Sep 2019 04:38:08 -0700 (PDT)
+        Sun, 15 Sep 2019 15:32:20 -0400
+Received: from localhost.localdomain ([93.23.196.41])
+        by mwinf5d03 with ME
+        id 1vYD210030u43at03vYDkN; Sun, 15 Sep 2019 21:32:16 +0200
+X-ME-Helo: localhost.localdomain
+X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
+X-ME-Date: Sun, 15 Sep 2019 21:32:16 +0200
+X-ME-IP: 93.23.196.41
+From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+To:     arend.vanspriel@broadcom.com, franky.lin@broadcom.com,
+        hante.meuleman@broadcom.com, chi-hsien.lin@cypress.com,
+        wright.feng@cypress.com, kvalo@codeaurora.org, davem@davemloft.net
+Cc:     linux-wireless@vger.kernel.org,
+        brcm80211-dev-list.pdl@broadcom.com,
+        brcm80211-dev-list@cypress.com, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
+        Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Subject: [PATCH] brcmsmac: remove a useless test
+Date:   Sun, 15 Sep 2019 21:32:10 +0200
+Message-Id: <20190915193210.27357-1-christophe.jaillet@wanadoo.fr>
+X-Mailer: git-send-email 2.20.1
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Kalle Valo <kvalo@codeaurora.org>
-Date: Sun, 15 Sep 2019 13:32:49 +0300
+'pih' is known to be non-NULL at this point, so the test can be removed.
 
-> David Miller <davem@davemloft.net> writes:
-> 
->> From: Kalle Valo <kvalo@codeaurora.org>
->> Date: Sat, 14 Sep 2019 13:14:40 +0300
->>
->>> here's a pull request to net-next tree for v5.4, more info below. Please
->>> let me know if there are any problems.
->>
->> Pulled, thanks Kalle.
-> 
-> Thanks for pulling this but I don't see it in net-next, maybe you forgot
-> to push? Nothing important, just making sure it didn't get lost.
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+---
+ drivers/net/wireless/broadcom/brcm80211/brcmsmac/main.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-I feel asleep while the build test was running, it should be there now :-)
+diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmsmac/main.c b/drivers/net/wireless/broadcom/brcm80211/brcmsmac/main.c
+index 080e829da9b3..6bb34a12a94b 100644
+--- a/drivers/net/wireless/broadcom/brcm80211/brcmsmac/main.c
++++ b/drivers/net/wireless/broadcom/brcm80211/brcmsmac/main.c
+@@ -1816,8 +1816,7 @@ void brcms_b_phy_reset(struct brcms_hardware *wlc_hw)
+ 	udelay(2);
+ 	brcms_b_core_phy_clk(wlc_hw, ON);
+ 
+-	if (pih)
+-		wlc_phy_anacore(pih, ON);
++	wlc_phy_anacore(pih, ON);
+ }
+ 
+ /* switch to and initialize new band */
+-- 
+2.20.1
+
