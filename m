@@ -2,31 +2,31 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 14D89B3507
-	for <lists+linux-wireless@lfdr.de>; Mon, 16 Sep 2019 09:04:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4C8CDB3511
+	for <lists+linux-wireless@lfdr.de>; Mon, 16 Sep 2019 09:04:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730245AbfIPHEB (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 16 Sep 2019 03:04:01 -0400
-Received: from rtits2.realtek.com ([211.75.126.72]:60343 "EHLO
+        id S1730317AbfIPHEL (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 16 Sep 2019 03:04:11 -0400
+Received: from rtits2.realtek.com ([211.75.126.72]:60344 "EHLO
         rtits2.realtek.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730240AbfIPHEB (ORCPT
+        with ESMTP id S1726922AbfIPHEB (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
         Mon, 16 Sep 2019 03:04:01 -0400
 Authenticated-By: 
-X-SpamFilter-By: BOX Solutions SpamTrap 5.62 with qID x8G73sx7029979, This message is accepted by code: ctloc85258
+X-SpamFilter-By: BOX Solutions SpamTrap 5.62 with qID x8G73tHR029983, This message is accepted by code: ctloc85258
 Received: from mail.realtek.com (RTITCASV01.realtek.com.tw[172.21.6.18])
-        by rtits2.realtek.com.tw (8.15.2/2.57/5.78) with ESMTPS id x8G73sx7029979
+        by rtits2.realtek.com.tw (8.15.2/2.57/5.78) with ESMTPS id x8G73tHR029983
         (version=TLSv1 cipher=DHE-RSA-AES256-SHA bits=256 verify=NOT);
-        Mon, 16 Sep 2019 15:03:54 +0800
+        Mon, 16 Sep 2019 15:03:55 +0800
 Received: from localhost.localdomain (172.21.68.126) by
  RTITCASV01.realtek.com.tw (172.21.6.18) with Microsoft SMTP Server id
- 14.3.468.0; Mon, 16 Sep 2019 15:03:53 +0800
+ 14.3.468.0; Mon, 16 Sep 2019 15:03:54 +0800
 From:   <yhchuang@realtek.com>
 To:     <kvalo@codeaurora.org>
 CC:     <linux-wireless@vger.kernel.org>, <briannorris@chromium.org>
-Subject: [PATCH 06/15] rtw88: not to enter or leave PS under IRQ
-Date:   Mon, 16 Sep 2019 15:03:36 +0800
-Message-ID: <1568617425-28062-7-git-send-email-yhchuang@realtek.com>
+Subject: [PATCH 07/15] rtw88: not to control LPS by each vif
+Date:   Mon, 16 Sep 2019 15:03:37 +0800
+Message-ID: <1568617425-28062-8-git-send-email-yhchuang@realtek.com>
 X-Mailer: git-send-email 2.7.4
 In-Reply-To: <1568617425-28062-1-git-send-email-yhchuang@realtek.com>
 References: <1568617425-28062-1-git-send-email-yhchuang@realtek.com>
@@ -40,154 +40,165 @@ X-Mailing-List: linux-wireless@vger.kernel.org
 
 From: Yan-Hsuan Chuang <yhchuang@realtek.com>
 
-Remove PS related *_irqsafe functions to avoid entering/leaving PS
-under interrupt context. Instead, make PS decision in watch_dog.
-This could simplify the logic and make the code look clean.
+The original design of LPS enter/leave routines allows
+to control the LPS state by each interface. But the
+hardware cannot actually handle it that way. This means
+the hardware can only enter LPS once with an associated
+port, so there is no need to keep tracking the state of
+each vif.
 
-But it could have a little side-effect that if the driver is having
-heavy traffic before the every-2-second watch_dog detect the traffic
-and decide to leave PS, the thoughput will be lower. Once traffic is
-detected by watch_dog and left PS state, the throughput will resume
-to the peak the hardware ought to have again.
+Hence the logic of enter/leave LPS state can be simple,
+just to check the state of the device's flag. And for
+leaving LPS state, it will get the same port id to send
+to inform the hardware.
 
 Signed-off-by: Yan-Hsuan Chuang <yhchuang@realtek.com>
 ---
- drivers/net/wireless/realtek/rtw88/main.c |  3 ++-
- drivers/net/wireless/realtek/rtw88/main.h |  1 -
- drivers/net/wireless/realtek/rtw88/ps.c   | 44 -------------------------------
- drivers/net/wireless/realtek/rtw88/ps.h   |  3 ---
- drivers/net/wireless/realtek/rtw88/rx.c   |  2 --
- drivers/net/wireless/realtek/rtw88/tx.c   |  2 --
- 6 files changed, 2 insertions(+), 53 deletions(-)
+ drivers/net/wireless/realtek/rtw88/coex.c     | 10 ++--------
+ drivers/net/wireless/realtek/rtw88/mac80211.c |  2 +-
+ drivers/net/wireless/realtek/rtw88/main.c     |  4 ++--
+ drivers/net/wireless/realtek/rtw88/main.h     |  2 --
+ drivers/net/wireless/realtek/rtw88/ps.c       | 19 +++++--------------
+ drivers/net/wireless/realtek/rtw88/ps.h       |  4 ++--
+ 6 files changed, 12 insertions(+), 29 deletions(-)
 
+diff --git a/drivers/net/wireless/realtek/rtw88/coex.c b/drivers/net/wireless/realtek/rtw88/coex.c
+index 4a0b569..9d8cbd9 100644
+--- a/drivers/net/wireless/realtek/rtw88/coex.c
++++ b/drivers/net/wireless/realtek/rtw88/coex.c
+@@ -810,8 +810,6 @@ static void rtw_coex_ignore_wlan_act(struct rtw_dev *rtwdev, bool enable)
+ static void rtw_coex_power_save_state(struct rtw_dev *rtwdev, u8 ps_type,
+ 				      u8 lps_val, u8 rpwm_val)
+ {
+-	struct rtw_lps_conf *lps_conf = &rtwdev->lps_conf;
+-	struct rtw_vif *rtwvif;
+ 	struct rtw_coex *coex = &rtwdev->coex;
+ 	struct rtw_coex_stat *coex_stat = &coex->stat;
+ 	u8 lps_mode = 0x0;
+@@ -823,18 +821,14 @@ static void rtw_coex_power_save_state(struct rtw_dev *rtwdev, u8 ps_type,
+ 		/* recover to original 32k low power setting */
+ 		coex_stat->wl_force_lps_ctrl = false;
+ 
+-		rtwvif = lps_conf->rtwvif;
+-		if (rtwvif && rtw_in_lps(rtwdev))
+-			rtw_leave_lps(rtwdev, rtwvif);
++		rtw_leave_lps(rtwdev);
+ 		break;
+ 	case COEX_PS_LPS_OFF:
+ 		coex_stat->wl_force_lps_ctrl = true;
+ 		if (lps_mode)
+ 			rtw_fw_coex_tdma_type(rtwdev, 0x8, 0, 0, 0, 0);
+ 
+-		rtwvif = lps_conf->rtwvif;
+-		if (rtwvif && rtw_in_lps(rtwdev))
+-			rtw_leave_lps(rtwdev, rtwvif);
++		rtw_leave_lps(rtwdev);
+ 		break;
+ 	default:
+ 		break;
+diff --git a/drivers/net/wireless/realtek/rtw88/mac80211.c b/drivers/net/wireless/realtek/rtw88/mac80211.c
+index 6d5cce0..66c05c4 100644
+--- a/drivers/net/wireless/realtek/rtw88/mac80211.c
++++ b/drivers/net/wireless/realtek/rtw88/mac80211.c
+@@ -464,7 +464,7 @@ static void rtw_ops_sw_scan_start(struct ieee80211_hw *hw,
+ 	struct rtw_vif *rtwvif = (struct rtw_vif *)vif->drv_priv;
+ 	u32 config = 0;
+ 
+-	rtw_leave_lps(rtwdev, rtwvif);
++	rtw_leave_lps(rtwdev);
+ 
+ 	mutex_lock(&rtwdev->mutex);
+ 
 diff --git a/drivers/net/wireless/realtek/rtw88/main.c b/drivers/net/wireless/realtek/rtw88/main.c
-index 36ba221..22fc5d6 100644
+index 22fc5d6..85d83f1 100644
 --- a/drivers/net/wireless/realtek/rtw88/main.c
 +++ b/drivers/net/wireless/realtek/rtw88/main.c
-@@ -182,6 +182,8 @@ static void rtw_watch_dog_work(struct work_struct *work)
+@@ -181,9 +181,9 @@ static void rtw_watch_dog_work(struct work_struct *work)
+ 	 */
  	if (rtw_fw_support_lps &&
  	    data.rtwvif && !data.active && data.assoc_cnt == 1)
- 		rtw_enter_lps(rtwdev, data.rtwvif);
-+	else
-+		rtw_leave_lps(rtwdev, rtwdev->lps_conf.rtwvif);
+-		rtw_enter_lps(rtwdev, data.rtwvif);
++		rtw_enter_lps(rtwdev, data.rtwvif->port);
+ 	else
+-		rtw_leave_lps(rtwdev, rtwdev->lps_conf.rtwvif);
++		rtw_leave_lps(rtwdev);
  
  	if (test_bit(RTW_FLAG_SCANNING, rtwdev->flags))
  		return;
-@@ -1152,7 +1154,6 @@ int rtw_core_init(struct rtw_dev *rtwdev)
- 		    rtw_tx_report_purge_timer, 0);
- 
- 	INIT_DELAYED_WORK(&rtwdev->watch_dog_work, rtw_watch_dog_work);
--	INIT_DELAYED_WORK(&rtwdev->lps_work, rtw_lps_work);
- 	INIT_DELAYED_WORK(&coex->bt_relink_work, rtw_coex_bt_relink_work);
- 	INIT_DELAYED_WORK(&coex->bt_reenable_work, rtw_coex_bt_reenable_work);
- 	INIT_DELAYED_WORK(&coex->defreeze_work, rtw_coex_defreeze_work);
 diff --git a/drivers/net/wireless/realtek/rtw88/main.h b/drivers/net/wireless/realtek/rtw88/main.h
-index 11ab9967..0955970 100644
+index 0955970..8472134c 100644
 --- a/drivers/net/wireless/realtek/rtw88/main.h
 +++ b/drivers/net/wireless/realtek/rtw88/main.h
-@@ -1361,7 +1361,6 @@ struct rtw_dev {
+@@ -533,8 +533,6 @@ enum rtw_pwr_state {
+ };
  
- 	/* lps power state & handler work */
- 	struct rtw_lps_conf lps_conf;
--	struct delayed_work lps_work;
- 
- 	struct dentry *debugfs;
- 
+ struct rtw_lps_conf {
+-	/* the interface to enter lps */
+-	struct rtw_vif *rtwvif;
+ 	enum rtw_lps_mode mode;
+ 	enum rtw_pwr_state state;
+ 	u8 awake_interval;
 diff --git a/drivers/net/wireless/realtek/rtw88/ps.c b/drivers/net/wireless/realtek/rtw88/ps.c
-index 4896953..ffba3bd 100644
+index ffba3bd..a154177 100644
 --- a/drivers/net/wireless/realtek/rtw88/ps.c
 +++ b/drivers/net/wireless/realtek/rtw88/ps.c
-@@ -91,50 +91,6 @@ static void rtw_enter_lps_core(struct rtw_dev *rtwdev)
- 	set_bit(RTW_FLAG_LEISURE_PS, rtwdev->flags);
+@@ -96,36 +96,27 @@ bool rtw_in_lps(struct rtw_dev *rtwdev)
+ 	return test_bit(RTW_FLAG_LEISURE_PS, rtwdev->flags);
  }
  
--void rtw_lps_work(struct work_struct *work)
--{
--	struct rtw_dev *rtwdev = container_of(work, struct rtw_dev,
--					      lps_work.work);
--	struct rtw_lps_conf *conf = &rtwdev->lps_conf;
--	struct rtw_vif *rtwvif = conf->rtwvif;
--
+-void rtw_enter_lps(struct rtw_dev *rtwdev, struct rtw_vif *rtwvif)
++void rtw_enter_lps(struct rtw_dev *rtwdev, u8 port_id)
+ {
+ 	struct rtw_lps_conf *conf = &rtwdev->lps_conf;
+ 
 -	if (WARN_ON(!rtwvif))
 -		return;
 -
--	if (conf->mode == RTW_MODE_LPS)
--		rtw_enter_lps_core(rtwdev);
--	else
--		rtw_leave_lps_core(rtwdev);
--}
--
--void rtw_enter_lps_irqsafe(struct rtw_dev *rtwdev, struct rtw_vif *rtwvif)
--{
--	struct rtw_lps_conf *conf = &rtwdev->lps_conf;
--
 -	if (rtwvif->in_lps)
--		return;
--
--	conf->mode = RTW_MODE_LPS;
++	if (test_bit(RTW_FLAG_LEISURE_PS, rtwdev->flags))
+ 		return;
+ 
+ 	conf->mode = RTW_MODE_LPS;
 -	conf->rtwvif = rtwvif;
 -	rtwvif->in_lps = true;
--
--	ieee80211_queue_delayed_work(rtwdev->hw, &rtwdev->lps_work, 0);
--}
--
--void rtw_leave_lps_irqsafe(struct rtw_dev *rtwdev, struct rtw_vif *rtwvif)
--{
--	struct rtw_lps_conf *conf = &rtwdev->lps_conf;
--
--	if (!rtwvif->in_lps)
++	conf->port_id = port_id;
+ 
+ 	rtw_enter_lps_core(rtwdev);
+ }
+ 
+-void rtw_leave_lps(struct rtw_dev *rtwdev, struct rtw_vif *rtwvif)
++void rtw_leave_lps(struct rtw_dev *rtwdev)
+ {
+ 	struct rtw_lps_conf *conf = &rtwdev->lps_conf;
+ 
+-	if (WARN_ON(!rtwvif))
 -		return;
 -
--	conf->mode = RTW_MODE_ACTIVE;
+-	if (!rtwvif->in_lps)
++	if (!test_bit(RTW_FLAG_LEISURE_PS, rtwdev->flags))
+ 		return;
+ 
+ 	conf->mode = RTW_MODE_ACTIVE;
 -	conf->rtwvif = rtwvif;
 -	rtwvif->in_lps = false;
--
--	ieee80211_queue_delayed_work(rtwdev->hw, &rtwdev->lps_work, 0);
--}
--
- bool rtw_in_lps(struct rtw_dev *rtwdev)
- {
- 	return test_bit(RTW_FLAG_LEISURE_PS, rtwdev->flags);
+ 
+ 	rtw_leave_lps_core(rtwdev);
+ }
 diff --git a/drivers/net/wireless/realtek/rtw88/ps.h b/drivers/net/wireless/realtek/rtw88/ps.h
-index 09e57405..0ac6c29 100644
+index 0ac6c29..d2aae61 100644
 --- a/drivers/net/wireless/realtek/rtw88/ps.h
 +++ b/drivers/net/wireless/realtek/rtw88/ps.h
-@@ -10,9 +10,6 @@
+@@ -10,8 +10,8 @@
  int rtw_enter_ips(struct rtw_dev *rtwdev);
  int rtw_leave_ips(struct rtw_dev *rtwdev);
  
--void rtw_lps_work(struct work_struct *work);
--void rtw_enter_lps_irqsafe(struct rtw_dev *rtwdev, struct rtw_vif *rtwvif);
--void rtw_leave_lps_irqsafe(struct rtw_dev *rtwdev, struct rtw_vif *rtwvif);
- void rtw_enter_lps(struct rtw_dev *rtwdev, struct rtw_vif *rtwvif);
- void rtw_leave_lps(struct rtw_dev *rtwdev, struct rtw_vif *rtwvif);
+-void rtw_enter_lps(struct rtw_dev *rtwdev, struct rtw_vif *rtwvif);
+-void rtw_leave_lps(struct rtw_dev *rtwdev, struct rtw_vif *rtwvif);
++void rtw_enter_lps(struct rtw_dev *rtwdev, u8 port_id);
++void rtw_leave_lps(struct rtw_dev *rtwdev);
  bool rtw_in_lps(struct rtw_dev *rtwdev);
-diff --git a/drivers/net/wireless/realtek/rtw88/rx.c b/drivers/net/wireless/realtek/rtw88/rx.c
-index 48b9ed4..16b22eb 100644
---- a/drivers/net/wireless/realtek/rtw88/rx.c
-+++ b/drivers/net/wireless/realtek/rtw88/rx.c
-@@ -25,8 +25,6 @@ void rtw_rx_stats(struct rtw_dev *rtwdev, struct ieee80211_vif *vif,
- 			rtwvif = (struct rtw_vif *)vif->drv_priv;
- 			rtwvif->stats.rx_unicast += skb->len;
- 			rtwvif->stats.rx_cnt++;
--			if (rtwvif->stats.rx_cnt > RTW_LPS_THRESHOLD)
--				rtw_leave_lps_irqsafe(rtwdev, rtwvif);
- 		}
- 	}
- }
-diff --git a/drivers/net/wireless/realtek/rtw88/tx.c b/drivers/net/wireless/realtek/rtw88/tx.c
-index 8eaa980..91bfd8c 100644
---- a/drivers/net/wireless/realtek/rtw88/tx.c
-+++ b/drivers/net/wireless/realtek/rtw88/tx.c
-@@ -27,8 +27,6 @@ void rtw_tx_stats(struct rtw_dev *rtwdev, struct ieee80211_vif *vif,
- 			rtwvif = (struct rtw_vif *)vif->drv_priv;
- 			rtwvif->stats.tx_unicast += skb->len;
- 			rtwvif->stats.tx_cnt++;
--			if (rtwvif->stats.tx_cnt > RTW_LPS_THRESHOLD)
--				rtw_leave_lps_irqsafe(rtwdev, rtwvif);
- 		}
- 	}
- }
+ 
+ #endif
 -- 
 2.7.4
 
