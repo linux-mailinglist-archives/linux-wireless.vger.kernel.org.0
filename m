@@ -2,61 +2,73 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 5115EB3239
-	for <lists+linux-wireless@lfdr.de>; Sun, 15 Sep 2019 23:35:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 657B2B3374
+	for <lists+linux-wireless@lfdr.de>; Mon, 16 Sep 2019 04:41:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728382AbfIOVf3 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 15 Sep 2019 17:35:29 -0400
-Received: from mail-io1-f54.google.com ([209.85.166.54]:33892 "EHLO
-        mail-io1-f54.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728379AbfIOVf3 (ORCPT
+        id S1726880AbfIPClu (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 15 Sep 2019 22:41:50 -0400
+Received: from rtits2.realtek.com ([211.75.126.72]:40400 "EHLO
+        rtits2.realtek.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726057AbfIPClu (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 15 Sep 2019 17:35:29 -0400
-Received: by mail-io1-f54.google.com with SMTP id q1so2005255ion.1
-        for <linux-wireless@vger.kernel.org>; Sun, 15 Sep 2019 14:35:28 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:from:date:message-id:subject:to:cc;
-        bh=++bAoxlksPOcvEg1gGnU8F7I0tI2kxi/6+syB3SJEvg=;
-        b=Flhji9abENEJeLZejltbeynVXYxC/G6vyZTcNsTMCQVWep/9mtlGjwyfJeRFlvYSZ/
-         vUuogPV2g7PJFPhw3FCLx5o568AWtMp3PsXHZ1x5rrCytgQ5jfcZwtZpKgdD0wNdUeEL
-         xAZGSEzXGZTif5C9cTY1bWWlWiEoptFNl7E2B0zX0/fbNVMkJA/dc12b7HKv3gUdtcIS
-         M0io7pyCaOknsZQHvJLTxlh9Oz1Yd8ohZsMG6hXw4F/gqgZJl7ezZF1zQVuyUas43ZyO
-         kdZfYDmDgHaC35UjL7n3K35O9zk+ptXJqZFPicUQXBeNfpyI9xdctnAellyUapwu/lNn
-         qvVQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:from:date:message-id:subject:to:cc;
-        bh=++bAoxlksPOcvEg1gGnU8F7I0tI2kxi/6+syB3SJEvg=;
-        b=qqvkqZo52aB+fzwXjA6WwxA0YZYAuUIQuRTYzGntbYRQ4WNVmx6LpdUH2nbchBnS3G
-         kTJBuBrJB5KhErgPhGOdKtyOO/A5HWqM0fU/sJMGfIuxMzI5IFpB2no1TQgn1MHWY7WM
-         zu9eLBhk5gwfDQGWoSKolUDRqItTFABk5FGupJzgSCej3t1B4vZ1HKA+S5O8p1/1dyBC
-         Di/Q/gf9KM0RW63uW0/6e/tDmuID42tasH3eFgLLKYx+CZYfcnb7y4DPfIJZR2a/rESy
-         6VfO6nKYYs32iDCR3tx9Se/57kofFKhGKxzIcu6ePmz0R6bPZdkxJvaYA30YN5zYcQcA
-         7Gzw==
-X-Gm-Message-State: APjAAAXuioG3jrka1DXjaTmXgsl5NO/3uY5KLIbwEfgEYyDJhDcifxOx
-        HP/unbDQh2kzZEkJPhZtM4GMbp2Jq5ZQ24qdmO65N0R2
-X-Google-Smtp-Source: APXvYqz0+rk2Xh2cTkWN1LEpDa2rxH2Dg2SEebZfvXjFilMcNw/PngxqK78FBVyHGdafAFHmu7nktgFMRDAKhzcLpTg=
-X-Received: by 2002:a6b:e618:: with SMTP id g24mr5203678ioh.277.1568583328180;
- Sun, 15 Sep 2019 14:35:28 -0700 (PDT)
+        Sun, 15 Sep 2019 22:41:50 -0400
+Authenticated-By: 
+X-SpamFilter-By: BOX Solutions SpamTrap 5.62 with qID x8G2fhbW019424, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (RTITCASV01.realtek.com.tw[172.21.6.18])
+        by rtits2.realtek.com.tw (8.15.2/2.57/5.78) with ESMTPS id x8G2fhbW019424
+        (version=TLSv1 cipher=DHE-RSA-AES256-SHA bits=256 verify=NOT);
+        Mon, 16 Sep 2019 10:41:44 +0800
+Received: from localhost.localdomain (172.21.68.126) by
+ RTITCASV01.realtek.com.tw (172.21.6.18) with Microsoft SMTP Server id
+ 14.3.468.0; Mon, 16 Sep 2019 10:41:43 +0800
+From:   <yhchuang@realtek.com>
+To:     <kvalo@codeaurora.org>
+CC:     <linux-wireless@vger.kernel.org>, <tehuang@realtek.com>
+Subject: [PATCH] rtw88: 8822c: fix boolreturn.cocci warnings
+Date:   Mon, 16 Sep 2019 10:41:40 +0800
+Message-ID: <1568601700-12162-1-git-send-email-yhchuang@realtek.com>
+X-Mailer: git-send-email 2.7.4
 MIME-Version: 1.0
-From:   Olli Niemikorpi <mr.oole@gmail.com>
-Date:   Mon, 16 Sep 2019 00:35:16 +0300
-Message-ID: <CAFXqH2MPhju-GNfwhcubLssZP5CuQAdENtQQ2TdgTNk0pur=Gg@mail.gmail.com>
-Subject: Wireless-regdb: Update regulatory rules for Finland (FI) on 5GHz
-To:     seth.forshee@canonical.com
-Cc:     wireless-regdb@lists.infradead.org, linux-wireless@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain
+X-Originating-IP: [172.21.68.126]
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi,
+From: Yan-Hsuan Chuang <yhchuang@realtek.com>
 
-Based on https://w.wol.ph/2015/08/28/maximum-wifi-transmission-power-country/
-, maximum output power for 5Ghz is 30 dBm from channel 100 and above.
-However, only 27 dBm is maximum in wireless-regdb. Could you please
-fix it?
+drivers/net/wireless/realtek/rtw88/rtw8822c.c:2606:9-10: WARNING: return
+of 0/1 in function 'rtw8822c_dpk_coef_iq_check' with return type bool
 
-BR Olli Niemikorpi
+Return statements in functions returning bool should use true/false
+instead of 1/0.
+Generated by: scripts/coccinelle/misc/boolreturn.cocci
+
+Fixes: 5227c2ee453d ("rtw88: 8822c: add SW DPK support")
+Reported-by: kbuild test robot <lkp@intel.com>
+Signed-off-by: Yan-Hsuan Chuang <yhchuang@realtek.com>
+---
+ drivers/net/wireless/realtek/rtw88/rtw8822c.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/drivers/net/wireless/realtek/rtw88/rtw8822c.c b/drivers/net/wireless/realtek/rtw88/rtw8822c.c
+index c2f6cd7..084c18d 100644
+--- a/drivers/net/wireless/realtek/rtw88/rtw8822c.c
++++ b/drivers/net/wireless/realtek/rtw88/rtw8822c.c
+@@ -2603,9 +2603,9 @@ static bool rtw8822c_dpk_coef_iq_check(struct rtw_dev *rtwdev,
+ {
+ 	if (coef_i == 0x1000 || coef_i == 0x0fff ||
+ 	    coef_q == 0x1000 || coef_q == 0x0fff)
+-		return 1;
+-	else
+-		return 0;
++		return true;
++
++	return false;
+ }
+ 
+ static u32 rtw8822c_dpk_coef_transfer(struct rtw_dev *rtwdev)
+-- 
+2.7.4
+
