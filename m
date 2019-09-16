@@ -2,31 +2,31 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 4F9DBB350C
-	for <lists+linux-wireless@lfdr.de>; Mon, 16 Sep 2019 09:04:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3878DB350E
+	for <lists+linux-wireless@lfdr.de>; Mon, 16 Sep 2019 09:04:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730312AbfIPHEG (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 16 Sep 2019 03:04:06 -0400
-Received: from rtits2.realtek.com ([211.75.126.72]:60360 "EHLO
+        id S1730318AbfIPHEH (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 16 Sep 2019 03:04:07 -0400
+Received: from rtits2.realtek.com ([211.75.126.72]:60361 "EHLO
         rtits2.realtek.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730263AbfIPHEF (ORCPT
+        with ESMTP id S1728120AbfIPHEG (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 16 Sep 2019 03:04:05 -0400
+        Mon, 16 Sep 2019 03:04:06 -0400
 Authenticated-By: 
-X-SpamFilter-By: BOX Solutions SpamTrap 5.62 with qID x8G73xsP030019, This message is accepted by code: ctloc85258
+X-SpamFilter-By: BOX Solutions SpamTrap 5.62 with qID x8G740xa030023, This message is accepted by code: ctloc85258
 Received: from mail.realtek.com (RTITCASV01.realtek.com.tw[172.21.6.18])
-        by rtits2.realtek.com.tw (8.15.2/2.57/5.78) with ESMTPS id x8G73xsP030019
+        by rtits2.realtek.com.tw (8.15.2/2.57/5.78) with ESMTPS id x8G740xa030023
         (version=TLSv1 cipher=DHE-RSA-AES256-SHA bits=256 verify=NOT);
         Mon, 16 Sep 2019 15:04:00 +0800
 Received: from localhost.localdomain (172.21.68.126) by
  RTITCASV01.realtek.com.tw (172.21.6.18) with Microsoft SMTP Server id
- 14.3.468.0; Mon, 16 Sep 2019 15:03:59 +0800
+ 14.3.468.0; Mon, 16 Sep 2019 15:04:00 +0800
 From:   <yhchuang@realtek.com>
 To:     <kvalo@codeaurora.org>
 CC:     <linux-wireless@vger.kernel.org>, <briannorris@chromium.org>
-Subject: [PATCH 13/15] rtw88: select deep PS mode when module is inserted
-Date:   Mon, 16 Sep 2019 15:03:43 +0800
-Message-ID: <1568617425-28062-14-git-send-email-yhchuang@realtek.com>
+Subject: [PATCH 14/15] rtw88: add deep PS PG mode for 8822c
+Date:   Mon, 16 Sep 2019 15:03:44 +0800
+Message-ID: <1568617425-28062-15-git-send-email-yhchuang@realtek.com>
 X-Mailer: git-send-email 2.7.4
 In-Reply-To: <1568617425-28062-1-git-send-email-yhchuang@realtek.com>
 References: <1568617425-28062-1-git-send-email-yhchuang@realtek.com>
@@ -40,144 +40,355 @@ X-Mailing-List: linux-wireless@vger.kernel.org
 
 From: Yan-Hsuan Chuang <yhchuang@realtek.com>
 
-Add a module parameter to select deep PS mode. And the mode
-cannot be changed after the module has been inserted and probed.
-If anyone wants to change the deep mode, should change the mode
-and probe the device again to setup the changed deep mode.
+Compare with LCLK mode, PG mode saves more power, by turning
+off more circuits. Therefore, to recover from PG mode, driver
+needs to backup some information into rsvd page. Such as CAM
+entries, DPK results.
 
-When the device is probed, driver will check the deep PS mode
-with different IC's PS mode suppotability. If none of the
-PS mode is matched, the deep PS mode is changed to NONE,
-means deep PS is disabled.
+As CAM entries can change, it is required to re-download CAM
+entries after set_key.
 
 Signed-off-by: Yan-Hsuan Chuang <yhchuang@realtek.com>
 ---
- drivers/net/wireless/realtek/rtw88/main.c     | 9 +++++++++
- drivers/net/wireless/realtek/rtw88/main.h     | 8 ++++++++
- drivers/net/wireless/realtek/rtw88/ps.c       | 3 +++
- drivers/net/wireless/realtek/rtw88/rtw8822b.c | 1 +
- drivers/net/wireless/realtek/rtw88/rtw8822c.c | 1 +
- 5 files changed, 22 insertions(+)
+ drivers/net/wireless/realtek/rtw88/fw.c       | 77 +++++++++++++++++++++++++++
+ drivers/net/wireless/realtek/rtw88/fw.h       | 29 ++++++++++
+ drivers/net/wireless/realtek/rtw88/mac80211.c |  6 +++
+ drivers/net/wireless/realtek/rtw88/main.h     |  3 ++
+ drivers/net/wireless/realtek/rtw88/ps.c       | 10 +++-
+ drivers/net/wireless/realtek/rtw88/ps.h       |  1 +
+ drivers/net/wireless/realtek/rtw88/rtw8822c.c |  2 +-
+ drivers/net/wireless/realtek/rtw88/sec.c      | 21 ++++++++
+ drivers/net/wireless/realtek/rtw88/sec.h      |  1 +
+ 9 files changed, 147 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/wireless/realtek/rtw88/main.c b/drivers/net/wireless/realtek/rtw88/main.c
-index 0d7ad17..3c366a3 100644
---- a/drivers/net/wireless/realtek/rtw88/main.c
-+++ b/drivers/net/wireless/realtek/rtw88/main.c
-@@ -14,13 +14,17 @@
- #include "efuse.h"
+diff --git a/drivers/net/wireless/realtek/rtw88/fw.c b/drivers/net/wireless/realtek/rtw88/fw.c
+index b082e2c..430d73c 100644
+--- a/drivers/net/wireless/realtek/rtw88/fw.c
++++ b/drivers/net/wireless/realtek/rtw88/fw.c
+@@ -7,6 +7,7 @@
+ #include "fw.h"
+ #include "tx.h"
+ #include "reg.h"
++#include "sec.h"
  #include "debug.h"
  
-+unsigned int rtw_fw_lps_deep_mode;
-+EXPORT_SYMBOL(rtw_fw_lps_deep_mode);
- static bool rtw_fw_support_lps;
- unsigned int rtw_debug_mask;
- EXPORT_SYMBOL(rtw_debug_mask);
+ static void rtw_fw_c2h_cmd_handle_ext(struct rtw_dev *rtwdev,
+@@ -397,6 +398,24 @@ static u8 rtw_get_rsvd_page_location(struct rtw_dev *rtwdev,
+ 	return location;
+ }
  
-+module_param_named(lps_deep_mode, rtw_fw_lps_deep_mode, uint, 0644);
- module_param_named(support_lps, rtw_fw_support_lps, bool, 0644);
- module_param_named(debug_mask, rtw_debug_mask, uint, 0644);
- 
-+MODULE_PARM_DESC(lps_deep_mode, "Deeper PS mode. If 0, deep PS is disabled");
- MODULE_PARM_DESC(support_lps, "Set Y to enable Leisure Power Save support, to turn radio off between beacons");
- MODULE_PARM_DESC(debug_mask, "Debugging mask");
- 
-@@ -1152,6 +1156,7 @@ EXPORT_SYMBOL(rtw_chip_info_setup);
- 
- int rtw_core_init(struct rtw_dev *rtwdev)
++void rtw_fw_set_pg_info(struct rtw_dev *rtwdev)
++{
++	struct rtw_lps_conf *conf = &rtwdev->lps_conf;
++	u8 h2c_pkt[H2C_PKT_SIZE] = {0};
++	u8 loc_pg, loc_dpk;
++
++	loc_pg = rtw_get_rsvd_page_location(rtwdev, RSVD_LPS_PG_INFO);
++	loc_dpk = rtw_get_rsvd_page_location(rtwdev, RSVD_LPS_PG_DPK);
++
++	SET_H2C_CMD_ID_CLASS(h2c_pkt, H2C_CMD_LPS_PG_INFO);
++
++	LPS_PG_INFO_LOC(h2c_pkt, loc_pg);
++	LPS_PG_DPK_LOC(h2c_pkt, loc_dpk);
++	LPS_PG_SEC_CAM_EN(h2c_pkt, conf->sec_cam_backup);
++
++	rtw_fw_send_h2c_command(rtwdev, h2c_pkt);
++}
++
+ void rtw_send_rsvd_page_h2c(struct rtw_dev *rtwdev)
  {
+ 	u8 h2c_pkt[H2C_PKT_SIZE] = {0};
+@@ -442,6 +461,58 @@ rtw_beacon_get(struct ieee80211_hw *hw, struct ieee80211_vif *vif)
+ 	return skb_new;
+ }
+ 
++static struct sk_buff *rtw_lps_pg_dpk_get(struct ieee80211_hw *hw)
++{
++	struct rtw_dev *rtwdev = hw->priv;
 +	struct rtw_chip_info *chip = rtwdev->chip;
- 	struct rtw_coex *coex = &rtwdev->coex;
- 	int ret;
- 
-@@ -1183,6 +1188,10 @@ int rtw_core_init(struct rtw_dev *rtwdev)
- 	rtwdev->sec.total_cam_num = 32;
- 	rtwdev->hal.current_channel = 1;
- 	set_bit(RTW_BC_MC_MACID, rtwdev->mac_id_map);
-+	if (!(BIT(rtw_fw_lps_deep_mode) & chip->lps_deep_mode_supported))
-+		rtwdev->lps_conf.deep_mode = LPS_DEEP_MODE_NONE;
-+	else
-+		rtwdev->lps_conf.deep_mode = rtw_fw_lps_deep_mode;
- 
- 	mutex_lock(&rtwdev->mutex);
- 	rtw_add_rsvd_page(rtwdev, RSVD_BEACON, false);
-diff --git a/drivers/net/wireless/realtek/rtw88/main.h b/drivers/net/wireless/realtek/rtw88/main.h
-index 6e6b047..a59cbae 100644
---- a/drivers/net/wireless/realtek/rtw88/main.h
-+++ b/drivers/net/wireless/realtek/rtw88/main.h
-@@ -27,6 +27,7 @@
- #define RTW_RF_PATH_MAX			4
- #define HW_FEATURE_LEN			13
- 
-+extern unsigned int rtw_fw_lps_deep_mode;
- extern unsigned int rtw_debug_mask;
- extern const struct ieee80211_ops rtw_ops;
- extern struct rtw_chip_info rtw8822b_hw_spec;
-@@ -528,6 +529,11 @@ enum rtw_lps_mode {
- 	RTW_MODE_WMM_PS	= 2,
++	struct rtw_dpk_info *dpk_info = &rtwdev->dm_info.dpk_info;
++	struct rtw_lps_pg_dpk_hdr *dpk_hdr;
++	struct sk_buff *skb;
++	u32 size;
++
++	size = chip->tx_pkt_desc_sz + sizeof(*dpk_hdr);
++	skb = alloc_skb(size, GFP_KERNEL);
++	if (!skb)
++		return NULL;
++
++	skb_reserve(skb, chip->tx_pkt_desc_sz);
++	dpk_hdr = skb_put_zero(skb, sizeof(*dpk_hdr));
++	dpk_hdr->dpk_ch = dpk_info->dpk_ch;
++	dpk_hdr->dpk_path_ok = dpk_info->dpk_path_ok[0];
++	memcpy(dpk_hdr->dpk_txagc, dpk_info->dpk_txagc, 2);
++	memcpy(dpk_hdr->dpk_gs, dpk_info->dpk_gs, 4);
++	memcpy(dpk_hdr->coef, dpk_info->coef, 160);
++
++	return skb;
++}
++
++static struct sk_buff *rtw_lps_pg_info_get(struct ieee80211_hw *hw,
++					   struct ieee80211_vif *vif)
++{
++	struct rtw_dev *rtwdev = hw->priv;
++	struct rtw_chip_info *chip = rtwdev->chip;
++	struct rtw_lps_conf *conf = &rtwdev->lps_conf;
++	struct rtw_lps_pg_info_hdr *pg_info_hdr;
++	struct sk_buff *skb;
++	u32 size;
++
++	size = chip->tx_pkt_desc_sz + sizeof(*pg_info_hdr);
++	skb = alloc_skb(size, GFP_KERNEL);
++	if (!skb)
++		return NULL;
++
++	skb_reserve(skb, chip->tx_pkt_desc_sz);
++	pg_info_hdr = skb_put_zero(skb, sizeof(*pg_info_hdr));
++	pg_info_hdr->tx_bu_page_count = rtwdev->fifo.rsvd_drv_pg_num;
++	pg_info_hdr->macid = find_first_bit(rtwdev->mac_id_map, RTW_MAX_MAC_ID_NUM);
++	pg_info_hdr->sec_cam_count =
++		rtw_sec_cam_pg_backup(rtwdev, pg_info_hdr->sec_cam);
++
++	conf->sec_cam_backup = pg_info_hdr->sec_cam_count != 0;
++
++	return skb;
++}
++
+ static struct sk_buff *rtw_get_rsvd_page_skb(struct ieee80211_hw *hw,
+ 					     struct ieee80211_vif *vif,
+ 					     enum rtw_rsvd_packet_type type)
+@@ -464,6 +535,12 @@ static struct sk_buff *rtw_get_rsvd_page_skb(struct ieee80211_hw *hw,
+ 	case RSVD_QOS_NULL:
+ 		skb_new = ieee80211_nullfunc_get(hw, vif, true);
+ 		break;
++	case RSVD_LPS_PG_DPK:
++		skb_new = rtw_lps_pg_dpk_get(hw);
++		break;
++	case RSVD_LPS_PG_INFO:
++		skb_new = rtw_lps_pg_info_get(hw, vif);
++		break;
+ 	default:
+ 		return NULL;
+ 	}
+diff --git a/drivers/net/wireless/realtek/rtw88/fw.h b/drivers/net/wireless/realtek/rtw88/fw.h
+index e95d85b..f4028ef 100644
+--- a/drivers/net/wireless/realtek/rtw88/fw.h
++++ b/drivers/net/wireless/realtek/rtw88/fw.h
+@@ -58,6 +58,8 @@ enum rtw_rsvd_packet_type {
+ 	RSVD_PROBE_RESP,
+ 	RSVD_NULL,
+ 	RSVD_QOS_NULL,
++	RSVD_LPS_PG_DPK,
++	RSVD_LPS_PG_INFO,
  };
  
-+enum rtw_lps_deep_mode {
-+	LPS_DEEP_MODE_NONE	= 0,
-+	LPS_DEEP_MODE_LCLK	= 1,
-+};
+ enum rtw_fw_rf_type {
+@@ -86,6 +88,25 @@ struct rtw_iqk_para {
+ 	u8 segment_iqk;
+ };
+ 
++struct rtw_lps_pg_dpk_hdr {
++	u16 dpk_path_ok;
++	u8 dpk_txagc[2];
++	u16 dpk_gs[2];
++	u32 coef[2][20];
++	u8 dpk_ch;
++} __packed;
 +
++struct rtw_lps_pg_info_hdr {
++	u8 macid;
++	u8 mbssid;
++	u8 pattern_count;
++	u8 mu_tab_group_id;
++	u8 sec_cam_count;
++	u8 tx_bu_page_count;
++	u16 rsvd;
++	u8 sec_cam[MAX_PG_CAM_BACKUP_NUM];
++} __packed;
++
+ struct rtw_rsvd_page {
+ 	struct list_head list;
+ 	struct sk_buff *skb;
+@@ -146,6 +167,7 @@ static inline void rtw_h2c_pkt_set_header(u8 *h2c_pkt, u8 sub_id)
+ #define H2C_CMD_RSVD_PAGE		0x0
+ #define H2C_CMD_MEDIA_STATUS_RPT	0x01
+ #define H2C_CMD_SET_PWR_MODE		0x20
++#define H2C_CMD_LPS_PG_INFO		0x2b
+ #define H2C_CMD_RA_INFO			0x40
+ #define H2C_CMD_RSSI_MONITOR		0x42
+ 
+@@ -177,6 +199,12 @@ static inline void rtw_h2c_pkt_set_header(u8 *h2c_pkt, u8 sub_id)
+ 	le32p_replace_bits((__le32 *)(h2c_pkt) + 0x01, value, GENMASK(7, 5))
+ #define SET_PWR_MODE_SET_PWR_STATE(h2c_pkt, value)                             \
+ 	le32p_replace_bits((__le32 *)(h2c_pkt) + 0x01, value, GENMASK(15, 8))
++#define LPS_PG_INFO_LOC(h2c_pkt, value)                                        \
++	le32p_replace_bits((__le32 *)(h2c_pkt) + 0x00, value, GENMASK(23, 16))
++#define LPS_PG_DPK_LOC(h2c_pkt, value)                                         \
++	le32p_replace_bits((__le32 *)(h2c_pkt) + 0x00, value, GENMASK(31, 24))
++#define LPS_PG_SEC_CAM_EN(h2c_pkt, value)                                      \
++	le32p_replace_bits((__le32 *)(h2c_pkt) + 0x00, value, BIT(8))
+ #define SET_RSSI_INFO_MACID(h2c_pkt, value)                                    \
+ 	le32p_replace_bits((__le32 *)(h2c_pkt) + 0x00, value, GENMASK(15, 8))
+ #define SET_RSSI_INFO_RSSI(h2c_pkt, value)                                     \
+@@ -270,6 +298,7 @@ void rtw_fw_send_phydm_info(struct rtw_dev *rtwdev);
+ 
+ void rtw_fw_do_iqk(struct rtw_dev *rtwdev, struct rtw_iqk_para *para);
+ void rtw_fw_set_pwr_mode(struct rtw_dev *rtwdev);
++void rtw_fw_set_pg_info(struct rtw_dev *rtwdev);
+ void rtw_fw_query_bt_info(struct rtw_dev *rtwdev);
+ void rtw_fw_wl_ch_info(struct rtw_dev *rtwdev, u8 link, u8 ch, u8 bw);
+ void rtw_fw_query_bt_mp_info(struct rtw_dev *rtwdev,
+diff --git a/drivers/net/wireless/realtek/rtw88/mac80211.c b/drivers/net/wireless/realtek/rtw88/mac80211.c
+index e241d05..22b13e4 100644
+--- a/drivers/net/wireless/realtek/rtw88/mac80211.c
++++ b/drivers/net/wireless/realtek/rtw88/mac80211.c
+@@ -272,6 +272,8 @@ static void rtw_ops_bss_info_changed(struct ieee80211_hw *hw,
+ 			rtw_add_rsvd_page(rtwdev, RSVD_PS_POLL, true);
+ 			rtw_add_rsvd_page(rtwdev, RSVD_QOS_NULL, true);
+ 			rtw_add_rsvd_page(rtwdev, RSVD_NULL, true);
++			rtw_add_rsvd_page(rtwdev, RSVD_LPS_PG_DPK, true);
++			rtw_add_rsvd_page(rtwdev, RSVD_LPS_PG_INFO, true);
+ 			rtw_fw_download_rsvd_page(rtwdev, vif);
+ 			rtw_send_rsvd_page_h2c(rtwdev);
+ 			rtw_coex_media_status_notify(rtwdev, conf->assoc);
+@@ -435,6 +437,10 @@ static int rtw_ops_set_key(struct ieee80211_hw *hw, enum set_key_cmd cmd,
+ 		break;
+ 	}
+ 
++	/* download new cam settings for PG to backup */
++	if (rtw_fw_lps_deep_mode == LPS_DEEP_MODE_PG)
++		rtw_fw_download_rsvd_page(rtwdev, vif);
++
+ out:
+ 	mutex_unlock(&rtwdev->mutex);
+ 
+diff --git a/drivers/net/wireless/realtek/rtw88/main.h b/drivers/net/wireless/realtek/rtw88/main.h
+index a59cbae..6221dc4 100644
+--- a/drivers/net/wireless/realtek/rtw88/main.h
++++ b/drivers/net/wireless/realtek/rtw88/main.h
+@@ -16,6 +16,7 @@
+ 
+ #define RTW_MAX_MAC_ID_NUM		32
+ #define RTW_MAX_SEC_CAM_NUM		32
++#define MAX_PG_CAM_BACKUP_NUM		8
+ 
+ #define RTW_WATCH_DOG_DELAY_TIME	round_jiffies_relative(HZ * 2)
+ 
+@@ -532,6 +533,7 @@ enum rtw_lps_mode {
+ enum rtw_lps_deep_mode {
+ 	LPS_DEEP_MODE_NONE	= 0,
+ 	LPS_DEEP_MODE_LCLK	= 1,
++	LPS_DEEP_MODE_PG	= 2,
+ };
+ 
  enum rtw_pwr_state {
- 	RTW_RF_OFF	= 0x0,
- 	RTW_RF_ON	= 0x4,
-@@ -536,6 +542,7 @@ enum rtw_pwr_state {
- 
- struct rtw_lps_conf {
- 	enum rtw_lps_mode mode;
-+	enum rtw_lps_deep_mode deep_mode;
- 	enum rtw_pwr_state state;
- 	u8 awake_interval;
+@@ -548,6 +550,7 @@ struct rtw_lps_conf {
  	u8 rlbm;
-@@ -844,6 +851,7 @@ struct rtw_chip_info {
+ 	u8 smart_ps;
+ 	u8 port_id;
++	bool sec_cam_backup;
+ };
  
- 	bool ht_supported;
- 	bool vht_supported;
-+	u8 lps_deep_mode_supported;
- 
- 	/* init values */
- 	u8 sys_func_en;
+ enum rtw_hw_key_type {
 diff --git a/drivers/net/wireless/realtek/rtw88/ps.c b/drivers/net/wireless/realtek/rtw88/ps.c
-index 1661cc2..02e104a 100644
+index 02e104a..83db6cf 100644
 --- a/drivers/net/wireless/realtek/rtw88/ps.c
 +++ b/drivers/net/wireless/realtek/rtw88/ps.c
-@@ -132,6 +132,9 @@ static void rtw_leave_lps_core(struct rtw_dev *rtwdev)
+@@ -74,10 +74,13 @@ void rtw_power_mode_change(struct rtw_dev *rtwdev, bool enter)
  
- static void __rtw_enter_lps_deep(struct rtw_dev *rtwdev)
- {
-+	if (rtwdev->lps_conf.deep_mode == LPS_DEEP_MODE_NONE)
-+		return;
+ 	/* toggle to request power mode, others remain 0 */
+ 	request ^= request | BIT_RPWM_TOGGLE;
+-	if (!enter)
++	if (!enter) {
+ 		request |= POWER_MODE_ACK;
+-	else
++	} else {
+ 		request |= POWER_MODE_LCLK;
++		if (rtw_fw_lps_deep_mode == LPS_DEEP_MODE_PG)
++			request |= POWER_MODE_PG;
++	}
+ 
+ 	rtw_write8(rtwdev, rtwdev->hci.rpwm_addr, request);
+ 
+@@ -141,6 +144,9 @@ static void __rtw_enter_lps_deep(struct rtw_dev *rtwdev)
+ 		return;
+ 	}
+ 
++	if (rtw_fw_lps_deep_mode == LPS_DEEP_MODE_PG)
++		rtw_fw_set_pg_info(rtwdev);
 +
- 	if (!test_bit(RTW_FLAG_LEISURE_PS, rtwdev->flags)) {
- 		rtw_dbg(rtwdev, RTW_DBG_PS,
- 			"Should enter LPS before entering deep PS\n");
-diff --git a/drivers/net/wireless/realtek/rtw88/rtw8822b.c b/drivers/net/wireless/realtek/rtw88/rtw8822b.c
-index 63abda3..2b6cd7cf 100644
---- a/drivers/net/wireless/realtek/rtw88/rtw8822b.c
-+++ b/drivers/net/wireless/realtek/rtw88/rtw8822b.c
-@@ -1977,6 +1977,7 @@ struct rtw_chip_info rtw8822b_hw_spec = {
- 	.dig_min = 0x1c,
- 	.ht_supported = true,
- 	.vht_supported = true,
-+	.lps_deep_mode_supported = BIT(LPS_DEEP_MODE_LCLK),
- 	.sys_func_en = 0xDC,
- 	.pwr_on_seq = card_enable_flow_8822b,
- 	.pwr_off_seq = card_disable_flow_8822b,
+ 	rtw_hci_deep_ps(rtwdev, true);
+ }
+ 
+diff --git a/drivers/net/wireless/realtek/rtw88/ps.h b/drivers/net/wireless/realtek/rtw88/ps.h
+index 03b08bd..18f687c 100644
+--- a/drivers/net/wireless/realtek/rtw88/ps.h
++++ b/drivers/net/wireless/realtek/rtw88/ps.h
+@@ -8,6 +8,7 @@
+ #define RTW_LPS_THRESHOLD	2
+ 
+ #define POWER_MODE_ACK		BIT(6)
++#define POWER_MODE_PG		BIT(4)
+ #define POWER_MODE_LCLK		BIT(0)
+ 
+ int rtw_enter_ips(struct rtw_dev *rtwdev);
 diff --git a/drivers/net/wireless/realtek/rtw88/rtw8822c.c b/drivers/net/wireless/realtek/rtw88/rtw8822c.c
-index 084c18d..b92940e5 100644
+index b92940e5..a300efd 100644
 --- a/drivers/net/wireless/realtek/rtw88/rtw8822c.c
 +++ b/drivers/net/wireless/realtek/rtw88/rtw8822c.c
-@@ -3747,6 +3747,7 @@ struct rtw_chip_info rtw8822c_hw_spec = {
+@@ -3747,7 +3747,7 @@ struct rtw_chip_info rtw8822c_hw_spec = {
  	.dig_min = 0x20,
  	.ht_supported = true,
  	.vht_supported = true,
-+	.lps_deep_mode_supported = BIT(LPS_DEEP_MODE_LCLK),
+-	.lps_deep_mode_supported = BIT(LPS_DEEP_MODE_LCLK),
++	.lps_deep_mode_supported = BIT(LPS_DEEP_MODE_LCLK) | BIT(LPS_DEEP_MODE_PG),
  	.sys_func_en = 0xD8,
  	.pwr_on_seq = card_enable_flow_8822c,
  	.pwr_off_seq = card_disable_flow_8822c,
+diff --git a/drivers/net/wireless/realtek/rtw88/sec.c b/drivers/net/wireless/realtek/rtw88/sec.c
+index c594fc0..d0d7fbb 100644
+--- a/drivers/net/wireless/realtek/rtw88/sec.c
++++ b/drivers/net/wireless/realtek/rtw88/sec.c
+@@ -96,6 +96,27 @@ void rtw_sec_clear_cam(struct rtw_dev *rtwdev,
+ 	rtw_write32(rtwdev, RTW_SEC_CMD_REG, command);
+ }
+ 
++u8 rtw_sec_cam_pg_backup(struct rtw_dev *rtwdev, u8 *used_cam)
++{
++	struct rtw_sec_desc *sec = &rtwdev->sec;
++	u8 offset = 0;
++	u8 count, n;
++
++	if (!used_cam)
++		return 0;
++
++	for (count = 0; count < MAX_PG_CAM_BACKUP_NUM; count++) {
++		n = find_next_bit(sec->cam_map, RTW_MAX_SEC_CAM_NUM, offset);
++		if (n == RTW_MAX_SEC_CAM_NUM)
++			break;
++
++		used_cam[count] = n;
++		offset = n + 1;
++	}
++
++	return count;
++}
++
+ void rtw_sec_enable_sec_engine(struct rtw_dev *rtwdev)
+ {
+ 	struct rtw_sec_desc *sec = &rtwdev->sec;
+diff --git a/drivers/net/wireless/realtek/rtw88/sec.h b/drivers/net/wireless/realtek/rtw88/sec.h
+index 8c50a89..efcf454 100644
+--- a/drivers/net/wireless/realtek/rtw88/sec.h
++++ b/drivers/net/wireless/realtek/rtw88/sec.h
+@@ -34,6 +34,7 @@ void rtw_sec_write_cam(struct rtw_dev *rtwdev,
+ void rtw_sec_clear_cam(struct rtw_dev *rtwdev,
+ 		       struct rtw_sec_desc *sec,
+ 		       u8 hw_key_idx);
++u8 rtw_sec_cam_pg_backup(struct rtw_dev *rtwdev, u8 *used_cam);
+ void rtw_sec_enable_sec_engine(struct rtw_dev *rtwdev);
+ 
+ #endif
 -- 
 2.7.4
 
