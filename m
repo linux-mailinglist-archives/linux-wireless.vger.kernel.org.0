@@ -2,73 +2,94 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 657B2B3374
-	for <lists+linux-wireless@lfdr.de>; Mon, 16 Sep 2019 04:41:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AE44DB348B
+	for <lists+linux-wireless@lfdr.de>; Mon, 16 Sep 2019 07:53:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726880AbfIPClu (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 15 Sep 2019 22:41:50 -0400
-Received: from rtits2.realtek.com ([211.75.126.72]:40400 "EHLO
-        rtits2.realtek.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726057AbfIPClu (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 15 Sep 2019 22:41:50 -0400
-Authenticated-By: 
-X-SpamFilter-By: BOX Solutions SpamTrap 5.62 with qID x8G2fhbW019424, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (RTITCASV01.realtek.com.tw[172.21.6.18])
-        by rtits2.realtek.com.tw (8.15.2/2.57/5.78) with ESMTPS id x8G2fhbW019424
-        (version=TLSv1 cipher=DHE-RSA-AES256-SHA bits=256 verify=NOT);
-        Mon, 16 Sep 2019 10:41:44 +0800
-Received: from localhost.localdomain (172.21.68.126) by
- RTITCASV01.realtek.com.tw (172.21.6.18) with Microsoft SMTP Server id
- 14.3.468.0; Mon, 16 Sep 2019 10:41:43 +0800
-From:   <yhchuang@realtek.com>
-To:     <kvalo@codeaurora.org>
-CC:     <linux-wireless@vger.kernel.org>, <tehuang@realtek.com>
-Subject: [PATCH] rtw88: 8822c: fix boolreturn.cocci warnings
-Date:   Mon, 16 Sep 2019 10:41:40 +0800
-Message-ID: <1568601700-12162-1-git-send-email-yhchuang@realtek.com>
-X-Mailer: git-send-email 2.7.4
+        id S1729311AbfIPFxx (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 16 Sep 2019 01:53:53 -0400
+Received: from szxga06-in.huawei.com ([45.249.212.32]:48860 "EHLO huawei.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1725270AbfIPFxx (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 16 Sep 2019 01:53:53 -0400
+Received: from DGGEMS408-HUB.china.huawei.com (unknown [172.30.72.58])
+        by Forcepoint Email with ESMTP id CB8CDB3E637D25ED0F96;
+        Mon, 16 Sep 2019 13:53:48 +0800 (CST)
+Received: from [127.0.0.1] (10.177.29.68) by DGGEMS408-HUB.china.huawei.com
+ (10.3.19.208) with Microsoft SMTP Server id 14.3.439.0; Mon, 16 Sep 2019
+ 13:53:47 +0800
+Message-ID: <5D7F236B.3070409@huawei.com>
+Date:   Mon, 16 Sep 2019 13:53:47 +0800
+From:   zhong jiang <zhongjiang@huawei.com>
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:12.0) Gecko/20120428 Thunderbird/12.0.1
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [172.21.68.126]
+To:     Kalle Valo <kvalo@codeaurora.org>
+CC:     <davem@davemloft.net>, <linux-wireless@vger.kernel.org>,
+        <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH 2/3] wlegacy: Remove unneeded variable and make function
+ to be void
+References: <1568306492-42998-1-git-send-email-zhongjiang@huawei.com> <1568306492-42998-3-git-send-email-zhongjiang@huawei.com> <87h85hh0hb.fsf@kamboji.qca.qualcomm.com>
+In-Reply-To: <87h85hh0hb.fsf@kamboji.qca.qualcomm.com>
+Content-Type: text/plain; charset="ISO-8859-1"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.177.29.68]
+X-CFilter-Loop: Reflected
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Yan-Hsuan Chuang <yhchuang@realtek.com>
+On 2019/9/13 1:45, Kalle Valo wrote:
+> zhong jiang <zhongjiang@huawei.com> writes:
+>
+>> il4965_set_tkip_dynamic_key_info  do not need return value to
+>> cope with different ases. And change functon return type to void.
+>>
+>> Signed-off-by: zhong jiang <zhongjiang@huawei.com>
+>> ---
+>>  drivers/net/wireless/intel/iwlegacy/4965-mac.c | 8 ++------
+>>  1 file changed, 2 insertions(+), 6 deletions(-)
+>>
+>> diff --git a/drivers/net/wireless/intel/iwlegacy/4965-mac.c b/drivers/net/wireless/intel/iwlegacy/4965-mac.c
+>> index ffb705b..a7bbfe2 100644
+>> --- a/drivers/net/wireless/intel/iwlegacy/4965-mac.c
+>> +++ b/drivers/net/wireless/intel/iwlegacy/4965-mac.c
+>> @@ -3326,12 +3326,11 @@ struct il_mod_params il4965_mod_params = {
+>>  	return il_send_add_sta(il, &sta_cmd, CMD_SYNC);
+>>  }
+>>  
+>> -static int
+>> +static void
+>>  il4965_set_tkip_dynamic_key_info(struct il_priv *il,
+>>  				 struct ieee80211_key_conf *keyconf, u8 sta_id)
+>>  {
+>>  	unsigned long flags;
+>> -	int ret = 0;
+>>  	__le16 key_flags = 0;
+>>  
+>>  	key_flags |= (STA_KEY_FLG_TKIP | STA_KEY_FLG_MAP_KEY_MSK);
+>> @@ -3367,8 +3366,6 @@ struct il_mod_params il4965_mod_params = {
+>>  	memcpy(il->stations[sta_id].sta.key.key, keyconf->key, 16);
+>>  
+>>  	spin_unlock_irqrestore(&il->sta_lock, flags);
+>> -
+>> -	return ret;
+>>  }
+>>  
+>>  void
+>> @@ -3483,8 +3480,7 @@ struct il_mod_params il4965_mod_params = {
+>>  		    il4965_set_ccmp_dynamic_key_info(il, keyconf, sta_id);
+>>  		break;
+>>  	case WLAN_CIPHER_SUITE_TKIP:
+>> -		ret =
+>> -		    il4965_set_tkip_dynamic_key_info(il, keyconf, sta_id);
+>> +		il4965_set_tkip_dynamic_key_info(il, keyconf, sta_id);
+>>  		break;
+>>  	case WLAN_CIPHER_SUITE_WEP40:
+>>  	case WLAN_CIPHER_SUITE_WEP104:
+> To me this looks inconsistent with the rest of the cases in the switch
+> statement. And won't we then return the ret variable uninitalised?
+Yep,  I miss that.   please ignore the patch.  Thanks,
 
-drivers/net/wireless/realtek/rtw88/rtw8822c.c:2606:9-10: WARNING: return
-of 0/1 in function 'rtw8822c_dpk_coef_iq_check' with return type bool
-
-Return statements in functions returning bool should use true/false
-instead of 1/0.
-Generated by: scripts/coccinelle/misc/boolreturn.cocci
-
-Fixes: 5227c2ee453d ("rtw88: 8822c: add SW DPK support")
-Reported-by: kbuild test robot <lkp@intel.com>
-Signed-off-by: Yan-Hsuan Chuang <yhchuang@realtek.com>
----
- drivers/net/wireless/realtek/rtw88/rtw8822c.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
-
-diff --git a/drivers/net/wireless/realtek/rtw88/rtw8822c.c b/drivers/net/wireless/realtek/rtw88/rtw8822c.c
-index c2f6cd7..084c18d 100644
---- a/drivers/net/wireless/realtek/rtw88/rtw8822c.c
-+++ b/drivers/net/wireless/realtek/rtw88/rtw8822c.c
-@@ -2603,9 +2603,9 @@ static bool rtw8822c_dpk_coef_iq_check(struct rtw_dev *rtwdev,
- {
- 	if (coef_i == 0x1000 || coef_i == 0x0fff ||
- 	    coef_q == 0x1000 || coef_q == 0x0fff)
--		return 1;
--	else
--		return 0;
-+		return true;
-+
-+	return false;
- }
- 
- static u32 rtw8822c_dpk_coef_transfer(struct rtw_dev *rtwdev)
--- 
-2.7.4
+Sincerely,
+zhong jiang
 
