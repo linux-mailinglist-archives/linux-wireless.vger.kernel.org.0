@@ -2,81 +2,93 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id DE631B47A2
-	for <lists+linux-wireless@lfdr.de>; Tue, 17 Sep 2019 08:44:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A94E0B47AF
+	for <lists+linux-wireless@lfdr.de>; Tue, 17 Sep 2019 08:51:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2404313AbfIQGoO (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 17 Sep 2019 02:44:14 -0400
-Received: from smtp.codeaurora.org ([198.145.29.96]:45770 "EHLO
-        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726953AbfIQGoN (ORCPT
+        id S2404334AbfIQGux (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 17 Sep 2019 02:50:53 -0400
+Received: from mail-pg1-f193.google.com ([209.85.215.193]:38653 "EHLO
+        mail-pg1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728003AbfIQGux (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 17 Sep 2019 02:44:13 -0400
-Received: by smtp.codeaurora.org (Postfix, from userid 1000)
-        id E237C61577; Tue, 17 Sep 2019 06:44:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1568702652;
-        bh=XOGjgZr+LKfe7TJSeX81ayFXlkoRYJg8kD9pa3v0y0o=;
-        h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-        b=hHjwk3DykCmXNhPPM/jZWBftN5aNOMZ6SRxV7iUI1/zojpoJEk20owyBxMfZCFSle
-         U58s7w/U/aPUHcE7DEtrWa5SYyUCCBOVJWlcMFZ1TfdNf2/YSMtI9oKwjrYWJvqA6V
-         kiFBKfP3Y4w05Svq6MWTrBhQyqS92KhlfUgaJrf8=
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        pdx-caf-mail.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-0.8 required=2.0 tests=ALL_TRUSTED,BAYES_00,
-        DKIM_INVALID,DKIM_SIGNED,MISSING_DATE,MISSING_MID,SPF_NONE autolearn=no
-        autolearn_force=no version=3.4.0
-Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        (Authenticated sender: kvalo@smtp.codeaurora.org)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id A0609611DC;
-        Tue, 17 Sep 2019 06:44:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1568702652;
-        bh=XOGjgZr+LKfe7TJSeX81ayFXlkoRYJg8kD9pa3v0y0o=;
-        h=Subject:From:In-Reply-To:References:To:Cc:From;
-        b=FfMsWvpo4s9+BpSAs2QkflnUgXyJmp+LDKNBSEkUV+EtqwU5q11C9BHQyL7ITNrQh
-         fmYJ4MURt6sxG21zgR6JF0GprOAXMh3WZqw+g+bsds2jYpdlEZ3UQMpV21NSF208ni
-         2ly+oDmMJxNea5yF5iy8IoHNIahF0GBPbZeFa4UQ=
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org A0609611DC
-Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
-Content-Type: text/plain; charset="utf-8"
+        Tue, 17 Sep 2019 02:50:53 -0400
+Received: by mail-pg1-f193.google.com with SMTP id x10so1467549pgi.5;
+        Mon, 16 Sep 2019 23:50:51 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=date:from:to:cc:subject:message-id:mime-version:content-disposition
+         :user-agent;
+        bh=A09ebAA08AUXlIM7rfJAlfeNFb0/R3dzB4utBep7g5k=;
+        b=NFR60qqidHaph1jwlnhZRW3ByDD9bHtGwZnAvitu0gchqdLaQ8TJRpdntardshvLP/
+         HXCsWoPL1e53p9YJnxS3UUcfnZrd3Ns9Lf/dSdJzhWBQ8W2lCXDoOGuCwmNGtPfFRzU1
+         3dlWUxKDAL7faO5GMgwsxngt5VoYp/+9HzEVvag9C0HtrTUdOhtV7M253apWJEpnG/Eu
+         qdtoxDC/u/SycTF8h7KlrOStdgpGfxVLb7lrFutIVK2S1ByJJ9XtCZn+juDgdUmrmkfX
+         kzxs8Rco/90ISXEQ1mqrTGOgMe5IaOdiDMRRNOjD5AjQmf3N4MVUVDGzK6vTKGyzUPMj
+         NNFw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:mime-version
+         :content-disposition:user-agent;
+        bh=A09ebAA08AUXlIM7rfJAlfeNFb0/R3dzB4utBep7g5k=;
+        b=n5MrHH1M/EI9riGHgmm8dygwEp3gbN6MKJvreAuIIwdgEMusfO1vJ2tuyNjXkzIXHZ
+         qK00unwqFZ4GgNmETHma5zC7JaJoRnXEfnKx16hHb2tzfCL8ARXjUz0djhyFETJI2ijD
+         NlEe/ax1VAyt4Hr+XO83PyDOdLZ57Z8IapHDP3SO59ivoD1Rd0zcRBdXM9AFosPEArUg
+         SUHvBlzgY4vxQVj6OkRkXXQYQCiStXaec2Tb/archdcr4Ej0V3mXB+GlL0kGZDtcU5Kb
+         +Xw34M/SsGbqgtdvC7Xc5w67cn6Ur82TZ3OpaS50xczAUo/RbnwI6RjK/KQi7Kiz13/p
+         cNiw==
+X-Gm-Message-State: APjAAAVd4UVKyVN7/g7rXzSAR3PBvahSbj2aHrR1+KqtrAggeVsxgbBa
+        elSQrqg9V1blw8+0arP23Ic=
+X-Google-Smtp-Source: APXvYqzwM1TmdOu8NcHkAeG+Pl6QsEYbNbIdHu1NSxPw+dSxhz1ml+UvP48URsmAGWL44BJIuj1eyg==
+X-Received: by 2002:a62:8c10:: with SMTP id m16mr2487881pfd.58.1568703050638;
+        Mon, 16 Sep 2019 23:50:50 -0700 (PDT)
+Received: from LGEARND20B15 ([27.122.242.75])
+        by smtp.gmail.com with ESMTPSA id f62sm1500038pfg.74.2019.09.16.23.50.47
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Mon, 16 Sep 2019 23:50:50 -0700 (PDT)
+Date:   Tue, 17 Sep 2019 15:50:44 +0900
+From:   Austin Kim <austindh.kim@gmail.com>
+To:     pkshih@realtek.com, kvalo@codeaurora.org, davem@davemloft.net
+Cc:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, austindh.kim@gmail.com
+Subject: [PATCH] rtlwifi: rtl8723ae: Remove unused 'rtstatus' variable
+Message-ID: <20190917065044.GA173797@LGEARND20B15>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH] ath10k: restore QCA9880-AR1A (v1) detection
-From:   Kalle Valo <kvalo@codeaurora.org>
-In-Reply-To: <20190906215423.23589-1-chunkeey@gmail.com>
-References: <20190906215423.23589-1-chunkeey@gmail.com>
-To:     Christian Lamparter <chunkeey@gmail.com>
-Cc:     linux-wireless@vger.kernel.org, ath10k@lists.infradead.org
-User-Agent: pwcli/0.0.0-git (https://github.com/kvalo/pwcli/) Python/2.7.12
-Message-Id: <20190917064412.E237C61577@smtp.codeaurora.org>
-Date:   Tue, 17 Sep 2019 06:44:12 +0000 (UTC)
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.5.24 (2015-08-30)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Christian Lamparter <chunkeey@gmail.com> wrote:
+'rtstatus' local variable is not used,
+so remove it for clean-up.
 
-> This patch restores the old behavior that read
-> the chip_id on the QCA988x before resetting the
-> chip. This needs to be done in this order since
-> the unsupported QCA988x AR1A chips fall off the
-> bus when resetted. Otherwise the next MMIO Op
-> after the reset causes a BUS ERROR and panic.
-> 
-> Cc: stable@vger.kernel.org
-> Fixes: 1a7fecb766c8 ("ath10k: reset chip before reading chip_id in probe")
-> Signed-off-by: Christian Lamparter <chunkeey@gmail.com>
+Signed-off-by: Austin Kim <austindh.kim@gmail.com>
+---
+ drivers/net/wireless/realtek/rtlwifi/rtl8723ae/phy.c | 3 ---
+ 1 file changed, 3 deletions(-)
 
-I'll drop this as there's no plan to support QCA988X hw1.0.
-
+diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8723ae/phy.c b/drivers/net/wireless/realtek/rtlwifi/rtl8723ae/phy.c
+index 54a3aec..22441dd 100644
+--- a/drivers/net/wireless/realtek/rtlwifi/rtl8723ae/phy.c
++++ b/drivers/net/wireless/realtek/rtlwifi/rtl8723ae/phy.c
+@@ -485,15 +485,12 @@ bool rtl8723e_phy_config_rf_with_headerfile(struct ieee80211_hw *hw,
+ 					    enum radio_path rfpath)
+ {
+ 	int i;
+-	bool rtstatus = true;
+ 	u32 *radioa_array_table;
+ 	u16 radioa_arraylen;
+ 
+ 	radioa_arraylen = RTL8723ERADIOA_1TARRAYLENGTH;
+ 	radioa_array_table = RTL8723E_RADIOA_1TARRAY;
+ 
+-	rtstatus = true;
+-
+ 	switch (rfpath) {
+ 	case RF90_PATH_A:
+ 		for (i = 0; i < radioa_arraylen; i = i + 2) {
 -- 
-https://patchwork.kernel.org/patch/11136089/
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+2.6.2
 
