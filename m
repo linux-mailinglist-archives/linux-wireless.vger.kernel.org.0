@@ -2,25 +2,25 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 09852B47E5
-	for <lists+linux-wireless@lfdr.de>; Tue, 17 Sep 2019 09:12:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 42A9CB47FC
+	for <lists+linux-wireless@lfdr.de>; Tue, 17 Sep 2019 09:16:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2388306AbfIQHMD (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 17 Sep 2019 03:12:03 -0400
-Received: from smtp.codeaurora.org ([198.145.29.96]:55246 "EHLO
+        id S2392503AbfIQHQd (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 17 Sep 2019 03:16:33 -0400
+Received: from smtp.codeaurora.org ([198.145.29.96]:58364 "EHLO
         smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2387879AbfIQHMD (ORCPT
+        with ESMTP id S1727126AbfIQHQd (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 17 Sep 2019 03:12:03 -0400
+        Tue, 17 Sep 2019 03:16:33 -0400
 Received: by smtp.codeaurora.org (Postfix, from userid 1000)
-        id 775DA611CE; Tue, 17 Sep 2019 07:12:02 +0000 (UTC)
+        id 1BAF96016D; Tue, 17 Sep 2019 07:16:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1568704322;
-        bh=ShYD8stI/e8wrCbX70U2IAUnW5cvRGQsjsgDE8dYptk=;
+        s=default; t=1568704592;
+        bh=GZZTS5JwXBklyWYN0ChgnYdm/WVY6X3Z75O2fGgHcPY=;
         h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-        b=VkuWRh6CkllcitfG5x+g/8IEkkrYfxtT6gy5NqVT2BD6/kZ8NfNsZlBx7FQBHBios
-         bhcjv5w4wEYddPTLmsEh6QFiwg7BJRuP8nl1WT3ZCR7zvu9QJMa2k1TNMKKnkxJDOF
-         HCCGGApZLZ6MtXKQpdPI91ETaGvLbTYbVlchIQsY=
+        b=IOP0AzwiWqB9Mtz2BrXRrc2WVU2k136JFRamBfmUyznbHTxHVo6mb12LuH6WZ7OwS
+         UjbhOSmn+kU/2K7EE9NCMylc9ZvQQC3L/J9ad3xoiOZtRlfZ2jewZem451ROkZzSrG
+         w+WQokvqX3zyXlGJSxkh+jMccv2scxg/cjhpdaQo=
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         pdx-caf-mail.web.codeaurora.org
 X-Spam-Level: 
@@ -31,88 +31,52 @@ Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
         (Authenticated sender: kvalo@smtp.codeaurora.org)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 8BCBC611CE;
-        Tue, 17 Sep 2019 07:12:00 +0000 (UTC)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 7FD2061528;
+        Tue, 17 Sep 2019 07:16:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1568704321;
-        bh=ShYD8stI/e8wrCbX70U2IAUnW5cvRGQsjsgDE8dYptk=;
+        s=default; t=1568704591;
+        bh=GZZTS5JwXBklyWYN0ChgnYdm/WVY6X3Z75O2fGgHcPY=;
         h=Subject:From:In-Reply-To:References:To:Cc:From;
-        b=SWK1VxLZ7RFsxFxyRTdENGm5DvKk4eB7wmyABSlgtsdEc51N8bDojtNcrzindMdh1
-         qDOtDA35QkuC3mc1qSvCqqWTww9L6PiS13Od01aWpPkVovILnP0h0kiW5mKYtidG+I
-         zXF3H9eFbGdJQVTBrsDs5e6HbQFb4vAUfXSuazOA=
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 8BCBC611CE
+        b=nTIpmkiW0DG6OSrf5w0qyOszg7275rTei1E0UhXDgjZr061oGKA3Xjt0+29qubP0P
+         8df+N9z6tNnYataWv5KHc7DCn3ZJJs1XCqI5+JJeC8aZrPt0fNSxz/4O0QAHietuEd
+         wTxxZUVljrHn1BNNyUxbBtvWTquoZ/em852YM46w=
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 7FD2061528
 Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
 Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH] ath10k: remove TX lock from ath10k_htt_tx_inc_pending
+Subject: Re: [PATCH] ath10k: Use ARRAY_SIZE instead of dividing sizeof array
+ with sizeof an element
 From:   Kalle Valo <kvalo@codeaurora.org>
-In-Reply-To: <20190824134857.4094-1-erik.stromdahl@gmail.com>
-References: <20190824134857.4094-1-erik.stromdahl@gmail.com>
-To:     Erik Stromdahl <erik.stromdahl@gmail.com>
-Cc:     kvalo@qca.qualcomm.com, linux-wireless@vger.kernel.org,
-        ath10k@lists.infradead.org,
-        Erik Stromdahl <erik.stromdahl@gmail.com>
+In-Reply-To: <1567582878-18739-1-git-send-email-zhongjiang@huawei.com>
+References: <1567582878-18739-1-git-send-email-zhongjiang@huawei.com>
+To:     zhong jiang <zhongjiang@huawei.com>
+Cc:     <davem@davemloft.net>, <ath10k@lists.infradead.org>,
+        <linux-wireless@vger.kernel.org>, <zhongjiang@huawei.com>,
+        <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>
 User-Agent: pwcli/0.0.0-git (https://github.com/kvalo/pwcli/) Python/2.7.12
-Message-Id: <20190917071202.775DA611CE@smtp.codeaurora.org>
-Date:   Tue, 17 Sep 2019 07:12:02 +0000 (UTC)
+Message-Id: <20190917071632.1BAF96016D@smtp.codeaurora.org>
+Date:   Tue, 17 Sep 2019 07:16:32 +0000 (UTC)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Erik Stromdahl <erik.stromdahl@gmail.com> wrote:
+zhong jiang <zhongjiang@huawei.com> wrote:
 
-> This commit removes the call to ath10k_mac_tx_lock() from
-> ath10k_htt_tx_inc_pending() in case the high water mark is reached.
+> With the help of Coccinelle, ARRAY_SIZE can be replaced in ath10k_snoc_wlan_enable.
 > 
-> ath10k_mac_tx_lock() calls ieee80211_stop_queues() in order to stop
-> mac80211 from pushing more TX data to the driver (this is the TX lock).
-> 
-> If a driver is trying to fetch an skb from a queue while the queue is
-> stopped, ieee80211_tx_dequeue() will return NULL.
-> 
-> So, in ath10k_mac_tx_push_txq(), there is a risk that the call to
-> ath10k_htt_tx_inc_pending() results in a stop of the mac80211 TX queues
-> just before the skb is fetched.
-> 
-> This will cause ieee80211_tx_dequeue() to return NULL and
-> ath10k_mac_tx_push_txq() to exit prematurely and return -ENOENT.
-> Before the function returns ath10k_htt_tx_dec_pending() will be called.
-> This call will re-enable the TX queues through ath10k_mac_tx_unlock().
-> When ath10k_mac_tx_push_txq() has returned, the TX queue will be
-> returned back to mac80211 with ieee80211_return_txq() without the skb
-> being properly consumed.
-> 
-> Since the TX queues were re-enabled in the error exit path of
-> ath10k_mac_tx_push_txq(), mac80211 can continue pushing data to the
-> driver. If the hardware does not consume the data, the above mentioned
-> case will be repeated over and over.
-> 
-> A case when the hardware is not able to transmit the data from the host
-> is when a STA has been dis-associated from an AP and has not yet been
-> able to re-associate. In this case there will be no TX_COMPL_INDs from
-> the hardware, resulting in the TX counter not be decremented.
-> 
-> This phenomenon has been observed in both a real and a test setup.
-> 
-> In order to fix this, the actual TX locking (the call to
-> ath10k_mac_tx_lock()) was removed from ath10k_htt_tx_inc_pending().
-> Instead, ath10k_mac_tx_lock() is called separately after the skb has
-> been fetched (after the call to ieee80211_tx_dequeue()). At this point
-> it is OK to stop the queues.
-> 
-> Signed-off-by: Erik Stromdahl <erik.stromdahl@gmail.com>
+> Signed-off-by: zhong jiang <zhongjiang@huawei.com>
 
-What hardware and firmware versions did you test this? Please always add that
-to the commit log.
+I already got an identical patch so dropping this one.
 
-As Erik mostly works on SDIO I assume PCI is not that well tested. Has anyone
-else tried this?
+error: patch failed: drivers/net/wireless/ath/ath10k/snoc.c:976
+error: drivers/net/wireless/ath/ath10k/snoc.c: patch does not apply
+stg import: Diff does not apply cleanly
 
 -- 
-https://patchwork.kernel.org/patch/11112997/
+https://patchwork.kernel.org/patch/11129531/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
