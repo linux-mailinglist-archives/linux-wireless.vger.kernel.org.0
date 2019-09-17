@@ -2,85 +2,96 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B5E70B5472
-	for <lists+linux-wireless@lfdr.de>; Tue, 17 Sep 2019 19:44:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EC9C3B5592
+	for <lists+linux-wireless@lfdr.de>; Tue, 17 Sep 2019 20:44:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727023AbfIQRoE (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 17 Sep 2019 13:44:04 -0400
-Received: from mail2.candelatech.com ([208.74.158.173]:48028 "EHLO
-        mail3.candelatech.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725862AbfIQRoE (ORCPT
+        id S1727266AbfIQSoZ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 17 Sep 2019 14:44:25 -0400
+Received: from mail-wm1-f65.google.com ([209.85.128.65]:51881 "EHLO
+        mail-wm1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726573AbfIQSoZ (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 17 Sep 2019 13:44:04 -0400
-Received: from [192.168.100.195] (50-251-239-81-static.hfc.comcastbusiness.net [50.251.239.81])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail3.candelatech.com (Postfix) with ESMTPSA id 7398713753C;
-        Tue, 17 Sep 2019 10:44:03 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail3.candelatech.com 7398713753C
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=candelatech.com;
-        s=default; t=1568742243;
-        bh=yKoFNLr7afSoYDBuTIU9ynCx61w6pq9x8JRWxKNnOWU=;
-        h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
-        b=cHjrOIzkxW+k3GDlHYyS4j8V/Zy/ms0xxAT9MpugG3LsCkKqUStOuiTEm4Wj2L60d
-         2OXVfSjpztCqq3CCYmF94OJRyMQDMmM2UgQX3L4jGXIgLS/BZA/CscLOkcNG5a6uVt
-         ehV192UVcTYbvwGRGO7L54B6nR0nIy32iYrmy+Dg=
-Subject: Re: [PATCH] cfg80211: Add cumulative channel survey dump support.
-To:     Sven Eckelmann <sven@narfation.org>, vnaralas@codeaurora.org,
-        ath10k@lists.infradead.org
-Cc:     Johannes Berg <johannes@sipsolutions.net>,
-        linux-wireless@vger.kernel.org, sw@simonwunderlich.de,
-        slakkavalli@datto.com
-References: <1526980556-26707-1-git-send-email-vnaralas@codeaurora.org>
- <1527069282.3759.16.camel@sipsolutions.net>
- <ebf1c95acb34649b3d2a5435142dc06a@codeaurora.org>
- <2083094.mFhUXK7yzB@bentobox>
-From:   Ben Greear <greearb@candelatech.com>
-Organization: Candela Technologies
-Message-ID: <cc8bc245-034b-376d-3952-0c0ac6d51cab@candelatech.com>
-Date:   Tue, 17 Sep 2019 10:44:03 -0700
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.7.0
+        Tue, 17 Sep 2019 14:44:25 -0400
+Received: by mail-wm1-f65.google.com with SMTP id 7so4760598wme.1
+        for <linux-wireless@vger.kernel.org>; Tue, 17 Sep 2019 11:44:24 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=date:from:to:subject:message-id:in-reply-to:references:mime-version
+         :content-transfer-encoding;
+        bh=ZjoHDBBadvwRyyw+M9tGmZyBWChr8xvbK/hlxQBDTY0=;
+        b=ZF3c50QSHO+kq45MJ6xhAEcXjougQuCcR859hh2SKCfJs1xnUz4jzC2yVSXyap7i+E
+         Nkx96JycZLYUMKJ2/YFBxRUcO7xTVgb8xfnb40IUminYSXtFmuNGzJAYOc998KE08CQK
+         dpgd+BumP5qXmlqgUXnhdNKKkqI54694PkWlFxN5o12BNes+lEjeko5FeqxW3j6++akS
+         EejayiwnP6KUG+p0ccwjF2gVBYby2wRpePjeoCCexJLvo/U1jP8kkUlKqzriHoMnfYSS
+         CLQsVbYeBdwxpSiUlP0llDONHTquvZqbON6YavqFmBqmfKNZofbM+fXdeXAsLTPTsbCm
+         AGJw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:subject:message-id:in-reply-to
+         :references:mime-version:content-transfer-encoding;
+        bh=ZjoHDBBadvwRyyw+M9tGmZyBWChr8xvbK/hlxQBDTY0=;
+        b=Netk/jC86ii3M1lCmucwzjoHGoe2OEjA9hMlmwscqxJjg4EltY9mMik+i6MmI1Ipfi
+         izUOKyzX9Iu6KkQhjHj0rj3+wGEhMF3kWe3kkF1hlEm4z3OYYTFXkRW8S+BKRbdDWCcZ
+         +SjU6Dz9v/2F3hAwMHs+LsmX740GQURK6m7DhGI6MhAcaJrlkGhPriI1k87Ic/9LLgaz
+         7yuuuMoUDSbfLurkytnt+uaupawU0FCG7wI/ob1iRtz2V5HIpeJaYv9YiYcP/Z/ZVKkS
+         849TdqD6fV49ZsAdrA2wMRvWUGYQxzMO0eAFwhya7h1M9gv65NCwWR92DkdYh5fExZ1n
+         PqTw==
+X-Gm-Message-State: APjAAAWZTy4QBCSIB9xXYelBIWvvJws9dKyJA68/5Rvzc2a9cnkCetS7
+        zjXGF3FKNr7GDXyb0p1LVcgQMOGT
+X-Google-Smtp-Source: APXvYqxa5RO4PbzT0YIi8MUJRdOVUosR/LN1K7RQO7TjOC18H9b6FAwyMMbtRpgyhGPCRmc/nd/ZiQ==
+X-Received: by 2002:a1c:9a46:: with SMTP id c67mr4611628wme.115.1568745863327;
+        Tue, 17 Sep 2019 11:44:23 -0700 (PDT)
+Received: from smicro.local.lan (BSN-77-158-208.static.siol.net. [193.77.158.208])
+        by smtp.gmail.com with ESMTPSA id y5sm1195787wma.14.2019.09.17.11.44.22
+        for <linux-wireless@vger.kernel.org>
+        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
+        Tue, 17 Sep 2019 11:44:22 -0700 (PDT)
+Date:   Tue, 17 Sep 2019 20:44:19 +0200
+From:   Bob Marcan <bob.marcan@gmail.com>
+To:     linux-wireless@vger.kernel.org
+Subject: Re: [RFC 0/4] Allow live MAC address change
+Message-ID: <20190917204419.41235404@smicro.local.lan>
+In-Reply-To: <763f4560-ba78-b0e7-6855-fd4bc048ec13@gmail.com>
+References: <20190904191155.28056-1-prestwoj@gmail.com>
+        <d776271eac8b7cd24da6dbd21fb87186b30a0e7f.camel@sipsolutions.net>
+        <4c43ea6a74cacc61184bc5b1387fecaa40711369.camel@gmail.com>
+        <4909a428ee6fef2bf8b0e61841bc88062f534b13.camel@sipsolutions.net>
+        <896183390a396e8e0508622eceb3664effcb3c30.camel@gmail.com>
+        <87a7b8lciz.fsf@tynnyri.adurom.net>
+        <844f1a1dc72ec73df5a86864b410bbc490c4abdd.camel@gmail.com>
+        <87imprbc0j.fsf@kamboji.qca.qualcomm.com>
+        <763f4560-ba78-b0e7-6855-fd4bc048ec13@gmail.com>
+X-Mailer: Claws Mail 3.15.1-dirty (GTK+ 2.24.31; x86_64-redhat-linux-gnu)
 MIME-Version: 1.0
-In-Reply-To: <2083094.mFhUXK7yzB@bentobox>
-Content-Type: text/plain; charset=windows-1252; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 9/17/19 10:27 AM, Sven Eckelmann wrote:
-> On Thursday, 31 May 2018 11:06:59 CEST vnaralas@codeaurora.org wrote:
->> I will sent next version of patch with updated commit log.
-> 
-> Can you please point me to the second version?
-> 
-> Btw. I've just checked the minimal changes in ath10k to get this working. It
-> seems we need SURVEY_INFO_NON_ACC_DATA in ath10k's ath10k_get_survey + memset
-> of ar->survey[idx].
-> 
-> But right now the total time looks (especially) wrong to me. At least it is
-> rather unlikely that I can have around 30 second active time delta in
-> roughly 1 real world second.  Maybe a bug with the READ_CLEAR handling in
-> firmware 10.2.4-1.0-00043 or maybe all firmware version? More logs about
-> that at the end.
-> 
-> @Ben: Was this also what you've experience in the past with the 10.2 firmware
-> bss_chan_info counter bugs or am I just misusing the functionality of the
-> firmware?
+On Tue, 17 Sep 2019 10:40:49 -0500
+Denis Kenzior <denkenz@gmail.com> wrote:
 
-Last I recall, the upstream code had several bugs.  Maybe some QCA
-firmware person can let you know if they fixed the upstream firmware.
+> Hi Kalle,
+>=20
+> > For user experience scanning and DHCP are also important, what kind of =
+> numbers you get when those are included? No need to have anything> precis=
+e, I would like just to get an understanding where we are> nowadays. =20
+>=20
+> Scanning heavily depends on the RF environment and the hardware.  In our =
+testing ath9k takes stupid long to scan for example.
+>=20
+> But in a sort of best case scenario, using limited scan and no mac change=
+, iwd connects in ~300ms.  People have reported that they have not finished=
+ opening their laptop screen and they're connected, so at that level of lat=
+ency, every millisecond is important and totally worth fighting for.  Rando=
+mizing the MAC would penalize our connection times by 2X (300 ms at least).=
+  And Android folks have reported the penalty to be as high as 3 seconds.  =
+So this needs to be fixed.  And do note that this is a feature every modern=
+ OS implements by default.
 
-If you want to test against ath10k-ct driver/firmware, and if you still see bogus values, then
-I can debug and fix it.
+Randomizing the MAC is a stupid decision.
+Do you realy expect that this will add something to the security?
 
-Thanks,
-Ben
-
--- 
-Ben Greear <greearb@candelatech.com>
-Candela Technologies Inc  http://www.candelatech.com
-
+B. Mar=C4=8Dan
