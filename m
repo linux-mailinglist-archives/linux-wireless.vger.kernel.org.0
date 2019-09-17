@@ -2,69 +2,69 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 1825BB5771
-	for <lists+linux-wireless@lfdr.de>; Tue, 17 Sep 2019 23:24:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2EB55B5798
+	for <lists+linux-wireless@lfdr.de>; Tue, 17 Sep 2019 23:31:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726857AbfIQVYM (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 17 Sep 2019 17:24:12 -0400
-Received: from us-smtp-2.mimecast.com ([205.139.110.61]:25481 "EHLO
+        id S1728295AbfIQVbO (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 17 Sep 2019 17:31:14 -0400
+Received: from us-smtp-1.mimecast.com ([205.139.110.61]:23798 "EHLO
         us-smtp-delivery-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1726030AbfIQVYM (ORCPT
+        by vger.kernel.org with ESMTP id S1728051AbfIQVbO (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 17 Sep 2019 17:24:12 -0400
+        Tue, 17 Sep 2019 17:31:14 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1568755450;
+        s=mimecast20190719; t=1568755872;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
          to:to:cc:cc:mime-version:mime-version:content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=b+48ay1mPqVDwtIAllu2J8td7+qP7si1SshjLTYZLWI=;
-        b=JBdr0SoiaqvzSfMkWjCrZ4Mk5z1JBT0HIC6N/m/SUKOvv0VrBule07PinmN1++c9j1krNy
-        dWcr0rLVvz2eGi5Okasr5he5XIRxc6g15GbZUYP3GS4YNvoO6GwGf+gLNd6eZykGDkI5eg
-        7dzn+YIAZWr4uw91r+XDBKU79Xv6Ntg=
-Received: from mail-ed1-f70.google.com (mail-ed1-f70.google.com
- [209.85.208.70]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-324-KsKXWsNQMJOllUo2zHCcxg-1; Tue, 17 Sep 2019 17:24:08 -0400
-Received: by mail-ed1-f70.google.com with SMTP id 38so3005713edr.4
-        for <linux-wireless@vger.kernel.org>; Tue, 17 Sep 2019 14:24:07 -0700 (PDT)
+        bh=JVaGqS/TFjKhE/EptfKk75z9gnGR8vTzonot4HX3CsY=;
+        b=S8Vbwkn42xJr/PMem1xChyydVrwxuG/NB2Mv26MscSWSAkd3U1Le5aIQlAWYMo7kmF2yMx
+        gJQ95Z+T4wK07RO/ZFFpjy6cM5qzyqeeS5ycUxQ88WUwuX1HdoSF3OR4Dw/dXSNdoagngC
+        rfXOkHk51uv2td2FXSDAL/Yy8RQiriw=
+Received: from mail-ed1-f71.google.com (mail-ed1-f71.google.com
+ [209.85.208.71]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-196-zz7xyQe-OpefX9rBv39ONA-1; Tue, 17 Sep 2019 17:31:11 -0400
+Received: by mail-ed1-f71.google.com with SMTP id f9so3019350edv.1
+        for <linux-wireless@vger.kernel.org>; Tue, 17 Sep 2019 14:31:11 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:in-reply-to:references:date
-         :message-id:mime-version;
-        bh=Jrok+0k/p7koNFbJcq2OElkCvD+CG1bEZ3scb71tObQ=;
-        b=TUZKltz6HFUNmZBm75orwVDgVnrZZK4+OMfg08YQ9Vi/scQiiHb2lwGWgDv578Mv9i
-         OofJ5haSZrLgK6B/QWbZEQzwyyiEoR0D0YzNLeRDc6hiXJKdzcKdsNi5RhrOFxA6dH6I
-         BSplRZzgkx2ErvRb7M6+2pSa5s9bTvsms8rbqSCD2MPLd7ZENz009oaOpqjXjYlYZQtX
-         RY8vV+zuS4mRBqjmXNtoWNs1Wrld1w8fYwPp50KLGLJOwDB2rodO6KdOFiyWUlboM+Bq
-         LEY3J3r35Up8oyWoieaTcqM4AytRBto0YCQZ7K0VNk0cih9hRXuRHBrE0HnM0kSeKHmZ
-         IA4w==
-X-Gm-Message-State: APjAAAUxNnq6Vn7eZngxlQhXPGw4N1jthoHHSXSp8kQ+2El5sVpsNqOb
-        75718QfUZoZZNv6n5KISbr0P5QK3NAxfBxvikvLycSM3DCT2owZwA4LtCrvS5q6U9/R7CY2wcnI
-        r7nS53kjPqGTrd4hYXORVth3XPe0=
-X-Received: by 2002:a50:d090:: with SMTP id v16mr7040875edd.176.1568755446561;
-        Tue, 17 Sep 2019 14:24:06 -0700 (PDT)
-X-Google-Smtp-Source: APXvYqyoS9BolYvd7bL6xJTfLlF4+ftyAAboQdIJXjbk/pXVZmGgYvhUlYqGbVSLDOCDdIu1G6J83g==
-X-Received: by 2002:a50:d090:: with SMTP id v16mr7040865edd.176.1568755446408;
-        Tue, 17 Sep 2019 14:24:06 -0700 (PDT)
-Received: from alrua-x1.borgediget.toke.dk (borgediget.toke.dk. [85.204.121.218])
-        by smtp.gmail.com with ESMTPSA id nk2sm321521ejb.28.2019.09.17.14.24.05
+         :message-id:mime-version:content-transfer-encoding;
+        bh=JVaGqS/TFjKhE/EptfKk75z9gnGR8vTzonot4HX3CsY=;
+        b=GM6ohVKQwVLt9X3LIUND2vzHoZRBsIMM/cIqx4NYZYwitZEWqN1VTQNGyGRPmFhPdS
+         mMHBaS/Oqgz137lxJryMocYancGzxAIOO5FBUXhy53ckt5UMKrAR/kZbW6qCXxFWutBA
+         oMB95uqoXORwyRqQDy6na/WwM0GV9ZtfwfI0iSFrCs7tIJN+iIzSikSLllO/dfOQcUar
+         vffzAsVyPy5O/KotV7rsSoy6XQIElRB4pTqUTB5DZP/aJbWZgQbSuSF0KsEU3CrLKkU1
+         EUOn+cg7wYUh/eXUMEUXnAEeZ46piOnmvfP6JXF/WdrtLYaXTWjFRel9L1sbR+2Kem+P
+         Nwqg==
+X-Gm-Message-State: APjAAAWSVGIu39HgIGtmYh4t7WqHOFb+s03UOf5i7OuA7NTc9iHykhES
+        /PfVKgnOXpYyPqcSKWzqHod2uAvG7tguXQmLNvUPn/VvOOKjP3uJS1TGo+tvUcUeiK9Po8w7e7C
+        TZiR10BG5f2zOxhysgytAch8we6U=
+X-Received: by 2002:a05:6402:78b:: with SMTP id d11mr4964741edy.14.1568755869725;
+        Tue, 17 Sep 2019 14:31:09 -0700 (PDT)
+X-Google-Smtp-Source: APXvYqx1wjlX98Jj01zS5MwohtCyWE1osliaa7sfDb/BoubXMW52uGvVGR84W7o5lDopiiD4H9If2Q==
+X-Received: by 2002:a05:6402:78b:: with SMTP id d11mr4964726edy.14.1568755869581;
+        Tue, 17 Sep 2019 14:31:09 -0700 (PDT)
+Received: from alrua-x1.borgediget.toke.dk ([2a00:7660:6da:443::2])
+        by smtp.gmail.com with ESMTPSA id z39sm638848edd.46.2019.09.17.14.31.08
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 17 Sep 2019 14:24:05 -0700 (PDT)
+        Tue, 17 Sep 2019 14:31:08 -0700 (PDT)
 Received: by alrua-x1.borgediget.toke.dk (Postfix, from userid 1000)
-        id A659E1800B9; Tue, 17 Sep 2019 23:24:04 +0200 (CEST)
+        id 62B041800B9; Tue, 17 Sep 2019 23:31:08 +0200 (CEST)
 From:   Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>
 To:     Yibo Zhao <yiboz@codeaurora.org>, ath10k@lists.infradead.org
-Cc:     linux-wireless@vger.kernel.org, Yibo Zhao <yiboz@codeaurora.org>
-Subject: Re: [PATCH 4/4] mac80211: Sync airtime weight sum with per AC synced sta airtime weight together
-In-Reply-To: <1568639388-27291-4-git-send-email-yiboz@codeaurora.org>
-References: <1568639388-27291-1-git-send-email-yiboz@codeaurora.org> <1568639388-27291-4-git-send-email-yiboz@codeaurora.org>
+Cc:     linux-wireless@vger.kernel.org
+Subject: Re: [PATCH 1/4] mac80211: Switch to a virtual time-based airtime scheduler
+In-Reply-To: <1568639388-27291-1-git-send-email-yiboz@codeaurora.org>
+References: <1568639388-27291-1-git-send-email-yiboz@codeaurora.org>
 X-Clacks-Overhead: GNU Terry Pratchett
-Date:   Tue, 17 Sep 2019 23:24:04 +0200
-Message-ID: <87impqipl7.fsf@toke.dk>
+Date:   Tue, 17 Sep 2019 23:31:08 +0200
+Message-ID: <87ftkuip9f.fsf@toke.dk>
 MIME-Version: 1.0
-X-MC-Unique: KsKXWsNQMJOllUo2zHCcxg-1
+X-MC-Unique: zz7xyQe-OpefX9rBv39ONA-1
 X-Mimecast-Spam-Score: 0
-Content-Type: text/plain; charset=WINDOWS-1252
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
@@ -73,97 +73,49 @@ X-Mailing-List: linux-wireless@vger.kernel.org
 
 Yibo Zhao <yiboz@codeaurora.org> writes:
 
-> Global airtime weight sum is updated only when txq is added/removed
-> from rbtree. If upper layer configures sta weight during high load,
-> airtime weight sum will not be updated since txq is most likely on the
-> tree. It could a little late for upper layer to reconfigure sta weight
-> when txq is already in the rbtree. And thus, incorrect airtime weight sum
-> will lead to incorrect global virtual time calculation as well as global
-> airtime weight sum overflow of airtime weight sum during txq removed.
+> From: Toke H=C3=B8iland-J=C3=B8rgensen <toke@redhat.com>
 >
-> Hence, need to update airtime weight sum upon receiving event for
-> configuring sta weight once sta's txq is on the rbtree.
+> This switches the airtime scheduler in mac80211 to use a virtual time-bas=
+ed
+> scheduler instead of the round-robin scheduler used before. This has a
+> couple of advantages:
 >
-> Besides, if airtime weight sum of ACs and sta weight is synced under the
-> same per AC lock protection, there can be a very short window causing
-> incorrct airtime weight sum calculation as below:
+> - No need to sync up the round-robin scheduler in firmware/hardware with
+>   the round-robin airtime scheduler.
 >
->     active_txq_lock_VO                          .
->     VO weight sum is syncd=09=09=09.
->     sta airtime weight sum is synced=09=09.
->     active_txq_unlock_VO=09=09=09.
->     .=09=09=09=09=09=09.
->     active_txq_lock_VI    =09=09=09.
->     VI weight sum is syncd=09=09=09.
->     sta airtime weight sum=09=09active_txq_lock_BE
->     active_txq_unlock_VI=09      Remove txq and thus sum
->     .=09=09=09=09      is calculated with synced
->     .=09=09=09=09      sta airtime weight
->     .=09=09=09=09=09active_txq_unlock_BE
+> - If several stations are eligible for transmission we can schedule both =
+of
+>   them; no need to hard-block the scheduling rotation until the head of t=
+he
+>   queue has used up its quantum.
 >
-> So introduce a per ac synced station airtime weight synced with per
-> AC synced weight sum together. And the per-AC station airtime weight
-> is used to calculate weight sum.
+> - The check of whether a station is eligible for transmission becomes
+>   simpler (in ieee80211_txq_may_transmit()).
 >
-> Signed-off-by: Yibo Zhao <yiboz@codeaurora.org>
-> ---
->  net/mac80211/cfg.c      | 27 +++++++++++++++++++++++++--
->  net/mac80211/sta_info.c |  6 ++++--
->  net/mac80211/sta_info.h |  3 +++
->  net/mac80211/tx.c       |  4 ++--
->  4 files changed, 34 insertions(+), 6 deletions(-)
+> The drawback is that scheduling becomes slightly more expensive, as we ne=
+ed
+> to maintain an rbtree of TXQs sorted by virtual time. This means that
+> ieee80211_register_airtime() becomes O(logN) in the number of currently
+> scheduled TXQs. However, hopefully this number rarely grows too big (it's
+> only TXQs currently backlogged, not all associated stations), so it
+> shouldn't be too big of an issue.
 >
-> diff --git a/net/mac80211/cfg.c b/net/mac80211/cfg.c
-> index d65aa01..4b420bb 100644
-> --- a/net/mac80211/cfg.c
-> +++ b/net/mac80211/cfg.c
-> @@ -1284,7 +1284,8 @@ static int sta_apply_parameters(struct ieee80211_lo=
-cal *local,
->  =09int ret =3D 0;
->  =09struct ieee80211_supported_band *sband;
->  =09struct ieee80211_sub_if_data *sdata =3D sta->sdata;
-> -=09u32 mask, set;
-> +=09u32 mask, set, tid, ac;
-> +=09struct txq_info *txqi;
-> =20
->  =09sband =3D ieee80211_get_sband(sdata);
->  =09if (!sband)
-> @@ -1452,8 +1453,30 @@ static int sta_apply_parameters(struct ieee80211_l=
-ocal *local,
->  =09if (ieee80211_vif_is_mesh(&sdata->vif))
->  =09=09sta_apply_mesh_params(local, sta, params);
-> =20
-> -=09if (params->airtime_weight)
-> +=09if (params->airtime_weight &&
-> +=09    params->airtime_weight !=3D sta->airtime_weight) {
-> +=09=09for (ac =3D 0; ac < IEEE80211_NUM_ACS; ac++) {
-> +=09=09=09spin_lock_bh(&local->active_txq_lock[ac]);
-> +=09=09=09for (tid =3D 0; tid < IEEE80211_NUM_TIDS + 1; tid++) {
-> +=09=09=09=09if (!sta->sta.txq[tid] ||
-> +=09=09=09=09    ac !=3D ieee80211_ac_from_tid(tid))
-> +=09=09=09=09=09continue;
-> +
-> +=09=09=09=09sta->airtime_weight_synced[ac] =3D
-> +=09=09=09=09=09=09=09params->airtime_weight;
-> +
-> +=09=09=09=09txqi =3D to_txq_info(sta->sta.txq[tid]);
-> +=09=09=09=09if (RB_EMPTY_NODE(&txqi->schedule_order))
-> +=09=09=09=09=09continue;
-> +
-> +=09=09=09=09local->airtime_weight_sum[ac] =3D local->airtime_weight_sum[=
-ac] +
-> +=09=09=09=09=09=09=09=09params->airtime_weight -
-> +=09=09=09=09=09=09=09=09sta->airtime_weight;
-> +=09=09=09}
-> +=09=09=09spin_unlock_bh(&local->active_txq_lock[ac]);
-> +=09=09}
->  =09=09sta->airtime_weight =3D params->airtime_weight;
+> Signed-off-by: Toke H=C3=B8iland-J=C3=B8rgensen <toke@redhat.com>
 
-With this, airtime_weight is basically only used to return to and from
-userspace, right? I.e., after the above loop has run, it will match the
-contents of airtime_weight_synced; so why not just turn airtime_weight
-into  a per-ac array? You could just use airtime_weight[0] as the value
-to return to userspace...
+I'll note that this patch still has the two issues that Felix pointed
+out when I posted the RFC version. Namely:
+
+- The use of divisions in the fast path. I guess I need to go write some
+  reciprocal-calculation code, since that is also an issue with the AQL
+  patches I linked to before.
+
+- The fact that we don't count the airtime usage of multicast traffic,
+  which with this series means that the vif TXQ will get priority over
+  the others. I think we agreed to fix this by just adding an airtime
+  v_t to the vif as well and use that for scheduling the TXQ. Does
+  ath10k report airtime usage for multicast as well, or only for
+  stations?
+
 
 -Toke
 
