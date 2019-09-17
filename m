@@ -2,156 +2,179 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B1BF0B4A3E
-	for <lists+linux-wireless@lfdr.de>; Tue, 17 Sep 2019 11:20:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2C671B4B54
+	for <lists+linux-wireless@lfdr.de>; Tue, 17 Sep 2019 11:55:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727040AbfIQJTz (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 17 Sep 2019 05:19:55 -0400
-Received: from mail-wr1-f68.google.com ([209.85.221.68]:33060 "EHLO
-        mail-wr1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726091AbfIQJTz (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 17 Sep 2019 05:19:55 -0400
-Received: by mail-wr1-f68.google.com with SMTP id b9so2347378wrs.0;
-        Tue, 17 Sep 2019 02:19:53 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:subject:to:cc:references:openpgp:autocrypt:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=cH+s/kHcFZjXMywBYraBVrnuYyRHILXFQppb3FCUAR4=;
-        b=dnXgnpvMud+Kgdk29IiRRvcDZ/FUPLeg/f5MNJLbSwqf2cnk8P4PJnnDCmP1Whdnrt
-         UPgDF74ineZ0EYbMHlwCv2CHtopdu4/mdSej5aDoJPH5Y5FP8OGxnTk+rAmOZ+5IcK/m
-         +tDkLukdbXhS6/BKmwIDB0gO00sXVgx78YycgVpov7RO9LICXEvGqvmG8FXrYer77sZi
-         7Kr0+kyNFk2rR3vkN4f2BliYpBJEqIpOaTfKz/V2UBSYPigghW0e1gYFHpT38/+Zk7/F
-         S60xtlLylM7FeeN70hBpHSaEQmbXZrQ24eFsaqQs1ijnhOPvq/WZL2+b7YV2RBwcdir/
-         +YQg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:subject:to:cc:references:openpgp:autocrypt
-         :message-id:date:user-agent:mime-version:in-reply-to
-         :content-language:content-transfer-encoding;
-        bh=cH+s/kHcFZjXMywBYraBVrnuYyRHILXFQppb3FCUAR4=;
-        b=UO4gPnxMtUKKxQ5GKFZvdPIT3k9xuqonwhhMtv5U2FdKO70oURk+nDCukzVQ7EzfF6
-         9cXBk2ttl1B5Yo4SVL05frLsw4IQkHb7NgyiNWjrThCC61cunbeFlxH02veqeC7PHjLY
-         Pd5XDm4CkZYHvyo2L3qoNHAxJCchK3d8Pmm4QUIr1x75+3N+CjS6AKZz1qxf1iLUe/B2
-         CsWgqcvTK3vkd90/qiMJjZUZkdDNzlfVpQuCgUpaEC3PJ6EPk4YUUQ4w6Won8oVJZsoH
-         xPEh+OX7AmMGtNVIJMMEmtB6JOAjATx2pxQqghe9KDCQ5llnlhYFxi2bjv78DzCGNYw5
-         /I3Q==
-X-Gm-Message-State: APjAAAVIG4Dx/6gRYDQWZER/FgWuUNv840u6Cpwvc4Hyu+MOMUavW2pZ
-        MoWM1d+wLAtY0gavtaX9n/uG/7MOeG1Qpg==
-X-Google-Smtp-Source: APXvYqyKlEN7eysKohRJe0S3TYLZFJtJdo//7bwiKYcUmnw12634GiHOTdkNGwwKx/LoRFS20jjmug==
-X-Received: by 2002:a5d:6951:: with SMTP id r17mr2082477wrw.208.1568711992227;
-        Tue, 17 Sep 2019 02:19:52 -0700 (PDT)
-Received: from ?IPv6:2620:10d:c0c1:1609::e5b? ([2620:10d:c092:200::1:c5da])
-        by smtp.gmail.com with ESMTPSA id r28sm2027569wrr.94.2019.09.17.02.19.50
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 17 Sep 2019 02:19:50 -0700 (PDT)
-From:   Jes Sorensen <jes.sorensen@gmail.com>
-X-Google-Original-From: Jes Sorensen <Jes.Sorensen@gmail.com>
-Subject: Re: [PATCH v7] rtl8xxxu: Improve TX performance of RTL8723BU on
- rtl8xxxu driver
-To:     Chris Chiu <chiu@endlessm.com>, kvalo@codeaurora.org,
-        davem@davemloft.net
-Cc:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux@endlessm.com,
-        Daniel Drake <drake@endlessm.com>
-References: <20190917074007.92259-1-chiu@endlessm.com>
+        id S1726357AbfIQJzK (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 17 Sep 2019 05:55:10 -0400
+Received: from bsmtp.bon.at ([213.33.87.14]:52201 "EHLO bsmtp.bon.at"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725972AbfIQJzJ (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 17 Sep 2019 05:55:09 -0400
+Received: from [10.1.14.125] (vpn.streamunlimited.com [91.114.0.140])
+        by bsmtp.bon.at (Postfix) with ESMTPSA id 46Xdkz3cdMz5tlb;
+        Tue, 17 Sep 2019 11:55:07 +0200 (CEST)
+Subject: [PATCH] wireless-regdb: Create entry for united European region
+From:   Emil Petersky <emil.petersky@streamunlimited.com>
+To:     Seth Forshee <seth.forshee@canonical.com>
+Cc:     linux-wireless@vger.kernel.org, wireless-regdb@lists.infradead.org
+References: <bf327181-521b-e1ce-c5c8-81b828fc65b6@streamunlimited.com>
+ <20190907235636.GA8256@ubuntu-xps13>
+ <a5bdfce7-e974-37bb-c1d1-956d4572703c@streamunlimited.com>
+ <39933518-6a65-fab3-4a66-8f44fc319d57@streamunlimited.com>
 Openpgp: preference=signencrypt
-Autocrypt: addr=Jes.Sorensen@gmail.com; keydata=
- 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 WQ==
-Message-ID: <50692e0b-2d46-de04-b277-0aefd2041669@gmail.com>
-Date:   Tue, 17 Sep 2019 05:19:50 -0400
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.8.0
+Message-ID: <76f464e9-8806-ecbf-2dc8-67bb4190ecc7@streamunlimited.com>
+Date:   Tue, 17 Sep 2019 11:55:07 +0200
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:60.0) Gecko/20100101
+ Thunderbird/60.9.0
 MIME-Version: 1.0
-In-Reply-To: <20190917074007.92259-1-chiu@endlessm.com>
-Content-Type: text/plain; charset=utf-8
+In-Reply-To: <39933518-6a65-fab3-4a66-8f44fc319d57@streamunlimited.com>
+Content-Type: multipart/mixed;
+ boundary="------------721EDA64A3BDC61691136963"
 Content-Language: en-US
-Content-Transfer-Encoding: 7bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 9/17/19 3:40 AM, Chris Chiu wrote:
-> We have 3 laptops which connect the wifi by the same RTL8723BU.
-> The PCI VID/PID of the wifi chip is 10EC:B720 which is supported.
-> They have the same problem with the in-kernel rtl8xxxu driver, the
-> iperf (as a client to an ethernet-connected server) gets ~1Mbps.
-> Nevertheless, the signal strength is reported as around -40dBm,
-> which is quite good. From the wireshark capture, the tx rate for each
-> data and qos data packet is only 1Mbps. Compare to the Realtek driver
-> at https://github.com/lwfinger/rtl8723bu, the same iperf test gets
-> ~12Mbps or better. The signal strength is reported similarly around
-> -40dBm. That's why we want to improve.
-> 
-> After reading the source code of the rtl8xxxu driver and Realtek's, the
-> major difference is that Realtek's driver has a watchdog which will keep
-> monitoring the signal quality and updating the rate mask just like the
-> rtl8xxxu_gen2_update_rate_mask() does if signal quality changes.
-> And this kind of watchdog also exists in rtlwifi driver of some specific
-> chips, ex rtl8192ee, rtl8188ee, rtl8723ae, rtl8821ae...etc. They have
-> the same member function named dm_watchdog and will invoke the
-> corresponding dm_refresh_rate_adaptive_mask to adjust the tx rate
-> mask.
-> 
-> With this commit, the tx rate of each data and qos data packet will
-> be 39Mbps (MCS4) with the 0xF00000 as the tx rate mask. The 20th bit
-> to 23th bit means MCS4 to MCS7. It means that the firmware still picks
-> the lowest rate from the rate mask and explains why the tx rate of
-> data and qos data is always lowest 1Mbps because the default rate mask
-> passed is always 0xFFFFFFF ranges from the basic CCK rate, OFDM rate,
-> and MCS rate. However, with Realtek's driver, the tx rate observed from
-> wireshark under the same condition is almost 65Mbps or 72Mbps, which
-> indicating that rtl8xxxu could still be further improved.
-> 
-> Signed-off-by: Chris Chiu <chiu@endlessm.com>
-> Reviewed-by: Daniel Drake <drake@endlessm.com>
+This is a multi-part message in MIME format.
+--------------721EDA64A3BDC61691136963
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 8bit
 
-I am still traveling after Plumbers and don't have my 8723bu dongles
-with me, but I'd say this looks good.
+Create entry for united European region, as usage of frequency bands
+is harmonized over EU and almost all CEPT countries as well.
 
-Acked-by: Jes Sorensen <Jes.Sorensen@gmail.com>
+All EU countries and almost all CEPT countries accepted decisions
+2005/513/EC (5GHz RLAN, EN 301 893)
+and 2006/771/EC (amended by 2008/432/EC, Short-Range Devices, EN 300 440)
+ EU decision 2005/513/EC:
+https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:02005D0513-20070213
+ EU decision 2006/771/EC:
+https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:02008D0432-20080611
+Harmonized CEPT countries:
+https://www.ecodocdb.dk/download/25c41779-cd6e/Rec7003e.pdf
+Such decision make sense to create united European region (EU) in regdb
 
-Jes
+United region for EU in regdb will enable much easier handling of proper
+wlan parameters on embedded devices sold across the Europe.
+
+Following 40 EU/CEPT countries are fully harmonized:
+AD    Andorra
+AL     Albania
+AT     Austria
+BA     Bosnia and Herzegovina
+BE     Belgium
+BG     Bulgaria
+CH     Switzerland
+CY     Cyprus
+CZ     Czechia
+DE     Germany
+DK     Denmark
+EE     Estonia
+ES     Spain
+FI     Finland
+FR     France
+GB     United Kingdom of Great Britain and Northern Ireland
+GR     Greece
+HR     Croatia
+HU     Hungary
+IE     Ireland
+IS     Iceland
+IT     Italy
+LI     Liechtenstein
+LT     Lithuania
+LU     Luxembourg
+LV     Latvia
+MC     Monaco
+MD     Moldova
+ME     Montenegro
+MK     Macedonia
+MT     Malta
+NL     Netherlands
+NO     Norway
+PL     Poland
+PT     Portugal
+RO     Romania
+RS     Serbia
+SE     Sweden
+SI     Slovenia
+SK     Slovakia
+
+Best regards,
+
+Emil
+
+-- 
+
+Emil Petersky
+
+________________________________________________________________________
+
+StreamUnlimited Engineering GmbH
+High Tech Campus Vienna, Gutheil-Schoder-Gasse 10, 1100 Vienna, Austria
+Office: +43 1 667 2002 4679 Fax: +43 1 667 2002 4401
+Mail to: emil.petersky@streamunlimited.com
+Visit us: www.streamunlimited.com
+
+Meet us at:
+IFA - Berlin, 6-11 September, hall 1.2/booth 224
+CEDIA - Denver, 12-14 September
+Hong Kong Electronics show - Hong Kong, 13 - 16 October
+
+
+--------------721EDA64A3BDC61691136963
+Content-Type: text/plain; charset=UTF-8;
+ name="0001-wireless-regdb-Create-entry-for-united-European-region.patch"
+Content-Transfer-Encoding: base64
+Content-Disposition: attachment;
+ filename*0="0001-wireless-regdb-Create-entry-for-united-European-region.";
+ filename*1="patch"
+
+RnJvbSBiMDUwMGQ4NGVhMGMyNDdmNzFlY2JlZDkwZDM4Y2U2OGNkMmFmOGI4IE1vbiBTZXAg
+MTcgMDA6MDA6MDAgMjAwMQpGcm9tOiBFbWlsIFBldGVyc2t5IDxlbWlsLnBldGVyc2t5QHN0
+cmVhbXVubGltaXRlZC5jb20+CkRhdGU6IFR1ZSwgMTcgU2VwIDIwMTkgMTE6NDU6MDQgKzAy
+MDAKU3ViamVjdDogW1BBVENIXSB3aXJlbGVzcy1yZWdkYjogQ3JlYXRlIGVudHJ5IGZvciB1
+bml0ZWQgRXVyb3BlYW4gcmVnaW9uCgpTaWduZWQtb2ZmLWJ5OiBFbWlsIFBldGVyc2t5IDxl
+bWlsLnBldGVyc2t5QHN0cmVhbXVubGltaXRlZC5jb20+CgpDcmVhdGUgZW50cnkgZm9yIHVu
+aXRlZCBFdXJvcGVhbiByZWdpb24sIGFzIHVzYWdlIG9mIGZyZXF1ZW5jeSBiYW5kcwppcyBo
+YXJtb25pemVkIG92ZXIgRVUgYW5kIGFsbW9zdCBhbGwgQ0VQVCBjb3VudHJpZXMgYXMgd2Vs
+bC4KCkFsbCBFVSBjb3VudHJpZXMgYW5kIGFsbW9zdCBhbGwgQ0VQVCBjb3VudHJpZXMgYWNj
+ZXB0ZWQgZGVjaXNpb25zIDIwMDUvNTEzL0VDICg1R0h6IFJMQU4sIEVOIDMwMSA4OTMpCmFu
+ZCAyMDA2Lzc3MS9FQyAoYW1lbmRlZCBieSAyMDA4LzQzMi9FQywgU2hvcnQtUmFuZ2UgRGV2
+aWNlcywgRU4gMzAwIDQ0MCkKIEVVIGRlY2lzaW9uIDIwMDUvNTEzL0VDOiBodHRwczovL2V1
+ci1sZXguZXVyb3BhLmV1L2xlZ2FsLWNvbnRlbnQvRU4vVFhULz91cmk9Q0VMRVg6MDIwMDVE
+MDUxMy0yMDA3MDIxMwogRVUgZGVjaXNpb24gMjAwNi83NzEvRUM6IGh0dHBzOi8vZXVyLWxl
+eC5ldXJvcGEuZXUvbGVnYWwtY29udGVudC9FTi9UWFQvP3VyaT1DRUxFWDowMjAwOEQwNDMy
+LTIwMDgwNjExCkhhcm1vbml6ZWQgQ0VQVCBjb3VudHJpZXM6IGh0dHBzOi8vd3d3LmVjb2Rv
+Y2RiLmRrL2Rvd25sb2FkLzI1YzQxNzc5LWNkNmUvUmVjNzAwM2UucGRmClN1Y2ggZGVjaXNp
+b24gbWFrZSBzZW5zZSB0byBjcmVhdGUgdW5pdGVkIEV1cm9wZWFuIHJlZ2lvbiAoRVUpIGlu
+IHJlZ2RiCgpVbml0ZWQgcmVnaW9uIGZvciBFVSBpbiByZWdkYiB3aWxsIGVuYWJsZSBtdWNo
+IGVhc2llciBoYW5kbGluZyBvZiBwcm9wZXIKd2xhbiBwYXJhbWV0ZXJzIG9uIGVtYmVkZGVk
+IGRldmljZXMgc29sZCBhY3Jvc3MgdGhlIEV1cm9wZS4KLS0tCiBkYi50eHQgfCAxMyArKysr
+KysrKysrKysrCiAxIGZpbGUgY2hhbmdlZCwgMTMgaW5zZXJ0aW9ucygrKQoKZGlmZiAtLWdp
+dCBhL2RiLnR4dCBiL2RiLnR4dAppbmRleCAzMGI5MzE4Li44OTY0NTczIDEwMDY0NAotLS0g
+YS9kYi50eHQKKysrIGIvZGIudHh0CkBAIC0yNiw2ICsyNiwxOSBAQCBjb3VudHJ5IDAwOgog
+CSMgSUVFRSA4MDIuMTFhZCAoNjBHSHopLCBjaGFubmVscyAxLi4zCiAJKDU3MjQwIC0gNjM3
+MjAgQCAyMTYwKSwgKDApCiAKKyMgQWxsIEVVIGNvdW50cmllcyBhbmQgYWxtb3N0IGFsbCBD
+RVBUIGNvdW50cmllcyBhY2NlcHRlZCBkZWNpc2lvbnMgMjAwNS81MTMvRUMgKDVHSHogUkxB
+TiwgRU4gMzAxIDg5MykKKyMgYW5kIDIwMDYvNzcxL0VDIChhbWVuZGVkIGJ5IDIwMDgvNDMy
+L0VDLCBTaG9ydC1SYW5nZSBEZXZpY2VzLCBFTiAzMDAgNDQwKQorIyAgRVUgZGVjaXNpb24g
+MjAwNS81MTMvRUM6IGh0dHBzOi8vZXVyLWxleC5ldXJvcGEuZXUvbGVnYWwtY29udGVudC9F
+Ti9UWFQvP3VyaT1DRUxFWDowMjAwNUQwNTEzLTIwMDcwMjEzCisjICBFVSBkZWNpc2lvbiAy
+MDA2Lzc3MS9FQzogaHR0cHM6Ly9ldXItbGV4LmV1cm9wYS5ldS9sZWdhbC1jb250ZW50L0VO
+L1RYVC8/dXJpPUNFTEVYOjAyMDA4RDA0MzItMjAwODA2MTEKKyMgSGFybW9uaXplZCBDRVBU
+IGNvdW50cmllczogaHR0cHM6Ly93d3cuZWNvZG9jZGIuZGsvZG93bmxvYWQvMjVjNDE3Nzkt
+Y2Q2ZS9SZWM3MDAzZS5wZGYKK2NvdW50cnkgRVU6IERGUy1FVFNJCisJKDI0MDAgLSAyNDgz
+LjUgQCA0MCksICgxMDAgbVcpCisJKDUxNTAgLSA1MjUwIEAgODApLCAoMjAwIG1XKSwgTk8t
+T1VURE9PUiwgQVVUTy1CVywgd21tcnVsZT1FVFNJCisJKDUyNTAgLSA1MzUwIEAgODApLCAo
+MTAwIG1XKSwgTk8tT1VURE9PUiwgREZTLCBBVVRPLUJXLCB3bW1ydWxlPUVUU0kKKwkoNTQ3
+MCAtIDU3MjUgQCAxNjApLCAoNTAwIG1XKSwgREZTLCB3bW1ydWxlPUVUU0kKKwkjIHNob3J0
+IHJhbmdlIGRldmljZXMgKEVUU0kgRU4gMzAwIDQ0MC0xKQorCSg1NzI1IC0gNTg3NSBAIDgw
+KSwgKDI1IG1XKQorCiAjIEFEIGFzIHBhcnQgb2YgQ0VQVCBhY2NlcHRlZCBkZWNpc2lvbnMg
+MjAwNS81MTMvRUMgKDVHSHogUkxBTiwgRU4gMzAxIDg5MykKICMgYW5kIDIwMDYvNzcxL0VD
+IChhbWVuZGVkIGJ5IDIwMDgvNDMyL0VDLCBTaG9ydC1SYW5nZSBEZXZpY2VzLCBFTiAzMDAg
+NDQwKQogIyAgRVUgZGVjaXNpb24gMjAwNS81MTMvRUM6IGh0dHBzOi8vZXVyLWxleC5ldXJv
+cGEuZXUvbGVnYWwtY29udGVudC9FTi9UWFQvP3VyaT1DRUxFWDowMjAwNUQwNTEzLTIwMDcw
+MjEzCi0tIAoyLjIzLjAud2luZG93cy4xCgo=
+--------------721EDA64A3BDC61691136963--
