@@ -2,96 +2,121 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 9DEB2B50EE
-	for <lists+linux-wireless@lfdr.de>; Tue, 17 Sep 2019 17:03:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 00B87B5194
+	for <lists+linux-wireless@lfdr.de>; Tue, 17 Sep 2019 17:32:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728917AbfIQPDY (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 17 Sep 2019 11:03:24 -0400
-Received: from us-smtp-delivery-1.mimecast.com ([207.211.31.120]:23745 "EHLO
-        us-smtp-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1726183AbfIQPDY (ORCPT
+        id S1729658AbfIQPcM (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 17 Sep 2019 11:32:12 -0400
+Received: from mail-ot1-f66.google.com ([209.85.210.66]:44461 "EHLO
+        mail-ot1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726882AbfIQPcM (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 17 Sep 2019 11:03:24 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1568732601;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=39CxzmaLHz+D7ZHqUHBYncwyADZWR/ZBJ8QLgYTPZ5c=;
-        b=YvgUKQo4yJxTCqcwrjrY1JoLvdjCYqiwakAbBRxI6o7dK07c6YKIq4w4kIDDlT97yeN+Zp
-        gcUHWpSQqEZ6+Xb9+wnYz5k2sLgaAD05n+VtQtg7NtpSyCYQgNUEvaWNDfWTHotnywdZV+
-        9rWSz2dXiVjVvjZwpUNsNXoVgNM4Jtg=
-Received: from mail-ed1-f69.google.com (mail-ed1-f69.google.com
- [209.85.208.69]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-115-CkiVhOi5OdyFZXjnxYtvJA-1; Tue, 17 Sep 2019 11:03:15 -0400
-Received: by mail-ed1-f69.google.com with SMTP id d7so2380980edv.3
-        for <linux-wireless@vger.kernel.org>; Tue, 17 Sep 2019 08:03:15 -0700 (PDT)
+        Tue, 17 Sep 2019 11:32:12 -0400
+Received: by mail-ot1-f66.google.com with SMTP id 21so3394711otj.11
+        for <linux-wireless@vger.kernel.org>; Tue, 17 Sep 2019 08:32:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=Qu/OQ3EvRAi7UXwqs+a6G63idfKTAODKs51W72J0ZXA=;
+        b=KmZwGFRFn7KZxkVu8PxQljOT9xc6cnf1f6SU1+WDW6k7okDYYssOeNHtZEfZ/ANj4F
+         QD9nwoTBUdAVTCvWLRNb2/l7T08VOwLnSZnZcblSV9nexFtqzbZNvTkHEhe6ZiWVyTXJ
+         yTQoozz94nkN1e8X0uVsh7WRAwwU4mPfvlzDm7tXeKujCW+NANYujA3dIQV+CITjall+
+         M2tEMo5udEXeYZ26zB02ysbHN1GkPKELtg5uIXnDrQZ7m2VQVlhvY2C89GuGbcQMSFEU
+         xRbSr7YWoWYTzzNDrDoglXCOOFz3/5TInF1ricKxvhgtf/ZmQviL1bDJ3L9eBxAHrNO+
+         9WHQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:in-reply-to:references:date
-         :message-id:mime-version:content-transfer-encoding;
-        bh=39CxzmaLHz+D7ZHqUHBYncwyADZWR/ZBJ8QLgYTPZ5c=;
-        b=GtWtvmmRCUv5lbJivxrubCqVjf3bZmr5GxotKbEc02svCwzWnkF27QljWq9J4VZaJi
-         ++Oo35rameLJygz7U6Ave5Ri4bctEd82T7RSP940i6tdZ2//QWCmejg4GDbtZWXf8pFH
-         XfU5l2ukjrXJlBsOKnL2sbGv3IiBZSoVennY8TNl4/tcAJFNJ5tTIW3bjolxDSRc/XvL
-         h4zapo5qKixJ2XT6e0REDwbbwzVlQjHqcdfIhSHfpizZkwOaqEcqkdDEu321pW1pu6RO
-         IANrCdfFQTqmTDRFUbFKB1nHKZCtdemwS5XduFYhfB3u+YOoN2lUNUqVKIztLuznF32l
-         SLmQ==
-X-Gm-Message-State: APjAAAUJ/Pq9mHc99Qk/UoF+QM7qjmLFY8bZ1PU17SwsP3wp/Vc2rwoo
-        vL2FLgnF1ryVsAO5QeqVgYr3FZEQK+sTRGYVfwXhJHMtaluMero4oixZwSNG+tkyTO43+x8+GQ+
-        3P+Qh/QKV/6YVuKbXe6XOvkUzkpU=
-X-Received: by 2002:a50:9f42:: with SMTP id b60mr5270485edf.192.1568732594558;
-        Tue, 17 Sep 2019 08:03:14 -0700 (PDT)
-X-Google-Smtp-Source: APXvYqx/E887Tte6e2oBD2MkVPvI8rpiPAdKjjBr+LaXcr+16wXfYbi4NwaiBprYRSL89rNdw5LFLw==
-X-Received: by 2002:a50:9f42:: with SMTP id b60mr5270470edf.192.1568732594384;
-        Tue, 17 Sep 2019 08:03:14 -0700 (PDT)
-Received: from alrua-x1.borgediget.toke.dk ([2a00:7660:6da:443::2])
-        by smtp.gmail.com with ESMTPSA id w21sm479000eda.90.2019.09.17.08.03.11
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 17 Sep 2019 08:03:12 -0700 (PDT)
-Received: by alrua-x1.borgediget.toke.dk (Postfix, from userid 1000)
-        id 4A3C21800EA; Mon, 16 Sep 2019 16:51:37 +0200 (CEST)
-From:   Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>
-To:     Yibo Zhao <yiboz@codeaurora.org>, ath10k@lists.infradead.org
-Cc:     linux-wireless@vger.kernel.org
-Subject: Re: [PATCH 1/4] mac80211: Switch to a virtual time-based airtime scheduler
-In-Reply-To: <1568639388-27291-1-git-send-email-yiboz@codeaurora.org>
-References: <1568639388-27291-1-git-send-email-yiboz@codeaurora.org>
-X-Clacks-Overhead: GNU Terry Pratchett
-Date:   Mon, 16 Sep 2019 16:51:37 +0200
-Message-ID: <877e68l2fa.fsf@toke.dk>
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=Qu/OQ3EvRAi7UXwqs+a6G63idfKTAODKs51W72J0ZXA=;
+        b=bhmWEm3fJPabJlpJo90by4qCiFnOWY2qWR+3Y4oGDBMKT/mjyT02PisBfDZKtWVkbs
+         pGK5GnPwptadXiUxtQfqFKKnQsl4/z1HG6NIJQGfbUpJ95g02VKJ4tojpbchqKuns2k5
+         WJkOl7hGgScQQzlpsnO124FZ06AxltwD4KAhb+P5uqyR0yQXhoMXaFksoMT49HexebCg
+         sVPNI91fAz8pPeopx4AcnqxhXZDDRnsKTrNyXJSNv1J2rkIQqmAs9a2B2g2Cdg3aQj40
+         XdFqAGnT0ybnAEdqD8mE8pNodT8451OEQI4gaFQ8G5RPqzbW2//RVZ2n6m3mn4CyTroC
+         nakA==
+X-Gm-Message-State: APjAAAWhgoaz9v0B7j1DmAnlTMhk5ZgBe00Yf1NschB8k+w2UEFhlB34
+        9xKbFRrsrGtuoIpNvWk+VR4=
+X-Google-Smtp-Source: APXvYqwJRERO1lGRMUS57zDVeyI0sY6XXj3p48RZf69wstLJfRcZOOvFTjJMy16fwDY/8FC/GfbO5Q==
+X-Received: by 2002:a9d:5906:: with SMTP id t6mr551226oth.361.1568734331296;
+        Tue, 17 Sep 2019 08:32:11 -0700 (PDT)
+Received: from [192.168.1.249] (cpe-70-114-247-242.austin.res.rr.com. [70.114.247.242])
+        by smtp.googlemail.com with ESMTPSA id v12sm796656oiv.58.2019.09.17.08.32.10
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Tue, 17 Sep 2019 08:32:10 -0700 (PDT)
+Subject: Re: [PATCH 04/11] wil6210: fix PTK re-key race
+To:     Alexander Wetzel <alexander@wetzel-home.de>,
+        Arend Van Spriel <arend.vanspriel@broadcom.com>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        Maya Erez <merez@codeaurora.org>
+Cc:     Ahmad Masri <amasri@codeaurora.org>,
+        linux-wireless@vger.kernel.org, wil6210@qti.qualcomm.com
+References: <1567931575-27984-5-git-send-email-merez@codeaurora.org>
+ <20190910132315.D7AC7602F2@smtp.codeaurora.org>
+ <7b636313-fa4a-5ee4-935a-ba2ed5dde1e5@wetzel-home.de>
+ <2c6bc637-62c2-020c-ab83-d2e1677d96b2@gmail.com>
+ <5716f475-856e-7fd2-637b-67927f4f78bc@wetzel-home.de>
+ <74c0e328-320c-0999-836e-1bfb0fa224ff@broadcom.com>
+ <13f699ef-16c2-3ba7-79a0-0934f5e39368@gmail.com>
+ <46f1141c-929c-9686-017d-fe4305d9c922@wetzel-home.de>
+From:   Denis Kenzior <denkenz@gmail.com>
+Message-ID: <31dd258c-7ff5-005b-9dee-b4753e3e5250@gmail.com>
+Date:   Tue, 17 Sep 2019 10:32:08 -0500
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.8.0
 MIME-Version: 1.0
-X-MC-Unique: CkiVhOi5OdyFZXjnxYtvJA-1
-X-Mimecast-Spam-Score: 0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <46f1141c-929c-9686-017d-fe4305d9c922@wetzel-home.de>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Yibo Zhao <yiboz@codeaurora.org> writes:
+Hi Alexander,
 
-> From: Toke H=C3=B8iland-J=C3=B8rgensen <toke@redhat.com>
->
-> This switches the airtime scheduler in mac80211 to use a virtual time-bas=
-ed
-> scheduler instead of the round-robin scheduler used before. This has a
-> couple of advantages:
+> And that the intend of it is to replace the "old" path.
+Correct.
 
-Thank you for keeping at this! I'll take a look at the series in detail
-tomorrow.
+> 
+> So the best way forward here would be to
+> 
+> 1) implement the patch here to work around the problem without 
+> control_port or the theoretical QDISC bypass
+> 2) start implementing control port for the future.
+> 
+> correct?
+> 
 
-While you're testing things related to this, I've also prototyped a port
-of the "airtime queue limit" feature from chromeos into mainline. It's
-currently in my tree here:
-https://git.kernel.org/pub/scm/linux/kernel/git/toke/linux.git/log/?h=3Dmac=
-80211-aql-01
+I don't know what the right answer is, but it seems strange to me that 
+we developed a 'better way', upstreamed it several years ago, but are 
+still trying to kludge around adding special flags to what is now 
+considered a legacy approach.  Also disconcerting that not a single 
+fullmac driver has added support for this 'better way' yet.
 
-If you have time to test it at some point, that would be awesome. I'm
-planning to submit it as an RFC, but it needs a bit more work first.
-Also, it's completely untested, but it does compile :)
+> 
+>> CONTROL_PORT was added specifically to take care of the re-keying 
+>> races and can be extended with additional attributes over time, as 
+>> needed (perhaps for extended key id, etc).  Also note that in our 
+>> testing CONTROL_PORT is _way_ faster than PAE socket...
+>>
+> 
+> Extended Key ID is pretty robust when rekeying and the driver/card only 
+> has to take care to not mix KeyIDs within one A-MPDU. It's no problem 
+> encrypting eapol#4 with the new key. You can even encrypt it at the 
+> initial connect and it will work. Basically all races the "classical" 
+> rekey has to work around go away.
+> 
+> For "normal" rekeys it's working pretty well with ath9k and iwlwifi even 
+> without control_port and just learned some weeks ago that QDISC could 
+> still cause issues...
 
--Toke
+Okay, if control port doesn't need to handle extended keys then even better.
 
+By the way, thanks for your earlier explanation (upthread).
+
+Regards,
+-Denis
