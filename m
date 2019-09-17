@@ -2,25 +2,25 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D5AA6B4FF3
-	for <lists+linux-wireless@lfdr.de>; Tue, 17 Sep 2019 16:08:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3B5ECB4FFE
+	for <lists+linux-wireless@lfdr.de>; Tue, 17 Sep 2019 16:09:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726980AbfIQOId (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 17 Sep 2019 10:08:33 -0400
-Received: from smtp.codeaurora.org ([198.145.29.96]:48424 "EHLO
+        id S1727093AbfIQOJb (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 17 Sep 2019 10:09:31 -0400
+Received: from smtp.codeaurora.org ([198.145.29.96]:49054 "EHLO
         smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726635AbfIQOId (ORCPT
+        with ESMTP id S1726545AbfIQOJb (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 17 Sep 2019 10:08:33 -0400
+        Tue, 17 Sep 2019 10:09:31 -0400
 Received: by smtp.codeaurora.org (Postfix, from userid 1000)
-        id 658B1613A8; Tue, 17 Sep 2019 14:08:32 +0000 (UTC)
+        id 11D9260790; Tue, 17 Sep 2019 14:09:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1568729312;
-        bh=5wstTaol9OEkbdIh5bH2JEcOWDwQTs42JwDygN0c5K4=;
+        s=default; t=1568729370;
+        bh=gBMlUc2ziFwwtkVc/AsmGn1pJDa0q/Stf70aBdLPBd0=;
         h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-        b=JiDNSU5z5U3zrBl14WbZT3ufHNfwxpAjAQGKVcQQHpm6j5LWkdSgJOnxkD6zz/osD
-         90SiHba6y19CR49nD1xAMbaQkblz489lBaykVuAIfdgJWtdDn3kwYGAII6KpMW7WGr
-         /FtZHsqX5TvvTPtsB/5k5KAhsiyf+JrVsQWO50eo=
+        b=ENoPz9V/EUR9xMEjpu5jhWFcAZGMhHzu3OF6NNmlH5IGWVOIneDSHxmwDdjvMJaG/
+         2I8SdG6j/A/b5QMFo3OeY9k3JwNIsMtf38s8oFO0fEVbRo+iqJBXsDvpT+eTk9sWhM
+         AznzzYSSwMCudu+CL1F0g444vWBAnYJncH7u9mX0=
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         pdx-caf-mail.web.codeaurora.org
 X-Spam-Level: 
@@ -31,59 +31,51 @@ Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
         (Authenticated sender: kvalo@smtp.codeaurora.org)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id B529B6021C;
-        Tue, 17 Sep 2019 14:08:30 +0000 (UTC)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 6339E60790;
+        Tue, 17 Sep 2019 14:09:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1568729312;
-        bh=5wstTaol9OEkbdIh5bH2JEcOWDwQTs42JwDygN0c5K4=;
+        s=default; t=1568729369;
+        bh=gBMlUc2ziFwwtkVc/AsmGn1pJDa0q/Stf70aBdLPBd0=;
         h=Subject:From:In-Reply-To:References:To:Cc:From;
-        b=F3GuoGxkGdAgLc5l6g2fxO0MgWhfTbkkYMAgTq7gqlfFcCZHuNuUftZDZS5Rm+Zfd
-         5qvRpw3+83CUpCIaKUqb0muiCBDENIjwv9OMoz4n+vflguGyPT+IuPX8AMnT0yazdy
-         b28imho1BFRyY/LwaNJTB3HsuB/7ilbi6DG7xtTk=
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org B529B6021C
+        b=nkafxI/YQMTakw7G3IJW0qA5pVwufvAyGJj3sqmfN3g0p9mNpKnCaX+sQJOpBxCHh
+         fuG7TZCBTTjEY7XUxjGU3d6l4w3ZP9/IaBK6OafIqSRKQ+FdULbcLDB3i7HDuYh+GV
+         oEZpN6arv8Zy23eEAQvZk7Pi1FA16FBEDVmc9s3I=
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 6339E60790
 Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
 Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH v3] ath10k: avoid leaving .bss_info_changed prematurely
+Subject: Re: [PATCH] ath10k: Use ARRAY_SIZE
 From:   Kalle Valo <kvalo@codeaurora.org>
-In-Reply-To: <20190703141949.9295-1-sven@narfation.org>
-References: <20190703141949.9295-1-sven@narfation.org>
-To:     Sven Eckelmann <sven@narfation.org>
-Cc:     ath10k@lists.infradead.org, linux-wireless@vger.kernel.org,
-        Sven Eckelmann <seckelmann@datto.com>,
-        Sriram R <srirrama@codeaurora.org>
+In-Reply-To: <20190718203032.15528-1-gomonovych@gmail.com>
+References: <20190718203032.15528-1-gomonovych@gmail.com>
+To:     Vasyl Gomonovych <gomonovych@gmail.com>
+Cc:     davem@davemloft.net, ath10k@lists.infradead.org,
+        linux-wireless@vger.kernel.org,
+        Vasyl Gomonovych <gomonovych@gmail.com>,
+        netdev@vger.kernel.org, linux-kernel@vger.kernel.org
 User-Agent: pwcli/0.0.0-git (https://github.com/kvalo/pwcli/) Python/2.7.12
-Message-Id: <20190917140832.658B1613A8@smtp.codeaurora.org>
-Date:   Tue, 17 Sep 2019 14:08:32 +0000 (UTC)
+Message-Id: <20190917140930.11D9260790@smtp.codeaurora.org>
+Date:   Tue, 17 Sep 2019 14:09:29 +0000 (UTC)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Sven Eckelmann <sven@narfation.org> wrote:
+Vasyl Gomonovych <gomonovych@gmail.com> wrote:
 
-> ath10k_bss_info_changed() handles various events from the upper layers. It
-> parses the changed bitfield and then configures the driver/firmware
-> accordingly. Each detected event is handled in a separate scope which is
-> independent of each other - but in the same function.
+> fix coccinelle warning, use ARRAY_SIZE
 > 
-> The commit f279294e9ee2 ("ath10k: add support for configuring management
-> packet rate") changed this behavior by returning from this function
-> prematurely when some precondition was not fulfilled. All new event
-> handlers added after the BSS_CHANGED_BASIC_RATES event handler would then
-> also be skipped.
-> 
-> Signed-off-by: Sven Eckelmann <seckelmann@datto.com>
+> Signed-off-by: Vasyl Gomonovych <gomonovych@gmail.com>
 > Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
 
 Patch applied to ath-next branch of ath.git, thanks.
 
-0227ff3656f2 ath10k: avoid leaving .bss_info_changed prematurely
+7921ae091907 ath10k: Use ARRAY_SIZE
 
 -- 
-https://patchwork.kernel.org/patch/11029683/
+https://patchwork.kernel.org/patch/11049553/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
