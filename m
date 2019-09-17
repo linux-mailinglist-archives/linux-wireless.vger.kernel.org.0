@@ -2,76 +2,75 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C9BE9B52FB
-	for <lists+linux-wireless@lfdr.de>; Tue, 17 Sep 2019 18:33:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0EE41B536D
+	for <lists+linux-wireless@lfdr.de>; Tue, 17 Sep 2019 18:54:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730345AbfIQQdI (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 17 Sep 2019 12:33:08 -0400
-Received: from mail-lf1-f68.google.com ([209.85.167.68]:44995 "EHLO
-        mail-lf1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730281AbfIQQdI (ORCPT
+        id S1726081AbfIQQyJ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 17 Sep 2019 12:54:09 -0400
+Received: from mail-oi1-f194.google.com ([209.85.167.194]:37074 "EHLO
+        mail-oi1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725811AbfIQQyI (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 17 Sep 2019 12:33:08 -0400
-Received: by mail-lf1-f68.google.com with SMTP id q11so3376638lfc.11
-        for <linux-wireless@vger.kernel.org>; Tue, 17 Sep 2019 09:33:07 -0700 (PDT)
+        Tue, 17 Sep 2019 12:54:08 -0400
+Received: by mail-oi1-f194.google.com with SMTP id i16so3494227oie.4
+        for <linux-wireless@vger.kernel.org>; Tue, 17 Sep 2019 09:54:08 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=iQDRRInEfkOmolUWUlkWs8+kiucdxwd5FC1fGShr5c4=;
-        b=dgmHFsLVgUDYlzKnx2AI9EBhRyfdronIQPVc9nmshBfpBav41pgLiKHS47u1qbTMRV
-         /OwRABb4gyj/8eMrwgTXTZKo1ZEr3OZ650q9RGo2V85QlQDznn7pVQpcjv7vyWQko1kV
-         m46DsLgVSgceBujZfIRs97mCBeZ7wHovtGGcM=
+        d=gmail.com; s=20161025;
+        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
+         :cc:content-transfer-encoding;
+        bh=fkl5Uz6CO+6SZ9rgr1xpzLXgAD4uYogYiQzsQ8Qmof8=;
+        b=Q9Axmgwlv0XCV5OdW7F376JmCHs8tHV4ArzG7ORYWPPj2R6ljxSfzgFUH6wtHtgIp7
+         m6k+AeMw5h6GUIzMgMXa0YRR/ACcG//DE7yHXJQE5qpQuIOOzVDs9vL6085CiB1o6X1P
+         jt1n7cOzb+an/w6Wm6C+8ums8jxEZtNRO5UEdC17TzQLJKgG/GJ33vyMCwExAiyrEKFo
+         EMJihcL8hdX1DSqO6LG6D1xvTq/Y5aLU7dDjqyQ/1qH1DAAl9o7M9dxqiftrBjWKr9GD
+         F99R208XfDKD5svc7ydWs3sxX4GaAFNMtjD2HbkOcIa8DRlOM5GsmhsOZMxLR949/MhV
+         b7vg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=iQDRRInEfkOmolUWUlkWs8+kiucdxwd5FC1fGShr5c4=;
-        b=S7f68G/jur2LcXZWk56/awkfZ1vnS20OAQrbffdoAEq5dgfHkq/59pC88LvXB4VVOI
-         6BKpem1tgJM3frnbs5AbrfrQKj8QajqyrPLoZA0rJJ/OtrYgibpwbIHjkZE7ZjMJoSDA
-         tA3IQyLBGy43d6fegDOaqkeG9U3Z7HUnomkRt3mK5W9P6A6QfoLYvfW1uK3aJBHvem6v
-         CkjzhqAtONPGFkB5O5fjYtb9sWXMbAW+JmoigNKyz54d1PZkDV3KAkIYT/VZJyrQpXfr
-         3LvoAKo812ay/SN+V70uKWRbS9J0DAouCqVR/XzNwEMjubAcsI1CZaAHK4+ok1vdQD1A
-         vKmA==
-X-Gm-Message-State: APjAAAXZZliSgLeBqpRWR6Oejhhn8HrLu212MDI8fIOerWLsqlTormYx
-        WSNDwiQSp5GWLaTzKjEipXgESHPcViM=
-X-Google-Smtp-Source: APXvYqwD4XddxF/zaidnE3Bmn8FDxarSmtRy/ggzuk7/X/L2N1h0q6dkFjF/ooPrJtsAX1cZtCjhQQ==
-X-Received: by 2002:a19:6455:: with SMTP id b21mr2626927lfj.167.1568737986211;
-        Tue, 17 Sep 2019 09:33:06 -0700 (PDT)
-Received: from mail-lj1-f171.google.com (mail-lj1-f171.google.com. [209.85.208.171])
-        by smtp.gmail.com with ESMTPSA id h9sm517287lfp.40.2019.09.17.09.33.04
-        for <linux-wireless@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 17 Sep 2019 09:33:05 -0700 (PDT)
-Received: by mail-lj1-f171.google.com with SMTP id a22so4253947ljd.0
-        for <linux-wireless@vger.kernel.org>; Tue, 17 Sep 2019 09:33:04 -0700 (PDT)
-X-Received: by 2002:a2e:8592:: with SMTP id b18mr2284561lji.18.1568737984442;
- Tue, 17 Sep 2019 09:33:04 -0700 (PDT)
+        h=x-gm-message-state:mime-version:in-reply-to:references:from:date
+         :message-id:subject:to:cc:content-transfer-encoding;
+        bh=fkl5Uz6CO+6SZ9rgr1xpzLXgAD4uYogYiQzsQ8Qmof8=;
+        b=TcnzkNDKdgP77fxttc6ztrFgpMLGmCX5XclbtYXinCP2n5aDbJrA3Hydfteq4kLmvM
+         bBAmwIBSsnBotLnq71PgWXyFJWy3tGZ5f/J5zt3umTi9fuRYiDwpJ4oLogtkXdwcSuKi
+         TMa2mhIpC2DYti2JncAGhrJtGeD9avvBDl4LWJjqLkhyKCbMkw/Q0Jwi7/pJfGJAyu0R
+         u0iS9y8PXjDzdi5TVvdKKUNZN1NGsiIHciawWILnm6c0/OgQgXFNqUzDG15uMcGnpk7K
+         gK7RGl3GbdsiNkcNL7EwiN8tHC46P56qEzwX+vOE9ErXW8NL9Xuumbz+lIb50v+l8VKp
+         0VJA==
+X-Gm-Message-State: APjAAAXwOu9mlJpWrvmutL4WHh76sk3/VJjlGj3qp7X/2Nazig9v8hcP
+        eDD2xaBlW8AScby9MH9VqIJoHSZgLfGtTxqfd4TBtQ==
+X-Google-Smtp-Source: APXvYqwAeHJ6ffh1AHRzRHrxcbevNHLDgTMxIoh/NthJ+CJxSI+KcpqLKKcbl8Q8QNXSiF3gRUDDwGguk49LeNUi8hY=
+X-Received: by 2002:a05:6808:24a:: with SMTP id m10mr4705976oie.24.1568739247944;
+ Tue, 17 Sep 2019 09:54:07 -0700 (PDT)
 MIME-Version: 1.0
-References: <1534402113-14337-1-git-send-email-wgong@codeaurora.org> <20181114225910.GA220599@google.com>
-In-Reply-To: <20181114225910.GA220599@google.com>
-From:   Brian Norris <briannorris@chromium.org>
-Date:   Tue, 17 Sep 2019 09:32:52 -0700
-X-Gmail-Original-Message-ID: <CA+ASDXMh7vdfkA5jtJqWEU-g-4Ta5Xvy046zujyASZcESCGhAQ@mail.gmail.com>
-Message-ID: <CA+ASDXMh7vdfkA5jtJqWEU-g-4Ta5Xvy046zujyASZcESCGhAQ@mail.gmail.com>
-Subject: Re: [PATCH v3] ath10k: support NET_DETECT WoWLAN feature
-To:     Wen Gong <wgong@codeaurora.org>
-Cc:     ath10k@lists.infradead.org,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        Linux Kernel <linux-kernel@vger.kernel.org>
+Received: by 2002:a9d:2286:0:0:0:0:0 with HTTP; Tue, 17 Sep 2019 09:54:07
+ -0700 (PDT)
+In-Reply-To: <20190917141014.6A1DA602F3@smtp.codeaurora.org>
+References: <1564305118-3059-1-git-send-email-pozega.tomislav@gmail.com> <20190917141014.6A1DA602F3@smtp.codeaurora.org>
+From:   Tom Psyborg <pozega.tomislav@gmail.com>
+Date:   Tue, 17 Sep 2019 18:54:07 +0200
+Message-ID: <CAKR_QVKtLM7fWs94y_KqndSXmUNTVHO7xqBK3sr5M44DSO_K0g@mail.gmail.com>
+Subject: Re: [PATCH] ath10k: use ath10k_pci_soc_ functions for all warm_reset instances
+To:     Kalle Valo <kvalo@codeaurora.org>
+Cc:     linux-wireless@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Since Wen has once again suggested I use this patch in other forums,
-I'll ping here to note:
-
-On Wed, Nov 14, 2018 at 2:59 PM Brian Norris <briannorris@chromium.org> wrote:
-> You've introduced a regression in 4.20-rc1:
-
-This regression still survives in the latest tree. Is it fair to just
-submit a revert?
-
-Brian
+On 17/09/2019, Kalle Valo <kvalo@codeaurora.org> wrote:
+> Tomislav Po=C5=BEega wrote:
+>
+>> Use ath10k_pci_soc_read32 / ath10k_pci_soc_write32 functions for
+>> the rest of warm_reset functions. Until now these have been used
+>> only for ath10k_pci_warm_reset_si0, but since they already exist
+>> it makes sense to simplify code a bit.
+>> Runtime tested with QCA9862.
+>>
+>> Signed-off-by: Tomislav Po=C5=BEega <pozega.tomislav@gmail.com>
+>> Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
+>
+is this a typo or should've I add your SoB line to that commit? btw
+what about this patch it's been sent out quite a several months ago?
+https://patchwork.kernel.org/patch/10860301/
