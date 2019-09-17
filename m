@@ -2,84 +2,62 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 04867B455A
-	for <lists+linux-wireless@lfdr.de>; Tue, 17 Sep 2019 03:48:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D5700B4679
+	for <lists+linux-wireless@lfdr.de>; Tue, 17 Sep 2019 06:29:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2391891AbfIQBsp (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 16 Sep 2019 21:48:45 -0400
-Received: from mail-qk1-f195.google.com ([209.85.222.195]:35231 "EHLO
-        mail-qk1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2391882AbfIQBso (ORCPT
+        id S2390744AbfIQE3J convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 17 Sep 2019 00:29:09 -0400
+Received: from mail.11d03.mspz7.gob.ec ([190.214.23.250]:55652 "EHLO
+        mail.11d03.mspz7.gob.ec" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726191AbfIQE3J (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 16 Sep 2019 21:48:44 -0400
-Received: by mail-qk1-f195.google.com with SMTP id w2so2187965qkf.2
-        for <linux-wireless@vger.kernel.org>; Mon, 16 Sep 2019 18:48:43 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=endlessm-com.20150623.gappssmtp.com; s=20150623;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=edT1MwEV0Yvt3Eaj1HjVvWX2OiCmS2l00yghhSQmhh8=;
-        b=aSP3I+0I+nRIj+73SiztqkTLRBYipxWxVa/2eCQpJX2zav0Vt2t57egFxrhJXLJN4T
-         O9I/rutgX3kq2wLwfAuMftmT+yN3onzIGaQ/Cd5rlDXR/SQQztigJqKDjlIigsoZVZj+
-         vmSCZYh/1v1+IldHyE7nga5tStmq7w1vkrO8F4A5wyq0hBaQeW6F2vcrbwGEbdX/MjJJ
-         uIKyvkGH4hO8JMTnfQZvTShrcMGkvFA6csXm93BTeHBMzJkSkrX9PZdw6rAMxIyP5BWB
-         ihsHObJmLtOl8WpR0Xp9cyE2kapAPxmjLdcrBVDaMWS+/rbpDhhfaZvC/6jaMmTmGzFX
-         g47w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=edT1MwEV0Yvt3Eaj1HjVvWX2OiCmS2l00yghhSQmhh8=;
-        b=jY5LnwsdkrPlIumCYYeoGf/4hC4duwqfTph+XxroPz88ce7gMnrZZbxf7si8Tnfree
-         i0defAKe0evDkMCMQ1RNIUi8n0LWxQgt6U2E41UJ+mXnmEifxeVAC4S2YgUbTsA+nng1
-         Un0R/TGS9ZJB05SMoMz2DpF403xAnJJKrwV6oetGvSUrn12NLguC0jiMXCx9+BNj2575
-         GyOOp2nyz9GamT8OWoSdxz8bPSqZhFF3mvoKr3VRSRME35etQDM9PqH2FwJ93XKC94JV
-         O1idmEBc4nVtbosfoOUCqTEmBp6zJr52/RYFPjwyubNj3gtxvdSt1mE69txhcepsZ01A
-         H10A==
-X-Gm-Message-State: APjAAAWK5HHc0/AE9JAHajGiUz96thq9JjViCEfNQHyCTIirbSiH/6nq
-        dpdXGU19ORvA1VRk/Zmipt517I0QL2YdHOhD+14XMg==
-X-Google-Smtp-Source: APXvYqxB9RUk2shXtPH36lM2sXDH6jnQgPup4a+emMeOnlShQR82DfRnnbGWl4+ZDJFFnKeHKMeuZgn7jU+QI6sHw2U=
-X-Received: by 2002:a37:7403:: with SMTP id p3mr1286816qkc.366.1568684923337;
- Mon, 16 Sep 2019 18:48:43 -0700 (PDT)
+        Tue, 17 Sep 2019 00:29:09 -0400
+X-Greylist: delayed 1507 seconds by postgrey-1.27 at vger.kernel.org; Tue, 17 Sep 2019 00:29:09 EDT
+Received: from localhost (localhost [127.0.0.1])
+        by mail.11d03.mspz7.gob.ec (Postfix) with ESMTP id 2416E404CFC0F;
+        Mon, 16 Sep 2019 23:01:27 -0500 (-05)
+Received: from mail.11d03.mspz7.gob.ec ([127.0.0.1])
+        by localhost (mail.11d03.mspz7.gob.ec [127.0.0.1]) (amavisd-new, port 10032)
+        with ESMTP id udX-AaIlJek2; Mon, 16 Sep 2019 23:01:26 -0500 (-05)
+Received: from localhost (localhost [127.0.0.1])
+        by mail.11d03.mspz7.gob.ec (Postfix) with ESMTP id 4F733404CFC06;
+        Mon, 16 Sep 2019 23:01:26 -0500 (-05)
+X-Virus-Scanned: amavisd-new at 11d03.mspz7.gob.ec
+Received: from mail.11d03.mspz7.gob.ec ([127.0.0.1])
+        by localhost (mail.11d03.mspz7.gob.ec [127.0.0.1]) (amavisd-new, port 10026)
+        with ESMTP id z-twum6UoXlV; Mon, 16 Sep 2019 23:01:26 -0500 (-05)
+Received: from [10.33.79.142] (unknown [105.4.0.133])
+        by mail.11d03.mspz7.gob.ec (Postfix) with ESMTPSA id 602C5404CF490;
+        Mon, 16 Sep 2019 23:01:16 -0500 (-05)
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-References: <20190805131452.13257-1-chiu@endlessm.com> <d0047834-957d-0cf3-5792-31faa5315ad1@gmail.com>
- <87wofibgk7.fsf@kamboji.qca.qualcomm.com> <a3ac212d-b976-fb16-227f-3246a317c4a2@gmail.com>
-In-Reply-To: <a3ac212d-b976-fb16-227f-3246a317c4a2@gmail.com>
-From:   Chris Chiu <chiu@endlessm.com>
-Date:   Tue, 17 Sep 2019 09:48:32 +0800
-Message-ID: <CAB4CAweWoFuXPci5Re6sdN_kB0i4DkpsYxux+GAHyRHWhC+hhA@mail.gmail.com>
-Subject: Re: [RFC PATCH v7] rtl8xxxu: Improve TX performance of RTL8723BU on
- rtl8xxxu driver
-To:     Jes Sorensen <jes.sorensen@gmail.com>
-Cc:     Kalle Valo <kvalo@codeaurora.org>,
-        David Miller <davem@davemloft.net>,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        netdev <netdev@vger.kernel.org>,
-        Linux Kernel <linux-kernel@vger.kernel.org>,
-        Linux Upstreaming Team <linux@endlessm.com>,
-        Daniel Drake <drake@endlessm.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8BIT
+Content-Description: Mail message body
+Subject: =?utf-8?q?Wohlt=C3=A4tigkeitsspende_von_2=2E000=2E000_Millionen_Euro?=
+To:     Recipients <vicenta.sinche@11d03.mspz7.gob.ec>
+From:   ''Tayeb souami'' <vicenta.sinche@11d03.mspz7.gob.ec>
+Date:   Tue, 17 Sep 2019 06:01:07 +0200
+Reply-To: Tayebsouam.spende@gmail.com
+Message-Id: <20190917040117.602C5404CF490@mail.11d03.mspz7.gob.ec>
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Mon, Aug 12, 2019 at 11:21 PM Jes Sorensen <jes.sorensen@gmail.com> wrote:
->
-> On 8/12/19 10:32 AM, Kalle Valo wrote:
-> >> Signed-off-by: Jes Sorensen <Jes.Sorensen@gmail.com>
-> >
-> > This is marked as RFC so I'm not sure what's the plan. Should I apply
-> > this?
->
-> I think it's at a point where it's worth applying - I kinda wish I had
-> had time to test it, but I won't be near my stash of USB dongles for a
-> little while.
->
-> Cheers,
-> Jes
->
+Lieber Freund,
 
-Gentle ping. Any suggestions for the next step?
+Ich bin Herr Tayeb Souami, New Jersey, Vereinigte Staaten von Amerika, der Mega-Gewinner von $ 315million In Mega Millions Jackpot, spende ich an 5 zufällige Personen, wenn Sie diese E-Mail erhalten, dann wurde Ihre E-Mail nach einem Spinball ausgewählt.Ich habe den größten Teil meines Vermögens auf eine Reihe von Wohltätigkeitsorganisationen und Organisationen verteilt.Ich habe mich freiwillig dazu entschieden, die Summe von € 2.000.000,00 an Sie als eine der ausgewählten 5 zu spenden, um meine Gewinne zu überprüfen, sehen Sie bitte meine You Tube Seite unten.
 
-Chris
+UHR MICH HIER: https://www.youtube.com/watch?v=Z6ui8ZDQ6Ks
+
+Das ist dein Spendencode: [TS530342018]
+
+Antworten Sie mit dem SPENDE-CODE an diese 
+
+E-Mail:Tayebsouam.spende@gmail.com
+
+Ich hoffe, Sie und Ihre Familie glücklich zu machen.
+
+Grüße
+Herr Tayeb Souami
