@@ -2,102 +2,99 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 69D9FB4793
-	for <lists+linux-wireless@lfdr.de>; Tue, 17 Sep 2019 08:36:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9D824B479E
+	for <lists+linux-wireless@lfdr.de>; Tue, 17 Sep 2019 08:41:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2404278AbfIQGgW (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 17 Sep 2019 02:36:22 -0400
-Received: from smtp.codeaurora.org ([198.145.29.96]:42858 "EHLO
+        id S1733182AbfIQGlC (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 17 Sep 2019 02:41:02 -0400
+Received: from smtp.codeaurora.org ([198.145.29.96]:44614 "EHLO
         smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729094AbfIQGgV (ORCPT
+        with ESMTP id S1729443AbfIQGlB (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 17 Sep 2019 02:36:21 -0400
+        Tue, 17 Sep 2019 02:41:01 -0400
 Received: by smtp.codeaurora.org (Postfix, from userid 1000)
-        id C909F60271; Tue, 17 Sep 2019 06:36:20 +0000 (UTC)
+        id E72E0613A8; Tue, 17 Sep 2019 06:41:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1568702180;
-        bh=j+K5h9V7T3l/wUoaSAsdMed329Ydn4hIdD2z0M3JVhA=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=H1pkD3qTb0EM9fatCQwsm40YVuEw4i7RK7h8ahmo/uZx1CpMduVearL6N4yIbEmxo
-         fTzXSTKwkq6sAH5brNffFN92JCEfmve9hDUS8HNv5ycWVnT+pRwt+4N9eLloAOFqXb
-         1zIWvAbTwjMs0ckLn38vsoCgaHbxpOmTtKXux8xQ=
+        s=default; t=1568702460;
+        bh=PsCESTKuaXVgX05Dw2TtqzRSs+kJpkOmCLBNa9gPZ/A=;
+        h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
+        b=gBGxvFFdwMyz9SenL8v+jRpIhZs4yhoSIQDyP2FopVEb0teLoaN6zwMtLVy7cqjeE
+         D8p9I3RG11cFWfxX/gprvZGRHRJclyY0+8Gm8vEInlsQi6xgtzXh2vKzZi+k0inKUH
+         miwzF0LV3inSAu9U9xklGOSKO+zTmp5hKbfa1BuY=
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         pdx-caf-mail.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-2.7 required=2.0 tests=ALL_TRUSTED,BAYES_00,
-        DKIM_INVALID,DKIM_SIGNED autolearn=no autolearn_force=no version=3.4.0
-Received: from mail.codeaurora.org (localhost.localdomain [127.0.0.1])
-        by smtp.codeaurora.org (Postfix) with ESMTP id 1C53260271;
-        Tue, 17 Sep 2019 06:36:20 +0000 (UTC)
+X-Spam-Status: No, score=-0.8 required=2.0 tests=ALL_TRUSTED,BAYES_00,
+        DKIM_INVALID,DKIM_SIGNED,MISSING_DATE,MISSING_MID,SPF_NONE autolearn=no
+        autolearn_force=no version=3.4.0
+Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo@smtp.codeaurora.org)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id E37316016D;
+        Tue, 17 Sep 2019 06:40:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1568702180;
-        bh=j+K5h9V7T3l/wUoaSAsdMed329Ydn4hIdD2z0M3JVhA=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=H1pkD3qTb0EM9fatCQwsm40YVuEw4i7RK7h8ahmo/uZx1CpMduVearL6N4yIbEmxo
-         fTzXSTKwkq6sAH5brNffFN92JCEfmve9hDUS8HNv5ycWVnT+pRwt+4N9eLloAOFqXb
-         1zIWvAbTwjMs0ckLn38vsoCgaHbxpOmTtKXux8xQ=
+        s=default; t=1568702458;
+        bh=PsCESTKuaXVgX05Dw2TtqzRSs+kJpkOmCLBNa9gPZ/A=;
+        h=Subject:From:In-Reply-To:References:To:Cc:From;
+        b=E3LHzA9Kc4Fw8KCwHSIuM9cRLB+PqftD8jDQh5mbyX8ELcF2PwTX1F9o4ZWMnU0r1
+         EZej7yALG3ngrOnu4pSibrfTaIV5tghGg9WQGGpbBLb40G8jAh/ZMBu4Gk9z+X5e6T
+         jxLug6oIpzTyzx4hJi8Xeivm+K3IJCGC1B4XFb9I=
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org E37316016D
+Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8;
- format=flowed
-Content-Transfer-Encoding: 8bit
-Date:   Tue, 17 Sep 2019 14:36:20 +0800
-From:   Yibo Zhao <yiboz@codeaurora.org>
-To:     Johannes Berg <johannes@sipsolutions.net>
-Cc:     ath10k@lists.infradead.org, linux-wireless@vger.kernel.org,
-        =?UTF-8?Q?Toke_H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>,
-        linux-wireless-owner@vger.kernel.org
-Subject: Re: [PATCH 3/4] mac80211: fix low throughput in push pull mode
-In-Reply-To: <6684ceecde399edeb31c594f889a403440c78142.camel@sipsolutions.net>
-References: <1568639388-27291-1-git-send-email-yiboz@codeaurora.org>
- <1568639388-27291-3-git-send-email-yiboz@codeaurora.org>
- (sfid-20190916_151039_049848_BE125514)
- <6684ceecde399edeb31c594f889a403440c78142.camel@sipsolutions.net>
-Message-ID: <8e4cd872d082c6bce598c87411a2125f@codeaurora.org>
-X-Sender: yiboz@codeaurora.org
-User-Agent: Roundcube Webmail/1.2.5
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH] ath9k: remove unneeded variable
+From:   Kalle Valo <kvalo@codeaurora.org>
+In-Reply-To: <1568109312-13175-1-git-send-email-dingxiang@cmss.chinamobile.com>
+References: <1568109312-13175-1-git-send-email-dingxiang@cmss.chinamobile.com>
+To:     Ding Xiang <dingxiang@cmss.chinamobile.com>
+Cc:     davem@davemloft.net, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+User-Agent: pwcli/0.0.0-git (https://github.com/kvalo/pwcli/) Python/2.7.12
+Message-Id: <20190917064100.E72E0613A8@smtp.codeaurora.org>
+Date:   Tue, 17 Sep 2019 06:41:00 +0000 (UTC)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 2019-09-16 23:27, Johannes Berg wrote:
-> Without really looking at the code -
-> 
->> If station is ineligible for transmission in 
->> ieee80211_txq_may_transmit(),
->> no packet will be delivered to FW. During the tests in push-pull mode 
->> with
->> many clients, after several seconds, not a single station is an 
->> eligible
->> candidate for transmission since global time is smaller than all the
->> station's virtual airtime. As a consequence, the Tx has been blocked 
->> and
->> throughput is quite low.
-> 
-> You should rewrite this to be, erm, a bit more understandable in
-> mac80211 context. I assume you're speaking (mostly?) about ath10k, but 
-> I
-> have very little context there. "push pull mode"? "firmware"? These
-> things are not something mac80211 knows about.
-Hi Johannes,
+Ding Xiang <dingxiang@cmss.chinamobile.com> wrote:
 
-Thanks for your kindly reminder. Will rewrite the commit log.
-
+> "len" is unneeded,just return 0
 > 
->> Co-developed-by: Yibo Zhao <yiboz@codeaurora.org>
-> 
-> That also seems wrong, should be Toke I guess, unless you intended for 
-> a
-> From: Toke to be present?
-Do you mean it should be something like:
+> Signed-off-by: Ding Xiang <dingxiang@cmss.chinamobile.com>
 
-Co-developed-by: Toke Høiland-Jørgensen <toke@toke.dk>
-Signed-off-by: Yibo Zhao <yiboz@codeaurora.org>
-Signed-off-by: Toke Høiland-Jørgensen <toke@toke.dk>
+ALWAYS build check your patches! I admit that ATH_DUMP_BTCOEX() is an
+evil macro as it uses len variable in secret, but if you had compiled
+your patch you would have noticed this immeadiately.
 
-Am I understanding right?
-> 
-> johannes
+In file included from drivers/net/wireless/ath/ath9k/gpio.c:17:
+drivers/net/wireless/ath/ath9k/gpio.c: In function 'ath9k_dump_legacy_btcoex':
+drivers/net/wireless/ath/ath9k/ath9k.h:763:3: error: 'len' undeclared (first use in this function); did you mean '_end'?
+   len += scnprintf(buf + len, size - len,  \
+   ^~~
+drivers/net/wireless/ath/ath9k/gpio.c:502:2: note: in expansion of macro 'ATH_DUMP_BTCOEX'
+  ATH_DUMP_BTCOEX("Stomp Type", btcoex->bt_stomp_type);
+  ^~~~~~~~~~~~~~~
+drivers/net/wireless/ath/ath9k/ath9k.h:763:3: note: each undeclared identifier is reported only once for each function it appears in
+   len += scnprintf(buf + len, size - len,  \
+   ^~~
+drivers/net/wireless/ath/ath9k/gpio.c:502:2: note: in expansion of macro 'ATH_DUMP_BTCOEX'
+  ATH_DUMP_BTCOEX("Stomp Type", btcoex->bt_stomp_type);
+  ^~~~~~~~~~~~~~~
+make[5]: *** [drivers/net/wireless/ath/ath9k/gpio.o] Error 1
+make[4]: *** [drivers/net/wireless/ath/ath9k] Error 2
+make[3]: *** [drivers/net/wireless/ath] Error 2
+make[2]: *** [drivers/net/wireless] Error 2
+make[1]: *** [drivers/net] Error 2
+make[1]: *** Waiting for unfinished jobs....
+make: *** [drivers] Error 2
 
 -- 
-Yibo
+https://patchwork.kernel.org/patch/11139147/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+
