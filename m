@@ -2,97 +2,85 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 4FE2DB5440
-	for <lists+linux-wireless@lfdr.de>; Tue, 17 Sep 2019 19:30:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B5E70B5472
+	for <lists+linux-wireless@lfdr.de>; Tue, 17 Sep 2019 19:44:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726878AbfIQRaa (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 17 Sep 2019 13:30:30 -0400
-Received: from smtp.codeaurora.org ([198.145.29.96]:46218 "EHLO
-        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725884AbfIQRaa (ORCPT
+        id S1727023AbfIQRoE (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 17 Sep 2019 13:44:04 -0400
+Received: from mail2.candelatech.com ([208.74.158.173]:48028 "EHLO
+        mail3.candelatech.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725862AbfIQRoE (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 17 Sep 2019 13:30:30 -0400
-Received: by smtp.codeaurora.org (Postfix, from userid 1000)
-        id 0622D613A8; Tue, 17 Sep 2019 17:30:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1568741429;
-        bh=VeoMTg9D75uSeZQHx+Ox+CDzOqOQgKcDZagRAuvhNrk=;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=l6jZVDVRmQQAr1h1v3m6f7DhCrFVhhm4N+WHHvBQSiHacETSbGQ/6Ahv3Jw4cVbJ9
-         IQn7QehpTXS6Rr5nsEouW6h5tqU5hYZVh3fsBI4DI5jNqwVjVgjemJ3NLzFCtV7Z7v
-         O7TprVzc02TxAspisObTDrrLTQjuyN8mMZzajpVI=
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        pdx-caf-mail.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.7 required=2.0 tests=ALL_TRUSTED,BAYES_00,
-        DKIM_INVALID,DKIM_SIGNED,SPF_NONE autolearn=no autolearn_force=no
-        version=3.4.0
-Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
+        Tue, 17 Sep 2019 13:44:04 -0400
+Received: from [192.168.100.195] (50-251-239-81-static.hfc.comcastbusiness.net [50.251.239.81])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        (Authenticated sender: kvalo@smtp.codeaurora.org)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id D5E73611CE;
-        Tue, 17 Sep 2019 17:30:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1568741428;
-        bh=VeoMTg9D75uSeZQHx+Ox+CDzOqOQgKcDZagRAuvhNrk=;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=bSbWXakEfBPBSIHa/Pu3trr9fQSivuon/L/gIL6R0VyBk1b3ZOSFnh2e39gcx28/r
-         7EUGO5oHtLnparUgYOlMCw76LkPQggyxN29YesTAxpgwijE8DhQCcBOC8RKNCSm/zT
-         9Hc4K/wMy1+Y0TYcEpNi7GJnFo0x7xP0sDbnADF0=
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org D5E73611CE
-Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
-From:   Kalle Valo <kvalo@codeaurora.org>
-To:     Tom Psyborg <pozega.tomislav@gmail.com>
-Cc:     linux-wireless@vger.kernel.org
-Subject: Re: [PATCH] ath10k: use ath10k_pci_soc_ functions for all warm_reset instances
-References: <1564305118-3059-1-git-send-email-pozega.tomislav@gmail.com>
-        <20190917141014.6A1DA602F3@smtp.codeaurora.org>
-        <CAKR_QVKtLM7fWs94y_KqndSXmUNTVHO7xqBK3sr5M44DSO_K0g@mail.gmail.com>
-Date:   Tue, 17 Sep 2019 20:30:24 +0300
-In-Reply-To: <CAKR_QVKtLM7fWs94y_KqndSXmUNTVHO7xqBK3sr5M44DSO_K0g@mail.gmail.com>
-        (Tom Psyborg's message of "Tue, 17 Sep 2019 18:54:07 +0200")
-Message-ID: <87a7b2bzkf.fsf@kamboji.qca.qualcomm.com>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
+        by mail3.candelatech.com (Postfix) with ESMTPSA id 7398713753C;
+        Tue, 17 Sep 2019 10:44:03 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail3.candelatech.com 7398713753C
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=candelatech.com;
+        s=default; t=1568742243;
+        bh=yKoFNLr7afSoYDBuTIU9ynCx61w6pq9x8JRWxKNnOWU=;
+        h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
+        b=cHjrOIzkxW+k3GDlHYyS4j8V/Zy/ms0xxAT9MpugG3LsCkKqUStOuiTEm4Wj2L60d
+         2OXVfSjpztCqq3CCYmF94OJRyMQDMmM2UgQX3L4jGXIgLS/BZA/CscLOkcNG5a6uVt
+         ehV192UVcTYbvwGRGO7L54B6nR0nIy32iYrmy+Dg=
+Subject: Re: [PATCH] cfg80211: Add cumulative channel survey dump support.
+To:     Sven Eckelmann <sven@narfation.org>, vnaralas@codeaurora.org,
+        ath10k@lists.infradead.org
+Cc:     Johannes Berg <johannes@sipsolutions.net>,
+        linux-wireless@vger.kernel.org, sw@simonwunderlich.de,
+        slakkavalli@datto.com
+References: <1526980556-26707-1-git-send-email-vnaralas@codeaurora.org>
+ <1527069282.3759.16.camel@sipsolutions.net>
+ <ebf1c95acb34649b3d2a5435142dc06a@codeaurora.org>
+ <2083094.mFhUXK7yzB@bentobox>
+From:   Ben Greear <greearb@candelatech.com>
+Organization: Candela Technologies
+Message-ID: <cc8bc245-034b-376d-3952-0c0ac6d51cab@candelatech.com>
+Date:   Tue, 17 Sep 2019 10:44:03 -0700
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.7.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <2083094.mFhUXK7yzB@bentobox>
+Content-Type: text/plain; charset=windows-1252; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Tom Psyborg <pozega.tomislav@gmail.com> writes:
+On 9/17/19 10:27 AM, Sven Eckelmann wrote:
+> On Thursday, 31 May 2018 11:06:59 CEST vnaralas@codeaurora.org wrote:
+>> I will sent next version of patch with updated commit log.
+> 
+> Can you please point me to the second version?
+> 
+> Btw. I've just checked the minimal changes in ath10k to get this working. It
+> seems we need SURVEY_INFO_NON_ACC_DATA in ath10k's ath10k_get_survey + memset
+> of ar->survey[idx].
+> 
+> But right now the total time looks (especially) wrong to me. At least it is
+> rather unlikely that I can have around 30 second active time delta in
+> roughly 1 real world second.  Maybe a bug with the READ_CLEAR handling in
+> firmware 10.2.4-1.0-00043 or maybe all firmware version? More logs about
+> that at the end.
+> 
+> @Ben: Was this also what you've experience in the past with the 10.2 firmware
+> bss_chan_info counter bugs or am I just misusing the functionality of the
+> firmware?
 
-> On 17/09/2019, Kalle Valo <kvalo@codeaurora.org> wrote:
->> Tomislav Po=C5=BEega wrote:
->>
->>> Use ath10k_pci_soc_read32 / ath10k_pci_soc_write32 functions for
->>> the rest of warm_reset functions. Until now these have been used
->>> only for ath10k_pci_warm_reset_si0, but since they already exist
->>> it makes sense to simplify code a bit.
->>> Runtime tested with QCA9862.
->>>
->>> Signed-off-by: Tomislav Po=C5=BEega <pozega.tomislav@gmail.com>
->>> Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
->
-> is this a typo or should've I add your SoB line to that commit?
+Last I recall, the upstream code had several bugs.  Maybe some QCA
+firmware person can let you know if they fixed the upstream firmware.
 
-This is just because of my pwcli patchwork script and it's stgit mode.
-It takes the commit log directly from the pending branch, where I need
-to add my s-o-b as I publish the branch.
+If you want to test against ath10k-ct driver/firmware, and if you still see bogus values, then
+I can debug and fix it.
 
-In general you should only add your own s-o-b line:
+Thanks,
+Ben
 
-https://www.kernel.org/doc/html/latest/process/submitting-patches.html#sign=
--your-work-the-developer-s-certificate-of-origin
+-- 
+Ben Greear <greearb@candelatech.com>
+Candela Technologies Inc  http://www.candelatech.com
 
-> btw what about this patch it's been sent out quite a several months
-> ago? https://patchwork.kernel.org/patch/10860301/
-
-I have not looked at that yet but it's in my queue.
-
---=20
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatc=
-hes
