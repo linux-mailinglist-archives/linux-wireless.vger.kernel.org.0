@@ -2,65 +2,84 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 61D91B5987
-	for <lists+linux-wireless@lfdr.de>; Wed, 18 Sep 2019 04:10:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 56AB4B5ED2
+	for <lists+linux-wireless@lfdr.de>; Wed, 18 Sep 2019 10:14:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726779AbfIRCKk (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 17 Sep 2019 22:10:40 -0400
-Received: from rtits2.realtek.com ([211.75.126.72]:55197 "EHLO
-        rtits2.realtek.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726677AbfIRCKk (ORCPT
+        id S1729876AbfIRIOv (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 18 Sep 2019 04:14:51 -0400
+Received: from mail-io1-f41.google.com ([209.85.166.41]:34625 "EHLO
+        mail-io1-f41.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727569AbfIRIOu (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 17 Sep 2019 22:10:40 -0400
-Authenticated-By: 
-X-SpamFilter-By: BOX Solutions SpamTrap 5.62 with qID x8I2AWTp009447, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (RTITCAS11.realtek.com.tw[172.21.6.12])
-        by rtits2.realtek.com.tw (8.15.2/2.57/5.78) with ESMTPS id x8I2AWTp009447
-        (version=TLSv1.2 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Wed, 18 Sep 2019 10:10:32 +0800
-Received: from RTITMBSVM04.realtek.com.tw ([fe80::e404:880:2ef1:1aa1]) by
- RTITCAS11.realtek.com.tw ([fe80::7c6d:ced5:c4ff:8297%15]) with mapi id
- 14.03.0468.000; Wed, 18 Sep 2019 10:10:31 +0800
-From:   Tony Chuang <yhchuang@realtek.com>
-To:     Brian Norris <briannorris@chromium.org>
-CC:     Kalle Valo <kvalo@codeaurora.org>,
-        linux-wireless <linux-wireless@vger.kernel.org>
-Subject: RE: [PATCH 05/15] rtw88: pci: release tx skbs DMAed when stop
-Thread-Topic: [PATCH 05/15] rtw88: pci: release tx skbs DMAed when stop
-Thread-Index: AQHVbFzthQTPSGBi5kOtH0MxIMGahqcwFOyAgACdtzA=
-Date:   Wed, 18 Sep 2019 02:10:30 +0000
-Message-ID: <F7CD281DE3E379468C6D07993EA72F84D18DC62E@RTITMBSVM04.realtek.com.tw>
-References: <1568617425-28062-1-git-send-email-yhchuang@realtek.com>
- <1568617425-28062-6-git-send-email-yhchuang@realtek.com>
- <CA+ASDXOMao9uucGxa6C0Q99pFvAtKTptreeshbfKqiELDKUH0Q@mail.gmail.com>
-In-Reply-To: <CA+ASDXOMao9uucGxa6C0Q99pFvAtKTptreeshbfKqiELDKUH0Q@mail.gmail.com>
-Accept-Language: zh-TW, en-US
-Content-Language: zh-TW
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [172.21.68.183]
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+        Wed, 18 Sep 2019 04:14:50 -0400
+Received: by mail-io1-f41.google.com with SMTP id q1so14170463ion.1
+        for <linux-wireless@vger.kernel.org>; Wed, 18 Sep 2019 01:14:50 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=xYcG2UqlY+/lq1FpcHC7dW6S5qd/4aCFZqrP7J5My6g=;
+        b=DrJl0qwbelNUkg+1UxCiZ87mYpYku2cDebagLMTo0F2eK0qmP4JZhI8Gs5+hnMlfGE
+         m4h8jRWCuUCEqByRUAAdxZXx8f5ZabtrKfNU+V1wfzH/r0VnorIdjQJkwRcJSHRETB1p
+         jTLgj1OqUW4zWR8rK05kkpFAGRNmhox9JoYYZn/tPP/Lqej3EFe9l00bgyYL9JZe/iUc
+         xFKhKsoaX1D9shCWXRXOMs1S9H3kd4hWY4UYKQWQ9QTbTV33yImqMorIXgWseoQ+SIjO
+         bw46vJpkTkzIaX1JccCxobauNMc8cdvXCp1cqdmyf2hs1QS+L1GuSMa0miBuGgMNTOdn
+         1YAQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=xYcG2UqlY+/lq1FpcHC7dW6S5qd/4aCFZqrP7J5My6g=;
+        b=q4Ssm2s9tm9uJ8tbiGMLsH4uu7V3wqPeEpNGqqAYf2EioD1JBOtP4gWA9brrzeOeiE
+         aqOjgpZrFiS49s5scOK22NDFDAiZU37RMoYirAkvvaET+abAkXD9tU6LIn5phLj1IAxl
+         CWL9Rw1ckJrd+I+uhG6GRTGnjA7jciLQp9INxkABI91qGPrD7eL9F6U2za1qzKJkxMJS
+         eDQtsHNb2CswB+IRt8dZEV9j9y0clM4o4CLW+oxMZ9Z1kD0pulylm5RRYxwgdinKoNPP
+         xIDJ7mCRoaTtDqhuJHyMoOePH5srNNP5G09NOOJ/LmPjOIVDpa5OqK+1nBkwHKxCwn/E
+         oeiQ==
+X-Gm-Message-State: APjAAAVfBcrTyyIcU4IlHDeFwM8PpuNyz9XP0+hLFcFH1eI70GwvPmab
+        0Xw+ToRnd/7tCkbMGnRlZswvA++U5aeu7WyHmTM=
+X-Google-Smtp-Source: APXvYqyokcdwcep/L054Oo34lDepqdh2H8WaYSiOPZDqkCXd4x47hPTmLQdNvKru5XhnASQGHHcLsC+jJU7vPk8Tjdc=
+X-Received: by 2002:a6b:ca47:: with SMTP id a68mr3811211iog.110.1568794489857;
+ Wed, 18 Sep 2019 01:14:49 -0700 (PDT)
 MIME-Version: 1.0
+References: <CAKKzd-8jgQWTO2w589gMVJm3CaU-15wUER+fsqpYJJSeZL4RPg@mail.gmail.com>
+ <CALLGbRKUZmZzBh9=YpJ+r_ts8aY+HXy159oviihSgqMEofOCRQ@mail.gmail.com>
+ <CAKKzd-8aRFtdkK+E4-sXBid9jP_sAr0bGbdLYJ=sjb4iCsTAcw@mail.gmail.com>
+ <7158fc76fe5ec091633b36b3218a8586960c19e2.camel@redhat.com> <CAKKzd-9zK0ZKWksyp7S+myGrtbc3s4npEhy02SS-wfLCS0tKSw@mail.gmail.com>
+In-Reply-To: <CAKKzd-9zK0ZKWksyp7S+myGrtbc3s4npEhy02SS-wfLCS0tKSw@mail.gmail.com>
+From:   Krishna Chaitanya <chaitanya.mgit@gmail.com>
+Date:   Wed, 18 Sep 2019 13:44:38 +0530
+Message-ID: <CABPxzYJ1YCwdVqba74aptV3KCwCDFT_UP8TCh6C30-gu=CRKNQ@mail.gmail.com>
+Subject: Re: Linux wireless times out at Google Starbucks location
+To:     David Ho <davidkwho@gmail.com>
+Cc:     Dan Williams <dcbw@redhat.com>,
+        Steve deRosier <derosier@gmail.com>,
+        linux-wireless <linux-wireless@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-PiBNYXkgYmUgYSBkdW1iIHF1ZXN0aW9uIGJ1dDoNCj4gDQo+IE9uIE1vbiwgU2VwIDE2LCAyMDE5
-IGF0IDEyOjAzIEFNIDx5aGNodWFuZ0ByZWFsdGVrLmNvbT4gd3JvdGU6DQo+ID4NCj4gPiBGcm9t
-OiBZYW4tSHN1YW4gQ2h1YW5nIDx5aGNodWFuZ0ByZWFsdGVrLmNvbT4NCj4gPg0KPiA+IEludGVy
-cnVwdCBpcyBkaXNhYmxlZCB0byBzdG9wIFBDSSwgd2hpY2ggbWVhbnMgdGhlIHNrYnMNCj4gPiBx
-dWV1ZWQgZm9yIGVhY2ggVFggcmluZyB3aWxsIG5vdCBiZSByZWxlYXNlZCB2aWEgRE1BDQo+ID4g
-aW50ZXJydXB0Lg0KPiANCj4gSW4gd2hhdCBjYXNlcyBkbyB5b3UgaGl0IHRoaXM/IEkgdGhpbmsg
-eW91IGRvIHRoaXMgd2hlbiBlbnRlcmluZyBQUw0KPiBtb2RlLCBubz8gQnV0IHRoZW4sIHNlZSBi
-ZWxvdy4NCg0KSSdsbCBoaXQgdGhpcyB3aGVuIGllZWU4MDIxMV9vcHM6OnN0b3AsIG9yIHJ0d19w
-b3dlcl9vZmYuDQpCb3RoIGFyZSB0byB0dXJuIG9mZiB0aGUgZGV2aWNlLCBzbyB0aGVyZSdzIG5v
-IG1vcmUgRE1BIGFjdGl2aXRpZXMuDQpJZiB3ZSBkb24ndCByZWxlYXNlIHRoZSBTS0JzIHRoYXQg
-YXJlIG5vdCByZWxlYXNlZCBieSBETUEgaW50ZXJydXB0DQp3aGVuIHBvd2VyaW5nIG9mZiwgdGhl
-c2UgY291bGQgYmUgbGVha2VkLg0KDQo+IA0KPiA+IFRvIGF2b2lkIHRob3NlIHNrYnMgcmVtYWlu
-ZWQgYmVpbmcgbGVmdCBpbg0KPiA+IHRoZSBza2IgcXVldWUgdW50aWwgUENJIGhhcyBiZWVuIHJl
-bW92ZWQsIGRyaXZlciBuZWVkcw0KPiA+IHRvIHJlbGVhc2Ugc2ticyBieSBpdHNlbGYuDQo+IA0K
-PiBEb2Vzbid0IHRoYXQgYWxzbyBtZWFuIHlvdXIgZHJvcHBpbmcgdGhlc2UgcGFja2V0cz8gU2hv
-dWxkbid0IHlvdSBiZQ0KPiBkZWxheWluZyBQUyB0cmFuc2l0aW9ucyB1bnRpbCB5b3UndmUgZmlu
-aXNoZWQgVFgnaW5nPw0KPiANCj4gQnJpYW4NCj4gDQoNCllhbi1Ic3Vhbg0KDQo=
+On Wed, Sep 18, 2019 at 6:22 AM David Ho <davidkwho@gmail.com> wrote:
+>
+> On Tue, Sep 17, 2019 at 2:01 PM Dan Williams <dcbw@redhat.com> wrote:
+> >
+> > If you're able to get the wpa_supplicant logs, that would be useful as
+> > well.
+> >
+>
+> I captured 2 minutes of log in /var/log/syslog, based on my crude
+> judgment of where the connection request began.
+>
+> I appreciate if someone can update me on this issue; I hope my effort
+> is not going to waste (I'm just an ML researcher trying to make Ubuntu
+> work at my favorite coffee shop =)
+Is this a new issue probably after some update? The only thing we can
+see from the
+kernel logs are that Auth/Assoc are getting timed-out, no info as to why?
+
+You can probably try disabling the powersave using below command or
+using `iw` utils.
+sudo sed -i "s/wifi.powersave = 3/wifi.powersave = 2/g"
+/etc/NetworkManager/conf.d/default-wifi-powersave-on.conf
