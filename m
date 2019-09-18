@@ -2,83 +2,99 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id AC901B64F5
-	for <lists+linux-wireless@lfdr.de>; Wed, 18 Sep 2019 15:45:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1B9E7B64FC
+	for <lists+linux-wireless@lfdr.de>; Wed, 18 Sep 2019 15:49:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728649AbfIRNpE (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 18 Sep 2019 09:45:04 -0400
-Received: from smtp.codeaurora.org ([198.145.29.96]:33854 "EHLO
-        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727123AbfIRNpD (ORCPT
+        id S1726714AbfIRNtK (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 18 Sep 2019 09:49:10 -0400
+Received: from paleale.coelho.fi ([176.9.41.70]:43438 "EHLO
+        farmhouse.coelho.fi" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
+        with ESMTP id S1726659AbfIRNtJ (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 18 Sep 2019 09:45:03 -0400
-Received: by smtp.codeaurora.org (Postfix, from userid 1000)
-        id C252660364; Wed, 18 Sep 2019 13:45:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1568814302;
-        bh=eGY3eld6Fw7wIMSHDmpahPNMKGlKeflNpx89TJV5ceQ=;
-        h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-        b=ZDOoxBstxJ37Hxm21UqIlWr/RuflPElsROpaJxmVz9sOmJVAq9DJ3N5Y8bWJnhp8+
-         x7iTT+ewqAocFoYfea2sjOAV4tjPS2y63k0+fvJ9EhQCoACo7C5wqpKBM0oKz2zzWh
-         tX+eSVtsHSPPGpetBS5Or85CzbMCT3YJ+tsN5It0=
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        pdx-caf-mail.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-0.8 required=2.0 tests=ALL_TRUSTED,BAYES_00,
-        DKIM_INVALID,DKIM_SIGNED,MISSING_DATE,MISSING_MID,SPF_NONE autolearn=no
-        autolearn_force=no version=3.4.0
-Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        (Authenticated sender: kvalo@smtp.codeaurora.org)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 3DE126133A;
-        Wed, 18 Sep 2019 13:45:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1568814302;
-        bh=eGY3eld6Fw7wIMSHDmpahPNMKGlKeflNpx89TJV5ceQ=;
-        h=Subject:From:In-Reply-To:References:To:Cc:From;
-        b=CNhjcR2uPZ/2TglrDOcGV39aZjs7u4Evh5Cx8p4J60NCrgMGFxfiPeYGvkoE6pi0q
-         6i3N1uuPI8g52rHNnIvVMypT76ht4MOxae0zFfdvXeCOZfNOmiO4LdYcMSWkSTyih4
-         Z9Jop5zpDgBPmAL8JS9XOeTcYgedt13/ON6rhF6A=
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 3DE126133A
-Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
-Content-Type: text/plain; charset="utf-8"
+        Wed, 18 Sep 2019 09:49:09 -0400
+Received: from [91.156.6.193] (helo=redipa.ger.corp.intel.com)
+        by farmhouse.coelho.fi with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+        (Exim 4.92)
+        (envelope-from <luca@coelho.fi>)
+        id 1iAaKR-0008Si-Op; Wed, 18 Sep 2019 16:49:08 +0300
+From:   Luca Coelho <luca@coelho.fi>
+To:     kvalo@codeaurora.org
+Cc:     linux-wireless@vger.kernel.org
+Date:   Wed, 18 Sep 2019 16:49:03 +0300
+Message-Id: <20190918134903.10103-1-luca@coelho.fi>
+X-Mailer: git-send-email 2.23.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH 2/2] ath10k: correct wmi_tlv command params to enable
- pktlog for WCN3990
-From:   Kalle Valo <kvalo@codeaurora.org>
-In-Reply-To: <1558087516-666-3-git-send-email-aambure@codeaurora.org>
-References: <1558087516-666-3-git-send-email-aambure@codeaurora.org>
-To:     Abhishek Ambure <aambure@codeaurora.org>
-Cc:     ath10k@lists.infradead.org, linux-wireless@vger.kernel.org,
-        Abhishek Ambure <aambure@codeaurora.org>
-User-Agent: pwcli/0.0.0-git (https://github.com/kvalo/pwcli/) Python/2.7.12
-Message-Id: <20190918134502.C252660364@smtp.codeaurora.org>
-Date:   Wed, 18 Sep 2019 13:45:02 +0000 (UTC)
+Content-Transfer-Encoding: 8bit
+X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on farmhouse.coelho.fi
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.9 required=5.0 tests=ALL_TRUSTED,BAYES_00,
+        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.2
+Subject: [PATCH v5.4] iwlwifi: mvm: fix build w/o CONFIG_THERMAL
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Abhishek Ambure <aambure@codeaurora.org> wrote:
+From: Johannes Berg <johannes.berg@intel.com>
 
-> PKT log enable command expects pdev id in enable params which is missing
-> in current configuration. Fill pdev id in pkt log enable wmi command for
-> correct configuration.
-> 
-> Fixes: ca996ec56608 ("ath10k: implement wmi-tlv backend")
-> Tested HW: WCN3990
-> Tested FW: WLAN.HL.3.1-00963-QCAHLSWMTPL-1
-> 
-> Signed-off-by: Abhishek Ambure <aambure@codeaurora.org>
-> Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
+Without CONFIG_THERMAL, the driver fails to link as it calls
+iwl_mvm_send_temp_report_ths_cmd() unconditionally. Fix this
+by making that function available, but do almost nothing but
+send the empty firmware command to enable CT-kill reporting.
 
-How do I know this doesn't break QCA6174/QCA9377?
+While at it, also fix that function itself to not error out
+when the thermal zone hasn't been initialized, but instead
+just send the empty firmware command in this case as well.
 
+Fixes: 242d9c8b9a93 ("iwlwifi: mvm: use FW thermal monitoring regardless of CONFIG_THERMAL")
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Luca Coelho <luciano.coelho@intel.com>
+---
+ drivers/net/wireless/intel/iwlwifi/mvm/tt.c | 9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/tt.c b/drivers/net/wireless/intel/iwlwifi/mvm/tt.c
+index 32a708301cfc..f0c539b37ea7 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/tt.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/tt.c
+@@ -555,16 +555,19 @@ static int compare_temps(const void *a, const void *b)
+ 	return ((s16)le16_to_cpu(*(__le16 *)a) -
+ 		(s16)le16_to_cpu(*(__le16 *)b));
+ }
++#endif
+ 
+ int iwl_mvm_send_temp_report_ths_cmd(struct iwl_mvm *mvm)
+ {
+ 	struct temp_report_ths_cmd cmd = {0};
+-	int ret, i, j, idx = 0;
++	int ret;
++#ifdef CONFIG_THERMAL
++	int i, j, idx = 0;
+ 
+ 	lockdep_assert_held(&mvm->mutex);
+ 
+ 	if (!mvm->tz_device.tzone)
+-		return -EINVAL;
++		goto send;
+ 
+ 	/* The driver holds array of temperature trips that are unsorted
+ 	 * and uncompressed, the FW should get it compressed and sorted
+@@ -597,6 +600,7 @@ int iwl_mvm_send_temp_report_ths_cmd(struct iwl_mvm *mvm)
+ 	}
+ 
+ send:
++#endif
+ 	ret = iwl_mvm_send_cmd_pdu(mvm, WIDE_ID(PHY_OPS_GROUP,
+ 						TEMP_REPORTING_THRESHOLDS_CMD),
+ 				   0, sizeof(cmd), &cmd);
+@@ -607,6 +611,7 @@ int iwl_mvm_send_temp_report_ths_cmd(struct iwl_mvm *mvm)
+ 	return ret;
+ }
+ 
++#ifdef CONFIG_THERMAL
+ static int iwl_mvm_tzone_get_temp(struct thermal_zone_device *device,
+ 				  int *temperature)
+ {
 -- 
-https://patchwork.kernel.org/patch/10947635/
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+2.23.0
 
