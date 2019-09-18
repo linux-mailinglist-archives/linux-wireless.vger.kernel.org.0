@@ -2,92 +2,129 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 40493B6A50
-	for <lists+linux-wireless@lfdr.de>; Wed, 18 Sep 2019 20:13:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 29E92B6A84
+	for <lists+linux-wireless@lfdr.de>; Wed, 18 Sep 2019 20:31:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728642AbfIRSN3 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 18 Sep 2019 14:13:29 -0400
-Received: from aserp2120.oracle.com ([141.146.126.78]:41532 "EHLO
-        aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726900AbfIRSN3 (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 18 Sep 2019 14:13:29 -0400
-Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
-        by aserp2120.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x8IHx8DJ064916;
-        Wed, 18 Sep 2019 18:13:19 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=from : to : cc :
- subject : date : message-id; s=corp-2019-08-05;
- bh=UjgOSjTYHKYQ3BViNdA+1Pbt5OtO2DhITkMO0ccXbsE=;
- b=YNxcge2fE7Jf9NrE4p+pVvJxPpd0rJjk0uwx7Tbp/f7hgyjAIO2KSBUG44QXgsaamU8D
- jHZVZgST4X7qOj+gi8GFM6t/WOiU/uybel2RdsYS46a2MCMEcFVF8Xe/6LDP1eiHPuQV
- DINp+SGZ/XIXIbb/lyzQ2bpbn3t1AoN3tppko0FU5rIUBzuAPQs5E4pdHFPcAU3+N9Hr
- 6tlR7v9WpfPtGjdf8OzX0uuFmTPdA1cRY/0+25UsbUUYLa8I8B88JYOCVUabQiXdQCLZ
- YWN+7ntzC9CC5TK6D05ZlwOE0dKwUh8UHbPGufp1nwPoMROqx5bc1LxcXQ3WwWH9uIWe Jw== 
-Received: from userp3020.oracle.com (userp3020.oracle.com [156.151.31.79])
-        by aserp2120.oracle.com with ESMTP id 2v385e5p0t-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Wed, 18 Sep 2019 18:13:19 +0000
-Received: from pps.filterd (userp3020.oracle.com [127.0.0.1])
-        by userp3020.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x8II4I1Y116899;
-        Wed, 18 Sep 2019 18:11:18 GMT
-Received: from aserv0122.oracle.com (aserv0122.oracle.com [141.146.126.236])
-        by userp3020.oracle.com with ESMTP id 2v37mb055b-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Wed, 18 Sep 2019 18:11:18 +0000
-Received: from abhmp0002.oracle.com (abhmp0002.oracle.com [141.146.116.8])
-        by aserv0122.oracle.com (8.14.4/8.14.4) with ESMTP id x8IIBFZo005891;
-        Wed, 18 Sep 2019 18:11:15 GMT
-Received: from x250.idc.oracle.com (/10.191.241.104)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Wed, 18 Sep 2019 11:11:14 -0700
-From:   Allen Pais <allen.pais@oracle.com>
-To:     kvalo@codeaurora.org
-Cc:     davem@davemloft.net, linux-wireless@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: [PATCH] iwlwifi: fix a potential NULL pointer dereference
-Date:   Wed, 18 Sep 2019 23:41:02 +0530
-Message-Id: <1568830262-5529-1-git-send-email-allen.pais@oracle.com>
-X-Mailer: git-send-email 1.9.1
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9384 signatures=668685
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=3 malwarescore=0
- phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=998
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.0.1-1908290000 definitions=main-1909180161
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9384 signatures=668685
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
- suspectscore=3 phishscore=0 bulkscore=0 spamscore=0 clxscore=1015
- lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=999 adultscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1908290000
- definitions=main-1909180161
+        id S2388519AbfIRSbE (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 18 Sep 2019 14:31:04 -0400
+Received: from mtax.cdmx.gob.mx ([187.141.35.197]:12581 "EHLO mtaw.cdmx.gob.mx"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S2387434AbfIRSbD (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Wed, 18 Sep 2019 14:31:03 -0400
+X-NAI-Header: Modified by McAfee Email Gateway (4500)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=cdmx.gob.mx; s=72359050-3965-11E6-920A-0192F7A2F08E;
+        t=1568830970; h=X-Virus-Scanned:Content-Type:
+         MIME-Version:Content-Transfer-Encoding:Content-Description:
+         Subject:To:From:Date:Reply-To:Message-Id:X-AnalysisOut:
+         X-AnalysisOut:X-AnalysisOut:X-AnalysisOut:
+         X-AnalysisOut:X-AnalysisOut:X-AnalysisOut:
+         X-SAAS-TrackingID:X-NAIMIME-Disclaimer:X-NAIMIME-Modified:
+         X-NAI-Spam-Flag:X-NAI-Spam-Threshold:X-NAI-Spam-Score:
+         X-NAI-Spam-Rules:X-NAI-Spam-Version; bh=K
+        jij0GhOpdKSaBiEpb4h9F2ukULK7Zgku7ZRRhmMNN
+        U=; b=jWaeRPcbimY6m11MnkS+EvMqEq7AcDtHd/odifW7FQOA
+        KFTtiBlX5KZykgX7EF3UUFHW0XgB5Y44PllZlZBY8m4QTIk0Q5
+        Jx8//3ausRbuGDpcNPDFxOlN4RFeigfpXgYsy9K3fHRdntXTUI
+        Qc27EmK/0KsB5soQ/uZJ6ShqHf4=
+Received: from correo.seciti.cdmx.gob.mx (gdf-correo.cdmx.gob.mx [10.250.102.17]) by mtaw.cdmx.gob.mx with smtp
+         id 7281_6da4_c612ec08_5e97_442a_bb6d_4378a5437b16;
+        Wed, 18 Sep 2019 13:22:49 -0500
+Received: from localhost (localhost [127.0.0.1])
+        by gdf-correo.df.gob.mx (Postfix) with ESMTP id C1DA13270;
+        Wed, 18 Sep 2019 13:22:44 -0500 (CDT)
+Received: from correo.seciti.cdmx.gob.mx ([127.0.0.1])
+        by localhost (gdf-correo.df.gob.mx [127.0.0.1]) (amavisd-new, port 10032)
+        with ESMTP id oyBmYUlHKSRd; Wed, 18 Sep 2019 13:22:44 -0500 (CDT)
+Received: from localhost (localhost [127.0.0.1])
+        by gdf-correo.df.gob.mx (Postfix) with ESMTP id 33FBE3A86;
+        Wed, 18 Sep 2019 13:11:48 -0500 (CDT)
+X-Virus-Scanned: amavisd-new at gdf-correo.df.gob.mx
+Received: from correo.seciti.cdmx.gob.mx ([127.0.0.1])
+        by localhost (gdf-correo.df.gob.mx [127.0.0.1]) (amavisd-new, port 10026)
+        with ESMTP id stiy78vmzvOo; Wed, 18 Sep 2019 13:11:47 -0500 (CDT)
+Received: from [41.148.42.229] (8ta-148-42-229.telkomadsl.co.za [41.148.42.229])
+        by gdf-correo.df.gob.mx (Postfix) with ESMTPSA id 114D73ED8;
+        Wed, 18 Sep 2019 12:56:20 -0500 (CDT)
+Content-Type: text/plain;
+  charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: base64
+Content-Description: Mail message body
+Subject: Spende von 5 Millionen Euro
+To:     Recipients <mramirezg@mexicocity.gob.mx>
+From:   "Shane Missler" <mramirezg@mexicocity.gob.mx>
+Date:   Wed, 18 Sep 2019 19:56:08 +0200
+Reply-To: shanemissler3@gmail.com
+Message-Id: <20190918175621.114D73ED8@gdf-correo.df.gob.mx>
+X-AnalysisOut: [v=2.2 cv=crfrqxwi c=1 sm=1 tr=0 p=ELT1L0JgSr8A:10 p=09-KjH]
+X-AnalysisOut: [S_CW8A:10 p=bEr4i4eggGkA:10 p=emDABjehN2fqPHqc8RbT:22 p=Ly]
+X-AnalysisOut: [qu6MUUigPyaOuRX7ce:22 a=KsSCQl7LcZej77FuluUcQw==:117 a=oLf]
+X-AnalysisOut: [NtqljNgXPa7RrmTwnGA==:17 a=IkcTkHD0fZMA:10 a=x7bEGLp0ZPQA:]
+X-AnalysisOut: [10 a=J70Eh1EUuV4A:10 a=pGLkceISAAAA:8 a=wN7rT8hNlMSaUXRpxS]
+X-AnalysisOut: [gA:9 a=K7tsimcRO30Sg2YH:21 a=QOCYt1FwmxBrUrRv:21 a=QEXdDO2]
+X-AnalysisOut: [ut3YA:10]
+X-SAAS-TrackingID: af5728d5.0.82556949.00-2365.138773590.s12p02m015.mxlogic.net
+X-NAIMIME-Disclaimer: 1
+X-NAIMIME-Modified: 1
+X-NAI-Spam-Flag: NO
+X-NAI-Spam-Threshold: 3
+X-NAI-Spam-Score: -5000
+X-NAI-Spam-Rules: 1 Rules triggered
+        WHITELISTED=-5000
+X-NAI-Spam-Version: 2.3.0.9418 : core <6637> : inlines <7143> : streams
+ <1833136> : uri <2906127>
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-alloc_workqueue is not checked for errors and as a result,
-a potential NULL dereference could occur.
-
-Signed-off-by: Allen Pais <allen.pais@oracle.com>
----
- drivers/net/wireless/intel/iwlwifi/pcie/trans.c | 5 +++++
- 1 file changed, 5 insertions(+)
-
-diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/trans.c b/drivers/net/wireless/intel/iwlwifi/pcie/trans.c
-index db62c83..276c26b 100644
---- a/drivers/net/wireless/intel/iwlwifi/pcie/trans.c
-+++ b/drivers/net/wireless/intel/iwlwifi/pcie/trans.c
-@@ -3655,6 +3655,11 @@ struct iwl_trans *iwl_trans_pcie_alloc(struct pci_dev *pdev,
- 
- 	trans_pcie->rba.alloc_wq = alloc_workqueue("rb_allocator",
- 						   WQ_HIGHPRI | WQ_UNBOUND, 1);
-+	if (unlikely(!trans_pcie->rba.alloc_wq)) {
-+		return -ENOMEM;
-+		goto out_free_ict;
-+	}
-+
- 	INIT_WORK(&trans_pcie->rba.rx_alloc, iwl_pcie_rx_allocator_work);
- 
- #ifdef CONFIG_IWLWIFI_PCIE_RTPM
--- 
-1.9.1
-
+RGllcyBpc3QgZWluZSBwZXJzw7ZubGljaGUgTWFpbCwgZGllIGljaCBhbiBTaWUgYWRyZXNzaWVy
+ZS4gSWNoIGJpbiBTSEFORSBNSVNTTEVSIGF1cyBGbG9yaWRhLCBVU0EuIFdpZSBTaWUgYmVyZWl0
+cyB3aXNzZW4sIGhhYmUgaWNoIGVpbmVuIExvdHRvLUphY2twb3QgaW4gSMO2aGUgdm9uIDQ1MSBN
+aW8uIFVTRCAoMzMwIE1pby4gR0JQKSBnZXdvbm5lbiB1bmQgZGFzIEdlbGQgaGF0IG1laW4gTGVi
+ZW4gdW5kIG1laW4gRmFtaWxpZW5sZWJlbiB2ZXLDpG5kZXJ0LCBhYmVyIGVzIHdpcmQgbWVpbiBI
+ZXJ6IG5pY2h0IHZlcsOkbmRlcm4sIHdpZSBpY2ggYW4gZGVtIFRhZyBzYWd0ZSwgYW4gZGVtIGlj
+aCBtZWluIEdlbGQgaGFiZSwgZGFzIGljaCB2ZXJ3ZW5kZW4gd2VyZGUgRGllc2VzIEdlbGQgZsO8
+ciBkaWUgSGlsZmUgZGVyIE1lbnNjaGhlaXQuIEljaCBoYWJlIGJlc2NobG9zc2VuLCBJaG5lbiB1
+bmQgSWhyZXIgR2VtZWluZGUgZWluZW4gQmV0cmFnIHZvbiA1IE1pbGxpb25lbiBFdXJvIHp1IHNw
+ZW5kZW4sIHVtIGRpZXNlIFNwZW5kZSBhbnp1Zm9yZGVybi4gRS1NYWlsOiAoc2hhbmVtaXNzbGVy
+MEBnbWFpbC5jb20pCgoKQ2VjaSBlc3QgdW4gY291cnJpZXIgcGVyc29ubmVsIHF1ZSBqZSB2b3Vz
+IGFkcmVzc2UuIEplIHN1aXMgU0hBTkUgTUlTU0xFUiwgZGUgRmxvcmlkZSwgw4l0YXRzLVVuaXMu
+IENvbW1lIHZvdXMgbGUgc2F2ZXogZMOpasOgLCBqJ2FpIGdhZ27DqSA0NTEgbWlsbGlvbnMgZGUg
+ZG9sbGFycyAoTG90dG8gSmFja3BvdCkgZXQgbCdhcmdlbnQgYSBjaGFuZ8OpIG1hIHZpZSBldCBj
+ZWxsZSBkZSBtYSBmYW1pbGxlLCBtYWlzIGNlbGEgbmUgY2hhbmdlcmEgcGFzIG1vbiBjxZN1ciwg
+Y29tbWUgamUgbCdhaSBkaXQgbGUgam91ciBvw7kgaidhaSBtb24gYXJnZW50LCBqJ3V0aWxpc2Vy
+YWkgY2V0IGFyZ2VudCBwb3VyIGwnYWlkZSBkZSBsJ2h1bWFuaXTDqS5KJ2FpIGTDqWNpZMOpIGRl
+IHZvdXMgZG9ubmVyIGxhIHNvbW1lIGRlIDUgbWlsbGlvbnMgZCdldXJvcyDDoCB2b3VzIGV0IMOg
+IHZvdHJlIGNvbW11bmF1dMOpLCBwb3VyIHLDqWNsYW1lciBjZSBkb24sIGVtYWlsLSAoc2hhbmVt
+aXNzbGVyMEBnbWFpbC5jb20pCgoKCgouLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4u
+Li4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4u
+Li4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4u
+Li4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4u
+Li4uLi4uLi4KCgpMYSBpbmZvcm1hY2lvbiBjb250ZW5pZGEgZW4gZXN0ZSBjb3JyZW8sIGFzaSBj
+b21vIGxhIGNvbnRlbmlkYSBlbiBsb3MgZG9jdW1lbnRvcyBhbmV4b3MsIHB1ZWRlIGNvbnRlbmVy
+IGRhdG9zIHBlcnNvbmFsZXMsIHBvciBsbyBxdWUgc3UgZGlmdXNpb24gZXMgcmVzcG9uc2FiaWxp
+ZGFkIGRlIHF1aWVuIGxvcyB0cmFuc21pdGUgeSBxdWllbiBsb3MgcmVjaWJlLCBlbiB0w6lybWlu
+b3MgZGUgbG8gZGlzcHVlc3RvIHBvciBsYXMgZnJhY2Npb25lcyBJSSB5IFZJSSBkZWwgYXJ0aWN1
+bG8gNCwgdWx0aW1vIHBhcnJhZm8gZGVsIGFydGljdWxvIDgsIGFydGljdWxvIDM2IHBhcnJhZm8g
+SUksIDM4IGZyYWNjaW9uIEkgeSBkZW1hcyBhcGxpY2FibGVzIGRlIGxhIExleSBkZSBUcmFuc3Bh
+cmVuY2lhIHkgQWNjZXNvIGEgbGEgSW5mb3JtYWNpb24gUHVibGljYSBkZWwgRGlzdHJpdG8gRmVk
+ZXJhbC4NCkxvcyBEYXRvcyBQZXJzb25hbGVzIHNlIGVuY3VlbnRyYW4gcHJvdGVnaWRvcyBwb3Ig
+bGEgTGV5IGRlIFByb3RlY2Npb24gZGUgRGF0b3MgUGVyc29uYWxlcyBkZWwgRGlzdHJpdG8gRmVk
+ZXJhbCwgcG9yIGxvIHF1ZSBzdSBkaWZ1c2lvbiBzZSBlbmN1ZW50cmEgdHV0ZWxhZGEgZW4gc3Vz
+IGFydGljdWxvcyAyLCA1LCAxNiwgMjEsIDQxIHkgZGVtYXMgcmVsYXRpdm9zIHkgYXBsaWNhYmxl
+cywgZGViaWVuZG8gc3VqZXRhcnNlIGVuIHN1IGNhc28sIGEgbGFzIGRpc3Bvc2ljaW9uZXMgcmVs
+YXRpdmFzIGEgbGEgY3JlYWNpb24sIG1vZGlmaWNhY2lvbiBvIHN1cHJlc2lvbiBkZSBkYXRvcyBw
+ZXJzb25hbGVzIHByZXZpc3Rvcy4gQXNpbWlzbW8sIGRlYmVyYSBlc3RhcnNlIGEgbG8gc2XDsWFs
+YWRvIGVuIGxvcyBudW1lcmFsZXMgMSAsIDMsIDEyLCAxOCwgMTksIDIwLCAyMSwgMjMsIDI0LCAy
+OSwgMzUgeSBkZW1hcyBhcGxpY2FibGVzIGRlIGxvcyBMaW5lYW1pZW50b3MgcGFyYSBsYSBQcm90
+ZWNjaW9uIGRlIERhdG9zIFBlcnNvbmFsZXMgZW4gZWwgRGlzdHJpdG8gRmVkZXJhbC4NCkVuIGVs
+IHVzbyBkZSBsYXMgdGVjbm9sb2dpYXMgZGUgbGEgaW5mb3JtYWNpb24geSBjb211bmljYWNpb25l
+cyBkZWwgR29iaWVybm8gZGVsIERpc3RyaXRvIEZlZGVyYWwsIGRlYmVyYSBvYnNlcnZhcnNlIHB1
+bnR1YWxtZW50ZSBsbyBkaXNwdWVzdG8gcG9yIGxhIExleSBHb2JpZXJubyBFbGVjdHJvbmljbyBk
+ZWwgRGlzdHJpdG8gRmVkZXJhbCwgbGEgbGV5IHBhcmEgaGFjZXIgZGUgbGEgQ2l1ZGFkIGRlIE1l
+eGljbyB1bmEgQ2l1ZGFkIE1hcyBBYmllcnRhLCBlbCBhcGFydGFkbyAxMCBkZSBsYSBDaXJjdWxh
+ciBVbm8gdmlnZW50ZSB5IGxhcyBOb3JtYXMgR2VuZXJhbGVzIHF1ZSBkZWJlcmFuIG9ic2VydmFy
+c2UgZW4gbWF0ZXJpYSBkZSBTZWd1cmlkYWQgZGUgbGEgSW5mb3JtYWNpb24gZW4gbGEgQWRtaW5p
+c3RyYWNpb24gUHVibGljYSBkZWwgRGlzdHJpdG8gRmVkZXJhbC4K
