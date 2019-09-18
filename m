@@ -2,65 +2,104 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D5E21B6504
-	for <lists+linux-wireless@lfdr.de>; Wed, 18 Sep 2019 15:50:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 49F91B6569
+	for <lists+linux-wireless@lfdr.de>; Wed, 18 Sep 2019 16:03:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726961AbfIRNuj (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 18 Sep 2019 09:50:39 -0400
-Received: from paleale.coelho.fi ([176.9.41.70]:43446 "EHLO
-        farmhouse.coelho.fi" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1726618AbfIRNuj (ORCPT
+        id S1731001AbfIRODV (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 18 Sep 2019 10:03:21 -0400
+Received: from smtp.codeaurora.org ([198.145.29.96]:42744 "EHLO
+        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726038AbfIRODS (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 18 Sep 2019 09:50:39 -0400
-Received: from [91.156.6.193] (helo=redipa)
-        by farmhouse.coelho.fi with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-        (Exim 4.92)
-        (envelope-from <luca@coelho.fi>)
-        id 1iAaLs-0008Sw-Pv; Wed, 18 Sep 2019 16:50:37 +0300
-Message-ID: <7b7a8949caae37c0b0dcbc18823dbaf360d482ec.camel@coelho.fi>
-From:   Luca Coelho <luca@coelho.fi>
-To:     kvalo@codeaurora.org
-Cc:     linux-wireless@vger.kernel.org, Mao Wenan <maowenan@huawei.com>
-Date:   Wed, 18 Sep 2019 16:50:35 +0300
-In-Reply-To: <20190918134903.10103-1-luca@coelho.fi>
-References: <20190918134903.10103-1-luca@coelho.fi>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.30.5-1.1 
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on farmhouse.coelho.fi
+        Wed, 18 Sep 2019 10:03:18 -0400
+Received: by smtp.codeaurora.org (Postfix, from userid 1000)
+        id 3F60560850; Wed, 18 Sep 2019 14:03:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
+        s=default; t=1568815397;
+        bh=GI8g7BdcEpF2wvGvgxsUXnHFIMMx79kllp6rnPF+YEE=;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+        b=DAMnkgK9yktfhC6LpBzpzRf3ErTSGwtdXaHtu9iwR99fuYwhVzPu4vbGmRe3H2j2Y
+         jV8TnVxzGPlTs1UwYl1KY4iNX5rov8FdENNkC/hj829cVAP4LVPGzp88nRSoLcGY4P
+         9mZzoR0E2zT1WDIj7kDevJD5aQQTmMiPmQbBXPaE=
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        pdx-caf-mail.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-2.9 required=5.0 tests=ALL_TRUSTED,BAYES_00,
-        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.2
-Subject: Re: [PATCH v5.4] iwlwifi: mvm: fix build w/o CONFIG_THERMAL
+X-Spam-Status: No, score=-2.7 required=2.0 tests=ALL_TRUSTED,BAYES_00,
+        DKIM_INVALID,DKIM_SIGNED,SPF_NONE autolearn=no autolearn_force=no
+        version=3.4.0
+Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo@smtp.codeaurora.org)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 8EDF0613A8;
+        Wed, 18 Sep 2019 14:03:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
+        s=default; t=1568815396;
+        bh=GI8g7BdcEpF2wvGvgxsUXnHFIMMx79kllp6rnPF+YEE=;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+        b=cPaFNWjv4igEjoXIw8leq53V6QydcyLRBRrA+UdRXV4uehhDiki/4NgnJLb6nW+57
+         4/gFaz9oNUtiXFXn3XbHjM6pxcIZBm40fSnTqCBa4mkVn4iB1HLbYBkI8ZzxkJixYR
+         3fs5g85v1J+uU3VCw3RBcPtfLLWXFfl7DSEYU01o=
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 8EDF0613A8
+Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
+From:   Kalle Valo <kvalo@codeaurora.org>
+To:     Brian Norris <briannorris@chromium.org>
+Cc:     Wen Gong <wgong@codeaurora.org>,
+        linux-wireless <linux-wireless@vger.kernel.org>,
+        Linux Kernel <linux-kernel@vger.kernel.org>,
+        ath10k@lists.infradead.org
+Subject: Re: [PATCH v3] ath10k: support NET_DETECT WoWLAN feature
+References: <1534402113-14337-1-git-send-email-wgong@codeaurora.org>
+        <20181114225910.GA220599@google.com>
+        <CA+ASDXMh7vdfkA5jtJqWEU-g-4Ta5Xvy046zujyASZcESCGhAQ@mail.gmail.com>
+Date:   Wed, 18 Sep 2019 17:03:12 +0300
+In-Reply-To: <CA+ASDXMh7vdfkA5jtJqWEU-g-4Ta5Xvy046zujyASZcESCGhAQ@mail.gmail.com>
+        (Brian Norris's message of "Tue, 17 Sep 2019 09:32:52 -0700")
+Message-ID: <87woe5aehr.fsf@kamboji.qca.qualcomm.com>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
+MIME-Version: 1.0
+Content-Type: text/plain
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Wed, 2019-09-18 at 16:49 +0300, Luca Coelho wrote:
-> From: Johannes Berg <johannes.berg@intel.com>
-> 
-> Without CONFIG_THERMAL, the driver fails to link as it calls
-> iwl_mvm_send_temp_report_ths_cmd() unconditionally. Fix this
-> by making that function available, but do almost nothing but
-> send the empty firmware command to enable CT-kill reporting.
-> 
-> While at it, also fix that function itself to not error out
-> when the thermal zone hasn't been initialized, but instead
-> just send the empty firmware command in this case as well.
-> 
-> Fixes: 242d9c8b9a93 ("iwlwifi: mvm: use FW thermal monitoring regardless of CONFIG_THERMAL")
-> Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-> Signed-off-by: Luca Coelho <luciano.coelho@intel.com>
-> ---
+Brian Norris <briannorris@chromium.org> writes:
 
-Kalle, please take this patch to fix the THERMAL thing instead.  I'll
-assign it to you in patchwork (and mark the other one as superseded).
+> Since Wen has once again suggested I use this patch in other forums,
+> I'll ping here to note:
+>
+> On Wed, Nov 14, 2018 at 2:59 PM Brian Norris <briannorris@chromium.org> wrote:
+>> You've introduced a regression in 4.20-rc1:
+>
+> This regression still survives in the latest tree. Is it fair to just
+> submit a revert?
 
-Thanks!
+Your description about the problem from an earlier email:
 
---
-Cheers,
-Luca.
+  "It seems like youre enabling SCHED_SCAN support? But you're not
+   adding the NL80211_FEATURE_SCHED_SCAN_RANDOM_MAC_ADDR feature flag.
+   So it puts us in a tough place on using randomization -- we either
+   can't trust the FEATURE flags, or else we can't use both SCHED_SCAN
+   and scan randomization."
 
+So essentially the problem is that with firmwares supporting both
+WMI_SERVICE_NLO and WMI_SERVICE_SPOOF_MAC_SUPPORT ath10k enables
+NL80211_FEATURE_SCAN_RANDOM_MAC_ADDR, but
+NL80211_FEATURE_SCHED_SCAN_RANDOM_MAC_ADDR is not enabled which is
+inconsistent from user space point of view. Is my understanding correct?
+
+Wen, can you enable NL80211_FEATURE_SCAN_RANDOM_MAC_ADDR? Does firmware
+support that?
+
+If that's not possible, one workaround might to be to not enable
+NL80211_FEATURE_SCAN_RANDOM_MAC_ADDR if firmware supports
+WMI_SERVICE_NLO, but of course that would suck big time.
+
+Here's the full context in case someone is interested:
+
+https://patchwork.kernel.org/patch/10567005/
+
+-- 
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
