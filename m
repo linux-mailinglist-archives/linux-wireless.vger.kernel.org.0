@@ -2,217 +2,93 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 8C0C6B637D
-	for <lists+linux-wireless@lfdr.de>; Wed, 18 Sep 2019 14:43:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 17AE8B63DE
+	for <lists+linux-wireless@lfdr.de>; Wed, 18 Sep 2019 14:58:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731286AbfIRMny (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 18 Sep 2019 08:43:54 -0400
-Received: from dvalin.narfation.org ([213.160.73.56]:48120 "EHLO
-        dvalin.narfation.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725902AbfIRMny (ORCPT
+        id S1728443AbfIRM6v (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 18 Sep 2019 08:58:51 -0400
+Received: from mail2.candelatech.com ([208.74.158.173]:43958 "EHLO
+        mail3.candelatech.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727243AbfIRM6v (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 18 Sep 2019 08:43:54 -0400
-Received: from sven-desktop.home.narfation.org (p200300C5971113F0000000000000063E.dip0.t-ipconnect.de [IPv6:2003:c5:9711:13f0::63e])
-        by dvalin.narfation.org (Postfix) with ESMTPSA id 2E7271FEDA;
-        Wed, 18 Sep 2019 12:14:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=narfation.org;
-        s=20121; t=1568808866;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=ZYlMLvNVkEdea6KljDpM49pT17zHd2GAuc1qQAd7Ev0=;
-        b=ieQaAvz2q0astjy1XkJIxsgrcdz/UzA7vZjV/iPEfgXh22ecTFOp0D6c3daOIPtEptfIkv
-        kZGeXXOs0dOxjY2MAwb8pG3U4iXtGOQahvulfWXAozJeUkQFu2YAHA6Zj8xz0zaQh2yZ1V
-        AqFM52yfnsAcDhHTCwFtiPujEyAlWfg=
-From:   Sven Eckelmann <sven@narfation.org>
-To:     ath10k@lists.infradead.org
-Cc:     vnaralas@codeaurora.org, linux-wireless@vger.kernel.org,
-        Sven Eckelmann <seckelmann@datto.com>
-Subject: [RFC PATCH 2/2] ath10k: regularly fetch survey counters
-Date:   Wed, 18 Sep 2019 14:42:59 +0200
-Message-Id: <20190918124259.17804-3-sven@narfation.org>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20190918124259.17804-1-sven@narfation.org>
-References: <20190918124259.17804-1-sven@narfation.org>
+        Wed, 18 Sep 2019 08:58:51 -0400
+Received: from [192.168.1.47] (unknown [50.34.216.97])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail3.candelatech.com (Postfix) with ESMTPSA id 06ED913C2BA;
+        Wed, 18 Sep 2019 05:58:48 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail3.candelatech.com 06ED913C2BA
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=candelatech.com;
+        s=default; t=1568811530;
+        bh=swWESwF5RdUiGeJMFtJC0GLZlrgKFNyGYpmONj/yXXI=;
+        h=Subject:To:References:Cc:From:Date:In-Reply-To:From;
+        b=flAv1dzIuCNspzBo6gxOGFA3X9qj9ZjRH9WbyrdKsUmUR/f4DuDKv+FrAgoy2CKuV
+         Qq/k5Dv6R6LmbbaN0ni3NknsmNZObKWeEtFlgguRfheDvARZ8DwAL8Swv6K1cT/a3Q
+         sbEKja0Sv5Q6mtByGH8tvXPfztULE2MRZoEBJOt4=
+Subject: Re: [PATCH] cfg80211: Add cumulative channel survey dump support.
+To:     Sven Eckelmann <sven@narfation.org>, ath10k@lists.infradead.org,
+        sw@simonwunderlich.de
+References: <1526980556-26707-1-git-send-email-vnaralas@codeaurora.org>
+ <ebf1c95acb34649b3d2a5435142dc06a@codeaurora.org>
+ <2083094.mFhUXK7yzB@bentobox> <18458963.ukFM9YuvQx@bentobox>
+Cc:     vnaralas@codeaurora.org, Johannes Berg <johannes@sipsolutions.net>,
+        slakkavalli@datto.com, linux-wireless@vger.kernel.org
+From:   Ben Greear <greearb@candelatech.com>
+Message-ID: <b24ec622-8510-d8e4-bbc4-86a34c1dd32b@candelatech.com>
+Date:   Wed, 18 Sep 2019 05:58:46 -0700
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:45.0) Gecko/20100101
+ Thunderbird/45.8.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=narfation.org;
-        s=20121; t=1568808866;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=ZYlMLvNVkEdea6KljDpM49pT17zHd2GAuc1qQAd7Ev0=;
-        b=RrzJc/Xr1r9wTeIP1eR+Wa0yqZjCu914wNV07TTtvkk5OOQSymCzn46s4foK3Vo5Dt7Gw0
-        shMl9ZUCe7jtJeb+yoW3EuwsqN91I99wa+ni7BqJ3WcD514BkIm6ZwZ81dxL5bXBHutZhd
-        sB0ojwf6KP5NZIniLBW3VesEMnTd9DE=
-ARC-Seal: i=1; s=20121; d=narfation.org; t=1568808866; a=rsa-sha256;
-        cv=none;
-        b=XzaHrEAlhDWbX7BZpGe+omo1j2YLJbXYg3Zu4hNYKTRfMZLrhbd8GxZhT3KaE1enM0ODL7
-        aeTwPFxwtWuN1bAvfY084pBOQ8b5FQsL7Yl/HGTN4qjfIlWkMLLXdZlxVppe/TMy83cRC5
-        rXmYPBzvE8pB7qQ2jNeurDiy1mEqSXA=
-ARC-Authentication-Results: i=1;
-        ORIGINATING;
-        auth=pass smtp.auth=sven smtp.mailfrom=sven@narfation.org
+In-Reply-To: <18458963.ukFM9YuvQx@bentobox>
+Content-Type: text/plain; charset=windows-1252; format=flowed
+Content-Transfer-Encoding: 7bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Sven Eckelmann <seckelmann@datto.com>
 
-The survey counters from firmwares like 10.2.4 are not actually using the
-full 64 bit. Instead, they only use the lower 31 bit and overflow ever
-14-30s. The driver must frequently fetch the survey data and add it to the
-survey data storage to avoid this problem and to present meaningful values
-to the caller of .get_survey.
 
-It is assumed for now that only the current rx_channel retrieves relevant
-updates for the survey data. This should avoid that the bss channel survey
-request times out too often.
+On 09/18/2019 01:46 AM, Sven Eckelmann wrote:
+> On Tuesday, 17 September 2019 19:27:50 CEST Sven Eckelmann wrote:
+> [...]
+>> So whatever the firmware does when it gets a
+>> WMI_BSS_SURVEY_REQ_TYPE_READ_CLEAR -  it is not a CLEAR after read. And they
+>> also don't simply wrap around but there all values have to get some kind of
+>> "fix" like the active time one shown in ath10k_hw_fill_survey_time.
+>> Just that the actual "fixes" for them are unknown. To me it looks like
+>> firmware ATH10K_HW_CC_WRAP_SHIFTED_ALL have busy and rx interlinked with
+>> the overflow of total. But the tx and rx_bss are actually cleared.
+>>
+>> Other than that, the counters are wrapping every ~14-30 seconds. So we
+>> also need also some worker for ath10k which every couple of seconds
+>> requests new values for all the channel from the firmware. Which already
+>> sounds problematic because I get
+>> "ath10k_pci 0000:00:00.0: bss channelsurvey timed out" all the time
+>> when requesting surveys manually.
+>
+> I've just tested it on 10.4 (wave-2) cards and it seems like it is cleared as
+> expected on them. So the change I posted earlier (with a minor fix for
+> ath10k_hw_fill_survey_time) returns now useful (accumulated) values. This can
+> be seen in
+> https://stats.freifunk-vogtland.net/d/ffv_node/nodeinfo?orgId=1&var-node=ac86749f4d60&fullscreen&panelId=5&from=1568782046974&to=1568807068706
+> (after the reboot at 10:15 UTC+2)
+>
+> So as Ben Greear said, the 10.4 firmware version is fixed and 10.2.* (for
+> the wave-1 cards) is still broken and we need a QCA firmware engineer to
+> fix it. Or to work around it by polling every couple of seconds and
+> manually do the cleanup of the values from the firmware.
 
-Tested on QCA988x hw2.0 10.2.4-1.0-00043
+Have you tried probing very fast, like every 100ms, to see if returned values
+look sane?  I seem to recall that there was some firmware issue with this, like
+it only updates internal counters every second or so.
 
-Signed-off-by: Sven Eckelmann <seckelmann@datto.com>
----
- drivers/net/wireless/ath/ath10k/core.c |  8 ++++
- drivers/net/wireless/ath/ath10k/core.h |  1 +
- drivers/net/wireless/ath/ath10k/mac.c  | 52 ++++++++++++++++++++++++++
- drivers/net/wireless/ath/ath10k/mac.h  |  3 ++
- 4 files changed, 64 insertions(+)
+Polling slow would have the same off-by-a-second's-worth-of-data, but you would not
+easily notice it at slower polling intervals.
 
-diff --git a/drivers/net/wireless/ath/ath10k/core.c b/drivers/net/wireless/ath/ath10k/core.c
-index dc45d16e8d21..754c46047b15 100644
---- a/drivers/net/wireless/ath/ath10k/core.c
-+++ b/drivers/net/wireless/ath/ath10k/core.c
-@@ -2788,8 +2788,14 @@ int ath10k_core_start(struct ath10k *ar, enum ath10k_firmware_mode mode,
- 		goto err_hif_stop;
- 	}
- 
-+	status = ath10k_survey_start(ar);
-+	if (status)
-+		goto err_debug_stop;
-+
- 	return 0;
- 
-+err_debug_stop:
-+	ath10k_debug_stop(ar);
- err_hif_stop:
- 	ath10k_hif_stop(ar);
- err_htt_rx_detach:
-@@ -2829,6 +2835,7 @@ int ath10k_wait_for_suspend(struct ath10k *ar, u32 suspend_opt)
- void ath10k_core_stop(struct ath10k *ar)
- {
- 	lockdep_assert_held(&ar->conf_mutex);
-+	ath10k_survey_stop(ar);
- 	ath10k_debug_stop(ar);
- 
- 	/* try to suspend target */
-@@ -3179,6 +3186,7 @@ struct ath10k *ath10k_core_create(size_t priv_size, struct device *dev,
- 	init_completion(&ar->peer_delete_done);
- 
- 	INIT_DELAYED_WORK(&ar->scan.timeout, ath10k_scan_timeout_work);
-+	INIT_DELAYED_WORK(&ar->survey_dwork, ath10k_survey_dwork);
- 
- 	ar->workqueue = create_singlethread_workqueue("ath10k_wq");
- 	if (!ar->workqueue)
-diff --git a/drivers/net/wireless/ath/ath10k/core.h b/drivers/net/wireless/ath/ath10k/core.h
-index 25c699f3a73b..66d2a1263898 100644
---- a/drivers/net/wireless/ath/ath10k/core.h
-+++ b/drivers/net/wireless/ath/ath10k/core.h
-@@ -1129,6 +1129,7 @@ struct ath10k {
- 	struct survey_info survey[ATH10K_NUM_CHANS];
- 	u64 survey_last_total_cc[ATH10K_NUM_CHANS];
- 	u64 survey_last_busy_cc[ATH10K_NUM_CHANS];
-+	struct delayed_work survey_dwork;
- 
- 	/* Channel info events are expected to come in pairs without and with
- 	 * COMPLETE flag set respectively for each channel visit during scan.
-diff --git a/drivers/net/wireless/ath/ath10k/mac.c b/drivers/net/wireless/ath/ath10k/mac.c
-index 12dad659bf68..4190b0148e97 100644
---- a/drivers/net/wireless/ath/ath10k/mac.c
-+++ b/drivers/net/wireless/ath/ath10k/mac.c
-@@ -24,6 +24,9 @@
- #include "wmi-ops.h"
- #include "wow.h"
- 
-+/* ms */
-+#define ATH10K_SURVEY_INTERVAL 10000
-+
- /*********/
- /* Rates */
- /*********/
-@@ -7152,6 +7155,55 @@ ath10k_mac_update_bss_chan_survey(struct ath10k *ar,
- 	}
- }
- 
-+static void ath10k_request_survey(struct ath10k *ar)
-+{
-+	lockdep_assert_held(&ar->conf_mutex);
-+
-+	if (ar->state != ATH10K_STATE_ON)
-+		return;
-+
-+	if (!ar->rx_channel)
-+		return;
-+
-+	ath10k_mac_update_bss_chan_survey(ar, ar->rx_channel);
-+}
-+
-+void ath10k_survey_dwork(struct work_struct *work)
-+{
-+	struct ath10k *ar = container_of(work, struct ath10k,
-+					 survey_dwork.work);
-+
-+	mutex_lock(&ar->conf_mutex);
-+	ath10k_request_survey(ar);
-+	mutex_unlock(&ar->conf_mutex);
-+
-+	queue_delayed_work(ar->workqueue, &ar->survey_dwork,
-+			   msecs_to_jiffies(ATH10K_SURVEY_INTERVAL));
-+}
-+
-+int ath10k_survey_start(struct ath10k *ar)
-+{
-+	lockdep_assert_held(&ar->conf_mutex);
-+
-+	if (ar->hw_params.cc_wraparound_type != ATH10K_HW_CC_WRAP_SHIFTED_ALL)
-+		return 0;
-+
-+	queue_delayed_work(ar->workqueue, &ar->survey_dwork,
-+			   msecs_to_jiffies(ATH10K_SURVEY_INTERVAL));
-+
-+	return 0;
-+}
-+
-+void ath10k_survey_stop(struct ath10k *ar)
-+{
-+	lockdep_assert_held(&ar->conf_mutex);
-+
-+	if (ar->hw_params.cc_wraparound_type != ATH10K_HW_CC_WRAP_SHIFTED_ALL)
-+		return;
-+
-+	cancel_delayed_work_sync(&ar->survey_dwork);
-+}
-+
- static int ath10k_get_survey(struct ieee80211_hw *hw, int idx,
- 			     struct survey_info *survey)
- {
-diff --git a/drivers/net/wireless/ath/ath10k/mac.h b/drivers/net/wireless/ath/ath10k/mac.h
-index 1fe84948b868..17e4d65edbe0 100644
---- a/drivers/net/wireless/ath/ath10k/mac.h
-+++ b/drivers/net/wireless/ath/ath10k/mac.h
-@@ -40,6 +40,9 @@ void ath10k_offchan_tx_purge(struct ath10k *ar);
- void ath10k_offchan_tx_work(struct work_struct *work);
- void ath10k_mgmt_over_wmi_tx_purge(struct ath10k *ar);
- void ath10k_mgmt_over_wmi_tx_work(struct work_struct *work);
-+void ath10k_survey_dwork(struct work_struct *work);
-+int ath10k_survey_start(struct ath10k *ar);
-+void ath10k_survey_stop(struct ath10k *ar);
- void ath10k_halt(struct ath10k *ar);
- void ath10k_mac_vif_beacon_free(struct ath10k_vif *arvif);
- void ath10k_drain_tx(struct ath10k *ar);
+Thanks,
+Ben
+
 -- 
-2.20.1
-
+Ben Greear <greearb@candelatech.com>
+Candela Technologies Inc  http://www.candelatech.com
