@@ -2,86 +2,65 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id CE32EB5913
-	for <lists+linux-wireless@lfdr.de>; Wed, 18 Sep 2019 02:42:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B3D8CB595F
+	for <lists+linux-wireless@lfdr.de>; Wed, 18 Sep 2019 03:41:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726081AbfIRAmP (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 17 Sep 2019 20:42:15 -0400
-Received: from mail-lj1-f194.google.com ([209.85.208.194]:42817 "EHLO
-        mail-lj1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725866AbfIRAmO (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 17 Sep 2019 20:42:14 -0400
-Received: by mail-lj1-f194.google.com with SMTP id y23so5367083lje.9
-        for <linux-wireless@vger.kernel.org>; Tue, 17 Sep 2019 17:42:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=9+Nb43vvEahh6EgYk9/NpOfIE7vJR686QGgI/gaAQh8=;
-        b=QscSjGbI2WTdumUGXP/dz+OvEKtR2EMWBlMNR8DIIx3pdw7EMYqsYUfCI1yudvmZzB
-         Gud8V5hB+OWr3DL/NyNh+RTizp3H10oD/ASWS5aIPkm26xg3vh/pjNgevqaTSsj1kK6a
-         nl3vlGCTtz98VhpPEYEKpsj1Yr/VtMrRGRuvU=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=9+Nb43vvEahh6EgYk9/NpOfIE7vJR686QGgI/gaAQh8=;
-        b=osTbG0vkpXMe8xARAB+6GSXxDeTHYeoVhp20jHfRm7uRz68EtXhlHpgNVZMdiIHxRb
-         YBK4PvDB+kFvWQv3Fvd5TKcHWsG/oiTcwasis125azevJPtrZ/Zc6xu+2cz3s6LCykaH
-         RnVaoRNsH3Jhso9fCoPQEtynORMG/Qfwwg4RXNFYUHnuthuHkGs0l32S8fL0jLEGEfaN
-         Tyi9JOFKMgZqdcMKuFnsCn8TCXWQrRL28qMILdcQ8fTH+LsTPXV/hPZJE0mZKiLKNxxS
-         5Kn522JfWzKxtsondKuJlbdMEIuTI2H4IrcELYw7/VnHQ0OnOBLEHvuWFJIIi0VltZuZ
-         c77w==
-X-Gm-Message-State: APjAAAXCft8Nyi7OJrbB3rWvj8tpovktRWRSBsa16eaP+F1vRH46O4fY
-        1sf4YQqHs7D+9MiCHuuvq9NOm7Af5no=
-X-Google-Smtp-Source: APXvYqwAWtI3Nkc0MEKW6OKCL5dUJGRcoFb+Yr0SMpeYa+REh/Y02YzUliUjRcO8GSlluyhIcW5H2g==
-X-Received: by 2002:a2e:89ce:: with SMTP id c14mr548283ljk.145.1568767332532;
-        Tue, 17 Sep 2019 17:42:12 -0700 (PDT)
-Received: from mail-lj1-f174.google.com (mail-lj1-f174.google.com. [209.85.208.174])
-        by smtp.gmail.com with ESMTPSA id m17sm855828lje.0.2019.09.17.17.42.11
-        for <linux-wireless@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 17 Sep 2019 17:42:11 -0700 (PDT)
-Received: by mail-lj1-f174.google.com with SMTP id v24so5422030ljj.3
-        for <linux-wireless@vger.kernel.org>; Tue, 17 Sep 2019 17:42:11 -0700 (PDT)
-X-Received: by 2002:a2e:95cf:: with SMTP id y15mr547070ljh.27.1568767331232;
- Tue, 17 Sep 2019 17:42:11 -0700 (PDT)
+        id S1728664AbfIRBll (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 17 Sep 2019 21:41:41 -0400
+Received: from mga04.intel.com ([192.55.52.120]:12077 "EHLO mga04.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1728596AbfIRBll (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 17 Sep 2019 21:41:41 -0400
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from orsmga003.jf.intel.com ([10.7.209.27])
+  by fmsmga104.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 17 Sep 2019 18:41:41 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.64,518,1559545200"; 
+   d="scan'208";a="189108316"
+Received: from shao2-debian.sh.intel.com (HELO [10.239.13.6]) ([10.239.13.6])
+  by orsmga003.jf.intel.com with ESMTP; 17 Sep 2019 18:41:39 -0700
+Subject: Re: [kbuild-all] [PATCH] staging: wilc1000: look for rtc_clk clock in
+ spi mode
+To:     Adham.Abozaeid@microchip.com, lkp@intel.com
+Cc:     devel@driverdev.osuosl.org, Ajay.Kathat@microchip.com,
+        gregkh@linuxfoundation.org, linux-wireless@vger.kernel.org,
+        kbuild-all@01.org, Eugen.Hristev@microchip.com,
+        johannes@sipsolutions.net
+References: <20190916193701.20755-1-adham.abozaeid@microchip.com>
+ <201909170853.9YktTPSZ%lkp@intel.com>
+ <4b015529-aeaa-b01f-01ce-1a81cbe2aea9@microchip.com>
+From:   Rong Chen <rong.a.chen@intel.com>
+Message-ID: <2a45205b-b9f1-b985-4a75-546b454c2e54@intel.com>
+Date:   Wed, 18 Sep 2019 09:41:29 +0800
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.6.1
 MIME-Version: 1.0
-References: <1568617425-28062-1-git-send-email-yhchuang@realtek.com> <1568617425-28062-6-git-send-email-yhchuang@realtek.com>
-In-Reply-To: <1568617425-28062-6-git-send-email-yhchuang@realtek.com>
-From:   Brian Norris <briannorris@chromium.org>
-Date:   Tue, 17 Sep 2019 17:41:59 -0700
-X-Gmail-Original-Message-ID: <CA+ASDXOMao9uucGxa6C0Q99pFvAtKTptreeshbfKqiELDKUH0Q@mail.gmail.com>
-Message-ID: <CA+ASDXOMao9uucGxa6C0Q99pFvAtKTptreeshbfKqiELDKUH0Q@mail.gmail.com>
-Subject: Re: [PATCH 05/15] rtw88: pci: release tx skbs DMAed when stop
-To:     Tony Chuang <yhchuang@realtek.com>
-Cc:     Kalle Valo <kvalo@codeaurora.org>,
-        linux-wireless <linux-wireless@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <4b015529-aeaa-b01f-01ce-1a81cbe2aea9@microchip.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Content-Language: en-US
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-May be a dumb question but:
+Hi Adham,
 
-On Mon, Sep 16, 2019 at 12:03 AM <yhchuang@realtek.com> wrote:
+On 9/17/19 9:03 AM, Adham.Abozaeid@microchip.com wrote:
 >
-> From: Yan-Hsuan Chuang <yhchuang@realtek.com>
+> On 9/16/19 5:49 PM, kbuild test robot wrote:
+>> [auto build test ERROR on linus/master]
+>> [cannot apply to v5.3 next-20190916]
+>> [if your patch is applied to the wrong git tree, please drop us a note to help improve the system]
+> This patch applies for staging-testing, not linus/master.
 >
-> Interrupt is disabled to stop PCI, which means the skbs
-> queued for each TX ring will not be released via DMA
-> interrupt.
+>
 
-In what cases do you hit this? I think you do this when entering PS
-mode, no? But then, see below.
+Thanks for clarification, we'll take a look. BTW 0day-CI introduced 
+'--base' option to record base tree info in format-patch.
+could you kindly add it to help robot to base on the right tree? please 
+see https://stackoverflow.com/a/37406982
 
-> To avoid those skbs remained being left in
-> the skb queue until PCI has been removed, driver needs
-> to release skbs by itself.
-
-Doesn't that also mean your dropping these packets? Shouldn't you be
-delaying PS transitions until you've finished TX'ing?
-
-Brian
+Best Regards,
+Rong Chen
