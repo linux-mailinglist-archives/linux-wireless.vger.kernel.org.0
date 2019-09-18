@@ -2,84 +2,119 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 56AB4B5ED2
-	for <lists+linux-wireless@lfdr.de>; Wed, 18 Sep 2019 10:14:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 764DFB5F69
+	for <lists+linux-wireless@lfdr.de>; Wed, 18 Sep 2019 10:46:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729876AbfIRIOv (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 18 Sep 2019 04:14:51 -0400
-Received: from mail-io1-f41.google.com ([209.85.166.41]:34625 "EHLO
-        mail-io1-f41.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727569AbfIRIOu (ORCPT
+        id S1729703AbfIRIqY (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 18 Sep 2019 04:46:24 -0400
+Received: from dvalin.narfation.org ([213.160.73.56]:43034 "EHLO
+        dvalin.narfation.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727614AbfIRIqY (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 18 Sep 2019 04:14:50 -0400
-Received: by mail-io1-f41.google.com with SMTP id q1so14170463ion.1
-        for <linux-wireless@vger.kernel.org>; Wed, 18 Sep 2019 01:14:50 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=xYcG2UqlY+/lq1FpcHC7dW6S5qd/4aCFZqrP7J5My6g=;
-        b=DrJl0qwbelNUkg+1UxCiZ87mYpYku2cDebagLMTo0F2eK0qmP4JZhI8Gs5+hnMlfGE
-         m4h8jRWCuUCEqByRUAAdxZXx8f5ZabtrKfNU+V1wfzH/r0VnorIdjQJkwRcJSHRETB1p
-         jTLgj1OqUW4zWR8rK05kkpFAGRNmhox9JoYYZn/tPP/Lqej3EFe9l00bgyYL9JZe/iUc
-         xFKhKsoaX1D9shCWXRXOMs1S9H3kd4hWY4UYKQWQ9QTbTV33yImqMorIXgWseoQ+SIjO
-         bw46vJpkTkzIaX1JccCxobauNMc8cdvXCp1cqdmyf2hs1QS+L1GuSMa0miBuGgMNTOdn
-         1YAQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=xYcG2UqlY+/lq1FpcHC7dW6S5qd/4aCFZqrP7J5My6g=;
-        b=q4Ssm2s9tm9uJ8tbiGMLsH4uu7V3wqPeEpNGqqAYf2EioD1JBOtP4gWA9brrzeOeiE
-         aqOjgpZrFiS49s5scOK22NDFDAiZU37RMoYirAkvvaET+abAkXD9tU6LIn5phLj1IAxl
-         CWL9Rw1ckJrd+I+uhG6GRTGnjA7jciLQp9INxkABI91qGPrD7eL9F6U2za1qzKJkxMJS
-         eDQtsHNb2CswB+IRt8dZEV9j9y0clM4o4CLW+oxMZ9Z1kD0pulylm5RRYxwgdinKoNPP
-         xIDJ7mCRoaTtDqhuJHyMoOePH5srNNP5G09NOOJ/LmPjOIVDpa5OqK+1nBkwHKxCwn/E
-         oeiQ==
-X-Gm-Message-State: APjAAAVfBcrTyyIcU4IlHDeFwM8PpuNyz9XP0+hLFcFH1eI70GwvPmab
-        0Xw+ToRnd/7tCkbMGnRlZswvA++U5aeu7WyHmTM=
-X-Google-Smtp-Source: APXvYqyokcdwcep/L054Oo34lDepqdh2H8WaYSiOPZDqkCXd4x47hPTmLQdNvKru5XhnASQGHHcLsC+jJU7vPk8Tjdc=
-X-Received: by 2002:a6b:ca47:: with SMTP id a68mr3811211iog.110.1568794489857;
- Wed, 18 Sep 2019 01:14:49 -0700 (PDT)
+        Wed, 18 Sep 2019 04:46:24 -0400
+Received: from bentobox.localnet (p200300C5971113F0000000000000063E.dip0.t-ipconnect.de [IPv6:2003:c5:9711:13f0::63e])
+        by dvalin.narfation.org (Postfix) with ESMTPSA id A033E1FF9B;
+        Wed, 18 Sep 2019 08:16:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=narfation.org;
+        s=20121; t=1568794612;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=BX4fjwFVQL4NLd+uNgUnLQ9RSR+S9QPFP1f84ohjf/4=;
+        b=dPoPVt/pmEoL8Zgr/+ZSYBFVTPjJaJUifQNR7aFbb1+Cp9bFL6nPxlzQ7qrBqpzirqGxbc
+        AVOttPUjObj0Qw9GuADtjs2oYE2w/4I3NK7LfL9DiqWW6nOMsa109Ku5iwiwIlUmmstr4F
+        p3kYBWoEdGoqrcm4gzlv4KtYSmKFVF8=
+From:   Sven Eckelmann <sven@narfation.org>
+To:     ath10k@lists.infradead.org, sw@simonwunderlich.de
+Cc:     vnaralas@codeaurora.org, Johannes Berg <johannes@sipsolutions.net>,
+        slakkavalli@datto.com, linux-wireless@vger.kernel.org
+Subject: Re: [PATCH] cfg80211: Add cumulative channel survey dump support.
+Date:   Wed, 18 Sep 2019 10:46:08 +0200
+Message-ID: <18458963.ukFM9YuvQx@bentobox>
+In-Reply-To: <2083094.mFhUXK7yzB@bentobox>
+References: <1526980556-26707-1-git-send-email-vnaralas@codeaurora.org> <ebf1c95acb34649b3d2a5435142dc06a@codeaurora.org> <2083094.mFhUXK7yzB@bentobox>
 MIME-Version: 1.0
-References: <CAKKzd-8jgQWTO2w589gMVJm3CaU-15wUER+fsqpYJJSeZL4RPg@mail.gmail.com>
- <CALLGbRKUZmZzBh9=YpJ+r_ts8aY+HXy159oviihSgqMEofOCRQ@mail.gmail.com>
- <CAKKzd-8aRFtdkK+E4-sXBid9jP_sAr0bGbdLYJ=sjb4iCsTAcw@mail.gmail.com>
- <7158fc76fe5ec091633b36b3218a8586960c19e2.camel@redhat.com> <CAKKzd-9zK0ZKWksyp7S+myGrtbc3s4npEhy02SS-wfLCS0tKSw@mail.gmail.com>
-In-Reply-To: <CAKKzd-9zK0ZKWksyp7S+myGrtbc3s4npEhy02SS-wfLCS0tKSw@mail.gmail.com>
-From:   Krishna Chaitanya <chaitanya.mgit@gmail.com>
-Date:   Wed, 18 Sep 2019 13:44:38 +0530
-Message-ID: <CABPxzYJ1YCwdVqba74aptV3KCwCDFT_UP8TCh6C30-gu=CRKNQ@mail.gmail.com>
-Subject: Re: Linux wireless times out at Google Starbucks location
-To:     David Ho <davidkwho@gmail.com>
-Cc:     Dan Williams <dcbw@redhat.com>,
-        Steve deRosier <derosier@gmail.com>,
-        linux-wireless <linux-wireless@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: multipart/signed; boundary="nextPart3954164.CNjgTPF8Pu"; micalg="pgp-sha512"; protocol="application/pgp-signature"
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=narfation.org;
+        s=20121; t=1568794612;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=BX4fjwFVQL4NLd+uNgUnLQ9RSR+S9QPFP1f84ohjf/4=;
+        b=zmSLPj7CkLwF3xTKf9tyTQsLqXn3oEOXbtzJhpvlrQWNPMjp4VzoXpwRuOnLBDDKHoIpik
+        bLHa2OcdPP7Rt+sx3UsmlqLwZWaLEkXjKx74a9z64kyq8hFONEzGcWPNLtAMkvfXqCi9eg
+        WccEVY2UBHrP+qy6DQUGF3i2a/fB3P4=
+ARC-Seal: i=1; s=20121; d=narfation.org; t=1568794612; a=rsa-sha256;
+        cv=none;
+        b=YjbDJOMyfpt1uGFX2M9iVhiCJeZCpY2odfjnlQEodkkPP5dpdy7qK37W8JALFQ/2YBRQu4
+        d/2CERSjP4DYPmCF9AIZQ/if7vlO/sU0X6VeFUwck59FYFnQ9YrvU/4BvQrY+GRt3JmoMt
+        su7SZR2luVoqz2iw/qb5pu7hagfZfpI=
+ARC-Authentication-Results: i=1;
+        dvalin.narfation.org;
+        auth=pass smtp.auth=sven smtp.mailfrom=sven@narfation.org
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Wed, Sep 18, 2019 at 6:22 AM David Ho <davidkwho@gmail.com> wrote:
->
-> On Tue, Sep 17, 2019 at 2:01 PM Dan Williams <dcbw@redhat.com> wrote:
-> >
-> > If you're able to get the wpa_supplicant logs, that would be useful as
-> > well.
-> >
->
-> I captured 2 minutes of log in /var/log/syslog, based on my crude
-> judgment of where the connection request began.
->
-> I appreciate if someone can update me on this issue; I hope my effort
-> is not going to waste (I'm just an ML researcher trying to make Ubuntu
-> work at my favorite coffee shop =)
-Is this a new issue probably after some update? The only thing we can
-see from the
-kernel logs are that Auth/Assoc are getting timed-out, no info as to why?
+--nextPart3954164.CNjgTPF8Pu
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="us-ascii"
 
-You can probably try disabling the powersave using below command or
-using `iw` utils.
-sudo sed -i "s/wifi.powersave = 3/wifi.powersave = 2/g"
-/etc/NetworkManager/conf.d/default-wifi-powersave-on.conf
+On Tuesday, 17 September 2019 19:27:50 CEST Sven Eckelmann wrote:
+[...]
+> So whatever the firmware does when it gets a 
+> WMI_BSS_SURVEY_REQ_TYPE_READ_CLEAR -  it is not a CLEAR after read. And they 
+> also don't simply wrap around but there all values have to get some kind of 
+> "fix" like the active time one shown in ath10k_hw_fill_survey_time.
+> Just that the actual "fixes" for them are unknown. To me it looks like
+> firmware ATH10K_HW_CC_WRAP_SHIFTED_ALL have busy and rx interlinked with
+> the overflow of total. But the tx and rx_bss are actually cleared.
+> 
+> Other than that, the counters are wrapping every ~14-30 seconds. So we
+> also need also some worker for ath10k which every couple of seconds
+> requests new values for all the channel from the firmware. Which already
+> sounds problematic because I get
+> "ath10k_pci 0000:00:00.0: bss channelsurvey timed out" all the time
+> when requesting surveys manually.
+
+I've just tested it on 10.4 (wave-2) cards and it seems like it is cleared as 
+expected on them. So the change I posted earlier (with a minor fix for 
+ath10k_hw_fill_survey_time) returns now useful (accumulated) values. This can 
+be seen in 
+https://stats.freifunk-vogtland.net/d/ffv_node/nodeinfo?orgId=1&var-node=ac86749f4d60&fullscreen&panelId=5&from=1568782046974&to=1568807068706 
+(after the reboot at 10:15 UTC+2)
+
+So as Ben Greear said, the 10.4 firmware version is fixed and 10.2.* (for
+the wave-1 cards) is still broken and we need a QCA firmware engineer to
+fix it. Or to work around it by polling every couple of seconds and 
+manually do the cleanup of the values from the firmware.
+
+Kind regards,
+	Sven
+--nextPart3954164.CNjgTPF8Pu
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: This is a digitally signed message part.
+Content-Transfer-Encoding: 7Bit
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCgAdFiEEF10rh2Elc9zjMuACXYcKB8Eme0YFAl2B7tAACgkQXYcKB8Em
+e0aTpA/+Mw2cCvo49jZ32Ctihgqw3ZkWKxTaizRZzAKNDnCArDWWs3wER2zw1BPm
+2Y4S9Nj0fq4fju1W+JRG/gX9gDFGJEhuCwG695aCofby6a9cXerq/3dzz3ciiJlh
+EJnkQOIgf4zHTGDhbzdca+2NxXWvxwXOhWZ+jehFrBux8P6oi/UafWpXVEALTsUV
+Byj4lW7/5rmJ99xDGXzeQF1S1MWw4q7clMKYGvlJl6yurbiHQpSqc859dDRsVhDw
+00mfmhCu4aEIJl9MlVMWY4HLpmW7S1sl1Y+dFR9ioDLgChWUQzq//EihpWwtYJUD
+Sjnvfpa77OZ9HO52bdWH2Epi45YoLdSV3jSoY2OSw0cQmYZMPiPod2C+tctfeg6U
+9Ky4MZ0ELXvzmrlYHE3p0QVu1IOQywCIzkjwDjHQuFsOam7KcpL1D2Nt/etnKN0D
+O+bVWoe0FEZ1ZDVnyjrX+bYcth7LH42LJrSIbBL+deAdO/6EIxrfTcibk6iYKJhq
+0uProQ4J4DtcqBvhI+zw1O1lGViIZ+csmODioRGPvSjMJ2zXwkLJRKZQAqz8i+QJ
+QRWFdi0oEsQyCGI4bg0i7p+6VzeFfc2dh6z95HdbfOKDzwaLYjuZkuCJBPVAB0fQ
+ql6U6cyZccZARNAVSAhG6/hq8NpWJmMmwB93Vt2NgKNWfmriMgY=
+=GhvJ
+-----END PGP SIGNATURE-----
+
+--nextPart3954164.CNjgTPF8Pu--
+
+
+
