@@ -2,134 +2,107 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 32543B7BAA
-	for <lists+linux-wireless@lfdr.de>; Thu, 19 Sep 2019 16:07:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 94B25B7BDA
+	for <lists+linux-wireless@lfdr.de>; Thu, 19 Sep 2019 16:12:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2389941AbfISOHV (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 19 Sep 2019 10:07:21 -0400
-Received: from aserp2120.oracle.com ([141.146.126.78]:53892 "EHLO
-        aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2387729AbfISOHV (ORCPT
+        id S1732438AbfISOMJ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 19 Sep 2019 10:12:09 -0400
+Received: from us-smtp-2.mimecast.com ([207.211.31.81]:30205 "EHLO
+        us-smtp-delivery-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1732436AbfISOMJ (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 19 Sep 2019 10:07:21 -0400
-Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
-        by aserp2120.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x8JE4LSn029434;
-        Thu, 19 Sep 2019 14:07:09 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=subject : to : cc :
- references : from : message-id : date : mime-version : in-reply-to :
- content-type : content-transfer-encoding; s=corp-2019-08-05;
- bh=/YOWrbzA7kJtkI9FFDm8sH5YeE3VoVARbcy1fM1cXRE=;
- b=qZLq+3h2EvEkLjvIyHKLJDAHQ32KYiaJdh0PBfakYyRHY5KW78HK8ieinAblp2oEFach
- sLKV0aYEnAfvOOE66nEEtzEaWzwnYZeAeyk91KR2PYSnIPI3rNsAk1/q7e9LoWo013TP
- qz3VMa4mtgybbXJfIVTvbLgML3oQkejaEyzF3u+jsy7/RZujEsiXXF3/GdTXA7HkcfMP
- tcTTT3bfLh9VaCD8/mDwywpLwSdIl+mF5tSEyqXcd+y2jBBuOdn0sX+w27DicfOGhCrm
- 7d99D8QKK0XUJLzVxppypl1TFcfjYxuNkQ0Wk3bYj4KO+++/ooKJNT0ytF0nDocv2gv/ Kg== 
-Received: from aserp3030.oracle.com (aserp3030.oracle.com [141.146.126.71])
-        by aserp2120.oracle.com with ESMTP id 2v3vb4m7fx-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Thu, 19 Sep 2019 14:07:09 +0000
-Received: from pps.filterd (aserp3030.oracle.com [127.0.0.1])
-        by aserp3030.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x8JDwbWd176998;
-        Thu, 19 Sep 2019 14:07:08 GMT
-Received: from userv0121.oracle.com (userv0121.oracle.com [156.151.31.72])
-        by aserp3030.oracle.com with ESMTP id 2v3vbs5jb4-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Thu, 19 Sep 2019 14:07:08 +0000
-Received: from abhmp0003.oracle.com (abhmp0003.oracle.com [141.146.116.9])
-        by userv0121.oracle.com (8.14.4/8.13.8) with ESMTP id x8JE76Ts016960;
-        Thu, 19 Sep 2019 14:07:06 GMT
-Received: from [192.168.0.106] (/183.82.16.154)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Thu, 19 Sep 2019 07:07:06 -0700
-Subject: Re: [PATCH] iwlwifi: fix a potential NULL pointer dereference
-To:     Johannes Berg <johannes@sipsolutions.net>, kvalo@codeaurora.org
-Cc:     davem@davemloft.net, linux-wireless@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-References: <1568830262-5529-1-git-send-email-allen.pais@oracle.com>
- <fd8813c1c3c02734d60f494a3c8081d95550ec85.camel@sipsolutions.net>
-From:   Allen <allen.pais@oracle.com>
-Message-ID: <2380f108-54a6-0110-4e2b-e66dd54ae800@oracle.com>
-Date:   Thu, 19 Sep 2019 19:37:01 +0530
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.6.1
+        Thu, 19 Sep 2019 10:12:09 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1568902328;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=ZjwZXRA4/wGuSYivmBDiMELQqrlAeAJ/4svl5cn5p44=;
+        b=KZn059WAsec6ud1ue4BZ7saZX5jXrej3vNOcVYnM/pM3W5yToOgShEWJWRzndUb7WTN5wb
+        PbCCAXp1fgQ1bSC6/slnI6DJ7lbXKFRLxzwjFPfgNeeUif9ajnLE2WCIuAtLFuzkNEbz6H
+        SLMVdwISAM4kf5Woe3e9yexR4lKjgeQ=
+Received: from mail-ed1-f71.google.com (mail-ed1-f71.google.com
+ [209.85.208.71]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-151-OChtXlj8OImC5qcFBISDwQ-1; Thu, 19 Sep 2019 10:12:07 -0400
+Received: by mail-ed1-f71.google.com with SMTP id m2so2048145eds.12
+        for <linux-wireless@vger.kernel.org>; Thu, 19 Sep 2019 07:12:06 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:in-reply-to:references:date
+         :message-id:mime-version:content-transfer-encoding;
+        bh=nqkXS5MsSQWaPs8wmhHCW242OlfdpvhtSB/D3SBl3XI=;
+        b=crwUOCHkcTOE6eVcrrKTTET5ylJ9ms+FwlgtPIGznJgtli/hD3FJoRoT4enbLNPpdW
+         ogq9uniPyoUI0QRS/4zbscvV5EZZufE9wcVl6pVvBDlmewDkXODEhtdcvycoeNcMb6dp
+         DgP1VSw417ELIml9XEnXYoBkE5AUI3PgAE6t5LW3qjuiGL57FS373caXZ65E5R1MjtMx
+         HrNGntvT8jt3ZVJERyO5xOLynyr4kuczUukybTdBxk4T2Vu7PylGqdVzTXXCseJ+rWiR
+         wwn97ZuM815j7KYUC/DkzLMScnPQVaf/1GXAtSxlP4osS2f8kJP+K0WhinB1N7Yw0Dx9
+         Ssfg==
+X-Gm-Message-State: APjAAAXsOQP6cZjrB+5zHfNYwQfcjIulQ4neYPqB3QM8zdaUgBvi6mDS
+        8uu7jyl9m4Kpj3wX0MLWw1OXULgxnfWoEwfGnQ2beywn0k6BF/1abAYB8S6iwMXpXksMz2JHMnU
+        ZV838p+c9Tltfe2jUZQZxImRTsN0=
+X-Received: by 2002:a17:906:e109:: with SMTP id gj9mr2436644ejb.160.1568902324455;
+        Thu, 19 Sep 2019 07:12:04 -0700 (PDT)
+X-Google-Smtp-Source: APXvYqzPqNM3pijjNln3JMahHQlD3HfPcRrSmQCsaiTpk+6jNVZuCsUg0uao2PjHxxZfWGY4dX0ekA==
+X-Received: by 2002:a17:906:e109:: with SMTP id gj9mr2436625ejb.160.1568902324246;
+        Thu, 19 Sep 2019 07:12:04 -0700 (PDT)
+Received: from alrua-x1.borgediget.toke.dk (borgediget.toke.dk. [85.204.121.218])
+        by smtp.gmail.com with ESMTPSA id n6sm944692edr.27.2019.09.19.07.12.03
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 19 Sep 2019 07:12:03 -0700 (PDT)
+Received: by alrua-x1.borgediget.toke.dk (Postfix, from userid 1000)
+        id 078E518063E; Thu, 19 Sep 2019 16:12:03 +0200 (CEST)
+From:   Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>
+To:     Johannes Berg <johannes@sipsolutions.net>
+Cc:     linux-wireless@vger.kernel.org,
+        make-wifi-fast@lists.bufferbloat.net,
+        John Crispin <john@phrozen.org>,
+        Lorenzo Bianconi <lorenzo@kernel.org>,
+        Felix Fietkau <nbd@nbd.name>
+Subject: Re: [PATCH RFC/RFT 0/4] Add Airtime Queue Limits (AQL) to mac80211
+In-Reply-To: <156889576422.191202.5906619710809654631.stgit@alrua-x1>
+References: <156889576422.191202.5906619710809654631.stgit@alrua-x1>
+X-Clacks-Overhead: GNU Terry Pratchett
+Date:   Thu, 19 Sep 2019 16:12:02 +0200
+Message-ID: <87d0fwfk99.fsf@toke.dk>
 MIME-Version: 1.0
-In-Reply-To: <fd8813c1c3c02734d60f494a3c8081d95550ec85.camel@sipsolutions.net>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9384 signatures=668685
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=2 malwarescore=0
- phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=914
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.0.1-1908290000 definitions=main-1909190132
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9384 signatures=668685
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
- suspectscore=2 phishscore=0 bulkscore=0 spamscore=0 clxscore=1011
- lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=985 adultscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1908290000
- definitions=main-1909190133
+X-MC-Unique: OChtXlj8OImC5qcFBISDwQ-1
+X-Mimecast-Spam-Score: 0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+Toke H=C3=B8iland-J=C3=B8rgensen <toke@redhat.com> writes:
 
+> This series is a first attempt at porting the Airtime Queue Limits concep=
+t from
+> the out-of-tree ath10k implementation[0] to mac80211. I limited the scope=
+ of
+> this RFC to ath10k, but it should be straight forward to enable other dri=
+vers
+> (they just need to provide a last TX bitrate).
+>
+> Unfortunately I don't currently have access to hardware to test this, so =
+I'm
+> posting it here in the hope that someone else will take it for a spin. Do=
+ note
+> that this means that the series is completely untested (although it shoul=
+d
+> compile :)).
 
-> 
-> Anyway, as 0-day bot pointed out, this isn't really right. The cleanup
-> paths here are also tricky, so I arrived at this patch a few days ago:
+Heh, it seems the kernel build bot did not agree with the "at least it
+compiles" statement. There's a bug in the debugfs code; guess I don't
+have debugfs enabled on my own build system...
 
-  My bad, I should have looked at the cleanup path.
+Anyway, I've fixed this in the git version, but won't bother submitting
+a new version here until someone's actually looked at it. If you're
+going to try and compile it, I'd suggest just cloning the git tree:
 
-> 
-> diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/trans.c b/drivers/net/wireless/intel/iwlwifi/pcie/trans.c
-> index eb544811759d..882fdf7e5e7b 100644
-> --- a/drivers/net/wireless/intel/iwlwifi/pcie/trans.c
-> +++ b/drivers/net/wireless/intel/iwlwifi/pcie/trans.c
-> @@ -3530,6 +3530,15 @@ struct iwl_trans *iwl_trans_pcie_alloc(struct pci_dev *pdev,
->   	spin_lock_init(&trans_pcie->reg_lock);
->   	mutex_init(&trans_pcie->mutex);
->   	init_waitqueue_head(&trans_pcie->ucode_write_waitq);
-> +
-> +	trans_pcie->rba.alloc_wq = alloc_workqueue("rb_allocator",
-> +						   WQ_HIGHPRI | WQ_UNBOUND, 1);
-> +	if (!trans_pcie->rba.alloc_wq) {
+https://git.kernel.org/pub/scm/linux/kernel/git/toke/linux.git/log/?h=3Dmac=
+80211-aql-01
 
-   I would like to stick to if(unlikely(!trans_pcie->rba.alloc_wq) just 
-for consistency.
-
-   Let me know if I could add your SOB and send out V2.
-
-- Allen
-
-> +		ret = -ENOMEM;
-> +		goto out_free_trans;
-> +	}
-> +	INIT_WORK(&trans_pcie->rba.rx_alloc, iwl_pcie_rx_allocator_work);
-> +
->   	trans_pcie->tso_hdr_page = alloc_percpu(struct iwl_tso_hdr_page);
->   	if (!trans_pcie->tso_hdr_page) {
->   		ret = -ENOMEM;
-> @@ -3664,10 +3673,6 @@ struct iwl_trans *iwl_trans_pcie_alloc(struct pci_dev *pdev,
->   		trans_pcie->inta_mask = CSR_INI_SET_MASK;
->   	 }
->   
-> -	trans_pcie->rba.alloc_wq = alloc_workqueue("rb_allocator",
-> -						   WQ_HIGHPRI | WQ_UNBOUND, 1);
-> -	INIT_WORK(&trans_pcie->rba.rx_alloc, iwl_pcie_rx_allocator_work);
-> -
->   #ifdef CPTCFG_IWLWIFI_DEBUGFS
->   	trans_pcie->fw_mon_data.state = IWL_FW_MON_DBGFS_STATE_CLOSED;
->   	mutex_init(&trans_pcie->fw_mon_data.mutex);
-> @@ -3681,6 +3686,8 @@ out_free_ict:
->   	iwl_pcie_free_ict(trans);
->   out_no_pci:
->   	free_percpu(trans_pcie->tso_hdr_page);
-> +	destroy_workqueue(trans_pcie->rba.alloc_wq);
-> +out_free_trans:
->   	iwl_trans_free(trans);
->   	return ERR_PTR(ret);
->   }
-> 
-
+-Toke
 
