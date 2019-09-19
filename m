@@ -2,97 +2,217 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 57BB7B8250
-	for <lists+linux-wireless@lfdr.de>; Thu, 19 Sep 2019 22:15:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 16981B833C
+	for <lists+linux-wireless@lfdr.de>; Thu, 19 Sep 2019 23:22:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2392383AbfISUPj (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 19 Sep 2019 16:15:39 -0400
-Received: from us-smtp-delivery-1.mimecast.com ([207.211.31.120]:40949 "EHLO
-        us-smtp-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S2390489AbfISUPi (ORCPT
+        id S2390098AbfISVWH (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 19 Sep 2019 17:22:07 -0400
+Received: from vulcan.natalenko.name ([104.207.131.136]:57666 "EHLO
+        vulcan.natalenko.name" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2389506AbfISVWG (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 19 Sep 2019 16:15:38 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1568924137;
+        Thu, 19 Sep 2019 17:22:06 -0400
+Received: from mail.natalenko.name (vulcan.natalenko.name [IPv6:fe80::5400:ff:fe0c:dfa0])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by vulcan.natalenko.name (Postfix) with ESMTPSA id 7C7A75E280C;
+        Thu, 19 Sep 2019 23:22:03 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=natalenko.name;
+        s=dkim-20170712; t=1568928123;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
          to:to:cc:cc:mime-version:mime-version:content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=7W+pePXqkmz7RHiezawqQ5L2NT1eFDJiMsNkFVGn840=;
-        b=g6SQJKv7dFdnWiIzSrvPsZiIm8jbLojJDtt8DCU488r2sgFf978cNbKhkiEbkN9pC0D+wP
-        B4r3B1jfO6wcd5wrg4UtlNlcYGL8vx40OOhQrbV3w4WAu9BwJzZRtGz53wOEqvFL0neu79
-        mT4duI5QOWnX6MvxnGpdToZTzAyOuI8=
-Received: from mail-ed1-f70.google.com (mail-ed1-f70.google.com
- [209.85.208.70]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-149-r8PWDHF_NY6032RfVXzlnw-1; Thu, 19 Sep 2019 16:15:33 -0400
-Received: by mail-ed1-f70.google.com with SMTP id n14so2079989edt.3
-        for <linux-wireless@vger.kernel.org>; Thu, 19 Sep 2019 13:15:33 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:in-reply-to:references:date
-         :message-id:mime-version;
-        bh=KJ6OYNkYsFvAA8jzLzx1h6hbKWVfzECU10Vac2aXn1k=;
-        b=sudbs84AmKTyWE7uGqkBQIcImXdKc/z1vtxJ1IlFFmiBxTIhoNS71yWvP6JSKuZw8Q
-         oeP94FccMBe9ucVxZsOrxvAd4X/tyUoj0PpAAVBo75QKHaqo/f/bToUYxOY+ruVuz5NW
-         9ix7bpNvQhz+5mURuAFxFN46PvGU7Z0XNr9IaR68NrnDbWAtPrUB9gqkpwQnncHGanSx
-         T1FCawHba5ex9aoYJ8FHiQ7q2s49mfJiW/sL2Wu/jnpFDL8/6YC5U2Mr4dK5ExuX7nAw
-         5HcUPYE3GcHJB09KzcBHYzEoMhViRC5KdlOO21K6/2q21cOZkcnTa3+UcpFViScImJN6
-         CwpQ==
-X-Gm-Message-State: APjAAAUXhvqJ3uGtVid/jPXP3LevJtjPpa+0oL1n6FWrnYrHMnG8ZfWH
-        NSoUcrCemRQK6IVOPQW0DVjM6lDVE6kQyn/dTvmPGCrl2Pd/gJ1vv4q5tIT+yV+N7YNleOCLyBS
-        f7nSNOdW1oikOX6FZPl0r6mB5YnY=
-X-Received: by 2002:aa7:c5c2:: with SMTP id h2mr18524073eds.260.1568924132273;
-        Thu, 19 Sep 2019 13:15:32 -0700 (PDT)
-X-Google-Smtp-Source: APXvYqz8soLaGsdDseJsMCceyYyFJLhNLJY/QOJgQxukBUxaRYwRD2X9fKT8p7ofyoHZZFJaMKG7SA==
-X-Received: by 2002:aa7:c5c2:: with SMTP id h2mr18524054eds.260.1568924132103;
-        Thu, 19 Sep 2019 13:15:32 -0700 (PDT)
-Received: from alrua-x1.borgediget.toke.dk (borgediget.toke.dk. [85.204.121.218])
-        by smtp.gmail.com with ESMTPSA id b53sm1830580ede.96.2019.09.19.13.15.31
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 19 Sep 2019 13:15:31 -0700 (PDT)
-Received: by alrua-x1.borgediget.toke.dk (Postfix, from userid 1000)
-        id EF5FC18063E; Thu, 19 Sep 2019 22:15:30 +0200 (CEST)
-From:   Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>
-To:     John Yates <john@yates-sheets.org>, Dave Taht <dave.taht@gmail.com>
-Cc:     Make-Wifi-fast <make-wifi-fast@lists.bufferbloat.net>,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        Peter Oh <peter.oh@eero.com>, John Crispin <john@phrozen.org>,
-        Ben Greear <greearb@candelatech.com>,
-        Lorenzo Bianconi <lorenzo@kernel.org>,
-        Johannes Berg <johannes@sipsolutions.net>,
-        Felix Fietkau <nbd@nbd.name>
-Subject: Re: [Make-wifi-fast] [PATCH RFC/RFT 4/4] mac80211: Apply Airtime-based Queue Limit (AQL) on packet dequeue
-In-Reply-To: <CAJnXXoj_jinaOhxxJP3EpfWsTuaLCR_gREXxqtktPbEAginLjg@mail.gmail.com>
-References: <156889576422.191202.5906619710809654631.stgit@alrua-x1> <156889576869.191202.510507546538322707.stgit@alrua-x1> <f21b10fd-02ae-af59-8e2f-88f654627ab3@eero.com> <879913e9-4254-1381-07f6-d860fb0b8de0@candelatech.com> <f9b224a0-305f-9715-f627-7a5fae0988d3@eero.com> <df105ac6-833b-4a22-9ecc-484513a2eb9c@eero.com> <CAA93jw4F4vuXdWOne_A=h6x-ERMshw5B5UqxU1-ZrnD74nAavw@mail.gmail.com> <CAJnXXoj_jinaOhxxJP3EpfWsTuaLCR_gREXxqtktPbEAginLjg@mail.gmail.com>
-X-Clacks-Overhead: GNU Terry Pratchett
-Date:   Thu, 19 Sep 2019 22:15:30 +0200
-Message-ID: <875zlodov1.fsf@toke.dk>
+        bh=nvfXNPCQg7B581+MslvcoEWLTwJp2jXTw915+YqYF0w=;
+        b=i+KmjjbSSriAGy62TJ1qhcGVNLO3g7OTsgglPkt+ylvBzx6jO8DN1KJC1G2E6e9r6WBPpC
+        7jhQtsboDmL2YJti9HlWuBCv+SX3r9pn1DrTs5XWew3eOCy59rO0cShMGjnGs1VIXrHqRR
+        5WsU9Sl7rOlJFZMVm7RfAOz1hR8C9w0=
 MIME-Version: 1.0
-X-MC-Unique: r8PWDHF_NY6032RfVXzlnw-1
-X-Mimecast-Spam-Score: 0
-Content-Type: text/plain; charset=WINDOWS-1252
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII;
+ format=flowed
+Content-Transfer-Encoding: 7bit
+Date:   Thu, 19 Sep 2019 23:22:03 +0200
+From:   Oleksandr Natalenko <oleksandr@natalenko.name>
+To:     linux-mediatek@lists.infradead.org
+Cc:     Felix Fietkau <nbd@nbd.name>,
+        Lorenzo Bianconi <lorenzo.bianconi83@gmail.com>,
+        Lorenzo Bianconi <lorenzo@kernel.org>,
+        Stanislaw Gruszka <sgruszka@redhat.com>,
+        Ryder Lee <ryder.lee@mediatek.com>,
+        Roy Luo <royluo@google.com>, Kalle Valo <kvalo@codeaurora.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+Subject: Re: mt76x2e hardware restart
+In-Reply-To: <deaafa7a3e9ea2111ebb5106430849c6@natalenko.name>
+References: <deaafa7a3e9ea2111ebb5106430849c6@natalenko.name>
+Message-ID: <c6d621759c190f7810d898765115f3b4@natalenko.name>
+X-Sender: oleksandr@natalenko.name
+User-Agent: Roundcube Webmail/1.3.10
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=natalenko.name;
+        s=arc-20170712; t=1568928123;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=nvfXNPCQg7B581+MslvcoEWLTwJp2jXTw915+YqYF0w=;
+        b=ETc2q7YURCqlrETsKKeQkoPlDZrCqCFYY89AXGwPNhu+uYOEQZFte02NHPleOvqNzi05+G
+        48LhJrMbwsTLyDxU3rcisz7iw7H9EfnL0KLSfhvwRodWvQW3eHZFlcgZe9OdbYoM9Qg9Pg
+        TSghhu0PLaDijtfAcg83a9yrI4P0ook=
+ARC-Seal: i=1; s=arc-20170712; d=natalenko.name; t=1568928123; a=rsa-sha256;
+        cv=none;
+        b=FDKorXnDcAKDb8+CrT3w5/PyCrZwO9676UXdBc0WwqcyPOB/xTGw21uNIzbPGPSOJYQNCm
+        z5viRpMuMdaOVmBOTY+aor9YJhQf0kk6lmyVVvh1uRubEjaYOfnyqCYmJGq9C6JaDhCIiY
+        uJj764/pFLr/8vhgqNFjwIDtuc4v+/8=
+ARC-Authentication-Results: i=1;
+        vulcan.natalenko.name;
+        auth=pass smtp.auth=oleksandr@natalenko.name smtp.mailfrom=oleksandr@natalenko.name
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-John Yates <john@yates-sheets.org> writes:
+On 19.09.2019 18:24, Oleksandr Natalenko wrote:
+> [  +9,979664] mt76x2e 0000:01:00.0: Firmware Version: 0.0.00
+> [  +0,000014] mt76x2e 0000:01:00.0: Build: 1
+> [  +0,000010] mt76x2e 0000:01:00.0: Build Time: 201507311614____
+> [  +0,018017] mt76x2e 0000:01:00.0: Firmware running!
+> [  +0,001101] ieee80211 phy4: Hardware restart was requested
 
-> On Thu, Sep 19, 2019 at 2:18 PM Dave Taht <dave.taht@gmail.com> wrote:
->>
->> For the record, this was the google report on their implementation in 3.=
-18.
->>
->> http://flent-newark.bufferbloat.net/~d/Airtime%20based%20queue%20limit%2=
-0for%20FQ_CoDel%20in%20wireless%20interface.pdf
->
-> From skimming that paper it sounds like this is shipping in the
-> current Google WiFi product. Is that correct?
+IIUC, this happens due to watchdog. I think the following applies.
 
-I believe so, yeah. The chromiumos patch tracker is here:
-https://chromium-review.googlesource.com/c/chromiumos/third_party/kernel/+/=
-588190/13
+Watchdog is started here:
 
--Toke
+=== mt76x02_util.c
+130 void mt76x02_init_device(struct mt76x02_dev *dev)
+131 {
+...
+155         INIT_DELAYED_WORK(&dev->wdt_work, mt76x02_wdt_work);
+===
 
+It checks for TX hang here:
+
+=== mt76x02_mmio.c
+557 void mt76x02_wdt_work(struct work_struct *work)
+558 {
+...
+562     mt76x02_check_tx_hang(dev);
+===
+
+Conditions:
+
+=== mt76x02_mmio.c
+530 static void mt76x02_check_tx_hang(struct mt76x02_dev *dev)
+531 {
+532     if (mt76x02_tx_hang(dev)) {
+533         if (++dev->tx_hang_check >= MT_TX_HANG_TH)
+534             goto restart;
+535     } else {
+536         dev->tx_hang_check = 0;
+537     }
+538
+539     if (dev->mcu_timeout)
+540         goto restart;
+541
+542     return;
+543
+544 restart:
+545     mt76x02_watchdog_reset(dev);
+===
+
+Actual check:
+
+=== mt76x02_mmio.c
+367 static bool mt76x02_tx_hang(struct mt76x02_dev *dev)
+368 {
+369     u32 dma_idx, prev_dma_idx;
+370     struct mt76_queue *q;
+371     int i;
+372
+373     for (i = 0; i < 4; i++) {
+374         q = dev->mt76.q_tx[i].q;
+375
+376         if (!q->queued)
+377             continue;
+378
+379         prev_dma_idx = dev->mt76.tx_dma_idx[i];
+380         dma_idx = readl(&q->regs->dma_idx);
+381         dev->mt76.tx_dma_idx[i] = dma_idx;
+382
+383         if (prev_dma_idx == dma_idx)
+384             break;
+385     }
+386
+387     return i < 4;
+388 }
+===
+
+(I don't quite understand what it does here; why 4? does each device 
+have 4 queues? maybe, my does not? I guess this is where watchdog is 
+triggered, though, because otherwise I'd see mcu_timeout message like 
+"MCU message %d (seq %d) timed out\n")
+
+Once it detects TX hang, the reset is triggered:
+
+=== mt76x02_mmio.c
+446 static void mt76x02_watchdog_reset(struct mt76x02_dev *dev)
+447 {
+...
+485     if (restart)
+486         mt76_mcu_restart(dev);
+===
+
+mt76_mcu_restart() is just a define for this series here:
+
+=== mt76.h
+555 #define mt76_mcu_restart(dev, ...)  
+(dev)->mt76.mcu_ops->mcu_restart(&((dev)->mt76))
+===
+
+Actual OP:
+
+=== mt76x2/pci_mcu.c
+188 int mt76x2_mcu_init(struct mt76x02_dev *dev)
+189 {
+190     static const struct mt76_mcu_ops mt76x2_mcu_ops = {
+191         .mcu_restart = mt76pci_mcu_restart,
+192         .mcu_send_msg = mt76x02_mcu_msg_send,
+193     };
+===
+
+This triggers loading the firmware:
+
+=== mt76x2/pci_mcu.c
+168 static int
+169 mt76pci_mcu_restart(struct mt76_dev *mdev)
+170 {
+...
+179     ret = mt76pci_load_firmware(dev);
+===
+
+which does the printout I observe:
+
+=== mt76x2/pci_mcu.c
+  91 static int
+  92 mt76pci_load_firmware(struct mt76x02_dev *dev)
+  93 {
+...
+156     dev_info(dev->mt76.dev, "Firmware running!\n");
+===
+
+Too bad it doesn't show the actual watchdog message, IOW, why the reset 
+happens. I guess I will have to insert some pr_infos here and there.
+
+Does it make sense? Any ideas why this can happen?
+
+More info on the device during boot:
+
+===
+[  +0,333233] mt76x2e 0000:01:00.0: enabling device (0000 -> 0002)
+[  +0,000571] mt76x2e 0000:01:00.0: ASIC revision: 76120044
+[  +0,017806] mt76x2e 0000:01:00.0: ROM patch build: 20141115060606a
+===
+
+-- 
+   Oleksandr Natalenko (post-factum)
