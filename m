@@ -2,95 +2,55 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 54715B7D17
-	for <lists+linux-wireless@lfdr.de>; Thu, 19 Sep 2019 16:41:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4CC6CB7D27
+	for <lists+linux-wireless@lfdr.de>; Thu, 19 Sep 2019 16:47:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732676AbfISOla (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 19 Sep 2019 10:41:30 -0400
-Received: from mail.kernel.org ([198.145.29.99]:43520 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1732606AbfISOla (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 19 Sep 2019 10:41:30 -0400
-Received: from localhost (83-86-89-107.cable.dynamic.v4.ziggo.nl [83.86.89.107])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 9CEF62067B;
-        Thu, 19 Sep 2019 14:41:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1568904089;
-        bh=TJHkQTtaGQHKS5CUibyY3os9gYsyoVt2bCM2nr2IE3I=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=YK7tcTHra9Le/h5CmSNa6LtWZSL5o4cwJ5rVAf2P+1X+wlsuAy/k+IOGQEI6mrRXo
-         NX6UgrRnJtjB5Tjxdh20rmvLJCYDLM1AjucKjmmdkioeymP65FUmeYdUixedjjrzog
-         rf26ghS7hGTSkoavOfnR5yDqRvo+1cLM2ntxQSpI=
-Date:   Thu, 19 Sep 2019 16:41:26 +0200
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     Jerome Pouiller <Jerome.Pouiller@silabs.com>
-Cc:     "devel@driverdev.osuosl.org" <devel@driverdev.osuosl.org>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        David Le Goff <David.Legoff@silabs.com>,
-        "David S . Miller" <davem@davemloft.net>,
-        Kalle Valo <kvalo@codeaurora.org>
-Subject: Re: [PATCH v3 00/20] Add support for Silicon Labs WiFi chip WF200
- and further
-Message-ID: <20190919144126.GA3997726@kroah.com>
-References: <20190919142527.31797-1-Jerome.Pouiller@silabs.com>
+        id S2389556AbfISOrf (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 19 Sep 2019 10:47:35 -0400
+Received: from s3.sipsolutions.net ([144.76.43.62]:43296 "EHLO
+        sipsolutions.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2389041AbfISOrf (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 19 Sep 2019 10:47:35 -0400
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <johannes@sipsolutions.net>)
+        id 1iAxiO-0005Fk-MS; Thu, 19 Sep 2019 16:47:24 +0200
+Message-ID: <ac6cea459c697db7aec99b8c0c5c0b3bf76b5877.camel@sipsolutions.net>
+Subject: Re: [PATCH] iwlwifi: fix a potential NULL pointer dereference
+From:   Johannes Berg <johannes@sipsolutions.net>
+To:     Allen <allen.pais@oracle.com>, kvalo@codeaurora.org
+Cc:     davem@davemloft.net, linux-wireless@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Date:   Thu, 19 Sep 2019 16:47:23 +0200
+In-Reply-To: <2380f108-54a6-0110-4e2b-e66dd54ae800@oracle.com>
+References: <1568830262-5529-1-git-send-email-allen.pais@oracle.com>
+         <fd8813c1c3c02734d60f494a3c8081d95550ec85.camel@sipsolutions.net>
+         <2380f108-54a6-0110-4e2b-e66dd54ae800@oracle.com>
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.30.5 (3.30.5-1.fc29) 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20190919142527.31797-1-Jerome.Pouiller@silabs.com>
-User-Agent: Mutt/1.12.1 (2019-06-15)
+Content-Transfer-Encoding: 7bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Thu, Sep 19, 2019 at 02:25:36PM +0000, Jerome Pouiller wrote:
-> From: Jérôme Pouiller <jerome.pouiller@silabs.com>
+On Thu, 2019-09-19 at 19:37 +0530, Allen wrote:
+> > 
+> > +	trans_pcie->rba.alloc_wq = alloc_workqueue("rb_allocator",
+> > +						   WQ_HIGHPRI | WQ_UNBOUND, 1);
+> > +	if (!trans_pcie->rba.alloc_wq) {
 > 
-> Hello all,
-> 
-> This series add support for Silicon Labs WiFi chip WF200 and further:
-> 
->    https://www.silabs.com/documents/public/data-sheets/wf200-datasheet.pdf
-> 
-> This driver is an export from:
-> 
->    https://github.com/SiliconLabs/wfx-linux-driver/
->    
-> I squashed all commits from github (it definitely does not make sense to
-> import history). Then I split it in comprehensible (at least try to be)
-> commits. I hope it will help readers to understand driver architecture.
-> IMHO, firsts commits are clean enough to be reviewed. Things get more
-> difficult when I introduce mac8011 API. I tried to extract important
-> parts like Rx/Tx process but, big and complex patches seem unavoidable
-> in this part.
-> 
-> Architecture itself is described in commit messages.
-> 
-> The series below is aligned on version 2.3.1 on github. If compare this
-> series with github, you will find traditional differences between
-> external and a in-tree driver: Documentation, build infrastructure,
-> compatibility with older kernel revisions, etc... In add, I dropped all
-> code in CONFIG_WFX_SECURE_LINK. Indeed, "Secure Link" feature depends
-> on mbedtls and I don't think to pull mbedtls in kernel is an option
-> (see "TODO" file in first commit).
-> 
-> v3:
->   - Fill commit log of patches 18, 19 and 20
-> 
-> v2:
->   - Add TODO file (and dropped todo list from cover letter)
->   - Drop code relative to compatibility with older kernels
+>    I would like to stick to if(unlikely(!trans_pcie->rba.alloc_wq) just 
+> for consistency.
 
-dude, slow down.  wait for others to look at this.
+That's just clutter, this path gets called exactly once in the lifetime
+of most systems ...
 
-there's nothing I can do until after 5.4-rc1 is out, so there is no rush
-at all...
+>    Let me know if I could add your SOB and send out V2.
 
-thanks,
+No no, I've already sent the patch on the way internally :)
 
-greg k-h
+johannes
+
