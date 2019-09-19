@@ -2,57 +2,134 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E18E1B7B64
-	for <lists+linux-wireless@lfdr.de>; Thu, 19 Sep 2019 15:59:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 32543B7BAA
+	for <lists+linux-wireless@lfdr.de>; Thu, 19 Sep 2019 16:07:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732339AbfISN7V (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 19 Sep 2019 09:59:21 -0400
-Received: from mail.kernel.org ([198.145.29.99]:44528 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1732329AbfISN7V (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 19 Sep 2019 09:59:21 -0400
-Received: from localhost (83-86-89-107.cable.dynamic.v4.ziggo.nl [83.86.89.107])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id F1E8A20665;
-        Thu, 19 Sep 2019 13:59:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1568901560;
-        bh=I8osdBr5rK8/FGiX5xKVgPYs/R2ZYcecd+s4/UF9w7E=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=f8OD1gi3nEkTcNUJXlI6jOI0AXpXmj5vr0wFr4lUW9cV/3FEkMLfxB1hYO9dPEKHm
-         gem2FmhUVREnBHtoUT44ZUBnM2Khz7+40EO3x1jDJCu1W6YYQLVYOdOd92xjzNuT/u
-         1xPPixqNnXvMfZv8eLmwekOhdmVU7OIqADqoj3MU=
-Date:   Thu, 19 Sep 2019 15:59:18 +0200
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     Jerome Pouiller <Jerome.Pouiller@silabs.com>
-Cc:     "devel@driverdev.osuosl.org" <devel@driverdev.osuosl.org>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        "David S . Miller" <davem@davemloft.net>,
-        David Le Goff <David.Legoff@silabs.com>
-Subject: Re: [PATCH v2 20/20] staging: wfx: implement the rest of mac80211 API
-Message-ID: <20190919135918.GA3853501@kroah.com>
-References: <20190919135220.30663-1-Jerome.Pouiller@silabs.com>
- <20190919135220.30663-21-Jerome.Pouiller@silabs.com>
+        id S2389941AbfISOHV (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 19 Sep 2019 10:07:21 -0400
+Received: from aserp2120.oracle.com ([141.146.126.78]:53892 "EHLO
+        aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2387729AbfISOHV (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 19 Sep 2019 10:07:21 -0400
+Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
+        by aserp2120.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x8JE4LSn029434;
+        Thu, 19 Sep 2019 14:07:09 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=subject : to : cc :
+ references : from : message-id : date : mime-version : in-reply-to :
+ content-type : content-transfer-encoding; s=corp-2019-08-05;
+ bh=/YOWrbzA7kJtkI9FFDm8sH5YeE3VoVARbcy1fM1cXRE=;
+ b=qZLq+3h2EvEkLjvIyHKLJDAHQ32KYiaJdh0PBfakYyRHY5KW78HK8ieinAblp2oEFach
+ sLKV0aYEnAfvOOE66nEEtzEaWzwnYZeAeyk91KR2PYSnIPI3rNsAk1/q7e9LoWo013TP
+ qz3VMa4mtgybbXJfIVTvbLgML3oQkejaEyzF3u+jsy7/RZujEsiXXF3/GdTXA7HkcfMP
+ tcTTT3bfLh9VaCD8/mDwywpLwSdIl+mF5tSEyqXcd+y2jBBuOdn0sX+w27DicfOGhCrm
+ 7d99D8QKK0XUJLzVxppypl1TFcfjYxuNkQ0Wk3bYj4KO+++/ooKJNT0ytF0nDocv2gv/ Kg== 
+Received: from aserp3030.oracle.com (aserp3030.oracle.com [141.146.126.71])
+        by aserp2120.oracle.com with ESMTP id 2v3vb4m7fx-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Thu, 19 Sep 2019 14:07:09 +0000
+Received: from pps.filterd (aserp3030.oracle.com [127.0.0.1])
+        by aserp3030.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x8JDwbWd176998;
+        Thu, 19 Sep 2019 14:07:08 GMT
+Received: from userv0121.oracle.com (userv0121.oracle.com [156.151.31.72])
+        by aserp3030.oracle.com with ESMTP id 2v3vbs5jb4-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Thu, 19 Sep 2019 14:07:08 +0000
+Received: from abhmp0003.oracle.com (abhmp0003.oracle.com [141.146.116.9])
+        by userv0121.oracle.com (8.14.4/8.13.8) with ESMTP id x8JE76Ts016960;
+        Thu, 19 Sep 2019 14:07:06 GMT
+Received: from [192.168.0.106] (/183.82.16.154)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Thu, 19 Sep 2019 07:07:06 -0700
+Subject: Re: [PATCH] iwlwifi: fix a potential NULL pointer dereference
+To:     Johannes Berg <johannes@sipsolutions.net>, kvalo@codeaurora.org
+Cc:     davem@davemloft.net, linux-wireless@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+References: <1568830262-5529-1-git-send-email-allen.pais@oracle.com>
+ <fd8813c1c3c02734d60f494a3c8081d95550ec85.camel@sipsolutions.net>
+From:   Allen <allen.pais@oracle.com>
+Message-ID: <2380f108-54a6-0110-4e2b-e66dd54ae800@oracle.com>
+Date:   Thu, 19 Sep 2019 19:37:01 +0530
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.6.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20190919135220.30663-21-Jerome.Pouiller@silabs.com>
-User-Agent: Mutt/1.12.1 (2019-06-15)
+In-Reply-To: <fd8813c1c3c02734d60f494a3c8081d95550ec85.camel@sipsolutions.net>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9384 signatures=668685
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=2 malwarescore=0
+ phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=914
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.0.1-1908290000 definitions=main-1909190132
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9384 signatures=668685
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
+ suspectscore=2 phishscore=0 bulkscore=0 spamscore=0 clxscore=1011
+ lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=985 adultscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1908290000
+ definitions=main-1909190133
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Thu, Sep 19, 2019 at 01:52:42PM +0000, Jerome Pouiller wrote:
-> From: Jérôme Pouiller <jerome.pouiller@silabs.com>
-> 
-> Signed-off-by: Jérôme Pouiller <jerome.pouiller@silabs.com>
 
-I can not take patches without any changelog text :(
+
+> 
+> Anyway, as 0-day bot pointed out, this isn't really right. The cleanup
+> paths here are also tricky, so I arrived at this patch a few days ago:
+
+  My bad, I should have looked at the cleanup path.
+
+> 
+> diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/trans.c b/drivers/net/wireless/intel/iwlwifi/pcie/trans.c
+> index eb544811759d..882fdf7e5e7b 100644
+> --- a/drivers/net/wireless/intel/iwlwifi/pcie/trans.c
+> +++ b/drivers/net/wireless/intel/iwlwifi/pcie/trans.c
+> @@ -3530,6 +3530,15 @@ struct iwl_trans *iwl_trans_pcie_alloc(struct pci_dev *pdev,
+>   	spin_lock_init(&trans_pcie->reg_lock);
+>   	mutex_init(&trans_pcie->mutex);
+>   	init_waitqueue_head(&trans_pcie->ucode_write_waitq);
+> +
+> +	trans_pcie->rba.alloc_wq = alloc_workqueue("rb_allocator",
+> +						   WQ_HIGHPRI | WQ_UNBOUND, 1);
+> +	if (!trans_pcie->rba.alloc_wq) {
+
+   I would like to stick to if(unlikely(!trans_pcie->rba.alloc_wq) just 
+for consistency.
+
+   Let me know if I could add your SOB and send out V2.
+
+- Allen
+
+> +		ret = -ENOMEM;
+> +		goto out_free_trans;
+> +	}
+> +	INIT_WORK(&trans_pcie->rba.rx_alloc, iwl_pcie_rx_allocator_work);
+> +
+>   	trans_pcie->tso_hdr_page = alloc_percpu(struct iwl_tso_hdr_page);
+>   	if (!trans_pcie->tso_hdr_page) {
+>   		ret = -ENOMEM;
+> @@ -3664,10 +3673,6 @@ struct iwl_trans *iwl_trans_pcie_alloc(struct pci_dev *pdev,
+>   		trans_pcie->inta_mask = CSR_INI_SET_MASK;
+>   	 }
+>   
+> -	trans_pcie->rba.alloc_wq = alloc_workqueue("rb_allocator",
+> -						   WQ_HIGHPRI | WQ_UNBOUND, 1);
+> -	INIT_WORK(&trans_pcie->rba.rx_alloc, iwl_pcie_rx_allocator_work);
+> -
+>   #ifdef CPTCFG_IWLWIFI_DEBUGFS
+>   	trans_pcie->fw_mon_data.state = IWL_FW_MON_DBGFS_STATE_CLOSED;
+>   	mutex_init(&trans_pcie->fw_mon_data.mutex);
+> @@ -3681,6 +3686,8 @@ out_free_ict:
+>   	iwl_pcie_free_ict(trans);
+>   out_no_pci:
+>   	free_percpu(trans_pcie->tso_hdr_page);
+> +	destroy_workqueue(trans_pcie->rba.alloc_wq);
+> +out_free_trans:
+>   	iwl_trans_free(trans);
+>   	return ERR_PTR(ret);
+>   }
+> 
 
 
