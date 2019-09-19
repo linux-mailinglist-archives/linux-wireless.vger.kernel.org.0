@@ -2,76 +2,91 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id F05F0B7129
-	for <lists+linux-wireless@lfdr.de>; Thu, 19 Sep 2019 03:44:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D900BB73B6
+	for <lists+linux-wireless@lfdr.de>; Thu, 19 Sep 2019 09:09:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2387624AbfISBoq (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 18 Sep 2019 21:44:46 -0400
-Received: from mail-qk1-f194.google.com ([209.85.222.194]:33309 "EHLO
-        mail-qk1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2387395AbfISBoq (ORCPT
+        id S2387830AbfISHJG (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 19 Sep 2019 03:09:06 -0400
+Received: from s3.sipsolutions.net ([144.76.43.62]:35128 "EHLO
+        sipsolutions.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2387611AbfISHJG (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 18 Sep 2019 21:44:46 -0400
-Received: by mail-qk1-f194.google.com with SMTP id x134so1681649qkb.0
-        for <linux-wireless@vger.kernel.org>; Wed, 18 Sep 2019 18:44:46 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=endlessm-com.20150623.gappssmtp.com; s=20150623;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=xkMdRwP7dRIQntiL1DI00+cj3iNG/NEsiFgJ+PEO0gw=;
-        b=Zw96cAcTE35uIKpBFAL0KSlDTqm4ScDPL9alYcLDS9Yf31Du08TU0vNhHURemYdcNO
-         WOR53PoEvW6D4qCckjtUXvNzBZjuBkzv1aX7U9cbUNy03Z5ikhlBo2lNC/aq+xEbI/59
-         eaIPkRgctTX/RVDoYCg9+XXiwnjLwZWrUntRrXgDnqA84Qxs5H45d5ZdDpntIV3debwA
-         Yi7rxtrMCRUi9yEAxsXAF76t6P1TelPu96uB+UUnyF10SY9/fjYlueLgI9vnl/0D2azL
-         bBFgmy/zlcPuMeeNWvztNnnnSsxuBwqMDaXJ0yuqvTz6ZV8TZzMqqAhNFQvG3cqI3Kou
-         b82g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=xkMdRwP7dRIQntiL1DI00+cj3iNG/NEsiFgJ+PEO0gw=;
-        b=UOsMjuM41d1v2HzOVuDEXfE2Yr1tf4/+GmEbnODzcKJDKB7RLk1EC/49XPdGGAYheX
-         qlbMTp/t6s7YRpgZ5N5rvlYPL+J5jHA+f/xycms1wimoF88QLsapuUYYc188R2U4O0HA
-         +qzCNAbjviK7mRKaLuXvfJd4PEWxeU+4XeJYN5vy7qsvUXPPpgMhpq9F+QE0fkqyO2BO
-         ph0FXwy872JfBFSplJ9TJtWuG55oS2b/n39pSOo1FdIxRd8Q7gNavMS063MTCmnqE86v
-         AdxX4BgXpDyjPDXmtL2hnxWACIm7nnFznYqwHQttimh4x4PyZEICAwJo0/RKTImjyUIC
-         6FQQ==
-X-Gm-Message-State: APjAAAVJQ4pJ/os7ALLB3fuk/X2rkSRO5pAkvl8YfQikV9GiYivvzQtQ
-        xTZ7I45OG4nv8wFzMYii7SWy61+D2PWyxU5XcDuV6w==
-X-Google-Smtp-Source: APXvYqw3xhDJsC4KO6DBCGEOvw+KkzJfCRl9QjdJwDEkRsdKxsqZl3tYPpV1cMRJHB+rn+bVsMMar0AqTbD5Bnon6EM=
-X-Received: by 2002:a37:b16:: with SMTP id 22mr498473qkl.220.1568857485567;
- Wed, 18 Sep 2019 18:44:45 -0700 (PDT)
-MIME-Version: 1.0
-References: <20190911025045.20918-1-chiu@endlessm.com>
-In-Reply-To: <20190911025045.20918-1-chiu@endlessm.com>
-From:   Chris Chiu <chiu@endlessm.com>
-Date:   Thu, 19 Sep 2019 09:44:34 +0800
-Message-ID: <CAB4CAwcs4zn4Sg0AkFnSUE-tbkdrHE=3yYeF8g+-ak5NyPBkuQ@mail.gmail.com>
-Subject: Re: [PATCH v2] rtl8xxxu: add bluetooth co-existence support for
- single antenna
-To:     Jes Sorensen <Jes.Sorensen@gmail.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        David Miller <davem@davemloft.net>
-Cc:     linux-wireless <linux-wireless@vger.kernel.org>,
-        netdev <netdev@vger.kernel.org>,
-        Linux Kernel <linux-kernel@vger.kernel.org>,
-        Linux Upstreaming Team <linux@endlessm.com>
+        Thu, 19 Sep 2019 03:09:06 -0400
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <johannes@sipsolutions.net>)
+        id 1iAqYi-00025V-AE; Thu, 19 Sep 2019 09:08:56 +0200
+Message-ID: <fd8813c1c3c02734d60f494a3c8081d95550ec85.camel@sipsolutions.net>
+Subject: Re: [PATCH] iwlwifi: fix a potential NULL pointer dereference
+From:   Johannes Berg <johannes@sipsolutions.net>
+To:     Allen Pais <allen.pais@oracle.com>, kvalo@codeaurora.org
+Cc:     davem@davemloft.net, linux-wireless@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Date:   Thu, 19 Sep 2019 09:08:55 +0200
+In-Reply-To: <1568830262-5529-1-git-send-email-allen.pais@oracle.com> (sfid-20190918_201340_397923_45638148)
+References: <1568830262-5529-1-git-send-email-allen.pais@oracle.com>
+         (sfid-20190918_201340_397923_45638148)
 Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.30.5 (3.30.5-1.fc29) 
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Wed, Sep 11, 2019 at 10:50 AM Chris Chiu <chiu@endlessm.com> wrote:
->
->
-> Notes:
->   v2:
->    - Add helper functions to replace bunch of tdma settings
->    - Reformat some lines to meet kernel coding style
->
->
+On Wed, 2019-09-18 at 23:41 +0530, Allen Pais wrote:
+> alloc_workqueue is not checked for errors and as a result,
+> a potential NULL dereference could occur.
 
-Gentle ping. Any suggestions would be appreciated. Thanks.
+Wonder why this is coming out now ... but I don't think kmalloc() was
+ever 'fixed' to fail for small allocations, so I guess this will never
+fail?
 
-Chris
+Anyway, as 0-day bot pointed out, this isn't really right. The cleanup
+paths here are also tricky, so I arrived at this patch a few days ago:
+
+
+diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/trans.c b/drivers/net/wireless/intel/iwlwifi/pcie/trans.c
+index eb544811759d..882fdf7e5e7b 100644
+--- a/drivers/net/wireless/intel/iwlwifi/pcie/trans.c
++++ b/drivers/net/wireless/intel/iwlwifi/pcie/trans.c
+@@ -3530,6 +3530,15 @@ struct iwl_trans *iwl_trans_pcie_alloc(struct pci_dev *pdev,
+ 	spin_lock_init(&trans_pcie->reg_lock);
+ 	mutex_init(&trans_pcie->mutex);
+ 	init_waitqueue_head(&trans_pcie->ucode_write_waitq);
++
++	trans_pcie->rba.alloc_wq = alloc_workqueue("rb_allocator",
++						   WQ_HIGHPRI | WQ_UNBOUND, 1);
++	if (!trans_pcie->rba.alloc_wq) {
++		ret = -ENOMEM;
++		goto out_free_trans;
++	}
++	INIT_WORK(&trans_pcie->rba.rx_alloc, iwl_pcie_rx_allocator_work);
++
+ 	trans_pcie->tso_hdr_page = alloc_percpu(struct iwl_tso_hdr_page);
+ 	if (!trans_pcie->tso_hdr_page) {
+ 		ret = -ENOMEM;
+@@ -3664,10 +3673,6 @@ struct iwl_trans *iwl_trans_pcie_alloc(struct pci_dev *pdev,
+ 		trans_pcie->inta_mask = CSR_INI_SET_MASK;
+ 	 }
+ 
+-	trans_pcie->rba.alloc_wq = alloc_workqueue("rb_allocator",
+-						   WQ_HIGHPRI | WQ_UNBOUND, 1);
+-	INIT_WORK(&trans_pcie->rba.rx_alloc, iwl_pcie_rx_allocator_work);
+-
+ #ifdef CPTCFG_IWLWIFI_DEBUGFS
+ 	trans_pcie->fw_mon_data.state = IWL_FW_MON_DBGFS_STATE_CLOSED;
+ 	mutex_init(&trans_pcie->fw_mon_data.mutex);
+@@ -3681,6 +3686,8 @@ out_free_ict:
+ 	iwl_pcie_free_ict(trans);
+ out_no_pci:
+ 	free_percpu(trans_pcie->tso_hdr_page);
++	destroy_workqueue(trans_pcie->rba.alloc_wq);
++out_free_trans:
+ 	iwl_trans_free(trans);
+ 	return ERR_PTR(ret);
+ }
+
+johannes
+
