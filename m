@@ -2,87 +2,223 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 396C3B8E71
-	for <lists+linux-wireless@lfdr.de>; Fri, 20 Sep 2019 12:23:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DC59AB8F70
+	for <lists+linux-wireless@lfdr.de>; Fri, 20 Sep 2019 14:06:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2438083AbfITKXw (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 20 Sep 2019 06:23:52 -0400
-Received: from mail-qt1-f193.google.com ([209.85.160.193]:34560 "EHLO
-        mail-qt1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2405917AbfITKXv (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 20 Sep 2019 06:23:51 -0400
-Received: by mail-qt1-f193.google.com with SMTP id 3so5585228qta.1
-        for <linux-wireless@vger.kernel.org>; Fri, 20 Sep 2019 03:23:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=endlessm-com.20150623.gappssmtp.com; s=20150623;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=4KRYh78mW4SdPF70IJ1RhDBVtlq4LObNU1qGDDQxBs0=;
-        b=tOoNnDAmZES+tYlRwv1BDJ5tc/c8uonUgoCJSanG/N6cxUUYQoeu5LP1MxcyskPr7+
-         9tDDCvJLigvz3UwafsvzuE++dDIpk6xSb5AU1UMFGIwZzm+Sr81VHNni+jl729noqpAF
-         i9ksNxKYjkPAw49oj/maGCIQ/qef2i/NVdTNwkvXC8gPONA9jB8igaMmwBrciL1s3G5s
-         8xt0/L7/Mq3C5hoLiRgdPB0euTb5vzE/KGbeoowsaOG0qzgV8UgPagJZxPcJEK+wTjFQ
-         46KRAOfX/sibqEp054jtv0xOSN6wOdVVN1vfXUBdae0IPYifLcZsZzvwdvdP6aGv5gV+
-         xVAQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=4KRYh78mW4SdPF70IJ1RhDBVtlq4LObNU1qGDDQxBs0=;
-        b=NIGyK79+yYKqh8/ATNiO35rV6Cq5HZgqOqavj+IA1Rf4Wq5G4ewrC/3tjBtzdwGvf9
-         hcSLN92i2he08lxM16jb7SHgjodG63ZnpbUEg7j6wasaVopwDx4yEUU5jvzfxVNyXPqp
-         7dqxjdwgyLLDq4wGkzG6vP0Dn/01mMjRB/bxefh3FBbvGm29wluOg+QQ1XupHTY+UJDy
-         9iB16oHopjjZMYLlf/WTy7ls+JCR2DSg9qYhh40SWT1prmdbqqfwOFAOXR9ub52g6TcS
-         cJiQXd88Hiun8HIv6ubZk5fnrhidj6ssfY6ZLbxTzn6CHlQ6AcAWcFVnbcvjkBATcu5M
-         PEVw==
-X-Gm-Message-State: APjAAAVj1DapxxGlRXpUTraQK3yxaoVm3xO0Hw20Vfc2b6rdH0QiMCx0
-        u+sJqTYn/7JgMAixEtotJTfx5az60Yo+gtGB61PEgg==
-X-Google-Smtp-Source: APXvYqycUexjcYpUbAA6viTRHrluaYbe8beqhFKg88II3Oyet91p8bdZ1huPfn6oJReTol4y7D3T60HEKnuPzIRpUTY=
-X-Received: by 2002:ac8:7310:: with SMTP id x16mr2416972qto.382.1568975030782;
- Fri, 20 Sep 2019 03:23:50 -0700 (PDT)
+        id S2406217AbfITMGq (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 20 Sep 2019 08:06:46 -0400
+Received: from mail.kernel.org ([198.145.29.99]:45856 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S2404361AbfITMGq (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 20 Sep 2019 08:06:46 -0400
+Received: from localhost.localdomain (nat-pool-mxp-t.redhat.com [149.6.153.186])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id D59DE20644;
+        Fri, 20 Sep 2019 12:06:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1568981205;
+        bh=2XYGNCCvtnM4cTVmLEYpFx5ZPYmSB05PBq2FPJnxjjI=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=jPtumAMUW7jJSMLsu7Ps0914y5Oef15CowwRDgAmzZiO4cSBrfZjQcYkDawbdlmBA
+         EeyTuK7JgezE3HDBghSfaS01ktkraSr1HS7nVQPjQfJQJ2WuPVLWpXPjZdYrSw65WN
+         oZYWvR4b/Gw7zutPOCkjHw3lwFVo8wNQ605NjYhs=
+Date:   Fri, 20 Sep 2019 14:06:39 +0200
+From:   Lorenzo Bianconi <lorenzo@kernel.org>
+To:     Toke =?iso-8859-1?Q?H=F8iland-J=F8rgensen?= <toke@redhat.com>
+Cc:     Johannes Berg <johannes@sipsolutions.net>,
+        linux-wireless@vger.kernel.org,
+        make-wifi-fast@lists.bufferbloat.net,
+        John Crispin <john@phrozen.org>, Felix Fietkau <nbd@nbd.name>
+Subject: Re: [PATCH RFC/RFT 4/4] mac80211: Apply Airtime-based Queue Limit
+ (AQL) on packet dequeue
+Message-ID: <20190920120639.GA6456@localhost.localdomain>
+References: <156889576422.191202.5906619710809654631.stgit@alrua-x1>
+ <156889576869.191202.510507546538322707.stgit@alrua-x1>
 MIME-Version: 1.0
-References: <20190920030043.30137-1-navid.emamdoost@gmail.com>
-In-Reply-To: <20190920030043.30137-1-navid.emamdoost@gmail.com>
-From:   Chris Chiu <chiu@endlessm.com>
-Date:   Fri, 20 Sep 2019 18:23:40 +0800
-Message-ID: <CAB4CAwf34TFGqTCz0BGGj3MC4pTTW10qvfJaPsNxMcXB6_EbEg@mail.gmail.com>
-Subject: Re: [PATCH] rtl8xxxu: prevent leaking urb
-To:     Navid Emamdoost <navid.emamdoost@gmail.com>
-Cc:     emamd001@umn.edu, smccaman@umn.edu, kjlu@umn.edu,
-        Jes Sorensen <Jes.Sorensen@gmail.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        netdev <netdev@vger.kernel.org>,
-        Linux Kernel <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="VbJkn9YxBvnuCH5J"
+Content-Disposition: inline
+In-Reply-To: <156889576869.191202.510507546538322707.stgit@alrua-x1>
+User-Agent: Mutt/1.12.1 (2019-06-15)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Fri, Sep 20, 2019 at 11:01 AM Navid Emamdoost
-<navid.emamdoost@gmail.com> wrote:
->
-> In rtl8xxxu_submit_int_urb if usb_submit_urb fails the allocated urb
-> should be released.
->
-> Signed-off-by: Navid Emamdoost <navid.emamdoost@gmail.com>
-Reviewed-by: Chris Chiu <chiu@endlessm.com>
 
+--VbJkn9YxBvnuCH5J
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-> --- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
-> +++ b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
-> @@ -5443,6 +5443,7 @@ static int rtl8xxxu_submit_int_urb(struct ieee80211_hw *hw)
->         ret = usb_submit_urb(urb, GFP_KERNEL);
->         if (ret) {
->                 usb_unanchor_urb(urb);
-> +               usb_free_urb(urb);
->                 goto error;
->         }
-You're right. There's a usb_alloc_urb in the beginning of this
-function and should be
-handled after submit failure.
+> From: Toke H=F8iland-J=F8rgensen <toke@redhat.com>
+>=20
+> Some devices have deep buffers in firmware and/or hardware which prevents
+> the FQ structure in mac80211 from effectively limiting bufferbloat on the
+> link. For Ethernet devices we have BQL to limit the lower-level queues, b=
+ut
+> this cannot be applied to mac80211 because transmit rates can vary wildly
+> between packets depending on which station we are transmitting it to.
+>=20
+> To overcome this, we can use airtime-based queue limiting (AQL), where we
+> estimate the transmission time for each packet before dequeueing it, and
+> use that to limit the amount of data in-flight to the hardware. This idea
+> was originally implemented as part of the out-of-tree airtime fairness
+> patch to ath10k[0] in chromiumos.
+>=20
+> This patch ports that idea over to mac80211. The basic idea is simple
+> enough: Whenever we dequeue a packet from the TXQs and send it to the
+> driver, we estimate its airtime usage, based on the last recorded TX rate
+> of the station that packet is destined for. We keep a running per-AC total
+> of airtime queued for the whole device, and when that total climbs above 8
+> ms' worth of data (corresponding to two maximum-sized aggregates), we
+> simply throttle the queues until it drops down again.
+>=20
+> The estimated airtime for each skb is stored in the tx_info, so we can
+> subtract the same amount from the running total when the skb is freed or
+> recycled. The throttling mechanism relies on this accounting to be
+> accurate (i.e., that we are not freeing skbs without subtracting any
+> airtime they were accounted for), so we put the subtraction into
+> ieee80211_report_used_skb().
+>=20
+> This patch does *not* include any mechanism to wake a throttled TXQ again,
+> on the assumption that this will happen anyway as a side effect of whatev=
+er
+> freed the skb (most commonly a TX completion).
+>=20
+> The throttling mechanism only kicks in if the queued airtime total goes
+> above the limit. Since mac80211 calculates the time based on the reported
+> last_tx_time from the driver, the whole throttling mechanism only kicks in
+> for drivers that actually report this value. With the exception of
+> multicast, where we always calculate an estimated tx time on the assumpti=
+on
+> that multicast is transmitted at the lowest (6 Mbps) rate.
+>=20
+> The throttling added in this patch is in addition to any throttling alrea=
+dy
+> performed by the airtime fairness mechanism, and in principle the two
+> mechanisms are orthogonal (and currently also uses two different sources =
+of
+> airtime). In the future, we could amend this, using the airtime estimates
+> calculated by this mechanism as a fallback input to the airtime fairness
+> scheduler, to enable airtime fairness even on drivers that don't have a
+> hardware source of airtime usage for each station.
+>=20
+> [0] https://chromium-review.googlesource.com/c/chromiumos/third_party/ker=
+nel/+/588190/13/drivers/net/wireless-4.2/ath/ath10k/mac.c#3845
+>=20
+> Signed-off-by: Toke H=F8iland-J=F8rgensen <toke@redhat.com>
+> ---
+>  net/mac80211/debugfs.c     |   24 ++++++++++++++++++++++++
+>  net/mac80211/ieee80211_i.h |    7 +++++++
+>  net/mac80211/status.c      |   22 ++++++++++++++++++++++
+>  net/mac80211/tx.c          |   38 +++++++++++++++++++++++++++++++++++++-
+>  4 files changed, 90 insertions(+), 1 deletion(-)
 
-Chris
+Hi Toke,
+
+Thx a lot for working on this. Few comments inline.
+
+Regards,
+Lorenzo
+
+>=20
+> diff --git a/net/mac80211/debugfs.c b/net/mac80211/debugfs.c
+> index 568b3b276931..c846c6e7f3e3 100644
+> --- a/net/mac80211/debugfs.c
+> +++ b/net/mac80211/debugfs.c
+> @@ -148,6 +148,29 @@ static const struct file_operations aqm_ops =3D {
+>  	.llseek =3D default_llseek,
+>  };
+> =20
+
+[...]
+
+> @@ -3581,8 +3591,19 @@ struct sk_buff *ieee80211_tx_dequeue(struct ieee80=
+211_hw *hw,
+>  	tx.skb =3D skb;
+>  	tx.sdata =3D vif_to_sdata(info->control.vif);
+> =20
+> -	if (txq->sta)
+> +	pktlen =3D skb->len + 38;
+> +	if (txq->sta) {
+>  		tx.sta =3D container_of(txq->sta, struct sta_info, sta);
+> +		if (tx.sta->last_tx_bitrate) {
+> +			airtime =3D (pktlen * 8 * 1000 *
+> +				   tx.sta->last_tx_bitrate_reciprocal) >> IEEE80211_RECIPROCAL_SHIFT;
+> +			airtime +=3D IEEE80211_AIRTIME_OVERHEAD;
+
+Here we are not taking into account aggregation burst size (it is done in a
+rough way in chromeos implementation) and tx retries. I have not carried out
+any tests so far but I think IEEE80211_AIRTIME_OVERHEAD will led to a
+significant airtime overestimation. Do you think this can be improved? (..I
+agree this is not a perfect world, but .. :))
+
+Moreover, can this approach be affected by some interrupt coalescing implem=
+ented
+by the chipset?
+
+> +		}
+> +	} else {
+> +		airtime =3D (pktlen * 8 * 1000 *
+> +			   IEEE80211_AIRTIME_MINRATE_RECIPROCAL) >> IEEE80211_RECIPROCAL_SHIF=
+T;
+> +		airtime +=3D IEEE80211_AIRTIME_OVERHEAD;
+> +	}
+> =20
+>  	/*
+>  	 * The key can be removed while the packet was queued, so need to call
+> @@ -3659,6 +3680,15 @@ struct sk_buff *ieee80211_tx_dequeue(struct ieee80=
+211_hw *hw,
+>  	}
+> =20
+>  	IEEE80211_SKB_CB(skb)->control.vif =3D vif;
+> +
+> +	if (airtime) {
+> +		info->control.tx_time_est =3D airtime;
+> +
+> +		spin_lock_bh(&local->active_txq_lock[ac]);
+> +		local->airtime_queued[ac] +=3D airtime;
+> +		spin_unlock_bh(&local->active_txq_lock[ac]);
+> +	}
+> +
+>  	return skb;
+> =20
+>  out:
+> @@ -3676,6 +3706,9 @@ struct ieee80211_txq *ieee80211_next_txq(struct iee=
+e80211_hw *hw, u8 ac)
+> =20
+>  	spin_lock_bh(&local->active_txq_lock[ac]);
+> =20
+> +	if (local->airtime_queued[ac] > IEEE80211_AIRTIME_QUEUE_LIMIT)
+> +		goto out;
+> +
+>   begin:
+>  	txqi =3D list_first_entry_or_null(&local->active_txqs[ac],
+>  					struct txq_info,
+> @@ -3753,6 +3786,9 @@ bool ieee80211_txq_may_transmit(struct ieee80211_hw=
+ *hw,
+> =20
+>  	spin_lock_bh(&local->active_txq_lock[ac]);
+> =20
+> +	if (local->airtime_queued[ac] > IEEE80211_AIRTIME_QUEUE_LIMIT)
+> +		goto out;
+> +
+>  	if (!txqi->txq.sta)
+>  		goto out;
+> =20
+>=20
+
+--VbJkn9YxBvnuCH5J
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYIAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCXYTAzQAKCRA6cBh0uS2t
+rG9uAQDPn0iF5ivifclSzkNbWu4PQyHwygghnfa/5HdXECShWQD/VbZTc7LAqZvX
+JVwANlZML1X+s2JCnpWozmJtcbG0wwY=
+=WFLv
+-----END PGP SIGNATURE-----
+
+--VbJkn9YxBvnuCH5J--
