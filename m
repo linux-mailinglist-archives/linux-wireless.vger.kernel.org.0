@@ -2,92 +2,85 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 9EA6CB8993
-	for <lists+linux-wireless@lfdr.de>; Fri, 20 Sep 2019 04:55:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 36E1FB899E
+	for <lists+linux-wireless@lfdr.de>; Fri, 20 Sep 2019 05:00:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2404020AbfITCzT (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 19 Sep 2019 22:55:19 -0400
-Received: from alexa-out-tai-02.qualcomm.com ([103.229.16.227]:25257 "EHLO
-        alexa-out-tai-02.qualcomm.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S2388199AbfITCzT (ORCPT
+        id S2392033AbfITDAw (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 19 Sep 2019 23:00:52 -0400
+Received: from mail-io1-f66.google.com ([209.85.166.66]:44050 "EHLO
+        mail-io1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2389956AbfITDAv (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 19 Sep 2019 22:55:19 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
-  d=qti.qualcomm.com; i=@qti.qualcomm.com; q=dns/txt;
-  s=qcdkim; t=1568948118; x=1600484118;
-  h=from:to:cc:date:message-id:references:in-reply-to:
-   content-transfer-encoding:mime-version:subject;
-  bh=h5GDMNjW+EjFMM6Brw8DWg04GozxHkTpURfiFQTUTHk=;
-  b=vOY4FwpTYzVD758IwZag6VQ6x74XXzvb9JCG+CR5908Qbi45Z0/4TV9v
-   M05+ODd4fVaLQ9UD9+fni/fTkHHrnuQQQYZZ3BBNhW9UMisqvOZ9GOo13
-   TmBNlrAmbXf8IQOz8RXYQfN+e40+7xtW6tfrIIOTTXnCQ82J1xgHRsuU+
-   Q=;
-Subject: RE: [PATCH v3] ath10k: support NET_DETECT WoWLAN feature
-Thread-Topic: [PATCH v3] ath10k: support NET_DETECT WoWLAN feature
-Received: from ironmsg01-tai.qualcomm.com ([10.249.140.6])
-  by alexa-out-tai-02.qualcomm.com with ESMTP; 20 Sep 2019 10:55:16 +0800
-Received: from aptaiexm02a.ap.qualcomm.com ([10.249.150.11])
-  by ironmsg01-tai.qualcomm.com with ESMTP/TLS/AES256-SHA; 20 Sep 2019 10:55:10 +0800
-Received: from aptaiexm02f.ap.qualcomm.com (10.249.150.16) by
- aptaiexm02a.ap.qualcomm.com (10.249.150.11) with Microsoft SMTP Server (TLS)
- id 15.0.1473.3; Fri, 20 Sep 2019 10:55:08 +0800
-Received: from aptaiexm02f.ap.qualcomm.com ([fe80::4152:1436:e436:faa1]) by
- aptaiexm02f.ap.qualcomm.com ([fe80::4152:1436:e436:faa1%19]) with mapi id
- 15.00.1473.005; Fri, 20 Sep 2019 10:55:08 +0800
-From:   Wen Gong <wgong@qti.qualcomm.com>
-To:     "kvalo@codeaurora.org" <kvalo@codeaurora.org>,
-        Brian Norris <briannorris@chromium.org>
-CC:     linux-wireless <linux-wireless@vger.kernel.org>,
-        Linux Kernel <linux-kernel@vger.kernel.org>,
-        "ath10k@lists.infradead.org" <ath10k@lists.infradead.org>,
-        Wen Gong <wgong@codeaurora.org>
-Thread-Index: AQHVbXWiq8VLkeX27kapg8LCqChuTqcxeMfAgAJpkJA=
-Date:   Fri, 20 Sep 2019 02:55:08 +0000
-Message-ID: <40854e84bd4b4a9699b60530b1c373ad@aptaiexm02f.ap.qualcomm.com>
-References: <1534402113-14337-1-git-send-email-wgong@codeaurora.org>
- <20181114225910.GA220599@google.com>
- <CA+ASDXMh7vdfkA5jtJqWEU-g-4Ta5Xvy046zujyASZcESCGhAQ@mail.gmail.com>
- <87woe5aehr.fsf@kamboji.qca.qualcomm.com>
-In-Reply-To: <87woe5aehr.fsf@kamboji.qca.qualcomm.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-ms-exchange-transport-fromentityheader: Hosted
-x-originating-ip: [10.249.136.10]
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
-MIME-Version: 1.0
+        Thu, 19 Sep 2019 23:00:51 -0400
+Received: by mail-io1-f66.google.com with SMTP id j4so12740088iog.11;
+        Thu, 19 Sep 2019 20:00:51 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id;
+        bh=wR9pye3sH3f9c/Ue486PD/cpETKoqUyEfHnMaMiRPdY=;
+        b=fzAGUdQVIXP8BO6Um0bEY7aXmxWrofp3WYusEuhMgPmQ27A5ZhIq51xSMAN9gohJey
+         xdsD6nXME5ZveH9/lQ1MvNo7e8lxKB+VJiF53+KRWHjYY3yo3CO+r/lMh38wUGe5T120
+         NI5FyQ8YmYV/aaqGUTa6/SbDVBDZBSb3F3uOkXNjWxRyI80HGsx60/fhQaY8HNtHHcDb
+         511aV1DthYS9mGIh4z56qpebAKs9Q6CMcrqtYaemGR01y1sZsyooYZweWPqYYQ28lZUi
+         oVHgUKZHp3jvfYhzZnVc8ousIPPiZiLXszN06Siqs6CGkR6p4m+lf80we8Xi6J0bEISz
+         hFBw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=wR9pye3sH3f9c/Ue486PD/cpETKoqUyEfHnMaMiRPdY=;
+        b=mUe4i46sJphvT9eHFwqTegYlyqNnE95+R/GbAr/Is0OJfzCFXHu/cUrw5ElaQR4ATd
+         ShSEU7xpcL4ISPtNRc3kSBvt3ROv3RHbxdgCw3UYVG+DJLMet3AvPnJT0bwN5UWcCodd
+         z7bw4VprjwTZj8WPj+itlX2LdPws17O4C/ROM8RuRJ7MFQLwCg0qLscbxBXwKUsnyoTp
+         KIi52u4X85ABBEBFgGrx6ZS/sllG/u+spcSMjf/TVV0UglkLy7sRgZ4gyMBHgbMrzUDO
+         tGJQMGon7uU9OTA6a73s3ap8eeQ/c8KZUftJBh6c7xJL7qrH5lfZJSQBjePgKF+RF/rt
+         40wQ==
+X-Gm-Message-State: APjAAAWUFzu7MpjxWJtu4hgZuo8rk1uE8i27EiFcdjhNEG5ZaOg9jkNB
+        zqGym44mT1nF7nFS4RHjg/Y=
+X-Google-Smtp-Source: APXvYqwI+IXRu7Lhr0HmMj08qfXGIRkcCHYMdmSMkCW5GIIz+Ml1cQ5Uy6GCUGV2WrCpixMQAv4aog==
+X-Received: by 2002:a02:ac82:: with SMTP id x2mr13978167jan.34.1568948450810;
+        Thu, 19 Sep 2019 20:00:50 -0700 (PDT)
+Received: from cs-dulles.cs.umn.edu (cs-dulles.cs.umn.edu. [128.101.35.54])
+        by smtp.googlemail.com with ESMTPSA id t9sm380269iop.86.2019.09.19.20.00.50
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 19 Sep 2019 20:00:50 -0700 (PDT)
+From:   Navid Emamdoost <navid.emamdoost@gmail.com>
+Cc:     emamd001@umn.edu, smccaman@umn.edu, kjlu@umn.edu,
+        Navid Emamdoost <navid.emamdoost@gmail.com>,
+        Jes Sorensen <Jes.Sorensen@gmail.com>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: [PATCH] rtl8xxxu: prevent leaking urb
+Date:   Thu, 19 Sep 2019 22:00:41 -0500
+Message-Id: <20190920030043.30137-1-navid.emamdoost@gmail.com>
+X-Mailer: git-send-email 2.17.1
+To:     unlisted-recipients:; (no To-header on input)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-> -----Original Message-----
-> From: ath10k <ath10k-bounces@lists.infradead.org> On Behalf Of Kalle Valo
-> Sent: Wednesday, September 18, 2019 10:03 PM
-> To: Brian Norris <briannorris@chromium.org>
-> Cc: linux-wireless <linux-wireless@vger.kernel.org>; Linux Kernel <linux-
-> kernel@vger.kernel.org>; ath10k@lists.infradead.org; Wen Gong
-> <wgong@codeaurora.org>
-> Subject: [EXT] Re: [PATCH v3] ath10k: support NET_DETECT WoWLAN feature
->=20
-> So essentially the problem is that with firmwares supporting both
-> WMI_SERVICE_NLO and WMI_SERVICE_SPOOF_MAC_SUPPORT ath10k
-> enables
-> NL80211_FEATURE_SCAN_RANDOM_MAC_ADDR, but
-> NL80211_FEATURE_SCHED_SCAN_RANDOM_MAC_ADDR is not enabled
-> which is
-> inconsistent from user space point of view. Is my understanding correct?
->=20
-> Wen, can you enable NL80211_FEATURE_SCAN_RANDOM_MAC_ADDR?
-> Does firmware
-> support that?
+In rtl8xxxu_submit_int_urb if usb_submit_urb fails the allocated urb
+should be released.
 
-Yes, I test again, it is enabled NL80211_FEATURE_SCAN_RANDOM_MAC_ADDR now.
+Signed-off-by: Navid Emamdoost <navid.emamdoost@gmail.com>
+---
+ drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c | 1 +
+ 1 file changed, 1 insertion(+)
 
->=20
-> _______________________________________________
-> ath10k mailing list
-> ath10k@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/ath10k
+diff --git a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
+index 8136e268b4e6..4a559c37e208 100644
+--- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
++++ b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
+@@ -5443,6 +5443,7 @@ static int rtl8xxxu_submit_int_urb(struct ieee80211_hw *hw)
+ 	ret = usb_submit_urb(urb, GFP_KERNEL);
+ 	if (ret) {
+ 		usb_unanchor_urb(urb);
++		usb_free_urb(urb);
+ 		goto error;
+ 	}
+ 
+-- 
+2.17.1
+
