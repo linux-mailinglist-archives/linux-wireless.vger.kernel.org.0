@@ -2,232 +2,138 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 204C5B9050
-	for <lists+linux-wireless@lfdr.de>; Fri, 20 Sep 2019 15:06:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B7CBEB907A
+	for <lists+linux-wireless@lfdr.de>; Fri, 20 Sep 2019 15:16:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727195AbfITNGL (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 20 Sep 2019 09:06:11 -0400
-Received: from mail.kernel.org ([198.145.29.99]:52580 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727190AbfITNGK (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 20 Sep 2019 09:06:10 -0400
-Received: from localhost.localdomain (nat-pool-mxp-t.redhat.com [149.6.153.186])
+        id S1727329AbfITNQm (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 20 Sep 2019 09:16:42 -0400
+Received: from smtp.codeaurora.org ([198.145.29.96]:40378 "EHLO
+        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725842AbfITNQl (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 20 Sep 2019 09:16:41 -0400
+Received: by smtp.codeaurora.org (Postfix, from userid 1000)
+        id 81B6461418; Fri, 20 Sep 2019 13:16:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
+        s=default; t=1568985400;
+        bh=rUHfeIczuED1/o6lZPJ3TUjPOVuQyAqF6bAfwhLl0Yk=;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+        b=Fl/H2wEPX2w63rUTnOpFTA0pIOsnMfmW4cz19oggv2MtI89cVutOja2dwkEhLuTjL
+         T5yX7BhklhCnRJAnIkY+TzA1+f6Sfuxyazi2I0saLb/zS756m+QCuNHTXd5F3QITc1
+         VoAP+XceRCb1Ea6SKTcgLDpkteFwmFqy2xlGftHg=
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        pdx-caf-mail.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.7 required=2.0 tests=ALL_TRUSTED,BAYES_00,
+        DKIM_INVALID,DKIM_SIGNED,SPF_NONE autolearn=no autolearn_force=no
+        version=3.4.0
+Received: from tynnyri.adurom.net (tynnyri.adurom.net [51.15.11.48])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id EF62D20640;
-        Fri, 20 Sep 2019 13:06:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1568984769;
-        bh=GnmfxUKTZ9Dlj/gpKRaAkOJXf8fPPArs8jqh6pbVNrE=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=Sxcd/VE3SvHckD3S2Gv0AbTl1SQaTyOfbhr8HaEbxndyA6dIeUzrXZwWTVPY+gGru
-         LekQ7ECQVFbrg+feZUV0F3/MmCe6wE0ua7bx9qxfMPh6qFqQkB0MW7J8x3mQTpVNvt
-         nejyb1wQGoVq+x3utoVIOtq/nVMp6RhAT3yRTtzM=
-Date:   Fri, 20 Sep 2019 15:06:04 +0200
-From:   Lorenzo Bianconi <lorenzo@kernel.org>
-To:     Toke =?iso-8859-1?Q?H=F8iland-J=F8rgensen?= <toke@redhat.com>
-Cc:     Johannes Berg <johannes@sipsolutions.net>,
-        linux-wireless@vger.kernel.org,
-        make-wifi-fast@lists.bufferbloat.net,
-        John Crispin <john@phrozen.org>, Felix Fietkau <nbd@nbd.name>
-Subject: Re: [PATCH RFC/RFT 4/4] mac80211: Apply Airtime-based Queue Limit
- (AQL) on packet dequeue
-Message-ID: <20190920130604.GB6456@localhost.localdomain>
-References: <156889576422.191202.5906619710809654631.stgit@alrua-x1>
- <156889576869.191202.510507546538322707.stgit@alrua-x1>
- <20190920120639.GA6456@localhost.localdomain>
- <87k1a39lgt.fsf@toke.dk>
+        (Authenticated sender: kvalo@smtp.codeaurora.org)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 4F05E61544;
+        Fri, 20 Sep 2019 13:16:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
+        s=default; t=1568985399;
+        bh=rUHfeIczuED1/o6lZPJ3TUjPOVuQyAqF6bAfwhLl0Yk=;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+        b=Q4VAL7Mjo0WtgFxpnAXxTg7SXp0vwAamLJAjR7SuVllSKJOMR8l9IOW5Ia+3fsqR3
+         /0y57+1HoaoT8uQpTZo8YQTQfZoYPy7xFzPKm7d31XkdClPqVp6t9TVZVNNa0m+FXZ
+         64NZFfVv4GWlSFPtZeJNxlwqvQCONgF8nq/3sqBs=
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 4F05E61544
+Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
+From:   Kalle Valo <kvalo@codeaurora.org>
+To:     Jean-Pierre TOSONI <jp.tosoni@acksys.fr>
+Cc:     "linux-wireless\@vger.kernel.org" <linux-wireless@vger.kernel.org>
+Subject: Re: mac80211+ath9k AP fails to honour power save mode from client
+References: <AM4PR0101MB23055B57EF8BEBA8D478554CE4C80@AM4PR0101MB2305.eurprd01.prod.exchangelabs.com>
+Date:   Fri, 20 Sep 2019 16:16:36 +0300
+In-Reply-To: <AM4PR0101MB23055B57EF8BEBA8D478554CE4C80@AM4PR0101MB2305.eurprd01.prod.exchangelabs.com>
+        (Jean-Pierre TOSONI's message of "Thu, 18 Jul 2019 14:52:05 +0000")
+Message-ID: <874l17jeff.fsf@tynnyri.adurom.net>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="qcHopEYAB45HaUaB"
-Content-Disposition: inline
-In-Reply-To: <87k1a39lgt.fsf@toke.dk>
-User-Agent: Mutt/1.12.1 (2019-06-15)
+Content-Type: text/plain
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+Jean-Pierre TOSONI <jp.tosoni@acksys.fr> writes:
 
---qcHopEYAB45HaUaB
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+> Context:
+>
+>  I am using one device in AP mode, the other in client mode.
+>  The client uses wpa_supplicant to do *background scan to other channels that the data channel*.
+>  I am running iperf (UDP) *from the AP* to the client.
+>
+>  My device is Cavium development board-based (Octeon III CPU), equipped with Compex WLE350NX.
+>  It used to work correctly with kernel 3.18 and an old 2015 wireless backport.
+>  Now I updated to kernel 4.9 and the wireless backport 4.19.32-1, the
+> last one from the OpenWRT trunk. (previously I used
+> backport-2017-11-01 with the same failure).
+>
+>  I am running wireshark with Airpcap to spy the wireless link.
+>
+> Problem:
+>
+>  When the client scans offchannel, it correctly sends nullfunc frames around the offchannel period, with the PM bit set then unset.
+>
+>  However, during this time, the AP continues to send data to the client.
+>    
+>  This results in a lot of lost frames, though I set the powersave buffers to high values on the AP side.
+>
+>
+> After some research I saw that the same kind of problem was fixed [1]
+> and even re-fixed, but since there where so many changes in the queue
+> management, I cannot really compare his work and the current state of
+> the driver.
+>
+> Any idea / patch / directions of research ?
+>
+> J.P. Tosoni - ACKSYS
+>
+> [1] https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=5519541d5a5f19893546883547e2f0f2e5934df7 
 
-> Lorenzo Bianconi <lorenzo@kernel.org> writes:
->=20
-> >> From: Toke H=F8iland-J=F8rgensen <toke@redhat.com>
-> >>=20
-> >> Some devices have deep buffers in firmware and/or hardware which preve=
-nts
-> >> the FQ structure in mac80211 from effectively limiting bufferbloat on =
-the
-> >> link. For Ethernet devices we have BQL to limit the lower-level queues=
-, but
-> >> this cannot be applied to mac80211 because transmit rates can vary wil=
-dly
-> >> between packets depending on which station we are transmitting it to.
-> >>=20
-> >> To overcome this, we can use airtime-based queue limiting (AQL), where=
- we
-> >> estimate the transmission time for each packet before dequeueing it, a=
-nd
-> >> use that to limit the amount of data in-flight to the hardware. This i=
-dea
-> >> was originally implemented as part of the out-of-tree airtime fairness
-> >> patch to ath10k[0] in chromiumos.
-> >>=20
-> >> This patch ports that idea over to mac80211. The basic idea is simple
-> >> enough: Whenever we dequeue a packet from the TXQs and send it to the
-> >> driver, we estimate its airtime usage, based on the last recorded TX r=
-ate
-> >> of the station that packet is destined for. We keep a running per-AC t=
-otal
-> >> of airtime queued for the whole device, and when that total climbs abo=
-ve 8
-> >> ms' worth of data (corresponding to two maximum-sized aggregates), we
-> >> simply throttle the queues until it drops down again.
-> >>=20
-> >> The estimated airtime for each skb is stored in the tx_info, so we can
-> >> subtract the same amount from the running total when the skb is freed =
-or
-> >> recycled. The throttling mechanism relies on this accounting to be
-> >> accurate (i.e., that we are not freeing skbs without subtracting any
-> >> airtime they were accounted for), so we put the subtraction into
-> >> ieee80211_report_used_skb().
-> >>=20
-> >> This patch does *not* include any mechanism to wake a throttled TXQ ag=
-ain,
-> >> on the assumption that this will happen anyway as a side effect of wha=
-tever
-> >> freed the skb (most commonly a TX completion).
-> >>=20
-> >> The throttling mechanism only kicks in if the queued airtime total goes
-> >> above the limit. Since mac80211 calculates the time based on the repor=
-ted
-> >> last_tx_time from the driver, the whole throttling mechanism only kick=
-s in
-> >> for drivers that actually report this value. With the exception of
-> >> multicast, where we always calculate an estimated tx time on the assum=
-ption
-> >> that multicast is transmitted at the lowest (6 Mbps) rate.
-> >>=20
-> >> The throttling added in this patch is in addition to any throttling al=
-ready
-> >> performed by the airtime fairness mechanism, and in principle the two
-> >> mechanisms are orthogonal (and currently also uses two different sourc=
-es of
-> >> airtime). In the future, we could amend this, using the airtime estima=
-tes
-> >> calculated by this mechanism as a fallback input to the airtime fairne=
-ss
-> >> scheduler, to enable airtime fairness even on drivers that don't have a
-> >> hardware source of airtime usage for each station.
-> >>=20
-> >> [0] https://chromium-review.googlesource.com/c/chromiumos/third_party/=
-kernel/+/588190/13/drivers/net/wireless-4.2/ath/ath10k/mac.c#3845
-> >>=20
-> >> Signed-off-by: Toke H=F8iland-J=F8rgensen <toke@redhat.com>
-> >> ---
-> >>  net/mac80211/debugfs.c     |   24 ++++++++++++++++++++++++
-> >>  net/mac80211/ieee80211_i.h |    7 +++++++
-> >>  net/mac80211/status.c      |   22 ++++++++++++++++++++++
-> >>  net/mac80211/tx.c          |   38 +++++++++++++++++++++++++++++++++++=
-++-
-> >>  4 files changed, 90 insertions(+), 1 deletion(-)
-> >
-> > Hi Toke,
-> >
-> > Thx a lot for working on this. Few comments inline.
-> >
-> > Regards,
-> > Lorenzo
-> >
-> >>=20
-> >> diff --git a/net/mac80211/debugfs.c b/net/mac80211/debugfs.c
-> >> index 568b3b276931..c846c6e7f3e3 100644
-> >> --- a/net/mac80211/debugfs.c
-> >> +++ b/net/mac80211/debugfs.c
-> >> @@ -148,6 +148,29 @@ static const struct file_operations aqm_ops =3D {
-> >>  	.llseek =3D default_llseek,
-> >>  };
-> >> =20
-> >
-> > [...]
-> >
-> >> @@ -3581,8 +3591,19 @@ struct sk_buff *ieee80211_tx_dequeue(struct iee=
-e80211_hw *hw,
-> >>  	tx.skb =3D skb;
-> >>  	tx.sdata =3D vif_to_sdata(info->control.vif);
-> >> =20
-> >> -	if (txq->sta)
-> >> +	pktlen =3D skb->len + 38;
-> >> +	if (txq->sta) {
-> >>  		tx.sta =3D container_of(txq->sta, struct sta_info, sta);
-> >> +		if (tx.sta->last_tx_bitrate) {
-> >> +			airtime =3D (pktlen * 8 * 1000 *
-> >> +				   tx.sta->last_tx_bitrate_reciprocal) >> IEEE80211_RECIPROCAL_SH=
-IFT;
-> >> +			airtime +=3D IEEE80211_AIRTIME_OVERHEAD;
-> >
-> > Here we are not taking into account aggregation burst size (it is done
-> > in a rough way in chromeos implementation) and tx retries. I have not
-> > carried out any tests so far but I think IEEE80211_AIRTIME_OVERHEAD
-> > will led to a significant airtime overestimation. Do you think this
-> > can be improved? (..I agree this is not a perfect world, but .. :))
->=20
-> Hmm, yeah, looking at this again, the way I'm going this now, I should
-> probably have used the low 16-us IFS overhead for every packet.
->=20
-> I guess we could do something similar to what the chromeos thing is
-> doing. I.e., adding a single "large" overhead value when we think the
-> packet is the first of a burst, and using the smaller value for the
-> rest.
->=20
-> One approach could be to couple the switch to the "scheduling rounds" we
-> already have. I.e., first packet after a call to
-> ieee8021_txq_schedule_start() will get the 100-us overhead, and every
-> subsequent one will get the low one. Not sure how this will fit with
-> what the driver actually does, though, so I guess some experimentation
-> is in order.
->=20
-> Ultimately,  I'm not sure it matters that much whether occasionally add
-> 80 us extra to the estimate. But as you say, adding 100 us to every
-> packet is probably a bit much ;)
+This an old report from July but sounds a pretty serious problem to me,
+and power save problems are difficult to detect by normal users which
+makes this even more important. Has anyone else noticed anything
+similar?
 
-Would it be possible to use the previous tx airtime reported by the driver?
-(not sure if it is feasible). Some drivers can report airtime compute in hw,
-the issue is it can be no not linked to the given skb or aggregation burst,=
- so
-we should take into account burst size
+Something which would help a lot is to bisect when the problem appeared.
+For example, if you can connect your ath9k board to an x86 device you
+could start testing upstream kernel releases[1] directly from git
+(v3.18, v4.9, v4.19 and so on). With an upstream kernel release I mean a
+release directly from Linus' tree:
 
->=20
-> > Moreover, can this approach be affected by some interrupt coalescing
-> > implemented by the chipset?
->=20
-> Probably? Ultimately we don't really know what exactly the chipset is
-> doing, so we're guessing here, no?
+https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/
 
-Here I mean if the hw relies on a 1:n tx interrupt/packet ratio (I guess mo=
-st
-driver do), it would probably affect throughput, right? (e.g TCP)
+This way there are no out-of-tree patches applied, and we can also rule
+out backports problems, which makes it easier to find the root cause.
+Just first make sure you that you can reproduce the problem with the
+upstream kernel so that you don't waste time bisecting which is not
+there :)
 
-Regards,
-Lorenzo
+First find what is the last working release ("good") and the first
+release which has the bug ("bad"). This way it's a lot easier to find
+the culprit and fix it.
 
->=20
-> -Toke
->=20
+You can checkout a specific release like this:
 
---qcHopEYAB45HaUaB
-Content-Type: application/pgp-signature; name="signature.asc"
+git checkout v4.9
 
------BEGIN PGP SIGNATURE-----
+And even better if you can then use git-bisect to find the actual commit
+which broke it:
 
-iHUEABYIAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCXYTOuQAKCRA6cBh0uS2t
-rLQAAQD8Vlm6rVWV5WKrPjRFK3eroxCu5PFp1FFND8/6RRGXxQD/QbVlp9J/PuFS
-1Vss+Kv0UC1KeWUwI9xcaTPzGKYUwgk=
-=jPvI
------END PGP SIGNATURE-----
+git bisect start
+git bisect bad v4.12
+git bisect good v4.11
 
---qcHopEYAB45HaUaB--
+https://www.kernel.org/doc/html/latest/admin-guide/bug-bisect.html
+
+Please do let me know how it goes, this issue should be fixed. Power
+save problems are always tricky and cause bad user experience.
+
+-- 
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
