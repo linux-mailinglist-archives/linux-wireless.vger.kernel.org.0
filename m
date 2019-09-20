@@ -2,53 +2,106 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 45E6CB83D1
-	for <lists+linux-wireless@lfdr.de>; Fri, 20 Sep 2019 00:05:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7C563B8897
+	for <lists+linux-wireless@lfdr.de>; Fri, 20 Sep 2019 02:36:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2403924AbfISWFK (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 19 Sep 2019 18:05:10 -0400
-Received: from s3.sipsolutions.net ([144.76.43.62]:51468 "EHLO
-        sipsolutions.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2389212AbfISWFK (ORCPT
+        id S2391613AbfITAgM (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 19 Sep 2019 20:36:12 -0400
+Received: from mail-qk1-f194.google.com ([209.85.222.194]:46541 "EHLO
+        mail-qk1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2390299AbfITAgM (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 19 Sep 2019 18:05:10 -0400
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <johannes@sipsolutions.net>)
-        id 1iB4Xy-0007p0-85; Fri, 20 Sep 2019 00:05:06 +0200
-Message-ID: <54996f59d8fb8f0f766959672e3fb9681d6a09c9.camel@sipsolutions.net>
-Subject: Re: Can Intel AX200 sniff UL OFDMA ?
-From:   Johannes Berg <johannes@sipsolutions.net>
-To:     Tim Higgins <tim@smallnetbuilder.com>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-Date:   Fri, 20 Sep 2019 00:05:03 +0200
-In-Reply-To: <82af1531-6f53-364c-46ed-e011455e9c01@smallnetbuilder.com> (sfid-20190919_210904_523705_B45512FD)
-References: <82af1531-6f53-364c-46ed-e011455e9c01@smallnetbuilder.com>
-         (sfid-20190919_210904_523705_B45512FD)
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.30.5 (3.30.5-1.fc29) 
+        Thu, 19 Sep 2019 20:36:12 -0400
+Received: by mail-qk1-f194.google.com with SMTP id 201so5407359qkd.13
+        for <linux-wireless@vger.kernel.org>; Thu, 19 Sep 2019 17:36:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=stg+GpIDtHLmRJfVFeaiidOrRaZK5aB+gDLGzBpnstM=;
+        b=k2iaeOhCEz6eOKlGxqJcc/E+rroYDws2+YpFC8MfpD75tieXZpYWYoyVxPwoNMzfyb
+         eHUWzoSVvZEOR3n+d4yQWUsu+bC2aY1JR6LHk1pbJ/IVWzvJ4pi45mY6UjTlq3Bn6UKa
+         /uvO3Vm9A2gLaG5AHE4hQ7Lrko6vDKHlQHWCg=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=stg+GpIDtHLmRJfVFeaiidOrRaZK5aB+gDLGzBpnstM=;
+        b=laIlg9Yd9q4W6aD0AyYJKvr1YIuZXEQVajxCkhLp3JDATMEUpO/h1vFIjCMS67t5cb
+         qeaqeniB/kvi+krw0ykRUqH/etBCdS3SRNc6nuAcUviHWwUPqDMZKQ9fr1T/IPaVRton
+         SAqSllWQbZrg8LUPZRk/WqG/HFxhBqgrAyuXTYe/a9l2w4taNwvVFBNtTm6Az2Av3qLi
+         4rUy8eoL7EklTvmDI7kYWhviNcJruxv7t273Kt+yo6+LYNdIyNI8+YNzPoz4JOwKY3+U
+         Zogn7JwBvhn9oFXPc06ia8Mvy/lI1BNYQuPZxZUDFS+Yd1e8RfqiPQoTthPgcKH0gf8I
+         nrPg==
+X-Gm-Message-State: APjAAAVj9I0YHt/aDeOhULQeNqUb6r2kv/QJZFyw8Xi/PDeA5TBH1gUI
+        6FCX5AJq0GtFuKUmO6NYYL9YUwBLuxg=
+X-Google-Smtp-Source: APXvYqzPM+ocVPKxz4AjJuokU3AOtbkWJtplG/vRbxHkH/nVDcDcciZ6PvILubjnbqyARHHPg2zwMg==
+X-Received: by 2002:ae9:edc1:: with SMTP id c184mr632657qkg.336.1568939771008;
+        Thu, 19 Sep 2019 17:36:11 -0700 (PDT)
+Received: from mail-qk1-f178.google.com (mail-qk1-f178.google.com. [209.85.222.178])
+        by smtp.gmail.com with ESMTPSA id q5sm185120qte.38.2019.09.19.17.36.08
+        for <linux-wireless@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 19 Sep 2019 17:36:09 -0700 (PDT)
+Received: by mail-qk1-f178.google.com with SMTP id w2so5486064qkf.2
+        for <linux-wireless@vger.kernel.org>; Thu, 19 Sep 2019 17:36:08 -0700 (PDT)
+X-Received: by 2002:a37:5a06:: with SMTP id o6mr606203qkb.279.1568939767810;
+ Thu, 19 Sep 2019 17:36:07 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+References: <1568617425-28062-1-git-send-email-yhchuang@realtek.com>
+ <1568617425-28062-6-git-send-email-yhchuang@realtek.com> <CA+ASDXOMao9uucGxa6C0Q99pFvAtKTptreeshbfKqiELDKUH0Q@mail.gmail.com>
+ <F7CD281DE3E379468C6D07993EA72F84D18DC62E@RTITMBSVM04.realtek.com.tw>
+In-Reply-To: <F7CD281DE3E379468C6D07993EA72F84D18DC62E@RTITMBSVM04.realtek.com.tw>
+From:   Brian Norris <briannorris@chromium.org>
+Date:   Thu, 19 Sep 2019 17:35:56 -0700
+X-Gmail-Original-Message-ID: <CA+ASDXP_7FVEaQrE1V=rX0Vieu8GGWj+it7p4F_8XeRNniEWkw@mail.gmail.com>
+Message-ID: <CA+ASDXP_7FVEaQrE1V=rX0Vieu8GGWj+it7p4F_8XeRNniEWkw@mail.gmail.com>
+Subject: Re: [PATCH 05/15] rtw88: pci: release tx skbs DMAed when stop
+To:     Tony Chuang <yhchuang@realtek.com>
+Cc:     Kalle Valo <kvalo@codeaurora.org>,
+        linux-wireless <linux-wireless@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi Tim,
+On Tue, Sep 17, 2019 at 7:10 PM Tony Chuang <yhchuang@realtek.com> wrote:
+> > On Mon, Sep 16, 2019 at 12:03 AM <yhchuang@realtek.com> wrote:
+> > >
+> > > From: Yan-Hsuan Chuang <yhchuang@realtek.com>
+> > >
+> > > Interrupt is disabled to stop PCI, which means the skbs
+> > > queued for each TX ring will not be released via DMA
+> > > interrupt.
+> >
+> > In what cases do you hit this? I think you do this when entering PS
+> > mode, no? But then, see below.
+>
+> I'll hit this when ieee80211_ops::stop, or rtw_power_off.
+> Both are to turn off the device, so there's no more DMA activities.
+> If we don't release the SKBs that are not released by DMA interrupt
+> when powering off, these could be leaked.
 
+Ah, I was a bit confused. So it does get called from "PS" routines:
+rtw_enter_ips() -> rtw_core_stop()
+but that "IPS" mode means "Inactive" Power Save, and it's only used
+when transitioning into idle states (IEEE80211_CONF_IDLE).
 
-> I have been using the debug hw_sniffer_params file to tune the AX200 to a specific AID. This 
-> works well for capturing OFDMA DL. But I have yet to capture any UL OFDMA frames, or at least I 
-> don't think I have.
-> 
-> I am looking for QoS data frames that have HE_MU PPDU format. Is this correct?
-> I can see plenty of HE_SU PPDU frames from STA to AP, but no HE_MU uplink.
-> 
-> Am I looking for the wrong thing or can the AX200 not sniff OFDMA UL?
+Incidentally, I think this also may explain many of the leaks I've
+been seeing elsewhere, when I leave a device sitting and scanning for
+a very long time -- each scan attempt is making a single transition
+out-and-back to IPS mode, which meant it may be leaking any
+outstanding TX DMA. And testing confirms this: if I just bring up the
+interface, run a scan, then bring it down, I see many fewer unmaps
+than maps. Doing this enough times, I run out of contiguous DMA memory
+and the device stops working. This fixes that problem for me. So:
 
-UL OFDMA frames should be HE_TB PPDU format, not HE_MU. They can only be
-sent as a response to trigger frames, so all the participants are
-synchronized etc.
+Reviewed-by: Brian Norris <briannorris@chromium.org>
+Tested-by: Brian Norris <briannorris@chromium.org>
 
-johannes
+I wonder if, given the problems I've seen (the driver can become
+totally ineroperable), this patch and the previous patch (its only
+real dependency) should be fast-tracked to the current release.
 
+Brian
