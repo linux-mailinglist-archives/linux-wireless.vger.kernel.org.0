@@ -2,107 +2,128 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 12686B8FEB
-	for <lists+linux-wireless@lfdr.de>; Fri, 20 Sep 2019 14:45:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A86D6B9011
+	for <lists+linux-wireless@lfdr.de>; Fri, 20 Sep 2019 14:54:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726143AbfITMpG (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 20 Sep 2019 08:45:06 -0400
-Received: from smtp.codeaurora.org ([198.145.29.96]:48806 "EHLO
-        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725922AbfITMpG (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 20 Sep 2019 08:45:06 -0400
-Received: by smtp.codeaurora.org (Postfix, from userid 1000)
-        id E59256141B; Fri, 20 Sep 2019 12:45:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1568983504;
-        bh=vGllR88P9hEZE+i0twWfEPOok8AM3MexNj8GcIjzAwQ=;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=FuC3zhZgA2QjEAFiqt/D0exGT9WWA7mGL2uoFj1D5Tdf+9Q7RdZ9l0sA5uGA0pLMK
-         TUL1GE6z6xcfP9M0UfE0+RNsZRlGxzEx9ndMl3l0gdKVCXI2uMKIQsnMxXP6Jk3/Xb
-         grtMuM7LoNLFw262qq8soPMl/3XHXb7RLq2e10ek=
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        pdx-caf-mail.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.7 required=2.0 tests=ALL_TRUSTED,BAYES_00,
-        DKIM_INVALID,DKIM_SIGNED,SPF_NONE autolearn=no autolearn_force=no
-        version=3.4.0
-Received: from x230.qca.qualcomm.com (37-136-106-186.rev.dnainternet.fi [37.136.106.186])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        (Authenticated sender: kvalo@smtp.codeaurora.org)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 40B5060A60;
-        Fri, 20 Sep 2019 12:45:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1568983503;
-        bh=vGllR88P9hEZE+i0twWfEPOok8AM3MexNj8GcIjzAwQ=;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=P0LswFBtKy4swZy+f/Wrw2EiCFXrPZoNu4pDPpFDSWs3AC9zv4ewGfpSNzXEkbucx
-         yF+0YQIqLPTKAceL67pBakc/y8jC0C9dZrWyW1Rwuhk2J5N1JjJ4SSYEYtTc9vvtP9
-         nusCYOBBBOG2jWXInjahLKYEpnEJ2KV06isaiU0w=
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 40B5060A60
-Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
-From:   Kalle Valo <kvalo@codeaurora.org>
-To:     Wen Gong <wgong@qti.qualcomm.com>
-Cc:     Wen Gong <wgong@codeaurora.org>,
-        "linux-wireless\@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "ath10k\@lists.infradead.org" <ath10k@lists.infradead.org>
-Subject: Re: [PATCH v5 0/8] ath10k: improve throughout of tcp/udp TX/RX of sdio
-References: <1567679893-14029-1-git-send-email-wgong@codeaurora.org>
-        <87tv9hikwe.fsf@kamboji.qca.qualcomm.com>
-        <87d0g5h07v.fsf@kamboji.qca.qualcomm.com>
-        <1568346854209.29270@qti.qualcomm.com>
-Date:   Fri, 20 Sep 2019 15:44:59 +0300
-In-Reply-To: <1568346854209.29270@qti.qualcomm.com> (Wen Gong's message of
-        "Fri, 13 Sep 2019 03:54:14 +0000")
-Message-ID: <87tv97b0hg.fsf@codeaurora.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
+        id S1726801AbfITMy5 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 20 Sep 2019 08:54:57 -0400
+Received: from mtax.cdmx.gob.mx ([187.141.35.197]:9716 "EHLO mtaw.cdmx.gob.mx"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1726741AbfITMyy (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 20 Sep 2019 08:54:54 -0400
+X-NAI-Header: Modified by McAfee Email Gateway (4500)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=cdmx.gob.mx; s=72359050-3965-11E6-920A-0192F7A2F08E;
+        t=1568968793; h=X-Virus-Scanned:Content-Type:
+         MIME-Version:Content-Transfer-Encoding:Content-Description:
+         Subject:To:From:Date:Reply-To:Message-Id:X-AnalysisOut:
+         X-AnalysisOut:X-AnalysisOut:X-AnalysisOut:
+         X-AnalysisOut:X-AnalysisOut:X-SAAS-TrackingID:
+         X-NAIMIME-Disclaimer:X-NAIMIME-Modified:X-NAI-Spam-Flag:
+         X-NAI-Spam-Threshold:X-NAI-Spam-Score:X-NAI-Spam-Rules:
+         X-NAI-Spam-Version; bh=p7gWlwfEWOsbONfopC
+        8BPhtqdzKUJiGtXCGJ3YtSNOM=; b=bCQRIfUo5PDuVTFwy8dy
+        OI3iWxtV3pZ4rFcCJTYdaA2lvAWR6gXNiJfXxfcioa9ONS+dmC
+        gcc1YRx6eVOIkGi2E0NV/9NYXlQHdJu51X4sK+CQikQSkQOjIF
+        OTSJsINbRmnx/AFiD/DYnHeCjRSar5Je96BVXgjYz5UEaQGFO3
+        8=
+Received: from correo.seciti.cdmx.gob.mx (gdf-correo.cdmx.gob.mx [10.250.102.17]) by mtaw.cdmx.gob.mx with smtp
+         id 1a9a_8b9e_97adaa50_e96f_4f42_8293_5b7bf478c4a6;
+        Fri, 20 Sep 2019 03:39:52 -0500
+Received: from localhost (localhost [127.0.0.1])
+        by gdf-correo.df.gob.mx (Postfix) with ESMTP id 5EA6E3433;
+        Fri, 20 Sep 2019 03:39:51 -0500 (CDT)
+Received: from correo.seciti.cdmx.gob.mx ([127.0.0.1])
+        by localhost (gdf-correo.df.gob.mx [127.0.0.1]) (amavisd-new, port 10032)
+        with ESMTP id tRopLFHtbZGV; Fri, 20 Sep 2019 03:39:51 -0500 (CDT)
+Received: from localhost (localhost [127.0.0.1])
+        by gdf-correo.df.gob.mx (Postfix) with ESMTP id 0C5DB3411;
+        Fri, 20 Sep 2019 03:39:51 -0500 (CDT)
+X-Virus-Scanned: amavisd-new at gdf-correo.df.gob.mx
+Received: from correo.seciti.cdmx.gob.mx ([127.0.0.1])
+        by localhost (gdf-correo.df.gob.mx [127.0.0.1]) (amavisd-new, port 10026)
+        with ESMTP id p_zJvwOP7VxS; Fri, 20 Sep 2019 03:39:50 -0500 (CDT)
+Received: from [100.80.130.141] (8ta-250-0-23.telkomadsl.co.za [102.250.0.23])
+        by gdf-correo.df.gob.mx (Postfix) with ESMTPSA id 7A47D3114;
+        Fri, 20 Sep 2019 03:39:42 -0500 (CDT)
+Content-Type: text/plain;
+  charset="utf-8"
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Transfer-Encoding: base64
+Content-Description: Mail message body
+Subject: Spende von 5 Millionen Euro
+To:     Recipients <mramirezg@mexicocity.gob.mx>
+From:   "Shane Missler" <mramirezg@mexicocity.gob.mx>
+Date:   Fri, 20 Sep 2019 10:39:48 +0200
+Reply-To: "shanemissler.spende11@gmail.comshanemissler.spende11"@gmail.com
+Message-Id: <20190920083942.7A47D3114@gdf-correo.df.gob.mx>
+X-AnalysisOut: [v=2.2 cv=eelNR/MH c=1 sm=1 tr=0 p=09-KjHS_CW8A:10 p=bEr4i4]
+X-AnalysisOut: [eggGkA:10 p=Lyqu6MUUigPyaOuRX7ce:22 a=KsSCQl7LcZej77FuluUc]
+X-AnalysisOut: [Qw==:117 a=h7CxE45fuSAsiQZVdqGW0A==:17 a=IkcTkHD0fZMA:10 a]
+X-AnalysisOut: [=x7bEGLp0ZPQA:10 a=J70Eh1EUuV4A:10 a=pGLkceISAAAA:8 a=wN7r]
+X-AnalysisOut: [T8hNlMSaUXRpxSgA:9 a=K7tsimcRO30Sg2YH:21 a=QOCYt1FwmxBrUrR]
+X-AnalysisOut: [v:21 a=QEXdDO2ut3YA:10]
+X-SAAS-TrackingID: 950948d5.0.973400.00-2396.1651895.s12p02m004.mxlogic.net
+X-NAIMIME-Disclaimer: 1
+X-NAIMIME-Modified: 1
+X-NAI-Spam-Flag: NO
+X-NAI-Spam-Threshold: 3
+X-NAI-Spam-Score: -5000
+X-NAI-Spam-Rules: 1 Rules triggered
+        WHITELISTED=-5000
+X-NAI-Spam-Version: 2.3.0.9418 : core <6638> : inlines <7144> : streams
+ <1833289> : uri <2907370>
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Wen Gong <wgong@qti.qualcomm.com> writes:
-
->>>> The bottleneck of throughout on sdio chip is the bus bandwidth, to the
->>>>patches are all to increase the use ratio of sdio bus.
->
->>> I tried to apply patches 2-8, patch 2 had a conflict due to my changes
->>> and patch 8 didn't apply at all. Also I saw few warnings with the
->>> patches I was able to test:
->
-> Hi kalle,
->
-> i see some warning is from patch "ath10k: add fw coredump for sdio when firmware assert"
-> and this patch also have change in sdio.c, so maybe it will have
-> conflict with the 8 patches.
->
-> patch 8 didn't apply at all, is it means each change of the patch is
-> conflict?
-
-Patches 1-7 applied fine, but patch 8 didn't apply. I didn't investigate
-what was the conflict.
-
-> I used command to check each patch.
-> perl ~/opensource/checkpatch.pl --strict --no-tree
-> --max-line-length=90 --show-types --ignore CONST_STRUCT ./*
->
-> I found it not check Wunused-but-set-variable.
-
-checkpatch only checks style issues, unused-but-set-variable is a
-warning from GCC.
-
-I use ath10k-check script to check all ath10k patches:
-
-https://wireless.wiki.kernel.org/en/users/drivers/ath10k/codingstyle#checking_code
-
-And I use latest GCC and sparse with that. crosstool is a simple way to
-install a relatively new version of GCC for kernel compilation:
-
-https://mirrors.edge.kernel.org/pub/tools/crosstool/
-
--- 
-Kalle Valo
+RGllcyBpc3QgZWluZSBwZXJzw7ZubGljaGUgTWFpbCwgZGllIGljaCBhbiBTaWUgYWRyZXNzaWVy
+ZS4gSWNoIGJpbiBTSEFORSBNSVNTTEVSIGF1cyBGbG9yaWRhLCBVU0EuIFdpZSBTaWUgYmVyZWl0
+cyB3aXNzZW4sIGhhYmUgaWNoIGVpbmVuIExvdHRvLUphY2twb3QgaW4gSMO2aGUgdm9uIDQ1MSBN
+aW8uIFVTRCAoMzMwIE1pby4gR0JQKSBnZXdvbm5lbiB1bmQgZGFzIEdlbGQgaGF0IG1laW4gTGVi
+ZW4gdW5kIG1laW4gRmFtaWxpZW5sZWJlbiB2ZXLDpG5kZXJ0LCBhYmVyIGVzIHdpcmQgbWVpbiBI
+ZXJ6IG5pY2h0IHZlcsOkbmRlcm4sIHdpZSBpY2ggYW4gZGVtIFRhZyBzYWd0ZSwgYW4gZGVtIGlj
+aCBtZWluIEdlbGQgaGFiZSwgZGFzIGljaCB2ZXJ3ZW5kZW4gd2VyZGUgRGllc2VzIEdlbGQgZsO8
+ciBkaWUgSGlsZmUgZGVyIE1lbnNjaGhlaXQuIEljaCBoYWJlIGJlc2NobG9zc2VuLCBJaG5lbiB1
+bmQgSWhyZXIgR2VtZWluZGUgZWluZW4gQmV0cmFnIHZvbiA1IE1pbGxpb25lbiBFdXJvIHp1IHNw
+ZW5kZW4sIHVtIGRpZXNlIFNwZW5kZSBhbnp1Zm9yZGVybi4gRS1NYWlsOiAoc2hhbmVtaXNzbGVy
+MEBnbWFpbC5jb20pCgpDZWNpIGVzdCB1biBjb3VycmllciBwZXJzb25uZWwgcXVlIGplIHZvdXMg
+YWRyZXNzZS4gSmUgc3VpcyBTSEFORSBNSVNTTEVSLCBkZSBGbG9yaWRlLCDDiXRhdHMtVW5pcy4g
+Q29tbWUgdm91cyBsZSBzYXZleiBkw6lqw6AsIGonYWkgZ2FnbsOpIDQ1MSBtaWxsaW9ucyBkZSBk
+b2xsYXJzIChMb3R0byBKYWNrcG90KSBldCBsJ2FyZ2VudCBhIGNoYW5nw6kgbWEgdmllIGV0IGNl
+bGxlIGRlIG1hIGZhbWlsbGUsIG1haXMgY2VsYSBuZSBjaGFuZ2VyYSBwYXMgbW9uIGPFk3VyLCBj
+b21tZSBqZSBsJ2FpIGRpdCBsZSBqb3VyIG/DuSBqJ2FpIG1vbiBhcmdlbnQsIGondXRpbGlzZXJh
+aSBjZXQgYXJnZW50IHBvdXIgbCdhaWRlIGRlIGwnaHVtYW5pdMOpLkonYWkgZMOpY2lkw6kgZGUg
+dm91cyBkb25uZXIgbGEgc29tbWUgZGUgNSBtaWxsaW9ucyBkJ2V1cm9zIMOgIHZvdXMgZXQgw6Ag
+dm90cmUgY29tbXVuYXV0w6ksIHBvdXIgcsOpY2xhbWVyIGNlIGRvbiwgZW1haWwtIChzaGFuZW1p
+c3NsZXIwQGdtYWlsLmNvbSkKCgoKLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4u
+Li4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4u
+Li4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4u
+Li4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4u
+Li4uLi4uCgoKTGEgaW5mb3JtYWNpb24gY29udGVuaWRhIGVuIGVzdGUgY29ycmVvLCBhc2kgY29t
+byBsYSBjb250ZW5pZGEgZW4gbG9zIGRvY3VtZW50b3MgYW5leG9zLCBwdWVkZSBjb250ZW5lciBk
+YXRvcyBwZXJzb25hbGVzLCBwb3IgbG8gcXVlIHN1IGRpZnVzaW9uIGVzIHJlc3BvbnNhYmlsaWRh
+ZCBkZSBxdWllbiBsb3MgdHJhbnNtaXRlIHkgcXVpZW4gbG9zIHJlY2liZSwgZW4gdMOpcm1pbm9z
+IGRlIGxvIGRpc3B1ZXN0byBwb3IgbGFzIGZyYWNjaW9uZXMgSUkgeSBWSUkgZGVsIGFydGljdWxv
+IDQsIHVsdGltbyBwYXJyYWZvIGRlbCBhcnRpY3VsbyA4LCBhcnRpY3VsbyAzNiBwYXJyYWZvIElJ
+LCAzOCBmcmFjY2lvbiBJIHkgZGVtYXMgYXBsaWNhYmxlcyBkZSBsYSBMZXkgZGUgVHJhbnNwYXJl
+bmNpYSB5IEFjY2VzbyBhIGxhIEluZm9ybWFjaW9uIFB1YmxpY2EgZGVsIERpc3RyaXRvIEZlZGVy
+YWwuDQpMb3MgRGF0b3MgUGVyc29uYWxlcyBzZSBlbmN1ZW50cmFuIHByb3RlZ2lkb3MgcG9yIGxh
+IExleSBkZSBQcm90ZWNjaW9uIGRlIERhdG9zIFBlcnNvbmFsZXMgZGVsIERpc3RyaXRvIEZlZGVy
+YWwsIHBvciBsbyBxdWUgc3UgZGlmdXNpb24gc2UgZW5jdWVudHJhIHR1dGVsYWRhIGVuIHN1cyBh
+cnRpY3Vsb3MgMiwgNSwgMTYsIDIxLCA0MSB5IGRlbWFzIHJlbGF0aXZvcyB5IGFwbGljYWJsZXMs
+IGRlYmllbmRvIHN1amV0YXJzZSBlbiBzdSBjYXNvLCBhIGxhcyBkaXNwb3NpY2lvbmVzIHJlbGF0
+aXZhcyBhIGxhIGNyZWFjaW9uLCBtb2RpZmljYWNpb24gbyBzdXByZXNpb24gZGUgZGF0b3MgcGVy
+c29uYWxlcyBwcmV2aXN0b3MuIEFzaW1pc21vLCBkZWJlcmEgZXN0YXJzZSBhIGxvIHNlw7FhbGFk
+byBlbiBsb3MgbnVtZXJhbGVzIDEgLCAzLCAxMiwgMTgsIDE5LCAyMCwgMjEsIDIzLCAyNCwgMjks
+IDM1IHkgZGVtYXMgYXBsaWNhYmxlcyBkZSBsb3MgTGluZWFtaWVudG9zIHBhcmEgbGEgUHJvdGVj
+Y2lvbiBkZSBEYXRvcyBQZXJzb25hbGVzIGVuIGVsIERpc3RyaXRvIEZlZGVyYWwuDQpFbiBlbCB1
+c28gZGUgbGFzIHRlY25vbG9naWFzIGRlIGxhIGluZm9ybWFjaW9uIHkgY29tdW5pY2FjaW9uZXMg
+ZGVsIEdvYmllcm5vIGRlbCBEaXN0cml0byBGZWRlcmFsLCBkZWJlcmEgb2JzZXJ2YXJzZSBwdW50
+dWFsbWVudGUgbG8gZGlzcHVlc3RvIHBvciBsYSBMZXkgR29iaWVybm8gRWxlY3Ryb25pY28gZGVs
+IERpc3RyaXRvIEZlZGVyYWwsIGxhIGxleSBwYXJhIGhhY2VyIGRlIGxhIENpdWRhZCBkZSBNZXhp
+Y28gdW5hIENpdWRhZCBNYXMgQWJpZXJ0YSwgZWwgYXBhcnRhZG8gMTAgZGUgbGEgQ2lyY3VsYXIg
+VW5vIHZpZ2VudGUgeSBsYXMgTm9ybWFzIEdlbmVyYWxlcyBxdWUgZGViZXJhbiBvYnNlcnZhcnNl
+IGVuIG1hdGVyaWEgZGUgU2VndXJpZGFkIGRlIGxhIEluZm9ybWFjaW9uIGVuIGxhIEFkbWluaXN0
+cmFjaW9uIFB1YmxpY2EgZGVsIERpc3RyaXRvIEZlZGVyYWwuCg==
