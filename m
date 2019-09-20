@@ -2,167 +2,134 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 270F3B90BF
-	for <lists+linux-wireless@lfdr.de>; Fri, 20 Sep 2019 15:37:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EE7D6B9144
+	for <lists+linux-wireless@lfdr.de>; Fri, 20 Sep 2019 15:58:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727968AbfITNhU (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 20 Sep 2019 09:37:20 -0400
-Received: from mail-lf1-f65.google.com ([209.85.167.65]:33039 "EHLO
-        mail-lf1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727337AbfITNhU (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 20 Sep 2019 09:37:20 -0400
-Received: by mail-lf1-f65.google.com with SMTP id y127so5115160lfc.0;
-        Fri, 20 Sep 2019 06:37:18 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=jphzEcSkNncyQXURXy+bMvvSOETA08+BxHJ5z57Bb0M=;
-        b=EfzMViMon0Yh012SQYg8h4xK0JFPuLUGf8hs1IklN8um4D/H4ReoSmHw3ok0fVz8wA
-         ydZvJ9tblvpBVSh29a7WTqMk9IUdC3G8y9/FfinNiNstDyifALTmZzkCRw7WiQEDaBrp
-         tRPJSKJCOj20Ei4e4kXUkdfi2HXwME57FgKE9QNgJHDSK8qBFcZji5mW9Ij/uxtduAZo
-         bGYtLMXFiX6MzgLcHcy3BF2pOpnaIKYVsZO9Jf/uwXkNZLuL5kN4x94Vjyk1r6GTg2c/
-         4U/y8/xo6DFTzBND9j9hKecItPSbnprkm0n3ZA+qqKYjSERd+JQepKHJRit1HW1zH9nA
-         nDiA==
+        id S1728846AbfITN6Y (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 20 Sep 2019 09:58:24 -0400
+Received: from mx1.redhat.com ([209.132.183.28]:50180 "EHLO mx1.redhat.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1728062AbfITN6X (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 20 Sep 2019 09:58:23 -0400
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com [209.85.128.69])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mx1.redhat.com (Postfix) with ESMTPS id CAA574ACA5
+        for <linux-wireless@vger.kernel.org>; Fri, 20 Sep 2019 13:58:22 +0000 (UTC)
+Received: by mail-wm1-f69.google.com with SMTP id 190so1261410wme.4
+        for <linux-wireless@vger.kernel.org>; Fri, 20 Sep 2019 06:58:22 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=jphzEcSkNncyQXURXy+bMvvSOETA08+BxHJ5z57Bb0M=;
-        b=iJOCnr5lz1gkSRcRxPmbHH1rDOb0BE9i9cysJIGB/azly/JMkzsnZ5FmbU0r8ug2z9
-         V6FgerQ0cuCgc4Hl6A5oVmLw8p8W8i6ddFHIlkFTBVKOmxiNd4wsTxPtukOReyMvCSPN
-         LNS5JIKSZdGmuO/Vg/FuyfIQPNojcK3yoIGqpp2r4wL/l9w0SGR+MxBHmkoB5pKC3sFg
-         YV+w8ONTVKMzZjyC+Zr5YH8eVpD/D1G7FiyXr1cA+j7pxq3ZVWyycOnNzr1Rflcqjdt9
-         hiA/iWOj2EkbiHICFuD3TwfXSPU0ltfc2nhV2gnxL1PgjQIQ157by/WKR5VfPngzA4mr
-         xUig==
-X-Gm-Message-State: APjAAAWWaFQ/LqJFRHcbOlR0j1El/zTwZH8WQB2xJMI3f5Bay0kvWM8H
-        6Z/ldJ9Drp+r44OXy1awC0w=
-X-Google-Smtp-Source: APXvYqxlzmxdYLzOPpcInVQyKgAS4zc777/kdZlRsQ6Gg/ppqj9M7QdxbhVc99mR+kWGcY6bb23LnQ==
-X-Received: by 2002:a19:4347:: with SMTP id m7mr8570675lfj.146.1568986637463;
-        Fri, 20 Sep 2019 06:37:17 -0700 (PDT)
-Received: from localhost.localdomain (ip-194-187-74-233.konfederacka.maverick.com.pl. [194.187.74.233])
-        by smtp.gmail.com with ESMTPSA id b25sm475423ljj.36.2019.09.20.06.37.14
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Fri, 20 Sep 2019 06:37:15 -0700 (PDT)
-From:   =?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <zajec5@gmail.com>
-To:     Johannes Berg <johannes@sipsolutions.net>,
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=spCZuDFD0EPU5ozujvfnvvEa34kbUMxIApAez+Dggu8=;
+        b=e1CKtjA+gIwKrRqEQHsqdxM9+2EaKJMQ3Yx/Tt0nvgMXl9JRYoWDIZYk4kAVF4BWSN
+         KzbC39EAZUNOSwMWPaw9Za6wL+JPnz0UL6o29ORPjbsmBoRl0qD04Bc9CD5+gk7cjlpD
+         r45kBb9yg63NkMMOGars/fQmSxamnhZv+bX6skg3zD+t/GNn3wGTdr71ICZUR/UIWvLO
+         8tVUdRSVwpYYgdeWQHqIsN+qEu4q5N8PoCg76TAWHWsByqEqfDkPwy32UnfmCovec5pr
+         z/W1Q/X2UpNWDtyBlZ3pmOB7X0Boey8+jal/4qP+/5R3w4HyBHii1PC7mYFKl4OBgXwD
+         SvAw==
+X-Gm-Message-State: APjAAAXxWMbka0p1SiXPLFWwJinjt902/Jfwx4FG9goLoAaQlG7wTYSx
+        /uWu7k4lPdDbch9XmbkteprHJjNHskTWwB4SfANtS37QvCJqGFqDEmR8FTAw6HLuH+gZL1cZWE5
+        Ir2ClOYwBcF3oCAp1rJRtx2lXBnk=
+X-Received: by 2002:a05:600c:241:: with SMTP id 1mr3641700wmj.162.1568987901451;
+        Fri, 20 Sep 2019 06:58:21 -0700 (PDT)
+X-Google-Smtp-Source: APXvYqxaL42VK6Hbg90QmZTlVy0wuDzSPLddZwEiO+ZOepAYrKU0ro0hZ5/EONlchkImHxvmp3T81A==
+X-Received: by 2002:a05:600c:241:: with SMTP id 1mr3641679wmj.162.1568987901220;
+        Fri, 20 Sep 2019 06:58:21 -0700 (PDT)
+Received: from localhost.localdomain (nat-pool-mxp-t.redhat.com. [149.6.153.186])
+        by smtp.gmail.com with ESMTPSA id r6sm1834884wmh.38.2019.09.20.06.58.19
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 20 Sep 2019 06:58:20 -0700 (PDT)
+Date:   Fri, 20 Sep 2019 15:58:17 +0200
+From:   Lorenzo Bianconi <lorenzo.bianconi@redhat.com>
+To:     Colin King <colin.king@canonical.com>
+Cc:     Jakub Kicinski <kubakici@wp.pl>, Kalle Valo <kvalo@codeaurora.org>,
         "David S . Miller" <davem@davemloft.net>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
         linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Jouni Malinen <j@w1.fi>,
-        hostap@lists.infradead.org, openwrt-devel@lists.openwrt.org
-Cc:     =?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <rafal@milecki.pl>
-Subject: [PATCH RFC] cfg80211: add new command for reporting wiphy crashes
-Date:   Fri, 20 Sep 2019 15:37:08 +0200
-Message-Id: <20190920133708.15313-1-zajec5@gmail.com>
-X-Mailer: git-send-email 2.21.0
+        linux-arm-kernel@lists.infradead.org,
+        linux-mediatek@lists.infradead.org,
+        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] mt7601u: phy: simplify zero check on val
+Message-ID: <20190920135817.GC6456@localhost.localdomain>
+References: <20190920125414.15507-1-colin.king@canonical.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="i7F3eY7HS/tUJxUd"
+Content-Disposition: inline
+In-Reply-To: <20190920125414.15507-1-colin.king@canonical.com>
+User-Agent: Mutt/1.12.1 (2019-06-15)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Rafał Miłecki <rafal@milecki.pl>
 
-Hardware or firmware instability may result in unusable wiphy. In such
-cases usually a hardware reset is needed. To allow a full recovery
-kernel has to indicate problem to the user space.
+--i7F3eY7HS/tUJxUd
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-This new nl80211 command lets user space known wiphy has crashed and has
-been just recovered. When applicable it should result in supplicant or
-authenticator reconfiguring all interfaces.
+> From: Colin Ian King <colin.king@canonical.com>
+>=20
+> Currently the zero check on val to break out of a loop
+> is a little obscure.  Replace the val is zero and break check
+> with a loop while value is non-zero.
+>=20
+> Signed-off-by: Colin Ian King <colin.king@canonical.com>
+> ---
+>  drivers/net/wireless/mediatek/mt7601u/phy.c | 4 +---
+>  1 file changed, 1 insertion(+), 3 deletions(-)
+>=20
+> diff --git a/drivers/net/wireless/mediatek/mt7601u/phy.c b/drivers/net/wi=
+reless/mediatek/mt7601u/phy.c
+> index 06f5702ab4bd..4e0e473caae1 100644
+> --- a/drivers/net/wireless/mediatek/mt7601u/phy.c
+> +++ b/drivers/net/wireless/mediatek/mt7601u/phy.c
+> @@ -213,9 +213,7 @@ int mt7601u_wait_bbp_ready(struct mt7601u_dev *dev)
+> =20
+>  	do {
+>  		val =3D mt7601u_bbp_rr(dev, MT_BBP_REG_VERSION);
+> -		if (val && ~val)
+> -			break;
 
-Signed-off-by: Rafał Miłecki <rafal@milecki.pl>
----
-I'd like to use this new cfg80211_crash_report() in brcmfmac after a
-successful recovery from a FullMAC firmware crash.
+I think this is not correct since (not considering the cast) we should break
+=66rom the loop if val !=3D 0 and val !=3D 0xff, so the right approach I gu=
+ess is:
 
-Later on I'd like to modify hostapd to reconfigure wiphy using a
-previously used setup.
+diff --git a/drivers/net/wireless/mediatek/mt7601u/phy.c b/drivers/net/wire=
+less/mediatek/mt7601u/phy.c
+index 06f5702ab4bd..d863ab4a66c9 100644
+--- a/drivers/net/wireless/mediatek/mt7601u/phy.c
++++ b/drivers/net/wireless/mediatek/mt7601u/phy.c
+@@ -213,7 +213,7 @@ int mt7601u_wait_bbp_ready(struct mt7601u_dev *dev)
+=20
+ 	do {
+ 		val =3D mt7601u_bbp_rr(dev, MT_BBP_REG_VERSION);
+-		if (val && ~val)
++		if (val && val !=3D 0xff)
+ 			break;
+ 	} while (--i);
 
-I'm OpenWrt developer & user and I got annoyed by my devices not auto
-recovering after various failures. There are things I cannot fix (hw
-failures or closed fw crashes) but I still expect my devices to get
-back to operational state as soon as possible on their own.
----
- include/net/cfg80211.h       |  7 +++++++
- include/uapi/linux/nl80211.h |  2 ++
- net/wireless/nl80211.c       | 29 +++++++++++++++++++++++++++++
- 3 files changed, 38 insertions(+)
+> -	} while (--i);
+> +	} while (val && --i);
+> =20
+>  	if (!i) {
+>  		dev_err(dev->dev, "Error: BBP is not ready\n");
+> --=20
+> 2.20.1
+>=20
 
-diff --git a/include/net/cfg80211.h b/include/net/cfg80211.h
-index ff45c3e1abff..668fa27c88cc 100644
---- a/include/net/cfg80211.h
-+++ b/include/net/cfg80211.h
-@@ -7437,6 +7437,13 @@ void cfg80211_pmsr_complete(struct wireless_dev *wdev,
- bool cfg80211_iftype_allowed(struct wiphy *wiphy, enum nl80211_iftype iftype,
- 			     bool is_4addr, u8 check_swif);
- 
-+/**
-+ * cfg80211_crash_report - report crashed wiphy that requires a setup
-+ *
-+ * @wiphy: the wiphy
-+ * @gfp: allocation flags
-+ */
-+void cfg80211_crash_report(struct wiphy *wiphy, gfp_t gfp);
- 
- /* Logging, debugging and troubleshooting/diagnostic helpers. */
- 
-diff --git a/include/uapi/linux/nl80211.h b/include/uapi/linux/nl80211.h
-index beee59c831a7..9e17feb03849 100644
---- a/include/uapi/linux/nl80211.h
-+++ b/include/uapi/linux/nl80211.h
-@@ -1325,6 +1325,8 @@ enum nl80211_commands {
- 
- 	NL80211_CMD_PROBE_MESH_LINK,
- 
-+	NL80211_CMD_CRASH_REPORT,
-+
- 	/* add new commands above here */
- 
- 	/* used to define NL80211_CMD_MAX below */
-diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
-index d21b1581a665..d29785fb0676 100644
---- a/net/wireless/nl80211.c
-+++ b/net/wireless/nl80211.c
-@@ -16940,6 +16940,35 @@ void cfg80211_update_owe_info_event(struct net_device *netdev,
- }
- EXPORT_SYMBOL(cfg80211_update_owe_info_event);
- 
-+void cfg80211_crash_report(struct wiphy *wiphy, gfp_t gfp)
-+{
-+	struct cfg80211_registered_device *rdev = wiphy_to_rdev(wiphy);
-+	struct sk_buff *msg;
-+	void *hdr;
-+
-+	msg = nlmsg_new(NLMSG_DEFAULT_SIZE, gfp);
-+	if (!msg)
-+		return;
-+
-+	hdr = nl80211hdr_put(msg, 0, 0, 0, NL80211_CMD_CRASH_REPORT);
-+	if (!hdr)
-+		goto nla_put_failure;
-+
-+	if (nla_put_u32(msg, NL80211_ATTR_WIPHY, rdev->wiphy_idx))
-+		goto nla_put_failure;
-+
-+	genlmsg_end(msg, hdr);
-+
-+	genlmsg_multicast_netns(&nl80211_fam, wiphy_net(&rdev->wiphy), msg, 0,
-+				NL80211_MCGRP_CONFIG, gfp);
-+
-+	return;
-+
-+nla_put_failure:
-+	nlmsg_free(msg);
-+}
-+EXPORT_SYMBOL(cfg80211_crash_report);
-+
- /* initialisation/exit functions */
- 
- int __init nl80211_init(void)
--- 
-2.21.0
+--i7F3eY7HS/tUJxUd
+Content-Type: application/pgp-signature; name="signature.asc"
 
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYIAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCXYTa9wAKCRA6cBh0uS2t
+rETyAP42WJmgG0YWFN4dtvNtHUZL2FS46W+Tt/OXQTdrQfEfYQEA6DLVOjMTQzuG
+hmE5irsv5UEh9sDb73OcIUNJYu7aPAg=
+=LFi7
+-----END PGP SIGNATURE-----
+
+--i7F3eY7HS/tUJxUd--
