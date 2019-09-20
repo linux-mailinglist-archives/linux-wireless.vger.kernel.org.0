@@ -2,106 +2,121 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 7C563B8897
-	for <lists+linux-wireless@lfdr.de>; Fri, 20 Sep 2019 02:36:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CDC33B88BD
+	for <lists+linux-wireless@lfdr.de>; Fri, 20 Sep 2019 02:53:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2391613AbfITAgM (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 19 Sep 2019 20:36:12 -0400
-Received: from mail-qk1-f194.google.com ([209.85.222.194]:46541 "EHLO
-        mail-qk1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2390299AbfITAgM (ORCPT
+        id S2394527AbfITAwo (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 19 Sep 2019 20:52:44 -0400
+Received: from mail-qk1-f195.google.com ([209.85.222.195]:42381 "EHLO
+        mail-qk1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2393910AbfITAwl (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 19 Sep 2019 20:36:12 -0400
-Received: by mail-qk1-f194.google.com with SMTP id 201so5407359qkd.13
-        for <linux-wireless@vger.kernel.org>; Thu, 19 Sep 2019 17:36:11 -0700 (PDT)
+        Thu, 19 Sep 2019 20:52:41 -0400
+Received: by mail-qk1-f195.google.com with SMTP id f16so5485116qkl.9
+        for <linux-wireless@vger.kernel.org>; Thu, 19 Sep 2019 17:52:41 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=chromium.org; s=google;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=stg+GpIDtHLmRJfVFeaiidOrRaZK5aB+gDLGzBpnstM=;
-        b=k2iaeOhCEz6eOKlGxqJcc/E+rroYDws2+YpFC8MfpD75tieXZpYWYoyVxPwoNMzfyb
-         eHUWzoSVvZEOR3n+d4yQWUsu+bC2aY1JR6LHk1pbJ/IVWzvJ4pi45mY6UjTlq3Bn6UKa
-         /uvO3Vm9A2gLaG5AHE4hQ7Lrko6vDKHlQHWCg=
+        bh=iiu7m8DUVWZxCoLUBSCJNA90YeclA/xM3wyYeZQULiE=;
+        b=oeFGdk6HEZzwtPUIq/2Gsk2c4kXst0Qsqf7PRP+6xzgYwwVjM7riJud/oeBQFSGlFD
+         iglEdfBLfUJ+90FLZSap4PHamyFAMKRZcRmNEngShJXeoFBzy3YrcA7wv7aJbeNK2IgH
+         9XU1Gt+hPw8ktpTaBqac/bO4BhkLmZLFJnKhE=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=stg+GpIDtHLmRJfVFeaiidOrRaZK5aB+gDLGzBpnstM=;
-        b=laIlg9Yd9q4W6aD0AyYJKvr1YIuZXEQVajxCkhLp3JDATMEUpO/h1vFIjCMS67t5cb
-         qeaqeniB/kvi+krw0ykRUqH/etBCdS3SRNc6nuAcUviHWwUPqDMZKQ9fr1T/IPaVRton
-         SAqSllWQbZrg8LUPZRk/WqG/HFxhBqgrAyuXTYe/a9l2w4taNwvVFBNtTm6Az2Av3qLi
-         4rUy8eoL7EklTvmDI7kYWhviNcJruxv7t273Kt+yo6+LYNdIyNI8+YNzPoz4JOwKY3+U
-         Zogn7JwBvhn9oFXPc06ia8Mvy/lI1BNYQuPZxZUDFS+Yd1e8RfqiPQoTthPgcKH0gf8I
-         nrPg==
-X-Gm-Message-State: APjAAAVj9I0YHt/aDeOhULQeNqUb6r2kv/QJZFyw8Xi/PDeA5TBH1gUI
-        6FCX5AJq0GtFuKUmO6NYYL9YUwBLuxg=
-X-Google-Smtp-Source: APXvYqzPM+ocVPKxz4AjJuokU3AOtbkWJtplG/vRbxHkH/nVDcDcciZ6PvILubjnbqyARHHPg2zwMg==
-X-Received: by 2002:ae9:edc1:: with SMTP id c184mr632657qkg.336.1568939771008;
-        Thu, 19 Sep 2019 17:36:11 -0700 (PDT)
-Received: from mail-qk1-f178.google.com (mail-qk1-f178.google.com. [209.85.222.178])
-        by smtp.gmail.com with ESMTPSA id q5sm185120qte.38.2019.09.19.17.36.08
+        bh=iiu7m8DUVWZxCoLUBSCJNA90YeclA/xM3wyYeZQULiE=;
+        b=D871Dtf3TFcF2a413N0tbeICFbzLva64rQ+Oedzbx9dy5pDoAzFhP3sY0HjgfGkXPW
+         vajHezrP2vpQ6gr6KC3NMA6eeAteETGZch1AVzZv7DB8dG7B6e5D9i2+49bUZDRX3lLe
+         mo7xMBqXJTLLmrpxlVaSIWorVbiMJtnsBSNiwajsIt4Diw51jPssrzZr6xYSdf3x6/uJ
+         1mGx8pH8lgdoxsZFRoYvcWE6Sc+f/r8/76y1hjLKQ2+8xaIdehHzAan6HdD5imNQS2Q1
+         brhSnVyTA/9XroER0UePqyvoKXF3WDxQfBrcnHgicxFMjdv+Ogj62fw/l9TgVLuW0tWg
+         l8ZQ==
+X-Gm-Message-State: APjAAAWgW/nzJSVAupGmDuiIZACd4W7xaSLXJMM41bSsXs7Fko5uWEOD
+        tsnrdFFyhgQ/oGVV1TDJRYWuzBqq9aEJ3A==
+X-Google-Smtp-Source: APXvYqw3qHuwmGJKEw3fF0Es8C0vstz6YGE/XkovyWvZmU46eP6oziri4UOdn9fr2TKA+BUNvWLf7g==
+X-Received: by 2002:a37:6dc7:: with SMTP id i190mr736012qkc.12.1568940759658;
+        Thu, 19 Sep 2019 17:52:39 -0700 (PDT)
+Received: from mail-qk1-f175.google.com (mail-qk1-f175.google.com. [209.85.222.175])
+        by smtp.gmail.com with ESMTPSA id p7sm248654qkc.21.2019.09.19.17.52.38
         for <linux-wireless@vger.kernel.org>
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 19 Sep 2019 17:36:09 -0700 (PDT)
-Received: by mail-qk1-f178.google.com with SMTP id w2so5486064qkf.2
-        for <linux-wireless@vger.kernel.org>; Thu, 19 Sep 2019 17:36:08 -0700 (PDT)
-X-Received: by 2002:a37:5a06:: with SMTP id o6mr606203qkb.279.1568939767810;
- Thu, 19 Sep 2019 17:36:07 -0700 (PDT)
+        Thu, 19 Sep 2019 17:52:38 -0700 (PDT)
+Received: by mail-qk1-f175.google.com with SMTP id w2so5523189qkf.2
+        for <linux-wireless@vger.kernel.org>; Thu, 19 Sep 2019 17:52:38 -0700 (PDT)
+X-Received: by 2002:a37:a00d:: with SMTP id j13mr732778qke.2.1568940757739;
+ Thu, 19 Sep 2019 17:52:37 -0700 (PDT)
 MIME-Version: 1.0
-References: <1568617425-28062-1-git-send-email-yhchuang@realtek.com>
- <1568617425-28062-6-git-send-email-yhchuang@realtek.com> <CA+ASDXOMao9uucGxa6C0Q99pFvAtKTptreeshbfKqiELDKUH0Q@mail.gmail.com>
- <F7CD281DE3E379468C6D07993EA72F84D18DC62E@RTITMBSVM04.realtek.com.tw>
-In-Reply-To: <F7CD281DE3E379468C6D07993EA72F84D18DC62E@RTITMBSVM04.realtek.com.tw>
+References: <1534402113-14337-1-git-send-email-wgong@codeaurora.org>
+ <20181114225910.GA220599@google.com> <CA+ASDXMh7vdfkA5jtJqWEU-g-4Ta5Xvy046zujyASZcESCGhAQ@mail.gmail.com>
+ <87woe5aehr.fsf@kamboji.qca.qualcomm.com>
+In-Reply-To: <87woe5aehr.fsf@kamboji.qca.qualcomm.com>
 From:   Brian Norris <briannorris@chromium.org>
-Date:   Thu, 19 Sep 2019 17:35:56 -0700
-X-Gmail-Original-Message-ID: <CA+ASDXP_7FVEaQrE1V=rX0Vieu8GGWj+it7p4F_8XeRNniEWkw@mail.gmail.com>
-Message-ID: <CA+ASDXP_7FVEaQrE1V=rX0Vieu8GGWj+it7p4F_8XeRNniEWkw@mail.gmail.com>
-Subject: Re: [PATCH 05/15] rtw88: pci: release tx skbs DMAed when stop
-To:     Tony Chuang <yhchuang@realtek.com>
-Cc:     Kalle Valo <kvalo@codeaurora.org>,
-        linux-wireless <linux-wireless@vger.kernel.org>
+Date:   Thu, 19 Sep 2019 17:52:26 -0700
+X-Gmail-Original-Message-ID: <CA+ASDXPaw0womrCF98zzUinMTYSxeanK0Rc-0kn56TBEWJ__5w@mail.gmail.com>
+Message-ID: <CA+ASDXPaw0womrCF98zzUinMTYSxeanK0Rc-0kn56TBEWJ__5w@mail.gmail.com>
+Subject: Re: [PATCH v3] ath10k: support NET_DETECT WoWLAN feature
+To:     Kalle Valo <kvalo@codeaurora.org>
+Cc:     Wen Gong <wgong@codeaurora.org>,
+        linux-wireless <linux-wireless@vger.kernel.org>,
+        Linux Kernel <linux-kernel@vger.kernel.org>,
+        ath10k@lists.infradead.org
 Content-Type: text/plain; charset="UTF-8"
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Tue, Sep 17, 2019 at 7:10 PM Tony Chuang <yhchuang@realtek.com> wrote:
-> > On Mon, Sep 16, 2019 at 12:03 AM <yhchuang@realtek.com> wrote:
-> > >
-> > > From: Yan-Hsuan Chuang <yhchuang@realtek.com>
-> > >
-> > > Interrupt is disabled to stop PCI, which means the skbs
-> > > queued for each TX ring will not be released via DMA
-> > > interrupt.
+(I realize I replied to the v3, not the v4 which was merged.)
+
+On Wed, Sep 18, 2019 at 7:03 AM Kalle Valo <kvalo@codeaurora.org> wrote:
+> Brian Norris <briannorris@chromium.org> writes:
+> > Since Wen has once again suggested I use this patch in other forums,
+> > I'll ping here to note:
 > >
-> > In what cases do you hit this? I think you do this when entering PS
-> > mode, no? But then, see below.
+> > On Wed, Nov 14, 2018 at 2:59 PM Brian Norris <briannorris@chromium.org> wrote:
+> >> You've introduced a regression in 4.20-rc1:
+> >
+> > This regression still survives in the latest tree. Is it fair to just
+> > submit a revert?
 >
-> I'll hit this when ieee80211_ops::stop, or rtw_power_off.
-> Both are to turn off the device, so there's no more DMA activities.
-> If we don't release the SKBs that are not released by DMA interrupt
-> when powering off, these could be leaked.
+> Your description about the problem from an earlier email:
+>
+>   "It seems like youre enabling SCHED_SCAN support? But you're not
+>    adding the NL80211_FEATURE_SCHED_SCAN_RANDOM_MAC_ADDR feature flag.
+>    So it puts us in a tough place on using randomization -- we either
+>    can't trust the FEATURE flags, or else we can't use both SCHED_SCAN
+>    and scan randomization."
 
-Ah, I was a bit confused. So it does get called from "PS" routines:
-rtw_enter_ips() -> rtw_core_stop()
-but that "IPS" mode means "Inactive" Power Save, and it's only used
-when transitioning into idle states (IEEE80211_CONF_IDLE).
+Yeah, maybe I shouldn't have trimmed that context :)
 
-Incidentally, I think this also may explain many of the leaks I've
-been seeing elsewhere, when I leave a device sitting and scanning for
-a very long time -- each scan attempt is making a single transition
-out-and-back to IPS mode, which meant it may be leaking any
-outstanding TX DMA. And testing confirms this: if I just bring up the
-interface, run a scan, then bring it down, I see many fewer unmaps
-than maps. Doing this enough times, I run out of contiguous DMA memory
-and the device stops working. This fixes that problem for me. So:
+> So essentially the problem is that with firmwares supporting both
+> WMI_SERVICE_NLO and WMI_SERVICE_SPOOF_MAC_SUPPORT ath10k enables
+> NL80211_FEATURE_SCAN_RANDOM_MAC_ADDR, but
+> NL80211_FEATURE_SCHED_SCAN_RANDOM_MAC_ADDR is not enabled which is
+> inconsistent from user space point of view. Is my understanding correct?
 
-Reviewed-by: Brian Norris <briannorris@chromium.org>
-Tested-by: Brian Norris <briannorris@chromium.org>
+Yes, that sounds about right.
 
-I wonder if, given the problems I've seen (the driver can become
-totally ineroperable), this patch and the previous patch (its only
-real dependency) should be fast-tracked to the current release.
+> Wen, can you enable NL80211_FEATURE_SCAN_RANDOM_MAC_ADDR? Does firmware
+> support that?
+
+I feel like I've asked him that privately, but asking here might not hurt :D
+
+> If that's not possible, one workaround might to be to not enable
+> NL80211_FEATURE_SCAN_RANDOM_MAC_ADDR if firmware supports
+> WMI_SERVICE_NLO, but of course that would suck big time.
+
+Yeah, that would be strictly worse than the current situation I think.
+SCAN_RANDOM_MAC_ADDRESS is a product requirement for us. At least
+right now, it's possible I could teach a user space to just ignore
+SCHED_SCAN if it doesn't support the appropriate randomization
+features. (I don't want to have to do that, but at least it's
+possible.)
 
 Brian
+
+> Here's the full context in case someone is interested:
+>
+> https://patchwork.kernel.org/patch/10567005/
