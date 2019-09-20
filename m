@@ -2,262 +2,167 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 8E0E7B90B1
-	for <lists+linux-wireless@lfdr.de>; Fri, 20 Sep 2019 15:32:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 270F3B90BF
+	for <lists+linux-wireless@lfdr.de>; Fri, 20 Sep 2019 15:37:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727239AbfITNcq (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 20 Sep 2019 09:32:46 -0400
-Received: from us-smtp-2.mimecast.com ([205.139.110.61]:30686 "EHLO
-        us-smtp-delivery-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1725842AbfITNcq (ORCPT
+        id S1727968AbfITNhU (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 20 Sep 2019 09:37:20 -0400
+Received: from mail-lf1-f65.google.com ([209.85.167.65]:33039 "EHLO
+        mail-lf1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727337AbfITNhU (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 20 Sep 2019 09:32:46 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1568986364;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=eIMQ42Sw8Hd9uIst5uE+3wtoqBljS/4EHk2QD30OcGw=;
-        b=By3Ym+/6hZ3dwqq007aTUFS/A048B79ySqtn8m3Jxx67nEpCojfASaCzTC1nLpP70Mq6b3
-        vxV1vPaV/L3LGZLnwf6SqrBfhAmfYSiVmdDctddILNUliHt0W2pYUAsV4YPkSJPRDsHYAe
-        GiwjLrCmO/rjKeS14dmhp3A3p3sczdM=
-Received: from mail-ed1-f72.google.com (mail-ed1-f72.google.com
- [209.85.208.72]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-336-hOr-J5bnP9-Pu6-GMRkpyw-1; Fri, 20 Sep 2019 09:32:43 -0400
-Received: by mail-ed1-f72.google.com with SMTP id k5so789126edx.13
-        for <linux-wireless@vger.kernel.org>; Fri, 20 Sep 2019 06:32:43 -0700 (PDT)
+        Fri, 20 Sep 2019 09:37:20 -0400
+Received: by mail-lf1-f65.google.com with SMTP id y127so5115160lfc.0;
+        Fri, 20 Sep 2019 06:37:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=jphzEcSkNncyQXURXy+bMvvSOETA08+BxHJ5z57Bb0M=;
+        b=EfzMViMon0Yh012SQYg8h4xK0JFPuLUGf8hs1IklN8um4D/H4ReoSmHw3ok0fVz8wA
+         ydZvJ9tblvpBVSh29a7WTqMk9IUdC3G8y9/FfinNiNstDyifALTmZzkCRw7WiQEDaBrp
+         tRPJSKJCOj20Ei4e4kXUkdfi2HXwME57FgKE9QNgJHDSK8qBFcZji5mW9Ij/uxtduAZo
+         bGYtLMXFiX6MzgLcHcy3BF2pOpnaIKYVsZO9Jf/uwXkNZLuL5kN4x94Vjyk1r6GTg2c/
+         4U/y8/xo6DFTzBND9j9hKecItPSbnprkm0n3ZA+qqKYjSERd+JQepKHJRit1HW1zH9nA
+         nDiA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:in-reply-to:references:date
-         :message-id:mime-version:content-transfer-encoding;
-        bh=aw5DtyEyUsPNvcBwktctk1CLPkf90JBH40BC4AU4FLQ=;
-        b=F/8lVEB2FPnBajerNxW5COvD2srJ6hDybkzPk3a4cOOA6dVeVoJ/w0vCgKm7B2Avjy
-         Z59u4rkBKMGwPEyxqecWyiZnG6NFHU8rwUKqAShRWRzwtba+wZXXMfgoV/vuTrkuZQG6
-         LI4teT8g0nxKijo5H+2mS6RKqdxnrTHfD0ExnhF+hfzRZwzBI85uWsGOTFoyEFhHK8fv
-         N0CRSQTXY9X6Fv8KKvV/bMkLFpoZPN2/j1EnJe0yFmYbDqp8o/ovrvyX/gl6e8nOXNox
-         VAC3D9afo02WIwyM7nfS8uvs4aHn6kZNrigTACSf11Eyo9O2DX74U/oGoIv2xNGWUT7w
-         sJWg==
-X-Gm-Message-State: APjAAAVXL4QfGvG7ojgHciHDkVg3ZBalYUoMYKChWRud9cW/Kfkch12t
-        Psi4XYi/hwa7jCQFQLuw4RGah3I5rz0iGgwlel+nXQZ6NktmSyWL4dGi7sim+0Cx5+/fXmlRgCN
-        RbOKcgjVCLICUlhyVamKoF29oJGI=
-X-Received: by 2002:a17:906:fc2:: with SMTP id c2mr3201397ejk.261.1568986361879;
-        Fri, 20 Sep 2019 06:32:41 -0700 (PDT)
-X-Google-Smtp-Source: APXvYqzX5AKyrhb7CoEjZB4pRdAo+/QHMDTGEsNTNfbXrC4y9p5KyLu/yEqAAYhF89iw5OWcMQw+Ew==
-X-Received: by 2002:a17:906:fc2:: with SMTP id c2mr3201378ejk.261.1568986361630;
-        Fri, 20 Sep 2019 06:32:41 -0700 (PDT)
-Received: from alrua-x1.borgediget.toke.dk ([2a00:7660:6da:443::2])
-        by smtp.gmail.com with ESMTPSA id n12sm329437edi.1.2019.09.20.06.32.40
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 20 Sep 2019 06:32:40 -0700 (PDT)
-Received: by alrua-x1.borgediget.toke.dk (Postfix, from userid 1000)
-        id 5B04718063E; Fri, 20 Sep 2019 15:32:40 +0200 (CEST)
-From:   Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>
-To:     Lorenzo Bianconi <lorenzo@kernel.org>
-Cc:     Johannes Berg <johannes@sipsolutions.net>,
-        linux-wireless@vger.kernel.org,
-        make-wifi-fast@lists.bufferbloat.net,
-        John Crispin <john@phrozen.org>, Felix Fietkau <nbd@nbd.name>
-Subject: Re: [PATCH RFC/RFT 4/4] mac80211: Apply Airtime-based Queue Limit (AQL) on packet dequeue
-In-Reply-To: <20190920130604.GB6456@localhost.localdomain>
-References: <156889576422.191202.5906619710809654631.stgit@alrua-x1> <156889576869.191202.510507546538322707.stgit@alrua-x1> <20190920120639.GA6456@localhost.localdomain> <87k1a39lgt.fsf@toke.dk> <20190920130604.GB6456@localhost.localdomain>
-X-Clacks-Overhead: GNU Terry Pratchett
-Date:   Fri, 20 Sep 2019 15:32:40 +0200
-Message-ID: <87h8579jpj.fsf@toke.dk>
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=jphzEcSkNncyQXURXy+bMvvSOETA08+BxHJ5z57Bb0M=;
+        b=iJOCnr5lz1gkSRcRxPmbHH1rDOb0BE9i9cysJIGB/azly/JMkzsnZ5FmbU0r8ug2z9
+         V6FgerQ0cuCgc4Hl6A5oVmLw8p8W8i6ddFHIlkFTBVKOmxiNd4wsTxPtukOReyMvCSPN
+         LNS5JIKSZdGmuO/Vg/FuyfIQPNojcK3yoIGqpp2r4wL/l9w0SGR+MxBHmkoB5pKC3sFg
+         YV+w8ONTVKMzZjyC+Zr5YH8eVpD/D1G7FiyXr1cA+j7pxq3ZVWyycOnNzr1Rflcqjdt9
+         hiA/iWOj2EkbiHICFuD3TwfXSPU0ltfc2nhV2gnxL1PgjQIQ157by/WKR5VfPngzA4mr
+         xUig==
+X-Gm-Message-State: APjAAAWWaFQ/LqJFRHcbOlR0j1El/zTwZH8WQB2xJMI3f5Bay0kvWM8H
+        6Z/ldJ9Drp+r44OXy1awC0w=
+X-Google-Smtp-Source: APXvYqxlzmxdYLzOPpcInVQyKgAS4zc777/kdZlRsQ6Gg/ppqj9M7QdxbhVc99mR+kWGcY6bb23LnQ==
+X-Received: by 2002:a19:4347:: with SMTP id m7mr8570675lfj.146.1568986637463;
+        Fri, 20 Sep 2019 06:37:17 -0700 (PDT)
+Received: from localhost.localdomain (ip-194-187-74-233.konfederacka.maverick.com.pl. [194.187.74.233])
+        by smtp.gmail.com with ESMTPSA id b25sm475423ljj.36.2019.09.20.06.37.14
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Fri, 20 Sep 2019 06:37:15 -0700 (PDT)
+From:   =?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <zajec5@gmail.com>
+To:     Johannes Berg <johannes@sipsolutions.net>,
+        "David S . Miller" <davem@davemloft.net>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Jouni Malinen <j@w1.fi>,
+        hostap@lists.infradead.org, openwrt-devel@lists.openwrt.org
+Cc:     =?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <rafal@milecki.pl>
+Subject: [PATCH RFC] cfg80211: add new command for reporting wiphy crashes
+Date:   Fri, 20 Sep 2019 15:37:08 +0200
+Message-Id: <20190920133708.15313-1-zajec5@gmail.com>
+X-Mailer: git-send-email 2.21.0
 MIME-Version: 1.0
-X-MC-Unique: hOr-J5bnP9-Pu6-GMRkpyw-1
-X-Mimecast-Spam-Score: 0
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Lorenzo Bianconi <lorenzo@kernel.org> writes:
+From: Rafał Miłecki <rafal@milecki.pl>
 
->> Lorenzo Bianconi <lorenzo@kernel.org> writes:
->>=20
->> >> From: Toke H=C3=B8iland-J=C3=B8rgensen <toke@redhat.com>
->> >>=20
->> >> Some devices have deep buffers in firmware and/or hardware which prev=
-ents
->> >> the FQ structure in mac80211 from effectively limiting bufferbloat on=
- the
->> >> link. For Ethernet devices we have BQL to limit the lower-level queue=
-s, but
->> >> this cannot be applied to mac80211 because transmit rates can vary wi=
-ldly
->> >> between packets depending on which station we are transmitting it to.
->> >>=20
->> >> To overcome this, we can use airtime-based queue limiting (AQL), wher=
-e we
->> >> estimate the transmission time for each packet before dequeueing it, =
-and
->> >> use that to limit the amount of data in-flight to the hardware. This =
-idea
->> >> was originally implemented as part of the out-of-tree airtime fairnes=
-s
->> >> patch to ath10k[0] in chromiumos.
->> >>=20
->> >> This patch ports that idea over to mac80211. The basic idea is simple
->> >> enough: Whenever we dequeue a packet from the TXQs and send it to the
->> >> driver, we estimate its airtime usage, based on the last recorded TX =
-rate
->> >> of the station that packet is destined for. We keep a running per-AC =
-total
->> >> of airtime queued for the whole device, and when that total climbs ab=
-ove 8
->> >> ms' worth of data (corresponding to two maximum-sized aggregates), we
->> >> simply throttle the queues until it drops down again.
->> >>=20
->> >> The estimated airtime for each skb is stored in the tx_info, so we ca=
-n
->> >> subtract the same amount from the running total when the skb is freed=
- or
->> >> recycled. The throttling mechanism relies on this accounting to be
->> >> accurate (i.e., that we are not freeing skbs without subtracting any
->> >> airtime they were accounted for), so we put the subtraction into
->> >> ieee80211_report_used_skb().
->> >>=20
->> >> This patch does *not* include any mechanism to wake a throttled TXQ a=
-gain,
->> >> on the assumption that this will happen anyway as a side effect of wh=
-atever
->> >> freed the skb (most commonly a TX completion).
->> >>=20
->> >> The throttling mechanism only kicks in if the queued airtime total go=
-es
->> >> above the limit. Since mac80211 calculates the time based on the repo=
-rted
->> >> last_tx_time from the driver, the whole throttling mechanism only kic=
-ks in
->> >> for drivers that actually report this value. With the exception of
->> >> multicast, where we always calculate an estimated tx time on the assu=
-mption
->> >> that multicast is transmitted at the lowest (6 Mbps) rate.
->> >>=20
->> >> The throttling added in this patch is in addition to any throttling a=
-lready
->> >> performed by the airtime fairness mechanism, and in principle the two
->> >> mechanisms are orthogonal (and currently also uses two different sour=
-ces of
->> >> airtime). In the future, we could amend this, using the airtime estim=
-ates
->> >> calculated by this mechanism as a fallback input to the airtime fairn=
-ess
->> >> scheduler, to enable airtime fairness even on drivers that don't have=
- a
->> >> hardware source of airtime usage for each station.
->> >>=20
->> >> [0] https://chromium-review.googlesource.com/c/chromiumos/third_party=
-/kernel/+/588190/13/drivers/net/wireless-4.2/ath/ath10k/mac.c#3845
->> >>=20
->> >> Signed-off-by: Toke H=C3=B8iland-J=C3=B8rgensen <toke@redhat.com>
->> >> ---
->> >>  net/mac80211/debugfs.c     |   24 ++++++++++++++++++++++++
->> >>  net/mac80211/ieee80211_i.h |    7 +++++++
->> >>  net/mac80211/status.c      |   22 ++++++++++++++++++++++
->> >>  net/mac80211/tx.c          |   38 ++++++++++++++++++++++++++++++++++=
-+++-
->> >>  4 files changed, 90 insertions(+), 1 deletion(-)
->> >
->> > Hi Toke,
->> >
->> > Thx a lot for working on this. Few comments inline.
->> >
->> > Regards,
->> > Lorenzo
->> >
->> >>=20
->> >> diff --git a/net/mac80211/debugfs.c b/net/mac80211/debugfs.c
->> >> index 568b3b276931..c846c6e7f3e3 100644
->> >> --- a/net/mac80211/debugfs.c
->> >> +++ b/net/mac80211/debugfs.c
->> >> @@ -148,6 +148,29 @@ static const struct file_operations aqm_ops =3D =
-{
->> >>  =09.llseek =3D default_llseek,
->> >>  };
->> >> =20
->> >
->> > [...]
->> >
->> >> @@ -3581,8 +3591,19 @@ struct sk_buff *ieee80211_tx_dequeue(struct ie=
-ee80211_hw *hw,
->> >>  =09tx.skb =3D skb;
->> >>  =09tx.sdata =3D vif_to_sdata(info->control.vif);
->> >> =20
->> >> -=09if (txq->sta)
->> >> +=09pktlen =3D skb->len + 38;
->> >> +=09if (txq->sta) {
->> >>  =09=09tx.sta =3D container_of(txq->sta, struct sta_info, sta);
->> >> +=09=09if (tx.sta->last_tx_bitrate) {
->> >> +=09=09=09airtime =3D (pktlen * 8 * 1000 *
->> >> +=09=09=09=09   tx.sta->last_tx_bitrate_reciprocal) >> IEEE80211_RECI=
-PROCAL_SHIFT;
->> >> +=09=09=09airtime +=3D IEEE80211_AIRTIME_OVERHEAD;
->> >
->> > Here we are not taking into account aggregation burst size (it is done
->> > in a rough way in chromeos implementation) and tx retries. I have not
->> > carried out any tests so far but I think IEEE80211_AIRTIME_OVERHEAD
->> > will led to a significant airtime overestimation. Do you think this
->> > can be improved? (..I agree this is not a perfect world, but .. :))
->>=20
->> Hmm, yeah, looking at this again, the way I'm going this now, I should
->> probably have used the low 16-us IFS overhead for every packet.
->>=20
->> I guess we could do something similar to what the chromeos thing is
->> doing. I.e., adding a single "large" overhead value when we think the
->> packet is the first of a burst, and using the smaller value for the
->> rest.
->>=20
->> One approach could be to couple the switch to the "scheduling rounds" we
->> already have. I.e., first packet after a call to
->> ieee8021_txq_schedule_start() will get the 100-us overhead, and every
->> subsequent one will get the low one. Not sure how this will fit with
->> what the driver actually does, though, so I guess some experimentation
->> is in order.
->>=20
->> Ultimately,  I'm not sure it matters that much whether occasionally add
->> 80 us extra to the estimate. But as you say, adding 100 us to every
->> packet is probably a bit much ;)
->
-> Would it be possible to use the previous tx airtime reported by the
-> driver? (not sure if it is feasible). Some drivers can report airtime
-> compute in hw, the issue is it can be no not linked to the given skb
-> or aggregation burst, so we should take into account burst size
+Hardware or firmware instability may result in unusable wiphy. In such
+cases usually a hardware reset is needed. To allow a full recovery
+kernel has to indicate problem to the user space.
 
-That's what we do for the fairness scheduler. And yeah, if the HW can
-report after-the-fact airtime usage that is bound to be more accurate,
-so I think we should keep using that for fairness.
+This new nl80211 command lets user space known wiphy has crashed and has
+been just recovered. When applicable it should result in supplicant or
+authenticator reconfiguring all interfaces.
 
-But for this AQL thing, we really need it ahead of time. However, I
-don't think it's as important that it is super accurate. As long as we
-have a reasonable estimate I think we'll be fine. We can solve any
-inaccuracies by fiddling with the limit, I think. Similar to what BQL
-does; dynamically adjusting it up and down.
+Signed-off-by: Rafał Miłecki <rafal@milecki.pl>
+---
+I'd like to use this new cfg80211_crash_report() in brcmfmac after a
+successful recovery from a FullMAC firmware crash.
 
-So for a first pass, we can just err on the side of having the limit
-higher, and then iterate from there.
+Later on I'd like to modify hostapd to reconfigure wiphy using a
+previously used setup.
 
->> > Moreover, can this approach be affected by some interrupt coalescing
->> > implemented by the chipset?
->>=20
->> Probably? Ultimately we don't really know what exactly the chipset is
->> doing, so we're guessing here, no?
->
-> Here I mean if the hw relies on a 1:n tx interrupt/packet ratio (I
-> guess most driver do), it would probably affect throughput, right?
-> (e.g TCP)
+I'm OpenWrt developer & user and I got annoyed by my devices not auto
+recovering after various failures. There are things I cannot fix (hw
+failures or closed fw crashes) but I still expect my devices to get
+back to operational state as soon as possible on their own.
+---
+ include/net/cfg80211.h       |  7 +++++++
+ include/uapi/linux/nl80211.h |  2 ++
+ net/wireless/nl80211.c       | 29 +++++++++++++++++++++++++++++
+ 3 files changed, 38 insertions(+)
 
-Yeah, this is what I alluded to above: If we set the limit too low, were
-are going to kill TCP throughput. Ideally, we want the limit to be as
-low as we can get it without hurting TCP (too much), but no lower. Just
-doing the conversion to airtime is a way to achieve this: This will
-scale the actual queue length with the achievable throughput as long as
-the tx rate estimate is reasonably accurate. If needed, we can add
-another layer of dynamic tuning on top using the existing BQL logic; but
-I'd like to get the basic case working first...
-
--Toke
+diff --git a/include/net/cfg80211.h b/include/net/cfg80211.h
+index ff45c3e1abff..668fa27c88cc 100644
+--- a/include/net/cfg80211.h
++++ b/include/net/cfg80211.h
+@@ -7437,6 +7437,13 @@ void cfg80211_pmsr_complete(struct wireless_dev *wdev,
+ bool cfg80211_iftype_allowed(struct wiphy *wiphy, enum nl80211_iftype iftype,
+ 			     bool is_4addr, u8 check_swif);
+ 
++/**
++ * cfg80211_crash_report - report crashed wiphy that requires a setup
++ *
++ * @wiphy: the wiphy
++ * @gfp: allocation flags
++ */
++void cfg80211_crash_report(struct wiphy *wiphy, gfp_t gfp);
+ 
+ /* Logging, debugging and troubleshooting/diagnostic helpers. */
+ 
+diff --git a/include/uapi/linux/nl80211.h b/include/uapi/linux/nl80211.h
+index beee59c831a7..9e17feb03849 100644
+--- a/include/uapi/linux/nl80211.h
++++ b/include/uapi/linux/nl80211.h
+@@ -1325,6 +1325,8 @@ enum nl80211_commands {
+ 
+ 	NL80211_CMD_PROBE_MESH_LINK,
+ 
++	NL80211_CMD_CRASH_REPORT,
++
+ 	/* add new commands above here */
+ 
+ 	/* used to define NL80211_CMD_MAX below */
+diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
+index d21b1581a665..d29785fb0676 100644
+--- a/net/wireless/nl80211.c
++++ b/net/wireless/nl80211.c
+@@ -16940,6 +16940,35 @@ void cfg80211_update_owe_info_event(struct net_device *netdev,
+ }
+ EXPORT_SYMBOL(cfg80211_update_owe_info_event);
+ 
++void cfg80211_crash_report(struct wiphy *wiphy, gfp_t gfp)
++{
++	struct cfg80211_registered_device *rdev = wiphy_to_rdev(wiphy);
++	struct sk_buff *msg;
++	void *hdr;
++
++	msg = nlmsg_new(NLMSG_DEFAULT_SIZE, gfp);
++	if (!msg)
++		return;
++
++	hdr = nl80211hdr_put(msg, 0, 0, 0, NL80211_CMD_CRASH_REPORT);
++	if (!hdr)
++		goto nla_put_failure;
++
++	if (nla_put_u32(msg, NL80211_ATTR_WIPHY, rdev->wiphy_idx))
++		goto nla_put_failure;
++
++	genlmsg_end(msg, hdr);
++
++	genlmsg_multicast_netns(&nl80211_fam, wiphy_net(&rdev->wiphy), msg, 0,
++				NL80211_MCGRP_CONFIG, gfp);
++
++	return;
++
++nla_put_failure:
++	nlmsg_free(msg);
++}
++EXPORT_SYMBOL(cfg80211_crash_report);
++
+ /* initialisation/exit functions */
+ 
+ int __init nl80211_init(void)
+-- 
+2.21.0
 
