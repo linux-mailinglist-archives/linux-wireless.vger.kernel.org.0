@@ -2,95 +2,67 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id F21B5B914B
-	for <lists+linux-wireless@lfdr.de>; Fri, 20 Sep 2019 16:01:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 40301B93B8
+	for <lists+linux-wireless@lfdr.de>; Fri, 20 Sep 2019 17:09:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728237AbfITOBt (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 20 Sep 2019 10:01:49 -0400
-Received: from mail.w1.fi ([212.71.239.96]:60684 "EHLO
-        li674-96.members.linode.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1727904AbfITOBt (ORCPT
+        id S2393287AbfITPJb (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 20 Sep 2019 11:09:31 -0400
+Received: from roobidoo.pudai.com ([216.14.118.130]:60480 "EHLO
+        roobidoo.pudai.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
+        with ESMTP id S2387614AbfITPJa (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 20 Sep 2019 10:01:49 -0400
-Received: from localhost (localhost [127.0.0.1])
-        by li674-96.members.linode.com (Postfix) with ESMTP id 6738411952;
-        Fri, 20 Sep 2019 14:01:47 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at w1.fi
-Received: from li674-96.members.linode.com ([127.0.0.1])
-        by localhost (mail.w1.fi [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id hAKQx5DjrZrw; Fri, 20 Sep 2019 14:01:45 +0000 (UTC)
-Received: by jm (sSMTP sendmail emulation); Fri, 20 Sep 2019 17:01:43 +0300
-Date:   Fri, 20 Sep 2019 17:01:43 +0300
-From:   Jouni Malinen <j@w1.fi>
-To:     =?utf-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>
-Cc:     Johannes Berg <johannes@sipsolutions.net>,
-        "David S . Miller" <davem@davemloft.net>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, hostap@lists.infradead.org,
-        openwrt-devel@lists.openwrt.org,
-        =?utf-8?B?UmFmYcWCIE1pxYJlY2tp?= <rafal@milecki.pl>
-Subject: Re: [PATCH RFC] cfg80211: add new command for reporting wiphy crashes
-Message-ID: <20190920140143.GA30514@w1.fi>
-References: <20190920133708.15313-1-zajec5@gmail.com>
+        Fri, 20 Sep 2019 11:09:30 -0400
+Received: from [71.219.36.120] (port=10772 helo=[10.168.3.100])
+        by roobidoo.pudai.com with esmtpsa (TLSv1.2:ECDHE-RSA-AES128-GCM-SHA256:128)
+        (Exim 4.92)
+        (envelope-from <tim@smallnetbuilder.com>)
+        id 1iBKXI-0000xo-Uw; Fri, 20 Sep 2019 10:09:29 -0500
+Subject: Re: Can Intel AX200 sniff UL OFDMA ?
+To:     Johannes Berg <johannes@sipsolutions.net>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+References: <82af1531-6f53-364c-46ed-e011455e9c01@smallnetbuilder.com>
+ <54996f59d8fb8f0f766959672e3fb9681d6a09c9.camel@sipsolutions.net>
+From:   Tim Higgins <tim@smallnetbuilder.com>
+Message-ID: <7d5dfbe4-17a4-dce9-0119-f21df7d7c2a1@smallnetbuilder.com>
+Date:   Fri, 20 Sep 2019 11:09:31 -0400
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:60.0) Gecko/20100101
+ Thunderbird/60.9.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20190920133708.15313-1-zajec5@gmail.com>
+In-Reply-To: <54996f59d8fb8f0f766959672e3fb9681d6a09c9.camel@sipsolutions.net>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Content-Language: en-US
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - roobidoo.pudai.com
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - smallnetbuilder.com
+X-Get-Message-Sender-Via: roobidoo.pudai.com: authenticated_id: tim@timhiggins.com
+X-Authenticated-Sender: roobidoo.pudai.com: tim@timhiggins.com
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Fri, Sep 20, 2019 at 03:37:08PM +0200, Rafał Miłecki wrote:
-> Hardware or firmware instability may result in unusable wiphy. In such
-> cases usually a hardware reset is needed. To allow a full recovery
-> kernel has to indicate problem to the user space.
+On 9/19/2019 6:05 PM, Johannes Berg wrote:
+> Hi Tim,
+>
+>> I have been using the debug hw_sniffer_params file to tune the AX200 to a specific AID. This
+>> works well for capturing OFDMA DL. But I have yet to capture any UL OFDMA frames, or at least I
+>> don't think I have.
+>>
+>> I am looking for QoS data frames that have HE_MU PPDU format. Is this correct?
+>> I can see plenty of HE_SU PPDU frames from STA to AP, but no HE_MU uplink.
+>>
+>> Am I looking for the wrong thing or can the AX200 not sniff OFDMA UL?
+> UL OFDMA frames should be HE_TB PPDU format, not HE_MU. They can only be
+> sent as a response to trigger frames, so all the participants are
+> synchronized etc.
+>
+> johannes
 
-Why? Shouldn't the driver be able to handle this on its own since all
-the previous configuration was done through the driver anyway. As far as
-I know, there are drivers that do indeed try to do this and handle it
-successfully at least for station mode. AP mode may be more complex, but
-for that one, I guess it would be fine to drop all associations (and
-provide indication of that to user space) and just restart the BSS.
+Thanks, Johannes. I believe Wireshark shows HE_TB as HE_TRIG (0x3) under HE information > HE Data 1, correct?
 
-> This new nl80211 command lets user space known wiphy has crashed and has
-> been just recovered. When applicable it should result in supplicant or
-> authenticator reconfiguring all interfaces.
-
-For me, that is not really "recovered" if some additional
-reconfiguration steps are needed.. I'd like to get a more detailed view
-on what exactly might need to be reconfigured and how would user space
-know what exactly to do. Or would the plan here be that the driver would
-not even indicate this crash if it is actually able to internally
-recover fully from the firmware restart?
-
-> I'd like to use this new cfg80211_crash_report() in brcmfmac after a
-> successful recovery from a FullMAC firmware crash.
-> 
-> Later on I'd like to modify hostapd to reconfigure wiphy using a
-> previously used setup.
-
-So this implies that at least something would need to happen in AP mode.
-Do you have a list of items that the driver cannot do on its own and why
-it would be better to do them from user space?
-
-> I'm OpenWrt developer & user and I got annoyed by my devices not auto
-> recovering after various failures. There are things I cannot fix (hw
-> failures or closed fw crashes) but I still expect my devices to get
-> back to operational state as soon as possible on their own.
-
-I fully agree with the auto recovery being important thing to cover for
-this, but I'm not yet convinced that this needs user space action. Or if
-it does, there would need to be more detailed way of indicating what
-exactly is needed for user space to do. The proposed change here is just
-saying "hey, I crashed and did something to get the hardware/firmware
-responding again" which does not really tell much to user space other
-than potentially requiring full disable + re-enable for the related
-interfaces. And that is something that should not actually be done in
-all cases of firmware crashes since there are drivers that handle
-recovery in a manner that is in practice completely transparent to user
-space.
-
--- 
-Jouni Malinen                                            PGP id EFC895FA
