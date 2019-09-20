@@ -2,63 +2,68 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 7481EB96E4
-	for <lists+linux-wireless@lfdr.de>; Fri, 20 Sep 2019 20:01:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 13833B9763
+	for <lists+linux-wireless@lfdr.de>; Fri, 20 Sep 2019 20:52:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2405555AbfITSBL (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 20 Sep 2019 14:01:11 -0400
-Received: from s3.sipsolutions.net ([144.76.43.62]:48422 "EHLO
-        sipsolutions.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2404951AbfITSBL (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 20 Sep 2019 14:01:11 -0400
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <johannes@sipsolutions.net>)
-        id 1iBNDQ-0002d0-73; Fri, 20 Sep 2019 20:01:08 +0200
-Message-ID: <7fec612f4e30bb9aa2d2eeadf5e3aeadcc865ac5.camel@sipsolutions.net>
-Subject: Re: Can Intel AX200 sniff UL OFDMA ?
-From:   Johannes Berg <johannes@sipsolutions.net>
-To:     Tim Higgins <tim@smallnetbuilder.com>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-Date:   Fri, 20 Sep 2019 20:01:07 +0200
-In-Reply-To: <7d5dfbe4-17a4-dce9-0119-f21df7d7c2a1@smallnetbuilder.com>
-References: <82af1531-6f53-364c-46ed-e011455e9c01@smallnetbuilder.com>
-         <54996f59d8fb8f0f766959672e3fb9681d6a09c9.camel@sipsolutions.net>
-         <7d5dfbe4-17a4-dce9-0119-f21df7d7c2a1@smallnetbuilder.com>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.30.5 (3.30.5-1.fc29) 
+        id S2406104AbfITSwQ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 20 Sep 2019 14:52:16 -0400
+Received: from mx3.wp.pl ([212.77.101.10]:8612 "EHLO mx3.wp.pl"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S2405734AbfITSwP (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 20 Sep 2019 14:52:15 -0400
+Received: (wp-smtpd smtp.wp.pl 15208 invoked from network); 20 Sep 2019 20:45:33 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wp.pl; s=1024a;
+          t=1569005134; bh=cizgm+wM/wjxUasVlGK7XAg12mZAPfOsYXg1d/8EQ90=;
+          h=From:To:Cc:Subject;
+          b=s5ny6L1GowL9XNrTar3fPEsX/ROiUgvN4PSEig0HQBPfKd+NPMYlml8HBaYwosXsM
+           pIw+74PyBFdJfjgsNhteK+dKxq+FIgc9WlEwAa20eriPCWeZTbvRLK3SVfH3j1JGYO
+           CeW+uDB4WLNOAsMJK7SYNkPTmOsnU36ogpr/QAxY=
+Received: from 014.152-60-66-biz-static.surewest.net (HELO cakuba.netronome.com) (kubakici@wp.pl@[66.60.152.14])
+          (envelope-sender <kubakici@wp.pl>)
+          by smtp.wp.pl (WP-SMTPD) with ECDHE-RSA-AES256-GCM-SHA384 encrypted SMTP
+          for <lorenzo.bianconi@redhat.com>; 20 Sep 2019 20:45:33 +0200
+Date:   Fri, 20 Sep 2019 11:45:15 -0700
+From:   Jakub Kicinski <kubakici@wp.pl>
+To:     Lorenzo Bianconi <lorenzo.bianconi@redhat.com>
+Cc:     Colin King <colin.king@canonical.com>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        "David S . Miller" <davem@davemloft.net>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-mediatek@lists.infradead.org,
+        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] mt7601u: phy: simplify zero check on val
+Message-ID: <20190920114515.36e1ed90@cakuba.netronome.com>
+In-Reply-To: <20190920135817.GC6456@localhost.localdomain>
+References: <20190920125414.15507-1-colin.king@canonical.com>
+        <20190920135817.GC6456@localhost.localdomain>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
+X-WP-MailID: 624ef302b2416e660574dde2845ab35d
+X-WP-AV: skaner antywirusowy Poczty Wirtualnej Polski
+X-WP-SPAM: NO 000000A [AVOU]                               
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Fri, 2019-09-20 at 11:09 -0400, Tim Higgins wrote:
-> On 9/19/2019 6:05 PM, Johannes Berg wrote:
-> > Hi Tim,
-> > 
-> > > I have been using the debug hw_sniffer_params file to tune the AX200 to a specific AID. This
-> > > works well for capturing OFDMA DL. But I have yet to capture any UL OFDMA frames, or at least I
-> > > don't think I have.
-> > > 
-> > > I am looking for QoS data frames that have HE_MU PPDU format. Is this correct?
-> > > I can see plenty of HE_SU PPDU frames from STA to AP, but no HE_MU uplink.
-> > > 
-> > > Am I looking for the wrong thing or can the AX200 not sniff OFDMA UL?
-> > UL OFDMA frames should be HE_TB PPDU format, not HE_MU. They can only be
-> > sent as a response to trigger frames, so all the participants are
-> > synchronized etc.
-> > 
-> > johannes
+On Fri, 20 Sep 2019 15:58:17 +0200, Lorenzo Bianconi wrote:
+> I think this is not correct since (not considering the cast) we should break
+> from the loop if val != 0 and val != 0xff, so the right approach I guess is:
 > 
-> Thanks, Johannes. I believe Wireshark shows HE_TB as HE_TRIG (0x3)
-> under HE information > HE Data 1, correct?
+> diff --git a/drivers/net/wireless/mediatek/mt7601u/phy.c b/drivers/net/wireless/mediatek/mt7601u/phy.c
+> index 06f5702ab4bd..d863ab4a66c9 100644
+> --- a/drivers/net/wireless/mediatek/mt7601u/phy.c
+> +++ b/drivers/net/wireless/mediatek/mt7601u/phy.c
+> @@ -213,7 +213,7 @@ int mt7601u_wait_bbp_ready(struct mt7601u_dev *dev)
+>  
+>  	do {
+>  		val = mt7601u_bbp_rr(dev, MT_BBP_REG_VERSION);
+> -		if (val && ~val)
+> +		if (val && val != 0xff)
+>  			break;
+>  	} while (--i);
 
-Right, see 
-
-http://www.radiotap.org/fields/HE
-
-johannes
-
+Yup, feel free to add my ack if you post this, Lorenzo.
