@@ -2,94 +2,72 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 97E7DB8ABA
-	for <lists+linux-wireless@lfdr.de>; Fri, 20 Sep 2019 08:07:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4846CB8AF2
+	for <lists+linux-wireless@lfdr.de>; Fri, 20 Sep 2019 08:17:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2408259AbfITGHl (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 20 Sep 2019 02:07:41 -0400
-Received: from vulcan.natalenko.name ([104.207.131.136]:46338 "EHLO
-        vulcan.natalenko.name" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2404689AbfITGHk (ORCPT
+        id S2394794AbfITGRO (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 20 Sep 2019 02:17:14 -0400
+Received: from smtp.codeaurora.org ([198.145.29.96]:40458 "EHLO
+        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2393094AbfITGRN (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 20 Sep 2019 02:07:40 -0400
-Received: from mail.natalenko.name (vulcan.natalenko.name [IPv6:fe80::5400:ff:fe0c:dfa0])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        Fri, 20 Sep 2019 02:17:13 -0400
+Received: by smtp.codeaurora.org (Postfix, from userid 1000)
+        id E26A861197; Fri, 20 Sep 2019 06:17:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
+        s=default; t=1568960232;
+        bh=WtC26mDlgtl3+WBvaJV+k9yuQ4fyIfV0QCdliHeBs0Q=;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+        b=VN6B5d9O7Ej7a1qAWtgEh/lpRbQbdf+zYhxukKx2ryuXwQUQATYYmgj7KP6rYZHMB
+         GDagPA7VLSIM8gLhE4/VN2WeYp54+FJrWxVOfAdri/5mrC8SCI3b3zv2b3oS/rO5GY
+         dsLg6WEgwSzQBR3NE9fJzJYA1ShN6BLWi+9gZ7ac=
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        pdx-caf-mail.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.7 required=2.0 tests=ALL_TRUSTED,BAYES_00,
+        DKIM_INVALID,DKIM_SIGNED,SPF_NONE autolearn=no autolearn_force=no
+        version=3.4.0
+Received: from x230.qca.qualcomm.com (37-136-106-186.rev.dnainternet.fi [37.136.106.186])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by vulcan.natalenko.name (Postfix) with ESMTPSA id B02075E2A21;
-        Fri, 20 Sep 2019 08:07:36 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=natalenko.name;
-        s=dkim-20170712; t=1568959656;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=jH9gXNPbxi1W8r9+ABp+AurJWFHZfRBG5DgXPnFMReM=;
-        b=R9vkVfECkjWSsgJppG8rxM736W3JpEs0gyNHlOeP0NxqIY0mOrOvG1NPEa47TciTF5yJgn
-        iXHnMmXPi2bRWXfTDVLJTOu/Z9m5PGlhve07S4wTYUxY7KZVJ41HZusrpioYhwwA+Hy3hi
-        99j9FqMlDBd163Sq7SiuIBav94PyaoA=
+        (Authenticated sender: kvalo@smtp.codeaurora.org)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 56E5B60736;
+        Fri, 20 Sep 2019 06:17:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
+        s=default; t=1568960232;
+        bh=WtC26mDlgtl3+WBvaJV+k9yuQ4fyIfV0QCdliHeBs0Q=;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+        b=VN6B5d9O7Ej7a1qAWtgEh/lpRbQbdf+zYhxukKx2ryuXwQUQATYYmgj7KP6rYZHMB
+         GDagPA7VLSIM8gLhE4/VN2WeYp54+FJrWxVOfAdri/5mrC8SCI3b3zv2b3oS/rO5GY
+         dsLg6WEgwSzQBR3NE9fJzJYA1ShN6BLWi+9gZ7ac=
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 56E5B60736
+Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
+From:   Kalle Valo <kvalo@codeaurora.org>
+To:     Larry Finger <Larry.Finger@lwfinger.net>
+Cc:     linux-wireless@vger.kernel.org, pkshih@realtek.com
+Subject: Re: [PATCH] rtlwifi: rtl_pci: Fix errors when CONFIG_RTLWIFI_DEBUG is not set
+References: <20190920022533.23085-1-Larry.Finger@lwfinger.net>
+Date:   Fri, 20 Sep 2019 09:17:08 +0300
+In-Reply-To: <20190920022533.23085-1-Larry.Finger@lwfinger.net> (Larry
+        Finger's message of "Thu, 19 Sep 2019 21:25:33 -0500")
+Message-ID: <87y2yjcx0b.fsf@codeaurora.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII;
- format=flowed
-Content-Transfer-Encoding: 7bit
-Date:   Fri, 20 Sep 2019 08:07:36 +0200
-From:   Oleksandr Natalenko <oleksandr@natalenko.name>
-To:     linux-mediatek@lists.infradead.org
-Cc:     Felix Fietkau <nbd@nbd.name>,
-        Lorenzo Bianconi <lorenzo.bianconi83@gmail.com>,
-        Lorenzo Bianconi <lorenzo@kernel.org>,
-        Stanislaw Gruszka <sgruszka@redhat.com>,
-        Ryder Lee <ryder.lee@mediatek.com>,
-        Roy Luo <royluo@google.com>, Kalle Valo <kvalo@codeaurora.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-Subject: Re: mt76x2e hardware restart
-In-Reply-To: <c6d621759c190f7810d898765115f3b4@natalenko.name>
-References: <deaafa7a3e9ea2111ebb5106430849c6@natalenko.name>
- <c6d621759c190f7810d898765115f3b4@natalenko.name>
-Message-ID: <9d581001e2e6cece418329842b2b0959@natalenko.name>
-X-Sender: oleksandr@natalenko.name
-User-Agent: Roundcube Webmail/1.3.10
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=natalenko.name;
-        s=arc-20170712; t=1568959656;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=jH9gXNPbxi1W8r9+ABp+AurJWFHZfRBG5DgXPnFMReM=;
-        b=Lx7RSi2KM1izZeY1DlaZvsDfXcqIgMn13kACMSo+n2mRDTFq4BW1IrmUEyYwUuLiSl6bHi
-        n1IhBPgJP6HMQhhtOmR2koeCh1eYP5P7bjkpF9dD3iujiiZuoEvYApZxGjdWfiugxVwjjk
-        Pk49jnuQ/xyCGUfVowZo0qwtKO/q/Ug=
-ARC-Seal: i=1; s=arc-20170712; d=natalenko.name; t=1568959656; a=rsa-sha256;
-        cv=none;
-        b=ltZH82cvZTCqUIZu17K+MZfElr0UyGtpOPdJxJdgkRBXBvIjnN1O85JL7EmLGgGuHw9V7e
-        UOYX4cwyH2BJlW8ziD7E+9pWCcf6uH4vcDACi99Y5K6OgL7A7Hj1rG3uTUQjAbzDWpq5qu
-        7tC9mxbub4DHtQorgIALBd8B7hEj3yo=
-ARC-Authentication-Results: i=1;
-        vulcan.natalenko.name;
-        auth=pass smtp.auth=oleksandr@natalenko.name smtp.mailfrom=oleksandr@natalenko.name
+Content-Type: text/plain
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 19.09.2019 23:22, Oleksandr Natalenko wrote:
-> It checks for TX hang here:
-> 
-> === mt76x02_mmio.c
-> 557 void mt76x02_wdt_work(struct work_struct *work)
-> 558 {
-> ...
-> 562     mt76x02_check_tx_hang(dev);
-> ===
+Larry Finger <Larry.Finger@lwfinger.net> writes:
 
-I've commented out the watchdog here ^^, and the card is not resetted 
-any more, but similarly it stops working shortly after the first client 
-connects. So, indeed, it must be some hang in the HW, and wdt seems to 
-do a correct job.
+> When rtlwifi debugging is disabled, missing globals occur due to the
+> attempt execution of code that is never generated.
+>
+> Signed-off-by: Larry Finger <Larry.Finger@lwfinger.net>
 
-Is it even debuggable/fixable from the driver?
+Is this is a new regression or an old problem?
 
 -- 
-   Oleksandr Natalenko (post-factum)
+Kalle Valo
