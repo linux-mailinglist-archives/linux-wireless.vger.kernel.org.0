@@ -2,25 +2,25 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C5D8EB9DA6
-	for <lists+linux-wireless@lfdr.de>; Sat, 21 Sep 2019 13:38:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F0074B9DAB
+	for <lists+linux-wireless@lfdr.de>; Sat, 21 Sep 2019 13:49:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2391948AbfIULi5 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 21 Sep 2019 07:38:57 -0400
-Received: from smtp.codeaurora.org ([198.145.29.96]:47624 "EHLO
+        id S2394099AbfIULtW (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 21 Sep 2019 07:49:22 -0400
+Received: from smtp.codeaurora.org ([198.145.29.96]:49806 "EHLO
         smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2391840AbfIULi5 (ORCPT
+        with ESMTP id S2389497AbfIULtW (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 21 Sep 2019 07:38:57 -0400
+        Sat, 21 Sep 2019 07:49:22 -0400
 Received: by smtp.codeaurora.org (Postfix, from userid 1000)
-        id 7071A613A3; Sat, 21 Sep 2019 11:38:56 +0000 (UTC)
+        id CCECA61196; Sat, 21 Sep 2019 11:49:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1569065936;
-        bh=gtYhQeg/21GWcRbAWVIoleIi/D4OfJWAySgPFth563E=;
+        s=default; t=1569066561;
+        bh=ktJ6zeHiaiXJq+CeabslabaI0JgFMHZNOK+gpbAFFA4=;
         h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=Gasq7a7D11UJZZv4Tpu3aNJv233VM4j3FKDMmmX+xa5004yBqMRQQ/hhjALYtXaaz
-         zY4YPGxmBIyEJzXPiZHCcdGMsjaWyZgrVveN7A1x6ze/NiCK/Dr3lasbKZborSWoXU
-         tO+DybnPD7IsK7Euon4YPAayxZ+QbNMk542ApXd0=
+        b=cfnf1/OfXeKkBfGDUzC/pyJKI5JiosdeIBdM4BzWT68wnNVU0hyBtHkVwclLohfec
+         ChPKsBtiBICalODk28PSc6Mj9Vexs/cyF+0pewJpPhxAisPG9utlx5XvDvPIU/LiLy
+         N3t2KKiGlfW6zs2B/llLop8rUrIqvDxrFuDkhW8Y=
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         pdx-caf-mail.web.codeaurora.org
 X-Spam-Level: 
@@ -31,16 +31,16 @@ Received: from x230.qca.qualcomm.com (37-136-106-186.rev.dnainternet.fi [37.136.
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
         (Authenticated sender: kvalo@smtp.codeaurora.org)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id E672060364;
-        Sat, 21 Sep 2019 11:38:54 +0000 (UTC)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 4243F61196;
+        Sat, 21 Sep 2019 11:49:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1569065935;
-        bh=gtYhQeg/21GWcRbAWVIoleIi/D4OfJWAySgPFth563E=;
+        s=default; t=1569066561;
+        bh=ktJ6zeHiaiXJq+CeabslabaI0JgFMHZNOK+gpbAFFA4=;
         h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=IG5Be7gG/Ruoj9ixMfugFz4onA02AMlRiPTPwbWEcsYWvgsaugs7SdXIaLgxjKJFq
-         tG6tqULvXGqZSXfhiLD6q6EiLttbWB84wA0iMzhK0xDJMc6OnYxWpYr76oH1sBOaca
-         5DTJrCi5jyDjWuAlUvTBqedxVOm0YIqjx8fbiaEo=
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org E672060364
+        b=cfnf1/OfXeKkBfGDUzC/pyJKI5JiosdeIBdM4BzWT68wnNVU0hyBtHkVwclLohfec
+         ChPKsBtiBICalODk28PSc6Mj9Vexs/cyF+0pewJpPhxAisPG9utlx5XvDvPIU/LiLy
+         N3t2KKiGlfW6zs2B/llLop8rUrIqvDxrFuDkhW8Y=
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 4243F61196
 Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
 Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
 From:   Kalle Valo <kvalo@codeaurora.org>
@@ -48,10 +48,10 @@ To:     Wen Gong <wgong@codeaurora.org>
 Cc:     ath10k@lists.infradead.org, linux-wireless@vger.kernel.org
 Subject: Re: [PATCH v2] ath10k: add fw coredump for sdio when firmware assert
 References: <1567132338-7407-1-git-send-email-wgong@codeaurora.org>
-Date:   Sat, 21 Sep 2019 14:38:52 +0300
+Date:   Sat, 21 Sep 2019 14:49:18 +0300
 In-Reply-To: <1567132338-7407-1-git-send-email-wgong@codeaurora.org> (Wen
         Gong's message of "Fri, 30 Aug 2019 10:32:18 +0800")
-Message-ID: <874l15c20j.fsf@codeaurora.org>
+Message-ID: <87zhixamyp.fsf@codeaurora.org>
 User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
 MIME-Version: 1.0
 Content-Type: text/plain
@@ -76,26 +76,24 @@ Wen Gong <wgong@codeaurora.org> writes:
 
 [...]
 
-> +static int ath10k_sdio_read_mem(struct ath10k *ar, u32 address, void *buf,
-> +				u32 buf_len)
+> +void ath10k_sdio_fw_crashed_dump(struct ath10k *ar)
 > +{
-> +	u32 val;
-> +	int i, ret;
+> +	struct ath10k_fw_crash_data *crash_data;
+> +	char guid[UUID_STRING_LEN + 1];
+> +	u32 fast_dump = 0;
 > +
-> +	for (i = 0; i < buf_len; i += 4) {
-> +		ret = ath10k_sdio_hif_diag_read32(ar, address + i, &val);
-> +		if (ret) {
-> +			ath10k_warn(ar, "unable to read mem %d value\n", address + i);
-> +			break;
-> +		}
-> +		memcpy(buf + i, &val, 4);
-> +	}
+> +	ath10k_err(ar, "begin fw dump\n", guid);
 > +
-> +	return ret;
-> +}
+> +	ath10k_sdio_check_fw_reg(ar, &fast_dump);
+> +
+> +	if (fast_dump)
+> +		ar->bmi.done_sent = false;
 
-What's wrong with ath10k_sdio_hif_diag_read()? AFAICS this whole
-function duplicates just what it does.
+After looking more closely, the ar->bmi.done_set checks in bmi.c does
+not look necessary to me, I have never seen that warning. I would remove
+those and the done_sent field altogether from ath10k to make the code
+cleaner and I avoid hacks like above. This should be done in a separate
+patch, of course.
 
 -- 
 Kalle Valo
