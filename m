@@ -2,162 +2,199 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 6E595B9DC4
-	for <lists+linux-wireless@lfdr.de>; Sat, 21 Sep 2019 14:13:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C723FB9DC5
+	for <lists+linux-wireless@lfdr.de>; Sat, 21 Sep 2019 14:16:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2437803AbfIUMMB (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 21 Sep 2019 08:12:01 -0400
-Received: from us-smtp-1.mimecast.com ([205.139.110.61]:59713 "EHLO
-        us-smtp-delivery-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S2437800AbfIUMMB (ORCPT
+        id S2437809AbfIUMQE (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 21 Sep 2019 08:16:04 -0400
+Received: from smtp.codeaurora.org ([198.145.29.96]:55554 "EHLO
+        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2437806AbfIUMQE (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 21 Sep 2019 08:12:01 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1569067919;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=7RQt9uInu36bABlUG0mwgAYjvA+rS+27DOQGd8Znwtk=;
-        b=enwUnjtzTQiluuspbcv8Zc3dKXildWCDzDQL/XGFG0NA8KGJvI73CbhwtLeoR4ZgS9xfrz
-        IMALxJBnIeBpx95yp787UOImzCsnVEoGdaHrpF7Hl9uNWdLlG3b3xDBtnBgqj5jMhXo/MM
-        PGR3ST8X7dAz2lqZ68siBpm0Gzq1CFw=
-Received: from mail-ed1-f70.google.com (mail-ed1-f70.google.com
- [209.85.208.70]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-210-SiLdRBjXPwKK5qo99DGdnQ-1; Sat, 21 Sep 2019 08:11:58 -0400
-Received: by mail-ed1-f70.google.com with SMTP id n14so5372833edt.3
-        for <linux-wireless@vger.kernel.org>; Sat, 21 Sep 2019 05:11:55 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:in-reply-to:references:date
-         :message-id:mime-version;
-        bh=qm2YOQ5sqzKJDhxq8JmZxpCCNt0ItCloW/5yhXOXaBE=;
-        b=QYbdTtipoB5zhjHnmoJ3lSDq8+XfSaeVDDQY1gHROvrFD1XiyeN5Go185xQ4OSRYl/
-         ARheRKxn96zUcveDhq3sBMZlRZRy0sajlqAu3fIDi7rS1CjXmToILoL/tcI1Q1Q4EeEB
-         St91f/jPn7WzyzzeD4rt82P0O6q4xBbn0xeA7dmVFYxRu7Dtp4Jt1EoZn6SprXrQ1v96
-         C9kxgvSs92xDt0YptF4HMozVo4nZPNG2p0bj1ZgLLXLeoK6k2Q0sG8EIqHhNVbdfx5aw
-         v9QzRVXFTo7wCDPY+N5c4Ax/W08U7p399F6Tnp3GNDiHUmWm+E+1992991tP2tGgGih3
-         uHkg==
-X-Gm-Message-State: APjAAAW91S2ubheStP3ZVvE6Tfr+1cTZCitNLKbrhhaxHto1ptvScmDY
-        nibeddDi3Q9C4Db25OYNlFA5/XW4Zh4JeasBtCSPgGqmkN3FWk6WaSglPJX3zPXtU4iEYUhxxwN
-        HcQTawNJH3ZymmP5f4DEwTGJqIkU=
-X-Received: by 2002:a17:906:1ed1:: with SMTP id m17mr22582574ejj.82.1569067914199;
-        Sat, 21 Sep 2019 05:11:54 -0700 (PDT)
-X-Google-Smtp-Source: APXvYqyBdukftE1uFzu6JtUiFa64klK19cYTZPrKV5B7+OP6LWcmE/hsc1z/EeXCAv8Le0WRdhB86Q==
-X-Received: by 2002:a17:906:1ed1:: with SMTP id m17mr22582557ejj.82.1569067913936;
-        Sat, 21 Sep 2019 05:11:53 -0700 (PDT)
-Received: from alrua-x1.borgediget.toke.dk (borgediget.toke.dk. [85.204.121.218])
-        by smtp.gmail.com with ESMTPSA id f26sm981563edb.55.2019.09.21.05.11.53
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 21 Sep 2019 05:11:53 -0700 (PDT)
-Received: by alrua-x1.borgediget.toke.dk (Postfix, from userid 1000)
-        id 84A1818063F; Sat, 21 Sep 2019 14:11:52 +0200 (CEST)
-From:   Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>
-To:     Kan Yan <kyan@google.com>
-Cc:     Lorenzo Bianconi <lorenzo@kernel.org>,
-        Johannes Berg <johannes@sipsolutions.net>,
-        linux-wireless@vger.kernel.org,
-        make-wifi-fast@lists.bufferbloat.net,
-        John Crispin <john@phrozen.org>, Felix Fietkau <nbd@nbd.name>
-Subject: Re: [PATCH RFC/RFT 4/4] mac80211: Apply Airtime-based Queue Limit (AQL) on packet dequeue
-In-Reply-To: <CA+iem5toLj4f-3tuJgoLx1=R2PzRUGPu+c1j7zauw7=izOUmgw@mail.gmail.com>
-References: <156889576422.191202.5906619710809654631.stgit@alrua-x1> <156889576869.191202.510507546538322707.stgit@alrua-x1> <20190920120639.GA6456@localhost.localdomain> <87k1a39lgt.fsf@toke.dk> <20190920130604.GB6456@localhost.localdomain> <87h8579jpj.fsf@toke.dk> <CA+iem5toLj4f-3tuJgoLx1=R2PzRUGPu+c1j7zauw7=izOUmgw@mail.gmail.com>
-X-Clacks-Overhead: GNU Terry Pratchett
-Date:   Sat, 21 Sep 2019 14:11:52 +0200
-Message-ID: <87d0ft7ss7.fsf@toke.dk>
+        Sat, 21 Sep 2019 08:16:04 -0400
+Received: by smtp.codeaurora.org (Postfix, from userid 1000)
+        id 4BD4761418; Sat, 21 Sep 2019 12:16:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
+        s=default; t=1569068163;
+        bh=wexDgknUrxzPZemPf9++eVSoD7b53DMLKuNNq26HWPA=;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+        b=BgDM/cnHTlD3sgocEHUR1AgZaF75mxpQF2RVexvqIr9u5UMtMjfydmumL6nR/Wq6Q
+         EeENOWqn+ELlAVj0d1Ub9mBjmrb4m+BQFe/Uf3Cfa56NFwEi8Y7gQR2OCl24U1MNNU
+         JTIyNtKsMTxbEYsZBnjSeiXnRbK+fJfqS7Zpt18M=
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        pdx-caf-mail.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.7 required=2.0 tests=ALL_TRUSTED,BAYES_00,
+        DKIM_INVALID,DKIM_SIGNED,SPF_NONE autolearn=no autolearn_force=no
+        version=3.4.0
+Received: from x230.qca.qualcomm.com (37-136-106-186.rev.dnainternet.fi [37.136.106.186])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo@smtp.codeaurora.org)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 2FF4460364;
+        Sat, 21 Sep 2019 12:16:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
+        s=default; t=1569068162;
+        bh=wexDgknUrxzPZemPf9++eVSoD7b53DMLKuNNq26HWPA=;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+        b=Ulss5o2Mj2PEdoVC9gnHcNeXi00NWtoEwkQ6hPRl8RWuqR6puQNoT/FuuNohINDya
+         kc91Q8Wfb4ewTYEkQmP346mxfBgs15fqmOE+rDlVZ21rdGJAPr2HEneefil2Kx0ppP
+         gNij0nWLvxsrMmVGnEDSxhoo2PEvjpVUQWuOe8J4=
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 2FF4460364
+Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
+From:   Kalle Valo <kvalo@codeaurora.org>
+To:     Wen Gong <wgong@codeaurora.org>
+Cc:     ath10k@lists.infradead.org, linux-wireless@vger.kernel.org
+Subject: Re: [PATCH v5 2/8] ath10k: enable RX bundle receive for sdio
+References: <1567679893-14029-1-git-send-email-wgong@codeaurora.org>
+        <1567679893-14029-3-git-send-email-wgong@codeaurora.org>
+Date:   Sat, 21 Sep 2019 15:15:58 +0300
+In-Reply-To: <1567679893-14029-3-git-send-email-wgong@codeaurora.org> (Wen
+        Gong's message of "Thu, 5 Sep 2019 18:38:07 +0800")
+Message-ID: <87r249alq9.fsf@codeaurora.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
 MIME-Version: 1.0
-X-MC-Unique: SiLdRBjXPwKK5qo99DGdnQ-1
-X-Mimecast-Spam-Score: 0
-Content-Type: text/plain; charset=WINDOWS-1252
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Kan Yan <kyan@google.com> writes:
+Wen Gong <wgong@codeaurora.org> writes:
 
-> Hi Toke,
+> From: Alagu Sankar <alagusankar@silex-india.com>
 >
-> There is an updated version of AQL in the chromiumos tree implemented
-> in the mac80211 driver, instead of in the ath10k driver as the
-> original version:
-> https://chromium-review.googlesource.com/c/chromiumos/third_party/kernel/=
-+/1703105/7
-> https://chromium-review.googlesource.com/c/chromiumos/third_party/kernel/=
-+/1703106/6
+> The existing implementation of initiating multiple sdio transfers for
+> receive bundling is slowing down the receive speed. Combining the
+> transfers using a bundle method would be ideal.
+>
+> The transmission utilization ratio for sdio bus for small packet is
+> slow, because the space and time cost for sdio bus is same for large
+> length packet and small length packet. So the speed of data for large
+> length packet is higher than small length.
+>
+> Test result of different length of data:
+> data packet(byte)   cost time(us)   calculated rate(Mbps)
+>       256               28                73
+>       512               33               124
+>      1024               35               234
+>      1792               45               318
+>     14336              168               682
+>     28672              333               688
+>     57344              660               695
+>
+> Tested with QCA6174 SDIO with firmware
+> WLAN.RMH.4.4.1-00007-QCARMSWP-1.
+>
+> Signed-off-by: Alagu Sankar <alagusankar@silex-india.com>
+> Signed-off-by: Wen Gong <wgong@codeaurora.org>
 
-Ah, that's awesome! Thank you for brining this up :)
+[...]
 
-> It is based on a more recent kernel (4.14) and integrated with the
-> airtime fairness tx scheduler in mac80211. This version has been
-> tested rather extensively. I intended to use it as the basis for my
-> effort to bring AQL upstream, but get sidetracked by other things. I
-> can clean it up and send a patchset next week if you think that is the
-> right path.
+> --- a/drivers/net/wireless/ath/ath10k/sdio.c
+> +++ b/drivers/net/wireless/ath/ath10k/sdio.c
+> @@ -24,6 +24,9 @@
+>  #include "trace.h"
+>  #include "sdio.h"
+>  
+> +#define ATH10K_SDIO_DMA_BUF_SIZE	(32 * 1024)
+> +#define ATH10K_SDIO_VSG_BUF_SIZE	(32 * 1024)
 
-Yes, please do! AFAICT, the main difference is that your version keeps
-the airtime calculation itself in the driver, while mine passes up the
-rate and lets mac80211 do the calculation of airtime. Other than that,
-the differences are minor, no?
+Why two defines? Seems error prone to me and using the latter should be
+enough.
 
-I'm not actually sure which approach is best; I suspect doing all the
-accounting in mac80211 will help with integrating this into drivers that
-use minstrel; we can just add a hook in that and be done with it.
-Whereas if the driver has to do the accounting, we would need to add
-that to each driver (mt76, iwl(?)).
+> @@ -529,6 +532,7 @@ static int ath10k_sdio_mbox_rx_alloc(struct ath10k *ar,
+>  	size_t full_len, act_len;
+>  	bool last_in_bundle;
+>  	int ret, i;
+> +	int pkt_cnt = 0;
+>  
+>  	if (n_lookaheads > ATH10K_SDIO_MAX_RX_MSGS) {
+>  		ath10k_warn(ar,
+> @@ -572,20 +576,22 @@ static int ath10k_sdio_mbox_rx_alloc(struct ath10k *ar,
+>  			 */
+>  			size_t bndl_cnt;
+>  
+> -			ret = ath10k_sdio_mbox_alloc_pkt_bundle(ar,
+> -								&ar_sdio->rx_pkts[i],
+> -								htc_hdr,
+> -								full_len,
+> -								act_len,
+> -								&bndl_cnt);
+> +			struct ath10k_sdio_rx_data *rx_pkts =
+> +				&ar_sdio->rx_pkts[pkt_cnt];
 
-But of course, doing things in mac80211 depends on stuffing even more
-stuff into the already overloaded cb field; and I'm not actually
-entirely sure what I've done with that will actually work. WDYT?
+You need to declare rx_pkts in the beginning of the block, not mixed
+within the code.
 
-In any case, if you post your series we'll have something to contrast
-against, which I think will be useful to help us converge on something
-we can all be happy with.
+> @@ -606,9 +612,10 @@ static int ath10k_sdio_mbox_rx_alloc(struct ath10k *ar,
+>  			ath10k_warn(ar, "alloc_rx_pkt error %d\n", ret);
+>  			goto err;
+>  		}
+> +		pkt_cnt++;
 
-Of course we'll also have to eventually integrate this with the other
-series that Yibo recently re-posted (the virtual time scheduler). I
-think that will be relatively straight forward, except I'm not sure your
-atomic patches will work when we also have to update the rbtree. Any
-thoughts on that series in general?
+Empty line before 'pkt_cnt++'.
 
-> Sorry for the long delay and slack off on the upstream effort.
+> -static int ath10k_sdio_mbox_rx_fetch(struct ath10k *ar)
+> +static int ath10k_sdio_mbox_rx_fetch_bundle(struct ath10k *ar)
+>  {
+>  	struct ath10k_sdio *ar_sdio = ath10k_sdio_priv(ar);
+> +	struct ath10k_sdio_rx_data *pkt;
+> +	struct ath10k_htc_hdr *htc_hdr;
+>  	int ret, i;
+> +	u32 pkt_offset, virt_pkt_len;
+>  
+> +	virt_pkt_len = 0;
+>  	for (i = 0; i < ar_sdio->n_rx_pkts; i++) {
+> -		ret = ath10k_sdio_mbox_rx_packet(ar,
+> -						 &ar_sdio->rx_pkts[i]);
+> +		virt_pkt_len += ar_sdio->rx_pkts[i].alloc_len;
+> +	}
+> +
+> +	if (virt_pkt_len < ATH10K_SDIO_DMA_BUF_SIZE) {
+> +		ret = ath10k_sdio_readsb(ar, ar_sdio->mbox_info.htc_addr,
+> +					 ar_sdio->vsg_buffer, virt_pkt_len);
+>  		if (ret)
+>  			goto err;
+> +	} else {
+> +		ath10k_err(ar, "size exceeding limit %d\n", virt_pkt_len);
+> +		ret = -ENOMEM;
+> +		goto err;
+> +	}
 
-Hehe, no worries. I only posted this because Dave finally bugged me into
-doing something about this at LPC. And hey, we're making progress now,
-so that's good! :)
+Use common error handling style, ath10k_warn() and -E2BIG:
 
-> There is some concern in this thread regarding the accuracy of the
-> estimated airtime using the last reported TX rate. It is indeed a
-> rather crude method and did not include retries in the calculation.
-> Besides, there are lags between firmware changing rate and host driver
-> get the rate update. The 16us IFS overhead is only correct for 5G and
-> it is actually 10us for 2.4 G. However, that hardly matters. The goal
-> of AQL is to prevent the firmware/hardware queue from getting bloated
-> or starved. There is a lot of headroom in the queue length limit (8-10
-> ms) to tolerate inaccuracy in the estimate airtime. AQL doesn't
-> control the fine grained TX packet scheduling. It is handled by the
-> airtime fairness scheduler and ultimately firmware.
+if (virt_pkt_len >= ATH10K_SDIO_DMA_BUF_SIZE) {
+	ath10k_err(ar, "size exceeding limit %d\n", virt_pkt_len);
+	ret = -E2BIG;
+	goto err;
+}
 
-Yeah, this was basically the point I was trying to make; this limit
-doesn't need to be that accurate, we just need a rough estimate. If we
-want to get the latency even lower later, we're better off fiddling with
-the queue limit value than trying to improve the airtime estimate.
+ret = ath10k_sdio_readsb(ar, ar_sdio->mbox_info.htc_addr,
+			 ar_sdio->vsg_buffer, virt_pkt_len);
+if (ret) {
+        ath10k_warn("failed to do foo: %d", ret)
+	goto err;
+}
 
-> There are two TX airtimes in the newer version (chromiumos 4.14
-> kernel): The estimated airtime for frames pending in the queue and the
-> airtime reported by the firmware for the frame transmitted, which
-> should be accurate as the firmware supposed to take retries and
-> aggregation into account. The airtime fairness scheduler that does the
-> TX packet scheduling should use the TX airtime reported by the
-> firmware. That's the reason why the original implementation in the
-> ChromiumOS tree tries to factor in aggregation size when estimate the
-> airtime overhead and the later version doesn't even bother with that.
+> @@ -1123,7 +1151,7 @@ static int ath10k_sdio_bmi_get_rx_lookahead(struct ath10k *ar)
+>  					 MBOX_HOST_INT_STATUS_ADDRESS,
+>  					 &rx_word);
+>  		if (ret) {
+> -			ath10k_warn(ar, "unable to read RX_LOOKAHEAD_VALID: %d\n", ret);
+> +			ath10k_warn(ar, "unable to read rx_lookahd: %d\n", ret);
 
-Yup, makes sense. Looking at the version you linked to, though, it seems
-you're calling ieee80211_sta_register_airtime() with the estimated value
-as well? So are you double-accounting airtime, or are you adjusting for
-the accurate values somewhere else I don't see in that series?
+Looks like an unnecessary change?
 
--Toke
+> @@ -196,6 +196,9 @@ struct ath10k_sdio {
+>  	struct ath10k *ar;
+>  	struct ath10k_sdio_irq_data irq_data;
+>  
+> +	/* temporary buffer for sdio read */
+> +	u8 *vsg_buffer;
 
+So how is vsg_buffer protected? You should document that here.
+
+-- 
+Kalle Valo
