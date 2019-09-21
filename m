@@ -2,98 +2,99 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 4D4E1B9C7C
-	for <lists+linux-wireless@lfdr.de>; Sat, 21 Sep 2019 07:58:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 858A7B9C86
+	for <lists+linux-wireless@lfdr.de>; Sat, 21 Sep 2019 08:02:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730868AbfIUF6A (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 21 Sep 2019 01:58:00 -0400
-Received: from smtp.codeaurora.org ([198.145.29.96]:37472 "EHLO
-        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730832AbfIUF6A (ORCPT
+        id S1730961AbfIUGB6 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 21 Sep 2019 02:01:58 -0400
+Received: from aserp2120.oracle.com ([141.146.126.78]:38206 "EHLO
+        aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726451AbfIUGB6 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 21 Sep 2019 01:58:00 -0400
-Received: by smtp.codeaurora.org (Postfix, from userid 1000)
-        id 7D43C613A3; Sat, 21 Sep 2019 05:57:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1569045479;
-        bh=w9bocaMK07bA6RbZkz/42TCpHEi65s53ZBFGd9Ga/MA=;
-        h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-        b=EjF6wjlcCi5IIBGvVfhLMIYtKsLD8QyACEI7CArnRMTjIOhsvFCuvHawTZP7Widzd
-         O7v366ssM4T6MdmeyU1cbq+I9jUMcEf3jIN5XUBjk9oImaJwn5DQrcSYSG3iBTYKg2
-         TlG2y0/Tf9Ck0H66Aytla3mCFOXQKNoc1p1Q+BrY=
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        pdx-caf-mail.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-0.8 required=2.0 tests=ALL_TRUSTED,BAYES_00,
-        DKIM_INVALID,DKIM_SIGNED,MISSING_DATE,MISSING_MID,SPF_NONE autolearn=no
-        autolearn_force=no version=3.4.0
-Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        (Authenticated sender: kvalo@smtp.codeaurora.org)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id D14D961196;
-        Sat, 21 Sep 2019 05:57:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1569045478;
-        bh=w9bocaMK07bA6RbZkz/42TCpHEi65s53ZBFGd9Ga/MA=;
-        h=Subject:From:In-Reply-To:References:To:Cc:From;
-        b=cWlzKUfGdItoaGOtH8EuZ3udfmzSkuqyGffjCXDX3PzstiKOhYxi1t8/GurajvtOw
-         EU/z42Z2+cN0Iw+AsIlYmkRPZ9v+SH+KWFAuWnNMAtM656AxohYAeYl/XcEHSTz3u/
-         gD+CUyjntL24iavhpUzavKyA2iL1QZjfo4ZYO/KM=
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org D14D961196
-Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
-Content-Type: text/plain; charset="utf-8"
+        Sat, 21 Sep 2019 02:01:58 -0400
+Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
+        by aserp2120.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x8L5xXW1070980;
+        Sat, 21 Sep 2019 06:01:53 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
+ : subject : message-id : mime-version : content-type; s=corp-2019-08-05;
+ bh=KrLWCrL39L3KzKDyRZJFxW428Ske5D6YnhVp0I3al+c=;
+ b=r69DMaVgor6ohn/WxIkkem1lzr+TQSqvQbTVSWg+uWQdtQUZ0ehRj45CmG17P8Uvaztr
+ /A7rxpRJxTvIuRKmaxzmLKBRmV8DzNvwnyvdkhuS5/SWjv15r0DRX9ib6Zp2NvG/129q
+ 6bHPUg1gIBdOL+I0rtRgSq14Vj9FDmybgx0O/cNuRf5UHncTVvSqVP/yJgXgtAXU4qY1
+ cFD6iI3LhJ66m4LVqRG8fluk67d1+Ac/e4f0V4rG9XxFRdtQ6nNOIITdd1dIVnnEFfqH
+ GHmDET7GSiIB8d7kF1dNoeRWo3gOi8OX4mxOY9mr0xyZvhGljgE0rXcc6iMYJE64j0Yk ag== 
+Received: from aserp3020.oracle.com (aserp3020.oracle.com [141.146.126.70])
+        by aserp2120.oracle.com with ESMTP id 2v5btpg6qp-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Sat, 21 Sep 2019 06:01:53 +0000
+Received: from pps.filterd (aserp3020.oracle.com [127.0.0.1])
+        by aserp3020.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x8L5vuBV179428;
+        Sat, 21 Sep 2019 06:01:53 GMT
+Received: from userv0121.oracle.com (userv0121.oracle.com [156.151.31.72])
+        by aserp3020.oracle.com with ESMTP id 2v5bpbycqw-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Sat, 21 Sep 2019 06:01:53 +0000
+Received: from abhmp0019.oracle.com (abhmp0019.oracle.com [141.146.116.25])
+        by userv0121.oracle.com (8.14.4/8.13.8) with ESMTP id x8L61p8b017123;
+        Sat, 21 Sep 2019 06:01:52 GMT
+Received: from mwanda (/41.57.98.10)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Fri, 20 Sep 2019 23:01:51 -0700
+Date:   Sat, 21 Sep 2019 09:01:45 +0300
+From:   Dan Carpenter <dan.carpenter@oracle.com>
+To:     Maya Erez <merez@codeaurora.org>,
+        Dedy Lansky <dlansky@codeaurora.org>
+Cc:     Kalle Valo <kvalo@codeaurora.org>, linux-wireless@vger.kernel.org,
+        wil6210@qti.qualcomm.com, kernel-janitors@vger.kernel.org
+Subject: [PATCH] wil6210: use after free in wil_netif_rx_any()
+Message-ID: <20190921060145.GD18726@mwanda>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH -net] zd1211rw: zd_usb: Use "%zu" to format size_t
-From:   Kalle Valo <kvalo@codeaurora.org>
-In-Reply-To: <20190919091532.24951-1-geert@linux-m68k.org>
-References: <20190919091532.24951-1-geert@linux-m68k.org>
-To:     Geert Uytterhoeven <geert@linux-m68k.org>
-Cc:     "Gustavo A . R . Silva" <gustavo@embeddedor.com>,
-        Daniel Drake <dsd@gentoo.org>,
-        Ulrich Kunitz <kune@deine-taler.de>,
-        "David S . Miller" <davem@davemloft.net>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        Geert Uytterhoeven <geert@linux-m68k.org>
-User-Agent: pwcli/0.0.0-git (https://github.com/kvalo/pwcli/) Python/2.7.12
-Message-Id: <20190921055759.7D43C613A3@smtp.codeaurora.org>
-Date:   Sat, 21 Sep 2019 05:57:59 +0000 (UTC)
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Mailer: git-send-email haha only kidding
+User-Agent: Mutt/1.10.1 (2018-07-13)
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9386 signatures=668685
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=2 malwarescore=0
+ phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=755
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.0.1-1908290000 definitions=main-1909210065
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9386 signatures=668685
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
+ suspectscore=2 phishscore=0 bulkscore=0 spamscore=0 clxscore=1011
+ lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=835 adultscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1908290000
+ definitions=main-1909210066
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Geert Uytterhoeven <geert@linux-m68k.org> wrote:
+The debug code dereferences "skb" to print "skb->len" so we have to
+print the message before we free "skb".
 
-> On 32-bit:
-> 
->     drivers/net/wireless/zydas/zd1211rw/zd_usb.c: In function ‘check_read_regs’:
->     drivers/net/wireless/zydas/zd1211rw/zd_def.h:18:25: warning: format ‘%ld’ expects argument of type ‘long int’, but argument 6 has type ‘size_t’ {aka ‘unsigned int’} [-Wformat=]
->       dev_printk(level, dev, "%s() " fmt, __func__, ##args)
-> 			     ^~~~~~~
->     drivers/net/wireless/zydas/zd1211rw/zd_def.h:22:4: note: in expansion of macro ‘dev_printk_f’
-> 	dev_printk_f(KERN_DEBUG, dev, fmt, ## args)
-> 	^~~~~~~~~~~~
->     drivers/net/wireless/zydas/zd1211rw/zd_usb.c:1635:3: note: in expansion of macro ‘dev_dbg_f’
->        dev_dbg_f(zd_usb_dev(usb),
->        ^~~~~~~~~
->     drivers/net/wireless/zydas/zd1211rw/zd_usb.c:1636:51: note: format string is defined here
-> 	 "error: actual length %d less than expected %ld\n",
-> 						     ~~^
-> 						     %d
-> 
-> Fixes: 84b0b66352470e64 ("zd1211rw: zd_usb: Use struct_size() helper")
-> Signed-off-by: Geert Uytterhoeven <geert@linux-m68k.org>
+Fixes: f99fe49ff372 ("wil6210: add wil_netif_rx() helper function")
+Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+---
+ drivers/net/wireless/ath/wil6210/txrx.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Patch applied to wireless-drivers.git, thanks.
-
-6355592e6b55 zd1211rw: zd_usb: Use "%zu" to format size_t
-
+diff --git a/drivers/net/wireless/ath/wil6210/txrx.c b/drivers/net/wireless/ath/wil6210/txrx.c
+index cb13652491ad..598c1fba9dac 100644
+--- a/drivers/net/wireless/ath/wil6210/txrx.c
++++ b/drivers/net/wireless/ath/wil6210/txrx.c
+@@ -1012,11 +1012,11 @@ void wil_netif_rx_any(struct sk_buff *skb, struct net_device *ndev)
+ 	skb_orphan(skb);
+ 
+ 	if (security && (wil->txrx_ops.rx_crypto_check(wil, skb) != 0)) {
++		wil_dbg_txrx(wil, "Rx drop %d bytes\n", skb->len);
+ 		dev_kfree_skb(skb);
+ 		ndev->stats.rx_dropped++;
+ 		stats->rx_replay++;
+ 		stats->rx_dropped++;
+-		wil_dbg_txrx(wil, "Rx drop %d bytes\n", skb->len);
+ 		return;
+ 	}
+ 
 -- 
-https://patchwork.kernel.org/patch/11151959/
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+2.20.1
 
