@@ -2,87 +2,77 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A801DBACC0
-	for <lists+linux-wireless@lfdr.de>; Mon, 23 Sep 2019 04:47:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 205F3BACF7
+	for <lists+linux-wireless@lfdr.de>; Mon, 23 Sep 2019 06:00:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2390293AbfIWCrO (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 22 Sep 2019 22:47:14 -0400
-Received: from rtits2.realtek.com ([211.75.126.72]:47834 "EHLO
-        rtits2.realtek.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730387AbfIWCrO (ORCPT
+        id S1726088AbfIWEAv (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 23 Sep 2019 00:00:51 -0400
+Received: from smtp.codeaurora.org ([198.145.29.96]:46506 "EHLO
+        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726047AbfIWEAu (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 22 Sep 2019 22:47:14 -0400
-Authenticated-By: 
-X-SpamFilter-By: BOX Solutions SpamTrap 5.62 with qID x8N2l6lV027779, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (RTITCASV01.realtek.com.tw[172.21.6.18])
-        by rtits2.realtek.com.tw (8.15.2/2.57/5.78) with ESMTPS id x8N2l6lV027779
-        (version=TLSv1 cipher=DHE-RSA-AES256-SHA bits=256 verify=NOT);
-        Mon, 23 Sep 2019 10:47:06 +0800
-Received: from localhost.localdomain (172.21.68.126) by
- RTITCASV01.realtek.com.tw (172.21.6.18) with Microsoft SMTP Server id
- 14.3.468.0; Mon, 23 Sep 2019 10:47:06 +0800
-From:   <yhchuang@realtek.com>
-To:     <kvalo@codeaurora.org>
-CC:     <linux-wireless@vger.kernel.org>, <briannorris@chromium.org>
-Subject: [PATCH 5.4 v2] rtw88: configure firmware after HCI started
-Date:   Mon, 23 Sep 2019 10:47:03 +0800
-Message-ID: <20190923024703.2995-1-yhchuang@realtek.com>
-X-Mailer: git-send-email 2.17.1
+        Mon, 23 Sep 2019 00:00:50 -0400
+Received: by smtp.codeaurora.org (Postfix, from userid 1000)
+        id CD74D61156; Mon, 23 Sep 2019 04:00:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
+        s=default; t=1569211249;
+        bh=dzGBpWxMQIcheSbBv5pFlJ/FVipyNXb6HgHczU7BnLw=;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+        b=bF0Si9noipC1DvA26t/bcOZFpeOa82/ozhTJmANi9lYi9jd1J32fFCx0w9MitKOW0
+         BCZsUklgXz1DCn/ADy4/z6aptpZbebveJRgXXkY8ihGq6v9CDwUC3y0LDdl9uiHhVR
+         DyaznzN/G7dNOMrT2wC6Az8HNyVEzL1iYIc2weNc=
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        pdx-caf-mail.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.7 required=2.0 tests=ALL_TRUSTED,BAYES_00,
+        DKIM_INVALID,DKIM_SIGNED,SPF_NONE autolearn=no autolearn_force=no
+        version=3.4.0
+Received: from tynnyri.adurom.net (tynnyri.adurom.net [51.15.11.48])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo@smtp.codeaurora.org)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 431AD6047C;
+        Mon, 23 Sep 2019 04:00:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
+        s=default; t=1569211249;
+        bh=dzGBpWxMQIcheSbBv5pFlJ/FVipyNXb6HgHczU7BnLw=;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+        b=bF0Si9noipC1DvA26t/bcOZFpeOa82/ozhTJmANi9lYi9jd1J32fFCx0w9MitKOW0
+         BCZsUklgXz1DCn/ADy4/z6aptpZbebveJRgXXkY8ihGq6v9CDwUC3y0LDdl9uiHhVR
+         DyaznzN/G7dNOMrT2wC6Az8HNyVEzL1iYIc2weNc=
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 431AD6047C
+Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
+From:   Kalle Valo <kvalo@codeaurora.org>
+To:     Lorenzo Bianconi <lorenzo@kernel.org>
+Cc:     nbd@nbd.name, lorenzo.bianconi@redhat.com,
+        linux-wireless@vger.kernel.org, ryder.lee@mediatek.com
+Subject: Re: [PATCH] mt76: mt7615: fix mt7615 firmware path definitions
+References: <9e132c0949139155a4fb3375e4c83218159efce7.1569159209.git.lorenzo@kernel.org>
+Date:   Mon, 23 Sep 2019 07:00:43 +0300
+In-Reply-To: <9e132c0949139155a4fb3375e4c83218159efce7.1569159209.git.lorenzo@kernel.org>
+        (Lorenzo Bianconi's message of "Sun, 22 Sep 2019 15:36:03 +0200")
+Message-ID: <87wodzirv8.fsf@tynnyri.adurom.net>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
 MIME-Version: 1.0
 Content-Type: text/plain
-X-Originating-IP: [172.21.68.126]
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Yan-Hsuan Chuang <yhchuang@realtek.com>
+Lorenzo Bianconi <lorenzo@kernel.org> writes:
 
-After firmware has been downloaded, driver should send
-some information to it through H2C commands. Those H2C
-commands are transmitted through TX path.
+> mt7615 patch/n9/cr4 firmwares are available in mediatek folder in
+> linux-firmware repository. Fix path definitions.
+> Moreover remove useless firmware name pointers and use definitions
+> directly
+>
+> Fixes: 04b8e65922f6 ("mt76: add mac80211 driver for MT7615 PCIe-based chipsets")
+> Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
 
-But before HCI has been started, the TX path is not
-working completely. Such as PCI interfaces, the interrupts
-are not enabled, hence TX interrupts will not be issued
-after H2C skb has been DMAed to the device. And the H2C
-skbs will not be released until the device is powered off.
+This sounds pretty serious, I guess distros don't work out of box
+because of this? So I would like to queue this to v5.4.
 
-Signed-off-by: Yan-Hsuan Chuang <yhchuang@realtek.com>
----
- drivers/net/wireless/realtek/rtw88/mac.c  | 3 ---
- drivers/net/wireless/realtek/rtw88/main.c | 4 ++++
- 2 files changed, 4 insertions(+), 3 deletions(-)
-
-diff --git a/drivers/net/wireless/realtek/rtw88/mac.c b/drivers/net/wireless/realtek/rtw88/mac.c
-index fc14b37d927d..b61b073031e5 100644
---- a/drivers/net/wireless/realtek/rtw88/mac.c
-+++ b/drivers/net/wireless/realtek/rtw88/mac.c
-@@ -707,9 +707,6 @@ int rtw_download_firmware(struct rtw_dev *rtwdev, struct rtw_fw_state *fw)
- 	rtwdev->h2c.last_box_num = 0;
- 	rtwdev->h2c.seq = 0;
- 
--	rtw_fw_send_general_info(rtwdev);
--	rtw_fw_send_phydm_info(rtwdev);
--
- 	rtw_flag_set(rtwdev, RTW_FLAG_FW_RUNNING);
- 
- 	return 0;
-diff --git a/drivers/net/wireless/realtek/rtw88/main.c b/drivers/net/wireless/realtek/rtw88/main.c
-index fc8f6213fc8f..6dd457741b15 100644
---- a/drivers/net/wireless/realtek/rtw88/main.c
-+++ b/drivers/net/wireless/realtek/rtw88/main.c
-@@ -704,6 +704,10 @@ static int rtw_power_on(struct rtw_dev *rtwdev)
- 		goto err_off;
- 	}
- 
-+	/* send H2C after HCI has started */
-+	rtw_fw_send_general_info(rtwdev);
-+	rtw_fw_send_phydm_info(rtwdev);
-+
- 	wifi_only = !rtwdev->efuse.btcoex;
- 	rtw_coex_power_on_setting(rtwdev);
- 	rtw_coex_init_hw_config(rtwdev, wifi_only);
 -- 
-2.17.1
-
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
