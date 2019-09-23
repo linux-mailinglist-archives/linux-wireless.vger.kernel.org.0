@@ -2,112 +2,101 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 296C1BB2F0
-	for <lists+linux-wireless@lfdr.de>; Mon, 23 Sep 2019 13:42:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1035CBB324
+	for <lists+linux-wireless@lfdr.de>; Mon, 23 Sep 2019 13:51:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727839AbfIWLmc (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 23 Sep 2019 07:42:32 -0400
-Received: from smtp.codeaurora.org ([198.145.29.96]:32834 "EHLO
-        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726146AbfIWLmb (ORCPT
+        id S1726428AbfIWLvX (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 23 Sep 2019 07:51:23 -0400
+Received: from s3.sipsolutions.net ([144.76.43.62]:37200 "EHLO
+        sipsolutions.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725873AbfIWLvX (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 23 Sep 2019 07:42:31 -0400
-Received: by smtp.codeaurora.org (Postfix, from userid 1000)
-        id 8BE766021C; Mon, 23 Sep 2019 11:42:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1569238950;
-        bh=lUtYUiOh943WW+54GHZhamd2qjJPMz0XuUx4GDR/87k=;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=ioK5vtxuDUaNLRCy8cjzfGJSNqbAq4gb1MelzZVSF5bzHSmaT305wz2d8v+SFyjyB
-         LdklPqawsCXURg161R5pTOIz5PjpSs6Bqm4VUEl8ftK3V6JRh36E943vI/QJVePSAP
-         MgND72TFG+eLuw7V3xeSG1pnJEr5jBPj5LadCPx4=
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        pdx-caf-mail.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.7 required=2.0 tests=ALL_TRUSTED,BAYES_00,
-        DKIM_INVALID,DKIM_SIGNED,SPF_NONE autolearn=no autolearn_force=no
-        version=3.4.0
-Received: from x230.qca.qualcomm.com (37-136-106-186.rev.dnainternet.fi [37.136.106.186])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        (Authenticated sender: kvalo@smtp.codeaurora.org)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id A6CCA60265;
-        Mon, 23 Sep 2019 11:42:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1569238950;
-        bh=lUtYUiOh943WW+54GHZhamd2qjJPMz0XuUx4GDR/87k=;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=ioK5vtxuDUaNLRCy8cjzfGJSNqbAq4gb1MelzZVSF5bzHSmaT305wz2d8v+SFyjyB
-         LdklPqawsCXURg161R5pTOIz5PjpSs6Bqm4VUEl8ftK3V6JRh36E943vI/QJVePSAP
-         MgND72TFG+eLuw7V3xeSG1pnJEr5jBPj5LadCPx4=
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org A6CCA60265
-Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
-From:   Kalle Valo <kvalo@codeaurora.org>
-To:     Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>
-Cc:     Yibo Zhao <yiboz@codeaurora.org>, linux-wireless@vger.kernel.org,
-        ath10k@lists.infradead.org
-Subject: Re: [PATCH 2/4] mac80211: defer txqs removal from rbtree
-References: <1568639388-27291-1-git-send-email-yiboz@codeaurora.org>
-        <1568639388-27291-2-git-send-email-yiboz@codeaurora.org>
-        <87pnjyiq7o.fsf@toke.dk>
-        <c3ee7ece0986f1c50513cd5fdd2ee03f@codeaurora.org>
-        <87sgothmpy.fsf@toke.dk>
-        <8cdece5c030fd95817fb099021c38613@codeaurora.org>
-        <87tv98fu6l.fsf@toke.dk>
-        <1b4ab006d9b5c88035845aaac193ef48@codeaurora.org>
-        <8736gre3bm.fsf@toke.dk>
-        <198124204167325252fcfcd65e3f2733@codeaurora.org>
-        <87ftkp7uuz.fsf@toke.dk>
-        <4574cce4079f8dab2b2bf223431a6eae@codeaurora.org>
-        <877e617qg2.fsf@toke.dk>
-        <910d9bb5f9016b29fb2aaeb0b89bac38@codeaurora.org>
-        <874l157nrt.fsf@toke.dk>
-        <2935b00bf3e29ad8b2738fe98dc24a76@codeaurora.org>
-        <87lfuf5ly2.fsf@toke.dk>
-Date:   Mon, 23 Sep 2019 14:42:26 +0300
-In-Reply-To: <87lfuf5ly2.fsf@toke.dk> ("Toke \=\?utf-8\?Q\?H\=C3\=B8iland-J\?\=
- \=\?utf-8\?Q\?\=C3\=B8rgensen\=22's\?\= message of
-        "Mon, 23 Sep 2019 12:47:01 +0200")
-Message-ID: <87r2476xy5.fsf@codeaurora.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
+        Mon, 23 Sep 2019 07:51:23 -0400
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <johannes@sipsolutions.net>)
+        id 1iCMsD-0001oa-7d; Mon, 23 Sep 2019 13:51:21 +0200
+From:   Johannes Berg <johannes@sipsolutions.net>
+To:     linux-wireless@vger.kernel.org
+Cc:     Johannes Berg <johannes.berg@intel.com>,
+        Dmitry Osipenko <digetx@gmail.com>
+Subject: [PATCH] cfg80211: initialize on-stack chandefs
+Date:   Mon, 23 Sep 2019 13:51:16 +0200
+Message-Id: <1569239475-I2dcce394ecf873376c386a78f31c2ec8b538fa25@changeid>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Toke H=C3=B8iland-J=C3=B8rgensen <toke@redhat.com> writes:
+From: Johannes Berg <johannes.berg@intel.com>
 
-> Yibo Zhao <yiboz@codeaurora.org> writes:
->
->> On 2019-09-21 22:00, Toke H=C3=B8iland-J=C3=B8rgensen wrote:
->>> Yibo Zhao <yiboz@codeaurora.org> writes:
->>>=20
->>>> On 2019-09-21 21:02, Toke H=C3=B8iland-J=C3=B8rgensen wrote:
->>>>> Yibo Zhao <yiboz@codeaurora.org> writes:
->>>>>=20
->>>>>> On 2019-09-21 19:27, Toke H=C3=B8iland-J=C3=B8rgensen wrote:
->>>>>>> Yibo Zhao <yiboz@codeaurora.org> writes:
->>>>>>>=20
->>>>>>>> On 2019-09-20 17:15, Toke H=C3=B8iland-J=C3=B8rgensen wrote:
->>>>>>>>> Yibo Zhao <yiboz@codeaurora.org> writes:
->>>>>>>>>=20
->>>>>>>>>> On 2019-09-19 18:37, Toke H=C3=B8iland-J=C3=B8rgensen wrote:
->>>>>>>>>>> Yibo Zhao <yiboz@codeaurora.org> writes:
->>>>>>>>>>>=20
->>>>>>>>>>>> On 2019-09-18 19:23, Toke H=C3=B8iland-J=C3=B8rgensen wrote:
->>>>>>>>>>>>> Yibo Zhao <yiboz@codeaurora.org> writes:
->>>>>>>>>>>>>=20
->>>>>>>>>>>>>> On 2019-09-18 05:10, Toke H=C3=B8iland-J=C3=B8rgensen wrote:
->>>>>>>>>>>>>>> Yibo Zhao <yiboz@codeaurora.org> writes:
+In a few places we don't properly initialize on-stack chandefs,
+resulting in EDMG data to be non-zero, which broke things.
 
-Guys, PLEASE please consider us poor maintainers drowning in email and
-edit your quotes :) This style of discussion makes patchwork unusable:
+Additionally, in a few places we rely on the driver to init the
+data completely, but perhaps we shouldn't as non-EDMG drivers
+may not initialize the EDMG data, also initialize it there.
 
-https://patchwork.kernel.org/patch/11147019/
+Fixes: 2a38075cd0be ("nl80211: Add support for EDMG channels")
+Reported-by: Dmitry Osipenko <digetx@gmail.com>
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+---
+ net/wireless/nl80211.c     | 4 +++-
+ net/wireless/reg.c         | 2 +-
+ net/wireless/wext-compat.c | 2 +-
+ 3 files changed, 5 insertions(+), 3 deletions(-)
 
---=20
-Kalle Valo
+diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
+index d21b1581a665..b9797a3c110a 100644
+--- a/net/wireless/nl80211.c
++++ b/net/wireless/nl80211.c
+@@ -2636,6 +2636,8 @@ int nl80211_parse_chandef(struct cfg80211_registered_device *rdev,
+ 
+ 	control_freq = nla_get_u32(attrs[NL80211_ATTR_WIPHY_FREQ]);
+ 
++	memset(chandef, 0, sizeof(*chandef));
++
+ 	chandef->chan = ieee80211_get_channel(&rdev->wiphy, control_freq);
+ 	chandef->width = NL80211_CHAN_WIDTH_20_NOHT;
+ 	chandef->center_freq1 = control_freq;
+@@ -3176,7 +3178,7 @@ static int nl80211_send_iface(struct sk_buff *msg, u32 portid, u32 seq, int flag
+ 
+ 	if (rdev->ops->get_channel) {
+ 		int ret;
+-		struct cfg80211_chan_def chandef;
++		struct cfg80211_chan_def chandef = {};
+ 
+ 		ret = rdev_get_channel(rdev, wdev, &chandef);
+ 		if (ret == 0) {
+diff --git a/net/wireless/reg.c b/net/wireless/reg.c
+index 5311d0ae2454..420c4207ab59 100644
+--- a/net/wireless/reg.c
++++ b/net/wireless/reg.c
+@@ -2108,7 +2108,7 @@ static void reg_call_notifier(struct wiphy *wiphy,
+ 
+ static bool reg_wdev_chan_valid(struct wiphy *wiphy, struct wireless_dev *wdev)
+ {
+-	struct cfg80211_chan_def chandef;
++	struct cfg80211_chan_def chandef = {};
+ 	struct cfg80211_registered_device *rdev = wiphy_to_rdev(wiphy);
+ 	enum nl80211_iftype iftype;
+ 
+diff --git a/net/wireless/wext-compat.c b/net/wireless/wext-compat.c
+index 7b6529d81c61..cac9e28d852b 100644
+--- a/net/wireless/wext-compat.c
++++ b/net/wireless/wext-compat.c
+@@ -798,7 +798,7 @@ static int cfg80211_wext_giwfreq(struct net_device *dev,
+ {
+ 	struct wireless_dev *wdev = dev->ieee80211_ptr;
+ 	struct cfg80211_registered_device *rdev = wiphy_to_rdev(wdev->wiphy);
+-	struct cfg80211_chan_def chandef;
++	struct cfg80211_chan_def chandef = {};
+ 	int ret;
+ 
+ 	switch (wdev->iftype) {
+-- 
+2.20.1
+
