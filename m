@@ -2,77 +2,101 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 82E40BB499
-	for <lists+linux-wireless@lfdr.de>; Mon, 23 Sep 2019 14:59:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6DF38BB567
+	for <lists+linux-wireless@lfdr.de>; Mon, 23 Sep 2019 15:35:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2394705AbfIWM7J (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 23 Sep 2019 08:59:09 -0400
-Received: from mail-lf1-f66.google.com ([209.85.167.66]:34729 "EHLO
-        mail-lf1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2394080AbfIWM7J (ORCPT
+        id S2407341AbfIWNev (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 23 Sep 2019 09:34:51 -0400
+Received: from mail-ot1-f65.google.com ([209.85.210.65]:42838 "EHLO
+        mail-ot1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2404581AbfIWNeu (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 23 Sep 2019 08:59:09 -0400
-Received: by mail-lf1-f66.google.com with SMTP id r22so10021210lfm.1
-        for <linux-wireless@vger.kernel.org>; Mon, 23 Sep 2019 05:59:07 -0700 (PDT)
+        Mon, 23 Sep 2019 09:34:50 -0400
+Received: by mail-ot1-f65.google.com with SMTP id c10so12066839otd.9;
+        Mon, 23 Sep 2019 06:34:50 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=subject:to:references:from:message-id:date:user-agent:mime-version
-         :in-reply-to:content-language:content-transfer-encoding;
-        bh=k50d4zNpLRzhDQ657vV08/3TQcYi960pcyNCE+IKpGA=;
-        b=Zp2FFk7VirwL/UMZ0KvSNy3BUVPf3N7l2pQQ0TvlshgrYI17n9Cg2wY+i8aPBt4TiV
-         v+bNx7BITv6hxf490oHe2VgT8+4rJMgcl6VPHwtcFj0tKp0RGoq8XzE0OAlk191rBRXs
-         STU5B5opNWu7wDWoTLrIln3C5kVPEzo9X/60eTXjhQAPxSvp4WCwYeXTfHsKUEID3sTi
-         B818cTPF8HkOxzd1Ky5vznEV3gXy+BNl0BP24PxmNaUCjtZd057dGUIWwdtZ6BqXhwCg
-         Ya9SnFJ4dQMTOjTco/Ig5A4mKp0F+ILmTxNBYPMK1R/N0qKJIfrLcQy5jbN0CjU5fXn1
-         KBlQ==
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc:content-transfer-encoding;
+        bh=2NRNT/qm8AbtyX6bm4uZ/GQHYcwpqJ9Os6l2yxnGLhE=;
+        b=b2DzTF2BOhkGeYitm3sbUSyDhsdflg0iKZF0VWDo33bqNgftOXXbPT01yqRcQkceHG
+         rZ2edpkQAP8t/XQuB7QOvOHQ/XUcJLVr18zr+GPbSQ+3bPHDO9zYQtrZU3TwAjHeyBf6
+         Mkk862v2GT5hokib9oE0IKthOiwqSr4ga6BOspmBYs7oLvCavH5XvMlAnwJxMCoue9Y7
+         6y7/s8BQ4qetaS3M2c6LXJ17v5W/F++FfDkF+bSGBUDLiC8beElJi//OdmSqg85lcq92
+         yKcS3BJMQaO1DXyMO5QBM1etfQ321grLj2YjlCH7SUiJDV4vztg98Xb/TgmYlgpqS9q1
+         aOiw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=k50d4zNpLRzhDQ657vV08/3TQcYi960pcyNCE+IKpGA=;
-        b=EJF5kOoRZ+lPqyaaE9fDrgQIiD/BRVNEKNXjEtocNxPlhtfjiW0hQDpJio58WsU/Ho
-         YA2Xn5MdEmRz/JSvMX6BFUUrnJMMVbr8g67SzFAsy7+gymzEH2T+wi3/pnc+mLMJDDlL
-         Mk0980GGhkGe6IFrphHKt/xN4xdc21EU2CfDruVb9HB8B8WgVZDBAIMrXJqXXNNEFODv
-         8eRMikCBKx8ao0C9VImfZJMnz7HaMGbwfJXoPeCoMF9RJX3CVllXN4Hv/PnhA3Yi2vte
-         eCMQX2XFK2elROlfYrKeHeBDw6a4aVfkDGKF3rl1gtTQzwjqxM37TZlnhg8cG0hkK+kC
-         94Kg==
-X-Gm-Message-State: APjAAAWT9QUJn6GydOUmomvQ3jYS+RuquGRKlCEBINSVsLnj79URmPat
-        byCz6qaooCyxyr2ldhVUfMjEAk7G
-X-Google-Smtp-Source: APXvYqz9CjsckumGKB9S0B9yv3T1co/sntzWWi9h8/MnIhLKXL4T7nEPYHhyBiK2KrNoz7mawJY81Q==
-X-Received: by 2002:ac2:5e9e:: with SMTP id b30mr16751949lfq.5.1569243546822;
-        Mon, 23 Sep 2019 05:59:06 -0700 (PDT)
-Received: from [192.168.2.145] (ppp94-29-32-67.pppoe.spdop.ru. [94.29.32.67])
-        by smtp.googlemail.com with ESMTPSA id 3sm2277925ljs.20.2019.09.23.05.59.06
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Mon, 23 Sep 2019 05:59:06 -0700 (PDT)
-Subject: Re: [PATCH] cfg80211: initialize on-stack chandefs
-To:     Johannes Berg <johannes@sipsolutions.net>,
-        linux-wireless@vger.kernel.org
-References: <1569239475-I2dcce394ecf873376c386a78f31c2ec8b538fa25@changeid>
- <4576d1ca-3af6-476b-7fb8-4b99dc77b92b@gmail.com>
- <711186e8d875750f7ec962b0e96c3f1a050ae86d.camel@sipsolutions.net>
-From:   Dmitry Osipenko <digetx@gmail.com>
-Message-ID: <cfcfcde8-5c97-316a-1053-60dc058346f7@gmail.com>
-Date:   Mon, 23 Sep 2019 15:59:05 +0300
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.8.0
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc:content-transfer-encoding;
+        bh=2NRNT/qm8AbtyX6bm4uZ/GQHYcwpqJ9Os6l2yxnGLhE=;
+        b=VCh3dcDrZrTzFwTPGJIAToxbyk+JN8pz8cifGsuXaKlYKU3puYohBQnvfbeDOAPE4E
+         McZ2ZVCIQdc2czhhVSDrHkwNEpmGVZe1TNL4mW8yb21NU4hknxClgmO/eCCMAbKCac0V
+         8+XEQGjX1kv9lH4w4ISkP/uQmf5vN28dncvJrsQljJDvnxKZ5655PNazWjdbL7ZifgbO
+         2vMpyLYg93GIq6yrufZ9cQfh1qPKFXkBp5ZDs3qcoBtpEYLfZBytje5VOLVMF0C4CydJ
+         uYLsXS25uezMhQskOLktVDgVZlo24rg2snUVOUB7ldJLEnMrBFTOt2y1CkTHVNIkDBs+
+         e0rg==
+X-Gm-Message-State: APjAAAUm9h956yq+WDDHicayOHtmYVoC3PUyHHluW5MTZ2xeSkaPnmxe
+        UlaWuBNQCrIPruAUCvMGOfZKgiiLn5ZpnbPymulugQMYovnQZw==
+X-Google-Smtp-Source: APXvYqxO3XWPSWwL+e9d4kqs68XLgFOn9a/IPLBkTuqUmJzXIoobr1YJ8g7tefWdo1jhzaITR/cg9iUjme01Re05vy0=
+X-Received: by 2002:a9d:7407:: with SMTP id n7mr13868528otk.16.1569245689782;
+ Mon, 23 Sep 2019 06:34:49 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <711186e8d875750f7ec962b0e96c3f1a050ae86d.camel@sipsolutions.net>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
+References: <20190917065044.GA173797@LGEARND20B15>
+In-Reply-To: <20190917065044.GA173797@LGEARND20B15>
+From:   Austin Kim <austindh.kim@gmail.com>
+Date:   Mon, 23 Sep 2019 22:34:39 +0900
+Message-ID: <CADLLry5b1RDjXX8Dbc4ebbZOFFaAd0wc3rDCaD-V9RBwrpNyMA@mail.gmail.com>
+Subject: Re: [PATCH] rtlwifi: rtl8723ae: Remove unused 'rtstatus' variable
+To:     pkshih@realtek.com, kvalo@codeaurora.org, davem@davemloft.net
+Cc:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-23.09.2019 15:13, Johannes Berg пишет:
-> On Mon, 2019-09-23 at 15:12 +0300, Dmitry Osipenko wrote:
->>
->> Tested-by: Dmitry Osipenko <digetx@gmail.com>
-> 
-> That was quick, heh!
+Hello, Maintainers...
+Would you please review above patch if you are available?
 
-Yes, it happened that I was doing some kernel work, had device to test
-under my hand and checked email in the right time. Thanks again!
+Thanks,
+Austin Kim
+
+2019=EB=85=84 9=EC=9B=94 17=EC=9D=BC (=ED=99=94) =EC=98=A4=ED=9B=84 3:50, A=
+ustin Kim <austindh.kim@gmail.com>=EB=8B=98=EC=9D=B4 =EC=9E=91=EC=84=B1:
+>
+> 'rtstatus' local variable is not used,
+> so remove it for clean-up.
+>
+> Signed-off-by: Austin Kim <austindh.kim@gmail.com>
+> ---
+>  drivers/net/wireless/realtek/rtlwifi/rtl8723ae/phy.c | 3 ---
+>  1 file changed, 3 deletions(-)
+>
+> diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8723ae/phy.c b/drive=
+rs/net/wireless/realtek/rtlwifi/rtl8723ae/phy.c
+> index 54a3aec..22441dd 100644
+> --- a/drivers/net/wireless/realtek/rtlwifi/rtl8723ae/phy.c
+> +++ b/drivers/net/wireless/realtek/rtlwifi/rtl8723ae/phy.c
+> @@ -485,15 +485,12 @@ bool rtl8723e_phy_config_rf_with_headerfile(struct =
+ieee80211_hw *hw,
+>                                             enum radio_path rfpath)
+>  {
+>         int i;
+> -       bool rtstatus =3D true;
+>         u32 *radioa_array_table;
+>         u16 radioa_arraylen;
+>
+>         radioa_arraylen =3D RTL8723ERADIOA_1TARRAYLENGTH;
+>         radioa_array_table =3D RTL8723E_RADIOA_1TARRAY;
+>
+> -       rtstatus =3D true;
+> -
+>         switch (rfpath) {
+>         case RF90_PATH_A:
+>                 for (i =3D 0; i < radioa_arraylen; i =3D i + 2) {
+> --
+> 2.6.2
+>
