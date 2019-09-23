@@ -2,25 +2,25 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 69636BAEE1
-	for <lists+linux-wireless@lfdr.de>; Mon, 23 Sep 2019 10:07:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 05CEABAEFB
+	for <lists+linux-wireless@lfdr.de>; Mon, 23 Sep 2019 10:12:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2405433AbfIWIHR (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 23 Sep 2019 04:07:17 -0400
-Received: from smtp.codeaurora.org ([198.145.29.96]:39022 "EHLO
+        id S2405750AbfIWIMM (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 23 Sep 2019 04:12:12 -0400
+Received: from smtp.codeaurora.org ([198.145.29.96]:41466 "EHLO
         smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2405276AbfIWIHR (ORCPT
+        with ESMTP id S2388953AbfIWIMM (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 23 Sep 2019 04:07:17 -0400
+        Mon, 23 Sep 2019 04:12:12 -0400
 Received: by smtp.codeaurora.org (Postfix, from userid 1000)
-        id A7B836119D; Mon, 23 Sep 2019 08:07:15 +0000 (UTC)
+        id 7B26C611CE; Mon, 23 Sep 2019 08:12:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1569226035;
-        bh=uH4zjXlXe/hhr/BYrZpT/kC8NHNyTFcFYPAI/Bqxml8=;
+        s=default; t=1569226331;
+        bh=nd+YstKI8r8Tq4qSUaTYi3GnQD8Vhzgbz1GEJTb7dng=;
         h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=OT6DcloXVJmOJ3QTEHF1DiRl9vCg3C0PNeBi2qVPp2RGgWQ97kv+uIiiOGrDCqhZh
-         OBAlO2duM2HP56G7t45wre6FfeYxJi/AWc1enPSWoBs1Ta1in5TSAsd3VwweO44JGg
-         79XYMmFDRB5BO7CyRyAxr9AY3tqrNFxbTaS+fnUA=
+        b=W3hPzeQbaDIWkdhsPE2iJ/DpngHSjNuvjpLUAn8sn7VtHhi1nndc46OP+LlZU63au
+         GdluXqyk0gxXwsPMQOzcVNQwBNV5r+FBlz2BDhDE7DNPnvWn/buoBX79b3qyLoGHln
+         eoD2RD+VFHkGEjfcpmSmisFV5xzBprko7+wDNbPA=
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         pdx-caf-mail.web.codeaurora.org
 X-Spam-Level: 
@@ -31,28 +31,28 @@ Received: from x230.qca.qualcomm.com (37-136-106-186.rev.dnainternet.fi [37.136.
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
         (Authenticated sender: kvalo@smtp.codeaurora.org)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 47A566034D;
-        Mon, 23 Sep 2019 08:07:14 +0000 (UTC)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 184E06119F;
+        Mon, 23 Sep 2019 08:12:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1569226035;
-        bh=uH4zjXlXe/hhr/BYrZpT/kC8NHNyTFcFYPAI/Bqxml8=;
+        s=default; t=1569226331;
+        bh=nd+YstKI8r8Tq4qSUaTYi3GnQD8Vhzgbz1GEJTb7dng=;
         h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=OT6DcloXVJmOJ3QTEHF1DiRl9vCg3C0PNeBi2qVPp2RGgWQ97kv+uIiiOGrDCqhZh
-         OBAlO2duM2HP56G7t45wre6FfeYxJi/AWc1enPSWoBs1Ta1in5TSAsd3VwweO44JGg
-         79XYMmFDRB5BO7CyRyAxr9AY3tqrNFxbTaS+fnUA=
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 47A566034D
+        b=W3hPzeQbaDIWkdhsPE2iJ/DpngHSjNuvjpLUAn8sn7VtHhi1nndc46OP+LlZU63au
+         GdluXqyk0gxXwsPMQOzcVNQwBNV5r+FBlz2BDhDE7DNPnvWn/buoBX79b3qyLoGHln
+         eoD2RD+VFHkGEjfcpmSmisFV5xzBprko7+wDNbPA=
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 184E06119F
 Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
 Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
 From:   Kalle Valo <kvalo@codeaurora.org>
 To:     Surabhi Vishnoi <svishnoi@codeaurora.org>
 Cc:     ath10k@lists.infradead.org, linux-wireless@vger.kernel.org
-Subject: Re: [PATCH 1/2] ath10k: Add support for adding htt_rx_ops based on htt_version
+Subject: Re: [PATCH 2/2] ath10k: Add support for per peer HTT tx stats for WCN3990
 References: <1551251628-22518-1-git-send-email-svishnoi@codeaurora.org>
-        <1551251628-22518-2-git-send-email-svishnoi@codeaurora.org>
-Date:   Mon, 23 Sep 2019 11:07:12 +0300
-In-Reply-To: <1551251628-22518-2-git-send-email-svishnoi@codeaurora.org>
-        (Surabhi Vishnoi's message of "Wed, 27 Feb 2019 12:43:47 +0530")
-Message-ID: <87ef07a11r.fsf@codeaurora.org>
+        <1551251628-22518-3-git-send-email-svishnoi@codeaurora.org>
+Date:   Mon, 23 Sep 2019 11:12:07 +0300
+In-Reply-To: <1551251628-22518-3-git-send-email-svishnoi@codeaurora.org>
+        (Surabhi Vishnoi's message of "Wed, 27 Feb 2019 12:43:48 +0530")
+Message-ID: <87a7ava0tk.fsf@codeaurora.org>
 User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
 MIME-Version: 1.0
 Content-Type: text/plain
@@ -63,8 +63,23 @@ X-Mailing-List: linux-wireless@vger.kernel.org
 
 Surabhi Vishnoi <svishnoi@codeaurora.org> writes:
 
-> Refactor the code to add the support to attach htt_rx_ops
-> based on HTT version.
+> The firmware sends peer stats to the host driver if the firmware
+> advertises WMI_SERVICE_PEER_STATS service and the host driver
+> indicates the WMI_RSRC_CFG_FLAG_TX_PEER_STATS capability in the
+> host capab flag in wmi init cmd.
+>
+> When peer stats are enabled, firmware sends one HTT event
+> HTT_TLV_T2H_MSG_TYPE_PEER_STATS for every four PPDUs transmitted.
+> HTT msg payload has tag followed by length followed by
+> success pkts/bytes, failed pkts/bytes, retry pkts/bytes and rate
+> info per ppdu.
+>
+> Parse peer stats sent by the firmware in tlv format and update the
+> tx rate information and tx_stats debugfs entry per STA.
+>
+> To get the tx_stats:
+> echo 1 > /sys/kernel/debug/ieee80211/phyX/ath10k/enable_extd_tx_stats
+> cat /sys/kernel/debug/ieee80211/phyX/net:wlanX/stations/xx:xx:xx:xx:xx:xx/tx_stats
 >
 > Tested HW: WCN3990
 > Tested FW: WLAN.HL.3.1-00784-QCAHLSWMTPLZ-1
@@ -73,45 +88,31 @@ Surabhi Vishnoi <svishnoi@codeaurora.org> writes:
 
 [...]
 
-> @@ -3572,7 +3580,7 @@ int ath10k_htt_txrx_compl_task(struct ath10k *ar, int budget)
->  	.htt_reset_paddrs_ring = ath10k_htt_reset_paddrs_ring_64,
->  };
->  
-> -static const struct ath10k_htt_rx_ops htt_rx_ops_hl = {
-> +static struct ath10k_htt_rx_ops htt_rx_ops_hl = {
->  };
->  
->  void ath10k_htt_set_rx_ops(struct ath10k_htt *htt)
-> @@ -3585,4 +3593,19 @@ void ath10k_htt_set_rx_ops(struct ath10k_htt *htt)
->  		htt->rx_ops = &htt_rx_ops_64;
->  	else
->  		htt->rx_ops = &htt_rx_ops_32;
-> +
-> +	switch (ar->running_fw->fw_file.htt_op_version) {
-> +	case ATH10K_FW_HTT_OP_VERSION_MAIN:
-> +	case ATH10K_FW_HTT_OP_VERSION_10_1:
-> +	case ATH10K_FW_HTT_OP_VERSION_10_4:
-> +		htt->rx_ops->htt_fetch_peer_stats = ath10k_htt_fetch_peer_stats;
-> +	break;
-> +	case ATH10K_FW_HTT_OP_VERSION_TLV:
-> +		htt->rx_ops->htt_fetch_peer_stats = ath10k_htt_fetch_peer_stats_tlv;
-> +	break;
-> +	case ATH10K_FW_HTT_OP_VERSION_MAX:
-> +	case ATH10K_FW_HTT_OP_VERSION_UNSET:
-> +		WARN_ON(1);
-> +	return;
-> +	}
->  }
+> @@ -3438,7 +3566,7 @@ bool ath10k_htt_t2h_msg_handler(struct ath10k *ar, struct sk_buff *skb)
+>  		ath10k_htt_rx_tx_mode_switch_ind(ar, skb);
+>  		break;
+>  	case HTT_T2H_MSG_TYPE_PEER_STATS:
+> -		ath10k_htt_fetch_peer_stats(ar, skb);
+> +		htt->rx_ops->htt_fetch_peer_stats(ar, skb);
+>  		break;
 
-I just realised this won't work. Let's say that there's both a qca988x
-and a qca6174 PCI device on the same host. Then htt->rx_ops is shared by
-_both_ devices and the htt_fetch_peer_stats field will contain the value
-of the last initialised ath10k device.
+I think this belongs to patch 1.
 
-So back to the drawing board. As this feature is for wcn3990 would it be
-enough to modify htt_rx_ops_64? IIRC only wcn3990 support 64bit HTT
-interface, right? Of course then qca6174 won't support this feature, but
-does the qca6174 firmware even support that?
+> +#define ATH10K_HW_GI_MASK				GENMASK(5, 5)
+
+BIT(5)
+
+> +#define ATH10K_HW_SKIPPED_RATE_CTRL_MASK		GENMASK(6, 6)
+
+BIT(6)
+
+> +#define ATH10K_HW_WCN3990_GI_MASK			GENMASK(6, 6)
+
+BIT(6)
+
+> +#define ATH10K_HW_WCN3990_SKIPPED_RATE_CTRL_MASK	GENMASK(7, 7)
+
+BIT(7)
 
 -- 
 Kalle Valo
