@@ -2,113 +2,130 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E70ACBB9C6
-	for <lists+linux-wireless@lfdr.de>; Mon, 23 Sep 2019 18:39:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E20D3BBAD5
+	for <lists+linux-wireless@lfdr.de>; Mon, 23 Sep 2019 19:56:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2389743AbfIWQjl (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 23 Sep 2019 12:39:41 -0400
-Received: from us-smtp-delivery-1.mimecast.com ([205.139.110.120]:45663 "EHLO
-        us-smtp-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S2389238AbfIWQjk (ORCPT
+        id S2438066AbfIWR4W (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 23 Sep 2019 13:56:22 -0400
+Received: from dvalin.narfation.org ([213.160.73.56]:38204 "EHLO
+        dvalin.narfation.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2393421AbfIWR4V (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 23 Sep 2019 12:39:40 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1569256779;
+        Mon, 23 Sep 2019 13:56:21 -0400
+Received: from sven-edge.localnet (unknown [IPv6:2a00:1ca0:1480:f9fc::4065])
+        by dvalin.narfation.org (Postfix) with ESMTPSA id D9AF31FFAB;
+        Mon, 23 Sep 2019 17:26:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=narfation.org;
+        s=20121; t=1569259611;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
          to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=cG6g8FWFhJNU2pFuuSQ3wDeFo55uwqFpwiewpVNDDMk=;
-        b=TaeRm61JNa7jJXAkRLUGQFFl7R4T4mJUPAr++og7npbEpqt9OQNE7BLYewCK0rN/G6XtlZ
-        uzpkCSxPgeYG79bggKKSS1rnb0OkS1TxqthefpPZb89Fu0+cnSdF8yqY31Y2ureSTZKsol
-        /U/NChhdvVG0v68FyAA4c0RJ0N1Pvm8=
-Received: from mail-ed1-f71.google.com (mail-ed1-f71.google.com
- [209.85.208.71]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-242-QYms7sYfOg-LxTikIs6pIg-1; Mon, 23 Sep 2019 12:39:38 -0400
-Received: by mail-ed1-f71.google.com with SMTP id 34so9821366edf.0
-        for <linux-wireless@vger.kernel.org>; Mon, 23 Sep 2019 09:39:37 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:in-reply-to:references:date
-         :message-id:mime-version:content-transfer-encoding;
-        bh=HyuhdIWnvw+MB2y5Xe1fi//iQfAWHI+rX11knAQoHQo=;
-        b=cx6eNsmTfyvJ3tR1CzbC1JVpQUMi0H5c1FSvuISurGjJYhnQtvbp6URpBDBfVCR8hm
-         9qb+BkP/qG5L6KyJvlOMU8o6Z5uxluDOxMkmRW1A0eZthxfqnuyXYnCu4bLT36NiHr4l
-         c3Qeqa/+xUHRB/zceLHejZE35TYNs/GJQPKXdAzQrxjFY7j1iho+yPTwFMQUHDQs4opu
-         41YuazqFQHT8uzmbHuerduy3zI9UdXsBHxrc30Wr+lZCQ4fN9keD2UBYCJNyFO1eit4a
-         TYTUOMBg2gO0udeCVc21C+ZpZrDF3IOgh6nND/vxtCWNyqrMLkEgcHgViGGrJBeubvdt
-         8kbg==
-X-Gm-Message-State: APjAAAXZrEbYJm8LdbAvUZonr89zVMTOOTWIjGfe6dNNw9QyKniB1iTo
-        bHAJMUP6mZPAbWp4cP3Jkj55g3UsQIJU+MgDIKPraKwRT74Khzk0ygLhEeBXRsSCfJNksNVfFTK
-        P/F5cQZ2xcy0aWCFYWvjq5IQbnwU=
-X-Received: by 2002:a17:906:b84c:: with SMTP id ga12mr758541ejb.0.1569256776598;
-        Mon, 23 Sep 2019 09:39:36 -0700 (PDT)
-X-Google-Smtp-Source: APXvYqwIK4BocAnGRpl4BZk23ytDqoFV+OFHOviTCmWt7eKGp8IoKRipaFYqBPbK+ZPr5H8Lyg3wGg==
-X-Received: by 2002:a17:906:b84c:: with SMTP id ga12mr758524ejb.0.1569256776382;
-        Mon, 23 Sep 2019 09:39:36 -0700 (PDT)
-Received: from alrua-x1.borgediget.toke.dk ([2a00:7660:6da:443::2])
-        by smtp.gmail.com with ESMTPSA id h3sm1193119ejp.77.2019.09.23.09.39.35
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 23 Sep 2019 09:39:35 -0700 (PDT)
-Received: by alrua-x1.borgediget.toke.dk (Postfix, from userid 1000)
-        id E52251804C8; Mon, 23 Sep 2019 18:39:34 +0200 (CEST)
-From:   Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>
-To:     Kalle Valo <kvalo@codeaurora.org>
-Cc:     Yibo Zhao <yiboz@codeaurora.org>, linux-wireless@vger.kernel.org,
-        ath10k@lists.infradead.org
-Subject: Re: [PATCH 2/4] mac80211: defer txqs removal from rbtree
-In-Reply-To: <87r2476xy5.fsf@codeaurora.org>
-References: <1568639388-27291-1-git-send-email-yiboz@codeaurora.org> <1568639388-27291-2-git-send-email-yiboz@codeaurora.org> <87pnjyiq7o.fsf@toke.dk> <c3ee7ece0986f1c50513cd5fdd2ee03f@codeaurora.org> <87sgothmpy.fsf@toke.dk> <8cdece5c030fd95817fb099021c38613@codeaurora.org> <87tv98fu6l.fsf@toke.dk> <1b4ab006d9b5c88035845aaac193ef48@codeaurora.org> <8736gre3bm.fsf@toke.dk> <198124204167325252fcfcd65e3f2733@codeaurora.org> <87ftkp7uuz.fsf@toke.dk> <4574cce4079f8dab2b2bf223431a6eae@codeaurora.org> <877e617qg2.fsf@toke.dk> <910d9bb5f9016b29fb2aaeb0b89bac38@codeaurora.org> <874l157nrt.fsf@toke.dk> <2935b00bf3e29ad8b2738fe98dc24a76@codeaurora.org> <87lfuf5ly2.fsf@toke.dk> <87r2476xy5.fsf@codeaurora.org>
-X-Clacks-Overhead: GNU Terry Pratchett
-Date:   Mon, 23 Sep 2019 18:39:34 +0200
-Message-ID: <875zlj55mh.fsf@toke.dk>
+        bh=JUegENmeIHHiT+O9uIIOxc1zWJHPwvIxI2SvuwGf54A=;
+        b=dVWTU2YRhbvNTjzU5zWqJuZwGuXdr2Y5i4h8fAIbmfcxuBJK1ZG+fGo/W/YblVDINcKj0n
+        B670FTOeqbkbbqdtvLu3HbF2eoleJzXw6Dgnm1/VfifonzNleM7VytHWdyYL6G301L3qIC
+        tdTHwh8/l2Z9JQUVmzRFgWWvKZS3wUo=
+From:   Sven Eckelmann <sven@narfation.org>
+To:     b.a.t.m.a.n@lists.open-mesh.org
+Cc:     Krzysztof Kozlowski <krzk@kernel.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Michael Grzeschik <m.grzeschik@pengutronix.de>,
+        Wolfgang Grandegger <wg@grandegger.com>,
+        Marc Kleine-Budde <mkl@pengutronix.de>,
+        Andrew Lunn <andrew@lunn.ch>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        Heiner Kallweit <hkallweit1@gmail.com>,
+        Alexey Kuznetsov <kuznet@ms2.inr.ac.ru>,
+        Hideaki YOSHIFUJI <yoshfuji@linux-ipv6.org>,
+        Pablo Neira Ayuso <pablo@netfilter.org>,
+        Jozsef Kadlecsik <kadlec@netfilter.org>,
+        Florian Westphal <fw@strlen.de>,
+        Jiri Kosina <trivial@kernel.org>, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-can@vger.kernel.org,
+        linux-rdma@vger.kernel.org, linux-wireless@vger.kernel.org,
+        netfilter-devel@vger.kernel.org, coreteam@netfilter.org,
+        lvs-devel@vger.kernel.org, rds-devel@oss.oracle.com
+Subject: Re: [PATCH trivial 1/2] net: Fix Kconfig indentation
+Date:   Mon, 23 Sep 2019 19:56:12 +0200
+Message-ID: <2354684.0ZvKvX0iQ3@sven-edge>
+In-Reply-To: <20190923155243.6997-1-krzk@kernel.org>
+References: <20190923155243.6997-1-krzk@kernel.org>
 MIME-Version: 1.0
-X-MC-Unique: QYms7sYfOg-LxTikIs6pIg-1
-X-Mimecast-Spam-Score: 0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: multipart/signed; boundary="nextPart2306317.z6aVZVsvuq"; micalg="pgp-sha512"; protocol="application/pgp-signature"
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=narfation.org;
+        s=20121; t=1569259612;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=JUegENmeIHHiT+O9uIIOxc1zWJHPwvIxI2SvuwGf54A=;
+        b=x1TVkKv99+ozAK7NGhKJppOQTZ3rt6BG5uCQ9jX1Cu6VwaJ1Z9e2XjHeZoi0ylFmE0Qgv2
+        uPumTYEhEqN0pwscCMrxg05p8YgwwZxS95AE3BnKHxJCx8DfTCCPdTAyKbC6OzxnJqzLC+
+        xMuRoeIhRMuvm0RcjlgRZSLiQKlXzBQ=
+ARC-Seal: i=1; s=20121; d=narfation.org; t=1569259612; a=rsa-sha256;
+        cv=none;
+        b=sC+Bw4VcxyWYjzxCJPweIGNX+Yyrk334W9KKcHzvmcS/hWk8OQo5sJew0irtt83lHu620y
+        GR1yOu+K+tFNotiu7Ji8FKdtPcJdPj6tP5KcJpiNcjdVnKzc1GUdEDf7J4u+rCReuDLD9y
+        a6G6B/KjsDql8SBNK00XkdLiqUmNeNQ=
+ARC-Authentication-Results: i=1;
+        ORIGINATING;
+        auth=pass smtp.auth=sven smtp.mailfrom=sven@narfation.org
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Kalle Valo <kvalo@codeaurora.org> writes:
+--nextPart2306317.z6aVZVsvuq
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="us-ascii"
 
-> Toke H=C3=B8iland-J=C3=B8rgensen <toke@redhat.com> writes:
->
->> Yibo Zhao <yiboz@codeaurora.org> writes:
->>
->>> On 2019-09-21 22:00, Toke H=C3=B8iland-J=C3=B8rgensen wrote:
->>>> Yibo Zhao <yiboz@codeaurora.org> writes:
->>>>=20
->>>>> On 2019-09-21 21:02, Toke H=C3=B8iland-J=C3=B8rgensen wrote:
->>>>>> Yibo Zhao <yiboz@codeaurora.org> writes:
->>>>>>=20
->>>>>>> On 2019-09-21 19:27, Toke H=C3=B8iland-J=C3=B8rgensen wrote:
->>>>>>>> Yibo Zhao <yiboz@codeaurora.org> writes:
->>>>>>>>=20
->>>>>>>>> On 2019-09-20 17:15, Toke H=C3=B8iland-J=C3=B8rgensen wrote:
->>>>>>>>>> Yibo Zhao <yiboz@codeaurora.org> writes:
->>>>>>>>>>=20
->>>>>>>>>>> On 2019-09-19 18:37, Toke H=C3=B8iland-J=C3=B8rgensen wrote:
->>>>>>>>>>>> Yibo Zhao <yiboz@codeaurora.org> writes:
->>>>>>>>>>>>=20
->>>>>>>>>>>>> On 2019-09-18 19:23, Toke H=C3=B8iland-J=C3=B8rgensen wrote:
->>>>>>>>>>>>>> Yibo Zhao <yiboz@codeaurora.org> writes:
->>>>>>>>>>>>>>=20
->>>>>>>>>>>>>>> On 2019-09-18 05:10, Toke H=C3=B8iland-J=C3=B8rgensen wrote=
-:
->>>>>>>>>>>>>>>> Yibo Zhao <yiboz@codeaurora.org> writes:
->
-> Guys, PLEASE please consider us poor maintainers drowning in email and
-> edit your quotes :) This style of discussion makes patchwork unusable:
->
-> https://patchwork.kernel.org/patch/11147019/
+On Monday, 23 September 2019 17:52:42 CEST Krzysztof Kozlowski wrote:
+> --- a/net/batman-adv/Kconfig
+> +++ b/net/batman-adv/Kconfig
+> @@ -12,11 +12,11 @@ config BATMAN_ADV
+>         depends on NET
+>         select LIBCRC32C
+>         help
+> -          B.A.T.M.A.N. (better approach to mobile ad-hoc networking) is
+> -          a routing protocol for multi-hop ad-hoc mesh networks. The
+> -          networks may be wired or wireless. See
+> -          https://www.open-mesh.org/ for more information and user space
+> -          tools.
+> +         B.A.T.M.A.N. (better approach to mobile ad-hoc networking) is
+> +         a routing protocol for multi-hop ad-hoc mesh networks. The
+> +         networks may be wired or wireless. See
+> +         https://www.open-mesh.org/ for more information and user space
+> +         tools.
+>  
+>  config BATMAN_ADV_BATMAN_V
+>         bool "B.A.T.M.A.N. V protocol"
 
-Heh, oops, didn't realise you were following the discussion from
-patchwork; sorry, will be sure to cut things in the future.
+Acked-by: Sven Eckelmann <sven@narfation.org>
 
-The quote marks do make a very nice (reverse) christmas tree, though ;)
+Kind regards,
+	Sven
 
--Toke
+--nextPart2306317.z6aVZVsvuq
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: This is a digitally signed message part.
+Content-Transfer-Encoding: 7Bit
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCgAdFiEEF10rh2Elc9zjMuACXYcKB8Eme0YFAl2JBzwACgkQXYcKB8Em
+e0YTVg/+PgtfvbyO8UPeEG3nkvaRcMywQsGWWB2nkRfHXA+QnFghJNXsvPHonkd+
+QQ1E5I3loiK90VFbdRR8R0o5G57WPTFAivY334UAL1m5qOZT1bMKwI971dT0GCny
+a9+BhZEjt729e7WlSOvkT/v7BHo8lxyHH5+x33dxMJF0oSD5UDdH8VZX9PCBTJ1g
+4+O3e18WyQdsXFi3G2N75DcT+OhRle2P7T6yfgD0Ro5ViMqeTigsdmw+kpq8x8IK
+fyUN3oo5vqFnH3sEEXFshmxAqAVjPjzzoRYTFTupTw8yDOTL2REIgU75HZ0WP2w6
+eQ03/+7hKhujukr4V/bwVPMf6WJ1mi9+cz88Op8BkY/UgFgAYJSUhnfeoLo1pK6q
+ewEwagQfFibXUqtebAoam3z20Mb7rnrUmQJbUvPLQatL76qUaonJp3yxUMnrOWo+
+GmDWR4zgHgwatjOBeGCPBuF3PBMPWe1NBrA0EF7+33gZu6pttf3Z6XLNUWCw3unx
+xQCR1dn7VzUA+/FdFZfVoUlGBPeqWzqdyp3Os2ymDHJRp6jZWTd2gX6KvldvWTDR
+dU2SmyvoOovNLFWyBd7rC7vud0aWMJUHypD2IlEMCPprnu+m33Lhqx8nrbF/goZL
+drH0F1BJDs5jlWehfTwnnaNdqZEuzamWT8GEJAUBj8Iq5R6+35s=
+=OS2O
+-----END PGP SIGNATURE-----
+
+--nextPart2306317.z6aVZVsvuq--
+
+
 
