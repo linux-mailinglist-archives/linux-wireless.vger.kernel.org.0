@@ -2,25 +2,25 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 77A8DBC161
-	for <lists+linux-wireless@lfdr.de>; Tue, 24 Sep 2019 07:27:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DF310BC16A
+	for <lists+linux-wireless@lfdr.de>; Tue, 24 Sep 2019 07:30:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2405014AbfIXF1k (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 24 Sep 2019 01:27:40 -0400
-Received: from smtp.codeaurora.org ([198.145.29.96]:35912 "EHLO
+        id S2438541AbfIXFaZ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 24 Sep 2019 01:30:25 -0400
+Received: from smtp.codeaurora.org ([198.145.29.96]:36682 "EHLO
         smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2393010AbfIXF1k (ORCPT
+        with ESMTP id S2438519AbfIXFaY (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 24 Sep 2019 01:27:40 -0400
+        Tue, 24 Sep 2019 01:30:24 -0400
 Received: by smtp.codeaurora.org (Postfix, from userid 1000)
-        id A91B960256; Tue, 24 Sep 2019 05:27:38 +0000 (UTC)
+        id CA98C602F0; Tue, 24 Sep 2019 05:30:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1569302858;
-        bh=iqreBXqW1z+PvVPcT2A+y7vEG6T1jEfF1BdCXbZUI9Y=;
+        s=default; t=1569303023;
+        bh=SKpoTL5qdqpCZE8jfMpeNULCFOVTf1yiWa2F+YGyiUY=;
         h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=cWNo/Z1yt6exvdlf1zwZ43aVajPzWOEEWpEkf1eDwjJBKpeS86Qs1F0hG+KDb8n56
-         VM+l99LIUWT17Dvjo4O1XWyZSZeMSfV7/WIWCAfQKtPZkKJiJhlZcIB/FglEe8mkoK
-         CmbRsJTBYFgYH7qr1ZXrdDilw1IBMaH9wscMWwpc=
+        b=i3ZY2OYdN2lGQe+y7MbsWqxJOYxpD0Ec7VitiyHqBIquXU/qK2wNGgUI6nAbehWVB
+         NT80mtpExC9mph25W5QYL5vF+AJoUCoTtraD+lWUtAgkHPWrV9rjMhnlG2gfZsBzbu
+         d+0509hQHGcuv3BAtAcFNk56bfcb9XVsHJDcs4yw=
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         pdx-caf-mail.web.codeaurora.org
 X-Spam-Level: 
@@ -31,46 +31,29 @@ Received: from x230.qca.qualcomm.com (37-136-106-186.rev.dnainternet.fi [37.136.
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
         (Authenticated sender: kvalo@smtp.codeaurora.org)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id CA3CF60240;
-        Tue, 24 Sep 2019 05:27:36 +0000 (UTC)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 416EE60240;
+        Tue, 24 Sep 2019 05:30:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1569302858;
-        bh=iqreBXqW1z+PvVPcT2A+y7vEG6T1jEfF1BdCXbZUI9Y=;
+        s=default; t=1569303023;
+        bh=SKpoTL5qdqpCZE8jfMpeNULCFOVTf1yiWa2F+YGyiUY=;
         h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=cWNo/Z1yt6exvdlf1zwZ43aVajPzWOEEWpEkf1eDwjJBKpeS86Qs1F0hG+KDb8n56
-         VM+l99LIUWT17Dvjo4O1XWyZSZeMSfV7/WIWCAfQKtPZkKJiJhlZcIB/FglEe8mkoK
-         CmbRsJTBYFgYH7qr1ZXrdDilw1IBMaH9wscMWwpc=
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org CA3CF60240
+        b=i3ZY2OYdN2lGQe+y7MbsWqxJOYxpD0Ec7VitiyHqBIquXU/qK2wNGgUI6nAbehWVB
+         NT80mtpExC9mph25W5QYL5vF+AJoUCoTtraD+lWUtAgkHPWrV9rjMhnlG2gfZsBzbu
+         d+0509hQHGcuv3BAtAcFNk56bfcb9XVsHJDcs4yw=
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 416EE60240
 Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
 Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
 From:   Kalle Valo <kvalo@codeaurora.org>
-To:     Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>
-Cc:     Yibo Zhao <yiboz@codeaurora.org>, linux-wireless@vger.kernel.org,
-        ath10k@lists.infradead.org
-Subject: Re: [PATCH 2/4] mac80211: defer txqs removal from rbtree
-References: <1568639388-27291-1-git-send-email-yiboz@codeaurora.org>
-        <1568639388-27291-2-git-send-email-yiboz@codeaurora.org>
-        <87pnjyiq7o.fsf@toke.dk>
-        <c3ee7ece0986f1c50513cd5fdd2ee03f@codeaurora.org>
-        <87sgothmpy.fsf@toke.dk>
-        <8cdece5c030fd95817fb099021c38613@codeaurora.org>
-        <87tv98fu6l.fsf@toke.dk>
-        <1b4ab006d9b5c88035845aaac193ef48@codeaurora.org>
-        <8736gre3bm.fsf@toke.dk>
-        <198124204167325252fcfcd65e3f2733@codeaurora.org>
-        <87ftkp7uuz.fsf@toke.dk>
-        <4574cce4079f8dab2b2bf223431a6eae@codeaurora.org>
-        <877e617qg2.fsf@toke.dk>
-        <910d9bb5f9016b29fb2aaeb0b89bac38@codeaurora.org>
-        <874l157nrt.fsf@toke.dk>
-        <2935b00bf3e29ad8b2738fe98dc24a76@codeaurora.org>
-        <87lfuf5ly2.fsf@toke.dk> <87r2476xy5.fsf@codeaurora.org>
-        <875zlj55mh.fsf@toke.dk>
-Date:   Tue, 24 Sep 2019 08:27:34 +0300
-In-Reply-To: <875zlj55mh.fsf@toke.dk> ("Toke \=\?utf-8\?Q\?H\=C3\=B8iland-J\?\=
- \=\?utf-8\?Q\?\=C3\=B8rgensen\=22's\?\= message of
-        "Mon, 23 Sep 2019 18:39:34 +0200")
-Message-ID: <87h8525kmx.fsf@codeaurora.org>
+To:     Tomislav =?utf-8?Q?Po=C5=BEega?= <pozega.tomislav@gmail.com>
+Cc:     linux-wireless@vger.kernel.org, ath10k@lists.infradead.org
+Subject: Re: [PATCH 5/5] ath10k: pull_svc_rdy code-style fix
+References: <1569268165-1639-1-git-send-email-pozega.tomislav@gmail.com>
+        <1569268165-1639-5-git-send-email-pozega.tomislav@gmail.com>
+Date:   Tue, 24 Sep 2019 08:30:19 +0300
+In-Reply-To: <1569268165-1639-5-git-send-email-pozega.tomislav@gmail.com>
+        ("Tomislav \=\?utf-8\?Q\?Po\=C5\=BEega\=22's\?\= message of "Mon, 23 Sep 2019
+ 21:49:25 +0200")
+Message-ID: <87d0fq5kic.fsf@codeaurora.org>
 User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
@@ -80,51 +63,38 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Toke H=C3=B8iland-J=C3=B8rgensen <toke@redhat.com> writes:
+Tomislav Po=C5=BEega <pozega.tomislav@gmail.com> writes:
 
-> Kalle Valo <kvalo@codeaurora.org> writes:
+> Drop unneeded lines by moving skb data in both main and 10x WMI
+> pull service ready event operations.
 >
->> Toke H=C3=B8iland-J=C3=B8rgensen <toke@redhat.com> writes:
->>
->>> Yibo Zhao <yiboz@codeaurora.org> writes:
->>>
->>>> On 2019-09-21 22:00, Toke H=C3=B8iland-J=C3=B8rgensen wrote:
->>>>> Yibo Zhao <yiboz@codeaurora.org> writes:
->>>>>=20
->>>>>> On 2019-09-21 21:02, Toke H=C3=B8iland-J=C3=B8rgensen wrote:
->>>>>>> Yibo Zhao <yiboz@codeaurora.org> writes:
->>>>>>>=20
->>>>>>>> On 2019-09-21 19:27, Toke H=C3=B8iland-J=C3=B8rgensen wrote:
->>>>>>>>> Yibo Zhao <yiboz@codeaurora.org> writes:
->>>>>>>>>=20
->>>>>>>>>> On 2019-09-20 17:15, Toke H=C3=B8iland-J=C3=B8rgensen wrote:
->>>>>>>>>>> Yibo Zhao <yiboz@codeaurora.org> writes:
->>>>>>>>>>>=20
->>>>>>>>>>>> On 2019-09-19 18:37, Toke H=C3=B8iland-J=C3=B8rgensen wrote:
->>>>>>>>>>>>> Yibo Zhao <yiboz@codeaurora.org> writes:
->>>>>>>>>>>>>=20
->>>>>>>>>>>>>> On 2019-09-18 19:23, Toke H=C3=B8iland-J=C3=B8rgensen wrote:
->>>>>>>>>>>>>>> Yibo Zhao <yiboz@codeaurora.org> writes:
->>>>>>>>>>>>>>>=20
->>>>>>>>>>>>>>>> On 2019-09-18 05:10, Toke H=C3=B8iland-J=C3=B8rgensen wrot=
-e:
->>>>>>>>>>>>>>>>> Yibo Zhao <yiboz@codeaurora.org> writes:
->>
->> Guys, PLEASE please consider us poor maintainers drowning in email and
->> edit your quotes :) This style of discussion makes patchwork unusable:
->>
->> https://patchwork.kernel.org/patch/11147019/
+> Signed-off-by: Tomislav Po=C5=BEega <pozega.tomislav@gmail.com>
+> ---
+>  drivers/net/wireless/ath/ath10k/wmi.c |    6 ++----
+>  1 files changed, 2 insertions(+), 4 deletions(-)
 >
-> Heh, oops, didn't realise you were following the discussion from
-> patchwork; sorry, will be sure to cut things in the future.
+> diff --git a/drivers/net/wireless/ath/ath10k/wmi.c b/drivers/net/wireless=
+/ath/ath10k/wmi.c
+> index 59d2d2a..8ab178c 100644
+> --- a/drivers/net/wireless/ath/ath10k/wmi.c
+> +++ b/drivers/net/wireless/ath/ath10k/wmi.c
+> @@ -5345,13 +5345,12 @@ static int ath10k_wmi_alloc_host_mem(struct ath10=
+k *ar, u32 req_id,
+>  ath10k_wmi_main_op_pull_svc_rdy_ev(struct ath10k *ar, struct sk_buff *sk=
+b,
+>  				   struct wmi_svc_rdy_ev_arg *arg)
+>  {
+> -	struct wmi_service_ready_event *ev;
+> +	struct wmi_service_ready_event *ev =3D (void *)skb->data;
+>  	size_t i, n;
+>=20=20
+>  	if (skb->len < sizeof(*ev))
+>  		return -EPROTO;
+>=20=20
+> -	ev =3D (void *)skb->data;
 
-To be honest, I'm not sure how much Johannes uses patchwork. But I check
-everything from patchwork 95% of the time and try to keep my email boxes
-clean.
-
-> The quote marks do make a very nice (reverse) christmas tree, though ;)
-
-It did! I had to include that to my rant :)
+Actually I prefer the original style, so that we first check the data in
+skb is valid and only then assign the data to ev.
 
 --=20
 Kalle Valo
