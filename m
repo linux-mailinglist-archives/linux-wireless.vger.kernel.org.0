@@ -2,79 +2,76 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id F1AB8BC4E3
-	for <lists+linux-wireless@lfdr.de>; Tue, 24 Sep 2019 11:32:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CBEC3BC5AE
+	for <lists+linux-wireless@lfdr.de>; Tue, 24 Sep 2019 12:31:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2393857AbfIXJc1 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 24 Sep 2019 05:32:27 -0400
-Received: from smtp.codeaurora.org ([198.145.29.96]:35436 "EHLO
-        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2390668AbfIXJc1 (ORCPT
+        id S2409467AbfIXKbF (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 24 Sep 2019 06:31:05 -0400
+Received: from paleale.coelho.fi ([176.9.41.70]:44742 "EHLO
+        farmhouse.coelho.fi" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
+        with ESMTP id S2387644AbfIXKbF (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 24 Sep 2019 05:32:27 -0400
-Received: by smtp.codeaurora.org (Postfix, from userid 1000)
-        id 1AD946083C; Tue, 24 Sep 2019 09:32:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1569317546;
-        bh=dX/ugPSN7GpC2cgkwy21GdHlwo09xtkP3Ul+IY1tFL0=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=ZgCy1WNYrBnOd+22Y8zh93gvyD3YGWlPbkk9h57Xod5TKwiAFDaAmSC8xvdpk/hXL
-         OQLCrGOOmB5NgT6cdq7Aqa82oPvvTe+t7h//jWyJCDly8VO86vvf5ZN86uH/cKAmBj
-         ooEOlSC7mobDla4HCgkK5xTr6lVMf2AaiV9yJHck=
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        pdx-caf-mail.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.7 required=2.0 tests=ALL_TRUSTED,BAYES_00,
-        DKIM_INVALID,DKIM_SIGNED autolearn=no autolearn_force=no version=3.4.0
-Received: from mail.codeaurora.org (localhost.localdomain [127.0.0.1])
-        by smtp.codeaurora.org (Postfix) with ESMTP id AF4BE602F2;
-        Tue, 24 Sep 2019 09:32:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1569317545;
-        bh=dX/ugPSN7GpC2cgkwy21GdHlwo09xtkP3Ul+IY1tFL0=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=eEDeUK/v+XeG7Rtf3FmL97hu5qtJPfnbf6u/M++KT4QSEQearGQLXkRNe7Q7fFcWF
-         /G3odYOii0ze8i03zpG3pOCcgDJ8d0lcDRtoPqH2KEI/L7bSRr8e2zwX+zxsEkKGdV
-         uWOFWnPf+0pDF/jiTnhTvFAzn7P2IUL6z81lJKu8=
+        Tue, 24 Sep 2019 06:31:05 -0400
+Received: from [91.156.6.193] (helo=redipa.ger.corp.intel.com)
+        by farmhouse.coelho.fi with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+        (Exim 4.92)
+        (envelope-from <luca@coelho.fi>)
+        id 1iCi63-0005Je-8E; Tue, 24 Sep 2019 13:31:03 +0300
+From:   Luca Coelho <luca@coelho.fi>
+To:     kvalo@codeaurora.org
+Cc:     linux-wireless@vger.kernel.org
+Date:   Tue, 24 Sep 2019 13:30:57 +0300
+Message-Id: <20190924103057.17147-1-luca@coelho.fi>
+X-Mailer: git-send-email 2.23.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII;
- format=flowed
-Content-Transfer-Encoding: 7bit
-Date:   Tue, 24 Sep 2019 17:32:25 +0800
-From:   Wen Gong <wgong@codeaurora.org>
-To:     Kalle Valo <kvalo@codeaurora.org>
-Cc:     ath10k@lists.infradead.org, linux-wireless@vger.kernel.org
-Subject: Re: [PATCH v5 3/8] ath10k: change max RX bundle size from 8 to 32 for
- sdio
-In-Reply-To: <871rw79ycy.fsf@codeaurora.org>
-References: <1567679893-14029-1-git-send-email-wgong@codeaurora.org>
- <1567679893-14029-4-git-send-email-wgong@codeaurora.org>
- <871rw79ycy.fsf@codeaurora.org>
-Message-ID: <5f2387dc4c97a5edff78fa6ce7dcd401@codeaurora.org>
-X-Sender: wgong@codeaurora.org
-User-Agent: Roundcube Webmail/1.2.5
+Content-Transfer-Encoding: 8bit
+X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on farmhouse.coelho.fi
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.9 required=5.0 tests=ALL_TRUSTED,BAYES_00,
+        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.2
+Subject: [PATCH v5.4] iwlwifi: fw: don't send GEO_TX_POWER_LIMIT command to FW version 36
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 2019-09-23 17:05, Kalle Valo wrote:
+From: Luca Coelho <luciano.coelho@intel.com>
 
->> 
->> +#define ATH10K_HTC_FLAG_BUNDLE_MASK 0xF0
->> +#define ATH10K_HTC_BUNDLE_EXTRA_MASK GENMASK(3, 2)
->> +
->> +#define ATH10K_HTC_GET_BUNDLE_COUNT(flags) \
->> +	    (FIELD_GET(ATH10K_HTC_FLAG_BUNDLE_MASK, (flags)) +  \
->> +	    (FIELD_GET(ATH10K_HTC_BUNDLE_EXTRA_MASK, (flags)) << 4))
-> 
-> When using FIELD_GET() there should be no need to use '<<', the main id
-> of FIELD_GET() and BITMASK() is that there's no need do any manual
-> shifting. So I suspect something is wrong here, but didn't have time to
-> investigate.
-the value is like this:
-the u8 flags:
-b7 b6 b5 b4 b3 b2 b1 b0
-the count= 0Bb7b6b5b4 + 0Bb3b2 << 4
-FIELD_GET is to >>, not <<
-so it need to manual shift for the "0Bb3b2 << 4"
+The intention was to have the GEO_TX_POWER_LIMIT command in FW version
+36 as well, but not all 8000 family got this feature enabled.  The
+8000 family is the only one using version 36, so skip this version
+entirely.  If we try to send this command to the firmwares that do not
+support it, we get a BAD_COMMAND response from the firmware.
+
+This fixes https://bugzilla.kernel.org/show_bug.cgi?id=204151.
+
+Cc: stable@vger.kernel.org # 4.19+
+Signed-off-by: Luca Coelho <luciano.coelho@intel.com>
+---
+ drivers/net/wireless/intel/iwlwifi/mvm/fw.c | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
+
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/fw.c b/drivers/net/wireless/intel/iwlwifi/mvm/fw.c
+index 014eca6596e2..32a5e4e5461f 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/fw.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/fw.c
+@@ -889,11 +889,13 @@ static bool iwl_mvm_sar_geo_support(struct iwl_mvm *mvm)
+ 	 * firmware versions.  Unfortunately, we don't have a TLV API
+ 	 * flag to rely on, so rely on the major version which is in
+ 	 * the first byte of ucode_ver.  This was implemented
+-	 * initially on version 38 and then backported to 36, 29 and
+-	 * 17.
++	 * initially on version 38 and then backported to29 and 17.
++	 * The intention was to have it in 36 as well, but not all
++	 * 8000 family got this feature enabled.  The 8000 family is
++	 * the only one using version 36, so skip this version
++	 * entirely.
+ 	 */
+ 	return IWL_UCODE_SERIAL(mvm->fw->ucode_ver) >= 38 ||
+-	       IWL_UCODE_SERIAL(mvm->fw->ucode_ver) == 36 ||
+ 	       IWL_UCODE_SERIAL(mvm->fw->ucode_ver) == 29 ||
+ 	       IWL_UCODE_SERIAL(mvm->fw->ucode_ver) == 17;
+ }
+-- 
+2.23.0
+
