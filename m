@@ -2,25 +2,25 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 8CC1BBCA94
-	for <lists+linux-wireless@lfdr.de>; Tue, 24 Sep 2019 16:48:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 94142BCA8C
+	for <lists+linux-wireless@lfdr.de>; Tue, 24 Sep 2019 16:47:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731081AbfIXOsT (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 24 Sep 2019 10:48:19 -0400
-Received: from smtp.codeaurora.org ([198.145.29.96]:36742 "EHLO
+        id S2387411AbfIXOrR (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 24 Sep 2019 10:47:17 -0400
+Received: from smtp.codeaurora.org ([198.145.29.96]:36974 "EHLO
         smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726130AbfIXOqT (ORCPT
+        with ESMTP id S1726060AbfIXOrP (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 24 Sep 2019 10:46:19 -0400
+        Tue, 24 Sep 2019 10:47:15 -0400
 Received: by smtp.codeaurora.org (Postfix, from userid 1000)
-        id 8AAB160A97; Tue, 24 Sep 2019 14:46:18 +0000 (UTC)
+        id 6706560E73; Tue, 24 Sep 2019 14:47:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1569336378;
-        bh=VwDBP5dU+zG6Qy6lwpYKrZqDwxKMAH0pQAIBblp0SyU=;
+        s=default; t=1569336434;
+        bh=oBdYXAVc/3GBGvYDVgDiAjq2lG5AEM14I5dke4IqQr4=;
         h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-        b=Ky5noSWlyARiEkt0tlkSqQ8lZCmwGj9O4/9zl+V55dsF1M2BImrjbNke8XsA+qYX5
-         wklGLXlQUYth121o2v4UiCYe3qMjhMhopbA/OYLrueZb5hiA7IQ5AT8PKf5fbEkuzv
-         wpnuqvVrQNdGRfx7p3pyQktTjBsbrb3N6mJgArNg=
+        b=huHJ/JgsKGNDED0e2ZWYI0sQKhU/PRxeUTyJUCRxBgXBazYXWI5xA1ARzPPkti0MC
+         qQv+otwpvQAPPozacjhEeUrPBb2q8c//yQrXWoVRFd2uSK9eEJCLmCMgqtqch5hHc5
+         jxeHmlDaUD1Th1L/64cEgVsBPHtcBv9TN5oKAKBY=
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         pdx-caf-mail.web.codeaurora.org
 X-Spam-Level: 
@@ -31,53 +31,57 @@ Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
         (Authenticated sender: kvalo@smtp.codeaurora.org)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id C019760128;
-        Tue, 24 Sep 2019 14:46:16 +0000 (UTC)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 59BAC602E1;
+        Tue, 24 Sep 2019 14:47:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1569336378;
-        bh=VwDBP5dU+zG6Qy6lwpYKrZqDwxKMAH0pQAIBblp0SyU=;
+        s=default; t=1569336434;
+        bh=oBdYXAVc/3GBGvYDVgDiAjq2lG5AEM14I5dke4IqQr4=;
         h=Subject:From:In-Reply-To:References:To:Cc:From;
-        b=Ub1Fip3ChS7/RJUqi4FSKhQu60u8WX85RcRSzdRylPIIKaWClDeAj4Lm8HHmH/GVW
-         H2w8l+4+JlJL+TUEZlI+CIQ6CeBGOMOpTlgOzRxq4JtxbTkBwF32LFVnqlYCWlgomm
-         pzyQEuyRFcwRy8uXHpFCNByaZqeKYIgPHfBYbAPc=
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org C019760128
+        b=mKxT9FZCOxaazeNBRL+0eXZA+Ay7dAz+PzHqwcGkkJSAHqA09MAHR/n4o/fZ9n9Nm
+         d9i7pKsxFb0LXaEm3KtvoEIegm4iT8FmvDCOr2Qwiw9FPtsdqa516ZvJp/Fp8wpaIh
+         SsgpPr9Gul0hcqIMXzsFJJjxLu0Sp1zOz42voEJw=
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 59BAC602E1
 Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
 Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH] mt76: mt7615: fix mt7615 firmware path definitions
+Subject: Re: [PATCH v5.4] iwlwifi: fw: don't send GEO_TX_POWER_LIMIT command
+ to FW version 36
 From:   Kalle Valo <kvalo@codeaurora.org>
-In-Reply-To: <9e132c0949139155a4fb3375e4c83218159efce7.1569159209.git.lorenzo@kernel.org>
-References: <9e132c0949139155a4fb3375e4c83218159efce7.1569159209.git.lorenzo@kernel.org>
-To:     Lorenzo Bianconi <lorenzo@kernel.org>
-Cc:     nbd@nbd.name, lorenzo.bianconi@redhat.com,
-        linux-wireless@vger.kernel.org, ryder.lee@mediatek.com
+In-Reply-To: <20190924103057.17147-1-luca@coelho.fi>
+References: <20190924103057.17147-1-luca@coelho.fi>
+To:     Luca Coelho <luca@coelho.fi>
+Cc:     linux-wireless@vger.kernel.org
 User-Agent: pwcli/0.0.0-git (https://github.com/kvalo/pwcli/) Python/2.7.12
-Message-Id: <20190924144618.8AAB160A97@smtp.codeaurora.org>
-Date:   Tue, 24 Sep 2019 14:46:18 +0000 (UTC)
+Message-Id: <20190924144714.6706560E73@smtp.codeaurora.org>
+Date:   Tue, 24 Sep 2019 14:47:14 +0000 (UTC)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Lorenzo Bianconi <lorenzo@kernel.org> wrote:
+Luca Coelho <luca@coelho.fi> wrote:
 
-> mt7615 patch/n9/cr4 firmwares are available in mediatek folder in
-> linux-firmware repository. Because of this mt7615 won't work on regular
-> distributions like Ubuntu. Fix path definitions.  Moreover remove useless
-> firmware name pointers and use definitions directly
+> From: Luca Coelho <luciano.coelho@intel.com>
 > 
-> Fixes: 04b8e65922f6 ("mt76: add mac80211 driver for MT7615 PCIe-based chipsets")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+> The intention was to have the GEO_TX_POWER_LIMIT command in FW version
+> 36 as well, but not all 8000 family got this feature enabled.  The
+> 8000 family is the only one using version 36, so skip this version
+> entirely.  If we try to send this command to the firmwares that do not
+> support it, we get a BAD_COMMAND response from the firmware.
+> 
+> This fixes https://bugzilla.kernel.org/show_bug.cgi?id=204151.
+> 
+> Cc: stable@vger.kernel.org # 4.19+
+> Signed-off-by: Luca Coelho <luciano.coelho@intel.com>
 
 Patch applied to wireless-drivers.git, thanks.
 
-9d4d0d06bbf9 mt76: mt7615: fix mt7615 firmware path definitions
+fddbfeece9c7 iwlwifi: fw: don't send GEO_TX_POWER_LIMIT command to FW version 36
 
 -- 
-https://patchwork.kernel.org/patch/11155889/
+https://patchwork.kernel.org/patch/11158395/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
