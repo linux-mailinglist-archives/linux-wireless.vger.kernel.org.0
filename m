@@ -2,63 +2,114 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A09F0BBFAA
-	for <lists+linux-wireless@lfdr.de>; Tue, 24 Sep 2019 03:22:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 58A80BC04C
+	for <lists+linux-wireless@lfdr.de>; Tue, 24 Sep 2019 04:45:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2392311AbfIXBWK (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 23 Sep 2019 21:22:10 -0400
-Received: from rtits2.realtek.com ([211.75.126.72]:51659 "EHLO
-        rtits2.realtek.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2388676AbfIXBWK (ORCPT
+        id S2394478AbfIXCpl (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 23 Sep 2019 22:45:41 -0400
+Received: from smtp.codeaurora.org ([198.145.29.96]:35856 "EHLO
+        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728992AbfIXCpk (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 23 Sep 2019 21:22:10 -0400
-Authenticated-By: 
-X-SpamFilter-By: BOX Solutions SpamTrap 5.62 with qID x8O1Luxj008608, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (RTITCAS12.realtek.com.tw[172.21.6.16])
-        by rtits2.realtek.com.tw (8.15.2/2.57/5.78) with ESMTPS id x8O1Luxj008608
-        (version=TLSv1.2 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Tue, 24 Sep 2019 09:21:56 +0800
-Received: from RTITMBSVM04.realtek.com.tw ([fe80::e404:880:2ef1:1aa1]) by
- RTITCAS12.realtek.com.tw ([::1]) with mapi id 14.03.0439.000; Tue, 24 Sep
- 2019 09:21:56 +0800
-From:   Pkshih <pkshih@realtek.com>
-To:     Austin Kim <austindh.kim@gmail.com>,
-        "kvalo@codeaurora.org" <kvalo@codeaurora.org>,
-        "davem@davemloft.net" <davem@davemloft.net>
-CC:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: RE: [PATCH] rtlwifi: rtl8723ae: Remove unused 'rtstatus' variable
-Thread-Topic: [PATCH] rtlwifi: rtl8723ae: Remove unused 'rtstatus' variable
-Thread-Index: AQHVbSQ/IoCU1aThcEGdzSMbu8vWrqc4xuaAgAFKO8A=
-Date:   Tue, 24 Sep 2019 01:21:55 +0000
-Message-ID: <5B2DA6FDDF928F4E855344EE0A5C39D1D5C7088F@RTITMBSVM04.realtek.com.tw>
-References: <20190917065044.GA173797@LGEARND20B15>
- <CADLLry5b1RDjXX8Dbc4ebbZOFFaAd0wc3rDCaD-V9RBwrpNyMA@mail.gmail.com>
-In-Reply-To: <CADLLry5b1RDjXX8Dbc4ebbZOFFaAd0wc3rDCaD-V9RBwrpNyMA@mail.gmail.com>
-Accept-Language: en-US, zh-TW
-Content-Language: zh-TW
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [172.21.69.95]
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+        Mon, 23 Sep 2019 22:45:40 -0400
+Received: by smtp.codeaurora.org (Postfix, from userid 1000)
+        id 119D36083C; Tue, 24 Sep 2019 02:45:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
+        s=default; t=1569293140;
+        bh=iTfu/83qFIlqNFUe+RnkDzMhW8LE4h055QqEN0+Skbk=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=OQjHsUf55iWzQv26OdqHCcQ3jMkUrMxrJesgnYgO3Zk845r+bxudi44lPcGRK+0x7
+         gUBCloTe0ZzfI8lMm03XuLQWf19vcCd9bkjXFd8TWahMSkdzmBp9GvK1AxPTuN+JfJ
+         cQizZaH/cGWwcwXYipBoqrVbTiO3e8wUSynYqVTA=
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        pdx-caf-mail.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.7 required=2.0 tests=ALL_TRUSTED,BAYES_00,
+        DKIM_INVALID,DKIM_SIGNED autolearn=no autolearn_force=no version=3.4.0
+Received: from mail.codeaurora.org (localhost.localdomain [127.0.0.1])
+        by smtp.codeaurora.org (Postfix) with ESMTP id 5533D602B8;
+        Tue, 24 Sep 2019 02:45:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
+        s=default; t=1569293139;
+        bh=iTfu/83qFIlqNFUe+RnkDzMhW8LE4h055QqEN0+Skbk=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=FR18QJsPlDJ1f5fpR5tRiTKc+RzV1EeD3Z3/ybJNLlFeeAfypUiNlCJvXTk+NWnpc
+         McfYMkpMfYLaXreTm/PjXDO+Pjqpqp/vqHn+dM3e8c7r81LFTbhfly3AcyjT/Au1C6
+         2maU7xqoa+9VrUBSKQNF5ln81FIxfymrjcQIDRtY=
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8;
+ format=flowed
+Content-Transfer-Encoding: 8bit
+Date:   Tue, 24 Sep 2019 10:45:39 +0800
+From:   Yibo Zhao <yiboz@codeaurora.org>
+To:     =?UTF-8?Q?Toke_H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>
+Cc:     ath10k@lists.infradead.org, linux-wireless@vger.kernel.org,
+        linux-wireless-owner@vger.kernel.org
+Subject: Re: [PATCH 2/4] mac80211: defer txqs removal from rbtree
+In-Reply-To: <87lfuf5ly2.fsf@toke.dk>
+References: <1568639388-27291-1-git-send-email-yiboz@codeaurora.org>
+ <1568639388-27291-2-git-send-email-yiboz@codeaurora.org>
+ <87pnjyiq7o.fsf@toke.dk> <c3ee7ece0986f1c50513cd5fdd2ee03f@codeaurora.org>
+ <87sgothmpy.fsf@toke.dk> <8cdece5c030fd95817fb099021c38613@codeaurora.org>
+ <87tv98fu6l.fsf@toke.dk> <1b4ab006d9b5c88035845aaac193ef48@codeaurora.org>
+ <8736gre3bm.fsf@toke.dk> <198124204167325252fcfcd65e3f2733@codeaurora.org>
+ <87ftkp7uuz.fsf@toke.dk> <4574cce4079f8dab2b2bf223431a6eae@codeaurora.org>
+ <877e617qg2.fsf@toke.dk> <910d9bb5f9016b29fb2aaeb0b89bac38@codeaurora.org>
+ <874l157nrt.fsf@toke.dk> <2935b00bf3e29ad8b2738fe98dc24a76@codeaurora.org>
+ <87lfuf5ly2.fsf@toke.dk>
+Message-ID: <1b3eab1f2481e0102b284f133605c6c4@codeaurora.org>
+X-Sender: yiboz@codeaurora.org
+User-Agent: Roundcube Webmail/1.2.5
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-DQo+IC0tLS0tT3JpZ2luYWwgTWVzc2FnZS0tLS0tDQo+IEZyb206IEF1c3RpbiBLaW0gW21haWx0
-bzphdXN0aW5kaC5raW1AZ21haWwuY29tXQ0KPiBTZW50OiBNb25kYXksIFNlcHRlbWJlciAyMywg
-MjAxOSA5OjM1IFBNDQo+IFRvOiBQa3NoaWg7IGt2YWxvQGNvZGVhdXJvcmEub3JnOyBkYXZlbUBk
-YXZlbWxvZnQubmV0DQo+IENjOiBsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmc7IG5ldGRl
-dkB2Z2VyLmtlcm5lbC5vcmc7IGxpbnV4LWtlcm5lbEB2Z2VyLmtlcm5lbC5vcmcNCj4gU3ViamVj
-dDogUmU6IFtQQVRDSF0gcnRsd2lmaTogcnRsODcyM2FlOiBSZW1vdmUgdW51c2VkICdydHN0YXR1
-cycgdmFyaWFibGUNCj4gDQo+IEhlbGxvLCBNYWludGFpbmVycy4uLg0KPiBXb3VsZCB5b3UgcGxl
-YXNlIHJldmlldyBhYm92ZSBwYXRjaCBpZiB5b3UgYXJlIGF2YWlsYWJsZT8NCj4gDQoNCllvdSBj
-YW4gY2hlY2sgc3RhdHVzIG9mIHlvdXIgcGF0Y2ggaGVyZQ0KaHR0cHM6Ly9wYXRjaHdvcmsua2Vy
-bmVsLm9yZy9wcm9qZWN0L2xpbnV4LXdpcmVsZXNzL2xpc3QvP3Nlcmllcz0xNzQ4NTkNCklmIHlv
-dXIgcGF0Y2ggaXMgZXhpc3RpbmcgaW4gcGF0Y2h3b3JrLCBtYWludGFpbmVyIGRvZXNuJ3QgZm9y
-Z2V0IGl0Lg0KDQpBbm90aGVyIHRoaW5nIGlzIHRvIGF2b2lkIHRvcCBwb3N0aW5nIHRoYXQgbWFr
-ZXMgbWFpbnRhaW5lciBoYXJkIHRvIHJlYWQgbWFpbC4NCg0KLS0tDQpQSw0KDQo=
+On 2019-09-23 18:47, Toke Høiland-Jørgensen wrote:
+> Yibo Zhao <yiboz@codeaurora.org> writes:
+>>> So, instead we need to keep next_txq() the way it is, and just add
+>> 
+>> Right, should keep next_txq() the way it is.
+>> 
+>>> 
+>>> local->schedule_pos[ac] = rb_prev(node);
+>>> 
+>>> whenever we remove a node (both in return_txq() and resort_txq()).
+>> 
+>> Agree, and also we may need to consider case like A is removed and 
+>> soon
+>> be added back just the same as ii),
+>>         B->C->A->D->E
+>> then B is schedule, removed and soon added back,
+>>         C->A->B->D->E
+>> A and B will have a second chance to be scheduled and this may happen 
+>> to
+>> others as well leading to the infinite loop as you have mentioned
+>> previously, so do we need to maintain a schedule_round like we do in
+>> DRR? Like,
+>>      - If the node is in the same round, by pass schedule, go to
+>> rb_next(), either continue loop this round or end this round.
+>>      - Increase the schedule_round at the schedule_start() only when 
+>> the
+>> schedule_pos is NULL.
+> 
+> Hmm, yeah, I guess we could end up with a loop like that as well.
+> Keeping the schedule_round would be a way to fix it, but I'm not sure 
+> we
+> should just skip that station; maybe we should just end the round
+> instead?
+I am not sure. I believe, in some cases, the rest of the nodes which 
+could be most of the nodes in the tree will not have the chance to be 
+scheduled in this round.
+
+> 
+>>>>> We'd still need a check in resort_txq() then, but it would make it
+>>>>> safe
+>>>>> to unschedule in return_txq()...
+>>>> Yes, agree with that.
+>>>> 
+
+
+
+-- 
+Yibo
