@@ -2,76 +2,152 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id CBEC3BC5AE
-	for <lists+linux-wireless@lfdr.de>; Tue, 24 Sep 2019 12:31:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D85AEBC7E7
+	for <lists+linux-wireless@lfdr.de>; Tue, 24 Sep 2019 14:32:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2409467AbfIXKbF (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 24 Sep 2019 06:31:05 -0400
-Received: from paleale.coelho.fi ([176.9.41.70]:44742 "EHLO
-        farmhouse.coelho.fi" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S2387644AbfIXKbF (ORCPT
+        id S2504875AbfIXMck (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 24 Sep 2019 08:32:40 -0400
+Received: from smtp.codeaurora.org ([198.145.29.96]:34486 "EHLO
+        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1731720AbfIXMck (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 24 Sep 2019 06:31:05 -0400
-Received: from [91.156.6.193] (helo=redipa.ger.corp.intel.com)
-        by farmhouse.coelho.fi with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-        (Exim 4.92)
-        (envelope-from <luca@coelho.fi>)
-        id 1iCi63-0005Je-8E; Tue, 24 Sep 2019 13:31:03 +0300
-From:   Luca Coelho <luca@coelho.fi>
-To:     kvalo@codeaurora.org
-Cc:     linux-wireless@vger.kernel.org
-Date:   Tue, 24 Sep 2019 13:30:57 +0300
-Message-Id: <20190924103057.17147-1-luca@coelho.fi>
-X-Mailer: git-send-email 2.23.0
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on farmhouse.coelho.fi
+        Tue, 24 Sep 2019 08:32:40 -0400
+Received: by smtp.codeaurora.org (Postfix, from userid 1000)
+        id 8BA22611D1; Tue, 24 Sep 2019 12:32:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
+        s=default; t=1569328359;
+        bh=Ds7UoBG2rXLNv5U7qrOLRd8QK3yD/meBDUHskysijXE=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=l4Yx8Q5FXc6ezi4t0DuiTiWcp2tW8EkNgsXRjusFTes7aIKZlEpWuE93PGBpAcTJm
+         EiP0FHdX5f70M9OJa77ojmJ9WMEK6SN5iI+sOWDG0is55lvsv1Cfg6tmtHZFaKygzP
+         xn2L642D9YP1rLLe+amRsm/quxu8VDgguuTEmZ90=
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        pdx-caf-mail.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-2.9 required=5.0 tests=ALL_TRUSTED,BAYES_00,
-        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.2
-Subject: [PATCH v5.4] iwlwifi: fw: don't send GEO_TX_POWER_LIMIT command to FW version 36
+X-Spam-Status: No, score=-2.7 required=2.0 tests=ALL_TRUSTED,BAYES_00,
+        DKIM_INVALID,DKIM_SIGNED autolearn=no autolearn_force=no version=3.4.0
+Received: from mail.codeaurora.org (localhost.localdomain [127.0.0.1])
+        by smtp.codeaurora.org (Postfix) with ESMTP id 8EA1360A97;
+        Tue, 24 Sep 2019 12:32:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
+        s=default; t=1569328358;
+        bh=Ds7UoBG2rXLNv5U7qrOLRd8QK3yD/meBDUHskysijXE=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=E9TEKkWaTOtc8Ip2/wIBMt34VIXuwbOAsz5BpAmKcYI3etv1BEEXMTBux5ARnlOAX
+         jK/BGQVFjssgjgtxphVDlRUa76ZP1LGLXDFKbEk/3LqI7BZ95aZVMiwAHOw9u7rrWA
+         viBAHiaU8ONJU3XrtOiH8Mp8imijnn2i2nZVbM3I=
+MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII;
+ format=flowed
+Content-Transfer-Encoding: 7bit
+Date:   Tue, 24 Sep 2019 20:32:38 +0800
+From:   Wen Gong <wgong@codeaurora.org>
+To:     Kalle Valo <kvalo@codeaurora.org>
+Cc:     ath10k@lists.infradead.org, linux-wireless@vger.kernel.org
+Subject: Re: [PATCH v5 0/8] ath10k: improve throughout of tcp/udp TX/RX of
+ sdio
+In-Reply-To: <87sgon8inp.fsf@codeaurora.org>
+References: <1567679893-14029-1-git-send-email-wgong@codeaurora.org>
+ <87sgon8inp.fsf@codeaurora.org>
+Message-ID: <11062c4e1659ac759cb73af7d46a6db2@codeaurora.org>
+X-Sender: wgong@codeaurora.org
+User-Agent: Roundcube Webmail/1.2.5
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Luca Coelho <luciano.coelho@intel.com>
+On 2019-09-23 17:29, Kalle Valo wrote:
+> Wen Gong <wgong@codeaurora.org> writes:
+> 
+>> The bottleneck of throughout on sdio chip is the bus bandwidth, to the
+>> patches are all to increase the use ratio of sdio bus.
+>> 
+>>                       udp-rx    udp-tx    tcp-rx    tcp-tx
+>> without patches(Mbps)  320        180       170       151
+>> with patches(Mbps)     450        410       400       320
+>> 
+>> These patches only affect sdio bus chip, explanation is mentioned in 
+>> each
+>> patch's commit log.
+> 
+> Below is my summary of the patchset. I recommend splitting these into
+> smaller sets, makes it a lot easier to review and apply. And please 
+> send
+> only one or two patchsets at a time.
+> 
+> [PATCH v5 1/8] ath10k: adjust skb length in ath10k_sdio_mbox_rx_packet
+> 
+> Applied.
+> 
+> Patchset 1:
+> 
+> [PATCH v5 2/8] ath10k: enable RX bundle receive for sdio
+> [PATCH v5 3/8] ath10k: change max RX bundle size from 8 to 32 for sdio
+> 
+> Reasonal but needs some cleanup.
+[PATCH v5 2/8] I will use sk_buff_head to replace the 
+ath10k_sdio_rx_request, then it will be simple
+[PATCH v5 3/8] FIELD_GET is to >>, not <<, so << still need by my 
+understand
+> 
+> Patchset 2:
+> 
+> [PATCH v5 4/8] ath10k: add workqueue for RX path of sdio
+> 
+> Is really another thread needed? We already have one for SDIO.
 
-The intention was to have the GEO_TX_POWER_LIMIT command in FW version
-36 as well, but not all 8000 family got this feature enabled.  The
-8000 family is the only one using version 36, so skip this version
-entirely.  If we try to send this command to the firmwares that do not
-support it, we get a BAD_COMMAND response from the firmware.
+the SDIO thread is used for async tx, this queue is for RX, and it will 
+improve udp rx
+from 200Mbps to 400Mbps. And it used the workqueue_aux of ar, not new 
+created.
+this patch is better to put to Patchset 1, it helps RX, so it should put 
+together with the
+[PATCH v5 2/8] ath10k: enable RX bundle receive for sdio
 
-This fixes https://bugzilla.kernel.org/show_bug.cgi?id=204151.
+> 
+> [PATCH v5 6/8] ath10k: add htt TX bundle for sdio
+> 
+> And again a new thread so that we would have three threads for SDIO? 
+> I'm
+> not convinced about that.
+The thread is for tx complete indication and the thread only used for tx 
+bundle, if it does not have
+heavy traffic, then it will not bundle, then the thread will not run.
+for bundled tx, after bundled, it has max 32 packets in each bundle, the 
+tx complete for the 32 packets will cost much time, if not give the tx 
+complete task to the thread, then it will much delay the bundle of the 
+next packets, then it will drop throughput.
+> 
+> Patchset 3:
+> 
+> [PATCH v5 7/8] ath10k: enable alt data of TX path for sdio
+> 
+> Again another module parameter?
+the alt_data could be removed
+> 
+> [PATCH v5 8/8] ath10k: enable napi on RX path for sdio
+> 
+> Seems reasonable, but worried about breaking USB.
+it can change to check napi enabled, if not, will use old 
+ieee80211_rx_ni in ath10k_htt_rx_proc_rx_ind_hl
+> 
+> Patchset 4:
+> 
+> [PATCH v5 5/8] ath10k: disable TX complete indication of htt for sdio
+> 
+> Quite hackish and I need numbers how much it really improves throughput
+it will improve throughput,
+for udp tx, it can arrive to 400Mbps, if remove this patch, it will drop 
+to
+130M. it not only remove the tx complete message's bus bandwidth of 
+sdio, and it also
+has a improvement in firmware's tx path's logic, it will change the 
+logic
+of tx simple both in firmware and ath10k and faster the tx circle.
+And the paramter disable_tx_comp can be removed.
+this patch shoud be put in Patchset 2, it help TX, so it is better to 
+put together with the
+[PATCH v5 6/8] ath10k: add htt TX bundle for sdio.
 
-Cc: stable@vger.kernel.org # 4.19+
-Signed-off-by: Luca Coelho <luciano.coelho@intel.com>
----
- drivers/net/wireless/intel/iwlwifi/mvm/fw.c | 8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
-
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/fw.c b/drivers/net/wireless/intel/iwlwifi/mvm/fw.c
-index 014eca6596e2..32a5e4e5461f 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/fw.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/fw.c
-@@ -889,11 +889,13 @@ static bool iwl_mvm_sar_geo_support(struct iwl_mvm *mvm)
- 	 * firmware versions.  Unfortunately, we don't have a TLV API
- 	 * flag to rely on, so rely on the major version which is in
- 	 * the first byte of ucode_ver.  This was implemented
--	 * initially on version 38 and then backported to 36, 29 and
--	 * 17.
-+	 * initially on version 38 and then backported to29 and 17.
-+	 * The intention was to have it in 36 as well, but not all
-+	 * 8000 family got this feature enabled.  The 8000 family is
-+	 * the only one using version 36, so skip this version
-+	 * entirely.
- 	 */
- 	return IWL_UCODE_SERIAL(mvm->fw->ucode_ver) >= 38 ||
--	       IWL_UCODE_SERIAL(mvm->fw->ucode_ver) == 36 ||
- 	       IWL_UCODE_SERIAL(mvm->fw->ucode_ver) == 29 ||
- 	       IWL_UCODE_SERIAL(mvm->fw->ucode_ver) == 17;
- }
--- 
-2.23.0
 
