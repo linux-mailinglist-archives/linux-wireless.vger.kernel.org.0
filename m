@@ -2,70 +2,70 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 8545DBC435
-	for <lists+linux-wireless@lfdr.de>; Tue, 24 Sep 2019 10:44:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9508DBC43F
+	for <lists+linux-wireless@lfdr.de>; Tue, 24 Sep 2019 10:49:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2440670AbfIXIoH (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 24 Sep 2019 04:44:07 -0400
-Received: from us-smtp-2.mimecast.com ([207.211.31.81]:46057 "EHLO
+        id S2440695AbfIXIs7 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 24 Sep 2019 04:48:59 -0400
+Received: from us-smtp-2.mimecast.com ([205.139.110.61]:34013 "EHLO
         us-smtp-delivery-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S2439012AbfIXIoH (ORCPT
+        by vger.kernel.org with ESMTP id S2439012AbfIXIs6 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 24 Sep 2019 04:44:07 -0400
+        Tue, 24 Sep 2019 04:48:58 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1569314645;
+        s=mimecast20190719; t=1569314937;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
          to:to:cc:cc:mime-version:mime-version:content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=3rkN8MH0IxkN2ptEk2A38ufQaZUiB5IkfFSgtoEu5oY=;
-        b=KgkslaluHDQNz9QcOQC28SIr634YgstGHlukhzQ0yEydqDAiL02B9zfk+yhW9L7qfWNMt9
-        Th5v3QZeCCMCz6LapJVHUYT5J4pvwgoo+oKwDg6ZnDVljYq++A+bTsykXaLXg1a7BMwr5/
-        IphJmH0nkOsREMRkVncXQVsjC4Ifqnk=
-Received: from mail-ed1-f70.google.com (mail-ed1-f70.google.com
- [209.85.208.70]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-333-xktv0HqzPpiOYMatIZlV_Q-1; Tue, 24 Sep 2019 04:44:04 -0400
-Received: by mail-ed1-f70.google.com with SMTP id w12so630167eda.6
-        for <linux-wireless@vger.kernel.org>; Tue, 24 Sep 2019 01:44:04 -0700 (PDT)
+        bh=vX1x3OwxVW1gA9DDAeV4qit7OavOIJKGn/Wr1PtPc04=;
+        b=M3j9nU2ffayrZgS6MGKwF3gnHQGnaIrIdUpcafJdh9DTL8rFEzY/9Qr+qRhtG08sEXNebS
+        y484Na24Yc8F7OeF4qLHvhA231Lyyi27LaCXjtuFm681PRwz7moRIcnr3zgvmTePo8xvUP
+        2EXDRA+AxIeQqUXv3C9feUyqz2msE5s=
+Received: from mail-ed1-f71.google.com (mail-ed1-f71.google.com
+ [209.85.208.71]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-88-tGOtcCHCPCyx6nD5Fh5LxA-1; Tue, 24 Sep 2019 04:48:56 -0400
+Received: by mail-ed1-f71.google.com with SMTP id y25so619417edv.20
+        for <linux-wireless@vger.kernel.org>; Tue, 24 Sep 2019 01:48:56 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:in-reply-to:references:date
-         :message-id:mime-version:content-transfer-encoding;
-        bh=0s+wvn51JwcIE6+b/0TfX281k8oD+BZhgHvYh3Sx18c=;
-        b=rA0nN485kTcp4qfD7Nayuf2YAhyrz9Cg8OM7YGrI1DwqaimqK8MbQpAR7BxQP6eOsm
-         eN13cQLPMNV+Ko5mOeKcKVHri+HlPk8hKp5/A3c+zxydIKPP//c14J3YYoJ3D7Jpw77A
-         JWCaeCQTqBRx1MHKgdbw37pVcZYNUnHhGIpQzF459n2fzz/HHgQ1aBWnzP4eyjHi9Wak
-         BZ+zKpToiEQWib931DvMVMVh4KKtCMXFlRjj/7XgF7eO/mm/JTWUFy9hZjuW3mkgx0V2
-         ffiRfBfrq6S4tC11XvU5lBjSY7/F+cql/ni7+cK/2s1CNYSgZwxh1NkRcmxfyLq/jrYg
-         IdVQ==
-X-Gm-Message-State: APjAAAVjexCGPVnDaexaoBEzA0WlaVh4x1fTGS8nlz+YgFZvELfMa234
-        Oa5KAg9296FHV7LWP9Z/6M/RiRx53pprddovtXw9oslUnfEu2PxqcdVmD/4/3V2HPkjVvIfBqSR
-        xba8cXz/ygC0CQJeYk4QZM3NYDLY=
-X-Received: by 2002:a50:8a9d:: with SMTP id j29mr1427602edj.283.1569314643536;
-        Tue, 24 Sep 2019 01:44:03 -0700 (PDT)
-X-Google-Smtp-Source: APXvYqw5GhLsosb8d3+pHn5gjMGcFz9uQMDJluWXWbFjtnzdAbrmy7O7xL/JLo+YgMsFyvkeIJ/M8g==
-X-Received: by 2002:a50:8a9d:: with SMTP id j29mr1427590edj.283.1569314643335;
-        Tue, 24 Sep 2019 01:44:03 -0700 (PDT)
+         :message-id:mime-version;
+        bh=TKN7mJbs5ICiKXTXySTCfkZ4/+HSLF+fQVqMVK7B8kI=;
+        b=RcghwtCyg0TWLnU9uB8eEEME5zVDiXuzEpUV+BTUxOk3VNn3JnZkhzQySXgoxg+HQB
+         yZA/iwTvM2eskzgxLj2wPFHs328TIaHx3w/nvyMqKT0Kmr0KJE/m1Pn6nch5aqIv72uC
+         mj2KTCQjsvLc5L3+FJNUGwlzSYe27sQqVtXNT6s5v/hnC76/yS/rjBLATqMgPKPrcXHg
+         Dq2loglf/ek+bBi/Mu0pywxyLRwx3fIZB9dZXvDFPG8VLNeKmoZb6YXblGYUENWaVuOa
+         tKCsmBygvI1pHrWDtMcV3W8A6ikFlB57H9aJSpADr++y5tdUk4R4raMxTzPd5vwmaNlz
+         0dMQ==
+X-Gm-Message-State: APjAAAUl2RPzz5oEvACWN2/D4R0ZZonzIGfUQ75Gf7kAC+30gOsEFIqY
+        caK+Ws68S8V19BsVIdeoYEFJEXdct5UUqc5SajgZia4vjq4nFKAQVQ4AG89eqnXrG2Rk9CxXha5
+        jkZ2xWIrcwXtnInJ75EdbDahY9Jw=
+X-Received: by 2002:a50:e791:: with SMTP id b17mr1408509edn.11.1569314935207;
+        Tue, 24 Sep 2019 01:48:55 -0700 (PDT)
+X-Google-Smtp-Source: APXvYqxZpr7o9y+z4g1i/DDY9nWdtJYS8D6BJlhn8xZVR+d5IMWf5V+rMVb0EskxpmiqhLjRP4VskA==
+X-Received: by 2002:a50:e791:: with SMTP id b17mr1408500edn.11.1569314935067;
+        Tue, 24 Sep 2019 01:48:55 -0700 (PDT)
 Received: from alrua-x1.borgediget.toke.dk (borgediget.toke.dk. [85.204.121.218])
-        by smtp.gmail.com with ESMTPSA id f36sm238153ede.28.2019.09.24.01.44.01
+        by smtp.gmail.com with ESMTPSA id y29sm242525edd.7.2019.09.24.01.48.54
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 24 Sep 2019 01:44:02 -0700 (PDT)
+        Tue, 24 Sep 2019 01:48:54 -0700 (PDT)
 Received: by alrua-x1.borgediget.toke.dk (Postfix, from userid 1000)
-        id 22FD018063F; Tue, 24 Sep 2019 10:44:01 +0200 (CEST)
+        id E974318063F; Tue, 24 Sep 2019 10:48:53 +0200 (CEST)
 From:   Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>
 To:     Yibo Zhao <yiboz@codeaurora.org>
-Cc:     ath10k@lists.infradead.org, linux-wireless@vger.kernel.org,
+Cc:     linux-wireless@vger.kernel.org, ath10k@lists.infradead.org,
         linux-wireless-owner@vger.kernel.org
-Subject: Re: [PATCH 2/4] mac80211: defer txqs removal from rbtree
-In-Reply-To: <4cb086a2ec62b6bb127d933d2dcfb17c@codeaurora.org>
-References: <1568639388-27291-1-git-send-email-yiboz@codeaurora.org> <1568639388-27291-2-git-send-email-yiboz@codeaurora.org> <87pnjyiq7o.fsf@toke.dk> <c3ee7ece0986f1c50513cd5fdd2ee03f@codeaurora.org> <87sgothmpy.fsf@toke.dk> <8cdece5c030fd95817fb099021c38613@codeaurora.org> <87tv98fu6l.fsf@toke.dk> <1b4ab006d9b5c88035845aaac193ef48@codeaurora.org> <8736gre3bm.fsf@toke.dk> <198124204167325252fcfcd65e3f2733@codeaurora.org> <87ftkp7uuz.fsf@toke.dk> <4574cce4079f8dab2b2bf223431a6eae@codeaurora.org> <877e617qg2.fsf@toke.dk> <910d9bb5f9016b29fb2aaeb0b89bac38@codeaurora.org> <874l157nrt.fsf@toke.dk> <2935b00bf3e29ad8b2738fe98dc24a76@codeaurora.org> <87lfuf5ly2.fsf@toke.dk> <1b3eab1f2481e0102b284f133605c6c4@codeaurora.org> <87r24640kb.fsf@toke.dk> <4cb086a2ec62b6bb127d933d2dcfb17c@codeaurora.org>
+Subject: Re: [PATCH V3 3/4] mac80211: fix low throughput in multi-clients situation
+In-Reply-To: <2aab0bd944ee34751304a5f92b885113@codeaurora.org>
+References: <1569223201-1490-1-git-send-email-yiboz@codeaurora.org> <1569223201-1490-4-git-send-email-yiboz@codeaurora.org> <87impj5lkm.fsf@toke.dk> <2aab0bd944ee34751304a5f92b885113@codeaurora.org>
 X-Clacks-Overhead: GNU Terry Pratchett
-Date:   Tue, 24 Sep 2019 10:44:01 +0200
-Message-ID: <87ftkm3wz2.fsf@toke.dk>
+Date:   Tue, 24 Sep 2019 10:48:53 +0200
+Message-ID: <87d0fq3wqy.fsf@toke.dk>
 MIME-Version: 1.0
-X-MC-Unique: xktv0HqzPpiOYMatIZlV_Q-1
+X-MC-Unique: tGOtcCHCPCyx6nD5Fh5LxA-1
 X-Mimecast-Spam-Score: 0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=WINDOWS-1252
 Content-Transfer-Encoding: quoted-printable
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
@@ -74,35 +74,32 @@ X-Mailing-List: linux-wireless@vger.kernel.org
 
 Yibo Zhao <yiboz@codeaurora.org> writes:
 
-> On 2019-09-24 15:26, Toke H=C3=B8iland-J=C3=B8rgensen wrote:
->>>> Hmm, yeah, I guess we could end up with a loop like that as well.
->>>> Keeping the schedule_round would be a way to fix it, but I'm not sure
->>>> we
->>>> should just skip that station; maybe we should just end the round
->>>> instead?
->>> I am not sure. I believe, in some cases, the rest of the nodes which
->>> could be most of the nodes in the tree will not have the chance to be
->>> scheduled in this round.
->>=20
->> My guess would be that it doesn't really matter, because in most cases
->> each schedule round will only actually end up queueing packets from one
->> or two stations; as the driver will pull multiple packets from that one
->> station which will often fill up the firmware queues (especially once=20
->> we
->> start throttling that with the AQL stuff).
->>=20
->> So I guess we can just skip TXQs that we've already seen this=20
->> scheduling
->> round, and let the v_t compare determine transmit eligibility :)
->
-> I am a little confused. So do you mean it is fine for you to skip the=20
-> TXQs we met in this round before and continue the loop until the end or=
+>> I can see why we need the second part (basically, this happens because=
 =20
-> vt comparison failure?
+>> I
+>> forgot to add a check for "no eligible stations" in may_transmit(),=20
+>> like
+>> the one in next_txq()). And rounding up the division result doesn't
+>> hurt, I guess. But why does it help to change the grace period if we're
+>> doing all the other stuff?
+> In multi-clients case, it is possible a TXQ sometimes gets drained due=20
+> to FW has deep queue and few packets in TXQ at that time. So the TXQ is=
+=20
+> removed from the rbtree after dequeuing. When it is about to added back=
+=20
+> very soon after the removal, the g_vt might have gone a little far away=
+=20
+> from sta vt where sync is needed. With this sync, the station is forced=
+=20
+> to catch up with the g_vt, however, its chance for transmission has been=
+=20
+> reduced. I think 500us is quite a short period in multi-clients case.
 
-Yeah. In most cases it won't make any difference; but it'll make sure we
-visit all eligible TXQs in all cases, so we might as well do that if
-we're tracking the scheduling round anyway.
+That's a good point, actually: Having the grace period be too small will
+allow stations that leave and re-enter the queue to "skip ahead" and use
+more than its share. However, I think it's a separate issue from what
+this patch is about; so how about I just increase the grace period in
+the next version of the base patch?
 
 -Toke
 
