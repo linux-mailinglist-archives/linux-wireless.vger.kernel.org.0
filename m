@@ -2,25 +2,25 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id DF310BC16A
-	for <lists+linux-wireless@lfdr.de>; Tue, 24 Sep 2019 07:30:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 61107BC16F
+	for <lists+linux-wireless@lfdr.de>; Tue, 24 Sep 2019 07:42:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2438541AbfIXFaZ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 24 Sep 2019 01:30:25 -0400
-Received: from smtp.codeaurora.org ([198.145.29.96]:36682 "EHLO
+        id S2392994AbfIXFml (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 24 Sep 2019 01:42:41 -0400
+Received: from smtp.codeaurora.org ([198.145.29.96]:39344 "EHLO
         smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2438519AbfIXFaY (ORCPT
+        with ESMTP id S2388254AbfIXFmk (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 24 Sep 2019 01:30:24 -0400
+        Tue, 24 Sep 2019 01:42:40 -0400
 Received: by smtp.codeaurora.org (Postfix, from userid 1000)
-        id CA98C602F0; Tue, 24 Sep 2019 05:30:23 +0000 (UTC)
+        id D3AEC60A00; Tue, 24 Sep 2019 05:42:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1569303023;
-        bh=SKpoTL5qdqpCZE8jfMpeNULCFOVTf1yiWa2F+YGyiUY=;
+        s=default; t=1569303759;
+        bh=OZumyeEfbvXBxK+pyI7dwFbulpy6LZOgCrgBslqqRWc=;
         h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=i3ZY2OYdN2lGQe+y7MbsWqxJOYxpD0Ec7VitiyHqBIquXU/qK2wNGgUI6nAbehWVB
-         NT80mtpExC9mph25W5QYL5vF+AJoUCoTtraD+lWUtAgkHPWrV9rjMhnlG2gfZsBzbu
-         d+0509hQHGcuv3BAtAcFNk56bfcb9XVsHJDcs4yw=
+        b=keS1nlkildg8HvZsyyH/BNlcMBIB7itjkkGU5JWVpClgNdrEoBfR99CKxjJRS0bj2
+         juu2rZqzIySW/AP07DUD4Ei6o7bO/GIuud3jX13ShCjrrr34x4+AT+1UZGseGWJr3h
+         hlaBKDoVVfnhJCIsnEEILusoMBnwiH+IXZnBTGlg=
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         pdx-caf-mail.web.codeaurora.org
 X-Spam-Level: 
@@ -31,70 +31,70 @@ Received: from x230.qca.qualcomm.com (37-136-106-186.rev.dnainternet.fi [37.136.
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
         (Authenticated sender: kvalo@smtp.codeaurora.org)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 416EE60240;
-        Tue, 24 Sep 2019 05:30:22 +0000 (UTC)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 38FA0602F2;
+        Tue, 24 Sep 2019 05:42:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1569303023;
-        bh=SKpoTL5qdqpCZE8jfMpeNULCFOVTf1yiWa2F+YGyiUY=;
+        s=default; t=1569303759;
+        bh=OZumyeEfbvXBxK+pyI7dwFbulpy6LZOgCrgBslqqRWc=;
         h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=i3ZY2OYdN2lGQe+y7MbsWqxJOYxpD0Ec7VitiyHqBIquXU/qK2wNGgUI6nAbehWVB
-         NT80mtpExC9mph25W5QYL5vF+AJoUCoTtraD+lWUtAgkHPWrV9rjMhnlG2gfZsBzbu
-         d+0509hQHGcuv3BAtAcFNk56bfcb9XVsHJDcs4yw=
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 416EE60240
+        b=keS1nlkildg8HvZsyyH/BNlcMBIB7itjkkGU5JWVpClgNdrEoBfR99CKxjJRS0bj2
+         juu2rZqzIySW/AP07DUD4Ei6o7bO/GIuud3jX13ShCjrrr34x4+AT+1UZGseGWJr3h
+         hlaBKDoVVfnhJCIsnEEILusoMBnwiH+IXZnBTGlg=
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 38FA0602F2
 Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
 Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
 From:   Kalle Valo <kvalo@codeaurora.org>
-To:     Tomislav =?utf-8?Q?Po=C5=BEega?= <pozega.tomislav@gmail.com>
-Cc:     linux-wireless@vger.kernel.org, ath10k@lists.infradead.org
-Subject: Re: [PATCH 5/5] ath10k: pull_svc_rdy code-style fix
-References: <1569268165-1639-1-git-send-email-pozega.tomislav@gmail.com>
-        <1569268165-1639-5-git-send-email-pozega.tomislav@gmail.com>
-Date:   Tue, 24 Sep 2019 08:30:19 +0300
-In-Reply-To: <1569268165-1639-5-git-send-email-pozega.tomislav@gmail.com>
-        ("Tomislav \=\?utf-8\?Q\?Po\=C5\=BEega\=22's\?\= message of "Mon, 23 Sep 2019
- 21:49:25 +0200")
-Message-ID: <87d0fq5kic.fsf@codeaurora.org>
+To:     Wen Gong <wgong@codeaurora.org>
+Cc:     ath10k@lists.infradead.org, linux-wireless@vger.kernel.org
+Subject: Re: [PATCH v3 0/2] add fw coredump for sdio when firmware assert
+References: <1569241055-30816-1-git-send-email-wgong@codeaurora.org>
+Date:   Tue, 24 Sep 2019 08:42:35 +0300
+In-Reply-To: <1569241055-30816-1-git-send-email-wgong@codeaurora.org> (Wen
+        Gong's message of "Mon, 23 Sep 2019 20:17:33 +0800")
+Message-ID: <878sqe5jxw.fsf@codeaurora.org>
 User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Tomislav Po=C5=BEega <pozega.tomislav@gmail.com> writes:
+Wen Gong <wgong@codeaurora.org> writes:
 
-> Drop unneeded lines by moving skb data in both main and 10x WMI
-> pull service ready event operations.
->
-> Signed-off-by: Tomislav Po=C5=BEega <pozega.tomislav@gmail.com>
-> ---
->  drivers/net/wireless/ath/ath10k/wmi.c |    6 ++----
->  1 files changed, 2 insertions(+), 4 deletions(-)
->
-> diff --git a/drivers/net/wireless/ath/ath10k/wmi.c b/drivers/net/wireless=
-/ath/ath10k/wmi.c
-> index 59d2d2a..8ab178c 100644
-> --- a/drivers/net/wireless/ath/ath10k/wmi.c
-> +++ b/drivers/net/wireless/ath/ath10k/wmi.c
-> @@ -5345,13 +5345,12 @@ static int ath10k_wmi_alloc_host_mem(struct ath10=
-k *ar, u32 req_id,
->  ath10k_wmi_main_op_pull_svc_rdy_ev(struct ath10k *ar, struct sk_buff *sk=
-b,
->  				   struct wmi_svc_rdy_ev_arg *arg)
->  {
-> -	struct wmi_service_ready_event *ev;
-> +	struct wmi_service_ready_event *ev =3D (void *)skb->data;
->  	size_t i, n;
->=20=20
->  	if (skb->len < sizeof(*ev))
->  		return -EPROTO;
->=20=20
-> -	ev =3D (void *)skb->data;
+> add fw coredump for sdio when firmware assert
 
-Actually I prefer the original style, so that we first check the data in
-skb is valid and only then assign the data to ev.
+Please add the changelog here.
 
---=20
+> Wen Gong (2):
+>   ath10k: add bus type for each layout of coredump
+> v2: change code style
+> v3: split bus type to another patch, 
+> remove ATH10K_BUS_ANY, 
+> add bus type for each layout
+>   ath10k: add fw coredump for sdio when firmware assert
+> v2: change code style
+> v3: add commit log for fastdump, 
+> add commit log for ath10k_sdio_hif_diag_read,
+> change ath10k_err to dbg log
+
+Then you mix the changelog with patch titles like that it makes it hard
+to read the summary. So instead add the changelog above, before the
+summary, and leave the summary intact.
+
+Also this didn't apply:
+
+Applying: ath10k: add bus type for each layout of coredump
+Applying: ath10k: add fw coredump for sdio when firmware assert
+fatal: sha1 information is lacking or useless (drivers/net/wireless/ath/ath10k/coredump.c).
+error: could not build fake ancestor
+Patch failed at 0002 ath10k: add fw coredump for sdio when firmware assert
+
+Then you submit the patch use ath.git master branch as the baseline and
+do NOT have any other patches applied. Otherwise the sha1 information is
+wrong and it's a lot more work for me to fix the conflicts.
+
+So please rebase and resend.
+
+-- 
 Kalle Valo
