@@ -2,334 +2,129 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 42874BD152
-	for <lists+linux-wireless@lfdr.de>; Tue, 24 Sep 2019 20:13:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 47DD5BD288
+	for <lists+linux-wireless@lfdr.de>; Tue, 24 Sep 2019 21:21:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2632862AbfIXSNQ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 24 Sep 2019 14:13:16 -0400
-Received: from mx2.suse.de ([195.135.220.15]:44314 "EHLO mx1.suse.de"
+        id S2407498AbfIXTVo (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 24 Sep 2019 15:21:44 -0400
+Received: from mtax.cdmx.gob.mx ([187.141.35.197]:11412 "EHLO mtaw.cdmx.gob.mx"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S2409758AbfIXSNP (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 24 Sep 2019 14:13:15 -0400
-X-Virus-Scanned: by amavisd-new at test-mx.suse.de
-Received: from relay2.suse.de (unknown [195.135.220.254])
-        by mx1.suse.de (Postfix) with ESMTP id 71267ABBD;
-        Tue, 24 Sep 2019 18:13:11 +0000 (UTC)
-From:   Nicolas Saenz Julienne <nsaenzjulienne@suse.de>
-To:     robh+dt@kernel.org, devicetree@vger.kernel.org,
-        frowand.list@gmail.com, linux-arm-kernel@lists.infradead.org,
-        linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-arm-msm@vger.kernel.org, dmaengine@vger.kernel.org,
-        etnaviv@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
-        xen-devel@lists.xenproject.org, linux-tegra@vger.kernel.org,
-        linux-media@vger.kernel.org, linux-pci@vger.kernel.org,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        =?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <zajec5@gmail.com>,
-        Sinan Kaya <okaya@kernel.org>, Andy Gross <agross@kernel.org>,
-        Lucas Stach <l.stach@pengutronix.de>,
-        Russell King <linux+etnaviv@armlinux.org.uk>,
-        Christian Gmeiner <christian.gmeiner@gmail.com>,
-        Maxime Ripard <mripard@kernel.org>,
-        Chen-Yu Tsai <wens@csie.org>,
-        Oleksandr Andrushchenko <oleksandr_andrushchenko@epam.com>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        Stanimir Varbanov <stanimir.varbanov@linaro.org>,
-        Kyungmin Park <kyungmin.park@samsung.com>,
-        Kamil Debski <kamil@wypas.org>,
-        Jeongtae Park <jtp.park@samsung.com>,
-        Andrzej Hajda <a.hajda@samsung.com>,
-        Boris Ostrovsky <boris.ostrovsky@oracle.com>,
-        Juergen Gross <jgross@suse.com>,
-        Stefano Stabellini <sstabellini@kernel.org>
-Cc:     mbrugger@suse.com, robin.murphy@arm.com, f.fainelli@gmail.com,
-        james.quinlan@broadcom.com, wahrenst@gmx.net,
-        Nicolas Saenz Julienne <nsaenzjulienne@suse.de>,
-        Vinod Koul <vkoul@kernel.org>,
-        Dan Williams <dan.j.williams@intel.com>,
-        David Airlie <airlied@linux.ie>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        Rob Clark <robdclark@gmail.com>, Sean Paul <sean@poorly.run>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        freedreno@lists.freedesktop.org
-Subject: [PATCH 11/11] of: simplify of_dma_config()'s arguments
-Date:   Tue, 24 Sep 2019 20:12:42 +0200
-Message-Id: <20190924181244.7159-12-nsaenzjulienne@suse.de>
-X-Mailer: git-send-email 2.23.0
-In-Reply-To: <20190924181244.7159-1-nsaenzjulienne@suse.de>
-References: <20190924181244.7159-1-nsaenzjulienne@suse.de>
+        id S2407458AbfIXTVn (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 24 Sep 2019 15:21:43 -0400
+X-NAI-Header: Modified by McAfee Email Gateway (4500)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=cdmx.gob.mx; s=72359050-3965-11E6-920A-0192F7A2F08E;
+        t=1569352851; h=X-Virus-Scanned:Content-Type:
+         MIME-Version:Content-Transfer-Encoding:Content-Description:
+         Subject:To:From:Date:Reply-To:Message-Id:X-AnalysisOut:
+         X-AnalysisOut:X-AnalysisOut:X-AnalysisOut:
+         X-AnalysisOut:X-AnalysisOut:X-AnalysisOut:
+         X-SAAS-TrackingID:X-NAIMIME-Disclaimer:X-NAIMIME-Modified:
+         X-NAI-Spam-Flag:X-NAI-Spam-Threshold:X-NAI-Spam-Score:
+         X-NAI-Spam-Rules:X-NAI-Spam-Version; bh=1
+        +99+kFrDLgaQ8R5/6EBfZ45Xi1kJbcxywFSs4cH3f
+        g=; b=S7g4niAUvyB4mCkFsngaRwz8gfV0O10HLw9234owSb8w
+        mSUyLXHTDNQt6Mkej/EbDI6/axMrsbZQi4WKxXNnc/kQHu7E8Y
+        dRVxmiu9ZD8cCVocckUe1cPyZsfkElEnJ0EXCWv/NVP988Ht48
+        AVRCER0f0+dblJiTws3oGMIjf6U=
+Received: from correo.seciti.cdmx.gob.mx (gdf-correo.cdmx.gob.mx [10.250.102.17]) by mtaw.cdmx.gob.mx with smtp
+         id 11a5_f137_305d2b55_6b53_484c_9eb9_43082c2f73ee;
+        Tue, 24 Sep 2019 14:20:50 -0500
+Received: from localhost (localhost [127.0.0.1])
+        by gdf-correo.df.gob.mx (Postfix) with ESMTP id 99336330A;
+        Tue, 24 Sep 2019 14:20:39 -0500 (CDT)
+Received: from correo.seciti.cdmx.gob.mx ([127.0.0.1])
+        by localhost (gdf-correo.df.gob.mx [127.0.0.1]) (amavisd-new, port 10032)
+        with ESMTP id C8UVJu9McSBb; Tue, 24 Sep 2019 14:20:39 -0500 (CDT)
+Received: from localhost (localhost [127.0.0.1])
+        by gdf-correo.df.gob.mx (Postfix) with ESMTP id 345103443;
+        Tue, 24 Sep 2019 14:20:35 -0500 (CDT)
+X-Virus-Scanned: amavisd-new at gdf-correo.df.gob.mx
+Received: from correo.seciti.cdmx.gob.mx ([127.0.0.1])
+        by localhost (gdf-correo.df.gob.mx [127.0.0.1]) (amavisd-new, port 10026)
+        with ESMTP id BR_pLpc5n9RB; Tue, 24 Sep 2019 14:20:34 -0500 (CDT)
+Received: from [10.152.195.110] (unknown [107.150.30.178])
+        by gdf-correo.df.gob.mx (Postfix) with ESMTPSA id C3E7C3313;
+        Tue, 24 Sep 2019 14:19:41 -0500 (CDT)
+Content-Type: text/plain;
+  charset="utf-8"
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: base64
+Content-Description: Mail message body
+Subject: Spende von 5 Millionen Euro
+To:     Recipients <mramirezg@mexicocity.gob.mx>
+From:   "Shane Missler" <mramirezg@mexicocity.gob.mx>
+Date:   Tue, 24 Sep 2019 21:19:43 +0200
+Reply-To: shanemissler.spende1@gmail.com
+Message-Id: <20190924191941.C3E7C3313@gdf-correo.df.gob.mx>
+X-AnalysisOut: [v=2.2 cv=OqU/823t c=1 sm=1 tr=0 p=NAessOE28N0A:10 p=09-KjH]
+X-AnalysisOut: [S_CW8A:10 p=bEr4i4eggGkA:10 p=-7VjjQDN59lQbO9EsjZ6:22 p=Ly]
+X-AnalysisOut: [qu6MUUigPyaOuRX7ce:22 a=KsSCQl7LcZej77FuluUcQw==:117 a=QVl]
+X-AnalysisOut: [0Y2YvxGgORTTHWQRBRg==:17 a=IkcTkHD0fZMA:10 a=x7bEGLp0ZPQA:]
+X-AnalysisOut: [10 a=J70Eh1EUuV4A:10 a=pGLkceISAAAA:8 a=wN7rT8hNlMSaUXRpxS]
+X-AnalysisOut: [gA:9 a=K7tsimcRO30Sg2YH:21 a=QOCYt1FwmxBrUrRv:21 a=QEXdDO2]
+X-AnalysisOut: [ut3YA:10]
+X-SAAS-TrackingID: 39c6a8d5.0.95433644.00-2323.160669449.s12p02m011.mxlogic.net
+X-NAIMIME-Disclaimer: 1
+X-NAIMIME-Modified: 1
+X-NAI-Spam-Flag: NO
+X-NAI-Spam-Threshold: 3
+X-NAI-Spam-Score: -5000
+X-NAI-Spam-Rules: 1 Rules triggered
+        WHITELISTED=-5000
+X-NAI-Spam-Version: 2.3.0.9418 : core <6641> : inlines <7145> : streams
+ <1833713> : uri <2910208>
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-The widespread use case for of_dma_config() highlights a redundant
-argument. Most callers provide both 'dev' and 'dev->of_node'. The rest
-of users use it to copy some device's  DMA configuration into a device
-not represented in DT.
-
-In order to simplify the common use case, and make code a little more
-explicit, create of_dma_config_copy() which will take another device's
-DT node as an argument and simplify of_dma_config() by removing one of
-it's redundant arguments.
-
-Signed-off-by: Nicolas Saenz Julienne <nsaenzjulienne@suse.de>
-
----
-
- drivers/base/platform.c                      |  2 +-
- drivers/bcma/main.c                          |  2 +-
- drivers/dma/qcom/hidma_mgmt.c                |  2 +-
- drivers/gpu/drm/etnaviv/etnaviv_drv.c        |  2 +-
- drivers/gpu/drm/msm/adreno/a6xx_gmu.c        |  2 +-
- drivers/gpu/drm/sun4i/sun4i_backend.c        |  2 +-
- drivers/gpu/drm/xen/xen_drm_front.c          |  2 +-
- drivers/gpu/host1x/bus.c                     |  2 +-
- drivers/media/platform/qcom/venus/firmware.c |  2 +-
- drivers/media/platform/s5p-mfc/s5p_mfc.c     |  2 +-
- drivers/of/device.c                          | 30 ++++++++++++++++++--
- drivers/xen/gntdev.c                         |  2 +-
- include/linux/of_device.h                    | 12 ++++++--
- 13 files changed, 48 insertions(+), 16 deletions(-)
-
-diff --git a/drivers/base/platform.c b/drivers/base/platform.c
-index b6c6c7d97d5b..4e252028aee9 100644
---- a/drivers/base/platform.c
-+++ b/drivers/base/platform.c
-@@ -1221,7 +1221,7 @@ int platform_dma_configure(struct device *dev)
- 	int ret = 0;
- 
- 	if (dev->of_node) {
--		ret = of_dma_configure(dev, dev->of_node, true);
-+		ret = of_dma_configure(dev, true);
- 	} else if (has_acpi_companion(dev)) {
- 		attr = acpi_get_dma_attr(to_acpi_device_node(dev->fwnode));
- 		ret = acpi_dma_configure(dev, attr);
-diff --git a/drivers/bcma/main.c b/drivers/bcma/main.c
-index 6535614a7dc1..4c7e8b35525c 100644
---- a/drivers/bcma/main.c
-+++ b/drivers/bcma/main.c
-@@ -207,7 +207,7 @@ static void bcma_of_fill_device(struct device *parent,
- 
- 	core->irq = bcma_of_get_irq(parent, core, 0);
- 
--	of_dma_configure(&core->dev, node, false);
-+	of_dma_configure(&core->dev, false);
- }
- 
- unsigned int bcma_core_irq(struct bcma_device *core, int num)
-diff --git a/drivers/dma/qcom/hidma_mgmt.c b/drivers/dma/qcom/hidma_mgmt.c
-index 806ca02c52d7..4ea901537902 100644
---- a/drivers/dma/qcom/hidma_mgmt.c
-+++ b/drivers/dma/qcom/hidma_mgmt.c
-@@ -388,7 +388,7 @@ static int __init hidma_mgmt_of_populate_channels(struct device_node *np)
- 			goto out;
- 		}
- 		new_pdev->dev.of_node = child;
--		of_dma_configure(&new_pdev->dev, child, true);
-+		of_dma_configure(&new_pdev->dev, true);
- 		/*
- 		 * It is assumed that calling of_msi_configure is safe on
- 		 * platforms with or without MSI support.
-diff --git a/drivers/gpu/drm/etnaviv/etnaviv_drv.c b/drivers/gpu/drm/etnaviv/etnaviv_drv.c
-index 1f9c01be40d7..1375f41593ef 100644
---- a/drivers/gpu/drm/etnaviv/etnaviv_drv.c
-+++ b/drivers/gpu/drm/etnaviv/etnaviv_drv.c
-@@ -706,7 +706,7 @@ static int __init etnaviv_init(void)
- 		 * device as the GPU we found. This assumes that all Vivante
- 		 * GPUs in the system share the same DMA constraints.
- 		 */
--		of_dma_configure(&pdev->dev, np, true);
-+		of_dma_configure_copy(&pdev->dev, np, true);
- 
- 		ret = platform_device_add(pdev);
- 		if (ret) {
-diff --git a/drivers/gpu/drm/msm/adreno/a6xx_gmu.c b/drivers/gpu/drm/msm/adreno/a6xx_gmu.c
-index 85f14feafdec..825fcdc72bd9 100644
---- a/drivers/gpu/drm/msm/adreno/a6xx_gmu.c
-+++ b/drivers/gpu/drm/msm/adreno/a6xx_gmu.c
-@@ -1268,7 +1268,7 @@ int a6xx_gmu_init(struct a6xx_gpu *a6xx_gpu, struct device_node *node)
- 
- 	gmu->dev = &pdev->dev;
- 
--	of_dma_configure(gmu->dev, node, true);
-+	of_dma_configure(gmu->dev, true);
- 
- 	/* Fow now, don't do anything fancy until we get our feet under us */
- 	gmu->idle_level = GMU_IDLE_STATE_ACTIVE;
-diff --git a/drivers/gpu/drm/sun4i/sun4i_backend.c b/drivers/gpu/drm/sun4i/sun4i_backend.c
-index 4e29f4fe4a05..97dd5d31e38d 100644
---- a/drivers/gpu/drm/sun4i/sun4i_backend.c
-+++ b/drivers/gpu/drm/sun4i/sun4i_backend.c
-@@ -802,7 +802,7 @@ static int sun4i_backend_bind(struct device *dev, struct device *master,
- 		 * for us, and DRM doesn't do per-device allocation either, so
- 		 * we would need to fix DRM first...
- 		 */
--		ret = of_dma_configure(drm->dev, dev->of_node, true);
-+		ret = of_dma_configure_copy(drm->dev, dev->of_node, true);
- 		if (ret)
- 			return ret;
- 	} else {
-diff --git a/drivers/gpu/drm/xen/xen_drm_front.c b/drivers/gpu/drm/xen/xen_drm_front.c
-index ba1828acd8c9..fa0bfd6517fa 100644
---- a/drivers/gpu/drm/xen/xen_drm_front.c
-+++ b/drivers/gpu/drm/xen/xen_drm_front.c
-@@ -726,7 +726,7 @@ static int xen_drv_probe(struct xenbus_device *xb_dev,
- 	 * node to set default DMA ops.
- 	 */
- 	dev->coherent_dma_mask = DMA_BIT_MASK(32);
--	ret = of_dma_configure(dev, NULL, true);
-+	ret = of_dma_configure(dev, true);
- 	if (ret < 0) {
- 		DRM_ERROR("Cannot setup DMA ops, ret %d", ret);
- 		return ret;
-diff --git a/drivers/gpu/host1x/bus.c b/drivers/gpu/host1x/bus.c
-index 2fdc04383a60..4eb531906e4a 100644
---- a/drivers/gpu/host1x/bus.c
-+++ b/drivers/gpu/host1x/bus.c
-@@ -337,7 +337,7 @@ static int host1x_device_uevent(struct device *dev,
- 
- static int host1x_dma_configure(struct device *dev)
- {
--	return of_dma_configure(dev, dev->of_node, true);
-+	return of_dma_configure(dev, true);
- }
- 
- static const struct dev_pm_ops host1x_device_pm_ops = {
-diff --git a/drivers/media/platform/qcom/venus/firmware.c b/drivers/media/platform/qcom/venus/firmware.c
-index d3d1748a7ef6..82f433218d99 100644
---- a/drivers/media/platform/qcom/venus/firmware.c
-+++ b/drivers/media/platform/qcom/venus/firmware.c
-@@ -238,7 +238,7 @@ int venus_firmware_init(struct venus_core *core)
- 
- 	pdev->dev.of_node = np;
- 
--	ret = of_dma_configure(&pdev->dev, np, true);
-+	ret = of_dma_configure(&pdev->dev, true);
- 	if (ret) {
- 		dev_err(core->dev, "dma configure fail\n");
- 		goto err_unregister;
-diff --git a/drivers/media/platform/s5p-mfc/s5p_mfc.c b/drivers/media/platform/s5p-mfc/s5p_mfc.c
-index b776f83e395e..ad33e7a655aa 100644
---- a/drivers/media/platform/s5p-mfc/s5p_mfc.c
-+++ b/drivers/media/platform/s5p-mfc/s5p_mfc.c
-@@ -1095,7 +1095,7 @@ static struct device *s5p_mfc_alloc_memdev(struct device *dev,
- 	 * to be treated as valid DMA masters we need a bit of a hack to force
- 	 * them to inherit the MFC node's DMA configuration.
- 	 */
--	of_dma_configure(child, dev->of_node, true);
-+	of_dma_configure_copy(child, dev->of_node, true);
- 
- 	if (device_add(child) == 0) {
- 		ret = of_reserved_mem_device_init_by_idx(child, dev->of_node,
-diff --git a/drivers/of/device.c b/drivers/of/device.c
-index 1d0b1127d05e..66726a2499d3 100644
---- a/drivers/of/device.c
-+++ b/drivers/of/device.c
-@@ -75,19 +75,18 @@ int of_device_add(struct platform_device *ofdev)
- /**
-  * of_dma_configure - Setup DMA configuration
-  * @dev:	Device to apply DMA configuration
-- * @np:		Pointer to OF node having DMA configuration
-  * @force_dma:  Whether device is to be set up by of_dma_configure() even if
-  *		DMA capability is not explicitly described by firmware.
-  *
-  * Try to get devices's DMA configuration from DT and update it
-  * accordingly.
-  */
--int of_dma_configure(struct device *dev, struct device_node *np, bool force_dma)
-+int of_dma_configure(struct device *dev, bool force_dma)
- {
- 	struct device_node *dma_parent;
- 	int ret;
- 
--	dma_parent = __of_get_dma_parent(np);
-+	dma_parent = __of_get_dma_parent(dev->of_node);
- 	ret = of_dma_configure_parent(dev, dma_parent, force_dma);
- 	of_node_put(dma_parent);
- 
-@@ -95,6 +94,31 @@ int of_dma_configure(struct device *dev, struct device_node *np, bool force_dma)
- }
- EXPORT_SYMBOL_GPL(of_dma_configure);
- 
-+/**
-+ * of_dma_configure_copy - Setup DMA configuration based on another device's DT
-+ *			   node
-+ * @dev:	Device to apply DMA configuration
-+ * @np:		Device node to copy the configuration from
-+ * @force_dma:  Whether device is to be set up by of_dma_configure() even if
-+ *		DMA capability is not explicitly described by firmware.
-+ *
-+ * Try to get devices's DMA configuration from DT and update it
-+ * accordingly.
-+ */
-+int of_dma_configure_copy(struct device *dev, struct device_node *np,
-+			  bool force_dma)
-+{
-+	struct device_node *dma_parent;
-+	int ret;
-+
-+	dma_parent = __of_get_dma_parent(np);
-+	ret = of_dma_configure_parent(dev, dma_parent, force_dma);
-+	of_node_put(dma_parent);
-+
-+	return ret;
-+}
-+EXPORT_SYMBOL_GPL(of_dma_configure_copy);
-+
- /**
-  * of_dma_configure_parent - Setup DMA configuration based on a parent bus'
-  *			     DT node
-diff --git a/drivers/xen/gntdev.c b/drivers/xen/gntdev.c
-index a446a7221e13..115e39f9f67a 100644
---- a/drivers/xen/gntdev.c
-+++ b/drivers/xen/gntdev.c
-@@ -632,7 +632,7 @@ static int gntdev_open(struct inode *inode, struct file *flip)
- 	 * Fix this by calling of_dma_configure() with a NULL node to set
- 	 * default DMA ops.
- 	 */
--	of_dma_configure(priv->dma_dev, NULL, true);
-+	of_dma_configure(priv->dma_dev, true);
- #endif
- 	pr_debug("priv %p\n", priv);
- 
-diff --git a/include/linux/of_device.h b/include/linux/of_device.h
-index 8f319b8c9deb..b05a86fd35a4 100644
---- a/include/linux/of_device.h
-+++ b/include/linux/of_device.h
-@@ -55,7 +55,9 @@ static inline struct device_node *of_cpu_device_node_get(int cpu)
- 	return of_node_get(cpu_dev->of_node);
- }
- 
--int of_dma_configure(struct device *dev, struct devce_node *np, bool force_dma);
-+int of_dma_configure(struct device *dev, bool force_dma);
-+int of_dma_configure_copy(struct device *dev, struct device_node *np,
-+			  bool force_dma);
- int of_dma_configure_parent(struct device *dev, struct device_node *parent,
- 			    bool force_dma);
- #else /* CONFIG_OF */
-@@ -107,12 +109,18 @@ static inline struct device_node *of_cpu_device_node_get(int cpu)
- }
- 
- static inline int of_dma_configure(struct device *dev,
--				   struct device_node *np,
- 				   bool force_dma)
- {
- 	return 0;
- }
- 
-+static inline int of_dma_configure_copy(struct device *dev,
-+					struct device_node *np,
-+					bool force_dma)
-+{
-+	return 0;
-+}
-+
- static inline int of_dma_configure_parent(struct device *dev,
- 					  struct device_node *parent,
- 					  bool force_dma)
--- 
-2.23.0
-
+RGllcyBpc3QgZWluZSBwZXJzw7ZubGljaGUgTWFpbCwgZGllIGljaCBhbiBTaWUgYWRyZXNzaWVy
+ZS4gSWNoIGJpbiBTSEFORSBNSVNTTEVSIGF1cyBGbG9yaWRhLCBVU0EuIFdpZSBTaWUgYmVyZWl0
+cyB3aXNzZW4sIGhhYmUgaWNoIGVpbmVuIExvdHRvLUphY2twb3QgaW4gSMO2aGUgdm9uIDQ1MSBN
+aW8uIFVTRCAoMzMwIE1pby4gR0JQKSBnZXdvbm5lbiB1bmQgZGFzIEdlbGQgaGF0IG1laW4gTGVi
+ZW4gdW5kIG1laW4gRmFtaWxpZW5sZWJlbiB2ZXLDpG5kZXJ0LCBhYmVyIGVzIHdpcmQgbWVpbiBI
+ZXJ6IG5pY2h0IHZlcsOkbmRlcm4sIHdpZSBpY2ggYW4gZGVtIFRhZyBzYWd0ZSwgYW4gZGVtIGlj
+aCBtZWluIEdlbGQgaGFiZSwgZGFzIGljaCB2ZXJ3ZW5kZW4gd2VyZGUgRGllc2VzIEdlbGQgZsO8
+ciBkaWUgSGlsZmUgZGVyIE1lbnNjaGhlaXQuIEljaCBoYWJlIGJlc2NobG9zc2VuLCBJaG5lbiB1
+bmQgSWhyZXIgR2VtZWluZGUgZWluZW4gQmV0cmFnIHZvbiA1IE1pbGxpb25lbiBFdXJvIHp1IHNw
+ZW5kZW4sIHVtIGRpZXNlIFNwZW5kZSBhbnp1Zm9yZGVybi4gRS1NYWlsOiAoc2hhbmVtaXNzbGVy
+MEBnbWFpbC5jb20pCgoKCgpDZWNpIGVzdCB1biBjb3VycmllciBwZXJzb25uZWwgcXVlIGplIHZv
+dXMgYWRyZXNzZS4gSmUgc3VpcyBTSEFORSBNSVNTTEVSLCBkZSBGbG9yaWRlLCDDiXRhdHMtVW5p
+cy4gQ29tbWUgdm91cyBsZSBzYXZleiBkw6lqw6AsIGonYWkgZ2FnbsOpIDQ1MSBtaWxsaW9ucyBk
+ZSBkb2xsYXJzIChMb3R0byBKYWNrcG90KSBldCBsJ2FyZ2VudCBhIGNoYW5nw6kgbWEgdmllIGV0
+IGNlbGxlIGRlIG1hIGZhbWlsbGUsIG1haXMgY2VsYSBuZSBjaGFuZ2VyYSBwYXMgbW9uIGPFk3Vy
+LCBjb21tZSBqZSBsJ2FpIGRpdCBsZSBqb3VyIG/DuSBqJ2FpIG1vbiBhcmdlbnQsIGondXRpbGlz
+ZXJhaSBjZXQgYXJnZW50IHBvdXIgbCdhaWRlIGRlIGwnaHVtYW5pdMOpLkonYWkgZMOpY2lkw6kg
+ZGUgdm91cyBkb25uZXIgbGEgc29tbWUgZGUgNSBtaWxsaW9ucyBkJ2V1cm9zIMOgIHZvdXMgZXQg
+w6Agdm90cmUgY29tbXVuYXV0w6ksIHBvdXIgcsOpY2xhbWVyIGNlIGRvbiwgZW1haWwtIChzaGFu
+ZW1pc3NsZXIwQGdtYWlsLmNvbSkKCgotLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0KCgpMYSBpbmZvcm1hY2lvbiBjb250ZW5pZGEgZW4gZXN0ZSBjb3Jy
+ZW8sIGFzaSBjb21vIGxhIGNvbnRlbmlkYSBlbiBsb3MgZG9jdW1lbnRvcyBhbmV4b3MsIHB1ZWRl
+IGNvbnRlbmVyIGRhdG9zIHBlcnNvbmFsZXMsIHBvciBsbyBxdWUgc3UgZGlmdXNpb24gZXMgcmVz
+cG9uc2FiaWxpZGFkIGRlIHF1aWVuIGxvcyB0cmFuc21pdGUgeSBxdWllbiBsb3MgcmVjaWJlLCBl
+biB0w6lybWlub3MgZGUgbG8gZGlzcHVlc3RvIHBvciBsYXMgZnJhY2Npb25lcyBJSSB5IFZJSSBk
+ZWwgYXJ0aWN1bG8gNCwgdWx0aW1vIHBhcnJhZm8gZGVsIGFydGljdWxvIDgsIGFydGljdWxvIDM2
+IHBhcnJhZm8gSUksIDM4IGZyYWNjaW9uIEkgeSBkZW1hcyBhcGxpY2FibGVzIGRlIGxhIExleSBk
+ZSBUcmFuc3BhcmVuY2lhIHkgQWNjZXNvIGEgbGEgSW5mb3JtYWNpb24gUHVibGljYSBkZWwgRGlz
+dHJpdG8gRmVkZXJhbC4NCkxvcyBEYXRvcyBQZXJzb25hbGVzIHNlIGVuY3VlbnRyYW4gcHJvdGVn
+aWRvcyBwb3IgbGEgTGV5IGRlIFByb3RlY2Npb24gZGUgRGF0b3MgUGVyc29uYWxlcyBkZWwgRGlz
+dHJpdG8gRmVkZXJhbCwgcG9yIGxvIHF1ZSBzdSBkaWZ1c2lvbiBzZSBlbmN1ZW50cmEgdHV0ZWxh
+ZGEgZW4gc3VzIGFydGljdWxvcyAyLCA1LCAxNiwgMjEsIDQxIHkgZGVtYXMgcmVsYXRpdm9zIHkg
+YXBsaWNhYmxlcywgZGViaWVuZG8gc3VqZXRhcnNlIGVuIHN1IGNhc28sIGEgbGFzIGRpc3Bvc2lj
+aW9uZXMgcmVsYXRpdmFzIGEgbGEgY3JlYWNpb24sIG1vZGlmaWNhY2lvbiBvIHN1cHJlc2lvbiBk
+ZSBkYXRvcyBwZXJzb25hbGVzIHByZXZpc3Rvcy4gQXNpbWlzbW8sIGRlYmVyYSBlc3RhcnNlIGEg
+bG8gc2XDsWFsYWRvIGVuIGxvcyBudW1lcmFsZXMgMSAsIDMsIDEyLCAxOCwgMTksIDIwLCAyMSwg
+MjMsIDI0LCAyOSwgMzUgeSBkZW1hcyBhcGxpY2FibGVzIGRlIGxvcyBMaW5lYW1pZW50b3MgcGFy
+YSBsYSBQcm90ZWNjaW9uIGRlIERhdG9zIFBlcnNvbmFsZXMgZW4gZWwgRGlzdHJpdG8gRmVkZXJh
+bC4NCkVuIGVsIHVzbyBkZSBsYXMgdGVjbm9sb2dpYXMgZGUgbGEgaW5mb3JtYWNpb24geSBjb211
+bmljYWNpb25lcyBkZWwgR29iaWVybm8gZGVsIERpc3RyaXRvIEZlZGVyYWwsIGRlYmVyYSBvYnNl
+cnZhcnNlIHB1bnR1YWxtZW50ZSBsbyBkaXNwdWVzdG8gcG9yIGxhIExleSBHb2JpZXJubyBFbGVj
+dHJvbmljbyBkZWwgRGlzdHJpdG8gRmVkZXJhbCwgbGEgbGV5IHBhcmEgaGFjZXIgZGUgbGEgQ2l1
+ZGFkIGRlIE1leGljbyB1bmEgQ2l1ZGFkIE1hcyBBYmllcnRhLCBlbCBhcGFydGFkbyAxMCBkZSBs
+YSBDaXJjdWxhciBVbm8gdmlnZW50ZSB5IGxhcyBOb3JtYXMgR2VuZXJhbGVzIHF1ZSBkZWJlcmFu
+IG9ic2VydmFyc2UgZW4gbWF0ZXJpYSBkZSBTZWd1cmlkYWQgZGUgbGEgSW5mb3JtYWNpb24gZW4g
+bGEgQWRtaW5pc3RyYWNpb24gUHVibGljYSBkZWwgRGlzdHJpdG8gRmVkZXJhbC4K
