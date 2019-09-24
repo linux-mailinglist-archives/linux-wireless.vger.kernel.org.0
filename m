@@ -2,152 +2,82 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D85AEBC7E7
-	for <lists+linux-wireless@lfdr.de>; Tue, 24 Sep 2019 14:32:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8CC1BBCA94
+	for <lists+linux-wireless@lfdr.de>; Tue, 24 Sep 2019 16:48:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2504875AbfIXMck (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 24 Sep 2019 08:32:40 -0400
-Received: from smtp.codeaurora.org ([198.145.29.96]:34486 "EHLO
+        id S1731081AbfIXOsT (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 24 Sep 2019 10:48:19 -0400
+Received: from smtp.codeaurora.org ([198.145.29.96]:36742 "EHLO
         smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1731720AbfIXMck (ORCPT
+        with ESMTP id S1726130AbfIXOqT (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 24 Sep 2019 08:32:40 -0400
+        Tue, 24 Sep 2019 10:46:19 -0400
 Received: by smtp.codeaurora.org (Postfix, from userid 1000)
-        id 8BA22611D1; Tue, 24 Sep 2019 12:32:39 +0000 (UTC)
+        id 8AAB160A97; Tue, 24 Sep 2019 14:46:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1569328359;
-        bh=Ds7UoBG2rXLNv5U7qrOLRd8QK3yD/meBDUHskysijXE=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=l4Yx8Q5FXc6ezi4t0DuiTiWcp2tW8EkNgsXRjusFTes7aIKZlEpWuE93PGBpAcTJm
-         EiP0FHdX5f70M9OJa77ojmJ9WMEK6SN5iI+sOWDG0is55lvsv1Cfg6tmtHZFaKygzP
-         xn2L642D9YP1rLLe+amRsm/quxu8VDgguuTEmZ90=
+        s=default; t=1569336378;
+        bh=VwDBP5dU+zG6Qy6lwpYKrZqDwxKMAH0pQAIBblp0SyU=;
+        h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
+        b=Ky5noSWlyARiEkt0tlkSqQ8lZCmwGj9O4/9zl+V55dsF1M2BImrjbNke8XsA+qYX5
+         wklGLXlQUYth121o2v4UiCYe3qMjhMhopbA/OYLrueZb5hiA7IQ5AT8PKf5fbEkuzv
+         wpnuqvVrQNdGRfx7p3pyQktTjBsbrb3N6mJgArNg=
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         pdx-caf-mail.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-2.7 required=2.0 tests=ALL_TRUSTED,BAYES_00,
-        DKIM_INVALID,DKIM_SIGNED autolearn=no autolearn_force=no version=3.4.0
-Received: from mail.codeaurora.org (localhost.localdomain [127.0.0.1])
-        by smtp.codeaurora.org (Postfix) with ESMTP id 8EA1360A97;
-        Tue, 24 Sep 2019 12:32:38 +0000 (UTC)
+X-Spam-Status: No, score=-0.8 required=2.0 tests=ALL_TRUSTED,BAYES_00,
+        DKIM_INVALID,DKIM_SIGNED,MISSING_DATE,MISSING_MID,SPF_NONE autolearn=no
+        autolearn_force=no version=3.4.0
+Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo@smtp.codeaurora.org)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id C019760128;
+        Tue, 24 Sep 2019 14:46:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1569328358;
-        bh=Ds7UoBG2rXLNv5U7qrOLRd8QK3yD/meBDUHskysijXE=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=E9TEKkWaTOtc8Ip2/wIBMt34VIXuwbOAsz5BpAmKcYI3etv1BEEXMTBux5ARnlOAX
-         jK/BGQVFjssgjgtxphVDlRUa76ZP1LGLXDFKbEk/3LqI7BZ95aZVMiwAHOw9u7rrWA
-         viBAHiaU8ONJU3XrtOiH8Mp8imijnn2i2nZVbM3I=
+        s=default; t=1569336378;
+        bh=VwDBP5dU+zG6Qy6lwpYKrZqDwxKMAH0pQAIBblp0SyU=;
+        h=Subject:From:In-Reply-To:References:To:Cc:From;
+        b=Ub1Fip3ChS7/RJUqi4FSKhQu60u8WX85RcRSzdRylPIIKaWClDeAj4Lm8HHmH/GVW
+         H2w8l+4+JlJL+TUEZlI+CIQ6CeBGOMOpTlgOzRxq4JtxbTkBwF32LFVnqlYCWlgomm
+         pzyQEuyRFcwRy8uXHpFCNByaZqeKYIgPHfBYbAPc=
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org C019760128
+Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII;
- format=flowed
 Content-Transfer-Encoding: 7bit
-Date:   Tue, 24 Sep 2019 20:32:38 +0800
-From:   Wen Gong <wgong@codeaurora.org>
-To:     Kalle Valo <kvalo@codeaurora.org>
-Cc:     ath10k@lists.infradead.org, linux-wireless@vger.kernel.org
-Subject: Re: [PATCH v5 0/8] ath10k: improve throughout of tcp/udp TX/RX of
- sdio
-In-Reply-To: <87sgon8inp.fsf@codeaurora.org>
-References: <1567679893-14029-1-git-send-email-wgong@codeaurora.org>
- <87sgon8inp.fsf@codeaurora.org>
-Message-ID: <11062c4e1659ac759cb73af7d46a6db2@codeaurora.org>
-X-Sender: wgong@codeaurora.org
-User-Agent: Roundcube Webmail/1.2.5
+Subject: Re: [PATCH] mt76: mt7615: fix mt7615 firmware path definitions
+From:   Kalle Valo <kvalo@codeaurora.org>
+In-Reply-To: <9e132c0949139155a4fb3375e4c83218159efce7.1569159209.git.lorenzo@kernel.org>
+References: <9e132c0949139155a4fb3375e4c83218159efce7.1569159209.git.lorenzo@kernel.org>
+To:     Lorenzo Bianconi <lorenzo@kernel.org>
+Cc:     nbd@nbd.name, lorenzo.bianconi@redhat.com,
+        linux-wireless@vger.kernel.org, ryder.lee@mediatek.com
+User-Agent: pwcli/0.0.0-git (https://github.com/kvalo/pwcli/) Python/2.7.12
+Message-Id: <20190924144618.8AAB160A97@smtp.codeaurora.org>
+Date:   Tue, 24 Sep 2019 14:46:18 +0000 (UTC)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 2019-09-23 17:29, Kalle Valo wrote:
-> Wen Gong <wgong@codeaurora.org> writes:
-> 
->> The bottleneck of throughout on sdio chip is the bus bandwidth, to the
->> patches are all to increase the use ratio of sdio bus.
->> 
->>                       udp-rx    udp-tx    tcp-rx    tcp-tx
->> without patches(Mbps)  320        180       170       151
->> with patches(Mbps)     450        410       400       320
->> 
->> These patches only affect sdio bus chip, explanation is mentioned in 
->> each
->> patch's commit log.
-> 
-> Below is my summary of the patchset. I recommend splitting these into
-> smaller sets, makes it a lot easier to review and apply. And please 
-> send
-> only one or two patchsets at a time.
-> 
-> [PATCH v5 1/8] ath10k: adjust skb length in ath10k_sdio_mbox_rx_packet
-> 
-> Applied.
-> 
-> Patchset 1:
-> 
-> [PATCH v5 2/8] ath10k: enable RX bundle receive for sdio
-> [PATCH v5 3/8] ath10k: change max RX bundle size from 8 to 32 for sdio
-> 
-> Reasonal but needs some cleanup.
-[PATCH v5 2/8] I will use sk_buff_head to replace the 
-ath10k_sdio_rx_request, then it will be simple
-[PATCH v5 3/8] FIELD_GET is to >>, not <<, so << still need by my 
-understand
-> 
-> Patchset 2:
-> 
-> [PATCH v5 4/8] ath10k: add workqueue for RX path of sdio
-> 
-> Is really another thread needed? We already have one for SDIO.
+Lorenzo Bianconi <lorenzo@kernel.org> wrote:
 
-the SDIO thread is used for async tx, this queue is for RX, and it will 
-improve udp rx
-from 200Mbps to 400Mbps. And it used the workqueue_aux of ar, not new 
-created.
-this patch is better to put to Patchset 1, it helps RX, so it should put 
-together with the
-[PATCH v5 2/8] ath10k: enable RX bundle receive for sdio
+> mt7615 patch/n9/cr4 firmwares are available in mediatek folder in
+> linux-firmware repository. Because of this mt7615 won't work on regular
+> distributions like Ubuntu. Fix path definitions.  Moreover remove useless
+> firmware name pointers and use definitions directly
+> 
+> Fixes: 04b8e65922f6 ("mt76: add mac80211 driver for MT7615 PCIe-based chipsets")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
 
-> 
-> [PATCH v5 6/8] ath10k: add htt TX bundle for sdio
-> 
-> And again a new thread so that we would have three threads for SDIO? 
-> I'm
-> not convinced about that.
-The thread is for tx complete indication and the thread only used for tx 
-bundle, if it does not have
-heavy traffic, then it will not bundle, then the thread will not run.
-for bundled tx, after bundled, it has max 32 packets in each bundle, the 
-tx complete for the 32 packets will cost much time, if not give the tx 
-complete task to the thread, then it will much delay the bundle of the 
-next packets, then it will drop throughput.
-> 
-> Patchset 3:
-> 
-> [PATCH v5 7/8] ath10k: enable alt data of TX path for sdio
-> 
-> Again another module parameter?
-the alt_data could be removed
-> 
-> [PATCH v5 8/8] ath10k: enable napi on RX path for sdio
-> 
-> Seems reasonable, but worried about breaking USB.
-it can change to check napi enabled, if not, will use old 
-ieee80211_rx_ni in ath10k_htt_rx_proc_rx_ind_hl
-> 
-> Patchset 4:
-> 
-> [PATCH v5 5/8] ath10k: disable TX complete indication of htt for sdio
-> 
-> Quite hackish and I need numbers how much it really improves throughput
-it will improve throughput,
-for udp tx, it can arrive to 400Mbps, if remove this patch, it will drop 
-to
-130M. it not only remove the tx complete message's bus bandwidth of 
-sdio, and it also
-has a improvement in firmware's tx path's logic, it will change the 
-logic
-of tx simple both in firmware and ath10k and faster the tx circle.
-And the paramter disable_tx_comp can be removed.
-this patch shoud be put in Patchset 2, it help TX, so it is better to 
-put together with the
-[PATCH v5 6/8] ath10k: add htt TX bundle for sdio.
+Patch applied to wireless-drivers.git, thanks.
 
+9d4d0d06bbf9 mt76: mt7615: fix mt7615 firmware path definitions
+
+-- 
+https://patchwork.kernel.org/patch/11155889/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
