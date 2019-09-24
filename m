@@ -2,62 +2,106 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 84DE7BC0C6
-	for <lists+linux-wireless@lfdr.de>; Tue, 24 Sep 2019 05:38:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8E60DBC146
+	for <lists+linux-wireless@lfdr.de>; Tue, 24 Sep 2019 07:15:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2394554AbfIXDia (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 23 Sep 2019 23:38:30 -0400
-Received: from smtp.codeaurora.org ([198.145.29.96]:56068 "EHLO
+        id S2409040AbfIXFPt (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 24 Sep 2019 01:15:49 -0400
+Received: from smtp.codeaurora.org ([198.145.29.96]:59954 "EHLO
         smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2391692AbfIXDia (ORCPT
+        with ESMTP id S2408781AbfIXFPt (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 23 Sep 2019 23:38:30 -0400
+        Tue, 24 Sep 2019 01:15:49 -0400
 Received: by smtp.codeaurora.org (Postfix, from userid 1000)
-        id 153A8602F2; Tue, 24 Sep 2019 03:38:29 +0000 (UTC)
+        id 8D3DD60A05; Tue, 24 Sep 2019 05:15:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1569296309;
-        bh=Ua6L2aRvDvQV9DfCgeqBlGXZkWiA8wsqvrMqezzm0hE=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=OUBcc2hkLJj9vjBpk4T00hRhGA1727TWZIyX9jpAesnSzX1zXazhB9MVdfO35nsel
-         oR72nC4s1k0Gc/oKJPiZybu7yDw6LRJmtp972SHYtE3zJyL7m6xFW6OPoBirrszWDz
-         521N4CaCX5EUJnrj0MGXS2Fobiry7002QlFWuX3U=
+        s=default; t=1569302147;
+        bh=azdN6vc/PGfI2bjrfNHt+vK3hA51rRmp/zu9UwVEnFE=;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+        b=OLBplSJ8QK2fuDQ89srMfDYzbHh19cEyYIPeEsii4HRtIELHAPm2/Bj4HjIWZXbrz
+         /ghU6UC7s7RGXH9PaTA2M7cO0Y+Tl1Tpz4nk04oTdOYa9q6gh8IfvMgAhybAQw24qA
+         +MsumvlYAN0nGHMUT7XPSltgWncFxCom6omq3DHw=
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         pdx-caf-mail.web.codeaurora.org
 X-Spam-Level: 
 X-Spam-Status: No, score=-2.7 required=2.0 tests=ALL_TRUSTED,BAYES_00,
-        DKIM_INVALID,DKIM_SIGNED autolearn=no autolearn_force=no version=3.4.0
-Received: from mail.codeaurora.org (localhost.localdomain [127.0.0.1])
-        by smtp.codeaurora.org (Postfix) with ESMTP id 9477160274;
-        Tue, 24 Sep 2019 03:38:28 +0000 (UTC)
+        DKIM_INVALID,DKIM_SIGNED,SPF_NONE autolearn=no autolearn_force=no
+        version=3.4.0
+Received: from tynnyri.adurom.net (tynnyri.adurom.net [51.15.11.48])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo@smtp.codeaurora.org)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 6A1EF602F0;
+        Tue, 24 Sep 2019 05:15:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1569296308;
-        bh=Ua6L2aRvDvQV9DfCgeqBlGXZkWiA8wsqvrMqezzm0hE=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=RQwnyFupPHculz0D1dmCaG1ra/ac1emNbtRQvjgnPBvsdK7KFRDxvv97rL7j7NZIl
-         3KOUwnAK0gvQMkdnnOXqcPhlU+KhiqCM3wqJtBR9Ds+YxgC2zgxhc7SoFPBOW7wd20
-         IV7jpBahIFiX21lR/euBVEW+d/3FKOJPgdptVwjg=
+        s=default; t=1569302146;
+        bh=azdN6vc/PGfI2bjrfNHt+vK3hA51rRmp/zu9UwVEnFE=;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+        b=V0LrSJ65dpf3rFn2VjpBmfRFfW6ofjXym1S9bUV43cIfh1B+Izf9IeMywVs7MWDvQ
+         Q4eVfHhYpjXfey9K+PrTenhrts+tzG6/7DcQlcBpDeIdqCt24Fw+fYZPsGUAXoDwsn
+         B9wbiz9mXwVc2iXDjEl8E1xHTX6aJcLeBzwEzFvY=
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 6A1EF602F0
+Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
+From:   Kalle Valo <kvalo@codeaurora.org>
+To:     Krzysztof Kozlowski <krzk@kernel.org>
+Cc:     "David S. Miller" <davem@davemloft.net>,
+        Michael Grzeschik <m.grzeschik@pengutronix.de>,
+        Wolfgang Grandegger <wg@grandegger.com>,
+        Marc Kleine-Budde <mkl@pengutronix.de>,
+        Andrew Lunn <andrew@lunn.ch>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        Heiner Kallweit <hkallweit1@gmail.com>,
+        Alexey Kuznetsov <kuznet@ms2.inr.ac.ru>,
+        Hideaki YOSHIFUJI <yoshfuji@linux-ipv6.org>,
+        Pablo Neira Ayuso <pablo@netfilter.org>,
+        Jozsef Kadlecsik <kadlec@netfilter.org>,
+        Florian Westphal <fw@strlen.de>,
+        Jiri Kosina <trivial@kernel.org>, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-can@vger.kernel.org,
+        linux-rdma@vger.kernel.org, linux-wireless@vger.kernel.org,
+        b.a.t.m.a.n@lists.open-mesh.org, netfilter-devel@vger.kernel.org,
+        coreteam@netfilter.org, lvs-devel@vger.kernel.org,
+        rds-devel@oss.oracle.com
+Subject: Re: [PATCH trivial 2/2] drivers: net: Fix Kconfig indentation
+References: <20190923155243.6997-1-krzk@kernel.org>
+        <20190923155243.6997-2-krzk@kernel.org>
+Date:   Tue, 24 Sep 2019 08:15:39 +0300
+In-Reply-To: <20190923155243.6997-2-krzk@kernel.org> (Krzysztof Kozlowski's
+        message of "Mon, 23 Sep 2019 17:52:43 +0200")
+Message-ID: <87sgomi8as.fsf@tynnyri.adurom.net>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII;
- format=flowed
-Content-Transfer-Encoding: 7bit
-Date:   Tue, 24 Sep 2019 11:38:28 +0800
-From:   Wen Gong <wgong@codeaurora.org>
-To:     Kalle Valo <kvalo@codeaurora.org>
-Cc:     ath10k@lists.infradead.org, linux-wireless@vger.kernel.org
-Subject: Re: [PATCH v2] ath10k: add fw coredump for sdio when firmware assert
-In-Reply-To: <706142499b2f13de278262f3c52c2047@codeaurora.org>
-References: <1567132338-7407-1-git-send-email-wgong@codeaurora.org>
- <878sqhc25h.fsf@codeaurora.org>
- <706142499b2f13de278262f3c52c2047@codeaurora.org>
-Message-ID: <3e189b030590e1f73acefb9ba111a184@codeaurora.org>
-X-Sender: wgong@codeaurora.org
-User-Agent: Roundcube Webmail/1.2.5
+Content-Type: text/plain
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-patch v3 sent.
-https://patchwork.kernel.org/patch/11156663/
-https://patchwork.kernel.org/patch/11156659/
+Krzysztof Kozlowski <krzk@kernel.org> writes:
 
+> Adjust indentation from spaces to tab (+optional two spaces) as in
+> coding style with command like:
+>     $ sed -e 's/^        /\t/' -i */Kconfig
+>
+> Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
+
+[...]
+
+>  drivers/net/wireless/ath/Kconfig              |   2 +-
+>  drivers/net/wireless/ath/ar5523/Kconfig       |   4 +-
+>  drivers/net/wireless/ath/ath6kl/Kconfig       |   2 +-
+>  drivers/net/wireless/ath/ath9k/Kconfig        |   2 +-
+>  drivers/net/wireless/ath/carl9170/Kconfig     |   6 +-
+>  drivers/net/wireless/atmel/Kconfig            |  32 ++---
+>  drivers/net/wireless/intel/ipw2x00/Kconfig    | 116 +++++++++---------
+>  drivers/net/wireless/intel/iwlegacy/Kconfig   |   6 +-
+>  drivers/net/wireless/intel/iwlwifi/Kconfig    |   6 +-
+>  drivers/net/wireless/ralink/rt2x00/Kconfig    |  24 ++--
+
+I hope this goes through net or net-next, less chances of conflits then.
+
+Acked-by: Kalle Valo <kvalo@codeaurora.org>
+
+-- 
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
