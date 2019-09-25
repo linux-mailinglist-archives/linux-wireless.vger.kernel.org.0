@@ -2,83 +2,89 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B849DBDAC1
-	for <lists+linux-wireless@lfdr.de>; Wed, 25 Sep 2019 11:16:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1BF5BBDAA6
+	for <lists+linux-wireless@lfdr.de>; Wed, 25 Sep 2019 11:12:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726386AbfIYJPl (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 25 Sep 2019 05:15:41 -0400
-Received: from mail.fedux.com.ar ([116.203.58.232]:59238 "EHLO
-        mail.fedux.com.ar" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725980AbfIYJP1 (ORCPT
+        id S1731291AbfIYJLv (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 25 Sep 2019 05:11:51 -0400
+Received: from smtp.codeaurora.org ([198.145.29.96]:54532 "EHLO
+        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1732047AbfIYJK5 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 25 Sep 2019 05:15:27 -0400
-X-Greylist: delayed 384 seconds by postgrey-1.27 at vger.kernel.org; Wed, 25 Sep 2019 05:15:26 EDT
-Received: from kaoz-xps.fedux.com.ar (unknown [192.168.12.12])
-        by mail.fedux.com.ar (Postfix) with ESMTP id 15D232911FB;
-        Wed, 25 Sep 2019 11:08:59 +0200 (CEST)
-Authentication-Results: mail.fedux.com.ar; dmarc=fail (p=none dis=none) header.from=fedux.com.ar
-Authentication-Results: mail.fedux.com.ar; spf=fail smtp.mailfrom=fedux@fedux.com.ar
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=fedux.com.ar;
-        s=default; t=1569402539;
-        bh=LYXUhPYeCMrWz+2Di6NEBd2QtPIYlty7oxUM/DeccAk=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=WQImZaPgsvAFwLC1uRAlGpgyXJzeT5cWh1ISevBNKAtAP/JkYcnpG9RFHHUllCsfG
-         8gk8y7g/KNUbIZ/3B3+6KMpjjMN9yvDqTwR8AJLoAg0VRhUMUxngH7odJAZs2ltUGt
-         Hc8b3aO5QleyZaQRqtUdJo1WMc1vhTb+OfxDJDEE=
-Received: by kaoz-xps.fedux.com.ar (Postfix, from userid 1000)
-        id EBB4F140C0E; Wed, 25 Sep 2019 11:08:58 +0200 (CEST)
-From:   Federico Cuello <fedux@fedux.com.ar>
-To:     linux-wireless@vger.kernel.org
-Cc:     wgong@codeaurora.org, Federico Cuello <fedux@fedux.com.ar>
-Subject: [PATCH] ath10k: Fix ath10k_init_uart when uart_print is false
-Date:   Wed, 25 Sep 2019 11:08:56 +0200
-Message-Id: <20190925090856.6964-2-fedux@fedux.com.ar>
-X-Mailer: git-send-email 2.23.0
-In-Reply-To: <20190925090856.6964-1-fedux@fedux.com.ar>
-References: <20190925090856.6964-1-fedux@fedux.com.ar>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+        Wed, 25 Sep 2019 05:10:57 -0400
+Received: by smtp.codeaurora.org (Postfix, from userid 1000)
+        id F3D036115A; Wed, 25 Sep 2019 09:10:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
+        s=default; t=1569402648;
+        bh=5PJK+SEQ8N7jhb0SG9vi+nd3Gvu/oOJKz/borfItxDc=;
+        h=From:To:Cc:Subject:Date:From;
+        b=WaRGVGrWhfX5m1fPlqLhRxGRJOtyGua/5CEfxRHYLSpB2l8UAtCx+XevH47NUDD2F
+         byjBDCU8q3n5H5vSpwGZSkvWkdlCcY3GOLYPHFC5uhq+OYybURTHws11cZ9BqavDyP
+         mKZu2yo/RK/GSo5gkZ17fzE+UY+SuTX3gMH5yuhI=
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        pdx-caf-mail.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.7 required=2.0 tests=ALL_TRUSTED,BAYES_00,
+        DKIM_INVALID,DKIM_SIGNED,SPF_NONE autolearn=no autolearn_force=no
+        version=3.4.0
+Received: from wgong-HP-Z240-SFF-Workstation.qca.qualcomm.com (unknown [180.166.53.21])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-SHA256 (128/128 bits))
+        (No client certificate requested)
+        (Authenticated sender: wgong@smtp.codeaurora.org)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id D61336115A;
+        Wed, 25 Sep 2019 09:10:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
+        s=default; t=1569402647;
+        bh=5PJK+SEQ8N7jhb0SG9vi+nd3Gvu/oOJKz/borfItxDc=;
+        h=From:To:Cc:Subject:Date:From;
+        b=Mgr4SvT+R3yHsS8BEepSaYWfLLpSowRJkN58Osz5lhIbbfKfbr0dnAC8sweoPqz8p
+         KyHZ9kBqvGVMqZLjq7ewZkmgU0LaDeIAOvoKUA8txVrtKKhhPjM7LbDFzN+AXi7P2D
+         jCePmHumHrgj0Ln6QBN28IWWeQZXsghGPHhq7Y0o=
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org D61336115A
+Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=wgong@codeaurora.org
+From:   Wen Gong <wgong@codeaurora.org>
+To:     ath10k@lists.infradead.org
+Cc:     linux-wireless@vger.kernel.org
+Subject: [PATCH v6 0/3] ath10k: improve throughout of RX of sdio
+Date:   Wed, 25 Sep 2019 17:10:36 +0800
+Message-Id: <1569402639-31720-1-git-send-email-wgong@codeaurora.org>
+X-Mailer: git-send-email 1.9.1
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Patch 4504f0e5b5714d9d26b1a80bf1fc133c95830588 introduced a workaround
-for a firmware UART pin configuration bug, but it caused uart_print to be
-interpreted as true when it was false and uart_pin_workaround also false.
+v6: change code style, change commit log to add test value of RX, use sk_buff_head to replace the rx queue
+this is 3 patches of the 7 patches from ath10k: improve throughout of tcp/udp TX/RX of sdio
 
-This patch corrects the exit condition when uart_print is false.
+v5: no change
 
-Signed-off-by: Federico Cuello <fedux@fedux.com.ar>
----
- drivers/net/wireless/ath/ath10k/core.c | 14 ++++++++------
- 1 file changed, 8 insertions(+), 6 deletions(-)
+v4: add err handle in ath10k_sdio_mbox_rx_fetch_bundle, change commit log
 
-diff --git a/drivers/net/wireless/ath/ath10k/core.c b/drivers/net/wireless/ath/ath10k/core.c
-index dc45d16e8d21..dd1311910d6a 100644
---- a/drivers/net/wireless/ath/ath10k/core.c
-+++ b/drivers/net/wireless/ath/ath10k/core.c
-@@ -2118,12 +2118,14 @@ static int ath10k_init_uart(struct ath10k *ar)
- 		return ret;
- 	}
- 
--	if (!uart_print && ar->hw_params.uart_pin_workaround) {
--		ret = ath10k_bmi_write32(ar, hi_dbg_uart_txpin,
--					 ar->hw_params.uart_pin);
--		if (ret) {
--			ath10k_warn(ar, "failed to set UART TX pin: %d", ret);
--			return ret;
-+	if (!uart_print) {
-+		if (ar->hw_params.uart_pin_workaround) {
-+			ret = ath10k_bmi_write32(ar, hi_dbg_uart_txpin,
-+						 ar->hw_params.uart_pin);
-+			if (ret) {
-+				ath10k_warn(ar, "failed to set UART TX pin: %d", ret);
-+				return ret;
-+			}
- 		}
- 
- 		return 0;
+v3: change some code style
+split fix incorrect skb tail of rx bundle to patch "adjust skb length in ath10k_sdio_mbox_rx_packet"
+
+v2: fix incorrect skb tail of rx bundle in ath10k_sdio_mbox_rx_process_packet, change macro HTC_GET_BUNDLE_COUNT
+
+The bottleneck of throughout on sdio chip is the bus bandwidth, to the
+patches are all to increase the use ratio of sdio bus.
+
+These patches only affect sdio bus chip, explanation is mentioned in each
+patch's commit log.
+
+Alagu Sankar (1):
+  ath10k: enable RX bundle receive for sdio
+
+Wen Gong (2):
+  ath10k: change max RX bundle size from 8 to 32 for sdio
+  ath10k: add workqueue for RX path of sdio
+
+ drivers/net/wireless/ath/ath10k/htc.h  |  12 ++-
+ drivers/net/wireless/ath/ath10k/sdio.c | 147 +++++++++++++++++++++++----------
+ drivers/net/wireless/ath/ath10k/sdio.h |  26 +++++-
+ 3 files changed, 134 insertions(+), 51 deletions(-)
+
 -- 
-2.23.0
+1.9.1
 
