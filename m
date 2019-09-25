@@ -2,83 +2,106 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 4EAD4BDDA5
-	for <lists+linux-wireless@lfdr.de>; Wed, 25 Sep 2019 14:02:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6899CBDE54
+	for <lists+linux-wireless@lfdr.de>; Wed, 25 Sep 2019 14:52:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2391391AbfIYMCo (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 25 Sep 2019 08:02:44 -0400
-Received: from smtp.codeaurora.org ([198.145.29.96]:58130 "EHLO
-        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2391282AbfIYMCo (ORCPT
+        id S2405795AbfIYMwr (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 25 Sep 2019 08:52:47 -0400
+Received: from us-smtp-delivery-1.mimecast.com ([207.211.31.120]:41692 "EHLO
+        us-smtp-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
+        with ESMTP id S1732452AbfIYMwq (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 25 Sep 2019 08:02:44 -0400
-Received: by smtp.codeaurora.org (Postfix, from userid 1000)
-        id 09CE660112; Wed, 25 Sep 2019 12:02:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1569412963;
-        bh=fzW0/s40aH0wn1UyIWcQVQckKg4nvy9gajWH4C9J5mU=;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=mLtwTwAHhjpPBSF4roUrhEGyOtFjMJrVyev1q+V1lIzPyadrrh4CShe5NLYiZG+0o
-         AootVORLSVBG20zpoppRa2EFKpnboj9C/vTXebNxfl232iswIZwfls7TTXcUeHz07k
-         X/SHpOi26mkl173Vq/pvVq+iaNp/I/9GL6ADujCY=
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        pdx-caf-mail.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.7 required=2.0 tests=ALL_TRUSTED,BAYES_00,
-        DKIM_INVALID,DKIM_SIGNED,SPF_NONE autolearn=no autolearn_force=no
-        version=3.4.0
-Received: from tynnyri.adurom.net (tynnyri.adurom.net [51.15.11.48])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        (Authenticated sender: kvalo@smtp.codeaurora.org)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id A15CE6013C;
-        Wed, 25 Sep 2019 12:02:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1569412962;
-        bh=fzW0/s40aH0wn1UyIWcQVQckKg4nvy9gajWH4C9J5mU=;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=D7eC359BlIsEnN0DLDCcOZuDS5QvVDvFgI4TPVuyLz+GOTAINpjIkFcATbNFMjo0/
-         Xw1cz3RgkRwne6fJ3TqBiEEWtNiDWckoDuTuo4nz3ziB2gY/KA6AeVtupA6mFSxfjt
-         v2n91FWgV9LtX394BOF0y8v6yHBhgXYYYU7VZpZA=
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org A15CE6013C
-Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
-From:   Kalle Valo <kvalo@codeaurora.org>
-To:     Federico Cuello <fedux@fedux.com.ar>
-Cc:     linux-wireless@vger.kernel.org, wgong@codeaurora.org,
-        ath10k@lists.infradead.org
-Subject: Re: [PATCH] ath10k: Fix ath10k_init_uart when uart_print is false
-References: <20190925090856.6964-1-fedux@fedux.com.ar>
-        <20190925090856.6964-2-fedux@fedux.com.ar>
-Date:   Wed, 25 Sep 2019 15:02:39 +0300
-In-Reply-To: <20190925090856.6964-2-fedux@fedux.com.ar> (Federico Cuello's
-        message of "Wed, 25 Sep 2019 11:08:56 +0200")
-Message-ID: <87o8z8inxc.fsf@tynnyri.adurom.net>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
+        Wed, 25 Sep 2019 08:52:46 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1569415965;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=RAxkE1h5ax6Fw7x83rQJVKg6nF9IOu73qh/OcRTyCUM=;
+        b=RBg5vSSUHOtdGSVlApDsNSQjFDYy//xqBQbRMCuCPJiWcuq/yzzmjFsrVWLlKkM8FufA9x
+        0qp52DAfRAFFW936C6tgpbboro8VsDnqbks9GVrcPHu+HxCykA0P6DCdmQ4U+52mj5AQ0n
+        H52gfkP6AbXdSULzbSkiKt5aoUuOW18=
+Received: from mail-lf1-f69.google.com (mail-lf1-f69.google.com
+ [209.85.167.69]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-221-8Tk1wGIkN_OjwrWm0aHLMA-1; Wed, 25 Sep 2019 08:52:43 -0400
+Received: by mail-lf1-f69.google.com with SMTP id y27so814911lfg.21
+        for <linux-wireless@vger.kernel.org>; Wed, 25 Sep 2019 05:52:42 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:in-reply-to:references:date
+         :message-id:mime-version:content-transfer-encoding;
+        bh=RAxkE1h5ax6Fw7x83rQJVKg6nF9IOu73qh/OcRTyCUM=;
+        b=NNqm9X70nwbJUsadXrc5Od5QI09AAUcv3DMaQhH0Mpkzm5DgXNp8b28CNGGV5DZ8wr
+         fVACrN91xRqUyP3vmwkiNCnrdiaOsUqYLDpek3x/U3QzdnbpdT9NUZJAQB+2Ud8Vb02O
+         f4vLx8UkunsdWALMk/BlF/HZb35Gw1niQt3uFGDT5qAEuHFnBd5Eimgoh7aITwAO2BZe
+         dW+2v4AXdEMM1yDSn35mr/OPnjpZ4JmG4OTE/BLIQuZKv67tH6spYskUI8MJdKSZAjAQ
+         6UANJ+5pBLJH/GlrOhqNm9QU7S+yMfXDMJh7pxHvvv9fAJ5rC3IWYH+bhVgJ+2CT310W
+         d+eA==
+X-Gm-Message-State: APjAAAXSOFNlpDU9niYNAjwtlK0S8SsvCE78ZVHNIuPKIAjW5+0gdrWG
+        YWlJeYK7Cv/b97vCoSGjsNFknQ807+ZcQOdhBgnIXxcTKnBth6YiMFX7i4GQSxDXub/Ebj5Pm/I
+        +pub53SwR6PT0UiD80r8vsWgQHmU=
+X-Received: by 2002:a2e:6e04:: with SMTP id j4mr5754586ljc.99.1569415961692;
+        Wed, 25 Sep 2019 05:52:41 -0700 (PDT)
+X-Google-Smtp-Source: APXvYqzDu6srlULdJ6FcUoQhtVcUpzhekdTROR9PDW2pnqEP42W3cf8lyFlaLcAbuTgcVyv31wAOpw==
+X-Received: by 2002:a2e:6e04:: with SMTP id j4mr5754561ljc.99.1569415961476;
+        Wed, 25 Sep 2019 05:52:41 -0700 (PDT)
+Received: from alrua-x1.borgediget.toke.dk (borgediget.toke.dk. [85.204.121.218])
+        by smtp.gmail.com with ESMTPSA id q66sm1181957ljq.101.2019.09.25.05.52.40
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 25 Sep 2019 05:52:40 -0700 (PDT)
+Received: by alrua-x1.borgediget.toke.dk (Postfix, from userid 1000)
+        id 9D6A218063D; Wed, 25 Sep 2019 14:52:39 +0200 (CEST)
+From:   Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>
+To:     Yibo Zhao <yiboz@codeaurora.org>
+Cc:     Johannes Berg <johannes@sipsolutions.net>,
+        linux-wireless@vger.kernel.org,
+        make-wifi-fast@lists.bufferbloat.net,
+        John Crispin <john@phrozen.org>,
+        Lorenzo Bianconi <lorenzo@kernel.org>,
+        Felix Fietkau <nbd@nbd.name>,
+        linux-wireless-owner@vger.kernel.org
+Subject: Re: [PATCH RFC/RFT 4/4] mac80211: Apply Airtime-based Queue Limit (AQL) on packet dequeue
+In-Reply-To: <8c5a3a011f03d4dd4165b838a2b8bc72@codeaurora.org>
+References: <156889576422.191202.5906619710809654631.stgit@alrua-x1> <156889576869.191202.510507546538322707.stgit@alrua-x1> <2f6b649dcb788222e070ebb5593918c7@codeaurora.org> <87y2yc3ieb.fsf@toke.dk> <8c5a3a011f03d4dd4165b838a2b8bc72@codeaurora.org>
+X-Clacks-Overhead: GNU Terry Pratchett
+Date:   Wed, 25 Sep 2019 14:52:39 +0200
+Message-ID: <87mues35d4.fsf@toke.dk>
 MIME-Version: 1.0
-Content-Type: text/plain
+X-MC-Unique: 8Tk1wGIkN_OjwrWm0aHLMA-1
+X-Mimecast-Spam-Score: 0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-+ ath10k
+Yibo Zhao <yiboz@codeaurora.org> writes:
 
-Federico Cuello <fedux@fedux.com.ar> writes:
-
-> Patch 4504f0e5b5714d9d26b1a80bf1fc133c95830588 introduced a workaround
-> for a firmware UART pin configuration bug, but it caused uart_print to be
-> interpreted as true when it was false and uart_pin_workaround also false.
+> On 2019-09-25 16:11, Toke H=C3=B8iland-J=C3=B8rgensen wrote:
+>> Yibo Zhao <yiboz@codeaurora.org> writes:
+>>=20
+>>> So if it is going to work together with virtual time based mechanism=20
+>>> in
+>>> the future, the Tx criteria will be met both of below conditions,
+>>>         1. Lower than g_vt
+>>>         2. Lower than IEEE80211_AIRTIME_QUEUE_LIMIT
+>>=20
+>>> Are we going to maintain two kinds of airtime that one is from
+>>> estimation and the other is basically from FW reporting?
+>>=20
+>> Yes, that was my plan. For devices that don't have FW reporting of
+>> airtime, we can fall back to the estimation; but if we do have FW
+>> reporting that is most likely going to be more accurate, so better to
+>> use that for fairness...
 >
-> This patch corrects the exit condition when uart_print is false.
->
-> Signed-off-by: Federico Cuello <fedux@fedux.com.ar>
+> Do you mean we will use airtime reported by FW to calculate=20
+> local->airtime_queued in case we have FW reporting airtime?
 
-I have already applied a fix for this:
+No, the opposite; if the firmware can't report airtime, we can use the
+estimated values to feed into report_airtime() for the fairness
+calculation...
 
-https://git.kernel.org/pub/scm/linux/kernel/git/kvalo/ath.git/commit/?h=ath-next&id=1340cc631bd00431e2f174525c971f119df9efa1
+-Toke
 
-But it's not CCed for stable, hopefully the stable bots still catch it.
-
--- 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
