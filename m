@@ -2,105 +2,81 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 17515BD7F0
-	for <lists+linux-wireless@lfdr.de>; Wed, 25 Sep 2019 07:51:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D9316BD829
+	for <lists+linux-wireless@lfdr.de>; Wed, 25 Sep 2019 08:12:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2404973AbfIYFvq (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 25 Sep 2019 01:51:46 -0400
-Received: from smtp.codeaurora.org ([198.145.29.96]:56236 "EHLO
+        id S2404692AbfIYGMy (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 25 Sep 2019 02:12:54 -0400
+Received: from smtp.codeaurora.org ([198.145.29.96]:41336 "EHLO
         smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2404696AbfIYFvq (ORCPT
+        with ESMTP id S2404606AbfIYGMy (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 25 Sep 2019 01:51:46 -0400
+        Wed, 25 Sep 2019 02:12:54 -0400
 Received: by smtp.codeaurora.org (Postfix, from userid 1000)
-        id 21C78602F2; Wed, 25 Sep 2019 05:51:44 +0000 (UTC)
+        id 8F93560E73; Wed, 25 Sep 2019 06:12:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1569390704;
-        bh=NeEFZDrD5NaVYEmvXkuToUi48FcsuLzZxJyEwdPTkGE=;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=dHje5Ybpl+BFyuvGMxmQgEIBoDShRh9U8IGBMu2iYbTFRPoibBBPa4Nzrfux2wXKX
-         uBThAC0R5vZOFONZo4SfJQt8o1ZZyVtosG9IApi9GTapPWhHxQfrGrxECoCXLvAFbe
-         hfsVWPLkw9xJ5MOAIg1PgBgnewEPlaklEqSJ/lrA=
+        s=default; t=1569391973;
+        bh=uYHSBx1k83QXHX/8PikNbwZgJt2w0Odf8Mt2PJ5HL1E=;
+        h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
+        b=cQap2bZgdAyV+QgvMJ5PUajCsl91dTQGd0AOTaKrDViQ/XHm2TWOm4dk9os57DhQm
+         BbC9JGf8s5XuZpJSBHxGx9qbqIPK5x7z5WamEb/7C9TljQEpWXzs9JK/qB6/a2e32s
+         nrk8CODqTDvBGmQjq3o490cCs2knEZLuJeoPDL1s=
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         pdx-caf-mail.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-2.7 required=2.0 tests=ALL_TRUSTED,BAYES_00,
-        DKIM_INVALID,DKIM_SIGNED,SPF_NONE autolearn=no autolearn_force=no
-        version=3.4.0
-Received: from x230.qca.qualcomm.com (37-136-106-186.rev.dnainternet.fi [37.136.106.186])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+X-Spam-Status: No, score=-0.8 required=2.0 tests=ALL_TRUSTED,BAYES_00,
+        DKIM_INVALID,DKIM_SIGNED,MISSING_DATE,MISSING_MID,SPF_NONE autolearn=no
+        autolearn_force=no version=3.4.0
+Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
         (Authenticated sender: kvalo@smtp.codeaurora.org)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 3996C602F2;
-        Wed, 25 Sep 2019 05:51:41 +0000 (UTC)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id B878660A00;
+        Wed, 25 Sep 2019 06:12:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1569390703;
-        bh=NeEFZDrD5NaVYEmvXkuToUi48FcsuLzZxJyEwdPTkGE=;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=ZuUtTWbVRuRvXPCjtRcyqxH4jRE/x0q3ryyGQHBc15TZiOj/YHlCVRo1VS3bUkCqU
-         6gbckZcqXlVzTWVE6jdEizsCc7CihjxyZo775K1Jjlv9mPgG39/X0Hy7F4DQwgK+c2
-         Pe3ysytiP8HcV5nTLkEyOuDHTOe0FpQeWxGcxHQo=
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 3996C602F2
+        s=default; t=1569391973;
+        bh=uYHSBx1k83QXHX/8PikNbwZgJt2w0Odf8Mt2PJ5HL1E=;
+        h=Subject:From:In-Reply-To:References:To:Cc:From;
+        b=mCSGNO2Pw9B71D3N1AjT1g1/jdViaAkkeV0xW1dVYcvEalTF7w310PVMHk83HQFnM
+         1HdVhCq2PMugxYJx/m5mNuc9moiKgjrKj112TOa/ZeTFK06PyUkci5zJ4cKzbjPuNB
+         quQeGhLh9OfCg5Hx7VHsRtrWBNlgk/wj0F+1oi9o=
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org B878660A00
 Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
 Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
-From:   Kalle Valo <kvalo@codeaurora.org>
-To:     Erik Stromdahl <erik.stromdahl@gmail.com>
-Cc:     Alagu Sankar <alagusankar@silex-india.com>,
-        linux-wireless@vger.kernel.org, ath10k@lists.infradead.org
-Subject: Re: [PATCH v2 3/5] ath10k: sdio: read RX packets in bundles
-References: <20190417191503.18814-4-erik.stromdahl@gmail.com>
-        <20190925054517.11D3E611FA@smtp.codeaurora.org>
-Date:   Wed, 25 Sep 2019 08:51:39 +0300
-In-Reply-To: <20190925054517.11D3E611FA@smtp.codeaurora.org> (Kalle Valo's
-        message of "Wed, 25 Sep 2019 05:45:17 +0000 (UTC)")
-Message-ID: <87o8z82aac.fsf@codeaurora.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH] wil6210: use after free in wil_netif_rx_any()
+From:   Kalle Valo <kvalo@codeaurora.org>
+In-Reply-To: <20190921060145.GD18726@mwanda>
+References: <20190921060145.GD18726@mwanda>
+To:     Dan Carpenter <dan.carpenter@oracle.com>
+Cc:     Maya Erez <merez@codeaurora.org>,
+        Dedy Lansky <dlansky@codeaurora.org>,
+        linux-wireless@vger.kernel.org, wil6210@qti.qualcomm.com,
+        kernel-janitors@vger.kernel.org
+User-Agent: pwcli/0.0.0-git (https://github.com/kvalo/pwcli/) Python/2.7.12
+Message-Id: <20190925061253.8F93560E73@smtp.codeaurora.org>
+Date:   Wed, 25 Sep 2019 06:12:53 +0000 (UTC)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Kalle Valo <kvalo@codeaurora.org> writes:
+Dan Carpenter <dan.carpenter@oracle.com> wrote:
 
-> Erik Stromdahl <erik.stromdahl@gmail.com> wrote:
->
->> From: Alagu Sankar <alagusankar@silex-india.com>
->> 
->> The existing implementation of initiating multiple sdio transfers for
->> receive bundling is slowing down the receive speed.
->> 
->> Instead of having one sdio transfer for each packet in the bundle, we
->> read all packets in one sdio transfer.
->> 
->> This results in significant performance improvement on some targets.
->> 
->> On an imx6dl together with a QCA9377 SDIO device, the following
->> performance increase was obtained with iperf:
->> 
->> Before:
->> 
->> [  3]  0.0- 1.0 sec  3.38 MBytes  28.3 Mbits/sec
->> 
->> After:
->> 
->> [  3]  0.0- 1.0 sec  7.12 MBytes  59.8 Mbits/sec
->> 
->> Co-developed-by: Erik Stromdahl <erik.stromdahl@gmail.com>
->> Signed-off-by: Alagu Sankar <alagusankar@silex-india.com>
->> Signed-off-by: Erik Stromdahl <erik.stromdahl@gmail.com>
->
-> Wen is working on this:
->
-> [v5,2/8] ath10k: enable RX bundle receive for sdio
->
-> https://patchwork.kernel.org/patch/11132661/
->
-> So I'll drop this version. Patch set to Superseded.
+> The debug code dereferences "skb" to print "skb->len" so we have to
+> print the message before we free "skb".
+> 
+> Fixes: f99fe49ff372 ("wil6210: add wil_netif_rx() helper function")
+> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
 
-There were invalid characters and linux-wireless dropped my mail,
-resending now.
+Patch applied to wireless-drivers.git, thanks.
+
+2b481835cf4e wil6210: use after free in wil_netif_rx_any()
 
 -- 
-Kalle Valo
+https://patchwork.kernel.org/patch/11155359/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+
