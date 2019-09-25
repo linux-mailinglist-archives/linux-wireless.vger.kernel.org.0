@@ -2,132 +2,94 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 9D3B6BD7A8
-	for <lists+linux-wireless@lfdr.de>; Wed, 25 Sep 2019 07:13:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EA104BD7D2
+	for <lists+linux-wireless@lfdr.de>; Wed, 25 Sep 2019 07:41:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2405153AbfIYFNx (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 25 Sep 2019 01:13:53 -0400
-Received: from smtp.codeaurora.org ([198.145.29.96]:39116 "EHLO
+        id S2411762AbfIYFlI (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 25 Sep 2019 01:41:08 -0400
+Received: from smtp.codeaurora.org ([198.145.29.96]:47576 "EHLO
         smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2388300AbfIYFNx (ORCPT
+        with ESMTP id S2404361AbfIYFlI (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 25 Sep 2019 01:13:53 -0400
+        Wed, 25 Sep 2019 01:41:08 -0400
 Received: by smtp.codeaurora.org (Postfix, from userid 1000)
-        id 3A6646115D; Wed, 25 Sep 2019 05:13:52 +0000 (UTC)
+        id 935786119D; Wed, 25 Sep 2019 05:41:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1569388432;
-        bh=uyezY+yPYzNZetQyZ4PtFeHdvxO2EXnjS44T11fWciQ=;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=MaPkHcGfX7OfcwWqrJco4C9u4uuFo+J1WG5ru1CPadG0G4Wv54YErq+FFcvr7kYID
-         xjyUTksotD4SklxrD4hobrfeT9ZpLB88g2YtXLqLrv924CqgOyGUy3037hOUfdMlNQ
-         EU8bfshWrelpax7Iuv8veqe5BoIV3qvgMVeOLjoI=
+        s=default; t=1569390067;
+        bh=4DnRI3/6DjoOwEPHvWGENKwNlQJEvOPUUpyFPzCCa+4=;
+        h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
+        b=Uc8o7j4T4Mi8OdYnJk7heDds0V8D4t+cr21xYpm5ZDz0NgVvF3c1Hh/Vrjo2O0BpW
+         l2e3pOnbr6WgJ3EeS8JFm6ZeU6UvY5cTdmM7QDh8Viu7OwtT3brXeOqa93YPe9BbRW
+         gdVp9yR+0No5UY8OcO55Y1Y+GTHKqaiwK4QJHGhE=
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         pdx-caf-mail.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-2.7 required=2.0 tests=ALL_TRUSTED,BAYES_00,
-        DKIM_INVALID,DKIM_SIGNED,SPF_NONE autolearn=no autolearn_force=no
-        version=3.4.0
-Received: from x230.qca.qualcomm.com (37-136-106-186.rev.dnainternet.fi [37.136.106.186])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+X-Spam-Status: No, score=-0.8 required=2.0 tests=ALL_TRUSTED,BAYES_00,
+        DKIM_INVALID,DKIM_SIGNED,MISSING_DATE,MISSING_MID,SPF_NONE autolearn=no
+        autolearn_force=no version=3.4.0
+Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
         (Authenticated sender: kvalo@smtp.codeaurora.org)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 8B219602E1;
-        Wed, 25 Sep 2019 05:13:50 +0000 (UTC)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 9B44E609F3;
+        Wed, 25 Sep 2019 05:41:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1569388431;
-        bh=uyezY+yPYzNZetQyZ4PtFeHdvxO2EXnjS44T11fWciQ=;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=Nq7ekzud6M55tO4q9LBqpQX5NkzcRHUc+iT7PFkHgAlkvzkxf71Z4yXiU8h35k3b+
-         /IGWames6cbaKE+oPl1HA5F5PlAGWD/ELgTRpElVMJ+TOV4F7dUp6UPfOoOlN5POWh
-         TpTyqHMHWxV3Tah23eOlohhSzyVNXYt8t5YIKXBw=
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 8B219602E1
+        s=default; t=1569390067;
+        bh=4DnRI3/6DjoOwEPHvWGENKwNlQJEvOPUUpyFPzCCa+4=;
+        h=Subject:From:In-Reply-To:References:To:Cc:From;
+        b=EvtodZJFV3RV/4RH2bzYXXGQHylIZQbZBLrj4YbbxQHk1khqchloPsTFl8rWrLGQd
+         iZX6zoyYbiBgWwUdlZJ0l6G2dUCqi/PEIETXQGMBCTUdEPx/SDTd7bY4eFi3B3frS0
+         K0amIrY7L96qVk1FSmU+OIBXVuT4CfwlKlGLVrq4=
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 9B44E609F3
 Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
 Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
-From:   Kalle Valo <kvalo@codeaurora.org>
-To:     Dundi Raviteja <dundi@codeaurora.org>
-Cc:     ath10k@lists.infradead.org, linux-wireless@vger.kernel.org
-Subject: Re: [PATCH v2] ath10k: Enable support for beacon interval per VAP
-References: <1550579046-22649-1-git-send-email-dundi@codeaurora.org>
-Date:   Wed, 25 Sep 2019 08:13:47 +0300
-In-Reply-To: <1550579046-22649-1-git-send-email-dundi@codeaurora.org> (Dundi
-        Raviteja's message of "Tue, 19 Feb 2019 17:54:06 +0530")
-Message-ID: <87pnjp3qlw.fsf@codeaurora.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH] ath10k: remove iteration in wake_tx_queue
+From:   Kalle Valo <kvalo@codeaurora.org>
+In-Reply-To: <20190327162906.6010-1-erik.stromdahl@gmail.com>
+References: <20190327162906.6010-1-erik.stromdahl@gmail.com>
+To:     Erik Stromdahl <erik.stromdahl@gmail.com>
+Cc:     kvalo@qca.qualcomm.com, linux-wireless@vger.kernel.org,
+        ath10k@lists.infradead.org, yiboz@codeaurora.org,
+        Erik Stromdahl <erik.stromdahl@gmail.com>
+User-Agent: pwcli/0.0.0-git (https://github.com/kvalo/pwcli/) Python/2.7.12
+Message-Id: <20190925054107.935786119D@smtp.codeaurora.org>
+Date:   Wed, 25 Sep 2019 05:41:07 +0000 (UTC)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Dundi Raviteja <dundi@codeaurora.org> writes:
+Erik Stromdahl <erik.stromdahl@gmail.com> wrote:
 
-> Enable support to configure different beacon interval per VAP.
->
-> To support this feature, map different beacon interval service bit
-> to wmi tlv service.
->
-> Tested HW: WCN3990
-> Tested FW: WLAN.HL.2.0-01188-QCAHLSWMTPLZ-1
->
-> Signed-off-by: Dundi Raviteja <dundi@codeaurora.org>
+> Iterating the TX queue and thereby dequeuing all available packets in the
+> queue could result in performance penalties on some SMP systems.
+> 
+> The reason for this is most likely that the per-ac lock (active_txq_lock)
+> in mac80211 will be held by the CPU iterating the current queue.
+> 
+> This will lock up other CPUs trying to push new messages on the TX
+> queue.
+> 
+> Instead of iterating the queue we fetch just one packet at the time,
+> resulting in minimal starvation of the other CPUs.
+> 
+> Reported-by: Yibo Zhao <yiboz@codeaurora.org>
+> Signed-off-by: Erik Stromdahl <erik.stromdahl@gmail.com>
 
-[...]
+Like others, I'm not convinced about this either. To me it looks like a quick
+workaround instead of properly investigating, and fixing, the root cause. To my
+understanding the throughput dip was caused by this commit:
 
-> --- a/drivers/net/wireless/ath/ath10k/mac.c
-> +++ b/drivers/net/wireless/ath/ath10k/mac.c
-> @@ -8232,6 +8232,30 @@ void ath10k_mac_destroy(struct ath10k *ar)
->  	},
->  };
->  
-> +static struct
-> +ieee80211_iface_combination ath10k_tlv_qcs_bcn_int_if_comb[] = {
-> +	{
-> +		.limits = ath10k_tlv_if_limit,
-> +		.num_different_channels = 1,
-> +		.max_interfaces = 4,
-> +		.beacon_int_infra_match = true,
-> +		.beacon_int_min_gcd = 1,
-> +		.n_limits = ARRAY_SIZE(ath10k_tlv_if_limit),
-> +	},
-> +	{
-> +		.limits = ath10k_tlv_qcs_if_limit,
-> +		.num_different_channels = 2,
-> +		.max_interfaces = 4,
-> +		.n_limits = ARRAY_SIZE(ath10k_tlv_qcs_if_limit),
-> +	},
-> +	{
-> +		.limits = ath10k_tlv_if_limit_ibss,
-> +		.num_different_channels = 1,
-> +		.max_interfaces = 2,
-> +		.n_limits = ARRAY_SIZE(ath10k_tlv_if_limit_ibss),
-> +	},
-> +};
-> +
->  static const struct ieee80211_iface_limit ath10k_10_4_if_limits[] = {
->  	{
->  		.max = 1,
-> @@ -8642,6 +8666,15 @@ int ath10k_mac_register(struct ath10k *ar)
->  				ath10k_tlv_qcs_if_comb;
->  			ar->hw->wiphy->n_iface_combinations =
->  				ARRAY_SIZE(ath10k_tlv_qcs_if_comb);
-> +
-> +			if (test_bit
-> +			    (WMI_SERVICE_VDEV_DIFFERENT_BEACON_INTERVAL_SUPPORT,
-> +			    ar->wmi.svc_map)) {
-> +				ar->hw->wiphy->iface_combinations =
-> +						ath10k_tlv_qcs_bcn_int_if_comb;
-> +				ar->hw->wiphy->n_iface_combinations =
-> +				     ARRAY_SIZE(ath10k_tlv_qcs_bcn_int_if_comb);
-> +			}
+e3148cc5fecf ath10k: fix return value check in wake_tx_q op
 
-I don't like using WMI service flags to advertise different interface
-combinations, it makes ath10k code convoluted. A much better approach is
-to use WMI_SERVICE_IFACE_COMBINATION_SUPPORT:
-
-ath10k:New interface to get interface combinations from FW
-
-https://patchwork.kernel.org/patch/11027361/
+So to me it feels like the issue has been there all along, just hidden, and the
+fix above just exposed it.
 
 -- 
-Kalle Valo
+https://patchwork.kernel.org/patch/10873753/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+
