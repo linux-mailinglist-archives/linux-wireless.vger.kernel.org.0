@@ -2,104 +2,90 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 39C82BD4BE
-	for <lists+linux-wireless@lfdr.de>; Tue, 24 Sep 2019 23:59:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E4A18BD5FA
+	for <lists+linux-wireless@lfdr.de>; Wed, 25 Sep 2019 03:09:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2633605AbfIXV7e (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 24 Sep 2019 17:59:34 -0400
-Received: from mail.kernel.org ([198.145.29.99]:60378 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2387723AbfIXV7d (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 24 Sep 2019 17:59:33 -0400
-Received: from mail-qt1-f179.google.com (mail-qt1-f179.google.com [209.85.160.179])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 6156D217D7;
-        Tue, 24 Sep 2019 21:59:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1569362372;
-        bh=7EnBQLGJXbJ0krx6sf9eAXMt0SpVcFYHvJ4Ffxc+GEI=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=ZUjBfJ5y+ysHUqZVHvVQV6vmXEF5m5l7X/D3o8MMo6T+fnXCBe1Len91UdIVSmNm8
-         1+IgmCK2yWkyLXKdLfON0wTF2uVY6/Zj+z4CbqBQ8S1mTFhTzxJ4K+kIhlIbeitlp5
-         qXtcO6SJzhSJ74/8s14mN0YBxYms1LJJP0SwTimA=
-Received: by mail-qt1-f179.google.com with SMTP id x4so4100980qtq.8;
-        Tue, 24 Sep 2019 14:59:32 -0700 (PDT)
-X-Gm-Message-State: APjAAAUSipfNLAs0r3iY98Oq51rlrlAyRzY6XaLme2e9ZLFqmU4bXOcs
-        y3XFqQogK86HIUelflV99P3yYhl0p6JxbjmCsw==
-X-Google-Smtp-Source: APXvYqxu7lx2ORNXYuD01RyoAdK8YY//zQYn3oJnMVZaPVMMDgXcioCqkbUXveNdRfpBkQzN/4OY/SjTncH5t1k8eUk=
-X-Received: by 2002:ac8:6982:: with SMTP id o2mr5274643qtq.143.1569362371529;
- Tue, 24 Sep 2019 14:59:31 -0700 (PDT)
-MIME-Version: 1.0
-References: <20190924181244.7159-1-nsaenzjulienne@suse.de>
-In-Reply-To: <20190924181244.7159-1-nsaenzjulienne@suse.de>
-From:   Rob Herring <robh+dt@kernel.org>
-Date:   Tue, 24 Sep 2019 16:59:20 -0500
-X-Gmail-Original-Message-ID: <CAL_Jsq+v+svTyna7UzQdRVqfNc5Z_bgWzxNRXv7-Wqv3NwDu2g@mail.gmail.com>
-Message-ID: <CAL_Jsq+v+svTyna7UzQdRVqfNc5Z_bgWzxNRXv7-Wqv3NwDu2g@mail.gmail.com>
-Subject: Re: [PATCH 00/11] of: Fix DMA configuration for non-DT masters
-To:     Nicolas Saenz Julienne <nsaenzjulienne@suse.de>
-Cc:     devicetree@vger.kernel.org, Frank Rowand <frowand.list@gmail.com>,
-        "moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" 
-        <linux-arm-kernel@lists.infradead.org>,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        linux-arm-msm <linux-arm-msm@vger.kernel.org>,
-        "open list:DMA GENERIC OFFLOAD ENGINE SUBSYSTEM" 
-        <dmaengine@vger.kernel.org>, etnaviv@lists.freedesktop.org,
-        dri-devel <dri-devel@lists.freedesktop.org>,
-        xen-devel@lists.xenproject.org, linux-tegra@vger.kernel.org,
-        Linux Media Mailing List <linux-media@vger.kernel.org>,
-        linux-pci@vger.kernel.org, Matthias Brugger <mbrugger@suse.com>,
-        Robin Murphy <robin.murphy@arm.com>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        james.quinlan@broadcom.com, Stefan Wahren <wahrenst@gmx.net>,
-        Dan Williams <dan.j.williams@intel.com>,
-        freedreno <freedreno@lists.freedesktop.org>
-Content-Type: text/plain; charset="UTF-8"
+        id S1729856AbfIYBJ0 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 24 Sep 2019 21:09:26 -0400
+Received: from mail-io1-f65.google.com ([209.85.166.65]:34243 "EHLO
+        mail-io1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729301AbfIYBJ0 (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 24 Sep 2019 21:09:26 -0400
+Received: by mail-io1-f65.google.com with SMTP id q1so9297898ion.1;
+        Tue, 24 Sep 2019 18:09:25 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id;
+        bh=0qoaoTDAjRV29/UL580IFfKdGNsaStRuKRBigYtB0Zw=;
+        b=XDiO+gjyS7ZVsjg7msFnLhyFFBifyXv3e7YuA3S6LsPIm+8Wm37b9Gx8ir5s2nvTEE
+         4CLtRlQ18hwpJ7WQbnedU4td+QeEpmuPlGo8iPpA8JFC/e9cfHiPSDj8bkE0mym+xH5s
+         4o3Zt70Jlode9tlxU5oXVwPBof8gM/I+vLHCDo84ahQPitOYoSQrd2i6rcTJDXVK7Atz
+         ORAsK7Ib2JFx+DjrQEqPv3cwxUx0x6lskcMNMi1HJUGE2PzXATJtJZdp5TMa6nUtYYe4
+         q3j/BwK/beAJiJOxYZXAHCLoiU9l+AkSlOUa1jCfzF8vlUjqGcyLYutabpPk4BxCj/cj
+         ZehA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=0qoaoTDAjRV29/UL580IFfKdGNsaStRuKRBigYtB0Zw=;
+        b=RluUCqx/kzvc27gPOsFc1F+gqSdxOJF8jM3NiLs1i9oAgu31KEVHI+IoDnOGM8KUTN
+         rppCFGmEyr/ZmXvwvmU4k22yfCf0CQeCnyZgBRdUYUUfcQ6TzH2RTdtrtd2shW/EJ98p
+         vMiRoGW0xDlTA5X+ZM/603f6hzcdo8xP7wMiorfG8ovN0f5e4DxMoa730R3CifrTp4K7
+         ZgqQHK4dygKiLaU5GxbHVXC1B26wEtDZR8es+1IgVx76Eo41cpQGte0tJSxnqoJHbLbs
+         TMfv0rgyo19HiVL4DNL4qMdqa+Wn5gJJPHNLRpLzISnz/lqPT0r6mxjg/bVkkfWJdEIV
+         gayQ==
+X-Gm-Message-State: APjAAAVmfxGJu8JH2iLE/aD+9IgqjZPez8OKwu48c7TaLcR03ucEXbJr
+        7MP3njJoh8j0hnhTEXHmluA=
+X-Google-Smtp-Source: APXvYqyJQw60nnXBo8IOkvNVJN5i5TE00dngvI5i7TZeFj+UTu8cmYUDSUY34+1t7gWd3XgLI+tSow==
+X-Received: by 2002:a6b:f319:: with SMTP id m25mr6676370ioh.33.1569373764944;
+        Tue, 24 Sep 2019 18:09:24 -0700 (PDT)
+Received: from cs-dulles.cs.umn.edu (cs-dulles.cs.umn.edu. [128.101.35.54])
+        by smtp.googlemail.com with ESMTPSA id l13sm23532ilq.56.2019.09.24.18.09.23
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 24 Sep 2019 18:09:24 -0700 (PDT)
+From:   Navid Emamdoost <navid.emamdoost@gmail.com>
+Cc:     emamd001@umn.edu, smccaman@umn.edu, kjlu@umn.edu,
+        Navid Emamdoost <navid.emamdoost@gmail.com>,
+        Johannes Berg <johannes.berg@intel.com>,
+        Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
+        Luca Coelho <luciano.coelho@intel.com>,
+        Intel Linux Wireless <linuxwifi@intel.com>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Shahar S Matityahu <shahar.s.matityahu@intel.com>,
+        Sara Sharon <sara.sharon@intel.com>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: [PATCH] iwlwifi: prevent memory leak
+Date:   Tue, 24 Sep 2019 20:09:07 -0500
+Message-Id: <20190925010912.27513-1-navid.emamdoost@gmail.com>
+X-Mailer: git-send-email 2.17.1
+To:     unlisted-recipients:; (no To-header on input)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Tue, Sep 24, 2019 at 1:12 PM Nicolas Saenz Julienne
-<nsaenzjulienne@suse.de> wrote:
->
-> Hi All,
-> this series tries to address one of the issues blocking us from
-> upstreaming Broadcom's STB PCIe controller[1]. Namely, the fact that
-> devices not represented in DT which sit behind a PCI bus fail to get the
-> bus' DMA addressing constraints.
->
-> This is due to the fact that of_dma_configure() assumes it's receiving a
-> DT node representing the device being configured, as opposed to the PCIe
-> bridge node we currently pass. This causes the code to directly jump
-> into PCI's parent node when checking for 'dma-ranges' and misses
-> whatever was set there.
->
-> To address this I create a new API in OF - inspired from Robin Murphys
-> original proposal[2] - which accepts a bus DT node as it's input in
-> order to configure a device's DMA constraints. The changes go deep into
-> of/address.c's implementation, as a device being having a DT node
-> assumption was pretty strong.
->
-> On top of this work, I also cleaned up of_dma_configure() removing its
-> redundant arguments and creating an alternative function for the special cases
-> not applicable to either the above case or the default usage.
->
-> IMO the resulting functions are more explicit. They will probably
-> surface some hacky usages that can be properly fixed as I show with the
-> DT fixes on the Layerscape platform.
->
-> This was also tested on a Raspberry Pi 4 with a custom PCIe driver and
-> on a Seattle AMD board.
+In alloc_sgtable if alloc_page fails, along with releasing previously
+allocated pages, the allocated table should be released too.
 
-Humm, I've been working on this issue too. Looks similar though yours
-has a lot more churn and there's some other bugs I've found.
+Signed-off-by: Navid Emamdoost <navid.emamdoost@gmail.com>
+---
+ drivers/net/wireless/intel/iwlwifi/fw/dbg.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-Can you test out this branch[1]. I don't have any h/w needing this,
-but wrote a unittest and tested with modified QEMU.
+diff --git a/drivers/net/wireless/intel/iwlwifi/fw/dbg.c b/drivers/net/wireless/intel/iwlwifi/fw/dbg.c
+index 5c8602de9168..87421807e040 100644
+--- a/drivers/net/wireless/intel/iwlwifi/fw/dbg.c
++++ b/drivers/net/wireless/intel/iwlwifi/fw/dbg.c
+@@ -646,6 +646,7 @@ static struct scatterlist *alloc_sgtable(int size)
+ 				if (new_page)
+ 					__free_page(new_page);
+ 			}
++			kfree(table);
+ 			return NULL;
+ 		}
+ 		alloc_size = min_t(int, size, PAGE_SIZE);
+-- 
+2.17.1
 
-Rob
-
-[1] git://git.kernel.org/pub/scm/linux/kernel/git/robh/linux.git dma-masks
