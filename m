@@ -2,53 +2,51 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 4722BBE672
-	for <lists+linux-wireless@lfdr.de>; Wed, 25 Sep 2019 22:32:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EDE22BE6A3
+	for <lists+linux-wireless@lfdr.de>; Wed, 25 Sep 2019 22:49:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2393128AbfIYUcT (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 25 Sep 2019 16:32:19 -0400
-Received: from mail-wm1-f65.google.com ([209.85.128.65]:35296 "EHLO
-        mail-wm1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2389778AbfIYUcS (ORCPT
+        id S2393352AbfIYUto (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 25 Sep 2019 16:49:44 -0400
+Received: from mail-wm1-f68.google.com ([209.85.128.68]:53454 "EHLO
+        mail-wm1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728993AbfIYUtn (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 25 Sep 2019 16:32:18 -0400
-Received: by mail-wm1-f65.google.com with SMTP id y21so176884wmi.0;
-        Wed, 25 Sep 2019 13:32:17 -0700 (PDT)
+        Wed, 25 Sep 2019 16:49:43 -0400
+Received: by mail-wm1-f68.google.com with SMTP id i16so186800wmd.3;
+        Wed, 25 Sep 2019 13:49:41 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
          :content-transfer-encoding;
-        bh=9msODsp1f3ntoBvQarVOQqQV429arne9yrJNCKUXVXc=;
-        b=Z1wasGaUInOb/wgCSGocPXC2c3mEd23s6FKA3UPmT43zj/y4/xK7j39of/3TPy2wFM
-         MO4Ny0LUIBqOzyynNcfMrakdwLT0nZSNqlQ5TEtBUrkmhpGcQdWzAZQX3EOMeIzXGxpW
-         aN3SCjO5TyBaYg+JVEK5hMbb44E5tIT04vjW4oQ80R4XMwMAG93lKe1vwRPlblI4PiVD
-         OQkjEx5M9aaupXxQQQHgxxptTXVGaimjWtgRduyHp+hIOaW7wD/JpX4qkAulI5gA9EX8
-         81LgP/FhQ6MQkdxCmgn6k+hcXn/lDaeTbCN6UQEA2l/8NEptfz9nEiOwB778O80KRWQZ
-         bxBw==
-X-Gm-Message-State: APjAAAV2SGEyrgtEQunFxeIJgNrwDDJdKMoPjd1b7YwovWm7gtm1NNVS
-        9AOYFODxq8A+V1XyLz96vFw=
-X-Google-Smtp-Source: APXvYqz7DKuSwCaT7Oqi7TD0hTMLSVZGaKUxZ8UDtvuWifMHzKPO9jzopX+sJDAL8LazUfq8VHznYw==
-X-Received: by 2002:a1c:9a46:: with SMTP id c67mr52161wme.115.1569443537037;
-        Wed, 25 Sep 2019 13:32:17 -0700 (PDT)
+        bh=26gn2NTMQ9dZ0K5OTw06VLKtRMQYca/TvxMBDgiM3Gc=;
+        b=sPxydplJQsLnQ+7EyrubEvK9CQs1bIJ8yiz1tgKnOfz3XtugwaJfHbdXuo4wkgVf2r
+         Qt9hkrmcm7B444jVh+rSHPCWoGjWY9jXz9Z2Jp7mmXYW2YGvTow8g3qV2irlWTznB1KA
+         UgYrWxPokB6ZEfyTv145LbJ499QCuttxOCkjrAPTCRz0bloKgwit8+AlNkSSbT8xTucu
+         NqjnDwYpQ4liQJhbbZrYCXcmVMyP+b2vOpR43C0le7JXcFMgzzpekW9s1IvtphnUx/Yj
+         UZZzZ4VAKKPshbnjGh8qZBuUiu46mmCE7JSngpHkN2MJ8s2E0k153s4ZTACweV6b/X6l
+         dnbA==
+X-Gm-Message-State: APjAAAVX4GxVDIq284+ygr8lPwJ0V11Ykbf1UpeAWi1ounVVX0XsMzoB
+        Pb3BCz5wdArZcGtwYOysx8Y=
+X-Google-Smtp-Source: APXvYqzKzgIgZwOz80DBC8lhUp17PeNmP3M+cq9fY7MrPkFZk2JBqNt3/TuqRc9dO1zOc40b0A716Q==
+X-Received: by 2002:a1c:cb05:: with SMTP id b5mr94727wmg.79.1569444580810;
+        Wed, 25 Sep 2019 13:49:40 -0700 (PDT)
 Received: from localhost.localdomain (99-48-196-88.sta.estpak.ee. [88.196.48.99])
-        by smtp.googlemail.com with ESMTPSA id t14sm105774wrs.6.2019.09.25.13.32.15
+        by smtp.googlemail.com with ESMTPSA id z1sm364705wre.40.2019.09.25.13.49.39
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 25 Sep 2019 13:32:16 -0700 (PDT)
+        Wed, 25 Sep 2019 13:49:40 -0700 (PDT)
 From:   Denis Efremov <efremov@linux.com>
 To:     Kalle Valo <kvalo@codeaurora.org>
 Cc:     Denis Efremov <efremov@linux.com>,
-        Wright Feng <wright.feng@cypress.com>,
-        Chi-Hsien Lin <chi-hsien.lin@cypress.com>,
-        Hante Meuleman <hante.meuleman@broadcom.com>,
-        Franky Lin <franky.lin@broadcom.com>,
-        Arend van Spriel <arend.vanspriel@broadcom.com>,
+        Johannes Berg <johannes.berg@intel.com>,
+        Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
+        Luca Coelho <luciano.coelho@intel.com>,
+        Intel Linux Wireless <linuxwifi@intel.com>,
         "David S. Miller" <davem@davemloft.net>,
-        linux-wireless@vger.kernel.org,
-        brcm80211-dev-list.pdl@broadcom.com, netdev@vger.kernel.org,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
         linux-kernel@vger.kernel.org
-Subject: [PATCH] brcmsmac: remove duplicated if condition
-Date:   Wed, 25 Sep 2019 23:31:52 +0300
-Message-Id: <20190925203152.21548-1-efremov@linux.com>
+Subject: [PATCH] iwlwifi: dvm: excessive if in rs_bt_update_lq()
+Date:   Wed, 25 Sep 2019 23:49:35 +0300
+Message-Id: <20190925204935.27118-1-efremov@linux.com>
 X-Mailer: git-send-email 2.21.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -57,36 +55,28 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-The nested 'li_mimo == &locale_bn' check is excessive and always
-true. Thus it can be safely removed.
+There is no need to check 'priv->bt_ant_couple_ok' twice in
+rs_bt_update_lq(). The second check is always true. Thus, the
+expression can be simplified.
 
 Signed-off-by: Denis Efremov <efremov@linux.com>
 ---
- .../net/wireless/broadcom/brcm80211/brcmsmac/channel.c | 10 ++++------
- 1 file changed, 4 insertions(+), 6 deletions(-)
+ drivers/net/wireless/intel/iwlwifi/dvm/rs.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmsmac/channel.c b/drivers/net/wireless/broadcom/brcm80211/brcmsmac/channel.c
-index db783e94f929..5a6d9c86552a 100644
---- a/drivers/net/wireless/broadcom/brcm80211/brcmsmac/channel.c
-+++ b/drivers/net/wireless/broadcom/brcm80211/brcmsmac/channel.c
-@@ -496,13 +496,11 @@ brcms_c_channel_reg_limits(struct brcms_cm_info *wlc_cm, u16 chanspec,
- 	 * table and override CDD later
- 	 */
- 	if (li_mimo == &locale_bn) {
--		if (li_mimo == &locale_bn) {
--			maxpwr20 = QDB(16);
--			maxpwr40 = 0;
-+		maxpwr20 = QDB(16);
-+		maxpwr40 = 0;
- 
--			if (chan >= 3 && chan <= 11)
--				maxpwr40 = QDB(16);
--		}
-+		if (chan >= 3 && chan <= 11)
-+			maxpwr40 = QDB(16);
- 
- 		for (i = 0; i < BRCMS_NUM_RATES_MCS_1_STREAM; i++) {
- 			txpwr->mcs_20_siso[i] = (u8) maxpwr20;
+diff --git a/drivers/net/wireless/intel/iwlwifi/dvm/rs.c b/drivers/net/wireless/intel/iwlwifi/dvm/rs.c
+index 74229fcb63a9..226165db7dfd 100644
+--- a/drivers/net/wireless/intel/iwlwifi/dvm/rs.c
++++ b/drivers/net/wireless/intel/iwlwifi/dvm/rs.c
+@@ -851,7 +851,7 @@ static void rs_bt_update_lq(struct iwl_priv *priv, struct iwl_rxon_context *ctx,
+ 		 * Is there a need to switch between
+ 		 * full concurrency and 3-wire?
+ 		 */
+-		if (priv->bt_ci_compliance && priv->bt_ant_couple_ok)
++		if (priv->bt_ci_compliance)
+ 			full_concurrent = true;
+ 		else
+ 			full_concurrent = false;
 -- 
 2.21.0
 
