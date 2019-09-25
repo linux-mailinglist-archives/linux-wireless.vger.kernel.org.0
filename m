@@ -2,186 +2,83 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 11186BDAA1
-	for <lists+linux-wireless@lfdr.de>; Wed, 25 Sep 2019 11:11:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EDADDBDC3C
+	for <lists+linux-wireless@lfdr.de>; Wed, 25 Sep 2019 12:35:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732032AbfIYJLL (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 25 Sep 2019 05:11:11 -0400
-Received: from smtp.codeaurora.org ([198.145.29.96]:54644 "EHLO
-        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728608AbfIYJK5 (ORCPT
+        id S2390006AbfIYKfG (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 25 Sep 2019 06:35:06 -0400
+Received: from mail-ot1-f66.google.com ([209.85.210.66]:33964 "EHLO
+        mail-ot1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2389655AbfIYKfG (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 25 Sep 2019 05:10:57 -0400
-Received: by smtp.codeaurora.org (Postfix, from userid 1000)
-        id 4851F611FA; Wed, 25 Sep 2019 09:10:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1569402652;
-        bh=28HjTg107xudXWilP3f2TOc5WYDSsZ6Rmykw7iVlDPk=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=jorIhOxZaKDA0MH+G1vEM98l42BK/Im7HQ/VQ1kFg/0P9tcM9fGfH3Wt6zDaGJIiV
-         VW98bF1kQOWlrKK8m6Yh8SMVOkneuJB6uUM9Rzh6QHkW0SjvoHMvnvEObChyUtd+FD
-         ApEGq1abMcYUPOqT4MVxXg/XjDJYdJw/1GJjRHLs=
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        pdx-caf-mail.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.7 required=2.0 tests=ALL_TRUSTED,BAYES_00,
-        DKIM_INVALID,DKIM_SIGNED,SPF_NONE autolearn=no autolearn_force=no
-        version=3.4.0
-Received: from wgong-HP-Z240-SFF-Workstation.qca.qualcomm.com (unknown [180.166.53.21])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-SHA256 (128/128 bits))
-        (No client certificate requested)
-        (Authenticated sender: wgong@smtp.codeaurora.org)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 15A01611BF;
-        Wed, 25 Sep 2019 09:10:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1569402651;
-        bh=28HjTg107xudXWilP3f2TOc5WYDSsZ6Rmykw7iVlDPk=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=OYEFjpaoK9Ba/iJHXZOrlSVJZMYMqqDwViS/7YKe7yCfU59hLlGiwAkA/irQ8lFpy
-         gmpwRA6ZRiFRmf2tv2M+Zeff1Ss61c9i+u1pQHRHqUQ/kz6TudW9MUHqTbivE9SUse
-         e9cx7lZ8Snqz4x4JP5HNH4S/F0iTK+BRDOrQh2HI=
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 15A01611BF
-Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=wgong@codeaurora.org
-From:   Wen Gong <wgong@codeaurora.org>
-To:     ath10k@lists.infradead.org
-Cc:     linux-wireless@vger.kernel.org
-Subject: [PATCH v6 3/3] ath10k: add workqueue for RX path of sdio
-Date:   Wed, 25 Sep 2019 17:10:39 +0800
-Message-Id: <1569402639-31720-4-git-send-email-wgong@codeaurora.org>
-X-Mailer: git-send-email 1.9.1
-In-Reply-To: <1569402639-31720-1-git-send-email-wgong@codeaurora.org>
-References: <1569402639-31720-1-git-send-email-wgong@codeaurora.org>
+        Wed, 25 Sep 2019 06:35:06 -0400
+Received: by mail-ot1-f66.google.com with SMTP id m19so4351454otp.1
+        for <linux-wireless@vger.kernel.org>; Wed, 25 Sep 2019 03:35:06 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
+         :cc:content-transfer-encoding;
+        bh=8wzVpUT1lF+LA85bI7Ppewnhb+cRPfMX9zvQYDu2GVU=;
+        b=Wi5Ag0SHfzxXZInHydI4YbqTIB/rrxCCL1JJscBC7KJCrxqB4Ihcn+UIjSPYjwKNch
+         7cBa5Lxf5Asnek9AGEu7V36waFAgT7Or0k7KzIQ7IqGDEtdO/MXNsdY5WBtitHzWOQug
+         dUsljL/wTOy+dxiX1U3vAHWmR9SN7rWKDO4xvpVJxDfg4q8fkQBIJKe6XT43I+awGL9n
+         0PtaYQaGTZf6vRsZpwOZj2V0vHGkpFSCuBIcN+YY78+rZf/1/LvnDEwI2PZuyWI6wHmh
+         kjxQiEMtUzmTUqeGS+dL5jv7ZhYB7rocdWN8xmwn+eQsu0engwyPl9ftTLcelVUVEqxy
+         8+SA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:in-reply-to:references:from:date
+         :message-id:subject:to:cc:content-transfer-encoding;
+        bh=8wzVpUT1lF+LA85bI7Ppewnhb+cRPfMX9zvQYDu2GVU=;
+        b=qTK+/gIbQXm7gmdsC4rV4gCDquC/5Ce0P/VS91d/n5fwqcBU6A6KNHp9XSjXYdflYX
+         DkhC7U45f4kQtr/6MQBpNu/+4PWI788v1aUxHhQg7KglN1jpm6PizN+7Oi4xJmApJbBc
+         tkiTj49nv4zBSz6ZBoc1XFudgUZUy2os41VZIYVYUIFTvWFgHP1rva4lfmItgdw/nXxB
+         njqm3j1o6Vp/GpCersT1n2Qr9NJHSuIRqdldkvEVpmHKzbHM8achpZYQ/AyZ5j3amvEZ
+         ppB+50Z8oSZx3PLK9b47GRAD0Ag/qIah8Nblv2ZlQTmCMw3Xr0fDA1Oeux8lpIvORPcq
+         b7Yg==
+X-Gm-Message-State: APjAAAVIAZ6gQzkdc3nws6nyrqK4eJ0rT7xtD0CPJ1MdhFaE9Ii0k9Yz
+        O4lbfU6qoJfkFgqS1yKB/2l/Hx0X6wN6dE/grTQ=
+X-Google-Smtp-Source: APXvYqyX/ZlcKUdbiApg5M1nDcipCDSrDxDkBnkm+TsyGlNqd0QuRU4h563tY5h2saYISCa6BDUaXRSCxfZliuxl4KU=
+X-Received: by 2002:a05:6830:5a:: with SMTP id d26mr5405952otp.256.1569407705902;
+ Wed, 25 Sep 2019 03:35:05 -0700 (PDT)
+MIME-Version: 1.0
+Received: by 2002:a9d:2286:0:0:0:0:0 with HTTP; Wed, 25 Sep 2019 03:35:05
+ -0700 (PDT)
+In-Reply-To: <a87917de-d60c-b746-742a-ade37ffe9c4c@candelatech.com>
+References: <1553025580-6118-1-git-send-email-pozega.tomislav@gmail.com>
+ <2715bcef-5b03-fc19-e665-3c6f90a7d123@candelatech.com> <CAKR_QVKfb5vkT1xmmEyvJzeb+VnPx8T3ZpkdLPTMx+agtSBYMg@mail.gmail.com>
+ <a87917de-d60c-b746-742a-ade37ffe9c4c@candelatech.com>
+From:   Tom Psyborg <pozega.tomislav@gmail.com>
+Date:   Wed, 25 Sep 2019 12:35:05 +0200
+Message-ID: <CAKR_QV+TDi5DQ5Vsc-nactAryzAExe470VNJ+tj+vUa37rs_Xg@mail.gmail.com>
+Subject: Re: [PATCH] ath10k: Fix ASPM L1 state on QCA988X
+To:     kvalo@codeaurora.org
+Cc:     linux-wireless@vger.kernel.org,
+        Ben Greear <greearb@candelatech.com>,
+        Sujith Manoharan <c_manoha@qca.qualcomm.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-For RX, it has two parts, one is to read data from sdio, another
-is to indicate the packets to upper stack. Recently it has only
-one thread to do all RX things, it results that it is sequential
-for RX and low throughout, change RX to parallel for the two parts
-will increase throughout.
+Hi
 
-This patch move the indication to a workqueue, it results in
-significant performance improvement on RX path.
+Some more info: the actual regression was introduced with the commit:
+ath10k: enable ASPM - reverting this change only is enough to have
+card operating as expected.
 
-Udp rx throughout is 200Mbps without this patch, and it arrives
-400Mbps with this patch.
+Still, this patch would apply, but in slightly different manner.
 
-Tested with QCA6174 SDIO with firmware
-WLAN.RMH.4.4.1-00017-QCARMSWPZ-1
+On OpenWrt router, masked value would always read 0x27 with two cards
+tested QCA9862 and QCA9880 v1.
 
-Signed-off-by: Wen Gong <wgong@codeaurora.org>
----
- drivers/net/wireless/ath/ath10k/sdio.c | 35 +++++++++++++++++++++++++++++++---
- drivers/net/wireless/ath/ath10k/sdio.h | 11 +++++++++++
- 2 files changed, 43 insertions(+), 3 deletions(-)
+But on HP laptop, QCA9862 masked value reading was 0x0f, and writing
+0x27 to this register still seems fine, as long as the faulty ASPM
+change is kept reverted.
 
-diff --git a/drivers/net/wireless/ath/ath10k/sdio.c b/drivers/net/wireless/ath/ath10k/sdio.c
-index a510101..ff02833 100644
---- a/drivers/net/wireless/ath/ath10k/sdio.c
-+++ b/drivers/net/wireless/ath/ath10k/sdio.c
-@@ -419,6 +419,7 @@ static int ath10k_sdio_mbox_rx_process_packets(struct ath10k *ar,
- 	struct ath10k_htc *htc = &ar->htc;
- 	struct ath10k_sdio_rx_data *pkt;
- 	struct ath10k_htc_ep *ep;
-+	struct ath10k_skb_cb *cb;
- 	enum ath10k_htc_ep_id id;
- 	int ret, i, *n_lookahead_local;
- 	u32 *lookaheads_local;
-@@ -464,10 +465,16 @@ static int ath10k_sdio_mbox_rx_process_packets(struct ath10k *ar,
- 		if (ret)
- 			goto out;
- 
--		if (!pkt->trailer_only)
--			ep->ep_ops.ep_rx_complete(ar_sdio->ar, pkt->skb);
--		else
-+		if (!pkt->trailer_only) {
-+			cb = ATH10K_SKB_CB(pkt->skb);
-+			cb->eid = id;
-+
-+			skb_queue_tail(&ar_sdio->rx_head, pkt->skb);
-+			queue_work(ar->workqueue_aux,
-+				   &ar_sdio->async_work_rx);
-+		} else {
- 			kfree_skb(pkt->skb);
-+		}
- 
- 		/* The RX complete handler now owns the skb...*/
- 		pkt->skb = NULL;
-@@ -1317,6 +1324,25 @@ static void __ath10k_sdio_write_async(struct ath10k *ar,
- 	ath10k_sdio_free_bus_req(ar, req);
- }
- 
-+static void ath10k_rx_indication_async_work(struct work_struct *work)
-+{
-+	struct ath10k_sdio *ar_sdio = container_of(work, struct ath10k_sdio,
-+						   async_work_rx);
-+	struct ath10k *ar = ar_sdio->ar;
-+	struct ath10k_htc_ep *ep;
-+	struct ath10k_skb_cb *cb;
-+	struct sk_buff *skb;
-+
-+	while (true) {
-+		skb = skb_dequeue(&ar_sdio->rx_head);
-+		if (!skb)
-+			break;
-+		cb = ATH10K_SKB_CB(skb);
-+		ep = &ar->htc.endpoint[cb->eid];
-+		ep->ep_ops.ep_rx_complete(ar, skb);
-+	}
-+}
-+
- static void ath10k_sdio_write_async_work(struct work_struct *work)
- {
- 	struct ath10k_sdio *ar_sdio = container_of(work, struct ath10k_sdio,
-@@ -2087,6 +2113,9 @@ static int ath10k_sdio_probe(struct sdio_func *func,
- 	for (i = 0; i < ATH10K_SDIO_BUS_REQUEST_MAX_NUM; i++)
- 		ath10k_sdio_free_bus_req(ar, &ar_sdio->bus_req[i]);
- 
-+	skb_queue_head_init(&ar_sdio->rx_head);
-+	INIT_WORK(&ar_sdio->async_work_rx, ath10k_rx_indication_async_work);
-+
- 	dev_id_base = FIELD_GET(QCA_MANUFACTURER_ID_BASE, id->device);
- 	switch (dev_id_base) {
- 	case QCA_MANUFACTURER_ID_AR6005_BASE:
-diff --git a/drivers/net/wireless/ath/ath10k/sdio.h b/drivers/net/wireless/ath/ath10k/sdio.h
-index 00bd4ca..8aa0dbc 100644
---- a/drivers/net/wireless/ath/ath10k/sdio.h
-+++ b/drivers/net/wireless/ath/ath10k/sdio.h
-@@ -98,6 +98,12 @@
- #define ATH10K_FIFO_TIMEOUT_AND_CHIP_CONTROL_DISABLE_SLEEP_OFF 0xFFFEFFFF
- #define ATH10K_FIFO_TIMEOUT_AND_CHIP_CONTROL_DISABLE_SLEEP_ON 0x10000
- 
-+struct ath10k_sdio_rx_request {
-+	struct list_head list;
-+	struct sk_buff *skb;
-+	struct ath10k_htc_ep *ep;
-+};
-+
- struct ath10k_sdio_bus_request {
- 	struct list_head list;
- 
-@@ -187,6 +193,9 @@ struct ath10k_sdio {
- 	struct ath10k_sdio_bus_request bus_req[ATH10K_SDIO_BUS_REQUEST_MAX_NUM];
- 	/* free list of bus requests */
- 	struct list_head bus_req_freeq;
-+
-+	struct sk_buff_head rx_head;
-+
- 	/* protects access to bus_req_freeq */
- 	spinlock_t lock;
- 
-@@ -213,6 +222,8 @@ struct ath10k_sdio {
- 	struct list_head wr_asyncq;
- 	/* protects access to wr_asyncq */
- 	spinlock_t wr_async_lock;
-+
-+	struct work_struct async_work_rx;
- };
- 
- static inline struct ath10k_sdio *ath10k_sdio_priv(struct ath10k *ar)
--- 
-1.9.1
-
+I did also notice about 10=C2=B0C temperature drop in ath10k_hwmon and no
+more crashes when resuming from sleep, but that might be related to
+the fact these tests were now done with backports-5.1 instead of the
+in-tree 4.9 driver.
