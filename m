@@ -2,56 +2,56 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E1E10BEBC3
-	for <lists+linux-wireless@lfdr.de>; Thu, 26 Sep 2019 07:57:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 252D0BEBD0
+	for <lists+linux-wireless@lfdr.de>; Thu, 26 Sep 2019 08:04:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2392589AbfIZF5h (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 26 Sep 2019 01:57:37 -0400
-Received: from us-smtp-delivery-1.mimecast.com ([207.211.31.120]:55811 "EHLO
+        id S2392694AbfIZGEd (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 26 Sep 2019 02:04:33 -0400
+Received: from us-smtp-delivery-1.mimecast.com ([205.139.110.120]:49198 "EHLO
         us-smtp-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1730840AbfIZF5h (ORCPT
+        with ESMTP id S2392682AbfIZGEa (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 26 Sep 2019 01:57:37 -0400
+        Thu, 26 Sep 2019 02:04:30 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1569477456;
+        s=mimecast20190719; t=1569477865;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
          to:to:cc:cc:mime-version:mime-version:content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=+Yu/mX+8B9QuHL4hN9k+El6bWskPSkNQA2rcFqy57vI=;
-        b=fUbvH6JNDS1nCfR9fDMAdhav5PcRrNT+pj9bOeFph/Qe3Ct9QfhRPEOTJfJ83+aLpHjKp2
-        MeU2PDSlLdURpyo9gXcZT3+K8RZKyez15d6uV//rj26c/CQPS/41A9XPNSkXsk+4WiMwco
-        TwCLbkwIldir2OCucCaK8lT4n3oHqPs=
-Received: from mail-ed1-f72.google.com (mail-ed1-f72.google.com
- [209.85.208.72]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-345-hNSTKXA9OkWwLJBdCJ6LSA-1; Thu, 26 Sep 2019 01:57:34 -0400
-Received: by mail-ed1-f72.google.com with SMTP id c23so621686edb.14
-        for <linux-wireless@vger.kernel.org>; Wed, 25 Sep 2019 22:57:34 -0700 (PDT)
+        bh=fJjKvUAiAvso3g67cfZxWoqpQkJ8lofBbPzkRMA+OUE=;
+        b=eKPrhkHfFS7QIJ3uS/HnbQAbJQeZN3pxxWApzuJtqvkktV1KVDgp2G4se36Q3aG05Gl5se
+        jfgdyqYx8TudQYvpTQAH80uFndDFwwNtnVcS6NbBsEumvaPb/2kdJIlAgG5TNY1xnlrpZO
+        nTYmJJjE1qexH9rrhNMAWExwqcRUEfQ=
+Received: from mail-ed1-f71.google.com (mail-ed1-f71.google.com
+ [209.85.208.71]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-24-xotYzooYO7CY0IpPNRNGIQ-1; Thu, 26 Sep 2019 02:04:22 -0400
+Received: by mail-ed1-f71.google.com with SMTP id p55so646440edc.5
+        for <linux-wireless@vger.kernel.org>; Wed, 25 Sep 2019 23:04:22 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:in-reply-to:references:date
          :message-id:mime-version;
-        bh=ucadyRpb1IAjd+Ci9gbzaePonwLnfEH0c/EZa1gvDYA=;
-        b=DWj/+VLjfSfPuMcPp9NUt1nMNpNtu5R0Mv+nl0DKWCaEwUEBGcesU90y6Qko/k3w38
-         qDrof9Txmw8GxIgjPxGRici6K+eLgVKtzKFtQNYQyo+yNjH7jTsJTapYV4Tm1jWC/N1v
-         +mg9iaJ2F9R5Zbr6hLZluNvt+K1S1Wk5i4inBEpitUzxAz0xfXJ6YqV6IUlbgC2WYejl
-         3+bPl/vpC0ha3ZAHhLaxVgbOKsjwo4MT+Ajca3VnoUQFlKBYZHLDsJNPv80GbODzeW8B
-         of++/Tm0hzAXbYEqgG8gP7SWRgeWVapZyPCc02LCsmdL+FB9jTB5ydl8GpKhPlMpBDJz
-         WAxA==
-X-Gm-Message-State: APjAAAUtQqiV3cAJGtFLY51zdBkViRjWVcOSBcfd2l44tqL9zB8Es/B+
-        sa0cu0nU7DmrN8un3P4m7b0bQDFx75Jwe3LD355cb6JkwiIzLCiou5JCwlehocevgX3zTrDBz4k
-        uWbV1o5hFqWKmwykTJJ4DkcThiXY=
-X-Received: by 2002:a17:906:c4b:: with SMTP id t11mr1560880ejf.131.1569477453454;
-        Wed, 25 Sep 2019 22:57:33 -0700 (PDT)
-X-Google-Smtp-Source: APXvYqzZQkbrsuzYGBmNMjgwjNSUZV1jZsLX07Efpokm64PxqfNa8lwKXgeX06dISnqxi1DS0IQbZA==
-X-Received: by 2002:a17:906:c4b:: with SMTP id t11mr1560865ejf.131.1569477453244;
-        Wed, 25 Sep 2019 22:57:33 -0700 (PDT)
-Received: from alrua-x1.borgediget.toke.dk ([2a00:7660:6da:443::2])
-        by smtp.gmail.com with ESMTPSA id v8sm257914edi.49.2019.09.25.22.57.32
+        bh=Xm/q5Y5mHbNgamTmjVPn/PJWoyBCasibiXbF7mGYw00=;
+        b=GKVrEY4I24Bp1tqXoW2E/Z93zCKOZ7JOC5ITKEw6ruWrhde3C+sjVKxIdHT8J1JnNz
+         3CyxwDu9UWSp6RuXlVIr4L7/hoJhDFen+OJ5QyE0JcUYk+jdaUavqowIhrzCDdX41XEh
+         he6fFdVhqhmoGGDiZYxtKC6JU2UU+hI5NTDyEg2goQVuDbjC4PYUHkYmR5V7oHVLn5fH
+         2JhZMl+KkuKK3bMXS4vQQ1LW2JLY741l09Ff4KuwwqscQmYwtfbdYPWveydv469BD/5J
+         wCBqXH8/ehXSvF25+0EIjp+zJMF0PAzJdTuut/SvZEj+zNUHgzAOcqEIOLfD7fH36H/s
+         2qlg==
+X-Gm-Message-State: APjAAAVAAEK1Drw+DFCZKrK7yRniIXzRZ882c7ybQrMuu66x548TM/vE
+        Vbb5rhwmNFxvh2bXcUdKiW90vYnW68nH1b8zaPDvPFRYM55WR3DJhKTQDHdaXKt7kMqRvrBti1P
+        V5gV0z0ml8iIt0nOVYRIak8aVVnY=
+X-Received: by 2002:a17:906:3281:: with SMTP id 1mr1590442ejw.181.1569477861003;
+        Wed, 25 Sep 2019 23:04:21 -0700 (PDT)
+X-Google-Smtp-Source: APXvYqy+xB2DKVEmhESC9/09VfXNNROZ2xYtoeQLKK28UnLuQWJP5zyp4zPW039QZOVh0Cm7zgiLkQ==
+X-Received: by 2002:a17:906:3281:: with SMTP id 1mr1590417ejw.181.1569477860735;
+        Wed, 25 Sep 2019 23:04:20 -0700 (PDT)
+Received: from alrua-x1.borgediget.toke.dk (borgediget.toke.dk. [85.204.121.218])
+        by smtp.gmail.com with ESMTPSA id v22sm263162edm.89.2019.09.25.23.04.19
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 25 Sep 2019 22:57:32 -0700 (PDT)
+        Wed, 25 Sep 2019 23:04:19 -0700 (PDT)
 Received: by alrua-x1.borgediget.toke.dk (Postfix, from userid 1000)
-        id D82D318063D; Thu, 26 Sep 2019 07:57:31 +0200 (CEST)
+        id 3167418063D; Thu, 26 Sep 2019 08:04:19 +0200 (CEST)
 From:   Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>
 To:     Kan Yan <kyan@google.com>
 Cc:     Yibo Zhao <yiboz@codeaurora.org>,
@@ -63,13 +63,13 @@ Cc:     Yibo Zhao <yiboz@codeaurora.org>,
         Felix Fietkau <nbd@nbd.name>,
         linux-wireless-owner@vger.kernel.org
 Subject: Re: [PATCH RFC/RFT 4/4] mac80211: Apply Airtime-based Queue Limit (AQL) on packet dequeue
-In-Reply-To: <CA+iem5uGU0mQ=37dvp-pnvyk_T9o5cp7vOpsi90U9X-rMjtZ5w@mail.gmail.com>
-References: <156889576422.191202.5906619710809654631.stgit@alrua-x1> <156889576869.191202.510507546538322707.stgit@alrua-x1> <2f6b649dcb788222e070ebb5593918c7@codeaurora.org> <87y2yc3ieb.fsf@toke.dk> <8c5a3a011f03d4dd4165b838a2b8bc72@codeaurora.org> <87mues35d4.fsf@toke.dk> <CA+iem5sg-YpkBX4VQPzqibN0YApMxtwFsGqjK2cUUrxD_52zPw@mail.gmail.com> <CA+iem5uGU0mQ=37dvp-pnvyk_T9o5cp7vOpsi90U9X-rMjtZ5w@mail.gmail.com>
+In-Reply-To: <CA+iem5sg-YpkBX4VQPzqibN0YApMxtwFsGqjK2cUUrxD_52zPw@mail.gmail.com>
+References: <156889576422.191202.5906619710809654631.stgit@alrua-x1> <156889576869.191202.510507546538322707.stgit@alrua-x1> <2f6b649dcb788222e070ebb5593918c7@codeaurora.org> <87y2yc3ieb.fsf@toke.dk> <8c5a3a011f03d4dd4165b838a2b8bc72@codeaurora.org> <87mues35d4.fsf@toke.dk> <CA+iem5sg-YpkBX4VQPzqibN0YApMxtwFsGqjK2cUUrxD_52zPw@mail.gmail.com>
 X-Clacks-Overhead: GNU Terry Pratchett
-Date:   Thu, 26 Sep 2019 07:57:31 +0200
-Message-ID: <87k19v38hg.fsf@toke.dk>
+Date:   Thu, 26 Sep 2019 08:04:19 +0200
+Message-ID: <87h84z3864.fsf@toke.dk>
 MIME-Version: 1.0
-X-MC-Unique: hNSTKXA9OkWwLJBdCJ6LSA-1
+X-MC-Unique: xotYzooYO7CY0IpPNRNGIQ-1
 X-Mimecast-Spam-Score: 0
 Content-Type: text/plain; charset=WINDOWS-1252
 Content-Transfer-Encoding: quoted-printable
@@ -80,26 +80,83 @@ X-Mailing-List: linux-wireless@vger.kernel.org
 
 Kan Yan <kyan@google.com> writes:
 
->> > Do you mean we will use airtime reported by FW to calculate
->>
->> > local->airtime_queued in case we have FW reporting airtime?
->> No, the opposite; if the firmware can't report airtime, we can use the
->> estimated values to feed into report_airtime() for the fairness
->> calculation...
-> The local->airtime_queued is the 'future' airtime for the packet
-> pending the queue. It can't be replaced by the after the fact airtime
-> reported from firmware for the frames transmitted.
+>> Yes, please do! AFAICT, the main difference is that your version keeps
+>> the airtime calculation itself in the driver, while mine passes up the
+>> rate and lets mac80211 do the calculation of airtime. Other than that,
+>> the differences are minor, no?
+>> I'm not actually sure which approach is best; I suspect doing all the
+>> accounting in mac80211 will help with integrating this into drivers that
+>> use minstrel; we can just add a hook in that and be done with it.
+>> Whereas if the driver has to do the accounting, we would need to add
+>> that to each driver (mt76, iwl(?)).
+>
+> Yes, they are essentially doing the same thing. I kept the airtime
+> estimation code in the ath10k just because it is already there. It is
+> better to do that in mac80211, so it doesn't have to be duplicated for
+> each driver and avoids the overhead of updating the estimated airtime
+> from host driver to mac80211.
 
-No, but on tx_completion we could do something like this:
+Right, makes sense.
 
-airtime =3D CB(skb)->tx_time ?: CB(skb)->tx_time_est;
-ieee80211_report_airtime(sta, airtime);
+>> But of course, doing things in mac80211 depends on stuffing even more
+>> stuff into the already overloaded cb field; and I'm not actually
+>> entirely sure what I've done with that will actually work. WDYT?
+> Either way a field in skb cb is needed to record the estimated
+> airtime. The  'tx_time_est' shares the space with the codel
+> 'enque_time' looks fine to me, as their lifetime doesn't overlap.
 
-That way, if the driver sets the tx_time field to something the firmware
-reports, we'll use that, and otherwise we'd fall back to the estimate.
+The kbuild bot pointed out that the current implementation doesn't work
+as it's supposed to on m68k (which is big-endian, I think?). I guess
+it's because the compiler puts the u16 in the "wrong half" of the space
+being used by the u32 it shares with, so it doesn't line up? If so, that
+may mean we'll need another layer struct/union wrapping; unless someone
+else has an idea for how to force the compiler to put the u16 in a union
+at the "start" of the u32 regardless of endianness?
 
-Of course, there would need to be a way for the driver to opt out of
-this, for drivers that report out of band airtime like ath10k does :)
+> There is another minor difference in the ChromiumOs version, which
+> actually address the issue Yibo just asked:
+>> Meanwhile, airtime_queued will also limit the situation that we only
+>> have a station for transmission. Not sure if the peak throughput will be
+>> impacted. I believe it may work fine with 11ac in chromiumos, how about
+>> 11n and 11a?
+>
+> My version has two AQL limits, a smaller per station limit (4ms) and a
+> larger per interface limit (24 ms). When the per interface limit has
+> not been reached, stations are allowed to transmit up to 1/3 of the
+> interface limits (8ms). This way it balance the needs to control
+> latency when there are a lot of stations and to get good throughput
+> benchmark numbers with a single client. In my test, I found increasing
+> the AQL limit to beyond 8 ms doesn't helps peak throughput on 4x4
+> ath10k chipset.
+> https://chromium-review.googlesource.com/c/chromiumos/third_party/kernel/=
++/1734867/3/net/mac80211/tx.c#b3734
+
+Yeah, I was wondering about that. Makes sense. Why 24ms, exactly?
+
+>> Of course we'll also have to eventually integrate this with the other
+>> series that Yibo recently re-posted (the virtual time scheduler). I
+>> think that will be relatively straight forward, except I'm not sure your
+>> atomic patches will work when we also have to update the rbtree. Any
+>> thoughts on that series in general?
+> I do like the virtual time scheduler patchset. It makes it easier to
+> schedule an arbitrary tx queue and handles ath10k's firmware pulling
+> mode better. I will give it a try.
+
+Yup, that was the idea. Note that the current version doesn't have the
+more granular locking that Felix put in for the RR-based scheduler.
+Guess I need to re-spin; will see if I can't get to that soon.
+
+>> Yup, makes sense. Looking at the version you linked to, though, it seems
+>> you're calling ieee80211_sta_register_airtime() with the estimated value
+>> as well? So are you double-accounting airtime, or are you adjusting for
+>> the accurate values somewhere else I don't see in that series?
+> It does not double count airtime, just both the airtime fairness
+> scheduler and AQL use the estimate airtime. It is on an older tree and
+> still doesn't have the patch that provides the fw airtime:
+> https://patchwork.kernel.org/patch/10684689
+
+Ah, I see. I assumed that the other call to sta_register_airtime() was
+still there...
 
 -Toke
 
