@@ -2,62 +2,55 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B4718BF36A
-	for <lists+linux-wireless@lfdr.de>; Thu, 26 Sep 2019 14:54:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E3ED0BF392
+	for <lists+linux-wireless@lfdr.de>; Thu, 26 Sep 2019 14:57:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726330AbfIZMyT (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 26 Sep 2019 08:54:19 -0400
-Received: from smtp.codeaurora.org ([198.145.29.96]:41512 "EHLO
+        id S1726500AbfIZM5i (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 26 Sep 2019 08:57:38 -0400
+Received: from smtp.codeaurora.org ([198.145.29.96]:42540 "EHLO
         smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725768AbfIZMyT (ORCPT
+        with ESMTP id S1726332AbfIZM5i (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 26 Sep 2019 08:54:19 -0400
+        Thu, 26 Sep 2019 08:57:38 -0400
 Received: by smtp.codeaurora.org (Postfix, from userid 1000)
-        id 4C4A2614DB; Thu, 26 Sep 2019 12:54:17 +0000 (UTC)
+        id 2FB196013C; Thu, 26 Sep 2019 12:57:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1569502458;
-        bh=eNhcs/ZYjvDCzx5+kNiqVivk1OFEH6ODOV34ybe75B0=;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=GoNKLRGXAscx5Zx6mLnc1qOUtFzm4C62UjGIi9AzKmfXM4ZaPzxsWRjRzF3ODgr7C
-         +7WdO1pD4aIIm6umtEtGGRLn9mTt24jVzgBR4udsqI5ywMO3r3BdK/1lcIe7pEz1/r
-         Fbhau1GgXoAOgXoudKJJbXYf0W+rqXdR/URTTZVU=
+        s=default; t=1569502657;
+        bh=XWJZ29qmhxdNsiEDSm4SmSSi0jFoSNnwAiHHPXLLh2Y=;
+        h=From:To:Cc:Subject:Date:From;
+        b=mLB6ESXn5HOGoQJpWnkUNKljeiPsPpPl3NccJNM/AzT+s3HiWv6rLKb6SW7bOkS/y
+         7phhZGnQTWOBIDMnfZuEch3ctdHzjkquzSpvpdujKdKjt/CuXYEIMSlJgftGWOaDa7
+         UUiH3QeRFAppqn+8sfcWE8ua3k+aWHv7XFpSYwEA=
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         pdx-caf-mail.web.codeaurora.org
 X-Spam-Level: 
 X-Spam-Status: No, score=-2.7 required=2.0 tests=ALL_TRUSTED,BAYES_00,
         DKIM_INVALID,DKIM_SIGNED,SPF_NONE autolearn=no autolearn_force=no
         version=3.4.0
-Received: from tynnyri.adurom.net (tynnyri.adurom.net [51.15.11.48])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
         (Authenticated sender: kvalo@smtp.codeaurora.org)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 333B261378;
-        Thu, 26 Sep 2019 12:54:13 +0000 (UTC)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 8BCEA6016D;
+        Thu, 26 Sep 2019 12:57:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1569502455;
-        bh=eNhcs/ZYjvDCzx5+kNiqVivk1OFEH6ODOV34ybe75B0=;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=InyQzI9yKHf18w1C52eyTlG3Q+pNdSEv2Cyb6muVZQKBBQ7W3LRpPHjIKOpvCYbR0
-         ElHU3nz0zNsnWDs9bb0xz6BiL5QPfLLehBjeyDwgzWpEFdC8zugthzehVM610sT3GU
-         8I7Zx11gl/BiZ+LpXo7i4iDRph4Yn4z5ZXWVhpYQ=
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 333B261378
+        s=default; t=1569502656;
+        bh=XWJZ29qmhxdNsiEDSm4SmSSi0jFoSNnwAiHHPXLLh2Y=;
+        h=From:To:Cc:Subject:Date:From;
+        b=D9NbvxsSKCAUttzEPFtiHP/pDAp13i96vTF4YoqbpiefOXmOlUVy5B2N8GFsnbtG3
+         8QxL3fDQ99lzgCCNEcVdZCFHVen9+bWeslAV53BKLcD44oz6bNSdtxq24yP9JmdEEM
+         wC7YiqglQ+nktugLTWVmPWcerDsEqTnAW3sWj0LA=
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 8BCEA6016D
 Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
 Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
 From:   Kalle Valo <kvalo@codeaurora.org>
-To:     Federico Cuello <fedux@fedux.com.ar>
-Cc:     Brian Norris <briannorris@chromium.org>,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        Wen Gong <wgong@codeaurora.org>,
-        Miaoqing Pan <miaoqing@codeaurora.org>
-Subject: Re: ath10k: Poor performance with kernel 5.3 fixed
-References: <20190925090856.6964-1-fedux@fedux.com.ar>
-        <CA+ASDXOCqZxbASdF4S3z1derWxJO44_hWfdTkjZS0FSoswRvxw@mail.gmail.com>
-        <81765f82aaeecc85dea9ce0d6524743e@fedux.com.ar>
-Date:   Thu, 26 Sep 2019 15:54:11 +0300
-In-Reply-To: <81765f82aaeecc85dea9ce0d6524743e@fedux.com.ar> (Federico
-        Cuello's message of "Thu, 26 Sep 2019 09:56:37 +0200")
-Message-ID: <87k19vi5fw.fsf@tynnyri.adurom.net>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
+To:     David Miller <davem@davemloft.net>
+Cc:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: pull-request: wireless-drivers 2019-09-26
+Date:   Thu, 26 Sep 2019 15:57:33 +0300
+Message-ID: <8736gj5i6a.fsf@kamboji.qca.qualcomm.com>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
 MIME-Version: 1.0
 Content-Type: text/plain
 Sender: linux-wireless-owner@vger.kernel.org
@@ -65,45 +58,82 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-+ Miaoqing
+Hi Dave,
 
-Federico Cuello <fedux@fedux.com.ar> writes:
+here's a pull request to net tree for v5.4. Please let me know if there
+are any problems.
 
-> On 2019-09-25 18:24, Brian Norris wrote:
->> On Wed, Sep 25, 2019 at 2:16 AM Federico Cuello <fedux@fedux.com.ar>
->> wrote:
->>> When upgrading to 5.3 my AP started to work really slow. I tracked
->>> the problem to 4504f0e5b5714d9d26b1a80bf1fc133c95830588 and fixed
->>> the issue.
->>
->> For the record, that's:
->> 4504f0e5b571 ath10k: sdio: workaround firmware UART pin
->> configuration bug
->
->
->>
->>> The attached patch fixes the issue when uart_print is false and
->>> uart_pin_workaround also false.
->>
->> -ENOPATCH
->
-> Sorry, I sent it in a different email "attached to the thread", but in
-> any case, there was the same fix already applied to kvalo's tree.
->
-> Here is the patch and link to already applied fix:
->
->   https://patchwork.kernel.org/patch/11160267/
->
->
-> It would be great if we can get this to stable, in my case, my WiFi
-> speed went from 150 Mbit/s to 1-5 Mbit/s without this fix.
+Kalle
 
-I didn't know that the bug was severe and I applied the patch to
-ath-next, which means it will go to v5.5 which is bad. (This is why I
-always ask people to clearly describe the bug in the commit log!)
 
-In theory I could also push it to v5.4 but I just don't want to deal
-with the possible conflicts coming from duplicate commits.
+The following changes since commit 280ceaed79f18db930c0cc8bb21f6493490bf29c:
 
--- 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+  usbnet: sanity checking of packet sizes and device mtu (2019-09-19 13:27:11 +0200)
+
+are available in the git repository at:
+
+  git://git.kernel.org/pub/scm/linux/kernel/git/kvalo/wireless-drivers.git tags/wireless-drivers-for-davem-2019-09-26
+
+for you to fetch changes up to 2b481835cf4e7384b80d7762074b32a45b792d99:
+
+  wil6210: use after free in wil_netif_rx_any() (2019-09-25 09:12:20 +0300)
+
+----------------------------------------------------------------
+wireless-drivers fixes for 5.4
+
+First set of fixes for 5.4 sent during the merge window. Most are
+regressions fixes but the mt7615 problem has been since it was merged.
+
+iwlwifi
+
+* fix a build regression related CONFIG_THERMAL
+
+* avoid using GEO_TX_POWER_LIMIT command on certain firmware versions
+
+rtw88
+
+* fixes for skb leaks
+
+zd1211rw
+
+* fix a compiler warning on 32 bit
+
+mt76
+
+* fix the firmware paths for mt7615 to match with linux-firmware
+
+wil6210
+
+* fix use of skb after free
+
+----------------------------------------------------------------
+Dan Carpenter (1):
+      wil6210: use after free in wil_netif_rx_any()
+
+Geert Uytterhoeven (1):
+      zd1211rw: zd_usb: Use "%zu" to format size_t
+
+Johannes Berg (1):
+      iwlwifi: mvm: fix build w/o CONFIG_THERMAL
+
+Lorenzo Bianconi (1):
+      mt76: mt7615: fix mt7615 firmware path definitions
+
+Luca Coelho (1):
+      iwlwifi: fw: don't send GEO_TX_POWER_LIMIT command to FW version 36
+
+Yan-Hsuan Chuang (3):
+      rtw88: pci: extract skbs free routine for trx rings
+      rtw88: pci: release tx skbs DMAed when stop
+      rtw88: configure firmware after HCI started
+
+ drivers/net/wireless/ath/wil6210/txrx.c            |  2 +-
+ drivers/net/wireless/intel/iwlwifi/mvm/fw.c        |  8 ++--
+ drivers/net/wireless/intel/iwlwifi/mvm/tt.c        |  9 +++-
+ drivers/net/wireless/mediatek/mt76/mt7615/mcu.c    | 11 ++---
+ drivers/net/wireless/mediatek/mt76/mt7615/mt7615.h |  6 +--
+ drivers/net/wireless/realtek/rtw88/mac.c           |  3 --
+ drivers/net/wireless/realtek/rtw88/main.c          |  4 ++
+ drivers/net/wireless/realtek/rtw88/pci.c           | 48 +++++++++++++++++-----
+ drivers/net/wireless/zydas/zd1211rw/zd_usb.c       |  2 +-
+ 9 files changed, 63 insertions(+), 30 deletions(-)
