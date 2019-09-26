@@ -2,89 +2,130 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 81918BF48B
-	for <lists+linux-wireless@lfdr.de>; Thu, 26 Sep 2019 15:58:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 676E5BF4FC
+	for <lists+linux-wireless@lfdr.de>; Thu, 26 Sep 2019 16:24:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726973AbfIZN6J (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 26 Sep 2019 09:58:09 -0400
-Received: from smtp.codeaurora.org ([198.145.29.96]:42002 "EHLO
+        id S1727047AbfIZOYd (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 26 Sep 2019 10:24:33 -0400
+Received: from smtp.codeaurora.org ([198.145.29.96]:51640 "EHLO
         smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726969AbfIZN6J (ORCPT
+        with ESMTP id S1726500AbfIZOYd (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 26 Sep 2019 09:58:09 -0400
+        Thu, 26 Sep 2019 10:24:33 -0400
 Received: by smtp.codeaurora.org (Postfix, from userid 1000)
-        id 95C64611BE; Thu, 26 Sep 2019 13:58:08 +0000 (UTC)
+        id D9FF460BEE; Thu, 26 Sep 2019 14:24:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1569506288;
-        bh=gs8p+1yjOS8sOPofcWc8Yqg6Lf3CwkoRj7uJbAnsvJ4=;
-        h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-        b=fccpK79/leBRzeKSmnHdSPwRAEAUkF3W9UPN16OkoV9hqwbAeQOecHjv10wJdtqbq
-         nyxl5YlNzk9YsaO3aZ4qUEMYBaagg6CRtG59TyeoU3KmsdNTY/sGfu59hj34QT71z5
-         c50WEZZZ6Q7LKux0VhiNEpb3E1vge/fXpkZ5EdFo=
+        s=default; t=1569507871;
+        bh=GCODvtjbhDXDVVj83RHxr17KUIFLZZfOpgfXP2PVhBU=;
+        h=From:To:Cc:Subject:Date:From;
+        b=Pz1/FkEYiXOJkXQ2DFT38g0TpCCyZQue/M+cEDyz32iirIjvfd98kcRutEWhBd908
+         lFWzAf7dY703q9UjbKVE5kCzp11UbNSInkM6u1PNYWoBrdCYGSkCImoDz0/3gGLYwb
+         D3Gyb09nygMJJ9jnly5lKZ0mfXVNdXGdsnkrvnss=
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         pdx-caf-mail.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-0.8 required=2.0 tests=ALL_TRUSTED,BAYES_00,
-        DKIM_INVALID,DKIM_SIGNED,MISSING_DATE,MISSING_MID,SPF_NONE autolearn=no
-        autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-2.7 required=2.0 tests=ALL_TRUSTED,BAYES_00,
+        DKIM_INVALID,DKIM_SIGNED,SPF_NONE autolearn=no autolearn_force=no
+        version=3.4.0
 Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-SHA256 (128/128 bits))
         (No client certificate requested)
         (Authenticated sender: kvalo@smtp.codeaurora.org)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id C63C760BF5;
-        Thu, 26 Sep 2019 13:58:06 +0000 (UTC)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 41EAF609F3;
+        Thu, 26 Sep 2019 14:24:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1569506288;
-        bh=gs8p+1yjOS8sOPofcWc8Yqg6Lf3CwkoRj7uJbAnsvJ4=;
-        h=Subject:From:In-Reply-To:References:To:Cc:From;
-        b=mEXmtWah526aMF0UxnBaqmESNFMOh9f8C52TtOcoXel7YPEwVuSUiMcgLoAl22a6m
-         hFagzV/AzzZwwtMNY7XFuopAcP54KQ5b+p5+MCDi1mwy7KM4NsMWR1DUFT3YVjpmTQ
-         oQuyHZUltPchmJz+Xfvn+q5nroizHvd52xUvdzZk=
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org C63C760BF5
+        s=default; t=1569507871;
+        bh=GCODvtjbhDXDVVj83RHxr17KUIFLZZfOpgfXP2PVhBU=;
+        h=From:To:Cc:Subject:Date:From;
+        b=Pz1/FkEYiXOJkXQ2DFT38g0TpCCyZQue/M+cEDyz32iirIjvfd98kcRutEWhBd908
+         lFWzAf7dY703q9UjbKVE5kCzp11UbNSInkM6u1PNYWoBrdCYGSkCImoDz0/3gGLYwb
+         D3Gyb09nygMJJ9jnly5lKZ0mfXVNdXGdsnkrvnss=
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 41EAF609F3
 Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
 Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH] ath10k:New interface to get interface combinations from FW
 From:   Kalle Valo <kvalo@codeaurora.org>
-In-Reply-To: <1562050742-8741-1-git-send-email-zhonglin@codeaurora.org>
-References: <1562050742-8741-1-git-send-email-zhonglin@codeaurora.org>
-To:     Zhonglin Zhang <zhonglin@codeaurora.org>
-Cc:     ath10k@lists.infradead.org, linux-wireless@vger.kernel.org,
-        Zhonglin Zhang <zhonglin@codeaurora.org>
-User-Agent: pwcli/0.0.0-git (https://github.com/kvalo/pwcli/) Python/2.7.12
-Message-Id: <20190926135808.95C64611BE@smtp.codeaurora.org>
-Date:   Thu, 26 Sep 2019 13:58:08 +0000 (UTC)
+To:     ath10k@lists.infradead.org
+Cc:     linux-wireless@vger.kernel.org,
+        Erik Stromdahl <erik.stromdahl@gmail.com>
+Subject: [PATCH RFT] ath10k: add QCA9377 sdio hw_param item
+Date:   Thu, 26 Sep 2019 17:24:27 +0300
+Message-Id: <1569507867-19547-1-git-send-email-kvalo@codeaurora.org>
+X-Mailer: git-send-email 2.7.4
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Zhonglin Zhang <zhonglin@codeaurora.org> wrote:
+From: Erik Stromdahl <erik.stromdahl@gmail.com>
 
-> New wmi event "WMI_TLV_IFACE_COMBINATION_EVENTID" is used.
-> If WMI_SERVICE_IFACE_COMBINATION_SUPPORT service bit set and
-> WMI_TLV_IFACE_COMBINATION_EVENTID event got from FW side, then
-> interface combinations reported from FW will override the default
-> combinations which is hard-coded in host drivers.
-> 
-> Tested HW: WCN3990
-> Tested FW: WLAN.HL.3.1-01061-QCAHLSWMTPL-1
-> 
-> Signed-off-by: Zhonglin Zhang <zhonglin@codeaurora.org>
-> Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
+Add hardware parameters for QCA9377 sdio devices, it's now properly supported.
 
-This introduced a new warning:
+Signed-off-by: Erik Stromdahl <erik.stromdahl@gmail.com>
+Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
+---
 
-drivers/net/wireless/ath/ath10k/wmi-tlv.c:556:41: warning: incorrect type in argument 1 (different base types)
-drivers/net/wireless/ath/ath10k/wmi-tlv.c:556:41:    expected unsigned long [usertype] n
-drivers/net/wireless/ath/ath10k/wmi-tlv.c:556:41:    got restricted __le32 [usertype] limits_n
+I don't have any working QCA9377 SDIO hardware so I would appreciate any
+test reports. This should apply cleanly to ath.git master branch (at least to
+tag ath-201909230832):
 
-I fixed that in the pending branch.
+https://git.kernel.org/pub/scm/linux/kernel/git/kvalo/ath.git/log/?h=master
 
+ drivers/net/wireless/ath/ath10k/core.c | 27 +++++++++++++++++++++++++++
+ drivers/net/wireless/ath/ath10k/hw.h   |  3 +++
+ 2 files changed, 30 insertions(+)
+
+diff --git a/drivers/net/wireless/ath/ath10k/core.c b/drivers/net/wireless/ath/ath10k/core.c
+index 36c62d66c19e..e5572d4b6ae9 100644
+--- a/drivers/net/wireless/ath/ath10k/core.c
++++ b/drivers/net/wireless/ath/ath10k/core.c
+@@ -539,6 +539,33 @@ static const struct ath10k_hw_params ath10k_hw_params_list[] = {
+ 		.tx_stats_over_pktlog = false,
+ 	},
+ 	{
++		.id = QCA9377_HW_1_1_DEV_VERSION,
++		.dev_id = QCA9377_1_0_DEVICE_ID,
++		.bus = ATH10K_BUS_SDIO,
++		.name = "qca9377 hw1.1 sdio",
++		.patch_load_addr = QCA9377_HW_1_0_PATCH_LOAD_ADDR,
++		.uart_pin = 19,
++		.otp_exe_param = 0,
++		.channel_counters_freq_hz = 88000,
++		.max_probe_resp_desc_thres = 0,
++		.cal_data_len = 8124,
++		.fw = {
++			.dir = QCA9377_HW_1_0_FW_DIR,
++			.board = QCA9377_HW_1_0_BOARD_DATA_FILE,
++			.board_size = QCA9377_BOARD_DATA_SZ,
++			.board_ext_size = QCA9377_BOARD_EXT_DATA_SZ,
++		},
++		.hw_ops = &qca6174_ops,
++		.hw_clk = qca6174_clk,
++		.target_cpu_freq = 176000000,
++		.decap_align_bytes = 4,
++		.n_cipher_suites = 8,
++		.num_peers = TARGET_QCA9377_HL_NUM_PEERS,
++		.ast_skid_limit = 0x10,
++		.num_wds_entries = 0x20,
++		.uart_pin_workaround = true,
++	},
++	{
+ 		.id = QCA4019_HW_1_0_DEV_VERSION,
+ 		.dev_id = 0,
+ 		.bus = ATH10K_BUS_AHB,
+diff --git a/drivers/net/wireless/ath/ath10k/hw.h b/drivers/net/wireless/ath/ath10k/hw.h
+index 2ae57c1de7b5..ddb1d23ec6de 100644
+--- a/drivers/net/wireless/ath/ath10k/hw.h
++++ b/drivers/net/wireless/ath/ath10k/hw.h
+@@ -768,6 +768,9 @@ ath10k_is_rssi_enable(struct ath10k_hw_params *hw,
+ #define TARGET_HL_TLV_AST_SKID_LIMIT		16
+ #define TARGET_HL_TLV_NUM_WDS_ENTRIES		2
+ 
++/* Target specific defines for QCA9377 high latency firmware */
++#define TARGET_QCA9377_HL_NUM_PEERS		15
++
+ /* Diagnostic Window */
+ #define CE_DIAG_PIPE	7
+ 
 -- 
-https://patchwork.kernel.org/patch/11027361/
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+2.7.4
 
