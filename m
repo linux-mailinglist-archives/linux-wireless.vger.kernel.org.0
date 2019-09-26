@@ -2,160 +2,100 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 019A2BF3EC
-	for <lists+linux-wireless@lfdr.de>; Thu, 26 Sep 2019 15:17:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 51646BF41D
+	for <lists+linux-wireless@lfdr.de>; Thu, 26 Sep 2019 15:36:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726758AbfIZNRl (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 26 Sep 2019 09:17:41 -0400
-Received: from us-smtp-delivery-1.mimecast.com ([207.211.31.120]:51922 "EHLO
-        us-smtp-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1726106AbfIZNRl (ORCPT
+        id S1726476AbfIZNgR (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 26 Sep 2019 09:36:17 -0400
+Received: from smtp.codeaurora.org ([198.145.29.96]:57322 "EHLO
+        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726094AbfIZNgR (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 26 Sep 2019 09:17:41 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1569503860;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=4fHt9hMMQ9w20DhXUGLUHzXPaBqepejvOHd5R4R+dMM=;
-        b=C3lVwJzTaxGP+8RDzcdteHEUcfaOowe2+RkEsTwXTYGbQIR5AexfHZo9CWfM8WOMhrqvvw
-        fiYuQfBWaIK1efPniOwA8m0lbH7/btSdJbyoVvmAYLJZyQw9hViZtD6htkkjaorhfXNFpA
-        IzuEGLYCo16HK+pglT3T3hzBIjfUJyU=
-Received: from mail-ed1-f70.google.com (mail-ed1-f70.google.com
- [209.85.208.70]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-339-e6p2ACzQO4OX9aAi3pbQfQ-1; Thu, 26 Sep 2019 09:17:37 -0400
-Received: by mail-ed1-f70.google.com with SMTP id p55so1339836edc.5
-        for <linux-wireless@vger.kernel.org>; Thu, 26 Sep 2019 06:17:37 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:in-reply-to:references:date
-         :message-id:mime-version:content-transfer-encoding;
-        bh=d5emT88HnX0Wz5aHzSDSckG8r3WZyvmiapWTnRvA1Qs=;
-        b=r95JnGUnRlH5ZzQzH/b7a50n0yQhhmH7/kUBsRO7k2qz5/JPveQ++Kpmq6mWBG3IHj
-         OQ3q2Oa5ta6hDyLJfNnuWrL1thxul0TdEgohZNH/G+PDQK3YsdEb3RzFmL3zCKOpkR77
-         UmqUdtzaTj7YOe9K1hojwzB2HcTMIR+H6dyQTsXlv0NhtRXReCVWoDcSkQUKKIs/Z/K7
-         0BkR23+nC7ydS0BrT69JPJk3CsYuYb0qh8rvGRGwue7l4Kv9aoKCVSQgsR7nJ+PU2MA0
-         2NbutVxSBzGq0WYNv0V2u7JdOBmSIVYje7LjsgXRe5Wq6fiPahnsC3gbj6eXmzEbpDME
-         7Edg==
-X-Gm-Message-State: APjAAAXh/yjHEYG5pZURPGRtTbBVpudZ/TL5Iy8T+yE1byrVlGq1ILsx
-        QrL1TKl5g+oYzGRnvrsCzjomAK8oqrs1SX3b8XiA72Nfqs8jd2F6D6W9hLqxp9PmAetb6tr9yPr
-        8CyoshIXyWoNi5rpIJggqZQL22+w=
-X-Received: by 2002:a05:6402:2d8:: with SMTP id b24mr3541109edx.222.1569503856286;
-        Thu, 26 Sep 2019 06:17:36 -0700 (PDT)
-X-Google-Smtp-Source: APXvYqy4MpaRGM4uGtZrPqmhhNl8GIWFjLTG/COPVgj/873mgSiv535jFkTl14Kdns8wOz9yYvC23Q==
-X-Received: by 2002:a05:6402:2d8:: with SMTP id b24mr3541082edx.222.1569503856077;
-        Thu, 26 Sep 2019 06:17:36 -0700 (PDT)
-Received: from alrua-x1.borgediget.toke.dk (borgediget.toke.dk. [85.204.121.218])
-        by smtp.gmail.com with ESMTPSA id z24sm236136ejw.57.2019.09.26.06.17.35
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 26 Sep 2019 06:17:35 -0700 (PDT)
-Received: by alrua-x1.borgediget.toke.dk (Postfix, from userid 1000)
-        id AD56618063D; Thu, 26 Sep 2019 15:17:34 +0200 (CEST)
-From:   Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>
-To:     Felix Fietkau <nbd@nbd.name>,
-        Johannes Berg <johannes@sipsolutions.net>
+        Thu, 26 Sep 2019 09:36:17 -0400
+Received: by smtp.codeaurora.org (Postfix, from userid 1000)
+        id 0B1DC60B72; Thu, 26 Sep 2019 13:36:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
+        s=default; t=1569504976;
+        bh=YuHVzHnU2iBdI6dRQ86mrnB17MCHWfndjfloXSheE/8=;
+        h=From:To:Cc:Subject:Date:From;
+        b=kJY8LxxqkDD7JZL9rXWrIfvEY43MUCYIEQ+tuA1VheOZHfcXUNlb8jPbaM8NYCBu6
+         6AMgvwtlUTjgjUi06JeMjha9Kor+O13FuTGHpQeNZgdzF8yzBLnEqZ2g0UoejNKuK8
+         uLdxBHnb/JMqwQ3mC0Jo5iMPTFEn7Fvwt/pK7Irs=
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        pdx-caf-mail.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.7 required=2.0 tests=ALL_TRUSTED,BAYES_00,
+        DKIM_INVALID,DKIM_SIGNED,SPF_NONE autolearn=no autolearn_force=no
+        version=3.4.0
+Received: from localhost (blr-c-bdr-fw-01_globalnat_allzones-outside.qualcomm.com [103.229.19.19])
+        (using TLSv1.2 with cipher DHE-RSA-AES128-SHA (128/128 bits))
+        (No client certificate requested)
+        (Authenticated sender: akolli@smtp.codeaurora.org)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id D60A460128;
+        Thu, 26 Sep 2019 13:36:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
+        s=default; t=1569504975;
+        bh=YuHVzHnU2iBdI6dRQ86mrnB17MCHWfndjfloXSheE/8=;
+        h=From:To:Cc:Subject:Date:From;
+        b=YmGO4WAIubHXOn2jueGRQGy4wZ3tRlJz5LCox+Jty7GFYkNTvwLVm3y1eN8WfNXMh
+         k+D7exeoNLnZgnUMFMf+0RMppO41tursHb4RvdFu4lmc7X+n6vKNT3T4PS4IHBKI9N
+         HWi7tYP7NZZz+QzAppzHD6Erpt7OTXoZH4WYtskg=
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org D60A460128
+Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=akolli@codeaurora.org
+From:   Anilkumar Kolli <akolli@codeaurora.org>
+To:     ath10k@lists.infradead.org
 Cc:     linux-wireless@vger.kernel.org,
-        make-wifi-fast@lists.bufferbloat.net,
-        John Crispin <john@phrozen.org>,
-        Lorenzo Bianconi <lorenzo@kernel.org>
-Subject: Re: [PATCH RFC/RFT 4/4] mac80211: Apply Airtime-based Queue Limit (AQL) on packet dequeue
-In-Reply-To: <08f0ed6e-b746-9689-6dc8-7c0ea705666d@nbd.name>
-References: <156889576422.191202.5906619710809654631.stgit@alrua-x1> <156889576869.191202.510507546538322707.stgit@alrua-x1> <08f0ed6e-b746-9689-6dc8-7c0ea705666d@nbd.name>
-X-Clacks-Overhead: GNU Terry Pratchett
-Date:   Thu, 26 Sep 2019 15:17:34 +0200
-Message-ID: <87wodv19jl.fsf@toke.dk>
-MIME-Version: 1.0
-X-MC-Unique: e6p2ACzQO4OX9aAi3pbQfQ-1
-X-Mimecast-Spam-Score: 0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+        Anilkumar Kolli <akolli@codeaurora.org>
+Subject: [PATCH 1/2] ath10k: fix IRAM addr in coredump
+Date:   Thu, 26 Sep 2019 19:07:00 +0530
+Message-Id: <1569505021-20515-1-git-send-email-akolli@codeaurora.org>
+X-Mailer: git-send-email 1.7.9.5
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Felix Fietkau <nbd@nbd.name> writes:
+Fix IRAM start address in coredump.
+Tested on: QCA9984, QCA4019
+FW version: 10.4-3.9.0.2-00044
 
-> On 2019-09-19 14:22, Toke H=C3=B8iland-J=C3=B8rgensen wrote:
->> From: Toke H=C3=B8iland-J=C3=B8rgensen <toke@redhat.com>
->>=20
->> Some devices have deep buffers in firmware and/or hardware which prevent=
-s
->> the FQ structure in mac80211 from effectively limiting bufferbloat on th=
-e
->> link. For Ethernet devices we have BQL to limit the lower-level queues, =
-but
->> this cannot be applied to mac80211 because transmit rates can vary wildl=
-y
->> between packets depending on which station we are transmitting it to.
->>=20
->> To overcome this, we can use airtime-based queue limiting (AQL), where w=
-e
->> estimate the transmission time for each packet before dequeueing it, and
->> use that to limit the amount of data in-flight to the hardware. This ide=
-a
->> was originally implemented as part of the out-of-tree airtime fairness
->> patch to ath10k[0] in chromiumos.
->>=20
->> This patch ports that idea over to mac80211. The basic idea is simple
->> enough: Whenever we dequeue a packet from the TXQs and send it to the
->> driver, we estimate its airtime usage, based on the last recorded TX rat=
-e
->> of the station that packet is destined for. We keep a running per-AC tot=
-al
->> of airtime queued for the whole device, and when that total climbs above=
- 8
->> ms' worth of data (corresponding to two maximum-sized aggregates), we
->> simply throttle the queues until it drops down again.
->>=20
->> The estimated airtime for each skb is stored in the tx_info, so we can
->> subtract the same amount from the running total when the skb is freed or
->> recycled. The throttling mechanism relies on this accounting to be
->> accurate (i.e., that we are not freeing skbs without subtracting any
->> airtime they were accounted for), so we put the subtraction into
->> ieee80211_report_used_skb().
->>=20
->> This patch does *not* include any mechanism to wake a throttled TXQ agai=
-n,
->> on the assumption that this will happen anyway as a side effect of whate=
-ver
->> freed the skb (most commonly a TX completion).
->>=20
->> The throttling mechanism only kicks in if the queued airtime total goes
->> above the limit. Since mac80211 calculates the time based on the reporte=
-d
->> last_tx_time from the driver, the whole throttling mechanism only kicks =
-in
->> for drivers that actually report this value. With the exception of
->> multicast, where we always calculate an estimated tx time on the assumpt=
-ion
->> that multicast is transmitted at the lowest (6 Mbps) rate.
->>=20
->> The throttling added in this patch is in addition to any throttling alre=
-ady
->> performed by the airtime fairness mechanism, and in principle the two
->> mechanisms are orthogonal (and currently also uses two different sources=
- of
->> airtime). In the future, we could amend this, using the airtime estimate=
-s
->> calculated by this mechanism as a fallback input to the airtime fairness
->> scheduler, to enable airtime fairness even on drivers that don't have a
->> hardware source of airtime usage for each station.
->>=20
->> [0] https://chromium-review.googlesource.com/c/chromiumos/third_party/ke=
-rnel/+/588190/13/drivers/net/wireless-4.2/ath/ath10k/mac.c#3845
-> One thing that might be missing here is dealing with airtime accounting
-> of frames that remain queued in the driver/hardware because the station
-> is in powersave mode.
+Signed-off-by: Anilkumar Kolli <akolli@codeaurora.org>
+---
+ drivers/net/wireless/ath/ath10k/coredump.c |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-Oh, right. Didn't know that could happen (I assumed those would be
-flushed out or something). But if we're going to go with Kan's
-suggestion of having per-station accounting as well as a global
-accounting for the device, we could just subtract the station's
-outstanding balance from the device total when it goes into powersave
-mode, and add it back once it wakes up again. At least I think that
-would work, no?
-
--Toke
+diff --git a/drivers/net/wireless/ath/ath10k/coredump.c b/drivers/net/wireless/ath/ath10k/coredump.c
+index b6d2932383cf..ecd3dd5d8356 100644
+--- a/drivers/net/wireless/ath/ath10k/coredump.c
++++ b/drivers/net/wireless/ath/ath10k/coredump.c
+@@ -703,7 +703,7 @@
+ 	},
+ 	{
+ 		.type = ATH10K_MEM_REGION_TYPE_REG,
+-		.start = 0x98000,
++		.start = 0x980000,
+ 		.len = 0x50000,
+ 		.name = "IRAM",
+ 		.section_table = {
+@@ -786,7 +786,7 @@
+ 	},
+ 	{
+ 		.type = ATH10K_MEM_REGION_TYPE_REG,
+-		.start = 0x98000,
++		.start = 0x980000,
+ 		.len = 0x50000,
+ 		.name = "IRAM",
+ 		.section_table = {
+@@ -891,7 +891,7 @@
+ 	},
+ 	{
+ 		.type = ATH10K_MEM_REGION_TYPE_REG,
+-		.start = 0x98000,
++		.start = 0x980000,
+ 		.len = 0x50000,
+ 		.name = "IRAM",
+ 		.section_table = {
+-- 
+1.7.9.5
 
