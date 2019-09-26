@@ -2,130 +2,189 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 676E5BF4FC
-	for <lists+linux-wireless@lfdr.de>; Thu, 26 Sep 2019 16:24:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 547FABF5A6
+	for <lists+linux-wireless@lfdr.de>; Thu, 26 Sep 2019 17:14:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727047AbfIZOYd (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 26 Sep 2019 10:24:33 -0400
-Received: from smtp.codeaurora.org ([198.145.29.96]:51640 "EHLO
-        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726500AbfIZOYd (ORCPT
+        id S1727269AbfIZPO5 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 26 Sep 2019 11:14:57 -0400
+Received: from esa5.microchip.iphmx.com ([216.71.150.166]:24633 "EHLO
+        esa5.microchip.iphmx.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727252AbfIZPO5 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 26 Sep 2019 10:24:33 -0400
-Received: by smtp.codeaurora.org (Postfix, from userid 1000)
-        id D9FF460BEE; Thu, 26 Sep 2019 14:24:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1569507871;
-        bh=GCODvtjbhDXDVVj83RHxr17KUIFLZZfOpgfXP2PVhBU=;
-        h=From:To:Cc:Subject:Date:From;
-        b=Pz1/FkEYiXOJkXQ2DFT38g0TpCCyZQue/M+cEDyz32iirIjvfd98kcRutEWhBd908
-         lFWzAf7dY703q9UjbKVE5kCzp11UbNSInkM6u1PNYWoBrdCYGSkCImoDz0/3gGLYwb
-         D3Gyb09nygMJJ9jnly5lKZ0mfXVNdXGdsnkrvnss=
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        pdx-caf-mail.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.7 required=2.0 tests=ALL_TRUSTED,BAYES_00,
-        DKIM_INVALID,DKIM_SIGNED,SPF_NONE autolearn=no autolearn_force=no
-        version=3.4.0
-Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-SHA256 (128/128 bits))
-        (No client certificate requested)
-        (Authenticated sender: kvalo@smtp.codeaurora.org)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 41EAF609F3;
-        Thu, 26 Sep 2019 14:24:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1569507871;
-        bh=GCODvtjbhDXDVVj83RHxr17KUIFLZZfOpgfXP2PVhBU=;
-        h=From:To:Cc:Subject:Date:From;
-        b=Pz1/FkEYiXOJkXQ2DFT38g0TpCCyZQue/M+cEDyz32iirIjvfd98kcRutEWhBd908
-         lFWzAf7dY703q9UjbKVE5kCzp11UbNSInkM6u1PNYWoBrdCYGSkCImoDz0/3gGLYwb
-         D3Gyb09nygMJJ9jnly5lKZ0mfXVNdXGdsnkrvnss=
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 41EAF609F3
-Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
-From:   Kalle Valo <kvalo@codeaurora.org>
-To:     ath10k@lists.infradead.org
-Cc:     linux-wireless@vger.kernel.org,
-        Erik Stromdahl <erik.stromdahl@gmail.com>
-Subject: [PATCH RFT] ath10k: add QCA9377 sdio hw_param item
-Date:   Thu, 26 Sep 2019 17:24:27 +0300
-Message-Id: <1569507867-19547-1-git-send-email-kvalo@codeaurora.org>
-X-Mailer: git-send-email 2.7.4
+        Thu, 26 Sep 2019 11:14:57 -0400
+Received-SPF: Pass (esa5.microchip.iphmx.com: domain of
+  Ajay.Kathat@microchip.com designates 198.175.253.82 as
+  permitted sender) identity=mailfrom;
+  client-ip=198.175.253.82; receiver=esa5.microchip.iphmx.com;
+  envelope-from="Ajay.Kathat@microchip.com";
+  x-sender="Ajay.Kathat@microchip.com"; x-conformance=spf_only;
+  x-record-type="v=spf1"; x-record-text="v=spf1 mx
+  a:ushub1.microchip.com a:smtpout.microchip.com
+  a:mx1.microchip.iphmx.com a:mx2.microchip.iphmx.com
+  include:servers.mcsv.net include:mktomail.com
+  include:spf.protection.outlook.com ~all"
+Received-SPF: None (esa5.microchip.iphmx.com: no sender
+  authenticity information available from domain of
+  postmaster@email.microchip.com) identity=helo;
+  client-ip=198.175.253.82; receiver=esa5.microchip.iphmx.com;
+  envelope-from="Ajay.Kathat@microchip.com";
+  x-sender="postmaster@email.microchip.com";
+  x-conformance=spf_only
+Authentication-Results: esa5.microchip.iphmx.com; spf=Pass smtp.mailfrom=Ajay.Kathat@microchip.com; spf=None smtp.helo=postmaster@email.microchip.com; dkim=pass (signature verified) header.i=@microchiptechnology.onmicrosoft.com; dmarc=pass (p=none dis=none) d=microchip.com
+IronPort-SDR: QG+OzQdATKhERiRPjzu0MHEidC/JcpQVcw/HSANBoNvuIUkLZgf9etodtEUXe594u1ghaQeLyo
+ yCvIcB/IvvGgddIgNbPPHrsZrKASbiQ5yl5wytQKuoQwU3RsTGQM6zbWbleXPAAnmvrcsfoNJa
+ UshIA8Td1Bz7XdagKrnFQFks+HiDfWfG01F+2l7lwnjU+/+OPgSskwy79I2IIOYcDbFHuAcMPf
+ /+S0qFUr7JpwJehq3rqJbXjJWH5Xer73SUPTfgq7VnxyZgTPAqfgDrMDhRGfd00o9C/hGvuSEI
+ 2gE=
+X-IronPort-AV: E=Sophos;i="5.64,552,1559545200"; 
+   d="scan'208";a="49137788"
+Received: from smtpout.microchip.com (HELO email.microchip.com) ([198.175.253.82])
+  by esa5.microchip.iphmx.com with ESMTP/TLS/AES256-SHA256; 26 Sep 2019 08:14:56 -0700
+Received: from chn-vm-ex02.mchp-main.com (10.10.85.144) by
+ chn-vm-ex01.mchp-main.com (10.10.85.143) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.1713.5; Thu, 26 Sep 2019 08:14:54 -0700
+Received: from NAM03-BY2-obe.outbound.protection.outlook.com (10.10.215.89) by
+ email.microchip.com (10.10.87.72) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256) id 15.1.1713.5 via Frontend
+ Transport; Thu, 26 Sep 2019 08:14:55 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=EIKhIp9Nc+Cf75GaI2wSMqUKAfTYjBojbzXnQOPwdU0EOrH5dclXAXfqYnwI6kFNmakwFGI90pseihs0txZOoXYmaZ/2aqYALcCIbWAgqWeAl4VCsek2N7ID7+/ZyDxGrpI+NcPv/IcrqA6fy7qC1r3UaD0aogX3Rmzg0HLaFvq3lHJWFIMPmpAovcEPb/ctlhOGUAjIWPxpy4wjfdO4h2C0jMZetcgXmmQusGQFUv6d/gvaH87+KFQpQezlE42A0CMtmlXQAls9VtWB9QgdT6w/olnVkkXEiWQVjivioLc2N9KL3dE5ch/c9Ifvre+D/OgAQgx+g+0OIaSGqmGCVA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=Fwlegk2njDEIDiInbpJsPbDOdaN3IlhlU9eiml/qETw=;
+ b=A1wJXb9H+TLruSlveU2km33RwYmMbEPuzGl67oVWR8but3nAUHNQgflAPtLFuGyvlt13szFuu7Ta50Hhb20PDj7A1AekHOvgVEHTBVRKsbMz+snixk3ogBgMR5HEiyDtYzKtTwpbpkjF8VwspWhNpC4oSOsGiemmgxhEv5ORkimj+Aeb56C0M7jaL5GyDCCgk+yRgFy5J2q4d+wFqIlV6zXnLZ4pjzw8geJ7HwsIlNbq3csYJYqzQdQlLKq5zBViHq70eSw49QAH8JpPMAcC+/9Bp6diVw/7F57CHNI3eT838RAo8pUOdTJMk6JpBMfOnTEnVlvmb+AyAMTyNuOTeg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=microchip.com; dmarc=pass action=none
+ header.from=microchip.com; dkim=pass header.d=microchip.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=microchiptechnology.onmicrosoft.com;
+ s=selector2-microchiptechnology-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=Fwlegk2njDEIDiInbpJsPbDOdaN3IlhlU9eiml/qETw=;
+ b=P9nvwejbACZNK781lI20U9W/OeuNLNmprklVmtpDMGeB5tKG38plLZCyLenbXW2d/oj2iz+olmbZAQZQnvNGqwDpz5nULkPtw88h48ludZLvRnJ/TSZUumtox7cqzdxmmLtPZBJ26fZysOja/r/BNQoT9itL0n9QGxSdf1EGNl8=
+Received: from BN6PR11MB3985.namprd11.prod.outlook.com (10.255.129.78) by
+ BN6PR11MB1860.namprd11.prod.outlook.com (10.175.99.21) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.2284.20; Thu, 26 Sep 2019 15:14:54 +0000
+Received: from BN6PR11MB3985.namprd11.prod.outlook.com
+ ([fe80::8d48:6075:7cc9:7d43]) by BN6PR11MB3985.namprd11.prod.outlook.com
+ ([fe80::8d48:6075:7cc9:7d43%6]) with mapi id 15.20.2284.028; Thu, 26 Sep 2019
+ 15:14:54 +0000
+From:   <Ajay.Kathat@microchip.com>
+To:     <linux-wireless@vger.kernel.org>
+CC:     <devel@driverdev.osuosl.org>, <gregkh@linuxfoundation.org>,
+        <Adham.Abozaeid@microchip.com>, <johannes@sipsolutions.net>,
+        <Ajay.Kathat@microchip.com>
+Subject: [PATCH 1/3] staging: wilc1000: remove unnecessary netdev validation
+ check in del_key()
+Thread-Topic: [PATCH 1/3] staging: wilc1000: remove unnecessary netdev
+ validation check in del_key()
+Thread-Index: AQHVdH0mTC7Rb21Xvk2Q2zp92wJYEg==
+Date:   Thu, 26 Sep 2019 15:14:54 +0000
+Message-ID: <20190926151436.27819-1-ajay.kathat@microchip.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-clientproxiedby: MAXPR0101CA0021.INDPRD01.PROD.OUTLOOK.COM
+ (2603:1096:a00:c::31) To BN6PR11MB3985.namprd11.prod.outlook.com
+ (2603:10b6:405:7b::14)
+x-mailer: git-send-email 2.22.0
+x-ms-exchange-messagesentrepresentingtype: 1
+x-originating-ip: [183.82.19.178]
+x-ms-publictraffictype: Email
+x-ms-office365-filtering-correlation-id: ff9eed42-ee64-4a92-1391-08d7429448b0
+x-microsoft-antispam: BCL:0;PCL:0;RULEID:(2390118)(7020095)(4652040)(8989299)(5600167)(711020)(4605104)(1401327)(4534185)(4627221)(201703031133081)(201702281549075)(8990200)(2017052603328)(7193020);SRVR:BN6PR11MB1860;
+x-ms-traffictypediagnostic: BN6PR11MB1860:
+x-ms-exchange-transport-forked: True
+x-microsoft-antispam-prvs: <BN6PR11MB186037C8CC0F5368AA754912E3860@BN6PR11MB1860.namprd11.prod.outlook.com>
+x-ms-oob-tlc-oobclassifiers: OLM:4714;
+x-forefront-prvs: 0172F0EF77
+x-forefront-antispam-report: SFV:NSPM;SFS:(10009020)(376002)(366004)(396003)(39860400002)(136003)(346002)(199004)(189003)(476003)(71200400001)(5660300002)(316002)(99286004)(186003)(2351001)(26005)(1076003)(66476007)(66946007)(6506007)(14454004)(66556008)(2501003)(86362001)(478600001)(102836004)(66446008)(52116002)(64756008)(2906002)(386003)(36756003)(50226002)(81166006)(6436002)(6116002)(3846002)(4326008)(8936002)(25786009)(486006)(305945005)(7736002)(66066001)(8676002)(5640700003)(6512007)(81156014)(107886003)(6916009)(256004)(6486002)(2616005)(71190400001)(54906003);DIR:OUT;SFP:1101;SCL:1;SRVR:BN6PR11MB1860;H:BN6PR11MB3985.namprd11.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;A:1;MX:1;
+received-spf: None (protection.outlook.com: microchip.com does not designate
+ permitted sender hosts)
+x-ms-exchange-senderadcheck: 1
+x-microsoft-antispam-message-info: UwWfBoh80aDO+3LxCqf+qqYBBqiiyACZBw/dTOwtoDKcu6btJ5LhirVT3ed33zlv3assIwXgUur+Z11m1A16oF6OZXEda9Wa0x1wU6LGa5DNmKzmoez10IjrAw5assNR42fgI8fuGPheE93MC6njP80Ayi9yrDHJaW+kMP3q5+WIyr5VlL0Fevmt5vtLdD+zb7JdcYA+4AZIrH2tNoiaTSkuj0HofJ9jooVkrB3VFVzoAnm5b4ZwLyVQlNF/0EbK6JpsjJiIlvZo54kNo6rdvdhIwd411qVd381fBjYt5dWFXBMnJIYCFlmCKERzFkTrZUn+B1wpbo2dJRQs/qYnOnI72Za99r8jVsoA8xS80ZwEclhnAEitteAK02EpFHZDiCU3XAkZxUFnFunrOb9B4smVQvnZM2yrkY6qEAUvVC8=
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+X-MS-Exchange-CrossTenant-Network-Message-Id: ff9eed42-ee64-4a92-1391-08d7429448b0
+X-MS-Exchange-CrossTenant-originalarrivaltime: 26 Sep 2019 15:14:54.0185
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 3f4057f3-b418-4d4e-ba84-d55b4e897d88
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: eBUVqiTx/phf94ACB1vSRQCDHAtzUtC8rHe9hKPUVXrXSmUHXroPDzEDio2UrAUU1lZyejWPVyeURsZ2EA/pkkuAs93DV7JCSYWwvrB0yQ0=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BN6PR11MB1860
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Erik Stromdahl <erik.stromdahl@gmail.com>
+From: Ajay Singh <ajay.kathat@microchip.com>
 
-Add hardware parameters for QCA9377 sdio devices, it's now properly supported.
+Removed unnecessary check to compare vif interface with zeroth index
+element in vif array. Already the caller takes care of passing the
+appropriate netdev handler during the del key operation.
 
-Signed-off-by: Erik Stromdahl <erik.stromdahl@gmail.com>
-Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
+Signed-off-by: Ajay Singh <ajay.kathat@microchip.com>
 ---
+ .../staging/wilc1000/wilc_wfi_cfgoperations.c | 33 +++++++++----------
+ 1 file changed, 15 insertions(+), 18 deletions(-)
 
-I don't have any working QCA9377 SDIO hardware so I would appreciate any
-test reports. This should apply cleanly to ath.git master branch (at least to
-tag ath-201909230832):
-
-https://git.kernel.org/pub/scm/linux/kernel/git/kvalo/ath.git/log/?h=master
-
- drivers/net/wireless/ath/ath10k/core.c | 27 +++++++++++++++++++++++++++
- drivers/net/wireless/ath/ath10k/hw.h   |  3 +++
- 2 files changed, 30 insertions(+)
-
-diff --git a/drivers/net/wireless/ath/ath10k/core.c b/drivers/net/wireless/ath/ath10k/core.c
-index 36c62d66c19e..e5572d4b6ae9 100644
---- a/drivers/net/wireless/ath/ath10k/core.c
-+++ b/drivers/net/wireless/ath/ath10k/core.c
-@@ -539,6 +539,33 @@ static const struct ath10k_hw_params ath10k_hw_params_list[] = {
- 		.tx_stats_over_pktlog = false,
- 	},
- 	{
-+		.id = QCA9377_HW_1_1_DEV_VERSION,
-+		.dev_id = QCA9377_1_0_DEVICE_ID,
-+		.bus = ATH10K_BUS_SDIO,
-+		.name = "qca9377 hw1.1 sdio",
-+		.patch_load_addr = QCA9377_HW_1_0_PATCH_LOAD_ADDR,
-+		.uart_pin = 19,
-+		.otp_exe_param = 0,
-+		.channel_counters_freq_hz = 88000,
-+		.max_probe_resp_desc_thres = 0,
-+		.cal_data_len = 8124,
-+		.fw = {
-+			.dir = QCA9377_HW_1_0_FW_DIR,
-+			.board = QCA9377_HW_1_0_BOARD_DATA_FILE,
-+			.board_size = QCA9377_BOARD_DATA_SZ,
-+			.board_ext_size = QCA9377_BOARD_EXT_DATA_SZ,
-+		},
-+		.hw_ops = &qca6174_ops,
-+		.hw_clk = qca6174_clk,
-+		.target_cpu_freq = 176000000,
-+		.decap_align_bytes = 4,
-+		.n_cipher_suites = 8,
-+		.num_peers = TARGET_QCA9377_HL_NUM_PEERS,
-+		.ast_skid_limit = 0x10,
-+		.num_wds_entries = 0x20,
-+		.uart_pin_workaround = true,
-+	},
-+	{
- 		.id = QCA4019_HW_1_0_DEV_VERSION,
- 		.dev_id = 0,
- 		.bus = ATH10K_BUS_AHB,
-diff --git a/drivers/net/wireless/ath/ath10k/hw.h b/drivers/net/wireless/ath/ath10k/hw.h
-index 2ae57c1de7b5..ddb1d23ec6de 100644
---- a/drivers/net/wireless/ath/ath10k/hw.h
-+++ b/drivers/net/wireless/ath/ath10k/hw.h
-@@ -768,6 +768,9 @@ ath10k_is_rssi_enable(struct ath10k_hw_params *hw,
- #define TARGET_HL_TLV_AST_SKID_LIMIT		16
- #define TARGET_HL_TLV_NUM_WDS_ENTRIES		2
- 
-+/* Target specific defines for QCA9377 high latency firmware */
-+#define TARGET_QCA9377_HL_NUM_PEERS		15
-+
- /* Diagnostic Window */
- #define CE_DIAG_PIPE	7
- 
--- 
-2.7.4
+diff --git a/drivers/staging/wilc1000/wilc_wfi_cfgoperations.c b/drivers/st=
+aging/wilc1000/wilc_wfi_cfgoperations.c
+index 22f21831649b..a1ca700e045a 100644
+--- a/drivers/staging/wilc1000/wilc_wfi_cfgoperations.c
++++ b/drivers/staging/wilc1000/wilc_wfi_cfgoperations.c
+@@ -620,29 +620,26 @@ static int del_key(struct wiphy *wiphy, struct net_de=
+vice *netdev,
+ 		   bool pairwise,
+ 		   const u8 *mac_addr)
+ {
+-	struct wilc *wl =3D wiphy_priv(wiphy);
+ 	struct wilc_vif *vif =3D netdev_priv(netdev);
+ 	struct wilc_priv *priv =3D &vif->priv;
+=20
+-	if (netdev =3D=3D wl->vif[0]->ndev) {
+-		if (priv->wilc_gtk[key_index]) {
+-			kfree(priv->wilc_gtk[key_index]->key);
+-			priv->wilc_gtk[key_index]->key =3D NULL;
+-			kfree(priv->wilc_gtk[key_index]->seq);
+-			priv->wilc_gtk[key_index]->seq =3D NULL;
++	if (priv->wilc_gtk[key_index]) {
++		kfree(priv->wilc_gtk[key_index]->key);
++		priv->wilc_gtk[key_index]->key =3D NULL;
++		kfree(priv->wilc_gtk[key_index]->seq);
++		priv->wilc_gtk[key_index]->seq =3D NULL;
+=20
+-			kfree(priv->wilc_gtk[key_index]);
+-			priv->wilc_gtk[key_index] =3D NULL;
+-		}
++		kfree(priv->wilc_gtk[key_index]);
++		priv->wilc_gtk[key_index] =3D NULL;
++	}
+=20
+-		if (priv->wilc_ptk[key_index]) {
+-			kfree(priv->wilc_ptk[key_index]->key);
+-			priv->wilc_ptk[key_index]->key =3D NULL;
+-			kfree(priv->wilc_ptk[key_index]->seq);
+-			priv->wilc_ptk[key_index]->seq =3D NULL;
+-			kfree(priv->wilc_ptk[key_index]);
+-			priv->wilc_ptk[key_index] =3D NULL;
+-		}
++	if (priv->wilc_ptk[key_index]) {
++		kfree(priv->wilc_ptk[key_index]->key);
++		priv->wilc_ptk[key_index]->key =3D NULL;
++		kfree(priv->wilc_ptk[key_index]->seq);
++		priv->wilc_ptk[key_index]->seq =3D NULL;
++		kfree(priv->wilc_ptk[key_index]);
++		priv->wilc_ptk[key_index] =3D NULL;
+ 	}
+=20
+ 	if (key_index <=3D 3 && priv->wep_key_len[key_index]) {
+--=20
+2.22.0
 
