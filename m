@@ -2,104 +2,107 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 9C2FAC01C5
-	for <lists+linux-wireless@lfdr.de>; Fri, 27 Sep 2019 11:07:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 95FCBC0210
+	for <lists+linux-wireless@lfdr.de>; Fri, 27 Sep 2019 11:17:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725911AbfI0JHT (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 27 Sep 2019 05:07:19 -0400
-Received: from us-smtp-1.mimecast.com ([207.211.31.81]:50919 "EHLO
-        us-smtp-delivery-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1725882AbfI0JHT (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 27 Sep 2019 05:07:19 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1569575238;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=1MCWdr3UZAx/IJlmu6bG99C2RPNYkY5L3Vfl+xVvhE8=;
-        b=Kz+nBuKw2H/Q0X9CCDCftnIhDH8lAle0YzjcXb7BX5Gu91ew1o3fdTGOCxz0258H+m8gNe
-        6vinXKIuPQcyv6IC4TSgf4fXxJ4ekbZoRdA53PMUBAcFlbw1LvPzoV39TLminouybCZHNF
-        /7B4sK4zkxQIzFsD5Se8SAQPKZfNYjQ=
-Received: from mail-ed1-f70.google.com (mail-ed1-f70.google.com
- [209.85.208.70]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-127-UDaWo9KwOWGK8Soo3yD18A-1; Fri, 27 Sep 2019 05:07:14 -0400
-Received: by mail-ed1-f70.google.com with SMTP id t13so1245919edr.2
-        for <linux-wireless@vger.kernel.org>; Fri, 27 Sep 2019 02:07:14 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:subject:in-reply-to:references:date
-         :message-id:mime-version:content-transfer-encoding;
-        bh=1MCWdr3UZAx/IJlmu6bG99C2RPNYkY5L3Vfl+xVvhE8=;
-        b=Jlv8XI3TV6oushxVMolUysGjnjUxk+OUTBO4K+NnEguSUDNKfezSZu+NJDyWeJO+qX
-         sVpjz3vq8oBR5ShT1vifHlYMxXbwR10mLhd6T7fheYl4HYrTz/+UzeamKdJ3jopIGHrJ
-         TtyNvPnYiK5WRVdcz426XNPZIsh2pTfKcwzGoC68oskD//WjPWg6fFjoLNian8UCtm82
-         GTOj9wr2VeN5LcuJN1NsPeX6a+uAM6+f05AkEC3KkKuNRN2m9E5cvuyJJMhjdL1NPTJ8
-         2pxImFZUdrj1DCPHLeg54lEjFyqhYYLPYdS5+NRZymTw6wIy+30gEqx1F0sMeAiAj1eR
-         LbjQ==
-X-Gm-Message-State: APjAAAUmEkzg/yNxyQbzI8fG7+xP7gRyWRv2UItRORb45oTAPeHpKRBQ
-        Lwl/12wRPjId8+u9ntQZsJYzYRx+bugUIkSvG3ifcM/yiB1tIod7+COD66WfhTb8S/4GWKftKpF
-        m9j8Q9JEUBGiCfXAMweGFO0eWW6s=
-X-Received: by 2002:a17:907:441d:: with SMTP id om21mr7049350ejb.188.1569575233483;
-        Fri, 27 Sep 2019 02:07:13 -0700 (PDT)
-X-Google-Smtp-Source: APXvYqwmCn5L6IdSpY+W/ZXeAp0l6OXfbk5dsfDaCfmvhbM88Za/j2Ny7xsTTrpKxAw5HpXzhqBpeQ==
-X-Received: by 2002:a17:907:441d:: with SMTP id om21mr7049335ejb.188.1569575233277;
-        Fri, 27 Sep 2019 02:07:13 -0700 (PDT)
-Received: from alrua-x1.borgediget.toke.dk (borgediget.toke.dk. [85.204.121.218])
-        by smtp.gmail.com with ESMTPSA id 36sm394820edz.92.2019.09.27.02.07.12
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 27 Sep 2019 02:07:12 -0700 (PDT)
-Received: by alrua-x1.borgediget.toke.dk (Postfix, from userid 1000)
-        id 2F57318063D; Fri, 27 Sep 2019 11:07:12 +0200 (CEST)
-From:   Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>
-To:     Felix Fietkau <nbd@nbd.name>, linux-wireless@vger.kernel.org
-Subject: Re: [PATCH 10/15] mt76: mt76x02: track approximate tx airtime for airtime fairness and survey
-In-Reply-To: <27bb95dd-1f0e-5862-3616-04452808e736@nbd.name>
-References: <20190926174732.42375-1-nbd@nbd.name> <20190926174732.42375-10-nbd@nbd.name> <871rw218ty.fsf@toke.dk> <2475938e-b82c-9924-f7db-f475ec2530b3@nbd.name> <87sgoiyw0p.fsf@toke.dk> <27bb95dd-1f0e-5862-3616-04452808e736@nbd.name>
-X-Clacks-Overhead: GNU Terry Pratchett
-Date:   Fri, 27 Sep 2019 11:07:12 +0200
-Message-ID: <87mueqyunz.fsf@toke.dk>
+        id S1725992AbfI0JRf (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 27 Sep 2019 05:17:35 -0400
+Received: from nbd.name ([46.4.11.11]:45156 "EHLO nbd.name"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725911AbfI0JRe (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 27 Sep 2019 05:17:34 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name;
+         s=20160729; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:
+        MIME-Version:Date:Message-ID:From:References:To:Subject:Sender:Reply-To:Cc:
+        Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+        Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+        List-Subscribe:List-Post:List-Owner:List-Archive;
+        bh=AAKlYzFsyVOj8+SLz02ouSkxJZ0E9WsZH9HIGP3Wok8=; b=HvwbSdArA7XahFhz9S8PsnJiOH
+        rl4hQtT+WfeBiaAAfDxr0/tCekizyopK40nmEJoAYgMNSxHYTvpobMvtiofsQYn6E4gyMN6UhHeDm
+        sAfDeU31w8PG6fIIm1Qm8AhJXZNBwvgLRTZq2vR4kfFB+rd9ZptwHItWyi6X94fS9/wc=;
+Received: from p54ae9b80.dip0.t-ipconnect.de ([84.174.155.128] helo=nf.local)
+        by ds12 with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        (Exim 4.89)
+        (envelope-from <nbd@nbd.name>)
+        id 1iDmNZ-0007wH-1d; Fri, 27 Sep 2019 11:17:33 +0200
+Subject: Re: [PATCH 10/15] mt76: mt76x02: track approximate tx airtime for
+ airtime fairness and survey
+To:     =?UTF-8?Q?Toke_H=c3=b8iland-J=c3=b8rgensen?= <toke@redhat.com>,
+        linux-wireless@vger.kernel.org
+References: <20190926174732.42375-1-nbd@nbd.name>
+ <20190926174732.42375-10-nbd@nbd.name> <871rw218ty.fsf@toke.dk>
+ <2475938e-b82c-9924-f7db-f475ec2530b3@nbd.name> <87sgoiyw0p.fsf@toke.dk>
+ <27bb95dd-1f0e-5862-3616-04452808e736@nbd.name> <87mueqyunz.fsf@toke.dk>
+From:   Felix Fietkau <nbd@nbd.name>
+Autocrypt: addr=nbd@nbd.name; prefer-encrypt=mutual; keydata=
+ xsDiBEah5CcRBADIY7pu4LIv3jBlyQ/2u87iIZGe6f0f8pyB4UjzfJNXhJb8JylYYRzIOSxh
+ ExKsdLCnJqsG1PY1mqTtoG8sONpwsHr2oJ4itjcGHfn5NJSUGTbtbbxLro13tHkGFCoCr4Z5
+ Pv+XRgiANSpYlIigiMbOkide6wbggQK32tC20QxUIwCg4k6dtV/4kwEeiOUfErq00TVqIiEE
+ AKcUi4taOuh/PQWx/Ujjl/P1LfJXqLKRPa8PwD4j2yjoc9l+7LptSxJThL9KSu6gtXQjcoR2
+ vCK0OeYJhgO4kYMI78h1TSaxmtImEAnjFPYJYVsxrhay92jisYc7z5R/76AaELfF6RCjjGeP
+ wdalulG+erWju710Bif7E1yjYVWeA/9Wd1lsOmx6uwwYgNqoFtcAunDaMKi9xVQW18FsUusM
+ TdRvTZLBpoUAy+MajAL+R73TwLq3LnKpIcCwftyQXK5pEDKq57OhxJVv1Q8XkA9Dn1SBOjNB
+ l25vJDFAT9ntp9THeDD2fv15yk4EKpWhu4H00/YX8KkhFsrtUs69+vZQwc0cRmVsaXggRmll
+ dGthdSA8bmJkQG5iZC5uYW1lPsJgBBMRAgAgBQJGoeQnAhsjBgsJCAcDAgQVAggDBBYCAwEC
+ HgECF4AACgkQ130UHQKnbvXsvgCgjsAIIOsY7xZ8VcSm7NABpi91yTMAniMMmH7FRenEAYMa
+ VrwYTIThkTlQzsFNBEah5FQQCACMIep/hTzgPZ9HbCTKm9xN4bZX0JjrqjFem1Nxf3MBM5vN
+ CYGBn8F4sGIzPmLhl4xFeq3k5irVg/YvxSDbQN6NJv8o+tP6zsMeWX2JjtV0P4aDIN1pK2/w
+ VxcicArw0VYdv2ZCarccFBgH2a6GjswqlCqVM3gNIMI8ikzenKcso8YErGGiKYeMEZLwHaxE
+ Y7mTPuOTrWL8uWWRL5mVjhZEVvDez6em/OYvzBwbkhImrryF29e3Po2cfY2n7EKjjr3/141K
+ DHBBdgXlPNfDwROnA5ugjjEBjwkwBQqPpDA7AYPvpHh5vLbZnVGu5CwG7NAsrb2isRmjYoqk
+ wu++3117AAMFB/9S0Sj7qFFQcD4laADVsabTpNNpaV4wAgVTRHKV/kC9luItzwDnUcsZUPdQ
+ f3MueRJ3jIHU0UmRBG3uQftqbZJj3ikhnfvyLmkCNe+/hXhPu9sGvXyi2D4vszICvc1KL4RD
+ aLSrOsROx22eZ26KqcW4ny7+va2FnvjsZgI8h4sDmaLzKczVRIiLITiMpLFEU/VoSv0m1F4B
+ FtRgoiyjFzigWG0MsTdAN6FJzGh4mWWGIlE7o5JraNhnTd+yTUIPtw3ym6l8P+gbvfoZida0
+ TspgwBWLnXQvP5EDvlZnNaKa/3oBes6z0QdaSOwZCRA3QSLHBwtgUsrT6RxRSweLrcabwkkE
+ GBECAAkFAkah5FQCGwwACgkQ130UHQKnbvW2GgCfTKx80VvCR/PvsUlrvdOLsIgeRGAAn1ee
+ RjMaxwtSdaCKMw3j33ZbsWS4
+Message-ID: <88a9f47b-143e-d266-d5d8-606bcb6365cc@nbd.name>
+Date:   Fri, 27 Sep 2019 11:17:32 +0200
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.14; rv:68.0)
+ Gecko/20100101 Thunderbird/68.1.0
 MIME-Version: 1.0
-X-MC-Unique: UDaWo9KwOWGK8Soo3yD18A-1
-X-Mimecast-Spam-Score: 0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <87mueqyunz.fsf@toke.dk>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Felix Fietkau <nbd@nbd.name> writes:
+On 2019-09-27 11:07, Toke Høiland-Jørgensen wrote:
+> Felix Fietkau <nbd@nbd.name> writes:
+> 
+>> On 2019-09-27 10:37, Toke Høiland-Jørgensen wrote:
+>>> Felix Fietkau <nbd@nbd.name> writes:
+>>> 
+>>>> On 2019-09-27 09:45, Toke Høiland-Jørgensen wrote:
+>>>>> Felix Fietkau <nbd@nbd.name> writes:
+>>>>> 
+>>>>>> Estimate by calculating duration for EWMA packet size + estimated A-MPDU
+>>>>>> length on tx status events
+>>>>> 
+>>>>> Would it make sense to move some of this code into mac80211? If we're
+>>>>> going to do airtime estimation for queue limiting it may make sense to
+>>>>> use this instead of the simplistic estimate I used in my RFC patch?
+>>>> Sure. I mainly put it in the driver because I wanted to get it working,
+>>>> tested and merged first without having to wait for a mac80211-next ->
+>>>> wireless-drivers-next merge.
+>>> 
+>>> Right, OK. So that means another patch set on top of this to move it
+>>> afterwards? Don't suppose you can be convinced to take care of that as
+>>> well? :)
+>> I could, but I don't know when I will have time for it, since my plate
+>> is pretty full at the moment.
+> 
+> Heh, I was afraid you'd say that. That makes two of us; guess we'll see
+> who gets around to it first, then :)
+> 
+> Is there anything in your new airtime.c that is mt76-specific apart from
+> the struct mt76_dev and struct mt76_rx_status parameters?
+No, I made it as generic as possible to make it easy to move to
+mac80211. mt76_rx_status mirrors ieee80211_rx_status very closely, and
+going from mt76_dev to ieee80211_hw is easy as well.
 
-> On 2019-09-27 10:37, Toke H=C3=B8iland-J=C3=B8rgensen wrote:
->> Felix Fietkau <nbd@nbd.name> writes:
->>=20
->>> On 2019-09-27 09:45, Toke H=C3=B8iland-J=C3=B8rgensen wrote:
->>>> Felix Fietkau <nbd@nbd.name> writes:
->>>>=20
->>>>> Estimate by calculating duration for EWMA packet size + estimated A-M=
-PDU
->>>>> length on tx status events
->>>>=20
->>>> Would it make sense to move some of this code into mac80211? If we're
->>>> going to do airtime estimation for queue limiting it may make sense to
->>>> use this instead of the simplistic estimate I used in my RFC patch?
->>> Sure. I mainly put it in the driver because I wanted to get it working,
->>> tested and merged first without having to wait for a mac80211-next ->
->>> wireless-drivers-next merge.
->>=20
->> Right, OK. So that means another patch set on top of this to move it
->> afterwards? Don't suppose you can be convinced to take care of that as
->> well? :)
-> I could, but I don't know when I will have time for it, since my plate
-> is pretty full at the moment.
-
-Heh, I was afraid you'd say that. That makes two of us; guess we'll see
-who gets around to it first, then :)
-
-Is there anything in your new airtime.c that is mt76-specific apart from
-the struct mt76_dev and struct mt76_rx_status parameters?
-
--Toke
-
+- Felix
