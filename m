@@ -2,97 +2,87 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 114BBC0094
-	for <lists+linux-wireless@lfdr.de>; Fri, 27 Sep 2019 10:03:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 844CCC00D3
+	for <lists+linux-wireless@lfdr.de>; Fri, 27 Sep 2019 10:12:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726694AbfI0IDK (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 27 Sep 2019 04:03:10 -0400
-Received: from mx1.redhat.com ([209.132.183.28]:40788 "EHLO mx1.redhat.com"
+        id S1727173AbfI0ILg (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 27 Sep 2019 04:11:36 -0400
+Received: from nbd.name ([46.4.11.11]:42482 "EHLO nbd.name"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725804AbfI0IDJ (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 27 Sep 2019 04:03:09 -0400
-Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.phx2.redhat.com [10.5.11.11])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mx1.redhat.com (Postfix) with ESMTPS id 4608E3082E44;
-        Fri, 27 Sep 2019 08:03:06 +0000 (UTC)
-Received: from localhost (unknown [10.40.205.177])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id C34C8600CE;
-        Fri, 27 Sep 2019 08:03:05 +0000 (UTC)
-Date:   Fri, 27 Sep 2019 10:03:04 +0200
-From:   Stanislaw Gruszka <sgruszka@redhat.com>
-To:     Anton Olsson <exuvo@exuvo.se>
-Cc:     linux-wireless@vger.kernel.org,
-        Helmut Schaa <helmut.schaa@googlemail.com>
-Subject: Re: rt2x00 regression
-Message-ID: <20190927080303.GA7667@redhat.com>
-References: <bff7d309-a816-6a75-51b6-5928ef4f7a8c@exuvo.se>
+        id S1726988AbfI0ILg (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 27 Sep 2019 04:11:36 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name;
+         s=20160729; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:
+        MIME-Version:Date:Message-ID:From:References:To:Subject:Sender:Reply-To:Cc:
+        Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+        Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+        List-Subscribe:List-Post:List-Owner:List-Archive;
+        bh=LOCWdYb42EnAGOKag0OCo+TWHxZGkx9JPLaLRHCzAO0=; b=Ks2qQkF1HTWJonO/IQQCjk1nwn
+        LEuEgKZv5xGzEn73GqLZkE8+Xif02erSHrWLXYwzYkUuGr2R84OhcNJLipG1H+8FV3+fkIULstSAO
+        7UGJUIgIoYGUK4Kdhp+wwJi1kV5md58+snNZpUVfz7P3RtXoaSQHl2za0MvPQT1n00vc=;
+Received: from p54ae9b80.dip0.t-ipconnect.de ([84.174.155.128] helo=nf.local)
+        by ds12 with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        (Exim 4.89)
+        (envelope-from <nbd@nbd.name>)
+        id 1iDlLi-0005om-6S; Fri, 27 Sep 2019 10:11:34 +0200
+Subject: Re: [PATCH 10/15] mt76: mt76x02: track approximate tx airtime for
+ airtime fairness and survey
+To:     =?UTF-8?Q?Toke_H=c3=b8iland-J=c3=b8rgensen?= <toke@redhat.com>,
+        linux-wireless@vger.kernel.org
+References: <20190926174732.42375-1-nbd@nbd.name>
+ <20190926174732.42375-10-nbd@nbd.name> <871rw218ty.fsf@toke.dk>
+From:   Felix Fietkau <nbd@nbd.name>
+Autocrypt: addr=nbd@nbd.name; prefer-encrypt=mutual; keydata=
+ xsDiBEah5CcRBADIY7pu4LIv3jBlyQ/2u87iIZGe6f0f8pyB4UjzfJNXhJb8JylYYRzIOSxh
+ ExKsdLCnJqsG1PY1mqTtoG8sONpwsHr2oJ4itjcGHfn5NJSUGTbtbbxLro13tHkGFCoCr4Z5
+ Pv+XRgiANSpYlIigiMbOkide6wbggQK32tC20QxUIwCg4k6dtV/4kwEeiOUfErq00TVqIiEE
+ AKcUi4taOuh/PQWx/Ujjl/P1LfJXqLKRPa8PwD4j2yjoc9l+7LptSxJThL9KSu6gtXQjcoR2
+ vCK0OeYJhgO4kYMI78h1TSaxmtImEAnjFPYJYVsxrhay92jisYc7z5R/76AaELfF6RCjjGeP
+ wdalulG+erWju710Bif7E1yjYVWeA/9Wd1lsOmx6uwwYgNqoFtcAunDaMKi9xVQW18FsUusM
+ TdRvTZLBpoUAy+MajAL+R73TwLq3LnKpIcCwftyQXK5pEDKq57OhxJVv1Q8XkA9Dn1SBOjNB
+ l25vJDFAT9ntp9THeDD2fv15yk4EKpWhu4H00/YX8KkhFsrtUs69+vZQwc0cRmVsaXggRmll
+ dGthdSA8bmJkQG5iZC5uYW1lPsJgBBMRAgAgBQJGoeQnAhsjBgsJCAcDAgQVAggDBBYCAwEC
+ HgECF4AACgkQ130UHQKnbvXsvgCgjsAIIOsY7xZ8VcSm7NABpi91yTMAniMMmH7FRenEAYMa
+ VrwYTIThkTlQzsFNBEah5FQQCACMIep/hTzgPZ9HbCTKm9xN4bZX0JjrqjFem1Nxf3MBM5vN
+ CYGBn8F4sGIzPmLhl4xFeq3k5irVg/YvxSDbQN6NJv8o+tP6zsMeWX2JjtV0P4aDIN1pK2/w
+ VxcicArw0VYdv2ZCarccFBgH2a6GjswqlCqVM3gNIMI8ikzenKcso8YErGGiKYeMEZLwHaxE
+ Y7mTPuOTrWL8uWWRL5mVjhZEVvDez6em/OYvzBwbkhImrryF29e3Po2cfY2n7EKjjr3/141K
+ DHBBdgXlPNfDwROnA5ugjjEBjwkwBQqPpDA7AYPvpHh5vLbZnVGu5CwG7NAsrb2isRmjYoqk
+ wu++3117AAMFB/9S0Sj7qFFQcD4laADVsabTpNNpaV4wAgVTRHKV/kC9luItzwDnUcsZUPdQ
+ f3MueRJ3jIHU0UmRBG3uQftqbZJj3ikhnfvyLmkCNe+/hXhPu9sGvXyi2D4vszICvc1KL4RD
+ aLSrOsROx22eZ26KqcW4ny7+va2FnvjsZgI8h4sDmaLzKczVRIiLITiMpLFEU/VoSv0m1F4B
+ FtRgoiyjFzigWG0MsTdAN6FJzGh4mWWGIlE7o5JraNhnTd+yTUIPtw3ym6l8P+gbvfoZida0
+ TspgwBWLnXQvP5EDvlZnNaKa/3oBes6z0QdaSOwZCRA3QSLHBwtgUsrT6RxRSweLrcabwkkE
+ GBECAAkFAkah5FQCGwwACgkQ130UHQKnbvW2GgCfTKx80VvCR/PvsUlrvdOLsIgeRGAAn1ee
+ RjMaxwtSdaCKMw3j33ZbsWS4
+Message-ID: <2475938e-b82c-9924-f7db-f475ec2530b3@nbd.name>
+Date:   Fri, 27 Sep 2019 10:11:33 +0200
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.14; rv:68.0)
+ Gecko/20100101 Thunderbird/68.1.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
+In-Reply-To: <871rw218ty.fsf@toke.dk>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <bff7d309-a816-6a75-51b6-5928ef4f7a8c@exuvo.se>
-User-Agent: Mutt/1.11.3 (2019-02-01)
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.11
-X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16 (mx1.redhat.com [10.5.110.46]); Fri, 27 Sep 2019 08:03:09 +0000 (UTC)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Thu, Sep 26, 2019 at 06:32:23PM +0200, Anton Olsson wrote:
-> Hello I have a USB based ID 148f:3070 Ralink Technology, Corp. RT2870/RT3070 Wireless Adapter, that stops working with recent kernels. It works on kernel 5.1.15 and does not work with 5.2.7 or 5.3.1 (I have not tested other versions). I use it in AP mode.
+On 2019-09-27 09:45, Toke HÃ¸iland-JÃ¸rgensen wrote:
+> Felix Fietkau <nbd@nbd.name> writes:
 > 
-> I found this similar bug report https://marc.info/?l=linux-wireless&m=156630037103575&w=2 but that did not have related error messages so I assume this is different?
+>> Estimate by calculating duration for EWMA packet size + estimated A-MPDU
+>> length on tx status events
 > 
-> Logs of working kernel 5.1.15-arch1-1-ARCH.
-> [   78.680555] ieee80211 phy0: rt2x00_set_rt: Info - RT chipset 3070, rev 0201 detected
-> [   78.690992] ieee80211 phy0: rt2x00_set_rf: Info - RF chipset 0005 detected
-> [   78.799625] ieee80211 phy0: Selected rate control algorithm 'minstrel_ht'
-> sep 26 17:13:03 kernel: usbcore: registered new interface driver rt2800usb
-> sep 26 17:13:03 systemd[1]: Found device RT2870/RT3070 Wireless Adapter.
-> [  113.812454] ieee80211 phy0: rt2x00lib_request_firmware: Info - Loading firmware file 'rt2870.bin'
-> [  113.905279] ieee80211 phy0: rt2x00lib_request_firmware: Info - Firmware detected - version: 0.36
-> [  114.028703] ieee80211 phy0: rt2x00usb_vendor_request: Error - Vendor Request 0x06 failed for offset 0x0404 with error -71
-> 
-> The last error there does not seem to affect the operation of the device.
-> 
-> Logs of not working with kernel 5.3.1, 5.2.7 has similar output.
-> sep 26 17:06:12 kernel: ieee80211 phy0: rt2x00_set_rt: Info - RT chipset 3070, rev 0201 detected
-> sep 26 17:06:12 kernel: ieee80211 phy0: rt2x00_set_rf: Info - RF chipset 0005 detected
-> sep 26 17:06:12 kernel: ieee80211 phy0: Selected rate control algorithm 'minstrel_ht'
-> sep 26 17:06:12 kernel: usbcore: registered new interface driver rt2800usb
-> sep 26 17:06:12 systemd[1]: Found device RT2870/RT3070 Wireless Adapter.
-> sep 26 17:06:21 ieee80211 phy0: rt2x00lib_request_firmware: Info - Loading firmware file 'rt2870.bin'
-> sep 26 17:06:21 ieee80211 phy0: rt2x00lib_request_firmware: Info - Firmware detected - version: 0.36
-> sep 26 17:06:21 ieee80211 phy0: rt2x00usb_vendor_request: Error - Vendor Request 0x06 failed for offset 0x0404 with>
-> sep 26 17:06:22 ieee80211 phy0: rt2800_wait_csr_ready: Error - Unstable hardware
-> sep 26 17:06:22 ieee80211 phy0: rt2800usb_set_device_state: Error - Device failed to enter state 4 (-5)
-> 
-> Unable to bring up the network interface here.
+> Would it make sense to move some of this code into mac80211? If we're
+> going to do airtime estimation for queue limiting it may make sense to
+> use this instead of the simplistic estimate I used in my RFC patch?
+Sure. I mainly put it in the driver because I wanted to get it working,
+tested and merged first without having to wait for a mac80211-next ->
+wireless-drivers-next merge.
 
-This most likely is the problem introduced by commit:
+If we move it to mac80211, we can also make ath9k use it. My
+implementation should be faster than the ath9k duration calculation.
 
-commit e383c70474db32b9d4a3de6dfbd08784d19e6751
-Author: Stanislaw Gruszka <sgruszka@redhat.com>
-Date:   Tue Mar 12 10:51:42 2019 +0100
-
-    rt2x00: check number of EPROTO errors
-
-Plase check below patch that increase number of EPROTO checks 
-before marking device removed. If it does not help, plese
-check if reverting above commits helps.
-
-diff --git a/drivers/net/wireless/ralink/rt2x00/rt2x00usb.c b/drivers/net/wireless/ralink/rt2x00/rt2x00usb.c
-index bc2dfef0de22..215c3f092306 100644
---- a/drivers/net/wireless/ralink/rt2x00/rt2x00usb.c
-+++ b/drivers/net/wireless/ralink/rt2x00/rt2x00usb.c
-@@ -30,7 +30,7 @@ static bool rt2x00usb_check_usb_error(struct rt2x00_dev *rt2x00dev, int status)
- 	else
- 		rt2x00dev->num_proto_errs = 0;
- 
--	if (rt2x00dev->num_proto_errs > 3)
-+	if (rt2x00dev->num_proto_errs > 8)
- 		return true;
- 
- 	return false;
+- Felix
