@@ -2,66 +2,66 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D5169C01B8
-	for <lists+linux-wireless@lfdr.de>; Fri, 27 Sep 2019 11:04:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9C2FAC01C5
+	for <lists+linux-wireless@lfdr.de>; Fri, 27 Sep 2019 11:07:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726182AbfI0JE0 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 27 Sep 2019 05:04:26 -0400
-Received: from us-smtp-2.mimecast.com ([205.139.110.61]:42171 "EHLO
+        id S1725911AbfI0JHT (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 27 Sep 2019 05:07:19 -0400
+Received: from us-smtp-1.mimecast.com ([207.211.31.81]:50919 "EHLO
         us-smtp-delivery-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1725882AbfI0JE0 (ORCPT
+        by vger.kernel.org with ESMTP id S1725882AbfI0JHT (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 27 Sep 2019 05:04:26 -0400
+        Fri, 27 Sep 2019 05:07:19 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1569575065;
+        s=mimecast20190719; t=1569575238;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
          to:to:cc:mime-version:mime-version:content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=CgIXk/C0RvbgqRAB7AXeg1r0pOMpXKTq3L1nU4U+SDY=;
-        b=SotUTHVcqEzgILVzgF8PP4XOFolylaeQ9EPuKo80ceUheqTrylKv55KhFUJLI+J984j8jQ
-        bD4aTMg/M4Lc18f1AIY3moPs3Rb3ld80F0uVrnhW754smQXl/8tZVzJiOjN2CBeUesn2K4
-        0cIrpt4PKEe2+WPJSqcoXaCqNXOT99g=
-Received: from mail-ed1-f72.google.com (mail-ed1-f72.google.com
- [209.85.208.72]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-50-XRYb-OhYP7WzSFm4wnF1Qg-1; Fri, 27 Sep 2019 05:04:23 -0400
-Received: by mail-ed1-f72.google.com with SMTP id l9so1226859edi.8
-        for <linux-wireless@vger.kernel.org>; Fri, 27 Sep 2019 02:04:23 -0700 (PDT)
+        bh=1MCWdr3UZAx/IJlmu6bG99C2RPNYkY5L3Vfl+xVvhE8=;
+        b=Kz+nBuKw2H/Q0X9CCDCftnIhDH8lAle0YzjcXb7BX5Gu91ew1o3fdTGOCxz0258H+m8gNe
+        6vinXKIuPQcyv6IC4TSgf4fXxJ4ekbZoRdA53PMUBAcFlbw1LvPzoV39TLminouybCZHNF
+        /7B4sK4zkxQIzFsD5Se8SAQPKZfNYjQ=
+Received: from mail-ed1-f70.google.com (mail-ed1-f70.google.com
+ [209.85.208.70]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-127-UDaWo9KwOWGK8Soo3yD18A-1; Fri, 27 Sep 2019 05:07:14 -0400
+Received: by mail-ed1-f70.google.com with SMTP id t13so1245919edr.2
+        for <linux-wireless@vger.kernel.org>; Fri, 27 Sep 2019 02:07:14 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:subject:in-reply-to:references:date
          :message-id:mime-version:content-transfer-encoding;
-        bh=pE0xQ2NrWaIiQjMQcmvx2PhMOt4W7LUdJ1yd9KBMJh8=;
-        b=gzaepWAjs6V8xS/0/Qq5wvG1o2/oKxNnwxvOsvOiZLISdDQDNqAzqXxRsAA7Gp+VZY
-         ZmWGuSW6rGsz5z3iUVj0mtyBWQfyk3Rd3T3JlHthH2i/rGJ4cgfrhqCOeXun3Sk+Bvx+
-         0JJIfSA7bgeM+DFeyPmrJRxFyGJxOJRzhwy9Ipb+PyfOc2knq/6LYECEX3yDEBkzScAq
-         Z6qXyF9bn2QEs1alWYhmo8yM48QkOtEIAK/Um7gT5aUwZQ8apdoZWfsmK/Lfkn6RpYzu
-         sdx1ou9eZC60ik4w26w+HS68fchDxS+9s6em8vhYU3R7zNUl97Iv6e8MT3dK91hzGwp1
-         rgdQ==
-X-Gm-Message-State: APjAAAUsTeBtrxsvTpRiN3TRVmZY626c4DNFMSQE58un6zn3tMW3XZnN
-        /Hc8Cqp9x54Lq0bHKIyKiXvVdSscQVcvsgBikRaih4cberPNhmBLrSX1xrDVI2xOj0fVeRqIkzG
-        QsYkc0PUCy8/VdozM+l58AOfmFX4=
-X-Received: by 2002:a50:fc0c:: with SMTP id i12mr3295946edr.82.1569575062786;
-        Fri, 27 Sep 2019 02:04:22 -0700 (PDT)
-X-Google-Smtp-Source: APXvYqzgd0Z3jgwod8XHElE4wcAaJUfr4Y4xvPIHfy7X6/OrPkoK7Eo28ipkrh7RW2NJz87tEZOkPg==
-X-Received: by 2002:a50:fc0c:: with SMTP id i12mr3295933edr.82.1569575062624;
-        Fri, 27 Sep 2019 02:04:22 -0700 (PDT)
+        bh=1MCWdr3UZAx/IJlmu6bG99C2RPNYkY5L3Vfl+xVvhE8=;
+        b=Jlv8XI3TV6oushxVMolUysGjnjUxk+OUTBO4K+NnEguSUDNKfezSZu+NJDyWeJO+qX
+         sVpjz3vq8oBR5ShT1vifHlYMxXbwR10mLhd6T7fheYl4HYrTz/+UzeamKdJ3jopIGHrJ
+         TtyNvPnYiK5WRVdcz426XNPZIsh2pTfKcwzGoC68oskD//WjPWg6fFjoLNian8UCtm82
+         GTOj9wr2VeN5LcuJN1NsPeX6a+uAM6+f05AkEC3KkKuNRN2m9E5cvuyJJMhjdL1NPTJ8
+         2pxImFZUdrj1DCPHLeg54lEjFyqhYYLPYdS5+NRZymTw6wIy+30gEqx1F0sMeAiAj1eR
+         LbjQ==
+X-Gm-Message-State: APjAAAUmEkzg/yNxyQbzI8fG7+xP7gRyWRv2UItRORb45oTAPeHpKRBQ
+        Lwl/12wRPjId8+u9ntQZsJYzYRx+bugUIkSvG3ifcM/yiB1tIod7+COD66WfhTb8S/4GWKftKpF
+        m9j8Q9JEUBGiCfXAMweGFO0eWW6s=
+X-Received: by 2002:a17:907:441d:: with SMTP id om21mr7049350ejb.188.1569575233483;
+        Fri, 27 Sep 2019 02:07:13 -0700 (PDT)
+X-Google-Smtp-Source: APXvYqwmCn5L6IdSpY+W/ZXeAp0l6OXfbk5dsfDaCfmvhbM88Za/j2Ny7xsTTrpKxAw5HpXzhqBpeQ==
+X-Received: by 2002:a17:907:441d:: with SMTP id om21mr7049335ejb.188.1569575233277;
+        Fri, 27 Sep 2019 02:07:13 -0700 (PDT)
 Received: from alrua-x1.borgediget.toke.dk (borgediget.toke.dk. [85.204.121.218])
-        by smtp.gmail.com with ESMTPSA id b12sm390134edq.75.2019.09.27.02.04.21
+        by smtp.gmail.com with ESMTPSA id 36sm394820edz.92.2019.09.27.02.07.12
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 27 Sep 2019 02:04:21 -0700 (PDT)
+        Fri, 27 Sep 2019 02:07:12 -0700 (PDT)
 Received: by alrua-x1.borgediget.toke.dk (Postfix, from userid 1000)
-        id 37F7218063D; Fri, 27 Sep 2019 11:04:21 +0200 (CEST)
+        id 2F57318063D; Fri, 27 Sep 2019 11:07:12 +0200 (CEST)
 From:   Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>
 To:     Felix Fietkau <nbd@nbd.name>, linux-wireless@vger.kernel.org
-Subject: Re: [PATCH 05/15] mt76: track rx airtime for airtime fairness and survey
-In-Reply-To: <6af9b976-48e8-64c2-dffe-b3eaa03b9c73@nbd.name>
-References: <20190926174732.42375-1-nbd@nbd.name> <20190926174732.42375-5-nbd@nbd.name> <87v9teyw40.fsf@toke.dk> <6af9b976-48e8-64c2-dffe-b3eaa03b9c73@nbd.name>
+Subject: Re: [PATCH 10/15] mt76: mt76x02: track approximate tx airtime for airtime fairness and survey
+In-Reply-To: <27bb95dd-1f0e-5862-3616-04452808e736@nbd.name>
+References: <20190926174732.42375-1-nbd@nbd.name> <20190926174732.42375-10-nbd@nbd.name> <871rw218ty.fsf@toke.dk> <2475938e-b82c-9924-f7db-f475ec2530b3@nbd.name> <87sgoiyw0p.fsf@toke.dk> <27bb95dd-1f0e-5862-3616-04452808e736@nbd.name>
 X-Clacks-Overhead: GNU Terry Pratchett
-Date:   Fri, 27 Sep 2019 11:04:21 +0200
-Message-ID: <87pnjmyusq.fsf@toke.dk>
+Date:   Fri, 27 Sep 2019 11:07:12 +0200
+Message-ID: <87mueqyunz.fsf@toke.dk>
 MIME-Version: 1.0
-X-MC-Unique: XRYb-OhYP7WzSFm4wnF1Qg-1
+X-MC-Unique: UDaWo9KwOWGK8Soo3yD18A-1
 X-Mimecast-Spam-Score: 0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
@@ -72,54 +72,34 @@ X-Mailing-List: linux-wireless@vger.kernel.org
 
 Felix Fietkau <nbd@nbd.name> writes:
 
-> On 2019-09-27 10:35, Toke H=C3=B8iland-J=C3=B8rgensen wrote:
+> On 2019-09-27 10:37, Toke H=C3=B8iland-J=C3=B8rgensen wrote:
 >> Felix Fietkau <nbd@nbd.name> writes:
->>> +=09switch (status->encoding) {
->>> +=09case RX_ENC_LEGACY:
->>> +=09=09if (WARN_ON_ONCE(status->band > NL80211_BAND_5GHZ))
->>> +=09=09=09return 0;
->>> +
->>> +=09=09sband =3D dev->hw->wiphy->bands[status->band];
->>> +=09=09if (!sband || status->rate_idx > sband->n_bitrates)
->>> +=09=09=09return 0;
->>> +
->>> +=09=09rate =3D &sband->bitrates[status->rate_idx];
->>> +
->>> +=09=09return mt76_calc_legacy_rate_duration(rate, sp, len);
->>> +=09case RX_ENC_VHT:
->>> +=09=09streams =3D status->nss;
->>> +=09=09idx =3D status->rate_idx;
->>> +=09=09group =3D VHT_GROUP_IDX(streams, sgi, bw);
->>> +=09=09break;
->>> +=09case RX_ENC_HT:
->>> +=09=09streams =3D ((status->rate_idx >> 3) & 3) + 1;
->>> +=09=09idx =3D status->rate_idx & 7;
->>> +=09=09group =3D HT_GROUP_IDX(streams, sgi, bw);
->>> +=09=09break;
->>> +=09default:
->>> +=09=09WARN_ON_ONCE(1);
->>> +=09=09return 0;
->>> +=09}
->>> +
->>> +=09if (WARN_ON_ONCE(streams > 4))
->>> +=09=09return 0;
->>> +
->>> +=09duration =3D airtime_mcs_groups[group].duration[idx];
->>> +=09duration <<=3D airtime_mcs_groups[group].shift;
->>> +=09duration *=3D len;
->>> +=09duration /=3D AVG_PKT_SIZE;
->>> +=09duration /=3D 1024;
 >>=20
->> On an earlier patch of mine you expressed concern over divisions in the
->> fast path. Does this mean this is no longer a concern? Or is the
->> compiler doing fancy things with the constant division here? :)
-> I made the constants power-of-2, so that the compiler can turn them into
-> bit shifts. I verified the disassembly: no divisions left in the code.
+>>> On 2019-09-27 09:45, Toke H=C3=B8iland-J=C3=B8rgensen wrote:
+>>>> Felix Fietkau <nbd@nbd.name> writes:
+>>>>=20
+>>>>> Estimate by calculating duration for EWMA packet size + estimated A-M=
+PDU
+>>>>> length on tx status events
+>>>>=20
+>>>> Would it make sense to move some of this code into mac80211? If we're
+>>>> going to do airtime estimation for queue limiting it may make sense to
+>>>> use this instead of the simplistic estimate I used in my RFC patch?
+>>> Sure. I mainly put it in the driver because I wanted to get it working,
+>>> tested and merged first without having to wait for a mac80211-next ->
+>>> wireless-drivers-next merge.
+>>=20
+>> Right, OK. So that means another patch set on top of this to move it
+>> afterwards? Don't suppose you can be convinced to take care of that as
+>> well? :)
+> I could, but I don't know when I will have time for it, since my plate
+> is pretty full at the moment.
 
-I see. Neat :)
+Heh, I was afraid you'd say that. That makes two of us; guess we'll see
+who gets around to it first, then :)
 
-There's still a regular division in the legacy rate calc further up,
-though, right? But I guess that doesn't happen so often?
+Is there anything in your new airtime.c that is mt76-specific apart from
+the struct mt76_dev and struct mt76_rx_status parameters?
 
 -Toke
 
