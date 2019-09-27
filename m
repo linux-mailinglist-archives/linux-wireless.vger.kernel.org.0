@@ -2,135 +2,67 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 22290C08C6
-	for <lists+linux-wireless@lfdr.de>; Fri, 27 Sep 2019 17:41:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 26103C0A0B
+	for <lists+linux-wireless@lfdr.de>; Fri, 27 Sep 2019 19:10:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727518AbfI0PlF (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 27 Sep 2019 11:41:05 -0400
-Received: from mail-qt1-f196.google.com ([209.85.160.196]:34654 "EHLO
-        mail-qt1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727207AbfI0PlF (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 27 Sep 2019 11:41:05 -0400
-Received: by mail-qt1-f196.google.com with SMTP id 3so7846858qta.1;
-        Fri, 27 Sep 2019 08:41:04 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=date:from:to:cc:subject:message-id:mime-version:content-disposition
-         :user-agent;
-        bh=fJXAR3BTSiEDrzcXRUPmAyScpWS/7FX+Os6XghgaQU0=;
-        b=uyS4auWyENLNwj4ODdMyhIEu9qmUQi6TF/0NgNXCDOSuv8he1njkkWUbH6MAAuI3dw
-         7vLlXOh9w2X0TDPsPQJ0xGa50Y/w8Pbl0Q9cF27Vp8Qvg0noboRK1e1n1eLo/A2AjyuD
-         uoQuNkjjiuKExO3npjd3EHDSrgGrqoZRhPGtTlDZDMXATXqpIrJAX7izsK0w7Yxgn93w
-         /QvzX10WXMfskAJ0QsMBgNc4pDJMZWNa6H9v21iOR2mV7ZrMDDpVkvXmSUJ1ClSH+Wtd
-         HW3kxO7tiQRWuLfj+Hl5STNb7ChjeOJD5rGDjJhnWylO6N16KyagbovNjvtXlcz3Dmtm
-         BIGA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:mime-version
-         :content-disposition:user-agent;
-        bh=fJXAR3BTSiEDrzcXRUPmAyScpWS/7FX+Os6XghgaQU0=;
-        b=b1EeUYzNUfYKr2cxCw0a+2WaVE0rou6lpU02jW4o2Xfv80cMUOqcaIrlQs106WHHom
-         X/Q1kCfHVYkzn/kXt6sk8WfK4jBs/S74dxAiEt5DD+qUljA0cZf7K05L7adTvWdjmSwm
-         i/MFmGij10Vr2W8fKR3KoqQztYbpyt50kiW5JnpZkaWjt6FM93cJo7GenZi48DbD8mLK
-         tqGbtOYd8MsjEXdyS9nt4G+JC5gal0ZEV5bOvex1Wayv1CKwSmMmvj4kW7DTT9RQ/oKO
-         NMO605D3asO1xm15h87Ne2ynq0D22QhXZCSJcHfVf1duoiJu62txqMLijGf/Ipp9ddEC
-         mPFA==
-X-Gm-Message-State: APjAAAX/IUOm2t8Z7dLcHrSrjmpBxfdaGtyaduB1272TajRPIcw5rNQa
-        3rMQf9d5AQV4PDlHIE52z21jjKJ1GK8v/qYm
-X-Google-Smtp-Source: APXvYqzflvmRBLJzHuAYDcQ5In3raI9yBS1yeQB4x+QTsu/BKYjGLPhy0jFumIrbkX37mMPtLYA1/A==
-X-Received: by 2002:ac8:67ce:: with SMTP id r14mr10362936qtp.317.1569598864212;
-        Fri, 27 Sep 2019 08:41:04 -0700 (PDT)
-Received: from ArchLaptop (lithosphere-80.dynamic2.rpi.edu. [129.161.139.80])
-        by smtp.gmail.com with ESMTPSA id p53sm2775779qtk.23.2019.09.27.08.41.03
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 27 Sep 2019 08:41:03 -0700 (PDT)
-Date:   Fri, 27 Sep 2019 11:41:02 -0400
-From:   Aaron Hill <aa1ronham@gmail.com>
-To:     linux-wireless@vger.kernel.org
-Cc:     Johannes Berg <johannes@sipsolutions.net>,
-        "David S. Miller" <davem@davemloft.net>, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: [PATCH] net: mac80211: Disable preeemption when updating stat
- counters
-Message-ID: <20190927154102.GA117350@ArchLaptop>
+        id S1727955AbfI0RI5 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 27 Sep 2019 13:08:57 -0400
+Received: from hz.preining.info ([95.216.25.247]:60308 "EHLO hz.preining.info"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726251AbfI0RI5 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 27 Sep 2019 13:08:57 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=preining.info; s=201909; h=In-Reply-To:Content-Type:MIME-Version:References
+        :Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:Content-Transfer-Encoding
+        :Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+        Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+        List-Subscribe:List-Post:List-Owner:List-Archive;
+        bh=cXXJiq5YH8gtvqyF/dKyuBE39EX6k3QlWqRuTYG4LN4=; b=GTtV7HJcwRxqiMQYEqCe25dyLm
+        nfImC55+5DAxthMfmua70/mWPOPdVJYHYW12kSGjKAhEvLdsx3ZNrGC0vRcwHCovXeZHHETmd7vnv
+        9PO5tLucqiOFyOxLCqf8Ap3gtm5M9zh/0UCVTJZ7ljxVSNYqZBehN1zCud/Hl4QyE3w3Tt/pO4Ivz
+        5+ydlxs3illFTYdE/Swl4n/ZXRf2luE+0a5rSCLT7xMOAYt+MRBsumNNLAhv45aogHlW/KnG0hcBE
+        aArD9IqV77oBlNt61bwHK/V/uSkY0DLPJ6l/6IZ6pZqXFyio0a3g7jRPE03ZjZ00MrwiJoqmMFMRL
+        kKRyXLew==;
+Received: from tvk213002.tvk.ne.jp ([180.94.213.2] helo=burischnitzel.preining.info)
+        by hz.preining.info with esmtpsa (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <norbert@preining.info>)
+        id 1iDtjf-0000rL-Ox; Fri, 27 Sep 2019 17:08:52 +0000
+Received: by burischnitzel.preining.info (Postfix, from userid 1000)
+        id 85C996971448; Sat, 28 Sep 2019 02:08:47 +0900 (JST)
+Date:   Sat, 28 Sep 2019 02:08:47 +0900
+From:   Norbert Preining <norbert@preining.info>
+To:     Kalle Valo <kvalo@codeaurora.org>
+Cc:     linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
+        ilw@linux.intel.com
+Subject: Re: IWL AC 8260, kernel 5.3.*, many kernel WARNING
+Message-ID: <20190927170847.laa7kii66d72il7y@burischnitzel.preining.info>
+References: <20190927010452.b576njhcvgowasf3@burischnitzel.preining.info>
+ <87blv5j4w1.fsf@tynnyri.adurom.net>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-User-Agent: Mutt/1.12.2 (2019-09-21)
+In-Reply-To: <87blv5j4w1.fsf@tynnyri.adurom.net>
+User-Agent: NeoMutt/20180716
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-The mac80211 subsystem maintains per-cpu stat counters for receive and
-transmit operations. Previously, preemption was not disabled when
-updating these counters. This creates a race condition where two cpus
-could attempt to update the same counters using non-atomic operations.
+Dear Kalle,
 
-This was causing a
-'BUG: using smp_processor_id() in preemptible [00000000] code'
-message to be printed, along with a stacktrace. This was reported
-in a few different places:
+On Fri, 27 Sep 2019, Kalle Valo wrote:
+> I'm guessing this should fix it:
+> https://git.kernel.org/pub/scm/linux/kernel/git/kvalo/wireless-drivers.git/commit/?id=fddbfeece9c7882cc47754c7da460fe427e3e85b
 
-* https://www.spinics.net/lists/linux-wireless/msg189992.html
-* https://bugzilla.kernel.org/show_bug.cgi?id=204127
+Yes, I can confirm that with this patch added on top of 5.3.1 I don't
+see the warnings anymore.
 
-This patch adds calls to preempt_disable() and preempt_enable()
-surrounding the updating of the stat counters.
+Thanks a lot
 
-Signed-off-by: Aaron Hill <aa1ronham@gmail.com>
----
- net/mac80211/rx.c | 7 ++++++-
- net/mac80211/tx.c | 7 ++++++-
- 2 files changed, 12 insertions(+), 2 deletions(-)
+Norbert
 
-diff --git a/net/mac80211/rx.c b/net/mac80211/rx.c
-index 768d14c9a716..5ef0667151bf 100644
---- a/net/mac80211/rx.c
-+++ b/net/mac80211/rx.c
-@@ -34,12 +34,17 @@
- 
- static inline void ieee80211_rx_stats(struct net_device *dev, u32 len)
- {
--	struct pcpu_sw_netstats *tstats = this_cpu_ptr(dev->tstats);
-+	struct pcpu_sw_netstats *tstats;
-+
-+	// Disable preemption while updating per-cpu stats counters
-+	preempt_disable();
-+	tstats = this_cpu_ptr(dev->tstats);
- 
- 	u64_stats_update_begin(&tstats->syncp);
- 	tstats->rx_packets++;
- 	tstats->rx_bytes += len;
- 	u64_stats_update_end(&tstats->syncp);
-+	preempt_enable();
- }
- 
- static u8 *ieee80211_get_bssid(struct ieee80211_hdr *hdr, size_t len,
-diff --git a/net/mac80211/tx.c b/net/mac80211/tx.c
-index 1fa422782905..4cad3d741b6b 100644
---- a/net/mac80211/tx.c
-+++ b/net/mac80211/tx.c
-@@ -40,12 +40,17 @@
- 
- static inline void ieee80211_tx_stats(struct net_device *dev, u32 len)
- {
--	struct pcpu_sw_netstats *tstats = this_cpu_ptr(dev->tstats);
-+	struct pcpu_sw_netstats *tstats;
-+
-+	// Disable preemption while updating per-cpu stats counters
-+	preempt_disable();
-+	tstats = this_cpu_ptr(dev->tstats);
- 
- 	u64_stats_update_begin(&tstats->syncp);
- 	tstats->tx_packets++;
- 	tstats->tx_bytes += len;
- 	u64_stats_update_end(&tstats->syncp);
-+	preempt_enable();
- }
- 
- static __le16 ieee80211_duration(struct ieee80211_tx_data *tx,
--- 
-2.23.0
-
+--
+PREINING Norbert                               http://www.preining.info
+Accelia Inc. + IFMGA ProGuide + TU Wien + JAIST + TeX Live + Debian Dev
+GPG: 0x860CDC13   fp: F7D8 A928 26E3 16A1 9FA0 ACF0 6CAC A448 860C DC13
