@@ -2,83 +2,99 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2BD49C0526
-	for <lists+linux-wireless@lfdr.de>; Fri, 27 Sep 2019 14:30:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9C241C0532
+	for <lists+linux-wireless@lfdr.de>; Fri, 27 Sep 2019 14:33:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727343AbfI0Maf (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 27 Sep 2019 08:30:35 -0400
-Received: from mail-lf1-f51.google.com ([209.85.167.51]:37453 "EHLO
-        mail-lf1-f51.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727085AbfI0Maf (ORCPT
+        id S1727337AbfI0MdK (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 27 Sep 2019 08:33:10 -0400
+Received: from smtp.codeaurora.org ([198.145.29.96]:52706 "EHLO
+        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726087AbfI0MdJ (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 27 Sep 2019 08:30:35 -0400
-Received: by mail-lf1-f51.google.com with SMTP id w67so1788176lff.4
-        for <linux-wireless@vger.kernel.org>; Fri, 27 Sep 2019 05:30:34 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=zT+XJ8rgbvvgqu15vgJ1VYmsyRkxzmWrc4dnnHHU3yA=;
-        b=AtlepkPsysu2pUUMVS1Q3NqsT7PE7X7hGG6XW/yT0Ad7VlkuzCZG7EV6kqlBSfHi5C
-         D5dHO85XNeT7suWZsD0QGwOC/Eh/1O7SnlfMqrBavTdYxJCWI1m2w/3cyL9SdlQHZ2r8
-         PTE7GoB9VLre9BuZemraPAVogVZUZWO2vfqq5bAB8Jd78sHFZoukn97Zr3DYxL4RMXKM
-         +NnQ8DTzB7l1IBB9lg/uWosV3Xzz8m+xYGS8BKB785/RcRRcWw+XdRlpALeK5y1g0qRA
-         +qGUk+hu5QkAE5b5Y4YvrfDszjKGdOhvFZ+b6yQRsA0yZISGdERfAEkeMeRhr77WoIXk
-         /hfA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=zT+XJ8rgbvvgqu15vgJ1VYmsyRkxzmWrc4dnnHHU3yA=;
-        b=cz5IU8/jhabzaGZePnpiebw3VZ5Re2tn0t8GsgxESDgrJfHtGmj6pwH0u5O1ACTpX6
-         m5JI835Exa1E0jkO/Gs05A5do7lFwn6KV9OpbJGHgUfG4zLQjdXFvydDSYWFCBTchHB5
-         m0V0PVZhXr0WDyYZEKvUIChrf8ASgg+ZQPTle7SV6EfEnv2EaYiUknOIwkOQhhbzFcgb
-         bwN5DTB7BUyCt9zasuFt1vfVFbyne7koGCaB8WUjejJlFJZJmDvlEOHX9toqkpYAX/gB
-         BzdqIjYgVonqtDdw1uOfXDoAvWX4FYXI+P4f/7lhXfonGE/eQPrvDKNX2bP8d9Q26D3P
-         YcTw==
-X-Gm-Message-State: APjAAAUdtp+p6wvRnrxgcnu+KvKIN6r1vika6B4dEEKRWOtFgmYkAQXG
-        g+0xqfZIleAOV+CcL+obw3WZ5n/kAkoU5HyvsCE=
-X-Google-Smtp-Source: APXvYqxsPZ7srG4jIoN20WSI/9CwvrgXqqJrDb/IeVfTPZ6j146WyHzeSYA8OpezFQocgLV2BbDmbNMkdh3yR1XvjvI=
-X-Received: by 2002:a19:7715:: with SMTP id s21mr2567405lfc.98.1569587433069;
- Fri, 27 Sep 2019 05:30:33 -0700 (PDT)
+        Fri, 27 Sep 2019 08:33:09 -0400
+Received: by smtp.codeaurora.org (Postfix, from userid 1000)
+        id 46D7460A78; Fri, 27 Sep 2019 12:33:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
+        s=default; t=1569587588;
+        bh=r8P0kTWFs5BN/PAIrml16HxhQSxByv11rct0foYZLGc=;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+        b=L9qn8RT6xZ4wbcsRpV1JbAIQB2wDlooRGkDSIIb4VR6rheWVGM+nREe1BspPPqp6N
+         khDGiUGDtcz8wIUVBA15X3rLyegLh2Bnb5a54/4Rtz1CBVDyPZj7xqsA5252pUdi2p
+         nAnvHFbI4tJr3cN/reR2xSG21b1x977iJPDYlrhA=
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        pdx-caf-mail.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.7 required=2.0 tests=ALL_TRUSTED,BAYES_00,
+        DKIM_INVALID,DKIM_SIGNED,SPF_NONE autolearn=no autolearn_force=no
+        version=3.4.0
+Received: from tynnyri.adurom.net (tynnyri.adurom.net [51.15.11.48])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo@smtp.codeaurora.org)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id C0D07608CC;
+        Fri, 27 Sep 2019 12:33:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
+        s=default; t=1569587587;
+        bh=r8P0kTWFs5BN/PAIrml16HxhQSxByv11rct0foYZLGc=;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+        b=RFv5nTSNu+dIox97OpCHi6fEdAr+gbGzLwWaHHnXoVQ/xs28RkMGs5ISu1rnK8y9L
+         b9pKuKhT/KskhyetDjwc9eXAeh2m7ptyGy7+YAR+KLyo/MaTF9e5bCvyAI5aRNAP5b
+         awI4cuLEn27eHIRA7rn2i/08T06DAkZDlr66SCnQ=
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org C0D07608CC
+Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
+From:   Kalle Valo <kvalo@codeaurora.org>
+To:     Norbert Preining <norbert@preining.info>
+Cc:     linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
+        ilw@linux.intel.com
+Subject: Re: IWL AC 8260, kernel 5.3.*, many kernel WARNING
+References: <20190927010452.b576njhcvgowasf3@burischnitzel.preining.info>
+Date:   Fri, 27 Sep 2019 15:33:02 +0300
+In-Reply-To: <20190927010452.b576njhcvgowasf3@burischnitzel.preining.info>
+        (Norbert Preining's message of "Fri, 27 Sep 2019 10:04:52 +0900")
+Message-ID: <87blv5j4w1.fsf@tynnyri.adurom.net>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
 MIME-Version: 1.0
-References: <CAK8U23ZyFnYt+ePreGjFA2VFXnpu21SPthscvJhP-5xjQCb0OA@mail.gmail.com>
- <49ded6ae8a23c29168ab7061235292ac7a853e0f.camel@sipsolutions.net>
-In-Reply-To: <49ded6ae8a23c29168ab7061235292ac7a853e0f.camel@sipsolutions.net>
-From:   Ramon Fontes <ramonreisfontes@gmail.com>
-Date:   Fri, 27 Sep 2019 09:30:21 -0300
-Message-ID: <CAK8U23bdmJGARCT=TXKyfknhmz-V0qUJ8dj0Mhko-CkvW+uW1A@mail.gmail.com>
-Subject: Re: mac80211_hwsim: packets being transmitted through the monitor interface
-To:     Johannes Berg <johannes@sipsolutions.net>
-Cc:     linux-wireless@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Yes, I agree that they are different things, but I can also see the
-packets through the monitor interface created via iw. Is this expected
-too?
+Norbert Preining <norbert@preining.info> writes:
 
-On Fri, Sep 27, 2019 at 9:16 AM Johannes Berg <johannes@sipsolutions.net> wrote:
+> Dear all,
 >
-> On Thu, 2019-09-26 at 22:54 -0300, Ramon Fontes wrote:
-> > Hello,
-> >
-> > I've noticed that packets transmitted between two clients connected to
-> > a hostapd AP are also transmitted (injected) through the monitor
-> > interface. Is this expected behavior?
+> (please cc)
 >
-> You mean on 'hwsim0'? That interface is just for monitoring what's
-> happening on the 'virtual air', so yes.
+> linux 5.3.1
+> Debian/sid
+> Thinkpad X260
+> iwlwifi 0000:04:00.0: Detected Intel(R) Dual Band Wireless AC 8260, REV=0x208
+> iwlwifi 0000:04:00.0: loaded firmware version 36.8fd77bb3.0 op_mode iwlmvm
 >
-> > I can easily modify such
-> > behavior by changing mac80211_hwsim, but it works only with hwsim0. On
-> > the other hand, if I create a monitor interface via iw it doesn't
-> > work.
+> since about 5.3.0 I get a lot of warnings in the syslog about iwlmvm.
 >
-> The two are completely different/unrelated things.
+> It starts with
+> Sep 27 09:08:35 burischnitzel kernel: iwlwifi 0000:04:00.0: Microcode SW error detected.  Restarting 0x82000000.
+> Sep 27 09:08:35 burischnitzel kernel: iwlwifi 0000:04:00.0: Start IWL Error Log Dump:
+> Sep 27 09:08:35 burischnitzel kernel: iwlwifi 0000:04:00.0: Status: 0x00000080, count: 6
+> Sep 27 09:08:35 burischnitzel kernel: iwlwifi 0000:04:00.0: Loaded firmware version: 36.8fd77bb3.0
+> Sep 27 09:08:35 burischnitzel kernel: iwlwifi 0000:04:00.0: 0x00000038 | BAD_COMMAND
+> Sep 27 09:08:35 burischnitzel kernel: iwlwifi 0000:04:00.0: 0x000002F0 | trm_hw_status0
+> Sep 27 09:08:35 burischnitzel kernel: iwlwifi 0000:04:00.0: 0x00000000 | trm_hw_status1
+> ....
 >
-> johannes
->
+> after that
+> Sep 27 09:08:35 burischnitzel kernel: ieee80211 phy0: Hardware restart was requested
+> Sep 27 09:08:35 burischnitzel kernel: iwlwifi 0000:04:00.0: FW Error notification: type 0x00000000 cmd_id 0x05
+> Sep 27 09:08:35 burischnitzel kernel: iwlwifi 0000:04:00.0: FW Error notification: seq 0x0030 service 0x00000005
+> Sep 27 09:08:35 burischnitzel kernel: iwlwifi 0000:04:00.0: FW Error notification: timestamp 0x000000000037F460
+> Sep 27 09:08:35 burischnitzel kernel: iwlwifi 0000:04:00.0: FW error in SYNC CMD GEO_TX_POWER_LIMIT
+
+I'm guessing this should fix it:
+
+https://git.kernel.org/pub/scm/linux/kernel/git/kvalo/wireless-drivers.git/commit/?id=fddbfeece9c7882cc47754c7da460fe427e3e85b
+
+-- 
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
