@@ -2,157 +2,115 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 97789C0CED
-	for <lists+linux-wireless@lfdr.de>; Fri, 27 Sep 2019 22:56:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6167BC1099
+	for <lists+linux-wireless@lfdr.de>; Sat, 28 Sep 2019 12:31:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727965AbfI0U4U (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 27 Sep 2019 16:56:20 -0400
-Received: from mail-io1-f66.google.com ([209.85.166.66]:38080 "EHLO
-        mail-io1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727243AbfI0U4T (ORCPT
+        id S1727849AbfI1KbM (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 28 Sep 2019 06:31:12 -0400
+Received: from us-smtp-delivery-1.mimecast.com ([205.139.110.120]:53457 "EHLO
+        us-smtp-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
+        with ESMTP id S1725932AbfI1KbM (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 27 Sep 2019 16:56:19 -0400
-Received: by mail-io1-f66.google.com with SMTP id u8so19900956iom.5;
-        Fri, 27 Sep 2019 13:56:19 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id;
-        bh=6XWDs202HxUMQZwjYYpTO5aVNS5TRVFQi//IFrYDeeY=;
-        b=L55gU92RCxo9GNVu0j7NUeyo3YCMTbuo25tgLSLVNxFov7l77Bov+cwbWcukwIMGmi
-         uQ11xfLgUDttTuKPXKLZDN9SXki7uN/vSBZJjGwRaPASn4ZdEpkR54UxwTGhuzDi4Z5e
-         l8Xea2ALVip9/5WqRkO4tXSvqA1llwWS889D/XRPyBwoBv4nAUYijYD+vJ7SsLGeULiy
-         86xYsrGPscwG8DThH7DuLFMb/AmppggrpgbQ73OviP5K+aUd5taDOel92JLovRZd/g1/
-         lNPGt27Kuum7GLKO6cf/tpQgV8Dd3i1pUkpK9LHr3lW0Hu8VRN7t+1rcgm8ta8+tYWQT
-         TZtg==
+        Sat, 28 Sep 2019 06:31:12 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1569666671;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=Pg4aLmP+lQVloEyALWu2QAwwXPoYhKHnJnWEpNq5AmM=;
+        b=Oz6s3kGYq0ktekYxRdVLvlcsW0tUTC5hK7YWB8Db/vieEDdjSiJvJOFEyNbTpV1HCTiBkH
+        s+1TVCZEAD+xBTkO65K/jospD2eLlpQijbc5/kvvE4NqdehKhf28iB55BYIiH7EApFDdjo
+        /6W68j0Gds2caDRLbHkxqizQvFfI4BQ=
+Received: from mail-lj1-f197.google.com (mail-lj1-f197.google.com
+ [209.85.208.197]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-214-ubUGCaurO4O_arzegUaROw-1; Sat, 28 Sep 2019 06:31:09 -0400
+Received: by mail-lj1-f197.google.com with SMTP id j10so1692501lja.21
+        for <linux-wireless@vger.kernel.org>; Sat, 28 Sep 2019 03:31:08 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id;
-        bh=6XWDs202HxUMQZwjYYpTO5aVNS5TRVFQi//IFrYDeeY=;
-        b=ZCsn1QXkwGfgdOs1NGCn3eJB3hQP5yiTcogEnximLT94JtBYsSswsyRbwrTg+mb+gh
-         YVkwca/swl2DHJ0haGzJUwfz2ifcWIzpPauryuRsitgIxJdaVZl/AGwaXqDjhhd3M/rR
-         pKumL7yEXgngHjn6+mHih5D5GyqAFuuh5ljoMBF5mYNivY6xxNEhrV9RkrClAnu2TZms
-         V0MYT0wcapm+P+dcJ5DXJeCa0+3e06Pi7EOuZp2y97dX1rl4/OWiOasBqvW0Z1Up9Zo7
-         OcZwcEUebXiNikVQkp+GMBNVS1ppV77hQ+g2oP3fqomzm9uYhq4lgmxEA71eizlnni9a
-         Ifhw==
-X-Gm-Message-State: APjAAAUpSIgBWmLsiNcrAwTCJY1dx0bA6mp/2ywHupDeT9f5Lcw1wbPj
-        P9OPhXPJxcLx90JQEvanEo4=
-X-Google-Smtp-Source: APXvYqxIcYCc3Etak50jxb9W0VgkeBkDrg7+srVbZp7ZubSS9Bq9i9G37DHrUcaMh7iYwl9mc9fWIA==
-X-Received: by 2002:a6b:6d07:: with SMTP id a7mr10591163iod.261.1569617778856;
-        Fri, 27 Sep 2019 13:56:18 -0700 (PDT)
-Received: from cs-dulles.cs.umn.edu (cs-dulles.cs.umn.edu. [128.101.35.54])
-        by smtp.googlemail.com with ESMTPSA id 197sm3197316ioc.78.2019.09.27.13.56.18
+        h=x-gm-message-state:from:to:subject:in-reply-to:references:date
+         :message-id:mime-version:content-transfer-encoding;
+        bh=gcwSMxQXdG//mLXUyojzY5QJJkrtTJZKwKrM2hD/Fak=;
+        b=R5QZB2hvWBkK1abdcKpihpPibeItfFWLgexm6cvaHFA1Y4zrsmz/MprCa2winDh8QV
+         eJ59tiSmZhZ9ucSBXbtZ7HRK8KsY9YMBWVOyRvho+DdGXJhP6G+GjkDK5Cpo5heZOJBB
+         X5yOV6bNpsOGlQDBe0AzW1MvkQR88Ld5XxmMWeOjCqCKkbkyNnDXn3KCi7sod1e1eXFH
+         nvQnZWdo4aEBortEjgfSyAcC/g/Dy+QjfKrrGf4DrfoH/IOBBEpYBw73XpNfpoYluHZz
+         3kOwWOkvqTVM01CSYhG1ozj8jgVGC4t7R+qUH+O49UT3Jd0SEvZPZbvxNd7r2aEEoDhh
+         K4bA==
+X-Gm-Message-State: APjAAAWNsiQpN1BxqnIqpOh1rgclCWnf+DDGOROmENy9EXDAeK6S983B
+        pbmS6gUFs/59Xef76KUKzzjA9t2uQzUPxk6Ty7G26rEW2uMjuCAG7IYaqUIeBwfrCgRrKPFw8hh
+        sfea6oQEDRZuWpeJHTxRkxukxwkY=
+X-Received: by 2002:a2e:442:: with SMTP id 63mr6061818lje.66.1569666667332;
+        Sat, 28 Sep 2019 03:31:07 -0700 (PDT)
+X-Google-Smtp-Source: APXvYqxknWmcA03yDjCsxkv9NZ+N9omHeF658VVk2x1oyK0LJIsFKJo9Gd2mjqHPE+mrSzhUhvnK0g==
+X-Received: by 2002:a2e:442:: with SMTP id 63mr6061809lje.66.1569666667150;
+        Sat, 28 Sep 2019 03:31:07 -0700 (PDT)
+Received: from alrua-x1.borgediget.toke.dk ([2a00:7660:6da:443::2])
+        by smtp.gmail.com with ESMTPSA id n8sm1219319lfk.21.2019.09.28.03.31.05
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 27 Sep 2019 13:56:18 -0700 (PDT)
-From:   Navid Emamdoost <navid.emamdoost@gmail.com>
-Cc:     emamd001@umn.edu, smccaman@umn.edu, kjlu@umn.edu,
-        Navid Emamdoost <navid.emamdoost@gmail.com>,
-        Johannes Berg <johannes.berg@intel.com>,
-        Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
-        Luca Coelho <luciano.coelho@intel.com>,
-        Intel Linux Wireless <linuxwifi@intel.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Shaul Triebitz <shaul.triebitz@intel.com>,
-        Sara Sharon <sara.sharon@intel.com>,
-        Shahar S Matityahu <shahar.s.matityahu@intel.com>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: [PATCH] iwlwifi: fix memory leaks in iwl_pcie_ctxt_info_gen3_init
-Date:   Fri, 27 Sep 2019 15:56:04 -0500
-Message-Id: <20190927205608.8755-1-navid.emamdoost@gmail.com>
-X-Mailer: git-send-email 2.17.1
-To:     unlisted-recipients:; (no To-header on input)
+        Sat, 28 Sep 2019 03:31:06 -0700 (PDT)
+Received: by alrua-x1.borgediget.toke.dk (Postfix, from userid 1000)
+        id D907418063D; Sat, 28 Sep 2019 12:31:04 +0200 (CEST)
+From:   Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>
+To:     Felix Fietkau <nbd@nbd.name>, linux-wireless@vger.kernel.org
+Subject: Re: [PATCH 10/15] mt76: mt76x02: track approximate tx airtime for airtime fairness and survey
+In-Reply-To: <88a9f47b-143e-d266-d5d8-606bcb6365cc@nbd.name>
+References: <20190926174732.42375-1-nbd@nbd.name> <20190926174732.42375-10-nbd@nbd.name> <871rw218ty.fsf@toke.dk> <2475938e-b82c-9924-f7db-f475ec2530b3@nbd.name> <87sgoiyw0p.fsf@toke.dk> <27bb95dd-1f0e-5862-3616-04452808e736@nbd.name> <87mueqyunz.fsf@toke.dk> <88a9f47b-143e-d266-d5d8-606bcb6365cc@nbd.name>
+X-Clacks-Overhead: GNU Terry Pratchett
+Date:   Sat, 28 Sep 2019 12:31:04 +0200
+Message-ID: <87blv4zp93.fsf@toke.dk>
+MIME-Version: 1.0
+X-MC-Unique: ubUGCaurO4O_arzegUaROw-1
+X-Mimecast-Spam-Score: 0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-In iwl_pcie_ctxt_info_gen3_init there are cases that the allocated dma
-memory is leaked in case of error.
-DMA memories prph_scratch, prph_info, and ctxt_info_gen3 are allocated
-and initialized to be later assigned to trans_pcie. But in any error case
-before such assignment the allocated memories should be released.
-First of such error cases happens when iwl_pcie_init_fw_sec fails.
-Current implementation correctly releases prph_scratch. But in two
-sunsequent error cases where dma_alloc_coherent may fail, such releases
-are missing. This commit adds release for prph_scratch when allocation
-for prph_info fails, and adds releases for prph_scratch and prph_info
-when allocation for ctxt_info_gen3 fails.
+Felix Fietkau <nbd@nbd.name> writes:
 
-Fixes: 2ee824026288 ("iwlwifi: pcie: support context information for 22560 devices")
+> On 2019-09-27 11:07, Toke H=C3=B8iland-J=C3=B8rgensen wrote:
+>> Felix Fietkau <nbd@nbd.name> writes:
+>>=20
+>>> On 2019-09-27 10:37, Toke H=C3=B8iland-J=C3=B8rgensen wrote:
+>>>> Felix Fietkau <nbd@nbd.name> writes:
+>>>>=20
+>>>>> On 2019-09-27 09:45, Toke H=C3=B8iland-J=C3=B8rgensen wrote:
+>>>>>> Felix Fietkau <nbd@nbd.name> writes:
+>>>>>>=20
+>>>>>>> Estimate by calculating duration for EWMA packet size + estimated A=
+-MPDU
+>>>>>>> length on tx status events
+>>>>>>=20
+>>>>>> Would it make sense to move some of this code into mac80211? If we'r=
+e
+>>>>>> going to do airtime estimation for queue limiting it may make sense =
+to
+>>>>>> use this instead of the simplistic estimate I used in my RFC patch?
+>>>>> Sure. I mainly put it in the driver because I wanted to get it workin=
+g,
+>>>>> tested and merged first without having to wait for a mac80211-next ->
+>>>>> wireless-drivers-next merge.
+>>>>=20
+>>>> Right, OK. So that means another patch set on top of this to move it
+>>>> afterwards? Don't suppose you can be convinced to take care of that as
+>>>> well? :)
+>>> I could, but I don't know when I will have time for it, since my plate
+>>> is pretty full at the moment.
+>>=20
+>> Heh, I was afraid you'd say that. That makes two of us; guess we'll see
+>> who gets around to it first, then :)
+>>=20
+>> Is there anything in your new airtime.c that is mt76-specific apart from
+>> the struct mt76_dev and struct mt76_rx_status parameters?
+> No, I made it as generic as possible to make it easy to move to
+> mac80211. mt76_rx_status mirrors ieee80211_rx_status very closely, and
+> going from mt76_dev to ieee80211_hw is easy as well.
 
-Signed-off-by: Navid Emamdoost <navid.emamdoost@gmail.com>
----
- .../intel/iwlwifi/pcie/ctxt-info-gen3.c       | 36 +++++++++++++------
- 1 file changed, 25 insertions(+), 11 deletions(-)
+Awesome, thanks!
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/ctxt-info-gen3.c b/drivers/net/wireless/intel/iwlwifi/pcie/ctxt-info-gen3.c
-index 75fa8a6aafee..b2759c751822 100644
---- a/drivers/net/wireless/intel/iwlwifi/pcie/ctxt-info-gen3.c
-+++ b/drivers/net/wireless/intel/iwlwifi/pcie/ctxt-info-gen3.c
-@@ -107,13 +107,9 @@ int iwl_pcie_ctxt_info_gen3_init(struct iwl_trans *trans,
- 
- 	/* allocate ucode sections in dram and set addresses */
- 	ret = iwl_pcie_init_fw_sec(trans, fw, &prph_scratch->dram);
--	if (ret) {
--		dma_free_coherent(trans->dev,
--				  sizeof(*prph_scratch),
--				  prph_scratch,
--				  trans_pcie->prph_scratch_dma_addr);
--		return ret;
--	}
-+	if (ret)
-+		goto err_free_prph_scratch;
-+
- 
- 	/* Allocate prph information
- 	 * currently we don't assign to the prph info anything, but it would get
-@@ -121,16 +117,20 @@ int iwl_pcie_ctxt_info_gen3_init(struct iwl_trans *trans,
- 	prph_info = dma_alloc_coherent(trans->dev, sizeof(*prph_info),
- 				       &trans_pcie->prph_info_dma_addr,
- 				       GFP_KERNEL);
--	if (!prph_info)
--		return -ENOMEM;
-+	if (!prph_info) {
-+		ret = -ENOMEM;
-+		goto err_free_prph_scratch;
-+	}
- 
- 	/* Allocate context info */
- 	ctxt_info_gen3 = dma_alloc_coherent(trans->dev,
- 					    sizeof(*ctxt_info_gen3),
- 					    &trans_pcie->ctxt_info_dma_addr,
- 					    GFP_KERNEL);
--	if (!ctxt_info_gen3)
--		return -ENOMEM;
-+	if (!ctxt_info_gen3) {
-+		ret = -ENOMEM;
-+		goto err_free_prph_info;
-+	}
- 
- 	ctxt_info_gen3->prph_info_base_addr =
- 		cpu_to_le64(trans_pcie->prph_info_dma_addr);
-@@ -186,6 +186,20 @@ int iwl_pcie_ctxt_info_gen3_init(struct iwl_trans *trans,
- 		iwl_set_bit(trans, CSR_GP_CNTRL, CSR_AUTO_FUNC_INIT);
- 
- 	return 0;
-+
-+err_free_prph_info:
-+	dma_free_coherent(trans->dev,
-+			  sizeof(*prph_info),
-+			prph_info,
-+			trans_pcie->prph_info_dma_addr);
-+
-+err_free_prph_scratch:
-+	dma_free_coherent(trans->dev,
-+			  sizeof(*prph_scratch),
-+			prph_scratch,
-+			trans_pcie->prph_scratch_dma_addr);
-+	return ret;
-+
- }
- 
- void iwl_pcie_ctxt_info_gen3_free(struct iwl_trans *trans)
--- 
-2.17.1
+-Toke
 
