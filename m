@@ -2,84 +2,107 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id DF8E6C15C1
-	for <lists+linux-wireless@lfdr.de>; Sun, 29 Sep 2019 16:20:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 10798C15FD
+	for <lists+linux-wireless@lfdr.de>; Sun, 29 Sep 2019 17:47:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728998AbfI2OU1 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 29 Sep 2019 10:20:27 -0400
-Received: from mout.gmx.net ([212.227.17.20]:44323 "EHLO mout.gmx.net"
+        id S1729039AbfI2Pqu (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 29 Sep 2019 11:46:50 -0400
+Received: from nbd.name ([46.4.11.11]:60944 "EHLO nbd.name"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725948AbfI2OU1 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 29 Sep 2019 10:20:27 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
-        s=badeba3b8450; t=1569766813;
-        bh=QjI2UKdBTdDpx4cfmKvkvgj/Fe/s7UCv8NhDMhZZ83Q=;
-        h=X-UI-Sender-Class:Subject:To:Cc:References:From:Date:In-Reply-To;
-        b=i7wnqtKFdzLyx0BtJPPZGiShPm6JBNEb+2pEsyxqR1VI1xyJhmekU8vtNBhB9fmFZ
-         oGvygj/tA4L2dTrO5cOXo1M3Oh5dj+Ui5ts03i9/vVA/9w1PuS7S545qrnBBfNI608
-         a2BtGUmw0qSu7yuWw+i3qT7cjxVH03nXj7G/UUMU=
-X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
-Received: from [192.168.1.162] ([37.4.249.130]) by mail.gmx.com (mrgmx105
- [212.227.17.168]) with ESMTPSA (Nemesis) id 1MJmGP-1iYiIv43p3-00KAVg; Sun, 29
- Sep 2019 16:20:13 +0200
-Subject: Re: [PATCH RFC V2] nl80211: Fix init of cfg80211 channel definition
-To:     Johannes Berg <johannes@sipsolutions.net>
-Cc:     Alexei Avshalom Lazar <ailizaro@codeaurora.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Dmitry Osipenko <digetx@gmail.com>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-References: <1569766379-9516-1-git-send-email-wahrenst@gmx.net>
-From:   Stefan Wahren <wahrenst@gmx.net>
-Message-ID: <560d7cb0-b509-6f2a-f31a-1743131e14df@gmx.net>
-Date:   Sun, 29 Sep 2019 16:20:12 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.8.0
-MIME-Version: 1.0
-In-Reply-To: <1569766379-9516-1-git-send-email-wahrenst@gmx.net>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 7bit
-Content-Language: en-US
-X-Provags-ID: V03:K1:E+Gc2cS4gkyzLOB29obc3xQlu0XoQVRGJvunw+VypChp4pm/K3D
- YuUgzyjCQBqfS4HIj8paluhlTzX8hfH82fg0Ilr7GtiVI2jv5L94rfcoHdqKn1jfQVdGUTj
- +UKHxGtpo2E4rKOpdS0rYkVd1FMof12yha5IQo4664pXa+5fXKb8upinEhrqE8qYW8OKIog
- i2gOv91jqlcso6iZE+0/w==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:f7pxAe5sqkQ=:4tM3hg7I9Yh/lnxS3cDqJQ
- bEE/lgFkxFw1EB8Ll8n5xXU4uGZ80aTUzQovNIR6JG96w6Or3ak4NoMjDie9BjjzyTxV4/CyY
- CtLYqRCfDANTiNeDfge1QXlFCW3DPOj1HfhtmnXPHJ5HktKzRyNhscRhiUJPbyftR6NH+G8pJ
- 5SnVj0tbMzcLTxP2xSJ1RBYaW/U0ekB9CJ/jmMpJH3on/4TNSQ3arQUZSYKzfQnZQLxpxY7fv
- hDx7+o9COROUgGeCuZSRsg7sW4qdFxpzugQzc+qtay8/BhXSq4wNwUx3p07wiowOjqGTnMpyo
- Tm/jyWnKNYEWv7eicByuV/yPNihn2hfN8FZ7tBlgb7k1xnu2vBPP+EBUoVwNZkTPScJZz3MhX
- Oep3CVwXhy1f79tWaOoFLV3qjbgHhDhSk6bUVIjJf7aOSgYRGUwMZCwwMeapRU6qrbVcCPmUW
- KCzP33JjV8VIXBfI9ytCchHpdOZTuU53Wxsv5uGCoK0SS0zM7OUDW9STjKSbpL6o4fkRnIrV5
- ouGXEDheF1cz+SkQxIHGVXs4tJKyxixglsYd03Hj1WPn3F52v/BJRYTz1hx5bOc13IyP9ikAx
- X9/TdxPky1NTLgGu+pAaTqnV5PllAZHKTCYKfM0tUa9GOZiMN0/FuBv2eCMdP1q3uM0UGQQ91
- 4e20VaAcSF9TOPIaOozYE03baZllf4HwWBWQiyww0Xf08sieOWXpd16PnL8AIvn0aTzte0Kpv
- PdtIqA8cebx9PjZRJfI5sUBgfIXpKXyyO9+kEOjFBherLZBmMY81ZbTFV9Is6gkqiUJO7U1Un
- V0dQON21G6lAtaTBcl9GQaMmqVDBEZl+oUNHlcVJQ7+BKViRmDslnMm+B4OejKM+CkxjYn1yC
- C2E+G30wJWmwufzugkIDWnTt0y67CDTzdytpBio21IsbYwpAFWqt3lDMhRnphsYQ+3RvTjpoX
- M6e3pW1+nJCeYqkxl3ftdtXAT9AOG7Ao/TAjh4rQLnmsB6CEtLrRXXz4rqhTqT6L8Gc7lYCGb
- RKOrNwA5kVaa7wsx1yI2jDpoXxwSawRUA/ktUE7WKkq7z9NrrRF+jjqlN11BEzIxHfvg/HRvC
- KmnHTn7V2TEclEH/COIcPt6d/BBr7l+I2iMCS0T3ueoUKC3HxmsWQ3SbyqbVccu510GgHnAD/
- EITgfvHJiMdOU00LPazxwQUQ/beKZ1OqDIiID19arvWFcnji81fBsZTKIhK8ZMltfMwwNBahe
- YxB0nXZ5ytjlUzFMRvltsqZ9KiPqDjjudFHqlZCcdkBIM4XMOkhv3hs6ikLQ=
+        id S1725948AbfI2Pqu (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Sun, 29 Sep 2019 11:46:50 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name;
+         s=20160729; h=Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:
+        MIME-Version:Content-Type:Content-Transfer-Encoding:Content-ID:
+        Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+        :Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
+        List-Subscribe:List-Post:List-Owner:List-Archive;
+        bh=pQj+MbErxLF/AoTx92UNgwkNq1oEtPrBNHakCtTqRfk=; b=r9MefCVK6LutKmAXMplSGmQuh7
+        nWLZNLuDsb/cNrXT34M+zmpzhvUycsbRnL0+pl+26mnB3rKdsUtW3bfXifMtznU2umIdnlE/MQaar
+        nW5E3X8nxijyh3lkkJ1IWS+dTX6BZMQMPClP4S8Dxo7IbaY/GIVb/Pv3BC2KhxMDH1sA=;
+Received: from p5b20652d.dip0.t-ipconnect.de ([91.32.101.45] helo=maeck.lan)
+        by ds12 with esmtpsa (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.89)
+        (envelope-from <nbd@nbd.name>)
+        id 1iEbPL-0002oS-Ge; Sun, 29 Sep 2019 17:46:47 +0200
+Received: by maeck.lan (Postfix, from userid 501)
+        id 4EAD769F606A; Sun, 29 Sep 2019 17:46:46 +0200 (CEST)
+From:   Felix Fietkau <nbd@nbd.name>
+To:     linux-wireless@vger.kernel.org
+Cc:     johannes@sipsolutions.net
+Subject: [PATCH 1/2] mac80211: minstrel: remove divisions in tx status path
+Date:   Sun, 29 Sep 2019 17:46:45 +0200
+Message-Id: <20190929154646.90901-1-nbd@nbd.name>
+X-Mailer: git-send-email 2.17.0
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi Johannes,
+Use a slightly different threshold for downgrading spatial streams to
+make it easier to calculate without divisions.
+Slightly reduces CPU overhead.
 
-Am 29.09.19 um 16:12 schrieb Stefan Wahren:
-> The commit 2a38075cd0be ("nl80211: Add support for EDMG channels")
-> introduced a member to the cfg80211 channel definition. Unfortunately
-> the channel definitions are allocated on the stack and are not always
-> initialized via memset. Now this results in a broken probe of brcmfmac
-> driver, because cfg80211_chandef_valid() accesses uninitialized memory
-> and fail. Fix this by init the remaining occurences with memset.
->
-> Reported-by: Dmitry Osipenko <digetx@gmail.com>
-> Signed-off-by: Stefan Wahren <wahrenst@gmx.net>
-> Fixes: 2a38075cd0be ("nl80211: Add support for EDMG channels")
-i oversight your patch. Sorry for the noise.
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
+---
+ net/mac80211/rc80211_minstrel.c    |  3 +--
+ net/mac80211/rc80211_minstrel_ht.c | 10 ++++------
+ 2 files changed, 5 insertions(+), 8 deletions(-)
+
+diff --git a/net/mac80211/rc80211_minstrel.c b/net/mac80211/rc80211_minstrel.c
+index ee86c3333999..f73017e08111 100644
+--- a/net/mac80211/rc80211_minstrel.c
++++ b/net/mac80211/rc80211_minstrel.c
+@@ -289,8 +289,7 @@ minstrel_tx_status(void *priv, struct ieee80211_supported_band *sband,
+ 	if (mi->sample_deferred > 0)
+ 		mi->sample_deferred--;
+ 
+-	if (time_after(jiffies, mi->last_stats_update +
+-				(mp->update_interval * HZ) / 1000))
++	if (time_after(jiffies, mi->last_stats_update + mp->update_interval))
+ 		minstrel_update_stats(mp, mi);
+ }
+ 
+diff --git a/net/mac80211/rc80211_minstrel_ht.c b/net/mac80211/rc80211_minstrel_ht.c
+index 0ef2633349b5..21c74b200269 100644
+--- a/net/mac80211/rc80211_minstrel_ht.c
++++ b/net/mac80211/rc80211_minstrel_ht.c
+@@ -970,23 +970,21 @@ minstrel_ht_tx_status(void *priv, struct ieee80211_supported_band *sband,
+ 		 */
+ 		rate = minstrel_get_ratestats(mi, mi->max_tp_rate[0]);
+ 		if (rate->attempts > 30 &&
+-		    MINSTREL_FRAC(rate->success, rate->attempts) <
+-		    MINSTREL_FRAC(20, 100)) {
++		    rate->success < rate->attempts / 4) {
+ 			minstrel_downgrade_rate(mi, &mi->max_tp_rate[0], true);
+ 			update = true;
+ 		}
+ 
+ 		rate2 = minstrel_get_ratestats(mi, mi->max_tp_rate[1]);
+ 		if (rate2->attempts > 30 &&
+-		    MINSTREL_FRAC(rate2->success, rate2->attempts) <
+-		    MINSTREL_FRAC(20, 100)) {
++		    rate2->success < rate2->attempts / 4) {
+ 			minstrel_downgrade_rate(mi, &mi->max_tp_rate[1], false);
+ 			update = true;
+ 		}
+ 	}
+ 
+ 	if (time_after(jiffies, mi->last_stats_update +
+-				(mp->update_interval / 2 * HZ) / 1000)) {
++				mp->update_interval / 2)) {
+ 		update = true;
+ 		minstrel_ht_update_stats(mp, mi, true);
+ 	}
+@@ -1666,7 +1664,7 @@ minstrel_ht_alloc(struct ieee80211_hw *hw, struct dentry *debugfsdir)
+ 		mp->has_mrr = true;
+ 
+ 	mp->hw = hw;
+-	mp->update_interval = 100;
++	mp->update_interval = HZ / 10;
+ 
+ #ifdef CONFIG_MAC80211_DEBUGFS
+ 	mp->fixed_rate_idx = (u32) -1;
+-- 
+2.17.0
+
