@@ -2,52 +2,53 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2CDFEC13F0
-	for <lists+linux-wireless@lfdr.de>; Sun, 29 Sep 2019 10:31:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 13819C144A
+	for <lists+linux-wireless@lfdr.de>; Sun, 29 Sep 2019 13:07:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726198AbfI2Ib3 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 29 Sep 2019 04:31:29 -0400
-Received: from mail-lj1-f193.google.com ([209.85.208.193]:35299 "EHLO
-        mail-lj1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725974AbfI2Ib3 (ORCPT
+        id S1726018AbfI2LGG (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 29 Sep 2019 07:06:06 -0400
+Received: from mail-lf1-f68.google.com ([209.85.167.68]:34447 "EHLO
+        mail-lf1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725924AbfI2LGG (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 29 Sep 2019 04:31:29 -0400
-Received: by mail-lj1-f193.google.com with SMTP id m7so6386148lji.2;
-        Sun, 29 Sep 2019 01:31:27 -0700 (PDT)
+        Sun, 29 Sep 2019 07:06:06 -0400
+Received: by mail-lf1-f68.google.com with SMTP id r22so4953760lfm.1;
+        Sun, 29 Sep 2019 04:06:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=Kdg/X1gRFWrRcjXeopdKgWFJCbdlHG/7tw/5ynKD8NM=;
-        b=KBpWBZhA1HI60TphaSFN6NGXpCo5zpNdI/H7EbzP/LwfDtiT2s60gNgxvzvugOmmc1
-         rDcWLBhA4qRzeIB/UYr1/GrwgBfjcu/i5jWoHVowEDHUWEnCT2ZXgwzI2QuT/8ps1WBP
-         N6FF3sIgdpHxsZu/heA4MRrhKuzXsIK5AMld4kBiBTP52FG+tKRzuWTcs600ICS5juJ3
-         hjngsvQLw15YDCiU9SGpxM1+xAeyqfhppKOEvoiuFJZtaNrNCdREpt/nybHbyASFPmPF
-         bSuRzoOxulQ0jSx8/8Q6j0miQt1LpXNsfHwCxuoua1TxAkNPKCuDNc7vzI36F7xejfgS
-         2UCg==
+        bh=dnZ4iM2yDtkFkt93R4MF3nfXRV6/1Xh4Uo5dTWKcW0Q=;
+        b=FOZWqstvikEmzvqvgPHaVWFTyV7hIXvn8Ho2y4DhnwIws9DXuHaFM/xpc+fuwXw4fT
+         UdLR+/s208yXs7MvZ7bL0HENfSIKd/8spYlflg+/Revwy2eOd6mMyRwtRjbVTE4GK/hL
+         GdOVKaUlXtp2V2GNI/HO+zHKp3N1eH8Eb+APIowVjVb3K/RffbkM9JH9kvmIkzJPtZJB
+         8pvNZDZHHyMh1rtibtSDQm7nWsImosIroYezG5G/ua6eDSUSb864bD2kfWCd+VA1Hu/V
+         4DXIEa59HVkLwB8zwsoZpq7Uca7lFw3S//AwPuQtCostn0olr1jOmEalmh69VItPM3PU
+         7pFw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=Kdg/X1gRFWrRcjXeopdKgWFJCbdlHG/7tw/5ynKD8NM=;
-        b=UAMI+4adBEKIWZobJY0+Js/tGKEPHn1rYAZYhU/hxrTFoBfid7ejdC7iifLiu6D/1M
-         Apa4p5IvBzL5icFySr640J+OjKHbBFVpf7pqL9lIIJAjSB4sgayTmN5bnbNaBanAkAaq
-         /POJuh5681boEInH8tO/cRdY4HoM/VROwVEgS8HNmMaLh6/HTsWNxt5+UKc1uOzKnSEd
-         863OrvzusIa9Dj0uvwWkl30307aFTmmsjh4gBgXzSnOoE920bre9UhxQUwxsaB2L9lQu
-         snUskq6JSdTxQmD3rWO+o5qVJOmwMw5GiC3YDjx6ndP+euxE7PCjkcv+Kh5mst9DQCbV
-         jOcQ==
-X-Gm-Message-State: APjAAAX8ozosFYjr0kbl+gVu2UwzrooiEdB9M325qeOmkX25O92TVhVM
-        XJtineTraZps63eYthH2+GTkDZsc2WrDzEP8Lc4=
-X-Google-Smtp-Source: APXvYqy9MLPg9uoPt91au00rfc5HZxwlQkH2JaQzACuIld+jNMM26xwAyZrIPkCoicj2S3nV1oUL243lNzYB3rLWMyY=
-X-Received: by 2002:a2e:8616:: with SMTP id a22mr2921297lji.6.1569745886863;
- Sun, 29 Sep 2019 01:31:26 -0700 (PDT)
+        bh=dnZ4iM2yDtkFkt93R4MF3nfXRV6/1Xh4Uo5dTWKcW0Q=;
+        b=jSgp4YOA0aGYFEU7dLdbkzDb2+6R+L/ys3sQ19G622dM+1+kApvkhzEdJ9glfkXdyA
+         54NLSE6jPT1wEiEHDrQlHzyxiQ7Bl0vLDq8iMDXGsfSz8VvNTzfF0ia6f1iN0+QKgK2Q
+         5AePRxDG8iP0r/QvKKO20iITyMZXcrvtcxWB182WttUQ4LhU0sFsN5PJIaY23kiSG8/M
+         T/Ww/nc/bTU4YUCuB83NIXpTEv+35SDKb9bffvabN7j8nfJ8IQcNQlljakgV467fKHMM
+         lPxFnqPYVZmDaCOSmH/2T2X3KVkryDJ/lXEUO+0YfMf5EUVBFoDBvZmP+tMYDGZb8ef8
+         reIQ==
+X-Gm-Message-State: APjAAAWDb6bVGTsK2zF6Z3KoiIAjOqP2xVkcjrL91xdOhAbR1c3Hw6Zf
+        W6ARig+j3X8/CjVopyFD2V6ZQCU2nkxyS8KHMhc=
+X-Google-Smtp-Source: APXvYqwHOC3tsEH5DwyvgqZBibu7BcKPCqf9mB6T6eQMhcmsQmZYsnUEt2PmyRWF8JGvAJwNl4x1Z0i6dS8X5G90NwQ=
+X-Received: by 2002:ac2:44b9:: with SMTP id c25mr8577589lfm.112.1569755163519;
+ Sun, 29 Sep 2019 04:06:03 -0700 (PDT)
 MIME-Version: 1.0
-References: <20190928164843.31800-1-ap420073@gmail.com> <2e836018c7ea299037d732e5138ca395bd1ae50f.camel@sipsolutions.net>
-In-Reply-To: <2e836018c7ea299037d732e5138ca395bd1ae50f.camel@sipsolutions.net>
+References: <20190928164843.31800-1-ap420073@gmail.com> <20190928164843.31800-2-ap420073@gmail.com>
+ <d1b5d944fef2a2d5875a0f12f3cdc490586da475.camel@sipsolutions.net>
+In-Reply-To: <d1b5d944fef2a2d5875a0f12f3cdc490586da475.camel@sipsolutions.net>
 From:   Taehee Yoo <ap420073@gmail.com>
-Date:   Sun, 29 Sep 2019 17:31:15 +0900
-Message-ID: <CAMArcTWs3wzad7ai_zQPCwzC62cFp-poELn+jnDaP7eT1a9ucw@mail.gmail.com>
-Subject: Re: [PATCH net v4 00/12] net: fix nested device bugs
+Date:   Sun, 29 Sep 2019 20:05:52 +0900
+Message-ID: <CAMArcTUgcPv+kg5rhw0i2iwX-CiD00v3ZCvw0b_Q0jb_-eo=UQ@mail.gmail.com>
+Subject: Re: [PATCH net v4 01/12] net: core: limit nested device depth
 To:     Johannes Berg <johannes@sipsolutions.net>
 Cc:     David Miller <davem@davemloft.net>,
         Netdev <netdev@vger.kernel.org>, linux-wireless@vger.kernel.org,
@@ -69,91 +70,112 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Sun, 29 Sep 2019 at 04:20, Johannes Berg <johannes@sipsolutions.net> wrote:
+On Sun, 29 Sep 2019 at 04:36, Johannes Berg <johannes@sipsolutions.net> wrote:
 >
+> Hi,
 >
-> > VLAN, BONDING, TEAM, MACSEC, MACVLAN, IPVLAN, VIRT_WIFI and VXLAN.
-> > But I couldn't test all interface types so there could be more device
-> > types which have similar problems.
+> >  int netdev_walk_all_upper_dev_rcu(struct net_device *dev,
+> >                                 int (*fn)(struct net_device *dev,
+> >                                           void *data),
+> >                                 void *data)
+> >  {
+> [...]
+> >       }
+> >
+> >       return 0;
+> > +
+> >  }
 >
-> Did you test virt_wifi? I don't see how it *doesn't* have the nesting
-> problem, and you didn't change it?
->
-> No, I see. You're limiting the nesting generally now in patch 1, and the
-> others are just lockdep fixups (I guess it's surprising virt_wifi
-> doesn't do this at all?).
-
-virt_wifi case is a little bit different case.
-I add the last patch that is to fix refcnt leaks in the virt_wifi module.
-The way to fix this is to add notifier routine.
-The notifier routine could delete lower device before deleting
-virt_wifi device.
-If virt_wifi devices are nested, notifier would work recursively.
-At that time, it would make stack memory overflow.
-
-Actually, before this patch, virt_wifi doesn't have the same problem.
-So, I will update a comment in a v5 patch.
-
->
-> FWIW I don't think virt_wifi really benefits at all from stacking, so we
-> could just do something like
->
-> --- a/drivers/net/wireless/virt_wifi.c
-> +++ b/drivers/net/wireless/virt_wifi.c
-> @@ -508,6 +508,9 @@ static int virt_wifi_newlink(struct net *src_net, struct net_device *dev,
->         else if (dev->mtu > priv->lowerdev->mtu)
->                 return -EINVAL;
->
-> +       if (priv->lowerdev->ieee80211_ptr)
-> +               return -EINVAL;
-> +
->         err = netdev_rx_handler_register(priv->lowerdev, virt_wifi_rx_handler,
->                                          priv);
->         if (err) {
+> that seems like an oversight, probably from editing the patch in
+> different versions?
 >
 
-Many other devices use this way to avoid wrong nesting configuration.
-And I think it's a good way.
-But we should think about the below configuration.
+I will fix this in a v5 patch.
 
-vlan5
-   |
-virt_wifi4
-   |
-vlan3
-   |
-virt_wifi2
-   |
-vlan1
-   |
-dummy0
-
-That code wouldn't avoid this configuration.
-And all devices couldn't avoid this config.
-I have been considering this case, but I couldn't make a decision yet.
-Maybe common netdev function is needed to find the same device type
- in their graph.
-
+> > +static int __netdev_update_upper_level(struct net_device *dev, void *data)
+> > +{
+> > +     dev->upper_level = __netdev_upper_depth(dev) + 1;
+> > +     return 0;
+> > +}
+> > +
+> > +static int __netdev_update_lower_level(struct net_device *dev, void *data)
+> > +{
+> > +     dev->lower_level = __netdev_lower_depth(dev) + 1;
+> > +     return 0;
+> > +}
 >
->
-> IMHO, but of course generally limiting the stack depth is needed anyway
-> and solves the problem well enough for virt_wifi.
->
+> Is there any point in the return value here? You don't really use it,
+> afaict? I guess I might see the point if it was used for tail-call
+> optimisation or such?
 >
 
-This is a little bit different question for you.
-I found another bug in virt_wifi after my last patch.
-Please test below commands
-    ip link add dummy0 type dummy
-    ip link add vw1 link dummy0 type virt_wifi
-    ip link add vw2 link vw1 type virt_wifi
-    modprobe -rv virt_wifi
+These functions are used as a callback function of
+netdev_walk_all_{upper/lower}_dev(). So these return types are needed.
 
-Then, you can see the warning messages.
-If SET_NETDEV_DEV() is deleted in the virt_wifi_newlink(),
-you can avoid that warning message.
-But I'm not sure about it's safe to remove that.
-I would really appreciate it if you let me know about that.
+>
+> Also, I dunno, I guess netdevs aren't as much under pressure as SKBs :-)
+> but do we actually gain much from storing the nesting level at all? You
+> have to maintain it all the time anyway when adding/removing and that's
+> the only place where you also check it, so perhaps it wouldn't be that
+> bad to just count at that time?
+>
+> But then again the counting would probably be recursive again ...
+>
+> >       return 0;
+> > +
+> >  }
+> >  EXPORT_SYMBOL_GPL(netdev_walk_all_lower_dev_rcu);
+>
+> same nit as above
+>
 
+I will fix this in a v5 patch too.
+
+> > +     __netdev_update_upper_level(dev, NULL);
+> > +     netdev_walk_all_lower_dev(dev, __netdev_update_upper_level, NULL);
+> > +
+> > +     __netdev_update_lower_level(upper_dev, NULL);
+> > +     netdev_walk_all_upper_dev(upper_dev, __netdev_update_lower_level, NULL);
+>
+> Actually, if I'm reading this correctly you already walk all the levels
+> anyway? Then couldn't you calculate the depth at this time and return
+> it, instead of storing it? Though, if it actually overflowed then you'd
+> have to walk *again* to undo that?
+>
+> Hmm, actually, if you don't store the value you don't even need to walk
+> here I guess, or at least you would only have to do it to verify you
+> *can* attach, but wouldn't have to in detach?
+>
+> So it looks to me like on attach (i.e. this code, quoted from
+> __netdev_upper_dev_link) you're already walking the entire graph to
+> update the level values, and could probably instead calculate the
+> nesting depth to validate it?
+> And then on netdev_upper_dev_unlink() you wouldn't even have to walk the
+> graph at all, since you only need that to update the values that you
+> stored.
+>
+> But maybe I'm misinterpreting this completely?
+>
+
+Without storing level storing, a walking graph routine is needed only
+once. The routine would work as a nesting depth validator.
+So that the detach routine doesn't need to walk the graph.
+Whereas, in this patch, both attach and detach routine need to
+walk graph. So, storing nesting variable way is slower than without
+storing nesting variable way because of the detach routine's updating
+upper and lower level routine.
+
+But I'm sure that storing nesting variables is useful because other
+modules already using nesting level values.
+Please look at vlan_get_encap_level() and usecases.
+If we don't provide nesting level variables, they should calculate
+every time when they need it and this way is easier way to get a
+nesting level. There are use-cases of lower_level variable
+in the 11th patch.
+
+Thank you
+
+> Thanks,
 > johannes
+>
 >
