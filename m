@@ -2,67 +2,73 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 654C4C1902
-	for <lists+linux-wireless@lfdr.de>; Sun, 29 Sep 2019 20:42:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1ED8DC1914
+	for <lists+linux-wireless@lfdr.de>; Sun, 29 Sep 2019 21:18:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729124AbfI2Sme (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 29 Sep 2019 14:42:34 -0400
-Received: from us-smtp-2.mimecast.com ([205.139.110.61]:58514 "EHLO
-        us-smtp-delivery-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1728755AbfI2Sme (ORCPT
+        id S1729109AbfI2TSc (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 29 Sep 2019 15:18:32 -0400
+Received: from us-smtp-delivery-1.mimecast.com ([207.211.31.120]:42297 "EHLO
+        us-smtp-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
+        with ESMTP id S1728755AbfI2TSb (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 29 Sep 2019 14:42:34 -0400
+        Sun, 29 Sep 2019 15:18:31 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1569782550;
+        s=mimecast20190719; t=1569784710;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
          to:to:cc:cc:mime-version:mime-version:content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=o2E2ADouX7tBrXQ2QYSqBbU5xaMdk1UTKQKzocuIs0k=;
-        b=YHzkpJuyWKEI0SOnzyUqgNI+aWs/tbkSAKgy6ZHXOmEbEsgXe6JC3xK3AdBfK9UtB4opVJ
-        2bncx/EW38+ooldfwmEdcTvnEmiq3uA/3hEvGBK4Gu+fMn8RcwRzTz17cl1kKRUA3WSfG1
-        tl7+YaXQmO+Bv2b3wCNfgMC3Ahsl2xw=
-Received: from mail-lj1-f198.google.com (mail-lj1-f198.google.com
- [209.85.208.198]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-38-WQwW9ENePjeQFbiyuEj0Rg-1; Sun, 29 Sep 2019 14:42:29 -0400
-Received: by mail-lj1-f198.google.com with SMTP id p14so2278110ljh.22
-        for <linux-wireless@vger.kernel.org>; Sun, 29 Sep 2019 11:42:28 -0700 (PDT)
+        bh=PmClTk6ZBeDnMUQqxWFXdnqlKIKLeLEMugsjxY3medI=;
+        b=bD6BypPUn6KNKsMtsvXotrrriPYJ6LtUhT090/GjGbzTNMlp7sMXtBI0TH+wtlPPSt0bc5
+        WZDhNzbNR/JoIXChykxwjNC7F1iuESqRnkNsCM7li4sQvvj/2rJX0WYfRy2ZJLXHIEedff
+        QN6uzGhVQWJGGhG3jQSA9WFDvWOIZZU=
+Received: from mail-lf1-f72.google.com (mail-lf1-f72.google.com
+ [209.85.167.72]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-219-5bKUW-LoN2aCJw9b9-dRmQ-1; Sun, 29 Sep 2019 15:18:27 -0400
+Received: by mail-lf1-f72.google.com with SMTP id r3so2116187lfn.13
+        for <linux-wireless@vger.kernel.org>; Sun, 29 Sep 2019 12:18:27 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:in-reply-to:references:date
          :message-id:mime-version;
-        bh=keD5mw/bNhy0hQKG9pGlW4ZQ+qajGxzrnXF4W+CFyW8=;
-        b=COeL0NiAz8vUKancx9YfmnWZG9/sbvRcc90m6jL1T37iHM7xJxeeTCaBVlAS0DvWOX
-         Kn5t+clYwrq8HIxRJkFOE3d2vSav0gxhKWm/IM+Uvmf2flQ13iQt5Sa8wTkG1Q/P0/7E
-         /zGpbjYK0U0sgtv1AZoNZJn3oUxp5nfbJ+BjCCq/AMlYi6j2mwrd1DLAlLm2kK2GiWwp
-         cuZrlReQy6cP5VfMl4/B4AaOCmHZXn8PKiqTL4N1yjZ4s+fdiLl1FoBTNoa1fq8yZJx6
-         pkdsz244p2eZ/MJu5Zj0IXH9AGuBzVglIgpXzEDTdgfWdHCQkg3niD73DAPHEWEaUTcX
-         yUWQ==
-X-Gm-Message-State: APjAAAVDRApORGTaLUDIEnY4la5hEYh4AmwOFSAE0GJt+uyeyafzaWwr
-        oBuWdIE5Ljvw1pEMOjGZjbQEQ7+o7nuJWOs1MVEBNzbQlJzUoKQNntRW3VQ/YVjvera/51Hsu9U
-        LaEf8CxAyWP+ETbPDZUmIy/MI8sU=
-X-Received: by 2002:a2e:96d8:: with SMTP id d24mr9946298ljj.138.1569782547353;
-        Sun, 29 Sep 2019 11:42:27 -0700 (PDT)
-X-Google-Smtp-Source: APXvYqx+ZT/UfWrFq5jlBZWct8pq0P5sEr1a3N8MjkrgbNfX6iju09i+oFcMAVtVAx+BvcaqgXBYtg==
-X-Received: by 2002:a2e:96d8:: with SMTP id d24mr9946291ljj.138.1569782547197;
-        Sun, 29 Sep 2019 11:42:27 -0700 (PDT)
-Received: from alrua-x1.borgediget.toke.dk ([2a00:7660:6da:443::2])
-        by smtp.gmail.com with ESMTPSA id r6sm2401807lfn.29.2019.09.29.11.42.25
+        bh=l7VGnnlSPM+qdvP47z76jYbpQR9HF1SiHUYNg1d9q/Q=;
+        b=Rvj9vj7TxF2d//itUwss4DNoMkBgVX8YJnEqYT8xZz0LyyEGs1RKpqnS8DfeuM1mw7
+         TmU66Blqze+JTSRaoOa9qjXH1wLNlam8RrPlWOGxcB05m5xu27byreODDLvGI6x05F4b
+         Y5fNYEtw57f9dg1CXzvRHiwYiMBBqSpAVCbRZSexigpvktf6o1YogNFTzWfjTtb9knwI
+         y/Aea8rUduVIedyknGGGug/tCsaNaMoX/Wyc97dJgzbFQG7iMp9M5e4SQcP6puC3HInx
+         6IxgZ6LkGYX0f+m4IxyL2xZF9PT/MYRo8GqpTEkIWcV4tc2n8I09dLvyA371fGly+aU8
+         67Ew==
+X-Gm-Message-State: APjAAAWmznfoROBgtfSYlkgaAaU2wa8+4aYS7TGbchLFUPJv4mvMvWR6
+        eshjc8W3S9sZHqEb2AHJvJDNW9yRZsARzriJPDhhJfUcFZpyfj+MxtX95aEVxdUBAMCjKJE7QA/
+        yeU4KOD7qdLuPQEARTqT13ui0dC0=
+X-Received: by 2002:a2e:9b4f:: with SMTP id o15mr9835471ljj.142.1569784706279;
+        Sun, 29 Sep 2019 12:18:26 -0700 (PDT)
+X-Google-Smtp-Source: APXvYqzuKThtVHIaZkeRIfxRmJqFrWP5oLP8/LYRgpK43G2sqqHQSjWRoJBhb9NyYJFDSUMjSUyH6w==
+X-Received: by 2002:a2e:9b4f:: with SMTP id o15mr9835452ljj.142.1569784706098;
+        Sun, 29 Sep 2019 12:18:26 -0700 (PDT)
+Received: from alrua-x1.borgediget.toke.dk (borgediget.toke.dk. [85.204.121.218])
+        by smtp.gmail.com with ESMTPSA id z72sm2469159ljb.98.2019.09.29.12.18.25
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 29 Sep 2019 11:42:26 -0700 (PDT)
+        Sun, 29 Sep 2019 12:18:25 -0700 (PDT)
 Received: by alrua-x1.borgediget.toke.dk (Postfix, from userid 1000)
-        id 9167518063D; Sun, 29 Sep 2019 20:42:24 +0200 (CEST)
+        id 4A27318063D; Sun, 29 Sep 2019 21:18:24 +0200 (CEST)
 From:   Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>
-To:     Felix Fietkau <nbd@nbd.name>, linux-wireless@vger.kernel.org
-Cc:     johannes@sipsolutions.net
-Subject: Re: [PATCH 2/2] mac80211: minstrel_ht: replace rate stats ewma with a better moving average
-In-Reply-To: <20190929154646.90901-2-nbd@nbd.name>
-References: <20190929154646.90901-1-nbd@nbd.name> <20190929154646.90901-2-nbd@nbd.name>
+To:     Kan Yan <kyan@google.com>, Yibo Zhao <yiboz@codeaurora.org>
+Cc:     Felix Fietkau <nbd@nbd.name>,
+        Johannes Berg <johannes@sipsolutions.net>,
+        linux-wireless@vger.kernel.org,
+        make-wifi-fast@lists.bufferbloat.net,
+        John Crispin <john@phrozen.org>,
+        Lorenzo Bianconi <lorenzo@kernel.org>,
+        linux-wireless-owner@vger.kernel.org
+Subject: Re: [PATCH RFC/RFT 4/4] mac80211: Apply Airtime-based Queue Limit (AQL) on packet dequeue
+In-Reply-To: <CA+iem5sGkRQy4B=Mz-C90sfqgFmuywa=W7Yjy2CDd8hfppQkvQ@mail.gmail.com>
+References: <156889576422.191202.5906619710809654631.stgit@alrua-x1> <156889576869.191202.510507546538322707.stgit@alrua-x1> <08f0ed6e-b746-9689-6dc8-7c0ea705666d@nbd.name> <87wodv19jl.fsf@toke.dk> <b0239b81-e3db-1f10-22cb-ad06536b97a8@nbd.name> <87tv8z13wv.fsf@toke.dk> <CA+iem5uir8GOq2psAVuUParY3MimsGhvdefUopiwHov128CQQA@mail.gmail.com> <87r2421d4f.fsf@toke.dk> <ed46699c32cd3d8d8bcc9bce1375ba04@codeaurora.org> <CA+iem5sGkRQy4B=Mz-C90sfqgFmuywa=W7Yjy2CDd8hfppQkvQ@mail.gmail.com>
 X-Clacks-Overhead: GNU Terry Pratchett
-Date:   Sun, 29 Sep 2019 20:42:24 +0200
-Message-ID: <87zhinx7u7.fsf@toke.dk>
+Date:   Sun, 29 Sep 2019 21:18:24 +0200
+Message-ID: <87muemykqn.fsf@toke.dk>
 MIME-Version: 1.0
-X-MC-Unique: WQwW9ENePjeQFbiyuEj0Rg-1
+X-MC-Unique: 5bKUW-LoN2aCJw9b9-dRmQ-1
 X-Mimecast-Spam-Score: 0
 Content-Type: text/plain; charset=WINDOWS-1252
 Content-Transfer-Encoding: quoted-printable
@@ -71,39 +77,70 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Felix Fietkau <nbd@nbd.name> writes:
+Kan Yan <kyan@google.com> writes:
 
-> Rate success probability usually fluctuates a lot under normal conditions=
-.
-> With a simple EWMA, noise and fluctuation can be reduced by increasing th=
-e
-> window length, but that comes at the cost of introducing lag on sudden
-> changes.
+>> No, ath10k would continue to do what it was always doing. Drivers that
+>> can report after-the-fact airtime usage per-frame (like ath9k) will
+>> continue to do that. In both of those cases, the airtime estimate is
+>> only used to throttle the queue, not to schedule for fairness.
+> You are right, I didn't realize ath9k reports per frame airtime usage.
 >
-> This change replaces the EWMA implementation with a moving average that's
-> designed to significantly reduce lag while keeping a bigger window size
-> by being better at filtering out noise.
->
-> It is only slightly more expensive than the simple EWMA and still avoids
-> divisions in its calculation.
->
-> The algorithm is adapted from an implementation intended for a completely
-> different field (stock market trading), where the tradeoff of lag vs
-> noise filtering is equally important. It is based on the "smoothing filte=
-r"
-> from http://www.stockspotter.com/files/PredictiveIndicators.pdf.
->
-> I have adapted it to fixed-point math with some constants so that it uses
-> only addition, bit shifts and multiplication
->
-> To better make use of the filtering and bigger window size, the update
-> interval time is cut in half.
->
-> For testing, the algorithm can be reverted to the older one via
-> debugfs
+>> Yeah, I was wondering about that. Makes sense. Why 24ms, exactly?
+> The per interface 24 ms queue limit is an empirical number that works
+> well for both achieve low latency when there is a lot of stations and
+> get high throughput when there is only 1-2 stations.  We could make it
+> configurable.
 
-This looks interesting! Do you have any performance numbers from your
-own testing to share? :)
+Right. "Found by trial and error" is a fine answer as far as I'm
+concerned :)
+
+But yeah, this should probably be configurable, like BQL is.
+
+>> BTW, I think Felix' concern about powersave was in relation to AQL: If
+>> we don't handle power save in that, we can end up in a situation where
+>>the budget for packets allowed to be queued in the firmware is taken up
+>> entirely by stations that are currently in powersave mode; which would
+>> throttle the device completely. So we should take that into account for
+>> AQL; for the fairness scheduler, stations in powersave are already
+>> unscheduled, so that should be fine.
+> I think the accounting for the airtime of frames in the power saving
+> queue could affect both the fairness scheduler and AQL.
+> For chipset with firmware offload, PS handling is mostly done by
+> firmware, so host driver's knowledge of PS state could be slightly
+> out-of-dated. The power save behavior also make it harder to the
+> airtime_weight correct for the fairness scheduler.
+
+Hmm, maybe. I'm not sure how significant this effect would be, but I
+guess we'll need to find out :)
+
+
+> Powersave mode's impact to AQL is much smaller. The lower per station
+> queue limit is not impacted by other stations PS behavior, since the
+> estimated future airtime is not weighted for other stations and a
+> station won't get blocked due to others stations in PS mode.
+> Station in PS mode do affects AQL's higher per interface limit, but in
+> an inconsequential way. The per interface AQL queue limit is quite
+> large (24 ms), hence airtime from packets in PS queue is unlikely to
+> have a significant impact on it. Still, it will be better if the
+> packet in power saving queue can be taken into account.
+
+I guess the risk is lower when with a 24ms per-iface limit; but with
+enough stations I guess it could still happen, no? So we should probably
+handle this case...
+
+>> > make it easier to schedule multiple stations, I think it has some meri=
+t
+>> > that makes it worth trying out. We should probably get the AQL stuff
+>> > done first, though, and try the virtual time scheduler on top of that.
+>> Agree that we should get the AQL stuff done first since I believe it
+>> will help to fix the issue mentioned above.
+> That sounds like a good plan. The virtual time scheduler is more
+> involved and will take more work to get it right. It make sense to get
+> AQL done first.
+
+Cool. Are you going to submit a ported version of your implementation?
+Then we can work from the two submissions and see if we can't converge
+on something...
 
 -Toke
 
