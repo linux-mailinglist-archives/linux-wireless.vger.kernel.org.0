@@ -2,250 +2,149 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 4B013C28EE
-	for <lists+linux-wireless@lfdr.de>; Mon, 30 Sep 2019 23:38:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 93519C29B1
+	for <lists+linux-wireless@lfdr.de>; Tue,  1 Oct 2019 00:39:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731499AbfI3ViO (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 30 Sep 2019 17:38:14 -0400
-Received: from mail-qt1-f178.google.com ([209.85.160.178]:42740 "EHLO
-        mail-qt1-f178.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726504AbfI3ViO (ORCPT
+        id S1727469AbfI3WjQ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 30 Sep 2019 18:39:16 -0400
+Received: from mail-io1-f69.google.com ([209.85.166.69]:53124 "EHLO
+        mail-io1-f69.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729229AbfI3WjP (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 30 Sep 2019 17:38:14 -0400
-Received: by mail-qt1-f178.google.com with SMTP id w14so18953067qto.9
-        for <linux-wireless@vger.kernel.org>; Mon, 30 Sep 2019 14:38:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:from:date:message-id:subject:to:cc;
-        bh=WxI0iRXlXWneiyvXbYQIs9S1AwT9XFZRPS04+P+ewwg=;
-        b=CRCbRaAJq3+IXuLgKK62dpof4LbrvzOc4ZoYX3pLpfhSfuRUIeXC3o+itF79GHDp7L
-         v2Ox19oWj3M5izLTKYPfIYug3p3kENcGoIrTS/QUI+iLBVnaCCJgHKK3nNj/B4otsAzU
-         BjXH97Ys4rBpi8+DQTgKTXTr57XKmDuprgnNuV4vu0n8lH/T0qLiZDrpRepdguUf550H
-         BuorJUJGhO4/2P5K3Xx8SDJF3/S1fajVltQXWrWwbN4NlVOwCDM7qAG0KbSb6BeDqT5W
-         CETuse9oCzuoAoaHo2/hCzlsxfSnS8XYnMid2MvCNuCM/icjeAroHRiOj2OxLNnsRu8d
-         lYQw==
+        Mon, 30 Sep 2019 18:39:15 -0400
+Received: by mail-io1-f69.google.com with SMTP id g8so33376568iop.19
+        for <linux-wireless@vger.kernel.org>; Mon, 30 Sep 2019 15:39:15 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:from:date:message-id:subject:to:cc;
-        bh=WxI0iRXlXWneiyvXbYQIs9S1AwT9XFZRPS04+P+ewwg=;
-        b=kVoTngJ4EhV0DIS2E92L5wJJ3k9x2qh6/MkqFmlVMZ/qZjpZwGv9Yo5AUN7T/vT7XA
-         VJ+/dBYoJjN+nkAu5Wdz71LKHIx91/eNb0AkO6wbt5L5yCMobG94/Kzl3cTCkR7+AkF2
-         XAIiZFG8od1msl8BaFlWZtrzF8nAbhNBDPSbLG2pDX6j0gQ5VDaTvry3C03wo9EiJAC9
-         4n3WAdRtIGdFDEuJtNrgERPsPwQuLfG0Gbcne7mLbtDJFknp0FztORytRNlUoQd5OuNV
-         lONRHlQ3DUjaUjdSLyIk7sbgWT2nlK/sYRnuTVS9p39LFxFbfsKDDPx08wqzLlA4Qnrk
-         Uu6A==
-X-Gm-Message-State: APjAAAWGckIpl09xQdKxGR465kIwgaWNhLfa1DMSKAwHwubZK0Yj0RNw
-        jDWXmwHmSuY73FNEYNsKR3U8Oue8TzZFOmMU8BRP67IYw80=
-X-Google-Smtp-Source: APXvYqwV+DGAZtxiCFPm8T/EqK0xQeDjregewPJqkt5PjTKOEilu/E2SR+fo2KL9si1hLsjo+JcFs0BMZy/ZfiGkR/4=
-X-Received: by 2002:ac8:1616:: with SMTP id p22mr25376141qtj.356.1569865376988;
- Mon, 30 Sep 2019 10:42:56 -0700 (PDT)
+        h=x-gm-message-state:mime-version:date:message-id:subject:from:to;
+        bh=S+VQhWYaAUm9S3kTD+g6Uv25dCXpksl3TXWhnx7EUec=;
+        b=HRPBlXKYWsbPf1PzjP/kuDGGu3Oe7zaoUdJ1KYMFkZ8EcMcGHBH2Y8LCuUF6jPHDNa
+         cYnI0FXHQTl6kGq11tr2qoutHB3ghI1V9goOj/SdR4AUmKi23AUoEzad2Nj0bmyePyod
+         Dmm5QLcMcTjlEO2TKvKtWgNAAzS3qdZBM6EhVh/y9qpzGrm9VwUUO5lJYtr/t6nLU+p4
+         1cxBAyo+AyR5MHzURqF6VhedRSid2oz9BYic+/qiv1Nk5rPqRbFlJ+cQs5Aq32msGxpr
+         JkVsqr9c8MJTMGItDaBgfRpfT0wcJpWsV9FScUxHDBw1MhOllPxA6l0fUivNmIjl8E7v
+         bgtA==
+X-Gm-Message-State: APjAAAUHRjPb0XBxJZ/MftwMwxTFLZPqOlj5xytVrb4s0bZ5Af3VWn60
+        0ajzZY8QUAy0dYfAeJrdeqNRjCvIgenCUUXjA6E9Ycj0tg24
+X-Google-Smtp-Source: APXvYqxAGOFqID5P9o7rvH8Pzpjjiu8fp5lk/fQqSI7vrHaUe3UxQ9GKkfOrTWJQgAMXWBPCV+e/RjA9RFpV6uo1Iw2++fmbRajX
 MIME-Version: 1.0
-From:   Peter Geis <pgwipeout@gmail.com>
-Date:   Mon, 30 Sep 2019 13:42:42 -0400
-Message-ID: <CAMdYzYpqYbgb-9s1VPSreoosQ=BPnhzC_gKOzbGipKikk5+4zA@mail.gmail.com>
-Subject: bug: nl80211 / brcmfmac broken for bcm4329/bcm4330 sdio in linux-next
-To:     johannes@sipsolutions.net, kvalo@codeaurora.org
-Cc:     linux-wireless@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+X-Received: by 2002:a5d:9457:: with SMTP id x23mr7302480ior.14.1569883154839;
+ Mon, 30 Sep 2019 15:39:14 -0700 (PDT)
+Date:   Mon, 30 Sep 2019 15:39:14 -0700
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <000000000000c889570593cce77b@google.com>
+Subject: KMSAN: uninit-value in rt2500usb_probe_hw
+From:   syzbot <syzbot+35c80b2190255a410f66@syzkaller.appspotmail.com>
+To:     davem@davemloft.net, glider@google.com,
+        helmut.schaa@googlemail.com, kvalo@codeaurora.org,
+        linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org, sgruszka@redhat.com,
+        syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"; format=flowed; delsp=yes
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Good Afternoon,
+Hello,
 
-Since 5.3 landed, brcmfmac has been broken both on bcm4329 and bcm4330
-sdio devices.
+syzbot found the following crash on:
 
-The error received is as follows:
-[   19.743990] ------------[ cut here ]------------
-[   19.744914] WARNING: CPU: 1 PID: 32 at net/wireless/nl80211.c:3118
-nl80211_send_chandef+0x178/0x180 [cfg80211]
-[   19.745140] Modules linked in: brcmfmac zram tegra_drm
-drm_kms_helper cfbfillrect syscopyarea cfg80211 cfbimgblt sysfillrect
-sysimgblt fb_sys_fops hci_uart cfbcopyarea drm btbcm bluetooth
-snd_soc_tegra30_i2s snd_soc_tegra_pcm ax88179_178a
-drm_panel_orientation_quirks usbnet host1x mii sg brcmutil
-snd_soc_tegra30_ahub tegra_wdt sch_fq_codel ip_tables x_tables autofs4
-[   19.745473] CPU: 1 PID: 32 Comm: kworker/1:1 Tainted: G        W
-     5.3.0-next-20190926+ #34
-[   19.745489] Hardware name: NVIDIA Tegra SoC (Flattened Device Tree)
-[   19.745549] Workqueue: events request_firmware_work_func
-[   19.745568] Backtrace:
-[   19.745607] [<c010e934>] (dump_backtrace) from [<c010ec48>]
-(show_stack+0x20/0x24)
-[   19.745650]  r7:60070113 r6:c12cce70 r5:00000000 r4:c12cce70
-[   19.745728] [<c010ec28>] (show_stack) from [<c0ad7998>]
-(dump_stack+0x80/0x94)
-[   19.745776] [<c0ad7918>] (dump_stack) from [<c012ec8c>] (__warn+0xec/0x104)
-[   19.745796]  r7:00000009 r6:bf2738b8 r5:00000000 r4:00000000
-[   19.745818] [<c012eba0>] (__warn) from [<c012ed5c>]
-(warn_slowpath_fmt+0xb8/0xc0)
-[   19.745838]  r9:00000009 r8:bf213d5c r7:00000c2e r6:bf2738b8
-r5:00000000 r4:c1209888
-[   19.746597] [<c012eca8>] (warn_slowpath_fmt) from [<bf213d5c>]
-(nl80211_send_chandef+0x178/0x180 [cfg80211])
-[   19.746640]  r9:e8de0360 r8:ffffffea r7:ea07b3c0 r6:c1209888
-r5:ea07b3c0 r4:ed365b18
-[   19.747685] [<bf213be4>] (nl80211_send_chandef [cfg80211]) from
-[<bf22eaf0>] (nl80211_send_iface+0xa78/0xb94 [cfg80211])
-[   19.747716]  r8:00000000 r7:c12098a8 r6:ed365b18 r5:ea07b3c0 r4:ed58f004
-[   19.748578] [<bf22e078>] (nl80211_send_iface [cfg80211]) from
-[<bf239908>] (nl80211_notify_iface+0x58/0xe4 [cfg80211])
-[   19.748611]  r10:ed593408 r9:00000005 r8:e8de0000 r7:00000007
-r6:ed58f004 r5:ea07b3c0
-[   19.748627]  r4:e8de0000
-[   19.749503] [<bf2398b0>] (nl80211_notify_iface [cfg80211]) from
-[<bf1ff98c>] (cfg80211_init_wdev+0x118/0x130 [cfg80211])
-[   19.749525]  r7:e8de0360 r6:ed58d000 r5:e8de0000 r4:ed58f004
-[   19.750410] [<bf1ff874>] (cfg80211_init_wdev [cfg80211]) from
-[<bf1ffd18>] (cfg80211_netdev_notifier_call+0x374/0x7fc [cfg80211])
-[   19.750432]  r5:c1209888 r4:ed58f004
-[   19.751031] [<bf1ff9a4>] (cfg80211_netdev_notifier_call [cfg80211])
-from [<c0159bb0>] (notifier_call_chain+0x58/0x94)
-[   19.751068]  r10:ed593408 r9:ffffffe0 r8:00000000 r7:00000005
-r6:ed365d5c r5:c12c6568
-[   19.751084]  r4:ffffffef
-[   19.751109] [<c0159b58>] (notifier_call_chain) from [<c0159cac>]
-(raw_notifier_call_chain+0x28/0x30)
-[   19.751154]  r9:ffffffe0 r8:00000000 r7:00000000 r6:00000001
-r5:ed365d5c r4:00000005
-[   19.751221] [<c0159c84>] (raw_notifier_call_chain) from
-[<c08e1734>] (call_netdevice_notifiers_info+0x3c/0x88)
-[   19.751275] [<c08e16f8>] (call_netdevice_notifiers_info) from
-[<c08f2184>] (register_netdevice+0x500/0x5e4)
-[   19.751295]  r5:c1209888 r4:ed58d000
-[   19.751317] [<c08f1c84>] (register_netdevice) from [<c08f2294>]
-(register_netdev+0x2c/0x44)
-[   19.751349]  r8:00000000 r7:e8de0760 r6:ed58d728 r5:ed58d000 r4:ed58d000
-[   19.751856] [<c08f2268>] (register_netdev) from [<bf3ef620>]
-(brcmf_net_attach+0x14c/0x194 [brcmfmac])
-[   19.751883]  r5:ed58d000 r4:ed58d6c0
-[   19.752375] [<bf3ef4d4>] (brcmf_net_attach [brcmfmac]) from
-[<bf3f01f8>] (brcmf_attach+0x194/0x540 [brcmfmac])
-[   19.752408]  r9:e97da600 r8:ed58d6c0 r7:e97abf80 r6:e8de2760
-r5:00000000 r4:e8de0760
-[   19.752817] [<bf3f0064>] (brcmf_attach [brcmfmac]) from
-[<bf3ff8f0>] (brcmf_sdio_firmware_callback+0x720/0x838 [brcmfmac])
-[   19.752841]  r10:e97ab340 r9:bf407b60 r8:ea26b800 r7:00000000
-r6:c1209888 r5:ed593408
-[   19.752857]  r4:e9560000
-[   19.753259] [<bf3ff1d0>] (brcmf_sdio_firmware_callback [brcmfmac])
-from [<bf3f12d4>] (brcmf_fw_request_done+0xbc/0x110 [brcmfmac])
-[   19.753272] Adding 109752k swap on /dev/zram3.  Priority:5
-extents:1 across:109752k SSFS
-[   19.753293]  r10:00000001 r9:c1209888 r8:c12098a8 r7:ee4edb00
-r6:ee4ea680 r5:00000000
-[   19.753308]  r4:e97ab0c0
-[   19.753569] [<bf3f1218>] (brcmf_fw_request_done [brcmfmac]) from
-[<c06a8e10>] (request_firmware_work_func+0x5c/0x98)
-[   19.753615]  r8:c12098a8 r7:ee4edb00 r6:ee4ea680 r5:c1209888 r4:e97aba40
-[   19.753666] [<c06a8db4>] (request_firmware_work_func) from
-[<c0150a88>] (process_one_work+0x304/0x7f4)
-[   19.753703]  r5:edeb6b00 r4:e97aba40
-[   19.753753] [<c0150784>] (process_one_work) from [<c0150fd4>]
-(worker_thread+0x5c/0x5c4)
-[   19.753792]  r10:c1206100 r9:00000008 r8:ffffe000 r7:ee4ea6bc
-r6:edeb6b14 r5:ee4ea680
-[   19.753810]  r4:edeb6b00
-[   19.753839] [<c0150f78>] (worker_thread) from [<c0158368>]
-(kthread+0x168/0x170)
-[   19.753858]  r10:ede85e50 r9:c0150f78 r8:edeb6b00 r7:ed364000
-r6:00000000 r5:ed2f0d80
-[   19.753877]  r4:ed59a900
-[   19.753928] [<c0158200>] (kthread) from [<c01010e8>]
-(ret_from_fork+0x14/0x2c)
-[   19.753964] Exception stack(0xed365fb0 to 0xed365ff8)
-[   19.754004] 5fa0:                                     00000000
-00000000 00000000 00000000
-[   19.754037] 5fc0: 00000000 00000000 00000000 00000000 00000000
-00000000 00000000 00000000
-[   19.754056] 5fe0: 00000000 00000000 00000000 00000000 00000013 00000000
-[   19.754076]  r10:00000000 r9:00000000 r8:00000000 r7:00000000
-r6:00000000 r5:c0158200
-[   19.754091]  r4:ed2f0d80
-[   19.785561] ---[ end trace c0485f03d4b7a6d9 ]---
+HEAD commit:    cebbfdbc kmsan: merge set_no_shadow_page() and set_no_orig..
+git tree:       https://github.com/google/kmsan.git master
+console output: https://syzkaller.appspot.com/x/log.txt?x=1125cb59600000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=f03c659d0830ab8d
+dashboard link: https://syzkaller.appspot.com/bug?extid=35c80b2190255a410f66
+compiler:       clang version 9.0.0 (/home/glider/llvm/clang  
+80fee25776c2fb61e74c1ecb1a523375c2500b69)
+syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=146abd21600000
+C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=106a19b5600000
 
-The iw command also fails to produce anything useful:
-root@ouya:~# iw wlan0 info
-command failed: No buffer space available (-105)
+IMPORTANT: if you fix the bug, please add the following tag to the commit:
+Reported-by: syzbot+35c80b2190255a410f66@syzkaller.appspotmail.com
 
-With the following kernel log:
-[  222.287296] ------------[ cut here ]------------
-[  222.287885] WARNING: CPU: 2 PID: 812 at net/wireless/nl80211.c:3118
-nl80211_send_chandef+0x178/0x180 [cfg80211]
-[  222.287904] Modules linked in: cpufreq_conservative
-cpufreq_userspace cpufreq_powersave brcmfmac zram tegra_drm
-drm_kms_helper cfbfillrect syscopyarea cfg80211 cfbimgblt sysfillrect
-sysimgblt fb_sys_fops hci_uart cfbcopyarea drm btbcm bluetooth
-snd_soc_tegra30_i2s snd_soc_tegra_pcm ax88179_178a
-drm_panel_orientation_quirks usbnet host1x mii sg brcmutil
-snd_soc_tegra30_ahub tegra_wdt sch_fq_codel ip_tables x_tables autofs4
-[  222.288054] CPU: 2 PID: 812 Comm: iw Tainted: G        W
-5.3.0-next-20190926+ #34
-[  222.288069] Hardware name: NVIDIA Tegra SoC (Flattened Device Tree)
-[  222.288083] Backtrace:
-[  222.288118] [<c010e934>] (dump_backtrace) from [<c010ec48>]
-(show_stack+0x20/0x24)
-[  222.288138]  r7:60010013 r6:c12cce70 r5:00000000 r4:c12cce70
-[  222.288173] [<c010ec28>] (show_stack) from [<c0ad7998>]
-(dump_stack+0x80/0x94)
-[  222.288203] [<c0ad7918>] (dump_stack) from [<c012ec8c>] (__warn+0xec/0x104)
-[  222.288221]  r7:00000009 r6:bf2738b8 r5:00000000 r4:00000000
-[  222.288241] [<c012eba0>] (__warn) from [<c012ed5c>]
-(warn_slowpath_fmt+0xb8/0xc0)
-[  222.288260]  r9:00000009 r8:bf213d5c r7:00000c2e r6:bf2738b8
-r5:00000000 r4:c1209888
-[  222.288594] [<c012eca8>] (warn_slowpath_fmt) from [<bf213d5c>]
-(nl80211_send_chandef+0x178/0x180 [cfg80211])
-[  222.288616]  r9:e8de0360 r8:ffffffea r7:ea27d9c0 r6:c1209888
-r5:ea27d9c0 r4:e8d87be0
-[  222.289143] [<bf213be4>] (nl80211_send_chandef [cfg80211]) from
-[<bf22eaf0>] (nl80211_send_iface+0xa78/0xb94 [cfg80211])
-[  222.289164]  r8:d4c0032c r7:c12098a8 r6:e8d87be0 r5:ea27d9c0 r4:ed58f004
-[  222.289684] [<bf22e078>] (nl80211_send_iface [cfg80211]) from
-[<bf22f440>] (nl80211_get_interface+0x58/0x9c [cfg80211])
-[  222.289705]  r10:e8d87d14 r9:c12bba00 r8:ea27d900 r7:ed58f004
-r6:e8de0000 r5:ea27d9c0
-[  222.289721]  r4:e8d87cb4
-[  222.290004] [<bf22f3e8>] (nl80211_get_interface [cfg80211]) from
-[<c0964fac>] (genl_rcv_msg+0x274/0x4e0)
-[  222.290024]  r7:c1209888 r6:ea777014 r5:bf27a14c r4:bf26ff40
-[  222.290045] [<c0964d38>] (genl_rcv_msg) from [<c0962de4>]
-(netlink_rcv_skb+0xc8/0x120)
-[  222.290065]  r10:c1209888 r9:00000000 r8:0000001c r7:ea777000
-r6:c0964d38 r5:c1209888
-[  222.290080]  r4:ea27d900
-[  222.290099] [<c0962d1c>] (netlink_rcv_skb) from [<c096367c>]
-(genl_rcv+0x34/0x44)
-[  222.290118]  r8:e8d87d78 r7:ea27d900 r6:0000001c r5:ea27d900 r4:c12c2138
-[  222.290138] [<c0963648>] (genl_rcv) from [<c0962618>]
-(netlink_unicast+0x18c/0x208)
-[  222.290153]  r5:e8cee800 r4:ecf99800
-[  222.290173] [<c096248c>] (netlink_unicast) from [<c0962910>]
-(netlink_sendmsg+0x27c/0x3ac)
-[  222.290191]  r10:0000001c r9:00000000 r8:00000000 r7:e8cee800
-r6:ea27d900 r5:c1209888
-[  222.290206]  r4:e8d87f44
-[  222.290236] [<c0962694>] (netlink_sendmsg) from [<c08c2ed8>]
-(___sys_sendmsg+0x23c/0x25c)
-[  222.290254]  r10:c0962694 r9:00000000 r8:e9dd0680 r7:00000000
-r6:0000001c r5:c1209888
-[  222.290269]  r4:e8d87f44
-[  222.290293] [<c08c2c9c>] (___sys_sendmsg) from [<c08c44ec>]
-(__sys_sendmsg+0x60/0x9c)
-[  222.290313]  r10:00000128 r9:e8d86000 r8:c0101204 r7:e9dd0680
-r6:00000000 r5:bec73440
-[  222.290328]  r4:c1209888
-[  222.290349] [<c08c448c>] (__sys_sendmsg) from [<c08c4544>]
-(sys_sendmsg+0x1c/0x20)
-[  222.290366]  r7:00000128 r6:00b0d668 r5:00b0d5b0 r4:0000006c
-[  222.290388] [<c08c4528>] (sys_sendmsg) from [<c0101000>]
-(ret_fast_syscall+0x0/0x54)
-[  222.290404] Exception stack(0xe8d87fa8 to 0xe8d87ff0)
-[  222.290423] 7fa0:                   0000006c 00b0d5b0 00000003
-bec73440 00000000 00000000
-[  222.290442] 7fc0: 0000006c 00b0d5b0 00b0d668 00000128 b6f00000
-00b0d5b0 00000000 bec736d0
-[  222.290459] 7fe0: 00000128 bec733f0 b6e7d73f b6dfb206
-[  222.290701] ---[ end trace c0485f03d4b7a6db ]---
+usb 1-1: config 0 descriptor??
+usb 1-1: reset high-speed USB device number 2 using dummy_hcd
+usb 1-1: device descriptor read/64, error -71
+usb 1-1: Using ep0 maxpacket: 16
+ieee80211 phy3: rt2x00usb_vendor_request: Error - Vendor Request 0x09  
+failed for offset 0x0000 with error -71
+ieee80211 phy3: rt2x00_set_chip: Info - Chipset detected - rt: 2570, rf:  
+0000, rev: 8771
+==================================================================
+BUG: KMSAN: uninit-value in rt2500usb_init_eeprom  
+drivers/net/wireless/ralink/rt2x00/rt2500usb.c:1443 [inline]
+BUG: KMSAN: uninit-value in rt2500usb_probe_hw+0xb5e/0x22a0  
+drivers/net/wireless/ralink/rt2x00/rt2500usb.c:1757
+CPU: 0 PID: 3369 Comm: kworker/0:2 Not tainted 5.3.0-rc7+ #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS  
+Google 01/01/2011
+Workqueue: usb_hub_wq hub_event
+Call Trace:
+  __dump_stack lib/dump_stack.c:77 [inline]
+  dump_stack+0x191/0x1f0 lib/dump_stack.c:113
+  kmsan_report+0x162/0x2d0 mm/kmsan/kmsan_report.c:109
+  __msan_warning+0x75/0xe0 mm/kmsan/kmsan_instr.c:294
+  rt2500usb_init_eeprom drivers/net/wireless/ralink/rt2x00/rt2500usb.c:1443  
+[inline]
+  rt2500usb_probe_hw+0xb5e/0x22a0  
+drivers/net/wireless/ralink/rt2x00/rt2500usb.c:1757
+  rt2x00lib_probe_dev+0xba9/0x3260  
+drivers/net/wireless/ralink/rt2x00/rt2x00dev.c:1427
+  rt2x00usb_probe+0x7ae/0xf60  
+drivers/net/wireless/ralink/rt2x00/rt2x00usb.c:842
+  rt2500usb_probe+0x50/0x60  
+drivers/net/wireless/ralink/rt2x00/rt2500usb.c:1966
+  usb_probe_interface+0xd19/0x1310 drivers/usb/core/driver.c:361
+  really_probe+0x1373/0x1dc0 drivers/base/dd.c:552
+  driver_probe_device+0x1ba/0x510 drivers/base/dd.c:709
+  __device_attach_driver+0x5b8/0x790 drivers/base/dd.c:816
+  bus_for_each_drv+0x28e/0x3b0 drivers/base/bus.c:454
+  __device_attach+0x489/0x750 drivers/base/dd.c:882
+  device_initial_probe+0x4a/0x60 drivers/base/dd.c:929
+  bus_probe_device+0x131/0x390 drivers/base/bus.c:514
+  device_add+0x25b5/0x2df0 drivers/base/core.c:2165
+  usb_set_configuration+0x309f/0x3710 drivers/usb/core/message.c:2027
+  generic_probe+0xe7/0x280 drivers/usb/core/generic.c:210
+  usb_probe_device+0x146/0x200 drivers/usb/core/driver.c:266
+  really_probe+0x1373/0x1dc0 drivers/base/dd.c:552
+  driver_probe_device+0x1ba/0x510 drivers/base/dd.c:709
+  __device_attach_driver+0x5b8/0x790 drivers/base/dd.c:816
+  bus_for_each_drv+0x28e/0x3b0 drivers/base/bus.c:454
+  __device_attach+0x489/0x750 drivers/base/dd.c:882
+  device_initial_probe+0x4a/0x60 drivers/base/dd.c:929
+  bus_probe_device+0x131/0x390 drivers/base/bus.c:514
+  device_add+0x25b5/0x2df0 drivers/base/core.c:2165
+  usb_new_device+0x23e5/0x2fb0 drivers/usb/core/hub.c:2536
+  hub_port_connect drivers/usb/core/hub.c:5098 [inline]
+  hub_port_connect_change drivers/usb/core/hub.c:5213 [inline]
+  port_event drivers/usb/core/hub.c:5359 [inline]
+  hub_event+0x581d/0x72f0 drivers/usb/core/hub.c:5441
+  process_one_work+0x1572/0x1ef0 kernel/workqueue.c:2269
+  worker_thread+0x111b/0x2460 kernel/workqueue.c:2415
+  kthread+0x4b5/0x4f0 kernel/kthread.c:256
+  ret_from_fork+0x35/0x40 arch/x86/entry/entry_64.S:355
+
+Local variable description: ----reg.i.i@rt2500usb_probe_hw
+Variable was created at:
+  rt2500usb_register_read drivers/net/wireless/ralink/rt2x00/rt2500usb.c:51  
+[inline]
+  rt2500usb_init_eeprom drivers/net/wireless/ralink/rt2x00/rt2500usb.c:1440  
+[inline]
+  rt2500usb_probe_hw+0x774/0x22a0  
+drivers/net/wireless/ralink/rt2x00/rt2500usb.c:1757
+  rt2x00lib_probe_dev+0xba9/0x3260  
+drivers/net/wireless/ralink/rt2x00/rt2x00dev.c:1427
+==================================================================
+
+
+---
+This bug is generated by a bot. It may contain errors.
+See https://goo.gl/tpsmEJ for more information about syzbot.
+syzbot engineers can be reached at syzkaller@googlegroups.com.
+
+syzbot will keep track of this bug report. See:
+https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
+syzbot can test patches for this bug, for details see:
+https://goo.gl/tpsmEJ#testing-patches
