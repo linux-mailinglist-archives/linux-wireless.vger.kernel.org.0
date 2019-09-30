@@ -2,80 +2,91 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id F3324C24C4
-	for <lists+linux-wireless@lfdr.de>; Mon, 30 Sep 2019 18:01:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B01E5C269C
+	for <lists+linux-wireless@lfdr.de>; Mon, 30 Sep 2019 22:40:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732157AbfI3P7o (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 30 Sep 2019 11:59:44 -0400
-Received: from mail-io1-f65.google.com ([209.85.166.65]:36322 "EHLO
-        mail-io1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1731790AbfI3P7o (ORCPT
+        id S1731061AbfI3UiI (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 30 Sep 2019 16:38:08 -0400
+Received: from mail-lj1-f195.google.com ([209.85.208.195]:41461 "EHLO
+        mail-lj1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1730105AbfI3UiH (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 30 Sep 2019 11:59:44 -0400
-Received: by mail-io1-f65.google.com with SMTP id b136so39663449iof.3
-        for <linux-wireless@vger.kernel.org>; Mon, 30 Sep 2019 08:59:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=hQWHchROlDrEeVJoMKAGXj3Nv1kqYbGMdT5gxvIirYI=;
-        b=slCvcLRZ2yW57IBbF3wnF6/3FeLHod2lHfPQ7GzFmGpmirdCKFyJO3sO4y3R6Zi8L8
-         7lh0Op5OBHdLE23c/ZyTvAhazAvashHf+NIY7CvwvqqhFpxbQ085xzO72MjSyygE7syq
-         wFxsi7/ISrCJ4XoE5+IG+gNrUOTh5wJc/r067GQoNMqAIbX+L3plWYrq75+lmAbkShsF
-         oKYEzQXqxVQOO0PFi/RUQ+8E0aFESpzkOCWO6NajlNUj6CEhUX2NhE2xxDR56xhCG79v
-         +ScJm3UiwdIvyxndRi1SHbqg8H1WVc/Mri3GEZmfzheZu2069LcNw25sL+U71EjOTjaz
-         QmOw==
+        Mon, 30 Sep 2019 16:38:07 -0400
+Received: by mail-lj1-f195.google.com with SMTP id f5so10926716ljg.8;
+        Mon, 30 Sep 2019 13:38:05 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=hQWHchROlDrEeVJoMKAGXj3Nv1kqYbGMdT5gxvIirYI=;
-        b=bNoGOoX9lSeg3m4xslIOAsghV2T7F411SdyqXv7SIwfPpC79TtxEPU5rF1cQwSnhTi
-         AsoLbr3kt7sLgFMmWE7HqkHT67iTiUCZJ82l6Gg/VfU7clE+/JG+umpZAYQEvOjD8FuF
-         6UyvjhSAbPHEQdJdiYAMhJO2mUjDg6+ZJGNjSzc/bHlEZ/7cTyl7wR5GEN+YPS//APmT
-         bd8SHJT36nSpUdBRa2d47UnDzSKb1peC0elU4srQzHTvMpUSuag2vSzWw06qWIMNcRnd
-         IWppJN9cnhwffGgFZd5ev0gBipSMfk64KGT6p43ge7H1sLmfTheK/H36r0NroFu+2m6y
-         RvVQ==
-X-Gm-Message-State: APjAAAVaz9wJUDE/xzg8+Kn+IHuTv7E0EVn+ITQY+G1iwlnwuzjngcMZ
-        Th2x242IqM3cN4l+vfLtaIPNpGK0b2PXTNInQW32LQ==
-X-Google-Smtp-Source: APXvYqypiyMJ7KYji9i2guB4Nq0aNqEEWGihtQTIClKiWuM3aI1iA4mRFFgqn+PLQu0wfUFEdpu3OZsW3rOHKrb77CA=
-X-Received: by 2002:a92:98d3:: with SMTP id a80mr20960972ill.194.1569859183561;
- Mon, 30 Sep 2019 08:59:43 -0700 (PDT)
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+         :references:mime-version:content-transfer-encoding;
+        bh=Gek2awizC19DRqdsGkSxiDjzH45dJ2a6h+V1E8hcFPc=;
+        b=m5DZh/v+bR7He87gdSFPGLVJrrQjpD045RxFCvuUDYQgF1aEnzS+4GHh9Fx6HEG4mh
+         Zh694ML65wXDvqCojVyghpo+7cJJzJ/dFwz1T+vS53V9wxTLZyTLPg6ECSNSyShebO9p
+         SwMtDQ8B9RvJHmLifzOfjbzYUjpunHAF43uBhO4/hKlElXJV4DoacquPRsDa37EvuQd1
+         HBZamqQUZ3+1o0guEHwwGMiQm2kRZgbd23sCBpxXt7vHIkGN5DiGNt7KLN9pOcgtmA8o
+         Ed1FaVTjFX5CORqe0SI8428h8Oiwn3zgkN8LncGrHIXmEJ9IpQVMFgXtCDhjz3qtPj5m
+         dPZQ==
+X-Gm-Message-State: APjAAAVNph/TJ5wtEMujXwXIPp/bnlr6iNn58X6MpwOSQa6ODp7IWRaj
+        QcBnZIs+ohTEGsVy2hc21ksVG1Zv
+X-Google-Smtp-Source: APXvYqxbquIAk6jQ5ZvzBUZ4ucsaWt3KPUV0l4rJzJHZx8ghqG80pGGYdJnDeItjHrVrSB0aln7Dvw==
+X-Received: by 2002:a2e:63da:: with SMTP id s87mr13106787lje.79.1569875513862;
+        Mon, 30 Sep 2019 13:31:53 -0700 (PDT)
+Received: from localhost.localdomain (broadband-188-32-48-208.ip.moscow.rt.ru. [188.32.48.208])
+        by smtp.googlemail.com with ESMTPSA id j84sm3548526ljb.91.2019.09.30.13.31.52
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 30 Sep 2019 13:31:53 -0700 (PDT)
+From:   Denis Efremov <efremov@linux.com>
+To:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Cc:     Denis Efremov <efremov@linux.com>,
+        Pontus Fuchs <pontus.fuchs@gmail.com>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        David Laight <David.Laight@ACULAB.COM>, stable@vger.kernel.org
+Subject: [PATCH v2] ar5523: check NULL before memcpy() in ar5523_cmd()
+Date:   Mon, 30 Sep 2019 23:31:47 +0300
+Message-Id: <20190930203147.10140-1-efremov@linux.com>
+X-Mailer: git-send-email 2.21.0
+In-Reply-To: <20190930140207.28638-1-efremov@linux.com>
+References: <20190930140207.28638-1-efremov@linux.com>
 MIME-Version: 1.0
-References: <CAK8U23biuUY9hWE1NOnSbJCRtRVfdg1a27ZOkU5cbaGdzZLYEA@mail.gmail.com>
- <fa029365caf3db963b1c2ec05ae389a8c8fc20fb.camel@sipsolutions.net>
- <CAK8U23aHprXtZm2PV3sj6g4Da_ponK9L0YmSO1tb6xoFgK-ZLA@mail.gmail.com>
- <80d9c12986ec0a13c34672ca1c16f37cae0cc096.camel@sipsolutions.net>
- <CABPxzYLrTC3kS86iyfq+RY=XEgjedu2MWPtn+i+H50jPz3oh3w@mail.gmail.com>
- <39d646206446159a2b0a67ee7d8667483ade0733.camel@sipsolutions.net>
- <CABPxzYL0i+YbKh-xMXsS-xWeQvwfFUvv7vGhugM1e+OFMOSHSg@mail.gmail.com> <CAK8U23bbiGhmDg-ChDJtbRVVc_6njVdoUjfAhqM+V3yfQXTC4Q@mail.gmail.com>
-In-Reply-To: <CAK8U23bbiGhmDg-ChDJtbRVVc_6njVdoUjfAhqM+V3yfQXTC4Q@mail.gmail.com>
-From:   Krishna Chaitanya <chaitanya.mgit@gmail.com>
-Date:   Mon, 30 Sep 2019 21:29:31 +0530
-Message-ID: <CABPxzY+8Jjvjv0x79yzo+rL3nONTZSkROK1T+gMqq5nhXb=7-g@mail.gmail.com>
-Subject: Re: mac80211_hwsim (kernel 4.18+): wmediumd + 2.4Ghz
-To:     Ramon Fontes <ramonreisfontes@gmail.com>
-Cc:     Johannes Berg <johannes@sipsolutions.net>,
-        linux-wireless <linux-wireless@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Sun, Sep 29, 2019 at 10:50 PM Ramon Fontes <ramonreisfontes@gmail.com> wrote:
->
-> > Still doesn't explain why it should work in 4.17 and not in 4.18, there
-> > aren't a lot of wifi changes there at all.
->
-> I just tested it with 4.15 and it didn't work. However, It works in
-> 4.15 in other PC. At first these 2 PCs have the same packages with
-> apparently the same version. The only thing I can highlight about the
-> difference between them is that: (i) Ubuntu has been upgraded from
-> 16.04 to 18.04 (it works fine up to 4.17) and (ii) Ubuntu 18.04 has
-> been installed from scratch (it doesn't work at all - tested from
-> 4.15).
+memcpy() call with "idata == NULL && ilen == 0" results in undefined
+behavior in ar5523_cmd(). For example, NULL is passed in callchain
+"ar5523_stat_work() -> ar5523_cmd_write() -> ar5523_cmd()". This patch
+adds ilen check before memcpy() call in ar5523_cmd() to prevent an
+undefined behavior.
 
-Based on this info, looks like hostapd/wpa_s versions might be causing
-the difference,
-can you please confirm the versions on both?
+Cc: Pontus Fuchs <pontus.fuchs@gmail.com>
+Cc: Kalle Valo <kvalo@codeaurora.org>
+Cc: "David S. Miller" <davem@davemloft.net>
+Cc: David Laight <David.Laight@ACULAB.COM>
+Cc: stable@vger.kernel.org
+Signed-off-by: Denis Efremov <efremov@linux.com>
+---
+V2: check ilen instead of idata as suggested by David Laight.
+
+ drivers/net/wireless/ath/ar5523/ar5523.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/net/wireless/ath/ar5523/ar5523.c b/drivers/net/wireless/ath/ar5523/ar5523.c
+index b94759daeacc..da2d179430ca 100644
+--- a/drivers/net/wireless/ath/ar5523/ar5523.c
++++ b/drivers/net/wireless/ath/ar5523/ar5523.c
+@@ -255,7 +255,8 @@ static int ar5523_cmd(struct ar5523 *ar, u32 code, const void *idata,
+ 
+ 	if (flags & AR5523_CMD_FLAG_MAGIC)
+ 		hdr->magic = cpu_to_be32(1 << 24);
+-	memcpy(hdr + 1, idata, ilen);
++	if (ilen)
++		memcpy(hdr + 1, idata, ilen);
+ 
+ 	cmd->odata = odata;
+ 	cmd->olen = olen;
+-- 
+2.21.0
+
