@@ -2,73 +2,72 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 0B75FC1BB8
-	for <lists+linux-wireless@lfdr.de>; Mon, 30 Sep 2019 08:46:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E6E98C1BCE
+	for <lists+linux-wireless@lfdr.de>; Mon, 30 Sep 2019 08:57:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729232AbfI3Gqe (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 30 Sep 2019 02:46:34 -0400
-Received: from mga17.intel.com ([192.55.52.151]:40066 "EHLO mga17.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1729022AbfI3Gqe (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 30 Sep 2019 02:46:34 -0400
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from fmsmga002.fm.intel.com ([10.253.24.26])
-  by fmsmga107.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 29 Sep 2019 23:46:34 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.64,565,1559545200"; 
-   d="scan'208";a="220553529"
-Received: from oamoreno-mobl.ccr.corp.intel.com ([10.252.17.131])
-  by fmsmga002.fm.intel.com with ESMTP; 29 Sep 2019 23:46:31 -0700
-Message-ID: <dbf90ac06b27395dc2d19fbc37e47877785b8d52.camel@intel.com>
-Subject: Re: [PATCH] iwlwifi: dvm: excessive if in rs_bt_update_lq()
-From:   Luciano Coelho <luciano.coelho@intel.com>
-To:     Denis Efremov <efremov@linux.com>,
-        Kalle Valo <kvalo@codeaurora.org>
-Cc:     Johannes Berg <johannes.berg@intel.com>,
+        id S1729473AbfI3G5O (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 30 Sep 2019 02:57:14 -0400
+Received: from paleale.coelho.fi ([176.9.41.70]:45646 "EHLO
+        farmhouse.coelho.fi" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
+        with ESMTP id S1726121AbfI3G5O (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 30 Sep 2019 02:57:14 -0400
+Received: from [91.156.6.193] (helo=redipa)
+        by farmhouse.coelho.fi with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+        (Exim 4.92)
+        (envelope-from <luca@coelho.fi>)
+        id 1iEpcE-0008QN-4w; Mon, 30 Sep 2019 09:57:02 +0300
+Message-ID: <ab9673e80e53e217b0a4a871713b375b3e4a2fa3.camel@coelho.fi>
+From:   Luca Coelho <luca@coelho.fi>
+To:     Navid Emamdoost <navid.emamdoost@gmail.com>
+Cc:     emamd001@umn.edu, smccaman@umn.edu, kjlu@umn.edu,
+        Johannes Berg <johannes.berg@intel.com>,
         Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
         Intel Linux Wireless <linuxwifi@intel.com>,
+        Kalle Valo <kvalo@codeaurora.org>,
         "David S. Miller" <davem@davemloft.net>,
+        Shaul Triebitz <shaul.triebitz@intel.com>,
+        Sara Sharon <sara.sharon@intel.com>,
+        Shahar S Matityahu <shahar.s.matityahu@intel.com>,
         linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
         linux-kernel@vger.kernel.org
-Date:   Mon, 30 Sep 2019 09:46:31 +0300
-In-Reply-To: <20190925204935.27118-1-efremov@linux.com>
-References: <20190925204935.27118-1-efremov@linux.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+Date:   Mon, 30 Sep 2019 09:57:00 +0300
+In-Reply-To: <20190927205608.8755-1-navid.emamdoost@gmail.com>
+References: <20190927205608.8755-1-navid.emamdoost@gmail.com>
 Content-Type: text/plain; charset="UTF-8"
 User-Agent: Evolution 3.30.5-1.1 
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
+X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on farmhouse.coelho.fi
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.9 required=5.0 tests=ALL_TRUSTED,BAYES_00
+        autolearn=ham autolearn_force=no version=3.4.2
+Subject: Re: [PATCH] iwlwifi: fix memory leaks in
+ iwl_pcie_ctxt_info_gen3_init
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Wed, 2019-09-25 at 23:49 +0300, Denis Efremov wrote:
-> There is no need to check 'priv->bt_ant_couple_ok' twice in
-> rs_bt_update_lq(). The second check is always true. Thus, the
-> expression can be simplified.
+On Fri, 2019-09-27 at 15:56 -0500, Navid Emamdoost wrote:
+> In iwl_pcie_ctxt_info_gen3_init there are cases that the allocated dma
+> memory is leaked in case of error.
+> DMA memories prph_scratch, prph_info, and ctxt_info_gen3 are allocated
+> and initialized to be later assigned to trans_pcie. But in any error case
+> before such assignment the allocated memories should be released.
+> First of such error cases happens when iwl_pcie_init_fw_sec fails.
+> Current implementation correctly releases prph_scratch. But in two
+> sunsequent error cases where dma_alloc_coherent may fail, such releases
+> are missing. This commit adds release for prph_scratch when allocation
+> for prph_info fails, and adds releases for prph_scratch and prph_info
+> when allocation for ctxt_info_gen3 fails.
 > 
-> Signed-off-by: Denis Efremov <efremov@linux.com>
+> Fixes: 2ee824026288 ("iwlwifi: pcie: support context information for 22560 devices")
+> 
+> Signed-off-by: Navid Emamdoost <navid.emamdoost@gmail.com>
 > ---
->  drivers/net/wireless/intel/iwlwifi/dvm/rs.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/net/wireless/intel/iwlwifi/dvm/rs.c b/drivers/net/wireless/intel/iwlwifi/dvm/rs.c
-> index 74229fcb63a9..226165db7dfd 100644
-> --- a/drivers/net/wireless/intel/iwlwifi/dvm/rs.c
-> +++ b/drivers/net/wireless/intel/iwlwifi/dvm/rs.c
-> @@ -851,7 +851,7 @@ static void rs_bt_update_lq(struct iwl_priv *priv, struct iwl_rxon_context *ctx,
->  		 * Is there a need to switch between
->  		 * full concurrency and 3-wire?
->  		 */
-> -		if (priv->bt_ci_compliance && priv->bt_ant_couple_ok)
-> +		if (priv->bt_ci_compliance)
->  			full_concurrent = true;
->  		else
->  			full_concurrent = false;
 
-Thanks, Denis! I have applied this to our internal tree and it will
+Thanks, Navid! I have applied this to our internal tree and it will
 reach the mainline following our usual upstreaming process.
 
 --
