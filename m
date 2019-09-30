@@ -2,105 +2,74 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 113ECC1B78
-	for <lists+linux-wireless@lfdr.de>; Mon, 30 Sep 2019 08:30:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0B75FC1BB8
+	for <lists+linux-wireless@lfdr.de>; Mon, 30 Sep 2019 08:46:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729731AbfI3Gal (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 30 Sep 2019 02:30:41 -0400
-Received: from paleale.coelho.fi ([176.9.41.70]:45624 "EHLO
-        farmhouse.coelho.fi" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1729521AbfI3Gak (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 30 Sep 2019 02:30:40 -0400
-Received: from [91.156.6.193] (helo=redipa)
-        by farmhouse.coelho.fi with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-        (Exim 4.92)
-        (envelope-from <luca@coelho.fi>)
-        id 1iEpCY-0008Pa-LD; Mon, 30 Sep 2019 09:30:36 +0300
-Message-ID: <8223ddc8f648f7ed2073ddcc5f7812df224f2068.camel@coelho.fi>
-From:   Luca Coelho <luca@coelho.fi>
-To:     greearb@candelatech.com, linux-wireless@vger.kernel.org
-Date:   Mon, 30 Sep 2019 09:30:29 +0300
-In-Reply-To: <20190905212801.13404-1-greearb@candelatech.com>
-References: <20190905212801.13404-1-greearb@candelatech.com>
+        id S1729232AbfI3Gqe (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 30 Sep 2019 02:46:34 -0400
+Received: from mga17.intel.com ([192.55.52.151]:40066 "EHLO mga17.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1729022AbfI3Gqe (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 30 Sep 2019 02:46:34 -0400
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from fmsmga002.fm.intel.com ([10.253.24.26])
+  by fmsmga107.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 29 Sep 2019 23:46:34 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.64,565,1559545200"; 
+   d="scan'208";a="220553529"
+Received: from oamoreno-mobl.ccr.corp.intel.com ([10.252.17.131])
+  by fmsmga002.fm.intel.com with ESMTP; 29 Sep 2019 23:46:31 -0700
+Message-ID: <dbf90ac06b27395dc2d19fbc37e47877785b8d52.camel@intel.com>
+Subject: Re: [PATCH] iwlwifi: dvm: excessive if in rs_bt_update_lq()
+From:   Luciano Coelho <luciano.coelho@intel.com>
+To:     Denis Efremov <efremov@linux.com>,
+        Kalle Valo <kvalo@codeaurora.org>
+Cc:     Johannes Berg <johannes.berg@intel.com>,
+        Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
+        Intel Linux Wireless <linuxwifi@intel.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Date:   Mon, 30 Sep 2019 09:46:31 +0300
+In-Reply-To: <20190925204935.27118-1-efremov@linux.com>
+References: <20190925204935.27118-1-efremov@linux.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 Content-Type: text/plain; charset="UTF-8"
 User-Agent: Evolution 3.30.5-1.1 
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on farmhouse.coelho.fi
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.9 required=5.0 tests=ALL_TRUSTED,BAYES_00
-        autolearn=ham autolearn_force=no version=3.4.2
-Subject: Re: [PATCH] iwl-mvm:  Report tx/rx antennas.
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Thu, 2019-09-05 at 14:28 -0700, greearb@candelatech.com wrote:
-> From: Ben Greear <greearb@candelatech.com>
+On Wed, 2019-09-25 at 23:49 +0300, Denis Efremov wrote:
+> There is no need to check 'priv->bt_ant_couple_ok' twice in
+> rs_bt_update_lq(). The second check is always true. Thus, the
+> expression can be simplified.
 > 
-> This makes it easier for user-space to know how many antennas the
-> radio has.  Seems to work with the AX200 radio, at least.
-> 
-> Signed-off-by: Ben Greear <greearb@candelatech.com>
+> Signed-off-by: Denis Efremov <efremov@linux.com>
 > ---
->  drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c | 14 ++++++++++++++
->  1 file changed, 14 insertions(+)
+>  drivers/net/wireless/intel/iwlwifi/dvm/rs.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 > 
-> diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c b/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
-> index 964c7baabede..f90b003f154a 100644
-> --- a/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
-> +++ b/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
-> @@ -440,10 +440,19 @@ const static struct wiphy_iftype_ext_capab he_iftypes_ext_capa[] = {
->  	},
->  };
->  
-> +static int iwl_mvm_op_get_antenna(struct ieee80211_hw *hw, u32 *tx_ant, u32 *rx_ant)
-> +{
-> +	struct iwl_mvm *mvm = IWL_MAC80211_GET_MVM(hw);
-> +	*tx_ant = iwl_mvm_get_valid_tx_ant(mvm);
-> +	*rx_ant = iwl_mvm_get_valid_rx_ant(mvm);
-> +	return 0;
-> +}
-> +
->  int iwl_mvm_mac_setup_register(struct iwl_mvm *mvm)
->  {
->  	struct ieee80211_hw *hw = mvm->hw;
->  	int num_mac, ret, i;
-> +	u32 tx_ant, rx_ant;
->  	static const u32 mvm_ciphers[] = {
->  		WLAN_CIPHER_SUITE_WEP40,
->  		WLAN_CIPHER_SUITE_WEP104,
-> @@ -813,6 +822,10 @@ int iwl_mvm_mac_setup_register(struct iwl_mvm *mvm)
->  		wiphy_ext_feature_set(hw->wiphy,
->  				      NL80211_EXT_FEATURE_MU_MIMO_AIR_SNIFFER);
->  
-> +	iwl_mvm_op_get_antenna(hw, &tx_ant, &rx_ant);
-> +	hw->wiphy->available_antennas_tx = tx_ant;
-> +	hw->wiphy->available_antennas_rx = rx_ant;
-> +
+> diff --git a/drivers/net/wireless/intel/iwlwifi/dvm/rs.c b/drivers/net/wireless/intel/iwlwifi/dvm/rs.c
+> index 74229fcb63a9..226165db7dfd 100644
+> --- a/drivers/net/wireless/intel/iwlwifi/dvm/rs.c
+> +++ b/drivers/net/wireless/intel/iwlwifi/dvm/rs.c
+> @@ -851,7 +851,7 @@ static void rs_bt_update_lq(struct iwl_priv *priv, struct iwl_rxon_context *ctx,
+>  		 * Is there a need to switch between
+>  		 * full concurrency and 3-wire?
+>  		 */
+> -		if (priv->bt_ci_compliance && priv->bt_ant_couple_ok)
+> +		if (priv->bt_ci_compliance)
+>  			full_concurrent = true;
+>  		else
+>  			full_concurrent = false;
 
-I changed this slightly so we call iwl_mvm_get_valid_tx/rx_ant() here
-instead of calling the op function.  Then we don't need the local
-variables and it's a bit clearer IMHO.
-
-
->  	ret = ieee80211_register_hw(mvm->hw);
->  	if (ret) {
->  		iwl_mvm_leds_exit(mvm);
-> @@ -5167,6 +5180,7 @@ const struct ieee80211_ops iwl_mvm_hw_ops = {
->  	.tx = iwl_mvm_mac_tx,
->  	.wake_tx_queue = iwl_mvm_mac_wake_tx_queue,
->  	.ampdu_action = iwl_mvm_mac_ampdu_action,
-> +	.get_antenna = iwl_mvm_op_get_antenna,
->  	.start = iwl_mvm_mac_start,
->  	.reconfig_complete = iwl_mvm_mac_reconfig_complete,
->  	.stop = iwl_mvm_mac_stop,
-
-I've applied this (with the above-mentioned change) to our internal
-tree and it should reach the mainline following our usual upstreaming
-process.  Thanks!
+Thanks, Denis! I have applied this to our internal tree and it will
+reach the mainline following our usual upstreaming process.
 
 --
 Cheers,
