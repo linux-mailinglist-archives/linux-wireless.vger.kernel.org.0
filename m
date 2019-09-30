@@ -2,75 +2,58 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E6E98C1BCE
-	for <lists+linux-wireless@lfdr.de>; Mon, 30 Sep 2019 08:57:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B1A78C1D60
+	for <lists+linux-wireless@lfdr.de>; Mon, 30 Sep 2019 10:48:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729473AbfI3G5O (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 30 Sep 2019 02:57:14 -0400
-Received: from paleale.coelho.fi ([176.9.41.70]:45646 "EHLO
-        farmhouse.coelho.fi" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1726121AbfI3G5O (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 30 Sep 2019 02:57:14 -0400
-Received: from [91.156.6.193] (helo=redipa)
-        by farmhouse.coelho.fi with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-        (Exim 4.92)
-        (envelope-from <luca@coelho.fi>)
-        id 1iEpcE-0008QN-4w; Mon, 30 Sep 2019 09:57:02 +0300
-Message-ID: <ab9673e80e53e217b0a4a871713b375b3e4a2fa3.camel@coelho.fi>
-From:   Luca Coelho <luca@coelho.fi>
-To:     Navid Emamdoost <navid.emamdoost@gmail.com>
-Cc:     emamd001@umn.edu, smccaman@umn.edu, kjlu@umn.edu,
-        Johannes Berg <johannes.berg@intel.com>,
-        Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
-        Intel Linux Wireless <linuxwifi@intel.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Shaul Triebitz <shaul.triebitz@intel.com>,
-        Sara Sharon <sara.sharon@intel.com>,
-        Shahar S Matityahu <shahar.s.matityahu@intel.com>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Date:   Mon, 30 Sep 2019 09:57:00 +0300
-In-Reply-To: <20190927205608.8755-1-navid.emamdoost@gmail.com>
-References: <20190927205608.8755-1-navid.emamdoost@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.30.5-1.1 
+        id S1730229AbfI3IsO (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 30 Sep 2019 04:48:14 -0400
+Received: from szxga04-in.huawei.com ([45.249.212.190]:3185 "EHLO huawei.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1730110AbfI3IsN (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 30 Sep 2019 04:48:13 -0400
+Received: from DGGEMS402-HUB.china.huawei.com (unknown [172.30.72.58])
+        by Forcepoint Email with ESMTP id 4299B58D45E983FB740F;
+        Mon, 30 Sep 2019 16:48:09 +0800 (CST)
+Received: from huawei.com (10.90.53.225) by DGGEMS402-HUB.china.huawei.com
+ (10.3.19.202) with Microsoft SMTP Server id 14.3.439.0; Mon, 30 Sep 2019
+ 16:47:58 +0800
+From:   zhengbin <zhengbin13@huawei.com>
+To:     <pkshih@realtek.com>, <kvalo@codeaurora.org>,
+        <davem@davemloft.net>, <linux-wireless@vger.kernel.org>,
+        <netdev@vger.kernel.org>
+CC:     <zhengbin13@huawei.com>
+Subject: [PATCH 0/6] rtlwifi: Remove a bunch of set but not used variables
+Date:   Mon, 30 Sep 2019 16:54:46 +0800
+Message-ID: <1569833692-93288-1-git-send-email-zhengbin13@huawei.com>
+X-Mailer: git-send-email 2.7.4
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on farmhouse.coelho.fi
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.9 required=5.0 tests=ALL_TRUSTED,BAYES_00
-        autolearn=ham autolearn_force=no version=3.4.2
-Subject: Re: [PATCH] iwlwifi: fix memory leaks in
- iwl_pcie_ctxt_info_gen3_init
+Content-Type: text/plain
+X-Originating-IP: [10.90.53.225]
+X-CFilter-Loop: Reflected
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Fri, 2019-09-27 at 15:56 -0500, Navid Emamdoost wrote:
-> In iwl_pcie_ctxt_info_gen3_init there are cases that the allocated dma
-> memory is leaked in case of error.
-> DMA memories prph_scratch, prph_info, and ctxt_info_gen3 are allocated
-> and initialized to be later assigned to trans_pcie. But in any error case
-> before such assignment the allocated memories should be released.
-> First of such error cases happens when iwl_pcie_init_fw_sec fails.
-> Current implementation correctly releases prph_scratch. But in two
-> sunsequent error cases where dma_alloc_coherent may fail, such releases
-> are missing. This commit adds release for prph_scratch when allocation
-> for prph_info fails, and adds releases for prph_scratch and prph_info
-> when allocation for ctxt_info_gen3 fails.
-> 
-> Fixes: 2ee824026288 ("iwlwifi: pcie: support context information for 22560 devices")
-> 
-> Signed-off-by: Navid Emamdoost <navid.emamdoost@gmail.com>
-> ---
+zhengbin (6):
+  rtlwifi: Remove set but not used variable 'rtstate'
+  rtlwifi: Remove set but not used variables 'dataempty','hoffset'
+  rtlwifi: rtl8192ee: Remove set but not used variable 'err'
+  rtlwifi: rtl8192ee: Remove set but not used variables
+    'short_gi','buf_len'
+  rtlwifi: rtl8192ee: Remove set but not used variables
+    'reg_ecc','reg_eac'
+  rtlwifi: rtl8723be: Remove set but not used variables
+    'reg_ecc','reg_eac'
 
-Thanks, Navid! I have applied this to our internal tree and it will
-reach the mainline following our usual upstreaming process.
+ drivers/net/wireless/realtek/rtlwifi/efuse.c         | 6 ++----
+ drivers/net/wireless/realtek/rtlwifi/ps.c            | 3 ---
+ drivers/net/wireless/realtek/rtlwifi/rtl8192ee/fw.c  | 3 +--
+ drivers/net/wireless/realtek/rtlwifi/rtl8192ee/phy.c | 8 ++------
+ drivers/net/wireless/realtek/rtlwifi/rtl8192ee/trx.c | 8 --------
+ drivers/net/wireless/realtek/rtlwifi/rtl8723be/phy.c | 8 ++------
+ 6 files changed, 7 insertions(+), 29 deletions(-)
 
 --
-Cheers,
-Luca.
+2.7.4
 
