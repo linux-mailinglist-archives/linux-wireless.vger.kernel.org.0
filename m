@@ -2,25 +2,25 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 66B97C3012
-	for <lists+linux-wireless@lfdr.de>; Tue,  1 Oct 2019 11:22:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9CADEC3018
+	for <lists+linux-wireless@lfdr.de>; Tue,  1 Oct 2019 11:23:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1733302AbfJAJWS (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 1 Oct 2019 05:22:18 -0400
-Received: from smtp.codeaurora.org ([198.145.29.96]:44060 "EHLO
+        id S2387598AbfJAJW6 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 1 Oct 2019 05:22:58 -0400
+Received: from smtp.codeaurora.org ([198.145.29.96]:44292 "EHLO
         smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726568AbfJAJWS (ORCPT
+        with ESMTP id S1727659AbfJAJW5 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 1 Oct 2019 05:22:18 -0400
+        Tue, 1 Oct 2019 05:22:57 -0400
 Received: by smtp.codeaurora.org (Postfix, from userid 1000)
-        id 44164619AD; Tue,  1 Oct 2019 09:22:14 +0000 (UTC)
+        id F2CB961213; Tue,  1 Oct 2019 09:22:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1569921737;
-        bh=VmuhhQTQwUQ/rwmArhiYtJQWVBWeBWRRgiKWa06tF+I=;
+        s=default; t=1569921777;
+        bh=2GPCgxJFWvTJTBPLUO3sxHcM0k0BS4pT6uBGryxTSbw=;
         h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-        b=N1+ROFef5avpHmoKEQBtCs4pSbXwod/5ZmCmePlkmqu/WxftNiYYhWDv7TO7d6Cs/
-         G2EmNpRj+wkiuHO6iRzMJAOVYHRM8BBn2LLobbuj7FuAtPIGGU2FmcKJHHYYcFtptc
-         GDrYF69DS9YCXw6EYqgiMrZeDCt1v8tBsxm1Lu/8=
+        b=FTBPbRknR6o7hA5YoX1CeFViiVzHB6ao7Lc7Dl7X4XOtw09yumFxrbAWuhR8Fw8WW
+         iOZ17MpRbJj8eQ8kVTl2CIKPUcxv81FPRKXGwTMnoc3E9aDjaUyfaPqoVnDicnKaBW
+         tehd7isHX38QiB8zDNt7XNXod7tG9ZJe7zG/ONnQ=
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         pdx-caf-mail.web.codeaurora.org
 X-Spam-Level: 
@@ -31,50 +31,58 @@ Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
         (Authenticated sender: kvalo@smtp.codeaurora.org)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 038A461950;
-        Tue,  1 Oct 2019 09:22:11 +0000 (UTC)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id AAFAE60A30;
+        Tue,  1 Oct 2019 09:22:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1569921733;
-        bh=VmuhhQTQwUQ/rwmArhiYtJQWVBWeBWRRgiKWa06tF+I=;
+        s=default; t=1569921775;
+        bh=2GPCgxJFWvTJTBPLUO3sxHcM0k0BS4pT6uBGryxTSbw=;
         h=Subject:From:In-Reply-To:References:To:Cc:From;
-        b=himDNRC4nbOwpPSsBw8yOo5x5YwEtnoMsQLkKhbXdsvA4Qj50ca8CeBIrTm1QE+Hn
-         AN2X2GsXiVN+EvY2j1cg1Sr6Oc0OW1Nj7vdo036Eq4ejBMlQwbXVIeWm4dOpWXoChG
-         hWuLN/p8B5bTXwbDfWWAw9sXn7/VIXRtMsRyQtQg=
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 038A461950
+        b=QGFoZi/6RYJGw5XxKUbERfLtUV5LdNv8hURkks8M8gLVwp+kUnxg53D7Bive5xG2c
+         ytZbamstYfXea9rObKBHSMyySK2OTPZ2jCHkCvcze6P6BgvmExcTGL4Xx8XxSscyaZ
+         Dj2wBXq8JZFT9r+YL6UDg/EKTAQ2ug7JgD30YY/s=
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org AAFAE60A30
 Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
 Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH] libertas: fix a potential NULL pointer dereference
+Subject: Re: [PATCH 2/2] mwifiex: use 'total_ie_len' in
+ mwifiex_update_bss_desc_with_ie()
 From:   Kalle Valo <kvalo@codeaurora.org>
-In-Reply-To: <1568824500-4243-1-git-send-email-allen.pais@oracle.com>
-References: <1568824500-4243-1-git-send-email-allen.pais@oracle.com>
-To:     Allen Pais <allen.pais@oracle.com>
-Cc:     netdev@vger.kernel.org, davem@davemloft.net,
-        libertas-dev@lists.infradead.org, linux-wireless@vger.kernel.org,
-        linux-kernel@vger.kernel.org
+In-Reply-To: <20190615001321.241808-2-briannorris@chromium.org>
+References: <20190615001321.241808-2-briannorris@chromium.org>
+To:     Brian Norris <briannorris@chromium.org>
+Cc:     Ganapathi Bhat <gbhat@marvell.com>,
+        Nishant Sarmukadam <nishants@marvell.com>,
+        Amitkumar Karwar <amitkarwar@gmail.com>,
+        Xinming Hu <huxinming820@gmail.com>,
+        <linux-kernel@vger.kernel.org>, linux-wireless@vger.kernel.org,
+        Takashi Iwai <tiwai@suse.de>,
+        Guenter Roeck <linux@roeck-us.net>,
+        Brian Norris <briannorris@chromium.org>
 User-Agent: pwcli/0.0.0-git (https://github.com/kvalo/pwcli/) Python/2.7.12
-Message-Id: <20191001092217.44164619AD@smtp.codeaurora.org>
-Date:   Tue,  1 Oct 2019 09:22:14 +0000 (UTC)
+Message-Id: <20191001092256.F2CB961213@smtp.codeaurora.org>
+Date:   Tue,  1 Oct 2019 09:22:56 +0000 (UTC)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Allen Pais <allen.pais@oracle.com> wrote:
+Brian Norris <briannorris@chromium.org> wrote:
 
-> alloc_workqueue is not checked for errors and as a result,
-> a potential NULL dereference could occur.
+> This is clearer than copy/pasting the magic number '+ 2' around, and it
+> even saves the need for one existing comment.
 > 
-> Signed-off-by: Allen Pais <allen.pais@oracle.com>
+> Cc: Takashi Iwai <tiwai@suse.de>
+> Signed-off-by: Brian Norris <briannorris@chromium.org>
+> Reviewed-by: Takashi Iwai <tiwai@suse.de>
 
 Patch applied to wireless-drivers-next.git, thanks.
 
-7da413a18583 libertas: fix a potential NULL pointer dereference
+0a3ce169476f mwifiex: use 'total_ie_len' in mwifiex_update_bss_desc_with_ie()
 
 -- 
-https://patchwork.kernel.org/patch/11150757/
+https://patchwork.kernel.org/patch/10996893/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
