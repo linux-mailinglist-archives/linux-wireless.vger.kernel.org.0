@@ -2,106 +2,98 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 67DD2C305D
-	for <lists+linux-wireless@lfdr.de>; Tue,  1 Oct 2019 11:39:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7DDE3C3067
+	for <lists+linux-wireless@lfdr.de>; Tue,  1 Oct 2019 11:39:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729464AbfJAJjK convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 1 Oct 2019 05:39:10 -0400
-Received: from rtits2.realtek.com ([211.75.126.72]:59979 "EHLO
-        rtits2.realtek.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726461AbfJAJjJ (ORCPT
+        id S1729537AbfJAJj4 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 1 Oct 2019 05:39:56 -0400
+Received: from us-smtp-1.mimecast.com ([207.211.31.81]:58372 "EHLO
+        us-smtp-delivery-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1726461AbfJAJj4 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 1 Oct 2019 05:39:09 -0400
-Authenticated-By: 
-X-SpamFilter-By: BOX Solutions SpamTrap 5.62 with qID x919csE2032503, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (RTITCAS12.realtek.com.tw[172.21.6.16])
-        by rtits2.realtek.com.tw (8.15.2/2.57/5.78) with ESMTPS id x919csE2032503
-        (version=TLSv1.2 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Tue, 1 Oct 2019 17:38:54 +0800
-Received: from RTITMBSVM04.realtek.com.tw ([fe80::e404:880:2ef1:1aa1]) by
- RTITCAS12.realtek.com.tw ([::1]) with mapi id 14.03.0439.000; Tue, 1 Oct 2019
- 17:38:53 +0800
-From:   Pkshih <pkshih@realtek.com>
-To:     zhengbin <zhengbin13@huawei.com>,
-        "kvalo@codeaurora.org" <kvalo@codeaurora.org>,
-        "davem@davemloft.net" <davem@davemloft.net>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "netdev@vger.kernel.org" <netdev@vger.kernel.org>
-Subject: RE: [PATCH 3/6] rtlwifi: rtl8192ee: Remove set but not used variable 'err'
-Thread-Topic: [PATCH 3/6] rtlwifi: rtl8192ee: Remove set but not used
- variable 'err'
-Thread-Index: AQHVd2vU6ma7X7lkhU6QwwWxUnTANqdFiJ5Q
-Date:   Tue, 1 Oct 2019 09:38:52 +0000
-Message-ID: <5B2DA6FDDF928F4E855344EE0A5C39D1D5C77D56@RTITMBSVM04.realtek.com.tw>
-References: <1569833692-93288-1-git-send-email-zhengbin13@huawei.com>
- <1569833692-93288-4-git-send-email-zhengbin13@huawei.com>
-In-Reply-To: <1569833692-93288-4-git-send-email-zhengbin13@huawei.com>
-Accept-Language: en-US, zh-TW
-Content-Language: zh-TW
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [172.21.69.95]
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 8BIT
+        Tue, 1 Oct 2019 05:39:56 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1569922794;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=Mh6wre2rKFFqyiOsqUY6NZ90QmROWYjjTocjJiWZidA=;
+        b=bvqJYoueSekMkW8BnbCd4LMUvAvg9tmFs6w3HfaFp7JkRAmoO9iQzV6AbIvgQ3nQpO1vkP
+        sYVMCXf3hP6ohCeygFS61OdqWm7KtAX61G/DqXK50977/EhWIxwg0L5iopJQQ69xevwotV
+        GAUqHT6Bxer2r1Ly0UqPz9fJdDjVpsQ=
+Received: from mail-lj1-f197.google.com (mail-lj1-f197.google.com
+ [209.85.208.197]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-327-uCh_FY_rNTKk3ztvjI2EXw-1; Tue, 01 Oct 2019 05:39:51 -0400
+Received: by mail-lj1-f197.google.com with SMTP id p14so3869023ljh.22
+        for <linux-wireless@vger.kernel.org>; Tue, 01 Oct 2019 02:39:51 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:in-reply-to:references:date
+         :message-id:mime-version:content-transfer-encoding;
+        bh=0AV/qi7FN67vmYSpoNF3PK6oGKufZjhJSMJcgKxRuIA=;
+        b=huEKCSKzDpNtqUMfYgrqNw0mgoUEjvkGM70CBQGxnYjztNsyOteZF/DWryCQS6eGPC
+         K3B0SThE2GrdGGAN7oJmjB2Alum1X+a53OgqGmf8Ifhby6kztwvxxQEqPU2zgKsz9mKN
+         7uQYLJ4s0F4EW/JU8QccgkDDQOSHIxGnSOfNQO5UYl0k+OEod6nVrQ4cze6jdPVAg+IV
+         An298Jw2nPRzsZnWbrvU+SdYhuM7zmCl0Wt/BkavvRHoBDCR8ncAHk0ZZ8w3Yzg9Ofoe
+         Utkrui7TNt6S9JJnPaY3bJXpHrtGQ4jTE8MQn3HoAce4jYzIouVE68cB5Z5H78HfSMIc
+         YsAQ==
+X-Gm-Message-State: APjAAAUzs4RNK1+Th7caRpD2tnxdqjgopMZDZZ1EIEEhprVf3p8KeukJ
+        FiKmgIIAHmg61xbVa2n5b2d1qaef3LhFpQnLbNiRvTeej+sB9elXNrbk35i5fH9bte7CuuKmuyc
+        D0KEaKLfjJXoZ/LBxG1pNxglrjdQ=
+X-Received: by 2002:a2e:6c08:: with SMTP id h8mr15479809ljc.28.1569922790270;
+        Tue, 01 Oct 2019 02:39:50 -0700 (PDT)
+X-Google-Smtp-Source: APXvYqwGMSw164aG5ltB2LcIDkpApPaI01p7En8Y8A9n9bACvqs0ay9eDmIcxo4GknUnVI3zsrCrqw==
+X-Received: by 2002:a2e:6c08:: with SMTP id h8mr15479799ljc.28.1569922790142;
+        Tue, 01 Oct 2019 02:39:50 -0700 (PDT)
+Received: from alrua-x1.borgediget.toke.dk (borgediget.toke.dk. [85.204.121.218])
+        by smtp.gmail.com with ESMTPSA id h2sm3859139ljb.11.2019.10.01.02.39.49
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 01 Oct 2019 02:39:49 -0700 (PDT)
+Received: by alrua-x1.borgediget.toke.dk (Postfix, from userid 1000)
+        id AD83418063D; Tue,  1 Oct 2019 11:39:48 +0200 (CEST)
+From:   Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>
+To:     Johannes Berg <johannes@sipsolutions.net>
+Cc:     linux-wireless@vger.kernel.org,
+        make-wifi-fast@lists.bufferbloat.net,
+        John Crispin <john@phrozen.org>,
+        Lorenzo Bianconi <lorenzo@kernel.org>,
+        Felix Fietkau <nbd@nbd.name>
+Subject: Re: [PATCH RFC/RFT 1/4] mac80211: Rearrange ieee80211_tx_info to make room for tx_time_est
+In-Reply-To: <e8d37726819f1b8eb51b370960a9be75cc9eaa26.camel@sipsolutions.net>
+References: <156889576422.191202.5906619710809654631.stgit@alrua-x1> <156889576534.191202.17686228416284995279.stgit@alrua-x1> <fd0d467d352177ac20100239cb18f80310b43fa9.camel@sipsolutions.net> <87v9t8vnn5.fsf@toke.dk> <e8d37726819f1b8eb51b370960a9be75cc9eaa26.camel@sipsolutions.net>
+X-Clacks-Overhead: GNU Terry Pratchett
+Date:   Tue, 01 Oct 2019 11:39:48 +0200
+Message-ID: <87lfu4vm6z.fsf@toke.dk>
 MIME-Version: 1.0
+X-MC-Unique: uCh_FY_rNTKk3ztvjI2EXw-1
+X-Mimecast-Spam-Score: 0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+Johannes Berg <johannes@sipsolutions.net> writes:
 
-> -----Original Message-----
-> From: linux-wireless-owner@vger.kernel.org [mailto:linux-wireless-owner@vger.kernel.org] On Behalf
-> Of zhengbin
-> Sent: Monday, September 30, 2019 4:55 PM
-> To: Pkshih; kvalo@codeaurora.org; davem@davemloft.net; linux-wireless@vger.kernel.org;
-> netdev@vger.kernel.org
-> Cc: zhengbin13@huawei.com
-> Subject: [PATCH 3/6] rtlwifi: rtl8192ee: Remove set but not used variable 'err'
-> 
-> Fixes gcc '-Wunused-but-set-variable' warning:
-> 
-> drivers/net/wireless/realtek/rtlwifi/rtl8192ee/fw.c: In function rtl92ee_download_fw:
-> drivers/net/wireless/realtek/rtlwifi/rtl8192ee/fw.c:111:6: warning: variable err set but not used
-> [-Wunused-but-set-variable]
-> 
-> It is not used since commit c93ac39da006 ("rtlwifi:
-> Remove some redundant code")
-> 
-> Reported-by: Hulk Robot <hulkci@huawei.com>
-> Signed-off-by: zhengbin <zhengbin13@huawei.com>
-> ---
->  drivers/net/wireless/realtek/rtlwifi/rtl8192ee/fw.c | 3 +--
->  1 file changed, 1 insertion(+), 2 deletions(-)
-> 
-> diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8192ee/fw.c
-> b/drivers/net/wireless/realtek/rtlwifi/rtl8192ee/fw.c
-> index 67305ce..322798c 100644
-> --- a/drivers/net/wireless/realtek/rtlwifi/rtl8192ee/fw.c
-> +++ b/drivers/net/wireless/realtek/rtlwifi/rtl8192ee/fw.c
-> @@ -108,7 +108,6 @@ int rtl92ee_download_fw(struct ieee80211_hw *hw, bool buse_wake_on_wlan_fw)
->  	struct rtlwifi_firmware_header *pfwheader;
->  	u8 *pfwdata;
->  	u32 fwsize;
-> -	int err;
->  	enum version_8192e version = rtlhal->version;
-> 
->  	if (!rtlhal->pfirmware)
-> @@ -146,7 +145,7 @@ int rtl92ee_download_fw(struct ieee80211_hw *hw, bool buse_wake_on_wlan_fw)
->  	_rtl92ee_write_fw(hw, version, pfwdata, fwsize);
->  	_rtl92ee_enable_fw_download(hw, false);
-> 
-> -	err = _rtl92ee_fw_free_to_go(hw);
-> +	(void)_rtl92ee_fw_free_to_go(hw);
-> 
->  	return 0;
+> On Tue, 2019-10-01 at 11:08 +0200, Toke H=C3=B8iland-J=C3=B8rgensen wrote=
+:
+>>=20
+>> Awesome! Any idea for how to make it work on big-endian systems? I got a
+>> splat from the kbuild robot that triggered the BUILD_BUG_ON when
+>> building for m68k. I assume it's the union with codel_time_t that ends
+>> up being aligned wrong...
+>
+> Hmm. Pad out the u16 part of the union by putting it into a struct, or
+> perhaps it's enough to make the union __packed?
 
-After checking the flow, it's ok 'return _rtl92ee_fw_free_to_go(hw);'.
+Yeah, another level of structs would probably work, but wanted to avoid
+another level of indentation. Although I guess even that would not make
+this the most-indented part of ieee80211_tx_info ;)
 
->  }
-> --
-> 2.7.4
-> 
-> 
-> ------Please consider the environment before printing this e-mail.
+I guess I'll look into the __packed thing, and go with another struct
+otherwise...
+
+-Toke
+
