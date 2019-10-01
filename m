@@ -2,101 +2,104 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id EF0CAC3333
-	for <lists+linux-wireless@lfdr.de>; Tue,  1 Oct 2019 13:44:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 143CFC3339
+	for <lists+linux-wireless@lfdr.de>; Tue,  1 Oct 2019 13:45:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732591AbfJALog (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 1 Oct 2019 07:44:36 -0400
-Received: from us-smtp-2.mimecast.com ([205.139.110.61]:33421 "EHLO
-        us-smtp-delivery-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1732588AbfJALog (ORCPT
+        id S1732855AbfJALpV (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 1 Oct 2019 07:45:21 -0400
+Received: from aserp2120.oracle.com ([141.146.126.78]:44478 "EHLO
+        aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1732572AbfJALpV (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 1 Oct 2019 07:44:36 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1569930274;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=h/dMKHvsQVTKl0BVcuMGS27k4ITdJQ1v4XmbW+hMaSE=;
-        b=WTmmcHzeE7KYDgN/JTakh9p6e0eTqGSRLemH9yCLvekJutXiKtuZaHpIqKyZ2pgQFB3wnt
-        WgmutSozzHf1ypdDhIzHJkoVRxBYy087nVd1XBTe/MUowSvMLD3NzMcHF38DRUuNXb9pR9
-        T40U01niHg8x3QnPZbODq5ekE3UiVF4=
-Received: from mail-lj1-f197.google.com (mail-lj1-f197.google.com
- [209.85.208.197]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-144-wUxin_6OPNy6wRP86CwXTw-1; Tue, 01 Oct 2019 07:44:33 -0400
-Received: by mail-lj1-f197.google.com with SMTP id i18so364124ljg.14
-        for <linux-wireless@vger.kernel.org>; Tue, 01 Oct 2019 04:44:33 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:in-reply-to:references:date
-         :message-id:mime-version:content-transfer-encoding;
-        bh=h/dMKHvsQVTKl0BVcuMGS27k4ITdJQ1v4XmbW+hMaSE=;
-        b=NKUtNT+Ya3W/5VTnh5WXijDXzVHCGceo6XFAdzdLHKZcfAkkTm4Y2+cMsk1E5ADn9E
-         x3/IOpFGvTh06SoM4qIqUMxhHqiALGxhgWcoU4G4Wn3cscWzjiOOtoo2LHPv/3IbjKtn
-         jAwIj6oTs9Hbd+EixQFt35JInhjiuY2fdgJax95kNFnEaYJaMZvBu/HP3dTZUT+WNslc
-         qMc7tEy5xHEFXBvxhayNBRHURhVYSUPQVBMvjkxmnf/w2FEll+c22eUL5Em9C4JE5GNf
-         44xZQh0uGHBhzcUinkwtrSRO9TgyI/2bSz/4Jzy6HjKU7+mGTvnxAIq9jZhiVCoPFxla
-         X21Q==
-X-Gm-Message-State: APjAAAUEYyCbe/TQf15YQ8BsTOwNpNAiGaJ9GFZrArrLItyBUmf9Kkml
-        916qHmLA2RYUYS5CmzZLJFTXk9XdbWMRgLFNzYSWcTY0ENtfp+IPT0lH1tJXeoUNxrbaCibTubb
-        6dGNM6tJtU5EihN9RtVuO1NGaQnU=
-X-Received: by 2002:a05:6512:251:: with SMTP id b17mr15482847lfo.35.1569930271677;
-        Tue, 01 Oct 2019 04:44:31 -0700 (PDT)
-X-Google-Smtp-Source: APXvYqwnT1+sf0TKg48VjVvqmrpYiQBeBo/Q6XPTzj3f3iVG7N0xf6z25UpDbnWAQfzVnQWSQkCXTw==
-X-Received: by 2002:a05:6512:251:: with SMTP id b17mr15482836lfo.35.1569930271542;
-        Tue, 01 Oct 2019 04:44:31 -0700 (PDT)
-Received: from alrua-x1.borgediget.toke.dk (borgediget.toke.dk. [85.204.121.218])
-        by smtp.gmail.com with ESMTPSA id c3sm3805082lfi.32.2019.10.01.04.44.30
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 01 Oct 2019 04:44:30 -0700 (PDT)
-Received: by alrua-x1.borgediget.toke.dk (Postfix, from userid 1000)
-        id 1E24618063D; Tue,  1 Oct 2019 13:44:30 +0200 (CEST)
-From:   Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>
-To:     Johannes Berg <johannes@sipsolutions.net>,
-        linux-wireless@vger.kernel.org
-Cc:     Johannes Berg <johannes.berg@intel.com>,
-        Jiri Kosina <jikos@kernel.org>,
-        Aaron Hill <aa1ronham@gmail.com>,
-        Lukas Redlinger <rel+kernel@agilox.net>,
-        Oleksii Shevchuk <alxchk@gmail.com>
-Subject: Re: [PATCH v2] mac80211: keep BHs disabled while calling drv_tx_wake_queue()
-In-Reply-To: <1569928763-I3e8838c5ecad878e59d4a94eb069a90f6641461a@changeid>
-References: <1569928763-I3e8838c5ecad878e59d4a94eb069a90f6641461a@changeid>
-X-Clacks-Overhead: GNU Terry Pratchett
-Date:   Tue, 01 Oct 2019 13:44:30 +0200
-Message-ID: <87tv8su1up.fsf@toke.dk>
+        Tue, 1 Oct 2019 07:45:21 -0400
+Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
+        by aserp2120.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x91Bi4tj112660;
+        Tue, 1 Oct 2019 11:45:12 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
+ : subject : message-id : mime-version : content-type : in-reply-to;
+ s=corp-2019-08-05; bh=R7YUiqeTtrLsMaz2yi00yXnksi+it1iuSXhMbZyibTk=;
+ b=sVgug/x56da9NzAm0eXEpy3MGqCLvDdDG6E7XEYu/yTpzyAfZ9F+w22ktIPZTeX/t8Uk
+ AiEHKZrmVCwTy1s9CO5BCrnuATjiucGX7wBorUbfZrv1K72b8FHdU7k8Edag98gweb64
+ eLqEu9EgNSVBR1c+FexJORPkncQVcB71jWQTguA8F6WE1EV9Hy7laRpCTr7ymm6T4nC1
+ rEqD7XZyLzrVzy+PUadMm6fz0xyVmo1EcZmstJLsUl2RTn26iy2/kAL1BtjcsGnLcGIL
+ /Ff4Q4Y8rHEDn5STTT1+OuT/2B221GVtTWZnsAUQtOVFi0RVvTuXdb59vWjZUOd2FosI ag== 
+Received: from userp3020.oracle.com (userp3020.oracle.com [156.151.31.79])
+        by aserp2120.oracle.com with ESMTP id 2v9yfq56ye-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Tue, 01 Oct 2019 11:45:11 +0000
+Received: from pps.filterd (userp3020.oracle.com [127.0.0.1])
+        by userp3020.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x91BdW6d096346;
+        Tue, 1 Oct 2019 11:45:11 GMT
+Received: from aserv0121.oracle.com (aserv0121.oracle.com [141.146.126.235])
+        by userp3020.oracle.com with ESMTP id 2vbnqcr9k1-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Tue, 01 Oct 2019 11:45:11 +0000
+Received: from abhmp0016.oracle.com (abhmp0016.oracle.com [141.146.116.22])
+        by aserv0121.oracle.com (8.14.4/8.13.8) with ESMTP id x91Bj7Mx006620;
+        Tue, 1 Oct 2019 11:45:08 GMT
+Received: from mwanda (/41.57.98.10)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Tue, 01 Oct 2019 04:45:07 -0700
+Date:   Tue, 1 Oct 2019 14:45:01 +0300
+From:   Dan Carpenter <dan.carpenter@oracle.com>
+To:     Solomon Peachy <pizza@shaftnet.org>
+Cc:     Kalle Valo <kvalo@codeaurora.org>, linux-wireless@vger.kernel.org,
+        kernel-janitors@vger.kernel.org
+Subject: [PATCH v2] cw1200: Fix a signedness bug in cw1200_load_firmware()
+Message-ID: <20191001114501.GA6550@mwanda>
 MIME-Version: 1.0
-X-MC-Unique: wUxin_6OPNy6wRP86CwXTw-1
-X-Mimecast-Spam-Score: 0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <87o8z8zlbu.fsf@codeaurora.org>
+X-Mailer: git-send-email haha only kidding
+User-Agent: Mutt/1.10.1 (2018-07-13)
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9396 signatures=668685
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 malwarescore=0
+ phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=999
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.0.1-1908290000 definitions=main-1910010108
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9396 signatures=668685
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
+ suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1015
+ lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=999 adultscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1908290000
+ definitions=main-1910010109
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Johannes Berg <johannes@sipsolutions.net> writes:
+The "priv->hw_type" is an enum and in this context GCC will treat it
+as an unsigned int so the error handling will never trigger.
 
-> From: Johannes Berg <johannes.berg@intel.com>
->
-> Drivers typically expect this, as it's the case for almost all cases
-> where this is called (i.e. from the TX path). Also, the code in mac80211
-> itself (if the driver calls ieee80211_tx_dequeue()) expects this as it
-> uses this_cpu_ptr() without additional protection.
->
-> This should fix various reports of the problem:
-> https://bugzilla.kernel.org/show_bug.cgi?id=3D204127
-> https://lore.kernel.org/linux-wireless/CAN5HydrWb3o_FE6A1XDnP1E+xS66d5kiE=
-uhHfiGKkLNQokx13Q@mail.gmail.com/
-> https://lore.kernel.org/lkml/nycvar.YFH.7.76.1909111238470.473@cbobk.fhfr=
-.pm/
->
-> Reported-by: Jiri Kosina <jikos@kernel.org>
-> Reported-by: Aaron Hill <aa1ronham@gmail.com>
-> Reported-by: Lukas Redlinger <rel+kernel@agilox.net>
-> Reported-by: Oleksii Shevchuk <alxchk@gmail.com>
-> Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Fixes: a910e4a94f69 ("cw1200: add driver for the ST-E CW1100 & CW1200 WLAN chipsets")
+Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+---
+v2: better style and preserve the error code.
 
-Reviewed-by: Toke H=C3=B8iland-J=C3=B8rgensen <toke@redhat.com>
+ drivers/net/wireless/st/cw1200/fwio.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/drivers/net/wireless/st/cw1200/fwio.c b/drivers/net/wireless/st/cw1200/fwio.c
+index 6574e78e05ea..2a03dc533b6a 100644
+--- a/drivers/net/wireless/st/cw1200/fwio.c
++++ b/drivers/net/wireless/st/cw1200/fwio.c
+@@ -320,12 +320,12 @@ int cw1200_load_firmware(struct cw1200_common *priv)
+ 		goto out;
+ 	}
+ 
+-	priv->hw_type = cw1200_get_hw_type(val32, &major_revision);
+-	if (priv->hw_type < 0) {
++	ret = cw1200_get_hw_type(val32, &major_revision);
++	if (ret < 0) {
+ 		pr_err("Can't deduce hardware type.\n");
+-		ret = -ENOTSUPP;
+ 		goto out;
+ 	}
++	priv->hw_type = ret;
+ 
+ 	/* Set DPLL Reg value, and read back to confirm writes work */
+ 	ret = cw1200_reg_write_32(priv, ST90TDS_TSET_GEN_R_W_REG_ID,
+-- 
+2.20.1
 
