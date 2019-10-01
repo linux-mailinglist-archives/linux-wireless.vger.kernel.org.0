@@ -2,25 +2,25 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 17078C2FAC
-	for <lists+linux-wireless@lfdr.de>; Tue,  1 Oct 2019 11:09:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B334CC2FBF
+	for <lists+linux-wireless@lfdr.de>; Tue,  1 Oct 2019 11:12:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729949AbfJAJJi (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 1 Oct 2019 05:09:38 -0400
-Received: from smtp.codeaurora.org ([198.145.29.96]:33954 "EHLO
+        id S1733304AbfJAJLu (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 1 Oct 2019 05:11:50 -0400
+Received: from smtp.codeaurora.org ([198.145.29.96]:34450 "EHLO
         smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729876AbfJAJJi (ORCPT
+        with ESMTP id S1728892AbfJAJLt (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 1 Oct 2019 05:09:38 -0400
+        Tue, 1 Oct 2019 05:11:49 -0400
 Received: by smtp.codeaurora.org (Postfix, from userid 1000)
-        id 2887D60A37; Tue,  1 Oct 2019 09:09:37 +0000 (UTC)
+        id 0BE8760A37; Tue,  1 Oct 2019 09:11:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1569920977;
-        bh=8+qPw+buh2bAKVu/iserVs8uM7m0xAhuaEbDYL7F03M=;
+        s=default; t=1569921109;
+        bh=64cRdgl/w9VBwZj+X1Zjo9wnyvSCIjqjuCnmWaq54jo=;
         h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-        b=czQNHWHl0/QoV8gSLPVlye++bYS40MuzHS6i73lbElBG4DEhDPwvnep4tzE0YHAW2
-         TIg7ogTpnzPmXg4bG/J7BIwP6VYoNStVUquWQwPGbqIY6dyxUKP377B5FMXFwmDNY4
-         gpsBe9dofJoRcR/FLXSYPc6VAJ7ekJcuYidxTObo=
+        b=jfFLapo26ZTIi6pTwYa65ZuKczdRqc5QZcKdwzZU+ynkmG4isq/tUMFMRVFPNacHP
+         g0YztM77ZjhS9h3DDPYzM4Bpi3haOxw4Sgw4c1VPBlCOZLK/vi20fjouI5Wwdevxhj
+         BaecR1omngPrNjY8+jO5+NKIqjlDSlx9Qefe9rdo=
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         pdx-caf-mail.web.codeaurora.org
 X-Spam-Level: 
@@ -31,52 +31,61 @@ Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
         (Authenticated sender: kvalo@smtp.codeaurora.org)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 056AB6081C;
-        Tue,  1 Oct 2019 09:09:34 +0000 (UTC)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 4B88E608CE;
+        Tue,  1 Oct 2019 09:11:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1569920976;
-        bh=8+qPw+buh2bAKVu/iserVs8uM7m0xAhuaEbDYL7F03M=;
+        s=default; t=1569921108;
+        bh=64cRdgl/w9VBwZj+X1Zjo9wnyvSCIjqjuCnmWaq54jo=;
         h=Subject:From:In-Reply-To:References:To:Cc:From;
-        b=FwbvP5WTOR82ONB2Nr483TRNx4dQSsMT67ln0zlaIsbXwZCxPn2cL+AZQXj4R3GEe
-         JYs3abF7Dan5KxTmdHYZDbXDfcV8v68qB6FP1AUwNKQomUipZO04JeaAjSIIXl/P6A
-         o7qI20nGo20FGEE5AOcvploO45/u+BEPqKeU9bP0=
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 056AB6081C
+        b=LQaG/LEB1BttZW9/8MHncCA3l4w8CN6pl3y+BF7Hro2Jw/CW8JTu7PVS634Wvwsim
+         1T04W+6w/EWpRs3FB28g4HXx2aj3n0zlpBq0lr7e/vGObSMUHVdTm4IqQWDyVNtiqc
+         d4gXhJKTI/1la+Jztk/HAsCu910HFiqdEHy4YDH0=
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 4B88E608CE
 Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
 Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH] rt2x00: initialize last_reset
+Subject: Re: [PATCH V2 2/2] brcmfmac: send port authorized event for FT-802.1X
 From:   Kalle Valo <kvalo@codeaurora.org>
-In-Reply-To: <20190926085433.1300-1-sgruszka@redhat.com>
-References: <20190926085433.1300-1-sgruszka@redhat.com>
-To:     Stanislaw Gruszka <sgruszka@redhat.com>
-Cc:     linux-wireless@vger.kernel.org,
-        =?utf-8?q?Tomislav_Po=C5=BEega?= <pozega.tomislav@gmail.com>,
-        Daniel Golle <daniel@makrotopia.org>,
-        Felix Fietkau <nbd@nbd.name>, Mathias Kresin <dev@kresin.me>,
-        Jonathan Liu <net147@gmail.com>
+In-Reply-To: <1557395289-41133-3-git-send-email-chi-hsien.lin@cypress.com>
+References: <1557395289-41133-3-git-send-email-chi-hsien.lin@cypress.com>
+To:     Chi-Hsien Lin <Chi-Hsien.Lin@cypress.com>
+Cc:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        "brcm80211-dev-list@broadcom.com" <brcm80211-dev-list@broadcom.com>,
+        brcm80211-dev-list <brcm80211-dev-list@cypress.com>,
+        Arend van Spriel <arend.vanspriel@broadcom.com>,
+        Franky Lin <franky.lin@broadcom.com>,
+        Hante Meuleman <hante.meuleman@broadcom.com>,
+        Wright Feng <Wright.Feng@cypress.com>,
+        Stanley Hsu <Stanley.Hsu@cypress.com>,
+        Chi-Hsien Lin <Chi-Hsien.Lin@cypress.com>
 User-Agent: pwcli/0.0.0-git (https://github.com/kvalo/pwcli/) Python/2.7.12
-Message-Id: <20191001090937.2887D60A37@smtp.codeaurora.org>
-Date:   Tue,  1 Oct 2019 09:09:37 +0000 (UTC)
+Message-Id: <20191001091149.0BE8760A37@smtp.codeaurora.org>
+Date:   Tue,  1 Oct 2019 09:11:49 +0000 (UTC)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Stanislaw Gruszka <sgruszka@redhat.com> wrote:
+Chi-Hsien Lin <Chi-Hsien.Lin@cypress.com> wrote:
 
-> Initialize last_reset variable to INITIAL_JIFFIES, otherwise it is not
-> possible to test H/W reset for first 5 minutes of system run.
+> From: Chung-Hsien Hsu <stanley.hsu@cypress.com>
 > 
-> Fixes: e403fa31ed71 ("rt2x00: add restart hw")
-> Reported-and-tested-by: Jonathan Liu <net147@gmail.com>
-> Signed-off-by: Stanislaw Gruszka <sgruszka@redhat.com>
+> With FT-802.1X, driver should send a port authorized event right after
+> sending a roamed event. It is used to indicate that a new AP is already
+> authorized so 802.1X is not required.
+> 
+> Acked-by: Arend van Spriel <arend.vanspriel@broadcom.com>
+> Signed-off-by: Chung-Hsien Hsu <stanley.hsu@cypress.com>
+> Signed-off-by: Chi-Hsien Lin <chi-hsien.lin@cypress.com>
 
-I'll queue this to v5.4.
+Patch applied to wireless-drivers-next.git, thanks.
+
+be898fed355e brcmfmac: send port authorized event for FT-802.1X
 
 -- 
-https://patchwork.kernel.org/patch/11161981/
+https://patchwork.kernel.org/patch/10936943/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
