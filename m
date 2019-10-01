@@ -2,149 +2,163 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 93519C29B1
-	for <lists+linux-wireless@lfdr.de>; Tue,  1 Oct 2019 00:39:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 52955C2CB4
+	for <lists+linux-wireless@lfdr.de>; Tue,  1 Oct 2019 06:55:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727469AbfI3WjQ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 30 Sep 2019 18:39:16 -0400
-Received: from mail-io1-f69.google.com ([209.85.166.69]:53124 "EHLO
-        mail-io1-f69.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729229AbfI3WjP (ORCPT
+        id S1726784AbfJAErd (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 1 Oct 2019 00:47:33 -0400
+Received: from mail-lj1-f193.google.com ([209.85.208.193]:37483 "EHLO
+        mail-lj1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725535AbfJAErc (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 30 Sep 2019 18:39:15 -0400
-Received: by mail-io1-f69.google.com with SMTP id g8so33376568iop.19
-        for <linux-wireless@vger.kernel.org>; Mon, 30 Sep 2019 15:39:15 -0700 (PDT)
+        Tue, 1 Oct 2019 00:47:32 -0400
+Received: by mail-lj1-f193.google.com with SMTP id l21so11852824lje.4
+        for <linux-wireless@vger.kernel.org>; Mon, 30 Sep 2019 21:47:30 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc:content-transfer-encoding;
+        bh=JHQkAiHVzplCQNOguqdKc7eWlycFDXP/ryC23H4Nkww=;
+        b=JsZJ4R7B0/0ow+5u7gyfyNAvbMYwrarKWczuQfRRL7p3w08ZQELjZP0eiJsxFLBOe6
+         NiMDVbwYWaJYApjOtRKZT2C+7cosLi0DZt0+wm5wqwtvbStLvFity/XTiSywSWe2CDT2
+         VZ6OGHAnKBSn5iIidq5dqKv794rIWbHdpNkMzbV1Cn9sICSAyKGayKzY2LrF6zTjsO0p
+         ymoP/BMpuf4IYQaqioq//o6fcrVYYjEwg+hSJG5MmHq5c/QP1bgDRVxCbuKL47cCPalQ
+         1WHNvnoI74y2Q4Nh5brGs6sG4iPzgXY0s0D351+flALll/giSui+dvHTQpsdxhrl6U5b
+         rmYA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:date:message-id:subject:from:to;
-        bh=S+VQhWYaAUm9S3kTD+g6Uv25dCXpksl3TXWhnx7EUec=;
-        b=HRPBlXKYWsbPf1PzjP/kuDGGu3Oe7zaoUdJ1KYMFkZ8EcMcGHBH2Y8LCuUF6jPHDNa
-         cYnI0FXHQTl6kGq11tr2qoutHB3ghI1V9goOj/SdR4AUmKi23AUoEzad2Nj0bmyePyod
-         Dmm5QLcMcTjlEO2TKvKtWgNAAzS3qdZBM6EhVh/y9qpzGrm9VwUUO5lJYtr/t6nLU+p4
-         1cxBAyo+AyR5MHzURqF6VhedRSid2oz9BYic+/qiv1Nk5rPqRbFlJ+cQs5Aq32msGxpr
-         JkVsqr9c8MJTMGItDaBgfRpfT0wcJpWsV9FScUxHDBw1MhOllPxA6l0fUivNmIjl8E7v
-         bgtA==
-X-Gm-Message-State: APjAAAUHRjPb0XBxJZ/MftwMwxTFLZPqOlj5xytVrb4s0bZ5Af3VWn60
-        0ajzZY8QUAy0dYfAeJrdeqNRjCvIgenCUUXjA6E9Ycj0tg24
-X-Google-Smtp-Source: APXvYqxAGOFqID5P9o7rvH8Pzpjjiu8fp5lk/fQqSI7vrHaUe3UxQ9GKkfOrTWJQgAMXWBPCV+e/RjA9RFpV6uo1Iw2++fmbRajX
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc:content-transfer-encoding;
+        bh=JHQkAiHVzplCQNOguqdKc7eWlycFDXP/ryC23H4Nkww=;
+        b=BNOPB4drDO1JGpeFiMoLHw20GqO4WimiAxCgdgINpFvynD6dkjb7Nh2/vy1aKH8BeU
+         LE11aelv1HGO2g3rAQoZmWFD58c7i7vXKoiGp0N7JjqHjfAvK0jx6KdZpgjkejyJ0k2I
+         pEilAltglqgXLnxDjZVjGkxIh9ET2QvFM72FAg0mYjH48GNI8A4c3vObtWMG7Hfrtev9
+         YUiaK9A3yYGcn9oXQgsrshgl/woJq9YG83bt/YoRrzmiFy6YojndcVixutMyX/P/x50R
+         rjm/awkRSX1/EyJCLEClRIbaUBhC/iDqhTze8CTbL5ljzE8sCMEX2UBNXTByuGCLvR2o
+         PRgg==
+X-Gm-Message-State: APjAAAUzZ4P63jUysTOBssHi53M14FzRJhQQJA/ugQGDjjC1WNujTdz/
+        yems1wSxcw/YtZLqI5AQ5iO+k5bt1lNF/WfNnbRtYw==
+X-Google-Smtp-Source: APXvYqzr4kRTFSCZNf4/0ac6IWGTEIww2OSi4IHxmlJrElUV0rU/KOOl1b9x/3CYoEfTvltRJwDP3qhXu5US/QAFHdM=
+X-Received: by 2002:a2e:9a03:: with SMTP id o3mr12593946lji.51.1569905249764;
+ Mon, 30 Sep 2019 21:47:29 -0700 (PDT)
 MIME-Version: 1.0
-X-Received: by 2002:a5d:9457:: with SMTP id x23mr7302480ior.14.1569883154839;
- Mon, 30 Sep 2019 15:39:14 -0700 (PDT)
-Date:   Mon, 30 Sep 2019 15:39:14 -0700
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <000000000000c889570593cce77b@google.com>
-Subject: KMSAN: uninit-value in rt2500usb_probe_hw
-From:   syzbot <syzbot+35c80b2190255a410f66@syzkaller.appspotmail.com>
-To:     davem@davemloft.net, glider@google.com,
-        helmut.schaa@googlemail.com, kvalo@codeaurora.org,
-        linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org, sgruszka@redhat.com,
-        syzkaller-bugs@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"; format=flowed; delsp=yes
+References: <156889576422.191202.5906619710809654631.stgit@alrua-x1>
+ <156889576869.191202.510507546538322707.stgit@alrua-x1> <08f0ed6e-b746-9689-6dc8-7c0ea705666d@nbd.name>
+ <87wodv19jl.fsf@toke.dk> <b0239b81-e3db-1f10-22cb-ad06536b97a8@nbd.name>
+ <87tv8z13wv.fsf@toke.dk> <CA+iem5uir8GOq2psAVuUParY3MimsGhvdefUopiwHov128CQQA@mail.gmail.com>
+ <87r2421d4f.fsf@toke.dk> <ed46699c32cd3d8d8bcc9bce1375ba04@codeaurora.org>
+ <CA+iem5sGkRQy4B=Mz-C90sfqgFmuywa=W7Yjy2CDd8hfppQkvQ@mail.gmail.com> <87muemykqn.fsf@toke.dk>
+In-Reply-To: <87muemykqn.fsf@toke.dk>
+From:   Kan Yan <kyan@google.com>
+Date:   Mon, 30 Sep 2019 21:47:18 -0700
+Message-ID: <CA+iem5tDU9RYdUJ5y1E3E1iFRsSX_rA8dbDjaviGBxKyMS_3kA@mail.gmail.com>
+Subject: Re: [PATCH RFC/RFT 4/4] mac80211: Apply Airtime-based Queue Limit
+ (AQL) on packet dequeue
+To:     =?UTF-8?B?VG9rZSBIw7hpbGFuZC1Kw7hyZ2Vuc2Vu?= <toke@redhat.com>
+Cc:     Yibo Zhao <yiboz@codeaurora.org>, Felix Fietkau <nbd@nbd.name>,
+        Johannes Berg <johannes@sipsolutions.net>,
+        linux-wireless@vger.kernel.org,
+        make-wifi-fast@lists.bufferbloat.net,
+        John Crispin <john@phrozen.org>,
+        Lorenzo Bianconi <lorenzo@kernel.org>,
+        linux-wireless-owner@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hello,
+> I guess the risk is lower when with a 24ms per-iface limit; but with
+> enough stations I guess it could still happen, no? So we should probably
+> handle this case...
+Each txq (per sta, per tid) is allowed to release at least the lower
+AQL limit amount of packet (default 4ms), which is not affected by
+other station's PS behavior and 4ms should be sufficient for most use
+cases.
+The 24ms per-interface limit is an optimization to get good benchmark
+score in peak performance test, which usually only involve 1-2
+stations. The higher limit probably won't matter anymore when there
+are many stations. I haven't noticed side effects due to PS behavior
+in the ChromiumOS version. Still, it is better to be able to take
+frames in PS queue in to account,
 
-syzbot found the following crash on:
-
-HEAD commit:    cebbfdbc kmsan: merge set_no_shadow_page() and set_no_orig..
-git tree:       https://github.com/google/kmsan.git master
-console output: https://syzkaller.appspot.com/x/log.txt?x=1125cb59600000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=f03c659d0830ab8d
-dashboard link: https://syzkaller.appspot.com/bug?extid=35c80b2190255a410f66
-compiler:       clang version 9.0.0 (/home/glider/llvm/clang  
-80fee25776c2fb61e74c1ecb1a523375c2500b69)
-syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=146abd21600000
-C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=106a19b5600000
-
-IMPORTANT: if you fix the bug, please add the following tag to the commit:
-Reported-by: syzbot+35c80b2190255a410f66@syzkaller.appspotmail.com
-
-usb 1-1: config 0 descriptor??
-usb 1-1: reset high-speed USB device number 2 using dummy_hcd
-usb 1-1: device descriptor read/64, error -71
-usb 1-1: Using ep0 maxpacket: 16
-ieee80211 phy3: rt2x00usb_vendor_request: Error - Vendor Request 0x09  
-failed for offset 0x0000 with error -71
-ieee80211 phy3: rt2x00_set_chip: Info - Chipset detected - rt: 2570, rf:  
-0000, rev: 8771
-==================================================================
-BUG: KMSAN: uninit-value in rt2500usb_init_eeprom  
-drivers/net/wireless/ralink/rt2x00/rt2500usb.c:1443 [inline]
-BUG: KMSAN: uninit-value in rt2500usb_probe_hw+0xb5e/0x22a0  
-drivers/net/wireless/ralink/rt2x00/rt2500usb.c:1757
-CPU: 0 PID: 3369 Comm: kworker/0:2 Not tainted 5.3.0-rc7+ #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS  
-Google 01/01/2011
-Workqueue: usb_hub_wq hub_event
-Call Trace:
-  __dump_stack lib/dump_stack.c:77 [inline]
-  dump_stack+0x191/0x1f0 lib/dump_stack.c:113
-  kmsan_report+0x162/0x2d0 mm/kmsan/kmsan_report.c:109
-  __msan_warning+0x75/0xe0 mm/kmsan/kmsan_instr.c:294
-  rt2500usb_init_eeprom drivers/net/wireless/ralink/rt2x00/rt2500usb.c:1443  
-[inline]
-  rt2500usb_probe_hw+0xb5e/0x22a0  
-drivers/net/wireless/ralink/rt2x00/rt2500usb.c:1757
-  rt2x00lib_probe_dev+0xba9/0x3260  
-drivers/net/wireless/ralink/rt2x00/rt2x00dev.c:1427
-  rt2x00usb_probe+0x7ae/0xf60  
-drivers/net/wireless/ralink/rt2x00/rt2x00usb.c:842
-  rt2500usb_probe+0x50/0x60  
-drivers/net/wireless/ralink/rt2x00/rt2500usb.c:1966
-  usb_probe_interface+0xd19/0x1310 drivers/usb/core/driver.c:361
-  really_probe+0x1373/0x1dc0 drivers/base/dd.c:552
-  driver_probe_device+0x1ba/0x510 drivers/base/dd.c:709
-  __device_attach_driver+0x5b8/0x790 drivers/base/dd.c:816
-  bus_for_each_drv+0x28e/0x3b0 drivers/base/bus.c:454
-  __device_attach+0x489/0x750 drivers/base/dd.c:882
-  device_initial_probe+0x4a/0x60 drivers/base/dd.c:929
-  bus_probe_device+0x131/0x390 drivers/base/bus.c:514
-  device_add+0x25b5/0x2df0 drivers/base/core.c:2165
-  usb_set_configuration+0x309f/0x3710 drivers/usb/core/message.c:2027
-  generic_probe+0xe7/0x280 drivers/usb/core/generic.c:210
-  usb_probe_device+0x146/0x200 drivers/usb/core/driver.c:266
-  really_probe+0x1373/0x1dc0 drivers/base/dd.c:552
-  driver_probe_device+0x1ba/0x510 drivers/base/dd.c:709
-  __device_attach_driver+0x5b8/0x790 drivers/base/dd.c:816
-  bus_for_each_drv+0x28e/0x3b0 drivers/base/bus.c:454
-  __device_attach+0x489/0x750 drivers/base/dd.c:882
-  device_initial_probe+0x4a/0x60 drivers/base/dd.c:929
-  bus_probe_device+0x131/0x390 drivers/base/bus.c:514
-  device_add+0x25b5/0x2df0 drivers/base/core.c:2165
-  usb_new_device+0x23e5/0x2fb0 drivers/usb/core/hub.c:2536
-  hub_port_connect drivers/usb/core/hub.c:5098 [inline]
-  hub_port_connect_change drivers/usb/core/hub.c:5213 [inline]
-  port_event drivers/usb/core/hub.c:5359 [inline]
-  hub_event+0x581d/0x72f0 drivers/usb/core/hub.c:5441
-  process_one_work+0x1572/0x1ef0 kernel/workqueue.c:2269
-  worker_thread+0x111b/0x2460 kernel/workqueue.c:2415
-  kthread+0x4b5/0x4f0 kernel/kthread.c:256
-  ret_from_fork+0x35/0x40 arch/x86/entry/entry_64.S:355
-
-Local variable description: ----reg.i.i@rt2500usb_probe_hw
-Variable was created at:
-  rt2500usb_register_read drivers/net/wireless/ralink/rt2x00/rt2500usb.c:51  
-[inline]
-  rt2500usb_init_eeprom drivers/net/wireless/ralink/rt2x00/rt2500usb.c:1440  
-[inline]
-  rt2500usb_probe_hw+0x774/0x22a0  
-drivers/net/wireless/ralink/rt2x00/rt2500usb.c:1757
-  rt2x00lib_probe_dev+0xba9/0x3260  
-drivers/net/wireless/ralink/rt2x00/rt2x00dev.c:1427
-==================================================================
+> Cool. Are you going to submit a ported version of your implementation?
+> Then we can work from the two submissions and see if we can't converge
+> on something...
+Working on porting, should have something ready before the end of this week=
+.
 
 
----
-This bug is generated by a bot. It may contain errors.
-See https://goo.gl/tpsmEJ for more information about syzbot.
-syzbot engineers can be reached at syzkaller@googlegroups.com.
-
-syzbot will keep track of this bug report. See:
-https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
-syzbot can test patches for this bug, for details see:
-https://goo.gl/tpsmEJ#testing-patches
+On Sun, Sep 29, 2019 at 12:18 PM Toke H=C3=B8iland-J=C3=B8rgensen <toke@red=
+hat.com> wrote:
+>
+> Kan Yan <kyan@google.com> writes:
+>
+> >> No, ath10k would continue to do what it was always doing. Drivers that
+> >> can report after-the-fact airtime usage per-frame (like ath9k) will
+> >> continue to do that. In both of those cases, the airtime estimate is
+> >> only used to throttle the queue, not to schedule for fairness.
+> > You are right, I didn't realize ath9k reports per frame airtime usage.
+> >
+> >> Yeah, I was wondering about that. Makes sense. Why 24ms, exactly?
+> > The per interface 24 ms queue limit is an empirical number that works
+> > well for both achieve low latency when there is a lot of stations and
+> > get high throughput when there is only 1-2 stations.  We could make it
+> > configurable.
+>
+> Right. "Found by trial and error" is a fine answer as far as I'm
+> concerned :)
+>
+> But yeah, this should probably be configurable, like BQL is.
+>
+> >> BTW, I think Felix' concern about powersave was in relation to AQL: If
+> >> we don't handle power save in that, we can end up in a situation where
+> >>the budget for packets allowed to be queued in the firmware is taken up
+> >> entirely by stations that are currently in powersave mode; which would
+> >> throttle the device completely. So we should take that into account fo=
+r
+> >> AQL; for the fairness scheduler, stations in powersave are already
+> >> unscheduled, so that should be fine.
+> > I think the accounting for the airtime of frames in the power saving
+> > queue could affect both the fairness scheduler and AQL.
+> > For chipset with firmware offload, PS handling is mostly done by
+> > firmware, so host driver's knowledge of PS state could be slightly
+> > out-of-dated. The power save behavior also make it harder to the
+> > airtime_weight correct for the fairness scheduler.
+>
+> Hmm, maybe. I'm not sure how significant this effect would be, but I
+> guess we'll need to find out :)
+>
+>
+> > Powersave mode's impact to AQL is much smaller. The lower per station
+> > queue limit is not impacted by other stations PS behavior, since the
+> > estimated future airtime is not weighted for other stations and a
+> > station won't get blocked due to others stations in PS mode.
+> > Station in PS mode do affects AQL's higher per interface limit, but in
+> > an inconsequential way. The per interface AQL queue limit is quite
+> > large (24 ms), hence airtime from packets in PS queue is unlikely to
+> > have a significant impact on it. Still, it will be better if the
+> > packet in power saving queue can be taken into account.
+>
+> I guess the risk is lower when with a 24ms per-iface limit; but with
+> enough stations I guess it could still happen, no? So we should probably
+> handle this case...
+>
+> >> > make it easier to schedule multiple stations, I think it has some me=
+rit
+> >> > that makes it worth trying out. We should probably get the AQL stuff
+> >> > done first, though, and try the virtual time scheduler on top of tha=
+t.
+> >> Agree that we should get the AQL stuff done first since I believe it
+> >> will help to fix the issue mentioned above.
+> > That sounds like a good plan. The virtual time scheduler is more
+> > involved and will take more work to get it right. It make sense to get
+> > AQL done first.
+>
+> Cool. Are you going to submit a ported version of your implementation?
+> Then we can work from the two submissions and see if we can't converge
+> on something...
+>
+> -Toke
+>
