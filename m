@@ -2,108 +2,80 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 738D9C3019
-	for <lists+linux-wireless@lfdr.de>; Tue,  1 Oct 2019 11:24:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6AEA7C303E
+	for <lists+linux-wireless@lfdr.de>; Tue,  1 Oct 2019 11:32:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726568AbfJAJXu (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 1 Oct 2019 05:23:50 -0400
-Received: from s3.sipsolutions.net ([144.76.43.62]:57930 "EHLO
-        sipsolutions.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726303AbfJAJXu (ORCPT
+        id S1729305AbfJAJcZ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 1 Oct 2019 05:32:25 -0400
+Received: from mail-qt1-f196.google.com ([209.85.160.196]:39767 "EHLO
+        mail-qt1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729282AbfJAJcZ (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 1 Oct 2019 05:23:50 -0400
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-        (Exim 4.92.2)
-        (envelope-from <johannes@sipsolutions.net>)
-        id 1iFENo-0003hp-7P; Tue, 01 Oct 2019 11:23:48 +0200
-Message-ID: <5ebdaccd04596bae01ee4e9474d6cab15902b2d1.camel@sipsolutions.net>
-Subject: Re: [RFCv3 2/3] nl80211: Support >4096 byte NEW_WIPHY event nlmsg
-From:   Johannes Berg <johannes@sipsolutions.net>
-To:     Denis Kenzior <denkenz@gmail.com>, linux-wireless@vger.kernel.org
-Date:   Tue, 01 Oct 2019 11:23:47 +0200
-In-Reply-To: <8b22b64e-5efc-beac-6581-778e47625c89@gmail.com> (sfid-20190911_174425_379766_D82FAB27)
-References: <20190906154303.9303-1-denkenz@gmail.com>
-         <20190906154303.9303-2-denkenz@gmail.com>
-         <4397b67b63d1b1a332afa9010e7f48abd54b49b2.camel@sipsolutions.net>
-         <5bd58103-bdb7-b72c-0b64-76c8573ca380@gmail.com>
-         <1eac4f853b835fef85cdf33d971382b2f6e7c5a9.camel@sipsolutions.net>
-         <8b22b64e-5efc-beac-6581-778e47625c89@gmail.com>
-         (sfid-20190911_174425_379766_D82FAB27)
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.30.5 (3.30.5-1.fc29) 
+        Tue, 1 Oct 2019 05:32:25 -0400
+Received: by mail-qt1-f196.google.com with SMTP id n7so20723024qtb.6
+        for <linux-wireless@vger.kernel.org>; Tue, 01 Oct 2019 02:32:25 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=endlessm-com.20150623.gappssmtp.com; s=20150623;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=OFYZf47XM4r0xE8wHoVEHk7v0YQ69pCu6pGafD2jwco=;
+        b=iDAM+R9ANcbzIjKCTN6ZYSi+Aksa0PboAWyf4s6tXCRILXfjN3srMVk9rzXdIqonNN
+         C9tv2GNLMLTLlcZF4RTX407fQQa7EBvmm2QK21l9IcRLfczMl3ma6kDFRqqyBPouORRx
+         JZ/RhDpKYXtEX30EgeQ56tCgIuBlcbFg9y2srZkbkZX+E7tUi8PYPAYd2r/N17AWhvVG
+         s4Et//tI2AlllqkmYdaS8QVYEKC15gqaZ4bH6rNd9y/yNi15b2pDCdtRFyPfJjHI46yl
+         sGHyzAzz7QTQhSZLZoWbeNkX5FWMhPnhPPCFNgYOPGekKsGpB5/ZkIhxmOuO4a8p+QWr
+         jTJQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=OFYZf47XM4r0xE8wHoVEHk7v0YQ69pCu6pGafD2jwco=;
+        b=jUhfH2oap5sspYB2Eb06PbHaglne/AOQGCZMBSJpTKO5jzJ8X4yfFWPZSU0jNtQQlo
+         jWABaca1JvopT0BYB7jqEluVraLDYE43kOKWY7SagLlXrX1hLRFuLnm1kVAYZUwrJWk7
+         InsPBbU7CBYLpuwduZxEBUecEyZ1kALkqIoikroHrliyVtqeCBzrtZK3Deijm7rdTVNR
+         rIEWKQ8ICzGLTZdImnIhbLbGgiOgvNet/SLFmeBxBMLbzV8rOPmAIBshrIj9AEGm8rdF
+         frB1R4BRG9TlNEBh/snzE0hekQKWAEmvNURcqqL5wDhpPE3d/54tXGgnvkXFBlxTRdWz
+         /V0g==
+X-Gm-Message-State: APjAAAWhXRlhYv617M8+FWdKxctvYikTt1jZsLo73OiWL1TB3clP2UJZ
+        E6U1bQdgEKNSkp2o6NZzrWogd1PbDLr34V01geyj5Q==
+X-Google-Smtp-Source: APXvYqx/69O5IdHsZutFRVhhkJCSDgmYpJbh7WyfugO2INdJv/xpqNfiengrZJKHyEPhWEsJ/6sllro9UJLiTLagBoI=
+X-Received: by 2002:a05:6214:30d:: with SMTP id i13mr24557854qvu.101.1569922344454;
+ Tue, 01 Oct 2019 02:32:24 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+References: <20190911025045.20918-1-chiu@endlessm.com> <CAB4CAwcs4zn4Sg0AkFnSUE-tbkdrHE=3yYeF8g+-ak5NyPBkuQ@mail.gmail.com>
+In-Reply-To: <CAB4CAwcs4zn4Sg0AkFnSUE-tbkdrHE=3yYeF8g+-ak5NyPBkuQ@mail.gmail.com>
+From:   Chris Chiu <chiu@endlessm.com>
+Date:   Tue, 1 Oct 2019 17:32:13 +0800
+Message-ID: <CAB4CAwdO5evU8K5qjGe0rXJPmQA8gSd0tLkN6nh-EzyATU9aOw@mail.gmail.com>
+Subject: Re: [PATCH v2] rtl8xxxu: add bluetooth co-existence support for
+ single antenna
+To:     Jes Sorensen <Jes.Sorensen@gmail.com>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        David Miller <davem@davemloft.net>
+Cc:     linux-wireless <linux-wireless@vger.kernel.org>,
+        netdev <netdev@vger.kernel.org>,
+        Linux Kernel <linux-kernel@vger.kernel.org>,
+        Linux Upstreaming Team <linux@endlessm.com>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi,
+On Thu, Sep 19, 2019 at 9:44 AM Chris Chiu <chiu@endlessm.com> wrote:
+>
+> On Wed, Sep 11, 2019 at 10:50 AM Chris Chiu <chiu@endlessm.com> wrote:
+> >
+> >
+> > Notes:
+> >   v2:
+> >    - Add helper functions to replace bunch of tdma settings
+> >    - Reformat some lines to meet kernel coding style
+> >
+> >
+>
+Hi Jes,
+    I've refactored the code per your suggestion. Any comment for further
+improvement? Thanks.
 
-> > Yeah, that does seem reasonable, especially if we're moving to bigger
-> > messages anyway. If we do add something huge to each channel, we can
-> > recover that code I suppose.
-> 
-> So do you want me to drop the channel splitting logic and only allow 
-> this for bands?  Or just keep this since it is already done?
-
-I guess I'm saying I don't really care. If we have it now might as well
-keep it?
-
-Actually, don't we already have up to 240 bytes per channel, counting
-the channel nesting itself and all the flags and WMM data that can be
-inside?
-
-Am I counting this wrong?
-
-If this is right, we really do need to be able to split this, because we
-have ~60 channels in the 6/7 GHz band ...
-
-> > > The current logic uses last_channel_pos for some of the trickery in
-> > > addition to last_good_pos.  So nla_put_failure would have to be made
-> > > aware of that.  Perhaps we can store last_good_pos in the stack, but the
-> > > split mechanism only allows the splits to be done at certain points...
-> > 
-> > Hmm, not sure I understand. last_channel_pos and last_good_pos are
-> > basically equivalent, no? In fact, I'm not sure why you need
-> > last_channel_pos vs. just using last_good_pos instead? Maybe I'm missing
-> > something.
-> 
-> Sort of.  The way I did it, last_channel_pos keeps track of whether any 
-> channel info was added or not.  So if NULL, we simply backtrack to 
-> last_good_pos in nla_put_failure. You can probably use last_good_pos for 
-> everything and an extra variable for the channel info tracking.
-
-Right.
-
-> > To me, conceptually, the "state->band_start" and "state->chan_start" is
-> > basically a sub-state of "state->split", so this is underneath state-
-> > > split == 3 (I think?), you basically get 3.0.0, 3.0.1, 3.0.2, ...,
-> > 3.1.0, 3.1.1 ... for the state? Which you have to unwind in terms of
-> > message formatting, but the last_good_pos should be sufficient?
-> 
-> Right.  And as I mentioned above, this could be done, but you probably 
-> need another state variable..
-> 
-> > IOW, the only difference I see between the normal split states 1, 2, ...
-> > and the band/channel split states 3.0.0, 3.0.1, ... is the fact that we
-> > have to also fix up the nested attributes after we trim to last_good_pos
-> > on failures. Where am I wrong?
-> > 
-> 
-> Didn't say that you were ;)
-
-No, you didn't, but I thought I probably was missing something :)
-
-> To be clear, I think it is a good approach and can be made to work.  My 
-> main hesitation is whether doing it now is worth it given the discussion 
-> at the very top.  But I can see what I can come up with if you want.
-
-See above - unless I'm doing something completely wrong, each channel
-with all the WMM data and stuff can really be big, no?
-
-(Now, why did we put the WMM data into each channel? Maybe we could've
-done per band? I think it can differ on the UNII subbands though)
-
-johannes
-
+Chris
