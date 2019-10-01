@@ -2,56 +2,56 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2EBAAC2FA9
-	for <lists+linux-wireless@lfdr.de>; Tue,  1 Oct 2019 11:08:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1706CC2FAD
+	for <lists+linux-wireless@lfdr.de>; Tue,  1 Oct 2019 11:09:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729934AbfJAJIh (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 1 Oct 2019 05:08:37 -0400
-Received: from us-smtp-2.mimecast.com ([205.139.110.61]:29621 "EHLO
-        us-smtp-delivery-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1728892AbfJAJIh (ORCPT
+        id S1730006AbfJAJJj (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 1 Oct 2019 05:09:39 -0400
+Received: from us-smtp-delivery-1.mimecast.com ([207.211.31.120]:49649 "EHLO
+        us-smtp-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
+        with ESMTP id S1728892AbfJAJJi (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 1 Oct 2019 05:08:37 -0400
+        Tue, 1 Oct 2019 05:09:38 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1569920915;
+        s=mimecast20190719; t=1569920976;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
          to:to:cc:cc:mime-version:mime-version:content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=ztuEv3F1VvUb37/sb6lMwENjtvEWt91fS/pfkH1uTOo=;
-        b=DAIv4TtbMvnaAU1cwjaHs0TUJzmf9lRWanjd+Jbh/YTsrYalKBN5TTO586xsnuXMmY7GWE
-        NNNnG0P2M5v3GXK+sdu9mYGrLhBGRunQHO8/MnyNajTFlJvj00olIMmKpM+3Ner1pBmENY
-        fatnaw+i6oXM0mUKpEZ99/S/UZI9nwc=
-Received: from mail-lf1-f71.google.com (mail-lf1-f71.google.com
- [209.85.167.71]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-360-CWdt7FA0OSKwpO3SIgyM5w-1; Tue, 01 Oct 2019 05:08:33 -0400
-Received: by mail-lf1-f71.google.com with SMTP id p15so2620654lfc.20
-        for <linux-wireless@vger.kernel.org>; Tue, 01 Oct 2019 02:08:33 -0700 (PDT)
+        bh=Ey2S05y+qH9qcmtAVhMGP0PZwCwz3gwo0pP+/KPv2RA=;
+        b=gkG76F9CbZqEFCLqOAzEcGCDhgysDJzeeMASotw2zoB3rXeO2KA3Zn+6+vQLCUnKj0SnCW
+        KM1vJAlJcXDfr9p9S8qco0/2HfLihcwBgvJqRDyDFaoh9NjSYvIzg6kaDN5hwH4UpqZzxp
+        j2dC1VgLbRjZZm92GpGsrsh5V9fuSIE=
+Received: from mail-ed1-f71.google.com (mail-ed1-f71.google.com
+ [209.85.208.71]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-31-C4vqDroYP7-2vJ0NuHonmA-1; Tue, 01 Oct 2019 05:09:32 -0400
+Received: by mail-ed1-f71.google.com with SMTP id d7so8156432edp.23
+        for <linux-wireless@vger.kernel.org>; Tue, 01 Oct 2019 02:09:32 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:in-reply-to:references:date
          :message-id:mime-version:content-transfer-encoding;
-        bh=10PCp8jeul/Ln8OdCxlZHThqI0Uexho93oGHCJziLrg=;
-        b=cwaEqMZ4gTY9KbWfbxDtb9fImITi+tPNzqi9UJXz4311bf6bJX9fl0yD4/uyqk1gi6
-         VMzLkM/QxETXqu2sEzk/dFXuHyImaR27U+pdsOXFu04Nh7oek3CkK73lCRh0f/zwPL73
-         K5/Wepre7Dg6p0tFPjKHNSRxGySt5FTr/NrTkjG7deHOWSalmJUFiUZekatzsgAi2aJK
-         MAtNVHs003PBw5K47PNihMqmsBuVBkJaY5eNv8Xiuu5w029uFHU+lWnhe4qw9GIc3lOk
-         WI9vXJeIl3yZRIkmN3nFfE6k05jUK8Kk94eLM7ktqcBY43ygmEMnPLp4BBlIF7YQmQ6F
-         4jBQ==
-X-Gm-Message-State: APjAAAWqwnMeNPcqOGrZF2f6YI3ERR6O5Pcx8bHliWjcbcdekwJ2tn0x
-        zlk3mttfoIEqHDFryazCQ0m+KqmtcIiALyytvBzw7OUjFyMOI2ZShX02v2vTwzzpZXml4MxQBtv
-        zLJK1p48s+qS9lqP+QRYJSVvYSS0=
-X-Received: by 2002:a2e:894b:: with SMTP id b11mr10980566ljk.152.1569920912182;
-        Tue, 01 Oct 2019 02:08:32 -0700 (PDT)
-X-Google-Smtp-Source: APXvYqwMmoZWktrU9t3bsxs/zxOrAZ9ZKCtaEs/KadF1Rn2MREKt6ho0vvj8CvEvxNHwXsMNihwIvg==
-X-Received: by 2002:a2e:894b:: with SMTP id b11mr10980561ljk.152.1569920912043;
-        Tue, 01 Oct 2019 02:08:32 -0700 (PDT)
-Received: from alrua-x1.borgediget.toke.dk ([2a00:7660:6da:443::2])
-        by smtp.gmail.com with ESMTPSA id t22sm3720806lfg.91.2019.10.01.02.08.30
+        bh=wlyXXImOIp1mcAi7TD8GXAiJ2gSaRKFmxGZ/4rWjOZk=;
+        b=HQeSgTxXWUdeZO1B0wlK8XQ9RRXIQt4INzhxalj5laM92C7nopexqA2yr7NTxfQvgr
+         4vdZZYhpWqlAxP7eK9UXQRTq/dN6toSqTKqhfqU2VjfSo+nRClyMVtkoeLvnmwooaFEl
+         GyrDysgA/UMy3iblHBL2UFbJ9/eosbLCEGTSucuBrcrCyltSFYvKU5gxc1S0Fwkw3KEP
+         uPhprvglg7NzpDQKPp9ykJiuGRgl+rk+mep3Vze7Bs9rogI9KnIXtCCr3FDt/pq+tsO5
+         AFwltiARthJp/JNqp89sV3NyTetiGOjVDWwFVGHw427aReLZQNkrZImYRcXOtUsRzmnM
+         zaRw==
+X-Gm-Message-State: APjAAAUo8AqRGO9nKt+RfQcd6bFMGlgUPF/fBUwuNIB7dfNYVYEouwcO
+        FxXFAvpTluifkEtT3jY2qn5YiIx14FuCl8yEsYPEWJweQSwHSSxyrHJ6c0i2i+hxkXbhCWuWCo5
+        4U0ejQ0MlZ9B62pODt89KIey0GEw=
+X-Received: by 2002:aa7:d789:: with SMTP id s9mr24215875edq.62.1569920971873;
+        Tue, 01 Oct 2019 02:09:31 -0700 (PDT)
+X-Google-Smtp-Source: APXvYqyCqH9jlzfDumYbdUArITAjkR/o1V5EP9TaHmmbcp6BHtfMgQprpm+eLJx+fRgaiLD0rIE/BQ==
+X-Received: by 2002:aa7:d789:: with SMTP id s9mr24215867edq.62.1569920971722;
+        Tue, 01 Oct 2019 02:09:31 -0700 (PDT)
+Received: from alrua-x1.borgediget.toke.dk (borgediget.toke.dk. [85.204.121.218])
+        by smtp.gmail.com with ESMTPSA id u27sm3018104edb.48.2019.10.01.02.09.30
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 01 Oct 2019 02:08:31 -0700 (PDT)
+        Tue, 01 Oct 2019 02:09:31 -0700 (PDT)
 Received: by alrua-x1.borgediget.toke.dk (Postfix, from userid 1000)
-        id 589A218063D; Tue,  1 Oct 2019 11:08:30 +0200 (CEST)
+        id B4F9118063D; Tue,  1 Oct 2019 11:09:30 +0200 (CEST)
 From:   Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>
 To:     Johannes Berg <johannes@sipsolutions.net>
 Cc:     linux-wireless@vger.kernel.org,
@@ -59,14 +59,14 @@ Cc:     linux-wireless@vger.kernel.org,
         John Crispin <john@phrozen.org>,
         Lorenzo Bianconi <lorenzo@kernel.org>,
         Felix Fietkau <nbd@nbd.name>
-Subject: Re: [PATCH RFC/RFT 1/4] mac80211: Rearrange ieee80211_tx_info to make room for tx_time_est
-In-Reply-To: <fd0d467d352177ac20100239cb18f80310b43fa9.camel@sipsolutions.net>
-References: <156889576422.191202.5906619710809654631.stgit@alrua-x1> <156889576534.191202.17686228416284995279.stgit@alrua-x1> <fd0d467d352177ac20100239cb18f80310b43fa9.camel@sipsolutions.net>
+Subject: Re: [PATCH RFC/RFT 2/4] mac80211: Add API function to set the last TX bitrate for a station
+In-Reply-To: <2518c49c96b8b5233fabcb8bafccba6b8f3155bf.camel@sipsolutions.net>
+References: <156889576422.191202.5906619710809654631.stgit@alrua-x1> <156889576646.191202.14461472477971784776.stgit@alrua-x1> <2518c49c96b8b5233fabcb8bafccba6b8f3155bf.camel@sipsolutions.net>
 X-Clacks-Overhead: GNU Terry Pratchett
-Date:   Tue, 01 Oct 2019 11:08:30 +0200
-Message-ID: <87v9t8vnn5.fsf@toke.dk>
+Date:   Tue, 01 Oct 2019 11:09:30 +0200
+Message-ID: <87sgocvnlh.fsf@toke.dk>
 MIME-Version: 1.0
-X-MC-Unique: CWdt7FA0OSKwpO3SIgyM5w-1
+X-MC-Unique: C4vqDroYP7-2vJ0NuHonmA-1
 X-Mimecast-Spam-Score: 0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
@@ -77,47 +77,30 @@ X-Mailing-List: linux-wireless@vger.kernel.org
 
 Johannes Berg <johannes@sipsolutions.net> writes:
 
-> Hi,
->
-> Sorry for the long time to review here ...
->
 > On Thu, 2019-09-19 at 14:22 +0200, Toke H=C3=B8iland-J=C3=B8rgensen wrote=
 :
->> From: Toke H=C3=B8iland-J=C3=B8rgensen <toke@redhat.com>
->>=20
->> To implement airtime queue limiting, we need to keep a running account o=
-f
->> the estimated airtime of all skbs queued into the device. Do to this
->> correctly, we need to store the airtime estimate into the skb so we can
->> decrease the outstanding balance when the skb is freed. This means that =
-the
->> time estimate must be stored somewhere that will survive for the lifetim=
-e
->> of the skb.
->>=20
->> Fortunately, we had a couple of bytes left in the 'status' field in the
->> ieee80211_tx_info; and since we only plan to calculate the airtime estim=
-ate
->> after the skb is dequeued from the FQ structure, on the control side we =
-can
->> share the space with the codel enqueue time. And by rearranging the orde=
-r
->> of elements it is possible to have the position of the new tx_time_est l=
-ine
->> up between the control and status structs, so the value will survive fro=
-m
->> when mac80211 hands the packet to the driver, and until the driver eithe=
-r
->> frees it, or hands it back through TX status.
 >
-> Seems reasonable to me, if we end up needing it and don't have an out-
-> of-band path (that you seem to have been discussing in this long
-> thread too)
+> Given a ULL constant:
+>
+>> +/* constants for calculating reciprocals to avoid division in fast path=
+ */
+>> +#define IEEE80211_RECIPROCAL_DIVISOR 0x100000000ULL
+>
+> [...]
+>
+>> +void ieee80211_sta_set_last_tx_bitrate(struct ieee80211_sta *pubsta,
+>> +=09=09=09=09       u32 rate)
+>> +{
+>> +=09struct sta_info *sta =3D container_of(pubsta, struct sta_info, sta);
+>> +
+>> +=09sta->last_tx_bitrate =3D rate;
+>> +=09sta->last_tx_bitrate_reciprocal =3D ((u64)IEEE80211_RECIPROCAL_DIVIS=
+OR / rate);
+>
+> that cast seems unnecessary?
 
-Awesome! Any idea for how to make it work on big-endian systems? I got a
-splat from the kbuild robot that triggered the BUILD_BUG_ON when
-building for m68k. I assume it's the union with codel_time_t that ends
-up being aligned wrong...
+Yeah. I only remembered to make it a ULL constant later, and forgot to
+remove the cast. But I guess this should be using do_div() anyway...
 
 -Toke
 
