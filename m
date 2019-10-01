@@ -2,80 +2,108 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 4A907C345B
-	for <lists+linux-wireless@lfdr.de>; Tue,  1 Oct 2019 14:36:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1731EC34BE
+	for <lists+linux-wireless@lfdr.de>; Tue,  1 Oct 2019 14:50:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2387805AbfJAMf4 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 1 Oct 2019 08:35:56 -0400
-Received: from mail-qk1-f195.google.com ([209.85.222.195]:37127 "EHLO
-        mail-qk1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726185AbfJAMf4 (ORCPT
+        id S1732007AbfJAMtX (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 1 Oct 2019 08:49:23 -0400
+Received: from s3.sipsolutions.net ([144.76.43.62]:33456 "EHLO
+        sipsolutions.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726181AbfJAMtX (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 1 Oct 2019 08:35:56 -0400
-Received: by mail-qk1-f195.google.com with SMTP id u184so11013588qkd.4
-        for <linux-wireless@vger.kernel.org>; Tue, 01 Oct 2019 05:35:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=8R02kNXRxfu4pSotKAW6zObEoBS2WT0sAFLmZGTDJp0=;
-        b=IYIfcfAgje5CndjZQmWhIviMbdoRRukzTaAVG636GRSiicnmBQxfHoOiV+wpaMYwD5
-         2D/anylaPAqkZp/jtVbKX7+2MOKJkud0ELObeWxBwqUk9mZctBOma0KfjcD7Xn4Gd3ca
-         bZEYkN2L3vYHqInRUWGHdjsq4kyWBZJz526nzn4MHINmV70F/Azz1+/lJo4osxtbjl6y
-         A+v6ZEfYH64wph5Y/iPUwwPWVLgNr+Al2rQ8VVQ0q95GOLNYTsGS2JJufmHX3XvzdH0P
-         VsfWDTCPvQP9rwJYtnhv4q394AJjKZn1fugOUcCVRqZ0VXcokUC9zlkrZDpfScwaWNjZ
-         jJsA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=8R02kNXRxfu4pSotKAW6zObEoBS2WT0sAFLmZGTDJp0=;
-        b=XqqQRwUX7uaW8apGxy1FxlRyN7f0nib/VMw/wKjBel8bq/v2T3K0qvbRh6WWWuzwlP
-         BrKQ9zg7YNIOH05Few5Pw/dvkP2bpn4pMgFb36xlpiF0PyFTfhfhDM4wsBvrt9yKQSSN
-         jHnh1gFATBbdJ7sfP15Kka8xNg3mX4KQxjceIGjwXksW0I0sj5wwHE1j7EJiOWEmLpb6
-         sp29IISUkrNPmCuvq9l/FCjPfaRu4NuQH9hNbutUrKxqxkJuvTinTPOvHO7CLRjVK4R2
-         g0HU2m+pk4M94uzCx/mL6HyiO/pM0FH5prKO5yfLCITW4Wep5pcYq+g4cuFzAHonVH7V
-         G0rg==
-X-Gm-Message-State: APjAAAVdn3ZjoLQF99YKdvgtdclXgp+LCik2Dm++pCln8tqrXvORXq/8
-        wTpY3vNW9y+k/jvrVd6WYPNEJRF6TjoL3gSmfojefvkGdhI5YQ==
-X-Google-Smtp-Source: APXvYqxuMb74HtkNiGpyLdknC2STSEnTFCy3g2oyaYuMwZLt3GAA0waYtLs0s5l4ZYIO+uzktJEUfHLsBWvuwEQ/MBE=
-X-Received: by 2002:a37:76c3:: with SMTP id r186mr3806814qkc.224.1569933355194;
- Tue, 01 Oct 2019 05:35:55 -0700 (PDT)
-MIME-Version: 1.0
-References: <CAMdYzYpqYbgb-9s1VPSreoosQ=BPnhzC_gKOzbGipKikk5+4zA@mail.gmail.com>
- <7b920db4e91a7e68f9eeacd95339b5f509e3273b.camel@sipsolutions.net>
-In-Reply-To: <7b920db4e91a7e68f9eeacd95339b5f509e3273b.camel@sipsolutions.net>
-From:   Peter Geis <pgwipeout@gmail.com>
-Date:   Tue, 1 Oct 2019 08:35:44 -0400
-Message-ID: <CAMdYzYq2iifpZzRAxGwjL9S65O6cL4vP1eJE-d6bq7zG-mQ7qA@mail.gmail.com>
-Subject: Re: bug: nl80211 / brcmfmac broken for bcm4329/bcm4330 sdio in linux-next
-To:     Johannes Berg <johannes@sipsolutions.net>
-Cc:     kvalo@codeaurora.org, linux-wireless@vger.kernel.org
+        Tue, 1 Oct 2019 08:49:23 -0400
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+        (Exim 4.92.2)
+        (envelope-from <johannes@sipsolutions.net>)
+        id 1iFHaj-0000G8-HQ; Tue, 01 Oct 2019 14:49:21 +0200
+Message-ID: <dfd42be470fd98ecc3506ea03806b3fd799cf79a.camel@sipsolutions.net>
+Subject: Re: [PATCH 6/6] ath10k: sdio: replace skb_trim with explicit set of
+ skb->len
+From:   Johannes Berg <johannes@sipsolutions.net>
+To:     Kalle Valo <kvalo@codeaurora.org>,
+        Erik Stromdahl <erik.stromdahl@gmail.com>
+Cc:     linux-wireless@vger.kernel.org, ath10k@lists.infradead.org
+Date:   Tue, 01 Oct 2019 14:49:19 +0200
+In-Reply-To: <875zl864hl.fsf@kamboji.qca.qualcomm.com>
+References: <20190409190851.4557-1-erik.stromdahl@gmail.com>
+         <20190409190851.4557-7-erik.stromdahl@gmail.com>
+         <87zhovcqhl.fsf@kamboji.qca.qualcomm.com>
+         <deca77d1-f171-e0cd-b571-89c2f8bafc87@gmail.com>
+         <875zl864hl.fsf@kamboji.qca.qualcomm.com>
 Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.30.5 (3.30.5-1.fc29) 
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Tue, Oct 1, 2019 at 3:32 AM Johannes Berg <johannes@sipsolutions.net> wrote:
->
-> Hi,
->
-> > Since 5.3 landed, brcmfmac has been broken both on bcm4329 and bcm4330
-> > sdio devices.
->
-> Yep, thanks for the report. I don't think you mean 5.3, as that doesn't
-> contain the problematic commit as far as I can tell? That was commit
-> 2a38075cd0be ("nl80211: Add support for EDMG channels").
->
-> I have a fix for this already pending I believe:
-> https://patchwork.kernel.org/patch/11156631/
->
-> johannes
->
+On Tue, 2019-10-01 at 15:21 +0300, Kalle Valo wrote:
 
-Correct, I was using the 5.3 merge window as the point of reference
-for the linux-next timeline.
-Confirmed this patch corrects the issue.
+> > > >   		padded_len = ath10k_sdio_calc_txrx_padded_len(ar_sdio,
+> > > >   							      skb->len);
+> > > > -		skb_trim(skb, padded_len);
+> > > > +		/* FIXME: unsure if just extending the skb len is the right
+> > > > +		 * thing to do since we might read outside the skb->data
+> > > > +		 * buffer. But we really don't want to realloc the skb just to
+> > > > +		 * pad the length.
+> > > > +		 */
+> > > > +		skb->len = padded_len;
+> > > 
+> > > Good catch! But I don't think you can modify skb->len directly like
+> > > that. There is skb_pad() but that doesn't change skb->len, so that most
+> > > likely needs more changes. So maybe skb_put() is the safest here?
 
-Tested-by: Peter Geis <pgwipeout@gmail.com>
+This seems unsafe to me - if you don't have any tailroom, then you'll
+end up sending data to the device that's not really for the device, or
+depending on how all this is allocated you might even fault later
+because of sdio_memcpy_toio(..., ..., skb->data, skb->len)...
+
+> > I have tried a few different solutions for this, but none seems to be
+> > bullet proof.
+> > 
+> > skb_pad() raises a BUG() if there is not enough space in skb->data.
+
+As it should.
+
+> > The best candidate so far has been skb_put_padto(). It pads and reallocates
+> > the skb if needed.
+> > 
+> > The problem is that it also cause a panic if there is more than one reference
+> > to the skb (skb_shared() returns true).
+
+As it also should :-)
+
+> In my opinion the cleanest approach would be to add extra_tx_tailroom to
+> struct ieee80211_hw, similarly like we have extra_tx_headroom, and that
+> way ath10k could easily add the padding with skb_pad(). Or what do you
+> think?
+
+I disagree, adding tailroom to the SKB just for padding would be
+useless...
+
+Probably all you really have to do is this:
+
+--- a/drivers/net/wireless/ath/ath10k/sdio.c
++++ b/drivers/net/wireless/ath/ath10k/sdio.c
+@@ -1485,11 +1485,10 @@ static int ath10k_sdio_hif_tx_sg(struct ath10k *ar, u8 pipe_id,
+ 		skb = items[i].transfer_context;
+ 		padded_len = ath10k_sdio_calc_txrx_padded_len(ar_sdio,
+ 							      skb->len);
+-		skb_trim(skb, padded_len);
+ 
+ 		/* Write TX data to the end of the mbox address space */
+ 		address = ar_sdio->mbox_addr[eid] + ar_sdio->mbox_size[eid] -
+-			  skb->len;
++			  padded_len;
+ 		ret = ath10k_sdio_prep_async_req(ar, address, skb,
+ 						 NULL, true, eid);
+ 		if (ret)
+
+
+since the device evidently doesn't care what's in the pad bytes, so it
+can just stay as is inside its own memory?
+
+johannes
+
