@@ -2,97 +2,100 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A6026C33AD
-	for <lists+linux-wireless@lfdr.de>; Tue,  1 Oct 2019 14:02:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A6E03C33E1
+	for <lists+linux-wireless@lfdr.de>; Tue,  1 Oct 2019 14:09:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732600AbfJAMCl (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 1 Oct 2019 08:02:41 -0400
-Received: from smtp.codeaurora.org ([198.145.29.96]:53450 "EHLO
-        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725821AbfJAMCk (ORCPT
+        id S2387476AbfJAMIl (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 1 Oct 2019 08:08:41 -0400
+Received: from mail-wr1-f65.google.com ([209.85.221.65]:33088 "EHLO
+        mail-wr1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725821AbfJAMIl (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 1 Oct 2019 08:02:40 -0400
-Received: by smtp.codeaurora.org (Postfix, from userid 1000)
-        id A1C5360AD9; Tue,  1 Oct 2019 12:02:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1569931359;
-        bh=QT2tNqnnlIdmUauWjnASbr4IMyXi0R64P5A0OYTYtKA=;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=jslPBATYEaLkWJoZ64yyx5OT6FjxvqR3FwCr960ub9CS1VSzYhmlrlxx18rvxa8IW
-         OnWH2P8IkVkTgepfWAW2XXG8JFcnE0J9Cmx8LFN1vVabIXzNmeKneOXp8cr/dtHdeE
-         b0PU2JVRCnCdwIrMmeTHed/bRfqeaNfy/VmcAIz4=
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        pdx-caf-mail.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.7 required=2.0 tests=ALL_TRUSTED,BAYES_00,
-        DKIM_INVALID,DKIM_SIGNED,SPF_NONE autolearn=no autolearn_force=no
-        version=3.4.0
-Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        (Authenticated sender: kvalo@smtp.codeaurora.org)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id E9CA260112;
-        Tue,  1 Oct 2019 12:02:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1569931359;
-        bh=QT2tNqnnlIdmUauWjnASbr4IMyXi0R64P5A0OYTYtKA=;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=jslPBATYEaLkWJoZ64yyx5OT6FjxvqR3FwCr960ub9CS1VSzYhmlrlxx18rvxa8IW
-         OnWH2P8IkVkTgepfWAW2XXG8JFcnE0J9Cmx8LFN1vVabIXzNmeKneOXp8cr/dtHdeE
-         b0PU2JVRCnCdwIrMmeTHed/bRfqeaNfy/VmcAIz4=
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org E9CA260112
-Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
-From:   Kalle Valo <kvalo@codeaurora.org>
-To:     Dan Carpenter <dan.carpenter@oracle.com>
-Cc:     Solomon Peachy <pizza@shaftnet.org>,
-        linux-wireless@vger.kernel.org, kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH v2] cw1200: Fix a signedness bug in cw1200_load_firmware()
-References: <20191001114501.GA6550@mwanda>
-Date:   Tue, 01 Oct 2019 15:02:35 +0300
-In-Reply-To: <20191001114501.GA6550@mwanda> (Dan Carpenter's message of "Tue,
-        1 Oct 2019 14:45:01 +0300")
-Message-ID: <87a7ak65d0.fsf@kamboji.qca.qualcomm.com>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
+        Tue, 1 Oct 2019 08:08:41 -0400
+Received: by mail-wr1-f65.google.com with SMTP id b9so15220403wrs.0;
+        Tue, 01 Oct 2019 05:08:39 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=vDFY4l7ObdzMDLTWvSUTkZyMTjDs2NyWYY8Kts57jhs=;
+        b=LQWkubhsu5JfOHnNRgZxHIVVqCwzlzmLuZ9RHk9QImzDX+0MV/CkXvsOatJ8tZrmXe
+         piAW/kJ612Zz75+s/zPNZ3jGgdtNmrHKAM1JfokLdSUAtFQAhU32AoKvMfarbTjWdPzT
+         SQEMxn+a2+nL4iNSRZbq09+EhJfByQ6UrXxaZnqSMks+OEgjXFSfc6OBquesTes2NQ07
+         XXtnlwoC9mcSE7WTBZ0Wc4mCa8Tl7iMcFslMY65KqGDhNWT055fwAULryP9LZae5dd3I
+         mat6PHk4RoNhs1du92YxKWZnnunloWSOpEJ2+V26Jqr0NWc1ao+HMTW1Z+Evw7XFEXCd
+         kCuQ==
+X-Gm-Message-State: APjAAAXRGfOqKC1GUjsfAFk1rBo27bvu7FrqiRlgpNcgHKyCXKXKHzSU
+        HbztSGXtCP1h6vE50Pxg9cdagF++
+X-Google-Smtp-Source: APXvYqyujIGI2hIGh/lUB8MFy3vCutJPJw+lMg4NWy6Jo7f9gI9ynwIJ+NcNgdPUNqFXXaJHDo5zCQ==
+X-Received: by 2002:a5d:540c:: with SMTP id g12mr17579546wrv.207.1569931718832;
+        Tue, 01 Oct 2019 05:08:38 -0700 (PDT)
+Received: from green.intra.ispras.ru (bran.ispras.ru. [83.149.199.196])
+        by smtp.googlemail.com with ESMTPSA id f18sm2600683wmh.43.2019.10.01.05.08.37
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 01 Oct 2019 05:08:38 -0700 (PDT)
+From:   Denis Efremov <efremov@linux.com>
+To:     linux-wireless@vger.kernel.org
+Cc:     Denis Efremov <efremov@linux.com>, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, wil6210@qti.qualcomm.com,
+        Maya Erez <merez@codeaurora.org>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        "David S. Miller" <davem@davemloft.net>, stable@vger.kernel.org
+Subject: [PATCH] wil6210: check len before memcpy() calls
+Date:   Tue,  1 Oct 2019 15:08:23 +0300
+Message-Id: <20191001120823.29853-1-efremov@linux.com>
+X-Mailer: git-send-email 2.21.0
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Dan Carpenter <dan.carpenter@oracle.com> writes:
+memcpy() in wmi_set_ie() and wmi_update_ft_ies() is called with
+src == NULL and len == 0. This is an undefined behavior. Fix it
+by checking "ie_len > 0" before the memcpy() calls.
 
-> The "priv->hw_type" is an enum and in this context GCC will treat it
-> as an unsigned int so the error handling will never trigger.
->
-> Fixes: a910e4a94f69 ("cw1200: add driver for the ST-E CW1100 & CW1200 WLAN chipsets")
-> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
-> ---
-> v2: better style and preserve the error code.
->
->  drivers/net/wireless/st/cw1200/fwio.c | 6 +++---
->  1 file changed, 3 insertions(+), 3 deletions(-)
->
-> diff --git a/drivers/net/wireless/st/cw1200/fwio.c b/drivers/net/wireless/st/cw1200/fwio.c
-> index 6574e78e05ea..2a03dc533b6a 100644
-> --- a/drivers/net/wireless/st/cw1200/fwio.c
-> +++ b/drivers/net/wireless/st/cw1200/fwio.c
-> @@ -320,12 +320,12 @@ int cw1200_load_firmware(struct cw1200_common *priv)
->  		goto out;
->  	}
->  
-> -	priv->hw_type = cw1200_get_hw_type(val32, &major_revision);
-> -	if (priv->hw_type < 0) {
-> +	ret = cw1200_get_hw_type(val32, &major_revision);
-> +	if (ret < 0) {
->  		pr_err("Can't deduce hardware type.\n");
-> -		ret = -ENOTSUPP;
->  		goto out;
->  	}
-> +	priv->hw_type = ret;
+As suggested by GCC documentation:
+"The pointers passed to memmove (and similar functions in <string.h>)
+must be non-null even when nbytes==0, so GCC can use that information
+to remove the check after the memmove call." [1]
 
-Thanks, this is indeed much better.
+[1] https://gcc.gnu.org/gcc-4.9/porting_to.html
 
+Cc: Maya Erez <merez@codeaurora.org>
+Cc: Kalle Valo <kvalo@codeaurora.org>
+Cc: "David S. Miller" <davem@davemloft.net>
+Cc: stable@vger.kernel.org
+Signed-off-by: Denis Efremov <efremov@linux.com>
+---
+ drivers/net/wireless/ath/wil6210/wmi.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/net/wireless/ath/wil6210/wmi.c b/drivers/net/wireless/ath/wil6210/wmi.c
+index 153b84447e40..41389c1eb252 100644
+--- a/drivers/net/wireless/ath/wil6210/wmi.c
++++ b/drivers/net/wireless/ath/wil6210/wmi.c
+@@ -2505,7 +2505,8 @@ int wmi_set_ie(struct wil6210_vif *vif, u8 type, u16 ie_len, const void *ie)
+ 	cmd->mgmt_frm_type = type;
+ 	/* BUG: FW API define ieLen as u8. Will fix FW */
+ 	cmd->ie_len = cpu_to_le16(ie_len);
+-	memcpy(cmd->ie_info, ie, ie_len);
++	if (ie_len)
++		memcpy(cmd->ie_info, ie, ie_len);
+ 	rc = wmi_send(wil, WMI_SET_APPIE_CMDID, vif->mid, cmd, len);
+ 	kfree(cmd);
+ out:
+@@ -2541,7 +2542,8 @@ int wmi_update_ft_ies(struct wil6210_vif *vif, u16 ie_len, const void *ie)
+ 	}
+ 
+ 	cmd->ie_len = cpu_to_le16(ie_len);
+-	memcpy(cmd->ie_info, ie, ie_len);
++	if (ie_len)
++		memcpy(cmd->ie_info, ie, ie_len);
+ 	rc = wmi_send(wil, WMI_UPDATE_FT_IES_CMDID, vif->mid, cmd, len);
+ 	kfree(cmd);
+ 
 -- 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+2.21.0
+
