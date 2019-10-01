@@ -2,85 +2,100 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E9C1EC3DA7
-	for <lists+linux-wireless@lfdr.de>; Tue,  1 Oct 2019 19:01:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9FCF9C3E4E
+	for <lists+linux-wireless@lfdr.de>; Tue,  1 Oct 2019 19:13:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731677AbfJARBU (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 1 Oct 2019 13:01:20 -0400
-Received: from mail-lj1-f173.google.com ([209.85.208.173]:42015 "EHLO
-        mail-lj1-f173.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729864AbfJARBT (ORCPT
+        id S1727322AbfJARNl (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 1 Oct 2019 13:13:41 -0400
+Received: from mail-pg1-f193.google.com ([209.85.215.193]:34377 "EHLO
+        mail-pg1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726473AbfJARNl (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 1 Oct 2019 13:01:19 -0400
-Received: by mail-lj1-f173.google.com with SMTP id y23so14134736lje.9
-        for <linux-wireless@vger.kernel.org>; Tue, 01 Oct 2019 10:01:18 -0700 (PDT)
+        Tue, 1 Oct 2019 13:13:41 -0400
+Received: by mail-pg1-f193.google.com with SMTP id y35so10113658pgl.1
+        for <linux-wireless@vger.kernel.org>; Tue, 01 Oct 2019 10:13:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=uD/wtsOUtAiuwHPnfertm4Y+ipE9kgBw/61YeeXaS38=;
-        b=ExcRSLE6pi2cVH+BCE+l+ey5SdeNFm75anjMHpkkVyDzAkaYS8t/PBjiroCagX3ZxK
-         umv+7YXBBKSKgfcI9g7hhMnoQt303ckKx3KYrhxp6Y+ZANr5+KAISajS5fw7+un4hUXm
-         hWeme7I8puo2DeozAmFdUzZZNWy1CyBOaDttZ716PXxecsCQx60/4hJP2w10bizt2PY2
-         ODeSVp2uQDQ1wfT9jNeQJRVQ6LwH6KTbXzT94e2Hiyi08f9q+h0sKp97HpLvDGIR1Jb4
-         ngiD8xOMuVQs9vMWUJ72DEBkegJGIEc6mMGevB+j6yuBoMO2PF5Hdum/Vu+ikkJlSbhJ
-         gU5g==
+        d=eero.com; s=google;
+        h=subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-transfer-encoding:content-language;
+        bh=AQENXz9W3lh6tp8zW2p3ipcz3DJsc45NsjiOFfnhUaM=;
+        b=LtLBRh3au2KYlosRYEUIS/BLjCPifqRNJvzEEBjoueuyoSvPrzX+6ClaP7Tlybi3Bq
+         vCP+DmjTQoFR4cOZpdWzGCwjjK+PrIPniBez+Pip1Cx/A0QfNH2y2DceTBpVlCVz5aWy
+         DErC04jImUmW+FXm+FrMpt855FkvPH4d51LtA=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=uD/wtsOUtAiuwHPnfertm4Y+ipE9kgBw/61YeeXaS38=;
-        b=JiFU6niyx/wUrUcLmhocbcyZ6Pa+xdWGBAeN488k5WpfNsLGqwsuxH11q5iTOZnRmw
-         CvF3Z+C/5vKFH29ST5a1jD6CmFzYU0zCMIZmTZaFyIgasQCa3p46ZKZtKqSmdD9GUi4S
-         I33SD+fUmBpaycEEw2ZjGX9h/96JQslykGjl5G3UZqEloxWhOmBJiEtlNFP9FYOsrta1
-         nunyS6umBg59jZShkFqxxtyxjGM31AP2mV9+71HYyhyqIOzrkt1dVYM7uoDxfyee6Ntv
-         zCCHIHqUoWCw7hbtwgojgfnPr4swNZhVesqP+TXfn5iw/3JBLAwyqJ5mD7RkF8V4s3j5
-         fHEA==
-X-Gm-Message-State: APjAAAVJXs+X+3ZD3VKOZ7iqvqj06GbqT+SNZ9c+MAnhRU/A22hts3rk
-        tXghI4w1M+Z7HtS5CKHRH9telgvB+75XTyNVX48=
-X-Google-Smtp-Source: APXvYqzXIjoh6j8R6wyKbTnhDH248/Z9RNJnIdlNFSbny1km3ekIiDHjX/wxHe7mm+YCSNMHaRFK/u2KDdOOee38wiM=
-X-Received: by 2002:a2e:9059:: with SMTP id n25mr9505259ljg.134.1569949277911;
- Tue, 01 Oct 2019 10:01:17 -0700 (PDT)
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-transfer-encoding
+         :content-language;
+        bh=AQENXz9W3lh6tp8zW2p3ipcz3DJsc45NsjiOFfnhUaM=;
+        b=eHZCeytNRaq2DCclco/Gy8M3QsNuXgco9A13JinjPoCjVk2kIly1NRxeGVnL6SzGkI
+         tnSJ3Mf3CJVwX9GtbsamrEtkXod59NjiBsydHD11SW0hqGqlee122BFKXmfmuZ4lpr/Y
+         xNXvHi+daesOo8H/pTu4YmKm2PYwtl3wG+AFafCzkYwuEOhcashEa93tgYmykNsPbX9X
+         Bwhy/WqDG7j/XvZITgqGtTfD1xAoqJFIN7Nzo4OEzRbBbxswZZjP2F41uPlQpEvqi1EH
+         bu/6TduV2KJLLMKSmIrk1kpRuMNzBPykyiMpbBR3jEu6zStbjqsLHeENZGbleE6OeSPc
+         6BmQ==
+X-Gm-Message-State: APjAAAVyK2Fwh49Pl8WCSnNFAKyJW1DMauw+AMLa5uBjF0qafX6IjTK4
+        ZImI7ybBQZ4BXdsHXHPn7RivOQ==
+X-Google-Smtp-Source: APXvYqwf0p5tJ29zKh4vSxVhDfuTNgdsfsk3N1ESFTW3/VZ0HnDwJmd6IwK0GPgB7wRx6rMfLlKsPQ==
+X-Received: by 2002:a63:6988:: with SMTP id e130mr32071818pgc.203.1569950020378;
+        Tue, 01 Oct 2019 10:13:40 -0700 (PDT)
+Received: from [10.0.2.15] (c-98-234-217-115.hsd1.ca.comcast.net. [98.234.217.115])
+        by smtp.gmail.com with ESMTPSA id y7sm16188954pfn.142.2019.10.01.10.13.39
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Tue, 01 Oct 2019 10:13:39 -0700 (PDT)
+Subject: Re: [PATCH 2/2] ath10k: switch to ieee80211_tx_dequeue_ni
+To:     Kalle Valo <kvalo@codeaurora.org>,
+        Erik Stromdahl <erik.stromdahl@gmail.com>
+Cc:     johannes@sipsolutions.net, davem@davemloft.net,
+        linux-wireless@vger.kernel.org, ath10k@lists.infradead.org,
+        linux-kernel@vger.kernel.org
+References: <20190617200140.6189-1-erik.stromdahl@gmail.com>
+ <20190617200140.6189-2-erik.stromdahl@gmail.com>
+ <87eezw660r.fsf@kamboji.qca.qualcomm.com>
+From:   Peter Oh <peter.oh@eero.com>
+Message-ID: <19f8023a-1943-9bf5-9a59-a7643f7692bf@eero.com>
+Date:   Tue, 1 Oct 2019 10:13:35 -0700
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.8.0
 MIME-Version: 1.0
-References: <CAK8U23biuUY9hWE1NOnSbJCRtRVfdg1a27ZOkU5cbaGdzZLYEA@mail.gmail.com>
- <fa029365caf3db963b1c2ec05ae389a8c8fc20fb.camel@sipsolutions.net>
- <CAK8U23aHprXtZm2PV3sj6g4Da_ponK9L0YmSO1tb6xoFgK-ZLA@mail.gmail.com>
- <80d9c12986ec0a13c34672ca1c16f37cae0cc096.camel@sipsolutions.net>
- <CABPxzYLrTC3kS86iyfq+RY=XEgjedu2MWPtn+i+H50jPz3oh3w@mail.gmail.com>
- <39d646206446159a2b0a67ee7d8667483ade0733.camel@sipsolutions.net>
- <CABPxzYL0i+YbKh-xMXsS-xWeQvwfFUvv7vGhugM1e+OFMOSHSg@mail.gmail.com>
- <CAK8U23bbiGhmDg-ChDJtbRVVc_6njVdoUjfAhqM+V3yfQXTC4Q@mail.gmail.com>
- <CABPxzY+8Jjvjv0x79yzo+rL3nONTZSkROK1T+gMqq5nhXb=7-g@mail.gmail.com>
- <CAK8U23bb9C+16zuGi+uAYxUg-goddiSZfDAJUYeC1Xpu=jud+Q@mail.gmail.com>
- <df3b53f157e113e309360ed40b1f36b9f08f4d8c.camel@sipsolutions.net>
- <CAK8U23YMeFcQPLfWTMijyJaiX1V+NO9FWmq70nhS+bLVNxFYkg@mail.gmail.com> <616a319e4b8623508f6cd00fcfca8303f494a2de.camel@sipsolutions.net>
-In-Reply-To: <616a319e4b8623508f6cd00fcfca8303f494a2de.camel@sipsolutions.net>
-From:   Ramon Fontes <ramonreisfontes@gmail.com>
-Date:   Tue, 1 Oct 2019 14:01:06 -0300
-Message-ID: <CAK8U23Yrdw8dtO2jDQMMECWpnp=8LEOPqbfL5NQt4sjz3VjsDQ@mail.gmail.com>
-Subject: Re: mac80211_hwsim (kernel 4.18+): wmediumd + 2.4Ghz
-To:     Johannes Berg <johannes@sipsolutions.net>
-Cc:     Bob Copeland <me@bobcopeland.com>,
-        Krishna Chaitanya <chaitanya.mgit@gmail.com>,
-        linux-wireless <linux-wireless@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <87eezw660r.fsf@kamboji.qca.qualcomm.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Content-Language: en-US
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-> Now that I look at that, I think most likely the reason is commit
-> 119f94a6fefc ("cfg80211: Address some corner cases in scan result
-> channel updating") which was backported to the 4.18 series.
 
-The problem is now fixed! :)
-Thank you so much for your support Johannes.
+On 10/1/19 4:48 AM, Kalle Valo wrote:
+> Erik Stromdahl <erik.stromdahl@gmail.com> writes:
+>
+>> Since ath10k_mac_tx_push_txq() can be called from process context, we
+>> must explicitly disable softirqs before the call into mac80211.
+>>
+>> By calling ieee80211_tx_dequeue_ni() instead of ieee80211_tx_dequeue()
+>> we make sure softirqs are always disabled even in the case when
+>> ath10k_mac_tx_push_txq() is called from process context.
+>>
+>> Calling ieee80211_tx_dequeue_ni() with softirq's already disabled
+>> (e.g., from softirq context) should be safe as the local_bh_disable()
+>> and local_bh_enable() functions (called from ieee80211_tx_dequeue_ni)
+>> are fully reentrant.
+>>
+>> Signed-off-by: Erik Stromdahl <erik.stromdahl@gmail.com>
+> I already applied this, but I still want to check _why_ you are changing
+> this? Is it that you want to call ath10k_mac_tx_push_pending() from a
+> workqueue in sdio.c in a future patch, or what? Because at the moment me
+> and Johannes were not able to find where this is called in process
+> context.
+>
+It seems Johannes wants to fix it in mac80211.
 
-Sorry for my ignorance but where can I follow up with these wmediumd changes?
-https://p.sipsolutions.net/6c52392b5e31d9d1.txt
+[PATCH v2] mac80211: keep BHs disabled while calling drv_tx_wake_queue()
 
-Btw, I've created a PR for this in the Bob's repo:
-https://github.com/bcopeland/wmediumd/pull/21/files
+Drivers typically expect this, as it's the case for almost all cases
+where this is called (i.e. from the TX path). Also, the code in mac80211
+itself (if the driver calls ieee80211_tx_dequeue()) expects this as it
+uses this_cpu_ptr() without additional protection.
 
---
-Ramon Fontes
