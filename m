@@ -2,108 +2,72 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 15EFDC3241
-	for <lists+linux-wireless@lfdr.de>; Tue,  1 Oct 2019 13:21:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DC604C3245
+	for <lists+linux-wireless@lfdr.de>; Tue,  1 Oct 2019 13:21:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731392AbfJALTc (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 1 Oct 2019 07:19:32 -0400
-Received: from s3.sipsolutions.net ([144.76.43.62]:60168 "EHLO
-        sipsolutions.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730379AbfJALTb (ORCPT
+        id S1730681AbfJALVi (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 1 Oct 2019 07:21:38 -0400
+Received: from mail-qk1-f195.google.com ([209.85.222.195]:35083 "EHLO
+        mail-qk1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725951AbfJALVi (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 1 Oct 2019 07:19:31 -0400
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-        (Exim 4.92.2)
-        (envelope-from <johannes@sipsolutions.net>)
-        id 1iFGBj-0006ZU-QK; Tue, 01 Oct 2019 13:19:27 +0200
-From:   Johannes Berg <johannes@sipsolutions.net>
-To:     linux-wireless@vger.kernel.org
-Cc:     =?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>,
-        Johannes Berg <johannes.berg@intel.com>,
-        Jiri Kosina <jikos@kernel.org>,
-        Aaron Hill <aa1ronham@gmail.com>,
-        Lukas Redlinger <rel+kernel@agilox.net>,
-        Oleksii Shevchuk <alxchk@gmail.com>
-Subject: [PATCH v2] mac80211: keep BHs disabled while calling drv_tx_wake_queue()
-Date:   Tue,  1 Oct 2019 13:19:23 +0200
-Message-Id: <1569928763-I3e8838c5ecad878e59d4a94eb069a90f6641461a@changeid>
-X-Mailer: git-send-email 2.20.1
+        Tue, 1 Oct 2019 07:21:38 -0400
+Received: by mail-qk1-f195.google.com with SMTP id w2so10801748qkf.2;
+        Tue, 01 Oct 2019 04:21:37 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc:content-transfer-encoding;
+        bh=T/9aZl1U9GrlNoj5M1zx7ZaXKGBZu2N7Er57Y3lw2mA=;
+        b=d6h4dqflK6dJrS3DyVHleQcC9Pg9WDR7VFgEP34yZDHFCiqOD5kl2X1P8zXfTpNPyh
+         Bzus2FED9RuFvA7ona/fcHkmbgK7VQfZwXRTQf181PrIkRU/SnVGN3FxTPKh9ApCYmyn
+         rfQhblHLMHp980TkwN6gV3EuybMNuh+ZNtZOmyri/ZEq8nXj7HzWRwYbDi3xaA0MHccg
+         3se3uEv6CQa38cioAfsForcsnDKsvQgFqGmBQW2McZHT0AfuwydSBx3oozx8be83tnbH
+         SqAsoJOUljSjHxW1JqrmfQ+KUEoFVlCVfnxdbH02hfw0EoViaxq82j7set6VWYBACkKb
+         c8aQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc:content-transfer-encoding;
+        bh=T/9aZl1U9GrlNoj5M1zx7ZaXKGBZu2N7Er57Y3lw2mA=;
+        b=Z7g8uMTEl+J8PywF+KbEPNWsDbeEhZBhZHg2pp0vWpv1DdVI+s8HcwEYFGZnetT5Bv
+         +WmG0VChAm7+L2pHX8DlHxKSjM9ZHWQHN+Dtdz1RwKGiZdayRPzbaaPtvPXX5554bLJ3
+         rs7xffLnJAv0Q6TdreYHNol7aZx31+ZA0Ev17G0of3WGSaXXzw7s6SvNZ/2hzQjyzLHA
+         Emt+AT9xMcne3h0yx9NWBpTBqgi11O49OVmp03fptKfceJMickCqMmedLysMVqwWf/EV
+         cHOkvB46jbM4UE6ZUyBUGd8P6kSwGrlX0QNKvtVAJjMixoy7YzO83Hyu5K8tt221c3Pe
+         5bSA==
+X-Gm-Message-State: APjAAAUaJvKjpQldVx4p2Pxl4aXTfOoiuB3dPSyrVsmnxQgkY63awnHD
+        +HFFjLIcUTicDXvelsZ28noxOB2Ymt0A5P+mS9o=
+X-Google-Smtp-Source: APXvYqyl9bVaXSVKnL22wKbGEcI8r30XZN9ZmuFl1zpfV4lXfZCyrG9S9ePOWNXJDXBNtEiWOudM/5L8lfXgPG0eab4=
+X-Received: by 2002:a37:a946:: with SMTP id s67mr5524550qke.470.1569928897381;
+ Tue, 01 Oct 2019 04:21:37 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20190917065044.GA173797@LGEARND20B15> <20191001092020.B3C7B60AD9@smtp.codeaurora.org>
+In-Reply-To: <20191001092020.B3C7B60AD9@smtp.codeaurora.org>
+From:   Austin Kim <austindh.kim@gmail.com>
+Date:   Tue, 1 Oct 2019 20:21:26 +0900
+Message-ID: <CADLLry48nTtopZ9qzSxd7NBOGFV2V8nf7tNDA-8-BeTpDVf9wQ@mail.gmail.com>
+Subject: Re: [PATCH] rtlwifi: rtl8723ae: Remove unused 'rtstatus' variable
+To:     Kalle Valo <kvalo@codeaurora.org>
+Cc:     pkshih@realtek.com, davem@davemloft.net,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Johannes Berg <johannes.berg@intel.com>
+2019=EB=85=84 10=EC=9B=94 1=EC=9D=BC (=ED=99=94) =EC=98=A4=ED=9B=84 6:20, K=
+alle Valo <kvalo@codeaurora.org>=EB=8B=98=EC=9D=B4 =EC=9E=91=EC=84=B1:
+>
+> Austin Kim <austindh.kim@gmail.com> wrote:
+>
+> > 'rtstatus' local variable is not used,
+> > so remove it for clean-up.
+> >
+> > Signed-off-by: Austin Kim <austindh.kim@gmail.com>
+>
+> Patch applied to wireless-drivers-next.git, thanks.
 
-Drivers typically expect this, as it's the case for almost all cases
-where this is called (i.e. from the TX path). Also, the code in mac80211
-itself (if the driver calls ieee80211_tx_dequeue()) expects this as it
-uses this_cpu_ptr() without additional protection.
-
-This should fix various reports of the problem:
-https://bugzilla.kernel.org/show_bug.cgi?id=204127
-https://lore.kernel.org/linux-wireless/CAN5HydrWb3o_FE6A1XDnP1E+xS66d5kiEuhHfiGKkLNQokx13Q@mail.gmail.com/
-https://lore.kernel.org/lkml/nycvar.YFH.7.76.1909111238470.473@cbobk.fhfr.pm/
-
-Reported-by: Jiri Kosina <jikos@kernel.org>
-Reported-by: Aaron Hill <aa1ronham@gmail.com>
-Reported-by: Lukas Redlinger <rel+kernel@agilox.net>
-Reported-by: Oleksii Shevchuk <alxchk@gmail.com>
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
----
-v2:
- * use local_bh_enable/disable to capture the last occurrence
- * split spin_lock_bh() into local_bh_disable()/spin_lock() to
-   make it clearer while we unlock them separately
----
- net/mac80211/util.c | 13 ++++++++-----
- 1 file changed, 8 insertions(+), 5 deletions(-)
-
-diff --git a/net/mac80211/util.c b/net/mac80211/util.c
-index 051a02ddcb85..32a7a53833c0 100644
---- a/net/mac80211/util.c
-+++ b/net/mac80211/util.c
-@@ -247,7 +247,8 @@ static void __ieee80211_wake_txqs(struct ieee80211_sub_if_data *sdata, int ac)
- 	struct sta_info *sta;
- 	int i;
- 
--	spin_lock_bh(&fq->lock);
-+	local_bh_disable();
-+	spin_lock(&fq->lock);
- 
- 	if (sdata->vif.type == NL80211_IFTYPE_AP)
- 		ps = &sdata->bss->ps;
-@@ -273,9 +274,9 @@ static void __ieee80211_wake_txqs(struct ieee80211_sub_if_data *sdata, int ac)
- 						&txqi->flags))
- 				continue;
- 
--			spin_unlock_bh(&fq->lock);
-+			spin_unlock(&fq->lock);
- 			drv_wake_tx_queue(local, txqi);
--			spin_lock_bh(&fq->lock);
-+			spin_lock(&fq->lock);
- 		}
- 	}
- 
-@@ -288,12 +289,14 @@ static void __ieee80211_wake_txqs(struct ieee80211_sub_if_data *sdata, int ac)
- 	    (ps && atomic_read(&ps->num_sta_ps)) || ac != vif->txq->ac)
- 		goto out;
- 
--	spin_unlock_bh(&fq->lock);
-+	spin_unlock(&fq->lock);
- 
- 	drv_wake_tx_queue(local, txqi);
-+	local_bh_enable();
- 	return;
- out:
--	spin_unlock_bh(&fq->lock);
-+	spin_unlock(&fq->lock);
-+	local_bh_enable();
- }
- 
- static void
--- 
-2.20.1
-
+Thanks for information.
