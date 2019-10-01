@@ -2,61 +2,82 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 64BC1C2FCA
-	for <lists+linux-wireless@lfdr.de>; Tue,  1 Oct 2019 11:14:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A6F61C2FCE
+	for <lists+linux-wireless@lfdr.de>; Tue,  1 Oct 2019 11:14:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2387427AbfJAJOZ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 1 Oct 2019 05:14:25 -0400
-Received: from s3.sipsolutions.net ([144.76.43.62]:57668 "EHLO
-        sipsolutions.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2387418AbfJAJOZ (ORCPT
+        id S2387440AbfJAJOk (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 1 Oct 2019 05:14:40 -0400
+Received: from smtp.codeaurora.org ([198.145.29.96]:37384 "EHLO
+        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728748AbfJAJOk (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 1 Oct 2019 05:14:25 -0400
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-        (Exim 4.92.2)
-        (envelope-from <johannes@sipsolutions.net>)
-        id 1iFEEh-0003RM-Rj; Tue, 01 Oct 2019 11:14:23 +0200
-Message-ID: <83bde7f521e636903b6b386faaa31b73479add8b.camel@sipsolutions.net>
-Subject: Re: [PATCH 1/2] nl80211: Add LIVE_ADDR_CHANGE feature
-From:   Johannes Berg <johannes@sipsolutions.net>
-To:     James Prestwood <prestwoj@gmail.com>,
-        linux-wireless@vger.kernel.org
-Date:   Tue, 01 Oct 2019 11:14:23 +0200
-In-Reply-To: <b43f737c06a392957e6f651d59282a3f36fd05e5.camel@gmail.com> (sfid-20190913_231625_014352_843A9715)
-References: <20190913195908.7871-1-prestwoj@gmail.com>
-         (sfid-20190913_220113_419728_36032050) <6c85d9b108825939afb84ebc8a708a211f7e2b98.camel@sipsolutions.net>
-         <38c222129dd182de4c55e536a89eada7f58a1bf1.camel@gmail.com>
-         (sfid-20190913_225826_111097_E5ED9AB1) <47aaaccf7d8fb58587f0cfbe38acd18e1420dc9a.camel@sipsolutions.net>
-         <b43f737c06a392957e6f651d59282a3f36fd05e5.camel@gmail.com>
-         (sfid-20190913_231625_014352_843A9715)
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.30.5 (3.30.5-1.fc29) 
+        Tue, 1 Oct 2019 05:14:40 -0400
+Received: by smtp.codeaurora.org (Postfix, from userid 1000)
+        id 92F7361156; Tue,  1 Oct 2019 09:14:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
+        s=default; t=1569921279;
+        bh=WSpjSRVXNNDez+8NXHpLgBQ3sbzicZGIgUaLTAUcw6g=;
+        h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
+        b=Pbupdbo0x/D61h1lZ5vihY9nY9gzEXjh6jlntf9cXsDk4EKWFHxX6PFVsO61IPe2y
+         ChmGBqyCJMYMA7mLMBhqQVzbdPZdzCERpK6xo9GSUZ2FSGbTkva128gyAD7cfMVkjn
+         f+6n+Gykv1+rKPgaWwZBUxvdwTqitJM4PcLZ+swE=
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        pdx-caf-mail.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-0.8 required=2.0 tests=ALL_TRUSTED,BAYES_00,
+        DKIM_INVALID,DKIM_SIGNED,MISSING_DATE,MISSING_MID,SPF_NONE autolearn=no
+        autolearn_force=no version=3.4.0
+Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo@smtp.codeaurora.org)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id B499060112;
+        Tue,  1 Oct 2019 09:14:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
+        s=default; t=1569921279;
+        bh=WSpjSRVXNNDez+8NXHpLgBQ3sbzicZGIgUaLTAUcw6g=;
+        h=Subject:From:In-Reply-To:References:To:Cc:From;
+        b=K5oPJifhyAcUWV/UeZ3f3Q/2ah+BuInEyJM1QmjKWtYuZB0troQH66sjE2vTMHqXK
+         yTK+akSmYjop6sh0gq+sBaOhED45HS3jylJsMibsqDWFDY0aeYt5Yi+5lc3p+98vhb
+         BK0bcdb3Vb1cs+tQtCP6zXAppFJ/NjGwtPOL2Hs4=
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org B499060112
+Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH 1/2] brcmfmac: don't WARN when there are no requests
+From:   Kalle Valo <kvalo@codeaurora.org>
+In-Reply-To: <20190925134458.1413790-1-adrian.ratiu@collabora.com>
+References: <20190925134458.1413790-1-adrian.ratiu@collabora.com>
+To:     Adrian Ratiu <adrian.ratiu@collabora.com>
+Cc:     brcm80211-dev-list.pdl@broadcom.com,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        Martyn Welch <martyn.welch@collabora.com>
+User-Agent: pwcli/0.0.0-git (https://github.com/kvalo/pwcli/) Python/2.7.12
+Message-Id: <20191001091439.92F7361156@smtp.codeaurora.org>
+Date:   Tue,  1 Oct 2019 09:14:39 +0000 (UTC)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi,
+Adrian Ratiu <adrian.ratiu@collabora.com> wrote:
 
-> > > Because userspace needs to know if this is supported?
-> > > IFF_LIVE_ADDR_CHANGE is a private flag... AFAIK userspace has no
-> > > way of
-> > > obtaining this.
-> > 
-> > Oh, annoying.
-> > 
-> > But that doesn't really mean that nl80211 is an appropriate place to
-> > advertise it, IMHO?
+> When n_reqs == 0 there is nothing to do so it doesn't make sense to
+> search for requests and issue a warning because none is found.
 > 
-> The intention of the flag was not soley related to
-> CMD_CONNECT/CMD_AUTHENTICATE. Its an indication that the
-> hardware/driver supports a live address change. If you don't want it
-> here could you suggest a better location for it?
+> Signed-off-by: Martyn Welch <martyn.welch@collabora.com>
+> Signed-off-by: Adrian Ratiu <adrian.ratiu@collabora.com>
 
-I guess RTNL would be the right place? This can hardly be specific to
-wireless, the flag comes from elsewhere.
+2 patches applied to wireless-drivers-next.git, thanks.
 
-johannes
+1524cbf36215 brcmfmac: don't WARN when there are no requests
+e0ae4bac22ef brcmfmac: fix suspend/resume when power is cut off
+
+-- 
+https://patchwork.kernel.org/patch/11160709/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
