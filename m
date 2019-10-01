@@ -2,95 +2,108 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A084EC3240
-	for <lists+linux-wireless@lfdr.de>; Tue,  1 Oct 2019 13:21:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 15EFDC3241
+	for <lists+linux-wireless@lfdr.de>; Tue,  1 Oct 2019 13:21:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731381AbfJALTO (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 1 Oct 2019 07:19:14 -0400
-Received: from smtp.codeaurora.org ([198.145.29.96]:58570 "EHLO
-        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725900AbfJALTN (ORCPT
+        id S1731392AbfJALTc (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 1 Oct 2019 07:19:32 -0400
+Received: from s3.sipsolutions.net ([144.76.43.62]:60168 "EHLO
+        sipsolutions.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1730379AbfJALTb (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 1 Oct 2019 07:19:13 -0400
-Received: by smtp.codeaurora.org (Postfix, from userid 1000)
-        id A75D36014B; Tue,  1 Oct 2019 11:19:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1569928752;
-        bh=TBrp107vqvrm5nw0Dhs+vhjDes58fG5CBnoGfgq8iXI=;
-        h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-        b=VlXmjYoFUICdyB08W+dyJtvJIibcEmbJeznAgp567xSEcSHFhVFqh4kgmyHKDFnZX
-         aapgFOwWYW3SHtISGkJVVB3HA3/CAFoA3a4c3IfiDeOLvaYZUqpX/2pmEcEVxh+h1X
-         mK63UvmTF4CAszgawXTW41g90305LNcpCQHdNRY8=
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        pdx-caf-mail.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-0.8 required=2.0 tests=ALL_TRUSTED,BAYES_00,
-        DKIM_INVALID,DKIM_SIGNED,MISSING_DATE,MISSING_MID,SPF_NONE autolearn=no
-        autolearn_force=no version=3.4.0
-Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        (Authenticated sender: kvalo@smtp.codeaurora.org)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 18BE8601D4;
-        Tue,  1 Oct 2019 11:19:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1569928751;
-        bh=TBrp107vqvrm5nw0Dhs+vhjDes58fG5CBnoGfgq8iXI=;
-        h=Subject:From:In-Reply-To:References:To:Cc:From;
-        b=i/277xzREeUwLrLvgJRl7K3i3RaG8xSFWuw2pL4BELv8bKW64Bf5YlJiykvAyIN2v
-         csY63r99jCRCIWjYLYKavWg0j2RJQXAiYWpsw1vnPrxjLI1vwT+3gWPfs2cknQKJKZ
-         +fHDdkV/vJl4LcUyNEfncdNOZ7qKE1/u3eEjedxg=
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 18BE8601D4
-Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
-Content-Type: text/plain; charset="utf-8"
+        Tue, 1 Oct 2019 07:19:31 -0400
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+        (Exim 4.92.2)
+        (envelope-from <johannes@sipsolutions.net>)
+        id 1iFGBj-0006ZU-QK; Tue, 01 Oct 2019 13:19:27 +0200
+From:   Johannes Berg <johannes@sipsolutions.net>
+To:     linux-wireless@vger.kernel.org
+Cc:     =?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>,
+        Johannes Berg <johannes.berg@intel.com>,
+        Jiri Kosina <jikos@kernel.org>,
+        Aaron Hill <aa1ronham@gmail.com>,
+        Lukas Redlinger <rel+kernel@agilox.net>,
+        Oleksii Shevchuk <alxchk@gmail.com>
+Subject: [PATCH v2] mac80211: keep BHs disabled while calling drv_tx_wake_queue()
+Date:   Tue,  1 Oct 2019 13:19:23 +0200
+Message-Id: <1569928763-I3e8838c5ecad878e59d4a94eb069a90f6641461a@changeid>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH] ath9k_hw: fix uninitialized variable data
-From:   Kalle Valo <kvalo@codeaurora.org>
-In-Reply-To: <20190926225604.9342-1-efremov@linux.com>
-References: <20190926225604.9342-1-efremov@linux.com>
-To:     Denis Efremov <efremov@linux.com>
-Cc:     unlisted-recipients:; (no To-header on input)
-        Denis Efremov <efremov@linux.com>,
-        ath9k-devel@qca.qualcomm.com, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Rajkumar Manoharan <rmanohar@qca.qualcomm.com>,
-        "John W . Linville" <linville@tuxdriver.com>,
-        "David S. Miller" <davem@davemloft.net>, stable@vger.kernel.org
-Illegal-Object: Syntax error in Cc: address found on vger.kernel.org:
-        Cc:     unlisted-recipients:; (no To-header on input)Denis Efremov <efremov@linux.com>
-                                                                     ^-missing end of address
-User-Agent: pwcli/0.0.0-git (https://github.com/kvalo/pwcli/) Python/2.7.12
-Message-Id: <20191001111912.A75D36014B@smtp.codeaurora.org>
-Date:   Tue,  1 Oct 2019 11:19:12 +0000 (UTC)
+Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Denis Efremov <efremov@linux.com> wrote:
+From: Johannes Berg <johannes.berg@intel.com>
 
-> Currently, data variable in ar9003_hw_thermo_cal_apply() could be
-> uninitialized if ar9300_otp_read_word() will fail to read the value.
-> Initialize data variable with 0 to prevent an undefined behavior. This
-> will be enough to handle error case when ar9300_otp_read_word() fails.
-> 
-> Fixes: 80fe43f2bbd5 ("ath9k_hw: Read and configure thermocal for AR9462")
-> Cc: Rajkumar Manoharan <rmanohar@qca.qualcomm.com>
-> Cc: John W. Linville <linville@tuxdriver.com>
-> Cc: Kalle Valo <kvalo@codeaurora.org>
-> Cc: "David S. Miller" <davem@davemloft.net>
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Denis Efremov <efremov@linux.com>
-> Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
+Drivers typically expect this, as it's the case for almost all cases
+where this is called (i.e. from the TX path). Also, the code in mac80211
+itself (if the driver calls ieee80211_tx_dequeue()) expects this as it
+uses this_cpu_ptr() without additional protection.
 
-Patch applied to ath-next branch of ath.git, thanks.
+This should fix various reports of the problem:
+https://bugzilla.kernel.org/show_bug.cgi?id=204127
+https://lore.kernel.org/linux-wireless/CAN5HydrWb3o_FE6A1XDnP1E+xS66d5kiEuhHfiGKkLNQokx13Q@mail.gmail.com/
+https://lore.kernel.org/lkml/nycvar.YFH.7.76.1909111238470.473@cbobk.fhfr.pm/
 
-80e84f36412e ath9k_hw: fix uninitialized variable data
+Reported-by: Jiri Kosina <jikos@kernel.org>
+Reported-by: Aaron Hill <aa1ronham@gmail.com>
+Reported-by: Lukas Redlinger <rel+kernel@agilox.net>
+Reported-by: Oleksii Shevchuk <alxchk@gmail.com>
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+---
+v2:
+ * use local_bh_enable/disable to capture the last occurrence
+ * split spin_lock_bh() into local_bh_disable()/spin_lock() to
+   make it clearer while we unlock them separately
+---
+ net/mac80211/util.c | 13 ++++++++-----
+ 1 file changed, 8 insertions(+), 5 deletions(-)
 
+diff --git a/net/mac80211/util.c b/net/mac80211/util.c
+index 051a02ddcb85..32a7a53833c0 100644
+--- a/net/mac80211/util.c
++++ b/net/mac80211/util.c
+@@ -247,7 +247,8 @@ static void __ieee80211_wake_txqs(struct ieee80211_sub_if_data *sdata, int ac)
+ 	struct sta_info *sta;
+ 	int i;
+ 
+-	spin_lock_bh(&fq->lock);
++	local_bh_disable();
++	spin_lock(&fq->lock);
+ 
+ 	if (sdata->vif.type == NL80211_IFTYPE_AP)
+ 		ps = &sdata->bss->ps;
+@@ -273,9 +274,9 @@ static void __ieee80211_wake_txqs(struct ieee80211_sub_if_data *sdata, int ac)
+ 						&txqi->flags))
+ 				continue;
+ 
+-			spin_unlock_bh(&fq->lock);
++			spin_unlock(&fq->lock);
+ 			drv_wake_tx_queue(local, txqi);
+-			spin_lock_bh(&fq->lock);
++			spin_lock(&fq->lock);
+ 		}
+ 	}
+ 
+@@ -288,12 +289,14 @@ static void __ieee80211_wake_txqs(struct ieee80211_sub_if_data *sdata, int ac)
+ 	    (ps && atomic_read(&ps->num_sta_ps)) || ac != vif->txq->ac)
+ 		goto out;
+ 
+-	spin_unlock_bh(&fq->lock);
++	spin_unlock(&fq->lock);
+ 
+ 	drv_wake_tx_queue(local, txqi);
++	local_bh_enable();
+ 	return;
+ out:
+-	spin_unlock_bh(&fq->lock);
++	spin_unlock(&fq->lock);
++	local_bh_enable();
+ }
+ 
+ static void
 -- 
-https://patchwork.kernel.org/patch/11163437/
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+2.20.1
 
