@@ -2,129 +2,106 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 5C59AC477B
-	for <lists+linux-wireless@lfdr.de>; Wed,  2 Oct 2019 08:05:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E1F2EC47CE
+	for <lists+linux-wireless@lfdr.de>; Wed,  2 Oct 2019 08:35:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727480AbfJBGFj (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 2 Oct 2019 02:05:39 -0400
-Received: from smtp.codeaurora.org ([198.145.29.96]:40280 "EHLO
-        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726965AbfJBGFj (ORCPT
+        id S1726543AbfJBGfm (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 2 Oct 2019 02:35:42 -0400
+Received: from rtits2.realtek.com ([211.75.126.72]:57688 "EHLO
+        rtits2.realtek.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726376AbfJBGfl (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 2 Oct 2019 02:05:39 -0400
-Received: by smtp.codeaurora.org (Postfix, from userid 1000)
-        id E0B3D61728; Wed,  2 Oct 2019 06:05:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1569996337;
-        bh=DF+HW6wwmJzYoEIrxyHBzQsB32Vt++k7jcLNJ4FIdkQ=;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=TaJk2PjroQBJnnxISNMqNzo8+NH/9buRv5Ov8ia4195It4HQcP7Z9iEzSP1pnyJvK
-         A48XwfqfqELzcG5+y6AlKyFO5DkYeWxl8DbXErvopo2qIkch5uQo3AJNnCIgXBz4aK
-         Ei03eyaWWUV50LD70Ez6Bpk47oGVsHB7o2r7jePg=
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        pdx-caf-mail.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.7 required=2.0 tests=ALL_TRUSTED,BAYES_00,
-        DKIM_INVALID,DKIM_SIGNED,SPF_NONE autolearn=no autolearn_force=no
-        version=3.4.0
-Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        (Authenticated sender: kvalo@smtp.codeaurora.org)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id D2D7661728;
-        Wed,  2 Oct 2019 06:05:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1569996337;
-        bh=DF+HW6wwmJzYoEIrxyHBzQsB32Vt++k7jcLNJ4FIdkQ=;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=TaJk2PjroQBJnnxISNMqNzo8+NH/9buRv5Ov8ia4195It4HQcP7Z9iEzSP1pnyJvK
-         A48XwfqfqELzcG5+y6AlKyFO5DkYeWxl8DbXErvopo2qIkch5uQo3AJNnCIgXBz4aK
-         Ei03eyaWWUV50LD70Ez6Bpk47oGVsHB7o2r7jePg=
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org D2D7661728
-Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
-From:   Kalle Valo <kvalo@codeaurora.org>
-To:     Antonio Quartulli <antonio.quartulli@kaiwoo.ai>
-Cc:     greearb@candelatech.com, linux-wireless@vger.kernel.org,
-        ath10k@lists.infradead.org
-Subject: Re: [PATCH] ath10k: Fix offchannel tx failure when no ath10k_mac_tx_frm_has_freq
-References: <1508284992-3574-1-git-send-email-greearb@candelatech.com>
-        <ba256006-b42b-0dee-4eb7-093da5885341@kaiwoo.ai>
-Date:   Wed, 02 Oct 2019 09:05:33 +0300
-In-Reply-To: <ba256006-b42b-0dee-4eb7-093da5885341@kaiwoo.ai> (Antonio
-        Quartulli's message of "Mon, 30 Sep 2019 16:29:32 +0200")
-Message-ID: <87tv8r3cnm.fsf@kamboji.qca.qualcomm.com>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
+        Wed, 2 Oct 2019 02:35:41 -0400
+Authenticated-By: 
+X-SpamFilter-By: BOX Solutions SpamTrap 5.62 with qID x926ZYFj013038, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (RTITCASV01.realtek.com.tw[172.21.6.18])
+        by rtits2.realtek.com.tw (8.15.2/2.57/5.78) with ESMTPS id x926ZYFj013038
+        (version=TLSv1 cipher=DHE-RSA-AES256-SHA bits=256 verify=NOT);
+        Wed, 2 Oct 2019 14:35:34 +0800
+Received: from localhost.localdomain (172.21.68.126) by
+ RTITCASV01.realtek.com.tw (172.21.6.18) with Microsoft SMTP Server id
+ 14.3.468.0; Wed, 2 Oct 2019 14:35:33 +0800
+From:   <yhchuang@realtek.com>
+To:     <kvalo@codeaurora.org>
+CC:     <linux-wireless@vger.kernel.org>, <briannorris@chromium.org>
+Subject: [PATCH 00/14] rtw88: add software TX queue support
+Date:   Wed, 2 Oct 2019 14:35:17 +0800
+Message-ID: <20191002063531.18135-1-yhchuang@realtek.com>
+X-Mailer: git-send-email 2.17.1
 MIME-Version: 1.0
 Content-Type: text/plain
+X-Originating-IP: [172.21.68.126]
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Antonio Quartulli <antonio.quartulli@kaiwoo.ai> writes:
+From: Yan-Hsuan Chuang <yhchuang@realtek.com>
 
-> Hi,
->
-> On 18/10/2017 02:03, greearb@candelatech.com wrote:
->> From: Ben Greear <greearb@candelatech.com>
->> 
->> This bug appears to have been added between 4.0 (which works for us),
->> and 4.4, which does not work.
->> 
->> I think this is because the tx-offchannel logic gets in a loop when
->> ath10k_mac_tx_frm_has_freq(ar) is false, so pkt is never actually
->> sent to the firmware for transmit.
->> 
->> This patch fixes the problem on 4.9 for me, and now HS20 clients
->> can work again with my firmware.
->> 
->> Signed-off-by: Ben Greear <greearb@candelatech.com>
->
-> I have been struggling to send offchannels mgmt frames since a while, as
-> I was always getting:
->
-> [18099.253732] ath10k_pci 0000:01:00.0: timed out waiting for offchannel
-> skb cf0e3780
-> [18102.293686] ath10k_pci 0000:01:00.0: timed out waiting for offchannel
-> skb cf0e3780
-> [18105.333653] ath10k_pci 0000:01:00.0: timed out waiting for offchannel
-> skb cf0e3780
-> [18108.373712] ath10k_pci 0000:01:00.0: timed out waiting for offchannel
-> skb cf0e3780
-> [18111.413687] ath10k_pci 0000:01:00.0: timed out waiting for offchannel
-> skb cf0e36c0
-> [18114.453726] ath10k_pci 0000:01:00.0: timed out waiting for offchannel
-> skb cf0e3f00
-> [18117.493773] ath10k_pci 0000:01:00.0: timed out waiting for offchannel
-> skb cf0e36c0
-> [18120.533631] ath10k_pci 0000:01:00.0: timed out waiting for offchannel
-> skb cf0e3f00
->
-> After digging through the ath10k patchwork I have found this patch which
-> touches exactly the code I was trying to debug.
->
-> After applying this set of changes, I can confirm that sending
-> offchannel frames works again like a charm.
->
-> I have tested only one fw though: ver 10.4-3.5.3-00057.
->
-> It's a bummer that this trivial but critical patch is not yet merged
-> upstream :-(
+This adds support for software TX queue that is provided by
+mac80211 stack. Also can take advantage of AMSDU, by letting
+it to aggregate the MSDUs in the TX queue.
 
-Ben has it's own firmware and own hacks in kernel so I can't apply them
-without testing, and it's just very difficult for me to find time to
-test anything right now.
+With software TX queue, driver can handle the rate control
+mechanism, by set/check the current state of the TX queues.
 
-> Tested-by: Antonio Quartulli <antonio.quartulli@kaiwoo.ai>
+If driver is going to use software TX queue, it is better to
+also add ieee80211_ops::flush for better control of either
+software/hardware queues. This can help mac80211 to flush
+the queues whenever it wants to.
 
-Thanks! What hardware did you test this? I'll add that to the commit
-log.
+And TX queues should follow the EDCA params, add
+ieee80211_ops::conf_tx to setup the parameters accordingly.
 
-The patch also had some conflicts which I fixed in the pending branch,
-please check:
+There's also some fixes for the driver. One can check in
+the log to see what the fixes for. The most important fix
+is ("rtw88: fix beaconing mode rsvd_page memory violation issue").
+Because there's kernel memory violation that could generate
+protection fault, when user wants to start beaconing modes
+such as AP.
 
-https://git.kernel.org/pub/scm/linux/kernel/git/kvalo/ath.git/commit/?h=pending&id=bdc657dd0c0cb7163fcf39b94e664e3d9409140e
+
+Chin-Yen Lee (1):
+  rtw88: check firmware leave lps successfully
+
+Ping-Ke Shih (4):
+  rtw88: Don't set RX_FLAG_DECRYPTED if packet has no encryption
+  rtw88: use struct rtw_fw_hdr to access firmware header
+  rtw88: fix NSS of hw_cap
+  rtw88: fix error handling when setup efuse info
+
+Tzu-En Huang (1):
+  rtw88: report tx rate to mac80211 stack
+
+Yan-Hsuan Chuang (8):
+  rtw88: allows to set RTS in TX descriptor
+  rtw88: add driver TX queue support
+  rtw88: take over rate control from mac80211
+  rtw88: add TX-AMSDU support
+  rtw88: flush hardware tx queues
+  rtw88: fix beaconing mode rsvd_page memory violation issue
+  rtw88: configure TX queue EDCA parameters
+  rtw88: raise firmware version debug level
+
+ drivers/net/wireless/realtek/rtw88/fw.c       | 149 ++++++++++++++++-
+ drivers/net/wireless/realtek/rtw88/fw.h       |  51 ++++--
+ drivers/net/wireless/realtek/rtw88/mac.c      | 131 ++++++++++++---
+ drivers/net/wireless/realtek/rtw88/mac.h      |   1 +
+ drivers/net/wireless/realtek/rtw88/mac80211.c | 154 +++++++++++++++++-
+ drivers/net/wireless/realtek/rtw88/main.c     |  70 +++++++-
+ drivers/net/wireless/realtek/rtw88/main.h     |  50 +++++-
+ drivers/net/wireless/realtek/rtw88/ps.c       |  29 ++++
+ drivers/net/wireless/realtek/rtw88/ps.h       |   2 +
+ drivers/net/wireless/realtek/rtw88/reg.h      |   5 +
+ drivers/net/wireless/realtek/rtw88/rtw8822b.c |   3 +-
+ drivers/net/wireless/realtek/rtw88/rtw8822c.c |   7 +-
+ drivers/net/wireless/realtek/rtw88/rx.c       |  22 +--
+ drivers/net/wireless/realtek/rtw88/rx.h       |  11 ++
+ drivers/net/wireless/realtek/rtw88/tx.c       | 133 +++++++++++++++
+ drivers/net/wireless/realtek/rtw88/tx.h       |   8 +
+ drivers/net/wireless/realtek/rtw88/util.c     |  27 +++
+ 17 files changed, 767 insertions(+), 86 deletions(-)
 
 -- 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+2.17.1
+
