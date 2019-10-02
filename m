@@ -2,83 +2,129 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 66743C46AA
-	for <lists+linux-wireless@lfdr.de>; Wed,  2 Oct 2019 06:37:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5C59AC477B
+	for <lists+linux-wireless@lfdr.de>; Wed,  2 Oct 2019 08:05:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726991AbfJBEhX (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 2 Oct 2019 00:37:23 -0400
-Received: from smtp.codeaurora.org ([198.145.29.96]:48750 "EHLO
+        id S1727480AbfJBGFj (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 2 Oct 2019 02:05:39 -0400
+Received: from smtp.codeaurora.org ([198.145.29.96]:40280 "EHLO
         smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726976AbfJBEhX (ORCPT
+        with ESMTP id S1726965AbfJBGFj (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 2 Oct 2019 00:37:23 -0400
+        Wed, 2 Oct 2019 02:05:39 -0400
 Received: by smtp.codeaurora.org (Postfix, from userid 1000)
-        id 2514260790; Wed,  2 Oct 2019 04:37:21 +0000 (UTC)
+        id E0B3D61728; Wed,  2 Oct 2019 06:05:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1569991042;
-        bh=xh39h2stOuKANpsG0r8C6wZebDbKE6gErmdAdpb39Ac=;
-        h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-        b=KRtTAAes4qfz+rt56X0bOa9I6hYSNjrSSpsRzyfQtCQFx0z3JLaM3ETczo+So27JP
-         UZFAdRY44J1w4xQ7DAuJPQbRQY//vqh4crrUJzzjdHRL0yhHpdUVfwzzoAFx0V6XQO
-         xzMeXSCmswB4MzTZLivnJq6WQ2gyugPCPfcDaKPw=
+        s=default; t=1569996337;
+        bh=DF+HW6wwmJzYoEIrxyHBzQsB32Vt++k7jcLNJ4FIdkQ=;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+        b=TaJk2PjroQBJnnxISNMqNzo8+NH/9buRv5Ov8ia4195It4HQcP7Z9iEzSP1pnyJvK
+         A48XwfqfqELzcG5+y6AlKyFO5DkYeWxl8DbXErvopo2qIkch5uQo3AJNnCIgXBz4aK
+         Ei03eyaWWUV50LD70Ez6Bpk47oGVsHB7o2r7jePg=
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         pdx-caf-mail.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-0.8 required=2.0 tests=ALL_TRUSTED,BAYES_00,
-        DKIM_INVALID,DKIM_SIGNED,MISSING_DATE,MISSING_MID,SPF_NONE autolearn=no
-        autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-2.7 required=2.0 tests=ALL_TRUSTED,BAYES_00,
+        DKIM_INVALID,DKIM_SIGNED,SPF_NONE autolearn=no autolearn_force=no
+        version=3.4.0
 Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
         (Authenticated sender: kvalo@smtp.codeaurora.org)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id E161C60790;
-        Wed,  2 Oct 2019 04:37:19 +0000 (UTC)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id D2D7661728;
+        Wed,  2 Oct 2019 06:05:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1569991041;
-        bh=xh39h2stOuKANpsG0r8C6wZebDbKE6gErmdAdpb39Ac=;
-        h=Subject:From:In-Reply-To:References:To:Cc:From;
-        b=VZN0CA5G2QGHos12kt2+cpPHrqvG89aDrill9D/917s8ZmMZwMqnih0Ql+TtEfrvn
-         4QszRzuxr3PvZr+ulQlaEaPJlda7XWAIrWlTgXt4nNPv9rUY5tduP+iW0yuExMFbPz
-         u4Ka+I9xdkh8xaGT91gG7mU0Hd+RkizOsNdxN2t4=
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org E161C60790
+        s=default; t=1569996337;
+        bh=DF+HW6wwmJzYoEIrxyHBzQsB32Vt++k7jcLNJ4FIdkQ=;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+        b=TaJk2PjroQBJnnxISNMqNzo8+NH/9buRv5Ov8ia4195It4HQcP7Z9iEzSP1pnyJvK
+         A48XwfqfqELzcG5+y6AlKyFO5DkYeWxl8DbXErvopo2qIkch5uQo3AJNnCIgXBz4aK
+         Ei03eyaWWUV50LD70Ez6Bpk47oGVsHB7o2r7jePg=
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org D2D7661728
 Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
 Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH] rt2x00: initialize last_reset
 From:   Kalle Valo <kvalo@codeaurora.org>
-In-Reply-To: <20190926085433.1300-1-sgruszka@redhat.com>
-References: <20190926085433.1300-1-sgruszka@redhat.com>
-To:     Stanislaw Gruszka <sgruszka@redhat.com>
-Cc:     linux-wireless@vger.kernel.org,
-        =?utf-8?q?Tomislav_Po=C5=BEega?= <pozega.tomislav@gmail.com>,
-        Daniel Golle <daniel@makrotopia.org>,
-        Felix Fietkau <nbd@nbd.name>, Mathias Kresin <dev@kresin.me>,
-        Jonathan Liu <net147@gmail.com>
-User-Agent: pwcli/0.0.0-git (https://github.com/kvalo/pwcli/) Python/2.7.12
-Message-Id: <20191002043722.2514260790@smtp.codeaurora.org>
-Date:   Wed,  2 Oct 2019 04:37:21 +0000 (UTC)
+To:     Antonio Quartulli <antonio.quartulli@kaiwoo.ai>
+Cc:     greearb@candelatech.com, linux-wireless@vger.kernel.org,
+        ath10k@lists.infradead.org
+Subject: Re: [PATCH] ath10k: Fix offchannel tx failure when no ath10k_mac_tx_frm_has_freq
+References: <1508284992-3574-1-git-send-email-greearb@candelatech.com>
+        <ba256006-b42b-0dee-4eb7-093da5885341@kaiwoo.ai>
+Date:   Wed, 02 Oct 2019 09:05:33 +0300
+In-Reply-To: <ba256006-b42b-0dee-4eb7-093da5885341@kaiwoo.ai> (Antonio
+        Quartulli's message of "Mon, 30 Sep 2019 16:29:32 +0200")
+Message-ID: <87tv8r3cnm.fsf@kamboji.qca.qualcomm.com>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
+MIME-Version: 1.0
+Content-Type: text/plain
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Stanislaw Gruszka <sgruszka@redhat.com> wrote:
+Antonio Quartulli <antonio.quartulli@kaiwoo.ai> writes:
 
-> Initialize last_reset variable to INITIAL_JIFFIES, otherwise it is not
-> possible to test H/W reset for first 5 minutes of system run.
-> 
-> Fixes: e403fa31ed71 ("rt2x00: add restart hw")
-> Reported-and-tested-by: Jonathan Liu <net147@gmail.com>
-> Signed-off-by: Stanislaw Gruszka <sgruszka@redhat.com>
+> Hi,
+>
+> On 18/10/2017 02:03, greearb@candelatech.com wrote:
+>> From: Ben Greear <greearb@candelatech.com>
+>> 
+>> This bug appears to have been added between 4.0 (which works for us),
+>> and 4.4, which does not work.
+>> 
+>> I think this is because the tx-offchannel logic gets in a loop when
+>> ath10k_mac_tx_frm_has_freq(ar) is false, so pkt is never actually
+>> sent to the firmware for transmit.
+>> 
+>> This patch fixes the problem on 4.9 for me, and now HS20 clients
+>> can work again with my firmware.
+>> 
+>> Signed-off-by: Ben Greear <greearb@candelatech.com>
+>
+> I have been struggling to send offchannels mgmt frames since a while, as
+> I was always getting:
+>
+> [18099.253732] ath10k_pci 0000:01:00.0: timed out waiting for offchannel
+> skb cf0e3780
+> [18102.293686] ath10k_pci 0000:01:00.0: timed out waiting for offchannel
+> skb cf0e3780
+> [18105.333653] ath10k_pci 0000:01:00.0: timed out waiting for offchannel
+> skb cf0e3780
+> [18108.373712] ath10k_pci 0000:01:00.0: timed out waiting for offchannel
+> skb cf0e3780
+> [18111.413687] ath10k_pci 0000:01:00.0: timed out waiting for offchannel
+> skb cf0e36c0
+> [18114.453726] ath10k_pci 0000:01:00.0: timed out waiting for offchannel
+> skb cf0e3f00
+> [18117.493773] ath10k_pci 0000:01:00.0: timed out waiting for offchannel
+> skb cf0e36c0
+> [18120.533631] ath10k_pci 0000:01:00.0: timed out waiting for offchannel
+> skb cf0e3f00
+>
+> After digging through the ath10k patchwork I have found this patch which
+> touches exactly the code I was trying to debug.
+>
+> After applying this set of changes, I can confirm that sending
+> offchannel frames works again like a charm.
+>
+> I have tested only one fw though: ver 10.4-3.5.3-00057.
+>
+> It's a bummer that this trivial but critical patch is not yet merged
+> upstream :-(
 
-Patch applied to wireless-drivers.git, thanks.
+Ben has it's own firmware and own hacks in kernel so I can't apply them
+without testing, and it's just very difficult for me to find time to
+test anything right now.
 
-c91a9cfe9f6d rt2x00: initialize last_reset
+> Tested-by: Antonio Quartulli <antonio.quartulli@kaiwoo.ai>
+
+Thanks! What hardware did you test this? I'll add that to the commit
+log.
+
+The patch also had some conflicts which I fixed in the pending branch,
+please check:
+
+https://git.kernel.org/pub/scm/linux/kernel/git/kvalo/ath.git/commit/?h=pending&id=bdc657dd0c0cb7163fcf39b94e664e3d9409140e
 
 -- 
-https://patchwork.kernel.org/patch/11161981/
-
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
-
