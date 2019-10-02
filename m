@@ -2,31 +2,31 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id BEB46C47DB
-	for <lists+linux-wireless@lfdr.de>; Wed,  2 Oct 2019 08:35:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 774C0C47D4
+	for <lists+linux-wireless@lfdr.de>; Wed,  2 Oct 2019 08:35:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726837AbfJBGfy (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 2 Oct 2019 02:35:54 -0400
-Received: from rtits2.realtek.com ([211.75.126.72]:57706 "EHLO
+        id S1727118AbfJBGfp (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 2 Oct 2019 02:35:45 -0400
+Received: from rtits2.realtek.com ([211.75.126.72]:57708 "EHLO
         rtits2.realtek.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726062AbfJBGfo (ORCPT
+        with ESMTP id S1726983AbfJBGfo (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
         Wed, 2 Oct 2019 02:35:44 -0400
 Authenticated-By: 
-X-SpamFilter-By: BOX Solutions SpamTrap 5.62 with qID x926Zclk013064, This message is accepted by code: ctloc85258
+X-SpamFilter-By: BOX Solutions SpamTrap 5.62 with qID x926ZdEq013068, This message is accepted by code: ctloc85258
 Received: from mail.realtek.com (RTITCASV01.realtek.com.tw[172.21.6.18])
-        by rtits2.realtek.com.tw (8.15.2/2.57/5.78) with ESMTPS id x926Zclk013064
+        by rtits2.realtek.com.tw (8.15.2/2.57/5.78) with ESMTPS id x926ZdEq013068
         (version=TLSv1 cipher=DHE-RSA-AES256-SHA bits=256 verify=NOT);
-        Wed, 2 Oct 2019 14:35:38 +0800
+        Wed, 2 Oct 2019 14:35:39 +0800
 Received: from localhost.localdomain (172.21.68.126) by
  RTITCASV01.realtek.com.tw (172.21.6.18) with Microsoft SMTP Server id
- 14.3.468.0; Wed, 2 Oct 2019 14:35:38 +0800
+ 14.3.468.0; Wed, 2 Oct 2019 14:35:39 +0800
 From:   <yhchuang@realtek.com>
 To:     <kvalo@codeaurora.org>
 CC:     <linux-wireless@vger.kernel.org>, <briannorris@chromium.org>
-Subject: [PATCH 06/14] rtw88: add TX-AMSDU support
-Date:   Wed, 2 Oct 2019 14:35:23 +0800
-Message-ID: <20191002063531.18135-7-yhchuang@realtek.com>
+Subject: [PATCH 07/14] rtw88: flush hardware tx queues
+Date:   Wed, 2 Oct 2019 14:35:24 +0800
+Message-ID: <20191002063531.18135-8-yhchuang@realtek.com>
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <20191002063531.18135-1-yhchuang@realtek.com>
 References: <20191002063531.18135-1-yhchuang@realtek.com>
@@ -40,85 +40,195 @@ X-Mailing-List: linux-wireless@vger.kernel.org
 
 From: Yan-Hsuan Chuang <yhchuang@realtek.com>
 
-Based on the mac80211's TXQ implementation, TX-AMSDU can
-be used to get higher MAC efficiency. To make mac80211
-aggregate MSDUs, low level driver just need to leave skbs
-in the TXQ, and mac80211 will try to aggregate them if
-possible. As driver will schedule a tasklet when the TX
-queue is woke, until the tasklet being served, there will
-have some skbs in the queue if traffic is heavy.
+Sometimes mac80211 will ask us to flush the hardware queues.
+To flush them, first we need to get the corresponding priority queues
+from the RQPN mapping table.
 
-Driver can control the max AMSDU size depending on the
-current bit rate used by hardware/firmware. The higher
-rates are used, the larger AMSDU size can be.
+Then we can check the available pages are equal to the originally
+reserved pages, which means the hardware has returned all of the pages
+it used to transmit.
 
-It is tested that can achieve higher T-Put at higher rates.
-If the environment is relatively clean, and the bit_rate
-is high enough, we can get about 80Mbps improvement.
-
-For lower bit rates, not much gain can we get, so leave
-the max_amsdu length low to prevent aggregation.
+Note that now we only check for 100 ms for the priority queue, but
+sometimes if we have a lot of traffic (ex. 100Mbps up), some of the
+packets could be dropped.
 
 Signed-off-by: Yan-Hsuan Chuang <yhchuang@realtek.com>
 ---
- drivers/net/wireless/realtek/rtw88/fw.c   | 24 +++++++++++++++++++++++
- drivers/net/wireless/realtek/rtw88/main.c |  1 +
- 2 files changed, 25 insertions(+)
+ drivers/net/wireless/realtek/rtw88/mac.c      | 88 +++++++++++++++++++
+ drivers/net/wireless/realtek/rtw88/mac.h      |  1 +
+ drivers/net/wireless/realtek/rtw88/mac80211.c | 14 +++
+ drivers/net/wireless/realtek/rtw88/main.h     |  3 +-
+ 4 files changed, 105 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/realtek/rtw88/fw.c b/drivers/net/wireless/realtek/rtw88/fw.c
-index 4b41bf531998..51649df7cc98 100644
---- a/drivers/net/wireless/realtek/rtw88/fw.c
-+++ b/drivers/net/wireless/realtek/rtw88/fw.c
-@@ -29,6 +29,28 @@ static void rtw_fw_c2h_cmd_handle_ext(struct rtw_dev *rtwdev,
- 	}
+diff --git a/drivers/net/wireless/realtek/rtw88/mac.c b/drivers/net/wireless/realtek/rtw88/mac.c
+index d8c5da342b11..f40877bc9c9a 100644
+--- a/drivers/net/wireless/realtek/rtw88/mac.c
++++ b/drivers/net/wireless/realtek/rtw88/mac.c
+@@ -719,6 +719,93 @@ int rtw_download_firmware(struct rtw_dev *rtwdev, struct rtw_fw_state *fw)
+ 	return ret;
  }
  
-+static u16 get_max_amsdu_len(u32 bit_rate)
++static u32 get_priority_queues(struct rtw_dev *rtwdev, u32 queues)
 +{
-+	/* lower than ofdm, do not aggregate */
-+	if (bit_rate < 550)
-+		return 1;
++	struct rtw_rqpn *rqpn = rtwdev->fifo.rqpn;
++	u32 prio_queues = 0;
 +
-+	/* lower than 20M 2ss mcs8, make it small */
-+	if (bit_rate < 1800)
-+		return 1200;
++	if (queues & BIT(IEEE80211_AC_VO))
++		prio_queues |= BIT(rqpn->dma_map_vo);
++	if (queues & BIT(IEEE80211_AC_VI))
++		prio_queues |= BIT(rqpn->dma_map_vi);
++	if (queues & BIT(IEEE80211_AC_BE))
++		prio_queues |= BIT(rqpn->dma_map_be);
++	if (queues & BIT(IEEE80211_AC_BK))
++		prio_queues |= BIT(rqpn->dma_map_bk);
 +
-+	/* lower than 40M 2ss mcs9, make it medium */
-+	if (bit_rate < 4000)
-+		return 2600;
-+
-+	/* not yet 80M 2ss mcs8/9, make it twice regular packet size */
-+	if (bit_rate < 7000)
-+		return 3500;
-+
-+	/* unlimited */
-+	return 0;
++	return prio_queues;
 +}
 +
- struct rtw_fw_iter_ra_data {
- 	struct rtw_dev *rtwdev;
- 	u8 *payload;
-@@ -83,6 +105,8 @@ static void rtw_fw_ra_report_iter(void *data, struct ieee80211_sta *sta)
- 
- 	si->ra_report.desc_rate = rate;
- 	si->ra_report.bit_rate = bit_rate;
++static void __rtw_mac_flush_prio_queue(struct rtw_dev *rtwdev,
++				       u32 prio_queue, bool drop)
++{
++	u32 addr;
++	u16 avail_page, rsvd_page;
++	int i;
 +
-+	sta->max_rc_amsdu_len = get_max_amsdu_len(bit_rate);
++	switch (prio_queue) {
++	case RTW_DMA_MAPPING_EXTRA:
++		addr = REG_FIFOPAGE_INFO_4;
++		break;
++	case RTW_DMA_MAPPING_LOW:
++		addr = REG_FIFOPAGE_INFO_2;
++		break;
++	case RTW_DMA_MAPPING_NORMAL:
++		addr = REG_FIFOPAGE_INFO_3;
++		break;
++	case RTW_DMA_MAPPING_HIGH:
++		addr = REG_FIFOPAGE_INFO_1;
++		break;
++	default:
++		return;
++	}
++
++	/* check if all of the reserved pages are available for 100 msecs */
++	for (i = 0; i < 5; i++) {
++		rsvd_page = rtw_read16(rtwdev, addr);
++		avail_page = rtw_read16(rtwdev, addr + 2);
++		if (rsvd_page == avail_page)
++			return;
++
++		msleep(20);
++	}
++
++	/* priority queue is still not empty, throw a warning,
++	 *
++	 * Note that if we want to flush the tx queue when having a lot of
++	 * traffic (ex, 100Mbps up), some of the packets could be dropped.
++	 * And it requires like ~2secs to flush the full priority queue.
++	 */
++	if (!drop)
++		rtw_warn(rtwdev, "timed out to flush queue %d\n", prio_queue);
++}
++
++static void rtw_mac_flush_prio_queues(struct rtw_dev *rtwdev,
++				      u32 prio_queues, bool drop)
++{
++	u32 q;
++
++	for (q = 0; q < RTW_DMA_MAPPING_MAX; q++)
++		if (prio_queues & BIT(q))
++			__rtw_mac_flush_prio_queue(rtwdev, q, drop);
++}
++
++void rtw_mac_flush_queues(struct rtw_dev *rtwdev, u32 queues, bool drop)
++{
++	u32 prio_queues = 0;
++
++	/* If all of the hardware queues are requested to flush,
++	 * or the priority queues are not mapped yet,
++	 * flush all of the priority queues
++	 */
++	if (queues == BIT(rtwdev->hw->queues) - 1 || !rtwdev->fifo.rqpn)
++		prio_queues = BIT(RTW_DMA_MAPPING_MAX) - 1;
++	else
++		prio_queues = get_priority_queues(rtwdev, queues);
++
++	rtw_mac_flush_prio_queues(rtwdev, prio_queues, drop);
++}
++
+ static int txdma_queue_mapping(struct rtw_dev *rtwdev)
+ {
+ 	struct rtw_chip_info *chip = rtwdev->chip;
+@@ -743,6 +830,7 @@ static int txdma_queue_mapping(struct rtw_dev *rtwdev)
+ 		return -EINVAL;
+ 	}
+ 
++	rtwdev->fifo.rqpn = rqpn;
+ 	txdma_pq_map |= BIT_TXDMA_HIQ_MAP(rqpn->dma_map_hi);
+ 	txdma_pq_map |= BIT_TXDMA_MGQ_MAP(rqpn->dma_map_mg);
+ 	txdma_pq_map |= BIT_TXDMA_BKQ_MAP(rqpn->dma_map_bk);
+diff --git a/drivers/net/wireless/realtek/rtw88/mac.h b/drivers/net/wireless/realtek/rtw88/mac.h
+index efe6f731f240..a67fa82973e4 100644
+--- a/drivers/net/wireless/realtek/rtw88/mac.h
++++ b/drivers/net/wireless/realtek/rtw88/mac.h
+@@ -31,5 +31,6 @@ int rtw_mac_power_on(struct rtw_dev *rtwdev);
+ void rtw_mac_power_off(struct rtw_dev *rtwdev);
+ int rtw_download_firmware(struct rtw_dev *rtwdev, struct rtw_fw_state *fw);
+ int rtw_mac_init(struct rtw_dev *rtwdev);
++void rtw_mac_flush_queues(struct rtw_dev *rtwdev, u32 queues, bool drop);
+ 
+ #endif
+diff --git a/drivers/net/wireless/realtek/rtw88/mac80211.c b/drivers/net/wireless/realtek/rtw88/mac80211.c
+index 9c77c86d3021..cb7436949ff6 100644
+--- a/drivers/net/wireless/realtek/rtw88/mac80211.c
++++ b/drivers/net/wireless/realtek/rtw88/mac80211.c
+@@ -589,6 +589,19 @@ static void rtw_ops_sta_statistics(struct ieee80211_hw *hw,
+ 	sinfo->filled |= BIT_ULL(NL80211_STA_INFO_TX_BITRATE);
  }
  
- static void rtw_fw_ra_report_handle(struct rtw_dev *rtwdev, u8 *payload,
-diff --git a/drivers/net/wireless/realtek/rtw88/main.c b/drivers/net/wireless/realtek/rtw88/main.c
-index 690a5c4d64e7..f7044e8bcb5b 100644
---- a/drivers/net/wireless/realtek/rtw88/main.c
-+++ b/drivers/net/wireless/realtek/rtw88/main.c
-@@ -1310,6 +1310,7 @@ int rtw_register_hw(struct rtw_dev *rtwdev, struct ieee80211_hw *hw)
- 	ieee80211_hw_set(hw, SUPPORT_FAST_XMIT);
- 	ieee80211_hw_set(hw, SUPPORTS_AMSDU_IN_AMPDU);
- 	ieee80211_hw_set(hw, HAS_RATE_CONTROL);
-+	ieee80211_hw_set(hw, TX_AMSDU);
++static void rtw_ops_flush(struct ieee80211_hw *hw,
++			  struct ieee80211_vif *vif,
++			  u32 queues, bool drop)
++{
++	struct rtw_dev *rtwdev = hw->priv;
++
++	mutex_lock(&rtwdev->mutex);
++	rtw_leave_lps_deep(rtwdev);
++
++	rtw_mac_flush_queues(rtwdev, queues, drop);
++	mutex_unlock(&rtwdev->mutex);
++}
++
+ const struct ieee80211_ops rtw_ops = {
+ 	.tx			= rtw_ops_tx,
+ 	.wake_tx_queue		= rtw_ops_wake_tx_queue,
+@@ -608,5 +621,6 @@ const struct ieee80211_ops rtw_ops = {
+ 	.mgd_prepare_tx		= rtw_ops_mgd_prepare_tx,
+ 	.set_rts_threshold	= rtw_ops_set_rts_threshold,
+ 	.sta_statistics		= rtw_ops_sta_statistics,
++	.flush			= rtw_ops_flush,
+ };
+ EXPORT_SYMBOL(rtw_ops);
+diff --git a/drivers/net/wireless/realtek/rtw88/main.h b/drivers/net/wireless/realtek/rtw88/main.h
+index cd34d4d77b52..00d2cf07a176 100644
+--- a/drivers/net/wireless/realtek/rtw88/main.h
++++ b/drivers/net/wireless/realtek/rtw88/main.h
+@@ -780,6 +780,7 @@ enum rtw_dma_mapping {
+ 	RTW_DMA_MAPPING_NORMAL	= 2,
+ 	RTW_DMA_MAPPING_HIGH	= 3,
  
- 	hw->wiphy->interface_modes = BIT(NL80211_IFTYPE_STATION) |
- 				     BIT(NL80211_IFTYPE_AP) |
++	RTW_DMA_MAPPING_MAX,
+ 	RTW_DMA_MAPPING_UNDEF,
+ };
+ 
+@@ -1286,7 +1287,7 @@ struct rtw_fifo_conf {
+ 	u16 rsvd_cpu_instr_addr;
+ 	u16 rsvd_fw_txbuf_addr;
+ 	u16 rsvd_csibuf_addr;
+-	enum rtw_dma_mapping pq_map[RTW_PQ_MAP_NUM];
++	struct rtw_rqpn *rqpn;
+ };
+ 
+ struct rtw_fw_state {
 -- 
 2.17.1
 
