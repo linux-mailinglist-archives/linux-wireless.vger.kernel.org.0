@@ -2,90 +2,113 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 6BFFAC88BE
-	for <lists+linux-wireless@lfdr.de>; Wed,  2 Oct 2019 14:38:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 02D85C8973
+	for <lists+linux-wireless@lfdr.de>; Wed,  2 Oct 2019 15:18:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726237AbfJBMiT (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 2 Oct 2019 08:38:19 -0400
-Received: from mail-qk1-f193.google.com ([209.85.222.193]:38496 "EHLO
-        mail-qk1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725747AbfJBMiT (ORCPT
+        id S1727393AbfJBNSK (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 2 Oct 2019 09:18:10 -0400
+Received: from userp2120.oracle.com ([156.151.31.85]:48276 "EHLO
+        userp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726208AbfJBNSK (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 2 Oct 2019 08:38:19 -0400
-Received: by mail-qk1-f193.google.com with SMTP id u186so14772486qkc.5
-        for <linux-wireless@vger.kernel.org>; Wed, 02 Oct 2019 05:38:18 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=endlessm-com.20150623.gappssmtp.com; s=20150623;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=XjGcad+/AEf/LQ6JW0XEmjTyfYLZoWupXny7/907quI=;
-        b=BuKfaXOGJkGNN039Bc44rug88lxpIT8oI+YcKkFCeQMvnOv102ztRZn3SwNsZHcFQv
-         v7EROximmU2mlCX6FLXNGJHwfUzzoPDW1Oefmyzg39aNXdAC6AqMjwoO6SjQWSKMbudq
-         pulzcmolj9dCghigUJiI9p+w8GbPQEUDaHe5LWEgLwfyO809Zo30CTyP4flXdTA2I3RY
-         3dd/olg1yHbQ8Rlvq3oSAIkPjSsWmdC7u4ispRQzoFBiHUl3b3bEcf6fEYPibxSXfieg
-         0f2oFQcuZQN9y0NZeHXdfHBS1pUWGCf3klcTqlKVfpKC2auiBaZQSEjPN21VvEBadw8Y
-         A0zQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=XjGcad+/AEf/LQ6JW0XEmjTyfYLZoWupXny7/907quI=;
-        b=mco5aZ4L/mZ31gkZflGqb6xxoICOa8pw5uKGwq9jrO5KiXUz6VQUfrfHvqLFVgEVOn
-         ut5E9bZi1da34fpKDeaZqChOvEdD4HdPu0Zw7JpFQShfgI9S6z/2aYt0rgkYhTDigRGA
-         uuJ0m0xLz1yRUObu56D1PQVCS7XY6+fyGf8ySoXkaFslPTe0jbPTDyhFlWggJRhOmRYA
-         yCzIef/9xH2ARvmxYoWXNYLGuUgXncte5SnU/mbR761OCIDLIEOOqnU4o9QVkTG7NEsX
-         B0H32GYTIL9nqmDBMnkA+6Ywvf+UhLWjE56Qbqzk12mjoPKEGGjtL1T95+mcPUbX1RnO
-         hqeQ==
-X-Gm-Message-State: APjAAAVQrYO+YXzbada86eRjzpMGoxPx2HRzxGOKWG/WDtASmk4PlmGl
-        BKrJV12s9R/obLRMrY43tT8tBFIHk+5aTcRIvMeGXg==
-X-Google-Smtp-Source: APXvYqwgMZyCWyDd3fnNskodhxm92UgANHaXL7pTyigGGX+fmEMuqAfA/i/iU3ag6oSmB1WW21ZFh/8Qjlo/LOZHEqM=
-X-Received: by 2002:a37:9c57:: with SMTP id f84mr3540760qke.250.1570019898066;
- Wed, 02 Oct 2019 05:38:18 -0700 (PDT)
+        Wed, 2 Oct 2019 09:18:10 -0400
+Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
+        by userp2120.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x92DEIDE023643;
+        Wed, 2 Oct 2019 13:17:47 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
+ : subject : message-id : references : mime-version : content-type :
+ in-reply-to; s=corp-2019-08-05;
+ bh=kXMcu5VQ15D9xKnPxBh3+Ftt1CqLJTYpiEFrjq4TfAg=;
+ b=oXPd2+g7d2yTwj+5qSOr+7FRpGcabuyFeGEeo2TA05LUJIHKm1JRRDqEB5FtshMTcpFa
+ 1c1OSWe2ssUMcoExnFOnbQDKLWj+LuqnMrEiIf+omI+z693lrOTngxgec+1+GeKNnagq
+ V4R205JA2fpUTMxyG4VK04yN1a+FGkxX+hXUIw/HFyVVaosgi/jT893FdKdLoMMSKlWb
+ Aky/+5/KdbHU/SIzqqxRaLV1k/Fl0mUz0Sb7/+CS+8EkRuKf74l37X6bOxiKzaM1Baka
+ GiOz1kXcQr+5tq4m7Bd0DNeReTgxfPvf5HrFOaGx9Rw2mYGQ7DGcHI5Ku3kjPyvWlZgD ww== 
+Received: from aserp3030.oracle.com (aserp3030.oracle.com [141.146.126.71])
+        by userp2120.oracle.com with ESMTP id 2va05rvs48-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Wed, 02 Oct 2019 13:17:47 +0000
+Received: from pps.filterd (aserp3030.oracle.com [127.0.0.1])
+        by aserp3030.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x92DEAjg161263;
+        Wed, 2 Oct 2019 13:17:46 GMT
+Received: from userv0121.oracle.com (userv0121.oracle.com [156.151.31.72])
+        by aserp3030.oracle.com with ESMTP id 2vbsm3ugxg-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Wed, 02 Oct 2019 13:17:46 +0000
+Received: from abhmp0007.oracle.com (abhmp0007.oracle.com [141.146.116.13])
+        by userv0121.oracle.com (8.14.4/8.13.8) with ESMTP id x92DHhbE013341;
+        Wed, 2 Oct 2019 13:17:43 GMT
+Received: from kadam (/41.57.98.10)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Wed, 02 Oct 2019 06:17:43 -0700
+Date:   Wed, 2 Oct 2019 16:17:35 +0300
+From:   Dan Carpenter <dan.carpenter@oracle.com>
+To:     Colin King <colin.king@canonical.com>,
+        Lubomir Rintel <lkundrak@v3.sk>
+Cc:     Kalle Valo <kvalo@codeaurora.org>,
+        "David S . Miller" <davem@davemloft.net>,
+        libertas-dev@lists.infradead.org, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org, kernel-janitors@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] libertas: remove redundant assignment to variable ret
+Message-ID: <20191002131734.GN22609@kadam>
+References: <20191002101517.10836-1-colin.king@canonical.com>
 MIME-Version: 1.0
-References: <20190911025045.20918-1-chiu@endlessm.com> <20191002042911.2E755611BF@smtp.codeaurora.org>
-In-Reply-To: <20191002042911.2E755611BF@smtp.codeaurora.org>
-From:   Chris Chiu <chiu@endlessm.com>
-Date:   Wed, 2 Oct 2019 20:38:07 +0800
-Message-ID: <CAB4CAwdvJSjamjUgu2BJxKxEW_drCyRFVTbwN_v-suXc2ZjeAg@mail.gmail.com>
-Subject: Re: [PATCH v2] rtl8xxxu: add bluetooth co-existence support for
- single antenna
-To:     Kalle Valo <kvalo@codeaurora.org>
-Cc:     Jes Sorensen <Jes.Sorensen@gmail.com>,
-        David Miller <davem@davemloft.net>,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        netdev <netdev@vger.kernel.org>,
-        Linux Kernel <linux-kernel@vger.kernel.org>,
-        Linux Upstreaming Team <linux@endlessm.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20191002101517.10836-1-colin.king@canonical.com>
+User-Agent: Mutt/1.9.4 (2018-02-28)
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9397 signatures=668685
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 malwarescore=0
+ phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=999
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.0.1-1908290000 definitions=main-1910020127
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9397 signatures=668685
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
+ suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1011
+ lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=999 adultscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1908290000
+ definitions=main-1910020127
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Wed, Oct 2, 2019 at 12:29 PM Kalle Valo <kvalo@codeaurora.org> wrote:
+Added Lubomir Rintel to the CC list.
 
-> Failed to apply, please rebase on top of wireless-drivers-next.
->
-> fatal: sha1 information is lacking or useless (drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu.h).
-> error: could not build fake ancestor
-> Applying: rtl8xxxu: add bluetooth co-existence support for single antenna
-> Patch failed at 0001 rtl8xxxu: add bluetooth co-existence support for single antenna
-> The copy of the patch that failed is found in: .git/rebase-apply/patch
->
-> Patch set to Changes Requested.
->
-> --
-> https://patchwork.kernel.org/patch/11140223/
->
-> https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
->
+On Wed, Oct 02, 2019 at 11:15:17AM +0100, Colin King wrote:
+> From: Colin Ian King <colin.king@canonical.com>
+> 
+> The variable ret is being assigned a value that is never read and is
+> being re-assigned a little later on. The assignment is redundant and hence
+> can be removed.
+> 
+> Addresses-Coverity: ("Unused value")
+> Signed-off-by: Colin Ian King <colin.king@canonical.com>
+> ---
+>  drivers/net/wireless/marvell/libertas/mesh.c | 1 -
+>  1 file changed, 1 deletion(-)
+> 
+> diff --git a/drivers/net/wireless/marvell/libertas/mesh.c b/drivers/net/wireless/marvell/libertas/mesh.c
+> index 2747c957d18c..44c8a550da4c 100644
+> --- a/drivers/net/wireless/marvell/libertas/mesh.c
+> +++ b/drivers/net/wireless/marvell/libertas/mesh.c
+> @@ -1003,7 +1003,6 @@ static int lbs_add_mesh(struct lbs_private *priv)
+>  	if (priv->mesh_tlv) {
+>  		sprintf(mesh_wdev->ssid, "mesh");
+>  		mesh_wdev->mesh_id_up_len = 4;
+> -		ret = 1;
+>  	}
 
-The failure is because this patch needs the 'enum wireless_mode' from another
-patch https://patchwork.kernel.org/patch/11148163/ which I already submit the
-new v8 version. I didn't put them in the same series due to it really
-took me a long
-time to come out after tx performance improvement patch upstream. Please apply
-this one after https://www.mail-archive.com/linux-kernel@vger.kernel.org/msg2117331.html.
-Thanks.
+Removing this is fine.  "ret = 1" is a mistake.
 
-Chris
+This was copy and pasted in commit 2199c9817670 ("libertas: use
+mesh_wdev->ssid instead of priv->mesh_ssid").  The return value was
+never used so it's not clear what returning 1 vs 0 was supposed to mean.
+
+lbs_init_mesh() should just be a void function.
+
+Reviewed-by: Dan Carpenter <dan.carpenter@oracle.com>
+
+regards,
+dan carpenter
