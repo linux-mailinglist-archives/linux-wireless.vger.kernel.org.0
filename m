@@ -2,153 +2,412 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id CB1BEC90D2
-	for <lists+linux-wireless@lfdr.de>; Wed,  2 Oct 2019 20:29:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 03133C930B
+	for <lists+linux-wireless@lfdr.de>; Wed,  2 Oct 2019 22:49:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728865AbfJBS2L (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 2 Oct 2019 14:28:11 -0400
-Received: from mail-pg1-f196.google.com ([209.85.215.196]:43682 "EHLO
-        mail-pg1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726076AbfJBS2L (ORCPT
+        id S1728169AbfJBUsO (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 2 Oct 2019 16:48:14 -0400
+Received: from mail2.candelatech.com ([208.74.158.173]:50824 "EHLO
+        mail3.candelatech.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725928AbfJBUsO (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 2 Oct 2019 14:28:11 -0400
-Received: by mail-pg1-f196.google.com with SMTP id v27so12326847pgk.10;
-        Wed, 02 Oct 2019 11:28:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=izcdKMTlTPXdg1rZpK9PkNPTeAL5ACc5p0aT6ECn+3o=;
-        b=nr6ZKcXN/729CI5YvKkqVc0Bz2wyp7AqMiNJbnneIbJ2S8a6/RpgT+vQxveooa1g8o
-         Tzstjrebdj0ch6CBEQIhLHedt+Meqh8poQODSN2lg0OykjXXZCvv3ItaPXFO7ZImXqcW
-         RuKmutNc32nfhTfdTSE+Gn+FP0hyvVehIb12ZNHr5rdWDezRIrhU/4qCY2koq02vv9hS
-         0JYsKwzPEkKLeHC0o1yMLr4lNeC7nIidqjJQlgZ17X3hwG7uMGUGlb0FYDKstybAoxSN
-         PuzGKEISFL71Mt9LOzHTLH19Bi/ikZqtSvsTTAUBs/9/pSrhf3mQrJw/Bi+Y2mWPIur/
-         yzHQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=izcdKMTlTPXdg1rZpK9PkNPTeAL5ACc5p0aT6ECn+3o=;
-        b=pmsHGoI1ePqZE8TLIu0Dey8pVqh1NIIj/A8bMidf6zGs1MH2FE1AqnpVY91B+3CLt4
-         8BheWaKNwiIe64AuVFIJOqTmRF+wchCvko/tc6ceKJuIY8xNxd18XG4w7zxqtj7bOmQM
-         23z+BEWQzE3U6Kc5/wR3Ro7gBJr/RNPvTtzVCBwWjkobkxurHdBt8LgZEXKKObj/ijfp
-         V1Z9ByZuI2uY3INWNDsKubaNPWcLw4eDL/a8pIDp789JIRi43c9zAMNUZiMvu13fc4ug
-         oD3vwMBWsm5OejBjBXsSYU+mE8l75Yv7FuI+nl6TSMi5293fIXUyqTuPChzLR1LiXXB7
-         3y7Q==
-X-Gm-Message-State: APjAAAWttjPq1lnPKLQ3CMBX0r/izgeFIFB8DCBRwvf1KTLBlY3nuQVw
-        rLq29wRs+YQEyzQLoW9cqqNMYGeN
-X-Google-Smtp-Source: APXvYqwrs3FB89RH0+kgXBF3ejwmYPZLTgHaLNuUiXE1AjcShSZR76+3xPYW28RCBcE0p63294782w==
-X-Received: by 2002:a17:90a:c214:: with SMTP id e20mr5758828pjt.81.1570040889544;
-        Wed, 02 Oct 2019 11:28:09 -0700 (PDT)
-Received: from [10.69.78.41] ([192.19.223.252])
-        by smtp.gmail.com with ESMTPSA id b14sm162486pfi.95.2019.10.02.11.28.07
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 02 Oct 2019 11:28:08 -0700 (PDT)
-Subject: Re: [PATCH 00/11] of: Fix DMA configuration for non-DT masters
-To:     Robin Murphy <robin.murphy@arm.com>,
-        Nicolas Saenz Julienne <nsaenzjulienne@suse.de>,
-        Rob Herring <robh+dt@kernel.org>
-Cc:     "moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" 
-        <linux-arm-kernel@lists.infradead.org>, devicetree@vger.kernel.org,
-        Matthias Brugger <mbrugger@suse.com>,
-        Frank Rowand <frowand.list@gmail.com>,
-        linux-arm-msm <linux-arm-msm@vger.kernel.org>,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        dri-devel <dri-devel@lists.freedesktop.org>,
-        etnaviv@lists.freedesktop.org,
-        "open list:DMA GENERIC OFFLOAD ENGINE SUBSYSTEM" 
-        <dmaengine@vger.kernel.org>, Stefan Wahren <wahrenst@gmx.net>,
-        james.quinlan@broadcom.com, linux-pci@vger.kernel.org,
-        linux-tegra@vger.kernel.org, xen-devel@lists.xenproject.org,
-        Dan Williams <dan.j.williams@intel.com>,
-        freedreno <freedreno@lists.freedesktop.org>,
-        Linux Media Mailing List <linux-media@vger.kernel.org>
-References: <20190924181244.7159-1-nsaenzjulienne@suse.de>
- <CAL_Jsq+v+svTyna7UzQdRVqfNc5Z_bgWzxNRXv7-Wqv3NwDu2g@mail.gmail.com>
- <d1a31a2ec8eb2f226b1fb41f6c24ffb47c3bf7c7.camel@suse.de>
- <e404c65b-5a66-6f91-5b38-8bf89a7697b2@arm.com>
- <43fb5fe1de317d65a4edf592f88ea150c6e3b8cc.camel@suse.de>
- <CAL_JsqLhx500cx3YLoC7HL1ux3bBpV+fEA2Qnk7D5RFGgiGzSw@mail.gmail.com>
- <aa4c8d62-7990-e385-2bb1-cec55148f0a8@arm.com>
- <CAL_JsqKKYcHPnA80ZwLY=Sk3e5MqrimedUhWQ5+iuPZXQxYHdA@mail.gmail.com>
- <307b988d0c67fb1c42166eca12742bcfda09d92d.camel@suse.de>
- <c27a51e1-1adf-ae6a-dc67-ae76222a1163@arm.com>
-From:   Florian Fainelli <f.fainelli@gmail.com>
-Message-ID: <fbae48ca-fbd4-e32b-e874-92b5bba5df4d@gmail.com>
-Date:   Wed, 2 Oct 2019 11:28:06 -0700
-User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:68.0) Gecko/20100101
- Thunderbird/68.1.1
+        Wed, 2 Oct 2019 16:48:14 -0400
+Received: from [192.168.100.195] (50-251-239-81-static.hfc.comcastbusiness.net [50.251.239.81])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail3.candelatech.com (Postfix) with ESMTPSA id 07142D94D
+        for <linux-wireless@vger.kernel.org>; Wed,  2 Oct 2019 13:48:12 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail3.candelatech.com 07142D94D
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=candelatech.com;
+        s=default; t=1570049293;
+        bh=bCAzc2i+qP1CXNmuVBmA3SSf+eQiwTQcl5Sd3L+Hnb4=;
+        h=To:From:Subject:Date:From;
+        b=ra0JDSmovFETIW5S2F19NiVWBTRVBiSsVOqORCuZPd1JU0J2NFKjE+x6j2+GD6Kvk
+         wqXHqailhzcX8sREZASpFF4kfXVDoOBG5wFdlA6dauFkKYX68b52/C7vJAxp2GeGIh
+         frp8XsN2+Fus5LwAe18yINexs/nBI/HUMlAqTb/w=
+To:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+From:   Ben Greear <greearb@candelatech.com>
+Subject: AX200 crash on udp upload, cannot restart
+Organization: Candela Technologies
+Message-ID: <08f29d02-2fcf-e779-6fc0-ea7a9d4e59b6@candelatech.com>
+Date:   Wed, 2 Oct 2019 13:48:12 -0700
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.7.0
 MIME-Version: 1.0
-In-Reply-To: <c27a51e1-1adf-ae6a-dc67-ae76222a1163@arm.com>
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Language: en-US
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+We have a system with several of the AX200 NICs in it, kernel is 5.2.14+.  We ran a udp upload
+test of 10Mbps across all radios, and after about 10 minutes one of the radios crashed and could
+not be restarted.  The others continued to run so far.
 
+I will open a bug in the kernel bug tracker.
 
-On 9/26/2019 4:20 AM, Robin Murphy wrote:
-> On 2019-09-26 11:44 am, Nicolas Saenz Julienne wrote:
->>>>>> Robin, have you looked into supporting multiple dma-ranges? It's the
->>>>>> next thing
->>>>>> we need for BCM STB's PCIe. I'll have a go at it myself if nothing
->>>>>> is in
->>>>>> the
->>>>>> works already.
->>>>>
->>>>> Multiple dma-ranges as far as configuring inbound windows should work
->>>>> already other than the bug when there's any parent translation. But if
->>>>> you mean supporting multiple DMA offsets and masks per device in the
->>>>> DMA API, there's nothing in the works yet.
->>
->> Sorry, I meant supporting multiple DMA offsets[1]. I think I could
->> still make
->> it with a single DMA mask though.
-> 
-> The main problem for supporting that case in general is the disgusting
-> carving up of the physical memory map you may have to do to guarantee
-> that a single buffer allocation cannot ever span two windows with
-> different offsets. I don't think we ever reached a conclusion on whether
-> that was even achievable in practice.
+iwlwifi 0000:10:00.0: Microcode SW error detected. Restarting 0x0.
+iwlwifi 0000:10:00.0: Start IWL Error Log Dump:
+iwlwifi 0000:10:00.0: Status: 0x00000080, count: 6
+iwlwifi 0000:10:00.0: Loaded firmware version: 48.4fa0041f.0
+iwlwifi 0000:10:00.0: 0x00000942 | ADVANCED_SYSASSERT
+iwlwifi 0000:10:00.0: 0x00A0A210 | trm_hw_status0
+iwlwifi 0000:10:00.0: 0x00000000 | trm_hw_status1
+iwlwifi 0000:10:00.0: 0x004F8E3C | branchlink2
+iwlwifi 0000:10:00.0: 0x00000E26 | interruptlink1
+iwlwifi 0000:10:00.0: 0x00000E26 | interruptlink2
+iwlwifi 0000:10:00.0: 0xFFE2FFEF | data1
+iwlwifi 0000:10:00.0: 0x6A010200 | data2
+iwlwifi 0000:10:00.0: 0x040C0605 | data3
+iwlwifi 0000:10:00.0: 0xE90146BA | beacon time
+iwlwifi 0000:10:00.0: 0x0A57190F | tsf low
+iwlwifi 0000:10:00.0: 0x00000001 | tsf hi
+iwlwifi 0000:10:00.0: 0x00000000 | time gp1
+iwlwifi 0000:10:00.0: 0x129412C7 | time gp2
+iwlwifi 0000:10:00.0: 0x00000001 | uCode revision type
+iwlwifi 0000:10:00.0: 0x00000030 | uCode version major
+iwlwifi 0000:10:00.0: 0x4FA0041F | uCode version minor
+iwlwifi 0000:10:00.0: 0x00000340 | hw version
+iwlwifi 0000:10:00.0: 0x00C89000 | board version
+iwlwifi 0000:10:00.0: 0x80B2FD06 | hcmd
+iwlwifi 0000:10:00.0: 0xE6821000 | isr0
+iwlwifi 0000:10:00.0: 0x00440000 | isr1
+iwlwifi 0000:10:00.0: 0x08F00102 | isr2
+iwlwifi 0000:10:00.0: 0x04C187CD | isr3
+iwlwifi 0000:10:00.0: 0x00000000 | isr4
+iwlwifi 0000:10:00.0: 0x03AC001C | last cmd Id
+iwlwifi 0000:10:00.0: 0x004EB8B4 | wait_event
+iwlwifi 0000:10:00.0: 0x000000B4 | l2p_control
+iwlwifi 0000:10:00.0: 0x00010014 | l2p_duration
+iwlwifi 0000:10:00.0: 0x0000000F | l2p_mhvalid
+iwlwifi 0000:10:00.0: 0x00000000 | l2p_addr_match
+iwlwifi 0000:10:00.0: 0x00000009 | lmpm_pmg_sel
+iwlwifi 0000:10:00.0: 0x00000000 | timestamp
+iwlwifi 0000:10:00.0: 0x0000307C | flow_handler
+iwlwifi 0000:10:00.0: Start IWL Error Log Dump:
+iwlwifi 0000:10:00.0: Status: 0x00000080, count: 7
+iwlwifi 0000:10:00.0: 0x20000070 | NMI_INTERRUPT_LMAC_FATAL
+iwlwifi 0000:10:00.0: 0x00000000 | umac branchlink1
+iwlwifi 0000:10:00.0: 0xC008CC3C | umac branchlink2
+iwlwifi 0000:10:00.0: 0x8048D0E6 | umac interruptlink1
+iwlwifi 0000:10:00.0: 0x8048D0E6 | umac interruptlink2
+iwlwifi 0000:10:00.0: 0x00000400 | umac data1
+iwlwifi 0000:10:00.0: 0x8048D0E6 | umac data2
+iwlwifi 0000:10:00.0: 0x00000000 | umac data3
+iwlwifi 0000:10:00.0: 0x00000030 | umac major
+iwlwifi 0000:10:00.0: 0x4FA0041F | umac minor
+iwlwifi 0000:10:00.0: 0x129412D8 | frame pointer
+iwlwifi 0000:10:00.0: 0xC0886284 | stack pointer
+iwlwifi 0000:10:00.0: 0x004E019C | last host cmd
+iwlwifi 0000:10:00.0: 0x00000000 | isr status reg
+iwlwifi 0000:10:00.0: Fseq Registers:
+iwlwifi 0000:10:00.0: 0xE0000000 | FSEQ_ERROR_CODE
+iwlwifi 0000:10:00.0: 0x80290001 | FSEQ_TOP_INIT_VERSION
+iwlwifi 0000:10:00.0: 0x80050008 | FSEQ_CNVIO_INIT_VERSION
+iwlwifi 0000:10:00.0: 0x0000A503 | FSEQ_OTP_VERSION
+iwlwifi 0000:10:00.0: 0x80000003 | FSEQ_TOP_CONTENT_VERSION
+iwlwifi 0000:10:00.0: 0x4552414E | FSEQ_ALIVE_TOKEN
+iwlwifi 0000:10:00.0: 0x00100530 | FSEQ_CNVI_ID
+iwlwifi 0000:10:00.0: 0x00000532 | FSEQ_CNVR_ID
+iwlwifi 0000:10:00.0: 0x00100530 | CNVI_AUX_MISC_CHIP
+iwlwifi 0000:10:00.0: 0x00000532 | CNVR_AUX_MISC_CHIP
+iwlwifi 0000:10:00.0: 0x05B0905B | CNVR_SCU_SD_REGS_SD_REG_DIG_DCDC_VTRIM
+iwlwifi 0000:10:00.0: 0x0000025B | CNVR_SCU_SD_REGS_SD_REG_ACTIVE_VDIG_MIRROR
+iwlwifi 0000:10:00.0: Microcode SW error detected. Restarting 0x0.
+iwlwifi 0000:10:00.0: Start IWL Error Log Dump:
+iwlwifi 0000:10:00.0: Status: 0x00000080, count: 6
+iwlwifi 0000:10:00.0: Loaded firmware version: 48.4fa0041f.0
+iwlwifi 0000:10:00.0: 0x00000942 | ADVANCED_SYSASSERT
+iwlwifi 0000:10:00.0: 0x00A0A210 | trm_hw_status0
+iwlwifi 0000:10:00.0: 0x00000000 | trm_hw_status1
+iwlwifi 0000:10:00.0: 0x004F8E3C | branchlink2
+iwlwifi 0000:10:00.0: 0x00000E26 | interruptlink1
+iwlwifi 0000:10:00.0: 0x00000E26 | interruptlink2
+iwlwifi 0000:10:00.0: 0xFFB1FFC7 | data1
+iwlwifi 0000:10:00.0: 0x6A000200 | data2
+iwlwifi 0000:10:00.0: 0x040C0605 | data3
+iwlwifi 0000:10:00.0: 0x00C0ED90 | beacon time
+iwlwifi 0000:10:00.0: 0xF7C97272 | tsf low
+iwlwifi 0000:10:00.0: 0x00000001 | tsf hi
+iwlwifi 0000:10:00.0: 0x00000000 | time gp1
+iwlwifi 0000:10:00.0: 0x00066C5B | time gp2
+iwlwifi 0000:10:00.0: 0x00000001 | uCode revision type
+iwlwifi 0000:10:00.0: 0x00000030 | uCode version major
+iwlwifi 0000:10:00.0: 0x4FA0041F | uCode version minor
+iwlwifi 0000:10:00.0: 0x00000340 | hw version
+iwlwifi 0000:10:00.0: 0x00C89000 | board version
+iwlwifi 0000:10:00.0: 0x801FFD06 | hcmd
+iwlwifi 0000:10:00.0: 0xE68A9000 | isr0
+iwlwifi 0000:10:00.0: 0x00440000 | isr1
+iwlwifi 0000:10:00.0: 0x08F00002 | isr2
+iwlwifi 0000:10:00.0: 0x00C1F00C | isr3
+iwlwifi 0000:10:00.0: 0x00000000 | isr4
+iwlwifi 0000:10:00.0: 0x02A2001C | last cmd Id
+iwlwifi 0000:10:00.0: 0x004EB8B4 | wait_event
+iwlwifi 0000:10:00.0: 0x000000D4 | l2p_control
+iwlwifi 0000:10:00.0: 0x00010014 | l2p_duration
+iwlwifi 0000:10:00.0: 0x00000007 | l2p_mhvalid
+iwlwifi 0000:10:00.0: 0x00000000 | l2p_addr_match
+iwlwifi 0000:10:00.0: 0x00000009 | lmpm_pmg_sel
+iwlwifi 0000:10:00.0: 0x00000000 | timestamp
+iwlwifi 0000:10:00.0: 0x000068B8 | flow_handler
+iwlwifi 0000:10:00.0: Start IWL Error Log Dump:
+iwlwifi 0000:10:00.0: Status: 0x00000080, count: 7
+iwlwifi 0000:10:00.0: 0x20000070 | NMI_INTERRUPT_LMAC_FATAL
+iwlwifi 0000:10:00.0: 0x00000000 | umac branchlink1
+iwlwifi 0000:10:00.0: 0xC008CC3C | umac branchlink2
+iwlwifi 0000:10:00.0: 0x8048D0E6 | umac interruptlink1
+iwlwifi 0000:10:00.0: 0x8048D0E6 | umac interruptlink2
+iwlwifi 0000:10:00.0: 0x00000400 | umac data1
+iwlwifi 0000:10:00.0: 0x8048D0E6 | umac data2
+iwlwifi 0000:10:00.0: 0x00000000 | umac data3
+iwlwifi 0000:10:00.0: 0x00000030 | umac major
+iwlwifi 0000:10:00.0: 0x4FA0041F | umac minor
+iwlwifi 0000:10:00.0: 0x00066C6B | frame pointer
+iwlwifi 0000:10:00.0: 0xC0886284 | stack pointer
+iwlwifi 0000:10:00.0: 0x0036010C | last host cmd
+iwlwifi 0000:10:00.0: 0x00000000 | isr status reg
+iwlwifi 0000:10:00.0: Fseq Registers:
+iwlwifi 0000:10:00.0: 0xE0000000 | FSEQ_ERROR_CODE
+iwlwifi 0000:10:00.0: 0x80290001 | FSEQ_TOP_INIT_VERSION
+iwlwifi 0000:10:00.0: 0x80050008 | FSEQ_CNVIO_INIT_VERSION
+iwlwifi 0000:10:00.0: 0x0000A503 | FSEQ_OTP_VERSION
+iwlwifi 0000:10:00.0: 0x80000003 | FSEQ_TOP_CONTENT_VERSION
+iwlwifi 0000:10:00.0: 0x4552414E | FSEQ_ALIVE_TOKEN
+iwlwifi 0000:10:00.0: 0x00100530 | FSEQ_CNVI_ID
+iwlwifi 0000:10:00.0: 0x00000532 | FSEQ_CNVR_ID
+iwlwifi 0000:10:00.0: 0x00100530 | CNVI_AUX_MISC_CHIP
+iwlwifi 0000:10:00.0: 0x00000532 | CNVR_AUX_MISC_CHIP
+iwlwifi 0000:10:00.0: 0x05B0905B | CNVR_SCU_SD_REGS_SD_REG_DIG_DCDC_VTRIM
+iwlwifi 0000:10:00.0: 0x0000025B | CNVR_SCU_SD_REGS_SD_REG_ACTIVE_VDIG_MIRROR
+iwlwifi 0000:08:00.0: Microcode SW error detected. Restarting 0x0.
+iwlwifi 0000:08:00.0: Start IWL Error Log Dump:
+iwlwifi 0000:08:00.0: Status: 0x00000080, count: 6
+iwlwifi 0000:08:00.0: Loaded firmware version: 48.4fa0041f.0
+iwlwifi 0000:08:00.0: 0x00000942 | ADVANCED_SYSASSERT
+iwlwifi 0000:08:00.0: 0x00A0A210 | trm_hw_status0
+iwlwifi 0000:08:00.0: 0x00000000 | trm_hw_status1
+iwlwifi 0000:08:00.0: 0x004F8E3C | branchlink2
+iwlwifi 0000:08:00.0: 0x00000E26 | interruptlink1
+iwlwifi 0000:08:00.0: 0x00000E26 | interruptlink2
+iwlwifi 0000:08:00.0: 0xFFD5FFE2 | data1
+iwlwifi 0000:08:00.0: 0x6A010201 | data2
+iwlwifi 0000:08:00.0: 0x040C0605 | data3
+iwlwifi 0000:08:00.0: 0x57007D73 | beacon time
+iwlwifi 0000:08:00.0: 0x0CBF8256 | tsf low
+iwlwifi 0000:08:00.0: 0x00000001 | tsf hi
+iwlwifi 0000:08:00.0: 0x00000000 | time gp1
+iwlwifi 0000:08:00.0: 0x1505FF93 | time gp2
+iwlwifi 0000:08:00.0: 0x00000001 | uCode revision type
+iwlwifi 0000:08:00.0: 0x00000030 | uCode version major
+iwlwifi 0000:08:00.0: 0x4FA0041F | uCode version minor
+iwlwifi 0000:08:00.0: 0x00000340 | hw version
+iwlwifi 0000:08:00.0: 0x00C89000 | board version
+iwlwifi 0000:08:00.0: 0x804CFD06 | hcmd
+iwlwifi 0000:08:00.0: 0xE6821000 | isr0
+iwlwifi 0000:08:00.0: 0x00440000 | isr1
+iwlwifi 0000:08:00.0: 0x08F00102 | isr2
+iwlwifi 0000:08:00.0: 0x04C19A5D | isr3
+iwlwifi 0000:08:00.0: 0x00000000 | isr4
+iwlwifi 0000:08:00.0: 0x03CA001C | last cmd Id
+iwlwifi 0000:08:00.0: 0x004EB8B4 | wait_event
+iwlwifi 0000:08:00.0: 0x00000000 | l2p_control
+iwlwifi 0000:08:00.0: 0x00010014 | l2p_duration
+iwlwifi 0000:08:00.0: 0x00000000 | l2p_mhvalid
+iwlwifi 0000:08:00.0: 0x00000000 | l2p_addr_match
+iwlwifi 0000:08:00.0: 0x00000009 | lmpm_pmg_sel
+iwlwifi 0000:08:00.0: 0x00000000 | timestamp
+iwlwifi 0000:08:00.0: 0x00004090 | flow_handler
+iwlwifi 0000:08:00.0: Start IWL Error Log Dump:
+iwlwifi 0000:08:00.0: Status: 0x00000080, count: 7
+iwlwifi 0000:08:00.0: 0x20000070 | NMI_INTERRUPT_LMAC_FATAL
+iwlwifi 0000:08:00.0: 0x00000000 | umac branchlink1
+iwlwifi 0000:08:00.0: 0xC008CC3C | umac branchlink2
+iwlwifi 0000:08:00.0: 0x8048D0E6 | umac interruptlink1
+iwlwifi 0000:08:00.0: 0x8048D0E6 | umac interruptlink2
+iwlwifi 0000:08:00.0: 0x00000400 | umac data1
+iwlwifi 0000:08:00.0: 0x8048D0E6 | umac data2
+iwlwifi 0000:08:00.0: 0x00000000 | umac data3
+iwlwifi 0000:08:00.0: 0x00000030 | umac major
+iwlwifi 0000:08:00.0: 0x4FA0041F | umac minor
+iwlwifi 0000:08:00.0: 0x1505FFA3 | frame pointer
+iwlwifi 0000:08:00.0: 0xC0886284 | stack pointer
+iwlwifi 0000:08:00.0: 0x00F0019C | last host cmd
+iwlwifi 0000:08:00.0: 0x00000000 | isr status reg
+iwlwifi 0000:08:00.0: Fseq Registers:
+iwlwifi 0000:08:00.0: 0xE0000000 | FSEQ_ERROR_CODE
+iwlwifi 0000:08:00.0: 0x80290001 | FSEQ_TOP_INIT_VERSION
+iwlwifi 0000:08:00.0: 0x80050008 | FSEQ_CNVIO_INIT_VERSION
+iwlwifi 0000:08:00.0: 0x0000A503 | FSEQ_OTP_VERSION
+iwlwifi 0000:08:00.0: 0x80000003 | FSEQ_TOP_CONTENT_VERSION
+iwlwifi 0000:08:00.0: 0x4552414E | FSEQ_ALIVE_TOKEN
+iwlwifi 0000:08:00.0: 0x00100530 | FSEQ_CNVI_ID
+iwlwifi 0000:08:00.0: 0x00000532 | FSEQ_CNVR_ID
+iwlwifi 0000:08:00.0: 0x00100530 | CNVI_AUX_MISC_CHIP
+iwlwifi 0000:08:00.0: 0x00000532 | CNVR_AUX_MISC_CHIP
+iwlwifi 0000:08:00.0: 0x05B0905B | CNVR_SCU_SD_REGS_SD_REG_DIG_DCDC_VTRIM
+iwlwifi 0000:08:00.0: 0x0000025B | CNVR_SCU_SD_REGS_SD_REG_ACTIVE_VDIG_MIRROR
+iwlwifi 0000:08:00.0: Microcode SW error detected. Restarting 0x0.
+iwlwifi 0000:08:00.0: Start IWL Error Log Dump:
+iwlwifi 0000:08:00.0: Status: 0x00000090, count: 6
+iwlwifi 0000:08:00.0: Loaded firmware version: 48.4fa0041f.0
+iwlwifi 0000:08:00.0: 0x00000942 | ADVANCED_SYSASSERT
+iwlwifi 0000:08:00.0: 0x0000A2F0 | trm_hw_status0
+iwlwifi 0000:08:00.0: 0x00000000 | trm_hw_status1
+iwlwifi 0000:08:00.0: 0x004F8E3C | branchlink2
+iwlwifi 0000:08:00.0: 0x00000E26 | interruptlink1
+iwlwifi 0000:08:00.0: 0x00000E26 | interruptlink2
+iwlwifi 0000:08:00.0: 0xFFDCFFF0 | data1
+iwlwifi 0000:08:00.0: 0x70000300 | data2
+iwlwifi 0000:08:00.0: 0x010C0605 | data3
+iwlwifi 0000:08:00.0: 0x00000000 | beacon time
+iwlwifi 0000:08:00.0: 0x0001ABEA | tsf low
+iwlwifi 0000:08:00.0: 0x00000000 | tsf hi
+iwlwifi 0000:08:00.0: 0x00000000 | time gp1
+iwlwifi 0000:08:00.0: 0x00020DDE | time gp2
+iwlwifi 0000:08:00.0: 0x00000001 | uCode revision type
+iwlwifi 0000:08:00.0: 0x00000030 | uCode version major
+iwlwifi 0000:08:00.0: 0x4FA0041F | uCode version minor
+iwlwifi 0000:08:00.0: 0x00000340 | hw version
+iwlwifi 0000:08:00.0: 0x00C89000 | board version
+iwlwifi 0000:08:00.0: 0x8011FD0C | hcmd
+iwlwifi 0000:08:00.0: 0xE29A1000 | isr0
+iwlwifi 0000:08:00.0: 0x00000000 | isr1
+iwlwifi 0000:08:00.0: 0x08F80002 | isr2
+iwlwifi 0000:08:00.0: 0x04C0001C | isr3
+iwlwifi 0000:08:00.0: 0x00000000 | isr4
+iwlwifi 0000:08:00.0: 0x00000000 | last cmd Id
+iwlwifi 0000:08:00.0: 0x0001503E | wait_event
+iwlwifi 0000:08:00.0: 0x00000000 | l2p_control
+iwlwifi 0000:08:00.0: 0x00000000 | l2p_duration
+iwlwifi 0000:08:00.0: 0x00000000 | l2p_mhvalid
+iwlwifi 0000:08:00.0: 0x00000000 | l2p_addr_match
+iwlwifi 0000:08:00.0: 0x00000009 | lmpm_pmg_sel
+iwlwifi 0000:08:00.0: 0x00000000 | timestamp
+iwlwifi 0000:08:00.0: 0x00000020 | flow_handler
+iwlwifi 0000:08:00.0: Start IWL Error Log Dump:
+iwlwifi 0000:08:00.0: Status: 0x00000090, count: 7
+iwlwifi 0000:08:00.0: 0x20000070 | NMI_INTERRUPT_LMAC_FATAL
+iwlwifi 0000:08:00.0: 0x00000000 | umac branchlink1
+iwlwifi 0000:08:00.0: 0xC008CC3C | umac branchlink2
+iwlwifi 0000:08:00.0: 0x8048D0E6 | umac interruptlink1
+iwlwifi 0000:08:00.0: 0x8048D0E6 | umac interruptlink2
+iwlwifi 0000:08:00.0: 0x00000400 | umac data1
+iwlwifi 0000:08:00.0: 0x8048D0E6 | umac data2
+iwlwifi 0000:08:00.0: 0x00000000 | umac data3
+iwlwifi 0000:08:00.0: 0x00000030 | umac major
+iwlwifi 0000:08:00.0: 0x4FA0041F | umac minor
+iwlwifi 0000:08:00.0: 0x00020DF0 | frame pointer
+iwlwifi 0000:08:00.0: 0xC0886284 | stack pointer
+iwlwifi 0000:08:00.0: 0x00010C00 | last host cmd
+iwlwifi 0000:08:00.0: 0x00000000 | isr status reg
+iwlwifi 0000:08:00.0: Fseq Registers:
+iwlwifi 0000:08:00.0: 0xE0000000 | FSEQ_ERROR_CODE
+iwlwifi 0000:08:00.0: 0x80290001 | FSEQ_TOP_INIT_VERSION
+iwlwifi 0000:08:00.0: 0x80050008 | FSEQ_CNVIO_INIT_VERSION
+iwlwifi 0000:08:00.0: 0x0000A503 | FSEQ_OTP_VERSION
+iwlwifi 0000:08:00.0: 0x80000003 | FSEQ_TOP_CONTENT_VERSION
+iwlwifi 0000:08:00.0: 0x4552414E | FSEQ_ALIVE_TOKEN
+iwlwifi 0000:08:00.0: 0x00100530 | FSEQ_CNVI_ID
+iwlwifi 0000:08:00.0: 0x00000532 | FSEQ_CNVR_ID
+iwlwifi 0000:08:00.0: 0x00100530 | CNVI_AUX_MISC_CHIP
+iwlwifi 0000:08:00.0: 0x00000532 | CNVR_AUX_MISC_CHIP
+iwlwifi 0000:08:00.0: 0x05B0905B | CNVR_SCU_SD_REGS_SD_REG_DIG_DCDC_VTRIM
+iwlwifi 0000:08:00.0: 0x0000025B | CNVR_SCU_SD_REGS_SD_REG_ACTIVE_VDIG_MIRROR
+iwlwifi 0000:08:00.0: Firmware error during reconfiguration - reprobe!
+iwlwifi 0000:08:00.0: Failed to start RT ucode: -5
+iwlwifi 0000:08:00.0: Firmware not running - cannot dump error
+wlan6: Failed check-sdata-in-driver check, flags: 0x0
+wlan6: Failed check-sdata-in-driver check, flags: 0x0
+wlan6: Failed check-sdata-in-driver check, flags: 0x0
+iwlwifi 0000:08:00.0: Failed to trigger RX queues sync (-5)
+wlan6: Failed check-sdata-in-driver check, flags: 0x0
+wlan6: Failed check-sdata-in-driver check, flags: 0x0
+wlan6: Failed check-sdata-in-driver check, flags: 0x0
+wlan6: Failed check-sdata-in-driver check, flags: 0x0
+wlan6: Failed check-sdata-in-driver check, flags: 0x0
+wlan6: Failed check-sdata-in-driver check, flags: 0x0
+wlan6: Failed check-sdata-in-driver check, flags: 0x0
+wlan6: Failed check-sdata-in-driver check, flags: 0x0
+wlan6: Failed check-sdata-in-driver check, flags: 0x0
+iwlwifi 0000:08:00.0: iwl_trans_wait_txq_empty bad state = 0
+wlan6: Failed check-sdata-in-driver check, flags: 0x0
+iwlwifi 0000:08:00.0: Microcode SW error detected. Restarting 0x0.
+iwlwifi 0000:08:00.0: Start IWL Error Log Dump:
+iwlwifi 0000:08:00.0: Status: 0x00000080, count: 6
+iwlwifi 0000:08:00.0: Loaded firmware version: 48.4fa0041f.0
+iwlwifi 0000:08:00.0: 0x00000942 | ADVANCED_SYSASSERT
+iwlwifi 0000:08:00.0: 0x0000A2F0 | trm_hw_status0
+iwlwifi 0000:08:00.0: 0x00000000 | trm_hw_status1
+iwlwifi 0000:08:00.0: 0x004F8E3C | branchlink2
+iwlwifi 0000:08:00.0: 0x00000E26 | interruptlink1
+iwlwifi 0000:08:00.0: 0x00000E26 | interruptlink2
+iwlwifi 0000:08:00.0: 0xFFE6FFF3 | data1
+iwlwifi 0000:08:00.0: 0x70000201 | data2
+iwlwifi 0000:08:00.0: 0x010C0605 | data3
+iwlwifi 0000:08:00.0: 0x00000000 | beacon time
+iwlwifi 0000:08:00.0: 0x0001A90F | tsf low
+iwlwifi 0000:08:00.0: 0x00000000 | tsf hi
+iwlwifi 0000:08:00.0: 0x00000000 | time gp1
+iwlwifi 0000:08:00.0: 0x00020AD8 | time gp2
+iwlwifi 0000:08:00.0: 0x00000001 | uCode revision type
+iwlwifi 0000:08:00.0: 0x00000030 | uCode version major
+iwlwifi 0000:08:00.0: 0x4FA0041F | uCode version minor
+iwlwifi 0000:08:00.0: 0x00000340 | hw version
+iwlwifi 0000:08:00.0: 0x18C89000 | board version
+iwlwifi 0000:08:00.0: 0x8011FD0C | hcmd
+iwlwifi 0000:08:00.0: 0xE69A9600 | isr0
+iwlwifi 0000:08:00.0: 0x00000000 | isr1
+iwlwifi 0000:08:00.0: 0x08F80002 | isr2
+iwlwifi 0000:08:00.0: 0x04C0001C | isr3
+iwlwifi 0000:08:00.0: 0x00000000 | isr4
+iwlwifi 0000:08:00.0: 0x00000000 | last cmd Id
+iwlwifi 0000:08:00.0: 0x0001503E | wait_event
+iwlwifi 0000:08:00.0: 0x00000000 | l2p_control
+iwlwifi 0000:08:00.0: 0x00000000 | l2p_duration
+iwlwifi 0000:08:00.0: 0x00000000 | l2p_mhvalid
+iwlwifi 0000:08:00.0: 0x00000000 | l2p_addr_match
+iwlwifi 0000:08:00.0: 0x00000009 | lmpm_pmg_sel
+iwlwifi 0000:08:00.0: 0x00000000 | timestamp
+iwlwifi 0000:08:00.0: 0x00000020 | flow_handler
+iwlwifi 0000:08:00.0: Start IWL Error Log Dump:
+iwlwifi 0000:08:00.0: Status: 0x00000080, count: 7
+iwlwifi 0000:08:00.0: 0x20000070 | NMI_INTERRUPT_LMAC_FATAL
+iwlwifi 0000:08:00.0: 0x00000000 | umac branchlink1
+iwlwifi 0000:08:00.0: 0xC008CC3C | umac branchlink2
+iwlwifi 0000:08:00.0: 0x8048D0E6 | umac interruptlink1
+iwlwifi 0000:08:00.0: 0x8048D0E6 | umac interruptlink2
+iwlwifi 0000:08:00.0: 0x00000400 | umac data1
+iwlwifi 0000:08:00.0: 0x8048D0E6 | umac data2
+iwlwifi 0000:08:00.0: 0x00000000 | umac data3
+iwlwifi 0000:08:00.0: 0x00000030 | umac major
+iwlwifi 0000:08:00.0: 0x4FA0041F | umac minor
+iwlwifi 0000:08:00.0: 0x00020AEA | frame pointer
+iwlwifi 0000:08:00.0: 0xC0886284 | stack pointer
+iwlwifi 0000:08:00.0: 0x00010C00 | last host cmd
+iwlwifi 0000:08:00.0: 0x00000000 | isr status reg
+iwlwifi 0000:08:00.0: Fseq Registers:
+iwlwifi 0000:08:00.0: 0xE0000000 | FSEQ_ERROR_CODE
+iwlwifi 0000:08:00.0: 0x80290001 | FSEQ_TOP_INIT_VERSION
+iwlwifi 0000:08:00.0: 0x80050008 | FSEQ_CNVIO_INIT_VERSION
+iwlwifi 0000:08:00.0: 0x0000A503 | FSEQ_OTP_VERSION
+iwlwifi 0000:08:00.0: 0x80000003 | FSEQ_TOP_CONTENT_VERSION
+iwlwifi 0000:08:00.0: 0x4552414E | FSEQ_ALIVE_TOKEN
+iwlwifi 0000:08:00.0: 0x00100530 | FSEQ_CNVI_ID
+iwlwifi 0000:08:00.0: 0x00000532 | FSEQ_CNVR_ID
+iwlwifi 0000:08:00.0: 0x00100530 | CNVI_AUX_MISC_CHIP
+iwlwifi 0000:08:00.0: 0x00000532 | CNVR_AUX_MISC_CHIP
+iwlwifi 0000:08:00.0: 0x05B0905B | CNVR_SCU_SD_REGS_SD_REG_DIG_DCDC_VTRIM
+iwlwifi 0000:08:00.0: 0x0000025B | CNVR_SCU_SD_REGS_SD_REG_ACTIVE_VDIG_MIRROR
+iwlwifi 0000:08:00.0: Firmware not running - cannot dump error
+iwlwifi 0000:08:00.0: Failed to run INIT ucode: -5
 
-It is with the Broadcom STB SoCs which have between 1 and 3 memory
-controllers depending on the SoC, and multiple dma-ranges cells for PCIe
-as a consequence.
+Thanks,
+Ben
 
-Each memory controller has a different physical address aperture in the
-CPU's physical address map (e.g.: MEMC0 is 0x0 - 0x3fff_ffff, MEMC1
-0x4000_0000 - 0x7ffff_ffff and MEMC2 0x8000_0000 - 0xbfff_ffff, not
-counting the extension regions above 4GB), and while the CPU is
-scheduled and arbitrated the same way across all memory controllers
-(thus making it virtually UMA, almost) having a buffer span two memory
-controllers would be problematic because the memory controllers do not
-know how to guarantee the transaction ordering and buffer data
-consistency in both DRAM itself and for other memory controller clients,
-like PCIe.
-
-We historically had to reserve the last 4KB of each memory controller to
-avoid problematic controllers like EHCI to prefetch beyond the end of a
-memory controller's populated memory and that also incidentally takes
-care of never having a buffer cross a controller boundary. Either you
-can allocate the entire buffer on a given memory controller, or you
-cannot allocate memory at all on that zone/region and another one must
-be found (or there is no more memory and there is a genuine OOM).
-
-The way we reserve memory right now is based on the first patch
-submitted by Jim:
-
-https://lore.kernel.org/patchwork/patch/988469/
-
-whereby we read the memory node's "reg" property and we map the physical
-addresses to the memory controller configuration read from the specific
-registers in the CPU's Bus Interface Unit (where the memory controller
-apertures are architecturally defined) and then we use that to call
-memblock_reserve() (not part of that patch, it should be though).
 -- 
-Florian
+Ben Greear <greearb@candelatech.com>
+Candela Technologies Inc  http://www.candelatech.com
+
