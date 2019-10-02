@@ -2,123 +2,104 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 87288C8E5C
-	for <lists+linux-wireless@lfdr.de>; Wed,  2 Oct 2019 18:29:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3E629C8E83
+	for <lists+linux-wireless@lfdr.de>; Wed,  2 Oct 2019 18:37:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726215AbfJBQ3N (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 2 Oct 2019 12:29:13 -0400
-Received: from mail-eopbgr690086.outbound.protection.outlook.com ([40.107.69.86]:33349
-        "EHLO NAM04-CO1-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1725893AbfJBQ3N (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 2 Oct 2019 12:29:13 -0400
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=JeG8pnKI27sED2lt/Cm3LhfUHRpszzgv3bo/NiSoPaic/dGPOdSUFeZ1sA8I6TIW+kWKd1/+/oie8iT2DyxVe1ljbjj7ZlSKO4vJy2x1vSjnKi+TuXHJlAZaSuOf/q/AmNwJ/c7bHmGVFNhNte6fNZtpJcycpw0KfbM8qjn06BrMj1h10GqFaCaYTLP2+2Us1sLTnexbMcBGs1gmrfjNhVf4wr/vrOoYf65FLahd2aUFXUf1y+31MGlpKZTTXW/MVHaqLzP7DMzoK0dKKeAtzeJYB58E4JUYifsnvmeT0iuLXSRbsKQj9fISUQfEKTJnaxRD6u5CL3HWeyJW6EkheQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=TqsS9yAkHZKgkTTaiYIT3edGEKPEbqJuGoXtqtPCSvs=;
- b=aFL2h0/8vLQkmJqUiGL24GCzeKZIVi23+Evg4CPebqTvwfUvfOGGJDCARjTANL4ysN+iyMEt8y10phOEDlFJi3Rz8Gjwg6eJlYbzorpllQbUPG7NbQPUBTR74slBFM8FdLgUs7862eWpvpKmirydEx9xcxujvAZ6X7SE+CRePTa9mL3gXaD9q2YwkATzkseB7u+1RnSoNyG963VM4WmuLjCHf+Pd1mygZvFPxeazBwauhwIHHJEwP4V4d7++TBT9tJ7rv1Y0OCxcge6A0IyKxjAmG9GQcAbWZyC67BJWUPnNl97gaM/layGaokhbP3jHGfIJzK7d87tiriYAHvSWlQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=silabs.com; dmarc=pass action=none header.from=silabs.com;
- dkim=pass header.d=silabs.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=silabs.onmicrosoft.com; s=selector2-silabs-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=TqsS9yAkHZKgkTTaiYIT3edGEKPEbqJuGoXtqtPCSvs=;
- b=jDllI+cwSsvLD4jw+GDof5ttQyYQsl18kr9JmpbER+s1SUuEg4Ins8u/shLAF0aIqoZ/kugqAhQk37FgJ/eCNWJ1OsuzMShP69J2LpeRPwoGJd0r5y1ArvAFbKzhbER7ATr+c6nuhUldCcXjTZ2FFP6ew7xX84eE0cCd6tZjR6I=
-Received: from MN2PR11MB4063.namprd11.prod.outlook.com (10.255.180.22) by
- MN2PR11MB3791.namprd11.prod.outlook.com (20.178.254.78) with Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.2305.20; Wed, 2 Oct 2019 16:29:09 +0000
-Received: from MN2PR11MB4063.namprd11.prod.outlook.com
- ([fe80::ac8c:fc55:d1e2:465f]) by MN2PR11MB4063.namprd11.prod.outlook.com
- ([fe80::ac8c:fc55:d1e2:465f%5]) with mapi id 15.20.2305.017; Wed, 2 Oct 2019
- 16:29:09 +0000
-From:   Jerome Pouiller <Jerome.Pouiller@silabs.com>
-To:     Andrew Lunn <andrew@lunn.ch>
-CC:     "devel@driverdev.osuosl.org" <devel@driverdev.osuosl.org>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        "David S . Miller" <davem@davemloft.net>,
-        David Le Goff <David.Legoff@silabs.com>
-Subject: Re: [PATCH 02/20] staging: wfx: add support for I/O access
-Thread-Topic: [PATCH 02/20] staging: wfx: add support for I/O access
-Thread-Index: AQHVbthYAz5BV9jhoUCLDh42xNi6RaczMoaAgBRsfQA=
-Date:   Wed, 2 Oct 2019 16:29:09 +0000
-Message-ID: <4024590.nSQgSsaaFe@pc-42>
-References: <20190919105153.15285-1-Jerome.Pouiller@silabs.com>
- <20190919105153.15285-3-Jerome.Pouiller@silabs.com>
- <20190919163429.GB27277@lunn.ch>
-In-Reply-To: <20190919163429.GB27277@lunn.ch>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-authentication-results: spf=none (sender IP is )
- smtp.mailfrom=Jerome.Pouiller@silabs.com; 
-x-originating-ip: [37.71.187.125]
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: 2eb31fd8-11e1-46e2-4d21-08d74755a6fb
-x-ms-traffictypediagnostic: MN2PR11MB3791:
-x-ms-exchange-transport-forked: True
-x-microsoft-antispam-prvs: <MN2PR11MB3791ED0AF9533F49D20B82FE939C0@MN2PR11MB3791.namprd11.prod.outlook.com>
-x-ms-oob-tlc-oobclassifiers: OLM:8882;
-x-forefront-prvs: 0178184651
-x-forefront-antispam-report: SFV:NSPM;SFS:(10009020)(7916004)(366004)(39850400004)(346002)(396003)(136003)(376002)(199004)(189003)(256004)(26005)(14444005)(33716001)(9686003)(6512007)(6916009)(14454004)(478600001)(4326008)(6246003)(107886003)(229853002)(71200400001)(71190400001)(6436002)(6486002)(8676002)(81156014)(81166006)(476003)(8936002)(486006)(86362001)(7736002)(11346002)(3846002)(54906003)(316002)(6116002)(2906002)(25786009)(99286004)(446003)(91956017)(76116006)(76176011)(4744005)(102836004)(5660300002)(66574012)(6506007)(66556008)(64756008)(66476007)(186003)(66946007)(66446008)(66066001)(305945005);DIR:OUT;SFP:1101;SCL:1;SRVR:MN2PR11MB3791;H:MN2PR11MB4063.namprd11.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;A:1;MX:1;
-received-spf: None (protection.outlook.com: silabs.com does not designate
- permitted sender hosts)
-x-ms-exchange-senderadcheck: 1
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: WQuT9ru85Fw+Ub7ypbsVbkV5is1kD44Y82p6zyJISqF8pj5t5NxA6+stQ0LXQxvMmJLCO8kuPwj546yJtHU4YuW+JFVbHAYGEeLjORAE8B7KPZPFnDqiMmmJlwi79luy1psh4BjYhRS/iDQXcx8Ejb9QMWXqG3ivL+0CXd1zykQQMTQcb73AK0Cx2HS65gNv0xlkACQPmZneOnqVjg4dnHVIT1yCLJcP1GxVYaCZnN55l3iWhd5kJ0aVPKMIgtpY9cgRoepSLTUR9B0KLXB7JvxvV0NJUnL9jJD4VazP3AkFGuxa1DIMBf+i6aHD6314zlqaaBOyKsz/MBFsPyjMJJ0VaXfoapbItasPSLkz6+jKZpvDBelTTZlRtJOKjDsZuTXMb67FqvWQeUgsbnl7AilRB8kFdstWC7zps2kRems=
-Content-Type: text/plain; charset="iso-8859-1"
-Content-ID: <D76D8AC44FFF174E98879F79DC311406@namprd11.prod.outlook.com>
-Content-Transfer-Encoding: quoted-printable
+        id S1726951AbfJBQhk (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 2 Oct 2019 12:37:40 -0400
+Received: from smtp.codeaurora.org ([198.145.29.96]:34196 "EHLO
+        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725916AbfJBQhj (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Wed, 2 Oct 2019 12:37:39 -0400
+Received: by smtp.codeaurora.org (Postfix, from userid 1000)
+        id 7915C60ADE; Wed,  2 Oct 2019 16:37:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
+        s=default; t=1570034258;
+        bh=W2ugWw+g4hwqvYP2PhDRDzBcHTHI03rkdLJkiNE2ZS4=;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+        b=ECEaEuCdVLCu0VGh+t83VcJoK2eLJ7R45a7tTf4HuXJV+PQY9u5ffT9cerhhfsRSH
+         xeoUe0uammn+/2fCqp1beres+SokK8vmhOfjh1aKCEhpp5qckbCopF5R2h8VPtmvno
+         g5W58616BfgNGGorME3ps27xTJ2VU2zz50q6t6BE=
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        pdx-caf-mail.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.7 required=2.0 tests=ALL_TRUSTED,BAYES_00,
+        DKIM_INVALID,DKIM_SIGNED,SPF_NONE autolearn=no autolearn_force=no
+        version=3.4.0
+Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo@smtp.codeaurora.org)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 02B866013C;
+        Wed,  2 Oct 2019 16:37:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
+        s=default; t=1570034257;
+        bh=W2ugWw+g4hwqvYP2PhDRDzBcHTHI03rkdLJkiNE2ZS4=;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+        b=LCCnEHegaZm4ZAkRYFxwZTKdrfata2y9wMVg6baYREWLFcYar8o3lPxqA7BfWZ9Xz
+         D4K1iPLMihgyTD+hgPrvxz38jSFqv0WKdxvWIaIZ9oCuc/1QwQ/LFVcEq1jav1XlWC
+         EgQiFPTXtQZKPfW8W+L1gFLLRM0+bPLVpqwUtnrs=
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 02B866013C
+Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
+From:   Kalle Valo <kvalo@codeaurora.org>
+To:     Chris Chiu <chiu@endlessm.com>
+Cc:     Jes Sorensen <Jes.Sorensen@gmail.com>,
+        David Miller <davem@davemloft.net>,
+        linux-wireless <linux-wireless@vger.kernel.org>,
+        netdev <netdev@vger.kernel.org>,
+        Linux Kernel <linux-kernel@vger.kernel.org>,
+        Linux Upstreaming Team <linux@endlessm.com>
+Subject: Re: [PATCH v2] rtl8xxxu: add bluetooth co-existence support for single antenna
+References: <20190911025045.20918-1-chiu@endlessm.com>
+        <20191002042911.2E755611BF@smtp.codeaurora.org>
+        <CAB4CAwdvJSjamjUgu2BJxKxEW_drCyRFVTbwN_v-suXc2ZjeAg@mail.gmail.com>
+Date:   Wed, 02 Oct 2019 19:37:33 +0300
+In-Reply-To: <CAB4CAwdvJSjamjUgu2BJxKxEW_drCyRFVTbwN_v-suXc2ZjeAg@mail.gmail.com>
+        (Chris Chiu's message of "Wed, 2 Oct 2019 20:38:07 +0800")
+Message-ID: <87pnjf2jea.fsf@kamboji.qca.qualcomm.com>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
 MIME-Version: 1.0
-X-OriginatorOrg: silabs.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 2eb31fd8-11e1-46e2-4d21-08d74755a6fb
-X-MS-Exchange-CrossTenant-originalarrivaltime: 02 Oct 2019 16:29:09.3634
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 54dbd822-5231-4b20-944d-6f4abcd541fb
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: zveEeK6gmYX/NPcpOPJa+E8D6619Rq/y6xubiDnrFIdQig1uNEA00n6aR36P4SUWdxv0ojy/vsD0ZnZr+tTr7g==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN2PR11MB3791
+Content-Type: text/plain
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Thursday 19 September 2019 18:34:48 CEST Andrew Lunn wrote:
-> On Thu, Sep 19, 2019 at 10:52:35AM +0000, Jerome Pouiller wrote:
-> > +static int wfx_sdio_copy_from_io(void *priv, unsigned int reg_id,
-> > +                              void *dst, size_t count)
-> > +{
-> > +     struct wfx_sdio_priv *bus =3D priv;
-> > +     unsigned int sdio_addr =3D reg_id << 2;
-> > +     int ret;
-> > +
-> > +     BUG_ON(reg_id > 7);
->=20
-> Hi Jerome
->=20
-> BUG_ON should only be used when the system is corrupted, and there is
-> no alternative than to stop the machine, so it does not further
-> corrupt itself. Accessing a register which does not exist is not a
-> reason the kill the machine. A WARN() and a return of -EINVAL would be
-> better.
+Chris Chiu <chiu@endlessm.com> writes:
 
-Hi Andrew,
+> On Wed, Oct 2, 2019 at 12:29 PM Kalle Valo <kvalo@codeaurora.org> wrote:
+>
+>> Failed to apply, please rebase on top of wireless-drivers-next.
+>>
+>> fatal: sha1 information is lacking or useless
+>> (drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu.h).
+>> error: could not build fake ancestor
+>> Applying: rtl8xxxu: add bluetooth co-existence support for single antenna
+>> Patch failed at 0001 rtl8xxxu: add bluetooth co-existence support for single antenna
+>> The copy of the patch that failed is found in: .git/rebase-apply/patch
+>>
+>> Patch set to Changes Requested.
+>>
+>> --
+>> https://patchwork.kernel.org/patch/11140223/
+>>
+>> https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+>>
+>
+> The failure is because this patch needs the 'enum wireless_mode' from another
+> patch https://patchwork.kernel.org/patch/11148163/ which I already submit the
+> new v8 version. I didn't put them in the same series due to it really
+> took me a long
+> time to come out after tx performance improvement patch upstream. Please apply
+> this one after
+> https://www.mail-archive.com/linux-kernel@vger.kernel.org/msg2117331.html.
 
-I did not forget your suggestion. However, if everyone is agree with that, =
-I'd=20
-prefer to address it in a next pull request. Indeed, I'd prefer to keep thi=
-s=20
-version in sync with version 2.3.1 published on github.
+Ok, but please always clearly document if there are any dependencies. I
+don't have time to start testing in which order I'm supposed to apply
+them. And the best is if you submit the patches in same patchset, that
+way I don't need to do anything extra.
 
---=20
-J=E9r=F4me Pouiller
-
+-- 
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
