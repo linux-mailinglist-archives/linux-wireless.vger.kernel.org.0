@@ -2,95 +2,106 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 1BA05C44B4
-	for <lists+linux-wireless@lfdr.de>; Wed,  2 Oct 2019 02:00:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3D872C45E9
+	for <lists+linux-wireless@lfdr.de>; Wed,  2 Oct 2019 04:31:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729405AbfJBAAL (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 1 Oct 2019 20:00:11 -0400
-Received: from mail-io1-f66.google.com ([209.85.166.66]:44695 "EHLO
-        mail-io1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729390AbfJBAAL (ORCPT
+        id S1729767AbfJBCbk (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 1 Oct 2019 22:31:40 -0400
+Received: from rtits2.realtek.com ([211.75.126.72]:45997 "EHLO
+        rtits2.realtek.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729341AbfJBCbj (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 1 Oct 2019 20:00:11 -0400
-Received: by mail-io1-f66.google.com with SMTP id w12so24597196iol.11
-        for <linux-wireless@vger.kernel.org>; Tue, 01 Oct 2019 17:00:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bobcopeland-com.20150623.gappssmtp.com; s=20150623;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=8XuORGyon1VOMPog0b9ChPguzhG8P8i4vzM4Xv8Uqzc=;
-        b=kdX1+Dmx5NsPMOpihunGR2OJCSfrr4JjlntcxD7R+ALz1L+MwnXxobTL70wA2xhkk5
-         DwZP8QdL0TeschpMkiVMjuu0HecXiTkp3/TUQUxR8jfV5r7muksNi7KIp1pnfeT1qLrK
-         pccYQLe4dgK6uIpaQvVp3OawufdrG1ZyQ4SkHuzQf8Bg9tJT7PXAPfYD76GF4AbNmBQB
-         hukUohuq02OJtHqySKMVLikBHYIhgnF8f+waZEVJ2RfBsJ2nU4ThtkOaxhjbHxr8Ujqa
-         M0zgmpiK+fQjANVvcglvdKACVKLEB04RBxa9ReB0MAA9/Lah5GA2/d2gXIec4qthEjmA
-         s1yQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=8XuORGyon1VOMPog0b9ChPguzhG8P8i4vzM4Xv8Uqzc=;
-        b=nBnERP99y3FyWmPEmiqPM8OriVDx18bqIk0fL9fXrBd1uD4dpnR3ku+RgX3zCOPzsa
-         UFwyq/0va3rGVf0DTyc0D5NwJQ1/N+iydZfxfi2YONUVr5cxQgw9ZA/vu2Cmkd4EngVe
-         FvjAmW4OVqyHlmcxF69AdlEy9e8O6yopailRPE4gy+W2df3rn0zSPggbALCW3kNyOJOg
-         k4tart31UU1y/B0fh7wEeV6wd4daIYJr4y8tAu9kmK9r67/obkf87Kharx9a8HeHJXUm
-         3k5m+L12FsVUw+cN36P4xTWTLV7T5tWJT17yiz6kp8sflXGx+M1rNZ6zE6xiOaeXMeRP
-         Dfqg==
-X-Gm-Message-State: APjAAAXxKPvXf5ZN+P9q7AGUDqiC6Uda2aBd9/i78Y8TdB0PNFbRjkZe
-        tCKw1vX5pdpRcs9+zGBpKy3SPg==
-X-Google-Smtp-Source: APXvYqzJARkEVuAEFbC8zVztAVf2Nk11aZ/GxPqcZs2fEKZIz912KOLJmKEHDG8oiQFWxDzoU4ZwHQ==
-X-Received: by 2002:a02:638a:: with SMTP id j132mr1092256jac.100.1569974409183;
-        Tue, 01 Oct 2019 17:00:09 -0700 (PDT)
-Received: from hash.lan ([2607:fea8:5ac0:1dd8::d25])
-        by smtp.gmail.com with ESMTPSA id m21sm7456621iob.82.2019.10.01.17.00.08
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 01 Oct 2019 17:00:08 -0700 (PDT)
-Received: from bob by hash.lan with local (Exim 4.92.2)
-        (envelope-from <me@bobcopeland.com>)
-        id 1iFS3r-0005XC-GC; Tue, 01 Oct 2019 20:00:07 -0400
-Date:   Tue, 1 Oct 2019 20:00:07 -0400
-From:   Bob Copeland <me@bobcopeland.com>
-To:     Ramon Fontes <ramonreisfontes@gmail.com>
-Cc:     Johannes Berg <johannes@sipsolutions.net>,
-        Krishna Chaitanya <chaitanya.mgit@gmail.com>,
-        linux-wireless <linux-wireless@vger.kernel.org>
-Subject: Re: mac80211_hwsim (kernel 4.18+): wmediumd + 2.4Ghz
-Message-ID: <20191002000007.GA20953@localhost>
-References: <CABPxzYLrTC3kS86iyfq+RY=XEgjedu2MWPtn+i+H50jPz3oh3w@mail.gmail.com>
- <39d646206446159a2b0a67ee7d8667483ade0733.camel@sipsolutions.net>
- <CABPxzYL0i+YbKh-xMXsS-xWeQvwfFUvv7vGhugM1e+OFMOSHSg@mail.gmail.com>
- <CAK8U23bbiGhmDg-ChDJtbRVVc_6njVdoUjfAhqM+V3yfQXTC4Q@mail.gmail.com>
- <CABPxzY+8Jjvjv0x79yzo+rL3nONTZSkROK1T+gMqq5nhXb=7-g@mail.gmail.com>
- <CAK8U23bb9C+16zuGi+uAYxUg-goddiSZfDAJUYeC1Xpu=jud+Q@mail.gmail.com>
- <df3b53f157e113e309360ed40b1f36b9f08f4d8c.camel@sipsolutions.net>
- <CAK8U23YMeFcQPLfWTMijyJaiX1V+NO9FWmq70nhS+bLVNxFYkg@mail.gmail.com>
- <616a319e4b8623508f6cd00fcfca8303f494a2de.camel@sipsolutions.net>
- <CAK8U23Yrdw8dtO2jDQMMECWpnp=8LEOPqbfL5NQt4sjz3VjsDQ@mail.gmail.com>
+        Tue, 1 Oct 2019 22:31:39 -0400
+Authenticated-By: 
+X-SpamFilter-By: BOX Solutions SpamTrap 5.62 with qID x922VUK6031823, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (RTITCASV01.realtek.com.tw[172.21.6.18])
+        by rtits2.realtek.com.tw (8.15.2/2.57/5.78) with ESMTPS id x922VUK6031823
+        (version=TLSv1 cipher=DHE-RSA-AES256-SHA bits=256 verify=NOT);
+        Wed, 2 Oct 2019 10:31:31 +0800
+Received: from localhost.localdomain (172.21.68.126) by
+ RTITCASV01.realtek.com.tw (172.21.6.18) with Microsoft SMTP Server id
+ 14.3.468.0; Wed, 2 Oct 2019 10:31:30 +0800
+From:   <yhchuang@realtek.com>
+To:     <kvalo@codeaurora.org>
+CC:     <linux-wireless@vger.kernel.org>, <briannorris@chromium.org>
+Subject: [PATCH v2 00/12] rtw88: Add support for deep PS mode
+Date:   Wed, 2 Oct 2019 10:31:16 +0800
+Message-ID: <20191002023128.12090-1-yhchuang@realtek.com>
+X-Mailer: git-send-email 2.17.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAK8U23Yrdw8dtO2jDQMMECWpnp=8LEOPqbfL5NQt4sjz3VjsDQ@mail.gmail.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Type: text/plain
+X-Originating-IP: [172.21.68.126]
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Tue, Oct 01, 2019 at 02:01:06PM -0300, Ramon Fontes wrote:
-> > Now that I look at that, I think most likely the reason is commit
-> > 119f94a6fefc ("cfg80211: Address some corner cases in scan result
-> > channel updating") which was backported to the 4.18 series.
-> 
-> The problem is now fixed! :)
-> Thank you so much for your support Johannes.
-> 
-> Sorry for my ignorance but where can I follow up with these wmediumd changes?
-> https://p.sipsolutions.net/6c52392b5e31d9d1.txt
-> 
-> Btw, I've created a PR for this in the Bob's repo:
-> https://github.com/bcopeland/wmediumd/pull/21/files
+From: Yan-Hsuan Chuang <yhchuang@realtek.com>
 
-Thanks, I merged that.
+RTL8822B/RTL8822C series devices are capable of entering deep PS
+mode. In contrast to Leisure Power Save (LPS) which turns off RF
+components periodically between beacons, deep PS mode turns off
+more hardware circuits. But device should enter LPS before enter
+deep PS mode, otherwise the state of the firmware is undefined.
+
+Under deep PS mode, driver can not read/write registers, and also
+the TX path is reuiqred to be idle. To make sure it, driver should
+acquired rtwdev->mutex lock, and then leave deep PS mode before
+operating on the hardware, otherwise the behavior of the device
+is unexpected and undefined.
+
+To add deep PS mode, some modifications for the driver are needed.
+
+For PCI part, drivers need to keep tracking on the SKBs delivered
+to the device and see if there will have any activity on the TX
+path. For the others, driver should make sure to acquire lock and
+leave deep PS mode.
+
+Also remove a misleading module parameter named "rtw_fw_support_lps".
+It is not representing property of the firmware, but to let driver
+decide if it wants to use LPS mode. But IEEE80211_CONF_PS can
+handle it, by setting power save [on/off] through user space.
+So just remove it, and listen to IEEE80211_CONF_CHANGE_PS.
+
+
+v1 -> v2
+  - rebase on top of wireless-drivers-next
+
+Yan-Hsuan Chuang (12):
+  rtw88: remove redundant flag check helper function
+  rtw88: pci: reset H2C queue indexes in a single write
+  rtw88: not to enter or leave PS under IRQ
+  rtw88: not to control LPS by each vif
+  rtw88: remove unused lps state check helper
+  rtw88: LPS enter/leave should be protected by lock
+  rtw88: leave PS state for dynamic mechanism
+  rtw88: add deep power save support
+  rtw88: not to enter LPS by coex strategy
+  rtw88: select deep PS mode when module is inserted
+  rtw88: add deep PS PG mode for 8822c
+  rtw88: remove misleading module parameter rtw_fw_support_lps
+
+ drivers/net/wireless/realtek/rtw88/coex.c     |  14 +-
+ drivers/net/wireless/realtek/rtw88/debug.h    |   1 +
+ drivers/net/wireless/realtek/rtw88/fw.c       |  77 +++++++++
+ drivers/net/wireless/realtek/rtw88/fw.h       |  29 ++++
+ drivers/net/wireless/realtek/rtw88/hci.h      |   6 +
+ drivers/net/wireless/realtek/rtw88/mac.c      |   2 +-
+ drivers/net/wireless/realtek/rtw88/mac80211.c |  43 ++++-
+ drivers/net/wireless/realtek/rtw88/main.c     |  84 +++++----
+ drivers/net/wireless/realtek/rtw88/main.h     |  32 ++--
+ drivers/net/wireless/realtek/rtw88/pci.c      |  77 ++++++++-
+ drivers/net/wireless/realtek/rtw88/phy.c      |   2 +-
+ drivers/net/wireless/realtek/rtw88/ps.c       | 162 ++++++++++++------
+ drivers/net/wireless/realtek/rtw88/ps.h       |  14 +-
+ drivers/net/wireless/realtek/rtw88/rtw8822b.c |   1 +
+ drivers/net/wireless/realtek/rtw88/rtw8822c.c |   1 +
+ drivers/net/wireless/realtek/rtw88/rx.c       |   2 -
+ drivers/net/wireless/realtek/rtw88/sec.c      |  21 +++
+ drivers/net/wireless/realtek/rtw88/sec.h      |   1 +
+ drivers/net/wireless/realtek/rtw88/tx.c       |   2 -
+ 19 files changed, 429 insertions(+), 142 deletions(-)
 
 -- 
-Bob Copeland %% https://bobcopeland.com/
+2.17.1
+
