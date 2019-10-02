@@ -2,189 +2,89 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 7A85BC45ED
-	for <lists+linux-wireless@lfdr.de>; Wed,  2 Oct 2019 04:31:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A10A5C4659
+	for <lists+linux-wireless@lfdr.de>; Wed,  2 Oct 2019 06:16:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729805AbfJBCbr (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 1 Oct 2019 22:31:47 -0400
-Received: from rtits2.realtek.com ([211.75.126.72]:46022 "EHLO
-        rtits2.realtek.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729802AbfJBCbq (ORCPT
+        id S1725909AbfJBEQd (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 2 Oct 2019 00:16:33 -0400
+Received: from smtp.codeaurora.org ([198.145.29.96]:44536 "EHLO
+        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725766AbfJBEQd (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 1 Oct 2019 22:31:46 -0400
-Authenticated-By: 
-X-SpamFilter-By: BOX Solutions SpamTrap 5.62 with qID x922VeBp031873, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (RTITCASV01.realtek.com.tw[172.21.6.18])
-        by rtits2.realtek.com.tw (8.15.2/2.57/5.78) with ESMTPS id x922VeBp031873
-        (version=TLSv1 cipher=DHE-RSA-AES256-SHA bits=256 verify=NOT);
-        Wed, 2 Oct 2019 10:31:40 +0800
-Received: from localhost.localdomain (172.21.68.126) by
- RTITCASV01.realtek.com.tw (172.21.6.18) with Microsoft SMTP Server id
- 14.3.468.0; Wed, 2 Oct 2019 10:31:39 +0800
-From:   <yhchuang@realtek.com>
-To:     <kvalo@codeaurora.org>
-CC:     <linux-wireless@vger.kernel.org>, <briannorris@chromium.org>
-Subject: [PATCH v2 12/12] rtw88: remove misleading module parameter rtw_fw_support_lps
-Date:   Wed, 2 Oct 2019 10:31:28 +0800
-Message-ID: <20191002023128.12090-13-yhchuang@realtek.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20191002023128.12090-1-yhchuang@realtek.com>
-References: <20191002023128.12090-1-yhchuang@realtek.com>
+        Wed, 2 Oct 2019 00:16:33 -0400
+Received: by smtp.codeaurora.org (Postfix, from userid 1000)
+        id 202C960A4E; Wed,  2 Oct 2019 04:16:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
+        s=default; t=1569989792;
+        bh=ABMSwBPwGo1QU011XzMyCQf5av246ZTYkO7iYK1Iv8A=;
+        h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
+        b=E/kpD2TKLbsKCl65STaq83aE+IVbolqVruutjM0ylvbvgSw8kO5T50441zM4iV2ku
+         iHOaS/gmbXxJdicCZypVxbNHXyechFWNN5eU3vTrkYtkgyZVpEA+02g8jz505L/W9s
+         pjnxFusWqknlHLc/Hh7n9DHIo/7JiJ8H+JPpjeo4=
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        pdx-caf-mail.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-0.8 required=2.0 tests=ALL_TRUSTED,BAYES_00,
+        DKIM_INVALID,DKIM_SIGNED,MISSING_DATE,MISSING_MID,SPF_NONE autolearn=no
+        autolearn_force=no version=3.4.0
+Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo@smtp.codeaurora.org)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id DDF1A6074F;
+        Wed,  2 Oct 2019 04:16:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
+        s=default; t=1569989791;
+        bh=ABMSwBPwGo1QU011XzMyCQf5av246ZTYkO7iYK1Iv8A=;
+        h=Subject:From:In-Reply-To:References:To:Cc:From;
+        b=WlNBoBd4jLJRy7tJL0lWaKCnBxumVD9vivjPf5RU0WmEZ45W0gPnso1Vgkcd3nAwy
+         ztfgsT6O66D5DF3NwBnnlW/CcEpWhCbMHO1Lu+lC+R+lGEeUltGee1AOQHERJu6kh3
+         qzxO7htY7LWLkDjUbny2UhIaeOzCTbf++uAo5iOc=
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org DDF1A6074F
+Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [172.21.68.126]
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH v2 17/35] net/wireless: Use kmemdup rather than
+ duplicating its implementation
+From:   Kalle Valo <kvalo@codeaurora.org>
+In-Reply-To: <20190703162934.32645-1-huangfq.daxian@gmail.com>
+References: <20190703162934.32645-1-huangfq.daxian@gmail.com>
+To:     Fuqian Huang <huangfq.daxian@gmail.com>
+Cc:     unlisted-recipients:; (no To-header on input)
+        "David S . Miller" <davem@davemloft.net>,
+        Solomon Peachy <pizza@shaftnet.org>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        Fuqian Huang <huangfq.daxian@gmail.com>
+Illegal-Object: Syntax error in Cc: address found on vger.kernel.org:
+        Cc:     unlisted-recipients:; (no To-header on input)"David S . Miller" <davem@davemloft.net>
+                                                                     ^-missing end of address
+User-Agent: pwcli/0.0.0-git (https://github.com/kvalo/pwcli/) Python/2.7.12
+Message-Id: <20191002041632.202C960A4E@smtp.codeaurora.org>
+Date:   Wed,  2 Oct 2019 04:16:32 +0000 (UTC)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Yan-Hsuan Chuang <yhchuang@realtek.com>
+Fuqian Huang <huangfq.daxian@gmail.com> wrote:
 
-The module parameter rtw_fw_support_lps is misleading. It
-is not used to represent the firmware's property, but to
-determine if driver wants to ask firmware to enter LPS.
+> kmemdup is introduced to duplicate a region of memory in a neat way.
+> Rather than kmalloc/kzalloc + memcpy, which the programmer needs to
+> write the size twice (sometimes lead to mistakes), kmemdup improves
+> readability, leads to smaller code and also reduce the chances of mistakes.
+> Suggestion to use kmemdup rather than using kmalloc/kzalloc + memcpy.
+> 
+> Signed-off-by: Fuqian Huang <huangfq.daxian@gmail.com>
 
-However, driver should better enable/disable PS through
-cfg80211_ops::set_power_mgmt instead.
-For example, one could use iw command to set PS state.
+Patch applied to wireless-drivers-next.git, thanks.
 
-  $ sudo iw wlanX set power_save [on/off]
+ab8c31dd8c8a net/wireless: Use kmemdup rather than duplicating its implementation
 
-So rtw_fw_support_lps should be removed because it is
-misleading and useless. Instead of checking the parameter,
-set PS mode according to IEEE80211_CONF_PS.
-
-Signed-off-by: Yan-Hsuan Chuang <yhchuang@realtek.com>
----
-
-v1 -> v2
-  - rebase on top of wireless-drivers-next
-
- drivers/net/wireless/realtek/rtw88/mac80211.c |  9 +++++
- drivers/net/wireless/realtek/rtw88/main.c     | 33 +++++++++----------
- drivers/net/wireless/realtek/rtw88/main.h     |  1 +
- 3 files changed, 25 insertions(+), 18 deletions(-)
-
-diff --git a/drivers/net/wireless/realtek/rtw88/mac80211.c b/drivers/net/wireless/realtek/rtw88/mac80211.c
-index 22b13e45fcee..97777c7fdce8 100644
---- a/drivers/net/wireless/realtek/rtw88/mac80211.c
-+++ b/drivers/net/wireless/realtek/rtw88/mac80211.c
-@@ -74,6 +74,15 @@ static int rtw_ops_config(struct ieee80211_hw *hw, u32 changed)
- 		}
- 	}
- 
-+	if (changed & IEEE80211_CONF_CHANGE_PS) {
-+		if (hw->conf.flags & IEEE80211_CONF_PS) {
-+			rtwdev->ps_enabled = true;
-+		} else {
-+			rtwdev->ps_enabled = false;
-+			rtw_leave_lps(rtwdev);
-+		}
-+	}
-+
- 	if (changed & IEEE80211_CONF_CHANGE_CHANNEL)
- 		rtw_set_channel(rtwdev);
- 
-diff --git a/drivers/net/wireless/realtek/rtw88/main.c b/drivers/net/wireless/realtek/rtw88/main.c
-index 3c366a3314cb..a3e9f917adef 100644
---- a/drivers/net/wireless/realtek/rtw88/main.c
-+++ b/drivers/net/wireless/realtek/rtw88/main.c
-@@ -16,16 +16,13 @@
- 
- unsigned int rtw_fw_lps_deep_mode;
- EXPORT_SYMBOL(rtw_fw_lps_deep_mode);
--static bool rtw_fw_support_lps;
- unsigned int rtw_debug_mask;
- EXPORT_SYMBOL(rtw_debug_mask);
- 
- module_param_named(lps_deep_mode, rtw_fw_lps_deep_mode, uint, 0644);
--module_param_named(support_lps, rtw_fw_support_lps, bool, 0644);
- module_param_named(debug_mask, rtw_debug_mask, uint, 0644);
- 
- MODULE_PARM_DESC(lps_deep_mode, "Deeper PS mode. If 0, deep PS is disabled");
--MODULE_PARM_DESC(support_lps, "Set Y to enable Leisure Power Save support, to turn radio off between beacons");
- MODULE_PARM_DESC(debug_mask, "Debugging mask");
- 
- static struct ieee80211_channel rtw_channeltable_2g[] = {
-@@ -117,8 +114,6 @@ static struct ieee80211_supported_band rtw_band_5ghz = {
- 
- struct rtw_watch_dog_iter_data {
- 	struct rtw_vif *rtwvif;
--	bool active;
--	u8 assoc_cnt;
- };
- 
- static void rtw_vif_watch_dog_iter(void *data, u8 *mac,
-@@ -127,18 +122,9 @@ static void rtw_vif_watch_dog_iter(void *data, u8 *mac,
- 	struct rtw_watch_dog_iter_data *iter_data = data;
- 	struct rtw_vif *rtwvif = (struct rtw_vif *)vif->drv_priv;
- 
--	if (vif->type == NL80211_IFTYPE_STATION) {
--		if (vif->bss_conf.assoc) {
--			iter_data->assoc_cnt++;
-+	if (vif->type == NL80211_IFTYPE_STATION)
-+		if (vif->bss_conf.assoc)
- 			iter_data->rtwvif = rtwvif;
--		}
--		if (rtwvif->stats.tx_cnt > RTW_LPS_THRESHOLD ||
--		    rtwvif->stats.rx_cnt > RTW_LPS_THRESHOLD)
--			iter_data->active = true;
--	} else {
--		/* only STATION mode can enter lps */
--		iter_data->active = true;
--	}
- 
- 	rtwvif->stats.tx_unicast = 0;
- 	rtwvif->stats.rx_unicast = 0;
-@@ -155,6 +141,7 @@ static void rtw_watch_dog_work(struct work_struct *work)
- 					      watch_dog_work.work);
- 	struct rtw_watch_dog_iter_data data = {};
- 	bool busy_traffic = test_bit(RTW_FLAG_BUSY_TRAFFIC, rtwdev->flags);
-+	bool ps_active;
- 
- 	mutex_lock(&rtwdev->mutex);
- 
-@@ -172,6 +159,12 @@ static void rtw_watch_dog_work(struct work_struct *work)
- 	if (busy_traffic != test_bit(RTW_FLAG_BUSY_TRAFFIC, rtwdev->flags))
- 		rtw_coex_wl_status_change_notify(rtwdev);
- 
-+	if (rtwdev->stats.tx_cnt > RTW_LPS_THRESHOLD ||
-+	    rtwdev->stats.rx_cnt > RTW_LPS_THRESHOLD)
-+		ps_active = true;
-+	else
-+		ps_active = false;
-+
- 	/* reset tx/rx statictics */
- 	rtwdev->stats.tx_unicast = 0;
- 	rtwdev->stats.rx_unicast = 0;
-@@ -192,9 +185,13 @@ static void rtw_watch_dog_work(struct work_struct *work)
- 	/* fw supports only one station associated to enter lps, if there are
- 	 * more than two stations associated to the AP, then we can not enter
- 	 * lps, because fw does not handle the overlapped beacon interval
-+	 *
-+	 * mac80211 should iterate vifs and determine if driver can enter
-+	 * ps by passing IEEE80211_CONF_PS to us, all we need to do is to
-+	 * get that vif and check if device is having traffic more than the
-+	 * threshold.
- 	 */
--	if (rtw_fw_support_lps &&
--	    data.rtwvif && !data.active && data.assoc_cnt == 1)
-+	if (rtwdev->ps_enabled && data.rtwvif && !ps_active)
- 		rtw_enter_lps(rtwdev, data.rtwvif->port);
- 
- 	rtwdev->watch_dog_cnt++;
-diff --git a/drivers/net/wireless/realtek/rtw88/main.h b/drivers/net/wireless/realtek/rtw88/main.h
-index 6221dc45fc2a..161297ad7d99 100644
---- a/drivers/net/wireless/realtek/rtw88/main.h
-+++ b/drivers/net/wireless/realtek/rtw88/main.h
-@@ -1372,6 +1372,7 @@ struct rtw_dev {
- 
- 	/* lps power state & handler work */
- 	struct rtw_lps_conf lps_conf;
-+	bool ps_enabled;
- 
- 	struct dentry *debugfs;
- 
 -- 
-2.17.1
+https://patchwork.kernel.org/patch/11029833/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
