@@ -2,133 +2,132 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 91687C999B
-	for <lists+linux-wireless@lfdr.de>; Thu,  3 Oct 2019 10:13:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 01F08C9F01
+	for <lists+linux-wireless@lfdr.de>; Thu,  3 Oct 2019 15:03:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727207AbfJCINn (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 3 Oct 2019 04:13:43 -0400
-Received: from mail-eopbgr00097.outbound.protection.outlook.com ([40.107.0.97]:56898
-        "EHLO EUR02-AM5-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1725879AbfJCINn (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 3 Oct 2019 04:13:43 -0400
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=nUMyl8/wGVSj5UWGCxwqM6/8Bz+Fnzr0ZUP9kBoiTwFGzPJ2L1c6pa/S0Anmbg93WnGxcsOoXqKQxc/8qQ+O1/p3S4+GH8uU9R9FbDKv9f65ZGgiAu4kgPCise60ziT4FI98gx3c1qGUyg4zTrjJrqaI/dZuT3wAOcFcxTx9DeauRSvxMZxRKFoLV/ig2flS4TLWYvyNriDC0nDJdE9bTmPz9/mtPtbxh2oqg3pomk/tuNRdlzu8Ebzkyx3BHQgLF8wlu9B89QqvjWz2wUPkEdl4X5l387ArPHFyBnB22DbGLgvMa/e0OP/e7Eo2ruUVMzX26YMU+YThQVyWakUrOg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Vsyf800x72H9+ETQ0ssLBSEpyhKde32bLKSDWhKzhB4=;
- b=UyfpD14apwKNM3TPd2ncwfWJ8YNpbjOvgVEi2rZH4/GtjK0yYWhz4+BXDYkIZysfDy3P8dgGx2ggSjPYEFbWl+bsE/h+PNtvqIH50Id7gQzPcKrMpM2AJhQ3KOrzMnDOfBGBTRqM/T/In+PsTbPb1VVfoFjBQWhkAzTh+WZNiGAdUcGP/b2CBwE1szHdzMKwtYtqBeVAQ+V1QkMEx5+85/UQ81L6NZaF1ZuDN7/uGOFfh+JgZohG1v0lOGGzxmJmxj/StefvDpEh2KKbLhTrRxq2KVHQupssJufm0/MWedhyHHb/j+ZY/DI6SfhUEwnlA0sbZ5ECvstjHx0V8eDyrQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=tandemg.com; dmarc=pass action=none header.from=tandemg.com;
- dkim=pass header.d=tandemg.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tandemg.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Vsyf800x72H9+ETQ0ssLBSEpyhKde32bLKSDWhKzhB4=;
- b=CL+OZuY9/efSQXLJ19sUXJfWK+FiH+GQ+yG593uG0PbwOaDxVRS9GatNFFGJEIuUMt2r3sdmvZggS6R45ux8tjnafVVOtHaa6Va2KUnkb//lrVedJgWx2zn7rCWCuU2Peg3Bgx+nIOZCD1UaBCvYHKUTlRrtLWyHEn7zsqJwilU=
-Received: from DB7PR02MB4314.eurprd02.prod.outlook.com (20.176.239.11) by
- DB7PR02MB4619.eurprd02.prod.outlook.com (20.178.42.140) with Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.2305.20; Thu, 3 Oct 2019 08:13:38 +0000
-Received: from DB7PR02MB4314.eurprd02.prod.outlook.com
- ([fe80::f978:a0d8:4042:92b]) by DB7PR02MB4314.eurprd02.prod.outlook.com
- ([fe80::f978:a0d8:4042:92b%5]) with mapi id 15.20.2305.023; Thu, 3 Oct 2019
- 08:13:38 +0000
-From:   Aaron Komisar <aaron.komisar@tandemg.com>
-To:     "peter.oh@eero.com" <peter.oh@eero.com>
-CC:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-Subject: [PATCH v3] mac80211: fix scan blocked on DFS channels in ETSI domains
-Thread-Topic: [PATCH v3] mac80211: fix scan blocked on DFS channels in ETSI
- domains
-Thread-Index: AQHVeSmOSAENpyhoVE6RI/+qs7ypzKdHoGQAgADyMIA=
-Date:   Thu, 3 Oct 2019 08:13:38 +0000
-Message-ID: <1570090415-28671-1-git-send-email-aaron.komisar@tandemg.com>
-References: <02f58201-4b92-0a1e-d237-6838543a3513@eero.com>
-In-Reply-To: <02f58201-4b92-0a1e-d237-6838543a3513@eero.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-clientproxiedby: AM0PR01CA0046.eurprd01.prod.exchangelabs.com
- (2603:10a6:208:e6::23) To DB7PR02MB4314.eurprd02.prod.outlook.com
- (2603:10a6:10:44::11)
-authentication-results: spf=none (sender IP is )
- smtp.mailfrom=aaron.komisar@tandemg.com; 
-x-ms-exchange-messagesentrepresentingtype: 1
-x-mailer: git-send-email 2.7.4
-x-originating-ip: [84.95.243.50]
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: 24602111-8b1a-4fb6-ee7d-08d747d997d5
-x-ms-traffictypediagnostic: DB7PR02MB4619:
-x-microsoft-antispam-prvs: <DB7PR02MB4619B3B149BC03EF9AED9352F89F0@DB7PR02MB4619.eurprd02.prod.outlook.com>
-x-ms-oob-tlc-oobclassifiers: OLM:9508;
-x-forefront-prvs: 01792087B6
-x-forefront-antispam-report: SFV:NSPM;SFS:(10019020)(39830400003)(346002)(376002)(396003)(366004)(136003)(199004)(189003)(51444003)(446003)(14454004)(2616005)(11346002)(6486002)(476003)(44832011)(15650500001)(66066001)(102836004)(26005)(186003)(316002)(76176011)(2906002)(66476007)(6436002)(486006)(5640700003)(99286004)(8676002)(3846002)(6116002)(6916009)(6512007)(2351001)(71190400001)(508600001)(71200400001)(52116002)(66446008)(66556008)(66946007)(64756008)(8936002)(305945005)(7736002)(5660300002)(53546011)(6506007)(386003)(25786009)(50226002)(36756003)(14444005)(81166006)(81156014)(256004)(2501003)(4326008)(86362001);DIR:OUT;SFP:1102;SCL:1;SRVR:DB7PR02MB4619;H:DB7PR02MB4314.eurprd02.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;A:1;MX:1;
-received-spf: None (protection.outlook.com: tandemg.com does not designate
- permitted sender hosts)
-x-ms-exchange-senderadcheck: 1
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: OblGzlFDNYC2UzdY/cTvzpHzMfg0Xx/zku04X3qJAMfwgqgeotoukaP/Sz+0Dd4n5lUiEOSjs8Do2dURg17zezW57IXG5Q1TrHhv8N4afhAqdHxDh1yFAOQs+6gPfRwuIK+26Zkamt9zTb7hTip1qfLAuS05o5w/4VdjGbgwdo9/XN8F5/yO75r7/0UNIdU9TydjjtV1C8lz01PP3v3+FRJ2zXBMzcZCcRZ51fhbjxm0givTkxANTz6kgLLd16cXRUqgxQUCy3CiF0rP9I/W8s2lRRoZpoUXj6P7cMbT9zZKQ5gM+x2VN2Xv1rFsOYJx2Co7otNs7M4sGCT84z+qdiqWp5ZKtw1BncNN8uVSRazQf63KO6OpGo6mif76x/0i5ZdLkvFTrBT4TIE7LVdd2zEoerP4hFy3FHn6t9iWyyA=
-x-ms-exchange-transport-forked: True
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+        id S1729501AbfJCNDk (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 3 Oct 2019 09:03:40 -0400
+Received: from smtp.codeaurora.org ([198.145.29.96]:45416 "EHLO
+        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726677AbfJCNDk (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 3 Oct 2019 09:03:40 -0400
+Received: by smtp.codeaurora.org (Postfix, from userid 1000)
+        id B57C2611C5; Thu,  3 Oct 2019 13:03:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
+        s=default; t=1570107818;
+        bh=Lx9BrOJJ6VK6C6KTF5WnbI/0E1bm8YGL2YkTTHwg8wM=;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+        b=NsG0wxGPTBk4roraRLgfmhCuwK1qI1h9stKu5DbmEzJm/UdJTFygZUuREFzWfhda3
+         PBedeAJ8EToLROfv5NRGhGLa3dCykmOdcrQwd2ChzhizNEMtd1p7x/6li4jzwuVDoq
+         ryNMFjsAWzjmJv3zWbzgIUnf/q0a5j6vIUNkEF3I=
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        pdx-caf-mail.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.7 required=2.0 tests=ALL_TRUSTED,BAYES_00,
+        DKIM_INVALID,DKIM_SIGNED,SPF_NONE autolearn=no autolearn_force=no
+        version=3.4.0
+Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo@smtp.codeaurora.org)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id C754560E73;
+        Thu,  3 Oct 2019 13:03:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
+        s=default; t=1570107818;
+        bh=Lx9BrOJJ6VK6C6KTF5WnbI/0E1bm8YGL2YkTTHwg8wM=;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+        b=NsG0wxGPTBk4roraRLgfmhCuwK1qI1h9stKu5DbmEzJm/UdJTFygZUuREFzWfhda3
+         PBedeAJ8EToLROfv5NRGhGLa3dCykmOdcrQwd2ChzhizNEMtd1p7x/6li4jzwuVDoq
+         ryNMFjsAWzjmJv3zWbzgIUnf/q0a5j6vIUNkEF3I=
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org C754560E73
+Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
+From:   Kalle Valo <kvalo@codeaurora.org>
+To:     Peter Oh <peter.oh@bowerswilkins.com>
+Cc:     Rakesh Pillai <pillair@codeaurora.org>,
+        "ath10k\@lists.infradead.org" <ath10k@lists.infradead.org>,
+        "linux-wireless\@vger.kernel.org" <linux-wireless@vger.kernel.org>
+Subject: Re: [PATCH v2] ath10k: Report low ack rssi based on the reason code
+References: <1554276181-7879-1-git-send-email-pillair@codeaurora.org>
+        <5f25f471-5753-7d4a-91f8-9a3986117580@bowerswilkins.com>
+Date:   Thu, 03 Oct 2019 16:03:33 +0300
+In-Reply-To: <5f25f471-5753-7d4a-91f8-9a3986117580@bowerswilkins.com> (Peter
+        Oh's message of "Wed, 3 Apr 2019 16:58:51 +0000")
+Message-ID: <878sq20ymy.fsf@kamboji.qca.qualcomm.com>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
 MIME-Version: 1.0
-X-OriginatorOrg: tandemg.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 24602111-8b1a-4fb6-ee7d-08d747d997d5
-X-MS-Exchange-CrossTenant-originalarrivaltime: 03 Oct 2019 08:13:38.0717
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: d690b55a-f04a-454b-9f62-fb1e25467a25
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: F/GI6lAXu+3fu3XgDdhn8qmx3XRSSinT15hMgFDct3fTT7eoDf/Eod3oiKRkNCS7sjsZozf2e753INqQCZfseG92aDnn1Jpmmn+SOivo9e4=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB7PR02MB4619
+Content-Type: text/plain
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 10/2/19 5:46 PM, Peter Oh wrote:
->On 10/2/19 6:59 AM, Aaron Komisar wrote:
->> In non-ETSI reg domains scan is blocked when operating channel is a DFS =
-ch.
->> For ETSI domains, however, once DFS channel is marked as available afer
->> the CAC, this channel will remain available even after leaving this chan=
-nel.
->> Therefore a new CAC will not be required when scan is done.
+Peter Oh <peter.oh@bowerswilkins.com> writes:
+
+> On 04/03/2019 12:23 AM, Rakesh Pillai wrote:
+>> Firmware sends peer sta kickout event to the driver
+>> along with the reason code for a particular peer.
 >>
->> In cfg80211 scan is not blocked for ETSI reg domains.
->> This patch enables scan in mac80211 as well when operating channel is a =
-radar
->> channel for ETSI reg domains (unless CAC is in progress).
+>> Currently the sta kickout event is delivered to the
+>> upper layer without checking if the reason code is
+>> valid or not. This causes frequent disconnection of
+>> the STA.
 >>
->This is not the right approach to solve the problem.
->
->The real reason of scan failure is because mac80211 checks if it's DFS
->channel, but it doesn't check if CAC is done or not.
+>> Report low ack rssi event to mac80211 only if the reason
+>> code is valid.
+>>
+>> Tested HW: WCN3990
+>> Tested FW: WLAN.HL.2.0-01188-QCAHLSWMTPLZ-1
+>>
+>> Signed-off-by: Rakesh Pillai <pillair@codeaurora.org>
 
-The problem is that scan request is blocked in ETSI reg domains. In non-ETS=
-I
-reg domains the behavior is fine.
+[...]
 
-cfg80211 blocks scan in non-ETSI reg domains and allows leaving the channel
-in ETSI reg domains. I think that if we add a function in mac80211, which
-checks if we can leave the operating channel this function should also take
-into account the reg domain for completeness.
+>> @@ -3440,6 +3437,12 @@ void ath10k_wmi_event_peer_sta_kickout(struct ath10k *ar, struct sk_buff *skb)
+>>   		goto exit;
+>>   	}
+>>   
+>> +	if (arg.reason_code_valid &&
+>> +	    arg.reason == WMI_PEER_STA_KICKOUT_REASON_UNSPECIFIED)
+>> +		goto exit;
+>> +
 >
->So to solve the issue, the right approach should be "check if DFS
->channels and check if CAC is done".
+> Why do we want this event not to be delivered to user space?
 
-We can't scan while CAC is in progress but why must we verify that CAC was =
-done
-in order to perform a scan operation?
->
->You may refer how "cfg80211_reg_can_beacon()" is doing for that.
->
->
->Thanks,
->
->Peter
+Yeah, I'm curious about that as well. If I'm guessing right,
+WMI_PEER_STA_KICKOUT_REASON_UNSPECIFIED is supposed to mean that the
+firmware does not support providing the reason code. Usually, but not
+always, in the firmware interface value zero means unsupported. So why
+would we want to ignore a kickout event which has a valid mac address
+for the peer?
 
-Thanks,
-Aaron
+In what kind of cases is the firmware emitting these events? Is this
+really the correct thing to do?
+
+>> +	ath10k_dbg(ar, ATH10K_DBG_WMI, "wmi event peer sta kickout %pM reason code %d\n",
+>> +		   arg.mac_addr, arg.reason);
+>>   	ieee80211_report_low_ack(sta, 10);
+>>   
+>>   exit:
+>> diff --git a/drivers/net/wireless/ath/ath10k/wmi.h b/drivers/net/wireless/ath/ath10k/wmi.h
+>> index e1c40bb..3ccd79e 100644
+>> --- a/drivers/net/wireless/ath/ath10k/wmi.h
+>> +++ b/drivers/net/wireless/ath/ath10k/wmi.h
+>> @@ -6797,6 +6797,8 @@ struct wmi_vdev_start_ev_arg {
+>>   
+>>   struct wmi_peer_kick_ev_arg {
+>>   	const u8 *mac_addr;
+>> +	u32 reason;
+>> +	bool reason_code_valid;
+>>   };
+>
+> Adding extra members to this structure breaks structure consistency 
+> between FW and host driver since FW doesn't have such members.
+
+Yeah, this reason_code_valid boolean is set if WMI-TLV is used, but it
+does not still mean that the reason code is valid. (There might be
+WMI-TLV firmwares which do not provide the reason code.)
+
+-- 
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
