@@ -2,93 +2,76 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 45757CADA2
-	for <lists+linux-wireless@lfdr.de>; Thu,  3 Oct 2019 19:51:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 08BBACAFC4
+	for <lists+linux-wireless@lfdr.de>; Thu,  3 Oct 2019 22:08:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729601AbfJCRvY (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 3 Oct 2019 13:51:24 -0400
-Received: from mail2.candelatech.com ([208.74.158.173]:39146 "EHLO
-        mail3.candelatech.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729355AbfJCRvY (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 3 Oct 2019 13:51:24 -0400
-Received: from [192.168.100.195] (50-251-239-81-static.hfc.comcastbusiness.net [50.251.239.81])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        id S1732416AbfJCUIZ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 3 Oct 2019 16:08:25 -0400
+Received: from mx1.redhat.com ([209.132.183.28]:48030 "EHLO mx1.redhat.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1729586AbfJCUIZ (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 3 Oct 2019 16:08:25 -0400
+Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.phx2.redhat.com [10.5.11.23])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
         (No client certificate requested)
-        by mail3.candelatech.com (Postfix) with ESMTPSA id 87449103B;
-        Thu,  3 Oct 2019 10:51:23 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail3.candelatech.com 87449103B
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=candelatech.com;
-        s=default; t=1570125083;
-        bh=PmHutI3e/us50pZHVkp4RIm1Xo5Sn1V7Csy21XIK2e4=;
-        h=Subject:From:To:References:Date:In-Reply-To:From;
-        b=bEa80CGmMQXMgCyipFIlkYNKefYInYvlY1Lp5k2VMQOqSBDADtjLGlMYAYqYdrDYn
-         /hq8VJSHMbwt1LO0RdM4GhDE87FQ8eedA26LY5JnT/aMxHa/jSTG78QoaQZ2ctVraf
-         9AMRSZgFuwTRgcF6EXW+sB+PnvdlmnKn6VhMSijA=
-Subject: Re: intel AX200 crash on 5.2.7+
-From:   Ben Greear <greearb@candelatech.com>
-To:     Johannes Berg <johannes@sipsolutions.net>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        Luca Coelho <luca@coelho.fi>
-References: <438925e0-deab-d84d-2b0a-da544d0989b3@candelatech.com>
- <2e30e4df1eb69362f00db89efb133856ec96b755.camel@sipsolutions.net>
- <9eae12b1-a5da-1943-0f81-90e05308ec82@candelatech.com>
-Organization: Candela Technologies
-Message-ID: <d7815da8-29eb-0f3b-0fab-9a512d9c8d53@candelatech.com>
-Date:   Thu, 3 Oct 2019 10:51:23 -0700
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.7.0
+        by mx1.redhat.com (Postfix) with ESMTPS id 3BC3C30BBE87;
+        Thu,  3 Oct 2019 20:08:25 +0000 (UTC)
+Received: from shalem.localdomain.com (ovpn-116-108.ams2.redhat.com [10.36.116.108])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id 67FD319C69;
+        Thu,  3 Oct 2019 20:08:23 +0000 (UTC)
+From:   Hans de Goede <hdegoede@redhat.com>
+To:     Arend van Spriel <arend.vanspriel@broadcom.com>,
+        Franky Lin <franky.lin@broadcom.com>,
+        Hante Meuleman <hante.meuleman@broadcom.com>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        Chi-Hsien Lin <chi-hsien.lin@cypress.com>,
+        Wright Feng <wright.feng@cypress.com>
+Cc:     Hans de Goede <hdegoede@redhat.com>,
+        linux-wireless@vger.kernel.org, brcm80211-dev-list.pdl@broadcom.com
+Subject: [PATCH 5.4 regression fix] brcmfmac: Fix brcmf_cfg80211_get_channel returning uninitialized fields
+Date:   Thu,  3 Oct 2019 22:08:21 +0200
+Message-Id: <20191003200821.819594-1-hdegoede@redhat.com>
 MIME-Version: 1.0
-In-Reply-To: <9eae12b1-a5da-1943-0f81-90e05308ec82@candelatech.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
 Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 2.84 on 10.5.11.23
+X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16 (mx1.redhat.com [10.5.110.49]); Thu, 03 Oct 2019 20:08:25 +0000 (UTC)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 9/9/19 10:54 AM, Ben Greear wrote:
-> On 9/9/19 10:40 AM, Johannes Berg wrote:
->> On Mon, 2019-09-09 at 10:03 -0700, Ben Greear wrote:
->>> Hello,
->>>
->>> Looks like we managed to crash the AX200 firmware.  This was running 5.2.7+ kernel
->>> in an apu2 platform.
->>>
->>> Is there a better place to report/discuss this?
->>
->> This is OK for first reports, but usually we'll ask to file a bug on
->> bugzilla.kernel.org (and assign to linuxwifi@intel.com if you can? Not
->> sure it's possible - or add that to CC at least)
->>
->>> [ 6066.180908] iwlwifi 0000:01:00.0: 0x00000942 | ADVANCED_SYSASSERT
->>
->> Hmm, that's a calibration failure.
->>
->> Did you do anything special in that environment?
-> 
-> Nothing that I'm aware of.  The person who found the crash said they had
-> run some throughput tests, and then the radio went away.
-> 
-> We put one of the radios in a more powerful system, and will continue
-> testing.
+With the new edmg support struct cfg80211_chan_def has been extended
+with a number of new members. brcmf_cfg80211_get_channel() was not setting
+(clearing) these causing the cfg80211_edmg_chandef_valid() check in
+cfg80211_chandef_valid() to fail. Triggering a WARN_ON and, worse, causing
+brcmfmac based wifi cards to not work.
 
-Hello,
+This commit fixes this by clearing the entire passed struct to 0 before
+setting the members used by the brcmfmac code. This solution also makes
+sure that this problem will not repeat itself in the future if further
+members are added to the struct.
 
-We have been capturing the firmware crash binary files from the AX200, I guess
-it uses the same API as ath10k, so something just worked for once.
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+---
+ drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-They are about 5MB each.  Is this something you can use to further debug
-this?  I'll be happy to send them to whoever can make use of them.
-
-It seems pretty easy to reproduce these transmit bugs, at least...maybe you
-can just as easily reproduce it yourself?
-
-Thanks,
-Ben
-
+diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
+index e3ebb7abbdae..480c05f66ebd 100644
+--- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
++++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
+@@ -5041,10 +5041,10 @@ static int brcmf_cfg80211_get_channel(struct wiphy *wiphy,
+ 	}
+ 
+ 	freq = ieee80211_channel_to_frequency(ch.control_ch_num, band);
++	memset(chandef, 0, sizeof(*chandef));
+ 	chandef->chan = ieee80211_get_channel(wiphy, freq);
+ 	chandef->width = width;
+ 	chandef->center_freq1 = ieee80211_channel_to_frequency(ch.chnum, band);
+-	chandef->center_freq2 = 0;
+ 
+ 	return 0;
+ }
 -- 
-Ben Greear <greearb@candelatech.com>
-Candela Technologies Inc  http://www.candelatech.com
+2.23.0
 
