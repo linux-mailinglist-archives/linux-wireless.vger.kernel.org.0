@@ -2,146 +2,93 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 7B463C9FF8
-	for <lists+linux-wireless@lfdr.de>; Thu,  3 Oct 2019 16:01:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 45757CADA2
+	for <lists+linux-wireless@lfdr.de>; Thu,  3 Oct 2019 19:51:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729835AbfJCOBj (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 3 Oct 2019 10:01:39 -0400
-Received: from mail-oi1-f193.google.com ([209.85.167.193]:45858 "EHLO
-        mail-oi1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727488AbfJCOBj (ORCPT
+        id S1729601AbfJCRvY (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 3 Oct 2019 13:51:24 -0400
+Received: from mail2.candelatech.com ([208.74.158.173]:39146 "EHLO
+        mail3.candelatech.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729355AbfJCRvY (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 3 Oct 2019 10:01:39 -0400
-Received: by mail-oi1-f193.google.com with SMTP id o205so2633796oib.12
-        for <linux-wireless@vger.kernel.org>; Thu, 03 Oct 2019 07:01:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
-         :cc:content-transfer-encoding;
-        bh=Xbl2FVDV/NRDS6TRrMIuIQnHaMA9j+8M/vbEhytQez0=;
-        b=uErh8nrK1Rs0KHN+obi/qdELNSpKYpzBn8koOfceCkJVWTVpbNiP46flbubxGRXUDc
-         cR6hCdWYmUHMZrJDF+4Z+Iq3euNopfgyXB07pSdYUTJPR65bqetkW2L60WPHAxIfjZHk
-         YCjZc1ABi5OVMy24FahqAhNFRSibUJOOk4gyz45cow1U7h250+/UiIoqCXD8WRiv0gnv
-         garCRttau3lmFyRIkaGl4S/pszqE8b5VkexGS4wgTfWSPAiTHxEhow5nhtDkNZzJJiHX
-         8er50thFFqK8iEKqrSQn7cMZJPtP1svTDzyY3pk4NTQre5QmRiB/4fRvskLFZqTx8XFx
-         UhLA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:in-reply-to:references:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=Xbl2FVDV/NRDS6TRrMIuIQnHaMA9j+8M/vbEhytQez0=;
-        b=lhlkbNRNxwFsogNPq2rGiI/B5jVjmoJIV589Of5+4VG2kAoRxrqTHDB4m9eS58mfLT
-         ny2f0JS4WKG5rt9TNPbBkSuy0jr3Rf+vvVs60IOc+5VRQN9HZlpO4WYX4VDrTvuT7b3v
-         IrCxMn9BnlucOj9oWSiBw4nD09uv+zH9krasmNgQx1WfG+19dyjmwhOBhCqLTYplaqyd
-         k3bPIAG6q5/qaBMH+mnelWWb1xshGNrqMc+H+o+GrZXpyLj33j0X4vhdiZJqFY74TblB
-         R8LHAj4M5xdPlnFhl5ZQHSSn4C5ch/Gy3xyENbHSqZo4SDfn+LwkZMgBZK2hM8Y4Vyxh
-         xjmQ==
-X-Gm-Message-State: APjAAAWS40RkKUCANUpktVgXV4kJIGdMf2oes2IJzZRteDJCh7C45CjM
-        fUYLECdqaZUFE2XF/ANjhd3H5wddf2WxpC6T3n0=
-X-Google-Smtp-Source: APXvYqzkKQ4SM5WDnCFERLLU+BzE1d3/Gg0x7itFys0N71kFzpge/0jV++4cn4A7IWK5YPPcYqR4rsrAcaeEVr7zw0s=
-X-Received: by 2002:aca:a88e:: with SMTP id r136mr3020734oie.30.1570111296850;
- Thu, 03 Oct 2019 07:01:36 -0700 (PDT)
+        Thu, 3 Oct 2019 13:51:24 -0400
+Received: from [192.168.100.195] (50-251-239-81-static.hfc.comcastbusiness.net [50.251.239.81])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail3.candelatech.com (Postfix) with ESMTPSA id 87449103B;
+        Thu,  3 Oct 2019 10:51:23 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail3.candelatech.com 87449103B
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=candelatech.com;
+        s=default; t=1570125083;
+        bh=PmHutI3e/us50pZHVkp4RIm1Xo5Sn1V7Csy21XIK2e4=;
+        h=Subject:From:To:References:Date:In-Reply-To:From;
+        b=bEa80CGmMQXMgCyipFIlkYNKefYInYvlY1Lp5k2VMQOqSBDADtjLGlMYAYqYdrDYn
+         /hq8VJSHMbwt1LO0RdM4GhDE87FQ8eedA26LY5JnT/aMxHa/jSTG78QoaQZ2ctVraf
+         9AMRSZgFuwTRgcF6EXW+sB+PnvdlmnKn6VhMSijA=
+Subject: Re: intel AX200 crash on 5.2.7+
+From:   Ben Greear <greearb@candelatech.com>
+To:     Johannes Berg <johannes@sipsolutions.net>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        Luca Coelho <luca@coelho.fi>
+References: <438925e0-deab-d84d-2b0a-da544d0989b3@candelatech.com>
+ <2e30e4df1eb69362f00db89efb133856ec96b755.camel@sipsolutions.net>
+ <9eae12b1-a5da-1943-0f81-90e05308ec82@candelatech.com>
+Organization: Candela Technologies
+Message-ID: <d7815da8-29eb-0f3b-0fab-9a512d9c8d53@candelatech.com>
+Date:   Thu, 3 Oct 2019 10:51:23 -0700
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.7.0
 MIME-Version: 1.0
-Received: by 2002:a9d:2286:0:0:0:0:0 with HTTP; Thu, 3 Oct 2019 07:01:35 -0700 (PDT)
-In-Reply-To: <87wodmgdhh.fsf@tynnyri.adurom.net>
-References: <1553025580-6118-1-git-send-email-pozega.tomislav@gmail.com> <87wodmgdhh.fsf@tynnyri.adurom.net>
-From:   Tom Psyborg <pozega.tomislav@gmail.com>
-Date:   Thu, 3 Oct 2019 16:01:35 +0200
-Message-ID: <CAKR_QV+mJKoP1MGdw3GYA5NHG00DOj00tRC0KTCnM9txXev8Qw@mail.gmail.com>
-Subject: Re: [PATCH] ath10k: Fix ASPM L1 state on QCA988X
-To:     Kalle Valo <kvalo@codeaurora.org>
-Cc:     linux-wireless@vger.kernel.org, ath10k@lists.infradead.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <9eae12b1-a5da-1943-0f81-90e05308ec82@candelatech.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 03/10/2019, Kalle Valo <kvalo@codeaurora.org> wrote:
-> (please always CC ath10k list so that ath10k patches are easy to find)
->
-> Tomislav Po=C5=BEega <pozega.tomislav@gmail.com> writes:
->
->> On some systems there are heavy crashes if the kernel config
->> option CONFIG_PCIEASPM_PERFORMANCE is not set. Patch provided by
->> Sujith for ath9k fixes this issue and the card operates without
->> crashes with kernel default CONFIG_PCIEASPM_DEFAULT option that uses
->> BIOS provided ASPM settings. Tested with QCA9862 mPCIe card.
+On 9/9/19 10:54 AM, Ben Greear wrote:
+> On 9/9/19 10:40 AM, Johannes Berg wrote:
+>> On Mon, 2019-09-09 at 10:03 -0700, Ben Greear wrote:
+>>> Hello,
+>>>
+>>> Looks like we managed to crash the AX200 firmware.  This was running 5.2.7+ kernel
+>>> in an apu2 platform.
+>>>
+>>> Is there a better place to report/discuss this?
 >>
->> Signed-off-by: Sujith Manoharan <c_manoha@qca.qualcomm.com>
->> Signed-off-by: Tomislav Po=C5=BEega <pozega.tomislav@gmail.com>
->
-> So I'll summarise the discussion from patchwork:
->
-> https://patchwork.kernel.org/patch/10860301/
->
-> Sujith wrote this workaround first for ath9k and you ported it to
-> ath10k:
->
-> https://lore.kernel.org/linux-wireless/1377421989-21240-1-git-send-email-=
-sujith@msujith.org/
->
-> https://git.kernel.org/linus/b380a43b52be
->
-> And you have PCI problems after QCA988X firmware has crashed on HP
-> Compaq 6735b laptop, apparently the device just does not respond on PCI
-> bus at that point. And this workaround solves the issue and you don't
-> have any problems anymore.
->
-> Please correct if I have misunderstood.
->
->> --- a/drivers/net/wireless/ath/ath10k/pci.c
->> +++ b/drivers/net/wireless/ath/ath10k/pci.c
->> @@ -2787,14 +2787,25 @@ static int ath10k_pci_hif_power_up(struct ath10k
->> *ar,
->>  				   enum ath10k_firmware_mode fw_mode)
->>  {
->>  	struct ath10k_pci *ar_pci =3D ath10k_pci_priv(ar);
->> +	struct pci_dev *pdev =3D ar_pci->pdev;
->>  	int ret;
->> +	u32 val;
+>> This is OK for first reports, but usually we'll ask to file a bug on
+>> bugzilla.kernel.org (and assign to linuxwifi@intel.com if you can? Not
+>> sure it's possible - or add that to CC at least)
 >>
->>  	ath10k_dbg(ar, ATH10K_DBG_BOOT, "boot hif power up\n");
+>>> [ 6066.180908] iwlwifi 0000:01:00.0: 0x00000942 | ADVANCED_SYSASSERT
 >>
->> -	pcie_capability_read_word(ar_pci->pdev, PCI_EXP_LNKCTL,
->> +	if (ar->dev_id =3D=3D QCA988X_2_0_DEVICE_ID) {
->> +		pci_read_config_dword(pdev, 0x70c, &val);
->> +		if ((val & 0xff000000) =3D=3D 0x17000000) {
->> +			val &=3D 0x00ffffff;
->> +			val |=3D 0x27000000;
->> +			pci_write_config_dword(pdev, 0x570c, val);
->> +		}
->> +	} else {
->> +		pcie_capability_read_word(ar_pci->pdev, PCI_EXP_LNKCTL,
->>  				  &ar_pci->link_ctl);
->> -	pcie_capability_write_word(ar_pci->pdev, PCI_EXP_LNKCTL,
->> +		pcie_capability_write_word(ar_pci->pdev, PCI_EXP_LNKCTL,
->>  				   ar_pci->link_ctl & ~PCI_EXP_LNKCTL_ASPMC);
->> +	}
->
-> Magic values are not nice, it's better to have proper defines. Sujith
-> already provided meaning for 0x70c, but I don't know what 0x570c means
-> (or I guess 0x500 offset)?
->
-> Also please use GENMASK() and FIELD_PREP(). Otherwise looks good to me.
->
-> --
-> https://wireless.wiki.kernel.org/en/developers/documentation/submittingpa=
-tches
->
+>> Hmm, that's a calibration failure.
+>>
+>> Did you do anything special in that environment?
+> 
+> Nothing that I'm aware of.  The person who found the crash said they had
+> run some throughput tests, and then the radio went away.
+> 
+> We put one of the radios in a more powerful system, and will continue
+> testing.
 
-I don't think the old patch from ath9k is that much relevant in this
-bug case at all, since by applying it the way it is the patch actually
-prevented ASPM code from execution (moved after } else { ) on
-QCA988X_2_0 devices. The ASPM enable code that was commited years ago
-causes regression as I've already wrote, and reverting that commit is
-sufficient to have card operating properly.
-When that is handled properly, this patch can then be added before or
-after the ASPM enable code. Also, since the read value will obviously
-differ from system to system, something like this could be used:
+Hello,
 
-if ((val & 0xff000000) !=3D 0x27000000)
+We have been capturing the firmware crash binary files from the AX200, I guess
+it uses the same API as ath10k, so something just worked for once.
 
-0x570c should refer to programming address for this register, at least
-according to reference driver.
+They are about 5MB each.  Is this something you can use to further debug
+this?  I'll be happy to send them to whoever can make use of them.
+
+It seems pretty easy to reproduce these transmit bugs, at least...maybe you
+can just as easily reproduce it yourself?
+
+Thanks,
+Ben
+
+-- 
+Ben Greear <greearb@candelatech.com>
+Candela Technologies Inc  http://www.candelatech.com
+
