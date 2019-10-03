@@ -2,132 +2,133 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 01F08C9F01
-	for <lists+linux-wireless@lfdr.de>; Thu,  3 Oct 2019 15:03:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 070C3C9F81
+	for <lists+linux-wireless@lfdr.de>; Thu,  3 Oct 2019 15:33:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729501AbfJCNDk (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 3 Oct 2019 09:03:40 -0400
-Received: from smtp.codeaurora.org ([198.145.29.96]:45416 "EHLO
+        id S1729981AbfJCNdx (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 3 Oct 2019 09:33:53 -0400
+Received: from smtp.codeaurora.org ([198.145.29.96]:34964 "EHLO
         smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726677AbfJCNDk (ORCPT
+        with ESMTP id S1729919AbfJCNdx (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 3 Oct 2019 09:03:40 -0400
+        Thu, 3 Oct 2019 09:33:53 -0400
 Received: by smtp.codeaurora.org (Postfix, from userid 1000)
-        id B57C2611C5; Thu,  3 Oct 2019 13:03:38 +0000 (UTC)
+        id 4C098611BF; Thu,  3 Oct 2019 13:33:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1570107818;
-        bh=Lx9BrOJJ6VK6C6KTF5WnbI/0E1bm8YGL2YkTTHwg8wM=;
+        s=default; t=1570109632;
+        bh=BhQc6BRfl0diz4Cietg+XTpvRy6X9NSbsfG4WqMHLqc=;
         h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=NsG0wxGPTBk4roraRLgfmhCuwK1qI1h9stKu5DbmEzJm/UdJTFygZUuREFzWfhda3
-         PBedeAJ8EToLROfv5NRGhGLa3dCykmOdcrQwd2ChzhizNEMtd1p7x/6li4jzwuVDoq
-         ryNMFjsAWzjmJv3zWbzgIUnf/q0a5j6vIUNkEF3I=
+        b=oeiKwtmwJgVBbqXfIinIKEPwMd04AzehgvnaUHUsXtoYeqOHpYNu5qC9LjA12NW+i
+         BSznTILPG5KSsjMqz4Lz29c0Fu3W8wqkcTytsnh38AzX9onEYdcoySNpwSgcWCEpiy
+         KORuMyHwkFymAIurnvwXpWzjClLm8wZhtv2oelqI=
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         pdx-caf-mail.web.codeaurora.org
 X-Spam-Level: 
 X-Spam-Status: No, score=-2.7 required=2.0 tests=ALL_TRUSTED,BAYES_00,
         DKIM_INVALID,DKIM_SIGNED,SPF_NONE autolearn=no autolearn_force=no
         version=3.4.0
-Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from tynnyri.adurom.net (tynnyri.adurom.net [51.15.11.48])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
         (Authenticated sender: kvalo@smtp.codeaurora.org)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id C754560E73;
-        Thu,  3 Oct 2019 13:03:36 +0000 (UTC)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id B83FE60AD9;
+        Thu,  3 Oct 2019 13:33:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1570107818;
-        bh=Lx9BrOJJ6VK6C6KTF5WnbI/0E1bm8YGL2YkTTHwg8wM=;
+        s=default; t=1570109631;
+        bh=BhQc6BRfl0diz4Cietg+XTpvRy6X9NSbsfG4WqMHLqc=;
         h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=NsG0wxGPTBk4roraRLgfmhCuwK1qI1h9stKu5DbmEzJm/UdJTFygZUuREFzWfhda3
-         PBedeAJ8EToLROfv5NRGhGLa3dCykmOdcrQwd2ChzhizNEMtd1p7x/6li4jzwuVDoq
-         ryNMFjsAWzjmJv3zWbzgIUnf/q0a5j6vIUNkEF3I=
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org C754560E73
+        b=SAp0srajaYD2gp/uHRXYqBtp+aj3gRCC+Vrb4ttoxVTJu8t50GuskljRqgzLhkyxF
+         o8M7cRUqQlECM+1OURB0pBWtfDUJsAtNBdiytC32oPU1cgp+kJETNsT/ZRSw6wJtaF
+         /hRKRj3R7h5PLbtdO5tc2sJVTjP8Yqq0J+P0PEW0=
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org B83FE60AD9
 Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
 Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
 From:   Kalle Valo <kvalo@codeaurora.org>
-To:     Peter Oh <peter.oh@bowerswilkins.com>
-Cc:     Rakesh Pillai <pillair@codeaurora.org>,
-        "ath10k\@lists.infradead.org" <ath10k@lists.infradead.org>,
-        "linux-wireless\@vger.kernel.org" <linux-wireless@vger.kernel.org>
-Subject: Re: [PATCH v2] ath10k: Report low ack rssi based on the reason code
-References: <1554276181-7879-1-git-send-email-pillair@codeaurora.org>
-        <5f25f471-5753-7d4a-91f8-9a3986117580@bowerswilkins.com>
-Date:   Thu, 03 Oct 2019 16:03:33 +0300
-In-Reply-To: <5f25f471-5753-7d4a-91f8-9a3986117580@bowerswilkins.com> (Peter
-        Oh's message of "Wed, 3 Apr 2019 16:58:51 +0000")
-Message-ID: <878sq20ymy.fsf@kamboji.qca.qualcomm.com>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
+To:     Tomislav =?utf-8?Q?Po=C5=BEega?= <pozega.tomislav@gmail.com>
+Cc:     linux-wireless@vger.kernel.org, ath10k@lists.infradead.org
+Subject: Re: [PATCH] ath10k: Fix ASPM L1 state on QCA988X
+References: <1553025580-6118-1-git-send-email-pozega.tomislav@gmail.com>
+Date:   Thu, 03 Oct 2019 16:33:46 +0300
+In-Reply-To: <1553025580-6118-1-git-send-email-pozega.tomislav@gmail.com>
+        ("Tomislav \=\?utf-8\?Q\?Po\=C5\=BEega\=22's\?\= message of "Tue, 19 Mar 2019
+ 20:59:40 +0100")
+Message-ID: <87wodmgdhh.fsf@tynnyri.adurom.net>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Peter Oh <peter.oh@bowerswilkins.com> writes:
+(please always CC ath10k list so that ath10k patches are easy to find)
 
-> On 04/03/2019 12:23 AM, Rakesh Pillai wrote:
->> Firmware sends peer sta kickout event to the driver
->> along with the reason code for a particular peer.
->>
->> Currently the sta kickout event is delivered to the
->> upper layer without checking if the reason code is
->> valid or not. This causes frequent disconnection of
->> the STA.
->>
->> Report low ack rssi event to mac80211 only if the reason
->> code is valid.
->>
->> Tested HW: WCN3990
->> Tested FW: WLAN.HL.2.0-01188-QCAHLSWMTPLZ-1
->>
->> Signed-off-by: Rakesh Pillai <pillair@codeaurora.org>
+Tomislav Po=C5=BEega <pozega.tomislav@gmail.com> writes:
 
-[...]
-
->> @@ -3440,6 +3437,12 @@ void ath10k_wmi_event_peer_sta_kickout(struct ath10k *ar, struct sk_buff *skb)
->>   		goto exit;
->>   	}
->>   
->> +	if (arg.reason_code_valid &&
->> +	    arg.reason == WMI_PEER_STA_KICKOUT_REASON_UNSPECIFIED)
->> +		goto exit;
->> +
+> On some systems there are heavy crashes if the kernel config
+> option CONFIG_PCIEASPM_PERFORMANCE is not set. Patch provided by
+> Sujith for ath9k fixes this issue and the card operates without
+> crashes with kernel default CONFIG_PCIEASPM_DEFAULT option that uses
+> BIOS provided ASPM settings. Tested with QCA9862 mPCIe card.
 >
-> Why do we want this event not to be delivered to user space?
+> Signed-off-by: Sujith Manoharan <c_manoha@qca.qualcomm.com>
+> Signed-off-by: Tomislav Po=C5=BEega <pozega.tomislav@gmail.com>
 
-Yeah, I'm curious about that as well. If I'm guessing right,
-WMI_PEER_STA_KICKOUT_REASON_UNSPECIFIED is supposed to mean that the
-firmware does not support providing the reason code. Usually, but not
-always, in the firmware interface value zero means unsupported. So why
-would we want to ignore a kickout event which has a valid mac address
-for the peer?
+So I'll summarise the discussion from patchwork:
 
-In what kind of cases is the firmware emitting these events? Is this
-really the correct thing to do?
+https://patchwork.kernel.org/patch/10860301/
 
->> +	ath10k_dbg(ar, ATH10K_DBG_WMI, "wmi event peer sta kickout %pM reason code %d\n",
->> +		   arg.mac_addr, arg.reason);
->>   	ieee80211_report_low_ack(sta, 10);
->>   
->>   exit:
->> diff --git a/drivers/net/wireless/ath/ath10k/wmi.h b/drivers/net/wireless/ath/ath10k/wmi.h
->> index e1c40bb..3ccd79e 100644
->> --- a/drivers/net/wireless/ath/ath10k/wmi.h
->> +++ b/drivers/net/wireless/ath/ath10k/wmi.h
->> @@ -6797,6 +6797,8 @@ struct wmi_vdev_start_ev_arg {
->>   
->>   struct wmi_peer_kick_ev_arg {
->>   	const u8 *mac_addr;
->> +	u32 reason;
->> +	bool reason_code_valid;
->>   };
->
-> Adding extra members to this structure breaks structure consistency 
-> between FW and host driver since FW doesn't have such members.
+Sujith wrote this workaround first for ath9k and you ported it to
+ath10k:
 
-Yeah, this reason_code_valid boolean is set if WMI-TLV is used, but it
-does not still mean that the reason code is valid. (There might be
-WMI-TLV firmwares which do not provide the reason code.)
+https://lore.kernel.org/linux-wireless/1377421989-21240-1-git-send-email-su=
+jith@msujith.org/
 
--- 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+https://git.kernel.org/linus/b380a43b52be
+
+And you have PCI problems after QCA988X firmware has crashed on HP
+Compaq 6735b laptop, apparently the device just does not respond on PCI
+bus at that point. And this workaround solves the issue and you don't
+have any problems anymore.
+
+Please correct if I have misunderstood.
+
+> --- a/drivers/net/wireless/ath/ath10k/pci.c
+> +++ b/drivers/net/wireless/ath/ath10k/pci.c
+> @@ -2787,14 +2787,25 @@ static int ath10k_pci_hif_power_up(struct ath10k =
+*ar,
+>  				   enum ath10k_firmware_mode fw_mode)
+>  {
+>  	struct ath10k_pci *ar_pci =3D ath10k_pci_priv(ar);
+> +	struct pci_dev *pdev =3D ar_pci->pdev;
+>  	int ret;
+> +	u32 val;
+>=20=20
+>  	ath10k_dbg(ar, ATH10K_DBG_BOOT, "boot hif power up\n");
+>=20=20
+> -	pcie_capability_read_word(ar_pci->pdev, PCI_EXP_LNKCTL,
+> +	if (ar->dev_id =3D=3D QCA988X_2_0_DEVICE_ID) {
+> +		pci_read_config_dword(pdev, 0x70c, &val);
+> +		if ((val & 0xff000000) =3D=3D 0x17000000) {
+> +			val &=3D 0x00ffffff;
+> +			val |=3D 0x27000000;
+> +			pci_write_config_dword(pdev, 0x570c, val);
+> +		}
+> +	} else {
+> +		pcie_capability_read_word(ar_pci->pdev, PCI_EXP_LNKCTL,
+>  				  &ar_pci->link_ctl);
+> -	pcie_capability_write_word(ar_pci->pdev, PCI_EXP_LNKCTL,
+> +		pcie_capability_write_word(ar_pci->pdev, PCI_EXP_LNKCTL,
+>  				   ar_pci->link_ctl & ~PCI_EXP_LNKCTL_ASPMC);
+> +	}
+
+Magic values are not nice, it's better to have proper defines. Sujith
+already provided meaning for 0x70c, but I don't know what 0x570c means
+(or I guess 0x500 offset)?
+
+Also please use GENMASK() and FIELD_PREP(). Otherwise looks good to me.
+
+--=20
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatc=
+hes
