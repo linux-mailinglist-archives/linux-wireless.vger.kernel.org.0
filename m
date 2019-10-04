@@ -2,140 +2,125 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id EFEDFCB873
-	for <lists+linux-wireless@lfdr.de>; Fri,  4 Oct 2019 12:37:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C410ACB8FD
+	for <lists+linux-wireless@lfdr.de>; Fri,  4 Oct 2019 13:19:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2387754AbfJDKh3 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 4 Oct 2019 06:37:29 -0400
-Received: from us-smtp-delivery-1.mimecast.com ([207.211.31.120]:58576 "EHLO
-        us-smtp-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S2387734AbfJDKh3 (ORCPT
+        id S1730506AbfJDLTo (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 4 Oct 2019 07:19:44 -0400
+Received: from smtp.codeaurora.org ([198.145.29.96]:45186 "EHLO
+        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1730061AbfJDLTo (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 4 Oct 2019 06:37:29 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1570185447;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=SDEjJlFGnZEVLKwp53YSkjo+Xm6OguhGW8Vu0chTKKk=;
-        b=Qr4YT3KkZtqL3/ThOhJwUqnvuiL2fuMBUA5sCkDC30jCa8Y6d9QDAYloJqtl59lq58pFZk
-        5pnqUj2sHlGVjkPBj8cpzfzuSGC4ADpnE8VtsZRQaRMvtiANM/41OiZkpeyHQQZ13ye29v
-        3WwYd9DxDAsLYTRAIaBfK+n+0Lc09WU=
-Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
- [209.85.221.71]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-279-JyBuzyrhN46WuAXjtMxoOQ-1; Fri, 04 Oct 2019 06:37:25 -0400
-Received: by mail-wr1-f71.google.com with SMTP id k2so2518290wrn.7
-        for <linux-wireless@vger.kernel.org>; Fri, 04 Oct 2019 03:37:25 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=TEaVNH3A7e7GBPdlA+cAKBgNZsoDT0//X3uinQHMMwc=;
-        b=NOE7QDWA8lw68lsttIBuHTowRRXTeizE1QlrX/gF/lJxgNKT0XhI/e3CATsEjFRRzz
-         ofS0HN0vv3KZxbNPs4hUGRuiWF9eLMQ4k0pgzHOiAXWWMe5duAXTeQM082dJdA4xz3te
-         ip9QZ1c+L0yLIoBaX6UO+RYuSYRppZE9ImTqb+35lBBXOCL2p8O6AmiWVe1xG8Vdz2MH
-         O6CJj8J/8ifA5buZ7hzxhxQ+vyVczkXrPL0pPWoHtZ3FJEa9ioMR2Juek0QZDDQRJ3tE
-         jvcloDfilRHjPOKGfyPUJ5+SKxsqrB3BE/6Jwxs7ZV8u6EYQlath91nAJPXGr4zI+yuV
-         8MJA==
-X-Gm-Message-State: APjAAAW3EzlADKqXlvx14yRweroqCSTBKqamYNjoSb09FpRrXhtZHgvZ
-        JDt2aWHEqrTQR8KuwHna6SMJocYujouODv3YR+hq3dL3/4iA5t9GuYdfy7qgbVzf3eYSFpeJ3GC
-        CkVtSJQhF2sViqD40kCnDUgkJvyY=
-X-Received: by 2002:a7b:c7d7:: with SMTP id z23mr6566523wmk.137.1570185444156;
-        Fri, 04 Oct 2019 03:37:24 -0700 (PDT)
-X-Google-Smtp-Source: APXvYqz8rpVuMWOvRhgaU3ejQq/62DCxgNKxxWaENZh5MnlEcBe0jd3wjb/OmyBqLqnqwlyMWshF8A==
-X-Received: by 2002:a7b:c7d7:: with SMTP id z23mr6566507wmk.137.1570185443925;
-        Fri, 04 Oct 2019 03:37:23 -0700 (PDT)
-Received: from dhcp-44-196.space.revspace.nl ([2a0e:5700:4:11:6eb:1143:b8be:2b8])
-        by smtp.gmail.com with ESMTPSA id b186sm11867365wmd.16.2019.10.04.03.37.22
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 04 Oct 2019 03:37:23 -0700 (PDT)
-Subject: Re: [PATCH 5.4 regression fix] brcmfmac: Fix
- brcmf_cfg80211_get_channel returning uninitialized fields
-To:     Kalle Valo <kvalo@codeaurora.org>
+        Fri, 4 Oct 2019 07:19:44 -0400
+Received: by smtp.codeaurora.org (Postfix, from userid 1000)
+        id 9661561A1B; Fri,  4 Oct 2019 11:19:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
+        s=default; t=1570187983;
+        bh=VmJtK+9wMv6b2twmQaVx1NvU/jWXVR09aUTD4hwh4PI=;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+        b=MmoJyt5LInmKqOX7x+UGlfbvGuGqwZdQ1WXJjhsKPu4rV0s2Fez0VQs/avW4JnWf/
+         BCgrvGaiC59RSBblaDpwRKe+LKJSskeR3Z8dmVse4r4neX/WoQL31kCEWtIkZli4GE
+         cPLBoKllf0cXNVDAPPCmnUxJIiaDzcPLfpEu2Q6g=
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        pdx-caf-mail.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.7 required=2.0 tests=ALL_TRUSTED,BAYES_00,
+        DKIM_INVALID,DKIM_SIGNED,SPF_NONE autolearn=no autolearn_force=no
+        version=3.4.0
+Received: from x230.qca.qualcomm.com (37-33-18-250.bb.dnainternet.fi [37.33.18.250])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo@smtp.codeaurora.org)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id E4000615C2;
+        Fri,  4 Oct 2019 11:19:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
+        s=default; t=1570187983;
+        bh=VmJtK+9wMv6b2twmQaVx1NvU/jWXVR09aUTD4hwh4PI=;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+        b=MmoJyt5LInmKqOX7x+UGlfbvGuGqwZdQ1WXJjhsKPu4rV0s2Fez0VQs/avW4JnWf/
+         BCgrvGaiC59RSBblaDpwRKe+LKJSskeR3Z8dmVse4r4neX/WoQL31kCEWtIkZli4GE
+         cPLBoKllf0cXNVDAPPCmnUxJIiaDzcPLfpEu2Q6g=
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org E4000615C2
+Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
+From:   Kalle Valo <kvalo@codeaurora.org>
+To:     Hans de Goede <hdegoede@redhat.com>
 Cc:     Arend van Spriel <arend.vanspriel@broadcom.com>,
         Franky Lin <franky.lin@broadcom.com>,
         Hante Meuleman <hante.meuleman@broadcom.com>,
         Chi-Hsien Lin <chi-hsien.lin@cypress.com>,
         Wright Feng <wright.feng@cypress.com>,
         linux-wireless@vger.kernel.org, brcm80211-dev-list.pdl@broadcom.com
+Subject: Re: [PATCH 5.4 regression fix] brcmfmac: Fix brcmf_cfg80211_get_channel returning uninitialized fields
 References: <20191003200821.819594-1-hdegoede@redhat.com>
- <87r23ssssh.fsf@codeaurora.org>
-From:   Hans de Goede <hdegoede@redhat.com>
-Message-ID: <0d86c109-78d3-3858-ae56-e4cdcb056fe4@redhat.com>
-Date:   Fri, 4 Oct 2019 12:37:22 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.8.0
+        <87r23ssssh.fsf@codeaurora.org>
+        <0d86c109-78d3-3858-ae56-e4cdcb056fe4@redhat.com>
+Date:   Fri, 04 Oct 2019 14:19:37 +0300
+In-Reply-To: <0d86c109-78d3-3858-ae56-e4cdcb056fe4@redhat.com> (Hans de
+        Goede's message of "Fri, 4 Oct 2019 12:37:22 +0200")
+Message-ID: <87muegsqpi.fsf@codeaurora.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
 MIME-Version: 1.0
-In-Reply-To: <87r23ssssh.fsf@codeaurora.org>
-Content-Language: en-US
-X-MC-Unique: JyBuzyrhN46WuAXjtMxoOQ-1
-X-Mimecast-Spam-Score: 0
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi,
+Hans de Goede <hdegoede@redhat.com> writes:
 
-On 10/4/19 12:34 PM, Kalle Valo wrote:
-> Hans de Goede <hdegoede@redhat.com> writes:
->=20
->> With the new edmg support struct cfg80211_chan_def has been extended
->> with a number of new members. brcmf_cfg80211_get_channel() was not setti=
-ng
->> (clearing) these causing the cfg80211_edmg_chandef_valid() check in
->> cfg80211_chandef_valid() to fail. Triggering a WARN_ON and, worse, causi=
-ng
->> brcmfmac based wifi cards to not work.
+> Hi,
+>
+> On 10/4/19 12:34 PM, Kalle Valo wrote:
+>> Hans de Goede <hdegoede@redhat.com> writes:
 >>
->> This commit fixes this by clearing the entire passed struct to 0 before
->> setting the members used by the brcmfmac code. This solution also makes
->> sure that this problem will not repeat itself in the future if further
->> members are added to the struct.
+>>> With the new edmg support struct cfg80211_chan_def has been extended
+>>> with a number of new members. brcmf_cfg80211_get_channel() was not setting
+>>> (clearing) these causing the cfg80211_edmg_chandef_valid() check in
+>>> cfg80211_chandef_valid() to fail. Triggering a WARN_ON and, worse, causing
+>>> brcmfmac based wifi cards to not work.
+>>>
+>>> This commit fixes this by clearing the entire passed struct to 0 before
+>>> setting the members used by the brcmfmac code. This solution also makes
+>>> sure that this problem will not repeat itself in the future if further
+>>> members are added to the struct.
+>>>
+>>> Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+>>> ---
+>>>   drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c | 2 +-
+>>>   1 file changed, 1 insertion(+), 1 deletion(-)
+>>>
+>>> diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
+>>> index e3ebb7abbdae..480c05f66ebd 100644
+>>> --- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
+>>> +++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
+>>> @@ -5041,10 +5041,10 @@ static int brcmf_cfg80211_get_channel(struct wiphy *wiphy,
+>>>   	}
+>>>     	freq = ieee80211_channel_to_frequency(ch.control_ch_num,
+>>> band);
+>>> +	memset(chandef, 0, sizeof(*chandef));
+>>>   	chandef->chan = ieee80211_get_channel(wiphy, freq);
+>>>   	chandef->width = width;
+>>>   	chandef->center_freq1 = ieee80211_channel_to_frequency(ch.chnum, band);
+>>> -	chandef->center_freq2 = 0;
+>>>     	return 0;
+>>>   }
 >>
->> Signed-off-by: Hans de Goede <hdegoede@redhat.com>
->> ---
->>   drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c | 2 +-
->>   1 file changed, 1 insertion(+), 1 deletion(-)
+>> Is this a separate issue from the cfg80211 fix:
 >>
->> diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c=
- b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
->> index e3ebb7abbdae..480c05f66ebd 100644
->> --- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
->> +++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
->> @@ -5041,10 +5041,10 @@ static int brcmf_cfg80211_get_channel(struct wip=
-hy *wiphy,
->>   =09}
->>  =20
->>   =09freq =3D ieee80211_channel_to_frequency(ch.control_ch_num, band);
->> +=09memset(chandef, 0, sizeof(*chandef));
->>   =09chandef->chan =3D ieee80211_get_channel(wiphy, freq);
->>   =09chandef->width =3D width;
->>   =09chandef->center_freq1 =3D ieee80211_channel_to_frequency(ch.chnum, =
-band);
->> -=09chandef->center_freq2 =3D 0;
->>  =20
->>   =09return 0;
->>   }
->=20
-> Is this a separate issue from the cfg80211 fix:
->=20
-> cfg80211: initialize on-stack chandefs
->=20
-> https://git.kernel.org/pub/scm/linux/kernel/git/jberg/mac80211.git/commit=
-/?id=3Df43e5210c739fe76a4b0ed851559d6902f20ceb1
+>> cfg80211: initialize on-stack chandefs
+>>
+>> https://git.kernel.org/pub/scm/linux/kernel/git/jberg/mac80211.git/commit/?id=f43e5210c739fe76a4b0ed851559d6902f20ceb1
+>
+> No it is the same issue, I was actually wondering if I should do a generic fix
+> instead... I'm glad someone has already fixed this with a generic fix. Assuming the
+> generic fix is going upstream soon
 
-No it is the same issue, I was actually wondering if I should do a generic =
-fix
-instead... I'm glad someone has already fixed this with a generic fix. Assu=
-ming the
-generic fix is going upstream soon, then this (my) patch can be dropped.
+It's in net tree right now so it should go to Linus' tree soon.
 
-Regards,
+> then this (my) patch can be dropped.
 
-Hans
+Ok, I'll drop it.
 
+-- 
+Kalle Valo
