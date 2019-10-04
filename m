@@ -2,59 +2,80 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 16592CB373
-	for <lists+linux-wireless@lfdr.de>; Fri,  4 Oct 2019 05:10:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 69CFCCB46D
+	for <lists+linux-wireless@lfdr.de>; Fri,  4 Oct 2019 08:22:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729378AbfJDDK3 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 3 Oct 2019 23:10:29 -0400
-Received: from rtits2.realtek.com ([211.75.126.72]:54700 "EHLO
-        rtits2.realtek.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728962AbfJDDK2 (ORCPT
+        id S1731285AbfJDGWR (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 4 Oct 2019 02:22:17 -0400
+Received: from mail-vk1-f202.google.com ([209.85.221.202]:54104 "EHLO
+        mail-vk1-f202.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1730687AbfJDGWR (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 3 Oct 2019 23:10:28 -0400
-Authenticated-By: 
-X-SpamFilter-By: BOX Solutions SpamTrap 5.62 with qID x943AHZx023329, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (RTITCAS11.realtek.com.tw[172.21.6.12])
-        by rtits2.realtek.com.tw (8.15.2/2.57/5.78) with ESMTPS id x943AHZx023329
-        (version=TLSv1.2 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Fri, 4 Oct 2019 11:10:17 +0800
-Received: from RTITMBSVM04.realtek.com.tw ([fe80::e404:880:2ef1:1aa1]) by
- RTITCAS11.realtek.com.tw ([fe80::7c6d:ced5:c4ff:8297%15]) with mapi id
- 14.03.0468.000; Fri, 4 Oct 2019 11:10:16 +0800
-From:   Pkshih <pkshih@realtek.com>
-To:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "zhengbin13@huawei.com" <zhengbin13@huawei.com>,
-        "kvalo@codeaurora.org" <kvalo@codeaurora.org>,
-        "netdev@vger.kernel.org" <netdev@vger.kernel.org>
-Subject: Re: [PATCH v2] rtlwifi: rtl8192ee: Remove set but not used variable 'err'
-Thread-Topic: [PATCH v2] rtlwifi: rtl8192ee: Remove set but not used
- variable 'err'
-Thread-Index: AQHVelyPBV9gOxQgBk6ZEuGNsgYqX6dJR6gA
-Date:   Fri, 4 Oct 2019 03:10:15 +0000
-Message-ID: <1570158616.3603.1.camel@realtek.com>
-References: <2ca176f2-e9ef-87cd-7f7d-cd51c67da38b@huawei.com>
-In-Reply-To: <2ca176f2-e9ef-87cd-7f7d-cd51c67da38b@huawei.com>
-Accept-Language: en-US, zh-TW
-Content-Language: zh-TW
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [172.21.69.95]
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <36AA4F202D83474496CDA9A0445FAFE9@realtek.com>
-Content-Transfer-Encoding: base64
-MIME-Version: 1.0
+        Fri, 4 Oct 2019 02:22:17 -0400
+Received: by mail-vk1-f202.google.com with SMTP id q5so2178130vkg.20
+        for <linux-wireless@vger.kernel.org>; Thu, 03 Oct 2019 23:22:15 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20161025;
+        h=date:message-id:mime-version:subject:from:to:cc;
+        bh=eM+TtTHjE2md44io/60oVnM+vsz9X/uBFBALUtWj+xs=;
+        b=q2JcCcXfsNyJ3p+aeik6xkH3hQdkASeAggPZN+xi4dxEM6VhW2wHAo6C/1xCkewMG6
+         fmuB38Is0vuGeG/I/EdSIBgXpNjijmWL0NBOwufDALuiGzNtJBG+zewt39cZ46sNDE9l
+         beKkH8yJe0ZnDAsq/oyvpq86Vi9BB80hdaBet9wsKlcdv87dHK4LRNukldiR3qli32qz
+         AVursi1QK6c999rfSzPQc4QhkGzPY67chDI2F41+5UQoL4yT/FgQViDvaPfMma7wGuts
+         5uCLo5krjyKelgAS4Vz17+xiZ7JUX935//GeY8vIQI8VAdqSACGD8zlB/TtPIflu7YYi
+         7Xfw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:message-id:mime-version:subject:from:to:cc;
+        bh=eM+TtTHjE2md44io/60oVnM+vsz9X/uBFBALUtWj+xs=;
+        b=rK69Wr0FDFfDgaYhLAcFYO0G3hF7Zhpe6C/KsKX1qPVGzX1iTHBZiGMlwu5a7WpW2p
+         gbdi9/keGlZS/MVOUzVdTuoXe1cqCAPSk7B7kFZob64ifoKqjuRt8KaN1RFujwcjb/mL
+         r7+hR5E97QfgVixlO7fPrxo2AhVmWK+71S4KtIi6rYHuE+yn98YMhBuoTaHjiuvPUusg
+         p9TV86jW4CtQkg06osF7IDKo/JzUGz7ayWdbaOgHsEiA4on7/1KqG8orJPg0rx96LIEJ
+         p31gRPbFITDlrwXjfOc952DaeeGv4bXLlzHvz7NBX7evbd4YarT3lhFCiyqQrl5HAg/8
+         0TyQ==
+X-Gm-Message-State: APjAAAVnK1DZoSLY+3DfCPQGb7GPS79O7DrTcliWCcctpjRvmYtdWhU8
+        vS0AqoK/uRBIfe1IwsbckGxy2LIn
+X-Google-Smtp-Source: APXvYqxUccMsePcOD0ey5XMo6FbbGwMiL63goML8dUj35j03ydqjILlgCleA59QWbi1apog6q161B2aG
+X-Received: by 2002:a1f:5c0d:: with SMTP id q13mr7209330vkb.38.1570170134477;
+ Thu, 03 Oct 2019 23:22:14 -0700 (PDT)
+Date:   Thu,  3 Oct 2019 23:21:49 -0700
+Message-Id: <20191004062151.131405-1-kyan@google.com>
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.23.0.581.g78d2f28ef7-goog
+Subject: [PATCH 0/2] Implement Airtime-based Queue Limit (AQL)
+From:   Kan Yan <kyan@google.com>
+To:     johannes@sipsolutions.net
+Cc:     linux-wireless@vger.kernel.org,
+        make-wifi-fast@lists.bufferbloat.net, toke@redhat.com,
+        nbd@nbd.name, yiboz@codeaurora.org, Kan Yan <kyan@google.com>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-T24gRnJpLCAyMDE5LTEwLTA0IGF0IDEwOjM2ICswODAwLCB6aGVuZ2JpbiAoQSkgd3JvdGU6DQo+
-IEZpeGVzIGdjYyAnLVd1bnVzZWQtYnV0LXNldC12YXJpYWJsZScgd2FybmluZzoNCj4gDQo+IGRy
-aXZlcnMvbmV0L3dpcmVsZXNzL3JlYWx0ZWsvcnRsd2lmaS9ydGw4MTkyZWUvZncuYzogSW4gZnVu
-Y3Rpb24NCj4gcnRsOTJlZV9kb3dubG9hZF9mdzoNCj4gZHJpdmVycy9uZXQvd2lyZWxlc3MvcmVh
-bHRlay9ydGx3aWZpL3J0bDgxOTJlZS9mdy5jOjExMTo2OiB3YXJuaW5nOiB2YXJpYWJsZQ0KPiBl
-cnIgc2V0IGJ1dCBub3QgdXNlZCBbLVd1bnVzZWQtYnV0LXNldC12YXJpYWJsZV0NCj4gDQo+IFJl
-cG9ydGVkLWJ5OiBIdWxrIFJvYm90IDxodWxrY2lAaHVhd2VpLmNvbT4NCj4gU2lnbmVkLW9mZi1i
-eTogemhlbmdiaW4gPHpoZW5nYmluMTNAaHVhd2VpLmNvbT4NCg0KTG9va3MgZ29vZCB0byBtZS4g
-VGhhbmsgeW91LsKgDQoNCkFja2VkLWJ5OiBQaW5nLUtlIFNoaWggPHBrc2hpaEByZWFsdGVrLmNv
-bT4NCg0KDQo=
+This patch series implements Airtime-based Queue Limit (AQL) in the mac80211 and Ath10k driver. It is based on an earlier version from the ChromiumOS tree[0]. 
+
+This version has been tested with QCA9884 platform with 4.14 kernel. Tests show AQL is able to reduce latency by an order of magnitude in a congested environment without negative impact on the throughput.
+
+[0] https://chromium-review.googlesource.com/c/chromiumos/third_party/kernel/+/1703105/7
+
+Kan Yan (2):
+  mac80211: Implement Airtime-based Queue Limit (AQL)
+  ath10k: Enable Airtime-based Queue Limit (AQL)
+
+ drivers/net/wireless/ath/ath10k/mac.c  |  7 ++-
+ drivers/net/wireless/ath/ath10k/txrx.c | 12 +++-
+ include/net/cfg80211.h                 |  7 +++
+ include/net/mac80211.h                 | 34 +++++++++++
+ net/mac80211/debugfs.c                 | 79 ++++++++++++++++++++++++++
+ net/mac80211/debugfs_sta.c             | 43 ++++++++++----
+ net/mac80211/ieee80211_i.h             |  4 ++
+ net/mac80211/main.c                    |  7 ++-
+ net/mac80211/sta_info.c                | 23 ++++++++
+ net/mac80211/sta_info.h                |  4 ++
+ net/mac80211/tx.c                      | 60 +++++++++++++++----
+ 11 files changed, 253 insertions(+), 27 deletions(-)
+
+-- 
