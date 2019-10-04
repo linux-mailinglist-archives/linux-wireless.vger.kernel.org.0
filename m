@@ -2,83 +2,95 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B7BA7CBB9D
-	for <lists+linux-wireless@lfdr.de>; Fri,  4 Oct 2019 15:24:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 65D3ACBC05
+	for <lists+linux-wireless@lfdr.de>; Fri,  4 Oct 2019 15:41:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2388310AbfJDNX7 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 4 Oct 2019 09:23:59 -0400
-Received: from mout.kundenserver.de ([212.227.126.134]:53409 "EHLO
-        mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2387952AbfJDNX7 (ORCPT
+        id S2388475AbfJDNlT (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 4 Oct 2019 09:41:19 -0400
+Received: from smtp.codeaurora.org ([198.145.29.96]:48696 "EHLO
+        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2388270AbfJDNlT (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 4 Oct 2019 09:23:59 -0400
-Received: from buildfff.adridolf.com ([188.192.135.195]) by
- mrelayeu.kundenserver.de (mreue012 [212.227.15.167]) with ESMTPSA (Nemesis)
- id 1N0Ip5-1hsX7b2DmJ-00xL5x; Fri, 04 Oct 2019 15:23:56 +0200
-From:   Adrian Schmutzler <freifunk@adrianschmutzler.de>
-To:     linux-wireless@vger.kernel.org
-Cc:     Pawel Dembicki <paweldembicki@gmail.com>,
-        Felix Fietkau <nbd@nbd.name>
-Subject: [PATCH] mt76x0: eeprom: add support for MAC address from OF
-Date:   Fri,  4 Oct 2019 15:23:49 +0200
-Message-Id: <20191004132349.4924-1-freifunk@adrianschmutzler.de>
-X-Mailer: git-send-email 2.20.1
+        Fri, 4 Oct 2019 09:41:19 -0400
+Received: by smtp.codeaurora.org (Postfix, from userid 1000)
+        id 234E361A5E; Fri,  4 Oct 2019 13:41:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
+        s=default; t=1570196478;
+        bh=IABE1GAiu1pvQqT8gzmXhHn0qZBZMJmM1+C/y7bmKhg=;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+        b=KwQeN6Ri6A9CwH0QjO29vh8l5q/z2TrMdAemswtkHAVGR4WlHeyh8pVV7PCs/qs6W
+         1/cpG9WuQ+Ji/KbRFuLxUYOBrSIebTN34Y5uoSn9t6F0KyFwUueUspXlqI378WZ/o9
+         PMk9dNMZRuFD6MpQPVL8PpcK7TGs0xSS4jOrPbvE=
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        pdx-caf-mail.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.7 required=2.0 tests=ALL_TRUSTED,BAYES_00,
+        DKIM_INVALID,DKIM_SIGNED,SPF_NONE autolearn=no autolearn_force=no
+        version=3.4.0
+Received: from x230.qca.qualcomm.com (37-33-18-250.bb.dnainternet.fi [37.33.18.250])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo@smtp.codeaurora.org)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 6A85E61A5F;
+        Fri,  4 Oct 2019 13:41:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
+        s=default; t=1570196476;
+        bh=IABE1GAiu1pvQqT8gzmXhHn0qZBZMJmM1+C/y7bmKhg=;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+        b=i2kQ48d4AHlS6/1UbK96BFQwJCAw0JwMyzfxoUOX/PCmVC6RmKiolk9DewS7t1gGI
+         vlpmC3FBtd7vYU6ot2Gh8r0Nt++OsCTunpNnN5tNfjCFGD4R50LkTxvmhwWGirGHkb
+         AASs8ZM8R2Pf34kFjhISnex74e2cIyCRDbaoIkpc=
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 6A85E61A5F
+Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
+From:   Kalle Valo <kvalo@codeaurora.org>
+To:     Luca Coelho <luca@coelho.fi>
+Cc:     linux-wireless@vger.kernel.org
+Subject: Re: [PATCH 4/8] iwlwifi: mvm: fix race in sync rx queue notification
+References: <20191004131414.27372-1-luca@coelho.fi>
+        <20191004131414.27372-5-luca@coelho.fi>
+Date:   Fri, 04 Oct 2019 16:41:12 +0300
+In-Reply-To: <20191004131414.27372-5-luca@coelho.fi> (Luca Coelho's message of
+        "Fri, 4 Oct 2019 16:14:10 +0300")
+Message-ID: <87imp4sk5j.fsf@codeaurora.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Provags-ID: V03:K1:yW/JQ6pu16OzzS6/VyGukoWRZuL/1OuANGO07xzBePOxSMbndaj
- xZBYAc5kQPoy1JH62iPX9IB315RNPuxCcKCgIWhOXXZGPZ8gmGwQoBc838QHUW74293g/Od
- JuqB4KlzOtlDyqr+G7CIR71KqXIH4W3ZNyTDHIoFBDwkimSdE5OUPDSScGRq6qtWhemGpN2
- sqzEffO3aEFShbwnT5gMQ==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:v6uqdu53s/4=:itXk7U/3//5suAeyTMd85e
- sUc1nSRCn0NDu3FCHdhw+mXcGIZ3ZAqWwMlBVEdf2cHEx7AXdewy9NmAm1gSLutunxz4N2/bw
- tPMD/qvgym/g1PDmF5XXsWZV4EdeFdkTYwZp/8A7/19Uc61FuEhRGXcVWvxLTt0/o2WOl6xj/
- WyAxbcCMPIDtKyyvokTalZO13nfMcWQ8/DEonE3VhP7Z50ZOoeNt+j3DqJs3u9aKwOc64eO6n
- t/Z4B3WJ6fu8wyAAMMKfzh7LmbDpmcOXCVGMZMFqIemgqcWCqtISNN7rRZz4QtOg6USgrr5Ul
- OJqsHx8t6urNiffvh7v6uFnFjWMGcS0OUFuxZ6IzyMO9MOQQOdVOCg/KTSzK+avbBls51yDOx
- VSJdcpqxZJGRv5vEvzhjtyP83R5PxbkHTdukIXVXsA5Vjzf32+2ShoN8mXZIHsp8Q3cTwtDu2
- +KmJMqa0BxkqPSt2rs4dEigDtjts8bOqh5ioaR5m7dYe5YxjmCFQuQNesiRazh09/Fqa8lzbE
- TjOgA3ZubcwYNkBkTCB2YH8PeYn1Ouuk+7jZt3XFmzF0NkXm5oYt5gpmV2R3MSAb1xk+JGFt3
- +qHRZ8xE3bXo+tTdTV18H9BnatbZ3/4lnn/lMtyaoAhpmniYPXvQ8IBLnvncdzoQFfz2wluUR
- IMI8q4xsKbJG4MN+Aa3PVT4g3VOgdegjWYgKcQ8XbVpqIBNtI36W+RzRDG8q6qqu9klK2Htt+
- i19sep6GDFdXC7QeYWpXNFyepn941MwdQDHklMWn8B4rTRKEl7hUfkh9vKJUMF57QrZu7u8TW
- KVBLIgyUfAs25BP3NaPgNF3cFqn3HhWYnY519c6Kb6PJ3A1FbcR2c6WpHf4PEAYn7fKh5UJQ2
- 9MfPjMH1vFWLi4nXGPj9QRgRO/YikfIEosVzT+fgI=
+Content-Type: text/plain
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Pawel Dembicki <paweldembicki@gmail.com>
+Luca Coelho <luca@coelho.fi> writes:
 
-mt76x0e driver only supports MAC addresses from
-calibration data eeprom. Many routers however do not
-have a valid stock address set in this field.
+> From: Naftali Goldstein <naftali.goldstein@intel.com>
+>
+> Consider the following flow:
+>  1. Driver starts to sync the rx queues due to a delba.
+>     mvm->queue_sync_cookie=1.
+>     This rx-queues-sync is synchronous, so it doesn't increment the
+>     cookie until all rx queues handle the notification from FW.
+>  2. During this time, driver starts to sync rx queues due to nssn sync
+>     required.
+>     The cookie's value is still 1, but it doesn't matter since this
+>     rx-queue-sync is non-synchronous so in the notification handler the
+>     cookie is ignored.
+>     What _does_ matter is that this flow increments the cookie to 2
+>     immediately.
+>     Remember though that the FW won't start servicing this command until
+>     it's done with the previous one.
+>  3. FW is still handling the first command, so it sends a notification
+>     with internal_notif->sync=1, and internal_notif->cookie=0, which
+>     triggers a WARN_ONCE.
+>
+> The solution for this race is to only use the mvm->queue_sync_cookie in
+> case of a synchronous sync-rx-queues. This way in step 2 the cookie's
+> value won't change so we avoid the WARN.
+>
+> The commit in the "fixes" field is the first commit to introduce
+> non-synchronous sending of this command to FW.
 
-This patch makes it possible to take a MAC address
-from OF (e.g. from mtd).
+But I don't see a Fixes field anywhere :)
 
-Cc: Felix Fietkau <nbd@nbd.name>
-
-Signed-off-by: Pawel Dembicki <paweldembicki@gmail.com>
-[adjusted for kernel submission]
-Signed-off-by: Adrian Schmutzler <freifunk@adrianschmutzler.de>
----
- drivers/net/wireless/mediatek/mt76/mt76x0/eeprom.c | 1 +
- 1 file changed, 1 insertion(+)
-
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76x0/eeprom.c b/drivers/net/wireless/mediatek/mt76/mt76x0/eeprom.c
-index 9d4426f6905f..48f61fd49c04 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76x0/eeprom.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt76x0/eeprom.c
-@@ -343,6 +343,7 @@ int mt76x0_eeprom_init(struct mt76x02_dev *dev)
- 		 version, fae);
- 
- 	mt76x02_mac_setaddr(dev, dev->mt76.eeprom.data + MT_EE_MAC_ADDR);
-+	mt76_eeprom_override(&dev->mt76);
- 	mt76x0_set_chip_cap(dev);
- 	mt76x0_set_freq_offset(dev);
- 	mt76x0_set_temp_offset(dev);
 -- 
-2.20.1
-
+Kalle Valo
