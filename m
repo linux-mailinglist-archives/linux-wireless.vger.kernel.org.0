@@ -2,25 +2,25 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 6B9B6CBC16
-	for <lists+linux-wireless@lfdr.de>; Fri,  4 Oct 2019 15:46:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 05431CBC1C
+	for <lists+linux-wireless@lfdr.de>; Fri,  4 Oct 2019 15:46:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2388690AbfJDNqS (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 4 Oct 2019 09:46:18 -0400
-Received: from smtp.codeaurora.org ([198.145.29.96]:50510 "EHLO
+        id S2388795AbfJDNqn (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 4 Oct 2019 09:46:43 -0400
+Received: from smtp.codeaurora.org ([198.145.29.96]:50854 "EHLO
         smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2388333AbfJDNqS (ORCPT
+        with ESMTP id S2388733AbfJDNqm (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 4 Oct 2019 09:46:18 -0400
+        Fri, 4 Oct 2019 09:46:42 -0400
 Received: by smtp.codeaurora.org (Postfix, from userid 1000)
-        id B236961A26; Fri,  4 Oct 2019 13:46:17 +0000 (UTC)
+        id 62F9D61A37; Fri,  4 Oct 2019 13:46:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1570196777;
-        bh=qYuzctfeAB3P/iEMcvGLCy+OrdcVxNVXQhcGiHtST7s=;
+        s=default; t=1570196801;
+        bh=7z8K8z1kVtW4QRmy9LQUNBsQnTcmL+HKDaKSTRVrlrk=;
         h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-        b=lQ+1Tx9oJui7MilLuhJTZeX3buQ8l7OwhBDBSuf6BHYFmbjFUJix8ya1AFx6P+GAs
-         SfDOcFRgiuxWoVPsg6doUm8JmLivSyePBXYpxYdYgEKiIasVz3ceKjPI9mgOND0s0k
-         pZ1tX0/AOy6izAwUHdH0KO/6wpOaseXdeQU/Cuog=
+        b=jN7pYUj2OrIhhdjp/i8GP2SYmK6REE/SkjCzJwZvh4FlUWwxB14XZpz9n/ulXpeue
+         ikaeeDigxkc9pO0IXRR1GXLLbY1moi0FKgATgM8OSxxGvDockGl4qbS+VTY+x9+Owr
+         08eOjd2JjsNQZvTfLFkKPYplzOXGP5hpWB6I9lbU=
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         pdx-caf-mail.web.codeaurora.org
 X-Spam-Level: 
@@ -31,62 +31,56 @@ Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
         (Authenticated sender: kvalo@smtp.codeaurora.org)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 896C061A21;
-        Fri,  4 Oct 2019 13:46:14 +0000 (UTC)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 40FD2613A8;
+        Fri,  4 Oct 2019 13:46:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1570196776;
-        bh=qYuzctfeAB3P/iEMcvGLCy+OrdcVxNVXQhcGiHtST7s=;
+        s=default; t=1570196800;
+        bh=7z8K8z1kVtW4QRmy9LQUNBsQnTcmL+HKDaKSTRVrlrk=;
         h=Subject:From:In-Reply-To:References:To:Cc:From;
-        b=BCB4y/AVewXrEJo0nXlLazoNIL19lXniMteZ9LkVuY1kLCkhMb/yJ7oz8QsrHpWz0
-         U46XePelmD2YOvUmFBNr2qDm9o+gZ2F7bHoTgtxIDwItx5avnRYawarYAtfzaPzNrn
-         OqND16QTC1cFPwvrJEPepY718kxGlaFmzeZuOL1s=
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 896C061A21
+        b=ViTfqnTxmBIMf4p1Hx277E8BubfHs+nBxCPzvrE/JNSgJ1JjSfbBjO+SzAWFQpDWw
+         NMi5PtAtTJw96KeSqS0vcM8BKX82vv3jiQ542DUG6ovIS6xMyT6P6IfNWdFefh0iOO
+         7gKaeeclOdMMHzX/S8JIFNdXaEeMeAGqlqB+a/gE=
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 40FD2613A8
 Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
 Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH V3] brcmfmac: add support for SAE authentication offload
+Subject: Re: [PATCH] libertas: remove redundant assignment to variable ret
 From:   Kalle Valo <kvalo@codeaurora.org>
-In-Reply-To: <1570008643-113848-1-git-send-email-chi-hsien.lin@cypress.com>
-References: <1570008643-113848-1-git-send-email-chi-hsien.lin@cypress.com>
-To:     Chi-Hsien Lin <Chi-Hsien.Lin@cypress.com>
-Cc:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "brcm80211-dev-list@broadcom.com" <brcm80211-dev-list@broadcom.com>,
-        brcm80211-dev-list <brcm80211-dev-list@cypress.com>,
-        Arend van Spriel <arend.vanspriel@broadcom.com>,
-        Franky Lin <franky.lin@broadcom.com>,
-        Hante Meuleman <hante.meuleman@broadcom.com>,
-        Wright Feng <Wright.Feng@cypress.com>,
-        Stanley Hsu <Stanley.Hsu@cypress.com>,
-        Chi-Hsien Lin <Chi-Hsien.Lin@cypress.com>
+In-Reply-To: <20191002101517.10836-1-colin.king@canonical.com>
+References: <20191002101517.10836-1-colin.king@canonical.com>
+To:     Colin King <colin.king@canonical.com>
+Cc:     "David S . Miller" <davem@davemloft.net>,
+        libertas-dev@lists.infradead.org, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org, kernel-janitors@vger.kernel.org,
+        linux-kernel@vger.kernel.org
 User-Agent: pwcli/0.0.0-git (https://github.com/kvalo/pwcli/) Python/2.7.12
-Message-Id: <20191004134617.B236961A26@smtp.codeaurora.org>
-Date:   Fri,  4 Oct 2019 13:46:17 +0000 (UTC)
+Message-Id: <20191004134641.62F9D61A37@smtp.codeaurora.org>
+Date:   Fri,  4 Oct 2019 13:46:41 +0000 (UTC)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Chi-Hsien Lin <Chi-Hsien.Lin@cypress.com> wrote:
+Colin King <colin.king@canonical.com> wrote:
 
-> From: Chung-Hsien Hsu <stanley.hsu@cypress.com>
+> From: Colin Ian King <colin.king@canonical.com>
 > 
-> The firmware may have SAE authentication code built-in. This is
-> detected by the driver and indicated in the wiphy features flags.
-> User-space can use this flag to determine whether or not to provide
-> the password material for SAE authentication in the nl80211 CONNECT
-> command.
+> The variable ret is being assigned a value that is never read and is
+> being re-assigned a little later on. The assignment is redundant and hence
+> can be removed.
 > 
-> Signed-off-by: Chung-Hsien Hsu <stanley.hsu@cypress.com>
-> Signed-off-by: Chi-Hsien Lin <chi-hsien.lin@cypress.com>
+> Addresses-Coverity: ("Unused value")
+> Signed-off-by: Colin Ian King <colin.king@canonical.com>
+> Reviewed-by: Dan Carpenter <dan.carpenter@oracle.com>
 
 Patch applied to wireless-drivers-next.git, thanks.
 
-3b1e0a7bdfee brcmfmac: add support for SAE authentication offload
+60b5b49f6a6e libertas: remove redundant assignment to variable ret
 
 -- 
-https://patchwork.kernel.org/patch/11170687/
+https://patchwork.kernel.org/patch/11170731/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
