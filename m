@@ -2,86 +2,126 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 0FE1ACBDDB
-	for <lists+linux-wireless@lfdr.de>; Fri,  4 Oct 2019 16:49:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C52F2CBEB0
+	for <lists+linux-wireless@lfdr.de>; Fri,  4 Oct 2019 17:11:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2389234AbfJDOtX (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 4 Oct 2019 10:49:23 -0400
-Received: from mail-lj1-f193.google.com ([209.85.208.193]:33515 "EHLO
-        mail-lj1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2388870AbfJDOtX (ORCPT
+        id S2389650AbfJDPLQ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 4 Oct 2019 11:11:16 -0400
+Received: from mail-qt1-f196.google.com ([209.85.160.196]:44896 "EHLO
+        mail-qt1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2389086AbfJDPLQ (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 4 Oct 2019 10:49:23 -0400
-Received: by mail-lj1-f193.google.com with SMTP id a22so6839371ljd.0;
-        Fri, 04 Oct 2019 07:49:20 -0700 (PDT)
+        Fri, 4 Oct 2019 11:11:16 -0400
+Received: by mail-qt1-f196.google.com with SMTP id u40so8975066qth.11;
+        Fri, 04 Oct 2019 08:11:15 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:subject:to:cc:references:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=LaVRRMK9qu3AK/IDimN49Clff2cxJBO8xmfUwWCrdGI=;
+        b=tjSLjRjBQ/Xb2EqjJJ+ELbHOAgSrTFA+9NuNuwVMn3f3zUpKLba1tmgGG7J3PqGWpL
+         YojUhXkcYDU2KT72YIx57K67hJyb3+qHTD97X1wsw+NT+8PIvHMY0vE/yoLlEk8zUXZY
+         bm9smuVFB7rUNUdyca3xT3LTMoNVt9nQj9LEQQ1lTbHf61rh9Uu273MLj6UHCI6XqhS+
+         oO4drxzBQzXLuMTeuWQPT6Npshp1oHDiNwq//3S2OzzJldXhEqiEdWmDuvDNLXNCJg9w
+         L5vG2Bvw9m9cabO2En6WYF7Ootl6qsBuZJGMHdACd7b+4QSR0JvGsZ57KAPq1UUXtS3J
+         /rOw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=AICnQvY7QcNF7f+/M4M7hIgheGhg17w1bpamNJvqPmY=;
-        b=tkFCdZAg4Bda89sCDZdt5sY+A7SR+mRB2xixkQwgQYXtIOqtianMUj9xnGc9CSwxk0
-         j7CkLl4Nx4qmVBoQYiSlS1R9j6fceFFBPBEkrgmNSQZoLyUVWQkrKfINIuKZ8A+yHK5s
-         xik8zoiLQR3SQO0wIP0dlqRhivoMRG6coI6yBgm7dF1jsBZ3yyEbyd2wiweMKu9vgHyb
-         qIUKOi/w3czVQXQbAiDCJQZTYqPdr0P3t1bGm880P9ekuu5jNBMBeYtk6rrWhK743e/n
-         rGJ9gFaH3k8H3TABiXKj9GjQ84QoFP5oVBtTyV7bSamN8UlNPBq9svgoQUo1ClxPYoIA
-         98xA==
-X-Gm-Message-State: APjAAAVDw8qc+Bn5SAPvNGxiMSW/966+UslxN73ZcKLalRi7sKhSLXzH
-        W76PAi6JU9d+UJEXBz2bb+o=
-X-Google-Smtp-Source: APXvYqxeivwiGvJSLj2qnzaww/e3vxhBx0aQeGAz7MOTp/aSTBo8DiGeHX+enW/cZawQMX4B5qQb1A==
-X-Received: by 2002:a2e:9585:: with SMTP id w5mr4088615ljh.220.1570200560185;
-        Fri, 04 Oct 2019 07:49:20 -0700 (PDT)
-Received: from xi.terra (c-51f1e055.07-184-6d6c6d4.bbcust.telenor.se. [85.224.241.81])
-        by smtp.gmail.com with ESMTPSA id y26sm1584105ljj.90.2019.10.04.07.49.18
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Fri, 04 Oct 2019 07:49:19 -0700 (PDT)
-Received: from johan by xi.terra with local (Exim 4.92.2)
-        (envelope-from <johan@kernel.org>)
-        id 1iGOte-0005Vp-Uy; Fri, 04 Oct 2019 16:49:31 +0200
-Date:   Fri, 4 Oct 2019 16:49:30 +0200
-From:   Johan Hovold <johan@kernel.org>
-To:     Kalle Valo <kvalo@codeaurora.org>
-Cc:     Denis Efremov <efremov@linux.com>, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Amitkumar Karwar <amitkarwar@gmail.com>,
-        Siva Rebbagondla <siva8118@gmail.com>
-Subject: Re: [PATCH] rsi: fix potential null dereference in rsi_probe()
-Message-ID: <20191004144930.GC13531@localhost>
-References: <20191002171811.23993-1-efremov@linux.com>
- <20191004134736.2D517619F4@smtp.codeaurora.org>
+        h=x-gm-message-state:from:subject:to:cc:references:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=LaVRRMK9qu3AK/IDimN49Clff2cxJBO8xmfUwWCrdGI=;
+        b=E1iH6ccYBkF8eE7a6FJr0g174k20IMcoPz2Hdd4DjdFeKt7XjjOGS7AUwfrqJ7J/9p
+         OaCva6MJLWBrrS4tH728YgdI7oE3vYU7vRUj+POpefeyDRd7X59EE0tvo9tGRgBzoFY9
+         DkbgBZ33SQGGiwS25mGjC2ojamPGi0cv4bsM1f8tFS4yaPaIqTpe081O0PoxDTypYjM+
+         nJloBLaBrqFt2q6ogoiSTk0M0jpoEC7Xe63uE8b8bnDV2Rm8QbTHjcd0Rot646EpsH8u
+         Vvq5YDN1/rfX7iSZlWQ78+RfNqRo8glT8hUXsYTn4tXSNaGWeEabQV3U3DXi4VvmAWt9
+         A3vg==
+X-Gm-Message-State: APjAAAXwON33sHRtQmbONOYu5PmyOsrOF1XLOGR7q5Iv1pf4pA5N92u+
+        /yEmreBgWT1jBma3hFIDsTA=
+X-Google-Smtp-Source: APXvYqzS2WPllmpeWzWMvLD7ans2wlPHGenq0xVVA5BS1uVMyNVlrgiV+KuHd5KyDDonyc0Im9VzRQ==
+X-Received: by 2002:ac8:5554:: with SMTP id o20mr16339768qtr.282.1570201874942;
+        Fri, 04 Oct 2019 08:11:14 -0700 (PDT)
+Received: from ?IPv6:2620:10d:c0a3:10fb:a464:42a6:e226:d387? ([2620:10d:c091:500::2:9b70])
+        by smtp.gmail.com with ESMTPSA id 139sm3317840qkf.14.2019.10.04.08.11.13
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 04 Oct 2019 08:11:14 -0700 (PDT)
+From:   Jes Sorensen <jes.sorensen@gmail.com>
+X-Google-Original-From: Jes Sorensen <Jes.Sorensen@gmail.com>
+Subject: Re: [PATCH v2] rtl8xxxu: add bluetooth co-existence support for
+ single antenna
+To:     Chris Chiu <chiu@endlessm.com>
+Cc:     Kalle Valo <kvalo@codeaurora.org>,
+        David Miller <davem@davemloft.net>,
+        linux-wireless <linux-wireless@vger.kernel.org>,
+        netdev <netdev@vger.kernel.org>,
+        Linux Kernel <linux-kernel@vger.kernel.org>,
+        Linux Upstreaming Team <linux@endlessm.com>
+References: <20190911025045.20918-1-chiu@endlessm.com>
+ <0c049f46-fb15-693e-affe-a84ea759b5d7@gmail.com>
+ <CAB4CAweXfhLc8ATWg87ydadCKVqj3SnG37O5Hyz8uP8EkPrg9w@mail.gmail.com>
+Message-ID: <5dad1fd1-ef0b-b5d9-02ea-7fc3bf7f8576@gmail.com>
+Date:   Fri, 4 Oct 2019 11:11:12 -0400
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.1.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20191004134736.2D517619F4@smtp.codeaurora.org>
-User-Agent: Mutt/1.12.1 (2019-06-15)
+In-Reply-To: <CAB4CAweXfhLc8ATWg87ydadCKVqj3SnG37O5Hyz8uP8EkPrg9w@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Fri, Oct 04, 2019 at 01:47:36PM +0000, Kalle Valo wrote:
-> Denis Efremov <efremov@linux.com> wrote:
+On 10/2/19 9:19 PM, Chris Chiu wrote:
+> On Wed, Oct 2, 2019 at 11:04 PM Jes Sorensen <jes.sorensen@gmail.com> wrote:
+>>
+>>
+>> In general I think it looks good! One nit below:
+>>
+>> Sorry I have been traveling for the last three weeks, so just catching up.
+>>
+>>
+>>> +void rtl8723bu_set_coex_with_type(struct rtl8xxxu_priv *priv, u8 type)
+>>> +{
+>>> +     switch (type) {
+>>> +     case 0:
+>>> +             rtl8xxxu_write32(priv, REG_BT_COEX_TABLE1, 0x55555555);
+>>> +             rtl8xxxu_write32(priv, REG_BT_COEX_TABLE2, 0x55555555);
+>>> +             rtl8xxxu_write32(priv, REG_BT_COEX_TABLE3, 0x00ffffff);
+>>> +             rtl8xxxu_write8(priv, REG_BT_COEX_TABLE4, 0x03);
+>>> +             break;
+>>> +     case 1:
+>>> +     case 3:
+>>
+>> The one item here, I would prefer introducing some defined types to
+>> avoid the hard coded type numbers. It's much easier to read and debug
+>> when named.
+>>
+> Honestly, I also thought of that but there's no meaningful description for these
+> numbers in the vendor driver. Even based on where they're invoked, I can merely
+> give a rough definition on 0. So I left it as it is for the covenience
+> if I have to do
+> cross-comparison with vendor driver in the future for some possible
+> unknown bugs.
 > 
-> > The id pointer can be NULL in rsi_probe().
+>> If you shortened the name of the function to rtl8723bu_set_coex() you
+>> won't have problems with line lengths at the calling point.
+>>
+> I think the rtl8723bu_set_ps_tdma() function would cause the line length problem
+> more than rtl8723bu_set_coex_with_type() at the calling point. But as the same
+> debug reason as mentioned, I may like to keep it because I don't know how to
+> categorize the 5 magic parameters. I also reference the latest rtw88
+> driver code,
+> it seems no better solution so far. I'll keep watching if there's any
+> better idea.
 
-While the existing code in rsi_probe() may lead you to believe that,
-this statement is false. 
+Personally I would still prefer to name it COEX_TYPE_1 etc. but I can 
+live with this. Would you mind at least adding some comments in the code 
+about it?
 
-> > It is checked everywhere except
-> > for the else branch in the idProduct condition. The patch adds NULL check
-> > before the id dereference in the rsi_dbg() call.
-> > 
-> > Fixes: 54fdb318c111 ("rsi: add new device model for 9116")
-> > Cc: Amitkumar Karwar <amitkarwar@gmail.com>
-> > Cc: Siva Rebbagondla <siva8118@gmail.com>
-> > Cc: Kalle Valo <kvalo@codeaurora.org>
-> > Signed-off-by: Denis Efremov <efremov@linux.com>
-> 
-> Patch applied to wireless-drivers-next.git, thanks.
-> 
-> f170d44bc4ec rsi: fix potential null dereference in rsi_probe()
+Cheers,
+Jes
 
-I just sent a revert to prevent the confusion from spreading (e.g. to
-stable autosel and contributers looking for things to work on). Hope you
-don't mind, Kalle.
 
-Johan
