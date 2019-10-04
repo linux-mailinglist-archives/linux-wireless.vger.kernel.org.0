@@ -2,76 +2,76 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 08BBACAFC4
-	for <lists+linux-wireless@lfdr.de>; Thu,  3 Oct 2019 22:08:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9DCBBCB34D
+	for <lists+linux-wireless@lfdr.de>; Fri,  4 Oct 2019 04:36:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732416AbfJCUIZ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 3 Oct 2019 16:08:25 -0400
-Received: from mx1.redhat.com ([209.132.183.28]:48030 "EHLO mx1.redhat.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1729586AbfJCUIZ (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 3 Oct 2019 16:08:25 -0400
-Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.phx2.redhat.com [10.5.11.23])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mx1.redhat.com (Postfix) with ESMTPS id 3BC3C30BBE87;
-        Thu,  3 Oct 2019 20:08:25 +0000 (UTC)
-Received: from shalem.localdomain.com (ovpn-116-108.ams2.redhat.com [10.36.116.108])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 67FD319C69;
-        Thu,  3 Oct 2019 20:08:23 +0000 (UTC)
-From:   Hans de Goede <hdegoede@redhat.com>
-To:     Arend van Spriel <arend.vanspriel@broadcom.com>,
-        Franky Lin <franky.lin@broadcom.com>,
-        Hante Meuleman <hante.meuleman@broadcom.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        Chi-Hsien Lin <chi-hsien.lin@cypress.com>,
-        Wright Feng <wright.feng@cypress.com>
-Cc:     Hans de Goede <hdegoede@redhat.com>,
-        linux-wireless@vger.kernel.org, brcm80211-dev-list.pdl@broadcom.com
-Subject: [PATCH 5.4 regression fix] brcmfmac: Fix brcmf_cfg80211_get_channel returning uninitialized fields
-Date:   Thu,  3 Oct 2019 22:08:21 +0200
-Message-Id: <20191003200821.819594-1-hdegoede@redhat.com>
+        id S1731944AbfJDCgg (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 3 Oct 2019 22:36:36 -0400
+Received: from szxga07-in.huawei.com ([45.249.212.35]:52336 "EHLO huawei.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1728360AbfJDCgg (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 3 Oct 2019 22:36:36 -0400
+Received: from DGGEMS409-HUB.china.huawei.com (unknown [172.30.72.58])
+        by Forcepoint Email with ESMTP id 9083BD9F2CCEE641D326;
+        Fri,  4 Oct 2019 10:36:34 +0800 (CST)
+Received: from [127.0.0.1] (10.184.213.217) by DGGEMS409-HUB.china.huawei.com
+ (10.3.19.209) with Microsoft SMTP Server id 14.3.439.0; Fri, 4 Oct 2019
+ 10:36:27 +0800
+To:     <pkshih@realtek.com>, <kvalo@codeaurora.org>,
+        <linux-wireless@vger.kernel.org>, <netdev@vger.kernel.org>
+CC:     <zhengbin13@huawei.com>
+From:   "zhengbin (A)" <zhengbin13@huawei.com>
+Subject: [PATCH v2] rtlwifi: rtl8192ee: Remove set but not used variable 'err'
+Message-ID: <2ca176f2-e9ef-87cd-7f7d-cd51c67da38b@huawei.com>
+Date:   Fri, 4 Oct 2019 10:36:16 +0800
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:60.0) Gecko/20100101
+ Thunderbird/60.3.0
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 2.84 on 10.5.11.23
-X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16 (mx1.redhat.com [10.5.110.49]); Thu, 03 Oct 2019 20:08:25 +0000 (UTC)
+Content-Language: en-US
+X-Originating-IP: [10.184.213.217]
+X-CFilter-Loop: Reflected
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-With the new edmg support struct cfg80211_chan_def has been extended
-with a number of new members. brcmf_cfg80211_get_channel() was not setting
-(clearing) these causing the cfg80211_edmg_chandef_valid() check in
-cfg80211_chandef_valid() to fail. Triggering a WARN_ON and, worse, causing
-brcmfmac based wifi cards to not work.
+Fixes gcc '-Wunused-but-set-variable' warning:
 
-This commit fixes this by clearing the entire passed struct to 0 before
-setting the members used by the brcmfmac code. This solution also makes
-sure that this problem will not repeat itself in the future if further
-members are added to the struct.
+drivers/net/wireless/realtek/rtlwifi/rtl8192ee/fw.c: In function rtl92ee_download_fw:
+drivers/net/wireless/realtek/rtlwifi/rtl8192ee/fw.c:111:6: warning: variable err set but not used [-Wunused-but-set-variable]
 
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Reported-by: Hulk Robot <hulkci@huawei.com>
+Signed-off-by: zhengbin <zhengbin13@huawei.com>
 ---
- drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/wireless/realtek/rtlwifi/rtl8192ee/fw.c | 5 +----
+ 1 file changed, 1 insertion(+), 4 deletions(-)
 
-diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
-index e3ebb7abbdae..480c05f66ebd 100644
---- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
-+++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
-@@ -5041,10 +5041,10 @@ static int brcmf_cfg80211_get_channel(struct wiphy *wiphy,
- 	}
- 
- 	freq = ieee80211_channel_to_frequency(ch.control_ch_num, band);
-+	memset(chandef, 0, sizeof(*chandef));
- 	chandef->chan = ieee80211_get_channel(wiphy, freq);
- 	chandef->width = width;
- 	chandef->center_freq1 = ieee80211_channel_to_frequency(ch.chnum, band);
--	chandef->center_freq2 = 0;
- 
- 	return 0;
- }
--- 
-2.23.0
+diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8192ee/fw.c b/drivers/net/wireless/realtek/rtlwifi/rtl8192ee/fw.c
+index 67305ce..0546242 100644
+--- a/drivers/net/wireless/realtek/rtlwifi/rtl8192ee/fw.c
++++ b/drivers/net/wireless/realtek/rtlwifi/rtl8192ee/fw.c
+@@ -108,7 +108,6 @@ int rtl92ee_download_fw(struct ieee80211_hw *hw, bool buse_wake_on_wlan_fw)
+        struct rtlwifi_firmware_header *pfwheader;
+        u8 *pfwdata;
+        u32 fwsize;
+-       int err;
+        enum version_8192e version = rtlhal->version;
+
+        if (!rtlhal->pfirmware)
+@@ -146,9 +145,7 @@ int rtl92ee_download_fw(struct ieee80211_hw *hw, bool buse_wake_on_wlan_fw)
+        _rtl92ee_write_fw(hw, version, pfwdata, fwsize);
+        _rtl92ee_enable_fw_download(hw, false);
+
+-       err = _rtl92ee_fw_free_to_go(hw);
+-
+-       return 0;
++       return _rtl92ee_fw_free_to_go(hw);
+ }
+
+ static bool _rtl92ee_check_fw_read_last_h2c(struct ieee80211_hw *hw, u8 boxnum)
+--
+2.7.4
+
 
