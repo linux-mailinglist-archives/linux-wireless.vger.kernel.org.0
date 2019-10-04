@@ -2,87 +2,89 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C139DCC24A
-	for <lists+linux-wireless@lfdr.de>; Fri,  4 Oct 2019 20:06:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 15C25CC322
+	for <lists+linux-wireless@lfdr.de>; Fri,  4 Oct 2019 20:57:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2388244AbfJDSGN (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 4 Oct 2019 14:06:13 -0400
-Received: from paleale.coelho.fi ([176.9.41.70]:46700 "EHLO
-        farmhouse.coelho.fi" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1729291AbfJDSGN (ORCPT
+        id S1725907AbfJDS4z (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 4 Oct 2019 14:56:55 -0400
+Received: from smtp.codeaurora.org ([198.145.29.96]:33674 "EHLO
+        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725775AbfJDS4z (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 4 Oct 2019 14:06:13 -0400
-Received: from [91.156.6.193] (helo=redipa)
-        by farmhouse.coelho.fi with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-        (Exim 4.92)
-        (envelope-from <luca@coelho.fi>)
-        id 1iGRxy-0000us-Q3; Fri, 04 Oct 2019 21:06:12 +0300
-Message-ID: <d8a3195b919e86e2c39e17e8c93cc0fcef19ae12.camel@coelho.fi>
-From:   Luca Coelho <luca@coelho.fi>
-To:     Kalle Valo <kvalo@codeaurora.org>
-Cc:     linux-wireless@vger.kernel.org
-Date:   Fri, 04 Oct 2019 21:06:09 +0300
-In-Reply-To: <87imp4sk5j.fsf@codeaurora.org>
-References: <20191004131414.27372-1-luca@coelho.fi>
-         <20191004131414.27372-5-luca@coelho.fi> <87imp4sk5j.fsf@codeaurora.org>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.30.5-1.1 
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on farmhouse.coelho.fi
+        Fri, 4 Oct 2019 14:56:55 -0400
+Received: by smtp.codeaurora.org (Postfix, from userid 1000)
+        id 01D6560A0A; Fri,  4 Oct 2019 18:56:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
+        s=default; t=1570215414;
+        bh=HddhwGwkCeWXSrQOE0ffx19+ae4C50NE2JNj4YM9ugg=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=lzefUBgE0PhGPUibXYpZiTua4u5DLXTFv2LEe5cEXOHvfpmujiljmw57uwXiSXSvj
+         Qc6I/+2rKtzWAVdQhGwJeQNvbGuw/Egt9vxC5sLik5attnuC/WZA/qqUsXCAJOU+/A
+         bjgQ8bpa7jEwZCdFOw2pSh6lPg9OcyNLghB2lOJM=
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        pdx-caf-mail.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-2.9 required=5.0 tests=ALL_TRUSTED,BAYES_00
-        autolearn=ham autolearn_force=no version=3.4.2
-Subject: Re: [PATCH 4/8] iwlwifi: mvm: fix race in sync rx queue notification
+X-Spam-Status: No, score=-2.7 required=2.0 tests=ALL_TRUSTED,BAYES_00,
+        DKIM_INVALID,DKIM_SIGNED autolearn=no autolearn_force=no version=3.4.0
+Received: from mail.codeaurora.org (localhost.localdomain [127.0.0.1])
+        by smtp.codeaurora.org (Postfix) with ESMTP id 8744760C5F;
+        Fri,  4 Oct 2019 18:56:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
+        s=default; t=1570215411;
+        bh=HddhwGwkCeWXSrQOE0ffx19+ae4C50NE2JNj4YM9ugg=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=dDQTCFGVlr5ubij2d+p0i3/3dU/rtNif/w2BzQP88xLgj9tpoC7kn+Mxrz04HXAon
+         BitBHnQAnrEm0zetbeigHu96HoEN3Vqq9HT2Qc+eKWv/4OHiDTiNY0/Ib7FePrVFr/
+         CVNIsnKtwdDf6fOxvCuthlB9i1VExI/EDpWYEHKo=
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8;
+ format=flowed
+Content-Transfer-Encoding: 8bit
+Date:   Fri, 04 Oct 2019 11:56:51 -0700
+From:   Jeff Johnson <jjohnson@codeaurora.org>
+To:     Tom Psyborg <pozega.tomislav@gmail.com>
+Cc:     Kalle Valo <kvalo@codeaurora.org>, linux-wireless@vger.kernel.org,
+        ath10k@lists.infradead.org, linux-wireless-owner@vger.kernel.org
+Subject: Re: [PATCH 5/5] ath10k: pull_svc_rdy code-style fix
+In-Reply-To: <CAKR_QVK=XwLtaGgoLeU5-+XQP_-jVvAdWfkGvdyV9WNK_5QUng@mail.gmail.com>
+References: <1569268165-1639-1-git-send-email-pozega.tomislav@gmail.com>
+ <1569268165-1639-5-git-send-email-pozega.tomislav@gmail.com>
+ <87d0fq5kic.fsf@codeaurora.org>
+ <CAKR_QVK=XwLtaGgoLeU5-+XQP_-jVvAdWfkGvdyV9WNK_5QUng@mail.gmail.com>
+Message-ID: <998c7ce60b99865835f619dee86b301b@codeaurora.org>
+X-Sender: jjohnson@codeaurora.org
+User-Agent: Roundcube Webmail/1.2.5
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Fri, 2019-10-04 at 16:41 +0300, Kalle Valo wrote:
-> Luca Coelho <luca@coelho.fi> writes:
+On 2019-09-24 00:49, Tom Psyborg wrote:
+> On 24/09/2019, Kalle Valo <kvalo@codeaurora.org> wrote:
+>> Tomislav Požega <pozega.tomislav@gmail.com> writes:
+>> Actually I prefer the original style, so that we first check the data 
+>> in
+>> skb is valid and only then assign the data to ev.
+>> 
+>> --
+>> Kalle Valo
+>> 
 > 
-> > From: Naftali Goldstein <naftali.goldstein@intel.com>
-> > 
-> > Consider the following flow:
-> >  1. Driver starts to sync the rx queues due to a delba.
-> >     mvm->queue_sync_cookie=1.
-> >     This rx-queues-sync is synchronous, so it doesn't increment the
-> >     cookie until all rx queues handle the notification from FW.
-> >  2. During this time, driver starts to sync rx queues due to nssn sync
-> >     required.
-> >     The cookie's value is still 1, but it doesn't matter since this
-> >     rx-queue-sync is non-synchronous so in the notification handler the
-> >     cookie is ignored.
-> >     What _does_ matter is that this flow increments the cookie to 2
-> >     immediately.
-> >     Remember though that the FW won't start servicing this command until
-> >     it's done with the previous one.
-> >  3. FW is still handling the first command, so it sends a notification
-> >     with internal_notif->sync=1, and internal_notif->cookie=0, which
-> >     triggers a WARN_ONCE.
-> > 
-> > The solution for this race is to only use the mvm->queue_sync_cookie in
-> > case of a synchronous sync-rx-queues. This way in step 2 the cookie's
-> > value won't change so we avoid the WARN.
-> > 
-> > The commit in the "fixes" field is the first commit to introduce
-> > non-synchronous sending of this command to FW.
-> 
-> But I don't see a Fixes field anywhere :)
+> It came to my mind that this might be the reason why the current
+> driver did not give me warning about too short service ready event,
+> but there was no warning about event length in either case.
+> I even tested this with compat wireless from 2013. and there the
+> situation was the opposite: in both cases there was warning about
+> service ready length.
 
-Hmmm, good catch.  My script should have added it.  One more thing to
-check... *sigh*
-
-This is the aforementioned commit:
-
-Fixes: 3c514bf831ac ("iwlwifi: mvm: add a loose synchronization of the NSSN across Rx queues")
-
-I'll add it and include it when I send the pull-req.
-
-Thanks!
-
---
-Cheers,
-Luca.
-
+Hmmm, my understanding of the way the TLV WMI is supposed to work is 
+that the individual data structures are extensible, and in the case 
+where a data structure is received with a "short" length the recipient 
+is supposed to zero-extend to the expected length, and then handle the 
+"zeroed" field(s) appropriately. This is supposed to hold for both 
+host=>firmware and firmware=>host. Since the wmi_service_ready_event has 
+been extended over time this behavior is necessary in the case of a host 
+built with the current format interfacing to a firmware built with an 
+earlier version of the format. I'm not sure why ath10k isn't supporting 
+this since the QTI "out of tree" driver (my area of focus) has that 
+support.
