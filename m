@@ -2,88 +2,109 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id DA8EDCB7A9
-	for <lists+linux-wireless@lfdr.de>; Fri,  4 Oct 2019 11:51:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EBEC5CB860
+	for <lists+linux-wireless@lfdr.de>; Fri,  4 Oct 2019 12:34:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2387950AbfJDJvr (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 4 Oct 2019 05:51:47 -0400
-Received: from mail.kernel.org ([198.145.29.99]:50662 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2387827AbfJDJvr (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 4 Oct 2019 05:51:47 -0400
-Received: from localhost.localdomain (236.31.169.217.in-addr.arpa [217.169.31.236])
+        id S2387480AbfJDKes (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 4 Oct 2019 06:34:48 -0400
+Received: from smtp.codeaurora.org ([198.145.29.96]:56684 "EHLO
+        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729427AbfJDKes (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 4 Oct 2019 06:34:48 -0400
+Received: by smtp.codeaurora.org (Postfix, from userid 1000)
+        id 80C5A602F2; Fri,  4 Oct 2019 10:34:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
+        s=default; t=1570185287;
+        bh=Hw2/gsH1gbeTBfIyDO0ihG5v4cTqAGsJO1mayKUidA8=;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+        b=FNf/IP6ywLTQy3561R1Sq6YzvuJgPDiwEiN58/T2f+rujSE2uo+Ezq+FThVZ97lvn
+         x7wo3YfoJRuHM8p08zftTF5rqq2sUNIgp5zCEMOqUjWyT2E+G/1o02/icn2RQi1zkx
+         f4yyQwYSCfz0DTTscYuW/T0tle6rqPfpo3pCPmuI=
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        pdx-caf-mail.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.7 required=2.0 tests=ALL_TRUSTED,BAYES_00,
+        DKIM_INVALID,DKIM_SIGNED,SPF_NONE autolearn=no autolearn_force=no
+        version=3.4.0
+Received: from x230.qca.qualcomm.com (85-76-46-241-nat.elisa-mobile.fi [85.76.46.241])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 4FE1521D81;
-        Fri,  4 Oct 2019 09:51:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1570182706;
-        bh=vE/jWS60KzqcNNmlodqOlV9AdeCoY1+tE4ZQVtKNzf8=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Yp1IkKEedfiRjZZ63iNqBeC6Z87eN81/lCy5T3vvESbPi7xVobOhKbjycm6ERQxz0
-         QUYsnIU7brsaSZlEjRkmUA6TYnSEA7r1AsbFBC66inUqcCJ4n+AmrNttuCWxciClE8
-         l5gNqRGxEmMXt/EUqpQ+8yexFhLQfOC0Km9FJg8I=
-From:   Will Deacon <will@kernel.org>
-To:     linux-wireless@vger.kernel.org
-Cc:     nico@semmle.com, Will Deacon <will@kernel.org>,
-        stable@vger.kernel.org, Johannes Berg <johannes@sipsolutions.net>,
-        Kees Cook <keescook@chromium.org>
-Subject: [PATCH 2/2] cfg80211: wext: Reject malformed SSID elements
-Date:   Fri,  4 Oct 2019 10:51:32 +0100
-Message-Id: <20191004095132.15777-2-will@kernel.org>
-X-Mailer: git-send-email 2.11.0
-In-Reply-To: <20191004095132.15777-1-will@kernel.org>
-References: <20191004095132.15777-1-will@kernel.org>
+        (Authenticated sender: kvalo@smtp.codeaurora.org)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 9E96E619F4;
+        Fri,  4 Oct 2019 10:34:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
+        s=default; t=1570185285;
+        bh=Hw2/gsH1gbeTBfIyDO0ihG5v4cTqAGsJO1mayKUidA8=;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+        b=EZBi/yL6fzoQUYwp91FRy2kqHORk8eIoW2yNAK3jp4JJSQ3ZIJ0F3wSZDkiLOLjgy
+         8PrF1bgVbc7Sz0lAwE9XN5oma3WS46MzMgiLKrpxa65QG3yxKcSwTQV3a1DMA50osy
+         y7LYhVNINHG4vzRj1ni9/2E+qx6nGaG7u2RZD4dA=
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 9E96E619F4
+Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
+From:   Kalle Valo <kvalo@codeaurora.org>
+To:     Hans de Goede <hdegoede@redhat.com>
+Cc:     Arend van Spriel <arend.vanspriel@broadcom.com>,
+        Franky Lin <franky.lin@broadcom.com>,
+        Hante Meuleman <hante.meuleman@broadcom.com>,
+        Chi-Hsien Lin <chi-hsien.lin@cypress.com>,
+        Wright Feng <wright.feng@cypress.com>,
+        linux-wireless@vger.kernel.org, brcm80211-dev-list.pdl@broadcom.com
+Subject: Re: [PATCH 5.4 regression fix] brcmfmac: Fix brcmf_cfg80211_get_channel returning uninitialized fields
+References: <20191003200821.819594-1-hdegoede@redhat.com>
+Date:   Fri, 04 Oct 2019 13:34:38 +0300
+In-Reply-To: <20191003200821.819594-1-hdegoede@redhat.com> (Hans de Goede's
+        message of "Thu, 3 Oct 2019 22:08:21 +0200")
+Message-ID: <87r23ssssh.fsf@codeaurora.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
+MIME-Version: 1.0
+Content-Type: text/plain
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Ensure the SSID element is bounds-checked prior to invoking memcpy()
-with its length field.
+Hans de Goede <hdegoede@redhat.com> writes:
 
-Cc: <stable@vger.kernel.org>
-Cc: Johannes Berg <johannes@sipsolutions.net>
-Cc: Kees Cook <keescook@chromium.org>
-Reported-by: Nicolas Waisman <nico@semmle.com>
-Signed-off-by: Will Deacon <will@kernel.org>
----
- net/wireless/wext-sme.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+> With the new edmg support struct cfg80211_chan_def has been extended
+> with a number of new members. brcmf_cfg80211_get_channel() was not setting
+> (clearing) these causing the cfg80211_edmg_chandef_valid() check in
+> cfg80211_chandef_valid() to fail. Triggering a WARN_ON and, worse, causing
+> brcmfmac based wifi cards to not work.
+>
+> This commit fixes this by clearing the entire passed struct to 0 before
+> setting the members used by the brcmfmac code. This solution also makes
+> sure that this problem will not repeat itself in the future if further
+> members are added to the struct.
+>
+> Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+> ---
+>  drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
+> index e3ebb7abbdae..480c05f66ebd 100644
+> --- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
+> +++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
+> @@ -5041,10 +5041,10 @@ static int brcmf_cfg80211_get_channel(struct wiphy *wiphy,
+>  	}
+>  
+>  	freq = ieee80211_channel_to_frequency(ch.control_ch_num, band);
+> +	memset(chandef, 0, sizeof(*chandef));
+>  	chandef->chan = ieee80211_get_channel(wiphy, freq);
+>  	chandef->width = width;
+>  	chandef->center_freq1 = ieee80211_channel_to_frequency(ch.chnum, band);
+> -	chandef->center_freq2 = 0;
+>  
+>  	return 0;
+>  }
 
-diff --git a/net/wireless/wext-sme.c b/net/wireless/wext-sme.c
-index c67d7a82ab13..3fd2cc7fc36a 100644
---- a/net/wireless/wext-sme.c
-+++ b/net/wireless/wext-sme.c
-@@ -201,6 +201,7 @@ int cfg80211_mgd_wext_giwessid(struct net_device *dev,
- 			       struct iw_request_info *info,
- 			       struct iw_point *data, char *ssid)
- {
-+	int ret = 0;
- 	struct wireless_dev *wdev = dev->ieee80211_ptr;
- 
- 	/* call only for station! */
-@@ -219,7 +220,10 @@ int cfg80211_mgd_wext_giwessid(struct net_device *dev,
- 		if (ie) {
- 			data->flags = 1;
- 			data->length = ie[1];
--			memcpy(ssid, ie + 2, data->length);
-+			if (data->length > IW_ESSID_MAX_SIZE)
-+				ret = -EINVAL;
-+			else
-+				memcpy(ssid, ie + 2, data->length);
- 		}
- 		rcu_read_unlock();
- 	} else if (wdev->wext.connect.ssid && wdev->wext.connect.ssid_len) {
-@@ -229,7 +233,7 @@ int cfg80211_mgd_wext_giwessid(struct net_device *dev,
- 	}
- 	wdev_unlock(wdev);
- 
--	return 0;
-+	return ret;
- }
- 
- int cfg80211_mgd_wext_siwap(struct net_device *dev,
+Is this a separate issue from the cfg80211 fix:
+
+cfg80211: initialize on-stack chandefs
+
+https://git.kernel.org/pub/scm/linux/kernel/git/jberg/mac80211.git/commit/?id=f43e5210c739fe76a4b0ed851559d6902f20ceb1
+
 -- 
-2.23.0.581.g78d2f28ef7-goog
-
+Kalle Valo
