@@ -2,174 +2,132 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 53279CC4F1
-	for <lists+linux-wireless@lfdr.de>; Fri,  4 Oct 2019 23:40:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 98457CC74A
+	for <lists+linux-wireless@lfdr.de>; Sat,  5 Oct 2019 03:52:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2387636AbfJDVkc (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 4 Oct 2019 17:40:32 -0400
-Received: from esa5.microchip.iphmx.com ([216.71.150.166]:16439 "EHLO
-        esa5.microchip.iphmx.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726827AbfJDVkc (ORCPT
+        id S1726680AbfJEBwG (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 4 Oct 2019 21:52:06 -0400
+Received: from mx0b-0016f401.pphosted.com ([67.231.156.173]:45388 "EHLO
+        mx0b-0016f401.pphosted.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1725887AbfJEBwF (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 4 Oct 2019 17:40:32 -0400
-Received-SPF: Pass (esa5.microchip.iphmx.com: domain of
-  Adham.Abozaeid@microchip.com designates 198.175.253.82 as
-  permitted sender) identity=mailfrom;
-  client-ip=198.175.253.82; receiver=esa5.microchip.iphmx.com;
-  envelope-from="Adham.Abozaeid@microchip.com";
-  x-sender="Adham.Abozaeid@microchip.com";
-  x-conformance=spf_only; x-record-type="v=spf1";
-  x-record-text="v=spf1 mx a:ushub1.microchip.com
-  a:smtpout.microchip.com a:mx1.microchip.iphmx.com
-  a:mx2.microchip.iphmx.com include:servers.mcsv.net
-  include:mktomail.com include:spf.protection.outlook.com ~all"
-Received-SPF: None (esa5.microchip.iphmx.com: no sender
-  authenticity information available from domain of
-  postmaster@email.microchip.com) identity=helo;
-  client-ip=198.175.253.82; receiver=esa5.microchip.iphmx.com;
-  envelope-from="Adham.Abozaeid@microchip.com";
-  x-sender="postmaster@email.microchip.com";
-  x-conformance=spf_only
-Authentication-Results: esa5.microchip.iphmx.com; spf=Pass smtp.mailfrom=Adham.Abozaeid@microchip.com; spf=None smtp.helo=postmaster@email.microchip.com; dkim=pass (signature verified) header.i=@microchiptechnology.onmicrosoft.com; dmarc=pass (p=none dis=none) d=microchip.com
-IronPort-SDR: ix5zck2JR0n2dqmQ2DXzGYuTuRhR+woEfu0rbtr3qpJVs3bP9gFR6cCy0N3ko9gKO+2fl9uTI6
- 0Cu+LsScG7It9PQX/0THFnIec/YeuZ/403uOZHDTgCcvYj5XMIfCMEfHhQ3agWamEF4/jiCJum
- zBvcC4rT33/nD01f6314bVKHaIcDzRKIeREmJPW0ySbdAWT0kZ7Msfbh8vI7/401I6HArtxzbo
- eA6YRIJRMHvvtikhgoyZ71OBrKFtCmxjJ9Ed3ZGr+pYgJJwfqw5PrujHgpZAlrFexsEX2hR9jC
- +AA=
-X-IronPort-AV: E=Sophos;i="5.67,257,1566889200"; 
-   d="scan'208";a="50260563"
-Received: from smtpout.microchip.com (HELO email.microchip.com) ([198.175.253.82])
-  by esa5.microchip.iphmx.com with ESMTP/TLS/AES256-SHA256; 04 Oct 2019 14:40:32 -0700
-Received: from chn-vm-ex04.mchp-main.com (10.10.85.152) by
- chn-vm-ex02.mchp-main.com (10.10.85.144) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.1713.5; Fri, 4 Oct 2019 14:40:24 -0700
-Received: from NAM05-DM3-obe.outbound.protection.outlook.com (10.10.215.89) by
- email.microchip.com (10.10.87.151) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.1713.5
- via Frontend Transport; Fri, 4 Oct 2019 14:40:24 -0700
+        Fri, 4 Oct 2019 21:52:05 -0400
+Received: from pps.filterd (m0045851.ppops.net [127.0.0.1])
+        by mx0b-0016f401.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id x951p68P005145;
+        Fri, 4 Oct 2019 18:51:49 -0700
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=marvell.com; h=from : to : cc :
+ subject : date : message-id : references : in-reply-to : content-type :
+ content-transfer-encoding : mime-version; s=pfpt0818;
+ bh=IoOO84f11ZbaAq15IbvyLBf5+bIoLDCYU2mb+DJwKO0=;
+ b=E1+y1nHBrGMEQClmp0o+eeOiUpmv1aNw+JZCta7tb0xNGfP5aJjHWFWBT01Zuk/qWNIC
+ KX7Jm/3mzCiP6Wp3fP6s3xU3axXn0grvxnps5J7oGSEL8xxq6AlcY+ihUXU/sBArlVR0
+ eHY6I6x7JEh2uDs/JB2VG+ceIGpkAJpTVtKQil4HvdepXi8O3i7nkpFDTUrUSKpxsAFx
+ ReVs9+0SRLPxMQfCDQebR7dzAOzSuprtIvthcvEJJdsHjSBpF0QumZVRXLH72t9Xq9aZ
+ mAY0vO4GmcIHmqD2yRihvH6vMS3P5T1rfYeRr7nQtnLMFXfZapO+vDGcOrObbmRNPXFZ /A== 
+Received: from sc-exch03.marvell.com ([199.233.58.183])
+        by mx0b-0016f401.pphosted.com with ESMTP id 2vd0yaaagh-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-SHA384 bits=256 verify=NOT);
+        Fri, 04 Oct 2019 18:51:48 -0700
+Received: from SC-EXCH01.marvell.com (10.93.176.81) by SC-EXCH03.marvell.com
+ (10.93.176.83) with Microsoft SMTP Server (TLS) id 15.0.1367.3; Fri, 4 Oct
+ 2019 18:51:47 -0700
+Received: from NAM01-SN1-obe.outbound.protection.outlook.com (104.47.32.51) by
+ SC-EXCH01.marvell.com (10.93.176.81) with Microsoft SMTP Server (TLS) id
+ 15.0.1367.3 via Frontend Transport; Fri, 4 Oct 2019 18:51:47 -0700
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=SUFC0yaHE/bm0oHNWJcvSSwzUq+w9IX0h8YJhqGAmdOkQ0RKdGPZAgt6C7CPBHaxW4KrbzFzaMulsXudIUEdToLAB0aBzUyiYq6Ny/EZRFCok7bJZaS6lfUD1ONijlTFrY3PXkcTBZ6J5U5s4CglZuUQb7TbgQl+J8/LJLiOARlXgB6zGeGs5pOUhIEl++Lfe2i33A1kLbOKQies/4jcvCiWN+UbjpyP5ZX8s1Nk2/2HgXN8lGTql+wes7ppt7FtxQO8wpcQdLs8WGoR2rIq3CbCBC/s5mUCfJ4kqdJlavkgVo0VtyytD9wYg/PZ0ItUJ5hAi2A/1p/pUZQPZ8Iwrg==
+ b=H3Uq812PHGZub8/N02KIC4JCwE0wX9aMA0hY5K3y98gywmCFdrquhy7boaekwSpyvhNqaS1V+7SwddRJBK95K8yifcuv9k+HVpDHUfiG3IU04rlO51jWa83bYxdAlDJc3TWPKhF0c1U0+izz4JnBtWl8YbnoV5LcB5CQmcEJzieR5k08I/Vigeggb4DfMRDu9CZJjjjB0LvZMgimiOe/yBHN+TGp5z5oRYtDapmMdagrLmTLF2I9E3JkxHjeDzfdRoavlPmQayB0exVkSDfBU5iWWsicl32Nv04AL/7cL5iepVSgudifSf9Ntu/ybSkWZKaUNW5vnuXbsyeHya8iwQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=GMQQz62L/WkKoDMpk6+3WPWCmIs/VNeltumtvhyu8o0=;
- b=a5v/Ea5NDXbsCbLNlScs9W1lWgoxaQoM21Z5cxirTcyWw8zFPNITWk3HNcCWJPu5vKed/X1Zp3ELfqvKrugL2Wp2P7i4Nh5g2pjogvZ1TyNcnW5NvvLlRmV9aP440YF51AkVJQ/N5hDRRqwr3E6aFWapzqn30ONiHuuwyN6YLIBbcwwCU5oECt4gBzWcUrJsEwlLTNqMGBGi+7MNhPbd1F4it6vHrzW8dfAkmavfJ+AMKMxuuaMjtUGnpd5bTfRtl6Z5E51zYHL/x0zn0bMFxqkwGAXQ0FsMl4L01R09aw3QchtQgwHkWQfMxH+LShLwaY+zfgYJW1Vt30DHnSwNPA==
+ bh=IoOO84f11ZbaAq15IbvyLBf5+bIoLDCYU2mb+DJwKO0=;
+ b=AaJdxrbonGMOhKk+d2GDctYYP+66YACfNGuFI5nQRVw+0L54lpiE2D76EEphos4fpSkEChzoD4R3nDNxTajVTafGbwsYVRC2KOFNxHf+hJ7h/f3uh6oDlK7lTzz48Q9FI9TVi78VGkxATiGzED/1tk+cCyMyACT7WG/9+7w2ZGgk3Atn1eR1DE346RPxoQLsScaAT0snzbq+zhk6+ckDuTyaH9tx/Jxl1OLAItSw8YCvqRU3eEuiKPvYLOwjjWxQJvshayI27SHQ0ZRICXgajt5sHl3nzs0KST89gPWra/U0k6XqYMUwKshgt2t1JUbQqn4ANz64ZDXh6qvb6Ln/1g==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=microchip.com; dmarc=pass action=none
- header.from=microchip.com; dkim=pass header.d=microchip.com; arc=none
+ smtp.mailfrom=marvell.com; dmarc=pass action=none header.from=marvell.com;
+ dkim=pass header.d=marvell.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=microchiptechnology.onmicrosoft.com;
- s=selector2-microchiptechnology-onmicrosoft-com;
+ d=marvell.onmicrosoft.com; s=selector2-marvell-onmicrosoft-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=GMQQz62L/WkKoDMpk6+3WPWCmIs/VNeltumtvhyu8o0=;
- b=rrZU7x35F+XRi5R2Xfkw+xs4+WNHJnhgtD+vYfKgi9+CkHTssi5weWyjCdmM6rRlp4rCzxSsJfPLtCIM2TcWJftnpact14LPL+h/DZPebaGc/8KJBrRq6RqOncgXwiQZXi2/GO6VugkSti0WijuZw6MjL3l//wENkvcHdvISQ9s=
-Received: from MWHPR11MB1373.namprd11.prod.outlook.com (10.169.234.141) by
- MWHPR11MB1311.namprd11.prod.outlook.com (10.169.237.14) with Microsoft SMTP
+ bh=IoOO84f11ZbaAq15IbvyLBf5+bIoLDCYU2mb+DJwKO0=;
+ b=dzHZyzRNtJJN7SmBVq6DIuPq7BB4V0F8Mi+0F7k5Wb+VaXlShIcNldcSXS2kLQlsbczcHx+MBUm7+ECC1KVnT1MVnqtOdAVCD03KP4owEhFT1Clk3E7lQY4WT7pDO8J2fWPzP/UzGhDNS9i6spbYyj1n7PeU6puo6jGaYUNaghE=
+Received: from MN2PR18MB2637.namprd18.prod.outlook.com (20.179.80.147) by
+ MN2PR18MB3133.namprd18.prod.outlook.com (10.255.238.143) with Microsoft SMTP
  Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.2305.20; Fri, 4 Oct 2019 21:40:22 +0000
-Received: from MWHPR11MB1373.namprd11.prod.outlook.com
- ([fe80::c518:fad3:68fe:ce20]) by MWHPR11MB1373.namprd11.prod.outlook.com
- ([fe80::c518:fad3:68fe:ce20%12]) with mapi id 15.20.2305.023; Fri, 4 Oct 2019
- 21:40:22 +0000
-From:   <Adham.Abozaeid@microchip.com>
-To:     <linux-wireless@vger.kernel.org>
-CC:     <devel@driverdev.osuosl.org>, <gregkh@linuxfoundation.org>,
-        <johannes@sipsolutions.net>, <Ajay.Kathat@microchip.com>,
-        <Adham.Abozaeid@microchip.com>
-Subject: [PATCH] staging: wilc1000: don't use wdev while setting tx power
-Thread-Topic: [PATCH] staging: wilc1000: don't use wdev while setting tx power
-Thread-Index: AQHVevxTkXfcC9a39kuERO2U+5rK/Q==
-Date:   Fri, 4 Oct 2019 21:40:22 +0000
-Message-ID: <20191004214011.7623-1-adham.abozaeid@microchip.com>
+ 15.20.2327.23; Sat, 5 Oct 2019 01:51:45 +0000
+Received: from MN2PR18MB2637.namprd18.prod.outlook.com
+ ([fe80::cf1:1b59:ac77:5828]) by MN2PR18MB2637.namprd18.prod.outlook.com
+ ([fe80::cf1:1b59:ac77:5828%7]) with mapi id 15.20.2305.023; Sat, 5 Oct 2019
+ 01:51:45 +0000
+From:   Ganapathi Bhat <gbhat@marvell.com>
+To:     Navid Emamdoost <navid.emamdoost@gmail.com>
+CC:     "emamd001@umn.edu" <emamd001@umn.edu>,
+        "kjlu@umn.edu" <kjlu@umn.edu>,
+        "smccaman@umn.edu" <smccaman@umn.edu>,
+        Amitkumar Karwar <amitkarwar@gmail.com>,
+        Nishant Sarmukadam <nishants@marvell.com>,
+        Xinming Hu <huxinming820@gmail.com>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: RE: [EXT] [PATCH] mwifiex: pcie: Fix memory leak in
+ mwifiex_pcie_alloc_cmdrsp_buf
+Thread-Topic: [EXT] [PATCH] mwifiex: pcie: Fix memory leak in
+ mwifiex_pcie_alloc_cmdrsp_buf
+Thread-Index: AQHVeu+VjJmN3rtj6Em9c/YO9xW8c6dLQGQQ
+Date:   Sat, 5 Oct 2019 01:51:44 +0000
+Message-ID: <MN2PR18MB263767B6B7B771837F0137F7A0990@MN2PR18MB2637.namprd18.prod.outlook.com>
+References: <20191004200853.23353-1-navid.emamdoost@gmail.com>
+In-Reply-To: <20191004200853.23353-1-navid.emamdoost@gmail.com>
 Accept-Language: en-US
 Content-Language: en-US
 X-MS-Has-Attach: 
 X-MS-TNEF-Correlator: 
-x-originating-ip: [198.175.253.81]
-x-clientproxiedby: BYAPR01CA0062.prod.exchangelabs.com (2603:10b6:a03:94::39)
- To MWHPR11MB1373.namprd11.prod.outlook.com (2603:10b6:300:25::13)
-x-ms-exchange-messagesentrepresentingtype: 1
-x-mailer: git-send-email 2.17.1
+x-originating-ip: [106.193.243.133]
 x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: 5fc5d446-d29b-43bb-290a-08d7491375b8
-x-ms-traffictypediagnostic: MWHPR11MB1311:
+x-ms-office365-filtering-correlation-id: 6edf8c16-65ab-4db6-4e60-08d7493693a9
+x-ms-traffictypediagnostic: MN2PR18MB3133:
 x-ms-exchange-transport-forked: True
-x-microsoft-antispam-prvs: <MWHPR11MB1311C83ED14FE81E7E8B82898D9E0@MWHPR11MB1311.namprd11.prod.outlook.com>
-x-ms-oob-tlc-oobclassifiers: OLM:3044;
-x-forefront-prvs: 018093A9B5
-x-forefront-antispam-report: SFV:NSPM;SFS:(10009020)(366004)(376002)(136003)(39860400002)(396003)(346002)(199004)(189003)(6506007)(36756003)(99286004)(2616005)(66066001)(71200400001)(2351001)(6436002)(6916009)(2501003)(107886003)(25786009)(86362001)(7736002)(386003)(50226002)(305945005)(256004)(4326008)(476003)(14444005)(486006)(71190400001)(186003)(26005)(14454004)(478600001)(102836004)(64756008)(1076003)(6486002)(66946007)(8936002)(66446008)(81166006)(3846002)(6116002)(316002)(5660300002)(66556008)(52116002)(66476007)(2906002)(8676002)(54906003)(81156014)(5640700003)(6512007);DIR:OUT;SFP:1101;SCL:1;SRVR:MWHPR11MB1311;H:MWHPR11MB1373.namprd11.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;A:1;MX:1;
-received-spf: None (protection.outlook.com: microchip.com does not designate
+x-microsoft-antispam-prvs: <MN2PR18MB313387612ACD01A37C35969EA0990@MN2PR18MB3133.namprd18.prod.outlook.com>
+x-ms-oob-tlc-oobclassifiers: OLM:5236;
+x-forefront-prvs: 0181F4652A
+x-forefront-antispam-report: SFV:NSPM;SFS:(10009020)(4636009)(346002)(396003)(376002)(39860400002)(366004)(136003)(199004)(189003)(51914003)(6916009)(6506007)(26005)(102836004)(7696005)(14454004)(74316002)(76176011)(2906002)(7736002)(305945005)(7416002)(8936002)(33656002)(8676002)(99286004)(25786009)(478600001)(81156014)(81166006)(476003)(66556008)(64756008)(66446008)(66476007)(76116006)(66946007)(71200400001)(71190400001)(486006)(5660300002)(52536014)(66066001)(11346002)(446003)(256004)(186003)(3846002)(6116002)(316002)(86362001)(6246003)(4326008)(6436002)(229853002)(9686003)(55016002)(558084003)(54906003);DIR:OUT;SFP:1101;SCL:1;SRVR:MN2PR18MB3133;H:MN2PR18MB2637.namprd18.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;A:1;MX:1;
+received-spf: None (protection.outlook.com: marvell.com does not designate
  permitted sender hosts)
 x-ms-exchange-senderadcheck: 1
 x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: 9BaJXJcVOkfO6m6jMUSmjIFluBwObsS+F0ZvdnWXFAqjMvDhIYEgjYvld0BPIeQmwC886FAIXdigxHfAg9YXOqtp62700zYwpTVneQgyd3nn6h9yDC4AMQ+hJ7h6lP4ZJpcA2qvdrG0jYF9NRWmnEKkxK9cot3xb+RrdudVkQYcehAq8WuJk2aqUUXhRO6GYnOfEDOtEI84xyxLBPK8x8gXskLo/cfnS5WGWNt+4Od2de321xUucX3KzR3biY7rXXD1Bg0qNlqlkhgnbNgYrtyKf900hjQuvGqjHDbwZmmMWTxBbMIF5cMRS2aV0m9U2TWpCMwHPf9zTzbelWqCG24bdcY4lZLt2qjORfKkYd7TPT1iQ9wgHL/YHSnGc0Q2Aj6BpeMDfvNVEIJRzk6rccQGRa6n2vTqj+rqQe4wAFEw=
-Content-Type: text/plain; charset="iso-8859-1"
+x-microsoft-antispam-message-info: 4fugZ09RWy7jpDc/69RCmFObwP9nc4wwyV/WaRBSgLaOMDV2U1EFzkWpe3ldeFvbKpipfi/7C3FybBcwe76MQVofT+Gw4ukMQtvZcnO4Dsn0+084l1O9sSbrIJtym1Wt2gbCV5Ihu7FhB0ZQ2nr/wWg1NzdZC/u41jChMPuQZEYc36nZUSHRboCBGmjLKDmrqpafoOW1pK/RT4aeM+eLRwYhb1gDBbw3drpN4Aak0+jBIF3++DkwFr/w7kr5+3OcMp7oCDbTU6CDfzqoS4fIAxZFO5FOhteGO9v9QpiDLM1TA219bVqg4Sbdy0MA3W5h+8hlNOZ7KyW4W2DHyX3n/ksWZwRLjwKgehMGFSR1qySMfqYr7CPPVeD92HJqj2etJF3nW7Mk7XMt4WAdeU7fkDP2tQDjRTysq8q00c5qlE0=
+Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-X-MS-Exchange-CrossTenant-Network-Message-Id: 5fc5d446-d29b-43bb-290a-08d7491375b8
-X-MS-Exchange-CrossTenant-originalarrivaltime: 04 Oct 2019 21:40:22.7172
+X-MS-Exchange-CrossTenant-Network-Message-Id: 6edf8c16-65ab-4db6-4e60-08d7493693a9
+X-MS-Exchange-CrossTenant-originalarrivaltime: 05 Oct 2019 01:51:44.9023
  (UTC)
 X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 3f4057f3-b418-4d4e-ba84-d55b4e897d88
+X-MS-Exchange-CrossTenant-id: 70e1fb47-1155-421d-87fc-2e58f638b6e0
 X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: tm+LIffZScZRbCdJLXArIrFwBP0Sa9B0vYPELFCWjnA7sC9Fuqeoi4I/KJqE7DrfVzP2H/MXFKsew157ZH5JLwB9DMDUNmooZGkP9jDvY7A=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MWHPR11MB1311
+X-MS-Exchange-CrossTenant-userprincipalname: tE2xeGGPnSff8BVMs590dtTPIszakXCbGZZBrgLDb1LqYbEhwpaHMnCAxll9S6XnFCfZOykowMJAUWk4AcehtA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN2PR18MB3133
+X-OriginatorOrg: marvell.com
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.95,1.0.8
+ definitions=2019-10-04_15:2019-10-03,2019-10-04 signatures=0
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Adham Abozaeid <adham.abozaeid@microchip.com>
+Hi Navid,
 
-WILC doesn't support per-vif tx power, and hence, wdev will always be
-null in calls to set_tx_power.
-Instead, wiphy should be used to execute the operation
+> Fixes: fc3314609047 ("mwifiex: use pci_alloc/free_consistent APIs for PCI=
+e")
 
-Signed-off-by: Adham Abozaeid <adham.abozaeid@microchip.com>
----
- .../staging/wilc1000/wilc_wfi_cfgoperations.c    | 16 +++++++++++++++-
- 1 file changed, 15 insertions(+), 1 deletion(-)
+Thanks for the change;
 
-diff --git a/drivers/staging/wilc1000/wilc_wfi_cfgoperations.c b/drivers/st=
-aging/wilc1000/wilc_wfi_cfgoperations.c
-index 3882c90dc3fb..cc56abc2fe37 100644
---- a/drivers/staging/wilc1000/wilc_wfi_cfgoperations.c
-+++ b/drivers/staging/wilc1000/wilc_wfi_cfgoperations.c
-@@ -1685,9 +1685,22 @@ static int set_tx_power(struct wiphy *wiphy, struct =
-wireless_dev *wdev,
- 			enum nl80211_tx_power_setting type, int mbm)
- {
- 	int ret;
-+	int srcu_idx;
- 	s32 tx_power =3D MBM_TO_DBM(mbm);
--	struct wilc_vif *vif =3D netdev_priv(wdev->netdev);
-+	struct wilc *wl =3D wiphy_priv(wiphy);
-+	struct wilc_vif *vif;
-=20
-+	if (!wl->initialized)
-+		return -EIO;
-+
-+	srcu_idx =3D srcu_read_lock(&wl->srcu);
-+	vif =3D wilc_get_wl_to_vif(wl);
-+	if (IS_ERR(vif)) {
-+		srcu_read_unlock(&wl->srcu, srcu_idx);
-+		return -EINVAL;
-+	}
-+
-+	netdev_info(vif->ndev, "Setting tx power %d\n", tx_power);
- 	if (tx_power < 0)
- 		tx_power =3D 0;
- 	else if (tx_power > 18)
-@@ -1695,6 +1708,7 @@ static int set_tx_power(struct wiphy *wiphy, struct w=
-ireless_dev *wdev,
- 	ret =3D wilc_set_tx_power(vif, tx_power);
- 	if (ret)
- 		netdev_err(vif->ndev, "Failed to set tx power\n");
-+	srcu_read_unlock(&wl->srcu, srcu_idx);
-=20
- 	return ret;
- }
---=20
-2.17.1
+Acked-by: Ganapathi Bhat <gbhat@marvell.com>
+
+Regards,
+Ganapathi
+
+
+
 
