@@ -2,34 +2,38 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 7B07ECCAFA
-	for <lists+linux-wireless@lfdr.de>; Sat,  5 Oct 2019 18:09:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 965C1CCB74
+	for <lists+linux-wireless@lfdr.de>; Sat,  5 Oct 2019 18:48:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729057AbfJEQJE (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 5 Oct 2019 12:09:04 -0400
-Received: from mout.web.de ([212.227.15.4]:44659 "EHLO mout.web.de"
+        id S1729376AbfJEQsk (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 5 Oct 2019 12:48:40 -0400
+Received: from mout.web.de ([212.227.15.4]:58843 "EHLO mout.web.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726636AbfJEQJD (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 5 Oct 2019 12:09:03 -0400
+        id S1725826AbfJEQsk (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Sat, 5 Oct 2019 12:48:40 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
-        s=dbaedf251592; t=1570291719;
-        bh=1+fXZSHTAhxOAIXnw/ROPSDqcFHC4nZKNKs7zywpgbw=;
+        s=dbaedf251592; t=1570294103;
+        bh=4qFUPO9sA/yWcKHS0hB5s2sv3vbiaz+inyvgXC+9GqY=;
         h=X-UI-Sender-Class:Cc:References:Subject:To:From:Date:In-Reply-To;
-        b=flr7/PuDfOcNNQENkxkN0UmJ88ssgmZkxi2s9hudyCKH1wV1O4ReLQrDadW73lTFO
-         +mBOUk1TVW4c+11yGQwgrToaIYtJc2saAsvd6l+0OGIWuMEWWQUbWRxDZbrOEXUuR+
-         dznhjE4Nt4hwbgMqpNK/F8bGatLreyIPMAvEMJIQ=
+        b=dNqajf4seyfblS0GaU4vd7UpDxaFHWj8Q31GqiZTAAR0kPakmwbMIWo0gQR1h9oZZ
+         7HJcDw5QhNlpCB/rW66myfCLo1Ctc4uddmNZuDFyfpnmmHWd8DT43m3g4tObd908Zb
+         4I2Ozofl7uhL6bDzgsZl5oQExWxMP2shIjn5//Q0=
 X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
-Received: from [192.168.1.2] ([93.135.178.111]) by smtp.web.de (mrweb004
- [213.165.67.108]) with ESMTPSA (Nemesis) id 0MPaxV-1iCg0l3e6L-004h4O; Sat, 05
- Oct 2019 18:08:39 +0200
+Received: from [192.168.1.2] ([93.135.178.111]) by smtp.web.de (mrweb001
+ [213.165.67.108]) with ESMTPSA (Nemesis) id 0M0R25-1hy9ql2vGP-00uaCt; Sat, 05
+ Oct 2019 18:48:22 +0200
 Cc:     Navid Emamdoost <emamd001@umn.edu>, Kangjie Lu <kjlu@umn.edu>,
         Stephen McCamant <smccaman@umn.edu>,
+        Amitkumar Karwar <amitkarwar@gmail.com>,
         "David S. Miller" <davem@davemloft.net>,
+        Ganapathi Bhat <gbhat@marvell.com>,
         Kalle Valo <kvalo@codeaurora.org>,
-        Ping-Ke Shih <pkshih@realtek.com>,
+        Nishant Sarmukadam <nishants@marvell.com>,
+        Xinming Hu <huxinming820@gmail.com>,
         linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
-References: <20191004195315.21168-1-navid.emamdoost@gmail.com>
-Subject: Re: [PATCH] rtlwifi: fix memory leak in rtl_usb_probe
+References: <20191004200853.23353-1-navid.emamdoost@gmail.com>
+Subject: Re: [PATCH] mwifiex: pcie: Fix memory leak in
+ mwifiex_pcie_alloc_cmdrsp_buf
 To:     Navid Emamdoost <navid.emamdoost@gmail.com>,
         linux-wireless@vger.kernel.org, netdev@vger.kernel.org
 From:   Markus Elfring <Markus.Elfring@web.de>
@@ -76,54 +80,48 @@ Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  Z/wsLiWTgKlih2QYULvW61XU+mWsK8+ZlYUrRMpkauN4CJ5yTpvp+Orcz5KixHQmc5tbkLWf
  x0n1QFc1xxJhbzN+r9djSGGN/5IBDfUqSANC8cWzHpWaHmSuU3JSAMB/N+yQjIad2ztTckZY
  pwT6oxng29LzZspTYUEzMz3wK2jQHw+U66qBFk8whA7B2uAU1QdGyPgahLYSOa4XAEGb6wbI FEE=
-Message-ID: <037d04e8-4651-a657-6be6-b1eca072bb81@web.de>
-Date:   Sat, 5 Oct 2019 18:08:36 +0200
+Message-ID: <7d8314a8-2f92-112b-fffd-83a47044a015@web.de>
+Date:   Sat, 5 Oct 2019 18:48:20 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.1.1
 MIME-Version: 1.0
-In-Reply-To: <20191004195315.21168-1-navid.emamdoost@gmail.com>
+In-Reply-To: <20191004200853.23353-1-navid.emamdoost@gmail.com>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
-X-Provags-ID: V03:K1:PTXTyKlngoYizrVOmtkzORQ0kDz2UE5brHu1fjldv0jOV26NHPl
- qQU+vI2CNCQMcOVI+Q+SfQUbZzDwIgst3alsBn1CTgO6VD1RSnY+Tzs9T28ceINS5zP7S7A
- JrLrZhzEaZN3akDTc0m9ti/BLoC0hkptqPViB+Dr0SUZUW75I6ivDNsrm2W3Ym0Z6oNR20d
- KguwijeJ5+Z8fIO9MAljw==
+X-Provags-ID: V03:K1:9EBG+gpJatT+eCDnMM/cq3BjNhAWwOZMk4egakQttSe0qGxW6P9
+ HGLPe3bTNV6pS4/Mtij+nVvh0J3IHIMgLGKJlRW2SqktTnF1zUTXFuAhoRbqwpXEkj7btVp
+ vdU19Q/Bt+glAvbF2C5Sq8xGk16SgkqKs4qTh21FLn07of7Usrus1BO23mL1SC6ntGdMAd0
+ eC8ygAJKUY7+LrdDPYMZw==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:05ZT3l++kVo=:Z369oQmBzxGgyJcD2+xEmp
- GHp+xqATYB0iHOw6UntDmO9Zgnj9dyzUG9hFRYKTzkJqjAufGn6kL7blyLMz9CFKrJm9qwids
- va7ASA191ssgDhvqNkqKg7SsvaRkXNERUKc+y3D0WSrnUpfXCjtFUtTs+O8d0uxkF7w9DMCuP
- cLGdBJkelieHbLxgJKLWQh2zgxxb4PPS41jejof1uby+RGA3NQVxKAas8uQSkyhhDf8kqAKI3
- 5ics2Z4mXsPZX6gnvJMKHMq/YHoczMA1UyQm3M4OFVwsqFawSJ02V4xshtrYm9+Pj+ZgTW9mu
- 7pFxSlL3sMGlKTBe+CcrhLmxRQ7ik/sjLShL4B9JjHVYyWO0zYJsosRv3h/3bMSnS8Q8L3yAs
- AVsCDvlGoEAcfsEm6SO1FJgPOo4+HlBp/ctcJ+lOJH4DwIxKB6Jp6KmUGyk+kto4TZDJozol0
- +hPwBfEkOSM0L1+uqPV1AqnIMfz+ZkTFfu0+Yz6Byr7pTzfmoiNO2FxrLwQiHTIzH8s3CqpvC
- P9AcPE9JsjhlPkCJs2vNP7NXnQs7E957ZR5ab5hIdcrPZjjoWvM31GV2oWbmXFHE8IJOVUt0F
- dxLQqgLJIhUyAsBOWhhiJXf2AEm6E6R0IHMa7LFHxtF+6GM8C1ds60byBFHBQUcsOanCMs1Mu
- 4mWez5lztW08yPVaZEln2yV/NyOgJPkHRB57Bx/DneRK4SFrZCwvbU9miz6PsRxugsLvIU4Ry
- m9RzGCIRZvQ56Pi75AAvB0IP5XxdjzUTSlZblQKH4HJMSreTKkhAMAuCQIeVBhmmb5YAHzfoK
- V9T7yxqc3wINTT/YDvfOcRqFA6hgd1UJ/MXTxuWI+gSAReESG7SpOYBIlDbvZAnuhcueZaAyg
- T6rdbU/NqaBBIy+ct3NafaYsGbQyULJA4w2Ztw1XDP8Roc23zI9gFrtHCxbONWt4FvbxVFt5S
- tjTGKK6dumuFHhpuKuBUiuiPf0+L21gn36+LPL0BNY4SYVCTamrzn4NKw16l2irA6iBVeCtnB
- gJGJaPtaQTNUvjojs8jy2eLDoiul2T6+gVeY5k2CNDMYDM0CErOzOyvOtBKXSI4UYJHQdqtui
- sf7N7S4gZy2a2chJ7mZNZOwlXovi0xoAMkcs8Zb3M6TFFjPbjh1DMxBnXFfRGK053XKBdQA5L
- /lfYwVnpGzaOhd0CXHdzOaO+t0g5J9HybVG78XlowmSoNQlAvbqkGMPZd/k1DZlqIWGLtRRS7
- EsbPu+hbot9gRETO44Ek7HE86axs/h7c/8F20sqb4QKX05185b5mpsmSC/c0=
+X-UI-Out-Filterresults: notjunk:1;V03:K0:sm+gVJWBLVI=:pZ6rwBb5cmfNSeF9XAhINx
+ k8cEAgZRqmdyT4rZSanttNSllzIw1yUsreIAiOaqOHf/A4Uj5j2XqhewnW0zZI6S9IQ4zb0VC
+ BvHk3PfgYmVOMYdUhuuhByXk3Lqp+SK1/u7S7t4r296pyqZo+bLnuALZiWQj4KRLFXDnxOYWV
+ JHdSs1jxnRrEqDYdMHDoiAffBiG9oBLTYUC8QSQ+0R4OPSaADTlDt3RcWpMawQ1eTGOTYuM4v
+ HrDkId7QOZ3w71sndBGrHJ2kw2yyx8yq0hkrOaFuOt0WhP5nb3Df1IYb4BLgIdSukwtVmBWAR
+ XLEcAi/4GqNM+OedAog9q9apsn25UU4ibBLjiZG55aMDcYfgIwQ8hnPbFE4lXFRpmK+O47tKp
+ BVN1+vICyWqRzxsoOu6+zEzDE9u7DquApd2hvKFDTBIptjb28jcBogd3ClhvKwxwTylvmF3/J
+ dEoNg+w+LEmjS295ir/3Ht+iBTrOV7kBSx4VvGQUw+Cgl+0lopAFNj4o2phKNzdjEzCDwk+Ub
+ r2JhjGa9bhm58vx386tuUSH5nnmJYkm3azWkxrARkWtrW4dfwWdDWa6/Cj3PJQKAIck3rkvGO
+ Ek6TjzGNqM2J3enXERQuibV3ceWKQZIHaoVzNsbt37ogs7yK3bmjOeBCAsfzDKkb6wQAEvdcf
+ 95zvabmp47NbeQoctBXVh2uuRIw46mIFnDtj0of6ZJghkMB+rKiDd8Gu0bA7SdxqsZTqbvTzY
+ bOT5nk3SpLyui5uRgkw3HAZAy4NFHL0Wfj0TQB07b96luMWX0hvE4JxZ9Dv487OoUGocnr1Xg
+ QZYnUxHIPx5buzCqhtfnMswxuVIlH5/IZZQf21PpZsobIjjmnfA2gRKrW46txmlN7xJASsTho
+ uxEUSZpHyCqV7pHh7Mtl1FB4V3qBmEr7ASV9R4OytrWQ7bnXULWVVVjKVsubpFcMfvkYK+VSg
+ ZnWR86nytDE/M4WbTWaIiB2Ju0bBByNQY6Xm/iMBxrGOqC2Bb2418Fq8FoGpl7ZTo3K0rC5tc
+ YfffoBNwmIMQ0EjLie1J4FmBGchAEPLREAwbD4rTryEFMMtOfa/jZUg2HVuCk8jLuoDttYUeT
+ f+3x7GtdGO1GtHyckQ3TDlQX0sptLwhZGjg6dXv/TzB0HE+0fJ+DHn3vboN0v5/Zoi0OXBdmU
+ mgkXF+aNcFpYMUVwlcnH21PYayg+SAPqv1Ro4w3LMBeqTcU5KI1B8oU0YvxOxNi32CtTViM1y
+ 2y5fHHKQeEqUST7myMO16tJ2sk4ndYPqwP5n0dVhpG2t1nh7rpPYU6B1vQ4U=
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-> In rtl_usb_probe, a new hw is allocated via ieee80211_alloc_hw(). This
-> allocation should be released in case of allocation failure for
-> rtlpriv->usb_data.
->
-> Fixes: a7959c1394d4 ("rtlwifi: Preallocate USB read buffers and eliminate kalloc in read routine")
+> In mwifiex_pcie_alloc_cmdrsp_buf, a new skb is allocated which should be
+> released if mwifiex_map_pci_memory() fails. The release is added.
 
-Which event did trigger the sending of this patch variant
-after a similar change was integrated already?
-https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git/commit/?id=3f93616951138a598d930dcaec40f2bfd9ce43bb
-https://lore.kernel.org/lkml/20191001092047.71E8460A30@smtp.codeaurora.org/
-https://lore.kernel.org/patchwork/comment/1331936/
+Please improve this change description.
+https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/Documentation/process/submitting-patches.rst?id=4ea655343ce4180fe9b2c7ec8cb8ef9884a47901#n151
 
 Regards,
 Markus
