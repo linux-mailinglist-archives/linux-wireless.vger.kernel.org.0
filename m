@@ -2,87 +2,98 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A3D99CCC6B
-	for <lists+linux-wireless@lfdr.de>; Sat,  5 Oct 2019 21:01:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C6D06CCF67
+	for <lists+linux-wireless@lfdr.de>; Sun,  6 Oct 2019 10:22:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729389AbfJETAg (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 5 Oct 2019 15:00:36 -0400
-Received: from mail-io1-f67.google.com ([209.85.166.67]:39305 "EHLO
-        mail-io1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729253AbfJETAg (ORCPT
+        id S1726307AbfJFIWi (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 6 Oct 2019 04:22:38 -0400
+Received: from smtp.codeaurora.org ([198.145.29.96]:49562 "EHLO
+        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726262AbfJFIWi (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 5 Oct 2019 15:00:36 -0400
-Received: by mail-io1-f67.google.com with SMTP id a1so20540426ioc.6;
-        Sat, 05 Oct 2019 12:00:35 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=Pzgds363sVjt6tTHjuT41LayOC3pwj5qUHdeZopvI60=;
-        b=ui+99W7V8mYFpZSjc7PrqXXPh/ZCrcNkygLinlWYrtBHXo+7eqZJC4gWIuDu60/Lfv
-         1tcn/3cip9ePEQESnqt5s9iyPCRm9GGn2CqlQUgo3jQpTVXEc7YdjILr0fKbk5dDpiMx
-         AlMP7k8vNV4s70WyuH6DEqD0bLoTGC6/P3WmPwXWOYOZnVr2w/T8/cbmpn4G3C92p/As
-         MMfV+gjBhQiYXR4xRQfHlKVSlLRksrvOQdGpp5ag7YxdMBRNt7ypb2AYiso6BR6A9Bbe
-         u5ddDtaVRigcswS+EzRuVfbMf5aPCV7uu1jxJt3GCYCbmY6nsAXR7DJj1qWC9HI+i31X
-         xW4g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=Pzgds363sVjt6tTHjuT41LayOC3pwj5qUHdeZopvI60=;
-        b=tf5aux5MDLE2r0L//6ZSPs6nxjPD8Ebo40J6xv45NMe5tGijNtr7w4ttC8gN+78sHz
-         prA5TeqbALr847m/xlMRwyVbkUiC4cvpzJRwXQsDqIvqBXt/+hGyjrB64a0xjg8SpFux
-         R6ozIp0bBo8EVxPPCFuWzghbE7QkD+j9Lftk6w7BgjGj46teOXMREIQkZPlCHJ9yE2j7
-         3l7flQINrd8l4v3g4m60vjMpIi9SZZp3X1QdyB+qO5NvkX1CYUrT2BRQfIBq69vVCr+v
-         bSjnPFwD0SHdX5cEa35pE8dwDHDsZR0A26d8mFMlK21rfX24GYTb2/hkW8zrwDJPYuKd
-         YuXg==
-X-Gm-Message-State: APjAAAW859R0Gr6ntOpld/SLPpenHUkh8TdtnzyxrrUuX3Zs5fztYCUj
-        BCUAJfcRbKjliwg9V5Z5ScQsuVpYEhxaI8DM9gI=
-X-Google-Smtp-Source: APXvYqwM96alpXRdELBUa41V98MXAHJuLW5QCNnGTNtIreMr90WPqYbBaStyDzTrxEQ/tpThispyvpWKRwYCJVLmvqs=
-X-Received: by 2002:a92:ced0:: with SMTP id z16mr21939458ilq.172.1570302035209;
- Sat, 05 Oct 2019 12:00:35 -0700 (PDT)
+        Sun, 6 Oct 2019 04:22:38 -0400
+Received: by smtp.codeaurora.org (Postfix, from userid 1000)
+        id 4B2EC609D1; Sun,  6 Oct 2019 08:22:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
+        s=default; t=1570350157;
+        bh=SqieHTOXpZqhU6RhETvmGOUXAlCtg2LP3Jyt4v6rf0M=;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+        b=K7muK0k0+jHGbY6gbpJMiyKROHLTb3l/KChyf3Vr5qCrMSJdLyDSoRb4QlU/a1TAv
+         Fdm4LO4IOkqsCdQEWbjKjACsvj44IwuWaMKMyzHrx7S7ubHL3htYXbHDBIPoYioknJ
+         ZxL2Y+Ovy6qFU3DbCEQdSIGo/I9uJjSyBpo5x3QM=
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        pdx-caf-mail.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.7 required=2.0 tests=ALL_TRUSTED,BAYES_00,
+        DKIM_INVALID,DKIM_SIGNED,SPF_NONE autolearn=no autolearn_force=no
+        version=3.4.0
+Received: from x230.qca.qualcomm.com (37-33-18-250.bb.dnainternet.fi [37.33.18.250])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo@smtp.codeaurora.org)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id CFDEC601E7;
+        Sun,  6 Oct 2019 08:22:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
+        s=default; t=1570350156;
+        bh=SqieHTOXpZqhU6RhETvmGOUXAlCtg2LP3Jyt4v6rf0M=;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+        b=ly4vbG73eOFTxZ3qIpQUY7h4lzezSxESty2x4ukG0Bu0a0F+UwviFSp6I/+Ew3cxF
+         SLKqB9ANMFMyRcfaUiB4Bmk82H8ynony7uQZKZAzrZmQnlHJ4qd+dbpzKWgW+HHqwJ
+         O1sCcKWubN8EkSQYzA4wNaKoq6US95DJl8HW7hBI=
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org CFDEC601E7
+Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
+From:   Kalle Valo <kvalo@codeaurora.org>
+To:     Johan Hovold <johan@kernel.org>
+Cc:     Denis Efremov <efremov@linux.com>, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Amitkumar Karwar <amitkarwar@gmail.com>,
+        Siva Rebbagondla <siva8118@gmail.com>
+Subject: Re: [PATCH] rsi: fix potential null dereference in rsi_probe()
+References: <20191002171811.23993-1-efremov@linux.com>
+        <20191004134736.2D517619F4@smtp.codeaurora.org>
+        <20191004144930.GC13531@localhost>
+Date:   Sun, 06 Oct 2019 11:22:31 +0300
+In-Reply-To: <20191004144930.GC13531@localhost> (Johan Hovold's message of
+        "Fri, 4 Oct 2019 16:49:30 +0200")
+Message-ID: <87eezqs2pk.fsf@codeaurora.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
 MIME-Version: 1.0
-References: <20191004195315.21168-1-navid.emamdoost@gmail.com> <037d04e8-4651-a657-6be6-b1eca072bb81@web.de>
-In-Reply-To: <037d04e8-4651-a657-6be6-b1eca072bb81@web.de>
-From:   Navid Emamdoost <navid.emamdoost@gmail.com>
-Date:   Sat, 5 Oct 2019 14:00:24 -0500
-Message-ID: <CAEkB2ERipLQRV3CsZ6L3EV0jXtS0HMc8yM6g5sNqJG0NThBsmw@mail.gmail.com>
-Subject: Re: [PATCH] rtlwifi: fix memory leak in rtl_usb_probe
-To:     Markus Elfring <Markus.Elfring@web.de>
-Cc:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        Navid Emamdoost <emamd001@umn.edu>, Kangjie Lu <kjlu@umn.edu>,
-        Stephen McCamant <smccaman@umn.edu>,
-        "David S. Miller" <davem@davemloft.net>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        Ping-Ke Shih <pkshih@realtek.com>,
-        LKML <linux-kernel@vger.kernel.org>,
-        kernel-janitors@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Oh! It's duplicate, thanks for catching that.
+Johan Hovold <johan@kernel.org> writes:
 
-On Sat, Oct 5, 2019 at 11:08 AM Markus Elfring <Markus.Elfring@web.de> wrote:
+> On Fri, Oct 04, 2019 at 01:47:36PM +0000, Kalle Valo wrote:
+>> Denis Efremov <efremov@linux.com> wrote:
+>> 
+>> > The id pointer can be NULL in rsi_probe().
 >
-> > In rtl_usb_probe, a new hw is allocated via ieee80211_alloc_hw(). This
-> > allocation should be released in case of allocation failure for
-> > rtlpriv->usb_data.
-> >
-> > Fixes: a7959c1394d4 ("rtlwifi: Preallocate USB read buffers and eliminate kalloc in read routine")
+> While the existing code in rsi_probe() may lead you to believe that,
+> this statement is false. 
 >
-> Which event did trigger the sending of this patch variant
-> after a similar change was integrated already?
-> https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git/commit/?id=3f93616951138a598d930dcaec40f2bfd9ce43bb
-> https://lore.kernel.org/lkml/20191001092047.71E8460A30@smtp.codeaurora.org/
-> https://lore.kernel.org/patchwork/comment/1331936/
+>> > It is checked everywhere except
+>> > for the else branch in the idProduct condition. The patch adds NULL check
+>> > before the id dereference in the rsi_dbg() call.
+>> > 
+>> > Fixes: 54fdb318c111 ("rsi: add new device model for 9116")
+>> > Cc: Amitkumar Karwar <amitkarwar@gmail.com>
+>> > Cc: Siva Rebbagondla <siva8118@gmail.com>
+>> > Cc: Kalle Valo <kvalo@codeaurora.org>
+>> > Signed-off-by: Denis Efremov <efremov@linux.com>
+>> 
+>> Patch applied to wireless-drivers-next.git, thanks.
+>> 
+>> f170d44bc4ec rsi: fix potential null dereference in rsi_probe()
 >
-> Regards,
-> Markus
+> I just sent a revert to prevent the confusion from spreading (e.g. to
+> stable autosel and contributers looking for things to work on). Hope you
+> don't mind, Kalle.
 
-
+That's great, thanks Johan.
 
 -- 
-Navid.
+Kalle Valo
