@@ -2,18 +2,19 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E9BCDCE7BC
-	for <lists+linux-wireless@lfdr.de>; Mon,  7 Oct 2019 17:37:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C039ECE82B
+	for <lists+linux-wireless@lfdr.de>; Mon,  7 Oct 2019 17:47:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728422AbfJGPhf (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 7 Oct 2019 11:37:35 -0400
-Received: from muru.com ([72.249.23.125]:35584 "EHLO muru.com"
+        id S1728111AbfJGPrH (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 7 Oct 2019 11:47:07 -0400
+Received: from muru.com ([72.249.23.125]:35600 "EHLO muru.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728071AbfJGPhf (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 7 Oct 2019 11:37:35 -0400
-Received: from hillo.muru.com (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTP id 6FDE880A5;
-        Mon,  7 Oct 2019 15:38:07 +0000 (UTC)
+        id S1727711AbfJGPrG (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 7 Oct 2019 11:47:06 -0400
+Received: from atomide.com (localhost [127.0.0.1])
+        by muru.com (Postfix) with ESMTPS id 9C68380A5;
+        Mon,  7 Oct 2019 15:47:39 +0000 (UTC)
+Date:   Mon, 7 Oct 2019 08:47:03 -0700
 From:   Tony Lindgren <tony@atomide.com>
 To:     Kalle Valo <kvalo@codeaurora.org>
 Cc:     Eyal Reizer <eyalr@ti.com>, Kishon Vijay Abraham I <kishon@ti.com>,
@@ -22,79 +23,36 @@ Cc:     Eyal Reizer <eyalr@ti.com>, Kishon Vijay Abraham I <kishon@ti.com>,
         Anders Roxell <anders.roxell@linaro.org>,
         John Stultz <john.stultz@linaro.org>,
         Ulf Hansson <ulf.hansson@linaro.org>
-Subject: [PATCH] wlcore: fix race for WL1271_FLAG_IRQ_RUNNING
-Date:   Mon,  7 Oct 2019 08:37:31 -0700
-Message-Id: <20191007153731.58045-1-tony@atomide.com>
-X-Mailer: git-send-email 2.23.0
+Subject: Re: [PATCH] wlcore: fix race for WL1271_FLAG_IRQ_RUNNING
+Message-ID: <20191007154703.GP5610@atomide.com>
+References: <20191007153731.58045-1-tony@atomide.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20191007153731.58045-1-tony@atomide.com>
+User-Agent: Mutt/1.12.1 (2019-06-15)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-We set WL1271_FLAG_IRQ_RUNNING in the beginning of wlcore_irq(), and test
-for it in wlcore_runtime_resume(). But WL1271_FLAG_IRQ_RUNNING currently
-gets cleared too early by wlcore_irq_locked() before wlcore_irq() is done
-calling it. And this will race against wlcore_runtime_resume() testing it.
+* Tony Lindgren <tony@atomide.com> [191007 08:38]:
+> --- a/drivers/net/wireless/ti/wlcore/main.c
+> +++ b/drivers/net/wireless/ti/wlcore/main.c
+> @@ -692,6 +687,9 @@ static irqreturn_t wlcore_irq(int irq, void *cookie)
+>  
+>  	mutex_unlock(&wl->mutex);
+>  
+> +out_handled:
+> +	clear_bit(WL1271_FLAG_IRQ_RUNNING, &wl->flags);
+> +
+>  	return IRQ_HANDLED;
+>  }
 
-Let's set and clear IRQ_RUNNING in wlcore_irq() so wlcore_runtime_resume()
-can rely on it. And let's remove old comments about hardirq, that's no
-longer the case as we're using request_threaded_irq().
+Sorry looks like I again sent out the patch too fast. The clear_bit()
+here should have spin_lock_irqsave() and spin_unlock_irqrestore()
+around it like we do elsewhere in the code currently.
 
-This fixes occasional annoying wlcore firmware reboots stat start with
-"wlcore: WARNING ELP wakeup timeout!" followed by a multisecond latency
-when the wlcore firmware gets wrongly rebooted waiting for an ELP wake
-interrupt that won't be coming.
+Regards,
 
-Note that I also suspect some form of this issue was the root cause why
-the wlcore GPIO interrupt has been often configured as a level interrupt
-instead of edge as an attempt to work around the ELP wake timeout errors.
-
-Fixes: fa2648a34e73 ("wlcore: Add support for runtime PM")
-Cc: Anders Roxell <anders.roxell@linaro.org>
-Cc: Eyal Reizer <eyalr@ti.com>
-Cc: Guy Mishol <guym@ti.com>
-Cc: John Stultz <john.stultz@linaro.org>
-Cc: Ulf Hansson <ulf.hansson@linaro.org>
-Signed-off-by: Tony Lindgren <tony@atomide.com>
----
- drivers/net/wireless/ti/wlcore/main.c | 10 ++++------
- 1 file changed, 4 insertions(+), 6 deletions(-)
-
-diff --git a/drivers/net/wireless/ti/wlcore/main.c b/drivers/net/wireless/ti/wlcore/main.c
---- a/drivers/net/wireless/ti/wlcore/main.c
-+++ b/drivers/net/wireless/ti/wlcore/main.c
-@@ -544,11 +544,6 @@ static int wlcore_irq_locked(struct wl1271 *wl)
- 	}
- 
- 	while (!done && loopcount--) {
--		/*
--		 * In order to avoid a race with the hardirq, clear the flag
--		 * before acknowledging the chip.
--		 */
--		clear_bit(WL1271_FLAG_IRQ_RUNNING, &wl->flags);
- 		smp_mb__after_atomic();
- 
- 		ret = wlcore_fw_status(wl, wl->fw_status);
-@@ -668,7 +663,7 @@ static irqreturn_t wlcore_irq(int irq, void *cookie)
- 		disable_irq_nosync(wl->irq);
- 		pm_wakeup_event(wl->dev, 0);
- 		spin_unlock_irqrestore(&wl->wl_lock, flags);
--		return IRQ_HANDLED;
-+		goto out_handled;
- 	}
- 	spin_unlock_irqrestore(&wl->wl_lock, flags);
- 
-@@ -692,6 +687,9 @@ static irqreturn_t wlcore_irq(int irq, void *cookie)
- 
- 	mutex_unlock(&wl->mutex);
- 
-+out_handled:
-+	clear_bit(WL1271_FLAG_IRQ_RUNNING, &wl->flags);
-+
- 	return IRQ_HANDLED;
- }
- 
--- 
-2.23.0
+Tony
