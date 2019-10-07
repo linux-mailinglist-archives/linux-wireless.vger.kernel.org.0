@@ -2,104 +2,101 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 5DA31CE020
-	for <lists+linux-wireless@lfdr.de>; Mon,  7 Oct 2019 13:22:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 10A16CE0B4
+	for <lists+linux-wireless@lfdr.de>; Mon,  7 Oct 2019 13:41:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727514AbfJGLWY (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 7 Oct 2019 07:22:24 -0400
-Received: from mx1.redhat.com ([209.132.183.28]:48368 "EHLO mx1.redhat.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727394AbfJGLWY (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 7 Oct 2019 07:22:24 -0400
-Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.phx2.redhat.com [10.5.11.13])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mx1.redhat.com (Postfix) with ESMTPS id ABC753086228;
-        Mon,  7 Oct 2019 11:22:22 +0000 (UTC)
-Received: from bistromath.localdomain (ovpn-116-43.ams2.redhat.com [10.36.116.43])
-        by smtp.corp.redhat.com (Postfix) with ESMTPS id 7275360606;
-        Mon,  7 Oct 2019 11:22:17 +0000 (UTC)
-Date:   Mon, 7 Oct 2019 13:22:15 +0200
-From:   Sabrina Dubroca <sd@queasysnail.net>
+        id S1727522AbfJGLlh (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 7 Oct 2019 07:41:37 -0400
+Received: from s3.sipsolutions.net ([144.76.43.62]:33862 "EHLO
+        sipsolutions.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727411AbfJGLlh (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 7 Oct 2019 07:41:37 -0400
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+        (Exim 4.92.2)
+        (envelope-from <johannes@sipsolutions.net>)
+        id 1iHRO8-0004uH-9s; Mon, 07 Oct 2019 13:41:16 +0200
+Message-ID: <bb48fca5a5ffb0a877b2bff8de07ec8090b63427.camel@sipsolutions.net>
+Subject: Re: [PATCH net v4 07/12] macvlan: use dynamic lockdep key instead
+ of subclass
+From:   Johannes Berg <johannes@sipsolutions.net>
 To:     Taehee Yoo <ap420073@gmail.com>
-Cc:     davem@davemloft.net, netdev@vger.kernel.org,
-        linux-wireless@vger.kernel.org, jakub.kicinski@netronome.com,
-        johannes@sipsolutions.net, j.vosburgh@gmail.com, vfalico@gmail.com,
-        andy@greyhouse.net, jiri@resnulli.us, roopa@cumulusnetworks.com,
+Cc:     David Miller <davem@davemloft.net>,
+        Netdev <netdev@vger.kernel.org>, linux-wireless@vger.kernel.org,
+        Jakub Kicinski <jakub.kicinski@netronome.com>,
+        j.vosburgh@gmail.com, vfalico@gmail.com,
+        Andy Gospodarek <andy@greyhouse.net>,
+        =?UTF-8?Q?Ji=C5=99=C3=AD_P=C3=ADrko?= <jiri@resnulli.us>,
+        sd@queasysnail.net, Roopa Prabhu <roopa@cumulusnetworks.com>,
         saeedm@mellanox.com, manishc@marvell.com, rahulv@marvell.com,
         kys@microsoft.com, haiyangz@microsoft.com,
-        stephen@networkplumber.org, sashal@kernel.org, hare@suse.de,
-        varun@chelsio.com, ubraun@linux.ibm.com, kgraul@linux.ibm.com,
-        jay.vosburgh@canonical.com, schuffelen@google.com, bjorn@mork.no
-Subject: Re: [PATCH net v4 12/12] virt_wifi: fix refcnt leak in module exit
- routine
-Message-ID: <20191007112215.GA1288400@bistromath.localdomain>
+        Stephen Hemminger <stephen@networkplumber.org>,
+        sashal@kernel.org, hare@suse.de, varun@chelsio.com,
+        ubraun@linux.ibm.com, kgraul@linux.ibm.com,
+        Jay Vosburgh <jay.vosburgh@canonical.com>,
+        Cody Schuffelen <schuffelen@google.com>, bjorn@mork.no
+Date:   Mon, 07 Oct 2019 13:41:14 +0200
+In-Reply-To: <CAMArcTVeFGqA2W26=rBD5KkjRpFB6gjSgXj8dp+WWrrwJ7pr-A@mail.gmail.com> (sfid-20191005_111343_179256_72415A7E)
 References: <20190928164843.31800-1-ap420073@gmail.com>
- <20190928164843.31800-13-ap420073@gmail.com>
+         <20190928164843.31800-8-ap420073@gmail.com>
+         <33adc57c243dccc1dcb478113166fa01add3d49a.camel@sipsolutions.net>
+         <CAMArcTWrMq0qK72VJv=6ATugMSt_b=FiE4d+xOmi2K3FE8aEyA@mail.gmail.com>
+         <72bc9727d0943c56403eac03b6de69c00b0f53f6.camel@sipsolutions.net>
+         <CAMArcTVeFGqA2W26=rBD5KkjRpFB6gjSgXj8dp+WWrrwJ7pr-A@mail.gmail.com>
+         (sfid-20191005_111343_179256_72415A7E)
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.30.5 (3.30.5-1.fc29) 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20190928164843.31800-13-ap420073@gmail.com>
-User-Agent: Mutt/1.12.1 (2019-06-15)
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.13
-X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16 (mx1.redhat.com [10.5.110.42]); Mon, 07 Oct 2019 11:22:23 +0000 (UTC)
+Content-Transfer-Encoding: 7bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-2019-09-28, 16:48:43 +0000, Taehee Yoo wrote:
-> virt_wifi_newlink() calls netdev_upper_dev_link() and it internally
-> holds reference count of lower interface.
+On Sat, 2019-10-05 at 18:13 +0900, Taehee Yoo wrote:
 > 
-> Current code does not release a reference count of the lower interface
-> when the lower interface is being deleted.
-> So, reference count leaks occur.
+> If we place lockdep keys into "struct net_device", this macro would be a
+> little bit modified and reused. And driver code shape will not be huge
+> changed. I think this way is better than this v4 way.
+> So I will try it.
+
+What I was thinking was that if we can do this for every VLAN netdev,
+why shouldn't we do it for *every* netdev unconditionally? Some code
+could perhaps even be simplified if this was just a general part of
+netdev allocation.
+
+> > But it seems to me the whole nesting also has to be applied here?
+> > 
+> > __dev_xmit_skb:
+> >  * qdisc_run_begin()
+> >  * sch_direct_xmit()
+> >    * HARD_TX_LOCK(dev, txq, smp_processor_id());
+> >    * dev_hard_start_xmit() // say this is VLAN
+> >      * dev_queue_xmit() // on real_dev
+> >        * __dev_xmit_skb // recursion on another netdev
+> > 
+> > Now if you have VLAN-in-VLAN the whole thing will recurse right?
+> > 
 > 
-> Test commands:
->     ip link add dummy0 type dummy
->     ip link add vw1 link dummy0 type virt_wifi
+> I have checked on this routine.
+> Only xmit_lock(HARD_TX_LOCK) could be nested. other
+> qdisc locks(runinng, busylock) will not be nested. 
 
-There should also be "ip link del dummy0" in this reproducer, right?
+OK, I still didn't check it too closely I guess, or got confused which
+lock I should look at.
 
-[...]
+> This patch already
+> handles the _xmit_lock key. so I think there is no problem.
 
-> @@ -598,14 +634,24 @@ static int __init virt_wifi_init_module(void)
->  	/* Guaranteed to be locallly-administered and not multicast. */
->  	eth_random_addr(fake_router_bssid);
->  
-> +	err = register_netdevice_notifier(&virt_wifi_notifier);
-> +	if (err)
-> +		return err;
-> +
+Right
 
-Here err is 0.
+> But I would like to place four lockdep keys(busylock, address,
+> running, _xmit_lock) into "struct net_device" because of code complexity.
+> 
+> Let me know if I misunderstood anything.
 
->  	common_wiphy = virt_wifi_make_wiphy();
->  	if (!common_wiphy)
-> -		return -ENOMEM;
-> +		goto notifier;
+Nothing to misunderstand - I was just asking/wondering why the qdisc
+locks were not treated the same way.
 
-err is still 0 when we jump...
+johannes
 
->  	err = rtnl_link_register(&virt_wifi_link_ops);
->  	if (err)
-> -		virt_wifi_destroy_wiphy(common_wiphy);
-> +		goto destroy_wiphy;
->  
-> +	return 0;
-> +
-> +destroy_wiphy:
-> +	virt_wifi_destroy_wiphy(common_wiphy);
-> +notifier:
-> +	unregister_netdevice_notifier(&virt_wifi_notifier);
->  	return err;
->  }
-
-... so now we return 0 on failure. Can you add an "err = -ENOMEM"
-before "common_wiphy = ..."?
-
-Thanks.
-
--- 
-Sabrina
