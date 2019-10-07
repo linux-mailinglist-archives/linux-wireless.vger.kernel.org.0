@@ -2,101 +2,72 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 10A16CE0B4
-	for <lists+linux-wireless@lfdr.de>; Mon,  7 Oct 2019 13:41:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D2B7FCE3F0
+	for <lists+linux-wireless@lfdr.de>; Mon,  7 Oct 2019 15:41:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727522AbfJGLlh (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 7 Oct 2019 07:41:37 -0400
-Received: from s3.sipsolutions.net ([144.76.43.62]:33862 "EHLO
-        sipsolutions.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727411AbfJGLlh (ORCPT
+        id S1728143AbfJGNlS (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 7 Oct 2019 09:41:18 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:49697 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726334AbfJGNlS (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 7 Oct 2019 07:41:37 -0400
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-        (Exim 4.92.2)
-        (envelope-from <johannes@sipsolutions.net>)
-        id 1iHRO8-0004uH-9s; Mon, 07 Oct 2019 13:41:16 +0200
-Message-ID: <bb48fca5a5ffb0a877b2bff8de07ec8090b63427.camel@sipsolutions.net>
-Subject: Re: [PATCH net v4 07/12] macvlan: use dynamic lockdep key instead
- of subclass
-From:   Johannes Berg <johannes@sipsolutions.net>
-To:     Taehee Yoo <ap420073@gmail.com>
-Cc:     David Miller <davem@davemloft.net>,
-        Netdev <netdev@vger.kernel.org>, linux-wireless@vger.kernel.org,
-        Jakub Kicinski <jakub.kicinski@netronome.com>,
-        j.vosburgh@gmail.com, vfalico@gmail.com,
-        Andy Gospodarek <andy@greyhouse.net>,
-        =?UTF-8?Q?Ji=C5=99=C3=AD_P=C3=ADrko?= <jiri@resnulli.us>,
-        sd@queasysnail.net, Roopa Prabhu <roopa@cumulusnetworks.com>,
-        saeedm@mellanox.com, manishc@marvell.com, rahulv@marvell.com,
-        kys@microsoft.com, haiyangz@microsoft.com,
-        Stephen Hemminger <stephen@networkplumber.org>,
-        sashal@kernel.org, hare@suse.de, varun@chelsio.com,
-        ubraun@linux.ibm.com, kgraul@linux.ibm.com,
-        Jay Vosburgh <jay.vosburgh@canonical.com>,
-        Cody Schuffelen <schuffelen@google.com>, bjorn@mork.no
-Date:   Mon, 07 Oct 2019 13:41:14 +0200
-In-Reply-To: <CAMArcTVeFGqA2W26=rBD5KkjRpFB6gjSgXj8dp+WWrrwJ7pr-A@mail.gmail.com> (sfid-20191005_111343_179256_72415A7E)
-References: <20190928164843.31800-1-ap420073@gmail.com>
-         <20190928164843.31800-8-ap420073@gmail.com>
-         <33adc57c243dccc1dcb478113166fa01add3d49a.camel@sipsolutions.net>
-         <CAMArcTWrMq0qK72VJv=6ATugMSt_b=FiE4d+xOmi2K3FE8aEyA@mail.gmail.com>
-         <72bc9727d0943c56403eac03b6de69c00b0f53f6.camel@sipsolutions.net>
-         <CAMArcTVeFGqA2W26=rBD5KkjRpFB6gjSgXj8dp+WWrrwJ7pr-A@mail.gmail.com>
-         (sfid-20191005_111343_179256_72415A7E)
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.30.5 (3.30.5-1.fc29) 
+        Mon, 7 Oct 2019 09:41:18 -0400
+Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
+        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        (Exim 4.86_2)
+        (envelope-from <colin.king@canonical.com>)
+        id 1iHTGD-0008KW-IG; Mon, 07 Oct 2019 13:41:13 +0000
+From:   Colin King <colin.king@canonical.com>
+To:     Stanislaw Gruszka <sgruszka@redhat.com>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        "David S . Miller" <davem@davemloft.net>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH] iwlegacy: make array interval static, makes object smaller
+Date:   Mon,  7 Oct 2019 14:41:13 +0100
+Message-Id: <20191007134113.5647-1-colin.king@canonical.com>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Sat, 2019-10-05 at 18:13 +0900, Taehee Yoo wrote:
-> 
-> If we place lockdep keys into "struct net_device", this macro would be a
-> little bit modified and reused. And driver code shape will not be huge
-> changed. I think this way is better than this v4 way.
-> So I will try it.
+From: Colin Ian King <colin.king@canonical.com>
 
-What I was thinking was that if we can do this for every VLAN netdev,
-why shouldn't we do it for *every* netdev unconditionally? Some code
-could perhaps even be simplified if this was just a general part of
-netdev allocation.
+Don't populate the array interval on the stack but instead make it
+static. Makes the object code smaller by 121 bytes.
 
-> > But it seems to me the whole nesting also has to be applied here?
-> > 
-> > __dev_xmit_skb:
-> >  * qdisc_run_begin()
-> >  * sch_direct_xmit()
-> >    * HARD_TX_LOCK(dev, txq, smp_processor_id());
-> >    * dev_hard_start_xmit() // say this is VLAN
-> >      * dev_queue_xmit() // on real_dev
-> >        * __dev_xmit_skb // recursion on another netdev
-> > 
-> > Now if you have VLAN-in-VLAN the whole thing will recurse right?
-> > 
-> 
-> I have checked on this routine.
-> Only xmit_lock(HARD_TX_LOCK) could be nested. other
-> qdisc locks(runinng, busylock) will not be nested. 
+Before:
+   text	   data	    bss	    dec	    hex	filename
+ 167797	  29676	    448	 197921	  30521	wireless/intel/iwlegacy/common.o
 
-OK, I still didn't check it too closely I guess, or got confused which
-lock I should look at.
+After:
+   text	   data	    bss	    dec	    hex	filename
+ 167580	  29772	    448	 197800	  304a8	wireless/intel/iwlegacy/common.o
 
-> This patch already
-> handles the _xmit_lock key. so I think there is no problem.
+(gcc version 9.2.1, amd64)
 
-Right
+Signed-off-by: Colin Ian King <colin.king@canonical.com>
+---
+ drivers/net/wireless/intel/iwlegacy/common.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-> But I would like to place four lockdep keys(busylock, address,
-> running, _xmit_lock) into "struct net_device" because of code complexity.
-> 
-> Let me know if I misunderstood anything.
-
-Nothing to misunderstand - I was just asking/wondering why the qdisc
-locks were not treated the same way.
-
-johannes
+diff --git a/drivers/net/wireless/intel/iwlegacy/common.c b/drivers/net/wireless/intel/iwlegacy/common.c
+index 73f7bbf742bc..e4ea734e58d8 100644
+--- a/drivers/net/wireless/intel/iwlegacy/common.c
++++ b/drivers/net/wireless/intel/iwlegacy/common.c
+@@ -1072,7 +1072,7 @@ EXPORT_SYMBOL(il_get_channel_info);
+ static void
+ il_build_powertable_cmd(struct il_priv *il, struct il_powertable_cmd *cmd)
+ {
+-	const __le32 interval[3][IL_POWER_VEC_SIZE] = {
++	static const __le32 interval[3][IL_POWER_VEC_SIZE] = {
+ 		SLP_VEC(2, 2, 4, 6, 0xFF),
+ 		SLP_VEC(2, 4, 7, 10, 10),
+ 		SLP_VEC(4, 7, 10, 10, 0xFF)
+-- 
+2.20.1
 
