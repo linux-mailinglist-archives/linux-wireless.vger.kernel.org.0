@@ -2,95 +2,104 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A7ECBCDDB3
-	for <lists+linux-wireless@lfdr.de>; Mon,  7 Oct 2019 10:50:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5DA31CE020
+	for <lists+linux-wireless@lfdr.de>; Mon,  7 Oct 2019 13:22:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727295AbfJGIuX (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 7 Oct 2019 04:50:23 -0400
-Received: from aserp2120.oracle.com ([141.146.126.78]:50354 "EHLO
-        aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726010AbfJGIuX (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 7 Oct 2019 04:50:23 -0400
-Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
-        by aserp2120.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x978nXvk179074;
-        Mon, 7 Oct 2019 08:50:12 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
- : subject : message-id : mime-version : content-type; s=corp-2019-08-05;
- bh=VQkZryK2aezDQNpWThieE0WO7967+E1fkMMie3Eegdo=;
- b=obakWYpvHBG2ARRqe+EpaNnzB0bN+LSzntonSM93zUGKxr82Nh3dcWEM9xKI8tJRRNsF
- C+SqkOSSCExnL6bZp4I3vD0HMHakvRtzirQ9ZlMl20aAsALC0XFH3p/99JZ6tCT5kVNC
- S2Fa9Tj56tVALVZyJgFHo47M+G9oBnX+I2FPx0uSNMw9aMW3KIiIjNMeecyuW0MrZIZ2
- z3gtQUgzvCcu9QvzukpOC+GsTlSqhR+Kykz5Mp0nli2Ggvdt9JaIoiSnp4586IjWqqLT
- TvhySNDS9XlYfThxkq35nl7ldMyhTWa6h7GSUpH45XcsKDsiQPiitaOaJMHai/NRMoZe Og== 
-Received: from aserp3020.oracle.com (aserp3020.oracle.com [141.146.126.70])
-        by aserp2120.oracle.com with ESMTP id 2vek4q5dg0-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Mon, 07 Oct 2019 08:50:12 +0000
-Received: from pps.filterd (aserp3020.oracle.com [127.0.0.1])
-        by aserp3020.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x978nQSI168538;
-        Mon, 7 Oct 2019 08:50:11 GMT
-Received: from userv0121.oracle.com (userv0121.oracle.com [156.151.31.72])
-        by aserp3020.oracle.com with ESMTP id 2vf4ph4xjm-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Mon, 07 Oct 2019 08:50:11 +0000
-Received: from abhmp0001.oracle.com (abhmp0001.oracle.com [141.146.116.7])
-        by userv0121.oracle.com (8.14.4/8.13.8) with ESMTP id x978oAdj003856;
-        Mon, 7 Oct 2019 08:50:10 GMT
-Received: from mwanda (/41.57.98.10)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Mon, 07 Oct 2019 08:50:09 +0000
-Date:   Mon, 7 Oct 2019 11:50:03 +0300
-From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     Kalle Valo <kvalo@codeaurora.org>,
-        Govind Singh <govinds@codeaurora.org>
-Cc:     ath10k@lists.infradead.org, linux-wireless@vger.kernel.org,
-        kernel-janitors@vger.kernel.org
-Subject: [PATCH] ath10k: Fix an && vs || typo
-Message-ID: <20191007085003.GB3865@mwanda>
+        id S1727514AbfJGLWY (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 7 Oct 2019 07:22:24 -0400
+Received: from mx1.redhat.com ([209.132.183.28]:48368 "EHLO mx1.redhat.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727394AbfJGLWY (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 7 Oct 2019 07:22:24 -0400
+Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.phx2.redhat.com [10.5.11.13])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mx1.redhat.com (Postfix) with ESMTPS id ABC753086228;
+        Mon,  7 Oct 2019 11:22:22 +0000 (UTC)
+Received: from bistromath.localdomain (ovpn-116-43.ams2.redhat.com [10.36.116.43])
+        by smtp.corp.redhat.com (Postfix) with ESMTPS id 7275360606;
+        Mon,  7 Oct 2019 11:22:17 +0000 (UTC)
+Date:   Mon, 7 Oct 2019 13:22:15 +0200
+From:   Sabrina Dubroca <sd@queasysnail.net>
+To:     Taehee Yoo <ap420073@gmail.com>
+Cc:     davem@davemloft.net, netdev@vger.kernel.org,
+        linux-wireless@vger.kernel.org, jakub.kicinski@netronome.com,
+        johannes@sipsolutions.net, j.vosburgh@gmail.com, vfalico@gmail.com,
+        andy@greyhouse.net, jiri@resnulli.us, roopa@cumulusnetworks.com,
+        saeedm@mellanox.com, manishc@marvell.com, rahulv@marvell.com,
+        kys@microsoft.com, haiyangz@microsoft.com,
+        stephen@networkplumber.org, sashal@kernel.org, hare@suse.de,
+        varun@chelsio.com, ubraun@linux.ibm.com, kgraul@linux.ibm.com,
+        jay.vosburgh@canonical.com, schuffelen@google.com, bjorn@mork.no
+Subject: Re: [PATCH net v4 12/12] virt_wifi: fix refcnt leak in module exit
+ routine
+Message-ID: <20191007112215.GA1288400@bistromath.localdomain>
+References: <20190928164843.31800-1-ap420073@gmail.com>
+ <20190928164843.31800-13-ap420073@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-X-Mailer: git-send-email haha only kidding
-User-Agent: Mutt/1.10.1 (2018-07-13)
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9402 signatures=668684
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 malwarescore=0
- phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=999
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.0.1-1908290000 definitions=main-1910070092
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9402 signatures=668684
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
- suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1011
- lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=999 adultscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1908290000
- definitions=main-1910070092
+In-Reply-To: <20190928164843.31800-13-ap420073@gmail.com>
+User-Agent: Mutt/1.12.1 (2019-06-15)
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.13
+X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16 (mx1.redhat.com [10.5.110.42]); Mon, 07 Oct 2019 11:22:23 +0000 (UTC)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-The kernel will Oops later in the function if either of these pointers
-is NULL so clearly || was intended instead of &&.
+2019-09-28, 16:48:43 +0000, Taehee Yoo wrote:
+> virt_wifi_newlink() calls netdev_upper_dev_link() and it internally
+> holds reference count of lower interface.
+> 
+> Current code does not release a reference count of the lower interface
+> when the lower interface is being deleted.
+> So, reference count leaks occur.
+> 
+> Test commands:
+>     ip link add dummy0 type dummy
+>     ip link add vw1 link dummy0 type virt_wifi
 
-Fixes: 3f14b73c3843 ("ath10k: Enable MSA region dump support for WCN3990")
-Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
----
- drivers/net/wireless/ath/ath10k/snoc.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+There should also be "ip link del dummy0" in this reproducer, right?
 
-diff --git a/drivers/net/wireless/ath/ath10k/snoc.c b/drivers/net/wireless/ath/ath10k/snoc.c
-index cd22c8654aa9..16177497bba7 100644
---- a/drivers/net/wireless/ath/ath10k/snoc.c
-+++ b/drivers/net/wireless/ath/ath10k/snoc.c
-@@ -1400,7 +1400,7 @@ static void ath10k_msa_dump_memory(struct ath10k *ar,
- 	size_t buf_len;
- 	u8 *buf;
- 
--	if (!crash_data && !crash_data->ramdump_buf)
-+	if (!crash_data || !crash_data->ramdump_buf)
- 		return;
- 
- 	mem_layout = ath10k_coredump_get_mem_layout(ar);
+[...]
+
+> @@ -598,14 +634,24 @@ static int __init virt_wifi_init_module(void)
+>  	/* Guaranteed to be locallly-administered and not multicast. */
+>  	eth_random_addr(fake_router_bssid);
+>  
+> +	err = register_netdevice_notifier(&virt_wifi_notifier);
+> +	if (err)
+> +		return err;
+> +
+
+Here err is 0.
+
+>  	common_wiphy = virt_wifi_make_wiphy();
+>  	if (!common_wiphy)
+> -		return -ENOMEM;
+> +		goto notifier;
+
+err is still 0 when we jump...
+
+>  	err = rtnl_link_register(&virt_wifi_link_ops);
+>  	if (err)
+> -		virt_wifi_destroy_wiphy(common_wiphy);
+> +		goto destroy_wiphy;
+>  
+> +	return 0;
+> +
+> +destroy_wiphy:
+> +	virt_wifi_destroy_wiphy(common_wiphy);
+> +notifier:
+> +	unregister_netdevice_notifier(&virt_wifi_notifier);
+>  	return err;
+>  }
+
+... so now we return 0 on failure. Can you add an "err = -ENOMEM"
+before "common_wiphy = ..."?
+
+Thanks.
+
 -- 
-2.20.1
-
+Sabrina
