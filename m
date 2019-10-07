@@ -2,51 +2,52 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 26186CDDAC
-	for <lists+linux-wireless@lfdr.de>; Mon,  7 Oct 2019 10:49:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A7ECBCDDB3
+	for <lists+linux-wireless@lfdr.de>; Mon,  7 Oct 2019 10:50:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727278AbfJGItp (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 7 Oct 2019 04:49:45 -0400
-Received: from aserp2120.oracle.com ([141.146.126.78]:49538 "EHLO
+        id S1727295AbfJGIuX (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 7 Oct 2019 04:50:23 -0400
+Received: from aserp2120.oracle.com ([141.146.126.78]:50354 "EHLO
         aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726010AbfJGIto (ORCPT
+        with ESMTP id S1726010AbfJGIuX (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 7 Oct 2019 04:49:44 -0400
+        Mon, 7 Oct 2019 04:50:23 -0400
 Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
-        by aserp2120.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x978nAC5178940;
-        Mon, 7 Oct 2019 08:49:37 GMT
+        by aserp2120.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x978nXvk179074;
+        Mon, 7 Oct 2019 08:50:12 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
  : subject : message-id : mime-version : content-type; s=corp-2019-08-05;
- bh=chit8EzPB6oj9TLSzZOnkjtb0GRZV9OhiCx1X86A93U=;
- b=UDosYBAw5XJpWthZvi8Q2i2i7DToFddUD/J2yqO0XptwquqgtJnQ0JY0ZhwrcY7e4AB1
- THLHbNoxSrey9/qRsO/KpdeIxg24lVnY/maTOBOlHj7my/FFCS0YO/QK/wnW8YZW8wFg
- 9v9nOAE7VJXlRWDrAy/uyCcE6vTc7fknFJtxAbalAu/8w/t5d86k/sw798sAwi6qch6g
- Xa++0PII5wN9aG0vimrfl3by12r9t9gIrVSeJgzJFYH9taaBjvVrRHQ9CHcNS8kBUcKX
- 1FpBgVmon1cs+rlDJaina6/1GiAKXAA3G/dap4AFvDVjGuH8EOGVm9fJh9bmef3GTvle DA== 
+ bh=VQkZryK2aezDQNpWThieE0WO7967+E1fkMMie3Eegdo=;
+ b=obakWYpvHBG2ARRqe+EpaNnzB0bN+LSzntonSM93zUGKxr82Nh3dcWEM9xKI8tJRRNsF
+ C+SqkOSSCExnL6bZp4I3vD0HMHakvRtzirQ9ZlMl20aAsALC0XFH3p/99JZ6tCT5kVNC
+ S2Fa9Tj56tVALVZyJgFHo47M+G9oBnX+I2FPx0uSNMw9aMW3KIiIjNMeecyuW0MrZIZ2
+ z3gtQUgzvCcu9QvzukpOC+GsTlSqhR+Kykz5Mp0nli2Ggvdt9JaIoiSnp4586IjWqqLT
+ TvhySNDS9XlYfThxkq35nl7ldMyhTWa6h7GSUpH45XcsKDsiQPiitaOaJMHai/NRMoZe Og== 
 Received: from aserp3020.oracle.com (aserp3020.oracle.com [141.146.126.70])
-        by aserp2120.oracle.com with ESMTP id 2vek4q5dbn-1
+        by aserp2120.oracle.com with ESMTP id 2vek4q5dg0-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Mon, 07 Oct 2019 08:49:36 +0000
+        Mon, 07 Oct 2019 08:50:12 +0000
 Received: from pps.filterd (aserp3020.oracle.com [127.0.0.1])
-        by aserp3020.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x978nQb4168561;
-        Mon, 7 Oct 2019 08:49:36 GMT
+        by aserp3020.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x978nQSI168538;
+        Mon, 7 Oct 2019 08:50:11 GMT
 Received: from userv0121.oracle.com (userv0121.oracle.com [156.151.31.72])
-        by aserp3020.oracle.com with ESMTP id 2vf4ph4vxb-1
+        by aserp3020.oracle.com with ESMTP id 2vf4ph4xjm-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Mon, 07 Oct 2019 08:49:36 +0000
-Received: from abhmp0009.oracle.com (abhmp0009.oracle.com [141.146.116.15])
-        by userv0121.oracle.com (8.14.4/8.13.8) with ESMTP id x978mBEd002935;
-        Mon, 7 Oct 2019 08:48:12 GMT
+        Mon, 07 Oct 2019 08:50:11 +0000
+Received: from abhmp0001.oracle.com (abhmp0001.oracle.com [141.146.116.7])
+        by userv0121.oracle.com (8.14.4/8.13.8) with ESMTP id x978oAdj003856;
+        Mon, 7 Oct 2019 08:50:10 GMT
 Received: from mwanda (/41.57.98.10)
         by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Mon, 07 Oct 2019 01:48:11 -0700
-Date:   Mon, 7 Oct 2019 11:48:05 +0300
+        with ESMTP ; Mon, 07 Oct 2019 08:50:09 +0000
+Date:   Mon, 7 Oct 2019 11:50:03 +0300
 From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     Yan-Hsuan Chuang <yhchuang@realtek.com>
-Cc:     Kalle Valo <kvalo@codeaurora.org>, linux-wireless@vger.kernel.org,
+To:     Kalle Valo <kvalo@codeaurora.org>,
+        Govind Singh <govinds@codeaurora.org>
+Cc:     ath10k@lists.infradead.org, linux-wireless@vger.kernel.org,
         kernel-janitors@vger.kernel.org
-Subject: [PATCH] rtw88: Fix an error message
-Message-ID: <20191007084805.GA3865@mwanda>
+Subject: [PATCH] ath10k: Fix an && vs || typo
+Message-ID: <20191007085003.GB3865@mwanda>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
@@ -68,28 +69,28 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-The WARN_ON() macro doesn't take an error message, the argument is a
-condition so this won't display the warning message.
+The kernel will Oops later in the function if either of these pointers
+is NULL so clearly || was intended instead of &&.
 
-Fixes: 27e117e4b01b ("rtw88: add deep power save support")
+Fixes: 3f14b73c3843 ("ath10k: Enable MSA region dump support for WCN3990")
 Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
 ---
- drivers/net/wireless/realtek/rtw88/ps.c | 2 +-
+ drivers/net/wireless/ath/ath10k/snoc.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/realtek/rtw88/ps.c b/drivers/net/wireless/realtek/rtw88/ps.c
-index 83db6cf6a219..228309b411ec 100644
---- a/drivers/net/wireless/realtek/rtw88/ps.c
-+++ b/drivers/net/wireless/realtek/rtw88/ps.c
-@@ -108,7 +108,7 @@ void rtw_power_mode_change(struct rtw_dev *rtwdev, bool enter)
- 		 * read/write. It should be treated as fatal error and
- 		 * requires an entire analysis about the firmware/hardware
- 		 */
--		WARN_ON("Hardware power state locked\n");
-+		WARN(1, "Hardware power state locked\n");
- 	}
- }
- EXPORT_SYMBOL(rtw_power_mode_change);
+diff --git a/drivers/net/wireless/ath/ath10k/snoc.c b/drivers/net/wireless/ath/ath10k/snoc.c
+index cd22c8654aa9..16177497bba7 100644
+--- a/drivers/net/wireless/ath/ath10k/snoc.c
++++ b/drivers/net/wireless/ath/ath10k/snoc.c
+@@ -1400,7 +1400,7 @@ static void ath10k_msa_dump_memory(struct ath10k *ar,
+ 	size_t buf_len;
+ 	u8 *buf;
+ 
+-	if (!crash_data && !crash_data->ramdump_buf)
++	if (!crash_data || !crash_data->ramdump_buf)
+ 		return;
+ 
+ 	mem_layout = ath10k_coredump_get_mem_layout(ar);
 -- 
 2.20.1
 
