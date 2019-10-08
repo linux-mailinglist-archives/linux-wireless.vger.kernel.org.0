@@ -2,108 +2,83 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C7A2CCFE50
-	for <lists+linux-wireless@lfdr.de>; Tue,  8 Oct 2019 18:01:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E6B3DCFEDE
+	for <lists+linux-wireless@lfdr.de>; Tue,  8 Oct 2019 18:24:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727999AbfJHQAl (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 8 Oct 2019 12:00:41 -0400
-Received: from mail-pl1-f193.google.com ([209.85.214.193]:34096 "EHLO
-        mail-pl1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726336AbfJHQAl (ORCPT
+        id S1728763AbfJHQYf (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 8 Oct 2019 12:24:35 -0400
+Received: from s3.sipsolutions.net ([144.76.43.62]:42582 "EHLO
+        sipsolutions.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727691AbfJHQYf (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 8 Oct 2019 12:00:41 -0400
-Received: by mail-pl1-f193.google.com with SMTP id k7so8652861pll.1;
-        Tue, 08 Oct 2019 09:00:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:subject:to:cc:references:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=wjbVP6SypA/yqxO11UpZl9j4IvRacVDxxX21VBwViOY=;
-        b=QCRICrIihtFumFoyDtKyU2p+eUACHmtbZBnIV0I8OuOXiYPKh2f5BKz8oUUaXc3lvT
-         7LAq+EF9Fgn2LluD0gVmI534y4qpfDwOTaici1bPDAHhcFWqopXA409BSgIWJZcD/SDw
-         lPq3t7Qagr/CSAOx+VNnFuqDQ3iRUW2jC0/8GqvYkJRH49X+nF4LVgPgt53eoAwZW3OU
-         FQx2oeOWRBEY9LtdVjld21f0OccvhTzw1QxwYy7okCmg+c0QJb1/JU6D8S/wYv3wIOrj
-         6qLHELPGnSIcVnTP7jZ429gFuU945Tf5Ce4RL/f6z8JQWACBjcVBQT0YncITmG//Xk4h
-         mlsg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:subject:to:cc:references:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=wjbVP6SypA/yqxO11UpZl9j4IvRacVDxxX21VBwViOY=;
-        b=nt9z+2oFUPdZWwh40bDWyMoNsD1lPZpG1uSfSzJ0pIdCHt+RiNNDce2GS0VkjRWJFZ
-         M9LQR81Ob8CUo6wp3YzuFqfSAowJF2lxhicIUUO+zZfaee/yG36atQQrM1NH33BSfzWj
-         krx0v0e4nhiMNcv2xa28cws0gJLQozSL8Uv4XXLHwQ3/Ex4nVivQWM816CEI9cHK8SyX
-         CsOFhQ1zAtxk/hbzUsk3YyOf7HIjw3xx5ZfrzDrIKfTael1NnBFi6LwvzQalvwrtZABA
-         cQBrx7AVfFFzixeo7xtH4S9u1w38KPXi97ULfxY5v/1LfIwqf5p2KLm7vx8rR6jhcD1J
-         18pA==
-X-Gm-Message-State: APjAAAVTAaOlQpFqQO5V0PupOKqBSHdliteEziRpyH+C77a3leiGmeKg
-        OT291bR8C2i02dbuVStZ3wo=
-X-Google-Smtp-Source: APXvYqxTubSCND8Zeg5GzoPb4dZLEhBcUxVuv81AxxZDH2iL+IHH8/l2M59SrZ23dDtZksHH6C+Zuw==
-X-Received: by 2002:a17:902:b583:: with SMTP id a3mr36650807pls.169.1570550439806;
-        Tue, 08 Oct 2019 09:00:39 -0700 (PDT)
-Received: from ?IPv6:2620:10d:c082:1055::2a69? ([2620:10d:c090:200::3:df92])
-        by smtp.gmail.com with ESMTPSA id c128sm19211093pfc.166.2019.10.08.09.00.38
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 08 Oct 2019 09:00:38 -0700 (PDT)
-From:   Jes Sorensen <jes.sorensen@gmail.com>
-X-Google-Original-From: Jes Sorensen <Jes.Sorensen@gmail.com>
-Subject: Re: [PATCH v3] rtl8xxxu: add bluetooth co-existence support for
- single antenna
-To:     Chris Chiu <chiu@endlessm.com>, kvalo@codeaurora.org,
-        davem@davemloft.net
-Cc:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux@endlessm.com
-References: <20191005094826.90814-1-chiu@endlessm.com>
-Message-ID: <4603f17b-6739-1168-f784-58b0b9cf1a74@gmail.com>
-Date:   Tue, 8 Oct 2019 12:00:37 -0400
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.1.0
+        Tue, 8 Oct 2019 12:24:35 -0400
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+        (Exim 4.92.2)
+        (envelope-from <johannes@sipsolutions.net>)
+        id 1iHsHp-0003yI-DP; Tue, 08 Oct 2019 18:24:33 +0200
+Message-ID: <f02b81f6dac29da911f8793b952a9efb6a1fdb62.camel@sipsolutions.net>
+Subject: Re: [PATCH 2/2] mac80211: Support LIVE_ADDRESS_CHANGE feature
+From:   Johannes Berg <johannes@sipsolutions.net>
+To:     Denis Kenzior <denkenz@gmail.com>,
+        James Prestwood <prestwoj@gmail.com>,
+        linux-wireless@vger.kernel.org
+Date:   Tue, 08 Oct 2019 18:24:32 +0200
+In-Reply-To: <864267ec-9158-940d-6e0e-db84a395888e@gmail.com> (sfid-20191008_180339_379266_C92398E9)
+References: <20190913195908.7871-1-prestwoj@gmail.com>
+         <20190913195908.7871-2-prestwoj@gmail.com>
+         <c6835b5c5d2a97fa82b0fb21f7b7f0056aa42e1b.camel@sipsolutions.net>
+         <90ae00044bc0834d87d3f9fb75ce63dce4cfadd5.camel@gmail.com>
+         <0b57c1288016310050ccd6233dda886fc4a89b02.camel@gmail.com>
+         <f468a8d573ddf401d2084b76eb625fef5950f265.camel@sipsolutions.net>
+         <6fa34e4c-5c81-4875-da29-cada1a078e2c@gmail.com>
+         <6530a6b06176790c5a6949d6ffccf37b506975bd.camel@sipsolutions.net>
+         <864267ec-9158-940d-6e0e-db84a395888e@gmail.com>
+         (sfid-20191008_180339_379266_C92398E9)
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.30.5 (3.30.5-1.fc29) 
 MIME-Version: 1.0
-In-Reply-To: <20191005094826.90814-1-chiu@endlessm.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
 Content-Transfer-Encoding: 7bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 10/5/19 5:48 AM, Chris Chiu wrote:
-> The RTL8723BU suffers the wifi disconnection problem while bluetooth
-> device connected. While wifi is doing tx/rx, the bluetooth will scan
-> without results. This is due to the wifi and bluetooth share the same
-> single antenna for RF communication and they need to have a mechanism
-> to collaborate.
-> 
-> BT information is provided via the packet sent from co-processor to
-> host (C2H). It contains the status of BT but the rtl8723bu_handle_c2h
-> dose not really handle it. And there's no bluetooth coexistence
-> mechanism to deal with it.
-> 
-> This commit adds a workqueue to set the tdma configurations and
-> coefficient table per the parsed bluetooth link status and given
-> wifi connection state. The tdma/coef table comes from the vendor
-> driver code of the RTL8192EU and RTL8723BU. However, this commit is
-> only for single antenna scenario which RTL8192EU is default dual
-> antenna. The rtl8xxxu_parse_rxdesc24 which invokes the handle_c2h
-> is only for 8723b and 8192e so the mechanism is expected to work
-> on both chips with single antenna. Note RTL8192EU dual antenna is
-> not supported.
-> 
-> Signed-off-by: Chris Chiu <chiu@endlessm.com>
-> ---
-> 
-> Notes:
->    v2:
->     - Add helper functions to replace bunch of tdma settings
->     - Reformat some lines to meet kernel coding style
->    v3:
->     - Add comment for rtl8723bu_set_coex_with_type()
+Hi,
 
-Looks good to me!
+> > The scan_req struct contains a reference to which interface is scanning,
+> > so it should very well be possible to have
+> > 
+> > phy0:
+> >   wlan0: IFF_UP & scanning
+> >   wlan1: IFF_UP & change MAC address all the time
+> > 
+> > just like it's possible to change the MAC address when wlan1 *isn't*
+> > IFF_UP even if wlan0 is scanning, right?
+> > 
+> 
+> Indeed.  But that is not what you were suggesting earlier with just 
+> checking local->scanning.  So if scan_req contains a wdev, then yes it 
+> should be possible to compare the scan_req->wdev to the interface being 
+> changed.
 
-Signed-off-by: Jes Sorensen <Jes.Sorensen@gmail.com>
+Well, yes, but only because I was incrementally going from James's
+patch, which was checking that only.
 
-Jes
+Similar with the other local-> things being checked here, btw, though in
+some cases it might be harder to actually determine which wdev is doing
+something and which isn't.
+
+> > No, this typically cannot be fixed, and it doesn't really make sense.
+> > The NIC cannot possibly do two scans at a time since it has only a
+> > single radio resource :-)
+> 
+> So why is the scan request not per phy then?  And should mac address 
+> even affect the ongoing scan?  Can we simply change it with the scan 
+> ongoing?
+
+There are things that affect the scan from the interface, e.g.
+capability overrides, (extended) capabilities, the MAC address is used
+unless randomization is requested, etc.
+
+johannes
 
