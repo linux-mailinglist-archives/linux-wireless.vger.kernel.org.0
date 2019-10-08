@@ -2,107 +2,292 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 78222CFF92
+	by mail.lfdr.de (Postfix) with ESMTP id E1D25CFF93
 	for <lists+linux-wireless@lfdr.de>; Tue,  8 Oct 2019 19:11:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727604AbfJHRLn (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        id S1727920AbfJHRLn (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
         Tue, 8 Oct 2019 13:11:43 -0400
-Received: from nbd.name ([46.4.11.11]:40302 "EHLO nbd.name"
+Received: from nbd.name ([46.4.11.11]:40306 "EHLO nbd.name"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726138AbfJHRLm (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        id S1726322AbfJHRLm (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
         Tue, 8 Oct 2019 13:11:42 -0400
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name;
-         s=20160729; h=Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:
-        MIME-Version:Content-Type:Content-Transfer-Encoding:Content-ID:
-        Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-        :Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
+         s=20160729; h=References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
+        Sender:Reply-To:MIME-Version:Content-Type:Content-Transfer-Encoding:
+        Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+        Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
         List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=pQj+MbErxLF/AoTx92UNgwkNq1oEtPrBNHakCtTqRfk=; b=HpxjrR2zpEKmrrG4W6DWL49zIB
-        74C4ADZpN35K3Dlui72PtFXAbGO0SQMgnb7ukw9t18niNhvWvfg2ohokb4Bgi1mO9lwqfu8Ust/A7
-        LrBXJQPwDAnni5yte5E1OItN5hf27R5FCB6CKr8rmh3Tj4UefprteV+HE+AWrKmYv5nQ=;
+        bh=vU0Xd0oUnS/MKPrgr9ctW1htPiQ9Ip+rzVh0v9ySFOs=; b=msBU93QSV4DBt2O1FGYdGpFdVF
+        UxtS9zGtOWw429z5Bm+16y2tuoeR7vu1azF+mlm4WQRVCxYUZbGwmWm9iCTnSx0rYM/IFKmSHKJp0
+        7QYha7QDw+YuwjIng2aDSZvGx1LsRcr8hgmF3joJSjWhRTaDQ9JHy1vw/s+tU5ULI6+E=;
 Received: from p54ae92e8.dip0.t-ipconnect.de ([84.174.146.232] helo=maeck.local)
         by ds12 with esmtpsa (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
         (Exim 4.89)
         (envelope-from <nbd@nbd.name>)
-        id 1iHt1Q-0006Pv-5Z; Tue, 08 Oct 2019 19:11:40 +0200
+        id 1iHt1Q-0006Pu-3r; Tue, 08 Oct 2019 19:11:40 +0200
 Received: by maeck.local (Postfix, from userid 501)
-        id 778D66AF2799; Tue,  8 Oct 2019 19:11:39 +0200 (CEST)
+        id 71CEF6AF2797; Tue,  8 Oct 2019 19:11:39 +0200 (CEST)
 From:   Felix Fietkau <nbd@nbd.name>
 To:     linux-wireless@vger.kernel.org
 Cc:     johannes@sipsolutions.net
-Subject: [PATCH v2 1/3] mac80211: minstrel: remove divisions in tx status path
-Date:   Tue,  8 Oct 2019 19:11:37 +0200
-Message-Id: <20191008171139.96476-1-nbd@nbd.name>
+Subject: [PATCH v2 2/3] mac80211: minstrel_ht: replace rate stats ewma with a better moving average
+Date:   Tue,  8 Oct 2019 19:11:38 +0200
+Message-Id: <20191008171139.96476-2-nbd@nbd.name>
 X-Mailer: git-send-email 2.17.0
+In-Reply-To: <20191008171139.96476-1-nbd@nbd.name>
+References: <20191008171139.96476-1-nbd@nbd.name>
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Use a slightly different threshold for downgrading spatial streams to
-make it easier to calculate without divisions.
-Slightly reduces CPU overhead.
+Rate success probability usually fluctuates a lot under normal conditions.
+With a simple EWMA, noise and fluctuation can be reduced by increasing the
+window length, but that comes at the cost of introducing lag on sudden
+changes.
+
+This change replaces the EWMA implementation with a moving average that's
+designed to significantly reduce lag while keeping a bigger window size
+by being better at filtering out noise.
+
+It is only slightly more expensive than the simple EWMA and still avoids
+divisions in its calculation.
+
+The algorithm is adapted from an implementation intended for a completely
+different field (stock market trading), where the tradeoff of lag vs
+noise filtering is equally important. It is based on the "smoothing filter"
+from http://www.stockspotter.com/files/PredictiveIndicators.pdf.
+
+I have adapted it to fixed-point math with some constants so that it uses
+only addition, bit shifts and multiplication
+
+To better make use of the filtering and bigger window size, the update
+interval time is cut in half.
+
+For testing, the algorithm can be reverted to the older one via debugfs
 
 Signed-off-by: Felix Fietkau <nbd@nbd.name>
 ---
- net/mac80211/rc80211_minstrel.c    |  3 +--
- net/mac80211/rc80211_minstrel_ht.c | 10 ++++------
- 2 files changed, 5 insertions(+), 8 deletions(-)
+v2:
+ - remove in_1 (previous input value) from the context struct
+   the (in + in_1)/2 average was only adding some very slight smoothing
+   to the resulting average, which is not needed here
+ - remove coeff1 value, it is equal to 1 - coeff2 - coeff3
+ - reduce the number of bitshift operations to make the code a tiny bit
+   more efficient
+
+ net/mac80211/rc80211_minstrel.c    | 13 ++++---
+ net/mac80211/rc80211_minstrel.h    | 56 +++++++++++++++++++++++++++++-
+ net/mac80211/rc80211_minstrel_ht.c | 15 ++++++--
+ 3 files changed, 76 insertions(+), 8 deletions(-)
 
 diff --git a/net/mac80211/rc80211_minstrel.c b/net/mac80211/rc80211_minstrel.c
-index ee86c3333999..f73017e08111 100644
+index f73017e08111..d9b7bc7fdb33 100644
 --- a/net/mac80211/rc80211_minstrel.c
 +++ b/net/mac80211/rc80211_minstrel.c
-@@ -289,8 +289,7 @@ minstrel_tx_status(void *priv, struct ieee80211_supported_band *sband,
+@@ -157,14 +157,18 @@ minstrel_update_rates(struct minstrel_priv *mp, struct minstrel_sta_info *mi)
+ * Recalculate statistics and counters of a given rate
+ */
+ void
+-minstrel_calc_rate_stats(struct minstrel_rate_stats *mrs)
++minstrel_calc_rate_stats(struct minstrel_priv *mp,
++			 struct minstrel_rate_stats *mrs)
+ {
+ 	unsigned int cur_prob;
+ 
+ 	if (unlikely(mrs->attempts > 0)) {
+ 		mrs->sample_skipped = 0;
+ 		cur_prob = MINSTREL_FRAC(mrs->success, mrs->attempts);
+-		if (unlikely(!mrs->att_hist)) {
++		if (mp->new_avg) {
++			mrs->prob_ewma = minstrel_filter_avg_add(&mrs->avg,
++								 cur_prob);
++		} else if (unlikely(!mrs->att_hist)) {
+ 			mrs->prob_ewma = cur_prob;
+ 		} else {
+ 			/*update exponential weighted moving avarage */
+@@ -200,7 +204,7 @@ minstrel_update_stats(struct minstrel_priv *mp, struct minstrel_sta_info *mi)
+ 		struct minstrel_rate_stats *tmp_mrs = &mi->r[tmp_prob_rate].stats;
+ 
+ 		/* Update statistics of success probability per rate */
+-		minstrel_calc_rate_stats(mrs);
++		minstrel_calc_rate_stats(mp, mrs);
+ 
+ 		/* Sample less often below the 10% chance of success.
+ 		 * Sample less often above the 95% chance of success. */
+@@ -289,7 +293,8 @@ minstrel_tx_status(void *priv, struct ieee80211_supported_band *sband,
  	if (mi->sample_deferred > 0)
  		mi->sample_deferred--;
  
--	if (time_after(jiffies, mi->last_stats_update +
--				(mp->update_interval * HZ) / 1000))
-+	if (time_after(jiffies, mi->last_stats_update + mp->update_interval))
+-	if (time_after(jiffies, mi->last_stats_update + mp->update_interval))
++	if (time_after(jiffies, mi->last_stats_update +
++				mp->update_interval / (mp->new_avg ? 2 : 1)))
  		minstrel_update_stats(mp, mi);
  }
  
+diff --git a/net/mac80211/rc80211_minstrel.h b/net/mac80211/rc80211_minstrel.h
+index 51d8b2c846e7..31f6f02ab765 100644
+--- a/net/mac80211/rc80211_minstrel.h
++++ b/net/mac80211/rc80211_minstrel.h
+@@ -18,6 +18,21 @@
+ /* number of highest throughput rates to consider*/
+ #define MAX_THR_RATES 4
+ 
++/*
++ * Coefficients for moving average with noise filter (period=16),
++ * scaled by 10 bits
++ *
++ * a1 = exp(-pi * sqrt(2) / period)
++ * coeff2 = 2 * a1 * cos(sqrt(2) * 2 * pi / period)
++ * coeff3 = -sqr(a1)
++ * coeff1 = 1 - coeff2 - coeff3
++ */
++#define MINSTREL_AVG_COEFF1		(MINSTREL_FRAC(1, 1) - \
++					 MINSTREL_AVG_COEFF2 - \
++					 MINSTREL_AVG_COEFF3)
++#define MINSTREL_AVG_COEFF2		0x00001499
++#define MINSTREL_AVG_COEFF3		-0x0000092e
++
+ /*
+  * Perform EWMA (Exponentially Weighted Moving Average) calculation
+  */
+@@ -32,6 +47,41 @@ minstrel_ewma(int old, int new, int weight)
+ 	return old + incr;
+ }
+ 
++struct minstrel_avg_ctx {
++	s32 prev[2];
++};
++
++static inline int minstrel_filter_avg_add(struct minstrel_avg_ctx *ctx, s32 in)
++{
++	s32 out_1 = ctx->prev[0];
++	s32 out_2 = ctx->prev[1];
++	s32 val;
++
++	if (!in)
++		in += 1;
++
++	if (!out_1) {
++		val = out_1 = in;
++		goto out;
++	}
++
++	val = MINSTREL_AVG_COEFF1 * in;
++	val += MINSTREL_AVG_COEFF2 * out_1;
++	val += MINSTREL_AVG_COEFF3 * out_2;
++	val >>= MINSTREL_SCALE;
++
++	if (val > 1 << MINSTREL_SCALE)
++		val = 1 << MINSTREL_SCALE;
++	if (val < 0)
++		val = 1;
++
++out:
++	ctx->prev[1] = out_1;
++	ctx->prev[0] = val;
++
++	return val;
++}
++
+ struct minstrel_rate_stats {
+ 	/* current / last sampling period attempts/success counters */
+ 	u16 attempts, last_attempts;
+@@ -40,6 +90,8 @@ struct minstrel_rate_stats {
+ 	/* total attempts/success counters */
+ 	u32 att_hist, succ_hist;
+ 
++	struct minstrel_avg_ctx avg;
++
+ 	/* prob_ewma - exponential weighted moving average of prob */
+ 	u16 prob_ewma;
+ 
+@@ -95,6 +147,7 @@ struct minstrel_sta_info {
+ struct minstrel_priv {
+ 	struct ieee80211_hw *hw;
+ 	bool has_mrr;
++	bool new_avg;
+ 	u32 sample_switch;
+ 	unsigned int cw_min;
+ 	unsigned int cw_max;
+@@ -126,7 +179,8 @@ extern const struct rate_control_ops mac80211_minstrel;
+ void minstrel_add_sta_debugfs(void *priv, void *priv_sta, struct dentry *dir);
+ 
+ /* Recalculate success probabilities and counters for a given rate using EWMA */
+-void minstrel_calc_rate_stats(struct minstrel_rate_stats *mrs);
++void minstrel_calc_rate_stats(struct minstrel_priv *mp,
++			      struct minstrel_rate_stats *mrs);
+ int minstrel_get_tp_avg(struct minstrel_rate *mr, int prob_ewma);
+ 
+ /* debugfs */
 diff --git a/net/mac80211/rc80211_minstrel_ht.c b/net/mac80211/rc80211_minstrel_ht.c
-index 0ef2633349b5..21c74b200269 100644
+index 21c74b200269..96c81392e617 100644
 --- a/net/mac80211/rc80211_minstrel_ht.c
 +++ b/net/mac80211/rc80211_minstrel_ht.c
-@@ -970,23 +970,21 @@ minstrel_ht_tx_status(void *priv, struct ieee80211_supported_band *sband,
- 		 */
- 		rate = minstrel_get_ratestats(mi, mi->max_tp_rate[0]);
- 		if (rate->attempts > 30 &&
--		    MINSTREL_FRAC(rate->success, rate->attempts) <
--		    MINSTREL_FRAC(20, 100)) {
-+		    rate->success < rate->attempts / 4) {
- 			minstrel_downgrade_rate(mi, &mi->max_tp_rate[0], true);
- 			update = true;
- 		}
+@@ -737,7 +737,7 @@ minstrel_ht_update_stats(struct minstrel_priv *mp, struct minstrel_ht_sta *mi,
  
- 		rate2 = minstrel_get_ratestats(mi, mi->max_tp_rate[1]);
- 		if (rate2->attempts > 30 &&
--		    MINSTREL_FRAC(rate2->success, rate2->attempts) <
--		    MINSTREL_FRAC(20, 100)) {
-+		    rate2->success < rate2->attempts / 4) {
- 			minstrel_downgrade_rate(mi, &mi->max_tp_rate[1], false);
- 			update = true;
+ 			mrs = &mg->rates[i];
+ 			mrs->retry_updated = false;
+-			minstrel_calc_rate_stats(mrs);
++			minstrel_calc_rate_stats(mp, mrs);
+ 			cur_prob = mrs->prob_ewma;
+ 
+ 			if (minstrel_ht_get_tp_avg(mi, group, i, cur_prob) == 0)
+@@ -773,6 +773,8 @@ minstrel_ht_update_stats(struct minstrel_priv *mp, struct minstrel_ht_sta *mi,
+ 
+ 	/* try to sample all available rates during each interval */
+ 	mi->sample_count *= 8;
++	if (mp->new_avg)
++		mi->sample_count /= 2;
+ 
+ 	if (sample)
+ 		minstrel_ht_rate_sample_switch(mp, mi);
+@@ -889,6 +891,7 @@ minstrel_ht_tx_status(void *priv, struct ieee80211_supported_band *sband,
+ 	struct ieee80211_tx_rate *ar = info->status.rates;
+ 	struct minstrel_rate_stats *rate, *rate2, *rate_sample = NULL;
+ 	struct minstrel_priv *mp = priv;
++	u32 update_interval = mp->update_interval / 2;
+ 	bool last, update = false;
+ 	bool sample_status = false;
+ 	int i;
+@@ -943,6 +946,10 @@ minstrel_ht_tx_status(void *priv, struct ieee80211_supported_band *sband,
+ 
+ 	switch (mi->sample_mode) {
+ 	case MINSTREL_SAMPLE_IDLE:
++		if (mp->new_avg &&
++		    (mp->hw->max_rates > 1 ||
++		     mi->total_packets_cur < SAMPLE_SWITCH_THR))
++			update_interval /= 2;
+ 		break;
+ 
+ 	case MINSTREL_SAMPLE_ACTIVE:
+@@ -983,8 +990,7 @@ minstrel_ht_tx_status(void *priv, struct ieee80211_supported_band *sband,
  		}
  	}
  
- 	if (time_after(jiffies, mi->last_stats_update +
--				(mp->update_interval / 2 * HZ) / 1000)) {
-+				mp->update_interval / 2)) {
+-	if (time_after(jiffies, mi->last_stats_update +
+-				mp->update_interval / 2)) {
++	if (time_after(jiffies, mi->last_stats_update + update_interval)) {
  		update = true;
  		minstrel_ht_update_stats(mp, mi, true);
  	}
-@@ -1666,7 +1664,7 @@ minstrel_ht_alloc(struct ieee80211_hw *hw, struct dentry *debugfsdir)
- 		mp->has_mrr = true;
+@@ -1665,6 +1671,7 @@ minstrel_ht_alloc(struct ieee80211_hw *hw, struct dentry *debugfsdir)
  
  	mp->hw = hw;
--	mp->update_interval = 100;
-+	mp->update_interval = HZ / 10;
+ 	mp->update_interval = HZ / 10;
++	mp->new_avg = true;
  
  #ifdef CONFIG_MAC80211_DEBUGFS
  	mp->fixed_rate_idx = (u32) -1;
+@@ -1672,6 +1679,8 @@ minstrel_ht_alloc(struct ieee80211_hw *hw, struct dentry *debugfsdir)
+ 			   &mp->fixed_rate_idx);
+ 	debugfs_create_u32("sample_switch", S_IRUGO | S_IWUSR, debugfsdir,
+ 			   &mp->sample_switch);
++	debugfs_create_bool("new_avg", S_IRUGO | S_IWUSR, debugfsdir,
++			   &mp->new_avg);
+ #endif
+ 
+ 	minstrel_ht_init_cck_rates(mp);
 -- 
 2.17.0
 
