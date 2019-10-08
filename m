@@ -2,131 +2,78 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id F17DED01C4
-	for <lists+linux-wireless@lfdr.de>; Tue,  8 Oct 2019 21:56:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 463F5D0200
+	for <lists+linux-wireless@lfdr.de>; Tue,  8 Oct 2019 22:16:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730731AbfJHT4B (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 8 Oct 2019 15:56:01 -0400
-Received: from mail-ed1-f67.google.com ([209.85.208.67]:36508 "EHLO
-        mail-ed1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730452AbfJHT4B (ORCPT
+        id S1730813AbfJHUQl (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 8 Oct 2019 16:16:41 -0400
+Received: from s3.sipsolutions.net ([144.76.43.62]:47940 "EHLO
+        sipsolutions.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727570AbfJHUQl (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 8 Oct 2019 15:56:01 -0400
-Received: by mail-ed1-f67.google.com with SMTP id h2so16843931edn.3
-        for <linux-wireless@vger.kernel.org>; Tue, 08 Oct 2019 12:56:00 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=d9t6Rq0RbZ7PXIZmIcLbP2JTBMFny2QBILsKgMXZe9M=;
-        b=Nw5QEdlo56HHv75ebufO1xE7OJYJGB/ks38I0F1Wb/fItBckqxVn9kspxoClVya7wo
-         272z5Yh/4F8BtTKugP+e/QS6gWm38z8BJkZSaN+qYEH3sdeZGa9QqhucIAe9zx4PPnPn
-         y1DxXl17QxBf1CSj4hZZMjoBetSMmj5aPJh42P0JoBXnheMxn2RdAhW8w19Fk4I5or3r
-         gQczG2fNQIz9QLpNhMzwYIBqmIjg/UmlFm1ziM9Y6jaR5SZ3MRjBbzi8dHSqZA0n6eIM
-         3igJQVyq8L7LWvPKj8cC97Px/0H+YS85c5Fb1dKkomRtc2onmQV/LYXToN8oiHlARdlq
-         O6UQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=d9t6Rq0RbZ7PXIZmIcLbP2JTBMFny2QBILsKgMXZe9M=;
-        b=gA1wfQGnCcDYicGR1+RcXxp1uWtMnOa0xur+ZoMZJ72tHIYQSwF3e9XzoqnR3jxQRO
-         QnjVnunWUkTKEUtz7qETEp7ieN3NSHhgVGbrsgFkh74gO70bD6dVks/lsVzfuR7kfWPs
-         oX33G6Yjqu5eRUZQRo/v7A+Y78fVW0Vu5zn6i/duBP3dumgPrtZxiIHfkegSR9BaF8qD
-         tQByOUhmJ3Gdc1sIresI8voevaFYP1pNsHCkzSv/StWqQswOpEu33OIDbV1gDg91KFZr
-         pjRT+aiImacIwwJ9oyjI3EyUjYmDWh5402av03/J2aBG64oOTo8Pdhr0EAWY4kO0Bht2
-         SSYA==
-X-Gm-Message-State: APjAAAXNirRUyEFjUFANLkz/+YlZ0C7Ke7DhNmZB5BshNwKVksFNqEP8
-        FfPvT1NK3KCR51oAbnoyWfCPivuQW+/QulNzFwg=
-X-Google-Smtp-Source: APXvYqxwhCQ6zX6FhBdDog9G6PjHU5EwA3aadyf9i1uNik0q+vAIX6gV5dEnTsOUpcZrOljfzY8n5NHRT3gpNN7Yyes=
-X-Received: by 2002:a05:6402:32f:: with SMTP id q15mr35783586edw.143.1570564559602;
- Tue, 08 Oct 2019 12:55:59 -0700 (PDT)
-MIME-Version: 1.0
-Received: by 2002:a17:906:cc89:0:0:0:0 with HTTP; Tue, 8 Oct 2019 12:55:59
- -0700 (PDT)
-Reply-To: moneygram.1820@outlook.fr
-From:   MONEY GRAM <currency1000000@gmail.com>
-Date:   Tue, 8 Oct 2019 20:55:59 +0100
-Message-ID: <CAPqfnSEr44Oq+keY6aSvGnDk5Eta-VLMOqEX1RgMPE_LUdd7+g@mail.gmail.com>
-Subject: HERE IS YOUR MONEY GRAM PAYMENT HAS BEEN SENT TO YOU HERE IS THE M.T.C.N:78393135
-To:     undisclosed-recipients:;
+        Tue, 8 Oct 2019 16:16:41 -0400
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+        (Exim 4.92.2)
+        (envelope-from <johannes@sipsolutions.net>)
+        id 1iHvuR-00017J-Bf; Tue, 08 Oct 2019 22:16:39 +0200
+Message-ID: <9c49ec27489333d7f27831de19e9d1c9cd65eeee.camel@sipsolutions.net>
+Subject: Re: [PATCH 2/2] mac80211: Support LIVE_ADDRESS_CHANGE feature
+From:   Johannes Berg <johannes@sipsolutions.net>
+To:     Denis Kenzior <denkenz@gmail.com>,
+        James Prestwood <prestwoj@gmail.com>,
+        linux-wireless@vger.kernel.org
+Date:   Tue, 08 Oct 2019 22:16:38 +0200
+In-Reply-To: <193168d4-6466-60a4-bc89-c4a44e84ac46@gmail.com> (sfid-20191008_205058_831848_E2C7643E)
+References: <20190913195908.7871-1-prestwoj@gmail.com>
+         <20190913195908.7871-2-prestwoj@gmail.com>
+         <c6835b5c5d2a97fa82b0fb21f7b7f0056aa42e1b.camel@sipsolutions.net>
+         <90ae00044bc0834d87d3f9fb75ce63dce4cfadd5.camel@gmail.com>
+         <0b57c1288016310050ccd6233dda886fc4a89b02.camel@gmail.com>
+         <f468a8d573ddf401d2084b76eb625fef5950f265.camel@sipsolutions.net>
+         <6fa34e4c-5c81-4875-da29-cada1a078e2c@gmail.com>
+         <6530a6b06176790c5a6949d6ffccf37b506975bd.camel@sipsolutions.net>
+         <864267ec-9158-940d-6e0e-db84a395888e@gmail.com>
+         <f02b81f6dac29da911f8793b952a9efb6a1fdb62.camel@sipsolutions.net>
+         <1bb5450b-bc4e-8c83-f99e-fc7e739b08f0@gmail.com>
+         <fbb287a82656dd3f89817590e86b23d6968a2822.camel@sipsolutions.net>
+         <193168d4-6466-60a4-bc89-c4a44e84ac46@gmail.com>
+         (sfid-20191008_205058_831848_E2C7643E)
 Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.30.5 (3.30.5-1.fc29) 
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-HERE IS YOUR MONEY GRAM PAYMENT HAS BEEN SENT TO YOU HERE IS THE
-M.T.C.N:78393135
+On Tue, 2019-10-08 at 13:50 -0500, Denis Kenzior wrote:
+> Hi Johannes,
+> 
+> > > But they shouldn't change due a mac address change?  I wonder if we can
+> > > further relax the requirements to allow mac change if
+> > > NL80211_SCAN_FLAG_RANDOM_ADDR was used?
+> > 
+> > No, at least with HW scan that would completely confuse the driver -
+> > since from the driver's POV we'd remove the interface it's currently
+> > managing the scan for.
+> 
+> So help me understand this better.
 
-Attn: Beneficiary,
+include/net/mac80211.h:
 
-This is to inform you that the America Embassy office was instructed
-to transfer your fund $980,000.00 U.S Dollars compensating all the
-SCAM VICTIMS and your email was found as one of the VICTIMS. by
-America security leading team and America representative officers so
-between today the 8th of October till 1ST Of December 2019 you will
-be receiving MONEY GRAM the sum of $6,000 dollars per day. However be informed
-that we have already sent the $6,000 dollars this morning to avoid
-cancellation of your payment, remain the total sum of $980,000.00.
+       int (*hw_scan)(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
+                      struct ieee80211_scan_request *req);
 
-You have only six hours to call this office upon the receipt of this
-email the maximum amount you will be receiving per a day starting from
-today's $6,000 and the Money Transfer Control Number of today is
-below.
+How is it difficult to understand that with an API like that, it might
+not be a good idea to remove the vif from the driver while it's
+scanning?
 
-NOTE; The sent $6,000 is on hold because of the instruction from IMF
-office, they asked us to place it on hold by requesting the (Clean
-Bill Record Certificate) which will cost you $25 in order to fulfill
-all the necessary obligation to avoid any hitches while sending you
-the payment through MONEY GRAM money transfer, the necessary
-obligation I mean here is to obtain the (Clean Bill Record
-Certificate)
 
-Below is the information of today track it in our
+>   Just by virtue of copying the new 
+> mac into sdata->vif.addr 
 
-websitehttps://moneygarm.com/asp/orderStatus.asp?country=global
-to see is available to pick up by the receiver, but if we didn't here
-from you soon we'll pickup it up from line for security reason to
-avoid hackers stealing the money online.
+That's not what happens?
 
-Money Transfer Control Number M.T.C.N)::78393135
-SENDERS FIRST NAME: John
-SENDERS LAST NAME: Chun
-SENDERS COUNTRY...BENIN REPUBLIC
-TEXT QUESTION: A
-ANSWER: B
-AMOUNT: $6,000
+johannes
 
-We need the below details from you, to enable us place the payment to
-your name and transfer the fund to you.
-
-(Full Receivers name)...................
-(You're Country)................................
-(Address)......................................
-(Phone NuMBER-...............................
-(You're Age)............................
-(OCCUPATION)..REAL ESTATE..................
-(A Copy of Your ID CARD).SEE ATTACHMENTS.............
-
-HOWEVER YOU HAVE TO PAY $25 FOR THE (Clean Bill Record Certificate)
-AND THAT IS ALL YOU HAVE TO DO ASAP.
-
-The payment will be sending to below information, such as:
-
-Receiver.............. ALAN UDE
-Country................Benin Republic
-Amount: ....................$25
-Question: .....................A
-Answer:................... B
-Sender...............Name:
-MTCN :..............
-
-According to the instruction and order we received from IMF the their
-requested $25 must be made directly to the above info's.
-
-Furthermore you are advised to call us as the instruction was passed
-that within 6hours without hearing from you, Count your payment
-canceled. Number to call is below listed manager director office of
-release order:
-DR.ALAN UDE
-Director MONEY GRAM-Benin
