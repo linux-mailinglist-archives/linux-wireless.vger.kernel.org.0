@@ -2,81 +2,64 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C6F0CCFDF0
-	for <lists+linux-wireless@lfdr.de>; Tue,  8 Oct 2019 17:42:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6D82FCFE14
+	for <lists+linux-wireless@lfdr.de>; Tue,  8 Oct 2019 17:49:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727766AbfJHPm5 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 8 Oct 2019 11:42:57 -0400
-Received: from smtp.codeaurora.org ([198.145.29.96]:33014 "EHLO
-        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725908AbfJHPm5 (ORCPT
+        id S1727876AbfJHPtF (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 8 Oct 2019 11:49:05 -0400
+Received: from s3.sipsolutions.net ([144.76.43.62]:41988 "EHLO
+        sipsolutions.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726839AbfJHPtE (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 8 Oct 2019 11:42:57 -0400
-Received: by smtp.codeaurora.org (Postfix, from userid 1000)
-        id 6B9CD6119D; Tue,  8 Oct 2019 15:42:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1570549375;
-        bh=PtXv/2PG6+HWdTsnqs6llorLWiI9qSK6Mjw3frrEvdU=;
-        h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-        b=pGJZiCJetnit4uFq4GfRFyROzFHSWIhBwt/qxAwlivWc94A7dc6BzZrWg7g0riB5c
-         3bCtxc8RyXrRZVodle2EGZk4DklhswwxE1eSjmoHhzvaE85I/Fw3MI1SBPO1ofREYC
-         pUErT++2JGg4cttTjBNbhszBVzH0/o1hZ4ORR12s=
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        pdx-caf-mail.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-0.8 required=2.0 tests=ALL_TRUSTED,BAYES_00,
-        DKIM_INVALID,DKIM_SIGNED,MISSING_DATE,MISSING_MID,SPF_NONE autolearn=no
-        autolearn_force=no version=3.4.0
-Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        (Authenticated sender: kvalo@smtp.codeaurora.org)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id B58D061ADB;
-        Tue,  8 Oct 2019 15:42:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1570549375;
-        bh=PtXv/2PG6+HWdTsnqs6llorLWiI9qSK6Mjw3frrEvdU=;
-        h=Subject:From:In-Reply-To:References:To:Cc:From;
-        b=WF+BvjbczkSra7F7qLXxhbe0xA1TwPJ4MSUSWXDR5ytPA9DnHK8nO547bgjuDhjBp
-         O5vbv9uTnpFMeYjYbJ7lCB1QWA/JDp4JU4Eyp4fau3b6IXyZFy9xwsj2LYNsZJ+lY/
-         WJ7AXekaFOJixje2MwyjlQX5r3BsJZ9mdGC2jryc=
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org B58D061ADB
-Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
-Content-Type: text/plain; charset="utf-8"
+        Tue, 8 Oct 2019 11:49:04 -0400
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+        (Exim 4.92.2)
+        (envelope-from <johannes@sipsolutions.net>)
+        id 1iHrjS-00038n-WA; Tue, 08 Oct 2019 17:49:03 +0200
+Message-ID: <764782a00ba58b895add84ca87cc42db491c4e17.camel@sipsolutions.net>
+Subject: Re: [PATCH 2/2] mac80211: Support LIVE_ADDRESS_CHANGE feature
+From:   Johannes Berg <johannes@sipsolutions.net>
+To:     Denis Kenzior <denkenz@gmail.com>,
+        James Prestwood <prestwoj@gmail.com>,
+        linux-wireless@vger.kernel.org
+Date:   Tue, 08 Oct 2019 17:49:02 +0200
+In-Reply-To: <2cf6ce4c-e9b7-9927-0f6f-52433ab3c66b@gmail.com> (sfid-20191008_173841_311495_63A9CFAA)
+References: <20190913195908.7871-1-prestwoj@gmail.com>
+         <20190913195908.7871-2-prestwoj@gmail.com>
+         <c6835b5c5d2a97fa82b0fb21f7b7f0056aa42e1b.camel@sipsolutions.net>
+         <90ae00044bc0834d87d3f9fb75ce63dce4cfadd5.camel@gmail.com>
+         <fa09d946e85a637d7b49e208714945dcbcc23f76.camel@sipsolutions.net>
+         <2cf6ce4c-e9b7-9927-0f6f-52433ab3c66b@gmail.com>
+         (sfid-20191008_173841_311495_63A9CFAA)
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.30.5 (3.30.5-1.fc29) 
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH] ath10k: Fix an && vs || typo
-From:   Kalle Valo <kvalo@codeaurora.org>
-In-Reply-To: <20191007085003.GB3865@mwanda>
-References: <20191007085003.GB3865@mwanda>
-To:     Dan Carpenter <dan.carpenter@oracle.com>
-Cc:     Govind Singh <govinds@codeaurora.org>, ath10k@lists.infradead.org,
-        linux-wireless@vger.kernel.org, kernel-janitors@vger.kernel.org
-User-Agent: pwcli/0.0.0-git (https://github.com/kvalo/pwcli/) Python/2.7.12
-Message-Id: <20191008154255.6B9CD6119D@smtp.codeaurora.org>
-Date:   Tue,  8 Oct 2019 15:42:55 +0000 (UTC)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Dan Carpenter <dan.carpenter@oracle.com> wrote:
+Hi,
 
-> The kernel will Oops later in the function if either of these pointers
-> is NULL so clearly || was intended instead of &&.
-> 
-> Fixes: 3f14b73c3843 ("ath10k: Enable MSA region dump support for WCN3990")
-> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+> I concur that scanning should be checked as
+> if (sdata->local->scanning).  So Johannes you're right that the polarity 
+> is reversed.  However, __ieee80211_start_scan seems to check for 
+> local->scan_req instead to take deferred scans into account.  So I 
+> wonder if that is a better approach.
 
-Sorry, Colin was faster :)
+Hmm. I don't think it's necessary.
 
-https://patchwork.kernel.org/patch/11174955/
+We basically only get to that kind of state if ieee80211_can_scan()
+returned false - then we assign local->scan_req and defer until
+ieee80211_run_deferred_scan() is called.
 
-Patch set to Rejected.
+But in the meantime, nothing in the scan requests references the MAC
+address.
 
--- 
-https://patchwork.kernel.org/patch/11176991/
+It does mean that we should grab local->mtx though for these checks, and
+then all around the interface change, so that we can be sure we don't
+actually start scanning in the middle of the changes here.
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+johannes
 
