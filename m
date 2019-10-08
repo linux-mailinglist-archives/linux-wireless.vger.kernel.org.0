@@ -2,138 +2,118 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 05A50CF306
-	for <lists+linux-wireless@lfdr.de>; Tue,  8 Oct 2019 08:54:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 94092CF379
+	for <lists+linux-wireless@lfdr.de>; Tue,  8 Oct 2019 09:18:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730150AbfJHGyD (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 8 Oct 2019 02:54:03 -0400
-Received: from mail-lj1-f196.google.com ([209.85.208.196]:38046 "EHLO
-        mail-lj1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730131AbfJHGyC (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 8 Oct 2019 02:54:02 -0400
-Received: by mail-lj1-f196.google.com with SMTP id b20so16285098ljj.5;
-        Mon, 07 Oct 2019 23:54:01 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=zM3giIosfgoQWz0D3Ztxbeg2hJtXoytSuhU/8Ui29xY=;
-        b=hrClwW6bQURhdQAdtLH3QQvaHEvRbRkhg/qVRZhJh4zfePeHy9qhIaDOwd48ZsdZAG
-         OdzX5lGqK1+vkMZdPI/NPo+MLzxYopsGe+8KJztWeTMuD5Dm2ufz1qo0Nt4EXbNOBnrR
-         mMADUBLd6FehdtNLMI3wX3FE0VfrHSmBI/8u76wT07nA+oZAllRMu3slGtsk+hbQhLSW
-         FwgMhp+XGfJ+K4gy7ePFm5LifD/5L1lrujfsOV7MMQERj+jIdDmmzPOWwZu+iyNnqrF/
-         roTHdTdQ3lWR1dPvzsBr4gDd3dkzuV9yNDuCHhIiH7kMmGiMhkl0UqRB/5ZjRTDoenJY
-         GVVQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=zM3giIosfgoQWz0D3Ztxbeg2hJtXoytSuhU/8Ui29xY=;
-        b=b9KyKpFiH6S1VcRUGLEkYW8gHwBoAI8Uk1KVCf+F++NBBHslGwYHU1KmAwPSoU4qib
-         ow3erWZCgFgnttNSPRzTIuoGqpdO1NNQJ/cQlzrUF+XW5oE/VQyTmsgoluYBpxz9ga2D
-         LqGk5C979BY0KcC+5fRhQZreI3yZ5sVy8xMRxhus0FZHfypMHZ4okg+CilZd6cdJmRj+
-         Cc6s4k0Xnga2mECnDNWuZU/iqqTScbzqo9c0cw/dxWT4kTdGH9UIxaqR39JeD4Zggy0x
-         ABgKd8WMm7eoOXL4zphU1GeGSeaq/hGQpamQ4J7b+TJKnepMXURanHTCdXdyeHeKNK43
-         mf6w==
-X-Gm-Message-State: APjAAAWR1rsh/Ia5XLtRR2YiGKSS8KivpXX3YlNwZG2rsku+kze3ghh1
-        d/yDRVt7yvtMExyofqQE4TT0r3mt5/HzzFmyBEA=
-X-Google-Smtp-Source: APXvYqzKag52UHXcZOOg2ekztLjB8OVrAesRcb6IMb3ooihDvDOMfFX6OLSwkuzUnAyTsJeTmfIlYWrW+1uZXLuxNkY=
-X-Received: by 2002:a2e:1504:: with SMTP id s4mr12753917ljd.80.1570517639723;
- Mon, 07 Oct 2019 23:53:59 -0700 (PDT)
-MIME-Version: 1.0
-References: <20190928164843.31800-1-ap420073@gmail.com> <20190928164843.31800-13-ap420073@gmail.com>
- <20191007112215.GA1288400@bistromath.localdomain>
-In-Reply-To: <20191007112215.GA1288400@bistromath.localdomain>
-From:   Taehee Yoo <ap420073@gmail.com>
-Date:   Tue, 8 Oct 2019 15:53:48 +0900
-Message-ID: <CAMArcTXi5kamtSO28SX4NdjOvHYiEYRCMARUXhdKM9UUhk78rQ@mail.gmail.com>
-Subject: Re: [PATCH net v4 12/12] virt_wifi: fix refcnt leak in module exit routine
-To:     Sabrina Dubroca <sd@queasysnail.net>
-Cc:     David Miller <davem@davemloft.net>,
-        Netdev <netdev@vger.kernel.org>, linux-wireless@vger.kernel.org,
-        Jakub Kicinski <jakub.kicinski@netronome.com>,
-        Johannes Berg <johannes@sipsolutions.net>,
-        j.vosburgh@gmail.com, vfalico@gmail.com,
-        Andy Gospodarek <andy@greyhouse.net>,
-        =?UTF-8?B?SmnFmcOtIFDDrXJrbw==?= <jiri@resnulli.us>,
-        Roopa Prabhu <roopa@cumulusnetworks.com>, saeedm@mellanox.com,
-        manishc@marvell.com, rahulv@marvell.com, kys@microsoft.com,
-        haiyangz@microsoft.com,
-        Stephen Hemminger <stephen@networkplumber.org>,
-        sashal@kernel.org, hare@suse.de, varun@chelsio.com,
-        ubraun@linux.ibm.com, kgraul@linux.ibm.com,
-        Jay Vosburgh <jay.vosburgh@canonical.com>,
-        Cody Schuffelen <schuffelen@google.com>, bjorn@mork.no
+        id S1730161AbfJHHRv (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 8 Oct 2019 03:17:51 -0400
+Received: from mga06.intel.com ([134.134.136.31]:45785 "EHLO mga06.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1730057AbfJHHRu (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 8 Oct 2019 03:17:50 -0400
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from fmsmga003.fm.intel.com ([10.253.24.29])
+  by orsmga104.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 08 Oct 2019 00:17:49 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.67,270,1566889200"; 
+   d="scan'208";a="199737798"
+Received: from raystayl-mobl1.ger.corp.intel.com ([10.252.7.179])
+  by FMSMGA003.fm.intel.com with ESMTP; 08 Oct 2019 00:17:45 -0700
+Message-ID: <b1c63efd883452ccb5e57e107c6a0aa74bf25d49.camel@intel.com>
+Subject: Re: [PATCH] iwlwifi: fw: don't send GEO_TX_POWER_LIMIT command to
+ FW version 29
+From:   Luciano Coelho <luciano.coelho@intel.com>
+To:     You-Sheng Yang <vicamo.yang@canonical.com>,
+        Johannes Berg <johannes.berg@intel.com>,
+        Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
+        Intel Linux Wireless <linuxwifi@intel.com>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        "David S . Miller" <davem@davemloft.net>,
+        Shahar S Matityahu <shahar.s.matityahu@intel.com>,
+        Sara Sharon <sara.sharon@intel.com>,
+        Gil Adam <gil.adam@intel.com>,
+        Mordechay Goodstein <mordechay.goodstein@intel.com>,
+        Haim Dreyfuss <haim.dreyfuss@intel.com>
+Cc:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Date:   Tue, 08 Oct 2019 10:17:44 +0300
+In-Reply-To: <20191008060511.18474-1-vicamo.yang@canonical.com>
+References: <20191008060511.18474-1-vicamo.yang@canonical.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.30.5-1.1 
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Mon, 7 Oct 2019 at 20:22, Sabrina Dubroca <sd@queasysnail.net> wrote:
->
+On Tue, 2019-10-08 at 14:05 +0800, You-Sheng Yang wrote:
+> Follow-up for commit fddbfeece9c7 ("iwlwifi: fw: don't send
+> GEO_TX_POWER_LIMIT command to FW version 36"). There is no
+> GEO_TX_POWER_LIMIT command support for all revisions of FW version
+> 29, either.
+> 
+> Bugzilla: https://bugzilla.kernel.org/show_bug.cgi?id=204151
+> Signed-off-by: You-Sheng Yang <vicamo.yang@canonical.com>
+> ---
+>  drivers/net/wireless/intel/iwlwifi/mvm/fw.c | 6 +++---
+>  1 file changed, 3 insertions(+), 3 deletions(-)
+> 
+> diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/fw.c b/drivers/net/wireless/intel/iwlwifi/mvm/fw.c
+> index 32a5e4e5461f..dbba616c19de 100644
+> --- a/drivers/net/wireless/intel/iwlwifi/mvm/fw.c
+> +++ b/drivers/net/wireless/intel/iwlwifi/mvm/fw.c
+> @@ -889,14 +889,14 @@ static bool iwl_mvm_sar_geo_support(struct iwl_mvm *mvm)
+>  	 * firmware versions.  Unfortunately, we don't have a TLV API
+>  	 * flag to rely on, so rely on the major version which is in
+>  	 * the first byte of ucode_ver.  This was implemented
+> -	 * initially on version 38 and then backported to29 and 17.
+> +	 * initially on version 38 and then backported to 29 and 17.
+>  	 * The intention was to have it in 36 as well, but not all
+>  	 * 8000 family got this feature enabled.  The 8000 family is
+>  	 * the only one using version 36, so skip this version
+> -	 * entirely.
+> +	 * entirely. All revisions of -29 fw still don't have
+> +	 * GEO_TX_POWER_LIMIT supported yet.
+>  	 */
+>  	return IWL_UCODE_SERIAL(mvm->fw->ucode_ver) >= 38 ||
+> -	       IWL_UCODE_SERIAL(mvm->fw->ucode_ver) == 29 ||
+>  	       IWL_UCODE_SERIAL(mvm->fw->ucode_ver) == 17;
+>  }
 
-Hi Sabrina,
-Thank you for the review!
+Thanks for the patch!
 
-> 2019-09-28, 16:48:43 +0000, Taehee Yoo wrote:
-> > virt_wifi_newlink() calls netdev_upper_dev_link() and it internally
-> > holds reference count of lower interface.
-> >
-> > Current code does not release a reference count of the lower interface
-> > when the lower interface is being deleted.
-> > So, reference count leaks occur.
-> >
-> > Test commands:
-> >     ip link add dummy0 type dummy
-> >     ip link add vw1 link dummy0 type virt_wifi
->
-> There should also be "ip link del dummy0" in this reproducer, right?
->
-> [...]
->
-> > @@ -598,14 +634,24 @@ static int __init virt_wifi_init_module(void)
-> >       /* Guaranteed to be locallly-administered and not multicast. */
-> >       eth_random_addr(fake_router_bssid);
-> >
-> > +     err = register_netdevice_notifier(&virt_wifi_notifier);
-> > +     if (err)
-> > +             return err;
-> > +
->
-> Here err is 0.
->
-> >       common_wiphy = virt_wifi_make_wiphy();
-> >       if (!common_wiphy)
-> > -             return -ENOMEM;
-> > +             goto notifier;
->
-> err is still 0 when we jump...
->
-> >       err = rtnl_link_register(&virt_wifi_link_ops);
-> >       if (err)
-> > -             virt_wifi_destroy_wiphy(common_wiphy);
-> > +             goto destroy_wiphy;
-> >
-> > +     return 0;
-> > +
-> > +destroy_wiphy:
-> > +     virt_wifi_destroy_wiphy(common_wiphy);
-> > +notifier:
-> > +     unregister_netdevice_notifier(&virt_wifi_notifier);
-> >       return err;
-> >  }
->
-> ... so now we return 0 on failure. Can you add an "err = -ENOMEM"
-> before "common_wiphy = ..."?
->
+But I have investigated this (even) further and now I see that 3168
+doesn't have this command, but 7265D does.  The latter also uses -29,
+so we can't blindly disable all -29 versions.
 
-You're right, I will fix this in a v5 patch!
+Can you try this instead?
 
-Thanks!
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/fw.c
+b/drivers/net/wireless/intel/iwlwifi/mvm/fw.c
+index 0d2229319261..38d89ee9bd28 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/fw.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/fw.c
+@@ -906,8 +906,10 @@ static bool iwl_mvm_sar_geo_support(struct iwl_mvm
+*mvm)
+         * entirely.
+         */
+        return IWL_UCODE_SERIAL(mvm->fw->ucode_ver) >= 38 ||
+-              IWL_UCODE_SERIAL(mvm->fw->ucode_ver) == 29 ||
+-              IWL_UCODE_SERIAL(mvm->fw->ucode_ver) == 17;
++              IWL_UCODE_SERIAL(mvm->fw->ucode_ver) == 17 ||
++              (IWL_UCODE_SERIAL(mvm->fw->ucode_ver) == 29 &&
++               (mvm->trans->hw_rev &
++                CSR_HW_REV_TYPE_MSK) == CSR_HW_REV_TYPE_7265D);
+ }
+ 
+ int iwl_mvm_get_sar_geo_profile(struct iwl_mvm *mvm)
 
-> Thanks.
->
-> --
-> Sabrina
+
+--
+Cheers,
+Luca.
+
