@@ -2,94 +2,87 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 95B9ECFF1D
-	for <lists+linux-wireless@lfdr.de>; Tue,  8 Oct 2019 18:43:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E499BCFF2C
+	for <lists+linux-wireless@lfdr.de>; Tue,  8 Oct 2019 18:47:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729206AbfJHQnd (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 8 Oct 2019 12:43:33 -0400
-Received: from mail-ot1-f66.google.com ([209.85.210.66]:36983 "EHLO
-        mail-ot1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727514AbfJHQnd (ORCPT
+        id S1728634AbfJHQog (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 8 Oct 2019 12:44:36 -0400
+Received: from mail-lf1-f65.google.com ([209.85.167.65]:36546 "EHLO
+        mail-lf1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727514AbfJHQog (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 8 Oct 2019 12:43:33 -0400
-Received: by mail-ot1-f66.google.com with SMTP id k32so14583436otc.4;
-        Tue, 08 Oct 2019 09:43:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=vS/5fB54XstU4rdvgpJKZPrhcUUHcFJDqzPvMYzq7Aw=;
-        b=dmqKzUE9oRZZBh7/aqQoqcQw7cmx9ZH8reWN0u5DAQ1yhGtTTDAfVtLTtDVQk3kZ71
-         FLDy/oU/nkBnpvRU2nNbRHRbk8khRAwLeJ9frv/61Vhp8Mc7OuFpkxPBWeXkmieiOQfn
-         Vjzoga+VgBNxrsz2HzB9o9wHPb2Irhnw6QyFqN5us7cXz5dUswzmrZwr4V9cf5Aimigz
-         ftWa/J98qlgoDbr+mxKh8j3cqPiR6oHame+DRdEQ4nE9UDzE4qLQ/eT7rkBgCDU6gg0l
-         vAT1P9j7awYGpupDYnYx+OtrmlhysiaCmsKrTHn9rMDgz+cUiuqHVU1yCO0zyzIvqxL9
-         1L8w==
+        Tue, 8 Oct 2019 12:44:36 -0400
+Received: by mail-lf1-f65.google.com with SMTP id x80so12495422lff.3;
+        Tue, 08 Oct 2019 09:44:34 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=vS/5fB54XstU4rdvgpJKZPrhcUUHcFJDqzPvMYzq7Aw=;
-        b=JzWP3vYJs7HW3FNJZOozUQBP2UJSX0KiijxJEXHVjo/TOesnDTDHB9xmpSsKzjjDhl
-         wyVfB9XU6bx4cGiFnHSc1oyp3mY+qYrOHlhWCye/QF/0ebRu5bCWQsOzcUGctlZVnHCj
-         yB066udb4eBnaUl9hKEcTK/muyVzyzUqKuBVCjXgi+6jTHfjkWJEg8gaTGa5KIBa3KSr
-         tOaAnQiajx8H5G5AevvUO6gH3xsiigjANd1Gip2qIhdAcRv2nr9PYJKT29/gmath62hJ
-         jRGyhD2Ryim69bAHwXhngTqZadbHqdpvbwgC7zv7jV2emSl9vaYkqiQVMmnkZMSRNJz9
-         Yc/A==
-X-Gm-Message-State: APjAAAUMmnwReKUB5Noz7IeCYlgHrq19foZlSESAC4kMJeEpumZEUA6X
-        7o2WQ3HLUJByKurZdPc2q+NlhQJS
-X-Google-Smtp-Source: APXvYqyDq/0iYUbTxfT10aEUY65SgeenNxyo9GuSQpVtPKIiHov/xAO5zWJZIkIAzQq1BcUPeUHg1Q==
-X-Received: by 2002:a9d:6155:: with SMTP id c21mr16819491otk.370.1570553010857;
-        Tue, 08 Oct 2019 09:43:30 -0700 (PDT)
-Received: from localhost.localdomain (cpe-70-114-247-242.austin.res.rr.com. [70.114.247.242])
-        by smtp.gmail.com with ESMTPSA id j31sm5680961ota.13.2019.10.08.09.43.29
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=/oomKU3Ue2is6xiOwCMSrWMkAzmIBP6NBZwxcWGzrnw=;
+        b=Ncx0ohAi5O+mdOjWhelQZgbVSEIfc2mVvbq3bAcrUAbMlBAYvg9JVguFomb501sogo
+         AvPacSVigW5eSH7gyXED4aaEBXn9XT0jzYZl5ahUcadEQ74IP1nbTZ8UJjJ3SZzDSJaA
+         6Z1SccdhmzJdmr5IwoBp2hQrPAWFpVJY+ClWecBJEtdcVZuNiMA0FaeWGY0IozkKjIzw
+         H57sgV+vyn+WyTYD53Kh2TjkXFSSJx1nq1cFxAJly3NzWcNpI9ZaWtwLZD8q+w6Fl4xX
+         p+z9NY22O0Uue/P8bLvW3GqnamfGx5S7cKVO7Ufays+BIumjpz/Fg5s5B4Fi5fuhA9im
+         Hfew==
+X-Gm-Message-State: APjAAAVdiUnwXejkkUTaGSPWfEv9wM2ewsgoLH0gLjsQ00JDTe2gtm/e
+        OFxoe4mQkd8CXLyae07lJJU8t1Db
+X-Google-Smtp-Source: APXvYqzcteOm3uTrWh+OKbO0eERZu0OYBR+7ScJFWAjegqTtRhEImpniRIfrG2cgzJFRP/fbGIk7Mg==
+X-Received: by 2002:a19:c6d5:: with SMTP id w204mr7172045lff.53.1570553073910;
+        Tue, 08 Oct 2019 09:44:33 -0700 (PDT)
+Received: from xi.terra (c-51f1e055.07-184-6d6c6d4.bbcust.telenor.se. [85.224.241.81])
+        by smtp.gmail.com with ESMTPSA id o13sm4022281ljh.35.2019.10.08.09.44.32
         (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Tue, 08 Oct 2019 09:43:30 -0700 (PDT)
-From:   Denis Kenzior <denkenz@gmail.com>
-To:     linux-wireless@vger.kernel.org, johannes@sipsolutions.net
-Cc:     Denis Kenzior <denkenz@gmail.com>, stable@vger.kernel.org
-Subject: [PATCH] mac80211: More strictly validate .abort_scan
-Date:   Tue,  8 Oct 2019 11:33:24 -0500
-Message-Id: <20191008163324.2614-1-denkenz@gmail.com>
-X-Mailer: git-send-email 2.21.0
+        Tue, 08 Oct 2019 09:44:32 -0700 (PDT)
+Received: from johan by xi.terra with local (Exim 4.92.2)
+        (envelope-from <johan@kernel.org>)
+        id 1iHsbH-0007GE-Vz; Tue, 08 Oct 2019 18:44:40 +0200
+Date:   Tue, 8 Oct 2019 18:44:39 +0200
+From:   Johan Hovold <johan@kernel.org>
+To:     Kalle Valo <kvalo@codeaurora.org>
+Cc:     Johan Hovold <johan@kernel.org>,
+        Amitkumar Karwar <amitkarwar@gmail.com>,
+        Siva Rebbagondla <siva8118@gmail.com>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Denis Efremov <efremov@linux.com>
+Subject: Re: [PATCH 1/2] Revert "rsi: fix potential null dereference in
+ rsi_probe()"
+Message-ID: <20191008164439.GA27819@localhost>
+References: <20191004144422.13003-1-johan@kernel.org>
+ <87a7aes2oh.fsf@codeaurora.org>
+ <87pnj7grii.fsf@tynnyri.adurom.net>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <87pnj7grii.fsf@tynnyri.adurom.net>
+User-Agent: Mutt/1.12.2 (2019-09-21)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-nl80211 requires NL80211_CMD_ABORT_SCAN to have a wdev or netdev
-attribute present and checks that if netdev is provided it is UP.
-However, mac80211 does not check that an ongoing scan actually belongs
-to the netdev/wdev provided by the user.  In other words, it is possible
-for an application to cancel scans on an interface it doesn't manage.
+On Tue, Oct 08, 2019 at 06:56:37PM +0300, Kalle Valo wrote:
+> Kalle Valo <kvalo@codeaurora.org> writes:
+> 
+> > Johan Hovold <johan@kernel.org> writes:
+> >
+> >> This reverts commit f170d44bc4ec2feae5f6206980e7ae7fbf0432a0.
+> >>
+> >> USB core will never call a USB-driver probe function with a NULL
+> >> device-id pointer.
+> >>
+> >> Reverting before removing the existing checks in order to document this
+> >> and prevent the offending commit from being "autoselected" for stable.
+> >>
+> >> Signed-off-by: Johan Hovold <johan@kernel.org>
+> >
+> > I'll queue these two to v5.4.
+> 
+> Actually I'll take that back. Commit f170d44bc4ec is in -next so I have
+> to also queue these to -next.
 
-Signed-off-by: Denis Kenzior <denkenz@gmail.com>
-Cc: stable@vger.kernel.org
----
- net/mac80211/cfg.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+That's right. I'm assuming you don't rebase your branches, otherwise
+just dropping the offending patch might of course be an option instead
+of the revert.
 
-diff --git a/net/mac80211/cfg.c b/net/mac80211/cfg.c
-index 70739e746c13..ece344f9e9ca 100644
---- a/net/mac80211/cfg.c
-+++ b/net/mac80211/cfg.c
-@@ -2333,7 +2333,13 @@ static int ieee80211_scan(struct wiphy *wiphy,
- 
- static void ieee80211_abort_scan(struct wiphy *wiphy, struct wireless_dev *wdev)
- {
--	ieee80211_scan_cancel(wiphy_priv(wiphy));
-+	struct ieee80211_local *local = wiphy_priv(wiphy);
-+	struct ieee80211_sub_if_data *sdata =
-+					IEEE80211_WDEV_TO_SUB_IF(wdev);
-+	bool cancel_scan = rcu_access_pointer(local->scan_sdata) == sdata;
-+
-+	if (cancel_scan)
-+		ieee80211_scan_cancel(local);
- }
- 
- static int
--- 
-2.21.0
-
+Johan
