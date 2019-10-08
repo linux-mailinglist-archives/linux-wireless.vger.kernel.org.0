@@ -2,65 +2,71 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E9D24CFEE6
-	for <lists+linux-wireless@lfdr.de>; Tue,  8 Oct 2019 18:26:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EFF51CFEF3
+	for <lists+linux-wireless@lfdr.de>; Tue,  8 Oct 2019 18:33:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728804AbfJHQ0T (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 8 Oct 2019 12:26:19 -0400
-Received: from mail-pf1-f193.google.com ([209.85.210.193]:41291 "EHLO
-        mail-pf1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726066AbfJHQ0T (ORCPT
+        id S1728271AbfJHQdL (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 8 Oct 2019 12:33:11 -0400
+Received: from mail-oi1-f178.google.com ([209.85.167.178]:45620 "EHLO
+        mail-oi1-f178.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725966AbfJHQdL (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 8 Oct 2019 12:26:19 -0400
-Received: by mail-pf1-f193.google.com with SMTP id q7so11045000pfh.8;
-        Tue, 08 Oct 2019 09:26:18 -0700 (PDT)
+        Tue, 8 Oct 2019 12:33:11 -0400
+Received: by mail-oi1-f178.google.com with SMTP id o205so15301498oib.12
+        for <linux-wireless@vger.kernel.org>; Tue, 08 Oct 2019 09:33:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=from:subject:to:cc:references:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=nUEi7b2Xg516Vucqorkh6nwu1M0azdgypl+CVmTornQ=;
-        b=swu2CpUIg8OQXUWKvhzJvvxfnjce9dVwGW+Kp4Yhmnc1bony+SLXPqGadZxoMQ4X3K
-         ZbwuWTsEGJC+SSZBmHbdlkiEgJ6xLEoBool16ohacH09/pmV5epWPyyKXnGdpgJsJsd9
-         IH6K0bjoidSfQwjaQRtw1bEqSbsTqM9lfgFLYQKo8F2p2UogSrIS7Wy0+oWSt9EFwbFG
-         c5EgQ4SPBSHMMPpjRLT9thMWIthzCrKjCzqXqp40AYQZ846Lzj6LQincDbw44UjK7SFS
-         pc2KNdtk49cYUzCT6YF4+ikr61GIINh3zd9cL3YIsLqFxXRVCoV8L3kEk/tq8ZmlaG0b
-         VF3A==
+        h=subject:to:references:from:message-id:date:user-agent:mime-version
+         :in-reply-to:content-language:content-transfer-encoding;
+        bh=V8JzW5ufWqfsvWt/2PHfMhHGNKpfScjLqSr/LltMya0=;
+        b=eBQkQmko0ktT5ZcLSJgGdTD3HbsypIwe2a0Thu+HFYU82sPwNBIijrRU2pqlYueaFe
+         +CXGoXUPUa6Aqahtpp6Z+PVaRGdBo9lZzy+WxC1JqnpIJ3en2sjvROTZmaT3umrhyd/v
+         mY8ta2Itzp/RYNQB0ePqksqFuvxIrLOlTB8CLoGYAp/HEwgV4G0A70FgLX+SRRXj+y2n
+         oklqcUmNVcO+hau7708k7lykAVgBdGEXAKsPkfKcqrRz0hwaXrjczB1r7pQMSNczSf2B
+         ZIEr0FyKskY++HHB5gfrsMQkHv5aUniHlyIb66CfQcHnfTaNxl2ta+kIZV/5A0wSSln5
+         eGRQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:subject:to:cc:references:message-id:date
+        h=x-gm-message-state:subject:to:references:from:message-id:date
          :user-agent:mime-version:in-reply-to:content-language
          :content-transfer-encoding;
-        bh=nUEi7b2Xg516Vucqorkh6nwu1M0azdgypl+CVmTornQ=;
-        b=tt1SShwh/uVHrRcHtUlZ93LlobBNnPgur/Va5ADgMew2TbuCWBf9EXgK4F7aGxI3gu
-         DkVMnmhXFHge4c4hsxXjOmf1ACKBi6Ne4YXtEP2wgjtJLOxZiIVYvKN6vdcsEwUXSYbB
-         aeo7SzWcV+bWjuYGGUr7YCu7w0QS85K2pfK55DcmV8k5+qHzpQ1cH0cPDkixJMO05KKh
-         Pfdnm5HIdaVRWZ9gkt4Oy6sqKgE3q81SWrn4YWRJIuolCvJSV0IBXy1PIJBLMCd20pcR
-         fnsXGNg9gD+rMLSjxRTueIcZAOPvvhIA7P0paTfqYbRdtKX2phIfRIAt5MVtUNHLSbxH
-         oR4A==
-X-Gm-Message-State: APjAAAW88g/ghdgO4z8nAhw78gNC9TLzIcJcBm4yutvDCcW7Y6x+xQgD
-        LFf97HwfEogrD4FIbfdzxU9IMC3Z
-X-Google-Smtp-Source: APXvYqxSZ5mR4npwRvdNOAmaoGhD0NoABC2Uc6OTEhDb1PsXAYOYcKbb6QmxcLci24zWb95HA6Jg9A==
-X-Received: by 2002:a62:2f84:: with SMTP id v126mr40203018pfv.167.1570551977393;
-        Tue, 08 Oct 2019 09:26:17 -0700 (PDT)
-Received: from ?IPv6:2620:10d:c082:1055::2a69? ([2620:10d:c090:200::3:df92])
-        by smtp.gmail.com with ESMTPSA id b5sm15704840pgb.68.2019.10.08.09.26.15
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 08 Oct 2019 09:26:16 -0700 (PDT)
-From:   Jes Sorensen <jes.sorensen@gmail.com>
-X-Google-Original-From: Jes Sorensen <Jes.Sorensen@gmail.com>
-Subject: Re: [PATCH] rtl8xxxu: make arrays static, makes object smaller
-To:     Colin King <colin.king@canonical.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        "David S . Miller" <davem@davemloft.net>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20191007135313.8443-1-colin.king@canonical.com>
-Message-ID: <87e99b3b-6b1d-4eeb-f08f-00cfff5e3b2b@gmail.com>
-Date:   Tue, 8 Oct 2019 12:26:15 -0400
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.1.0
+        bh=V8JzW5ufWqfsvWt/2PHfMhHGNKpfScjLqSr/LltMya0=;
+        b=hysAV2ES+xSGGF9067YlLUOAxjSd+3CRaHK7pZDXUJn5lEYFa7k3zx0GZVt55dBsYE
+         +YeUphwEaR6sHm05ME/Je2pJp+ARNZSpNJjFPqBeBck7YmqbIrGMogGbwcBc9Xz1YGRc
+         yMte6RlXQDVPuR8wpWbvKiMRk4S7g4lLq3K7yFtkWmFwV4PBwPldnI5WcXRPE4YP7zQ1
+         CoJYAWf7qA8FakD89p360LE+V1n7DayBLwoWIQEqMoV/yxsbqk/Y/NGYwyA8mZv0u7MJ
+         2ujxvuDsjh1/f3eVs0AxT5+MRPZ1Cl/tSU4pddvvF3pMkBOxRaFAggsQgM3mbth4UWol
+         3TNg==
+X-Gm-Message-State: APjAAAWSIcIk3iyr/KN9jckQeZBC+TX/bSNhl68c2MLiHhiNm24zsHTq
+        JUZN5fT1IfHUDRAMFSmToI2lbh/R
+X-Google-Smtp-Source: APXvYqxuGibxthh/Oxz4VdiVH7b0AnInEQvWJWJwI7GE5NJ8QjKqhuWa2FjcnRtQEyh0IkjQ12CDPg==
+X-Received: by 2002:aca:4d85:: with SMTP id a127mr4388546oib.154.1570552390459;
+        Tue, 08 Oct 2019 09:33:10 -0700 (PDT)
+Received: from [192.168.1.249] (cpe-70-114-247-242.austin.res.rr.com. [70.114.247.242])
+        by smtp.googlemail.com with ESMTPSA id l12sm5183770oii.48.2019.10.08.09.33.09
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Tue, 08 Oct 2019 09:33:09 -0700 (PDT)
+Subject: Re: [PATCH 2/2] mac80211: Support LIVE_ADDRESS_CHANGE feature
+To:     Johannes Berg <johannes@sipsolutions.net>,
+        James Prestwood <prestwoj@gmail.com>,
+        linux-wireless@vger.kernel.org
+References: <20190913195908.7871-1-prestwoj@gmail.com>
+ <20190913195908.7871-2-prestwoj@gmail.com>
+ <c6835b5c5d2a97fa82b0fb21f7b7f0056aa42e1b.camel@sipsolutions.net>
+ <90ae00044bc0834d87d3f9fb75ce63dce4cfadd5.camel@gmail.com>
+ <0b57c1288016310050ccd6233dda886fc4a89b02.camel@gmail.com>
+ <f468a8d573ddf401d2084b76eb625fef5950f265.camel@sipsolutions.net>
+ <6fa34e4c-5c81-4875-da29-cada1a078e2c@gmail.com>
+ <6530a6b06176790c5a6949d6ffccf37b506975bd.camel@sipsolutions.net>
+ <864267ec-9158-940d-6e0e-db84a395888e@gmail.com>
+ <f02b81f6dac29da911f8793b952a9efb6a1fdb62.camel@sipsolutions.net>
+From:   Denis Kenzior <denkenz@gmail.com>
+Message-ID: <1bb5450b-bc4e-8c83-f99e-fc7e739b08f0@gmail.com>
+Date:   Tue, 8 Oct 2019 11:23:14 -0500
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.8.0
 MIME-Version: 1.0
-In-Reply-To: <20191007135313.8443-1-colin.king@canonical.com>
+In-Reply-To: <f02b81f6dac29da911f8793b952a9efb6a1fdb62.camel@sipsolutions.net>
 Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
@@ -69,33 +75,43 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 10/7/19 9:53 AM, Colin King wrote:
-> From: Colin Ian King <colin.king@canonical.com>
-> 
-> Don't populate const arrays on the stack but instead make them
-> static. Makes the object code smaller by 60 bytes.
-> 
-> Before:
->     text	   data	    bss	    dec	    hex	filename
->    15133	   8768	      0	  23901	   5d5d	realtek/rtl8xxxu/rtl8xxxu_8192e.o
->    15209	   6392	      0	  21601	   5461	realtek/rtl8xxxu/rtl8xxxu_8723b.o
->   103254	  31202	    576	 135032	  20f78	realtek/rtl8xxxu/rtl8xxxu_core.o
-> 
-> After:
->     text	   data	    bss	    dec	    hex	filename
->    14861	   9024	      0	  23885	   5d4d	realtek/rtl8xxxu/rtl8xxxu_8192e.o
->    14953	   6616	      0	  21569	   5441	realtek/rtl8xxxu/rtl8xxxu_8723b.o
->   102986	  31458	    576	 135020	  20f6c	realtek/rtl8xxxu/rtl8xxxu_core.o
-> 
-> (gcc version 9.2.1, amd64)
-> 
-> Signed-off-by: Colin Ian King <colin.king@canonical.com>
+Hi Johannes,
 
-Looks fine to me!
+>> Indeed.  But that is not what you were suggesting earlier with just
+>> checking local->scanning.  So if scan_req contains a wdev, then yes it
+>> should be possible to compare the scan_req->wdev to the interface being
+>> changed.
+> 
+> Well, yes, but only because I was incrementally going from James's
+> patch, which was checking that only.
 
-Assume you mean x86_64 since there's no such thing as an amd64 
-architecture :)
+Well, something to improve.  Sometimes it is pretty hard to figure out 
+what you mean.
 
-Cheers,
-Jes
+> 
+> Similar with the other local-> things being checked here, btw, though in
+> some cases it might be harder to actually determine which wdev is doing
+> something and which isn't.
 
+Right
+
+> 
+>>> No, this typically cannot be fixed, and it doesn't really make sense.
+>>> The NIC cannot possibly do two scans at a time since it has only a
+>>> single radio resource :-)
+>>
+>> So why is the scan request not per phy then?  And should mac address
+>> even affect the ongoing scan?  Can we simply change it with the scan
+>> ongoing?
+> 
+> There are things that affect the scan from the interface, e.g.
+> capability overrides, (extended) capabilities, the MAC address is used
+> unless randomization is requested, etc.
+> 
+
+But they shouldn't change due a mac address change?  I wonder if we can 
+further relax the requirements to allow mac change if 
+NL80211_SCAN_FLAG_RANDOM_ADDR was used?
+
+Regards,
+-Denis
