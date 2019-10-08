@@ -2,138 +2,99 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 26117CF4BA
-	for <lists+linux-wireless@lfdr.de>; Tue,  8 Oct 2019 10:13:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E04EBCF4E2
+	for <lists+linux-wireless@lfdr.de>; Tue,  8 Oct 2019 10:21:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730506AbfJHINg (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 8 Oct 2019 04:13:36 -0400
-Received: from mail-lf1-f65.google.com ([209.85.167.65]:32813 "EHLO
-        mail-lf1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730309AbfJHINg (ORCPT
+        id S1730580AbfJHIVM (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 8 Oct 2019 04:21:12 -0400
+Received: from rtits2.realtek.com ([211.75.126.72]:47339 "EHLO
+        rtits2.realtek.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1730491AbfJHIVM (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 8 Oct 2019 04:13:36 -0400
-Received: by mail-lf1-f65.google.com with SMTP id y127so11273645lfc.0;
-        Tue, 08 Oct 2019 01:13:35 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=LRw2nUwXDpX/s9reIbhkN0rYHhrGthC9PtGcXI5QI30=;
-        b=tFcsSOCGp9hyWVQnJOvF/8gyV5y4Eo7v0lg4cj3BZugrr6w3/4lEZJYSFPxoIcBJlq
-         PwudanwBLOH/9XnmkUOi+f3olI0PbcO27yupyh2vuhbazLgPInKR9bWMzttfhmDP5+WF
-         8fKPkDiFnKewoc9SVs4YZy4r2lu966cqAiculSRdjAARpO9BYDg8nAgSAO+flx/DCTMd
-         bgtm0Z3x1I3fiFn9vZ58YwdXWMBjmC/Io48qdNOd9Cot9zBbRIp/5r/36gOZCpwtA3qT
-         nzSTDe6ADQMIpdAwCEsQETpOIq+wr4ynOwrn+Z4hdW/jdKucNANS1NDUKp/20EIENded
-         4haw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=LRw2nUwXDpX/s9reIbhkN0rYHhrGthC9PtGcXI5QI30=;
-        b=WponLL7ywPPBUije8NNFrBR8Y9xZ08IPkKVK6Tsiz6d4d3rUT2NpiBOFiyxVamjl9U
-         L6C95m4JCOOgkM4KoVnVFAplsjVVzIIRNQaQseJKOTnVZKiBkXCwcMmrXR5sR7vOd29P
-         QjMnT3/o4uWSdyBke1DZqs/io+vQ1+/ErDoCtiXKu+nhteWgbCKQJDGXc2wjPXIt1tqc
-         BGIFjt01ZW7q52VuZ0ct7oeMJHOOJrkxYT6tsOTOhQ2nM7IVigqrOZo53ieTQ6aR32Cj
-         36tcZIcZVLy3/1Evj8E5f8lQxEXST4HJNEMf+OwDTkLiRMR9qv9wuXV9sIKlAse4Fz2f
-         Th+Q==
-X-Gm-Message-State: APjAAAUdJTJGIZuw9092E1QKWfLfwRb3HP8weG6CCd2TMnWoNkXT1qvI
-        VnKH6x/Z5zIAJEIXqTh3mg71drPFP6NxNxI3rRY=
-X-Google-Smtp-Source: APXvYqxp1WiyRxY0zT+XmroavDCpA4LOvQuD2KDPgzp8Ksx/cmijBwIdtGVAwM9dphQLhiKa1OpuNV13dP56aLBL4D4=
-X-Received: by 2002:a19:2207:: with SMTP id i7mr19618360lfi.185.1570522414136;
- Tue, 08 Oct 2019 01:13:34 -0700 (PDT)
+        Tue, 8 Oct 2019 04:21:12 -0400
+Authenticated-By: 
+X-SpamFilter-By: BOX Solutions SpamTrap 5.62 with qID x988L42H028120, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (RTITCASV01.realtek.com.tw[172.21.6.18])
+        by rtits2.realtek.com.tw (8.15.2/2.57/5.78) with ESMTPS id x988L42H028120
+        (version=TLSv1 cipher=DHE-RSA-AES256-SHA bits=256 verify=NOT);
+        Tue, 8 Oct 2019 16:21:04 +0800
+Received: from localhost.localdomain (172.21.68.126) by
+ RTITCASV01.realtek.com.tw (172.21.6.18) with Microsoft SMTP Server id
+ 14.3.468.0; Tue, 8 Oct 2019 16:21:03 +0800
+From:   <yhchuang@realtek.com>
+To:     <kvalo@codeaurora.org>
+CC:     <linux-wireless@vger.kernel.org>, <briannorris@chromium.org>
+Subject: [PATCH 00/10] rtw88: minor throughput improvement
+Date:   Tue, 8 Oct 2019 16:20:51 +0800
+Message-ID: <20191008082101.2494-1-yhchuang@realtek.com>
+X-Mailer: git-send-email 2.17.1
 MIME-Version: 1.0
-References: <20190928164843.31800-1-ap420073@gmail.com> <20190928164843.31800-8-ap420073@gmail.com>
- <33adc57c243dccc1dcb478113166fa01add3d49a.camel@sipsolutions.net>
- <CAMArcTWrMq0qK72VJv=6ATugMSt_b=FiE4d+xOmi2K3FE8aEyA@mail.gmail.com>
- <72bc9727d0943c56403eac03b6de69c00b0f53f6.camel@sipsolutions.net>
- <CAMArcTVeFGqA2W26=rBD5KkjRpFB6gjSgXj8dp+WWrrwJ7pr-A@mail.gmail.com> <bb48fca5a5ffb0a877b2bff8de07ec8090b63427.camel@sipsolutions.net>
-In-Reply-To: <bb48fca5a5ffb0a877b2bff8de07ec8090b63427.camel@sipsolutions.net>
-From:   Taehee Yoo <ap420073@gmail.com>
-Date:   Tue, 8 Oct 2019 17:13:22 +0900
-Message-ID: <CAMArcTVvpUsz013K6UXpbKiKfpMKaTsGmJhnv3YfiGOLnh4Zig@mail.gmail.com>
-Subject: Re: [PATCH net v4 07/12] macvlan: use dynamic lockdep key instead of subclass
-To:     Johannes Berg <johannes@sipsolutions.net>
-Cc:     David Miller <davem@davemloft.net>,
-        Netdev <netdev@vger.kernel.org>, linux-wireless@vger.kernel.org,
-        Jakub Kicinski <jakub.kicinski@netronome.com>,
-        j.vosburgh@gmail.com, vfalico@gmail.com,
-        Andy Gospodarek <andy@greyhouse.net>,
-        =?UTF-8?B?SmnFmcOtIFDDrXJrbw==?= <jiri@resnulli.us>,
-        Sabrina Dubroca <sd@queasysnail.net>,
-        Roopa Prabhu <roopa@cumulusnetworks.com>, saeedm@mellanox.com,
-        manishc@marvell.com, rahulv@marvell.com, kys@microsoft.com,
-        haiyangz@microsoft.com,
-        Stephen Hemminger <stephen@networkplumber.org>,
-        sashal@kernel.org, hare@suse.de, varun@chelsio.com,
-        ubraun@linux.ibm.com, kgraul@linux.ibm.com,
-        Jay Vosburgh <jay.vosburgh@canonical.com>,
-        Cody Schuffelen <schuffelen@google.com>, bjorn@mork.no
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain
+X-Originating-IP: [172.21.68.126]
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Mon, 7 Oct 2019 at 20:41, Johannes Berg <johannes@sipsolutions.net> wrote:
->
+From: Yan-Hsuan Chuang <yhchuang@realtek.com>
 
-Hi Johannes,
+This patchset mainly adds support for beamforming and power
+tracking. Power tracking can monitor the thermal value of
+the device and adjust corresponding power indexes, to make
+sure the RF output power is expected.
 
-> On Sat, 2019-10-05 at 18:13 +0900, Taehee Yoo wrote:
-> >
-> > If we place lockdep keys into "struct net_device", this macro would be a
-> > little bit modified and reused. And driver code shape will not be huge
-> > changed. I think this way is better than this v4 way.
-> > So I will try it.
->
-> What I was thinking was that if we can do this for every VLAN netdev,
-> why shouldn't we do it for *every* netdev unconditionally? Some code
-> could perhaps even be simplified if this was just a general part of
-> netdev allocation.
->
+And another thing is to add a debugfs for physical layer
+information. This is useful when sometimes the environment
+is too harsh for the device, and provides the activities
+for us to debug.
 
-Your opinion makes sense.
-I think there is no critical reason that every netdev shouldn't have
-own lockdep keys. By comparison, the benefits are obvious.
+The rest patches are some minor fixes.
 
-> > > But it seems to me the whole nesting also has to be applied here?
-> > >
-> > > __dev_xmit_skb:
-> > >  * qdisc_run_begin()
-> > >  * sch_direct_xmit()
-> > >    * HARD_TX_LOCK(dev, txq, smp_processor_id());
-> > >    * dev_hard_start_xmit() // say this is VLAN
-> > >      * dev_queue_xmit() // on real_dev
-> > >        * __dev_xmit_skb // recursion on another netdev
-> > >
-> > > Now if you have VLAN-in-VLAN the whole thing will recurse right?
-> > >
-> >
-> > I have checked on this routine.
-> > Only xmit_lock(HARD_TX_LOCK) could be nested. other
-> > qdisc locks(runinng, busylock) will not be nested.
->
-> OK, I still didn't check it too closely I guess, or got confused which
-> lock I should look at.
->
-> > This patch already
-> > handles the _xmit_lock key. so I think there is no problem.
->
-> Right
->
-> > But I would like to place four lockdep keys(busylock, address,
-> > running, _xmit_lock) into "struct net_device" because of code complexity.
-> >
-> > Let me know if I misunderstood anything.
->
-> Nothing to misunderstand - I was just asking/wondering why the qdisc
-> locks were not treated the same way.
->
 
-I'm always thankful for your detailed and careful reviews.
+Ping-Ke Shih (1):
+  rtw88: coex: Set 4 slot mode for A2DP
 
-> johannes
->
+Tsang-Shian Lin (1):
+  rtw88: add phy_info debugfs to show Tx/Rx physical status
 
-Thank you,
-Taehee Yoo
+Tzu-En Huang (6):
+  rtw88: add power tracking support
+  rtw88: Enable 802.11ac beamformee support
+  rtw88: config 8822c multicast address in MAC init flow
+  rtw88: add set_bitrate_mask support
+  rtw88: update regulatory settings implementaion
+  rtw88: add NL80211_EXT_FEATURE_CAN_REPLACE_PTK0 support
+
+Yan-Hsuan Chuang (2):
+  rtw88: Use rtw_write8_set to set SYS_FUNC
+  rtw88: pci: config phy after chip info is setup
+
+ drivers/net/wireless/realtek/rtw88/Makefile   |   1 +
+ drivers/net/wireless/realtek/rtw88/bf.c       | 408 +++++++++++++++++
+ drivers/net/wireless/realtek/rtw88/bf.h       |  92 ++++
+ drivers/net/wireless/realtek/rtw88/coex.c     |  24 +-
+ drivers/net/wireless/realtek/rtw88/debug.c    | 174 +++++++-
+ drivers/net/wireless/realtek/rtw88/debug.h    |   1 +
+ drivers/net/wireless/realtek/rtw88/fw.c       |   1 +
+ drivers/net/wireless/realtek/rtw88/mac.c      |   2 +-
+ drivers/net/wireless/realtek/rtw88/mac.h      |   5 +
+ drivers/net/wireless/realtek/rtw88/mac80211.c |  65 +++
+ drivers/net/wireless/realtek/rtw88/main.c     | 159 ++++++-
+ drivers/net/wireless/realtek/rtw88/main.h     | 155 ++++++-
+ drivers/net/wireless/realtek/rtw88/pci.c      |   4 +-
+ drivers/net/wireless/realtek/rtw88/phy.c      | 118 +++++
+ drivers/net/wireless/realtek/rtw88/phy.h      |  12 +
+ drivers/net/wireless/realtek/rtw88/reg.h      |   2 +
+ drivers/net/wireless/realtek/rtw88/regd.c     |  61 ++-
+ drivers/net/wireless/realtek/rtw88/rtw8822b.c | 413 ++++++++++++++++++
+ drivers/net/wireless/realtek/rtw88/rtw8822b.h |  12 +
+ drivers/net/wireless/realtek/rtw88/rtw8822c.c | 341 +++++++++++++++
+ drivers/net/wireless/realtek/rtw88/rtw8822c.h |  12 +
+ drivers/net/wireless/realtek/rtw88/rx.c       |  69 ++-
+ 22 files changed, 2056 insertions(+), 75 deletions(-)
+ create mode 100644 drivers/net/wireless/realtek/rtw88/bf.c
+ create mode 100644 drivers/net/wireless/realtek/rtw88/bf.h
+
+-- 
+2.17.1
+
