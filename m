@@ -2,114 +2,116 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2794DD028B
-	for <lists+linux-wireless@lfdr.de>; Tue,  8 Oct 2019 22:56:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 08842D02BB
+	for <lists+linux-wireless@lfdr.de>; Tue,  8 Oct 2019 23:18:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731016AbfJHU4B (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 8 Oct 2019 16:56:01 -0400
-Received: from mail-oi1-f193.google.com ([209.85.167.193]:39913 "EHLO
-        mail-oi1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730523AbfJHU4A (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 8 Oct 2019 16:56:00 -0400
-Received: by mail-oi1-f193.google.com with SMTP id w144so16061693oia.6
-        for <linux-wireless@vger.kernel.org>; Tue, 08 Oct 2019 13:56:00 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=subject:to:references:from:message-id:date:user-agent:mime-version
-         :in-reply-to:content-language:content-transfer-encoding;
-        bh=yCyVhjClXNjq0YQsKGkIC8fBv7zTeXfGYpTR/X/NJOw=;
-        b=DNaHBaGGja++PJFx1ICQDovPst/jYbNFfC14YiyjFaBEvyeEgz5BJol3O/gzA4dQx8
-         B4naJbVxTOYSRTM88dWIcWysw3r2X5+CJrpWrqM1DWMWVkTwd2zklDHkbFcal6rFkED1
-         OERDWwLkCqxWMWaK6GlyRDjzBpgUfvN1zdEaje2WOzUuohEFbmCxwuhh+0EGajPFDfY8
-         VYnS/CLtE+wc6cYQ5zao3jKI5VdQPGreYMSEuvnE3sU4bJyb4kZoDkoQtLI79nC4A2kb
-         Vm2vRWiLl7xZBTzIiRhItku54sgSfMmjQAviCLdnCHKI/WtUWwTKld3gBLP9Fa52PKQL
-         eXcQ==
+        id S1730781AbfJHVSp (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 8 Oct 2019 17:18:45 -0400
+Received: from mx4.ucr.edu ([138.23.248.66]:2395 "EHLO mx4.ucr.edu"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1730720AbfJHVSp (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 8 Oct 2019 17:18:45 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
+  d=ucr.edu; i=@ucr.edu; q=dns/txt; s=selector3;
+  t=1570569525; x=1602105525;
+  h=mime-version:from:date:message-id:subject:to;
+  bh=7ivXoMVu8s+JtT7SVGYU6lcEvBBmpcUMZbNR5PyOLRg=;
+  b=jiVFkVxXXBxd7w1nT73nX00z2hipuPXtmwSWQZR2Sn/8RZCTGSPzRCpR
+   QKjPEcmQHW17yuD0qF5ZSlTTksB0V/v4sQ4w06OHNAfbUUUsFvjiMhGb0
+   JiCqGmjtiilAKkzxk3gYIa+e3w1xLvq5oUL9mODL6xDnotdqnFkULVyOe
+   st+gWooVeA0wBq5CHfFajtTmkrnuLcw33tPOnvy4s36DQ/gfETQv1qO01
+   HSWSuTxDCEBx1ptf30A1wMBApx/Rgto2SLNl9xkJwIreuD6qRjoLAwxvd
+   rXS4o7w4MHsgbHnPh5vlG1hO1XfoGhbdhKhCEkcxX3Cr7qaOI1KIxwxsb
+   A==;
+IronPort-SDR: hJsPqtPI01xeRiZcky+kyZLKy5fyw1o4O8OqpuFT2TRfPb1fBMZbWvvWeH9ipkopSBUrecrKHZ
+ ANdGYNaThmnqsfW6x8mKP2d/uw51JJ8KR16GMPAWKs8vDcm4+wWvd6TfSKlq7ln6q0gsLRJH9o
+ xs7Ho9cbGMXVHWQ1Yc3WGRjQC92IjdbWIGVoVe6E5bT0SHEB3OF39svN3y6RYaVKmYoC5ORLpb
+ Ri9UZHtrBUN8kv6oJj4LyDWk3FtvZLKTmWxzO7foL/GI1x/sWfZdF/Zuy9D9FKV26z1VqagrRB
+ j00=
+IronPort-PHdr: =?us-ascii?q?9a23=3A4rgGkB+kUsQGRf9uRHKM819IXTAuvvDOBiVQ1K?=
+ =?us-ascii?q?B20uocTK2v8tzYMVDF4r011RmVBN6dtqMP0rSP+4nbGkU4qa6bt34DdJEeHz?=
+ =?us-ascii?q?Qksu4x2zIaPcieFEfgJ+TrZSFpVO5LVVti4m3peRMNQJW2aFLduGC94iAPER?=
+ =?us-ascii?q?vjKwV1Ov71GonPhMiryuy+4ZLebxhGiTanYb5/KBq6oRjQu8ULnIBvNrs/xh?=
+ =?us-ascii?q?zVr3VSZu9Y33loJVWdnxb94se/4ptu+DlOtvwi6sBNT7z0c7w3QrJEAjsmNX?=
+ =?us-ascii?q?s15NDwuhnYUQSP/HocXX4InRdOHgPI8Qv1Xpb1siv9q+p9xCyXNtD4QLwoRT?=
+ =?us-ascii?q?iv6bpgRQT2gykbKTE27GDXitRxjK1FphKhuwd/yJPQbI2MKfZyYr/RcdYcSG?=
+ =?us-ascii?q?FcXMheSjZBD5uzYIUPAeQPPvtWoZfhqFYVsRuyGROhCP/zxjNUhHL727Ax3e?=
+ =?us-ascii?q?Q7EQHB2QwtB9ABsHXVrdX1KacSVv2+w6rIzTrZbvNdxDDw6YjJcxAhu/6MXK?=
+ =?us-ascii?q?58fdbfxEQ0CgPKkk+QpZb7MDyIy+QAqm6W5PdjW+K3k2MrtR19rzy1ysovio?=
+ =?us-ascii?q?TFnJ8Zx1HG+Cljwos5ONu1Q1Nhb9G+CptfrSSaOpNzQsMlXm5npj43yqYDuZ?=
+ =?us-ascii?q?6nZCgKz4knxwLHZ/yHbYeI5hXjWf6UIThihXJlfKuzhxK88US90+H8WMu53E?=
+ =?us-ascii?q?tQoipKldnMsX8N1xjN5cSdVvR9+UKh1S6O1wDV9O5EPVg5mbTHJ5Ml2LI9lZ?=
+ =?us-ascii?q?oevV7eEiL3mkj6lq2belg89uit8evnY7HmppGGN49zjwHzKqQvm82/AesiMw?=
+ =?us-ascii?q?gCQ3SX9Oqn2b3+4UL5Wq9GgeMrnanEqJzaP9gUpralAw9J1YYu8xK/Dzag0N?=
+ =?us-ascii?q?QFkngLNVxEeBOdj4f3P1HBPuv4DeykjlSynzdk2erGMqfiAprTNHjDlqnufb?=
+ =?us-ascii?q?Jn505b0gozwoMX25UBKLYBKfT1V1S5ntHCAVdtMQu0yuDhBc5VzYIGQmWLH7?=
+ =?us-ascii?q?OYN6XJ91mF+rRra6OgbZEUtH7GbbAA5vrqgGVz0QsRdLek2LMbYW61G/BhLV?=
+ =?us-ascii?q?nfZ3fw1JNJFWYMoxp7U+3whVmPSiV7eXm/ReQ/6ys9BYbgCp3MAsirjaCN0T?=
+ =?us-ascii?q?mTAJJbfCZFB0qKHHOucJ+LH78IaSSPMopinyYCWLyJVYAsz1etuRX8xr4hKf?=
+ =?us-ascii?q?DbqQMCspe25dln5/DU3SMy/D08W9WP02iMFzkvtn4DXXk70L0p8h818UuKza?=
+ =?us-ascii?q?Ut268QLtdU/f4cF15ibZM=3D?=
+X-IronPort-Anti-Spam-Filtered: true
+X-IronPort-Anti-Spam-Result: =?us-ascii?q?A2E+AgCt/Jxdh0enVdFmHgFDDIFThBC?=
+ =?us-ascii?q?ETY5ihRcBliKBewEIAQEBDi8BAYcIIzYHDgIDCQEBBQEBAQEBBQQBAQIQAQE?=
+ =?us-ascii?q?BCA0JCCmFQII6KQGDVRF8DwImAiQSAQUBIgEaGoMAggsFohqBAzyLJoEyiGY?=
+ =?us-ascii?q?BCQ2BSBJ6KIwOgheMM4JYBIE5AQEBlS+WVwEGAoIQFAOMUYhFG4IqlxaOLZl?=
+ =?us-ascii?q?PDyOBNgOCCDMaJX8GZ4FPTxAUgWmOTCSRRAEB?=
+X-IPAS-Result: =?us-ascii?q?A2E+AgCt/Jxdh0enVdFmHgFDDIFThBCETY5ihRcBliKBe?=
+ =?us-ascii?q?wEIAQEBDi8BAYcIIzYHDgIDCQEBBQEBAQEBBQQBAQIQAQEBCA0JCCmFQII6K?=
+ =?us-ascii?q?QGDVRF8DwImAiQSAQUBIgEaGoMAggsFohqBAzyLJoEyiGYBCQ2BSBJ6KIwOg?=
+ =?us-ascii?q?heMM4JYBIE5AQEBlS+WVwEGAoIQFAOMUYhFG4IqlxaOLZlPDyOBNgOCCDMaJ?=
+ =?us-ascii?q?X8GZ4FPTxAUgWmOTCSRRAEB?=
+X-IronPort-AV: E=Sophos;i="5.67,272,1566889200"; 
+   d="scan'208";a="81493384"
+Received: from mail-lf1-f71.google.com ([209.85.167.71])
+  by smtpmx4.ucr.edu with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 08 Oct 2019 14:18:44 -0700
+Received: by mail-lf1-f71.google.com with SMTP id z7so21799lfj.19
+        for <linux-wireless@vger.kernel.org>; Tue, 08 Oct 2019 14:18:43 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=yCyVhjClXNjq0YQsKGkIC8fBv7zTeXfGYpTR/X/NJOw=;
-        b=JPasWP7DPZrQ6Fv6O/z2nfY7dg2ABW2wJD3ooxYx/VY1kAf3usiqYcFZPXtNrJpiJU
-         HP2agHeyK+CT+0l8zt762WlaKQKNxe8xu+Gs9SzE4zmqr1elWOKypHqPYtSUWk3hcYa/
-         78Magc1q00VpXHKQ07M0wO2YPKtsGzICfH+66i//rcTdzOaKr/Rl4rHvcVox9afkG9LV
-         c6I7GJ0hq32WTEWWnrFg9Eyg7t0wF9SHB5wRd6AL8ZR9VctM2LHAHpbX1cEkliA0oP/o
-         LH8x2IIlxMhSO8upSmC9UZWLwpJI4yjSTm95z0tcstHZuLDi7YCnT+bNMcMbQRZ9lxvx
-         bz+g==
-X-Gm-Message-State: APjAAAULhwOll57M0GiKY9uyhZuZEU90qZGs3xOOc9852Svk0L1F9Xw5
-        /TgmF/hS/29OOmEZZuu9d8rzShzJ
-X-Google-Smtp-Source: APXvYqz5Kupsufgbz2AcCODlYzp/2aSWdKR6FSTc6aV/6ZZMAv62BjgkqI8cyluwSFshZP0MM5IdhA==
-X-Received: by 2002:aca:f1c1:: with SMTP id p184mr5219872oih.43.1570568159925;
-        Tue, 08 Oct 2019 13:55:59 -0700 (PDT)
-Received: from [192.168.1.249] (cpe-70-114-247-242.austin.res.rr.com. [70.114.247.242])
-        by smtp.googlemail.com with ESMTPSA id o23sm5884620ote.67.2019.10.08.13.55.57
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Tue, 08 Oct 2019 13:55:58 -0700 (PDT)
-Subject: Re: [PATCH 2/2] mac80211: Support LIVE_ADDRESS_CHANGE feature
-To:     Johannes Berg <johannes@sipsolutions.net>,
-        James Prestwood <prestwoj@gmail.com>,
-        linux-wireless@vger.kernel.org
-References: <20190913195908.7871-1-prestwoj@gmail.com>
- <20190913195908.7871-2-prestwoj@gmail.com>
- <c6835b5c5d2a97fa82b0fb21f7b7f0056aa42e1b.camel@sipsolutions.net>
- <90ae00044bc0834d87d3f9fb75ce63dce4cfadd5.camel@gmail.com>
- <0b57c1288016310050ccd6233dda886fc4a89b02.camel@gmail.com>
- <f468a8d573ddf401d2084b76eb625fef5950f265.camel@sipsolutions.net>
- <6fa34e4c-5c81-4875-da29-cada1a078e2c@gmail.com>
- <6530a6b06176790c5a6949d6ffccf37b506975bd.camel@sipsolutions.net>
- <864267ec-9158-940d-6e0e-db84a395888e@gmail.com>
- <f02b81f6dac29da911f8793b952a9efb6a1fdb62.camel@sipsolutions.net>
- <1bb5450b-bc4e-8c83-f99e-fc7e739b08f0@gmail.com>
- <fbb287a82656dd3f89817590e86b23d6968a2822.camel@sipsolutions.net>
- <193168d4-6466-60a4-bc89-c4a44e84ac46@gmail.com>
- <9c49ec27489333d7f27831de19e9d1c9cd65eeee.camel@sipsolutions.net>
-From:   Denis Kenzior <denkenz@gmail.com>
-Message-ID: <cc2cee76-2a83-17ad-0e7a-ba71075e1497@gmail.com>
-Date:   Tue, 8 Oct 2019 15:55:56 -0500
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.8.0
+        h=x-gm-message-state:mime-version:from:date:message-id:subject:to;
+        bh=BzqX1zVw4wq3Gt+nW+YozxJEWLVjzz1XyMCyK/6yVFo=;
+        b=bAHYrYp2keqWyqQrfIlJxfqczpjdJsi8lZdB1PcrdaTmzygYPO6efsaGYq45mDYnmM
+         i0ZYFXzKVyuuoP0kIBcNUHXtkYUvaAPc/w6ydzQ0rvUww6VyDiZxH5CIKuALQDVeuaYZ
+         bqLVOJwn9sudDDEZboIZ2B6owWQHKPkdjxHCMmmRszeeineo4M3Bg203dibMcZb0pqFc
+         tVygUiTfTUJENBrbeCJqx7m+wVY4gccrhFtuvX+al0ZVN0Za/iiyhC02/KWwkNOxPrlP
+         OeSoMkfUcj4U2XtqxZWg1XwbkXVtCX372Mh6IB79DiGm2hsA7LRZozFoVWLhQpye6PDu
+         xMDw==
+X-Gm-Message-State: APjAAAU3FUArkWj+DAvhfSyo6FfMDdFtobxD6OSlj8b7zIarXyu6MD+z
+        qojnGEByDxlQaS1UMoX0nz9tbqxeGYuL8x5dtQ87oZl5bfizWYBpBpsb3pUMNDVopfORUrNV4x2
+        tmg9itj/L5X5FTBFjUEn/RO1AiSDUomzcKSEhiuOROY5z
+X-Received: by 2002:a2e:634e:: with SMTP id x75mr152653ljb.25.1570569521567;
+        Tue, 08 Oct 2019 14:18:41 -0700 (PDT)
+X-Google-Smtp-Source: APXvYqwxdSHEcSfRKYlPljj5Tuv1lx9cKQ4bNLJxj+P06OlnAhwoDIezvXyKWld7+DEaALP61IUuVX5UPYX+YpMFYDk=
+X-Received: by 2002:a2e:634e:: with SMTP id x75mr152642ljb.25.1570569521308;
+ Tue, 08 Oct 2019 14:18:41 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <9c49ec27489333d7f27831de19e9d1c9cd65eeee.camel@sipsolutions.net>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+From:   Yizhuo Zhai <yzhai003@ucr.edu>
+Date:   Tue, 8 Oct 2019 14:19:23 -0700
+Message-ID: <CABvMjLQ0Qgzk74yg4quZG4CMKy8pb6pV3XGm_cg4NRkTiCHaKA@mail.gmail.com>
+Subject: Potential uninitialized variables in cfg80211
+To:     Johannes Berg <johannes@sipsolutions.net>,
+        "David S. Miller" <davem@davemloft.net>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi Johannes,
+Hi All:
+net/wireless/chan.c:
+Inside function cfg80211_chandef_compatible(), variable "c1_pri40",
+" c2_pri40", "c1_pri80" and "c2_pri80" could be uninitialized if
+chandef_primary_freqs() fails. However, they are used later in the if
+statement to decide the control flow, which is potentially unsafe.
 
-On 10/8/19 3:16 PM, Johannes Berg wrote:
-> On Tue, 2019-10-08 at 13:50 -0500, Denis Kenzior wrote:
->> Hi Johannes,
->>
->>>> But they shouldn't change due a mac address change?  I wonder if we can
->>>> further relax the requirements to allow mac change if
->>>> NL80211_SCAN_FLAG_RANDOM_ADDR was used?
->>>
->>> No, at least with HW scan that would completely confuse the driver -
->>> since from the driver's POV we'd remove the interface it's currently
->>> managing the scan for.
->>
->> So help me understand this better.
-> 
-> include/net/mac80211.h:
-> 
->         int (*hw_scan)(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
->                        struct ieee80211_scan_request *req);
-> 
-> How is it difficult to understand that with an API like that, it might
-> not be a good idea to remove the vif from the driver while it's
-> scanning?
+The patch is hard since we do not know the correct value to initialize them.
+-- 
+Kind Regards,
 
-Right, so you're talking in the context of this implementation which 
-performs a remove/add interface.  You're right about that.
+Yizhuo Zhai
 
-But I was asking more in general terms.  If all we're doing is scanning, 
-can we just change the mac?  Anyway, not important.  Maybe I bring this 
-up once this set is accepted.
-
-Regards,
--Denis
+Computer Science, Graduate Student
+University of California, Riverside
