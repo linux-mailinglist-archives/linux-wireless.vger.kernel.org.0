@@ -2,73 +2,83 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 7C376D0A7E
-	for <lists+linux-wireless@lfdr.de>; Wed,  9 Oct 2019 11:01:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 65F9DD0B17
+	for <lists+linux-wireless@lfdr.de>; Wed,  9 Oct 2019 11:27:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729883AbfJIJB3 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 9 Oct 2019 05:01:29 -0400
-Received: from szxga07-in.huawei.com ([45.249.212.35]:52718 "EHLO huawei.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1726579AbfJIJB2 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 9 Oct 2019 05:01:28 -0400
-Received: from DGGEMS410-HUB.china.huawei.com (unknown [172.30.72.58])
-        by Forcepoint Email with ESMTP id 753B350DD7A12F2FFBEB;
-        Wed,  9 Oct 2019 17:01:26 +0800 (CST)
-Received: from huawei.com (10.90.53.225) by DGGEMS410-HUB.china.huawei.com
- (10.3.19.210) with Microsoft SMTP Server id 14.3.439.0; Wed, 9 Oct 2019
- 17:01:16 +0800
-From:   zhengbin <zhengbin13@huawei.com>
-To:     <pkshih@realtek.com>, <kvalo@codeaurora.org>,
-        <linux-wireless@vger.kernel.org>, <netdev@vger.kernel.org>
-CC:     <zhengbin13@huawei.com>
-Subject: [PATCH RESEND] rtlwifi: rtl8192ee: Remove set but not used variable 'err'
-Date:   Wed, 9 Oct 2019 17:08:27 +0800
-Message-ID: <1570612107-13286-1-git-send-email-zhengbin13@huawei.com>
-X-Mailer: git-send-email 2.7.4
+        id S1730144AbfJIJ1G (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 9 Oct 2019 05:27:06 -0400
+Received: from wout4-smtp.messagingengine.com ([64.147.123.20]:54045 "EHLO
+        wout4-smtp.messagingengine.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1729747AbfJIJ1G (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Wed, 9 Oct 2019 05:27:06 -0400
+Received: from compute6.internal (compute6.nyi.internal [10.202.2.46])
+        by mailout.west.internal (Postfix) with ESMTP id 485B3520;
+        Wed,  9 Oct 2019 05:27:05 -0400 (EDT)
+Received: from mailfrontend2 ([10.202.2.163])
+  by compute6.internal (MEProxy); Wed, 09 Oct 2019 05:27:05 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kroah.com; h=
+        date:from:to:cc:subject:message-id:references:mime-version
+        :content-type:in-reply-to; s=fm2; bh=SU9uF8IClSvEO6f2AACsW6k3zkd
+        /WItSqIelcQgWmJc=; b=IxBwvnR7dlnFRaqZyDEHEYMR7cA2MARwEDma9Hit0tB
+        Sc46MWOOj5DlEJrPU6DRlIPxr/GTLBRTQygN76OYyyMWgDTyoMJCZoMcqh6SuCCJ
+        1pAXlRsUtCWPBneQ8lqCKANIOz5XbFmKG7GmnDBHiNui1kePaIvfkUQn7i4Xt+sw
+        jHQLQmMFexhurpvWxkBdHIPueMCjQt8pubzC0P9WLRcW99GztpB6QWDUVxrqe7Wa
+        /9nz+pHNf0bbmyvLkII9vmLu8XwC2buZH3yWTqDDK6ZYi2LWQ0xty2LlGJ1BmhtP
+        A7LvIcDS7Ka+w155n1ypXTDx3KMX3k3o7/mOQSTMJdA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+        messagingengine.com; h=cc:content-type:date:from:in-reply-to
+        :message-id:mime-version:references:subject:to:x-me-proxy
+        :x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; bh=SU9uF8
+        IClSvEO6f2AACsW6k3zkd/WItSqIelcQgWmJc=; b=Hku/QXSc/xe8gg0frCKPv9
+        /9g2NFDP/H9gFdajyQTCJAKs94TadrdFFR/GLC1jbxmgfRAzi4rVe56lEgU8l0pt
+        K4dSPFuQ6yaWJSBSBXwhooImTKzfdrV2vdMcAcUPul+uYmagLXEqyMHhCB4X3eyI
+        AOk8Xhm7Hb5fobWXBVOkQWlsUsRDpioJpys+VPOnDwEkAQFoHWvPP5iDYChRw9h3
+        du7kwTsiqwGdzeeLQZIyv+zFGVXlVR1JvMsartmtaE44E1OuJp+oEDTtFWIFxoMY
+        5Znw+yMTGoHi5wKlG/VHTimq8gGi3cIC5Cm4+G82yYmPe7yK6SElB4URRT3sdX7g
+        ==
+X-ME-Sender: <xms:6KedXUzkk6FLOGZe17s5Lc4ERH6Ss1lAsvlrOdNbMYJnTtvmkz9Ghg>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedufedriedtgddugeegucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
+    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
+    cujfgurhepfffhvffukfhfgggtuggjfgesthdtredttdervdenucfhrhhomhepifhrvghg
+    ucfmjfcuoehgrhgvgheskhhrohgrhhdrtghomheqnecukfhppeekfedrkeeirdekledrud
+    dtjeenucfrrghrrghmpehmrghilhhfrhhomhepghhrvghgsehkrhhorghhrdgtohhmnecu
+    vehluhhsthgvrhfuihiivgeptd
+X-ME-Proxy: <xmx:6KedXbnA_V2ODD9HonmdWk_X3aWMKm6qCwwzFYKaH24BZB4DQNifeQ>
+    <xmx:6KedXSIzTw-8kxPfXN7YlHBLIGKFOgvYrjH6SVSXIkKJw0z50R35Yw>
+    <xmx:6KedXVv7OFryIXz6Py_5rR0nMG6hxj5gcBoZPjyW7PgRUTrvMdSTVw>
+    <xmx:6KedXZwWMWoUP9twqAhISY15MCmFRvQ0noNTD1dm6s2XeprvKo6-Ww>
+Received: from localhost (83-86-89-107.cable.dynamic.v4.ziggo.nl [83.86.89.107])
+        by mail.messagingengine.com (Postfix) with ESMTPA id 1B348D6005B;
+        Wed,  9 Oct 2019 05:27:04 -0400 (EDT)
+Date:   Wed, 9 Oct 2019 11:27:02 +0200
+From:   Greg KH <greg@kroah.com>
+To:     Johannes Berg <johannes@sipsolutions.net>
+Cc:     linux-wireless@vger.kernel.org, stable@vger.kernel.org,
+        Johannes Berg <johannes.berg@intel.com>
+Subject: Re: [PATCH 4.4, 4.9, 4.14, 4.19] nl80211: validate beacon head
+Message-ID: <20191009092702.GA3901624@kroah.com>
+References: <1570603265-@changeid>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [10.90.53.225]
-X-CFilter-Loop: Reflected
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1570603265-@changeid>
+User-Agent: Mutt/1.12.2 (2019-09-21)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Fixes gcc '-Wunused-but-set-variable' warning:
+On Wed, Oct 09, 2019 at 08:41:09AM +0200, Johannes Berg wrote:
+> From: Johannes Berg <johannes.berg@intel.com>
+> 
+> Commit 8a3347aa110c76a7f87771999aed491d1d8779a8 upstream.
 
-drivers/net/wireless/realtek/rtlwifi/rtl8192ee/fw.c: In function rtl92ee_download_fw:
-drivers/net/wireless/realtek/rtlwifi/rtl8192ee/fw.c:111:6: warning: variable err set but not used [-Wunused-but-set-variable]
+I don't see that commit in Linus's tree :(
 
-Reported-by: Hulk Robot <hulkci@huawei.com>
-Signed-off-by: zhengbin <zhengbin13@huawei.com>
-Acked-by: Ping-Ke Shih <pkshih@realtek.com>
----
- drivers/net/wireless/realtek/rtlwifi/rtl8192ee/fw.c | 5 +----
- 1 file changed, 1 insertion(+), 4 deletions(-)
+Is this f88eb7c0d002 ("nl80211: validate beacon head")?
 
-diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8192ee/fw.c b/drivers/net/wireless/realtek/rtlwifi/rtl8192ee/fw.c
-index 67305ce..0546242 100644
---- a/drivers/net/wireless/realtek/rtlwifi/rtl8192ee/fw.c
-+++ b/drivers/net/wireless/realtek/rtlwifi/rtl8192ee/fw.c
-@@ -108,7 +108,6 @@ int rtl92ee_download_fw(struct ieee80211_hw *hw, bool buse_wake_on_wlan_fw)
- 	struct rtlwifi_firmware_header *pfwheader;
- 	u8 *pfwdata;
- 	u32 fwsize;
--	int err;
- 	enum version_8192e version = rtlhal->version;
+thanks,
 
- 	if (!rtlhal->pfirmware)
-@@ -146,9 +145,7 @@ int rtl92ee_download_fw(struct ieee80211_hw *hw, bool buse_wake_on_wlan_fw)
- 	_rtl92ee_write_fw(hw, version, pfwdata, fwsize);
- 	_rtl92ee_enable_fw_download(hw, false);
-
--	err = _rtl92ee_fw_free_to_go(hw);
--
--	return 0;
-+	return _rtl92ee_fw_free_to_go(hw);
- }
-
- static bool _rtl92ee_check_fw_read_last_h2c(struct ieee80211_hw *hw, u8 boxnum)
---
-2.7.4
-
+greg k-h
