@@ -2,25 +2,25 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id DD435D09C6
-	for <lists+linux-wireless@lfdr.de>; Wed,  9 Oct 2019 10:27:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9BE75D09D3
+	for <lists+linux-wireless@lfdr.de>; Wed,  9 Oct 2019 10:29:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729548AbfJII1S (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 9 Oct 2019 04:27:18 -0400
-Received: from smtp.codeaurora.org ([198.145.29.96]:60704 "EHLO
+        id S1727657AbfJII2d (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 9 Oct 2019 04:28:33 -0400
+Received: from smtp.codeaurora.org ([198.145.29.96]:35686 "EHLO
         smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725776AbfJII1S (ORCPT
+        with ESMTP id S1725848AbfJII2d (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 9 Oct 2019 04:27:18 -0400
+        Wed, 9 Oct 2019 04:28:33 -0400
 Received: by smtp.codeaurora.org (Postfix, from userid 1000)
-        id 9029761230; Wed,  9 Oct 2019 08:27:11 +0000 (UTC)
+        id 7B8BC61AC6; Wed,  9 Oct 2019 08:28:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1570609637;
-        bh=SlauZ4D8HLCxXEiHQM7t8QAJWzhEXJDLKsZ+hcRK+f0=;
+        s=default; t=1570609712;
+        bh=HbZdDa2cOuuT9V7lXu+I+zSgZiv78NTVmAzMtH+i/9M=;
         h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-        b=lLQrx+AWxhce9300FQpQjXBZn8PDbkdTuajjUBgguNgnL+2e40CC8+IWiBJ9ePaqc
-         4qkUbxWMgXFhOUl45npJkzGzlfeWmSu+qcANd7zU1U4jN0sI3yRi48g8mPKSmb2RnP
-         mGCwYlPNGoLc9gld/ykPTvNFa8mEIhie6Ro/kTeE=
+        b=K538711DcIhJnteovFc+JdlEiNz8SUHYidnlAfp6Gb6qnSJLjSrdb0KxuwRZTs9un
+         qbNbyEa5+iBx05gnGWeqMUAgou/imCNgEdL7pjPwGoMvuJmxCGUUxP5KPN0EBq1gjN
+         2/6yqPonn1gb4mVOr/qJnYmgBEugoGNhAeaymc6M=
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         pdx-caf-mail.web.codeaurora.org
 X-Spam-Level: 
@@ -31,50 +31,63 @@ Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
         (Authenticated sender: kvalo@smtp.codeaurora.org)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id E2BE261CB7;
-        Wed,  9 Oct 2019 08:27:09 +0000 (UTC)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 2CF80602A9;
+        Wed,  9 Oct 2019 08:28:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1570609631;
-        bh=SlauZ4D8HLCxXEiHQM7t8QAJWzhEXJDLKsZ+hcRK+f0=;
+        s=default; t=1570609710;
+        bh=HbZdDa2cOuuT9V7lXu+I+zSgZiv78NTVmAzMtH+i/9M=;
         h=Subject:From:In-Reply-To:References:To:Cc:From;
-        b=X4cpT/lzoG2Y5DFNvnv7+ZtIbTKSY/C0Qd+YnOhtWfMtp7dFmghgj9fRdmal2439t
-         EwLezsU/X5qoXw0Fx7HqAxLc59yK4aD4LbDpC5OfOwdknXYlReu9E4ZCIptIl0aFdy
-         pa7NtTSoZRP+NJ1v4SdPgtswvP5bE86ro2J7dRnA=
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org E2BE261CB7
+        b=GwhbOQpX0nN5FqRep6gJ9G4j4uj/jE9vs51Jc0GzV/UNTdLpTeil51JcZK7RCUC5+
+         1cDMabGFzmeYpTrD6YwB1NuEAgerDcnT5UwjE+ZD854Baes9OxLIFpTp3iaHDpIlSY
+         PLPzDV2rpsAlgvABiJ8bHVRiPDMnaUApMuKBx9dw=
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 2CF80602A9
 Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
 Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH] rtw88: Fix an error message
+Subject: Re: [PATCH] iwlegacy: make array interval static, makes object smaller
 From:   Kalle Valo <kvalo@codeaurora.org>
-In-Reply-To: <20191007084805.GA3865@mwanda>
-References: <20191007084805.GA3865@mwanda>
-To:     Dan Carpenter <dan.carpenter@oracle.com>
-Cc:     Yan-Hsuan Chuang <yhchuang@realtek.com>,
-        linux-wireless@vger.kernel.org, kernel-janitors@vger.kernel.org
+In-Reply-To: <20191007134113.5647-1-colin.king@canonical.com>
+References: <20191007134113.5647-1-colin.king@canonical.com>
+To:     Colin King <colin.king@canonical.com>
+Cc:     Stanislaw Gruszka <sgruszka@redhat.com>,
+        "David S . Miller" <davem@davemloft.net>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
 User-Agent: pwcli/0.0.0-git (https://github.com/kvalo/pwcli/) Python/2.7.12
-Message-Id: <20191009082716.9029761230@smtp.codeaurora.org>
-Date:   Wed,  9 Oct 2019 08:27:11 +0000 (UTC)
+Message-Id: <20191009082832.7B8BC61AC6@smtp.codeaurora.org>
+Date:   Wed,  9 Oct 2019 08:28:31 +0000 (UTC)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Dan Carpenter <dan.carpenter@oracle.com> wrote:
+Colin King <colin.king@canonical.com> wrote:
 
-> The WARN_ON() macro doesn't take an error message, the argument is a
-> condition so this won't display the warning message.
+> From: Colin Ian King <colin.king@canonical.com>
 > 
-> Fixes: 27e117e4b01b ("rtw88: add deep power save support")
-> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+> Don't populate the array interval on the stack but instead make it
+> static. Makes the object code smaller by 121 bytes.
+> 
+> Before:
+>    text	   data	    bss	    dec	    hex	filename
+>  167797	  29676	    448	 197921	  30521	wireless/intel/iwlegacy/common.o
+> 
+> After:
+>    text	   data	    bss	    dec	    hex	filename
+>  167580	  29772	    448	 197800	  304a8	wireless/intel/iwlegacy/common.o
+> 
+> (gcc version 9.2.1, amd64)
+> 
+> Signed-off-by: Colin Ian King <colin.king@canonical.com>
 
 Patch applied to wireless-drivers-next.git, thanks.
 
-be10b09b278f rtw88: Fix an error message
+55047fb783e0 iwlegacy: make array interval static, makes object smaller
 
 -- 
-https://patchwork.kernel.org/patch/11176989/
+https://patchwork.kernel.org/patch/11177531/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
