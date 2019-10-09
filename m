@@ -2,97 +2,92 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 633B1D104A
-	for <lists+linux-wireless@lfdr.de>; Wed,  9 Oct 2019 15:37:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 156F9D1454
+	for <lists+linux-wireless@lfdr.de>; Wed,  9 Oct 2019 18:43:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731352AbfJINhA (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 9 Oct 2019 09:37:00 -0400
-Received: from out3-smtp.messagingengine.com ([66.111.4.27]:45757 "EHLO
-        out3-smtp.messagingengine.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1731183AbfJINhA (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 9 Oct 2019 09:37:00 -0400
-Received: from compute6.internal (compute6.nyi.internal [10.202.2.46])
-        by mailout.nyi.internal (Postfix) with ESMTP id 5713A220A3;
-        Wed,  9 Oct 2019 09:36:59 -0400 (EDT)
-Received: from mailfrontend2 ([10.202.2.163])
-  by compute6.internal (MEProxy); Wed, 09 Oct 2019 09:36:59 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kroah.com; h=
-        date:from:to:cc:subject:message-id:references:mime-version
-        :content-type:in-reply-to; s=fm2; bh=gnm5/K6BRLhl7sZoyC43VeoPAfO
-        sZBL7QWezS01zOds=; b=Gm27DKQONrTQtBnT66x0EunKtcGf+tYiYGfKpR6tkL5
-        AvrIvxDUboP+C9ik4QPOCkT7iN2jQZk20uX/ulRKMykmAbqTM5i9hUzI0Z5Z2iVZ
-        tuIVeKv3qy6Q0axtWo43kbHTOXuq4WtDqasS91mEVWaVfyJ/untTaHZ4xsfy+zlj
-        veccRMjbJ34xtI/vkWy/biy1ZM92TjEprEhDmHUjhFqfI1iZI1Oc0haRfwNeqidE
-        Bgu7P52ysUqIL09xb/32UHsyXHk34kWvaR15tAo0wenGezYYG/m+yw06wAx6Uugn
-        qXxyscLjKN7BizIEhzFAarz0+aZsMhVZAsqT1SZr/Eg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-        messagingengine.com; h=cc:content-type:date:from:in-reply-to
-        :message-id:mime-version:references:subject:to:x-me-proxy
-        :x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; bh=gnm5/K
-        6BRLhl7sZoyC43VeoPAfOsZBL7QWezS01zOds=; b=cOsv+pemqGCDJRZs/5uZcj
-        9eE8Zq4rJeSOPjnNB4AlvCwqQnTwkOYot+oJ42bJGuvufsuCkoRLm9V9NVu2S0mG
-        HeFAM1mP+jlN9H5/JvCrYHFHYl3ag3vW5LfujHQI/GxEG9NyiEAjt6INSuN4VDZI
-        2uwOstIyNo2jFXYEun8u4tDyreFhtgvv6IS5oCN648BohIm7TYZBBLCxmp/9twe7
-        eVpIg2m+6YNpDgtrYjRi4xk7vUbc3M7P7qAsdS1+M5sPXWBENjJon+Sxm+w+xCTE
-        ioOPELn8/Ut333v7rvyf0QMWZOEiWMhgd8zNZ4Mua8HJe+ZOthf+JqCXcUgs7JuA
-        ==
-X-ME-Sender: <xms:euKdXSX5tqWfegw0GURgQNV6xG8vY4EJplFT8NeAxtO_v9HaNaEG4w>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedufedriedugdegvdcutefuodetggdotefrodftvf
-    curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
-    uegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenuc
-    fjughrpeffhffvuffkfhggtggujggfsehttdertddtredvnecuhfhrohhmpefirhgvghcu
-    mffjuceoghhrvghgsehkrhhorghhrdgtohhmqeenucfkphepkeefrdekiedrkeelrddutd
-    ejnecurfgrrhgrmhepmhgrihhlfhhrohhmpehgrhgvgheskhhrohgrhhdrtghomhenucev
-    lhhushhtvghrufhiiigvpedt
-X-ME-Proxy: <xmx:euKdXdpNREWBgaWAu0Wj3wRB84-E7mIMi-JUfdRY4kBwJ69_2Vp8Rw>
-    <xmx:euKdXcm_i0BfW2QyWvBj5Lj8oshbzX3r0GWaLwiDjYht-gAnyGsv8A>
-    <xmx:euKdXV1cBJqZ2bISU28Pf9CYqTs3nA-0cflnithf_J1v_J3EBeLChQ>
-    <xmx:e-KdXT6DlCgnHuBQTqsfLvowvDy6iHGMOg9n-ODet_VmTpxmCVinlQ>
-Received: from localhost (83-86-89-107.cable.dynamic.v4.ziggo.nl [83.86.89.107])
-        by mail.messagingengine.com (Postfix) with ESMTPA id AB255D6005B;
-        Wed,  9 Oct 2019 09:36:58 -0400 (EDT)
-Date:   Wed, 9 Oct 2019 15:36:56 +0200
-From:   Greg KH <greg@kroah.com>
-To:     Johannes Berg <johannes@sipsolutions.net>
-Cc:     linux-wireless@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH 4.4, 4.9, 4.14, 4.19] nl80211: validate beacon head
-Message-ID: <20191009133656.GA58233@kroah.com>
-References: <1570603265-@changeid>
- <20191009094310.GA3945119@kroah.com>
- <fd0c407c9507ba22741af5a9360ddba79971af29.camel@sipsolutions.net>
+        id S1731375AbfJIQnA (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 9 Oct 2019 12:43:00 -0400
+Received: from muru.com ([72.249.23.125]:36202 "EHLO muru.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1730708AbfJIQnA (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Wed, 9 Oct 2019 12:43:00 -0400
+Received: from atomide.com (localhost [127.0.0.1])
+        by muru.com (Postfix) with ESMTPS id 03F5E8140;
+        Wed,  9 Oct 2019 16:43:31 +0000 (UTC)
+Date:   Wed, 9 Oct 2019 09:42:55 -0700
+From:   Tony Lindgren <tony@atomide.com>
+To:     Kalle Valo <kvalo@codeaurora.org>
+Cc:     Eyal Reizer <eyalr@ti.com>, Kishon Vijay Abraham I <kishon@ti.com>,
+        Guy Mishol <guym@ti.com>, linux-wireless@vger.kernel.org,
+        linux-omap@vger.kernel.org,
+        Anders Roxell <anders.roxell@linaro.org>,
+        John Stultz <john.stultz@linaro.org>,
+        Ulf Hansson <ulf.hansson@linaro.org>
+Subject: Re: [PATCHv2] wlcore: fix race for WL1271_FLAG_IRQ_RUNNING
+Message-ID: <20191009164255.GJ5610@atomide.com>
+References: <20191007172800.64249-1-tony@atomide.com>
+ <20191008140556.GZ5610@atomide.com>
+ <87h84j7263.fsf@kamboji.qca.qualcomm.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <fd0c407c9507ba22741af5a9360ddba79971af29.camel@sipsolutions.net>
-User-Agent: Mutt/1.12.2 (2019-09-21)
+In-Reply-To: <87h84j7263.fsf@kamboji.qca.qualcomm.com>
+User-Agent: Mutt/1.12.1 (2019-06-15)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Wed, Oct 09, 2019 at 11:44:03AM +0200, Johannes Berg wrote:
-> On Wed, 2019-10-09 at 11:43 +0200, Greg KH wrote:
-> > 
-> > > +	for_each_element(elem, data, len) {
-> > > +		/* nothing */
-> > > +	}
-> > 
-> > for_each_element() is not in 4.4, 4.9, 4.14, or 4.19, so this breaks the
-> > build :(
+* Kalle Valo <kvalo@codeaurora.org> [191008 14:17]:
+> Tony Lindgren <tony@atomide.com> writes:
 > 
-> Oh, right. I had previously also said:
+> > * Tony Lindgren <tony@atomide.com> [191007 17:29]:
+> >> We set WL1271_FLAG_IRQ_RUNNING in the beginning of wlcore_irq(), and test
+> >> for it in wlcore_runtime_resume(). But WL1271_FLAG_IRQ_RUNNING currently
+> >> gets cleared too early by wlcore_irq_locked() before wlcore_irq() is done
+> >> calling it. And this will race against wlcore_runtime_resume() testing it.
+> >> 
+> >> Let's set and clear IRQ_RUNNING in wlcore_irq() so wlcore_runtime_resume()
+> >> can rely on it. And let's remove old comments about hardirq, that's no
+> >> longer the case as we're using request_threaded_irq().
+> >> 
+> >> This fixes occasional annoying wlcore firmware reboots stat start with
+> >> "wlcore: WARNING ELP wakeup timeout!" followed by a multisecond latency
+> >> when the wlcore firmware gets wrongly rebooted waiting for an ELP wake
+> >> interrupt that won't be coming.
+> >> 
+> >> Note that I also suspect some form of this issue was the root cause why
+> >> the wlcore GPIO interrupt has been often configured as a level interrupt
+> >> instead of edge as an attempt to work around the ELP wake timeout errors.
+> >
+> > So this fixed a reproducable test case where loading some webpages
+> > often produced ELP timeout errors. But looks like I'm still seeing ELP
+> > timeouts elsewhere. So best to wait on this one. Something is still
+> > wrong with the ELP timeout handling.
 > 
-> You also need to cherry-pick
-> 0f3b07f027f8 ("cfg80211: add and use strongly typed element iteration macros")
-> 7388afe09143 ("cfg80211: Use const more consistently in for_each_element macros")
-> 
-> as dependencies - the latter doesn't apply cleanly as it has a change
-> that doesn't apply, but that part of the change isn't necessary.
+> Ok, I'll drop this then. Please send v3 once you think the patch is
+> ready to be applied.
 
-Ok, that worked, thanks.  Well, almost worked, I had to do a bit more
-effort for 4.4.y, but all looks good now.
+Looks like the real fix is to use level instead of edge interrupt
+for omap4 and 5 to avoid the check for untriggered interrupts in
+omap_gpio_unidle(). Should not be needed for other SoCs as their
+l4per can't idle independent of the CPUs.
 
-thanks,
+I'll send a separate patch for that. And I'll send an updated clean-up
+patch for $subject patch as the race described above should never
+happen.
 
-greg k-h
+The clearing of WL1271_FLAG_IRQ_RUNNING bit happens already within
+pm_runtime_get_sync() section of wlcore_irq_locked(). So this patch just
+happened to sligthly change the timings for my reproducable test case.
+We should not be able to hit the race described above even with super
+short autosuspend timeouts between wlcore_irq_locked() and the end of
+wlcore_irq() :)
+
+Regards,
+
+Tony
+
+
+> -- 
+> https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
