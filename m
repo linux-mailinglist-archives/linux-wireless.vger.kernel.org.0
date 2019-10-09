@@ -2,78 +2,76 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 72218D0F9E
-	for <lists+linux-wireless@lfdr.de>; Wed,  9 Oct 2019 15:07:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AD3BCD0FC7
+	for <lists+linux-wireless@lfdr.de>; Wed,  9 Oct 2019 15:18:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731335AbfJINHa (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 9 Oct 2019 09:07:30 -0400
-Received: from szxga04-in.huawei.com ([45.249.212.190]:3671 "EHLO huawei.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1730858AbfJINH3 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 9 Oct 2019 09:07:29 -0400
-Received: from DGGEMS409-HUB.china.huawei.com (unknown [172.30.72.58])
-        by Forcepoint Email with ESMTP id 177F39A6B016244B3259;
-        Wed,  9 Oct 2019 21:07:26 +0800 (CST)
-Received: from [127.0.0.1] (10.184.213.217) by DGGEMS409-HUB.china.huawei.com
- (10.3.19.209) with Microsoft SMTP Server id 14.3.439.0; Wed, 9 Oct 2019
- 21:07:21 +0800
-Subject: Re: [PATCH RESEND] rtlwifi: rtl8192ee: Remove set but not used
- variable 'err'
-To:     Kalle Valo <kvalo@codeaurora.org>
-CC:     <pkshih@realtek.com>, <linux-wireless@vger.kernel.org>,
-        <netdev@vger.kernel.org>
-References: <1570612107-13286-1-git-send-email-zhengbin13@huawei.com>
- <8736g2rs86.fsf@codeaurora.org>
- <0135c3c7-a827-941a-1bad-90129c49d0ac@huawei.com>
- <87y2xuqdbo.fsf@codeaurora.org>
-From:   "zhengbin (A)" <zhengbin13@huawei.com>
-Message-ID: <e9c16275-16bc-25d0-9761-abcb0e47b2f4@huawei.com>
-Date:   Wed, 9 Oct 2019 21:06:53 +0800
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:60.0) Gecko/20100101
- Thunderbird/60.3.0
+        id S1731138AbfJINSF (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 9 Oct 2019 09:18:05 -0400
+Received: from smtp.codeaurora.org ([198.145.29.96]:35856 "EHLO
+        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1730490AbfJINSF (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Wed, 9 Oct 2019 09:18:05 -0400
+Received: by smtp.codeaurora.org (Postfix, from userid 1000)
+        id 49EAB60C5F; Wed,  9 Oct 2019 13:18:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
+        s=default; t=1570627084;
+        bh=envJvmdlNsJEQbEUUBpCyBB6HOzYd7ZRkxn8Frs/dtc=;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+        b=UOvgPT/O2qSPu7HxmRhJ1xXXlJHVEaco64qPtdDjczT2yEl4DWkpGPyUZZ0lYJYt/
+         ninXFskbQoldKgHWzqD0h4G8CsY11OIhb3gNQCOUpuZcyUsPQ3/cm3qwC6PdMuufo7
+         jWY3CrrT09UdY41J5IFh6DTmG+7JvAYCDkPZKslQ=
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        pdx-caf-mail.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.7 required=2.0 tests=ALL_TRUSTED,BAYES_00,
+        DKIM_INVALID,DKIM_SIGNED,SPF_NONE autolearn=no autolearn_force=no
+        version=3.4.0
+Received: from tynnyri.adurom.net (tynnyri.adurom.net [51.15.11.48])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo@smtp.codeaurora.org)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id F1D67609D1;
+        Wed,  9 Oct 2019 13:18:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
+        s=default; t=1570627083;
+        bh=envJvmdlNsJEQbEUUBpCyBB6HOzYd7ZRkxn8Frs/dtc=;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+        b=aJHWWgiAI11UiLFMppuqdDf1OKTeGB7B4ju2uJQyZmAmJ8pD+sSkr8yjnrRaHyU40
+         /2WnQayhWwcqercq225g571mA9YPyvvMYaqQtxV2Z8/vXXWoXTUrMpxMsR5obkaEmK
+         q6GMAUAPcmxFn8Ydbuv6Dh42ZMd3jVdDfc4RMFMI=
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org F1D67609D1
+Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
+From:   Kalle Valo <kvalo@codeaurora.org>
+To:     Kan Yan <kyan@google.com>
+Cc:     johannes@sipsolutions.net, linux-wireless@vger.kernel.org,
+        make-wifi-fast@lists.bufferbloat.net, toke@redhat.com,
+        nbd@nbd.name, yiboz@codeaurora.org, ath10k@lists.infradead.org
+Subject: Re: [PATCH v2 2/2] ath10k: Enable Airtime-based Queue Limit (AQL)
+References: <20191007043120.67567-1-kyan@google.com>
+        <20191007043120.67567-3-kyan@google.com>
+Date:   Wed, 09 Oct 2019 16:17:58 +0300
+In-Reply-To: <20191007043120.67567-3-kyan@google.com> (Kan Yan's message of
+        "Sun, 6 Oct 2019 21:31:20 -0700")
+Message-ID: <87eezmgird.fsf@tynnyri.adurom.net>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
 MIME-Version: 1.0
-In-Reply-To: <87y2xuqdbo.fsf@codeaurora.org>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Content-Language: en-US
-X-Originating-IP: [10.184.213.217]
-X-CFilter-Loop: Reflected
+Content-Type: text/plain
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+Kan Yan <kyan@google.com> writes:
 
-On 2019/10/9 21:05, Kalle Valo wrote:
-> "zhengbin (A)" <zhengbin13@huawei.com> writes:
+> Calculate the estimated airtime pending in the txqs and apply AQL to
+> prevent excessive amounts of packets being queued in the firmware queue.
 >
->> On 2019/10/9 20:58, Kalle Valo wrote:
->>> zhengbin <zhengbin13@huawei.com> writes:
->>>
->>>> Fixes gcc '-Wunused-but-set-variable' warning:
->>>>
->>>> drivers/net/wireless/realtek/rtlwifi/rtl8192ee/fw.c: In function rtl92ee_download_fw:
->>>> drivers/net/wireless/realtek/rtlwifi/rtl8192ee/fw.c:111:6: warning:
->>>> variable err set but not used [-Wunused-but-set-variable]
->>>>
->>>> Reported-by: Hulk Robot <hulkci@huawei.com>
->>>> Signed-off-by: zhengbin <zhengbin13@huawei.com>
->>>> Acked-by: Ping-Ke Shih <pkshih@realtek.com>
->>> There's no changelog, why did you resend? Document clearly the changes
->>> so that maintainers don't need to guess what has changed:
->> Failed to apply:
->>
->> fatal: corrupt patch at line 13
->> error: could not build fake ancestor
->> Applying: rtlwifi: rtl8192ee: Remove set but not used variable 'err'
->> Patch failed at 0001 rtlwifi: rtl8192ee: Remove set but not used variable 'err'
->> The copy of the patch that failed is found in: .git/rebase-apply/patch
->>
->> So I resend this. 
-> Ok, thanks. But next time include the changelog automatically and mark
-> the patch as v2. And read the documentation:
-Copy that, thank your for your patience
->
-> https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
->
+> Signed-off-by: Kan Yan <kyan@google.com>
 
+Please CC ath10k patches to ath10k list, I doubt all ath10k developers
+follow linux-wireless.
+
+-- 
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
