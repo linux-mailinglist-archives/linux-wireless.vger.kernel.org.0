@@ -2,37 +2,66 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A2CCDD17C6
-	for <lists+linux-wireless@lfdr.de>; Wed,  9 Oct 2019 20:51:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3282AD18B0
+	for <lists+linux-wireless@lfdr.de>; Wed,  9 Oct 2019 21:23:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731144AbfJISvn (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 9 Oct 2019 14:51:43 -0400
-Received: from smtp123.ord1d.emailsrvr.com ([184.106.54.123]:45660 "EHLO
-        smtp123.ord1d.emailsrvr.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1730490AbfJISvn (ORCPT
+        id S1731287AbfJITXf (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 9 Oct 2019 15:23:35 -0400
+Received: from mail-lj1-f195.google.com ([209.85.208.195]:38184 "EHLO
+        mail-lj1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1730708AbfJITXf (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 9 Oct 2019 14:51:43 -0400
-X-Greylist: delayed 508 seconds by postgrey-1.27 at vger.kernel.org; Wed, 09 Oct 2019 14:51:42 EDT
-X-Auth-ID: robert.carter@octoscope.com
-Received: by smtp16.relay.ord1d.emailsrvr.com (Authenticated sender: robert.carter-AT-octoscope.com) with ESMTPSA id 6912B401D9;
-        Wed,  9 Oct 2019 14:43:13 -0400 (EDT)
-X-Sender-Id: robert.carter@octoscope.com
-Received: from [10.100.100.91] (static-98-118-126-237.bstnma.fios.verizon.net [98.118.126.237])
-        (using TLSv1.2 with cipher AES128-SHA)
-        by 0.0.0.0:465 (trex/5.7.12);
-        Wed, 09 Oct 2019 14:43:13 -0400
-Subject: Re: Intel AX200 driver crash on 5.2.8 kernel
-To:     Luca Coelho <luca@coelho.fi>, linux-wireless@vger.kernel.org
-Cc:     linuxwifi@intel.com
-References: <fde66eaf-a0c9-6206-c718-475e4168fe3d@octoscope.com>
- <f871035cf2770e9f6e50efeb005e5db8dae06edf.camel@coelho.fi>
-From:   Robert Carter <robert.carter@octoscope.com>
-Message-ID: <d1045ccc-4858-cc66-9c4d-5e9c7ff183a8@octoscope.com>
-Date:   Wed, 9 Oct 2019 14:43:13 -0400
+        Wed, 9 Oct 2019 15:23:35 -0400
+Received: by mail-lj1-f195.google.com with SMTP id b20so3670241ljj.5;
+        Wed, 09 Oct 2019 12:23:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=RjL6aeL+yB6TH6pYK3+ft/SKEqM4F474X+76FvzFX/g=;
+        b=Ik6w0eB4orUeDmq8LzqH6DyV81I9I0LFBNRL/z8AXi1llhQHVMkjypPACqPElc8x2w
+         c1XL6l/C0CqtG3jX05+8AxX8rnssUQd1VoUCj24+Ct3GjN5TsrCzWucUlQh6DRpSj5lH
+         FB40Tz7KDlJbFV9STZQFwyIvooqAMLNbzVZ3EIGcY679sKOpzgclbMI0njxkHLbOlYJ0
+         ZiewZi34+U4d4ul8HZXU8X9ULOuNKrDBtdsWPQSAmRCGe7JXPSF7ZuCjjbrlPmCOvOid
+         ztgamoWlb6Hg0euNJ4cPFxtCk4ZAh83hbkcBJxDXE6OrLnynPhHtHzIA/Zs/6O9vnUu7
+         8acA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=RjL6aeL+yB6TH6pYK3+ft/SKEqM4F474X+76FvzFX/g=;
+        b=tUYRUnyx+XHTBrUccSR2sueoPDKXtwsjdEuM7giKabqBaqqymcFmJfpQToy1gyB9sv
+         FfVHlw5Qrw0dE7wB86NtUytQ+fYFfl2xC9SnQoDo2V+Lif18bKI7q4ovDtII/EnrOiGZ
+         4MNjLH3B9BA0pC0mfew9zkI3PQbdtCQPHFODTwF4kZZNf9tFgsHC1wk4Ry13hh9krc6r
+         tYaINQ+mpJ4sIDxjVtM31+BxpIvPlF1/ow5MyPrBS6Q2viOR4UEFtujjx1f2YyWm0YK0
+         ktBbZBM8UHm/0Ge9coX/zItUvXsIcLHJNIaHEgxpK6h6P0tLMmZvHWU5nFt3JAN++etJ
+         DvRw==
+X-Gm-Message-State: APjAAAWyTjKRf4UXHQiks5tr3/SmtCfG2FT05V0jyWDFo6OWIr9GL4qE
+        RWEvK/IZwz7cX6w2XXscIDMzNjaJrYQ=
+X-Google-Smtp-Source: APXvYqwAzAWlJ8momOLfd+IzLb8ETNR8DVUq0T2CQK01RB20qrbuF6Dp9LG7GLIhlUwcidi59JcwIA==
+X-Received: by 2002:a2e:6101:: with SMTP id v1mr3434522ljb.132.1570649012345;
+        Wed, 09 Oct 2019 12:23:32 -0700 (PDT)
+Received: from [192.168.1.244] (81-233-89-221-no75.tbcn.telia.com. [81.233.89.221])
+        by smtp.gmail.com with ESMTPSA id 77sm648652ljj.84.2019.10.09.12.23.31
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 09 Oct 2019 12:23:31 -0700 (PDT)
+Subject: Re: [PATCH 2/2] ath10k: switch to ieee80211_tx_dequeue_ni
+To:     Peter Oh <peter.oh@eero.com>, Kalle Valo <kvalo@codeaurora.org>
+Cc:     johannes@sipsolutions.net, davem@davemloft.net,
+        linux-wireless@vger.kernel.org, ath10k@lists.infradead.org,
+        linux-kernel@vger.kernel.org
+References: <20190617200140.6189-1-erik.stromdahl@gmail.com>
+ <20190617200140.6189-2-erik.stromdahl@gmail.com>
+ <87eezw660r.fsf@kamboji.qca.qualcomm.com>
+ <19f8023a-1943-9bf5-9a59-a7643f7692bf@eero.com>
+From:   Erik Stromdahl <erik.stromdahl@gmail.com>
+Message-ID: <fd43b218-7dc7-22dd-664b-46c55c3dd94e@gmail.com>
+Date:   Wed, 9 Oct 2019 21:23:31 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.8.0
+ Thunderbird/60.7.0
 MIME-Version: 1.0
-In-Reply-To: <f871035cf2770e9f6e50efeb005e5db8dae06edf.camel@coelho.fi>
+In-Reply-To: <19f8023a-1943-9bf5-9a59-a7643f7692bf@eero.com>
 Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
@@ -41,204 +70,42 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-My dmegs dump posted to bug 205061.
-
-I get a slightly different assert code, 0xEDC:
-
-   Loaded firmware version: 48.4fa0041f.0
-   0x00000EDC | ADVANCED_SYSASSERT
-
-And confirming other reports, I'm seeing the AX20048 driver crash on 
-both TCP and UDP uplink traffic streams.
 
 
-On 10/9/19 1:47 AM, Luca Coelho wrote:
-> Hi Robert,
+On 10/1/19 7:13 PM, Peter Oh wrote:
 > 
-> This seems to be the same as this bugzilla:
+> On 10/1/19 4:48 AM, Kalle Valo wrote:
+>> Erik Stromdahl <erik.stromdahl@gmail.com> writes:
+>>
+>>> Since ath10k_mac_tx_push_txq() can be called from process context, we
+>>> must explicitly disable softirqs before the call into mac80211.
+>>>
+>>> By calling ieee80211_tx_dequeue_ni() instead of ieee80211_tx_dequeue()
+>>> we make sure softirqs are always disabled even in the case when
+>>> ath10k_mac_tx_push_txq() is called from process context.
+>>>
+>>> Calling ieee80211_tx_dequeue_ni() with softirq's already disabled
+>>> (e.g., from softirq context) should be safe as the local_bh_disable()
+>>> and local_bh_enable() functions (called from ieee80211_tx_dequeue_ni)
+>>> are fully reentrant.
+>>>
+>>> Signed-off-by: Erik Stromdahl <erik.stromdahl@gmail.com>
+>> I already applied this, but I still want to check _why_ you are changing
+>> this? Is it that you want to call ath10k_mac_tx_push_pending() from a
+>> workqueue in sdio.c in a future patch, or what? Because at the moment me
+>> and Johannes were not able to find where this is called in process
+>> context.
+>>
+SDIO irqs are threaded irqs (at least on my iMX6 board) and hence process context.
+I will see if I can find a trace that shows the call chain more exactly.
+
+
+> It seems Johannes wants to fix it in mac80211.
 > 
-> https://bugzilla.kernel.org/show_bug.cgi?id=205061
+> [PATCH v2] mac80211: keep BHs disabled while calling drv_tx_wake_queue()
 > 
-> Though the SYSASSERT you pasted here seems to be a side effect of an
-> earlier SYSASSERT.  Can you please attach the entire dmesg on that bug
-> in bugzilla? I'm pretty sure it's the same thing, but if you attach the
-> dmesg then I can confirm that it is.
-> 
-> --
-> Cheers,
-> Luca.
-> 
-> 
-> On Wed, 2019-09-25 at 15:27 -0400, Robert Carter wrote:
->> Hi,
->>
->> I'm running an AX200 on a AAEON PICO-APL4 running the 5.2.8 kernel. In
->> running multiple, upstream UDP tests (towards the AP), the
->> iwlwifi-cc-a0-48.ucode driver is crashing. See below. It's happily
->> rolling over! I've pulled this driver from the
->> linux-firmware-20190815.tar.gz archive.
->>
->> Below is a representative crash dump from syslog.
->>
->> I'm not on this mailing list; contact me if any information is needed. I
->> _may_ be able to test a new AX200 firmware load.
->>
->> Bob Carter
->>
->> -----------
->>
->> octoscope@octo-pico-4:~$ sudo cat /var/log/syslog | grep -Ea "Microcode
->> SW error detected. Restarting" | wc
->>        24     360    2832
->>
->> -----------
->>
->> Sep 25 13:43:16 octo-pico-4 kernel: [ 5618.179271] iwlwifi 0000:03:00.0:
->> Microcode SW error detected. Restarting 0x0.
->> Sep 25 13:43:16 octo-pico-4 kernel: [ 5618.179399] iwlwifi 0000:03:00.0:
->> Start IWL Error Log Dump:
->> Sep 25 13:43:16 octo-pico-4 kernel: [ 5618.179405] iwlwifi 0000:03:00.0:
->> Status: 0x00000080, count: 6
->> Sep 25 13:43:16 octo-pico-4 kernel: [ 5618.179411] iwlwifi 0000:03:00.0:
->> Loaded firmware version: 48.4fa0041f.0
->> Sep 25 13:43:16 octo-pico-4 kernel: [ 5618.179417] iwlwifi 0000:03:00.0:
->> 0x00000EDC | ADVANCED_SYSASSERT
->> Sep 25 13:43:16 octo-pico-4 kernel: [ 5618.179423] iwlwifi 0000:03:00.0:
->> 0x0080AE11 | trm_hw_status0
->> Sep 25 13:43:16 octo-pico-4 kernel: [ 5618.179428] iwlwifi 0000:03:00.0:
->> 0x00000000 | trm_hw_status1
->> Sep 25 13:43:16 octo-pico-4 kernel: [ 5618.179433] iwlwifi 0000:03:00.0:
->> 0x004F8E3C | branchlink2
->> Sep 25 13:43:16 octo-pico-4 kernel: [ 5618.179438] iwlwifi 0000:03:00.0:
->> 0x00000E26 | interruptlink1
->> Sep 25 13:43:16 octo-pico-4 kernel: [ 5618.179443] iwlwifi 0000:03:00.0:
->> 0x00000E26 | interruptlink2
->> Sep 25 13:43:16 octo-pico-4 kernel: [ 5618.179448] iwlwifi 0000:03:00.0:
->> 0x8D69BE05 | data1
->> Sep 25 13:43:16 octo-pico-4 kernel: [ 5618.179453] iwlwifi 0000:03:00.0:
->> 0x62481231 | data2
->> Sep 25 13:43:16 octo-pico-4 kernel: [ 5618.179458] iwlwifi 0000:03:00.0:
->> 0x00002730 | data3
->> Sep 25 13:43:16 octo-pico-4 kernel: [ 5618.179463] iwlwifi 0000:03:00.0:
->> 0xA141234E | beacon time
->> Sep 25 13:43:16 octo-pico-4 kernel: [ 5618.179468] iwlwifi 0000:03:00.0:
->> 0x697D1CC5 | tsf low
->> Sep 25 13:43:16 octo-pico-4 kernel: [ 5618.179473] iwlwifi 0000:03:00.0:
->> 0x00000000 | tsf hi
->> Sep 25 13:43:16 octo-pico-4 kernel: [ 5618.179477] iwlwifi 0000:03:00.0:
->> 0x00000000 | time gp1
->> Sep 25 13:43:16 octo-pico-4 kernel: [ 5618.179482] iwlwifi 0000:03:00.0:
->> 0x073015E3 | time gp2
->> Sep 25 13:43:16 octo-pico-4 kernel: [ 5618.179487] iwlwifi 0000:03:00.0:
->> 0x00000001 | uCode revision type
->> Sep 25 13:43:16 octo-pico-4 kernel: [ 5618.179493] iwlwifi 0000:03:00.0:
->> 0x00000030 | uCode version major
->> Sep 25 13:43:16 octo-pico-4 kernel: [ 5618.179498] iwlwifi 0000:03:00.0:
->> 0x4FA0041F | uCode version minor
->> Sep 25 13:43:16 octo-pico-4 kernel: [ 5618.179503] iwlwifi 0000:03:00.0:
->> 0x00000340 | hw version
->> Sep 25 13:43:16 octo-pico-4 kernel: [ 5618.179508] iwlwifi 0000:03:00.0:
->> 0x00C89000 | board version
->> Sep 25 13:43:16 octo-pico-4 kernel: [ 5618.179513] iwlwifi 0000:03:00.0:
->> 0x62481231 | hcmd
->> Sep 25 13:43:16 octo-pico-4 kernel: [ 5618.179518] iwlwifi 0000:03:00.0:
->> 0xE6F21010 | isr0
->> Sep 25 13:43:16 octo-pico-4 kernel: [ 5618.179522] iwlwifi 0000:03:00.0:
->> 0x01448000 | isr1
->> Sep 25 13:43:16 octo-pico-4 kernel: [ 5618.179527] iwlwifi 0000:03:00.0:
->> 0x08F00002 | isr2
->> Sep 25 13:43:16 octo-pico-4 kernel: [ 5618.179532] iwlwifi 0000:03:00.0:
->> 0x00C1D508 | isr3
->> Sep 25 13:43:16 octo-pico-4 kernel: [ 5618.179536] iwlwifi 0000:03:00.0:
->> 0x00000000 | isr4
->> Sep 25 13:43:16 octo-pico-4 kernel: [ 5618.179541] iwlwifi 0000:03:00.0:
->> 0x05AB001C | last cmd Id
->> Sep 25 13:43:16 octo-pico-4 kernel: [ 5618.179546] iwlwifi 0000:03:00.0:
->> 0x0000DB06 | wait_event
->> Sep 25 13:43:16 octo-pico-4 kernel: [ 5618.179551] iwlwifi 0000:03:00.0:
->> 0x00000024 | l2p_control
->> Sep 25 13:43:16 octo-pico-4 kernel: [ 5618.179556] iwlwifi 0000:03:00.0:
->> 0x00014C14 | l2p_duration
->> Sep 25 13:43:16 octo-pico-4 kernel: [ 5618.179561] iwlwifi 0000:03:00.0:
->> 0x0000000F | l2p_mhvalid
->> Sep 25 13:43:16 octo-pico-4 kernel: [ 5618.179566] iwlwifi 0000:03:00.0:
->> 0x000000C6 | l2p_addr_match
->> Sep 25 13:43:16 octo-pico-4 kernel: [ 5618.179571] iwlwifi 0000:03:00.0:
->> 0x00000009 | lmpm_pmg_sel
->> Sep 25 13:43:16 octo-pico-4 kernel: [ 5618.179576] iwlwifi 0000:03:00.0:
->> 0x00000000 | timestamp
->> Sep 25 13:43:16 octo-pico-4 kernel: [ 5618.179581] iwlwifi 0000:03:00.0:
->> 0x00000000 | flow_handler
->> Sep 25 13:43:16 octo-pico-4 kernel: [ 5618.179616] iwlwifi 0000:03:00.0:
->> Start IWL Error Log Dump:
->> Sep 25 13:43:16 octo-pico-4 kernel: [ 5618.179621] iwlwifi 0000:03:00.0:
->> Status: 0x00000080, count: 7
->> Sep 25 13:43:16 octo-pico-4 kernel: [ 5618.179627] iwlwifi 0000:03:00.0:
->> 0x20000070 | NMI_INTERRUPT_LMAC_FATAL
->> Sep 25 13:43:16 octo-pico-4 kernel: [ 5618.179632] iwlwifi 0000:03:00.0:
->> 0x00000000 | umac branchlink1
->> Sep 25 13:43:16 octo-pico-4 kernel: [ 5618.179637] iwlwifi 0000:03:00.0:
->> 0xC008CC3C | umac branchlink2
->> Sep 25 13:43:16 octo-pico-4 kernel: [ 5618.179642] iwlwifi 0000:03:00.0:
->> 0x8048D0E6 | umac interruptlink1
->> Sep 25 13:43:16 octo-pico-4 kernel: [ 5618.179647] iwlwifi 0000:03:00.0:
->> 0x8048D0E6 | umac interruptlink2
->> Sep 25 13:43:16 octo-pico-4 kernel: [ 5618.179652] iwlwifi 0000:03:00.0:
->> 0x00000400 | umac data1
->> Sep 25 13:43:16 octo-pico-4 kernel: [ 5618.179657] iwlwifi 0000:03:00.0:
->> 0x8048D0E6 | umac data2
->> Sep 25 13:43:16 octo-pico-4 kernel: [ 5618.179664] iwlwifi 0000:03:00.0:
->> 0x00000000 | umac data3
->> Sep 25 13:43:16 octo-pico-4 kernel: [ 5618.179669] iwlwifi 0000:03:00.0:
->> 0x00000030 | umac major
->> Sep 25 13:43:16 octo-pico-4 kernel: [ 5618.179674] iwlwifi 0000:03:00.0:
->> 0x4FA0041F | umac minor
->> Sep 25 13:43:16 octo-pico-4 kernel: [ 5618.179679] iwlwifi 0000:03:00.0:
->> 0x073015F2 | frame pointer
->> Sep 25 13:43:16 octo-pico-4 kernel: [ 5618.179684] iwlwifi 0000:03:00.0:
->> 0xC0886284 | stack pointer
->> Sep 25 13:43:16 octo-pico-4 kernel: [ 5618.179689] iwlwifi 0000:03:00.0:
->> 0x00D8019C | last host cmd
->> Sep 25 13:43:16 octo-pico-4 kernel: [ 5618.179694] iwlwifi 0000:03:00.0:
->> 0x00000000 | isr status reg
->> Sep 25 13:43:16 octo-pico-4 kernel: [ 5618.179707] iwlwifi 0000:03:00.0:
->> Fseq Registers:
->> Sep 25 13:43:16 octo-pico-4 kernel: [ 5618.179715] iwlwifi 0000:03:00.0:
->> 0xE0000000 | FSEQ_ERROR_CODE
->> Sep 25 13:43:16 octo-pico-4 kernel: [ 5618.179723] iwlwifi 0000:03:00.0:
->> 0x80290001 | FSEQ_TOP_INIT_VERSION
->> Sep 25 13:43:16 octo-pico-4 kernel: [ 5618.179731] iwlwifi 0000:03:00.0:
->> 0x80050008 | FSEQ_CNVIO_INIT_VERSION
->> Sep 25 13:43:16 octo-pico-4 kernel: [ 5618.179739] iwlwifi 0000:03:00.0:
->> 0x0000A503 | FSEQ_OTP_VERSION
->> Sep 25 13:43:16 octo-pico-4 kernel: [ 5618.179747] iwlwifi 0000:03:00.0:
->> 0x80000003 | FSEQ_TOP_CONTENT_VERSION
->> Sep 25 13:43:16 octo-pico-4 kernel: [ 5618.179755] iwlwifi 0000:03:00.0:
->> 0x4552414E | FSEQ_ALIVE_TOKEN
->> Sep 25 13:43:16 octo-pico-4 kernel: [ 5618.179763] iwlwifi 0000:03:00.0:
->> 0x00100530 | FSEQ_CNVI_ID
->> Sep 25 13:43:16 octo-pico-4 kernel: [ 5618.179771] iwlwifi 0000:03:00.0:
->> 0x00000532 | FSEQ_CNVR_ID
->> Sep 25 13:43:16 octo-pico-4 kernel: [ 5618.179779] iwlwifi 0000:03:00.0:
->> 0x00100530 | CNVI_AUX_MISC_CHIP
->> Sep 25 13:43:16 octo-pico-4 kernel: [ 5618.179789] iwlwifi 0000:03:00.0:
->> 0x00000532 | CNVR_AUX_MISC_CHIP
->> Sep 25 13:43:16 octo-pico-4 kernel: [ 5618.179799] iwlwifi 0000:03:00.0:
->> 0x05B0905B | CNVR_SCU_SD_REGS_SD_REG_DIG_DCDC_VTRIM
->> Sep 25 13:43:16 octo-pico-4 kernel: [ 5618.179810] iwlwifi 0000:03:00.0:
->> 0x0000025B | CNVR_SCU_SD_REGS_SD_REG_ACTIVE_VDIG_MIRROR
->> Sep 25 13:43:16 octo-pico-4 kernel: [ 5618.179932] iwlwifi 0000:03:00.0:
->> Collecting data: trigger 2 fired.
->> Sep 25 13:43:16 octo-pico-4 kernel: [ 5618.179947] ieee80211 phy0:
->> Hardware restart was requested
->> Sep 25 13:43:17 octo-pico-4 kernel: [ 5618.755398] iwlwifi 0000:03:00.0:
->> Applying debug destination EXTERNAL_DRAM
->> Sep 25 13:43:17 octo-pico-4 kernel: [ 5618.904492] iwlwifi 0000:03:00.0:
->> FW already configured (0) - re-configuring
->> Sep 25 13:43:17 octo-pico-4 kernel: [ 5618.931426] iwlwifi 0000:03:00.0:
->> Got NSS = 4 - trimming to 2
->> Sep 25 13:43:17 octo-pico-4 kernel: [ 5618.932215] iwlwifi 0000:03:00.0:
->> Got NSS = 4 - trimming to 2
->> Sep 25 13:43:17 octo-pico-4 wpa_supplicant[890]: wlp3s0:
->> CTRL-EVENT-SIGNAL-CHANGE above=1 signal=-60 noise=9999 txrate=6000
+> Drivers typically expect this, as it's the case for almost all cases
+> where this is called (i.e. from the TX path). Also, the code in mac80211
+> itself (if the driver calls ieee80211_tx_dequeue()) expects this as it
+> uses this_cpu_ptr() without additional protection.
 > 
