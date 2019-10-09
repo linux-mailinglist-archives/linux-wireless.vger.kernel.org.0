@@ -2,172 +2,155 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 969FAD192C
-	for <lists+linux-wireless@lfdr.de>; Wed,  9 Oct 2019 21:45:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AE107D1C16
+	for <lists+linux-wireless@lfdr.de>; Thu, 10 Oct 2019 00:44:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731590AbfJITpU (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 9 Oct 2019 15:45:20 -0400
-Received: from mail-lj1-f196.google.com ([209.85.208.196]:35667 "EHLO
-        mail-lj1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728804AbfJITpU (ORCPT
+        id S1732158AbfJIWow (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 9 Oct 2019 18:44:52 -0400
+Received: from mail-lf1-f68.google.com ([209.85.167.68]:36313 "EHLO
+        mail-lf1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1732074AbfJIWow (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 9 Oct 2019 15:45:20 -0400
-Received: by mail-lj1-f196.google.com with SMTP id m7so3758608lji.2;
-        Wed, 09 Oct 2019 12:45:18 -0700 (PDT)
+        Wed, 9 Oct 2019 18:44:52 -0400
+Received: by mail-lf1-f68.google.com with SMTP id x80so2875936lff.3
+        for <linux-wireless@vger.kernel.org>; Wed, 09 Oct 2019 15:44:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=subject:from:to:cc:references:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=HmPVQEnpjipxWeyFZpCS/dPubFPvdXRXnBDLynnz6Hw=;
-        b=hF4SZalCdpKxqdOPG4AOuy4m9gPQll8fjepU3K8fV1XVE42jwxnfXMS7Au/BAg2kTG
-         BQ0xlx19FiR+BcABFFkGz2qxSKSIhOLmbHEBOtQvF/RlUu5kflIsaKiEbv2NBXaD9MaL
-         C2MauWv9b9skhcNYTJEye4lLj/UOhjFjws75h1OUnySOb197RChzNR/usLUqxV95Ibzt
-         Szksa6N/SRHQEewCaUdc/AimyDTynBvOtRT8VOjuqSwwqAYMNZztK2uOReBLpkxGy9Jv
-         LwyBBYd/4x0A5OHPTpaQkEX7Jt9K0MxYns8rM1q16G6Xu8A4m/ZnVkPhirXqUWlqhBs6
-         giLw==
+        d=google.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=K74FSLibgRox92Ke/og8To0X7TZ2VBykrYPKh9Z5pcY=;
+        b=OFzsCFUKTEmsMDknSMDxoYlbwIb7GydlLPMKg2T7ObARVcE80qslnzBR91P7DoYc3l
+         LGczTTg6nnxjA5GRPpHuBcw9ZBqUEBD4tvERUHqHZ65gFMBnZ4hHilyY+F3bTFpndQa1
+         ZHiNeC0+dGKGssHwt8dgOHpb4GzHA636aT7RiDrU5h+HHm1fQLCXgqFawHbCSnvGOK1R
+         Z2mkd5W8/kVjsp0WyF9CFggzncP2OYg32kAH0b/nlzsRBagRmZrutVQLg1EDZV+cem3+
+         S/AOygxjUKZWc/f7uf8zmHAnWq9hkQYkfT8vL5tCk8Eo/Z60MKSWEo3QBOBwAh6z0j7h
+         hgrw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:from:to:cc:references:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=HmPVQEnpjipxWeyFZpCS/dPubFPvdXRXnBDLynnz6Hw=;
-        b=oXVcGJcf0gSXU2dD731Sl3Jl0KALBXYayKBU/aGQDXcwnhs7UMIhEP/VAnl6spbGvS
-         pWrB+yeNyOOjyrhFhzWrTijehRRfVh/QFoqVqmT52doqIcrOYKcKnCiAZUYaWyUFzsjG
-         Ipooy0XK572Re7PP9d94nW+MOU+alZ3vN407btcxKdnTvlNhJ2ysB/oR5M5wBQ1jcVxa
-         4Bw289MmXSxj4yygQ8OvK/RArrrTaI2pkV+/g17DzfjgdXstTGezrbtDFpeWEXOkmn5R
-         d/ZYEtCu1Ej/87ayngMBvc4jVEgPZRSV2mH0ksvzdOCbJJXigzpowWcKkogxzpyEA82S
-         36vg==
-X-Gm-Message-State: APjAAAXVKfJrILFWtUWMqBb4XqI15eq59PultRWr02wHgzXGd8dqAkkg
-        L7KII+PbGnXsx8gnmRaDjyCvZteb3GM=
-X-Google-Smtp-Source: APXvYqwPT9zZIpgQBWMqHiuRGXolOAJXuNI8NyQAcf67PQinS2bjqXqZ4RY87fkqNwY8xGHvgoqj3g==
-X-Received: by 2002:a2e:8852:: with SMTP id z18mr3525471ljj.230.1570650316995;
-        Wed, 09 Oct 2019 12:45:16 -0700 (PDT)
-Received: from [192.168.1.244] (81-233-89-221-no75.tbcn.telia.com. [81.233.89.221])
-        by smtp.gmail.com with ESMTPSA id g27sm660014lja.33.2019.10.09.12.45.16
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 09 Oct 2019 12:45:16 -0700 (PDT)
-Subject: Re: [PATCH 2/2] ath10k: switch to ieee80211_tx_dequeue_ni
-From:   Erik Stromdahl <erik.stromdahl@gmail.com>
-To:     Peter Oh <peter.oh@eero.com>, Kalle Valo <kvalo@codeaurora.org>
-Cc:     johannes@sipsolutions.net, davem@davemloft.net,
-        linux-wireless@vger.kernel.org, ath10k@lists.infradead.org,
-        linux-kernel@vger.kernel.org
-References: <20190617200140.6189-1-erik.stromdahl@gmail.com>
- <20190617200140.6189-2-erik.stromdahl@gmail.com>
- <87eezw660r.fsf@kamboji.qca.qualcomm.com>
- <19f8023a-1943-9bf5-9a59-a7643f7692bf@eero.com>
- <fd43b218-7dc7-22dd-664b-46c55c3dd94e@gmail.com>
-Message-ID: <f1669b69-6762-1341-8822-de08d9ddd55b@gmail.com>
-Date:   Wed, 9 Oct 2019 21:45:15 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.7.0
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=K74FSLibgRox92Ke/og8To0X7TZ2VBykrYPKh9Z5pcY=;
+        b=Ex00rpgKJMUw/jTpcNznvq0zfH6oeCXHNRWuo2su4fBO49LtSIqEHpF0mTr/mC8sK+
+         LWNOcKqlrTez+aU9wt4kOJcROW1oB7uUdt/e+FRgpSiP6IonESbet2U8havyIJrANchO
+         a61QZSBYw4fAVh6GcN7+28dMn4UBiAnMYTk5bA+lte/fKMPtisosJSOMDZubVh/lknbu
+         0ddeq+VbczAeMymQ1zQqjjaRwu9de0wl97VUTNuvOUMWPYG+9sVGmhlYwxyd0i94wno+
+         crzrGy8/hwzdsR8a7njxrKeBr5fk0po2f/OZLSEb9VmnSOrjMUCdFqpanU1q3yB0nxfY
+         8tKw==
+X-Gm-Message-State: APjAAAW5j1iolBjBO0vM3lFWzJkJYEid77tHMVI6eG2AbikJhOh3KsV5
+        Uq3gzDUe/E0yn8z/n6Knm4mcbduUmnEziKPgIAIhoOyYtHNpFw==
+X-Google-Smtp-Source: APXvYqw8TxfNud+WAkN3jF6GWM7cpQopC1R+YRlW1JfifDNbx3oPxFQDYFKeZzY2DCGsB2iZqSRopVKloav1TwNXDcM=
+X-Received: by 2002:a19:7b08:: with SMTP id w8mr3422573lfc.95.1570661088819;
+ Wed, 09 Oct 2019 15:44:48 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <fd43b218-7dc7-22dd-664b-46c55c3dd94e@gmail.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+References: <20191007043120.67567-1-kyan@google.com> <20191007043120.67567-2-kyan@google.com>
+ <18630c07d0aa46d16cf660d013f96b3d@codeaurora.org>
+In-Reply-To: <18630c07d0aa46d16cf660d013f96b3d@codeaurora.org>
+From:   Kan Yan <kyan@google.com>
+Date:   Wed, 9 Oct 2019 15:44:37 -0700
+Message-ID: <CA+iem5tVZLoisVF=pRR7+Jx04wCGz-CJh0oLKYa6=eQbDkOTKw@mail.gmail.com>
+Subject: Re: [PATCH v2 1/2] mac80211: Implement Airtime-based Queue Limit (AQL)
+To:     Yibo Zhao <yiboz@codeaurora.org>
+Cc:     Johannes Berg <johannes@sipsolutions.net>,
+        linux-wireless@vger.kernel.org,
+        make-wifi-fast@lists.bufferbloat.net,
+        =?UTF-8?B?VG9rZSBIw7hpbGFuZC1Kw7hyZ2Vuc2Vu?= <toke@redhat.com>,
+        Felix Fietkau <nbd@nbd.name>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+Hi  Johannes,
+
+Thanks for the review and will address all issues you pointed out in
+the next version.
+
+Hi Yibo,
+>
+> I assume here the only txq in the list that does not meet AQL check will
+> not be dequeued. Right? Will it affect peak throughput once there is
+> only one station.
+
+Yes, the txq won't be picked for transmitting even if it is the only
+active txq if the AQL check failed.  However, this won't affect peak
+throughput. The reason why there are two queue limits is address this
+kind of situation. The higher queue limit ensures the hardware get
+enough frames.
+>
+> > @@ -3748,10 +3785,10 @@ bool ieee80211_txq_may_transmit(struct
+> > ieee80211_hw *hw,
+> >       struct sta_info *sta;
+> >       u8 ac = txq->ac;
+> >
+> > -     spin_lock_bh(&local->active_txq_lock[ac]);
+> > -
+> >       if (!txqi->txq.sta)
+> > -             goto out;
+> > +             return true;
+>
+> why return here? I think even a txq without sta info should get removed
+> from list and added it back later in return_txq() if needed. No?
+Yes, it should be removed from the active list. I will fix that.
+
+Thanks,
+Kan
 
 
-On 10/9/19 9:23 PM, Erik Stromdahl wrote:
-> 
-> 
-> On 10/1/19 7:13 PM, Peter Oh wrote:
->>
->> On 10/1/19 4:48 AM, Kalle Valo wrote:
->>> Erik Stromdahl <erik.stromdahl@gmail.com> writes:
->>>
->>>> Since ath10k_mac_tx_push_txq() can be called from process context, we
->>>> must explicitly disable softirqs before the call into mac80211.
->>>>
->>>> By calling ieee80211_tx_dequeue_ni() instead of ieee80211_tx_dequeue()
->>>> we make sure softirqs are always disabled even in the case when
->>>> ath10k_mac_tx_push_txq() is called from process context.
->>>>
->>>> Calling ieee80211_tx_dequeue_ni() with softirq's already disabled
->>>> (e.g., from softirq context) should be safe as the local_bh_disable()
->>>> and local_bh_enable() functions (called from ieee80211_tx_dequeue_ni)
->>>> are fully reentrant.
->>>>
->>>> Signed-off-by: Erik Stromdahl <erik.stromdahl@gmail.com>
->>> I already applied this, but I still want to check _why_ you are changing
->>> this? Is it that you want to call ath10k_mac_tx_push_pending() from a
->>> workqueue in sdio.c in a future patch, or what? Because at the moment me
->>> and Johannes were not able to find where this is called in process
->>> context.
->>>
-> SDIO irqs are threaded irqs (at least on my iMX6 board) and hence process context.
-> I will see if I can find a trace that shows the call chain more exactly.
-> 
-
-I found this backtrace in a log file:
-(it does not show the call to ieee80211_tx_dequeue_ni(), but it shows that
-ath10k_sdio_irq_handler() is called from process context)
-
-          irq/62-mmc1-65    [000] ....   785.261081: ath10k_mac_op_wake_tx_queue <-ieee80211_queue_skb
-          irq/62-mmc1-65    [000] ....   785.261090: <stack trace>
-      => ieee80211_queue_skb
-      => __ieee80211_subif_start_xmit
-      => ieee80211_subif_start_xmit
-      => dev_hard_start_xmit
-      => __dev_queue_xmit
-      => dev_queue_xmit
-      => ip_finish_output2
-      => ip_finish_output
-      => ip_output
-      => ip_local_out
-      => ip_queue_xmit
-      => tcp_transmit_skb
-      => tcp_write_xmit
-      => __tcp_push_pending_frames
-      => tcp_rcv_established
-      => tcp_v4_do_rcv
-      => tcp_v4_rcv
-      => ip_local_deliver_finish
-      => ip_local_deliver
-      => ip_rcv_finish
-      => ip_rcv
-      => __netif_receive_skb_core
-      => __netif_receive_skb
-      => netif_receive_skb_internal
-      => netif_receive_skb
-      => ieee80211_deliver_skb
-      => ieee80211_rx_handlers
-      => ieee80211_prepare_and_rx_handle
-      => ieee80211_rx_napi
-      => ath10k_htt_t2h_msg_handler
-      => ath10k_htt_htc_t2h_msg_handler
-      => ath10k_sdio_mbox_rxmsg_pending_handler
-      => ath10k_sdio_irq_handler                        <- ath10k_mac_tx_push_pending() is called from here
-      => process_sdio_pending_irqs
-      => sdio_run_irqs
-      => sdhci_thread_irq
-      => irq_thread_fn
-      => irq_thread
-      => kthread
-      => ret_from_fork
-      => 0
-
- From ath10k_sdio_irq_handler(), the call chain down to ieee80211_tx_dequeue_ni()
-looks like this:
-
-ath10k_sdio_irq_handler() =>
-   ath10k_mac_tx_push_pending() =>
-     ath10k_mac_schedule_txq() =>
-       ath10k_mac_tx_push_txq() =>
-         ieee80211_tx_dequeue_ni()
-
-> 
->> It seems Johannes wants to fix it in mac80211.
->>
->> [PATCH v2] mac80211: keep BHs disabled while calling drv_tx_wake_queue()
->>
->> Drivers typically expect this, as it's the case for almost all cases
->> where this is called (i.e. from the TX path). Also, the code in mac80211
->> itself (if the driver calls ieee80211_tx_dequeue()) expects this as it
->> uses this_cpu_ptr() without additional protection.
->>
+On Wed, Oct 9, 2019 at 1:18 AM Yibo Zhao <yiboz@codeaurora.org> wrote:
+>
+> > diff --git a/net/mac80211/tx.c b/net/mac80211/tx.c
+> > index f13eb2f61ccf..dadb643a5498 100644
+> > --- a/net/mac80211/tx.c
+> > +++ b/net/mac80211/tx.c
+> > @@ -3669,7 +3669,8 @@ struct ieee80211_txq *ieee80211_next_txq(struct
+> > ieee80211_hw *hw, u8 ac)
+> >  {
+> >       struct ieee80211_local *local = hw_to_local(hw);
+> >       struct ieee80211_txq *ret = NULL;
+> > -     struct txq_info *txqi = NULL;
+> > +     struct txq_info *txqi = NULL, *head = NULL;
+> > +     bool found_eligible_txq = false;
+> >
+> >       spin_lock_bh(&local->active_txq_lock[ac]);
+> >
+> > @@ -3680,20 +3681,32 @@ struct ieee80211_txq
+> > *ieee80211_next_txq(struct ieee80211_hw *hw, u8 ac)
+> >       if (!txqi)
+> >               goto out;
+> >
+> > +     if (txqi == head && !found_eligible_txq)
+> > +             goto out;
+>
+> I assume here the only txq in the list that does not meet AQL check will
+> not be dequeued. Right? Will it affect peak throughput once there is
+> only one station.
+>
+> How about dequeuing it anyway regardless AQL because it is the only one
+> active now so it is fine to occupy the rest bandwidth. Otherwise, I am
+> afraid next_txq() will return NULL in the test only one station is
+> present.
+>
+> > @@ -3748,10 +3785,10 @@ bool ieee80211_txq_may_transmit(struct
+> > ieee80211_hw *hw,
+> >       struct sta_info *sta;
+> >       u8 ac = txq->ac;
+> >
+> > -     spin_lock_bh(&local->active_txq_lock[ac]);
+> > -
+> >       if (!txqi->txq.sta)
+> > -             goto out;
+> > +             return true;
+>
+> why return here? I think even a txq without sta info should get removed
+> from list and added it back later in return_txq() if needed. No?
+>
+> > +
+> > +     spin_lock_bh(&local->active_txq_lock[ac]);
+> >
+> >       if (list_empty(&txqi->schedule_order))
+> >               goto out;
+>
+>
+> --
+> Yibo
