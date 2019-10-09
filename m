@@ -2,127 +2,102 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id AFA7BD155F
-	for <lists+linux-wireless@lfdr.de>; Wed,  9 Oct 2019 19:18:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3E8CFD1616
+	for <lists+linux-wireless@lfdr.de>; Wed,  9 Oct 2019 19:27:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731889AbfJIRSw (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 9 Oct 2019 13:18:52 -0400
-Received: from mail-pg1-f169.google.com ([209.85.215.169]:44246 "EHLO
-        mail-pg1-f169.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1731433AbfJIRSv (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 9 Oct 2019 13:18:51 -0400
-Received: by mail-pg1-f169.google.com with SMTP id u12so1807007pgb.11
-        for <linux-wireless@vger.kernel.org>; Wed, 09 Oct 2019 10:18:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=netronome-com.20150623.gappssmtp.com; s=20150623;
-        h=date:from:to:cc:subject:message-id:in-reply-to:references
-         :organization:mime-version:content-transfer-encoding;
-        bh=ZMJV/snI6C/CEZXoxKg9FufmzjYiI8z5knUXpjXkXps=;
-        b=QWOUeDyizNA9aVFqmIP+SKhzpIHUb43GjehvHrqkh3P0JYA5Zef0Qzpw1f7xng+LdM
-         A4NsnaCHuqq6Fd9V8C9+lgox98UWL6FmPIIzUNElte3OR2N/PULkgp362zEaW3Pf10zm
-         JqG9tRNhoqiNJ+BovnfW2LhP3/lFGtEL4V+RZ9Vx9RSa/u8wyB5t/gDDeaY1PeWrNoJa
-         ojA+y0oKTtl24SL2ohOfKMmcGuUgWpW2QkTq4GcnuA+1Fu50bBOZV5522LQu1SPXND9G
-         slmYfZ6FE7p3TfOqGRAZqi9RVb3fGTADo4qBO1ePQpzlcjBXBYIPZkDCSJIXPqViSOUP
-         88KA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:in-reply-to
-         :references:organization:mime-version:content-transfer-encoding;
-        bh=ZMJV/snI6C/CEZXoxKg9FufmzjYiI8z5knUXpjXkXps=;
-        b=gsWpYYtJJYBJioYzNZQrZUH7FlhHfjGgnmI5Qu905yp2i1Zt0wKH/MYEN9K7TWdBqA
-         Z2lItSS3pwvhfT37oUoaH1nmTwkYoWbA+jkPj91894bWhCf/D6G5oiqMsnbV4BmBBfcn
-         lfbW46202ul5Bme40pkEoVxuKFbasiEgehHt89I1Oyq3/I/Aa2y78n+krK4jYg+b9V26
-         wToBl4caUC6xBEEPKXOckLg6ViT7SQKwGRcrWChIlUReJwn/9o943aJlJyMCfA1RZS+J
-         Xt/W4yg0WdaD+8vHKC0T2Uw5RMcDSIa5KC6rogtk3wETyBMVwvf6jpzBa+dmzQeYiNRL
-         jMjA==
-X-Gm-Message-State: APjAAAX79ICkQuzAs+X0GJxHY5Dbg8t594GvuPsu5Q0yfRTxTG2+x8EJ
-        04NSMEowhu1uCXKXZTs9mSsUPw==
-X-Google-Smtp-Source: APXvYqwBQ/MgCnMdknVCiCI0PghiS4n04POjb0K9O6uFQlvD6ACsAoxFfRepYvCC+AxIpkqMy5QmNQ==
-X-Received: by 2002:a17:90a:ad0c:: with SMTP id r12mr5508698pjq.1.1570641530603;
-        Wed, 09 Oct 2019 10:18:50 -0700 (PDT)
-Received: from cakuba.netronome.com (c-73-202-202-92.hsd1.ca.comcast.net. [73.202.202.92])
-        by smtp.gmail.com with ESMTPSA id p66sm3201170pfg.127.2019.10.09.10.18.49
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 09 Oct 2019 10:18:50 -0700 (PDT)
-Date:   Wed, 9 Oct 2019 10:18:36 -0700
-From:   Jakub Kicinski <jakub.kicinski@netronome.com>
-To:     Johannes Berg <johannes@sipsolutions.net>
-Cc:     David Miller <davem@davemloft.net>, netdev@vger.kernel.org,
-        linux-wireless@vger.kernel.org
-Subject: Re: pull-request: mac80211 2019-10-08
-Message-ID: <20191009101836.46bcf268@cakuba.netronome.com>
-In-Reply-To: <5fa6cece698e96345dd8cdc19ebb645ec9f6da73.camel@sipsolutions.net>
-References: <20191008123111.4019-1-johannes@sipsolutions.net>
-        <20191008195520.33532bbe@cakuba.netronome.com>
-        <5fa6cece698e96345dd8cdc19ebb645ec9f6da73.camel@sipsolutions.net>
-Organization: Netronome Systems, Ltd.
+        id S1732754AbfJIR1P (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 9 Oct 2019 13:27:15 -0400
+Received: from mail.kernel.org ([198.145.29.99]:49234 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1732347AbfJIRYa (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Wed, 9 Oct 2019 13:24:30 -0400
+Received: from sasha-vm.mshome.net (unknown [167.220.2.234])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id E9AE021929;
+        Wed,  9 Oct 2019 17:24:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1570641870;
+        bh=Ay+h74khH/1fU1y9XJ3IOYOYoc+ZH4aIsf7L+V39wB0=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=hbWkVaLPRh2yoLGYrRgbwb8eAZ64Jg6clV5OJ4L+uwQY64F4QH1IwgUVgKIY9BBJk
+         v2B0Dk2AmMz3DuMJ5Llhl0Lzk4gRePabUK2whKnBaJ2Z8S+qFrIIXfRK1tAwtoEgJh
+         hXp7n+QVybWsOJLH1OOIHljzoTYYy4g95LmMN12k=
+From:   Sasha Levin <sashal@kernel.org>
+To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Cc:     Miaoqing Pan <miaoqing@codeaurora.org>,
+        Johannes Berg <johannes.berg@intel.com>,
+        Sasha Levin <sashal@kernel.org>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org
+Subject: [PATCH AUTOSEL 4.14 14/21] nl80211: fix null pointer dereference
+Date:   Wed,  9 Oct 2019 13:06:07 -0400
+Message-Id: <20191009170615.32750-14-sashal@kernel.org>
+X-Mailer: git-send-email 2.20.1
+In-Reply-To: <20191009170615.32750-1-sashal@kernel.org>
+References: <20191009170615.32750-1-sashal@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+X-stable: review
+X-Patchwork-Hint: Ignore
+Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Wed, 09 Oct 2019 08:36:57 +0200, Johannes Berg wrote:
-> Hi Jakub,
-> 
-> > Pulled into net. Let me know if did it wrong :)  
-> 
-> Oops, didn't know it was your "turn" again, guess I haven't been reading
-> netdev enough.
+From: Miaoqing Pan <miaoqing@codeaurora.org>
 
-It's more of a ad hoc whenever Dave needs to step away for a day 
-or two thing, than a schedule. Also I'm quite happy to pick things 
-up from patchwork and the mailing list, so no real need to CC me,
-anyway :)
+[ Upstream commit b501426cf86e70649c983c52f4c823b3c40d72a3 ]
 
-> Looks good, but I didn't think this could possibly go wrong :)
-> 
-> > FWIW there was this little complaint from checkpatch:  
-> [...]
-> > WARNING: Duplicate signature
-> > #14: 
-> > Signed-off-by: Johannes Berg <johannes.berg@intel.com>  
-> 
-> Hmm, yeah, so ... I was actually not sure about that and I guess it
-> slipped by. Most of the time, I've been editing it out, but what happens
-> is this:
-> 
->  1) I send a patch to our internal tree, to fix up some things. Unless
->     it's really urgent, I don't necessarily post it externally at the
->     same time. This obviously has my S-o-b.
->  2) Luca goes through our internal tree and sends out the patches to the
->     list, adding his S-o-b.
->  3) For the patches to the stack, I apply them, and git-am adds my S-o-b
->     again because it's not the last.
-> 
-> So now we have
-> 
-> S-o-b: Johannes
-> S-o-b: Luca
-> S-o-b: Johannes
-> 
-> If I edit it just to be "S-o-b: Johannes", then it looks strange because
-> I've applied a patch from the list and dropped an S-o-b. It's still my
-> code, and Luca doesn't normally have to make any changes to it, but ...
-> This is what I've normally been doing I think, but it always felt a bit
-> weird because then it's not the patch I actually applied, it's like I
-> pretend the whole process described above never happened.
-> 
-> If I edit and remove my first S-o-b then it's weird because the Author
-> isn't the first S-o-b, making it look like I didn't sign it off when I
-> authored it?
-> 
-> If I edit and remove the last S-o-b, how did it end up in my tree?
-> 
-> So basically my first S-o-b is certifying (a) or maybe occasionally (b)
-> under the DCO, while Luca's and my second are certifying (c) (and maybe
-> occasionally also (a) or (b) if any changes were made.)
-> 
-> 
-> Is there any convention on this that I could adhere to? :)
+If the interface is not in MESH mode, the command 'iw wlanx mpath del'
+will cause kernel panic.
 
-Thanks for the explanation, seems like a reasonable stand so as long as
-you're aware this is happening, I'm happy :)
+The root cause is null pointer access in mpp_flush_by_proxy(), as the
+pointer 'sdata->u.mesh.mpp_paths' is NULL for non MESH interface.
+
+Unable to handle kernel NULL pointer dereference at virtual address 00000068
+[...]
+PC is at _raw_spin_lock_bh+0x20/0x5c
+LR is at mesh_path_del+0x1c/0x17c [mac80211]
+[...]
+Process iw (pid: 4537, stack limit = 0xd83e0238)
+[...]
+[<c021211c>] (_raw_spin_lock_bh) from [<bf8c7648>] (mesh_path_del+0x1c/0x17c [mac80211])
+[<bf8c7648>] (mesh_path_del [mac80211]) from [<bf6cdb7c>] (extack_doit+0x20/0x68 [compat])
+[<bf6cdb7c>] (extack_doit [compat]) from [<c05c309c>] (genl_rcv_msg+0x274/0x30c)
+[<c05c309c>] (genl_rcv_msg) from [<c05c25d8>] (netlink_rcv_skb+0x58/0xac)
+[<c05c25d8>] (netlink_rcv_skb) from [<c05c2e14>] (genl_rcv+0x20/0x34)
+[<c05c2e14>] (genl_rcv) from [<c05c1f90>] (netlink_unicast+0x11c/0x204)
+[<c05c1f90>] (netlink_unicast) from [<c05c2420>] (netlink_sendmsg+0x30c/0x370)
+[<c05c2420>] (netlink_sendmsg) from [<c05886d0>] (sock_sendmsg+0x70/0x84)
+[<c05886d0>] (sock_sendmsg) from [<c0589f4c>] (___sys_sendmsg.part.3+0x188/0x228)
+[<c0589f4c>] (___sys_sendmsg.part.3) from [<c058add4>] (__sys_sendmsg+0x4c/0x70)
+[<c058add4>] (__sys_sendmsg) from [<c0208c80>] (ret_fast_syscall+0x0/0x44)
+Code: e2822c02 e2822001 e5832004 f590f000 (e1902f9f)
+---[ end trace bbd717600f8f884d ]---
+
+Signed-off-by: Miaoqing Pan <miaoqing@codeaurora.org>
+Link: https://lore.kernel.org/r/1569485810-761-1-git-send-email-miaoqing@codeaurora.org
+[trim useless data from commit message]
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ net/wireless/nl80211.c | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
+index f19d5a55f09ef..8477209906aba 100644
+--- a/net/wireless/nl80211.c
++++ b/net/wireless/nl80211.c
+@@ -5464,6 +5464,9 @@ static int nl80211_del_mpath(struct sk_buff *skb, struct genl_info *info)
+ 	if (!rdev->ops->del_mpath)
+ 		return -EOPNOTSUPP;
+ 
++	if (dev->ieee80211_ptr->iftype != NL80211_IFTYPE_MESH_POINT)
++		return -EOPNOTSUPP;
++
+ 	return rdev_del_mpath(rdev, dev, dst);
+ }
+ 
+-- 
+2.20.1
+
