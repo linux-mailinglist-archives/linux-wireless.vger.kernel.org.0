@@ -2,103 +2,127 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2506AD1486
-	for <lists+linux-wireless@lfdr.de>; Wed,  9 Oct 2019 18:50:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AFA7BD155F
+	for <lists+linux-wireless@lfdr.de>; Wed,  9 Oct 2019 19:18:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731542AbfJIQuJ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 9 Oct 2019 12:50:09 -0400
-Received: from muru.com ([72.249.23.125]:36234 "EHLO muru.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1730490AbfJIQuJ (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 9 Oct 2019 12:50:09 -0400
-Received: from hillo.muru.com (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTP id 7F5448140;
-        Wed,  9 Oct 2019 16:50:42 +0000 (UTC)
-From:   Tony Lindgren <tony@atomide.com>
-To:     Kalle Valo <kvalo@codeaurora.org>
-Cc:     Eyal Reizer <eyalr@ti.com>, Kishon Vijay Abraham I <kishon@ti.com>,
-        Guy Mishol <guym@ti.com>, linux-wireless@vger.kernel.org,
-        linux-omap@vger.kernel.org,
-        Anders Roxell <anders.roxell@linaro.org>,
-        John Stultz <john.stultz@linaro.org>,
-        Ulf Hansson <ulf.hansson@linaro.org>
-Subject: [PATCHv3] wlcore: clean-up clearing of WL1271_FLAG_IRQ_RUNNING
-Date:   Wed,  9 Oct 2019 09:50:06 -0700
-Message-Id: <20191009165006.41567-1-tony@atomide.com>
-X-Mailer: git-send-email 2.23.0
+        id S1731889AbfJIRSw (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 9 Oct 2019 13:18:52 -0400
+Received: from mail-pg1-f169.google.com ([209.85.215.169]:44246 "EHLO
+        mail-pg1-f169.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1731433AbfJIRSv (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Wed, 9 Oct 2019 13:18:51 -0400
+Received: by mail-pg1-f169.google.com with SMTP id u12so1807007pgb.11
+        for <linux-wireless@vger.kernel.org>; Wed, 09 Oct 2019 10:18:51 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=netronome-com.20150623.gappssmtp.com; s=20150623;
+        h=date:from:to:cc:subject:message-id:in-reply-to:references
+         :organization:mime-version:content-transfer-encoding;
+        bh=ZMJV/snI6C/CEZXoxKg9FufmzjYiI8z5knUXpjXkXps=;
+        b=QWOUeDyizNA9aVFqmIP+SKhzpIHUb43GjehvHrqkh3P0JYA5Zef0Qzpw1f7xng+LdM
+         A4NsnaCHuqq6Fd9V8C9+lgox98UWL6FmPIIzUNElte3OR2N/PULkgp362zEaW3Pf10zm
+         JqG9tRNhoqiNJ+BovnfW2LhP3/lFGtEL4V+RZ9Vx9RSa/u8wyB5t/gDDeaY1PeWrNoJa
+         ojA+y0oKTtl24SL2ohOfKMmcGuUgWpW2QkTq4GcnuA+1Fu50bBOZV5522LQu1SPXND9G
+         slmYfZ6FE7p3TfOqGRAZqi9RVb3fGTADo4qBO1ePQpzlcjBXBYIPZkDCSJIXPqViSOUP
+         88KA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:in-reply-to
+         :references:organization:mime-version:content-transfer-encoding;
+        bh=ZMJV/snI6C/CEZXoxKg9FufmzjYiI8z5knUXpjXkXps=;
+        b=gsWpYYtJJYBJioYzNZQrZUH7FlhHfjGgnmI5Qu905yp2i1Zt0wKH/MYEN9K7TWdBqA
+         Z2lItSS3pwvhfT37oUoaH1nmTwkYoWbA+jkPj91894bWhCf/D6G5oiqMsnbV4BmBBfcn
+         lfbW46202ul5Bme40pkEoVxuKFbasiEgehHt89I1Oyq3/I/Aa2y78n+krK4jYg+b9V26
+         wToBl4caUC6xBEEPKXOckLg6ViT7SQKwGRcrWChIlUReJwn/9o943aJlJyMCfA1RZS+J
+         Xt/W4yg0WdaD+8vHKC0T2Uw5RMcDSIa5KC6rogtk3wETyBMVwvf6jpzBa+dmzQeYiNRL
+         jMjA==
+X-Gm-Message-State: APjAAAX79ICkQuzAs+X0GJxHY5Dbg8t594GvuPsu5Q0yfRTxTG2+x8EJ
+        04NSMEowhu1uCXKXZTs9mSsUPw==
+X-Google-Smtp-Source: APXvYqwBQ/MgCnMdknVCiCI0PghiS4n04POjb0K9O6uFQlvD6ACsAoxFfRepYvCC+AxIpkqMy5QmNQ==
+X-Received: by 2002:a17:90a:ad0c:: with SMTP id r12mr5508698pjq.1.1570641530603;
+        Wed, 09 Oct 2019 10:18:50 -0700 (PDT)
+Received: from cakuba.netronome.com (c-73-202-202-92.hsd1.ca.comcast.net. [73.202.202.92])
+        by smtp.gmail.com with ESMTPSA id p66sm3201170pfg.127.2019.10.09.10.18.49
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 09 Oct 2019 10:18:50 -0700 (PDT)
+Date:   Wed, 9 Oct 2019 10:18:36 -0700
+From:   Jakub Kicinski <jakub.kicinski@netronome.com>
+To:     Johannes Berg <johannes@sipsolutions.net>
+Cc:     David Miller <davem@davemloft.net>, netdev@vger.kernel.org,
+        linux-wireless@vger.kernel.org
+Subject: Re: pull-request: mac80211 2019-10-08
+Message-ID: <20191009101836.46bcf268@cakuba.netronome.com>
+In-Reply-To: <5fa6cece698e96345dd8cdc19ebb645ec9f6da73.camel@sipsolutions.net>
+References: <20191008123111.4019-1-johannes@sipsolutions.net>
+        <20191008195520.33532bbe@cakuba.netronome.com>
+        <5fa6cece698e96345dd8cdc19ebb645ec9f6da73.camel@sipsolutions.net>
+Organization: Netronome Systems, Ltd.
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-We set WL1271_FLAG_IRQ_RUNNING in the beginning of wlcore_irq(), but clear
-it before interrupt handling is done in wlcore_irq_locked().
+On Wed, 09 Oct 2019 08:36:57 +0200, Johannes Berg wrote:
+> Hi Jakub,
+> 
+> > Pulled into net. Let me know if did it wrong :)  
+> 
+> Oops, didn't know it was your "turn" again, guess I haven't been reading
+> netdev enough.
 
-Let's move the clearing to the end of wlcore_irq() where it gets set,
-and remove the old comments about hardirq. That's no longer the case as
-we're using request_threaded_irq().
+It's more of a ad hoc whenever Dave needs to step away for a day 
+or two thing, than a schedule. Also I'm quite happy to pick things 
+up from patchwork and the mailing list, so no real need to CC me,
+anyway :)
 
-Note that the WL1271_FLAG_IRQ_RUNNING should never race between the
-interrupt handler and wlcore_runtime_resume() as because of autosuspend
-timeout we cannot enter idle between wlcore_irq_locked() and the end of
-wlcore_irq().
+> Looks good, but I didn't think this could possibly go wrong :)
+> 
+> > FWIW there was this little complaint from checkpatch:  
+> [...]
+> > WARNING: Duplicate signature
+> > #14: 
+> > Signed-off-by: Johannes Berg <johannes.berg@intel.com>  
+> 
+> Hmm, yeah, so ... I was actually not sure about that and I guess it
+> slipped by. Most of the time, I've been editing it out, but what happens
+> is this:
+> 
+>  1) I send a patch to our internal tree, to fix up some things. Unless
+>     it's really urgent, I don't necessarily post it externally at the
+>     same time. This obviously has my S-o-b.
+>  2) Luca goes through our internal tree and sends out the patches to the
+>     list, adding his S-o-b.
+>  3) For the patches to the stack, I apply them, and git-am adds my S-o-b
+>     again because it's not the last.
+> 
+> So now we have
+> 
+> S-o-b: Johannes
+> S-o-b: Luca
+> S-o-b: Johannes
+> 
+> If I edit it just to be "S-o-b: Johannes", then it looks strange because
+> I've applied a patch from the list and dropped an S-o-b. It's still my
+> code, and Luca doesn't normally have to make any changes to it, but ...
+> This is what I've normally been doing I think, but it always felt a bit
+> weird because then it's not the patch I actually applied, it's like I
+> pretend the whole process described above never happened.
+> 
+> If I edit and remove my first S-o-b then it's weird because the Author
+> isn't the first S-o-b, making it look like I didn't sign it off when I
+> authored it?
+> 
+> If I edit and remove the last S-o-b, how did it end up in my tree?
+> 
+> So basically my first S-o-b is certifying (a) or maybe occasionally (b)
+> under the DCO, while Luca's and my second are certifying (c) (and maybe
+> occasionally also (a) or (b) if any changes were made.)
+> 
+> 
+> Is there any convention on this that I could adhere to? :)
 
-Cc: Anders Roxell <anders.roxell@linaro.org>
-Cc: Eyal Reizer <eyalr@ti.com>
-Cc: Guy Mishol <guym@ti.com>
-Cc: John Stultz <john.stultz@linaro.org>
-Cc: Ulf Hansson <ulf.hansson@linaro.org>
-Signed-off-by: Tony Lindgren <tony@atomide.com>
-
-Changes since v2:
-
-- Downgraded to clean-up from a fix as the race should never happen
-
-Changes since v1:
-
-- Add locking around clear_bit like we do elsewhere in the driver
-
----
- drivers/net/wireless/ti/wlcore/main.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
-
-diff --git a/drivers/net/wireless/ti/wlcore/main.c b/drivers/net/wireless/ti/wlcore/main.c
---- a/drivers/net/wireless/ti/wlcore/main.c
-+++ b/drivers/net/wireless/ti/wlcore/main.c
-@@ -544,11 +544,6 @@ static int wlcore_irq_locked(struct wl1271 *wl)
- 	}
- 
- 	while (!done && loopcount--) {
--		/*
--		 * In order to avoid a race with the hardirq, clear the flag
--		 * before acknowledging the chip.
--		 */
--		clear_bit(WL1271_FLAG_IRQ_RUNNING, &wl->flags);
- 		smp_mb__after_atomic();
- 
- 		ret = wlcore_fw_status(wl, wl->fw_status);
-@@ -668,7 +663,7 @@ static irqreturn_t wlcore_irq(int irq, void *cookie)
- 		disable_irq_nosync(wl->irq);
- 		pm_wakeup_event(wl->dev, 0);
- 		spin_unlock_irqrestore(&wl->wl_lock, flags);
--		return IRQ_HANDLED;
-+		goto out_handled;
- 	}
- 	spin_unlock_irqrestore(&wl->wl_lock, flags);
- 
-@@ -692,6 +687,11 @@ static irqreturn_t wlcore_irq(int irq, void *cookie)
- 
- 	mutex_unlock(&wl->mutex);
- 
-+out_handled:
-+	spin_lock_irqsave(&wl->wl_lock, flags);
-+	clear_bit(WL1271_FLAG_IRQ_RUNNING, &wl->flags);
-+	spin_unlock_irqrestore(&wl->wl_lock, flags);
-+
- 	return IRQ_HANDLED;
- }
- 
--- 
-2.23.0
+Thanks for the explanation, seems like a reasonable stand so as long as
+you're aware this is happening, I'm happy :)
