@@ -2,54 +2,65 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 155CBD0B98
-	for <lists+linux-wireless@lfdr.de>; Wed,  9 Oct 2019 11:44:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8950FD0BC6
+	for <lists+linux-wireless@lfdr.de>; Wed,  9 Oct 2019 11:50:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730419AbfJIJoG (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 9 Oct 2019 05:44:06 -0400
-Received: from s3.sipsolutions.net ([144.76.43.62]:34806 "EHLO
-        sipsolutions.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729817AbfJIJoG (ORCPT
+        id S1727219AbfJIJu6 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 9 Oct 2019 05:50:58 -0400
+Received: from paleale.coelho.fi ([176.9.41.70]:47800 "EHLO
+        farmhouse.coelho.fi" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
+        with ESMTP id S1725935AbfJIJu6 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 9 Oct 2019 05:44:06 -0400
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-        (Exim 4.92.2)
-        (envelope-from <johannes@sipsolutions.net>)
-        id 1iI8Vo-0001DF-HQ; Wed, 09 Oct 2019 11:44:04 +0200
-Message-ID: <fd0c407c9507ba22741af5a9360ddba79971af29.camel@sipsolutions.net>
-Subject: Re: [PATCH 4.4, 4.9, 4.14, 4.19] nl80211: validate beacon head
-From:   Johannes Berg <johannes@sipsolutions.net>
-To:     Greg KH <greg@kroah.com>
-Cc:     linux-wireless@vger.kernel.org, stable@vger.kernel.org
-Date:   Wed, 09 Oct 2019 11:44:03 +0200
-In-Reply-To: <20191009094310.GA3945119@kroah.com>
-References: <1570603265-@changeid> <20191009094310.GA3945119@kroah.com>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.30.5 (3.30.5-1.fc29) 
+        Wed, 9 Oct 2019 05:50:58 -0400
+Received: from [91.156.6.193] (helo=redipa.ger.corp.intel.com)
+        by farmhouse.coelho.fi with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+        (Exim 4.92)
+        (envelope-from <luca@coelho.fi>)
+        id 1iI8cR-0003o4-QC; Wed, 09 Oct 2019 12:50:56 +0300
+From:   Luca Coelho <luca@coelho.fi>
+To:     kvalo@codeaurora.org
+Cc:     linux-wireless@vger.kernel.org
+Date:   Wed,  9 Oct 2019 12:48:52 +0300
+Message-Id: <1570614256-@changeid>
+X-Mailer: git-send-email 2.23.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on farmhouse.coelho.fi
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.9 required=5.0 tests=ALL_TRUSTED,BAYES_00,
+        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.2
+Subject: [PATCH 0/2] iwlwifi: fixes intended for 5.4 2019-10-09
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Wed, 2019-10-09 at 11:43 +0200, Greg KH wrote:
-> 
-> > +	for_each_element(elem, data, len) {
-> > +		/* nothing */
-> > +	}
-> 
-> for_each_element() is not in 4.4, 4.9, 4.14, or 4.19, so this breaks the
-> build :(
+From: Luca Coelho <luciano.coelho@intel.com>
 
-Oh, right. I had previously also said:
+This is my second patchset with fixes for v5.4.  Just a couple more
+patches I'd like to include in the pull-req I'll send you today.
 
-You also need to cherry-pick
-0f3b07f027f8 ("cfg80211: add and use strongly typed element iteration macros")
-7388afe09143 ("cfg80211: Use const more consistently in for_each_element macros")
+The changes are:
 
-as dependencies - the latter doesn't apply cleanly as it has a change
-that doesn't apply, but that part of the change isn't necessary.
+* Fix initialization of 3168 devices (the infamous BAD_COMMAND bug);
+* Fix recognition of some newer systems with integrated MAC;
 
-johannes
+As usual, I'm pushing this to a pending branch, for kbuild bot.  I
+will send you a pull-req today with these plus the ones I sent a few
+days ago.
+
+Cheers,
+Luca.
+
+
+Luca Coelho (2):
+  iwlwifi: exclude GEO SAR support for 3168
+  iwlwifi: pcie: change qu with jf devices to use qu configuration
+
+ drivers/net/wireless/intel/iwlwifi/mvm/fw.c   |  16 +-
+ drivers/net/wireless/intel/iwlwifi/pcie/drv.c | 274 +++++++++---------
+ 2 files changed, 146 insertions(+), 144 deletions(-)
+
+-- 
+2.23.0
 
