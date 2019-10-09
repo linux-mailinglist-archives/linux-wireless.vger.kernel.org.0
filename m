@@ -2,92 +2,111 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id CCB75D074D
-	for <lists+linux-wireless@lfdr.de>; Wed,  9 Oct 2019 08:37:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 231CFD0757
+	for <lists+linux-wireless@lfdr.de>; Wed,  9 Oct 2019 08:41:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729464AbfJIGhD (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 9 Oct 2019 02:37:03 -0400
-Received: from s3.sipsolutions.net ([144.76.43.62]:60184 "EHLO
+        id S1726734AbfJIGlT (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 9 Oct 2019 02:41:19 -0400
+Received: from s3.sipsolutions.net ([144.76.43.62]:60334 "EHLO
         sipsolutions.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727677AbfJIGhD (ORCPT
+        with ESMTP id S1725776AbfJIGlT (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 9 Oct 2019 02:37:03 -0400
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+        Wed, 9 Oct 2019 02:41:19 -0400
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
         (Exim 4.92.2)
         (envelope-from <johannes@sipsolutions.net>)
-        id 1iI5ak-0005fu-03; Wed, 09 Oct 2019 08:36:58 +0200
-Message-ID: <5fa6cece698e96345dd8cdc19ebb645ec9f6da73.camel@sipsolutions.net>
-Subject: Re: pull-request: mac80211 2019-10-08
+        id 1iI5ev-0005nl-1b; Wed, 09 Oct 2019 08:41:17 +0200
 From:   Johannes Berg <johannes@sipsolutions.net>
-To:     Jakub Kicinski <jakub.kicinski@netronome.com>
-Cc:     David Miller <davem@davemloft.net>, netdev@vger.kernel.org,
-        linux-wireless@vger.kernel.org
-Date:   Wed, 09 Oct 2019 08:36:57 +0200
-In-Reply-To: <20191008195520.33532bbe@cakuba.netronome.com> (sfid-20191009_045539_879003_33E33FCD)
-References: <20191008123111.4019-1-johannes@sipsolutions.net>
-         <20191008195520.33532bbe@cakuba.netronome.com>
-         (sfid-20191009_045539_879003_33E33FCD)
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.30.5 (3.30.5-1.fc29) 
+To:     linux-wireless@vger.kernel.org, stable@vger.kernel.org
+Cc:     Johannes Berg <johannes.berg@intel.com>
+Subject: [PATCH 4.4, 4.9, 4.14, 4.19] nl80211: validate beacon head
+Date:   Wed,  9 Oct 2019 08:41:09 +0200
+Message-Id: <1570603265-@changeid>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi Jakub,
+From: Johannes Berg <johannes.berg@intel.com>
 
-> Pulled into net. Let me know if did it wrong :)
+Commit 8a3347aa110c76a7f87771999aed491d1d8779a8 upstream.
 
-Oops, didn't know it was your "turn" again, guess I haven't been reading
-netdev enough.
+We currently don't validate the beacon head, i.e. the header,
+fixed part and elements that are to go in front of the TIM
+element. This means that the variable elements there can be
+malformed, e.g. have a length exceeding the buffer size, but
+most downstream code from this assumes that this has already
+been checked.
 
-Looks good, but I didn't think this could possibly go wrong :)
+Add the necessary checks to the netlink policy.
 
-> FWIW there was this little complaint from checkpatch:
-[...]
-> WARNING: Duplicate signature
-> #14: 
-> Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Cc: stable@vger.kernel.org
+Fixes: ed1b6cc7f80f ("cfg80211/nl80211: add beacon settings")
+Link: https://lore.kernel.org/r/1569009255-I7ac7fbe9436e9d8733439eab8acbbd35e55c74ef@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+---
+ net/wireless/nl80211.c | 38 ++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 38 insertions(+)
 
-Hmm, yeah, so ... I was actually not sure about that and I guess it
-slipped by. Most of the time, I've been editing it out, but what happens
-is this:
-
- 1) I send a patch to our internal tree, to fix up some things. Unless
-    it's really urgent, I don't necessarily post it externally at the
-    same time. This obviously has my S-o-b.
- 2) Luca goes through our internal tree and sends out the patches to the
-    list, adding his S-o-b.
- 3) For the patches to the stack, I apply them, and git-am adds my S-o-b
-    again because it's not the last.
-
-So now we have
-
-S-o-b: Johannes
-S-o-b: Luca
-S-o-b: Johannes
-
-If I edit it just to be "S-o-b: Johannes", then it looks strange because
-I've applied a patch from the list and dropped an S-o-b. It's still my
-code, and Luca doesn't normally have to make any changes to it, but ...
-This is what I've normally been doing I think, but it always felt a bit
-weird because then it's not the patch I actually applied, it's like I
-pretend the whole process described above never happened.
-
-If I edit and remove my first S-o-b then it's weird because the Author
-isn't the first S-o-b, making it look like I didn't sign it off when I
-authored it?
-
-If I edit and remove the last S-o-b, how did it end up in my tree?
-
-So basically my first S-o-b is certifying (a) or maybe occasionally (b)
-under the DCO, while Luca's and my second are certifying (c) (and maybe
-occasionally also (a) or (b) if any changes were made.)
-
-
-Is there any convention on this that I could adhere to? :)
-
-johannes
+diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
+index 6168db3c35e4..4a10ab388e0b 100644
+--- a/net/wireless/nl80211.c
++++ b/net/wireless/nl80211.c
+@@ -200,6 +200,38 @@ cfg80211_get_dev_from_info(struct net *netns, struct genl_info *info)
+ 	return __cfg80211_rdev_from_attrs(netns, info->attrs);
+ }
+ 
++static int validate_beacon_head(const struct nlattr *attr,
++				struct netlink_ext_ack *extack)
++{
++	const u8 *data = nla_data(attr);
++	unsigned int len = nla_len(attr);
++	const struct element *elem;
++	const struct ieee80211_mgmt *mgmt = (void *)data;
++	unsigned int fixedlen = offsetof(struct ieee80211_mgmt,
++					 u.beacon.variable);
++
++	if (len < fixedlen)
++		goto err;
++
++	if (ieee80211_hdrlen(mgmt->frame_control) !=
++	    offsetof(struct ieee80211_mgmt, u.beacon))
++		goto err;
++
++	data += fixedlen;
++	len -= fixedlen;
++
++	for_each_element(elem, data, len) {
++		/* nothing */
++	}
++
++	if (for_each_element_completed(elem, data, len))
++		return 0;
++
++err:
++	NL_SET_ERR_MSG_ATTR(extack, attr, "malformed beacon head");
++	return -EINVAL;
++}
++
+ /* policy for the attributes */
+ static const struct nla_policy nl80211_policy[NUM_NL80211_ATTR] = {
+ 	[NL80211_ATTR_WIPHY] = { .type = NLA_U32 },
+@@ -4014,6 +4046,12 @@ static int nl80211_parse_beacon(struct nlattr *attrs[],
+ 	memset(bcn, 0, sizeof(*bcn));
+ 
+ 	if (attrs[NL80211_ATTR_BEACON_HEAD]) {
++		int ret = validate_beacon_head(attrs[NL80211_ATTR_BEACON_HEAD],
++					       NULL);
++
++		if (ret)
++			return ret;
++
+ 		bcn->head = nla_data(attrs[NL80211_ATTR_BEACON_HEAD]);
+ 		bcn->head_len = nla_len(attrs[NL80211_ATTR_BEACON_HEAD]);
+ 		if (!bcn->head_len)
+-- 
+2.20.1
 
