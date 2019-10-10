@@ -2,187 +2,78 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id F10DCD2708
-	for <lists+linux-wireless@lfdr.de>; Thu, 10 Oct 2019 12:19:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5DBA1D2AD6
+	for <lists+linux-wireless@lfdr.de>; Thu, 10 Oct 2019 15:17:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726359AbfJJKTe (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 10 Oct 2019 06:19:34 -0400
-Received: from mx1.redhat.com ([209.132.183.28]:49710 "EHLO mx1.redhat.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725840AbfJJKTe (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 10 Oct 2019 06:19:34 -0400
-Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.phx2.redhat.com [10.5.11.12])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mx1.redhat.com (Postfix) with ESMTPS id 68BBC30655F9;
-        Thu, 10 Oct 2019 10:19:32 +0000 (UTC)
-Received: from bistromath.localdomain (unknown [10.36.118.53])
-        by smtp.corp.redhat.com (Postfix) with ESMTPS id B4CF960BF4;
-        Thu, 10 Oct 2019 10:19:26 +0000 (UTC)
-Date:   Thu, 10 Oct 2019 12:19:25 +0200
-From:   Sabrina Dubroca <sd@queasysnail.net>
-To:     Taehee Yoo <ap420073@gmail.com>
-Cc:     davem@davemloft.net, netdev@vger.kernel.org,
-        linux-wireless@vger.kernel.org, jakub.kicinski@netronome.com,
-        johannes@sipsolutions.net, j.vosburgh@gmail.com, vfalico@gmail.com,
-        andy@greyhouse.net, jiri@resnulli.us, roopa@cumulusnetworks.com,
-        saeedm@mellanox.com, manishc@marvell.com, rahulv@marvell.com,
-        kys@microsoft.com, haiyangz@microsoft.com,
-        stephen@networkplumber.org, sashal@kernel.org, hare@suse.de,
-        varun@chelsio.com, ubraun@linux.ibm.com, kgraul@linux.ibm.com,
-        jay.vosburgh@canonical.com, schuffelen@google.com, bjorn@mork.no
-Subject: Re: [PATCH net v4 01/12] net: core: limit nested device depth
-Message-ID: <20191010101925.GA93190@bistromath.localdomain>
-References: <20190928164843.31800-1-ap420073@gmail.com>
- <20190928164843.31800-2-ap420073@gmail.com>
+        id S2388345AbfJJNRr (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 10 Oct 2019 09:17:47 -0400
+Received: from mail-ot1-f65.google.com ([209.85.210.65]:37216 "EHLO
+        mail-ot1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2388329AbfJJNRp (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 10 Oct 2019 09:17:45 -0400
+Received: by mail-ot1-f65.google.com with SMTP id k32so4824967otc.4
+        for <linux-wireless@vger.kernel.org>; Thu, 10 Oct 2019 06:17:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ub-ac-id.20150623.gappssmtp.com; s=20150623;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=QTZIdVmjWEaVgfwGRupI4vAqJVGET3VIX90hz2R16m0=;
+        b=kbDD0ETnfb+9T5ky4afnuU19WL5B3TgSTtrvr8/78l52RfSJ/bD7cjcm8C45XsJ4wr
+         kY8zUv/ms1sLDr56E/0rqAcpldgbTirzVsO1TqrlTRt5AL5IhxusLfWbWkCQZqSDApog
+         xVZixZPZF5pv+wD9wYHHFszyBuRJ0Z0/71+2E/SGgHwnMzv66/86w9uplcX1z0grTv9p
+         1TYZ7MtIagYr+hnMPgyspL8CH18dkY1RexU6NSgr6L6/lGHi7jHNMmmGOoiBuh2azqNd
+         aWHFVXbx5cxjkbX5kJe7PAp4IU2wf06fogqa+YoO9ylF7jna+POCU+xNsHXT6R2wFQg9
+         YqYQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=QTZIdVmjWEaVgfwGRupI4vAqJVGET3VIX90hz2R16m0=;
+        b=IufOfrqW91iXFGMsoxmlgc+6MtC3Mqhl7Xpz0GjlXsoLDzOZXRbI8Sp535FwvGfAHB
+         dbSKsstYX9OfzBuh1tscx/8qbpIHVwC/B1pY88pNNOLMhCdnvufXT7K8JTIyD6jjE9M+
+         IUSG1dDu5yIKeHKH8yuiKPlv6ziD7wo9LoqhGl2ujgGZJJf+zgfLfoAeeP+5n166uRrI
+         GbhPnzQa2nQF3gz4+hoT41hCLlIYnQMxKauoKk1toepRoGh1mUeTqvxBkEn4Q6+Liexb
+         nQMF3S+cfEsSK92jNNei8WYmclH/MNBL18qKMrhOzEmzgs1w7AxA3eDaGDDg6GMv7Fgn
+         LfJg==
+X-Gm-Message-State: APjAAAXI6Xy4ZQh8NCZXNguEWcLMTxNrs//kKBEFxl6UBP8CWzQOvJSL
+        tOyvhWIG0+OYpKIXJqnAPuCb715n+8g6IuMNN5rS
+X-Google-Smtp-Source: APXvYqwe5B6z/3dUuNDQtQ0n2oQYOsdY3HQR3dkIin1gqVhu0NNteov05tKzv4DhJBBR4bjK2RG7Phnj6WUHoBrkRYc=
+X-Received: by 2002:a05:6830:1103:: with SMTP id w3mr7909437otq.312.1570713462861;
+ Thu, 10 Oct 2019 06:17:42 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20190928164843.31800-2-ap420073@gmail.com>
-User-Agent: Mutt/1.12.2 (2019-09-21)
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.12
-X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16 (mx1.redhat.com [10.5.110.47]); Thu, 10 Oct 2019 10:19:33 +0000 (UTC)
+Received: by 2002:a4a:3346:0:0:0:0:0 with HTTP; Thu, 10 Oct 2019 06:17:41
+ -0700 (PDT)
+Reply-To: sunrisefundingltd50@gmail.com
+From:   Valentina Yurina <v_yurina@ub.ac.id>
+Date:   Thu, 10 Oct 2019 14:17:41 +0100
+Message-ID: <CAKoEkvu4vc5Yn9-hzxQ5dYmUL=oO69=GSP0FC7O+CGz9Jni8+Q@mail.gmail.com>
+Subject: Apply For Financial investment at a lower rate 2%
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-2019-09-28, 16:48:32 +0000, Taehee Yoo wrote:
-> @@ -6790,23 +6878,45 @@ int netdev_walk_all_lower_dev(struct net_device *dev,
->  					void *data),
->  			      void *data)
->  {
-> -	struct net_device *ldev;
-> -	struct list_head *iter;
-> -	int ret;
-> +	struct net_device *ldev, *next, *now, *dev_stack[MAX_NEST_DEV + 1];
-> +	struct list_head *niter, *iter, *iter_stack[MAX_NEST_DEV + 1];
-> +	int ret, cur = 0;
->  
-> -	for (iter = &dev->adj_list.lower,
-> -	     ldev = netdev_next_lower_dev(dev, &iter);
-> -	     ldev;
-> -	     ldev = netdev_next_lower_dev(dev, &iter)) {
-> -		/* first is the lower device itself */
-> -		ret = fn(ldev, data);
-> -		if (ret)
-> -			return ret;
-> +	now = dev;
-> +	iter = &dev->adj_list.lower;
->  
-> -		/* then look at all of its lower devices */
-> -		ret = netdev_walk_all_lower_dev(ldev, fn, data);
-> -		if (ret)
-> -			return ret;
-> +	while (1) {
-> +		if (now != dev) {
-> +			ret = fn(now, data);
-> +			if (ret)
-> +				return ret;
-> +		}
-> +
-> +		next = NULL;
-> +		while (1) {
-> +			ldev = netdev_next_lower_dev(now, &iter);
-> +			if (!ldev)
-> +				break;
-> +
-> +			if (!next) {
-> +				next = ldev;
-> +				niter = &ldev->adj_list.lower;
-> +			} else {
-> +				dev_stack[cur] = ldev;
-> +				iter_stack[cur++] = &ldev->adj_list.lower;
-> +				break;
-> +			}
-> +		}
-> +
-> +		if (!next) {
-> +			if (!cur)
-> +				return 0;
-
-Hmm, I don't think this condition is correct.
-
-If we have this topology:
-
-
-                bridge0
-                /  |  \
-               /   |   \
-              /    |    \
-        dummy0   vlan1   vlan2
-                   |       \
-                 dummy1    dummy2
-
-We end up with the expected lower/upper levels for all devices:
-
-    | device  | upper | lower |
-    |---------+-------+-------|
-    | dummy0  |     2 |     1 |
-    | dummy1  |     3 |     1 |
-    | dummy2  |     3 |     1 |
-    | vlan1   |     2 |     2 |
-    | vlan2   |     2 |     2 |
-    | bridge0 |     1 |     3 |
-
-
-If we then add macvlan0 on top of bridge0:
-
-
-                macvlan0
-                   |
-                   |
-                bridge0
-                /  |  \
-               /   |   \
-              /    |    \
-        dummy0   vlan1   vlan2
-                   |       \
-                 dummy1    dummy2
-
-
-we can observe that __netdev_update_upper_level is only called for
-some of the devices under bridge0. I added a perf probe:
-
- # perf probe -a '__netdev_update_upper_level dev->name:string'
-
-which gets hit for bridge0 (called directly by
-__netdev_upper_dev_link) and then dummy0, vlan1, dummy1. It is never
-called for vlan2 and dummy2.
-
-After this, we have the following levels (*):
-
-    | device   | upper | lower |
-    |----------+-------+-------|
-    | dummy0   |     3 |     1 |
-    | dummy1   |     4 |     1 |
-    | dummy2   |     3 |     1 |
-    | vlan1    |     3 |     2 |
-    | vlan2    |     2 |     2 |
-    | bridge0  |     2 |     3 |
-    | macvlan0 |     1 |     4 |
-
-For dummy0, dummy1, vlan1, the upper level has increased by 1, as
-expected. For dummy2 and vlan2, it's still the same, which is wrong.
-
-
-(*) observed easily by adding another probe:
-
- # perf probe -a 'dev_get_stats dev->name:string dev->upper_level dev->lower_level'
-
-and running "ip link"
-
-Or you can just add prints and recompile, of course :)
-
-> +			next = dev_stack[--cur];
-> +			niter = iter_stack[cur];
-> +		}
-> +
-> +		now = next;
-> +		iter = niter;
->  	}
->  
->  	return 0;
-
 -- 
-Sabrina
+Hello,
+
+We are private lenders based in UK.
+
+Do you need a loan (credit) as soon as possible. Are you in search of
+money to solve your personal needs or finance your business venture,
+then get Your desired loan today! Consult us at Sunrise Funding Ltd.
+
+* We offer personal loan & huge capital loan at 2% interest rate to
+the general public both locally and internationally.
+* Credit amount range from $5,000.00 -- $500,000.00 and above.
+* Special $10,000,000.00 Loan offer for huge project also available.
+* Loan period of 6 months -- 10 years.
+* Loan is granted 24 hours after approval and accredited, directly in
+hand or bank account.
+
+Please note that you are advised to contact us for more details via
+the following e-mail address below;
+
+EMAIL : sunrisefundingltd50@gmail.com
+FIRM : Sunrise Funding Ltd UK.
