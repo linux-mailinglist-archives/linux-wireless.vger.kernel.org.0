@@ -2,74 +2,183 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 80570D31E1
-	for <lists+linux-wireless@lfdr.de>; Thu, 10 Oct 2019 22:21:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 127F1D32F1
+	for <lists+linux-wireless@lfdr.de>; Thu, 10 Oct 2019 22:53:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726526AbfJJUU4 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 10 Oct 2019 16:20:56 -0400
-Received: from mail-io1-f46.google.com ([209.85.166.46]:46248 "EHLO
-        mail-io1-f46.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725867AbfJJUU4 (ORCPT
+        id S1726707AbfJJUxW (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 10 Oct 2019 16:53:22 -0400
+Received: from mail-wr1-f66.google.com ([209.85.221.66]:42770 "EHLO
+        mail-wr1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726533AbfJJUxV (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 10 Oct 2019 16:20:56 -0400
-Received: by mail-io1-f46.google.com with SMTP id c6so16549964ioo.13
-        for <linux-wireless@vger.kernel.org>; Thu, 10 Oct 2019 13:20:54 -0700 (PDT)
+        Thu, 10 Oct 2019 16:53:21 -0400
+Received: by mail-wr1-f66.google.com with SMTP id n14so9445184wrw.9
+        for <linux-wireless@vger.kernel.org>; Thu, 10 Oct 2019 13:53:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=mPkNNGeagVj1CLX70B/TcJzGtTxszLuPgR2FHE+kuIc=;
-        b=iuSmkh4Cpxz19gsiGFuL0ZVrlKtDWP2mKMwadZ7OuQ/hzMQO2nzK2snzfFePzYICWC
-         3oJz0l6T61ApxyoMQQIMsh2Z1e5DJQJbGMW16rZCnPM4x//pAMsCdIGJzykq9LdP69qK
-         eiy5YfTKhoGLjVoAq5dDRTpFE2bpYIgEBmVHGo+h0K4Q4NNDHv5LPdI+NkZcBOb8mcZc
-         gQqBui3i27Fkg0Sl0JdCcskFzaTmXHE8w3t0SB8qr6B3j+QYGxSNWF7Bp411p/AkAhVq
-         Rohq01/7lpQ6YNvY2jRbE7ESHPWQaJHc+1h6m+hKDfhm8F6yMJfRlvJSeuZGFr8pnHMM
-         5Zig==
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=zbWsOyqaUaMHm6xbSII/Hh4r9T9pk6P3FHSekk7NLFU=;
+        b=lC2l7cvBPfIl4Gq/l8GvzR3FxvmfuhHxOkkKNG+Nzv3wKCi4kplrEMVe2j6TbVpk/l
+         SdZTvDG/1zbVLm4dJaCnG8Xy8+ghhrToYzKyFegOnQtjEi1OWRlueKewQLjqt25tXr4i
+         hnYHONPrQN02siE1dX1miH07uqVW4gXOub1dICHKpO5wb3vQbxc/qxuSNwWiYQJj6pTp
+         ir9tudAC5vFJgsOPCCgxkHEDOWlWjP+LKRk9IAA+6DM6ASTNUezOEhQxwPKVqvB+J1lJ
+         9EGxl6y9CDKsSjJwDyv0c5BqqWtYNW8s4Kkr/kjtkjj5GIg7NkT1OoNVKROhl2Fur2z/
+         Y+cg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=mPkNNGeagVj1CLX70B/TcJzGtTxszLuPgR2FHE+kuIc=;
-        b=c5EHmRdH1zp4kM/65vMHYpLOm29Ne+zQX3Sa/pRY4mpyH8ia5k9UzHLvleCntpZ/Mt
-         4oeifbCdxED8RcQjMi9G8i1eJa3nSbdq1OF2XlWNNdObOBqAFkPGLGGSavUmJYMobT1h
-         Dt32aYJQRB6Y2SrpFD4K72+GDKibg4Cnh2LY1Ge5i0LMNLCd3fkyZbqun1FcxTOqnmI4
-         ncciAkx0L0qDlJ4VujXxyBetNI2y6SwWM2Ui896vtUu/1WBD3KZrEMYI7ixt93o97fge
-         d4gmViB4x6b1nSKJCUnQGSZ14f22IZiAxro2HQORdn/iC8nMJAmkyymV/+qOBowRD9r9
-         MEZA==
-X-Gm-Message-State: APjAAAVltSFiVNWnDvURuSs1ovJpPkyemI3khAyrfCJWlWep+DgL36zZ
-        w+7ZB3aW/vhFWXKWt4VSVErWv8pR1OjIjRDRc/U=
-X-Google-Smtp-Source: APXvYqzyI2vMq8QgfrM8GdgBDQjMus11f9YGid7QgzGSh9iNYheEPq/UgvLwDE875OeVNZVEZPSCItjsujY379yW4Tw=
-X-Received: by 2002:a02:c4d8:: with SMTP id h24mr13338162jaj.27.1570738854176;
- Thu, 10 Oct 2019 13:20:54 -0700 (PDT)
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=zbWsOyqaUaMHm6xbSII/Hh4r9T9pk6P3FHSekk7NLFU=;
+        b=YoKzmkukXGE+ti+HzlZ3Wwidq9WdqFqjzonRz5QK3j0htbsNkVjCu7K7cSm//nJhmz
+         f2ygBOe3yyfYimRpxMtK3o67ZFKlbBshvnuDc4Dmh4sDsqtg18Y1uOyHmvaYMtn3M0It
+         GXdXj8KplLmOLk8pNvf4lskCl2zPzVGA3LWCkfJpkYlfva+EGKAKGNS+3UMjR0cb93dj
+         bYYVgHHu8n5FC69tcgrf6VhC6vtcAVti990J0jCVp9WAWiFTMM/2sLlgCH5MTdvu9fQ3
+         LpJj6uIo4pQzwjfJFZqPR3dWfBieMZ7tvgYYK+Gzu0icmg5jyTUoZJXx1bzFpORBMufT
+         eu1Q==
+X-Gm-Message-State: APjAAAVpZ6PZ7xfNfnU1w/QSYiLjy9rj01+7nA9u6qbh6rh2MRiabySU
+        yYU5XqXBpd1HJBZuZYIQ3U1MGB6ZuP8=
+X-Google-Smtp-Source: APXvYqwAVP4Sirp8uMbLsyEKE2RUSL0NVI9HK5gNpEZC2jXRuM8qAOBVr6co12geF+Z0ocycj3RI6Q==
+X-Received: by 2002:a5d:4901:: with SMTP id x1mr2092059wrq.28.1570740799141;
+        Thu, 10 Oct 2019 13:53:19 -0700 (PDT)
+Received: from localhost.localdomain ([31.147.208.18])
+        by smtp.googlemail.com with ESMTPSA id y18sm5179081wrs.6.2019.10.10.13.53.18
+        (version=TLS1 cipher=AES128-SHA bits=128/128);
+        Thu, 10 Oct 2019 13:53:18 -0700 (PDT)
+From:   =?UTF-8?q?Tomislav=20Po=C5=BEega?= <pozega.tomislav@gmail.com>
+To:     linux-wireless@vger.kernel.org
+Cc:     kvalo@codeaurora.org, ath10k@lists.infradead.org
+Subject: [PATCH] ath: rename regulatory rules
+Date:   Thu, 10 Oct 2019 22:53:15 +0200
+Message-Id: <1570740795-12522-1-git-send-email-pozega.tomislav@gmail.com>
+X-Mailer: git-send-email 1.7.0.4
 MIME-Version: 1.0
-References: <CAKKzd-8jgQWTO2w589gMVJm3CaU-15wUER+fsqpYJJSeZL4RPg@mail.gmail.com>
- <CALLGbRKUZmZzBh9=YpJ+r_ts8aY+HXy159oviihSgqMEofOCRQ@mail.gmail.com>
- <CAKKzd-8aRFtdkK+E4-sXBid9jP_sAr0bGbdLYJ=sjb4iCsTAcw@mail.gmail.com>
- <7158fc76fe5ec091633b36b3218a8586960c19e2.camel@redhat.com>
- <CAKKzd--xon+8DY0=6pYF536SfGU9iXQeMvQ3huhT=8=Ap2bCBw@mail.gmail.com>
- <CAKKzd--_m8BZhjXkimAzGJ8TFF8-18zV61ykZEnGq_WX9Wrz8Q@mail.gmail.com>
- <CAKKzd--TAFqwuUcWyU1c5GTya8EQRN=Ob9TUuDwQ4AAMTDEAHw@mail.gmail.com>
- <CABPxzY+2mZ2=t8t9vD+ptu5WeZDRGtmn-p=EBSknunU3C5tWAQ@mail.gmail.com> <CAKKzd-91BbanxTRQf--EeLBpPvZg-X5kcAx1tohVKJ4sxC=pDg@mail.gmail.com>
-In-Reply-To: <CAKKzd-91BbanxTRQf--EeLBpPvZg-X5kcAx1tohVKJ4sxC=pDg@mail.gmail.com>
-From:   David Ho <davidkwho@gmail.com>
-Date:   Thu, 10 Oct 2019 13:20:43 -0700
-Message-ID: <CAKKzd-_MLGXVYuV1k7K6PGE_T50MzrXbENeM7FWsFHA+LNr_uQ@mail.gmail.com>
-Subject: Re: Linux wireless times out at Google Starbucks location
-To:     Krishna Chaitanya <chaitanya.mgit@gmail.com>
-Cc:     Dan Williams <dcbw@redhat.com>,
-        Steve deRosier <derosier@gmail.com>,
-        linux-wireless <linux-wireless@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Thu, Oct 10, 2019 at 12:09 PM Krishna Chaitanya
-<chaitanya.mgit@gmail.com> wrote:
->
-> Did you also updated to corresponding linux-firmware, that might have
-> solved the problem?
+Regulatory rule defines in regd.c are used not only by ath9k but also
+ath10k driver (haven't test other drivers) and thus should be
+renamed from ATH9K* to ATH*.
 
-Nothing else was changed other than the kernel being booted from grub;
- I would have said that otherwise.
+Signed-off-by: Tomislav Požega <pozega.tomislav@gmail.com>
+---
+ drivers/net/wireless/ath/regd.c |   50 +++++++++++++++++++-------------------
+ 1 files changed, 25 insertions(+), 25 deletions(-)
+
+diff --git a/drivers/net/wireless/ath/regd.c b/drivers/net/wireless/ath/regd.c
+index e25bfdf..20f4f8e 100644
+--- a/drivers/net/wireless/ath/regd.c
++++ b/drivers/net/wireless/ath/regd.c
+@@ -33,33 +33,33 @@
+  */
+ 
+ /* Only these channels all allow active scan on all world regulatory domains */
+-#define ATH9K_2GHZ_CH01_11	REG_RULE(2412-10, 2462+10, 40, 0, 20, 0)
++#define ATH_2GHZ_CH01_11	REG_RULE(2412-10, 2462+10, 40, 0, 20, 0)
+ 
+ /* We enable active scan on these a case by case basis by regulatory domain */
+-#define ATH9K_2GHZ_CH12_13	REG_RULE(2467-10, 2472+10, 40, 0, 20,\
++#define ATH_2GHZ_CH12_13	REG_RULE(2467-10, 2472+10, 40, 0, 20,\
+ 					 NL80211_RRF_NO_IR)
+-#define ATH9K_2GHZ_CH14		REG_RULE(2484-10, 2484+10, 40, 0, 20,\
++#define ATH_2GHZ_CH14		REG_RULE(2484-10, 2484+10, 40, 0, 20,\
+ 					 NL80211_RRF_NO_IR | \
+ 					 NL80211_RRF_NO_OFDM)
+ 
+ /* We allow IBSS on these on a case by case basis by regulatory domain */
+-#define ATH9K_5GHZ_5150_5350	REG_RULE(5150-10, 5350+10, 80, 0, 30,\
++#define ATH_5GHZ_5150_5350	REG_RULE(5150-10, 5350+10, 80, 0, 30,\
+ 					 NL80211_RRF_NO_IR)
+-#define ATH9K_5GHZ_5470_5850	REG_RULE(5470-10, 5850+10, 80, 0, 30,\
++#define ATH_5GHZ_5470_5850	REG_RULE(5470-10, 5850+10, 80, 0, 30,\
+ 					 NL80211_RRF_NO_IR)
+-#define ATH9K_5GHZ_5725_5850	REG_RULE(5725-10, 5850+10, 80, 0, 30,\
++#define ATH_5GHZ_5725_5850	REG_RULE(5725-10, 5850+10, 80, 0, 30,\
+ 					 NL80211_RRF_NO_IR)
+ 
+-#define ATH9K_2GHZ_ALL		ATH9K_2GHZ_CH01_11, \
+-				ATH9K_2GHZ_CH12_13, \
+-				ATH9K_2GHZ_CH14
++#define ATH_2GHZ_ALL		ATH_2GHZ_CH01_11, \
++				ATH_2GHZ_CH12_13, \
++				ATH_2GHZ_CH14
+ 
+-#define ATH9K_5GHZ_ALL		ATH9K_5GHZ_5150_5350, \
+-				ATH9K_5GHZ_5470_5850
++#define ATH_5GHZ_ALL		ATH_5GHZ_5150_5350, \
++				ATH_5GHZ_5470_5850
+ 
+ /* This one skips what we call "mid band" */
+-#define ATH9K_5GHZ_NO_MIDBAND	ATH9K_5GHZ_5150_5350, \
+-				ATH9K_5GHZ_5725_5850
++#define ATH_5GHZ_NO_MIDBAND	ATH_5GHZ_5150_5350, \
++				ATH_5GHZ_5725_5850
+ 
+ /* Can be used for:
+  * 0x60, 0x61, 0x62 */
+@@ -67,8 +67,8 @@
+ 	.n_reg_rules = 5,
+ 	.alpha2 =  "99",
+ 	.reg_rules = {
+-		ATH9K_2GHZ_ALL,
+-		ATH9K_5GHZ_ALL,
++		ATH_2GHZ_ALL,
++		ATH_5GHZ_ALL,
+ 	}
+ };
+ 
+@@ -77,9 +77,9 @@
+ 	.n_reg_rules = 4,
+ 	.alpha2 =  "99",
+ 	.reg_rules = {
+-		ATH9K_2GHZ_CH01_11,
+-		ATH9K_2GHZ_CH12_13,
+-		ATH9K_5GHZ_NO_MIDBAND,
++		ATH_2GHZ_CH01_11,
++		ATH_2GHZ_CH12_13,
++		ATH_5GHZ_NO_MIDBAND,
+ 	}
+ };
+ 
+@@ -88,8 +88,8 @@
+ 	.n_reg_rules = 3,
+ 	.alpha2 =  "99",
+ 	.reg_rules = {
+-		ATH9K_2GHZ_CH01_11,
+-		ATH9K_5GHZ_NO_MIDBAND,
++		ATH_2GHZ_CH01_11,
++		ATH_5GHZ_NO_MIDBAND,
+ 	}
+ };
+ 
+@@ -98,8 +98,8 @@
+ 	.n_reg_rules = 3,
+ 	.alpha2 =  "99",
+ 	.reg_rules = {
+-		ATH9K_2GHZ_CH01_11,
+-		ATH9K_5GHZ_ALL,
++		ATH_2GHZ_CH01_11,
++		ATH_5GHZ_ALL,
+ 	}
+ };
+ 
+@@ -108,9 +108,9 @@
+ 	.n_reg_rules = 4,
+ 	.alpha2 =  "99",
+ 	.reg_rules = {
+-		ATH9K_2GHZ_CH01_11,
+-		ATH9K_2GHZ_CH12_13,
+-		ATH9K_5GHZ_ALL,
++		ATH_2GHZ_CH01_11,
++		ATH_2GHZ_CH12_13,
++		ATH_5GHZ_ALL,
+ 	}
+ };
+ 
+-- 
+1.7.0.4
+
