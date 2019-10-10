@@ -2,87 +2,160 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A35E3D2EB2
-	for <lists+linux-wireless@lfdr.de>; Thu, 10 Oct 2019 18:37:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4FAA0D2F9C
+	for <lists+linux-wireless@lfdr.de>; Thu, 10 Oct 2019 19:31:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726449AbfJJQhd (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 10 Oct 2019 12:37:33 -0400
-Received: from mail-oi1-f194.google.com ([209.85.167.194]:42784 "EHLO
-        mail-oi1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726007AbfJJQhc (ORCPT
+        id S1726800AbfJJRbO (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 10 Oct 2019 13:31:14 -0400
+Received: from mail-qt1-f193.google.com ([209.85.160.193]:44586 "EHLO
+        mail-qt1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725862AbfJJRbO (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 10 Oct 2019 12:37:32 -0400
-Received: by mail-oi1-f194.google.com with SMTP id i185so5453869oif.9
-        for <linux-wireless@vger.kernel.org>; Thu, 10 Oct 2019 09:37:31 -0700 (PDT)
+        Thu, 10 Oct 2019 13:31:14 -0400
+Received: by mail-qt1-f193.google.com with SMTP id u40so9805364qth.11;
+        Thu, 10 Oct 2019 10:31:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=rvNKcQa6csvrpV0BR7Qohhs6ik/U0hSG7/A3nrUQ4+g=;
-        b=kOyXbu3+zHoOhnB1P/Zq5yXR4EyQ7y2zBm+/BgJ1Gsk78S9F8a8Whv8Al12WC3/X8d
-         KzQkKRmscwpvG0mXlH/93sULDD2DAcIEGxphjQh9NvhVxOHnNzoS0ouZ5LOPCU5kFzyJ
-         NFhALCUOrGR2wJ5IH/W4NAeF2PjEVSXJSRrf16dJ6mZsBiwnNFqzg0jV3pfZB/xkYEft
-         Qf+AAZNqKdl1qFrtZFOb0ApEQccLgjg74lKbwZzTTGyeYSNcFvbiFKTW0lEFutRMqebK
-         tFpNgRAKqzQaZNdhV9smOijbHaFp/EU8qZKtbNrN+9qHjSKjhYNq/O42ju9sMOyWck+U
-         gukA==
+        h=from:to:cc:subject:date:message-id;
+        bh=dOt1vRqdwBYbPI0xl2LwMnQ4qRjMI3wDIKPkiQR4+I4=;
+        b=e9Ib4LGiYHwjzCkV+v0J1jcnTquitiq/dmXxW98ZG+ry5DvCSZWlkxr2Gs3BlWePge
+         lZAa/w0UueKEdUfXDbi7paBVzu+pxiNGrlrRFj0WAqY3e0pdm92/EE/IzYT9QuRtOYTf
+         72HYKnn6e3PYFa/ayrs+zqnYsW1SFXY+3182O7B1CyPK8bZzK3scf+nRvR3gZZEGBWdo
+         DKTzHhODrQpgcBIOXaLi5SqyeDznbpvMeFoCqh7x0MRxWEChCkCXSuNTS6NurftJ9Y7i
+         aeBZI5jhACwgj4mnDHkNcgGh1W9bZ6V3KePya0bo3WF9sZ+9mTjlDFJ7EYINNuLTf65L
+         YvmQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=rvNKcQa6csvrpV0BR7Qohhs6ik/U0hSG7/A3nrUQ4+g=;
-        b=J4p6dyi9akFDXiN0hPYE74kn2/D/uu1Nw5UzmJc0oQ+ElNnCY10rBFrZrkn4mgCpBQ
-         FNqvJFxD1AFspPt8px75h0Yt2dVIRVubnKIbYA60ZYuPh1ITJ1OeKxZ/hRM50aWqv0vu
-         Bdk7RfDZ5LzGqjYTa0Zw1XPWpnAdQhn9U0MnNapX68G4m9ug9Yr1yr3fKj8HOeiMOSKv
-         r5Z5/cGVAS4zPc8Dj5BKUucUtKZ1rHX0wyXY2/Dh0Rc8JAMcTqRmjyHOk7I4NGxSLUsX
-         R7ZrDz2CNbCkGBr5Nz0pcw7QbP4QqLcC4KHVkpkaKzSKHXgdJUf1W8VrXP9SY/WDpYUR
-         G9Og==
-X-Gm-Message-State: APjAAAXeWsdi/vsUaV3ajfm/v0cUTsAosB2YZ9wf68cUdKdgBrC7LVrR
-        9uum2wPVilmK6+EHqiL8sMXjsLa4AYKMV5P0cw==
-X-Google-Smtp-Source: APXvYqx9pHw37Q0H22/wByklULJ03KoMfltHnFJRD3Om1HGl33ab8Lyt1IMR5RX5Dk/XpMPJCTOoYdC8zSKSMKaLADQ=
-X-Received: by 2002:a54:4e8a:: with SMTP id c10mr8413283oiy.14.1570725450592;
- Thu, 10 Oct 2019 09:37:30 -0700 (PDT)
-MIME-Version: 1.0
-Received: by 2002:a4a:ab4e:0:0:0:0:0 with HTTP; Thu, 10 Oct 2019 09:37:30
- -0700 (PDT)
-Reply-To: brianjesse343@gmail.com
-From:   brianjesse <cleanmichel66@gmail.com>
-Date:   Thu, 10 Oct 2019 17:37:30 +0100
-Message-ID: <CAJnAYk-6LSDA9_o-rvP+bdL5tNKj3SaqQZwEEQmNLnpYJE+-EQ@mail.gmail.com>
-Subject: Hl
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=dOt1vRqdwBYbPI0xl2LwMnQ4qRjMI3wDIKPkiQR4+I4=;
+        b=jx67v6HSvTP1f6f176kMg6hi6MV+XUl8XPvTgsozsjTVpAAKUK+vOixh9ZzCVBtlgA
+         i47WgdDgmCRbuO4t6hu//ZyqscqMpl5SOUhXDH0MG3KyoKTYTWg1UWI66OsVqx27U7ov
+         cs1+xyqx3Px28rIYTuVchDUWWZ3sVNxTFPG8+7Wty1IHpdjP3OE3n8JtcMLzQipCpjkM
+         oNNPgQXOFAQzBD0NGuDgnbHCm9ZIky+a6Tv2tmwCJFzYOoEN1J9VYzIFXVWaxjWkK/A5
+         WTB7mGonpZnM2WvWOs7vJB81ctX9CUHb0Nt+ez9ORTU5FVhMpuwiIyZnxgsa9Wc+PsAh
+         QMdA==
+X-Gm-Message-State: APjAAAUsGduI67pHQcT0gIEwzJN4JtGXc3yIs+Ds/S+HYfz2U8Y9vzPp
+        QKzBFkQQEHK2G00GeiHYgEDmrVWblzo=
+X-Google-Smtp-Source: APXvYqz7yOBitRelW2amEc7FwgLAa20BiKph/V7SX1ePdB8fRFoEu9FH78anrkK+8/scaIpVypkJXg==
+X-Received: by 2002:aed:2ce7:: with SMTP id g94mr12037265qtd.133.1570728672379;
+        Thu, 10 Oct 2019 10:31:12 -0700 (PDT)
+Received: from alpha-Inspiron-5480.lan ([170.84.225.105])
+        by smtp.gmail.com with ESMTPSA id v23sm3148066qto.89.2019.10.10.10.31.08
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 10 Oct 2019 10:31:11 -0700 (PDT)
+From:   Ramon Fontes <ramonreisfontes@gmail.com>
+To:     linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
+        linux-wireless@vger.kernel.org
+Cc:     johannes@sipsolutions.net, kvalo@codeaurora.org,
+        davem@davemloft.net, Ramon Fontes <ramonreisfontes@gmail.com>
+Subject: [PATCH] mac80211_hwsim: add support for OCB and more 5Ghz Channels Signed-off-by: Ramon Fontes <ramonreisfontes@gmail.com>
+Date:   Thu, 10 Oct 2019 14:30:29 -0300
+Message-Id: <20191010173029.8435-1-ramonreisfontes@gmail.com>
+X-Mailer: git-send-email 2.17.1
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Dear Friend,
+---
+ drivers/net/wireless/mac80211_hwsim.c | 34 +++++++++++++++++++++++----
+ 1 file changed, 30 insertions(+), 4 deletions(-)
 
-I hope this message meet you well, after quite a very long time. I'm
-happy to inform you about my success in getting those funds
-transferred under the cooperation of a new partner from India.
-Presently  I'm in India for investment projects with my own share of
-the total sum. meanwhile, I didn't forget your past efforts and
-attempts to assist me in transferring those funds despite that it
-failed us some how.Now contact my secretary in Lome, Togo with his
-below contact,I droped a certified ATM visa card, ask him to send you
-the ATM visa card of $250.000.00 which I left with him for your
-compensation for all the past efforts and attempts to assist me in
-this matter. I appreciated your efforts at that time very much.
+diff --git a/drivers/net/wireless/mac80211_hwsim.c b/drivers/net/wireless/mac80211_hwsim.c
+index 45c73a6f0..ae41b05e7 100644
+--- a/drivers/net/wireless/mac80211_hwsim.c
++++ b/drivers/net/wireless/mac80211_hwsim.c
+@@ -148,23 +148,25 @@ static const char *hwsim_alpha2s[] = {
+ };
+ 
+ static const struct ieee80211_regdomain hwsim_world_regdom_custom_01 = {
+-	.n_reg_rules = 4,
++	.n_reg_rules = 5,
+ 	.alpha2 =  "99",
+ 	.reg_rules = {
+ 		REG_RULE(2412-10, 2462+10, 40, 0, 20, 0),
+ 		REG_RULE(2484-10, 2484+10, 40, 0, 20, 0),
+ 		REG_RULE(5150-10, 5240+10, 40, 0, 30, 0),
+ 		REG_RULE(5745-10, 5825+10, 40, 0, 30, 0),
++		REG_RULE(5855-10, 5925+10, 40, 0, 33, 0),
+ 	}
+ };
+ 
+ static const struct ieee80211_regdomain hwsim_world_regdom_custom_02 = {
+-	.n_reg_rules = 2,
++	.n_reg_rules = 3,
+ 	.alpha2 =  "99",
+ 	.reg_rules = {
+ 		REG_RULE(2412-10, 2462+10, 40, 0, 20, 0),
+ 		REG_RULE(5725-10, 5850+10, 40, 0, 30,
+ 			 NL80211_RRF_NO_IR),
++		REG_RULE(5855-10, 5925+10, 40, 0, 33, 0),
+ 	}
+ };
+ 
+@@ -354,6 +356,24 @@ static const struct ieee80211_channel hwsim_channels_5ghz[] = {
+ 	CHAN5G(5805), /* Channel 161 */
+ 	CHAN5G(5825), /* Channel 165 */
+ 	CHAN5G(5845), /* Channel 169 */
++
++	CHAN5G(5855), /* Channel 171 */
++	CHAN5G(5860), /* Channel 172 */
++	CHAN5G(5865), /* Channel 173 */
++	CHAN5G(5870), /* Channel 174 */
++
++	CHAN5G(5875), /* Channel 175 */
++	CHAN5G(5880), /* Channel 176 */
++	CHAN5G(5885), /* Channel 177 */
++	CHAN5G(5890), /* Channel 178 */
++	CHAN5G(5895), /* Channel 179 */
++	CHAN5G(5900), /* Channel 180 */
++	CHAN5G(5905), /* Channel 181 */
++
++	CHAN5G(5910), /* Channel 182 */
++	CHAN5G(5915), /* Channel 183 */
++	CHAN5G(5920), /* Channel 184 */
++	CHAN5G(5925), /* Channel 185 */
+ };
+ 
+ static const struct ieee80211_rate hwsim_rates[] = {
+@@ -1550,7 +1570,8 @@ static void mac80211_hwsim_beacon_tx(void *arg, u8 *mac,
+ 
+ 	if (vif->type != NL80211_IFTYPE_AP &&
+ 	    vif->type != NL80211_IFTYPE_MESH_POINT &&
+-	    vif->type != NL80211_IFTYPE_ADHOC)
++	    vif->type != NL80211_IFTYPE_ADHOC &&
++	    vif->type != NL80211_IFTYPE_OCB)
+ 		return;
+ 
+ 	skb = ieee80211_beacon_get(hw, vif);
+@@ -1604,6 +1625,8 @@ mac80211_hwsim_beacon(struct hrtimer *timer)
+ }
+ 
+ static const char * const hwsim_chanwidths[] = {
++	[NL80211_CHAN_WIDTH_5] = "ht5",
++	[NL80211_CHAN_WIDTH_10] = "ht10",
+ 	[NL80211_CHAN_WIDTH_20_NOHT] = "noht",
+ 	[NL80211_CHAN_WIDTH_20] = "ht20",
+ 	[NL80211_CHAN_WIDTH_40] = "ht40",
+@@ -2723,7 +2746,8 @@ static void mac80211_hwsim_he_capab(struct ieee80211_supported_band *sband)
+ 	 BIT(NL80211_IFTYPE_P2P_CLIENT) | \
+ 	 BIT(NL80211_IFTYPE_P2P_GO) | \
+ 	 BIT(NL80211_IFTYPE_ADHOC) | \
+-	 BIT(NL80211_IFTYPE_MESH_POINT))
++	 BIT(NL80211_IFTYPE_MESH_POINT) | \
++	 BIT(NL80211_IFTYPE_OCB))
+ 
+ static int mac80211_hwsim_new_radio(struct genl_info *info,
+ 				    struct hwsim_new_radio_params *param)
+@@ -2847,6 +2871,8 @@ static int mac80211_hwsim_new_radio(struct genl_info *info,
+ 	} else {
+ 		data->if_combination.num_different_channels = 1;
+ 		data->if_combination.radar_detect_widths =
++					BIT(NL80211_CHAN_WIDTH_5) |
++					BIT(NL80211_CHAN_WIDTH_10) |
+ 					BIT(NL80211_CHAN_WIDTH_20_NOHT) |
+ 					BIT(NL80211_CHAN_WIDTH_20) |
+ 					BIT(NL80211_CHAN_WIDTH_40) |
+-- 
+2.17.1
 
-So feel free and get in touch with my secretary in Lome Togo and
-instruct him  where to send the ATM visa card containing amount to
-you.Please do let me know immediately if you receive it so that we can
-share the joy after all the sufferness at that  time together. in the
-moment, I'm very busy here because of the investment projects which me
-and the new partner are having at hand,finally remember that I had
-forwarded instruction to my secretary on your behalf to release the
-ATM visa card to you and you alone, so feel free to get in touch with
-him and forward him your informations,your full names,address and
-contact number for easy communication until your received the ATM visa
-card. if you whish to communicate futher on this issue, you can
-contact my secretery Mr: Vincent Philip through this his email address
-(vincentphilip.sec@gmail.com)
-
-
-Best Regards
-Barrister Brian Jesse
