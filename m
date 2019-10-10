@@ -2,44 +2,33 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 3559FD2D82
-	for <lists+linux-wireless@lfdr.de>; Thu, 10 Oct 2019 17:18:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C70E7D2DEE
+	for <lists+linux-wireless@lfdr.de>; Thu, 10 Oct 2019 17:40:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726521AbfJJPSF (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 10 Oct 2019 11:18:05 -0400
-Received: from s3.sipsolutions.net ([144.76.43.62]:42124 "EHLO
+        id S1725959AbfJJPkR (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 10 Oct 2019 11:40:17 -0400
+Received: from s3.sipsolutions.net ([144.76.43.62]:42432 "EHLO
         sipsolutions.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725959AbfJJPSF (ORCPT
+        with ESMTP id S1725901AbfJJPkQ (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 10 Oct 2019 11:18:05 -0400
+        Thu, 10 Oct 2019 11:40:16 -0400
 Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
         (Exim 4.92.2)
         (envelope-from <johannes@sipsolutions.net>)
-        id 1iIaCZ-000734-Ae; Thu, 10 Oct 2019 17:18:03 +0200
-Message-ID: <bbe3369418b948de0d54aefa16e2bf77693351bd.camel@sipsolutions.net>
-Subject: Re: [PATCH 2/2] mac80211: Support LIVE_ADDRESS_CHANGE feature
+        id 1iIaY1-0007Xs-HI; Thu, 10 Oct 2019 17:40:13 +0200
+Message-ID: <a2cc0ebecfb055c8b667db57d0469fe69054a69c.camel@sipsolutions.net>
+Subject: Re: [PATCH v3 1/2] mac80211: Implement Airtime-based Queue Limit
+ (AQL)
 From:   Johannes Berg <johannes@sipsolutions.net>
-To:     Denis Kenzior <denkenz@gmail.com>,
-        James Prestwood <prestwoj@gmail.com>,
-        linux-wireless@vger.kernel.org
-Date:   Thu, 10 Oct 2019 17:18:02 +0200
-In-Reply-To: <cc2cee76-2a83-17ad-0e7a-ba71075e1497@gmail.com> (sfid-20191008_225601_596382_1D893268)
-References: <20190913195908.7871-1-prestwoj@gmail.com>
-         <20190913195908.7871-2-prestwoj@gmail.com>
-         <c6835b5c5d2a97fa82b0fb21f7b7f0056aa42e1b.camel@sipsolutions.net>
-         <90ae00044bc0834d87d3f9fb75ce63dce4cfadd5.camel@gmail.com>
-         <0b57c1288016310050ccd6233dda886fc4a89b02.camel@gmail.com>
-         <f468a8d573ddf401d2084b76eb625fef5950f265.camel@sipsolutions.net>
-         <6fa34e4c-5c81-4875-da29-cada1a078e2c@gmail.com>
-         <6530a6b06176790c5a6949d6ffccf37b506975bd.camel@sipsolutions.net>
-         <864267ec-9158-940d-6e0e-db84a395888e@gmail.com>
-         <f02b81f6dac29da911f8793b952a9efb6a1fdb62.camel@sipsolutions.net>
-         <1bb5450b-bc4e-8c83-f99e-fc7e739b08f0@gmail.com>
-         <fbb287a82656dd3f89817590e86b23d6968a2822.camel@sipsolutions.net>
-         <193168d4-6466-60a4-bc89-c4a44e84ac46@gmail.com>
-         <9c49ec27489333d7f27831de19e9d1c9cd65eeee.camel@sipsolutions.net>
-         <cc2cee76-2a83-17ad-0e7a-ba71075e1497@gmail.com>
-         (sfid-20191008_225601_596382_1D893268)
+To:     Kan Yan <kyan@google.com>
+Cc:     linux-wireless@vger.kernel.org,
+        make-wifi-fast@lists.bufferbloat.net, toke@redhat.com,
+        nbd@nbd.name, ath10k@lists.infradead.org, yiboz@codeaurora.org
+Date:   Thu, 10 Oct 2019 17:40:12 +0200
+In-Reply-To: <20191010022502.141862-2-kyan@google.com> (sfid-20191010_042522_960956_7035429C)
+References: <20191010022502.141862-1-kyan@google.com>
+         <20191010022502.141862-2-kyan@google.com>
+         (sfid-20191010_042522_960956_7035429C)
 Content-Type: text/plain; charset="UTF-8"
 User-Agent: Evolution 3.30.5 (3.30.5-1.fc29) 
 MIME-Version: 1.0
@@ -49,29 +38,123 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Tue, 2019-10-08 at 15:55 -0500, Denis Kenzior wrote:
+Hi,
 
-> Right, so you're talking in the context of this implementation which 
-> performs a remove/add interface.  You're right about that.
-> 
-> But I was asking more in general terms.  If all we're doing is scanning, 
-> can we just change the mac?  Anyway, not important.  Maybe I bring this 
-> up once this set is accepted.
+A couple of points...
 
-Maybe, but honestly, I'm not convinced the complexity would be worth it.
-You'd have to push this all the way through to the driver, so it knows
-to do it, or defer it until the scan is done, or something? Not
-something you'd want to do on all hardware while a non-randomized scan
-is running, for example (iwlwifi might actually be OK).
+First, I'd like Toke to review & ack this if possible :-)
 
-Or you could perhaps cache the MAC address change in mac80211 and apply
-it at the next possible point in time - but then again you have to be
-really careful to actually apply it and block all further operations,
-even if a bunch of remain-on-channel's are active and you request a new
-scan, that has to be blocked until the remain-on-channel is done *and*
-the MAC address change is applied?
+Second, I probably won't apply this until I return from vacation (will
+be out next week & the week after).
 
-Seems rather complex for very little value.
+Third, a couple of more comments on the code:
 
+> +/* The per TXQ firmware queue limit in airtime */
+
+I was pretty sure I mentioned it *somewhere*, but I think just calling
+this "device" or something would be more general. If you don't mind, I
+can edit that also (unless you have other reasons to resubmit?)
+
+> +/**
+> + * ieee80211_sta_update_pending_airtime - update txq's estimated airtime
+> + *
+> + * Update the estimated total airtime of frames queued in a lower layer queue.
+> + *
+> + * The estimated airtime is calculated for each frame using the last reported
+> + * data rate and stored in the SKB's CB. Once the frame is completed, the same
+> + * airtime stored in the CB should be subtracted from a txq's pending airtime
+
+"stored in the CB" should probably be just given as an example "(e.g.
+stored in the CB)"
+
+> + * count.
+
+"count" is a bit odd for a time value, just remove "count"?
+
+(again, I can fix these)
+
+> +/**
+> + * ieee80211_txq_aql_check - check if a txq can send frame to device
+
+I wonder if this really should even be have "aql" in the name? It's also
+going to return NULL if there's nothing on the TXQ, for example, right?
+
+> +	len = scnprintf(buf, sizeof(buf),
+> +			"AC	AQL limit low	AQL limit high\n"
+> +			"0	%u		%u\n"
+> +			"1	%u		%u\n"
+> +			"2	%u		%u\n"
+> +			"3	%u		%u\n",
+
+BK/BE/VI/VO instead of 0/1/23?
+
+> +			local->aql_txq_limit_low[0],
+> +			local->aql_txq_limit_high[0],
+> +			local->aql_txq_limit_low[1],
+> +			local->aql_txq_limit_high[1],
+> +			local->aql_txq_limit_low[2],
+> +			local->aql_txq_limit_high[2],
+> +			local->aql_txq_limit_low[3],
+> +			local->aql_txq_limit_high[3]);
+
+but then I guess we have to use the macros to index here too
+
+> +	local->airtime_flags =
+> +		AIRTIME_USE_TX | AIRTIME_USE_RX | AIRTIME_USE_AQL;
+
+
+might be nicer as 
+
+ airtime_flags = TX |
+                 RX |
+                 AQL;
+
+but doesn't matter, just in case you have to resend anyway...
+
+> +	spin_lock_bh(&local->active_txq_lock[ac]);
+> +	if (unlikely(sta->airtime[ac].aql_tx_pending + tx_airtime > S32_MAX)) {
+> +		WARN_ONCE(1, "TXQ pending airtime underflow: %d, %d",
+> +			  sta->airtime[ac].aql_tx_pending, tx_airtime);
+
+if (WARN_ONCE(..., "...", ...))
+
+saves you the braces and the extra condition
+
+Also, hmm, doesn't this rely on 2s complement underflow or something?
+
+Maybe that should be
+
+	__signed_add_overflow(aql_tx_pending, tx_airtime,
+                              &aql_tx_pending) ||
+        aql_tx_pending < 0
+
+or so?
+
+But then again, we don't really care *that* much about overflow or
+underflow in this code path - it's not going to be security critical.
+
+But it seems that your code there actually can cause UB? That would be
+nice to avoid.
+
+Actually, that condition can never be true, right? Wait, ok, this one
+can because integer promotion?
+
+> +		sta->airtime[ac].aql_tx_pending = 0;
+> +	} else {
+> +		sta->airtime[ac].aql_tx_pending += tx_airtime;
+> +	}
+> +
+> +	if (unlikely(local->aql_total_pending_airtime + tx_airtime > S32_MAX)) {
+> +		WARN_ONCE(1, "pending airtime underflow: %d, %d",
+> +			  local->aql_total_pending_airtime, tx_airtime);
+
+same here
+
+Except aql_total_pending_airtime is still defined as s32 and that causes
+different behaviour?
+
+All this confuses me ... is it possible to write this more clearly?
+
+Thanks,
 johannes
 
