@@ -2,208 +2,134 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id F0374D1EA1
-	for <lists+linux-wireless@lfdr.de>; Thu, 10 Oct 2019 04:43:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A3077D1FE9
+	for <lists+linux-wireless@lfdr.de>; Thu, 10 Oct 2019 07:10:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732743AbfJJCnx (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 9 Oct 2019 22:43:53 -0400
-Received: from smtp.codeaurora.org ([198.145.29.96]:35674 "EHLO
-        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726621AbfJJCnw (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 9 Oct 2019 22:43:52 -0400
-Received: by smtp.codeaurora.org (Postfix, from userid 1000)
-        id 3B03660E5A; Thu, 10 Oct 2019 02:43:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1570675431;
-        bh=24BqhuLC/g82Gtaoa9FnLy2P+s++jHVz4WjUtvWEM2M=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=UNXvEzh+jNH8DE/BNaGJDTyyGDKs/YkdhwSwwem3u14OlU8fqfYnaje8BRsfX/4Hq
-         Gd4MZ0Tyqcwh7Q0nYl3RoIu7ji2r6jdtcBIBUifTz1dbN9H6d2PMqxHQbtowkUF3CK
-         5OSvaehUy2ZrLBBpsPiZ6UL8p0n0AwDzPcZRdkqs=
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        pdx-caf-mail.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.7 required=2.0 tests=ALL_TRUSTED,BAYES_00,
-        DKIM_INVALID,DKIM_SIGNED autolearn=no autolearn_force=no version=3.4.0
-Received: from mail.codeaurora.org (localhost.localdomain [127.0.0.1])
-        by smtp.codeaurora.org (Postfix) with ESMTP id D9FA660E41;
-        Thu, 10 Oct 2019 02:43:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1570675430;
-        bh=24BqhuLC/g82Gtaoa9FnLy2P+s++jHVz4WjUtvWEM2M=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=RrCDnbUVR6ek04kNckIQSzW56GPYmutoiArhsp5h7OkE8VIVr1n7jZR7/Kk0lBe3x
-         SVhL22+S3Ugu5hoIpb+BT03dbwsCV9ria8YW0EOphllUij61SFgmR5H6y3UiKF32XW
-         +cHxAvmi7XlQSBHbS4InoQS7U7gnVmoTXfwidshk=
+        id S1729045AbfJJFKT (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 10 Oct 2019 01:10:19 -0400
+Received: from mx2.ucr.edu ([138.23.62.3]:6050 "EHLO mx2.ucr.edu"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726518AbfJJFKS (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 10 Oct 2019 01:10:18 -0400
+X-Greylist: delayed 426 seconds by postgrey-1.27 at vger.kernel.org; Thu, 10 Oct 2019 01:10:18 EDT
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
+  d=ucr.edu; i=@ucr.edu; q=dns/txt; s=selector3;
+  t=1570684217; x=1602220217;
+  h=mime-version:from:date:message-id:subject:to;
+  bh=JCsL3WIN73xzwLhXOrKo3QlppAA/heL7UqOSuoxaqtM=;
+  b=pkSl9+4y7K/NCCI7wXdy9BfSQPf2O4AeGhttQ4to4y+GkSEmrco3Ud86
+   05uRT8yxED5e4ExVsZeVi2H9zWxARQDagJ2ZhCJWVvLD+wpSUjHbuoIQs
+   ez/+mzJponVdhqS2Ayk2GSjv/7HZHXnRWL51EBZlUWLJdtoFDbLWJ+bp8
+   iyZHBP0rza220ZjKC2QYMYzBnBwhVQWqxYds++zjyDPIipyYwYP5CIOWe
+   BA5N4Hj+T2WicHwo/hpMLCUoXumSLvJgLtoZcJ5/I6Jf9lYeu5Apk0jIO
+   Kwr3hWEnqlwKwDTOly+JV0GTC8JBFuWdo5BuCN0xMWPiSRSHeQIgE4tBI
+   g==;
+IronPort-SDR: 8VQZgGqoUW/ucAmlP5B+/TwT5+0hSPekQSwAtGn2fPOwgKSUJzT86Qd2bi4VP9zqaP3tqBJAQu
+ Qa5jBKhyAqQRkOFAD8YZtfssji84m/Js4S4RT8NKdLdLRmbMTnekYA9+xHQ62fHlRoOzqE9Pzc
+ KoLi4wujI6qX3W4axpEmjZUJEqmTzmLoLoxDFWlRLGwh34AUCgKQ80zJVTAPqQjMEgUk6QUmYH
+ AxIOyGS6I4CiQQ9JEa4l0sGw4T/2ZkvvqB4thabjoJGhaykY2VFdBv6bZyx1X24ODAGd1vbHwM
+ nXM=
+IronPort-PHdr: =?us-ascii?q?9a23=3AtewmRRNY7DRTivs+hJol6mtUPXoX/o7sNwtQ0K?=
+ =?us-ascii?q?IMzox0K/39pMbcNUDSrc9gkEXOFd2Cra4d0KyI6euxACQp2tWoiDg6aptCVh?=
+ =?us-ascii?q?sI2409vjcLJ4q7M3D9N+PgdCcgHc5PBxdP9nC/NlVJSo6lPwWB6nK94iQPFR?=
+ =?us-ascii?q?rhKAF7Ovr6GpLIj8Swyuu+54Dfbx9HiTagb75+NhS7oRveusQSnIdpN7o8xA?=
+ =?us-ascii?q?bOrnZUYepd2HlmJUiUnxby58ew+IBs/iFNsP8/9MBOTLv3cb0gQbNXEDopPW?=
+ =?us-ascii?q?Y15Nb2tRbYVguA+mEcUmQNnRVWBQXO8Qz3UY3wsiv+sep9xTWaMMjrRr06RT?=
+ =?us-ascii?q?iu86FmQwLzhSwZKzA27n3Yis1ojKJavh2hoQB/w5XJa42RLfZyY7/Rcc8fSW?=
+ =?us-ascii?q?dHQ81fVTFOApmkYoQAD+QPM+VWoZTjqVQStha+GRWgCfnzxjNUmnP736s32P?=
+ =?us-ascii?q?khHwHc2wwgGsoDv3bVrNT0NKcSTOe1x7TLwjXDdfxW2Cr25Y/IcxEgofGDR7?=
+ =?us-ascii?q?NwfdbNxUQhDA7Fk0mfqZb/MzyLy+sNrnGW4ux9Xuysk24qsx99riSry8s2iY?=
+ =?us-ascii?q?TEhpgZxk3F+Ch72oo4J8G0RUhmatC+CpRQrTuVN45uT8MnRGFnpTg1x6UduZ?=
+ =?us-ascii?q?6+YCgK0JMnxwPDa/Cfc4iH/BbjVOGJLDd9nn1leba/iw+28Uiu1+HwT8e03V?=
+ =?us-ascii?q?RWoiZfndnMsXcN1xPX6seZUPdy4kCh2TOX2wDS7OFLP1w0mLLFJ5I9xrM8jJ?=
+ =?us-ascii?q?kevETZEiPrmUj7jrWae0c49uSw7uToeLTmppuSN49ujQH+N7wjm8y+AOQ4KA?=
+ =?us-ascii?q?cOXnSX9fiy2bD44E32XK9KguconabErZDWPd4bqbKhAw9JzoYj7A6yDzOn0N?=
+ =?us-ascii?q?QegHkGI0tJeRyGj4jzJV7OJO73Deykg1m3jjdryO7JPqf7DpXOMHfDirHhcq?=
+ =?us-ascii?q?h560JGzwoz199ftNpoDeQjJ/L6XEn8r5TyAwU2e1i2xObuDtNwzcUUVHiAKq?=
+ =?us-ascii?q?6fLK7W91SP47Rra8SJYYYTpTv5Y9c/+vvkhHQ50QsQeKyg24YabDa3BOljKU?=
+ =?us-ascii?q?ySYVLthMsMFSEBuQ9oCKTOlVaLGRVUanKyWOpo4iwwCYugCsHIQY2pgLup3S?=
+ =?us-ascii?q?GnE5kQbWdDXBTEMHH0eoHMf/YKdTLaHc57nzgJTqPpH4sg0wy+qw70ypJmKP?=
+ =?us-ascii?q?bZ/msTspe1kJBW7unXmFkM/DhzR5CezWiJSEl/mW8FTiIs27p250tnxQHHme?=
+ =?us-ascii?q?JUiuJZGZRoobtsUwM+OISWh7h2As7/XyrNd8mETVKhTMngBzwtGJZ56sEPbE?=
+ =?us-ascii?q?98H52NlBHFxDanArldw7WVBZM986aa0GLwId1hxnfA/Kgnk1QiBMBIMDvizo?=
+ =?us-ascii?q?529g2bK5TEgkuEjL3iIaQV3SuL+H2O3GSTp1pwUQhsXKGDVncaMA+eqdX/+1?=
+ =?us-ascii?q?OHUL60BLAqKRBp18GPMO1JZ8fvgFEAQ+3sfJzYbn69lnmYGxmF3PWPYZDsdm?=
+ =?us-ascii?q?Fb2z/STAAAkgYO7TOFOBI4CyOJvW3TFnptGEjpbkeq9vNx+12hSUph/gCYb1?=
+ =?us-ascii?q?Bmn4i18x9d0e2OS/oShupfkDoqsXN5EEvrjIGeMMaJuwc0JPYUWtg6+loSkD?=
+ =?us-ascii?q?uB7wE=3D?=
+X-IronPort-Anti-Spam-Filtered: true
+X-IronPort-Anti-Spam-Result: =?us-ascii?q?A2E1AwB/up5dgEanVdFlhlKETY5bhRc?=
+ =?us-ascii?q?BmB0BCAEBAQ4vAQGHGCM4EwIDCQEBBQEBAQEBBQQBAQIQAQEJDQkIJ4VCgjo?=
+ =?us-ascii?q?pAYNVEXwPAiYCJBIBBQEiATSFeKRCgQM8iyaBMoQMAYRYAQkNgUgSeiiMDoI?=
+ =?us-ascii?q?XgRGDUIQogyqCXgSBOQEBAZUvllcBBgKCEBSMVIhFG4IqlxaOLZlPDyOBRoF?=
+ =?us-ascii?q?7MxolfwZngU9PEBSPXgFWJJFLAQE?=
+X-IPAS-Result: =?us-ascii?q?A2E1AwB/up5dgEanVdFlhlKETY5bhRcBmB0BCAEBAQ4vA?=
+ =?us-ascii?q?QGHGCM4EwIDCQEBBQEBAQEBBQQBAQIQAQEJDQkIJ4VCgjopAYNVEXwPAiYCJ?=
+ =?us-ascii?q?BIBBQEiATSFeKRCgQM8iyaBMoQMAYRYAQkNgUgSeiiMDoIXgRGDUIQogyqCX?=
+ =?us-ascii?q?gSBOQEBAZUvllcBBgKCEBSMVIhFG4IqlxaOLZlPDyOBRoF7MxolfwZngU9PE?=
+ =?us-ascii?q?BSPXgFWJJFLAQE?=
+X-IronPort-AV: E=Sophos;i="5.67,278,1566889200"; 
+   d="scan'208";a="14126547"
+Received: from mail-lf1-f70.google.com ([209.85.167.70])
+  by smtp2.ucr.edu with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 09 Oct 2019 22:03:10 -0700
+Received: by mail-lf1-f70.google.com with SMTP id w22so1056686lfe.2
+        for <linux-wireless@vger.kernel.org>; Wed, 09 Oct 2019 22:03:11 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:from:date:message-id:subject:to;
+        bh=6pAAPXZ1XbspBXsT/nVNYN754RlatzoTXF5DnMyqcQU=;
+        b=HgqnchIeZZxieR5cLX0Yqs1iOj6th+7r77czKrzEp7LJvNp1b8dFfEpVQo78tAibFN
+         WnDYnJD+TKqRN6N3VTuhXRdiVIMMw7KN3/v+Sjlw7cXcOep1Vtnqv+4DQZXS+IOKBfHQ
+         J0GC3WR9vPmDoX2jLeOIwwO3HTPgx6ccOtEs5gg+KoxcUQ8zkhflljKWClLxHTJjf2yi
+         C1MpDe1CAlFGbDX+bduxzeB/AN+Wvk5/AjoOMCvjNxIQCyVjlJRGeLoxZsO4HG++yzou
+         L6Ss9qwAiO6vxqFjzC5fYG13nqwG7g2PeX8f/achcTcq5Yu9d1ihgbKa7qOWCX93ngg3
+         rn+A==
+X-Gm-Message-State: APjAAAUFKzBWueSNwKj80M6Fnf+IykeaDdrxNBBXKyJrMz8dPY2HjHo2
+        t+hR9T2moav38XWrStEfOoFOhp4ZGuHRlVdTuXv+XkgbvdZ6V4xwEEZiHlAzogGHaeHZOYw/FU8
+        JkAJm5zITR4hTiImR1fe/9hjbmtgNoGpCxxYPLqje7V3K
+X-Received: by 2002:a2e:9a4e:: with SMTP id k14mr4816419ljj.104.1570683789501;
+        Wed, 09 Oct 2019 22:03:09 -0700 (PDT)
+X-Google-Smtp-Source: APXvYqyLbyF0nKrTc3N1NhrBYGj51/xn4jBAjuUiVfEPkbcB6vQTEAA65Ud8oPAk9dQ6WUgeoAyg9+sMf/8vTtEysGQ=
+X-Received: by 2002:a2e:9a4e:: with SMTP id k14mr4816390ljj.104.1570683789247;
+ Wed, 09 Oct 2019 22:03:09 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII;
- format=flowed
-Content-Transfer-Encoding: 7bit
-Date:   Thu, 10 Oct 2019 10:43:49 +0800
-From:   Yibo Zhao <yiboz@codeaurora.org>
-To:     Felix Fietkau <nbd@nbd.name>
-Cc:     linux-wireless@vger.kernel.org, johannes@sipsolutions.net,
-        =?UTF-8?Q?Toke_H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>,
-        linux-wireless-owner@vger.kernel.org
-Subject: Re: [PATCH] mac80211: rework locking for txq scheduling / airtime
- fairness
-In-Reply-To: <20190315100335.91445-1-nbd@nbd.name>
-References: <20190315100335.91445-1-nbd@nbd.name>
-Message-ID: <b2bded992cb02bad84fc738b7e4b1837@codeaurora.org>
-X-Sender: yiboz@codeaurora.org
-User-Agent: Roundcube Webmail/1.2.5
+From:   Yizhuo Zhai <yzhai003@ucr.edu>
+Date:   Wed, 9 Oct 2019 22:02:43 -0700
+Message-ID: <CABvMjLThWpQYir0soRDE3W4S6q0S28RTxen8Y-2YAxbRczMCiA@mail.gmail.com>
+Subject: Potential NULL pointer deference in iwlwifi: mvm
+To:     Johannes Berg <johannes.berg@intel.com>,
+        Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
+        Luca Coelho <luciano.coelho@intel.com>,
+        Intel Linux Wireless <linuxwifi@intel.com>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Avigail Grinstein <avigail.grinstein@intel.com>,
+        Haim Dreyfuss <haim.dreyfuss@intel.com>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-> diff --git a/net/mac80211/tx.c b/net/mac80211/tx.c
-> index ca23abbf5c0b..51cc37802439 100644
-> --- a/net/mac80211/tx.c
-> +++ b/net/mac80211/tx.c
-> @@ -3653,16 +3653,17 @@ EXPORT_SYMBOL(ieee80211_tx_dequeue);
->  struct ieee80211_txq *ieee80211_next_txq(struct ieee80211_hw *hw, u8 
-> ac)
->  {
->  	struct ieee80211_local *local = hw_to_local(hw);
-> +	struct ieee80211_txq *ret = NULL;
->  	struct txq_info *txqi = NULL;
-> 
-> -	lockdep_assert_held(&local->active_txq_lock[ac]);
-> +	spin_lock_bh(&local->active_txq_lock[ac]);
-> 
->   begin:
->  	txqi = list_first_entry_or_null(&local->active_txqs[ac],
->  					struct txq_info,
->  					schedule_order);
->  	if (!txqi)
-> -		return NULL;
-> +		goto out;
-> 
->  	if (txqi->txq.sta) {
->  		struct sta_info *sta = container_of(txqi->txq.sta,
-> @@ -3679,21 +3680,25 @@ struct ieee80211_txq
-> *ieee80211_next_txq(struct ieee80211_hw *hw, u8 ac)
-> 
-> 
->  	if (txqi->schedule_round == local->schedule_round[ac])
-> -		return NULL;
-> +		goto out;
-> 
->  	list_del_init(&txqi->schedule_order);
->  	txqi->schedule_round = local->schedule_round[ac];
-> -	return &txqi->txq;
-> +	ret = &txqi->txq;
-> +
-> +out:
-> +	spin_unlock_bh(&local->active_txq_lock[ac]);
-> +	return ret;
->  }
->  EXPORT_SYMBOL(ieee80211_next_txq);
-> 
-> -void ieee80211_return_txq(struct ieee80211_hw *hw,
-> -			  struct ieee80211_txq *txq)
-> +void ieee80211_schedule_txq(struct ieee80211_hw *hw,
-> +			    struct ieee80211_txq *txq)
->  {
->  	struct ieee80211_local *local = hw_to_local(hw);
->  	struct txq_info *txqi = to_txq_info(txq);
-> 
-> -	lockdep_assert_held(&local->active_txq_lock[txq->ac]);
-> +	spin_lock_bh(&local->active_txq_lock[txq->ac]);
-> 
->  	if (list_empty(&txqi->schedule_order) &&
->  	    (!skb_queue_empty(&txqi->frags) || txqi->tin.backlog_packets)) {
-> @@ -3713,17 +3718,7 @@ void ieee80211_return_txq(struct ieee80211_hw 
-> *hw,
->  			list_add_tail(&txqi->schedule_order,
->  				      &local->active_txqs[txq->ac]);
->  	}
-> -}
-> -EXPORT_SYMBOL(ieee80211_return_txq);
-> 
-> -void ieee80211_schedule_txq(struct ieee80211_hw *hw,
-> -			    struct ieee80211_txq *txq)
-> -	__acquires(txq_lock) __releases(txq_lock)
-> -{
-> -	struct ieee80211_local *local = hw_to_local(hw);
-> -
-> -	spin_lock_bh(&local->active_txq_lock[txq->ac]);
-> -	ieee80211_return_txq(hw, txq);
->  	spin_unlock_bh(&local->active_txq_lock[txq->ac]);
->  }
->  EXPORT_SYMBOL(ieee80211_schedule_txq);
-> @@ -3736,7 +3731,7 @@ bool ieee80211_txq_may_transmit(struct 
-> ieee80211_hw *hw,
->  	struct sta_info *sta;
->  	u8 ac = txq->ac;
-> 
-> -	lockdep_assert_held(&local->active_txq_lock[ac]);
-> +	spin_lock_bh(&local->active_txq_lock[ac]);
-> 
->  	if (!txqi->txq.sta)
->  		goto out;
-> @@ -3766,34 +3761,27 @@ bool ieee80211_txq_may_transmit(struct 
-> ieee80211_hw *hw,
-> 
->  	sta->airtime[ac].deficit += sta->airtime_weight;
->  	list_move_tail(&txqi->schedule_order, &local->active_txqs[ac]);
-> +	spin_unlock_bh(&local->active_txq_lock[ac]);
-> 
->  	return false;
->  out:
->  	if (!list_empty(&txqi->schedule_order))
->  		list_del_init(&txqi->schedule_order);
-> +	spin_unlock_bh(&local->active_txq_lock[ac]);
-> 
->  	return true;
->  }
->  EXPORT_SYMBOL(ieee80211_txq_may_transmit);
-> 
->  void ieee80211_txq_schedule_start(struct ieee80211_hw *hw, u8 ac)
-> -	__acquires(txq_lock)
->  {
->  	struct ieee80211_local *local = hw_to_local(hw);
-> 
->  	spin_lock_bh(&local->active_txq_lock[ac]);
->  	local->schedule_round[ac]++;
-Hi Felix,
+Hi All:
 
-In ath10k, we might have situations like,
+drivers/net/wireless/intel/iwlwifi/mvm/power.c:
 
-           CPU0                           CPU1
-...                                   ieee80211_txq_schedule_start()
-...                                   while(ieee80211_next_txq()) {
-...                                       driver dequeue packets from 
-txq
-...                                       ieee80211_return_txq()
-ieee80211_txq_schedule_start()            ...
-ieee80211_next_txq()                  }
-driver dequeue packets from txq       ieee80211_txq_schedule_end()
-ieee80211_return_txq()
-ieee80211_txq_schedule_end()
+The function iwl_mvm_vif_from_mac80211() could return NULL,
+but some callers in this file does not check the return value while
+directly dereference it, which seems potentially unsafe.
+Such callers include iwl_mvm_update_d0i3_power_mode(),
+iwl_mvm_power_configure_uapsd(),
+iwl_mvm_power_allow_uapsd(), etc.
 
-The problem is while CPU1 is looping to dequeue txqs, the schedule_round 
-which is used to make sure no infinite loop will be changed in CPU0. So 
-a txq has already been scheduled will be scheduled again then the loop 
-won't be end at that point as our expected.
 
-> -}
-> -EXPORT_SYMBOL(ieee80211_txq_schedule_start);
-> -
-> -void ieee80211_txq_schedule_end(struct ieee80211_hw *hw, u8 ac)
-> -	__releases(txq_lock)
-> -{
-> -	struct ieee80211_local *local = hw_to_local(hw);
-> -
->  	spin_unlock_bh(&local->active_txq_lock[ac]);
->  }
-> -EXPORT_SYMBOL(ieee80211_txq_schedule_end);
-> +EXPORT_SYMBOL(ieee80211_txq_schedule_start);
-> 
->  void __ieee80211_subif_start_xmit(struct sk_buff *skb,
->  				  struct net_device *dev,
 
 -- 
-Yibo
+Kind Regards,
+
+Yizhuo Zhai
+
+Computer Science, Graduate Student
+University of California, Riverside
