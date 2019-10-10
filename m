@@ -2,91 +2,87 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 6BBE2D2E93
-	for <lists+linux-wireless@lfdr.de>; Thu, 10 Oct 2019 18:27:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2E436D2EA9
+	for <lists+linux-wireless@lfdr.de>; Thu, 10 Oct 2019 18:36:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726088AbfJJQ06 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 10 Oct 2019 12:26:58 -0400
-Received: from mail-pl1-f194.google.com ([209.85.214.194]:37092 "EHLO
-        mail-pl1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726038AbfJJQ05 (ORCPT
+        id S1726135AbfJJQgA (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 10 Oct 2019 12:36:00 -0400
+Received: from mail-ot1-f67.google.com ([209.85.210.67]:34093 "EHLO
+        mail-ot1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725909AbfJJQgA (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 10 Oct 2019 12:26:57 -0400
-Received: by mail-pl1-f194.google.com with SMTP id u20so3043376plq.4
-        for <linux-wireless@vger.kernel.org>; Thu, 10 Oct 2019 09:26:57 -0700 (PDT)
+        Thu, 10 Oct 2019 12:36:00 -0400
+Received: by mail-ot1-f67.google.com with SMTP id m19so5462394otp.1
+        for <linux-wireless@vger.kernel.org>; Thu, 10 Oct 2019 09:35:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=/3L9d8Hq5e07DU4XHZuzPz1Kd0iVbIQrEZ53Rw3PFwc=;
-        b=oMNG8OFlEGU3PWXGkW4uWbQiN1c4TgfEUV4U5ZaRnieGiVh9zJFF289MPunGMy0uQa
-         seUQM8U2tTTWjYTuqnWM1hjDfz4EQSu6HMMR+BLW3eWSh4BlEZczW9TkQZKEJ/hk3f8b
-         1JFjuInD9NbbsOx1TTAGItzyuIrtHBAw+AvyLljpiKbRSLyrTzWMOLnm4O599EaVohmY
-         qyXHpkXA478RmdObxZO9bhYjjODG2+x1geIWOUjM1C4N9VKcwAJdm2FwBoPqZPyewoBt
-         HCAcvkfg29toUTW1/GIlRSFNFLn9cq68xGT5V8C627JjNT5+CYI49sBWZkhztGviM0xZ
-         RQqA==
+        d=gmail.com; s=20161025;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=rvNKcQa6csvrpV0BR7Qohhs6ik/U0hSG7/A3nrUQ4+g=;
+        b=D6hs2hfOQSej3i3Vxd07F1ZxqNYYvPr+gjlo/oOqB41H9rsY6yqDxhgBXcxY9DkVaR
+         S7UG7s5fsPZm2oUE+CDW38y/zuG5pdm6H4nfwYt6VxzdjPVAymJyD94qbm5zBrPZFbaa
+         zDmiAIaNoj3Ig8sAlxF1LkVHHSwd+yCNjgaLIf61+GiYwXsFqTc5+o5PgpIyow4acGRk
+         SD0Ppzjh+ccPIuxLAeUNfDSgJihJv0YU4DlVc0NTUO90K6yECXXO2lpAupHNaJRv+9TM
+         StiLvgcjJgJjsGYuFKgGwaKyxeAp5+sedWN+SSurp5qohJVrl8j8kOzv6Sm2ixdl6V0v
+         Kl2A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=/3L9d8Hq5e07DU4XHZuzPz1Kd0iVbIQrEZ53Rw3PFwc=;
-        b=ceQrxpksGTIYoKIoxMP/+OO8v8cJUB4uLHUeXZaE5bkARoI/gsg7ytB9S22dev5nbS
-         vHQD3pnEIZWhMvvQlHtO5yaIzm2+4r3L3ipIyy9TF1mGNzCc2sDTtwJuofT3BFuPdWl8
-         TtChTNNAdpz7PGaTFD6MAvevF5uSpnbpTdxzWRx4/Gdy7gKBu00Slk+d7ta6BDrV6dd1
-         XPmBkpi+OSwNFjI3sUX9mRRAMSKNIJj6Ks7WAxzKLK6B2QKlqNjF7bkgVULmIeeTS63h
-         VlGnb0QvsFeDxx320LsnEzZR0zdMGqdd8JIsNaHniKWQafjgeGKr0bSwW98TyiOep4+A
-         o79g==
-X-Gm-Message-State: APjAAAV0SQEFV3bdGZyBMZYX/EfHZqMWEvpBkfKPGVNDA9H0P+0b3b+R
-        mpu3PY9m/zHJRs9aERU4U+nk7Q==
-X-Google-Smtp-Source: APXvYqzUtSx9TXYj7cPELtcJoIFrQb9QmW162prSdvzhCjMi66kmK7ihqlK1y9torULncYYjxLcW0w==
-X-Received: by 2002:a17:902:904b:: with SMTP id w11mr8623273plz.182.1570724816801;
-        Thu, 10 Oct 2019 09:26:56 -0700 (PDT)
-Received: from localhost.localdomain (104-188-17-28.lightspeed.sndgca.sbcglobal.net. [104.188.17.28])
-        by smtp.gmail.com with ESMTPSA id o15sm6148342pjs.14.2019.10.10.09.26.55
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 10 Oct 2019 09:26:56 -0700 (PDT)
-From:   Bjorn Andersson <bjorn.andersson@linaro.org>
-To:     Kalle Valo <kvalo@codeaurora.org>,
-        "David S. Miller" <davem@davemloft.net>
-Cc:     ath10k@lists.infradead.org, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Niklas Cassel <niklas.cassel@linaro.org>,
-        stable@vger.kernel.org
-Subject: [PATCH] ath10k: Correct error check of dma_map_single()
-Date:   Thu, 10 Oct 2019 09:26:53 -0700
-Message-Id: <20191010162653.141303-1-bjorn.andersson@linaro.org>
-X-Mailer: git-send-email 2.23.0
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=rvNKcQa6csvrpV0BR7Qohhs6ik/U0hSG7/A3nrUQ4+g=;
+        b=QzorYlH382yOF1XDGixTbsW5Hk2MfHyWTHJXUjOixDENKeVw9y9k36qLgyOBVY0b2x
+         /6xL2MQpXIqSZTpFmuPZeY8BIRV5hjM8QrOVFRCTlRWLGTOzXS3SS29TbDl2MpnbMvZZ
+         8f1H6lcUW81VFHMfxWG91EQuHnLv82fsRYijxrqmwUghwWb3XmiGrWAf777XW3LMoBnI
+         a0WJI7tQ4cHphTv8NKvx0LlQ5frkJhUFkd0aKtbRyRONcxt8Pr5lPXcSSV5WgNim+UUf
+         M93kjqRdcV85ymf5z7pUE5mNY4qBgX36q9X0svITOWx4JOtFtxZFeVpB2AOVQSx7DXVO
+         myuA==
+X-Gm-Message-State: APjAAAVl3HUWkETtySeLbQJcgYKc62fYcHKUgQi2SgwxFrxM6Yx/k5Yt
+        vgW6kNQ0oDzmOAgXn8Vw3xcc2jfToFQ7EgqHKw==
+X-Google-Smtp-Source: APXvYqy9fa/cknIIuTHbExl24JXqhdG8ot3dpQYu25McYP+8ias3y24dWOMXeMhsdiszviq40ELWKBCHMycvx1i1yrs=
+X-Received: by 2002:a9d:5a0b:: with SMTP id v11mr487591oth.274.1570725357721;
+ Thu, 10 Oct 2019 09:35:57 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Received: by 2002:a4a:ab4e:0:0:0:0:0 with HTTP; Thu, 10 Oct 2019 09:35:56
+ -0700 (PDT)
+Reply-To: brianjesse343@gmail.com
+From:   brianjesse <cleanmichel66@gmail.com>
+Date:   Thu, 10 Oct 2019 17:35:56 +0100
+Message-ID: <CAJnAYk-do7r5vPa+G70mtPA4u6gjNzOXStViHzBD8KVOpZjZjg@mail.gmail.com>
+Subject: 
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-The return value of dma_map_single() should be checked for errors using
-dma_mapping_error(), rather than testing for NULL. Correct this.
+Dear Friend,
 
-Fixes: 1807da49733e ("ath10k: wmi: add management tx by reference support over wmi")
-Cc: stable@vger.kernel.org
-Reported-by: Niklas Cassel <niklas.cassel@linaro.org>
-Signed-off-by: Bjorn Andersson <bjorn.andersson@linaro.org>
----
- drivers/net/wireless/ath/ath10k/mac.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+I hope this message meet you well, after quite a very long time. I'm
+happy to inform you about my success in getting those funds
+transferred under the cooperation of a new partner from India.
+Presently  I'm in India for investment projects with my own share of
+the total sum. meanwhile, I didn't forget your past efforts and
+attempts to assist me in transferring those funds despite that it
+failed us some how.Now contact my secretary in Lome, Togo with his
+below contact,I droped a certified ATM visa card, ask him to send you
+the ATM visa card of $250.000.00 which I left with him for your
+compensation for all the past efforts and attempts to assist me in
+this matter. I appreciated your efforts at that time very much.
 
-diff --git a/drivers/net/wireless/ath/ath10k/mac.c b/drivers/net/wireless/ath/ath10k/mac.c
-index 3d2c8fcba952..a01868938692 100644
---- a/drivers/net/wireless/ath/ath10k/mac.c
-+++ b/drivers/net/wireless/ath/ath10k/mac.c
-@@ -3904,7 +3904,7 @@ void ath10k_mgmt_over_wmi_tx_work(struct work_struct *work)
- 			     ar->running_fw->fw_file.fw_features)) {
- 			paddr = dma_map_single(ar->dev, skb->data,
- 					       skb->len, DMA_TO_DEVICE);
--			if (!paddr)
-+			if (dma_mapping_error(ar->dev, paddr))
- 				continue;
- 			ret = ath10k_wmi_mgmt_tx_send(ar, skb, paddr);
- 			if (ret) {
--- 
-2.23.0
+So feel free and get in touch with my secretary in Lome Togo and
+instruct him  where to send the ATM visa card containing amount to
+you.Please do let me know immediately if you receive it so that we can
+share the joy after all the sufferness at that  time together. in the
+moment, I'm very busy here because of the investment projects which me
+and the new partner are having at hand,finally remember that I had
+forwarded instruction to my secretary on your behalf to release the
+ATM visa card to you and you alone, so feel free to get in touch with
+him and forward him your informations,your full names,address and
+contact number for easy communication until your received the ATM visa
+card. if you whish to communicate futher on this issue, you can
+contact my secretery Mr: Vincent Philip through this his email address
+(vincentphilip.sec@gmail.com)
 
+
+Best Regards
+Barrister Brian Jesse
