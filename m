@@ -2,145 +2,108 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 7479BD1E66
-	for <lists+linux-wireless@lfdr.de>; Thu, 10 Oct 2019 04:25:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 71F4BD1E7F
+	for <lists+linux-wireless@lfdr.de>; Thu, 10 Oct 2019 04:35:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732679AbfJJCZX (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 9 Oct 2019 22:25:23 -0400
-Received: from mail-pl1-f201.google.com ([209.85.214.201]:39345 "EHLO
-        mail-pl1-f201.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726370AbfJJCZX (ORCPT
+        id S1731155AbfJJCfU (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 9 Oct 2019 22:35:20 -0400
+Received: from mail-lj1-f195.google.com ([209.85.208.195]:33191 "EHLO
+        mail-lj1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726478AbfJJCfU (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 9 Oct 2019 22:25:23 -0400
-Received: by mail-pl1-f201.google.com with SMTP id w11so2886457ply.6
-        for <linux-wireless@vger.kernel.org>; Wed, 09 Oct 2019 19:25:22 -0700 (PDT)
+        Wed, 9 Oct 2019 22:35:20 -0400
+Received: by mail-lj1-f195.google.com with SMTP id a22so4566711ljd.0
+        for <linux-wireless@vger.kernel.org>; Wed, 09 Oct 2019 19:35:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=google.com; s=20161025;
-        h=date:in-reply-to:message-id:mime-version:references:subject:from:to
-         :cc;
-        bh=kGk/7KejGkDZxzehqIVr9iG/CJHtXnwr5jx9nytWH0I=;
-        b=kbC/KmHukXc1r/7vG59UBTp6xFJZnPdTQp+YRg2PvaBXk2vz9kJKMFbHpTNrh7n5/L
-         ArdMvvvU4Zk8+WKvTeLAD6UTrvbMGUjtF7a4/myn7sulc0Zv0YcnSa2autoqg+ttdXcI
-         cfAov0OnR/1oUP7r1ZUK6f8DmmSONBeMvPLvNLaF1ujghOUank/z8OCr5ZMbYlqext6w
-         911RRavOiIAi4XyOpoWJSQaRuqU5GTKle52Sv6VnQysbbkmcN1qu+k+MNfFjaFXLHp7J
-         TWDTmczO/l/6hjXDMh16XIlFox+UgLEXgvqoazZIU3Jb/Q730tkYpRp/n0DMl4cq+vfy
-         C2iA==
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc:content-transfer-encoding;
+        bh=xNOk7RHs2NX231yJ4vn1jUbJI6Vg12VmhwZvxDf3llU=;
+        b=BxwrlrJYW5KCzwrH2ymFZOFiqA2U16Y9AQbAkSScJraAZWewvUSoi9Ur+Fj0oUwxYu
+         yHKfU0MOzjkOE9iFBJoQo8FjrMsRyzTOaLL5FaquJCpEdqbvf8Lsdr6uDcIuBhOKwKCv
+         s5o2RnleG5+7V9L6BmuhPwMx1uzCXVxQUacrrtUSMEoVtO++6pKdKXh0CS6D5848f8bk
+         pks1O/Gv2cmp80L3fWyivc8UbwEEA+kPcq2ypPlKwkM6BbGf4ZVwyjpSZLTJ5gUv1yX7
+         YQ+Z96xnKURYMB6ar5vXhRGK4avzaY0P32RIQoKONyEHVcSnzeVqm4jLuC9ra/uTmUa0
+         iZCQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:in-reply-to:message-id:mime-version
-         :references:subject:from:to:cc;
-        bh=kGk/7KejGkDZxzehqIVr9iG/CJHtXnwr5jx9nytWH0I=;
-        b=dizWNAsTrkwL/N8VQaTeaZOyQRwoRxjOsLrk2xEjQBXVPNph0usES/lF5o8pgrUa9V
-         lf5qLeIo3NxKi2VXXSVwUROLT68ME6UbY4gkZqEOf4tVyiu8cRyLs2AxJyo0fIPkS9un
-         8zHOBt9bsiBaqhgDmR7GcoH8mD1K8IzKzcO/0u+IOXLoDX/DXdh/Tf2++JAs2y0Btzy2
-         ydm0UwNVl3mWnK9D776QU9LqFnMxK1OddcNh1F4J13nVo6Qe0SkI1Dnpeky6RJ8EM1I/
-         bxl8+9gAqPPDsyRb+7irnBOOZ+Iro0vKRUDyAMR5r55GgZAyi9Q03F0MrNLqrUMRgnxs
-         LKFg==
-X-Gm-Message-State: APjAAAXlNTnt5WavcVsQhjD6SInjw2V97fvQTT40LyzyImqgmK6gCnYp
-        mxqpNUS3Gn/vBi/MVPK9AXUC8TQW
-X-Google-Smtp-Source: APXvYqygGfbjespKmHgXgHBuOcQEh8edbha1EHCUFKHMydLFWheu7apHsV0cCqj3DbH/NLYOFV1n1q0Q
-X-Received: by 2002:a63:c045:: with SMTP id z5mr7831822pgi.69.1570674321965;
- Wed, 09 Oct 2019 19:25:21 -0700 (PDT)
-Date:   Wed,  9 Oct 2019 19:25:02 -0700
-In-Reply-To: <20191010022502.141862-1-kyan@google.com>
-Message-Id: <20191010022502.141862-3-kyan@google.com>
-Mime-Version: 1.0
-References: <20191010022502.141862-1-kyan@google.com>
-X-Mailer: git-send-email 2.23.0.581.g78d2f28ef7-goog
-Subject: [PATCH v3 2/2] ath10k: Enable Airtime-based Queue Limit (AQL)
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc:content-transfer-encoding;
+        bh=xNOk7RHs2NX231yJ4vn1jUbJI6Vg12VmhwZvxDf3llU=;
+        b=bDoP2n3FYhwZ+dqm6hNUGDJ02DHnVc5oxu6Q9Nb2m33Kw6vEUaQnV9rUQK153yXyhC
+         RhS/jQcfZtEDU5zC32C1L6Huh907mV9Q3M+HLmWX0x4KHmqgh8Y2MLgCNFjrxRzKRZEi
+         PZZ5LlkBTiV1laAV2vYIm3sIHQF07tKn00lSN5jhDih88pTmPs3wxwSV4Yi4P2PIx4y4
+         cmh2h+/EhiiHNJl3dsTelCWcslELXRYYSLQSOR3viZL2HjwzVoxLlQjQj8HmAUbMXfzp
+         SaJoJdaIkJL0HMhD+u9zAQxIvJc3B36yZLwkN+k5xJKR3ZP+qDzgYaAAMIPpN09BAs8g
+         H03A==
+X-Gm-Message-State: APjAAAUOjnXEbqBO+fbwgj1FT/cmhS5CgLp1x/zGudUySie1w0TrCJk7
+        LkqkxPwDVrY4ju50aAyWjCOWkrj5nrZuOPLY5WsSWMNTwGQ=
+X-Google-Smtp-Source: APXvYqwwrdPan2+uHY+XBfFTybHUsvN8bh1ZbFKWi6AkQkilSDfV/jCIK6QipEjOGXZh5r2z8+XgmGx6kLQOYqbGUcE=
+X-Received: by 2002:a05:651c:112e:: with SMTP id e14mr4229753ljo.193.1570674918128;
+ Wed, 09 Oct 2019 19:35:18 -0700 (PDT)
+MIME-Version: 1.0
+References: <20191004062151.131405-1-kyan@google.com> <20191004062151.131405-2-kyan@google.com>
+ <87imp4o6qp.fsf@toke.dk> <CA+iem5vJFRxskyHOKf5K73X8aGH965P4hoiCj-wQtK-Z-47pdg@mail.gmail.com>
+ <87pnj9n55y.fsf@toke.dk> <aa40e945adfbeb52890afb2de493142e82ecf69d.camel@sipsolutions.net>
+ <878spwmjif.fsf@toke.dk> <600f64e1e673fff25d2be71ac767d7332db0452a.camel@sipsolutions.net>
+In-Reply-To: <600f64e1e673fff25d2be71ac767d7332db0452a.camel@sipsolutions.net>
 From:   Kan Yan <kyan@google.com>
-To:     johannes@sipsolutions.net
-Cc:     linux-wireless@vger.kernel.org,
-        make-wifi-fast@lists.bufferbloat.net, toke@redhat.com,
-        nbd@nbd.name, ath10k@lists.infradead.org, yiboz@codeaurora.org,
-        Kan Yan <kyan@google.com>
+Date:   Wed, 9 Oct 2019 19:35:06 -0700
+Message-ID: <CA+iem5uemV7YB=DPry5UdgLgi0USXG-e3My2=3256EWtFkye4Q@mail.gmail.com>
+Subject: Re: [PATCH 1/2] mac80211: Implement Airtime-based Queue Limit (AQL)
+To:     Johannes Berg <johannes@sipsolutions.net>
+Cc:     =?UTF-8?B?VG9rZSBIw7hpbGFuZC1Kw7hyZ2Vuc2Vu?= <toke@redhat.com>,
+        linux-wireless@vger.kernel.org,
+        make-wifi-fast@lists.bufferbloat.net, Felix Fietkau <nbd@nbd.name>,
+        Yibo Zhao <yiboz@codeaurora.org>
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Calculate the estimated airtime pending in the txqs and apply AQL to
-prevent excessive amounts of packets being queued in the firmware queue.
+> I'd like to use the new rate calculation code that Felix added to mt76.
+> Is the arsta->txrate info in ath10k suitable to be passed up to mac80211
+> and used in that, do you think? Because then that would probably be the
+> easiest way to go about it...
 
-Signed-off-by: Kan Yan <kyan@google.com>
----
- drivers/net/wireless/ath/ath10k/htt_rx.c |  1 +
- drivers/net/wireless/ath/ath10k/mac.c    |  8 +++++---
- drivers/net/wireless/ath/ath10k/txrx.c   | 11 ++++++++---
- 3 files changed, 14 insertions(+), 6 deletions(-)
+Do you mean the mt76 patch that using the EWMA to smooth estimate data
+rate? It would be great if you can move that to mac80211.
+Yes, arsta->txrate info in ath10k is a good place to extract latest date ra=
+te.
 
-diff --git a/drivers/net/wireless/ath/ath10k/htt_rx.c b/drivers/net/wireless/ath/ath10k/htt_rx.c
-index 83a7fb68fd24..f2115b940964 100644
---- a/drivers/net/wireless/ath/ath10k/htt_rx.c
-+++ b/drivers/net/wireless/ath/ath10k/htt_rx.c
-@@ -3053,6 +3053,7 @@ static void ath10k_htt_rx_tx_fetch_ind(struct ath10k *ar, struct sk_buff *skb)
- 
- 			num_msdus++;
- 			num_bytes += ret;
-+			may_tx = ieee80211_txq_aql_check(hw, txq);
- 		}
- 		ieee80211_return_txq(hw, txq, false);
- 		ieee80211_txq_schedule_end(hw, txq->ac);
-diff --git a/drivers/net/wireless/ath/ath10k/mac.c b/drivers/net/wireless/ath/ath10k/mac.c
-index 0606416dc971..b300a3c506b2 100644
---- a/drivers/net/wireless/ath/ath10k/mac.c
-+++ b/drivers/net/wireless/ath/ath10k/mac.c
-@@ -3983,6 +3983,9 @@ static bool ath10k_mac_tx_can_push(struct ieee80211_hw *hw,
- 	struct ath10k_txq *artxq = (void *)txq->drv_priv;
- 
- 	/* No need to get locks */
-+	if (!ieee80211_txq_aql_check(hw, txq))
-+		return false;
-+
- 	if (ar->htt.tx_q_state.mode == HTT_TX_MODE_SWITCH_PUSH)
- 		return true;
- 
-@@ -4009,13 +4012,11 @@ static u16 ath10k_mac_update_airtime(struct ath10k *ar,
- {
- 	struct ath10k_sta *arsta;
- 	u32 pktlen;
--	u16 airtime = 0;
-+	s32 airtime = 0;
- 
- 	if (!txq || !txq->sta)
- 		return airtime;
- 
--	if (test_bit(WMI_SERVICE_REPORT_AIRTIME, ar->wmi.svc_map))
--		return airtime;
- 
- 	spin_lock_bh(&ar->data_lock);
- 	arsta = (struct ath10k_sta *)txq->sta->drv_priv;
-@@ -4038,6 +4039,7 @@ static u16 ath10k_mac_update_airtime(struct ath10k *ar,
- 	}
- 	spin_unlock_bh(&ar->data_lock);
- 
-+	ieee80211_sta_register_pending_airtime(txq->sta, txq->tid, airtime);
- 	return airtime;
- }
- 
-diff --git a/drivers/net/wireless/ath/ath10k/txrx.c b/drivers/net/wireless/ath/ath10k/txrx.c
-index 4102df016931..739046b34d4b 100644
---- a/drivers/net/wireless/ath/ath10k/txrx.c
-+++ b/drivers/net/wireless/ath/ath10k/txrx.c
-@@ -84,9 +84,14 @@ int ath10k_txrx_tx_unref(struct ath10k_htt *htt,
- 		wake_up(&htt->empty_tx_wq);
- 	spin_unlock_bh(&htt->tx_lock);
- 
--	if (txq && txq->sta && skb_cb->airtime_est)
--		ieee80211_sta_register_airtime(txq->sta, txq->tid,
--					       skb_cb->airtime_est, 0);
-+	if (txq && txq->sta && skb_cb->airtime_est) {
-+		if (!test_bit(WMI_SERVICE_REPORT_AIRTIME, ar->wmi.svc_map))
-+			ieee80211_sta_register_airtime(txq->sta, txq->tid,
-+						       skb_cb->airtime_est, 0);
-+
-+		ieee80211_sta_release_pending_airtime(txq->sta, txq->tid,
-+						      skb_cb->airtime_est);
-+	}
- 
- 	if (ar->bus_param.dev_type != ATH10K_DEV_TYPE_HL)
- 		dma_unmap_single(dev, skb_cb->paddr, msdu->len, DMA_TO_DEVICE);
--- 
-2.23.0.581.g78d2f28ef7-goog
 
+
+On Mon, Oct 7, 2019 at 12:43 PM Johannes Berg <johannes@sipsolutions.net> w=
+rote:
+>
+> On Mon, 2019-10-07 at 21:40 +0200, Toke H=C3=B8iland-J=C3=B8rgensen wrote=
+:
+>
+> > > > So if and when we start supporting true multi-band devices we'll ha=
+ve to
+> > > > change these things anyway. So might as well keep everything togeth=
+er so
+> > > > it all gets fixed :)
+> > >
+> > > I guess I'm OK with that, but I'm pretty sure this will come up soone=
+r
+> > > rather than later ...
+> > >
+> > > What else is there though?
+> >
+> > By "it all" I meant "all the airtime fairness stuff". Other than that, =
+I
+> > didn't have anything in particular in mind. I just kinda assumed there
+> > would be lots of places that had an implicit assumption that all device=
+s
+> > on the same phy shares a channel...
+>
+> Not _that_ much - we do have the channel contexts after all. But except
+> for hwsim (*cough cough* I was lazy) nothing actually implements real
+> concurrent multi-channel yet, obviously, but uses a single radio with
+> channel hopping...
+>
+> johannes
+>
