@@ -2,139 +2,121 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 5BAA1D377F
-	for <lists+linux-wireless@lfdr.de>; Fri, 11 Oct 2019 04:24:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A49D5D3A99
+	for <lists+linux-wireless@lfdr.de>; Fri, 11 Oct 2019 10:16:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728017AbfJKCYY (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 10 Oct 2019 22:24:24 -0400
-Received: from mail-pf1-f201.google.com ([209.85.210.201]:57055 "EHLO
-        mail-pf1-f201.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728066AbfJKCYY (ORCPT
+        id S1726328AbfJKIQf (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 11 Oct 2019 04:16:35 -0400
+Received: from s3.sipsolutions.net ([144.76.43.62]:34194 "EHLO
+        sipsolutions.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726174AbfJKIQf (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 10 Oct 2019 22:24:24 -0400
-Received: by mail-pf1-f201.google.com with SMTP id b17so6260033pfo.23
-        for <linux-wireless@vger.kernel.org>; Thu, 10 Oct 2019 19:24:23 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20161025;
-        h=date:in-reply-to:message-id:mime-version:references:subject:from:to
-         :cc;
-        bh=HmYY0PWVAFlMRzrk7cXJ/dfio3OkuBi+GUsExcPOorQ=;
-        b=q9mkOC6KaQyawkvkfk73wglKZGlIhW5WYjPuGer7egMjUfhRbWxPIF8ijxYwRchm6P
-         mnTNEz2EnFR+enjjqOcon4rzi8QO2I7DYTDBoGD22H7zs42+luWzM6OIVyxuKc3Kll+K
-         /0f+BwxLPTk7AzrpCdLzoUjGdOdeRIKeJRWGDlt9JHL9c7xXvCkEEacoxdxlqbpMEwuh
-         EUaKbNV+NGo8QjRzLxA+i0rv1a3OdhNI4H3IOIHfgkKXMy0DxfPlu3U3G6cUxIlK67dG
-         sC3oPcNM75dtuRNQSD/WLSFXY7a9jkQYIUaxgk70q/J8cJ62Vh1k6E61CSu7Laoj/d31
-         wo6Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:in-reply-to:message-id:mime-version
-         :references:subject:from:to:cc;
-        bh=HmYY0PWVAFlMRzrk7cXJ/dfio3OkuBi+GUsExcPOorQ=;
-        b=pCTZ7S9/IoTRv70U/3xxwnKxklEDJiSp2mtfUaSXYP3Mcjg6T4NSisetHe5m/xgMej
-         D5ZmIUrASZGcQVi8l7ztVscvzRkP3r8SdSgat3UAOYTwudTzz3n3WI64ioRLHjX1LIAg
-         /wWH5VFKpWgyoEI5jvRUKjgIsNY35Nvdnq26LzSsZweRPwQkl3b9gVOgsjvZa9nXXqQ7
-         OXQNZnIj1a6xqEu240cHtjSvt/bLsTn10bYZjDOIIaJyBn9YK8H9eyFNdfZ1N4iAPssq
-         FBDRTHO65cdSGGLpeOwcJyzemSIfd1ylJiwhTORWzDEDZePmpXPeKDNClv2M40PIPjRI
-         Pxwg==
-X-Gm-Message-State: APjAAAXNJzV27vg3zMsAHNyQd6L80+LSd/Zz0f1NBltiWC8Pu3AG72sZ
-        bkhKVQVVsbcrvumkIGo3sIYeS7QN
-X-Google-Smtp-Source: APXvYqxY8BiQ3Fv8BLi6xeVwbFok1Wl07Ci7EYxc/1PlruwxjuKVB35a6bOxasQ7YDCHDQMs9iGlLjXI
-X-Received: by 2002:a63:db15:: with SMTP id e21mr14361491pgg.21.1570760663156;
- Thu, 10 Oct 2019 19:24:23 -0700 (PDT)
-Date:   Thu, 10 Oct 2019 19:24:13 -0700
-In-Reply-To: <20191011022413.176208-1-kyan@google.com>
-Message-Id: <20191011022413.176208-3-kyan@google.com>
-Mime-Version: 1.0
-References: <20191011022413.176208-1-kyan@google.com>
-X-Mailer: git-send-email 2.23.0.700.g56cf767bdb-goog
-Subject: [PATCH v4 2/2] ath10k: Enable Airtime-based Queue Limit (AQL)
-From:   Kan Yan <kyan@google.com>
-To:     johannes@sipsolutions.net
+        Fri, 11 Oct 2019 04:16:35 -0400
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+        (Exim 4.92.2)
+        (envelope-from <johannes@sipsolutions.net>)
+        id 1iIq68-000582-Kg; Fri, 11 Oct 2019 10:16:29 +0200
+Message-ID: <3cbedfe48e796b9d2c28d97c301a08a03b42869c.camel@sipsolutions.net>
+Subject: Re: [PATCH v3 1/2] mac80211: Implement Airtime-based Queue Limit
+ (AQL)
+From:   Johannes Berg <johannes@sipsolutions.net>
+To:     Kan Yan <kyan@google.com>,
+        Toke =?ISO-8859-1?Q?H=F8iland-J=F8rgensen?= <toke@redhat.com>
 Cc:     linux-wireless@vger.kernel.org,
-        make-wifi-fast@lists.bufferbloat.net, toke@redhat.com,
-        nbd@nbd.name, ath10k@lists.infradead.org, yiboz@codeaurora.org,
-        Kan Yan <kyan@google.com>
+        make-wifi-fast@lists.bufferbloat.net, Felix Fietkau <nbd@nbd.name>,
+        ath10k@lists.infradead.org, Yibo Zhao <yiboz@codeaurora.org>
+Date:   Fri, 11 Oct 2019 10:16:27 +0200
+In-Reply-To: <CA+iem5u8p7pDZw-QvqU285p7F5AunN3Z4YyS=TjAd9xbKqegnQ@mail.gmail.com> (sfid-20191011_042420_744343_355715ED)
+References: <20191010022502.141862-1-kyan@google.com>
+         <20191010022502.141862-2-kyan@google.com>
+         <a2cc0ebecfb055c8b667db57d0469fe69054a69c.camel@sipsolutions.net>
+         <87ftk0jr70.fsf@toke.dk>
+         <CA+iem5u8p7pDZw-QvqU285p7F5AunN3Z4YyS=TjAd9xbKqegnQ@mail.gmail.com>
+         (sfid-20191011_042420_744343_355715ED)
 Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.30.5 (3.30.5-1.fc29) 
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Calculate the estimated airtime pending in the txqs and apply AQL to
-prevent excessive amounts of packets being queued in the firmware queue.
+On Thu, 2019-10-10 at 19:24 -0700, Kan Yan wrote:
 
-Signed-off-by: Kan Yan <kyan@google.com>
----
- drivers/net/wireless/ath/ath10k/htt_rx.c |  1 +
- drivers/net/wireless/ath/ath10k/mac.c    |  6 ++++--
- drivers/net/wireless/ath/ath10k/txrx.c   | 11 ++++++++---
- 3 files changed, 13 insertions(+), 5 deletions(-)
+> > > + * ieee80211_txq_aql_check - check if a txq can send frame to device
+> > I wonder if this really should even be have "aql" in the name? It's also
+> > going to return NULL if there's nothing on the TXQ, for example, right?
+> 
+> Renamed to  ieee80211_txq_airtime_check()
 
-diff --git a/drivers/net/wireless/ath/ath10k/htt_rx.c b/drivers/net/wireless/ath/ath10k/htt_rx.c
-index 83a7fb68fd24..12d63fa02e8e 100644
---- a/drivers/net/wireless/ath/ath10k/htt_rx.c
-+++ b/drivers/net/wireless/ath/ath10k/htt_rx.c
-@@ -3053,6 +3053,7 @@ static void ath10k_htt_rx_tx_fetch_ind(struct ath10k *ar, struct sk_buff *skb)
- 
- 			num_msdus++;
- 			num_bytes += ret;
-+			may_tx = ieee80211_txq_airtime_check(hw, txq);
- 		}
- 		ieee80211_return_txq(hw, txq, false);
- 		ieee80211_txq_schedule_end(hw, txq->ac);
-diff --git a/drivers/net/wireless/ath/ath10k/mac.c b/drivers/net/wireless/ath/ath10k/mac.c
-index 0606416dc971..ed19a40c2c3a 100644
---- a/drivers/net/wireless/ath/ath10k/mac.c
-+++ b/drivers/net/wireless/ath/ath10k/mac.c
-@@ -3983,6 +3983,9 @@ static bool ath10k_mac_tx_can_push(struct ieee80211_hw *hw,
- 	struct ath10k_txq *artxq = (void *)txq->drv_priv;
- 
- 	/* No need to get locks */
-+	if (!ieee80211_txq_airtime_check(hw, txq))
-+		return false;
-+
- 	if (ar->htt.tx_q_state.mode == HTT_TX_MODE_SWITCH_PUSH)
- 		return true;
- 
-@@ -4014,8 +4017,6 @@ static u16 ath10k_mac_update_airtime(struct ath10k *ar,
- 	if (!txq || !txq->sta)
- 		return airtime;
- 
--	if (test_bit(WMI_SERVICE_REPORT_AIRTIME, ar->wmi.svc_map))
--		return airtime;
- 
- 	spin_lock_bh(&ar->data_lock);
- 	arsta = (struct ath10k_sta *)txq->sta->drv_priv;
-@@ -4038,6 +4039,7 @@ static u16 ath10k_mac_update_airtime(struct ath10k *ar,
- 	}
- 	spin_unlock_bh(&ar->data_lock);
- 
-+	ieee80211_sta_register_pending_airtime(txq->sta, txq->tid, airtime);
- 	return airtime;
- }
- 
-diff --git a/drivers/net/wireless/ath/ath10k/txrx.c b/drivers/net/wireless/ath/ath10k/txrx.c
-index 4102df016931..739046b34d4b 100644
---- a/drivers/net/wireless/ath/ath10k/txrx.c
-+++ b/drivers/net/wireless/ath/ath10k/txrx.c
-@@ -84,9 +84,14 @@ int ath10k_txrx_tx_unref(struct ath10k_htt *htt,
- 		wake_up(&htt->empty_tx_wq);
- 	spin_unlock_bh(&htt->tx_lock);
- 
--	if (txq && txq->sta && skb_cb->airtime_est)
--		ieee80211_sta_register_airtime(txq->sta, txq->tid,
--					       skb_cb->airtime_est, 0);
-+	if (txq && txq->sta && skb_cb->airtime_est) {
-+		if (!test_bit(WMI_SERVICE_REPORT_AIRTIME, ar->wmi.svc_map))
-+			ieee80211_sta_register_airtime(txq->sta, txq->tid,
-+						       skb_cb->airtime_est, 0);
-+
-+		ieee80211_sta_release_pending_airtime(txq->sta, txq->tid,
-+						      skb_cb->airtime_est);
-+	}
- 
- 	if (ar->bus_param.dev_type != ATH10K_DEV_TYPE_HL)
- 		dma_unmap_single(dev, skb_cb->paddr, msdu->len, DMA_TO_DEVICE);
--- 
-2.23.0.700.g56cf767bdb-goog
+:)
+
+> This function is not for finding next eligible txq, but return a
+> boolean to indicate if a given txq can send more packets to device. It
+> is also called from ath10k:
+> static bool ath10k_mac_tx_can_push(struct ieee80211_hw *hw,
+>                                    struct ieee80211_txq *txq)
+> {
+>        ...
+>         if (!ieee80211_txq_airtime_check(hw, txq))
+>                 return false;
+
+Sure, I get that.
+
+I phrased this badly before because I neglected to look at the code of
+the function closely.
+
+You were documenting it as
+
++ * Return true if the AQL's airtime limit has not been reached and the txq can
++ * continue to send more packets to the device. Otherwise return false.
+
+but with the current implementation that's not really true. For example,
+if there are no packets on the TXQ at all, then the function still
+returns true, even if it's not true that "the txq can continue to send
+more packets to the device".
+
+So I guess really what I should ask is if the documentation shouldn't be
+rephrased to say something like
+
+	[...] has not been reached and the TXQ is eligible to send
+        packets to the device, regardless of whether or not it currently
+        can or cannot (e.g. if it has no packets, or is stopped, etc.)
+
+to make it more obvious that this really is *only* concerned about the
+airtime aspects.
+
+> > But then again, we don't really care *that* much about overflow or
+> > underflow in this code path - it's not going to be security critical.
+> > But it seems that your code there actually can cause UB? That would be
+> > nice to avoid.
+> > Actually, that condition can never be true, right? Wait, ok, this one
+> > can because integer promotion?
+> 
+>  I don't think that condition could happen. The WARN_ONCE() was added
+> per your earlier comment. The older version don't have underflow check
+> and reset pending_airtime part and I didn't find any issues.
+
+Of course it will never happen with a valid driver :-)
+
+But it seems like a very easy mistake to make - add an estimate, and
+later subtract the actual airtime, which may be more ...
+
+> > Except aql_total_pending_airtime is still defined as s32 and that causes
+> > different behaviour?
+> > All this confuses me ... is it possible to write this more clearly?
+> 
+> I revised it to something similar to the original version, which
+> ieee80211_sta_update_pending_airtime() takes extra parameter to
+> indicate whether it is for a tx completion event.
+> void ieee80211_sta_update_pending_airtime(struct ieee80211_sta *pubsta, u8 tid,
+>                                           u32 tx_airtime, bool tx_completed)
+> This help get rid of the problem that airtime need be signed. Also
+> added the inline function of
+> ieee80211_sta_register/release_pending_airtime() as you suggested.
+
+ok
+
+johannes
 
