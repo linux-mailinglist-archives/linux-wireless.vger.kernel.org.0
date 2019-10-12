@@ -2,61 +2,54 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 146D6D4798
-	for <lists+linux-wireless@lfdr.de>; Fri, 11 Oct 2019 20:28:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 73B88D4BCC
+	for <lists+linux-wireless@lfdr.de>; Sat, 12 Oct 2019 03:27:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728514AbfJKS22 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 11 Oct 2019 14:28:28 -0400
-Received: from mail-pg1-f195.google.com ([209.85.215.195]:42509 "EHLO
-        mail-pg1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728735AbfJKS2W (ORCPT
+        id S1728171AbfJLB1Z (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 11 Oct 2019 21:27:25 -0400
+Received: from mail-pf1-f195.google.com ([209.85.210.195]:38210 "EHLO
+        mail-pf1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726918AbfJLB1Z (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 11 Oct 2019 14:28:22 -0400
-Received: by mail-pg1-f195.google.com with SMTP id f14so1140520pgi.9
-        for <linux-wireless@vger.kernel.org>; Fri, 11 Oct 2019 11:28:22 -0700 (PDT)
+        Fri, 11 Oct 2019 21:27:25 -0400
+Received: by mail-pf1-f195.google.com with SMTP id h195so7065955pfe.5
+        for <linux-wireless@vger.kernel.org>; Fri, 11 Oct 2019 18:27:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=8oCcxD88VFm1cXltnKInhOC0dvYbRf3OZje5KuISZ28=;
-        b=DmSSa+o/fbCnmcSE8r3LLdGEcw4nF+cZDPt6n9Uav/Mh/6eUQUBdpUuOVjFil99enF
-         yW+l+bqqnjB2LexYRbSpMwtzwWFE8E9D/KnGVyNJulBfAtHABiiSDzWBGbr2X/OK+XT8
-         L9Hviw5kazL60EJ6JyhVmA3PsPTO5Un7UcOuq97b7+LwEoOnaInyOvbl78GA8DDCEIu4
-         pKdxSQq3K3wzCSHxveT1nB+mV+iSi/AR5oKe8Z4vigMNNzWYy96byVbfG3DpQQRkesij
-         1jl1r0OfXGl8OxMN96Wtp706aglMlW6IEQw6UURw+hIsGYJAX+wP3AqwzZkaV0dSvvrt
-         Iz+A==
+        d=chromium.org; s=google;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=C+RPiOySyp0KKixv/e0AjYvT1LgmjR0sE/np4+YU9pA=;
+        b=GlDOfVzB+snPT49K/0DPuMKNzaD1OBzBNd8axQQBN0IGFvIRqYBFdSU7KcIKKvDXzi
+         uwfDhrPOwhSRbBuIa5avI/1uQ1AgQmy3x91vxUIYHUEZ+7+1FsqPIf22L2jOnqsfSCIM
+         w1U4iWAcOYqfC4EiKGsoYyN+cVgpVgqLDnlJk=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=8oCcxD88VFm1cXltnKInhOC0dvYbRf3OZje5KuISZ28=;
-        b=OI6NjId19P0xscBQet1TEb2abVS8v4HVMRu+JSVnvUbWv3wjSwHM3QQz+LBQy6dCIE
-         8r0Q5lMvazlnaJ5NJSNvKFLnLEFz3KrjfC7IGG6j6QVb0HtG2aj2VLo+Ahk1yCuCtap7
-         fIn+oP05QqVzDmP8mT7eZC1l1pyBfGhUOhpEEX7yGcI+coTOgY5l4flUpJJ5DPOZd2Q4
-         fvfAq3SyqDyOY6YhhRCpbGJI8xjBQaNFfRTOfJxlGVSQA/9OWg3qzeM660BclM5pN9Yr
-         o/CyCwQZI9KiohD8JZz8hpRxTaBNdsknYUS9xYVpr6FTJK1Xjzj/iqL+2GVaES3WdoWo
-         Lieg==
-X-Gm-Message-State: APjAAAXoGuJavJpWgcH4IjidNJUOvpLf4dKbbbqezqDWefRFjit1BV4S
-        F2K5Uu6EZ1VYKyi7tnl8R35Tiw==
-X-Google-Smtp-Source: APXvYqw0pkpNYcFqFnQAxe70uYZ67hQnflJjxtKuMR2lnBw5aheockxkUpH2gAVY12yHDaYAukkmnw==
-X-Received: by 2002:a17:90b:288:: with SMTP id az8mr19023217pjb.18.1570818501530;
-        Fri, 11 Oct 2019 11:28:21 -0700 (PDT)
-Received: from localhost.localdomain (104-188-17-28.lightspeed.sndgca.sbcglobal.net. [104.188.17.28])
-        by smtp.gmail.com with ESMTPSA id a11sm8652343pfo.165.2019.10.11.11.28.20
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=C+RPiOySyp0KKixv/e0AjYvT1LgmjR0sE/np4+YU9pA=;
+        b=BYf1EcbkiKuDITJR0rbKdOcH261mwa4i3OSgdjjgOaiifr6NsIh35trtV+sYOp0ACh
+         ye7j8bA+GFD7MNMOyCRZZdb9nIjC7LO/FrmwpLTH0kaggMcNcSq/PCTcieYUyDOGgIo+
+         7jHhiy0/FRQ+WBuNq/Nn3kS5YfA2Ch3mbIs38Tys+SalPsXchKfL25pV+nB2AlMJPX9K
+         3qAyWnqooCGhQjWj6rj/nJPzy2TDt1LhQCIhO9Bg6OvVJQ0kaybp55tJWa2RXyf5uWae
+         ihTSiXraJYy3qdprjWkhH1DHQz8Ilmy3Sbv4v2mEoHSeLjSO7QXAF6jeVdDiRTqeQ9cn
+         OXww==
+X-Gm-Message-State: APjAAAUWbuAHPIirDo2D6r4awx4u4fzH4I5g5P74f+mNcGEVYhL0J/k3
+        1L1NNw34ce+hIyc7idQh/xaOdWsqzXY=
+X-Google-Smtp-Source: APXvYqwdSLmpjbC0Mqcc6Iss2B6Czwa1nD8+o3+xg6du6KOS/vIdsLiL9ml58x0OXM0/720SblumeQ==
+X-Received: by 2002:a65:5a81:: with SMTP id c1mr7448702pgt.245.1570843644180;
+        Fri, 11 Oct 2019 18:27:24 -0700 (PDT)
+Received: from smtp.gmail.com ([2620:15c:202:1:534:b7c0:a63c:460c])
+        by smtp.gmail.com with ESMTPSA id a16sm11510552pfa.53.2019.10.11.18.27.21
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 11 Oct 2019 11:28:20 -0700 (PDT)
-From:   Bjorn Andersson <bjorn.andersson@linaro.org>
-To:     Kalle Valo <kvalo@codeaurora.org>,
-        "David S. Miller" <davem@davemloft.net>
-Cc:     ath10k@lists.infradead.org, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Niklas Cassel <niklas.cassel@linaro.org>
-Subject: [PATCH v2] ath10k: Correct error handling of dma_map_single()
-Date:   Fri, 11 Oct 2019 11:28:17 -0700
-Message-Id: <20191011182817.194565-1-bjorn.andersson@linaro.org>
-X-Mailer: git-send-email 2.23.0
-In-Reply-To: <20191010162653.141303-1-bjorn.andersson@linaro.org>
-References: 
+        Fri, 11 Oct 2019 18:27:22 -0700 (PDT)
+From:   Brian Norris <briannorris@chromium.org>
+To:     <linux-wireless@vger.kernel.org>
+Cc:     Yan-Hsuan Chuang <yhchuang@realtek.com>,
+        Brian Norris <briannorris@chromium.org>
+Subject: [PATCH] rtw88: use a for loop in rtw_power_mode_change(), not goto
+Date:   Fri, 11 Oct 2019 18:27:20 -0700
+Message-Id: <20191012012720.227399-1-briannorris@chromium.org>
+X-Mailer: git-send-email 2.23.0.700.g56cf767bdb-goog
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
@@ -64,37 +57,95 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-The return value of dma_map_single() should be checked for errors using
-dma_mapping_error() and the skb has been dequeued so it needs to be
-freed.
+No change in logic.
 
-Fixes: 1807da49733e ("ath10k: wmi: add management tx by reference support over wmi")
-Reported-by: Niklas Cassel <niklas.cassel@linaro.org>
-Signed-off-by: Bjorn Andersson <bjorn.andersson@linaro.org>
+Signed-off-by: Brian Norris <briannorris@chromium.org>
 ---
+ drivers/net/wireless/realtek/rtw88/ps.c | 61 ++++++++++++-------------
+ 1 file changed, 29 insertions(+), 32 deletions(-)
 
-Changes since v1:
-- Free the dequeued skb
-
- drivers/net/wireless/ath/ath10k/mac.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/net/wireless/ath/ath10k/mac.c b/drivers/net/wireless/ath/ath10k/mac.c
-index 3d2c8fcba952..e8bdb2ba9b18 100644
---- a/drivers/net/wireless/ath/ath10k/mac.c
-+++ b/drivers/net/wireless/ath/ath10k/mac.c
-@@ -3904,8 +3904,10 @@ void ath10k_mgmt_over_wmi_tx_work(struct work_struct *work)
- 			     ar->running_fw->fw_file.fw_features)) {
- 			paddr = dma_map_single(ar->dev, skb->data,
- 					       skb->len, DMA_TO_DEVICE);
--			if (!paddr)
-+			if (dma_mapping_error(ar->dev, paddr)) {
-+				ieee80211_free_txskb(ar->hw, skb);
- 				continue;
-+			}
- 			ret = ath10k_wmi_mgmt_tx_send(ar, skb, paddr);
- 			if (ret) {
- 				ath10k_warn(ar, "failed to transmit management frame by ref via WMI: %d\n",
+diff --git a/drivers/net/wireless/realtek/rtw88/ps.c b/drivers/net/wireless/realtek/rtw88/ps.c
+index e81de3ddc8c5..820e0a3a141c 100644
+--- a/drivers/net/wireless/realtek/rtw88/ps.c
++++ b/drivers/net/wireless/realtek/rtw88/ps.c
+@@ -69,24 +69,26 @@ void rtw_power_mode_change(struct rtw_dev *rtwdev, bool enter)
+ 	u8 polling_cnt;
+ 	u8 retry_cnt = 0;
+ 
+-retry:
+-	request = rtw_read8(rtwdev, rtwdev->hci.rpwm_addr);
+-	confirm = rtw_read8(rtwdev, rtwdev->hci.cpwm_addr);
+-
+-	/* toggle to request power mode, others remain 0 */
+-	request ^= request | BIT_RPWM_TOGGLE;
+-	if (!enter) {
+-		request |= POWER_MODE_ACK;
+-	} else {
+-		request |= POWER_MODE_LCLK;
+-		if (rtw_fw_lps_deep_mode == LPS_DEEP_MODE_PG)
+-			request |= POWER_MODE_PG;
+-	}
++	for (retry_cnt = 0; retry_cnt < 3; retry_cnt++) {
++		request = rtw_read8(rtwdev, rtwdev->hci.rpwm_addr);
++		confirm = rtw_read8(rtwdev, rtwdev->hci.cpwm_addr);
++
++		/* toggle to request power mode, others remain 0 */
++		request ^= request | BIT_RPWM_TOGGLE;
++		if (!enter) {
++			request |= POWER_MODE_ACK;
++		} else {
++			request |= POWER_MODE_LCLK;
++			if (rtw_fw_lps_deep_mode == LPS_DEEP_MODE_PG)
++				request |= POWER_MODE_PG;
++		}
+ 
+-	rtw_write8(rtwdev, rtwdev->hci.rpwm_addr, request);
++		rtw_write8(rtwdev, rtwdev->hci.rpwm_addr, request);
++
++		if (enter)
++			return;
+ 
+-	/* check confirm power mode has left power save state */
+-	if (!enter) {
++		/* check confirm power mode has left power save state */
+ 		for (polling_cnt = 0; polling_cnt < 3; polling_cnt++) {
+ 			polling = rtw_read8(rtwdev, rtwdev->hci.cpwm_addr);
+ 			if ((polling ^ confirm) & BIT_RPWM_TOGGLE)
+@@ -94,23 +96,18 @@ void rtw_power_mode_change(struct rtw_dev *rtwdev, bool enter)
+ 			mdelay(20);
+ 		}
+ 
+-		/* in case of fw/hw missed the request, retry 3 times */
+-		if (retry_cnt < 3) {
+-			rtw_warn(rtwdev, "failed to leave deep PS, retry=%d\n",
+-				 retry_cnt);
+-			retry_cnt++;
+-			goto retry;
+-		}
+-
+-		/* Hit here means that driver failed to change hardware
+-		 * power mode to active state after retry 3 times.
+-		 * If the power state is locked at Deep sleep, most of
+-		 * the hardware circuits is not working, even register
+-		 * read/write. It should be treated as fatal error and
+-		 * requires an entire analysis about the firmware/hardware
+-		 */
+-		WARN(1, "Hardware power state locked\n");
++		/* in case of fw/hw missed the request, retry */
++		rtw_warn(rtwdev, "failed to leave deep PS, retry=%d\n",
++			 retry_cnt);
+ 	}
++
++	/* Hit here means that driver failed to change hardware power mode to
++	 * active state after retry 3 times. If the power state is locked at
++	 * Deep sleep, most of the hardware circuits is not working, even
++	 * register read/write. It should be treated as fatal error and
++	 * requires an entire analysis about the firmware/hardware
++	 */
++	WARN(1, "Hardware power state locked\n");
+ }
+ EXPORT_SYMBOL(rtw_power_mode_change);
+ 
 -- 
-2.23.0
+2.23.0.700.g56cf767bdb-goog
 
