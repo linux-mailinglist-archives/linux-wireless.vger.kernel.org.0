@@ -2,26 +2,26 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 05C59D50B9
+	by mail.lfdr.de (Postfix) with ESMTP id 1C6ADD50BA
 	for <lists+linux-wireless@lfdr.de>; Sat, 12 Oct 2019 17:48:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729428AbfJLPsw (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 12 Oct 2019 11:48:52 -0400
-Received: from paleale.coelho.fi ([176.9.41.70]:48678 "EHLO
+        id S1729424AbfJLPss (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 12 Oct 2019 11:48:48 -0400
+Received: from paleale.coelho.fi ([176.9.41.70]:48672 "EHLO
         farmhouse.coelho.fi" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1729427AbfJLPsv (ORCPT
+        with ESMTP id S1729272AbfJLPss (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 12 Oct 2019 11:48:51 -0400
+        Sat, 12 Oct 2019 11:48:48 -0400
 Received: from [91.156.6.193] (helo=redipa.ger.corp.intel.com)
         by farmhouse.coelho.fi with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
         (Exim 4.92)
         (envelope-from <luca@coelho.fi>)
-        id 1iJJdM-0005yf-3q; Sat, 12 Oct 2019 18:48:44 +0300
+        id 1iJJdM-0005yf-UR; Sat, 12 Oct 2019 18:48:45 +0300
 From:   Luca Coelho <luca@coelho.fi>
 To:     kvalo@codeaurora.org
 Cc:     linux-wireless@vger.kernel.org
-Date:   Sat, 12 Oct 2019 18:48:23 +0300
-Message-Id: <20191012184707.f28b5805bf3c.I5882726ee399b1d313493eb12aec9ec3d055cf77@changeid>
+Date:   Sat, 12 Oct 2019 18:48:24 +0300
+Message-Id: <20191012184707.32c15e3f61c9.I65d0d5e782864f53b4ed8a6f43e72c50a09d9fd9@changeid>
 X-Mailer: git-send-email 2.23.0
 In-Reply-To: <20191012154828.9249-1-luca@coelho.fi>
 References: <20191012154828.9249-1-luca@coelho.fi>
@@ -31,7 +31,7 @@ X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on farmhouse.coelho.fi
 X-Spam-Level: 
 X-Spam-Status: No, score=-2.9 required=5.0 tests=ALL_TRUSTED,BAYES_00,
         URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.2
-Subject: [PATCH 11/16] iwlwifi: dbg_ini: add periodic trigger new API support
+Subject: [PATCH 12/16] iwlwifi: dbg_ini: support domain changing via debugfs
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
@@ -39,180 +39,84 @@ X-Mailing-List: linux-wireless@vger.kernel.org
 
 From: Shahar S Matityahu <shahar.s.matityahu@intel.com>
 
-Enable periodic trigger.
-Allows the driver to trigger dump collection in constant intervals.
+Allow to change or read the debug domain bitmap at runtime via
+fw_dbg_domain debugfs.
 
 Signed-off-by: Shahar S Matityahu <shahar.s.matityahu@intel.com>
 Signed-off-by: Luca Coelho <luciano.coelho@intel.com>
 ---
- .../net/wireless/intel/iwlwifi/iwl-dbg-tlv.c  | 105 +++++++++++++++++-
- .../net/wireless/intel/iwlwifi/iwl-trans.h    |   2 +
- 2 files changed, 106 insertions(+), 1 deletion(-)
+ .../net/wireless/intel/iwlwifi/fw/debugfs.c   | 37 +++++++++++++++++++
+ .../net/wireless/intel/iwlwifi/iwl-trans.h    |  5 +++
+ 2 files changed, 42 insertions(+)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/iwl-dbg-tlv.c b/drivers/net/wireless/intel/iwlwifi/iwl-dbg-tlv.c
-index c657acf61fe9..f813b2333565 100644
---- a/drivers/net/wireless/intel/iwlwifi/iwl-dbg-tlv.c
-+++ b/drivers/net/wireless/intel/iwlwifi/iwl-dbg-tlv.c
-@@ -95,6 +95,20 @@ struct iwl_dbg_tlv_ver_data {
- 	int max_ver;
- };
+diff --git a/drivers/net/wireless/intel/iwlwifi/fw/debugfs.c b/drivers/net/wireless/intel/iwlwifi/fw/debugfs.c
+index c1aa4360736b..7f1d299e8b0a 100644
+--- a/drivers/net/wireless/intel/iwlwifi/fw/debugfs.c
++++ b/drivers/net/wireless/intel/iwlwifi/fw/debugfs.c
+@@ -320,10 +320,47 @@ static ssize_t iwl_dbgfs_send_hcmd_write(struct iwl_fw_runtime *fwrt, char *buf,
  
-+/**
-+ * struct iwl_dbg_tlv_timer_node - timer node struct
-+ * @list: list of &struct iwl_dbg_tlv_timer_node
-+ * @timer: timer
-+ * @fwrt: &struct iwl_fw_runtime
-+ * @tlv: TLV attach to the timer node
-+ */
-+struct iwl_dbg_tlv_timer_node {
-+	struct list_head list;
-+	struct timer_list timer;
-+	struct iwl_fw_runtime *fwrt;
-+	struct iwl_ucode_tlv *tlv;
-+};
-+
- static const struct iwl_dbg_tlv_ver_data
- dbg_ver_table[IWL_DBG_TLV_TYPE_NUM] = {
- 	[IWL_DBG_TLV_TYPE_DEBUG_INFO]	= {.min_ver = 1, .max_ver = 1,},
-@@ -310,7 +324,14 @@ void iwl_dbg_tlv_alloc(struct iwl_trans *trans, struct iwl_ucode_tlv *tlv,
+ FWRT_DEBUGFS_WRITE_FILE_OPS(send_hcmd, 512);
  
- void iwl_dbg_tlv_del_timers(struct iwl_trans *trans)
- {
--	/* will be used later */
-+	struct list_head *timer_list = &trans->dbg.periodic_trig_list;
-+	struct iwl_dbg_tlv_timer_node *node, *tmp;
-+
-+	list_for_each_entry_safe(node, tmp, timer_list, list) {
-+		del_timer(&node->timer);
-+		list_del(&node->list);
-+		kfree(node);
-+	}
- }
- IWL_EXPORT_SYMBOL(iwl_dbg_tlv_del_timers);
- 
-@@ -438,6 +459,7 @@ void iwl_dbg_tlv_init(struct iwl_trans *trans)
- 	int i;
- 
- 	INIT_LIST_HEAD(&trans->dbg.debug_info_tlv_list);
-+	INIT_LIST_HEAD(&trans->dbg.periodic_trig_list);
- 
- 	for (i = 0; i < ARRAY_SIZE(trans->dbg.time_point); i++) {
- 		struct iwl_dbg_tlv_time_point_data *tp =
-@@ -654,6 +676,83 @@ static void iwl_dbg_tlv_send_hcmds(struct iwl_fw_runtime *fwrt,
- 	}
- }
- 
-+static void iwl_dbg_tlv_periodic_trig_handler(struct timer_list *t)
++static ssize_t iwl_dbgfs_fw_dbg_domain_write(struct iwl_fw_runtime *fwrt,
++					     char *buf, size_t count)
 +{
-+	struct iwl_dbg_tlv_timer_node *timer_node =
-+		from_timer(timer_node, t, timer);
-+	struct iwl_fwrt_dump_data dump_data = {
-+		.trig = (void *)timer_node->tlv->data,
-+	};
++	u32 new_domain;
++	long val;
 +	int ret;
 +
-+	ret = iwl_fw_dbg_ini_collect(timer_node->fwrt, &dump_data);
-+	if (!ret || ret == -EBUSY) {
-+		u32 occur = le32_to_cpu(dump_data.trig->occurrences);
-+		u32 collect_interval = le32_to_cpu(dump_data.trig->data[0]);
++	if (!iwl_trans_fw_running(fwrt->trans))
++		return -EIO;
 +
-+		if (!occur)
-+			return;
++	ret = kstrtol(buf, 0, &val);
++	if (ret)
++		return ret;
 +
-+		mod_timer(t, jiffies + msecs_to_jiffies(collect_interval));
++	new_domain = (u32)val;
++	if (new_domain != fwrt->trans->dbg.domains_bitmap) {
++		ret = iwl_dbg_tlv_gen_active_trigs(fwrt, new_domain);
++		if (ret)
++			return ret;
++
++		iwl_dbg_tlv_time_point(fwrt, IWL_FW_INI_TIME_POINT_PERIODIC,
++				       NULL);
 +	}
++
++	return count;
 +}
 +
-+static void iwl_dbg_tlv_set_periodic_trigs(struct iwl_fw_runtime *fwrt)
++static ssize_t iwl_dbgfs_fw_dbg_domain_read(struct iwl_fw_runtime *fwrt,
++					    size_t size, char *buf)
 +{
-+	struct iwl_dbg_tlv_node *node;
-+	struct list_head *trig_list =
-+		&fwrt->trans->dbg.time_point[IWL_FW_INI_TIME_POINT_PERIODIC].active_trig_list;
-+
-+	list_for_each_entry(node, trig_list, list) {
-+		struct iwl_fw_ini_trigger_tlv *trig = (void *)node->tlv.data;
-+		struct iwl_dbg_tlv_timer_node *timer_node;
-+		u32 occur = le32_to_cpu(trig->occurrences), collect_interval;
-+		u32 min_interval = 100;
-+
-+		if (!occur)
-+			continue;
-+
-+		/* make sure there is at least one dword of data for the
-+		 * interval value
-+		 */
-+		if (le32_to_cpu(node->tlv.length) <
-+		    sizeof(*trig) + sizeof(__le32)) {
-+			IWL_ERR(fwrt,
-+				"WRT: Invalid periodic trigger data was not given\n");
-+			continue;
-+		}
-+
-+		if (le32_to_cpu(trig->data[0]) < min_interval) {
-+			IWL_WARN(fwrt,
-+				 "WRT: Override min interval from %u to %u msec\n",
-+				 le32_to_cpu(trig->data[0]), min_interval);
-+			trig->data[0] = cpu_to_le32(min_interval);
-+		}
-+
-+		collect_interval = le32_to_cpu(trig->data[0]);
-+
-+		timer_node = kzalloc(sizeof(*timer_node), GFP_KERNEL);
-+		if (!timer_node) {
-+			IWL_ERR(fwrt,
-+				"WRT: Failed to allocate periodic trigger\n");
-+			continue;
-+		}
-+
-+		timer_node->fwrt = fwrt;
-+		timer_node->tlv = &node->tlv;
-+		timer_setup(&timer_node->timer,
-+			    iwl_dbg_tlv_periodic_trig_handler, 0);
-+
-+		list_add_tail(&timer_node->list,
-+			      &fwrt->trans->dbg.periodic_trig_list);
-+
-+		IWL_DEBUG_FW(fwrt, "WRT: Enabling periodic trigger\n");
-+
-+		mod_timer(&timer_node->timer,
-+			  jiffies + msecs_to_jiffies(collect_interval));
-+	}
++	return scnprintf(buf, size, "0x%08x\n",
++			 fwrt->trans->dbg.domains_bitmap);
 +}
 +
- static bool is_trig_data_contained(struct iwl_ucode_tlv *new,
- 				   struct iwl_ucode_tlv *old)
++FWRT_DEBUGFS_READ_WRITE_FILE_OPS(fw_dbg_domain, 20);
++
+ void iwl_fwrt_dbgfs_register(struct iwl_fw_runtime *fwrt,
+ 			    struct dentry *dbgfs_dir)
  {
-@@ -936,6 +1035,10 @@ void iwl_dbg_tlv_time_point(struct iwl_fw_runtime *fwrt,
- 		iwl_dbg_tlv_send_hcmds(fwrt, hcmd_list);
- 		iwl_dbg_tlv_tp_trigger(fwrt, trig_list, tp_data, NULL);
- 		break;
-+	case IWL_FW_INI_TIME_POINT_PERIODIC:
-+		iwl_dbg_tlv_set_periodic_trigs(fwrt);
-+		iwl_dbg_tlv_send_hcmds(fwrt, hcmd_list);
-+		break;
- 	default:
- 		iwl_dbg_tlv_send_hcmds(fwrt, hcmd_list);
- 		iwl_dbg_tlv_tp_trigger(fwrt, trig_list, tp_data, NULL);
+ 	INIT_DELAYED_WORK(&fwrt->timestamp.wk, iwl_fw_timestamp_marker_wk);
+ 	FWRT_DEBUGFS_ADD_FILE(timestamp_marker, dbgfs_dir, 0200);
+ 	FWRT_DEBUGFS_ADD_FILE(send_hcmd, dbgfs_dir, 0200);
++	FWRT_DEBUGFS_ADD_FILE(fw_dbg_domain, dbgfs_dir, 0600);
+ }
 diff --git a/drivers/net/wireless/intel/iwlwifi/iwl-trans.h b/drivers/net/wireless/intel/iwlwifi/iwl-trans.h
-index 59debf6e1b9d..32e522991068 100644
+index 32e522991068..8cadad7364ac 100644
 --- a/drivers/net/wireless/intel/iwlwifi/iwl-trans.h
 +++ b/drivers/net/wireless/intel/iwlwifi/iwl-trans.h
-@@ -724,6 +724,7 @@ struct iwl_self_init_dram {
-  * @active_regions: active regions
-  * @debug_info_tlv_list: list of debug info TLVs
-  * @time_point: array of debug time points
-+ * @periodic_trig_list: periodic triggers list
-  * @domains_bitmap: bitmap of active domains other than
-  *	&IWL_FW_INI_DOMAIN_ALWAYS_ON
-  */
-@@ -754,6 +755,7 @@ struct iwl_trans_debug {
- 	struct list_head debug_info_tlv_list;
- 	struct iwl_dbg_tlv_time_point_data
- 		time_point[IWL_FW_INI_TIME_POINT_NUM];
-+	struct list_head periodic_trig_list;
+@@ -1249,6 +1249,11 @@ static inline void iwl_trans_fw_error(struct iwl_trans *trans)
+ 		iwl_op_mode_nic_error(trans->op_mode);
+ }
  
- 	u32 domains_bitmap;
- };
++static inline bool iwl_trans_fw_running(struct iwl_trans *trans)
++{
++	return trans->state == IWL_TRANS_FW_ALIVE;
++}
++
+ static inline void iwl_trans_sync_nmi(struct iwl_trans *trans)
+ {
+ 	if (trans->ops->sync_nmi)
 -- 
 2.23.0
 
