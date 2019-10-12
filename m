@@ -2,86 +2,76 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 90999D4BE7
-	for <lists+linux-wireless@lfdr.de>; Sat, 12 Oct 2019 03:44:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 79CD4D4F19
+	for <lists+linux-wireless@lfdr.de>; Sat, 12 Oct 2019 12:44:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727068AbfJLBod (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 11 Oct 2019 21:44:33 -0400
-Received: from mail-pf1-f196.google.com ([209.85.210.196]:34252 "EHLO
-        mail-pf1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726903AbfJLBod (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 11 Oct 2019 21:44:33 -0400
-Received: by mail-pf1-f196.google.com with SMTP id b128so7102853pfa.1
-        for <linux-wireless@vger.kernel.org>; Fri, 11 Oct 2019 18:44:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=lfZWhCsdhpTvu1J3RYYyWkeimUnBV2W1S5JndhbGX0E=;
-        b=OIMF1XQzW6MiZtgScCiYJZn3kGU8cBrahyJ8LCluNQ1LhdqBwMpPNjHGMjNlVnvWwg
-         cx/6aYKtjaNkdgjrdd/q9ms7Fs8o9IoGxc812w61DzWTJk+tYxCT6PG+FuVkhNm6d/N7
-         bj0rHXYPPsMnZYZpzxx+SO9+zt9O8nDGW2YO8=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=lfZWhCsdhpTvu1J3RYYyWkeimUnBV2W1S5JndhbGX0E=;
-        b=iNJgeFM34D1G3E0IHY3vZ96rZqSHIhYx4Ur3hyQwy4aLYKqdjl8RiIgP+K79ZwCfRJ
-         UtCY0uRUE4fURsr8OwAPEtpBF6T5qrXzMGSDC2GJoyFwPTy/RNEFvl2IG9/GMV4zZZbB
-         01KNtmX5FmSA1kDEvmh3nd9c5LWQvbkQ7VUiWFzcVf3X/QNC2Bb4LqIXgBNwLiLAHb82
-         WB9AZbfXrfeQYLPAG5O66SRu29nO8ELSvkVJIwRnQyRhsuVpjRijLJNAimCJIHLIyX8j
-         z8ZZcY/8VF7HafL59Z05DpX62a3w3AgVhQMW7XXaB6765yWJqhNzDmHV7XDxM+FrwhLu
-         U2lw==
-X-Gm-Message-State: APjAAAXrnyBm/3ZeBnAYyP950sP/a3dAOe/SHr07efBywgPRjYDZEa7e
-        sMp2gswgm7npIpBRHm34p9mf7A4BpO4=
-X-Google-Smtp-Source: APXvYqz9lIbaFqHlbM5UNDmxOJNHY26QSGLSmEEsnoOvkmCeFzH2rgz3KFZBZOB4QJwwQ4AGuD9I2w==
-X-Received: by 2002:a17:90a:b391:: with SMTP id e17mr21846450pjr.132.1570844670636;
-        Fri, 11 Oct 2019 18:44:30 -0700 (PDT)
-Received: from smtp.gmail.com ([2620:15c:202:1:534:b7c0:a63c:460c])
-        by smtp.gmail.com with ESMTPSA id q132sm10403835pfq.16.2019.10.11.18.44.29
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 11 Oct 2019 18:44:29 -0700 (PDT)
-From:   Brian Norris <briannorris@chromium.org>
-To:     <linux-wireless@vger.kernel.org>
-Cc:     Yan-Hsuan Chuang <yhchuang@realtek.com>,
-        Brian Norris <briannorris@chromium.org>
-Subject: [PATCH] rtw88: include interrupt.h for tasklet_struct
-Date:   Fri, 11 Oct 2019 18:44:21 -0700
-Message-Id: <20191012014421.21592-1-briannorris@chromium.org>
-X-Mailer: git-send-email 2.23.0.700.g56cf767bdb-goog
+        id S1729155AbfJLKol (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 12 Oct 2019 06:44:41 -0400
+Received: from szxga04-in.huawei.com ([45.249.212.190]:3703 "EHLO huawei.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1727507AbfJLKml (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Sat, 12 Oct 2019 06:42:41 -0400
+Received: from DGGEMS414-HUB.china.huawei.com (unknown [172.30.72.60])
+        by Forcepoint Email with ESMTP id 65E7B40191098360B728;
+        Sat, 12 Oct 2019 18:42:38 +0800 (CST)
+Received: from localhost (10.133.213.239) by DGGEMS414-HUB.china.huawei.com
+ (10.3.19.214) with Microsoft SMTP Server id 14.3.439.0; Sat, 12 Oct 2019
+ 18:42:26 +0800
+From:   YueHaibing <yuehaibing@huawei.com>
+To:     <johannes.berg@intel.com>, <emmanuel.grumbach@intel.com>,
+        <luciano.coelho@intel.com>, <linuxwifi@intel.com>,
+        <kvalo@codeaurora.org>, <davem@davemloft.net>,
+        <sara.sharon@intel.com>, <shahar.s.matityahu@intel.com>,
+        <ilan.peer@intel.com>, <liad.kaufman@intel.com>
+CC:     <linux-wireless@vger.kernel.org>, <netdev@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, YueHaibing <yuehaibing@huawei.com>
+Subject: [PATCH] iwlwifi: mvm: Move static keyword to the front of declarations
+Date:   Sat, 12 Oct 2019 18:41:14 +0800
+Message-ID: <20191012104114.21356-1-yuehaibing@huawei.com>
+X-Mailer: git-send-email 2.10.2.windows.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Originating-IP: [10.133.213.239]
+X-CFilter-Loop: Reflected
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Depending on implicit header includes, we might see this compilation
-error:
+gcc warn about this:
 
-.../main.h:1391:24: error: field has incomplete type 'struct tasklet_struct'
-        struct tasklet_struct tx_tasklet;
-                              ^
+drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c:342:1:
+ warning: static is not at beginning of declaration [-Wold-style-declaration]
+drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c:349:1:
+ warning: static is not at beginning of declaration [-Wold-style-declaration]
 
-Fixes: 3745d3e550d1 ("rtw88: add driver TX queue support")
-Signed-off-by: Brian Norris <briannorris@chromium.org>
+Signed-off-by: YueHaibing <yuehaibing@huawei.com>
 ---
- drivers/net/wireless/realtek/rtw88/main.h | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/wireless/realtek/rtw88/main.h b/drivers/net/wireless/realtek/rtw88/main.h
-index f3eab96dba86..4759d6a0ca6e 100644
---- a/drivers/net/wireless/realtek/rtw88/main.h
-+++ b/drivers/net/wireless/realtek/rtw88/main.h
-@@ -11,6 +11,7 @@
- #include <linux/average.h>
- #include <linux/bitops.h>
- #include <linux/bitfield.h>
-+#include <linux/interrupt.h>
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c b/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
+index d31f96c..0358c67 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
+@@ -339,14 +339,14 @@ int iwl_mvm_init_fw_regd(struct iwl_mvm *mvm)
+ 	return ret;
+ }
  
- #include "util.h"
+-const static u8 he_if_types_ext_capa_sta[] = {
++static const u8 he_if_types_ext_capa_sta[] = {
+ 	 [0] = WLAN_EXT_CAPA1_EXT_CHANNEL_SWITCHING,
+ 	 [2] = WLAN_EXT_CAPA3_MULTI_BSSID_SUPPORT,
+ 	 [7] = WLAN_EXT_CAPA8_OPMODE_NOTIF,
+ 	 [9] = WLAN_EXT_CAPA10_TWT_REQUESTER_SUPPORT,
+ };
  
+-const static struct wiphy_iftype_ext_capab he_iftypes_ext_capa[] = {
++static const struct wiphy_iftype_ext_capab he_iftypes_ext_capa[] = {
+ 	{
+ 		.iftype = NL80211_IFTYPE_STATION,
+ 		.extended_capabilities = he_if_types_ext_capa_sta,
 -- 
-2.23.0.700.g56cf767bdb-goog
+2.7.4
+
 
