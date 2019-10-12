@@ -2,142 +2,220 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 9D9BCD510A
-	for <lists+linux-wireless@lfdr.de>; Sat, 12 Oct 2019 18:30:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 92FF4D5128
+	for <lists+linux-wireless@lfdr.de>; Sat, 12 Oct 2019 18:51:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729458AbfJLQax (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 12 Oct 2019 12:30:53 -0400
-Received: from paleale.coelho.fi ([176.9.41.70]:48834 "EHLO
-        farmhouse.coelho.fi" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1727939AbfJLQaw (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 12 Oct 2019 12:30:52 -0400
-Received: from [91.156.6.193] (helo=redipa.ger.corp.intel.com)
-        by farmhouse.coelho.fi with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-        (Exim 4.92)
-        (envelope-from <luca@coelho.fi>)
-        id 1iJKGy-00062r-Hu; Sat, 12 Oct 2019 19:29:41 +0300
-From:   Luca Coelho <luca@coelho.fi>
-To:     kvalo@codeaurora.org
-Cc:     linux-wireless@vger.kernel.org
-Date:   Sat, 12 Oct 2019 19:29:24 +0300
-Message-Id: <20191012192536.4b61ed866f94.I38188bc18da1615342d4e12a4a485b7c4e18b268@changeid>
-X-Mailer: git-send-email 2.23.0
-In-Reply-To: <20191012162924.19848-1-luca@coelho.fi>
-References: <20191012162924.19848-1-luca@coelho.fi>
+        id S1729396AbfJLQvS (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 12 Oct 2019 12:51:18 -0400
+Received: from mail.kernel.org ([198.145.29.99]:48560 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727115AbfJLQug (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Sat, 12 Oct 2019 12:50:36 -0400
+Received: from lore-desk-wlan.lan (unknown [151.66.37.226])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 7737520679;
+        Sat, 12 Oct 2019 16:50:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1570899035;
+        bh=qSEg9PvZkbVxQM23WcD3L4Jru73ZuIoTRpmb7PBGQxQ=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=EHZFF54gumdqsWmUGFRJmszZTjIyCFrRlaBz+iSS8rE9i13x1qazGZ9vd4+UjHBy+
+         6FdI6HxhQ8g89WZ+j7ScrPRymDIdb8P5WOav5J4NCx/OIglmp1YvCY8Tw7gjVSCBVs
+         bhqM+bkilAPq0SRMq6hiiTZ3KAc7Cn/9w5DzHHDk=
+Date:   Sat, 12 Oct 2019 18:50:28 +0200
+From:   Lorenzo Bianconi <lorenzo@kernel.org>
+To:     Oleksandr Natalenko <oleksandr@natalenko.name>
+Cc:     linux-mediatek@lists.infradead.org, Felix Fietkau <nbd@nbd.name>,
+        Lorenzo Bianconi <lorenzo.bianconi83@gmail.com>,
+        Stanislaw Gruszka <sgruszka@redhat.com>,
+        Ryder Lee <ryder.lee@mediatek.com>,
+        Roy Luo <royluo@google.com>, Kalle Valo <kvalo@codeaurora.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+Subject: Re: mt76x2e hardware restart
+Message-ID: <20191012165028.GA8739@lore-desk-wlan.lan>
+References: <deaafa7a3e9ea2111ebb5106430849c6@natalenko.name>
+ <c6d621759c190f7810d898765115f3b4@natalenko.name>
+ <9d581001e2e6cece418329842b2b0959@natalenko.name>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on farmhouse.coelho.fi
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.9 required=5.0 tests=ALL_TRUSTED,BAYES_00,
-        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.2
-Subject: [PATCH 13/13] iwlwifi: rx: use new api to get band from rx mpdu
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="ReaqsoxgOBHFXBhH"
+Content-Disposition: inline
+In-Reply-To: <9d581001e2e6cece418329842b2b0959@natalenko.name>
+User-Agent: Mutt/1.12.1 (2019-06-15)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Tova Mussai <tova.mussai@intel.com>
 
-The FW introduce new API to get the band from the rx mpdu,
-use this new API.
+--ReaqsoxgOBHFXBhH
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Signed-off-by: Tova Mussai <tova.mussai@intel.com>
-Signed-off-by: Luca Coelho <luciano.coelho@intel.com>
+> On 19.09.2019 23:22, Oleksandr Natalenko wrote:
+> > It checks for TX hang here:
+> >=20
+> > =3D=3D=3D mt76x02_mmio.c
+> > 557 void mt76x02_wdt_work(struct work_struct *work)
+> > 558 {
+> > ...
+> > 562     mt76x02_check_tx_hang(dev);
+> > =3D=3D=3D
+>=20
+> I've commented out the watchdog here ^^, and the card is not resetted any
+> more, but similarly it stops working shortly after the first client
+> connects. So, indeed, it must be some hang in the HW, and wdt seems to do=
+ a
+> correct job.
+>=20
+> Is it even debuggable/fixable from the driver?
+
+Hi Oleksandr,
+
+sorry for the delay. Felix and me worked on this issue today. Could you ple=
+ase
+try if the following patch fixes your issue?
+
+Regards,
+Lorenzo
+
+=46rom cf3436c42a297967235a9c9778620c585100529e Mon Sep 17 00:00:00 2001
+Message-Id: <cf3436c42a297967235a9c9778620c585100529e.1570897574.git.lorenz=
+o@kernel.org>
+=46rom: Lorenzo Bianconi <lorenzo@kernel.org>
+Date: Sat, 12 Oct 2019 17:32:57 +0200
+Subject: [PATCH] mt76: mt76x2: disable pcie_aspm by default
+
+On same device (e.g. U7612E-H1) PCIE_ASPM causes continues mcu hangs and
+instability. This patch disable PCIE_ASPM by default. This patch has
+been successfully tested on U7612E-H1 mini-pice card
+
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
+Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
 ---
- .../net/wireless/intel/iwlwifi/fw/api/rx.h    |  5 ++++
- drivers/net/wireless/intel/iwlwifi/fw/file.h  |  2 ++
- drivers/net/wireless/intel/iwlwifi/mvm/mvm.h  |  6 +++++
- drivers/net/wireless/intel/iwlwifi/mvm/rxmq.c | 23 +++++++++++++++++--
- 4 files changed, 34 insertions(+), 2 deletions(-)
+ drivers/net/wireless/mediatek/mt76/mmio.c     | 48 +++++++++++++++++++
+ drivers/net/wireless/mediatek/mt76/mt76.h     |  1 +
+ .../net/wireless/mediatek/mt76/mt76x2/pci.c   |  2 +
+ 3 files changed, 51 insertions(+)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/fw/api/rx.h b/drivers/net/wireless/intel/iwlwifi/fw/api/rx.h
-index a93449db7bb2..88bc7733065f 100644
---- a/drivers/net/wireless/intel/iwlwifi/fw/api/rx.h
-+++ b/drivers/net/wireless/intel/iwlwifi/fw/api/rx.h
-@@ -260,6 +260,11 @@ enum iwl_rx_mpdu_amsdu_info {
- 	IWL_RX_MPDU_AMSDU_LAST_SUBFRAME		= 0x80,
- };
- 
-+#define RX_MPDU_BAND_POS 6
-+#define RX_MPDU_BAND_MASK 0xC0
-+#define BAND_IN_RX_STATUS(_val) \
-+	(((_val) & RX_MPDU_BAND_MASK) >> RX_MPDU_BAND_POS)
+diff --git a/drivers/net/wireless/mediatek/mt76/mmio.c b/drivers/net/wirele=
+ss/mediatek/mt76/mmio.c
+index 1c974df1fe25..8e1dbc1903f3 100644
+--- a/drivers/net/wireless/mediatek/mt76/mmio.c
++++ b/drivers/net/wireless/mediatek/mt76/mmio.c
+@@ -3,6 +3,9 @@
+  * Copyright (C) 2016 Felix Fietkau <nbd@nbd.name>
+  */
+=20
++#include <linux/pci.h>
++#include <linux/pci-aspm.h>
 +
- enum iwl_rx_l3_proto_values {
- 	IWL_RX_L3_TYPE_NONE,
- 	IWL_RX_L3_TYPE_IPV4,
-diff --git a/drivers/net/wireless/intel/iwlwifi/fw/file.h b/drivers/net/wireless/intel/iwlwifi/fw/file.h
-index 07628566cb4a..6de20e76b63c 100644
---- a/drivers/net/wireless/intel/iwlwifi/fw/file.h
-+++ b/drivers/net/wireless/intel/iwlwifi/fw/file.h
-@@ -322,6 +322,8 @@ enum iwl_ucode_tlv_api {
- 	IWL_UCODE_TLV_API_SAR_TABLE_VER         = (__force iwl_ucode_tlv_api_t)55,
- 	IWL_UCODE_TLV_API_ADWELL_HB_DEF_N_AP	= (__force iwl_ucode_tlv_api_t)57,
- 	IWL_UCODE_TLV_API_SCAN_EXT_CHAN_VER	= (__force iwl_ucode_tlv_api_t)58,
-+	IWL_UCODE_TLV_API_BAND_IN_RX_DATA	= (__force iwl_ucode_tlv_api_t)59,
-+
- 
- 	NUM_IWL_UCODE_TLV_API
- #ifdef __CHECKER__
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mvm.h b/drivers/net/wireless/intel/iwlwifi/mvm/mvm.h
-index d9c437682a5a..a25712cce4ab 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/mvm.h
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/mvm.h
-@@ -1409,6 +1409,12 @@ static inline bool iwl_mvm_is_scan_ext_chan_supported(struct iwl_mvm *mvm)
- 			  IWL_UCODE_TLV_API_SCAN_EXT_CHAN_VER);
+ #include "mt76.h"
+ #include "trace.h"
+=20
+@@ -78,6 +81,51 @@ void mt76_set_irq_mask(struct mt76_dev *dev, u32 addr,
  }
- 
-+static inline bool iwl_mvm_is_band_in_rx_supported(struct iwl_mvm *mvm)
+ EXPORT_SYMBOL_GPL(mt76_set_irq_mask);
+=20
++void mt76_mmio_disable_aspm(struct pci_dev *pdev)
 +{
-+	return fw_has_api(&mvm->fw->ucode_capa,
-+			   IWL_UCODE_TLV_API_BAND_IN_RX_DATA);
-+}
++	struct pci_dev *parent =3D pdev->bus->self;
++	u16 aspm_conf, parent_aspm_conf =3D 0;
 +
- static inline bool iwl_mvm_has_new_rx_stats_api(struct iwl_mvm *mvm)
- {
- 	return fw_has_api(&mvm->fw->ucode_capa,
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/rxmq.c b/drivers/net/wireless/intel/iwlwifi/mvm/rxmq.c
-index 77b03b757193..b488cd702058 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/rxmq.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/rxmq.c
-@@ -1542,6 +1542,19 @@ static void iwl_mvm_decode_lsig(struct sk_buff *skb,
- 	}
- }
- 
-+static inline u8 iwl_mvm_nl80211_band_from_rx_msdu(u8 phy_band)
-+{
-+	switch (phy_band) {
-+	case PHY_BAND_24:
-+		return NL80211_BAND_2GHZ;
-+	case PHY_BAND_5:
-+		return NL80211_BAND_5GHZ;
-+	default:
-+		WARN_ONCE(1, "Unsupported phy band (%u)\n", phy_band);
-+		return NL80211_BAND_5GHZ;
++	pcie_capability_read_word(pdev, PCI_EXP_LNKCTL, &aspm_conf);
++	aspm_conf &=3D PCI_EXP_LNKCTL_ASPMC;
++	if (parent) {
++		pcie_capability_read_word(parent, PCI_EXP_LNKCTL,
++					  &parent_aspm_conf);
++		parent_aspm_conf &=3D PCI_EXP_LNKCTL_ASPMC;
 +	}
-+}
 +
- void iwl_mvm_rx_mpdu_mq(struct iwl_mvm *mvm, struct napi_struct *napi,
- 			struct iwl_rx_cmd_buffer *rxb, int queue)
- {
-@@ -1678,8 +1691,14 @@ void iwl_mvm_rx_mpdu_mq(struct iwl_mvm *mvm, struct napi_struct *napi,
- 	}
- 
- 	rx_status->device_timestamp = gp2_on_air_rise;
--	rx_status->band = channel > 14 ? NL80211_BAND_5GHZ :
--		NL80211_BAND_2GHZ;
-+	if (iwl_mvm_is_band_in_rx_supported(mvm)) {
-+		u8 band = BAND_IN_RX_STATUS(desc->mac_phy_idx);
-+
-+		rx_status->band = iwl_mvm_nl80211_band_from_rx_msdu(band);
-+	} else {
-+		rx_status->band = channel > 14 ? NL80211_BAND_5GHZ :
-+			NL80211_BAND_2GHZ;
++	if (!aspm_conf && (!parent || !parent_aspm_conf)) {
++		/* aspm already disabled */
++		return;
 +	}
- 	rx_status->freq = ieee80211_channel_to_frequency(channel,
- 							 rx_status->band);
- 	iwl_mvm_get_signal_strength(mvm, rx_status, rate_n_flags, energy_a,
--- 
-2.23.0
++
++	dev_info(&pdev->dev, "disabling ASPM %s %s\n",
++		 (aspm_conf & PCI_EXP_LNKCTL_ASPM_L0S) ? "L0s" : "",
++		 (aspm_conf & PCI_EXP_LNKCTL_ASPM_L1) ? "L1" : "");
++
++#ifdef CONFIG_PCIEASPM
++	pci_disable_link_state(pdev, aspm_conf);
++
++	/* Double-check ASPM control.  If not disabled by the above, the
++	 * BIOS is preventing that from happening (or CONFIG_PCIEASPM is
++	 * not enabled); override by writing PCI config space directly.
++	 */
++	pcie_capability_read_word(pdev, PCI_EXP_LNKCTL, &aspm_conf);
++	if (!(aspm_conf & PCI_EXP_LNKCTL_ASPMC))
++		return;
++#endif /* CONFIG_PCIEASPM */
++
++	/* Both device and parent should have the same ASPM setting.
++	 * Disable ASPM in downstream component first and then upstream.
++	 */
++	pcie_capability_clear_word(pdev, PCI_EXP_LNKCTL, aspm_conf);
++
++	if (parent)
++		pcie_capability_clear_word(parent, PCI_EXP_LNKCTL,
++					   aspm_conf);
++}
++EXPORT_SYMBOL_GPL(mt76_mmio_disable_aspm);
++
+ void mt76_mmio_init(struct mt76_dev *dev, void __iomem *regs)
+ {
+ 	static const struct mt76_bus_ops mt76_mmio_ops =3D {
+diff --git a/drivers/net/wireless/mediatek/mt76/mt76.h b/drivers/net/wirele=
+ss/mediatek/mt76/mt76.h
+index 8bcc7f21e83c..e95a5893f93b 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt76.h
++++ b/drivers/net/wireless/mediatek/mt76/mt76.h
+@@ -596,6 +596,7 @@ bool __mt76_poll_msec(struct mt76_dev *dev, u32 offset,=
+ u32 mask, u32 val,
+ #define mt76_poll_msec(dev, ...) __mt76_poll_msec(&((dev)->mt76), __VA_ARG=
+S__)
+=20
+ void mt76_mmio_init(struct mt76_dev *dev, void __iomem *regs);
++void mt76_mmio_disable_aspm(struct pci_dev *pdev);
+=20
+ static inline u16 mt76_chip(struct mt76_dev *dev)
+ {
+diff --git a/drivers/net/wireless/mediatek/mt76/mt76x2/pci.c b/drivers/net/=
+wireless/mediatek/mt76/mt76x2/pci.c
+index 6253ec5fbd72..06fb80163c8e 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt76x2/pci.c
++++ b/drivers/net/wireless/mediatek/mt76/mt76x2/pci.c
+@@ -83,6 +83,8 @@ mt76pci_probe(struct pci_dev *pdev, const struct pci_devi=
+ce_id *id)
+ 	/* RG_SSUSB_CDR_BR_PE1D =3D 0x3 */
+ 	mt76_rmw_field(dev, 0x15c58, 0x3 << 6, 0x3);
+=20
++	mt76_mmio_disable_aspm(pdev);
++
+ 	return 0;
+=20
+ error:
+--=20
+2.21.0
 
+>=20
+> --=20
+>   Oleksandr Natalenko (post-factum)
+
+--ReaqsoxgOBHFXBhH
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYIAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCXaIEUQAKCRA6cBh0uS2t
+rMgMAP4gYBsBVaqrrJGeL59RvPIDCtDh9B4Cal6r0cZiF8/eawD9E3a71sAvXQRq
+77lBM018hpb2RI8zaAU2j9ddT2e6HwU=
+=jGHZ
+-----END PGP SIGNATURE-----
+
+--ReaqsoxgOBHFXBhH--
