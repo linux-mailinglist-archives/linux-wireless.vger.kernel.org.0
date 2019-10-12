@@ -2,26 +2,26 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2ABF3D5109
+	by mail.lfdr.de (Postfix) with ESMTP id 9D9BCD510A
 	for <lists+linux-wireless@lfdr.de>; Sat, 12 Oct 2019 18:30:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729433AbfJLQau (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 12 Oct 2019 12:30:50 -0400
-Received: from paleale.coelho.fi ([176.9.41.70]:48828 "EHLO
+        id S1729458AbfJLQax (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 12 Oct 2019 12:30:53 -0400
+Received: from paleale.coelho.fi ([176.9.41.70]:48834 "EHLO
         farmhouse.coelho.fi" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1727939AbfJLQau (ORCPT
+        with ESMTP id S1727939AbfJLQaw (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 12 Oct 2019 12:30:50 -0400
+        Sat, 12 Oct 2019 12:30:52 -0400
 Received: from [91.156.6.193] (helo=redipa.ger.corp.intel.com)
         by farmhouse.coelho.fi with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
         (Exim 4.92)
         (envelope-from <luca@coelho.fi>)
-        id 1iJKGx-00062r-Rc; Sat, 12 Oct 2019 19:29:40 +0300
+        id 1iJKGy-00062r-Hu; Sat, 12 Oct 2019 19:29:41 +0300
 From:   Luca Coelho <luca@coelho.fi>
 To:     kvalo@codeaurora.org
 Cc:     linux-wireless@vger.kernel.org
-Date:   Sat, 12 Oct 2019 19:29:23 +0300
-Message-Id: <20191012192536.048a5113ea25.I5c7497c483448a99cf22b9b0b8088970d45a1399@changeid>
+Date:   Sat, 12 Oct 2019 19:29:24 +0300
+Message-Id: <20191012192536.4b61ed866f94.I38188bc18da1615342d4e12a4a485b7c4e18b268@changeid>
 X-Mailer: git-send-email 2.23.0
 In-Reply-To: <20191012162924.19848-1-luca@coelho.fi>
 References: <20191012162924.19848-1-luca@coelho.fi>
@@ -31,7 +31,7 @@ X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on farmhouse.coelho.fi
 X-Spam-Level: 
 X-Spam-Status: No, score=-2.9 required=5.0 tests=ALL_TRUSTED,BAYES_00,
         URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.2
-Subject: [PATCH 12/13] iwlwifi: nvm: create function to convert channel index to nl80211_band
+Subject: [PATCH 13/13] iwlwifi: rx: use new api to get band from rx mpdu
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
@@ -39,102 +39,105 @@ X-Mailing-List: linux-wireless@vger.kernel.org
 
 From: Tova Mussai <tova.mussai@intel.com>
 
-Create function to convert channel index to nl80211_band
-and use it.
+The FW introduce new API to get the band from the rx mpdu,
+use this new API.
 
 Signed-off-by: Tova Mussai <tova.mussai@intel.com>
 Signed-off-by: Luca Coelho <luciano.coelho@intel.com>
 ---
- .../wireless/intel/iwlwifi/iwl-nvm-parse.c    | 26 ++++++++++++-------
- 1 file changed, 17 insertions(+), 9 deletions(-)
+ .../net/wireless/intel/iwlwifi/fw/api/rx.h    |  5 ++++
+ drivers/net/wireless/intel/iwlwifi/fw/file.h  |  2 ++
+ drivers/net/wireless/intel/iwlwifi/mvm/mvm.h  |  6 +++++
+ drivers/net/wireless/intel/iwlwifi/mvm/rxmq.c | 23 +++++++++++++++++--
+ 4 files changed, 34 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/iwl-nvm-parse.c b/drivers/net/wireless/intel/iwlwifi/iwl-nvm-parse.c
-index c8972f6e38ba..b0a0901ce0f3 100644
---- a/drivers/net/wireless/intel/iwlwifi/iwl-nvm-parse.c
-+++ b/drivers/net/wireless/intel/iwlwifi/iwl-nvm-parse.c
-@@ -256,12 +256,12 @@ static inline void iwl_nvm_print_channel_flags(struct device *dev, u32 level,
- #undef CHECK_AND_PRINT_I
+diff --git a/drivers/net/wireless/intel/iwlwifi/fw/api/rx.h b/drivers/net/wireless/intel/iwlwifi/fw/api/rx.h
+index a93449db7bb2..88bc7733065f 100644
+--- a/drivers/net/wireless/intel/iwlwifi/fw/api/rx.h
++++ b/drivers/net/wireless/intel/iwlwifi/fw/api/rx.h
+@@ -260,6 +260,11 @@ enum iwl_rx_mpdu_amsdu_info {
+ 	IWL_RX_MPDU_AMSDU_LAST_SUBFRAME		= 0x80,
+ };
+ 
++#define RX_MPDU_BAND_POS 6
++#define RX_MPDU_BAND_MASK 0xC0
++#define BAND_IN_RX_STATUS(_val) \
++	(((_val) & RX_MPDU_BAND_MASK) >> RX_MPDU_BAND_POS)
++
+ enum iwl_rx_l3_proto_values {
+ 	IWL_RX_L3_TYPE_NONE,
+ 	IWL_RX_L3_TYPE_IPV4,
+diff --git a/drivers/net/wireless/intel/iwlwifi/fw/file.h b/drivers/net/wireless/intel/iwlwifi/fw/file.h
+index 07628566cb4a..6de20e76b63c 100644
+--- a/drivers/net/wireless/intel/iwlwifi/fw/file.h
++++ b/drivers/net/wireless/intel/iwlwifi/fw/file.h
+@@ -322,6 +322,8 @@ enum iwl_ucode_tlv_api {
+ 	IWL_UCODE_TLV_API_SAR_TABLE_VER         = (__force iwl_ucode_tlv_api_t)55,
+ 	IWL_UCODE_TLV_API_ADWELL_HB_DEF_N_AP	= (__force iwl_ucode_tlv_api_t)57,
+ 	IWL_UCODE_TLV_API_SCAN_EXT_CHAN_VER	= (__force iwl_ucode_tlv_api_t)58,
++	IWL_UCODE_TLV_API_BAND_IN_RX_DATA	= (__force iwl_ucode_tlv_api_t)59,
++
+ 
+ 	NUM_IWL_UCODE_TLV_API
+ #ifdef __CHECKER__
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mvm.h b/drivers/net/wireless/intel/iwlwifi/mvm/mvm.h
+index d9c437682a5a..a25712cce4ab 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/mvm.h
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/mvm.h
+@@ -1409,6 +1409,12 @@ static inline bool iwl_mvm_is_scan_ext_chan_supported(struct iwl_mvm *mvm)
+ 			  IWL_UCODE_TLV_API_SCAN_EXT_CHAN_VER);
  }
  
--static u32 iwl_get_channel_flags(u8 ch_num, int ch_idx, bool is_5ghz,
-+static u32 iwl_get_channel_flags(u8 ch_num, int ch_idx, enum nl80211_band band,
- 				 u32 nvm_flags, const struct iwl_cfg *cfg)
- {
- 	u32 flags = IEEE80211_CHAN_NO_HT40;
- 
--	if (!is_5ghz && (nvm_flags & NVM_CHANNEL_40MHZ)) {
-+	if (band == NL80211_BAND_2GHZ && (nvm_flags & NVM_CHANNEL_40MHZ)) {
- 		if (ch_num <= LAST_2GHZ_HT_PLUS)
- 			flags &= ~IEEE80211_CHAN_NO_HT40PLUS;
- 		if (ch_num >= FIRST_2GHZ_HT_MINUS)
-@@ -299,6 +299,13 @@ static u32 iwl_get_channel_flags(u8 ch_num, int ch_idx, bool is_5ghz,
- 	return flags;
- }
- 
-+static enum nl80211_band iwl_nl80211_band_from_channel_idx(int ch_idx)
++static inline bool iwl_mvm_is_band_in_rx_supported(struct iwl_mvm *mvm)
 +{
-+	if (ch_idx >= NUM_2GHZ_CHANNELS)
-+		return NL80211_BAND_5GHZ;
-+	return NL80211_BAND_2GHZ;
++	return fw_has_api(&mvm->fw->ucode_capa,
++			   IWL_UCODE_TLV_API_BAND_IN_RX_DATA);
 +}
 +
- static int iwl_init_channel_map(struct device *dev, const struct iwl_cfg *cfg,
- 				struct iwl_nvm_data *data,
- 				const void * const nvm_ch_flags,
-@@ -308,7 +315,7 @@ static int iwl_init_channel_map(struct device *dev, const struct iwl_cfg *cfg,
- 	int n_channels = 0;
- 	struct ieee80211_channel *channel;
- 	u32 ch_flags;
--	int num_of_ch, num_2ghz_channels = NUM_2GHZ_CHANNELS;
-+	int num_of_ch;
- 	const u16 *nvm_chan;
+ static inline bool iwl_mvm_has_new_rx_stats_api(struct iwl_mvm *mvm)
+ {
+ 	return fw_has_api(&mvm->fw->ucode_capa,
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/rxmq.c b/drivers/net/wireless/intel/iwlwifi/mvm/rxmq.c
+index 77b03b757193..b488cd702058 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/rxmq.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/rxmq.c
+@@ -1542,6 +1542,19 @@ static void iwl_mvm_decode_lsig(struct sk_buff *skb,
+ 	}
+ }
  
- 	if (cfg->uhb_supported) {
-@@ -323,7 +330,8 @@ static int iwl_init_channel_map(struct device *dev, const struct iwl_cfg *cfg,
++static inline u8 iwl_mvm_nl80211_band_from_rx_msdu(u8 phy_band)
++{
++	switch (phy_band) {
++	case PHY_BAND_24:
++		return NL80211_BAND_2GHZ;
++	case PHY_BAND_5:
++		return NL80211_BAND_5GHZ;
++	default:
++		WARN_ONCE(1, "Unsupported phy band (%u)\n", phy_band);
++		return NL80211_BAND_5GHZ;
++	}
++}
++
+ void iwl_mvm_rx_mpdu_mq(struct iwl_mvm *mvm, struct napi_struct *napi,
+ 			struct iwl_rx_cmd_buffer *rxb, int queue)
+ {
+@@ -1678,8 +1691,14 @@ void iwl_mvm_rx_mpdu_mq(struct iwl_mvm *mvm, struct napi_struct *napi,
  	}
  
- 	for (ch_idx = 0; ch_idx < num_of_ch; ch_idx++) {
--		bool is_5ghz = (ch_idx >= num_2ghz_channels);
-+		enum nl80211_band band =
-+			iwl_nl80211_band_from_channel_idx(ch_idx);
- 
- 		if (v4)
- 			ch_flags =
-@@ -332,12 +340,13 @@ static int iwl_init_channel_map(struct device *dev, const struct iwl_cfg *cfg,
- 			ch_flags =
- 				__le16_to_cpup((__le16 *)nvm_ch_flags + ch_idx);
- 
--		if (is_5ghz && !data->sku_cap_band_52ghz_enable)
-+		if (band == NL80211_BAND_5GHZ &&
-+		    !data->sku_cap_band_52ghz_enable)
- 			continue;
- 
- 		/* workaround to disable wide channels in 5GHz */
- 		if ((sbands_flags & IWL_NVM_SBANDS_FLAGS_NO_WIDE_IN_5GHZ) &&
--		    is_5ghz) {
-+		    band == NL80211_BAND_5GHZ) {
- 			ch_flags &= ~(NVM_CHANNEL_40MHZ |
- 				     NVM_CHANNEL_80MHZ |
- 				     NVM_CHANNEL_160MHZ);
-@@ -362,8 +371,7 @@ static int iwl_init_channel_map(struct device *dev, const struct iwl_cfg *cfg,
- 		n_channels++;
- 
- 		channel->hw_value = nvm_chan[ch_idx];
--		channel->band = is_5ghz ?
--				NL80211_BAND_5GHZ : NL80211_BAND_2GHZ;
-+		channel->band = band;
- 		channel->center_freq =
- 			ieee80211_channel_to_frequency(
- 				channel->hw_value, channel->band);
-@@ -379,7 +387,7 @@ static int iwl_init_channel_map(struct device *dev, const struct iwl_cfg *cfg,
- 		/* don't put limitations in case we're using LAR */
- 		if (!(sbands_flags & IWL_NVM_SBANDS_FLAGS_LAR))
- 			channel->flags = iwl_get_channel_flags(nvm_chan[ch_idx],
--							       ch_idx, is_5ghz,
-+							       ch_idx, band,
- 							       ch_flags, cfg);
- 		else
- 			channel->flags = 0;
+ 	rx_status->device_timestamp = gp2_on_air_rise;
+-	rx_status->band = channel > 14 ? NL80211_BAND_5GHZ :
+-		NL80211_BAND_2GHZ;
++	if (iwl_mvm_is_band_in_rx_supported(mvm)) {
++		u8 band = BAND_IN_RX_STATUS(desc->mac_phy_idx);
++
++		rx_status->band = iwl_mvm_nl80211_band_from_rx_msdu(band);
++	} else {
++		rx_status->band = channel > 14 ? NL80211_BAND_5GHZ :
++			NL80211_BAND_2GHZ;
++	}
+ 	rx_status->freq = ieee80211_channel_to_frequency(channel,
+ 							 rx_status->band);
+ 	iwl_mvm_get_signal_strength(mvm, rx_status, rate_n_flags, energy_a,
 -- 
 2.23.0
 
