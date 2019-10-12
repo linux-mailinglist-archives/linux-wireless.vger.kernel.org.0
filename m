@@ -2,34 +2,31 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 9A693D5161
-	for <lists+linux-wireless@lfdr.de>; Sat, 12 Oct 2019 19:27:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D619AD51A3
+	for <lists+linux-wireless@lfdr.de>; Sat, 12 Oct 2019 20:35:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729589AbfJLR0z (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 12 Oct 2019 13:26:55 -0400
-Received: from mout.web.de ([212.227.15.4]:60029 "EHLO mout.web.de"
+        id S1729461AbfJLSev (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 12 Oct 2019 14:34:51 -0400
+Received: from mout.web.de ([212.227.15.4]:45025 "EHLO mout.web.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1729554AbfJLR0z (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 12 Oct 2019 13:26:55 -0400
+        id S1727423AbfJLSev (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Sat, 12 Oct 2019 14:34:51 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
-        s=dbaedf251592; t=1570901189;
-        bh=aTvoJhmGzJyzLDndjNa/ydXpVEmlvsXJjiOEAPQZ3vI=;
+        s=dbaedf251592; t=1570905280;
+        bh=tnUCoeFj2C0v+2VNSy0rywq/m+iexZfrWWmmse2Betw=;
         h=X-UI-Sender-Class:To:From:Subject:Cc:Date;
-        b=rKgDqQp5/RHTOZo0PQsXYux6r5z/YxAAuJtKPe7ZCf2i++vOS6nlb7hcJUl+46KAX
-         xQj3HHdviSAvjZocQewz4+s7fnZ39gnWvyOtHufE1ro8QkrTjF85qiWaT2iwLEZ/un
-         hr+GNBllg1jaSVr6hlqsmULEk8nnNXuXHqjb9OVY=
+        b=Cy/iYMQrK2HxmrBeEidu+rEMvmriEQZWz45f3swHeDzr8gPjhNfRPrRuMzPGn+3wL
+         7k9b2M23LI/RP3atUOUwKGkseeEXv8dmhFrg+HoYm7nIyYLKCmIj4DpUorXVmS0G2F
+         7f3HyBsW/++CwtlsBRa9s65aQOAqh0y6wt+hD/NA=
 X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
 Received: from [192.168.1.2] ([93.132.155.250]) by smtp.web.de (mrweb003
- [213.165.67.108]) with ESMTPSA (Nemesis) id 0Lpw63-1hpWK345hv-00fiXk; Sat, 12
- Oct 2019 19:26:29 +0200
-To:     linux-wireless@vger.kernel.org, linuxwifi@intel.com,
-        netdev@vger.kernel.org, "David S. Miller" <davem@davemloft.net>,
-        Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
-        Johannes Berg <johannes.berg@intel.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        Luca Coelho <luciano.coelho@intel.com>
+ [213.165.67.108]) with ESMTPSA (Nemesis) id 0Lfipe-1hhYcH3MhG-00pK6t; Sat, 12
+ Oct 2019 20:34:39 +0200
+To:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        "David S. Miller" <davem@davemloft.net>,
+        Johannes Berg <johannes@sipsolutions.net>
 From:   Markus Elfring <Markus.Elfring@web.de>
-Subject: iwlwifi: Checking a kmemdup() call in iwl_req_fw_callback()
+Subject: mac80211: Checking a kmemdup() call in ieee80211_send_assoc()
 Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  mQINBFg2+xABEADBJW2hoUoFXVFWTeKbqqif8VjszdMkriilx90WB5c0ddWQX14h6w5bT/A8
  +v43YoGpDNyhgA0w9CEhuwfZrE91GocMtjLO67TAc2i2nxMc/FJRDI0OemO4VJ9RwID6ltwt
@@ -77,38 +74,38 @@ Cc:     LKML <linux-kernel@vger.kernel.org>,
         kernel-janitors@vger.kernel.org, Aditya Pakki <pakki001@umn.edu>,
         Kangjie Lu <kjlu@umn.edu>, Navid Emamdoost <emamd001@umn.edu>,
         Stephen McCamant <smccaman@umn.edu>
-Message-ID: <71774617-79f9-1365-4267-a15a47422d10@web.de>
-Date:   Sat, 12 Oct 2019 19:26:24 +0200
+Message-ID: <1b2c589c-46d4-2bad-ed54-176b7c2f66bf@web.de>
+Date:   Sat, 12 Oct 2019 20:34:37 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.1.1
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:81oefqlZYHs5UgQG93M+vVZYpkwPZp8iXevuslFnEfSmxedsr7c
- yr1EoG818OF+pZu0w8C2kmoYcwRsByTKZD9gDqCW7BLrTKTBxiXjzTY8QzG+GtLrtGZ2Fe1
- wSTthsBaSJ7/04s1/QDo7h7hYnBpJejC11B5oyJ1OQAXAUURR+bWqHQIJnSUMzlfiv+m9I9
- AgFLUEsvtq8cUwMtT6D9g==
+X-Provags-ID: V03:K1:Z0eKhyF/1qhVEuJn8+76n7DUgjpIAkCcKI8tnk3AgDF3NnwtXY9
+ wN8UhUue8mAU9m2c8hDiLmtDkFp40/Z2DRfQS0/t5QF8qMwmmy+YkXVugr8cCuuJkVEhpYr
+ lVSIuQdejpLA4OK3RshTTLe7ziHim7udHZE8PFnn0hUHAdInDAoJv0kFTuSPH9aaJtz6sDs
+ ABg9drpClLh0DJac3WM/A==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:157GF0vRHQs=:3a94LDlEJEwjrgCLz71wZ8
- 3qytvC6BgILZyKmLba5Iy94LnblfBMZsmgc1l7iKC8ZHUxa9DBJ9r6V5r2pG5igsrdgmc8dFR
- bf6KB0UEUzRRfJJ10dX8+QabKHQZg1YH7mdYAEO2RpIpDbS9SBYWKX7XPKRsl2qf7rKv2e7Dg
- yaUc65YsR25Q5LeeIZe1HumBHvX766058xz47TtQXahC7lOK9R2/FlLpFnAM1mYn6lLJuZuu6
- gogJOIGnsNyNowu+iO1GQPhvPaM+lV0/ZuZNF2w6LEFSAnplGR0/KyFlrGAyE0xoK5cuu77ZO
- LHX7b2sNFs5w9YlXLYvE7zGxERz8zh4an1dIhxbVKsQnzFZ8hGSz/xi/9+Oj6oklsyKpBBIE8
- 1QpoaoYo2t6oEhVl7vdl2SRhuPwTVoExkujO+BGzfgdokUx7D9GUlL2LogkKVJmd5D5+frkpD
- rzV2zwLvQiezl9/uVdOm0ur+dyXWYwIzHcRetB0ElPKWSYGDpfPrH65sGOSHMmNLFU/JoBCJw
- AeUoZhDwPRU9Pa9LeagiJp1XaZxhAbG6H0VytL78HAMaWBMoTbCgq1U+3jcLIxT5kwX8Fh6MF
- WY3wIgH/n791ozfGe1wijTJkoQ2OvMfZU0dKs/B9VYIEsuVSMkClRx3r36j+eMSQF2c7qJGa5
- VKvbb41fp6M/EA5hY+tax0Ev3Z5Vgt5WBxwzJ2WNiL+QqEqVxLmX1u7jhRepPkoZ7N/1TM4lD
- sqDmexITjDI4rK8uCo6rBMtyYP/aPVIND4dfjjkHcNe+nWhvfiaYlxI/5Ev9H2bgkg8o0GJef
- lvuIKhcuKw3tvbm4LnGLKgeP3EKzBO0u2mIHclOY4TzrcV71ExGndCfPxyveUXqSHM/M51aCB
- KSFALEKPKjq4GAX6A9opeB9hoC2e+8reqiZs5mrrUp4l0msNzToCghX/AP8tNf2DfHH4X1ZZU
- uphGtS8RXl31CDeffZ/caaE/8NKEObmWLciPYDq+709YczpCkVobgxDsAYdZ62dC5uNASEp0V
- VJvP4NkAjEVbn21EsPGf9+hlo4Z0lCo8wMNziJfbaQDxudwHn6EkBKKzl0VpL5zSdkmxrpSB7
- NO+77f/7F6DBL6DeKj7gPGv/OiPx6K/rhesQye2fP5HCSoAPMuG5K5JBowe8XBHC6X2w+pxGZ
- rLMpShwRzmlgEzIbVlEJHR+sk7eb6IDsIxU/ZuWxds9vj97kjzYenbrpOZ4gnxpDD5PXzI0UT
- fi41vjidYgTdZeGRfh13gVwl1EBeMudn0xthqzTQtQn+VGKx90ZPtOrF9QgI=
+X-UI-Out-Filterresults: notjunk:1;V03:K0:x/KgguxDvGA=:ESEK/BX8Khoof0DULGuntb
+ 6dntcI75FerXZa/IqZBeJKpWBPCE0HrwgoJ0wa4pcYfIwf3B9wSP26CEyXukU/c5l66nPoXZ1
+ 2+JB0cDS6BBNaZfcCGIiTn21WEY3Skv8LD5T6I0KM376ektyZCnUzZyLqZ7l+t85hu+kQjzlc
+ xblpksGkhboh8PUrZlU2EACgCcfUs3vcsy8VGftb+jdP/xk/riLwg7Qy7Kcvm8I+zK9eM5kGF
+ /OLx5GQEKd8hl7h219CxR5BB8Cz0TubMqaDBxtexESawFUywXKqPVFRj6PrNXOsYq18QQgzCf
+ hTupfj3gTIlXj5wONE1rhmBHCjpa8N78d94Ne9GymiJsgzCwsk+RKw6ky+QDbIUPZ7CkBLbXS
+ vxRwwPsCRbiuDkuKn7IuUweLmKcwkOJsT6IeDDQCCMzWtxyPaKBkZrUm8NDVyMpatHM+whac5
+ yT2UsDeut8eQHveDxU5g527J9WRuXrok8nBwVscr/Suu4avLCITN3RaRlgY79YIHzH5rvRo+o
+ HdO8EK9aLYHv7GIlv1XN1gz/kKchdSv9fiJGNbTryDUN7IqJJMb6sbDSjPQijTCU6oZX26+CG
+ JMF9dsH4iGZGvldwLuj90mEHhHBiVYmTLQZrrnXP2ulz/9hhY9NPzAw04JqzMdZiPbN4Onz7u
+ 7/03064dsysUsgGKX99iZkv/vWAZ53kQsZdZVfG6NQ14LWTS85NTNsQqmdjNv56vObLY9y+Hl
+ fb3j0VbxvP/FPVP28Z8/suF2aM9ufL+ddOhIRgy8x9u/X+excKk2M0RugYRqQDGSQNgr5oc2n
+ nbuIV7XXQWZ+vV5aECA0pQQAPGit/DWgMxfbklDXqJg2NaIF6xOSMyceHHVYG9mnN1voIAu2B
+ I4s+8uKh/u5Ou7hQf1FCbVCe81Pre5bOHjCLKDewikNz3DmIwDjIeIAyMLV2vB4VSIDUH4pme
+ HoJ8dHbPGtY+neJkJ1d03cfNp5thR1Gndn6xUIL9I6lbSmXP3gYj9L6PXmEOO/W/Ywj+efsZS
+ XplNJ57+wJb3s3SG8746A1hw2mDocDEos/r0RDJu4mhTVMroeJoiMfw01uyp0E12FXwybXZS2
+ +4nY9qH+VWklCGfvlsKm+YRr0dzkehtMq2MotAaChBPSaH7pmBm/UiyiNkrU5d0koXbfkjl2I
+ EOqiRSBGLgX7H53nM+x34opMa99Ux5h2ryocn0X7pL2rPy3TBEwqCCRTQCpVBZCz0rVtc7Bpv
+ 4Zcx63Qs8L88H1vjJqmoPnwbK9DfaQZNUUF7fwrZTgPlfMsE13oxl1cVEeuI=
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
@@ -118,17 +115,14 @@ Hello,
 
 I tried another script for the semantic patch language out.
 This source code analysis approach points out that the implementation
-of the function =E2=80=9Ciwl_req_fw_callback=E2=80=9D contains still an un=
-checked call
+of the function =E2=80=9Cieee80211_send_assoc=E2=80=9D contains still an u=
+nchecked call
 of the function =E2=80=9Ckmemdup=E2=80=9D.
-https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/dr=
-ivers/net/wireless/intel/iwlwifi/iwl-drv.c?id=3D1c0cc5f1ae5ee5a6913704c0d7=
-5a6e99604ee30a#n1454
-https://elixir.bootlin.com/linux/v5.4-rc2/source/drivers/net/wireless/inte=
-l/iwlwifi/iwl-drv.c#L1454
+https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/ne=
+t/mac80211/mlme.c?id=3D1c0cc5f1ae5ee5a6913704c0d75a6e99604ee30a#n980
+https://elixir.bootlin.com/linux/v5.4-rc2/source/net/mac80211/mlme.c#L980
 
-Can it be that just an other data structure member should be used
-for the desired null pointer check at this place?
+How do you think about to improve it?
 
 Regards,
 Markus
