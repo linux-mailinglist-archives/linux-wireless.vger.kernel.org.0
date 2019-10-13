@@ -2,1402 +2,2351 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 88BE6D5402
-	for <lists+linux-wireless@lfdr.de>; Sun, 13 Oct 2019 05:31:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3CC61D54BD
+	for <lists+linux-wireless@lfdr.de>; Sun, 13 Oct 2019 07:55:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727974AbfJMDbL (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 12 Oct 2019 23:31:11 -0400
-Received: from mga07.intel.com ([134.134.136.100]:45209 "EHLO mga07.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727492AbfJMDbL (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 12 Oct 2019 23:31:11 -0400
-X-Amp-Result: UNKNOWN
-X-Amp-Original-Verdict: FILE UNKNOWN
-X-Amp-File-Uploaded: False
-Received: from fmsmga007.fm.intel.com ([10.253.24.52])
-  by orsmga105.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 12 Oct 2019 20:31:05 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.67,290,1566889200"; 
-   d="gz'50?scan'50,208,50";a="194697125"
-Received: from lkp-server01.sh.intel.com (HELO lkp-server01) ([10.239.97.150])
-  by fmsmga007.fm.intel.com with ESMTP; 12 Oct 2019 20:31:00 -0700
-Received: from kbuild by lkp-server01 with local (Exim 4.89)
-        (envelope-from <lkp@intel.com>)
-        id 1iJUay-000Hvp-Dq; Sun, 13 Oct 2019 11:31:00 +0800
-Date:   Sun, 13 Oct 2019 11:30:24 +0800
-From:   kbuild test robot <lkp@intel.com>
-To:     Lorenzo Bianconi <lorenzo@kernel.org>
-Cc:     kbuild-all@lists.01.org,
-        Oleksandr Natalenko <oleksandr@natalenko.name>,
-        linux-mediatek@lists.infradead.org, Felix Fietkau <nbd@nbd.name>,
-        Lorenzo Bianconi <lorenzo.bianconi83@gmail.com>,
-        Stanislaw Gruszka <sgruszka@redhat.com>,
-        Ryder Lee <ryder.lee@mediatek.com>,
-        Roy Luo <royluo@google.com>, Kalle Valo <kvalo@codeaurora.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] mt76: mt76x2: disable pcie_aspm by default
-Message-ID: <201910131158.sDdvoOLC%lkp@intel.com>
-References: <20191012165028.GA8739@lore-desk-wlan.lan>
+        id S1728080AbfJMFyh (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 13 Oct 2019 01:54:37 -0400
+Received: from mail-wm1-f66.google.com ([209.85.128.66]:39454 "EHLO
+        mail-wm1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726698AbfJMFyg (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Sun, 13 Oct 2019 01:54:36 -0400
+Received: by mail-wm1-f66.google.com with SMTP id v17so13638308wml.4;
+        Sat, 12 Oct 2019 22:54:26 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=x7JY6xrCHUh7LlmLoH9Isp9XiPlwVlZPf9oGFQJZmCY=;
+        b=YSPZ8XN9jSTDZd2v1JtJb4lWMZH+2Vl0rX3jArIiHYxJJXIjtAX5RRC5QdXZJtsNgW
+         E9rqQNsRzdLWKxRZVNndmhXIi1SQn67s4/hvEgWR3uj0SWgQ3pb3ymqFZ1Pb58awFVRF
+         Gl8RzEy4KgtqYPHS9TQSvahud1ke90VfKKcBZhNbT9q3PxGST8zMy3DBwHeCRPOr22gm
+         UAYrffyLF2pNC+RSrkpw5P5nz28I43vvE1j62fVJytOaRxp4uHRA6pG9EApy4LjyLatF
+         DBgI8ynwVE6rvsSVwjdZpSYn6j/nvVHGFaHIMNcof2oBT8SluR1uJ883qdNvyLf/43h3
+         2lYQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=x7JY6xrCHUh7LlmLoH9Isp9XiPlwVlZPf9oGFQJZmCY=;
+        b=i7tm5oAEdulJzCUyOVTCirqvteJ+C3WTe9GKJxTZNqhpqDUoW3/U4ONbhlWuVphDuF
+         66GEMKRjDiu6Zc2kuXUQnEWAO2mDr5ZgyAX2mf7zFuCDtKO2SV9BODj0U0msGLc0XWEQ
+         vo7rYgVnN1660MnZAsVCotAs2NfUoiNYomYWgzgJmJMe9eWRRSJcnwcVYGzTfDRz1Xwc
+         JzH2ucPm4/g7aT7iNm+z4W+kvIdnsx2ayupwTKMEIc+K5pSpVC0IAEGIkR0zWx4PYiqC
+         gUqk/wMz8oq2lQHmX5RaWBBsbrGI0UhlXNp04UVnNQJhb/w/AkmWZQRmNDow6Z6OOgT1
+         rcfg==
+X-Gm-Message-State: APjAAAW95WBAroBg1Ewa7TRZDjOGzDsua834f1AIiWAeIgsiiFV/MEGZ
+        UTJtxm2yJ8qEPHG7LLlUCrOMsVJodBE=
+X-Google-Smtp-Source: APXvYqzbYwyFDAnRBpYXWTuBg5Vj/8B6o8KWMZyQtw5AHgk7lXA8k1c/3huvBT4ukzzAjzJD6CwGug==
+X-Received: by 2002:a7b:cb95:: with SMTP id m21mr1988089wmi.36.1570946064538;
+        Sat, 12 Oct 2019 22:54:24 -0700 (PDT)
+Received: from localhost.localdomain ([104.238.174.53])
+        by smtp.gmail.com with ESMTPSA id e3sm13847839wme.39.2019.10.12.22.54.15
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 12 Oct 2019 22:54:23 -0700 (PDT)
+From:   Changbin Du <changbin.du@gmail.com>
+To:     Jonathan Corbet <corbet@lwn.net>
+Cc:     linux-pci@vger.kernel.org, linux-doc@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+        linux-crypto@vger.kernel.org, linux-kselftest@vger.kernel.org,
+        linux-wireless@vger.kernel.org, linux-fpga@vger.kernel.org,
+        linux-usb@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        intel-gfx@lists.freedesktop.org,
+        Changbin Du <changbin.du@gmail.com>
+Subject: [PATCH] kernel-doc: rename the kernel-doc directive 'functions' to 'specific'
+Date:   Sun, 13 Oct 2019 13:53:59 +0800
+Message-Id: <20191013055359.23312-1-changbin.du@gmail.com>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-Content-Type: multipart/mixed; boundary="ceh7gnri3y7esqzi"
-Content-Disposition: inline
-In-Reply-To: <20191012165028.GA8739@lore-desk-wlan.lan>
-X-Patchwork-Hint: ignore
-User-Agent: NeoMutt/20170113 (1.7.2)
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+The 'functions' directive is not only for functions, but also works for
+structs/unions. So the name is misleading. This patch renames it to
+'specific', so now we have export/internal/specific directives to limit
+the functions/types to be included in documentation. Meanwhile we improved
+the warning message.
 
---ceh7gnri3y7esqzi
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-
-Hi Lorenzo,
-
-I love your patch! Yet something to improve:
-
-[auto build test ERROR on wireless-drivers-next/master]
-[cannot apply to v5.4-rc2 next-20191011]
-[if your patch is applied to the wrong git tree, please drop us a note to help
-improve the system. BTW, we also suggest to use '--base' option to specify the
-base tree in git format-patch, please see https://stackoverflow.com/a/37406982]
-
-url:    https://github.com/0day-ci/linux/commits/Lorenzo-Bianconi/mt76-mt76x2-disable-pcie_aspm-by-default/20191013-093134
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/kvalo/wireless-drivers-next.git master
-config: x86_64-allyesconfig (attached as .config)
-compiler: gcc-7 (Debian 7.4.0-13) 7.4.0
-reproduce:
-        # save the attached .config to linux build tree
-        make ARCH=x86_64 
-
-If you fix the issue, kindly add following tag
-Reported-by: kbuild test robot <lkp@intel.com>
-
-All errors (new ones prefixed by >>):
-
->> drivers/net/wireless/mediatek/mt76/mmio.c:7:10: fatal error: linux/pci-aspm.h: No such file or directory
-    #include <linux/pci-aspm.h>
-             ^~~~~~~~~~~~~~~~~~
-   compilation terminated.
-
-vim +7 drivers/net/wireless/mediatek/mt76/mmio.c
-
-   > 7	#include <linux/pci-aspm.h>
-     8	
-
+Signed-off-by: Changbin Du <changbin.du@gmail.com>
 ---
-0-DAY kernel test infrastructure                Open Source Technology Center
-https://lists.01.org/pipermail/kbuild-all                   Intel Corporation
+ Documentation/PCI/pci.rst                     |   4 +-
+ Documentation/core-api/boot-time-mm.rst       |   2 +-
+ Documentation/core-api/debug-objects.rst      |  14 +-
+ Documentation/core-api/genalloc.rst           |  34 +--
+ Documentation/core-api/generic-radix-tree.rst |   2 +-
+ .../core-api/gfp_mask-from-fs-io.rst          |   4 +-
+ Documentation/core-api/idr.rst                |   4 +-
+ Documentation/core-api/kernel-api.rst         |  12 +-
+ Documentation/core-api/mm-api.rst             |   4 +-
+ Documentation/crypto/api-aead.rst             |   6 +-
+ Documentation/crypto/api-akcipher.rst         |   6 +-
+ Documentation/crypto/api-digest.rst           |   8 +-
+ Documentation/crypto/api-kpp.rst              |  10 +-
+ Documentation/crypto/api-rng.rst              |   4 +-
+ Documentation/crypto/api-skcipher.rst         |  14 +-
+ Documentation/dev-tools/kselftest.rst         |   4 +-
+ Documentation/doc-guide/kernel-doc.rst        |  26 +--
+ Documentation/driver-api/80211/cfg80211.rst   | 200 +++++++++---------
+ .../driver-api/80211/mac80211-advanced.rst    |  88 ++++----
+ Documentation/driver-api/80211/mac80211.rst   |  80 +++----
+ .../driver-api/device_connection.rst          |   2 +-
+ Documentation/driver-api/device_link.rst      |   4 +-
+ .../firmware/fallback-mechanisms.rst          |   2 +-
+ .../driver-api/firmware/other_interfaces.rst  |  10 +-
+ .../driver-api/firmware/request_firmware.rst  |  12 +-
+ Documentation/driver-api/fpga/fpga-bridge.rst |  10 +-
+ Documentation/driver-api/fpga/fpga-mgr.rst    |  12 +-
+ .../driver-api/fpga/fpga-programming.rst      |   8 +-
+ Documentation/driver-api/fpga/fpga-region.rst |  20 +-
+ Documentation/driver-api/i2c.rst              |   2 +-
+ Documentation/driver-api/mei/hdcp.rst         |   2 +-
+ Documentation/driver-api/spi.rst              |   2 +-
+ Documentation/driver-api/usb/typec.rst        |  26 +--
+ Documentation/driver-api/usb/typec_bus.rst    |  10 +-
+ Documentation/gpu/amdgpu-dc.rst               |   6 +-
+ Documentation/gpu/drm-kms-helpers.rst         |   2 +-
+ Documentation/gpu/i915.rst                    |  70 +++---
+ Documentation/gpu/vga-switcheroo.rst          |  14 +-
+ Documentation/security/tpm/tpm_vtpm_proxy.rst |   2 +-
+ Documentation/sphinx/kerneldoc.py             |  10 +-
+ .../it_IT/doc-guide/kernel-doc.rst            |   2 +-
+ Documentation/vm/ksm.rst                      |   2 +-
+ scripts/kernel-doc                            |   9 +-
+ 43 files changed, 385 insertions(+), 380 deletions(-)
 
---ceh7gnri3y7esqzi
-Content-Type: application/gzip
-Content-Disposition: attachment; filename=".config.gz"
-Content-Transfer-Encoding: base64
+diff --git a/Documentation/PCI/pci.rst b/Documentation/PCI/pci.rst
+index 6864f9a70f5f..6f310807f74c 100644
+--- a/Documentation/PCI/pci.rst
++++ b/Documentation/PCI/pci.rst
+@@ -79,13 +79,13 @@ initialization with a pointer to a structure describing the driver
+ (``struct pci_driver``):
+ 
+ .. kernel-doc:: include/linux/pci.h
+-   :functions: pci_driver
++   :specific: pci_driver
+ 
+ The ID table is an array of ``struct pci_device_id`` entries ending with an
+ all-zero entry.  Definitions with static const are generally preferred.
+ 
+ .. kernel-doc:: include/linux/mod_devicetable.h
+-   :functions: pci_device_id
++   :specific: pci_device_id
+ 
+ Most drivers only need ``PCI_DEVICE()`` or ``PCI_DEVICE_CLASS()`` to set up
+ a pci_device_id table.
+diff --git a/Documentation/core-api/boot-time-mm.rst b/Documentation/core-api/boot-time-mm.rst
+index e5ec9f1a563d..54824740d010 100644
+--- a/Documentation/core-api/boot-time-mm.rst
++++ b/Documentation/core-api/boot-time-mm.rst
+@@ -38,4 +38,4 @@ really happens under the hood.
+ 
+ .. kernel-doc:: include/linux/memblock.h
+ .. kernel-doc:: mm/memblock.c
+-   :functions:
++   :specific:
+diff --git a/Documentation/core-api/debug-objects.rst b/Documentation/core-api/debug-objects.rst
+index ac926fd55a64..352fc2d8abbd 100644
+--- a/Documentation/core-api/debug-objects.rst
++++ b/Documentation/core-api/debug-objects.rst
+@@ -65,7 +65,7 @@ Debug functions
+ ===============
+ 
+ .. kernel-doc:: lib/debugobjects.c
+-   :functions: debug_object_init
++   :specific: debug_object_init
+ 
+ This function is called whenever the initialization function of a real
+ object is called.
+@@ -88,7 +88,7 @@ calling code must use debug_object_init_on_stack() and remove the
+ object before leaving the function which allocated it. See next section.
+ 
+ .. kernel-doc:: lib/debugobjects.c
+-   :functions: debug_object_init_on_stack
++   :specific: debug_object_init_on_stack
+ 
+ This function is called whenever the initialization function of a real
+ object which resides on the stack is called.
+@@ -112,7 +112,7 @@ calling debug_object_free() before the function which allocates the
+ object returns. Otherwise we keep track of stale objects.
+ 
+ .. kernel-doc:: lib/debugobjects.c
+-   :functions: debug_object_activate
++   :specific: debug_object_activate
+ 
+ This function is called whenever the activation function of a real
+ object is called.
+@@ -137,7 +137,7 @@ tracker object is set to ODEBUG_STATE_ACTIVE.
+ 
+ 
+ .. kernel-doc:: lib/debugobjects.c
+-   :functions: debug_object_deactivate
++   :specific: debug_object_deactivate
+ 
+ This function is called whenever the deactivation function of a real
+ object is called.
+@@ -150,7 +150,7 @@ When the deactivation is legitimate, then the state of the associated
+ tracker object is set to ODEBUG_STATE_INACTIVE.
+ 
+ .. kernel-doc:: lib/debugobjects.c
+-   :functions: debug_object_destroy
++   :specific: debug_object_destroy
+ 
+ This function is called to mark an object destroyed. This is useful to
+ prevent the usage of invalid objects, which are still available in
+@@ -169,7 +169,7 @@ When the destruction is legitimate, then the state of the associated
+ tracker object is set to ODEBUG_STATE_DESTROYED.
+ 
+ .. kernel-doc:: lib/debugobjects.c
+-   :functions: debug_object_free
++   :specific: debug_object_free
+ 
+ This function is called before an object is freed.
+ 
+@@ -186,7 +186,7 @@ usage of the object is detected by the other debug checks.
+ 
+ 
+ .. kernel-doc:: lib/debugobjects.c
+-   :functions: debug_object_assert_init
++   :specific: debug_object_assert_init
+ 
+ This function is called to assert that an object has been initialized.
+ 
+diff --git a/Documentation/core-api/genalloc.rst b/Documentation/core-api/genalloc.rst
+index 6b38a39fab24..28a665c28852 100644
+--- a/Documentation/core-api/genalloc.rst
++++ b/Documentation/core-api/genalloc.rst
+@@ -18,10 +18,10 @@ Code using this allocator should include <linux/genalloc.h>.  The action
+ begins with the creation of a pool using one of:
+ 
+ .. kernel-doc:: lib/genalloc.c
+-   :functions: gen_pool_create		
++   :specific: gen_pool_create
+ 
+ .. kernel-doc:: lib/genalloc.c
+-   :functions: devm_gen_pool_create
++   :specific: devm_gen_pool_create
+ 
+ A call to :c:func:`gen_pool_create` will create a pool.  The granularity of
+ allocations is set with min_alloc_order; it is a log-base-2 number like
+@@ -39,7 +39,7 @@ pool when the given device is destroyed.
+ A pool is shut down with:
+ 
+ .. kernel-doc:: lib/genalloc.c
+-   :functions: gen_pool_destroy
++   :specific: gen_pool_destroy
+ 
+ It's worth noting that, if there are still allocations outstanding from the
+ given pool, this function will take the rather extreme step of invoking
+@@ -50,10 +50,10 @@ that state, so one of the first orders of business is usually to add memory
+ to the pool.  That can be done with one of:
+ 
+ .. kernel-doc:: include/linux/genalloc.h
+-   :functions: gen_pool_add
++   :specific: gen_pool_add
+ 
+ .. kernel-doc:: lib/genalloc.c
+-   :functions: gen_pool_add_virt
++   :specific: gen_pool_add_virt
+ 
+ A call to :c:func:`gen_pool_add` will place the size bytes of memory
+ starting at addr (in the kernel's virtual address space) into the given
+@@ -66,13 +66,13 @@ The functions for allocating memory from the pool (and putting it back)
+ are:
+ 
+ .. kernel-doc:: lib/genalloc.c
+-   :functions: gen_pool_alloc
++   :specific: gen_pool_alloc
+ 
+ .. kernel-doc:: lib/genalloc.c
+-   :functions: gen_pool_dma_alloc
++   :specific: gen_pool_dma_alloc
+ 
+ .. kernel-doc:: lib/genalloc.c
+-   :functions: gen_pool_free
++   :specific: gen_pool_free
+ 
+ As one would expect, :c:func:`gen_pool_alloc` will allocate size< bytes
+ from the given pool.  The :c:func:`gen_pool_dma_alloc` variant allocates
+@@ -89,10 +89,10 @@ return.  If that sort of control is needed, the following functions will be
+ of interest:
+ 
+ .. kernel-doc:: lib/genalloc.c
+-   :functions: gen_pool_alloc_algo
++   :specific: gen_pool_alloc_algo
+ 
+ .. kernel-doc:: lib/genalloc.c
+-   :functions: gen_pool_set_algo
++   :specific: gen_pool_set_algo
+ 
+ Allocations with :c:func:`gen_pool_alloc_algo` specify an algorithm to be
+ used to choose the memory to be allocated; the default algorithm can be set
+@@ -123,22 +123,22 @@ above.  With luck, wider awareness of this module will help to prevent the
+ writing of special-purpose memory allocators in the future.
+ 
+ .. kernel-doc:: lib/genalloc.c
+-   :functions: gen_pool_virt_to_phys
++   :specific: gen_pool_virt_to_phys
+ 
+ .. kernel-doc:: lib/genalloc.c
+-   :functions: gen_pool_for_each_chunk
++   :specific: gen_pool_for_each_chunk
+ 
+ .. kernel-doc:: lib/genalloc.c
+-   :functions: addr_in_gen_pool
++   :specific: addr_in_gen_pool
+ 
+ .. kernel-doc:: lib/genalloc.c
+-   :functions: gen_pool_avail
++   :specific: gen_pool_avail
+ 
+ .. kernel-doc:: lib/genalloc.c
+-   :functions: gen_pool_size
++   :specific: gen_pool_size
+ 
+ .. kernel-doc:: lib/genalloc.c
+-   :functions: gen_pool_get
++   :specific: gen_pool_get
+ 
+ .. kernel-doc:: lib/genalloc.c
+-   :functions: of_gen_pool_get
++   :specific: of_gen_pool_get
+diff --git a/Documentation/core-api/generic-radix-tree.rst b/Documentation/core-api/generic-radix-tree.rst
+index ed42839ae42f..373380f6c037 100644
+--- a/Documentation/core-api/generic-radix-tree.rst
++++ b/Documentation/core-api/generic-radix-tree.rst
+@@ -9,4 +9,4 @@ generic radix tree functions
+ ----------------------------
+ 
+ .. kernel-doc:: include/linux/generic-radix-tree.h
+-   :functions:
++   :specific:
+diff --git a/Documentation/core-api/gfp_mask-from-fs-io.rst b/Documentation/core-api/gfp_mask-from-fs-io.rst
+index e7c32a8de126..b6eff1c8b3b7 100644
+--- a/Documentation/core-api/gfp_mask-from-fs-io.rst
++++ b/Documentation/core-api/gfp_mask-from-fs-io.rst
+@@ -36,9 +36,9 @@ scope will inherently drop __GFP_FS respectively __GFP_IO from the given
+ mask so no memory allocation can recurse back in the FS/IO.
+ 
+ .. kernel-doc:: include/linux/sched/mm.h
+-   :functions: memalloc_nofs_save memalloc_nofs_restore
++   :specific: memalloc_nofs_save memalloc_nofs_restore
+ .. kernel-doc:: include/linux/sched/mm.h
+-   :functions: memalloc_noio_save memalloc_noio_restore
++   :specific: memalloc_noio_save memalloc_noio_restore
+ 
+ FS/IO code then simply calls the appropriate save function before
+ any critical section with respect to the reclaim is started - e.g.
+diff --git a/Documentation/core-api/idr.rst b/Documentation/core-api/idr.rst
+index a2738050c4f0..d54425605a8f 100644
+--- a/Documentation/core-api/idr.rst
++++ b/Documentation/core-api/idr.rst
+@@ -76,6 +76,6 @@ Functions and structures
+ ========================
+ 
+ .. kernel-doc:: include/linux/idr.h
+-   :functions:
++   :specific:
+ .. kernel-doc:: lib/idr.c
+-   :functions:
++   :specific:
+diff --git a/Documentation/core-api/kernel-api.rst b/Documentation/core-api/kernel-api.rst
+index f77de49b1d51..8cec422f0d8e 100644
+--- a/Documentation/core-api/kernel-api.rst
++++ b/Documentation/core-api/kernel-api.rst
+@@ -25,10 +25,10 @@ String Conversions
+    :export:
+ 
+ .. kernel-doc:: include/linux/kernel.h
+-   :functions: kstrtol
++   :specific: kstrtol
+ 
+ .. kernel-doc:: include/linux/kernel.h
+-   :functions: kstrtoul
++   :specific: kstrtoul
+ 
+ .. kernel-doc:: lib/kstrtox.c
+    :export:
+@@ -46,7 +46,7 @@ String Manipulation
+    :internal:
+ 
+ .. kernel-doc:: mm/util.c
+-   :functions: kstrdup kstrdup_const kstrndup kmemdup kmemdup_nul memdup_user
++   :specific: kstrdup kstrdup_const kstrndup kmemdup kmemdup_nul memdup_user
+                vmemdup_user strndup_user memdup_user_nul
+ 
+ Basic Kernel Library Functions
+@@ -109,7 +109,7 @@ Text Searching
+    :export:
+ 
+ .. kernel-doc:: include/linux/textsearch.h
+-   :functions: textsearch_find textsearch_next \
++   :specific: textsearch_find textsearch_next \
+                textsearch_get_pattern textsearch_get_pattern_len
+ 
+ CRC and Math Functions in Linux
+@@ -157,13 +157,13 @@ Division Functions
+ ------------------
+ 
+ .. kernel-doc:: include/asm-generic/div64.h
+-   :functions: do_div
++   :specific: do_div
+ 
+ .. kernel-doc:: include/linux/math64.h
+    :internal:
+ 
+ .. kernel-doc:: lib/math/div64.c
+-   :functions: div_s64_rem div64_u64_rem div64_u64 div64_s64
++   :specific: div_s64_rem div64_u64_rem div64_u64 div64_s64
+ 
+ .. kernel-doc:: lib/math/gcd.c
+    :export:
+diff --git a/Documentation/core-api/mm-api.rst b/Documentation/core-api/mm-api.rst
+index 128e8a721c1e..12579eaca4d6 100644
+--- a/Documentation/core-api/mm-api.rst
++++ b/Documentation/core-api/mm-api.rst
+@@ -12,7 +12,7 @@ User Space Memory Access
+    :export:
+ 
+ .. kernel-doc:: mm/util.c
+-   :functions: get_user_pages_fast
++   :specific: get_user_pages_fast
+ 
+ .. _mm-api-gfp-flags:
+ 
+@@ -50,7 +50,7 @@ The Slab Cache
+    :export:
+ 
+ .. kernel-doc:: mm/util.c
+-   :functions: kfree_const kvmalloc_node kvfree
++   :specific: kfree_const kvmalloc_node kvfree
+ 
+ Virtually Contiguous Mappings
+ =============================
+diff --git a/Documentation/crypto/api-aead.rst b/Documentation/crypto/api-aead.rst
+index d15256f1ae36..c195acca0ca3 100644
+--- a/Documentation/crypto/api-aead.rst
++++ b/Documentation/crypto/api-aead.rst
+@@ -5,13 +5,13 @@ Authenticated Encryption With Associated Data (AEAD) Algorithm Definitions
+    :doc: Authenticated Encryption With Associated Data (AEAD) Cipher API
+ 
+ .. kernel-doc:: include/crypto/aead.h
+-   :functions: aead_request aead_alg
++   :specific: aead_request aead_alg
+ 
+ Authenticated Encryption With Associated Data (AEAD) Cipher API
+ ---------------------------------------------------------------
+ 
+ .. kernel-doc:: include/crypto/aead.h
+-   :functions: crypto_alloc_aead crypto_free_aead crypto_aead_ivsize crypto_aead_authsize crypto_aead_blocksize crypto_aead_setkey crypto_aead_setauthsize crypto_aead_encrypt crypto_aead_decrypt
++   :specific: crypto_alloc_aead crypto_free_aead crypto_aead_ivsize crypto_aead_authsize crypto_aead_blocksize crypto_aead_setkey crypto_aead_setauthsize crypto_aead_encrypt crypto_aead_decrypt
+ 
+ Asynchronous AEAD Request Handle
+ --------------------------------
+@@ -20,4 +20,4 @@ Asynchronous AEAD Request Handle
+    :doc: Asynchronous AEAD Request Handle
+ 
+ .. kernel-doc:: include/crypto/aead.h
+-   :functions: crypto_aead_reqsize aead_request_set_tfm aead_request_alloc aead_request_free aead_request_set_callback aead_request_set_crypt aead_request_set_ad
++   :specific: crypto_aead_reqsize aead_request_set_tfm aead_request_alloc aead_request_free aead_request_set_callback aead_request_set_crypt aead_request_set_ad
+diff --git a/Documentation/crypto/api-akcipher.rst b/Documentation/crypto/api-akcipher.rst
+index 40aa8746e2a1..db4d16b5920e 100644
+--- a/Documentation/crypto/api-akcipher.rst
++++ b/Documentation/crypto/api-akcipher.rst
+@@ -2,7 +2,7 @@ Asymmetric Cipher Algorithm Definitions
+ ---------------------------------------
+ 
+ .. kernel-doc:: include/crypto/akcipher.h
+-   :functions: akcipher_alg akcipher_request
++   :specific: akcipher_alg akcipher_request
+ 
+ Asymmetric Cipher API
+ ---------------------
+@@ -11,10 +11,10 @@ Asymmetric Cipher API
+    :doc: Generic Public Key API
+ 
+ .. kernel-doc:: include/crypto/akcipher.h
+-   :functions: crypto_alloc_akcipher crypto_free_akcipher crypto_akcipher_set_pub_key crypto_akcipher_set_priv_key crypto_akcipher_maxsize crypto_akcipher_encrypt crypto_akcipher_decrypt crypto_akcipher_sign crypto_akcipher_verify
++   :specific: crypto_alloc_akcipher crypto_free_akcipher crypto_akcipher_set_pub_key crypto_akcipher_set_priv_key crypto_akcipher_maxsize crypto_akcipher_encrypt crypto_akcipher_decrypt crypto_akcipher_sign crypto_akcipher_verify
+ 
+ Asymmetric Cipher Request Handle
+ --------------------------------
+ 
+ .. kernel-doc:: include/crypto/akcipher.h
+-   :functions: akcipher_request_alloc akcipher_request_free akcipher_request_set_callback akcipher_request_set_crypt
++   :specific: akcipher_request_alloc akcipher_request_free akcipher_request_set_callback akcipher_request_set_crypt
+diff --git a/Documentation/crypto/api-digest.rst b/Documentation/crypto/api-digest.rst
+index 7a1e670d6ce1..5ac8e2db0410 100644
+--- a/Documentation/crypto/api-digest.rst
++++ b/Documentation/crypto/api-digest.rst
+@@ -5,7 +5,7 @@ Message Digest Algorithm Definitions
+    :doc: Message Digest Algorithm Definitions
+ 
+ .. kernel-doc:: include/crypto/hash.h
+-   :functions: hash_alg_common ahash_alg shash_alg
++   :specific: hash_alg_common ahash_alg shash_alg
+ 
+ Asynchronous Message Digest API
+ -------------------------------
+@@ -14,7 +14,7 @@ Asynchronous Message Digest API
+    :doc: Asynchronous Message Digest API
+ 
+ .. kernel-doc:: include/crypto/hash.h
+-   :functions: crypto_alloc_ahash crypto_free_ahash crypto_ahash_init crypto_ahash_digestsize crypto_ahash_reqtfm crypto_ahash_reqsize crypto_ahash_statesize crypto_ahash_setkey crypto_ahash_finup crypto_ahash_final crypto_ahash_digest crypto_ahash_export crypto_ahash_import
++   :specific: crypto_alloc_ahash crypto_free_ahash crypto_ahash_init crypto_ahash_digestsize crypto_ahash_reqtfm crypto_ahash_reqsize crypto_ahash_statesize crypto_ahash_setkey crypto_ahash_finup crypto_ahash_final crypto_ahash_digest crypto_ahash_export crypto_ahash_import
+ 
+ Asynchronous Hash Request Handle
+ --------------------------------
+@@ -23,7 +23,7 @@ Asynchronous Hash Request Handle
+    :doc: Asynchronous Hash Request Handle
+ 
+ .. kernel-doc:: include/crypto/hash.h
+-   :functions: ahash_request_set_tfm ahash_request_alloc ahash_request_free ahash_request_set_callback ahash_request_set_crypt
++   :specific: ahash_request_set_tfm ahash_request_alloc ahash_request_free ahash_request_set_callback ahash_request_set_crypt
+ 
+ Synchronous Message Digest API
+ ------------------------------
+@@ -32,4 +32,4 @@ Synchronous Message Digest API
+    :doc: Synchronous Message Digest API
+ 
+ .. kernel-doc:: include/crypto/hash.h
+-   :functions: crypto_alloc_shash crypto_free_shash crypto_shash_blocksize crypto_shash_digestsize crypto_shash_descsize crypto_shash_setkey crypto_shash_digest crypto_shash_export crypto_shash_import crypto_shash_init crypto_shash_update crypto_shash_final crypto_shash_finup
++   :specific: crypto_alloc_shash crypto_free_shash crypto_shash_blocksize crypto_shash_digestsize crypto_shash_descsize crypto_shash_setkey crypto_shash_digest crypto_shash_export crypto_shash_import crypto_shash_init crypto_shash_update crypto_shash_final crypto_shash_finup
+diff --git a/Documentation/crypto/api-kpp.rst b/Documentation/crypto/api-kpp.rst
+index 7d86ab906bdf..eff06d515a10 100644
+--- a/Documentation/crypto/api-kpp.rst
++++ b/Documentation/crypto/api-kpp.rst
+@@ -2,7 +2,7 @@ Key-agreement Protocol Primitives (KPP) Cipher Algorithm Definitions
+ --------------------------------------------------------------------
+ 
+ .. kernel-doc:: include/crypto/kpp.h
+-   :functions: kpp_request crypto_kpp kpp_alg kpp_secret
++   :specific: kpp_request crypto_kpp kpp_alg kpp_secret
+ 
+ Key-agreement Protocol Primitives (KPP) Cipher API
+ --------------------------------------------------
+@@ -11,13 +11,13 @@ Key-agreement Protocol Primitives (KPP) Cipher API
+    :doc: Generic Key-agreement Protocol Primitives API
+ 
+ .. kernel-doc:: include/crypto/kpp.h
+-   :functions: crypto_alloc_kpp crypto_free_kpp crypto_kpp_set_secret crypto_kpp_generate_public_key crypto_kpp_compute_shared_secret crypto_kpp_maxsize
++   :specific: crypto_alloc_kpp crypto_free_kpp crypto_kpp_set_secret crypto_kpp_generate_public_key crypto_kpp_compute_shared_secret crypto_kpp_maxsize
+ 
+ Key-agreement Protocol Primitives (KPP) Cipher Request Handle
+ -------------------------------------------------------------
+ 
+ .. kernel-doc:: include/crypto/kpp.h
+-   :functions: kpp_request_alloc kpp_request_free kpp_request_set_callback kpp_request_set_input kpp_request_set_output
++   :specific: kpp_request_alloc kpp_request_free kpp_request_set_callback kpp_request_set_input kpp_request_set_output
+ 
+ ECDH Helper Functions
+ ---------------------
+@@ -26,7 +26,7 @@ ECDH Helper Functions
+    :doc: ECDH Helper Functions
+ 
+ .. kernel-doc:: include/crypto/ecdh.h
+-   :functions: ecdh crypto_ecdh_key_len crypto_ecdh_encode_key crypto_ecdh_decode_key
++   :specific: ecdh crypto_ecdh_key_len crypto_ecdh_encode_key crypto_ecdh_decode_key
+ 
+ DH Helper Functions
+ -------------------
+@@ -35,4 +35,4 @@ DH Helper Functions
+    :doc: DH Helper Functions
+ 
+ .. kernel-doc:: include/crypto/dh.h
+-   :functions: dh crypto_dh_key_len crypto_dh_encode_key crypto_dh_decode_key
++   :specific: dh crypto_dh_key_len crypto_dh_encode_key crypto_dh_decode_key
+diff --git a/Documentation/crypto/api-rng.rst b/Documentation/crypto/api-rng.rst
+index 10ba7436cee4..2359a161efd5 100644
+--- a/Documentation/crypto/api-rng.rst
++++ b/Documentation/crypto/api-rng.rst
+@@ -2,7 +2,7 @@ Random Number Algorithm Definitions
+ -----------------------------------
+ 
+ .. kernel-doc:: include/crypto/rng.h
+-   :functions: rng_alg
++   :specific: rng_alg
+ 
+ Crypto API Random Number API
+ ----------------------------
+@@ -11,4 +11,4 @@ Crypto API Random Number API
+    :doc: Random number generator API
+ 
+ .. kernel-doc:: include/crypto/rng.h
+-   :functions: crypto_alloc_rng crypto_rng_alg crypto_free_rng crypto_rng_generate crypto_rng_get_bytes crypto_rng_reset crypto_rng_seedsize
++   :specific: crypto_alloc_rng crypto_rng_alg crypto_free_rng crypto_rng_generate crypto_rng_get_bytes crypto_rng_reset crypto_rng_seedsize
+diff --git a/Documentation/crypto/api-skcipher.rst b/Documentation/crypto/api-skcipher.rst
+index 20ba08dddf2e..7934edd73932 100644
+--- a/Documentation/crypto/api-skcipher.rst
++++ b/Documentation/crypto/api-skcipher.rst
+@@ -5,7 +5,7 @@ Block Cipher Algorithm Definitions
+    :doc: Block Cipher Algorithm Definitions
+ 
+ .. kernel-doc:: include/linux/crypto.h
+-   :functions: crypto_alg ablkcipher_alg blkcipher_alg cipher_alg compress_alg
++   :specific: crypto_alg ablkcipher_alg blkcipher_alg cipher_alg compress_alg
+ 
+ Symmetric Key Cipher API
+ ------------------------
+@@ -14,7 +14,7 @@ Symmetric Key Cipher API
+    :doc: Symmetric Key Cipher API
+ 
+ .. kernel-doc:: include/crypto/skcipher.h
+-   :functions: crypto_alloc_skcipher crypto_free_skcipher crypto_has_skcipher crypto_skcipher_ivsize crypto_skcipher_blocksize crypto_skcipher_setkey crypto_skcipher_reqtfm crypto_skcipher_encrypt crypto_skcipher_decrypt
++   :specific: crypto_alloc_skcipher crypto_free_skcipher crypto_has_skcipher crypto_skcipher_ivsize crypto_skcipher_blocksize crypto_skcipher_setkey crypto_skcipher_reqtfm crypto_skcipher_encrypt crypto_skcipher_decrypt
+ 
+ Symmetric Key Cipher Request Handle
+ -----------------------------------
+@@ -23,7 +23,7 @@ Symmetric Key Cipher Request Handle
+    :doc: Symmetric Key Cipher Request Handle
+ 
+ .. kernel-doc:: include/crypto/skcipher.h
+-   :functions: crypto_skcipher_reqsize skcipher_request_set_tfm skcipher_request_alloc skcipher_request_free skcipher_request_set_callback skcipher_request_set_crypt
++   :specific: crypto_skcipher_reqsize skcipher_request_set_tfm skcipher_request_alloc skcipher_request_free skcipher_request_set_callback skcipher_request_set_crypt
+ 
+ Single Block Cipher API
+ -----------------------
+@@ -32,7 +32,7 @@ Single Block Cipher API
+    :doc: Single Block Cipher API
+ 
+ .. kernel-doc:: include/linux/crypto.h
+-   :functions: crypto_alloc_cipher crypto_free_cipher crypto_has_cipher crypto_cipher_blocksize crypto_cipher_setkey crypto_cipher_encrypt_one crypto_cipher_decrypt_one
++   :specific: crypto_alloc_cipher crypto_free_cipher crypto_has_cipher crypto_cipher_blocksize crypto_cipher_setkey crypto_cipher_encrypt_one crypto_cipher_decrypt_one
+ 
+ Asynchronous Block Cipher API - Deprecated
+ ------------------------------------------
+@@ -41,7 +41,7 @@ Asynchronous Block Cipher API - Deprecated
+    :doc: Asynchronous Block Cipher API
+ 
+ .. kernel-doc:: include/linux/crypto.h
+-   :functions: crypto_free_ablkcipher crypto_has_ablkcipher crypto_ablkcipher_ivsize crypto_ablkcipher_blocksize crypto_ablkcipher_setkey crypto_ablkcipher_reqtfm crypto_ablkcipher_encrypt crypto_ablkcipher_decrypt
++   :specific: crypto_free_ablkcipher crypto_has_ablkcipher crypto_ablkcipher_ivsize crypto_ablkcipher_blocksize crypto_ablkcipher_setkey crypto_ablkcipher_reqtfm crypto_ablkcipher_encrypt crypto_ablkcipher_decrypt
+ 
+ Asynchronous Cipher Request Handle - Deprecated
+ -----------------------------------------------
+@@ -50,7 +50,7 @@ Asynchronous Cipher Request Handle - Deprecated
+    :doc: Asynchronous Cipher Request Handle
+ 
+ .. kernel-doc:: include/linux/crypto.h
+-   :functions: crypto_ablkcipher_reqsize ablkcipher_request_set_tfm ablkcipher_request_alloc ablkcipher_request_free ablkcipher_request_set_callback ablkcipher_request_set_crypt
++   :specific: crypto_ablkcipher_reqsize ablkcipher_request_set_tfm ablkcipher_request_alloc ablkcipher_request_free ablkcipher_request_set_callback ablkcipher_request_set_crypt
+ 
+ Synchronous Block Cipher API - Deprecated
+ -----------------------------------------
+@@ -59,4 +59,4 @@ Synchronous Block Cipher API - Deprecated
+    :doc: Synchronous Block Cipher API
+ 
+ .. kernel-doc:: include/linux/crypto.h
+-   :functions: crypto_alloc_blkcipher crypto_free_blkcipher crypto_has_blkcipher crypto_blkcipher_name crypto_blkcipher_ivsize crypto_blkcipher_blocksize crypto_blkcipher_setkey crypto_blkcipher_encrypt crypto_blkcipher_encrypt_iv crypto_blkcipher_decrypt crypto_blkcipher_decrypt_iv crypto_blkcipher_set_iv crypto_blkcipher_get_iv
++   :specific: crypto_alloc_blkcipher crypto_free_blkcipher crypto_has_blkcipher crypto_blkcipher_name crypto_blkcipher_ivsize crypto_blkcipher_blocksize crypto_blkcipher_setkey crypto_blkcipher_encrypt crypto_blkcipher_encrypt_iv crypto_blkcipher_decrypt crypto_blkcipher_decrypt_iv crypto_blkcipher_set_iv crypto_blkcipher_get_iv
+diff --git a/Documentation/dev-tools/kselftest.rst b/Documentation/dev-tools/kselftest.rst
+index ecdfdc9d4b03..da60a749eb10 100644
+--- a/Documentation/dev-tools/kselftest.rst
++++ b/Documentation/dev-tools/kselftest.rst
+@@ -300,7 +300,7 @@ Helpers
+ -------
+ 
+ .. kernel-doc:: tools/testing/selftests/kselftest_harness.h
+-    :functions: TH_LOG TEST TEST_SIGNAL FIXTURE FIXTURE_DATA FIXTURE_SETUP
++    :specific: TH_LOG TEST TEST_SIGNAL FIXTURE FIXTURE_DATA FIXTURE_SETUP
+                 FIXTURE_TEARDOWN TEST_F TEST_HARNESS_MAIN
+ 
+ Operators
+@@ -310,7 +310,7 @@ Operators
+     :doc: operators
+ 
+ .. kernel-doc:: tools/testing/selftests/kselftest_harness.h
+-    :functions: ASSERT_EQ ASSERT_NE ASSERT_LT ASSERT_LE ASSERT_GT ASSERT_GE
++    :specific: ASSERT_EQ ASSERT_NE ASSERT_LT ASSERT_LE ASSERT_GT ASSERT_GE
+                 ASSERT_NULL ASSERT_TRUE ASSERT_NULL ASSERT_TRUE ASSERT_FALSE
+                 ASSERT_STREQ ASSERT_STRNE EXPECT_EQ EXPECT_NE EXPECT_LT
+                 EXPECT_LE EXPECT_GT EXPECT_GE EXPECT_NULL EXPECT_TRUE
+diff --git a/Documentation/doc-guide/kernel-doc.rst b/Documentation/doc-guide/kernel-doc.rst
+index 192c36af39e2..c287c5edaa5c 100644
+--- a/Documentation/doc-guide/kernel-doc.rst
++++ b/Documentation/doc-guide/kernel-doc.rst
+@@ -476,6 +476,19 @@ internal: *[source-pattern ...]*
+     .. kernel-doc:: drivers/gpu/drm/i915/intel_audio.c
+        :internal:
+ 
++specific: *[ function/type ...]*
++  Include documentation for each *function* and *type* in *source*.
++  If no *function* is specified, the documentation for all functions
++  and types in the *source* will be included.
++
++  Examples::
++
++    .. kernel-doc:: lib/bitmap.c
++       :specific: bitmap_parselist bitmap_parselist_user
++
++    .. kernel-doc:: lib/idr.c
++       :specific:
++
+ doc: *title*
+   Include documentation for the ``DOC:`` paragraph identified by *title* in
+   *source*. Spaces are allowed in *title*; do not quote the *title*. The *title*
+@@ -488,19 +501,6 @@ doc: *title*
+     .. kernel-doc:: drivers/gpu/drm/i915/intel_audio.c
+        :doc: High Definition Audio over HDMI and Display Port
+ 
+-functions: *[ function ...]*
+-  Include documentation for each *function* in *source*.
+-  If no *function* is specified, the documentation for all functions
+-  and types in the *source* will be included.
+-
+-  Examples::
+-
+-    .. kernel-doc:: lib/bitmap.c
+-       :functions: bitmap_parselist bitmap_parselist_user
+-
+-    .. kernel-doc:: lib/idr.c
+-       :functions:
+-
+ Without options, the kernel-doc directive includes all documentation comments
+ from the source file.
+ 
+diff --git a/Documentation/driver-api/80211/cfg80211.rst b/Documentation/driver-api/80211/cfg80211.rst
+index eeab91b59457..aeecafeaa0b7 100644
+--- a/Documentation/driver-api/80211/cfg80211.rst
++++ b/Documentation/driver-api/80211/cfg80211.rst
+@@ -12,79 +12,79 @@ Device registration
+    :doc: Device registration
+ 
+ .. kernel-doc:: include/net/cfg80211.h
+-   :functions: ieee80211_channel_flags
++   :specific: ieee80211_channel_flags
+ 
+ .. kernel-doc:: include/net/cfg80211.h
+-   :functions: ieee80211_channel
++   :specific: ieee80211_channel
+ 
+ .. kernel-doc:: include/net/cfg80211.h
+-   :functions: ieee80211_rate_flags
++   :specific: ieee80211_rate_flags
+ 
+ .. kernel-doc:: include/net/cfg80211.h
+-   :functions: ieee80211_rate
++   :specific: ieee80211_rate
+ 
+ .. kernel-doc:: include/net/cfg80211.h
+-   :functions: ieee80211_sta_ht_cap
++   :specific: ieee80211_sta_ht_cap
+ 
+ .. kernel-doc:: include/net/cfg80211.h
+-   :functions: ieee80211_supported_band
++   :specific: ieee80211_supported_band
+ 
+ .. kernel-doc:: include/net/cfg80211.h
+-   :functions: cfg80211_signal_type
++   :specific: cfg80211_signal_type
+ 
+ .. kernel-doc:: include/net/cfg80211.h
+-   :functions: wiphy_params_flags
++   :specific: wiphy_params_flags
+ 
+ .. kernel-doc:: include/net/cfg80211.h
+-   :functions: wiphy_flags
++   :specific: wiphy_flags
+ 
+ .. kernel-doc:: include/net/cfg80211.h
+-   :functions: wiphy
++   :specific: wiphy
+ 
+ .. kernel-doc:: include/net/cfg80211.h
+-   :functions: wireless_dev
++   :specific: wireless_dev
+ 
+ .. kernel-doc:: include/net/cfg80211.h
+-   :functions: wiphy_new
++   :specific: wiphy_new
+ 
+ .. kernel-doc:: include/net/cfg80211.h
+-   :functions: wiphy_read_of_freq_limits
++   :specific: wiphy_read_of_freq_limits
+ 
+ .. kernel-doc:: include/net/cfg80211.h
+-   :functions: wiphy_register
++   :specific: wiphy_register
+ 
+ .. kernel-doc:: include/net/cfg80211.h
+-   :functions: wiphy_unregister
++   :specific: wiphy_unregister
+ 
+ .. kernel-doc:: include/net/cfg80211.h
+-   :functions: wiphy_free
++   :specific: wiphy_free
+ 
+ .. kernel-doc:: include/net/cfg80211.h
+-   :functions: wiphy_name
++   :specific: wiphy_name
+ 
+ .. kernel-doc:: include/net/cfg80211.h
+-   :functions: wiphy_dev
++   :specific: wiphy_dev
+ 
+ .. kernel-doc:: include/net/cfg80211.h
+-   :functions: wiphy_priv
++   :specific: wiphy_priv
+ 
+ .. kernel-doc:: include/net/cfg80211.h
+-   :functions: priv_to_wiphy
++   :specific: priv_to_wiphy
+ 
+ .. kernel-doc:: include/net/cfg80211.h
+-   :functions: set_wiphy_dev
++   :specific: set_wiphy_dev
+ 
+ .. kernel-doc:: include/net/cfg80211.h
+-   :functions: wdev_priv
++   :specific: wdev_priv
+ 
+ .. kernel-doc:: include/net/cfg80211.h
+-   :functions: ieee80211_iface_limit
++   :specific: ieee80211_iface_limit
+ 
+ .. kernel-doc:: include/net/cfg80211.h
+-   :functions: ieee80211_iface_combination
++   :specific: ieee80211_iface_combination
+ 
+ .. kernel-doc:: include/net/cfg80211.h
+-   :functions: cfg80211_check_combinations
++   :specific: cfg80211_check_combinations
+ 
+ Actions and configuration
+ =========================
+@@ -93,139 +93,139 @@ Actions and configuration
+    :doc: Actions and configuration
+ 
+ .. kernel-doc:: include/net/cfg80211.h
+-   :functions: cfg80211_ops
++   :specific: cfg80211_ops
+ 
+ .. kernel-doc:: include/net/cfg80211.h
+-   :functions: vif_params
++   :specific: vif_params
+ 
+ .. kernel-doc:: include/net/cfg80211.h
+-   :functions: key_params
++   :specific: key_params
+ 
+ .. kernel-doc:: include/net/cfg80211.h
+-   :functions: survey_info_flags
++   :specific: survey_info_flags
+ 
+ .. kernel-doc:: include/net/cfg80211.h
+-   :functions: survey_info
++   :specific: survey_info
+ 
+ .. kernel-doc:: include/net/cfg80211.h
+-   :functions: cfg80211_beacon_data
++   :specific: cfg80211_beacon_data
+ 
+ .. kernel-doc:: include/net/cfg80211.h
+-   :functions: cfg80211_ap_settings
++   :specific: cfg80211_ap_settings
+ 
+ .. kernel-doc:: include/net/cfg80211.h
+-   :functions: station_parameters
++   :specific: station_parameters
+ 
+ .. kernel-doc:: include/net/cfg80211.h
+-   :functions: rate_info_flags
++   :specific: rate_info_flags
+ 
+ .. kernel-doc:: include/net/cfg80211.h
+-   :functions: rate_info
++   :specific: rate_info
+ 
+ .. kernel-doc:: include/net/cfg80211.h
+-   :functions: station_info
++   :specific: station_info
+ 
+ .. kernel-doc:: include/net/cfg80211.h
+-   :functions: monitor_flags
++   :specific: monitor_flags
+ 
+ .. kernel-doc:: include/net/cfg80211.h
+-   :functions: mpath_info_flags
++   :specific: mpath_info_flags
+ 
+ .. kernel-doc:: include/net/cfg80211.h
+-   :functions: mpath_info
++   :specific: mpath_info
+ 
+ .. kernel-doc:: include/net/cfg80211.h
+-   :functions: bss_parameters
++   :specific: bss_parameters
+ 
+ .. kernel-doc:: include/net/cfg80211.h
+-   :functions: ieee80211_txq_params
++   :specific: ieee80211_txq_params
+ 
+ .. kernel-doc:: include/net/cfg80211.h
+-   :functions: cfg80211_crypto_settings
++   :specific: cfg80211_crypto_settings
+ 
+ .. kernel-doc:: include/net/cfg80211.h
+-   :functions: cfg80211_auth_request
++   :specific: cfg80211_auth_request
+ 
+ .. kernel-doc:: include/net/cfg80211.h
+-   :functions: cfg80211_assoc_request
++   :specific: cfg80211_assoc_request
+ 
+ .. kernel-doc:: include/net/cfg80211.h
+-   :functions: cfg80211_deauth_request
++   :specific: cfg80211_deauth_request
+ 
+ .. kernel-doc:: include/net/cfg80211.h
+-   :functions: cfg80211_disassoc_request
++   :specific: cfg80211_disassoc_request
+ 
+ .. kernel-doc:: include/net/cfg80211.h
+-   :functions: cfg80211_ibss_params
++   :specific: cfg80211_ibss_params
+ 
+ .. kernel-doc:: include/net/cfg80211.h
+-   :functions: cfg80211_connect_params
++   :specific: cfg80211_connect_params
+ 
+ .. kernel-doc:: include/net/cfg80211.h
+-   :functions: cfg80211_pmksa
++   :specific: cfg80211_pmksa
+ 
+ .. kernel-doc:: include/net/cfg80211.h
+-   :functions: cfg80211_rx_mlme_mgmt
++   :specific: cfg80211_rx_mlme_mgmt
+ 
+ .. kernel-doc:: include/net/cfg80211.h
+-   :functions: cfg80211_auth_timeout
++   :specific: cfg80211_auth_timeout
+ 
+ .. kernel-doc:: include/net/cfg80211.h
+-   :functions: cfg80211_rx_assoc_resp
++   :specific: cfg80211_rx_assoc_resp
+ 
+ .. kernel-doc:: include/net/cfg80211.h
+-   :functions: cfg80211_assoc_timeout
++   :specific: cfg80211_assoc_timeout
+ 
+ .. kernel-doc:: include/net/cfg80211.h
+-   :functions: cfg80211_tx_mlme_mgmt
++   :specific: cfg80211_tx_mlme_mgmt
+ 
+ .. kernel-doc:: include/net/cfg80211.h
+-   :functions: cfg80211_ibss_joined
++   :specific: cfg80211_ibss_joined
+ 
+ .. kernel-doc:: include/net/cfg80211.h
+-   :functions: cfg80211_connect_resp_params
++   :specific: cfg80211_connect_resp_params
+ 
+ .. kernel-doc:: include/net/cfg80211.h
+-   :functions: cfg80211_connect_done
++   :specific: cfg80211_connect_done
+ 
+ .. kernel-doc:: include/net/cfg80211.h
+-   :functions: cfg80211_connect_result
++   :specific: cfg80211_connect_result
+ 
+ .. kernel-doc:: include/net/cfg80211.h
+-   :functions: cfg80211_connect_bss
++   :specific: cfg80211_connect_bss
+ 
+ .. kernel-doc:: include/net/cfg80211.h
+-   :functions: cfg80211_connect_timeout
++   :specific: cfg80211_connect_timeout
+ 
+ .. kernel-doc:: include/net/cfg80211.h
+-   :functions: cfg80211_roamed
++   :specific: cfg80211_roamed
+ 
+ .. kernel-doc:: include/net/cfg80211.h
+-   :functions: cfg80211_disconnected
++   :specific: cfg80211_disconnected
+ 
+ .. kernel-doc:: include/net/cfg80211.h
+-   :functions: cfg80211_ready_on_channel
++   :specific: cfg80211_ready_on_channel
+ 
+ .. kernel-doc:: include/net/cfg80211.h
+-   :functions: cfg80211_remain_on_channel_expired
++   :specific: cfg80211_remain_on_channel_expired
+ 
+ .. kernel-doc:: include/net/cfg80211.h
+-   :functions: cfg80211_new_sta
++   :specific: cfg80211_new_sta
+ 
+ .. kernel-doc:: include/net/cfg80211.h
+-   :functions: cfg80211_rx_mgmt
++   :specific: cfg80211_rx_mgmt
+ 
+ .. kernel-doc:: include/net/cfg80211.h
+-   :functions: cfg80211_mgmt_tx_status
++   :specific: cfg80211_mgmt_tx_status
+ 
+ .. kernel-doc:: include/net/cfg80211.h
+-   :functions: cfg80211_cqm_rssi_notify
++   :specific: cfg80211_cqm_rssi_notify
+ 
+ .. kernel-doc:: include/net/cfg80211.h
+-   :functions: cfg80211_cqm_pktloss_notify
++   :specific: cfg80211_cqm_pktloss_notify
+ 
+ .. kernel-doc:: include/net/cfg80211.h
+-   :functions: cfg80211_michael_mic_failure
++   :specific: cfg80211_michael_mic_failure
+ 
+ Scanning and BSS list handling
+ ==============================
+@@ -234,34 +234,34 @@ Scanning and BSS list handling
+    :doc: Scanning and BSS list handling
+ 
+ .. kernel-doc:: include/net/cfg80211.h
+-   :functions: cfg80211_ssid
++   :specific: cfg80211_ssid
+ 
+ .. kernel-doc:: include/net/cfg80211.h
+-   :functions: cfg80211_scan_request
++   :specific: cfg80211_scan_request
+ 
+ .. kernel-doc:: include/net/cfg80211.h
+-   :functions: cfg80211_scan_done
++   :specific: cfg80211_scan_done
+ 
+ .. kernel-doc:: include/net/cfg80211.h
+-   :functions: cfg80211_bss
++   :specific: cfg80211_bss
+ 
+ .. kernel-doc:: include/net/cfg80211.h
+-   :functions: cfg80211_inform_bss
++   :specific: cfg80211_inform_bss
+ 
+ .. kernel-doc:: include/net/cfg80211.h
+-   :functions: cfg80211_inform_bss_frame_data
++   :specific: cfg80211_inform_bss_frame_data
+ 
+ .. kernel-doc:: include/net/cfg80211.h
+-   :functions: cfg80211_inform_bss_data
++   :specific: cfg80211_inform_bss_data
+ 
+ .. kernel-doc:: include/net/cfg80211.h
+-   :functions: cfg80211_unlink_bss
++   :specific: cfg80211_unlink_bss
+ 
+ .. kernel-doc:: include/net/cfg80211.h
+-   :functions: cfg80211_find_ie
++   :specific: cfg80211_find_ie
+ 
+ .. kernel-doc:: include/net/cfg80211.h
+-   :functions: ieee80211_bss_get_ie
++   :specific: ieee80211_bss_get_ie
+ 
+ Utility functions
+ =================
+@@ -270,25 +270,25 @@ Utility functions
+    :doc: Utility functions
+ 
+ .. kernel-doc:: include/net/cfg80211.h
+-   :functions: ieee80211_channel_to_frequency
++   :specific: ieee80211_channel_to_frequency
+ 
+ .. kernel-doc:: include/net/cfg80211.h
+-   :functions: ieee80211_frequency_to_channel
++   :specific: ieee80211_frequency_to_channel
+ 
+ .. kernel-doc:: include/net/cfg80211.h
+-   :functions: ieee80211_get_channel
++   :specific: ieee80211_get_channel
+ 
+ .. kernel-doc:: include/net/cfg80211.h
+-   :functions: ieee80211_get_response_rate
++   :specific: ieee80211_get_response_rate
+ 
+ .. kernel-doc:: include/net/cfg80211.h
+-   :functions: ieee80211_hdrlen
++   :specific: ieee80211_hdrlen
+ 
+ .. kernel-doc:: include/net/cfg80211.h
+-   :functions: ieee80211_get_hdrlen_from_skb
++   :specific: ieee80211_get_hdrlen_from_skb
+ 
+ .. kernel-doc:: include/net/cfg80211.h
+-   :functions: ieee80211_radiotap_iterator
++   :specific: ieee80211_radiotap_iterator
+ 
+ Data path helpers
+ =================
+@@ -297,13 +297,13 @@ Data path helpers
+    :doc: Data path helpers
+ 
+ .. kernel-doc:: include/net/cfg80211.h
+-   :functions: ieee80211_data_to_8023
++   :specific: ieee80211_data_to_8023
+ 
+ .. kernel-doc:: include/net/cfg80211.h
+-   :functions: ieee80211_amsdu_to_8023s
++   :specific: ieee80211_amsdu_to_8023s
+ 
+ .. kernel-doc:: include/net/cfg80211.h
+-   :functions: cfg80211_classify8021d
++   :specific: cfg80211_classify8021d
+ 
+ Regulatory enforcement infrastructure
+ =====================================
+@@ -312,13 +312,13 @@ Regulatory enforcement infrastructure
+    :doc: Regulatory enforcement infrastructure
+ 
+ .. kernel-doc:: include/net/cfg80211.h
+-   :functions: regulatory_hint
++   :specific: regulatory_hint
+ 
+ .. kernel-doc:: include/net/cfg80211.h
+-   :functions: wiphy_apply_custom_regulatory
++   :specific: wiphy_apply_custom_regulatory
+ 
+ .. kernel-doc:: include/net/cfg80211.h
+-   :functions: freq_reg_info
++   :specific: freq_reg_info
+ 
+ RFkill integration
+ ==================
+@@ -327,13 +327,13 @@ RFkill integration
+    :doc: RFkill integration
+ 
+ .. kernel-doc:: include/net/cfg80211.h
+-   :functions: wiphy_rfkill_set_hw_state
++   :specific: wiphy_rfkill_set_hw_state
+ 
+ .. kernel-doc:: include/net/cfg80211.h
+-   :functions: wiphy_rfkill_start_polling
++   :specific: wiphy_rfkill_start_polling
+ 
+ .. kernel-doc:: include/net/cfg80211.h
+-   :functions: wiphy_rfkill_stop_polling
++   :specific: wiphy_rfkill_stop_polling
+ 
+ Test mode
+ =========
+@@ -342,13 +342,13 @@ Test mode
+    :doc: Test mode
+ 
+ .. kernel-doc:: include/net/cfg80211.h
+-   :functions: cfg80211_testmode_alloc_reply_skb
++   :specific: cfg80211_testmode_alloc_reply_skb
+ 
+ .. kernel-doc:: include/net/cfg80211.h
+-   :functions: cfg80211_testmode_reply
++   :specific: cfg80211_testmode_reply
+ 
+ .. kernel-doc:: include/net/cfg80211.h
+-   :functions: cfg80211_testmode_alloc_event_skb
++   :specific: cfg80211_testmode_alloc_event_skb
+ 
+ .. kernel-doc:: include/net/cfg80211.h
+-   :functions: cfg80211_testmode_event
++   :specific: cfg80211_testmode_event
+diff --git a/Documentation/driver-api/80211/mac80211-advanced.rst b/Documentation/driver-api/80211/mac80211-advanced.rst
+index 9f1c5bb7ac35..9eeff622a192 100644
+--- a/Documentation/driver-api/80211/mac80211-advanced.rst
++++ b/Documentation/driver-api/80211/mac80211-advanced.rst
+@@ -15,25 +15,25 @@ appropriate trigger, which will then be triggered appropriately by
+ mac80211.
+ 
+ .. kernel-doc:: include/net/mac80211.h
+-   :functions: ieee80211_get_tx_led_name
++   :specific: ieee80211_get_tx_led_name
+ 
+ .. kernel-doc:: include/net/mac80211.h
+-   :functions: ieee80211_get_rx_led_name
++   :specific: ieee80211_get_rx_led_name
+ 
+ .. kernel-doc:: include/net/mac80211.h
+-   :functions: ieee80211_get_assoc_led_name
++   :specific: ieee80211_get_assoc_led_name
+ 
+ .. kernel-doc:: include/net/mac80211.h
+-   :functions: ieee80211_get_radio_led_name
++   :specific: ieee80211_get_radio_led_name
+ 
+ .. kernel-doc:: include/net/mac80211.h
+-   :functions: ieee80211_tpt_blink
++   :specific: ieee80211_tpt_blink
+ 
+ .. kernel-doc:: include/net/mac80211.h
+-   :functions: ieee80211_tpt_led_trigger_flags
++   :specific: ieee80211_tpt_led_trigger_flags
+ 
+ .. kernel-doc:: include/net/mac80211.h
+-   :functions: ieee80211_create_tpt_led_trigger
++   :specific: ieee80211_create_tpt_led_trigger
+ 
+ Hardware crypto acceleration
+ ============================
+@@ -42,22 +42,22 @@ Hardware crypto acceleration
+    :doc: Hardware crypto acceleration
+ 
+ .. kernel-doc:: include/net/mac80211.h
+-   :functions: set_key_cmd
++   :specific: set_key_cmd
+ 
+ .. kernel-doc:: include/net/mac80211.h
+-   :functions: ieee80211_key_conf
++   :specific: ieee80211_key_conf
+ 
+ .. kernel-doc:: include/net/mac80211.h
+-   :functions: ieee80211_key_flags
++   :specific: ieee80211_key_flags
+ 
+ .. kernel-doc:: include/net/mac80211.h
+-   :functions: ieee80211_get_tkip_p1k
++   :specific: ieee80211_get_tkip_p1k
+ 
+ .. kernel-doc:: include/net/mac80211.h
+-   :functions: ieee80211_get_tkip_p1k_iv
++   :specific: ieee80211_get_tkip_p1k_iv
+ 
+ .. kernel-doc:: include/net/mac80211.h
+-   :functions: ieee80211_get_tkip_p2k
++   :specific: ieee80211_get_tkip_p2k
+ 
+ Powersave support
+ =================
+@@ -72,7 +72,7 @@ Beacon filter support
+    :doc: Beacon filter support
+ 
+ .. kernel-doc:: include/net/mac80211.h
+-   :functions: ieee80211_beacon_loss
++   :specific: ieee80211_beacon_loss
+ 
+ Multiple queues and QoS support
+ ===============================
+@@ -80,7 +80,7 @@ Multiple queues and QoS support
+ TBD
+ 
+ .. kernel-doc:: include/net/mac80211.h
+-   :functions: ieee80211_tx_queue_params
++   :specific: ieee80211_tx_queue_params
+ 
+ Access point mode support
+ =========================
+@@ -99,28 +99,28 @@ support for powersaving clients
+    :doc: AP support for powersaving clients
+ 
+ .. kernel-doc:: include/net/mac80211.h
+-   :functions: ieee80211_get_buffered_bc
++   :specific: ieee80211_get_buffered_bc
+ 
+ .. kernel-doc:: include/net/mac80211.h
+-   :functions: ieee80211_beacon_get
++   :specific: ieee80211_beacon_get
+ 
+ .. kernel-doc:: include/net/mac80211.h
+-   :functions: ieee80211_sta_eosp
++   :specific: ieee80211_sta_eosp
+ 
+ .. kernel-doc:: include/net/mac80211.h
+-   :functions: ieee80211_frame_release_type
++   :specific: ieee80211_frame_release_type
+ 
+ .. kernel-doc:: include/net/mac80211.h
+-   :functions: ieee80211_sta_ps_transition
++   :specific: ieee80211_sta_ps_transition
+ 
+ .. kernel-doc:: include/net/mac80211.h
+-   :functions: ieee80211_sta_ps_transition_ni
++   :specific: ieee80211_sta_ps_transition_ni
+ 
+ .. kernel-doc:: include/net/mac80211.h
+-   :functions: ieee80211_sta_set_buffered
++   :specific: ieee80211_sta_set_buffered
+ 
+ .. kernel-doc:: include/net/mac80211.h
+-   :functions: ieee80211_sta_block_awake
++   :specific: ieee80211_sta_block_awake
+ 
+ Supporting multiple virtual interfaces
+ ======================================
+@@ -134,10 +134,10 @@ addresses here, note which configurations are supported by mac80211, add
+ notes about supporting hw crypto with it.
+ 
+ .. kernel-doc:: include/net/mac80211.h
+-   :functions: ieee80211_iterate_active_interfaces
++   :specific: ieee80211_iterate_active_interfaces
+ 
+ .. kernel-doc:: include/net/mac80211.h
+-   :functions: ieee80211_iterate_active_interfaces_atomic
++   :specific: ieee80211_iterate_active_interfaces_atomic
+ 
+ Station handling
+ ================
+@@ -145,16 +145,16 @@ Station handling
+ TODO
+ 
+ .. kernel-doc:: include/net/mac80211.h
+-   :functions: ieee80211_sta
++   :specific: ieee80211_sta
+ 
+ .. kernel-doc:: include/net/mac80211.h
+-   :functions: sta_notify_cmd
++   :specific: sta_notify_cmd
+ 
+ .. kernel-doc:: include/net/mac80211.h
+-   :functions: ieee80211_find_sta
++   :specific: ieee80211_find_sta
+ 
+ .. kernel-doc:: include/net/mac80211.h
+-   :functions: ieee80211_find_sta_by_ifaddr
++   :specific: ieee80211_find_sta_by_ifaddr
+ 
+ Hardware scan offload
+ =====================
+@@ -162,7 +162,7 @@ Hardware scan offload
+ TBD
+ 
+ .. kernel-doc:: include/net/mac80211.h
+-   :functions: ieee80211_scan_completed
++   :specific: ieee80211_scan_completed
+ 
+ Aggregation
+ ===========
+@@ -184,7 +184,7 @@ RX A-MPDU aggregation
+ .. WARNING: DOCPROC directive not supported: !Cnet/mac80211/agg-rx.c
+ 
+ .. kernel-doc:: include/net/mac80211.h
+-   :functions: ieee80211_ampdu_mlme_action
++   :specific: ieee80211_ampdu_mlme_action
+ 
+ Spatial Multiplexing Powersave (SMPS)
+ =====================================
+@@ -193,10 +193,10 @@ Spatial Multiplexing Powersave (SMPS)
+    :doc: Spatial multiplexing power save
+ 
+ .. kernel-doc:: include/net/mac80211.h
+-   :functions: ieee80211_request_smps
++   :specific: ieee80211_request_smps
+ 
+ .. kernel-doc:: include/net/mac80211.h
+-   :functions: ieee80211_smps_mode
++   :specific: ieee80211_smps_mode
+ 
+ TBD
+ 
+@@ -209,22 +209,22 @@ Rate Control API
+ TBD
+ 
+ .. kernel-doc:: include/net/mac80211.h
+-   :functions: ieee80211_start_tx_ba_session
++   :specific: ieee80211_start_tx_ba_session
+ 
+ .. kernel-doc:: include/net/mac80211.h
+-   :functions: ieee80211_start_tx_ba_cb_irqsafe
++   :specific: ieee80211_start_tx_ba_cb_irqsafe
+ 
+ .. kernel-doc:: include/net/mac80211.h
+-   :functions: ieee80211_stop_tx_ba_session
++   :specific: ieee80211_stop_tx_ba_session
+ 
+ .. kernel-doc:: include/net/mac80211.h
+-   :functions: ieee80211_stop_tx_ba_cb_irqsafe
++   :specific: ieee80211_stop_tx_ba_cb_irqsafe
+ 
+ .. kernel-doc:: include/net/mac80211.h
+-   :functions: ieee80211_rate_control_changed
++   :specific: ieee80211_rate_control_changed
+ 
+ .. kernel-doc:: include/net/mac80211.h
+-   :functions: ieee80211_tx_rate_control
++   :specific: ieee80211_tx_rate_control
+ 
+ TBD
+ 
+@@ -261,10 +261,10 @@ Programming information
+ -----------------------
+ 
+ .. kernel-doc:: net/mac80211/sta_info.h
+-   :functions: sta_info
++   :specific: sta_info
+ 
+ .. kernel-doc:: net/mac80211/sta_info.h
+-   :functions: ieee80211_sta_info_flags
++   :specific: ieee80211_sta_info_flags
+ 
+ STA information lifetime rules
+ ------------------------------
+@@ -276,13 +276,13 @@ Aggregation
+ ===========
+ 
+ .. kernel-doc:: net/mac80211/sta_info.h
+-   :functions: sta_ampdu_mlme
++   :specific: sta_ampdu_mlme
+ 
+ .. kernel-doc:: net/mac80211/sta_info.h
+-   :functions: tid_ampdu_tx
++   :specific: tid_ampdu_tx
+ 
+ .. kernel-doc:: net/mac80211/sta_info.h
+-   :functions: tid_ampdu_rx
++   :specific: tid_ampdu_rx
+ 
+ Synchronisation
+ ===============
+diff --git a/Documentation/driver-api/80211/mac80211.rst b/Documentation/driver-api/80211/mac80211.rst
+index eab40bcf3987..6ac0fa665532 100644
+--- a/Documentation/driver-api/80211/mac80211.rst
++++ b/Documentation/driver-api/80211/mac80211.rst
+@@ -30,31 +30,31 @@ Finally, a discussion of hardware capabilities should be done with
+ references to other parts of the book.
+ 
+ .. kernel-doc:: include/net/mac80211.h
+-   :functions: ieee80211_hw
++   :specific: ieee80211_hw
+ 
+ .. kernel-doc:: include/net/mac80211.h
+-   :functions: ieee80211_hw_flags
++   :specific: ieee80211_hw_flags
+ 
+ .. kernel-doc:: include/net/mac80211.h
+-   :functions: SET_IEEE80211_DEV
++   :specific: SET_IEEE80211_DEV
+ 
+ .. kernel-doc:: include/net/mac80211.h
+-   :functions: SET_IEEE80211_PERM_ADDR
++   :specific: SET_IEEE80211_PERM_ADDR
+ 
+ .. kernel-doc:: include/net/mac80211.h
+-   :functions: ieee80211_ops
++   :specific: ieee80211_ops
+ 
+ .. kernel-doc:: include/net/mac80211.h
+-   :functions: ieee80211_alloc_hw
++   :specific: ieee80211_alloc_hw
+ 
+ .. kernel-doc:: include/net/mac80211.h
+-   :functions: ieee80211_register_hw
++   :specific: ieee80211_register_hw
+ 
+ .. kernel-doc:: include/net/mac80211.h
+-   :functions: ieee80211_unregister_hw
++   :specific: ieee80211_unregister_hw
+ 
+ .. kernel-doc:: include/net/mac80211.h
+-   :functions: ieee80211_free_hw
++   :specific: ieee80211_free_hw
+ 
+ PHY configuration
+ =================
+@@ -65,10 +65,10 @@ This chapter should describe PHY handling including start/stop callbacks
+ and the various structures used.
+ 
+ .. kernel-doc:: include/net/mac80211.h
+-   :functions: ieee80211_conf
++   :specific: ieee80211_conf
+ 
+ .. kernel-doc:: include/net/mac80211.h
+-   :functions: ieee80211_conf_flags
++   :specific: ieee80211_conf_flags
+ 
+ Virtual interfaces
+ ==================
+@@ -88,7 +88,7 @@ the recommendation to allow only a single interface in STA mode at
+ first!
+ 
+ .. kernel-doc:: include/net/mac80211.h
+-   :functions: ieee80211_vif
++   :specific: ieee80211_vif
+ 
+ Receive and transmit processing
+ ===============================
+@@ -123,79 +123,79 @@ functions/definitions
+ ---------------------
+ 
+ .. kernel-doc:: include/net/mac80211.h
+-   :functions: ieee80211_rx_status
++   :specific: ieee80211_rx_status
+ 
+ .. kernel-doc:: include/net/mac80211.h
+-   :functions: mac80211_rx_encoding_flags
++   :specific: mac80211_rx_encoding_flags
+ 
+ .. kernel-doc:: include/net/mac80211.h
+-   :functions: mac80211_rx_flags
++   :specific: mac80211_rx_flags
+ 
+ .. kernel-doc:: include/net/mac80211.h
+-   :functions: mac80211_tx_info_flags
++   :specific: mac80211_tx_info_flags
+ 
+ .. kernel-doc:: include/net/mac80211.h
+-   :functions: mac80211_tx_control_flags
++   :specific: mac80211_tx_control_flags
+ 
+ .. kernel-doc:: include/net/mac80211.h
+-   :functions: mac80211_rate_control_flags
++   :specific: mac80211_rate_control_flags
+ 
+ .. kernel-doc:: include/net/mac80211.h
+-   :functions: ieee80211_tx_rate
++   :specific: ieee80211_tx_rate
+ 
+ .. kernel-doc:: include/net/mac80211.h
+-   :functions: ieee80211_tx_info
++   :specific: ieee80211_tx_info
+ 
+ .. kernel-doc:: include/net/mac80211.h
+-   :functions: ieee80211_tx_info_clear_status
++   :specific: ieee80211_tx_info_clear_status
+ 
+ .. kernel-doc:: include/net/mac80211.h
+-   :functions: ieee80211_rx
++   :specific: ieee80211_rx
+ 
+ .. kernel-doc:: include/net/mac80211.h
+-   :functions: ieee80211_rx_ni
++   :specific: ieee80211_rx_ni
+ 
+ .. kernel-doc:: include/net/mac80211.h
+-   :functions: ieee80211_rx_irqsafe
++   :specific: ieee80211_rx_irqsafe
+ 
+ .. kernel-doc:: include/net/mac80211.h
+-   :functions: ieee80211_tx_status
++   :specific: ieee80211_tx_status
+ 
+ .. kernel-doc:: include/net/mac80211.h
+-   :functions: ieee80211_tx_status_ni
++   :specific: ieee80211_tx_status_ni
+ 
+ .. kernel-doc:: include/net/mac80211.h
+-   :functions: ieee80211_tx_status_irqsafe
++   :specific: ieee80211_tx_status_irqsafe
+ 
+ .. kernel-doc:: include/net/mac80211.h
+-   :functions: ieee80211_rts_get
++   :specific: ieee80211_rts_get
+ 
+ .. kernel-doc:: include/net/mac80211.h
+-   :functions: ieee80211_rts_duration
++   :specific: ieee80211_rts_duration
+ 
+ .. kernel-doc:: include/net/mac80211.h
+-   :functions: ieee80211_ctstoself_get
++   :specific: ieee80211_ctstoself_get
+ 
+ .. kernel-doc:: include/net/mac80211.h
+-   :functions: ieee80211_ctstoself_duration
++   :specific: ieee80211_ctstoself_duration
+ 
+ .. kernel-doc:: include/net/mac80211.h
+-   :functions: ieee80211_generic_frame_duration
++   :specific: ieee80211_generic_frame_duration
+ 
+ .. kernel-doc:: include/net/mac80211.h
+-   :functions: ieee80211_wake_queue
++   :specific: ieee80211_wake_queue
+ 
+ .. kernel-doc:: include/net/mac80211.h
+-   :functions: ieee80211_stop_queue
++   :specific: ieee80211_stop_queue
+ 
+ .. kernel-doc:: include/net/mac80211.h
+-   :functions: ieee80211_wake_queues
++   :specific: ieee80211_wake_queues
+ 
+ .. kernel-doc:: include/net/mac80211.h
+-   :functions: ieee80211_stop_queues
++   :specific: ieee80211_stop_queues
+ 
+ .. kernel-doc:: include/net/mac80211.h
+-   :functions: ieee80211_queue_stopped
++   :specific: ieee80211_queue_stopped
+ 
+ Frame filtering
+ ===============
+@@ -204,7 +204,7 @@ Frame filtering
+    :doc: Frame filtering
+ 
+ .. kernel-doc:: include/net/mac80211.h
+-   :functions: ieee80211_filter_flags
++   :specific: ieee80211_filter_flags
+ 
+ The mac80211 workqueue
+ ======================
+@@ -213,7 +213,7 @@ The mac80211 workqueue
+    :doc: mac80211 workqueue
+ 
+ .. kernel-doc:: include/net/mac80211.h
+-   :functions: ieee80211_queue_work
++   :specific: ieee80211_queue_work
+ 
+ .. kernel-doc:: include/net/mac80211.h
+-   :functions: ieee80211_queue_delayed_work
++   :specific: ieee80211_queue_delayed_work
+diff --git a/Documentation/driver-api/device_connection.rst b/Documentation/driver-api/device_connection.rst
+index ba364224c349..0feaf7146dd6 100644
+--- a/Documentation/driver-api/device_connection.rst
++++ b/Documentation/driver-api/device_connection.rst
+@@ -40,4 +40,4 @@ API
+ ---
+ 
+ .. kernel-doc:: drivers/base/devcon.c
+-   :functions: device_connection_find_match device_connection_find device_connection_add device_connection_remove
++   :specific: device_connection_find_match device_connection_find device_connection_add device_connection_remove
+diff --git a/Documentation/driver-api/device_link.rst b/Documentation/driver-api/device_link.rst
+index 1b5020ec6517..6e79007d41cd 100644
+--- a/Documentation/driver-api/device_link.rst
++++ b/Documentation/driver-api/device_link.rst
+@@ -258,7 +258,7 @@ State machine
+ =============
+ 
+ .. kernel-doc:: include/linux/device.h
+-   :functions: device_link_state
++   :specific: device_link_state
+ 
+ ::
+ 
+@@ -321,4 +321,4 @@ API
+ ===
+ 
+ .. kernel-doc:: drivers/base/core.c
+-   :functions: device_link_add device_link_del device_link_remove
++   :specific: device_link_add device_link_del device_link_remove
+diff --git a/Documentation/driver-api/firmware/fallback-mechanisms.rst b/Documentation/driver-api/firmware/fallback-mechanisms.rst
+index 8b041d0ab426..08d60ae4e138 100644
+--- a/Documentation/driver-api/firmware/fallback-mechanisms.rst
++++ b/Documentation/driver-api/firmware/fallback-mechanisms.rst
+@@ -111,7 +111,7 @@ expected to be used regularly by userspace.
+ firmware_fallback_sysfs
+ -----------------------
+ .. kernel-doc:: drivers/base/firmware_loader/fallback.c
+-   :functions: firmware_fallback_sysfs
++   :specific: firmware_fallback_sysfs
+ 
+ Firmware kobject uevent fallback mechanism
+ ==========================================
+diff --git a/Documentation/driver-api/firmware/other_interfaces.rst b/Documentation/driver-api/firmware/other_interfaces.rst
+index b81794e0cfbb..da948488a4c4 100644
+--- a/Documentation/driver-api/firmware/other_interfaces.rst
++++ b/Documentation/driver-api/firmware/other_interfaces.rst
+@@ -27,19 +27,19 @@ and processed one by one. ARM’s SMCCC is used to pass the execution
+ of the requests on to a secure monitor (EL3).
+ 
+ .. kernel-doc:: include/linux/firmware/intel/stratix10-svc-client.h
+-   :functions: stratix10_svc_command_code
++   :specific: stratix10_svc_command_code
+ 
+ .. kernel-doc:: include/linux/firmware/intel/stratix10-svc-client.h
+-   :functions: stratix10_svc_client_msg
++   :specific: stratix10_svc_client_msg
+ 
+ .. kernel-doc:: include/linux/firmware/intel/stratix10-svc-client.h
+-   :functions: stratix10_svc_command_config_type
++   :specific: stratix10_svc_command_config_type
+ 
+ .. kernel-doc:: include/linux/firmware/intel/stratix10-svc-client.h
+-   :functions: stratix10_svc_cb_data
++   :specific: stratix10_svc_cb_data
+ 
+ .. kernel-doc:: include/linux/firmware/intel/stratix10-svc-client.h
+-   :functions: stratix10_svc_client
++   :specific: stratix10_svc_client
+ 
+ .. kernel-doc:: drivers/firmware/stratix10-svc.c
+    :export:
+diff --git a/Documentation/driver-api/firmware/request_firmware.rst b/Documentation/driver-api/firmware/request_firmware.rst
+index f62bdcbfed5b..5d3cee760735 100644
+--- a/Documentation/driver-api/firmware/request_firmware.rst
++++ b/Documentation/driver-api/firmware/request_firmware.rst
+@@ -18,22 +18,22 @@ an error is returned.
+ request_firmware
+ ----------------
+ .. kernel-doc:: drivers/base/firmware_loader/main.c
+-   :functions: request_firmware
++   :specific: request_firmware
+ 
+ firmware_request_nowarn
+ -----------------------
+ .. kernel-doc:: drivers/base/firmware_loader/main.c
+-   :functions: firmware_request_nowarn
++   :specific: firmware_request_nowarn
+ 
+ request_firmware_direct
+ -----------------------
+ .. kernel-doc:: drivers/base/firmware_loader/main.c
+-   :functions: request_firmware_direct
++   :specific: request_firmware_direct
+ 
+ request_firmware_into_buf
+ -------------------------
+ .. kernel-doc:: drivers/base/firmware_loader/main.c
+-   :functions: request_firmware_into_buf
++   :specific: request_firmware_into_buf
+ 
+ Asynchronous firmware requests
+ ==============================
+@@ -47,7 +47,7 @@ in atomic contexts.
+ request_firmware_nowait
+ -----------------------
+ .. kernel-doc:: drivers/base/firmware_loader/main.c
+-   :functions: request_firmware_nowait
++   :specific: request_firmware_nowait
+ 
+ Special optimizations on reboot
+ ===============================
+@@ -61,7 +61,7 @@ firmware to be loaded.
+ firmware_request_cache()
+ ------------------------
+ .. kernel-doc:: drivers/base/firmware_loader/main.c
+-   :functions: firmware_request_cache
++   :specific: firmware_request_cache
+ 
+ request firmware API expected driver use
+ ========================================
+diff --git a/Documentation/driver-api/fpga/fpga-bridge.rst b/Documentation/driver-api/fpga/fpga-bridge.rst
+index 71c5a40da320..3aaecbffcf97 100644
+--- a/Documentation/driver-api/fpga/fpga-bridge.rst
++++ b/Documentation/driver-api/fpga/fpga-bridge.rst
+@@ -11,16 +11,16 @@ API to implement a new FPGA bridge
+ * :c:func:`fpga_bridge_unregister()` — Unregister a bridge
+ 
+ .. kernel-doc:: include/linux/fpga/fpga-bridge.h
+-   :functions: fpga_bridge
++   :specific: fpga_bridge
+ 
+ .. kernel-doc:: include/linux/fpga/fpga-bridge.h
+-   :functions: fpga_bridge_ops
++   :specific: fpga_bridge_ops
+ 
+ .. kernel-doc:: drivers/fpga/fpga-bridge.c
+-   :functions: devm_fpga_bridge_create
++   :specific: devm_fpga_bridge_create
+ 
+ .. kernel-doc:: drivers/fpga/fpga-bridge.c
+-   :functions: fpga_bridge_register
++   :specific: fpga_bridge_register
+ 
+ .. kernel-doc:: drivers/fpga/fpga-bridge.c
+-   :functions: fpga_bridge_unregister
++   :specific: fpga_bridge_unregister
+diff --git a/Documentation/driver-api/fpga/fpga-mgr.rst b/Documentation/driver-api/fpga/fpga-mgr.rst
+index 576f1945eacd..5445f66910ca 100644
+--- a/Documentation/driver-api/fpga/fpga-mgr.rst
++++ b/Documentation/driver-api/fpga/fpga-mgr.rst
+@@ -109,19 +109,19 @@ API for implementing a new FPGA Manager driver
+ * :c:func:`fpga_mgr_unregister` —  Unregister an FPGA manager
+ 
+ .. kernel-doc:: include/linux/fpga/fpga-mgr.h
+-   :functions: fpga_mgr_states
++   :specific: fpga_mgr_states
+ 
+ .. kernel-doc:: include/linux/fpga/fpga-mgr.h
+-   :functions: fpga_manager
++   :specific: fpga_manager
+ 
+ .. kernel-doc:: include/linux/fpga/fpga-mgr.h
+-   :functions: fpga_manager_ops
++   :specific: fpga_manager_ops
+ 
+ .. kernel-doc:: drivers/fpga/fpga-mgr.c
+-   :functions: devm_fpga_mgr_create
++   :specific: devm_fpga_mgr_create
+ 
+ .. kernel-doc:: drivers/fpga/fpga-mgr.c
+-   :functions: fpga_mgr_register
++   :specific: fpga_mgr_register
+ 
+ .. kernel-doc:: drivers/fpga/fpga-mgr.c
+-   :functions: fpga_mgr_unregister
++   :specific: fpga_mgr_unregister
+diff --git a/Documentation/driver-api/fpga/fpga-programming.rst b/Documentation/driver-api/fpga/fpga-programming.rst
+index b5484df6ff0f..4abf868898e9 100644
+--- a/Documentation/driver-api/fpga/fpga-programming.rst
++++ b/Documentation/driver-api/fpga/fpga-programming.rst
+@@ -90,7 +90,7 @@ API for programming an FPGA
+ * :c:func:`fpga_image_info_free()` —  Free an FPGA image info struct
+ 
+ .. kernel-doc:: drivers/fpga/fpga-region.c
+-   :functions: fpga_region_program_fpga
++   :specific: fpga_region_program_fpga
+ 
+ FPGA Manager flags
+ 
+@@ -98,10 +98,10 @@ FPGA Manager flags
+    :doc: FPGA Manager flags
+ 
+ .. kernel-doc:: include/linux/fpga/fpga-mgr.h
+-   :functions: fpga_image_info
++   :specific: fpga_image_info
+ 
+ .. kernel-doc:: drivers/fpga/fpga-mgr.c
+-   :functions: fpga_image_info_alloc
++   :specific: fpga_image_info_alloc
+ 
+ .. kernel-doc:: drivers/fpga/fpga-mgr.c
+-   :functions: fpga_image_info_free
++   :specific: fpga_image_info_free
+diff --git a/Documentation/driver-api/fpga/fpga-region.rst b/Documentation/driver-api/fpga/fpga-region.rst
+index 0529b2d2231a..94344f1a4d0c 100644
+--- a/Documentation/driver-api/fpga/fpga-region.rst
++++ b/Documentation/driver-api/fpga/fpga-region.rst
+@@ -73,31 +73,31 @@ following APIs to handle building or tearing down that list.
+ * :c:func:`fpga_bridges_put` — Given a list of bridges, put them
+ 
+ .. kernel-doc:: include/linux/fpga/fpga-region.h
+-   :functions: fpga_region
++   :specific: fpga_region
+ 
+ .. kernel-doc:: drivers/fpga/fpga-region.c
+-   :functions: devm_fpga_region_create
++   :specific: devm_fpga_region_create
+ 
+ .. kernel-doc:: drivers/fpga/fpga-region.c
+-   :functions: fpga_region_register
++   :specific: fpga_region_register
+ 
+ .. kernel-doc:: drivers/fpga/fpga-region.c
+-   :functions: fpga_region_unregister
++   :specific: fpga_region_unregister
+ 
+ .. kernel-doc:: drivers/fpga/fpga-mgr.c
+-   :functions: fpga_mgr_get
++   :specific: fpga_mgr_get
+ 
+ .. kernel-doc:: drivers/fpga/fpga-mgr.c
+-   :functions: of_fpga_mgr_get
++   :specific: of_fpga_mgr_get
+ 
+ .. kernel-doc:: drivers/fpga/fpga-mgr.c
+-   :functions: fpga_mgr_put
++   :specific: fpga_mgr_put
+ 
+ .. kernel-doc:: drivers/fpga/fpga-bridge.c
+-   :functions: fpga_bridge_get_to_list
++   :specific: fpga_bridge_get_to_list
+ 
+ .. kernel-doc:: drivers/fpga/fpga-bridge.c
+-   :functions: of_fpga_bridge_get_to_list
++   :specific: of_fpga_bridge_get_to_list
+ 
+ .. kernel-doc:: drivers/fpga/fpga-bridge.c
+-   :functions: fpga_bridges_put
++   :specific: fpga_bridges_put
+diff --git a/Documentation/driver-api/i2c.rst b/Documentation/driver-api/i2c.rst
+index 7582c079d747..8f585d9adf62 100644
+--- a/Documentation/driver-api/i2c.rst
++++ b/Documentation/driver-api/i2c.rst
+@@ -39,7 +39,7 @@ i2c_adapter devices which don't support those I2C operations.
+    :internal:
+ 
+ .. kernel-doc:: drivers/i2c/i2c-boardinfo.c
+-   :functions: i2c_register_board_info
++   :specific: i2c_register_board_info
+ 
+ .. kernel-doc:: drivers/i2c/i2c-core-base.c
+    :export:
+diff --git a/Documentation/driver-api/mei/hdcp.rst b/Documentation/driver-api/mei/hdcp.rst
+index e85a065b1cdc..aebfc3378cab 100644
+--- a/Documentation/driver-api/mei/hdcp.rst
++++ b/Documentation/driver-api/mei/hdcp.rst
+@@ -28,5 +28,5 @@ mei_hdcp api
+ ------------
+ 
+ .. kernel-doc:: drivers/misc/mei/hdcp/mei_hdcp.c
+-    :functions:
++    :specific:
+ 
+diff --git a/Documentation/driver-api/spi.rst b/Documentation/driver-api/spi.rst
+index f64cb666498a..288d0b315931 100644
+--- a/Documentation/driver-api/spi.rst
++++ b/Documentation/driver-api/spi.rst
+@@ -47,7 +47,7 @@ policies for how they use the bits transferred with SPI.
+    :internal:
+ 
+ .. kernel-doc:: drivers/spi/spi.c
+-   :functions: spi_register_board_info
++   :specific: spi_register_board_info
+ 
+ .. kernel-doc:: drivers/spi/spi.c
+    :export:
+diff --git a/Documentation/driver-api/usb/typec.rst b/Documentation/driver-api/usb/typec.rst
+index 201163d8c13e..a3782833b6ea 100644
+--- a/Documentation/driver-api/usb/typec.rst
++++ b/Documentation/driver-api/usb/typec.rst
+@@ -63,7 +63,7 @@ The port drivers will describe every Type-C port they control with struct
+ typec_capability data structure, and register them with the following API:
+ 
+ .. kernel-doc:: drivers/usb/typec/class.c
+-   :functions: typec_register_port typec_unregister_port
++   :specific: typec_register_port typec_unregister_port
+ 
+ When registering the ports, the prefer_role member in struct typec_capability
+ deserves special notice. If the port that is being registered does not have
+@@ -82,7 +82,7 @@ registration. The class offers the following API for registering/unregistering
+ partners.
+ 
+ .. kernel-doc:: drivers/usb/typec/class.c
+-   :functions: typec_register_partner typec_unregister_partner
++   :specific: typec_register_partner typec_unregister_partner
+ 
+ The class will provide a handle to struct typec_partner if the registration was
+ successful, or NULL.
+@@ -94,7 +94,7 @@ create a sysfs directory for the identity under the partner device. The result
+ of Discover Identity command can then be reported with the following API:
+ 
+ .. kernel-doc:: drivers/usb/typec/class.c
+-   :functions: typec_partner_set_identity
++   :specific: typec_partner_set_identity
+ 
+ Registering Cables
+ ~~~~~~~~~~~~~~~~~~
+@@ -115,7 +115,7 @@ the details during registration. The class offers the following API for
+ registering/unregistering cables and their plugs:
+ 
+ .. kernel-doc:: drivers/usb/typec/class.c
+-   :functions: typec_register_cable typec_unregister_cable typec_register_plug typec_unregister_plug
++   :specific: typec_register_cable typec_unregister_cable typec_register_plug typec_unregister_plug
+ 
+ The class will provide a handle to struct typec_cable and struct typec_plug if
+ the registration is successful, or NULL if it isn't.
+@@ -127,7 +127,7 @@ sysfs directory for the identity under the cable device. The result of Discover
+ Identity command can then be reported with the following API:
+ 
+ .. kernel-doc:: drivers/usb/typec/class.c
+-   :functions: typec_cable_set_identity
++   :specific: typec_cable_set_identity
+ 
+ Notifications
+ ~~~~~~~~~~~~~
+@@ -137,7 +137,7 @@ during connection of a partner or cable, the port driver must use the following
+ APIs to report it to the class:
+ 
+ .. kernel-doc:: drivers/usb/typec/class.c
+-   :functions: typec_set_data_role typec_set_pwr_role typec_set_vconn_role typec_set_pwr_opmode
++   :specific: typec_set_data_role typec_set_pwr_role typec_set_vconn_role typec_set_pwr_opmode
+ 
+ Alternate Modes
+ ~~~~~~~~~~~~~~~
+@@ -152,7 +152,7 @@ Ports that support Alternate Modes need to register each SVID they support with
+ the following API:
+ 
+ .. kernel-doc:: drivers/usb/typec/class.c
+-   :functions: typec_port_register_altmode
++   :specific: typec_port_register_altmode
+ 
+ If a partner or cable plug provides a list of SVIDs as response to USB Power
+ Delivery Structured VDM Discover SVIDs message, each SVID needs to be
+@@ -161,12 +161,12 @@ registered.
+ API for the partners:
+ 
+ .. kernel-doc:: drivers/usb/typec/class.c
+-   :functions: typec_partner_register_altmode
++   :specific: typec_partner_register_altmode
+ 
+ API for the Cable Plugs:
+ 
+ .. kernel-doc:: drivers/usb/typec/class.c
+-   :functions: typec_plug_register_altmode
++   :specific: typec_plug_register_altmode
+ 
+ So ports, partners and cable plugs will register the alternate modes with their
+ own functions, but the registration will always return a handle to struct
+@@ -174,13 +174,13 @@ typec_altmode on success, or NULL. The unregistration will happen with the same
+ function:
+ 
+ .. kernel-doc:: drivers/usb/typec/class.c
+-   :functions: typec_unregister_altmode
++   :specific: typec_unregister_altmode
+ 
+ If a partner or cable plug enters or exits a mode, the port driver needs to
+ notify the class with the following API:
+ 
+ .. kernel-doc:: drivers/usb/typec/class.c
+-   :functions: typec_altmode_update_active
++   :specific: typec_altmode_update_active
+ 
+ Multiplexer/DeMultiplexer Switches
+ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+@@ -193,7 +193,7 @@ route the pins on the connector to some other component besides USB. USB Type-C
+ Connector Class supplies an API for registering those switches.
+ 
+ .. kernel-doc:: drivers/usb/typec/mux.c
+-   :functions: typec_switch_register typec_switch_unregister typec_mux_register typec_mux_unregister
++   :specific: typec_switch_register typec_switch_unregister typec_mux_register typec_mux_unregister
+ 
+ In most cases the same physical mux will handle both the orientation and mode.
+ However, as the port drivers will be responsible for the orientation, and the
+@@ -205,7 +205,7 @@ the switch for the port. The drivers can then use the following API for
+ controlling them:
+ 
+ .. kernel-doc:: drivers/usb/typec/class.c
+-   :functions: typec_set_orientation typec_set_mode
++   :specific: typec_set_orientation typec_set_mode
+ 
+ If the connector is dual-role capable, there may also be a switch for the data
+ role. USB Type-C Connector Class does not supply separate API for them. The
+diff --git a/Documentation/driver-api/usb/typec_bus.rst b/Documentation/driver-api/usb/typec_bus.rst
+index f47a69bff498..762e53b66665 100644
+--- a/Documentation/driver-api/usb/typec_bus.rst
++++ b/Documentation/driver-api/usb/typec_bus.rst
+@@ -110,27 +110,27 @@ Alternate mode driver registering/unregistering
+ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ 
+ .. kernel-doc:: drivers/usb/typec/bus.c
+-   :functions: typec_altmode_register_driver typec_altmode_unregister_driver
++   :specific: typec_altmode_register_driver typec_altmode_unregister_driver
+ 
+ Alternate mode driver operations
+ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ 
+ .. kernel-doc:: drivers/usb/typec/bus.c
+-   :functions: typec_altmode_enter typec_altmode_exit typec_altmode_attention typec_altmode_vdm typec_altmode_notify
++   :specific: typec_altmode_enter typec_altmode_exit typec_altmode_attention typec_altmode_vdm typec_altmode_notify
+ 
+ API for the port drivers
+ ~~~~~~~~~~~~~~~~~~~~~~~~
+ 
+ .. kernel-doc:: drivers/usb/typec/bus.c
+-   :functions: typec_match_altmode
++   :specific: typec_match_altmode
+ 
+ Cable Plug operations
+ ~~~~~~~~~~~~~~~~~~~~~
+ 
+ .. kernel-doc:: drivers/usb/typec/bus.c
+-   :functions: typec_altmode_get_plug typec_altmode_put_plug
++   :specific: typec_altmode_get_plug typec_altmode_put_plug
+ 
+ Notifications
+ ~~~~~~~~~~~~~
+ .. kernel-doc:: drivers/usb/typec/class.c
+-   :functions: typec_altmode_register_notifier typec_altmode_unregister_notifier
++   :specific: typec_altmode_register_notifier typec_altmode_unregister_notifier
+diff --git a/Documentation/gpu/amdgpu-dc.rst b/Documentation/gpu/amdgpu-dc.rst
+index cc89b0fc11df..ec95a5a0aea4 100644
+--- a/Documentation/gpu/amdgpu-dc.rst
++++ b/Documentation/gpu/amdgpu-dc.rst
+@@ -39,7 +39,7 @@ Lifecycle
+    :doc: DM Lifecycle
+ 
+ .. kernel-doc:: drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+-   :functions: dm_hw_init dm_hw_fini
++   :specific: dm_hw_init dm_hw_fini
+ 
+ Interrupts
+ ----------
+@@ -51,7 +51,7 @@ Interrupts
+    :internal:
+ 
+ .. kernel-doc:: drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+-   :functions: register_hpd_handlers dm_crtc_high_irq dm_pflip_high_irq
++   :specific: register_hpd_handlers dm_crtc_high_irq dm_pflip_high_irq
+ 
+ Atomic Implementation
+ ---------------------
+@@ -60,7 +60,7 @@ Atomic Implementation
+    :doc: atomic
+ 
+ .. kernel-doc:: drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+-   :functions: amdgpu_dm_atomic_check amdgpu_dm_atomic_commit_tail
++   :specific: amdgpu_dm_atomic_check amdgpu_dm_atomic_commit_tail
+ 
+ Display Core
+ ============
+diff --git a/Documentation/gpu/drm-kms-helpers.rst b/Documentation/gpu/drm-kms-helpers.rst
+index 3868008db8a9..78a0457a9434 100644
+--- a/Documentation/gpu/drm-kms-helpers.rst
++++ b/Documentation/gpu/drm-kms-helpers.rst
+@@ -257,7 +257,7 @@ These functions aren't exported to drivers, but are documented here to help make
+ the MST topology helpers easier to understand
+ 
+ .. kernel-doc:: drivers/gpu/drm/drm_dp_mst_topology.c
+-   :functions: drm_dp_mst_topology_try_get_mstb drm_dp_mst_topology_get_mstb
++   :specific: drm_dp_mst_topology_try_get_mstb drm_dp_mst_topology_get_mstb
+                drm_dp_mst_topology_put_mstb
+                drm_dp_mst_topology_try_get_port drm_dp_mst_topology_get_port
+                drm_dp_mst_topology_put_port
+diff --git a/Documentation/gpu/i915.rst b/Documentation/gpu/i915.rst
+index 3415255ad3dc..c0c6d5e4a35c 100644
+--- a/Documentation/gpu/i915.rst
++++ b/Documentation/gpu/i915.rst
+@@ -32,13 +32,13 @@ Interrupt Handling
+    :doc: interrupt handling
+ 
+ .. kernel-doc:: drivers/gpu/drm/i915/i915_irq.c
+-   :functions: intel_irq_init intel_irq_init_hw intel_hpd_init
++   :specific: intel_irq_init intel_irq_init_hw intel_hpd_init
+ 
+ .. kernel-doc:: drivers/gpu/drm/i915/i915_irq.c
+-   :functions: intel_runtime_pm_disable_interrupts
++   :specific: intel_runtime_pm_disable_interrupts
+ 
+ .. kernel-doc:: drivers/gpu/drm/i915/i915_irq.c
+-   :functions: intel_runtime_pm_enable_interrupts
++   :specific: intel_runtime_pm_enable_interrupts
+ 
+ Intel GVT-g Guest Support(vGPU)
+ -------------------------------
+@@ -181,22 +181,22 @@ Display Refresh Rate Switching (DRRS)
+    :doc: Display Refresh Rate Switching (DRRS)
+ 
+ .. kernel-doc:: drivers/gpu/drm/i915/display/intel_dp.c
+-   :functions: intel_dp_set_drrs_state
++   :specific: intel_dp_set_drrs_state
+ 
+ .. kernel-doc:: drivers/gpu/drm/i915/display/intel_dp.c
+-   :functions: intel_edp_drrs_enable
++   :specific: intel_edp_drrs_enable
+ 
+ .. kernel-doc:: drivers/gpu/drm/i915/display/intel_dp.c
+-   :functions: intel_edp_drrs_disable
++   :specific: intel_edp_drrs_disable
+ 
+ .. kernel-doc:: drivers/gpu/drm/i915/display/intel_dp.c
+-   :functions: intel_edp_drrs_invalidate
++   :specific: intel_edp_drrs_invalidate
+ 
+ .. kernel-doc:: drivers/gpu/drm/i915/display/intel_dp.c
+-   :functions: intel_edp_drrs_flush
++   :specific: intel_edp_drrs_flush
+ 
+ .. kernel-doc:: drivers/gpu/drm/i915/display/intel_dp.c
+-   :functions: intel_dp_drrs_init
++   :specific: intel_dp_drrs_init
+ 
+ DPIO
+ ----
+@@ -492,21 +492,21 @@ This section covers the entrypoints exported outside of i915_perf.c to
+ integrate with drm/i915 and to handle the `DRM_I915_PERF_OPEN` ioctl.
+ 
+ .. kernel-doc:: drivers/gpu/drm/i915/i915_perf.c
+-   :functions: i915_perf_init
++   :specific: i915_perf_init
+ .. kernel-doc:: drivers/gpu/drm/i915/i915_perf.c
+-   :functions: i915_perf_fini
++   :specific: i915_perf_fini
+ .. kernel-doc:: drivers/gpu/drm/i915/i915_perf.c
+-   :functions: i915_perf_register
++   :specific: i915_perf_register
+ .. kernel-doc:: drivers/gpu/drm/i915/i915_perf.c
+-   :functions: i915_perf_unregister
++   :specific: i915_perf_unregister
+ .. kernel-doc:: drivers/gpu/drm/i915/i915_perf.c
+-   :functions: i915_perf_open_ioctl
++   :specific: i915_perf_open_ioctl
+ .. kernel-doc:: drivers/gpu/drm/i915/i915_perf.c
+-   :functions: i915_perf_release
++   :specific: i915_perf_release
+ .. kernel-doc:: drivers/gpu/drm/i915/i915_perf.c
+-   :functions: i915_perf_add_config_ioctl
++   :specific: i915_perf_add_config_ioctl
+ .. kernel-doc:: drivers/gpu/drm/i915/i915_perf.c
+-   :functions: i915_perf_remove_config_ioctl
++   :specific: i915_perf_remove_config_ioctl
+ 
+ i915 Perf Stream
+ ----------------
+@@ -515,47 +515,47 @@ This section covers the stream-semantics-agnostic structures and functions
+ for representing an i915 perf stream FD and associated file operations.
+ 
+ .. kernel-doc:: drivers/gpu/drm/i915/i915_drv.h
+-   :functions: i915_perf_stream
++   :specific: i915_perf_stream
+ .. kernel-doc:: drivers/gpu/drm/i915/i915_drv.h
+-   :functions: i915_perf_stream_ops
++   :specific: i915_perf_stream_ops
+ 
+ .. kernel-doc:: drivers/gpu/drm/i915/i915_perf.c
+-   :functions: read_properties_unlocked
++   :specific: read_properties_unlocked
+ .. kernel-doc:: drivers/gpu/drm/i915/i915_perf.c
+-   :functions: i915_perf_open_ioctl_locked
++   :specific: i915_perf_open_ioctl_locked
+ .. kernel-doc:: drivers/gpu/drm/i915/i915_perf.c
+-   :functions: i915_perf_destroy_locked
++   :specific: i915_perf_destroy_locked
+ .. kernel-doc:: drivers/gpu/drm/i915/i915_perf.c
+-   :functions: i915_perf_read
++   :specific: i915_perf_read
+ .. kernel-doc:: drivers/gpu/drm/i915/i915_perf.c
+-   :functions: i915_perf_ioctl
++   :specific: i915_perf_ioctl
+ .. kernel-doc:: drivers/gpu/drm/i915/i915_perf.c
+-   :functions: i915_perf_enable_locked
++   :specific: i915_perf_enable_locked
+ .. kernel-doc:: drivers/gpu/drm/i915/i915_perf.c
+-   :functions: i915_perf_disable_locked
++   :specific: i915_perf_disable_locked
+ .. kernel-doc:: drivers/gpu/drm/i915/i915_perf.c
+-   :functions: i915_perf_poll
++   :specific: i915_perf_poll
+ .. kernel-doc:: drivers/gpu/drm/i915/i915_perf.c
+-   :functions: i915_perf_poll_locked
++   :specific: i915_perf_poll_locked
+ 
+ i915 Perf Observation Architecture Stream
+ -----------------------------------------
+ 
+ .. kernel-doc:: drivers/gpu/drm/i915/i915_drv.h
+-   :functions: i915_oa_ops
++   :specific: i915_oa_ops
+ 
+ .. kernel-doc:: drivers/gpu/drm/i915/i915_perf.c
+-   :functions: i915_oa_stream_init
++   :specific: i915_oa_stream_init
+ .. kernel-doc:: drivers/gpu/drm/i915/i915_perf.c
+-   :functions: i915_oa_read
++   :specific: i915_oa_read
+ .. kernel-doc:: drivers/gpu/drm/i915/i915_perf.c
+-   :functions: i915_oa_stream_enable
++   :specific: i915_oa_stream_enable
+ .. kernel-doc:: drivers/gpu/drm/i915/i915_perf.c
+-   :functions: i915_oa_stream_disable
++   :specific: i915_oa_stream_disable
+ .. kernel-doc:: drivers/gpu/drm/i915/i915_perf.c
+-   :functions: i915_oa_wait_unlocked
++   :specific: i915_oa_wait_unlocked
+ .. kernel-doc:: drivers/gpu/drm/i915/i915_perf.c
+-   :functions: i915_oa_poll_wait
++   :specific: i915_oa_poll_wait
+ 
+ All i915 Perf Internals
+ -----------------------
+diff --git a/Documentation/gpu/vga-switcheroo.rst b/Documentation/gpu/vga-switcheroo.rst
+index cbbdb994f1dd..d490b01919fd 100644
+--- a/Documentation/gpu/vga-switcheroo.rst
++++ b/Documentation/gpu/vga-switcheroo.rst
+@@ -35,31 +35,31 @@ Public structures
+ -----------------
+ 
+ .. kernel-doc:: include/linux/vga_switcheroo.h
+-   :functions: vga_switcheroo_handler
++   :specific: vga_switcheroo_handler
+ 
+ .. kernel-doc:: include/linux/vga_switcheroo.h
+-   :functions: vga_switcheroo_client_ops
++   :specific: vga_switcheroo_client_ops
+ 
+ Public constants
+ ----------------
+ 
+ .. kernel-doc:: include/linux/vga_switcheroo.h
+-   :functions: vga_switcheroo_handler_flags_t
++   :specific: vga_switcheroo_handler_flags_t
+ 
+ .. kernel-doc:: include/linux/vga_switcheroo.h
+-   :functions: vga_switcheroo_client_id
++   :specific: vga_switcheroo_client_id
+ 
+ .. kernel-doc:: include/linux/vga_switcheroo.h
+-   :functions: vga_switcheroo_state
++   :specific: vga_switcheroo_state
+ 
+ Private structures
+ ------------------
+ 
+ .. kernel-doc:: drivers/gpu/vga/vga_switcheroo.c
+-   :functions: vgasr_priv
++   :specific: vgasr_priv
+ 
+ .. kernel-doc:: drivers/gpu/vga/vga_switcheroo.c
+-   :functions: vga_switcheroo_client
++   :specific: vga_switcheroo_client
+ 
+ Handlers
+ ========
+diff --git a/Documentation/security/tpm/tpm_vtpm_proxy.rst b/Documentation/security/tpm/tpm_vtpm_proxy.rst
+index ea08e76b17f5..8583cd970393 100644
+--- a/Documentation/security/tpm/tpm_vtpm_proxy.rst
++++ b/Documentation/security/tpm/tpm_vtpm_proxy.rst
+@@ -47,4 +47,4 @@ UAPI
+ .. kernel-doc:: include/uapi/linux/vtpm_proxy.h
+ 
+ .. kernel-doc:: drivers/char/tpm/tpm_vtpm_proxy.c
+-   :functions: vtpmx_ioc_new_dev
++   :specific: vtpmx_ioc_new_dev
+diff --git a/Documentation/sphinx/kerneldoc.py b/Documentation/sphinx/kerneldoc.py
+index 1159405cb920..1232d0324927 100644
+--- a/Documentation/sphinx/kerneldoc.py
++++ b/Documentation/sphinx/kerneldoc.py
+@@ -59,7 +59,7 @@ class KernelDocDirective(Directive):
+     optional_arguments = 4
+     option_spec = {
+         'doc': directives.unchanged_required,
+-        'functions': directives.unchanged,
++        'specific': directives.unchanged,
+         'export': directives.unchanged,
+         'internal': directives.unchanged,
+     }
+@@ -84,15 +84,15 @@ class KernelDocDirective(Directive):
+         elif 'internal' in self.options:
+             cmd += ['-internal']
+             export_file_patterns = str(self.options.get('internal')).split()
+-        elif 'doc' in self.options:
+-            cmd += ['-function', str(self.options.get('doc'))]
+-        elif 'functions' in self.options:
+-            functions = self.options.get('functions').split()
++        elif 'specific' in self.options:
++            functions = self.options.get('specific').split()
+             if functions:
+                 for f in functions:
+                     cmd += ['-function', f]
+             else:
+                 cmd += ['-no-doc-sections']
++        elif 'doc' in self.options:
++            cmd += ['-function', str(self.options.get('doc'))]
+ 
+         for pattern in export_file_patterns:
+             for f in glob.glob(env.config.kerneldoc_srctree + '/' + pattern):
+diff --git a/Documentation/translations/it_IT/doc-guide/kernel-doc.rst b/Documentation/translations/it_IT/doc-guide/kernel-doc.rst
+index a4ecd8f27631..1a4a3c3774e9 100644
+--- a/Documentation/translations/it_IT/doc-guide/kernel-doc.rst
++++ b/Documentation/translations/it_IT/doc-guide/kernel-doc.rst
+@@ -535,7 +535,7 @@ functions: *function* *[...]*
+   Esempio::
+ 
+     .. kernel-doc:: lib/bitmap.c
+-       :functions: bitmap_parselist bitmap_parselist_user
++       :specific: bitmap_parselist bitmap_parselist_user
+ 
+ Senza alcuna opzione, la direttiva kernel-doc include tutti i commenti di
+ documentazione presenti nel file sorgente (*source*).
+diff --git a/Documentation/vm/ksm.rst b/Documentation/vm/ksm.rst
+index d32016d9be2c..c518a7985ce1 100644
+--- a/Documentation/vm/ksm.rst
++++ b/Documentation/vm/ksm.rst
+@@ -80,7 +80,7 @@ The frequency of such scans is defined by
+ Reference
+ ---------
+ .. kernel-doc:: mm/ksm.c
+-   :functions: mm_slot ksm_scan stable_node rmap_item
++   :specific: mm_slot ksm_scan stable_node rmap_item
+ 
+ --
+ Izik Eidus,
+diff --git a/scripts/kernel-doc b/scripts/kernel-doc
+index 81dc91760b23..cd3d2ca52c34 100755
+--- a/scripts/kernel-doc
++++ b/scripts/kernel-doc
+@@ -1475,8 +1475,13 @@ sub push_parameter($$$$) {
+ 		$parameterdescs{$param} = $undescribed;
+ 
+ 	        if (show_warnings($type, $declaration_name) && $param !~ /\./) {
+-			print STDERR
+-			      "${file}:$.: warning: Function parameter or member '$param' not described in '$declaration_name'\n";
++			if ($decl_type eq "struct" or $decl_type eq 'union') {
++				print STDERR
++					"${file}:$.: warning: $decl_type member '$param' not described in '$declaration_name'\n";
++			} else {
++				print STDERR
++					"${file}:$.: warning: $decl_type parameter '$param' not described in '$declaration_name'\n";
++			}
+ 			++$warnings;
+ 		}
+ 	}
+-- 
+2.20.1
 
-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
-
---ceh7gnri3y7esqzi--
