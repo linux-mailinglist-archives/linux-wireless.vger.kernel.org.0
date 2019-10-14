@@ -2,118 +2,147 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 413A4D624F
-	for <lists+linux-wireless@lfdr.de>; Mon, 14 Oct 2019 14:20:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1AE6BD6AE8
+	for <lists+linux-wireless@lfdr.de>; Mon, 14 Oct 2019 22:49:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730125AbfJNMUY (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 14 Oct 2019 08:20:24 -0400
-Received: from mail-ed1-f66.google.com ([209.85.208.66]:42676 "EHLO
-        mail-ed1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727409AbfJNMUX (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 14 Oct 2019 08:20:23 -0400
-Received: by mail-ed1-f66.google.com with SMTP id y91so14602732ede.9
-        for <linux-wireless@vger.kernel.org>; Mon, 14 Oct 2019 05:20:22 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=googlemail.com; s=20161025;
-        h=from:subject:to:cc:references:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=m/CxiEdckKwLReSUTDQ3wufvnzpVl+4j/+0XnWtbNxk=;
-        b=VZgpmuNfDBKE6PfyedfKGYxdxQV/583aElP6aFtEgV1lo8gPfdweaQDPAXxmjrQBbh
-         uwqmPitciJSmHHulSys3z/s/Jf7GTCybHBcYR8InzN/XKEP+Yzg8Rnma8sLVBMpBTWgB
-         1BZTHWB27yZ+o7MZjjKW65ulS5UFJZvJ2ClIDXRfRYkETbAMgm1Dqro4vhudBl7/j451
-         z1vko/Hhox11UAFjO//CJhDeFvvneIhY3lhCIx2JB2+dzqHlYMzsk8du5fXwBEb67ECQ
-         WFU7/e5TjxuabZvkBX269WUOfR+tSF5e4ObKqA7qwEDuXe4z2ljUmicrXL4kjDc+ZCTb
-         zXdg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:subject:to:cc:references:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=m/CxiEdckKwLReSUTDQ3wufvnzpVl+4j/+0XnWtbNxk=;
-        b=HjLj1n2eY8PHe0En/NKpGjr8AFOUsy2ZYSodQjVieh6C3VPmT0eh7WSUCyskMHjl9P
-         k6Xd7ZRy8bVEOxnTsD+KFz3lG2qAgSCMHdaVQcA5DcNUjoRE7mdz6YAaMzdujsCRPGV5
-         U78ryEju/QmEETWLKx5wjCqDXv6+3et/ox9LHFgr7aWRbhZLcHPZ/mfEylqap8jA7cG4
-         2bqqoaOs+VzMQ4mdVNHmDQJbXhmvDHjXRcIiOQ/R0/WyOc72jQsR+8HRjEODuz0di4Vr
-         Jc4/QsO1uSMdyeqkPwC1F+YLaRH3TWZbsRjO06Vo7qUG/n/+2ieroJ1VDpoa44vlNcPh
-         a4kQ==
-X-Gm-Message-State: APjAAAVneUL1wuagXBFWySxaMdhjbNzQ37iONTfXcwkXR7x/kFGJc7lv
-        lGUrN3j/DIICalLK59BUJvfbaspC
-X-Google-Smtp-Source: APXvYqwhj0Da9Ou6i4sUjn3aQXbyoqNJqOwCeP9i6faNWm8Nt+NNSe6r77HzoPLyKTWTXqTU6tkv5g==
-X-Received: by 2002:a50:c304:: with SMTP id a4mr28066509edb.303.1571055622040;
-        Mon, 14 Oct 2019 05:20:22 -0700 (PDT)
-Received: from ?IPv6:2001:db8:4b:222::197? ([2a02:810a:8c0:6498:9d87:72c9:c815:5f34])
-        by smtp.gmail.com with ESMTPSA id v8sm3183979edl.74.2019.10.14.05.20.20
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 14 Oct 2019 05:20:21 -0700 (PDT)
-From:   "g.schlmm" <g.schlmm@googlemail.com>
-X-Google-Original-From: "g.schlmm" <g.schlmm@gmail.com>
-Subject: Re: rtw88: M.2 RTL8822BE not working - rfe 3 isn't supported
-To:     Tony Chuang <yhchuang@realtek.com>
-Cc:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-References: <0d0159a8-a83e-cef3-fd32-4928a2301719@gmail.com>
- <20190612091330.GC2965@redhat.com>
- <F7CD281DE3E379468C6D07993EA72F84D180639E@RTITMBSVM04.realtek.com.tw>
-Message-ID: <5960cc5a-becf-8bdc-7898-b9933247b6e3@gmail.com>
-Date:   Mon, 14 Oct 2019 14:20:14 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.1.1
-MIME-Version: 1.0
-In-Reply-To: <F7CD281DE3E379468C6D07993EA72F84D180639E@RTITMBSVM04.realtek.com.tw>
-Content-Type: text/plain; charset=windows-1252
+        id S2388943AbfJNUtg (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 14 Oct 2019 16:49:36 -0400
+Received: from mail-eopbgr760111.outbound.protection.outlook.com ([40.107.76.111]:23521
+        "EHLO NAM02-CY1-obe.outbound.protection.outlook.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S2387731AbfJNUtf (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 14 Oct 2019 16:49:35 -0400
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=MybpUUiGZnWjEdAgd7fYbEXahV/V1rVAgT/guxeLGYP2cD8pwvfnOVy34dBtjwkEaN1OKM7SvRfnKC9R6VJXgzOpN5q5skKL3XeaR9rd6vIJAPvBr9yCMBYeHjxmvahQqspmW3u7gZxhB8DQy7Lx89MqH23qWskMnl2NicRqFcabDx9I0mQGMTPcRX1Ze7acZRmFRChLcUBwfJKER/LeXVqJunXJdRKlX4VrLargZgaRwv7JrTOtuUIxWGpG++1YTMzRdKbIQzu0kxUlGUiR1icHXMIqStK6jsEsIpbNTXWtcoDFmZ6fZWKF3NpbV4Z+LqPR1B8gdg8iBRpn0QpVxg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=OArEe6nXYnBjam6+kgN/IG+mDckpqt8jB9TcKWjhL+8=;
+ b=M/yQ3n/Nxj9iSyV8vv+9D9f9AgwrskSXaqUnK0Z9OpzsTjdC6YLmonKBlyzdPuH8CqPYQBQW9MESoa5t8TfX7KZphcvCjcEbrvnogiGhkQUe4SPLfZWNiL8cc8ddE5GVctRY+b2513j8fNtGNH3vmYebu6HOgMfFfHfGlyputdj5kY5v7oBitnNjo5fcOAkrSGSOa4DP7XP+nqhSaxEZ9H5eOALP4U+XtHNDimCIX9L1KjOetT+jyJCPqCLyGRIyA0tRszYZccZzsf3Sp+FfGYxirrEOwDNEHqpw3FFge0nv6NAhw6ZuX/yFbPH1vbemSgE4Vwk6R092HYukW8o0Gw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 160.33.194.228) smtp.rcpttodomain=linux.intel.com smtp.mailfrom=sony.com;
+ dmarc=pass (p=none sp=none pct=100) action=none header.from=sony.com;
+ dkim=none (message not signed); arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Sony.onmicrosoft.com;
+ s=selector2-Sony-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=OArEe6nXYnBjam6+kgN/IG+mDckpqt8jB9TcKWjhL+8=;
+ b=GW8ap/OtxWR7IboWJaCeN4ARVfmxmyY4CC3bxYgfZsVEI+/lz29dimTIgVXYOi+8wBLwn5egEbRa69BC5KS5XjTtJSaofKp/iRMl8n9HrssY0KACQ/AKYeMVlXBdiZCsBpZbM7+KPKFXBlKAXn3YYUbI9GDUDq0a48gogH+gj5c=
+Received: from MWHPR13CA0003.namprd13.prod.outlook.com (2603:10b6:300:16::13)
+ by BN6PR13MB1507.namprd13.prod.outlook.com (2603:10b6:404:10f::7) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.2347.15; Mon, 14 Oct
+ 2019 20:48:51 +0000
+Received: from CY1NAM02FT017.eop-nam02.prod.protection.outlook.com
+ (2a01:111:f400:7e45::208) by MWHPR13CA0003.outlook.office365.com
+ (2603:10b6:300:16::13) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.2367.6 via Frontend
+ Transport; Mon, 14 Oct 2019 20:48:51 +0000
+Authentication-Results: spf=pass (sender IP is 160.33.194.228)
+ smtp.mailfrom=sony.com; linux.intel.com; dkim=none (message not signed)
+ header.d=none;linux.intel.com; dmarc=pass action=none header.from=sony.com;
+Received-SPF: Pass (protection.outlook.com: domain of sony.com designates
+ 160.33.194.228 as permitted sender) receiver=protection.outlook.com;
+ client-ip=160.33.194.228; helo=usculsndmail01v.am.sony.com;
+Received: from usculsndmail01v.am.sony.com (160.33.194.228) by
+ CY1NAM02FT017.mail.protection.outlook.com (10.152.75.181) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.2347.16 via Frontend Transport; Mon, 14 Oct 2019 20:48:51 +0000
+Received: from usculsndmail12v.am.sony.com (usculsndmail12v.am.sony.com [146.215.230.103])
+        by usculsndmail01v.am.sony.com (Sentrion-MTA-4.3.2/Sentrion-MTA-4.3.2) with ESMTP id x9EKmn8J020884;
+        Mon, 14 Oct 2019 20:48:50 GMT
+Received: from USCULXHUB04V.am.sony.com (hubs.sonyusa.com [146.215.231.18])
+        by usculsndmail12v.am.sony.com (Sentrion-MTA-4.3.2/Sentrion-MTA-4.3.2) with ESMTP id x9EKmnIf008425;
+        Mon, 14 Oct 2019 20:48:49 GMT
+Received: from USCULXMSG01.am.sony.com ([fe80::b09d:6cb6:665e:d1b5]) by
+ USCULXHUB04V.am.sony.com ([146.215.231.18]) with mapi id 14.03.0439.000; Mon,
+ 14 Oct 2019 16:48:48 -0400
+From:   <Tim.Bird@sony.com>
+To:     <jani.nikula@linux.intel.com>, <changbin.du@gmail.com>,
+        <corbet@lwn.net>
+CC:     <linux-pci@vger.kernel.org>, <linux-doc@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, <linux-mm@kvack.org>,
+        <linux-crypto@vger.kernel.org>, <linux-kselftest@vger.kernel.org>,
+        <linux-wireless@vger.kernel.org>, <linux-fpga@vger.kernel.org>,
+        <linux-usb@vger.kernel.org>, <dri-devel@lists.freedesktop.org>,
+        <intel-gfx@lists.freedesktop.org>, <changbin.du@gmail.com>
+Subject: RE: [PATCH] kernel-doc: rename the kernel-doc directive 'functions'
+ to 'specific'
+Thread-Topic: [PATCH] kernel-doc: rename the kernel-doc directive
+ 'functions' to 'specific'
+Thread-Index: AQHVgYrHjoG0ILu0Lk6IAGRKrE96jadaG2GAgACB3oA=
+Date:   Mon, 14 Oct 2019 20:48:48 +0000
+Message-ID: <ECADFF3FD767C149AD96A924E7EA6EAF977CAF09@USCULXMSG01.am.sony.com>
+References: <20191013055359.23312-1-changbin.du@gmail.com>
+ <875zkrd7nq.fsf@intel.com>
+In-Reply-To: <875zkrd7nq.fsf@intel.com>
+Accept-Language: en-US
 Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [146.215.228.6]
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+X-EOPAttributedMessage: 0
+X-MS-Office365-Filtering-HT: Tenant
+X-Forefront-Antispam-Report: CIP:160.33.194.228;IPV:NLI;CTRY:US;EFV:NLI;SFV:NSPM;SFS:(10019020)(376002)(396003)(136003)(39860400002)(346002)(199004)(189003)(13464003)(8676002)(37786003)(23726003)(102836004)(6246003)(97756001)(7696005)(76176011)(5660300002)(3846002)(55016002)(6116002)(86362001)(55846006)(486006)(2876002)(33656002)(476003)(126002)(46406003)(246002)(2906002)(336012)(54906003)(356004)(11346002)(186003)(26005)(14444005)(478600001)(426003)(50466002)(4326008)(47776003)(66066001)(446003)(70206006)(110136005)(7416002)(8746002)(70586007)(8936002)(106002)(305945005)(229853002)(316002)(2201001)(7736002)(2101003)(5001870100001);DIR:OUT;SFP:1102;SCL:1;SRVR:BN6PR13MB1507;H:usculsndmail01v.am.sony.com;FPR:;SPF:Pass;LANG:en;PTR:mail.sonyusa.com,mail01.sonyusa.com;A:1;MX:1;
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id: 3e15f9ef-1f4b-49bd-255a-08d750e7eb79
+X-MS-TrafficTypeDiagnostic: BN6PR13MB1507:
+X-Microsoft-Antispam-PRVS: <BN6PR13MB1507003AF9F82B961C9751ABFD900@BN6PR13MB1507.namprd13.prod.outlook.com>
+X-MS-Oob-TLC-OOBClassifiers: OLM:9508;
+X-Forefront-PRVS: 01901B3451
+X-MS-Exchange-SenderADCheck: 1
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: ODSsHBKcgRD7wEsIwdsafZ04SyHtvm6qy2uPMrfx8nrVkiaJV82xR/OwG5okb99i7iEG7CUt+pn2KbJBPyp187ND0/kHxYb/7tP22z69BUTj6Wlx1EQoDSV+ElAIjXpN8C9DoU+jBgY6W7C27KRfwheVky55hswuncioRmZtMFK1kJEUyeM7Ng2QRXmSWjvzg5eD+pBeRIFTbw41R2yDlXxOkRNAOFdLDaUSiTsIqTqloaCmX36kXCqIpoFg0YZbKxmOMYBMBSA57f5ntoG9D4U+oJ5tHYpM7vs19N0ZrD/WMS6Dq2UYzCeQFl/EdGjVR1G99/WzNKsZfKa0Eg7uBmjCbjLFkVBs7/de3Fw5Ts373lbBgIV94u9kGMfIy4vxMe2QQWX45Oe9neLBGoV3iJYAf/TXPsVgSHA6TIoC3fA=
+X-OriginatorOrg: sony.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Oct 2019 20:48:51.3386
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 3e15f9ef-1f4b-49bd-255a-08d750e7eb79
+X-MS-Exchange-CrossTenant-Id: 66c65d8a-9158-4521-a2d8-664963db48e4
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=66c65d8a-9158-4521-a2d8-664963db48e4;Ip=[160.33.194.228];Helo=[usculsndmail01v.am.sony.com]
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BN6PR13MB1507
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 14.06.19 10:24, Tony Chuang wrote:
->> Subject: Re: rtw88: M.2 RTL8822BE not working - rfe 3 isn't supported
->>
->> Cc Tony
->>
->> On Sat, Jun 08, 2019 at 02:26:51PM +0200, g.schlmm wrote:
->>> my RTL8822BE M.2 card is not working with linux 5.2rc3
->>>
->>> the staging r8822be driver in linux 5.1 was working for this card
->>>
->>> from dmesg:
->>>> [    8.001186] rtw_pci 0000:04:00.0: rfe 3 isn't supported
->>>> [    8.003870] rtw_pci 0000:04:00.0: failed to setup chip efuse info
->>>> [    8.006405] rtw_pci 0000:04:00.0: failed to setup chip information
->>>
->>> lspci:
->>>> 04:00.0 Unassigned class [ff00]: Realtek Semiconductor Co., Ltd.
->> RTL8822BE 802.11a/b/g/n/ac WiFi adapter
->>>>         Subsystem: Lenovo RTL8822BE 802.11a/b/g/n/ac WiFi adapter
->>>>         Flags: fast devsel, IRQ 19
->>>>         I/O ports at c000 [size=256]
->>>>         Memory at 81200000 (64-bit, non-prefetchable) [size=64K]
->>>>         Capabilities: [40] Power Management version 3
->>>>         Capabilities: [50] MSI: Enable- Count=1/1 Maskable- 64bit+
->>>>         Capabilities: [70] Express Endpoint, MSI 00
->>>>         Capabilities: [100] Advanced Error Reporting
->>>>         Capabilities: [148] Device Serial Number
->> 00-e0-4c-ff-fe-b8-22-01
->>>>         Capabilities: [158] Latency Tolerance Reporting
->>>>         Capabilities: [160] L1 PM Substates
->>>>         Kernel modules: rtwpci
->>
-> 
-> Hi,
-> 
-> Please use the attached patch. And RFE type 3 has not been well tested,
-> I am not sure if the quality is expected. But it should work fine I guess.
-> If there is any further problems, just tell me, thanks.
-> 
-> Yan-Hsuan
-> 
 
-Hi,
 
-the above patch doesnt apply anymore on newer kernel sources.
-can we except to see rfe type 3 support in the mainline kernel?
-what can i do to help testing, if testing is still needed?
+> -----Original Message-----
+> From: Jani Nikula on October 13, 2019 11:00 PM
+> On Sun, 13 Oct 2019, Changbin Du <changbin.du@gmail.com> wrote:
+> > The 'functions' directive is not only for functions, but also works for
+> > structs/unions. So the name is misleading. This patch renames it to
+> > 'specific', so now we have export/internal/specific directives to limit
+> > the functions/types to be included in documentation. Meanwhile we
+> improved
+> > the warning message.
+>=20
+> Agreed on "functions" being less than perfect. It directly exposes the
+> idiosyncrasies of scripts/kernel-doc. I'm not sure "specific" is any
+> better, though.
 
-thanx
+I strongly agree with this.  'specific' IMHO, has no semantic value and
+I'd rather just leave the only-sometimes-wrong 'functions' than convert
+to something that obscures the meaning always.
+
+>=20
+> Perhaps "symbols" would be more self-explanatory. Or, actually make
+> "functions" only work on functions, and add a separate keyword for other
+> stuff. *shrug*
+My preference would be to use 'symbols'.  I tried to come up with something
+but 'symbols' is better than anything I came up with.
+
+>=20
+> Seems like the patch is way too big. I'd probably add "symbols" (or
+> whatever) as a synonym for "functions" for starters, and convert
+> documents piecemeal, and finally drop the old one.
+>=20
+> The scripts/kernel-doc change should be a patch of its own.
+Agreed on these two points as well.
+
+Just adding my 2 cents.
+ -- Tim
