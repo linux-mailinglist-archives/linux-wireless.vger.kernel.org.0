@@ -2,156 +2,209 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C0167D75D2
-	for <lists+linux-wireless@lfdr.de>; Tue, 15 Oct 2019 14:08:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id ACD71D768A
+	for <lists+linux-wireless@lfdr.de>; Tue, 15 Oct 2019 14:30:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730366AbfJOMIJ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 15 Oct 2019 08:08:09 -0400
-Received: from mx2.suse.de ([195.135.220.15]:56142 "EHLO mx1.suse.de"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1726540AbfJOMII (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 15 Oct 2019 08:08:08 -0400
-X-Virus-Scanned: by amavisd-new at test-mx.suse.de
-Received: from relay2.suse.de (unknown [195.135.220.254])
-        by mx1.suse.de (Postfix) with ESMTP id 0D9E7B12C;
-        Tue, 15 Oct 2019 12:08:06 +0000 (UTC)
-Subject: Re: [PATCH] kernel-doc: rename the kernel-doc directive 'functions'
- to 'specific'
-To:     Matthew Wilcox <willy@infradead.org>
-Cc:     Tim.Bird@sony.com, jani.nikula@linux.intel.com,
-        changbin.du@gmail.com, corbet@lwn.net, linux-doc@vger.kernel.org,
-        linux-pci@vger.kernel.org, linux-fpga@vger.kernel.org,
-        linux-usb@vger.kernel.org, linux-wireless@vger.kernel.org,
-        linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        linux-mm@kvack.org, linux-crypto@vger.kernel.org,
-        linux-kselftest@vger.kernel.org, intel-gfx@lists.freedesktop.org
-References: <20191013055359.23312-1-changbin.du@gmail.com>
- <875zkrd7nq.fsf@intel.com>
- <ECADFF3FD767C149AD96A924E7EA6EAF977CAF09@USCULXMSG01.am.sony.com>
- <7e7557b5-469f-3e63-6254-53dab2d7234a@suse.de>
- <20191015115439.GE32665@bombadil.infradead.org>
-From:   Thomas Zimmermann <tzimmermann@suse.de>
-Autocrypt: addr=tzimmermann@suse.de; keydata=
- mQENBFs50uABCADEHPidWt974CaxBVbrIBwqcq/WURinJ3+2WlIrKWspiP83vfZKaXhFYsdg
- XH47fDVbPPj+d6tQrw5lPQCyqjwrCPYnq3WlIBnGPJ4/jreTL6V+qfKRDlGLWFjZcsrPJGE0
- BeB5BbqP5erN1qylK9i3gPoQjXGhpBpQYwRrEyQyjuvk+Ev0K1Jc5tVDeJAuau3TGNgah4Yc
- hdHm3bkPjz9EErV85RwvImQ1dptvx6s7xzwXTgGAsaYZsL8WCwDaTuqFa1d1jjlaxg6+tZsB
- 9GluwvIhSezPgnEmimZDkGnZRRSFiGP8yjqTjjWuf0bSj5rUnTGiyLyRZRNGcXmu6hjlABEB
- AAG0J1Rob21hcyBaaW1tZXJtYW5uIDx0emltbWVybWFubkBzdXNlLmRlPokBVAQTAQgAPhYh
- BHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJbOdLgAhsDBQkDwmcABQsJCAcCBhUKCQgLAgQWAgMB
- Ah4BAheAAAoJEGgNwR1TC3ojR80H/jH+vYavwQ+TvO8ksXL9JQWc3IFSiGpuSVXLCdg62AmR
- irxW+qCwNncNQyb9rd30gzdectSkPWL3KSqEResBe24IbA5/jSkPweJasgXtfhuyoeCJ6PXo
- clQQGKIoFIAEv1s8l0ggPZswvCinegl1diyJXUXmdEJRTWYAtxn/atut1o6Giv6D2qmYbXN7
- mneMC5MzlLaJKUtoH7U/IjVw1sx2qtxAZGKVm4RZxPnMCp9E1MAr5t4dP5gJCIiqsdrVqI6i
- KupZstMxstPU//azmz7ZWWxT0JzgJqZSvPYx/SATeexTYBP47YFyri4jnsty2ErS91E6H8os
- Bv6pnSn7eAq5AQ0EWznS4AEIAMYmP4M/V+T5RY5at/g7rUdNsLhWv1APYrh9RQefODYHrNRH
- UE9eosYbT6XMryR9hT8XlGOYRwKWwiQBoWSDiTMo/Xi29jUnn4BXfI2px2DTXwc22LKtLAgT
- RjP+qbU63Y0xnQN29UGDbYgyyK51DW3H0If2a3JNsheAAK+Xc9baj0LGIc8T9uiEWHBnCH+R
- dhgATnWWGKdDegUR5BkDfDg5O/FISymJBHx2Dyoklv5g4BzkgqTqwmaYzsl8UxZKvbaxq0zb
- ehDda8lvhFXodNFMAgTLJlLuDYOGLK2AwbrS3Sp0AEbkpdJBb44qVlGm5bApZouHeJ/+n+7r
- 12+lqdsAEQEAAYkBPAQYAQgAJhYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJbOdLgAhsMBQkD
- wmcAAAoJEGgNwR1TC3ojpfcIAInwP5OlcEKokTnHCiDTz4Ony4GnHRP2fXATQZCKxmu4AJY2
- h9ifw9Nf2TjCZ6AMvC3thAN0rFDj55N9l4s1CpaDo4J+0fkrHuyNacnT206CeJV1E7NYntxU
- n+LSiRrOdywn6erjxRi9EYTVLCHcDhBEjKmFZfg4AM4GZMWX1lg0+eHbd5oL1as28WvvI/uI
- aMyV8RbyXot1r/8QLlWldU3NrTF5p7TMU2y3ZH2mf5suSKHAMtbE4jKJ8ZHFOo3GhLgjVrBW
- HE9JXO08xKkgD+w6v83+nomsEuf6C6LYrqY/tsZvyEX6zN8CtirPdPWu/VXNRYAl/lat7lSI
- 3H26qrE=
-Message-ID: <f4157a18-6c2e-9854-40a2-dd78c9bde5ea@suse.de>
-Date:   Tue, 15 Oct 2019 14:08:04 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.1.1
+        id S1729353AbfJOMa4 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 15 Oct 2019 08:30:56 -0400
+Received: from mail.kernel.org ([198.145.29.99]:46812 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1729160AbfJOMa4 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 15 Oct 2019 08:30:56 -0400
+Received: from localhost.localdomain.com (nat-pool-mxp-t.redhat.com [149.6.153.186])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id A1DFA20854;
+        Tue, 15 Oct 2019 12:30:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1571142654;
+        bh=+gSaolIGwgG1dSbeiKY+xGM9A8FhpizDX4nH0jdoO3M=;
+        h=From:To:Cc:Subject:Date:From;
+        b=iWJmKlTon3Kck35qpzi/Y0GErQkuVmHIynZlyLCfZassN1hDxrscSvoRpK74oyeMt
+         J8STnmpCgCu47xx7udnB2yS2RMYt6l7XPs59nKhjcQ6hhBUwTHVAxnAPsScbF/lDTF
+         BKKxnY74EUwWqj+jAeWYad/XfiupJnPDfZNpL0iU=
+From:   Lorenzo Bianconi <lorenzo@kernel.org>
+To:     nbd@nbd.name
+Cc:     lorenzo.bianconi@redhat.com, linux-wireless@vger.kernel.org,
+        sgruszka@redhat.com
+Subject: [PATCH] mt76: refactor cc_lock locking scheme
+Date:   Tue, 15 Oct 2019 14:30:42 +0200
+Message-Id: <6a1cd5c3aef25d5d65c0519a6b97d673c51b4a8f.1571142313.git.lorenzo@kernel.org>
+X-Mailer: git-send-email 2.21.0
 MIME-Version: 1.0
-In-Reply-To: <20191015115439.GE32665@bombadil.infradead.org>
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature";
- boundary="xXjpgUbLDdBAUlDObA57HUQXDHzBsVHcH"
+Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
---xXjpgUbLDdBAUlDObA57HUQXDHzBsVHcH
-Content-Type: multipart/mixed; boundary="z434XuCeAEdMMPGCrDECpwMF4D7beqFx1";
- protected-headers="v1"
-From: Thomas Zimmermann <tzimmermann@suse.de>
-To: Matthew Wilcox <willy@infradead.org>
-Cc: Tim.Bird@sony.com, jani.nikula@linux.intel.com, changbin.du@gmail.com,
- corbet@lwn.net, linux-doc@vger.kernel.org, linux-pci@vger.kernel.org,
- linux-fpga@vger.kernel.org, linux-usb@vger.kernel.org,
- linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
- dri-devel@lists.freedesktop.org, linux-mm@kvack.org,
- linux-crypto@vger.kernel.org, linux-kselftest@vger.kernel.org,
- intel-gfx@lists.freedesktop.org
-Message-ID: <f4157a18-6c2e-9854-40a2-dd78c9bde5ea@suse.de>
-Subject: Re: [PATCH] kernel-doc: rename the kernel-doc directive 'functions'
- to 'specific'
-References: <20191013055359.23312-1-changbin.du@gmail.com>
- <875zkrd7nq.fsf@intel.com>
- <ECADFF3FD767C149AD96A924E7EA6EAF977CAF09@USCULXMSG01.am.sony.com>
- <7e7557b5-469f-3e63-6254-53dab2d7234a@suse.de>
- <20191015115439.GE32665@bombadil.infradead.org>
-In-Reply-To: <20191015115439.GE32665@bombadil.infradead.org>
+Read busy counters not holding cc_lock spinlock since usb read can't be
+performed in interrupt context. Move cc_active and cc_rx counters out of
+cc_lock since they are not modified in interrupt context.
+Grab cc_lock updating cur_cc_bss_rx in mt76_airtime_report and do not
+hold rx_lock in mt76_update_survey.
+Moreover grab mt76 mutex in mt76_get_survey before running
+mt76_update_survey. This patch fixes the following 'schedule while
+atomic'
 
---z434XuCeAEdMMPGCrDECpwMF4D7beqFx1
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: quoted-printable
+[  291.790866] BUG: scheduling while atomic: iw/2161/0x00000202
+[  291.791002] Preemption disabled at:
+[  291.791007] [<0000000000000000>] 0x0
+[  291.791015] CPU: 0 PID: 2161 Comm: iw Tainted: G W 5.4.= 0-rc2-3-ARCH-00104-g9e208aa06c21 #1
+[  291.791017] Hardware name: LENOVO 2349QM6/2349QM6, BIOS G1ETC2WW (2.82=) 08/07/2019
+[  291.791019] Call Trace:
+[  291.791042]  dump_stack+0x5c/0x80
+[  291.791049]  __schedule_bug.cold+0x8e/0x9b
+[  291.791055]  __schedule+0x5f8/0x770
+[  291.791062]  schedule+0x43/0xd0
+[  291.791068]  schedule_preempt_disabled+0x14/0x20
+[  291.791074]  __mutex_lock.isra.0+0x18a/0x530
+[  291.791099]  mt76u_rr+0x1f/0x40 [mt76_usb]
+[  291.791113]  mt76x02_update_channel+0x22/0x40 [mt76x02_lib]
+[  291.791122]  mt76_update_survey+0x42/0xe0 [mt76]
+[  291.791129]  mt76_get_survey+0x2f/0x1b0 [mt76]
+[  291.791170]  ieee80211_dump_survey+0x5e/0x140 [mac80211]
+[  291.791217]  nl80211_dump_survey+0x13c/0x2f0 [cfg80211]
+[  291.791222]  ? __kmalloc_reserve.isra.0+0x2d/0x70
+[  291.791225]  ? __alloc_skb+0x96/0x1d0
+[  291.791229]  netlink_dump+0x17b/0x370
+[  291.791247]  __netlink_dump_start+0x16f/0x1e0
+[  291.791253]  genl_family_rcv_msg+0x396/0x410
+[  291.791290]  ? nl80211_prepare_wdev_dump+0x1b0/0x1b0 [cfg80211]
+[  291.791297]  ? _raw_spin_unlock_irqrestore+0x20/0x40
+[  291.791312]  ? __wake_up_common_lock+0x8a/0xc0
+[  291.791316]  genl_rcv_msg+0x47/0x90
+[  291.791320]  ? genl_family_rcv_msg+0x410/0x410
+[  291.791323]  netlink_rcv_skb+0x49/0x110
+[  291.791329]  genl_rcv+0x24/0x40
+[  291.791333]  netlink_unicast+0x171/0x200
+[  291.791340]  netlink_sendmsg+0x208/0x3d0
+[  291.791358]  sock_sendmsg+0x5e/0x60
+[  291.791361]  ___sys_sendmsg+0x2ae/0x330
+[  291.791368]  ? filemap_map_pages+0x272/0x390
+[  291.791374]  ? _raw_spin_unlock+0x16/0x30
+[  291.791379]  ? __handle_mm_fault+0x112f/0x1390
+[  291.791388]  __sys_sendmsg+0x59/0xa0
+[  291.791396]  do_syscall_64+0x5b/0x1a0
+[  291.791400]  entry_SYSCALL_64_after_hwframe+0x44/0xa9
+[  291.791404] RIP: 0033:0x7f5d0c7f37b7
+[  291.791418] Code: 64 89 02 48 c7 c0 ff ff ff ff eb bb 0f 1f 80 00 00 0=
+0 00 f3 0f 1e fa 64 8b 04 25 18 00 00 00 85 c0 75 10 b8 2e 00 00 00 0f 05=
+ <48> 3d 00 f0 ff ff 77 51 c3 48 83 ec 28 89 54 24 1c 48 89 74 24 10
+[  291.791421] RSP: 002b:00007ffe8b5d0538 EFLAGS: 00000246 ORIG_RAX: 0000= 00000000002e
+[  291.791426] RAX: ffffffffffffffda RBX: 000055a038e6c390 RCX: 00007f5d0= c7f37b7
+[  291.791430] RDX: 0000000000000000 RSI: 00007ffe8b5d0570 RDI: 000000000= 0000003
+[  291.791434] RBP: 000055a038e718c0 R08: 000055a038e6c02a R09: 000000000= 0000002
+[  291.791438] R10: 000055a03808cb00 R11: 0000000000000246 R12: 000055a03= 8e71780
+[  291.791440] R13: 00007ffe8b5d0570 R14: 000055a038e717d0 R15: 000055a03= 8e718c0
+[  291.791480] NOHZ: local_softirq_pending 202
 
-Hi
+Fixes: 168aea24f4bb ("mt76: mt76x02u: enable survey support")
+Tested-by: Markus Theil <markus.theil@tu-ilmenau.de>
+Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+---
+ drivers/net/wireless/mediatek/mt76/mac80211.c | 25 +++++++++++--------
+ .../net/wireless/mediatek/mt76/mt76x02_mac.c  |  3 +++
+ 2 files changed, 17 insertions(+), 11 deletions(-)
 
-Am 15.10.19 um 13:54 schrieb Matthew Wilcox:
-> On Tue, Oct 15, 2019 at 11:25:53AM +0200, Thomas Zimmermann wrote:
->>> My preference would be to use 'symbols'.  I tried to come up with som=
-ething
->>> but 'symbols' is better than anything I came up with.
->>
->> Maybe 'interfaces' or 'artifacts'. The term 'symbols' is just as
->> imprecise as 'functions'.
->=20
-> I suggested 'identifier' because that's the term used in the C spec (6.=
-2.1):
->=20
-> : An identifier can denote an object; a function; a tag or a member
-> : of a structure, union, or enumeration; a typedef name; a label name;
-> : a macro name; or a macro parameter.
->=20
-> We don't allow documenting all those things separately, but it does cov=
-er
-> all the things we do allow to be individually documented.
->=20
+diff --git a/drivers/net/wireless/mediatek/mt76/mac80211.c b/drivers/net/wireless/mediatek/mt76/mac80211.c
+index a962abce98f8..f2d2d2a3e88e 100644
+--- a/drivers/net/wireless/mediatek/mt76/mac80211.c
++++ b/drivers/net/wireless/mediatek/mt76/mac80211.c
+@@ -432,8 +432,6 @@ void mt76_update_survey(struct mt76_dev *dev)
+ 	if (!test_bit(MT76_STATE_RUNNING, &dev->state))
+ 		return;
+ 
+-	spin_lock_bh(&dev->cc_lock);
+-
+ 	if (dev->drv->update_survey)
+ 		dev->drv->update_survey(dev);
+ 
+@@ -442,15 +440,11 @@ void mt76_update_survey(struct mt76_dev *dev)
+ 						  dev->survey_time));
+ 	dev->survey_time = cur_time;
+ 
+-	spin_unlock_bh(&dev->cc_lock);
+-
+ 	if (dev->drv->drv_flags & MT_DRV_SW_RX_AIRTIME) {
+-		spin_lock_bh(&dev->rx_lock);
+ 		spin_lock(&dev->cc_lock);
+ 		state->cc_bss_rx += dev->cur_cc_bss_rx;
+ 		dev->cur_cc_bss_rx = 0;
+ 		spin_unlock(&dev->cc_lock);
+-		spin_unlock_bh(&dev->rx_lock);
+ 	}
+ }
+ EXPORT_SYMBOL_GPL(mt76_update_survey);
+@@ -485,6 +479,7 @@ int mt76_get_survey(struct ieee80211_hw *hw, int idx,
+ 	struct mt76_channel_state *state;
+ 	int ret = 0;
+ 
++	mutex_lock(&dev->mutex);
+ 	if (idx == 0 && dev->drv->update_survey)
+ 		mt76_update_survey(dev);
+ 
+@@ -494,8 +489,10 @@ int mt76_get_survey(struct ieee80211_hw *hw, int idx,
+ 		sband = &dev->sband_5g;
+ 	}
+ 
+-	if (idx >= sband->sband.n_channels)
+-		return -ENOENT;
++	if (idx >= sband->sband.n_channels) {
++		ret = -ENOENT;
++		goto out;
++	}
+ 
+ 	chan = &sband->sband.channels[idx];
+ 	state = mt76_channel_state(dev, chan);
+@@ -511,14 +508,18 @@ int mt76_get_survey(struct ieee80211_hw *hw, int idx,
+ 			survey->filled |= SURVEY_INFO_TIME_BSS_RX;
+ 	}
+ 
+-	spin_lock_bh(&dev->cc_lock);
+-	survey->time = div_u64(state->cc_active, 1000);
+ 	survey->time_busy = div_u64(state->cc_busy, 1000);
+-	survey->time_bss_rx = div_u64(state->cc_bss_rx, 1000);
+ 	survey->time_rx = div_u64(state->cc_rx, 1000);
++	survey->time = div_u64(state->cc_active, 1000);
++
++	spin_lock_bh(&dev->cc_lock);
++	survey->time_bss_rx = div_u64(state->cc_bss_rx, 1000);
+ 	survey->time_tx = div_u64(state->cc_tx, 1000);
+ 	spin_unlock_bh(&dev->cc_lock);
+ 
++out:
++	mutex_unlock(&dev->mutex);
++
+ 	return ret;
+ }
+ EXPORT_SYMBOL_GPL(mt76_get_survey);
+@@ -622,7 +623,9 @@ mt76_airtime_report(struct mt76_dev *dev, struct mt76_rx_status *status,
+ 	u32 airtime;
+ 
+ 	airtime = mt76_calc_rx_airtime(dev, status, len);
++	spin_lock(&dev->cc_lock);
+ 	dev->cur_cc_bss_rx += airtime;
++	spin_unlock(&dev->cc_lock);
+ 
+ 	if (!wcid || !wcid->sta)
+ 		return;
+diff --git a/drivers/net/wireless/mediatek/mt76/mt76x02_mac.c b/drivers/net/wireless/mediatek/mt76/mt76x02_mac.c
+index 41f7c01045b8..2c0bd9aa1987 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt76x02_mac.c
++++ b/drivers/net/wireless/mediatek/mt76/mt76x02_mac.c
+@@ -1024,8 +1024,11 @@ void mt76x02_update_channel(struct mt76_dev *mdev)
+ 
+ 	state = mdev->chan_state;
+ 	state->cc_busy += mt76_rr(dev, MT_CH_BUSY);
++
++	spin_lock_bh(&dev->mt76.cc_lock);
+ 	state->cc_tx += dev->tx_airtime;
+ 	dev->tx_airtime = 0;
++	spin_unlock_bh(&dev->mt76.cc_lock);
+ }
+ EXPORT_SYMBOL_GPL(mt76x02_update_channel);
+ 
+-- 
+2.21.0
 
-Yeah, makes sense.
-
-Best regards
-Thomas
-
---=20
-Thomas Zimmermann
-Graphics Driver Developer
-SUSE Software Solutions Germany GmbH
-Maxfeldstr. 5, 90409 N=C3=BCrnberg, Germany
-(HRB 36809, AG N=C3=BCrnberg)
-Gesch=C3=A4ftsf=C3=BChrer: Felix Imend=C3=B6rffer
-
-
---z434XuCeAEdMMPGCrDECpwMF4D7beqFx1--
-
---xXjpgUbLDdBAUlDObA57HUQXDHzBsVHcH
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: OpenPGP digital signature
-Content-Disposition: attachment; filename="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAEBCAAdFiEEchf7rIzpz2NEoWjlaA3BHVMLeiMFAl2ltqUACgkQaA3BHVML
-eiO7bAf8DqpVa41x8h+LyR771/7XD6R9SM1oSqopIn1EaGndzepL2obOpvv7TM8J
-xdFUMac1FMD7pBfjtTfs6Ax/+KSIBGMJQxiiiGhsZ2Z9RXIiNMJpVV0pFwkEBCic
-Xwxmem2Hn+LhB98tlmtb1rUid5ZEWIqxJn0HEfOht/Y7iu+RZUfVre1GHP2W5OG+
-KSJSTG5ZwTIBzXvMS++NOh0kJWyzTiKY7Gaxl0ck76UKp34bdsTqFNVlOqNgfdiW
-tEmx0i6R/9ZZp3HGgsbN7waSqxjcYWI4M8sPApl7aPDDpTZC2ydWX1J5qzmp9/LF
-uRn+WrOCEMHCMSPfYsv/311cYx9oLw==
-=fbgk
------END PGP SIGNATURE-----
-
---xXjpgUbLDdBAUlDObA57HUQXDHzBsVHcH--
