@@ -2,25 +2,25 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id ECD23D6E85
-	for <lists+linux-wireless@lfdr.de>; Tue, 15 Oct 2019 07:21:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 215ABD6E9A
+	for <lists+linux-wireless@lfdr.de>; Tue, 15 Oct 2019 07:28:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728247AbfJOFVY (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 15 Oct 2019 01:21:24 -0400
-Received: from smtp.codeaurora.org ([198.145.29.96]:49296 "EHLO
+        id S1728341AbfJOF2G (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 15 Oct 2019 01:28:06 -0400
+Received: from smtp.codeaurora.org ([198.145.29.96]:52888 "EHLO
         smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728152AbfJOFVX (ORCPT
+        with ESMTP id S1728335AbfJOF2F (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 15 Oct 2019 01:21:23 -0400
+        Tue, 15 Oct 2019 01:28:05 -0400
 Received: by smtp.codeaurora.org (Postfix, from userid 1000)
-        id 0040460A08; Tue, 15 Oct 2019 05:21:22 +0000 (UTC)
+        id 0C01F60BDD; Tue, 15 Oct 2019 05:28:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1571116883;
-        bh=I9WghGtYVeVXJlrf61PEkCMhAN/CWWt9s6E+2MBmULs=;
+        s=default; t=1571117285;
+        bh=8FGb2J/wiGU3r55lQEJRsCKstDbZ2Qwho5EqzVqSYf8=;
         h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-        b=hVK+F4j87QFPu8H0DZGTPMxOIoi/Pgr5d+Mn0NCwieNYN1K7Uv72nxfTRqWS/uGn2
-         LadqbYPRTwrpLMSGeZHpT04abyU6lFTGDhlazzfSe6Ol1JWIqW7aODf374IQ5XjCT/
-         Qx2Y8/MVzaa0P8KkM0iNQwt7a4u13JaqaKf5JMBw=
+        b=XDxj/4yehBuLdsC/ns/oMKGiMiMhU9FqRl/df2/ElHY8In2y0B4qdlMdfl0nZe12u
+         jNTT3iDhaCkGDtTSbkPfoJ2R9P870Z2bXkYn6EqN6XpwNmjgR0hcwWQDST6CZ2H1Dq
+         sk6m3z6g1G08NfQFaUlyBYCLdmt9+gSsdDoyo1bw=
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         pdx-caf-mail.web.codeaurora.org
 X-Spam-Level: 
@@ -31,68 +31,65 @@ Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
         (Authenticated sender: kvalo@smtp.codeaurora.org)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 5D5BE60A08;
-        Tue, 15 Oct 2019 05:21:18 +0000 (UTC)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id BD25E60610;
+        Tue, 15 Oct 2019 05:28:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1571116882;
-        bh=I9WghGtYVeVXJlrf61PEkCMhAN/CWWt9s6E+2MBmULs=;
+        s=default; t=1571117283;
+        bh=8FGb2J/wiGU3r55lQEJRsCKstDbZ2Qwho5EqzVqSYf8=;
         h=Subject:From:In-Reply-To:References:To:Cc:From;
-        b=NnBS+7x4cXUBpHYlGfS2P9pXG0hRUwGdykafpD6XvkHSi6ZHk6Q5HEgtpQlPoNISP
-         aNXuk0+bDPWjjMTMjqPcLketao2JjtarTtgLPEgooWF+xnYw2z4vdkhZL/2/QPRc2I
-         e2Uvtqr11xwD/Wz+ObDG7J7LqU0OdjuQLAAMsqF4=
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 5D5BE60A08
+        b=VuLGlA8lk9NyjZcl8MpkH9/FQvmn9bmr9SU1UhdN/yFzeLu4OBTAyX7nXo9qB8+Y0
+         17PxNEnrlPmE62lGxKz2TQB0gDq8+ioS2p81qCejvHX+tWMxAiSBP5ZddMUUTutCaI
+         RXiTXq/az4elXX5fFhUe6TrTRvkz/b9OkPmdvU/g=
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org BD25E60610
 Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
 Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH v3 20/24] wireless: Remove call to memset after
- dma_alloc_coherent
+Content-Transfer-Encoding: 8bit
+Subject: Re: =?utf-8?q?=5BPATCH=5D_net/wireless=3A_Delete_unnecessary_checks_bef?==?utf-8?q?ore_the_macro_call_=E2=80=9Cdev=5Fkfree=5Fskb=E2=80=9D?=
 From:   Kalle Valo <kvalo@codeaurora.org>
-In-Reply-To: <20190715031941.7120-1-huangfq.daxian@gmail.com>
-References: <20190715031941.7120-1-huangfq.daxian@gmail.com>
-To:     Fuqian Huang <huangfq.daxian@gmail.com>
-Cc:     unlisted-recipients:; (no To-header on input)
-        "David S . Miller" <davem@davemloft.net>,
-        Arend van Spriel <arend.vanspriel@broadcom.com>,
-        Franky Lin <franky.lin@broadcom.com>,
-        Hante Meuleman <hante.meuleman@broadcom.com>,
-        Chi-Hsien Lin <chi-hsien.lin@cypress.com>,
-        Wright Feng <wright.feng@cypress.com>,
-        Igor Mitsyanko <imitsyanko@quantenna.com>,
-        Avinash Patil <avinashp@quantenna.com>,
-        Sergey Matyukevich <smatyukevich@quantenna.com>,
-        ath10k@lists.infradead.org, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-        brcm80211-dev-list.pdl@broadcom.com,
-        brcm80211-dev-list@cypress.com,
-        Fuqian Huang <huangfq.daxian@gmail.com>
-Illegal-Object: Syntax error in Cc: address found on vger.kernel.org:
-        Cc:     unlisted-recipients:; (no To-header on input)"David S . Miller" <davem@davemloft.net>
-                                                                     ^-missing end of address
+In-Reply-To: <ea6c6fef-9868-196b-d914-23faf12d7f5c@web.de>
+References: <ea6c6fef-9868-196b-d914-23faf12d7f5c@web.de>
+To:     Markus Elfring <Markus.Elfring@web.de>
+Cc:     linux-wireless@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-mediatek@lists.infradead.org, ath10k@lists.infradead.org,
+        "David S. Miller" <davem@davemloft.net>,
+        Felix Fietkau <nbd@nbd.name>,
+        Lorenzo Bianconi <lorenzo.bianconi83@gmail.com>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        Roy Luo <royluo@google.com>,
+        Ryder Lee <ryder.lee@mediatek.com>,
+        Solomon Peachy <pizza@shaftnet.org>,
+        Stanislaw Gruszka <sgruszka@redhat.com>,
+        LKML <linux-kernel@vger.kernel.org>,
+        kernel-janitors@vger.kernel.org
 User-Agent: pwcli/0.0.0-git (https://github.com/kvalo/pwcli/) Python/2.7.12
-Message-Id: <20191015052123.0040460A08@smtp.codeaurora.org>
-Date:   Tue, 15 Oct 2019 05:21:22 +0000 (UTC)
+Message-Id: <20191015052805.0C01F60BDD@smtp.codeaurora.org>
+Date:   Tue, 15 Oct 2019 05:28:04 +0000 (UTC)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Fuqian Huang <huangfq.daxian@gmail.com> wrote:
+Markus Elfring <Markus.Elfring@web.de> wrote:
 
-> In commit 518a2f1925c3
-> ("dma-mapping: zero memory returned from dma_alloc_*"),
-> dma_alloc_coherent has already zeroed the memory.
-> So memset is not needed.
+> From: Markus Elfring <elfring@users.sourceforge.net>
+> Date: Thu, 22 Aug 2019 10:20:10 +0200
 > 
-> Signed-off-by: Fuqian Huang <huangfq.daxian@gmail.com>
+> The dev_kfree_skb() function performs also input parameter validation.
+> Thus the test around the shown calls is not needed.
+> 
+> This issue was detected by using the Coccinelle software.
+> 
+> Signed-off-by: Markus Elfring <elfring@users.sourceforge.net>
 
 Patch applied to wireless-drivers-next.git, thanks.
 
-52d4261862ec wireless: Remove call to memset after dma_alloc_coherent
+868ad2149602 net/wireless: Delete unnecessary checks before the macro call “dev_kfree_skb”
 
 -- 
-https://patchwork.kernel.org/patch/11043359/
+https://patchwork.kernel.org/patch/11108741/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
