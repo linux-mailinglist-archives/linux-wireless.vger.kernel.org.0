@@ -2,107 +2,82 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 0CD01D6C47
-	for <lists+linux-wireless@lfdr.de>; Tue, 15 Oct 2019 01:58:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D5DA6D6D80
+	for <lists+linux-wireless@lfdr.de>; Tue, 15 Oct 2019 05:15:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726836AbfJNX6S (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 14 Oct 2019 19:58:18 -0400
-Received: from mail-lj1-f193.google.com ([209.85.208.193]:38072 "EHLO
-        mail-lj1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726674AbfJNX6S (ORCPT
+        id S1727685AbfJODPJ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 14 Oct 2019 23:15:09 -0400
+Received: from bombadil.infradead.org ([198.137.202.133]:38110 "EHLO
+        bombadil.infradead.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726946AbfJODPI (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 14 Oct 2019 19:58:18 -0400
-Received: by mail-lj1-f193.google.com with SMTP id b20so18311753ljj.5
-        for <linux-wireless@vger.kernel.org>; Mon, 14 Oct 2019 16:58:16 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=JPvtAhVgHaqjs/EQbN+HHGKZb04AFtR23CWG2J/pYzg=;
-        b=BJXFZaoaOEFudxdPwrAxofTfRLkpnPWPJeiWWKuTGp6VJoxGBpbQIwoa9yAw0ETpOR
-         fUqWkUB2yKwREvl4aFh7E8dCUd6uvQa5j1M2ajhez0YC4t84HRFKrFMGe2CJ1HLyRgHe
-         t1sAvNxmPRGMV4GaVU+YX30tBlmyR3YL8Yqrm4WsB+cSLCFQ4nwqEr7JvxJQVSjabjsI
-         7mxRSVQrdLcw/VX4JDXWFPEu8u65ca8Ton/fO/Q6WwuzB0Nao6fkqz7hu1ToXUnAar2s
-         NuQW/zAS16U3yKH4rdjaPOUo8Hto0zkaiRbCgOyxZO2l8fdfLDDCoOzUVtvz5UILL+X3
-         0GMA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=JPvtAhVgHaqjs/EQbN+HHGKZb04AFtR23CWG2J/pYzg=;
-        b=n7lhCAicddgx9ZBNaZRdDE5J8z5+NN2o6d1IUz1jTlQuwfhdsL0BwRgZcn8AxPlSE2
-         qz7NSWJGOurnd5HmGUVXEC4OKyHsQdNkmkEC7odwQjojVjLx3gUoiiForfTybv+dN2r/
-         Dqgp+IxZ6Jwv5KYS1jbsGcttRu5X1cZfghIDZCo8TQqIXdpQ3NFUfhh9LR+KsB1apSoS
-         4olivy+prm3utLWkxIBIFhCi79j+K1G+ze9P00F+qnichX6C37JCdOsC0DGcS3/9leg4
-         ZlrWfhvJbWZe1tact3N2xTrqJJMj4DT2isP2mBFL1KirixTO+MXjHH1uHAPrmEMV6rHs
-         PUgw==
-X-Gm-Message-State: APjAAAV+oAURtRuBQJGk4UK2AS0Fyc6bVAEK5FetDiqY5/sq+BoysHD/
-        VR6a+Uk44q33mMX8r6CUNgamEcOY41dOrApfrZR4hA==
-X-Google-Smtp-Source: APXvYqwTYFbJV9swRZOOCbryRgaI72elPIj0s6C4+0Lirr86n5yZSHudIeTWAaUCYwEcefjmsTfd0Zn00oPouTLhXtQ=
-X-Received: by 2002:a2e:9759:: with SMTP id f25mr9634973ljj.173.1571097495738;
- Mon, 14 Oct 2019 16:58:15 -0700 (PDT)
+        Mon, 14 Oct 2019 23:15:08 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=bombadil.20170209; h=In-Reply-To:Content-Type:MIME-Version
+        :References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+        Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+        Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+        List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+         bh=rGXKOzZI2i2ULcbgzDpG/mG1eu5gxk2EGw7KyGeZWwE=; b=Ck4GEFQCqtrUxKelUCq8Q93OE
+        TgZCkXwGyd9+XQ40HYW8ayvgLfti0hqTDa/CvRTsliaSADnE0HCCMC+vmvq9WGGbdffVTCNYxlnCD
+        4Mrl5Zi4BKTGxL9fnpjlQMVLdNBXgDcfNCMIw8MKAMk+oWO3/qbzDB4KFlPcaCrDkE59assZz3cd5
+        +rjncO71ZMRE4j0IH3/9bteALR9aB3djRUl1V+UH+aLGCY+gcZPHu4bgNrak6aZQGDhqeDmnfIQlA
+        lvsZmqvgnm+aKjD3Hejv3+pRbfLWXv1Sydao3hwwLdrvJuNkXSJRQ3Tb12fWsiMj1dY974Z1KiKkp
+        WEffcX/fw==;
+Received: from willy by bombadil.infradead.org with local (Exim 4.92.3 #3 (Red Hat Linux))
+        id 1iKDIe-0000xB-K6; Tue, 15 Oct 2019 03:15:04 +0000
+Date:   Mon, 14 Oct 2019 20:15:04 -0700
+From:   Matthew Wilcox <willy@infradead.org>
+To:     Tim.Bird@sony.com
+Cc:     jani.nikula@linux.intel.com, changbin.du@gmail.com, corbet@lwn.net,
+        linux-pci@vger.kernel.org, linux-doc@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+        linux-crypto@vger.kernel.org, linux-kselftest@vger.kernel.org,
+        linux-wireless@vger.kernel.org, linux-fpga@vger.kernel.org,
+        linux-usb@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        intel-gfx@lists.freedesktop.org
+Subject: Re: [PATCH] kernel-doc: rename the kernel-doc directive 'functions'
+ to 'specific'
+Message-ID: <20191015031504.GB32665@bombadil.infradead.org>
+References: <20191013055359.23312-1-changbin.du@gmail.com>
+ <875zkrd7nq.fsf@intel.com>
+ <ECADFF3FD767C149AD96A924E7EA6EAF977CAF09@USCULXMSG01.am.sony.com>
 MIME-Version: 1.0
-References: <20191011022413.176208-1-kyan@google.com> <87wod7y9ui.fsf@kamboji.qca.qualcomm.com>
- <87sgnvy9c2.fsf@kamboji.qca.qualcomm.com>
-In-Reply-To: <87sgnvy9c2.fsf@kamboji.qca.qualcomm.com>
-From:   Kan Yan <kyan@google.com>
-Date:   Mon, 14 Oct 2019 16:58:04 -0700
-Message-ID: <CA+iem5uLYFVQjPaE1QDKc6c+eKz8Xd4LbwczYXOBKP3q+HHdBg@mail.gmail.com>
-Subject: Re: [PATCH v4 0/2] Implement Airtime-based Queue Limit (AQL)
-To:     Kalle Valo <kvalo@codeaurora.org>
-Cc:     make-wifi-fast@lists.bufferbloat.net,
-        =?UTF-8?B?VG9rZSBIw7hpbGFuZC1Kw7hyZ2Vuc2Vu?= <toke@redhat.com>,
-        linux-wireless@vger.kernel.org, ath10k@lists.infradead.org,
-        Yibo Zhao <yiboz@codeaurora.org>,
-        Johannes Berg <johannes@sipsolutions.net>,
-        Felix Fietkau <nbd@nbd.name>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ECADFF3FD767C149AD96A924E7EA6EAF977CAF09@USCULXMSG01.am.sony.com>
+User-Agent: Mutt/1.12.1 (2019-06-15)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi Kalle,
+On Mon, Oct 14, 2019 at 08:48:48PM +0000, Tim.Bird@sony.com wrote:
+> 
+> 
+> > -----Original Message-----
+> > From: Jani Nikula on October 13, 2019 11:00 PM
+> > On Sun, 13 Oct 2019, Changbin Du <changbin.du@gmail.com> wrote:
+> > > The 'functions' directive is not only for functions, but also works for
+> > > structs/unions. So the name is misleading. This patch renames it to
+> > > 'specific', so now we have export/internal/specific directives to limit
+> > > the functions/types to be included in documentation. Meanwhile we
+> > improved
+> > > the warning message.
+> > 
+> > Agreed on "functions" being less than perfect. It directly exposes the
+> > idiosyncrasies of scripts/kernel-doc. I'm not sure "specific" is any
+> > better, though.
+> 
+> I strongly agree with this.  'specific' IMHO, has no semantic value and
+> I'd rather just leave the only-sometimes-wrong 'functions' than convert
+> to something that obscures the meaning always.
+> 
+> > 
+> > Perhaps "symbols" would be more self-explanatory. Or, actually make
+> > "functions" only work on functions, and add a separate keyword for other
+> > stuff. *shrug*
+> My preference would be to use 'symbols'.  I tried to come up with something
+> but 'symbols' is better than anything I came up with.
 
-Thanks for the help and tips.  Will do that if I need to submit again.
-
-I believe Toke will integrate this with his version and move the
-estimating pending airtime part to mac80211, so maybe in the next
-version, ath10k change is no longer required.
-
-Thanks,
-Kan
-
-
-On Mon, Oct 14, 2019 at 2:18 AM Kalle Valo <kvalo@codeaurora.org> wrote:
->
-> Kalle Valo <kvalo@codeaurora.org> writes:
->
-> > Kan Yan <kyan@google.com> writes:
-> >
-> >> This patch series implements Airtime-based Queue Limit (AQL) in the
-> >> mac80211 and Ath10k driver. It is based on an earlier version from
-> >> the ChromiumOS tree[0].
-> >>
-> >> This version has been tested with QCA9884 platform with 4.14 kernel.
-> >> Tests show AQL is able to reduce latency by an order of magnitude in
-> >> a congested environment without negative impact on the throughput.
-> >>
-> >> [0]
-> >> https://chromium-review.googlesource.com/c/chromiumos/third_party/kernel/+/1703105/7
-> >>
-> >> Kan Yan (2):
-> >>   mac80211: Implement Airtime-based Queue Limit (AQL)
-> >>   ath10k: Enable Airtime-based Queue Limit (AQL)
-> >
-> > Please always include a change log so that people know what has changed
-> > since the previous version:
-> >
-> > https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches#changelog_missing
->
-> Never mind, you actually had the changelog after the signature separator
-> ("-- \n" line) and I automatically skip the signature :) So instead I
-> recommend moving the change log up and above the signature separator.
->
-> --
-> https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+structures aren't symbols though ... How about 'identifier'?
