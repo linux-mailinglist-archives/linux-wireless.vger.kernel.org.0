@@ -2,116 +2,90 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 06440D7A9E
-	for <lists+linux-wireless@lfdr.de>; Tue, 15 Oct 2019 17:54:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5C53BD7B56
+	for <lists+linux-wireless@lfdr.de>; Tue, 15 Oct 2019 18:24:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2387657AbfJOPyu (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 15 Oct 2019 11:54:50 -0400
-Received: from mail.kernel.org ([198.145.29.99]:40294 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728624AbfJOPyu (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 15 Oct 2019 11:54:50 -0400
-Received: from localhost.localdomain (nat-pool-mxp-t.redhat.com [149.6.153.186])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        id S1727809AbfJOQYi (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 15 Oct 2019 12:24:38 -0400
+Received: from smtp.codeaurora.org ([198.145.29.96]:35390 "EHLO
+        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726200AbfJOQYh (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 15 Oct 2019 12:24:37 -0400
+Received: by smtp.codeaurora.org (Postfix, from userid 1000)
+        id D622C60BEA; Tue, 15 Oct 2019 16:24:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
+        s=default; t=1571156677;
+        bh=TLXzKaLgAlXy4RnEdq1+kK9xYyxZfCis3fJ9E8UWSc4=;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+        b=A5tX6D+sC/m1Fgcjf5DxqWmh6cSVveSWyx+6t0/zQt6/aCvWMtYftGFLwOMhN0tde
+         Ekj6sXb8306mlZRDxnEspKj9uRYDnEVPkO+R4g3AM/+gg6p5NHWAM1SuJOoD9Y5usd
+         g4FqS2s9WNtToslBvLwWDS4UXxyPNLqHgP3Bkcpo=
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        pdx-caf-mail.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.7 required=2.0 tests=ALL_TRUSTED,BAYES_00,
+        DKIM_INVALID,DKIM_SIGNED,SPF_NONE autolearn=no autolearn_force=no
+        version=3.4.0
+Received: from x230.qca.qualcomm.com (85-76-79-201-nat.elisa-mobile.fi [85.76.79.201])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 51AA320854;
-        Tue, 15 Oct 2019 15:54:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1571154889;
-        bh=qV3qVcv5wgEK1k3f7Pdtgc268eBae+4cUcU3ZpfTRpQ=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=Nw5iMwHscj0uukZrCHQWtlGXdDG9h2MMvIl9aau4LGFUztBkc1NBdDFJrb9bWM7af
-         xRusmfHCD3YSw6vXAjcgz9Y4NgOq5Fuvjl8CIe+UBpC+3wxfcIbelqLQ7tZzzsVvcs
-         QmSUyYwzbz/59w3+zOmiqK+afmkJX/egIijd1Pb0=
-Date:   Tue, 15 Oct 2019 17:54:44 +0200
-From:   Lorenzo Bianconi <lorenzo@kernel.org>
-To:     Stanislaw Gruszka <sgruszka@redhat.com>
-Cc:     nbd@nbd.name, lorenzo.bianconi@redhat.com,
-        linux-wireless@vger.kernel.org
-Subject: Re: [PATCH v2] mt76: refactor cc_lock locking scheme
-Message-ID: <20191015155444.GA10108@localhost.localdomain>
-References: <252d75b5139a7acb4bdc28c8131e408c2483d8ac.1571151935.git.lorenzo@kernel.org>
- <20191015154250.GA18262@redhat.com>
+        (Authenticated sender: kvalo@smtp.codeaurora.org)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 2755260BEA;
+        Tue, 15 Oct 2019 16:24:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
+        s=default; t=1571156675;
+        bh=TLXzKaLgAlXy4RnEdq1+kK9xYyxZfCis3fJ9E8UWSc4=;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+        b=mMPeemZpQQq6uVOxx8hGlc3an876I99Rp8OAasBUM3ZLKhc/Rskb95EK03asp2hl3
+         XQ/MaPJrcEQr/MwdG3sLRMQ2N1LCGUNKyRCMhoVF5bjSxhClGDNC0/HJ9botmw1s9+
+         Wc0JNS/a3PJuM5Z4aAbwDIhj9O3dpo/KFmznxpeQ=
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 2755260BEA
+Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
+From:   Kalle Valo <kvalo@codeaurora.org>
+To:     Johannes Berg <johannes@sipsolutions.net>
+Cc:     linux-wireless@vger.kernel.org, devicetree@vger.kernel.org,
+        ath11k@lists.infradead.org
+Subject: Re: [PATCH 08/49] ath11k: add core.c
+References: <1566316095-27507-1-git-send-email-kvalo@codeaurora.org>
+        <1566316095-27507-9-git-send-email-kvalo@codeaurora.org>
+        <0c526ce00e6e1c7731c990515e7438230efb55af.camel@sipsolutions.net>
+Date:   Tue, 15 Oct 2019 19:24:29 +0300
+In-Reply-To: <0c526ce00e6e1c7731c990515e7438230efb55af.camel@sipsolutions.net>
+        (Johannes Berg's message of "Tue, 20 Aug 2019 22:32:45 +0200")
+Message-ID: <87h84am0xu.fsf@codeaurora.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="PNTmBPCT7hxwcZjr"
-Content-Disposition: inline
-In-Reply-To: <20191015154250.GA18262@redhat.com>
-User-Agent: Mutt/1.12.1 (2019-06-15)
+Content-Type: text/plain
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+Johannes Berg <johannes@sipsolutions.net> writes:
 
---PNTmBPCT7hxwcZjr
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+>> +module_param_named(debug_mask, ath11k_debug_mask, uint, 0644);
+>> +
+>> +MODULE_PARM_DESC(debug_mask, "Debugging mask");
+>> +
+>> +static const struct ath11k_hw_params ath11k_hw_params = {
+>> +			.name = "ipq8074",
+>
+> indentation here seems a bit too much
 
-> On Tue, Oct 15, 2019 at 05:16:43PM +0200, Lorenzo Bianconi wrote:
-> > Read busy counters not holding cc_lock spinlock since usb read can't be
-> > performed in interrupt context. Move cc_active and cc_rx counters out of
-> > cc_lock since they are not modified in interrupt context.
-> > Grab cc_lock updating cur_cc_bss_rx in mt76_airtime_report and do not
-> > hold rx_lock in mt76_update_survey.
-> <snip>
-> > Fixes: 168aea24f4bb ("mt76: mt76x02u: enable survey support")
->=20
-> I think problem was introduced currently in mt76 driver version
-> that is not yet in mainline tree, so this is not right commit.
-> On Linus' tree we still read registers outside of cc_lock section.
+I'll fix that. I'll also group the module parameter macros above next to
+each other.
 
-Hi Stanislaw,
+>> +MODULE_LICENSE("Dual BSD/GPL");
+>
+> All your files state "ISC", shouldn't that be reflected here?
 
-yes, you are right. We should drop the Fixes tag. Thx
+AFAIK MODULE_LICENSE() macro does not support ISC. AFAIK this is what
+all ISC wireless drivers have.
 
->=20
-> void mt76x02_update_channel(struct mt76_dev *mdev)
-> {
-> 	...
->=20
->         busy =3D mt76_rr(dev, MT_CH_BUSY);
->         active =3D busy + mt76_rr(dev, MT_CH_IDLE);
->=20
->         spin_lock_bh(&dev->mt76.cc_lock);
->         state->cc_busy +=3D busy;
->         state->cc_active +=3D active;
->         spin_unlock_bh(&dev->mt76.cc_lock);
-> }
->=20
-> >  	if (dev->drv->drv_flags & MT_DRV_SW_RX_AIRTIME) {
-> > -		spin_lock_bh(&dev->rx_lock);
-> > -		spin_lock(&dev->cc_lock);
-> > +		spin_lock_bh(&dev->cc_lock);
-> >  		state->cc_bss_rx +=3D dev->cur_cc_bss_rx;
-> >  		dev->cur_cc_bss_rx =3D 0;
-> > -		spin_unlock(&dev->cc_lock);
-> > -		spin_unlock_bh(&dev->rx_lock);
-> > +		spin_unlock_bh(&dev->cc_lock);
->=20
-> Why dev->rx_lock was needed before and is not needed now ?
+Related to this, we now changed the license in ath11k to
+BSD-3-Clause-Clear.
 
-Looking at the code I think rx_lock is not needed here since cur_cc_bss_rx =
-is
-updated without holding rx_lock in mt76_airtime_report() (we need cc_lock
-there).
-
-Regards,
-Lorenzo
-
->=20
-> Stanislaw
-
---PNTmBPCT7hxwcZjr
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYIAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCXaXrwgAKCRA6cBh0uS2t
-rJnHAP0VaasoiTFO8wo4O2OmEZQSZOixVxfWxbBK8q0JpBZLGQD+OS4p0VP3DVJ7
-9gyj4r4tycdIqNpgNgQ6zHjPsHlZyAI=
-=NMsX
------END PGP SIGNATURE-----
-
---PNTmBPCT7hxwcZjr--
+-- 
+Kalle Valo
