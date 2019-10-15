@@ -2,55 +2,40 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 8A58FD768E
-	for <lists+linux-wireless@lfdr.de>; Tue, 15 Oct 2019 14:31:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E4DADD774D
+	for <lists+linux-wireless@lfdr.de>; Tue, 15 Oct 2019 15:18:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729467AbfJOMbE (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 15 Oct 2019 08:31:04 -0400
-Received: from smtp.codeaurora.org ([198.145.29.96]:32842 "EHLO
-        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729160AbfJOMbE (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 15 Oct 2019 08:31:04 -0400
-Received: by smtp.codeaurora.org (Postfix, from userid 1000)
-        id 5A7FD60779; Tue, 15 Oct 2019 12:31:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1571142663;
-        bh=TnUctFmJdgiG2TefwmFK0I39R2+MxLcs+91vSZwCffg=;
-        h=From:To:Cc:Subject:Date:From;
-        b=OppXpEm0hs6r7XYWoHIQcgDNtWF317ZS27liX3lvkdLLkVHm5sNgcwwnDd/HVxE5g
-         jKGzumqGXp6GvC+I250D68Y9Jt/jbYlgIU5rNwBX67RlVuEIFIrlrXUpY6J40X5UpE
-         Q2V13yPpCrpqNk3Dd+7Lmh+BsI9YELVRPNj3/G0M=
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        pdx-caf-mail.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.7 required=2.0 tests=ALL_TRUSTED,BAYES_00,
-        DKIM_INVALID,DKIM_SIGNED,SPF_NONE autolearn=no autolearn_force=no
-        version=3.4.0
-Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        (Authenticated sender: kvalo@smtp.codeaurora.org)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id C6A7360588;
-        Tue, 15 Oct 2019 12:31:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1571142663;
-        bh=TnUctFmJdgiG2TefwmFK0I39R2+MxLcs+91vSZwCffg=;
-        h=From:To:Cc:Subject:Date:From;
-        b=OppXpEm0hs6r7XYWoHIQcgDNtWF317ZS27liX3lvkdLLkVHm5sNgcwwnDd/HVxE5g
-         jKGzumqGXp6GvC+I250D68Y9Jt/jbYlgIU5rNwBX67RlVuEIFIrlrXUpY6J40X5UpE
-         Q2V13yPpCrpqNk3Dd+7Lmh+BsI9YELVRPNj3/G0M=
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org C6A7360588
-Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
-From:   Kalle Valo <kvalo@codeaurora.org>
-To:     David Miller <davem@davemloft.net>
-Cc:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: pull-request: wireless-drivers 2019-10-15
-Date:   Tue, 15 Oct 2019 15:30:59 +0300
-Message-ID: <87eezexkak.fsf@kamboji.qca.qualcomm.com>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
+        id S1731813AbfJONSq (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 15 Oct 2019 09:18:46 -0400
+Received: from mga18.intel.com ([134.134.136.126]:16623 "EHLO mga18.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1729551AbfJONSp (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 15 Oct 2019 09:18:45 -0400
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+  by orsmga106.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 15 Oct 2019 06:18:44 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.67,300,1566889200"; 
+   d="scan'208";a="208181089"
+Received: from mcretu-mobl.ger.corp.intel.com (HELO localhost) ([10.252.56.150])
+  by fmsmga001.fm.intel.com with ESMTP; 15 Oct 2019 06:18:38 -0700
+From:   Jani Nikula <jani.nikula@linux.intel.com>
+To:     Matthew Wilcox <willy@infradead.org>,
+        Thomas Zimmermann <tzimmermann@suse.de>
+Cc:     Tim.Bird@sony.com, changbin.du@gmail.com, corbet@lwn.net,
+        linux-doc@vger.kernel.org, linux-pci@vger.kernel.org,
+        linux-fpga@vger.kernel.org, linux-usb@vger.kernel.org,
+        linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
+        dri-devel@lists.freedesktop.org, linux-mm@kvack.org,
+        linux-crypto@vger.kernel.org, linux-kselftest@vger.kernel.org,
+        intel-gfx@lists.freedesktop.org
+Subject: Re: [PATCH] kernel-doc: rename the kernel-doc directive 'functions' to 'specific'
+In-Reply-To: <20191015115439.GE32665@bombadil.infradead.org>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+References: <20191013055359.23312-1-changbin.du@gmail.com> <875zkrd7nq.fsf@intel.com> <ECADFF3FD767C149AD96A924E7EA6EAF977CAF09@USCULXMSG01.am.sony.com> <7e7557b5-469f-3e63-6254-53dab2d7234a@suse.de> <20191015115439.GE32665@bombadil.infradead.org>
+Date:   Tue, 15 Oct 2019 16:19:36 +0300
+Message-ID: <8736fub0yf.fsf@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain
 Sender: linux-wireless-owner@vger.kernel.org
@@ -58,89 +43,28 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi Dave,
+On Tue, 15 Oct 2019, Matthew Wilcox <willy@infradead.org> wrote:
+> On Tue, Oct 15, 2019 at 11:25:53AM +0200, Thomas Zimmermann wrote:
+>> > My preference would be to use 'symbols'.  I tried to come up with something
+>> > but 'symbols' is better than anything I came up with.
+>> 
+>> Maybe 'interfaces' or 'artifacts'. The term 'symbols' is just as
+>> imprecise as 'functions'.
+>
+> I suggested 'identifier' because that's the term used in the C spec (6.2.1):
+>
+> : An identifier can denote an object; a function; a tag or a member
+> : of a structure, union, or enumeration; a typedef name; a label name;
+> : a macro name; or a macro parameter.
+>
+> We don't allow documenting all those things separately, but it does cover
+> all the things we do allow to be individually documented.
 
-here's a pull request to net tree for v5.4, more info below. Please let
-me know if there are any problems.
+Agreed.
 
-Kalle
+BR,
+Jani.
 
-The following changes since commit 54ecb8f7028c5eb3d740bb82b0f1d90f2df63c5c:
 
-  Linux 5.4-rc1 (2019-09-30 10:35:40 -0700)
-
-are available in the git repository at:
-
-  git://git.kernel.org/pub/scm/linux/kernel/git/kvalo/wireless-drivers.git tags/wireless-drivers-for-davem-2019-10-15
-
-for you to fetch changes up to d79749f7716d9dc32fa2d5075f6ec29aac63c76d:
-
-  ath10k: fix latency issue for QCA988x (2019-10-14 11:43:36 +0300)
-
-----------------------------------------------------------------
-wireless-drivers fixes for 5.4
-
-Second set of fixes for 5.4. ath10k regression and iwlwifi BAD_COMMAND
-bug are the ones getting most reports at the moment.
-
-ath10k
-
-* fix throughput regression on QCA98XX
-
-iwlwifi
-
-* fix initialization of 3168 devices (the infamous BAD_COMMAND bug)
-
-* other smaller fixes
-
-rt2x00
-
-* don't include input-polldev.h header
-
-* fix hw reset to work during first 5 minutes of system run
-
-----------------------------------------------------------------
-Dmitry Torokhov (1):
-      rt2x00: remove input-polldev.h header
-
-Haim Dreyfuss (1):
-      iwlwifi: mvm: force single phy init
-
-Johannes Berg (2):
-      iwlwifi: pcie: fix indexing in command dump for new HW
-      iwlwifi: pcie: fix rb_allocator workqueue allocation
-
-Kalle Valo (1):
-      Merge tag 'iwlwifi-for-kalle-2019-10-09' of git://git.kernel.org/.../iwlwifi/iwlwifi-fixes
-
-Luca Coelho (4):
-      iwlwifi: don't access trans_cfg via cfg
-      iwlwifi: fix ACPI table revision checks
-      iwlwifi: exclude GEO SAR support for 3168
-      iwlwifi: pcie: change qu with jf devices to use qu configuration
-
-Miaoqing Pan (1):
-      ath10k: fix latency issue for QCA988x
-
-Naftali Goldstein (1):
-      iwlwifi: mvm: fix race in sync rx queue notification
-
-Navid Emamdoost (2):
-      iwlwifi: dbg_ini: fix memory leak in alloc_sgtable
-      iwlwifi: pcie: fix memory leaks in iwl_pcie_ctxt_info_gen3_init
-
-Stanislaw Gruszka (1):
-      rt2x00: initialize last_reset
-
- drivers/net/wireless/ath/ath10k/core.c             |  15 +-
- drivers/net/wireless/intel/iwlwifi/fw/acpi.c       |  10 +-
- drivers/net/wireless/intel/iwlwifi/fw/dbg.c        |   1 +
- drivers/net/wireless/intel/iwlwifi/iwl-io.h        |  12 +-
- drivers/net/wireless/intel/iwlwifi/mvm/fw.c        |  43 +++-
- drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c  |   9 +-
- .../wireless/intel/iwlwifi/pcie/ctxt-info-gen3.c   |  36 ++-
- drivers/net/wireless/intel/iwlwifi/pcie/drv.c      | 274 ++++++++++-----------
- drivers/net/wireless/intel/iwlwifi/pcie/trans.c    |  25 +-
- drivers/net/wireless/ralink/rt2x00/rt2x00.h        |   1 -
- drivers/net/wireless/ralink/rt2x00/rt2x00debug.c   |   2 +-
- 11 files changed, 239 insertions(+), 189 deletions(-)
+-- 
+Jani Nikula, Intel Open Source Graphics Center
