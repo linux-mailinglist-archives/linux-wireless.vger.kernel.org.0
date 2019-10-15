@@ -2,176 +2,214 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2A5CAD77CF
-	for <lists+linux-wireless@lfdr.de>; Tue, 15 Oct 2019 15:59:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C8EF0D7990
+	for <lists+linux-wireless@lfdr.de>; Tue, 15 Oct 2019 17:16:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732271AbfJON7c (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 15 Oct 2019 09:59:32 -0400
-Received: from esa3.hc3102-66.iphmx.com ([139.138.33.118]:21538 "EHLO
-        esa3.hc3102-66.iphmx.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728880AbfJON7b (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 15 Oct 2019 09:59:31 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=jax.org; i=@jax.org; q=dns/txt; s=selector1;
-  t=1571147971; x=1602683971;
-  h=arc-seal:arc-message-signature:
-   arc-authentication-results:from:to:subject:thread-topic:
-   thread-index:date:message-id:accept-language:
-   content-language:x-ms-has-attach:x-ms-tnef-correlator:
-   x-clientproxiedby:authentication-results:
-   x-ms-exchange-messagesentrepresentingtype:
-   x-originating-ip:x-ms-publictraffictype:
-   x-ms-office365-filtering-correlation-id:
-   x-ms-traffictypediagnostic:x-ms-exchange-purlcount:
-   x-microsoft-antispam-prvs:x-ms-oob-tlc-oobclassifiers:
-   x-forefront-prvs:x-forefront-antispam-report:
-   x-ms-exchange-senderadcheck:x-microsoft-antispam:
-   x-microsoft-antispam-message-info:
-   x-ms-exchange-transport-forked:content-type:content-id:
-   mime-version:x-originatororg:
-   x-ms-exchange-crosstenant-network-message-id:
-   x-ms-exchange-crosstenant-originalarrivaltime:
-   x-ms-exchange-crosstenant-fromentityheader:
-   x-ms-exchange-crosstenant-id:
-   x-ms-exchange-crosstenant-mailboxtype:
-   x-ms-exchange-crosstenant-userprincipalname:
-   x-ms-exchange-transport-crosstenantheadersstamped:
-   content-transfer-encoding:ironport-sdr;
-  bh=LpYVcI/nKl3ePfhPtimLf9FBhvsYGXhknQzH43CvZT0=;
-  b=Vu0Vp8KOHXstIsbUqKoNoHKqR7l3cC8fyTV0etZK9ph8i1yAxeRVQ6UW
-   XBopIOKlfmV0taQ2K2WnuAN55t8jhd0fs1D8kS/+hp93cAL6WoncPs8+A
-   41pCKSqT9fgh3BDOvvMVggnrKrtJnst+rzdb+W6ENZ9DhDkWcfGGkGKDJ
-   M=;
-IronPort-SDR: reSA44OcX484aQCzFD4SgsPgC5POEZQZ075DrCaBuF86qXPuMipGs9FWhmefWn+FVCGML/yfsS
- QEKPYOIJpg837FSikjqlHVV6vQW8MpB84sEXpY36ZH8luXVdpZfEcTGhOAw4/6jUXEdw5UhrR+
- nycLUFJ89qP2XNEFudF6YENx31J9zW9dX5S0JnpFlg5PBbW8ZrOKajxnRQKAGtUhdgDG1deWhF
- DBFX+/SyUNGtuoI4jv4YGZ7vcRBwtO90fmZIbyCrvKPBSkF2xMaXHE9kmLVkjIPEhSDpaGUAVA
- y0Y=
-Received: from mail-by2nam03lp2059.outbound.protection.outlook.com (HELO NAM03-BY2-obe.outbound.protection.outlook.com) ([104.47.42.59])
-  by ob1.hc3102-66.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Oct 2019 18:59:30 +0500
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=mUjS2eHqgVI41aNNSoLhb8qdQdhnddRcNzHp1F94cK+EvkJD6nwxgMbfczsgMFRqRHvjMqAdLplaINFClCrgi//oH/nbRKf3/S6wuwabaApzxiteiSRSClCNVQzmHKUz+I0f+5TTBM/7+3dlWjkgfQ+bn7wXvbgIm0uckhKmb2nPLSSxI/UKRyG7Q+wGM6Io1EGtsZF3GbUXFcUUVNICTO27GJfXa5uDuYL1ElPEO3avudDKK60hmLgKHbv2KZOHhAJ9jHfKrHZdyuPpmZ7x+NoqAdYwhAQk2mu/tkMwITujZvhoM9panTOtcniFR6T5mMRasly68L4jBXDP6zxofA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=cxFbdyfpsL2YHCvaNOB1fDSu7guVN47lUzoivIO8Uw4=;
- b=m9jfdlGGj7wYffUu/fNlYwwq5EmLiEwtAk6DBBvHjC3HkE6651MDUqcKxPlNinJT7V01DdjZF0aTCA6XirvjkwbM9PLXrRRwS9B/ePu01HgeYyd20xom9/bK9ivdNgTQW+D2E2zH6Fyu9r5iyREdwa8ahaPf+majFeVplWtbA1PrFP7L3/KrFoeo/7XWSc1t93nvPlxPp+DjF0glxTdY1Yox4e9OWINaWha+LeI2aXR9MP0DRHv+IHt5I9bSz2nmvcUcgE0K7NdgTo5jDlFnrrUr+34jpYJ2iKxaQBt25tDz03s6n6IpQUC7YFL9TR6gsBdEGdINncc8H4JMMjT63w==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=jax.org; dmarc=pass action=none header.from=jax.org; dkim=pass
- header.d=jax.org; arc=none
-Received: from BN6PR06MB3411.namprd06.prod.outlook.com (10.174.235.157) by
- BN6PR06MB3505.namprd06.prod.outlook.com (10.175.131.18) with Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.2347.16; Tue, 15 Oct 2019 13:59:29 +0000
-Received: from BN6PR06MB3411.namprd06.prod.outlook.com
- ([fe80::eddd:8895:5383:2a8c]) by BN6PR06MB3411.namprd06.prod.outlook.com
- ([fe80::eddd:8895:5383:2a8c%7]) with mapi id 15.20.2347.023; Tue, 15 Oct 2019
- 13:59:29 +0000
-From:   Josh Marshall <Josh.Marshall@jax.org>
-To:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-Subject: [unconfirmed bug] missing firmware configuration
- `brcm/brcmfmac43602-pcie.txt`
-Thread-Topic: [unconfirmed bug] missing firmware configuration
- `brcm/brcmfmac43602-pcie.txt`
-Thread-Index: AQHVg2DDg/mWQ4cax064kqPpuZwnkg==
-Date:   Tue, 15 Oct 2019 13:59:29 +0000
-Message-ID: <907921df-34c1-6f08-1ece-bac896031397@jax.org>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-clientproxiedby: BN4PR13CA0003.namprd13.prod.outlook.com
- (2603:10b6:403:3::13) To BN6PR06MB3411.namprd06.prod.outlook.com
- (2603:10b6:405:47::29)
-authentication-results: spf=none (sender IP is )
- smtp.mailfrom=Josh.Marshall@jax.org; 
-x-ms-exchange-messagesentrepresentingtype: 1
-x-originating-ip: [162.221.11.67]
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: 869cbf4c-5c28-4918-649a-08d75177e5dd
-x-ms-traffictypediagnostic: BN6PR06MB3505:
-x-ms-exchange-purlcount: 11
-x-microsoft-antispam-prvs:  <BN6PR06MB3505BD8EEDD159434B44DB1EE9930@BN6PR06MB3505.namprd06.prod.outlook.com>
-x-ms-oob-tlc-oobclassifiers: OLM:9508;
-x-forefront-prvs: 01917B1794
-x-forefront-antispam-report:  SFV:NSPM;SFS:(10009020)(4636009)(136003)(366004)(39850400004)(346002)(376002)(396003)(199004)(189003)(44832011)(86362001)(6116002)(71190400001)(8936002)(478600001)(486006)(316002)(102836004)(81166006)(8676002)(81156014)(5660300002)(386003)(6506007)(305945005)(2616005)(476003)(7736002)(3846002)(2501003)(31696002)(786003)(4001150100001)(36756003)(16799955002)(52116002)(2906002)(66066001)(186003)(64756008)(66946007)(99286004)(966005)(66446008)(6512007)(66476007)(66556008)(14454004)(26005)(256004)(2351001)(6436002)(6486002)(71200400001)(25786009)(6916009)(31686004)(14444005)(5640700003)(6306002)(81973001);DIR:OUT;SFP:1101;SCL:1;SRVR:BN6PR06MB3505;H:BN6PR06MB3411.namprd06.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;A:1;MX:1;
-received-spf: None (protection.outlook.com: jax.org does not designate
- permitted sender hosts)
-x-ms-exchange-senderadcheck: 1
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info:  um5YegeRT86K7JE8EOWhRtUMO1R4mSIoTgN9pYjxD4xxAnZViduW0ya8ypKvYvTRpFdMW/kk/efiljxIj70wA53dthF46psQpAmP37l+O8rJH/1EJGOT44JZTaSXQXaFgJTzGEXSw4/ap32DxC2hOAIZmZEURgPtkx2eRdOFgzQu4R/Q4ADZoP1UZWWRqxDS3Ou4Znq5dm9hBy95H0KNZxP/1gx77NZVfFQA2WHcdtKwVWRYvaxs/1985bZSOo2UmAgRE+ieccB+6fDXrAYnFhJrfF8MjjtWt17k7xHhxFuG472YR5RGAc/l824bfHmPmq0Yqm441KhDvqGqzEg0i+/zNc7zniMwo8yO2zwZ9EP5b7kUHaxI4/knQcBBo3J82+tekhoKMa7DSu/aonMFP7Xr53gDyHYCfFyldBngDF/J5HEu0wDaTlw1LvfXL14iWpY+pdqLHd6wKHE+eLqBLg==
-x-ms-exchange-transport-forked: True
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <E21A3DF955E9AA41A97F441A5717EB19@namprd06.prod.outlook.com>
+        id S1733275AbfJOPQ4 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 15 Oct 2019 11:16:56 -0400
+Received: from mail.kernel.org ([198.145.29.99]:55952 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1733070AbfJOPQ4 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 15 Oct 2019 11:16:56 -0400
+Received: from localhost.localdomain.com (nat-pool-mxp-t.redhat.com [149.6.153.186])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 49A9520854;
+        Tue, 15 Oct 2019 15:16:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1571152615;
+        bh=bvxXAUsrRVf8mbCehV9PGMx2g4QVI7tpLjTELPiBtIg=;
+        h=From:To:Cc:Subject:Date:From;
+        b=bm8QDh7jZJusV9cstVWD1hz46MCAPKKZn8vUriink/6eavt8hhIJ0CVJYcuD0C7yz
+         bX4PIMmldV66RxB34CJnONjl203mtVIuvUAMC7gUyzq1Y4pkMl7if/155aCGLlQwlE
+         BC3TeYJq/Hz2gTimttYmkIVHdIn5kusDObZ8BoQ8=
+From:   Lorenzo Bianconi <lorenzo@kernel.org>
+To:     nbd@nbd.name
+Cc:     lorenzo.bianconi@redhat.com, linux-wireless@vger.kernel.org,
+        sgruszka@redhat.com
+Subject: [PATCH v2] mt76: refactor cc_lock locking scheme
+Date:   Tue, 15 Oct 2019 17:16:43 +0200
+Message-Id: <252d75b5139a7acb4bdc28c8131e408c2483d8ac.1571151935.git.lorenzo@kernel.org>
+X-Mailer: git-send-email 2.21.0
 MIME-Version: 1.0
-X-OriginatorOrg: jax.org
-X-MS-Exchange-CrossTenant-Network-Message-Id: 869cbf4c-5c28-4918-649a-08d75177e5dd
-X-MS-Exchange-CrossTenant-originalarrivaltime: 15 Oct 2019 13:59:29.8002
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 5d665caa-d62e-4678-9f5f-e707cf9ecbd1
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: LAaBD+Y0Z8P8tNkWSC7Nx0IBPv0/YTm4AuhOXM81/bJP/uwBI/FgVziHvX4sHX6gCqmKnZAyyUC4GfRHmIAkug==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BN6PR06MB3505
-Content-Transfer-Encoding: base64
+Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-SGVsbG8sDQoNCkZpcnN0IHRpbWUgY29udGFjdGluZyBhIGtlcm5lbCBtYWlsaW5nIGxpc3QuDQoN
-CkkndmUgYmVlbiB0cnlpbmcgdG8gZml4IHRoZSB3aXJlbGVzcyBvbiBteSBsYXB0b3AgKCBNYWNC
-b29rUHJvMTIsMSApLsKgIA0KSXQgaGFzIHZlcnkgd2VhayBzaWduYWwgc3RyZW5ndGguwqAgSSBo
-YXZlIGF0IGxlYXN0IHBhcnRpYWxseSByZWFkIA0KdGhyb3VnaCB0aGUgZm9sbG93aW5nOg0KDQpo
-dHRwczovL2Fza3VidW50dS5jb20vcXVlc3Rpb25zLzc3NTAxMS9tYWNib29rLXByby0xNi0wNC13
-aWZpLWRyaXZlci1pbnN0YWxsZWQtYnV0LW5vdC1hdmFpbGFibGUNCmh0dHBzOi8vYXNrdWJ1bnR1
-LmNvbS9xdWVzdGlvbnMvMTA2NDQ0Mi93aWZpLW5vdC13b3JraW5nLXdpdGgtYmNtNDM2MDItb24t
-dWJ1bnR1LTE4LTA0DQpodHRwczovL2Fza3VidW50dS5jb20vcXVlc3Rpb25zLzYyMjk4OC93aWZp
-LWlzc3Vlcy13aXRoLW1hY2Jvb2stcHJvLXJldGluYS1lYXJseS0yMDE1LTEyLTItb24tdWJ1bnR1
-LTE1LTA0DQogwqDCoMKgIGh0dHBzOi8vd2lraS5kZWJpYW4ub3JnL2JyY21mbWFjDQogwqDCoMKg
-IGh0dHBzOi8vdWJ1bnR1Zm9ydW1zLm9yZy9zaG93dGhyZWFkLnBocD90PTIzNTQzNjUNCmh0dHBz
-Oi8vYXNrdWJ1bnR1LmNvbS9xdWVzdGlvbnMvODg0MjkxL3VidW50dS0xNC0wNC13aXJlbGVzcy1u
-b3Qtd29ya2luZy1vbi1tYWNib29rLXByby1kdWFsLWJvb3QNCmh0dHBzOi8vd3d3Lm1haWwtYXJj
-aGl2ZS5jb20vbGludXgtd2lyZWxlc3NAdmdlci5rZXJuZWwub3JnL21zZzE3MjI5Lmh0bWwNCmh0
-dHBzOi8vd3d3Lm1haWwtYXJjaGl2ZS5jb20vc2VhcmNoP2w9dWJ1bnR1LWJ1Z3NAbGlzdHMudWJ1
-bnR1LmNvbSZxPXN1YmplY3Q6JTIyJTVDJTVCQnVnKzE2OTM1MjElNUMlNUQrUmUlNUMlM0ErYnJj
-bWZtYWMlNUMlM0ErRGlyZWN0K2Zpcm13YXJlK2xvYWQrZmFpbGVkJTIyJm89bmV3ZXN0DQpodHRw
-czovL2J1Z3MubGF1bmNocGFkLm5ldC91YnVudHUvK3NvdXJjZS9saW51eC1maXJtd2FyZS8rYnVn
-LzE3NzI2MjQNCmh0dHBzOi8vZ2l0Lmtlcm5lbC5vcmcvcHViL3NjbS9saW51eC9rZXJuZWwvZ2l0
-L2Zpcm13YXJlL2xpbnV4LWZpcm13YXJlLmdpdC9wbGFpbi9icmNtLw0KDQpJIGNyZWF0ZWQgZW1w
-dHkgZmlsZXMgYXQgYC9saWIvZmlybXdhcmUve2JyY21mbWFjNDM2MDItcGNpZS5BcHBsZVwgDQpJ
-bmMuLU1hY0Jvb2tQcm8xNFwsMi50eHQsYnJjbWZtYWM0MzYwMi1wY2llLnR4dH1gDQoNCmBgYA0K
-JCBkbWVzZyB8IGdyZXAgYnJjbQ0KW8KgwqDCoCA1LjMwNTk5OF0gdXNiY29yZTogcmVnaXN0ZXJl
-ZCBuZXcgaW50ZXJmYWNlIGRyaXZlciBicmNtZm1hYw0KW8KgwqDCoCA1LjQzMzU5OV0gYnJjbWZt
-YWM6IGJyY21mX2Z3X2FsbG9jX3JlcXVlc3Q6IHVzaW5nIA0KYnJjbS9icmNtZm1hYzQzNjAyLXBj
-aWUgZm9yIGNoaXAgQkNNNDM2MDIvMg0KW8KgwqDCoCA1LjQzNTE0MF0gYnJjbWZtYWMgMDAwMDow
-MjowMC4wOiBsb2FkaW5nIA0KL2xpYi9maXJtd2FyZS9icmNtL2JyY21mbWFjNDM2MDItcGNpZS5B
-cHBsZSBJbmMuLU1hY0Jvb2tQcm8xNCwyLnR4dCANCmZhaWxlZCB3aXRoIGVycm9yIC0yMg0KW8Kg
-wqDCoCA1LjQzNTE0Ml0gYnJjbWZtYWMgMDAwMDowMjowMC4wOiBEaXJlY3QgZmlybXdhcmUgbG9h
-ZCBmb3IgDQpicmNtL2JyY21mbWFjNDM2MDItcGNpZS5BcHBsZSBJbmMuLU1hY0Jvb2tQcm8xNCwy
-LnR4dCBmYWlsZWQgd2l0aCBlcnJvciAtMjINClvCoMKgwqAgNS40MzUzNThdIGJyY21mbWFjIDAw
-MDA6MDI6MDAuMDogbG9hZGluZyANCi9saWIvZmlybXdhcmUvYnJjbS9icmNtZm1hYzQzNjAyLXBj
-aWUudHh0IGZhaWxlZCB3aXRoIGVycm9yIC0yMg0KW8KgwqDCoCA1LjQzNTM1OV0gYnJjbWZtYWMg
-MDAwMDowMjowMC4wOiBEaXJlY3QgZmlybXdhcmUgbG9hZCBmb3IgDQpicmNtL2JyY21mbWFjNDM2
-MDItcGNpZS50eHQgZmFpbGVkIHdpdGggZXJyb3IgLTIyDQpbwqDCoMKgIDUuNzgxODgxXSBicmNt
-Zm1hYzogYnJjbWZfZndfYWxsb2NfcmVxdWVzdDogdXNpbmcgDQpicmNtL2JyY21mbWFjNDM2MDIt
-cGNpZSBmb3IgY2hpcCBCQ000MzYwMi8yDQpbwqDCoMKgIDUuNzgxOTEwXSBicmNtZm1hYzogYnJj
-bWZfY19wcm9jZXNzX2NsbV9ibG9iOiBubyBjbG1fYmxvYiBhdmFpbGFibGUgDQooZXJyPS0yKSwg
-ZGV2aWNlIG1heSBoYXZlIGxpbWl0ZWQgY2hhbm5lbHMgYXZhaWxhYmxlDQpbwqDCoMKgIDUuNzgy
-OTI3XSBicmNtZm1hYzogYnJjbWZfY19wcmVpbml0X2RjbWRzOiBGaXJtd2FyZTogQkNNNDM2MDIv
-MiANCndsMDogTm92IDEwIDIwMTUgMDY6Mzg6MTAgdmVyc2lvbiA3LjM1LjE3Ny42MSAocjU5ODY1
-NykgRldJRCAwMS1lYTY2MmE4Yw0KW8KgwqDCoCA1LjgyODU2MV0gYnJjbWZtYWMgMDAwMDowMjow
-MC4wIHdscDJzMDogcmVuYW1lZCBmcm9tIHdsYW4wDQpgYGANCg0KV2hhdCBJIHRoaW5rIG1heSBu
-ZWVkIHRvIGhhcHBlbiBpcyB0byBoYXZlIGEgcGFydGljdWxhciBjb25maWd1cmF0aW9uIA0KYWRk
-ZWQgbGlrZSANCmh0dHBzOi8vZ2l0Lmtlcm5lbC5vcmcvcHViL3NjbS9saW51eC9rZXJuZWwvZ2l0
-L2Zpcm13YXJlL2xpbnV4LWZpcm13YXJlLmdpdC9wbGFpbi9icmNtL2JyY21mbWFjNDM0MzAtc2Rp
-by5yYXNwYmVycnlwaSwzLW1vZGVsLWIudHh0IA0KYXMgYGJyY21mbWFjNDM2MDItcGNpZS50eHRg
-IGluIG9yZGVyIHRvIG1ha2UgdGhlIGZ1bGwgcmFuZ2Ugb2YgY2hhbm5lbHMgDQphdmFpbGFibGUs
-IGFuZCBieSB0aGF0IGltcHJvdmUgc2lnbmFsIHN0cmVuZ3RoLCBidXQgdGhpcyBpcyBvbmx5IGEg
-c2hvdCANCmluIHRoZSBkYXJrLg0KLS0tCgpUaGUgaW5mb3JtYXRpb24gaW4gdGhpcyBlbWFpbCwg
-aW5jbHVkaW5nIGF0dGFjaG1lbnRzLCBtYXkgYmUgY29uZmlkZW50aWFsIGFuZCBpcyBpbnRlbmRl
-ZCBzb2xlbHkgZm9yIHRoZSBhZGRyZXNzZWUocykuIElmIHlvdSBiZWxpZXZlIHlvdSByZWNlaXZl
-ZCB0aGlzIGVtYWlsIGJ5IG1pc3Rha2UsIHBsZWFzZSBub3RpZnkgdGhlIHNlbmRlciBieSByZXR1
-cm4gZW1haWwgYXMgc29vbiBhcyBwb3NzaWJsZS4K
+Read busy counters not holding cc_lock spinlock since usb read can't be
+performed in interrupt context. Move cc_active and cc_rx counters out of
+cc_lock since they are not modified in interrupt context.
+Grab cc_lock updating cur_cc_bss_rx in mt76_airtime_report and do not
+hold rx_lock in mt76_update_survey.
+Moreover grab mt76 mutex in mt76_get_survey before running
+mt76_update_survey. This patch fixes the following 'schedule while
+atomic'
+
+[  291.790866] BUG: scheduling while atomic: iw/2161/0x00000202
+[  291.791002] Preemption disabled at:
+[  291.791007] [<0000000000000000>] 0x0
+[  291.791015] CPU: 0 PID: 2161 Comm: iw Tainted: G W 5.4.= 0-rc2-3-ARCH-00104-g9e208aa06c21 #1
+[  291.791017] Hardware name: LENOVO 2349QM6/2349QM6, BIOS G1ETC2WW (2.82=) 08/07/2019
+[  291.791019] Call Trace:
+[  291.791042]  dump_stack+0x5c/0x80
+[  291.791049]  __schedule_bug.cold+0x8e/0x9b
+[  291.791055]  __schedule+0x5f8/0x770
+[  291.791062]  schedule+0x43/0xd0
+[  291.791068]  schedule_preempt_disabled+0x14/0x20
+[  291.791074]  __mutex_lock.isra.0+0x18a/0x530
+[  291.791099]  mt76u_rr+0x1f/0x40 [mt76_usb]
+[  291.791113]  mt76x02_update_channel+0x22/0x40 [mt76x02_lib]
+[  291.791122]  mt76_update_survey+0x42/0xe0 [mt76]
+[  291.791129]  mt76_get_survey+0x2f/0x1b0 [mt76]
+[  291.791170]  ieee80211_dump_survey+0x5e/0x140 [mac80211]
+[  291.791217]  nl80211_dump_survey+0x13c/0x2f0 [cfg80211]
+[  291.791222]  ? __kmalloc_reserve.isra.0+0x2d/0x70
+[  291.791225]  ? __alloc_skb+0x96/0x1d0
+[  291.791229]  netlink_dump+0x17b/0x370
+[  291.791247]  __netlink_dump_start+0x16f/0x1e0
+[  291.791253]  genl_family_rcv_msg+0x396/0x410
+[  291.791290]  ? nl80211_prepare_wdev_dump+0x1b0/0x1b0 [cfg80211]
+[  291.791297]  ? _raw_spin_unlock_irqrestore+0x20/0x40
+[  291.791312]  ? __wake_up_common_lock+0x8a/0xc0
+[  291.791316]  genl_rcv_msg+0x47/0x90
+[  291.791320]  ? genl_family_rcv_msg+0x410/0x410
+[  291.791323]  netlink_rcv_skb+0x49/0x110
+[  291.791329]  genl_rcv+0x24/0x40
+[  291.791333]  netlink_unicast+0x171/0x200
+[  291.791340]  netlink_sendmsg+0x208/0x3d0
+[  291.791358]  sock_sendmsg+0x5e/0x60
+[  291.791361]  ___sys_sendmsg+0x2ae/0x330
+[  291.791368]  ? filemap_map_pages+0x272/0x390
+[  291.791374]  ? _raw_spin_unlock+0x16/0x30
+[  291.791379]  ? __handle_mm_fault+0x112f/0x1390
+[  291.791388]  __sys_sendmsg+0x59/0xa0
+[  291.791396]  do_syscall_64+0x5b/0x1a0
+[  291.791400]  entry_SYSCALL_64_after_hwframe+0x44/0xa9
+[  291.791404] RIP: 0033:0x7f5d0c7f37b7
+[  291.791418] Code: 64 89 02 48 c7 c0 ff ff ff ff eb bb 0f 1f 80 00 00 0=
+0 00 f3 0f 1e fa 64 8b 04 25 18 00 00 00 85 c0 75 10 b8 2e 00 00 00 0f 05=
+ <48> 3d 00 f0 ff ff 77 51 c3 48 83 ec 28 89 54 24 1c 48 89 74 24 10
+[  291.791421] RSP: 002b:00007ffe8b5d0538 EFLAGS: 00000246 ORIG_RAX: 0000= 00000000002e
+[  291.791426] RAX: ffffffffffffffda RBX: 000055a038e6c390 RCX: 00007f5d0= c7f37b7
+[  291.791430] RDX: 0000000000000000 RSI: 00007ffe8b5d0570 RDI: 000000000= 0000003
+[  291.791434] RBP: 000055a038e718c0 R08: 000055a038e6c02a R09: 000000000= 0000002
+[  291.791438] R10: 000055a03808cb00 R11: 0000000000000246 R12: 000055a03= 8e71780
+[  291.791440] R13: 00007ffe8b5d0570 R14: 000055a038e717d0 R15: 000055a03= 8e718c0
+[  291.791480] NOHZ: local_softirq_pending 202
+
+Fixes: 168aea24f4bb ("mt76: mt76x02u: enable survey support")
+Tested-by: Markus Theil <markus.theil@tu-ilmenau.de>
+Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+---
+Changes since v1:
+- disable BH in mt76_update_survey holding cc_lock
+---
+ drivers/net/wireless/mediatek/mt76/mac80211.c | 29 ++++++++++---------
+ .../net/wireless/mediatek/mt76/mt76x02_mac.c  |  3 ++
+ 2 files changed, 19 insertions(+), 13 deletions(-)
+
+diff --git a/drivers/net/wireless/mediatek/mt76/mac80211.c b/drivers/net/wireless/mediatek/mt76/mac80211.c
+index a962abce98f8..6535921fcea4 100644
+--- a/drivers/net/wireless/mediatek/mt76/mac80211.c
++++ b/drivers/net/wireless/mediatek/mt76/mac80211.c
+@@ -432,8 +432,6 @@ void mt76_update_survey(struct mt76_dev *dev)
+ 	if (!test_bit(MT76_STATE_RUNNING, &dev->state))
+ 		return;
+ 
+-	spin_lock_bh(&dev->cc_lock);
+-
+ 	if (dev->drv->update_survey)
+ 		dev->drv->update_survey(dev);
+ 
+@@ -442,15 +440,11 @@ void mt76_update_survey(struct mt76_dev *dev)
+ 						  dev->survey_time));
+ 	dev->survey_time = cur_time;
+ 
+-	spin_unlock_bh(&dev->cc_lock);
+-
+ 	if (dev->drv->drv_flags & MT_DRV_SW_RX_AIRTIME) {
+-		spin_lock_bh(&dev->rx_lock);
+-		spin_lock(&dev->cc_lock);
++		spin_lock_bh(&dev->cc_lock);
+ 		state->cc_bss_rx += dev->cur_cc_bss_rx;
+ 		dev->cur_cc_bss_rx = 0;
+-		spin_unlock(&dev->cc_lock);
+-		spin_unlock_bh(&dev->rx_lock);
++		spin_unlock_bh(&dev->cc_lock);
+ 	}
+ }
+ EXPORT_SYMBOL_GPL(mt76_update_survey);
+@@ -485,6 +479,7 @@ int mt76_get_survey(struct ieee80211_hw *hw, int idx,
+ 	struct mt76_channel_state *state;
+ 	int ret = 0;
+ 
++	mutex_lock(&dev->mutex);
+ 	if (idx == 0 && dev->drv->update_survey)
+ 		mt76_update_survey(dev);
+ 
+@@ -494,8 +489,10 @@ int mt76_get_survey(struct ieee80211_hw *hw, int idx,
+ 		sband = &dev->sband_5g;
+ 	}
+ 
+-	if (idx >= sband->sband.n_channels)
+-		return -ENOENT;
++	if (idx >= sband->sband.n_channels) {
++		ret = -ENOENT;
++		goto out;
++	}
+ 
+ 	chan = &sband->sband.channels[idx];
+ 	state = mt76_channel_state(dev, chan);
+@@ -511,14 +508,18 @@ int mt76_get_survey(struct ieee80211_hw *hw, int idx,
+ 			survey->filled |= SURVEY_INFO_TIME_BSS_RX;
+ 	}
+ 
+-	spin_lock_bh(&dev->cc_lock);
+-	survey->time = div_u64(state->cc_active, 1000);
+ 	survey->time_busy = div_u64(state->cc_busy, 1000);
+-	survey->time_bss_rx = div_u64(state->cc_bss_rx, 1000);
+ 	survey->time_rx = div_u64(state->cc_rx, 1000);
++	survey->time = div_u64(state->cc_active, 1000);
++
++	spin_lock_bh(&dev->cc_lock);
++	survey->time_bss_rx = div_u64(state->cc_bss_rx, 1000);
+ 	survey->time_tx = div_u64(state->cc_tx, 1000);
+ 	spin_unlock_bh(&dev->cc_lock);
+ 
++out:
++	mutex_unlock(&dev->mutex);
++
+ 	return ret;
+ }
+ EXPORT_SYMBOL_GPL(mt76_get_survey);
+@@ -622,7 +623,9 @@ mt76_airtime_report(struct mt76_dev *dev, struct mt76_rx_status *status,
+ 	u32 airtime;
+ 
+ 	airtime = mt76_calc_rx_airtime(dev, status, len);
++	spin_lock(&dev->cc_lock);
+ 	dev->cur_cc_bss_rx += airtime;
++	spin_unlock(&dev->cc_lock);
+ 
+ 	if (!wcid || !wcid->sta)
+ 		return;
+diff --git a/drivers/net/wireless/mediatek/mt76/mt76x02_mac.c b/drivers/net/wireless/mediatek/mt76/mt76x02_mac.c
+index 41f7c01045b8..2c0bd9aa1987 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt76x02_mac.c
++++ b/drivers/net/wireless/mediatek/mt76/mt76x02_mac.c
+@@ -1024,8 +1024,11 @@ void mt76x02_update_channel(struct mt76_dev *mdev)
+ 
+ 	state = mdev->chan_state;
+ 	state->cc_busy += mt76_rr(dev, MT_CH_BUSY);
++
++	spin_lock_bh(&dev->mt76.cc_lock);
+ 	state->cc_tx += dev->tx_airtime;
+ 	dev->tx_airtime = 0;
++	spin_unlock_bh(&dev->mt76.cc_lock);
+ }
+ EXPORT_SYMBOL_GPL(mt76x02_update_channel);
+ 
+-- 
+2.21.0
 
