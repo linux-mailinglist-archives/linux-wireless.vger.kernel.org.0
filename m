@@ -2,56 +2,56 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id F2DE5D7305
-	for <lists+linux-wireless@lfdr.de>; Tue, 15 Oct 2019 12:19:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AB005D730E
+	for <lists+linux-wireless@lfdr.de>; Tue, 15 Oct 2019 12:21:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730315AbfJOKTV (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 15 Oct 2019 06:19:21 -0400
-Received: from mail-pg1-f196.google.com ([209.85.215.196]:36867 "EHLO
-        mail-pg1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727698AbfJOKTQ (ORCPT
+        id S1727882AbfJOKVP (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 15 Oct 2019 06:21:15 -0400
+Received: from mail-pg1-f195.google.com ([209.85.215.195]:39169 "EHLO
+        mail-pg1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727846AbfJOKVP (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 15 Oct 2019 06:19:16 -0400
-Received: by mail-pg1-f196.google.com with SMTP id p1so11852992pgi.4
-        for <linux-wireless@vger.kernel.org>; Tue, 15 Oct 2019 03:19:14 -0700 (PDT)
+        Tue, 15 Oct 2019 06:21:15 -0400
+Received: by mail-pg1-f195.google.com with SMTP id p12so2524409pgn.6
+        for <linux-wireless@vger.kernel.org>; Tue, 15 Oct 2019 03:21:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=endlessm-com.20150623.gappssmtp.com; s=20150623;
         h=from:to:cc:subject:date:message-id:mime-version
          :content-transfer-encoding;
-        bh=v2+MfU8BA9N+kYG+UhxO+xB6ESKW69SU23RYupl8tn0=;
-        b=v1Keii2AMIQ2PHav5u2wn8zsXXt1VCZh/YSN1DMY3rm6moRf3QVRm+H+AX7PLRFTeM
-         1FT3BygBzYcOrA39ion6q6EDYe6KjvTB6MCpNjmwgB9Gflsx2RgIyBLnFRCkeq6sRKL3
-         K7E5E2ALpkA+HZDRThYKCu8g2pGIhbxoHOojMukX5lbwq8c427ZI/8QQx65NevMICvvK
-         GIQQB/pD2xCuFLvV8bBPBh+/ufN5x7zHsjNkIJ3Sm+gBG19oshTgqIy5PNC3UPvBAk1Y
-         WLLOEjtzxJ41LeZTXvsKkoO/CzkRhFwjuVgjczTG7bFCXng1UtFsXIpDxE7UyT7PTG2C
-         Y/Lg==
+        bh=ZjSUyyFcE4OzpFsuD5QbPfEEJTeG0kXm3yEnzXaAd7g=;
+        b=tOogVHkfeRdcF8NN8t2A3kIiU62I+r1F4VR1UkcTkugAUka3Cs04268T/43pgZ7D7S
+         PQepFz1DsCHvu4q+AqW+6APMO13npmM5QAaMHIFdmpb4tZlNFWSJjHywwIQe7dtep+g9
+         jZGzS6u3jpp8IxG4C2RQioL/fxKA7UqCQPrwiO87oXtZJe3r3N/3YiHjB7/ULauaBqI+
+         s6oGLzElmnWljNA3WE67kbKWb+lyEtxOSN3YQCq/iLbT74sNcY5lMOajRVOEJ/wbngAc
+         nFRLY8uq/99/8D9VZN2e4jgsJfro17aeGSaPTIJAgqLLLzhJgPNqZTsMasBz5hNiYlMI
+         /IJw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
          :content-transfer-encoding;
-        bh=v2+MfU8BA9N+kYG+UhxO+xB6ESKW69SU23RYupl8tn0=;
-        b=tJ+MLn/fpvBjzjauQs0vkHoJNPvhhUlEJaGztos+9wYsVs2+37CLlvbK2+zdyJ5CqY
-         k82JvB/yYM9cfi4kMat8r+BxMioeteJyS1DPRLbTfo+ilH4GzvOkxjkwMdM2KWHv6JQ4
-         OpVGH73g1jobbZQA5rnq2xTiX/77D7bvCLlqlCTUkSGo0V30NW3WppY+Ao6Wnv3asPmd
-         pRCobT6nqOdQHtueV/q/ZbDGzJjVVI+r7NVdtkK9RfjVYIUpfc5xg8v9Jm5ZtlEA29Mu
-         0B9nWk0QQEfJejhA8YaBYzC3fAgkKrQUyC5WUO6HihMGfFidU1BlNx9zpew7sPQzGkXZ
-         GpQg==
-X-Gm-Message-State: APjAAAU/WpCDhE02chDEIyMDrKJTn53yvUp//zxXtAAYuZwATHnX8qT/
-        iTPqGRryEJNJW+NSXW39bmBHBA==
-X-Google-Smtp-Source: APXvYqzxfW0HfhrtkjeiBPUPxUrWjbbIPe+aeyWNKtwFXZrIWAAaVN4VyjHbl7eryMtTzPtVVFhAkw==
-X-Received: by 2002:aa7:86d6:: with SMTP id h22mr38105646pfo.72.1571134754357;
-        Tue, 15 Oct 2019 03:19:14 -0700 (PDT)
-Received: from localhost.localdomain (59-127-47-130.HINET-IP.hinet.net. [59.127.47.130])
-        by smtp.gmail.com with ESMTPSA id m12sm24635560pff.66.2019.10.15.03.19.12
+        bh=ZjSUyyFcE4OzpFsuD5QbPfEEJTeG0kXm3yEnzXaAd7g=;
+        b=mqyBnmzw9rvfJTGvU63fqip+NNkbCzmRK4uQ+NGKWLFNBb0un3sEYu9WxRi/UXpLyS
+         mpSMkJxRvVfHGqG93QJZE0zQeyl3NwrO0QhINUJc3EU8JV0RUg7v+a6vd5IlSfnHSwDj
+         YTRcLOHbOIO2UbMg12Dpf1YrRJup+7/fyQaJS+CEE0Q6ywpzT01ZAbR+v5s8dJxS2yWs
+         8yjL2/ce021FiXl2lPCFsFmoALjVJBvuwIeB5BaAn/Yk5H8bDxC+mB1O5PSVsb4/3BmN
+         VgohcR59Gkgemo+vr9YFTLlodgHgMfKqrGsherPrC+aSzPf7ePD3UBMsR8Cni8BtP8CT
+         FPlQ==
+X-Gm-Message-State: APjAAAV99VczlfavvGEk0zfJR7RABbAe6Cc9QxrprL+ZCo0L+KlAiqIV
+        NXg5Of7v28hZNhBgqcVNgKIa3Q==
+X-Google-Smtp-Source: APXvYqwSAxzEMOHC8QTx9yFJObxsJCQpENWGTP5uv8UvWH5ruPNpBvxi4RQ7TOGrHCws2VAlWYHJNA==
+X-Received: by 2002:a63:1511:: with SMTP id v17mr37218393pgl.34.1571134874188;
+        Tue, 15 Oct 2019 03:21:14 -0700 (PDT)
+Received: from localhost.localdomain (59-127-47-126.HINET-IP.hinet.net. [59.127.47.126])
+        by smtp.gmail.com with ESMTPSA id z21sm19704595pfa.119.2019.10.15.03.21.12
         (version=TLS1_2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
-        Tue, 15 Oct 2019 03:19:13 -0700 (PDT)
+        Tue, 15 Oct 2019 03:21:13 -0700 (PDT)
 From:   Chris Chiu <chiu@endlessm.com>
 To:     Jes.Sorensen@gmail.com, kvalo@codeaurora.org, davem@davemloft.net
 Cc:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
         linux-kernel@vger.kernel.org, linux@endlessm.com
 Subject: [PATCH] rtl8xxxu: fix RTL8723BU connection failure issue after warm reboot
-Date:   Tue, 15 Oct 2019 18:19:09 +0800
-Message-Id: <20191015101909.4640-1-chiu@endlessm.com>
+Date:   Tue, 15 Oct 2019 18:21:09 +0800
+Message-Id: <20191015102109.4701-1-chiu@endlessm.com>
 X-Mailer: git-send-email 2.20.1 (Apple Git-117)
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -71,7 +71,9 @@ is already powered and thus some procedures are skipped during
 driver initialization. Double checked the vendor driver, it reads
 the SYS_CR and SYS_CLK_MAC_CLK_ENABLE also but doesn't skip any
 during initialization based on them. This commit only tells the
-RTL8723BU to do full initilization without checking MAC status.
+RTL8723BU to do full initialization without checking MAC status.
+
+https://phabricator.endlessm.com/T28000
 
 Signed-off-by: Chris Chiu <chiu@endlessm.com>
 ---
