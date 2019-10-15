@@ -2,209 +2,145 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id ACD71D768A
-	for <lists+linux-wireless@lfdr.de>; Tue, 15 Oct 2019 14:30:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8A58FD768E
+	for <lists+linux-wireless@lfdr.de>; Tue, 15 Oct 2019 14:31:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729353AbfJOMa4 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 15 Oct 2019 08:30:56 -0400
-Received: from mail.kernel.org ([198.145.29.99]:46812 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1729160AbfJOMa4 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 15 Oct 2019 08:30:56 -0400
-Received: from localhost.localdomain.com (nat-pool-mxp-t.redhat.com [149.6.153.186])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id A1DFA20854;
-        Tue, 15 Oct 2019 12:30:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1571142654;
-        bh=+gSaolIGwgG1dSbeiKY+xGM9A8FhpizDX4nH0jdoO3M=;
+        id S1729467AbfJOMbE (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 15 Oct 2019 08:31:04 -0400
+Received: from smtp.codeaurora.org ([198.145.29.96]:32842 "EHLO
+        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729160AbfJOMbE (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 15 Oct 2019 08:31:04 -0400
+Received: by smtp.codeaurora.org (Postfix, from userid 1000)
+        id 5A7FD60779; Tue, 15 Oct 2019 12:31:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
+        s=default; t=1571142663;
+        bh=TnUctFmJdgiG2TefwmFK0I39R2+MxLcs+91vSZwCffg=;
         h=From:To:Cc:Subject:Date:From;
-        b=iWJmKlTon3Kck35qpzi/Y0GErQkuVmHIynZlyLCfZassN1hDxrscSvoRpK74oyeMt
-         J8STnmpCgCu47xx7udnB2yS2RMYt6l7XPs59nKhjcQ6hhBUwTHVAxnAPsScbF/lDTF
-         BKKxnY74EUwWqj+jAeWYad/XfiupJnPDfZNpL0iU=
-From:   Lorenzo Bianconi <lorenzo@kernel.org>
-To:     nbd@nbd.name
-Cc:     lorenzo.bianconi@redhat.com, linux-wireless@vger.kernel.org,
-        sgruszka@redhat.com
-Subject: [PATCH] mt76: refactor cc_lock locking scheme
-Date:   Tue, 15 Oct 2019 14:30:42 +0200
-Message-Id: <6a1cd5c3aef25d5d65c0519a6b97d673c51b4a8f.1571142313.git.lorenzo@kernel.org>
-X-Mailer: git-send-email 2.21.0
+        b=OppXpEm0hs6r7XYWoHIQcgDNtWF317ZS27liX3lvkdLLkVHm5sNgcwwnDd/HVxE5g
+         jKGzumqGXp6GvC+I250D68Y9Jt/jbYlgIU5rNwBX67RlVuEIFIrlrXUpY6J40X5UpE
+         Q2V13yPpCrpqNk3Dd+7Lmh+BsI9YELVRPNj3/G0M=
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        pdx-caf-mail.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.7 required=2.0 tests=ALL_TRUSTED,BAYES_00,
+        DKIM_INVALID,DKIM_SIGNED,SPF_NONE autolearn=no autolearn_force=no
+        version=3.4.0
+Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo@smtp.codeaurora.org)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id C6A7360588;
+        Tue, 15 Oct 2019 12:31:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
+        s=default; t=1571142663;
+        bh=TnUctFmJdgiG2TefwmFK0I39R2+MxLcs+91vSZwCffg=;
+        h=From:To:Cc:Subject:Date:From;
+        b=OppXpEm0hs6r7XYWoHIQcgDNtWF317ZS27liX3lvkdLLkVHm5sNgcwwnDd/HVxE5g
+         jKGzumqGXp6GvC+I250D68Y9Jt/jbYlgIU5rNwBX67RlVuEIFIrlrXUpY6J40X5UpE
+         Q2V13yPpCrpqNk3Dd+7Lmh+BsI9YELVRPNj3/G0M=
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org C6A7360588
+Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
+From:   Kalle Valo <kvalo@codeaurora.org>
+To:     David Miller <davem@davemloft.net>
+Cc:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: pull-request: wireless-drivers 2019-10-15
+Date:   Tue, 15 Oct 2019 15:30:59 +0300
+Message-ID: <87eezexkak.fsf@kamboji.qca.qualcomm.com>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Read busy counters not holding cc_lock spinlock since usb read can't be
-performed in interrupt context. Move cc_active and cc_rx counters out of
-cc_lock since they are not modified in interrupt context.
-Grab cc_lock updating cur_cc_bss_rx in mt76_airtime_report and do not
-hold rx_lock in mt76_update_survey.
-Moreover grab mt76 mutex in mt76_get_survey before running
-mt76_update_survey. This patch fixes the following 'schedule while
-atomic'
+Hi Dave,
 
-[  291.790866] BUG: scheduling while atomic: iw/2161/0x00000202
-[  291.791002] Preemption disabled at:
-[  291.791007] [<0000000000000000>] 0x0
-[  291.791015] CPU: 0 PID: 2161 Comm: iw Tainted: G W 5.4.= 0-rc2-3-ARCH-00104-g9e208aa06c21 #1
-[  291.791017] Hardware name: LENOVO 2349QM6/2349QM6, BIOS G1ETC2WW (2.82=) 08/07/2019
-[  291.791019] Call Trace:
-[  291.791042]  dump_stack+0x5c/0x80
-[  291.791049]  __schedule_bug.cold+0x8e/0x9b
-[  291.791055]  __schedule+0x5f8/0x770
-[  291.791062]  schedule+0x43/0xd0
-[  291.791068]  schedule_preempt_disabled+0x14/0x20
-[  291.791074]  __mutex_lock.isra.0+0x18a/0x530
-[  291.791099]  mt76u_rr+0x1f/0x40 [mt76_usb]
-[  291.791113]  mt76x02_update_channel+0x22/0x40 [mt76x02_lib]
-[  291.791122]  mt76_update_survey+0x42/0xe0 [mt76]
-[  291.791129]  mt76_get_survey+0x2f/0x1b0 [mt76]
-[  291.791170]  ieee80211_dump_survey+0x5e/0x140 [mac80211]
-[  291.791217]  nl80211_dump_survey+0x13c/0x2f0 [cfg80211]
-[  291.791222]  ? __kmalloc_reserve.isra.0+0x2d/0x70
-[  291.791225]  ? __alloc_skb+0x96/0x1d0
-[  291.791229]  netlink_dump+0x17b/0x370
-[  291.791247]  __netlink_dump_start+0x16f/0x1e0
-[  291.791253]  genl_family_rcv_msg+0x396/0x410
-[  291.791290]  ? nl80211_prepare_wdev_dump+0x1b0/0x1b0 [cfg80211]
-[  291.791297]  ? _raw_spin_unlock_irqrestore+0x20/0x40
-[  291.791312]  ? __wake_up_common_lock+0x8a/0xc0
-[  291.791316]  genl_rcv_msg+0x47/0x90
-[  291.791320]  ? genl_family_rcv_msg+0x410/0x410
-[  291.791323]  netlink_rcv_skb+0x49/0x110
-[  291.791329]  genl_rcv+0x24/0x40
-[  291.791333]  netlink_unicast+0x171/0x200
-[  291.791340]  netlink_sendmsg+0x208/0x3d0
-[  291.791358]  sock_sendmsg+0x5e/0x60
-[  291.791361]  ___sys_sendmsg+0x2ae/0x330
-[  291.791368]  ? filemap_map_pages+0x272/0x390
-[  291.791374]  ? _raw_spin_unlock+0x16/0x30
-[  291.791379]  ? __handle_mm_fault+0x112f/0x1390
-[  291.791388]  __sys_sendmsg+0x59/0xa0
-[  291.791396]  do_syscall_64+0x5b/0x1a0
-[  291.791400]  entry_SYSCALL_64_after_hwframe+0x44/0xa9
-[  291.791404] RIP: 0033:0x7f5d0c7f37b7
-[  291.791418] Code: 64 89 02 48 c7 c0 ff ff ff ff eb bb 0f 1f 80 00 00 0=
-0 00 f3 0f 1e fa 64 8b 04 25 18 00 00 00 85 c0 75 10 b8 2e 00 00 00 0f 05=
- <48> 3d 00 f0 ff ff 77 51 c3 48 83 ec 28 89 54 24 1c 48 89 74 24 10
-[  291.791421] RSP: 002b:00007ffe8b5d0538 EFLAGS: 00000246 ORIG_RAX: 0000= 00000000002e
-[  291.791426] RAX: ffffffffffffffda RBX: 000055a038e6c390 RCX: 00007f5d0= c7f37b7
-[  291.791430] RDX: 0000000000000000 RSI: 00007ffe8b5d0570 RDI: 000000000= 0000003
-[  291.791434] RBP: 000055a038e718c0 R08: 000055a038e6c02a R09: 000000000= 0000002
-[  291.791438] R10: 000055a03808cb00 R11: 0000000000000246 R12: 000055a03= 8e71780
-[  291.791440] R13: 00007ffe8b5d0570 R14: 000055a038e717d0 R15: 000055a03= 8e718c0
-[  291.791480] NOHZ: local_softirq_pending 202
+here's a pull request to net tree for v5.4, more info below. Please let
+me know if there are any problems.
 
-Fixes: 168aea24f4bb ("mt76: mt76x02u: enable survey support")
-Tested-by: Markus Theil <markus.theil@tu-ilmenau.de>
-Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
----
- drivers/net/wireless/mediatek/mt76/mac80211.c | 25 +++++++++++--------
- .../net/wireless/mediatek/mt76/mt76x02_mac.c  |  3 +++
- 2 files changed, 17 insertions(+), 11 deletions(-)
+Kalle
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mac80211.c b/drivers/net/wireless/mediatek/mt76/mac80211.c
-index a962abce98f8..f2d2d2a3e88e 100644
---- a/drivers/net/wireless/mediatek/mt76/mac80211.c
-+++ b/drivers/net/wireless/mediatek/mt76/mac80211.c
-@@ -432,8 +432,6 @@ void mt76_update_survey(struct mt76_dev *dev)
- 	if (!test_bit(MT76_STATE_RUNNING, &dev->state))
- 		return;
- 
--	spin_lock_bh(&dev->cc_lock);
--
- 	if (dev->drv->update_survey)
- 		dev->drv->update_survey(dev);
- 
-@@ -442,15 +440,11 @@ void mt76_update_survey(struct mt76_dev *dev)
- 						  dev->survey_time));
- 	dev->survey_time = cur_time;
- 
--	spin_unlock_bh(&dev->cc_lock);
--
- 	if (dev->drv->drv_flags & MT_DRV_SW_RX_AIRTIME) {
--		spin_lock_bh(&dev->rx_lock);
- 		spin_lock(&dev->cc_lock);
- 		state->cc_bss_rx += dev->cur_cc_bss_rx;
- 		dev->cur_cc_bss_rx = 0;
- 		spin_unlock(&dev->cc_lock);
--		spin_unlock_bh(&dev->rx_lock);
- 	}
- }
- EXPORT_SYMBOL_GPL(mt76_update_survey);
-@@ -485,6 +479,7 @@ int mt76_get_survey(struct ieee80211_hw *hw, int idx,
- 	struct mt76_channel_state *state;
- 	int ret = 0;
- 
-+	mutex_lock(&dev->mutex);
- 	if (idx == 0 && dev->drv->update_survey)
- 		mt76_update_survey(dev);
- 
-@@ -494,8 +489,10 @@ int mt76_get_survey(struct ieee80211_hw *hw, int idx,
- 		sband = &dev->sband_5g;
- 	}
- 
--	if (idx >= sband->sband.n_channels)
--		return -ENOENT;
-+	if (idx >= sband->sband.n_channels) {
-+		ret = -ENOENT;
-+		goto out;
-+	}
- 
- 	chan = &sband->sband.channels[idx];
- 	state = mt76_channel_state(dev, chan);
-@@ -511,14 +508,18 @@ int mt76_get_survey(struct ieee80211_hw *hw, int idx,
- 			survey->filled |= SURVEY_INFO_TIME_BSS_RX;
- 	}
- 
--	spin_lock_bh(&dev->cc_lock);
--	survey->time = div_u64(state->cc_active, 1000);
- 	survey->time_busy = div_u64(state->cc_busy, 1000);
--	survey->time_bss_rx = div_u64(state->cc_bss_rx, 1000);
- 	survey->time_rx = div_u64(state->cc_rx, 1000);
-+	survey->time = div_u64(state->cc_active, 1000);
-+
-+	spin_lock_bh(&dev->cc_lock);
-+	survey->time_bss_rx = div_u64(state->cc_bss_rx, 1000);
- 	survey->time_tx = div_u64(state->cc_tx, 1000);
- 	spin_unlock_bh(&dev->cc_lock);
- 
-+out:
-+	mutex_unlock(&dev->mutex);
-+
- 	return ret;
- }
- EXPORT_SYMBOL_GPL(mt76_get_survey);
-@@ -622,7 +623,9 @@ mt76_airtime_report(struct mt76_dev *dev, struct mt76_rx_status *status,
- 	u32 airtime;
- 
- 	airtime = mt76_calc_rx_airtime(dev, status, len);
-+	spin_lock(&dev->cc_lock);
- 	dev->cur_cc_bss_rx += airtime;
-+	spin_unlock(&dev->cc_lock);
- 
- 	if (!wcid || !wcid->sta)
- 		return;
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76x02_mac.c b/drivers/net/wireless/mediatek/mt76/mt76x02_mac.c
-index 41f7c01045b8..2c0bd9aa1987 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76x02_mac.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt76x02_mac.c
-@@ -1024,8 +1024,11 @@ void mt76x02_update_channel(struct mt76_dev *mdev)
- 
- 	state = mdev->chan_state;
- 	state->cc_busy += mt76_rr(dev, MT_CH_BUSY);
-+
-+	spin_lock_bh(&dev->mt76.cc_lock);
- 	state->cc_tx += dev->tx_airtime;
- 	dev->tx_airtime = 0;
-+	spin_unlock_bh(&dev->mt76.cc_lock);
- }
- EXPORT_SYMBOL_GPL(mt76x02_update_channel);
- 
--- 
-2.21.0
+The following changes since commit 54ecb8f7028c5eb3d740bb82b0f1d90f2df63c5c:
 
+  Linux 5.4-rc1 (2019-09-30 10:35:40 -0700)
+
+are available in the git repository at:
+
+  git://git.kernel.org/pub/scm/linux/kernel/git/kvalo/wireless-drivers.git tags/wireless-drivers-for-davem-2019-10-15
+
+for you to fetch changes up to d79749f7716d9dc32fa2d5075f6ec29aac63c76d:
+
+  ath10k: fix latency issue for QCA988x (2019-10-14 11:43:36 +0300)
+
+----------------------------------------------------------------
+wireless-drivers fixes for 5.4
+
+Second set of fixes for 5.4. ath10k regression and iwlwifi BAD_COMMAND
+bug are the ones getting most reports at the moment.
+
+ath10k
+
+* fix throughput regression on QCA98XX
+
+iwlwifi
+
+* fix initialization of 3168 devices (the infamous BAD_COMMAND bug)
+
+* other smaller fixes
+
+rt2x00
+
+* don't include input-polldev.h header
+
+* fix hw reset to work during first 5 minutes of system run
+
+----------------------------------------------------------------
+Dmitry Torokhov (1):
+      rt2x00: remove input-polldev.h header
+
+Haim Dreyfuss (1):
+      iwlwifi: mvm: force single phy init
+
+Johannes Berg (2):
+      iwlwifi: pcie: fix indexing in command dump for new HW
+      iwlwifi: pcie: fix rb_allocator workqueue allocation
+
+Kalle Valo (1):
+      Merge tag 'iwlwifi-for-kalle-2019-10-09' of git://git.kernel.org/.../iwlwifi/iwlwifi-fixes
+
+Luca Coelho (4):
+      iwlwifi: don't access trans_cfg via cfg
+      iwlwifi: fix ACPI table revision checks
+      iwlwifi: exclude GEO SAR support for 3168
+      iwlwifi: pcie: change qu with jf devices to use qu configuration
+
+Miaoqing Pan (1):
+      ath10k: fix latency issue for QCA988x
+
+Naftali Goldstein (1):
+      iwlwifi: mvm: fix race in sync rx queue notification
+
+Navid Emamdoost (2):
+      iwlwifi: dbg_ini: fix memory leak in alloc_sgtable
+      iwlwifi: pcie: fix memory leaks in iwl_pcie_ctxt_info_gen3_init
+
+Stanislaw Gruszka (1):
+      rt2x00: initialize last_reset
+
+ drivers/net/wireless/ath/ath10k/core.c             |  15 +-
+ drivers/net/wireless/intel/iwlwifi/fw/acpi.c       |  10 +-
+ drivers/net/wireless/intel/iwlwifi/fw/dbg.c        |   1 +
+ drivers/net/wireless/intel/iwlwifi/iwl-io.h        |  12 +-
+ drivers/net/wireless/intel/iwlwifi/mvm/fw.c        |  43 +++-
+ drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c  |   9 +-
+ .../wireless/intel/iwlwifi/pcie/ctxt-info-gen3.c   |  36 ++-
+ drivers/net/wireless/intel/iwlwifi/pcie/drv.c      | 274 ++++++++++-----------
+ drivers/net/wireless/intel/iwlwifi/pcie/trans.c    |  25 +-
+ drivers/net/wireless/ralink/rt2x00/rt2x00.h        |   1 -
+ drivers/net/wireless/ralink/rt2x00/rt2x00debug.c   |   2 +-
+ 11 files changed, 239 insertions(+), 189 deletions(-)
