@@ -2,100 +2,134 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 88557D7C5B
-	for <lists+linux-wireless@lfdr.de>; Tue, 15 Oct 2019 18:52:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 054E7D7D44
+	for <lists+linux-wireless@lfdr.de>; Tue, 15 Oct 2019 19:19:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728515AbfJOQwS (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 15 Oct 2019 12:52:18 -0400
-Received: from vulcan.natalenko.name ([104.207.131.136]:45772 "EHLO
-        vulcan.natalenko.name" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726362AbfJOQwS (ORCPT
+        id S1730793AbfJORTF (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 15 Oct 2019 13:19:05 -0400
+Received: from us-smtp-delivery-1.mimecast.com ([207.211.31.120]:47483 "EHLO
+        us-smtp-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
+        with ESMTP id S1727163AbfJORTE (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 15 Oct 2019 12:52:18 -0400
-Received: from mail.natalenko.name (vulcan.natalenko.name [IPv6:fe80::5400:ff:fe0c:dfa0])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by vulcan.natalenko.name (Postfix) with ESMTPSA id 08E8B600D27;
-        Tue, 15 Oct 2019 18:52:13 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=natalenko.name;
-        s=dkim-20170712; t=1571158333;
+        Tue, 15 Oct 2019 13:19:04 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1571159943;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
          to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=gP7dY/174GGdD6usTpaalR67cnmsiaPwYD5OpFcQfyY=;
-        b=axlssqB+DUWqk4taqLCosVffDK8d64AuWwQ15V7uZqtx7iDctmvnRYOYKT+W9sQ0eHsN/C
-        6jIbhyD9Sm2mIWuhiqx2sZThjUyh0zi3Yu4hB2KMVydbuj2Tr1PQqK7Q9NC5gMNnk2RdV6
-        ZU1x93AcuTKJFTxW0B76PTLkE+3Rtj0=
+         content-transfer-encoding:content-transfer-encoding;
+        bh=aiICBq+klD7gts5SC7Lw3KPTDcrLbo2thywzxGgTe5U=;
+        b=a8ygi3Z5h1JihYNzjpsxf73M0d5eNV0TVdqPxenhfRFl5uO3iAUgymhOCQS/BFtrgxvPCN
+        ZPmFPazC/Luiio3y0xHMXjiEB6jzXYclNE5Kax7J34PtpV5Xety5ONe+7+5nRQDvbeQjWw
+        zvSDU7ZLPFKAapPSfP5t6yRUvUa6f2I=
+Received: from mail-lj1-f198.google.com (mail-lj1-f198.google.com
+ [209.85.208.198]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-171-2owlj4sUPraFnOVeDMJ2Hg-1; Tue, 15 Oct 2019 13:19:01 -0400
+Received: by mail-lj1-f198.google.com with SMTP id p18so4056271ljn.1
+        for <linux-wireless@vger.kernel.org>; Tue, 15 Oct 2019 10:19:00 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:from:to:cc:date:message-id:user-agent
+         :mime-version:content-transfer-encoding;
+        bh=Y9ZicZO6b29gZwYmEAgc0Vga9o23GaUpVran/Wv7Gas=;
+        b=Yd4RVlhsV68C+MQVDVW5W2BTSFRUs7JsLw5xc7KwaAIhbieIVtMc2SiG1LZetJlOyE
+         ZnJf1eu4fCtR3qTmX7s+JNaHSWaAFSH+po8UzzVqfLCT8sfS0e6Zt8qymMsZsWKC4NLs
+         Tl2ayZhQ/7ywh4F1yn7q+KaBb9L3HAAFBG7+hxfYJHYcpbEye3PXPfXBJ5ytF4OD+Pi3
+         djio/E8adF82vNrLpU5xhFHGsXblpK12qZNIQSFyP24azeoX5cAaKACeX2wYtCOIvZ17
+         GaU8Xpju7gF0iQx7Q89sWIU8O5BpRoxQeLEYY0Wdyl8stARrwLluBcGYeu3GDH27VJ3v
+         dSxg==
+X-Gm-Message-State: APjAAAWLOwPwBeztprgy0ES/sPSxzuoBbGdpztyGcH38ubW5tZa/LAhZ
+        XRLfGLOsmdiDf8SZgcKsNuk5JNnlQS/+yMTjJtAx9WX95p5gqAtFgyZQhxudFKDOzNRRrVZxxPG
+        TY22egpy6RTjznNgBCuqo7Ntm+dA=
+X-Received: by 2002:ac2:46d9:: with SMTP id p25mr9407716lfo.174.1571159939664;
+        Tue, 15 Oct 2019 10:18:59 -0700 (PDT)
+X-Google-Smtp-Source: APXvYqy4GGvaQ++TIAujXuUFP1I9PfblNVucnrgy1g/FJr66h0DYi2to2kGkxbuh0iD28epJYmQE3Q==
+X-Received: by 2002:ac2:46d9:: with SMTP id p25mr9407696lfo.174.1571159939436;
+        Tue, 15 Oct 2019 10:18:59 -0700 (PDT)
+Received: from alrua-x1.borgediget.toke.dk ([2a00:7660:6da:443::2])
+        by smtp.gmail.com with ESMTPSA id v1sm5331272lfa.87.2019.10.15.10.18.58
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 15 Oct 2019 10:18:58 -0700 (PDT)
+Received: by alrua-x1.borgediget.toke.dk (Postfix, from userid 1000)
+        id A2AF31803A8; Tue, 15 Oct 2019 19:18:57 +0200 (CEST)
+Subject: [PATCH v2 0/4] Add Airtime Queue Limits (AQL) to mac80211
+From:   =?utf-8?q?Toke_H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>
+To:     Johannes Berg <johannes@sipsolutions.net>
+Cc:     linux-wireless@vger.kernel.org,
+        make-wifi-fast@lists.bufferbloat.net, ath10k@lists.infradead.org,
+        John Crispin <john@phrozen.org>,
+        Lorenzo Bianconi <lorenzo@kernel.org>,
+        Felix Fietkau <nbd@nbd.name>, Kan Yan <kyan@google.com>,
+        Rajkumar Manoharan <rmanohar@codeaurora.org>,
+        Kevin Hayes <kevinhayes@google.com>
+Date:   Tue, 15 Oct 2019 19:18:57 +0200
+Message-ID: <157115993755.2500430.12214017471129215800.stgit@toke.dk>
+User-Agent: StGit/0.20
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII;
- format=flowed
-Content-Transfer-Encoding: 7bit
-Date:   Tue, 15 Oct 2019 18:52:12 +0200
-From:   Oleksandr Natalenko <oleksandr@natalenko.name>
-To:     Lorenzo Bianconi <lorenzo@kernel.org>
-Cc:     linux-mediatek@lists.infradead.org, Felix Fietkau <nbd@nbd.name>,
-        Lorenzo Bianconi <lorenzo.bianconi83@gmail.com>,
-        Stanislaw Gruszka <sgruszka@redhat.com>,
-        Ryder Lee <ryder.lee@mediatek.com>,
-        Roy Luo <royluo@google.com>, Kalle Valo <kvalo@codeaurora.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-Subject: Re: mt76x2e hardware restart
-In-Reply-To: <20191012165028.GA8739@lore-desk-wlan.lan>
-References: <deaafa7a3e9ea2111ebb5106430849c6@natalenko.name>
- <c6d621759c190f7810d898765115f3b4@natalenko.name>
- <9d581001e2e6cece418329842b2b0959@natalenko.name>
- <20191012165028.GA8739@lore-desk-wlan.lan>
-Message-ID: <f7695bc79d40bbc96744a639b1243027@natalenko.name>
-X-Sender: oleksandr@natalenko.name
-User-Agent: Roundcube Webmail/1.3.10
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=natalenko.name;
-        s=arc-20170712; t=1571158333;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=gP7dY/174GGdD6usTpaalR67cnmsiaPwYD5OpFcQfyY=;
-        b=DRapKaMH9Ss4+Y57MDmNYSjvx33aSfwXUw8own30SGyjDa5AMl64qaMDNsqvPX7/s1RUlT
-        /QkkeIHxPcKgKgp5SWsPB7WS+D/aWzg/vXK6aNsqs0cbcnq0AIxk4q1eaPz/BTo77lmKqr
-        7yVWwSxfpPnFqoATcwt0citzVM5lIws=
-ARC-Seal: i=1; s=arc-20170712; d=natalenko.name; t=1571158333; a=rsa-sha256;
-        cv=none;
-        b=PesOlooj33cKhM+/mIkE91p8YnsF/RM+XyufMQ7N+HwXFSwngv2bnoT5IKQRxPvK2kLS4e
-        7/Ja/w9ZpmQ8oiIZboZ0nmfG8W7ad/eC012N804Ng5944lJbgzAaNEkQWMq1YRUDsdWJZ9
-        ez1OhgcRkIU+TO6ThLjdLvcKF9Rbz7k=
-ARC-Authentication-Results: i=1;
-        vulcan.natalenko.name;
-        auth=pass smtp.auth=oleksandr@natalenko.name smtp.mailfrom=oleksandr@natalenko.name
+X-MC-Unique: 2owlj4sUPraFnOVeDMJ2Hg-1
+X-Mimecast-Spam-Score: 0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hey.
+This series is a first attempt at porting the Airtime Queue Limits concept =
+from
+the out-of-tree ath10k implementation[0] to mac80211. This version takes Ka=
+n's
+patch to do the throttling in mac80211, and replaces the driver API with th=
+e
+mechanism from the previous version of my series, which instead calculated =
+the
+expected airtime at dequeue time inside mac80211, storing it in the SKB cb
+field.
 
-On 12.10.2019 18:50, Lorenzo Bianconi wrote:
-> sorry for the delay. Felix and me worked on this issue today. Could you 
-> please
-> try if the following patch fixes your issue?
+This series also imports Felix' airtime calculation code from mt76 into
+mac80211, adjusting the API so it can be used from TX dequeue, by extractin=
+g the
+latest TX rate from the tx_stats structure kept for each station.
 
-Thanks for the answer and the IRC discussion. As agreed I've applied [1] 
-and [2], and have just swapped the card to try it again. So far, it 
-works fine in 5 GHz band in 802.11ac mode as an AP.
+As before, I've only compile tested this (lacking the proper hardware to do=
+ more
+testing). So I'm hoping someone with a proper testing setup can take the wh=
+ole
+thing for a spin... :)
 
-I'll give it more load with my phone over evening, and we can discuss 
-what to do next (if needed) tomorrow again. Or feel free to drop me an 
-email today.
+The series is also available in my git repo here:
+https://git.kernel.org/pub/scm/linux/kernel/git/toke/linux.git/log/?h=3Dmac=
+80211-aql-02
 
-Thanks for your efforts.
+Changelog:
 
-[1] 
-https://github.com/LorenzoBianconi/wireless-drivers-next/commit/cf3436c42a297967235a9c9778620c585100529e.patch
-[2] 
-https://github.com/LorenzoBianconi/wireless-drivers-next/commit/aad256eb62620f9646d39c1aa69234f50c89eed8.patch
+v2:
+  - Integrate Kan's approach to airtime throttling.
+  - Hopefully fix the cb struct alignment on big-endian architectures.
 
--- 
-   Oleksandr Natalenko (post-factum)
+---
+
+Kan Yan (1):
+      mac80211: Implement Airtime-based Queue Limit (AQL)
+
+Toke H=C3=B8iland-J=C3=B8rgensen (3):
+      mac80211: Rearrange ieee80211_tx_info to make room for tx_time_est
+      mac80211: Import airtime calculation code from mt76
+      mac80211: Use Airtime-based Queue Limits (AQL) on packet dequeue
+
+
+ include/net/cfg80211.h     |    7 +
+ include/net/mac80211.h     |   52 +++++-
+ net/mac80211/Makefile      |    3=20
+ net/mac80211/airtime.c     |  375 ++++++++++++++++++++++++++++++++++++++++=
+++++
+ net/mac80211/debugfs.c     |   78 +++++++++
+ net/mac80211/debugfs_sta.c |   43 ++++-
+ net/mac80211/ieee80211_i.h |    8 +
+ net/mac80211/main.c        |    9 +
+ net/mac80211/sta_info.c    |   32 ++++
+ net/mac80211/sta_info.h    |    8 +
+ net/mac80211/status.c      |   38 ++++
+ net/mac80211/tx.c          |   62 +++++++
+ 12 files changed, 693 insertions(+), 22 deletions(-)
+ create mode 100644 net/mac80211/airtime.c
+
