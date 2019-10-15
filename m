@@ -2,82 +2,104 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D5DA6D6D80
-	for <lists+linux-wireless@lfdr.de>; Tue, 15 Oct 2019 05:15:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4D941D6DA0
+	for <lists+linux-wireless@lfdr.de>; Tue, 15 Oct 2019 05:23:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727685AbfJODPJ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 14 Oct 2019 23:15:09 -0400
-Received: from bombadil.infradead.org ([198.137.202.133]:38110 "EHLO
-        bombadil.infradead.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726946AbfJODPI (ORCPT
+        id S1727546AbfJODXU convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 14 Oct 2019 23:23:20 -0400
+Received: from rtits2.realtek.com ([211.75.126.72]:33223 "EHLO
+        rtits2.realtek.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727195AbfJODXU (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 14 Oct 2019 23:15:08 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=bombadil.20170209; h=In-Reply-To:Content-Type:MIME-Version
-        :References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-        Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-        Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-        List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-         bh=rGXKOzZI2i2ULcbgzDpG/mG1eu5gxk2EGw7KyGeZWwE=; b=Ck4GEFQCqtrUxKelUCq8Q93OE
-        TgZCkXwGyd9+XQ40HYW8ayvgLfti0hqTDa/CvRTsliaSADnE0HCCMC+vmvq9WGGbdffVTCNYxlnCD
-        4Mrl5Zi4BKTGxL9fnpjlQMVLdNBXgDcfNCMIw8MKAMk+oWO3/qbzDB4KFlPcaCrDkE59assZz3cd5
-        +rjncO71ZMRE4j0IH3/9bteALR9aB3djRUl1V+UH+aLGCY+gcZPHu4bgNrak6aZQGDhqeDmnfIQlA
-        lvsZmqvgnm+aKjD3Hejv3+pRbfLWXv1Sydao3hwwLdrvJuNkXSJRQ3Tb12fWsiMj1dY974Z1KiKkp
-        WEffcX/fw==;
-Received: from willy by bombadil.infradead.org with local (Exim 4.92.3 #3 (Red Hat Linux))
-        id 1iKDIe-0000xB-K6; Tue, 15 Oct 2019 03:15:04 +0000
-Date:   Mon, 14 Oct 2019 20:15:04 -0700
-From:   Matthew Wilcox <willy@infradead.org>
-To:     Tim.Bird@sony.com
-Cc:     jani.nikula@linux.intel.com, changbin.du@gmail.com, corbet@lwn.net,
-        linux-pci@vger.kernel.org, linux-doc@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-        linux-crypto@vger.kernel.org, linux-kselftest@vger.kernel.org,
-        linux-wireless@vger.kernel.org, linux-fpga@vger.kernel.org,
-        linux-usb@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        intel-gfx@lists.freedesktop.org
-Subject: Re: [PATCH] kernel-doc: rename the kernel-doc directive 'functions'
- to 'specific'
-Message-ID: <20191015031504.GB32665@bombadil.infradead.org>
-References: <20191013055359.23312-1-changbin.du@gmail.com>
- <875zkrd7nq.fsf@intel.com>
- <ECADFF3FD767C149AD96A924E7EA6EAF977CAF09@USCULXMSG01.am.sony.com>
+        Mon, 14 Oct 2019 23:23:20 -0400
+Authenticated-By: 
+X-SpamFilter-By: BOX Solutions SpamTrap 5.62 with qID x9F3NBK0004972, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (RTITCAS12.realtek.com.tw[172.21.6.16])
+        by rtits2.realtek.com.tw (8.15.2/2.57/5.78) with ESMTPS id x9F3NBK0004972
+        (version=TLSv1.2 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Tue, 15 Oct 2019 11:23:12 +0800
+Received: from RTITMBSVM04.realtek.com.tw ([fe80::e404:880:2ef1:1aa1]) by
+ RTITCAS12.realtek.com.tw ([::1]) with mapi id 14.03.0439.000; Tue, 15 Oct
+ 2019 11:23:12 +0800
+From:   Tony Chuang <yhchuang@realtek.com>
+To:     Kalle Valo <kvalo@codeaurora.org>
+CC:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        "briannorris@chromium.org" <briannorris@chromium.org>
+Subject: RE: [PATCH 00/10] rtw88: minor throughput improvement
+Thread-Topic: [PATCH 00/10] rtw88: minor throughput improvement
+Thread-Index: AQHVfbFc26VWAFzfcEe2tMzpR0n4B6dZ7MldgAEnPJA=
+Date:   Tue, 15 Oct 2019 03:23:10 +0000
+Message-ID: <F7CD281DE3E379468C6D07993EA72F84D18FDB17@RTITMBSVM04.realtek.com.tw>
+References: <20191008082101.2494-1-yhchuang@realtek.com>
+ <87mue3fyoo.fsf@tynnyri.adurom.net>
+In-Reply-To: <87mue3fyoo.fsf@tynnyri.adurom.net>
+Accept-Language: zh-TW, en-US
+Content-Language: zh-TW
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [172.21.68.183]
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 8BIT
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ECADFF3FD767C149AD96A924E7EA6EAF977CAF09@USCULXMSG01.am.sony.com>
-User-Agent: Mutt/1.12.1 (2019-06-15)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Mon, Oct 14, 2019 at 08:48:48PM +0000, Tim.Bird@sony.com wrote:
+> From: Kalle Valo 
 > 
+> <yhchuang@realtek.com> writes:
 > 
-> > -----Original Message-----
-> > From: Jani Nikula on October 13, 2019 11:00 PM
-> > On Sun, 13 Oct 2019, Changbin Du <changbin.du@gmail.com> wrote:
-> > > The 'functions' directive is not only for functions, but also works for
-> > > structs/unions. So the name is misleading. This patch renames it to
-> > > 'specific', so now we have export/internal/specific directives to limit
-> > > the functions/types to be included in documentation. Meanwhile we
-> > improved
-> > > the warning message.
-> > 
-> > Agreed on "functions" being less than perfect. It directly exposes the
-> > idiosyncrasies of scripts/kernel-doc. I'm not sure "specific" is any
-> > better, though.
+> > From: Yan-Hsuan Chuang <yhchuang@realtek.com>
+> >
+> > This patchset mainly adds support for beamforming and power
+> > tracking. Power tracking can monitor the thermal value of
+> > the device and adjust corresponding power indexes, to make
+> > sure the RF output power is expected.
+> >
+> > And another thing is to add a debugfs for physical layer
+> > information. This is useful when sometimes the environment
+> > is too harsh for the device, and provides the activities
+> > for us to debug.
+> >
+> > The rest patches are some minor fixes.
+> >
+> >
+> > Ping-Ke Shih (1):
+> >   rtw88: coex: Set 4 slot mode for A2DP
+> >
+> > Tsang-Shian Lin (1):
+> >   rtw88: add phy_info debugfs to show Tx/Rx physical status
+> >
+> > Tzu-En Huang (6):
+> >   rtw88: add power tracking support
+> >   rtw88: Enable 802.11ac beamformee support
+> >   rtw88: config 8822c multicast address in MAC init flow
+> >   rtw88: add set_bitrate_mask support
+> >   rtw88: update regulatory settings implementaion
+> >   rtw88: add NL80211_EXT_FEATURE_CAN_REPLACE_PTK0 support
+> >
+> > Yan-Hsuan Chuang (2):
+> >   rtw88: Use rtw_write8_set to set SYS_FUNC
+> >   rtw88: pci: config phy after chip info is setup
 > 
-> I strongly agree with this.  'specific' IMHO, has no semantic value and
-> I'd rather just leave the only-sometimes-wrong 'functions' than convert
-> to something that obscures the meaning always.
+> It would be easier for me if you could split the patchsets even more,
+> for example fixes into one set and new features into another. That way I
+> can apply the fixes faster. (I now applied five fixes from this set)
 > 
-> > 
-> > Perhaps "symbols" would be more self-explanatory. Or, actually make
-> > "functions" only work on functions, and add a separate keyword for other
-> > stuff. *shrug*
-> My preference would be to use 'symbols'.  I tried to come up with something
-> but 'symbols' is better than anything I came up with.
+> And maybe you could even split the new features into smaller sets, or
+> maybe even just send them one by one once you have a patch ready
+> (especially on bigger features). That would also make it faster to
+> review, reviewing big patchsets is pain.
+> 
+> But whenever you submit, just to use wireless-drivers-next as the
+> baseline, and no extra patches on top of. That way it's for git to
+> handle conflicts.
+> 
 
-structures aren't symbols though ... How about 'identifier'?
+Sorry, it my fault to mess them into one patch set.
+Will try to split them into more sets.
+Thanks.
+
+Yan-Hsuan
