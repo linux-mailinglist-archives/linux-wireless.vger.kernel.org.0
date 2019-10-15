@@ -2,25 +2,25 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 5C53BD7B56
-	for <lists+linux-wireless@lfdr.de>; Tue, 15 Oct 2019 18:24:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A7581D7B6C
+	for <lists+linux-wireless@lfdr.de>; Tue, 15 Oct 2019 18:28:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727809AbfJOQYi (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 15 Oct 2019 12:24:38 -0400
-Received: from smtp.codeaurora.org ([198.145.29.96]:35390 "EHLO
+        id S1729584AbfJOQ2e (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 15 Oct 2019 12:28:34 -0400
+Received: from smtp.codeaurora.org ([198.145.29.96]:37744 "EHLO
         smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726200AbfJOQYh (ORCPT
+        with ESMTP id S1728687AbfJOQ2e (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 15 Oct 2019 12:24:37 -0400
+        Tue, 15 Oct 2019 12:28:34 -0400
 Received: by smtp.codeaurora.org (Postfix, from userid 1000)
-        id D622C60BEA; Tue, 15 Oct 2019 16:24:36 +0000 (UTC)
+        id EDCC060BE7; Tue, 15 Oct 2019 16:28:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1571156677;
-        bh=TLXzKaLgAlXy4RnEdq1+kK9xYyxZfCis3fJ9E8UWSc4=;
+        s=default; t=1571156913;
+        bh=KOeIw3gkdA6lhYkuGUW1LTe0NI6YnsNCGDr0ZnO6Mk8=;
         h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=A5tX6D+sC/m1Fgcjf5DxqWmh6cSVveSWyx+6t0/zQt6/aCvWMtYftGFLwOMhN0tde
-         Ekj6sXb8306mlZRDxnEspKj9uRYDnEVPkO+R4g3AM/+gg6p5NHWAM1SuJOoD9Y5usd
-         g4FqS2s9WNtToslBvLwWDS4UXxyPNLqHgP3Bkcpo=
+        b=cKzFdjlLgaErSB4sPznCi+BheW8s+h/Mu5k81fmYlSPCe3TaCvjICWk+bu4Xtl2ex
+         gu3k+7egf+sB9Xn4HGqd5qhpv429moKJ04Brs4+usoyYc27zbmp0+x10kzVGxfMqc5
+         Mse7oDYBdfGkIuP2m0tBrUHBGWECXqw4Lw4p3Ayc=
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         pdx-caf-mail.web.codeaurora.org
 X-Spam-Level: 
@@ -31,30 +31,30 @@ Received: from x230.qca.qualcomm.com (85-76-79-201-nat.elisa-mobile.fi [85.76.79
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
         (Authenticated sender: kvalo@smtp.codeaurora.org)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 2755260BEA;
-        Tue, 15 Oct 2019 16:24:33 +0000 (UTC)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 81BFF60B6C;
+        Tue, 15 Oct 2019 16:28:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1571156675;
-        bh=TLXzKaLgAlXy4RnEdq1+kK9xYyxZfCis3fJ9E8UWSc4=;
+        s=default; t=1571156912;
+        bh=KOeIw3gkdA6lhYkuGUW1LTe0NI6YnsNCGDr0ZnO6Mk8=;
         h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=mMPeemZpQQq6uVOxx8hGlc3an876I99Rp8OAasBUM3ZLKhc/Rskb95EK03asp2hl3
-         XQ/MaPJrcEQr/MwdG3sLRMQ2N1LCGUNKyRCMhoVF5bjSxhClGDNC0/HJ9botmw1s9+
-         Wc0JNS/a3PJuM5Z4aAbwDIhj9O3dpo/KFmznxpeQ=
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 2755260BEA
+        b=bIrLcz7COORdGWYbbfTYuOMyXkjcAcvj8aF9Q531hE2qXGhU1YO8EgeJd3Q6FU/6a
+         xvms0ujDc0Opbc6o5sApZgM7ZCU1rYbZho0JWF4QgWJ/Iv6d4GF3XPO02WQWMe3fDw
+         8mVP3dxvIABTEj4Xd4STfTHf2+OxV13tqlAOFjis=
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 81BFF60B6C
 Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
 Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
 From:   Kalle Valo <kvalo@codeaurora.org>
-To:     Johannes Berg <johannes@sipsolutions.net>
-Cc:     linux-wireless@vger.kernel.org, devicetree@vger.kernel.org,
-        ath11k@lists.infradead.org
-Subject: Re: [PATCH 08/49] ath11k: add core.c
+To:     Sven Eckelmann <sven@narfation.org>
+Cc:     ath11k@lists.infradead.org, devicetree@vger.kernel.org,
+        linux-wireless@vger.kernel.org
+Subject: Re: [PATCH 31/49] ath11k: add mac.c
 References: <1566316095-27507-1-git-send-email-kvalo@codeaurora.org>
-        <1566316095-27507-9-git-send-email-kvalo@codeaurora.org>
-        <0c526ce00e6e1c7731c990515e7438230efb55af.camel@sipsolutions.net>
-Date:   Tue, 15 Oct 2019 19:24:29 +0300
-In-Reply-To: <0c526ce00e6e1c7731c990515e7438230efb55af.camel@sipsolutions.net>
-        (Johannes Berg's message of "Tue, 20 Aug 2019 22:32:45 +0200")
-Message-ID: <87h84am0xu.fsf@codeaurora.org>
+        <1566316095-27507-32-git-send-email-kvalo@codeaurora.org>
+        <1635460.phzPRRphLd@bentobox>
+Date:   Tue, 15 Oct 2019 19:28:27 +0300
+In-Reply-To: <1635460.phzPRRphLd@bentobox> (Sven Eckelmann's message of "Wed,
+        21 Aug 2019 08:16:27 +0200")
+Message-ID: <87d0eym0r8.fsf@codeaurora.org>
 User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
 MIME-Version: 1.0
 Content-Type: text/plain
@@ -63,29 +63,31 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Johannes Berg <johannes@sipsolutions.net> writes:
+Sven Eckelmann <sven@narfation.org> writes:
 
->> +module_param_named(debug_mask, ath11k_debug_mask, uint, 0644);
->> +
->> +MODULE_PARM_DESC(debug_mask, "Debugging mask");
->> +
->> +static const struct ath11k_hw_params ath11k_hw_params = {
->> +			.name = "ipq8074",
+> On Tuesday, 20 August 2019 17:47:57 CEST Kalle Valo wrote:
+>> +static void ath11k_peer_assoc_h_rates(struct ath11k *ar,
+>> +                                     struct ieee80211_vif *vif,
+>> +                                     struct ieee80211_sta *sta,
+>> +                                     struct peer_assoc_params *arg)
+>> +{
+>> +       struct ath11k_vif *arvif = (void *)vif->drv_priv;
+>> +       struct wmi_rate_set_arg *rateset = &arg->peer_legacy_rates;
+>> +       struct cfg80211_chan_def def;
+>> +       const struct ieee80211_supported_band *sband;
+>> +       const struct ieee80211_rate *rates;
+>> +       enum nl80211_band band;
+>> +       u32 ratemask;
+>> +       u8 rate;
 >
-> indentation here seems a bit too much
-
-I'll fix that. I'll also group the module parameter macros above next to
-each other.
-
->> +MODULE_LICENSE("Dual BSD/GPL");
+> rate has to be u32 [1].
 >
-> All your files state "ISC", shouldn't that be reflected here?
+> Kind regards,
+> 	Sven
+>
+> [1] https://patchwork.kernel.org/patch/11089507/
 
-AFAIK MODULE_LICENSE() macro does not support ISC. AFAIK this is what
-all ISC wireless drivers have.
-
-Related to this, we now changed the license in ath11k to
-BSD-3-Clause-Clear.
+I have applied this now.
 
 -- 
 Kalle Valo
