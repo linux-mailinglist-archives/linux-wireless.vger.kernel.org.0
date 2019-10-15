@@ -2,91 +2,69 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 6DCAED7528
-	for <lists+linux-wireless@lfdr.de>; Tue, 15 Oct 2019 13:36:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2AA1CD759F
+	for <lists+linux-wireless@lfdr.de>; Tue, 15 Oct 2019 13:54:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727764AbfJOLgt (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 15 Oct 2019 07:36:49 -0400
-Received: from smtp.codeaurora.org ([198.145.29.96]:55954 "EHLO
-        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727148AbfJOLgs (ORCPT
+        id S1729424AbfJOLyq (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 15 Oct 2019 07:54:46 -0400
+Received: from bombadil.infradead.org ([198.137.202.133]:49312 "EHLO
+        bombadil.infradead.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725790AbfJOLyp (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 15 Oct 2019 07:36:48 -0400
-Received: by smtp.codeaurora.org (Postfix, from userid 1000)
-        id E956C60DA7; Tue, 15 Oct 2019 11:36:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1571139408;
-        bh=ovkt4b2nKzMchB9ZgtQWzeYw6k1PJKUjpwtIZzO24Mc=;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=Us3gxveSa+uHoCXf77KwRimlDca9sam72HCL1c5NuUiD+9Nn/z1Ma5tVBqgA45tOe
-         pjpZwD9AVkVOOlsNzlazbkBlJq5dDG5NeZWA5UQd1EdXhWlzSXHSRAAqIN7qZIlg6A
-         Sz43FdW37JmUiBoKIbILCsqCuToy1ORroFawcuNU=
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        pdx-caf-mail.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.7 required=2.0 tests=ALL_TRUSTED,BAYES_00,
-        DKIM_INVALID,DKIM_SIGNED,SPF_NONE autolearn=no autolearn_force=no
-        version=3.4.0
-Received: from x230.qca.qualcomm.com (176-93-78-119.bb.dnainternet.fi [176.93.78.119])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        (Authenticated sender: kvalo@smtp.codeaurora.org)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 19E6760D80;
-        Tue, 15 Oct 2019 11:36:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1571139406;
-        bh=ovkt4b2nKzMchB9ZgtQWzeYw6k1PJKUjpwtIZzO24Mc=;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=Qeo9I8PLZsA311E0L8wsSnMmwlaCDk/23SZZipiccN6Usk65XBM4XNss+gMJBmRHv
-         umFfG+lEAOr2jOeOZUmiGA+KRe9YWex6yOojDRaB38k/2/dbGcxsL5AD1OSuAj8RwU
-         h6BSEKzfYJ4rgJqhpw3MbzQDQjE0OUMa3oMlxd+0=
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 19E6760D80
-Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
-From:   Kalle Valo <kvalo@codeaurora.org>
-To:     Chris Chiu <chiu@endlessm.com>
-Cc:     Jes.Sorensen@gmail.com, davem@davemloft.net,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux@endlessm.com
-Subject: Re: [PATCH] rtl8xxxu: fix RTL8723BU connection failure issue after warm reboot
-References: <20191015102109.4701-1-chiu@endlessm.com>
-Date:   Tue, 15 Oct 2019 14:36:41 +0300
-In-Reply-To: <20191015102109.4701-1-chiu@endlessm.com> (Chris Chiu's message
-        of "Tue, 15 Oct 2019 18:21:09 +0800")
-Message-ID: <874l0ansty.fsf@codeaurora.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
+        Tue, 15 Oct 2019 07:54:45 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=bombadil.20170209; h=In-Reply-To:Content-Type:MIME-Version
+        :References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+        Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+        Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+        List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+         bh=0yszEpJzojsv0U117iSsMG8HSxDkuZTGjoLlQ1g6Cro=; b=H2QiGrYjU+ubokt8xpeZfhmc4
+        KeJqoyW8uxg7q1ISBlPkeTP2VdHeNdFTEjfM200kGher4lLa4FDZstL8YRJD8ekvVwvsmb0Xh9MA/
+        lfFABlsn9oxUQAauCLzlpFOdRUSbEbEftAcVJJaMGJY9NIPHKq6QjSrP6QslqqBxQ3eLaFQdzC3DX
+        TIla8pTIh8VTxkbhj7ewvknq0SzA4BjENLyfZTNdx3ia+LGoTRLtZYCdz0cbkHhiqHgzceQQAS/CK
+        Ds/hLOlmUytSUF8O1f0IFiZGzOvwnZuONgSdBd4omuLOkIVrqAZm05F0lAxgbTylf8FsZGeFd7LZF
+        KVLvVEaeQ==;
+Received: from willy by bombadil.infradead.org with local (Exim 4.92.3 #3 (Red Hat Linux))
+        id 1iKLPT-0005JE-TQ; Tue, 15 Oct 2019 11:54:39 +0000
+Date:   Tue, 15 Oct 2019 04:54:39 -0700
+From:   Matthew Wilcox <willy@infradead.org>
+To:     Thomas Zimmermann <tzimmermann@suse.de>
+Cc:     Tim.Bird@sony.com, jani.nikula@linux.intel.com,
+        changbin.du@gmail.com, corbet@lwn.net, linux-doc@vger.kernel.org,
+        linux-pci@vger.kernel.org, linux-fpga@vger.kernel.org,
+        linux-usb@vger.kernel.org, linux-wireless@vger.kernel.org,
+        linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        linux-mm@kvack.org, linux-crypto@vger.kernel.org,
+        linux-kselftest@vger.kernel.org, intel-gfx@lists.freedesktop.org
+Subject: Re: [PATCH] kernel-doc: rename the kernel-doc directive 'functions'
+ to 'specific'
+Message-ID: <20191015115439.GE32665@bombadil.infradead.org>
+References: <20191013055359.23312-1-changbin.du@gmail.com>
+ <875zkrd7nq.fsf@intel.com>
+ <ECADFF3FD767C149AD96A924E7EA6EAF977CAF09@USCULXMSG01.am.sony.com>
+ <7e7557b5-469f-3e63-6254-53dab2d7234a@suse.de>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <7e7557b5-469f-3e63-6254-53dab2d7234a@suse.de>
+User-Agent: Mutt/1.12.1 (2019-06-15)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Chris Chiu <chiu@endlessm.com> writes:
+On Tue, Oct 15, 2019 at 11:25:53AM +0200, Thomas Zimmermann wrote:
+> > My preference would be to use 'symbols'.  I tried to come up with something
+> > but 'symbols' is better than anything I came up with.
+> 
+> Maybe 'interfaces' or 'artifacts'. The term 'symbols' is just as
+> imprecise as 'functions'.
 
-> The RTL8723BU has problems connecting to AP after each warm reboot.
-> Sometimes it returns no scan result, and in most cases, it fails
-> the authentication for unknown reason. However, it works totally
-> fine after cold reboot.
->
-> Compare the value of register SYS_CR and SYS_CLK_MAC_CLK_ENABLE
-> for cold reboot and warm reboot, the registers imply that the MAC
-> is already powered and thus some procedures are skipped during
-> driver initialization. Double checked the vendor driver, it reads
-> the SYS_CR and SYS_CLK_MAC_CLK_ENABLE also but doesn't skip any
-> during initialization based on them. This commit only tells the
-> RTL8723BU to do full initialization without checking MAC status.
->
-> https://phabricator.endlessm.com/T28000
->
-> Signed-off-by: Chris Chiu <chiu@endlessm.com>
+I suggested 'identifier' because that's the term used in the C spec (6.2.1):
 
-If you send a new version of patch mark it as v2 and include a
-changelog:
+: An identifier can denote an object; a function; a tag or a member
+: of a structure, union, or enumeration; a typedef name; a label name;
+: a macro name; or a macro parameter.
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches#patch_version_missing
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches#changelog_missing
-
--- 
-Kalle Valo
+We don't allow documenting all those things separately, but it does cover
+all the things we do allow to be individually documented.
