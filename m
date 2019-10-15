@@ -2,107 +2,97 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E390BD6DAE
-	for <lists+linux-wireless@lfdr.de>; Tue, 15 Oct 2019 05:27:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id ECD23D6E85
+	for <lists+linux-wireless@lfdr.de>; Tue, 15 Oct 2019 07:21:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727368AbfJOD1O convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 14 Oct 2019 23:27:14 -0400
-Received: from rtits2.realtek.com ([211.75.126.72]:33419 "EHLO
-        rtits2.realtek.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727092AbfJOD1O (ORCPT
+        id S1728247AbfJOFVY (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 15 Oct 2019 01:21:24 -0400
+Received: from smtp.codeaurora.org ([198.145.29.96]:49296 "EHLO
+        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728152AbfJOFVX (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 14 Oct 2019 23:27:14 -0400
-Authenticated-By: 
-X-SpamFilter-By: BOX Solutions SpamTrap 5.62 with qID x9F3R9R0005546, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (RTITCASV02.realtek.com.tw[172.21.6.19])
-        by rtits2.realtek.com.tw (8.15.2/2.57/5.78) with ESMTPS id x9F3R9R0005546
-        (version=TLSv1 cipher=DHE-RSA-AES256-SHA bits=256 verify=NOT);
-        Tue, 15 Oct 2019 11:27:09 +0800
-Received: from RTITMBSVM04.realtek.com.tw ([fe80::e404:880:2ef1:1aa1]) by
- RTITCASV02.realtek.com.tw ([::1]) with mapi id 14.03.0468.000; Tue, 15 Oct
- 2019 11:27:09 +0800
-From:   Tony Chuang <yhchuang@realtek.com>
-To:     "g.schlmm" <g.schlmm@googlemail.com>,
-        "briannorris@chromium.org" <briannorris@chromium.org>
-CC:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-Subject: RE: rtw88: M.2 RTL8822BE not working - rfe 3 isn't supported
-Thread-Topic: rtw88: M.2 RTL8822BE not working - rfe 3 isn't supported
-Thread-Index: AQHVHfV5qrKScUVcP06geVYCQL9tp6aXPCwAgAOaooCAv3qhAIABgmyg
-Date:   Tue, 15 Oct 2019 03:27:07 +0000
-Message-ID: <F7CD281DE3E379468C6D07993EA72F84D18FDB51@RTITMBSVM04.realtek.com.tw>
-References: <0d0159a8-a83e-cef3-fd32-4928a2301719@gmail.com>
- <20190612091330.GC2965@redhat.com>
- <F7CD281DE3E379468C6D07993EA72F84D180639E@RTITMBSVM04.realtek.com.tw>
- <5960cc5a-becf-8bdc-7898-b9933247b6e3@gmail.com>
-In-Reply-To: <5960cc5a-becf-8bdc-7898-b9933247b6e3@gmail.com>
-Accept-Language: zh-TW, en-US
-Content-Language: zh-TW
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [172.21.68.183]
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 8BIT
+        Tue, 15 Oct 2019 01:21:23 -0400
+Received: by smtp.codeaurora.org (Postfix, from userid 1000)
+        id 0040460A08; Tue, 15 Oct 2019 05:21:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
+        s=default; t=1571116883;
+        bh=I9WghGtYVeVXJlrf61PEkCMhAN/CWWt9s6E+2MBmULs=;
+        h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
+        b=hVK+F4j87QFPu8H0DZGTPMxOIoi/Pgr5d+Mn0NCwieNYN1K7Uv72nxfTRqWS/uGn2
+         LadqbYPRTwrpLMSGeZHpT04abyU6lFTGDhlazzfSe6Ol1JWIqW7aODf374IQ5XjCT/
+         Qx2Y8/MVzaa0P8KkM0iNQwt7a4u13JaqaKf5JMBw=
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        pdx-caf-mail.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-0.8 required=2.0 tests=ALL_TRUSTED,BAYES_00,
+        DKIM_INVALID,DKIM_SIGNED,MISSING_DATE,MISSING_MID,SPF_NONE autolearn=no
+        autolearn_force=no version=3.4.0
+Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo@smtp.codeaurora.org)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 5D5BE60A08;
+        Tue, 15 Oct 2019 05:21:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
+        s=default; t=1571116882;
+        bh=I9WghGtYVeVXJlrf61PEkCMhAN/CWWt9s6E+2MBmULs=;
+        h=Subject:From:In-Reply-To:References:To:Cc:From;
+        b=NnBS+7x4cXUBpHYlGfS2P9pXG0hRUwGdykafpD6XvkHSi6ZHk6Q5HEgtpQlPoNISP
+         aNXuk0+bDPWjjMTMjqPcLketao2JjtarTtgLPEgooWF+xnYw2z4vdkhZL/2/QPRc2I
+         e2Uvtqr11xwD/Wz+ObDG7J7LqU0OdjuQLAAMsqF4=
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 5D5BE60A08
+Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH v3 20/24] wireless: Remove call to memset after
+ dma_alloc_coherent
+From:   Kalle Valo <kvalo@codeaurora.org>
+In-Reply-To: <20190715031941.7120-1-huangfq.daxian@gmail.com>
+References: <20190715031941.7120-1-huangfq.daxian@gmail.com>
+To:     Fuqian Huang <huangfq.daxian@gmail.com>
+Cc:     unlisted-recipients:; (no To-header on input)
+        "David S . Miller" <davem@davemloft.net>,
+        Arend van Spriel <arend.vanspriel@broadcom.com>,
+        Franky Lin <franky.lin@broadcom.com>,
+        Hante Meuleman <hante.meuleman@broadcom.com>,
+        Chi-Hsien Lin <chi-hsien.lin@cypress.com>,
+        Wright Feng <wright.feng@cypress.com>,
+        Igor Mitsyanko <imitsyanko@quantenna.com>,
+        Avinash Patil <avinashp@quantenna.com>,
+        Sergey Matyukevich <smatyukevich@quantenna.com>,
+        ath10k@lists.infradead.org, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+        brcm80211-dev-list.pdl@broadcom.com,
+        brcm80211-dev-list@cypress.com,
+        Fuqian Huang <huangfq.daxian@gmail.com>
+Illegal-Object: Syntax error in Cc: address found on vger.kernel.org:
+        Cc:     unlisted-recipients:; (no To-header on input)"David S . Miller" <davem@davemloft.net>
+                                                                     ^-missing end of address
+User-Agent: pwcli/0.0.0-git (https://github.com/kvalo/pwcli/) Python/2.7.12
+Message-Id: <20191015052123.0040460A08@smtp.codeaurora.org>
+Date:   Tue, 15 Oct 2019 05:21:22 +0000 (UTC)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-> From: g.schlmm 
-> 
-> On 14.06.19 10:24, Tony Chuang wrote:
-> >> Subject: Re: rtw88: M.2 RTL8822BE not working - rfe 3 isn't supported
-> >>
-> >> Cc Tony
-> >>
-> >> On Sat, Jun 08, 2019 at 02:26:51PM +0200, g.schlmm wrote:
-> >>> my RTL8822BE M.2 card is not working with linux 5.2rc3
-> >>>
-> >>> the staging r8822be driver in linux 5.1 was working for this card
-> >>>
-> >>> from dmesg:
-> >>>> [    8.001186] rtw_pci 0000:04:00.0: rfe 3 isn't supported
-> >>>> [    8.003870] rtw_pci 0000:04:00.0: failed to setup chip efuse info
-> >>>> [    8.006405] rtw_pci 0000:04:00.0: failed to setup chip information
-> >>>
-> >>> lspci:
-> >>>> 04:00.0 Unassigned class [ff00]: Realtek Semiconductor Co., Ltd.
-> >> RTL8822BE 802.11a/b/g/n/ac WiFi adapter
-> >>>>         Subsystem: Lenovo RTL8822BE 802.11a/b/g/n/ac WiFi
-> adapter
-> >>>>         Flags: fast devsel, IRQ 19
-> >>>>         I/O ports at c000 [size=256]
-> >>>>         Memory at 81200000 (64-bit, non-prefetchable) [size=64K]
-> >>>>         Capabilities: [40] Power Management version 3
-> >>>>         Capabilities: [50] MSI: Enable- Count=1/1 Maskable- 64bit+
-> >>>>         Capabilities: [70] Express Endpoint, MSI 00
-> >>>>         Capabilities: [100] Advanced Error Reporting
-> >>>>         Capabilities: [148] Device Serial Number
-> >> 00-e0-4c-ff-fe-b8-22-01
-> >>>>         Capabilities: [158] Latency Tolerance Reporting
-> >>>>         Capabilities: [160] L1 PM Substates
-> >>>>         Kernel modules: rtwpci
-> >>
-> >
-> > Hi,
-> >
-> > Please use the attached patch. And RFE type 3 has not been well tested,
-> > I am not sure if the quality is expected. But it should work fine I guess.
-> > If there is any further problems, just tell me, thanks.
-> >
-> > Yan-Hsuan
-> >
-> 
-> Hi,
-> 
-> the above patch doesnt apply anymore on newer kernel sources.
-> can we except to see rfe type 3 support in the mainline kernel?
-> what can i do to help testing, if testing is still needed?
-> 
+Fuqian Huang <huangfq.daxian@gmail.com> wrote:
 
-That's fine, I'll fix the conflicts and send them to mainline.
-Also I will try to fix the array usage of the tables, use struct instead.
-That was requested by Brian before.
+> In commit 518a2f1925c3
+> ("dma-mapping: zero memory returned from dma_alloc_*"),
+> dma_alloc_coherent has already zeroed the memory.
+> So memset is not needed.
+> 
+> Signed-off-by: Fuqian Huang <huangfq.daxian@gmail.com>
 
-Yan-Hsuan
+Patch applied to wireless-drivers-next.git, thanks.
+
+52d4261862ec wireless: Remove call to memset after dma_alloc_coherent
+
+-- 
+https://patchwork.kernel.org/patch/11043359/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+
