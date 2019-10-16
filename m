@@ -2,93 +2,108 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 5D387D984C
-	for <lists+linux-wireless@lfdr.de>; Wed, 16 Oct 2019 19:10:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6780AD9C12
+	for <lists+linux-wireless@lfdr.de>; Wed, 16 Oct 2019 22:57:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2406465AbfJPRKZ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 16 Oct 2019 13:10:25 -0400
-Received: from mail-qk1-f195.google.com ([209.85.222.195]:36960 "EHLO
-        mail-qk1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2404848AbfJPRKZ (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 16 Oct 2019 13:10:25 -0400
-Received: by mail-qk1-f195.google.com with SMTP id u184so23482081qkd.4
-        for <linux-wireless@vger.kernel.org>; Wed, 16 Oct 2019 10:10:24 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=kUmvgidWrzJAmUn4k8febeD4hOBuYQj6kP5p8qO7WGU=;
-        b=KaKsq60gFuuHsthWEDS3OKBKEaz/05xowGVDZxnUkeOEWk1Ehdt7elud6dbUWx99xs
-         whIVT6U9lImPXHHr+G1B0ohmDPxj5udXVZAp1NgpkSqShsLl/eijUHu1qpYq2VQiJ3Yc
-         KHkF1flfs6dwBPKUDNCV5VqO4HxyPZo/Y2Idk=
+        id S1732172AbfJPU50 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 16 Oct 2019 16:57:26 -0400
+Received: from mx1.redhat.com ([209.132.183.28]:44956 "EHLO mx1.redhat.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1729353AbfJPU5Z (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Wed, 16 Oct 2019 16:57:25 -0400
+Received: from mail-qk1-f199.google.com (mail-qk1-f199.google.com [209.85.222.199])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mx1.redhat.com (Postfix) with ESMTPS id 83D797FDC9
+        for <linux-wireless@vger.kernel.org>; Wed, 16 Oct 2019 20:57:25 +0000 (UTC)
+Received: by mail-qk1-f199.google.com with SMTP id z128so24998973qke.8
+        for <linux-wireless@vger.kernel.org>; Wed, 16 Oct 2019 13:57:25 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=kUmvgidWrzJAmUn4k8febeD4hOBuYQj6kP5p8qO7WGU=;
-        b=aTf3gTUJBLyj/5DBa+rQsT8YtlK/J1oIRtFwN5F2zZs4reOzwda4mfuDiTl5nPZlcf
-         GF46RxD1v+SvnjM7OJzq0Nmbg8HOmXvYs+C/rMvx+EaD4s/2XgggHNBhOsVdFElem3r7
-         wGS2S2gnedr2ddLK8tV8pVe0gfwCUmDaTRo+wx40u1iGNHwzOBKyqNL6IY0BrhfrViaz
-         z6O0b51uTUyTP058/cPPr6/QZP/Pb17ZqsfMLXUsbUJuUhvUVoh2Cj7ALPdtdF7/hdzz
-         +VR4su2uDQOoLkvmVOlkaf3T/KAkaGvPOFTb+KTvb5LPX+lSHc5lgO661woboOuGQUiR
-         IEng==
-X-Gm-Message-State: APjAAAVgoJCu0X/r61fSGm2fAvZB4iA1jC5lxUVqYdp5hJyE/ii/W5uv
-        getn/aTKAgkSlCHwQJm+wlKMiD5BsxI=
-X-Google-Smtp-Source: APXvYqwo2lrN5GpPzrc/jZvv902xE4W2L4ahpz8Mz65FRkntLa3AfJAPl/DJCflX9wff4rWj35YCzw==
-X-Received: by 2002:a37:ba46:: with SMTP id k67mr11261397qkf.175.1571245823356;
-        Wed, 16 Oct 2019 10:10:23 -0700 (PDT)
-Received: from mail-qk1-f176.google.com (mail-qk1-f176.google.com. [209.85.222.176])
-        by smtp.gmail.com with ESMTPSA id w11sm15483918qtj.10.2019.10.16.10.10.22
-        for <linux-wireless@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 16 Oct 2019 10:10:22 -0700 (PDT)
-Received: by mail-qk1-f176.google.com with SMTP id w2so23484985qkf.2
-        for <linux-wireless@vger.kernel.org>; Wed, 16 Oct 2019 10:10:22 -0700 (PDT)
-X-Received: by 2002:a37:9c0f:: with SMTP id f15mr1238861qke.62.1571245821637;
- Wed, 16 Oct 2019 10:10:21 -0700 (PDT)
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=DBQ7gpZ68XC9yJUIRmvhGT9ykcxZ7LBo1PQ5kgI2O8M=;
+        b=j3lSdJPfwLpm5NnQ/Kqvd9huegQhD3njpbhnJNzSkWvt9tWfeGG7SWF7N6Qfy6UT2l
+         +0ZZ2Q6o0kSBmZyCPW2FsiL2myqzt2oJlHaBMosA7laJYtUt+CDjmYErHahxRLHpVXbC
+         w1gAArUilceo/g4soJU763G3icZakoaqfElT2TLfOsTeAApfa0DbT7yypp/QZJfBNgC8
+         dAUqu5tcS+qUS7Xwa2U3fG9Jkid2YeJpuWKSqSEXxwfVrZmqaTU2nHTiqUxF8f3o2in3
+         1Y2WRenhBwFCL5ySmDZsmsENESBGl0g0rw605cNwgb/5LJJJS7Q9jnP28uxT5+Mp/wT/
+         yAtA==
+X-Gm-Message-State: APjAAAXmy4/e0bWiZlxn80D9usjzHZGiKxu2h/bTZoJs2A5kd6qfY6z3
+        OBbCcuon3D+SgDIUcMqwMB/aqrVv8z5PeYIZOHxXiXpz/8DB4laKfizNgJtqkv0ji4rnRS04+eB
+        oS5cTYQbkSOHqlxxIW7r2ykXar2s=
+X-Received: by 2002:a0c:eda9:: with SMTP id h9mr30854qvr.125.1571259444744;
+        Wed, 16 Oct 2019 13:57:24 -0700 (PDT)
+X-Google-Smtp-Source: APXvYqxtZQ1p9uv2sCQ5sckBZmJmAmvdBRNeFuMdkuR0mLRWv2XsHKm8h8LAyLgrLZlCxrCo9UBhpQ==
+X-Received: by 2002:a0c:eda9:: with SMTP id h9mr30831qvr.125.1571259444351;
+        Wed, 16 Oct 2019 13:57:24 -0700 (PDT)
+Received: from labbott-redhat.redhat.com (pool-96-235-39-235.pitbpa.fios.verizon.net. [96.235.39.235])
+        by smtp.gmail.com with ESMTPSA id 16sm26966qkj.59.2019.10.16.13.57.23
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 16 Oct 2019 13:57:23 -0700 (PDT)
+From:   Laura Abbott <labbott@redhat.com>
+To:     Ping-Ke Shih <pkshih@realtek.com>,
+        Kalle Valo <kvalo@codeaurora.org>
+Cc:     Laura Abbott <labbott@redhat.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Nicolas Waisman <nico@semmle.com>
+Subject: [PATCH] rtlwifi: Fix potential overflow on P2P code
+Date:   Wed, 16 Oct 2019 16:57:16 -0400
+Message-Id: <20191016205716.2843-1-labbott@redhat.com>
+X-Mailer: git-send-email 2.21.0
 MIME-Version: 1.0
-References: <20191016123301.2649-1-yhchuang@realtek.com> <20191016123301.2649-2-yhchuang@realtek.com>
-In-Reply-To: <20191016123301.2649-2-yhchuang@realtek.com>
-From:   Brian Norris <briannorris@chromium.org>
-Date:   Wed, 16 Oct 2019 10:10:10 -0700
-X-Gmail-Original-Message-ID: <CA+ASDXNmMiW_FaqCKowzZW6fnBhA+JXcGBJOEToBA47EShu35A@mail.gmail.com>
-Message-ID: <CA+ASDXNmMiW_FaqCKowzZW6fnBhA+JXcGBJOEToBA47EShu35A@mail.gmail.com>
-Subject: Re: [PATCH v2 1/6] rtw88: use macro to check the current band
-To:     Tony Chuang <yhchuang@realtek.com>
-Cc:     Kalle Valo <kvalo@codeaurora.org>,
-        linux-wireless <linux-wireless@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Wed, Oct 16, 2019 at 5:33 AM <yhchuang@realtek.com> wrote:
-> index 4759d6a0ca6e..492a2bfc0d5a 100644
-> --- a/drivers/net/wireless/realtek/rtw88/main.h
-> +++ b/drivers/net/wireless/realtek/rtw88/main.h
-> @@ -58,6 +58,19 @@ struct rtw_hci {
->         u8 bulkout_num;
->  };
->
-> +#define IS_CH_5G_BAND_1(channel) ((channel) >= 36 && (channel <= 48))
-> +#define IS_CH_5G_BAND_2(channel) ((channel) >= 52 && (channel <= 64))
-> +#define IS_CH_5G_BAND_3(channel) ((channel) >= 100 && (channel <= 144))
-> +#define IS_CH_5G_BAND_4(channel) ((channel) >= 149 && (channel <= 177))
+Nicolas Waisman noticed that even though noa_len is checked for
+a compatible length it's still possible to overrun the buffers
+of p2pinfo since there's no check on the upper bound of noa_num.
+Bounds check noa_num against P2P_MAX_NOA_NUM.
 
-There are channels between 48 and 52, 64 and 100, and 144 and 149.
-What are you doing with those?
+Reported-by: Nicolas Waisman <nico@semmle.com>
+Signed-off-by: Laura Abbott <labbott@redhat.com>
+---
+Compile tested only as this was reported to the security list.
+---
+ drivers/net/wireless/realtek/rtlwifi/ps.c | 14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
 
-> +#define IS_CH_5G_BAND_MID(channel) \
-> +       (IS_CH_5G_BAND_2(channel) || IS_CH_5G_BAND_3(channel))
-> +
-> +#define IS_CH_2G_BAND(channel) ((channel) <= 14)
-> +#define IS_CH_5G_BAND(channel) \
-> +       (IS_CH_5G_BAND_1(channel) || IS_CH_5G_BAND_2(channel) || \
-> +        IS_CH_5G_BAND_3(channel) || IS_CH_5G_BAND_4(channel))
+diff --git a/drivers/net/wireless/realtek/rtlwifi/ps.c b/drivers/net/wireless/realtek/rtlwifi/ps.c
+index 70f04c2f5b17..c5cff598383d 100644
+--- a/drivers/net/wireless/realtek/rtlwifi/ps.c
++++ b/drivers/net/wireless/realtek/rtlwifi/ps.c
+@@ -754,6 +754,13 @@ static void rtl_p2p_noa_ie(struct ieee80211_hw *hw, void *data,
+ 				return;
+ 			} else {
+ 				noa_num = (noa_len - 2) / 13;
++				if (noa_num > P2P_MAX_NOA_NUM) {
++					RT_TRACE(rtlpriv, COMP_INIT, DBG_LOUD,
++						 "P2P notice of absence: invalid noa_num.%d\n",
++						 noa_num);
++					return;
++				}
++
+ 			}
+ 			noa_index = ie[3];
+ 			if (rtlpriv->psc.p2p_ps_info.p2p_ps_mode ==
+@@ -848,6 +855,13 @@ static void rtl_p2p_action_ie(struct ieee80211_hw *hw, void *data,
+ 				return;
+ 			} else {
+ 				noa_num = (noa_len - 2) / 13;
++				if (noa_num > P2P_MAX_NOA_NUM) {
++					RT_TRACE(rtlpriv, COMP_FW, DBG_LOUD,
++						 "P2P notice of absence: invalid noa_len.%d\n",
++						 noa_len);
++					return;
++
++				}
+ 			}
+ 			noa_index = ie[3];
+ 			if (rtlpriv->psc.p2p_ps_info.p2p_ps_mode ==
+-- 
+2.21.0
 
-Given the above (you have major holes in 5G_BAND{1,2,3,4}), this macro
-seems like a regression.
-
-Brian
