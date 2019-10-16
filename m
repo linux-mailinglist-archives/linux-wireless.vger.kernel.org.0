@@ -2,83 +2,98 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 5F508D89CE
-	for <lists+linux-wireless@lfdr.de>; Wed, 16 Oct 2019 09:35:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8EBEED90FB
+	for <lists+linux-wireless@lfdr.de>; Wed, 16 Oct 2019 14:33:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2389079AbfJPHfw (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 16 Oct 2019 03:35:52 -0400
-Received: from smtp.codeaurora.org ([198.145.29.96]:35834 "EHLO
-        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726545AbfJPHfw (ORCPT
+        id S2390082AbfJPMdJ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 16 Oct 2019 08:33:09 -0400
+Received: from rtits2.realtek.com ([211.75.126.72]:48704 "EHLO
+        rtits2.realtek.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728987AbfJPMdJ (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 16 Oct 2019 03:35:52 -0400
-Received: by smtp.codeaurora.org (Postfix, from userid 1000)
-        id 6B65960D74; Wed, 16 Oct 2019 07:35:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1571211351;
-        bh=TCkkE7HZcgQa8TEgwxI66v9F0vZK3Am/I5+x9gKIvHs=;
-        h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-        b=nUtWlb5M0U3xjpGLsHWfv42zKp8StYj1JxMpGlftLp02epobIpzFwOCQOABhAMZVB
-         GY75oyw0CNFOzxcYCn8n2OgvVy0elzAGF/6HS77tN+UKkVfmI3KyzbTHm1WTqQdSaz
-         2A5pQ2mLw1ruaLuwaPjP6raalgNCjDTjP+ZTNjx4=
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        pdx-caf-mail.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-0.8 required=2.0 tests=ALL_TRUSTED,BAYES_00,
-        DKIM_INVALID,DKIM_SIGNED,MISSING_DATE,MISSING_MID,SPF_NONE autolearn=no
-        autolearn_force=no version=3.4.0
-Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        (Authenticated sender: kvalo@smtp.codeaurora.org)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 7824F60D74;
-        Wed, 16 Oct 2019 07:35:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1571211349;
-        bh=TCkkE7HZcgQa8TEgwxI66v9F0vZK3Am/I5+x9gKIvHs=;
-        h=Subject:From:In-Reply-To:References:To:Cc:From;
-        b=itnAR6V66YUUp1uh6UUc96DBWcjMtIc9YprFICCauySxy2QA43qoHZhPkV0CLDWql
-         jsOJY/oNOIrmJQaXSr3IiBuGZYtOCndkBrL5ZS6HSNjJ2IdM6+6IssrHAlf2dZ5UXx
-         DQk8LdxSQ7NzPD3zPUvuv9gUNkRvBqzOyO0Kla6Y=
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 7824F60D74
-Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
-Content-Type: text/plain; charset="utf-8"
+        Wed, 16 Oct 2019 08:33:09 -0400
+Authenticated-By: 
+X-SpamFilter-By: BOX Solutions SpamTrap 5.62 with qID x9GCX33H000428, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (RTITCASV01.realtek.com.tw[172.21.6.18])
+        by rtits2.realtek.com.tw (8.15.2/2.57/5.78) with ESMTPS id x9GCX33H000428
+        (version=TLSv1 cipher=DHE-RSA-AES256-SHA bits=256 verify=NOT);
+        Wed, 16 Oct 2019 20:33:03 +0800
+Received: from localhost.localdomain (172.21.68.126) by
+ RTITCASV01.realtek.com.tw (172.21.6.18) with Microsoft SMTP Server id
+ 14.3.468.0; Wed, 16 Oct 2019 20:33:03 +0800
+From:   <yhchuang@realtek.com>
+To:     <kvalo@codeaurora.org>
+CC:     <linux-wireless@vger.kernel.org>, <briannorris@chromium.org>
+Subject: [PATCH v2 0/6] rtw88: minor throughput improvement
+Date:   Wed, 16 Oct 2019 20:32:55 +0800
+Message-ID: <20191016123301.2649-1-yhchuang@realtek.com>
+X-Mailer: git-send-email 2.17.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH] rtw88: mark rtw_fw_hdr __packed
-From:   Kalle Valo <kvalo@codeaurora.org>
-In-Reply-To: <20191014212648.122549-1-briannorris@chromium.org>
-References: <20191014212648.122549-1-briannorris@chromium.org>
-To:     Brian Norris <briannorris@chromium.org>
-Cc:     <linux-wireless@vger.kernel.org>,
-        Yan-Hsuan Chuang <yhchuang@realtek.com>,
-        Brian Norris <briannorris@chromium.org>,
-        Ping-Ke Shih <pkshih@realtek.com>
-User-Agent: pwcli/0.0.0-git (https://github.com/kvalo/pwcli/) Python/2.7.12
-Message-Id: <20191016073551.6B65960D74@smtp.codeaurora.org>
-Date:   Wed, 16 Oct 2019 07:35:51 +0000 (UTC)
+Content-Type: text/plain
+X-Originating-IP: [172.21.68.126]
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Brian Norris <briannorris@chromium.org> wrote:
+From: Yan-Hsuan Chuang <yhchuang@realtek.com>
 
-> The use of u8 and __le16 in this struct assumes that it's going to be
-> packed to byte alignment. C doesn't guarantee that, so we should mark
-> this __packed.
-> 
-> Fixes: cc20a7139836 ("rtw88: use struct rtw_fw_hdr to access firmware header")
-> Cc: Ping-Ke Shih <pkshih@realtek.com>
-> Signed-off-by: Brian Norris <briannorris@chromium.org>
+This patchset mainly adds support for beamforming and power
+tracking. Power tracking can monitor the thermal value of
+the device and adjust corresponding power indexes, to make
+sure the RF output power is expected.
 
-Patch applied to wireless-drivers-next.git, thanks.
+And another thing is to add a debugfs for physical layer
+information. This is useful when sometimes the environment
+is too harsh for the device, and provides the activities
+for us to debug.
 
-89dca86d29b4 rtw88: mark rtw_fw_hdr __packed
+
+v1 -> v2
+  * Do not use cast on "const" pointers
+  * Add macros for checking current band, also used in power tracking
+  * Some refinement for power tracking
+  * Remove regulatory's module parameter for user's hint, and enable
+    it by choosing the Kconfig
+  * Add some description for beamforming module parameter
+
+
+Tsang-Shian Lin (1):
+  rtw88: add phy_info debugfs to show Tx/Rx physical status
+
+Tzu-En Huang (4):
+  rtw88: add power tracking support
+  rtw88: Enable 802.11ac beamformee support
+  rtw88: update regulatory settings implementaion
+  rtw88: add set_bitrate_mask support
+
+Yan-Hsuan Chuang (1):
+  rtw88: use macro to check the current band
+
+ drivers/net/wireless/realtek/rtw88/Kconfig    |  10 +
+ drivers/net/wireless/realtek/rtw88/Makefile   |   1 +
+ drivers/net/wireless/realtek/rtw88/bf.c       | 409 ++++++++++++++++
+ drivers/net/wireless/realtek/rtw88/bf.h       |  92 ++++
+ drivers/net/wireless/realtek/rtw88/debug.c    | 174 ++++++-
+ drivers/net/wireless/realtek/rtw88/debug.h    |   1 +
+ drivers/net/wireless/realtek/rtw88/fw.c       |   1 +
+ drivers/net/wireless/realtek/rtw88/mac.c      |   2 +-
+ drivers/net/wireless/realtek/rtw88/mac80211.c |  64 +++
+ drivers/net/wireless/realtek/rtw88/main.c     | 154 +++++-
+ drivers/net/wireless/realtek/rtw88/main.h     | 168 ++++++-
+ drivers/net/wireless/realtek/rtw88/phy.c      | 137 +++++-
+ drivers/net/wireless/realtek/rtw88/phy.h      |  12 +
+ drivers/net/wireless/realtek/rtw88/reg.h      |   1 +
+ drivers/net/wireless/realtek/rtw88/regd.c     |  61 ++-
+ drivers/net/wireless/realtek/rtw88/rtw8822b.c | 461 +++++++++++++++++-
+ drivers/net/wireless/realtek/rtw88/rtw8822b.h |  12 +
+ drivers/net/wireless/realtek/rtw88/rtw8822c.c | 351 ++++++++++++-
+ drivers/net/wireless/realtek/rtw88/rtw8822c.h |  12 +
+ drivers/net/wireless/realtek/rtw88/rx.c       |  69 ++-
+ 20 files changed, 2097 insertions(+), 95 deletions(-)
+ create mode 100644 drivers/net/wireless/realtek/rtw88/bf.c
+ create mode 100644 drivers/net/wireless/realtek/rtw88/bf.h
 
 -- 
-https://patchwork.kernel.org/patch/11189429/
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+2.17.1
 
