@@ -2,175 +2,92 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 0ED63DAA1B
-	for <lists+linux-wireless@lfdr.de>; Thu, 17 Oct 2019 12:32:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2D515DAEDB
+	for <lists+linux-wireless@lfdr.de>; Thu, 17 Oct 2019 15:57:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2502016AbfJQKcc (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 17 Oct 2019 06:32:32 -0400
-Received: from mail-qk1-f195.google.com ([209.85.222.195]:33814 "EHLO
-        mail-qk1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2501977AbfJQKcc (ORCPT
+        id S2437311AbfJQN54 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 17 Oct 2019 09:57:56 -0400
+Received: from mail-lf1-f68.google.com ([209.85.167.68]:35850 "EHLO
+        mail-lf1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726470AbfJQN5z (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 17 Oct 2019 06:32:32 -0400
-Received: by mail-qk1-f195.google.com with SMTP id f18so756288qkm.1
-        for <linux-wireless@vger.kernel.org>; Thu, 17 Oct 2019 03:32:31 -0700 (PDT)
+        Thu, 17 Oct 2019 09:57:55 -0400
+Received: by mail-lf1-f68.google.com with SMTP id u16so1987883lfq.3
+        for <linux-wireless@vger.kernel.org>; Thu, 17 Oct 2019 06:57:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=endlessm-com.20150623.gappssmtp.com; s=20150623;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=+vRwCO9XAqd/fessmQbp6e+hqmtBFcDTjY06QiOHWJ4=;
-        b=odw5PTN/l1EAtM+JtnMJAeeJPhKsi62vTdsmDoQSUkG4hCesP1w/kg4EmPyZIJzwfu
-         C6IAYUoIj4FeVLFSHnvV2RcCAJUOncaW+X09Ma3hBJpZT4O1f9tckMkNdGwxhkwi1Onb
-         gQH9eQzuB3nqXw8/OHTiKZ3nV4IcN4xXUWjuTFLVZrdEVyX+HiMpjaNCSrV15szr4XO5
-         fZaJslla1hnt26HDPZMqj3JiNOiV+lCzCtCEhdvyQZw36JHM0D6WMc7SEvilXBeGEUXB
-         iRGP6qDhGl/8BWZYWXLCGcT7wsN6zClp40PrgusS+Q1CwgJhPBocMMrNJElG+i5jqSnW
-         qILQ==
+        d=linaro.org; s=google;
+        h=from:to:cc:subject:date:message-id;
+        bh=MPvIgeYyS5sEH2/sdzpYI6YJY72ljFxd5CJtu+IHloQ=;
+        b=YMFYY9SOWuw2gCta52O4XJLM08tWAp/9Z2kzoqZLJ/YQ4cX4Spn3oy410avVSqTrMw
+         YK4NEVG/uPHsWOYvvrIrZsGN8ISXf+SYEgDbnsuqF/OKiXcI9qHA//el6AZ5DQ7LZCPN
+         6DHX9qWhxCEQ6AoBBEMZ4UpjJythPE92PTmADKDtOXqquPiaK6gZzB04gh85tAQvMkmv
+         0Eqj7k/oRwQbZA+ViQQPtLonzcIJnULli0n+vAesSX9gPVzipWVx3MaQvnmkesxm9lbP
+         L5KssgY0CPwSdejFzqUvC4yyQro28W3uvW45/UZoVG/cku3ZXxv33Zci8NlZMvT+qBMO
+         h4mQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=+vRwCO9XAqd/fessmQbp6e+hqmtBFcDTjY06QiOHWJ4=;
-        b=Jkf8LSfICDv/uA9I4Ac7Tm4lK4S0nCbDQMkc7c697HftSH6u//8Pyechp55UMgZ314
-         cCnDzsBotmMAjh1h4jWbIKq4/ddelb79Lk1IUHtXZWRmFCd86ydRrtDMaEEjcfsieGbU
-         /hBiZ3DCQHePliqYUa3EbvW1AWZLdFLkttiTfLhnV3T/qZbhThm6hWXham8zvQ1lhpxJ
-         OKapzy1nD6WQE7KmTPeS5aRE+UdxjzNBPRyXfQZ1FTgw53QvIdQdETnTLUhIthNFK+rA
-         rShHXiqFSNqv5bdh4eBKGDedAzoRz30fdzmBQBUrA4F1oqqa4SIpap+5FmOjxo/a+ncq
-         BVyQ==
-X-Gm-Message-State: APjAAAW2XSePk2SQViNU3KDnoG8BXRwHk4PUuRJZrucpdn90oICsGnMx
-        inlJM/AZhPl5Dol3hSh7N7mvvMmt5SfbxqWTGi3LFg==
-X-Google-Smtp-Source: APXvYqwCxS+LYgY6V0nxJtNareUXq9W7pe5jsypfUtDFHN164JYZdw0DufYkijnIexMiTOoGw6bnp6ZUP083g0wxhSI=
-X-Received: by 2002:a37:644f:: with SMTP id y76mr2583183qkb.369.1571308351035;
- Thu, 17 Oct 2019 03:32:31 -0700 (PDT)
-MIME-Version: 1.0
-References: <20191016123301.2649-1-yhchuang@realtek.com> <20191016123301.2649-3-yhchuang@realtek.com>
-In-Reply-To: <20191016123301.2649-3-yhchuang@realtek.com>
-From:   Chris Chiu <chiu@endlessm.com>
-Date:   Thu, 17 Oct 2019 18:32:20 +0800
-Message-ID: <CAB4CAwfFUibbZT9G8Y9Afx4fbGaXpnTVqM9-Z+vgjMVKSPUDQA@mail.gmail.com>
-Subject: Re: [PATCH v2 2/6] rtw88: add power tracking support
-To:     Tony Chuang <yhchuang@realtek.com>
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=MPvIgeYyS5sEH2/sdzpYI6YJY72ljFxd5CJtu+IHloQ=;
+        b=Z6v6TOMOJBmbtTLh/Bh7VWvvcT7BampDGxSlYpBCV0IYQct3bnuzFY8eMYPaH7xPFf
+         Ue45vkIO1n2chcvJEWO04AuxydYjgcIBQpp4NmRrx6s3KSu7fpKDcE7ReHY63QUytNDh
+         6eXtyPdYoKgVZ05tv/rnGYLZubmjC8rsGEwzIMBHGBKvnYh18H6n8j1Fd4wh8JnZ3LCV
+         3AGdhGR7lpK4v/7L7gRHhwDa9f9yBdcV1vHa6QVnKMe3+tAlRem41Bop2PXwvX/QpJKp
+         xOUFnKwa9noD5PlmQ+b35/a52cUXKhLvqlMy/JylxP8UkFxLiOMTRuvppZsFJnstredr
+         U2xA==
+X-Gm-Message-State: APjAAAUTS2R+OEWtsWor2E750Qdy+CctXXjyu386jL3OvYdL1depXUeo
+        sF5NMAE8Q14RPadWA0uO7AEQ4w==
+X-Google-Smtp-Source: APXvYqzgFfNbRiS1dqPAYHp+u5VFayansAF4dMt2TlvUi3kylGKp6MkSIK6/8d+dmnSpQfZGH71o1w==
+X-Received: by 2002:a19:8c05:: with SMTP id o5mr2459368lfd.53.1571320673697;
+        Thu, 17 Oct 2019 06:57:53 -0700 (PDT)
+Received: from localhost.localdomain (h-158-174-22-210.NA.cust.bahnhof.se. [158.174.22.210])
+        by smtp.gmail.com with ESMTPSA id x17sm975088lji.62.2019.10.17.06.57.52
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 17 Oct 2019 06:57:52 -0700 (PDT)
+From:   Ulf Hansson <ulf.hansson@linaro.org>
+To:     linux-mmc@vger.kernel.org, Ulf Hansson <ulf.hansson@linaro.org>,
+        Adrian Hunter <adrian.hunter@intel.com>,
+        Douglas Anderson <dianders@chromium.org>,
+        Matthias Kaehlcke <mka@chromium.org>
 Cc:     Kalle Valo <kvalo@codeaurora.org>,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        Brian Norris <briannorris@chromium.org>
-Content-Type: text/plain; charset="UTF-8"
+        Tony Lindgren <tony@atomide.com>,
+        Wen Gong <wgong@codeaurora.org>,
+        Erik Stromdahl <erik.stromdahl@gmail.com>,
+        Eyal Reizer <eyalreizer@gmail.com>,
+        linux-wireless@vger.kernel.org
+Subject: [PATCH 0/2] mmc: core: Fixup HW reset for SDIO cards
+Date:   Thu, 17 Oct 2019 15:57:37 +0200
+Message-Id: <20191017135739.1315-1-ulf.hansson@linaro.org>
+X-Mailer: git-send-email 2.17.1
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Wed, Oct 16, 2019 at 8:33 PM <yhchuang@realtek.com> wrote:
->
-> From: Tzu-En Huang <tehuang@realtek.com>
->
-> The temperature of the chip can affect the output power
-> of the RF components. Hence driver requires to compensate
-> the power by adjusting the power index recorded in the
-> power swing table.
->
-> And if the difference of current thermal value to the
-> default thermal value exceeds a threshold, the RF IQK
-> should be triggered to re-calibrate the characteristics
-> of the RF components, to keep the output IQ vectors of
-> the RF components orthogonal enough.
->
-> Signed-off-by: Tzu-En Huang <tehuang@realtek.com>
-> Signed-off-by: Yan-Hsuan Chuang <yhchuang@realtek.com>
-> ---
->
-> v1 -> v2
->   * Use macros to check current band
->   * Some coding style refinement
->   * Not casting "const" pointers
->
+It has turned out that it's not a good idea to try to power cycle and to
+re-initialize the SDIO card, as currently done through mmc_hw_reset(). This
+because there may be multiple SDIO funcs attached to the same SDIO card and
+some of the others that didn't execute the call to mmc_hw_reset(), may then
+simply experience an undefined behaviour.
 
-> @@ -1220,7 +1265,9 @@ struct rtw_efuse {
->         u8 country_code[2];
->         u8 rf_board_option;
->         u8 rfe_option;
-> -       u8 thermal_meter;
-> +       u8 power_track_type;
-> +       u8 thermal_meter[2];
+The following two patches in this series attempts to address this problem, by
+reworking the mmc_hw_reset() behaviour for SDIO.
 
-The '2' is related to RTW_RF_PATH_MAX or something else? Please have a
-descriptive macro for this.
+Note that, the code has only compile tested, so any test on HW is greatly
+appreciated.
 
-> +       u8 thermal_meter_k;
->         u8 crystal_cap;
->         u8 ant_div_cfg;
->         u8 ant_div_type;
-> +
-> +bool rtw_phy_pwrtrack_thermal_changed(struct rtw_dev *rtwdev, u8 thermal,
-> +                                     u8 path)
-> +{
-> +       struct rtw_dm_info *dm_info = &rtwdev->dm_info;
-> +       u8 avg = ewma_thermal_read(&dm_info->avg_thermal[path]);
-> +
-> +       if (avg == thermal)
-> +               return false;
-> +
-> +       return true;
-> +}
-
-Why not simplify this as pure if-else? It's a bit confusing.
-
-> +bool rtw_phy_pwrtrack_need_iqk(struct rtw_dev *rtwdev)
-> +{
-> +       struct rtw_dm_info *dm_info = &rtwdev->dm_info;
-> +       u8 delta_iqk;
-> +
-> +       delta_iqk = abs(dm_info->thermal_avg[0] - dm_info->thermal_meter_k);
-> +       if (delta_iqk >= rtwdev->chip->iqk_threshold) {
-> +               dm_info->thermal_meter_k = dm_info->thermal_avg[0];
-> +               return true;
-> +       }
-> +       return false;
-> +}
-
-Is 'thermal_avg[0]' for RF_PATH_A? Or it means something else?
-And it's also good to simplify it as a simple if-else.
+Kind regards
+Uffe
 
 
-> diff --git a/drivers/net/wireless/realtek/rtw88/rtw8822b.c b/drivers/net/wireless/realtek/rtw88/rtw8822b.c
-> index baf5091fa253..8a018aefbe16 100644
-> --- a/drivers/net/wireless/realtek/rtw88/rtw8822b.c
-> +++ b/drivers/net/wireless/realtek/rtw88/rtw8822b.c
-> @@ -43,6 +43,8 @@ static int rtw8822b_read_efuse(struct rtw_dev *rtwdev, u8 *log_map)
->         efuse->country_code[1] = map->country_code[1];
->         efuse->bt_setting = map->rf_bt_setting;
->         efuse->regd = map->rf_board_option & 0x7;
-> +       efuse->thermal_meter[0] = map->thermal_meter;
-> +       efuse->thermal_meter_k = map->thermal_meter;
->
->         for (i = 0; i < 4; i++)
->                 efuse->txpwr_idx_table[i] = map->txpwr_idx_table[i];
-> @@ -75,6 +77,49 @@ static void rtw8822b_phy_rfe_init(struct rtw_dev *rtwdev)
->         rtw_write32_mask(rtwdev, 0x974, (BIT(11) | BIT(10)), 0x3);
->  }
->
+Ulf Hansson (2):
+  mmc: core: Drop check for mmc_card_is_removable() in mmc_rescan()
+  mmc: core: Re-work HW reset for SDIO cards
 
-Is 'thermal_meter[0]' for RF_PATH_A, 1 for PATH_B?
-Dose the '4' refer to RTW_RF_PATH_MAX or totally irrelevant? Same
-question for the rtw8822c.c
+ drivers/mmc/core/core.c | 10 +++-------
+ drivers/mmc/core/core.h |  2 ++
+ drivers/mmc/core/sdio.c | 11 +++++++++--
+ 3 files changed, 14 insertions(+), 9 deletions(-)
 
+-- 
+2.17.1
 
-- a/drivers/net/wireless/realtek/rtw88/rtw8822c.c
-+++ b/drivers/net/wireless/realtek/rtw88/rtw8822c.c
-@@ -40,6 +40,11 @@ static int rtw8822c_read_efuse(struct rtw_dev
-*rtwdev, u8 *log_map)
-        efuse->country_code[1] = map->country_code[1];
-        efuse->bt_setting = map->rf_bt_setting;
-        efuse->regd = map->rf_board_option & 0x7;
-+       efuse->thermal_meter[0] = map->path_a_thermal;
-+       efuse->thermal_meter[1] = map->path_b_thermal;
-+       efuse->thermal_meter_k =
-+                       (map->path_a_thermal + map->path_b_thermal) >> 1;
-+       efuse->power_track_type = (map->tx_pwr_calibrate_rate >> 4) & 0xf;
-
-        for (i = 0; i < 4; i++)
-                efuse->txpwr_idx_table[i] = map->txpwr_idx_table[i];
-
-Same as above.
-
-> +
-> 2.17.1
->
