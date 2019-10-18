@@ -2,130 +2,67 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 4F20BDBF22
-	for <lists+linux-wireless@lfdr.de>; Fri, 18 Oct 2019 09:58:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B3066DBFBA
+	for <lists+linux-wireless@lfdr.de>; Fri, 18 Oct 2019 10:19:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2391584AbfJRH6i (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 18 Oct 2019 03:58:38 -0400
-Received: from smtp.codeaurora.org ([198.145.29.96]:35006 "EHLO
-        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728064AbfJRH6h (ORCPT
+        id S2404297AbfJRITn (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 18 Oct 2019 04:19:43 -0400
+Received: from paleale.coelho.fi ([176.9.41.70]:50130 "EHLO
+        farmhouse.coelho.fi" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
+        with ESMTP id S2403773AbfJRITn (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 18 Oct 2019 03:58:37 -0400
-Received: by smtp.codeaurora.org (Postfix, from userid 1000)
-        id 171DB6090E; Fri, 18 Oct 2019 07:58:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1571385517;
-        bh=3GTFwjIlWhXTOjjTyMlnew+m09s2RvpZ8RrP6LlGZ+w=;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=VqbjfRnoFf9T8b6Wn9tLe9Cf3QFkkqwUA5zfqhdPV56zEfNCVxVwo2gDBRWxfnoms
-         CsLxcC+5pgkhqgIFCOG6N0k7RyaZuhvXDQVJj5cAby+KZejhQsILl3/lRErYzH/yEO
-         ktPJOuCgMT2L/1XZ60yTzXYof8WVV1ELnIJUYMgM=
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        pdx-caf-mail.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.7 required=2.0 tests=ALL_TRUSTED,BAYES_00,
-        DKIM_INVALID,DKIM_SIGNED,SPF_NONE autolearn=no autolearn_force=no
-        version=3.4.0
-Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        (Authenticated sender: kvalo@smtp.codeaurora.org)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id A344B60953;
-        Fri, 18 Oct 2019 07:58:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1571385516;
-        bh=3GTFwjIlWhXTOjjTyMlnew+m09s2RvpZ8RrP6LlGZ+w=;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=QBX6rLJCbBNII7ggBVwu4dfcDbjt8gKfG7Kg46eji3m0uIZemysUMpoRrSht6kCVy
-         LKCe/KLyuJ/bnHGG9gn4sRGEiehMCTW5NlDKO0si+LeufMejv+9JJkoO0UrVJl6tAC
-         q3n6zWuMNzfIslJFoG955hkanpk19ZaQiAXSivk8=
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org A344B60953
-Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
-From:   Kalle Valo <kvalo@codeaurora.org>
-To:     Guenter Roeck <linux@roeck-us.net>
-Cc:     Hui Peng <benquike@gmail.com>, davem@davemloft.net,
-        Mathias Payer <mathias.payer@nebelwelt.net>,
-        ath10k@lists.infradead.org, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 2/2] Fix a NULL-ptr-deref bug in ath10k_usb_alloc_urb_from_pipe
-References: <20190804003101.11541-1-benquike@gmail.com>
-        <20190831213139.GA32507@roeck-us.net>
-        <87ftlgqw42.fsf@kamboji.qca.qualcomm.com>
-        <20191018040530.GA28167@roeck-us.net>
-Date:   Fri, 18 Oct 2019 10:58:32 +0300
-In-Reply-To: <20191018040530.GA28167@roeck-us.net> (Guenter Roeck's message of
-        "Thu, 17 Oct 2019 21:05:30 -0700")
-Message-ID: <875zkmxz6f.fsf@kamboji.qca.qualcomm.com>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
+        Fri, 18 Oct 2019 04:19:43 -0400
+Received: from [91.156.6.193] (helo=redipa)
+        by farmhouse.coelho.fi with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+        (Exim 4.92)
+        (envelope-from <luca@coelho.fi>)
+        id 1iLNU5-00020l-0D; Fri, 18 Oct 2019 11:19:41 +0300
+Message-ID: <0421e9e5452ebf7b396e8237e52fd2bdcae5fa1b.camel@coelho.fi>
+From:   Luca Coelho <luca@coelho.fi>
+To:     Kalle Valo <kvalo@codeaurora.org>
+Cc:     linux-wireless@vger.kernel.org
+Date:   Fri, 18 Oct 2019 11:19:39 +0300
+In-Reply-To: <87lftlkvup.fsf@codeaurora.org>
+References: <20191012162924.19848-1-luca@coelho.fi>
+         <20191012192536.797f1ede5077.Ice818674f107105ae05a6f561263c0896d49de2c@changeid>
+         <87lftlkvup.fsf@codeaurora.org>
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.34.1-2 
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
+X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on farmhouse.coelho.fi
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.9 required=5.0 tests=ALL_TRUSTED,BAYES_00,
+        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.2
+Subject: Re: [PATCH 05/13] iwlwifi: dbg: prefer struct copy to memcpy()
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Guenter Roeck <linux@roeck-us.net> writes:
+On Wed, 2019-10-16 at 10:11 +0300, Kalle Valo wrote:
+> Luca Coelho <luca@coelho.fi> writes:
+> 
+> > From: Johannes Berg <johannes.berg@intel.com>
+> > 
+> > ifxes=Ic930239af4832ecb04afbf92840c99dfd726eebe
+> > 
+> > Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+> > Signed-off-by: Luca Coelho <luciano.coelho@intel.com>
+> 
+> Quite cryptic commit log :)
 
-> On Sun, Sep 01, 2019 at 11:06:05AM +0300, Kalle Valo wrote:
->> Guenter Roeck <linux@roeck-us.net> writes:
->> 
->> > Hi,
->> >
->> > On Sat, Aug 03, 2019 at 08:31:01PM -0400, Hui Peng wrote:
->> >> The `ar_usb` field of `ath10k_usb_pipe_usb_pipe` objects
->> >> are initialized to point to the containing `ath10k_usb` object
->> >> according to endpoint descriptors read from the device side, as shown
->> >> below in `ath10k_usb_setup_pipe_resources`:
->> >> 
->> >> for (i = 0; i < iface_desc->desc.bNumEndpoints; ++i) {
->> >>         endpoint = &iface_desc->endpoint[i].desc;
->> >> 
->> >>         // get the address from endpoint descriptor
->> >>         pipe_num = ath10k_usb_get_logical_pipe_num(ar_usb,
->> >>                                                 endpoint->bEndpointAddress,
->> >>                                                 &urbcount);
->> >>         ......
->> >>         // select the pipe object
->> >>         pipe = &ar_usb->pipes[pipe_num];
->> >> 
->> >>         // initialize the ar_usb field
->> >>         pipe->ar_usb = ar_usb;
->> >> }
->> >> 
->> >> The driver assumes that the addresses reported in endpoint
->> >> descriptors from device side  to be complete. If a device is
->> >> malicious and does not report complete addresses, it may trigger
->> >> NULL-ptr-deref `ath10k_usb_alloc_urb_from_pipe` and
->> >> `ath10k_usb_free_urb_to_pipe`.
->> >> 
->> >> This patch fixes the bug by preventing potential NULL-ptr-deref.
->> >> 
->> >> Signed-off-by: Hui Peng <benquike@gmail.com>
->> >> Reported-by: Hui Peng <benquike@gmail.com>
->> >> Reported-by: Mathias Payer <mathias.payer@nebelwelt.net>
->> >
->> > This patch fixes CVE-2019-15099, which has CVSS scores of 7.5 (CVSS 3.0)
->> > and 7.8 (CVSS 2.0). Yet, I don't find it in the upstream kernel or in Linux
->> > next.
->> >
->> > Is the patch going to be applied to the upstream kernel anytime soon ?
->> 
->> Same answer as in patch 1:
->> 
->> https://patchwork.kernel.org/patch/11074655/
->> 
->
-> Sorry to bring this up again. The ath6k patch made it into the upstream
-> kernel, but the ath10k patch didn't. Did it get lost, or was there a
-> reason not to apply this patch ?
+Hah! Sorry... there was a typo in our "fixes" tag, which caused my
+script not to trim it out and additionally it was merged without a
+proper description.
 
-This patch had a build warning, you can see it from patchwork:
+If the "fixes" didn't have a typo, this patch would have been squashed
+with the one it's fixing, so not having a commit message wouldn't
+matter.
 
-https://patchwork.kernel.org/patch/11074657/
+It's supposed to fix "iwlwifi: dbg_ini: use new trigger TLV in dump
+flow", so I'll just squash it into that one.
 
-Can someone fix it and resend the patch, please?
+--
+Luca.
 
--- 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
