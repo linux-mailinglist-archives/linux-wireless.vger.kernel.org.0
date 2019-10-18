@@ -2,63 +2,137 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 1C42BDD138
-	for <lists+linux-wireless@lfdr.de>; Fri, 18 Oct 2019 23:31:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F3F6DDD435
+	for <lists+linux-wireless@lfdr.de>; Sat, 19 Oct 2019 00:23:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2440440AbfJRVbc (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 18 Oct 2019 17:31:32 -0400
-Received: from mail.kernel.org ([198.145.29.99]:59524 "EHLO mail.kernel.org"
+        id S2405076AbfJRWXK (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 18 Oct 2019 18:23:10 -0400
+Received: from mail.kernel.org ([198.145.29.99]:37340 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1732440AbfJRVbb (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 18 Oct 2019 17:31:31 -0400
-Received: from localhost.localdomain (unknown [151.66.3.111])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        id S1729482AbfJRWF2 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 18 Oct 2019 18:05:28 -0400
+Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 2004F2070B;
-        Fri, 18 Oct 2019 21:31:29 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 2E98A222C2;
+        Fri, 18 Oct 2019 22:05:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1571434291;
-        bh=JRhWexNLuyM/83gNzScdv5VGYQIOtyYKpt6Fhp0I6O8=;
+        s=default; t=1571436327;
+        bh=atw4UZaQccT3eKFCQyThccWL3IxyuknKXsMHVAawv3s=;
         h=From:To:Cc:Subject:Date:From;
-        b=kypPVrBm6Xwo8WISKOV6WO7D12M8vd21pmYDv8E4O5K401gjSXJanlqqe0pvc5eEC
-         ydQoFCiInYhfrusqrvgQJaYBJpLuLgXa6bdtg+nNox3UkpE2C7HNayD5z4aph31eaf
-         yDB1v4BF6mr/EgXzyOVIL0mu0j/FUYw8tZh0+6BQ=
-From:   Lorenzo Bianconi <lorenzo@kernel.org>
-To:     nbd@nbd.name
-Cc:     lorenzo.bianconi@redhat.com, linux-wireless@vger.kernel.org,
-        sidhayn@gmail.com, sgruszka@redhat.com
-Subject: [PATCH] mt76: mt76x0: remove 350ms delay in mt76x0_phy_calibrate
-Date:   Fri, 18 Oct 2019 23:31:23 +0200
-Message-Id: <1df39fc826ff1fd79098b7431d04a00a0f3bdf6c.1571433997.git.lorenzo@kernel.org>
-X-Mailer: git-send-email 2.21.0
+        b=lTMh4D0/HdLF9jI+3lfVdMWmbzThp3AiXxBxqp/ZJ3Uj7lCAhqDdJR4s//oIyXkY6
+         vPSnwpqVBnrV/4KzwG1ZXF787SsJcy0h2C+d7PPYcqE+gY5xD23Ht7S4zU/WO4IZWd
+         pjEGUQyjGRoHPLfUi7SlWOyUr9jsF9MJYAapcoY8=
+From:   Sasha Levin <sashal@kernel.org>
+To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Cc:     Ahmad Masri <amasri@codeaurora.org>,
+        Maya Erez <merez@codeaurora.org>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        Sasha Levin <sashal@kernel.org>,
+        linux-wireless@vger.kernel.org, wil6210@qca.qualcomm.com,
+        netdev@vger.kernel.org
+Subject: [PATCH AUTOSEL 4.19 001/100] wil6210: fix freeing of rx buffers in EDMA mode
+Date:   Fri, 18 Oct 2019 18:03:46 -0400
+Message-Id: <20191018220525.9042-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
+X-stable: review
+X-Patchwork-Hint: Ignore
 Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Since mt76x0 does not save the phy calibration data it is not necessary
-to wait 350ms in mt76x0_phy_calibrate
+From: Ahmad Masri <amasri@codeaurora.org>
 
-Tested-by: Sid Hayn <sidhayn@gmail.com>
-Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+[ Upstream commit 6470f31927b46846d957628b719dcfda05446664 ]
+
+After being associated with some EDMA rx traffic, upon "down" driver
+doesn't free all skbs in the rx ring.
+Modify wil_move_all_rx_buff_to_free_list to loop on active list of rx
+buffers, unmap the physical memory and free the skb.
+
+Signed-off-by: Ahmad Masri <amasri@codeaurora.org>
+Signed-off-by: Maya Erez <merez@codeaurora.org>
+Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/mediatek/mt76/mt76x0/phy.c | 1 -
- 1 file changed, 1 deletion(-)
+ drivers/net/wireless/ath/wil6210/txrx_edma.c | 44 +++++++-------------
+ 1 file changed, 14 insertions(+), 30 deletions(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76x0/phy.c b/drivers/net/wireless/mediatek/mt76/mt76x0/phy.c
-index 711a352dfd5c..61e1a086f3cb 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76x0/phy.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt76x0/phy.c
-@@ -899,7 +899,6 @@ void mt76x0_phy_calibrate(struct mt76x02_dev *dev, bool power_on)
- 	}
+diff --git a/drivers/net/wireless/ath/wil6210/txrx_edma.c b/drivers/net/wireless/ath/wil6210/txrx_edma.c
+index 3e7fc2983cbb3..409a6fa8b6c8f 100644
+--- a/drivers/net/wireless/ath/wil6210/txrx_edma.c
++++ b/drivers/net/wireless/ath/wil6210/txrx_edma.c
+@@ -234,9 +234,10 @@ static int wil_rx_refill_edma(struct wil6210_priv *wil)
+ 	struct wil_ring *ring = &wil->ring_rx;
+ 	u32 next_head;
+ 	int rc = 0;
+-	u32 swtail = *ring->edma_rx_swtail.va;
++	ring->swtail = *ring->edma_rx_swtail.va;
  
- 	mt76x02_mcu_calibrate(dev, MCU_CAL_FULL, val);
--	msleep(350);
- 	mt76x02_mcu_calibrate(dev, MCU_CAL_LC, is_5ghz);
- 	usleep_range(15000, 20000);
+-	for (; next_head = wil_ring_next_head(ring), (next_head != swtail);
++	for (; next_head = wil_ring_next_head(ring),
++	     (next_head != ring->swtail);
+ 	     ring->swhead = next_head) {
+ 		rc = wil_ring_alloc_skb_edma(wil, ring, ring->swhead);
+ 		if (unlikely(rc)) {
+@@ -264,43 +265,26 @@ static void wil_move_all_rx_buff_to_free_list(struct wil6210_priv *wil,
+ 					      struct wil_ring *ring)
+ {
+ 	struct device *dev = wil_to_dev(wil);
+-	u32 next_tail;
+-	u32 swhead = (ring->swhead + 1) % ring->size;
++	struct list_head *active = &wil->rx_buff_mgmt.active;
+ 	dma_addr_t pa;
+-	u16 dmalen;
+ 
+-	for (; next_tail = wil_ring_next_tail(ring), (next_tail != swhead);
+-	     ring->swtail = next_tail) {
+-		struct wil_rx_enhanced_desc dd, *d = &dd;
+-		struct wil_rx_enhanced_desc *_d =
+-			(struct wil_rx_enhanced_desc *)
+-			&ring->va[ring->swtail].rx.enhanced;
+-		struct sk_buff *skb;
+-		u16 buff_id;
++	while (!list_empty(active)) {
++		struct wil_rx_buff *rx_buff =
++			list_first_entry(active, struct wil_rx_buff, list);
++		struct sk_buff *skb = rx_buff->skb;
+ 
+-		*d = *_d;
+-
+-		/* Extract the SKB from the rx_buff management array */
+-		buff_id = __le16_to_cpu(d->mac.buff_id);
+-		if (buff_id >= wil->rx_buff_mgmt.size) {
+-			wil_err(wil, "invalid buff_id %d\n", buff_id);
+-			continue;
+-		}
+-		skb = wil->rx_buff_mgmt.buff_arr[buff_id].skb;
+-		wil->rx_buff_mgmt.buff_arr[buff_id].skb = NULL;
+ 		if (unlikely(!skb)) {
+-			wil_err(wil, "No Rx skb at buff_id %d\n", buff_id);
++			wil_err(wil, "No Rx skb at buff_id %d\n", rx_buff->id);
+ 		} else {
+-			pa = wil_rx_desc_get_addr_edma(&d->dma);
+-			dmalen = le16_to_cpu(d->dma.length);
+-			dma_unmap_single(dev, pa, dmalen, DMA_FROM_DEVICE);
+-
++			rx_buff->skb = NULL;
++			memcpy(&pa, skb->cb, sizeof(pa));
++			dma_unmap_single(dev, pa, wil->rx_buf_len,
++					 DMA_FROM_DEVICE);
+ 			kfree_skb(skb);
+ 		}
+ 
+ 		/* Move the buffer from the active to the free list */
+-		list_move(&wil->rx_buff_mgmt.buff_arr[buff_id].list,
+-			  &wil->rx_buff_mgmt.free);
++		list_move(&rx_buff->list, &wil->rx_buff_mgmt.free);
+ 	}
+ }
  
 -- 
-2.21.0
+2.20.1
 
