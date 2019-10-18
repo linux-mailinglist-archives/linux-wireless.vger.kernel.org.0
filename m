@@ -2,123 +2,100 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 35A94DC270
-	for <lists+linux-wireless@lfdr.de>; Fri, 18 Oct 2019 12:15:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 91D2DDC424
+	for <lists+linux-wireless@lfdr.de>; Fri, 18 Oct 2019 13:43:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2438519AbfJRKPT (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 18 Oct 2019 06:15:19 -0400
-Received: from us-smtp-1.mimecast.com ([207.211.31.81]:47997 "EHLO
-        us-smtp-delivery-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S2442482AbfJRKPS (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 18 Oct 2019 06:15:18 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1571393717;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=fPfdn1wJgZGqQXuVAEaKG2OM7BuZcbx3t0qWbYXPYIY=;
-        b=CqO/ZpzOTBDlRsy0P/nPM2HzbfCVXmu6Q87v96ubVGedtcDrrBGsZZKrTu6DV+wlup5BJl
-        5gv4Y1O/vC6+EP7L+ew/rmOrlqLoe+1W14B+XfvxHIETLBgHJYkPUcaFkjG4mGtLtHevzW
-        5I0HU+UU3/1ar2Sbvy6fZKtu0d3oan0=
-Received: from mail-lj1-f200.google.com (mail-lj1-f200.google.com
- [209.85.208.200]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-321-B31KicRPMLelMl44H7gV5w-1; Fri, 18 Oct 2019 06:15:15 -0400
-Received: by mail-lj1-f200.google.com with SMTP id m8so963428ljb.3
-        for <linux-wireless@vger.kernel.org>; Fri, 18 Oct 2019 03:15:15 -0700 (PDT)
+        id S2404893AbfJRLn0 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 18 Oct 2019 07:43:26 -0400
+Received: from mx1.redhat.com ([209.132.183.28]:47228 "EHLO mx1.redhat.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S2389397AbfJRLn0 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 18 Oct 2019 07:43:26 -0400
+Received: from mail-qk1-f197.google.com (mail-qk1-f197.google.com [209.85.222.197])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mx1.redhat.com (Postfix) with ESMTPS id 0ADFC369AC
+        for <linux-wireless@vger.kernel.org>; Fri, 18 Oct 2019 11:43:26 +0000 (UTC)
+Received: by mail-qk1-f197.google.com with SMTP id g65so5207016qkf.19
+        for <linux-wireless@vger.kernel.org>; Fri, 18 Oct 2019 04:43:26 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:in-reply-to:references:date
-         :message-id:mime-version;
-        bh=fPfdn1wJgZGqQXuVAEaKG2OM7BuZcbx3t0qWbYXPYIY=;
-        b=M+Ip6H7U4JdiFm/LeLt1oN4FOhBf5X7ckhtO6fZ6tG8fMNLyqvobpJjXQMPjOO30sL
-         On0QK61XYv+1d1tkEjYh7OUY5VcFB87AdJX1l6BA4aDX+mg0516x/SVkICV3z7cZTvp4
-         kNRoyvM5OpNlozmimvqVlOgOCpzydge0fHuvhltFEVb8KhnIG0f2rqqaKzMzahthsXy1
-         HHvLO1O0C7LdjrqhNc7FBJQFsJdwXhqY12g9IDAbBrT6t7YsBlR0MsaQbt8wR0pfHnSq
-         9HqewSVTvLRdsy52phOlHuqQVlQy9FvnZKyoZ+B0sDLUExh3wVgk4j2E8nPGTAQ2Fyuq
-         ztwQ==
-X-Gm-Message-State: APjAAAXaI7qX8hSFGAOZ5jGYqlxGp6e+UD6zYyIDTMESCx+71OM+pY8D
-        macEXC1pjHaRhQ5SYI/GpV2dLfBJo6wmuu62yenVzFu6+A90Sc1wm/YzSiHxGkSLADyCDD4mVbL
-        rDSV05KsOeQltWPVXWphKCbB8UmY=
-X-Received: by 2002:a2e:501c:: with SMTP id e28mr5633714ljb.201.1571393714343;
-        Fri, 18 Oct 2019 03:15:14 -0700 (PDT)
-X-Google-Smtp-Source: APXvYqzS9cqDMn8709PKQFYCsL6fEv1jTLkzhF66c6MpwtxFxNTvaB57PQEp+T6O/S1uC35uTMRvqw==
-X-Received: by 2002:a2e:501c:: with SMTP id e28mr5633684ljb.201.1571393713934;
-        Fri, 18 Oct 2019 03:15:13 -0700 (PDT)
-Received: from alrua-x1.borgediget.toke.dk (borgediget.toke.dk. [85.204.121.218])
-        by smtp.gmail.com with ESMTPSA id v1sm2085763lfe.34.2019.10.18.03.15.12
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=6Ub6Gl8wiH8cmKTsFrafRHW9fuJ5vrtuEMWyvrQhDdg=;
+        b=a46DpZwLcfvYlJ5gPobtL0FDfeO98XwF2IKHbqEobp2fKy41UaZbZyp9fg8UMYu7I5
+         KuZ1RvTItdX4FFjQZu4EQOB/maPBY85ZZZrCEJdYjR4++6eKuLPJYxOk+CuolQIkSRuZ
+         XRtXxdzi5Ibaq9kgrFwoZAREO3m5S8zF7m++C8Xe8JkBms3fU3bjTxMAAgO15hK/K/ZD
+         aZ0/F6JpyO9cDLKvZR9KmBC0AGDUdwfmtu8Uxj/JL9FVK0yd72FlKJuDWgeKaVBg5vJ8
+         hcdeL0mCxMllFSI3u3jDWo2+ByKxUnSMLrE/ap3doUrs5WzCsZfmlSkLPUKsoym6NdRE
+         Azog==
+X-Gm-Message-State: APjAAAWATRaLGRth6+wKRG+ezvUhCEKqEVCHPdrInU7gNWjXWfQBCEk1
+        fBYIvuj+p2PHMpozdgHWSCbobcFTLaBCsrWogacQXxNsL4b6VbT1ZnGIzc9gmMSqrqSEdUaSys+
+        0Zj0GHjBClF/VA/UOkR2pKu0SXIQ=
+X-Received: by 2002:ac8:141a:: with SMTP id k26mr9417392qtj.372.1571399005322;
+        Fri, 18 Oct 2019 04:43:25 -0700 (PDT)
+X-Google-Smtp-Source: APXvYqwjEavSnVnimGynhK2zUjx91XWTp3w/V3NUGx/C7pvOgTC+fTUzLspHsEQefImPQDlxwBybyQ==
+X-Received: by 2002:ac8:141a:: with SMTP id k26mr9417366qtj.372.1571399005006;
+        Fri, 18 Oct 2019 04:43:25 -0700 (PDT)
+Received: from labbott-redhat.redhat.com (pool-96-235-39-235.pitbpa.fios.verizon.net. [96.235.39.235])
+        by smtp.gmail.com with ESMTPSA id d205sm3031043qke.96.2019.10.18.04.43.23
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 18 Oct 2019 03:15:12 -0700 (PDT)
-Received: by alrua-x1.borgediget.toke.dk (Postfix, from userid 1000)
-        id 000821804C9; Fri, 18 Oct 2019 12:15:11 +0200 (CEST)
-From:   Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>
-To:     Kan Yan <kyan@google.com>
-Cc:     Johannes Berg <johannes@sipsolutions.net>,
-        linux-wireless@vger.kernel.org,
-        make-wifi-fast@lists.bufferbloat.net, ath10k@lists.infradead.org,
-        John Crispin <john@phrozen.org>,
-        Lorenzo Bianconi <lorenzo@kernel.org>,
-        Felix Fietkau <nbd@nbd.name>,
-        Rajkumar Manoharan <rmanohar@codeaurora.org>,
-        Kevin Hayes <kevinhayes@google.com>
-Subject: Re: [PATCH v2 1/4] mac80211: Rearrange ieee80211_tx_info to make room for tx_time_est
-In-Reply-To: <CA+iem5t6xghBocck864nDX2snWQ5O+v6_M2Jc9aCdn_hE+mFCA@mail.gmail.com>
-References: <157115993755.2500430.12214017471129215800.stgit@toke.dk> <157115993866.2500430.13989567853855880476.stgit@toke.dk> <CA+iem5t6xghBocck864nDX2snWQ5O+v6_M2Jc9aCdn_hE+mFCA@mail.gmail.com>
-X-Clacks-Overhead: GNU Terry Pratchett
-Date:   Fri, 18 Oct 2019 12:15:11 +0200
-Message-ID: <87sgnqe4wg.fsf@toke.dk>
+        Fri, 18 Oct 2019 04:43:24 -0700 (PDT)
+From:   Laura Abbott <labbott@redhat.com>
+To:     Ping-Ke Shih <pkshih@realtek.com>,
+        Kalle Valo <kvalo@codeaurora.org>
+Cc:     Laura Abbott <labbott@redhat.com>,
+        "David S . Miller" <davem@davemloft.net>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Nicolas Waisman <nico@semmle.com>
+Subject: [PATCH v2] rtlwifi: Fix potential overflow on P2P code
+Date:   Fri, 18 Oct 2019 07:43:21 -0400
+Message-Id: <20191018114321.13131-1-labbott@redhat.com>
+X-Mailer: git-send-email 2.21.0
 MIME-Version: 1.0
-X-MC-Unique: B31KicRPMLelMl44H7gV5w-1
-X-Mimecast-Spam-Score: 0
-Content-Type: text/plain; charset=WINDOWS-1252
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Kan Yan <kyan@google.com> writes:
+Nicolas Waisman noticed that even though noa_len is checked for
+a compatible length it's still possible to overrun the buffers
+of p2pinfo since there's no check on the upper bound of noa_num.
+Bound noa_num against P2P_MAX_NOA_NUM.
 
-> The "tx_time_est" field, shared by control and status, is not able to
-> survive until the skb returns to the mac80211 layer in some
-> architectures. The same space is defined as driver_data and some
-> wireless drivers use it for other purposes, as the cb in the sk_buff
-> is free to be used by any layer.
->
-> In the case of ath10k, the tx_time_est get clobbered by
-> struct ath10k_skb_cb {
->         dma_addr_t paddr;
->         u8 flags;
->         u8 eid;
->         u16 msdu_id;
->         u16 airtime_est;
->         struct ieee80211_vif *vif;
->         struct ieee80211_txq *txq;
-> } __packed;
+Reported-by: Nicolas Waisman <nico@semmle.com>
+Signed-off-by: Laura Abbott <labbott@redhat.com>
+---
+v2: Use P2P_MAX_NOA_NUM instead of erroring out.
+---
+ drivers/net/wireless/realtek/rtlwifi/ps.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-Ah, bugger, of course the driver that actually needs this is using the
-full driver_data space :P
-
-> Do you think shrink driver_data by 2 bytes and use that space for
-> tx_time_est to make it persistent across mac80211 and wireless driver
-> layer an acceptable solution?
-
-Hmm, the driver_data field is defined as an array of pointers, so we can
-only shrink it in increments of sizeof(void *). I think it may be
-feasible to shrink it (as in, I don't think any drivers are actually
-using the full 40 bytes), but doing this in a way that will gain us a
-2-byte space that is also usable in the case driver_data is *not* used
-(i.e., it needs be able to align with a field in .control and .status as
-well) would require some serious surgery of the whole ieee80211_tx_info...
-
-However, there's a nice juicy 'u16 ack_frame_id' at the start of
-ieee80211_tx_info. Could we potentially use that? We could use the top
-bit as a disambiguation flag; I think we're fine with 15 bits for the TX
-time itself (a single packet won't exceed 8ms or TX time), so if we can
-live with 15 bits of ACK frame ID space, that could be a way forward?
-
-Johannes, what do you think?
-
--Toke
+diff --git a/drivers/net/wireless/realtek/rtlwifi/ps.c b/drivers/net/wireless/realtek/rtlwifi/ps.c
+index 70f04c2f5b17..fff8dda14023 100644
+--- a/drivers/net/wireless/realtek/rtlwifi/ps.c
++++ b/drivers/net/wireless/realtek/rtlwifi/ps.c
+@@ -754,6 +754,9 @@ static void rtl_p2p_noa_ie(struct ieee80211_hw *hw, void *data,
+ 				return;
+ 			} else {
+ 				noa_num = (noa_len - 2) / 13;
++				if (noa_num > P2P_MAX_NOA_NUM)
++					noa_num = P2P_MAX_NOA_NUM;
++
+ 			}
+ 			noa_index = ie[3];
+ 			if (rtlpriv->psc.p2p_ps_info.p2p_ps_mode ==
+@@ -848,6 +851,9 @@ static void rtl_p2p_action_ie(struct ieee80211_hw *hw, void *data,
+ 				return;
+ 			} else {
+ 				noa_num = (noa_len - 2) / 13;
++				if (noa_num > P2P_MAX_NOA_NUM)
++					noa_num = P2P_MAX_NOA_NUM;
++
+ 			}
+ 			noa_index = ie[3];
+ 			if (rtlpriv->psc.p2p_ps_info.p2p_ps_mode ==
+-- 
+2.21.0
 
