@@ -2,140 +2,100 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 392E9DBDFB
-	for <lists+linux-wireless@lfdr.de>; Fri, 18 Oct 2019 09:02:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8FC2EDBE46
+	for <lists+linux-wireless@lfdr.de>; Fri, 18 Oct 2019 09:28:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2409550AbfJRHCe (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 18 Oct 2019 03:02:34 -0400
-Received: from mail-qt1-f195.google.com ([209.85.160.195]:38462 "EHLO
-        mail-qt1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727315AbfJRHCe (ORCPT
+        id S2504604AbfJRH2X (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 18 Oct 2019 03:28:23 -0400
+Received: from smtp.codeaurora.org ([198.145.29.96]:49206 "EHLO
+        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728604AbfJRH2X (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 18 Oct 2019 03:02:34 -0400
-Received: by mail-qt1-f195.google.com with SMTP id j31so7674253qta.5
-        for <linux-wireless@vger.kernel.org>; Fri, 18 Oct 2019 00:02:32 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=endlessm-com.20150623.gappssmtp.com; s=20150623;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=4KsSLgRJmUZhLeDsO9zE0FQ0xWgEhUiiwV2u0di5PoM=;
-        b=ZNlJQz61Mw38cg475LWjZLK516n/Pfe8ejUK/ezOh4rAve494mHGw+wjaf5LoOxoo2
-         PFNzTUU2oAGNRabimovAQwVERvrIqVzTpwRtqEPzKrzCDD9Dd1cM5IgJ5olsjUB/0utu
-         bGZR5msltOxufA+fouUQ7fJPd8gNthr/+t+sCe6TH0OXdEikHUCNodr8KX8GG3YtT6Mi
-         WyZpCpNsYxp2SwT3bfCe7a5OrWuEceKzLVesJ47fM3EkCEX8aNlEFW86har0u6gdiRHT
-         qSDilg2kFXQItmW8p8ngAqKuyH8w4y19+hRFtd44zTUES41JL03/woXWmH3HwCb8Ftmc
-         +KRw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=4KsSLgRJmUZhLeDsO9zE0FQ0xWgEhUiiwV2u0di5PoM=;
-        b=nAdrfnuB4pPR9vEwkl6Ur82vFgONjajx9He0TKgEZYp0hwbdCPxJ8CwA9zG2XutjDZ
-         39MaxUt11r76bd/Fp2Jgt+zfooNMeI/rtrRgNUFzh6+r2aBBq+3jpxXC4/8LMESxPU69
-         d/Kb8jsffIfMUrvZxA+L4EKWRELSzjwYcJOU7sfXtI1RDFh0/WJAOby6ZVQGtqX7hA+o
-         +rKZMCmYKkFlgBkD7ijRj0Uc71l6UajnEdo94ai9SaKr293/vS8JUzM7RpqwbKIXFjRP
-         qodMAoH01DNuOW0O1x794GWZRazhDizZoXISLSnpVI54iygWEixBTk04xX+YmUQtV5aS
-         OS5w==
-X-Gm-Message-State: APjAAAWNe/dmFr+/g9oTl1LLF83XSpPgW1Wex4smukcmtPczYtn8xLVS
-        d/1GSziGt9A/cIAnLGH/CEQuyX0qIOqevX3GeHB9yA==
-X-Google-Smtp-Source: APXvYqy1dMZvXnleYPmJypInZMQ59h6Z5V6w4LYAlUj1YqBHM5rqaD4iV6wDr9nBq0mYOAUvknU08V9nQP01Y2WmA+8=
-X-Received: by 2002:a0c:b929:: with SMTP id u41mr8202501qvf.37.1571382151467;
- Fri, 18 Oct 2019 00:02:31 -0700 (PDT)
+        Fri, 18 Oct 2019 03:28:23 -0400
+Received: by smtp.codeaurora.org (Postfix, from userid 1000)
+        id B600360265; Fri, 18 Oct 2019 07:28:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
+        s=default; t=1571383702;
+        bh=ozyRCRj8gSIWs3v8F2NQ5Y9Vjt3xopcZa1rQk6KxJL0=;
+        h=From:To:Cc:Subject:Date:From;
+        b=fYeJlwPstbH6n+QNkKn9TOBNWtaXZfBdYSZgh9/HQXwRcrW5i68DJ7Q59WGa0gUHe
+         wywcnvks9v3vjlq1K/dhOb6AdbJ8C2JWiR16xI69J9j+t8pc15r+nc+/oZ3VqsbXeE
+         J6E7u0GfQQ7fAJ7q1vhiCZyvuk1PDqcg3yG+b8uI=
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        pdx-caf-mail.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.7 required=2.0 tests=ALL_TRUSTED,BAYES_00,
+        DKIM_INVALID,DKIM_SIGNED,SPF_NONE autolearn=no autolearn_force=no
+        version=3.4.0
+Received: from wgong-HP-Z240-SFF-Workstation.qca.qualcomm.com (unknown [180.166.53.21])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-SHA256 (128/128 bits))
+        (No client certificate requested)
+        (Authenticated sender: wgong@smtp.codeaurora.org)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 8880460588;
+        Fri, 18 Oct 2019 07:28:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
+        s=default; t=1571383702;
+        bh=ozyRCRj8gSIWs3v8F2NQ5Y9Vjt3xopcZa1rQk6KxJL0=;
+        h=From:To:Cc:Subject:Date:From;
+        b=fYeJlwPstbH6n+QNkKn9TOBNWtaXZfBdYSZgh9/HQXwRcrW5i68DJ7Q59WGa0gUHe
+         wywcnvks9v3vjlq1K/dhOb6AdbJ8C2JWiR16xI69J9j+t8pc15r+nc+/oZ3VqsbXeE
+         J6E7u0GfQQ7fAJ7q1vhiCZyvuk1PDqcg3yG+b8uI=
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 8880460588
+Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=wgong@codeaurora.org
+From:   Wen Gong <wgong@codeaurora.org>
+To:     ath10k@lists.infradead.org
+Cc:     linux-wireless@vger.kernel.org
+Subject: [PATCH v7 0/3] ath10k: improve throughout of TX of sdio
+Date:   Fri, 18 Oct 2019 15:27:47 +0800
+Message-Id: <20191018072750.10372-1-wgong@codeaurora.org>
+X-Mailer: git-send-email 2.23.0
 MIME-Version: 1.0
-References: <20191016123301.2649-1-yhchuang@realtek.com> <20191016123301.2649-7-yhchuang@realtek.com>
-In-Reply-To: <20191016123301.2649-7-yhchuang@realtek.com>
-From:   Chris Chiu <chiu@endlessm.com>
-Date:   Fri, 18 Oct 2019 15:02:20 +0800
-Message-ID: <CAB4CAwenD-=cHs7QZWaePE0LjYYtyi96dwgz3xCpQT+HLpr3yQ@mail.gmail.com>
-Subject: Re: [PATCH v2 6/6] rtw88: add phy_info debugfs to show Tx/Rx physical status
-To:     Tony Chuang <yhchuang@realtek.com>
-Cc:     Kalle Valo <kvalo@codeaurora.org>,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        Brian Norris <briannorris@chromium.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Wed, Oct 16, 2019 at 8:33 PM <yhchuang@realtek.com> wrote:
->
-> From: Tsang-Shian Lin <thlin@realtek.com>
->
-> This commit adds several Tx/Rx physical information to phy_info
-> debugfs for 8822B/8822C. By this debugfs, we can know physical
-> information, such as Tx/Rx rate, RSSI, EVM,SNR, etc. The
-> information is gotten from the packets of Tx/Rx path. It has
-> no impact for the performance of 8822B/8822C.
->
-> In the fields, we may meet different kinds of problems, but
-> we may have no professional instrument to check them. At
-> this moment, this debugfs is a good tool, and it may provide
-> useful information for debug.
->
-> Signed-off-by: Tsang-Shian Lin <thlin@realtek.com>
-> Signed-off-by: Yan-Hsuan Chuang <yhchuang@realtek.com>
-> ---
->
-> v1 -> v2
->   * No change
->
-> @@ -528,10 +556,16 @@ struct rtw_rx_pkt_stat {
->         s8 rx_power[RTW_RF_PATH_MAX];
->         u8 rssi;
->         u8 rxsc;
-> +       s8 rx_snr[RTW_RF_PATH_MAX];
-> +       u8 rx_evm[RTW_RF_PATH_MAX];
-> +       s8 cfo_tail[RTW_RF_PATH_MAX];
-> +
->         struct rtw_sta_info *si;
->         struct ieee80211_vif *vif;
->  };
->
-> +DECLARE_EWMA(tp, 10, 2);
-> +
->  struct rtw_traffic_stats {
->         /* units in bytes */
->         u64 tx_unicast;
-> @@ -853,6 +860,34 @@ static void query_phy_status_page1(struct rtw_dev *rtwdev, u8 *phy_status,
->         pkt_stat->signal_power = max3(pkt_stat->rx_power[RF_PATH_A],
->                                       pkt_stat->rx_power[RF_PATH_B],
->                                       min_rx_power);
-> +
-> +       dm_info->curr_rx_rate = pkt_stat->rate;
-> +
-> +       pkt_stat->rx_evm[RF_PATH_A] = GET_PHY_STAT_P1_RXEVM_A(phy_status);
-> +       pkt_stat->rx_evm[RF_PATH_B] = GET_PHY_STAT_P1_RXEVM_B(phy_status);
-> +
-> +       pkt_stat->rx_snr[RF_PATH_A] = GET_PHY_STAT_P1_RXSNR_A(phy_status);
-> +       pkt_stat->rx_snr[RF_PATH_B] = GET_PHY_STAT_P1_RXSNR_B(phy_status);
-> +
-> +       pkt_stat->cfo_tail[RF_PATH_A] = GET_PHY_STAT_P1_CFO_TAIL_A(phy_status);
-> +       pkt_stat->cfo_tail[RF_PATH_B] = GET_PHY_STAT_P1_CFO_TAIL_B(phy_status);
-> +
-> +       for (path = 0; path <= rtwdev->hal.rf_path_num; path++) {
-> +               rssi = rtw_phy_rf_power_2_rssi(&pkt_stat->rx_power[path], 1);
-> +               dm_info->rssi[path] = rssi;
-> +               dm_info->rx_snr[path] = pkt_stat->rx_snr[path] >> 1;
-> +               dm_info->cfo_tail[path] = (pkt_stat->cfo_tail[path] * 5) >> 1;
-> +
-> +               rx_evm = pkt_stat->rx_evm[path];
-> +
-> +               if (rx_evm < 0) {
-> +                       evm_dbm = ((u8)-rx_evm >> 1);
-> +
-> +                       if (evm_dbm == 64)
+v7: change a few code style to meet ath10k-check script
 
-Does the 64 means the S8_MAX >> 1 or something else?
-Can you give a more straightforward expression for EVM boundary check?
-Same for the following rtw8822c.c
+v6: remove module parameters disable_tx_comp and alt_data
+this is 3 patches of the 7 patches from ath10k: improve throughout of tcp/udp TX/RX of sdio
 
-> +                               evm_dbm = 0;
-> +               }
-> +               dm_info->rx_evm_dbm[path] = evm_dbm;
-> +       }
->  }
->
-> --
-> 2.17.1
->
+v5: change ath10k_htc_setup_tx_req to add check bundle_tx
+to forbidden init 2 times
+
+v4: add macro ATH10K_HTC_MSG_READY_EXT_ALT_DATA_MASK
+
+v3: change some code style
+
+v2: change some code style
+
+The bottleneck of throughout on sdio chip is the bus bandwidth, to the
+patches are all to increase the use ratio of sdio bus.
+
+These patches only affect sdio bus chip, explanation is mentioned in each
+patch's commit log.
+
+Wen Gong (3):
+  ath10k: disable TX complete indication of htt for sdio
+  ath10k: add htt TX bundle for sdio
+  ath10k: enable alt data of TX path for sdio
+
+ drivers/net/wireless/ath/ath10k/core.c   |  27 +-
+ drivers/net/wireless/ath/ath10k/core.h   |   4 +-
+ drivers/net/wireless/ath/ath10k/hif.h    |   9 +
+ drivers/net/wireless/ath/ath10k/htc.c    | 373 +++++++++++++++++++++--
+ drivers/net/wireless/ath/ath10k/htc.h    |  38 ++-
+ drivers/net/wireless/ath/ath10k/htt.c    |  13 +
+ drivers/net/wireless/ath/ath10k/htt.h    |  17 +-
+ drivers/net/wireless/ath/ath10k/htt_rx.c |  35 ++-
+ drivers/net/wireless/ath/ath10k/htt_tx.c |  38 ++-
+ drivers/net/wireless/ath/ath10k/hw.h     |   2 +-
+ drivers/net/wireless/ath/ath10k/sdio.c   |  23 ++
+ drivers/net/wireless/ath/ath10k/sdio.h   |   2 +-
+ 12 files changed, 528 insertions(+), 53 deletions(-)
+
+-- 
+2.23.0
+
