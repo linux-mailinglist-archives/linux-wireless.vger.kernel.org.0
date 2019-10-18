@@ -2,74 +2,70 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D9D4EDC75B
-	for <lists+linux-wireless@lfdr.de>; Fri, 18 Oct 2019 16:30:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 624C1DC794
+	for <lists+linux-wireless@lfdr.de>; Fri, 18 Oct 2019 16:41:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2408333AbfJROar (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 18 Oct 2019 10:30:47 -0400
-Received: from us-smtp-delivery-1.mimecast.com ([205.139.110.120]:46253 "EHLO
+        id S2408662AbfJROk3 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 18 Oct 2019 10:40:29 -0400
+Received: from us-smtp-delivery-1.mimecast.com ([207.211.31.120]:44176 "EHLO
         us-smtp-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1729584AbfJROar (ORCPT
+        with ESMTP id S2405743AbfJROk3 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 18 Oct 2019 10:30:47 -0400
+        Fri, 18 Oct 2019 10:40:29 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1571409046;
+        s=mimecast20190719; t=1571409628;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
          to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=bakk7ZMdh+u0X+Hl2jLm9/YFhVpOg7xiWkA7OuAAt3c=;
-        b=BOSadUsr5BV+E9tbZAgMG3i/5WkGu6pqrGmbiAXxxYVLjVIwyuXTzrBMk/Sg+D1yL6mHuq
-        w4EqmCg4ORZr3H7DmyZRrxyiAtafnOnz7JVBewRwXfeVUqk7SUACRbyl3sO1h3+Fmb8lAc
-        0zM/YeckUaclPqHMV/5zG4UIhaaQQvw=
-Received: from mail-lj1-f200.google.com (mail-lj1-f200.google.com
- [209.85.208.200]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-138-n1EIdzZcOey4sN86CkCVkA-1; Fri, 18 Oct 2019 10:30:41 -0400
-Received: by mail-lj1-f200.google.com with SMTP id m81so1115176lje.4
-        for <linux-wireless@vger.kernel.org>; Fri, 18 Oct 2019 07:30:40 -0700 (PDT)
+         content-transfer-encoding:content-transfer-encoding;
+        bh=4jQ/tW2DJnux5IJz+rjWj2biWuzQKo2eWZ9vfDg1dJM=;
+        b=bnUv6hjIKVEVKbWXo5JzzJNjkCVoFzIrj4LdrB1AdQjK2R+pfXa/Ax3tdwp4aI/4rbBNOv
+        IL/uGxBAJjcONgjBl8QyO4A+bT4zg8g5DZGFDE4+AI5MuACJWKKtAqovhAZEiaeC/ETzd/
+        OMiOq0n0gnRDomng94J3JhJV/Kkjbf0=
+Received: from mail-lj1-f198.google.com (mail-lj1-f198.google.com
+ [209.85.208.198]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-149-2uSYnUweM_W7YzcI8Xsj6Q-1; Fri, 18 Oct 2019 10:40:24 -0400
+Received: by mail-lj1-f198.google.com with SMTP id e3so1119785ljj.16
+        for <linux-wireless@vger.kernel.org>; Fri, 18 Oct 2019 07:40:24 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:in-reply-to:references:date
-         :message-id:mime-version:content-transfer-encoding;
-        bh=rKJhlEJJw/5ARrgpbdb2WsNHVUGoOLGpeEW6RcLOYbk=;
-        b=QS6SWlxTpVc7YlZEMZw7uVkMtZYBHM3cj3tqeUZvkv7Rw/+Oyu6DlevLKjqabai/CR
-         SVI8cuPp1RbKd0u1NmMRDQmCprF3kfPB3wbg1bR6wmxT1iNeGCXvPuAYl0ho+f1IrriG
-         zgpJn2K0nx2eXsvWM+AnyM+5V0SH5rzwsT7S6VVpWCJdvEBzzJIRZcRFoN3pdndkfytB
-         xJSr6rFmlqOjNBFyrRkqzvAOgZEvCQieLQxnmARY9idc4scNeEQMTi9K8ULrEsHY5NwC
-         PoIh/7JoIPmZ39S3uO+wez94YXRNAOVsrd2RVmai7ZcfnqC4W7R1ieYY2A/CTwv/q3pn
-         MLZg==
-X-Gm-Message-State: APjAAAXJXqmVQ41YchEsxY8fpej1qzuzl/arMmNyPsMq0OogV0DEhrmG
-        9DDi/NL122cy+sPpeHDqeToE4N8AMxvEs7UCyeJ66xrXLUK4YSaB0kRqL9drLhC1NnSyCO/x1Nw
-        frBOid4r0S3G27ef04O6KktUNYtA=
-X-Received: by 2002:ac2:41d4:: with SMTP id d20mr594284lfi.24.1571409039651;
-        Fri, 18 Oct 2019 07:30:39 -0700 (PDT)
-X-Google-Smtp-Source: APXvYqzILyzAuOEIj5ig6vIuTDFP316XFk3tSJVizLbq8TAYqZMR4SvKuZP0W2lfpHxx007dUHDYlg==
-X-Received: by 2002:ac2:41d4:: with SMTP id d20mr594270lfi.24.1571409039487;
-        Fri, 18 Oct 2019 07:30:39 -0700 (PDT)
+        h=x-gm-message-state:subject:from:to:cc:date:message-id:user-agent
+         :mime-version:content-transfer-encoding;
+        bh=e7FaDhgC1zTkjFC0jsJQQgggehot9KAb85p12pfkR44=;
+        b=m/bwhiElO+qBMZbV7oUZj4cvhW08qXLvK7sseVfAoJa0NfHLyoGZH7Ptx1wo0HyAVg
+         pJ48zo3APaFc9xAA8LBcWIFAwwlio/TVvk3N+/GWZn4/qC3kJek+IpPfAHEZWUmxFgk2
+         jyhAGP7UTG7tDVldVT0YrEPSTXBAKGfOK5hhYzVO84ZmEjckb0wkbEXp9bTMKsijTL2L
+         oCPtkHpOqG/3+qt2KEOZR12boYbO2y2yE2Tz782GAsZJtKOW/llx6zbQatHOla2zPMhq
+         G+gB/BfQi5qLqNWDvoFYigjNxTESdLT8eJJ/33YDmhxsUsnku2FwZoxeESNjTLqAlS07
+         w0Bw==
+X-Gm-Message-State: APjAAAU6rr/5hykWJ46rBQ10v8aCF/AxNsU1tCKNx4ve972NrFlHJ0r3
+        D7zurROAuOu5QjzQ8TK85CLj3Rc24/7AR+AOkcsdxFp75dBEsPUmcEE0ECJP7ReoEuVGY6Pt/BO
+        5LOcpKJnc2UYZUWDRELMZ6czNY5c=
+X-Received: by 2002:ac2:50c4:: with SMTP id h4mr5868998lfm.15.1571409623107;
+        Fri, 18 Oct 2019 07:40:23 -0700 (PDT)
+X-Google-Smtp-Source: APXvYqy1oW0Pilzv/j0cmg+z4cw3p8bFy2vRDcI9r/1HPABPVkHKj9AY00UN3Q8sVxFdt9bvMFmBOQ==
+X-Received: by 2002:ac2:50c4:: with SMTP id h4mr5868984lfm.15.1571409622930;
+        Fri, 18 Oct 2019 07:40:22 -0700 (PDT)
 Received: from alrua-x1.borgediget.toke.dk ([2a00:7660:6da:443::2])
-        by smtp.gmail.com with ESMTPSA id b20sm2413663ljo.106.2019.10.18.07.30.38
+        by smtp.gmail.com with ESMTPSA id u26sm2688629lfd.19.2019.10.18.07.40.21
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 18 Oct 2019 07:30:38 -0700 (PDT)
+        Fri, 18 Oct 2019 07:40:21 -0700 (PDT)
 Received: by alrua-x1.borgediget.toke.dk (Postfix, from userid 1000)
-        id 3A6D81804B6; Fri, 18 Oct 2019 16:30:38 +0200 (CEST)
-From:   Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>
-To:     Johannes Berg <johannes@sipsolutions.net>,
-        Kan Yan <kyan@google.com>
+        id 0EDCF1804B6; Fri, 18 Oct 2019 16:40:21 +0200 (CEST)
+Subject: [PATCH v3 0/4] Add Airtime Queue Limits (AQL) to mac80211
+From:   =?utf-8?q?Toke_H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>
+To:     Johannes Berg <johannes@sipsolutions.net>
 Cc:     linux-wireless@vger.kernel.org,
         make-wifi-fast@lists.bufferbloat.net, ath10k@lists.infradead.org,
         John Crispin <john@phrozen.org>,
         Lorenzo Bianconi <lorenzo@kernel.org>,
-        Felix Fietkau <nbd@nbd.name>,
+        Felix Fietkau <nbd@nbd.name>, Kan Yan <kyan@google.com>,
         Rajkumar Manoharan <rmanohar@codeaurora.org>,
         Kevin Hayes <kevinhayes@google.com>
-Subject: Re: [PATCH v2 1/4] mac80211: Rearrange ieee80211_tx_info to make room for tx_time_est
-In-Reply-To: <78035e38264feac9d15a761b009c89b9738b4de1.camel@sipsolutions.net>
-References: <157115993755.2500430.12214017471129215800.stgit@toke.dk> <157115993866.2500430.13989567853855880476.stgit@toke.dk> <CA+iem5t6xghBocck864nDX2snWQ5O+v6_M2Jc9aCdn_hE+mFCA@mail.gmail.com> <87sgnqe4wg.fsf@toke.dk> <10b885b3238cede2d99c6134bebcc0c8ba6f6b10.camel@sipsolutions.net> <87imomdvsj.fsf@toke.dk> <9fc60b546b54b40357264d67536733251cf39ebe.camel@sipsolutions.net> <87d0eudufu.fsf@toke.dk> <78035e38264feac9d15a761b009c89b9738b4de1.camel@sipsolutions.net>
-X-Clacks-Overhead: GNU Terry Pratchett
-Date:   Fri, 18 Oct 2019 16:30:38 +0200
-Message-ID: <877e52dt2p.fsf@toke.dk>
+Date:   Fri, 18 Oct 2019 16:40:21 +0200
+Message-ID: <157140962094.2866668.3383184317264069493.stgit@toke.dk>
+User-Agent: StGit/0.20
 MIME-Version: 1.0
-X-MC-Unique: n1EIdzZcOey4sN86CkCVkA-1
+X-MC-Unique: 2uSYnUweM_W7YzcI8Xsj6Q-1
 X-Mimecast-Spam-Score: 0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
@@ -78,29 +74,70 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Johannes Berg <johannes@sipsolutions.net> writes:
+This series is a first attempt at porting the Airtime Queue Limits concept =
+from
+the out-of-tree ath10k implementation[0] to mac80211. This version takes Ka=
+n's
+patch to do the throttling in mac80211, and replaces the driver API with th=
+e
+mechanism from the previous version of my series, which instead calculated =
+the
+expected airtime at dequeue time inside mac80211, storing it in the SKB cb
+field.
 
-> On Fri, 2019-10-18 at 16:01 +0200, Toke H=C3=B8iland-J=C3=B8rgensen wrote=
-:
->>=20
->> > We can also play with the units of the airtime, e.g. making that a
->> > multiple of 2 or 4 us? Seems unlikely to matter much?
->>=20
->> Sure, that's a good point! Increments of 4us means we can fit 4ms is 10
->> bits, leaving plenty of space for ACK IDs (hopefully).
->
-> If you do need more bits (e.g. to be on the safe side and have space for
-> 8ms) you could also steal bits out of 'band' (we only need 3 I think)
-> and 'hw_queue' (not sure what the limit really is, but there aren't many
-> users, seems like only iwlwifi/dvm and hwsim care, and those certainly
-> don't need >32 queues).
->
-> Of course if you leave more bits for later that's good too ;-)
+This series also imports Felix' airtime calculation code from mt76 into
+mac80211, adjusting the API so it can be used from TX dequeue, by extractin=
+g the
+latest TX rate from the tx_stats structure kept for each station.
 
-Yeah, let's leave that for later. After all, with the limits we
-currently have configured, if a single packet takes up 4096 us, that
-will trigger the per-station queue throttling in itself, so I think
-we'll be fine (famous last words).
+As before, I've only compile tested this (lacking the proper hardware to do=
+ more
+testing). So I'm hoping someone with a proper testing setup can take the wh=
+ole
+thing for a spin... :)
 
--Toke
+The series is also available in my git repo here:
+https://git.kernel.org/pub/scm/linux/kernel/git/toke/linux.git/log/?h=3Dmac=
+80211-aql-02
+
+Changelog:
+
+v3:
+  - Move the tx_time_est field so it's shared with ack_frame_id, and use un=
+its
+    of 4us for the value stored in it.
+  - Move the addition of the Ethernet header size into ieee80211_calc_expec=
+ted_tx_airtime()
+v2:
+  - Integrate Kan's approach to airtime throttling.
+  - Hopefully fix the cb struct alignment on big-endian architectures.
+
+---
+
+Kan Yan (1):
+      mac80211: Implement Airtime-based Queue Limit (AQL)
+
+Toke H=C3=B8iland-J=C3=B8rgensen (3):
+      mac80211: Shrink the size of ack_frame_id to make room for tx_time_es=
+t
+      mac80211: Import airtime calculation code from mt76
+      mac80211: Use Airtime-based Queue Limits (AQL) on packet dequeue
+
+
+ include/net/cfg80211.h     |    7 +
+ include/net/mac80211.h     |   30 +++-
+ net/mac80211/Makefile      |    3=20
+ net/mac80211/airtime.c     |  377 ++++++++++++++++++++++++++++++++++++++++=
+++++
+ net/mac80211/cfg.c         |    2=20
+ net/mac80211/debugfs.c     |   78 +++++++++
+ net/mac80211/debugfs_sta.c |   43 ++++-
+ net/mac80211/ieee80211_i.h |    8 +
+ net/mac80211/main.c        |    9 +
+ net/mac80211/sta_info.c    |   32 ++++
+ net/mac80211/sta_info.h    |    8 +
+ net/mac80211/status.c      |   38 ++++
+ net/mac80211/tx.c          |   67 +++++++-
+ 13 files changed, 684 insertions(+), 18 deletions(-)
+ create mode 100644 net/mac80211/airtime.c
 
