@@ -2,95 +2,83 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 47F3BDC50E
-	for <lists+linux-wireless@lfdr.de>; Fri, 18 Oct 2019 14:35:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 98AA2DC517
+	for <lists+linux-wireless@lfdr.de>; Fri, 18 Oct 2019 14:36:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728228AbfJRMfo (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 18 Oct 2019 08:35:44 -0400
-Received: from s3.sipsolutions.net ([144.76.43.62]:56620 "EHLO
-        sipsolutions.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2633850AbfJRMfo (ORCPT
+        id S2438968AbfJRMgD (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 18 Oct 2019 08:36:03 -0400
+Received: from rtits2.realtek.com ([211.75.126.72]:55119 "EHLO
+        rtits2.realtek.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2403808AbfJRMgC (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 18 Oct 2019 08:35:44 -0400
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-        (Exim 4.92.2)
-        (envelope-from <johannes@sipsolutions.net>)
-        id 1iLRTp-0002Kb-8n; Fri, 18 Oct 2019 14:35:41 +0200
-Message-ID: <4bc17c32337888a57a78a0e2c874abd462faef21.camel@sipsolutions.net>
-Subject: Re: [PATCH v2 1/4] mac80211: Rearrange ieee80211_tx_info to make
- room for tx_time_est
-From:   Johannes Berg <johannes@sipsolutions.net>
-To:     Toke =?ISO-8859-1?Q?H=F8iland-J=F8rgensen?= <toke@redhat.com>,
-        Kan Yan <kyan@google.com>
-Cc:     linux-wireless@vger.kernel.org,
-        make-wifi-fast@lists.bufferbloat.net, ath10k@lists.infradead.org,
-        John Crispin <john@phrozen.org>,
-        Lorenzo Bianconi <lorenzo@kernel.org>,
-        Felix Fietkau <nbd@nbd.name>,
-        Rajkumar Manoharan <rmanohar@codeaurora.org>,
-        Kevin Hayes <kevinhayes@google.com>
-Date:   Fri, 18 Oct 2019 14:35:40 +0200
-In-Reply-To: <87sgnqe4wg.fsf@toke.dk>
-References: <157115993755.2500430.12214017471129215800.stgit@toke.dk>
-         <157115993866.2500430.13989567853855880476.stgit@toke.dk>
-         <CA+iem5t6xghBocck864nDX2snWQ5O+v6_M2Jc9aCdn_hE+mFCA@mail.gmail.com>
-         <87sgnqe4wg.fsf@toke.dk>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.30.5 (3.30.5-1.fc29) 
+        Fri, 18 Oct 2019 08:36:02 -0400
+Authenticated-By: 
+X-SpamFilter-By: BOX Solutions SpamTrap 5.62 with qID x9ICZi57020888, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (RTITCAS11.realtek.com.tw[172.21.6.12])
+        by rtits2.realtek.com.tw (8.15.2/2.57/5.78) with ESMTPS id x9ICZi57020888
+        (version=TLSv1.2 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Fri, 18 Oct 2019 20:35:44 +0800
+Received: from RTITMBSVM04.realtek.com.tw ([fe80::e404:880:2ef1:1aa1]) by
+ RTITCAS11.realtek.com.tw ([fe80::7c6d:ced5:c4ff:8297%15]) with mapi id
+ 14.03.0468.000; Fri, 18 Oct 2019 20:35:43 +0800
+From:   Pkshih <pkshih@realtek.com>
+To:     "labbott@redhat.com" <labbott@redhat.com>,
+        "kvalo@codeaurora.org" <kvalo@codeaurora.org>
+CC:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        "davem@davemloft.net" <davem@davemloft.net>,
+        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "nico@semmle.com" <nico@semmle.com>
+Subject: Re: [PATCH v2] rtlwifi: Fix potential overflow on P2P code
+Thread-Topic: [PATCH v2] rtlwifi: Fix potential overflow on P2P code
+Thread-Index: AQHVhalClczxzfC5skeU3Go3kf32jKdfz60A
+Date:   Fri, 18 Oct 2019 12:35:43 +0000
+Message-ID: <1571402142.1994.6.camel@realtek.com>
+References: <20191018114321.13131-1-labbott@redhat.com>
+In-Reply-To: <20191018114321.13131-1-labbott@redhat.com>
+Accept-Language: en-US, zh-TW
+Content-Language: zh-TW
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [172.21.6.62]
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <9E6FC9AFA9152045A93C210744C36458@realtek.com>
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Fri, 2019-10-18 at 12:15 +0200, Toke Høiland-Jørgensen wrote:
-> Kan Yan <kyan@google.com> writes:
-> 
-> > The "tx_time_est" field, shared by control and status, is not able to
-> > survive until the skb returns to the mac80211 layer in some
-> > architectures. The same space is defined as driver_data and some
-> > wireless drivers use it for other purposes, as the cb in the sk_buff
-> > is free to be used by any layer.
-> > 
-> > In the case of ath10k, the tx_time_est get clobbered by
-> > struct ath10k_skb_cb {
-> >         dma_addr_t paddr;
-> >         u8 flags;
-> >         u8 eid;
-> >         u16 msdu_id;
-> >         u16 airtime_est;
-> >         struct ieee80211_vif *vif;
-> >         struct ieee80211_txq *txq;
-> > } __packed;
-> 
-> Ah, bugger, of course the driver that actually needs this is using the
-> full driver_data space :P
-
-Looks like you could shrink *this* fairly easily though.
-
-E.g. most likely vif == txq->vif unless txq==NULL, so it's down to 22
-bytes plus a bit/flag for knowing whether the pointer is a vif directly
-(if no TXQ) or a TXQ.
-
-> > Do you think shrink driver_data by 2 bytes and use that space for
-> > tx_time_est to make it persistent across mac80211 and wireless driver
-> > layer an acceptable solution?
-> 
-> Hmm, the driver_data field is defined as an array of pointers, so we can
-> only shrink it in increments of sizeof(void *). I think it may be
-> feasible to shrink it (as in, I don't think any drivers are actually
-> using the full 40 bytes),
-
-It doesn't have to be defined like that, just was most convenient as
-driers were using pointers there.
-
-> but doing this in a way that will gain us a
-> 2-byte space that is also usable in the case driver_data is *not* used
-> (i.e., it needs be able to align with a field in .control and .status as
-> well) would require some serious surgery of the whole ieee80211_tx_info...
-
-Yeah, good point, this doesn't help at all ...
-
-johannes
-
+T24gRnJpLCAyMDE5LTEwLTE4IGF0IDA3OjQzIC0wNDAwLCBMYXVyYSBBYmJvdHQgd3JvdGU6DQo+
+IE5pY29sYXMgV2Fpc21hbiBub3RpY2VkIHRoYXQgZXZlbiB0aG91Z2ggbm9hX2xlbiBpcyBjaGVj
+a2VkIGZvcg0KPiBhIGNvbXBhdGlibGUgbGVuZ3RoIGl0J3Mgc3RpbGwgcG9zc2libGUgdG8gb3Zl
+cnJ1biB0aGUgYnVmZmVycw0KPiBvZiBwMnBpbmZvIHNpbmNlIHRoZXJlJ3Mgbm8gY2hlY2sgb24g
+dGhlIHVwcGVyIGJvdW5kIG9mIG5vYV9udW0uDQo+IEJvdW5kIG5vYV9udW0gYWdhaW5zdCBQMlBf
+TUFYX05PQV9OVU0uDQo+IA0KPiBSZXBvcnRlZC1ieTogTmljb2xhcyBXYWlzbWFuIDxuaWNvQHNl
+bW1sZS5jb20+DQo+IFNpZ25lZC1vZmYtYnk6IExhdXJhIEFiYm90dCA8bGFiYm90dEByZWRoYXQu
+Y29tPg0KDQpBY2tlZC1ieTogUGluZy1LZSBTaGloIDxwa3NoaWhAcmVhbHRlay5jb20+DQphbmQg
+UGxlYXNlIENDIHRvIHN0YWJsZQ0KQ2M6IFN0YWJsZSA8c3RhYmxlQHZnZXIua2VybmVsLm9yZz4g
+IyA0LjQrDQoNCi0tLQ0KDQpIaSBLYWxsZSwNCg0KVGhpcyBidWcgd2FzIGV4aXN0aW5nIHNpbmNl
+IHYzLjEwLCBhbmQgZGlyZWN0b3J5IG9mIHdpcmVsZXNzIGRyaXZlcnMgd2VyZQ0KbW92ZWQgYXQg
+djQuNC4gRG8gSSBuZWVkIHNlbmQgYW5vdGhlciBwYXRjaCB0byBmaXggdGhpcyBpc3N1ZSBmb3Ig
+bG9uZ3Rlcm0NCmtlcm5lbCB2My4xNi43NT8NCg0KVGhhbmtzDQpQSw0KDQoNCj4gLS0tDQo+IHYy
+OiBVc2UgUDJQX01BWF9OT0FfTlVNIGluc3RlYWQgb2YgZXJyb3Jpbmcgb3V0Lg0KPiAtLS0NCj4g
+wqBkcml2ZXJzL25ldC93aXJlbGVzcy9yZWFsdGVrL3J0bHdpZmkvcHMuYyB8IDYgKysrKysrDQo+
+IMKgMSBmaWxlIGNoYW5nZWQsIDYgaW5zZXJ0aW9ucygrKQ0KPiANCj4gZGlmZiAtLWdpdCBhL2Ry
+aXZlcnMvbmV0L3dpcmVsZXNzL3JlYWx0ZWsvcnRsd2lmaS9wcy5jDQo+IGIvZHJpdmVycy9uZXQv
+d2lyZWxlc3MvcmVhbHRlay9ydGx3aWZpL3BzLmMNCj4gaW5kZXggNzBmMDRjMmY1YjE3Li5mZmY4
+ZGRhMTQwMjMgMTAwNjQ0DQo+IC0tLSBhL2RyaXZlcnMvbmV0L3dpcmVsZXNzL3JlYWx0ZWsvcnRs
+d2lmaS9wcy5jDQo+ICsrKyBiL2RyaXZlcnMvbmV0L3dpcmVsZXNzL3JlYWx0ZWsvcnRsd2lmaS9w
+cy5jDQo+IEBAIC03NTQsNiArNzU0LDkgQEAgc3RhdGljIHZvaWQgcnRsX3AycF9ub2FfaWUoc3Ry
+dWN0IGllZWU4MDIxMV9odyAqaHcsIHZvaWQNCj4gKmRhdGEsDQo+IMKgCQkJCXJldHVybjsNCj4g
+wqAJCQl9IGVsc2Ugew0KPiDCoAkJCQlub2FfbnVtID0gKG5vYV9sZW4gLSAyKSAvIDEzOw0KPiAr
+CQkJCWlmIChub2FfbnVtID4gUDJQX01BWF9OT0FfTlVNKQ0KPiArCQkJCQlub2FfbnVtID0gUDJQ
+X01BWF9OT0FfTlVNOw0KPiArDQo+IMKgCQkJfQ0KPiDCoAkJCW5vYV9pbmRleCA9IGllWzNdOw0K
+PiDCoAkJCWlmIChydGxwcml2LT5wc2MucDJwX3BzX2luZm8ucDJwX3BzX21vZGUgPT0NCj4gQEAg
+LTg0OCw2ICs4NTEsOSBAQCBzdGF0aWMgdm9pZCBydGxfcDJwX2FjdGlvbl9pZShzdHJ1Y3QgaWVl
+ZTgwMjExX2h3ICpodywNCj4gdm9pZCAqZGF0YSwNCj4gwqAJCQkJcmV0dXJuOw0KPiDCoAkJCX0g
+ZWxzZSB7DQo+IMKgCQkJCW5vYV9udW0gPSAobm9hX2xlbiAtIDIpIC8gMTM7DQo+ICsJCQkJaWYg
+KG5vYV9udW0gPiBQMlBfTUFYX05PQV9OVU0pDQo+ICsJCQkJCW5vYV9udW0gPSBQMlBfTUFYX05P
+QV9OVU07DQo+ICsNCj4gwqAJCQl9DQo+IMKgCQkJbm9hX2luZGV4ID0gaWVbM107DQo+IMKgCQkJ
+aWYgKHJ0bHByaXYtPnBzYy5wMnBfcHNfaW5mby5wMnBfcHNfbW9kZSA9PQ0KDQoNCg==
