@@ -2,26 +2,26 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 28EACDD7AF
+	by mail.lfdr.de (Postfix) with ESMTP id 9B50CDD7B0
 	for <lists+linux-wireless@lfdr.de>; Sat, 19 Oct 2019 11:39:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726194AbfJSJjN (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 19 Oct 2019 05:39:13 -0400
-Received: from paleale.coelho.fi ([176.9.41.70]:50410 "EHLO
+        id S1726385AbfJSJjO (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 19 Oct 2019 05:39:14 -0400
+Received: from paleale.coelho.fi ([176.9.41.70]:50418 "EHLO
         farmhouse.coelho.fi" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1725828AbfJSJjM (ORCPT
+        with ESMTP id S1725828AbfJSJjO (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 19 Oct 2019 05:39:12 -0400
+        Sat, 19 Oct 2019 05:39:14 -0400
 Received: from [91.156.6.193] (helo=redipa.ger.corp.intel.com)
         by farmhouse.coelho.fi with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
         (Exim 4.92)
         (envelope-from <luca@coelho.fi>)
-        id 1iLlCZ-0002fy-FL; Sat, 19 Oct 2019 12:39:11 +0300
+        id 1iLlCa-0002fy-5R; Sat, 19 Oct 2019 12:39:12 +0300
 From:   Luca Coelho <luca@coelho.fi>
 To:     kvalo@codeaurora.org
 Cc:     linux-wireless@vger.kernel.org
-Date:   Sat, 19 Oct 2019 12:38:54 +0300
-Message-Id: <20191019093902.29823-3-luca@coelho.fi>
+Date:   Sat, 19 Oct 2019 12:38:55 +0300
+Message-Id: <20191019093902.29823-4-luca@coelho.fi>
 X-Mailer: git-send-email 2.23.0
 In-Reply-To: <20191019093902.29823-1-luca@coelho.fi>
 References: <20191019093902.29823-1-luca@coelho.fi>
@@ -31,63 +31,54 @@ X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on farmhouse.coelho.fi
 X-Spam-Level: 
 X-Spam-Status: No, score=-2.9 required=5.0 tests=ALL_TRUSTED,BAYES_00,
         URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.2
-Subject: [PATCH 04/12] iwlwifi: mvm: in VHT connection use only VHT capabilities
+Subject: [PATCH 05/12] iwlwifi: pcie: make iwl_pcie_gen2_update_byte_tbl static
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Mordechay Goodstein <mordechay.goodstein@intel.com>
+From: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
 
-mac80211 limits amsdu size to the minimum of HT and VHT capabilities
-but since in a VHT connection we don't transmit HT frames we can discard
-HT limits.
+It is called within tx-gen2.c only.
 
-Signed-off-by: Mordechay Goodstein <mordechay.goodstein@intel.com>
+Signed-off-by: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
 Signed-off-by: Luca Coelho <luciano.coelho@intel.com>
 ---
- drivers/net/wireless/intel/iwlwifi/mvm/rs-fw.c | 2 +-
- drivers/net/wireless/intel/iwlwifi/mvm/rs.c    | 2 ++
- drivers/net/wireless/intel/iwlwifi/mvm/rs.h    | 2 ++
- 3 files changed, 5 insertions(+), 1 deletion(-)
+ drivers/net/wireless/intel/iwlwifi/pcie/internal.h | 3 ---
+ drivers/net/wireless/intel/iwlwifi/pcie/tx-gen2.c  | 6 +++---
+ 2 files changed, 3 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/rs-fw.c b/drivers/net/wireless/intel/iwlwifi/mvm/rs-fw.c
-index 098d48153a38..10a08fae2942 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/rs-fw.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/rs-fw.c
-@@ -384,7 +384,7 @@ void iwl_mvm_tlc_update_notif(struct iwl_mvm *mvm,
- 	rcu_read_unlock();
- }
+diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/internal.h b/drivers/net/wireless/intel/iwlwifi/pcie/internal.h
+index 1047d48beaa5..fcef2806ebb1 100644
+--- a/drivers/net/wireless/intel/iwlwifi/pcie/internal.h
++++ b/drivers/net/wireless/intel/iwlwifi/pcie/internal.h
+@@ -702,9 +702,6 @@ void iwl_trans_pcie_reclaim(struct iwl_trans *trans, int txq_id, int ssn,
+ 			    struct sk_buff_head *skbs);
+ void iwl_trans_pcie_set_q_ptrs(struct iwl_trans *trans, int txq_id, int ptr);
+ void iwl_trans_pcie_tx_reset(struct iwl_trans *trans);
+-void iwl_pcie_gen2_update_byte_tbl(struct iwl_trans_pcie *trans_pcie,
+-				   struct iwl_txq *txq, u16 byte_cnt,
+-				   int num_tbs);
  
--static u16 rs_fw_get_max_amsdu_len(struct ieee80211_sta *sta)
-+u16 rs_fw_get_max_amsdu_len(struct ieee80211_sta *sta)
+ static inline u16 iwl_pcie_tfd_tb_get_len(struct iwl_trans *trans, void *_tfd,
+ 					  u8 idx)
+diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/tx-gen2.c b/drivers/net/wireless/intel/iwlwifi/pcie/tx-gen2.c
+index 8894027429d6..1c69a2ddd7c7 100644
+--- a/drivers/net/wireless/intel/iwlwifi/pcie/tx-gen2.c
++++ b/drivers/net/wireless/intel/iwlwifi/pcie/tx-gen2.c
+@@ -86,9 +86,9 @@ void iwl_pcie_gen2_tx_stop(struct iwl_trans *trans)
+ /*
+  * iwl_pcie_txq_update_byte_tbl - Set up entry in Tx byte-count array
+  */
+-void iwl_pcie_gen2_update_byte_tbl(struct iwl_trans_pcie *trans_pcie,
+-				   struct iwl_txq *txq, u16 byte_cnt,
+-				   int num_tbs)
++static void iwl_pcie_gen2_update_byte_tbl(struct iwl_trans_pcie *trans_pcie,
++					  struct iwl_txq *txq, u16 byte_cnt,
++					  int num_tbs)
  {
- 	const struct ieee80211_sta_vht_cap *vht_cap = &sta->vht_cap;
- 	const struct ieee80211_sta_ht_cap *ht_cap = &sta->ht_cap;
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/rs.c b/drivers/net/wireless/intel/iwlwifi/mvm/rs.c
-index 42d525e46e80..0a442cb7f223 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/rs.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/rs.c
-@@ -1533,6 +1533,8 @@ static void rs_set_amsdu_len(struct iwl_mvm *mvm, struct ieee80211_sta *sta,
- 	struct iwl_mvm_sta *mvmsta = iwl_mvm_sta_from_mac80211(sta);
- 	int i;
- 
-+	sta->max_amsdu_len = rs_fw_get_max_amsdu_len(sta);
-+
- 	/*
- 	 * In case TLC offload is not active amsdu_enabled is either 0xFFFF
- 	 * or 0, since there is no per-TID alg.
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/rs.h b/drivers/net/wireless/intel/iwlwifi/mvm/rs.h
-index 7cd62c5622ce..32104c9f8f5e 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/rs.h
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/rs.h
-@@ -452,4 +452,6 @@ int rs_fw_tx_protection(struct iwl_mvm *mvm, struct iwl_mvm_sta *mvmsta,
- 			bool enable);
- void iwl_mvm_tlc_update_notif(struct iwl_mvm *mvm,
- 			      struct iwl_rx_cmd_buffer *rxb);
-+
-+u16 rs_fw_get_max_amsdu_len(struct ieee80211_sta *sta);
- #endif /* __rs__ */
+ 	struct iwlagn_scd_bc_tbl *scd_bc_tbl = txq->bc_tbl.addr;
+ 	struct iwl_trans *trans = iwl_trans_pcie_get_trans(trans_pcie);
 -- 
 2.23.0
 
