@@ -2,206 +2,139 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 39DA3DD895
-	for <lists+linux-wireless@lfdr.de>; Sat, 19 Oct 2019 13:37:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 91E9FDDA33
+	for <lists+linux-wireless@lfdr.de>; Sat, 19 Oct 2019 20:42:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726118AbfJSLh1 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 19 Oct 2019 07:37:27 -0400
-Received: from us-smtp-1.mimecast.com ([205.139.110.61]:32409 "EHLO
-        us-smtp-delivery-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1725912AbfJSLh0 (ORCPT
+        id S1726534AbfJSSl6 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 19 Oct 2019 14:41:58 -0400
+Received: from mo4-p02-ob.smtp.rzone.de ([85.215.255.81]:19862 "EHLO
+        mo4-p02-ob.smtp.rzone.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726389AbfJSSl5 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 19 Oct 2019 07:37:26 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1571485045;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=MVaudQUuQCI+ljMWLLAsex2zEz8cPUhBc2aoUxPRkR8=;
-        b=BWcOvuLNv5sd3XrirToRijYY47SKmawEq67pkT1OMXCnwQdWSd3bTeGjy62B3W5BSk4E+o
-        wfPek17boDv3Z1Wo0UlGmMf3RHSucmJHliD+ujH7u6mmmWWoY3dX5uIth7amXxNmGdSA1I
-        ekb94G5xkt3eIjEseeXtclveKH/GuTE=
-Received: from mail-lj1-f198.google.com (mail-lj1-f198.google.com
- [209.85.208.198]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-206-BjThIq7eM0Gx-bXcFrpW7Q-1; Sat, 19 Oct 2019 07:37:22 -0400
-Received: by mail-lj1-f198.google.com with SMTP id m81so1620377lje.4
-        for <linux-wireless@vger.kernel.org>; Sat, 19 Oct 2019 04:37:22 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:from:to:cc:date:message-id:in-reply-to
-         :references:user-agent:mime-version:content-transfer-encoding;
-        bh=KwtZFfw3+zEIBpCSK3JjIjdY2khNQMsybmZnMAvVGWM=;
-        b=oxXi5RR2dKIcq19W184KbDHr5EfrPod6SK2wOBtfb+O1KySWIYtYp3zIBOAYaz5H5H
-         MJvqi40q/HD37W64Vjuw8FyIx42mkZxLh0mckJJclTG2f0UWtcJsWvUqt21XxeZiVUf7
-         3rdlbjUGPxENWFlK3sfHUgTGeGW+dCNL/dUikvR85XJtPmu1OsFEGZtBaj67n9LkrjL/
-         dJaMpHscHVRbzZ2XoTIxz2skWTW/dyj0LAx7zrMEg46J8P5VrrHaDGykWjnPZWgXyedI
-         zR2g61ixazDrHzicSz20NjOkv/MvtCuyOVe9thiJdkRJedtC8y7Imy6xl7Q6nvehy8vU
-         kdzA==
-X-Gm-Message-State: APjAAAWIaeCixlBoZ/GjlsB7sfSjg6dYipxsIvwPIm0lL5Cisk9U/f1t
-        HCvYeA9uL2vSn2WbqPjRXIXWJIlpy6zkKj3za6cw2DBpOZFDimEQNhEHJtSJGW2Pbi2VCYu4Yl6
-        UNhndvqlHaRVl/JV+WhepmdeKMGQ=
-X-Received: by 2002:a19:9146:: with SMTP id y6mr645542lfj.11.1571485040858;
-        Sat, 19 Oct 2019 04:37:20 -0700 (PDT)
-X-Google-Smtp-Source: APXvYqy6A2s0kb12rWbr+kZlB9sAojMXKwZLl1GcZkznDPvWiSSK5d9yqvGSQlvsPztMK75+Z9uVsw==
-X-Received: by 2002:a19:9146:: with SMTP id y6mr645532lfj.11.1571485040619;
-        Sat, 19 Oct 2019 04:37:20 -0700 (PDT)
-Received: from alrua-x1.borgediget.toke.dk (borgediget.toke.dk. [85.204.121.218])
-        by smtp.gmail.com with ESMTPSA id h3sm5459652ljf.12.2019.10.19.04.37.19
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 19 Oct 2019 04:37:19 -0700 (PDT)
-Received: by alrua-x1.borgediget.toke.dk (Postfix, from userid 1000)
-        id BD12A1804C8; Sat, 19 Oct 2019 13:37:18 +0200 (CEST)
-Subject: [PATCH v4 4/4] mac80211: Use Airtime-based Queue Limits (AQL) on
- packet dequeue
-From:   =?utf-8?q?Toke_H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>
-To:     Johannes Berg <johannes@sipsolutions.net>
-Cc:     linux-wireless@vger.kernel.org,
-        make-wifi-fast@lists.bufferbloat.net, ath10k@lists.infradead.org,
-        John Crispin <john@phrozen.org>,
-        Lorenzo Bianconi <lorenzo@kernel.org>,
-        Felix Fietkau <nbd@nbd.name>, Kan Yan <kyan@google.com>,
-        Rajkumar Manoharan <rmanohar@codeaurora.org>,
-        Kevin Hayes <kevinhayes@google.com>
-Date:   Sat, 19 Oct 2019 13:37:18 +0200
-Message-ID: <157148503865.2989444.7118792679603045723.stgit@toke.dk>
-In-Reply-To: <157148503415.2989444.7391437309981941226.stgit@toke.dk>
-References: <157148503415.2989444.7391437309981941226.stgit@toke.dk>
-User-Agent: StGit/0.20
+        Sat, 19 Oct 2019 14:41:57 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1571510511;
+        s=strato-dkim-0002; d=goldelico.com;
+        h=Message-Id:Date:Subject:Cc:To:From:X-RZG-CLASS-ID:X-RZG-AUTH:From:
+        Subject:Sender;
+        bh=l0qWMjci4TxLI+eOGNNufcvgLLDB/JaT6TCyJXXhCcU=;
+        b=UjQnHb+AQOaMSFBBI3VrgZgtWeLGA/znD4j9UHbEfOKWtuG+Ir0kG7/M48dVz7ifyP
+        tQDdWO0VYp5GgydokGuAoXTfMyrPxOxh44VkuwO6GXrMq5kBUGN3iPlv2eUMW84THkGp
+        hBZ2Os8m0SUzRO9MDw8hGnEeZc2OpLlPwAQmSM3SYVXjCXaBXXhB1AFiMrtsctoZhcUb
+        xgkwr0xZncMleSPV9z8Q6lqs/l1Fwm0/XTfpVbJyV7BM8qgxLhyYoL6beQ0jbnzXjIOy
+        LzGgblDvJrYDgd3N7815drXPtIudHqF+7oI2vdhrb/pGqkb7hZ5CT+psh7uqgEVkC6b6
+        qcRA==
+X-RZG-AUTH: ":JGIXVUS7cutRB/49FwqZ7WcJeFKiMhflhwDubTJ9o12DNOsPj0pAyXkHTz8="
+X-RZG-CLASS-ID: mo00
+Received: from iMac.fritz.box
+        by smtp.strato.de (RZmta 44.28.1 DYNA|AUTH)
+        with ESMTPSA id R0b2a8v9JIfRFML
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (curve secp521r1 with 521 ECDH bits, eq. 15360 bits RSA))
+        (Client did not present a certificate);
+        Sat, 19 Oct 2019 20:41:27 +0200 (CEST)
+From:   "H. Nikolaus Schaller" <hns@goldelico.com>
+To:     =?UTF-8?q?Beno=C3=AEt=20Cousson?= <bcousson@baylibre.com>,
+        Tony Lindgren <tony@atomide.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Russell King <linux@armlinux.org.uk>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        Mike Rapoport <rppt@linux.ibm.com>,
+        David Sterba <dsterba@suse.com>,
+        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+        Petr Mladek <pmladek@suse.com>,
+        Sakari Ailus <sakari.ailus@linux.intel.com>,
+        "H. Nikolaus Schaller" <hns@goldelico.com>,
+        Kefeng Wang <wangkefeng.wang@huawei.com>,
+        Yangtao Li <tiny.windzz@gmail.com>,
+        Alexios Zavras <alexios.zavras@intel.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Allison Randal <allison@lohutok.net>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        John Stultz <john.stultz@linaro.org>,
+        Bjorn Helgaas <bhelgaas@google.com>
+Cc:     linux-omap@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-mmc@vger.kernel.org, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org, letux-kernel@openphoenux.org,
+        kernel@pyra-handheld.com
+Subject: [PATCH v2 00/11] OpenPandora: make wl1251 connected to mmc3 sdio port of OpenPandora work again
+Date:   Sat, 19 Oct 2019 20:41:15 +0200
+Message-Id: <cover.1571510481.git.hns@goldelico.com>
+X-Mailer: git-send-email 2.19.1
 MIME-Version: 1.0
-X-MC-Unique: BjThIq7eM0Gx-bXcFrpW7Q-1
-X-Mimecast-Spam-Score: 0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+DT:     Pandora: fixes and extensions
+Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Toke H=C3=B8iland-J=C3=B8rgensen <toke@redhat.com>
 
-The previous commit added the ability to throttle stations when they queue
-too much airtime in the hardware. This commit enables the functionality by
-calculating the expected airtime usage of each packet that is dequeued from
-the TXQs in mac80211, and accounting that as pending airtime.
+* added acked-by for wl1251 patches - Kalle Valo <kvalo@codeaurora.org>
+* really removed old pdata-quirks code (not through #if 0)
+* splited out a partial revert of
+	efdfeb079cc3b ("regulator: fixed: Convert to use GPIO descriptor only")
+  because that was introduced after v4.19 and stops the removal of
+  the pdata-quirks patch from cleanly applying to v4.9, v4.14, v4.19
+  - reported by Sasha Levin <sashal@kernel.org>
+* added a new patch to remove old omap hsmmc since pdata quirks
+  were last user - suggested by Tony Lindgren <tony@atomide.com>
 
-The estimated airtime for each skb is stored in the tx_info, so we can
-subtract the same amount from the running total when the skb is freed or
-recycled. The throttling mechanism relies on this accounting to be
-accurate (i.e., that we are not freeing skbs without subtracting any
-airtime they were accounted for), so we put the subtraction into
-ieee80211_report_used_skb(). As an optimisation, we also subtract the
-airtime on regular TX completion, zeroing out the value stored in the
-packet afterwards, to avoid having to do an expensive lookup of the
-station from the packet data on every packet.
+PATCH V1 2019-10-18 22:25:39:
 
-This patch does *not* include any mechanism to wake a throttled TXQ again,
-on the assumption that this will happen anyway as a side effect of whatever
-freed the skb (most commonly a TX completion).
+Here we have a set of scattered patches to make the OpenPandora WiFi work again.
 
-Signed-off-by: Toke H=C3=B8iland-J=C3=B8rgensen <toke@redhat.com>
----
- net/mac80211/status.c |   38 ++++++++++++++++++++++++++++++++++++++
- net/mac80211/tx.c     |   21 +++++++++++++++++++++
- 2 files changed, 59 insertions(+)
+v4.7 did break the pdata-quirks which made the mmc3 interface
+fail completely, because some code now assumes device tree
+based instantiation.
 
-diff --git a/net/mac80211/status.c b/net/mac80211/status.c
-index ab8ba5835ca0..905b4afd457d 100644
---- a/net/mac80211/status.c
-+++ b/net/mac80211/status.c
-@@ -676,6 +676,33 @@ static void ieee80211_report_used_skb(struct ieee80211=
-_local *local,
- =09if (dropped)
- =09=09acked =3D false;
-=20
-+=09if (info->tx_time_est) {
-+=09=09struct ieee80211_sub_if_data *sdata;
-+=09=09struct sta_info *sta =3D NULL;
-+=09=09u8 *qc, ac;
-+=09=09int tid;
-+
-+=09=09rcu_read_lock();
-+
-+=09=09sdata =3D ieee80211_sdata_from_skb(local, skb);
-+=09=09if (sdata)
-+=09=09=09sta =3D sta_info_get_bss(sdata, skb_mac_header(skb));
-+
-+=09=09if (ieee80211_is_data_qos(hdr->frame_control)) {
-+=09=09=09qc =3D ieee80211_get_qos_ctl(hdr);
-+=09=09=09tid =3D qc[0] & 0xf;
-+=09=09=09ac =3D ieee80211_ac_from_tid(tid);
-+=09=09} else {
-+=09=09=09ac =3D IEEE80211_AC_BE;
-+=09=09}
-+
-+=09=09ieee80211_sta_update_pending_airtime(local, sta, ac,
-+=09=09=09=09=09=09     info->tx_time_est << 2,
-+=09=09=09=09=09=09     true);
-+=09=09rcu_read_unlock();
-+
-+=09}
-+
- =09if (info->flags & IEEE80211_TX_INTFL_MLME_CONN_TX) {
- =09=09struct ieee80211_sub_if_data *sdata;
-=20
-@@ -930,6 +957,17 @@ static void __ieee80211_tx_status(struct ieee80211_hw =
-*hw,
- =09=09=09tid =3D qc[0] & 0xf;
- =09=09}
-=20
-+=09=09if (info->tx_time_est) {
-+=09=09=09/* Do this here to avoid the expensive lookup of the sta
-+=09=09=09 * in ieee80211_report_used_skb().
-+=09=09=09 */
-+=09=09=09ieee80211_sta_update_pending_airtime(local, sta,
-+=09=09=09=09=09=09=09     ieee80211_ac_from_tid(tid),
-+=09=09=09=09=09=09=09     info->tx_time_est << 2,
-+=09=09=09=09=09=09=09     true);
-+=09=09=09info->tx_time_est =3D 0;
-+=09=09}
-+
- =09=09if (!acked && ieee80211_is_back_req(fc)) {
- =09=09=09u16 control;
-=20
-diff --git a/net/mac80211/tx.c b/net/mac80211/tx.c
-index 12653d873b8c..b8ff56d1d661 100644
---- a/net/mac80211/tx.c
-+++ b/net/mac80211/tx.c
-@@ -3542,6 +3542,9 @@ struct sk_buff *ieee80211_tx_dequeue(struct ieee80211=
-_hw *hw,
-=20
- =09WARN_ON_ONCE(softirq_count() =3D=3D 0);
-=20
-+=09if (!ieee80211_txq_airtime_check(hw, txq))
-+=09=09return NULL;
-+
- begin:
- =09spin_lock_bh(&fq->lock);
-=20
-@@ -3652,6 +3655,24 @@ struct sk_buff *ieee80211_tx_dequeue(struct ieee8021=
-1_hw *hw,
- =09}
-=20
- =09IEEE80211_SKB_CB(skb)->control.vif =3D vif;
-+
-+=09if (local->airtime_flags & AIRTIME_USE_AQL) {
-+=09=09u32 airtime;
-+
-+=09=09airtime =3D ieee80211_calc_expected_tx_airtime(hw, vif, txq->sta,
-+=09=09=09=09=09=09=09     skb->len);
-+=09=09if (airtime) {
-+=09=09=09/* We only have 10 bits in tx_time_est, so store airtime
-+=09=09=09 * in increments of 4 us and clamp the maximum to 2**12-1
-+=09=09=09 */
-+=09=09=09airtime =3D min_t(u32, airtime, 4095) & ~3U;
-+=09=09=09info->tx_time_est =3D airtime >> 2;
-+=09=09=09ieee80211_sta_update_pending_airtime(local, tx.sta,
-+=09=09=09=09=09=09=09     txq->ac, airtime,
-+=09=09=09=09=09=09=09     false);
-+=09=09}
-+=09}
-+
- =09return skb;
-=20
- out:
+Fixes: 81eef6ca9201 ("mmc: omap_hsmmc: Use dma_request_chan() for requesting DMA channel")
+
+v4.11 did break the sdio qirks for wl1251 which made the driver no longer
+load, although the device was found as an sdio client.
+
+Fixes: 884f38607897 ("mmc: core: move some sdio IDs out of quirks file")
+
+To solve these issues:
+* we convert mmc3 and wl1251 initialization from pdata-quirks
+  to device tree
+* we make the wl1251 driver read properties from device tree
+* we fix the mmc core vendor ids and quirks
+* we fix the wl1251 (and wl1271) driver to use only vendor ids
+  from header file instead of (potentially conflicting) local
+  definitions
+
+
+H. Nikolaus Schaller (11):
+  Documentation: dt: wireless: update wl1251 for sdio
+  net: wireless: ti: wl1251 add device tree support
+  DTS: ARM: pandora-common: define wl1251 as child node of mmc3
+  mmc: host: omap_hsmmc: add code for special init of wl1251 to get rid
+    of pandora_wl1251_init_card
+  omap: pdata-quirks: revert pandora specific gpiod additions
+  omap: pdata-quirks: remove openpandora quirks for mmc3 and wl1251
+  omap: remove old hsmmc.[ch] and in Makefile
+  mmc: sdio: fix wl1251 vendor id
+  mmc: core: fix wl1251 sdio quirks
+  net: wireless: ti: wl1251 use new SDIO_VENDOR_ID_TI_WL1251 definition
+  net: wireless: ti: remove local VENDOR_ID and DEVICE_ID definitions
+
+ .../bindings/net/wireless/ti,wl1251.txt       |  26 +++
+ arch/arm/boot/dts/omap3-pandora-common.dtsi   |  37 +++-
+ arch/arm/mach-omap2/Makefile                  |   1 -
+ arch/arm/mach-omap2/hsmmc.c                   | 171 ------------------
+ arch/arm/mach-omap2/hsmmc.h                   |  32 ----
+ arch/arm/mach-omap2/pdata-quirks.c            | 105 -----------
+ drivers/mmc/core/quirks.h                     |   7 +
+ drivers/mmc/host/omap_hsmmc.c                 |  21 +++
+ drivers/net/wireless/ti/wl1251/sdio.c         |  23 ++-
+ drivers/net/wireless/ti/wlcore/sdio.c         |   8 -
+ include/linux/mmc/sdio_ids.h                  |   2 +
+ 11 files changed, 105 insertions(+), 328 deletions(-)
+ delete mode 100644 arch/arm/mach-omap2/hsmmc.c
+ delete mode 100644 arch/arm/mach-omap2/hsmmc.h
+
+-- 
+2.19.1
 
