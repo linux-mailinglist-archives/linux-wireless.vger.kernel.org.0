@@ -2,68 +2,58 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 3CE20DDA40
-	for <lists+linux-wireless@lfdr.de>; Sat, 19 Oct 2019 20:42:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BE058DDA93
+	for <lists+linux-wireless@lfdr.de>; Sat, 19 Oct 2019 21:02:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726512AbfJSSl6 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 19 Oct 2019 14:41:58 -0400
-Received: from mo4-p04-ob.smtp.rzone.de ([81.169.146.177]:33684 "EHLO
-        mo4-p04-ob.smtp.rzone.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726388AbfJSSl5 (ORCPT
+        id S1726118AbfJSTCa (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 19 Oct 2019 15:02:30 -0400
+Received: from mail-oi1-f193.google.com ([209.85.167.193]:39625 "EHLO
+        mail-oi1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726078AbfJSTCa (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 19 Oct 2019 14:41:57 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1571510511;
-        s=strato-dkim-0002; d=goldelico.com;
-        h=References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
-        X-RZG-CLASS-ID:X-RZG-AUTH:From:Subject:Sender;
-        bh=ghOjg962ogCTFSl+WarS5kwHM8++CbDNCWRtO1jWLTk=;
-        b=KuldUVGHcPNu1X7NDi5MTgY9yWo6HfoZddIoAuYqHTJ4cdfcN4efsCBcsNvWruhMuf
-        yHHveeugsTzrq2k2NjAJmRQuwGlzMHhpSssJPk8ajfZ32BRuHknOlikbNiwIYVlU9OmJ
-        uB8YmdmH2aNN1990r6XzXi5w9WVYRoPEURPKy4RTeBYklJoE003rkeDheucLbvcCSM5B
-        IWUBZFDYPPLmL3Q7OmXE5UsWx8HtZOFm3LZv4caZ/Mu4ZSukbNHFeZT4RYWgkshyi/p3
-        P8jKbYhnQgwk65JjaOgVREgrB/EndKwwz896VI5jTX+VxEzZxRbx+JWV3g2k1WQhhgSH
-        4PVA==
-X-RZG-AUTH: ":JGIXVUS7cutRB/49FwqZ7WcJeFKiMhflhwDubTJ9o12DNOsPj0pAyXkHTz8="
-X-RZG-CLASS-ID: mo00
-Received: from iMac.fritz.box
-        by smtp.strato.de (RZmta 44.28.1 DYNA|AUTH)
-        with ESMTPSA id R0b2a8v9JIfcFMW
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (curve secp521r1 with 521 ECDH bits, eq. 15360 bits RSA))
-        (Client did not present a certificate);
-        Sat, 19 Oct 2019 20:41:38 +0200 (CEST)
-From:   "H. Nikolaus Schaller" <hns@goldelico.com>
-To:     =?UTF-8?q?Beno=C3=AEt=20Cousson?= <bcousson@baylibre.com>,
-        Tony Lindgren <tony@atomide.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Russell King <linux@armlinux.org.uk>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        Mike Rapoport <rppt@linux.ibm.com>,
-        David Sterba <dsterba@suse.com>,
-        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-        Petr Mladek <pmladek@suse.com>,
-        Sakari Ailus <sakari.ailus@linux.intel.com>,
-        "H. Nikolaus Schaller" <hns@goldelico.com>,
-        Kefeng Wang <wangkefeng.wang@huawei.com>,
-        Yangtao Li <tiny.windzz@gmail.com>,
-        Alexios Zavras <alexios.zavras@intel.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Allison Randal <allison@lohutok.net>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        John Stultz <john.stultz@linaro.org>,
-        Bjorn Helgaas <bhelgaas@google.com>
-Cc:     linux-omap@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-mmc@vger.kernel.org, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org, letux-kernel@openphoenux.org,
-        kernel@pyra-handheld.com, stable@vger.kernel.org
-Subject: [PATCH v2 11/11] net: wireless: ti: remove local VENDOR_ID and DEVICE_ID definitions
-Date:   Sat, 19 Oct 2019 20:41:26 +0200
-Message-Id: <da609ecf83eca8af70172627ada29902b096bae9.1571510481.git.hns@goldelico.com>
-X-Mailer: git-send-email 2.19.1
-In-Reply-To: <cover.1571510481.git.hns@goldelico.com>
-References: <cover.1571510481.git.hns@goldelico.com>
+        Sat, 19 Oct 2019 15:02:30 -0400
+Received: by mail-oi1-f193.google.com with SMTP id w144so7942834oia.6;
+        Sat, 19 Oct 2019 12:02:29 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=sender:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=8fkGTWJ7nV0zqlGQILKgkuirDJcGK5IownLExBhIIBU=;
+        b=m5FCJQzIgdyMX2abqBZPdulqgf4gkVcT82duLjP5DtD10mhWnlySxHWD+m0iO2H9lQ
+         3YPfofm4Rn4Xh2VxvFWjEn9tzgEHAoheUkLhJdana7rBj5YmKQPt0RVzZddUzywamsoC
+         yuEquaOiJVZ4pnBrVIIAQHliQ35uuvj/gekmtT+r+RSlyRDv0XZndgB7XF4DhTu6Uvq5
+         N+DQBII5tkieA1sbby3stY1IQwyo/PwmCRDlowEzgieC7BMbesyQbS3Hun5f+BYn/v06
+         3DriPsFWGPqxG2jPs3z4s0igKfyaxvR3AE60VBp43nhp/CPiWDLNW/fB4V95ELsnEX+e
+         f14w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:sender:from:to:cc:subject:date:message-id
+         :mime-version:content-transfer-encoding;
+        bh=8fkGTWJ7nV0zqlGQILKgkuirDJcGK5IownLExBhIIBU=;
+        b=ELUjdx5Px4Lde8mpQipV2AqEXZMwpcTVj15HOXO2Rdy6W2DW+mWszFpFSdBagHzjjf
+         zo9D3/ZmhS56+yoeh/DNSnApKGgsM5MWAz+BHoxkAbLsoXay4c6a80afjxXQ98Phnrh5
+         Un6KAfD4lMrOHBsnWFDgca5AKM03l5wPFeXNiZc7Qyy4b7qLMxTgFEeB7WbrL9eKL5mn
+         r1j3Wx6bgNaR/Jf0XzglWk8pEN65wksmsBJi0M/1b/6sxZNZerlJKLMKAzm4h0cQ5Yxm
+         zWnxW1KNN52icJuPycsNbcmNkJYe0mPQdA1CTsuke1NN808o7BQsKogEHINFEVS5nuHa
+         zbhg==
+X-Gm-Message-State: APjAAAXsfypIPs9CGP7Q7bnsceYf5BbhTzwZ2VjSSwQIdGNqmMlzk7on
+        7q5ADWsO37RbUNU8T0V6pyo=
+X-Google-Smtp-Source: APXvYqymv6JZ8koXfAiU6tyYOENvYSJwCkWYKATrdJieaXMpadqJvX5c2Us3xWjWxttswpivc4UZEQ==
+X-Received: by 2002:aca:5357:: with SMTP id h84mr12928325oib.17.1571511748862;
+        Sat, 19 Oct 2019 12:02:28 -0700 (PDT)
+Received: from localhost.localdomain (cpe-24-31-245-230.kc.res.rr.com. [24.31.245.230])
+        by smtp.gmail.com with ESMTPSA id 109sm2621930otc.52.2019.10.19.12.02.27
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 19 Oct 2019 12:02:28 -0700 (PDT)
+From:   Larry Finger <Larry.Finger@lwfinger.net>
+To:     kvalo@codeaurora.org
+Cc:     linux-wireless@vger.kernel.org, pkshih@realtek.com,
+        Larry Finger <Larry.Finger@lwfinger.net>,
+        Stable <stable@vger.kernel.org>
+Subject: [PATCH] rtlwifi: rtl_pci: Fix problem of too small skb->len
+Date:   Sat, 19 Oct 2019 14:02:22 -0500
+Message-Id: <20191019190222.29681-1-Larry.Finger@lwfinger.net>
+X-Mailer: git-send-email 2.23.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
@@ -71,57 +61,41 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-They are already included from mmc/sdio_ids.h and do not need
-a local definition.
+In commit 8020919a9b99 ("mac80211: Properly handle SKB with radiotap
+only"), buffers whose length is too short cause a WARN_ON(1) to be
+executed. This change exposed a fault in rtlwifi drivers, which is fixed
+by increasing the length of the affected buffer before it is sent to
+mac80211.
 
-Fixes: 884f38607897 ("mmc: core: move some sdio IDs out of quirks file")
-
-Signed-off-by: H. Nikolaus Schaller <hns@goldelico.com>
-Acked-by: Kalle Valo <kvalo@codeaurora.org>
-Cc: <stable@vger.kernel.org> # 4.11.0
+Cc: Stable <stable@vger.kernel.org> # v5.0+
+Signed-off-by: Larry Finger <Larry.Finger@lwfinger.net>
 ---
- drivers/net/wireless/ti/wl1251/sdio.c | 8 --------
- drivers/net/wireless/ti/wlcore/sdio.c | 8 --------
- 2 files changed, 16 deletions(-)
 
-diff --git a/drivers/net/wireless/ti/wl1251/sdio.c b/drivers/net/wireless/ti/wl1251/sdio.c
-index 42b55f3a50df..3c4d5e38c66c 100644
---- a/drivers/net/wireless/ti/wl1251/sdio.c
-+++ b/drivers/net/wireless/ti/wl1251/sdio.c
-@@ -22,14 +22,6 @@
+Kalle,
+
+Please send to v5.4.
+
+Larry
+---
+
+ drivers/net/wireless/realtek/rtlwifi/pci.c | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/drivers/net/wireless/realtek/rtlwifi/pci.c b/drivers/net/wireless/realtek/rtlwifi/pci.c
+index 6087ec7a90a6..bb5144b7c64f 100644
+--- a/drivers/net/wireless/realtek/rtlwifi/pci.c
++++ b/drivers/net/wireless/realtek/rtlwifi/pci.c
+@@ -692,7 +692,10 @@ static void _rtl_pci_rx_to_mac80211(struct ieee80211_hw *hw,
+ 		dev_kfree_skb_any(skb);
+ 	} else {
+ 		struct sk_buff *uskb = NULL;
++		int len = skb->len;
  
- #include "wl1251.h"
- 
--#ifndef SDIO_VENDOR_ID_TI
--#define SDIO_VENDOR_ID_TI		0x104c
--#endif
--
--#ifndef SDIO_DEVICE_ID_TI_WL1251
--#define SDIO_DEVICE_ID_TI_WL1251	0x9066
--#endif
--
- struct wl1251_sdio {
- 	struct sdio_func *func;
- 	u32 elp_val;
-diff --git a/drivers/net/wireless/ti/wlcore/sdio.c b/drivers/net/wireless/ti/wlcore/sdio.c
-index 7afaf35f2453..9fd8cf2d270c 100644
---- a/drivers/net/wireless/ti/wlcore/sdio.c
-+++ b/drivers/net/wireless/ti/wlcore/sdio.c
-@@ -26,14 +26,6 @@
- #include "wl12xx_80211.h"
- #include "io.h"
- 
--#ifndef SDIO_VENDOR_ID_TI
--#define SDIO_VENDOR_ID_TI		0x0097
--#endif
--
--#ifndef SDIO_DEVICE_ID_TI_WL1271
--#define SDIO_DEVICE_ID_TI_WL1271	0x4076
--#endif
--
- static bool dump = false;
- 
- struct wl12xx_sdio_glue {
++		if (unlikely(len <= FCS_LEN))
++			len = FCS_LEN + 2;
+ 		uskb = dev_alloc_skb(skb->len + 128);
+ 		if (likely(uskb)) {
+ 			memcpy(IEEE80211_SKB_RXCB(uskb), &rx_status,
 -- 
-2.19.1
+2.23.0
 
