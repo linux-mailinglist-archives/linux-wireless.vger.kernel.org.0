@@ -2,116 +2,106 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 519BCDD865
-	for <lists+linux-wireless@lfdr.de>; Sat, 19 Oct 2019 13:13:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D5D24DD867
+	for <lists+linux-wireless@lfdr.de>; Sat, 19 Oct 2019 13:14:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725895AbfJSLNG (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 19 Oct 2019 07:13:06 -0400
-Received: from us-smtp-1.mimecast.com ([207.211.31.81]:31686 "EHLO
-        us-smtp-delivery-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1725883AbfJSLNF (ORCPT
+        id S1725883AbfJSLOq (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 19 Oct 2019 07:14:46 -0400
+Received: from smtp.codeaurora.org ([198.145.29.96]:50342 "EHLO
+        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725792AbfJSLOp (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 19 Oct 2019 07:13:05 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1571483583;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=WoX9rczeRjvya0vnh4YYflEgbgCXdBdatjIIvrFPWu0=;
-        b=Y8vkzNLKbQGMa2euHCJRTV4d0MXSbadNwg0QNuJEl7DXmNql7OzXa+WlER3QdYXH3EcyN3
-        6x+KRPdhu0nkTlPx1wpWcKrwdYFMp8on1m4h9+GVI7VJBbjYA0uwYSWx8+tBdoMdLQJtEL
-        t7o788NeGdo9DnK955vOCw8hMx/j6Z8=
-Received: from mail-lj1-f200.google.com (mail-lj1-f200.google.com
- [209.85.208.200]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-159-gdVylvcfOxaMxhfdhI-amA-1; Sat, 19 Oct 2019 07:12:58 -0400
-Received: by mail-lj1-f200.google.com with SMTP id h19so1617819ljc.5
-        for <linux-wireless@vger.kernel.org>; Sat, 19 Oct 2019 04:12:58 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:in-reply-to:references:date
-         :message-id:mime-version;
-        bh=M4GgkX+LRADBECdK3BnJ0KmXqiIAAwYR2Rj8nOCvbRc=;
-        b=Pv+9bPNnCZRGFGasxd+Ic+w4zupaVRmrRwYxAjwd4njAAcgGzX4xriP59YQP+D8FF3
-         LGGWQNUhOpi4jMvzaq/t06/EGJ/4iG/9UQrzpHl1yAeT02lNzImF2B/zwCE88Qn5csUU
-         HRA0X9TU1pfqv4cCqRmOyOLSe9fgGfylwdnbzuFELOcT8EnyfeG5Xaslu/f8Y12W5st+
-         JcULfuJ51SPp3b51IUC+yP0WSYzr0wjjq7eonx5Gtg5VsvQq7YYv2HXiB1adsccaijq1
-         MvdyxNv83NMMpMvFQeFjMXjGXysegczgeBM+IIdJ6gr3UHziAoubr3r7MPoZNKy0TBAy
-         VEpA==
-X-Gm-Message-State: APjAAAV3hOWJYpllCXudljtTA/S7B8qPKI1NSBowFQVnNR2+FeoeBWa5
-        fA0z37xc7RR/I6ZbNpg6XFK7NTZ0fvWMQBDNjgxps0kttQc5B4ziGnE6lTJPw89EnkS6DSrb6Gq
-        JF3fd9QaW4bjFWCUF7NMjUx2Yu1c=
-X-Received: by 2002:a2e:a0d6:: with SMTP id f22mr9186477ljm.74.1571483577551;
-        Sat, 19 Oct 2019 04:12:57 -0700 (PDT)
-X-Google-Smtp-Source: APXvYqzlAKTSJxvndxc9u4z5wrZ6m3ed9972rGIVuaUby4/A2GFHKgjGkWh5J+VqEVLYMg27m8c8Kg==
-X-Received: by 2002:a2e:a0d6:: with SMTP id f22mr9186462ljm.74.1571483577382;
-        Sat, 19 Oct 2019 04:12:57 -0700 (PDT)
-Received: from alrua-x1.borgediget.toke.dk ([2a00:7660:6da:443::2])
-        by smtp.gmail.com with ESMTPSA id e19sm3391039lja.8.2019.10.19.04.12.56
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 19 Oct 2019 04:12:56 -0700 (PDT)
-Received: by alrua-x1.borgediget.toke.dk (Postfix, from userid 1000)
-        id 967CE1804C8; Sat, 19 Oct 2019 13:12:55 +0200 (CEST)
-From:   Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>
-To:     Kan Yan <kyan@google.com>
-Cc:     Johannes Berg <johannes@sipsolutions.net>,
-        linux-wireless@vger.kernel.org,
-        Make-Wifi-fast <make-wifi-fast@lists.bufferbloat.net>,
-        ath10k@lists.infradead.org, John Crispin <john@phrozen.org>,
-        Lorenzo Bianconi <lorenzo@kernel.org>,
-        Felix Fietkau <nbd@nbd.name>,
-        Rajkumar Manoharan <rmanohar@codeaurora.org>,
-        Kevin Hayes <kevinhayes@google.com>
-Subject: Re: [PATCH v3 4/4] mac80211: Use Airtime-based Queue Limits (AQL) on packet dequeue
-In-Reply-To: <CA+iem5sCTsPe4PW=0j20NoAratvdCvB0ss7zO3wMWLcirXsLgg@mail.gmail.com>
-References: <157140962094.2866668.3383184317264069493.stgit@toke.dk> <157140962534.2866668.1182822483250825739.stgit@toke.dk> <CA+iem5sCTsPe4PW=0j20NoAratvdCvB0ss7zO3wMWLcirXsLgg@mail.gmail.com>
-X-Clacks-Overhead: GNU Terry Pratchett
-Date:   Sat, 19 Oct 2019 13:12:55 +0200
-Message-ID: <87o8ydc7k8.fsf@toke.dk>
+        Sat, 19 Oct 2019 07:14:45 -0400
+Received: by smtp.codeaurora.org (Postfix, from userid 1000)
+        id 150D160D4C; Sat, 19 Oct 2019 11:14:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
+        s=default; t=1571483685;
+        bh=WPjGoPsWvB8sgjViJJX+0PY6Iln7rDmcCavy1L53H/Q=;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+        b=HW/hEV4S6IWm6nXzx2/QhZ0h1yNJFlfXSgmMfhJQcniBuKMrYFYpIhSx+VDXrmnmB
+         Mp8hZGiqmzqUhEwDmbvGoUx3mpbINNn92Se4v2AiCzhfMWoEl/G2uVE6tCFsxGiJ/U
+         oASff5nqLj0jTPHqCWcTUWzoLcffLQQQt/TJ7AXo=
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        pdx-caf-mail.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.7 required=2.0 tests=ALL_TRUSTED,BAYES_00,
+        DKIM_INVALID,DKIM_SIGNED,SPF_NONE autolearn=no autolearn_force=no
+        version=3.4.0
+Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo@smtp.codeaurora.org)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 982C66092D;
+        Sat, 19 Oct 2019 11:14:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
+        s=default; t=1571483684;
+        bh=WPjGoPsWvB8sgjViJJX+0PY6Iln7rDmcCavy1L53H/Q=;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+        b=Qn5q4uEI3ErPZGJHuC7R9MGf5Q4djatOh0jpLrWnBHawVPY5EOm61Hqk3NVWvPnZQ
+         H8sy/zeGtbr/dy2lNkCt77JGvluiVQgCANP8Hnl5HWbfpwZ9EYptsKevA4K4nbE0CX
+         C+XqxJ/aMXdEfPjgbcv65M2iEgeZ7e8qSBAAXK6k=
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 982C66092D
+Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
+From:   Kalle Valo <kvalo@codeaurora.org>
+To:     Brian Norris <briannorris@chromium.org>
+Cc:     Tony Chuang <yhchuang@realtek.com>,
+        linux-wireless <linux-wireless@vger.kernel.org>
+Subject: Re: [PATCH v2 4/6] rtw88: update regulatory settings implementaion
+References: <20191016123301.2649-1-yhchuang@realtek.com>
+        <20191016123301.2649-5-yhchuang@realtek.com>
+        <CA+ASDXMj_f9q1aKgkcqd+2NPmxQfcQsJK8zQLUQSu8DSUW7Fsw@mail.gmail.com>
+        <F7CD281DE3E379468C6D07993EA72F84D1900CF3@RTITMBSVM04.realtek.com.tw>
+        <CA+ASDXPkU8+8haHbyiQ5gf2e6rZ-2ks=D6zfV0CDnAzaWPZXFA@mail.gmail.com>
+Date:   Sat, 19 Oct 2019 14:14:41 +0300
+In-Reply-To: <CA+ASDXPkU8+8haHbyiQ5gf2e6rZ-2ks=D6zfV0CDnAzaWPZXFA@mail.gmail.com>
+        (Brian Norris's message of "Wed, 16 Oct 2019 20:17:32 -0700")
+Message-ID: <87lfthvvfi.fsf@kamboji.qca.qualcomm.com>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
 MIME-Version: 1.0
-X-MC-Unique: gdVylvcfOxaMxhfdhI-amA-1
-X-Mimecast-Spam-Score: 0
-Content-Type: text/plain; charset=WINDOWS-1252
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Kan Yan <kyan@google.com> writes:
+Brian Norris <briannorris@chromium.org> writes:
 
->> +       if (local->airtime_flags & AIRTIME_USE_AQL) {
->> +               airtime =3D ieee80211_calc_expected_tx_airtime(hw, vif, =
-txq->sta,
->> +                                                            skb->len);
->> +               if (airtime) {
->> +                       /* We only have 10 bits in tx_time_est, so store=
- airtime
->> +                        * in increments of 4 us and clamp that to 2**10=
-.
->> +                        */
->> +                       info->tx_time_est =3D min_t(u32, airtime >> 2, 1=
- << 10);
->> +                       ieee80211_sta_update_pending_airtime(local, tx.s=
-ta, ac,
->> +                                                            airtime, fa=
-lse);
->> +               }
->> +       }
->> +
+> On Wed, Oct 16, 2019 at 7:55 PM Tony Chuang <yhchuang@realtek.com> wrote:
+>>
+>> From: Brian Norris
+>> >
+>> > On Wed, Oct 16, 2019 at 5:33 AM <yhchuang@realtek.com> wrote:
+>> > > This also supports user regulatory hints, and it should only be
+>> > > enabled for specific distributions that need this to correct
+>> > > the cards reglutory.
+> ...
+>> > There should be a pretty high bar for introducing either new CONFIG_*
+>> > options or module parameters, in my opinion, and I'm not sure you
+>> > really satisfied it. Why "should only be enabled" by certain
+>> > distributions? Your opinion? If it's the technical limitation you
+>> > refer to ("efuse settings"), then just detect the efuse and prevent
+>> > user hints only on those modules.
+>> >
+>>
+>> Because the efuse/module does not contain the information if the
+>> user's hint is allowed. But sometimes distributions require to set the
+>> regulatory via "NL80211_CMD_SET_REG".
+>> So we are leaving the CONFIG_* here for some reason that needs it.
 >
-> It should be:
->                          ieee80211_sta_update_pending_airtime(local, tx.s=
-ta, ac,
+> Is there ever a case where user hint is not allowed? For what reason?
+> If not efuse, then what?
 >
-> info->tx_time_est << 2, false);
->
-> The airtime rounded to 4us (info->tx_time_est << 2), instead of the
-> original airtime should be used when registering the pending airtime,
-> to keep it consistent with airtime subtracted when the skb is freed.
+> Or alternatively: if someone sets CONFIG_RTW88_REGD_USER_REG_HINTS=y,
+> then what problems will they have? Technical problems (e.g., firmware
+> will crash on certain modules) or <other> problems?
 
-Yes, I realised that last night as well. The rounding is also off (max
-is 2**10-1, not 2**10. Will send a v4 :)
+I'm not convinced either that a Kconfig option is the correct thing to
+do here. We need to understand more about the background first.
 
--Toke
+This patch needs a lot more discussion, please move it out from this
+patchset and handle it separately. That way it won't block other
+patches.
 
+-- 
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
