@@ -2,81 +2,86 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 002A1DDF15
-	for <lists+linux-wireless@lfdr.de>; Sun, 20 Oct 2019 17:12:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 970D2DDFEA
+	for <lists+linux-wireless@lfdr.de>; Sun, 20 Oct 2019 20:11:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726467AbfJTPMJ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 20 Oct 2019 11:12:09 -0400
-Received: from mail-wr1-f66.google.com ([209.85.221.66]:39574 "EHLO
-        mail-wr1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726438AbfJTPMJ (ORCPT
+        id S1726784AbfJTSLI (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 20 Oct 2019 14:11:08 -0400
+Received: from mail-io1-f43.google.com ([209.85.166.43]:34942 "EHLO
+        mail-io1-f43.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726738AbfJTSLI (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 20 Oct 2019 11:12:09 -0400
-Received: by mail-wr1-f66.google.com with SMTP id r3so11043025wrj.6;
-        Sun, 20 Oct 2019 08:12:07 -0700 (PDT)
+        Sun, 20 Oct 2019 14:11:08 -0400
+Received: by mail-io1-f43.google.com with SMTP id t18so9075887iog.2
+        for <linux-wireless@vger.kernel.org>; Sun, 20 Oct 2019 11:11:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=sEDPpuabV3/B35Mj82XikN4wgjEHBJYpPuqoickG7cM=;
-        b=qe7JRxXbGbvrO0+E0KKpDJTcZaU1q5xXn2OMubvAwzdz6DXYAFokTgupTFoolqGyjg
-         A6KRGTXAyoj4xsKyZ9hk7cwVP0lmWjMLgtqa3oPhH1GCriZSTXht8bdFzzAwN3Thtm6a
-         zJcjZc6VXK0ADr3Rn6HZ9t5VNQ0r2K0dcDHQbGfz97/1IJ3l1p1NVLHdJZOYCwSUsMO9
-         0N75im9QJWuGekHRmtuGXTXpSLgODycgvCE+yH8zM6slPokq7DmscgUhyKkzqbZ+O6t9
-         YMTNlWiGr/iC0i5HVn+9IGiN1TYHeViLEwNLYWCgUc3AIES6tKXttTV4dmkw4q4c98CC
-         e68Q==
+        d=mojatatu-com.20150623.gappssmtp.com; s=20150623;
+        h=to:from:subject:cc:message-id:date:user-agent:mime-version
+         :content-language:content-transfer-encoding;
+        bh=WwwOJG6cLnG5xe3kjsXT2ilCOHWGZRdMg+j74Vw53t4=;
+        b=xIRXpq8f/TDXgDmgVcZmBmcpBA1YW2MqqLg1daMjdWhX29XZxDpk+kWpAbHEc9I9ak
+         QvZk0TsCqH8w+tGANCynHQASn8DjmWLsCvql3TAMT6Sl4YSOJHhZ0Ubr2XRydLZW2b8S
+         uX2+tIPVXTRL6jA8P5UDWJhIlmSC4FBNjJFWJOpADWdR6+A/LhT7sDXrSsYGLUdXmCcM
+         svh6WrY1AREuxupY5jZaNQFUWvYL+0HmIlkPpg4b4OADBTPojBAlotOydJHDMiqAE6Fz
+         +IOFGJPqAFYRPBlE/p4t+f9EWrOeiYNhfmctDfjwzMIZEVUN6YHBHDRgIClvdY/G5yBN
+         jloA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references;
-        bh=sEDPpuabV3/B35Mj82XikN4wgjEHBJYpPuqoickG7cM=;
-        b=gcZRQA9MFWYx75XO1oxDxzg0ZIkN3jqN+c6ybX72Gu9G4LvOMhacAQVfY4hj1n+eAD
-         6mBQGHQMdzeuTZfje8nBhCKnKWdJy1onYBq0vEIh5Ha1Trf2MG/plwZTm+/ehrey3qut
-         cM+7tcZ+9XPjmIKZxsdr6yisVHWnpbrGBquS5Cacowcgmm3cPPKvMve1sjREocvxUVpH
-         MNzFkI3DFqyDVUV3+Esz7bRv01R43dKxoNSjYbEx0QDmK2V0Zn2Vx7CXWNQx1L6NBk1V
-         fMqS9z1XxxYiCkyLW4rgM57GyOOjTWEab3ThVHKvUfBX4e73d+0PyseY2fVyMHGP8SUh
-         oUIg==
-X-Gm-Message-State: APjAAAUzfJ7pWLhe5c44gB1PPVTlqMz0JUPQ1+V1YPeMDFOo2qr6Mm6l
-        dHcc1htzSXHjEuP690BhRiC3HVLNE8k4ng==
-X-Google-Smtp-Source: APXvYqw0jfXTUHK8SC+t6VvHbj+B+5ZX/+DPYODZPb1bq/b1S92Q1hjT09/etSBReCQR1wHjlCNhTg==
-X-Received: by 2002:a05:6000:12cd:: with SMTP id l13mr15862953wrx.181.1571584326730;
-        Sun, 20 Oct 2019 08:12:06 -0700 (PDT)
-Received: from localhost.localdomain ([31.147.208.18])
-        by smtp.googlemail.com with ESMTPSA id e12sm6367204wrs.49.2019.10.20.08.12.05
-        (version=TLS1 cipher=AES128-SHA bits=128/128);
-        Sun, 20 Oct 2019 08:12:06 -0700 (PDT)
-From:   =?UTF-8?q?Tomislav=20Po=C5=BEega?= <pozega.tomislav@gmail.com>
-To:     kvalo@codeaurora.org
-Cc:     netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-        ath10k@lists.infradead.org, davem@davemloft.net,
-        torvalds@linux-foundation.org, johannes@sipsolutions.net,
-        linux-wireless@vger.kernel.org
-Subject: Re: WARNING at net/mac80211/sta_info.c:1057 (__sta_info_destroy_part2())
-Date:   Sun, 20 Oct 2019 17:12:00 +0200
-Message-Id: <1571584320-29816-1-git-send-email-pozega.tomislav@gmail.com>
-X-Mailer: git-send-email 1.7.0.4
-In-Reply-To: <87lfuuln5n.fsf@tynnyri.adurom.net>
-References: <87lfuuln5n.fsf@tynnyri.adurom.net>
+        h=x-gm-message-state:to:from:subject:cc:message-id:date:user-agent
+         :mime-version:content-language:content-transfer-encoding;
+        bh=WwwOJG6cLnG5xe3kjsXT2ilCOHWGZRdMg+j74Vw53t4=;
+        b=Bq6n7WctOD3P2j0FcPqUkmAflhuRgfNXHy7wnVKKrAnkNBOrI2i/wIvln5PeagsI+S
+         uszhUTM4lT/utlsKvs2fjqETEcvML3lS+lrwuwNRkoL0OHewKCzm0EzQ1XEiwktC43YW
+         UzIeuLP3uhX70x8mFf/SU97sh0XrVz4r0ml3ihoPQpX3OmuJfa0xltYAwn1AwQpgLh2O
+         TAOsEYO39jkJOYnsgzt1W4Bt0Oca1Rxc98YCMszmmMBPYq9aT2wOL+fbaK1Qel4CFPuT
+         TnKiT/wPIPOO4Y5q7KPlUUKe6YxFzDWt8oqh9VoSwwu+To48abc6mBe7iMkNoJjkuKhF
+         CLaw==
+X-Gm-Message-State: APjAAAUDDnyRD/sqldwfgwhuyh2WFNJ/ne84Sy17KN6Gm1eoMvBEVFru
+        QiSqE8R9tYVNxMoXi5ZEirtlxw==
+X-Google-Smtp-Source: APXvYqy+g0dW6i2W+ZwUWXvHoX5E4PThQJkpc6ElQkdeecg/jBrJXQlBfbZsm0QTf+vurjU7oUVUGA==
+X-Received: by 2002:a6b:d812:: with SMTP id y18mr859466iob.151.1571595066005;
+        Sun, 20 Oct 2019 11:11:06 -0700 (PDT)
+Received: from [192.168.0.124] (198-84-204-252.cpe.teksavvy.com. [198.84.204.252])
+        by smtp.googlemail.com with ESMTPSA id x4sm4448657ilm.57.2019.10.20.11.11.04
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Sun, 20 Oct 2019 11:11:05 -0700 (PDT)
+To:     people <people@netdevconf.org>
+From:   Jamal Hadi Salim <jhs@mojatatu.com>
+Subject: CFS for Netdev 0x14 open!
+Cc:     netfilter-devel@vger.kernel.org, linux-wireless@vger.kernel.org,
+        lwn@lwn.net, netdev@vger.kernel.org, netfilter@vger.kernel.org,
+        lartc@vger.kernel.org
+Message-ID: <65cebdca-7ed1-2bb5-450a-0bb8de7b6ff3@mojatatu.com>
+Date:   Sun, 20 Oct 2019 14:11:03 -0400
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.9.0
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-> -11 is -EAGAIN which would mean that the HTC credits have run out some
->  reason for the WMI command:
-> 
-> if (ep->tx_credits < credits) {
->         ath10k_dbg(ar, ATH10K_DBG_HTC,
->                 "htc insufficient credits ep %d required %d available %d\n",
->                 eid, credits, ep->tx_credits);
->         spin_unlock_bh(&htc->tx_lock);
->         ret = -EAGAIN;
->         goto err_pull;
-> }
-> 
-> Credits can run out, for example, if there's a lot of WMI command/event
-> activity and are not returned during the 3s wait, firmware crashed or
-> problems with the PCI bus.
 
-Hi
 
-Can this occur if the target memory is not properly allocated?
+We are pleased to announce the opening of Call For
+Submissions(CFS) for Netdev 0x14.
+
+For overview of topics, submissions and requirements
+please visit:
+https://netdevconf.info/0x14/submit-proposal.html
+
+For all submitted sessions, we employ a blind
+review process carried out by the Program Committee.
+Please refer to:
+https://www.netdevconf.info/0x14/pc_review.html
+
+Important dates:
+Closing of CFS: Wed, January 15, 2020.
+Notification by: Mon, January 20, 2020
+Conference dates:  Tue, March 17 to Fri, March 20, 2020.
+
+cheers,
+jamal
