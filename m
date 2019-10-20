@@ -2,103 +2,122 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 5DB17DDD4D
-	for <lists+linux-wireless@lfdr.de>; Sun, 20 Oct 2019 10:28:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D9BACDDD5B
+	for <lists+linux-wireless@lfdr.de>; Sun, 20 Oct 2019 10:56:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726063AbfJTI2U (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 20 Oct 2019 04:28:20 -0400
-Received: from smtp.codeaurora.org ([198.145.29.96]:48226 "EHLO
-        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725893AbfJTI2T (ORCPT
+        id S1726195AbfJTIzy (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 20 Oct 2019 04:55:54 -0400
+Received: from paleale.coelho.fi ([176.9.41.70]:50754 "EHLO
+        farmhouse.coelho.fi" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
+        with ESMTP id S1725893AbfJTIzy (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 20 Oct 2019 04:28:19 -0400
-Received: by smtp.codeaurora.org (Postfix, from userid 1000)
-        id 5432960D4C; Sun, 20 Oct 2019 08:28:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1571560099;
-        bh=VJ+3BY4N5uiFdl5h5/baueL661bRnGGWhze5C9VXYI4=;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=Js3qyiV/CqwSecWlDAfnFllxDIcnZmfbfUOb4lF9e6/1nL+PyNrM/4JpuEANIAo7c
-         jqMwQOrj+Cxl0DS8JqF1CpEE4R+XoUPRGHKvBT4fQnAxDtB2DSAbNiy12dZwd+GgCG
-         hs8ay3sCYy0z+KIUqn8ziSKf+82nQUntuGIJD20o=
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        pdx-caf-mail.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.7 required=2.0 tests=ALL_TRUSTED,BAYES_00,
-        DKIM_INVALID,DKIM_SIGNED,SPF_NONE autolearn=no autolearn_force=no
-        version=3.4.0
-Received: from x230.qca.qualcomm.com (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        (Authenticated sender: kvalo@smtp.codeaurora.org)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 841B360CA5;
-        Sun, 20 Oct 2019 08:28:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1571560098;
-        bh=VJ+3BY4N5uiFdl5h5/baueL661bRnGGWhze5C9VXYI4=;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=ikHQi7c3iFcWj1as1ykx1A1u76MB1bOgTtJZ/RSZc1FqE+345Lu5MYHUt6WIe/320
-         XOy4kBpuCWRz5KsogqLRXZ8a77TLE+b9a5/MTc7bctjt9FNhxGkSQ5a8WA2mu/tZCd
-         51kbkSzw4krYSN2XtPr3BVjDgeiMyV5gRgTf9GK0=
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 841B360CA5
-Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
-From:   Kalle Valo <kvalo@codeaurora.org>
-To:     Larry Finger <Larry.Finger@lwfinger.net>
-Cc:     linux-wireless@vger.kernel.org, pkshih@realtek.com,
-        Stable <stable@vger.kernel.org>
-Subject: Re: [PATCH V2] rtlwifi: rtl_pci: Fix problem of too small skb->len
-References: <20191020011153.29383-1-Larry.Finger@lwfinger.net>
-Date:   Sun, 20 Oct 2019 11:28:14 +0300
-In-Reply-To: <20191020011153.29383-1-Larry.Finger@lwfinger.net> (Larry
-        Finger's message of "Sat, 19 Oct 2019 20:11:53 -0500")
-Message-ID: <874l03lt29.fsf@codeaurora.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
+        Sun, 20 Oct 2019 04:55:54 -0400
+Received: from [91.156.6.193] (helo=redipa.ger.corp.intel.com)
+        by farmhouse.coelho.fi with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+        (Exim 4.92)
+        (envelope-from <luca@coelho.fi>)
+        id 1iM709-0003LY-Il; Sun, 20 Oct 2019 11:55:51 +0300
+From:   Luca Coelho <luca@coelho.fi>
+To:     kvalo@codeaurora.org
+Cc:     linux-wireless@vger.kernel.org
+Date:   Sun, 20 Oct 2019 11:55:33 +0300
+Message-Id: <20191020085545.16407-1-luca@coelho.fi>
+X-Mailer: git-send-email 2.23.0
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Transfer-Encoding: 8bit
+X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on farmhouse.coelho.fi
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.9 required=5.0 tests=ALL_TRUSTED,BAYES_00,
+        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.2
+Subject: [PATCH 00/12] iwlwifi: updates intended for v5.5 2019-20
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Larry Finger <Larry.Finger@lwfinger.net> writes:
+From: Luca Coelho <luciano.coelho@intel.com>
 
-> In commit 8020919a9b99 ("mac80211: Properly handle SKB with radiotap
-> only"), buffers whose length is too short cause a WARN_ON(1) to be
-> executed. This change exposed a fault in rtlwifi drivers, which is fixed
-> by increasing the length of the affected buffer before it is sent to
-> mac80211.
+Hi,
 
-With what frames, or in what scenarios, do you get these warnings?
+Here's the fourth set of patches intended for v5.5.  It's the usual
+development, new features, cleanups and bugfixes.
 
-> Cc: Stable <stable@vger.kernel.org> # v5.0+
-> Signed-off-by: Larry Finger <Larry.Finger@lwfinger.net>
-> ---
-> V2 - added missing usage of new len
-> ---
-> Please Apply to 5.4
-> ---
->  drivers/net/wireless/realtek/rtlwifi/pci.c | 5 ++++-
->  1 file changed, 4 insertions(+), 1 deletion(-)
->
-> diff --git a/drivers/net/wireless/realtek/rtlwifi/pci.c b/drivers/net/wireless/realtek/rtlwifi/pci.c
-> index 6087ec7a90a6..3e9185162e51 100644
-> --- a/drivers/net/wireless/realtek/rtlwifi/pci.c
-> +++ b/drivers/net/wireless/realtek/rtlwifi/pci.c
-> @@ -692,12 +692,15 @@ static void _rtl_pci_rx_to_mac80211(struct ieee80211_hw *hw,
->  		dev_kfree_skb_any(skb);
->  	} else {
->  		struct sk_buff *uskb = NULL;
-> +		int len = skb->len;
->  
-> +		if (unlikely(len <= FCS_LEN))
-> +			len = FCS_LEN + 2;
+The changes are:
 
-I don't understand this change, I think this needs a comment in the
-code, or better yet a proper define documenting the meaning of the
-value. What does these two bytes contain? Or are you just working around
-the mac80211 warning by increasing the length with a random value you
-chose?
+* Move ACPI handling code fully into acpi.c;
+* Increase the CTDP budget to improve signal strength;
+* A fix for compilation with no ACPI enabled;
+* Enable adaptive dwell on P2P interfaces;
+* Another scan FW API update;
+* A few clean-ups;
+* Other small fixes and improvements;
+
+As usual, I'm pushing this to a pending branch, for kbuild bot, and
+will send a pull-request later.
+
+Please review.
+
+Cheers,
+Luca.
+
+
+Colin Ian King (1):
+  iwlwifi: remove redundant assignment to variable bufsz
+
+Emmanuel Grumbach (1):
+  iwlwifi: mvm: sync the iwl_mvm_session_prot_notif layout
+
+Haim Dreyfuss (1):
+  iwlwifi: mvm: don't skip mgmt tid when flushing all tids
+
+Ihab Zhaika (1):
+  iwlwifi: refactor the SAR tables from mvm to acpi
+
+Johannes Berg (3):
+  iwlwifi: remove IWL_DEVICE_22560/IWL_DEVICE_FAMILY_22560
+  iwlwifi: 22000: fix some indentation
+  iwlwifi: mvm: fix non-ACPI function
+
+Mordechay Goodstein (1):
+  iwlwifi: mvm: start CTDP budget from 2400mA
+
+Shahar S Matityahu (3):
+  iwlwifi: scan: make new scan req versioning flow
+  iwlwifi: scan: support scan req cmd ver 12
+  iwlwifi: mvm: scan: enable adaptive dwell in p2p
+
+Wang Xuerui (1):
+  iwlwifi: mvm: fix unaligned read of rx_pkt_status
+
+ .../net/wireless/intel/iwlwifi/cfg/22000.c    |  50 +-
+ drivers/net/wireless/intel/iwlwifi/fw/acpi.c  | 297 +++++++++++-
+ drivers/net/wireless/intel/iwlwifi/fw/acpi.h  |  84 ++++
+ .../net/wireless/intel/iwlwifi/fw/api/scan.h  | 161 ++++---
+ .../intel/iwlwifi/fw/api/time-event.h         |   4 +-
+ .../net/wireless/intel/iwlwifi/fw/api/tx.h    |   6 +-
+ .../net/wireless/intel/iwlwifi/fw/runtime.h   |  11 +
+ .../net/wireless/intel/iwlwifi/iwl-config.h   |   1 -
+ drivers/net/wireless/intel/iwlwifi/iwl-csr.h  |   2 -
+ drivers/net/wireless/intel/iwlwifi/iwl-drv.c  |   2 +-
+ drivers/net/wireless/intel/iwlwifi/iwl-fh.h   |   2 +-
+ .../net/wireless/intel/iwlwifi/mvm/debugfs.c  |   7 +-
+ drivers/net/wireless/intel/iwlwifi/mvm/fw.c   | 361 ++-------------
+ .../net/wireless/intel/iwlwifi/mvm/mac80211.c |   2 +-
+ drivers/net/wireless/intel/iwlwifi/mvm/mvm.h  |  30 +-
+ drivers/net/wireless/intel/iwlwifi/mvm/ops.c  |   6 +-
+ drivers/net/wireless/intel/iwlwifi/mvm/rx.c   |   3 +-
+ drivers/net/wireless/intel/iwlwifi/mvm/rxmq.c |   4 +-
+ drivers/net/wireless/intel/iwlwifi/mvm/scan.c | 426 ++++++++++++++----
+ drivers/net/wireless/intel/iwlwifi/mvm/tt.c   |  43 +-
+ drivers/net/wireless/intel/iwlwifi/mvm/tx.c   |   4 +-
+ .../wireless/intel/iwlwifi/pcie/internal.h    |   4 +-
+ drivers/net/wireless/intel/iwlwifi/pcie/rx.c  |  53 +--
+ .../wireless/intel/iwlwifi/pcie/trans-gen2.c  |   4 +-
+ .../net/wireless/intel/iwlwifi/pcie/trans.c   |  31 +-
+ .../net/wireless/intel/iwlwifi/pcie/tx-gen2.c |  12 +-
+ drivers/net/wireless/intel/iwlwifi/pcie/tx.c  |   2 +-
+ 27 files changed, 966 insertions(+), 646 deletions(-)
 
 -- 
-Kalle Valo
+2.23.0
+
