@@ -2,25 +2,25 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B8BEDDDDC1
-	for <lists+linux-wireless@lfdr.de>; Sun, 20 Oct 2019 12:05:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B5542DDDC3
+	for <lists+linux-wireless@lfdr.de>; Sun, 20 Oct 2019 12:05:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726449AbfJTKF1 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 20 Oct 2019 06:05:27 -0400
-Received: from smtp.codeaurora.org ([198.145.29.96]:47642 "EHLO
+        id S1726464AbfJTKF3 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 20 Oct 2019 06:05:29 -0400
+Received: from smtp.codeaurora.org ([198.145.29.96]:47852 "EHLO
         smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726319AbfJTKF1 (ORCPT
+        with ESMTP id S1726319AbfJTKF2 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 20 Oct 2019 06:05:27 -0400
+        Sun, 20 Oct 2019 06:05:28 -0400
 Received: by smtp.codeaurora.org (Postfix, from userid 1000)
-        id 7DAAD611B8; Sun, 20 Oct 2019 10:05:15 +0000 (UTC)
+        id 771BF6147C; Sun, 20 Oct 2019 10:05:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1571565925;
-        bh=YE++7X8q7LQHDNPMEuRmurFLpL7ajXWo0UZhbEiSaQs=;
+        s=default; t=1571565927;
+        bh=PiIWvdSQZsP6jGeaQgl/Q7FZ/cwUfJpPJrXC/qOCe0U=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=fufgGaS73Ynym7uiJEc5ZuCQECMv5I2SigyMznjKR7/mtHohzzEVNIbIqlC88ihZT
-         YVlDC5mBOBbrTKH8rU0HhIDH/Wq0gJe1Hq2DycruQ3JpwuKfU6Grs/l5IweBYmRSZN
-         gFx4rOh426dM4DhN4ink+0F6jI0jrUDQ/B8YSJHw=
+        b=RRDY6USI9jjBGmTO8paOhuMtxzdXaS3t5a59IvaWn2KhQ/N+dUeV/l+TbJydF/SG/
+         iN4cYRtGXbgkqs+NNQgksryTv71F+chxZlQ8wXg0x6lhCQrYiQBV11a/SVMDE3Hl7R
+         e+RAZ4/njfBXWGN4802zHgsdrQef73kALq6VCar4=
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         pdx-caf-mail.web.codeaurora.org
 X-Spam-Level: 
@@ -31,24 +31,24 @@ Received: from x230.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-SHA256 (128/128 bits))
         (No client certificate requested)
         (Authenticated sender: kvalo@smtp.codeaurora.org)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id DFA49611F3;
-        Sun, 20 Oct 2019 10:05:11 +0000 (UTC)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id ACDD861284;
+        Sun, 20 Oct 2019 10:05:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1571565913;
-        bh=YE++7X8q7LQHDNPMEuRmurFLpL7ajXWo0UZhbEiSaQs=;
+        s=default; t=1571565914;
+        bh=PiIWvdSQZsP6jGeaQgl/Q7FZ/cwUfJpPJrXC/qOCe0U=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=d+3aPmsH6DYMOLAtaQ7uiwsmw5L6GquNyNAc4w6nYcf4xrsofGsrwm3mmXCQjBfx0
-         gYbl/cO+tDuCi78ICU3GhrwGpAuQdskaG8ZcoyGirsiF4KEjzVuybZT0O69cFnito2
-         kZhkxCZcgBaKmmHPi2C4MgrBgNUfklJ78TnlXBkE=
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org DFA49611F3
+        b=cXmP1K+ooZjTiTxqOPleC8s5FCHKC8S8z3iFJWdkKfMwuMKnpPx2iZyeJGdn81em1
+         R3Gylf51t2C+V7y6R/aP5kyS0l8QgpuwK4nNtIY8yhfXDpQYM04+yQw9EL7MK6p8/Y
+         Qm+/ISkh/VxqAU0cZ8Vd3sKP0wO+lTQNZzvAMpmc=
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org ACDD861284
 Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
 Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
 From:   Kalle Valo <kvalo@codeaurora.org>
 To:     linux-wireless@vger.kernel.org
 Cc:     ath11k@lists.infradead.org, devicetree@vger.kernel.org
-Subject: [PATCH v2 26/49] ath11k: add hal_tx.c
-Date:   Sun, 20 Oct 2019 13:03:44 +0300
-Message-Id: <1571565847-10338-27-git-send-email-kvalo@codeaurora.org>
+Subject: [PATCH v2 27/49] ath11k: add hal_tx.h
+Date:   Sun, 20 Oct 2019 13:03:45 +0300
+Message-Id: <1571565847-10338-28-git-send-email-kvalo@codeaurora.org>
 X-Mailer: git-send-email 2.7.4
 In-Reply-To: <1571565847-10338-1-git-send-email-kvalo@codeaurora.org>
 References: <1571565847-10338-1-git-send-email-kvalo@codeaurora.org>
@@ -61,239 +61,93 @@ X-Mailing-List: linux-wireless@vger.kernel.org
 
 Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
 ---
- drivers/net/wireless/ath/ath11k/hal_tx.c | 226 +++++++++++++++++++++++++++++++
- 1 file changed, 226 insertions(+)
+ drivers/net/wireless/ath/ath11k/hal_tx.h | 80 ++++++++++++++++++++++++++++++++
+ 1 file changed, 80 insertions(+)
 
-diff --git a/drivers/net/wireless/ath/ath11k/hal_tx.c b/drivers/net/wireless/ath/ath11k/hal_tx.c
+diff --git a/drivers/net/wireless/ath/ath11k/hal_tx.h b/drivers/net/wireless/ath/ath11k/hal_tx.h
 new file mode 100644
-index 000000000000..bb27591023fe
+index 000000000000..f955070bcf1e
 --- /dev/null
-+++ b/drivers/net/wireless/ath/ath11k/hal_tx.c
-@@ -0,0 +1,226 @@
-+// SPDX-License-Identifier: BSD-3-Clause-Clear
++++ b/drivers/net/wireless/ath/ath11k/hal_tx.h
+@@ -0,0 +1,80 @@
++/* SPDX-License-Identifier: BSD-3-Clause-Clear */
 +/*
 + * Copyright (c) 2018-2019 The Linux Foundation. All rights reserved.
 + */
 +
-+#include "ahb.h"
-+#include "hal.h"
-+#include "hal_tx.h"
++#ifndef ATH11K_HAL_TX_H
++#define ATH11K_HAL_TX_H
 +
-+#define DSCP_TID_MAP_TBL_ENTRY_SIZE 64
++#include "hal_desc.h"
 +
-+/* dscp_tid_map - Default DSCP-TID mapping
-+ *
-+ * DSCP        TID
-+ * 000000      0
-+ * 001000      1
-+ * 010000      2
-+ * 011000      3
-+ * 100000      4
-+ * 101000      5
-+ * 110000      6
-+ * 111000      7
-+ */
-+static const u8 dscp_tid_map[DSCP_TID_MAP_TBL_ENTRY_SIZE] = {
-+	0, 0, 0, 0, 0, 0, 0, 0,
-+	1, 1, 1, 1, 1, 1, 1, 1,
-+	2, 2, 2, 2, 2, 2, 2, 2,
-+	3, 3, 3, 3, 3, 3, 3, 3,
-+	4, 4, 4, 4, 4, 4, 4, 4,
-+	5, 5, 5, 5, 5, 5, 5, 5,
-+	6, 6, 6, 6, 6, 6, 6, 6,
-+	7, 7, 7, 7, 7, 7, 7, 7,
++#define HAL_TX_ADDRX_EN			1
++#define HAL_TX_ADDRY_EN			2
++
++#define HAL_TX_ADDR_SEARCH_INDEX	0
++#define HAL_TX_ADDR_SEARCH_DEFAULT	1
++
++struct hal_tx_info {
++	u16 meta_data_flags; /* %HAL_TCL_DATA_CMD_INFO0_META_ */
++	u8 ring_id;
++	u32 desc_id;
++	enum hal_tcl_desc_type type;
++	enum hal_tcl_encap_type encap_type;
++	dma_addr_t paddr;
++	u32 data_len;
++	u32 pkt_offset;
++	enum hal_encrypt_type encrypt_type;
++	u32 flags0; /* %HAL_TCL_DATA_CMD_INFO1_ */
++	u32 flags1; /* %HAL_TCL_DATA_CMD_INFO2_ */
++	u16 addr_search_flags; /* %HAL_TCL_DATA_CMD_INFO0_ADDR(X/Y)_ */
++	u16 bss_ast_hash;
++	u8 tid;
++	u8 search_type; /* %HAL_TX_ADDR_SEARCH_ */
++	u8 lmac_id;
++	u8 dscp_tid_tbl_idx;
++};
++
++/* TODO: Check if the actual desc macros can be used instead */
++#define HAL_TX_STATUS_FLAGS_FIRST_MSDU		BIT(0)
++#define HAL_TX_STATUS_FLAGS_LAST_MSDU		BIT(1)
++#define HAL_TX_STATUS_FLAGS_MSDU_IN_AMSDU	BIT(2)
++#define HAL_TX_STATUS_FLAGS_RATE_STATS_VALID	BIT(3)
++#define HAL_TX_STATUS_FLAGS_RATE_LDPC		BIT(4)
++#define HAL_TX_STATUS_FLAGS_RATE_STBC		BIT(5)
++#define HAL_TX_STATUS_FLAGS_OFDMA		BIT(6)
++
++#define HAL_TX_STATUS_DESC_LEN		sizeof(struct hal_wbm_release_ring)
++
++/* Tx status parsed from srng desc */
++struct hal_tx_status {
++	enum hal_wbm_rel_src_module buf_rel_source;
++	u32 desc_id;
++	enum hal_wbm_tqm_rel_reason status;
++	u8 ack_rssi;
++	enum hal_tx_rate_stats_bw bw;
++	enum hal_tx_rate_stats_pkt_type pkt_type;
++	enum hal_tx_rate_stats_sgi sgi;
++	u8 mcs;
++	u16 num_tones_in_ru;
++	u32 flags; /* %HAL_TX_STATUS_FLAGS_ */
++	u32 tsf;
++	u32 ppdu_id;
++	u8 try_cnt;
++	u8 tid;
++	u16 peer_id;
 +};
 +
 +void ath11k_hal_tx_cmd_desc_setup(struct ath11k_base *ab, void *cmd,
-+				  struct hal_tx_info *ti)
-+{
-+	struct hal_tcl_data_cmd *tcl_cmd = (struct hal_tcl_data_cmd *)cmd;
-+
-+	tcl_cmd->buf_addr_info.info0 =
-+		FIELD_PREP(BUFFER_ADDR_INFO0_ADDR, ti->paddr);
-+	tcl_cmd->buf_addr_info.info1 =
-+		FIELD_PREP(BUFFER_ADDR_INFO1_ADDR,
-+			   ((uint64_t)ti->paddr >> HAL_ADDR_MSB_REG_SHIFT));
-+	tcl_cmd->buf_addr_info.info1 |=
-+		FIELD_PREP(BUFFER_ADDR_INFO1_RET_BUF_MGR,
-+			   (ti->ring_id + HAL_RX_BUF_RBM_SW0_BM)) |
-+		FIELD_PREP(BUFFER_ADDR_INFO1_SW_COOKIE, ti->desc_id);
-+
-+	tcl_cmd->info0 =
-+		FIELD_PREP(HAL_TCL_DATA_CMD_INFO0_DESC_TYPE, ti->type) |
-+		FIELD_PREP(HAL_TCL_DATA_CMD_INFO0_ENCAP_TYPE, ti->encap_type) |
-+		FIELD_PREP(HAL_TCL_DATA_CMD_INFO0_ENCRYPT_TYPE,
-+			   ti->encrypt_type) |
-+		FIELD_PREP(HAL_TCL_DATA_CMD_INFO0_ADDRX_EN,
-+			   ti->addr_search_flags) |
-+		FIELD_PREP(HAL_TCL_DATA_CMD_INFO0_ADDRY_EN,
-+			   ti->addr_search_flags) |
-+		FIELD_PREP(HAL_TCL_DATA_CMD_INFO0_CMD_NUM,
-+			   ti->meta_data_flags);
-+
-+	tcl_cmd->info1 = ti->flags0 |
-+		FIELD_PREP(HAL_TCL_DATA_CMD_INFO1_DATA_LEN, ti->data_len) |
-+		FIELD_PREP(HAL_TCL_DATA_CMD_INFO1_PKT_OFFSET, ti->pkt_offset);
-+
-+	tcl_cmd->info2 = ti->flags1 |
-+		FIELD_PREP(HAL_TCL_DATA_CMD_INFO2_TID, ti->tid) |
-+		FIELD_PREP(HAL_TCL_DATA_CMD_INFO2_LMAC_ID, ti->lmac_id);
-+
-+	tcl_cmd->info3 = FIELD_PREP(HAL_TCL_DATA_CMD_INFO3_DSCP_TID_TABLE_IDX,
-+				    ti->dscp_tid_tbl_idx) |
-+			 FIELD_PREP(HAL_TCL_DATA_CMD_INFO3_SEARCH_INDEX,
-+				    ti->bss_ast_hash);
-+}
-+
-+/* Commit the descriptor to hardware */
-+void ath11k_hal_tx_desc_sync(void *tx_desc_cached, void *hw_desc)
-+{
-+	memcpy(hw_desc + sizeof(struct hal_tlv_hdr), tx_desc_cached,
-+	       sizeof(struct hal_tcl_data_cmd));
-+}
-+
-+/* Get the descriptor status from hardware */
-+void ath11k_hal_tx_status_desc_sync(void *hw_desc, void *local_desc)
-+{
-+	memcpy(local_desc, hw_desc, HAL_TX_STATUS_DESC_LEN);
-+}
-+
++				  struct hal_tx_info *ti);
++void ath11k_hal_tx_desc_sync(void *tx_desc_cached, void *hw_desc);
 +void ath11k_hal_tx_status_parse(struct ath11k_base *ab,
 +				struct hal_wbm_release_ring *desc,
-+				struct hal_tx_status *ts)
-+{
-+	ts->buf_rel_source =
-+		FIELD_GET(HAL_WBM_RELEASE_INFO0_REL_SRC_MODULE, desc->info0);
-+	if (ts->buf_rel_source != HAL_WBM_REL_SRC_MODULE_FW &&
-+	    ts->buf_rel_source != HAL_WBM_REL_SRC_MODULE_TQM)
-+		return;
-+
-+	ts->desc_id = FIELD_GET(BUFFER_ADDR_INFO1_SW_COOKIE,
-+				desc->buf_addr_info.info1);
-+
-+	if (ts->buf_rel_source == HAL_WBM_REL_SRC_MODULE_FW)
-+		return;
-+
-+	ts->status = FIELD_GET(HAL_WBM_RELEASE_INFO0_TQM_RELEASE_REASON,
-+			       desc->info0);
-+	ts->ppdu_id = FIELD_GET(HAL_WBM_RELEASE_INFO1_TQM_STATUS_NUMBER,
-+				desc->info1);
-+	ts->try_cnt = FIELD_GET(HAL_WBM_RELEASE_INFO1_TRANSMIT_COUNT,
-+				desc->info1);
-+
-+	ts->ack_rssi = FIELD_GET(HAL_WBM_RELEASE_INFO2_ACK_FRAME_RSSI,
-+				 desc->info2);
-+	if (desc->info2 & HAL_WBM_RELEASE_INFO2_FIRST_MSDU)
-+		ts->flags |= HAL_TX_STATUS_FLAGS_FIRST_MSDU;
-+
-+	if (desc->info2 & HAL_WBM_RELEASE_INFO2_LAST_MSDU)
-+		ts->flags |= HAL_TX_STATUS_FLAGS_LAST_MSDU;
-+
-+	if (desc->info2 & HAL_WBM_RELEASE_INFO2_MSDU_IN_AMSDU)
-+		ts->flags |= HAL_TX_STATUS_FLAGS_MSDU_IN_AMSDU;
-+
-+	ts->peer_id = FIELD_GET(HAL_WBM_RELEASE_INFO3_PEER_ID, desc->info3);
-+	ts->tid = FIELD_GET(HAL_WBM_RELEASE_INFO3_TID, desc->info3);
-+
-+	if (!(desc->rate_stats.info0 & HAL_TX_RATE_STATS_INFO0_VALID))
-+		return;
-+
-+	ts->flags |= HAL_TX_STATUS_FLAGS_RATE_STATS_VALID;
-+	ts->tsf = desc->rate_stats.tsf;
-+	ts->bw = FIELD_GET(HAL_TX_RATE_STATS_INFO0_BW, desc->rate_stats.info0);
-+	ts->pkt_type = FIELD_GET(HAL_TX_RATE_STATS_INFO0_PKT_TYPE,
-+				 desc->rate_stats.info0);
-+	if (desc->rate_stats.info0 & HAL_TX_RATE_STATS_INFO0_STBC)
-+		ts->flags |= HAL_TX_STATUS_FLAGS_RATE_STBC;
-+	if (desc->rate_stats.info0 & HAL_TX_RATE_STATS_INFO0_LDPC)
-+		ts->flags |= HAL_TX_STATUS_FLAGS_RATE_LDPC;
-+	if (desc->rate_stats.info0 & HAL_TX_RATE_STATS_INFO0_OFDMA_TX)
-+		ts->flags |= HAL_TX_STATUS_FLAGS_OFDMA;
-+
-+	ts->sgi = FIELD_GET(HAL_TX_RATE_STATS_INFO0_SGI,
-+			    desc->rate_stats.info0);
-+	ts->mcs = FIELD_GET(HAL_TX_RATE_STATS_INFO0_MCS,
-+			    desc->rate_stats.info0);
-+	ts->num_tones_in_ru = FIELD_GET(HAL_TX_RATE_STATS_INFO0_TONES_IN_RU,
-+					desc->rate_stats.info0);
-+}
-+
-+void ath11k_hal_tx_set_dscp_tid_map(struct ath11k_base *ab, int id)
-+{
-+	u32 ctrl_reg_val;
-+	u32 addr;
-+	u8 hw_map_val[HAL_DSCP_TID_TBL_SIZE];
-+	int i;
-+	u32 value;
-+	int cnt = 0;
-+
-+	ctrl_reg_val = ath11k_ahb_read32(ab, HAL_SEQ_WCSS_UMAC_TCL_REG +
-+					 HAL_TCL1_RING_CMN_CTRL_REG);
-+	/* Enable read/write access */
-+	ctrl_reg_val |= HAL_TCL1_RING_CMN_CTRL_DSCP_TID_MAP_PROG_EN;
-+	ath11k_ahb_write32(ab, HAL_SEQ_WCSS_UMAC_TCL_REG +
-+			   HAL_TCL1_RING_CMN_CTRL_REG, ctrl_reg_val);
-+
-+	addr = HAL_SEQ_WCSS_UMAC_TCL_REG + HAL_TCL1_RING_DSCP_TID_MAP +
-+	       (4 * id * (HAL_DSCP_TID_TBL_SIZE / 4));
-+
-+	/* Configure each DSCP-TID mapping in three bits there by configure
-+	 * three bytes in an iteration.
-+	 */
-+	for (i = 0; i < DSCP_TID_MAP_TBL_ENTRY_SIZE; i += 8) {
-+		value = FIELD_PREP(HAL_TCL1_RING_FIELD_DSCP_TID_MAP0,
-+				   dscp_tid_map[i]) |
-+			FIELD_PREP(HAL_TCL1_RING_FIELD_DSCP_TID_MAP1,
-+				   dscp_tid_map[i + 1]) |
-+			FIELD_PREP(HAL_TCL1_RING_FIELD_DSCP_TID_MAP2,
-+				   dscp_tid_map[i + 2]) |
-+			FIELD_PREP(HAL_TCL1_RING_FIELD_DSCP_TID_MAP3,
-+				   dscp_tid_map[i + 3]) |
-+			FIELD_PREP(HAL_TCL1_RING_FIELD_DSCP_TID_MAP4,
-+				   dscp_tid_map[i + 4]) |
-+			FIELD_PREP(HAL_TCL1_RING_FIELD_DSCP_TID_MAP5,
-+				   dscp_tid_map[i + 5]) |
-+			FIELD_PREP(HAL_TCL1_RING_FIELD_DSCP_TID_MAP6,
-+				   dscp_tid_map[i + 6]) |
-+			FIELD_PREP(HAL_TCL1_RING_FIELD_DSCP_TID_MAP7,
-+				   dscp_tid_map[i + 7]);
-+		memcpy(&hw_map_val[cnt], (u8 *)&value, 3);
-+		cnt += 3;
-+	}
-+
-+	for (i = 0; i < HAL_DSCP_TID_TBL_SIZE; i += 4) {
-+		ath11k_ahb_write32(ab, addr, *(u32 *)&hw_map_val[i]);
-+		addr += 4;
-+	}
-+
-+	/* Disable read/write access */
-+	ctrl_reg_val = ath11k_ahb_read32(ab, HAL_SEQ_WCSS_UMAC_TCL_REG +
-+					 HAL_TCL1_RING_CMN_CTRL_REG);
-+	ctrl_reg_val &= ~HAL_TCL1_RING_CMN_CTRL_DSCP_TID_MAP_PROG_EN;
-+	ath11k_ahb_write32(ab, HAL_SEQ_WCSS_UMAC_TCL_REG +
-+			   HAL_TCL1_RING_CMN_CTRL_REG,
-+			   ctrl_reg_val);
-+}
-+
-+void ath11k_hal_tx_init_data_ring(struct ath11k_base *ab, struct hal_srng *srng)
-+{
-+	struct hal_srng_params params;
-+	struct hal_tlv_hdr *tlv;
-+	int i, entry_size;
-+	u8 *desc;
-+
-+	memset(&params, 0, sizeof(params));
-+
-+	entry_size = ath11k_hal_srng_get_entrysize(HAL_TCL_DATA);
-+	ath11k_hal_srng_get_params(ab, srng, &params);
-+	desc = (u8 *)params.ring_base_vaddr;
-+
-+	for (i = 0; i < params.num_entries; i++) {
-+		tlv = (struct hal_tlv_hdr *)desc;
-+		tlv->tl = FIELD_PREP(HAL_TLV_HDR_TAG, HAL_TCL_DATA_CMD) |
-+			  FIELD_PREP(HAL_TLV_HDR_LEN,
-+				     sizeof(struct hal_tcl_data_cmd));
-+		desc += entry_size;
-+	}
-+}
++				struct hal_tx_status *ts);
++void ath11k_hal_tx_status_desc_sync(void *hw_desc, void *local_desc);
++void ath11k_hal_tx_set_dscp_tid_map(struct ath11k_base *ab, int id);
++int ath11k_hal_reo_cmd_send(struct ath11k_base *ab, struct hal_srng *srng,
++			    enum hal_reo_cmd_type type,
++			    struct ath11k_hal_reo_cmd *cmd);
++void ath11k_hal_tx_init_data_ring(struct ath11k_base *ab,
++				  struct hal_srng *srng);
++#endif
 
