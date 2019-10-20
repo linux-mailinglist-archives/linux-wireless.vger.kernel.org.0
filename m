@@ -2,60 +2,63 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 970D2DDFEA
-	for <lists+linux-wireless@lfdr.de>; Sun, 20 Oct 2019 20:11:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C0085DE058
+	for <lists+linux-wireless@lfdr.de>; Sun, 20 Oct 2019 22:13:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726784AbfJTSLI (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 20 Oct 2019 14:11:08 -0400
-Received: from mail-io1-f43.google.com ([209.85.166.43]:34942 "EHLO
-        mail-io1-f43.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726738AbfJTSLI (ORCPT
+        id S1725977AbfJTUNR (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 20 Oct 2019 16:13:17 -0400
+Received: from mail-ot1-f66.google.com ([209.85.210.66]:36237 "EHLO
+        mail-ot1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725940AbfJTUNQ (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 20 Oct 2019 14:11:08 -0400
-Received: by mail-io1-f43.google.com with SMTP id t18so9075887iog.2
-        for <linux-wireless@vger.kernel.org>; Sun, 20 Oct 2019 11:11:06 -0700 (PDT)
+        Sun, 20 Oct 2019 16:13:16 -0400
+Received: by mail-ot1-f66.google.com with SMTP id 67so9251525oto.3;
+        Sun, 20 Oct 2019 13:13:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=mojatatu-com.20150623.gappssmtp.com; s=20150623;
-        h=to:from:subject:cc:message-id:date:user-agent:mime-version
-         :content-language:content-transfer-encoding;
-        bh=WwwOJG6cLnG5xe3kjsXT2ilCOHWGZRdMg+j74Vw53t4=;
-        b=xIRXpq8f/TDXgDmgVcZmBmcpBA1YW2MqqLg1daMjdWhX29XZxDpk+kWpAbHEc9I9ak
-         QvZk0TsCqH8w+tGANCynHQASn8DjmWLsCvql3TAMT6Sl4YSOJHhZ0Ubr2XRydLZW2b8S
-         uX2+tIPVXTRL6jA8P5UDWJhIlmSC4FBNjJFWJOpADWdR6+A/LhT7sDXrSsYGLUdXmCcM
-         svh6WrY1AREuxupY5jZaNQFUWvYL+0HmIlkPpg4b4OADBTPojBAlotOydJHDMiqAE6Fz
-         +IOFGJPqAFYRPBlE/p4t+f9EWrOeiYNhfmctDfjwzMIZEVUN6YHBHDRgIClvdY/G5yBN
-         jloA==
+        d=gmail.com; s=20161025;
+        h=sender:from:subject:to:cc:references:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=G+2eqRRy4akls0unQNzeQFHny5jIQlyDN020J7AGyQc=;
+        b=JdNB3IqMzsHXrJnNdQsSyJeytpFuiwA4dUwsY+gsS3RfDwW36Tsa1BqxJ2U/N7ULaN
+         mYymbmzmkaBa1WwNouPkTReYEjadmBiiLSLlwEmRcwuubjZdttHcqRO++dtIuc0uxPdy
+         CliS/V+rdKANoBCVSJ9t5CSsxgwwxQ+s7vMVqEpVp54OOLVCi0mNY/c0YbHw/mNc2m/F
+         83e51FEV7CJiQJ7FVmcLWk5iTfq64OCNsMuNi24+EBDKlyN2clBHwTJX/DNkDji/X9O2
+         vmINZTyMDh+V9gB5Lzl7hhcrO2hQM7neNwwuklmNIzx5Xcipv0BxQDCO41UCPmcoCdHm
+         lYVQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:to:from:subject:cc:message-id:date:user-agent
-         :mime-version:content-language:content-transfer-encoding;
-        bh=WwwOJG6cLnG5xe3kjsXT2ilCOHWGZRdMg+j74Vw53t4=;
-        b=Bq6n7WctOD3P2j0FcPqUkmAflhuRgfNXHy7wnVKKrAnkNBOrI2i/wIvln5PeagsI+S
-         uszhUTM4lT/utlsKvs2fjqETEcvML3lS+lrwuwNRkoL0OHewKCzm0EzQ1XEiwktC43YW
-         UzIeuLP3uhX70x8mFf/SU97sh0XrVz4r0ml3ihoPQpX3OmuJfa0xltYAwn1AwQpgLh2O
-         TAOsEYO39jkJOYnsgzt1W4Bt0Oca1Rxc98YCMszmmMBPYq9aT2wOL+fbaK1Qel4CFPuT
-         TnKiT/wPIPOO4Y5q7KPlUUKe6YxFzDWt8oqh9VoSwwu+To48abc6mBe7iMkNoJjkuKhF
-         CLaw==
-X-Gm-Message-State: APjAAAUDDnyRD/sqldwfgwhuyh2WFNJ/ne84Sy17KN6Gm1eoMvBEVFru
-        QiSqE8R9tYVNxMoXi5ZEirtlxw==
-X-Google-Smtp-Source: APXvYqy+g0dW6i2W+ZwUWXvHoX5E4PThQJkpc6ElQkdeecg/jBrJXQlBfbZsm0QTf+vurjU7oUVUGA==
-X-Received: by 2002:a6b:d812:: with SMTP id y18mr859466iob.151.1571595066005;
-        Sun, 20 Oct 2019 11:11:06 -0700 (PDT)
-Received: from [192.168.0.124] (198-84-204-252.cpe.teksavvy.com. [198.84.204.252])
-        by smtp.googlemail.com with ESMTPSA id x4sm4448657ilm.57.2019.10.20.11.11.04
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Sun, 20 Oct 2019 11:11:05 -0700 (PDT)
-To:     people <people@netdevconf.org>
-From:   Jamal Hadi Salim <jhs@mojatatu.com>
-Subject: CFS for Netdev 0x14 open!
-Cc:     netfilter-devel@vger.kernel.org, linux-wireless@vger.kernel.org,
-        lwn@lwn.net, netdev@vger.kernel.org, netfilter@vger.kernel.org,
-        lartc@vger.kernel.org
-Message-ID: <65cebdca-7ed1-2bb5-450a-0bb8de7b6ff3@mojatatu.com>
-Date:   Sun, 20 Oct 2019 14:11:03 -0400
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.9.0
+        h=x-gm-message-state:sender:from:subject:to:cc:references:message-id
+         :date:user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=G+2eqRRy4akls0unQNzeQFHny5jIQlyDN020J7AGyQc=;
+        b=S+1ZA88CXFahMF5N2rag4somcLy37Ws2EoFkouGD8jW6te7n2qEmmQb23OJ3KrHu/D
+         TK7oJJ9V+ihLXaKObLWVhyiUU1vdaGere+pP7gtDEtW2EMC3bYPo9764Ozf90cKaAM5R
+         2hozaWlq59a4RGWTP9ontCaXROwjCqqTEBQXbxXnexPlYcedVKMhAJKhdqCN/eWNQml4
+         RLuZ6gzJcGzGKQ57ezri7qsaLqiIgrnoZ41BDv+pxScEIglAGsc4qajHyxynD0BEQNUt
+         RrfZnb4oFxhiF4T2qgISCPjGDdEq7my5NiwCw42oB7hz90b6f/GVk/uJGvw1CU7Xkin5
+         tjyA==
+X-Gm-Message-State: APjAAAX8p6lDQASoUWBLG0IpRj7WdEvaXbXrbwmE1RqHoKLp8iegn5N0
+        uBtPukvlA9bvZOCNUZpKnYFhlOO5
+X-Google-Smtp-Source: APXvYqxmahmZichoOikLt9k6kxKGSHHII//DVkKmRgFF63iTf6Jdu8PJM8NYCzYaPoi3Q0IwiGTHgQ==
+X-Received: by 2002:a9d:5886:: with SMTP id x6mr14921331otg.351.1571602395728;
+        Sun, 20 Oct 2019 13:13:15 -0700 (PDT)
+Received: from [192.168.1.122] (cpe-24-31-245-230.kc.res.rr.com. [24.31.245.230])
+        by smtp.gmail.com with ESMTPSA id w13sm3165528oih.54.2019.10.20.13.13.15
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sun, 20 Oct 2019 13:13:15 -0700 (PDT)
+From:   Larry Finger <Larry.Finger@lwfinger.net>
+Subject: Re: [PATCH V2] rtlwifi: rtl_pci: Fix problem of too small skb->len
+To:     Kalle Valo <kvalo@codeaurora.org>
+Cc:     linux-wireless@vger.kernel.org, pkshih@realtek.com,
+        Stable <stable@vger.kernel.org>
+References: <20191020011153.29383-1-Larry.Finger@lwfinger.net>
+ <874l03lt29.fsf@codeaurora.org>
+Message-ID: <11ea185a-e2e8-5371-e9b3-4ac6f7880a00@lwfinger.net>
+Date:   Sun, 20 Oct 2019 15:13:14 -0500
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.1.1
 MIME-Version: 1.0
+In-Reply-To: <874l03lt29.fsf@codeaurora.org>
 Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
@@ -64,24 +67,22 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+On 10/20/19 3:28 AM, Kalle Valo wrote:
+> Larry Finger <Larry.Finger@lwfinger.net> writes:
+> 
+>> In commit 8020919a9b99 ("mac80211: Properly handle SKB with radiotap
+>> only"), buffers whose length is too short cause a WARN_ON(1) to be
+>> executed. This change exposed a fault in rtlwifi drivers, which is fixed
+>> by increasing the length of the affected buffer before it is sent to
+>> mac80211.
+> 
+> With what frames, or in what scenarios, do you get these warnings?
 
+I am not sure how they happen, but the firmware reports a 3-byte packet, which 
+leads to the warning. After looking at the code path again, a better approach 
+would be to consider those short packets the same way that those with CRC or 
+hardware errors and drop them.
 
-We are pleased to announce the opening of Call For
-Submissions(CFS) for Netdev 0x14.
+After more testing, I will send V3 using that approach.
 
-For overview of topics, submissions and requirements
-please visit:
-https://netdevconf.info/0x14/submit-proposal.html
-
-For all submitted sessions, we employ a blind
-review process carried out by the Program Committee.
-Please refer to:
-https://www.netdevconf.info/0x14/pc_review.html
-
-Important dates:
-Closing of CFS: Wed, January 15, 2020.
-Notification by: Mon, January 20, 2020
-Conference dates:  Tue, March 17 to Fri, March 20, 2020.
-
-cheers,
-jamal
+Larry
