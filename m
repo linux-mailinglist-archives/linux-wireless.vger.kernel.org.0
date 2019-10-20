@@ -2,25 +2,25 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 9FD3BDDDE5
-	for <lists+linux-wireless@lfdr.de>; Sun, 20 Oct 2019 12:06:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 70D5BDDDED
+	for <lists+linux-wireless@lfdr.de>; Sun, 20 Oct 2019 12:06:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726559AbfJTKGN (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 20 Oct 2019 06:06:13 -0400
-Received: from smtp.codeaurora.org ([198.145.29.96]:51678 "EHLO
+        id S1726561AbfJTKGQ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 20 Oct 2019 06:06:16 -0400
+Received: from smtp.codeaurora.org ([198.145.29.96]:51896 "EHLO
         smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726376AbfJTKGN (ORCPT
+        with ESMTP id S1726282AbfJTKGQ (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 20 Oct 2019 06:06:13 -0400
+        Sun, 20 Oct 2019 06:06:16 -0400
 Received: by smtp.codeaurora.org (Postfix, from userid 1000)
-        id ABD596124D; Sun, 20 Oct 2019 10:06:08 +0000 (UTC)
+        id 81AF9614BB; Sun, 20 Oct 2019 10:06:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1571565972;
-        bh=1v6TLeEtmhwNqEaAwzgjYBDH5RMoH2RrcEvrvQrbMK4=;
+        s=default; t=1571565975;
+        bh=VeiYsOiJ34C6mK+O1IMpFSujsRltb99Y7wY7+/sOdn8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=mou8xUqzXtArFBIzwd8JSzGqJPWWK9B7DO6jYBtaljAIiUnv/v6qQuNDbDxWdQplJ
-         7LzkDRA5pVHqrsoJcztnNZ+vnXYSu2uhfxqjz84GmTcKy2ussPWDg8+TzO34CUMbfm
-         TG2rlir12omhcUoDTfvyEbQR66y0bffyvIASi2BY=
+        b=SN4xG3rNN/mRNNxob3z/OG3Fpu8csdw2nBry8mtDGWbtbk3sQ6eJvQoCTijbzjWrj
+         Ybv7yCUZcStRwdKfZZ5tRZ+gjZDnYH7m8Vz2O7g2ILB+YEzNhurOytvlJtGkg5A0gF
+         FZgAUirpKTa83HXydD2gGoaPV2EnDLNvTqOsTdWc=
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         pdx-caf-mail.web.codeaurora.org
 X-Spam-Level: 
@@ -31,24 +31,24 @@ Received: from x230.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-SHA256 (128/128 bits))
         (No client certificate requested)
         (Authenticated sender: kvalo@smtp.codeaurora.org)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id A805F614B8;
-        Sun, 20 Oct 2019 10:06:06 +0000 (UTC)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 52D74616E5;
+        Sun, 20 Oct 2019 10:06:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1571565967;
-        bh=1v6TLeEtmhwNqEaAwzgjYBDH5RMoH2RrcEvrvQrbMK4=;
+        s=default; t=1571565969;
+        bh=VeiYsOiJ34C6mK+O1IMpFSujsRltb99Y7wY7+/sOdn8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=e8+aBExbbekhzV1VLaodlBfV5RshVwcVZLcvMfW6tYi5vMXPgTvH94KVgXKkNfmmK
-         UfyNY6YyE8bFIhf0eg4nIEycnKGn1P8CW0NTfbwxgAbN6Jrs4mj/QbK12MF7ZODT/J
-         L9h1sry+Esyft2omxH/1nA8/CYv8i8Ri9y2hk9lc=
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org A805F614B8
+        b=aCnQ4heKRUL7VjVmkpyAMdqArLL/QQm987KejCo0S3BcUCvOdbbtu1+mQn+RZt0lJ
+         urgPvBrmPal+MxoYRpo9y32ISFeQ8ShdF44IC4IIq2Cp/lMDPEjjfYu+rZ3K5UlTnj
+         DYpMIhS6xW3cIs1WRvDoMmpa0ZakV2kdQuxrBMG4=
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 52D74616E5
 Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
 Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
 From:   Kalle Valo <kvalo@codeaurora.org>
 To:     linux-wireless@vger.kernel.org
 Cc:     ath11k@lists.infradead.org, devicetree@vger.kernel.org
-Subject: [PATCH v2 48/49] ath: add ath11k to Kconfig
-Date:   Sun, 20 Oct 2019 13:04:06 +0300
-Message-Id: <1571565847-10338-49-git-send-email-kvalo@codeaurora.org>
+Subject: [PATCH v2 49/49] MAINTAINERS: add ath11k
+Date:   Sun, 20 Oct 2019 13:04:07 +0300
+Message-Id: <1571565847-10338-50-git-send-email-kvalo@codeaurora.org>
 X-Mailer: git-send-email 2.7.4
 In-Reply-To: <1571565847-10338-1-git-send-email-kvalo@codeaurora.org>
 References: <1571565847-10338-1-git-send-email-kvalo@codeaurora.org>
@@ -57,22 +57,30 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-(patches split for easier review, see the cover letter for more)
+Add an entry for ath11k to the MAINTAINERS file.
 
+Signed-off-by: John Crispin <john@phrozen.org>
 Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
 ---
- drivers/net/wireless/ath/Kconfig | 1 +
- 1 file changed, 1 insertion(+)
+ MAINTAINERS | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/drivers/net/wireless/ath/Kconfig b/drivers/net/wireless/ath/Kconfig
-index 82ab7c33cf97..88473bcdd196 100644
---- a/drivers/net/wireless/ath/Kconfig
-+++ b/drivers/net/wireless/ath/Kconfig
-@@ -61,5 +61,6 @@ source "drivers/net/wireless/ath/ar5523/Kconfig"
- source "drivers/net/wireless/ath/wil6210/Kconfig"
- source "drivers/net/wireless/ath/ath10k/Kconfig"
- source "drivers/net/wireless/ath/wcn36xx/Kconfig"
-+source "drivers/net/wireless/ath/ath11k/Kconfig"
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 677ef41cb012..ae00b2c443b6 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -13028,6 +13028,13 @@ T:	git git://git.kernel.org/pub/scm/linux/kernel/git/kvalo/ath.git
+ S:	Supported
+ F:	drivers/net/wireless/ath/ath10k/
  
- endif
++QUALCOMM ATHEROS ATH11K WIRELESS DRIVER
++M:	Kalle Valo <kvalo@codeaurora.org>
++L:	ath11k@lists.infradead.org
++T:	git git://git.kernel.org/pub/scm/linux/kernel/git/kvalo/ath.git
++S:	Supported
++F:	drivers/net/wireless/ath/ath11k/
++
+ QUALCOMM ATHEROS ATH9K WIRELESS DRIVER
+ M:	QCA ath9k Development <ath9k-devel@qca.qualcomm.com>
+ L:	linux-wireless@vger.kernel.org
 
