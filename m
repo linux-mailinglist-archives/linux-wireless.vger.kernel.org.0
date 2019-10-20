@@ -2,61 +2,57 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 92BC1DDD00
-	for <lists+linux-wireless@lfdr.de>; Sun, 20 Oct 2019 08:18:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5DB17DDD4D
+	for <lists+linux-wireless@lfdr.de>; Sun, 20 Oct 2019 10:28:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726194AbfJTGSe (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 20 Oct 2019 02:18:34 -0400
-Received: from smtp.codeaurora.org ([198.145.29.96]:57224 "EHLO
+        id S1726063AbfJTI2U (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 20 Oct 2019 04:28:20 -0400
+Received: from smtp.codeaurora.org ([198.145.29.96]:48226 "EHLO
         smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725928AbfJTGSd (ORCPT
+        with ESMTP id S1725893AbfJTI2T (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 20 Oct 2019 02:18:33 -0400
+        Sun, 20 Oct 2019 04:28:19 -0400
 Received: by smtp.codeaurora.org (Postfix, from userid 1000)
-        id 72B4560D52; Sun, 20 Oct 2019 06:18:32 +0000 (UTC)
+        id 5432960D4C; Sun, 20 Oct 2019 08:28:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1571552312;
-        bh=Q9+5wS+TPeabeVxkWEkwzYGbJK3BhjhTAvD4VfK2Chk=;
+        s=default; t=1571560099;
+        bh=VJ+3BY4N5uiFdl5h5/baueL661bRnGGWhze5C9VXYI4=;
         h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=cZyW+1CM1NSGdUdRiMHlW/UPWIxx6ztSzBtxDOyfspPDcTZfmSoiZYIbRiX2fHEJj
-         OLim2yl9MdMpAH4lcghYnJTGxWAToWu581MCwL2q3fjs+sGdKzkTusGJ6jaDmBFgzm
-         zbxo0CDloNezzQ7aYiCtJ6yw+sgmUrcoJf77PvJ0=
+        b=Js3qyiV/CqwSecWlDAfnFllxDIcnZmfbfUOb4lF9e6/1nL+PyNrM/4JpuEANIAo7c
+         jqMwQOrj+Cxl0DS8JqF1CpEE4R+XoUPRGHKvBT4fQnAxDtB2DSAbNiy12dZwd+GgCG
+         hs8ay3sCYy0z+KIUqn8ziSKf+82nQUntuGIJD20o=
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         pdx-caf-mail.web.codeaurora.org
 X-Spam-Level: 
 X-Spam-Status: No, score=-2.7 required=2.0 tests=ALL_TRUSTED,BAYES_00,
         DKIM_INVALID,DKIM_SIGNED,SPF_NONE autolearn=no autolearn_force=no
         version=3.4.0
-Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
+Received: from x230.qca.qualcomm.com (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
         (Authenticated sender: kvalo@smtp.codeaurora.org)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id DF74860BFA;
-        Sun, 20 Oct 2019 06:18:29 +0000 (UTC)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 841B360CA5;
+        Sun, 20 Oct 2019 08:28:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1571552311;
-        bh=Q9+5wS+TPeabeVxkWEkwzYGbJK3BhjhTAvD4VfK2Chk=;
+        s=default; t=1571560098;
+        bh=VJ+3BY4N5uiFdl5h5/baueL661bRnGGWhze5C9VXYI4=;
         h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=JxHoOUp4Q9gSTQgs9tH2kkjOaSSubWWLbaH8cCYPTXO9YuV4+Ufihal/9Z9xyigPI
-         jqxbhn2kG/C29pQSvE9jt9Hh6cRiql/eCJeEJm5YZbqCxaGHzqct33nzpLUrGuCHQ2
-         ALfqhVG5MJyIWl2e1V9xkHTSr/jcgcnG6WR8PUhU=
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org DF74860BFA
+        b=ikHQi7c3iFcWj1as1ykx1A1u76MB1bOgTtJZ/RSZc1FqE+345Lu5MYHUt6WIe/320
+         XOy4kBpuCWRz5KsogqLRXZ8a77TLE+b9a5/MTc7bctjt9FNhxGkSQ5a8WA2mu/tZCd
+         51kbkSzw4krYSN2XtPr3BVjDgeiMyV5gRgTf9GK0=
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 841B360CA5
 Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
 Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
 From:   Kalle Valo <kvalo@codeaurora.org>
-To:     Laura Abbott <labbott@redhat.com>
-Cc:     Ping-Ke Shih <pkshih@realtek.com>,
-        "David S . Miller" <davem@davemloft.net>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Nicolas Waisman <nico@semmle.com>
-Subject: Re: [PATCH v2] rtlwifi: Fix potential overflow on P2P code
-References: <20191018114321.13131-1-labbott@redhat.com>
-        <871rv9xb2l.fsf@kamboji.qca.qualcomm.com>
-        <51b732bf-4575-d7d1-daff-ec1c2171a303@redhat.com>
-Date:   Sun, 20 Oct 2019 09:18:26 +0300
-In-Reply-To: <51b732bf-4575-d7d1-daff-ec1c2171a303@redhat.com> (Laura Abbott's
-        message of "Sat, 19 Oct 2019 15:02:47 -0400")
-Message-ID: <878spgvt1p.fsf@kamboji.qca.qualcomm.com>
+To:     Larry Finger <Larry.Finger@lwfinger.net>
+Cc:     linux-wireless@vger.kernel.org, pkshih@realtek.com,
+        Stable <stable@vger.kernel.org>
+Subject: Re: [PATCH V2] rtlwifi: rtl_pci: Fix problem of too small skb->len
+References: <20191020011153.29383-1-Larry.Finger@lwfinger.net>
+Date:   Sun, 20 Oct 2019 11:28:14 +0300
+In-Reply-To: <20191020011153.29383-1-Larry.Finger@lwfinger.net> (Larry
+        Finger's message of "Sat, 19 Oct 2019 20:11:53 -0500")
+Message-ID: <874l03lt29.fsf@codeaurora.org>
 User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
 MIME-Version: 1.0
 Content-Type: text/plain
@@ -65,53 +61,44 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Laura Abbott <labbott@redhat.com> writes:
+Larry Finger <Larry.Finger@lwfinger.net> writes:
 
-> On 10/19/19 6:51 AM, Kalle Valo wrote:
->> Laura Abbott <labbott@redhat.com> writes:
->>
->>> Nicolas Waisman noticed that even though noa_len is checked for
->>> a compatible length it's still possible to overrun the buffers
->>> of p2pinfo since there's no check on the upper bound of noa_num.
->>> Bound noa_num against P2P_MAX_NOA_NUM.
->>>
->>> Reported-by: Nicolas Waisman <nico@semmle.com>
->>> Signed-off-by: Laura Abbott <labbott@redhat.com>
->>> ---
->>> v2: Use P2P_MAX_NOA_NUM instead of erroring out.
->>> ---
->>>   drivers/net/wireless/realtek/rtlwifi/ps.c | 6 ++++++
->>>   1 file changed, 6 insertions(+)
->>>
->>> diff --git a/drivers/net/wireless/realtek/rtlwifi/ps.c b/drivers/net/wireless/realtek/rtlwifi/ps.c
->>> index 70f04c2f5b17..fff8dda14023 100644
->>> --- a/drivers/net/wireless/realtek/rtlwifi/ps.c
->>> +++ b/drivers/net/wireless/realtek/rtlwifi/ps.c
->>> @@ -754,6 +754,9 @@ static void rtl_p2p_noa_ie(struct ieee80211_hw *hw, void *data,
->>>   				return;
->>>   			} else {
->>>   				noa_num = (noa_len - 2) / 13;
->>> +				if (noa_num > P2P_MAX_NOA_NUM)
->>> +					noa_num = P2P_MAX_NOA_NUM;
->>> +
->>>   			}
->>>   			noa_index = ie[3];
->>>   			if (rtlpriv->psc.p2p_ps_info.p2p_ps_mode ==
->>> @@ -848,6 +851,9 @@ static void rtl_p2p_action_ie(struct ieee80211_hw *hw, void *data,
->>>   				return;
->>>   			} else {
->>>   				noa_num = (noa_len - 2) / 13;
->>> +				if (noa_num > P2P_MAX_NOA_NUM)
->>> +					noa_num = P2P_MAX_NOA_NUM;
->>
->> IMHO using min() would be cleaner, but I'm fine with this as well. Up to
->> you.
->>
+> In commit 8020919a9b99 ("mac80211: Properly handle SKB with radiotap
+> only"), buffers whose length is too short cause a WARN_ON(1) to be
+> executed. This change exposed a fault in rtlwifi drivers, which is fixed
+> by increasing the length of the affected buffer before it is sent to
+> mac80211.
+
+With what frames, or in what scenarios, do you get these warnings?
+
+> Cc: Stable <stable@vger.kernel.org> # v5.0+
+> Signed-off-by: Larry Finger <Larry.Finger@lwfinger.net>
+> ---
+> V2 - added missing usage of new len
+> ---
+> Please Apply to 5.4
+> ---
+>  drivers/net/wireless/realtek/rtlwifi/pci.c | 5 ++++-
+>  1 file changed, 4 insertions(+), 1 deletion(-)
 >
-> I believe the intention is to re-write this anyway so I'd prefer to
-> just get this in given the uptick this issue seems to have gotten.
+> diff --git a/drivers/net/wireless/realtek/rtlwifi/pci.c b/drivers/net/wireless/realtek/rtlwifi/pci.c
+> index 6087ec7a90a6..3e9185162e51 100644
+> --- a/drivers/net/wireless/realtek/rtlwifi/pci.c
+> +++ b/drivers/net/wireless/realtek/rtlwifi/pci.c
+> @@ -692,12 +692,15 @@ static void _rtl_pci_rx_to_mac80211(struct ieee80211_hw *hw,
+>  		dev_kfree_skb_any(skb);
+>  	} else {
+>  		struct sk_buff *uskb = NULL;
+> +		int len = skb->len;
+>  
+> +		if (unlikely(len <= FCS_LEN))
+> +			len = FCS_LEN + 2;
 
-Ok, I'll queue this to v5.4.
+I don't understand this change, I think this needs a comment in the
+code, or better yet a proper define documenting the meaning of the
+value. What does these two bytes contain? Or are you just working around
+the mac80211 warning by increasing the length with a random value you
+chose?
 
 -- 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+Kalle Valo
