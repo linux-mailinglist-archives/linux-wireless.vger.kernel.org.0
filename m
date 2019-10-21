@@ -2,99 +2,97 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id BEA31DF039
-	for <lists+linux-wireless@lfdr.de>; Mon, 21 Oct 2019 16:45:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 90978DF09E
+	for <lists+linux-wireless@lfdr.de>; Mon, 21 Oct 2019 16:57:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728025AbfJUOpw (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 21 Oct 2019 10:45:52 -0400
-Received: from mail.kernel.org ([198.145.29.99]:41602 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726987AbfJUOpw (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 21 Oct 2019 10:45:52 -0400
-Received: from localhost (unknown [107.87.137.115])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id A29D12053B;
-        Mon, 21 Oct 2019 14:45:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1571669151;
-        bh=zSxr6boC9XHsm0JY6dQGUP4Y+pfXYhmlbUslvFJagHU=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=wzQU8e0ZUFNA8uAikS25qhU+PVVOE1nVLd8tB20kS4RhTnUBXXeHPWRWyrc6EfC/U
-         3MxufZMwym9OBnJTJHOyQO6DC35w13zixXNgT34vkVW+/WGisLaRsfWiKq9PCWqjMn
-         eR5n3fRA7Hjg+DR0PEPA/XiaRHmax8grcGZk3iAs=
-Date:   Mon, 21 Oct 2019 10:45:48 -0400
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     Geert Uytterhoeven <geert+renesas@glider.be>
-Cc:     Ludovic Desroches <ludovic.desroches@microchip.com>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        Nicolas Ferre <nicolas.ferre@microchip.com>,
-        Alexandre Belloni <alexandre.belloni@bootlin.com>,
-        Jaehoon Chung <jh80.chung@samsung.com>,
-        "David S . Miller" <davem@davemloft.net>,
-        "Rafael J . Wysocki" <rafael@kernel.org>,
+        id S1727355AbfJUO54 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 21 Oct 2019 10:57:56 -0400
+Received: from us-smtp-1.mimecast.com ([207.211.31.81]:32459 "EHLO
+        us-smtp-delivery-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1726289AbfJUO54 (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 21 Oct 2019 10:57:56 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1571669875;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=3LCLBxaSD8g38T8u/ybfkijweWWcwiPR1YNTgQYJONY=;
+        b=gGf5qFuVWsa0QSikEMSn73CvvUeATeb1VVd45A+akFPKg+CvR97JUaj50XyVRuR/LLKSth
+        gMvI084knV7XmszZoCC2jxZHnX692OIQb0x6LR3SYCMU+1NJ7aiDR7CxOFTftqOT3mkUPy
+        hEiC/3l5uhBOCZA/knoJz7HcmT3Mc5M=
+Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
+ [209.85.221.71]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-97-JrUssL2yPLii7IChtDN-2g-1; Mon, 21 Oct 2019 10:57:53 -0400
+Received: by mail-wr1-f71.google.com with SMTP id e25so6857996wra.9
+        for <linux-wireless@vger.kernel.org>; Mon, 21 Oct 2019 07:57:53 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:in-reply-to:references:date
+         :message-id:mime-version;
+        bh=uq0uDmRtgXO3GMqtdwEBfqJdfQu+hMv3WbuD0weh130=;
+        b=HMChfKHh98IlMBakeFh29EkAGSXEyQVRnCUetJ7qGeanWBVHlgSDigfiqdF2HAb5Qz
+         bdANAvGRlkRLkRux2QqelbHH4G34gfDhqdWISIvw+2CtWD1SGBqI9D2S3zqt+drvu00T
+         8OcHmggYCsrHmdJIuL3NChdbaZx+WJE6UEbZR1Chpwg0CRVGxpE75MF5Ebo9Vis31elD
+         rXxtGznwCvPtGBFYI0yoZ9UiFLXAVcAjwK3u8lng/VkfhxQ8SrbW29VdeQDMqeKuasrK
+         PcV/3eNKN8XjGYYJ/fRJFBTZWJSNvOAfW3/EnV3hqSlmHJ8IFVsHznLXGGK+3O7AzRUy
+         BDkQ==
+X-Gm-Message-State: APjAAAWuinqiLK9qzq0HQg2yfCCYnpNxlPP17nGOzRLt5gbjwvjXpCyi
+        tqywaawKNe6QOb/E5T9/Ova51NFNB4Ua8XSL1/efOA3ahBJp1SHzsGqeTiz+t4JePa93F2vFreY
+        fxQx86F+cizMrY7GzR9bxSj+cp/Q=
+X-Received: by 2002:adf:dbcf:: with SMTP id e15mr20788529wrj.134.1571669872539;
+        Mon, 21 Oct 2019 07:57:52 -0700 (PDT)
+X-Google-Smtp-Source: APXvYqwjEPCqaFlqG75Sr20Nuzi+1rlCvDUYLDh1LXlWULjlqxXbBBkdJRH2br3nUhJY4SbuXETleQ==
+X-Received: by 2002:adf:dbcf:: with SMTP id e15mr20788514wrj.134.1571669872348;
+        Mon, 21 Oct 2019 07:57:52 -0700 (PDT)
+Received: from alrua-x1.borgediget.toke.dk (borgediget.toke.dk. [85.204.121.218])
+        by smtp.gmail.com with ESMTPSA id a189sm2135474wma.2.2019.10.21.07.57.51
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 21 Oct 2019 07:57:51 -0700 (PDT)
+Received: by alrua-x1.borgediget.toke.dk (Postfix, from userid 1000)
+        id BB7831800E9; Mon, 21 Oct 2019 16:57:50 +0200 (CEST)
+From:   Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>
+To:     Kalle Valo <kvalo@codeaurora.org>, Kan Yan <kyan@google.com>
+Cc:     make-wifi-fast@lists.bufferbloat.net,
+        linux-wireless@vger.kernel.org, ath10k@lists.infradead.org,
+        Yibo Zhao <yiboz@codeaurora.org>,
         Johannes Berg <johannes@sipsolutions.net>,
-        linux-mmc@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        netdev@vger.kernel.org, linux-wireless@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 1/7] debugfs: Add debugfs_create_xul() for hexadecimal
- unsigned long
-Message-ID: <20191021144548.GA41107@kroah.com>
-References: <20191021143742.14487-1-geert+renesas@glider.be>
- <20191021143742.14487-2-geert+renesas@glider.be>
+        Felix Fietkau <nbd@nbd.name>
+Subject: Re: [PATCH v4 0/2] Implement Airtime-based Queue Limit (AQL)
+In-Reply-To: <87r236tbgz.fsf@kamboji.qca.qualcomm.com>
+References: <20191011022413.176208-1-kyan@google.com> <87wod7y9ui.fsf@kamboji.qca.qualcomm.com> <87sgnvy9c2.fsf@kamboji.qca.qualcomm.com> <CA+iem5uLYFVQjPaE1QDKc6c+eKz8Xd4LbwczYXOBKP3q+HHdBg@mail.gmail.com> <87r236tbgz.fsf@kamboji.qca.qualcomm.com>
+X-Clacks-Overhead: GNU Terry Pratchett
+Date:   Mon, 21 Oct 2019 16:57:50 +0200
+Message-ID: <878speqh75.fsf@toke.dk>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20191021143742.14487-2-geert+renesas@glider.be>
-User-Agent: Mutt/1.12.2 (2019-09-21)
+X-MC-Unique: JrUssL2yPLii7IChtDN-2g-1
+X-Mimecast-Spam-Score: 0
+Content-Type: text/plain; charset=WINDOWS-1252
+Content-Transfer-Encoding: quoted-printable
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Mon, Oct 21, 2019 at 04:37:36PM +0200, Geert Uytterhoeven wrote:
-> The existing debugfs_create_ulong() function supports objects of
-> type "unsigned long", which are 32-bit or 64-bit depending on the
-> platform, in decimal form.  To format objects in hexadecimal, various
-> debugfs_create_x*() functions exist, but all of them take fixed-size
-> types.
-> 
-> Add a debugfs helper for "unsigned long" objects in hexadecimal format.
-> This avoids the need for users to open-code the same, or introduce
-> bugs when casting the value pointer to "u32 *" or "u64 *" to call
-> debugfs_create_x{32,64}().
-> 
-> Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
-> ---
->  include/linux/debugfs.h | 10 ++++++++++
->  1 file changed, 10 insertions(+)
-> 
-> diff --git a/include/linux/debugfs.h b/include/linux/debugfs.h
-> index 33690949b45d6904..d7b2aebcc277d65e 100644
-> --- a/include/linux/debugfs.h
-> +++ b/include/linux/debugfs.h
-> @@ -356,4 +356,14 @@ static inline ssize_t debugfs_write_file_bool(struct file *file,
->  
->  #endif
->  
-> +static inline void debugfs_create_xul(const char *name, umode_t mode,
-> +				      struct dentry *parent,
-> +				      unsigned long *value)
-> +{
-> +	if (sizeof(*value) == sizeof(u32))
-> +		debugfs_create_x32(name, mode, parent, (u32 *)value);
-> +	else
-> +		debugfs_create_x64(name, mode, parent, (u64 *)value);
-> +}
+Kalle Valo <kvalo@codeaurora.org> writes:
 
-Looks sane, but can you add some kernel-doc comments here so that we can
-pull it into the debugfs documentation?  Also there is debugfs
-documentation in Documentation/filesystems/ so maybe also add this
-there?  I am going to be overhauling the debugfs documentation "soon"
-but it's at the lower part of my todo list, so it will take a while,
-might as well keep it up to date with new stuff added like this so that
-people don't get lost.
+> (please don't top post)
+>
+> Kan Yan <kyan@google.com> writes:
+>
+>> I believe Toke will integrate this with his version and move the
+>> estimating pending airtime part to mac80211, so maybe in the next
+>> version, ath10k change is no longer required.
+>
+> What do you mean? Are you saying that I can drop this patch:
+>
+> [v4,2/2] ath10k: Enable Airtime-based Queue Limit (AQL)
+>
+> https://patchwork.kernel.org/patch/11184783/
 
-thanks,
+Yes, we're trying to do it all in mac80211. See
+https://patchwork.kernel.org/project/linux-wireless/list/?series=3D190333
 
-greg k-h
+-Toke
+
