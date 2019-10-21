@@ -2,74 +2,127 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 17E6EDF3EB
-	for <lists+linux-wireless@lfdr.de>; Mon, 21 Oct 2019 19:13:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B8B72DF4D0
+	for <lists+linux-wireless@lfdr.de>; Mon, 21 Oct 2019 20:07:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728215AbfJURN2 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 21 Oct 2019 13:13:28 -0400
-Received: from muru.com ([72.249.23.125]:38554 "EHLO muru.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726819AbfJURN2 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 21 Oct 2019 13:13:28 -0400
-Received: from atomide.com (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTPS id 41D32810A;
-        Mon, 21 Oct 2019 17:13:59 +0000 (UTC)
-Date:   Mon, 21 Oct 2019 10:13:21 -0700
-From:   Tony Lindgren <tony@atomide.com>
-To:     "H. Nikolaus Schaller" <hns@goldelico.com>
-Cc:     =?utf-8?Q?Beno=C3=AEt?= Cousson <bcousson@baylibre.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Russell King <linux@armlinux.org.uk>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        Mike Rapoport <rppt@linux.ibm.com>,
-        David Sterba <dsterba@suse.com>,
-        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-        Petr Mladek <pmladek@suse.com>,
-        Sakari Ailus <sakari.ailus@linux.intel.com>,
-        Kefeng Wang <wangkefeng.wang@huawei.com>,
-        Yangtao Li <tiny.windzz@gmail.com>,
-        Alexios Zavras <alexios.zavras@intel.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Allison Randal <allison@lohutok.net>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        John Stultz <john.stultz@linaro.org>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        linux-omap@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-mmc@vger.kernel.org, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org, letux-kernel@openphoenux.org,
-        kernel@pyra-handheld.com, stable@vger.kernel.org
-Subject: Re: [PATCH 3/9] DTS: ARM: pandora-common: define wl1251 as child
- node of mmc3
-Message-ID: <20191021171321.GZ5610@atomide.com>
-References: <cover.1571430329.git.hns@goldelico.com>
- <58c57f194e35b2a055a58081a0ea0d3ffcd07b6d.1571430329.git.hns@goldelico.com>
+        id S1728185AbfJUSH1 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 21 Oct 2019 14:07:27 -0400
+Received: from mail-pf1-f194.google.com ([209.85.210.194]:46468 "EHLO
+        mail-pf1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726672AbfJUSH1 (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 21 Oct 2019 14:07:27 -0400
+Received: by mail-pf1-f194.google.com with SMTP id q5so8889948pfg.13;
+        Mon, 21 Oct 2019 11:07:27 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=KbHCUVncfbVXzjoVKRZ8xqvM9JfSFpXWmdqMW9SfaRQ=;
+        b=AzBfPCx1mtbp3iuy/W5OD0UDNgvG4jUT19hQfYJ4VVhIEI3NaBv/3+aprYHzZWKxru
+         4UzwF8F5+xwyfAUIkhs6BA+joBq0c4P5pRUeO5ar4i7B0zpg/EvvKYU0na09vL0sw0OW
+         jpJyCxQKZDmMfGE6iFga6aXe5QuBu/1wuCBeNlhY/3yaDVdNqvfHcdmAC0vnwzK50PtP
+         iWNGlvuJoaMoIqszWxRRc3X0fOE2AB/jrDcYZurE3mI+rh0RxmEZdy6o/m+xfEmbCivW
+         C+/RFYSclGNMO2TBjiQfix+3/W4CSYYRKv7/EoE3XgXJv+tD+o9VJg2l+FaI8r9VXmhA
+         HyXQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=KbHCUVncfbVXzjoVKRZ8xqvM9JfSFpXWmdqMW9SfaRQ=;
+        b=O21t3HwifA1BDD1J/XLPvEVPV9wNbEFX0z7zIVfM7y6sqn3N8cAjVqLhy8GSlQEQFe
+         fGB5DXcllE/nnZxoBC6x0TLvBdUDZMdl4Ct3059PT3H3NzWLXm6+MmQ8X3H3drxb8WZW
+         5aOs6xGu9KQA+7i9XTke0rkIFos3qCTq7Pxz7zQlbY7bFIMAObMDWu9S2cTb3OU1hwJm
+         NZ27VAIzMbLlF5QdLweEC1vvA6g4LY0pSSsXbu303SrCXvrzJMHD08pDwAQHEAxzfK6L
+         dB1BoL91N5gofQckNNa/qIEIk2dUnNSqp/YrGq2K8v/DyCVTJZ3b6WPbrNzfzuNbhXOL
+         N8+A==
+X-Gm-Message-State: APjAAAVSnJlYE5ooZPshy0X5sVpnSdH5G8RPk7dc9PFwiNV/BeB3ATgr
+        5cplukKnYT6Cxx+WkCJEymZ6xKMYjGs=
+X-Google-Smtp-Source: APXvYqz4ol6E1J9UjCRv3ntNUDsTxd5HsAkUIbQ7RTpcxDNl9LJKdS8DuSVmyHX3xgxsAfYCP6r7KA==
+X-Received: by 2002:a62:ae06:: with SMTP id q6mr24361988pff.96.1571681246647;
+        Mon, 21 Oct 2019 11:07:26 -0700 (PDT)
+Received: from localhost.localdomain ([124.253.151.72])
+        by smtp.googlemail.com with ESMTPSA id ep10sm31335388pjb.2.2019.10.21.11.07.23
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 21 Oct 2019 11:07:26 -0700 (PDT)
+From:   Yadav Lamichhane <tuxomega1@gmail.com>
+To:     tuxomega1@gmail.com
+Cc:     zajec5@gmail.com, linux-wireless@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: [PATCH] BCMA: driver_chipcommon_pmu: fixed a block comment coding style.
+Date:   Mon, 21 Oct 2019 23:35:13 +0530
+Message-Id: <20191021180513.2106-1-tuxomega1@gmail.com>
+X-Mailer: git-send-email 2.21.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <58c57f194e35b2a055a58081a0ea0d3ffcd07b6d.1571430329.git.hns@goldelico.com>
-User-Agent: Mutt/1.12.1 (2019-06-15)
+Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-* H. Nikolaus Schaller <hns@goldelico.com> [191018 20:28]:
-> Since v4.7 the dma initialization requires that there is a
-> device tree property for "rx" and "tx" channels which is
-> not provided by the pdata-quirks initialization.
-> 
-> By conversion of the mmc3 setup to device tree this will
-> finally allows to remove the OpenPandora wlan specific omap3
-> data-quirks.
-> 
-> Fixes: 81eef6ca9201 ("mmc: omap_hsmmc: Use dma_request_chan() for requesting DMA channel")
+Fixed a coding style issue.
 
-Here you have the subject line the wrong way around,
-please update it to start with "ARM: dts: ...".
+Signed-off-by: Yadav Lamichhane <tuxomega1@gmail.com>
+---
+ drivers/bcma/driver_chipcommon_pmu.c | 24 ++++++++++++++++--------
+ 1 file changed, 16 insertions(+), 8 deletions(-)
 
-Regards,
+diff --git a/drivers/bcma/driver_chipcommon_pmu.c b/drivers/bcma/driver_chipcommon_pmu.c
+index f4161064365c..3056f81efca4 100644
+--- a/drivers/bcma/driver_chipcommon_pmu.c
++++ b/drivers/bcma/driver_chipcommon_pmu.c
+@@ -233,8 +233,10 @@ static void bcma_pmu_workarounds(struct bcma_drv_cc *cc)
+ 
+ 	switch (bus->chipinfo.id) {
+ 	case BCMA_CHIP_ID_BCM4313:
+-		/* enable 12 mA drive strenth for 4313 and set chipControl
+-		   register bit 1 */
++		/*
++		 * enable 12 mA drive strenth for 4313 and set chipControl
++		 * register bit 1
++		 */
+ 		bcma_chipco_chipctl_maskset(cc, 0,
+ 					    ~BCMA_CCTRL_4313_12MA_LED_DRIVE,
+ 					    BCMA_CCTRL_4313_12MA_LED_DRIVE);
+@@ -246,8 +248,10 @@ static void bcma_pmu_workarounds(struct bcma_drv_cc *cc)
+ 		break;
+ 	case BCMA_CHIP_ID_BCM43224:
+ 	case BCMA_CHIP_ID_BCM43421:
+-		/* enable 12 mA drive strenth for 43224 and set chipControl
+-		   register bit 15 */
++		/*
++		 * enable 12 mA drive strenth for 43224 and set chipControl
++		 * register bit 15
++		 */
+ 		if (bus->chipinfo.rev == 0) {
+ 			bcma_cc_maskset32(cc, BCMA_CC_CHIPCTL,
+ 					  ~BCMA_CCTRL_43224_GPIO_TOGGLE,
+@@ -500,8 +504,10 @@ void bcma_pmu_spuravoid_pllupdate(struct bcma_drv_cc *cc, int spuravoid)
+ 	case BCMA_CHIP_ID_BCM53572:
+ 		/* 5357[ab]0, 43236[ab]0, and 6362b0 */
+ 
+-		/* BCM5357 needs to touch PLL1_PLLCTL[02],
+-		   so offset PLL0_PLLCTL[02] by 6 */
++		/*
++		 * BCM5357 needs to touch PLL1_PLLCTL[02],
++		 * so offset PLL0_PLLCTL[02] by 6
++		 */
+ 		phypll_offset = (bus->chipinfo.id == BCMA_CHIP_ID_BCM5357 ||
+ 		       bus->chipinfo.id == BCMA_CHIP_ID_BCM4749 ||
+ 		       bus->chipinfo.id == BCMA_CHIP_ID_BCM53572) ? 6 : 0;
+@@ -619,8 +625,10 @@ void bcma_pmu_spuravoid_pllupdate(struct bcma_drv_cc *cc, int spuravoid)
+ 	case BCMA_CHIP_ID_BCM43228:
+ 	case BCMA_CHIP_ID_BCM43428:
+ 		/* LCNXN */
+-		/* PLL Settings for spur avoidance on/off mode,
+-		   no on2 support for 43228A0 */
++		/*
++		 * PLL Settings for spur avoidance on/off mode,
++		 * no on2 support for 43228A0
++		 */
+ 		if (spuravoid == 1) {
+ 			bcma_pmu_spuravoid_pll_write(cc, BCMA_CC_PMU_PLL_CTL0,
+ 						     0x01100014);
+-- 
+2.21.0
 
-Tony
