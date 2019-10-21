@@ -2,78 +2,82 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id F26B6DFC0B
-	for <lists+linux-wireless@lfdr.de>; Tue, 22 Oct 2019 04:51:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A0E87DFCEF
+	for <lists+linux-wireless@lfdr.de>; Tue, 22 Oct 2019 06:59:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730550AbfJVCvu (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 21 Oct 2019 22:51:50 -0400
-Received: from mail-io1-f42.google.com ([209.85.166.42]:40533 "EHLO
-        mail-io1-f42.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730156AbfJVCvu (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 21 Oct 2019 22:51:50 -0400
-Received: by mail-io1-f42.google.com with SMTP id p6so10342601iod.7
-        for <linux-wireless@vger.kernel.org>; Mon, 21 Oct 2019 19:51:49 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:from:date:message-id:subject:to;
-        bh=vwHJvn5LlsBsZWMTHEdYg10EePvWqYZi2Mc809hAbx8=;
-        b=pUDg4SPAa9Qc8IKn+TsP+71KtKf3jtywyQtoUTXwA2BnwYVUmO20EiBtXsasv3Z0ze
-         8c2tp3PYjZZ35oBQh/RzOlt6GMcoz0Uk5IVM+JFz6M9OrF2JzZsbO24j18UsKz0TcjNp
-         BCY/hrNoG/MAhyVFGXOjZ7l9PRudxTLxQ6SrMv+G39ta0V+3vODzZbWFQjM7ZxkufwbZ
-         aMlmGi23pEPRUYGpkDa2IUf81EJ7+g+yqwBWnv2N4XayHSnSBKfILI+Yyg+xAhlJENKq
-         v3FNas/uljUY4KnskA6G2AwpiNmW+7oPC8XoygEZNBUYy6wYumNMsqEplPF4S+aBbUno
-         YHfg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:from:date:message-id:subject:to;
-        bh=vwHJvn5LlsBsZWMTHEdYg10EePvWqYZi2Mc809hAbx8=;
-        b=cJk7WHy5XKXnfqMHsknchurLZc9toTFa0g1a10dGUbkkPLK1cG//zpIi3WIHjFYlmD
-         swQe0RxK50tLVH2O+RyxiQv2aSOUvqD0G+3rAcO2g+xRlQey4I4e6Zd5KNxdIGbiix/I
-         szcp467AmZF+b1Nf4XJrMHoBE0kE3ZhsN5OyqScParJSdyjkRkktJMSF+G6LdTi9G+R3
-         qGwrK3YZ5UMnDyJ3SrTiolmaW6xjdGPufGbASy2DhDLYmIiTFGGpUF1yB4UyqvITAo73
-         4wegf2TU5baTDidCEPx7HZOoPdVa5K11sKjhYbN9ExZhh9EbhIj50FRjirZfsbP0TkDA
-         2NrA==
-X-Gm-Message-State: APjAAAVPqEWGOie9Y/9YXJntSjMy6NWQkhzsB+J6Ko4R5MQ20IuWAKjH
-        /SatJ+RRoX6eGjcOzbvFkhzED+ffU06KXhjOu1ORnw58
-X-Google-Smtp-Source: APXvYqzZtr9RPiXPPo6lVT9W9YnI0cYdvSmklBcT60Wvyv2TvjTF5Aj83gnltiWOcVWs5e4UVVej0ovHuYx+GtxuZ/Y=
-X-Received: by 2002:a02:70c8:: with SMTP id f191mr1496682jac.117.1571712708795;
- Mon, 21 Oct 2019 19:51:48 -0700 (PDT)
+        id S2387637AbfJVE7B (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 22 Oct 2019 00:59:01 -0400
+Received: from ni.piap.pl ([195.187.100.5]:41074 "EHLO ni.piap.pl"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S2387462AbfJVE7A (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 22 Oct 2019 00:59:00 -0400
+Received: from t19.piap.pl (OSB1819.piap.pl [10.0.9.19])
+        (using TLSv1.2 with cipher AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ni.piap.pl (Postfix) with ESMTPSA id A1BD9443141;
+        Tue, 22 Oct 2019 06:58:57 +0200 (CEST)
+DKIM-Filter: OpenDKIM Filter v2.11.0 ni.piap.pl A1BD9443141
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=piap.pl; s=mail;
+        t=1571720338; bh=5sGEWkaUNVS3ZDgcwrCiHd9vXY1HkWoD0Tk6Dh28hfM=;
+        h=From:To:Cc:Subject:In-Reply-To:Date:References:From;
+        b=lzJJG3out/A+BWjk9oZFkkvPT8gnUGpbqmq09MWSXDYx1sSDSOuZkuFadAvksnWTe
+         dmiGyNb4wbvhhRDFQoJL2KMUrM/lWvY3bGdkUlpzrCsUvnFWwtjB7pO7v+rAHboqC8
+         Rl8spBVi3z6o3Fqv3hL2lzwJfKGpNhMJpBIRVwYM=
+From:   khalasa@piap.pl (Krzysztof =?utf-8?Q?Ha=C5=82asa?=)
+To:     Johannes Berg <johannes@sipsolutions.net>
+Cc:     "David S. Miller" <davem@davemloft.net>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: [PATCH] 802.11n IBSS: wlan0 stops receiving packets due to aggregation after sender reboot
+In-Reply-To: <m34l02mh71.fsf@t19.piap.pl>
+Date:   Mon, 21 Oct 2019 14:18:53 +0200
+Lines:  32
+References: <m34l02mh71.fsf@t19.piap.pl>
+Message-ID: <m3v9shl6jz.fsf@t19.piap.pl>
 MIME-Version: 1.0
-Received: by 2002:ac0:9c85:0:0:0:0:0 with HTTP; Mon, 21 Oct 2019 19:51:48
- -0700 (PDT)
-From:   JH <jupiter.hce@gmail.com>
-Date:   Tue, 22 Oct 2019 13:51:48 +1100
-Message-ID: <CAA=hcWS_5keJiNJwqpiOh+N49LoNE-pHjkwYSKSN1q=G12z3pw@mail.gmail.com>
-Subject: mwifiex Invalid Sched_scan parameters
-To:     linux-wireless@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-KLMS-Rule-ID: 4
+X-KLMS-Message-Action: skipped
+X-KLMS-AntiSpam-Status: not scanned, whitelist
+X-KLMS-AntiPhishing: not scanned, whitelist
+X-KLMS-AntiVirus: Kaspersky Security 8.0 for Linux Mail Server, version 8.0.1.721, not scanned, whitelist
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi,
+Fix a bug where the mac80211 RX aggregation code sets a new aggregation
+"session" at the remote station's request, but the head_seq_num
+(the sequence number the receiver expects to receive) isn't reset.
 
-I am running kernel 4.19.75 LTS on imx6, the WiFi connection is not
-stable, sometime it works, sometime it didn't, it could work with some
-home WiFi modem, but not with some other WiFi modem. there is a
-following error message, do I need to worry about?
+Spotted on a pair of AR9580 in IBSS mode.
 
-[  519.870877] ieee80211 phy0: mwifiex_cfg80211_sched_scan_start :
-Invalid Sched_scan parameters
+Signed-off-by: Krzysztof Halasa <khalasa@piap.pl>
 
-There was no that error message when I ran the kernel 5.1 at the same
-device, the WiFi connection was much reliable than kernel 4.19, any
-explanation?
+diff --git a/net/mac80211/agg-rx.c b/net/mac80211/agg-rx.c
+index 4d1c335e06e5..775a51cc51c9 100644
+--- a/net/mac80211/agg-rx.c
++++ b/net/mac80211/agg-rx.c
+@@ -354,9 +354,11 @@ void ___ieee80211_start_rx_ba_session(struct sta_info =
+*sta,
+ 			 */
+ 			rcu_read_lock();
+ 			tid_rx =3D rcu_dereference(sta->ampdu_mlme.tid_rx[tid]);
+-			if (tid_rx && tid_rx->timeout =3D=3D timeout)
++			if (tid_rx && tid_rx->timeout =3D=3D timeout) {
++				tid_rx->ssn =3D start_seq_num;
++				tid_rx->head_seq_num =3D start_seq_num;
+ 				status =3D WLAN_STATUS_SUCCESS;
+-			else
++			} else
+ 				status =3D WLAN_STATUS_REQUEST_DECLINED;
+ 			rcu_read_unlock();
+ 			goto end;
 
-The reason we moved from kernel 5.1 back to 4.19 is we want to  use
-kernel LTS release, which might not be a good idea.
+--=20
+Krzysztof Ha=C5=82asa
 
-Appreciate your comments.
-
-Thank you.
-
-Kind regards,
-
-- jupiter
+=C5=81UKASIEWICZ Research Network
+Industrial Research Institute for Automation and Measurements PIAP
+Al. Jerozolimskie 202, 02-486 Warsaw, Poland
