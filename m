@@ -2,82 +2,84 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 9377CDEBF7
-	for <lists+linux-wireless@lfdr.de>; Mon, 21 Oct 2019 14:19:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 486B9DEE6C
+	for <lists+linux-wireless@lfdr.de>; Mon, 21 Oct 2019 15:53:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728098AbfJUMS5 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 21 Oct 2019 08:18:57 -0400
-Received: from ni.piap.pl ([195.187.100.5]:48156 "EHLO ni.piap.pl"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727256AbfJUMS5 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 21 Oct 2019 08:18:57 -0400
-X-Greylist: delayed 440 seconds by postgrey-1.27 at vger.kernel.org; Mon, 21 Oct 2019 08:18:55 EDT
-Received: from t19.piap.pl (OSB1819.piap.pl [10.0.9.19])
-        (using TLSv1.2 with cipher AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ni.piap.pl (Postfix) with ESMTPSA id A1B08443491;
-        Mon, 21 Oct 2019 14:18:54 +0200 (CEST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 ni.piap.pl A1B08443491
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=piap.pl; s=mail;
-        t=1571660334; bh=Tp8OSf1h/wDKpwi0+HzYPecCfDy55FK9qmwYC4Eai90=;
+        id S1729123AbfJUNxp (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 21 Oct 2019 09:53:45 -0400
+Received: from smtp.codeaurora.org ([198.145.29.96]:53466 "EHLO
+        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727152AbfJUNxp (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 21 Oct 2019 09:53:45 -0400
+Received: by smtp.codeaurora.org (Postfix, from userid 1000)
+        id D8DE96076A; Mon, 21 Oct 2019 13:53:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
+        s=default; t=1571666024;
+        bh=kHPCqSDycA6KEAoUomcYWPc5e+ajK/BLVgtYOFqyX/U=;
         h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=CLbMeDVxHJ9JNtZuGbwZP5WljuUhEqWhdQiChl7+y7D2bbVOAbXSXERRWrruUaAnQ
-         joD5Cz0rULQLcizQTb3L6boWn+924hxz9bhnhKdU9wPCgcP+y+QVf/5dMGPUm2jWxi
-         HdZzdmfKXtgE0xHWFOaAwH/nSKLtw9vhkz3X9M/0=
-From:   khalasa@piap.pl (Krzysztof =?utf-8?Q?Ha=C5=82asa?=)
-To:     Johannes Berg <johannes@sipsolutions.net>
-Cc:     "David S. Miller" <davem@davemloft.net>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: [PATCH] 802.11n IBSS: wlan0 stops receiving packets due to aggregation after sender reboot
-References: <m34l02mh71.fsf@t19.piap.pl>
-Date:   Mon, 21 Oct 2019 14:18:53 +0200
-In-Reply-To: <m34l02mh71.fsf@t19.piap.pl> ("Krzysztof \=\?utf-8\?Q\?Ha\=C5\=82as\?\=
- \=\?utf-8\?Q\?a\=22's\?\= message of
-        "Mon, 21 Oct 2019 14:11:30 +0200")
-Message-ID: <m3zhhul2aa.fsf@t19.piap.pl>
+        b=agAZZCc0thnjJLrM4UWbDytEAm6inBPfud7Bj+Kr6Pe//dsnGfwh0GpTQlSJcnlop
+         k1LJTV+I4k2kvg7QoRQalaUaxYQSqT19rAn2mrOJwEFru6VV9QvnyK0vYGzRB2+c8s
+         j6y4qjvtz64/wx0RbSkRRYG4kRqH06Qn1MH8M1BA=
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        pdx-caf-mail.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.7 required=2.0 tests=ALL_TRUSTED,BAYES_00,
+        DKIM_INVALID,DKIM_SIGNED,SPF_NONE autolearn=no autolearn_force=no
+        version=3.4.0
+Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo@smtp.codeaurora.org)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 2796060112;
+        Mon, 21 Oct 2019 13:53:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
+        s=default; t=1571666024;
+        bh=kHPCqSDycA6KEAoUomcYWPc5e+ajK/BLVgtYOFqyX/U=;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+        b=agAZZCc0thnjJLrM4UWbDytEAm6inBPfud7Bj+Kr6Pe//dsnGfwh0GpTQlSJcnlop
+         k1LJTV+I4k2kvg7QoRQalaUaxYQSqT19rAn2mrOJwEFru6VV9QvnyK0vYGzRB2+c8s
+         j6y4qjvtz64/wx0RbSkRRYG4kRqH06Qn1MH8M1BA=
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 2796060112
+Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
+From:   Kalle Valo <kvalo@codeaurora.org>
+To:     Larry Finger <Larry.Finger@lwfinger.net>
+Cc:     linux-wireless@vger.kernel.org, pkshih@realtek.com,
+        Stable <stable@vger.kernel.org>
+Subject: Re: [PATCH V3] rtlwifi: rtl_pci: Fix problem of too small skb->len
+References: <20191021005658.31391-1-Larry.Finger@lwfinger.net>
+Date:   Mon, 21 Oct 2019 16:53:40 +0300
+In-Reply-To: <20191021005658.31391-1-Larry.Finger@lwfinger.net> (Larry
+        Finger's message of "Sun, 20 Oct 2019 19:56:58 -0500")
+Message-ID: <87zhhuurvf.fsf@kamboji.qca.qualcomm.com>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-KLMS-Rule-ID: 4
-X-KLMS-Message-Action: skipped
-X-KLMS-AntiSpam-Status: not scanned, whitelist
-X-KLMS-AntiPhishing: not scanned, whitelist
-X-KLMS-AntiVirus: Kaspersky Security 8.0 for Linux Mail Server, version 8.0.1.721, not scanned, whitelist
+Content-Type: text/plain
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Fix a bug where the mac80211 RX aggregation code sets a new aggregation
-"session" at the remote station's request, but the head_seq_num
-(the sequence number the receiver expects to receive) isn't reset.
+Larry Finger <Larry.Finger@lwfinger.net> writes:
 
-Spotted on a pair of AR9580 in IBSS mode.
+> In commit 8020919a9b99 ("mac80211: Properly handle SKB with radiotap
+> only"), buffers whose length is too short cause a WARN_ON(1) to be
+> executed. This change exposed a fault in rtlwifi drivers, which is fixed
+> by regarding packets with skb->len <= FCS_LEN as though they are in error
+> and dropping them. The test is now annotated as likely.
+>
+> Cc: Stable <stable@vger.kernel.org> # v5.0+
+> Signed-off-by: Larry Finger <Larry.Finger@lwfinger.net>
+> ---
+> V2 - content dropped
+> V3 - changed fix to drop packet rather than arbitrarily increasing the length.
 
-diff --git a/net/mac80211/agg-rx.c b/net/mac80211/agg-rx.c
-index 4d1c335e06e5..775a51cc51c9 100644
---- a/net/mac80211/agg-rx.c
-+++ b/net/mac80211/agg-rx.c
-@@ -354,9 +354,11 @@ void ___ieee80211_start_rx_ba_session(struct sta_info =
-*sta,
- 			 */
- 			rcu_read_lock();
- 			tid_rx =3D rcu_dereference(sta->ampdu_mlme.tid_rx[tid]);
--			if (tid_rx && tid_rx->timeout =3D=3D timeout)
-+			if (tid_rx && tid_rx->timeout =3D=3D timeout) {
-+				tid_rx->ssn =3D start_seq_num;
-+				tid_rx->head_seq_num =3D start_seq_num;
- 				status =3D WLAN_STATUS_SUCCESS;
--			else
-+			} else
- 				status =3D WLAN_STATUS_REQUEST_DECLINED;
- 			rcu_read_unlock();
- 			goto end;
+Much better, thanks.
 
---=20
-Krzysztof Ha=C5=82asa
+> Material for 5.4.
 
-=C5=81UKASIEWICZ Research Network
-Industrial Research Institute for Automation and Measurements PIAP
-Al. Jerozolimskie 202, 02-486 Warsaw, Poland
+Ok, I'll queue it for v5.4.
+
+-- 
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
