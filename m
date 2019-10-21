@@ -2,84 +2,85 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 486B9DEE6C
-	for <lists+linux-wireless@lfdr.de>; Mon, 21 Oct 2019 15:53:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 26404DEE9F
+	for <lists+linux-wireless@lfdr.de>; Mon, 21 Oct 2019 16:01:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729123AbfJUNxp (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 21 Oct 2019 09:53:45 -0400
-Received: from smtp.codeaurora.org ([198.145.29.96]:53466 "EHLO
-        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727152AbfJUNxp (ORCPT
+        id S1729069AbfJUOBE (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 21 Oct 2019 10:01:04 -0400
+Received: from mail2.candelatech.com ([208.74.158.173]:51700 "EHLO
+        mail3.candelatech.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727152AbfJUOBE (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 21 Oct 2019 09:53:45 -0400
-Received: by smtp.codeaurora.org (Postfix, from userid 1000)
-        id D8DE96076A; Mon, 21 Oct 2019 13:53:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1571666024;
-        bh=kHPCqSDycA6KEAoUomcYWPc5e+ajK/BLVgtYOFqyX/U=;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=agAZZCc0thnjJLrM4UWbDytEAm6inBPfud7Bj+Kr6Pe//dsnGfwh0GpTQlSJcnlop
-         k1LJTV+I4k2kvg7QoRQalaUaxYQSqT19rAn2mrOJwEFru6VV9QvnyK0vYGzRB2+c8s
-         j6y4qjvtz64/wx0RbSkRRYG4kRqH06Qn1MH8M1BA=
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        pdx-caf-mail.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.7 required=2.0 tests=ALL_TRUSTED,BAYES_00,
-        DKIM_INVALID,DKIM_SIGNED,SPF_NONE autolearn=no autolearn_force=no
-        version=3.4.0
-Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
+        Mon, 21 Oct 2019 10:01:04 -0400
+Received: from [192.168.1.47] (unknown [50.34.216.97])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        (Authenticated sender: kvalo@smtp.codeaurora.org)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 2796060112;
-        Mon, 21 Oct 2019 13:53:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1571666024;
-        bh=kHPCqSDycA6KEAoUomcYWPc5e+ajK/BLVgtYOFqyX/U=;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=agAZZCc0thnjJLrM4UWbDytEAm6inBPfud7Bj+Kr6Pe//dsnGfwh0GpTQlSJcnlop
-         k1LJTV+I4k2kvg7QoRQalaUaxYQSqT19rAn2mrOJwEFru6VV9QvnyK0vYGzRB2+c8s
-         j6y4qjvtz64/wx0RbSkRRYG4kRqH06Qn1MH8M1BA=
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 2796060112
-Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
-From:   Kalle Valo <kvalo@codeaurora.org>
-To:     Larry Finger <Larry.Finger@lwfinger.net>
-Cc:     linux-wireless@vger.kernel.org, pkshih@realtek.com,
-        Stable <stable@vger.kernel.org>
-Subject: Re: [PATCH V3] rtlwifi: rtl_pci: Fix problem of too small skb->len
-References: <20191021005658.31391-1-Larry.Finger@lwfinger.net>
-Date:   Mon, 21 Oct 2019 16:53:40 +0300
-In-Reply-To: <20191021005658.31391-1-Larry.Finger@lwfinger.net> (Larry
-        Finger's message of "Sun, 20 Oct 2019 19:56:58 -0500")
-Message-ID: <87zhhuurvf.fsf@kamboji.qca.qualcomm.com>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
+        by mail3.candelatech.com (Postfix) with ESMTPSA id A377D137563;
+        Mon, 21 Oct 2019 07:01:01 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail3.candelatech.com A377D137563
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=candelatech.com;
+        s=default; t=1571666463;
+        bh=TC0IC7ijVgH9EVtRApZTiGeFe1tzHYJg6SGZj3JD57E=;
+        h=Subject:To:References:Cc:From:Date:In-Reply-To:From;
+        b=dB9W91qhjuh+ZefuIByWJyo92qyfGQjN7Ueu0zjVFermwckAaik1XLfzrxBbMV14O
+         Y8rhWNATIjDSg9KiPv1imIYSGJKhO2yb5M/ZN1AQ+TD/HMkfWGbVDbUqi/AzoJeolO
+         c15E661Rx/PoWdnGtBrkm/EoSyvy755xltPfPqG8=
+Subject: Re: WARNING at net/mac80211/sta_info.c:1057
+ (__sta_info_destroy_part2())
+To:     =?UTF-8?Q?Tomislav_Po=c5=beega?= <pozega.tomislav@gmail.com>,
+        kvalo@codeaurora.org
+References: <87lfuuln5n.fsf@tynnyri.adurom.net>
+ <1571584320-29816-1-git-send-email-pozega.tomislav@gmail.com>
+Cc:     netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+        ath10k@lists.infradead.org, davem@davemloft.net,
+        torvalds@linux-foundation.org, johannes@sipsolutions.net,
+        linux-wireless@vger.kernel.org
+From:   Ben Greear <greearb@candelatech.com>
+Message-ID: <073b0ffb-187b-659e-0967-23ae44c5c660@candelatech.com>
+Date:   Mon, 21 Oct 2019 07:01:00 -0700
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:45.0) Gecko/20100101
+ Thunderbird/45.8.0
 MIME-Version: 1.0
-Content-Type: text/plain
+In-Reply-To: <1571584320-29816-1-git-send-email-pozega.tomislav@gmail.com>
+Content-Type: text/plain; charset=windows-1252; format=flowed
+Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Larry Finger <Larry.Finger@lwfinger.net> writes:
 
-> In commit 8020919a9b99 ("mac80211: Properly handle SKB with radiotap
-> only"), buffers whose length is too short cause a WARN_ON(1) to be
-> executed. This change exposed a fault in rtlwifi drivers, which is fixed
-> by regarding packets with skb->len <= FCS_LEN as though they are in error
-> and dropping them. The test is now annotated as likely.
+
+On 10/20/2019 08:12 AM, Tomislav Požega wrote:
+>> -11 is -EAGAIN which would mean that the HTC credits have run out some
+>>  reason for the WMI command:
+>>
+>> if (ep->tx_credits < credits) {
+>>         ath10k_dbg(ar, ATH10K_DBG_HTC,
+>>                 "htc insufficient credits ep %d required %d available %d\n",
+>>                 eid, credits, ep->tx_credits);
+>>         spin_unlock_bh(&htc->tx_lock);
+>>         ret = -EAGAIN;
+>>         goto err_pull;
+>> }
+>>
+>> Credits can run out, for example, if there's a lot of WMI command/event
+>> activity and are not returned during the 3s wait, firmware crashed or
+>> problems with the PCI bus.
 >
-> Cc: Stable <stable@vger.kernel.org> # v5.0+
-> Signed-off-by: Larry Finger <Larry.Finger@lwfinger.net>
-> ---
-> V2 - content dropped
-> V3 - changed fix to drop packet rather than arbitrarily increasing the length.
+> Hi
+>
+> Can this occur if the target memory is not properly allocated?
 
-Much better, thanks.
+I have only seen this on wave-1 cards, and it is usually paired with situations
+where the wave-1 stops doing WMI related interrupts properly as best as I can
+understand.  If I force the firmware to poll instead of waiting for irqs, then
+WMI communication will work for a while...I have not implemented that on the
+driver side though, so I still see these WMI timeout issues.
 
-> Material for 5.4.
-
-Ok, I'll queue it for v5.4.
+Thanks,
+Ben
 
 -- 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+Ben Greear <greearb@candelatech.com>
+Candela Technologies Inc  http://www.candelatech.com
