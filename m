@@ -2,85 +2,95 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E4B5EDEFA5
-	for <lists+linux-wireless@lfdr.de>; Mon, 21 Oct 2019 16:33:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9F0A1DEFE6
+	for <lists+linux-wireless@lfdr.de>; Mon, 21 Oct 2019 16:38:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727101AbfJUOdZ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 21 Oct 2019 10:33:25 -0400
-Received: from smtp.codeaurora.org ([198.145.29.96]:51994 "EHLO
-        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726227AbfJUOdZ (ORCPT
+        id S1728008AbfJUOh5 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 21 Oct 2019 10:37:57 -0400
+Received: from michel.telenet-ops.be ([195.130.137.88]:57634 "EHLO
+        michel.telenet-ops.be" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729406AbfJUOh5 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 21 Oct 2019 10:33:25 -0400
-Received: by smtp.codeaurora.org (Postfix, from userid 1000)
-        id 63CBC6079D; Mon, 21 Oct 2019 14:33:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1571668404;
-        bh=KMDUFdljanvngNy/CGgHd1p8m9cZpuOnap9ONx+d/w0=;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=g+HadGiiA95b9uw7F4J/zt1XMfRm1Sdkiomtl5lf62oYMjlA29kQD6dnKslWV85jF
-         XH9L2TV5i4LnF/c986KTZHoRpIZp0uzwM0yeKK9w7JZUlqdJX0u3xF8sV1N2NN1Ov+
-         uuozX8lmtjMZ75sMPx5b1iXXEGjv0EICXb0RkS0I=
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        pdx-caf-mail.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.7 required=2.0 tests=ALL_TRUSTED,BAYES_00,
-        DKIM_INVALID,DKIM_SIGNED,SPF_NONE autolearn=no autolearn_force=no
-        version=3.4.0
-Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        (Authenticated sender: kvalo@smtp.codeaurora.org)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 4E4EA6081E;
-        Mon, 21 Oct 2019 14:33:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1571668401;
-        bh=KMDUFdljanvngNy/CGgHd1p8m9cZpuOnap9ONx+d/w0=;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=ISBcQlbWwowObyPEsmQ2QV5k7VSgxhYZRffAlnYpxxS4kP/GfvD0nmIeFSuixIKW9
-         0Kud269HqJ90exG3gg52fxXxWPuIvPdiIY+SUOYSiNfG5J/MVqW2R2BUJNEp8lRBtF
-         GAIMcaa/7943cK5XO5iS2gEPmdn7RCnl36uk5ipY=
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 4E4EA6081E
-Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
-From:   Kalle Valo <kvalo@codeaurora.org>
-To:     Kan Yan <kyan@google.com>
-Cc:     make-wifi-fast@lists.bufferbloat.net,
-        Toke =?utf-8?Q?H=C3=B8iland-J?= =?utf-8?Q?=C3=B8rgensen?= 
-        <toke@redhat.com>, linux-wireless@vger.kernel.org,
-        ath10k@lists.infradead.org, Yibo Zhao <yiboz@codeaurora.org>,
-        Johannes Berg <johannes@sipsolutions.net>,
-        Felix Fietkau <nbd@nbd.name>
-Subject: Re: [PATCH v4 0/2] Implement Airtime-based Queue Limit (AQL)
-References: <20191011022413.176208-1-kyan@google.com>
-        <87wod7y9ui.fsf@kamboji.qca.qualcomm.com>
-        <87sgnvy9c2.fsf@kamboji.qca.qualcomm.com>
-        <CA+iem5uLYFVQjPaE1QDKc6c+eKz8Xd4LbwczYXOBKP3q+HHdBg@mail.gmail.com>
-Date:   Mon, 21 Oct 2019 17:33:16 +0300
-In-Reply-To: <CA+iem5uLYFVQjPaE1QDKc6c+eKz8Xd4LbwczYXOBKP3q+HHdBg@mail.gmail.com>
-        (Kan Yan's message of "Mon, 14 Oct 2019 16:58:04 -0700")
-Message-ID: <87r236tbgz.fsf@kamboji.qca.qualcomm.com>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
-MIME-Version: 1.0
-Content-Type: text/plain
+        Mon, 21 Oct 2019 10:37:57 -0400
+Received: from ramsan ([84.194.98.4])
+        by michel.telenet-ops.be with bizsmtp
+        id GEdo2100R05gfCL06Edorl; Mon, 21 Oct 2019 16:37:54 +0200
+Received: from rox.of.borg ([192.168.97.57])
+        by ramsan with esmtp (Exim 4.90_1)
+        (envelope-from <geert@linux-m68k.org>)
+        id 1iMYoe-0007cv-Bm; Mon, 21 Oct 2019 16:37:48 +0200
+Received: from geert by rox.of.borg with local (Exim 4.90_1)
+        (envelope-from <geert@linux-m68k.org>)
+        id 1iMYoe-0003mY-7w; Mon, 21 Oct 2019 16:37:48 +0200
+From:   Geert Uytterhoeven <geert+renesas@glider.be>
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Ludovic Desroches <ludovic.desroches@microchip.com>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        Nicolas Ferre <nicolas.ferre@microchip.com>,
+        Alexandre Belloni <alexandre.belloni@bootlin.com>,
+        Jaehoon Chung <jh80.chung@samsung.com>,
+        "David S . Miller" <davem@davemloft.net>,
+        "Rafael J . Wysocki" <rafael@kernel.org>,
+        Johannes Berg <johannes@sipsolutions.net>
+Cc:     linux-mmc@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        netdev@vger.kernel.org, linux-wireless@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        Geert Uytterhoeven <geert+renesas@glider.be>
+Subject: [PATCH 0/7] debugfs: Add and use debugfs_create_xul()
+Date:   Mon, 21 Oct 2019 16:37:35 +0200
+Message-Id: <20191021143742.14487-1-geert+renesas@glider.be>
+X-Mailer: git-send-email 2.17.1
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-(please don't top post)
+	Hi all,
 
-Kan Yan <kyan@google.com> writes:
+The existing debugfs_create_ulong() function supports objects of
+type "unsigned long", which are 32-bit or 64-bit depending on the
+platform, in decimal form.  To format objects in hexadecimal, various
+debugfs_create_x*() functions exist, but all of them take fixed-size
+types.
 
-> I believe Toke will integrate this with his version and move the
-> estimating pending airtime part to mac80211, so maybe in the next
-> version, ath10k change is no longer required.
+To work around this, some drivers call one of debugfs_create_x{32,64}(),
+depending on the size of unsigned long.
+Other driver just cast the value pointer to "u32 *" or "u64 *",
+introducing portability bugs or data leaks in the process.
 
-What do you mean? Are you saying that I can drop this patch:
+Hence this patch series adds a debugfs helper for "unsigned long"
+objects in hexadecimal format, and converts drivers to make use of it.
+It also contains two cleanups removing superfluous casts, which I added
+to this series to avoid conflicts.
 
-[v4,2/2] ath10k: Enable Airtime-based Queue Limit (AQL)
+Thanks for your comments!
 
-https://patchwork.kernel.org/patch/11184783/
+Geert Uytterhoeven (7):
+  debugfs: Add debugfs_create_xul() for hexadecimal unsigned long
+  mac80211: Use debugfs_create_xul() helper
+  net: caif: Fix debugfs on 64-bit platforms
+  mmc: atmel-mci: Fix debugfs on 64-bit platforms
+  mmc: atmel-mci: Remove superfluous cast in debugfs_create_u32() call
+  mmc: dw_mmc: Fix debugfs on 64-bit platforms
+  mmc: dw_mmc: Remove superfluous cast in debugfs_create_u32() call
+
+ drivers/mmc/host/atmel-mci.c   | 10 +++++-----
+ drivers/mmc/host/dw_mmc.c      | 10 +++++-----
+ drivers/net/caif/caif_serial.c |  4 ++--
+ include/linux/debugfs.h        | 10 ++++++++++
+ net/mac80211/debugfs_sta.c     | 17 +++--------------
+ 5 files changed, 25 insertions(+), 26 deletions(-)
 
 -- 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+2.17.1
+
+Gr{oetje,eeting}s,
+
+						Geert
+
+--
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+							    -- Linus Torvalds
