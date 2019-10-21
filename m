@@ -2,85 +2,74 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 26404DEE9F
-	for <lists+linux-wireless@lfdr.de>; Mon, 21 Oct 2019 16:01:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 99BE5DEF8B
+	for <lists+linux-wireless@lfdr.de>; Mon, 21 Oct 2019 16:30:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729069AbfJUOBE (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 21 Oct 2019 10:01:04 -0400
-Received: from mail2.candelatech.com ([208.74.158.173]:51700 "EHLO
-        mail3.candelatech.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727152AbfJUOBE (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 21 Oct 2019 10:01:04 -0400
-Received: from [192.168.1.47] (unknown [50.34.216.97])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail3.candelatech.com (Postfix) with ESMTPSA id A377D137563;
-        Mon, 21 Oct 2019 07:01:01 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail3.candelatech.com A377D137563
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=candelatech.com;
-        s=default; t=1571666463;
-        bh=TC0IC7ijVgH9EVtRApZTiGeFe1tzHYJg6SGZj3JD57E=;
-        h=Subject:To:References:Cc:From:Date:In-Reply-To:From;
-        b=dB9W91qhjuh+ZefuIByWJyo92qyfGQjN7Ueu0zjVFermwckAaik1XLfzrxBbMV14O
-         Y8rhWNATIjDSg9KiPv1imIYSGJKhO2yb5M/ZN1AQ+TD/HMkfWGbVDbUqi/AzoJeolO
-         c15E661Rx/PoWdnGtBrkm/EoSyvy755xltPfPqG8=
-Subject: Re: WARNING at net/mac80211/sta_info.c:1057
- (__sta_info_destroy_part2())
-To:     =?UTF-8?Q?Tomislav_Po=c5=beega?= <pozega.tomislav@gmail.com>,
-        kvalo@codeaurora.org
-References: <87lfuuln5n.fsf@tynnyri.adurom.net>
- <1571584320-29816-1-git-send-email-pozega.tomislav@gmail.com>
-Cc:     netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-        ath10k@lists.infradead.org, davem@davemloft.net,
-        torvalds@linux-foundation.org, johannes@sipsolutions.net,
-        linux-wireless@vger.kernel.org
-From:   Ben Greear <greearb@candelatech.com>
-Message-ID: <073b0ffb-187b-659e-0967-23ae44c5c660@candelatech.com>
-Date:   Mon, 21 Oct 2019 07:01:00 -0700
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:45.0) Gecko/20100101
- Thunderbird/45.8.0
+        id S1729125AbfJUOaQ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 21 Oct 2019 10:30:16 -0400
+Received: from muru.com ([72.249.23.125]:38364 "EHLO muru.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727406AbfJUOaP (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 21 Oct 2019 10:30:15 -0400
+Received: from atomide.com (localhost [127.0.0.1])
+        by muru.com (Postfix) with ESMTPS id A43AE80CC;
+        Mon, 21 Oct 2019 14:30:46 +0000 (UTC)
+Date:   Mon, 21 Oct 2019 07:30:08 -0700
+From:   Tony Lindgren <tony@atomide.com>
+To:     "H. Nikolaus Schaller" <hns@goldelico.com>
+Cc:     =?utf-8?Q?Beno=C3=AEt?= Cousson <bcousson@baylibre.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Russell King <linux@armlinux.org.uk>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        Mike Rapoport <rppt@linux.ibm.com>,
+        David Sterba <dsterba@suse.com>,
+        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+        Petr Mladek <pmladek@suse.com>,
+        Sakari Ailus <sakari.ailus@linux.intel.com>,
+        Kefeng Wang <wangkefeng.wang@huawei.com>,
+        Yangtao Li <tiny.windzz@gmail.com>,
+        Alexios Zavras <alexios.zavras@intel.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Allison Randal <allison@lohutok.net>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        John Stultz <john.stultz@linaro.org>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        linux-omap@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-mmc@vger.kernel.org, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org, letux-kernel@openphoenux.org,
+        kernel@pyra-handheld.com
+Subject: Re: [PATCH v2 07/11] omap: remove old hsmmc.[ch] and in Makefile
+Message-ID: <20191021143008.GS5610@atomide.com>
+References: <cover.1571510481.git.hns@goldelico.com>
+ <9bd4c0bb0df26523d7f5265cdb06d86d63dafba8.1571510481.git.hns@goldelico.com>
 MIME-Version: 1.0
-In-Reply-To: <1571584320-29816-1-git-send-email-pozega.tomislav@gmail.com>
-Content-Type: text/plain; charset=windows-1252; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <9bd4c0bb0df26523d7f5265cdb06d86d63dafba8.1571510481.git.hns@goldelico.com>
+User-Agent: Mutt/1.12.1 (2019-06-15)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+* H. Nikolaus Schaller <hns@goldelico.com> [191019 18:43]:
+> --- a/arch/arm/mach-omap2/Makefile
+> +++ b/arch/arm/mach-omap2/Makefile
+> @@ -216,7 +216,6 @@ obj-$(CONFIG_MACH_NOKIA_N8X0)		+= board-n8x0.o
+>  
+>  # Platform specific device init code
+>  
+> -omap-hsmmc-$(CONFIG_MMC_OMAP_HS)	:= hsmmc.o
+>  obj-y					+= $(omap-hsmmc-m) $(omap-hsmmc-y)
 
+The related obj-y line can go now too, right?
 
-On 10/20/2019 08:12 AM, Tomislav Požega wrote:
->> -11 is -EAGAIN which would mean that the HTC credits have run out some
->>  reason for the WMI command:
->>
->> if (ep->tx_credits < credits) {
->>         ath10k_dbg(ar, ATH10K_DBG_HTC,
->>                 "htc insufficient credits ep %d required %d available %d\n",
->>                 eid, credits, ep->tx_credits);
->>         spin_unlock_bh(&htc->tx_lock);
->>         ret = -EAGAIN;
->>         goto err_pull;
->> }
->>
->> Credits can run out, for example, if there's a lot of WMI command/event
->> activity and are not returned during the 3s wait, firmware crashed or
->> problems with the PCI bus.
->
-> Hi
->
-> Can this occur if the target memory is not properly allocated?
+And looks like common.h also has struct omap2_hsmmc_info
+so maybe check by grepping for hsmmc_info to see it's gone.
 
-I have only seen this on wave-1 cards, and it is usually paired with situations
-where the wave-1 stops doing WMI related interrupts properly as best as I can
-understand.  If I force the firmware to poll instead of waiting for irqs, then
-WMI communication will work for a while...I have not implemented that on the
-driver side though, so I still see these WMI timeout issues.
+Regards,
 
-Thanks,
-Ben
-
--- 
-Ben Greear <greearb@candelatech.com>
-Candela Technologies Inc  http://www.candelatech.com
+Tony
