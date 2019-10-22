@@ -2,107 +2,107 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 1808EDFDEB
-	for <lists+linux-wireless@lfdr.de>; Tue, 22 Oct 2019 08:59:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 32A90DFE10
+	for <lists+linux-wireless@lfdr.de>; Tue, 22 Oct 2019 09:16:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2387614AbfJVG7W (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 22 Oct 2019 02:59:22 -0400
-Received: from mail-vk1-f193.google.com ([209.85.221.193]:42350 "EHLO
-        mail-vk1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728346AbfJVG7V (ORCPT
+        id S1728346AbfJVHOw (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 22 Oct 2019 03:14:52 -0400
+Received: from us-smtp-1.mimecast.com ([205.139.110.61]:46510 "EHLO
+        us-smtp-delivery-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1726160AbfJVHOw (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 22 Oct 2019 02:59:21 -0400
-Received: by mail-vk1-f193.google.com with SMTP id j22so232238vki.9
-        for <linux-wireless@vger.kernel.org>; Mon, 21 Oct 2019 23:59:21 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=48GsjoJkha+FkK4BjEpjxR+SeBNRB+aPyJf6ECBpNI8=;
-        b=hbyPJZlxSdwm88myuhdtJEWIniVP1HiyEFgnExhI8LirSFCoAssFt32rZiA6ATyVm1
-         RfPrjPXMTCjoAwM+OIdY+RZmtVg+qMxVFAFdE1sSNExUcHfa5QU/axOjkyW9NIhXAnMw
-         12HfGq8+/d7D00ifWT3bp1gIIGhSCTcWH+AOmyLfDPf2pm+QQayGYH6BM5PnZcao+fGx
-         EN2Ht1omTOCmgsUVR6YVT2YLw5ezM3kXz8KQFgXSzvnivqvBoEff2XKL34V5JzZ7ygvs
-         6ovL3ZC5dP+zoCqhRdoblDoZCU9DAwv3bVwBcsq87BrFkpXHAkgA+4tHyuorekroJaA5
-         kHPg==
+        Tue, 22 Oct 2019 03:14:52 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1571728490;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=qwsp5QQ6bMYXnb9ux6HCdVcJSILSyF0BVLpabeoGiOo=;
+        b=JEOG/wa5tOAUWp4lN3GH4l1/iu41zLnEB5TNtsEibo2mclOiHnb4Y9Tm9xD7Uhs6efWYQJ
+        w3SpaZAE64rCL3zUje2L74l2Iu3m+coO+6yJHYgOJ9OXobQKDeTDkATNp4Wz+kc3JlrH/b
+        KBqHCEw/WoYYEj2C6GuYFCCvR1xGKEA=
+Received: from mail-lf1-f72.google.com (mail-lf1-f72.google.com
+ [209.85.167.72]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-146-GoQkclVEMfCQ03an90mSUA-1; Tue, 22 Oct 2019 03:14:47 -0400
+Received: by mail-lf1-f72.google.com with SMTP id n26so14997lfe.17
+        for <linux-wireless@vger.kernel.org>; Tue, 22 Oct 2019 00:14:47 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=48GsjoJkha+FkK4BjEpjxR+SeBNRB+aPyJf6ECBpNI8=;
-        b=uQ8MkRpZ8cS2gE6r5C/fZLlBFOwEzEaLTeC/ewUr+APffo2PnjU6ls4DiqTbqmTst3
-         lR+XZOQD4a3kpvGB9hriGL80Q0coH5Y9FpTewoXdYVlGZvOqo2ywYL6dplDMDB14zKoW
-         eyK6kLQDJdDKYBWcRHNNUJwko80KTcL5MAziiXRndbO3HrzIWu5l3mybi8+H6QeUR5Fy
-         Kltp8wdVqGxm704K4WqjK8KhCMG6N7jb7mZhowrx8dodZeGt132qK7UGdJUOyj8EhvtD
-         AW1+bhrzpL9ZyFk7xryuY2wP7SHY9jPhgWPTwp9zmANeYK8N/1AfLACwYEdmXp2yyXmL
-         EMpA==
-X-Gm-Message-State: APjAAAVCQ9J+4SpVv7z1ss2ylL13QGVKDmbT7a/TfLeXDsOL/YO5kb0k
-        HAq211S7ROm6p8qewEa5Cs2iV4raHT65pRzaGy1FrQ==
-X-Google-Smtp-Source: APXvYqyQp/ZBzqbnbb99OA7AcxXgKHIl2AlPbDn895oCL9HPi5AEBH3Op7dbJ+nVlsWjQf3q2l3n/Tbcy8/XA0+cyS0=
-X-Received: by 2002:a1f:a293:: with SMTP id l141mr1033147vke.43.1571727560670;
- Mon, 21 Oct 2019 23:59:20 -0700 (PDT)
+        h=x-gm-message-state:from:to:cc:subject:in-reply-to:references:date
+         :message-id:mime-version;
+        bh=YEnLndySMbqJ6YLxHTcryFiXLrxuubnh33DpZ1uyCVw=;
+        b=LQPqB+ez7dOhfsBTyaw1uN4prqXpBkCpnGjqXfaEBQOhuAYhNkTzW1ZaHRvIaU7zMV
+         z/WxRmhxdci/iWyGr+WSI/S0+lf3RhnuLrZlBIWED0BbBWvlbeftXXUdKUa6swKYPcwt
+         QSDCWdpQ6KQaePL76oxNmz05WL6dcfjEnUgKNJR/2EGlbnl61J0lTrZ3KEsw8YQvrH3G
+         EHsq65Gpc5eBeb8DjdUgrGVCLxYvp5qlFostu34a79PdEIvDM2md/CNSRL+0mZPfdnv7
+         kyiJKuzTVawd2SLBRniVRKpSAsSIj0rEdln3O3SMUB7tOaSHFCrnrPu/MyuxpBJ9tzI1
+         c6rQ==
+X-Gm-Message-State: APjAAAVNc8uH6Pwg/01VDTefgLpDh0kQaxrGVWIVy3jGdnd4/IsT04e/
+        rjU3Iq3/7Sk8Dmqoobs2j6+NoyzC9c+EooPBggH0sRJcqeJxHMuPe1SvCXhSjxt91Jy4iIcGnUn
+        w4JpghdLuSPRmcO49DKDYNHClelY=
+X-Received: by 2002:a19:ee15:: with SMTP id g21mr9604050lfb.27.1571728486204;
+        Tue, 22 Oct 2019 00:14:46 -0700 (PDT)
+X-Google-Smtp-Source: APXvYqwCSIOYeZTnkeEphbi//1B6x6TmIFBb5CxKOQTHtWQ/QW3TmwG4Neq6wU/IdDUdAzg548Su5Q==
+X-Received: by 2002:a19:ee15:: with SMTP id g21mr9604021lfb.27.1571728485759;
+        Tue, 22 Oct 2019 00:14:45 -0700 (PDT)
+Received: from alrua-x1.borgediget.toke.dk (borgediget.toke.dk. [85.204.121.218])
+        by smtp.gmail.com with ESMTPSA id p22sm8765694ljp.69.2019.10.22.00.14.44
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 22 Oct 2019 00:14:45 -0700 (PDT)
+Received: by alrua-x1.borgediget.toke.dk (Postfix, from userid 1000)
+        id EE22D1804B1; Tue, 22 Oct 2019 09:14:43 +0200 (CEST)
+From:   Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>
+To:     Kan Yan <kyan@google.com>
+Cc:     Johannes Berg <johannes@sipsolutions.net>,
+        linux-wireless@vger.kernel.org,
+        Make-Wifi-fast <make-wifi-fast@lists.bufferbloat.net>,
+        ath10k@lists.infradead.org, John Crispin <john@phrozen.org>,
+        Lorenzo Bianconi <lorenzo@kernel.org>,
+        Felix Fietkau <nbd@nbd.name>,
+        Rajkumar Manoharan <rmanohar@codeaurora.org>,
+        Kevin Hayes <kevinhayes@google.com>
+Subject: Re: [PATCH v4 4/4] mac80211: Use Airtime-based Queue Limits (AQL) on packet dequeue
+In-Reply-To: <CA+iem5sy16=xMZjJi1nKHrxP_xWHk-86G=ZLwtMMb04EOt5tQA@mail.gmail.com>
+References: <157148503415.2989444.7391437309981941226.stgit@toke.dk> <157148503865.2989444.7118792679603045723.stgit@toke.dk> <CA+iem5sy16=xMZjJi1nKHrxP_xWHk-86G=ZLwtMMb04EOt5tQA@mail.gmail.com>
+X-Clacks-Overhead: GNU Terry Pratchett
+Date:   Tue, 22 Oct 2019 09:14:43 +0200
+Message-ID: <87o8y9p7z0.fsf@toke.dk>
 MIME-Version: 1.0
-References: <cover.1571510481.git.hns@goldelico.com> <9bd4c0bb0df26523d7f5265cdb06d86d63dafba8.1571510481.git.hns@goldelico.com>
- <20191021143008.GS5610@atomide.com> <3FDBE28F-B2C5-4EDE-905C-687F601462B6@goldelico.com>
- <20191021171104.GY5610@atomide.com>
-In-Reply-To: <20191021171104.GY5610@atomide.com>
-From:   Ulf Hansson <ulf.hansson@linaro.org>
-Date:   Tue, 22 Oct 2019 08:58:44 +0200
-Message-ID: <CAPDyKFryqo3wF-GphhytNqrDL4rbZ7Qou1Ki3e2_5w-yh2o=uw@mail.gmail.com>
-Subject: Re: [PATCH v2 07/11] omap: remove old hsmmc.[ch] and in Makefile
-To:     Tony Lindgren <tony@atomide.com>,
-        "H. Nikolaus Schaller" <hns@goldelico.com>
-Cc:     Kalle Valo <kvalo@codeaurora.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        linux-omap <linux-omap@vger.kernel.org>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
-        DTML <devicetree@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        linux-wireless <linux-wireless@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+X-MC-Unique: GoQkclVEMfCQ03an90mSUA-1
+X-Mimecast-Spam-Score: 0
+Content-Type: text/plain; charset=WINDOWS-1252
+Content-Transfer-Encoding: quoted-printable
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-- Trimmed cc-list (could be a good idea for next submission as well)
+Kan Yan <kyan@google.com> writes:
 
-On Mon, 21 Oct 2019 at 19:11, Tony Lindgren <tony@atomide.com> wrote:
+>> +               if (ieee80211_is_data_qos(hdr->frame_control)) {
+>> +                       qc =3D ieee80211_get_qos_ctl(hdr);
+>> +                       tid =3D qc[0] & 0xf;
+>> +                       ac =3D ieee80211_ac_from_tid(tid);
+>> +               } else {
+>> +                       ac =3D IEEE80211_AC_BE;
+>> +               }
 >
-> * H. Nikolaus Schaller <hns@goldelico.com> [191021 17:08]:
-> >
-> > > Am 21.10.2019 um 16:30 schrieb Tony Lindgren <tony@atomide.com>:
-> > >
-> > > * H. Nikolaus Schaller <hns@goldelico.com> [191019 18:43]:
-> > >> --- a/arch/arm/mach-omap2/Makefile
-> > >> +++ b/arch/arm/mach-omap2/Makefile
-> > >> @@ -216,7 +216,6 @@ obj-$(CONFIG_MACH_NOKIA_N8X0)          += board-n8x0.o
-> > >>
-> > >> # Platform specific device init code
-> > >>
-> > >> -omap-hsmmc-$(CONFIG_MMC_OMAP_HS)  := hsmmc.o
-> > >> obj-y                                      += $(omap-hsmmc-m) $(omap-hsmmc-y)
-> > >
-> > > The related obj-y line can go now too, right?
-> >
-> > Yes, I think so. It is a construction that I have never seen before :)
-> > Therefore I did not recognize that it is related.
-> >
-> > > And looks like common.h also has struct omap2_hsmmc_info
-> > > so maybe check by grepping for hsmmc_info to see it's gone.
-> >
-> > Yes, it is just a forward-declaration of the struct name with
-> > no user anywhere.
-> >
-> > Scheduled for v3.
-> >
-> > BTW: should this series go through your tree since it is an
-> > omap machine?
->
-> Or MMC tree as that's where the code change really are.
+> The tid/ac is incorrect either here or in __ieee80211_tx_status() when
+> tested with ath10k. The ac is set to AC_BE with test done using BK
+> class traffic, hence the pending airtime get updated for the wrong
+> txq.
 
-I am okay with that. I will have a look at the series and provide some comments.
+Huh, well that won't do, obviously :)
 
-Kind regards
-Uffe
+Any idea why it might be wrong?
+
+> The rest of the patch seems to work as expected, after I did a quick
+> hack to release the pending airtime from ath10k_txrx_tx_unref()
+> instead, where the ac/tid can be directly retrieved from struck struct
+> ieee80211_tx.
+
+Awesome! Thanks for testing!
+
+-Toke
+
