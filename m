@@ -2,110 +2,112 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 06B2DDFF6C
-	for <lists+linux-wireless@lfdr.de>; Tue, 22 Oct 2019 10:29:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 81441DFFAF
+	for <lists+linux-wireless@lfdr.de>; Tue, 22 Oct 2019 10:38:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2388170AbfJVI3W (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 22 Oct 2019 04:29:22 -0400
-Received: from smtp.codeaurora.org ([198.145.29.96]:48996 "EHLO
+        id S2388431AbfJVIhz (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 22 Oct 2019 04:37:55 -0400
+Received: from smtp.codeaurora.org ([198.145.29.96]:54692 "EHLO
         smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2388155AbfJVI3W (ORCPT
+        with ESMTP id S2388393AbfJVIhy (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 22 Oct 2019 04:29:22 -0400
+        Tue, 22 Oct 2019 04:37:54 -0400
 Received: by smtp.codeaurora.org (Postfix, from userid 1000)
-        id 07F416083E; Tue, 22 Oct 2019 08:29:21 +0000 (UTC)
+        id 621F46079C; Tue, 22 Oct 2019 08:37:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1571732961;
-        bh=dfnexyKFgZ7M3DXnhgBgdvvHTwJwwPlBvK3aF2Dyz6g=;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=B7XsgLsTLag4wg7U0U2rWfWMi2EDUDJ1d15A0B2h8Hj7NIb7ghVma4TaC5MOq8gdY
-         y4QLoTOEhFmr19lVpJTVh6ivp2wrSlh9hG5F62PT8OiuTboAraZb/BWcPX9L1h6Z0a
-         sXyASotZhZvsCfPdV1J4dnUoW0brJRF2BwyPfx9g=
+        s=default; t=1571733473;
+        bh=Po5RtiTU4/a1PjWYIFhSvt3ysgdj+uj3Q97l1tGoGno=;
+        h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
+        b=QCCCcIC789yQ7vbQZCHzAEybmJpv0vZdd2l3JH455L1ATtObglxlqGa3Mevq6K7t+
+         QEcCnfnJwgsLraluQWKf4zK9AejH43f7u+H3LWYMpIs8CnrO/GUhpuLz+QeogAUIwR
+         PB6O61Alyb4w5ROOD6RWvjzr+xx/RRSHcQTQ17nA=
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         pdx-caf-mail.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-2.7 required=2.0 tests=ALL_TRUSTED,BAYES_00,
-        DKIM_INVALID,DKIM_SIGNED,SPF_NONE autolearn=no autolearn_force=no
-        version=3.4.0
+X-Spam-Status: No, score=-0.8 required=2.0 tests=ALL_TRUSTED,BAYES_00,
+        DKIM_INVALID,DKIM_SIGNED,MISSING_DATE,MISSING_MID,SPF_NONE autolearn=no
+        autolearn_force=no version=3.4.0
 Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
         (Authenticated sender: kvalo@smtp.codeaurora.org)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id EACA060790;
-        Tue, 22 Oct 2019 08:29:18 +0000 (UTC)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 8C0B66081E;
+        Tue, 22 Oct 2019 08:37:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1571732960;
-        bh=dfnexyKFgZ7M3DXnhgBgdvvHTwJwwPlBvK3aF2Dyz6g=;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=D3WZcfzK0XQ3ETVfJaKNyQPKxY0N8pfoMCjWOPXhkxdV8ECvEOVb1R7oNk3CHoW3p
-         m+s+Ch565ofgrKW5JSt2dY3hseKLbjkPIogltKE9u3ykU6wVCU10rvrfun/eO/ePcy
-         nU9aqSD+6O5MdiP+IXaUIF+m5j0iL+nVXpC3Cqz0=
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org EACA060790
+        s=default; t=1571733468;
+        bh=Po5RtiTU4/a1PjWYIFhSvt3ysgdj+uj3Q97l1tGoGno=;
+        h=Subject:From:In-Reply-To:References:To:Cc:From;
+        b=S+TEhuqHHOLxBvvFbhB4Fg/0nbgR8jLvULtLxz34XMRYJ1ZrEH2uoixCBf1BT0aGQ
+         XapuA4XFkIkgBxjEYlBHtuvpoqnD7+SjujRhfeQsiwkRsMrsjjtpwpvFAV3J5KXW6/
+         b9XS1mAnHnbxutmCYP5i6EHXsjV6fCyS/gOcQgFo=
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 8C0B66081E
 Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
 Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
-From:   Kalle Valo <kvalo@codeaurora.org>
-To:     Luca Coelho <luca@coelho.fi>
-Cc:     linux-wireless@vger.kernel.org, linuxwifi@intel.com,
-        david.e.box@intel.com, joe.konno@intel.com
-Subject: Re: pull-request: iwlwifi-next 2019-10-18
-References: <3aa31c1474703a74e539d97720ce6ef68b3e5893.camel@coelho.fi>
-Date:   Tue, 22 Oct 2019 11:29:16 +0300
-In-Reply-To: <3aa31c1474703a74e539d97720ce6ef68b3e5893.camel@coelho.fi> (Luca
-        Coelho's message of "Fri, 18 Oct 2019 12:08:45 +0300")
-Message-ID: <87mudttc83.fsf@kamboji.qca.qualcomm.com>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH v2] ath10k: Fix a NULL-ptr-deref bug in
+ ath10k_usb_alloc_urb_from_pipe
+From:   Kalle Valo <kvalo@codeaurora.org>
+In-Reply-To: <20191018133516.12606-1-linux@roeck-us.net>
+References: <20191018133516.12606-1-linux@roeck-us.net>
+To:     Guenter Roeck <linux@roeck-us.net>
+Cc:     ath10k@lists.infradead.org, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Hui Peng <benquike@gmail.com>,
+        Guenter Roeck <linux@roeck-us.net>
+User-Agent: pwcli/0.0.0-git (https://github.com/kvalo/pwcli/) Python/2.7.12
+Message-Id: <20191022083752.621F46079C@smtp.codeaurora.org>
+Date:   Tue, 22 Oct 2019 08:37:51 +0000 (UTC)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Luca Coelho <luca@coelho.fi> writes:
+Guenter Roeck <linux@roeck-us.net> wrote:
 
-> Hi Kalle,
->
-> Here's the first batch of patches intended for v5.4.  This includes the
-> last patchset 2 patchsets I sent.  Usual development work.  More
-> details about the contents in the tag description.
->
-> I pushed this to my pending branch and got results from kbuildbot for a
-> previous version but not for the last one yet.  Though there shouldn't
-> be any issues, since the changes were trivial.  I'll let you know when
-> I get the results.
->
-> Please let me know if there are any issues.
->
-> Cheers,
-> Luca.
->
->
-> The following changes since commit 89dca86d29b46f2a5f38ea6476cfd441bd205d25:
->
->   rtw88: mark rtw_fw_hdr __packed (2019-10-16 10:35:25 +0300)
->
-> are available in the Git repository at:
->
->   git://git.kernel.org/pub/scm/linux/kernel/git/iwlwifi/iwlwifi-next.git tags/iwlwifi-next-for-kalle-2019-10-18
->
-> for you to fetch changes up to e3277617c634b0efadb0429c59c8716531648415:
->
->   iwlwifi: rx: use new api to get band from rx mpdu (2019-10-18 11:52:49 +0300)
->
-> ----------------------------------------------------------------
-> Patches intended for v5.5
->
-> * Revamp the debugging infrastructure;
-> * Some udpdates to FW API commands;
-> * Fix max amsdu value calculation;
-> * Small updates in the debugging infra;
-> * Some new helper functions;
-> * A few clean-ups;
-> * Other small fixes and improvements;
->
-> ----------------------------------------------------------------
+> The `ar_usb` field of `ath10k_usb_pipe_usb_pipe` objects
+> are initialized to point to the containing `ath10k_usb` object
+> according to endpoint descriptors read from the device side, as shown
+> below in `ath10k_usb_setup_pipe_resources`:
+> 
+> for (i = 0; i < iface_desc->desc.bNumEndpoints; ++i) {
+>         endpoint = &iface_desc->endpoint[i].desc;
+> 
+>         // get the address from endpoint descriptor
+>         pipe_num = ath10k_usb_get_logical_pipe_num(ar_usb,
+>                                                 endpoint->bEndpointAddress,
+>                                                 &urbcount);
+>         ......
+>         // select the pipe object
+>         pipe = &ar_usb->pipes[pipe_num];
+> 
+>         // initialize the ar_usb field
+>         pipe->ar_usb = ar_usb;
+> }
+> 
+> The driver assumes that the addresses reported in endpoint
+> descriptors from device side  to be complete. If a device is
+> malicious and does not report complete addresses, it may trigger
+> NULL-ptr-deref `ath10k_usb_alloc_urb_from_pipe` and
+> `ath10k_usb_free_urb_to_pipe`.
+> 
+> This patch fixes the bug by preventing potential NULL-ptr-deref.
+> 
+> Signed-off-by: Hui Peng <benquike@gmail.com>
+> Reported-by: Hui Peng <benquike@gmail.com>
+> Reported-by: Mathias Payer <mathias.payer@nebelwelt.net>
+> Reviewed-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> [groeck: Add driver tag to subject, fix build warning]
+> Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+> Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
 
-Every commit has a Change-id tag, please fix that.
+Patch applied to ath-next branch of ath.git, thanks.
+
+bfd6e6e6c5d2 ath10k: Fix a NULL-ptr-deref bug in ath10k_usb_alloc_urb_from_pipe
 
 -- 
+https://patchwork.kernel.org/patch/11198433/
+
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+
