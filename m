@@ -2,97 +2,90 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 93714E001E
-	for <lists+linux-wireless@lfdr.de>; Tue, 22 Oct 2019 10:57:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 12766E004A
+	for <lists+linux-wireless@lfdr.de>; Tue, 22 Oct 2019 11:07:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731298AbfJVI5o (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 22 Oct 2019 04:57:44 -0400
-Received: from smtp.codeaurora.org ([198.145.29.96]:36340 "EHLO
+        id S1731291AbfJVJHU (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 22 Oct 2019 05:07:20 -0400
+Received: from smtp.codeaurora.org ([198.145.29.96]:41604 "EHLO
         smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1731223AbfJVI5n (ORCPT
+        with ESMTP id S1731234AbfJVJHT (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 22 Oct 2019 04:57:43 -0400
+        Tue, 22 Oct 2019 05:07:19 -0400
 Received: by smtp.codeaurora.org (Postfix, from userid 1000)
-        id 3D93C6081C; Tue, 22 Oct 2019 08:57:43 +0000 (UTC)
+        id 4DED86078F; Tue, 22 Oct 2019 09:07:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1571734663;
-        bh=P1gtfMzQ64P1I8hkPS69QXlX/oj3QD3ocmBAXcTD/gw=;
-        h=From:To:Cc:Subject:Date:From;
-        b=U4wDhOa2jowfb4Gyg7jq5c+VsZLcbdamql8N6rT/gTEFxbtQzO7ni0cnQrx1z35eP
-         yiNbAEgMJpBXhomIwGD9Xrcxs1Hn0nqyzVcbna8BVyRAPvmAVc2ROgjLO09Kq9AOoH
-         Wve195Bseh3x7GCe04zbdny3xHDVndhNUtS22PQY=
+        s=default; t=1571735239;
+        bh=ApUGZYgh33UJoQCW+BZQrwxQct95D/UJnMmb5Z+Q1Gw=;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+        b=GGNBnuy2oMDhg1KBIMGtuPCqoivNZ/Ukbv3zCDmQBINiEkQU6ana443MLI8l3E46K
+         pa/EQr5eFpBlmzxLYGoAWpXpYD3EAZ4FqrAPE5GG+KMqkrwriFTrEwQYWVb0OPfVVJ
+         dEdaZf5nZ69daOIQ2WwzAQzUtjDbqNaVBCSbxGgQ=
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         pdx-caf-mail.web.codeaurora.org
 X-Spam-Level: 
 X-Spam-Status: No, score=-2.7 required=2.0 tests=ALL_TRUSTED,BAYES_00,
         DKIM_INVALID,DKIM_SIGNED,SPF_NONE autolearn=no autolearn_force=no
         version=3.4.0
-Received: from zhichen.ap.qualcomm.com (unknown [180.166.53.21])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-SHA256 (128/128 bits))
+Received: from tynnyri.adurom.net (tynnyri.adurom.net [51.15.11.48])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        (Authenticated sender: zhichen@codeaurora.org)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id F0ACA60159;
-        Tue, 22 Oct 2019 08:57:41 +0000 (UTC)
+        (Authenticated sender: kvalo@smtp.codeaurora.org)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 420046050D;
+        Tue, 22 Oct 2019 09:07:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1571734662;
-        bh=P1gtfMzQ64P1I8hkPS69QXlX/oj3QD3ocmBAXcTD/gw=;
-        h=From:To:Cc:Subject:Date:From;
-        b=hvWS21AhsOHa0S0NnNO8mHlDU1gISUSMra4JdrrOJq+hWXMyTAPIgWmtLOGIEbBIO
-         TyuMqiB4k5JndsiS/O+izJ/XmdbzFW7eIUlGef4swAqPz2tAqQ+ZYAc9/wfu5jo8Y0
-         2kQtzjOq7Sn6Y6Ou+oE/6d1oImxnLYsu3scH9LKs=
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org F0ACA60159
+        s=default; t=1571735239;
+        bh=ApUGZYgh33UJoQCW+BZQrwxQct95D/UJnMmb5Z+Q1Gw=;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+        b=GGNBnuy2oMDhg1KBIMGtuPCqoivNZ/Ukbv3zCDmQBINiEkQU6ana443MLI8l3E46K
+         pa/EQr5eFpBlmzxLYGoAWpXpYD3EAZ4FqrAPE5GG+KMqkrwriFTrEwQYWVb0OPfVVJ
+         dEdaZf5nZ69daOIQ2WwzAQzUtjDbqNaVBCSbxGgQ=
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 420046050D
 Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=zhichen@codeaurora.org
-From:   Zhi Chen <zhichen@codeaurora.org>
-To:     ath10k@lists.infradead.org
-Cc:     linux-wireless@vger.kernel.org, Zhi Chen <zhichen@codeaurora.org>
-Subject: [PATCH RFC] Revert "ath10k: fix DMA related firmware crashes on multiple devices"
-Date:   Tue, 22 Oct 2019 16:57:09 +0800
-Message-Id: <1571734629-18028-1-git-send-email-zhichen@codeaurora.org>
-X-Mailer: git-send-email 2.7.4
+Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
+From:   Kalle Valo <kvalo@codeaurora.org>
+To:     Ryan Adolf <ryanadolf123@gmail.com>
+Cc:     Johannes Berg <johannes@sipsolutions.net>,
+        linux-wireless@vger.kernel.org
+Subject: Re: [PATCH] iw: Fix typo in iw --help
+References: <79e3b9aba5159d1e7fbf908af6621e9d0fdb57fd.camel@gmail.com>
+Date:   Tue, 22 Oct 2019 12:07:16 +0300
+In-Reply-To: <79e3b9aba5159d1e7fbf908af6621e9d0fdb57fd.camel@gmail.com> (Ryan
+        Adolf's message of "Tue, 22 Oct 2019 01:07:09 -0700")
+Message-ID: <8736flf8sb.fsf@tynnyri.adurom.net>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
+MIME-Version: 1.0
+Content-Type: text/plain
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-This reverts commit 76d164f582150fd0259ec0fcbc485470bcd8033e.
-PCIe hung issue was observed on multiple platforms. The issue was reproduced
-when DUT was configured as AP and associated with 50+ STAs.
+Ryan Adolf <ryanadolf123@gmail.com> writes:
 
-With PCIe protocol analyzer, we can see DMA Read crossing 4KB boundary when
-issue happened. It broke PCIe spec and caused PCIe stuck.
+> Signed-off-by: Ryan Adolf <ryanadolf123@gmail.com>
+> ---
+>  event.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/event.c b/event.c
+> index 100f644..4a932d1 100644
+> --- a/event.c
+> +++ b/event.c
+> @@ -1172,5 +1172,5 @@ static int print_events(struct nl80211_state *state,
+>  TOPLEVEL(event, "[-t|-r] [-f]", 0, 0, CIB_NONE, print_events,
+>  	"Monitor events from the kernel.\n"
+>  	"-t - print timestamp\n"
+> -	"-r - print relative timstamp\n"
+> +	"-r - print relative timestamp\n"
+>  	"-f - print full frame for auth/assoc etc.");
 
-Tested:  IPQ8064 + QCA9984 with firmware 10.4-3.10-00047
-         QCS404 + QCA9984 with firmware 10.4-3.9.0.2--00044
-         Synaptics AS370 + QCA9888  with firmware 10.4-3.9.0.2--00040
+Thanks, look good. You can now follow the status in patchwork:
 
-Signed-off-by: Zhi Chen <zhichen@codeaurora.org>
----
- drivers/net/wireless/ath/ath10k/hw.h | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+https://patchwork.kernel.org/patch/11203919/
 
-diff --git a/drivers/net/wireless/ath/ath10k/hw.h b/drivers/net/wireless/ath/ath10k/hw.h
-index 35a3623..17f620b 100644
---- a/drivers/net/wireless/ath/ath10k/hw.h
-+++ b/drivers/net/wireless/ath/ath10k/hw.h
-@@ -753,7 +753,7 @@ ath10k_is_rssi_enable(struct ath10k_hw_params *hw,
- #define TARGET_10X_MAX_FRAG_ENTRIES		0
- 
- /* 10.2 parameters */
--#define TARGET_10_2_DMA_BURST_SIZE		0
-+#define TARGET_10_2_DMA_BURST_SIZE		1
- 
- /* Target specific defines for WMI-TLV firmware */
- #define TARGET_TLV_NUM_VDEVS			4
-@@ -813,7 +813,7 @@ ath10k_is_rssi_enable(struct ath10k_hw_params *hw,
- 
- #define TARGET_10_4_TX_DBG_LOG_SIZE		1024
- #define TARGET_10_4_NUM_WDS_ENTRIES		32
--#define TARGET_10_4_DMA_BURST_SIZE		0
-+#define TARGET_10_4_DMA_BURST_SIZE		1
- #define TARGET_10_4_MAC_AGGR_DELIM		0
- #define TARGET_10_4_RX_SKIP_DEFRAG_TIMEOUT_DUP_DETECTION_CHECK 1
- #define TARGET_10_4_VOW_CONFIG			0
+But do note that maintainers are busy so sometimes it might take even
+weeks before your patch is reviewed.
+
 -- 
-2.7.4
-
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
