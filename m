@@ -2,124 +2,230 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B855EDFDAB
-	for <lists+linux-wireless@lfdr.de>; Tue, 22 Oct 2019 08:20:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D39ACDFDAE
+	for <lists+linux-wireless@lfdr.de>; Tue, 22 Oct 2019 08:23:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731029AbfJVGUd (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 22 Oct 2019 02:20:33 -0400
-Received: from mail-vs1-f65.google.com ([209.85.217.65]:34154 "EHLO
-        mail-vs1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727978AbfJVGUd (ORCPT
+        id S1731040AbfJVGUt (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 22 Oct 2019 02:20:49 -0400
+Received: from mail-lf1-f67.google.com ([209.85.167.67]:44502 "EHLO
+        mail-lf1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725788AbfJVGUt (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 22 Oct 2019 02:20:33 -0400
-Received: by mail-vs1-f65.google.com with SMTP id d3so10581986vsr.1
-        for <linux-wireless@vger.kernel.org>; Mon, 21 Oct 2019 23:20:31 -0700 (PDT)
+        Tue, 22 Oct 2019 02:20:49 -0400
+Received: by mail-lf1-f67.google.com with SMTP id q12so12037135lfc.11
+        for <linux-wireless@vger.kernel.org>; Mon, 21 Oct 2019 23:20:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
+        d=google.com; s=20161025;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=k8DW9vd1TIycb0sU0HAtL003PnMYaqF/Te0E+k23Gg8=;
-        b=TQ0Nb+kieO5MMn1rHD6P0qJMUfJ6iTIbZ2TVn3pGuctKRPEgEIYZkA6rJfGg9vLqw3
-         YPeqXraDyVEV3lnJm4Uv1UxZ6w+aYr2pnrKj85XP+0Y7oSWtjA2Ou1TAzgy/Djlo5alq
-         Muj7WQ+1yc54PPSWjfqEnSU9kVTSE2HWAhQzsf5jjE2VXq7Na+o+8oIBtWCWQJc8pVck
-         FaCDI8y3Vk9DJzCHAH5tn+4Ka8z7AjGZg3McnSAOCJFESVqW/BZMzgQpBdT7/3t6+TNT
-         lNKRqNvDbu9oQjPv2DnHXnDA7eVOW6MKCWZvOVz/i+WlGgN/Xe6TL5XWZWUvzV2X1obN
-         QmGw==
+         :cc:content-transfer-encoding;
+        bh=P89YVq7mabnbReOmcuX3tbFnU1/HsoCVT0wVL7HYmgo=;
+        b=H6fbYWTqwfAzUI0aZwG24lhF9WJY8zUGD2ZkDaEt8GdDT3wSosRcnrLTg5vgYNVQti
+         xB5HLN+lsDlUxmw5ZwXpIOmfknFtbmHgejpU4A97IvOx1PPiW/lJEzROMOyUXQ4/4Mun
+         KezH0Ku9mtAfva3+2KDK2dL2Lcnx0FFucpiemXhTcm4HjHVfEBQcMJeG4jl3NoY4x54A
+         4jdUHr3gyn03Fa6aTId0V5CPkB1fflYZs1Sv4H1a3HRqv3TSkpvmESxTofmTnhItZiyz
+         7lA76VICm3+uVUEPzJ0rG72KEUk2OuTkj71bOvxOMRuBgoVIBlVDHoNZ4C4sS76WncCB
+         nYjQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=k8DW9vd1TIycb0sU0HAtL003PnMYaqF/Te0E+k23Gg8=;
-        b=m/1yKlnC963QhcAP3CnVZRJmv4D+s7VXvyiTEAhYBA52p02Z03v56k6RyYazxzrDaG
-         S8oqNTsXGo9dFk95NE7uBGjopP9TGTMYGA86TORleCK1A5LBjwe3O4Kvb6eZWU6bnB6Q
-         Ugd9IiNSnxoOvxC6FRHy9BCeCsF5AMUscj5nGD/xqqxCPeShSfjlpv39fEBzKNKXiJuL
-         4cYQd7mDt2jVu6WCSzKlQKj34daE2KI6tdDnkwM3G9x4UXe89zgvlP61UgqmRGbuog8A
-         /6BuLZM8CyG0z+o02ak6jCHRstxSdXtmp0rALsuV3hL04nRfxbvrzkCjYsoxDaJhwglJ
-         mYlg==
-X-Gm-Message-State: APjAAAW+RdnBFhIwVHJ5YMWtvxXwBzYhBnr/slxBFocXMG/E1Mwjz4zJ
-        utaqRWllUKctaYlH68rYcaAKOGSuIc83hfLLbYDbWw==
-X-Google-Smtp-Source: APXvYqzkYXuPseyXcdejvdvVSZXrEV06mZj0Op9CmRCQocYg4WimxvN1pSQnH8nJ/I9kGzCrw1RMyltd+I7tD0ELvMo=
-X-Received: by 2002:a67:cf05:: with SMTP id y5mr918147vsl.34.1571725230784;
- Mon, 21 Oct 2019 23:20:30 -0700 (PDT)
+         :message-id:subject:to:cc:content-transfer-encoding;
+        bh=P89YVq7mabnbReOmcuX3tbFnU1/HsoCVT0wVL7HYmgo=;
+        b=UCtxSjK0d3Wkdl9kex/SjF66oQiBKD+3AMdQzzcf4llIVloT85cNbkslBEci8g92v3
+         C2mo/KVBEaXIaxbWHu6Cqm9BAY1brBymzpSv0acw2P736rvIEl7UdZ+wpLE3zAmMRVH5
+         U2vs6R0kjteYOt4QVnb5aq0ecRAVW8atqUgkF5uCyqz/7WAtv+1rrXNLaZOf8xMjCGRt
+         6Fgpnwc3qmXmraF7Xltpv3tquLM6S9QvsCaq5DC51AsEz0v1XAWr9q5ntCj4zaM30yYO
+         LBMJkCFbbqnjWhq6m3ObQbla+NfAO2dnv+ucWq/1ESAbcCOShz5ULvHu3R+YFtzyofXL
+         IvVw==
+X-Gm-Message-State: APjAAAV9fsPRzajKkJ12nrFEGYYGAeqNZBXmESmwSdbyh9FFpSLhxiCD
+        mxKaCpDH/q8mVog5UoNq61xr0QCHIJt4FROI/Q1Gzw==
+X-Google-Smtp-Source: APXvYqxl8ImxyIIaYe9Nt5SgAG5+hUWTullxdEbjF0/6jry2TDPqWN0jbmS+AN13XvzxT1JqVAOWFjuhHFtVQsZDa3s=
+X-Received: by 2002:a19:9144:: with SMTP id y4mr12326104lfj.168.1571725245884;
+ Mon, 21 Oct 2019 23:20:45 -0700 (PDT)
 MIME-Version: 1.0
-References: <20191017135739.1315-1-ulf.hansson@linaro.org> <20191017135739.1315-2-ulf.hansson@linaro.org>
- <CAD=FV=Wh3bnvNu-_1cXf1xT44-EwomoZEWDt88PZzhUVCn9PcQ@mail.gmail.com>
-In-Reply-To: <CAD=FV=Wh3bnvNu-_1cXf1xT44-EwomoZEWDt88PZzhUVCn9PcQ@mail.gmail.com>
-From:   Ulf Hansson <ulf.hansson@linaro.org>
-Date:   Tue, 22 Oct 2019 08:19:53 +0200
-Message-ID: <CAPDyKFo58zdN5A18kY9tieFspC_dEPqomAE_FfC+NhpcL7LC9A@mail.gmail.com>
-Subject: Re: [PATCH 1/2] mmc: core: Drop check for mmc_card_is_removable() in mmc_rescan()
-To:     Doug Anderson <dianders@chromium.org>
-Cc:     Linux MMC List <linux-mmc@vger.kernel.org>,
-        Adrian Hunter <adrian.hunter@intel.com>,
-        Matthias Kaehlcke <mka@chromium.org>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        Tony Lindgren <tony@atomide.com>,
-        Wen Gong <wgong@codeaurora.org>,
-        Erik Stromdahl <erik.stromdahl@gmail.com>,
-        Eyal Reizer <eyalreizer@gmail.com>,
-        linux-wireless <linux-wireless@vger.kernel.org>
+References: <157148503415.2989444.7391437309981941226.stgit@toke.dk> <157148503865.2989444.7118792679603045723.stgit@toke.dk>
+In-Reply-To: <157148503865.2989444.7118792679603045723.stgit@toke.dk>
+From:   Kan Yan <kyan@google.com>
+Date:   Mon, 21 Oct 2019 23:20:34 -0700
+Message-ID: <CA+iem5sy16=xMZjJi1nKHrxP_xWHk-86G=ZLwtMMb04EOt5tQA@mail.gmail.com>
+Subject: Re: [PATCH v4 4/4] mac80211: Use Airtime-based Queue Limits (AQL) on
+ packet dequeue
+To:     =?UTF-8?B?VG9rZSBIw7hpbGFuZC1Kw7hyZ2Vuc2Vu?= <toke@redhat.com>
+Cc:     Johannes Berg <johannes@sipsolutions.net>,
+        linux-wireless@vger.kernel.org,
+        Make-Wifi-fast <make-wifi-fast@lists.bufferbloat.net>,
+        ath10k@lists.infradead.org, John Crispin <john@phrozen.org>,
+        Lorenzo Bianconi <lorenzo@kernel.org>,
+        Felix Fietkau <nbd@nbd.name>,
+        Rajkumar Manoharan <rmanohar@codeaurora.org>,
+        Kevin Hayes <kevinhayes@google.com>
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Tue, 22 Oct 2019 at 00:13, Doug Anderson <dianders@chromium.org> wrote:
->
-> Hi,
->
-> On Thu, Oct 17, 2019 at 6:57 AM Ulf Hansson <ulf.hansson@linaro.org> wrote:
-> >
-> > Upfront in mmc_rescan() we use the host->rescan_entered flag, to allow
-> > scanning only once for non-removable cards. Therefore, it's also not
-> > possible that we can have bus attached, when we are scanning non-removable
-> > cards. For this reason, let' drop the check for mmc_card_is_removable() as
-> > it's redundant.
-> >
-> > Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
-> > ---
-> >  drivers/mmc/core/core.c | 7 ++-----
-> >  1 file changed, 2 insertions(+), 5 deletions(-)
-> >
-> > diff --git a/drivers/mmc/core/core.c b/drivers/mmc/core/core.c
-> > index 221127324709..6f8342702c73 100644
-> > --- a/drivers/mmc/core/core.c
-> > +++ b/drivers/mmc/core/core.c
-> > @@ -2297,11 +2297,8 @@ void mmc_rescan(struct work_struct *work)
-> >
-> >         mmc_bus_get(host);
-> >
-> > -       /*
-> > -        * if there is a _removable_ card registered, check whether it is
-> > -        * still present
-> > -        */
-> > -       if (host->bus_ops && !host->bus_dead && mmc_card_is_removable(host))
-> > +       /* Verify a registered card to be functional, else remove it. */
-> > +       if (host->bus_ops && !host->bus_dead)
-> >                 host->bus_ops->detect(host);
->
-> At first I thought this was a bit more of a change than your
-> description makes it sound like.  Specifically it seemed like
-> non-removable cards used to never call host->bus_ops->detect() here
-> (even during the first call to mmc_rescan) but now they would call it
-> the first time through.
->
-> ...so I put in a bunch of printouts.  It appears that the first time
-> through mmc_rescan() host->bus_ops is NULL.
->
-> ...ah, and this is what that sentence in your description means about
-> having a bus attached.  Now I get it!  :-)
->
-> ...so, right, this looks fine.
->
-> Reviewed-by: Douglas Anderson <dianders@chromium.org>
+> +               if (ieee80211_is_data_qos(hdr->frame_control)) {
+> +                       qc =3D ieee80211_get_qos_ctl(hdr);
+> +                       tid =3D qc[0] & 0xf;
+> +                       ac =3D ieee80211_ac_from_tid(tid);
+> +               } else {
+> +                       ac =3D IEEE80211_AC_BE;
+> +               }
 
-Thanks for testing and reviewing! Let me amend the changelog a bit, to
-try to clarify that the host->bus_ops is NULL.
+The tid/ac is incorrect either here or in __ieee80211_tx_status() when
+tested with ath10k. The ac is set to AC_BE with test done using BK
+class traffic,  hence the pending airtime get updated for the wrong
+txq.
 
-Additionally, I think this one should be tagged for stable, but let's
-see what happens with patch 2/2 first.
+The rest of the patch seems to work as expected, after I did a quick
+hack to release the pending airtime from ath10k_txrx_tx_unref()
+instead, where the ac/tid can be directly retrieved from struck struct
+ieee80211_tx.
 
-Kind regards
-Uffe
+
+On Sat, Oct 19, 2019 at 4:37 AM Toke H=C3=B8iland-J=C3=B8rgensen <toke@redh=
+at.com> wrote:
+>
+> From: Toke H=C3=B8iland-J=C3=B8rgensen <toke@redhat.com>
+>
+> The previous commit added the ability to throttle stations when they queu=
+e
+> too much airtime in the hardware. This commit enables the functionality b=
+y
+> calculating the expected airtime usage of each packet that is dequeued fr=
+om
+> the TXQs in mac80211, and accounting that as pending airtime.
+>
+> The estimated airtime for each skb is stored in the tx_info, so we can
+> subtract the same amount from the running total when the skb is freed or
+> recycled. The throttling mechanism relies on this accounting to be
+> accurate (i.e., that we are not freeing skbs without subtracting any
+> airtime they were accounted for), so we put the subtraction into
+> ieee80211_report_used_skb(). As an optimisation, we also subtract the
+> airtime on regular TX completion, zeroing out the value stored in the
+> packet afterwards, to avoid having to do an expensive lookup of the
+> station from the packet data on every packet.
+>
+> This patch does *not* include any mechanism to wake a throttled TXQ again=
+,
+> on the assumption that this will happen anyway as a side effect of whatev=
+er
+> freed the skb (most commonly a TX completion).
+>
+> Signed-off-by: Toke H=C3=B8iland-J=C3=B8rgensen <toke@redhat.com>
+> ---
+>  net/mac80211/status.c |   38 ++++++++++++++++++++++++++++++++++++++
+>  net/mac80211/tx.c     |   21 +++++++++++++++++++++
+>  2 files changed, 59 insertions(+)
+>
+> diff --git a/net/mac80211/status.c b/net/mac80211/status.c
+> index ab8ba5835ca0..905b4afd457d 100644
+> --- a/net/mac80211/status.c
+> +++ b/net/mac80211/status.c
+> @@ -676,6 +676,33 @@ static void ieee80211_report_used_skb(struct ieee802=
+11_local *local,
+>         if (dropped)
+>                 acked =3D false;
+>
+> +       if (info->tx_time_est) {
+> +               struct ieee80211_sub_if_data *sdata;
+> +               struct sta_info *sta =3D NULL;
+> +               u8 *qc, ac;
+> +               int tid;
+> +
+> +               rcu_read_lock();
+> +
+> +               sdata =3D ieee80211_sdata_from_skb(local, skb);
+> +               if (sdata)
+> +                       sta =3D sta_info_get_bss(sdata, skb_mac_header(sk=
+b));
+> +
+> +               if (ieee80211_is_data_qos(hdr->frame_control)) {
+> +                       qc =3D ieee80211_get_qos_ctl(hdr);
+> +                       tid =3D qc[0] & 0xf;
+> +                       ac =3D ieee80211_ac_from_tid(tid);
+> +               } else {
+> +                       ac =3D IEEE80211_AC_BE;
+> +               }
+> +
+> +               ieee80211_sta_update_pending_airtime(local, sta, ac,
+> +                                                    info->tx_time_est <<=
+ 2,
+> +                                                    true);
+> +               rcu_read_unlock();
+> +
+> +       }
+> +
+>         if (info->flags & IEEE80211_TX_INTFL_MLME_CONN_TX) {
+>                 struct ieee80211_sub_if_data *sdata;
+>
+> @@ -930,6 +957,17 @@ static void __ieee80211_tx_status(struct ieee80211_h=
+w *hw,
+>                         tid =3D qc[0] & 0xf;
+>                 }
+>
+> +               if (info->tx_time_est) {
+> +                       /* Do this here to avoid the expensive lookup of =
+the sta
+> +                        * in ieee80211_report_used_skb().
+> +                        */
+> +                       ieee80211_sta_update_pending_airtime(local, sta,
+> +                                                            ieee80211_ac=
+_from_tid(tid),
+> +                                                            info->tx_tim=
+e_est << 2,
+> +                                                            true);
+> +                       info->tx_time_est =3D 0;
+> +               }
+> +
+>                 if (!acked && ieee80211_is_back_req(fc)) {
+>                         u16 control;
+>
+> diff --git a/net/mac80211/tx.c b/net/mac80211/tx.c
+> index 12653d873b8c..b8ff56d1d661 100644
+> --- a/net/mac80211/tx.c
+> +++ b/net/mac80211/tx.c
+> @@ -3542,6 +3542,9 @@ struct sk_buff *ieee80211_tx_dequeue(struct ieee802=
+11_hw *hw,
+>
+>         WARN_ON_ONCE(softirq_count() =3D=3D 0);
+>
+> +       if (!ieee80211_txq_airtime_check(hw, txq))
+> +               return NULL;
+> +
+>  begin:
+>         spin_lock_bh(&fq->lock);
+>
+> @@ -3652,6 +3655,24 @@ struct sk_buff *ieee80211_tx_dequeue(struct ieee80=
+211_hw *hw,
+>         }
+>
+>         IEEE80211_SKB_CB(skb)->control.vif =3D vif;
+> +
+> +       if (local->airtime_flags & AIRTIME_USE_AQL) {
+> +               u32 airtime;
+> +
+> +               airtime =3D ieee80211_calc_expected_tx_airtime(hw, vif, t=
+xq->sta,
+> +                                                            skb->len);
+> +               if (airtime) {
+> +                       /* We only have 10 bits in tx_time_est, so store =
+airtime
+> +                        * in increments of 4 us and clamp the maximum to=
+ 2**12-1
+> +                        */
+> +                       airtime =3D min_t(u32, airtime, 4095) & ~3U;
+> +                       info->tx_time_est =3D airtime >> 2;
+> +                       ieee80211_sta_update_pending_airtime(local, tx.st=
+a,
+> +                                                            txq->ac, air=
+time,
+> +                                                            false);
+> +               }
+> +       }
+> +
+>         return skb;
+>
+>  out:
+>
