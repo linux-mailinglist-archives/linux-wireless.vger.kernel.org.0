@@ -2,107 +2,99 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 32A90DFE10
-	for <lists+linux-wireless@lfdr.de>; Tue, 22 Oct 2019 09:16:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 33F30DFE26
+	for <lists+linux-wireless@lfdr.de>; Tue, 22 Oct 2019 09:21:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728346AbfJVHOw (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 22 Oct 2019 03:14:52 -0400
-Received: from us-smtp-1.mimecast.com ([205.139.110.61]:46510 "EHLO
-        us-smtp-delivery-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1726160AbfJVHOw (ORCPT
+        id S1729909AbfJVHVk (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 22 Oct 2019 03:21:40 -0400
+Received: from mail-io1-f49.google.com ([209.85.166.49]:46539 "EHLO
+        mail-io1-f49.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728768AbfJVHVj (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 22 Oct 2019 03:14:52 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1571728490;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=qwsp5QQ6bMYXnb9ux6HCdVcJSILSyF0BVLpabeoGiOo=;
-        b=JEOG/wa5tOAUWp4lN3GH4l1/iu41zLnEB5TNtsEibo2mclOiHnb4Y9Tm9xD7Uhs6efWYQJ
-        w3SpaZAE64rCL3zUje2L74l2Iu3m+coO+6yJHYgOJ9OXobQKDeTDkATNp4Wz+kc3JlrH/b
-        KBqHCEw/WoYYEj2C6GuYFCCvR1xGKEA=
-Received: from mail-lf1-f72.google.com (mail-lf1-f72.google.com
- [209.85.167.72]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-146-GoQkclVEMfCQ03an90mSUA-1; Tue, 22 Oct 2019 03:14:47 -0400
-Received: by mail-lf1-f72.google.com with SMTP id n26so14997lfe.17
-        for <linux-wireless@vger.kernel.org>; Tue, 22 Oct 2019 00:14:47 -0700 (PDT)
+        Tue, 22 Oct 2019 03:21:39 -0400
+Received: by mail-io1-f49.google.com with SMTP id c6so19099686ioo.13
+        for <linux-wireless@vger.kernel.org>; Tue, 22 Oct 2019 00:21:39 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=lKhRrIcVwkG0rJ9As4nEBuvgFBjR0lcF9sCefS1Wd4A=;
+        b=u4wFbrmroBjIzTeovbexU8R9SxLIBDiYtqJ7S9Z7nJQy6BUk2G+bX8qELacosDtsTY
+         MyFn4peABnNRhcTp9gEumJxtZWvbLiNXniKG30CcFVyKxJbZ/q9UM3ImZuoWwQt8s/X6
+         26DWfWqt5olbxjVt6jVkIiLAInX8wxasjFx7p6rxUB5XTBsQV0lfNhDOgV+6BAMre34w
+         iKLb2c6+Ep14lsKTnPW+Vc4O43PtE+TTjxo6DKQKxP+/SF7xJ4UPaTFKwW3SIjkp5tlq
+         eBjmaCCLFForfiA3s5B0TaNVXGhXmnz6EehiJJpY8sVGsL51S1MZnuVOIahHwKfO2BaU
+         VVAg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:in-reply-to:references:date
-         :message-id:mime-version;
-        bh=YEnLndySMbqJ6YLxHTcryFiXLrxuubnh33DpZ1uyCVw=;
-        b=LQPqB+ez7dOhfsBTyaw1uN4prqXpBkCpnGjqXfaEBQOhuAYhNkTzW1ZaHRvIaU7zMV
-         z/WxRmhxdci/iWyGr+WSI/S0+lf3RhnuLrZlBIWED0BbBWvlbeftXXUdKUa6swKYPcwt
-         QSDCWdpQ6KQaePL76oxNmz05WL6dcfjEnUgKNJR/2EGlbnl61J0lTrZ3KEsw8YQvrH3G
-         EHsq65Gpc5eBeb8DjdUgrGVCLxYvp5qlFostu34a79PdEIvDM2md/CNSRL+0mZPfdnv7
-         kyiJKuzTVawd2SLBRniVRKpSAsSIj0rEdln3O3SMUB7tOaSHFCrnrPu/MyuxpBJ9tzI1
-         c6rQ==
-X-Gm-Message-State: APjAAAVNc8uH6Pwg/01VDTefgLpDh0kQaxrGVWIVy3jGdnd4/IsT04e/
-        rjU3Iq3/7Sk8Dmqoobs2j6+NoyzC9c+EooPBggH0sRJcqeJxHMuPe1SvCXhSjxt91Jy4iIcGnUn
-        w4JpghdLuSPRmcO49DKDYNHClelY=
-X-Received: by 2002:a19:ee15:: with SMTP id g21mr9604050lfb.27.1571728486204;
-        Tue, 22 Oct 2019 00:14:46 -0700 (PDT)
-X-Google-Smtp-Source: APXvYqwCSIOYeZTnkeEphbi//1B6x6TmIFBb5CxKOQTHtWQ/QW3TmwG4Neq6wU/IdDUdAzg548Su5Q==
-X-Received: by 2002:a19:ee15:: with SMTP id g21mr9604021lfb.27.1571728485759;
-        Tue, 22 Oct 2019 00:14:45 -0700 (PDT)
-Received: from alrua-x1.borgediget.toke.dk (borgediget.toke.dk. [85.204.121.218])
-        by smtp.gmail.com with ESMTPSA id p22sm8765694ljp.69.2019.10.22.00.14.44
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 22 Oct 2019 00:14:45 -0700 (PDT)
-Received: by alrua-x1.borgediget.toke.dk (Postfix, from userid 1000)
-        id EE22D1804B1; Tue, 22 Oct 2019 09:14:43 +0200 (CEST)
-From:   Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>
-To:     Kan Yan <kyan@google.com>
-Cc:     Johannes Berg <johannes@sipsolutions.net>,
-        linux-wireless@vger.kernel.org,
-        Make-Wifi-fast <make-wifi-fast@lists.bufferbloat.net>,
-        ath10k@lists.infradead.org, John Crispin <john@phrozen.org>,
-        Lorenzo Bianconi <lorenzo@kernel.org>,
-        Felix Fietkau <nbd@nbd.name>,
-        Rajkumar Manoharan <rmanohar@codeaurora.org>,
-        Kevin Hayes <kevinhayes@google.com>
-Subject: Re: [PATCH v4 4/4] mac80211: Use Airtime-based Queue Limits (AQL) on packet dequeue
-In-Reply-To: <CA+iem5sy16=xMZjJi1nKHrxP_xWHk-86G=ZLwtMMb04EOt5tQA@mail.gmail.com>
-References: <157148503415.2989444.7391437309981941226.stgit@toke.dk> <157148503865.2989444.7118792679603045723.stgit@toke.dk> <CA+iem5sy16=xMZjJi1nKHrxP_xWHk-86G=ZLwtMMb04EOt5tQA@mail.gmail.com>
-X-Clacks-Overhead: GNU Terry Pratchett
-Date:   Tue, 22 Oct 2019 09:14:43 +0200
-Message-ID: <87o8y9p7z0.fsf@toke.dk>
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=lKhRrIcVwkG0rJ9As4nEBuvgFBjR0lcF9sCefS1Wd4A=;
+        b=cCPo8DntT+4YDoqIbPcrST9Hw0nUt53nCQcgp4gIzfK0rAG0MVfIHMow7dPmCuhxUO
+         DVCDQdARz1OAM5/uGVaSvVfUe6zhdOyGmCfi8kvyHDYCYhjkbVcaR0nZUfukrcfg5M2F
+         hw/lTxtahjaENlZ0lC5syNkCP/qlOuhqFAennlvBBt2dqXHPKic61TL5TfMRdxYZQWF9
+         rhvD9qC6xs0TgVXvcPH9svBLMqzwplXU+uVlxlQBO80yfuCbtXaV/90tTS/xAH2+5vsB
+         +OVzj11DYqSuL2G7uOUTnjKwX2rCtsbz/116y1t9+AQjXjCV8RJYajkUDeWo3dw8jXMd
+         02VQ==
+X-Gm-Message-State: APjAAAXKnVJC57vZCs4pQ0I1QjotJ7N2KP6F0MMvsrs7zziTsbQYEaQv
+        tfjjxr+czAehq2l7D9pNuPycjKeQFk24ReN7Ofrg2g==
+X-Google-Smtp-Source: APXvYqxFiYmgfYB1ocgek3j17tfLwBRurLcL/N+rNx3esFlucWX/OnomHg1ypJLmA11I94wUVQAJACgc3Q5sT+UX0Eo=
+X-Received: by 2002:a6b:6a0e:: with SMTP id x14mr2274036iog.150.1571728898427;
+ Tue, 22 Oct 2019 00:21:38 -0700 (PDT)
 MIME-Version: 1.0
-X-MC-Unique: GoQkclVEMfCQ03an90mSUA-1
-X-Mimecast-Spam-Score: 0
-Content-Type: text/plain; charset=WINDOWS-1252
-Content-Transfer-Encoding: quoted-printable
+References: <CADh-Cm=umBWCkz41-e0-PDnDrbpfQi_PRdT--SePmQLCqj5rwg@mail.gmail.com>
+ <CADh-CmnrWe_hrdfs3RqL0mF4ipAxthUgE3=eBSvaiudbEtsQvw@mail.gmail.com> <0f33cba3dd5fdcc4697c26e97e8f265c1bb9958c.camel@coelho.fi>
+In-Reply-To: <0f33cba3dd5fdcc4697c26e97e8f265c1bb9958c.camel@coelho.fi>
+From:   Ryan Adolf <ryanadolf123@gmail.com>
+Date:   Tue, 22 Oct 2019 00:21:26 -0700
+Message-ID: <CADh-Cm=bG2wV6Ccy3ATx3g=dsoXa6KAvxwBJ+pPxMSscaQ0AXA@mail.gmail.com>
+Subject: Re: Fwd: iw package typo in help command output
+To:     Luca Coelho <luca@coelho.fi>
+Cc:     linux-wireless@vger.kernel.org
+Content-Type: multipart/mixed; boundary="000000000000acb5b305957aa64e"
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Kan Yan <kyan@google.com> writes:
+--000000000000acb5b305957aa64e
+Content-Type: text/plain; charset="UTF-8"
 
->> +               if (ieee80211_is_data_qos(hdr->frame_control)) {
->> +                       qc =3D ieee80211_get_qos_ctl(hdr);
->> +                       tid =3D qc[0] & 0xf;
->> +                       ac =3D ieee80211_ac_from_tid(tid);
->> +               } else {
->> +                       ac =3D IEEE80211_AC_BE;
->> +               }
+The patch is attached.
+There's only one modified line in it: correcting the typo of timstamp
+--> timestamp.
+
+On Mon, Oct 21, 2019 at 1:07 PM Luca Coelho <luca@coelho.fi> wrote:
 >
-> The tid/ac is incorrect either here or in __ieee80211_tx_status() when
-> tested with ath10k. The ac is set to AC_BE with test done using BK
-> class traffic, hence the pending airtime get updated for the wrong
-> txq.
+> On Mon, 2019-10-21 at 02:34 -0700, Ryan Adolf wrote:
+> > Hello,
+> >
+> > First of all I'm not sure what the policy of this community is on
+> > typos. It's my first time contributing to iw :) If you consider this
+> > too minor to fix, I understand. The package has a lot of amazing stuff
+> > to it.
+>
+> Just submit a patch! Then the maintainers will decide whether it's
+> worth it or not.  I, particularly, don't see why it wouldn't be taken.
+>
+> --
+> Cheers,
+> Luca.
+>
 
-Huh, well that won't do, obviously :)
+--000000000000acb5b305957aa64e
+Content-Type: text/x-patch; charset="US-ASCII"; name="event.patch"
+Content-Disposition: attachment; filename="event.patch"
+Content-Transfer-Encoding: base64
+Content-ID: <f_k21iqkg80>
+X-Attachment-Id: f_k21iqkg80
 
-Any idea why it might be wrong?
-
-> The rest of the patch seems to work as expected, after I did a quick
-> hack to release the pending airtime from ath10k_txrx_tx_unref()
-> instead, where the ac/tid can be directly retrieved from struck struct
-> ieee80211_tx.
-
-Awesome! Thanks for testing!
-
--Toke
-
+ZGlmZiAtLWdpdCBhL2V2ZW50LmMgYi9ldmVudC5jCmluZGV4IDEwMGY2NDQuLjRhOTMyZDEgMTAw
+NjQ0Ci0tLSBhL2V2ZW50LmMKKysrIGIvZXZlbnQuYwpAQCAtMTE3Miw1ICsxMTcyLDUgQEAgc3Rh
+dGljIGludCBwcmludF9ldmVudHMoc3RydWN0IG5sODAyMTFfc3RhdGUgKnN0YXRlLAogVE9QTEVW
+RUwoZXZlbnQsICJbLXR8LXJdIFstZl0iLCAwLCAwLCBDSUJfTk9ORSwgcHJpbnRfZXZlbnRzLAog
+CSJNb25pdG9yIGV2ZW50cyBmcm9tIHRoZSBrZXJuZWwuXG4iCiAJIi10IC0gcHJpbnQgdGltZXN0
+YW1wXG4iCi0JIi1yIC0gcHJpbnQgcmVsYXRpdmUgdGltc3RhbXBcbiIKKwkiLXIgLSBwcmludCBy
+ZWxhdGl2ZSB0aW1lc3RhbXBcbiIKIAkiLWYgLSBwcmludCBmdWxsIGZyYW1lIGZvciBhdXRoL2Fz
+c29jIGV0Yy4iKTsK
+--000000000000acb5b305957aa64e--
