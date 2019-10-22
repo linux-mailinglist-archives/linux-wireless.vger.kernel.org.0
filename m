@@ -2,78 +2,125 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id BE0F5E0A61
-	for <lists+linux-wireless@lfdr.de>; Tue, 22 Oct 2019 19:17:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 83018E0AC4
+	for <lists+linux-wireless@lfdr.de>; Tue, 22 Oct 2019 19:36:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2387981AbfJVRRB (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 22 Oct 2019 13:17:01 -0400
-Received: from mail-pg1-f195.google.com ([209.85.215.195]:41096 "EHLO
-        mail-pg1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2387932AbfJVRRA (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 22 Oct 2019 13:17:00 -0400
-Received: by mail-pg1-f195.google.com with SMTP id t3so10324508pga.8
-        for <linux-wireless@vger.kernel.org>; Tue, 22 Oct 2019 10:16:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=eero.com; s=google;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-transfer-encoding:content-language;
-        bh=GHvPOx7Y78ZeJ1Yw7axrjUXLhpN94yYCRzl4dJi2nWk=;
-        b=GWDcpvx1auFIYbVdNJw/pgsS8e50PuTC5qQeUDHNMtTqYF4Fv6cxLdYzH++VXfVIbn
-         soNeQcRZUdPA5eLLQaUzK9KWs5Q0cJ38puY+sRZHWW9ORrwQZ2A7syR3PAX8ZjI71Ft/
-         AH5ieJ6+gf8vayXNyG3DJrDuUbWxQTtIA8P7g=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-transfer-encoding
-         :content-language;
-        bh=GHvPOx7Y78ZeJ1Yw7axrjUXLhpN94yYCRzl4dJi2nWk=;
-        b=L9g45pwAXjn/W9Mv9/UlRlcysrmBxpG5H0qNm3xRxlxehlrqLJbheR1cD/lei+DK8N
-         t3zypbtWG8khD11wwLBfw43xan03MBNEzo/qqRhRr/2TgtnqNwHT5ZhC2Q0OIZzqsL9j
-         br0SdaFKuY0C+BahRmilTwLUb6ZQo0f/kKQ8iObjPrZWrn48/ioiyqfkgbEMoN8L4wbJ
-         Z2QuU0mSjKm3P80n8SLRib3V9B0Y/0yf9S0Vj6U4Mzhn6i6l0bcUDkpUwTwesGyuUEp3
-         ZyyNGBu1+/uMY5Z9ZQWIGIuUKigIDEtvsm1mf7iJpAnyWvmAgIJ28pTl5GDwovzrFcVo
-         1CyQ==
-X-Gm-Message-State: APjAAAVVUwsCrI6LRjt6lOmPDna/WLq+2dx3rk2tO5ivJeQcokDjXx1E
-        z6kNX0lywwBvp+kBLJnqBRAuz4cqZZU=
-X-Google-Smtp-Source: APXvYqwJqI342gzP2JTytRol266Tw3+AT8qsdYN7EYE+D2Ueg/APyfQxpWsXua5mUhI9fzRUZtUgeA==
-X-Received: by 2002:a63:f750:: with SMTP id f16mr4977771pgk.206.1571764618980;
-        Tue, 22 Oct 2019 10:16:58 -0700 (PDT)
-Received: from [10.0.2.15] (eero.static.monkeybrains.net. [199.116.72.162])
-        by smtp.gmail.com with ESMTPSA id u3sm18761515pfn.134.2019.10.22.10.16.57
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Tue, 22 Oct 2019 10:16:57 -0700 (PDT)
-Subject: Re: [PATCH RFC] Revert "ath10k: fix DMA related firmware crashes on
- multiple devices"
-To:     Zhi Chen <zhichen@codeaurora.org>, ath10k@lists.infradead.org
-Cc:     linux-wireless@vger.kernel.org
-References: <1571734629-18028-1-git-send-email-zhichen@codeaurora.org>
-From:   Peter Oh <peter.oh@eero.com>
-Message-ID: <d6cfd945-7bab-a01d-0157-e0e1802f66e3@eero.com>
-Date:   Tue, 22 Oct 2019 10:16:53 -0700
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.8.0
+        id S1731738AbfJVRfc (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 22 Oct 2019 13:35:32 -0400
+Received: from mail.kernel.org ([198.145.29.99]:35486 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725837AbfJVRfc (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 22 Oct 2019 13:35:32 -0400
+Received: from localhost (mobile-166-172-186-56.mycingular.net [166.172.186.56])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id B094320700;
+        Tue, 22 Oct 2019 17:35:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1571765730;
+        bh=Jld/hYcxZXmjGFVuWBdEY4QI+QyPIanxZKbLtqBLGBc=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=KjIZP5hfgFgUn1+Ljz18nxHSEXDVd7I1a8ueHM1nX8sqKYwTPALZAdaZeymD9A5Xk
+         AhqKSe2drZC6ffhxX2VDu2wyGx51R4WPVjG0f6K8p+Z2h7rwP81FZEar+clOopjyBk
+         JWILQvQH0HfCGebHAWRAKurHRkWaeIRbs5Klfa/c=
+Date:   Tue, 22 Oct 2019 13:35:27 -0400
+From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To:     Joe Perches <joe@perches.com>
+Cc:     Geert Uytterhoeven <geert@linux-m68k.org>,
+        Ludovic Desroches <ludovic.desroches@microchip.com>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        Nicolas Ferre <nicolas.ferre@microchip.com>,
+        Alexandre Belloni <alexandre.belloni@bootlin.com>,
+        Jaehoon Chung <jh80.chung@samsung.com>,
+        "David S . Miller" <davem@davemloft.net>,
+        "Rafael J . Wysocki" <rafael@kernel.org>,
+        Johannes Berg <johannes@sipsolutions.net>,
+        Linux MMC List <linux-mmc@vger.kernel.org>,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>,
+        netdev <netdev@vger.kernel.org>,
+        linux-wireless <linux-wireless@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH 1/7] debugfs: Add debugfs_create_xul() for hexadecimal
+ unsigned long
+Message-ID: <20191022173527.GD230934@kroah.com>
+References: <20191021143742.14487-1-geert+renesas@glider.be>
+ <20191021143742.14487-2-geert+renesas@glider.be>
+ <0f91839d858fcb03435ebc85e61ee4e75371ff37.camel@perches.com>
+ <CAMuHMdU4OhsK6Jvy406ZCM+OeGcfVB0b7ccsne9KdMZFLf=JqQ@mail.gmail.com>
+ <a32b6a6b5f48ff0c4685bd417a8fb66229d95033.camel@perches.com>
 MIME-Version: 1.0
-In-Reply-To: <1571734629-18028-1-git-send-email-zhichen@codeaurora.org>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Content-Language: en-US
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <a32b6a6b5f48ff0c4685bd417a8fb66229d95033.camel@perches.com>
+User-Agent: Mutt/1.12.2 (2019-09-21)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+On Tue, Oct 22, 2019 at 02:07:34AM -0700, Joe Perches wrote:
+> On Tue, 2019-10-22 at 10:03 +0200, Geert Uytterhoeven wrote:
+> > Hi Joe,
+> 
+> Hey again Geert.
+> 
+> > On Mon, Oct 21, 2019 at 5:37 PM Joe Perches <joe@perches.com> wrote:
+> > > On Mon, 2019-10-21 at 16:37 +0200, Geert Uytterhoeven wrote:
+> > > > The existing debugfs_create_ulong() function supports objects of
+> > > > type "unsigned long", which are 32-bit or 64-bit depending on the
+> > > > platform, in decimal form.  To format objects in hexadecimal, various
+> > > > debugfs_create_x*() functions exist, but all of them take fixed-size
+> > > > types.
+> > > > 
+> > > > Add a debugfs helper for "unsigned long" objects in hexadecimal format.
+> > > > This avoids the need for users to open-code the same, or introduce
+> > > > bugs when casting the value pointer to "u32 *" or "u64 *" to call
+> > > > debugfs_create_x{32,64}().
+> > > []
+> > > > diff --git a/include/linux/debugfs.h b/include/linux/debugfs.h
+> > > []
+> > > > @@ -356,4 +356,14 @@ static inline ssize_t debugfs_write_file_bool(struct file *file,
+> > > > 
+> > > >  #endif
+> > > > 
+> > > > +static inline void debugfs_create_xul(const char *name, umode_t mode,
+> > > > +                                   struct dentry *parent,
+> > > > +                                   unsigned long *value)
+> > > > +{
+> > > > +     if (sizeof(*value) == sizeof(u32))
+> > > > +             debugfs_create_x32(name, mode, parent, (u32 *)value);
+> > > > +     else
+> > > > +             debugfs_create_x64(name, mode, parent, (u64 *)value);
+> > > 
+> > > trivia: the casts are unnecessary.
+> > 
+> > They are necessary, in both calls (so using #ifdef as suggested below
+> > won't help):
+> 
+> Silly thinko, (I somehow thought the compiler would
+> eliminate the code after the branch not taken, but
+> of course it has to compile it first...  oops)
+> though the #ifdef should work.
+> 
+> > > This might be more sensible using #ifdef
+> > > 
+> > > static inline void debugfs_create_xul(const char *name, umode_t mode,
+> > >                                       struct dentry *parent,
+> > >                                       unsigned long *value)
+> > > {
+> > > #if BITS_PER_LONG == 64
+> > >         debugfs_create_x64(name, mode, parent, value);
+> > > #else
+> > >         debugfs_create_x32(name, mode, parent, value);
+> > > #endif
+> > > }
+> > 
+> > ... at the expense of the compiler checking only one branch.
+> > 
+> > Just like "if (IS_ENABLED(CONFIG_<foo>)" (when possible) is preferred
+> > over "#ifdef CONFIG_<foo>" because of compile-coverage, I think using
+> > "if" here is better than using "#if".
+> 
+> True if all compilers will always eliminate the unused branch.
 
-On 10/22/19 1:57 AM, Zhi Chen wrote:
-> This reverts commit 76d164f582150fd0259ec0fcbc485470bcd8033e.
-> PCIe hung issue was observed on multiple platforms. The issue was reproduced
-> when DUT was configured as AP and associated with 50+ STAs.
->
-> With PCIe protocol analyzer, we can see DMA Read crossing 4KB boundary when
-> issue happened. It broke PCIe spec and caused PCIe stuck.
-
-How can you say value 0 (I believe it's 64 bytes) DMA burst size causes 
-the symptom and 1 fixes it?
-
-Peter
-
+Good ones will, we don't care about bad ones :)
