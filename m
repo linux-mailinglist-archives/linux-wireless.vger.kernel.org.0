@@ -2,108 +2,78 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E560FDF9EF
-	for <lists+linux-wireless@lfdr.de>; Tue, 22 Oct 2019 02:51:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F26B6DFC0B
+	for <lists+linux-wireless@lfdr.de>; Tue, 22 Oct 2019 04:51:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730589AbfJVAvS (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 21 Oct 2019 20:51:18 -0400
-Received: from mail-qt1-f195.google.com ([209.85.160.195]:38102 "EHLO
-        mail-qt1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729270AbfJVAvS (ORCPT
+        id S1730550AbfJVCvu (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 21 Oct 2019 22:51:50 -0400
+Received: from mail-io1-f42.google.com ([209.85.166.42]:40533 "EHLO
+        mail-io1-f42.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1730156AbfJVCvu (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 21 Oct 2019 20:51:18 -0400
-Received: by mail-qt1-f195.google.com with SMTP id o25so10791252qtr.5;
-        Mon, 21 Oct 2019 17:51:16 -0700 (PDT)
+        Mon, 21 Oct 2019 22:51:50 -0400
+Received: by mail-io1-f42.google.com with SMTP id p6so10342601iod.7
+        for <linux-wireless@vger.kernel.org>; Mon, 21 Oct 2019 19:51:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=subject:to:references:from:message-id:date:user-agent:mime-version
-         :in-reply-to:content-language:content-transfer-encoding;
-        bh=UgHNrnh51LB6rsCCFN3sZSSt5cfq2Pvtlch4dtYv1tA=;
-        b=FDCkswBoPdusvkkQyAi0DqMRQ9KngFpAG+MZPS8AhwUjkAT8Fg3UwFa/qlaN0BlOZP
-         ucN3naXBSANDhjFQkE0iX+eyY3Y3GRifwfnQ6tsI+yrMcnlcg4SlJFDHc1DnZGq5bt+C
-         8xo0naNKxUG1EaXFer3+jR+0m3zxROC+NDrH47/yP7H7y4Wtu6TM+nn+d/opZWvUtwr0
-         kmf8BNVt1+ee25+MIKuBcp/sk34b/XovxFo/IUSOnUvuDMg82uz6rf4TSSOFT5FgLcZ6
-         8CnA3MjDkZJDgMsXQQQdS+faDQsSk0zHPV0q1jqRPzIRuLGjYKx7kRj3I/MGPZpYsj4d
-         +W2A==
+        h=mime-version:from:date:message-id:subject:to;
+        bh=vwHJvn5LlsBsZWMTHEdYg10EePvWqYZi2Mc809hAbx8=;
+        b=pUDg4SPAa9Qc8IKn+TsP+71KtKf3jtywyQtoUTXwA2BnwYVUmO20EiBtXsasv3Z0ze
+         8c2tp3PYjZZ35oBQh/RzOlt6GMcoz0Uk5IVM+JFz6M9OrF2JzZsbO24j18UsKz0TcjNp
+         BCY/hrNoG/MAhyVFGXOjZ7l9PRudxTLxQ6SrMv+G39ta0V+3vODzZbWFQjM7ZxkufwbZ
+         aMlmGi23pEPRUYGpkDa2IUf81EJ7+g+yqwBWnv2N4XayHSnSBKfILI+Yyg+xAhlJENKq
+         v3FNas/uljUY4KnskA6G2AwpiNmW+7oPC8XoygEZNBUYy6wYumNMsqEplPF4S+aBbUno
+         YHfg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=UgHNrnh51LB6rsCCFN3sZSSt5cfq2Pvtlch4dtYv1tA=;
-        b=isW+k4/Bjdstr+TCG9opwdps5pahxMojKEddLdmJ20REVoOxE/ffi2WqXkImu7u5dF
-         HspzJZakJrpXIJH7HX7MMwcgI5P5nffhS4DDO8CRMTEMIY9kJnoOgCZ1z9bLIlC9zHVi
-         6f1GdXMmyXNwTMalKWli5WVEku51ZMk85c6KTSc5I/BJ6vYP9+qcfM06zQUc20IAA09t
-         fs3+f/fJxAHegFN1jCR4fGHjJEcxAN/YkDp9LOJ2Bd+7yeEvJUk/0iRIaUWhhI9PfYBr
-         NAZ02ed40+MVTqm7ek7fnxXZFu+qwyd9xrgRpYc5XMyw0w6VrNYOGS66HIBy10rJyh6L
-         pfTA==
-X-Gm-Message-State: APjAAAUTTU8J/i5u6zObBYS/MMaGhyMhnkLkMP7RnAFx4Pual4hv1U9G
-        +1OQLNgrRKMFQ0QdJt0SJ2A=
-X-Google-Smtp-Source: APXvYqxYjd0Zi1qjHa8UGioJLYyhNTYMQQASxvsQpy+HH86ZA+573b8Qsy/j+Geh8Ny+S3nN1XO8fA==
-X-Received: by 2002:a05:6214:104b:: with SMTP id l11mr539620qvr.195.1571705476013;
-        Mon, 21 Oct 2019 17:51:16 -0700 (PDT)
-Received: from dahern-DO-MB.local ([2601:282:800:fd80:b912:7de9:ffc9:d1c])
-        by smtp.googlemail.com with ESMTPSA id r36sm6006903qta.27.2019.10.21.17.51.12
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Mon, 21 Oct 2019 17:51:14 -0700 (PDT)
-Subject: Re: [PATCH net v5 01/10] net: core: limit nested device depth
-To:     Taehee Yoo <ap420073@gmail.com>, davem@davemloft.net,
-        netdev@vger.kernel.org, linux-wireless@vger.kernel.org,
-        jakub.kicinski@netronome.com, johannes@sipsolutions.net,
-        j.vosburgh@gmail.com, vfalico@gmail.com, andy@greyhouse.net,
-        jiri@resnulli.us, sd@queasysnail.net, roopa@cumulusnetworks.com,
-        saeedm@mellanox.com, manishc@marvell.com, rahulv@marvell.com,
-        kys@microsoft.com, haiyangz@microsoft.com,
-        stephen@networkplumber.org, sashal@kernel.org, hare@suse.de,
-        varun@chelsio.com, ubraun@linux.ibm.com, kgraul@linux.ibm.com,
-        jay.vosburgh@canonical.com, schuffelen@google.com, bjorn@mork.no
-References: <20191021184759.13125-1-ap420073@gmail.com>
-From:   David Ahern <dsahern@gmail.com>
-Message-ID: <c0e17051-ab18-ac60-9c00-348cce84d12f@gmail.com>
-Date:   Mon, 21 Oct 2019 18:51:11 -0600
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.14; rv:60.0)
- Gecko/20100101 Thunderbird/60.9.0
+        h=x-gm-message-state:mime-version:from:date:message-id:subject:to;
+        bh=vwHJvn5LlsBsZWMTHEdYg10EePvWqYZi2Mc809hAbx8=;
+        b=cJk7WHy5XKXnfqMHsknchurLZc9toTFa0g1a10dGUbkkPLK1cG//zpIi3WIHjFYlmD
+         swQe0RxK50tLVH2O+RyxiQv2aSOUvqD0G+3rAcO2g+xRlQey4I4e6Zd5KNxdIGbiix/I
+         szcp467AmZF+b1Nf4XJrMHoBE0kE3ZhsN5OyqScParJSdyjkRkktJMSF+G6LdTi9G+R3
+         qGwrK3YZ5UMnDyJ3SrTiolmaW6xjdGPufGbASy2DhDLYmIiTFGGpUF1yB4UyqvITAo73
+         4wegf2TU5baTDidCEPx7HZOoPdVa5K11sKjhYbN9ExZhh9EbhIj50FRjirZfsbP0TkDA
+         2NrA==
+X-Gm-Message-State: APjAAAVPqEWGOie9Y/9YXJntSjMy6NWQkhzsB+J6Ko4R5MQ20IuWAKjH
+        /SatJ+RRoX6eGjcOzbvFkhzED+ffU06KXhjOu1ORnw58
+X-Google-Smtp-Source: APXvYqzZtr9RPiXPPo6lVT9W9YnI0cYdvSmklBcT60Wvyv2TvjTF5Aj83gnltiWOcVWs5e4UVVej0ovHuYx+GtxuZ/Y=
+X-Received: by 2002:a02:70c8:: with SMTP id f191mr1496682jac.117.1571712708795;
+ Mon, 21 Oct 2019 19:51:48 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <20191021184759.13125-1-ap420073@gmail.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Received: by 2002:ac0:9c85:0:0:0:0:0 with HTTP; Mon, 21 Oct 2019 19:51:48
+ -0700 (PDT)
+From:   JH <jupiter.hce@gmail.com>
+Date:   Tue, 22 Oct 2019 13:51:48 +1100
+Message-ID: <CAA=hcWS_5keJiNJwqpiOh+N49LoNE-pHjkwYSKSN1q=G12z3pw@mail.gmail.com>
+Subject: mwifiex Invalid Sched_scan parameters
+To:     linux-wireless@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 10/21/19 12:47 PM, Taehee Yoo wrote:
-> Current code doesn't limit the number of nested devices.
-> Nested devices would be handled recursively and this needs huge stack
-> memory. So, unlimited nested devices could make stack overflow.
-> 
-> This patch adds upper_level and lower_level, they are common variables
-> and represent maximum lower/upper depth.
-> When upper/lower device is attached or dettached,
-> {lower/upper}_level are updated. and if maximum depth is bigger than 8,
-> attach routine fails and returns -EMLINK.
-> 
-> In addition, this patch converts recursive routine of
-> netdev_walk_all_{lower/upper} to iterator routine.
+Hi,
 
-They were made recursive because of a particular setup. Did you verify
-your changes did not break it? See commits starting with
-5bb61cb5fd115bed1814f6b97417e0f397da3c79
+I am running kernel 4.19.75 LTS on imx6, the WiFi connection is not
+stable, sometime it works, sometime it didn't, it could work with some
+home WiFi modem, but not with some other WiFi modem. there is a
+following error message, do I need to worry about?
 
-> 
-> Test commands:
->     ip link add dummy0 type dummy
->     ip link add link dummy0 name vlan1 type vlan id 1
->     ip link set vlan1 up
-> 
->     for i in {2..55}
->     do
-> 	    let A=$i-1
-> 
-> 	    ip link add vlan$i link vlan$A type vlan id $i
->     done
->     ip link del dummy0
+[  519.870877] ieee80211 phy0: mwifiex_cfg80211_sched_scan_start :
+Invalid Sched_scan parameters
 
-8 levels of nested vlan seems like complete nonsense. Why not just limit
-that stacking and not mess with the rest which can affect real use cases?
+There was no that error message when I ran the kernel 5.1 at the same
+device, the WiFi connection was much reliable than kernel 4.19, any
+explanation?
+
+The reason we moved from kernel 5.1 back to 4.19 is we want to  use
+kernel LTS release, which might not be a good idea.
+
+Appreciate your comments.
+
+Thank you.
+
+Kind regards,
+
+- jupiter
