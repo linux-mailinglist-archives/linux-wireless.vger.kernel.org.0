@@ -2,112 +2,97 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 81441DFFAF
-	for <lists+linux-wireless@lfdr.de>; Tue, 22 Oct 2019 10:38:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 93714E001E
+	for <lists+linux-wireless@lfdr.de>; Tue, 22 Oct 2019 10:57:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2388431AbfJVIhz (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 22 Oct 2019 04:37:55 -0400
-Received: from smtp.codeaurora.org ([198.145.29.96]:54692 "EHLO
+        id S1731298AbfJVI5o (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 22 Oct 2019 04:57:44 -0400
+Received: from smtp.codeaurora.org ([198.145.29.96]:36340 "EHLO
         smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2388393AbfJVIhy (ORCPT
+        with ESMTP id S1731223AbfJVI5n (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 22 Oct 2019 04:37:54 -0400
+        Tue, 22 Oct 2019 04:57:43 -0400
 Received: by smtp.codeaurora.org (Postfix, from userid 1000)
-        id 621F46079C; Tue, 22 Oct 2019 08:37:51 +0000 (UTC)
+        id 3D93C6081C; Tue, 22 Oct 2019 08:57:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1571733473;
-        bh=Po5RtiTU4/a1PjWYIFhSvt3ysgdj+uj3Q97l1tGoGno=;
-        h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-        b=QCCCcIC789yQ7vbQZCHzAEybmJpv0vZdd2l3JH455L1ATtObglxlqGa3Mevq6K7t+
-         QEcCnfnJwgsLraluQWKf4zK9AejH43f7u+H3LWYMpIs8CnrO/GUhpuLz+QeogAUIwR
-         PB6O61Alyb4w5ROOD6RWvjzr+xx/RRSHcQTQ17nA=
+        s=default; t=1571734663;
+        bh=P1gtfMzQ64P1I8hkPS69QXlX/oj3QD3ocmBAXcTD/gw=;
+        h=From:To:Cc:Subject:Date:From;
+        b=U4wDhOa2jowfb4Gyg7jq5c+VsZLcbdamql8N6rT/gTEFxbtQzO7ni0cnQrx1z35eP
+         yiNbAEgMJpBXhomIwGD9Xrcxs1Hn0nqyzVcbna8BVyRAPvmAVc2ROgjLO09Kq9AOoH
+         Wve195Bseh3x7GCe04zbdny3xHDVndhNUtS22PQY=
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         pdx-caf-mail.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-0.8 required=2.0 tests=ALL_TRUSTED,BAYES_00,
-        DKIM_INVALID,DKIM_SIGNED,MISSING_DATE,MISSING_MID,SPF_NONE autolearn=no
-        autolearn_force=no version=3.4.0
-Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+X-Spam-Status: No, score=-2.7 required=2.0 tests=ALL_TRUSTED,BAYES_00,
+        DKIM_INVALID,DKIM_SIGNED,SPF_NONE autolearn=no autolearn_force=no
+        version=3.4.0
+Received: from zhichen.ap.qualcomm.com (unknown [180.166.53.21])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-SHA256 (128/128 bits))
         (No client certificate requested)
-        (Authenticated sender: kvalo@smtp.codeaurora.org)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 8C0B66081E;
-        Tue, 22 Oct 2019 08:37:46 +0000 (UTC)
+        (Authenticated sender: zhichen@codeaurora.org)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id F0ACA60159;
+        Tue, 22 Oct 2019 08:57:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1571733468;
-        bh=Po5RtiTU4/a1PjWYIFhSvt3ysgdj+uj3Q97l1tGoGno=;
-        h=Subject:From:In-Reply-To:References:To:Cc:From;
-        b=S+TEhuqHHOLxBvvFbhB4Fg/0nbgR8jLvULtLxz34XMRYJ1ZrEH2uoixCBf1BT0aGQ
-         XapuA4XFkIkgBxjEYlBHtuvpoqnD7+SjujRhfeQsiwkRsMrsjjtpwpvFAV3J5KXW6/
-         b9XS1mAnHnbxutmCYP5i6EHXsjV6fCyS/gOcQgFo=
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 8C0B66081E
+        s=default; t=1571734662;
+        bh=P1gtfMzQ64P1I8hkPS69QXlX/oj3QD3ocmBAXcTD/gw=;
+        h=From:To:Cc:Subject:Date:From;
+        b=hvWS21AhsOHa0S0NnNO8mHlDU1gISUSMra4JdrrOJq+hWXMyTAPIgWmtLOGIEbBIO
+         TyuMqiB4k5JndsiS/O+izJ/XmdbzFW7eIUlGef4swAqPz2tAqQ+ZYAc9/wfu5jo8Y0
+         2kQtzjOq7Sn6Y6Ou+oE/6d1oImxnLYsu3scH9LKs=
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org F0ACA60159
 Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH v2] ath10k: Fix a NULL-ptr-deref bug in
- ath10k_usb_alloc_urb_from_pipe
-From:   Kalle Valo <kvalo@codeaurora.org>
-In-Reply-To: <20191018133516.12606-1-linux@roeck-us.net>
-References: <20191018133516.12606-1-linux@roeck-us.net>
-To:     Guenter Roeck <linux@roeck-us.net>
-Cc:     ath10k@lists.infradead.org, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Hui Peng <benquike@gmail.com>,
-        Guenter Roeck <linux@roeck-us.net>
-User-Agent: pwcli/0.0.0-git (https://github.com/kvalo/pwcli/) Python/2.7.12
-Message-Id: <20191022083752.621F46079C@smtp.codeaurora.org>
-Date:   Tue, 22 Oct 2019 08:37:51 +0000 (UTC)
+Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=zhichen@codeaurora.org
+From:   Zhi Chen <zhichen@codeaurora.org>
+To:     ath10k@lists.infradead.org
+Cc:     linux-wireless@vger.kernel.org, Zhi Chen <zhichen@codeaurora.org>
+Subject: [PATCH RFC] Revert "ath10k: fix DMA related firmware crashes on multiple devices"
+Date:   Tue, 22 Oct 2019 16:57:09 +0800
+Message-Id: <1571734629-18028-1-git-send-email-zhichen@codeaurora.org>
+X-Mailer: git-send-email 2.7.4
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Guenter Roeck <linux@roeck-us.net> wrote:
+This reverts commit 76d164f582150fd0259ec0fcbc485470bcd8033e.
+PCIe hung issue was observed on multiple platforms. The issue was reproduced
+when DUT was configured as AP and associated with 50+ STAs.
 
-> The `ar_usb` field of `ath10k_usb_pipe_usb_pipe` objects
-> are initialized to point to the containing `ath10k_usb` object
-> according to endpoint descriptors read from the device side, as shown
-> below in `ath10k_usb_setup_pipe_resources`:
-> 
-> for (i = 0; i < iface_desc->desc.bNumEndpoints; ++i) {
->         endpoint = &iface_desc->endpoint[i].desc;
-> 
->         // get the address from endpoint descriptor
->         pipe_num = ath10k_usb_get_logical_pipe_num(ar_usb,
->                                                 endpoint->bEndpointAddress,
->                                                 &urbcount);
->         ......
->         // select the pipe object
->         pipe = &ar_usb->pipes[pipe_num];
-> 
->         // initialize the ar_usb field
->         pipe->ar_usb = ar_usb;
-> }
-> 
-> The driver assumes that the addresses reported in endpoint
-> descriptors from device side  to be complete. If a device is
-> malicious and does not report complete addresses, it may trigger
-> NULL-ptr-deref `ath10k_usb_alloc_urb_from_pipe` and
-> `ath10k_usb_free_urb_to_pipe`.
-> 
-> This patch fixes the bug by preventing potential NULL-ptr-deref.
-> 
-> Signed-off-by: Hui Peng <benquike@gmail.com>
-> Reported-by: Hui Peng <benquike@gmail.com>
-> Reported-by: Mathias Payer <mathias.payer@nebelwelt.net>
-> Reviewed-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-> [groeck: Add driver tag to subject, fix build warning]
-> Signed-off-by: Guenter Roeck <linux@roeck-us.net>
-> Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
+With PCIe protocol analyzer, we can see DMA Read crossing 4KB boundary when
+issue happened. It broke PCIe spec and caused PCIe stuck.
 
-Patch applied to ath-next branch of ath.git, thanks.
+Tested:  IPQ8064 + QCA9984 with firmware 10.4-3.10-00047
+         QCS404 + QCA9984 with firmware 10.4-3.9.0.2--00044
+         Synaptics AS370 + QCA9888  with firmware 10.4-3.9.0.2--00040
 
-bfd6e6e6c5d2 ath10k: Fix a NULL-ptr-deref bug in ath10k_usb_alloc_urb_from_pipe
+Signed-off-by: Zhi Chen <zhichen@codeaurora.org>
+---
+ drivers/net/wireless/ath/ath10k/hw.h | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
+diff --git a/drivers/net/wireless/ath/ath10k/hw.h b/drivers/net/wireless/ath/ath10k/hw.h
+index 35a3623..17f620b 100644
+--- a/drivers/net/wireless/ath/ath10k/hw.h
++++ b/drivers/net/wireless/ath/ath10k/hw.h
+@@ -753,7 +753,7 @@ ath10k_is_rssi_enable(struct ath10k_hw_params *hw,
+ #define TARGET_10X_MAX_FRAG_ENTRIES		0
+ 
+ /* 10.2 parameters */
+-#define TARGET_10_2_DMA_BURST_SIZE		0
++#define TARGET_10_2_DMA_BURST_SIZE		1
+ 
+ /* Target specific defines for WMI-TLV firmware */
+ #define TARGET_TLV_NUM_VDEVS			4
+@@ -813,7 +813,7 @@ ath10k_is_rssi_enable(struct ath10k_hw_params *hw,
+ 
+ #define TARGET_10_4_TX_DBG_LOG_SIZE		1024
+ #define TARGET_10_4_NUM_WDS_ENTRIES		32
+-#define TARGET_10_4_DMA_BURST_SIZE		0
++#define TARGET_10_4_DMA_BURST_SIZE		1
+ #define TARGET_10_4_MAC_AGGR_DELIM		0
+ #define TARGET_10_4_RX_SKIP_DEFRAG_TIMEOUT_DUP_DETECTION_CHECK 1
+ #define TARGET_10_4_VOW_CONFIG			0
 -- 
-https://patchwork.kernel.org/patch/11198433/
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+2.7.4
 
