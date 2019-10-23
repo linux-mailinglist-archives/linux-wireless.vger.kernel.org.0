@@ -2,91 +2,85 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 1D161E17AA
-	for <lists+linux-wireless@lfdr.de>; Wed, 23 Oct 2019 12:17:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1588FE17F2
+	for <lists+linux-wireless@lfdr.de>; Wed, 23 Oct 2019 12:29:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2404210AbfJWKQz (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 23 Oct 2019 06:16:55 -0400
-Received: from smtp.codeaurora.org ([198.145.29.96]:53868 "EHLO
+        id S2404448AbfJWK3p (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 23 Oct 2019 06:29:45 -0400
+Received: from smtp.codeaurora.org ([198.145.29.96]:35926 "EHLO
         smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2403810AbfJWKQz (ORCPT
+        with ESMTP id S2391067AbfJWK3m (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 23 Oct 2019 06:16:55 -0400
+        Wed, 23 Oct 2019 06:29:42 -0400
 Received: by smtp.codeaurora.org (Postfix, from userid 1000)
-        id 10E1C61282; Wed, 23 Oct 2019 10:16:50 +0000 (UTC)
+        id 8DD45609DD; Wed, 23 Oct 2019 10:29:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1571825814;
-        bh=tS28jUJhwHH2gy1huRdTOg7DLGrPTLou2VFpUP+xrr4=;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=DlvVzDAHTKuNxc8am8S9BNY532beF7zvBcVuYZGq3u4fN668cBXsGoHReODnjKzkH
-         nBnTpr49Kll5jXte09NftMry1siH/Ix7AnjXD0rxhDjILxY9QIzXoh577Ba1i81TaS
-         mqmiBLIdrRHidVp0HRsmYvr9ZhbVvpHRtFafkIfg=
+        s=default; t=1571826581;
+        bh=z4intaI4GGy+Ezfoxd0Jj1d1aTHxxla8MnjHpbrLwq8=;
+        h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
+        b=eTXD0/hYhLRkQCV9MvWWByT4guug4HAeIPC6KKEJo8CZo36yKBCSH6LYLn9JxBBHq
+         DJ+JEc2LXIHlh8/H1z31rbEM8McNm3BPPeiFMEcCqdhMMU+lediW8GMBUrPJoOgsXI
+         wYVPMUGylG/J+aN4ndyl9cowwRGxuHyGbbyWFIHI=
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         pdx-caf-mail.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-2.7 required=2.0 tests=ALL_TRUSTED,BAYES_00,
-        DKIM_INVALID,DKIM_SIGNED,SPF_NONE autolearn=no autolearn_force=no
-        version=3.4.0
-Received: from tynnyri.adurom.net (tynnyri.adurom.net [51.15.11.48])
+X-Spam-Status: No, score=-0.8 required=2.0 tests=ALL_TRUSTED,BAYES_00,
+        DKIM_INVALID,DKIM_SIGNED,MISSING_DATE,MISSING_MID,SPF_NONE autolearn=no
+        autolearn_force=no version=3.4.0
+Received: from potku.adurom.net (unknown [88.114.240.156])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
         (Authenticated sender: kvalo@smtp.codeaurora.org)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 4A53C6126F;
-        Wed, 23 Oct 2019 10:16:47 +0000 (UTC)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id E41D560930;
+        Wed, 23 Oct 2019 10:29:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1571825809;
-        bh=tS28jUJhwHH2gy1huRdTOg7DLGrPTLou2VFpUP+xrr4=;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=LVDf3tcxlr0PG/Y2JkbhrqpnBSzHRcKgL0zg3A44qao1jnvzhrrWkOchQT86dDkZ0
-         PMb9JT5wbyPweXhsZ1U/kTkUdOc1ac4nFQwo92HdNCA5k50PP4amgE8Y62GGIA3H2V
-         XpFtD0q+mY5ipz0ht9Df5ls9yR4RJ/kRBu+1eB5M=
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 4A53C6126F
+        s=default; t=1571826580;
+        bh=z4intaI4GGy+Ezfoxd0Jj1d1aTHxxla8MnjHpbrLwq8=;
+        h=Subject:From:In-Reply-To:References:To:Cc:From;
+        b=R4VMQWDp8u8frK6GQjU4vW+nhg4iKnFe9ebr6gEtafB/z6tSerlvAIGP+7taP7KV8
+         QjFp5hnERBZm0EMgt5wMyvDAPw2OkjI+l9KsVoascbQazgBwj0FAPxsVA2hsyi2o8e
+         KWS/vJRhAhvFmEnNwfenj6KZTKtmH3pjoh0/PPlY=
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org E41D560930
 Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
 Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
-From:   Kalle Valo <kvalo@codeaurora.org>
-To:     Chris Chiu <chiu@endlessm.com>
-Cc:     YueHaibing <yuehaibing@huawei.com>,
-        Jes Sorensen <Jes.Sorensen@gmail.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        David Miller <davem@davemloft.net>,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        netdev <netdev@vger.kernel.org>,
-        Linux Kernel <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH] rtl8xxxu: remove set but not used variable 'rate_mask'
-References: <20191023075342.26656-1-yuehaibing@huawei.com>
-        <CAB4CAwek7u3_U9T_314P7qK2o7ReKQ0EVvYTkyzrORZjhdSRnA@mail.gmail.com>
-Date:   Wed, 23 Oct 2019 13:16:43 +0300
-In-Reply-To: <CAB4CAwek7u3_U9T_314P7qK2o7ReKQ0EVvYTkyzrORZjhdSRnA@mail.gmail.com>
-        (Chris Chiu's message of "Wed, 23 Oct 2019 18:10:50 +0800")
-Message-ID: <87sgnjeph0.fsf@tynnyri.adurom.net>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH v5.4] iwlwifi: pcie: fix merge damage on making QnJ
+ exclusive
+From:   Kalle Valo <kvalo@codeaurora.org>
+In-Reply-To: <20191018104748.37249e76f17d.Id28ce460f03b8bac50e05d648e8ac15d32d6f14d@changeid>
+References: <20191018104748.37249e76f17d.Id28ce460f03b8bac50e05d648e8ac15d32d6f14d@changeid>
+To:     Luca Coelho <luca@coelho.fi>
+Cc:     linux-wireless@vger.kernel.org
+User-Agent: pwcli/0.0.0-git (https://github.com/kvalo/pwcli/) Python/2.7.12
+Message-Id: <20191023102941.8DD45609DD@smtp.codeaurora.org>
+Date:   Wed, 23 Oct 2019 10:29:41 +0000 (UTC)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Chris Chiu <chiu@endlessm.com> writes:
+Luca Coelho <luca@coelho.fi> wrote:
 
-> On Wed, Oct 23, 2019 at 3:54 PM YueHaibing <yuehaibing@huawei.com> wrote:
->>
->> drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c:4484:6:
->>  warning: variable rate_mask set but not used [-Wunused-but-set-variable]
->>
->> It is never used since commit a9bb0b515778 ("rtl8xxxu: Improve
->> TX performance of RTL8723BU on rtl8xxxu driver")
->>
->> Signed-off-by: YueHaibing <yuehaibing@huawei.com>
->> ---
-> Singed-off-by: Chris Chiu <chiu@endlessm.com>
+> From: Luca Coelho <luciano.coelho@intel.com>
+> 
+> Two patches were sent out of order: one removed some conditions from
+> an if and the other moved the code elsewhere.  When sending the patch
+> that moved the code, an older version of the original code was moved,
+> causing the "make QnJ exclusive" code to be essentially undone.
+> 
+> Fix that by removing the inclusive conditions from the check again.
+> 
+> Fixes: 809805a820c6 ("iwlwifi: pcie: move some cfg mangling from trans_pcie_alloc to probe")
+> Signed-off-by: Luca Coelho <luciano.coelho@intel.com>
 
-In the future please use Reviewed-by:
+Patch applied to wireless-drivers.git, thanks.
 
-https://www.kernel.org/doc/html/latest/process/submitting-patches.html#using-reported-by-tested-by-reviewed-by-suggested-by-and-fixes
-
-Signed-off-by is supposed to be used when you are sending a patch and
-Acked-by is used by the driver maintainer, in this case Jes.
+7cded5658329 iwlwifi: pcie: fix merge damage on making QnJ exclusive
 
 -- 
+https://patchwork.kernel.org/patch/11197655/
+
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+
