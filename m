@@ -2,86 +2,121 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 15391E11BE
-	for <lists+linux-wireless@lfdr.de>; Wed, 23 Oct 2019 07:39:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3EFA8E1253
+	for <lists+linux-wireless@lfdr.de>; Wed, 23 Oct 2019 08:42:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730047AbfJWFiz (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 23 Oct 2019 01:38:55 -0400
-Received: from rtits2.realtek.com ([211.75.126.72]:41331 "EHLO
-        rtits2.realtek.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725789AbfJWFiz (ORCPT
+        id S2387662AbfJWGmB (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 23 Oct 2019 02:42:01 -0400
+Received: from mail-lj1-f195.google.com ([209.85.208.195]:45226 "EHLO
+        mail-lj1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1732574AbfJWGmA (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 23 Oct 2019 01:38:55 -0400
-Authenticated-By: 
-X-SpamFilter-By: BOX Solutions SpamTrap 5.62 with qID x9N5cVkK004030, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (RTITCASV01.realtek.com.tw[172.21.6.18])
-        by rtits2.realtek.com.tw (8.15.2/2.57/5.78) with ESMTPS id x9N5cVkK004030
-        (version=TLSv1 cipher=DHE-RSA-AES256-SHA bits=256 verify=NOT);
-        Wed, 23 Oct 2019 13:38:31 +0800
-Received: from RTITMBSVM04.realtek.com.tw ([fe80::e404:880:2ef1:1aa1]) by
- RTITCASV01.realtek.com.tw ([::1]) with mapi id 14.03.0468.000; Wed, 23 Oct
- 2019 13:38:30 +0800
-From:   Pkshih <pkshih@realtek.com>
-To:     "kvalo@codeaurora.org" <kvalo@codeaurora.org>,
-        "natechancellor@gmail.com" <natechancellor@gmail.com>
-CC:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "Larry.Finger@lwfinger.net" <Larry.Finger@lwfinger.net>,
-        "clang-built-linux@googlegroups.com" 
-        <clang-built-linux@googlegroups.com>
-Subject: Re: [PATCH] rtlwifi: Remove unnecessary NULL check in rtl_regd_init
-Thread-Topic: [PATCH] rtlwifi: Remove unnecessary NULL check in rtl_regd_init
-Thread-Index: AQHViTtpsZzjxTpDzEGH+xR50FXlCadnL6AA
-Date:   Wed, 23 Oct 2019 05:38:30 +0000
-Message-ID: <1571809110.12757.0.camel@realtek.com>
-References: <20191023004703.39710-1-natechancellor@gmail.com>
-In-Reply-To: <20191023004703.39710-1-natechancellor@gmail.com>
-Accept-Language: en-US, zh-TW
-Content-Language: zh-TW
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [172.21.69.95]
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <EA6B22816DFAC3419D67AF0D26586ED0@realtek.com>
-Content-Transfer-Encoding: base64
+        Wed, 23 Oct 2019 02:42:00 -0400
+Received: by mail-lj1-f195.google.com with SMTP id q64so19772945ljb.12
+        for <linux-wireless@vger.kernel.org>; Tue, 22 Oct 2019 23:41:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc:content-transfer-encoding;
+        bh=xLzPgNOZ8X14gfCEvYWsxDF01OFUZfoQjcWDyuoGltc=;
+        b=LJWHaiQc/q6Hg9z63NPV0MjMzWfOhKO0ey++fb4OkDyjZxD45pVUtUWBaO1/A2Qw2d
+         RJd7oMRFkK9acDzP60fuBo6rXfXFDBhRQNsaSsYvkYETY+Y//R9nqZUBljNNONlm2JRJ
+         fA/4lfnnSbauy8m0CvVAUs+97DA1Lf3yvlh2Ek0wox9gA1zBdoGbHsm6eJ5bUAmzQbNq
+         +CZzAgGbM6Pffjp8WhndhgV/FPWBbAZP77u09c6zMgkfR77ity9Rx2DfjWwUpJsmAL1g
+         TDWItxlH08H4EGtDcM+O35SFI3kDJZEl/vvqCBaLjWr7MkbwhQW3690smPgjvwVTpcrg
+         pThA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc:content-transfer-encoding;
+        bh=xLzPgNOZ8X14gfCEvYWsxDF01OFUZfoQjcWDyuoGltc=;
+        b=iiql63sHnL/5Fv8tP4TC4Jq4Xe4CYVeEOh1ohQntSX1fvMfFbu7DnViIfsrsdQNsCS
+         hReGsCdLn8iPUCZVxaEmp3Mi0bXcQEQpJN7SRPeD8jTyzSwFRZ1hHqMB4pycxvwVSvDm
+         MyrBCRylEuUNWitGipP9dqgIK2oohnE1FbKKduJVi58yUxK0RiI6fcivGMEHCjhOZCGR
+         7xtDotwjKxBHqsV+Q2GsywhIChY/C/LHCHi4N6OWx1FwLEdeVaDqimcUPnlA4DjSb8Pr
+         8zkNI+pphIyypHQ+5I3bOJ0lfrUCj0kaxLPY8mC21o9C9XN2aOEHnNxI/KncEA+sRWi7
+         Qe9Q==
+X-Gm-Message-State: APjAAAXyUs5OU2PZiiLUTGaKYhZlDiyU58g/kvxmxZiLRsMVHzQEAtpR
+        cjr9pDr8NTaIqfsk/fTTiwRtb2nFOOUc8ISuE2qMGg==
+X-Google-Smtp-Source: APXvYqwbYShriZrtOfH5CKHMRI9ZjT56L9KXRHcmYVKve8FvpLfX1msZDukO1Wkvr96pb24xb7V1qDQkpFKWU15F9BQ=
+X-Received: by 2002:a2e:9759:: with SMTP id f25mr21512398ljj.173.1571812918369;
+ Tue, 22 Oct 2019 23:41:58 -0700 (PDT)
 MIME-Version: 1.0
+References: <157148503415.2989444.7391437309981941226.stgit@toke.dk>
+ <157148503865.2989444.7118792679603045723.stgit@toke.dk> <CA+iem5sy16=xMZjJi1nKHrxP_xWHk-86G=ZLwtMMb04EOt5tQA@mail.gmail.com>
+ <871rv5ovwr.fsf@toke.dk>
+In-Reply-To: <871rv5ovwr.fsf@toke.dk>
+From:   Kan Yan <kyan@google.com>
+Date:   Tue, 22 Oct 2019 23:41:47 -0700
+Message-ID: <CA+iem5tZ95Jd9htLEdAJMubuFeWeUibK9MhTnTHLWNucX6_cRg@mail.gmail.com>
+Subject: Re: [PATCH v4 4/4] mac80211: Use Airtime-based Queue Limits (AQL) on
+ packet dequeue
+To:     =?UTF-8?B?VG9rZSBIw7hpbGFuZC1Kw7hyZ2Vuc2Vu?= <toke@redhat.com>
+Cc:     Johannes Berg <johannes@sipsolutions.net>,
+        linux-wireless@vger.kernel.org,
+        Make-Wifi-fast <make-wifi-fast@lists.bufferbloat.net>,
+        ath10k@lists.infradead.org, John Crispin <john@phrozen.org>,
+        Lorenzo Bianconi <lorenzo@kernel.org>,
+        Felix Fietkau <nbd@nbd.name>,
+        Rajkumar Manoharan <rmanohar@codeaurora.org>,
+        Kevin Hayes <kevinhayes@google.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-T24gVHVlLCAyMDE5LTEwLTIyIGF0IDE3OjQ3IC0wNzAwLCBOYXRoYW4gQ2hhbmNlbGxvciB3cm90
-ZToNCj4gV2hlbiBidWlsZGluZyB3aXRoIENsYW5nICsgLVd0YXV0b2xvZ2ljYWwtcG9pbnRlci1j
-b21wYXJlOg0KPiANCj4gZHJpdmVycy9uZXQvd2lyZWxlc3MvcmVhbHRlay9ydGx3aWZpL3JlZ2Qu
-YzozODk6MzM6IHdhcm5pbmc6IGNvbXBhcmlzb24NCj4gb2YgYWRkcmVzcyBvZiAncnRscHJpdi0+
-cmVnZCcgZXF1YWwgdG8gYSBudWxsIHBvaW50ZXIgaXMgYWx3YXlzIGZhbHNlDQo+IFstV3RhdXRv
-bG9naWNhbC1wb2ludGVyLWNvbXBhcmVdDQo+IMKgwqDCoMKgwqDCoMKgwqBpZiAod2lwaHkgPT0g
-TlVMTCB8fCAmcnRscHJpdi0+cmVnZCA9PSBOVUxMKQ0KPiDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqB+fn5+fn5+fn5efn5+wqDCoMKg
-wqB+fn5+DQo+IDEgd2FybmluZyBnZW5lcmF0ZWQuDQo+IA0KPiBUaGUgYWRkcmVzcyBvZiBhbiBh
-cnJheSBtZW1iZXIgaXMgbmV2ZXIgTlVMTCB1bmxlc3MgaXQgaXMgdGhlIGZpcnN0DQo+IHN0cnVj
-dCBtZW1iZXIgc28gcmVtb3ZlIHRoZSB1bm5lY2Vzc2FyeSBjaGVjay4gVGhpcyB3YXMgYWRkcmVz
-c2VkIGluDQo+IHRoZSBzdGFnaW5nIHZlcnNpb24gb2YgdGhlIGRyaXZlciBpbiBjb21taXQgZjk4
-Njk3OGIzMmIzICgiU3RhZ2luZzoNCj4gcnRsd2lmaTogcmVtb3ZlIHVubmVjZXNzYXJ5IE5VTEwg
-Y2hlY2siKS4NCj4gDQo+IFdoaWxlIHdlIGFyZSBoZXJlLCBmaXggdGhlIGZvbGxvd2luZyBjaGVj
-a3BhdGNoIHdhcm5pbmc6DQo+IA0KPiBDSEVDSzogQ29tcGFyaXNvbiB0byBOVUxMIGNvdWxkIGJl
-IHdyaXR0ZW4gIiF3aXBoeSINCj4gMzU6IEZJTEU6IGRyaXZlcnMvbmV0L3dpcmVsZXNzL3JlYWx0
-ZWsvcnRsd2lmaS9yZWdkLmM6Mzg5Og0KPiArwqDCoMKgwqDCoMKgwqBpZiAod2lwaHkgPT0gTlVM
-TCkNCj4gDQo+IEZpeGVzOiAwYzgxNzMzODVlNTQgKCJydGw4MTkyY2U6IEFkZCBuZXcgZHJpdmVy
-IikNCj4gTGluazpodHRwczovL2dpdGh1Yi5jb20vQ2xhbmdCdWlsdExpbnV4L2xpbnV4L2lzc3Vl
-cy83NTANCj4gU2lnbmVkLW9mZi1ieTogTmF0aGFuIENoYW5jZWxsb3IgPG5hdGVjaGFuY2VsbG9y
-QGdtYWlsLmNvbT4NCg0KTG9va3MgZ29vZC4NClRoYW5rcyBmb3IgeW91ciBmaXguDQoNCkFja2Vk
-LWJ5OiBQaW5nLUtlIFNoaWggPHBrc2hpaEByZWFsdGVrLmNvbT4NCg0KPiAtLS0NCj4gwqBkcml2
-ZXJzL25ldC93aXJlbGVzcy9yZWFsdGVrL3J0bHdpZmkvcmVnZC5jIHwgMiArLQ0KPiDCoDEgZmls
-ZSBjaGFuZ2VkLCAxIGluc2VydGlvbigrKSwgMSBkZWxldGlvbigtKQ0KPiANCj4gZGlmZiAtLWdp
-dCBhL2RyaXZlcnMvbmV0L3dpcmVsZXNzL3JlYWx0ZWsvcnRsd2lmaS9yZWdkLmMNCj4gYi9kcml2
-ZXJzL25ldC93aXJlbGVzcy9yZWFsdGVrL3J0bHdpZmkvcmVnZC5jDQo+IGluZGV4IGMxMDQzMmNk
-NzAzZS4uOGJlMzFlMGFkODc4IDEwMDY0NA0KPiAtLS0gYS9kcml2ZXJzL25ldC93aXJlbGVzcy9y
-ZWFsdGVrL3J0bHdpZmkvcmVnZC5jDQo+ICsrKyBiL2RyaXZlcnMvbmV0L3dpcmVsZXNzL3JlYWx0
-ZWsvcnRsd2lmaS9yZWdkLmMNCj4gQEAgLTM4Niw3ICszODYsNyBAQCBpbnQgcnRsX3JlZ2RfaW5p
-dChzdHJ1Y3QgaWVlZTgwMjExX2h3ICpodywNCj4gwqAJc3RydWN0IHdpcGh5ICp3aXBoeSA9IGh3
-LT53aXBoeTsNCj4gwqAJc3RydWN0IGNvdW50cnlfY29kZV90b19lbnVtX3JkICpjb3VudHJ5ID0g
-TlVMTDsNCj4gwqANCj4gLQlpZiAod2lwaHkgPT0gTlVMTCB8fCAmcnRscHJpdi0+cmVnZCA9PSBO
-VUxMKQ0KPiArCWlmICghd2lwaHkpDQo+IMKgCQlyZXR1cm4gLUVJTlZBTDsNCj4gwqANCj4gwqAJ
-LyogaW5pdCBjb3VudHJ5X2NvZGUgZnJvbSBlZnVzZSBjaGFubmVsIHBsYW4gKi8NCg0KDQo=
+> >> +               if (ieee80211_is_data_qos(hdr->frame_control)) {
+> >> +                       qc =3D ieee80211_get_qos_ctl(hdr);
+> >> +                       tid =3D qc[0] & 0xf;
+> >> +                       ac =3D ieee80211_ac_from_tid(tid);
+> >> +               } else {
+> >> +                       ac =3D IEEE80211_AC_BE;
+> >> +               }
+> >
+> > The tid/ac is incorrect either here or in __ieee80211_tx_status() when
+> > tested with ath10k. The ac is set to AC_BE with test done using BK
+> > class traffic, hence the pending airtime get updated for the wrong
+> > txq.
+>
+> Huh, well that won't do, obviously :)
+>
+> Any idea why it might be wrong?
+
+somehow  ieee80211_is_data_qos() returns false. Besides,  qos_control
+field doesn't seems to be set in ieee80211_build_hdr().
+
+> Hmm, I guess we could just get the ac using skb_get_queue_mapping().
+> I'll send an update with this fixed for you to try :)
+Thanks for the quick update. It is getting much better, but
+unfortunately the pending airtime accounting sometimes is still not
+correct and cause txq stuck occasionally.
+
+
+
+
+
+On Tue, Oct 22, 2019 at 4:35 AM Toke H=C3=B8iland-J=C3=B8rgensen <toke@redh=
+at.com> wrote:
+>
+> Kan Yan <kyan@google.com> writes:
+>
+> >> +               if (ieee80211_is_data_qos(hdr->frame_control)) {
+> >> +                       qc =3D ieee80211_get_qos_ctl(hdr);
+> >> +                       tid =3D qc[0] & 0xf;
+> >> +                       ac =3D ieee80211_ac_from_tid(tid);
+> >> +               } else {
+> >> +                       ac =3D IEEE80211_AC_BE;
+> >> +               }
+> >
+> > The tid/ac is incorrect either here or in __ieee80211_tx_status() when
+> > tested with ath10k. The ac is set to AC_BE with test done using BK
+> > class traffic,  hence the pending airtime get updated for the wrong
+> > txq.
+>
+> Hmm, I guess we could just get the ac using skb_get_queue_mapping().
+> I'll send an update with this fixed for you to try :)
+>
+> -Toke
+>
