@@ -2,29 +2,29 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 366EFE1344
-	for <lists+linux-wireless@lfdr.de>; Wed, 23 Oct 2019 09:40:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CCF2EE1377
+	for <lists+linux-wireless@lfdr.de>; Wed, 23 Oct 2019 09:54:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2389941AbfJWHkf (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 23 Oct 2019 03:40:35 -0400
-Received: from szxga06-in.huawei.com ([45.249.212.32]:48066 "EHLO huawei.com"
+        id S2390035AbfJWHyA (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 23 Oct 2019 03:54:00 -0400
+Received: from szxga07-in.huawei.com ([45.249.212.35]:57706 "EHLO huawei.com"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1732328AbfJWHkf (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 23 Oct 2019 03:40:35 -0400
-Received: from DGGEMS408-HUB.china.huawei.com (unknown [172.30.72.58])
-        by Forcepoint Email with ESMTP id 94EA234E5549B1E25C9E;
-        Wed, 23 Oct 2019 15:40:32 +0800 (CST)
-Received: from localhost (10.133.213.239) by DGGEMS408-HUB.china.huawei.com
- (10.3.19.208) with Microsoft SMTP Server id 14.3.439.0; Wed, 23 Oct 2019
- 15:40:23 +0800
+        id S1727574AbfJWHyA (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Wed, 23 Oct 2019 03:54:00 -0400
+Received: from DGGEMS404-HUB.china.huawei.com (unknown [172.30.72.60])
+        by Forcepoint Email with ESMTP id 6EB3E66DC43364274BBD;
+        Wed, 23 Oct 2019 15:53:58 +0800 (CST)
+Received: from localhost (10.133.213.239) by DGGEMS404-HUB.china.huawei.com
+ (10.3.19.204) with Microsoft SMTP Server id 14.3.439.0; Wed, 23 Oct 2019
+ 15:53:48 +0800
 From:   YueHaibing <yuehaibing@huawei.com>
-To:     <simon@thekelleys.org.uk>, <kvalo@codeaurora.org>,
+To:     <Jes.Sorensen@gmail.com>, <kvalo@codeaurora.org>,
         <davem@davemloft.net>
 CC:     <linux-wireless@vger.kernel.org>, <netdev@vger.kernel.org>,
         <linux-kernel@vger.kernel.org>, YueHaibing <yuehaibing@huawei.com>
-Subject: [PATCH] atmel: remove set but not used variable 'dev'
-Date:   Wed, 23 Oct 2019 15:40:19 +0800
-Message-ID: <20191023074019.29708-1-yuehaibing@huawei.com>
+Subject: [PATCH] rtl8xxxu: remove set but not used variable 'rate_mask'
+Date:   Wed, 23 Oct 2019 15:53:42 +0800
+Message-ID: <20191023075342.26656-1-yuehaibing@huawei.com>
 X-Mailer: git-send-email 2.10.2.windows.1
 MIME-Version: 1.0
 Content-Type: text/plain
@@ -35,34 +35,33 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Fixes gcc '-Wunused-but-set-variable' warning:
+drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c:4484:6:
+ warning: variable rate_mask set but not used [-Wunused-but-set-variable]
 
-drivers/net/wireless/atmel/atmel_cs.c:120:21:
- warning: variable dev set but not used [-Wunused-but-set-variable]
-
-It is never used, so can remove it.
+It is never used since commit a9bb0b515778 ("rtl8xxxu: Improve
+TX performance of RTL8723BU on rtl8xxxu driver")
 
 Signed-off-by: YueHaibing <yuehaibing@huawei.com>
 ---
- drivers/net/wireless/atmel/atmel_cs.c | 2 --
- 1 file changed, 2 deletions(-)
+ drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c | 5 -----
+ 1 file changed, 5 deletions(-)
 
-diff --git a/drivers/net/wireless/atmel/atmel_cs.c b/drivers/net/wireless/atmel/atmel_cs.c
-index 7afc9c5..368eebe 100644
---- a/drivers/net/wireless/atmel/atmel_cs.c
-+++ b/drivers/net/wireless/atmel/atmel_cs.c
-@@ -117,11 +117,9 @@ static int atmel_config_check(struct pcmcia_device *p_dev, void *priv_data)
- 
- static int atmel_config(struct pcmcia_device *link)
+diff --git a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
+index 1e3b716..3843d7a 100644
+--- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
++++ b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
+@@ -4481,11 +4481,6 @@ static u16
+ rtl8xxxu_wireless_mode(struct ieee80211_hw *hw, struct ieee80211_sta *sta)
  {
--	struct local_info *dev;
- 	int ret;
- 	const struct pcmcia_device_id *did;
+ 	u16 network_type = WIRELESS_MODE_UNKNOWN;
+-	u32 rate_mask;
+-
+-	rate_mask = (sta->supp_rates[0] & 0xfff) |
+-		    (sta->ht_cap.mcs.rx_mask[0] << 12) |
+-		    (sta->ht_cap.mcs.rx_mask[0] << 20);
  
--	dev = link->priv;
- 	did = dev_get_drvdata(&link->dev);
- 
- 	dev_dbg(&link->dev, "atmel_config\n");
+ 	if (hw->conf.chandef.chan->band == NL80211_BAND_5GHZ) {
+ 		if (sta->vht_cap.vht_supported)
 -- 
 2.7.4
 
