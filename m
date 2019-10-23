@@ -2,132 +2,78 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 022F6E1FA6
-	for <lists+linux-wireless@lfdr.de>; Wed, 23 Oct 2019 17:43:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 251A6E2087
+	for <lists+linux-wireless@lfdr.de>; Wed, 23 Oct 2019 18:25:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2406841AbfJWPnQ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 23 Oct 2019 11:43:16 -0400
-Received: from mail-lj1-f195.google.com ([209.85.208.195]:39983 "EHLO
-        mail-lj1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2404173AbfJWPnQ (ORCPT
+        id S2407253AbfJWQZj (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 23 Oct 2019 12:25:39 -0400
+Received: from vulcan.natalenko.name ([104.207.131.136]:57578 "EHLO
+        vulcan.natalenko.name" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2389149AbfJWQZj (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 23 Oct 2019 11:43:16 -0400
-Received: by mail-lj1-f195.google.com with SMTP id u22so3626818lji.7
-        for <linux-wireless@vger.kernel.org>; Wed, 23 Oct 2019 08:43:15 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc:content-transfer-encoding;
-        bh=Wf7cqgLpHpMCfHDTso2mEEg6iVGE1A3AlSMCK0EZOvI=;
-        b=MeL78PzzFc4GWTGjttUER3eajJiHAfiXzG8G1Xek8riNLS0Akb3EyaIF8kCjplCBvC
-         e8PdIOrGlpPr64UiYnljhSyeNwzpyq1+SmkBqsKNqfnIjx/7/WUm7V18gqSZfq6qXpjy
-         HSSFn0i5dZw0hwcdKmrjoc8j36P/bg/LP5qNws123c15xYetsbls2kJVLs9fGDiHpzTp
-         NTAbYCE9/adTig9wIUFJSciEu5YjcNmNc29oi5wz79zXLWWwMOEF2YCmKSle0etLBDjV
-         RPybKBRkcQRNKCdFp6+vsH/DZ/Jg6//ynFzwearQSIDF3fO2sX+/o3KRHWOwcJvzxVXH
-         952A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=Wf7cqgLpHpMCfHDTso2mEEg6iVGE1A3AlSMCK0EZOvI=;
-        b=SJZ9GgBg/fZvB37fxzt12SQI1/+1tfSOR8mKZjWZDObanprHTKbFjqkIidfQasPXpC
-         ochDJbSnaUHluHrbcOtQVmQ2pqAK60Q2eAycPHaQzvSp/dsvqnGIhb7y6Y1LyLtCMUx8
-         ZTEaiZfO0o/emMRqOildf5N1bOprcwGLbHhPXLCWm8Uc/j6/efT01CBueqaUbPl/1Byi
-         NjvYduJ3gKl/6vVT7YIaMXx10zzL5Sejts9LGCvDBumqME1iUg2E4FinitKzuLw0swfq
-         My5KV+e5CuTFcZPkp/d8acedVvoilu7r5cE+E5FeM68MC1C4GqNqFiV6ppwQcqyAw2Yc
-         E3Kg==
-X-Gm-Message-State: APjAAAVMhnhc/1HTdjxoaaTHpVtdARsxN27HumHWSYhbr/LQpeAzM8SG
-        zdOblfGZyoh8+cVzMBwMEJMUXnmp/8fiCv17A58cVA==
-X-Google-Smtp-Source: APXvYqx3Qvv4PHdZrvwXrE+LY1lvoApw+SX5kuGkePq0Hg3y9W9edqODxW4WERwR4EtQWzHdvirS2CmRTMj3y2hm1yI=
-X-Received: by 2002:a05:651c:326:: with SMTP id b6mr7678893ljp.119.1571845394424;
- Wed, 23 Oct 2019 08:43:14 -0700 (PDT)
+        Wed, 23 Oct 2019 12:25:39 -0400
+Received: from mail.natalenko.name (vulcan.natalenko.name [IPv6:fe80::5400:ff:fe0c:dfa0])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by vulcan.natalenko.name (Postfix) with ESMTPSA id CFB2060CD4E;
+        Wed, 23 Oct 2019 18:25:35 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=natalenko.name;
+        s=dkim-20170712; t=1571847935;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=T8zzS7fQ1+h8Dch7o2XgPzxblvYJzj9a0o53CwTbiaY=;
+        b=jnyA/zUOIOvhANewA4/U/XLZ/Yg3a6p75ZDGpruHbTgVE0VI+z43o04fM9QZWleV0efy7t
+        wakILwZ4dlR90ml71qd+e8CMJa1hltGwsfHZiM/TRJN9xDLrbq+Q5/4hHoIwQmYQewf3mI
+        tqSHWB4vLQInidp3POEexp11AoVST2E=
 MIME-Version: 1.0
-References: <157148503415.2989444.7391437309981941226.stgit@toke.dk>
- <157148503865.2989444.7118792679603045723.stgit@toke.dk> <CA+iem5sy16=xMZjJi1nKHrxP_xWHk-86G=ZLwtMMb04EOt5tQA@mail.gmail.com>
- <871rv5ovwr.fsf@toke.dk> <CA+iem5tZ95Jd9htLEdAJMubuFeWeUibK9MhTnTHLWNucX6_cRg@mail.gmail.com>
- <87tv7znact.fsf@toke.dk> <87lftbn60t.fsf@toke.dk>
-In-Reply-To: <87lftbn60t.fsf@toke.dk>
-From:   Kan Yan <kyan@google.com>
-Date:   Wed, 23 Oct 2019 08:43:03 -0700
-Message-ID: <CA+iem5tbSFyY0pS5Ufb8Ch=y3UGR_iuX_8ao9=2iS05-MozQwA@mail.gmail.com>
-Subject: Re: [PATCH v4 4/4] mac80211: Use Airtime-based Queue Limits (AQL) on
- packet dequeue
-To:     =?UTF-8?B?VG9rZSBIw7hpbGFuZC1Kw7hyZ2Vuc2Vu?= <toke@redhat.com>
-Cc:     Johannes Berg <johannes@sipsolutions.net>,
-        linux-wireless@vger.kernel.org,
-        Make-Wifi-fast <make-wifi-fast@lists.bufferbloat.net>,
-        ath10k@lists.infradead.org, John Crispin <john@phrozen.org>,
-        Lorenzo Bianconi <lorenzo@kernel.org>,
-        Felix Fietkau <nbd@nbd.name>,
-        Rajkumar Manoharan <rmanohar@codeaurora.org>,
-        Kevin Hayes <kevinhayes@google.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII;
+ format=flowed
+Content-Transfer-Encoding: 7bit
+Date:   Wed, 23 Oct 2019 18:25:35 +0200
+From:   Oleksandr Natalenko <oleksandr@natalenko.name>
+To:     Lorenzo Bianconi <lorenzo.bianconi@redhat.com>
+Cc:     Lorenzo Bianconi <lorenzo@kernel.org>,
+        linux-mediatek@lists.infradead.org, Felix Fietkau <nbd@nbd.name>,
+        Lorenzo Bianconi <lorenzo.bianconi83@gmail.com>,
+        Stanislaw Gruszka <sgruszka@redhat.com>,
+        Ryder Lee <ryder.lee@mediatek.com>,
+        Roy Luo <royluo@google.com>, Kalle Valo <kvalo@codeaurora.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+Subject: Re: mt76x2e hardware restart
+In-Reply-To: <20191023085039.GB2461@localhost.localdomain>
+References: <deaafa7a3e9ea2111ebb5106430849c6@natalenko.name>
+ <c6d621759c190f7810d898765115f3b4@natalenko.name>
+ <9d581001e2e6cece418329842b2b0959@natalenko.name>
+ <20191012165028.GA8739@lore-desk-wlan.lan>
+ <f7695bc79d40bbc96744a639b1243027@natalenko.name>
+ <96f43a2103a9f2be152c53f867f5805c@natalenko.name>
+ <20191016163842.GA18799@localhost.localdomain>
+ <20191023085039.GB2461@localhost.localdomain>
+Message-ID: <a2f0be152fc9ed53ea10b8e260c23faf@natalenko.name>
+X-Sender: oleksandr@natalenko.name
+User-Agent: Roundcube Webmail/1.3.10
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-> Aha! Turns out I was doing the sta lookup completely wrong in
-> ieee80211_report_used_skb(); so anything frames that were dropped and
-> went through there would not get its airtime subtracted correctly. Will
-> send a v6 with a fix :)
+Hi.
 
-Awesome, thanks! That looks very promising.  The symptom I see with
-previous patch is the interface's pending airtime count looks fine,
-but the station's airtime get wrong, either due to airtime is credited
-to the wrong station or wrong AC.
+On 23.10.2019 10:50, Lorenzo Bianconi wrote:
+> I think I spotted the SG issue on mt76x2e. Could you please:
+> - keep pcie_aspm patch I sent
+> - remove the debug patch where I disabled TX Scatter-Gather on mt76x2e
+> - apply the following patch
 
-On Wed, Oct 23, 2019 at 2:52 AM Toke H=C3=B8iland-J=C3=B8rgensen <toke@redh=
-at.com> wrote:
->
-> Toke H=C3=B8iland-J=C3=B8rgensen <toke@redhat.com> writes:
->
-> > Kan Yan <kyan@google.com> writes:
-> >
-> >>> >> +               if (ieee80211_is_data_qos(hdr->frame_control)) {
-> >>> >> +                       qc =3D ieee80211_get_qos_ctl(hdr);
-> >>> >> +                       tid =3D qc[0] & 0xf;
-> >>> >> +                       ac =3D ieee80211_ac_from_tid(tid);
-> >>> >> +               } else {
-> >>> >> +                       ac =3D IEEE80211_AC_BE;
-> >>> >> +               }
-> >>> >
-> >>> > The tid/ac is incorrect either here or in __ieee80211_tx_status() w=
-hen
-> >>> > tested with ath10k. The ac is set to AC_BE with test done using BK
-> >>> > class traffic, hence the pending airtime get updated for the wrong
-> >>> > txq.
-> >>>
-> >>> Huh, well that won't do, obviously :)
-> >>>
-> >>> Any idea why it might be wrong?
-> >>
-> >> somehow  ieee80211_is_data_qos() returns false. Besides,  qos_control
-> >> field doesn't seems to be set in ieee80211_build_hdr().
-> >>
-> >>> Hmm, I guess we could just get the ac using skb_get_queue_mapping().
-> >>> I'll send an update with this fixed for you to try :)
-> >> Thanks for the quick update. It is getting much better, but
-> >> unfortunately the pending airtime accounting sometimes is still not
-> >> correct and cause txq stuck occasionally.
-> >
-> > OK, so that has to mean that there are packets getting dropped somewher=
-e
-> > without going through ieee80211_report_used_skb(). Assuming you're not
-> > hitting the underflow warnings, just seeing the counter not get back
-> > down to zero?
-> >
-> > Could you see if you can find out if ath10k does that anywhere? I'll go
-> > hunting in mac80211.
-> >
-> > Looking for calls to kfree_skb() or kfree_skb_list() should hopefully
-> > turn up something...
->
-> Aha! Turns out I was doing the sta lookup completely wrong in
-> ieee80211_report_used_skb(); so anything frames that were dropped and
-> went through there would not get its airtime subtracted correctly. Will
-> send a v6 with a fix :)
->
-> -Toke
->
+Thanks for the patch. So far so good, I was able to start AP, connect to 
+it and conduct a couple of simple speed tests.
+
+I'll use it more today and will let you know in case something breaks.
+
+-- 
+   Oleksandr Natalenko (post-factum)
