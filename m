@@ -2,121 +2,80 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 3EFA8E1253
-	for <lists+linux-wireless@lfdr.de>; Wed, 23 Oct 2019 08:42:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 44D1DE133F
+	for <lists+linux-wireless@lfdr.de>; Wed, 23 Oct 2019 09:39:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2387662AbfJWGmB (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 23 Oct 2019 02:42:01 -0400
-Received: from mail-lj1-f195.google.com ([209.85.208.195]:45226 "EHLO
-        mail-lj1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1732574AbfJWGmA (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 23 Oct 2019 02:42:00 -0400
-Received: by mail-lj1-f195.google.com with SMTP id q64so19772945ljb.12
-        for <linux-wireless@vger.kernel.org>; Tue, 22 Oct 2019 23:41:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc:content-transfer-encoding;
-        bh=xLzPgNOZ8X14gfCEvYWsxDF01OFUZfoQjcWDyuoGltc=;
-        b=LJWHaiQc/q6Hg9z63NPV0MjMzWfOhKO0ey++fb4OkDyjZxD45pVUtUWBaO1/A2Qw2d
-         RJd7oMRFkK9acDzP60fuBo6rXfXFDBhRQNsaSsYvkYETY+Y//R9nqZUBljNNONlm2JRJ
-         fA/4lfnnSbauy8m0CvVAUs+97DA1Lf3yvlh2Ek0wox9gA1zBdoGbHsm6eJ5bUAmzQbNq
-         +CZzAgGbM6Pffjp8WhndhgV/FPWBbAZP77u09c6zMgkfR77ity9Rx2DfjWwUpJsmAL1g
-         TDWItxlH08H4EGtDcM+O35SFI3kDJZEl/vvqCBaLjWr7MkbwhQW3690smPgjvwVTpcrg
-         pThA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=xLzPgNOZ8X14gfCEvYWsxDF01OFUZfoQjcWDyuoGltc=;
-        b=iiql63sHnL/5Fv8tP4TC4Jq4Xe4CYVeEOh1ohQntSX1fvMfFbu7DnViIfsrsdQNsCS
-         hReGsCdLn8iPUCZVxaEmp3Mi0bXcQEQpJN7SRPeD8jTyzSwFRZ1hHqMB4pycxvwVSvDm
-         MyrBCRylEuUNWitGipP9dqgIK2oohnE1FbKKduJVi58yUxK0RiI6fcivGMEHCjhOZCGR
-         7xtDotwjKxBHqsV+Q2GsywhIChY/C/LHCHi4N6OWx1FwLEdeVaDqimcUPnlA4DjSb8Pr
-         8zkNI+pphIyypHQ+5I3bOJ0lfrUCj0kaxLPY8mC21o9C9XN2aOEHnNxI/KncEA+sRWi7
-         Qe9Q==
-X-Gm-Message-State: APjAAAXyUs5OU2PZiiLUTGaKYhZlDiyU58g/kvxmxZiLRsMVHzQEAtpR
-        cjr9pDr8NTaIqfsk/fTTiwRtb2nFOOUc8ISuE2qMGg==
-X-Google-Smtp-Source: APXvYqwbYShriZrtOfH5CKHMRI9ZjT56L9KXRHcmYVKve8FvpLfX1msZDukO1Wkvr96pb24xb7V1qDQkpFKWU15F9BQ=
-X-Received: by 2002:a2e:9759:: with SMTP id f25mr21512398ljj.173.1571812918369;
- Tue, 22 Oct 2019 23:41:58 -0700 (PDT)
+        id S2389946AbfJWHjO (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 23 Oct 2019 03:39:14 -0400
+Received: from szxga07-in.huawei.com ([45.249.212.35]:39748 "EHLO huawei.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S2389224AbfJWHjO (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Wed, 23 Oct 2019 03:39:14 -0400
+Received: from DGGEMS405-HUB.china.huawei.com (unknown [172.30.72.60])
+        by Forcepoint Email with ESMTP id 0EE469FA3A46F5293FE7;
+        Wed, 23 Oct 2019 15:39:04 +0800 (CST)
+Received: from localhost (10.133.213.239) by DGGEMS405-HUB.china.huawei.com
+ (10.3.19.205) with Microsoft SMTP Server id 14.3.439.0; Wed, 23 Oct 2019
+ 15:38:55 +0800
+From:   YueHaibing <yuehaibing@huawei.com>
+To:     <kvalo@codeaurora.org>, <davem@davemloft.net>,
+        <yuehaibing@huawei.com>, <kstewart@linuxfoundation.org>,
+        <allison@lohutok.net>, <info@metux.net>, <tglx@linutronix.de>
+CC:     <linux-wireless@vger.kernel.org>, <netdev@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>
+Subject: [PATCH] adm80211: remove set but not used variables 'mem_addr' and 'io_addr'
+Date:   Wed, 23 Oct 2019 15:38:42 +0800
+Message-ID: <20191023073842.34512-1-yuehaibing@huawei.com>
+X-Mailer: git-send-email 2.10.2.windows.1
 MIME-Version: 1.0
-References: <157148503415.2989444.7391437309981941226.stgit@toke.dk>
- <157148503865.2989444.7118792679603045723.stgit@toke.dk> <CA+iem5sy16=xMZjJi1nKHrxP_xWHk-86G=ZLwtMMb04EOt5tQA@mail.gmail.com>
- <871rv5ovwr.fsf@toke.dk>
-In-Reply-To: <871rv5ovwr.fsf@toke.dk>
-From:   Kan Yan <kyan@google.com>
-Date:   Tue, 22 Oct 2019 23:41:47 -0700
-Message-ID: <CA+iem5tZ95Jd9htLEdAJMubuFeWeUibK9MhTnTHLWNucX6_cRg@mail.gmail.com>
-Subject: Re: [PATCH v4 4/4] mac80211: Use Airtime-based Queue Limits (AQL) on
- packet dequeue
-To:     =?UTF-8?B?VG9rZSBIw7hpbGFuZC1Kw7hyZ2Vuc2Vu?= <toke@redhat.com>
-Cc:     Johannes Berg <johannes@sipsolutions.net>,
-        linux-wireless@vger.kernel.org,
-        Make-Wifi-fast <make-wifi-fast@lists.bufferbloat.net>,
-        ath10k@lists.infradead.org, John Crispin <john@phrozen.org>,
-        Lorenzo Bianconi <lorenzo@kernel.org>,
-        Felix Fietkau <nbd@nbd.name>,
-        Rajkumar Manoharan <rmanohar@codeaurora.org>,
-        Kevin Hayes <kevinhayes@google.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain
+X-Originating-IP: [10.133.213.239]
+X-CFilter-Loop: Reflected
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-> >> +               if (ieee80211_is_data_qos(hdr->frame_control)) {
-> >> +                       qc =3D ieee80211_get_qos_ctl(hdr);
-> >> +                       tid =3D qc[0] & 0xf;
-> >> +                       ac =3D ieee80211_ac_from_tid(tid);
-> >> +               } else {
-> >> +                       ac =3D IEEE80211_AC_BE;
-> >> +               }
-> >
-> > The tid/ac is incorrect either here or in __ieee80211_tx_status() when
-> > tested with ath10k. The ac is set to AC_BE with test done using BK
-> > class traffic, hence the pending airtime get updated for the wrong
-> > txq.
->
-> Huh, well that won't do, obviously :)
->
-> Any idea why it might be wrong?
+Fixes gcc '-Wunused-but-set-variable' warning:
 
-somehow  ieee80211_is_data_qos() returns false. Besides,  qos_control
-field doesn't seems to be set in ieee80211_build_hdr().
+drivers/net/wireless/admtek/adm8211.c:1784:16:
+ warning: variable mem_addr set but not used [-Wunused-but-set-variable]
+drivers/net/wireless/admtek/adm8211.c:1785:15:
+ warning: variable io_addr set but not used [-Wunused-but-set-variable]
 
-> Hmm, I guess we could just get the ac using skb_get_queue_mapping().
-> I'll send an update with this fixed for you to try :)
-Thanks for the quick update. It is getting much better, but
-unfortunately the pending airtime accounting sometimes is still not
-correct and cause txq stuck occasionally.
+They are never used, so can be removed.
+
+Signed-off-by: YueHaibing <yuehaibing@huawei.com>
+---
+ drivers/net/wireless/admtek/adm8211.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
+
+diff --git a/drivers/net/wireless/admtek/adm8211.c b/drivers/net/wireless/admtek/adm8211.c
+index 46f1427..ba326f6 100644
+--- a/drivers/net/wireless/admtek/adm8211.c
++++ b/drivers/net/wireless/admtek/adm8211.c
+@@ -1781,8 +1781,8 @@ static int adm8211_probe(struct pci_dev *pdev,
+ {
+ 	struct ieee80211_hw *dev;
+ 	struct adm8211_priv *priv;
+-	unsigned long mem_addr, mem_len;
+-	unsigned int io_addr, io_len;
++	unsigned long mem_len;
++	unsigned int io_len;
+ 	int err;
+ 	u32 reg;
+ 	u8 perm_addr[ETH_ALEN];
+@@ -1794,9 +1794,7 @@ static int adm8211_probe(struct pci_dev *pdev,
+ 		return err;
+ 	}
+ 
+-	io_addr = pci_resource_start(pdev, 0);
+ 	io_len = pci_resource_len(pdev, 0);
+-	mem_addr = pci_resource_start(pdev, 1);
+ 	mem_len = pci_resource_len(pdev, 1);
+ 	if (io_len < 256 || mem_len < 1024) {
+ 		printk(KERN_ERR "%s (adm8211): Too short PCI resources\n",
+-- 
+2.7.4
 
 
-
-
-
-On Tue, Oct 22, 2019 at 4:35 AM Toke H=C3=B8iland-J=C3=B8rgensen <toke@redh=
-at.com> wrote:
->
-> Kan Yan <kyan@google.com> writes:
->
-> >> +               if (ieee80211_is_data_qos(hdr->frame_control)) {
-> >> +                       qc =3D ieee80211_get_qos_ctl(hdr);
-> >> +                       tid =3D qc[0] & 0xf;
-> >> +                       ac =3D ieee80211_ac_from_tid(tid);
-> >> +               } else {
-> >> +                       ac =3D IEEE80211_AC_BE;
-> >> +               }
-> >
-> > The tid/ac is incorrect either here or in __ieee80211_tx_status() when
-> > tested with ath10k. The ac is set to AC_BE with test done using BK
-> > class traffic,  hence the pending airtime get updated for the wrong
-> > txq.
->
-> Hmm, I guess we could just get the ac using skb_get_queue_mapping().
-> I'll send an update with this fixed for you to try :)
->
-> -Toke
->
