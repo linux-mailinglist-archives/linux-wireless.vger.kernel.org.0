@@ -2,134 +2,69 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 4DF54E2CC2
-	for <lists+linux-wireless@lfdr.de>; Thu, 24 Oct 2019 11:02:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 75D84E2CF2
+	for <lists+linux-wireless@lfdr.de>; Thu, 24 Oct 2019 11:14:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1733240AbfJXJBz (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 24 Oct 2019 05:01:55 -0400
-Received: from mail.kernel.org ([198.145.29.99]:41316 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727079AbfJXJBy (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 24 Oct 2019 05:01:54 -0400
-Received: from localhost.localdomain (nat-pool-mxp-t.redhat.com [149.6.153.186])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id B740120856;
-        Thu, 24 Oct 2019 09:01:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1571907713;
-        bh=37iuuaGpSmraY0pA/lBQbaIYjNaOnB//MJRR10tlGlg=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=WsYd/vXeUwGgRpVKkKMB3UTUOugINmUCmt2cIG6og3xSmeYIrEmJsw3QG8yaFNRMi
-         7pcoeqAIa7nI8dhQ/WyxVBaGMCSf1W/w39q7gaFHsLnv4U4gIIYKc+EsN2UND+5Fei
-         au6SML7ioSVxbWJZFH1odvzNnDd9NYyN5l9+L9Uo=
-Date:   Thu, 24 Oct 2019 11:01:48 +0200
-From:   Lorenzo Bianconi <lorenzo@kernel.org>
-To:     Stanislaw Gruszka <sgruszka@redhat.com>
-Cc:     kvalo@codeaurora.org, linux-wireless@vger.kernel.org, nbd@nbd.name,
-        lorenzo.bianconi@redhat.com, oleksandr@natalenko.name,
-        netdev@vger.kernel.org
-Subject: Re: [PATCH wireless-drivers 2/2] mt76: dma: fix buffer unmap with
- non-linear skbs
-Message-ID: <20191024090148.GC9346@localhost.localdomain>
-References: <cover.1571868221.git.lorenzo@kernel.org>
- <1f7560e10edd517bfd9d3c0dd9820e6f420726b6.1571868221.git.lorenzo@kernel.org>
- <20191024081816.GA2440@redhat.com>
+        id S2393038AbfJXJO2 convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 24 Oct 2019 05:14:28 -0400
+Received: from rtits2.realtek.com ([211.75.126.72]:50808 "EHLO
+        rtits2.realtek.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727653AbfJXJO2 (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 24 Oct 2019 05:14:28 -0400
+Authenticated-By: 
+X-SpamFilter-By: BOX Solutions SpamTrap 5.62 with qID x9O9EDpw030334, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (RTITCAS11.realtek.com.tw[172.21.6.12])
+        by rtits2.realtek.com.tw (8.15.2/2.57/5.78) with ESMTPS id x9O9EDpw030334
+        (version=TLSv1.2 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Thu, 24 Oct 2019 17:14:13 +0800
+Received: from RTITMBSVM04.realtek.com.tw ([fe80::e404:880:2ef1:1aa1]) by
+ RTITCAS11.realtek.com.tw ([fe80::7c6d:ced5:c4ff:8297%15]) with mapi id
+ 14.03.0468.000; Thu, 24 Oct 2019 17:14:12 +0800
+From:   Tony Chuang <yhchuang@realtek.com>
+To:     Kalle Valo <kvalo@codeaurora.org>,
+        kbuild test robot <lkp@intel.com>
+CC:     Andy Huang <tehuang@realtek.com>,
+        "kbuild-all@lists.01.org" <kbuild-all@lists.01.org>,
+        Chris Chiu <chiu@endlessm.com>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+Subject: RE: [wireless-drivers-next:master 91/97] include/linux/bits.h:23:11: warning: right shift count is negative
+Thread-Topic: [wireless-drivers-next:master 91/97]
+ include/linux/bits.h:23:11: warning: right shift count is negative
+Thread-Index: AQHVij/zuYt41C6geUOgPtZKjVCrT6dpbcEVgAAUTjA=
+Date:   Thu, 24 Oct 2019 09:14:11 +0000
+Message-ID: <F7CD281DE3E379468C6D07993EA72F84D190F16B@RTITMBSVM04.realtek.com.tw>
+References: <201910241518.1B6Ev5VT%lkp@intel.com>
+ <875zketvxg.fsf@kamboji.qca.qualcomm.com>
+In-Reply-To: <875zketvxg.fsf@kamboji.qca.qualcomm.com>
+Accept-Language: zh-TW, en-US
+Content-Language: zh-TW
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [172.21.68.183]
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 8BIT
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="S1BNGpv0yoYahz37"
-Content-Disposition: inline
-In-Reply-To: <20191024081816.GA2440@redhat.com>
-User-Agent: Mutt/1.12.1 (2019-06-15)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+> From: linux-wireless-owner@vger.kernel.org
+> [mailto:linux-wireless-owner@vger.kernel.org] On Behalf Of Kalle Valo
+> Sent: Thursday, October 24, 2019 4:00 PM
+> To: kbuild test robot
+> Cc: Andy Huang; kbuild-all@lists.01.org; Tony Chuang; Chris Chiu;
+> linux-wireless@vger.kernel.org
+> Subject: Re: [wireless-drivers-next:master 91/97] include/linux/bits.h:23:11:
+> warning: right shift count is negative
+> 
+> + linux-wireless
+> 
+> Tony, can you send a followup patch to fix this warning?
+> 
 
---S1BNGpv0yoYahz37
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Sure, will send a fix later.
 
-> On Thu, Oct 24, 2019 at 12:23:16AM +0200, Lorenzo Bianconi wrote:
-> > mt76 dma layer is supposed to unmap skb data buffers while keep txwi
-> > mapped on hw dma ring. At the moment mt76 wrongly unmap txwi or does
-> > not unmap data fragments in even positions for non-linear skbs. This
-> > issue may result in hw hangs with A-MSDU if the system relies on IOMMU
-> > or SWIOTLB. Fix this behaviour properly unmapping data fragments on
-> > non-linear skbs.
->=20
-> If we have to keep txwi mapped, before unmap fragments, when then
-> txwi is unmaped ?
-
-txwi are mapped when they are crated in mt76_alloc_txwi(). Whenever we need=
- to
-modify them we sync the DMA in mt76_dma_tx_queue_skb(). txwi are unmapped in
-mt76_tx_free() at driver unload.
-
-Regards,
-Lorenzo
-
->=20
-> Stanislaw
->=20
-> > Fixes: 17f1de56df05 ("mt76: add common code shared between multiple chi=
-psets")
-> > Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
-> > ---
-> >  drivers/net/wireless/mediatek/mt76/dma.c | 10 +++++++---
-> >  1 file changed, 7 insertions(+), 3 deletions(-)
-> >=20
-> > diff --git a/drivers/net/wireless/mediatek/mt76/dma.c b/drivers/net/wir=
-eless/mediatek/mt76/dma.c
-> > index c747eb24581c..8c27956875e7 100644
-> > --- a/drivers/net/wireless/mediatek/mt76/dma.c
-> > +++ b/drivers/net/wireless/mediatek/mt76/dma.c
-> > @@ -93,11 +93,14 @@ static void
-> >  mt76_dma_tx_cleanup_idx(struct mt76_dev *dev, struct mt76_queue *q, in=
-t idx,
-> >  			struct mt76_queue_entry *prev_e)
-> >  {
-> > -	struct mt76_queue_entry *e =3D &q->entry[idx];
-> >  	__le32 __ctrl =3D READ_ONCE(q->desc[idx].ctrl);
-> > +	struct mt76_queue_entry *e =3D &q->entry[idx];
-> >  	u32 ctrl =3D le32_to_cpu(__ctrl);
-> > +	bool mcu =3D e->skb && !e->txwi;
-> > +	bool first =3D e->skb =3D=3D DMA_DUMMY_DATA || e->txwi =3D=3D DMA_DUM=
-MY_DATA ||
-> > +		     (e->skb && !skb_is_nonlinear(e->skb));
-> > =20
-> > -	if (!e->txwi || !e->skb) {
-> > +	if (!first || mcu) {
-> >  		__le32 addr =3D READ_ONCE(q->desc[idx].buf0);
-> >  		u32 len =3D FIELD_GET(MT_DMA_CTL_SD_LEN0, ctrl);
-> > =20
-> > @@ -105,7 +108,8 @@ mt76_dma_tx_cleanup_idx(struct mt76_dev *dev, struc=
-t mt76_queue *q, int idx,
-> >  				 DMA_TO_DEVICE);
-> >  	}
-> > =20
-> > -	if (!(ctrl & MT_DMA_CTL_LAST_SEC0)) {
-> > +	if (!(ctrl & MT_DMA_CTL_LAST_SEC0) ||
-> > +	    e->txwi =3D=3D DMA_DUMMY_DATA) {
-> >  		__le32 addr =3D READ_ONCE(q->desc[idx].buf1);
-> >  		u32 len =3D FIELD_GET(MT_DMA_CTL_SD_LEN1, ctrl);
-> > =20
-> > --=20
-> > 2.21.0
-> >=20
->=20
-
---S1BNGpv0yoYahz37
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYIAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCXbFoeQAKCRA6cBh0uS2t
-rAfIAQCKXW+QaHwFSGNhLoEhG13ebnxRYqwqcGerYQkBKs7z2QEA0NHlfRKfi1KU
-hyVS0QnEWEh+SMgUeS3fVzeLjXCdHgU=
-=T+m5
------END PGP SIGNATURE-----
-
---S1BNGpv0yoYahz37--
+Yan-Hsuan
