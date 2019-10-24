@@ -2,90 +2,59 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 948DDE3B09
-	for <lists+linux-wireless@lfdr.de>; Thu, 24 Oct 2019 20:32:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BCB07E3B36
+	for <lists+linux-wireless@lfdr.de>; Thu, 24 Oct 2019 20:44:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2394146AbfJXScQ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 24 Oct 2019 14:32:16 -0400
-Received: from smtprelay0156.hostedemail.com ([216.40.44.156]:32801 "EHLO
-        smtprelay.hostedemail.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1726155AbfJXScQ (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 24 Oct 2019 14:32:16 -0400
-Received: from filter.hostedemail.com (clb03-v110.bra.tucows.net [216.40.38.60])
-        by smtprelay02.hostedemail.com (Postfix) with ESMTP id 029588E78;
-        Thu, 24 Oct 2019 18:32:15 +0000 (UTC)
-X-Session-Marker: 6A6F6540706572636865732E636F6D
-X-Spam-Summary: 2,0,0,,d41d8cd98f00b204,joe@perches.com,:::::::::,RULES_HIT:41:355:379:800:960:966:973:988:989:1260:1277:1311:1313:1314:1345:1437:1515:1516:1518:1534:1542:1593:1594:1711:1730:1747:1777:1792:2196:2199:2393:2559:2562:2828:2899:3138:3139:3140:3141:3142:3353:3865:3867:3868:3870:3871:3874:4250:4321:4385:5007:6117:6119:7875:7903:10004:10400:11026:11473:11658:11914:12043:12296:12297:12438:12555:12760:13141:13230:13439:14096:14097:14181:14394:14659:14721:21080:21433:21451:21611:21627:30046:30054,0,RBL:47.151.135.224:@perches.com:.lbl8.mailshell.net-62.8.0.100 64.201.201.201,CacheIP:none,Bayesian:0.5,0.5,0.5,Netcheck:none,DomainCache:0,MSF:not bulk,SPF:fn,MSBL:0,DNSBL:neutral,Custom_rules:0:0:0,LFtime:26,LUA_SUMMARY:none
-X-HE-Tag: vest26_87e0d9178874e
-X-Filterd-Recvd-Size: 2764
-Received: from XPS-9350.home (unknown [47.151.135.224])
-        (Authenticated sender: joe@perches.com)
-        by omf01.hostedemail.com (Postfix) with ESMTPA;
-        Thu, 24 Oct 2019 18:32:13 +0000 (UTC)
-Message-ID: <4d53be6c963542878d370ff1a6dc7c3a89b28d23.camel@perches.com>
-Subject: [PATCH] mac80211.h: Trivial typo fixes
-From:   Joe Perches <joe@perches.com>
-To:     Johannes Berg <johannes@sipsolutions.net>
-Cc:     "David S. Miller" <davem@davemloft.net>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel <linux-kernel@vger.kernel.org>
-Date:   Thu, 24 Oct 2019 11:32:12 -0700
-Content-Type: text/plain; charset="ISO-8859-1"
-User-Agent: Evolution 3.34.1-2 
+        id S2504109AbfJXSoU (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 24 Oct 2019 14:44:20 -0400
+Received: from mail.kernel.org ([198.145.29.99]:37882 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S2440075AbfJXSoU (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 24 Oct 2019 14:44:20 -0400
+Received: from localhost (unknown [75.104.69.146])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 5798E205F4;
+        Thu, 24 Oct 2019 18:44:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1571942658;
+        bh=vvS8NHgWqzFAvjFh6auB7LQrOacNbGqy2A0HschvZqU=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=csXyKMqTL8c7qWdUUYVj52JXHYhKQZLnDB2HeJkx/bf6DcrVqq6CLVnbaM54L9UTz
+         Mf7ZhLnUas0Xi5PkLPhscb4psZL/OgCUBIZGn1c33424Cp99JBuINFdhoinZx8Vj/j
+         IeTGBXtV1aa577YUKuvk90tRGhPw/zF+E/5WZfhE=
+Date:   Thu, 24 Oct 2019 14:44:08 -0400
+From:   Greg KH <gregkh@linuxfoundation.org>
+To:     Marcel Holtmann <marcel@holtmann.org>
+Cc:     arnd@arndb.de, johannes@sipsolutions.net, davem@davemloft.net,
+        linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org
+Subject: Re: [PATCH] rfkill: allocate static minor
+Message-ID: <20191024184408.GA260560@kroah.com>
+References: <20191024174042.19851-1-marcel@holtmann.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20191024174042.19851-1-marcel@holtmann.org>
+User-Agent: Mutt/1.12.2 (2019-09-21)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Just typos...
+On Thu, Oct 24, 2019 at 07:40:42PM +0200, Marcel Holtmann wrote:
+> udev has a feature of creating /dev/<node> device-nodes if it finds
+> a devnode:<node> modalias. This allows for auto-loading of modules that
+> provide the node. This requires to use a statically allocated minor
+> number for misc character devices.
+> 
+> However, rfkill uses dynamic minor numbers and prevents auto-loading
+> of the module. So allocate the next static misc minor number and use
+> it for rfkill.
 
-Signed-off-by: Joe Perches <joe@perches.com>
----
- include/net/mac80211.h | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+As rfkill has been around for a long time, what new use case is needing
+to auto-load this based on a major number?
 
-diff --git a/include/net/mac80211.h b/include/net/mac80211.h
-index d69081..edd6d0 100644
---- a/include/net/mac80211.h
-+++ b/include/net/mac80211.h
-@@ -1702,7 +1702,7 @@ struct wireless_dev *ieee80211_vif_to_wdev(struct ieee80211_vif *vif);
-  *	%IEEE80211_KEY_FLAG_SW_MGMT_TX flag to encrypt such frames in SW.
-  * @IEEE80211_KEY_FLAG_GENERATE_IV_MGMT: This flag should be set by the
-  *	driver for a CCMP/GCMP key to indicate that is requires IV generation
-- *	only for managment frames (MFP).
-+ *	only for management frames (MFP).
-  * @IEEE80211_KEY_FLAG_RESERVE_TAILROOM: This flag should be set by the
-  *	driver for a key to indicate that sufficient tailroom must always
-  *	be reserved for ICV or MIC, even when HW encryption is enabled.
-@@ -2626,7 +2626,7 @@ ieee80211_get_alt_retry_rate(const struct ieee80211_hw *hw,
-  * @hw: the hardware
-  * @skb: the skb
-  *
-- * Free a transmit skb. Use this funtion when some failure
-+ * Free a transmit skb. Use this function when some failure
-  * to transmit happened and thus status cannot be reported.
-  */
- void ieee80211_free_txskb(struct ieee80211_hw *hw, struct sk_buff *skb);
-@@ -3193,7 +3193,7 @@ enum ieee80211_rate_control_changed {
-  *
-  * @IEEE80211_ROC_TYPE_NORMAL: There are no special requirements for this ROC.
-  * @IEEE80211_ROC_TYPE_MGMT_TX: The remain on channel request is required
-- *	for sending managment frames offchannel.
-+ *	for sending management frames offchannel.
-  */
- enum ieee80211_roc_type {
- 	IEEE80211_ROC_TYPE_NORMAL = 0,
-@@ -5616,7 +5616,7 @@ void ieee80211_iter_keys_rcu(struct ieee80211_hw *hw,
- 
- /**
-  * ieee80211_iter_chan_contexts_atomic - iterate channel contexts
-- * @hw: pointre obtained from ieee80211_alloc_hw().
-+ * @hw: pointer obtained from ieee80211_alloc_hw().
-  * @iter: iterator function
-  * @iter_data: data passed to iterator function
-  *
+thanks,
 
-
+greg k-h
