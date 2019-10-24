@@ -2,89 +2,114 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C88CDE27C3
-	for <lists+linux-wireless@lfdr.de>; Thu, 24 Oct 2019 03:33:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 32134E29BE
+	for <lists+linux-wireless@lfdr.de>; Thu, 24 Oct 2019 07:03:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2392747AbfJXBdj (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 23 Oct 2019 21:33:39 -0400
-Received: from mail-qk1-f196.google.com ([209.85.222.196]:42209 "EHLO
-        mail-qk1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2392133AbfJXBdj (ORCPT
+        id S2437442AbfJXFDX (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 24 Oct 2019 01:03:23 -0400
+Received: from smtp.codeaurora.org ([198.145.29.96]:32846 "EHLO
+        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725298AbfJXFDX (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 23 Oct 2019 21:33:39 -0400
-Received: by mail-qk1-f196.google.com with SMTP id m4so4891765qke.9
-        for <linux-wireless@vger.kernel.org>; Wed, 23 Oct 2019 18:33:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=endlessm-com.20150623.gappssmtp.com; s=20150623;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=xcmSVZ6hZYBd6lnEzHdiyLJGQhFzsrox7dDuK9wOh74=;
-        b=yqRzl0g4bcFhhIO4QZ4w5RdVOW2/G+PqoqiedMjXrDoqTT2MSPjLc9dQ3QkQVYVkix
-         xD3fGhkHi0fvXxc7wnCuWN2DdGNjTbISzzWTJLPcoTX2kzC6XgnebMEg7psz5nQhtwLq
-         6ioJKsa6HWVoIsGEUy2fi+PjX26Q0HgtOUsZznkcxx2xy1BKQXE2JzpGQXWzh0z5c39T
-         iLc4u8zS0r/kyzx/Z4/2gVQ2JQnI6wBspoEWNwxYBU/mK+NRXZUgVhS7CN1NU868zG80
-         aAQMAgG4F466QkABZ2hq/FyATP90A5Um/7alfWfwFv6jHFNPxueCyLRH08p5LxjDIKkx
-         dXUQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=xcmSVZ6hZYBd6lnEzHdiyLJGQhFzsrox7dDuK9wOh74=;
-        b=MpBrHZPNRMFI5uJ0fy2RwDt8ZaCdJRmjzw/3u5+K27tbzzZ7F9oX3KeDf974o9F5wI
-         lXnRrBrHjIP8QWiRh9vAV6rKibs+/9s5/e53tZ/tCyiHZ45RuDq57c5HFWGwvpJO9rLc
-         NIwcxV93SsaLkTbo0riSRqg+fGr3RZmRBeCWLgKdCRH78ymvF4M6158oLJUgN3+fuqGX
-         jgJKbs2bcpHNfZbDrrWA+2Ks5AXuiEqLADWyc0wFPZOdkcpCssc9VETwpSibu2UGe1K9
-         2rmbv0qRIF2welBOyRtdMzQbG9pNZQQoz43/xJVQginn2T11oFjSgEcm3mawruwPAYMb
-         /VGg==
-X-Gm-Message-State: APjAAAWPN3AiWYPknT4Cak3Bsdh7wkkCmAaJnT/TqInqz1kQtP3+EoB7
-        mfXCtQU1rjADebAMXG/6Jx1yO1Oh2V2eAb0RTHou1BlkQqg=
-X-Google-Smtp-Source: APXvYqwLtNh3FiqWQ8YOclKCEALpdj1EJA/Kj3mm3fvW3vexGZU/dFdQST/Z+AcbKVSHS+gMhEA26cHIynSKW03q/s0=
-X-Received: by 2002:a05:620a:2158:: with SMTP id m24mr11826201qkm.250.1571880817013;
- Wed, 23 Oct 2019 18:33:37 -0700 (PDT)
+        Thu, 24 Oct 2019 01:03:23 -0400
+Received: by smtp.codeaurora.org (Postfix, from userid 1000)
+        id D11CF60DEA; Thu, 24 Oct 2019 05:03:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
+        s=default; t=1571893401;
+        bh=vYRU+bM5JuL4RITs+SLUICptP4u3V+UStBVyN02aLUw=;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+        b=RWwbs03Ne47c4LigpsA9MtG3IVJ8M9D/Q5mU+dOTEYDIHHP3rc+m7UQCfZdYlfovL
+         U1M2Thsw9jhkjYuS9SdUqGwH0jdofLNsogcoTIXOx8zXPTyeALvWvhm/pGMftejcWm
+         NAOzIVcMxAfQlWxsPLH1FQ05HfS+rxqCGMHCBqCA=
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        pdx-caf-mail.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.7 required=2.0 tests=ALL_TRUSTED,BAYES_00,
+        DKIM_INVALID,DKIM_SIGNED,SPF_NONE autolearn=no autolearn_force=no
+        version=3.4.0
+Received: from potku.adurom.net (unknown [88.114.240.156])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo@smtp.codeaurora.org)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 5293A60F78;
+        Thu, 24 Oct 2019 05:03:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
+        s=default; t=1571893401;
+        bh=vYRU+bM5JuL4RITs+SLUICptP4u3V+UStBVyN02aLUw=;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+        b=RWwbs03Ne47c4LigpsA9MtG3IVJ8M9D/Q5mU+dOTEYDIHHP3rc+m7UQCfZdYlfovL
+         U1M2Thsw9jhkjYuS9SdUqGwH0jdofLNsogcoTIXOx8zXPTyeALvWvhm/pGMftejcWm
+         NAOzIVcMxAfQlWxsPLH1FQ05HfS+rxqCGMHCBqCA=
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 5293A60F78
+Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
+From:   Kalle Valo <kvalo@codeaurora.org>
+To:     Lorenzo Bianconi <lorenzo@kernel.org>
+Cc:     linux-wireless@vger.kernel.org, nbd@nbd.name, sgruszka@redhat.com,
+        lorenzo.bianconi@redhat.com, oleksandr@natalenko.name,
+        netdev@vger.kernel.org
+Subject: Re: [PATCH wireless-drivers 1/2] mt76: mt76x2e: disable pcie_aspm by default
+References: <cover.1571868221.git.lorenzo@kernel.org>
+        <fec60f066bab1936d58b2e69bae3f20e645d1304.1571868221.git.lorenzo@kernel.org>
+Date:   Thu, 24 Oct 2019 08:03:16 +0300
+In-Reply-To: <fec60f066bab1936d58b2e69bae3f20e645d1304.1571868221.git.lorenzo@kernel.org>
+        (Lorenzo Bianconi's message of "Thu, 24 Oct 2019 00:23:15 +0200")
+Message-ID: <87eez2u44r.fsf@kamboji.qca.qualcomm.com>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
 MIME-Version: 1.0
-References: <20191022100420.25116-1-yhchuang@realtek.com> <20191022100420.25116-6-yhchuang@realtek.com>
-In-Reply-To: <20191022100420.25116-6-yhchuang@realtek.com>
-From:   Chris Chiu <chiu@endlessm.com>
-Date:   Thu, 24 Oct 2019 09:33:25 +0800
-Message-ID: <CAB4CAwdpG5yfEaptLjpMzsG4hCG+Qc9GpxRMkFHpKD7mwEPigw@mail.gmail.com>
-Subject: Re: [PATCH v3 5/5] rtw88: add phy_info debugfs to show Tx/Rx physical status
-To:     Tony Chuang <yhchuang@realtek.com>
-Cc:     Kalle Valo <kvalo@codeaurora.org>,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        Brian Norris <briannorris@chromium.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Tue, Oct 22, 2019 at 6:04 PM <yhchuang@realtek.com> wrote:
->
-> From: Tsang-Shian Lin <thlin@realtek.com>
->
-> This commit adds several Tx/Rx physical information to phy_info
-> debugfs for 8822B/8822C. By this debugfs, we can know physical
-> information, such as Tx/Rx rate, RSSI, EVM,SNR, etc. The
-> information is gotten from the packets of Tx/Rx path. It has
-> no impact for the performance of 8822B/8822C.
->
-> In the fields, we may meet different kinds of problems, but
-> we may have no professional instrument to check them. At
-> this moment, this debugfs is a good tool, and it may provide
-> useful information for debug.
->
-> Signed-off-by: Tsang-Shian Lin <thlin@realtek.com>
-> Signed-off-by: Yan-Hsuan Chuang <yhchuang@realtek.com>
-> ---
-Reviewed-by: Chris Chiu <chiu@endlessm.com>
+Lorenzo Bianconi <lorenzo@kernel.org> writes:
 
+> On same device (e.g. U7612E-H1) PCIE_ASPM causes continuous mcu hangs and
+> instability and so let's disable PCIE_ASPM by default. This patch has
+> been successfully tested on U7612E-H1 mini-pice card
 >
-> v1 -> v2
->   * No change
->
-> v2 -> v3
->   * refine get evm code, use S8_MIN
->
-> --
-> 2.17.1
->
+> Signed-off-by: Felix Fietkau <nbd@nbd.name>
+> Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+
+[...]
+
+> +void mt76_mmio_disable_aspm(struct pci_dev *pdev)
+> +{
+> +	struct pci_dev *parent = pdev->bus->self;
+> +	u16 aspm_conf, parent_aspm_conf = 0;
+> +
+> +	pcie_capability_read_word(pdev, PCI_EXP_LNKCTL, &aspm_conf);
+> +	aspm_conf &= PCI_EXP_LNKCTL_ASPMC;
+> +	if (parent) {
+> +		pcie_capability_read_word(parent, PCI_EXP_LNKCTL,
+> +					  &parent_aspm_conf);
+> +		parent_aspm_conf &= PCI_EXP_LNKCTL_ASPMC;
+> +	}
+> +
+> +	if (!aspm_conf && (!parent || !parent_aspm_conf)) {
+> +		/* aspm already disabled */
+> +		return;
+> +	}
+> +
+> +	dev_info(&pdev->dev, "disabling ASPM %s %s\n",
+> +		 (aspm_conf & PCI_EXP_LNKCTL_ASPM_L0S) ? "L0s" : "",
+> +		 (aspm_conf & PCI_EXP_LNKCTL_ASPM_L1) ? "L1" : "");
+> +
+> +#ifdef CONFIG_PCIEASPM
+> +	pci_disable_link_state(pdev, aspm_conf);
+> +
+> +	/* Double-check ASPM control.  If not disabled by the above, the
+> +	 * BIOS is preventing that from happening (or CONFIG_PCIEASPM is
+> +	 * not enabled); override by writing PCI config space directly.
+> +	 */
+> +	pcie_capability_read_word(pdev, PCI_EXP_LNKCTL, &aspm_conf);
+> +	if (!(aspm_conf & PCI_EXP_LNKCTL_ASPMC))
+> +		return;
+> +#endif /* CONFIG_PCIEASPM */
+
+A minor comment, but 'if IS_ENABLED(CONFIG_PCIEASPM)' is preferred over
+#ifdef. Better compiler coverage and so on.
+
+-- 
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
