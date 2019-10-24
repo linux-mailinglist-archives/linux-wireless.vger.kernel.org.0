@@ -2,89 +2,89 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E2498E265B
-	for <lists+linux-wireless@lfdr.de>; Thu, 24 Oct 2019 00:24:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 13C5CE27B7
+	for <lists+linux-wireless@lfdr.de>; Thu, 24 Oct 2019 03:29:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2436772AbfJWWYc (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 23 Oct 2019 18:24:32 -0400
-Received: from mail.kernel.org ([198.145.29.99]:54360 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2436651AbfJWWYc (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 23 Oct 2019 18:24:32 -0400
-Received: from lore-desk.lan (unknown [151.66.11.57])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id F3A412173B;
-        Wed, 23 Oct 2019 22:24:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1571869471;
-        bh=mRzuMXKMhF/cUZKhXc6fkszUgY7R3oT+oL8NgDG8tLI=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=H6u7Wm0xCvMJIQZ/zb6/F/J5fuosGNlelku980iIFAA6gaDKqX4JLZZCFKUNYsjje
-         +ML14CXt/lrRvGho8lrZTiFjV8+4ilyYvmxPxbmSOkIjGM+XkuPx7inwfSjpQwtyem
-         NqSG1P0OGCzwjYoHcwauaXgHZuQB5CZUOrxK3b70=
-From:   Lorenzo Bianconi <lorenzo@kernel.org>
-To:     kvalo@codeaurora.org
-Cc:     linux-wireless@vger.kernel.org, nbd@nbd.name, sgruszka@redhat.com,
-        lorenzo.bianconi@redhat.com, oleksandr@natalenko.name,
-        netdev@vger.kernel.org
-Subject: [PATCH wireless-drivers 2/2] mt76: dma: fix buffer unmap with non-linear skbs
-Date:   Thu, 24 Oct 2019 00:23:16 +0200
-Message-Id: <1f7560e10edd517bfd9d3c0dd9820e6f420726b6.1571868221.git.lorenzo@kernel.org>
-X-Mailer: git-send-email 2.21.0
-In-Reply-To: <cover.1571868221.git.lorenzo@kernel.org>
-References: <cover.1571868221.git.lorenzo@kernel.org>
+        id S2392295AbfJXB3o (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 23 Oct 2019 21:29:44 -0400
+Received: from mail-qk1-f195.google.com ([209.85.222.195]:38406 "EHLO
+        mail-qk1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2388218AbfJXB3o (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Wed, 23 Oct 2019 21:29:44 -0400
+Received: by mail-qk1-f195.google.com with SMTP id p4so21829481qkf.5
+        for <linux-wireless@vger.kernel.org>; Wed, 23 Oct 2019 18:29:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=endlessm-com.20150623.gappssmtp.com; s=20150623;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=YbIr1oDSQ4EPbvIHPFNZbAyS3NB93QhbsBV4jJ3VP1k=;
+        b=tzh0AgOXkfbqhCuKFKxoKO7S4f9RzUekJ6ryKIIbV668YrBdWD7X/nPXj2f1VVxHEy
+         VbIbGZybsXTfsQq8QT0dYS/lDSbUsnIA/RT6lw8yRXVsnf0DFKpounTkPcrYTyAYYGUK
+         7Cn6722/+MM9G62uEBXkJx8mFzUQRlMwnwdd0UoU0mI/t0PQVPWr+i8NSLSVv2u9JGMw
+         1z01K77rP3W0k4t8m+a6LRR70wOI5LRBa8HXcBgzzm2TeY/IzWL2lXQY4DOMNpiYjCIH
+         U1bgz/5/2itAThK5rRkmZxP9kPue0G1SGWpjW38LcKvqPceKFgc+pU6bc+UQGcz+jd5a
+         K2tQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=YbIr1oDSQ4EPbvIHPFNZbAyS3NB93QhbsBV4jJ3VP1k=;
+        b=NdMz/v+8smCkvC+3aeSM+EbGv3ku86dC6xleLssYbymP/1zLZDiTIZYi/+O1AsnauY
+         jPkMHWDu2TcoycOTlxo7huh00u36UDr2OELwwpV914m1t0Su2ouEMfVlZikFzKDw2gZX
+         bAi60G2dk5CwzhHGUFg3zwBBXufy5qvN1NSRIXLUzfzk4vDTqYovJIx8ETrIl5nDR7IZ
+         1wwVxvmV5pgCxWzMZDZ997ypEj2/RY9/8HWGesUhY8GD+j62GL78Ql28Y2zJ4zREAbOw
+         vuzAlYji3oC3FiloTKd5dDTyl1o8DkZfhXUAHyiWV/U464mmoZ8CdlHRj358YIg+tY5v
+         rbvA==
+X-Gm-Message-State: APjAAAWSayTstOgmADD/8KZhPwb/UguiotAqh8g3T/kHgcNlbEID/5NW
+        KxNsEuARy0R996lgvy8m/AdZrMnZzOJgvgVPnq9WBA==
+X-Google-Smtp-Source: APXvYqz5CJUUK0qyAseXj87mmB6Nt0seAeXquM4IvjhczlDYn60KVA4MXVjTWwbk59KNHiacIziBk1T/NZtcf3RQVgw=
+X-Received: by 2002:a37:847:: with SMTP id 68mr10906479qki.366.1571880581745;
+ Wed, 23 Oct 2019 18:29:41 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20191022100420.25116-1-yhchuang@realtek.com> <20191022100420.25116-3-yhchuang@realtek.com>
+In-Reply-To: <20191022100420.25116-3-yhchuang@realtek.com>
+From:   Chris Chiu <chiu@endlessm.com>
+Date:   Thu, 24 Oct 2019 09:29:30 +0800
+Message-ID: <CAB4CAwcMxOgRXUT=QxU26S7TvaE9oYgBcUdj-WEvEhV7Krypzw@mail.gmail.com>
+Subject: Re: [PATCH v3 2/5] rtw88: add power tracking support
+To:     Tony Chuang <yhchuang@realtek.com>
+Cc:     Kalle Valo <kvalo@codeaurora.org>,
+        linux-wireless <linux-wireless@vger.kernel.org>,
+        Brian Norris <briannorris@chromium.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-mt76 dma layer is supposed to unmap skb data buffers while keep txwi
-mapped on hw dma ring. At the moment mt76 wrongly unmap txwi or does
-not unmap data fragments in even positions for non-linear skbs. This
-issue may result in hw hangs with A-MSDU if the system relies on IOMMU
-or SWIOTLB. Fix this behaviour properly unmapping data fragments on
-non-linear skbs.
+On Tue, Oct 22, 2019 at 6:04 PM <yhchuang@realtek.com> wrote:
+>
+> From: Tzu-En Huang <tehuang@realtek.com>
+>
+> The temperature of the chip can affect the output power
+> of the RF components. Hence driver requires to compensate
+> the power by adjusting the power index recorded in the
+> power swing table.
+>
+> And if the difference of current thermal value to the
+> default thermal value exceeds a threshold, the RF IQK
+> should be triggered to re-calibrate the characteristics
+> of the RF components, to keep the output IQ vectors of
+> the RF components orthogonal enough.
+>
+> Signed-off-by: Tzu-En Huang <tehuang@realtek.com>
+> Signed-off-by: Yan-Hsuan Chuang <yhchuang@realtek.com>
+> ---
 
-Fixes: 17f1de56df05 ("mt76: add common code shared between multiple chipsets")
-Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
----
- drivers/net/wireless/mediatek/mt76/dma.c | 10 +++++++---
- 1 file changed, 7 insertions(+), 3 deletions(-)
+Reviewed-by: Chris Chiu <chiu@endlessm.com>
 
-diff --git a/drivers/net/wireless/mediatek/mt76/dma.c b/drivers/net/wireless/mediatek/mt76/dma.c
-index c747eb24581c..8c27956875e7 100644
---- a/drivers/net/wireless/mediatek/mt76/dma.c
-+++ b/drivers/net/wireless/mediatek/mt76/dma.c
-@@ -93,11 +93,14 @@ static void
- mt76_dma_tx_cleanup_idx(struct mt76_dev *dev, struct mt76_queue *q, int idx,
- 			struct mt76_queue_entry *prev_e)
- {
--	struct mt76_queue_entry *e = &q->entry[idx];
- 	__le32 __ctrl = READ_ONCE(q->desc[idx].ctrl);
-+	struct mt76_queue_entry *e = &q->entry[idx];
- 	u32 ctrl = le32_to_cpu(__ctrl);
-+	bool mcu = e->skb && !e->txwi;
-+	bool first = e->skb == DMA_DUMMY_DATA || e->txwi == DMA_DUMMY_DATA ||
-+		     (e->skb && !skb_is_nonlinear(e->skb));
- 
--	if (!e->txwi || !e->skb) {
-+	if (!first || mcu) {
- 		__le32 addr = READ_ONCE(q->desc[idx].buf0);
- 		u32 len = FIELD_GET(MT_DMA_CTL_SD_LEN0, ctrl);
- 
-@@ -105,7 +108,8 @@ mt76_dma_tx_cleanup_idx(struct mt76_dev *dev, struct mt76_queue *q, int idx,
- 				 DMA_TO_DEVICE);
- 	}
- 
--	if (!(ctrl & MT_DMA_CTL_LAST_SEC0)) {
-+	if (!(ctrl & MT_DMA_CTL_LAST_SEC0) ||
-+	    e->txwi == DMA_DUMMY_DATA) {
- 		__le32 addr = READ_ONCE(q->desc[idx].buf1);
- 		u32 len = FIELD_GET(MT_DMA_CTL_SD_LEN1, ctrl);
- 
--- 
-2.21.0
-
+>
+> v1 -> v2
+>   * Use macros to check current band
+>   * Some coding style refinement
+>   * Not casting "const" pointers
+>
+> v2 -> v3
+>   * Use RF_PATH_* for thermal values
+>
