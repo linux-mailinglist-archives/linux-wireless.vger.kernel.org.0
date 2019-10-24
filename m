@@ -2,52 +2,52 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 13C5CE27B7
-	for <lists+linux-wireless@lfdr.de>; Thu, 24 Oct 2019 03:29:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C88CDE27C3
+	for <lists+linux-wireless@lfdr.de>; Thu, 24 Oct 2019 03:33:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2392295AbfJXB3o (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 23 Oct 2019 21:29:44 -0400
-Received: from mail-qk1-f195.google.com ([209.85.222.195]:38406 "EHLO
-        mail-qk1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2388218AbfJXB3o (ORCPT
+        id S2392747AbfJXBdj (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 23 Oct 2019 21:33:39 -0400
+Received: from mail-qk1-f196.google.com ([209.85.222.196]:42209 "EHLO
+        mail-qk1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2392133AbfJXBdj (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 23 Oct 2019 21:29:44 -0400
-Received: by mail-qk1-f195.google.com with SMTP id p4so21829481qkf.5
-        for <linux-wireless@vger.kernel.org>; Wed, 23 Oct 2019 18:29:42 -0700 (PDT)
+        Wed, 23 Oct 2019 21:33:39 -0400
+Received: by mail-qk1-f196.google.com with SMTP id m4so4891765qke.9
+        for <linux-wireless@vger.kernel.org>; Wed, 23 Oct 2019 18:33:37 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=endlessm-com.20150623.gappssmtp.com; s=20150623;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=YbIr1oDSQ4EPbvIHPFNZbAyS3NB93QhbsBV4jJ3VP1k=;
-        b=tzh0AgOXkfbqhCuKFKxoKO7S4f9RzUekJ6ryKIIbV668YrBdWD7X/nPXj2f1VVxHEy
-         VbIbGZybsXTfsQq8QT0dYS/lDSbUsnIA/RT6lw8yRXVsnf0DFKpounTkPcrYTyAYYGUK
-         7Cn6722/+MM9G62uEBXkJx8mFzUQRlMwnwdd0UoU0mI/t0PQVPWr+i8NSLSVv2u9JGMw
-         1z01K77rP3W0k4t8m+a6LRR70wOI5LRBa8HXcBgzzm2TeY/IzWL2lXQY4DOMNpiYjCIH
-         U1bgz/5/2itAThK5rRkmZxP9kPue0G1SGWpjW38LcKvqPceKFgc+pU6bc+UQGcz+jd5a
-         K2tQ==
+        bh=xcmSVZ6hZYBd6lnEzHdiyLJGQhFzsrox7dDuK9wOh74=;
+        b=yqRzl0g4bcFhhIO4QZ4w5RdVOW2/G+PqoqiedMjXrDoqTT2MSPjLc9dQ3QkQVYVkix
+         xD3fGhkHi0fvXxc7wnCuWN2DdGNjTbISzzWTJLPcoTX2kzC6XgnebMEg7psz5nQhtwLq
+         6ioJKsa6HWVoIsGEUy2fi+PjX26Q0HgtOUsZznkcxx2xy1BKQXE2JzpGQXWzh0z5c39T
+         iLc4u8zS0r/kyzx/Z4/2gVQ2JQnI6wBspoEWNwxYBU/mK+NRXZUgVhS7CN1NU868zG80
+         aAQMAgG4F466QkABZ2hq/FyATP90A5Um/7alfWfwFv6jHFNPxueCyLRH08p5LxjDIKkx
+         dXUQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=YbIr1oDSQ4EPbvIHPFNZbAyS3NB93QhbsBV4jJ3VP1k=;
-        b=NdMz/v+8smCkvC+3aeSM+EbGv3ku86dC6xleLssYbymP/1zLZDiTIZYi/+O1AsnauY
-         jPkMHWDu2TcoycOTlxo7huh00u36UDr2OELwwpV914m1t0Su2ouEMfVlZikFzKDw2gZX
-         bAi60G2dk5CwzhHGUFg3zwBBXufy5qvN1NSRIXLUzfzk4vDTqYovJIx8ETrIl5nDR7IZ
-         1wwVxvmV5pgCxWzMZDZ997ypEj2/RY9/8HWGesUhY8GD+j62GL78Ql28Y2zJ4zREAbOw
-         vuzAlYji3oC3FiloTKd5dDTyl1o8DkZfhXUAHyiWV/U464mmoZ8CdlHRj358YIg+tY5v
-         rbvA==
-X-Gm-Message-State: APjAAAWSayTstOgmADD/8KZhPwb/UguiotAqh8g3T/kHgcNlbEID/5NW
-        KxNsEuARy0R996lgvy8m/AdZrMnZzOJgvgVPnq9WBA==
-X-Google-Smtp-Source: APXvYqz5CJUUK0qyAseXj87mmB6Nt0seAeXquM4IvjhczlDYn60KVA4MXVjTWwbk59KNHiacIziBk1T/NZtcf3RQVgw=
-X-Received: by 2002:a37:847:: with SMTP id 68mr10906479qki.366.1571880581745;
- Wed, 23 Oct 2019 18:29:41 -0700 (PDT)
+        bh=xcmSVZ6hZYBd6lnEzHdiyLJGQhFzsrox7dDuK9wOh74=;
+        b=MpBrHZPNRMFI5uJ0fy2RwDt8ZaCdJRmjzw/3u5+K27tbzzZ7F9oX3KeDf974o9F5wI
+         lXnRrBrHjIP8QWiRh9vAV6rKibs+/9s5/e53tZ/tCyiHZ45RuDq57c5HFWGwvpJO9rLc
+         NIwcxV93SsaLkTbo0riSRqg+fGr3RZmRBeCWLgKdCRH78ymvF4M6158oLJUgN3+fuqGX
+         jgJKbs2bcpHNfZbDrrWA+2Ks5AXuiEqLADWyc0wFPZOdkcpCssc9VETwpSibu2UGe1K9
+         2rmbv0qRIF2welBOyRtdMzQbG9pNZQQoz43/xJVQginn2T11oFjSgEcm3mawruwPAYMb
+         /VGg==
+X-Gm-Message-State: APjAAAWPN3AiWYPknT4Cak3Bsdh7wkkCmAaJnT/TqInqz1kQtP3+EoB7
+        mfXCtQU1rjADebAMXG/6Jx1yO1Oh2V2eAb0RTHou1BlkQqg=
+X-Google-Smtp-Source: APXvYqwLtNh3FiqWQ8YOclKCEALpdj1EJA/Kj3mm3fvW3vexGZU/dFdQST/Z+AcbKVSHS+gMhEA26cHIynSKW03q/s0=
+X-Received: by 2002:a05:620a:2158:: with SMTP id m24mr11826201qkm.250.1571880817013;
+ Wed, 23 Oct 2019 18:33:37 -0700 (PDT)
 MIME-Version: 1.0
-References: <20191022100420.25116-1-yhchuang@realtek.com> <20191022100420.25116-3-yhchuang@realtek.com>
-In-Reply-To: <20191022100420.25116-3-yhchuang@realtek.com>
+References: <20191022100420.25116-1-yhchuang@realtek.com> <20191022100420.25116-6-yhchuang@realtek.com>
+In-Reply-To: <20191022100420.25116-6-yhchuang@realtek.com>
 From:   Chris Chiu <chiu@endlessm.com>
-Date:   Thu, 24 Oct 2019 09:29:30 +0800
-Message-ID: <CAB4CAwcMxOgRXUT=QxU26S7TvaE9oYgBcUdj-WEvEhV7Krypzw@mail.gmail.com>
-Subject: Re: [PATCH v3 2/5] rtw88: add power tracking support
+Date:   Thu, 24 Oct 2019 09:33:25 +0800
+Message-ID: <CAB4CAwdpG5yfEaptLjpMzsG4hCG+Qc9GpxRMkFHpKD7mwEPigw@mail.gmail.com>
+Subject: Re: [PATCH v3 5/5] rtw88: add phy_info debugfs to show Tx/Rx physical status
 To:     Tony Chuang <yhchuang@realtek.com>
 Cc:     Kalle Valo <kvalo@codeaurora.org>,
         linux-wireless <linux-wireless@vger.kernel.org>,
@@ -60,31 +60,31 @@ X-Mailing-List: linux-wireless@vger.kernel.org
 
 On Tue, Oct 22, 2019 at 6:04 PM <yhchuang@realtek.com> wrote:
 >
-> From: Tzu-En Huang <tehuang@realtek.com>
+> From: Tsang-Shian Lin <thlin@realtek.com>
 >
-> The temperature of the chip can affect the output power
-> of the RF components. Hence driver requires to compensate
-> the power by adjusting the power index recorded in the
-> power swing table.
+> This commit adds several Tx/Rx physical information to phy_info
+> debugfs for 8822B/8822C. By this debugfs, we can know physical
+> information, such as Tx/Rx rate, RSSI, EVM,SNR, etc. The
+> information is gotten from the packets of Tx/Rx path. It has
+> no impact for the performance of 8822B/8822C.
 >
-> And if the difference of current thermal value to the
-> default thermal value exceeds a threshold, the RF IQK
-> should be triggered to re-calibrate the characteristics
-> of the RF components, to keep the output IQ vectors of
-> the RF components orthogonal enough.
+> In the fields, we may meet different kinds of problems, but
+> we may have no professional instrument to check them. At
+> this moment, this debugfs is a good tool, and it may provide
+> useful information for debug.
 >
-> Signed-off-by: Tzu-En Huang <tehuang@realtek.com>
+> Signed-off-by: Tsang-Shian Lin <thlin@realtek.com>
 > Signed-off-by: Yan-Hsuan Chuang <yhchuang@realtek.com>
 > ---
-
 Reviewed-by: Chris Chiu <chiu@endlessm.com>
 
 >
 > v1 -> v2
->   * Use macros to check current band
->   * Some coding style refinement
->   * Not casting "const" pointers
+>   * No change
 >
 > v2 -> v3
->   * Use RF_PATH_* for thermal values
+>   * refine get evm code, use S8_MIN
+>
+> --
+> 2.17.1
 >
