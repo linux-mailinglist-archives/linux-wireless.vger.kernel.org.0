@@ -2,118 +2,116 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id CA102E2BEB
-	for <lists+linux-wireless@lfdr.de>; Thu, 24 Oct 2019 10:18:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 833F6E2C29
+	for <lists+linux-wireless@lfdr.de>; Thu, 24 Oct 2019 10:29:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2438074AbfJXIS2 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 24 Oct 2019 04:18:28 -0400
-Received: from us-smtp-delivery-1.mimecast.com ([205.139.110.120]:23807 "EHLO
-        us-smtp-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1726395AbfJXIS2 (ORCPT
+        id S2438197AbfJXI3N (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 24 Oct 2019 04:29:13 -0400
+Received: from smtp.codeaurora.org ([198.145.29.96]:42706 "EHLO
+        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727024AbfJXI3N (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 24 Oct 2019 04:18:28 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1571905106;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=iUU4XisJlicj+W2Ht8NrSYQhFK2TGjm36W78eDFsQYw=;
-        b=e9FSky7XQbJKdqQYmJXOVh1BLYPy6PE1z7vYcuPgocFQjq7Aj5DEgFeiozjtLAdw9tJ3Hy
-        hzPfnWn28Fn+lnxFwYtJd2c9rLrD5cSnLwKInCT17zGLCU1rF4q6kji7Mm3fIX7WPtJFia
-        4DXTvN/NZOTYRbQAhip2GcVr2TvVIlo=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-338-9zpOSi7ZMAaRh8uSwKlnsA-1; Thu, 24 Oct 2019 04:18:25 -0400
-Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.phx2.redhat.com [10.5.11.14])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        Thu, 24 Oct 2019 04:29:13 -0400
+Received: by smtp.codeaurora.org (Postfix, from userid 1000)
+        id C364D60B12; Thu, 24 Oct 2019 08:29:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
+        s=default; t=1571905752;
+        bh=nSCA5+OR5K46lqvfoqS2k/eQ02BuOgI9IqOuCIqU72k=;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+        b=P1joCsWjGHBNZH60E3aEvYQg02N4bHB2oPCJFz6j0Y0flAA1jN50HVyWaTnjB10z7
+         LZaJP5Ij4rNEOp5O6tVZZbCHYuh09fxY1TYnibFdydWToT2Q+2es7DkSmN2wkdq6nr
+         8AQydLtDR6zd38FxP8X96EHW9aJMA/auD9Wydz8w=
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        pdx-caf-mail.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.7 required=2.0 tests=ALL_TRUSTED,BAYES_00,
+        DKIM_INVALID,DKIM_SIGNED,SPF_NONE autolearn=no autolearn_force=no
+        version=3.4.0
+Received: from potku.adurom.net (unknown [88.114.240.156])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 44ACF107AD31;
-        Thu, 24 Oct 2019 08:18:24 +0000 (UTC)
-Received: from localhost (unknown [10.43.2.93])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 759715D9CA;
-        Thu, 24 Oct 2019 08:18:18 +0000 (UTC)
-Date:   Thu, 24 Oct 2019 10:18:16 +0200
-From:   Stanislaw Gruszka <sgruszka@redhat.com>
-To:     Lorenzo Bianconi <lorenzo@kernel.org>
-Cc:     kvalo@codeaurora.org, linux-wireless@vger.kernel.org, nbd@nbd.name,
-        lorenzo.bianconi@redhat.com, oleksandr@natalenko.name,
-        netdev@vger.kernel.org
-Subject: Re: [PATCH wireless-drivers 2/2] mt76: dma: fix buffer unmap with
- non-linear skbs
-Message-ID: <20191024081816.GA2440@redhat.com>
-References: <cover.1571868221.git.lorenzo@kernel.org>
- <1f7560e10edd517bfd9d3c0dd9820e6f420726b6.1571868221.git.lorenzo@kernel.org>
+        (Authenticated sender: kvalo@smtp.codeaurora.org)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 5175260B16;
+        Thu, 24 Oct 2019 08:29:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
+        s=default; t=1571905750;
+        bh=nSCA5+OR5K46lqvfoqS2k/eQ02BuOgI9IqOuCIqU72k=;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+        b=DswJ17HlcX2AQLy7Cay2azkZW/oqrGm1QKP9tSSl28xXKA4uhL+gAbFpctbb9RA7a
+         5WbZUh2dIh+vgZU59U6IazyNn1yA9/BluL+hcXZBdRm3zrBUctJbBP8CgRZnJBFzRT
+         eRuLcRU1kQwZM+056Ee1Ud7bohU+DPbgfM3M5hIo=
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 5175260B16
+Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
+From:   Kalle Valo <kvalo@codeaurora.org>
+To:     Wen Gong <wgong@codeaurora.org>
+Cc:     ath10k@lists.infradead.org, linux-wireless@vger.kernel.org
+Subject: Re: [PATCH v6 1/3] ath10k: enable RX bundle receive for sdio
+References: <1569402639-31720-1-git-send-email-wgong@codeaurora.org>
+        <1569402639-31720-2-git-send-email-wgong@codeaurora.org>
+Date:   Thu, 24 Oct 2019 11:29:06 +0300
+In-Reply-To: <1569402639-31720-2-git-send-email-wgong@codeaurora.org> (Wen
+        Gong's message of "Wed, 25 Sep 2019 17:10:37 +0800")
+Message-ID: <87v9sesg19.fsf@kamboji.qca.qualcomm.com>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
 MIME-Version: 1.0
-In-Reply-To: <1f7560e10edd517bfd9d3c0dd9820e6f420726b6.1571868221.git.lorenzo@kernel.org>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.14
-X-MC-Unique: 9zpOSi7ZMAaRh8uSwKlnsA-1
-X-Mimecast-Spam-Score: 0
-Content-Type: text/plain; charset=WINDOWS-1252
-Content-Transfer-Encoding: quoted-printable
-Content-Disposition: inline
+Content-Type: text/plain
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Thu, Oct 24, 2019 at 12:23:16AM +0200, Lorenzo Bianconi wrote:
-> mt76 dma layer is supposed to unmap skb data buffers while keep txwi
-> mapped on hw dma ring. At the moment mt76 wrongly unmap txwi or does
-> not unmap data fragments in even positions for non-linear skbs. This
-> issue may result in hw hangs with A-MSDU if the system relies on IOMMU
-> or SWIOTLB. Fix this behaviour properly unmapping data fragments on
-> non-linear skbs.
+Wen Gong <wgong@codeaurora.org> writes:
 
-If we have to keep txwi mapped, before unmap fragments, when then
-txwi is unmaped ?
+> From: Alagu Sankar <alagusankar@silex-india.com>
+>
+> The existing implementation of initiating multiple sdio transfers for
+> receive bundling is slowing down the receive speed. Combining the
+> transfers using a bundle method would be ideal.
+>
+> The transmission utilization ratio for sdio bus for small packet is
+> slow, because the space and time cost for sdio bus is same for large
+> length packet and small length packet. So the speed of data for large
+> length packet is higher than small length.
+>
+> Test result of different length of data:
+> data packet(byte)   cost time(us)   calculated rate(Mbps)
+>       256               28                73
+>       512               33               124
+>      1024               35               234
+>      1792               45               318
+>     14336              168               682
+>     28672              333               688
+>     57344              660               695
+>
+> Tested with QCA6174 SDIO with firmware
+> WLAN.RMH.4.4.1-00017-QCARMSWPZ-1
+>
+> Signed-off-by: Alagu Sankar <alagusankar@silex-india.com>
+> Signed-off-by: Wen Gong <wgong@codeaurora.org>
 
-Stanislaw
+[...]
 
-> Fixes: 17f1de56df05 ("mt76: add common code shared between multiple chips=
-ets")
-> Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
-> ---
->  drivers/net/wireless/mediatek/mt76/dma.c | 10 +++++++---
->  1 file changed, 7 insertions(+), 3 deletions(-)
->=20
-> diff --git a/drivers/net/wireless/mediatek/mt76/dma.c b/drivers/net/wirel=
-ess/mediatek/mt76/dma.c
-> index c747eb24581c..8c27956875e7 100644
-> --- a/drivers/net/wireless/mediatek/mt76/dma.c
-> +++ b/drivers/net/wireless/mediatek/mt76/dma.c
-> @@ -93,11 +93,14 @@ static void
->  mt76_dma_tx_cleanup_idx(struct mt76_dev *dev, struct mt76_queue *q, int =
-idx,
->  =09=09=09struct mt76_queue_entry *prev_e)
+> +static int ath10k_sdio_mbox_rx_fetch_bundle(struct ath10k *ar)
 >  {
-> -=09struct mt76_queue_entry *e =3D &q->entry[idx];
->  =09__le32 __ctrl =3D READ_ONCE(q->desc[idx].ctrl);
-> +=09struct mt76_queue_entry *e =3D &q->entry[idx];
->  =09u32 ctrl =3D le32_to_cpu(__ctrl);
-> +=09bool mcu =3D e->skb && !e->txwi;
-> +=09bool first =3D e->skb =3D=3D DMA_DUMMY_DATA || e->txwi =3D=3D DMA_DUM=
-MY_DATA ||
-> +=09=09     (e->skb && !skb_is_nonlinear(e->skb));
-> =20
-> -=09if (!e->txwi || !e->skb) {
-> +=09if (!first || mcu) {
->  =09=09__le32 addr =3D READ_ONCE(q->desc[idx].buf0);
->  =09=09u32 len =3D FIELD_GET(MT_DMA_CTL_SD_LEN0, ctrl);
-> =20
-> @@ -105,7 +108,8 @@ mt76_dma_tx_cleanup_idx(struct mt76_dev *dev, struct =
-mt76_queue *q, int idx,
->  =09=09=09=09 DMA_TO_DEVICE);
->  =09}
-> =20
-> -=09if (!(ctrl & MT_DMA_CTL_LAST_SEC0)) {
-> +=09if (!(ctrl & MT_DMA_CTL_LAST_SEC0) ||
-> +=09    e->txwi =3D=3D DMA_DUMMY_DATA) {
->  =09=09__le32 addr =3D READ_ONCE(q->desc[idx].buf1);
->  =09=09u32 len =3D FIELD_GET(MT_DMA_CTL_SD_LEN1, ctrl);
-> =20
-> --=20
-> 2.21.0
->=20
+>  	struct ath10k_sdio *ar_sdio = ath10k_sdio_priv(ar);
+> +	struct ath10k_sdio_rx_data *pkt;
+> +	struct ath10k_htc_hdr *htc_hdr;
+>  	int ret, i;
+> +	u32 pkt_offset, virt_pkt_len;
+>  
+> +	virt_pkt_len = 0;
+> +	for (i = 0; i < ar_sdio->n_rx_pkts; i++)
+> +		virt_pkt_len += ar_sdio->rx_pkts[i].alloc_len;
+> +
+> +	if (virt_pkt_len > ATH10K_SDIO_VSG_BUF_SIZE) {
+> +		ath10k_err(ar, "size exceeding limit %d\n", virt_pkt_len);
+> +		ret = -E2BIG;
+> +		goto err;
+> +	}
 
+This should use ath10k_warn(), fixed in the pending branch. I also
+improved the log message.
+
+-- 
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
