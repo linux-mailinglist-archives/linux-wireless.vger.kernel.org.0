@@ -2,191 +2,62 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 6D9F9E3C30
-	for <lists+linux-wireless@lfdr.de>; Thu, 24 Oct 2019 21:41:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5F4B3E3D1E
+	for <lists+linux-wireless@lfdr.de>; Thu, 24 Oct 2019 22:24:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2437124AbfJXTla (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 24 Oct 2019 15:41:30 -0400
-Received: from mail-wr1-f65.google.com ([209.85.221.65]:46355 "EHLO
-        mail-wr1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725963AbfJXTla (ORCPT
+        id S1727401AbfJXUYA convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 24 Oct 2019 16:24:00 -0400
+Received: from coyote.holtmann.net ([212.227.132.17]:52701 "EHLO
+        mail.holtmann.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727394AbfJXUX7 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 24 Oct 2019 15:41:30 -0400
-Received: by mail-wr1-f65.google.com with SMTP id n15so16585099wrw.13;
-        Thu, 24 Oct 2019 12:41:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=Fiq96nVjT7sQAwiXIWbAXKJXQQzKMaRKwEla4GjSbOo=;
-        b=qTsLTm6MGk5ID/mmvIBrEdqlSQdIOywkczH9FHuYpKZNgrvrj7vRp8S/FBdUDWq+7S
-         cVX4cN1uZXyhxWaqhexkroEkbX5tkcOt5I0sc8/fCX1HVzdKyeyeZUB62HOYF7bEgaRv
-         Jt9+t576UfY48rbmwYwgIt8C90GyE8wYQBx8YIWJM0/B3MTFMhOSnN3yKgeDPSc0WIju
-         TiiP78rn6gK6OLaf4+fp74oO27NOnSuaeyJ3+fDfSjR000hgiccNtIloUymSK85MRHZl
-         saxF7dNSU+ljbG90g3Zw0dFtUph9lwsmSl18a9MvPw5ypTcLbOl+oeGCO/baSJ7FEL4u
-         hm3A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=Fiq96nVjT7sQAwiXIWbAXKJXQQzKMaRKwEla4GjSbOo=;
-        b=if0q8C9H6d/o5f4RuAM/Zftx27AIYMHKFo6uGYdXWDoeLrqOJff43ZbVVo4iQmfQ91
-         8BId7prCCLlTRsD0bjAmZtgE+y2enS4pbblo91wm641lkOjIoG3mxj4H0xPwKE6WeSje
-         /8xCboMnXZX3pvcX/++45BgPT3JcbqRJ5bCTjZZPwN5qugdWA3lts75DvJJoS9+1Ejsf
-         GcWYe2gpXXAnZ9+VMmy6f2fvH0bhf66pVtmj6bhMBm5ir5923lD+m+D+goC/p8M3wTBy
-         fygC5fTdcpiLuS69QYw7jasZMOV6wqj5hNrHK7u8itkTU2FdW6SFFruh9WeqJ0AFHF+V
-         FkXw==
-X-Gm-Message-State: APjAAAW1aYmvUHaMjEeyv/jblXxEq8tCaBzRPMe2mUz1VqoBl58IA1NP
-        j8vhhPJGsTR+DLvN4YJugboyC13H
-X-Google-Smtp-Source: APXvYqz43ZaekBcWKuaU5TGXy/7Gp4rgz+nOb1cNpd6V25W8F55KqjLJmWggha2xwOLprbbJoqLPQA==
-X-Received: by 2002:adf:e806:: with SMTP id o6mr4857048wrm.139.1571946086431;
-        Thu, 24 Oct 2019 12:41:26 -0700 (PDT)
-Received: from ?IPv6:2003:ea:8f26:6400:ac52:2d04:d8e7:8f98? (p200300EA8F266400AC522D04D8E78F98.dip0.t-ipconnect.de. [2003:ea:8f26:6400:ac52:2d04:d8e7:8f98])
-        by smtp.googlemail.com with ESMTPSA id p12sm27729009wrm.62.2019.10.24.12.41.25
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Thu, 24 Oct 2019 12:41:25 -0700 (PDT)
-Subject: Re: [PATCH wireless-drivers 1/2] mt76: mt76x2e: disable pcie_aspm by
- default
-To:     Lorenzo Bianconi <lorenzo@kernel.org>, kvalo@codeaurora.org
-Cc:     linux-wireless@vger.kernel.org, nbd@nbd.name, sgruszka@redhat.com,
-        lorenzo.bianconi@redhat.com, oleksandr@natalenko.name,
-        netdev@vger.kernel.org,
-        "linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>
-References: <cover.1571868221.git.lorenzo@kernel.org>
- <fec60f066bab1936d58b2e69bae3f20e645d1304.1571868221.git.lorenzo@kernel.org>
-From:   Heiner Kallweit <hkallweit1@gmail.com>
-Message-ID: <5924c8eb-7269-b8ef-ad0e-957104645638@gmail.com>
-Date:   Thu, 24 Oct 2019 21:41:20 +0200
-User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:60.0) Gecko/20100101
- Thunderbird/60.9.0
-MIME-Version: 1.0
-In-Reply-To: <fec60f066bab1936d58b2e69bae3f20e645d1304.1571868221.git.lorenzo@kernel.org>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+        Thu, 24 Oct 2019 16:23:59 -0400
+Received: from marcel-macpro.fritz.box (p4FEFC197.dip0.t-ipconnect.de [79.239.193.151])
+        by mail.holtmann.org (Postfix) with ESMTPSA id 865C3CECF6;
+        Thu, 24 Oct 2019 22:32:58 +0200 (CEST)
+Content-Type: text/plain;
+        charset=us-ascii
+Mime-Version: 1.0 (Mac OS X Mail 13.0 \(3594.4.19\))
+Subject: Re: [PATCH] rfkill: allocate static minor
+From:   Marcel Holtmann <marcel@holtmann.org>
+In-Reply-To: <20191024184408.GA260560@kroah.com>
+Date:   Thu, 24 Oct 2019 22:23:57 +0200
+Cc:     Arnd Bergmann <arnd@arndb.de>,
+        Johannes Berg <johannes@sipsolutions.net>,
+        "David S. Miller" <davem@davemloft.net>,
+        linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org
+Content-Transfer-Encoding: 8BIT
+Message-Id: <B457050C-18F5-4171-A8A1-4CE95D908FAA@holtmann.org>
+References: <20191024174042.19851-1-marcel@holtmann.org>
+ <20191024184408.GA260560@kroah.com>
+To:     Greg KH <gregkh@linuxfoundation.org>
+X-Mailer: Apple Mail (2.3594.4.19)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 24.10.2019 00:23, Lorenzo Bianconi wrote:
-> On same device (e.g. U7612E-H1) PCIE_ASPM causes continuous mcu hangs and
-> instability and so let's disable PCIE_ASPM by default. This patch has
-> been successfully tested on U7612E-H1 mini-pice card
-> 
-> Signed-off-by: Felix Fietkau <nbd@nbd.name>
-> Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
-> ---
->  drivers/net/wireless/mediatek/mt76/mmio.c     | 47 +++++++++++++++++++
->  drivers/net/wireless/mediatek/mt76/mt76.h     |  1 +
->  .../net/wireless/mediatek/mt76/mt76x2/pci.c   |  2 +
->  3 files changed, 50 insertions(+)
-> 
-> diff --git a/drivers/net/wireless/mediatek/mt76/mmio.c b/drivers/net/wireless/mediatek/mt76/mmio.c
-> index 1c974df1fe25..f991a8f1c42a 100644
-> --- a/drivers/net/wireless/mediatek/mt76/mmio.c
-> +++ b/drivers/net/wireless/mediatek/mt76/mmio.c
-> @@ -3,6 +3,8 @@
->   * Copyright (C) 2016 Felix Fietkau <nbd@nbd.name>
->   */
->  
-> +#include <linux/pci.h>
-> +
->  #include "mt76.h"
->  #include "trace.h"
->  
-> @@ -78,6 +80,51 @@ void mt76_set_irq_mask(struct mt76_dev *dev, u32 addr,
->  }
->  EXPORT_SYMBOL_GPL(mt76_set_irq_mask);
->  
-> +void mt76_mmio_disable_aspm(struct pci_dev *pdev)
-> +{
-> +	struct pci_dev *parent = pdev->bus->self;
-> +	u16 aspm_conf, parent_aspm_conf = 0;
-> +
-> +	pcie_capability_read_word(pdev, PCI_EXP_LNKCTL, &aspm_conf);
-> +	aspm_conf &= PCI_EXP_LNKCTL_ASPMC;
-> +	if (parent) {
-> +		pcie_capability_read_word(parent, PCI_EXP_LNKCTL,
-> +					  &parent_aspm_conf);
-> +		parent_aspm_conf &= PCI_EXP_LNKCTL_ASPMC;
-> +	}
-> +
-> +	if (!aspm_conf && (!parent || !parent_aspm_conf)) {
-> +		/* aspm already disabled */
-> +		return;
-> +	}
-> +
-> +	dev_info(&pdev->dev, "disabling ASPM %s %s\n",
-> +		 (aspm_conf & PCI_EXP_LNKCTL_ASPM_L0S) ? "L0s" : "",
-> +		 (aspm_conf & PCI_EXP_LNKCTL_ASPM_L1) ? "L1" : "");
-> +
-> +#ifdef CONFIG_PCIEASPM
-> +	pci_disable_link_state(pdev, aspm_conf);
-> +
-> +	/* Double-check ASPM control.  If not disabled by the above, the
-> +	 * BIOS is preventing that from happening (or CONFIG_PCIEASPM is
-> +	 * not enabled); override by writing PCI config space directly.
-> +	 */
-> +	pcie_capability_read_word(pdev, PCI_EXP_LNKCTL, &aspm_conf);
-> +	if (!(aspm_conf & PCI_EXP_LNKCTL_ASPMC))
-> +		return;
-> +#endif /* CONFIG_PCIEASPM */
-> +
-> +	/* Both device and parent should have the same ASPM setting.
-> +	 * Disable ASPM in downstream component first and then upstream.
-> +	 */
-> +	pcie_capability_clear_word(pdev, PCI_EXP_LNKCTL, aspm_conf);
-> +
-> +	if (parent)
-> +		pcie_capability_clear_word(parent, PCI_EXP_LNKCTL,
-> +					   aspm_conf);
+Hi Greg,
 
-+ linux-pci mailing list
-
-All this seems to be legacy code copied from e1000e.
-Fiddling with the low-level PCI(e) registers should be left to the
-PCI core. It shouldn't be needed here, a simple call to
-pci_disable_link_state() should be sufficient. Note that this function
-has a return value meanwhile that you can check instead of reading
-back low-level registers.
-If BIOS forbids that OS changes ASPM settings, then this should be
-respected (like PCI core does). Instead the network chip may provide
-the option to configure whether it activates certain ASPM (sub-)states
-or not. We went through a similar exercise with the r8169 driver,
-you can check how it's done there.
-
-> +}
-> +EXPORT_SYMBOL_GPL(mt76_mmio_disable_aspm);
-> +
->  void mt76_mmio_init(struct mt76_dev *dev, void __iomem *regs)
->  {
->  	static const struct mt76_bus_ops mt76_mmio_ops = {
-> diff --git a/drivers/net/wireless/mediatek/mt76/mt76.h b/drivers/net/wireless/mediatek/mt76/mt76.h
-> index 570c159515a0..962812b6247d 100644
-> --- a/drivers/net/wireless/mediatek/mt76/mt76.h
-> +++ b/drivers/net/wireless/mediatek/mt76/mt76.h
-> @@ -578,6 +578,7 @@ bool __mt76_poll_msec(struct mt76_dev *dev, u32 offset, u32 mask, u32 val,
->  #define mt76_poll_msec(dev, ...) __mt76_poll_msec(&((dev)->mt76), __VA_ARGS__)
->  
->  void mt76_mmio_init(struct mt76_dev *dev, void __iomem *regs);
-> +void mt76_mmio_disable_aspm(struct pci_dev *pdev);
->  
->  static inline u16 mt76_chip(struct mt76_dev *dev)
->  {
-> diff --git a/drivers/net/wireless/mediatek/mt76/mt76x2/pci.c b/drivers/net/wireless/mediatek/mt76/mt76x2/pci.c
-> index 73c3104f8858..264bef87e5c7 100644
-> --- a/drivers/net/wireless/mediatek/mt76/mt76x2/pci.c
-> +++ b/drivers/net/wireless/mediatek/mt76/mt76x2/pci.c
-> @@ -81,6 +81,8 @@ mt76pci_probe(struct pci_dev *pdev, const struct pci_device_id *id)
->  	/* RG_SSUSB_CDR_BR_PE1D = 0x3 */
->  	mt76_rmw_field(dev, 0x15c58, 0x3 << 6, 0x3);
->  
-> +	mt76_mmio_disable_aspm(pdev);
-> +
->  	return 0;
->  
->  error:
+>> udev has a feature of creating /dev/<node> device-nodes if it finds
+>> a devnode:<node> modalias. This allows for auto-loading of modules that
+>> provide the node. This requires to use a statically allocated minor
+>> number for misc character devices.
+>> 
+>> However, rfkill uses dynamic minor numbers and prevents auto-loading
+>> of the module. So allocate the next static misc minor number and use
+>> it for rfkill.
 > 
+> As rfkill has been around for a long time, what new use case is needing
+> to auto-load this based on a major number?
+
+we have bug reports from iwd users where it fails opening /dev/rfkill. Since iwd can be actually started before the WiFi hardware is fully probed and all its drivers are loaded, we have a race-condition here if rfkill is not capable of auto-loading.
+
+The difference is really that iwd is a fully self-contained WiFi daemon compared to wpa_supplicant which is just some sort of helper. iwd is fully hot plug capable as well compared to wpa_supplicant. It looks like this is exposing the race condition for our users. Frankly, we should have fixed rfkill a long time ago when we fixed uinput, uhid etc, but seems we forgot it. I assume mainly because it magically got loaded in time by some module dependencies.
+
+Regards
+
+Marcel
 
