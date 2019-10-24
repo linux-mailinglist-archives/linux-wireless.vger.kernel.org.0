@@ -2,126 +2,99 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 784DFE2BC9
-	for <lists+linux-wireless@lfdr.de>; Thu, 24 Oct 2019 10:09:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5D1D8E2BD7
+	for <lists+linux-wireless@lfdr.de>; Thu, 24 Oct 2019 10:14:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2438023AbfJXII5 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 24 Oct 2019 04:08:57 -0400
-Received: from mail.kernel.org ([198.145.29.99]:58776 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725977AbfJXII5 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 24 Oct 2019 04:08:57 -0400
-Received: from localhost.localdomain (nat-pool-mxp-t.redhat.com [149.6.153.186])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        id S2438039AbfJXIOo (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 24 Oct 2019 04:14:44 -0400
+Received: from smtp.codeaurora.org ([198.145.29.96]:58444 "EHLO
+        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726395AbfJXIOo (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 24 Oct 2019 04:14:44 -0400
+Received: by smtp.codeaurora.org (Postfix, from userid 1000)
+        id 3C64F60FB7; Thu, 24 Oct 2019 08:14:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
+        s=default; t=1571904883;
+        bh=5mC2bcaVDbhxJnEGAHvlCjQq62O7TRVKlkrwqnUNv18=;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+        b=KvHNlICxmAl0QOloGWboxxs7bTdjZDfMoe544Lcbm/MRj6mYK3AB+2EYNIapdFNwG
+         akTWFO3P7w4i5z9rthzfHde5abREo7TSfyJlI/HRpQpWuIUcJpcnhTTLzwC8YZmeIW
+         y1oae5WEogAJQMy0J3v9VeIa3xvZxdo2WMYpgBJ0=
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        pdx-caf-mail.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.7 required=2.0 tests=ALL_TRUSTED,BAYES_00,
+        DKIM_INVALID,DKIM_SIGNED,SPF_NONE autolearn=no autolearn_force=no
+        version=3.4.0
+Received: from potku.adurom.net (unknown [88.114.240.156])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 8E33020684;
-        Thu, 24 Oct 2019 08:08:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1571904536;
-        bh=jZQqNwSUxva3l51zcJ1O93jn/tL3QHziuhKu/M7kJVs=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=jX99tMhIeNmzXlOC5vHdQhDMxI7P+97pll/JeJJrLI6hYbvzLxNpwtLgDUufzC/kf
-         KqYmUdKBxk6z0JLX8A46adBny6JpbQ7nc/t10eMunn03uvS4tw1k+WepcjZ26Qey7R
-         +F8GG049o5JdJSh1YarPDtISzoNVVwIqYfw9yxfs=
-Date:   Thu, 24 Oct 2019 10:08:50 +0200
-From:   Lorenzo Bianconi <lorenzo@kernel.org>
-To:     Kalle Valo <kvalo@codeaurora.org>
-Cc:     linux-wireless@vger.kernel.org, nbd@nbd.name, sgruszka@redhat.com,
-        lorenzo.bianconi@redhat.com, oleksandr@natalenko.name,
-        netdev@vger.kernel.org
-Subject: Re: [PATCH wireless-drivers 1/2] mt76: mt76x2e: disable pcie_aspm by
- default
-Message-ID: <20191024080850.GA9346@localhost.localdomain>
-References: <cover.1571868221.git.lorenzo@kernel.org>
- <fec60f066bab1936d58b2e69bae3f20e645d1304.1571868221.git.lorenzo@kernel.org>
- <87eez2u44r.fsf@kamboji.qca.qualcomm.com>
+        (Authenticated sender: kvalo@smtp.codeaurora.org)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id D47166081C;
+        Thu, 24 Oct 2019 08:14:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
+        s=default; t=1571904882;
+        bh=5mC2bcaVDbhxJnEGAHvlCjQq62O7TRVKlkrwqnUNv18=;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+        b=D2P8+6uHO7/w0aunlzHk9QkeWcReoADnBdEv7j/b72XafqbGRdiWwNDKAyq7bsaIM
+         bxb/fs7NezZsApRWxsq3zszaK5HWvkxk8v9hdPLCeix9EgxWMPf2xf+wzI5Gk8tN4u
+         vnA5bw0xpXFQOtQM8nz1SmGEM+4+wjo8RAyhH1HA=
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org D47166081C
+Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
+From:   Kalle Valo <kvalo@codeaurora.org>
+To:     Wen Gong <wgong@codeaurora.org>
+Cc:     ath10k@lists.infradead.org, linux-wireless@vger.kernel.org
+Subject: Re: [PATCH v6 3/3] ath10k: add workqueue for RX path of sdio
+References: <1569402639-31720-1-git-send-email-wgong@codeaurora.org>
+        <1569402639-31720-4-git-send-email-wgong@codeaurora.org>
+Date:   Thu, 24 Oct 2019 11:14:39 +0300
+In-Reply-To: <1569402639-31720-4-git-send-email-wgong@codeaurora.org> (Wen
+        Gong's message of "Wed, 25 Sep 2019 17:10:39 +0800")
+Message-ID: <871rv2tv9s.fsf@kamboji.qca.qualcomm.com>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="EVF5PPMfhYS0aIcm"
-Content-Disposition: inline
-In-Reply-To: <87eez2u44r.fsf@kamboji.qca.qualcomm.com>
-User-Agent: Mutt/1.12.1 (2019-06-15)
+Content-Type: text/plain
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+Wen Gong <wgong@codeaurora.org> writes:
 
---EVF5PPMfhYS0aIcm
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+> For RX, it has two parts, one is to read data from sdio, another
+> is to indicate the packets to upper stack. Recently it has only
+> one thread to do all RX things, it results that it is sequential
+> for RX and low throughout, change RX to parallel for the two parts
+> will increase throughout.
+>
+> This patch move the indication to a workqueue, it results in
+> significant performance improvement on RX path.
+>
+> Udp rx throughout is 200Mbps without this patch, and it arrives
+> 400Mbps with this patch.
+>
+> Tested with QCA6174 SDIO with firmware
+> WLAN.RMH.4.4.1-00017-QCARMSWPZ-1
+>
+> Signed-off-by: Wen Gong <wgong@codeaurora.org>
 
-> Lorenzo Bianconi <lorenzo@kernel.org> writes:
->=20
-> > On same device (e.g. U7612E-H1) PCIE_ASPM causes continuous mcu hangs a=
-nd
-> > instability and so let's disable PCIE_ASPM by default. This patch has
-> > been successfully tested on U7612E-H1 mini-pice card
-> >
-> > Signed-off-by: Felix Fietkau <nbd@nbd.name>
-> > Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
->=20
-> [...]
->=20
-> > +void mt76_mmio_disable_aspm(struct pci_dev *pdev)
-> > +{
-> > +	struct pci_dev *parent =3D pdev->bus->self;
-> > +	u16 aspm_conf, parent_aspm_conf =3D 0;
-> > +
-> > +	pcie_capability_read_word(pdev, PCI_EXP_LNKCTL, &aspm_conf);
-> > +	aspm_conf &=3D PCI_EXP_LNKCTL_ASPMC;
-> > +	if (parent) {
-> > +		pcie_capability_read_word(parent, PCI_EXP_LNKCTL,
-> > +					  &parent_aspm_conf);
-> > +		parent_aspm_conf &=3D PCI_EXP_LNKCTL_ASPMC;
-> > +	}
-> > +
-> > +	if (!aspm_conf && (!parent || !parent_aspm_conf)) {
-> > +		/* aspm already disabled */
-> > +		return;
-> > +	}
-> > +
-> > +	dev_info(&pdev->dev, "disabling ASPM %s %s\n",
-> > +		 (aspm_conf & PCI_EXP_LNKCTL_ASPM_L0S) ? "L0s" : "",
-> > +		 (aspm_conf & PCI_EXP_LNKCTL_ASPM_L1) ? "L1" : "");
-> > +
-> > +#ifdef CONFIG_PCIEASPM
-> > +	pci_disable_link_state(pdev, aspm_conf);
-> > +
-> > +	/* Double-check ASPM control.  If not disabled by the above, the
-> > +	 * BIOS is preventing that from happening (or CONFIG_PCIEASPM is
-> > +	 * not enabled); override by writing PCI config space directly.
-> > +	 */
-> > +	pcie_capability_read_word(pdev, PCI_EXP_LNKCTL, &aspm_conf);
-> > +	if (!(aspm_conf & PCI_EXP_LNKCTL_ASPMC))
-> > +		return;
-> > +#endif /* CONFIG_PCIEASPM */
->=20
-> A minor comment, but 'if IS_ENABLED(CONFIG_PCIEASPM)' is preferred over
-> #ifdef. Better compiler coverage and so on.
+[...]
 
-Hi Kalle,
+> --- a/drivers/net/wireless/ath/ath10k/sdio.h
+> +++ b/drivers/net/wireless/ath/ath10k/sdio.h
+> @@ -98,6 +98,12 @@
+>  #define ATH10K_FIFO_TIMEOUT_AND_CHIP_CONTROL_DISABLE_SLEEP_OFF 0xFFFEFFFF
+>  #define ATH10K_FIFO_TIMEOUT_AND_CHIP_CONTROL_DISABLE_SLEEP_ON 0x10000
+>  
+> +struct ath10k_sdio_rx_request {
+> +	struct list_head list;
+> +	struct sk_buff *skb;
+> +	struct ath10k_htc_ep *ep;
+> +};
 
-ack, I will fix it in v2.
+This is not used anymore, I removed it in the pending branch.
 
-Regards,
-Lorenzo
-
->=20
-> --=20
-> https://wireless.wiki.kernel.org/en/developers/documentation/submittingpa=
-tches
-
---EVF5PPMfhYS0aIcm
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYIAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCXbFcEAAKCRA6cBh0uS2t
-rGOtAQCGhErEs2zXuOOCpsKHdrNhCmZVXNfmNFRLzx3pvw7gAAD/Q+FCJo/TtLTT
-5bx4h3MOKy8tD22nno2praFY8IJ8LwE=
-=QH3z
------END PGP SIGNATURE-----
-
---EVF5PPMfhYS0aIcm--
+-- 
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
