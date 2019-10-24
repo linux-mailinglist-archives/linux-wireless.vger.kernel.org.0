@@ -2,154 +2,165 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 02596E3E4E
-	for <lists+linux-wireless@lfdr.de>; Thu, 24 Oct 2019 23:37:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 38B09E3E8D
+	for <lists+linux-wireless@lfdr.de>; Thu, 24 Oct 2019 23:55:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729596AbfJXVhD (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 24 Oct 2019 17:37:03 -0400
-Received: from gate2.alliedtelesis.co.nz ([202.36.163.20]:60009 "EHLO
-        gate2.alliedtelesis.co.nz" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726386AbfJXVg7 (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 24 Oct 2019 17:36:59 -0400
-Received: from mmarshal3.atlnz.lc (mmarshal3.atlnz.lc [10.32.18.43])
+        id S1729727AbfJXVzE (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 24 Oct 2019 17:55:04 -0400
+Received: from mail.kernel.org ([198.145.29.99]:56916 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726279AbfJXVzE (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 24 Oct 2019 17:55:04 -0400
+Received: from lore-desk.lan (unknown [151.66.11.57])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (Client did not present a certificate)
-        by gate2.alliedtelesis.co.nz (Postfix) with ESMTPS id 26CCA891A9;
-        Fri, 25 Oct 2019 10:36:55 +1300 (NZDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alliedtelesis.co.nz;
-        s=mail181024; t=1571953015;
-        bh=ORxhwEJ9gRBpr0JBIptG2U2pQaqdGpfhtNuFcfek5AU=;
-        h=From:To:Cc:Subject:Date;
-        b=zTEfMP4bfWP16xDZmgfTngjMzVJrENoiky94CunRzhG52m15zrJnzMyZCEjvizkeW
-         3Y0Okuq0OQ7cOzDZnyz3KFQbdTLBaqabOY+bwDliTwJH4DgUpzpyiVrNxwJQNiLTVA
-         n5RVESI3drXgxbgyKO+yrcvkYZZzaGXbNW68Juru2Sg7U0OupsYlIiQM1WDnvrx0LK
-         ZsWVEd28RFNh7VfNjmeaG+8cvqRefg5Iw0X5gUmWx0dYuW7nn/Z0nZaqULUSN1X0zg
-         u8i20VZUAcTdr+WaYhnY5r37sjVYiTzAwGRhBiyoEMy/8ViW6+2t7IHlD7I/81Tdxi
-         PG2zB1tfO1p/g==
-Received: from smtp (Not Verified[10.32.16.33]) by mmarshal3.atlnz.lc with Trustwave SEG (v7,5,8,10121)
-        id <B5db219750000>; Fri, 25 Oct 2019 10:36:53 +1300
-Received: from chrisp-dl.ws.atlnz.lc (chrisp-dl.ws.atlnz.lc [10.33.22.20])
-        by smtp (Postfix) with ESMTP id 0CD7213EEEB;
-        Fri, 25 Oct 2019 10:36:59 +1300 (NZDT)
-Received: by chrisp-dl.ws.atlnz.lc (Postfix, from userid 1030)
-        id CA83F28005C; Fri, 25 Oct 2019 10:36:54 +1300 (NZDT)
-From:   Chris Packham <chris.packham@alliedtelesis.co.nz>
-To:     johannes@sipsolutions.net, davem@davemloft.net
-Cc:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        trivial@kernel.org,
-        Chris Packham <chris.packham@alliedtelesis.co.nz>,
-        linux-kernel@vger.kernel.org
-Subject: [PATCH v2] mac80211: typo fixes in kerneldoc comments
-Date:   Fri, 25 Oct 2019 10:36:47 +1300
-Message-Id: <20191024213647.5507-1-chris.packham@alliedtelesis.co.nz>
-X-Mailer: git-send-email 2.23.0
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 5EAC020663;
+        Thu, 24 Oct 2019 21:55:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1571954102;
+        bh=Ct0arrhFcRuyT69o0kp0Cxj1ORQIfTWXcIwmtNzYuKU=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=Z/Lr3MJGtB3UIwlHFIrZvAMG0p/ehmMO8AILTBMCChW556GYNY1uK46QmHU3cX7Gj
+         CVjbCb+DzikaCNeFrZA5DdSN4oS4OSaTkspa1kDIwYsbgFRgbpG+Xje9eMaCTyQFGC
+         rAqOozr9b1dWIcdfyV6cy2u9Cy6TDMQvifK0pxvA=
+Date:   Thu, 24 Oct 2019 23:54:51 +0200
+From:   Lorenzo Bianconi <lorenzo@kernel.org>
+To:     Heiner Kallweit <hkallweit1@gmail.com>
+Cc:     kvalo@codeaurora.org, linux-wireless@vger.kernel.org, nbd@nbd.name,
+        sgruszka@redhat.com, lorenzo.bianconi@redhat.com,
+        oleksandr@natalenko.name, netdev@vger.kernel.org,
+        "linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>
+Subject: Re: [PATCH wireless-drivers 1/2] mt76: mt76x2e: disable pcie_aspm by
+ default
+Message-ID: <20191024215451.GA30822@lore-desk.lan>
+References: <cover.1571868221.git.lorenzo@kernel.org>
+ <fec60f066bab1936d58b2e69bae3f20e645d1304.1571868221.git.lorenzo@kernel.org>
+ <5924c8eb-7269-b8ef-ad0e-957104645638@gmail.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-x-atlnz-ls: pat
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="k1lZvvs/B4yU6o8G"
+Content-Disposition: inline
+In-Reply-To: <5924c8eb-7269-b8ef-ad0e-957104645638@gmail.com>
+User-Agent: Mutt/1.12.1 (2019-06-15)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Correct some trivial typos in kerneldoc comments.
 
-Signed-off-by: Chris Packham <chris.packham@alliedtelesis.co.nz>
----
+--k1lZvvs/B4yU6o8G
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Notes:
-    Changes in v2:
-    - one more reasurement -> measurement
+> On 24.10.2019 00:23, Lorenzo Bianconi wrote:
+> > On same device (e.g. U7612E-H1) PCIE_ASPM causes continuous mcu hangs a=
+nd
+> > instability and so let's disable PCIE_ASPM by default. This patch has
+> > been successfully tested on U7612E-H1 mini-pice card
+> >=20
+> > Signed-off-by: Felix Fietkau <nbd@nbd.name>
+> > Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+> > ---
+> >  drivers/net/wireless/mediatek/mt76/mmio.c     | 47 +++++++++++++++++++
+> >  drivers/net/wireless/mediatek/mt76/mt76.h     |  1 +
+> >  .../net/wireless/mediatek/mt76/mt76x2/pci.c   |  2 +
+> >  3 files changed, 50 insertions(+)
+> >=20
 
- include/net/mac80211.h | 16 ++++++++--------
- 1 file changed, 8 insertions(+), 8 deletions(-)
+[...]
 
-diff --git a/include/net/mac80211.h b/include/net/mac80211.h
-index 523c6a09e1c8..46f28c6620b9 100644
---- a/include/net/mac80211.h
-+++ b/include/net/mac80211.h
-@@ -312,7 +312,7 @@ struct ieee80211_vif_chanctx_switch {
-  * @BSS_CHANGED_KEEP_ALIVE: keep alive options (idle period or protected
-  *	keep alive) changed.
-  * @BSS_CHANGED_MCAST_RATE: Multicast Rate setting changed for this inte=
-rface
-- * @BSS_CHANGED_FTM_RESPONDER: fime timing reasurement request responder
-+ * @BSS_CHANGED_FTM_RESPONDER: fine timing measurement request responder
-  *	functionality changed for this BSS (AP mode).
-  * @BSS_CHANGED_TWT: TWT status changed
-  * @BSS_CHANGED_HE_OBSS_PD: OBSS Packet Detection status changed.
-@@ -1059,7 +1059,7 @@ struct ieee80211_tx_info {
- };
-=20
- /**
-- * struct ieee80211_tx_status - extended tx staus info for rate control
-+ * struct ieee80211_tx_status - extended tx status info for rate control
-  *
-  * @sta: Station that the packet was transmitted for
-  * @info: Basic tx status information
-@@ -1702,7 +1702,7 @@ struct wireless_dev *ieee80211_vif_to_wdev(struct i=
-eee80211_vif *vif);
-  *	%IEEE80211_KEY_FLAG_SW_MGMT_TX flag to encrypt such frames in SW.
-  * @IEEE80211_KEY_FLAG_GENERATE_IV_MGMT: This flag should be set by the
-  *	driver for a CCMP/GCMP key to indicate that is requires IV generation
-- *	only for managment frames (MFP).
-+ *	only for management frames (MFP).
-  * @IEEE80211_KEY_FLAG_RESERVE_TAILROOM: This flag should be set by the
-  *	driver for a key to indicate that sufficient tailroom must always
-  *	be reserved for ICV or MIC, even when HW encryption is enabled.
-@@ -1998,7 +1998,7 @@ struct ieee80211_sta {
- 	 *
- 	 * * If the skb is transmitted as part of a BA agreement, the
- 	 *   A-MSDU maximal size is min(max_amsdu_len, 4065) bytes.
--	 * * If the skb is not part of a BA aggreement, the A-MSDU maximal
-+	 * * If the skb is not part of a BA agreement, the A-MSDU maximal
- 	 *   size is min(max_amsdu_len, 7935) bytes.
- 	 *
- 	 * Both additional HT limits must be enforced by the low level
-@@ -3183,13 +3183,13 @@ enum ieee80211_rate_control_changed {
-  *
-  * With the support for multi channel contexts and multi channel operati=
-ons,
-  * remain on channel operations might be limited/deferred/aborted by oth=
-er
-- * flows/operations which have higher priority (and vise versa).
-+ * flows/operations which have higher priority (and vice versa).
-  * Specifying the ROC type can be used by devices to prioritize the ROC
-  * operations compared to other operations/flows.
-  *
-  * @IEEE80211_ROC_TYPE_NORMAL: There are no special requirements for thi=
-s ROC.
-  * @IEEE80211_ROC_TYPE_MGMT_TX: The remain on channel request is require=
-d
-- *	for sending managment frames offchannel.
-+ *	for sending management frames offchannel.
-  */
- enum ieee80211_roc_type {
- 	IEEE80211_ROC_TYPE_NORMAL =3D 0,
-@@ -5609,7 +5609,7 @@ void ieee80211_iter_keys_rcu(struct ieee80211_hw *h=
-w,
-=20
- /**
-  * ieee80211_iter_chan_contexts_atomic - iterate channel contexts
-- * @hw: pointre obtained from ieee80211_alloc_hw().
-+ * @hw: pointer obtained from ieee80211_alloc_hw().
-  * @iter: iterator function
-  * @iter_data: data passed to iterator function
-  *
-@@ -6357,7 +6357,7 @@ ieee80211_return_txq(struct ieee80211_hw *hw, struc=
-t ieee80211_txq *txq,
-  * again.
-  *
-  * The API ieee80211_txq_may_transmit() also ensures that TXQ list will =
-be
-- * aligned aginst driver's own round-robin scheduler list. i.e it rotate=
-s
-+ * aligned against driver's own round-robin scheduler list. i.e it rotat=
-es
-  * the TXQ list till it makes the requested node becomes the first entry
-  * in TXQ list. Thus both the TXQ list and driver's list are in sync. If=
- this
-  * function returns %true, the driver is expected to schedule packets
---=20
-2.23.0
+> > +
+> > +	if (parent)
+> > +		pcie_capability_clear_word(parent, PCI_EXP_LNKCTL,
+> > +					   aspm_conf);
+>=20
+> + linux-pci mailing list
 
+Hi Heiner,
+
+>=20
+> All this seems to be legacy code copied from e1000e.
+> Fiddling with the low-level PCI(e) registers should be left to the
+> PCI core. It shouldn't be needed here, a simple call to
+> pci_disable_link_state() should be sufficient. Note that this function
+> has a return value meanwhile that you can check instead of reading
+> back low-level registers.
+
+ack, I will add it to v2
+
+> If BIOS forbids that OS changes ASPM settings, then this should be
+> respected (like PCI core does). Instead the network chip may provide
+> the option to configure whether it activates certain ASPM (sub-)states
+> or not. We went through a similar exercise with the r8169 driver,
+> you can check how it's done there.
+
+looking at the vendor sdk (at least in the version I currently have) there =
+are
+no particular ASPM configurations, it just optionally disables it writing d=
+irectly
+in pci registers.
+Moreover there are multiple drivers that are currently using this approach:
+- ath9k in ath_pci_aspm_init()
+- tg3 in tg3_chip_reset()
+- e1000e in __e1000e_disable_aspm()
+- r8169 in rtl_enable_clock_request()/rtl_disable_clock_request()
+
+Is disabling the ASPM for the system the only option to make this minipcie
+work?
+
+Regards,
+Lorenzo
+
+>=20
+> > +}
+> > +EXPORT_SYMBOL_GPL(mt76_mmio_disable_aspm);
+> > +
+> >  void mt76_mmio_init(struct mt76_dev *dev, void __iomem *regs)
+> >  {
+> >  	static const struct mt76_bus_ops mt76_mmio_ops =3D {
+> > diff --git a/drivers/net/wireless/mediatek/mt76/mt76.h b/drivers/net/wi=
+reless/mediatek/mt76/mt76.h
+> > index 570c159515a0..962812b6247d 100644
+> > --- a/drivers/net/wireless/mediatek/mt76/mt76.h
+> > +++ b/drivers/net/wireless/mediatek/mt76/mt76.h
+> > @@ -578,6 +578,7 @@ bool __mt76_poll_msec(struct mt76_dev *dev, u32 off=
+set, u32 mask, u32 val,
+> >  #define mt76_poll_msec(dev, ...) __mt76_poll_msec(&((dev)->mt76), __VA=
+_ARGS__)
+> > =20
+> >  void mt76_mmio_init(struct mt76_dev *dev, void __iomem *regs);
+> > +void mt76_mmio_disable_aspm(struct pci_dev *pdev);
+> > =20
+> >  static inline u16 mt76_chip(struct mt76_dev *dev)
+> >  {
+> > diff --git a/drivers/net/wireless/mediatek/mt76/mt76x2/pci.c b/drivers/=
+net/wireless/mediatek/mt76/mt76x2/pci.c
+> > index 73c3104f8858..264bef87e5c7 100644
+> > --- a/drivers/net/wireless/mediatek/mt76/mt76x2/pci.c
+> > +++ b/drivers/net/wireless/mediatek/mt76/mt76x2/pci.c
+> > @@ -81,6 +81,8 @@ mt76pci_probe(struct pci_dev *pdev, const struct pci_=
+device_id *id)
+> >  	/* RG_SSUSB_CDR_BR_PE1D =3D 0x3 */
+> >  	mt76_rmw_field(dev, 0x15c58, 0x3 << 6, 0x3);
+> > =20
+> > +	mt76_mmio_disable_aspm(pdev);
+> > +
+> >  	return 0;
+> > =20
+> >  error:
+> >=20
+>=20
+
+--k1lZvvs/B4yU6o8G
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYIAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCXbIdqQAKCRA6cBh0uS2t
+rCwJAP9TQYbzoTDW107MrwmbRPSxNPttIP2u/vIHoAO7CnI/bgD/VEbeg3ymqpVw
+iEM7cfdP6FEholmTwZV+BSUBcm4e5AY=
+=7Nvy
+-----END PGP SIGNATURE-----
+
+--k1lZvvs/B4yU6o8G--
