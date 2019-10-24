@@ -2,131 +2,96 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 71732E3681
-	for <lists+linux-wireless@lfdr.de>; Thu, 24 Oct 2019 17:23:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AE4B9E378B
+	for <lists+linux-wireless@lfdr.de>; Thu, 24 Oct 2019 18:11:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2503120AbfJXPXj (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 24 Oct 2019 11:23:39 -0400
-Received: from albert.telenet-ops.be ([195.130.137.90]:52140 "EHLO
-        albert.telenet-ops.be" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2503090AbfJXPXi (ORCPT
+        id S2439708AbfJXQLZ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 24 Oct 2019 12:11:25 -0400
+Received: from smtp.codeaurora.org ([198.145.29.96]:40368 "EHLO
+        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2436655AbfJXQLZ (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 24 Oct 2019 11:23:38 -0400
-Received: from ramsan ([84.195.182.253])
-        by albert.telenet-ops.be with bizsmtp
-        id HTPS2100V5USYZQ06TPSop; Thu, 24 Oct 2019 17:23:35 +0200
-Received: from rox.of.borg ([192.168.97.57])
-        by ramsan with esmtp (Exim 4.90_1)
-        (envelope-from <geert@linux-m68k.org>)
-        id 1iNexS-00076C-FH; Thu, 24 Oct 2019 17:23:26 +0200
-Received: from geert by rox.of.borg with local (Exim 4.90_1)
-        (envelope-from <geert@linux-m68k.org>)
-        id 1iNexS-0007oO-DL; Thu, 24 Oct 2019 17:23:26 +0200
-From:   Geert Uytterhoeven <geert+renesas@glider.be>
-To:     "David S . Miller" <davem@davemloft.net>,
-        Ping-Ke Shih <pkshih@realtek.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        Johannes Berg <johannes@sipsolutions.net>,
-        Wensong Zhang <wensong@linux-vs.org>,
-        Simon Horman <horms@verge.net.au>,
-        Julian Anastasov <ja@ssi.bg>,
-        Pablo Neira Ayuso <pablo@netfilter.org>,
-        Jozsef Kadlecsik <kadlec@netfilter.org>,
-        Florian Westphal <fw@strlen.de>,
-        Jiri Kosina <trivial@kernel.org>
-Cc:     netdev@vger.kernel.org, linux-wireless@vger.kernel.org,
-        lvs-devel@vger.kernel.org, netfilter-devel@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        Geert Uytterhoeven <geert+renesas@glider.be>
-Subject: [PATCH trivial] net: Fix various misspellings of "connect"
-Date:   Thu, 24 Oct 2019 17:23:23 +0200
-Message-Id: <20191024152323.29987-1-geert+renesas@glider.be>
-X-Mailer: git-send-email 2.17.1
+        Thu, 24 Oct 2019 12:11:25 -0400
+Received: by smtp.codeaurora.org (Postfix, from userid 1000)
+        id D22F5611AD; Thu, 24 Oct 2019 16:11:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
+        s=default; t=1571933484;
+        bh=6BQeRd1YE343V3Pyn6bXhu7AVvclx5LyH+xiYk/mmsQ=;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+        b=TQNWdZPw1VNshMmWaBQj1Njknz4thr4uOvbL1s7+gUpZ2/S4Z6UPbwd/i0UR/Pl7b
+         Sp4caPzRIbVyjzYY/jo54suzPij6UtrkvF+XsYDXl1bDXeAvgT6m7F8e19ZDERebd7
+         vU/FhgsI3fyJCWKzlLamjK3sITo8j5Zub6XmHcBw=
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        pdx-caf-mail.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.7 required=2.0 tests=ALL_TRUSTED,BAYES_00,
+        DKIM_INVALID,DKIM_SIGNED,SPF_NONE autolearn=no autolearn_force=no
+        version=3.4.0
+Received: from potku.adurom.net (unknown [88.114.240.156])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo@smtp.codeaurora.org)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id CE9586110A;
+        Thu, 24 Oct 2019 16:11:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
+        s=default; t=1571933480;
+        bh=6BQeRd1YE343V3Pyn6bXhu7AVvclx5LyH+xiYk/mmsQ=;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+        b=ad96iQEMymUX4ygi/5GDCdgFnmUhXDrCv64tNVhd3dPGHxI4cDyjZzfjbCwrwUedx
+         /jnhJJswJ5dPo4LKE68u2uv2H7SAvEKEbExn15lSHN9CohgbLdjqfa6M8ApqgrEYzy
+         NJ7yZ41/UYNotjEG+4ToTSevM23sPyCLz9KkbYLk=
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org CE9586110A
+Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
+From:   Kalle Valo <kvalo@codeaurora.org>
+To:     Geert Uytterhoeven <geert+renesas@glider.be>
+Cc:     "David S . Miller" <davem@davemloft.net>,
+        Jiri Kosina <trivial@kernel.org>, netdev@vger.kernel.org,
+        linux-rdma@vger.kernel.org, linux-wireless@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2] [trivial] net: Fix misspellings of "configure" and "configuration"
+References: <20191024152201.29868-1-geert+renesas@glider.be>
+Date:   Thu, 24 Oct 2019 19:11:15 +0300
+In-Reply-To: <20191024152201.29868-1-geert+renesas@glider.be> (Geert
+        Uytterhoeven's message of "Thu, 24 Oct 2019 17:22:01 +0200")
+Message-ID: <878spaqg2k.fsf@kamboji.qca.qualcomm.com>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
+MIME-Version: 1.0
+Content-Type: text/plain
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Fix misspellings of "disconnect", "disconnecting", "connections", and
-"disconnected".
+Geert Uytterhoeven <geert+renesas@glider.be> writes:
 
-Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
----
- drivers/net/wimax/i2400m/usb.c                      | 2 +-
- drivers/net/wireless/realtek/rtlwifi/rtl8192se/hw.c | 4 ++--
- include/net/cfg80211.h                              | 2 +-
- net/netfilter/ipvs/ip_vs_ovf.c                      | 2 +-
- net/wireless/reg.h                                  | 2 +-
- 5 files changed, 6 insertions(+), 6 deletions(-)
+> Fix various misspellings of "configuration" and "configure".
+>
+> Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+> ---
+> v2:
+>   - Merge
+>     [trivial] net/mlx5e: Spelling s/configuraiton/configuration/
+>     [trivial] qed: Spelling s/configuraiton/configuration/
+>   - Fix typo in subject,
+>   - Extend with various other similar misspellings.
+> ---
+>  drivers/net/ethernet/mellanox/mlx5/core/en/port_buffer.c | 2 +-
+>  drivers/net/ethernet/qlogic/qed/qed_int.h                | 4 ++--
+>  drivers/net/ethernet/qlogic/qed/qed_sriov.h              | 2 +-
+>  drivers/net/ethernet/qlogic/qede/qede_filter.c           | 2 +-
+>  drivers/net/wireless/ath/ath9k/ar9003_hw.c               | 2 +-
+>  drivers/net/wireless/intel/iwlwifi/iwl-fh.h              | 2 +-
+>  drivers/net/wireless/ti/wlcore/spi.c                     | 2 +-
+>  include/uapi/linux/dcbnl.h                               | 2 +-
+>  8 files changed, 9 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/net/wimax/i2400m/usb.c b/drivers/net/wimax/i2400m/usb.c
-index 6953f904232f8d9b..9659f9e1aaa64c8a 100644
---- a/drivers/net/wimax/i2400m/usb.c
-+++ b/drivers/net/wimax/i2400m/usb.c
-@@ -511,7 +511,7 @@ int i2400mu_probe(struct usb_interface *iface,
- 
- 
- /*
-- * Disconect a i2400m from the system.
-+ * Disconnect a i2400m from the system.
-  *
-  * i2400m_stop() has been called before, so al the rx and tx contexts
-  * have been taken down already. Make sure the queue is stopped,
-diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8192se/hw.c b/drivers/net/wireless/realtek/rtlwifi/rtl8192se/hw.c
-index 6d6e8994460d90ba..81313e0ca83411f7 100644
---- a/drivers/net/wireless/realtek/rtlwifi/rtl8192se/hw.c
-+++ b/drivers/net/wireless/realtek/rtlwifi/rtl8192se/hw.c
-@@ -1352,9 +1352,9 @@ static void _rtl92s_phy_set_rfhalt(struct ieee80211_hw *hw)
- 	/* SW/HW radio off or halt adapter!! For example S3/S4 */
- 	} else {
- 		/* LED function disable. Power range is about 8mA now. */
--		/* if write 0xF1 disconnet_pci power
-+		/* if write 0xF1 disconnect_pci power
- 		 *	 ifconfig wlan0 down power are both high 35:70 */
--		/* if write oxF9 disconnet_pci power
-+		/* if write oxF9 disconnect_pci power
- 		 * ifconfig wlan0 down power are both low  12:45*/
- 		rtl_write_byte(rtlpriv, 0x03, 0xF9);
- 	}
-diff --git a/include/net/cfg80211.h b/include/net/cfg80211.h
-index 4ab2c49423dcba4b..ab6850bbba995e15 100644
---- a/include/net/cfg80211.h
-+++ b/include/net/cfg80211.h
-@@ -6593,7 +6593,7 @@ struct cfg80211_roam_info {
-  * time it is accessed in __cfg80211_roamed() due to delay in scheduling
-  * rdev->event_work. In case of any failures, the reference is released
-  * either in cfg80211_roamed() or in __cfg80211_romed(), Otherwise, it will be
-- * released while diconneting from the current bss.
-+ * released while disconnecting from the current bss.
-  */
- void cfg80211_roamed(struct net_device *dev, struct cfg80211_roam_info *info,
- 		     gfp_t gfp);
-diff --git a/net/netfilter/ipvs/ip_vs_ovf.c b/net/netfilter/ipvs/ip_vs_ovf.c
-index 78b074cd54646923..c03066fdd5ca69a3 100644
---- a/net/netfilter/ipvs/ip_vs_ovf.c
-+++ b/net/netfilter/ipvs/ip_vs_ovf.c
-@@ -5,7 +5,7 @@
-  * Authors:     Raducu Deaconu <rhadoo_io@yahoo.com>
-  *
-  * Scheduler implements "overflow" loadbalancing according to number of active
-- * connections , will keep all conections to the node with the highest weight
-+ * connections , will keep all connections to the node with the highest weight
-  * and overflow to the next node if the number of connections exceeds the node's
-  * weight.
-  * Note that this scheduler might not be suitable for UDP because it only uses
-diff --git a/net/wireless/reg.h b/net/wireless/reg.h
-index dc8f689bd46902af..f9e83031a40a5eb3 100644
---- a/net/wireless/reg.h
-+++ b/net/wireless/reg.h
-@@ -114,7 +114,7 @@ void regulatory_hint_country_ie(struct wiphy *wiphy,
- 			 u8 country_ie_len);
- 
- /**
-- * regulatory_hint_disconnect - informs all devices have been disconneted
-+ * regulatory_hint_disconnect - informs all devices have been disconnected
-  *
-  * Regulotory rules can be enhanced further upon scanning and upon
-  * connection to an AP. These rules become stale if we disconnect
+I hope this goes to net-next? Easier to handle possible conflicts that
+way.
+
+For the wireless part:
+
+Acked-by: Kalle Valo <kvalo@codeaurora.org>
+
 -- 
-2.17.1
-
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
