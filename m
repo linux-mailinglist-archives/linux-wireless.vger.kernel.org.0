@@ -2,177 +2,153 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 15F69E4D82
-	for <lists+linux-wireless@lfdr.de>; Fri, 25 Oct 2019 16:01:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4421DE4EBC
+	for <lists+linux-wireless@lfdr.de>; Fri, 25 Oct 2019 16:17:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2394880AbfJYOAs (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 25 Oct 2019 10:00:48 -0400
-Received: from mail.kernel.org ([198.145.29.99]:53920 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2505600AbfJYN6c (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 25 Oct 2019 09:58:32 -0400
-Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id A0F09222C9;
-        Fri, 25 Oct 2019 13:58:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1572011911;
-        bh=M+mdSED+ku2Dex57fysCFC6s0u2WCo4GX+Um1EfdXmU=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=w7USYjbXp9zHVI2nFKFiwweO/wqmJvyrzfTlJYd/2RBPif3zCbInnQRNmH6AxQCwS
-         9bxIhrDtuk6YHjDumjNCqgBp9tNpG6s8aznxzYm9mf7epOD5Hdw6fN5nIKmNEuCqFZ
-         4U9UtKbvWEpGKamFEyN0CAW2wIKwesa0vCW19t90=
-From:   Sasha Levin <sashal@kernel.org>
-To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Lorenzo Bianconi <lorenzo@kernel.org>,
-        Koen Vandeputte <koen.vandeputte@ncentric.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        Sasha Levin <sashal@kernel.org>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.9 15/20] ath9k: dynack: fix possible deadlock in ath_dynack_node_{de}init
-Date:   Fri, 25 Oct 2019 09:57:55 -0400
-Message-Id: <20191025135801.25739-15-sashal@kernel.org>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20191025135801.25739-1-sashal@kernel.org>
-References: <20191025135801.25739-1-sashal@kernel.org>
+        id S1729421AbfJYORO (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 25 Oct 2019 10:17:14 -0400
+Received: from mail-ua1-f66.google.com ([209.85.222.66]:41537 "EHLO
+        mail-ua1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729370AbfJYORN (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 25 Oct 2019 10:17:13 -0400
+Received: by mail-ua1-f66.google.com with SMTP id l13so639114uap.8
+        for <linux-wireless@vger.kernel.org>; Fri, 25 Oct 2019 07:17:13 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=0CAVWEuC0Wr/mgCNhsciXMq3IOIcM2OeEJA1ru10OHU=;
+        b=BrEeBRwZDH9LZLeKgrqHeOgCWaKAmVmTI7cMNQIKEaYEOK53dhkfxvTEKUGua8pEYn
+         KKNJzY8SmgtZ+dw3qe1Agc2vGppEXIG1RGP5HC2P1kKZXPTbKtIpQR2SQKACoXr5lq0C
+         TScshIyi3sg7b5Hy25a2fSckkchRRsFhi9RlnSQvUaIw1Nf3d0C7L32mPGonpNC9s3ad
+         f4mEbkmZNu+GPe98/k+KnUyrpi8nNMWjrct9aw2hMFaPKKo5NTYPbfK68XGpHZn2x6Xn
+         HuYO8WGSuebDL5haCxBpBYPspmBzdf7z9PY+tx2jmxlCfYCe1cwL6ZN1dZnJqBMUa0Dz
+         hUUQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=0CAVWEuC0Wr/mgCNhsciXMq3IOIcM2OeEJA1ru10OHU=;
+        b=YAmP/ZUx02WtFfKVVAS0DOTA1XaApyAMjScZpjrLYepYcLiPvAlAuXSwfIqLdBtdpW
+         ENiHE0lfW0RZzWUJri0MN8GsSzXHxk9U46f16y940mDGZYqD5Wir55YJbQNxaaC3b27R
+         AMbbR0xil5J4bb5H5iVJPDFpl1zpl7i4NeqJqMSao/8bdUUiJL/afHg06htXUDUxWJ6z
+         gh0HD6xeyw+v7iGZlfywJDWve8nVNOeB+ukP9gqXv0Q5DQRS+bsJGQJz7zh+qVq5e8YA
+         MZBV8TUOhDRHscoqzQYhifk0dEkvJ2kT6bmt6dxY6bpZShfNxzI2WxgcEJKGsH9aYDpo
+         Zgbw==
+X-Gm-Message-State: APjAAAXn9SAlOy/vdNy3OLe0HCdEqYwaUqh0TkcAki+iXvuiIhu+SQ4J
+        gA7iejHg2d3obwFocABeNM4Sc2humx0SL8Gk0Qmbig==
+X-Google-Smtp-Source: APXvYqyZno3A9J1kXU5Ta+j5fFJXc9VmiZWw3ERbPW0XjhEwv684O2MnRYorcI0NUgB1j37apIhbef6Vu3yrO3CrrDc=
+X-Received: by 2002:ab0:5a97:: with SMTP id w23mr1758543uae.129.1572013032335;
+ Fri, 25 Oct 2019 07:17:12 -0700 (PDT)
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-Content-Transfer-Encoding: 8bit
+References: <20191017135739.1315-1-ulf.hansson@linaro.org> <20191017135739.1315-3-ulf.hansson@linaro.org>
+ <CAD=FV=XsCGqLwKOicW47Yk3y3mHzU+9fR8kS7jx2pW6SzjgCbg@mail.gmail.com>
+ <CAPDyKFq_Utz+ztdXTV534pY9Q9CyTSBJV_mfyPKAsHxaSyZjpA@mail.gmail.com>
+ <CAD=FV=U7Tm0eB00Ze8PUvCvDw_nqHFL6nGO=vEP2t9d-zVveTw@mail.gmail.com> <CAPDyKFoumdj9u1B4fQh8ws2PqvtYtVekDyq+M4nLs=hriqD-VA@mail.gmail.com>
+In-Reply-To: <CAPDyKFoumdj9u1B4fQh8ws2PqvtYtVekDyq+M4nLs=hriqD-VA@mail.gmail.com>
+From:   Ulf Hansson <ulf.hansson@linaro.org>
+Date:   Fri, 25 Oct 2019 16:16:36 +0200
+Message-ID: <CAPDyKFrR7O-Jkmor7=OcRduNS9MMjTH6d0ij1ToYp_=h_viZSg@mail.gmail.com>
+Subject: Re: [PATCH 2/2] mmc: core: Re-work HW reset for SDIO cards
+To:     Doug Anderson <dianders@chromium.org>
+Cc:     Linux MMC List <linux-mmc@vger.kernel.org>,
+        Adrian Hunter <adrian.hunter@intel.com>,
+        Matthias Kaehlcke <mka@chromium.org>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        Tony Lindgren <tony@atomide.com>,
+        Wen Gong <wgong@codeaurora.org>,
+        Erik Stromdahl <erik.stromdahl@gmail.com>,
+        Eyal Reizer <eyalreizer@gmail.com>,
+        linux-wireless <linux-wireless@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Lorenzo Bianconi <lorenzo@kernel.org>
+On Wed, 23 Oct 2019 at 17:06, Ulf Hansson <ulf.hansson@linaro.org> wrote:
+>
+> On Tue, 22 Oct 2019 at 16:47, Doug Anderson <dianders@chromium.org> wrote:
+> >
+> > Hi,
+> >
+> > On Mon, Oct 21, 2019 at 11:51 PM Ulf Hansson <ulf.hansson@linaro.org> wrote:
+> > >
+> > > > The problem I see here is that callers of this reset function aren't
+> > > > expecting it to work this way.  Look specifically at
+> > > > mwifiex_sdio_card_reset_work().  It's assuming that it needs to do
+> > > > things like shutdown / reinit.  Now it's true that the old
+> > > > mwifiex_sdio_card_reset_work() was pretty broken on any systems that
+> > > > also had SDIO bluetooth, but presumably it worked OK on systems
+> > > > without SDIO Bluetooth.  I don't think it'll work so well now.
+> > >
+> > > Good point!
+> > >
+> > > I guess I was hoping that running through ->remove() and then
+> > > ->probe() for the SDIO func drivers should simply take care of
+> > > whatever that may be needed. In some way this makes the driver broken
+> > > already in regards to this path, but never mind.
+> >
+> > Yeah, probably true.  I guess if anyone actually expected to use one
+> > of these cards as a removable SDIO card (I have seen such dev boards
+> > long ago) then it would always have been possible for someone to
+> > remove the card at just the wrong time and break things.
+>
+> Well, this isn't solely about card removal but driver removal as well.
+> And the latter can be managed from user space at any point in time.
+>
+> >
+> >
+> > > > Testing shows that indeed your patch breaks mwifiex reset worse than
+> > > > it was before (AKA WiFi totally fails instead of it just killing
+> > > > Bluetooth).
+> > > >
+> > > > I think it may be better to add a new API call rather than trying to
+> > > > co-opt the old one.  Maybe put a WARN_ON() for the old API call to
+> > > > make people move away from it, or something?
+> > >
+> > > Thanks again for testing and for valuable feedback! Clearly this needs
+> > > a little more thinking.
+> > >
+> > > An additional concern I see with the "hotplug approach" implemented in
+> > > $subject patch, is that it becomes unnecessary heavy when there is
+> > > only one SDIO func driver bound.
+> > >
+> > > In one way I am tempted to try to address that situation, as it seems
+> > > a bit silly to do full hotplug dance when it isn't needed.
+> >
+> > True, though I kinda like the heavy solution here.  At least in the
+> > mwifiex case this isn't a part of the normal flow.  AKA: we don't call
+> > this function during normal bootup nor during any normal operations.
+> > It's much more of an "oh crap, something's not working and we don't
+> > know what to do" type solution.  I mean, I guess it's still not
+> > uncommon that we end up in this code path due to the number of bugs in
+> > Marvell firmware, but I'm just trying to say that it's an error code
+> > path and not a normal one.  In my mind that means the more things we
+> > can re-init the better.
+>
+> You have a point, but...
+>
+> >
+> > If this was, on the other hand, a reset that we were supposed to
+> > always assert when doing a normal operation (like it wants us to reset
+> > it when we switch modes, or something) then a lighter operation would
+> > make more sense.
+>
+> This is indeed the tricky part, as it depends on the level of bugs,
+> but also under what specific circumstances the reset is getting
+> called.
+>
+> In the TI case (drivers/net/wireless/ti/wlcore/sdio.c) the reset is
+> executed at the "power on" case, which for example is at system
+> resume. And we want system resume to be as fast as possible...
+>
+> I am exploring a few options to deal with both cases, let's see what I
+> can come up with in a day or two.
 
-[ Upstream commit e1aa1a1db3b01c9890e82cf065cee99962ba1ed9 ]
+FYI, still exploring and trying a few slightly different options. I
+should be able to post something early next week, stay tuned. :-)
 
-Fix following lockdep warning disabling bh in
-ath_dynack_node_init/ath_dynack_node_deinit
-
-[   75.955878] --------------------------------
-[   75.955880] inconsistent {SOFTIRQ-ON-W} -> {IN-SOFTIRQ-W} usage.
-[   75.955884] swapper/0/0 [HC0[0]:SC1[3]:HE1:SE0] takes:
-[   75.955888] 00000000792a7ee0 (&(&da->qlock)->rlock){+.?.}, at: ath_dynack_sample_ack_ts+0x4d/0xa0 [ath9k_hw]
-[   75.955905] {SOFTIRQ-ON-W} state was registered at:
-[   75.955912]   lock_acquire+0x9a/0x160
-[   75.955917]   _raw_spin_lock+0x2c/0x70
-[   75.955927]   ath_dynack_node_init+0x2a/0x60 [ath9k_hw]
-[   75.955934]   ath9k_sta_state+0xec/0x160 [ath9k]
-[   75.955976]   drv_sta_state+0xb2/0x740 [mac80211]
-[   75.956008]   sta_info_insert_finish+0x21a/0x420 [mac80211]
-[   75.956039]   sta_info_insert_rcu+0x12b/0x2c0 [mac80211]
-[   75.956069]   sta_info_insert+0x7/0x70 [mac80211]
-[   75.956093]   ieee80211_prep_connection+0x42e/0x730 [mac80211]
-[   75.956120]   ieee80211_mgd_auth.cold+0xb9/0x15c [mac80211]
-[   75.956152]   cfg80211_mlme_auth+0x143/0x350 [cfg80211]
-[   75.956169]   nl80211_authenticate+0x25e/0x2b0 [cfg80211]
-[   75.956172]   genl_family_rcv_msg+0x198/0x400
-[   75.956174]   genl_rcv_msg+0x42/0x90
-[   75.956176]   netlink_rcv_skb+0x35/0xf0
-[   75.956178]   genl_rcv+0x1f/0x30
-[   75.956180]   netlink_unicast+0x154/0x200
-[   75.956182]   netlink_sendmsg+0x1bf/0x3d0
-[   75.956186]   ___sys_sendmsg+0x2c2/0x2f0
-[   75.956187]   __sys_sendmsg+0x44/0x80
-[   75.956190]   do_syscall_64+0x55/0x1a0
-[   75.956192]   entry_SYSCALL_64_after_hwframe+0x49/0xbe
-[   75.956194] irq event stamp: 2357092
-[   75.956196] hardirqs last  enabled at (2357092): [<ffffffff818c62de>] _raw_spin_unlock_irqrestore+0x3e/0x50
-[   75.956199] hardirqs last disabled at (2357091): [<ffffffff818c60b1>] _raw_spin_lock_irqsave+0x11/0x80
-[   75.956202] softirqs last  enabled at (2357072): [<ffffffff8106dc09>] irq_enter+0x59/0x60
-[   75.956204] softirqs last disabled at (2357073): [<ffffffff8106dcbe>] irq_exit+0xae/0xc0
-[   75.956206]
-               other info that might help us debug this:
-[   75.956207]  Possible unsafe locking scenario:
-
-[   75.956208]        CPU0
-[   75.956209]        ----
-[   75.956210]   lock(&(&da->qlock)->rlock);
-[   75.956213]   <Interrupt>
-[   75.956214]     lock(&(&da->qlock)->rlock);
-[   75.956216]
-                *** DEADLOCK ***
-
-[   75.956217] 1 lock held by swapper/0/0:
-[   75.956219]  #0: 000000003bb5675c (&(&sc->sc_pcu_lock)->rlock){+.-.}, at: ath9k_tasklet+0x55/0x240 [ath9k]
-[   75.956225]
-               stack backtrace:
-[   75.956228] CPU: 0 PID: 0 Comm: swapper/0 Not tainted 5.3.0-rc1-wdn+ #13
-[   75.956229] Hardware name: Dell Inc. Studio XPS 1340/0K183D, BIOS A11 09/08/2009
-[   75.956231] Call Trace:
-[   75.956233]  <IRQ>
-[   75.956236]  dump_stack+0x67/0x90
-[   75.956239]  mark_lock+0x4c1/0x640
-[   75.956242]  ? check_usage_backwards+0x130/0x130
-[   75.956245]  ? sched_clock_local+0x12/0x80
-[   75.956247]  __lock_acquire+0x484/0x7a0
-[   75.956250]  ? __lock_acquire+0x3b9/0x7a0
-[   75.956252]  lock_acquire+0x9a/0x160
-[   75.956259]  ? ath_dynack_sample_ack_ts+0x4d/0xa0 [ath9k_hw]
-[   75.956262]  _raw_spin_lock_bh+0x34/0x80
-[   75.956268]  ? ath_dynack_sample_ack_ts+0x4d/0xa0 [ath9k_hw]
-[   75.956275]  ath_dynack_sample_ack_ts+0x4d/0xa0 [ath9k_hw]
-[   75.956280]  ath_rx_tasklet+0xd09/0xe90 [ath9k]
-[   75.956286]  ath9k_tasklet+0x102/0x240 [ath9k]
-[   75.956288]  tasklet_action_common.isra.0+0x6d/0x170
-[   75.956291]  __do_softirq+0xcc/0x425
-[   75.956294]  irq_exit+0xae/0xc0
-[   75.956296]  do_IRQ+0x8a/0x110
-[   75.956298]  common_interrupt+0xf/0xf
-[   75.956300]  </IRQ>
-[   75.956303] RIP: 0010:cpuidle_enter_state+0xb2/0x400
-[   75.956308] RSP: 0018:ffffffff82203e70 EFLAGS: 00000202 ORIG_RAX: ffffffffffffffd7
-[   75.956310] RAX: ffffffff82219800 RBX: ffffffff822bd0a0 RCX: 0000000000000000
-[   75.956312] RDX: 0000000000000046 RSI: 0000000000000006 RDI: ffffffff82219800
-[   75.956314] RBP: ffff888155a01c00 R08: 00000011af51aabe R09: 0000000000000000
-[   75.956315] R10: 0000000000000000 R11: 0000000000000000 R12: 0000000000000002
-[   75.956317] R13: 00000011af51aabe R14: 0000000000000003 R15: ffffffff82219800
-[   75.956321]  cpuidle_enter+0x24/0x40
-[   75.956323]  do_idle+0x1ac/0x220
-[   75.956326]  cpu_startup_entry+0x14/0x20
-[   75.956329]  start_kernel+0x482/0x489
-[   75.956332]  secondary_startup_64+0xa4/0xb0
-
-Fixes: c774d57fd47c ("ath9k: add dynamic ACK timeout estimation")
-Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
-Tested-by: Koen Vandeputte <koen.vandeputte@ncentric.com>
-Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- drivers/net/wireless/ath/ath9k/dynack.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
-
-diff --git a/drivers/net/wireless/ath/ath9k/dynack.c b/drivers/net/wireless/ath/ath9k/dynack.c
-index 6e236a4854311..71b4888b30e71 100644
---- a/drivers/net/wireless/ath/ath9k/dynack.c
-+++ b/drivers/net/wireless/ath/ath9k/dynack.c
-@@ -300,9 +300,9 @@ void ath_dynack_node_init(struct ath_hw *ah, struct ath_node *an)
- 
- 	an->ackto = ackto;
- 
--	spin_lock(&da->qlock);
-+	spin_lock_bh(&da->qlock);
- 	list_add_tail(&an->list, &da->nodes);
--	spin_unlock(&da->qlock);
-+	spin_unlock_bh(&da->qlock);
- }
- EXPORT_SYMBOL(ath_dynack_node_init);
- 
-@@ -316,9 +316,9 @@ void ath_dynack_node_deinit(struct ath_hw *ah, struct ath_node *an)
- {
- 	struct ath_dynack *da = &ah->dynack;
- 
--	spin_lock(&da->qlock);
-+	spin_lock_bh(&da->qlock);
- 	list_del(&an->list);
--	spin_unlock(&da->qlock);
-+	spin_unlock_bh(&da->qlock);
- }
- EXPORT_SYMBOL(ath_dynack_node_deinit);
- 
--- 
-2.20.1
-
+Kind regards
+Uffe
