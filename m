@@ -2,86 +2,60 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 394A7E468E
-	for <lists+linux-wireless@lfdr.de>; Fri, 25 Oct 2019 11:02:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 98AC2E46C8
+	for <lists+linux-wireless@lfdr.de>; Fri, 25 Oct 2019 11:12:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2408496AbfJYJCs (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 25 Oct 2019 05:02:48 -0400
-Received: from us-smtp-delivery-1.mimecast.com ([205.139.110.120]:46699 "EHLO
-        us-smtp-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S2407258AbfJYJCr (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 25 Oct 2019 05:02:47 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1571994166;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=qyvnOyTtmihc9tF/xt9r5Q0bXWKANiskgnWCt9PFrsA=;
-        b=FQsRqkJ7vlF9+DK6L9izejnIrNmtGiL5F1sVYgTkCjiCSqYVyA40q1KUFEaFDl3Xj3mMxR
-        y2sTj/x1G6sfPBKNMy0uEmmdT70RKKFkxcfBMPL1elSWvt5hcE+p3I/Ne+7gBEA+Jqx47Q
-        wUViDsmnhXWpAxw4Kmyd0FV5X5Xl4fk=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-386-Ul04umbTO-2FOPBourXFhA-1; Fri, 25 Oct 2019 05:02:43 -0400
-Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.phx2.redhat.com [10.5.11.23])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 30B99476;
-        Fri, 25 Oct 2019 09:02:42 +0000 (UTC)
-Received: from localhost (unknown [10.43.2.93])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id CA11A57AE;
-        Fri, 25 Oct 2019 09:02:38 +0000 (UTC)
-Date:   Fri, 25 Oct 2019 11:02:36 +0200
-From:   Stanislaw Gruszka <sgruszka@redhat.com>
-To:     Lorenzo Bianconi <lorenzo@kernel.org>
-Cc:     kvalo@codeaurora.org, linux-wireless@vger.kernel.org, nbd@nbd.name,
-        lorenzo.bianconi@redhat.com, oleksandr@natalenko.name,
-        netdev@vger.kernel.org
-Subject: Re: [PATCH wireless-drivers 2/2] mt76: dma: fix buffer unmap with
- non-linear skbs
-Message-ID: <20191025090236.GB14818@redhat.com>
-References: <cover.1571868221.git.lorenzo@kernel.org>
- <1f7560e10edd517bfd9d3c0dd9820e6f420726b6.1571868221.git.lorenzo@kernel.org>
- <20191024081816.GA2440@redhat.com>
- <20191024090148.GC9346@localhost.localdomain>
+        id S2436527AbfJYJMR (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 25 Oct 2019 05:12:17 -0400
+Received: from szxga07-in.huawei.com ([45.249.212.35]:50384 "EHLO huawei.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S2393522AbfJYJMR (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 25 Oct 2019 05:12:17 -0400
+Received: from DGGEMS404-HUB.china.huawei.com (unknown [172.30.72.60])
+        by Forcepoint Email with ESMTP id F0B85A2AF2293B7914DC;
+        Fri, 25 Oct 2019 17:12:01 +0800 (CST)
+Received: from localhost (10.133.213.239) by DGGEMS404-HUB.china.huawei.com
+ (10.3.19.204) with Microsoft SMTP Server id 14.3.439.0; Fri, 25 Oct 2019
+ 17:11:54 +0800
+From:   YueHaibing <yuehaibing@huawei.com>
+To:     <kvalo@codeaurora.org>, <davem@davemloft.net>
+CC:     <ath10k@lists.infradead.org>, <linux-wireless@vger.kernel.org>,
+        <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        YueHaibing <yuehaibing@huawei.com>
+Subject: [PATCH] ath10k: remove unneeded semicolon
+Date:   Fri, 25 Oct 2019 17:10:41 +0800
+Message-ID: <20191025091041.34056-1-yuehaibing@huawei.com>
+X-Mailer: git-send-email 2.10.2.windows.1
 MIME-Version: 1.0
-In-Reply-To: <20191024090148.GC9346@localhost.localdomain>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-X-Scanned-By: MIMEDefang 2.84 on 10.5.11.23
-X-MC-Unique: Ul04umbTO-2FOPBourXFhA-1
-X-Mimecast-Spam-Score: 0
-Content-Type: text/plain; charset=WINDOWS-1252
-Content-Transfer-Encoding: quoted-printable
-Content-Disposition: inline
+Content-Type: text/plain
+X-Originating-IP: [10.133.213.239]
+X-CFilter-Loop: Reflected
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Thu, Oct 24, 2019 at 11:01:48AM +0200, Lorenzo Bianconi wrote:
-> > On Thu, Oct 24, 2019 at 12:23:16AM +0200, Lorenzo Bianconi wrote:
-> > > mt76 dma layer is supposed to unmap skb data buffers while keep txwi
-> > > mapped on hw dma ring. At the moment mt76 wrongly unmap txwi or does
-> > > not unmap data fragments in even positions for non-linear skbs. This
-> > > issue may result in hw hangs with A-MSDU if the system relies on IOMM=
-U
-> > > or SWIOTLB. Fix this behaviour properly unmapping data fragments on
-> > > non-linear skbs.
-> >=20
-> > If we have to keep txwi mapped, before unmap fragments, when then
-> > txwi is unmaped ?
->=20
-> txwi are mapped when they are crated in mt76_alloc_txwi(). Whenever we ne=
-ed to
-> modify them we sync the DMA in mt76_dma_tx_queue_skb(). txwi are unmapped=
- in
-> mt76_tx_free() at driver unload.
+remove unneeded semicolon.
 
-So not only txwi is wrongly unmapped on runtime, but we can call
-dma_sync_single_for_cpu/device() after dma_unmap_single().
-That serious bug, good you spotted it and fixed!
+Signed-off-by: YueHaibing <yuehaibing@huawei.com>
+---
+ drivers/net/wireless/ath/ath10k/htt_rx.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Stanislaw
+diff --git a/drivers/net/wireless/ath/ath10k/htt_rx.c b/drivers/net/wireless/ath/ath10k/htt_rx.c
+index 9f0e7b4..d95b63f 100644
+--- a/drivers/net/wireless/ath/ath10k/htt_rx.c
++++ b/drivers/net/wireless/ath/ath10k/htt_rx.c
+@@ -2073,7 +2073,7 @@ static void ath10k_htt_rx_mpdu_desc_pn_hl(struct htt_hl_rx_desc *rx_desc,
+ 	case 24:
+ 		pn->pn24 = __le32_to_cpu(rx_desc->pn_31_0);
+ 		break;
+-	};
++	}
+ }
+ 
+ static bool ath10k_htt_rx_pn_cmp48(union htt_rx_pn_t *new_pn,
+-- 
+2.7.4
+
 
