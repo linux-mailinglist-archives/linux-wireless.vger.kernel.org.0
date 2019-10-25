@@ -2,103 +2,86 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 93F94E4627
-	for <lists+linux-wireless@lfdr.de>; Fri, 25 Oct 2019 10:48:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 394A7E468E
+	for <lists+linux-wireless@lfdr.de>; Fri, 25 Oct 2019 11:02:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2392714AbfJYIso (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 25 Oct 2019 04:48:44 -0400
-Received: from mail-oi1-f196.google.com ([209.85.167.196]:42741 "EHLO
-        mail-oi1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2389425AbfJYIso (ORCPT
+        id S2408496AbfJYJCs (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 25 Oct 2019 05:02:48 -0400
+Received: from us-smtp-delivery-1.mimecast.com ([205.139.110.120]:46699 "EHLO
+        us-smtp-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
+        with ESMTP id S2407258AbfJYJCr (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 25 Oct 2019 04:48:44 -0400
-Received: by mail-oi1-f196.google.com with SMTP id i185so1050033oif.9;
-        Fri, 25 Oct 2019 01:48:43 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=uA6lSNHDRCatiJVJ/bgW4yuf0LByUeyt0njk9B4ukrc=;
-        b=pB1+s7USrm2jK85Akcv2CH3fUw/7POfgi/pgDdjS44HoqmOwhRJtXlOBQHZ2MEEmZz
-         zu9xxhWTFFKoHoaQMdR60oyEToi9uPlwzM1BBa2FNJ2D58lrim6ylC/Z1eY04ZZg6Fi4
-         yXdYkFlm7DbQBtjVP2+uFUxx+0qkSBCyk3gYQuXKGl/yTFANNMvx1reHErjCeQePx++4
-         8wY3yEAY+hSwF4/cEGQxXi8/Q6yJIXeITmGmxUARPAP4I+TM3sLtu3MgrZmOM1wpvbQg
-         FtcJRprTvebpzrS4IP17JXY7ad5Vw6O52Pjz8/W6o05yoDGNbPO3HcFv+5oFuSAfmDwv
-         K69A==
-X-Gm-Message-State: APjAAAXd7HRybCHuKR49gUG/tXaXd9tT+IRTL99HwWmVJ6M1pCcKlTS7
-        cJgcweT4SFuFCbApgqlqv7rlhXFWaEQDhZF7W+c=
-X-Google-Smtp-Source: APXvYqy3g9SYZvOxsJVmghtKOBqa12cq3/vF5Q6/wloURwxegziLuCjjGM4yxIDdlwF02aQ5tVVijREi3KOgNM/I0d4=
-X-Received: by 2002:aca:882:: with SMTP id 124mr2027997oii.54.1571993322988;
- Fri, 25 Oct 2019 01:48:42 -0700 (PDT)
+        Fri, 25 Oct 2019 05:02:47 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1571994166;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=qyvnOyTtmihc9tF/xt9r5Q0bXWKANiskgnWCt9PFrsA=;
+        b=FQsRqkJ7vlF9+DK6L9izejnIrNmtGiL5F1sVYgTkCjiCSqYVyA40q1KUFEaFDl3Xj3mMxR
+        y2sTj/x1G6sfPBKNMy0uEmmdT70RKKFkxcfBMPL1elSWvt5hcE+p3I/Ne+7gBEA+Jqx47Q
+        wUViDsmnhXWpAxw4Kmyd0FV5X5Xl4fk=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-386-Ul04umbTO-2FOPBourXFhA-1; Fri, 25 Oct 2019 05:02:43 -0400
+Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.phx2.redhat.com [10.5.11.23])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 30B99476;
+        Fri, 25 Oct 2019 09:02:42 +0000 (UTC)
+Received: from localhost (unknown [10.43.2.93])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id CA11A57AE;
+        Fri, 25 Oct 2019 09:02:38 +0000 (UTC)
+Date:   Fri, 25 Oct 2019 11:02:36 +0200
+From:   Stanislaw Gruszka <sgruszka@redhat.com>
+To:     Lorenzo Bianconi <lorenzo@kernel.org>
+Cc:     kvalo@codeaurora.org, linux-wireless@vger.kernel.org, nbd@nbd.name,
+        lorenzo.bianconi@redhat.com, oleksandr@natalenko.name,
+        netdev@vger.kernel.org
+Subject: Re: [PATCH wireless-drivers 2/2] mt76: dma: fix buffer unmap with
+ non-linear skbs
+Message-ID: <20191025090236.GB14818@redhat.com>
+References: <cover.1571868221.git.lorenzo@kernel.org>
+ <1f7560e10edd517bfd9d3c0dd9820e6f420726b6.1571868221.git.lorenzo@kernel.org>
+ <20191024081816.GA2440@redhat.com>
+ <20191024090148.GC9346@localhost.localdomain>
 MIME-Version: 1.0
-References: <20191024152201.29868-1-geert+renesas@glider.be>
- <878spaqg2k.fsf@kamboji.qca.qualcomm.com> <20191024.095709.187911510311520475.davem@davemloft.net>
-In-Reply-To: <20191024.095709.187911510311520475.davem@davemloft.net>
-From:   Geert Uytterhoeven <geert@linux-m68k.org>
-Date:   Fri, 25 Oct 2019 10:48:31 +0200
-Message-ID: <CAMuHMdXLyoxpjYYVhnZ35hwD25+MPXkte5QV_YYOadPVTf9_zA@mail.gmail.com>
-Subject: Re: [PATCH v2] [trivial] net: Fix misspellings of "configure" and "configuration"
-To:     David Miller <davem@davemloft.net>
-Cc:     Kalle Valo <kvalo@codeaurora.org>,
-        Geert Uytterhoeven <geert+renesas@glider.be>,
-        Jiri Kosina <trivial@kernel.org>,
-        netdev <netdev@vger.kernel.org>,
-        linux-rdma <linux-rdma@vger.kernel.org>,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <20191024090148.GC9346@localhost.localdomain>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+X-Scanned-By: MIMEDefang 2.84 on 10.5.11.23
+X-MC-Unique: Ul04umbTO-2FOPBourXFhA-1
+X-Mimecast-Spam-Score: 0
+Content-Type: text/plain; charset=WINDOWS-1252
+Content-Transfer-Encoding: quoted-printable
+Content-Disposition: inline
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi David,
+On Thu, Oct 24, 2019 at 11:01:48AM +0200, Lorenzo Bianconi wrote:
+> > On Thu, Oct 24, 2019 at 12:23:16AM +0200, Lorenzo Bianconi wrote:
+> > > mt76 dma layer is supposed to unmap skb data buffers while keep txwi
+> > > mapped on hw dma ring. At the moment mt76 wrongly unmap txwi or does
+> > > not unmap data fragments in even positions for non-linear skbs. This
+> > > issue may result in hw hangs with A-MSDU if the system relies on IOMM=
+U
+> > > or SWIOTLB. Fix this behaviour properly unmapping data fragments on
+> > > non-linear skbs.
+> >=20
+> > If we have to keep txwi mapped, before unmap fragments, when then
+> > txwi is unmaped ?
+>=20
+> txwi are mapped when they are crated in mt76_alloc_txwi(). Whenever we ne=
+ed to
+> modify them we sync the DMA in mt76_dma_tx_queue_skb(). txwi are unmapped=
+ in
+> mt76_tx_free() at driver unload.
 
-On Thu, Oct 24, 2019 at 6:57 PM David Miller <davem@davemloft.net> wrote:
-> From: Kalle Valo <kvalo@codeaurora.org>
-> Date: Thu, 24 Oct 2019 19:11:15 +0300
->
-> > Geert Uytterhoeven <geert+renesas@glider.be> writes:
-> >
-> >> Fix various misspellings of "configuration" and "configure".
-> >>
-> >> Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
-> >> ---
-> >> v2:
-> >>   - Merge
-> >>     [trivial] net/mlx5e: Spelling s/configuraiton/configuration/
-> >>     [trivial] qed: Spelling s/configuraiton/configuration/
-> >>   - Fix typo in subject,
-> >>   - Extend with various other similar misspellings.
-> >> ---
-> >>  drivers/net/ethernet/mellanox/mlx5/core/en/port_buffer.c | 2 +-
-> >>  drivers/net/ethernet/qlogic/qed/qed_int.h                | 4 ++--
-> >>  drivers/net/ethernet/qlogic/qed/qed_sriov.h              | 2 +-
-> >>  drivers/net/ethernet/qlogic/qede/qede_filter.c           | 2 +-
-> >>  drivers/net/wireless/ath/ath9k/ar9003_hw.c               | 2 +-
-> >>  drivers/net/wireless/intel/iwlwifi/iwl-fh.h              | 2 +-
-> >>  drivers/net/wireless/ti/wlcore/spi.c                     | 2 +-
-> >>  include/uapi/linux/dcbnl.h                               | 2 +-
-> >>  8 files changed, 9 insertions(+), 9 deletions(-)
-> >
-> > I hope this goes to net-next? Easier to handle possible conflicts that
-> > way.
-> >
-> > For the wireless part:
-> >
-> > Acked-by: Kalle Valo <kvalo@codeaurora.org>
->
-> Yeah I can take it if that's easier.
+So not only txwi is wrongly unmapped on runtime, but we can call
+dma_sync_single_for_cpu/device() after dma_unmap_single().
+That serious bug, good you spotted it and fixed!
 
-That would be great, thanks!
+Stanislaw
 
-Gr{oetje,eeting}s,
-
-                        Geert
-
--- 
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
