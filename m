@@ -2,119 +2,83 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id CE1CDE4761
-	for <lists+linux-wireless@lfdr.de>; Fri, 25 Oct 2019 11:34:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 60577E487C
+	for <lists+linux-wireless@lfdr.de>; Fri, 25 Oct 2019 12:21:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2393285AbfJYJeA (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 25 Oct 2019 05:34:00 -0400
-Received: from rtits2.realtek.com ([211.75.126.72]:50496 "EHLO
-        rtits2.realtek.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730185AbfJYJd7 (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 25 Oct 2019 05:33:59 -0400
-Authenticated-By: 
-X-SpamFilter-By: BOX Solutions SpamTrap 5.62 with qID x9P9XqaG026494, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (RTITCASV01.realtek.com.tw[172.21.6.18])
-        by rtits2.realtek.com.tw (8.15.2/2.57/5.78) with ESMTPS id x9P9XqaG026494
-        (version=TLSv1 cipher=DHE-RSA-AES256-SHA bits=256 verify=NOT);
-        Fri, 25 Oct 2019 17:33:52 +0800
-Received: from localhost.localdomain (172.21.68.126) by
- RTITCASV01.realtek.com.tw (172.21.6.18) with Microsoft SMTP Server id
- 14.3.468.0; Fri, 25 Oct 2019 17:33:51 +0800
-From:   <yhchuang@realtek.com>
-To:     <kvalo@codeaurora.org>
-CC:     <linux-wireless@vger.kernel.org>, <briannorris@chromium.org>,
-        <g.schlmm@googlemail.com>
-Subject: [PATCH 6/6] rtw88: avoid FW info flood
-Date:   Fri, 25 Oct 2019 17:33:45 +0800
-Message-ID: <20191025093345.22643-7-yhchuang@realtek.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20191025093345.22643-1-yhchuang@realtek.com>
-References: <20191025093345.22643-1-yhchuang@realtek.com>
+        id S2409340AbfJYKVc (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 25 Oct 2019 06:21:32 -0400
+Received: from ni.piap.pl ([195.187.100.5]:43526 "EHLO ni.piap.pl"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S2407901AbfJYKVb (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 25 Oct 2019 06:21:31 -0400
+Received: from t19.piap.pl (OSB1819.piap.pl [10.0.9.19])
+        (using TLSv1.2 with cipher AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ni.piap.pl (Postfix) with ESMTPSA id 537F4442535;
+        Fri, 25 Oct 2019 12:21:25 +0200 (CEST)
+DKIM-Filter: OpenDKIM Filter v2.11.0 ni.piap.pl 537F4442535
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=piap.pl; s=mail;
+        t=1571998885; bh=sun4VvlMaGTBiByATlzJrvKsGY/hA5o6lYFps8BBRXI=;
+        h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+        b=NssrYNXCHiu67ElUYtL9U50/QUf+6vGBygdUyz3P2NrIb03HAkm6+P/SC464PshKg
+         1KvSpQhoIiV7BLaDqCknMp55EYcXIXTwvL4edonArFzxDbEssEmXDD+26un2QN1xrw
+         FhOPSahjr0IP0POX+PS4NSj6hKpSQAnBfVCzYZlQ=
+From:   khalasa@piap.pl (Krzysztof =?utf-8?Q?Ha=C5=82asa?=)
+To:     Johannes Berg <johannes@sipsolutions.net>
+Cc:     "David S. Miller" <davem@davemloft.net>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: [PATCH v2] 802.11n IBSS: wlan0 stops receiving packets due to aggregation after sender reboot
+In-Reply-To: <m34l02mh71.fsf@t19.piap.pl>
+References: <m34l02mh71.fsf@t19.piap.pl>
+Date:   Fri, 25 Oct 2019 12:21:25 +0200
+Message-ID: <m37e4tjfbu.fsf@t19.piap.pl>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [172.21.68.126]
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-KLMS-Rule-ID: 4
+X-KLMS-Message-Action: skipped
+X-KLMS-AntiSpam-Status: not scanned, whitelist
+X-KLMS-AntiPhishing: not scanned, whitelist
+X-KLMS-AntiVirus: Kaspersky Security 8.0 for Linux Mail Server, version 8.0.1.721, not scanned, whitelist
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Yan-Hsuan Chuang <yhchuang@realtek.com>
+Fix a bug where the mac80211 RX aggregation code sets a new aggregation
+"session" at the remote station's request, but the head_seq_num
+(the sequence number the receiver expects to receive) isn't reset.
 
-The FW info was printed everytime driver is powered on, such as
-leaving IDLE state. It will flood the kernel log.
+Spotted on a pair of AR9580 in IBSS mode.
 
-Move the FW info printing to callback when FW is loaded, so
-that will only be printed once when device is probed.
+Signed-off-by: Krzysztof Halasa <khalasa@piap.pl>
 
-Signed-off-by: Yan-Hsuan Chuang <yhchuang@realtek.com>
----
- drivers/net/wireless/realtek/rtw88/mac.c  | 17 -----------------
- drivers/net/wireless/realtek/rtw88/main.c | 10 ++++++++++
- 2 files changed, 10 insertions(+), 17 deletions(-)
+diff --git a/net/mac80211/agg-rx.c b/net/mac80211/agg-rx.c
+index 4d1c335e06e5..67733bd61297 100644
+--- a/net/mac80211/agg-rx.c
++++ b/net/mac80211/agg-rx.c
+@@ -354,10 +354,13 @@ void ___ieee80211_start_rx_ba_session(struct sta_info=
+ *sta,
+ 			 */
+ 			rcu_read_lock();
+ 			tid_rx =3D rcu_dereference(sta->ampdu_mlme.tid_rx[tid]);
+-			if (tid_rx && tid_rx->timeout =3D=3D timeout)
++			if (tid_rx && tid_rx->timeout =3D=3D timeout) {
++				tid_rx->ssn =3D start_seq_num;
++				tid_rx->head_seq_num =3D start_seq_num;
+ 				status =3D WLAN_STATUS_SUCCESS;
+-			else
++			} else {
+ 				status =3D WLAN_STATUS_REQUEST_DECLINED;
++			}
+ 			rcu_read_unlock();
+ 			goto end;
+ 		}
 
-diff --git a/drivers/net/wireless/realtek/rtw88/mac.c b/drivers/net/wireless/realtek/rtw88/mac.c
-index c471117b1472..507970387b2a 100644
---- a/drivers/net/wireless/realtek/rtw88/mac.c
-+++ b/drivers/net/wireless/realtek/rtw88/mac.c
-@@ -567,21 +567,6 @@ download_firmware_to_mem(struct rtw_dev *rtwdev, const u8 *data,
- 	return 0;
- }
- 
--static void update_firmware_info(struct rtw_dev *rtwdev,
--				 struct rtw_fw_state *fw)
--{
--	const struct rtw_fw_hdr *fw_hdr =
--				(const struct rtw_fw_hdr *)fw->firmware->data;
--
--	fw->h2c_version = le16_to_cpu(fw_hdr->h2c_fmt_ver);
--	fw->version = le16_to_cpu(fw_hdr->version);
--	fw->sub_version = fw_hdr->subversion;
--	fw->sub_index = fw_hdr->subindex;
--
--	rtw_info(rtwdev, "Firmware version %u.%u.%u, H2C version %u\n",
--		 fw->version, fw->sub_version, fw->sub_index, fw->h2c_version);
--}
--
- static int
- start_download_firmware(struct rtw_dev *rtwdev, const u8 *data, u32 size)
- {
-@@ -698,8 +683,6 @@ int rtw_download_firmware(struct rtw_dev *rtwdev, struct rtw_fw_state *fw)
- 	if (ret)
- 		goto dlfw_fail;
- 
--	update_firmware_info(rtwdev, fw);
--
- 	/* reset desc and index */
- 	rtw_hci_setup(rtwdev);
- 
-diff --git a/drivers/net/wireless/realtek/rtw88/main.c b/drivers/net/wireless/realtek/rtw88/main.c
-index bff8a0b129d9..bace9c583abb 100644
---- a/drivers/net/wireless/realtek/rtw88/main.c
-+++ b/drivers/net/wireless/realtek/rtw88/main.c
-@@ -1025,12 +1025,22 @@ static void rtw_load_firmware_cb(const struct firmware *firmware, void *context)
- {
- 	struct rtw_dev *rtwdev = context;
- 	struct rtw_fw_state *fw = &rtwdev->fw;
-+	const struct rtw_fw_hdr *fw_hdr;
- 
- 	if (!firmware)
- 		rtw_err(rtwdev, "failed to request firmware\n");
- 
-+	fw_hdr = (const struct rtw_fw_hdr *)firmware->data;
-+	fw->h2c_version = le16_to_cpu(fw_hdr->h2c_fmt_ver);
-+	fw->version = le16_to_cpu(fw_hdr->version);
-+	fw->sub_version = fw_hdr->subversion;
-+	fw->sub_index = fw_hdr->subindex;
-+
- 	fw->firmware = firmware;
- 	complete_all(&fw->completion);
-+
-+	rtw_info(rtwdev, "Firmware version %u.%u.%u, H2C version %u\n",
-+		 fw->version, fw->sub_version, fw->sub_index, fw->h2c_version);
- }
- 
- static int rtw_load_firmware(struct rtw_dev *rtwdev, const char *fw_name)
--- 
-2.17.1
+--=20
+Krzysztof Ha=C5=82asa
 
+=C5=81UKASIEWICZ Research Network
+Industrial Research Institute for Automation and Measurements PIAP
+Al. Jerozolimskie 202, 02-486 Warsaw, Poland
