@@ -2,144 +2,177 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 4123AE4BDA
-	for <lists+linux-wireless@lfdr.de>; Fri, 25 Oct 2019 15:13:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 82A6FE4CFD
+	for <lists+linux-wireless@lfdr.de>; Fri, 25 Oct 2019 15:57:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2394538AbfJYNNa (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 25 Oct 2019 09:13:30 -0400
-Received: from smtp.codeaurora.org ([198.145.29.96]:42000 "EHLO
-        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1731514AbfJYNN3 (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 25 Oct 2019 09:13:29 -0400
-Received: by smtp.codeaurora.org (Postfix, from userid 1000)
-        id 990E460779; Fri, 25 Oct 2019 13:13:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1572009209;
-        bh=CiOrvA6VYZbMeIb+pu+Q+ccs4TJbDaUOVs0FyYw9lEU=;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=YnQGMIROUG9IUp46fUjBdDCWKX3dX8uz7meYR5e9X+b95lk+LuOullmoxggDSF0lH
-         Kz4sQtwzaYtV7STqvL+SneW6op5AR5OSSEiYH/Rg90tEDqCvE8NTU3S5AWvnZtAVY0
-         pkz1wBoeb2TEiABZMycb61uGjTq7VkZT4OY88T/8=
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        pdx-caf-mail.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.7 required=2.0 tests=ALL_TRUSTED,BAYES_00,
-        DKIM_INVALID,DKIM_SIGNED,SPF_NONE autolearn=no autolearn_force=no
-        version=3.4.0
-Received: from potku.adurom.net (unknown [88.114.240.156])
+        id S2394769AbfJYN5B (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 25 Oct 2019 09:57:01 -0400
+Received: from mail.kernel.org ([198.145.29.99]:51558 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S2394759AbfJYN5A (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 25 Oct 2019 09:57:00 -0400
+Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        (Authenticated sender: kvalo@smtp.codeaurora.org)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id B98606049C;
-        Fri, 25 Oct 2019 13:13:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1572009206;
-        bh=CiOrvA6VYZbMeIb+pu+Q+ccs4TJbDaUOVs0FyYw9lEU=;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=BIKYW97vJVhPTf9kAdjOAZv+1eGkHZwhOCGzlv2yEW9z+c0/FQyNw/Hu7SEwdI7+j
-         lNFYAn2HWwlHL9bDaJCRPaU2pKIdA/ezfaUnA+9Qe0TLKp1bmyQgTjBK4Gc9/kJheP
-         QuF1x6rnOLK0ihkaeCdWWsfEqqzlkoQ7rWYsCO8A=
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org B98606049C
-Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
-From:   Kalle Valo <kvalo@codeaurora.org>
-To:     Wen Gong <wgong@codeaurora.org>
-Cc:     ath10k@lists.infradead.org, linux-wireless@vger.kernel.org
-Subject: Re: [PATCH v6] ath10k: enable napi on RX path for sdio
-References: <20191014114753.7459-1-wgong@codeaurora.org>
-Date:   Fri, 25 Oct 2019 16:13:23 +0300
-In-Reply-To: <20191014114753.7459-1-wgong@codeaurora.org> (Wen Gong's message
-        of "Mon, 14 Oct 2019 19:47:53 +0800")
-Message-ID: <875zkdaryk.fsf@kamboji.qca.qualcomm.com>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
+        by mail.kernel.org (Postfix) with ESMTPSA id 9A8B421E6F;
+        Fri, 25 Oct 2019 13:56:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1572011819;
+        bh=M+mdSED+ku2Dex57fysCFC6s0u2WCo4GX+Um1EfdXmU=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=qC2hyzyefC4z7dLA6TtAsNdAIv4Y7E4muvVeMKrMcfpgqJmlcMsSRzwgxG9JBbZQ7
+         doZNjqd1HuGZtW7ssaLFY6aSJw3kVH8Q8JSKp1nuxlAff0BoeAGdQJIZZEFV6qSj6F
+         pM0hDNTBw6VOpfgz0isGxiIXLOr2QbQw+J+z/VvY=
+From:   Sasha Levin <sashal@kernel.org>
+To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Cc:     Lorenzo Bianconi <lorenzo@kernel.org>,
+        Koen Vandeputte <koen.vandeputte@ncentric.com>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        Sasha Levin <sashal@kernel.org>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org
+Subject: [PATCH AUTOSEL 4.19 30/37] ath9k: dynack: fix possible deadlock in ath_dynack_node_{de}init
+Date:   Fri, 25 Oct 2019 09:55:54 -0400
+Message-Id: <20191025135603.25093-30-sashal@kernel.org>
+X-Mailer: git-send-email 2.20.1
+In-Reply-To: <20191025135603.25093-1-sashal@kernel.org>
+References: <20191025135603.25093-1-sashal@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+X-stable: review
+X-Patchwork-Hint: Ignore
+Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Wen Gong <wgong@codeaurora.org> writes:
+From: Lorenzo Bianconi <lorenzo@kernel.org>
 
-> For tcp RX, the quantity of tcp acks to remote is 1/2 of the quantity
-> of tcp data from remote, then it will have many small length packets
-> on TX path of sdio bus, then it reduce the RX packets's bandwidth of
-> tcp.
->
-> This patch enable napi on RX path, then the RX packet of tcp will not
-> feed to tcp stack immeditely from mac80211 since GRO is enabled by
-> default, it will feed to tcp stack after napi complete, if rx bundle
-> is enabled, then it will feed to tcp stack one time for each bundle
-> of RX. For example, RX bundle size is 32, then tcp stack will receive
-> one large length packet, its length is neary 1500*32, then tcp stack
-> will send a tcp ack for this large packet, this will reduce the tcp
-> acks ratio from 1/2 to 1/32. This results in significant performance
-> improvement for tcp RX.
->
-> Tcp rx throughout is 240Mbps without this patch, and it arrive 390Mbps
-> with this patch. The cpu usage has no obvious difference with and
-> without NAPI.
->
-> call stack for each RX packet on GRO path:
-> (skb length is about 1500 bytes)
->   skb_gro_receive ([kernel.kallsyms])
->   tcp4_gro_receive ([kernel.kallsyms])
->   inet_gro_receive ([kernel.kallsyms])
->   dev_gro_receive ([kernel.kallsyms])
->   napi_gro_receive ([kernel.kallsyms])
->   ieee80211_deliver_skb ([mac80211])
->   ieee80211_rx_handlers ([mac80211])
->   ieee80211_prepare_and_rx_handle ([mac80211])
->   ieee80211_rx_napi ([mac80211])
->   ath10k_htt_rx_proc_rx_ind_hl ([ath10k_core])
->   ath10k_htt_rx_pktlog_completion_handler ([ath10k_core])
->   ath10k_sdio_napi_poll ([ath10k_sdio])
->   net_rx_action ([kernel.kallsyms])
->   softirqentry_text_start ([kernel.kallsyms])
->   do_softirq ([kernel.kallsyms])
->
-> call stack for napi complete and send tcp ack from tcp stack:
-> (skb length is about 1500*32 bytes)
->  _tcp_ack_snd_check ([kernel.kallsyms])
->  tcp_v4_do_rcv ([kernel.kallsyms])
->  tcp_v4_rcv ([kernel.kallsyms])
->  local_deliver_finish ([kernel.kallsyms])
->  ip_local_deliver ([kernel.kallsyms])
->  ip_rcv_finish ([kernel.kallsyms])
->  ip_rcv ([kernel.kallsyms])
->  netif_receive_skb_core ([kernel.kallsyms])
->  netif_receive_skb_one_core([kernel.kallsyms])
->  netif_receive_skb ([kernel.kallsyms])
->  netif_receive_skb_internal ([kernel.kallsyms])
->  napi_gro_complete ([kernel.kallsyms])
->  napi_gro_flush ([kernel.kallsyms])
->  napi_complete_done ([kernel.kallsyms])
->  ath10k_sdio_napi_poll ([ath10k_sdio])
->  net_rx_action ([kernel.kallsyms])
->  __softirqentry_text_start ([kernel.kallsyms])
->  do_softirq ([kernel.kallsyms])
->
-> Tested with QCA6174 SDIO with firmware
-> WLAN.RMH.4.4.1-00017-QCARMSWP-1.
->
-> Signed-off-by: Wen Gong <wgong@codeaurora.org>
+[ Upstream commit e1aa1a1db3b01c9890e82cf065cee99962ba1ed9 ]
 
-[...]
+Fix following lockdep warning disabling bh in
+ath_dynack_node_init/ath_dynack_node_deinit
 
-> +void ath10k_sdio_init_napi(struct ath10k *ar)
-> +{
-> +	netif_napi_add(&ar->napi_dev, &ar->napi, ath10k_sdio_napi_poll,
-> +		       ATH10K_NAPI_BUDGET);
-> +}
+[   75.955878] --------------------------------
+[   75.955880] inconsistent {SOFTIRQ-ON-W} -> {IN-SOFTIRQ-W} usage.
+[   75.955884] swapper/0/0 [HC0[0]:SC1[3]:HE1:SE0] takes:
+[   75.955888] 00000000792a7ee0 (&(&da->qlock)->rlock){+.?.}, at: ath_dynack_sample_ack_ts+0x4d/0xa0 [ath9k_hw]
+[   75.955905] {SOFTIRQ-ON-W} state was registered at:
+[   75.955912]   lock_acquire+0x9a/0x160
+[   75.955917]   _raw_spin_lock+0x2c/0x70
+[   75.955927]   ath_dynack_node_init+0x2a/0x60 [ath9k_hw]
+[   75.955934]   ath9k_sta_state+0xec/0x160 [ath9k]
+[   75.955976]   drv_sta_state+0xb2/0x740 [mac80211]
+[   75.956008]   sta_info_insert_finish+0x21a/0x420 [mac80211]
+[   75.956039]   sta_info_insert_rcu+0x12b/0x2c0 [mac80211]
+[   75.956069]   sta_info_insert+0x7/0x70 [mac80211]
+[   75.956093]   ieee80211_prep_connection+0x42e/0x730 [mac80211]
+[   75.956120]   ieee80211_mgd_auth.cold+0xb9/0x15c [mac80211]
+[   75.956152]   cfg80211_mlme_auth+0x143/0x350 [cfg80211]
+[   75.956169]   nl80211_authenticate+0x25e/0x2b0 [cfg80211]
+[   75.956172]   genl_family_rcv_msg+0x198/0x400
+[   75.956174]   genl_rcv_msg+0x42/0x90
+[   75.956176]   netlink_rcv_skb+0x35/0xf0
+[   75.956178]   genl_rcv+0x1f/0x30
+[   75.956180]   netlink_unicast+0x154/0x200
+[   75.956182]   netlink_sendmsg+0x1bf/0x3d0
+[   75.956186]   ___sys_sendmsg+0x2c2/0x2f0
+[   75.956187]   __sys_sendmsg+0x44/0x80
+[   75.956190]   do_syscall_64+0x55/0x1a0
+[   75.956192]   entry_SYSCALL_64_after_hwframe+0x49/0xbe
+[   75.956194] irq event stamp: 2357092
+[   75.956196] hardirqs last  enabled at (2357092): [<ffffffff818c62de>] _raw_spin_unlock_irqrestore+0x3e/0x50
+[   75.956199] hardirqs last disabled at (2357091): [<ffffffff818c60b1>] _raw_spin_lock_irqsave+0x11/0x80
+[   75.956202] softirqs last  enabled at (2357072): [<ffffffff8106dc09>] irq_enter+0x59/0x60
+[   75.956204] softirqs last disabled at (2357073): [<ffffffff8106dcbe>] irq_exit+0xae/0xc0
+[   75.956206]
+               other info that might help us debug this:
+[   75.956207]  Possible unsafe locking scenario:
 
-This had a new warning:
+[   75.956208]        CPU0
+[   75.956209]        ----
+[   75.956210]   lock(&(&da->qlock)->rlock);
+[   75.956213]   <Interrupt>
+[   75.956214]     lock(&(&da->qlock)->rlock);
+[   75.956216]
+                *** DEADLOCK ***
 
-drivers/net/wireless/ath/ath10k/sdio.c:2053:6: warning: no previous prototype for 'ath10k_sdio_init_napi' [-Wmissing-prototypes]
-drivers/net/wireless/ath/ath10k/sdio.c:2053:6: warning: symbol 'ath10k_sdio_init_napi' was not declared. Should it be static?
+[   75.956217] 1 lock held by swapper/0/0:
+[   75.956219]  #0: 000000003bb5675c (&(&sc->sc_pcu_lock)->rlock){+.-.}, at: ath9k_tasklet+0x55/0x240 [ath9k]
+[   75.956225]
+               stack backtrace:
+[   75.956228] CPU: 0 PID: 0 Comm: swapper/0 Not tainted 5.3.0-rc1-wdn+ #13
+[   75.956229] Hardware name: Dell Inc. Studio XPS 1340/0K183D, BIOS A11 09/08/2009
+[   75.956231] Call Trace:
+[   75.956233]  <IRQ>
+[   75.956236]  dump_stack+0x67/0x90
+[   75.956239]  mark_lock+0x4c1/0x640
+[   75.956242]  ? check_usage_backwards+0x130/0x130
+[   75.956245]  ? sched_clock_local+0x12/0x80
+[   75.956247]  __lock_acquire+0x484/0x7a0
+[   75.956250]  ? __lock_acquire+0x3b9/0x7a0
+[   75.956252]  lock_acquire+0x9a/0x160
+[   75.956259]  ? ath_dynack_sample_ack_ts+0x4d/0xa0 [ath9k_hw]
+[   75.956262]  _raw_spin_lock_bh+0x34/0x80
+[   75.956268]  ? ath_dynack_sample_ack_ts+0x4d/0xa0 [ath9k_hw]
+[   75.956275]  ath_dynack_sample_ack_ts+0x4d/0xa0 [ath9k_hw]
+[   75.956280]  ath_rx_tasklet+0xd09/0xe90 [ath9k]
+[   75.956286]  ath9k_tasklet+0x102/0x240 [ath9k]
+[   75.956288]  tasklet_action_common.isra.0+0x6d/0x170
+[   75.956291]  __do_softirq+0xcc/0x425
+[   75.956294]  irq_exit+0xae/0xc0
+[   75.956296]  do_IRQ+0x8a/0x110
+[   75.956298]  common_interrupt+0xf/0xf
+[   75.956300]  </IRQ>
+[   75.956303] RIP: 0010:cpuidle_enter_state+0xb2/0x400
+[   75.956308] RSP: 0018:ffffffff82203e70 EFLAGS: 00000202 ORIG_RAX: ffffffffffffffd7
+[   75.956310] RAX: ffffffff82219800 RBX: ffffffff822bd0a0 RCX: 0000000000000000
+[   75.956312] RDX: 0000000000000046 RSI: 0000000000000006 RDI: ffffffff82219800
+[   75.956314] RBP: ffff888155a01c00 R08: 00000011af51aabe R09: 0000000000000000
+[   75.956315] R10: 0000000000000000 R11: 0000000000000000 R12: 0000000000000002
+[   75.956317] R13: 00000011af51aabe R14: 0000000000000003 R15: ffffffff82219800
+[   75.956321]  cpuidle_enter+0x24/0x40
+[   75.956323]  do_idle+0x1ac/0x220
+[   75.956326]  cpu_startup_entry+0x14/0x20
+[   75.956329]  start_kernel+0x482/0x489
+[   75.956332]  secondary_startup_64+0xa4/0xb0
 
-But as you are calling this function from only ath10k_sdio_probe(), in
-the pending branch I removed the function and moved the napi call there.
+Fixes: c774d57fd47c ("ath9k: add dynamic ACK timeout estimation")
+Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+Tested-by: Koen Vandeputte <koen.vandeputte@ncentric.com>
+Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ drivers/net/wireless/ath/ath9k/dynack.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
+diff --git a/drivers/net/wireless/ath/ath9k/dynack.c b/drivers/net/wireless/ath/ath9k/dynack.c
+index 6e236a4854311..71b4888b30e71 100644
+--- a/drivers/net/wireless/ath/ath9k/dynack.c
++++ b/drivers/net/wireless/ath/ath9k/dynack.c
+@@ -300,9 +300,9 @@ void ath_dynack_node_init(struct ath_hw *ah, struct ath_node *an)
+ 
+ 	an->ackto = ackto;
+ 
+-	spin_lock(&da->qlock);
++	spin_lock_bh(&da->qlock);
+ 	list_add_tail(&an->list, &da->nodes);
+-	spin_unlock(&da->qlock);
++	spin_unlock_bh(&da->qlock);
+ }
+ EXPORT_SYMBOL(ath_dynack_node_init);
+ 
+@@ -316,9 +316,9 @@ void ath_dynack_node_deinit(struct ath_hw *ah, struct ath_node *an)
+ {
+ 	struct ath_dynack *da = &ah->dynack;
+ 
+-	spin_lock(&da->qlock);
++	spin_lock_bh(&da->qlock);
+ 	list_del(&an->list);
+-	spin_unlock(&da->qlock);
++	spin_unlock_bh(&da->qlock);
+ }
+ EXPORT_SYMBOL(ath_dynack_node_deinit);
+ 
 -- 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+2.20.1
+
