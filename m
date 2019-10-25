@@ -2,27 +2,27 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 95FAAE4E56
-	for <lists+linux-wireless@lfdr.de>; Fri, 25 Oct 2019 16:07:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DE729E4D96
+	for <lists+linux-wireless@lfdr.de>; Fri, 25 Oct 2019 16:02:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2632743AbfJYNzm (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 25 Oct 2019 09:55:42 -0400
-Received: from mail.kernel.org ([198.145.29.99]:49718 "EHLO mail.kernel.org"
+        id S2505392AbfJYN5z (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 25 Oct 2019 09:57:55 -0400
+Received: from mail.kernel.org ([198.145.29.99]:52878 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2632731AbfJYNzm (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 25 Oct 2019 09:55:42 -0400
+        id S2505384AbfJYN5w (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 25 Oct 2019 09:57:52 -0400
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id BDEBF222D1;
-        Fri, 25 Oct 2019 13:55:39 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 248E4222CB;
+        Fri, 25 Oct 2019 13:57:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1572011740;
-        bh=TgHgFRPkTtXZrx3dH/wH0Sh7Sunx/cPD0igSj6wTcSA=;
+        s=default; t=1572011871;
+        bh=M+mdSED+ku2Dex57fysCFC6s0u2WCo4GX+Um1EfdXmU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=DQBo+gsGyfyxC9kj+hSUyOlqz6WhYOOiQ6tLVRiNAJvDiI9jBAhGlA3LVr51LjpRU
-         b5iY3wR39g96wkhggWtcWUye9oTKBiy37/gv9JlwDnGOwjGKLIygGH+PrkHhhxpHKp
-         zOUErA3o9LC+KcEVs9Pxk+GacA2Ewc6GaYMLepDw=
+        b=m2RSQ+b84DahNhkEuZwAdrH77zg5sEsi9iQE08WNZWbWJt31zfN7xclfMmfLomNmM
+         rrNTKGcjkX7fsGYGtQoFlWv8C5mtGWdDx/Y6OoO1aKBAZqAfp3PuDx/Gfc0i8RGvZj
+         fr5xI2Vf+EnrFQ1qIMsEKx2H5L6S/ycoo3yXYQPc=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     Lorenzo Bianconi <lorenzo@kernel.org>,
@@ -30,12 +30,12 @@ Cc:     Lorenzo Bianconi <lorenzo@kernel.org>,
         Kalle Valo <kvalo@codeaurora.org>,
         Sasha Levin <sashal@kernel.org>,
         linux-wireless@vger.kernel.org, netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.3 21/33] ath9k: dynack: fix possible deadlock in ath_dynack_node_{de}init
-Date:   Fri, 25 Oct 2019 09:54:53 -0400
-Message-Id: <20191025135505.24762-21-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.14 20/25] ath9k: dynack: fix possible deadlock in ath_dynack_node_{de}init
+Date:   Fri, 25 Oct 2019 09:57:08 -0400
+Message-Id: <20191025135715.25468-20-sashal@kernel.org>
 X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20191025135505.24762-1-sashal@kernel.org>
-References: <20191025135505.24762-1-sashal@kernel.org>
+In-Reply-To: <20191025135715.25468-1-sashal@kernel.org>
+References: <20191025135715.25468-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -146,10 +146,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 4 insertions(+), 4 deletions(-)
 
 diff --git a/drivers/net/wireless/ath/ath9k/dynack.c b/drivers/net/wireless/ath/ath9k/dynack.c
-index f112fa5b2eacf..1ccf20d8c1607 100644
+index 6e236a4854311..71b4888b30e71 100644
 --- a/drivers/net/wireless/ath/ath9k/dynack.c
 +++ b/drivers/net/wireless/ath/ath9k/dynack.c
-@@ -298,9 +298,9 @@ void ath_dynack_node_init(struct ath_hw *ah, struct ath_node *an)
+@@ -300,9 +300,9 @@ void ath_dynack_node_init(struct ath_hw *ah, struct ath_node *an)
  
  	an->ackto = ackto;
  
@@ -161,7 +161,7 @@ index f112fa5b2eacf..1ccf20d8c1607 100644
  }
  EXPORT_SYMBOL(ath_dynack_node_init);
  
-@@ -314,9 +314,9 @@ void ath_dynack_node_deinit(struct ath_hw *ah, struct ath_node *an)
+@@ -316,9 +316,9 @@ void ath_dynack_node_deinit(struct ath_hw *ah, struct ath_node *an)
  {
  	struct ath_dynack *da = &ah->dynack;
  
