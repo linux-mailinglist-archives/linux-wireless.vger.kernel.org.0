@@ -2,79 +2,72 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 59BC8E46E1
-	for <lists+linux-wireless@lfdr.de>; Fri, 25 Oct 2019 11:16:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C4FE5E475D
+	for <lists+linux-wireless@lfdr.de>; Fri, 25 Oct 2019 11:33:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2408764AbfJYJQe (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 25 Oct 2019 05:16:34 -0400
-Received: from szxga04-in.huawei.com ([45.249.212.190]:5184 "EHLO huawei.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1726377AbfJYJQd (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 25 Oct 2019 05:16:33 -0400
-Received: from DGGEMS408-HUB.china.huawei.com (unknown [172.30.72.58])
-        by Forcepoint Email with ESMTP id A6DE0466B7B9160D03B0;
-        Fri, 25 Oct 2019 17:16:28 +0800 (CST)
-Received: from localhost (10.133.213.239) by DGGEMS408-HUB.china.huawei.com
- (10.3.19.208) with Microsoft SMTP Server id 14.3.439.0; Fri, 25 Oct 2019
- 17:16:21 +0800
-From:   YueHaibing <yuehaibing@huawei.com>
-To:     <nbd@nbd.name>, <lorenzo.bianconi83@gmail.com>,
-        <ryder.lee@mediatek.com>, <royluo@google.com>,
-        <kvalo@codeaurora.org>, <davem@davemloft.net>,
-        <matthias.bgg@gmail.com>
-CC:     <linux-wireless@vger.kernel.org>, <netdev@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <linux-mediatek@lists.infradead.org>,
-        <linux-kernel@vger.kernel.org>, YueHaibing <yuehaibing@huawei.com>
-Subject: [PATCH] mt76: mt7615: remove unneeded semicolon
-Date:   Fri, 25 Oct 2019 17:16:16 +0800
-Message-ID: <20191025091616.26740-1-yuehaibing@huawei.com>
-X-Mailer: git-send-email 2.10.2.windows.1
+        id S1730218AbfJYJd5 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 25 Oct 2019 05:33:57 -0400
+Received: from rtits2.realtek.com ([211.75.126.72]:50460 "EHLO
+        rtits2.realtek.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1730184AbfJYJd5 (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 25 Oct 2019 05:33:57 -0400
+Authenticated-By: 
+X-SpamFilter-By: BOX Solutions SpamTrap 5.62 with qID x9P9Xl8x026466, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (RTITCASV01.realtek.com.tw[172.21.6.18])
+        by rtits2.realtek.com.tw (8.15.2/2.57/5.78) with ESMTPS id x9P9Xl8x026466
+        (version=TLSv1 cipher=DHE-RSA-AES256-SHA bits=256 verify=NOT);
+        Fri, 25 Oct 2019 17:33:47 +0800
+Received: from localhost.localdomain (172.21.68.126) by
+ RTITCASV01.realtek.com.tw (172.21.6.18) with Microsoft SMTP Server id
+ 14.3.468.0; Fri, 25 Oct 2019 17:33:46 +0800
+From:   <yhchuang@realtek.com>
+To:     <kvalo@codeaurora.org>
+CC:     <linux-wireless@vger.kernel.org>, <briannorris@chromium.org>,
+        <g.schlmm@googlemail.com>
+Subject: [PATCH 0/6] rtw88: minor driver updates
+Date:   Fri, 25 Oct 2019 17:33:39 +0800
+Message-ID: <20191025093345.22643-1-yhchuang@realtek.com>
+X-Mailer: git-send-email 2.17.1
 MIME-Version: 1.0
 Content-Type: text/plain
-X-Originating-IP: [10.133.213.239]
-X-CFilter-Loop: Reflected
+X-Originating-IP: [172.21.68.126]
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-remove unneeded semicolon.
-This is detected by coccinelle.
+From: Yan-Hsuan Chuang <yhchuang@realtek.com>
 
-Signed-off-by: YueHaibing <yuehaibing@huawei.com>
----
- drivers/net/wireless/mediatek/mt76/mt7615/main.c | 2 +-
- drivers/net/wireless/mediatek/mt76/mt7615/mcu.c  | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+This patch set contains some minor driver updates including RFE
+type 3 for RTL8822BE.
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/main.c b/drivers/net/wireless/mediatek/mt76/mt7615/main.c
-index b6d7821..63600e2 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7615/main.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7615/main.c
-@@ -58,7 +58,7 @@ static int get_omac_idx(enum nl80211_iftype type, u32 mask)
- 	default:
- 		WARN_ON(1);
- 		break;
--	};
-+	}
- 
- 	return -1;
- }
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c
-index 842cd81..164619f 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c
-@@ -1076,7 +1076,7 @@ int mt7615_mcu_set_sta_rec(struct mt7615_dev *dev, struct ieee80211_vif *vif,
- 	default:
- 		WARN_ON(1);
- 		break;
--	};
-+	}
- 
- 	if (en) {
- 		req.basic.conn_state = CONN_STATE_PORT_SECURE;
+Also refine the tables with proper struct instead of arrays.
+
+
+Tzu-En Huang (1):
+  rtw88: fix potential read outside array boundary
+
+Yan-Hsuan Chuang (5):
+  rtw88: 8822b: add RFE type 3 support
+  rtw88: use rtw_phy_pg_cfg_pair struct, not arrays
+  rtw88: use a module parameter to control LPS enter
+  rtw88: rearrange if..else statements for rx rate indexes
+  rtw88: avoid FW info flood
+
+ drivers/net/wireless/realtek/rtw88/mac.c      |  17 -
+ drivers/net/wireless/realtek/rtw88/main.c     |  17 +-
+ drivers/net/wireless/realtek/rtw88/phy.c      |  32 +-
+ drivers/net/wireless/realtek/rtw88/phy.h      |  18 +
+ drivers/net/wireless/realtek/rtw88/ps.h       |   2 -
+ drivers/net/wireless/realtek/rtw88/rtw8822b.c |   4 +-
+ .../wireless/realtek/rtw88/rtw8822b_table.c   | 829 ++++++++++++++++--
+ .../wireless/realtek/rtw88/rtw8822b_table.h   |   2 +
+ drivers/net/wireless/realtek/rtw88/rtw8822c.c |   4 +-
+ .../wireless/realtek/rtw88/rtw8822c_table.c   |  94 +-
+ drivers/net/wireless/realtek/rtw88/rx.c       |  14 +-
+ 11 files changed, 838 insertions(+), 195 deletions(-)
+
 -- 
-2.7.4
-
+2.17.1
 
