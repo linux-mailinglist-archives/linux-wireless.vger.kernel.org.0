@@ -2,111 +2,212 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 3C702E48ED
-	for <lists+linux-wireless@lfdr.de>; Fri, 25 Oct 2019 12:52:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9CC3AE4905
+	for <lists+linux-wireless@lfdr.de>; Fri, 25 Oct 2019 12:56:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2502585AbfJYKwG (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 25 Oct 2019 06:52:06 -0400
-Received: from mail-qk1-f196.google.com ([209.85.222.196]:41651 "EHLO
-        mail-qk1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2390265AbfJYKwF (ORCPT
+        id S2408176AbfJYK4T (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 25 Oct 2019 06:56:19 -0400
+Received: from mail-wm1-f67.google.com ([209.85.128.67]:51559 "EHLO
+        mail-wm1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2407177AbfJYK4S (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 25 Oct 2019 06:52:05 -0400
-Received: by mail-qk1-f196.google.com with SMTP id p10so1285593qkg.8
-        for <linux-wireless@vger.kernel.org>; Fri, 25 Oct 2019 03:51:46 -0700 (PDT)
+        Fri, 25 Oct 2019 06:56:18 -0400
+Received: by mail-wm1-f67.google.com with SMTP id q70so1624704wme.1;
+        Fri, 25 Oct 2019 03:56:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=endlessm-com.20150623.gappssmtp.com; s=20150623;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=vJyEnzvWjh6BqwEAaRaKIbFDEVVjj/sLXsvP5ADxiIw=;
-        b=Q08xE32DjaLpJrddMuK3TyV4KtzsbCnYs2/VcxHlDDSDap2vALbY8pYkMKEBIALD9i
-         XyP88p+UizhCM0RfhBi3GqgeqS0SpghiPoDyhWKhoSmsklIMD67A70mS1ZGXwDYmSVz5
-         KNw1JJIR6rycliKAw/1VT0kRXYX07zGep+WQK0J0CLjKWFEg/SfspT/EJTrNbKnWW8RH
-         kk30gcqkO6PorBrGhtCtNJrcOL5XnonRADqBt7+YSf4ftrYZtbX8ZBS28Y2uTWRUhsx2
-         qRLxqmk2jj6kmU5X8j3fOnEmfiY/rNj5dRONQv0W1KTFUrmKyHjgoBkomaVN4OB1G1zO
-         1XZA==
+        d=gmail.com; s=20161025;
+        h=subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=57JL6czp8XRt0qf3fn4MancsDpFqTecfuOlKbl7+WuY=;
+        b=Gzj0vYbpqs0OjSdjgMZ/CPGOgdymY5kwdrKhCa62kMdHciyFt8IO6zMN9DyCG48DI0
+         uixs2LXqk0pYS/5IxjMlUNjjjXWpUDD6EHcCfGOSFUTN1c60g8TrFsYjUF9ZpUk+I010
+         LJeagwMdP8YglLJAVIEJL93frxKgoRI6hR4tkQtL1EGtyAyFRcKRgl48wUhzssiRJgk6
+         qY52V5dz6ppRVU45Xuo4mTGcRBsyU2ypIuSM6nKZ0CjX9rvi545zgcikSZxwcje3YwqH
+         A3WquYt3RoBUH1hNILVgmuMh9ZBAEfF3BNZV3fO4bw/6RpKJoonu5j77pRpiYHRIwLRm
+         wVKQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=vJyEnzvWjh6BqwEAaRaKIbFDEVVjj/sLXsvP5ADxiIw=;
-        b=mPHM47DlxY7DoOcOAX0R0jP6SVECm29rGS8AnjcXBPHBFT8hPgTNNoLni+guQPwCA1
-         LThqSCIbPWkrc9IljFk2oPMWOj4DjBtZpSUZ56qI+5hAIRdK4ESyd8WsIGEvpqy+zoWT
-         5zvHbkGhdekW5ZH4reXdZ1jnGHo0HgOUZ/R4lnKQqg2j4Wt1S8PGUCtfC/7etvMlxvIY
-         57Zohz1p3zIehlRWH++lV9FSj+HBZYYrEOyTR7HBsys8d1oV5Vs/ue6lp49LFLqcVYO6
-         cJig2LodFrGKlcB1v4RwVWFLtxzLo5znjavqX7H01KTmNID5o2+REE/PwpA5vG6v5La7
-         VLHA==
-X-Gm-Message-State: APjAAAVWd4aL+5czR8W5BHyWcVqtUY2ACJfyqmlMwXR9z4hSUlJYYe6S
-        yJ938arCUmCMJgo4A0cYrf4I2M3ev4AEPMIhpbYV5g==
-X-Google-Smtp-Source: APXvYqyaW8nvrp3eYaqjxGJLzXyS5U6VGe6zMMOVX6JTZlQ3GucYk/dQCgB7YXMZdlufZNIzvDDB956nRtWXgmVF8yw=
-X-Received: by 2002:a37:847:: with SMTP id 68mr2092452qki.366.1572000706203;
- Fri, 25 Oct 2019 03:51:46 -0700 (PDT)
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=57JL6czp8XRt0qf3fn4MancsDpFqTecfuOlKbl7+WuY=;
+        b=kfg5VylnX+1sa/GPJ3gk/+tPn6OLb1avUVIbo/wSknD0jxfT53Ya6jMTU3d4rrV60e
+         FRZMhldmD0oYSALyYMouxTVXfwK8A/Lhsl+1CyMOjVd2AoPEWYsfQ4l0Am0K4Uddg9ms
+         McV0zQZrdfrqML6i3ytVpySXRJFz1OxMvaRnxiiHiQToD5oc7IqdZ/+HC98ltZ/3wQh7
+         v8CBe2tQ/i0YmCORD5QJozSSC7HmtTvwLfZUrXqqq/Zl0L+LwetVKb3IqobVT60wFKpm
+         OpahQ/xnAO8yMMno+yvQEZfAhw+rnUmwM4zItmeBYJhEfUm1Bnh72qwBo1z3+OkYXpNy
+         qzsw==
+X-Gm-Message-State: APjAAAXVmcen/jf4NOKxw1zfaoeFtOpvx4N2uLq06fwVvwct/BwcI5vS
+        hRzSRLyqOYHC5HvxXzocfT1fRhUH
+X-Google-Smtp-Source: APXvYqwdWeJJwnLiMawy/vDI4I1hvmG8S1YpXaC6f+AH7cMvh94eCWZ7+HqgFsbfTShssFjUjDKStQ==
+X-Received: by 2002:a05:600c:1009:: with SMTP id c9mr2789793wmc.109.1572000975403;
+        Fri, 25 Oct 2019 03:56:15 -0700 (PDT)
+Received: from ?IPv6:2003:ea:8f26:6400:7da9:3255:a997:9c24? (p200300EA8F2664007DA93255A9979C24.dip0.t-ipconnect.de. [2003:ea:8f26:6400:7da9:3255:a997:9c24])
+        by smtp.googlemail.com with ESMTPSA id f6sm2463530wrm.61.2019.10.25.03.56.13
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Fri, 25 Oct 2019 03:56:14 -0700 (PDT)
+Subject: Re: [PATCH wireless-drivers 1/2] mt76: mt76x2e: disable pcie_aspm by
+ default
+To:     Lorenzo Bianconi <lorenzo@kernel.org>
+Cc:     kvalo@codeaurora.org, linux-wireless@vger.kernel.org, nbd@nbd.name,
+        sgruszka@redhat.com, lorenzo.bianconi@redhat.com,
+        oleksandr@natalenko.name, netdev@vger.kernel.org,
+        "linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>
+References: <cover.1571868221.git.lorenzo@kernel.org>
+ <fec60f066bab1936d58b2e69bae3f20e645d1304.1571868221.git.lorenzo@kernel.org>
+ <5924c8eb-7269-b8ef-ad0e-957104645638@gmail.com>
+ <20191024215451.GA30822@lore-desk.lan>
+ <9cac34a5-0bfe-0443-503f-218210dab4d6@gmail.com>
+ <20191024230747.GA30614@lore-desk.lan>
+From:   Heiner Kallweit <hkallweit1@gmail.com>
+Message-ID: <1de75f53-ab28-9951-092c-19a854ef4907@gmail.com>
+Date:   Fri, 25 Oct 2019 12:56:05 +0200
+User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:60.0) Gecko/20100101
+ Thunderbird/60.9.0
 MIME-Version: 1.0
-References: <20191025093345.22643-1-yhchuang@realtek.com> <20191025093345.22643-4-yhchuang@realtek.com>
-In-Reply-To: <20191025093345.22643-4-yhchuang@realtek.com>
-From:   Chris Chiu <chiu@endlessm.com>
-Date:   Fri, 25 Oct 2019 18:51:34 +0800
-Message-ID: <CAB4CAwf_Y0tMG37nZDtsU9FmACaOB=eALCNCazVk1kbAvOE26Q@mail.gmail.com>
-Subject: Re: [PATCH 3/6] rtw88: use a module parameter to control LPS enter
-To:     Tony Chuang <yhchuang@realtek.com>
-Cc:     Kalle Valo <kvalo@codeaurora.org>,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        Brian Norris <briannorris@chromium.org>,
-        g.schlmm@googlemail.com
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <20191024230747.GA30614@lore-desk.lan>
+Content-Type: text/plain; charset=windows-1252
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Fri, Oct 25, 2019 at 5:33 PM <yhchuang@realtek.com> wrote:
->
-> From: Yan-Hsuan Chuang <yhchuang@realtek.com>
->
-> If the number of packets is less than the LPS threshold, driver
-> can then enter LPS mode.
-> And driver used to take RTW_LPS_THRESHOLD as the threshold. As
-> the macro can not be changed after compiled, use a parameter
-> instead.
->
-> The larger of the threshold, the more traffic required to leave
-> power save mode, responsive time could be longer, but also the
-> power consumption could be lower.
->
-> Signed-off-by: Yan-Hsuan Chuang <yhchuang@realtek.com>
-> ---
->  drivers/net/wireless/realtek/rtw88/main.c | 7 +++++--
->  drivers/net/wireless/realtek/rtw88/ps.h   | 2 --
->  2 files changed, 5 insertions(+), 4 deletions(-)
->
-> diff --git a/drivers/net/wireless/realtek/rtw88/main.c b/drivers/net/wireless/realtek/rtw88/main.c
-> index 7c1b89c4fb6c..bff8a0b129d9 100644
-> --- a/drivers/net/wireless/realtek/rtw88/main.c
-> +++ b/drivers/net/wireless/realtek/rtw88/main.c
+On 25.10.2019 01:07, Lorenzo Bianconi wrote:
+>> On 24.10.2019 23:54, Lorenzo Bianconi wrote:
+>>>> On 24.10.2019 00:23, Lorenzo Bianconi wrote:
+>>>>> On same device (e.g. U7612E-H1) PCIE_ASPM causes continuous mcu hangs and
+>>>>> instability and so let's disable PCIE_ASPM by default. This patch has
+>>>>> been successfully tested on U7612E-H1 mini-pice card
+>>>>>
+>>>>> Signed-off-by: Felix Fietkau <nbd@nbd.name>
+>>>>> Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+>>>>> ---
+>>>>>  drivers/net/wireless/mediatek/mt76/mmio.c     | 47 +++++++++++++++++++
+>>>>>  drivers/net/wireless/mediatek/mt76/mt76.h     |  1 +
+>>>>>  .../net/wireless/mediatek/mt76/mt76x2/pci.c   |  2 +
+>>>>>  3 files changed, 50 insertions(+)
+>>>>>
+>>>
+>>> [...]
+>>>
+>>>>> +
+>>>>> +	if (parent)
+>>>>> +		pcie_capability_clear_word(parent, PCI_EXP_LNKCTL,
+>>>>> +					   aspm_conf);
+>>>>
+>>>> + linux-pci mailing list
+>>>
+>>> Hi Heiner,
+>>>
+>>>>
+>>>> All this seems to be legacy code copied from e1000e.
+>>>> Fiddling with the low-level PCI(e) registers should be left to the
+>>>> PCI core. It shouldn't be needed here, a simple call to
+>>>> pci_disable_link_state() should be sufficient. Note that this function
+>>>> has a return value meanwhile that you can check instead of reading
+>>>> back low-level registers.
+>>>
+>>> ack, I will add it to v2
+>>>
+>>>> If BIOS forbids that OS changes ASPM settings, then this should be
+>>>> respected (like PCI core does). Instead the network chip may provide
+>>>> the option to configure whether it activates certain ASPM (sub-)states
+>>>> or not. We went through a similar exercise with the r8169 driver,
+>>>> you can check how it's done there.
+>>>
+>>> looking at the vendor sdk (at least in the version I currently have) there are
+>>> no particular ASPM configurations, it just optionally disables it writing directly
+>>> in pci registers.
+>>> Moreover there are multiple drivers that are currently using this approach:
+>>> - ath9k in ath_pci_aspm_init()
+>>> - tg3 in tg3_chip_reset()
+>>> - e1000e in __e1000e_disable_aspm()
+>>> - r8169 in rtl_enable_clock_request()/rtl_disable_clock_request()
+>>>
+>> All these drivers include quite some legacy code. I can mainly speak for r8169:
+>> First versions of the driver are almost as old as Linux. And even though I
+>> refactored most of the driver still some legacy code for older chip versions
+>> (like the two functions you mentioned) is included.
+>>
+>>> Is disabling the ASPM for the system the only option to make this minipcie
+>>> work?
+>>>
+>>
+>> No. What we do in r8169:
+>>
+>> - call pci_disable_link_state(pdev, PCIE_LINK_STATE_L0S | PCIE_LINK_STATE_L1)
+>> - If it returns 0, then ASPM (including the L1 sub-states) is disabled.
+>> - If it returns an errno, then disabling ASPM failed (most likely due to
+>>   BIOS forbidding ASPM changes - pci_disable_link_state will spit out
+>>   a related warning). In this case r8169 configures the chip to not initiate
+>>   transitions to L0s/L1 (the other end of the link may still try to enter
+>>   ASPM states). See rtl_hw_aspm_clkreq_enable(). That's sufficient
+>>   to avoid the ASPM-related problems with certain versions of this chip.
+>>   Maybe your HW provides similar functionality.
+> 
+> yep, I looked at rtl_hw_aspm_clkreq_enable. This is more or less what I did but
+> unfortunately there is no specific code or documentation I can use for mt76x2e.
+> So as last chance I decided to disable ASPM directly (in this way the chip is
+> working fine).
+> Do you think a kernel parameter to disable ASPM directly would be acceptable?
+> 
+Module parameters are not the preferred approach, even though some maintainers
+may consider it acceptable. I think it should be ok if you disable ASPM per
+default. Who wants ASPM can enable the individual states via brand-new
+sysfs attributes (provided BIOS allows OS to control ASPM).
+However changing ASPM settings via direct register writes may cause
+inconsistencies between PCI core and actual settings.
+I'm not sure whether there's any general best practice how to deal with the
+scenario that a device misbehaves with ASPM enabled and OS isn't allowed to
+change ASPM settings. 
+Maybe the PCI guys can advise on these points.
 
-> @@ -199,8 +202,8 @@ static void rtw_watch_dog_work(struct work_struct *work)
->         if (busy_traffic != test_bit(RTW_FLAG_BUSY_TRAFFIC, rtwdev->flags))
->                 rtw_coex_wl_status_change_notify(rtwdev);
->
-> -       if (stats->tx_cnt > RTW_LPS_THRESHOLD ||
-> -           stats->rx_cnt > RTW_LPS_THRESHOLD)
-> +       if (stats->tx_cnt > rtw_lps_threshold ||
-> +           stats->rx_cnt > rtw_lps_threshold)
->                 ps_active = true;
->         else
->                 ps_active = false;
+> Regards,
+> Lorenzo
+> 
+Heiner
 
-The naming of 'ps_active' is a bit confusing. Per the commit message,
-it will leave LPS
-it tx/rx count > threshold. But I'll be misled by the name ps_active.
-Does it mean the
-current condition is PS active and ready to power sleep? I'd like to
-rename it to old-fashioned
-'lps_enter' to represent the action that would be taken. It would be
-easier for me to understand.
+>>
+>>> Regards,
+>>> Lorenzo
+>>>
+>> Heiner
+>>
+>>>>
+>>>>> +}
+>>>>> +EXPORT_SYMBOL_GPL(mt76_mmio_disable_aspm);
+>>>>> +
+>>>>>  void mt76_mmio_init(struct mt76_dev *dev, void __iomem *regs)
+>>>>>  {
+>>>>>  	static const struct mt76_bus_ops mt76_mmio_ops = {
+>>>>> diff --git a/drivers/net/wireless/mediatek/mt76/mt76.h b/drivers/net/wireless/mediatek/mt76/mt76.h
+>>>>> index 570c159515a0..962812b6247d 100644
+>>>>> --- a/drivers/net/wireless/mediatek/mt76/mt76.h
+>>>>> +++ b/drivers/net/wireless/mediatek/mt76/mt76.h
+>>>>> @@ -578,6 +578,7 @@ bool __mt76_poll_msec(struct mt76_dev *dev, u32 offset, u32 mask, u32 val,
+>>>>>  #define mt76_poll_msec(dev, ...) __mt76_poll_msec(&((dev)->mt76), __VA_ARGS__)
+>>>>>  
+>>>>>  void mt76_mmio_init(struct mt76_dev *dev, void __iomem *regs);
+>>>>> +void mt76_mmio_disable_aspm(struct pci_dev *pdev);
+>>>>>  
+>>>>>  static inline u16 mt76_chip(struct mt76_dev *dev)
+>>>>>  {
+>>>>> diff --git a/drivers/net/wireless/mediatek/mt76/mt76x2/pci.c b/drivers/net/wireless/mediatek/mt76/mt76x2/pci.c
+>>>>> index 73c3104f8858..264bef87e5c7 100644
+>>>>> --- a/drivers/net/wireless/mediatek/mt76/mt76x2/pci.c
+>>>>> +++ b/drivers/net/wireless/mediatek/mt76/mt76x2/pci.c
+>>>>> @@ -81,6 +81,8 @@ mt76pci_probe(struct pci_dev *pdev, const struct pci_device_id *id)
+>>>>>  	/* RG_SSUSB_CDR_BR_PE1D = 0x3 */
+>>>>>  	mt76_rmw_field(dev, 0x15c58, 0x3 << 6, 0x3);
+>>>>>  
+>>>>> +	mt76_mmio_disable_aspm(pdev);
+>>>>> +
+>>>>>  	return 0;
+>>>>>  
+>>>>>  error:
+>>>>>
+>>>>
+>>
 
-Chris
-
-> --
-> 2.17.1
->
