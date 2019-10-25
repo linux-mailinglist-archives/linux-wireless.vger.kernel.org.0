@@ -2,58 +2,58 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 103E4E44B2
-	for <lists+linux-wireless@lfdr.de>; Fri, 25 Oct 2019 09:41:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EA491E44C1
+	for <lists+linux-wireless@lfdr.de>; Fri, 25 Oct 2019 09:44:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2407290AbfJYHlF (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 25 Oct 2019 03:41:05 -0400
-Received: from smtp.codeaurora.org ([198.145.29.96]:50052 "EHLO
+        id S2390611AbfJYHo6 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 25 Oct 2019 03:44:58 -0400
+Received: from smtp.codeaurora.org ([198.145.29.96]:52592 "EHLO
         smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2406055AbfJYHlF (ORCPT
+        with ESMTP id S1732484AbfJYHo5 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 25 Oct 2019 03:41:05 -0400
+        Fri, 25 Oct 2019 03:44:57 -0400
 Received: by smtp.codeaurora.org (Postfix, from userid 1000)
-        id 173E860FB4; Fri, 25 Oct 2019 07:41:05 +0000 (UTC)
+        id 310F060FB8; Fri, 25 Oct 2019 07:44:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1571989265;
-        bh=VkDNXTxi5tmSfmj+pzf7jwxgrFJaxKhc7+lAfV16+fM=;
+        s=default; t=1571989497;
+        bh=jk1eQ/A2AAKcr5SpqzxLaf8WJWf2/Wsnt5wueA9UJRI=;
         h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=Mng/FsLFz9CT3k7fpoiY7S8xkzSebmRUUxwNUOEFb8EmtneEtafUBeuOjM5eYnbkf
-         dI+dLmKTCePQqjvm8JHtH0tqQlOWu+DqOG4ohigQa8Pa0qIbJl0LPT6oeySgaBRSDR
-         FDWXiIlBS/HJYYcFPku/XJRmcE19eYTCLB0AcLk0=
+        b=ZkKOXxLxAg71X/jahR1RKNtfdj+2lbBT+lz9QOnLen7RNw+Mi1YsVd9fFs7Td0lrW
+         VBxoAKcXfugOMZijxydVfpagJMTZY9gSDGzlghlLp/Ee2516axXgTzyC/xZlWsdAYz
+         q8TYy4QGHUrlA7OxDe2F603wiyC1LIQp8gHHDaK8=
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         pdx-caf-mail.web.codeaurora.org
 X-Spam-Level: 
 X-Spam-Status: No, score=-2.7 required=2.0 tests=ALL_TRUSTED,BAYES_00,
         DKIM_INVALID,DKIM_SIGNED,SPF_NONE autolearn=no autolearn_force=no
         version=3.4.0
-Received: from tynnyri.adurom.net (tynnyri.adurom.net [51.15.11.48])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from potku.adurom.net (unknown [88.114.240.156])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
         (Authenticated sender: kvalo@smtp.codeaurora.org)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 9DBAF60B69;
-        Fri, 25 Oct 2019 07:41:03 +0000 (UTC)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 5026660FB8;
+        Fri, 25 Oct 2019 07:44:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1571989264;
-        bh=VkDNXTxi5tmSfmj+pzf7jwxgrFJaxKhc7+lAfV16+fM=;
+        s=default; t=1571989496;
+        bh=jk1eQ/A2AAKcr5SpqzxLaf8WJWf2/Wsnt5wueA9UJRI=;
         h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=SljavbjBZ5fltcrKksNCf/5Aavbmbc+QRRpe+TI7du0AaDMJSvVOmrP8GY8NwECuV
-         nIyoZoNsDU6oCTzMaNThp+pNV4OMZ+6QqjciEbeYyH8tNUumVR8KEaUBTwmALohznK
-         MbvjxMwXjRekBWgzYGZrHXuLByu9xnvHIaxsnRTw=
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 9DBAF60B69
+        b=SgpYkJuYYpGU+L2qaYe02VlNkWR4gnWkdueZCRRBwTfYQrgiYUbWfEL3XrOFz6ycH
+         6tND0D2L2Pe01kAjFnRduNxyWgLFLAImIgOHdYMFZa4RvlGZ4FBJbZUOLSGlU7EWez
+         b/Vu1RQXHgeWyPSOvd/I9G9GLzsxRmC77Qv2unvU=
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 5026660FB8
 Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
 Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
 From:   Kalle Valo <kvalo@codeaurora.org>
-To:     Kalle Valo <kvalo@codeaurora.org>
-Cc:     <yhchuang@realtek.com>, <linux-wireless@vger.kernel.org>
-Subject: Re: [PATCH] rtw88: fix GENMASK_ULL for u64
-References: <20191024091948.10569-1-yhchuang@realtek.com>
-        <87ftjie9t3.fsf@tynnyri.adurom.net>
-Date:   Fri, 25 Oct 2019 10:41:00 +0300
-In-Reply-To: <87ftjie9t3.fsf@tynnyri.adurom.net> (Kalle Valo's message of
-        "Thu, 24 Oct 2019 13:07:20 +0300")
-Message-ID: <877e4te0hf.fsf@tynnyri.adurom.net>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
+To:     Luca Coelho <luca@coelho.fi>
+Cc:     linux-wireless@vger.kernel.org, linuxwifi@intel.com,
+        david.e.box@intel.com, joe.konno@intel.com
+Subject: Re: pull-request: iwlwifi-next 2019-10-18-2
+References: <ab07c633cc356750c6d794ccefef3fb6221acf6b.camel@coelho.fi>
+Date:   Fri, 25 Oct 2019 10:44:53 +0300
+In-Reply-To: <ab07c633cc356750c6d794ccefef3fb6221acf6b.camel@coelho.fi> (Luca
+        Coelho's message of "Fri, 25 Oct 2019 10:20:55 +0300")
+Message-ID: <87zhhpp8ui.fsf@kamboji.qca.qualcomm.com>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
 MIME-Version: 1.0
 Content-Type: text/plain
 Sender: linux-wireless-owner@vger.kernel.org
@@ -61,40 +61,52 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Kalle Valo <kvalo@codeaurora.org> writes:
+Luca Coelho <luca@coelho.fi> writes:
 
-> <yhchuang@realtek.com> writes:
+> Here's the first batch of patches intended for v5.4.  This includes the
+> last patchset 2 patchsets I sent.  Usual development work.  More
+> details about the contents in the tag description.
 >
->> From: Yan-Hsuan Chuang <yhchuang@realtek.com>
->>
->> This fixes compile warning:
->>
->>     In file included from include/linux/bitops.h:5:0,
->>                      from include/linux/kernel.h:12,
->>                      from include/asm-generic/bug.h:19,
->>                      from arch/mips/include/asm/bug.h:42,
->>                      from include/linux/bug.h:5,
->>                      from include/net/mac80211.h:16,
->>                      from drivers/net/wireless/realtek/rtw88/main.h:8,
->>                      from drivers/net/wireless/realtek/rtw88/main.c:5:
->>     drivers/net/wireless/realtek/rtw88/main.c: In function 'rtw_update_rate_mask':
->>       include/linux/bits.h:23:11: warning: right shift count is negative
->>       [-Wshift-count-negative]
->>        (~UL(0) >> (BITS_PER_LONG - 1 - (h))))
->>                ^
->>     drivers/net/wireless/realtek/rtw88/main.c:622:17: note: in expansion of macro 'GENMASK'
->>       u64 cfg_mask = GENMASK(63, 0);
->>                      ^~~~~~~
->>
->> Fixes: f39e9bd49a3d ("rtw88: add set_bitrate_mask support")
->> Signed-off-by: Yan-Hsuan Chuang <yhchuang@realtek.com>
+> In this second version, I have removed all the Change-Id tags that
+> accidentally got in, as you mentioned.  Sorry about that.
 >
-> I'll add:
+> I pushed this to my pending branch and got results from kbuildbot for a
+> previous version but not for the last one yet.  Though there shouldn't
+> be any issues, since the changes were trivial.  I'll let you know when
+> I get the results.
 >
-> Reported-by: kbuild test robot <lkp@intel.com>
+> Please let me know if there are any issues.
+>
+> Cheers,
+> Luca.
+>
+>
+> The following changes since commit 89dca86d29b46f2a5f38ea6476cfd441bd205d25:
+>
+>   rtw88: mark rtw_fw_hdr __packed (2019-10-16 10:35:25 +0300)
+>
+> are available in the Git repository at:
+>
+>   git://git.kernel.org/pub/scm/linux/kernel/git/iwlwifi/iwlwifi-next.git tags/iwlwifi-next-for-kalle-2019-10-18-2
+>
+> for you to fetch changes up to 65b9425ce9aa107f758ad0a491af5ef635567315:
+>
+>   iwlwifi: rx: use new api to get band from rx mpdu (2019-10-25 10:10:28 +0300)
+>
+> ----------------------------------------------------------------
+> Patches intended for v5.5
+>
+> * Revamp the debugging infrastructure;
+> * Some udpdates to FW API commands;
+> * Fix max amsdu value calculation;
+> * Small updates in the debugging infra;
+> * Some new helper functions;
+> * A few clean-ups;
+> * Other small fixes and improvements;
+>
+> ----------------------------------------------------------------
 
-Oh nice, patchwork automatically added the tag from my email above and I
-didn't have to do anything :)
+Pulled, thanks Luca.
 
 -- 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
