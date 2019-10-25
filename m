@@ -2,32 +2,32 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 48FDFE4762
-	for <lists+linux-wireless@lfdr.de>; Fri, 25 Oct 2019 11:34:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CE1CDE4761
+	for <lists+linux-wireless@lfdr.de>; Fri, 25 Oct 2019 11:34:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730185AbfJYJeB (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 25 Oct 2019 05:34:01 -0400
-Received: from rtits2.realtek.com ([211.75.126.72]:50490 "EHLO
+        id S2393285AbfJYJeA (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 25 Oct 2019 05:34:00 -0400
+Received: from rtits2.realtek.com ([211.75.126.72]:50496 "EHLO
         rtits2.realtek.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730249AbfJYJd6 (ORCPT
+        with ESMTP id S1730185AbfJYJd7 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 25 Oct 2019 05:33:58 -0400
+        Fri, 25 Oct 2019 05:33:59 -0400
 Authenticated-By: 
-X-SpamFilter-By: BOX Solutions SpamTrap 5.62 with qID x9P9XppV026487, This message is accepted by code: ctloc85258
+X-SpamFilter-By: BOX Solutions SpamTrap 5.62 with qID x9P9XqaG026494, This message is accepted by code: ctloc85258
 Received: from mail.realtek.com (RTITCASV01.realtek.com.tw[172.21.6.18])
-        by rtits2.realtek.com.tw (8.15.2/2.57/5.78) with ESMTPS id x9P9XppV026487
+        by rtits2.realtek.com.tw (8.15.2/2.57/5.78) with ESMTPS id x9P9XqaG026494
         (version=TLSv1 cipher=DHE-RSA-AES256-SHA bits=256 verify=NOT);
-        Fri, 25 Oct 2019 17:33:51 +0800
+        Fri, 25 Oct 2019 17:33:52 +0800
 Received: from localhost.localdomain (172.21.68.126) by
  RTITCASV01.realtek.com.tw (172.21.6.18) with Microsoft SMTP Server id
- 14.3.468.0; Fri, 25 Oct 2019 17:33:50 +0800
+ 14.3.468.0; Fri, 25 Oct 2019 17:33:51 +0800
 From:   <yhchuang@realtek.com>
 To:     <kvalo@codeaurora.org>
 CC:     <linux-wireless@vger.kernel.org>, <briannorris@chromium.org>,
         <g.schlmm@googlemail.com>
-Subject: [PATCH 5/6] rtw88: fix potential read outside array boundary
-Date:   Fri, 25 Oct 2019 17:33:44 +0800
-Message-ID: <20191025093345.22643-6-yhchuang@realtek.com>
+Subject: [PATCH 6/6] rtw88: avoid FW info flood
+Date:   Fri, 25 Oct 2019 17:33:45 +0800
+Message-ID: <20191025093345.22643-7-yhchuang@realtek.com>
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <20191025093345.22643-1-yhchuang@realtek.com>
 References: <20191025093345.22643-1-yhchuang@realtek.com>
@@ -39,113 +39,82 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Tzu-En Huang <tehuang@realtek.com>
+From: Yan-Hsuan Chuang <yhchuang@realtek.com>
 
-The level of cckpd is from 0 to 4, and it is the index of
-array pd_lvl[] and cs_lvl[]. However, the length of both arrays
-are 4, which is smaller than the possible maximum input index.
-Enumerate cck level to make sure the max level will not be wrong
-if new level is added in future.
+The FW info was printed everytime driver is powered on, such as
+leaving IDLE state. It will flood the kernel log.
 
-Fixes: 479c4ee931a6 ("rtw88: add dynamic cck pd mechanism")
-Signed-off-by: Tzu-En Huang <tehuang@realtek.com>
+Move the FW info printing to callback when FW is loaded, so
+that will only be printed once when device is probed.
+
 Signed-off-by: Yan-Hsuan Chuang <yhchuang@realtek.com>
 ---
- drivers/net/wireless/realtek/rtw88/phy.c      | 17 ++++++++---------
- drivers/net/wireless/realtek/rtw88/phy.h      |  9 +++++++++
- drivers/net/wireless/realtek/rtw88/rtw8822c.c |  4 ++--
- 3 files changed, 19 insertions(+), 11 deletions(-)
+ drivers/net/wireless/realtek/rtw88/mac.c  | 17 -----------------
+ drivers/net/wireless/realtek/rtw88/main.c | 10 ++++++++++
+ 2 files changed, 10 insertions(+), 17 deletions(-)
 
-diff --git a/drivers/net/wireless/realtek/rtw88/phy.c b/drivers/net/wireless/realtek/rtw88/phy.c
-index 4a41134c420e..4adba44dbd74 100644
---- a/drivers/net/wireless/realtek/rtw88/phy.c
-+++ b/drivers/net/wireless/realtek/rtw88/phy.c
-@@ -109,7 +109,7 @@ static void rtw_phy_cck_pd_init(struct rtw_dev *rtwdev)
- 
- 	for (i = 0; i <= RTW_CHANNEL_WIDTH_40; i++) {
- 		for (j = 0; j < RTW_RF_PATH_MAX; j++)
--			dm_info->cck_pd_lv[i][j] = 0;
-+			dm_info->cck_pd_lv[i][j] = CCK_PD_LV0;
- 	}
- 
- 	dm_info->cck_fa_avg = CCK_FA_AVG_RESET;
-@@ -461,7 +461,6 @@ static void rtw_phy_dpk_track(struct rtw_dev *rtwdev)
- 		chip->ops->dpk_track(rtwdev);
+diff --git a/drivers/net/wireless/realtek/rtw88/mac.c b/drivers/net/wireless/realtek/rtw88/mac.c
+index c471117b1472..507970387b2a 100644
+--- a/drivers/net/wireless/realtek/rtw88/mac.c
++++ b/drivers/net/wireless/realtek/rtw88/mac.c
+@@ -567,21 +567,6 @@ download_firmware_to_mem(struct rtw_dev *rtwdev, const u8 *data,
+ 	return 0;
  }
  
--#define CCK_PD_LV_MAX		5
- #define CCK_PD_FA_LV1_MIN	1000
- #define CCK_PD_FA_LV0_MAX	500
- 
-@@ -471,10 +470,10 @@ static u8 rtw_phy_cck_pd_lv_unlink(struct rtw_dev *rtwdev)
- 	u32 cck_fa_avg = dm_info->cck_fa_avg;
- 
- 	if (cck_fa_avg > CCK_PD_FA_LV1_MIN)
--		return 1;
-+		return CCK_PD_LV1;
- 
- 	if (cck_fa_avg < CCK_PD_FA_LV0_MAX)
--		return 0;
-+		return CCK_PD_LV0;
- 
- 	return CCK_PD_LV_MAX;
- }
-@@ -494,15 +493,15 @@ static u8 rtw_phy_cck_pd_lv_link(struct rtw_dev *rtwdev)
- 	u32 cck_fa_avg = dm_info->cck_fa_avg;
- 
- 	if (igi > CCK_PD_IGI_LV4_VAL && rssi > CCK_PD_RSSI_LV4_VAL)
--		return 4;
-+		return CCK_PD_LV4;
- 	if (igi > CCK_PD_IGI_LV3_VAL && rssi > CCK_PD_RSSI_LV3_VAL)
--		return 3;
-+		return CCK_PD_LV3;
- 	if (igi > CCK_PD_IGI_LV2_VAL || rssi > CCK_PD_RSSI_LV2_VAL)
--		return 2;
-+		return CCK_PD_LV2;
- 	if (cck_fa_avg > CCK_PD_FA_LV1_MIN)
--		return 1;
-+		return CCK_PD_LV1;
- 	if (cck_fa_avg < CCK_PD_FA_LV0_MAX)
--		return 0;
-+		return CCK_PD_LV0;
- 
- 	return CCK_PD_LV_MAX;
- }
-diff --git a/drivers/net/wireless/realtek/rtw88/phy.h b/drivers/net/wireless/realtek/rtw88/phy.h
-index c389ef274ed8..af916d8784cd 100644
---- a/drivers/net/wireless/realtek/rtw88/phy.h
-+++ b/drivers/net/wireless/realtek/rtw88/phy.h
-@@ -146,6 +146,15 @@ rtw_get_tx_power_params(struct rtw_dev *rtwdev, u8 path,
- 			u8 rate, u8 bw, u8 ch, u8 regd,
- 			struct rtw_power_params *pwr_param);
- 
-+enum rtw_phy_cck_pd_lv {
-+	CCK_PD_LV0,
-+	CCK_PD_LV1,
-+	CCK_PD_LV2,
-+	CCK_PD_LV3,
-+	CCK_PD_LV4,
-+	CCK_PD_LV_MAX,
-+};
-+
- #define	MASKBYTE0		0xff
- #define	MASKBYTE1		0xff00
- #define	MASKBYTE2		0xff0000
-diff --git a/drivers/net/wireless/realtek/rtw88/rtw8822c.c b/drivers/net/wireless/realtek/rtw88/rtw8822c.c
-index b77905196ffb..0c419332fd52 100644
---- a/drivers/net/wireless/realtek/rtw88/rtw8822c.c
-+++ b/drivers/net/wireless/realtek/rtw88/rtw8822c.c
-@@ -3295,8 +3295,8 @@ rtw8822c_phy_cck_pd_set_reg(struct rtw_dev *rtwdev,
- static void rtw8822c_phy_cck_pd_set(struct rtw_dev *rtwdev, u8 new_lvl)
+-static void update_firmware_info(struct rtw_dev *rtwdev,
+-				 struct rtw_fw_state *fw)
+-{
+-	const struct rtw_fw_hdr *fw_hdr =
+-				(const struct rtw_fw_hdr *)fw->firmware->data;
+-
+-	fw->h2c_version = le16_to_cpu(fw_hdr->h2c_fmt_ver);
+-	fw->version = le16_to_cpu(fw_hdr->version);
+-	fw->sub_version = fw_hdr->subversion;
+-	fw->sub_index = fw_hdr->subindex;
+-
+-	rtw_info(rtwdev, "Firmware version %u.%u.%u, H2C version %u\n",
+-		 fw->version, fw->sub_version, fw->sub_index, fw->h2c_version);
+-}
+-
+ static int
+ start_download_firmware(struct rtw_dev *rtwdev, const u8 *data, u32 size)
  {
- 	struct rtw_dm_info *dm_info = &rtwdev->dm_info;
--	s8 pd_lvl[4] = {2, 4, 6, 8};
--	s8 cs_lvl[4] = {2, 2, 2, 4};
-+	s8 pd_lvl[CCK_PD_LV_MAX] = {0, 2, 4, 6, 8};
-+	s8 cs_lvl[CCK_PD_LV_MAX] = {0, 2, 2, 2, 4};
- 	u8 cur_lvl;
- 	u8 nrx, bw;
+@@ -698,8 +683,6 @@ int rtw_download_firmware(struct rtw_dev *rtwdev, struct rtw_fw_state *fw)
+ 	if (ret)
+ 		goto dlfw_fail;
  
+-	update_firmware_info(rtwdev, fw);
+-
+ 	/* reset desc and index */
+ 	rtw_hci_setup(rtwdev);
+ 
+diff --git a/drivers/net/wireless/realtek/rtw88/main.c b/drivers/net/wireless/realtek/rtw88/main.c
+index bff8a0b129d9..bace9c583abb 100644
+--- a/drivers/net/wireless/realtek/rtw88/main.c
++++ b/drivers/net/wireless/realtek/rtw88/main.c
+@@ -1025,12 +1025,22 @@ static void rtw_load_firmware_cb(const struct firmware *firmware, void *context)
+ {
+ 	struct rtw_dev *rtwdev = context;
+ 	struct rtw_fw_state *fw = &rtwdev->fw;
++	const struct rtw_fw_hdr *fw_hdr;
+ 
+ 	if (!firmware)
+ 		rtw_err(rtwdev, "failed to request firmware\n");
+ 
++	fw_hdr = (const struct rtw_fw_hdr *)firmware->data;
++	fw->h2c_version = le16_to_cpu(fw_hdr->h2c_fmt_ver);
++	fw->version = le16_to_cpu(fw_hdr->version);
++	fw->sub_version = fw_hdr->subversion;
++	fw->sub_index = fw_hdr->subindex;
++
+ 	fw->firmware = firmware;
+ 	complete_all(&fw->completion);
++
++	rtw_info(rtwdev, "Firmware version %u.%u.%u, H2C version %u\n",
++		 fw->version, fw->sub_version, fw->sub_index, fw->h2c_version);
+ }
+ 
+ static int rtw_load_firmware(struct rtw_dev *rtwdev, const char *fw_name)
 -- 
 2.17.1
 
