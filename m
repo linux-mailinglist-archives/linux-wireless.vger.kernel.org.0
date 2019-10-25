@@ -2,32 +2,32 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 4F8F9E475C
-	for <lists+linux-wireless@lfdr.de>; Fri, 25 Oct 2019 11:33:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8FF5EE4760
+	for <lists+linux-wireless@lfdr.de>; Fri, 25 Oct 2019 11:34:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730202AbfJYJd5 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 25 Oct 2019 05:33:57 -0400
-Received: from rtits2.realtek.com ([211.75.126.72]:50464 "EHLO
+        id S2393259AbfJYJd7 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 25 Oct 2019 05:33:59 -0400
+Received: from rtits2.realtek.com ([211.75.126.72]:50466 "EHLO
         rtits2.realtek.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729612AbfJYJd4 (ORCPT
+        with ESMTP id S1730205AbfJYJd6 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 25 Oct 2019 05:33:56 -0400
+        Fri, 25 Oct 2019 05:33:58 -0400
 Authenticated-By: 
-X-SpamFilter-By: BOX Solutions SpamTrap 5.62 with qID x9P9XnOi026479, This message is accepted by code: ctloc85258
+X-SpamFilter-By: BOX Solutions SpamTrap 5.62 with qID x9P9XoIs026483, This message is accepted by code: ctloc85258
 Received: from mail.realtek.com (RTITCASV01.realtek.com.tw[172.21.6.18])
-        by rtits2.realtek.com.tw (8.15.2/2.57/5.78) with ESMTPS id x9P9XnOi026479
+        by rtits2.realtek.com.tw (8.15.2/2.57/5.78) with ESMTPS id x9P9XoIs026483
         (version=TLSv1 cipher=DHE-RSA-AES256-SHA bits=256 verify=NOT);
-        Fri, 25 Oct 2019 17:33:49 +0800
+        Fri, 25 Oct 2019 17:33:50 +0800
 Received: from localhost.localdomain (172.21.68.126) by
  RTITCASV01.realtek.com.tw (172.21.6.18) with Microsoft SMTP Server id
- 14.3.468.0; Fri, 25 Oct 2019 17:33:49 +0800
+ 14.3.468.0; Fri, 25 Oct 2019 17:33:50 +0800
 From:   <yhchuang@realtek.com>
 To:     <kvalo@codeaurora.org>
 CC:     <linux-wireless@vger.kernel.org>, <briannorris@chromium.org>,
         <g.schlmm@googlemail.com>
-Subject: [PATCH 3/6] rtw88: use a module parameter to control LPS enter
-Date:   Fri, 25 Oct 2019 17:33:42 +0800
-Message-ID: <20191025093345.22643-4-yhchuang@realtek.com>
+Subject: [PATCH 4/6] rtw88: rearrange if..else statements for rx rate indexes
+Date:   Fri, 25 Oct 2019 17:33:43 +0800
+Message-ID: <20191025093345.22643-5-yhchuang@realtek.com>
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <20191025093345.22643-1-yhchuang@realtek.com>
 References: <20191025093345.22643-1-yhchuang@realtek.com>
@@ -41,70 +41,51 @@ X-Mailing-List: linux-wireless@vger.kernel.org
 
 From: Yan-Hsuan Chuang <yhchuang@realtek.com>
 
-If the number of packets is less than the LPS threshold, driver
-can then enter LPS mode.
-And driver used to take RTW_LPS_THRESHOLD as the threshold. As
-the macro can not be changed after compiled, use a parameter
-instead.
+Driver just memset() rx_status to 0 before assigning rate indexes.
+And driver could never hit the 'else' because the driver checks
+if 'pkt_stat->rate >= DESC_RATEMCS0', so the 'else' statement can
+be removed.
 
-The larger of the threshold, the more traffic required to leave
-power save mode, responsive time could be longer, but also the
-power consumption could be lower.
+Also rearrange the if..else statements because DESC_RATEMCS0 is
+actually larger than DESC_RATE1M ~ DESC_RATE54M, move the check
+of 'pkt_stat->rate >= DESC_RATEMCS0' to the last to keep an
+increasing order.
 
 Signed-off-by: Yan-Hsuan Chuang <yhchuang@realtek.com>
 ---
- drivers/net/wireless/realtek/rtw88/main.c | 7 +++++--
- drivers/net/wireless/realtek/rtw88/ps.h   | 2 --
- 2 files changed, 5 insertions(+), 4 deletions(-)
+ drivers/net/wireless/realtek/rtw88/rx.c | 14 ++++++--------
+ 1 file changed, 6 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/net/wireless/realtek/rtw88/main.c b/drivers/net/wireless/realtek/rtw88/main.c
-index 7c1b89c4fb6c..bff8a0b129d9 100644
---- a/drivers/net/wireless/realtek/rtw88/main.c
-+++ b/drivers/net/wireless/realtek/rtw88/main.c
-@@ -16,16 +16,19 @@
- #include "debug.h"
- #include "bf.h"
+diff --git a/drivers/net/wireless/realtek/rtw88/rx.c b/drivers/net/wireless/realtek/rtw88/rx.c
+index 36887f998090..9b90339ab697 100644
+--- a/drivers/net/wireless/realtek/rtw88/rx.c
++++ b/drivers/net/wireless/realtek/rtw88/rx.c
+@@ -160,19 +160,17 @@ void rtw_rx_fill_rx_status(struct rtw_dev *rtwdev,
+ 	else if (pkt_stat->rate >= DESC_RATEMCS0)
+ 		rx_status->encoding = RX_ENC_HT;
  
-+unsigned int rtw_lps_threshold = 2;
- unsigned int rtw_fw_lps_deep_mode;
- EXPORT_SYMBOL(rtw_fw_lps_deep_mode);
- bool rtw_bf_support = true;
- unsigned int rtw_debug_mask;
- EXPORT_SYMBOL(rtw_debug_mask);
+-	if (pkt_stat->rate >= DESC_RATEMCS0) {
+-		rtw_desc_to_mcsrate(pkt_stat->rate, &rx_status->rate_idx,
+-				    &rx_status->nss);
+-	} else if (rx_status->band == NL80211_BAND_5GHZ &&
+-		   pkt_stat->rate >= DESC_RATE6M &&
+-		   pkt_stat->rate <= DESC_RATE54M) {
++	if (rx_status->band == NL80211_BAND_5GHZ &&
++	    pkt_stat->rate >= DESC_RATE6M &&
++	    pkt_stat->rate <= DESC_RATE54M) {
+ 		rx_status->rate_idx = pkt_stat->rate - DESC_RATE6M;
+ 	} else if (rx_status->band == NL80211_BAND_2GHZ &&
+ 		   pkt_stat->rate >= DESC_RATE1M &&
+ 		   pkt_stat->rate <= DESC_RATE54M) {
+ 		rx_status->rate_idx = pkt_stat->rate - DESC_RATE1M;
+-	} else {
+-		rx_status->rate_idx = 0;
++	} else if (pkt_stat->rate >= DESC_RATEMCS0) {
++		rtw_desc_to_mcsrate(pkt_stat->rate, &rx_status->rate_idx,
++				    &rx_status->nss);
+ 	}
  
-+module_param_named(lps_threshold, rtw_lps_threshold, uint, 0644);
- module_param_named(lps_deep_mode, rtw_fw_lps_deep_mode, uint, 0644);
- module_param_named(support_bf, rtw_bf_support, bool, 0644);
- module_param_named(debug_mask, rtw_debug_mask, uint, 0644);
- 
-+MODULE_PARM_DESC(lps_threshold, "Threshold of number of packets in every 2 seconds");
- MODULE_PARM_DESC(lps_deep_mode, "Deeper PS mode. If 0, deep PS is disabled");
- MODULE_PARM_DESC(support_bf, "Set Y to enable beamformee support");
- MODULE_PARM_DESC(debug_mask, "Debugging mask");
-@@ -199,8 +202,8 @@ static void rtw_watch_dog_work(struct work_struct *work)
- 	if (busy_traffic != test_bit(RTW_FLAG_BUSY_TRAFFIC, rtwdev->flags))
- 		rtw_coex_wl_status_change_notify(rtwdev);
- 
--	if (stats->tx_cnt > RTW_LPS_THRESHOLD ||
--	    stats->rx_cnt > RTW_LPS_THRESHOLD)
-+	if (stats->tx_cnt > rtw_lps_threshold ||
-+	    stats->rx_cnt > rtw_lps_threshold)
- 		ps_active = true;
- 	else
- 		ps_active = false;
-diff --git a/drivers/net/wireless/realtek/rtw88/ps.h b/drivers/net/wireless/realtek/rtw88/ps.h
-index 25925eedbad4..fe43f8d96d04 100644
---- a/drivers/net/wireless/realtek/rtw88/ps.h
-+++ b/drivers/net/wireless/realtek/rtw88/ps.h
-@@ -5,8 +5,6 @@
- #ifndef __RTW_PS_H_
- #define __RTW_PS_H_
- 
--#define RTW_LPS_THRESHOLD	2
--
- #define POWER_MODE_ACK		BIT(6)
- #define POWER_MODE_PG		BIT(4)
- #define POWER_MODE_LCLK		BIT(0)
+ 	rx_status->flag |= RX_FLAG_MACTIME_START;
 -- 
 2.17.1
 
