@@ -2,36 +2,36 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 35832E5BFF
-	for <lists+linux-wireless@lfdr.de>; Sat, 26 Oct 2019 15:28:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 151DCE5C05
+	for <lists+linux-wireless@lfdr.de>; Sat, 26 Oct 2019 15:28:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728900AbfJZNVU (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 26 Oct 2019 09:21:20 -0400
-Received: from mail.kernel.org ([198.145.29.99]:43104 "EHLO mail.kernel.org"
+        id S1726976AbfJZNVj (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 26 Oct 2019 09:21:39 -0400
+Received: from mail.kernel.org ([198.145.29.99]:43396 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728880AbfJZNVT (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 26 Oct 2019 09:21:19 -0400
+        id S1729068AbfJZNVi (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Sat, 26 Oct 2019 09:21:38 -0400
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id F0BCF222BD;
-        Sat, 26 Oct 2019 13:21:17 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 046D62070B;
+        Sat, 26 Oct 2019 13:21:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1572096078;
-        bh=fZ5b/0CjTl/y0q4mG/aNFlc0SydL+UI5brBMk+5wOI4=;
+        s=default; t=1572096097;
+        bh=Xst7r6Og8CbzbfVwav+UJkWGXsNWcL/fy+F8I9Q6Ql0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=udwb1UfGDwohNqRgye6PC04tzo9gr09nUKD99WwGimTCFoXMsRKH3jM+IkXmkeoXx
-         q+842h3dcN3uM5fn8mXqjk6NeKkzDfH19EHczxNnINnl4cN6oJCtN/dJ6xR6ikZK9P
-         Bq4n8RyI62O15o+qv/lYpCdavDiigFnZOzyFGClc=
+        b=vU9EFiZCsx8jyZlhQzPBEpM8zD1pZ7IJfkxI115Yor6OQvLKaNsjdQUSBwvv9HBdz
+         flIMHZh3yW8UU6HJ1FQgzF8i+awoD2Xxm9gvuujy6/M1qy5RrHySr3pn1KkWuMD+69
+         qywdzAVLQJEMIobQRs6uL9BQYgypp1nSKiGyDfZo=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Johannes Berg <johannes.berg@intel.com>,
+Cc:     Navid Emamdoost <navid.emamdoost@gmail.com>,
         Luca Coelho <luciano.coelho@intel.com>,
         Sasha Levin <sashal@kernel.org>,
         linux-wireless@vger.kernel.org, netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.14 07/33] mac80211: accept deauth frames in IBSS mode
-Date:   Sat, 26 Oct 2019 09:20:44 -0400
-Message-Id: <20191026132110.4026-7-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.14 13/33] iwlwifi: dbg_ini: fix memory leak in alloc_sgtable
+Date:   Sat, 26 Oct 2019 09:20:50 -0400
+Message-Id: <20191026132110.4026-13-sashal@kernel.org>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20191026132110.4026-1-sashal@kernel.org>
 References: <20191026132110.4026-1-sashal@kernel.org>
@@ -44,47 +44,32 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Johannes Berg <johannes.berg@intel.com>
+From: Navid Emamdoost <navid.emamdoost@gmail.com>
 
-[ Upstream commit 95697f9907bfe3eab0ef20265a766b22e27dde64 ]
+[ Upstream commit b4b814fec1a5a849383f7b3886b654a13abbda7d ]
 
-We can process deauth frames and all, but we drop them very
-early in the RX path today - this could never have worked.
+In alloc_sgtable if alloc_page fails, the alocated table should be
+released.
 
-Fixes: 2cc59e784b54 ("mac80211: reply to AUTH with DEAUTH if sta allocation fails in IBSS")
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Navid Emamdoost <navid.emamdoost@gmail.com>
 Signed-off-by: Luca Coelho <luciano.coelho@intel.com>
-Link: https://lore.kernel.org/r/20191004123706.15768-2-luca@coelho.fi
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mac80211/rx.c | 11 ++++++++++-
- 1 file changed, 10 insertions(+), 1 deletion(-)
+ drivers/net/wireless/intel/iwlwifi/fw/dbg.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/net/mac80211/rx.c b/net/mac80211/rx.c
-index 4a6b3c7b35e37..31000622376df 100644
---- a/net/mac80211/rx.c
-+++ b/net/mac80211/rx.c
-@@ -3227,9 +3227,18 @@ ieee80211_rx_h_mgmt(struct ieee80211_rx_data *rx)
- 	case cpu_to_le16(IEEE80211_STYPE_PROBE_RESP):
- 		/* process for all: mesh, mlme, ibss */
- 		break;
-+	case cpu_to_le16(IEEE80211_STYPE_DEAUTH):
-+		if (is_multicast_ether_addr(mgmt->da) &&
-+		    !is_broadcast_ether_addr(mgmt->da))
-+			return RX_DROP_MONITOR;
-+
-+		/* process only for station/IBSS */
-+		if (sdata->vif.type != NL80211_IFTYPE_STATION &&
-+		    sdata->vif.type != NL80211_IFTYPE_ADHOC)
-+			return RX_DROP_MONITOR;
-+		break;
- 	case cpu_to_le16(IEEE80211_STYPE_ASSOC_RESP):
- 	case cpu_to_le16(IEEE80211_STYPE_REASSOC_RESP):
--	case cpu_to_le16(IEEE80211_STYPE_DEAUTH):
- 	case cpu_to_le16(IEEE80211_STYPE_DISASSOC):
- 		if (is_multicast_ether_addr(mgmt->da) &&
- 		    !is_broadcast_ether_addr(mgmt->da))
+diff --git a/drivers/net/wireless/intel/iwlwifi/fw/dbg.c b/drivers/net/wireless/intel/iwlwifi/fw/dbg.c
+index 8390104172410..2ae5c831764a9 100644
+--- a/drivers/net/wireless/intel/iwlwifi/fw/dbg.c
++++ b/drivers/net/wireless/intel/iwlwifi/fw/dbg.c
+@@ -532,6 +532,7 @@ static struct scatterlist *alloc_sgtable(int size)
+ 				if (new_page)
+ 					__free_page(new_page);
+ 			}
++			kfree(table);
+ 			return NULL;
+ 		}
+ 		alloc_size = min_t(int, size, PAGE_SIZE);
 -- 
 2.20.1
 
