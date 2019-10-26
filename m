@@ -2,37 +2,35 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 33E23E5A8F
-	for <lists+linux-wireless@lfdr.de>; Sat, 26 Oct 2019 15:16:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 381DEE5AB3
+	for <lists+linux-wireless@lfdr.de>; Sat, 26 Oct 2019 15:17:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726506AbfJZNQI (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 26 Oct 2019 09:16:08 -0400
-Received: from mail.kernel.org ([198.145.29.99]:37566 "EHLO mail.kernel.org"
+        id S1727240AbfJZNRQ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 26 Oct 2019 09:17:16 -0400
+Received: from mail.kernel.org ([198.145.29.99]:38832 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726377AbfJZNQI (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 26 Oct 2019 09:16:08 -0400
+        id S1727225AbfJZNRO (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Sat, 26 Oct 2019 09:17:14 -0400
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id A7E6521D81;
-        Sat, 26 Oct 2019 13:16:06 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 7391D21655;
+        Sat, 26 Oct 2019 13:17:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1572095767;
-        bh=62QafBCYLVsAzcLcrBb5DjZ9s+goGqXlmmf7CSY/hzg=;
+        s=default; t=1572095834;
+        bh=P+x0vk8c6GjcSwPpPa+2eiHOdIpm+8+UEleTFKRbyOs=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=oxvO3fwWK9sYx1BO0q8s4J5Q1Aoy7SLaGJF13GBwuCHtNkqcOLGk3RxgyLm0vtydg
-         bDFedGa5AcslR2LCze2xvRb50LgSrX13LKHw9bZ7nmZfCN9ZEH7e6CK207kX4jNBjW
-         Y35Pb2U9YBdD2f7pVVCiftrxBgWxnqBLfwBiPAcE=
+        b=EOPwo2t1SG4oE+WymKEDzvlZqzz6xgekMorPGK76/i5viXNCcjSCSzREjWDoFvbLO
+         iAuGi98kJQcL64Z80iTPlfHYLSFcn7SNjo2vYAMStK42GTsk978IjRy7n+GCZq3qp/
+         CwVo5qcbZ0VJLvfkrLVpuqDaU0W6DvKKcYPZRApk=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Stanislaw Gruszka <sgruszka@redhat.com>,
-        Jonathan Liu <net147@gmail.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
+Cc:     Luca Coelho <luciano.coelho@intel.com>,
         Sasha Levin <sashal@kernel.org>,
         linux-wireless@vger.kernel.org, netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.3 05/99] rt2x00: initialize last_reset
-Date:   Sat, 26 Oct 2019 09:14:26 -0400
-Message-Id: <20191026131600.2507-5-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.3 38/99] iwlwifi: exclude GEO SAR support for 3168
+Date:   Sat, 26 Oct 2019 09:14:59 -0400
+Message-Id: <20191026131600.2507-38-sashal@kernel.org>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20191026131600.2507-1-sashal@kernel.org>
 References: <20191026131600.2507-1-sashal@kernel.org>
@@ -45,35 +43,51 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Stanislaw Gruszka <sgruszka@redhat.com>
+From: Luca Coelho <luciano.coelho@intel.com>
 
-[ Upstream commit c91a9cfe9f6d136172a52ff6e01b3f83ba850c19 ]
+[ Upstream commit 12e36d98d3e5acf5fc57774e0a15906d55f30cb9 ]
 
-Initialize last_reset variable to INITIAL_JIFFIES, otherwise it is not
-possible to test H/W reset for first 5 minutes of system run.
+We currently support two NICs in FW version 29, namely 7265D and 3168.
+Out of these, only 7265D supports GEO SAR, so adjust the function that
+checks for it accordingly.
 
-Fixes: e403fa31ed71 ("rt2x00: add restart hw")
-Reported-and-tested-by: Jonathan Liu <net147@gmail.com>
-Signed-off-by: Stanislaw Gruszka <sgruszka@redhat.com>
-Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
+Signed-off-by: Luca Coelho <luciano.coelho@intel.com>
+Fixes: f5a47fae6aa3 ("iwlwifi: mvm: fix version check for GEO_TX_POWER_LIMIT support")
+Signed-off-by: Luca Coelho <luciano.coelho@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ralink/rt2x00/rt2x00debug.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/wireless/intel/iwlwifi/mvm/fw.c | 16 +++++++++-------
+ 1 file changed, 9 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/net/wireless/ralink/rt2x00/rt2x00debug.c b/drivers/net/wireless/ralink/rt2x00/rt2x00debug.c
-index ef5f515122125..faf588ce7bd5a 100644
---- a/drivers/net/wireless/ralink/rt2x00/rt2x00debug.c
-+++ b/drivers/net/wireless/ralink/rt2x00/rt2x00debug.c
-@@ -575,7 +575,7 @@ static ssize_t rt2x00debug_write_restart_hw(struct file *file,
- {
- 	struct rt2x00debug_intf *intf =	file->private_data;
- 	struct rt2x00_dev *rt2x00dev = intf->rt2x00dev;
--	static unsigned long last_reset;
-+	static unsigned long last_reset = INITIAL_JIFFIES;
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/fw.c b/drivers/net/wireless/intel/iwlwifi/mvm/fw.c
+index 8b0b464a1f213..c520f42d165cd 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/fw.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/fw.c
+@@ -887,15 +887,17 @@ static bool iwl_mvm_sar_geo_support(struct iwl_mvm *mvm)
+ 	 * firmware versions.  Unfortunately, we don't have a TLV API
+ 	 * flag to rely on, so rely on the major version which is in
+ 	 * the first byte of ucode_ver.  This was implemented
+-	 * initially on version 38 and then backported to29 and 17.
+-	 * The intention was to have it in 36 as well, but not all
+-	 * 8000 family got this feature enabled.  The 8000 family is
+-	 * the only one using version 36, so skip this version
+-	 * entirely.
++	 * initially on version 38 and then backported to 17.  It was
++	 * also backported to 29, but only for 7265D devices.  The
++	 * intention was to have it in 36 as well, but not all 8000
++	 * family got this feature enabled.  The 8000 family is the
++	 * only one using version 36, so skip this version entirely.
+ 	 */
+ 	return IWL_UCODE_SERIAL(mvm->fw->ucode_ver) >= 38 ||
+-	       IWL_UCODE_SERIAL(mvm->fw->ucode_ver) == 29 ||
+-	       IWL_UCODE_SERIAL(mvm->fw->ucode_ver) == 17;
++	       IWL_UCODE_SERIAL(mvm->fw->ucode_ver) == 17 ||
++	       (IWL_UCODE_SERIAL(mvm->fw->ucode_ver) == 29 &&
++		((mvm->trans->hw_rev & CSR_HW_REV_TYPE_MSK) ==
++		 CSR_HW_REV_TYPE_7265D));
+ }
  
- 	if (!rt2x00_has_cap_restart_hw(rt2x00dev))
- 		return -EOPNOTSUPP;
+ int iwl_mvm_get_sar_geo_profile(struct iwl_mvm *mvm)
 -- 
 2.20.1
 
