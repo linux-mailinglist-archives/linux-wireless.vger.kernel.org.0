@@ -2,36 +2,36 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 4AA9EE5D25
-	for <lists+linux-wireless@lfdr.de>; Sat, 26 Oct 2019 15:35:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E24DCE5CEB
+	for <lists+linux-wireless@lfdr.de>; Sat, 26 Oct 2019 15:33:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728189AbfJZNf2 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 26 Oct 2019 09:35:28 -0400
-Received: from mail.kernel.org ([198.145.29.99]:38760 "EHLO mail.kernel.org"
+        id S1728124AbfJZNd4 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 26 Oct 2019 09:33:56 -0400
+Received: from mail.kernel.org ([198.145.29.99]:39476 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727209AbfJZNRM (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 26 Oct 2019 09:17:12 -0400
+        id S1727531AbfJZNRv (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Sat, 26 Oct 2019 09:17:51 -0400
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 965F321655;
-        Sat, 26 Oct 2019 13:17:10 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 2F60A21D80;
+        Sat, 26 Oct 2019 13:17:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1572095831;
-        bh=2t4kefleT8FFtV7eoVBTsdG7Vg2fUXwzYOT4ZkZ0+lU=;
+        s=default; t=1572095871;
+        bh=Nw/PIM1BjEYj1uKwxNWpIozPv3bYm3XR3iJqsJno1EI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=i/yaQMwH335Y0j7eqlc9BPB80bfBySTbrx9m398LEUzF5MUid/E0Rm0SQmIsUkC/5
-         f8Zt37a+V2/31jZmVJ3Y3bCq9BdJ48og0WjOsIMTJ9proqXVKBwr5phHJZOYfahAm5
-         LxCCFAtX+2TZC5RnjmNvUxHHQxxT2oC8yDNT0E3U=
+        b=0vPu2tHzAruBId00QFJyMfZiEDGO6cPuhHnskQ3wISjBaEULY81dz9QJ6eeB1D/a3
+         +lXSfA27tKgPNGSwEt34fnL+deJK7il+gakcO9EvtAO4OzcCWiQd1s8CbF4JwX4nWE
+         XohtOPLhsAFZ2Eu94IntoSPN0hC/8GDP+fMUmhhs=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Navid Emamdoost <navid.emamdoost@gmail.com>,
-        Luca Coelho <luciano.coelho@intel.com>,
-        Sasha Levin <sashal@kernel.org>,
+Cc:     Miaoqing Pan <miaoqing@codeaurora.org>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        Sasha Levin <sashal@kernel.org>, ath10k@lists.infradead.org,
         linux-wireless@vger.kernel.org, netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.3 37/99] iwlwifi: pcie: fix memory leaks in iwl_pcie_ctxt_info_gen3_init
-Date:   Sat, 26 Oct 2019 09:14:58 -0400
-Message-Id: <20191026131600.2507-37-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.3 60/99] ath10k: fix latency issue for QCA988x
+Date:   Sat, 26 Oct 2019 09:15:21 -0400
+Message-Id: <20191026131600.2507-60-sashal@kernel.org>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20191026131600.2507-1-sashal@kernel.org>
 References: <20191026131600.2507-1-sashal@kernel.org>
@@ -44,101 +44,56 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Navid Emamdoost <navid.emamdoost@gmail.com>
+From: Miaoqing Pan <miaoqing@codeaurora.org>
 
-[ Upstream commit 0f4f199443faca715523b0659aa536251d8b978f ]
+[ Upstream commit d79749f7716d9dc32fa2d5075f6ec29aac63c76d ]
 
-In iwl_pcie_ctxt_info_gen3_init there are cases that the allocated dma
-memory is leaked in case of error.
+(kvalo: cherry picked from commit 1340cc631bd00431e2f174525c971f119df9efa1 in
+wireless-drivers-next to wireless-drivers as this a frequently reported
+regression)
 
-DMA memories prph_scratch, prph_info, and ctxt_info_gen3 are allocated
-and initialized to be later assigned to trans_pcie. But in any error case
-before such assignment the allocated memories should be released.
+Bad latency is found on QCA988x, the issue was introduced by
+commit 4504f0e5b571 ("ath10k: sdio: workaround firmware UART
+pin configuration bug"). If uart_pin_workaround is false, this
+change will set uart pin even if uart_print is false.
 
-First of such error cases happens when iwl_pcie_init_fw_sec fails.
-Current implementation correctly releases prph_scratch. But in two
-sunsequent error cases where dma_alloc_coherent may fail, such
-releases are missing.
+Tested HW: QCA9880
+Tested FW: 10.2.4-1.0-00037
 
-This commit adds release for prph_scratch when allocation for
-prph_info fails, and adds releases for prph_scratch and prph_info when
-allocation for ctxt_info_gen3 fails.
-
-Fixes: 2ee824026288 ("iwlwifi: pcie: support context information for 22560 devices")
-Signed-off-by: Navid Emamdoost <navid.emamdoost@gmail.com>
-Signed-off-by: Luca Coelho <luciano.coelho@intel.com>
+Fixes: 4504f0e5b571 ("ath10k: sdio: workaround firmware UART pin configuration bug")
+Signed-off-by: Miaoqing Pan <miaoqing@codeaurora.org>
+Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../intel/iwlwifi/pcie/ctxt-info-gen3.c       | 36 +++++++++++++------
- 1 file changed, 25 insertions(+), 11 deletions(-)
+ drivers/net/wireless/ath/ath10k/core.c | 15 +++++++++------
+ 1 file changed, 9 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/ctxt-info-gen3.c b/drivers/net/wireless/intel/iwlwifi/pcie/ctxt-info-gen3.c
-index 5e86783d616b6..ab48ed258b1d7 100644
---- a/drivers/net/wireless/intel/iwlwifi/pcie/ctxt-info-gen3.c
-+++ b/drivers/net/wireless/intel/iwlwifi/pcie/ctxt-info-gen3.c
-@@ -107,13 +107,9 @@ int iwl_pcie_ctxt_info_gen3_init(struct iwl_trans *trans,
+diff --git a/drivers/net/wireless/ath/ath10k/core.c b/drivers/net/wireless/ath/ath10k/core.c
+index dc45d16e8d214..383d4fa555a88 100644
+--- a/drivers/net/wireless/ath/ath10k/core.c
++++ b/drivers/net/wireless/ath/ath10k/core.c
+@@ -2118,12 +2118,15 @@ static int ath10k_init_uart(struct ath10k *ar)
+ 		return ret;
+ 	}
  
- 	/* allocate ucode sections in dram and set addresses */
- 	ret = iwl_pcie_init_fw_sec(trans, fw, &prph_scratch->dram);
--	if (ret) {
--		dma_free_coherent(trans->dev,
--				  sizeof(*prph_scratch),
--				  prph_scratch,
--				  trans_pcie->prph_scratch_dma_addr);
--		return ret;
--	}
-+	if (ret)
-+		goto err_free_prph_scratch;
-+
+-	if (!uart_print && ar->hw_params.uart_pin_workaround) {
+-		ret = ath10k_bmi_write32(ar, hi_dbg_uart_txpin,
+-					 ar->hw_params.uart_pin);
+-		if (ret) {
+-			ath10k_warn(ar, "failed to set UART TX pin: %d", ret);
+-			return ret;
++	if (!uart_print) {
++		if (ar->hw_params.uart_pin_workaround) {
++			ret = ath10k_bmi_write32(ar, hi_dbg_uart_txpin,
++						 ar->hw_params.uart_pin);
++			if (ret) {
++				ath10k_warn(ar, "failed to set UART TX pin: %d",
++					    ret);
++				return ret;
++			}
+ 		}
  
- 	/* Allocate prph information
- 	 * currently we don't assign to the prph info anything, but it would get
-@@ -121,16 +117,20 @@ int iwl_pcie_ctxt_info_gen3_init(struct iwl_trans *trans,
- 	prph_info = dma_alloc_coherent(trans->dev, sizeof(*prph_info),
- 				       &trans_pcie->prph_info_dma_addr,
- 				       GFP_KERNEL);
--	if (!prph_info)
--		return -ENOMEM;
-+	if (!prph_info) {
-+		ret = -ENOMEM;
-+		goto err_free_prph_scratch;
-+	}
- 
- 	/* Allocate context info */
- 	ctxt_info_gen3 = dma_alloc_coherent(trans->dev,
- 					    sizeof(*ctxt_info_gen3),
- 					    &trans_pcie->ctxt_info_dma_addr,
- 					    GFP_KERNEL);
--	if (!ctxt_info_gen3)
--		return -ENOMEM;
-+	if (!ctxt_info_gen3) {
-+		ret = -ENOMEM;
-+		goto err_free_prph_info;
-+	}
- 
- 	ctxt_info_gen3->prph_info_base_addr =
- 		cpu_to_le64(trans_pcie->prph_info_dma_addr);
-@@ -186,6 +186,20 @@ int iwl_pcie_ctxt_info_gen3_init(struct iwl_trans *trans,
- 		iwl_set_bit(trans, CSR_GP_CNTRL, CSR_AUTO_FUNC_INIT);
- 
- 	return 0;
-+
-+err_free_prph_info:
-+	dma_free_coherent(trans->dev,
-+			  sizeof(*prph_info),
-+			prph_info,
-+			trans_pcie->prph_info_dma_addr);
-+
-+err_free_prph_scratch:
-+	dma_free_coherent(trans->dev,
-+			  sizeof(*prph_scratch),
-+			prph_scratch,
-+			trans_pcie->prph_scratch_dma_addr);
-+	return ret;
-+
- }
- 
- void iwl_pcie_ctxt_info_gen3_free(struct iwl_trans *trans)
+ 		return 0;
 -- 
 2.20.1
 
