@@ -2,39 +2,39 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 69F18E5BA2
-	for <lists+linux-wireless@lfdr.de>; Sat, 26 Oct 2019 15:24:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4AA47E5D6A
+	for <lists+linux-wireless@lfdr.de>; Sat, 26 Oct 2019 15:37:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729646AbfJZNXJ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 26 Oct 2019 09:23:09 -0400
-Received: from mail.kernel.org ([198.145.29.99]:44940 "EHLO mail.kernel.org"
+        id S1726605AbfJZNQR (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 26 Oct 2019 09:16:17 -0400
+Received: from mail.kernel.org ([198.145.29.99]:37738 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1729631AbfJZNXH (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 26 Oct 2019 09:23:07 -0400
+        id S1726566AbfJZNQQ (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Sat, 26 Oct 2019 09:16:16 -0400
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 68F4A214DA;
-        Sat, 26 Oct 2019 13:23:05 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 6B83721897;
+        Sat, 26 Oct 2019 13:16:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1572096186;
-        bh=EW4/IRrOJwj5qEvaxtF3QoKN+4u+9FMx9SWDEIYwjus=;
+        s=default; t=1572095776;
+        bh=NQ0FnJ1VBANMVsMUTfmcHRHbQvXmLQjJYYhHODkSERc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=SUOV1bTgQMJ825LYwXZQL+bonuY7I1Di7BuLgK6xIiWVZf6M/HbLzqgb7ngLLZxnu
-         nvibuVSsmUts1eFgWn9keKn0He9t+WuC6oC6xFNH/roX322YLqrNDK4g3roapdqzhs
-         3p7Y6F+zpDgkVYbrxs0VXgE5dBrb7wyAwcAfWjC0=
+        b=p11wgfF/ez48B8UA/kQZYySvqHW6RAwkVFOSTsY3rlUY5sihPg3UiTzBUcp/XJvD/
+         KMzFKYcinGhAQ1NuzMWN0GY9AV/CdVPDERJx/JNxHZa06d65RZOW2HcgZQSl7Zialv
+         QYnBPx7CFfHU7iLJnYEpsy+jg7ZYP0zO0iVKwT54=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Johannes Berg <johannes.berg@intel.com>,
-        Luca Coelho <luciano.coelho@intel.com>,
+Cc:     Michael Vassernis <michael.vassernis@tandemg.com>,
+        Johannes Berg <johannes.berg@intel.com>,
         Sasha Levin <sashal@kernel.org>,
         linux-wireless@vger.kernel.org, netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.4 03/17] mac80211: accept deauth frames in IBSS mode
-Date:   Sat, 26 Oct 2019 09:22:47 -0400
-Message-Id: <20191026132302.4622-3-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.3 07/99] mac80211_hwsim: fix incorrect dev_alloc_name failure goto
+Date:   Sat, 26 Oct 2019 09:14:28 -0400
+Message-Id: <20191026131600.2507-7-sashal@kernel.org>
 X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20191026132302.4622-1-sashal@kernel.org>
-References: <20191026132302.4622-1-sashal@kernel.org>
+In-Reply-To: <20191026131600.2507-1-sashal@kernel.org>
+References: <20191026131600.2507-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -44,47 +44,36 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Johannes Berg <johannes.berg@intel.com>
+From: Michael Vassernis <michael.vassernis@tandemg.com>
 
-[ Upstream commit 95697f9907bfe3eab0ef20265a766b22e27dde64 ]
+[ Upstream commit 313c3fe9c2348e7147eca38bb446f295b45403a0 ]
 
-We can process deauth frames and all, but we drop them very
-early in the RX path today - this could never have worked.
+If dev_alloc_name fails, hwsim_mon's memory allocated in alloc_netdev
+needs to be freed.
+Change goto command in dev_alloc_name failure to out_free_mon in
+order to perform free_netdev.
 
-Fixes: 2cc59e784b54 ("mac80211: reply to AUTH with DEAUTH if sta allocation fails in IBSS")
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Luca Coelho <luciano.coelho@intel.com>
-Link: https://lore.kernel.org/r/20191004123706.15768-2-luca@coelho.fi
+Signed-off-by: Michael Vassernis <michael.vassernis@tandemg.com>
+Link: https://lore.kernel.org/r/20191003073049.3760-1-michael.vassernis@tandemg.com
 Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mac80211/rx.c | 11 ++++++++++-
- 1 file changed, 10 insertions(+), 1 deletion(-)
+ drivers/net/wireless/mac80211_hwsim.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/mac80211/rx.c b/net/mac80211/rx.c
-index 3b8e2f97d8151..2b7975c4dac7b 100644
---- a/net/mac80211/rx.c
-+++ b/net/mac80211/rx.c
-@@ -3040,9 +3040,18 @@ ieee80211_rx_h_mgmt(struct ieee80211_rx_data *rx)
- 	case cpu_to_le16(IEEE80211_STYPE_PROBE_RESP):
- 		/* process for all: mesh, mlme, ibss */
- 		break;
-+	case cpu_to_le16(IEEE80211_STYPE_DEAUTH):
-+		if (is_multicast_ether_addr(mgmt->da) &&
-+		    !is_broadcast_ether_addr(mgmt->da))
-+			return RX_DROP_MONITOR;
-+
-+		/* process only for station/IBSS */
-+		if (sdata->vif.type != NL80211_IFTYPE_STATION &&
-+		    sdata->vif.type != NL80211_IFTYPE_ADHOC)
-+			return RX_DROP_MONITOR;
-+		break;
- 	case cpu_to_le16(IEEE80211_STYPE_ASSOC_RESP):
- 	case cpu_to_le16(IEEE80211_STYPE_REASSOC_RESP):
--	case cpu_to_le16(IEEE80211_STYPE_DEAUTH):
- 	case cpu_to_le16(IEEE80211_STYPE_DISASSOC):
- 		if (is_multicast_ether_addr(mgmt->da) &&
- 		    !is_broadcast_ether_addr(mgmt->da))
+diff --git a/drivers/net/wireless/mac80211_hwsim.c b/drivers/net/wireless/mac80211_hwsim.c
+index 772e54f0696fd..141508e01c31f 100644
+--- a/drivers/net/wireless/mac80211_hwsim.c
++++ b/drivers/net/wireless/mac80211_hwsim.c
+@@ -3929,7 +3929,7 @@ static int __init init_mac80211_hwsim(void)
+ 	err = dev_alloc_name(hwsim_mon, hwsim_mon->name);
+ 	if (err < 0) {
+ 		rtnl_unlock();
+-		goto out_free_radios;
++		goto out_free_mon;
+ 	}
+ 
+ 	err = register_netdevice(hwsim_mon);
 -- 
 2.20.1
 
