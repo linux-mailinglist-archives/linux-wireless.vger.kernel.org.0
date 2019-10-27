@@ -2,90 +2,74 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 10F75E64CE
-	for <lists+linux-wireless@lfdr.de>; Sun, 27 Oct 2019 19:16:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5DD1BE6521
+	for <lists+linux-wireless@lfdr.de>; Sun, 27 Oct 2019 20:53:52 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727801AbfJ0SQJ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 27 Oct 2019 14:16:09 -0400
-Received: from mail-io1-f65.google.com ([209.85.166.65]:45741 "EHLO
-        mail-io1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727069AbfJ0SQJ (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 27 Oct 2019 14:16:09 -0400
-Received: by mail-io1-f65.google.com with SMTP id s17so819492iol.12;
-        Sun, 27 Oct 2019 11:16:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id;
-        bh=EqTKYGxwRtgKou170QTjCapfCQnW5veBmjxT9IVfvCE=;
-        b=MfuI91WKKqXR97ZU9J9jt2dh1Z65+IKMClcwi0TkJ2wvdYZx+Er7goJsODxQWJNXIY
-         npSrebR5opDlXtLiiGqJ0gL2+kQbGDaXzI7ozEnsrspa9cV/ESQhBWlk10A3DepJTAAn
-         ATxiziWlnMse+DR5gQVx7+iSK8uJCMYeI/qbBfc/UmvvVjbiPyHl+sR7HCQGG0xQwhmQ
-         moOwNhbi/WDBxhyZritiE5Y4qYuxt7bHzevwLAb0r+NRg6ItntbyOJSEWcQfR3KfrDHF
-         f+0pCaNgRkFCyUUX9wpP+Nln5Yl8bu2BE8vcMxOczB5JxZPL+9cWlLvKJ0EoiXF2eg3L
-         M8Hg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id;
-        bh=EqTKYGxwRtgKou170QTjCapfCQnW5veBmjxT9IVfvCE=;
-        b=D1zWZwvOiQCnItiT5QrH0FR1FtC5ThXklW5KIRI23blmf+PM5LZ902OQsQxEd/aWW/
-         KCYWkOqShcSkUc7wzUx2Ab9T35/eUXABLnSu4d7D5/mgINE9mVibeq8BJncUA9QbNUmz
-         OhP0YYxtqm9idBqj4VZo/y2dXosRpzjOhwpwPVZln4maj1YphjQQDtkmaVK8Usxlo7+G
-         BC73o0+ivpbk6SSwEvxpOczrqVC/3ebErTvX0Icq4digb7Qn+zf9tv+9LzJd5i3uQp9f
-         QJ3aCHOdvRp8O9oaRa7T5UlcaMYJ4ehm7R7KAp9xq/paLlh78m24KUZYKs3UjNMBqsTg
-         PGgQ==
-X-Gm-Message-State: APjAAAUGBXg7Sr1SEAmXKJilQtwLg9ms6olBBX0x6NSuI7nTrmzvX36F
-        VV0vmtsPLWWuk+MAFXLBt9o=
-X-Google-Smtp-Source: APXvYqzWPE2pA6JCuu+MmemrSKfrvLtp4hSCnODwCRO+642Ahn7R0MCo38lHNFUzEigDE0ZFt44wIQ==
-X-Received: by 2002:a02:3541:: with SMTP id y1mr13912734jae.65.1572200168642;
-        Sun, 27 Oct 2019 11:16:08 -0700 (PDT)
-Received: from cs-dulles.cs.umn.edu (cs-dulles.cs.umn.edu. [128.101.35.54])
-        by smtp.googlemail.com with ESMTPSA id i17sm326316ioj.21.2019.10.27.11.16.07
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 27 Oct 2019 11:16:08 -0700 (PDT)
-From:   Navid Emamdoost <navid.emamdoost@gmail.com>
-Cc:     emamd001@umn.edu, smccaman@umn.edu, kjlu@umn.edu,
-        Navid Emamdoost <navid.emamdoost@gmail.com>,
-        Johannes Berg <johannes@sipsolutions.net>,
-        "David S. Miller" <davem@davemloft.net>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: [PATCH] cfg80211: Fix memory leak in cfg80211_inform_single_bss_frame_data
-Date:   Sun, 27 Oct 2019 13:15:59 -0500
-Message-Id: <20191027181600.11149-1-navid.emamdoost@gmail.com>
-X-Mailer: git-send-email 2.17.1
-To:     unlisted-recipients:; (no To-header on input)
+        id S1727377AbfJ0Txa (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 27 Oct 2019 15:53:30 -0400
+Received: from mail.kernel.org ([198.145.29.99]:42342 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726444AbfJ0Txa (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Sun, 27 Oct 2019 15:53:30 -0400
+Received: from localhost.localdomain (unknown [151.66.57.46])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id C2E4020650;
+        Sun, 27 Oct 2019 19:53:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1572206009;
+        bh=M+gVnQkWQ5XjtBjEueWoMFYUbiTNJWLOmZyYc2Us3CI=;
+        h=From:To:Cc:Subject:Date:From;
+        b=Q7p+FzO/MLCpfvMOZhs4WEN1X2N6xQlE+FR6FVoF21DDl+h/2bIy9jWYToQSZVaFW
+         LrvEtm1j167iYBm+qxQlTAKSHnPw0cLf7Ha52i1M4rusqE7q75XDdSKTv8qrBiTLRM
+         Y8JKSI5BKcrBEFd00RdvEq+x+Qk0FeQAwGLBgYLw=
+From:   Lorenzo Bianconi <lorenzo@kernel.org>
+To:     kvalo@codeaurora.org
+Cc:     linux-wireless@vger.kernel.org, nbd@nbd.name, hkallweit1@gmail.com,
+        sgruszka@redhat.com, lorenzo.bianconi@redhat.com,
+        oleksandr@natalenko.name, netdev@vger.kernel.org
+Subject: [PATCH v3 wireless-drivers 0/2] fix mt76x2e hangs on U7612E mini-pcie
+Date:   Sun, 27 Oct 2019 20:53:07 +0100
+Message-Id: <cover.1572204430.git.lorenzo@kernel.org>
+X-Mailer: git-send-email 2.21.0
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-In the implementation of cfg80211_inform_single_bss_frame_data() the
-allocated memory for ies is leaked in case of an error. Release ies if
-cfg80211_bss_update() fails.
+Various mt76x2e issues have been reported on U7612E mini-pcie card [1].
+On U7612E-H1 PCIE_ASPM causes continuous mcu hangs and instability and
+so patch 1/2 disable it by default.
+Moreover mt76 does not properly unmap dma buffers for non-linear skbs.
+This issue may result in hw hangs if the system relies on IOMMU.
+Patch 2/2 fix the problem properly unmapping data fragments on
+non-linear skbs. 
 
-Fixes: 2a5193119269 ("cfg80211/nl80211: scanning (and mac80211 update to use it)")
-Signed-off-by: Navid Emamdoost <navid.emamdoost@gmail.com>
----
- net/wireless/scan.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+Changes since v2:
+- fix compilation error if PCI support is not compiled
 
-diff --git a/net/wireless/scan.c b/net/wireless/scan.c
-index aef240fdf8df..fae5af24f668 100644
---- a/net/wireless/scan.c
-+++ b/net/wireless/scan.c
-@@ -1856,8 +1856,10 @@ cfg80211_inform_single_bss_frame_data(struct wiphy *wiphy,
- 		wiphy->max_adj_channel_rssi_comp;
- 	res = cfg80211_bss_update(wiphy_to_rdev(wiphy), &tmp, signal_valid,
- 				  jiffies);
--	if (!res)
-+	if (!res) {
-+		kfree(ies);
- 		return NULL;
-+	}
- 
- 	if (channel->band == NL80211_BAND_60GHZ) {
- 		bss_type = res->pub.capability & WLAN_CAPABILITY_DMG_TYPE_MASK;
+Changes since v1:
+- simplify buf0 unmap condition
+- use IS_ENABLED(CONFIG_PCIEASPM) instead of ifdef CONFIG_PCIEASPM
+- check pci_disable_link_state return value
+
+[1]: https://lore.kernel.org/netdev/deaafa7a3e9ea2111ebb5106430849c6@natalenko.name/
+
+
+Lorenzo Bianconi (2):
+  mt76: mt76x2e: disable pcie_aspm by default
+  mt76: dma: fix buffer unmap with non-linear skbs
+
+ drivers/net/wireless/mediatek/mt76/Makefile   |  2 +
+ drivers/net/wireless/mediatek/mt76/dma.c      |  6 ++-
+ drivers/net/wireless/mediatek/mt76/mt76.h     |  6 ++-
+ .../net/wireless/mediatek/mt76/mt76x2/pci.c   |  2 +
+ drivers/net/wireless/mediatek/mt76/pci.c      | 46 +++++++++++++++++++
+ 5 files changed, 58 insertions(+), 4 deletions(-)
+ create mode 100644 drivers/net/wireless/mediatek/mt76/pci.c
+
 -- 
-2.17.1
+2.21.0
 
