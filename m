@@ -2,157 +2,86 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id EEE16E62A8
-	for <lists+linux-wireless@lfdr.de>; Sun, 27 Oct 2019 14:28:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C4A9AE64AA
+	for <lists+linux-wireless@lfdr.de>; Sun, 27 Oct 2019 18:47:03 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726817AbfJ0N23 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 27 Oct 2019 09:28:29 -0400
-Received: from smtp.codeaurora.org ([198.145.29.96]:49548 "EHLO
-        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726549AbfJ0N23 (ORCPT
+        id S1727775AbfJ0RqM (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 27 Oct 2019 13:46:12 -0400
+Received: from mail-ot1-f68.google.com ([209.85.210.68]:36998 "EHLO
+        mail-ot1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727025AbfJ0RqM (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 27 Oct 2019 09:28:29 -0400
-Received: by smtp.codeaurora.org (Postfix, from userid 1000)
-        id 0ACB460D52; Sun, 27 Oct 2019 13:28:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1572182908;
-        bh=9ZZre0NuSoDeFDxf4oUJniz9M2r5yh3TTjgFWZaZdtA=;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=LXnDmbXbqE5Pn5kUsfYvei2OaHKhD9g7VEIlFyzgpJSakPUjhAHlisivcsyNsUUMp
-         LRBC+AltQKLPlam6d7Ppk5YBTrfeUQ166iiN4+Om/tAcCAKLocNdHjRK+B7Te0+5lg
-         DVxjEb+a8iuDLb+GmErt/FyrqG+jy4IaBsKrHqaI=
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        pdx-caf-mail.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.7 required=2.0 tests=ALL_TRUSTED,BAYES_00,
-        DKIM_INVALID,DKIM_SIGNED,SPF_NONE autolearn=no autolearn_force=no
-        version=3.4.0
-Received: from potku.adurom.net (unknown [88.114.240.156])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        (Authenticated sender: kvalo@smtp.codeaurora.org)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 0BFC760BFA;
-        Sun, 27 Oct 2019 13:28:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1572182907;
-        bh=9ZZre0NuSoDeFDxf4oUJniz9M2r5yh3TTjgFWZaZdtA=;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=KWV/6SWhNivItb8uhSpxeULt5KHH5YM8fcN677+JgVRn1xDrGiB49kWgNnocXNKUr
-         tw0hh5CheuFdBTGr7bRU9WcYO49ttETTT9Szdz7i8AxkIweHHpeAkj7ZirBr7NOGc9
-         Jevhgcba+2cAAsP/MBO+fEmZ1yWhKyMoPkXIMy2k=
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 0BFC760BFA
-Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
-From:   Kalle Valo <kvalo@codeaurora.org>
-To:     Rob Herring <robh@kernel.org>
-Cc:     devicetree@vger.kernel.org, linux-wireless@vger.kernel.org,
-        ath11k@lists.infradead.org
-Subject: Re: [PATCH v2 01/49] dt: bindings: net: add qcom,ath11k.yaml
-References: <1571565847-10338-1-git-send-email-kvalo@codeaurora.org>
-        <1571565847-10338-2-git-send-email-kvalo@codeaurora.org>
-        <20191025213028.GA5117@bogus>
-Date:   Sun, 27 Oct 2019 15:28:23 +0200
-In-Reply-To: <20191025213028.GA5117@bogus> (Rob Herring's message of "Fri, 25
-        Oct 2019 16:30:28 -0500")
-Message-ID: <874kzu9v2g.fsf@kamboji.qca.qualcomm.com>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
+        Sun, 27 Oct 2019 13:46:12 -0400
+Received: by mail-ot1-f68.google.com with SMTP id 53so5284730otv.4;
+        Sun, 27 Oct 2019 10:46:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=sender:subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=xEy3TN5x5/gYla+irAZsZ6AR5hkYO/R9cAnyhZadJDg=;
+        b=LPwzPvB9k8mqey+YGpTQ6S36Qx0exXD+8AzvsgLrNAkE4olYCyufUYCuIJzgVuVhV/
+         HwvmGYLs9LY5M2G/gFdj3Ici4IwwyGLxZSPTJLThK6vlOC4srQV6f1HdOzdwgSYXrmxK
+         xoDuJjPCO26ElWRtrNIB2OOyDdn5hXgyG20ajGWQY0qjWSmTOs2BtQU3DNPa3t+sfHgO
+         fqckWg+s7Wr/8flPny/8e6OUka30bRmd5+IqpN3iayYU0RwvkklXseFo0HPG2j2FXKlL
+         96GAsYeKNPnJKXjKgtnm1r5/SkAxGMeq9aF57APXdkuhAId5wFuIxcG9aFl0zaeIiZbb
+         80mA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:sender:subject:to:cc:references:from:message-id
+         :date:user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=xEy3TN5x5/gYla+irAZsZ6AR5hkYO/R9cAnyhZadJDg=;
+        b=e/abgiP6qBAxrRgCSt7Vh+FmjlKQ4cfxGpVTcpkLb8qHCCO/elGYKtZ6MPglVKwtwN
+         rnn6ynudI2t9aUn4OXwnDC396xKjOVtB1V+VpO1VKxzTXrzenso/6GGO/jQBPPS/Y0ow
+         QeXp16UrYdOkPj4GSuJQKZ98VcX/6R80IZudyKmhDXLk33c7KE7FlZGWo1ACnUHyeJV/
+         4v4xqNfLnQyMpZkYdOPjIezJvANOxajn+fp8dxO7t/TREtzd2LxcKyIDkKq6PouhG+cL
+         NdbzJQ6/yDhozaCBUjHjdWkOJC5M4Lv59cXitCaktuPP3MhYnghEWMSz0LZQ4KhZwipM
+         +Z3Q==
+X-Gm-Message-State: APjAAAWlWmpANi79urkI3gWnEIbnZLcYQkwyLse1MH+WwrTeAGsZ93ET
+        ryBMsBvn0MFyVBQ1lbOgCxA=
+X-Google-Smtp-Source: APXvYqzoaHRM3IGVKcPhpxaHhfefPQI2rna6kX88/tP6OsaCMilIEWouzS52etJYBw5VZ+iYnNbTMQ==
+X-Received: by 2002:a9d:7d09:: with SMTP id v9mr10685593otn.292.1572198371402;
+        Sun, 27 Oct 2019 10:46:11 -0700 (PDT)
+Received: from [192.168.1.112] (cpe-24-31-245-230.kc.res.rr.com. [24.31.245.230])
+        by smtp.gmail.com with ESMTPSA id y18sm2793129oto.2.2019.10.27.10.46.09
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sun, 27 Oct 2019 10:46:10 -0700 (PDT)
+Subject: Re: [PATCH] net: wireless: realtek: rtlwifi: rtl8192c:Drop condition
+ with no effect
+To:     Saurav Girepunje <saurav.girepunje@gmail.com>, pkshih@realtek.com,
+        kvalo@codeaurora.org, davem@davemloft.net,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Cc:     saurav.girepunje@hotmail.com
+References: <20191027062255.GA9362@saurav>
+From:   Larry Finger <Larry.Finger@lwfinger.net>
+Message-ID: <4d2b5e56-48ba-4af5-e7c6-b6171210cb32@lwfinger.net>
+Date:   Sun, 27 Oct 2019 12:46:09 -0500
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.1.2
 MIME-Version: 1.0
-Content-Type: text/plain
+In-Reply-To: <20191027062255.GA9362@saurav>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Rob Herring <robh@kernel.org> writes:
+On 10/27/19 1:23 AM, Saurav Girepunje wrote:
+> As the "else if" and "else" branch body are identical the condition
+> has no effect. So drop the "else if" condition.
+> 
+> Signed-off-by: Saurav Girepunje <saurav.girepunje@gmail.com>
+> ---
 
-> On Sun, Oct 20, 2019 at 01:03:19PM +0300, Kalle Valo wrote:
->> ath11k is a driver for Qualcomm IEEE 802.11ax devices. Add a
->> bindings document for the driver, first documenting IPQ8074 which is the
->> only device ath11k currently supports.
->> 
->> Signed-off-by: Anilkumar Kolli <akolli@codeaurora.org>
->> Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
->> ---
->>  .../bindings/net/wireless/qcom,ath11k.yaml         | 277 +++++++++++++++++++++
->>  1 file changed, 277 insertions(+)
->> 
->> diff --git
->> a/Documentation/devicetree/bindings/net/wireless/qcom,ath11k.yaml
->> b/Documentation/devicetree/bindings/net/wireless/qcom,ath11k.yaml
->> new file mode 100644
->> index 000000000000..5d25542f85f8
->> --- /dev/null
->> +++ b/Documentation/devicetree/bindings/net/wireless/qcom,ath11k.yaml
->> @@ -0,0 +1,277 @@
->> +# SPDX-License-Identifier: BSD-3-Clause-Clear
->
-> (GPL-2.0-only OR BSD-2-Clause) please.
+The patch is OK; however, the subject should be: rtlwifi: rtl8192c-common: Drop ...
 
-I chose BSD-3-Clause-Clear because ath11k uses that license and I would
-prefer to use the same license throughout the driver. Also it's
-categorised as a preferred license:
+We do not use the directory tree in the subject. By convention, it is the driver 
+directory and the driver name. It is common for the driver name to match that of 
+the top-level directory, but not in this case.
 
-https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/LICENSES/preferred
+Thanks,
 
-Any specific reason why you want to change the license?
-
->> +# Copyright (c) 2018-2019 The Linux Foundation. All rights reserved.
->> +
->> +%YAML 1.2
->> +---
->> +$id: http://devicetree.org/schemas/net/wireless/qcom,ath11k.yaml#
->> +$schema: http://devicetree.org/meta-schemas/core.yaml#
->> +
->> +title: Qualcomm Technologies ath11k wireless devices Generic Binding
->> +
->> +maintainers:
->> +  - Kalle Valo <kvalo@codeaurora.org>
->> +
->> +description: |
->> + These are dt entries used on ath11k driver. AHB based ipq8074 uses
->> most of the properties defined in this doc.
->
-> Describe the h/w, not what the document is.
->
-> Wrap your lines.
->
->> +
->> +properties:
->> +  compatible:
->> +    const: "qcom,ipq8074-wifi"
->
-> Drop quotes.
->
->> +
->> +  reg:
->> +    description: Address and length of the register set for the device
->
-> Don't need a description.
->
->> +    maxItems: 1
->> +
->> +  interrupts:
->> +    minItems: 53
->> +    maxItems: 53
->
-> Assuming the list below has 53 entries min/maxItems is implied.
-
-Will fix these.
-
->> +examples:
->> +  - |
->> +
->> +    q6v5_wcss: q6v5_wcss@CD00000 {
->> +    	compatible = "qcom,ipq8074-wcss-pil";
->> +    	reg = <0xCD00000 0x4040>,
->> +    	      <0x4AB000 0x20>;
->> +    	reg-names = "qdsp6",
->> +    		    "rmb";
->
-> Mixed tabs and spaces. YAML needs spaces (at least at the beginning), so 
-> just use spaces. More below...
-
-Ok, I'll remove all the tabs from the doc. Thanks for the review!
-
--- 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+Larry
