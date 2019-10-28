@@ -2,191 +2,769 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 0ED4EE76A1
-	for <lists+linux-wireless@lfdr.de>; Mon, 28 Oct 2019 17:38:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E8CBBE7786
+	for <lists+linux-wireless@lfdr.de>; Mon, 28 Oct 2019 18:22:58 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2403772AbfJ1QiY (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 28 Oct 2019 12:38:24 -0400
-Received: from mail.kernel.org ([198.145.29.99]:47858 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1733084AbfJ1QiY (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 28 Oct 2019 12:38:24 -0400
-Received: from localhost.localdomain.com (unknown [176.229.194.15])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 850F920717;
-        Mon, 28 Oct 2019 16:38:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1572280702;
-        bh=Yz7KYZbCOe6uI59yda9EgTcgedQO2L0GoO8bwxpW27Q=;
-        h=From:To:Cc:Subject:Date:From;
-        b=oNfNcpw4lJn+ifoY4NzqC9MiDxzpNDlzk6fhPy0YoQqcMik2fn0BkNS0Z+eY+nu/A
-         zmJ+udU37osHjbHxPQ4vTslvZQPMxvDWEd3VsQ8icqrbr01kbi4c2gPE2ggxKnZze1
-         wbRWV+VsuO+DokLXm92pKQ/3yxal+Otwe3IsH4+Y=
-From:   Lorenzo Bianconi <lorenzo@kernel.org>
-To:     nbd@nbd.name
-Cc:     linux-wireless@vger.kernel.org, lorenzo.bianconi@redhat.com,
-        sgruszka@redhat.com
-Subject: [PATCH] mt76: mt76u: rely on a dedicated stats workqueue
-Date:   Mon, 28 Oct 2019 17:38:05 +0100
-Message-Id: <22f6f2caa55b11f4ccf3ee9adca339e5dcd51232.1572280127.git.lorenzo@kernel.org>
-X-Mailer: git-send-email 2.21.0
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+        id S2404107AbfJ1RW5 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 28 Oct 2019 13:22:57 -0400
+Received: from alexa-out-ams-02.qualcomm.com ([185.23.61.163]:2717 "EHLO
+        alexa-out-ams-02.qualcomm.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1730212AbfJ1RW5 (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 28 Oct 2019 13:22:57 -0400
+Received: from ironmsg01-ams.qualcomm.com ([10.251.56.2])
+  by alexa-out-ams-02.qualcomm.com with ESMTP; 28 Oct 2019 18:22:50 +0100
+IronPort-SDR: ++i18f7GvkFTNwlM53M0mFw9LmOK1fF8jlL+kDmaFd4MWXieKoEt3C+yqH6RKVIbVvntd7kdeQ
+ pZXsQYhQjQtIybsm5O+jTMGsGOYC2qDKc=
+Received: from lx-merez1.mea.qualcomm.com ([10.18.173.103])
+  by ironmsg01-ams.qualcomm.com with ESMTP; 28 Oct 2019 18:22:44 +0100
+From:   Maya Erez <merez@codeaurora.org>
+To:     Kalle Valo <kvalo@codeaurora.org>
+Cc:     Lior David <liord@codeaurora.org>, linux-wireless@vger.kernel.org,
+        wil6210@qti.qualcomm.com, Maya Erez <merez@codeaurora.org>
+Subject: [PATCH] wil6210: add SPDX license identifiers
+Date:   Mon, 28 Oct 2019 19:22:41 +0200
+Message-Id: <1572283361-22874-1-git-send-email-merez@codeaurora.org>
+X-Mailer: git-send-email 1.9.1
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-rate controller and throughput are very sensitive to tx status timing.
-In order to improve performances when the system is heavily loaded,
-substitute stat_work delayed_work with a regular work_struct and create
-a mt76u dedicated workqueue for tx status reporting
+From: Lior David <liord@codeaurora.org>
 
-Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+Change all files to add SPDX license identifiers and
+remove license text.
+This is only an administrative change, there is no change
+in actual license or copyright for any file.
+
+Signed-off-by: Lior David <liord@codeaurora.org>
+Signed-off-by: Maya Erez <merez@codeaurora.org>
 ---
- drivers/net/wireless/mediatek/mt76/mt76.h     |  4 ++-
- .../net/wireless/mediatek/mt76/mt76x0/usb.c   |  2 ++
- .../net/wireless/mediatek/mt76/mt76x2/usb.c   |  2 ++
- drivers/net/wireless/mediatek/mt76/usb.c      | 27 ++++++++++++-------
- 4 files changed, 25 insertions(+), 10 deletions(-)
+ drivers/net/wireless/ath/wil6210/boot_loader.h    | 13 +------------
+ drivers/net/wireless/ath/wil6210/cfg80211.c       | 13 +------------
+ drivers/net/wireless/ath/wil6210/debug.c          | 13 +------------
+ drivers/net/wireless/ath/wil6210/debugfs.c        | 13 +------------
+ drivers/net/wireless/ath/wil6210/ethtool.c        | 13 +------------
+ drivers/net/wireless/ath/wil6210/fw.c             | 13 +------------
+ drivers/net/wireless/ath/wil6210/fw.h             | 13 +------------
+ drivers/net/wireless/ath/wil6210/fw_inc.c         | 13 +------------
+ drivers/net/wireless/ath/wil6210/interrupt.c      | 13 +------------
+ drivers/net/wireless/ath/wil6210/main.c           | 13 +------------
+ drivers/net/wireless/ath/wil6210/netdev.c         | 13 +------------
+ drivers/net/wireless/ath/wil6210/p2p.c            | 13 +------------
+ drivers/net/wireless/ath/wil6210/pcie_bus.c       | 13 +------------
+ drivers/net/wireless/ath/wil6210/pm.c             | 13 +------------
+ drivers/net/wireless/ath/wil6210/pmc.c            | 13 +------------
+ drivers/net/wireless/ath/wil6210/pmc.h            | 17 ++---------------
+ drivers/net/wireless/ath/wil6210/rx_reorder.c     | 13 +------------
+ drivers/net/wireless/ath/wil6210/trace.c          | 13 +------------
+ drivers/net/wireless/ath/wil6210/trace.h          | 13 +------------
+ drivers/net/wireless/ath/wil6210/txrx.c           | 13 +------------
+ drivers/net/wireless/ath/wil6210/txrx.h           | 13 +------------
+ drivers/net/wireless/ath/wil6210/txrx_edma.c      | 13 +------------
+ drivers/net/wireless/ath/wil6210/txrx_edma.h      | 13 +------------
+ drivers/net/wireless/ath/wil6210/wil6210.h        | 13 +------------
+ drivers/net/wireless/ath/wil6210/wil_crash_dump.c | 13 +------------
+ drivers/net/wireless/ath/wil6210/wil_platform.c   | 15 ++-------------
+ drivers/net/wireless/ath/wil6210/wil_platform.h   | 13 +------------
+ drivers/net/wireless/ath/wil6210/wmi.c            | 13 +------------
+ drivers/net/wireless/ath/wil6210/wmi.h            | 13 +------------
+ 29 files changed, 31 insertions(+), 352 deletions(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76.h b/drivers/net/wireless/mediatek/mt76/mt76.h
-index ccbc05d8e96d..5644df793450 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt76.h
-@@ -390,7 +390,8 @@ struct mt76_usb {
- 	};
+diff --git a/drivers/net/wireless/ath/wil6210/boot_loader.h b/drivers/net/wireless/ath/wil6210/boot_loader.h
+index d32c1f4..a8a43c2 100644
+--- a/drivers/net/wireless/ath/wil6210/boot_loader.h
++++ b/drivers/net/wireless/ath/wil6210/boot_loader.h
+@@ -1,17 +1,6 @@
++/* SPDX-License-Identifier: ISC */
+ /* Copyright (c) 2015 Qualcomm Atheros, Inc.
+  * Copyright (c) 2018, The Linux Foundation. All rights reserved.
+- *
+- * Permission to use, copy, modify, and/or distribute this software for any
+- * purpose with or without fee is hereby granted, provided that the above
+- * copyright notice and this permission notice appear in all copies.
+- *
+- * THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
+- * WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
+- * MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
+- * ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+- * WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
+- * ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
+- * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
+  */
  
- 	struct tasklet_struct rx_tasklet;
--	struct delayed_work stat_work;
-+	struct workqueue_struct *stat_wq;
-+	struct work_struct stat_work;
+ /* This file contains the definitions for the boot loader
+diff --git a/drivers/net/wireless/ath/wil6210/cfg80211.c b/drivers/net/wireless/ath/wil6210/cfg80211.c
+index c70854e..7d6f1442 100644
+--- a/drivers/net/wireless/ath/wil6210/cfg80211.c
++++ b/drivers/net/wireless/ath/wil6210/cfg80211.c
+@@ -1,18 +1,7 @@
++// SPDX-License-Identifier: ISC
+ /*
+  * Copyright (c) 2012-2017 Qualcomm Atheros, Inc.
+  * Copyright (c) 2018-2019, The Linux Foundation. All rights reserved.
+- *
+- * Permission to use, copy, modify, and/or distribute this software for any
+- * purpose with or without fee is hereby granted, provided that the above
+- * copyright notice and this permission notice appear in all copies.
+- *
+- * THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
+- * WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
+- * MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
+- * ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+- * WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
+- * ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
+- * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
+  */
  
- 	u8 out_ep[__MT_EP_OUT_MAX];
- 	u8 in_ep[__MT_EP_IN_MAX];
-@@ -825,6 +826,7 @@ int mt76u_vendor_request(struct mt76_dev *dev, u8 req,
- void mt76u_single_wr(struct mt76_dev *dev, const u8 req,
- 		     const u16 offset, const u32 val);
- int mt76u_init(struct mt76_dev *dev, struct usb_interface *intf);
-+void mt76u_deinit(struct mt76_dev *dev);
- int mt76u_alloc_queues(struct mt76_dev *dev);
- void mt76u_stop_tx(struct mt76_dev *dev);
- void mt76u_stop_rx(struct mt76_dev *dev);
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76x0/usb.c b/drivers/net/wireless/mediatek/mt76/mt76x0/usb.c
-index b9fd41433106..a8ab8df075c3 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76x0/usb.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt76x0/usb.c
-@@ -273,6 +273,7 @@ static int mt76x0u_probe(struct usb_interface *usb_intf,
- err:
- 	usb_set_intfdata(usb_intf, NULL);
- 	usb_put_dev(interface_to_usbdev(usb_intf));
-+	mt76u_deinit(&dev->mt76);
+ #include <linux/etherdevice.h>
+diff --git a/drivers/net/wireless/ath/wil6210/debug.c b/drivers/net/wireless/ath/wil6210/debug.c
+index a9befb9..396c94c 100644
+--- a/drivers/net/wireless/ath/wil6210/debug.c
++++ b/drivers/net/wireless/ath/wil6210/debug.c
+@@ -1,18 +1,7 @@
++// SPDX-License-Identifier: ISC
+ /*
+  * Copyright (c) 2013,2016 Qualcomm Atheros, Inc.
+  * Copyright (c) 2018, The Linux Foundation. All rights reserved.
+- *
+- * Permission to use, copy, modify, and/or distribute this software for any
+- * purpose with or without fee is hereby granted, provided that the above
+- * copyright notice and this permission notice appear in all copies.
+- *
+- * THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
+- * WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
+- * MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
+- * ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+- * WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
+- * ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
+- * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
+  */
  
- 	ieee80211_free_hw(mdev->hw);
- 	return ret;
-@@ -292,6 +293,7 @@ static void mt76x0_disconnect(struct usb_interface *usb_intf)
- 	usb_set_intfdata(usb_intf, NULL);
- 	usb_put_dev(interface_to_usbdev(usb_intf));
+ #include "wil6210.h"
+diff --git a/drivers/net/wireless/ath/wil6210/debugfs.c b/drivers/net/wireless/ath/wil6210/debugfs.c
+index 304b4d4..11d0c79 100644
+--- a/drivers/net/wireless/ath/wil6210/debugfs.c
++++ b/drivers/net/wireless/ath/wil6210/debugfs.c
+@@ -1,18 +1,7 @@
++// SPDX-License-Identifier: ISC
+ /*
+  * Copyright (c) 2012-2017 Qualcomm Atheros, Inc.
+  * Copyright (c) 2018-2019, The Linux Foundation. All rights reserved.
+- *
+- * Permission to use, copy, modify, and/or distribute this software for any
+- * purpose with or without fee is hereby granted, provided that the above
+- * copyright notice and this permission notice appear in all copies.
+- *
+- * THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
+- * WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
+- * MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
+- * ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+- * WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
+- * ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
+- * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
+  */
  
-+	mt76u_deinit(&dev->mt76);
- 	ieee80211_free_hw(dev->mt76.hw);
- }
+ #include <linux/module.h>
+diff --git a/drivers/net/wireless/ath/wil6210/ethtool.c b/drivers/net/wireless/ath/wil6210/ethtool.c
+index a04c87f..912c4ea 100644
+--- a/drivers/net/wireless/ath/wil6210/ethtool.c
++++ b/drivers/net/wireless/ath/wil6210/ethtool.c
+@@ -1,18 +1,7 @@
++// SPDX-License-Identifier: ISC
+ /*
+  * Copyright (c) 2014,2017 Qualcomm Atheros, Inc.
+  * Copyright (c) 2018, The Linux Foundation. All rights reserved.
+- *
+- * Permission to use, copy, modify, and/or distribute this software for any
+- * purpose with or without fee is hereby granted, provided that the above
+- * copyright notice and this permission notice appear in all copies.
+- *
+- * THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
+- * WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
+- * MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
+- * ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+- * WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
+- * ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
+- * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
+  */
  
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76x2/usb.c b/drivers/net/wireless/mediatek/mt76/mt76x2/usb.c
-index 48b9017813b5..b64ad816cc25 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76x2/usb.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt76x2/usb.c
-@@ -73,6 +73,7 @@ static int mt76x2u_probe(struct usb_interface *intf,
+ #include <linux/etherdevice.h>
+diff --git a/drivers/net/wireless/ath/wil6210/fw.c b/drivers/net/wireless/ath/wil6210/fw.c
+index 3e2bbbc..6d3413a4 100644
+--- a/drivers/net/wireless/ath/wil6210/fw.c
++++ b/drivers/net/wireless/ath/wil6210/fw.c
+@@ -1,18 +1,7 @@
++// SPDX-License-Identifier: ISC
+ /*
+  * Copyright (c) 2014-2015,2017 Qualcomm Atheros, Inc.
+  * Copyright (c) 2018, The Linux Foundation. All rights reserved.
+- *
+- * Permission to use, copy, modify, and/or distribute this software for any
+- * purpose with or without fee is hereby granted, provided that the above
+- * copyright notice and this permission notice appear in all copies.
+- *
+- * THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
+- * WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
+- * MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
+- * ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+- * WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
+- * ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
+- * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
+  */
+ #include <linux/firmware.h>
+ #include <linux/module.h>
+diff --git a/drivers/net/wireless/ath/wil6210/fw.h b/drivers/net/wireless/ath/wil6210/fw.h
+index fa31647..540fa16 100644
+--- a/drivers/net/wireless/ath/wil6210/fw.h
++++ b/drivers/net/wireless/ath/wil6210/fw.h
+@@ -1,18 +1,7 @@
++/* SPDX-License-Identifier: ISC */
+ /*
+  * Copyright (c) 2014,2016 Qualcomm Atheros, Inc.
+  * Copyright (c) 2018-2019, The Linux Foundation. All rights reserved.
+- *
+- * Permission to use, copy, modify, and/or distribute this software for any
+- * purpose with or without fee is hereby granted, provided that the above
+- * copyright notice and this permission notice appear in all copies.
+- *
+- * THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
+- * WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
+- * MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
+- * ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+- * WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
+- * ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
+- * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
+  */
+ #ifndef __WIL_FW_H__
+ #define __WIL_FW_H__
+diff --git a/drivers/net/wireless/ath/wil6210/fw_inc.c b/drivers/net/wireless/ath/wil6210/fw_inc.c
+index 94ebfa3..fbc84c0 100644
+--- a/drivers/net/wireless/ath/wil6210/fw_inc.c
++++ b/drivers/net/wireless/ath/wil6210/fw_inc.c
+@@ -1,18 +1,7 @@
++// SPDX-License-Identifier: ISC
+ /*
+  * Copyright (c) 2014-2017 Qualcomm Atheros, Inc.
+  * Copyright (c) 2018-2019, The Linux Foundation. All rights reserved.
+- *
+- * Permission to use, copy, modify, and/or distribute this software for any
+- * purpose with or without fee is hereby granted, provided that the above
+- * copyright notice and this permission notice appear in all copies.
+- *
+- * THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
+- * WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
+- * MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
+- * ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+- * WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
+- * ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
+- * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
+  */
  
- err:
- 	ieee80211_free_hw(mt76_hw(dev));
-+	mt76u_deinit(&dev->mt76);
- 	usb_set_intfdata(intf, NULL);
- 	usb_put_dev(udev);
+ /* Algorithmic part of the firmware download.
+diff --git a/drivers/net/wireless/ath/wil6210/interrupt.c b/drivers/net/wireless/ath/wil6210/interrupt.c
+index b00a13d..b1480b4 100644
+--- a/drivers/net/wireless/ath/wil6210/interrupt.c
++++ b/drivers/net/wireless/ath/wil6210/interrupt.c
+@@ -1,18 +1,7 @@
++// SPDX-License-Identifier: ISC
+ /*
+  * Copyright (c) 2012-2017 Qualcomm Atheros, Inc.
+  * Copyright (c) 2018-2019, The Linux Foundation. All rights reserved.
+- *
+- * Permission to use, copy, modify, and/or distribute this software for any
+- * purpose with or without fee is hereby granted, provided that the above
+- * copyright notice and this permission notice appear in all copies.
+- *
+- * THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
+- * WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
+- * MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
+- * ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+- * WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
+- * ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
+- * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
+  */
  
-@@ -88,6 +89,7 @@ static void mt76x2u_disconnect(struct usb_interface *intf)
- 	set_bit(MT76_REMOVED, &dev->mt76.state);
- 	ieee80211_unregister_hw(hw);
- 	mt76x2u_cleanup(dev);
-+	mt76u_deinit(&dev->mt76);
+ #include <linux/interrupt.h>
+diff --git a/drivers/net/wireless/ath/wil6210/main.c b/drivers/net/wireless/ath/wil6210/main.c
+index 9b72202..06091d8a 100644
+--- a/drivers/net/wireless/ath/wil6210/main.c
++++ b/drivers/net/wireless/ath/wil6210/main.c
+@@ -1,18 +1,7 @@
++// SPDX-License-Identifier: ISC
+ /*
+  * Copyright (c) 2012-2017 Qualcomm Atheros, Inc.
+  * Copyright (c) 2018-2019, The Linux Foundation. All rights reserved.
+- *
+- * Permission to use, copy, modify, and/or distribute this software for any
+- * purpose with or without fee is hereby granted, provided that the above
+- * copyright notice and this permission notice appear in all copies.
+- *
+- * THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
+- * WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
+- * MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
+- * ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+- * WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
+- * ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
+- * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
+  */
  
- 	ieee80211_free_hw(hw);
- 	usb_set_intfdata(intf, NULL);
-diff --git a/drivers/net/wireless/mediatek/mt76/usb.c b/drivers/net/wireless/mediatek/mt76/usb.c
-index be19038ea7dd..d6d47081e281 100644
---- a/drivers/net/wireless/mediatek/mt76/usb.c
-+++ b/drivers/net/wireless/mediatek/mt76/usb.c
-@@ -697,10 +697,7 @@ static void mt76u_tx_tasklet(unsigned long data)
- 		mt76_txq_schedule(dev, i);
+ #include <linux/moduleparam.h>
+diff --git a/drivers/net/wireless/ath/wil6210/netdev.c b/drivers/net/wireless/ath/wil6210/netdev.c
+index a87bb84..07b4a25 100644
+--- a/drivers/net/wireless/ath/wil6210/netdev.c
++++ b/drivers/net/wireless/ath/wil6210/netdev.c
+@@ -1,18 +1,7 @@
++// SPDX-License-Identifier: ISC
+ /*
+  * Copyright (c) 2012-2017 Qualcomm Atheros, Inc.
+  * Copyright (c) 2018-2019, The Linux Foundation. All rights reserved.
+- *
+- * Permission to use, copy, modify, and/or distribute this software for any
+- * purpose with or without fee is hereby granted, provided that the above
+- * copyright notice and this permission notice appear in all copies.
+- *
+- * THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
+- * WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
+- * MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
+- * ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+- * WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
+- * ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
+- * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
+  */
  
- 		if (!test_and_set_bit(MT76_READING_STATS, &dev->state))
--			ieee80211_queue_delayed_work(dev->hw,
--						     &dev->usb.stat_work,
--						     msecs_to_jiffies(10));
--
-+			queue_work(dev->usb.stat_wq, &dev->usb.stat_work);
- 		if (wake)
- 			ieee80211_wake_queue(dev->hw, i);
- 	}
-@@ -713,7 +710,7 @@ static void mt76u_tx_status_data(struct work_struct *work)
- 	u8 update = 1;
- 	u16 count = 0;
+ #include <linux/etherdevice.h>
+diff --git a/drivers/net/wireless/ath/wil6210/p2p.c b/drivers/net/wireless/ath/wil6210/p2p.c
+index db087ea..f26bf04 100644
+--- a/drivers/net/wireless/ath/wil6210/p2p.c
++++ b/drivers/net/wireless/ath/wil6210/p2p.c
+@@ -1,18 +1,7 @@
++// SPDX-License-Identifier: ISC
+ /*
+  * Copyright (c) 2014-2017 Qualcomm Atheros, Inc.
+  * Copyright (c) 2018, The Linux Foundation. All rights reserved.
+- *
+- * Permission to use, copy, modify, and/or distribute this software for any
+- * purpose with or without fee is hereby granted, provided that the above
+- * copyright notice and this permission notice appear in all copies.
+- *
+- * THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
+- * WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
+- * MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
+- * ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+- * WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
+- * ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
+- * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
+  */
  
--	usb = container_of(work, struct mt76_usb, stat_work.work);
-+	usb = container_of(work, struct mt76_usb, stat_work);
- 	dev = container_of(usb, struct mt76_dev, usb);
+ #include "wil6210.h"
+diff --git a/drivers/net/wireless/ath/wil6210/pcie_bus.c b/drivers/net/wireless/ath/wil6210/pcie_bus.c
+index f1a28236..c174323 100644
+--- a/drivers/net/wireless/ath/wil6210/pcie_bus.c
++++ b/drivers/net/wireless/ath/wil6210/pcie_bus.c
+@@ -1,18 +1,7 @@
++// SPDX-License-Identifier: ISC
+ /*
+  * Copyright (c) 2012-2017 Qualcomm Atheros, Inc.
+  * Copyright (c) 2018-2019, The Linux Foundation. All rights reserved.
+- *
+- * Permission to use, copy, modify, and/or distribute this software for any
+- * purpose with or without fee is hereby granted, provided that the above
+- * copyright notice and this permission notice appear in all copies.
+- *
+- * THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
+- * WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
+- * MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
+- * ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+- * WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
+- * ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
+- * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
+  */
  
- 	while (true) {
-@@ -726,8 +723,7 @@ static void mt76u_tx_status_data(struct work_struct *work)
- 	}
+ #include <linux/module.h>
+diff --git a/drivers/net/wireless/ath/wil6210/pm.c b/drivers/net/wireless/ath/wil6210/pm.c
+index 56143e7..ed4df56 100644
+--- a/drivers/net/wireless/ath/wil6210/pm.c
++++ b/drivers/net/wireless/ath/wil6210/pm.c
+@@ -1,18 +1,7 @@
++// SPDX-License-Identifier: ISC
+ /*
+  * Copyright (c) 2014,2017 Qualcomm Atheros, Inc.
+  * Copyright (c) 2018-2019, The Linux Foundation. All rights reserved.
+- *
+- * Permission to use, copy, modify, and/or distribute this software for any
+- * purpose with or without fee is hereby granted, provided that the above
+- * copyright notice and this permission notice appear in all copies.
+- *
+- * THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
+- * WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
+- * MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
+- * ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+- * WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
+- * ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
+- * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
+  */
  
- 	if (count && test_bit(MT76_STATE_RUNNING, &dev->state))
--		ieee80211_queue_delayed_work(dev->hw, &usb->stat_work,
--					     msecs_to_jiffies(10));
-+		queue_work(usb->stat_wq, &usb->stat_work);
- 	else
- 		clear_bit(MT76_READING_STATS, &dev->state);
- }
-@@ -908,7 +904,7 @@ void mt76u_stop_tx(struct mt76_dev *dev)
- 		}
- 	}
+ #include "wil6210.h"
+diff --git a/drivers/net/wireless/ath/wil6210/pmc.c b/drivers/net/wireless/ath/wil6210/pmc.c
+index 4b7ac14..9b4ca6b 100644
+--- a/drivers/net/wireless/ath/wil6210/pmc.c
++++ b/drivers/net/wireless/ath/wil6210/pmc.c
+@@ -1,18 +1,7 @@
++// SPDX-License-Identifier: ISC
+ /*
+  * Copyright (c) 2012-2015,2017 Qualcomm Atheros, Inc.
+  * Copyright (c) 2018, The Linux Foundation. All rights reserved.
+- *
+- * Permission to use, copy, modify, and/or distribute this software for any
+- * purpose with or without fee is hereby granted, provided that the above
+- * copyright notice and this permission notice appear in all copies.
+- *
+- * THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
+- * WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
+- * MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
+- * ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+- * WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
+- * ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
+- * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
+  */
  
--	cancel_delayed_work_sync(&dev->usb.stat_work);
-+	cancel_work_sync(&dev->usb.stat_work);
- 	clear_bit(MT76_READING_STATS, &dev->state);
+ #include <linux/types.h>
+diff --git a/drivers/net/wireless/ath/wil6210/pmc.h b/drivers/net/wireless/ath/wil6210/pmc.h
+index 92b8c4d..b3d79eb 100644
+--- a/drivers/net/wireless/ath/wil6210/pmc.h
++++ b/drivers/net/wireless/ath/wil6210/pmc.h
+@@ -1,18 +1,5 @@
+-/*
+- * Copyright (c) 2012-2015 Qualcomm Atheros, Inc.
+- *
+- * Permission to use, copy, modify, and/or distribute this software for any
+- * purpose with or without fee is hereby granted, provided that the above
+- * copyright notice and this permission notice appear in all copies.
+- *
+- * THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
+- * WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
+- * MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
+- * ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+- * WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
+- * ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
+- * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
+- */
++/* SPDX-License-Identifier: ISC */
++/* Copyright (c) 2012-2015 Qualcomm Atheros, Inc. */
  
- 	mt76_tx_status_check(dev, NULL, true);
-@@ -959,9 +955,13 @@ int mt76u_init(struct mt76_dev *dev,
+ #include <linux/types.h>
  
- 	tasklet_init(&usb->rx_tasklet, mt76u_rx_tasklet, (unsigned long)dev);
- 	tasklet_init(&dev->tx_tasklet, mt76u_tx_tasklet, (unsigned long)dev);
--	INIT_DELAYED_WORK(&usb->stat_work, mt76u_tx_status_data);
-+	INIT_WORK(&usb->stat_work, mt76u_tx_status_data);
- 	skb_queue_head_init(&dev->rx_skb[MT_RXQ_MAIN]);
+diff --git a/drivers/net/wireless/ath/wil6210/rx_reorder.c b/drivers/net/wireless/ath/wil6210/rx_reorder.c
+index 13246d2..d385bc0 100644
+--- a/drivers/net/wireless/ath/wil6210/rx_reorder.c
++++ b/drivers/net/wireless/ath/wil6210/rx_reorder.c
+@@ -1,18 +1,7 @@
++// SPDX-License-Identifier: ISC
+ /*
+  * Copyright (c) 2014-2017 Qualcomm Atheros, Inc.
+  * Copyright (c) 2018-2019, The Linux Foundation. All rights reserved.
+- *
+- * Permission to use, copy, modify, and/or distribute this software for any
+- * purpose with or without fee is hereby granted, provided that the above
+- * copyright notice and this permission notice appear in all copies.
+- *
+- * THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
+- * WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
+- * MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
+- * ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+- * WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
+- * ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
+- * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
+  */
  
-+	usb->stat_wq = alloc_workqueue("mt76u", WQ_UNBOUND, 0);
-+	if (!usb->stat_wq)
-+		return -ENOMEM;
-+
- 	mutex_init(&usb->mcu.mutex);
+ #include "wil6210.h"
+diff --git a/drivers/net/wireless/ath/wil6210/trace.c b/drivers/net/wireless/ath/wil6210/trace.c
+index cd2534b..6909e98 100644
+--- a/drivers/net/wireless/ath/wil6210/trace.c
++++ b/drivers/net/wireless/ath/wil6210/trace.c
+@@ -1,17 +1,6 @@
++// SPDX-License-Identifier: ISC
+ /*
+  * Copyright (c) 2013 Qualcomm Atheros, Inc.
+- *
+- * Permission to use, copy, modify, and/or distribute this software for any
+- * purpose with or without fee is hereby granted, provided that the above
+- * copyright notice and this permission notice appear in all copies.
+- *
+- * THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
+- * WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
+- * MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
+- * ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+- * WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
+- * ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
+- * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
+  */
  
- 	mutex_init(&usb->usb_ctrl_mtx);
-@@ -976,5 +976,14 @@ int mt76u_init(struct mt76_dev *dev,
- }
- EXPORT_SYMBOL_GPL(mt76u_init);
+ #include <linux/module.h>
+diff --git a/drivers/net/wireless/ath/wil6210/trace.h b/drivers/net/wireless/ath/wil6210/trace.h
+index 36ebfcf..11c989e 100644
+--- a/drivers/net/wireless/ath/wil6210/trace.h
++++ b/drivers/net/wireless/ath/wil6210/trace.h
+@@ -1,18 +1,7 @@
++/* SPDX-License-Identifier: ISC */
+ /*
+  * Copyright (c) 2013-2016 Qualcomm Atheros, Inc.
+  * Copyright (c) 2019, The Linux Foundation. All rights reserved.
+- *
+- * Permission to use, copy, modify, and/or distribute this software for any
+- * purpose with or without fee is hereby granted, provided that the above
+- * copyright notice and this permission notice appear in all copies.
+- *
+- * THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
+- * WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
+- * MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
+- * ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+- * WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
+- * ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
+- * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
+  */
  
-+void mt76u_deinit(struct mt76_dev *dev)
-+{
-+	if (dev->usb.stat_wq) {
-+		destroy_workqueue(dev->usb.stat_wq);
-+		dev->usb.stat_wq = NULL;
-+	}
-+}
-+EXPORT_SYMBOL_GPL(mt76u_deinit);
-+
- MODULE_AUTHOR("Lorenzo Bianconi <lorenzo.bianconi83@gmail.com>");
- MODULE_LICENSE("Dual BSD/GPL");
+ #undef TRACE_SYSTEM
+diff --git a/drivers/net/wireless/ath/wil6210/txrx.c b/drivers/net/wireless/ath/wil6210/txrx.c
+index 598c1fb..8ebc6d5 100644
+--- a/drivers/net/wireless/ath/wil6210/txrx.c
++++ b/drivers/net/wireless/ath/wil6210/txrx.c
+@@ -1,18 +1,7 @@
++// SPDX-License-Identifier: ISC
+ /*
+  * Copyright (c) 2012-2017 Qualcomm Atheros, Inc.
+  * Copyright (c) 2018-2019, The Linux Foundation. All rights reserved.
+- *
+- * Permission to use, copy, modify, and/or distribute this software for any
+- * purpose with or without fee is hereby granted, provided that the above
+- * copyright notice and this permission notice appear in all copies.
+- *
+- * THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
+- * WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
+- * MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
+- * ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+- * WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
+- * ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
+- * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
+  */
+ 
+ #include <linux/etherdevice.h>
+diff --git a/drivers/net/wireless/ath/wil6210/txrx.h b/drivers/net/wireless/ath/wil6210/txrx.h
+index 5120475b..1f4c8ec 100644
+--- a/drivers/net/wireless/ath/wil6210/txrx.h
++++ b/drivers/net/wireless/ath/wil6210/txrx.h
+@@ -1,18 +1,7 @@
++/* SPDX-License-Identifier: ISC */
+ /*
+  * Copyright (c) 2012-2016 Qualcomm Atheros, Inc.
+  * Copyright (c) 2018-2019, The Linux Foundation. All rights reserved.
+- *
+- * Permission to use, copy, modify, and/or distribute this software for any
+- * purpose with or without fee is hereby granted, provided that the above
+- * copyright notice and this permission notice appear in all copies.
+- *
+- * THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
+- * WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
+- * MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
+- * ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+- * WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
+- * ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
+- * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
+  */
+ 
+ #ifndef WIL6210_TXRX_H
+diff --git a/drivers/net/wireless/ath/wil6210/txrx_edma.c b/drivers/net/wireless/ath/wil6210/txrx_edma.c
+index 04d576d..778b63b 100644
+--- a/drivers/net/wireless/ath/wil6210/txrx_edma.c
++++ b/drivers/net/wireless/ath/wil6210/txrx_edma.c
+@@ -1,17 +1,6 @@
++// SPDX-License-Identifier: ISC
+ /*
+  * Copyright (c) 2012-2019 The Linux Foundation. All rights reserved.
+- *
+- * Permission to use, copy, modify, and/or distribute this software for any
+- * purpose with or without fee is hereby granted, provided that the above
+- * copyright notice and this permission notice appear in all copies.
+- *
+- * THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
+- * WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
+- * MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
+- * ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+- * WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
+- * ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
+- * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
+  */
+ 
+ #include <linux/etherdevice.h>
+diff --git a/drivers/net/wireless/ath/wil6210/txrx_edma.h b/drivers/net/wireless/ath/wil6210/txrx_edma.h
+index 136c51c..c744c65 100644
+--- a/drivers/net/wireless/ath/wil6210/txrx_edma.h
++++ b/drivers/net/wireless/ath/wil6210/txrx_edma.h
+@@ -1,17 +1,6 @@
++/* SPDX-License-Identifier: ISC */
+ /*
+  * Copyright (c) 2012-2016,2018-2019, The Linux Foundation. All rights reserved.
+- *
+- * Permission to use, copy, modify, and/or distribute this software for any
+- * purpose with or without fee is hereby granted, provided that the above
+- * copyright notice and this permission notice appear in all copies.
+- *
+- * THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
+- * WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
+- * MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
+- * ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+- * WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
+- * ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
+- * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
+  */
+ 
+ #ifndef WIL6210_TXRX_EDMA_H
+diff --git a/drivers/net/wireless/ath/wil6210/wil6210.h b/drivers/net/wireless/ath/wil6210/wil6210.h
+index 0783c79..97626bf 100644
+--- a/drivers/net/wireless/ath/wil6210/wil6210.h
++++ b/drivers/net/wireless/ath/wil6210/wil6210.h
+@@ -1,18 +1,7 @@
++/* SPDX-License-Identifier: ISC */
+ /*
+  * Copyright (c) 2012-2017 Qualcomm Atheros, Inc.
+  * Copyright (c) 2018-2019, The Linux Foundation. All rights reserved.
+- *
+- * Permission to use, copy, modify, and/or distribute this software for any
+- * purpose with or without fee is hereby granted, provided that the above
+- * copyright notice and this permission notice appear in all copies.
+- *
+- * THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
+- * WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
+- * MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
+- * ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+- * WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
+- * ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
+- * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
+  */
+ 
+ #ifndef __WIL6210_H__
+diff --git a/drivers/net/wireless/ath/wil6210/wil_crash_dump.c b/drivers/net/wireless/ath/wil6210/wil_crash_dump.c
+index 772cb00..1332eb8 100644
+--- a/drivers/net/wireless/ath/wil6210/wil_crash_dump.c
++++ b/drivers/net/wireless/ath/wil6210/wil_crash_dump.c
+@@ -1,18 +1,7 @@
++// SPDX-License-Identifier: ISC
+ /*
+  * Copyright (c) 2015,2017 Qualcomm Atheros, Inc.
+  * Copyright (c) 2018-2019, The Linux Foundation. All rights reserved.
+- *
+- * Permission to use, copy, modify, and/or distribute this software for any
+- * purpose with or without fee is hereby granted, provided that the above
+- * copyright notice and this permission notice appear in all copies.
+- *
+- * THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
+- * WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
+- * MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
+- * ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+- * WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
+- * ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
+- * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
+  */
+ 
+ #include "wil6210.h"
+diff --git a/drivers/net/wireless/ath/wil6210/wil_platform.c b/drivers/net/wireless/ath/wil6210/wil_platform.c
+index 4eed05bd..10e10dc 100644
+--- a/drivers/net/wireless/ath/wil6210/wil_platform.c
++++ b/drivers/net/wireless/ath/wil6210/wil_platform.c
+@@ -1,17 +1,6 @@
++// SPDX-License-Identifier: ISC
+ /*
+- * Copyright (c) 2014 Qualcomm Atheros, Inc.
+- *
+- * Permission to use, copy, modify, and/or distribute this software for any
+- * purpose with or without fee is hereby granted, provided that the above
+- * copyright notice and this permission notice appear in all copies.
+- *
+- * THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
+- * WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
+- * MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
+- * ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+- * WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
+- * ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
+- * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
++ * Copyright (c) 2014-2016 Qualcomm Atheros, Inc.
+  */
+ 
+ #include <linux/device.h>
+diff --git a/drivers/net/wireless/ath/wil6210/wil_platform.h b/drivers/net/wireless/ath/wil6210/wil_platform.h
+index bca0906..5ff6620 100644
+--- a/drivers/net/wireless/ath/wil6210/wil_platform.h
++++ b/drivers/net/wireless/ath/wil6210/wil_platform.h
+@@ -1,17 +1,6 @@
++/* SPDX-License-Identifier: ISC */
+ /*
+  * Copyright (c) 2014-2017 Qualcomm Atheros, Inc.
+- *
+- * Permission to use, copy, modify, and/or distribute this software for any
+- * purpose with or without fee is hereby granted, provided that the above
+- * copyright notice and this permission notice appear in all copies.
+- *
+- * THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
+- * WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
+- * MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
+- * ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+- * WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
+- * ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
+- * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
+  */
+ 
+ #ifndef __WIL_PLATFORM_H__
+diff --git a/drivers/net/wireless/ath/wil6210/wmi.c b/drivers/net/wireless/ath/wil6210/wmi.c
+index f9a006d..7a0d934 100644
+--- a/drivers/net/wireless/ath/wil6210/wmi.c
++++ b/drivers/net/wireless/ath/wil6210/wmi.c
+@@ -1,18 +1,7 @@
++// SPDX-License-Identifier: ISC
+ /*
+  * Copyright (c) 2012-2017 Qualcomm Atheros, Inc.
+  * Copyright (c) 2018-2019, The Linux Foundation. All rights reserved.
+- *
+- * Permission to use, copy, modify, and/or distribute this software for any
+- * purpose with or without fee is hereby granted, provided that the above
+- * copyright notice and this permission notice appear in all copies.
+- *
+- * THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
+- * WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
+- * MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
+- * ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+- * WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
+- * ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
+- * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
+  */
+ 
+ #include <linux/moduleparam.h>
+diff --git a/drivers/net/wireless/ath/wil6210/wmi.h b/drivers/net/wireless/ath/wil6210/wmi.h
+index a2f7034..6bd4cce 100644
+--- a/drivers/net/wireless/ath/wil6210/wmi.h
++++ b/drivers/net/wireless/ath/wil6210/wmi.h
+@@ -1,19 +1,8 @@
++/* SPDX-License-Identifier: ISC */
+ /*
+  * Copyright (c) 2018-2019, The Linux Foundation. All rights reserved.
+  * Copyright (c) 2012-2017 Qualcomm Atheros, Inc.
+  * Copyright (c) 2006-2012 Wilocity
+- *
+- * Permission to use, copy, modify, and/or distribute this software for any
+- * purpose with or without fee is hereby granted, provided that the above
+- * copyright notice and this permission notice appear in all copies.
+- *
+- * THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
+- * WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
+- * MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
+- * ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+- * WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
+- * ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
+- * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
+  */
+ 
+ /*
 -- 
-2.21.0
+1.9.1
 
