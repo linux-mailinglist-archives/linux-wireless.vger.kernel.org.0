@@ -2,83 +2,91 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 671D3E713F
-	for <lists+linux-wireless@lfdr.de>; Mon, 28 Oct 2019 13:21:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6993AE73F1
+	for <lists+linux-wireless@lfdr.de>; Mon, 28 Oct 2019 15:47:08 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2389050AbfJ1MVX (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 28 Oct 2019 08:21:23 -0400
-Received: from s3.sipsolutions.net ([144.76.43.62]:40652 "EHLO
-        sipsolutions.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2389047AbfJ1MVX (ORCPT
+        id S1729997AbfJ1OrD (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 28 Oct 2019 10:47:03 -0400
+Received: from mail-io1-f65.google.com ([209.85.166.65]:42994 "EHLO
+        mail-io1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727982AbfJ1OrD (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 28 Oct 2019 08:21:23 -0400
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-        (Exim 4.92.2)
-        (envelope-from <johannes@sipsolutions.net>)
-        id 1iP41N-0003VP-51; Mon, 28 Oct 2019 13:21:17 +0100
-Message-ID: <e5b07b4ce51f806ce79b1ae06ff3cbabbaa4873d.camel@sipsolutions.net>
-Subject: Re: [PATCH v2] 802.11n IBSS: wlan0 stops receiving packets due to
- aggregation after sender reboot
-From:   Johannes Berg <johannes@sipsolutions.net>
-To:     Krzysztof =?UTF-8?Q?Ha=C5=82asa?= <khalasa@piap.pl>
-Cc:     "David S. Miller" <davem@davemloft.net>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Date:   Mon, 28 Oct 2019 13:21:15 +0100
-In-Reply-To: <m37e4tjfbu.fsf@t19.piap.pl>
-References: <m34l02mh71.fsf@t19.piap.pl> <m37e4tjfbu.fsf@t19.piap.pl>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.30.5 (3.30.5-1.fc29) 
+        Mon, 28 Oct 2019 10:47:03 -0400
+Received: by mail-io1-f65.google.com with SMTP id k1so1997810iom.9;
+        Mon, 28 Oct 2019 07:47:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=yAdrULyPsP/saITrhQHAw973q46vIVzs8IC2ETW439M=;
+        b=QQAhywDmsOGu3coSnKbJtF4iR4BVXWDs/vXUz52Ab9yVEeC53HQJehf1YFook6soIi
+         cjiIb1IJSu1/VLEATHmher8rfFI2ExE49XBsd1/JaA1UADBln6n3ubYZyFkpvBURFm1Q
+         NcWgXXEpQJPeWdxsKj9UEWIBq2UIgBbmUUrSkCglZU0wAkR9xYngIyOd2ge1O4ysOBHy
+         bCVmT4L1t07zi1Eq95jlNFgZVSawQm5Yjf36/mZQAlj9Dwie827dJjMv6VBS7KshsV9J
+         Ec1CdrIEz3Tofu0wvqU83PszdhDcztBGdUbm7rUOW/hgBoPE8smhTi9wEh10e1BAWIpn
+         s75w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=yAdrULyPsP/saITrhQHAw973q46vIVzs8IC2ETW439M=;
+        b=NzZkccufFHngDqzK6iKXGc9hU6Pzv6yM3uarAKpeo+adGAbNmIx4vcOixhMK7/Bqns
+         sHClYGkVl5GSeZum9fSCVTmU6Nj5h1xn+JQPrFYXZH5UmIb9zNIL4GHiHrBY5s+ISQzt
+         DC++Dylm45qn+0Mqn/SvieC6Oi83Z1vzOwyCkdhOsl3JtHBZ/HR5qCUPyKlaWMrzo0eT
+         KbCQsXvSHGptL5pFkXEPvinZOMQWTgrBSs7Fel2LAg2Tn9HIUvACTBO9D4EA8AcCt1sP
+         TMyvh3F2lIMcRKa1sar39H1NMq3kjDjQDLtZ5T9QHs9PokLtihVAFd9qq14qApNgjIoP
+         /aYg==
+X-Gm-Message-State: APjAAAVxWTUV15gWiVTLEWgBvFUhNFOb88cW+O/af3qFRL7krAAhbQkg
+        GjjQcGxVnmUg9c8el6h8+FAi9iXPsG+eUQCjfSE=
+X-Google-Smtp-Source: APXvYqwRGrEMocwfiJKgngbQwJ1cUH7qFhJiEsIdi038NTMHy30hIo1Ql6GFXDTIDLNemPEdYg7e30CyxZlLg0llkrI=
+X-Received: by 2002:a6b:ba44:: with SMTP id k65mr2436219iof.190.1572274022666;
+ Mon, 28 Oct 2019 07:47:02 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20191027181600.11149-1-navid.emamdoost@gmail.com> <d0fc94581e0dce37d993c55edaae8fc40eaa7601.camel@sipsolutions.net>
+In-Reply-To: <d0fc94581e0dce37d993c55edaae8fc40eaa7601.camel@sipsolutions.net>
+From:   Navid Emamdoost <navid.emamdoost@gmail.com>
+Date:   Mon, 28 Oct 2019 09:46:51 -0500
+Message-ID: <CAEkB2ERK=LQNgzAk-O9UB4wBGQGfSLdUOuybBwWiPTnoipfuTQ@mail.gmail.com>
+Subject: Re: [PATCH] cfg80211: Fix memory leak in cfg80211_inform_single_bss_frame_data
+To:     Johannes Berg <johannes@sipsolutions.net>
+Cc:     Navid Emamdoost <emamd001@umn.edu>,
+        Stephen McCamant <smccaman@umn.edu>, Kangjie Lu <kjlu@umn.edu>,
+        "David S. Miller" <davem@davemloft.net>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        LKML <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Fri, 2019-10-25 at 12:21 +0200, Krzysztof Hałasa wrote:
-> Fix a bug where the mac80211 RX aggregation code sets a new aggregation
-> "session" at the remote station's request, but the head_seq_num
-> (the sequence number the receiver expects to receive) isn't reset.
-> 
-> Spotted on a pair of AR9580 in IBSS mode.
-> 
-> Signed-off-by: Krzysztof Halasa <khalasa@piap.pl>
-> 
-> diff --git a/net/mac80211/agg-rx.c b/net/mac80211/agg-rx.c
-> index 4d1c335e06e5..67733bd61297 100644
-> --- a/net/mac80211/agg-rx.c
-> +++ b/net/mac80211/agg-rx.c
-> @@ -354,10 +354,13 @@ void ___ieee80211_start_rx_ba_session(struct sta_info *sta,
->  			 */
->  			rcu_read_lock();
->  			tid_rx = rcu_dereference(sta->ampdu_mlme.tid_rx[tid]);
-> -			if (tid_rx && tid_rx->timeout == timeout)
-> +			if (tid_rx && tid_rx->timeout == timeout) {
-> +				tid_rx->ssn = start_seq_num;
-> +				tid_rx->head_seq_num = start_seq_num;
->  				status = WLAN_STATUS_SUCCESS;
+On Mon, Oct 28, 2019 at 7:12 AM Johannes Berg <johannes@sipsolutions.net> wrote:
+>
+> On Sun, 2019-10-27 at 13:15 -0500, Navid Emamdoost wrote:
+> > In the implementation of cfg80211_inform_single_bss_frame_data() the
+> > allocated memory for ies is leaked in case of an error. Release ies if
+> > cfg80211_bss_update() fails.
+>
+> I'm pretty sure it's more complicated than this patch (and the previous
+> one) - we already do free this at least in the case that "new =
+> kzalloc(...)" fails in cfg80211_bss_update().
 
-This is wrong, this is the case of *updating an existing session*, we
-must not reset the head SN then.
+Now I agree, there are two cases of release for ies in cfg80211_bss_update().
+But for future reference, I suspect the last two cases of goto drop to
+be mishandling ies.
 
-I think you just got very lucky (or unlucky) to have the same dialog
-token, because we start from 0 - maybe we should initialize it to a
-random value to flush out such issues.
 
-Really what I think probably happened is that one of your stations lost
-the connection to the other, and didn't tell it about it in any way - so
-the other kept all the status alive.
+>
+> Your Fixes: tag is also wrong, back then we didn't even have the dynamic
+> allocation of the IEs.
+>
+> I'm dropping this patch and the other and will make a note to eventually
+> look at the lifetime issue here you point out, but if you want to work
+> on it instead let me know.
+>
+> johannes
+>
 
-I suspect to make all this work well we need to not only have the fixes
-I made recently to actually send and parse deauth frames, but also to
-even send an auth and reset the state when we receive that, so if we
-move out of range and even the deauth frame is lost, we can still reset
-properly.
 
-In any case, this is not the right approach - we need to handle the
-"lost connection" case better I suspect, but since you don't say what
-really happened I don't really know that that's what you're seeing.
-
-johannes
-
+-- 
+Navid.
