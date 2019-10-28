@@ -2,89 +2,95 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A2F44E6B4B
-	for <lists+linux-wireless@lfdr.de>; Mon, 28 Oct 2019 04:13:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8D01DE6CCA
+	for <lists+linux-wireless@lfdr.de>; Mon, 28 Oct 2019 08:17:10 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729415AbfJ1DNK (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 27 Oct 2019 23:13:10 -0400
-Received: from rtits2.realtek.com ([211.75.126.72]:52351 "EHLO
-        rtits2.realtek.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727851AbfJ1DNK (ORCPT
+        id S1730981AbfJ1HRG (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 28 Oct 2019 03:17:06 -0400
+Received: from vulcan.natalenko.name ([104.207.131.136]:39440 "EHLO
+        vulcan.natalenko.name" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1730751AbfJ1HRG (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 27 Oct 2019 23:13:10 -0400
-Authenticated-By: 
-X-SpamFilter-By: BOX Solutions SpamTrap 5.62 with qID x9S3Cvm0028398, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (RTITCAS12.realtek.com.tw[172.21.6.16])
-        by rtits2.realtek.com.tw (8.15.2/2.57/5.78) with ESMTPS id x9S3Cvm0028398
-        (version=TLSv1.2 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Mon, 28 Oct 2019 11:12:57 +0800
-Received: from RTITMBSVM04.realtek.com.tw ([fe80::e404:880:2ef1:1aa1]) by
- RTITCAS12.realtek.com.tw ([::1]) with mapi id 14.03.0468.000; Mon, 28 Oct
- 2019 11:12:57 +0800
-From:   Tony Chuang <yhchuang@realtek.com>
-To:     Chris Chiu <chiu@endlessm.com>
-CC:     Kalle Valo <kvalo@codeaurora.org>,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        Brian Norris <briannorris@chromium.org>,
-        "g.schlmm@googlemail.com" <g.schlmm@googlemail.com>
-Subject: RE: [PATCH 3/6] rtw88: use a module parameter to control LPS enter
-Thread-Topic: [PATCH 3/6] rtw88: use a module parameter to control LPS enter
-Thread-Index: AQHVixdU7Df1/OOTokC0rqDmBUERUKdqqAoAgAS8baA=
-Date:   Mon, 28 Oct 2019 03:12:55 +0000
-Message-ID: <F7CD281DE3E379468C6D07993EA72F84D1911E08@RTITMBSVM04.realtek.com.tw>
-References: <20191025093345.22643-1-yhchuang@realtek.com>
- <20191025093345.22643-4-yhchuang@realtek.com>
- <CAB4CAwf_Y0tMG37nZDtsU9FmACaOB=eALCNCazVk1kbAvOE26Q@mail.gmail.com>
-In-Reply-To: <CAB4CAwf_Y0tMG37nZDtsU9FmACaOB=eALCNCazVk1kbAvOE26Q@mail.gmail.com>
-Accept-Language: zh-TW, en-US
-Content-Language: zh-TW
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [172.21.68.183]
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+        Mon, 28 Oct 2019 03:17:06 -0400
+Received: from mail.natalenko.name (vulcan.natalenko.name [IPv6:fe80::5400:ff:fe0c:dfa0])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by vulcan.natalenko.name (Postfix) with ESMTPSA id A3DCE60EFBC;
+        Mon, 28 Oct 2019 08:17:02 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=natalenko.name;
+        s=dkim-20170712; t=1572247022;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=GpScNA8k1wNynPH+2njANhiKTtFuRG/+CoTwLULQUMU=;
+        b=Z2OfiMrOL9ZuQSbl5Y5PfE3jj8D/dJHYYnSrGfNykqXTg8Hn+od9ZCtFcczuOn6l81KZ71
+        0RZ0D5CnvdfX6RN/yHD7doRpkMl1h/OrUdqc+PU/L22Cc1KYAtghkloLVK7cnhDw225ed3
+        9yBtoF0hOEig9jRK9QHbR8wgq/V2JFM=
 MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII;
+ format=flowed
+Content-Transfer-Encoding: 7bit
+Date:   Mon, 28 Oct 2019 08:17:02 +0100
+From:   Oleksandr Natalenko <oleksandr@natalenko.name>
+To:     Lorenzo Bianconi <lorenzo@kernel.org>
+Cc:     kvalo@codeaurora.org, linux-wireless@vger.kernel.org, nbd@nbd.name,
+        hkallweit1@gmail.com, sgruszka@redhat.com,
+        lorenzo.bianconi@redhat.com, netdev@vger.kernel.org
+Subject: Re: [PATCH v3 wireless-drivers 0/2] fix mt76x2e hangs on U7612E
+ mini-pcie
+In-Reply-To: <cover.1572204430.git.lorenzo@kernel.org>
+References: <cover.1572204430.git.lorenzo@kernel.org>
+Message-ID: <5c6bdfd65ae3178cff2f55233e9e8465@natalenko.name>
+X-Sender: oleksandr@natalenko.name
+User-Agent: Roundcube Webmail/1.3.10
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-PiBPbiBGcmksIE9jdCAyNSwgMjAxOSBhdCA1OjMzIFBNIDx5aGNodWFuZ0ByZWFsdGVrLmNvbT4g
-d3JvdGU6DQo+ID4NCj4gPiBGcm9tOiBZYW4tSHN1YW4gQ2h1YW5nIDx5aGNodWFuZ0ByZWFsdGVr
-LmNvbT4NCj4gPg0KPiA+IElmIHRoZSBudW1iZXIgb2YgcGFja2V0cyBpcyBsZXNzIHRoYW4gdGhl
-IExQUyB0aHJlc2hvbGQsIGRyaXZlcg0KPiA+IGNhbiB0aGVuIGVudGVyIExQUyBtb2RlLg0KPiA+
-IEFuZCBkcml2ZXIgdXNlZCB0byB0YWtlIFJUV19MUFNfVEhSRVNIT0xEIGFzIHRoZSB0aHJlc2hv
-bGQuIEFzDQo+ID4gdGhlIG1hY3JvIGNhbiBub3QgYmUgY2hhbmdlZCBhZnRlciBjb21waWxlZCwg
-dXNlIGEgcGFyYW1ldGVyDQo+ID4gaW5zdGVhZC4NCj4gPg0KPiA+IFRoZSBsYXJnZXIgb2YgdGhl
-IHRocmVzaG9sZCwgdGhlIG1vcmUgdHJhZmZpYyByZXF1aXJlZCB0byBsZWF2ZQ0KPiA+IHBvd2Vy
-IHNhdmUgbW9kZSwgcmVzcG9uc2l2ZSB0aW1lIGNvdWxkIGJlIGxvbmdlciwgYnV0IGFsc28gdGhl
-DQo+ID4gcG93ZXIgY29uc3VtcHRpb24gY291bGQgYmUgbG93ZXIuDQo+ID4NCj4gPiBTaWduZWQt
-b2ZmLWJ5OiBZYW4tSHN1YW4gQ2h1YW5nIDx5aGNodWFuZ0ByZWFsdGVrLmNvbT4NCj4gPiAtLS0N
-Cj4gPiAgZHJpdmVycy9uZXQvd2lyZWxlc3MvcmVhbHRlay9ydHc4OC9tYWluLmMgfCA3ICsrKysr
-LS0NCj4gPiAgZHJpdmVycy9uZXQvd2lyZWxlc3MvcmVhbHRlay9ydHc4OC9wcy5oICAgfCAyIC0t
-DQo+ID4gIDIgZmlsZXMgY2hhbmdlZCwgNSBpbnNlcnRpb25zKCspLCA0IGRlbGV0aW9ucygtKQ0K
-PiA+DQo+ID4gZGlmZiAtLWdpdCBhL2RyaXZlcnMvbmV0L3dpcmVsZXNzL3JlYWx0ZWsvcnR3ODgv
-bWFpbi5jDQo+IGIvZHJpdmVycy9uZXQvd2lyZWxlc3MvcmVhbHRlay9ydHc4OC9tYWluLmMNCj4g
-PiBpbmRleCA3YzFiODljNGZiNmMuLmJmZjhhMGIxMjlkOSAxMDA2NDQNCj4gPiAtLS0gYS9kcml2
-ZXJzL25ldC93aXJlbGVzcy9yZWFsdGVrL3J0dzg4L21haW4uYw0KPiA+ICsrKyBiL2RyaXZlcnMv
-bmV0L3dpcmVsZXNzL3JlYWx0ZWsvcnR3ODgvbWFpbi5jDQo+IA0KPiA+IEBAIC0xOTksOCArMjAy
-LDggQEAgc3RhdGljIHZvaWQgcnR3X3dhdGNoX2RvZ193b3JrKHN0cnVjdA0KPiB3b3JrX3N0cnVj
-dCAqd29yaykNCj4gPiAgICAgICAgIGlmIChidXN5X3RyYWZmaWMgIT0gdGVzdF9iaXQoUlRXX0ZM
-QUdfQlVTWV9UUkFGRklDLA0KPiBydHdkZXYtPmZsYWdzKSkNCj4gPiAgICAgICAgICAgICAgICAg
-cnR3X2NvZXhfd2xfc3RhdHVzX2NoYW5nZV9ub3RpZnkocnR3ZGV2KTsNCj4gPg0KPiA+IC0gICAg
-ICAgaWYgKHN0YXRzLT50eF9jbnQgPiBSVFdfTFBTX1RIUkVTSE9MRCB8fA0KPiA+IC0gICAgICAg
-ICAgIHN0YXRzLT5yeF9jbnQgPiBSVFdfTFBTX1RIUkVTSE9MRCkNCj4gPiArICAgICAgIGlmIChz
-dGF0cy0+dHhfY250ID4gcnR3X2xwc190aHJlc2hvbGQgfHwNCj4gPiArICAgICAgICAgICBzdGF0
-cy0+cnhfY250ID4gcnR3X2xwc190aHJlc2hvbGQpDQo+ID4gICAgICAgICAgICAgICAgIHBzX2Fj
-dGl2ZSA9IHRydWU7DQo+ID4gICAgICAgICBlbHNlDQo+ID4gICAgICAgICAgICAgICAgIHBzX2Fj
-dGl2ZSA9IGZhbHNlOw0KPiANCj4gVGhlIG5hbWluZyBvZiAncHNfYWN0aXZlJyBpcyBhIGJpdCBj
-b25mdXNpbmcuIFBlciB0aGUgY29tbWl0IG1lc3NhZ2UsDQo+IGl0IHdpbGwgbGVhdmUgTFBTDQo+
-IGl0IHR4L3J4IGNvdW50ID4gdGhyZXNob2xkLiBCdXQgSSdsbCBiZSBtaXNsZWQgYnkgdGhlIG5h
-bWUgcHNfYWN0aXZlLg0KPiBEb2VzIGl0IG1lYW4gdGhlDQo+IGN1cnJlbnQgY29uZGl0aW9uIGlz
-IFBTIGFjdGl2ZSBhbmQgcmVhZHkgdG8gcG93ZXIgc2xlZXA/IEknZCBsaWtlIHRvDQo+IHJlbmFt
-ZSBpdCB0byBvbGQtZmFzaGlvbmVkDQo+ICdscHNfZW50ZXInIHRvIHJlcHJlc2VudCB0aGUgYWN0
-aW9uIHRoYXQgd291bGQgYmUgdGFrZW4uIEl0IHdvdWxkIGJlDQo+IGVhc2llciBmb3IgbWUgdG8g
-dW5kZXJzdGFuZC4NCj4gDQo+IENocmlzDQo+IA0KDQpJIHRoaW5rIGFjY29yZGluZyB0byB0aGUg
-Y29udGV4dCwgcHNfYWN0aXZlIGlzIGdvb2QgZm9yIG1lLg0KQnV0IEkgY2FuIHN0aWxsIHNlbmQg
-YSBzZXBhcmF0ZSBwYXRjaCB0byByZW5hbWUgaXQuDQpPciB5b3UgY2FuIDopDQoNCllhbi1Ic3Vh
-bg0K
+On 27.10.2019 20:53, Lorenzo Bianconi wrote:
+> Various mt76x2e issues have been reported on U7612E mini-pcie card [1].
+> On U7612E-H1 PCIE_ASPM causes continuous mcu hangs and instability and
+> so patch 1/2 disable it by default.
+> Moreover mt76 does not properly unmap dma buffers for non-linear skbs.
+> This issue may result in hw hangs if the system relies on IOMMU.
+> Patch 2/2 fix the problem properly unmapping data fragments on
+> non-linear skbs.
+> 
+> Changes since v2:
+> - fix compilation error if PCI support is not compiled
+> 
+> Changes since v1:
+> - simplify buf0 unmap condition
+> - use IS_ENABLED(CONFIG_PCIEASPM) instead of ifdef CONFIG_PCIEASPM
+> - check pci_disable_link_state return value
+> 
+> [1]:
+> https://lore.kernel.org/netdev/deaafa7a3e9ea2111ebb5106430849c6@natalenko.name/
+> 
+> 
+> Lorenzo Bianconi (2):
+>   mt76: mt76x2e: disable pcie_aspm by default
+>   mt76: dma: fix buffer unmap with non-linear skbs
+> 
+>  drivers/net/wireless/mediatek/mt76/Makefile   |  2 +
+>  drivers/net/wireless/mediatek/mt76/dma.c      |  6 ++-
+>  drivers/net/wireless/mediatek/mt76/mt76.h     |  6 ++-
+>  .../net/wireless/mediatek/mt76/mt76x2/pci.c   |  2 +
+>  drivers/net/wireless/mediatek/mt76/pci.c      | 46 +++++++++++++++++++
+>  5 files changed, 58 insertions(+), 4 deletions(-)
+>  create mode 100644 drivers/net/wireless/mediatek/mt76/pci.c
+
+So, works fine for me. Checked with 5.3 and additional include fix I've 
+mentioned previously.
+
+With that, for the whole series feel free to add:
+
+Reported-by: Oleksandr Natalenko <oleksandr@natalenko.name>
+Tested-by: Oleksandr Natalenko <oleksandr@natalenko.name>
+
+Thank you.
+
+-- 
+   Oleksandr Natalenko (post-factum)
