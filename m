@@ -2,28 +2,28 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 4F4ADE7B4A
-	for <lists+linux-wireless@lfdr.de>; Mon, 28 Oct 2019 22:22:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 20CF7E7B4C
+	for <lists+linux-wireless@lfdr.de>; Mon, 28 Oct 2019 22:23:10 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729839AbfJ1VWj (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 28 Oct 2019 17:22:39 -0400
-Received: from fudo.makrotopia.org ([185.142.180.71]:57312 "EHLO
+        id S1729867AbfJ1VXJ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 28 Oct 2019 17:23:09 -0400
+Received: from fudo.makrotopia.org ([185.142.180.71]:49111 "EHLO
         fudo.makrotopia.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729836AbfJ1VWi (ORCPT
+        with ESMTP id S1729836AbfJ1VXJ (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 28 Oct 2019 17:22:38 -0400
+        Mon, 28 Oct 2019 17:23:09 -0400
 Received: from local
         by fudo.makrotopia.org with esmtpsa (TLSv1.2:ECDHE-RSA-AES256-GCM-SHA384:256)
          (Exim 4.92.2)
         (envelope-from <daniel@makrotopia.org>)
-        id 1iPCQy-0006a0-59; Mon, 28 Oct 2019 22:22:35 +0100
-Date:   Mon, 28 Oct 2019 22:20:01 +0100
+        id 1iPCTh-0006eU-3x; Mon, 28 Oct 2019 22:23:06 +0100
+Date:   Mon, 28 Oct 2019 22:22:44 +0100
 From:   Daniel Golle <daniel@makrotopia.org>
 To:     linux-wireless@vger.kernel.org
 Cc:     Roman Yeryomin <roman@advem.lv>, wbob <wbob@jify.de>,
         Stanislaw Gruszka <sgruszka@redhat.com>
 Subject: [PATCH] rt2800: remove erroneous duplicate condition
-Message-ID: <20191028212001.GA2318@makrotopia.org>
+Message-ID: <20191028212244.GA2590@makrotopia.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
