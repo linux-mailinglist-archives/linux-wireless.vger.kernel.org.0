@@ -2,95 +2,94 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 8D01DE6CCA
-	for <lists+linux-wireless@lfdr.de>; Mon, 28 Oct 2019 08:17:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1C016E6EFA
+	for <lists+linux-wireless@lfdr.de>; Mon, 28 Oct 2019 10:21:40 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730981AbfJ1HRG (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 28 Oct 2019 03:17:06 -0400
-Received: from vulcan.natalenko.name ([104.207.131.136]:39440 "EHLO
-        vulcan.natalenko.name" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730751AbfJ1HRG (ORCPT
+        id S2387985AbfJ1JVP (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 28 Oct 2019 05:21:15 -0400
+Received: from smtp.codeaurora.org ([198.145.29.96]:53488 "EHLO
+        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1731818AbfJ1JVO (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 28 Oct 2019 03:17:06 -0400
-Received: from mail.natalenko.name (vulcan.natalenko.name [IPv6:fe80::5400:ff:fe0c:dfa0])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        Mon, 28 Oct 2019 05:21:14 -0400
+Received: by smtp.codeaurora.org (Postfix, from userid 1000)
+        id 1804D60AD7; Mon, 28 Oct 2019 09:21:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
+        s=default; t=1572254474;
+        bh=VadqlEYYfxB7OwaJryx2n7rtLMjDQtS6L+9F+QovAbc=;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+        b=WKz+T/W5uKEyyW/O27wOpwhCdee/+JYZpj1lC8uhPHZeMV90qnZBEUU1hE1ATU3zx
+         dvnwkzNs+ZpMRGQnPmacOBk/D9ImEwzBEuVUJTXBYeTaG8GQpAYL93+GkJZWlO/YD3
+         9LamebTs+Mukr5XHg1mk2pqXAUuHOOuTay0smbYA=
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        pdx-caf-mail.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.7 required=2.0 tests=ALL_TRUSTED,BAYES_00,
+        DKIM_INVALID,DKIM_SIGNED,SPF_NONE autolearn=no autolearn_force=no
+        version=3.4.0
+Received: from potku.adurom.net (unknown [88.114.240.156])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by vulcan.natalenko.name (Postfix) with ESMTPSA id A3DCE60EFBC;
-        Mon, 28 Oct 2019 08:17:02 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=natalenko.name;
-        s=dkim-20170712; t=1572247022;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=GpScNA8k1wNynPH+2njANhiKTtFuRG/+CoTwLULQUMU=;
-        b=Z2OfiMrOL9ZuQSbl5Y5PfE3jj8D/dJHYYnSrGfNykqXTg8Hn+od9ZCtFcczuOn6l81KZ71
-        0RZ0D5CnvdfX6RN/yHD7doRpkMl1h/OrUdqc+PU/L22Cc1KYAtghkloLVK7cnhDw225ed3
-        9yBtoF0hOEig9jRK9QHbR8wgq/V2JFM=
+        (Authenticated sender: kvalo@smtp.codeaurora.org)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 245736078F;
+        Mon, 28 Oct 2019 09:21:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
+        s=default; t=1572254472;
+        bh=VadqlEYYfxB7OwaJryx2n7rtLMjDQtS6L+9F+QovAbc=;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+        b=BdpVt/ohSPBR7p2rO6SPXPW9cFEAK4uwm4aH6CJZR/v9kZuK6rWpRnmdFTQvQujEs
+         4gvci4q/6+ySyXE/Ivj6B4mNKOWYeN+N8su3LLoY4EiR7Ah1cyAnR1DRl4hMr7933u
+         UGuNnejw+TkYRIXHydpStd+SJZFa410ecaGvD1Ko=
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 245736078F
+Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
+From:   Kalle Valo <kvalo@codeaurora.org>
+To:     Saurav Girepunje <saurav.girepunje@gmail.com>
+Cc:     davem@davemloft.net, allison@lohutok.net,
+        kstewart@linuxfoundation.org, opensource@jilayne.com,
+        mcgrof@kernel.org, saurav.girepunje@gmail.com, tglx@linutronix.de,
+        linux-wireless@vger.kernel.org, b43-dev@lists.infradead.org,
+        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+        saurav.girepunje@hotmail.com
+Subject: Re: [PATCH] net: wireless: broadcom: Fix use true/false for bool type variable.
+References: <20191027042422.GA7956@saurav>
+Date:   Mon, 28 Oct 2019 11:21:05 +0200
+In-Reply-To: <20191027042422.GA7956@saurav> (Saurav Girepunje's message of
+        "Sun, 27 Oct 2019 09:54:26 +0530")
+Message-ID: <87wocp8bum.fsf@kamboji.qca.qualcomm.com>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII;
- format=flowed
-Content-Transfer-Encoding: 7bit
-Date:   Mon, 28 Oct 2019 08:17:02 +0100
-From:   Oleksandr Natalenko <oleksandr@natalenko.name>
-To:     Lorenzo Bianconi <lorenzo@kernel.org>
-Cc:     kvalo@codeaurora.org, linux-wireless@vger.kernel.org, nbd@nbd.name,
-        hkallweit1@gmail.com, sgruszka@redhat.com,
-        lorenzo.bianconi@redhat.com, netdev@vger.kernel.org
-Subject: Re: [PATCH v3 wireless-drivers 0/2] fix mt76x2e hangs on U7612E
- mini-pcie
-In-Reply-To: <cover.1572204430.git.lorenzo@kernel.org>
-References: <cover.1572204430.git.lorenzo@kernel.org>
-Message-ID: <5c6bdfd65ae3178cff2f55233e9e8465@natalenko.name>
-X-Sender: oleksandr@natalenko.name
-User-Agent: Roundcube Webmail/1.3.10
+Content-Type: text/plain
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 27.10.2019 20:53, Lorenzo Bianconi wrote:
-> Various mt76x2e issues have been reported on U7612E mini-pcie card [1].
-> On U7612E-H1 PCIE_ASPM causes continuous mcu hangs and instability and
-> so patch 1/2 disable it by default.
-> Moreover mt76 does not properly unmap dma buffers for non-linear skbs.
-> This issue may result in hw hangs if the system relies on IOMMU.
-> Patch 2/2 fix the problem properly unmapping data fragments on
-> non-linear skbs.
-> 
-> Changes since v2:
-> - fix compilation error if PCI support is not compiled
-> 
-> Changes since v1:
-> - simplify buf0 unmap condition
-> - use IS_ENABLED(CONFIG_PCIEASPM) instead of ifdef CONFIG_PCIEASPM
-> - check pci_disable_link_state return value
-> 
-> [1]:
-> https://lore.kernel.org/netdev/deaafa7a3e9ea2111ebb5106430849c6@natalenko.name/
-> 
-> 
-> Lorenzo Bianconi (2):
->   mt76: mt76x2e: disable pcie_aspm by default
->   mt76: dma: fix buffer unmap with non-linear skbs
-> 
->  drivers/net/wireless/mediatek/mt76/Makefile   |  2 +
->  drivers/net/wireless/mediatek/mt76/dma.c      |  6 ++-
->  drivers/net/wireless/mediatek/mt76/mt76.h     |  6 ++-
->  .../net/wireless/mediatek/mt76/mt76x2/pci.c   |  2 +
->  drivers/net/wireless/mediatek/mt76/pci.c      | 46 +++++++++++++++++++
->  5 files changed, 58 insertions(+), 4 deletions(-)
->  create mode 100644 drivers/net/wireless/mediatek/mt76/pci.c
+(manually fixing the Cc field)
 
-So, works fine for me. Checked with 5.3 and additional include fix I've 
-mentioned previously.
+Saurav Girepunje <saurav.girepunje@gmail.com> writes:
 
-With that, for the whole series feel free to add:
+> use true/false for bool type variables assignment.
+>
+> Signed-off-by: Saurav Girepunje <saurav.girepunje@gmail.com>
 
-Reported-by: Oleksandr Natalenko <oleksandr@natalenko.name>
-Tested-by: Oleksandr Natalenko <oleksandr@natalenko.name>
+I don't see any of your three patches in linux-wireless list and hence
+neither in patchwork:
 
-Thank you.
+https://patchwork.kernel.org/project/linux-wireless/list/?state=*
+
+One reason might be the ';' character in the To field:
+
+To: kvalo@codeaurora.org;, davem@davemloft.net;, allison@lohutok.net;,
+	kstewart@linuxfoundation.org;, opensource@jilayne.com;,
+	mcgrof@kernel.org;, saurav.girepunje@gmail.com;, tglx@linutronix.de
+	;, linux-wireless@vger.kernel.org;, b43-dev@lists.infradead.org;,
+	netdev@vger.kernel.org;, linux-kernel@vger.kernel.org;
+
+Please fix that and resend all patches. Also the title prefix should be
+'b43:':
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches#commit_title_is_wrong
 
 -- 
-   Oleksandr Natalenko (post-factum)
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
